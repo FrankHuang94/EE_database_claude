@@ -35,7 +35,7 @@ Single- and multivariable calculus taught through electrical examples: charge an
 | [01-07 · Applications of Integration](chapters/01-07-applications-of-integration.md) | 10 | ✅ verified | [problems](problems/01-07-problems.md) · [solutions](solutions/01-07-solutions.md) · [lab](labs/01-07-lab/README.md) · [verify](verify/verify_01_07.py) |
 | [01-08 · Sequences, Series and Taylor Expansions](chapters/01-08-sequences-series-and-taylor.md) | 12 | ✅ verified | [problems](problems/01-08-problems.md) · [solutions](solutions/01-08-solutions.md) · [lab](labs/01-08-lab/README.md) · [verify](verify/verify_01_08.py) |
 | [01-09 · Multivariable Calculus I: Partial Derivatives and Gradients](chapters/01-09-multivariable-calculus-1.md) | 12 | ✅ verified | [problems](problems/01-09-problems.md) · [solutions](solutions/01-09-solutions.md) · [lab](labs/01-09-lab/README.md) · [verify](verify/verify_01_09.py) |
-| [01-10 · Multivariable Calculus II: Multiple, Line and Surface Integrals](chapters/01-10-multivariable-calculus-2.md) | 12 | ⬜ planned | — |
+| [01-10 · Multivariable Calculus II: Multiple, Line and Surface Integrals](chapters/01-10-multivariable-calculus-2.md) | 12 | ✅ verified | [problems](problems/01-10-problems.md) · [solutions](solutions/01-10-solutions.md) · [lab](labs/01-10-lab/README.md) · [verify](verify/verify_01_10.py) |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 

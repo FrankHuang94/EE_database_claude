@@ -7,9 +7,9 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 > **Phase 2 is under way** (the learner asked on 2026-11-12 to continue Phase 2 while pilot feedback is pending).
 >
 > - Course 00 is complete and audited (🏁).
-> - Course 01: 01-01 to 01-09 are verified.
+> - Course 01: all ten chapters (01-01 to 01-10) are verified.
 >
-> **Next: write 01-10 Multivariable Calculus II** (chapter, problems, solutions, verify, lab, figures, glossary), then the Course 01 exam, flashcards, equation sheet and independent audit; push after the audit fixes. Course 01 flashcards are written at course end (about 8–12 cards per chapter). After that, write the Course 01 exam, flashcards and equation sheet, run the independent audit, fix its findings and push.
+> **Next: Course 01 wrap-up.** Write the Course 01 exam (`exam/README.md`, solutions and `verify/verify_01_exam.py`), the flashcards (about 8–12 cards per chapter) and the equation sheet. Then run the independent audit with a fresh reviewer subagent, fix every finding, mark the chapters reviewed and push. Course 02 (from 02-02) follows.
 >
 > When pilot feedback arrives, apply it to the pilots and to every chapter written since, before continuing.
 
@@ -32,12 +32,12 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | Course | Chapters | Written | Verified | Reviewed | Words | Problems | Verified numbers | Labs | Notebooks / netlists / testbenches |
 |---|---|---|---|---|---|---|---|---|---|
 | 00 | 5 | 5 | 5 | 5 | 22,489 | 52 | 229 | 5 | 5 / 3 / 1 |
-| 01 | 10 | 9 | 9 | 0 | 47,679 | 136 | 784 | 9 | 9 / 13 / 0 |
+| 01 | 10 | 10 | 10 | 0 | 52,411 | 151 | 851 | 10 | 10 / 13 / 0 |
 | 02 | 10 | 1 | 1 | 0 | 9,185 | 18 | 118 | 1 | 1 / 0 / 0 |
 | 07 | 11 | 1 | 1 | 0 | 8,902 | 18 | 149 | 1 | 1 / 6 / 0 |
-| **Total** | **307** | **16** | **16** | **5** | **88,255** | **224** | **1280** | **16** | **16 / 22 / 1** |
+| **Total** | **307** | **17** | **17** | **5** | **92,987** | **239** | **1347** | **17** | **17 / 22 / 1** |
 
-Glossary terms: **222** · Flashcards: **111**
+Glossary terms: **236** · Flashcards: **111**
 
 <!-- END STATS -->
 
@@ -46,7 +46,7 @@ Glossary terms: **222** · Flashcards: **111**
 | Course | Status | Audit | Notes |
 |---|---|---|---|
 | 00 | 🏁 audited | ✅ 2026-11-12 | 5 chapters reviewed: 52 problems, 229 machine-checked chapter/lab values, exam (15 questions, 27 keyed values), 56 flashcards, equation sheet. The audit found 4 critical, 11 major and 12 minor items; all were fixed (see session log). |
-| 01 | 🔄 in progress | — | 01-01 ✅ verified: 15 problems, 123 machine-checked values, lab notebook. 01-02 ✅ verified: 15 problems, 97 machine-checked values, notebook + 2 ngspice netlists. 01-03 ✅ verified: 16 problems, 74 machine-checked values, notebook + 2 ngspice netlists. 01-04 ✅ verified: 15 problems, 99 machine-checked values, notebook + 1 ngspice netlist. 01-05 ✅ verified: 15 problems, 82 machine-checked values, notebook + 2 ngspice netlists. 01-06 ✅ verified: 15 problems, 68 machine-checked values, notebook + 2 ngspice netlists. 01-07 ✅ verified: 15 problems, 83 machine-checked values, notebook + 1 ngspice netlist. 01-08 ✅ verified: 15 problems, 85 machine-checked values, notebook + 2 ngspice netlists. 01-09 ✅ verified: 15 problems, 73 machine-checked values, notebook + 1 ngspice netlist. |
+| 01 | 🔄 in progress | — | 01-01 ✅ verified: 15 problems, 123 machine-checked values, lab notebook. 01-02 ✅ verified: 15 problems, 97 machine-checked values, notebook + 2 ngspice netlists. 01-03 ✅ verified: 16 problems, 74 machine-checked values, notebook + 2 ngspice netlists. 01-04 ✅ verified: 15 problems, 99 machine-checked values, notebook + 1 ngspice netlist. 01-05 ✅ verified: 15 problems, 82 machine-checked values, notebook + 2 ngspice netlists. 01-06 ✅ verified: 15 problems, 68 machine-checked values, notebook + 2 ngspice netlists. 01-07 ✅ verified: 15 problems, 83 machine-checked values, notebook + 1 ngspice netlist. 01-08 ✅ verified: 15 problems, 85 machine-checked values, notebook + 2 ngspice netlists. 01-09 ✅ verified: 15 problems, 73 machine-checked values, notebook + 1 ngspice netlist. 01-10 ✅ verified: 15 problems, 67 machine-checked values, notebook (fields and geometry, no netlist). Next: exam, flashcards, equation sheet, audit. |
 | 02 | 🔄 in progress (pilot) | — | 02-01 ✅ verified: 17 problems, 111 machine-checked values, lab notebook. Other chapters planned. |
 | 07 | 🔄 in progress (pilot) | — | 07-02 ✅ verified: 16 problems, 128 machine-checked values, 6 ngspice netlists, lab notebook. Other chapters planned. |
 | all others | ⬜ planned (stubs only) | — | |

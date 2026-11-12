@@ -736,3 +736,52 @@
 - term: Bandgap reference
   definition: A circuit that adds a junction voltage (falling about 2 mV/K) to a voltage proportional to absolute temperature so that the temperature coefficients cancel; its output sits near the silicon bandgap, about 1.2 V.
   chapter: "01-09"
+- term: Double integral
+  definition: The integral of a function over a two-dimensional region, ∬ f dA; it sums a density (power per area, charge per area) over the region to give a total.
+  chapter: "01-10"
+- term: Fubini's theorem
+  definition: For well-behaved integrands, a double integral can be evaluated as two nested single integrals in either order; reversing the order can turn an impossible integral into an easy one.
+  chapter: "01-10"
+  see_also: [Double integral]
+- term: Jacobian
+  definition: The determinant of the matrix of partial derivatives of a change of variables; its magnitude is the local area or volume scale factor, r for polar and ρ² sin φ for spherical coordinates.
+  chapter: "01-10"
+- term: Vector field
+  definition: A rule that assigns a vector to every point in space, such as an electric field E(x, y, z) or a current density J.
+  chapter: "01-10"
+- term: Line integral
+  definition: The integral of a vector field's component along a path, ∫ F · dr; for a force it is work, for an electric field it is (minus) the voltage difference.
+  chapter: "01-10"
+  see_also: [Vector field]
+- term: Conservative field
+  definition: A vector field whose line integrals depend only on the endpoints, equivalently the gradient of a potential, equivalently curl-free on a region without holes; electrostatic fields are conservative, which is what makes voltage well defined.
+  chapter: "01-10"
+  see_also: [Line integral, Curl]
+- term: Flux
+  definition: The surface integral of a vector field's normal component, ∬ F · dA, measuring how much of the field passes through a surface.
+  chapter: "01-10"
+- term: Divergence
+  definition: ∇ · F, the net outflow of a vector field per unit volume at a point; a source density. Gauss's law states ∇ · E = ρ/ε₀.
+  chapter: "01-10"
+  see_also: [Flux]
+- term: Curl
+  definition: ∇ × F, the circulation of a vector field per unit area at a point, as a vector along the axis of rotation; magnetic fields have curl where current flows.
+  chapter: "01-10"
+- term: Divergence theorem
+  definition: The total outward flux of a field through a closed surface equals the integral of its divergence over the enclosed volume; it turns local source density into a global balance.
+  chapter: "01-10"
+  see_also: [Divergence, Flux]
+- term: Stokes' theorem
+  definition: The circulation of a field around a closed loop equals the flux of its curl through any surface bounded by the loop; Green's theorem is its flat, two-dimensional case.
+  chapter: "01-10"
+  see_also: [Curl]
+- term: Gauss's law
+  definition: The electric flux out of any closed surface equals the enclosed charge divided by ε₀; with symmetry it gives fields of spheres, lines and planes in one line.
+  chapter: "01-10"
+  see_also: [Divergence theorem]
+- term: Skin effect
+  definition: The crowding of AC current toward a conductor's surface, within a skin depth δ = √(ρ/(πfμ)) (about 0.21 mm in copper at 100 kHz), which raises resistance at high frequency.
+  chapter: "01-10"
+- term: Dies per wafer
+  definition: The number of whole dies that fit on a round wafer, approximated by πd²/(4A) − πd/√(2A); the subtracted edge-loss term grows in relative size as dies get larger.
+  chapter: "01-10"
