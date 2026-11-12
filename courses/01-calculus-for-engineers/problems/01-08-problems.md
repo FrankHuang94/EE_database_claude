@@ -88,9 +88,9 @@ A non-inverting amplifier has ideal gain $1/\beta = 11$.
 
 **Compression and intercept points of a cubic amplifier.** An amplifier has $y = x - 0.05x^3$ (volts).
 
-(a) For $x = A\cos\omega t$ with $A = 1$ V, find the fundamental output amplitude and HD3.
+(a) For $x = A\cos\omega t$ with $A = 1$ V, find the fundamental output amplitude and HD3, defined here as the third-harmonic amplitude divided by the *actual* (compressed) fundamental. Compare with the small-signal formula of chapter §3.8.
 (b) The **1 dB compression point** is the input amplitude at which the fundamental gain falls 1 dB below $a_1$. Find it.
-(c) The **third-order intercept** (input-referred) is the amplitude at which the extrapolated third-order intermodulation product of a two-tone test would equal the fundamental. For a cubic it is $A_{IP3} = \sqrt{\tfrac{4}{3}\lvert a_1/a_3\rvert}$. Evaluate it, and show that $A_{IP3}/A_{1dB}$ is about 9.6 dB, independent of $a_3$.
+(c) The **third-order intercept** (input-referred) is the amplitude at which the extrapolated third-order intermodulation product of a two-tone test would equal the fundamental. Show that for a cubic it is $A_{IP3} = \sqrt{\tfrac{4}{3}\lvert a_1/a_3\rvert}$ (hint: expand $a_3x^3$ with $x = A(\cos\omega_1t + \cos\omega_2t)$ and find the term at $2\omega_1 - \omega_2$). Evaluate it, and show that $A_{IP3}/A_{1dB}$ is about 9.6 dB, independent of $a_3$.
 
 ### Problem 01-08.13 [C]
 
@@ -112,13 +112,31 @@ A non-inverting amplifier has ideal gain $1/\beta = 11$.
 (b) Write the far-end voltage as a geometric series, and find its limit. Check it against the DC voltage divider.
 (c) After how many arrivals is the far-end voltage within 1% of its final value?
 
+### Problem 01-08.16 [A]
+
+**Choosing a convergence test.** Decide whether each series converges, naming the test you use.
+
+(a) $\displaystyle\sum_{k=1}^\infty\frac{1}{k^2 + 3k}$. If it converges, find its sum (hint: partial fractions make it telescope).
+(b) $\displaystyle\sum_{k=1}^\infty\frac{1}{2k + 1}$
+(c) $\displaystyle\sum_{k=1}^\infty\frac{\sin^2k}{k^2}$
+(d) $\displaystyle\sum_{k=1}^\infty\left(\frac{k}{2k + 1}\right)^k$
+
+### Problem 01-08.17 [B]
+
+**Bracketing a slowly converging sum.** Let $S = \sum_{k=1}^\infty 1/k^3$.
+
+(a) Compute the partial sum $S_{10}$.
+(b) Use the integral test to bracket the remainder $S - S_{10}$, and so bracket $S$.
+(c) Take the midpoint of your bracket as an estimate of $S$. Compare it with the true value, $S = 1.2020569$.
+(d) How many terms would the plain partial sum need to guarantee an error below $10^{-6}$?
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 01-08) | Problems |
 |---|---|
-| 1. Convergence of sequences and series; geometric sums | 1, 2, 5, 6, 15 |
+| 1. Convergence of sequences and series; geometric sums | 1, 2, 5, 6, 15, 16, 17 |
 | 2. Taylor and Maclaurin series; radius of convergence | 3, 4, 10, 14 |
 | 3. Remainder bounds; number of terms | 7, 14 |
 | 4. Engineering approximations; feedback gain error | 8, 9 |

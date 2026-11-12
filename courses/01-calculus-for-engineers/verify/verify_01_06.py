@@ -193,4 +193,40 @@ pk = minimize_scalar(lambda tt: -sum(4 / (k * math.pi) * math.sin(2 * math.pi * 
 v.check("Lab 01-06.b", -pk.fun)
 v.check("Lab 01-06.c", simpson(lambda z: np.sin(40 * z) ** 2, 0, math.pi, 20), tol=1e-12)
 
+# ---------------------------------------------------------------- audit additions (Ex 6, Problems 16-17)
+from scipy.constants import epsilon_0  # noqa: E402
+
+kC = 1 / (4 * math.pi * epsilon_0)
+lam6, d6, L6 = 1e-9, 0.01, 0.05
+E6 = quad(lambda xx: kC * lam6 * d6 / (xx * xx + d6 * d6) ** 1.5, -L6, L6)[0]
+v.check("Ex 01-06.6a", kC * lam6 / d6)
+v.check("Ex 01-06.6b", 2 * L6 / math.sqrt(L6**2 + d6**2))
+v.check("Ex 01-06.6c", E6)
+v.check("Ex 01-06.6d", lam6 / (2 * math.pi * epsilon_0 * d6))
+v.check("Ex 01-06.6e", 100 * E6 / (lam6 / (2 * math.pi * epsilon_0 * d6)))
+v.check("Ex 01-06.6f", kC)
+v.check("Ex 01-06.6g", L6 / d6)
+xa, aa = sp.symbols("x a", positive=True)
+v.assert_true("∫ dx/(x²+d²)^(3/2) = x/(d² sqrt(x²+d²))",
+              sp.simplify(sp.diff(xa / (aa**2 * sp.sqrt(xa**2 + aa**2)), xa) - 1 / (xa**2 + aa**2) ** sp.Rational(3, 2)) == 0)
+v.assert_true("∫0^a sqrt(a²−x²) = πa²/4", sp.simplify(sp.integrate(sp.sqrt(aa**2 - xa**2), (xa, 0, aa)) - sp.pi * aa**2 / 4) == 0)
+v.check("01-06.16a", quad(lambda xx: math.sqrt(4 - xx * xx), 0, 1)[0])
+v.check("01-06.16b", 2 * math.asin(0.5))
+v.check("01-06.16c", math.sqrt(3) / 2)
+v.check("01-06.17a", quad(lambda xx: 1 / (xx * xx + 2 * xx + 5), 0, 1)[0])
+v.check("01-06.17b", quad(lambda xx: (xx + 3) / (xx * xx + 2 * xx + 5), 0, 1)[0])
+v.check("01-06.17c", 0.5 * math.log(8 / 5))
+v.check("01-06.17d", 2 * quad(lambda xx: 1 / (xx * xx + 2 * xx + 5), 0, 1)[0])
+ss, tt_ = sp.symbols("s t", positive=True)
+v.assert_true("L{e^-t sin 2t} = 2/(s²+2s+5)",
+              sp.simplify(sp.laplace_transform(sp.exp(-tt_) * sp.sin(2 * tt_), tt_, ss, noconds=True) - 2 / (ss**2 + 2 * ss + 5)) == 0)
+v.check("01-06.17e", 1)
+v.check("01-06.17f", 2)
+v.check("01-06.17g", 2 * math.pi / 2)
+v.check("01-06.17h", math.atan(1))
+v.check("01-06.17i", math.atan(0.5))
+
+v.check("Lab 01-06.d", 2 - 2 * math.sqrt(1e-8))
+v.check("Lab 01-06.e", ((1 - 1e-8) / 20) / 3 * 1e-8 ** -0.5)
+
 v.finish()

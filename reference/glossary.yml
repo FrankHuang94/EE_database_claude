@@ -785,3 +785,39 @@
 - term: Dies per wafer
   definition: The number of whole dies that fit on a round wafer, approximated by πd²/(4A) − πd/√(2A); the subtracted edge-loss term grows in relative size as dies get larger.
   chapter: "01-10"
+- term: Hyperbolic functions
+  definition: cosh x = (e^x + e^−x)/2, sinh x = (e^x − e^−x)/2 and tanh = sinh/cosh, linked by cosh² − sinh² = 1; they describe catenaries, overdamped responses, transmission-line input impedance and the differential pair's tanh transfer curve.
+  chapter: "01-01"
+- term: Logarithmic differentiation
+  definition: Differentiating ln y instead of y, which turns products, quotients and variable exponents into sums; for example (x^x)' = x^x(1 + ln x).
+  chapter: "01-03"
+- term: Trigonometric substitution
+  definition: Replacing x by a sin θ, a tan θ or a sec θ so that a Pythagorean identity collapses √(a² − x²), a² + x² or √(x² − a²); the reference triangle converts the answer back to x.
+  chapter: "01-06"
+- term: Completing the square
+  definition: Rewriting x² + px + q as (x + p/2)² + (q − p²/4); it turns an irreducible quadratic into an arctangent integral, and in the Laplace domain into a damped sinusoid.
+  chapter: "01-06"
+- term: Arc length
+  definition: The length of a curve, L = ∫√(1 + f'(x)²) dx, built from the element ds = √(dx² + dy²).
+  chapter: "01-07"
+- term: Centroid
+  definition: The balance point of a region or distribution, its first moment divided by its area (or total weight); the mean of a density and the Elmore delay are centroids.
+  chapter: "01-07"
+  see_also: [Elmore delay]
+- term: Integral test
+  definition: For a positive decreasing f with a_k = f(k), Σ a_k converges exactly when ∫ f dx does, and the tail after n terms lies between ∫ from n+1 to ∞ and ∫ from n to ∞ of f.
+  chapter: "01-08"
+- term: Limit comparison test
+  definition: If a_k, b_k > 0 and a_k/b_k tends to a finite positive limit, the series Σ a_k and Σ b_k converge or diverge together.
+  chapter: "01-08"
+- term: Dot product
+  definition: a·b = a₁b₁ + a₂b₂ + a₃b₃ = |a||b|cos θ; it measures how far two vectors point the same way and is zero for perpendicular vectors.
+  chapter: "01-09"
+- term: Cross product
+  definition: a × b, a vector perpendicular to both a and b, of length |a||b|sin θ (the area of their parallelogram), directed by the right-hand rule.
+  chapter: "01-10"
+- term: Mean time to failure (MTTF)
+  definition: The expected lifetime of a non-repairable component, 1/λ for a constant failure rate λ; MTBF is the analogous figure for repairable systems, and the two are often used loosely as synonyms.
+  chapter: "01-07"
+  see_also: [Mean time between failures (MTBF)]
+

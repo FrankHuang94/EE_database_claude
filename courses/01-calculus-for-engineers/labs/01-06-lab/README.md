@@ -29,7 +29,7 @@ Chapter sections 3.1–3.4 (substitution, parts, trigonometric integrals, orthog
 | 2 | triangle-wave $b_1, b_3, b_5$ | 0.8106, −0.0901, 0.0324: falling as $1/n^2$ |
 | 2 | Gibbs peak with harmonics up to 11, and the limit | 1.1813; 1.1790 for many harmonics (it does not shrink) |
 | 3 | Simpson(20) on $\sin^2(40x)$ over $[0, \pi]$ | 0, against the true $\pi/2$: every sample lands on a zero of the integrand (aliasing) |
-| 3 | Simpson(20) on $1/\sqrt{x}$ near 0 | about 168, against the true 2: the singularity defeats a uniform grid |
+| 3 | Simpson(20) on $1/\sqrt{x}$ over $[\epsilon, 1]$ with the notebook's cutoff $\epsilon = 10^{-8}$ | about 168, against the true 2: the singularity defeats a uniform grid. The first sample alone, $(h/3)\cdot\epsilon^{-1/2}$ with $h \approx 0.05$, contributes about 167, so the result is set by the arbitrary cutoff. (SciPy's `quad` prints 2.000000 because it extrapolates to the $\epsilon \to 0$ limit; the exact $\int_\epsilon^1$ is $2 - 2\sqrt\epsilon = 1.9998$.) |
 | 4 | ngspice $b_1$, $b_3$, $b_5$ | 1.2732, 0.4244, 0.2546; $b_2 \approx 0$ |
 | 4 | noise: 10 kΩ with $f_c$ = 10 kHz; 1 kΩ with 1 pF; 1 MΩ with 1 pF | 1.613 µV; 64.36 µV; 64.36 µV |
 
@@ -39,6 +39,8 @@ Chapter sections 3.1–3.4 (substitution, parts, trigonometric integrals, orthog
 | Lab 01-06.a | kT/C noise, 1 MΩ and 1 pF | 64.36 | µV |
 | Lab 01-06.b | Gibbs peak, harmonics up to 11 | 1.1813 | — |
 | Lab 01-06.c | Simpson(20) on sin²(40x) | 0 | — |
+| Lab 01-06.d | exact integral of x^(−1/2) over [1e−8, 1] | 1.9998 | — |
+| Lab 01-06.e | first Simpson sample's contribution | 167 | — |
 
 ## Discussion questions
 

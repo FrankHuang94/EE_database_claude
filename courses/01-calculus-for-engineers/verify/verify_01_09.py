@@ -83,6 +83,7 @@ VT300 = K_B * 300 / Q
 Vd = VT300 * math.log(1e-3 / 1e-14)
 v.check("Ex 01-09.3a", Vd)
 v.check("Ex 01-09.3b", tempco(Vd, 300) * 1e3)
+v.check("Ex 01-09.3c", K_B * 300 / Q * 1e3)
 
 f4 = x**2 + 4 * y**2
 g4 = [sp.diff(f4, x).subs({x: 2, y: 1}), sp.diff(f4, y).subs({x: 2, y: 1})]
@@ -144,6 +145,8 @@ v.check("01-09.6b", gm6 * 1e3)
 v.check("01-09.6c", go6 * 1e6)
 v.check("01-09.6d", 1 / go6 / 1e3)
 v.check("01-09.6e", gm6 / go6)
+v.check("01-09.6f", (gm6 * 0.005 + go6 * 0.2) * 1e6)
+v.check("01-09.6g", (num(ID, {**s6, vg: 0.705, vd: 1.1}) - num(ID, s6)) * 1e6)
 
 v.check("01-09.7a", tempco(0.600, 350) * 1e3)
 F7 = x**3 + y**3
@@ -210,6 +213,9 @@ dvbe = tempco(Vd, 300)
 Kb = -dvbe / (K_B / Q)
 v.check("01-09.14b", Kb)
 v.check("01-09.14c", Vd + Kb * VT300)
+v.check("01-09.14d", -dvbe * 1e3)
+v.check("01-09.14e", K_B / Q * 1e3)
+v.check("01-09.14f", Kb)
 v.assert_true("V_out = Eg/q + 3kT/q", math.isclose(Vd + Kb * VT300, EG + 3 * VT300, rel_tol=1e-12))
 
 V15 = np.array([0.6, 0.8, 1.0])
@@ -225,5 +231,7 @@ v.check("01-09.15d", 100 * b15 / (a15 * 0.64 + b15))
 v.check("Lab 01-09.a", 2 / (2 * 100))
 V10u = VT300 * math.log(10e-6 / 1e-14)
 v.check("Lab 01-09.b", tempco(V10u, 300) * 1e3)
+
+v.check("01-09.12f", mu)
 
 v.finish()

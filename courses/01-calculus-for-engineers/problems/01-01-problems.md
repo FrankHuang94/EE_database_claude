@@ -150,14 +150,22 @@ Doubling times, rates and the "rule of 70".
 (d) The finance "rule of 70" estimates doubling time as $70/(\text{percent growth per period})$. Derive it from $(1 + g)^{t} = 2$, stating the approximation it makes.
 (e) Apply the rule to the 41.42%/year growth from (a), and to 7%/year growth. Compare each with the exact doubling time, and explain why the rule works much better in one case.
 
+### Problem 01-01.16 [A]
+
+Hyperbolic functions.
+
+(a) Evaluate $\cosh 1$ and $\sinh 1$ from their definitions, and check that $\cosh^2 1 - \sinh^2 1 = 1$.
+(b) Show that $\tanh x = \dfrac{1 - e^{-2x}}{1 + e^{-2x}}$, and use it to explain why $\tanh x \approx 1 - 2e^{-2x}$ for large $x$.
+(c) Evaluate $\tanh 3$ exactly and with the approximation from (b). How far is $\tanh 3$ from 1?
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 01-01) | Problems |
 |---|---|
-| 1. Functions with domain, range and units; function families | 1, 2, 12 |
-| 2. Exponential and logarithm laws; solving for time or rate | 3, 4, 8, 9, 15 |
+| 1. Functions with domain, range and units; function families | 1, 2, 12, 16 |
+| 2. Exponential and logarithm laws; solving for time or rate | 3, 4, 8, 9, 15, 16 |
 | 3. Decibels for power and amplitude; dBm | 5, 6, 10, 14 |
 | 4. Sinusoids in radian form; small-angle approximations | 7, 11 |
-| 5. Fitting exponential and power-law models by linearization | 12, 13, 14 |
+| 5. Fitting exponential and power-law models by linearization | 13, 14 |

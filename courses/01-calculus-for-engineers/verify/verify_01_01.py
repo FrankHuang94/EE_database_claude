@@ -265,6 +265,15 @@ v.check("01-01.15h", math.log(2) / math.log(1.07))
 v.assert_true("rule-of-70 error ~15 % at 41 %, ~2 % at 7 %",
               round(100 * (1 - (70 / 41.42) / 2)) == 15 and round(100 * (1 - 10 / 10.2448)) == 2)
 
+v.check("01-01.16a", (math.e + math.exp(-1)) / 2)
+v.check("01-01.16b", (math.e - math.exp(-1)) / 2)
+v.check("01-01.16c", math.cosh(1) ** 2)
+v.check("01-01.16d", math.sinh(1) ** 2)
+v.assert_true("cosh^2 - sinh^2 = 1", math.isclose(math.cosh(1) ** 2 - math.sinh(1) ** 2, 1.0))
+v.check("01-01.16e", (1 - math.exp(-6)) / (1 + math.exp(-6)))
+v.check("01-01.16f", 1 - 2 * math.exp(-6))
+v.check("01-01.16g", 1 - math.tanh(3))
+
 # ---------------------------------------------------------------- lab handout
 v.check("Lab 01-01.a", vt(360) * 1e3)
 v.check("Lab 01-01.b", vt(360) * LN10 * 1e3)

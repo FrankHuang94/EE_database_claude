@@ -239,6 +239,14 @@ So $A$ is the received power at 1 m, in dBm, and the slope against $\log_{10}d$ 
 
 (e) For 41.42%: the rule gives $70/41.42 = $ **1.690 years** against the exact 2.000 years, a 15% error. For 7%: it gives $70/7 = $ **10.00 years** against the exact $\ln 2/\ln 1.07 = $ **10.24 years**, a 2% error. The approximation $\ln(1 + g) \approx g$ is good only when $g \ll 1$. At $g = 0.414$, $\ln 1.414 = 0.347$ is far from 0.414. The same lesson holds throughout this course: linear approximations are local.
 
+### Solution 01-01.16
+
+(a) $\cosh 1 = (e + e^{-1})/2 = (2.71828 + 0.36788)/2 = $ **1.5431** and $\sinh 1 = (e - e^{-1})/2 = $ **1.1752**. Squaring the unrounded values, $\cosh^2 1 = 2.38110$ and $\sinh^2 1 = 1.38110$, whose difference is 1 ✓.
+
+(b) Multiply the top and bottom of $\tanh x = \dfrac{e^x - e^{-x}}{e^x + e^{-x}}$ by $e^{-x}$: $\tanh x = \dfrac{1 - e^{-2x}}{1 + e^{-2x}}$. For large $x$, $u = e^{-2x}$ is small, and $\dfrac{1 - u}{1 + u} = (1 - u)(1 - u + u^2 - \cdots) = 1 - 2u + 2u^2 - \cdots$, so $\tanh x \approx 1 - 2e^{-2x}$.
+
+(c) Exactly, $\tanh 3 = (1 - e^{-6})/(1 + e^{-6}) = $ **0.99505**. The approximation gives $1 - 2e^{-6} = $ **0.99504**. $\tanh 3$ is within $4.95\times10^{-3}$ (0.5%) of 1, which is why "tanh saturates beyond about 3" is a good rule.
+
 ---
 
 <!-- answer-key -->
@@ -343,3 +351,10 @@ So $A$ is the received power at 1 m, in dBm, and the slope against $\log_{10}d$ 
 | 01-01.15f | rule of 70 at 41.42 % | 1.690 | yr |
 | 01-01.15g | rule of 70 at 7 % | 10.00 | yr |
 | 01-01.15h | exact doubling at 7 % | 10.24 | yr |
+| 01-01.16a | cosh 1 | 1.5431 | — |
+| 01-01.16b | sinh 1 | 1.1752 | — |
+| 01-01.16c | cosh² 1 | 2.38110 | — |
+| 01-01.16d | sinh² 1 | 1.38110 | — |
+| 01-01.16e | tanh 3 | 0.99505 | — |
+| 01-01.16f | 1 − 2e^−6 | 0.99504 | — |
+| 01-01.16g | 1 − tanh 3 | 4.95×10^-3 | — |

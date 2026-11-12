@@ -18,7 +18,7 @@ Chapter sections 3.2 (classifying optima, flatness), 3.4 (optimization), 3.5 (li
 
 1. Run all notebook cells in order.
 2. **Part 1:** note the penalty for missing each optimum by a factor of 2.
-3. **Part 2:** before running, predict whether the Monte Carlo spread resembles the worst-case or the RSS figure.
+3. **Part 2:** before running, predict whether the Monte Carlo standard deviation matches the worst case, the RSS of the tolerance limits, or the RSS of the standard deviations ($t/\sqrt3$ for a uniform ±$t$ spread).
 4. **Part 3:** confirm that the number of correct digits roughly doubles per Newton step, and find the edge of the arctan convergence region.
 5. **Part 4:** before running, predict at what relative gap between $\tau_1$ and $\tau_2$ the direct formula loses accuracy.
 6. **Part 5:** from the repository root, run `python tools/run_spice.py 01-04`. Then change `RS1` to 25 Ω and predict the new optimum and maximum power before re-running.
@@ -35,7 +35,7 @@ Chapter sections 3.2 (classifying optima, flatness), 3.4 (optimization), 3.5 (li
 | 4 | best relative gap | about $10^{-8}$; smaller gaps lose accuracy to cancellation (error $10^{-3}$ at $10^{-14}$) |
 | 5 | ngspice optimum | 50 Ω, 0.5 W; 0.4444 W at 100 Ω; 2 kΩ, 125 µW for the sensor. With $R_s = 25\ \Omega$: 25 Ω, 1 W |
 
-The penalties in Part 1 differ because the optima differ in curvature (§3.2). Maximum power transfer is symmetric in $\ln R_L$: $P(R_s/2) = P(2R_s)$. The stylized energy curve rises much more steeply below its optimum than above it, in relative terms.
+The penalties in Part 1 differ because the optima differ in curvature (§3.2). Maximum power transfer is symmetric in $\ln R_L$: $P(R_s/2) = P(2R_s)$. The stylized energy curve is asymmetric: a factor-of-2 error costs 41.7% below the optimum and 66.7% above it, so per factor of 2 it rises more steeply *above* the optimum (though more steeply per volt below it).
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -44,6 +44,9 @@ The penalties in Part 1 differ because the optima differ in curvature (§3.2). M
 | Lab 01-04.b | repeater-delay penalty at a 2× count error | 25.0 | % |
 | Lab 01-04.c | uniform-distribution standard deviation | 2.94 | % |
 | Lab 01-04.d | max power with R_s = 25 Ω | 1 | W |
+| Lab 01-04.e | min-energy penalty at V*/2 | 41.7 | % |
+| Lab 01-04.f | min-energy penalty at 2V* | 66.7 | % |
+| Lab 01-04.g | RSS of the tolerance limits | 5.10 | % |
 
 ## Discussion questions
 

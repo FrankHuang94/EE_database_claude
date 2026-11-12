@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 01-01 · Functions, Models and Units
 
 | | |
@@ -21,7 +21,7 @@
 
 Engineering is the practice of describing the world with functions and then reasoning about them. A capacitor's voltage *is* a function of time; a diode's current *is* a function of its voltage; an amplifier's gain *is* a function of frequency. A handful of function families do almost all the work: **linear** relations (Ohm's law), **power laws** ($P = V^2/R$, dynamic power $\propto V^2f$), **exponentials** (charging, decay, transistor currents), **logarithms** (decibels, Bode plots, information) and **sinusoids** (AC power, radio, clocks). This chapter makes you fluent with all five before calculus starts asking how they change.
 
-- **Exponentials** describe every first-order circuit ([07-02](../../07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md)) and the current in every diode and transistor in its subthreshold region ([09-06](../../09-semiconductor-devices/chapters/09-06-pn-junction-iv-and-capacitance.md)).
+- **Exponentials** describe every first-order circuit ([07-02](../../07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md)) and the current in diodes, in bipolar transistors in forward-active operation, and in MOSFETs in their subthreshold region ([09-06](../../09-semiconductor-devices/chapters/09-06-pn-junction-iv-and-capacitance.md)).
 - **Logarithms and decibels** are the native language of RF, audio and communications specifications.
 - **Power laws** express scaling: how power, delay and cost change when a design parameter changes.
 - **Sinusoids** are the basis of AC analysis and Fourier methods ([02-01](../../02-complex-numbers-des-and-linear-algebra/chapters/02-01-complex-numbers-euler-and-phasors.md)).
@@ -99,6 +99,14 @@ where $\tau$ (seconds) is the **time constant**. The exponent must be dimensionl
 - **Time to fall to 10%:** $\tau\ln 10 \approx 2.303\tau$.
 
 **Other bases.** Any base converts to base $e$: $a^x = e^{x\ln a}$. For example $2^x = e^{0.6931x}$, and $10^x = e^{2.3026x}$.
+
+**Hyperbolic functions.** Two combinations of exponentials appear so often that they have names:
+
+$$
+\cosh x = \frac{e^x + e^{-x}}{2}, \qquad \sinh x = \frac{e^x - e^{-x}}{2}, \qquad \tanh x = \frac{\sinh x}{\cosh x}.
+$$
+
+They obey $\cosh^2x - \sinh^2x = 1$ (expand both squares: the cross terms give $\tfrac{2}{4} + \tfrac{2}{4} = 1$), the hyperbolic twin of $\cos^2 + \sin^2 = 1$. $\cosh$ is even with minimum 1 at $x = 0$; $\sinh$ is odd; $\tanh$ rises from −1 to +1 and is close to $\pm1$ once $\lvert x\rvert$ exceeds about 3, since $\tanh x = 1 - 2e^{-2x} + \cdots$ for large $x$. They describe a hanging cable (a catenary is a cosh curve), the overdamped response of an RLC circuit ([02-03](../../02-complex-numbers-des-and-linear-algebra/chapters/02-03-second-order-linear-odes.md)), and the input impedance of a transmission line, which involves $\tanh$ of the line's electrical length ([13-08](../../13-electromagnetics/chapters/13-08-transmission-lines-sinusoidal-steady-state.md)). The neuron activation function tanh in machine-learning accelerators is the same function.
 
 ### 3.5 Logarithms
 
@@ -317,7 +325,7 @@ The lab ([labs/01-01-lab/](../labs/01-01-lab/README.md)) is a notebook with four
 |---|---|---|---|
 | N 01-01.a | 36 dBm in watts | 3.98 | W |
 | N 01-01.b | 30 dBm in watts | 1.00 | W |
-| N 01-01.c | 5 dBm/MHz in mW per MHz | 3.16 | mW |
+| N 01-01.c | 5 dBm/MHz in mW per MHz | 3.16 | mW/MHz |
 
 ## 8. Common mistakes
 
@@ -441,7 +449,8 @@ Now work the problem set: [01-01 problems](../problems/01-01-problems.md) (solut
 [Semilog plot](../../../reference/glossary.md#semilog-plot) ·
 [Log–log plot](../../../reference/glossary.md#log-log-plot) ·
 [Thermal voltage](../../../reference/glossary.md#thermal-voltage) ·
-[Dynamic voltage and frequency scaling (DVFS)](../../../reference/glossary.md#dynamic-voltage-and-frequency-scaling-dvfs)
+[Dynamic voltage and frequency scaling (DVFS)](../../../reference/glossary.md#dynamic-voltage-and-frequency-scaling-dvfs) ·
+[Hyperbolic functions](../../../reference/glossary.md#hyperbolic-functions)
 
 ## 12. Connections
 

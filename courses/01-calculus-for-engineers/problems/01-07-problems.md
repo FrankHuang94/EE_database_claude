@@ -57,10 +57,10 @@ A load has $v = 325\cos\omega t$ V and $i = 8\cos(\omega t - 45^\circ)$ A.
 
 ### Problem 01-07.7 [B]
 
-A 1 F supercapacitor charged to 5 V backs up a memory controller that draws a constant 0.5 W through a regulator that works down to 2.5 V input.
+A 1 F supercapacitor charged to 5 V backs up a memory controller that draws a constant 0.5 W through a regulator that works down to 2.5 V input. Assume the regulator is lossless, so the capacitor supplies exactly 0.5 W.
 
 (a) Find the usable energy.
-(b) For a constant-power load, $dE/dt = -P$. Find the hold-up time.
+(b) For a constant-power load, the stored energy obeys $dw/dt = -P$. Find the hold-up time.
 (c) Write $v(t)$ during the discharge. (Hint: $\tfrac{1}{2}Cv^2 = \tfrac{1}{2}CV_1^2 - Pt$.)
 
 ### Problem 01-07.8 [B]
@@ -125,6 +125,40 @@ A server contains 1000 components, each with a constant failure rate of $2\times
 (b) Show that the mean of $\lvert x\rvert$ is $\sigma\sqrt{2/\pi}$.
 (c) An average-responding meter (calibrated for sines with form factor 1.111) measures this noise. What does it read, as a fraction of the true RMS σ? What is the error in percent?
 
+### Problem 01-07.16 [B]
+
+**An electrostatic actuator at constant voltage.** A MEMS parallel-plate actuator has plate area $A = 1$ mm² and is held at $V = 5$ V by a source ($\varepsilon_0 = 8.854\times10^{-12}$ F/m).
+
+(a) Show that the attractive force is $F = \varepsilon_0AV^2/(2x^2)$ at gap $x$, and evaluate it at $x_1 = 2$ µm.
+(b) Find the work needed to pull the plates from $x_1 = 2$ µm to $x_2 = 4$ µm by integrating the force.
+(c) Find the stored energy $\tfrac12CV^2$ at both gaps. Did it rise or fall, and by how much?
+(d) Find the charge returned to the source and the energy the source absorbed. Show that energy is conserved.
+
+### Problem 01-07.17 [A]
+
+**Area and centroid.** The curves $y = \sqrt{x}$ and $y = x^2$ enclose a region between $x = 0$ and $x = 1$.
+
+(a) Which curve is on top? Find the area of the region.
+(b) Find the $x$-coordinate of its centroid.
+(c) The region is symmetric about the line $y = x$. Without integrating, what is the $y$-coordinate of the centroid?
+
+### Problem 01-07.18 [B]
+
+**Copper in a through-silicon via.** A tapered via (TSV) is 50 µm deep. Its radius grows linearly from 2.0 µm at the bottom to 2.5 µm at the top, and it is completely filled with copper.
+
+(a) Write the radius $r(z)$ as a function of depth and find the copper volume with the disk method.
+(b) Compare with a straight via of radius 2.5 µm. What fraction of that volume does the tapered via hold?
+(c) Check your answer against the frustum formula $V = \frac{\pi h}{3}(R^2 + Rr + r^2)$.
+
+### Problem 01-07.19 [B]
+
+**A sagging power line.** A cable hangs in the catenary $y = a\cosh(x/a)$ with $a = 500$ m, between towers at $x = \pm100$ m (span 200 m).
+
+(a) Show that $\sqrt{1 + y'^2} = \cosh(x/a)$, and find the cable's length.
+(b) How much longer than the span is it, in percent?
+(c) Find the sag: the height of the towers' attachment points above the lowest point.
+(d) Show that for a shallow cable, length ≈ span × $\big(1 + \tfrac{8}{3}(\text{sag}/\text{span})^2\big)$, by Taylor-expanding $\sinh$ and $\cosh$ ([01-08](../chapters/01-08-sequences-series-and-taylor.md)). Check it numerically.
+
 ---
 
 ## Objective coverage
@@ -133,6 +167,7 @@ A server contains 1000 components, each with a constant failure rate of $2\times
 |---|---|
 | 1. Average, RMS, crest and form factors | 1, 2, 15(c) |
 | 2. Average AC power; RMS currents and conduction loss | 5, 6, 12, 14 |
-| 3. Stored and usable energy; work | 3, 7, 8, 13 |
+| 3. Stored and usable energy; work | 3, 7, 8, 13, 16 |
 | 4. Probability densities: uniform, exponential, Gaussian | 4, 9, 10, 15 |
 | 5. ADC SNR and ENOB | 4(a), 11 |
+| 6. Areas, volumes, arc length and centroids | 17, 18, 19 |

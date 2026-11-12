@@ -44,11 +44,12 @@ A PCB trace has resistance $R = \rho L/(wt)$, with $\rho = 1.72\times10^{-8}$ Ω
 
 ### Problem 01-09.6 [B]
 
-A MOSFET has $k = 4$ mA/V², $V_{TH} = 0.4$ V and $V_A = 6$ V, biased at $V_{GS} = 0.7$ V and $V_{DS} = 0.9$ V.
+A MOSFET has $k_n = 4$ mA/V², $V_{TH} = 0.4$ V and $V_A = 6$ V, biased at $V_{GS} = 0.7$ V and $V_{DS} = 0.9$ V.
 
 (a) Find $I_D$, $g_m$, $g_o$ and $r_o$.
 (b) Find the intrinsic gain $g_mr_o$.
 (c) Verify the shortcut $g_m = 2I_D/(V_{GS} - V_{TH})$.
+(d) Use the small-signal model $i_d = g_mv_{gs} + g_ov_{ds}$ to estimate the change in drain current when $V_{GS}$ rises by 5 mV and $V_{DS}$ by 0.2 V. Compare with the exact change.
 
 ### Problem 01-09.7 [B]
 
@@ -92,9 +93,9 @@ Find and classify the critical points of $f(x, y) = x^3 - 3x + y^2 - 2y$, and gi
 
 ### Problem 01-09.13 [C]
 
-**Three heterogeneous cores.** Throughput $F = 3.4$ GHz must be split among three cores with $P_i = k_if_i^3$ and $k = 0.1$, 0.4 and 0.9 W/GHz³.
+**Three heterogeneous cores.** Throughput $F = 3.4$ GHz must be split among three cores with $P_i = c_if_i^3$ and $c_i = 0.1$, 0.4 and 0.9 W/GHz³.
 
-(a) Show that the optimum has $f_i \propto 1/\sqrt{k_i}$.
+(a) Show that the optimum has $f_i \propto 1/\sqrt{c_i}$.
 (b) Find each $f_i$, the total power and λ.
 (c) Explain why no core is switched off entirely, and what would change if each core also had a fixed idle power when on.
 

@@ -70,8 +70,11 @@ T4 = sum(0.5**j / math.factorial(j) for j in range(5))
 v.check("Ex 01-08.2a", T4)
 v.check("Ex 01-08.2b", math.exp(0.5))
 v.check("Ex 01-08.2c", math.exp(0.5) - T4)
-v.check("Ex 01-08.2d", math.exp(0.5) * 0.5**5 / math.factorial(5))
-v.check("Ex 01-08.2e", next(m for m in range(1, 30) if math.e / math.factorial(m) <= 1e-6))
+v.check("Ex 01-08.2d", 2 * 0.5**5 / math.factorial(5))
+v.check("Ex 01-08.2f", 3 / math.factorial(9))
+v.check("Ex 01-08.2g", 3 / math.factorial(10))
+v.check("Ex 01-08.2e", next(m for m in range(1, 30) if 3 / math.factorial(m) <= 1e-6))
+v.assert_true("bound with e^0.5 < 2 still exceeds actual error", math.exp(0.5) - T4 < 2 * 0.5**5 / math.factorial(5))
 
 A3, b3 = 1e5, 0.01
 G3 = A3 / (1 + A3 * b3)
@@ -196,5 +199,41 @@ v.check("Lab 01-08.a", 100 * iv(2, 3e-3 / VT) / iv(1, 3e-3 / VT))
 Y17 = np.abs(np.fft.rfft(1.7 * np.cos(th) - 0.05 * (1.7 * np.cos(th)) ** 3)) / 2048
 v.check("Lab 01-08.b", 20 * math.log10(Y17[1] / 1.7))
 v.check("Lab 01-08.c", 1e4 / (1 + 1e4 * 0.01))
+
+# ---------------------------------------------------------------- audit additions
+v.check("01-08.4b", float(sp.limit(sp.Abs(k / (k + 1)), k, sp.oo)) ** -1)
+v.check("01-08.4c", 0)
+v.check("01-08.9e", 100 * 11 / 1000)
+v.check("01-08.9f", 100 * 11 / 1000 - 100 * (1 - (1000 / (1 + 1000 / 11)) / 11))
+v.check("01-08.9g", 1e4 * 11)
+v.check("01-08.9h", 20 * math.log10(1.1e5))
+v.check("01-08.10b", s10.real)
+v.check("01-08.10c", s10.imag)
+v.check("01-08.12f", 100 * abs(a3) / (4 * a1))
+v.check("01-08.12g", (AIP3 / A1) ** 2)
+for _id, _A, kind in [("e", 5e-3, "t"), ("f", 5e-3, "x"), ("g", 10e-3, "t"), ("h", 10e-3, "x"), ("i", VT, "t")]:
+    val = 100 * (_A / VT) / 4 if kind == "t" else 100 * iv(2, _A / VT) / iv(1, _A / VT)
+    v.check(f"01-08.13{_id}", val)
+sums = [bounce(25, 50, 100, arrivals=m)[3] for m in (1, 2, 3)]
+for _id, val in zip("fgh", sums):
+    v.check(f"01-08.15{_id}", val)
+for _id, val in zip("ijk", sums):
+    v.check(f"01-08.15{_id}", 100 * abs(val - vinf) / vinf)
+kk = sp.symbols("kk", integer=True, positive=True)
+v.check("01-08.16a", float(sp.summation(1 / (kk**2 + 3 * kk), (kk, 1, sp.oo))))
+v.assert_true("16(b) limit-comparison ratio 1/2, (d) root-test limit 1/2",
+              sp.limit(kk / (2 * kk + 1), kk, sp.oo) == sp.Rational(1, 2))
+S10 = sum(1 / j**3 for j in range(1, 11))
+z3 = float(sp.zeta(3))
+v.check("01-08.17a", S10)
+v.check("01-08.17b", 1 / (2 * 11**2))
+v.check("01-08.17c", 1 / (2 * 10**2))
+v.check("01-08.17d", S10 + 1 / 242)
+v.check("01-08.17e", S10 + 1 / 200)
+v.check("01-08.17f", S10 + (1 / 242 + 1 / 200) / 2)
+v.check("01-08.17g", abs(S10 + (1 / 242 + 1 / 200) / 2 - z3))
+v.check("01-08.17h", z3 - S10)
+v.check("01-08.17i", math.ceil(math.sqrt(0.5e6)))
+v.assert_true("true sum inside the bracket", S10 + 1 / 242 <= z3 <= S10 + 1 / 200)
 
 v.finish()

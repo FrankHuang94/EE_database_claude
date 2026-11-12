@@ -56,6 +56,8 @@ Check: $z = \cos^2t\sin t$, so $dz/dt = -2\cos t\sin^2t + \cos^3t$, which at π/
 
 (c) $2I_D/V_{ov} = 2\times207\text{ µA}/0.3\text{ V} = $ **1.380 mS** ✓. A lower Early voltage (shorter channel) gives lower intrinsic gain than in Example 01-09.2.
 
+(d) $\Delta I_D \approx g_m(5\text{ mV}) + g_o(0.2\text{ V}) = 6.90 + 6.00 = $ **12.90 µA**. Exactly, $I_D(0.705, 1.1) - I_D(0.7, 0.9) = $ **13.16 µA**. The linear estimate is 2% low, mostly from the square law's curvature in $V_{GS}$, as in Example 01-09.2.
+
 ### Solution 01-09.7
 
 (a) $3kT/q$ at 350 K is 0.09048 V, so $dV/dT = (0.600 - 1.12 - 0.09048)/350 = $ **−1.744 mV/K**. The magnitude depends on both bias and temperature.
@@ -83,7 +85,7 @@ $f_x = 3x^2 - 3 = 0$ gives $x = \pm1$; $f_y = 2y - 2 = 0$ gives $y = 1$. The sec
 
 (a) $\nabla f = (2x, 20y)$, so $x \leftarrow x - 2\eta x = x(1 - 2\eta)$ and $y \leftarrow y(1 - 20\eta)$.
 
-(b) Both factors must have magnitude below 1: $0 < \eta < 1$ for $x$ and $0 < \eta < 0.1$ for $y$. So **0 < η < 0.1**, i.e. $2/\lambda_{max}$, where $\lambda_{max} = 20$ is the larger curvature (Hessian eigenvalue).
+(b) Both factors must have magnitude below 1: $0 < \eta < 1$ for $x$ and $0 < \eta < 0.1$ for $y$. So **0 < η < 0.1**, i.e. $2/h_{max}$, where $h_{max} = 20$ is the larger curvature (Hessian eigenvalue; written $h$ here to keep λ for Lagrange multipliers).
 
 (c) The factors are 0.92 and 0.2. After three steps: $x = 0.92^3 = $ **0.7787**, $y = 0.2^3 = $ **0.008**, and $f = 0.6064 + 0.00064 = $ **0.6070**.
 
@@ -99,27 +101,27 @@ $f_x = 3x^2 - 3 = 0$ gives $x = \pm1$; $f_y = 2y - 2 = 0$ gives $y = 1$. The sec
 
 (a) $\dfrac{\partial C}{\partial P_i} = \dfrac{1}{\ln2}\cdot\dfrac{1}{N_i + P_i} = \lambda$ for each $i$, so $N_i + P_i = 1/(\lambda\ln2) \equiv \mu$, the same "water level" for both channels.
 
-(b) $P_1 + P_2 = 2\mu - (N_1 + N_2) = 6$ gives $\mu = 5$, so $P_1 = $ **4 mW** and $P_2 = $ **2 mW**. Then $C = \log_25 + \log_2(5/3) = $ **3.059 b/s/Hz**. The equal split (3/3) gives $\log_24 + \log_22 = $ **3** b/s/Hz, so water-filling gains about 2%.
+(b) $P_1 + P_2 = 2\mu - (N_1 + N_2) = 6$ gives $\mu = $ **5 mW**, so $P_1 = $ **4 mW** and $P_2 = $ **2 mW**. Then $C = \log_25 + \log_2(5/3) = $ **3.059 b/s/Hz**. The equal split (3/3) gives $\log_24 + \log_22 = $ **3** b/s/Hz, so water-filling gains about 2%.
 
-(c) For $P = 1$: $\mu = 2.5$, which would make $P_2 = -0.5$: impossible. The constraint $P_2 \ge 0$ binds. Put all the power in the better channel: $P_1 = 1$, $P_2 = 0$, so $C = \log_22 = $ **1 b/s/Hz**. At low total power the noisy channel is not worth using, which is why bit-loading systems switch off poor subcarriers.
+(c) For $P = 1$: $\mu = 2.5$, which would make $P_2 = -0.5$: impossible. The constraint $P_2 \ge 0$ binds. Put all the power in the better channel: $P_1 = 1$, $P_2 = 0$, so $C = \log_22 = $ **1 b/s/Hz**. Check that this corner is optimal: the marginal capacity of channel 1 there is proportional to $1/(N_1 + P_1) = 1/2$, larger than that of the unused channel 2, $1/N_2 = 1/3$, so moving any power to channel 2 would lower $C$. At low total power the noisy channel is not worth using, which is why bit-loading systems switch off poor subcarriers.
 
 ### Solution 01-09.13
 
-(a) $3k_if_i^2 = \lambda$ for every $i$, so $f_i = \sqrt{\lambda/(3k_i)} \propto 1/\sqrt{k_i}$.
+(a) $3c_if_i^2 = \lambda$ for every $i$, so $f_i = \sqrt{\lambda/(3c_i)} \propto 1/\sqrt{c_i}$.
 
-(b) The weights $1/\sqrt{k_i}$ are 3.162, 1.581 and 1.054, summing to 5.797. Scaling to $F = 3.4$:
+(b) The weights $1/\sqrt{c_i}$ are 3.162, 1.581 and 1.054, summing to 5.797. Scaling to $F = 3.4$:
 
 - $f_1 = $ **1.855 GHz**, $f_2 = $ **0.9273 GHz**, $f_3 = $ **0.6182 GHz**;
-- total power $\sum k_if_i^3 = $ **1.169 W**;
+- total power $\sum c_if_i^3 = $ **1.169 W**;
 - $\lambda = 3(0.1)(1.855)^2 = $ **1.032 W/GHz**.
 
-(c) At $f_i = 0$ a core's marginal cost $3k_if_i^2$ is zero, below λ, so it always pays to give every core some work. With a fixed idle power, an active core costs that power even at zero work. Then switching a core off entirely can win, and the optimum becomes a discrete choice: which cores to power, then a Lagrange split among them. Real schedulers face exactly this.
+(c) At $f_i = 0$ a core's marginal cost $3c_if_i^2$ is zero, below λ, so it always pays to give every core some work. With a fixed idle power, an active core costs that power even at zero work. Then switching a core off entirely can win, and the optimum becomes a discrete choice: which cores to power, then a Lagrange split among them. Real schedulers face exactly this.
 
 ### Solution 01-09.14
 
 (a) $dV_T/dT = k/q = $ **0.08617 mV/K**: proportional to absolute temperature (PTAT).
 
-(b) From Example 01-09.3, $dV_{BE}/dT = -1.809$ mV/K. So $K = 1.809/0.08617 = $ **21.00**.
+(b) From Example 01-09.3, $dV_{BE}/dT = -1.8092$ mV/K, and $k/q = 0.086173$ mV/K. So $K = 1.8092/0.086173 = 20.995 \approx $ **21.00**.
 
 (c) $V_{out} = 0.6548 + 21.00\times0.02585 = $ **1.198 V**. In general, $dV_{BE}/dT = (V_{BE} - E_g/q - 3V_T)/T$ and $d(KV_T)/dT = KV_T/T$. Setting the sum to zero gives
 
@@ -189,3 +191,9 @@ whatever the bias current. The output of a zero-tempco reference sits at (nearly
 | 01-09.15b | b | 0.04093 | W |
 | 01-09.15c | residual sum of squares | 1.62×10^-4 | W² |
 | 01-09.15d | leakage share at 0.8 V | 5.94 | % |
+| 01-09.6f | linear estimate of ΔI_D | 12.90 | µA |
+| 01-09.6g | exact ΔI_D | 13.16 | µA |
+| 01-09.12f | water level μ | 5 | mW |
+| 01-09.14d | dV_BE/dT magnitude, five digits | 1.8092 | mV/K |
+| 01-09.14e | k/q | 0.086173 | mV/K |
+| 01-09.14f | K before rounding | 20.995 | — |

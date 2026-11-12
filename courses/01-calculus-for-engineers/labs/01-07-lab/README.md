@@ -19,7 +19,7 @@ Chapter sections 3.1–3.2 (RMS and average power), 3.5 (probability densities) 
 2. **Part 1:** compare the average-responding meter with the true RMS for each waveform. (The meter model here rectifies the whole signal, DC included. Real meters on their AC range block the DC first.)
 3. **Part 2:** before running, predict the SNR of a 10-bit quantizer driven at half of full scale.
 4. **Part 3:** compare the simulated fractions with the integrals.
-5. **Part 4:** from the repository root, run `python tools/run_spice.py 01-07`. Then change `L3` in the netlist so that the load angle becomes 60°, predict the new average power, and re-run.
+5. **Part 4:** from the repository root, run `python tools/run_spice.py 01-07`. Then change the load so that its angle becomes 60° while $\lvert Z\rvert$ stays 17 Ω: set `R3` to $17\cos60° = 8.5\ \Omega$ and `L3` to $17\sin60°/(2\pi\cdot60) = 39.05$ mH. Predict the new average power, and re-run. (If you change `L3` alone, $\lvert Z\rvert$ grows as well, the current falls, and the power drops much further, to 245.4 W. Predict that case too.)
 
 ## Expected results
 
@@ -32,7 +32,8 @@ Chapter sections 3.1–3.2 (RMS and average power), 3.5 (probability densities) 
 | 3 | 720 h survival and ±1% yield | 0.866 and 0.955, matching the integrals |
 | 4 | PWM average and RMS; triangle RMS | 3.000 V and 6.000 V; 0.5774 V |
 | 4 | R–L load: average power and RMS current | 736.1 W and 7.071 A |
-| 4 | with a 60° load angle ($\lvert Z\rvert$ = 17 Ω) | ½ × 170 × 10 × cos 60° = 425 W |
+| 4 | with a 60° load angle ($\lvert Z\rvert$ = 17 Ω: R3 = 8.5 Ω, L3 = 39.05 mH) | ½ × 170 × 10 × cos 60° = 425 W |
+| 4 | with only L3 changed (R3 = 14.722 Ω, X = 25.50 Ω, $\lvert Z\rvert$ = 29.44 Ω) | $V_{rms}^2R/\lvert Z\rvert^2$ = 245.4 W |
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -41,6 +42,10 @@ Chapter sections 3.1–3.2 (RMS and average power), 3.5 (probability densities) 
 | Lab 01-07.b | ideal SNR, 10 bits at half scale | 55.94 | dB |
 | Lab 01-07.c | average-responding error, rectifier-like pulses | −40.5 | % |
 | Lab 01-07.d | average power at a 60° load angle | 425 | W |
+| Lab 01-07.e | L3 for 60° at 17 Ω | 39.05 | mH |
+| Lab 01-07.f | reactance with only L3 changed | 25.50 | Ω |
+| Lab 01-07.g | impedance with only L3 changed | 29.44 | Ω |
+| Lab 01-07.h | power with only L3 changed | 245.4 | W |
 
 ## Discussion questions
 

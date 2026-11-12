@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 01-02 · Limits and Continuity
 
 | | |
@@ -158,7 +158,7 @@ the continuous-compounding formula. The "rate equals slope" property of $e^x$ an
 
 The **left-hand limit** $\lim_{x\to a^-} f(x)$ uses only $x < a$; the **right-hand limit** $\lim_{x\to a^+} f(x)$ uses only $x > a$. The two-sided limit exists exactly when both one-sided limits exist and are equal.
 
-The **unit step** $u(t)$, which is 0 for $t < 0$ and 1 for $t \ge 0$ ([notation](../../../reference/notation.md)), has $\lim_{t\to 0^-}u(t) = 0$ and $\lim_{t\to 0^+}u(t) = 1$. No two-sided limit exists at 0. Every switch that closes at $t = 0$ multiplies something by a step.
+The **unit step** $u(t)$, which is 0 for $t < 0$ and 1 for $t > 0$ ([notation](../../../reference/notation.md); its value at exactly $t = 0$ is a convention that never affects a circuit's response), has $\lim_{t\to 0^-}u(t) = 0$ and $\lim_{t\to 0^+}u(t) = 1$. No two-sided limit exists at 0. Every switch that closes at $t = 0$ multiplies something by a step.
 
 Circuit analysis writes these one-sided limits compactly:
 
@@ -236,7 +236,7 @@ $$
 \ln x \;\ll\; x^p \;\ll\; e^{x} \qquad (\text{for any } p > 0),
 $$
 
-meaning each ratio tends to zero: $\ln x / x^p \to 0$ and $x^p/e^x \to 0$. Consequently $t^n e^{-t/\tau} \to 0$ for any power $n$: an exponential decay beats any polynomial growth. That is why every stable transient settles, even the "critically damped" response $t\,e^{-t/\tau}$ of [02-03](../../02-complex-numbers-des-and-linear-algebra/chapters/02-03-second-order-linear-odes.md). But "eventually" can be very late. $\ln x$ exceeds $x^{0.1}$ until $x$ is about $3\times10^{15}$ (Problem 01-02.15).
+meaning each ratio tends to zero: $\ln x / x^p \to 0$ and $x^p/e^x \to 0$. Consequently $t^n e^{-t/\tau} \to 0$ for any power $n$: an exponential decay beats any polynomial growth. That is why every stable transient settles, even the "critically damped" response $t\,e^{-t/\tau}$ of [02-03](../../02-complex-numbers-des-and-linear-algebra/chapters/02-03-second-order-linear-odes.md). But "eventually" can be very late. $\ln x$ exceeds $x^{0.1}$ for all $x$ between about 3.06 and $3.43\times10^{15}$ (Problem 01-02.15).
 
 > **Going deeper — why exponentials beat powers.** For $x > 0$, the series $e^x = 1 + x + x^2/2! + \cdots$ ([01-08](01-08-sequences-series-and-taylor.md)) has only positive terms, so $e^x > x^{n+1}/(n + 1)!$. Then $0 < x^n/e^x < (n + 1)!/x \to 0$, and the squeeze theorem finishes the proof.
 
@@ -439,8 +439,8 @@ The lab ([labs/01-02-lab/](../labs/01-02-lab/README.md)) has a notebook and two 
 
 Several of the hard numbers an engineering leader works against are limits in the mathematical sense:
 
-- **Shannon capacity** ([00-01](../../00-orientation/chapters/00-01-map-of-electrical-engineering.md)) is the supremum of error-free data rates. Codes approach it but never exceed it **[Established]**.
-- **The reticle limit** of about 858 mm² ([R-015](../../../reference/research-log.md#r-015--lithography-exposure-field-the-reticle-limit)) caps single-die area, so designs at that size must split into chiplets **[Established]**.
+- **Shannon capacity** ([00-01](../../00-orientation/chapters/00-01-map-of-electrical-engineering.md)) is the supremum of the data rates achievable with arbitrarily small error probability. Codes approach it but cannot reliably exceed it **[Established]**.
+- **The reticle limit** of about 858 mm² ([R-015](../../../reference/research-log.md#r-015--lithography-exposure-field-the-reticle-limit)) caps the area one exposure can print, so designs beyond it must split into chiplets or use reticle stitching **[Established]**.
 - **Regulatory power limits,** such as 36 dBm EIRP for standard-power 6 GHz Wi-Fi ([R-007](../../../reference/research-log.md#r-007--us-6-ghz-unlicensed-band)), are ceilings a product approaches but may not cross **[Established]**.
 
 A leader should know which numbers on a roadmap are physical limits, which are regulatory, and which are merely current practice.

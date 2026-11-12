@@ -48,17 +48,17 @@ A piezoelectric sensor behaves as a 1 V source (open circuit) with 2 kΩ interna
 
 ### Problem 01-04.6 [B]
 
-**Repeater insertion.** A long on-chip wire has an unrepeated delay of 800 ps, which grows as the square of its length. Splitting it into $n$ equal segments with a repeater (buffer) between them gives total delay
+**Repeater insertion.** A long on-chip wire has an intrinsic RC delay of 800 ps, which grows as the square of its length. Splitting it into $n$ equal segments, each driven by its own buffer (the source driver counts as the first), gives total delay
 
 $$
 T(n) = 20n + \frac{800}{n}\ \text{ps},
 $$
 
-where 20 ps is the delay each repeater adds.
+where 20 ps is the delay each buffer adds.
 
 (a) Treating $n$ as continuous, find the optimal $n$ and the minimum delay.
 (b) $n$ must be an integer. Which integer is best, and what is its delay?
-(c) Compare with the unrepeated wire ($n = 1$).
+(c) Compare with a single segment driven only by the source driver ($n = 1$).
 (d) Explain why the delay of each segment falls as $1/n^2$ while the total wire delay falls as $1/n$.
 
 ### Problem 01-04.7 [B]
@@ -81,7 +81,7 @@ where 20 ps is the delay each repeater adds.
 
 ### Problem 01-04.9 [B]
 
-**A MEMS microphone.** A condenser microphone is a parallel-plate capacitor with $C = \varepsilon_0A/d$, plate area $A = 1$ mm² and rest gap $d = 2$ µm, biased at a constant 5 V ($\varepsilon_0 = 8.854\times10^{-12}$ F/m).
+**A MEMS microphone (constant-voltage teaching model, chapter §3.7).** A condenser microphone is a parallel-plate capacitor with $C = \varepsilon_0A/d$, plate area $A = 1$ mm² and rest gap $d = 2$ µm, biased at a constant 5 V ($\varepsilon_0 = 8.854\times10^{-12}$ F/m).
 
 (a) Find the rest capacitance.
 (b) Sound moves the diaphragm away from the backplate at 1 mm/s (the gap is increasing). Find $dC/dt$ and the current $i = V\,dC/dt$ at the rest gap.

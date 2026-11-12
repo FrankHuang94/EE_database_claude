@@ -2,6 +2,7 @@
 #html:true
 #columns:Front,Back,Tags
 #tags column:3
+"Define cosh, sinh and tanh. What identity links cosh and sinh?","\(\cosh x = (e^x + e^{-x})/2\), \(\sinh x = (e^x - e^{-x})/2\), \(\tanh = \sinh/\cosh\); \(\cosh^2x - \sinh^2x = 1\). tanh saturates at ±1 beyond about |x| = 3.",bsee::01 bsee::01-01
 "Convert a power ratio and a voltage ratio to dB.","\(10\log_{10}(P_2/P_1)\) for power; \(20\log_{10}(V_2/V_1)\) for voltage, valid only when both voltages are across equal impedances.",bsee::01 bsee::01-01
 "3 dB, 10 dB and 20 dB as power ratios? As amplitude ratios?","Power: ≈2×, 10×, 100×. Amplitude: ≈1.41×, 3.16×, 10×.",bsee::01 bsee::01-01
 "0 dBm, 30 dBm and −30 dBm in watts?","1 mW, 1 W and 1 µW. dBm is absolute power referenced to 1 mW; never add two dBm values.",bsee::01 bsee::01-01
@@ -22,6 +23,7 @@
 "What does the intermediate value theorem guarantee?","A continuous function that changes sign on \([a, b]\) has a root there; the basis of bisection.",bsee::01 bsee::01-02
 "Why does a forward difference fail for very small \(h\) in floating point?","Round-off: subtracting nearly equal numbers loses digits. Best \(h \approx 10^{-8}\) (≈ √machine epsilon) in double precision.",bsee::01 bsee::01-02
 "What does 'settled within 1%' mean for an exponential, and after how long?","\(e^{-t/\tau} < 0.01\), i.e. after 4.6τ; after 5τ it is within 0.7%.",bsee::01 bsee::01-02
+"How do you differentiate \(x^x\)?","Logarithmic differentiation: \(\ln y = x\ln x\), so \(y'/y = \ln x + 1\) and \(y' = x^x(1 + \ln x)\).",bsee::01 bsee::01-03
 "Definition of the derivative?","\(f'(x) = \lim_{h\to0}\big(f(x + h) - f(x)\big)/h\): the slope of the tangent, the instantaneous rate.",bsee::01 bsee::01-03
 "Chain rule?","\(\big(f(g(x))\big)' = f'(g(x))\,g'(x)\); e.g. \((e^{-t/\tau})' = -e^{-t/\tau}/\tau\).",bsee::01 bsee::01-03
 "Product and quotient rules?","\((fg)' = f'g + fg'\); \((f/g)' = (f'g - fg')/g^2\).",bsee::01 bsee::01-03
@@ -53,16 +55,18 @@
 "Trapezoid vs Simpson error orders?","\(h^2\) vs \(h^4\): halving h cuts the error to ¼ vs 1/16.",bsee::01 bsee::01-05
 "Why integrate over 16.67 ms or 20 ms in precision meters?","A whole number of mains periods (60 / 50 Hz): the integral of the hum is then zero.",bsee::01 bsee::01-05
 "Why does a coulomb-counting fuel gauge drift?","Integration accumulates a constant sensor offset forever; gauges recalibrate at known states (full charge, rested open-circuit voltage).",bsee::01 bsee::01-05
+"Which trigonometric substitution for \(\sqrt{a^2 - x^2}\), \(a^2 + x^2\), \(\sqrt{x^2 - a^2}\)?","\(x = a\sin\theta\), \(x = a\tan\theta\), \(x = a\sec\theta\); return to x with the reference triangle.",bsee::01 bsee::01-06
 "Integration by parts?","\(\int u\,dv = uv - \int v\,du\); pick \(u\) that simplifies when differentiated (LIATE).",bsee::01 bsee::01-06
 "\(\int_0^\infty t^ne^{-t}dt\)?","\(n!\); so \(\int_0^\infty te^{-t/\tau}dt = \tau^2\).",bsee::01 bsee::01-06
 "Orthogonality of sines over one period?","\(\int_0^T\sin(m\omega t)\sin(n\omega t)dt = 0\) for \(m \ne n\), \(T/2\) for \(m = n\): the basis of Fourier series.",bsee::01 bsee::01-06
 "Noise bandwidth of a one-pole low-pass?","\((\pi/2)f_c \approx 1.571f_c\): 57% more noise power than \(f_c\) suggests.",bsee::01 bsee::01-06
 "Thermal noise of 1 kΩ at 300 K?","\(\sqrt{4kTR} \approx 4.07\) nV/√Hz; scales as √R.",bsee::01 bsee::01-06
-"kT/C noise at 1 pF and 300 K?","\(\sqrt{kT/C} \approx 64.3\) µV rms, independent of R.",bsee::01 bsee::01-06
+"kT/C noise at 1 pF and 300 K?","\(\sqrt{kT/C} \approx 64.4\) µV rms, independent of R.",bsee::01 bsee::01-06
 "Fourier fundamental of a ±A square wave?","\((4/\pi)A \approx 1.273A\), carrying 81% of the power; harmonics \(4A/(n\pi)\) for odd n.",bsee::01 bsee::01-06
 "When does \(\int_1^\infty x^{-p}dx\) converge?","Only for \(p > 1\). At \(p = 1\) (1/f noise) every decade carries equal power.",bsee::01 bsee::01-06
 "Partial fractions: what do you do first if the degree of the numerator ≥ the denominator's?","Polynomial long division; then split the proper remainder into simple fractions.",bsee::01 bsee::01-06
 "Elmore delay vs 50% delay for a single pole?","Elmore = τ; 50% delay = τ ln 2; ratio 1.443.",bsee::01 bsee::01-06
+"Arc length of \(y = f(x)\) from a to b?","\(L = \int_a^b\sqrt{1 + f'(x)^2}\,dx\), from \(ds = \sqrt{dx^2 + dy^2}\).",bsee::01 bsee::01-07
 "Definition of RMS?","\(V_{rms} = \sqrt{\frac{1}{T}\int_0^Tv^2dt}\): the DC voltage that heats a resistor equally.",bsee::01 bsee::01-07
 "RMS of sine, square and triangle (peak \(V_p\))?","\(0.707V_p\), \(V_p\), \(0.577V_p\); crest factors 1.414, 1, 1.732.",bsee::01 bsee::01-07
 "PWM at duty D and peak \(V_p\): average and RMS?","Average \(DV_p\); RMS \(\sqrt{D}V_p\).",bsee::01 bsee::01-07
@@ -73,6 +77,7 @@
 "RMS quantization error of an ideal ADC?","\(\Delta/\sqrt{12} \approx 0.29\) LSB, from the variance of a uniform density.",bsee::01 bsee::01-07
 "Ideal N-bit ADC SNR for a full-scale sine?","\(6.02N + 1.76\) dB; 12 bits gives 74.0 dB.",bsee::01 bsee::01-07
 "What does an MTBF of 1,000,000 h mean?","About one failure per million device-hours across a fleet (≈ 114 device-years), not a lifetime of one unit.",bsee::01 bsee::01-07
+"What does the integral test say about the error after n terms?","For positive decreasing \(f\) with \(a_k = f(k)\): \(\int_{n+1}^\infty f\,dx \le\) remainder \(\le \int_n^\infty f\,dx\). For \(\sum 1/k^2\) the error after n terms is about 1/n.",bsee::01 bsee::01-08
 "Geometric series sum?","\(\sum_{k\ge0}r^k = 1/(1 - r)\) for \(\lvert r\rvert < 1\); e.g. the DC gain of \(y[n] = ry[n-1] + x[n]\).",bsee::01 bsee::01-08
 "Does the harmonic series converge?","No: \(\sum 1/k\) grows like \(\ln n\) (≈ 14.4 at 10⁶ terms). \(\sum 1/k^2 = \pi^2/6\) converges.",bsee::01 bsee::01-08
 "Taylor series of \(f\) about \(a\)?","\(\sum f^{(n)}(a)(x - a)^n/n!\), valid inside its radius of convergence.",bsee::01 bsee::01-08
@@ -91,8 +96,9 @@
 "Second-derivative test in two variables?","\(D = f_{xx}f_{yy} - f_{xy}^2\): \(D > 0, f_{xx} > 0\) min; \(D > 0, f_{xx} < 0\) max; \(D < 0\) saddle.",bsee::01 bsee::01-09
 "Lagrange condition and the meaning of λ?","\(\nabla f = \lambda\nabla g\) on \(g = c\); λ is the change in the optimal value per unit of constraint (a shadow price).",bsee::01 bsee::01-09
 "Elasticities of CMOS dynamic power \(P = \alpha CV^2f\)?","2 in V and 1 in f; 3 together when V scales with f (DVFS).",bsee::01 bsee::01-09
-"Square-law MOSFET \(g_m\)?","\(g_m = 2I_D/(V_{GS} - V_{TH})\); intrinsic gain \(g_mr_o \approx 2V_A/V_{ov}\).",bsee::01 bsee::01-09
+"Square-law MOSFET \(g_m\)?","\(g_m = 2I_D/(V_{GS} - V_{TH})\); intrinsic gain \(g_mr_o \approx 2V_A/V_{ov}\) (exactly \(2(V_A + V_{DS})/V_{ov}\) when channel-length modulation is in the model).",bsee::01 bsee::01-09
 "Gradient-descent stability limit?","Step \(\eta < 2/\lambda_{max}\) of the Hessian; a large condition number makes convergence slow.",bsee::01 bsee::01-09
+"Spherical coordinates: which angle is which, in this course versus EE texts?","Here (math): φ from the z axis, θ the azimuth, \(dV = r^2\sin\phi\,dr\,d\phi\,d\theta\). EE/physics (Course 13): θ from the z axis, φ the azimuth. The sin always goes with the angle from z.",bsee::01 bsee::01-10
 "Area and volume elements in polar, cylindrical and spherical coordinates?","\(r\,dr\,d\theta\); \(r\,dr\,d\theta\,dz\); \(\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\). Never forget the Jacobian.",bsee::01 bsee::01-10
 "\(\int_{-\infty}^\infty e^{-x^2}dx\)?","\(\sqrt\pi \approx 1.772\), found by squaring and switching to polar coordinates.",bsee::01 bsee::01-10
 "What does Fubini's theorem allow?","Evaluating a double integral as nested single integrals in either order; swapping the order can make a hard integral easy.",bsee::01 bsee::01-10

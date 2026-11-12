@@ -83,7 +83,7 @@ Numerical integration of $\int_0^\pi\sin x\,dx = 2$.
 
 ### Problem 01-05.11 [B]
 
-An op-amp integrator has $v_{out}(t) = -\dfrac{1}{RC}\displaystyle\int_0^t v_{in}\,d\tau$ with $R = 10$ kΩ and $C = 100$ nF, starting from $v_{out}(0) = 0$.
+An op-amp integrator has $v_{out}(t) = -\dfrac{1}{RC}\displaystyle\int_0^t v_{in}\,d\lambda$ with $R = 10$ kΩ and $C = 100$ nF, starting from $v_{out}(0) = 0$.
 
 (a) A 0.5 V step is applied at $t = 0$. Find $v_{out}$ at 2 ms and the slope of the output ramp.
 (b) The op-amp's output saturates at −12 V. When does that happen?
@@ -97,7 +97,7 @@ An op-amp integrator has $v_{out}(t) = -\dfrac{1}{RC}\displaystyle\int_0^t v_{in
 (b) For $V_x = 0.35$ V, find $T_2$, and the count of a 1 MHz clock during $T_2$.
 (c) A 50 Hz interference $A\sin(2\pi\cdot50t + \phi)$ adds to $V_x$. Show that it contributes nothing to the integral over $T_1$, for any $A$ and $\phi$. What would happen in a 60 Hz country?
 
-### Problem 01-05.13 [C]
+### Problem 01-05.13 [B]
 
 Let $A(x) = \displaystyle\int_0^x\big(t^2 - 4\big)\,dt$ (Figure 2 of the chapter).
 

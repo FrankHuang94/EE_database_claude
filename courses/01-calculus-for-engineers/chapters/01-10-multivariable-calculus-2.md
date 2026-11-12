@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 01-10 · Multivariable Calculus II: Multiple, Line and Surface Integrals
 
 | | |
@@ -6,7 +6,7 @@
 | **Course** | [01 · Calculus for Engineers](../README.md) |
 | **University equivalent** | Calculus III, multiple integrals and vector calculus (Stewart, ch. 15–16: double and triple integrals, polar/cylindrical/spherical coordinates, vector fields, line integrals, Green's theorem, curl and divergence, surface integrals, Stokes' and divergence theorems) |
 | **Prerequisites** | [01-05](01-05-integrals.md), [01-06](01-06-techniques-of-integration.md) (integration), [01-09](01-09-multivariable-calculus-1.md) (partial derivatives, gradient). |
-| **Estimated study hours** | 12 |
+| **Estimated study hours** | 13 |
 | **Last verified** | 2026-11-12 |
 
 **Learning objectives.** After this chapter you can:
@@ -45,7 +45,7 @@ A thermal engineer has a map of power density over a die, in W/mm², hottest whe
 
 ### An analogy from finance: portfolios over two dimensions
 
-A portfolio's value at risk integrates a joint probability density over two or more risk factors, such as rates and equities, across the region where losses exceed a threshold. That is a multiple integral. Changing coordinates to make the integral easy, for example rotating to uncorrelated factors, is exactly what polar coordinates do for circular regions here.
+The probability that a portfolio loses more than some amount is a multiple integral: a joint density of two or more risk factors, such as rates and equities, integrated over the region where the loss exceeds the threshold. (Value at risk is the threshold at which that probability equals, say, 1%, found by solving for it.) Changing coordinates to make such an integral easy, for example rotating to uncorrelated factors, plays the same role that polar coordinates play for circular regions here.
 
 *Where the analogy breaks:* financial densities are estimated from data and have fat tails that a Gaussian misses. Physical densities, such as charge, current or power, are often known from design or from Maxwell's equations. And physical *vector* fields carry a direction at each point, which has no clean analogue in a scalar risk density. Line and surface integrals need that direction.
 
@@ -109,36 +109,38 @@ So 86.5% of the power lies within $r = w$ (Figure 2). This sets how much light c
 
 Triple integrals $\iiint_Ef\,dV$ add up quantities over volumes, such as total charge $\iiint\rho\,dV$ from a charge density ρ (C/m³). Two coordinate systems fit common shapes:
 
-- **Cylindrical** $(r, \theta, z)$, for wires, vias and coaxial cables: $dV = r\,dr\,d\theta\,dz$.
-- **Spherical** $(\rho, \phi, \theta)$, with ρ the distance from the origin, φ the angle from the $z$ axis and θ the azimuth: $dV = \rho^2\sin\phi\,d\rho\,d\phi\,d\theta$. The volume element is a small box of sides $d\rho$, $\rho\,d\phi$ and $\rho\sin\phi\,d\theta$.
+- **Cylindrical** $(r, \theta, z)$, for wires, vias and coaxial cables, with $r$ the distance from the $z$ axis: $dV = r\,dr\,d\theta\,dz$.
+- **Spherical** $(r, \phi, \theta)$, with $r$ the distance from the origin, φ the angle from the $z$ axis and θ the azimuth: $dV = r^2\sin\phi\,dr\,d\phi\,d\theta$. The volume element is a small box of sides $dr$, $r\,d\phi$ and $r\sin\phi\,d\theta$. Its volume is the Jacobian determinant of the map $(r, \phi, \theta) \mapsto (x, y, z)$, just as $r$ was for polar coordinates (Problem 01-10.3 asks you to check one case).
 
-For a spherically symmetric integrand the angular integrals give $4\pi$, so $dV \to 4\pi\rho^2\,d\rho$, the volume of a thin shell. For example, the volume of a ball is $\int_0^R4\pi\rho^2d\rho = \tfrac{4}{3}\pi R^3$.
+For a spherically symmetric integrand the angular integrals give $4\pi$, so $dV \to 4\pi r^2\,dr$, the volume of a thin shell. For example, the volume of a ball is $\int_0^R4\pi r^2dr = \tfrac{4}{3}\pi R^3$.
+
+> **Coordinate conventions — read this before Course 13.** This chapter uses the *mathematicians'* convention, as Stewart does: θ is always the azimuth (the angle around the $z$ axis), and in spherical coordinates φ is the angle down from the $z$ axis. Most EE and physics texts, [reference/notation.md](../../../reference/notation.md) and Course 13 use the *opposite* labels: spherical $(r, \theta, \phi)$ with θ the polar angle from $z$ and φ the azimuth, so $dV = r^2\sin\theta\,dr\,d\theta\,d\phi$, and cylindrical $(r, \phi, z)$ with azimuthal unit vector $\hat\phi$. The geometry is identical; only the Greek letters swap. When you read a formula, first check which angle is measured from the $z$ axis: the $\sin$ in the volume element always belongs to that one. Also note that $r$ means distance from the *axis* in cylindrical coordinates but distance from the *origin* in spherical ones.
 
 ### 3.5 Line integrals of vector fields
 
-A **vector field** $\mathbf{F}(x, y, z)$ assigns a vector to each point: an electric field, a magnetic field, a current density. The **line integral** along a curve $C$, parametrized by $\mathbf{r}(t)$ for $a \le t \le b$, is
+A **vector field** $\vec{F}(x, y, z)$ assigns a vector to each point: an electric field, a magnetic field, a current density. The **line integral** along a curve $C$, parametrized by $\vec{r}(t)$ for $a \le t \le b$, is
 
 $$
-\int_C\mathbf{F}\cdot d\mathbf{r} = \int_a^b\mathbf{F}\big(\mathbf{r}(t)\big)\cdot\mathbf{r}'(t)\,dt .
+\int_C\vec{F}\cdot d\vec{r} = \int_a^b\vec{F}\big(\vec{r}(t)\big)\cdot\vec{r}'(t)\,dt .
 $$
 
-It adds up the component of $\mathbf{F}$ *along* the path. If $\mathbf{F}$ is a force, the integral is the **work** done moving along $C$.
+It adds up the component of $\vec{F}$ *along* the path. If $\vec{F}$ is a force, the integral is the **work** done moving along $C$.
 
 **Voltage is a line integral.** The potential difference between points $a$ and $b$ in an electric field is
 
 $$
-V_b - V_a = -\int_a^b\mathbf{E}\cdot d\mathbf{l} .
+V_b - V_a = -\int_a^b\vec{E}\cdot d\vec{l} .
 $$
 
-**Conservative fields.** If $\mathbf{F} = \nabla\varphi$ for some scalar potential φ, then by the chain rule
+**Conservative fields.** If $\vec{F} = \nabla\varphi$ for some scalar potential φ, then by the chain rule
 
 $$
-\int_C\mathbf{F}\cdot d\mathbf{r} = \varphi(\text{end}) - \varphi(\text{start}),
+\int_C\vec{F}\cdot d\vec{r} = \varphi(\text{end}) - \varphi(\text{start}),
 $$
 
-whatever the path (Figure 3, left). Every closed loop then gives zero. In a simply connected region (no holes), $\mathbf{F}$ is conservative exactly when its curl is zero, which in two dimensions means $\partial F_y/\partial x = \partial F_x/\partial y$. Static electric fields are conservative, which is why voltage is well defined and **KVL holds**: the sum of voltage drops around any loop is $\oint\mathbf{E}\cdot d\mathbf{l} = 0$.
+whatever the path (Figure 3, left). Every closed loop then gives zero. In a simply connected region (no holes), $\vec{F}$ is conservative exactly when its curl is zero, which in two dimensions means $\partial F_y/\partial x = \partial F_x/\partial y$. Static electric fields are conservative, which is why voltage is well defined and **KVL holds**: the sum of voltage drops around any loop is $\oint\vec{E}\cdot d\vec{l} = 0$.
 
-**Non-conservative fields: circulation.** The magnetic field around a straight wire carrying current $I$ circles the wire, $\mathbf{B} = \frac{\mu_0I}{2\pi r}\hat{\boldsymbol\theta}$. Its line integral around any loop enclosing the wire is $\mu_0I$, **Ampère's law** (Example 01-10.4). And when the magnetic flux through a loop changes, $\oint\mathbf{E}\cdot d\mathbf{l} = -d\Phi_B/dt \ne 0$ (**Faraday's law**). KVL then fails for that loop. This is the physics of transformers, inductive coupling and ground loops (Problem 01-10.10).
+**Non-conservative fields: circulation.** The magnetic field around a straight wire carrying current $I$ circles the wire, $\vec{B} = \frac{\mu_0I}{2\pi r}\hat{\theta}$, where $\hat\theta$ is the unit vector pointing around the wire (written $\hat\phi$ in EE texts). Its line integral around any loop enclosing the wire is $\mu_0I$, **Ampère's law** (Example 01-10.4). And when the magnetic flux through a loop changes, $\oint\vec{E}\cdot d\vec{l} = -d\Phi_B/dt \ne 0$ (**Faraday's law**). KVL then fails for that loop. This is the physics of transformers, inductive coupling and ground loops (Problem 01-10.10).
 
 ![A conservative and a rotational vector field](../../../assets/figures/01-10/vector-fields.svg)
 
@@ -146,63 +148,82 @@ whatever the path (Figure 3, left). Every closed loop then gives zero. In a simp
 
 ### 3.6 Surface integrals and flux
 
-The **flux** of a vector field through a surface $S$ with unit normal $\mathbf{n}$ is
+> **Math refresher — the cross product and surface normals.** For three-dimensional vectors, the **cross product** $\vec{a}\times\vec{b} = (a_2b_3 - a_3b_2,\ a_3b_1 - a_1b_3,\ a_1b_2 - a_2b_1)$ is a vector perpendicular to both $\vec a$ and $\vec b$, with length $\lvert\vec a\rvert\lvert\vec b\rvert\sin\theta$, the area of the parallelogram they span. Its direction follows the **right-hand rule**: curl the fingers of your right hand from $\vec a$ toward $\vec b$, and your thumb points along $\vec a\times\vec b$. So $\hat x\times\hat y = \hat z$, and $\vec b\times\vec a = -\vec a\times\vec b$. A surface needs a **unit normal** $\hat n$, a unit vector perpendicular to it. For a *closed* surface the convention is the **outward** normal.
+
+The **flux** of a vector field through a surface $S$ with unit normal $\hat{n}$ is
 
 $$
-\Phi = \iint_S\mathbf{F}\cdot\mathbf{n}\,dS .
+\Phi = \iint_S\vec{F}\cdot\hat{n}\,dS .
 $$
 
-It counts only the component crossing the surface. Two essential instances:
+It counts only the component crossing the surface.
 
-- **Current is the flux of current density.** $I = \iint_S\mathbf{J}\cdot\mathbf{n}\,dS$, with $\mathbf{J}$ in A/m². In a wire carrying AC, the current crowds toward the surface (the **skin effect**), so the cross-section is used unevenly and the resistance rises (Problem 01-10.13).
-- **Electric flux and Gauss's law.** $\oint_S\mathbf{E}\cdot\mathbf{n}\,dS = Q_{enc}/\varepsilon_0$: the flux out of any closed surface equals the enclosed charge divided by $\varepsilon_0 = 8.854\times10^{-12}$ F/m. With spherical symmetry, $\mathbf{E}$ is radial and constant in magnitude on a sphere, so $E\cdot4\pi r^2 = Q_{enc}/\varepsilon_0$ (Example 01-10.5).
+**Curved surfaces.** When the surface is not flat, describe it with two parameters, $\vec r(u, v)$. The partial derivatives $\vec r_u$ and $\vec r_v$ are tangent to the surface, so $\vec r_u\times\vec r_v$ is normal to it, and its length is the area of the small patch spanned by $du$ and $dv$:
+
+$$
+\iint_S\vec F\cdot\hat n\,dS = \iint\vec F\big(\vec r(u, v)\big)\cdot(\vec r_u\times\vec r_v)\,du\,dv .
+$$
+
+*Example: the curved side of a cylinder.* Take $\vec F = (x, y, 0)$, pointing straight away from the $z$ axis, and the side of a cylinder of radius $a$ and height $h$, parametrized as $\vec r(\theta, z) = (a\cos\theta, a\sin\theta, z)$. Then $\vec r_\theta = (-a\sin\theta, a\cos\theta, 0)$ and $\vec r_z = (0, 0, 1)$, so $\vec r_\theta\times\vec r_z = (a\cos\theta, a\sin\theta, 0)$, outward with length $a$ (the patch is $a\,d\theta$ by $dz$). On the surface $\vec F\cdot(\vec r_\theta\times\vec r_z) = a^2\cos^2\theta + a^2\sin^2\theta = a^2$, so the flux is $\int_0^h\int_0^{2\pi}a^2\,d\theta\,dz = 2\pi a^2h$. The divergence theorem of §3.8 will confirm this.
+
+Two essential instances of flux:
+
+- **Current is the flux of current density.** $I = \iint_S\vec{J}\cdot\hat{n}\,dS$, with $\vec{J}$ in A/m². In a wire carrying AC, the current crowds toward the surface (the **skin effect**), so the cross-section is used unevenly and the resistance rises (Problem 01-10.13).
+- **Electric flux and Gauss's law.** $\oint_S\vec{E}\cdot\hat{n}\,dS = Q_{enc}/\varepsilon_0$: the flux out of any closed surface equals the enclosed charge divided by $\varepsilon_0 = 8.854\times10^{-12}$ F/m. With spherical symmetry, $\vec{E}$ is radial and constant in magnitude on a sphere, so $E\cdot4\pi r^2 = Q_{enc}/\varepsilon_0$ (Example 01-10.5). With *cylindrical* symmetry, around a long straight line carrying charge λ per meter, $\vec E$ points straight away from the line and is constant on a coaxial cylinder of radius $r$ and length $\ell$. The end caps carry no flux (the field is parallel to them), so $E\cdot2\pi r\ell = \lambda\ell/\varepsilon_0$ and $E = \lambda/(2\pi\varepsilon_0r)$, the infinite-wire field that [01-06](01-06-techniques-of-integration.md) Example 6 approached by integration. Inside an insulator of relative permittivity $\varepsilon_r$, the material's polarization weakens the field, and Gauss's law holds with $\varepsilon = \varepsilon_r\varepsilon_0$ in place of $\varepsilon_0$ (Course 13 explains why). Problem 01-10.16 applies this to a coaxial cable.
 
 ### 3.7 Divergence and curl
 
-For $\mathbf{F} = (F_x, F_y, F_z)$:
+For $\vec{F} = (F_x, F_y, F_z)$:
 
 $$
-\nabla\cdot\mathbf{F} = \frac{\partial F_x}{\partial x} + \frac{\partial F_y}{\partial y} + \frac{\partial F_z}{\partial z}, \qquad
-\nabla\times\mathbf{F} = \left(\frac{\partial F_z}{\partial y} - \frac{\partial F_y}{\partial z},\ \frac{\partial F_x}{\partial z} - \frac{\partial F_z}{\partial x},\ \frac{\partial F_y}{\partial x} - \frac{\partial F_x}{\partial y}\right).
+\nabla\cdot\vec{F} = \frac{\partial F_x}{\partial x} + \frac{\partial F_y}{\partial y} + \frac{\partial F_z}{\partial z}, \qquad
+\nabla\times\vec{F} = \left(\frac{\partial F_z}{\partial y} - \frac{\partial F_y}{\partial z},\ \frac{\partial F_x}{\partial z} - \frac{\partial F_z}{\partial x},\ \frac{\partial F_y}{\partial x} - \frac{\partial F_x}{\partial y}\right).
 $$
 
-- **Divergence** is the net outflow per unit volume at a point, the local "source density". Positive divergence is a source, negative a sink, zero means no net creation.
-- **Curl** is the circulation per unit area at a point, the local "swirl". Its direction is the axis of the swirl, by the right-hand rule. For $\mathbf{F} = (-y, x, 0)$, the curl is $(0, 0, 2)$ everywhere: uniform rotation.
+**Divergence is outflow per unit volume.** Take a tiny box with corner $(x, y, z)$ and sides $dx$, $dy$, $dz$. The faces perpendicular to $x$ have area $dy\,dz$. The flux out through the right face is $F_x(x + dx)\,dy\,dz$, and through the left face it is $-F_x(x)\,dy\,dz$ (the outward normal points in $-\hat x$ there). Together they give $[F_x(x + dx) - F_x(x)]\,dy\,dz \approx \frac{\partial F_x}{\partial x}\,dx\,dy\,dz$. Adding the other two pairs of faces, the net outward flux is $(\nabla\cdot\vec F)\,dV$. So **divergence** is the net outflow per unit volume at a point, the local "source density". Positive divergence is a source, negative a sink, zero means no net creation.
 
-A gradient field has zero curl, $\nabla\times\nabla\varphi = \mathbf{0}$, by equality of mixed partials (01-09). So zero curl is the hallmark of conservative fields.
+**Curl is circulation per unit area.** Go counterclockwise around a tiny rectangle in the $xy$ plane with sides $dx$ and $dy$. The bottom and top edges contribute $F_x(y)\,dx - F_x(y + dy)\,dx \approx -\frac{\partial F_x}{\partial y}\,dx\,dy$; the right and left edges contribute $F_y(x + dx)\,dy - F_y(x)\,dy \approx \frac{\partial F_y}{\partial x}\,dx\,dy$. So the circulation is $\left(\frac{\partial F_y}{\partial x} - \frac{\partial F_x}{\partial y}\right)dA$, the $z$ component of the curl times the area. **Curl** is the circulation per unit area at a point, the local "swirl". Its direction is the axis of the swirl, by the right-hand rule. For $\vec{F} = (-y, x, 0)$, the curl is $(0, 0, 2)$ everywhere: uniform rotation.
+
+A gradient field has zero curl, $\nabla\times\nabla\varphi = \vec{0}$, by equality of mixed partials (01-09). So zero curl is the hallmark of conservative fields.
 
 ### 3.8 The integral theorems, and the circuit laws they imply
 
 Three theorems link a derivative inside a region to an integral over its boundary. Each is a multidimensional fundamental theorem of calculus.
 
-**Green's theorem** (plane): for a closed curve $C$ bounding a region $D$ (counterclockwise),
+**Green's theorem** (plane): for a closed curve $C$ bounding a region $D$, traversed counterclockwise (so that $D$ is on your left),
 
 $$
 \oint_C(P\,dx + Q\,dy) = \iint_D\left(\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y}\right)dA .
 $$
 
+*Proof for a rectangle* $[a, b]\times[c, d]$. The $P\,dx$ part of the loop integral comes only from the horizontal edges: the bottom edge, run left to right, gives $\int_a^bP(x, c)\,dx$, and the top edge, run right to left, gives $-\int_a^bP(x, d)\,dx$. By the fundamental theorem of calculus in $y$, their sum is $-\int_a^b\big[P(x, d) - P(x, c)\big]dx = -\int_a^b\int_c^d\frac{\partial P}{\partial y}\,dy\,dx$. In the same way the vertical edges give $\iint\frac{\partial Q}{\partial x}\,dA$. For a general region, tile it with small rectangles: each interior edge is traversed twice in opposite directions and cancels, leaving only the outer boundary. That is the curl-as-circulation picture above, summed. ∎
+
 **Stokes' theorem:** circulation around a loop equals the flux of the curl through any surface it bounds:
 
 $$
-\oint_C\mathbf{F}\cdot d\mathbf{r} = \iint_S(\nabla\times\mathbf{F})\cdot\mathbf{n}\,dS .
+\oint_C\vec{F}\cdot d\vec{r} = \iint_S(\nabla\times\vec{F})\cdot\hat{n}\,dS .
 $$
 
-**Divergence (Gauss's) theorem:** outflow through a closed surface equals the total divergence inside:
+The orientations must match by the **right-hand rule**: curl the fingers of your right hand along the direction of travel around $C$, and your thumb gives the side toward which $\hat n$ points. Green's theorem is the flat case, with $\hat n = \hat z$ and a counterclockwise loop. The proof tiles the surface with tiny loops, as for Green: interior edges cancel.
+
+**Divergence (Gauss's) theorem:** outflow through a closed surface, with $\hat n$ the **outward** normal, equals the total divergence inside:
 
 $$
-\oint_S\mathbf{F}\cdot\mathbf{n}\,dS = \iiint_V\nabla\cdot\mathbf{F}\,dV .
+\oint_S\vec{F}\cdot\hat{n}\,dS = \iiint_V\nabla\cdot\vec{F}\,dV .
 $$
+
+Its proof is the tiny-box argument above: fill the volume with boxes; the flux through each shared face counts once outward from each neighbor and cancels, leaving the outer surface. *Check with the cylinder of §3.6:* $\vec F = (x, y, 0)$ has $\nabla\cdot\vec F = 2$, so the volume integral is $2\pi a^2h$. The top and bottom faces carry no flux ($F_z = 0$), so all of it goes through the curved side, matching the $2\pi a^2h$ found there directly ✓.
 
 **Maxwell's equations, in a sentence each** ([13-04](../../13-electromagnetics/chapters/13-04-maxwells-equations.md)):
 
-- $\nabla\cdot\mathbf{E} = \rho/\varepsilon_0$: charge is the source of electric field.
-- $\nabla\cdot\mathbf{B} = 0$: no magnetic charges.
-- $\nabla\times\mathbf{E} = -\partial\mathbf{B}/\partial t$: a changing magnetic field makes the electric field swirl.
-- $\nabla\times\mathbf{B} = \mu_0\mathbf{J} + \mu_0\varepsilon_0\,\partial\mathbf{E}/\partial t$: currents, and changing electric fields, make magnetic fields swirl.
+- $\nabla\cdot\vec{E} = \rho/\varepsilon_0$: charge is the source of electric field.
+- $\nabla\cdot\vec{B} = 0$: no magnetic charges.
+- $\nabla\times\vec{E} = -\partial\vec{B}/\partial t$: a changing magnetic field makes the electric field swirl.
+- $\nabla\times\vec{B} = \mu_0\vec{J} + \mu_0\varepsilon_0\,\partial\vec{E}/\partial t$: currents, and changing electric fields, make magnetic fields swirl.
 
 The theorems turn each into an integral law: Gauss, Faraday, Ampère.
 
-**KCL and KVL from vector calculus.** Charge conservation says $\nabla\cdot\mathbf{J} = -\partial\rho/\partial t$. In a circuit node no charge accumulates, so $\nabla\cdot\mathbf{J} = 0$, and the divergence theorem over a surface enclosing the node gives $\oint\mathbf{J}\cdot\mathbf{n}\,dS = 0$: the currents leaving sum to zero. That is **KCL**. Where magnetic flux is not changing, $\nabla\times\mathbf{E} = 0$, and Stokes' theorem gives $\oint\mathbf{E}\cdot d\mathbf{l} = 0$: that is **KVL**. The lumped circuit abstraction of [00-02](../../00-orientation/chapters/00-02-the-abstraction-stack.md) is precisely the assumption that these conditions hold within each loop and node.
+**KCL and KVL from vector calculus.** Charge conservation says $\nabla\cdot\vec{J} = -\partial\rho/\partial t$. In a circuit node no charge accumulates, so $\nabla\cdot\vec{J} = 0$, and the divergence theorem over a surface enclosing the node gives $\oint\vec{J}\cdot\hat{n}\,dS = 0$: the currents leaving sum to zero. That is **KCL**. Where magnetic flux is not changing, $\nabla\times\vec{E} = 0$, and Stokes' theorem gives $\oint\vec{E}\cdot d\vec{l} = 0$: that is **KVL**. The lumped circuit abstraction of [00-02](../../00-orientation/chapters/00-02-the-abstraction-stack.md) is precisely the assumption that these conditions hold within each loop and node.
 
 ## 4. Worked examples
 
@@ -247,7 +268,7 @@ The first term is the wafer area divided by the die area. The second subtracts t
 **Solution.**
 
 - 100 mm²: $70\,686/100 - \pi\times300/\sqrt{200} = 706.9 - 66.6 = $ **640** dies, an edge loss of **9.4%**.
-- 800 mm² (near the reticle limit): $88.36 - 23.56 = $ **64.8**, i.e. about 64 dies, an edge loss of **26.7%**.
+- 800 mm² (near the reticle limit of about 858 mm², [R-015](../../../reference/research-log.md#r-015--lithography-exposure-field-the-reticle-limit)): $88.36 - 23.56 = $ **64.8**, i.e. about 64 dies, an edge loss of **26.7%**.
 
 Figure 4 shows the edge loss directly for large dies.
 
@@ -261,13 +282,13 @@ Figure 4 shows the edge loss directly for large dies.
 
 ### Example 01-10.4 — Line integrals: a conservative field and Ampère's law (tier B)
 
-**Setup.** (a) For $\mathbf{F} = (2xy, x^2)$, evaluate $\int\mathbf{F}\cdot d\mathbf{r}$ from (0, 0) to (1, 2) along two paths: the straight line, and along the $x$ axis then up. (b) A long wire carries 1 A. Evaluate $\oint\mathbf{B}\cdot d\mathbf{l}$ around a circle of radius $r$ centered on the wire.
+**Setup.** (a) For $\vec{F} = (2xy, x^2)$, evaluate $\int\vec{F}\cdot d\vec{r}$ from (0, 0) to (1, 2) along two paths: the straight line, and along the $x$ axis then up. (b) A long wire carries 1 A. Evaluate $\oint\vec{B}\cdot d\vec{l}$ around a circle of radius $r$ centered on the wire.
 
 **Solution.**
 
-(a) $\partial F_y/\partial x = 2x = \partial F_x/\partial y$, so $\mathbf{F}$ is conservative, with potential $\varphi = x^2y$. Both paths therefore give $\varphi(1, 2) - \varphi(0, 0) = $ **2**. Check the axis path: along the $x$ axis $y = 0$, so $F_x = 0$, contributing 0. Up the line $x = 1$, $F_y = 1$, so $\int_0^21\,dy = 2$ ✓.
+(a) $\partial F_y/\partial x = 2x = \partial F_x/\partial y$, so $\vec{F}$ is conservative, with potential $\varphi = x^2y$. Both paths therefore give $\varphi(1, 2) - \varphi(0, 0) = $ **2**. Check the axis path: along the $x$ axis $y = 0$, so $F_x = 0$, contributing 0. Up the line $x = 1$, $F_y = 1$, so $\int_0^21\,dy = 2$ ✓.
 
-(b) $\mathbf{B} = \frac{\mu_0I}{2\pi r}\hat{\boldsymbol\theta}$ is tangent to the circle and constant in magnitude, so $\oint\mathbf{B}\cdot d\mathbf{l} = \frac{\mu_0I}{2\pi r}\cdot2\pi r = \mu_0I = $ **1.257×10^−6 T·m**, independent of $r$.
+(b) $\vec{B} = \frac{\mu_0I}{2\pi r}\hat{\boldsymbol\theta}$ is tangent to the circle and constant in magnitude, so $\oint\vec{B}\cdot d\vec{l} = \frac{\mu_0I}{2\pi r}\cdot2\pi r = \mu_0I = $ **1.257×10^−6 T·m**, independent of $r$.
 
 **Interpretation.** The magnetic field's circulation measures the enclosed current. Its curl is zero everywhere except on the wire, yet the loop integral is not zero: the wire is a "hole" in the region, so zero curl alone does not make the field conservative there (Problem 01-10.15).
 
@@ -332,10 +353,10 @@ The lab ([labs/01-10-lab/](../labs/01-10-lab/README.md)) is a notebook:
 
 | Quantity | Value | Note |
 |---|---|---|
-| Polar / cylindrical / spherical elements | $r\,dr\,d\theta$ / $r\,dr\,d\theta\,dz$ / $\rho^2\sin\phi\,d\rho\,d\phi\,d\theta$ | Never forget the Jacobian |
+| Polar / cylindrical / spherical elements | $r\,dr\,d\theta$ / $r\,dr\,d\theta\,dz$ / $r^2\sin\phi\,dr\,d\phi\,d\theta$ | Never forget the Jacobian |
 | $\int_{-\infty}^\infty e^{-x^2}dx$ | $\sqrt{\pi}$ ≈ 1.772 | Normalizes the Gaussian |
 | Gaussian beam power within $w$ | 86.5% | $1 - e^{-2}$ |
-| $\mu_0$ | $1.257\times10^{-6}$ T·m/A | $\oint\mathbf{B}\cdot d\mathbf{l} = \mu_0I$ |
+| $\mu_0$ | $1.257\times10^{-6}$ T·m/A | $\oint\vec{B}\cdot d\vec{l} = \mu_0I$ |
 | $\varepsilon_0$ | $8.854\times10^{-12}$ F/m | Gauss: flux = $Q/\varepsilon_0$ |
 | Field 1 cm from a 1 A wire | 20 µT | $\mu_0I/(2\pi r)$ |
 | 300 mm wafer area | 70 686 mm² | ≈ 640 dies of 100 mm² |
@@ -343,7 +364,7 @@ The lab ([labs/01-10-lab/](../labs/01-10-lab/README.md)) is a notebook:
 
 ## 8. Common mistakes
 
-1. **Dropping the Jacobian** ($r$ in polar, $\rho^2\sin\phi$ in spherical).
+1. **Dropping the Jacobian** ($r$ in polar, $r^2\sin\phi$ in spherical).
 2. **Wrong limits after changing the order** of integration. Sketch the region first.
 3. **Integrating the magnitude of a vector field** instead of its component along the path or normal to the surface.
 4. **Assuming every field is conservative.** Check the curl, and beware of regions with holes.
@@ -356,7 +377,7 @@ The lab ([labs/01-10-lab/](../labs/01-10-lab/README.md)) is a notebook:
 
 ### Where these integrals sit in today's engineering (as of Nov 2026)
 
-- **Thermal and power-integrity sign-off integrate density maps.** Chip teams compute power-density maps across the die and integrate them for totals and hot spots; package and heat-sink design follow the peaks **[Established]**. The highest-power accelerators push power densities so high that cooling (direct liquid cooling in datacenters) has become a first-order product constraint ([25-08](../../25-fabrication-packaging-test-and-reliability/chapters/25-08-thermal-engineering.md)).
+- **Thermal and power-integrity sign-off integrate density maps.** Chip teams compute power-density maps across the die and integrate them for totals and hot spots; package and heat-sink design follow the peaks **[Established]**. The highest-power accelerators, rated around 1,000 W per GPU ([R-026](../../../reference/research-log.md#r-026--ai-accelerator-power-ratings)), push power densities so high that cooling, increasingly direct liquid cooling in datacenters, has become a first-order product constraint **[Industry estimate]** ([25-08](../../25-fabrication-packaging-test-and-reliability/chapters/25-08-thermal-engineering.md)).
 - **Wafer economics are geometry plus probability.** Dies per wafer (Example 01-10.3) and defect-limited yield (Problem 01-10.14) are the first two lines of every die-cost model. The textbook dies-per-wafer formula appears in Hennessy and Patterson's *Computer Architecture* **[Established]**. Large monolithic dies pay twice, at the edge and in yield, which is a quantitative core of the chiplet argument ([25-04](../../25-fabrication-packaging-test-and-reliability/chapters/25-04-yield-and-die-cost.md)).
 - **Field solvers do these integrals at scale.** Extraction tools compute capacitance and inductance of chip and package wiring by solving Maxwell's equations, in their integral or differential forms, over complex 3D geometry **[Established]**.
 
@@ -402,7 +423,7 @@ $\left(\int_0^2x\,dx\right)\left(\int_0^3y\,dy\right) = 2\times4.5 = 9$.
 
 </details>
 
-**Q3.** How can you tell that $\mathbf{F} = (y, x)$ is conservative, and what is its potential?
+**Q3.** How can you tell that $\vec{F} = (y, x)$ is conservative, and what is its potential?
 
 <details>
 <summary>Answer</summary>
@@ -411,7 +432,7 @@ $\partial F_y/\partial x = 1 = \partial F_x/\partial y$, so its curl is zero. Th
 
 </details>
 
-**Q4.** What is the flux of $\mathbf{F} = (0, 0, 5)$ through a horizontal square of side 2 m? Through a vertical one?
+**Q4.** What is the flux of $\vec{F} = (0, 0, 5)$ through a horizontal square of side 2 m? Through a vertical one?
 
 <details>
 <summary>Answer</summary>
@@ -420,12 +441,12 @@ $5\times4 = 20$ (units of F × m²) through the horizontal square; 0 through the
 
 </details>
 
-**Q5.** Compute the divergence and curl of $\mathbf{F} = (x, y, z)$.
+**Q5.** Compute the divergence and curl of $\vec{F} = (x, y, z)$.
 
 <details>
 <summary>Answer</summary>
 
-Divergence 3 (a uniform source); curl $\mathbf{0}$ (no swirl).
+Divergence 3 (a uniform source); curl $\vec{0}$ (no swirl).
 
 </details>
 
@@ -473,7 +494,8 @@ Now work the problem set: [01-10 problems](../problems/01-10-problems.md) (solut
 [Stokes' theorem](../../../reference/glossary.md#stokes-theorem) ·
 [Gauss's law](../../../reference/glossary.md#gausss-law) ·
 [Skin effect](../../../reference/glossary.md#skin-effect) ·
-[Dies per wafer](../../../reference/glossary.md#dies-per-wafer)
+[Dies per wafer](../../../reference/glossary.md#dies-per-wafer) ·
+[Cross product](../../../reference/glossary.md#cross-product)
 
 ## 12. Connections
 

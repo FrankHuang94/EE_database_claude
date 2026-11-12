@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 01-06 · Techniques of Integration
 
 | | |
@@ -6,14 +6,14 @@
 | **Course** | [01 · Calculus for Engineers](../README.md) |
 | **University equivalent** | Calculus II, techniques of integration (Stewart, ch. 7: substitution, integration by parts, trigonometric integrals and substitution, partial fractions, approximate integration, improper integrals) |
 | **Prerequisites** | [01-05](01-05-integrals.md) (the definite integral and the fundamental theorem), [01-03](01-03-derivatives.md) (chain and product rules). |
-| **Estimated study hours** | 12 |
+| **Estimated study hours** | 13 |
 | **Last verified** | 2026-11-12 |
 
 **Learning objectives.** After this chapter you can:
 
-1. Evaluate integrals by substitution, changing the limits of definite integrals, and recognize substitutions hidden in physical integrals.
+1. Evaluate integrals by substitution, including trigonometric substitution, changing the limits of definite integrals, and recognize substitutions hidden in physical integrals.
 2. Integrate by parts, including repeated, tabular and "loop" applications, and use it to compute moments such as the Elmore delay.
-3. Decompose rational functions into partial fractions and integrate them, and explain how this anticipates the inverse Laplace transform.
+3. Decompose rational functions into partial fractions (including irreducible quadratics, by completing the square) and integrate them, and explain how this anticipates the inverse Laplace transform.
 4. Evaluate trigonometric integrals with identities, and use the orthogonality of sinusoids to compute Fourier coefficients and harmonic power.
 5. Evaluate and test improper integrals, compute noise bandwidths, and choose and apply numerical integration when no antiderivative exists.
 
@@ -46,7 +46,7 @@ When you face an integral, ask which rule might have produced it. That question 
 
 A complicated structured product can often be valued by decomposing it into simpler instruments (bonds, options) whose values you know, then adding. Partial fractions do exactly this for rational functions: a complicated ratio becomes a sum of terms like $A/(x + a)$, each of which integrates to a logarithm. Fourier analysis decomposes a periodic signal into sinusoids the same way. Orthogonality guarantees that the pieces do not interfere, much as uncorrelated assets have additive variances.
 
-*Where the analogy breaks:* financial decompositions are often approximate, and replication can fail under stress. A mathematical decomposition is exact, provided its conditions hold: a proper rational function, and a periodic signal with finite energy per period. Another difference: in finance the components are chosen for convenience, while in a circuit they are dictated by physics, since each partial fraction corresponds to a natural mode of the circuit.
+*Where the analogy breaks:* financial decompositions are often approximate, and replication can fail under stress. A mathematical decomposition is exact, provided its conditions hold: a proper rational function, and a periodic signal with finite energy per period (for which the Fourier series converges in the mean-square sense, though not necessarily at every point; see the Gibbs overshoot in §3.3). Another difference: in finance the components are chosen for convenience, while in a circuit they are dictated by physics, since each partial fraction corresponds to a natural mode of the circuit.
 
 ## 3. Theory
 
@@ -117,7 +117,7 @@ $$
 \bar{t} = \frac{\int_0^\infty t\,h(t)\,dt}{\int_0^\infty h(t)\,dt}.
 $$
 
-For a single RC stage, $h \propto e^{-t/\tau}$. By parts, $\int_0^\infty te^{-t/\tau}\,dt = \tau^2$, while $\int_0^\infty e^{-t/\tau}\,dt = \tau$. So $\bar{t} = \tau$ (Figure 1). For an RC *tree*, the first moment is easy to compute from the resistances and capacitances alone, without solving the circuit. It is called the **Elmore delay** (W. C. Elmore, 1948). Because it is cheap and well behaved, it has long been used to estimate interconnect delay during chip placement and routing ([19-05](../../19-digital-vlsi-design/chapters/19-05-interconnect.md)) **[Established]**. For a single pole it overestimates the 50% delay, $\tau\ln 2$, by a factor $1/\ln 2 = 1.44$.
+For a single RC stage, $h \propto e^{-t/\tau}$. By parts, $\int_0^\infty te^{-t/\tau}\,dt = \tau^2$, while $\int_0^\infty e^{-t/\tau}\,dt = \tau$. So $\bar{t} = \tau$ (Figure 1). For an RC *tree*, the first moment is easy to compute from the resistances and capacitances alone, without solving the circuit. It is called the **Elmore delay**: W. C. Elmore (1948) proposed the first moment as a delay measure, and Rubinstein, Penfield and Horowitz (1983) gave the simple formula for RC trees used by timing tools. Because it is cheap and well behaved, it has long been used to estimate interconnect delay during chip placement and routing ([19-05](../../19-digital-vlsi-design/chapters/19-05-interconnect.md)) **[Established]**. For a single pole it overestimates the 50% delay, $\tau\ln 2$, by a factor $1/\ln 2 = 1.44$.
 
 ![Centroid of an RC impulse response](../../../assets/figures/01-06/elmore-centroid.svg)
 
@@ -193,18 +193,45 @@ Oliver Heaviside used the same trick to solve circuit equations, which is why en
 
 **Why EEs care: modes of a circuit.** In [07-04](../../07-circuit-analysis-2-transient-and-ac/chapters/07-04-laplace-domain-circuit-analysis.md) a circuit's response appears as a rational function of a complex frequency $s$, for example $H(s) = \dfrac{10}{(s + 2)(s + 5)}$. Partial fractions split it into $\dfrac{10/3}{s + 2} - \dfrac{10/3}{s + 5}$. Each simple term corresponds to one decaying exponential in time ($e^{-2t}$ and $e^{-5t}$): a **natural mode** of the circuit, with the denominator's roots (the **poles**) setting the decay rates (Figure 4, Problem 01-06.9). A repeated factor $(s + a)^2$ produces $te^{-at}$, the repeated-root signature found with L'Hôpital's rule in [01-04](01-04-applications-of-derivatives.md). Irreducible quadratics produce damped sinusoids.
 
+**An irreducible quadratic, by completing the square.** $x^2 + 2x + 5$ has no real roots (its discriminant is $4 - 20 < 0$). Complete the square: $x^2 + 2x + 5 = (x + 1)^2 + 4$. With $u = x + 1$ and the arctangent integral of §3.5,
+
+$$
+\int\frac{dx}{x^2 + 2x + 5} = \int\frac{du}{u^2 + 2^2} = \frac{1}{2}\arctan\frac{x + 1}{2} + C .
+$$
+
+A numerator $Bx + C$ splits into a multiple of the denominator's derivative, $2x + 2$, which integrates to a log, plus a constant, which integrates to an arctangent. In the Laplace domain the same completed square, $(s + 1)^2 + 2^2$, is the signature of the damped sinusoid $e^{-t}\sin 2t$: decay rate 1 from the shift, oscillation at 2 rad/s from the square (Problem 01-06.17).
+
 ![Two exponential modes summing to a response](../../../assets/figures/01-06/partial-fraction-modes.svg)
 
 *Figure 4. The response $h(t) = \tfrac{10}{3}(e^{-2t} - e^{-5t})$ is the sum of the two modes that partial fractions reveal.*
 
 ### 3.5 Trigonometric substitution
 
-Integrands containing $a^2 + x^2$ or $\sqrt{a^2 - x^2}$ simplify when $x$ is a trigonometric function of a new variable:
+Integrands containing $a^2 - x^2$, $a^2 + x^2$ or $x^2 - a^2$ simplify when $x$ is a trigonometric function of a new variable $\theta$, chosen so that a Pythagorean identity collapses the sum or difference into a single square:
 
-- $x = a\tan\theta$: $\displaystyle\int\frac{dx}{a^2 + x^2} = \frac{1}{a}\arctan\frac{x}{a} + C$, since $dx = a\sec^2\theta\,d\theta$ and $a^2 + x^2 = a^2\sec^2\theta$;
-- $x = a\sin\theta$: $\displaystyle\int\frac{dx}{\sqrt{a^2 - x^2}} = \arcsin\frac{x}{a} + C$.
+| Integrand contains | Substitute | Then | Identity used |
+|---|---|---|---|
+| $\sqrt{a^2 - x^2}$ | $x = a\sin\theta$ | $dx = a\cos\theta\,d\theta$, $\sqrt{a^2 - x^2} = a\cos\theta$ | $1 - \sin^2 = \cos^2$ |
+| $a^2 + x^2$ | $x = a\tan\theta$ | $dx = a\sec^2\theta\,d\theta$, $a^2 + x^2 = a^2\sec^2\theta$ | $1 + \tan^2 = \sec^2$ |
+| $\sqrt{x^2 - a^2}$ | $x = a\sec\theta$ | $dx = a\sec\theta\tan\theta\,d\theta$, $\sqrt{x^2 - a^2} = a\tan\theta$ | $\sec^2 - 1 = \tan^2$ |
 
-The first is the integral behind the noise bandwidth of a filter (§3.6) and the arctangent phase of first-order systems.
+(Restrict $\theta$ to the range where the square roots are positive: $-\pi/2 \le \theta \le \pi/2$ for the sine, $-\pi/2 < \theta < \pi/2$ for the tangent, $0 \le \theta < \pi/2$ for the secant when $x \ge a$.)
+
+**Derivation of the two standard results.** With $x = a\tan\theta$:
+
+$$
+\int\frac{dx}{a^2 + x^2} = \int\frac{a\sec^2\theta\,d\theta}{a^2\sec^2\theta} = \frac{\theta}{a} + C = \frac{1}{a}\arctan\frac{x}{a} + C .
+$$
+
+With $x = a\sin\theta$:
+
+$$
+\int\frac{dx}{\sqrt{a^2 - x^2}} = \int\frac{a\cos\theta\,d\theta}{a\cos\theta} = \theta + C = \arcsin\frac{x}{a} + C .
+$$
+
+**Getting back to x: the reference triangle.** When the answer contains $\sin\theta$, $\cos\theta$ or $\tan\theta$ rather than $\theta$ itself, draw a right triangle that encodes the substitution. For $x = a\tan\theta$, the opposite side is $x$, the adjacent side $a$, and the hypotenuse $\sqrt{a^2 + x^2}$, so $\sin\theta = x/\sqrt{a^2 + x^2}$ and $\cos\theta = a/\sqrt{a^2 + x^2}$. Example 01-06.6 uses this to find the field of a charged wire of finite length.
+
+The arctangent result is the integral behind the noise bandwidth of a filter (§3.6) and the arctangent phase of first-order systems.
 
 ### 3.6 Improper integrals
 
@@ -224,13 +251,13 @@ $$
 
 For example, $\int_1^\infty x^{-2}dx = 1$, but $\int_1^\infty x^{-1}dx = \lim\ln b = \infty$. The borderline $p = 1$ diverges at *both* ends, only logarithmically slowly.
 
-**Comparison test.** If $0 \le f \le g$ and $\int g$ converges, so does $\int f$. If $\int f$ diverges, so does $\int g$. Exponential decay beats every power (01-02), so integrals like $\int_0^\infty t^ne^{-t}\,dt$ converge. By repeated parts, $\int_0^\infty t^ne^{-t}\,dt = n!$.
+**Comparison test.** If $0 \le f \le g$ and $\int g$ converges, so does $\int f$. If $\int f$ diverges, so does $\int g$. Exponential decay beats every power (01-02), so integrals like $\int_0^\infty t^ne^{-t}\,dt$ converge. To make that precise, note that $t^ne^{-t/2}$ is bounded on $[0, \infty)$: it starts at 0, tends to 0, and its maximum, at $t = 2n$, is $C_n = (2n/e)^n$. So $t^ne^{-t} = (t^ne^{-t/2})\,e^{-t/2} \le C_ne^{-t/2}$, whose integral converges. By repeated parts, $\int_0^\infty t^ne^{-t}\,dt = n!$.
 
 **Engineering improper integrals.**
 
 - **Total energy of a transient:** $\int_0^\infty i^2R\,dt$ (01-05, Example 3).
-- **The Laplace transform** $F(s) = \int_0^\infty f(t)e^{-st}\,dt$, an improper integral that converges for $s$ large enough (Problem 01-06.15; [07-04](../../07-circuit-analysis-2-transient-and-ac/chapters/07-04-laplace-domain-circuit-analysis.md)).
-- **Equivalent noise bandwidth (ENBW).** White noise of density $S$ (V²/Hz) passed through a filter of power gain $\lvert H(f)\rvert^2$ has total power $S\int_0^\infty\lvert H\rvert^2\,df$. The integral, divided by the passband gain, is the width of the ideal "brick-wall" filter that would pass the same noise. For one pole, $\lvert H\rvert^2 = 1/\big(1 + (f/f_c)^2\big)$, and with the substitution of §3.5,
+- **The Laplace transform** $F(s) = \int_0^\infty f(t)e^{-st}\,dt$, an improper integral that converges when $\operatorname{Re}s$ is large enough (Problem 01-06.15; [07-04](../../07-circuit-analysis-2-transient-and-ac/chapters/07-04-laplace-domain-circuit-analysis.md)).
+- **Equivalent noise bandwidth (ENBW).** White noise of density $S$ (V²/Hz) passed through a filter of power gain $\lvert H(f)\rvert^2$ has total power $S\int_0^\infty\lvert H\rvert^2\,df$. The integral, divided by the peak power gain $\lvert H\rvert^2_{max}$, is the width of the ideal "brick-wall" filter that would pass the same noise. For one pole, $\lvert H\rvert^2 = 1/\big(1 + (f/f_c)^2\big)$, and with the substitution of §3.5,
 
 $$
 \text{ENBW} = \int_0^\infty\frac{df}{1 + (f/f_c)^2} = f_c\Big[\arctan\frac{f}{f_c}\Big]_0^\infty = \frac{\pi}{2}f_c \approx 1.571f_c .
@@ -254,7 +281,7 @@ $$
 \int_a^b f\,dx \approx \frac{h}{3}\Big[f_0 + 4f_1 + 2f_2 + 4f_3 + \cdots + 4f_{n-1} + f_n\Big]\qquad(n\text{ even}),
 $$
 
-with error proportional to $h^4$. It is exactly the $(2M + T)/3$ combination of 01-05. Two further methods are standard:
+with error proportional to $h^4$. It is exactly the $(2M + T)/3$ combination of 01-05, where the midpoint sum $M$ and the trapezoid sum $T$ are both taken on the coarser grid of step $2h$ ($n/2$ intervals). Two further methods are standard:
 
 - **Adaptive quadrature** (for example SciPy's `quad`) refines the grid where the integrand varies quickly, and reports an error estimate.
 - **Gaussian quadrature** chooses both sample points and weights optimally, and is exact for polynomials of degree $2n - 1$ with only $n$ points. It is used inside circuit and electromagnetic field solvers.
@@ -329,7 +356,7 @@ $\cos n\pi = (-1)^n$, so $b_n = 4/(n\pi)$ for odd $n$ and 0 for even $n$: $b_1 =
 
 (b) The mean square of a ±1 square wave is 1. The fundamental's power is $b_1^2/2 = 8/\pi^2 = $ **0.8106**, i.e. **81.06%**. The rest sits in the odd harmonics.
 
-**Sanity check.** The fundamental's amplitude, 1.273, *exceeds* the square wave's amplitude of 1: the best-fitting sine must overshoot to match the square wave's area ✓. By Parseval, the harmonics' powers must sum to 1. They do, since $\sum_{n\text{ odd}}8/(n^2\pi^2) = (8/\pi^2)(\pi^2/8) = 1$ ✓.
+**Sanity check.** The fundamental's amplitude, 1.273, *exceeds* the square wave's amplitude of 1: the coefficient comes from projecting the square wave onto $\sin$ (least squares), and because the square wave stays at full height across the whole half-cycle, that projection is $2\times$ the average of $\lvert\sin\rvert$, which is $4/\pi > 1$ ✓. By Parseval, the harmonics' powers must sum to 1. They do, since $\sum_{n\text{ odd}}8/(n^2\pi^2) = (8/\pi^2)(\pi^2/8) = 1$ ✓.
 
 ### Example 01-06.5 — Noise bandwidth and the noise of a filtered resistor (tier C)
 
@@ -346,6 +373,32 @@ $\cos n\pi = (-1)^n$, so $b_n = 4/(n\pi)$ for odd $n$ and 0 for even $n$: $b_1 =
 **Interpretation.** A designer who multiplied the density by the −3 dB bandwidth (10 kHz) would get 1.287 µV, underestimating the noise by 20% in voltage (57% in power). Datasheets quote noise densities so that you can perform exactly this integral for your own filter.
 
 **Sanity check.** The lab's ngspice `.noise` analysis integrates the same output spectrum numerically, and agrees ✓.
+
+### Example 01-06.6 — The field of a finite charged wire, by trigonometric substitution (tier B)
+
+**Setup.** A straight wire of length $2L$ carries charge $\lambda$ per meter. Find the electric field at distance $d$ from its midpoint, on the perpendicular bisector. Evaluate it for $\lambda = 1$ nC/m, $d = 1$ cm and $L = 5$ cm, and compare with an infinitely long wire.
+
+**Solution.** A small piece $dx$ at position $x$ along the wire carries charge $\lambda\,dx$ at distance $\sqrt{x^2 + d^2}$. By Coulomb's law it contributes a field of magnitude $k\lambda\,dx/(x^2 + d^2)$, with $k = 1/(4\pi\varepsilon_0) = 8.988\times10^9$ N·m²/C². By symmetry the components along the wire cancel in pairs, leaving the perpendicular component, which is the magnitude times $d/\sqrt{x^2 + d^2}$:
+
+$$
+E = k\lambda d\int_{-L}^{L}\frac{dx}{(x^2 + d^2)^{3/2}} .
+$$
+
+Substitute $x = d\tan\theta$: $dx = d\sec^2\theta\,d\theta$ and $(x^2 + d^2)^{3/2} = d^3\sec^3\theta$. The integrand becomes $\cos\theta\,d\theta/d^2$, so
+
+$$
+\int\frac{dx}{(x^2 + d^2)^{3/2}} = \frac{\sin\theta}{d^2} + C = \frac{x}{d^2\sqrt{x^2 + d^2}} + C,
+$$
+
+using the reference triangle of §3.5 for $\sin\theta$. Evaluating from $-L$ to $L$:
+
+$$
+E = \frac{k\lambda}{d}\cdot\frac{2L}{\sqrt{L^2 + d^2}} .
+$$
+
+Numerically, $k\lambda/d = 8.988\times10^9\times10^{-9}/0.01 = 898.8$ V/m and $2L/\sqrt{L^2 + d^2} = 0.1/0.05099 = 1.961$, so $E = $ **1763 V/m**. As $L \to \infty$ the factor tends to 2, giving the infinite-wire field $2k\lambda/d = \lambda/(2\pi\varepsilon_0d) = $ **1798 V/m**. A wire whose half-length is only five times the distance already gives **98.06%** of it.
+
+**Units check.** (N·m²/C²)(C/m)/m = N/C = V/m ✓. **Sanity check.** Far away ($d \gg L$), $2L/\sqrt{L^2 + d^2} \to 2L/d$ and $E \to k(2L\lambda)/d^2$: the field of a point charge $2L\lambda$, as it must be ✓. [01-10](01-10-multivariable-calculus-2.md) gets the infinite-wire field in one line from Gauss's law.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -364,6 +417,13 @@ $\cos n\pi = (-1)^n$, so $b_n = 4/(n\pi)$ for odd $n$ and 0 for even $n$: $b_1 =
 | Ex 01-06.5a | noise density | 12.87 | nV/√Hz |
 | Ex 01-06.5b | noise bandwidth | 15.71 | kHz |
 | Ex 01-06.5c | output noise | 1.613 | µV |
+| Ex 01-06.6a | kλ/d | 898.8 | V/m |
+| Ex 01-06.6b | geometry factor | 1.961 | — |
+| Ex 01-06.6c | field of the finite wire | 1763 | V/m |
+| Ex 01-06.6d | field of an infinite wire | 1798 | V/m |
+| Ex 01-06.6e | finite as a fraction of infinite | 98.06 | % |
+| Ex 01-06.6f | Coulomb constant | 8.988×10^9 | N·m²/C² |
+| Ex 01-06.6g | half-length divided by distance | 5 | — |
 
 *Recomputed by [verify_01_06.py](../verify/verify_01_06.py). Examples 01-06.4 and 01-06.5 and Problem 01-06.10 are also confirmed in ngspice by the lab netlists.*
 
@@ -396,7 +456,7 @@ The lab ([labs/01-06-lab/](../labs/01-06-lab/README.md)) has a notebook and two 
 | Elmore delay / 50% delay, single pole | 1.443 | $1/\ln 2$ |
 | One-pole noise bandwidth | $(\pi/2)f_c$ ≈ 1.571 $f_c$ | 57% more noise power than $f_c$ suggests |
 | Thermal noise density, 1 kΩ at 300 K | 4.07 nV/√Hz | $\sqrt{4kTR}$; scales as √R |
-| kT/C noise at 1 pF, 300 K | 64.3 µV rms | Independent of R |
+| kT/C noise at 1 pF, 300 K | 64.4 µV rms | Independent of R |
 | Square-wave fundamental | $4/\pi$ ≈ 1.273 × amplitude; 81% of power | Harmonics $4/(n\pi)$, odd n |
 | Gibbs overshoot | ≈ 9% of the jump | Does not shrink with more harmonics |
 | p-integrals | $\int_1^\infty x^{-p}$ converges iff $p > 1$ | $1/f$: equal power per decade |
@@ -531,7 +591,9 @@ Now work the problem set: [01-06 problems](../problems/01-06-problems.md) (solut
 [Elmore delay](../../../reference/glossary.md#elmore-delay) ·
 [Simpson's rule](../../../reference/glossary.md#simpsons-rule) ·
 [Gibbs phenomenon](../../../reference/glossary.md#gibbs-phenomenon) ·
-[Flicker (1/f) noise](../../../reference/glossary.md#flicker-1-f-noise)
+[Flicker (1/f) noise](../../../reference/glossary.md#flicker-1-f-noise) ·
+[Trigonometric substitution](../../../reference/glossary.md#trigonometric-substitution) ·
+[Completing the square](../../../reference/glossary.md#completing-the-square)
 
 ## 12. Connections
 

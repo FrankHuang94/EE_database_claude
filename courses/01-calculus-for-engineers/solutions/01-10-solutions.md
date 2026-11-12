@@ -26,17 +26,17 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 ### Solution 01-10.3
 
-(a) $\int_0^{2\pi}\int_0^\pi\int_0^2\rho^2\sin\phi\,d\rho\,d\phi\,d\theta = \tfrac{8}{3}\cdot2\cdot2\pi = \tfrac{32\pi}{3} = $ **33.51**.
+(a) $\int_0^{2\pi}\int_0^\pi\int_0^2r^2\sin\phi\,dr\,d\phi\,d\theta = \tfrac{8}{3}\cdot2\cdot2\pi = \tfrac{32\pi}{3} = $ **33.51**.
 
 (b) $\int_0^3\int_0^{2\pi}\int_0^1r\,dr\,d\theta\,dz = \tfrac{1}{2}\cdot2\pi\cdot3 = $ **9.425** (3π).
 
-(c) $\int_0^14\pi\rho^2\cdot\rho^2\,d\rho = 4\pi/5 = $ **2.513**.
+(c) $\int_0^14\pi r^2\cdot r^2\,dr = 4\pi/5 = $ **2.513**.
 
 ### Solution 01-10.4
 
-(a) $\nabla\cdot\mathbf{F} = 2x + x + 1 = 3x + 1$, which is **4** at (1, 2, 3). $\nabla\times\mathbf{F} = (0 - 0,\ 0 - 0,\ y - 0) = (0, 0, y)$, which is **(0, 0, 2)** at (1, 2, 3).
+(a) $\nabla\cdot\vec{F} = 2x + x + 1 = 3x + 1$, which is **4** at (1, 2, 3). $\nabla\times\vec{F} = (0 - 0,\ 0 - 0,\ y - 0) = (0, 0, y)$, which is **(0, 0, 2)** at (1, 2, 3).
 
-(b) $\nabla\cdot\mathbf{G} = 0$ and $\nabla\times\mathbf{G} = (0, 0, 1 - (-1)) = (0, 0, 2)$: pure, uniform rotation with no sources.
+(b) $\nabla\cdot\vec{G} = 0$ and $\nabla\times\vec{G} = (0, 0, 1 - (-1)) = (0, 0, 2)$: pure, uniform rotation with no sources.
 
 ### Solution 01-10.5
 
@@ -58,25 +58,25 @@ $Q = \int_0^{0.05}\int_0^{0.1}\sigma_0(1 + x/0.1)\,dx\,dy = \sigma_0\times0.05\t
 
 ### Solution 01-10.8
 
-(a) $\partial F_y/\partial x = 2y = \partial F_x/\partial y$, so $\mathbf{F}$ is conservative, with $\varphi = xy^2$. The integral is $\varphi(2, 1) - \varphi(0, 0) = $ **2**.
+(a) $\partial F_y/\partial x = 2y = \partial F_x/\partial y$, so $\vec{F}$ is conservative, with $\varphi = xy^2$. The integral is $\varphi(2, 1) - \varphi(0, 0) = $ **2**.
 
-(b) With $x = 2\cos t$, $y = 2\sin t$: $\mathbf{G}\cdot\mathbf{r}' = (-2\sin t)(-2\sin t) + (2\cos t)(2\cos t) = 4$, so $\oint = 4\times2\pi = $ **25.13** (8π). Green's theorem: $\iint(\partial_xG_y - \partial_yG_x)\,dA = \iint2\,dA = 2\times4\pi = 8\pi$ ✓.
+(b) With $x = 2\cos t$, $y = 2\sin t$: $\vec{G}\cdot\vec{r}' = (-2\sin t)(-2\sin t) + (2\cos t)(2\cos t) = 4$, so $\oint = 4\times2\pi = $ **25.13** (8π). Green's theorem: $\iint(\partial_xG_y - \partial_yG_x)\,dA = \iint2\,dA = 2\times4\pi = 8\pi$ ✓.
 
 ### Solution 01-10.9
 
-(a) $V_A - V_B = \int_A^B\mathbf{E}\cdot d\mathbf{l} = 1000\times0.02 + 0\times0.01 = $ **20 V**. The field has no $y$ component, so moving in $y$ is moving along an equipotential.
+(a) $V_A - V_B = \int_A^B\vec{E}\cdot d\vec{l} = 1000\times0.02 + 0\times0.01 = $ **20 V**. The field has no $y$ component, so moving in $y$ is moving along an equipotential.
 
 (b) $W = \dfrac{1}{4\pi\varepsilon_0}\dfrac{q_1q_2}{r} = 8.988\times10^9\times10^{-18}/0.01 = $ **8.988×10^−7 J**, the line integral of the repulsive force from infinity to 1 cm.
 
 ### Solution 01-10.10
 
-(a) By Ampère's law, $\oint\mathbf{B}\cdot d\mathbf{l} = \mu_0I = $ **2.513×10^−6 T·m**. At 1 cm, $B = \mu_0I/(2\pi r) = $ **40.00 µT**.
+(a) By Ampère's law, $\oint\vec{B}\cdot d\vec{l} = \mu_0I = $ **2.513×10^−6 T·m**. At 1 cm, $B = \mu_0I/(2\pi r) = $ **40.00 µT**.
 
-(b) The flux is $\Phi = BA = 10\text{ µT}\sin(\omega t)\times10^{-3}\text{ m}^2$, and the EMF is $-d\Phi/dt$, with peak $AB\omega = 10^{-3}\times10^{-5}\times2\pi\times50 = $ **3.142 µV**. KVL assumed $\oint\mathbf{E}\cdot d\mathbf{l} = 0$; Faraday's law says it equals $-d\Phi/dt$, so a few microvolts appear around the loop that no component "drops". **Shrink the loop area**: route the return path directly beside or beneath the signal (a ground plane), or twist the pair. The EMF scales with area, and for sensitive analog paths microvolts matter.
+(b) The flux is $\Phi = BA = 10\text{ µT}\sin(\omega t)\times10^{-3}\text{ m}^2$, and the EMF is $-d\Phi/dt$, with peak $AB\omega = 10^{-3}\times10^{-5}\times2\pi\times50 = $ **3.142 µV**. KVL assumed $\oint\vec{E}\cdot d\vec{l} = 0$; Faraday's law says it equals $-d\Phi/dt$, so a few microvolts appear around the loop that no component "drops". **Shrink the loop area**: route the return path directly beside or beneath the signal (a ground plane), or twist the pair. The EMF scales with area, and for sensitive analog paths microvolts matter.
 
 ### Solution 01-10.11
 
-(a) On the sphere, $\mathbf{F}\cdot\mathbf{n} = r = 2$, so the flux is $2\times4\pi(2)^2 = 32\pi = $ **100.5**. The divergence is 3, so the volume integral is $3\times\tfrac{4}{3}\pi(2)^3 = 32\pi$ ✓.
+(a) On the sphere, $\vec{F}\cdot\hat{n} = r = 2$, so the flux is $2\times4\pi(2)^2 = 32\pi = $ **100.5**. The divergence is 3, so the volume integral is $3\times\tfrac{4}{3}\pi(2)^3 = 32\pi$ ✓.
 
 (b) $Q/\varepsilon_0 = 10^{-9}/8.854\times10^{-12} = $ **112.9 V·m**, independent of the radius. The field falls as $1/r^2$ while the area grows as $r^2$.
 
@@ -94,7 +94,7 @@ $Q = \int_0^{0.05}\int_0^{0.1}\sigma_0(1 + x/0.1)\,dx\,dy = \sigma_0\times0.05\t
 
 (b) $I = \int_0^RJ_0e^{(r - R)/\delta}2\pi r\,dr$. By parts, $\int_0^Rre^{(r - R)/\delta}dr = \delta R - \delta^2\left(1 - e^{-R/\delta}\right)$. The effective area $I/J_0$ is **1.040 mm²** at 100 kHz and **0.3874 mm²** at 1 MHz, against $\pi R^2 = 3.142$ mm².
 
-(c) The resistance ratios are about **3.02** at 100 kHz and **8.11** at 1 MHz. Solid round wire wastes most of its copper at high frequency. That is why switching converters use Litz wire (many insulated strands) or foil windings, and why high-speed PCB losses grow with the square root of frequency ([24-01](../../24-high-speed-io-signal-integrity-and-photonics/chapters/24-01-signal-integrity-fundamentals.md)).
+(c) The resistance ratios are about **3.02** at 100 kHz and **8.11** at 1 MHz. Solid round wire wastes most of its copper at high frequency. That is why switching converters use Litz wire (many insulated strands) or foil windings, and why the *conductor* part of high-speed PCB loss grows with the square root of frequency (dielectric loss grows in proportion to frequency and dominates at multi-gigahertz rates) ([24-01](../../24-high-speed-io-signal-integrity-and-photonics/chapters/24-01-signal-integrity-fundamentals.md)).
 
 ### Solution 01-10.14
 
@@ -102,20 +102,40 @@ $Q = \int_0^{0.05}\int_0^{0.1}\sigma_0(1 + x/0.1)\,dx\,dy = \sigma_0\times0.05\t
 
 | Die area (mm²) | Gross DPW | Yield | Good dies |
 |---|---|---|---|
-| 25 | **2694** | 97.53% | **2628** |
-| 100 | 640.2 | **90.48%** | **579.3** |
-| 400 | 143.4 | 67.03% | **96.12** |
-| 800 | 64.80 | **44.93%** | **29.11** |
+| 25 | **2694** | **97.53%** | **2628** |
+| 100 | **640.2** | **90.48%** | **579.3** |
+| 400 | **143.4** | **67.03%** | **96.12** |
+| 800 | **64.80** | **44.93%** | **29.11** |
 
 (b) Cost per good die is proportional to $1/(\text{good dies})$: $579.3/29.11 = $ **19.9×** more for 8× the area. Cost grows much faster than area, because of both edge loss and yield.
 
-(c) A 200 mm² chiplet gives 306.3 gross and 250.8 good dies (Y = 81.87%), so **62.70** sets of four per wafer: 2.15× the monolithic good-die count. The saving must pay for advanced packaging, die-to-die interfaces and their power, test of known-good dies, and assembly yield. That is the real chiplet tradeoff ([25-07](../../25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md)).
+(c) A 200 mm² chiplet gives **306.3** gross and **250.8** good dies (Y = **81.87%**), so **62.70** sets of four per wafer. Four 200 mm² chiplets replace one 800 mm² die, so compare 62.70 sets with 29.11 monolithic good dies: **2.15×**. The saving must pay for advanced packaging, die-to-die interfaces and their power, test of known-good dies, and assembly yield. That is the real chiplet tradeoff ([25-07](../../25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md)).
 
 ### Solution 01-10.15
 
 (a) With $P = -y/2$ and $Q = x/2$, Green's theorem gives $\iint(\tfrac{1}{2} + \tfrac{1}{2})\,dA = $ area. For the ellipse, $x\,dy - y\,dx = (3\cos t)(2\cos t)\,dt + (2\sin t)(3\sin t)\,dt = 6\,dt$, so the area is $\tfrac{1}{2}\times6\times2\pi = 6\pi = $ **18.85** ($\pi ab$ ✓). This is the principle of the planimeter, which measures area by tracing a boundary.
 
-(b) On the unit circle, $\mathbf{F} = (-\sin t, \cos t)$ and $\mathbf{r}' = (-\sin t, \cos t)$, so $\mathbf{F}\cdot\mathbf{r}' = 1$ and the circulation is **6.283** (2π). Green's theorem requires the field to be smooth *throughout* the enclosed region, but $\mathbf{F}$ blows up at the origin, which is inside the loop. The curl is zero everywhere it is defined, yet a "hole" carries circulation. This is exactly the magnetic field of a straight wire along the $z$ axis, scaled: $\mathbf{B} = \frac{\mu_0I}{2\pi}\mathbf{F}$, with the current concentrated in the hole.
+(b) On the unit circle, $\vec{F} = (-\sin t, \cos t)$ and $\vec{r}' = (-\sin t, \cos t)$, so $\vec{F}\cdot\vec{r}' = 1$ and the circulation is **6.283** (2π). Green's theorem requires the field to be smooth *throughout* the enclosed region, but $\vec{F}$ blows up at the origin, which is inside the loop. The curl is zero everywhere it is defined, yet a "hole" carries circulation. This is exactly the magnetic field of a straight wire along the $z$ axis, scaled: $\vec{B} = \frac{\mu_0I}{2\pi}\vec{F}$, with the current concentrated in the hole.
+
+### Solution 01-10.16
+
+(a) By symmetry $\vec E$ points radially away from the line and has the same magnitude everywhere on a coaxial cylinder of radius $r$ and length $\ell$. The flat end caps carry no flux, because the field runs parallel to them. Gauss's law gives $E\cdot2\pi r\ell = \lambda\ell/\varepsilon_0$, so
+
+$$
+E = \frac{\lambda}{2\pi\varepsilon_0r} = \frac{10^{-9}}{2\pi\times8.854\times10^{-12}\times0.01} = 1798\text{ V/m},
+$$
+
+exactly the infinite-wire limit of Example 01-06.6, obtained here without any integration.
+
+(b) With charge λ per meter on the inner conductor, the same cylinder (now with $a < r < b$, inside the insulation) gives $E = \lambda/(2\pi\varepsilon r)$, with $\varepsilon = \varepsilon_r\varepsilon_0$. The voltage between the conductors is the line integral of $E$ across the gap:
+
+$$
+V = \int_a^b\frac{\lambda}{2\pi\varepsilon r}\,dr = \frac{\lambda}{2\pi\varepsilon}\ln\frac{b}{a}, \qquad C' = \frac{\lambda}{V} = \frac{2\pi\varepsilon_0\varepsilon_r}{\ln(b/a)} .
+$$
+
+With $\ln 3 = 1.0986$: $C' = 2\pi\times8.854\times10^{-12}\times2.1/1.0986 = $ **106.3 pF/m**.
+
+(c) $\lambda = C'V = 106.3\text{ pF/m}\times50\text{ V} = $ **5.317 nC/m**. The field is largest at the smallest radius, the inner conductor's surface: $E(a) = V/\big(a\ln(b/a)\big) = 50/(0.5\times10^{-3}\times1.0986) = $ **91.02 kV/m**.
 
 ---
 
@@ -172,3 +192,17 @@ $Q = \int_0^{0.05}\int_0^{0.1}\sigma_0(1 + x/0.1)\,dx\,dy = \sigma_0\times0.05\t
 | 01-10.14i | chiplet sets per wafer | 62.70 | — |
 | 01-10.15a | ellipse area | 18.85 | — |
 | 01-10.15b | circulation around the hole | 6.283 | — |
+| 01-10.14j | yield at 25 mm² | 97.53 | % |
+| 01-10.14k | gross dies at 100 mm² | 640.2 | — |
+| 01-10.14l | gross dies at 400 mm² | 143.4 | — |
+| 01-10.14m | yield at 400 mm² | 67.03 | % |
+| 01-10.14n | gross dies at 800 mm² | 64.80 | — |
+| 01-10.14o | chiplet gross dies at 200 mm² | 306.3 | — |
+| 01-10.14p | chiplet good dies at 200 mm² | 250.8 | — |
+| 01-10.14q | chiplet yield | 81.87 | % |
+| 01-10.14r | chiplet sets vs monolithic good dies | 2.15 | — |
+| 01-10.16a | line-charge field at 1 cm | 1798 | V/m |
+| 01-10.16b | ln 3 | 1.0986 | — |
+| 01-10.16c | coax capacitance per meter | 106.3 | pF/m |
+| 01-10.16d | charge per meter at 50 V | 5.317 | nC/m |
+| 01-10.16e | peak field at the inner conductor | 91.02 | kV/m |

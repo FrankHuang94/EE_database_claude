@@ -188,6 +188,16 @@ $$
 
 (d) At high SNR each dB, a 26% increase in power, adds only about $B/3$ bits per second: 6.6 Mb/s, about 3% of this 200 Mb/s link. Doubling power (+3 dB) adds about $B$ bits per second, while doubling bandwidth doubles the capacity. Bandwidth is the stronger lever at high SNR, which is why spectrum is so valuable.
 
+### Solution 01-03.17
+
+(a) $\ln y = x\ln x$, so $y'/y = \ln x + 1$ and $y' = x^x(1 + \ln x)$. At $x = 2$: $4(1 + 0.6931) = $ **6.773**.
+
+(b) $(\tanh x)' = 1 - \tanh^2x$. At 0.5, $\tanh 0.5 = 0.4621$, so the derivative is $1 - 0.2135 = $ **0.7864**.
+
+(c) By the chain rule, $g_m = \dfrac{I_{EE}}{2V_T}\left[1 - \tanh^2\!\left(\dfrac{v_{id}}{2V_T}\right)\right]$. At $v_{id} = 0$: $g_m = I_{EE}/(2V_T) = 1\text{ mA}/51.7\text{ mV} = $ **19.34 mS**. Units: A/V = S ✓.
+
+(d) We need $1 - \tanh^2u = 1/\cosh^2u = \tfrac12$, so $\cosh u = \sqrt2$ and $u = \operatorname{arccosh}\sqrt2 = $ **0.8814**. Then $v_{id} = 2V_Tu = $ **45.57 mV**. The pair is linear only for inputs of a few tens of millivolts; beyond about ±45 mV its gain has halved and it acts as a current switch. That is why a bipolar differential pair makes a good limiter and needs emitter degeneration for linearity ([12](../../12-electronics-2/README.md)).
+
 ---
 
 <!-- answer-key -->
@@ -228,6 +238,12 @@ $$
 | 01-03.11a | runtime gain, exact | 3.061 | % |
 | 01-03.11b | corner change for +5 % R | −4.762 | % |
 | 01-03.11c | corner change for −5 % R | 5.263 | % |
+| 01-03.11d | voltage elasticity at fixed f | 2 | — |
+| 01-03.11e | voltage elasticity with f ∝ V | 3 | — |
+| 01-03.11f | runtime elasticity | −3 | — |
+| 01-03.11g | runtime gain, first order | 3 | % |
+| 01-03.11h | corner elasticity to R | −1 | — |
+| 01-03.11i | corner change for +5 % R, first order | −5 | % |
 | 01-03.12a | slope of circle at (3, 4) | −0.75 | — |
 | 01-03.12b | d/dx arctan x at 1 | 0.5 | — |
 | 01-03.12c | r at 1 mA | 25.85 | Ω |
@@ -245,6 +261,13 @@ $$
 | 01-03.15a | current amplitude | 64.09 | mA |
 | 01-03.15b | peak instantaneous power | 5.448 | W |
 | 01-03.15c | reactive power | 5.448 | var |
-| 01-03.16a | dC/dSNR_dB at 30 dB | 6.637 | Mb/s |
-| 01-03.16b | dC/dSNR_dB at 0 dB | 3.322 | Mb/s |
+| 01-03.16a | dC/dSNR_dB at 30 dB | 6.637 | Mb/s per dB |
+| 01-03.16b | dC/dSNR_dB at 0 dB | 3.322 | Mb/s per dB |
 | 01-03.16c | exact gain 30 → 31 dB | 6.638 | Mb/s |
+| 01-03.17a | derivative of x^x at 2 | 6.773 | — |
+| 01-03.17b | tanh 0.5 | 0.4621 | — |
+| 01-03.17c | derivative of tanh at 0.5 | 0.7864 | — |
+| 01-03.17d | differential-pair g_m at 0 | 19.34 | mS |
+| 01-03.17e | 2V_T | 51.7 | mV |
+| 01-03.17f | arccosh √2 | 0.8814 | — |
+| 01-03.17g | input for half g_m | 45.57 | mV |

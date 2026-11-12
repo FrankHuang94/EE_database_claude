@@ -114,7 +114,7 @@ $$
 
 Each bit adds 6.021 dB, because it halves $\Delta$. For $N = 12$: $72.25 + 1.761 = 74.01$ dB ✓. The rule of thumb, with its rounded coefficient, gives $6.02 \times 12 + 1.76 = 74.00$ dB; the 0.01 dB gap is rounding.
 
-**10.** *(01-08)* (a) $P_3(0.1) = 1 + 0.1 + 0.005 + 0.0001667 = 1.105167$. The Lagrange remainder is $R_3 = e^{\xi}x^4/4!$ for some $\xi$ in (0, 0.1). Since $1 < e^{\xi} < e^{0.1} \approx 1.1052$, the error lies between $10^{-4}/24 = 4.167\times10^{-6}$ and $1.1052\times10^{-4}/24 = 4.605\times10^{-6}$. The actual error, $e^{0.1} - P_3 = 4.251\times10^{-6}$, is inside that range ✓.
+**10.** *(01-08)* (a) $P_3(0.1) = 1 + 0.1 + 0.005 + 0.0001667 = 1.105167$. The Lagrange remainder is $R_3 = e^{\xi}x^4/4!$ for some $\xi$ in (0, 0.1). We may not use the value of $e^{0.1}$ we are estimating, but $1 < e^{\xi} < e^{0.1} < 3^{0.1} < 1.2$ is safe. So the error lies between $10^{-4}/24 = 4.167\times10^{-6}$ and $1.2\times10^{-4}/24 = 5.0\times10^{-6}$. The actual error, $e^{0.1} - P_3 = 4.251\times10^{-6}$, is inside that range ✓.
 
 (b) $\ln(1 + x) = x - x^2/2 + x^3/3 - x^4/4 + \cdots$. At $x = 0.2$, three terms give $0.2 - 0.02 + 0.002667 = 0.1827$. The true value is $\ln 1.2 = 0.1823$, so the actual error is $3.451\times10^{-4}$. The terms alternate in sign and shrink, so the error is smaller than the first omitted term, $0.2^4/4 = 4.0\times10^{-4}$ ✓.
 
@@ -124,7 +124,9 @@ $$
 e^{a\cos\theta} \approx 1 + a\cos\theta + \frac{a^2}{2}\cos^2\theta = \left(1 + \frac{a^2}{4}\right) + a\cos\theta + \frac{a^2}{4}\cos2\theta.
 $$
 
-The second-harmonic amplitude over the fundamental is $(a^2/4)/a = a/4 = 2.5\%$. Higher-order terms change this by a relative amount of order $a^2$, about 1%, so 2.5% is good to two digits.
+The second-harmonic amplitude over the fundamental is $(a^2/4)/a = a/4 = 2.5\%$. The next correction is a relative factor of about $1 - a^2/24$, a change of only 0.04%: the exact value, $I_2(0.1)/I_1(0.1)$ from modified Bessel functions, is 2.499%.
+
+(d) With $f(x) = 1/x^2$, the remainder $\sum_{k=21}^\infty1/k^2$ lies between $\int_{21}^\infty x^{-2}dx = 1/21 = 0.04762$ and $\int_{20}^\infty x^{-2}dx = 1/20 = 0.05$. The actual error is $\pi^2/6 - S_{20} = 1.644934 - 1.596163 = 0.04877$, inside the bracket ✓. Twenty terms leave the second decimal wrong: this series converges slowly, as its $1/n$ remainder says.
 
 **11.** *(01-10)* (a) Gross dies $= \pi d^2/(4A) - \pi d/\sqrt{2A}$ with $d = 300$ mm.
 
@@ -140,7 +142,7 @@ Doubling the area cuts gross dies by a factor of 2.18, not 2, because edge loss 
 
 (c) Cost per good die is \$17,000/159.8 = **\$106.4** for the small die and \$17,000/59.53 = **\$285.6** for the large one. The ratio is **2.68×**, not 2×.
 
-(d) Rubric: 3 points. Award 1.5 for the reasoning and 1.5 for two good questions.
+(d) Rubric: 2 of the question's 5 points. Award 1 for the reasoning and 1 for two good questions.
 
 - **Reasoning:** cost per good die grows faster than area for two reasons. Fewer dies fit, with relatively more edge loss, and yield falls exponentially with area. Here the result is 2.7× rather than 2×, and the gap widens with higher defect density.
 - **Good questions:**
@@ -165,7 +167,7 @@ Doubling the area cuts gross dies by a factor of 2.18, not 2, because edge loss 
 
 (d) On the constraint, $P(I_1) = R_1I_1^2 + R_2(I - I_1)^2$, a parabola with $P'' = 2(R_1 + R_2) = 0.050\ \Omega > 0$. So the critical point is a minimum. The loss function is convex, so this minimum is global.
 
-**14.** *(01-10)* (a) Take a cylinder of radius $r$ and length $\ell$. By symmetry $\mathbf{E}$ is radial and depends only on $r$, so the end caps carry no flux. Gauss's law gives $\varepsilon E\cdot2\pi r\ell = \lambda\ell$, with $\varepsilon = \varepsilon_0\varepsilon_r$, so
+**14.** *(01-10 §3.6 and Problem 01-10.16)* (a) Take a cylinder of radius $r$ and length $\ell$. By symmetry $\vec{E}$ is radial and depends only on $r$, so the end caps carry no flux. Gauss's law gives $\varepsilon E\cdot2\pi r\ell = \lambda\ell$, with $\varepsilon = \varepsilon_0\varepsilon_r$, so
 
 $$
 E(r) = \frac{\lambda}{2\pi\varepsilon r}, \qquad a < r < b.
@@ -197,7 +199,9 @@ $$
 B = \frac{\mu_0I}{2\pi a} = \frac{4\pi\times10^{-7} \times 3.927}{2\pi \times 5\times10^{-4}} = 1.571\text{ mT}.
 $$
 
-(c) The curl test: $\partial F_2/\partial x = 2x$ and $\partial F_1/\partial y = 2x$ agree everywhere in the plane, which has no holes, so $\mathbf{F}$ is conservative. Integrate $\partial\varphi/\partial x = 2xy + 1$ to get $\varphi = x^2y + x + h(y)$. Then $\partial\varphi/\partial y = x^2 + h'(y)$ must equal $x^2$, so $h$ is a constant and $\varphi = x^2y + x$. The work is $\varphi(1, 2) - \varphi(0, 0) = 2 + 1 = 3$, for any path.
+(c) The curl test: $\partial F_2/\partial x = 2x$ and $\partial F_1/\partial y = 2x$ agree everywhere in the plane, which has no holes, so $\vec{F}$ is conservative. Integrate $\partial\varphi/\partial x = 2xy + 1$ to get $\varphi = x^2y + x + h(y)$. Then $\partial\varphi/\partial y = x^2 + h'(y)$ must equal $x^2$, so $h$ is a constant and $\varphi = x^2y + x$. The work is $\varphi(1, 2) - \varphi(0, 0) = 2 + 1 = 3$, for any path.
+
+(d) $\nabla\cdot\vec G = 1 + 1 + 2z$, so $\iiint\nabla\cdot\vec G\,dV = 1 + 1 + \int_0^1 2z\,dz = 3$. Outward fluxes: on $x = 1$ ($\hat n = \hat x$), $\iint G_x\,dA = \iint 1\,dA = 1$; on $x = 0$ ($\hat n = -\hat x$), $G_x = 0$, so 0. Likewise 1 on $y = 1$ and 0 on $y = 0$. On $z = 1$, $G_z = z^2 = 1$, giving 1; on $z = 0$, $G_z = 0$, giving 0. Total outward flux $= 3$, matching the volume integral ✓.
 
 ## Answer key
 
@@ -257,7 +261,7 @@ $$
 | X01.9h | rule-of-thumb SNR | 74.00 | dB |
 | X01.10a | third-order estimate of e^0.1 | 1.105167 | — |
 | X01.10b | lower edge of error range | 4.167×10^-6 | — |
-| X01.10c | Lagrange error bound | 4.605×10^-6 | — |
+| X01.10c | Lagrange error bound | 5.0×10^-6 | — |
 | X01.10d | actual error | 4.251×10^-6 | — |
 | X01.10e | three-term estimate of ln 1.2 | 0.1827 | — |
 | X01.10f | ln 1.2 | 0.1823 | — |
@@ -305,3 +309,12 @@ $$
 | X01.15b | current with uniform J0 | 7.854 | A |
 | X01.15c | B at the surface | 1.571 | mT |
 | X01.15d | work from (0, 0) to (1, 2) | 3 | — |
+| X01.10j | exact HD2 from Bessel functions | 2.499 | % |
+| X01.10k | relative correction a²/24 | 0.04 | % |
+| X01.10l | lower bracket 1/21 | 0.04762 | — |
+| X01.10m | upper bracket 1/20 | 0.05 | — |
+| X01.10n | π²/6 | 1.644934 | — |
+| X01.10o | S20 | 1.596163 | — |
+| X01.10p | actual error of S20 | 0.04877 | — |
+| X01.15e | volume integral of div G | 3 | — |
+| X01.15f | total outward flux | 3 | — |

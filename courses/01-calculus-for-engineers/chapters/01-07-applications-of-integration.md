@@ -1,12 +1,12 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 01-07 · Applications of Integration
 
 | | |
 |---|---|
 | **Course** | [01 · Calculus for Engineers](../README.md) |
-| **University equivalent** | Calculus II, applications of integration (Stewart, ch. 6 and 8: average value, work, probability), with RMS values and average AC power from a first circuits course and probability densities from an engineering-statistics course |
+| **University equivalent** | Calculus II, applications of integration (Stewart, ch. 6 and 8: areas between curves, volumes, arc length, centroids, average value, work, probability), with RMS values and average AC power from a first circuits course and probability densities from an engineering-statistics course |
 | **Prerequisites** | [01-05](01-05-integrals.md), [01-06](01-06-techniques-of-integration.md) (integration techniques, orthogonality). |
-| **Estimated study hours** | 10 |
+| **Estimated study hours** | 12 |
 | **Last verified** | 2026-11-12 |
 
 **Learning objectives.** After this chapter you can:
@@ -16,6 +16,7 @@
 3. Compute energy stored in capacitors and inductors, usable energy between voltage limits, and work done by variable forces and fields.
 4. Use probability density functions to compute probabilities, means and variances: uniform (quantization noise), exponential (lifetimes, MTBF) and Gaussian (tolerances, noise).
 5. Derive the ideal ADC signal-to-noise ratio $6.02N + 1.76$ dB, and use it to interpret effective number of bits.
+6. Compute areas between curves, volumes of solids of revolution, arc lengths and centroids, and recognize the centroid in the Elmore delay and the mean of a density.
 
 ## 1. Big picture
 
@@ -60,7 +61,7 @@ $$
 X_{avg} = \frac{1}{T}\int_0^Tx\,dt, \qquad X_{rms} = \sqrt{\frac{1}{T}\int_0^Tx^2\,dt}.
 $$
 
-**Derivations for standard waveforms (peak value $X_p$):**
+**Derivations for standard waveforms (peak value $X_p$; for voltages and currents this chapter also writes $V_m$ and $I_m$, as in 01-05):**
 
 - **Sine.** $\overline{\sin^2} = \tfrac{1}{2}$ (01-05), so $X_{rms} = X_p/\sqrt{2} \approx 0.707X_p$.
 - **Square (±$X_p$).** $x^2 = X_p^2$ always, so $X_{rms} = X_p$.
@@ -117,44 +118,52 @@ From $w = \int vi\,dt$ (01-05):
 **Usable energy between voltage limits.** A supercapacitor or hold-up capacitor powers a load only between its full voltage $V_1$ and the minimum voltage $V_2$ the load (or its regulator) accepts:
 
 $$
-E_{usable} = \tfrac{1}{2}C\big(V_1^2 - V_2^2\big) = \tfrac{1}{2}CV_1^2\left[1 - \left(\frac{V_2}{V_1}\right)^2\right].
+w_{usable} = \tfrac{1}{2}C\big(V_1^2 - V_2^2\big) = \tfrac{1}{2}CV_1^2\left[1 - \left(\frac{V_2}{V_1}\right)^2\right].
 $$
 
-Discharging to half the voltage releases 75% of the energy (Figure 3). For a constant-power load, $dE/dt = -P$ gives the hold-up time directly: $t = E_{usable}/P$ (Problem 01-07.7).
+Discharging to half the voltage releases 75% of the energy (Figure 3). For a constant-power load, $dw/dt = -P$ gives the hold-up time directly: $t = w_{usable}/P$ (Problem 01-07.7).
 
 ![Energy versus voltage of a supercapacitor](../../../assets/figures/01-07/supercap-energy.svg)
 
 *Figure 3. Stored energy grows as $V^2$. Using the range from 2.7 V down to 1.35 V captures 75% of the full energy.*
 
-**Battery energy.** A battery's charge rating (mAh) is not its energy rating (mWh). Energy is $\int V\,dq$, and the voltage falls during discharge. So energy equals capacity × the *charge-weighted average* voltage, which is the meaning of a battery's "nominal" voltage (Problem 01-07.13).
+**Battery energy.** A battery's charge rating (mAh) is not its energy rating (mWh). Energy is $\int V\,dq$, and the voltage falls during discharge. So energy equals capacity × the *charge-weighted average* voltage. A battery's "nominal" voltage is a designation that approximates this average for a slow discharge (Problem 01-07.13).
 
 ### 3.4 Work done by variable forces and fields
 
-Work is the integral of force along a path, $W = \int F\,dx$. When the force varies, as for a spring ($F = kx$, so $W = \tfrac{1}{2}kx^2$) or an electrostatic actuator, the integral is essential.
+Work is the integral of force along a path, $W = \int F\,dx$. When the force varies, as for a spring ($F = k_sx$, so $W = \tfrac{1}{2}k_sx^2$, with $k_s$ the spring constant) or an electrostatic actuator, the integral is essential.
 
 **Moving charge through a potential difference.** The work to move charge $q$ through a voltage $\Delta V$ is $W = q\Delta V$. That is the definition of voltage: joules per coulomb. One **electron-volt** (eV) is the work to move one electron through 1 V: $1.602\times10^{-19}$ J, the natural energy unit of semiconductor physics ([09](../../09-semiconductor-devices/README.md)).
 
-**Energy and force in a capacitor.** A parallel-plate capacitor with fixed charge $Q$ stores $E = Q^2/(2C) = Q^2d/(2\varepsilon_0A)$. Pulling the plates apart by $dd$ increases the energy by $\frac{Q^2}{2\varepsilon_0A}\,dd$, and that energy must come from the work done against the attractive force. So the force is
+**Energy and force in a capacitor at fixed charge.** Write the plate gap as $x$. A parallel-plate capacitor with fixed charge $Q$ (disconnected from any source) stores $w = Q^2/(2C) = Q^2x/(2\varepsilon_0A)$. Pulling the plates apart by $dx$ increases the energy by $\frac{Q^2}{2\varepsilon_0A}\,dx$, and that energy must come from the work done against the attractive force. So the force is
 
 $$
-F = \frac{dE}{dd} = \frac{Q^2}{2\varepsilon_0A}.
+F = \frac{dw}{dx} = \frac{Q^2}{2\varepsilon_0A},
 $$
 
-This is the force MEMS electrostatic actuators use, and integrating it over a displacement recovers the energy change (Problem 01-07.8).
+independent of the gap. This is the force MEMS electrostatic actuators use (Problem 01-07.8).
+
+**At fixed voltage the force varies, and the source joins the energy balance.** With the capacitor held at $V$ by a source, $Q = CV = \varepsilon_0AV/x$, so the same attraction becomes $F = Q^2/(2\varepsilon_0A) = \varepsilon_0AV^2/(2x^2)$: it grows steeply as the gap closes. Now the integral is essential. Pulling the plates from $x_1$ to $x_2$ takes work
+
+$$
+W = \int_{x_1}^{x_2}\frac{\varepsilon_0AV^2}{2x^2}\,dx = \frac{\varepsilon_0AV^2}{2}\left(\frac{1}{x_1} - \frac{1}{x_2}\right).
+$$
+
+Yet the stored energy $\tfrac12CV^2 = \varepsilon_0AV^2/(2x)$ *falls*, by exactly $W$. Where did the energy go? The capacitance fell, so charge $\lvert\Delta Q\rvert = V\lvert\Delta C\rvert$ flowed back into the source, which absorbed $V\lvert\Delta Q\rvert = 2W$: your work plus the released stored energy. Forgetting the source is the classic error in electrostatic-actuator problems (Problem 01-07.16).
 
 ### 3.5 Probability densities
 
 A **probability density function** $f(x)$ satisfies $f(x) \ge 0$ and $\int_{-\infty}^\infty f(x)\,dx = 1$. For a random variable $X$ with density $f$:
 
 $$
-P(a < X < b) = \int_a^bf(x)\,dx, \qquad \mu = E[X] = \int xf(x)\,dx, \qquad \sigma^2 = \int(x - \mu)^2f(x)\,dx .
+P(a < X < b) = \int_a^bf(x)\,dx, \qquad \mu = \mathbb{E}[X] = \int xf(x)\,dx, \qquad \sigma^2 = \int(x - \mu)^2f(x)\,dx .
 $$
 
 The **cumulative distribution function** is $F(x) = \int_{-\infty}^xf(t)\,dt$. By the fundamental theorem, $F' = f$. Three densities do most of the work in EE ([03](../../03-probability-statistics-and-random-variables/README.md) develops them fully):
 
 **Uniform** on $[-\Delta/2, \Delta/2]$, with $f = 1/\Delta$: mean 0, variance $\displaystyle\int_{-\Delta/2}^{\Delta/2}\frac{x^2}{\Delta}\,dx = \frac{\Delta^2}{12}$. This is the model of **quantization error** in an ADC (§3.6).
 
-**Exponential** with rate $\lambda$ (1/time): $f(t) = \lambda e^{-\lambda t}$ for $t \ge 0$. Then $P(T > t) = e^{-\lambda t}$, and by parts the mean is $E[T] = 1/\lambda$. It models the lifetime of a component with a constant failure rate, so $1/\lambda$ is the **mean time between failures (MTBF)**. For $n$ independent components in series, any one failing fails the system, and the rates add: $\lambda_{sys} = \sum\lambda_i$ (Problem 01-07.10). The exponential is **memoryless**: an unfailed component is "as good as new", which is why constant failure rates suit the long flat middle of the "bathtub curve" but not wear-out.
+**Exponential** with rate $\lambda$ (1/time): $f(t) = \lambda e^{-\lambda t}$ for $t \ge 0$. For a lifetime $T_f$ (time to failure), $P(T_f > t) = e^{-\lambda t}$, and by parts the mean is $\mathbb{E}[T_f] = 1/\lambda$. It models the lifetime of a component with a constant failure rate, so $1/\lambda$ is the **mean time to failure (MTTF)**. For repairable systems the same quantity is called the **mean time between failures (MTBF)**, and industry often uses "MTBF" loosely for both. For $n$ independent components in series, any one failing fails the system, and the rates add: $\lambda_{sys} = \sum\lambda_i$ (Problem 01-07.10). The exponential is **memoryless**: an unfailed component is "as good as new", which is why constant failure rates suit the long flat middle of the "bathtub curve" but not wear-out.
 
 **Gaussian (normal)** with mean $\mu$ and standard deviation $\sigma$:
 
@@ -193,6 +202,42 @@ $$
 $$
 
 Example 01-07.5 works this through, and [20](../../20-analog-and-mixed-signal-ic-design/README.md) builds on it.
+
+### 3.7 Geometry: areas, volumes, arc length and centroids
+
+The same "slice, sum, take the limit" idea measures shapes. Each formula comes from writing the contribution of one thin slice and integrating.
+
+**Area between curves.** If $f(x) \ge g(x)$ on $[a, b]$, a vertical strip of width $dx$ has height $f - g$, so
+
+$$
+A = \int_a^b\big(f(x) - g(x)\big)\,dx .
+$$
+
+Find $a$ and $b$ where the curves cross. For example, $y = x$ lies above $y = x^2$ on $[0, 1]$, and the area between them is $\int_0^1(x - x^2)\,dx = \tfrac12 - \tfrac13 = \tfrac16$.
+
+**Volumes of revolution.** Spin the region under $r(x) \ge 0$ about the $x$-axis. A slice of thickness $dx$ is a disk of area $\pi r(x)^2$:
+
+$$
+V = \int_a^b\pi\,r(x)^2\,dx \qquad\text{(disks; subtract an inner radius for washers).}
+$$
+
+A sphere is the disk method on $r = \sqrt{R^2 - x^2}$: $V = \pi\int_{-R}^R(R^2 - x^2)\,dx = \tfrac43\pi R^3$. Spinning about the $y$-axis instead, a thin cylindrical shell at radius $x$ of height $h(x)$ and thickness $dx$ has volume $2\pi x\,h(x)\,dx$, so $V = \int 2\pi x\,h(x)\,dx$ (shells). In chip packaging, the copper in a tapered through-silicon via is a disk-method volume (Problem 01-07.18).
+
+**Arc length.** A short piece of curve has run $dx$ and rise $dy = f'(x)\,dx$, so by Pythagoras its length is $ds = \sqrt{dx^2 + dy^2} = \sqrt{1 + f'(x)^2}\,dx$:
+
+$$
+L = \int_a^b\sqrt{1 + f'(x)^2}\,dx .
+$$
+
+Few integrands of this form have elementary antiderivatives, so arc lengths are often computed numerically. An exception is the hanging cable, the catenary $y = a\cosh(x/a)$ of [01-01](01-01-functions-models-and-units.md): since $1 + \sinh^2 = \cosh^2$, its arc length is $\int\cosh(x/a)\,dx = a\sinh(x/a)$ (Problem 01-07.19). The arc-length element $ds$ is also what line integrals in electromagnetics are built from ([01-10](01-10-multivariable-calculus-2.md)).
+
+**Centroids and first moments.** The centroid of a region, its balance point, has
+
+$$
+\bar x = \frac{\int x\,dA}{\int dA} = \frac{\int_a^b x\big(f(x) - g(x)\big)\,dx}{\int_a^b\big(f(x) - g(x)\big)\,dx} .
+$$
+
+The numerator is the region's **first moment**. You have met this formula twice already in other clothing: the mean of a density, $\mu = \int xf\,dx$ with $\int f\,dx = 1$ (§3.5), and the Elmore delay, the centroid of an impulse response ([01-06](01-06-techniques-of-integration.md) §3.2). For the triangle under $y = x$ on $[0, 1]$, $\bar x = \int_0^1x^2\,dx\big/\int_0^1x\,dx = (1/3)/(1/2) = 2/3$: two-thirds of the way toward the wide end.
 
 ## 4. Worked examples
 
@@ -236,7 +281,7 @@ Example 01-07.5 works this through, and [20](../../20-analog-and-mixed-signal-ic
 
 **Solution.**
 
-(a) $E_{usable} = \tfrac{1}{2}(10)(2.7^2 - 1.35^2) = $ **27.34 J**. The full energy is $\tfrac{1}{2}(10)(2.7^2) = $ **36.45 J**, so the usable fraction is $1 - (1/2)^2 = $ **75%**.
+(a) $w_{usable} = \tfrac{1}{2}(10)(2.7^2 - 1.35^2) = $ **27.34 J**. The full energy is $\tfrac{1}{2}(10)(2.7^2) = $ **36.45 J**, so the usable fraction is $1 - (1/2)^2 = $ **75%**.
 
 (b) $0.300\text{ Ah}\times3.85\text{ V} = $ **1.155 Wh** $= 1.155\times3600 = $ **4158 J**.
 
@@ -263,6 +308,8 @@ Example 01-07.5 works this through, and [20](../../20-analog-and-mixed-signal-ic
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
+| T 01-07.a | area between y = x and y = x² on [0, 1] (= 1/6) | 0.1667 | — |
+| T 01-07.b | centroid of the triangle under y = x (= 2/3) | 0.6667 | — |
 | Ex 01-07.1a | RMS of square | 1 | V |
 | Ex 01-07.1b | RMS of sine | 0.7071 | V |
 | Ex 01-07.1c | RMS of triangle | 0.5774 | V |
@@ -454,7 +501,10 @@ Now work the problem set: [01-07 problems](../problems/01-07-problems.md) (solut
 [Probability density function](../../../reference/glossary.md#probability-density-function) ·
 [Mean time between failures (MTBF)](../../../reference/glossary.md#mean-time-between-failures-mtbf) ·
 [Quantization noise](../../../reference/glossary.md#quantization-noise) ·
-[Effective number of bits (ENOB)](../../../reference/glossary.md#effective-number-of-bits-enob)
+[Effective number of bits (ENOB)](../../../reference/glossary.md#effective-number-of-bits-enob) ·
+[Arc length](../../../reference/glossary.md#arc-length) ·
+[Centroid](../../../reference/glossary.md#centroid) ·
+[Mean time to failure (MTTF)](../../../reference/glossary.md#mean-time-to-failure-mttf)
 
 ## 12. Connections
 

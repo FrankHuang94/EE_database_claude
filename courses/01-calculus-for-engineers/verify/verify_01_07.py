@@ -213,5 +213,47 @@ tt = np.linspace(0, 1, 200000, endpoint=False)
 pulse = np.where(np.abs(np.sin(2 * np.pi * tt)) > 0.9, np.sign(np.sin(2 * np.pi * tt)), 0.0)
 v.check("Lab 01-07.c", 100 * (FF * np.abs(pulse).mean() / math.sqrt((pulse**2).mean()) - 1))
 v.check("Lab 01-07.d", 0.5 * 170 * 10 * math.cos(math.pi / 3))
+v.check("Lab 01-07.e", 17 * math.sin(math.pi / 3) / (2 * math.pi * 60) * 1e3)
+x_only = 14.722 * math.tan(math.pi / 3)
+z_only = math.hypot(14.722, x_only)
+v.check("Lab 01-07.f", x_only)
+v.check("Lab 01-07.g", z_only)
+v.check("Lab 01-07.h", 0.5 * 170**2 * 14.722 / z_only**2)
+
+# ---------------------------------------------------------------- audit additions (§3.7, Problems 16-19)
+from scipy.integrate import quad as _quad  # noqa: E402
+
+v.check("T 01-07.a", _quad(lambda x: x - x * x, 0, 1)[0])
+v.check("T 01-07.b", _quad(lambda x: x * x, 0, 1)[0] / _quad(lambda x: x, 0, 1)[0])
+v.check("01-07.1i", rms(lambda s: 4 * (s % 1.0) - 2))
+e0 = 8.854187817e-12
+k16 = e0 * 1e-6 * 25 / 2
+v.check("01-07.16a", k16 / (2e-6) ** 2 * 1e6)
+v.check("01-07.16b", k16)
+W16 = _quad(lambda x: k16 / x**2, 2e-6, 4e-6)[0]
+v.check("01-07.16c", W16 * 1e12)
+v.check("01-07.16d", k16 / 2e-6 * 1e12)
+v.check("01-07.16e", k16 / 4e-6 * 1e12)
+v.check("01-07.16f", e0 * 1e-6 / 2e-6 * 1e12)
+v.check("01-07.16g", e0 * 1e-6 / 4e-6 * 1e12)
+dQ = 5 * (e0 * 1e-6 / 2e-6 - e0 * 1e-6 / 4e-6)
+v.check("01-07.16h", dQ * 1e12)
+v.check("01-07.16i", 5 * dQ * 1e12)
+v.assert_true("energy balance: W + released = source", math.isclose(W16 + (k16 / 2e-6 - k16 / 4e-6), 5 * dQ, rel_tol=1e-9))
+A17 = _quad(lambda x: math.sqrt(x) - x * x, 0, 1)[0]
+v.check("01-07.17a", A17)
+v.check("01-07.17b", _quad(lambda x: x * (math.sqrt(x) - x * x), 0, 1)[0] / A17)
+v.check("01-07.17c", _quad(lambda y: y * (math.sqrt(y) - y * y), 0, 1)[0] / A17)
+V18 = _quad(lambda z: math.pi * (2 + z / 100) ** 2, 0, 50)[0]
+v.check("01-07.18a", V18)
+v.check("01-07.18b", math.pi * 2.5**2 * 50)
+v.check("01-07.18c", 100 * V18 / (math.pi * 2.5**2 * 50))
+v.assert_true("frustum formula agrees", math.isclose(V18, math.pi * 50 / 3 * (6.25 + 5 + 4)))
+L19 = _quad(lambda x: math.sqrt(1 + math.sinh(x / 500) ** 2), -100, 100)[0]
+v.check("01-07.19a", L19)
+v.check("01-07.19b", 100 * (L19 / 200 - 1))
+sag = 500 * (math.cosh(0.2) - 1)
+v.check("01-07.19c", sag)
+v.check("01-07.19d", 200 * (1 + 8 / 3 * (sag / 200) ** 2), tol=0.01)
 
 v.finish()

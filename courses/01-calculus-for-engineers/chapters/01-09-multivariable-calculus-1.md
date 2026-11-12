@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 01-09 · Multivariable Calculus I: Partial Derivatives and Gradients
 
 | | |
@@ -62,10 +62,10 @@ A function $f(x, y)$ assigns a number to each point of a region of the plane, or
 - **A MOSFET in saturation** (square law with channel-length modulation, [10-02](../../10-electronics-1/chapters/10-02-mosfet-dc-operation-and-biasing.md)):
 
 $$
-I_D(V_{GS}, V_{DS}) = \tfrac{1}{2}k\,(V_{GS} - V_{TH})^2\left(1 + \frac{V_{DS}}{V_A}\right),
+I_D(V_{GS}, V_{DS}) = \tfrac{1}{2}k_n\,(V_{GS} - V_{TH})^2\left(1 + \frac{V_{DS}}{V_A}\right),
 $$
 
-with transconductance parameter $k$ (A/V²), threshold $V_{TH}$ and Early voltage $V_A$ (V).
+with transconductance parameter $k_n$ (A/V²; the subscript keeps it apart from Boltzmann's $k$), threshold $V_{TH}$ and Early voltage $V_A$ (V).
 
 A **level curve** $f(x, y) = c$ collects the points with the same output. For $P(V, f)$ the level curves are the combinations of voltage and frequency with equal power (Figure 1). Level curves never cross, and they crowd together where the function changes quickly.
 
@@ -88,7 +88,7 @@ The units are those of $f$ divided by those of the variable. Each partial deriva
 **The MOSFET's small-signal parameters.** Differentiating $I_D$:
 
 $$
-g_m = \frac{\partial I_D}{\partial V_{GS}} = k\,(V_{GS} - V_{TH})\left(1 + \frac{V_{DS}}{V_A}\right), \qquad g_o = \frac{\partial I_D}{\partial V_{DS}} = \frac{\tfrac{1}{2}k(V_{GS} - V_{TH})^2}{V_A} .
+g_m = \frac{\partial I_D}{\partial V_{GS}} = k_n\,(V_{GS} - V_{TH})\left(1 + \frac{V_{DS}}{V_A}\right), \qquad g_o = \frac{\partial I_D}{\partial V_{DS}} = \frac{\tfrac{1}{2}k_n(V_{GS} - V_{TH})^2}{V_A} .
 $$
 
 $g_m$ (siemens) measures how strongly the gate controls the current, and $r_o = 1/g_o$ is the output resistance (Figure 2). Their product $g_mr_o$ is the transistor's **intrinsic gain**, the most voltage gain one transistor can give (Example 01-09.2).
@@ -113,7 +113,15 @@ $$
 df = \frac{\partial f}{\partial x}dx + \frac{\partial f}{\partial y}dy .
 $$
 
-Small changes in each input contribute independently and additively, each weighted by its sensitivity. This is the multivariable version of 01-04's linearization, and its error is second order (the Taylor theorem of [01-08](01-08-sequences-series-and-taylor.md), extended to several variables).
+Small changes in each input contribute independently and additively, each weighted by its sensitivity. This is the multivariable version of 01-04's linearization, and its error is second order.
+
+**The second-order expansion.** To see the error term, reduce to one variable. Fix a step $(h, m)$ and let $g(t) = f(a + th, b + tm)$, the function along the line from $(a, b)$ in that direction. By the chain rule (§3.4), $g'(t) = f_xh + f_ym$ and $g''(t) = f_{xx}h^2 + 2f_{xy}hm + f_{yy}m^2$ (using $f_{xy} = f_{yx}$). The one-variable Taylor expansion of [01-08](01-08-sequences-series-and-taylor.md), $g(1) \approx g(0) + g'(0) + \tfrac12g''(0)$, then gives
+
+$$
+f(a + h, b + m) \approx f + f_xh + f_ym + \tfrac12\big(f_{xx}h^2 + 2f_{xy}hm + f_{yy}m^2\big),
+$$
+
+with all derivatives at $(a, b)$. The first-order part is the tangent plane; the bracket is the curvature correction, which §3.6 uses to classify critical points.
 
 **The small-signal model of a MOSFET** is the total differential of $I_D$:
 
@@ -129,7 +137,7 @@ $$
 \Delta y \approx \sum_i\frac{\partial f}{\partial x_i}\Delta x_i, \qquad \text{worst case } \sum_i\left\lvert\frac{\partial f}{\partial x_i}\right\rvert\lvert\Delta x_i\rvert, \qquad \text{RSS } \sqrt{\sum_i\left(\frac{\partial f}{\partial x_i}\Delta x_i\right)^2}.
 $$
 
-These are the formulas used informally in 01-04, now justified (Problem 01-09.5).
+These are the formulas used informally in 01-04, now justified (Problem 01-09.5). As there, the RSS form gives the output's standard deviation only when each $\Delta x_i$ is the input's standard deviation, not its ± tolerance limit.
 
 ### 3.4 The chain rule and implicit differentiation
 
@@ -168,6 +176,8 @@ The **gradient** of $f(x, y)$ is the vector of its partial derivatives:
 $$
 \nabla f = \left(\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}\right).
 $$
+
+> **Math refresher — vectors and the dot product.** A vector in the plane is a pair $\mathbf{a} = (a_1, a_2)$: an arrow with a length and a direction. Its length is $\lvert\mathbf{a}\rvert = \sqrt{a_1^2 + a_2^2}$, and a **unit vector** has length 1. The **dot product** of two vectors is $\mathbf{a}\cdot\mathbf{b} = a_1b_1 + a_2b_2$. By the law of cosines it also equals $\lvert\mathbf{a}\rvert\lvert\mathbf{b}\rvert\cos\theta$, where θ is the angle between them. So the dot product measures how much two vectors point the same way: it is zero when they are perpendicular. In three dimensions add a third component. [02-06](../../02-complex-numbers-des-and-linear-algebra/chapters/02-06-vectors-matrices-and-linear-systems.md) develops vector algebra fully.
 
 The rate of change of $f$ in the direction of a unit vector $\mathbf{u}$ is the **directional derivative**
 
@@ -212,7 +222,13 @@ $$
 - $D < 0$: a **saddle point**, up in one direction and down in another;
 - $D = 0$: inconclusive.
 
-The test comes from the second-order Taylor expansion: near a critical point, $f$ is approximately a quadratic form defined by $H$ ([02-08](../../02-complex-numbers-des-and-linear-algebra/chapters/02-08-eigenvalues-and-eigenvectors.md) generalizes this to many variables with eigenvalues).
+**Why the test works.** At a critical point the first-order terms of §3.3's expansion vanish, so $f(a + h, b + m) - f(a, b) \approx \tfrac12Q(h, m)$ with $Q = f_{xx}h^2 + 2f_{xy}hm + f_{yy}m^2$. If $f_{xx} \ne 0$, complete the square:
+
+$$
+Q = f_{xx}\left(h + \frac{f_{xy}}{f_{xx}}m\right)^2 + \frac{f_{xx}f_{yy} - f_{xy}^2}{f_{xx}}\,m^2 = f_{xx}\left(h + \frac{f_{xy}}{f_{xx}}m\right)^2 + \frac{D}{f_{xx}}\,m^2 .
+$$
+
+If $D > 0$, both terms have the sign of $f_{xx}$ for every nonzero step, so $f$ rises in all directions (minimum, $f_{xx} > 0$) or falls in all directions (maximum, $f_{xx} < 0$). If $D < 0$, the two terms have opposite signs, so $Q$ is positive along some steps and negative along others: a saddle. ([02-08](../../02-complex-numbers-des-and-linear-algebra/chapters/02-08-eigenvalues-and-eigenvectors.md) generalizes this to many variables with eigenvalues.)
 
 **Least squares, derived.** To fit a line $y = a + bx$ to data $(x_i, y_i)$, minimize the sum of squared errors $S(a, b) = \sum_i(y_i - a - bx_i)^2$. Setting both partials to zero gives the **normal equations**:
 
@@ -220,13 +236,13 @@ $$
 \frac{\partial S}{\partial a} = -2\sum(y_i - a - bx_i) = 0, \qquad \frac{\partial S}{\partial b} = -2\sum x_i(y_i - a - bx_i) = 0,
 $$
 
-whose solution is
+whose solution is found in two steps. Dividing the first equation by $-2n$ gives $\bar y - a - b\bar x = 0$, so $a = \bar y - b\bar x$: the line passes through the point of means. Substitute this into the second equation: $\sum x_i\big((y_i - \bar y) - b(x_i - \bar x)\big) = 0$. Because $\sum(y_i - \bar y) = 0$ and $\sum(x_i - \bar x) = 0$, the factor $x_i$ can be replaced by $x_i - \bar x$ without changing the sum, which gives
 
 $$
 b = \frac{\sum(x_i - \bar{x})(y_i - \bar{y})}{\sum(x_i - \bar{x})^2}, \qquad a = \bar{y} - b\bar{x} .
 $$
 
-The Hessian of $S$ is positive definite, so this is the minimum. It is the regression of 01-01's model fitting, and the same formula that gives a stock's **beta** (Problem 01-09.9).
+**It is a minimum.** The second partials are $S_{aa} = 2n$, $S_{bb} = 2\sum x_i^2$ and $S_{ab} = 2\sum x_i$, so $D = 4n\sum x_i^2 - 4\big(\sum x_i\big)^2 = 4n\sum(x_i - \bar x)^2 > 0$ unless all $x_i$ are equal, and $S_{aa} > 0$. So the critical point is a minimum, and since $S$ is a quadratic that never goes negative, it is the global one. It is the regression of 01-01's model fitting, and the same formula that gives a stock's **beta** (Problem 01-09.9).
 
 ### 3.7 Constrained optimization and Lagrange multipliers
 
@@ -243,6 +259,8 @@ These are three equations for $x$, $y$ and the **Lagrange multiplier** λ. Equiv
 $$
 \frac{df^\ast}{dc} = \lambda .
 $$
+
+*Proof.* Let $(x^*(c), y^*(c))$ be the optimum for each $c$, and $f^*(c) = f(x^*, y^*)$. By the chain rule, $\dfrac{df^*}{dc} = \nabla f\cdot\dfrac{d\mathbf{x}^*}{dc}$. At the optimum $\nabla f = \lambda\nabla g$, so $\dfrac{df^*}{dc} = \lambda\,\nabla g\cdot\dfrac{d\mathbf{x}^*}{dc} = \lambda\dfrac{d}{dc}g(x^*, y^*)$. But the optimum always satisfies the constraint, $g(x^*, y^*) = c$, whose derivative with respect to $c$ is 1. So $df^*/dc = \lambda$. ∎
 
 λ is the marginal value of relaxing the constraint, in units of $f$ per unit of $c$: watts per extra GHz of required throughput, bits per extra milliwatt of transmit power. A finance reader knows it as the shadow price of a capital or budget constraint.
 
@@ -277,7 +295,7 @@ $$
 
 ### Example 01-09.2 — A MOSFET's small-signal parameters (tier B)
 
-**Setup.** A MOSFET with $k = 2$ mA/V², $V_{TH} = 0.5$ V and $V_A = 10$ V is biased at $V_{GS} = 0.8$ V, $V_{DS} = 1.0$ V. Find $I_D$, $g_m$, $g_o$, $r_o$ and the intrinsic gain $g_mr_o$. Then estimate the current change when $V_{GS}$ rises by 10 mV and $V_{DS}$ by 0.1 V, and compare with the exact change.
+**Setup.** A MOSFET with $k_n = 2$ mA/V², $V_{TH} = 0.5$ V and $V_A = 10$ V is biased at $V_{GS} = 0.8$ V, $V_{DS} = 1.0$ V. Find $I_D$, $g_m$, $g_o$, $r_o$ and the intrinsic gain $g_mr_o$. Then estimate the current change when $V_{GS}$ rises by 10 mV and $V_{DS}$ by 0.1 V, and compare with the exact change.
 
 **Solution.**
 
@@ -295,7 +313,7 @@ $$
 
 **Setup.** A silicon diode with $I_s = 10^{-14}$ A at 300 K carries a constant 1 mA. Using $I_s \propto T^3e^{-E_g/(kT)}$ with $E_g = 1.12$ eV, find its voltage and $dV/dT$.
 
-**Solution.** $V_T = kT/q = 25.85$ mV, so $V = V_T\ln(10^{-3}/10^{-14}) = $ **0.6548 V**. By §3.4,
+**Solution.** $V_T = kT/q = 25.852$ mV (kept to five digits, since it multiplies a large logarithm), so $V = V_T\ln(10^{-3}/10^{-14}) = $ **0.6548 V**. By §3.4,
 
 $$
 \frac{dV}{dT} = \frac{0.6548 - 1.12 - 3(0.02585)}{300} = \frac{-0.5428}{300} = \mathbf{-1.809\ mV/K}.
@@ -349,6 +367,7 @@ $$
 | Ex 01-09.2g | exact current change | 7.67 | µA |
 | Ex 01-09.3a | diode voltage at 1 mA | 0.6548 | V |
 | Ex 01-09.3b | dV/dT | −1.809 | mV/K |
+| Ex 01-09.3c | thermal voltage at 300 K | 25.852 | mV |
 | Ex 01-09.4a | magnitude of ∇f | 8.944 | — |
 | Ex 01-09.4b | directional derivative | 8.485 | — |
 | Ex 01-09.4c | f after one step | 2.72 | — |
@@ -389,11 +408,11 @@ The lab ([labs/01-09-lab/](../labs/01-09-lab/README.md)) has a notebook and an n
 |---|---|---|
 | Power sensitivity to V and f | elasticities 2 and 1 (3 together under DVFS) | $\partial P/\partial V = 2P/V$ |
 | Square-law $g_m$ | $2I_D/(V_{GS} - V_{TH})$ | 99 µA at 0.3 V overdrive → 0.66 mS |
-| Output resistance | $r_o \approx V_A/I_D$ | Intrinsic gain $g_mr_o \approx 2V_A/V_{ov}$ |
+| Output resistance | $r_o \approx V_A/I_D$ (exactly $(V_A + V_{DS})/I_D$ in this model) | Intrinsic gain $g_mr_o \approx 2V_A/V_{ov}$ (exactly $2(V_A + V_{DS})/V_{ov}$) |
 | Silicon junction tempco at constant current | ≈ −1.8 to −2 mV/K | $(V - E_g/q - 3kT/q)/T$ |
 | PTAT slope of $V_T$ | $k/q$ = 0.0862 mV/K | Used to cancel the junction tempco |
 | Silicon bandgap reference output | ≈ 1.2 V | $E_g/q + 3kT/q$ (Problem 01-09.14) |
-| Gradient-descent stability | $\eta < 2/\lambda_{max}$ of the Hessian | Condition number sets speed |
+| Gradient-descent stability | $\eta < 2/h_{max}$, with $h_{max}$ the largest Hessian eigenvalue (curvature) | Condition number sets speed |
 | Lagrange multiplier | marginal value of the constraint | Units of objective per unit of constraint |
 
 ## 8. Common mistakes
@@ -411,14 +430,14 @@ The lab ([labs/01-09-lab/](../labs/01-09-lab/README.md)) has a notebook and an n
 
 ### Partial derivatives and gradients in today's products (as of Nov 2026)
 
-- **Heterogeneous processors rely on marginal-cost scheduling.** Mobile and many client processors combine high-performance and high-efficiency cores (Arm's big.LITTLE approach, introduced in 2011, and its successors). Their operating systems place work using energy models of exactly the kind in Example 01-09.5 **[Established]**. For wearables and phones, how well the scheduler uses the efficient cores is a visible differentiator in battery life.
+- **Heterogeneous processors rely on marginal-cost scheduling.** Mobile and many client processors combine high-performance and high-efficiency cores (Arm's big.LITTLE approach, announced in 2011, and its successors such as DynamIQ; see [Arm's big.LITTLE overview](https://www.arm.com/technologies/big-little)). Their operating systems place work using energy models of exactly the kind in Example 01-09.5 **[Established]**. For wearables and phones, how well the scheduler uses the efficient cores is a visible differentiator in battery life.
 - **Training compute is spent on gradients.** Each step of neural-network training computes the gradient of a loss with respect to every weight (by the chain rule applied systematically: backpropagation), then takes a descent step. The accelerators in AI datacenters are, at bottom, machines for computing and applying these partial derivatives at enormous scale **[Established]**.
 - **Temperature coefficients are designed in.** Bandgap voltage references combine a junction voltage (about −2 mV/K) with a voltage proportional to absolute temperature (+0.086 mV/K per $V_T$) so that the two partial derivatives cancel. The result, near 1.2 V, is the reference inside almost every chip **[Established]** (Problem 01-09.14).
 
 ### Why it matters commercially
 
 - **Marginal analysis is how good engineering tradeoffs are made.** A team that knows the partial derivatives of its key metrics (power, area, performance) with respect to each design knob can allocate its budget where the marginal return is highest. That is the Lagrange condition in practice.
-- **Small-signal parameters set analog product limits.** Intrinsic gain $g_mr_o$ has fallen in advanced CMOS processes as channels shortened. That pushes analog design toward more elaborate circuits, or toward keeping analog functions on older nodes ([19](../../19-digital-vlsi-design/README.md), [20](../../20-analog-and-mixed-signal-ic-design/README.md)).
+- **Small-signal parameters set analog product limits.** Intrinsic gain $g_mr_o$ fell across successive planar CMOS generations as channels shortened; FinFET and gate-all-around devices recovered part of it through tighter gate control, but it remains far below that of older long-channel processes **[Established]**. That pushes analog design toward more elaborate circuits, or toward keeping analog functions on older nodes ([19](../../19-digital-vlsi-design/README.md), [20](../../20-analog-and-mixed-signal-ic-design/README.md)).
 
 ### Marketing vs Reality
 
@@ -526,7 +545,8 @@ Now work the problem set: [01-09 problems](../problems/01-09-problems.md) (solut
 [Hessian](../../../reference/glossary.md#hessian) ·
 [Lagrange multiplier](../../../reference/glossary.md#lagrange-multiplier) ·
 [Water-filling](../../../reference/glossary.md#water-filling) ·
-[Bandgap reference](../../../reference/glossary.md#bandgap-reference)
+[Bandgap reference](../../../reference/glossary.md#bandgap-reference) ·
+[Dot product](../../../reference/glossary.md#dot-product)
 
 ## 12. Connections
 

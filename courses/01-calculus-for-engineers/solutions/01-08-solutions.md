@@ -93,15 +93,15 @@ So **6 terms** (through $x^{11}$) are needed. Reducing the argument to $\lvert x
 
 (a) $G = \dfrac{2\times10^5}{1 + 2\times10^5/11} = $ **10.99940**. The relative error is $1 - G\beta = $ **55.00 ppm**, and $1/(A\beta) = 11/2\times10^5 = $ **55.00 ppm**: identical to four digits.
 
-(b) With $A = 1000$: $G = $ **10.88032**, an error of **1.088%**. The first-order estimate gives **1.1%**. It is still adequate as a rough figure, but the second-order term (0.012%) is now visible.
+(b) With $A = 1000$: $G = $ **10.88032**, an error of **1.088%**. The first-order estimate gives **1.1%**. It is still adequate as a rough figure, but the second-order term (**0.012%**) is now visible.
 
-(c) $1/(A\beta) = 10^{-4}$ gives $A\beta = 10^4$, so $A = 1.1\times10^5$ (101 dB) for this gain of 11.
+(c) $1/(A\beta) = 10^{-4}$ gives $A\beta = 10^4$, so $A = $ **1.1×10^5** (**101 dB**) for this gain of 11.
 
 ### Solution 01-08.10
 
 (a) $j^2 = -1$, $j^3 = -j$, $j^4 = 1$. So the even-power terms of $e^{j\theta}$ are real, with alternating signs, giving the cosine series. The odd-power terms are $j$ times real numbers with alternating signs, giving $j$ times the sine series. The series converges absolutely, so the regrouping is valid.
 
-(b) The partial sum through $(j\pi/3)^6/6!$ is $0.49996 + j0.86630$. The exact value is $0.5 + j0.86603$, and the magnitude of the error is **2.72×10^−4**.
+(b) The partial sum through $(j\pi/3)^6/6!$ is **0.49996 + j0.86630**. The exact value is $0.5 + j0.86603$, and the magnitude of the error is **2.72×10^−4**.
 
 ### Solution 01-08.11
 
@@ -116,11 +116,13 @@ So **6 terms** (through $x^{11}$) are needed. Reducing the argument to $\lvert x
 
 ### Solution 01-08.12
 
-(a) With $a_1 = 1$ and $a_3 = -0.05$: fundamental $a_1A + \tfrac{3}{4}a_3A^3 = 1 - 0.0375 = $ **0.9625 V**. Third harmonic $\tfrac{1}{4}\lvert a_3\rvert A^3 = 0.0125$ V, so HD3 $= 0.0125/0.9625 = $ **1.299%**.
+(a) With $a_1 = 1$ and $a_3 = -0.05$: fundamental $a_1A + \tfrac{3}{4}a_3A^3 = 1 - 0.0375 = $ **0.9625 V**. Third harmonic $\tfrac{1}{4}\lvert a_3\rvert A^3 = 0.0125$ V, so HD3 $= 0.0125/0.9625 = $ **1.299%** relative to the compressed fundamental. The chapter's small-signal formula $\lvert a_3\rvert A^2/(4a_1)$ divides by the *uncompressed* fundamental $a_1A$ instead and gives **1.250%**. The two agree when compression is small; here the fundamental is already 3.75% compressed.
 
 (b) The fundamental's gain is $1 - \tfrac{3}{4}(0.05)A^2$. Set it to $10^{-1/20} = 0.8913$: $0.0375A^2 = 0.1087$, so $A_{1dB} = $ **1.703 V**.
 
-(c) $A_{IP3} = \sqrt{\tfrac{4}{3}\cdot\tfrac{1}{0.05}} = $ **5.164 V**. The ratio is $20\log_{10}(5.164/1.703) = $ **9.636 dB**. Both amplitudes scale as $\sqrt{a_1/\lvert a_3\rvert}$, so $a_3$ cancels from their ratio: $A_{IP3}^2/A_{1dB}^2 = \dfrac{4/3}{\tfrac{4}{3}(1 - 10^{-1/20})} = 9.19$, i.e. 9.6 dB. This is the textbook "IP3 is about 10 dB above P1dB" rule.
+(c) *Derivation.* With $x = A(c_1 + c_2)$, where $c_i = \cos\omega_it$, the cubic term gives $a_3A^3(c_1 + c_2)^3$, which contains $3a_3A^3c_1^2c_2$. Since $c_1^2c_2 = \tfrac12(1 + \cos2\omega_1t)\cos\omega_2t$ and $\cos2\omega_1t\cos\omega_2t = \tfrac12[\cos(2\omega_1 - \omega_2)t + \cos(2\omega_1 + \omega_2)t]$, the product at $2\omega_1 - \omega_2$ has amplitude $3\cdot\tfrac12\cdot\tfrac12\lvert a_3\rvert A^3 = \tfrac34\lvert a_3\rvert A^3$. This third-order intermodulation product (IM3) lands right next to the wanted tones, which is why it matters. Extrapolating the small-signal lines $a_1A$ and $\tfrac34\lvert a_3\rvert A^3$ until they meet gives $A_{IP3}^2 = \tfrac43\lvert a_1/a_3\rvert$.
+
+Numerically, $A_{IP3} = \sqrt{\tfrac{4}{3}\cdot\tfrac{1}{0.05}} = $ **5.164 V**. The ratio is $20\log_{10}(5.164/1.703) = $ **9.636 dB**. Both amplitudes scale as $\sqrt{a_1/\lvert a_3\rvert}$, so $a_3$ cancels from their ratio: $A_{IP3}^2/A_{1dB}^2 = \dfrac{4/3}{\tfrac{4}{3}(1 - 10^{-1/20})} = $ **9.20**, i.e. 9.6 dB. This is the textbook "IP3 is about 10 dB above P1dB" rule.
 
 ### Solution 01-08.13
 
@@ -147,7 +149,27 @@ The Taylor estimate overstates HD2 slightly, and its relative error grows roughl
 
 (b) The far-end voltage after $n$ arrivals is $V_l(1 + \Gamma_L)\sum_{k=0}^{n-1}(\Gamma_s\Gamma_L)^k$, with ratio $-1/9$. The limit is $\dfrac{0.6667\times1.3333}{1 + 1/9} = $ **0.8 V**, equal to the DC divider $100/125 = 0.8$ ✓.
 
-(c) The partial sums are 0.8889, 0.7901, 0.8011, …, with errors of 11.1%, 1.23% and 0.137%. The first arrival within 1% is **the 3rd**. A ratio of $-1/9$ settles fast; the open line of chapter Example 01-08.1 (ratio $-2/3$) rings much longer.
+(c) The partial sums are **0.8889**, **0.7901**, **0.8011**, …, with errors of **11.1%**, **1.23%** and **0.137%**. The first arrival within 1% is **the 3rd**. A ratio of $-1/9$ settles fast; the open line of chapter Example 01-08.1 (ratio $-2/3$) rings much longer.
+
+### Solution 01-08.16
+
+(a) Limit comparison with $\sum1/k^2$: $\dfrac{1/(k^2 + 3k)}{1/k^2} = \dfrac{k^2}{k^2 + 3k} \to 1$, and $\sum 1/k^2$ converges ($p = 2$), so this converges. Its sum: $\dfrac{1}{k(k + 3)} = \dfrac13\left(\dfrac1k - \dfrac1{k + 3}\right)$. In the partial sums every $1/k$ with $k \ge 4$ is cancelled by a later $-1/(k + 3)$, leaving $\dfrac13\left(1 + \dfrac12 + \dfrac13\right) = \dfrac{11}{18} = $ **0.6111**.
+
+(b) Limit comparison with the harmonic series: $\dfrac{1/(2k + 1)}{1/k} \to \dfrac12$, and $\sum1/k$ diverges, so this **diverges**.
+
+(c) Comparison: $0 \le \sin^2k/k^2 \le 1/k^2$, and $\sum1/k^2$ converges, so this **converges**.
+
+(d) Root test: $\left(\dfrac{k}{2k + 1}\right)^{k\cdot\frac1k} = \dfrac{k}{2k + 1} \to \dfrac12 < 1$, so it **converges**.
+
+### Solution 01-08.17
+
+(a) $S_{10} = 1 + \tfrac18 + \tfrac1{27} + \cdots + \tfrac1{1000} = $ **1.197532**.
+
+(b) With $f(x) = x^{-3}$, $\int_n^\infty x^{-3}dx = 1/(2n^2)$. The remainder lies between $\int_{11}^\infty = 1/242 = $ **0.004132** and $\int_{10}^\infty = 1/200 = $ **0.005**. So **1.201664 ≤ S ≤ 1.202532**.
+
+(c) The midpoint is **1.202098**, against the true 1.2020569: an error of **4.1×10^−5**, about 100 times smaller than the remainder itself (**0.004525**). Ten terms plus an integral correction beat hundreds of terms without it.
+
+(d) The plain partial sum's error is at most $1/(2n^2)$. Setting $1/(2n^2) \le 10^{-6}$ gives $n \ge \sqrt{5\times10^5} = 707.1$, so **708 terms** guarantee it. (This is the same idea that turns sums into integrals in [03](../../03-probability-statistics-and-random-variables/README.md) and in Euler–Maclaurin corrections to numerical integration.)
 
 ---
 
@@ -207,3 +229,34 @@ The Taylor estimate overstates HD2 slightly, and its relative error grows roughl
 | 01-08.15c | Γ_L | 0.3333 | — |
 | 01-08.15d | final far-end voltage | 0.8 | V |
 | 01-08.15e | arrivals to within 1 % | 3 | — |
+| 01-08.4b | radius for (a) | 1 | — |
+| 01-08.4c | radius for (c) | 0 | — |
+| 01-08.9e | first-order error estimate | 1.1 | % |
+| 01-08.9f | second-order term | 0.012 | % |
+| 01-08.9g | open-loop gain for 0.01 % | 1.1×10^5 | — |
+| 01-08.9h | open-loop gain for 0.01 % in dB | 101 | dB |
+| 01-08.10b | real part of the partial sum | 0.49996 | — |
+| 01-08.10c | imaginary part of the partial sum | 0.86630 | — |
+| 01-08.12f | small-signal HD3 at 1 V | 1.250 | % |
+| 01-08.12g | (A_IP3 / A_1dB)² | 9.20 | — |
+| 01-08.13e | Taylor HD2 at 5 mV | 4.836 | % |
+| 01-08.13f | exact HD2 at 5 mV | 4.828 | % |
+| 01-08.13g | Taylor HD2 at 10 mV | 9.671 | % |
+| 01-08.13h | exact HD2 at 10 mV | 9.611 | % |
+| 01-08.13i | Taylor HD2 at 25.85 mV | 25.00 | % |
+| 01-08.15f | first partial sum | 0.8889 | V |
+| 01-08.15g | second partial sum | 0.7901 | V |
+| 01-08.15h | third partial sum | 0.8011 | V |
+| 01-08.15i | first error | 11.1 | % |
+| 01-08.15j | second error | 1.23 | % |
+| 01-08.15k | third error | 0.137 | % |
+| 01-08.16a | sum of 1/(k² + 3k) | 0.6111 | — |
+| 01-08.17a | S10 | 1.197532 | — |
+| 01-08.17b | lower remainder bound | 0.004132 | — |
+| 01-08.17c | upper remainder bound | 0.005 | — |
+| 01-08.17d | lower bracket | 1.201664 | — |
+| 01-08.17e | upper bracket | 1.202532 | — |
+| 01-08.17f | midpoint estimate | 1.202098 | — |
+| 01-08.17g | midpoint error | 4.1×10^-5 | — |
+| 01-08.17h | actual remainder | 0.004525 | — |
+| 01-08.17i | terms for 1e−6 | 708 | — |

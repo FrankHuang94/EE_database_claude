@@ -136,6 +136,15 @@ $$
 (c) At 30 dB, compare the derivative's prediction for +1 dB with the exact gain, $C(31\text{ dB}) - C(30\text{ dB})$.
 (d) Interpret: at high SNR each extra dB is worth about $B/3$ bits per second. What does that imply about spending transmit power versus acquiring bandwidth?
 
+### Problem 01-03.17 [B]
+
+**Hyperbolic functions and the differential pair.**
+
+(a) Use logarithmic differentiation to find $\dfrac{d}{dx}x^x$, and evaluate it at $x = 2$.
+(b) Find $\dfrac{d}{dx}\tanh x$ at $x = 0.5$.
+(c) A bipolar differential pair with tail current $I_{EE}$ steers current according to $\Delta i = I_{EE}\tanh\!\big(v_{id}/(2V_T)\big)$, where $v_{id}$ is the differential input voltage. Find its transconductance $g_m = d(\Delta i)/dv_{id}$ at $v_{id} = 0$ for $I_{EE} = 1$ mA and $V_T = 25.85$ mV.
+(d) At what input voltage has the transconductance fallen to half its value at 0? (Hint: solve $\cosh^2 u = 2$.) What does this say about the input range over which the pair is linear?
+
 ---
 
 ## Objective coverage
@@ -144,6 +153,6 @@ $$
 |---|---|
 | 1. Derivative from the definition; slopes and rates with units | 1, 6, 8 |
 | 2. Power, product, quotient and chain rules | 2, 4, 5, 10, 16 |
-| 3. Exponential, log, trig, inverse derivatives; implicit differentiation; sinusoids | 3, 5(d), 9, 12, 14, 15 |
-| 4. Capacitor and inductor laws, power and energy; small-signal conductance | 7, 9, 10, 12(c), 15 |
+| 3. Exponential, log, hyperbolic, trig, inverse derivatives; implicit and logarithmic differentiation; sinusoids | 3, 5(d), 9, 12, 14, 15, 17 |
+| 4. Capacitor and inductor laws, power and energy; small-signal conductance | 7, 9, 10, 12(c), 15, 17(c) |
 | 5. Elasticity and sensitivity; numerical differentiation | 11, 13, 16 |

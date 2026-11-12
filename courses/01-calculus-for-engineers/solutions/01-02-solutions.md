@@ -298,6 +298,10 @@ For the limit, $\dfrac{N\log_2 N}{N^2} = \dfrac{\log_2 N}{N} = \dfrac{1}{\ln 2}\
 | 01-02.12b | rounding bound at x = 1e−5 | 1.1×10^-6 | — |
 | 01-02.12c | rounding bound at x = 1e−7 | 1.1 | % |
 | 01-02.12d | stable form at 1e−8 | 0.5000 | — |
+| 01-02.12e | computed value at 1e−3 | 0.49999996 | — |
+| 01-02.12f | computed value at 1e−5 | 0.50000004 | — |
+| 01-02.12g | computed value at 1e−7 | 0.4996 | — |
+| 01-02.12h | computed value at 1e−8 | 0 | — |
 | 01-02.13a | D(0.1) | 1.0517 | — |
 | 01-02.13b | D(0.01) | 1.0050 | — |
 | 01-02.13c | D(1e−5) | 1.0000050 | — |

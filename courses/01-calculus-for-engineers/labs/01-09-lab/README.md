@@ -28,7 +28,7 @@ Chapter sections 3.2–3.4 (partial derivatives, small-signal models, implicit d
 | 1 | $I_D$, $g_m$, $g_o$ | 99.00 µA, 0.6600 mS, 9.000 µS (symbolic and numerical agree) |
 | 2 | stability limits for curvature ratios 1, 10, 100 | η < 1, 0.1, 0.01 |
 | 2 | best steps to $f < 10^{-6}$ for ratios 10 and 100 | about 36 and about 348: roughly proportional to the condition number |
-| 3 | three-core split and power | 1.854, 0.927, 0.618 GHz; 1.169 W |
+| 3 | three-core split and power | 1.855, 0.927, 0.618 GHz; 1.169 W |
 | 3 | water-filling at 6 mW and at 1 mW | (4, 2) mW, 3.059 b/s/Hz; (1, 0) mW, 1 b/s/Hz |
 | 4 | ngspice $g_m$, $g_{ds}$, diode V and dV/dT | 0.66 mS, 9 µS, 0.6548 V, −1.809 mV/K |
 | 4 | with 10 µA | $V$ falls by $2V_T\ln10 = 0.119$ V, so dV/dT steepens by $0.119/300$ = −0.40 mV/K, to about −2.21 mV/K |

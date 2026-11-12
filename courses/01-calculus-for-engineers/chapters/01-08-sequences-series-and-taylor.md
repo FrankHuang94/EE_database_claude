@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 01-08 · Sequences, Series and Taylor Expansions
 
 | | |
@@ -6,12 +6,12 @@
 | **Course** | [01 · Calculus for Engineers](../README.md) |
 | **University equivalent** | Calculus II, infinite sequences and series (Stewart, ch. 11: sequences, series, convergence tests, power series, Taylor and Maclaurin series, the binomial series, applications of Taylor polynomials) |
 | **Prerequisites** | [01-03](01-03-derivatives.md), [01-04](01-04-applications-of-derivatives.md) (linearization), [01-06](01-06-techniques-of-integration.md) (improper integrals). |
-| **Estimated study hours** | 12 |
+| **Estimated study hours** | 13 |
 | **Last verified** | 2026-11-12 |
 
 **Learning objectives.** After this chapter you can:
 
-1. Decide whether sequences and series converge (geometric, p-series, comparison, ratio and alternating-series tests), and sum geometric series that arise in feedback, reflections and finance.
+1. Decide whether sequences and series converge (geometric, p-series, comparison, limit comparison, integral, ratio, root and alternating-series tests, with error estimates for the integral and alternating tests), and sum geometric series that arise in feedback, reflections and finance.
 2. Derive the Taylor and Maclaurin series of $e^x$, $\sin x$, $\cos x$, $\ln(1 + x)$, $1/(1 - x)$ and $(1 + x)^\alpha$, and find radii of convergence.
 3. Bound truncation errors with the Lagrange remainder and the alternating-series bound, and choose how many terms a computation needs.
 4. Apply and error-bound the standard engineering approximations (small angle, binomial, $e^x \approx 1 + x$, $1/(1 + x) \approx 1 - x$), including the gain error of a feedback amplifier.
@@ -58,7 +58,7 @@ $$
 \frac{\Delta P}{P} \approx -D\,\Delta y + \tfrac{1}{2}C\,(\Delta y)^2,
 $$
 
-with $D$ the duration and $C$ the convexity. That *is* a second-order Taylor expansion of $\ln P$. Duration is the first derivative and convexity the second. Risk managers use the first term for small moves and add the second when moves are large. Engineers do exactly the same with gain (first derivative) and distortion (second and third).
+with $D$ the (modified) duration and $C$ the convexity. That is the second-order Taylor expansion of the price $P(y)$ about the current yield, divided by $P$: duration is $D = -P'/P$ and convexity is $C = P''/P$, the first and second derivatives scaled by the price. Risk managers use the first term for small moves and add the second when moves are large. Engineers do exactly the same with gain (first derivative) and distortion (second and third).
 
 *Where the analogy breaks:* a bond's price function is smooth and well behaved, so two terms usually suffice. Engineering functions can have nearby singularities (a resonance, a pole), beyond which *no* number of Taylor terms converges (§3.4). The radius of convergence is the limit of trust, and finance rarely has an analogue of it.
 
@@ -102,6 +102,18 @@ For $\lvert r\rvert \ge 1$ the infinite series diverges. Geometric series appear
 
 **Ratio test.** If $\lim\lvert a_{k+1}/a_k\rvert = L$, the series converges (absolutely) when $L < 1$ and diverges when $L > 1$; $L = 1$ is inconclusive. It suits factorials and powers: for $\sum x^k/k!$, the ratio is $\lvert x\rvert/(k + 1) \to 0$, so the series converges for every $x$.
 
+**Limit comparison test.** If $a_k, b_k > 0$ and $a_k/b_k \to L$ with $0 < L < \infty$, then $\sum a_k$ and $\sum b_k$ converge or diverge together. This is the practical version of comparison: you only need the terms to behave alike for large $k$. For example, $\sum\frac{1}{k^2 + 3k}$ converges because its terms behave like $1/k^2$ (the ratio tends to 1).
+
+**The integral test, with a remainder estimate.** If $f$ is positive and decreasing on $[1, \infty)$ and $a_k = f(k)$, then each term is squeezed between areas under $f$: $\int_k^{k+1}f\,dx \le a_k \le \int_{k-1}^kf\,dx$ (draw the rectangles). Summing, $\sum a_k$ converges exactly when $\int_1^\infty f\,dx$ does, and the error after $n$ terms is bracketed by
+
+$$
+\int_{n+1}^\infty f(x)\,dx \;\le\; \sum_{k=n+1}^\infty a_k \;\le\; \int_n^\infty f(x)\,dx .
+$$
+
+For $\sum 1/k^2 = \pi^2/6$, stopping after $n$ terms leaves an error between $1/(n + 1)$ and $1/n$: a thousand terms buy only three digits. That is the price of a slowly converging series (Problem 01-08.17).
+
+**Root test.** If $\lvert a_k\rvert^{1/k} \to L$, the series converges when $L < 1$ and diverges when $L > 1$. It suits terms raised to the $k$-th power, such as $\sum(k/(2k + 1))^k$, where $L = 1/2$.
+
 **Alternating series test, with an error bound.** If the terms alternate in sign and decrease in magnitude to zero, the series converges. Truncating it leaves an error **no larger than the first omitted term**, and of that term's sign. For example, $1 - \tfrac{1}{2} + \tfrac{1}{3} - \cdots = \ln 2$. Its convergence is painfully slow: the error after $n$ terms is about $1/(2n)$.
 
 **Absolute versus conditional convergence.** A series converges *absolutely* if $\sum\lvert a_k\rvert$ converges. Absolutely convergent series can be rearranged freely. *Conditionally* convergent ones, like the alternating harmonic series, cannot: rearranging their terms can change the sum. Engineering power series are absolutely convergent inside their radius of convergence, so this subtlety rarely bites.
@@ -127,6 +139,8 @@ Replace $x$ by $-x^2$ and integrate:
 $$
 \arctan x = x - \frac{x^3}{3} + \frac{x^5}{5} - \cdots \qquad(\lvert x\rvert \le 1).
 $$
+
+> **Math refresher — the imaginary unit j.** Engineers write $j$ for the number with $j^2 = -1$ (mathematicians use $i$, which EE reserves for current). A complex number $a + jb$ is a point in a plane: $a$ along the real axis, $b$ along the imaginary axis. Its distance from the origin is $\sqrt{a^2 + b^2}$, so $\pm j$ are at distance 1 from 0, and $j^3 = -j$, $j^4 = 1$. Chapter [02-01](../../02-complex-numbers-des-and-linear-algebra/chapters/02-01-complex-numbers-euler-and-phasors.md) develops all of this. Here you need only $j^2 = -1$ and the idea of distance in the plane.
 
 **Why the radius is what it is.** $\ln(1 + x)$ blows up at $x = -1$, one unit from the center, and its series stops converging at that distance on *both* sides: it diverges for $x > 1$, where the function itself is perfectly smooth (Figure 3). The deeper reason lives in the complex plane ([02-01](../../02-complex-numbers-des-and-linear-algebra/chapters/02-01-complex-numbers-euler-and-phasors.md)). The radius equals the distance from the center to the nearest point where the function misbehaves, *including complex points*. $1/(1 + x^2)$ is smooth for every real $x$, yet its series converges only for $\lvert x\rvert < 1$, because the function has poles at $x = \pm j$. Circuit transfer functions behave the same way: their poles limit series expansions in frequency.
 
@@ -185,7 +199,7 @@ for some $\xi$ between $a$ and $x$. The remainder looks like the first omitted t
 - **Central difference:** subtract the expansions of $f(x \pm h)$. The even terms cancel, leaving an error of $\tfrac{h^2}{6}f'''$ (Problem 01-08.11).
 - **Newton's convergence** (01-04) used the $n = 1$ remainder about $x_k$.
 
-**How many terms?** To compute $e^1$ to within $10^{-6}$, the remainder after the degree-$n$ term is $e^\xi/(n + 1)! \le e/(n + 1)!$. This first drops below $10^{-6}$ at $n + 1 = 10$, so 10 terms (degree 9) suffice (Example 01-08.2). Library implementations go further: they reduce the argument to a small range first, so that a short polynomial suffices.
+**How many terms?** To compute $e^1$ to within $10^{-6}$, the remainder after the degree-$n$ term is $e^\xi/(n + 1)!$ with $0 < \xi < 1$. We cannot use the value of $e$ we are computing to bound it, but $e^\xi < e < 3$ is safe, so the error is below $3/(n + 1)!$. This first drops below $10^{-6}$ at $n + 1 = 10$, so 10 terms (degree 9) suffice (Example 01-08.2). Library implementations go further: they reduce the argument to a small range first, so that a short polynomial suffices.
 
 ### 3.7 Approximations engineers use
 
@@ -203,7 +217,7 @@ Each is a truncated Taylor series, valid for $\lvert x\rvert \ll 1$, with the fi
 
 ![Relative errors of first-order approximations](../../../assets/figures/01-08/approximation-errors.svg)
 
-*Figure 4. Every first-order approximation has an error that grows as $x^2$. At $x = 0.1$ the errors range from 0.17% to 1%.*
+*Figure 4. Every first-order approximation has an error that grows as $x^2$. At $x = 0.1$ the errors range from 0.11% (the square root) to 1% (the reciprocal).*
 
 **Feedback gain error.** An amplifier of open-loop gain $A$ with feedback fraction $\beta$ has closed-loop gain
 
@@ -265,9 +279,9 @@ A 1 mV signal already produces about 1% second harmonic (Example 01-08.5, Figure
 
 **Solution.**
 
-(a) $T_4(0.5) = 1 + 0.5 + 0.125 + 0.0208333 + 0.0026042 = $ **1.648438**, against $e^{0.5} = $ **1.648721**: an error of **2.84×10^−4**. The bound is $e^{\xi}\frac{0.5^5}{5!} \le e^{0.5}\frac{0.03125}{120} = $ **4.29×10^−4** ✓ (actual ≤ bound).
+(a) $T_4(0.5) = 1 + 0.5 + 0.125 + 0.0208333 + 0.0026042 = $ **1.648438**, against $e^{0.5} = $ **1.648721**: an error of **2.84×10^−4**. The bound is $e^{\xi}\frac{0.5^5}{5!}$ with $0 < \xi < 0.5$. We must not use the value of $e^{0.5}$ we are estimating, but $e^\xi < e^{0.5} < \sqrt4 = 2$ (since $e < 4$) is safe, so the error is at most $2\times\frac{0.03125}{120} = $ **5.21×10^−4** ✓ (actual ≤ bound).
 
-(b) We need $e/(n + 1)! \le 10^{-6}$. $e/9! = 7.5\times10^{-6}$ is too large, while $e/10! = 7.5\times10^{-7}$ works. So $n + 1 = 10$: **10 terms** (degree 9).
+(b) Using $e^\xi < 3$, we need $3/(n + 1)! \le 10^{-6}$. $3/9! = 8.3\times10^{-6}$ is too large, while $3/10! = 8.3\times10^{-7}$ works. So $n + 1 = 10$: **10 terms** (degree 9).
 
 **Sanity check.** The factorial grows so fast that each extra term buys about one more decimal digit near $x = 1$ ✓.
 
@@ -323,7 +337,9 @@ Ten times the amplitude gives 20 dB more HD2 and 40 dB more HD3, as predicted.
 | Ex 01-08.2a | T4(0.5) | 1.648438 | — |
 | Ex 01-08.2b | e^0.5 | 1.648721 | — |
 | Ex 01-08.2c | actual error | 2.84×10^-4 | — |
-| Ex 01-08.2d | Lagrange bound | 4.29×10^-4 | — |
+| Ex 01-08.2d | Lagrange bound | 5.21×10^-4 | — |
+| Ex 01-08.2f | 3/9! | 8.3×10^-6 | — |
+| Ex 01-08.2g | 3/10! | 8.3×10^-7 | — |
 | Ex 01-08.2e | terms for 1e−6 at x = 1 | 10 | — |
 | Ex 01-08.3a | exact closed-loop gain | 99.90 | — |
 | Ex 01-08.3b | exact relative error | −0.0999 | % |
@@ -395,7 +411,7 @@ The lab ([labs/01-08-lab/](../labs/01-08-lab/README.md)) has a notebook and two 
 
 ### Taylor coefficients in today's specifications (as of Nov 2026)
 
-- **Linearity specifications are Taylor coefficients in disguise.** RF and analog datasheets specify harmonic distortion, the 1 dB compression point (P1dB) and the third-order intercept point (IP3). For a memoryless cubic nonlinearity, all three follow from $a_1$, $a_2$ and $a_3$. The textbook result that the input IP3 sits about 9.6 dB above the input P1dB follows directly from §3.8 (Problem 01-08.12). Real amplifiers, with memory effects and higher-order terms, deviate from it **[Established]**.
+- **Linearity specifications are Taylor coefficients in disguise.** RF and analog datasheets specify harmonic distortion, the 1 dB compression point (P1dB) and the third-order intercept point (IP3). For a memoryless cubic nonlinearity, all three follow from $a_1$, $a_2$ and $a_3$. The textbook result that the input IP3 sits about 9.6 dB above the input P1dB follows from §3.8's analysis extended to two input tones (Problem 01-08.12 derives it). Real amplifiers, with memory effects and higher-order terms, deviate from it **[Established]**.
 - **Loop gain buys accuracy and linearity.** The $1/(A\beta)$ gain error and the corresponding suppression of distortion by feedback are why precision amplifiers advertise open-loop gains of 100 dB or more **[Established]** ([12](../../12-electronics-2/README.md)).
 - **Polynomial approximations power hardware math.** Math libraries and hardware function units evaluate exp, log and trigonometric functions with argument reduction followed by short polynomial or rational approximations. Taylor series are the starting point; minimax-optimized polynomials are the refinement **[Established]**.
 
@@ -510,7 +526,9 @@ Now work the problem set: [01-08 problems](../problems/01-08-problems.md) (solut
 [Lagrange remainder](../../../reference/glossary.md#lagrange-remainder) ·
 [Binomial series](../../../reference/glossary.md#binomial-series) ·
 [Loop gain](../../../reference/glossary.md#loop-gain) ·
-[Harmonic distortion](../../../reference/glossary.md#harmonic-distortion)
+[Harmonic distortion](../../../reference/glossary.md#harmonic-distortion) ·
+[Integral test](../../../reference/glossary.md#integral-test) ·
+[Limit comparison test](../../../reference/glossary.md#limit-comparison-test)
 
 ## 12. Connections
 

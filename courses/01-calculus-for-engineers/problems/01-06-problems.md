@@ -121,7 +121,7 @@ A circuit has $H(s) = \dfrac{10}{(s + 2)(s + 5)}$.
 (b) Find the effective capacitance $\lvert q/V\rvert$, and compare it with the small-signal capacitance $C(-5\text{ V})$.
 (c) Varactors tune RF oscillators. Which capacitance, the effective or the small-signal one, sets the oscillation frequency for a small RF swing about a −5 V bias? Explain.
 
-### Problem 01-06.15 [C]
+### Problem 01-06.15 [B]
 
 **Previewing the Laplace transform.** For $s > 0$, evaluate the improper integrals
 
@@ -129,14 +129,30 @@ A circuit has $H(s) = \dfrac{10}{(s + 2)(s + 5)}$.
 
 in general, then numerically for $s = 2$, $a = 1$, $\omega = 3$. For which $s$ does (a) converge if $a$ is negative (a growing exponential)?
 
+### Problem 01-06.16 [B]
+
+**Area of a circle by trigonometric substitution.**
+
+(a) Use $x = a\sin\theta$ to show that $\displaystyle\int_0^a\sqrt{a^2 - x^2}\,dx = \frac{\pi a^2}{4}$, and explain geometrically why the answer had to be a quarter of a circle's area.
+(b) Find the antiderivative $\displaystyle\int\sqrt{a^2 - x^2}\,dx$ in terms of $x$, using the reference triangle to remove $\theta$.
+(c) Evaluate $\displaystyle\int_0^1\sqrt{4 - x^2}\,dx$.
+
+### Problem 01-06.17 [B]
+
+**Completing the square.**
+
+(a) Evaluate $\displaystyle\int_0^1\frac{dx}{x^2 + 2x + 5}$.
+(b) Evaluate $\displaystyle\int_0^1\frac{x + 3}{x^2 + 2x + 5}\,dx$ by splitting the numerator into a multiple of the denominator's derivative plus a constant.
+(c) In the Laplace domain, a circuit's response is $\dfrac{2}{s^2 + 2s + 5}$. Write the denominator as $(s + \alpha)^2 + \omega^2$ and read off $\alpha$ and $\omega$. Given that $\dfrac{\omega}{(s + \alpha)^2 + \omega^2}$ is the transform of $e^{-\alpha t}\sin\omega t$, what is the time response, and what are its decay time constant and oscillation period?
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 01-06) | Problems |
 |---|---|
-| 1. Substitution, with limits; physical changes of variable | 1, 14 |
+| 1. Substitution (including trigonometric), with limits; physical changes of variable | 1, 14, 16 |
 | 2. Integration by parts; moments | 2, 5(e), 6, 7, 15 |
-| 3. Partial fractions; modes | 4, 9 |
+| 3. Partial fractions (including irreducible quadratics); modes | 4, 9, 17 |
 | 4. Trig integrals; orthogonality; Fourier coefficients and harmonic power | 3, 7, 8, 12 |
 | 5. Improper integrals; noise bandwidth; numerical integration | 5, 10, 11, 13, 15 |

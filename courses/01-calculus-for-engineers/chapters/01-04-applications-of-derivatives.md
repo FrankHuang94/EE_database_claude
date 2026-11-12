@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 01-04 · Applications of Derivatives
 
 | | |
@@ -24,7 +24,7 @@
 - **What is the best value?** Load resistance for maximum power, supply voltage for minimum energy, number of repeaters on a long wire, pipeline depth. Optimal points are where a derivative is zero.
 - **How sensitive is the result?** Linearization turns a nonlinear model into a straight line near the operating point. That is the basis of tolerance analysis and of every small-signal amplifier model ([10-04](../../10-electronics-1/chapters/10-04-small-signal-models.md)).
 - **How do we solve equations no formula solves?** Newton's method, which SPICE runs millions of times per simulation, is linearization applied repeatedly.
-- **How are rates linked?** When one quantity changes, related ones change at rates the chain rule connects. A MEMS microphone turns a diaphragm's velocity into a current this way.
+- **How are rates linked?** When one quantity changes, related ones change at rates the chain rule connects. In a condenser or MEMS microphone, the diaphragm's motion changes a capacitance, and the chain rule converts that rate of change into an electrical signal.
 - **What does an indeterminate limit equal?** L'Hôpital's rule settles $0/0$ forms by comparing rates, and explains where the $te^{-t/\tau}$ terms of repeated poles come from.
 
 ## 2. Intuition first
@@ -65,7 +65,7 @@ A **critical point** is where $f'(c) = 0$ or $f'(c)$ does not exist. Extrema occ
 
 **Second derivative test.** If $f'(c) = 0$ and $f''(c) < 0$, the graph is concave down (curving like ∩), so $c$ is a local maximum. If $f''(c) > 0$, it is concave up (∪): a local minimum. If $f''(c) = 0$, the test is inconclusive. Points where $f''$ changes sign are **inflection points**.
 
-The size of $\lvert f''(c)\rvert$ measures how sharp the optimum is. Near $c$, $f(x) \approx f(c) + \tfrac{1}{2}f''(c)(x - c)^2$ (a result made precise by Taylor's theorem in [01-08](01-08-sequences-series-and-taylor.md)). So the loss from missing the optimum by $\Delta$ is about $\tfrac{1}{2}\lvert f''(c)\rvert\Delta^2$: **second order in the error**. Missing by 10% costs only about 1% of curvature-scaled loss. This is why optima are forgiving.
+The size of $\lvert f''(c)\rvert$ measures how sharp the optimum is. Near $c$, $f(x) \approx f(c) + \tfrac{1}{2}f''(c)(x - c)^2$ (a result made precise by Taylor's theorem in [01-08](01-08-sequences-series-and-taylor.md)). So the loss from missing the optimum by $\Delta$ is about $\tfrac{1}{2}\lvert f''(c)\rvert\Delta^2$: **second order in the error**. For maximum power transfer (§3.4), a load 10% too large costs only 0.23% of the available power. This is why optima are forgiving.
 
 ### 3.3 The mean value theorem
 
@@ -113,7 +113,7 @@ $$
 P_{max} = \frac{V_s^2}{4R_s}.
 $$
 
-The **efficiency** at that point is only $R_L/(R_s + R_L) = 50\%$: half the power burns inside the source. That is why the rule is used where the *signal* is precious and the source is weak, as in RF receivers, antennas and sensor interfaces (the 50 Ω world of [21](../../21-rf-and-microwave-engineering/README.md)). It is *never* used for power delivery, where efficiency matters and the goal is $R_s \ll R_L$. Figure 1 shows how flat the optimum is.
+The **efficiency** at that point is only $R_L/(R_s + R_L) = 50\%$: half the power burns inside the source. So matching is the right goal when the source's available power is limited and the energy lost inside it costs nothing: RF receivers, antennas and sensor interfaces (the 50 Ω world of [21](../../21-rf-and-microwave-engineering/README.md)), and also energy harvesters and solar panels, whose maximum-power-point trackers (MPPT) adjust the load continuously to extract the most power. It is the wrong goal when the source's internal loss costs you, as with the mains or a battery feeding a load: there efficiency matters and the goal is $R_s \ll R_L$. Figure 1 shows how flat the optimum is.
 
 ![Maximum power transfer and efficiency](../../../assets/figures/01-04/max-power-transfer.svg)
 
@@ -172,17 +172,17 @@ $$
 Two ways to combine the errors:
 
 - **Worst case:** add the magnitudes, $\sum\lvert S_i\rvert\lvert dx_i/x_i\rvert$. This is guaranteed, but pessimistic.
-- **Root sum of squares (RSS):** $\sqrt{\sum(S_i\,dx_i/x_i)^2}$. This is the standard deviation when the errors are independent and random ([03](../../03-probability-statistics-and-random-variables/README.md)), and the usual choice when many parts are involved.
+- **Root sum of squares (RSS):** $\sqrt{\sum(S_i\,\sigma_i/x_i)^2}$, where $\sigma_i$ is the *standard deviation* of each input. For independent random errors this is the standard deviation of the output ([03](../../03-probability-statistics-and-random-variables/README.md)), and it is the usual choice when many parts are involved. Be careful what you feed it. A ±5% tolerance is a limit, not a standard deviation. If values are spread uniformly across ±$t$, then $\sigma = t/\sqrt3$; if they are Gaussian with the limit at 3σ, then $\sigma = t/3$. RSS applied directly to the ± limits gives a *statistical limit* of the same kind, valid only if every limit is the same multiple of its σ.
 
 Example 01-04.3 compares the two for an RC filter.
 
-**The small-signal idea.** Split each variable into a fixed operating point and a small deviation: $v = V + v_{small}$. For a nonlinear device $i = f(v)$, linearization gives
+**The small-signal idea.** Split each variable into a fixed operating point and a small deviation, written with the notation of this curriculum: total $v_D$ = DC $V_D$ + small-signal $v_d$. For a nonlinear device $i_D = f(v_D)$, linearization gives
 
 $$
-i \approx f(V) + f'(V)\,v_{small} = I + g\,v_{small}.
+i_D \approx f(V_D) + f'(V_D)\,v_d = I_D + g\,v_d.
 $$
 
-The DC operating point $I$ and the small-signal response $g\,v_{small}$ can then be analyzed separately, the second with ordinary linear circuit theory. This is exactly how every transistor amplifier is designed. The diode's $g_d = I/V_T$ (01-03) and a MOSFET's transconductance $g_m$ ([10-04](../../10-electronics-1/chapters/10-04-small-signal-models.md)) are such slopes. The approximation is good while $v_{small}$ is small compared with the scale on which $f'$ changes. For a diode that scale is $V_T \approx 26$ mV.
+The DC operating point $I_D$ and the small-signal response $i_d = g\,v_d$ can then be analyzed separately, the second with ordinary linear circuit theory. This is exactly how every transistor amplifier is designed. The diode's $g_d = I/V_T$ (01-03) and a MOSFET's transconductance $g_m$ ([10-04](../../10-electronics-1/chapters/10-04-small-signal-models.md)) are such slopes. The approximation is good while $v_d$ is small compared with the scale on which $f'$ changes. For a diode that scale is $V_T \approx 26$ mV.
 
 ### 3.6 Newton's method
 
@@ -200,7 +200,7 @@ $$
 0 = f(r) = f(x_k) - f'(x_k)e_k + \tfrac{1}{2}f''(\xi)e_k^2
 $$
 
-for some $\xi$ between $r$ and $x_k$. Divide by $f'(x_k)$ and use the Newton step $x_{k+1} = x_k - f(x_k)/f'(x_k)$:
+for some $\xi$ between $r$ and $x_k$. This needs $f''$ continuous near $r$, and the next step needs $f'(x_k) \ne 0$; both hold near a **simple root** ($f(r) = 0$, $f'(r) \ne 0$). Divide by $f'(x_k)$ and use the Newton step $x_{k+1} = x_k - f(x_k)/f'(x_k)$:
 
 $$
 e_{k+1} = x_{k+1} - r = \frac{f''(\xi)}{2f'(x_k)}\,e_k^2 .
@@ -216,7 +216,8 @@ The new error is proportional to the *square* of the old one. If $e_k = 10^{-3}$
 
 - **overshoot** when $f'$ is small or rapidly changing, as with the diode's exponential from a low starting voltage ([00-04](../../00-orientation/chapters/00-04-toolchain-walkthrough.md), Problem 9);
 - **diverge** when the tangent points away: for $\arctan x$, starting beyond about 1.39 sends the iterates flying outward (Problem 01-04.8);
-- **fail outright** where $f'(x_k) = 0$.
+- **fail outright** where $f'(x_k) = 0$;
+- **slow down to linear convergence** at a *multiple* root, where $f'(r) = 0$ too. For $f(x) = x^2$, Newton gives $x_{k+1} = x_k/2$: the error only halves each step, no better than bisection.
 
 **Remedies** are damping (take only a fraction of the step), step limiting (SPICE caps voltage changes per iteration), and hybrid methods that fall back to bisection when a step would leave the bracket.
 
@@ -242,13 +243,13 @@ $$
 i = \frac{dq}{dt} = V\frac{dC}{dt} = V\cdot\left(-\frac{\varepsilon_0A}{d^2}\right)\frac{dd}{dt}.
 $$
 
-The diaphragm's *velocity* becomes a current (Problem 01-04.9). Note the $1/d^2$: smaller gaps give much more sensitive sensors, which is why MEMS gaps are micrometers.
+In this constant-voltage model the diaphragm's *velocity* becomes a current (Problem 01-04.9). Note the $1/d^2$: smaller gaps give much more sensitive sensors, which is why MEMS gaps are micrometers. It is a teaching model. Practical condenser and MEMS microphones are biased through a very large resistor, so over an audio cycle the *charge* stays nearly constant instead. Then $v = q/C = qd/(\varepsilon_0A)$, and the output voltage tracks the diaphragm's *displacement*, linearly in $d$. Either way, the chain rule links the mechanical motion to the electrical signal.
 
 **Thermal rates.** A chip's temperature rises toward its steady state at a rate set by its thermal time constant. Related rates tell you how long a "turbo" power level can be sustained before a temperature limit is reached (Problem 01-04.15).
 
 ### 3.8 L'Hôpital's rule
 
-**Statement.** If $f(x) \to 0$ and $g(x) \to 0$ as $x \to a$ (or both tend to $\pm\infty$), and $\lim f'(x)/g'(x)$ exists, then
+**Statement.** Let $f$ and $g$ be differentiable near $a$ (except possibly at $a$), with $g'(x) \ne 0$ there. If $f(x) \to 0$ and $g(x) \to 0$ as $x \to a$ (or both tend to $\pm\infty$), and $\lim f'(x)/g'(x)$ exists (or is $\pm\infty$), then
 
 $$
 \lim_{x\to a}\frac{f(x)}{g(x)} = \lim_{x\to a}\frac{f'(x)}{g'(x)}.
@@ -256,7 +257,7 @@ $$
 
 **Why it works (the 0/0 case, intuitively).** If $f(a) = g(a) = 0$, linearize both: $f(x) \approx f'(a)(x - a)$ and $g(x) \approx g'(a)(x - a)$. The common factor $(x - a)$ cancels, leaving $f'(a)/g'(a)$. Two quantities vanishing together have a ratio set by the rates at which they vanish.
 
-> **Going deeper — Cauchy's mean value theorem.** The rigorous proof, which also covers $f'(a)/g'(a)$ undefined and the ∞/∞ case, uses Cauchy's generalization of the MVT: for $f$, $g$ continuous on $[a, x]$ and differentiable inside, there is a $c$ in $(a, x)$ with $\big(f(x) - f(a)\big)g'(c) = \big(g(x) - g(a)\big)f'(c)$. With $f(a) = g(a) = 0$ this gives $f(x)/g(x) = f'(c)/g'(c)$, and as $x \to a$, $c \to a$ as well.
+> **Going deeper — Cauchy's mean value theorem.** The rigorous proof of the 0/0 case, which also covers $f'(a)/g'(a)$ undefined, uses Cauchy's generalization of the MVT: for $f$, $g$ continuous on $[a, x]$ and differentiable inside, there is a $c$ in $(a, x)$ with $\big(f(x) - f(a)\big)g'(c) = \big(g(x) - g(a)\big)f'(c)$. With $f(a) = g(a) = 0$ this gives $f(x)/g(x) = f'(c)/g'(c)$, and as $x \to a$, $c \to a$ as well. The ∞/∞ case needs a more delicate version of the same argument (see Stewart's appendix or any analysis text), so we use it without proof.
 
 **Examples.**
 
@@ -316,7 +317,7 @@ The factor $t$ in front of the exponential is the signature of a **repeated root
 
 (c) Exact: both values low gives $1/(0.99\times0.95) - 1 = $ **+6.33%**; both high gives $1/(1.01\times1.05) - 1 = $ **−5.70%**.
 
-**Interpretation.** The capacitor dominates. Tightening the resistor to 0.1% barely helps, while a 1% capacitor would cut the spread about 3.5×. This is the first lesson of tolerance analysis: **find the dominant term before spending money**. The linear worst case is slightly off from the exact range because $1/x$ curves.
+**Interpretation.** The capacitor dominates. Tightening the resistor to 0.1% barely helps, while a 1% capacitor would cut the spread about 3.6× by RSS (3.0× worst case). This is the first lesson of tolerance analysis: **find the dominant term before spending money**. The linear worst case is slightly off from the exact range because $1/x$ curves.
 
 **Sanity check.** RSS ≤ worst case, always ✓.
 
@@ -354,6 +355,9 @@ The number of correct digits goes roughly 1, 2, 5, 11.
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
+| T 01-04.a | power lost with a load 10% too large (§3.2) | 0.23 | % |
+| T 01-04.b | spread reduction with a 1% capacitor, RSS | 3.6 | — |
+| T 01-04.c | spread reduction with a 1% capacitor, worst case | 3.0 | — |
 | Ex 01-04.1a | optimal load | 50 | Ω |
 | Ex 01-04.1b | maximum power | 0.5 | W |
 | Ex 01-04.1c | efficiency at maximum | 50 | % |
@@ -387,7 +391,7 @@ The lab ([labs/01-04-lab/](../labs/01-04-lab/README.md)) has a notebook and one 
 4. **L'Hôpital numerically.** Evaluate the two-time-constant response as $\tau_2 \to \tau_1$, and watch floating-point cancellation spoil it when they get *too* close.
 5. **ngspice.** `max_power.cir` sweeps the load resistance and measures the power maximum.
 
-**Predict, then run.** Before Part 2, predict whether the Monte Carlo standard deviation will be closer to the worst-case or the RSS figure.
+**Predict, then run.** Before Part 2, predict the Monte Carlo standard deviation for parts spread *uniformly* across their tolerances. Hint: is it the worst case, the RSS of the limits, or the RSS of $t/\sqrt3$?
 
 ## 6. Engineering tradeoffs
 
@@ -439,7 +443,7 @@ The lab ([labs/01-04-lab/](../labs/01-04-lab/README.md)) has a notebook and one 
 
 **"Optimized for efficiency."** Ask: efficiency at which operating point, and at what speed? Energy per operation is minimized at low voltage, but so is throughput. Claims that mix a best-case energy figure with a best-case speed figure are describing two different operating points.
 
-**"Maximum power transfer" in power products.** Matching is the wrong goal for power delivery. A pitch that conflates the two signals a weak grasp of fundamentals.
+**"Maximum power transfer" in power products.** Matching is the wrong goal when the source's own loss costs money (mains or battery power delivery), and the right one when the source's power is free and limited (solar MPPT, energy harvesting, RF). Ask which case a pitch is in. One that confuses them signals a weak grasp of fundamentals.
 
 **"Our solver always converges."** Newton converges only near a solution. Ask how the tool or firmware handles non-convergence, and how often it falls back.
 

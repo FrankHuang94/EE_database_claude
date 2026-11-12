@@ -100,14 +100,14 @@ courses:
     chapters:
       - {id: "01-01", slug: functions-models-and-units, title: "Functions, Models and Units", hours: 8, topics: "Functions as signals; exponentials and logarithms refresher; decibels; trigonometric functions and radians; dimensional analysis"}
       - {id: "01-02", slug: limits-and-continuity, title: "Limits and Continuity", hours: 8, topics: "Limits, one-sided limits, continuity, limits at infinity, asymptotic behavior, L'Hôpital preview"}
-      - {id: "01-03", slug: derivatives, title: "Derivatives: Rates of Change in Circuits", hours: 12, topics: "Definition, rules (product, quotient, chain), derivatives of exp/log/trig, implicit differentiation, i = C dv/dt and v = L di/dt"}
+      - {id: "01-03", slug: derivatives, title: "Derivatives: Rates of Change in Circuits", hours: 13, topics: "Definition, rules (product, quotient, chain), derivatives of exp/log/trig, implicit differentiation, i = C dv/dt and v = L di/dt"}
       - {id: "01-04", slug: applications-of-derivatives, title: "Applications of Derivatives", hours: 12, topics: "Optimization (max power transfer), linearization and the small-signal idea, Newton's method, related rates, L'Hôpital's rule"}
       - {id: "01-05", slug: integrals, title: "Integrals: Accumulating Charge and Energy", hours: 12, topics: "Riemann sums, definite integrals, fundamental theorem of calculus, antiderivatives, q = ∫i dt, w = ∫p dt"}
-      - {id: "01-06", slug: techniques-of-integration, title: "Techniques of Integration", hours: 12, topics: "Substitution, integration by parts, partial fractions, trigonometric integrals, improper integrals, numerical integration"}
-      - {id: "01-07", slug: applications-of-integration, title: "Applications of Integration", hours: 10, topics: "Average value, RMS of periodic waveforms, energy in capacitors and inductors, work, probability densities"}
-      - {id: "01-08", slug: sequences-series-and-taylor, title: "Sequences, Series and Taylor Expansions", hours: 12, topics: "Convergence, geometric series, power series, Taylor/Maclaurin series of exp, sin, cos, ln(1+x); remainder bounds; approximations engineers use"}
+      - {id: "01-06", slug: techniques-of-integration, title: "Techniques of Integration", hours: 13, topics: "Substitution, integration by parts, partial fractions, trigonometric integrals, improper integrals, numerical integration"}
+      - {id: "01-07", slug: applications-of-integration, title: "Applications of Integration", hours: 12, topics: "Average value, RMS of periodic waveforms, energy in capacitors and inductors, work, probability densities, areas, volumes, arc length, centroids"}
+      - {id: "01-08", slug: sequences-series-and-taylor, title: "Sequences, Series and Taylor Expansions", hours: 13, topics: "Convergence, geometric series, power series, Taylor/Maclaurin series of exp, sin, cos, ln(1+x); remainder bounds; approximations engineers use"}
       - {id: "01-09", slug: multivariable-calculus-1, title: "Multivariable Calculus I: Partial Derivatives and Gradients", hours: 12, topics: "Functions of several variables, partial derivatives, gradient, directional derivative, chain rule, multivariable optimization, Lagrange multipliers"}
-      - {id: "01-10", slug: multivariable-calculus-2, title: "Multivariable Calculus II: Multiple, Line and Surface Integrals", hours: 12, topics: "Double/triple integrals, polar/cylindrical/spherical coordinates, line integrals (work), surface integrals (flux), intuition for divergence and curl"}
+      - {id: "01-10", slug: multivariable-calculus-2, title: "Multivariable Calculus II: Multiple, Line and Surface Integrals", hours: 13, topics: "Double/triple integrals, polar/cylindrical/spherical coordinates, line integrals (work), surface integrals (flux), intuition for divergence and curl"}
 
   # ---------------------------------------------------------------------------
   - id: "02"

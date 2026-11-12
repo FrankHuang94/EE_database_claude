@@ -28,14 +28,14 @@ Use polar coordinates.
 
 (a) Find the volume of a ball of radius 2 with a spherical-coordinate integral.
 (b) Find the volume of a cylinder of radius 1 and height 3 with a cylindrical-coordinate integral.
-(c) Evaluate $\iiint\rho^2\,dV$ over the unit ball (ρ = distance from the origin).
+(c) Evaluate $\iiint r^2\,dV$ over the unit ball ($r$ = distance from the origin).
 
 ### Problem 01-10.4 [A]
 
 Compute the divergence and curl of:
 
-(a) $\mathbf{F} = (x^2, xy, z)$, and evaluate both at (1, 2, 3);
-(b) $\mathbf{G} = (-y, x, 0)$.
+(a) $\vec{F} = (x^2, xy, z)$, and evaluate both at (1, 2, 3);
+(b) $\vec{G} = (-y, x, 0)$.
 
 ### Problem 01-10.5 [B]
 
@@ -58,22 +58,22 @@ A Gaussian beam has intensity $I(r) = I_0e^{-2r^2/w^2}$.
 
 ### Problem 01-10.8 [B]
 
-(a) Is $\mathbf{F} = (y^2, 2xy)$ conservative? If so, find its potential and evaluate $\int\mathbf{F}\cdot d\mathbf{r}$ from (0, 0) to (2, 1).
-(b) Evaluate the circulation of $\mathbf{G} = (-y, x)$ around the circle of radius 2 (counterclockwise) directly, and check it with Green's theorem.
+(a) Is $\vec{F} = (y^2, 2xy)$ conservative? If so, find its potential and evaluate $\int\vec{F}\cdot d\vec{r}$ from (0, 0) to (2, 1).
+(b) Evaluate the circulation of $\vec{G} = (-y, x)$ around the circle of radius 2 (counterclockwise) directly, and check it with Green's theorem.
 
 ### Problem 01-10.9 [B]
 
-(a) In a uniform field $\mathbf{E} = (1000, 0)$ V/m, find $V_A - V_B$ for $A = (0, 0)$ and $B = (0.02, 0.01)$ m. Why does the $y$ displacement not matter?
+(a) In a uniform field $\vec{E} = (1000, 0)$ V/m, find $V_A - V_B$ for $A = (0, 0)$ and $B = (0.02, 0.01)$ m. Why does the $y$ displacement not matter?
 (b) How much work does it take to bring a 1 nC charge from infinity to 1 cm from another 1 nC point charge?
 
 ### Problem 01-10.10 [B]
 
-(a) A long wire carries 2 A. Find $\oint\mathbf{B}\cdot d\mathbf{l}$ around any loop enclosing it, and the field magnitude 1 cm away.
+(a) A long wire carries 2 A. Find $\oint\vec{B}\cdot d\vec{l}$ around any loop enclosing it, and the field magnitude 1 cm away.
 (b) A signal path and its return form a loop of area 10 cm × 1 cm. A nearby 50 Hz field of 10 µT peak threads the loop perpendicularly. By Faraday's law, find the peak induced voltage. Why does this break KVL for the loop, and what layout change reduces it?
 
 ### Problem 01-10.11 [B]
 
-(a) Verify the divergence theorem for $\mathbf{F} = (x, y, z)$ over a ball of radius 2: compute both the flux and the volume integral.
+(a) Verify the divergence theorem for $\vec{F} = (x, y, z)$ over a ball of radius 2: compute both the flux and the volume integral.
 (b) A 1 nC point charge sits at the center of a sphere. What is the electric flux through the sphere? Does it depend on the sphere's radius?
 
 ### Problem 01-10.12 [C]
@@ -103,7 +103,15 @@ For the charged sphere of chapter Example 01-10.5 ($\rho = \rho_0(1 - r/R)$, $\r
 ### Problem 01-10.15 [C]
 
 (a) Use Green's theorem to show that the area enclosed by a curve $C$ is $\tfrac{1}{2}\oint_C(x\,dy - y\,dx)$. Apply it to the ellipse $x = 3\cos t$, $y = 2\sin t$.
-(b) The field $\mathbf{F} = \dfrac{(-y, x)}{x^2 + y^2}$ has zero curl everywhere except the origin, where it is undefined. Compute its circulation around the unit circle. Explain why this does not contradict Green's theorem, and what physical field it describes.
+(b) The field $\vec{F} = \dfrac{(-y, x)}{x^2 + y^2}$ has zero curl everywhere except the origin, where it is undefined. Compute its circulation around the unit circle. Explain why this does not contradict Green's theorem, and what physical field it describes.
+
+### Problem 01-10.16 [B]
+
+**Gauss's law with cylindrical symmetry.**
+
+(a) A long straight line carries charge $\lambda = 1$ nC/m in vacuum. Use Gauss's law on a coaxial cylinder to find the field 1 cm from the line. Compare with Example 01-06.6, which approached the same field by integrating over a finite wire.
+(b) A coaxial cable has inner radius $a = 0.5$ mm, outer radius $b = 3a$ and PTFE insulation with $\varepsilon_r = 2.1$. Show that its capacitance per meter is $C' = 2\pi\varepsilon_0\varepsilon_r/\ln(b/a)$, and evaluate it.
+(c) At 50 V between the conductors, find the charge per meter on the inner conductor and the largest field in the insulation.
 
 ---
 
@@ -111,8 +119,8 @@ For the charged sphere of chapter Example 01-10.5 ($\rho = \rho_0(1 - r/R)$, $\r
 
 | Learning objective (chapter 01-10) | Problems |
 |---|---|
-| 1. Double and triple integrals; totals and averages | 1, 5, 6 |
-| 2. Polar, cylindrical, spherical coordinates | 2, 3, 7, 12, 13, 14 |
+| 1. Double and triple integrals; totals and averages | 1, 5, 6, 14 |
+| 2. Polar, cylindrical, spherical coordinates | 2, 3, 7, 12, 13, 16 |
 | 3. Line integrals; conservative fields | 8, 9, 10, 15 |
-| 4. Flux and Gauss's law | 11, 12, 13 |
+| 4. Flux and Gauss's law | 11, 12, 13, 16 |
 | 5. Divergence, curl and the integral theorems | 4, 8(b), 10(b), 11, 15 |

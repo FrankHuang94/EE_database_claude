@@ -1,7 +1,7 @@
 # Course 01 · Final Exam (Calculus for Engineers)
 
 **Time limit:** 180 minutes. **Allowed:** a scientific calculator, and the [Course 01 equation sheet](../../../reference/equation-sheets/01-calculus-for-engineers.md) printed without its chapter links. No notes, no Python.
-**Instructions:** answer all 15 questions and show every step. Each [A] is worth 5 points, each [B] 8 and each [C] 12 (127 points in total; 89 or more, about 70%, is a strong pass). Give numerical answers to 4 significant figures unless told otherwise, with units. Question 11(d) is a short-answer diligence question graded against the rubric in the solutions. Solutions are in a separate file, [solutions.md](solutions.md). Open it only after you finish.
+**Instructions:** answer all 15 questions and show every step. Each [A] is worth 5 points, each [B] 8 and each [C] 12 (128 points in total; 90 or more, about 70%, is a strong pass). Give numerical answers to 4 significant figures unless told otherwise, with units. Question 11(d) is a short-answer diligence question graded against the rubric in the solutions. Solutions are in a separate file, [solutions.md](solutions.md). Open it only after you finish.
 
 Unless stated otherwise: $\varepsilon_0 = 8.854\times10^{-12}$ F/m, $\mu_0 = 4\pi\times10^{-7}$ H/m.
 
@@ -53,12 +53,13 @@ Unless stated otherwise: $\varepsilon_0 = 8.854\times10^{-12}$ F/m, $\mu_0 = 4\p
 (c) A full-scale sine (1 V peak-to-peak) is applied. Find the signal-to-quantization-noise ratio (SNR) in dB.
 (d) Show that each extra bit adds a fixed number of dB, find it, and reconcile your answer to (c) with the rule of thumb SNR ≈ 6.02$N$ + 1.76 dB.
 
-**10 [B] · Taylor series and error bounds.**
+**10 [B] · Series, Taylor polynomials and error bounds.**
 (a) Estimate $e^{0.1}$ with the third-order Maclaurin polynomial. Bound the error with the Lagrange remainder, then compare with the actual error.
 (b) Estimate $\ln 1.2$ with the first three terms of the series for $\ln(1 + x)$. Find the actual error and the alternating-series bound.
 (c) A diode current is proportional to $e^{v/V_T}$, with $v = 0.1\,V_T\cos\omega t$. Use the Taylor series to estimate the second-harmonic distortion: the second-harmonic amplitude divided by the fundamental, in %.
+(d) $\sum_{k=1}^\infty 1/k^2 = \pi^2/6$. Use the integral test to bracket the error of the partial sum $S_{20}$, then compare with the actual error.
 
-**11 [B] · Dies per wafer and a cost claim.** A startup's CEO says: "Our next chip doubles the die from 300 mm² to 600 mm², so its cost per die roughly doubles." Assume a 300 mm wafer costs \$17,000, a defect density $D_0 = 0.07$ per cm², and Poisson yield $Y = e^{-AD_0}$ (all illustrative).
+**11 [A] · Dies per wafer and a cost claim.** A startup's CEO says: "Our next chip doubles the die from 300 mm² to 600 mm², so its cost per die roughly doubles." Assume a 300 mm wafer costs \$17,000, a defect density $D_0 = 0.07$ per cm², and Poisson yield $Y = e^{-AD_0}$ (all illustrative).
 (a) Use the dies-per-wafer formula to find the gross dies for each size.
 (b) Find the yield and the good dies per wafer for each.
 (c) Find the cost per good die for each, and the ratio.
@@ -82,7 +83,8 @@ Unless stated otherwise: $\varepsilon_0 = 8.854\times10^{-12}$ F/m, $\mu_0 = 4\p
 (c) Find the capacitance per meter.
 (d) At 100 V between the conductors, find the charge per meter and the largest field in the insulation, and say where it occurs.
 
-**15 [B] · Current, circulation and potential.**
+**15 [C] · Current, circulation, potential and flux.**
 (a) In a round wire of radius $a = 0.5$ mm, the current density is $J(r) = J_0(r/a)^2$ with $J_0 = 10$ A/mm². Find the total current with a double integral in polar coordinates.
-(b) Use Ampère's law, $\oint \mathbf{B}\cdot d\mathbf{l} = \mu_0 I_{enc}$, to find $B$ at the wire's surface.
-(c) Show that $\mathbf{F} = (2xy + 1,\ x^2)$ is conservative, find a potential, and find the work $\int \mathbf{F}\cdot d\mathbf{r}$ from (0, 0) to (1, 2).
+(b) Use Ampère's law, $\oint \vec{B}\cdot d\vec{l} = \mu_0 I_{enc}$, to find $B$ at the wire's surface.
+(c) Show that $\vec{F} = (2xy + 1,\ x^2)$ is conservative, find a potential, and find the work $\int \vec{F}\cdot d\vec{r}$ from (0, 0) to (1, 2).
+(d) Verify the divergence theorem for $\vec{G} = (x, y, z^2)$ on the unit cube $0 \le x, y, z \le 1$: compute the outward flux through each of the six faces, and the volume integral of $\nabla\cdot\vec{G}$.

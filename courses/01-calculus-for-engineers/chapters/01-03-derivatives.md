@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 01-03 · Derivatives: Rates of Change in Circuits
 
 | | |
@@ -6,14 +6,14 @@
 | **Course** | [01 · Calculus for Engineers](../README.md) |
 | **University equivalent** | Calculus I, differentiation (Stewart, ch. 3: definition, rules, exponential, logarithmic and trigonometric derivatives, chain rule, implicit differentiation), with the capacitor and inductor laws from a first circuits course |
 | **Prerequisites** | [01-01](01-01-functions-models-and-units.md) (function families), [01-02](01-02-limits-and-continuity.md) (limits, the difference quotient, $\sin\theta/\theta \to 1$, $(e^h - 1)/h \to 1$). |
-| **Estimated study hours** | 12 |
+| **Estimated study hours** | 13 |
 | **Last verified** | 2026-11-12 |
 
 **Learning objectives.** After this chapter you can:
 
 1. Compute a derivative from the limit definition, and interpret it as a slope or rate with correct units.
 2. Derive and apply the power, product, quotient and chain rules.
-3. Differentiate exponential, logarithmic, trigonometric and inverse trigonometric functions, including by implicit differentiation, and explain why differentiating a sinusoid multiplies its amplitude by ω and advances its phase by 90°.
+3. Differentiate exponential, logarithmic, hyperbolic, trigonometric and inverse trigonometric functions, including by implicit and logarithmic differentiation, and explain why differentiating a sinusoid multiplies its amplitude by ω and advances its phase by 90°.
 4. Use $i = C\,dv/dt$, $v = L\,di/dt$ and $p = dw/dt$ to compute capacitor and inductor waveforms, and compute a diode's small-signal conductance by differentiating its I–V law.
 5. Use logarithmic derivatives (elasticities) to quantify sensitivity, and estimate derivatives numerically with forward and central differences.
 
@@ -123,7 +123,15 @@ $$
 
 *Intuition:* a rectangle of sides $f$ and $g$ grows by two strips, $g\,\Delta f$ and $f\,\Delta g$. The corner piece $\Delta f\,\Delta g$ is second-order small and vanishes in the limit. Example: the power in a resistor-capacitor branch is $p = vi$, so $dp/dt = \dot v\,i + v\,\dot i$.
 
-**Quotient rule.** Apply the product rule to $f\cdot(1/g)$ using $\dfrac{d}{dx}\dfrac{1}{g} = -\dfrac{g'}{g^2}$ (which follows from the chain rule below). This gives
+**Reciprocal rule.** Wherever $g \ne 0$, straight from the definition:
+
+$$
+\frac{1}{h}\left[\frac{1}{g(x + h)} - \frac{1}{g(x)}\right] = -\frac{g(x + h) - g(x)}{h}\cdot\frac{1}{g(x)\,g(x + h)} \;\xrightarrow{h\to0}\; -\frac{g'(x)}{g(x)^2},
+$$
+
+using the continuity of $g$ (differentiable functions are continuous, §3.1) for $g(x + h) \to g(x)$.
+
+**Quotient rule.** Apply the product rule to $f\cdot(1/g)$ with the reciprocal rule. This gives
 
 $$
 \left(\frac{f}{g}\right)' = \frac{f'g - fg'}{g^2} .
@@ -189,7 +197,7 @@ $$
 S^{y}_{x} = \frac{d\ln y}{d\ln x} = \frac{x}{y}\frac{dy}{dx} \approx \frac{\Delta y/y}{\Delta x/x}.
 $$
 
-It is dimensionless. For a power law $y = kx^n$, $S = n$ exactly: dynamic power $P \propto V^2$ has voltage elasticity 2. Engineers call it **sensitivity**, economists **elasticity**, and finance professionals will recognize duration as the same idea. Problem 01-03.11 uses it for tolerance analysis.
+It is dimensionless. For a power law $y = kx^n$, $S = n$ exactly: dynamic power $P \propto V^2$ has voltage elasticity 2. Engineers call it **sensitivity** and economists **elasticity**. Finance professionals will recognize a close cousin: modified duration, $-\,d\ln P/dy$, is a *semi*-elasticity (a percentage change in price per absolute change in yield). Problem 01-03.11 uses it for tolerance analysis.
 
 ### 3.6 Trigonometric functions
 
@@ -225,7 +233,7 @@ $$
 \frac{d}{dx}\arctan x = \frac{1}{1 + x^2}.
 $$
 
-Similarly, $\dfrac{d}{dx}\arcsin x = \dfrac{1}{\sqrt{1 - x^2}}$. The phase of a first-order filter, $-\arctan(f/f_c)$, changes fastest at the corner, where this derivative is largest.
+Similarly, $\dfrac{d}{dx}\arcsin x = \dfrac{1}{\sqrt{1 - x^2}}$ and $\dfrac{d}{dx}\arccos x = -\dfrac{1}{\sqrt{1 - x^2}}$ (since $\arccos x = \pi/2 - \arcsin x$), both for $\lvert x\rvert < 1$. The phase of a first-order filter is $-\arctan(f/f_c)$. Against linear frequency it changes fastest at DC, where $1/(1 + x^2)$ is largest. On the logarithmic frequency axis of a Bode plot, however, the slope is $\dfrac{d(-\arctan x)}{d\ln x} = -\dfrac{x}{1 + x^2}$, which peaks at the corner $x = 1$: −½ rad per unit of $\ln x$, about −66° per decade, steeper than the −45°/decade straight-line sketch.
 
 **Summary table.**
 
@@ -236,6 +244,12 @@ Similarly, $\dfrac{d}{dx}\arcsin x = \dfrac{1}{\sqrt{1 - x^2}}$. The phase of a 
 | $a^x$ | $a^x\ln a$ | | $\tan x$ | $\sec^2 x$ |
 | $\ln x$ | $1/x$ | | $\arctan x$ | $1/(1 + x^2)$ |
 | $\log_{10}x$ | $1/(x\ln 10)$ | | $\arcsin x$ | $1/\sqrt{1 - x^2}$ |
+| $\sinh x$ | $\cosh x$ | | $\arccos x$ | $-1/\sqrt{1 - x^2}$ |
+| $\cosh x$ | $\sinh x$ | | $\tanh x$ | $1 - \tanh^2 x$ |
+
+The hyperbolic rows follow directly from the definitions in [01-01](01-01-functions-models-and-units.md) §3.4: $\frac{d}{dx}\tfrac12(e^x + e^{-x}) = \tfrac12(e^x - e^{-x})$, and the quotient rule with $\cosh^2 - \sinh^2 = 1$ gives $(\tanh x)' = 1/\cosh^2x = 1 - \tanh^2x$. Unlike $\cos$, $\cosh$ has no minus sign in its derivative.
+
+**Logarithmic differentiation.** For a function such as $y = x^x$, with the variable in both base and exponent, neither the power rule nor the exponential rule applies. Take logs first: $\ln y = x\ln x$. Differentiate both sides, using the chain rule on the left: $y'/y = \ln x + 1$. So $y' = x^x(\ln x + 1)$. The same trick simplifies long products and quotients, because the log turns them into sums.
 
 ### 3.7 Higher derivatives
 
@@ -253,7 +267,7 @@ $$
 
 Constant voltage means zero current: a capacitor is an open circuit at DC. A voltage ramp of slope $m$ (V/s) draws constant current $Cm$. A jump in voltage would need infinite current, which is the continuity property of 01-02.
 
-**Inductor.** An inductor's magnetic flux linkage is $\lambda = Li$, and Faraday's law says the induced voltage is $d\lambda/dt$. So
+**Inductor.** An inductor's magnetic flux linkage is $\psi = Li$, and Faraday's law says the induced voltage is $d\psi/dt$. So
 
 $$
 v_L = L\,\frac{di_L}{dt}.
@@ -290,9 +304,9 @@ For a small change $\Delta V$ around the operating point, $\Delta I \approx g_d\
 When $f$ is known only as data or as a black-box program, estimate $f'$ with a difference quotient:
 
 - **Forward difference:** $D_+(h) = \dfrac{f(x + h) - f(x)}{h}$. Its truncation error is about $\tfrac{h}{2}\lvert f''(x)\rvert$, first order in $h$.
-- **Central difference:** $D_0(h) = \dfrac{f(x + h) - f(x - h)}{2h}$. Its truncation error is about $\tfrac{h^2}{6}\lvert f'''(x)\rvert$, second order in $h$, because the even-order error terms cancel between the two sides. [01-08](01-08-sequences-series-and-taylor.md) derives both error terms with Taylor series.
+- **Central difference:** $D_0(h) = \dfrac{f(x + h) - f(x - h)}{2h}$. Its truncation error is about $\tfrac{h^2}{6}\lvert f'''(x)\rvert$, second order in $h$: in the Taylor expansions of $f(x + h)$ and $f(x - h)$, the even powers of $h$ (including the $f''$ term that limits the forward difference) cancel in the subtraction, so the leading error comes from the $h^3$ term. [01-08](01-08-sequences-series-and-taylor.md) derives both error terms with Taylor series.
 
-Rounding error grows like $\epsilon_{\text{mach}}/h$ as in 01-02. For the forward difference the best step is near $10^{-8}$, giving about 8 correct digits. For the central difference it is near $10^{-5}$, giving about 10 (Figure 5, Problem 01-03.13). SPICE's transient solver uses exactly such difference formulas to replace $C\,dv/dt$ at each time step ([00-04](../../00-orientation/chapters/00-04-toolchain-walkthrough.md)).
+Rounding error grows like $\epsilon_{\text{mach}}/h$ as in 01-02. For the forward difference the best step is near $10^{-8}$, giving about 8 correct digits. For the central difference it is near $10^{-5}$, giving about 10 (Figure 5, Problem 01-03.13). SPICE's transient solver uses related but *implicit* formulas (backward Euler, the trapezoidal rule and Gear's methods) to replace $C\,dv/dt$ at each time step ([00-04](../../00-orientation/chapters/00-04-toolchain-walkthrough.md), [02-10](../../02-complex-numbers-des-and-linear-algebra/chapters/02-10-numerical-methods.md)).
 
 ![Error of forward and central differences versus step size](../../../assets/figures/01-03/numerical-derivative-error.svg)
 
@@ -462,7 +476,7 @@ The lab ([labs/01-03-lab/](../labs/01-03-lab/README.md)) has a notebook and two 
 
 **"Bandwidth 0.7 MHz."** That is a small-signal figure. With large signals, slew rate limits the response far sooner (4.8 kHz at 10 V peak above). **Sanity check:** compute $SR/(2\pi V_p)$ at the actual signal swing.
 
-**"Peak power 1,000 W."** The thermal design power says little about how fast the load changes. **Sanity check:** ask for the worst-case load step, its rise time, and the supply droop budget.
+**"Peak power 1,000 W."** A power rating, peak or average, says little about how fast the load changes. **Sanity check:** ask for the worst-case load step, its rise time, and the supply droop budget.
 
 **"Ultra-fast switching."** Fast edges cut switching loss but raise dv/dt and di/dt stress, EMI and ringing. **Sanity check:** ask what the edges do to the rest of the system: EMI compliance margin, required snubbers, gate-driver complexity.
 
@@ -547,7 +561,7 @@ $V_T/I = 25.85\text{ mV}/2\text{ mA} \approx 12.9$ Ω.
 <details>
 <summary>Answer</summary>
 
-Its error terms of even order in $h$ cancel between the two sides, so its truncation error falls as $h^2$ instead of $h$.
+In the Taylor expansions of $f(x + h)$ and $f(x - h)$, the even-power terms (including the $f''$ term that dominates the forward difference's error) cancel in the subtraction. Its truncation error therefore falls as $h^2$ instead of $h$.
 
 </details>
 
@@ -567,7 +581,8 @@ Now work the problem set: [01-03 problems](../problems/01-03-problems.md) (solut
 [Slew rate](../../../reference/glossary.md#slew-rate) ·
 [Small-signal conductance](../../../reference/glossary.md#small-signal-conductance) ·
 [Inductive kick](../../../reference/glossary.md#inductive-kick) ·
-[Central difference](../../../reference/glossary.md#central-difference)
+[Central difference](../../../reference/glossary.md#central-difference) ·
+[Logarithmic differentiation](../../../reference/glossary.md#logarithmic-differentiation)
 
 ## 12. Connections
 

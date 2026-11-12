@@ -143,6 +143,7 @@ best_int = min(range(1, 30), key=T6)
 v.check("01-04.6c", best_int)
 v.check("01-04.6d", T6(best_int))
 v.check("01-04.6e", T6(1))
+v.check("01-04.6f", T6(1) / T6(6))
 
 xr = 0.3
 iters = []
@@ -168,6 +169,16 @@ v.check("01-04.8c", brentq(lambda xx: 2 * xx - (1 + xx * xx) * math.atan(xx), 1,
 seq = [1.5]
 for _ in range(4):
     seq.append(nt(seq[-1]))
+sq1 = [1.0]
+for _ in range(4):
+    sq1.append(nt(sq1[-1]))
+v.check("01-04.8d", sq1[2])
+v.check("01-04.8e", sq1[3])
+v.check("01-04.8f", sq1[4])
+v.check("01-04.8g", abs(sq1[4]) / abs(sq1[3]) ** 3)
+v.check("01-04.8h", seq[2])
+v.check("01-04.8i", seq[3])
+v.check("01-04.8j", seq[4])
 v.assert_true("P8 from 1.5 diverges (|x| grows each step)", all(abs(seq[i + 1]) > abs(seq[i]) for i in range(4)))
 seq1 = [1.0]
 for _ in range(4):
@@ -207,6 +218,7 @@ v.check("01-04.13d", T13(5))
 v.check("01-04.13e", T13(19))
 v.check("01-04.13f", T13(1) / T13(19))
 v.check("01-04.13g", T13(n13 / 2))
+v.check("01-04.13j", 100 * (T13(n13 / 2) / T13(n13) - 1))
 v.assert_true("P13 symmetric penalty", math.isclose(T13(math.sqrt(375) / 2), T13(2 * math.sqrt(375)), rel_tol=1e-12))
 n13b = argmin(lambda nn: T13(nn, 0.02), 1, 100)
 v.check("01-04.13h", n13b)
@@ -222,6 +234,9 @@ v.check("01-04.14a", errs[1] / errs[0] ** 2)
 v.check("01-04.14b", errs[2] / errs[1] ** 2)
 v.check("01-04.14c", errs[3] / errs[2] ** 2, rtol=2e-4)
 v.check("01-04.14d", 1 / (2 * xs2))
+v.check("01-04.14e", (1.5 + 2 / 1.5) / 2)
+v.check("01-04.14f", ((1.5 + 2 / 1.5) / 2 + 2 / ((1.5 + 2 / 1.5) / 2)) / 2)
+v.assert_true("x^2-2: e_{k+1} = e_k^2/(2 x_k) exactly", all(abs(errs[i + 1] - errs[i] ** 2 / (2 * (errs[i] + xs2))) < 1e-15 for i in range(3)))
 
 Ta, Rth, tau_th = 40.0, 0.5, 2.0
 Tt = lambda tt, P_: Ta + P_ * Rth * (1 - math.exp(-tt / tau_th))  # noqa: E731
@@ -237,7 +252,14 @@ v.check("Lab 01-04.a", 100 * (1 - Pf(100) / Pf(50)))
 v.check("Lab 01-04.b", 100 * (T6(2 * n6) / T6(n6) - 1))
 v.check("Lab 01-04.c", math.sqrt((1 + 25) / 3))
 v.check("Lab 01-04.d", Pf(argmin(lambda r: -Pf(r, 10.0, 25.0), 1, 1000), 10.0, 25.0))
+v.check("Lab 01-04.e", 100 * (Ef(vst / 2) / Ef(vst) - 1))
+v.check("Lab 01-04.f", 100 * (Ef(2 * vst) / Ef(vst) - 1))
+v.check("Lab 01-04.g", math.sqrt(1 + 25))
 v.assert_true("Lab: min-energy penalties +41.7 % and +66.7 %",
               round(100 * (Ef(vst / 2) / Ef(vst) - 1), 1) == 41.7 and round(100 * (Ef(2 * vst) / Ef(vst) - 1), 1) == 66.7)
+
+v.check("T 01-04.a", 100 * (1 - 4 * 1.1 / 2.1**2))
+v.check("T 01-04.b", math.sqrt(1 + 25) / math.sqrt(1 + 1))
+v.check("T 01-04.c", (1 + 5) / (1 + 1))
 
 v.finish()

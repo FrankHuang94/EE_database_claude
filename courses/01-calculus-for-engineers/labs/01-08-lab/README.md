@@ -48,4 +48,4 @@ Chapter sections 3.2–3.6 (series, convergence, Taylor's theorem), 3.7 (approxi
 
 ## Optional hardware version
 
-With a function generator, an oscilloscope with FFT, a 1N4148 diode, a 1 kΩ resistor and a 9 V battery: bias the diode at about 1 mA (9 V through 8.2 kΩ), and add a 1 kHz signal through a coupling capacitor and a 10 kΩ resistor. The diode's small-signal resistance is about 26 Ω, so each volt of generator amplitude puts about 2.6 mV across the diode. Watch the second harmonic in the FFT of the diode voltage grow by about 6 dB each time you double the signal amplitude, the 20 dB-per-decade slope of HD2.
+With a function generator, an oscilloscope with FFT, a 1N4148 diode, 8.2 kΩ and 10 kΩ resistors, a 10 µF coupling capacitor and a 9 V battery: bias the diode at about 1 mA (9 V through 8.2 kΩ), and add a 1 kHz signal through a coupling capacitor and a 10 kΩ resistor. The diode's small-signal resistance is about 26 Ω, so each volt of generator amplitude puts about 2.6 mV across the diode. Watch the second harmonic in the FFT of the diode voltage grow by about 6 dB each time you double the signal amplitude, the 20 dB-per-decade slope of HD2.

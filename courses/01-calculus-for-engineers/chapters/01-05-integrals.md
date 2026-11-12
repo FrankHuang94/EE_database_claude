@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 01-05 · Integrals: Accumulating Charge and Energy
 
 | | |
@@ -109,7 +109,7 @@ In words: **the rate at which area accumulates equals the height of the curve at
 
 *Figure 2. Top: $f(t) = t^2 - 4$. Bottom: its accumulation function $A(x) = \int_0^x f$. $A$ decreases while $f < 0$, bottoms out where $f = 0$, and returns to zero when the positive area cancels the negative.*
 
-**Antiderivatives.** $F$ is an **antiderivative** of $f$ if $F' = f$. By 01-04's corollary of the mean value theorem, two antiderivatives of the same function differ by a constant. So the general antiderivative is $F(x) + C$, written as the **indefinite integral** $\int f(x)\,dx = F(x) + C$.
+**Antiderivatives.** $F$ is an **antiderivative** of $f$ if $F' = f$. By 01-04's corollary of the mean value theorem, two antiderivatives of the same function *on an interval* differ by a constant. (On a domain with a gap, the constant can differ on each piece: for $\int dx/x = \ln\lvert x\rvert + C$, the constants for $x < 0$ and $x > 0$ are independent, which only matters if you integrate across the gap, which you must not do anyway.) So the general antiderivative is $F(x) + C$, written as the **indefinite integral** $\int f(x)\,dx = F(x) + C$.
 
 **FTC, part 2.** If $f$ is continuous on $[a, b]$ and $F$ is any antiderivative of $f$, then
 
@@ -155,15 +155,15 @@ For example, $\int e^{-t/\tau}\,dt = -\tau e^{-t/\tau} + C$ and $\int\cos(\omega
 **Charge.** Since $i = dq/dt$, the net change theorem gives
 
 $$
-q(t) = q(t_0) + \int_{t_0}^{t} i(\tau)\,d\tau .
+q(t) = q(t_0) + \int_{t_0}^{t} i(\lambda)\,d\lambda .
 $$
 
-(Here $\tau$ is a dummy time variable, not a time constant.) The common battery unit, the **ampere-hour** (Ah), is a charge: 1 Ah = 1 A × 3600 s = 3600 C.
+(Here $\lambda$ is a dummy time variable, the convention of [notation.md](../../../reference/notation.md); it is not a time constant.) The common battery unit, the **ampere-hour** (Ah), is a charge: 1 Ah = 1 A × 3600 s = 3600 C.
 
 **Capacitor voltage.** Since $q = Cv$,
 
 $$
-v_C(t) = v_C(t_0) + \frac{1}{C}\int_{t_0}^{t} i_C\,d\tau .
+v_C(t) = v_C(t_0) + \frac{1}{C}\int_{t_0}^{t} i_C\,d\lambda .
 $$
 
 A capacitor *integrates* its current. Constant current gives a linear ramp; a current pulse gives a step in voltage of $(\text{pulse area})/C$ (Figure 3). Because an integral of a bounded function cannot jump, this formula is another proof that capacitor voltage is continuous (01-02).
@@ -175,7 +175,7 @@ A capacitor *integrates* its current. Constant current gives a linear ramp; a cu
 **Inductor current.** Likewise, from $v = L\,di/dt$,
 
 $$
-i_L(t) = i_L(t_0) + \frac{1}{L}\int_{t_0}^{t} v_L\,d\tau .
+i_L(t) = i_L(t_0) + \frac{1}{L}\int_{t_0}^{t} v_L\,d\lambda .
 $$
 
 An inductor integrates its voltage. This is the principle of every switching power converter: a constant voltage across an inductor ramps its current linearly ([22-02](../../22-power-electronics-and-energy-conversion/chapters/22-02-buck-converter-steady-state.md)).
@@ -183,10 +183,10 @@ An inductor integrates its voltage. This is the principle of every switching pow
 **Energy.** Energy is the integral of power, $w = \int p\,dt = \int vi\,dt$. For a capacitor, substitute $i = C\,dv/dt$:
 
 $$
-w_C = \int_{0}^{t} v\,C\frac{dv}{d\tau}\,d\tau = \int_{0}^{V} Cv\,dv = \frac{1}{2}CV^2 ,
+w_C = \int_{0}^{t} v\,C\frac{dv}{d\lambda}\,d\lambda = \int_{0}^{V} Cv\,dv = \frac{1}{2}CV^2 ,
 $$
 
-starting from an uncharged capacitor. The middle step changes the variable of integration from time to voltage: as $\tau$ runs from 0 to $t$, $v$ runs from 0 to $V$. This is a substitution, justified in [01-06](01-06-techniques-of-integration.md). The result depends only on the final voltage, not on how fast the capacitor was charged. In the same way, an inductor stores $w_L = \tfrac{1}{2}LI^2$.
+starting from an uncharged capacitor. The middle step changes the variable of integration from time to voltage: as $\lambda$ runs from 0 to $t$, $v$ runs from 0 to $V$. This is a substitution, justified in [01-06](01-06-techniques-of-integration.md). The result depends only on the final voltage, not on how fast the capacitor was charged. In the same way, an inductor stores $w_L = \tfrac{1}{2}LI^2$.
 
 **Where the source's energy goes.** Charging a capacitor from 0 to $V$ through a resistor from a fixed source $V$ draws total charge $CV$ from the source, which therefore delivers energy $V\cdot CV = CV^2$. Only half, $\tfrac{1}{2}CV^2$, ends up stored. The other half is dissipated in the resistor, *whatever its value* (Example 01-05.3). This resolves the two-capacitor puzzle of [01-02](01-02-limits-and-continuity.md), Problem 14.
 
@@ -280,7 +280,7 @@ $R$ cancels: the loss is $\tfrac{1}{2}CV^2$ for any resistance.
 
 ### Example 01-05.4 — Rectifier averages and average power (tier B)
 
-**Setup.** (a) The 120 V (rms) mains has peak $V_m = 170$ V. Find the average of its full-wave and half-wave rectified versions. (b) A sinusoidal current of 2 A peak flows in a 10 Ω resistor. Find the average power.
+**Setup.** (a) The 120 V (rms) North American mains ([R-014](../../../reference/research-log.md#r-014--nominal-mains-voltages)) has peak $V_m = 170$ V. Find the average of its full-wave and half-wave rectified versions. (b) A sinusoidal current of 2 A peak flows in a 10 Ω resistor. Find the average power.
 
 **Solution.**
 
@@ -384,8 +384,8 @@ The lab ([labs/01-05-lab/](../labs/01-05-lab/README.md)) has a notebook and two 
 ### Integration inside products (as of Nov 2026)
 
 - **Battery fuel gauges** in phones and wearables combine coulomb counting (an integral of measured current) with voltage-based battery models. Pure integration drifts because of sensor offset (Example 01-05.5), and pure voltage readings are unreliable under load, so gauges blend the two and recalibrate at known states **[Established]**. Gauge accuracy directly shapes the user experience of "battery percentage", and gauging algorithms are a differentiator for battery-management IC suppliers ([18](../../18-embedded-systems-and-microcontrollers/README.md)).
-- **Electricity meters** compute energy as $\int v\,i\,dt$ from sampled voltage and current. International standards define accuracy classes for static meters, for example class 1 (1%) for ordinary active-energy meters under IEC 62053-21 **[Established]**. Problem 01-05.15 shows why the sampling must be fast enough to capture the product $v\cdot i$, which oscillates at twice the line frequency.
-- **Integrating ADCs** remain the basis of high-resolution, low-speed measurement, such as digital multimeters and weigh scales, because integrating over whole mains periods rejects hum exactly **[Established]**.
+- **Electricity meters** compute energy as $\int v\,i\,dt$ from sampled voltage and current. International standards define accuracy classes for static meters, for example classes 0.5, 1 and 2 (nominally 0.5%, 1% and 2%) for AC active-energy meters under IEC 62053-21:2020 ([R-028](../../../reference/research-log.md#r-028--electricity-meter-accuracy-classes-iec-62053-21)) **[Established]**. Problem 01-05.15 shows why the sampling must be fast enough to capture the product $v\cdot i$, which oscillates at twice the line frequency.
+- **Integrating ADCs** (dual-slope in handheld meters, multislope in bench instruments) remain common in high-resolution digital multimeters, because integrating over whole mains periods rejects hum exactly **[Established]**. Weigh scales and most other sensor front ends now use sigma-delta converters, which also average their input and can place notches at 50 Hz and 60 Hz ([20](../../20-analog-and-mixed-signal-ic-design/README.md)).
 
 ### Why it matters commercially
 

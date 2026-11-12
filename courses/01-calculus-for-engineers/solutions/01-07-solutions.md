@@ -14,7 +14,7 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (b) Half-wave: average $V_p/\pi = $ **3.183 V**. The mean square is half the sine's: $\tfrac{1}{2}\cdot\tfrac{V_p^2}{2} = V_p^2/4$, so RMS $= V_p/2 = $ **5 V**.
 
-(c) Sawtooth $x = 4u$ with $u$ uniform on $[0, 1]$: average $4\times\tfrac{1}{2} = $ **2 V**. Mean square $16\int_0^1u^2\,du = 16/3$, so RMS $= 4/\sqrt{3} = $ **2.309 V**. (This sawtooth runs from 0 to 4 V, not symmetrically about 0, so the $X_p/\sqrt{3}$ rule applies to its full range, not to a ±peak.)
+(c) Sawtooth $x = 4u$ with $u$ uniform on $[0, 1]$: average $4\times\tfrac{1}{2} = $ **2 V**. Mean square $16\int_0^1u^2\,du = 16/3$, so RMS $= 4/\sqrt{3} = $ **2.309 V**. (A 0 → $A$ ramp has RMS $A/\sqrt{3}$ because $\int_0^1u^2\,du = 1/3$. Its AC part alone, measured about its 2 V average, has RMS $A/(2\sqrt{3}) = 4/(2\sqrt3) = $ **1.155 V**, the $X_p/\sqrt3$ rule applied to its ±2 V swing. Check: $\sqrt{2^2 + 1.155^2} = 2.309$ ✓.)
 
 (d) Crest factors: sine **1.414**, square **1**, triangle **1.732**.
 
@@ -84,10 +84,10 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (b) $e^{-2\times10^{-4}\times720} = e^{-0.144} = $ **0.8659**. About 13% of servers fail within a month, a strong argument for redundancy.
 
-(c) $E[T] = \int_0^\infty t\lambda e^{-\lambda t}dt$. With $u = t$ and $dv = \lambda e^{-\lambda t}dt$ (so $v = -e^{-\lambda t}$):
+(c) $\mathbb{E}[T_f] = \int_0^\infty t\lambda e^{-\lambda t}dt$. With $u = t$ and $dv = \lambda e^{-\lambda t}dt$ (so $v = -e^{-\lambda t}$):
 
 $$
-E[T] = \Big[-te^{-\lambda t}\Big]_0^\infty + \int_0^\infty e^{-\lambda t}dt = 0 + \frac{1}{\lambda}.
+\mathbb{E}[T_f] = \Big[-te^{-\lambda t}\Big]_0^\infty + \int_0^\infty e^{-\lambda t}dt = 0 + \frac{1}{\lambda}.
 $$
 
 ### Solution 01-07.11
@@ -110,7 +110,7 @@ $$
 
 (a) With $x = q/Q$, $E = Q\int_0^1(4.2 - 0.6x - 0.3x^2)\,dx = Q(4.2 - 0.3 - 0.1) = 3.0\text{ Ah}\times3.8\text{ V} = $ **11.4 Wh**.
 
-(b) The charge-weighted average voltage is $E/Q = $ **3.8 V**, against the end-point average of **3.75 V**. The voltage curve bends downward (concave), staying high for most of the discharge and dropping at the end, so the true average sits above the straight-line average. This charge-weighted average is what "nominal voltage" means.
+(b) The charge-weighted average voltage is $E/Q = $ **3.8 V**, against the end-point average of **3.75 V**. The voltage curve bends downward (concave), staying high for most of the discharge and dropping at the end, so the true average sits above the straight-line average. A battery's "nominal voltage" is a designation that approximates this charge-weighted average for a slow discharge.
 
 (c) $V = 3.5$ V at $0.3x^2 + 0.6x - 0.7 = 0$, i.e. $x = 0.8257$. The charge left is $(1 - 0.8257)\times3000 = $ **522.8 mAh**. The energy delivered up to that point is $Q(4.2x - 0.3x^2 - 0.1x^3) = $ **9.622 Wh**, leaving **1.778 Wh** unused. A device that works down to 3.3 V would gain over 15% more energy from the same cell.
 
@@ -129,6 +129,50 @@ $$
 (b) $E\lvert x\rvert = 2\int_0^\infty x\frac{1}{\sigma\sqrt{2\pi}}e^{-x^2/2\sigma^2}dx$. Substitute $u = x^2/(2\sigma^2)$, $du = x\,dx/\sigma^2$: $= \frac{2\sigma}{\sqrt{2\pi}}\int_0^\infty e^{-u}du = \sigma\sqrt{2/\pi}$, i.e. **0.7979σ**.
 
 (c) The meter reads $1.111\times0.7979\sigma = $ **0.8862σ**, an error of **−11.4%**. Average-responding meters under-read noise. Noise must be measured with a true-RMS meter or a spectrum analyzer.
+
+### Solution 01-07.16
+
+(a) At fixed voltage, $Q = CV = \varepsilon_0AV/x$. The force on one plate depends only on the charge, $F = Q^2/(2\varepsilon_0A)$ (chapter §3.4), so $F = \varepsilon_0AV^2/(2x^2)$. With $\varepsilon_0AV^2/2 = 8.854\times10^{-12}\times10^{-6}\times25/2 = 1.107\times10^{-16}$ J·m, at $x_1 = 2$ µm: $F = 1.107\times10^{-16}/(2\times10^{-6})^2 = $ **27.67 µN**.
+
+(b) $W = \dfrac{\varepsilon_0AV^2}{2}\left(\dfrac{1}{x_1} - \dfrac{1}{x_2}\right) = 1.107\times10^{-16}\times(5\times10^5 - 2.5\times10^5) = $ **27.67 pJ**.
+
+(c) $\tfrac12CV^2 = \varepsilon_0AV^2/(2x)$: **55.34 pJ** at 2 µm and **27.67 pJ** at 4 µm. It *fell*, by 27.67 pJ, exactly $W$.
+
+(d) $C$ fell from 4.427 pF to 2.214 pF, so charge $V\lvert\Delta C\rvert = 5\times2.214\text{ pF} = $ **11.07 pC** flowed back into the source, which absorbed $V\lvert\Delta Q\rvert = $ **55.34 pJ** $= 2W$. Energy balance: work done by you (27.67 pJ) + stored energy released (27.67 pJ) = energy absorbed by the source (55.34 pJ) ✓. At fixed *charge*, by contrast, the stored energy rises by exactly the work done (Problem 01-07.8). The source makes the difference.
+
+### Solution 01-07.17
+
+(a) On $(0, 1)$, $\sqrt{x} > x^2$ (for example $\sqrt{0.25} = 0.5 > 0.0625$), so $\sqrt{x}$ is on top. The area is $\int_0^1(\sqrt{x} - x^2)\,dx = \tfrac23 - \tfrac13 = \tfrac13 = $ **0.3333**.
+
+(b) First moment: $\int_0^1x(\sqrt{x} - x^2)\,dx = \tfrac25 - \tfrac14 = \tfrac{3}{20}$. So $\bar x = (3/20)/(1/3) = 9/20 = $ **0.45**.
+
+(c) The curves are inverse functions of each other, so the region is its own mirror image in the line $y = x$, and the centroid must lie on that line: $\bar y = \bar x = $ **0.45**.
+
+### Solution 01-07.18
+
+(a) Measuring depth $z$ from the bottom, $r(z) = 2.0 + 0.5z/50$ µm. Then
+
+$$
+V = \int_0^{50}\pi\left(2 + \frac{z}{100}\right)^2dz = \pi\left[\frac{100}{3}\left(2 + \frac{z}{100}\right)^3\right]_0^{50} = \frac{100\pi}{3}(2.5^3 - 2^3) = 798.5\text{ µm}^3 .
+$$
+
+(b) A straight via of radius 2.5 µm holds $\pi\times2.5^2\times50 = $ **981.7 µm³**, so the tapered via holds **81.33%** of it.
+
+(c) $\frac{\pi\times50}{3}(6.25 + 5 + 4) = \frac{\pi\times50\times15.25}{3} = 798.5$ µm³ ✓.
+
+### Solution 01-07.19
+
+(a) $y' = \sinh(x/a)$, so $1 + y'^2 = 1 + \sinh^2(x/a) = \cosh^2(x/a)$, and $\sqrt{1 + y'^2} = \cosh(x/a)$ (positive). The length is
+
+$$
+L = \int_{-100}^{100}\cosh\frac{x}{500}\,dx = 2\times500\,\sinh(0.2) = 201.34\text{ m}.
+$$
+
+(b) $201.34/200 - 1 = $ **0.668%** longer than the span.
+
+(c) Sag $= a\big(\cosh(100/a) - 1\big) = 500(\cosh0.2 - 1) = $ **10.03 m**.
+
+(d) Let $c = 100$ m be the half-span. For $c \ll a$, $\cosh u \approx 1 + u^2/2$ and $\sinh u \approx u + u^3/6$. So sag $\approx c^2/(2a)$ and $L \approx 2c + c^3/(3a^2)$. With span $S = 2c$, $(\text{sag}/S)^2 = c^2/(16a^2)$, so $S\big(1 + \tfrac83(\text{sag}/S)^2\big) = 2c + \tfrac{2c^3}{6a^2} = 2c + c^3/(3a^2)$ ✓. Numerically, with the exact sag of 10.03 m, the formula gives **201.34 m**, matching (a) to within 1 cm. Line engineers use this to relate cable length, sag and temperature: a cable that lengthens by thermal expansion sags more.
 
 ---
 
@@ -193,3 +237,23 @@ $$
 | 01-07.15c | mean of abs x, over σ | 0.7979 | — |
 | 01-07.15d | meter reading / σ | 0.8862 | — |
 | 01-07.15e | meter error | −11.4 | % |
+| 01-07.1i | AC-only RMS of the 0–4 V sawtooth | 1.155 | V |
+| 01-07.16a | force at 2 µm | 27.67 | µN |
+| 01-07.16b | ε0AV²/2 | 1.107×10^-16 | J·m |
+| 01-07.16c | work from 2 to 4 µm | 27.67 | pJ |
+| 01-07.16d | stored energy at 2 µm | 55.34 | pJ |
+| 01-07.16e | stored energy at 4 µm | 27.67 | pJ |
+| 01-07.16f | capacitance at 2 µm | 4.427 | pF |
+| 01-07.16g | capacitance at 4 µm | 2.214 | pF |
+| 01-07.16h | charge returned to the source | 11.07 | pC |
+| 01-07.16i | energy absorbed by the source | 55.34 | pJ |
+| 01-07.17a | area between √x and x² | 0.3333 | — |
+| 01-07.17b | centroid x | 0.45 | — |
+| 01-07.17c | centroid y | 0.45 | — |
+| 01-07.18a | tapered via volume | 798.5 | µm³ |
+| 01-07.18b | straight via volume | 981.7 | µm³ |
+| 01-07.18c | tapered fraction | 81.33 | % |
+| 01-07.19a | cable length | 201.34 | m |
+| 01-07.19b | excess over span | 0.668 | % |
+| 01-07.19c | sag | 10.03 | m |
+| 01-07.19d | shallow-cable approximation | 201.34 | m |

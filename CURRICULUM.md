@@ -4,7 +4,7 @@
 
 The complete map of the Self-Taught BSEE: every course and chapter, with university equivalents, textbook alignment, prerequisites, learning objectives and estimated study hours. For the week-by-week schedule see [STUDY_PLAN.md](STUDY_PLAN.md). For build status see [PROGRESS.md](PROGRESS.md).
 
-**At a glance:** 29 courses · 307 chapters · 7 terms · 4 capstones · ≈ 2750 study hours in total (courses 2536 h, capstones 160 h, term checkpoints 56 h).
+**At a glance:** 29 courses · 307 chapters · 7 terms · 4 capstones · ≈ 2760 study hours in total (courses 2542 h, capstones 160 h, term checkpoints 56 h).
 
 > **About the hour estimates.** Hours cover reading, working the examples, the full problem set and the lab for each chapter, for a strong learner meeting the material for the first time. At 10–12 hours per week, the full curriculum is a multi-year undertaking; see [STUDY_PLAN.md](STUDY_PLAN.md) for the calendar and the shorter practitioner fast track.
 
@@ -13,7 +13,7 @@ The complete map of the Self-Taught BSEE: every course and chapter, with univers
 | Course | Term | Chapters | Hours | Typical university equivalent |
 |---|---|---|---|---|
 | [00 · Orientation](#course-00) | 1 | 5 | 17 | Freshman 'Introduction to Electrical Engineering' seminar |
-| [01 · Calculus for Engineers](#course-01) | 1 | 10 | 116 | Calculus I–III (single variable + multivariable) |
+| [01 · Calculus for Engineers](#course-01) | 1 | 10 | 122 | Calculus I–III (single variable + multivariable) |
 | [02 · Complex Numbers, Differential Equations and Linear Algebra](#course-02) | 1 | 10 | 110 | Differential Equations + Linear Algebra (sophomore math) |
 | [03 · Probability, Statistics and Random Variables for EE](#course-03) | 1 | 6 | 43 | Probability and Random Processes for EE (junior) |
 | [04 · Physics for EE](#course-04) | 1 | 11 | 106 | University Physics II (E&M) + Modern Physics |
@@ -166,7 +166,7 @@ The NCEES FE Electrical and Computer exam (spec effective July 2020, 110 questio
 
 ## Term 1 — Foundations
 
-The mathematics, physics and programming that every later course assumes. *Term total: ≈ 472 hours + checkpoint (8 h).*
+The mathematics, physics and programming that every later course assumes. *Term total: ≈ 478 hours + checkpoint (8 h).*
 
 <a id="course-00"></a>
 
@@ -209,7 +209,7 @@ Single- and multivariable calculus taught through electrical examples: charge an
 - **Free courses:** MIT OCW 18.01SC Single Variable Calculus; MIT OCW 18.02SC Multivariable Calculus
 - **Prerequisites:** [00 · Orientation](#course-00)
 - **FE areas served:** Mathematics
-- **Study hours:** ≈ 116 (110 chapter hours + 6 review/exam)
+- **Study hours:** ≈ 122 (116 chapter hours + 6 review/exam)
 
 **Learning objectives.** By the end of the course you can:
 
@@ -223,14 +223,14 @@ Single- and multivariable calculus taught through electrical examples: charge an
 |---|---|---|
 | [01-01 · Functions, Models and Units](courses/01-calculus-for-engineers/chapters/01-01-functions-models-and-units.md) | 8 | Functions as signals; exponentials and logarithms refresher; decibels; trigonometric functions and radians; dimensional analysis |
 | [01-02 · Limits and Continuity](courses/01-calculus-for-engineers/chapters/01-02-limits-and-continuity.md) | 8 | Limits, one-sided limits, continuity, limits at infinity, asymptotic behavior, L'Hôpital preview |
-| [01-03 · Derivatives: Rates of Change in Circuits](courses/01-calculus-for-engineers/chapters/01-03-derivatives.md) | 12 | Definition, rules (product, quotient, chain), derivatives of exp/log/trig, implicit differentiation, i = C dv/dt and v = L di/dt |
+| [01-03 · Derivatives: Rates of Change in Circuits](courses/01-calculus-for-engineers/chapters/01-03-derivatives.md) | 13 | Definition, rules (product, quotient, chain), derivatives of exp/log/trig, implicit differentiation, i = C dv/dt and v = L di/dt |
 | [01-04 · Applications of Derivatives](courses/01-calculus-for-engineers/chapters/01-04-applications-of-derivatives.md) | 12 | Optimization (max power transfer), linearization and the small-signal idea, Newton's method, related rates, L'Hôpital's rule |
 | [01-05 · Integrals: Accumulating Charge and Energy](courses/01-calculus-for-engineers/chapters/01-05-integrals.md) | 12 | Riemann sums, definite integrals, fundamental theorem of calculus, antiderivatives, q = ∫i dt, w = ∫p dt |
-| [01-06 · Techniques of Integration](courses/01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md) | 12 | Substitution, integration by parts, partial fractions, trigonometric integrals, improper integrals, numerical integration |
-| [01-07 · Applications of Integration](courses/01-calculus-for-engineers/chapters/01-07-applications-of-integration.md) | 10 | Average value, RMS of periodic waveforms, energy in capacitors and inductors, work, probability densities |
-| [01-08 · Sequences, Series and Taylor Expansions](courses/01-calculus-for-engineers/chapters/01-08-sequences-series-and-taylor.md) | 12 | Convergence, geometric series, power series, Taylor/Maclaurin series of exp, sin, cos, ln(1+x); remainder bounds; approximations engineers use |
+| [01-06 · Techniques of Integration](courses/01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md) | 13 | Substitution, integration by parts, partial fractions, trigonometric integrals, improper integrals, numerical integration |
+| [01-07 · Applications of Integration](courses/01-calculus-for-engineers/chapters/01-07-applications-of-integration.md) | 12 | Average value, RMS of periodic waveforms, energy in capacitors and inductors, work, probability densities, areas, volumes, arc length, centroids |
+| [01-08 · Sequences, Series and Taylor Expansions](courses/01-calculus-for-engineers/chapters/01-08-sequences-series-and-taylor.md) | 13 | Convergence, geometric series, power series, Taylor/Maclaurin series of exp, sin, cos, ln(1+x); remainder bounds; approximations engineers use |
 | [01-09 · Multivariable Calculus I: Partial Derivatives and Gradients](courses/01-calculus-for-engineers/chapters/01-09-multivariable-calculus-1.md) | 12 | Functions of several variables, partial derivatives, gradient, directional derivative, chain rule, multivariable optimization, Lagrange multipliers |
-| [01-10 · Multivariable Calculus II: Multiple, Line and Surface Integrals](courses/01-calculus-for-engineers/chapters/01-10-multivariable-calculus-2.md) | 12 | Double/triple integrals, polar/cylindrical/spherical coordinates, line integrals (work), surface integrals (flux), intuition for divergence and curl |
+| [01-10 · Multivariable Calculus II: Multiple, Line and Surface Integrals](courses/01-calculus-for-engineers/chapters/01-10-multivariable-calculus-2.md) | 13 | Double/triple integrals, polar/cylindrical/spherical coordinates, line integrals (work), surface integrals (flux), intuition for divergence and curl |
 
 <a id="course-02"></a>
 

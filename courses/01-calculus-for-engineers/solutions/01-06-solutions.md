@@ -160,6 +160,42 @@ $$
 
 These are the Laplace transforms of $e^{-at}$, $t$ and $\sin\omega t$, three entries of the table used throughout circuit analysis ([07-04](../../07-circuit-analysis-2-transient-and-ac/chapters/07-04-laplace-domain-circuit-analysis.md)).
 
+### Solution 01-06.16
+
+(a) With $x = a\sin\theta$, $dx = a\cos\theta\,d\theta$ and $\sqrt{a^2 - x^2} = a\cos\theta$ (positive for $0 \le \theta \le \pi/2$). The limits $x = 0$ and $x = a$ become $\theta = 0$ and $\pi/2$:
+
+$$
+\int_0^a\sqrt{a^2 - x^2}\,dx = a^2\int_0^{\pi/2}\cos^2\theta\,d\theta = a^2\left[\frac{\theta}{2} + \frac{\sin2\theta}{4}\right]_0^{\pi/2} = \frac{\pi a^2}{4}.
+$$
+
+Geometrically, $y = \sqrt{a^2 - x^2}$ for $0 \le x \le a$ is the quarter of the circle $x^2 + y^2 = a^2$ in the first quadrant, so the area under it must be a quarter of $\pi a^2$ ✓.
+
+(b) Indefinitely, $a^2\int\cos^2\theta\,d\theta = \frac{a^2}{2}(\theta + \sin\theta\cos\theta) + C$. The reference triangle for $x = a\sin\theta$ has opposite side $x$, hypotenuse $a$ and adjacent side $\sqrt{a^2 - x^2}$, so $\sin\theta = x/a$ and $\cos\theta = \sqrt{a^2 - x^2}/a$:
+
+$$
+\int\sqrt{a^2 - x^2}\,dx = \frac{a^2}{2}\arcsin\frac{x}{a} + \frac{x}{2}\sqrt{a^2 - x^2} + C.
+$$
+
+Check by differentiating: $\frac{a^2}{2}\cdot\frac{1}{\sqrt{a^2 - x^2}} + \frac{1}{2}\sqrt{a^2 - x^2} - \frac{x^2}{2\sqrt{a^2 - x^2}} = \frac{a^2 + (a^2 - x^2) - x^2}{2\sqrt{a^2 - x^2}} = \sqrt{a^2 - x^2}$ ✓.
+
+(c) With $a = 2$: $\Big[2\arcsin\frac{x}{2} + \frac{x}{2}\sqrt{4 - x^2}\Big]_0^1 = 2\cdot\frac{\pi}{6} + \frac{\sqrt3}{2} = 1.0472 + 0.8660 = $ **1.9132**. **Sanity check:** on $[0, 1]$ the integrand falls from 2 to $\sqrt3 = 1.732$, so the answer must lie between them ✓.
+
+### Solution 01-06.17
+
+(a) Complete the square: $x^2 + 2x + 5 = (x + 1)^2 + 4$. With $u = x + 1$ (limits 1 to 2):
+
+$$
+\int_1^2\frac{du}{u^2 + 4} = \frac{1}{2}\Big[\arctan\frac{u}{2}\Big]_1^2 = \frac{1}{2}(0.7854 - 0.4636) = 0.1609 .
+$$
+
+(b) The denominator's derivative is $2x + 2$, and $x + 3 = \tfrac12(2x + 2) + 2$. The first part integrates to a log, the second to twice the result of (a):
+
+$$
+\int_0^1\frac{x + 3}{x^2 + 2x + 5}\,dx = \frac{1}{2}\ln\frac{8}{5} + 2(0.1609) = 0.2350 + 0.3218 = 0.5568 .
+$$
+
+(c) $s^2 + 2s + 5 = (s + 1)^2 + 2^2$, so $\alpha = 1$ and $\omega = 2$ rad/s. Then $\dfrac{2}{(s + 1)^2 + 2^2}$ is the transform of $e^{-t}\sin2t$: a damped sinusoid with decay time constant $1/\alpha = 1$ s and period $2\pi/\omega = \pi = 3.142$ s. The shift in the completed square sets the decay, and the added square sets the oscillation: this is the "irreducible quadratic → damped sinusoid" rule of chapter §3.4.
+
 ---
 
 <!-- answer-key -->
@@ -216,3 +252,15 @@ These are the Laplace transforms of $e^{-at}$, $t$ and $\sin\omega t$, three ent
 | 01-06.15a | (a) | 0.3333 | — |
 | 01-06.15b | (b) | 0.25 | — |
 | 01-06.15c | (c) | 0.2308 | — |
+| 01-06.16a | ∫ from 0 to 1 of sqrt(4 − x²) | 1.9132 | — |
+| 01-06.16b | 2 arcsin(1/2) | 1.0472 | — |
+| 01-06.16c | √3/2 | 0.8660 | — |
+| 01-06.17a | ∫ dx/(x² + 2x + 5) over [0, 1] | 0.1609 | — |
+| 01-06.17b | ∫ (x + 3)/(x² + 2x + 5) over [0, 1] | 0.5568 | — |
+| 01-06.17c | log part | 0.2350 | — |
+| 01-06.17d | arctan part | 0.3218 | — |
+| 01-06.17e | decay rate α | 1 | 1/s |
+| 01-06.17f | angular frequency ω | 2 | rad/s |
+| 01-06.17g | oscillation period | 3.142 | s |
+| 01-06.17h | arctan 1 | 0.7854 | — |
+| 01-06.17i | arctan 0.5 | 0.4636 | — |

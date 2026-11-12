@@ -64,7 +64,7 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (b) $T(6) = 120 + 133.3 = $ **253.3 ps** and $T(7) = 140 + 114.3 = 254.3$ ps. The best integer is **6**.
 
-(c) $T(1) = 20 + 800 = $ **820 ps**. Repeaters make the wire 3.2 times faster.
+(c) $T(1) = 20 + 800 = $ **820 ps** (the driver plus the whole wire). Repeaters make the wire $820/253.3 = $ **3.2 times** faster.
 
 (d) A wire's RC delay is proportional to $R\times C$, and both grow with length, so the delay grows as length squared. Each of the $n$ segments has length $L/n$, so its delay is $(1/n)^2$ of the whole. Summing $n$ segments gives $n\times(1/n^2) = 1/n$ of the unrepeated delay.
 
@@ -97,7 +97,7 @@ Only multiplication and subtraction are needed.
 | 3 | −0.001061 | −5.114 |
 | 4 | $8\times10^{-10}$ | 32.30 |
 
-From 1.0, the iterates alternate in sign and converge quickly (quadratically at the end). From 1.5, they alternate in sign with *growing* magnitude: divergence. The tangent of the flattening arctan curve, far from the root, is nearly horizontal, and it throws the next guess far past the root.
+From 1.0, the iterates alternate in sign and converge quickly, in fact *cubically* at the end: $\lvert e_4\rvert/\lvert e_3\rvert^3 = 0.667$. The reason is that $f''(0) = 0$ for arctan (it is odd), so the quadratic error term of the chapter's formula vanishes. Expanding, $x - \arctan x\,(1 + x^2) = -\tfrac23x^3 + \cdots$, so $e_{k+1} \approx -\tfrac23e_k^3$. From 1.5, they alternate in sign with *growing* magnitude: divergence. The tangent of the flattening arctan curve, far from the root, is nearly horizontal, and it throws the next guess far past the root.
 
 (c) Setting $x_{k+1} = -x_k$ gives $2x = (1 + x^2)\arctan x$. Solving numerically (bisection on $[1, 2]$) gives $x_c = $ **1.392**. Starting below it converges; starting above it diverges.
 
@@ -147,7 +147,7 @@ From 1.0, the iterates alternate in sign and converge quickly (quadratically at 
 
 (b) $T(1) = $ **665.6 ps**; $T(5) = $ **192.0 ps**; $T(19) = $ **125.98 ps** (the best integer; $T(20) = 126.0$ ps). The speedup over $n = 1$ is $665.6/125.98 = $ **5.28×**.
 
-(c) At half the optimal depth (9.68) and at double (38.7), $T = $ **141.46 ps**, only 12.3% slower. The optimum is broad. That is why real designs can sit some distance from the "optimal" depth for power or design-effort reasons.
+(c) At half the optimal depth (9.68) and at double (38.7), $T = $ **141.46 ps**, only **12.3%** slower. The optimum is broad. That is why real designs can sit some distance from the "optimal" depth for power or design-effort reasons.
 
 (d) $T = 52 + 600/n + 0.8n$, so $n^\ast = \sqrt{600/0.8} = $ **27.39**, with $T_{min} = $ **95.82 ps**. Better branch prediction justifies deeper pipelines. This is the historical logic of the deep-pipeline era (Hartstein and Puzak, ISCA 2002, analyzed it in this spirit), and also part of why power limits later pulled depths back down.
 
@@ -157,7 +157,7 @@ From 1.0, the iterates alternate in sign and converge quickly (quadratically at 
 
 (b) $f'(r) = 2\sqrt{2}$ and $f'' = 2$, so $f''/(2f') = 2/(4\sqrt{2}) = 1/(2\sqrt{2}) = $ **0.3536**. The ratios approach it ✓.
 
-(c) The formula $e_{k+1} = \dfrac{f''(\xi)}{2f'(x_k)}e_k^2$ uses $f'$ at the current iterate. At $x_0 = 1$ that is 2 rather than $2\sqrt{2}$. As $x_k \to \sqrt{2}$, the factor converges to the limiting constant.
+(c) For $f = x^2 - 2$, $f'' = 2$ is constant and $f'(x_k) = 2x_k$, so the chapter's formula is *exact*: $e_{k+1} = e_k^2/(2x_k)$. The ratios are therefore $1/(2x_k)$ at the current iterate: $1/(2\times1.5) = 0.3333$ at $x_1 = 1.5$, then $1/(2\times1.41667) = 0.3529$, then $1/(2\times1.414216) = 0.3535$. As $x_k \to \sqrt2$ they converge to the limiting constant $1/(2\sqrt2)$.
 
 ### Solution 01-04.15
 
@@ -202,7 +202,8 @@ From 1.0, the iterates alternate in sign and converge quickly (quadratically at 
 | 01-04.6b | continuous minimum delay | 253.0 | ps |
 | 01-04.6c | best integer n | 6 | — |
 | 01-04.6d | delay with 6 repeaters | 253.3 | ps |
-| 01-04.6e | unrepeated delay | 820 | ps |
+| 01-04.6e | single-segment delay including driver | 820 | ps |
+| 01-04.6f | speed-up from repeaters | 3.2 | — |
 | 01-04.7a | x1 | 0.33 | — |
 | 01-04.7b | x2 | 0.3333 | — |
 | 01-04.7c | x3 | 0.33333333 | — |
@@ -213,6 +214,13 @@ From 1.0, the iterates alternate in sign and converge quickly (quadratically at 
 | 01-04.8a | first iterate from 1.0 | −0.5708 | — |
 | 01-04.8b | first iterate from 1.5 | −1.694 | — |
 | 01-04.8c | critical starting value | 1.392 | — |
+| 01-04.8d | second iterate from 1.0 | 0.1169 | — |
+| 01-04.8e | third iterate from 1.0 | −0.001061 | — |
+| 01-04.8f | fourth iterate from 1.0 | 8×10^-10 | — |
+| 01-04.8g | cubic error ratio | 0.667 | — |
+| 01-04.8h | second iterate from 1.5 | 2.321 | — |
+| 01-04.8i | third iterate from 1.5 | −5.114 | — |
+| 01-04.8j | fourth iterate from 1.5 | 32.30 | — |
 | 01-04.9a | rest capacitance | 4.427 | pF |
 | 01-04.9b | current | −11.07 | nA |
 | 01-04.9c | factor for half the gap | 4 | — |
@@ -237,9 +245,12 @@ From 1.0, the iterates alternate in sign and converge quickly (quadratically at 
 | 01-04.13g | T at half or double depth | 141.46 | ps |
 | 01-04.13h | optimal depth, hazard 0.02 | 27.39 | — |
 | 01-04.13i | minimum T, hazard 0.02 | 95.82 | ps |
+| 01-04.13j | slowdown at half or double depth | 12.3 | % |
 | 01-04.14a | ratio e2/e1² | 0.3333 | — |
 | 01-04.14b | ratio e3/e2² | 0.3529 | — |
 | 01-04.14c | ratio e4/e3² | 0.3535 | — |
+| 01-04.14e | x2 | 1.41667 | — |
+| 01-04.14f | x3 | 1.414216 | — |
 | 01-04.14d | limit 1/(2√2) | 0.3536 | — |
 | 01-04.15a | initial heating rate | 25 | K/s |
 | 01-04.15b | steady state at 100 W | 90 | °C |

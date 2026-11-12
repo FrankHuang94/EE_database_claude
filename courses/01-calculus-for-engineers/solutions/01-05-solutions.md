@@ -54,7 +54,7 @@ The midpoint error is about half the trapezoid error, with the opposite sign, as
 
 ### Solution 01-05.5
 
-(a) $v(t) = v(0) + \dfrac{1}{C}\displaystyle\int_0^t i\,d\tau$.
+(a) $v(t) = v(0) + \dfrac{1}{C}\displaystyle\int_0^t i\,d\lambda$.
 
 - At 1 ms: $1 + (10\times10^{-3})(10^{-3})/(2\times10^{-6}) = 1 + 5 = $ **6 V**.
 - At 3 ms: $6 + (-5\times10^{-3})(2\times10^{-3})/(2\times10^{-6}) = 6 - 5 = $ **1 V**.
@@ -102,7 +102,7 @@ $R$ cancels.
 
 (a) Charge per hour: $15\times3 + 1.2\times57 = 45 + 68.4 = 113.4$ mA·min. The average is $113.4/60 = $ **1.890 mA**. Life $= 300/1.89 = $ **158.7 h** $= $ **6.61 days**.
 
-(b) $50\text{ µA}\times24\text{ h} = $ **1.2 mAh** per day, or **0.4%** of capacity per day. Without recalibration, the error compounds over the week.
+(b) $50\text{ µA}\times24\text{ h} = $ **1.2 mAh** per day, or **0.4%** of capacity per day. Without recalibration, the error accumulates linearly, by 8.4 mAh over a week.
 
 (c) Halving the GPS current gives an average of $(22.5 + 68.4)/60 = 1.515$ mA, a life of **198.0 h**. Cutting the idle current by 20% gives $(45 + 54.72)/60 = 1.662$ mA, a life of **180.5 h**. **Halving the GPS current wins**: the bursts are 40% of the charge budget ($45/113.4$) although they run only 5% of the time.
 
@@ -194,6 +194,7 @@ $R$ cancels.
 | 01-05.9c | life | 6.61 | days |
 | 01-05.9d | offset charge per day | 1.2 | mAh |
 | 01-05.9e | offset per day as % of capacity | 0.4 | % |
+| 01-05.9h | offset charge per week | 8.4 | mAh |
 | 01-05.9f | life with GPS halved | 198.0 | h |
 | 01-05.9g | life with idle cut 20 % | 180.5 | h |
 | 01-05.10a | trapezoid n = 4 | 1.8961 | — |

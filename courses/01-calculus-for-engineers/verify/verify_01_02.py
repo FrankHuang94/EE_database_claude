@@ -211,6 +211,8 @@ v.check("01-02.12a", (1 - math.cos(0.1)) / 0.01)
 v.check("01-02.12b", 2**-53 / 1e-10)
 v.check("01-02.12c", 100 * 2**-53 / 1e-14)
 v.check("01-02.12d", 2 * math.sin(0.5e-8) ** 2 / 1e-16)
+for _id, _x in (("01-02.12e", 1e-3), ("01-02.12f", 1e-5), ("01-02.12g", 1e-7), ("01-02.12h", 1e-8)):
+    v.check(_id, (1 - math.cos(_x)) / _x**2)  # double-precision result, rounding included
 v.assert_true("P12 naive value collapses to 0 at 1e-8", (1 - math.cos(1e-8)) / 1e-16 == 0.0)
 naive7 = (1 - math.cos(1e-7)) / 1e-14
 v.assert_true("P12 naive error at 1e-7 is within the 1.1 % bound", abs(naive7 - 0.5) / 0.5 <= 0.0111)
