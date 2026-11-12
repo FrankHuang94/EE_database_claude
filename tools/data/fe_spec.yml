@@ -1,0 +1,30 @@
+# NCEES FE Electrical and Computer — exam specification (CBT)
+# Spec "effective beginning with the July 2020 examinations".
+# Source: https://ncees.org/wp-content/uploads/FE-Electrical-and-Computer-CBT-specs.pdf
+# Research date: Nov 2026 (see reference/research-log.md, item R-001).
+# Confidence: high for most areas; medium for linear_systems, signal_processing,
+# electronics, communications (ranges confirmed via secondary sources citing the spec).
+# ncees.org was unreachable from the build environment; re-check against the PDF.
+as_of: "Nov 2026"
+spec_effective: "July 2020"
+total_questions: 110
+exam_time: "5 h 20 min of exam time within a ~6 h appointment"
+handbook: "NCEES FE Reference Handbook (version current at your exam date; check MyNCEES)"
+areas:
+  mathematics:                   {name: "Mathematics", questions: "11–17"}
+  probability_statistics:        {name: "Probability and Statistics", questions: "4–6"}
+  ethics_professional_practice:  {name: "Ethics and Professional Practice", questions: "4–6"}
+  engineering_economics:         {name: "Engineering Economics", questions: "5–8"}
+  electrical_materials:          {name: "Properties of Electrical Materials", questions: "4–6"}
+  circuit_analysis:              {name: "Circuit Analysis (DC and AC Steady State)", questions: "11–17"}
+  linear_systems:                {name: "Linear Systems", questions: "5–8"}
+  signal_processing:             {name: "Signal Processing", questions: "5–8"}
+  electronics:                   {name: "Electronics", questions: "7–11"}
+  power_systems:                 {name: "Power Systems", questions: "8–12"}
+  electromagnetics:              {name: "Electromagnetics", questions: "4–6"}
+  control_systems:               {name: "Control Systems", questions: "6–9"}
+  communications:                {name: "Communications", questions: "5–8"}
+  computer_networks:             {name: "Computer Networks", questions: "4–6"}
+  digital_systems:               {name: "Digital Systems", questions: "8–12"}
+  computer_systems:              {name: "Computer Systems", questions: "5–8"}
+  software_engineering:          {name: "Software Engineering", questions: "4–6"}

@@ -1,0 +1,26 @@
+# Conda alternative to requirements.txt:
+#   conda env create -f environment.yml && conda activate bsee
+# ngspice and Icarus Verilog are also available from conda-forge, which makes
+# this the easiest route on macOS and Windows (outside WSL).
+name: bsee
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - numpy>=1.26
+  - scipy>=1.11
+  - sympy>=1.12
+  - matplotlib>=3.8
+  - pyyaml>=6.0
+  - jupyterlab>=4.0
+  - ipykernel>=6.25
+  - nbclient>=0.9
+  - nbformat>=5.9
+  - pytest>=8.0
+  - ngspice
+  - iverilog
+  - pip
+  - pip:
+      - schemdraw>=0.18
+      - mkdocs-material>=9.5
+      - pymdown-extensions>=10.7

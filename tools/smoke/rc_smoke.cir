@@ -1,0 +1,10 @@
+* Toolchain smoke test: RC step response.
+* A 1 V step charges C = 1 uF through R = 1 kOhm (tau = 1 ms) from 0 V.
+* At t = tau the capacitor voltage must be 1 - exp(-1) = 0.632121 V.
+* EXPECT vtau 0.6321206 rtol=1e-3
+V1 in 0 PWL(0 0 1n 1)
+R1 in out 1k
+C1 out 0 1u IC=0
+.tran 1u 5m 0 1u UIC
+.meas tran vtau FIND v(out) AT=1.000001m
+.end

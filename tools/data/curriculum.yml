@@ -1,0 +1,1277 @@
+# =============================================================================
+# Self-Taught BSEE — master curriculum data (single source of truth)
+#
+# Edit THIS file, then run:   python tools/build_curriculum.py
+# The generator rewrites CURRICULUM.md, the generated block of every course
+# README, and creates stub chapter files for chapters that do not exist yet.
+# It never overwrites a chapter file that already exists.
+#
+# hours      = estimated study hours for a chapter: reading + worked examples
+#              + problem set + lab, for a strong but new learner.
+# review_hours = course-level review + final exam time.
+# fe         = NCEES FE Electrical & Computer knowledge areas the course serves
+#              (keys defined in tools/data/fe_spec.yml).
+# =============================================================================
+
+terms:
+  - id: 1
+    title: Foundations
+    summary: The mathematics, physics and programming that every later course assumes.
+    # Python basics come first because every lab from 02-01 on is a notebook; C waits until the end of the term.
+    sequence: ["00", "05-01..05-04", "01", "02", "03", "04", "05-05..05-09"]
+  - id: 2
+    title: Circuits and Digital Logic
+    summary: The two core abstractions of EE, linear circuits and Boolean logic.
+  - id: 3
+    title: Devices, Electronics I, Signals and Systems
+    summary: How transistors work, how to build amplifiers from them, and the mathematics of signals.
+  - id: 4
+    title: Electronics II, Electromagnetics, Computer Architecture
+    summary: Real amplifiers and feedback, fields and waves, and how processors are built.
+  - id: 5
+    title: Systems Core
+    summary: Control, DSP, communications and embedded systems, the system-level toolkits.
+  - id: 6
+    title: Senior Electives (semiconductor-industry tracks)
+    summary: VLSI, analog/mixed-signal, RF, power, memory, high-speed I/O and the fab-to-package chain.
+  - id: 7
+    title: Design Practice, Systems and Practitioner Layer
+    summary: Engineering economics, end-to-end system case studies and technical diligence.
+
+courses:
+  # ---------------------------------------------------------------------------
+  - id: "00"
+    slug: orientation
+    title: Orientation
+    term: 1
+    review_hours: 0
+    overview: >-
+      A map of electrical engineering and of this curriculum: the subdisciplines, the
+      abstraction stack from physics to software, how to study without an instructor,
+      the toolchain, and how chip companies organize their engineering teams.
+    equivalents:
+      - "Freshman 'Introduction to Electrical Engineering' seminar"
+    textbooks:
+      - "No required text. Optional: Hambley, *Electrical Engineering: Principles and Applications* (survey chapters)"
+    free_courses:
+      - "MIT OCW 6.002 (Circuits and Electronics), lecture 1, for the abstraction idea"
+    prerequisites: []
+    fe: []
+    objectives:
+      - Name the major EE subdisciplines and place each on the abstraction stack.
+      - Explain what each level of the stack (device, circuit, block, chip, package, board, system, software) optimizes and hands to the next.
+      - Install and smoke-test the curriculum toolchain (Python, Jupyter, ngspice, Icarus Verilog).
+      - Describe the main engineering functions in a chip company and how a product moves from spec to production.
+    chapters:
+      - {id: "00-01", slug: map-of-electrical-engineering, title: "The Map of Electrical Engineering", hours: 2, topics: "Subdisciplines (circuits, devices, signals, communications, controls, power, EM/RF, computer engineering); how they connect; where the semiconductor industry sits"}
+      - {id: "00-02", slug: the-abstraction-stack, title: "The Abstraction Stack: Physics to Software", hours: 2, topics: "Physics → device → circuit → block → chip → package → board → system → software; what each layer hides; where abstractions leak"}
+      - {id: "00-03", slug: how-to-study-this-curriculum, title: "How to Study This Curriculum", hours: 1.5, topics: "Study loop, problem-solving protocol, spaced repetition with Anki, using verify scripts and labs, when to move on"}
+      - {id: "00-04", slug: toolchain-walkthrough, title: "Toolchain Setup Walkthrough", hours: 2.5, topics: "Python env, Jupyter, ngspice, Icarus Verilog/Verilator, GTKWave, Yosys; running the repo's checks; optional hardware kit"}
+      - {id: "00-05", slug: how-chip-companies-are-organized, title: "How Chip Companies' Engineering Organizations Work", hours: 2, topics: "Architecture, design, verification, physical design, DFT, analog/RF, software, product/test engineering, ops; spec-to-production lifecycle; headcount ratios"}
+
+  # ---------------------------------------------------------------------------
+  - id: "01"
+    slug: calculus-for-engineers
+    title: Calculus for Engineers
+    term: 1
+    review_hours: 6
+    overview: >-
+      Single- and multivariable calculus taught through electrical examples: charge and
+      current, energy and power, RC decay, RMS values and fields. Starts at refresher level
+      and ends at what circuits, devices and electromagnetics require.
+    equivalents:
+      - "Calculus I–III (single variable + multivariable)"
+      - "MIT 18.01 / 18.02"
+    textbooks:
+      - "Stewart, *Calculus: Early Transcendentals*"
+      - "Strang, *Calculus* (free, MIT OpenCourseWare)"
+      - "Kreyszig, *Advanced Engineering Mathematics* (multivariable / vector chapters)"
+    free_courses:
+      - "MIT OCW 18.01SC Single Variable Calculus"
+      - "MIT OCW 18.02SC Multivariable Calculus"
+    prerequisites: ["00"]
+    fe: [mathematics]
+    objectives:
+      - Differentiate and integrate the functions that appear in EE (polynomials, exponentials, logarithms, sinusoids, rational functions).
+      - Use derivatives for rates of change, optimization and linearization (the idea behind small-signal models).
+      - Use integrals for accumulation (charge from current, energy from power), averages and RMS values.
+      - Build and use Taylor expansions, and bound their error.
+      - Compute partial derivatives and gradients, and interpret line and surface integrals as work, flux and circulation.
+    chapters:
+      - {id: "01-01", slug: functions-models-and-units, title: "Functions, Models and Units", hours: 8, topics: "Functions as signals; exponentials and logarithms refresher; decibels; trigonometric functions and radians; dimensional analysis"}
+      - {id: "01-02", slug: limits-and-continuity, title: "Limits and Continuity", hours: 8, topics: "Limits, one-sided limits, continuity, limits at infinity, asymptotic behavior, L'Hôpital preview"}
+      - {id: "01-03", slug: derivatives, title: "Derivatives: Rates of Change in Circuits", hours: 12, topics: "Definition, rules (product, quotient, chain), derivatives of exp/log/trig, implicit differentiation, i = C dv/dt and v = L di/dt"}
+      - {id: "01-04", slug: applications-of-derivatives, title: "Applications of Derivatives", hours: 12, topics: "Optimization (max power transfer), linearization and the small-signal idea, Newton's method, related rates, L'Hôpital's rule"}
+      - {id: "01-05", slug: integrals, title: "Integrals: Accumulating Charge and Energy", hours: 12, topics: "Riemann sums, definite integrals, fundamental theorem of calculus, antiderivatives, q = ∫i dt, w = ∫p dt"}
+      - {id: "01-06", slug: techniques-of-integration, title: "Techniques of Integration", hours: 12, topics: "Substitution, integration by parts, partial fractions, trigonometric integrals, improper integrals, numerical integration"}
+      - {id: "01-07", slug: applications-of-integration, title: "Applications of Integration", hours: 10, topics: "Average value, RMS of periodic waveforms, energy in capacitors and inductors, work, probability densities"}
+      - {id: "01-08", slug: sequences-series-and-taylor, title: "Sequences, Series and Taylor Expansions", hours: 12, topics: "Convergence, geometric series, power series, Taylor/Maclaurin series of exp, sin, cos, ln(1+x); remainder bounds; approximations engineers use"}
+      - {id: "01-09", slug: multivariable-calculus-1, title: "Multivariable Calculus I: Partial Derivatives and Gradients", hours: 12, topics: "Functions of several variables, partial derivatives, gradient, directional derivative, chain rule, multivariable optimization, Lagrange multipliers"}
+      - {id: "01-10", slug: multivariable-calculus-2, title: "Multivariable Calculus II: Multiple, Line and Surface Integrals", hours: 12, topics: "Double/triple integrals, polar/cylindrical/spherical coordinates, line integrals (work), surface integrals (flux), intuition for divergence and curl"}
+
+  # ---------------------------------------------------------------------------
+  - id: "02"
+    slug: complex-numbers-des-and-linear-algebra
+    title: Complex Numbers, Differential Equations and Linear Algebra
+    term: 1
+    review_hours: 6
+    overview: >-
+      The three mathematical workhorses of EE. Complex numbers and phasors turn sinusoids
+      into algebra; linear ODEs describe every circuit with memory; linear algebra solves
+      large circuits and underpins state-space, signal processing and machine learning hardware.
+    equivalents:
+      - "Differential Equations + Linear Algebra (sophomore math)"
+      - "MIT 18.03 / 18.06"
+      - "Berkeley EE16A/B (linear-algebra and ODE content)"
+    textbooks:
+      - "Boyce & DiPrima, *Elementary Differential Equations and Boundary Value Problems*"
+      - "Strang, *Introduction to Linear Algebra*"
+      - "Kreyszig, *Advanced Engineering Mathematics* (complex numbers, ODE and linear-algebra parts)"
+    free_courses:
+      - "MIT OCW 18.03SC Differential Equations"
+      - "MIT OCW 18.06SC Linear Algebra"
+      - "Berkeley EE16A/EE16B course notes"
+    prerequisites: ["01"]
+    fe: [mathematics, linear_systems]
+    objectives:
+      - Work fluently with complex numbers in rectangular, polar and exponential form, and represent sinusoids as phasors.
+      - Solve first- and second-order linear constant-coefficient ODEs (homogeneous and forced) and interpret the characteristic roots physically.
+      - Use the Laplace transform to solve linear ODEs with initial conditions.
+      - Solve linear systems by elimination; compute determinants, inverses and rank; reason about solution existence and uniqueness.
+      - Compute eigenvalues and eigenvectors and use them to decouple systems of ODEs.
+      - Apply basic numerical methods (Newton, Euler/Runge–Kutta, numerical linear algebra) and recognize ill-conditioning.
+    chapters:
+      - {id: "02-01", slug: complex-numbers-euler-and-phasors, title: "Complex Numbers, Euler's Formula and Phasors", hours: 10, topics: "Rectangular/polar/exponential forms, arithmetic, roots of unity, Euler's formula (derived), sinusoids, phasors, d/dt ↔ jω, sinusoidal steady state of ODEs, impedance preview"}
+      - {id: "02-02", slug: first-order-linear-odes, title: "First-Order Linear ODEs", hours: 10, topics: "Separation of variables, integrating factor, homogeneous + particular solutions, time constant, initial-value problems, existence/uniqueness"}
+      - {id: "02-03", slug: second-order-linear-odes, title: "Second-Order Linear ODEs and the Characteristic Equation", hours: 12, topics: "Characteristic equation, overdamped/critically damped/underdamped cases, damping ratio and natural frequency, initial conditions"}
+      - {id: "02-04", slug: forced-response-and-resonance, title: "Forced Response and Resonance", hours: 10, topics: "Undetermined coefficients, superposition of forcing terms, sinusoidal forcing via phasors, resonance, quality factor"}
+      - {id: "02-05", slug: laplace-transform-for-odes, title: "The Laplace Transform for ODEs", hours: 10, topics: "Definition, table, properties, partial-fraction inversion, initial/final value theorems, solving IVPs, transfer-function preview"}
+      - {id: "02-06", slug: vectors-matrices-and-linear-systems, title: "Vectors, Matrices and Linear Systems", hours: 12, topics: "Vectors, matrix algebra, Gaussian elimination, LU, nodal analysis as Ax = b"}
+      - {id: "02-07", slug: determinants-inverses-and-vector-spaces, title: "Determinants, Inverses, Rank and Vector Spaces", hours: 10, topics: "Determinants, Cramer's rule, inverses, rank, null space, column space, linear independence, basis"}
+      - {id: "02-08", slug: eigenvalues-and-eigenvectors, title: "Eigenvalues and Eigenvectors", hours: 12, topics: "Characteristic polynomial, diagonalization, symmetric matrices, complex eigenvalues, SVD intuition"}
+      - {id: "02-09", slug: systems-of-odes-and-matrix-exponential, title: "Systems of Linear ODEs and the Matrix Exponential", hours: 10, topics: "State-variable form x' = Ax + Bu, eigen-decomposition solutions, matrix exponential, stability from eigenvalues"}
+      - {id: "02-10", slug: numerical-methods, title: "Numerical Methods for Engineers", hours: 8, topics: "Newton–Raphson, Euler and Runge–Kutta, stiffness, numerical linear algebra, conditioning, floating-point error (how SPICE solves circuits)"}
+
+  # ---------------------------------------------------------------------------
+  - id: "03"
+    slug: probability-statistics-and-random-variables
+    title: Probability, Statistics and Random Variables for EE
+    term: 1
+    review_hours: 3
+    overview: >-
+      An accelerated course for a learner who already knows probability and statistics from
+      finance: the same mathematics restated in EE language (bit errors, yield, noise,
+      measurement) and extended to the Gaussian Q-function and random-process ideas that
+      noise and communications courses need.
+    equivalents:
+      - "Probability and Random Processes for EE (junior)"
+      - "MIT 6.041 / 6.431"
+    textbooks:
+      - "Leon-Garcia, *Probability, Statistics, and Random Processes for Electrical Engineering*"
+      - "Bertsekas & Tsitsiklis, *Introduction to Probability*"
+    free_courses:
+      - "MIT OCW 6.041SC Probabilistic Systems Analysis and Applied Probability"
+    prerequisites: ["01"]
+    fe: [probability_statistics]
+    objectives:
+      - Model engineering events (bit errors, defects, failures) with the appropriate discrete or continuous distribution.
+      - Compute expectations, variances, covariances and correlation coefficients, including for sums and functions of random variables.
+      - Use the Gaussian distribution and the Q-function to compute error and yield probabilities.
+      - Apply estimation, confidence intervals and hypothesis tests to measurement and yield data.
+      - Explain autocorrelation, stationarity and white noise as the bridge to noise analysis and communications.
+    chapters:
+      - {id: "03-01", slug: probability-in-ee-language, title: "Probability in EE Language", hours: 6, topics: "Axioms, conditional probability, Bayes, independence, applied to bit errors, defects and test escapes"}
+      - {id: "03-02", slug: random-variables-and-distributions, title: "Random Variables and Distributions", hours: 8, topics: "Bernoulli, binomial, Poisson, geometric, uniform, exponential, Gaussian, Q-function, CDF/PDF/PMF"}
+      - {id: "03-03", slug: expectation-and-functions-of-rvs, title: "Expectation, Variance and Functions of Random Variables", hours: 6, topics: "Moments, transformation of variables, power of a random signal, RMS"}
+      - {id: "03-04", slug: joint-distributions-and-clt, title: "Joint Distributions, Correlation and the CLT", hours: 8, topics: "Joint/marginal/conditional, covariance, correlation, sums of RVs, convolution of densities, central limit theorem, jointly Gaussian"}
+      - {id: "03-05", slug: estimation-and-hypothesis-testing, title: "Estimation and Hypothesis Testing for Engineers", hours: 6, topics: "Sample statistics, confidence intervals, hypothesis tests, process capability (Cpk), yield and reliability statistics (Weibull preview)"}
+      - {id: "03-06", slug: random-processes-preview, title: "Random Processes Preview: Noise", hours: 6, topics: "Random processes, autocorrelation, stationarity, ergodicity, white noise, power spectral density intuition"}
+
+  # ---------------------------------------------------------------------------
+  - id: "04"
+    slug: physics-for-ee
+    title: Physics for EE
+    term: 1
+    review_hours: 6
+    overview: >-
+      Calculus-based electricity and magnetism with the mechanics, waves and modern physics
+      that EE depends on, ending with an introduction to quantum mechanics and solid-state
+      physics so that semiconductor devices make sense.
+    equivalents:
+      - "University Physics II (E&M) + Modern Physics"
+      - "MIT 8.02 / 8.04 (intro)"
+    textbooks:
+      - "Halliday, Resnick & Walker, *Fundamentals of Physics*"
+      - "Purcell & Morin, *Electricity and Magnetism*"
+      - "Griffiths, *Introduction to Quantum Mechanics* (first chapters, optional)"
+    free_courses:
+      - "MIT OCW 8.02 Physics II: Electricity and Magnetism"
+      - "MIT OCW 8.04 Quantum Physics I (first lectures)"
+    prerequisites: ["01"]
+    fe: [electromagnetics, electrical_materials]
+    companion: "quantum computing"
+    objectives:
+      - Compute electric fields, potentials and capacitance for simple charge distributions using Coulomb's and Gauss's laws.
+      - Compute magnetic fields of simple current distributions and the EMF induced by changing flux (Faraday/Lenz), and derive inductance.
+      - Relate microscopic conduction (drift, mobility) to Ohm's law and resistivity.
+      - Describe wave propagation (speed, wavelength, impedance, interference) and basic optics.
+      - Explain quantization, tunneling and energy bands, and why semiconductors differ from metals and insulators.
+    chapters:
+      - {id: "04-01", slug: mechanics-essentials, title: "Mechanics Essentials for EE", hours: 8, topics: "SI units, force, work, energy, power, momentum, simple harmonic oscillator (the mechanical LC)"}
+      - {id: "04-02", slug: charge-coulomb-and-electric-fields, title: "Charge, Coulomb's Law and Electric Fields", hours: 10, topics: "Charge, Coulomb's law, superposition, field lines, continuous distributions, dipoles"}
+      - {id: "04-03", slug: gauss-law, title: "Gauss's Law", hours: 8, topics: "Flux, Gauss's law, symmetric distributions, conductors in equilibrium"}
+      - {id: "04-04", slug: potential-capacitance-and-dielectrics, title: "Electric Potential, Capacitance and Dielectrics", hours: 10, topics: "Potential, equipotentials, capacitance, parallel-plate capacitor, dielectrics and permittivity, stored energy"}
+      - {id: "04-05", slug: current-resistance-and-conduction, title: "Current, Resistance and Conduction", hours: 8, topics: "Current density, drift velocity, mobility, resistivity, Drude model, temperature dependence, Joule heating"}
+      - {id: "04-06", slug: magnetic-fields-and-forces, title: "Magnetic Fields and Forces", hours: 10, topics: "Lorentz force, Biot–Savart, Ampère's law, solenoids, magnetic materials, Hall effect"}
+      - {id: "04-07", slug: faraday-lenz-and-inductance, title: "Faraday's Law, Lenz's Law and Inductance", hours: 10, topics: "Induced EMF, Lenz's law, self- and mutual inductance, energy in magnetic fields, transformers and generators (physics)"}
+      - {id: "04-08", slug: maxwell-preview, title: "Energy in Fields and Maxwell's Equations (Preview)", hours: 6, topics: "Displacement current, Maxwell's equations in integral form, electromagnetic waves, Poynting vector"}
+      - {id: "04-09", slug: waves-and-optics, title: "Waves and Optics Basics", hours: 10, topics: "Wave equation, speed/wavelength/frequency, superposition, interference, diffraction, reflection/refraction, polarization, the EM spectrum"}
+      - {id: "04-10", slug: intro-quantum-mechanics, title: "Introduction to Quantum Mechanics", hours: 10, topics: "Photons, photoelectric effect, wave–particle duality, Schrödinger equation, particle in a box, tunneling, uncertainty"}
+      - {id: "04-11", slug: intro-solid-state-physics, title: "Introduction to Solid-State Physics", hours: 10, topics: "Crystal lattices, electrons in a periodic potential, energy bands, metals vs semiconductors vs insulators, effective mass, holes"}
+
+  # ---------------------------------------------------------------------------
+  - id: "05"
+    slug: programming-for-engineers
+    title: Programming for Engineers
+    term: 1
+    review_hours: 4
+    overview: >-
+      Python for engineering computation and C for hardware-adjacent programming, plus the
+      data structures, algorithms and software-engineering practices that embedded systems,
+      verification and the FE exam assume.
+    equivalents:
+      - "Intro to Programming (Python) + Programming in C for Engineers"
+      - "MIT 6.0001 (Python); CS50 (C portions)"
+    textbooks:
+      - "Downey, *Think Python* (free)"
+      - "Kernighan & Ritchie, *The C Programming Language*"
+      - "VanderPlas, *Python Data Science Handbook* (free, NumPy/Matplotlib chapters)"
+    free_courses:
+      - "MIT OCW 6.0001 Introduction to Computer Science and Programming in Python"
+      - "Harvard CS50 (C weeks)"
+    prerequisites: ["00"]
+    fe: [software_engineering, computer_systems]
+    objectives:
+      - Write, test and debug Python programs that solve engineering problems with NumPy, SciPy, SymPy and Matplotlib.
+      - Write C programs that use pointers, arrays, structs and dynamic memory correctly.
+      - Manipulate bits, masks and fixed-width integers the way firmware manipulates hardware registers.
+      - Choose appropriate data structures (arrays, ring buffers, linked lists, hash tables, trees) and reason about algorithmic complexity.
+      - Apply basic software-engineering practice: version control, testing, requirements and design methods.
+    chapters:
+      - {id: "05-01", slug: python-fundamentals, title: "Python Fundamentals for Engineers", hours: 8, topics: "Types, control flow, functions, modules, files, exceptions, virtual environments"}
+      - {id: "05-02", slug: numpy-and-vectorization, title: "NumPy, Vectorization and Numerical Computing", hours: 8, topics: "Arrays, broadcasting, vectorization, complex arrays, floating point"}
+      - {id: "05-03", slug: scipy-sympy-matplotlib, title: "SciPy, SymPy and Matplotlib", hours: 8, topics: "Solving equations and ODEs, symbolic algebra, plotting conventions for engineering figures"}
+      - {id: "05-04", slug: reproducible-workflows, title: "Jupyter, Testing and Reproducible Workflows", hours: 6, topics: "Notebooks, git basics, pytest, assertions, how this repo's verify scripts work"}
+      - {id: "05-05", slug: c-fundamentals, title: "C Fundamentals", hours: 10, topics: "Compilation model, types, operators, control flow, functions, headers, the preprocessor"}
+      - {id: "05-06", slug: c-pointers-and-memory, title: "C Pointers, Arrays and Memory", hours: 10, topics: "Pointers, arrays, strings, structs, stack vs heap, malloc/free, common memory bugs"}
+      - {id: "05-07", slug: bit-manipulation, title: "Bit Manipulation and Fixed-Width Integers", hours: 8, topics: "Two's complement, masks, shifts, stdint.h, endianness, register access, fixed-point arithmetic"}
+      - {id: "05-08", slug: data-structures-and-algorithms, title: "Data Structures and Algorithms You Will Need", hours: 12, topics: "Arrays, ring buffers, linked lists, stacks/queues, hash tables, trees, sorting/searching, Big-O"}
+      - {id: "05-09", slug: software-engineering-practices, title: "Software Engineering Practices", hours: 6, topics: "Requirements, design methods (waterfall, V-model, agile), testing levels, version control, code review, (FE Software Engineering topics)"}
+
+  # ---------------------------------------------------------------------------
+  - id: "06"
+    slug: circuit-analysis-1-dc
+    title: Circuit Analysis I (DC)
+    term: 2
+    review_hours: 6
+    overview: >-
+      The foundation of circuit theory: elements, Kirchhoff's laws, systematic nodal and mesh
+      analysis, network theorems, and the ideal op-amp, all with DC sources so that the
+      methods are learned before time and frequency enter.
+    equivalents:
+      - "Circuits I (sophomore)"
+      - "MIT 6.002 (first half); Berkeley EE16A (circuits portion)"
+    textbooks:
+      - "Nilsson & Riedel, *Electric Circuits*"
+      - "Alexander & Sadiku, *Fundamentals of Electric Circuits*"
+      - "Agarwal & Lang, *Foundations of Analog and Digital Electronic Circuits* (MIT 6.002 text)"
+    free_courses:
+      - "MIT OCW 6.002 Circuits and Electronics"
+      - "Berkeley EE16A"
+    prerequisites: ["01", "02", "04"]
+    fe: [circuit_analysis]
+    objectives:
+      - Apply KVL, KCL and element laws with the passive sign convention to any lumped circuit.
+      - Solve circuits with independent and dependent sources by nodal and mesh analysis, setting them up as matrix equations.
+      - Use superposition, source transformation and Thevenin/Norton equivalents to simplify circuits.
+      - Find the load that receives maximum power, and the efficiency at that point.
+      - Analyze ideal op-amp circuits (inverting, non-inverting, summing, difference, buffer).
+    chapters:
+      - {id: "06-01", slug: charge-current-voltage-power, title: "Charge, Current, Voltage, Power and the Lumped Circuit Abstraction", hours: 6, topics: "Lumped-matter discipline, reference directions, passive sign convention, power and energy"}
+      - {id: "06-02", slug: circuit-elements-and-ohms-law, title: "Circuit Elements and Ohm's Law", hours: 6, topics: "Resistors, independent sources, open/short circuits, conductance, resistor technology"}
+      - {id: "06-03", slug: kirchhoffs-laws, title: "Kirchhoff's Laws, Series/Parallel and Dividers", hours: 8, topics: "KCL, KVL, series and parallel combination, voltage and current dividers, Wheatstone bridge, delta–wye"}
+      - {id: "06-04", slug: nodal-analysis, title: "Nodal Analysis", hours: 10, topics: "Node voltages, supernodes, matrix formulation G·v = i, by-inspection method, modified nodal analysis (how SPICE does it)"}
+      - {id: "06-05", slug: mesh-analysis, title: "Mesh Analysis", hours: 8, topics: "Mesh currents, supermeshes, matrix formulation, choosing nodal vs mesh"}
+      - {id: "06-06", slug: dependent-sources, title: "Dependent Sources", hours: 8, topics: "VCVS, VCCS, CCVS, CCCS; modeling transistors and amplifiers; analysis with dependent sources"}
+      - {id: "06-07", slug: linearity-and-superposition, title: "Linearity and Superposition", hours: 6, topics: "Linearity, superposition with independent sources, limitations (power is not linear)"}
+      - {id: "06-08", slug: thevenin-and-norton, title: "Thevenin and Norton Equivalents", hours: 10, topics: "Source transformation, Thevenin/Norton theorems, test-source method, equivalents with dependent sources"}
+      - {id: "06-09", slug: maximum-power-transfer, title: "Maximum Power Transfer", hours: 4, topics: "Derivation, efficiency at maximum power, when engineers do and do not want matching"}
+      - {id: "06-10", slug: ideal-op-amp, title: "The Ideal Op-Amp", hours: 10, topics: "Op-amp model, negative feedback, virtual short, inverting/non-inverting/summing/difference amplifiers, buffers, comparators"}
+      - {id: "06-11", slug: practical-dc-circuits-and-measurement, title: "Practical DC Circuits and Measurement", hours: 4, topics: "Meter loading, source resistance, wire resistance, tolerance and worst-case analysis, Kelvin sensing"}
+
+  # ---------------------------------------------------------------------------
+  - id: "07"
+    slug: circuit-analysis-2-transient-and-ac
+    title: Circuit Analysis II (Transient and AC)
+    term: 2
+    review_hours: 6
+    overview: >-
+      Circuits with memory. Capacitors and inductors, first- and second-order transients,
+      Laplace-domain analysis, sinusoidal steady state with phasors and impedance, AC power,
+      frequency response and filters, transformers, two-port networks and three-phase power.
+    equivalents:
+      - "Circuits II (sophomore/junior)"
+      - "MIT 6.002 (second half)"
+      - "Berkeley EE16B (circuits/transients portion)"
+    textbooks:
+      - "Nilsson & Riedel, *Electric Circuits*"
+      - "Alexander & Sadiku, *Fundamentals of Electric Circuits*"
+    free_courses:
+      - "MIT OCW 6.002 Circuits and Electronics"
+      - "Berkeley EE16B"
+    prerequisites: ["02", "06"]
+    fe: [circuit_analysis, linear_systems, power_systems]
+    objectives:
+      - Analyze first- and second-order transients from initial conditions, final values and characteristic roots.
+      - Analyze circuits in the s-domain, including initial conditions, and extract transfer functions, poles and zeros.
+      - Solve sinusoidal steady-state circuits with phasors and impedance, and compute real, reactive, apparent and complex power.
+      - Sketch Bode plots, design simple passive and active filters, and characterize resonance by ω0, Q and bandwidth.
+      - Analyze magnetically coupled circuits, ideal transformers, two-port networks and balanced three-phase systems.
+    chapters:
+      - {id: "07-01", slug: capacitors-and-inductors, title: "Capacitors and Inductors", hours: 7, topics: "Element laws, energy storage, continuity of v_C and i_L, series/parallel combinations, real capacitors and inductors"}
+      - {id: "07-02", slug: first-order-rc-rl-transients, title: "First-Order RC and RL Transients", hours: 10, topics: "Natural and step responses, initial–final–τ method, sequential switching, pulse trains, settling and rise time, the ½CV² charging loss, inductive kick, op-amp integrators"}
+      - {id: "07-03", slug: second-order-rlc-transients, title: "Second-Order RLC Transients", hours: 10, topics: "Series/parallel RLC, characteristic equation, overdamped/critically damped/underdamped, ζ and ω0, step response, ringing"}
+      - {id: "07-04", slug: laplace-domain-circuit-analysis, title: "Laplace-Domain Circuit Analysis", hours: 12, topics: "s-domain element models with initial conditions, transfer functions, poles and zeros, impulse and step response, stability"}
+      - {id: "07-05", slug: sinusoidal-steady-state-and-impedance, title: "Sinusoidal Steady State, Phasors and Impedance", hours: 10, topics: "Impedance and admittance, phasor KVL/KCL, nodal/mesh/Thevenin in the phasor domain, phasor diagrams"}
+      - {id: "07-06", slug: ac-power-and-power-factor, title: "AC Power and Power Factor", hours: 8, topics: "Instantaneous and average power, RMS, complex power, power factor and its correction, maximum average power transfer"}
+      - {id: "07-07", slug: frequency-response-and-bode-plots, title: "Frequency Response and Bode Plots", hours: 10, topics: "H(jω), decibels, asymptotic Bode plots, poles/zeros to magnitude and phase, bandwidth"}
+      - {id: "07-08", slug: filters-and-resonance, title: "Filters and Resonance", hours: 10, topics: "Passive and active filters, series/parallel resonance, Q and bandwidth, Butterworth intro, Sallen–Key"}
+      - {id: "07-09", slug: mutual-inductance-and-transformers, title: "Mutual Inductance and Transformers", hours: 8, topics: "Coupled inductors, dot convention, coupling coefficient, ideal and linear transformers, impedance reflection"}
+      - {id: "07-10", slug: two-port-networks, title: "Two-Port Networks", hours: 7, topics: "z, y, h, ABCD parameters; conversions; interconnection; reciprocity (bridge to S-parameters)"}
+      - {id: "07-11", slug: three-phase-circuits, title: "Three-Phase Circuits", hours: 5, topics: "Balanced Y and Δ, line vs phase quantities, per-phase analysis, three-phase power and measurement"}
+
+  # ---------------------------------------------------------------------------
+  - id: "08"
+    slug: digital-logic-design
+    title: Digital Logic Design
+    term: 2
+    review_hours: 6
+    overview: >-
+      From number systems and Boolean algebra to finite state machines, timing and FPGA
+      implementation, written in Verilog/SystemVerilog with self-checking testbenches, the way
+      digital design is actually done.
+    equivalents:
+      - "Digital Design / Digital Logic (sophomore)"
+      - "MIT 6.004 (first half), MIT 6.111"
+      - "Berkeley CS61C (logic portion), EECS 151 (intro)"
+    textbooks:
+      - "Harris & Harris, *Digital Design and Computer Architecture* (RISC-V Edition)"
+      - "Mano & Ciletti, *Digital Design*"
+    free_courses:
+      - "MIT OCW 6.004 Computation Structures"
+      - "MIT OCW 6.111 Introductory Digital Systems Laboratory"
+    prerequisites: ["05"]
+    fe: [digital_systems, computer_systems]
+    objectives:
+      - Convert between number systems and perform two's-complement and fixed-point arithmetic.
+      - Simplify Boolean functions algebraically and with K-maps, and implement them with gates and standard combinational blocks.
+      - Design synchronous sequential circuits and FSMs (Moore and Mealy) from a specification.
+      - Write synthesizable Verilog/SystemVerilog and self-checking testbenches, and simulate them.
+      - Analyze timing (propagation and contamination delay, setup/hold, maximum clock frequency) and explain metastability and clock-domain crossing.
+      - Take a design through an open-source FPGA flow.
+    chapters:
+      - {id: "08-01", slug: number-systems-and-codes, title: "Number Systems and Codes", hours: 7, topics: "Binary, hex, two's complement, overflow, fixed-point, Gray code, BCD, ASCII, error-detecting codes"}
+      - {id: "08-02", slug: boolean-algebra-and-gates, title: "Boolean Algebra and Logic Gates", hours: 8, topics: "Axioms and theorems, De Morgan, SOP/POS, canonical forms, gates, universal gates"}
+      - {id: "08-03", slug: logic-minimization, title: "Logic Minimization: K-Maps and Beyond", hours: 8, topics: "K-maps, don't cares, prime implicants, Quine–McCluskey idea, how synthesis tools minimize"}
+      - {id: "08-04", slug: combinational-building-blocks, title: "Combinational Building Blocks", hours: 10, topics: "Mux, decoder, encoder, priority encoder, adders, subtractors, comparators, ALU, hazards"}
+      - {id: "08-05", slug: verilog-and-testbenches, title: "Introduction to Verilog/SystemVerilog and Testbenches", hours: 12, topics: "Modules, assign/always, blocking vs non-blocking, synthesizable subset, self-checking testbenches, Icarus/Verilator/GTKWave"}
+      - {id: "08-06", slug: latches-and-flip-flops, title: "Latches, Flip-Flops and Sequential Timing", hours: 8, topics: "SR/D latches, D flip-flops, enable/reset, setup/hold/clock-to-Q, synchronous design discipline"}
+      - {id: "08-07", slug: registers-counters-shift-registers, title: "Registers, Counters and Shift Registers", hours: 7, topics: "Registers, binary/BCD/ring/Johnson counters, shift registers, LFSRs"}
+      - {id: "08-08", slug: finite-state-machines, title: "Finite State Machines", hours: 12, topics: "Moore vs Mealy, state diagrams, state encoding, FSM design flow, FSMs in Verilog"}
+      - {id: "08-09", slug: arithmetic-circuits, title: "Arithmetic Circuits", hours: 8, topics: "Ripple, carry-lookahead and prefix adders, multipliers, shifters, fixed-point datapaths"}
+      - {id: "08-10", slug: timing-metastability-cdc, title: "Timing, Metastability and Clock-Domain Crossing", hours: 10, topics: "Critical path, max frequency, hold violations, clock skew, metastability and MTBF, synchronizers, CDC FIFOs"}
+      - {id: "08-11", slug: memories-and-programmable-logic, title: "Memories and Programmable Logic", hours: 5, topics: "ROM/RAM arrays, register files, PLAs, FPGA architecture (LUTs, BRAM, DSP slices)"}
+      - {id: "08-12", slug: fpga-implementation-flow, title: "FPGA Implementation Flow", hours: 5, topics: "Synthesis, place and route, timing reports, constraints, open-source Yosys/nextpnr on iCE40"}
+
+  # ---------------------------------------------------------------------------
+  - id: "09"
+    slug: semiconductor-devices
+    title: Semiconductor Devices
+    term: 3
+    review_hours: 6
+    overview: >-
+      The physics of the transistor, from crystals and energy bands through PN junctions,
+      BJTs and MOSFETs to the scaling story (Moore, Dennard and their limits), today's
+      FinFET/GAA/CFET devices, backside power, and compound-semiconductor and optoelectronic devices.
+    equivalents:
+      - "Solid-State / Semiconductor Devices (junior)"
+      - "MIT 6.012; Berkeley EE130; Stanford EE216"
+    textbooks:
+      - "Pierret, *Semiconductor Device Fundamentals*"
+      - "Streetman & Banerjee, *Solid State Electronic Devices*"
+      - "Hu, *Modern Semiconductor Devices for Integrated Circuits* (free online)"
+      - "Sze & Ng, *Physics of Semiconductor Devices* (reference)"
+    free_courses:
+      - "MIT OCW 6.012 Microelectronic Devices and Circuits"
+      - "MIT OCW 6.720J Integrated Microelectronic Devices"
+      - "NPTEL semiconductor devices courses"
+    prerequisites: ["04", "07"]
+    fe: [electrical_materials, electronics]
+    companion: "semiconductor capital equipment"
+    objectives:
+      - Compute carrier concentrations, Fermi-level position and conductivity for doped semiconductors.
+      - Derive drift and diffusion currents and use the continuity equation for minority carriers.
+      - Derive PN-junction electrostatics, the ideal-diode equation and junction capacitance.
+      - Explain BJT operation and derive its terminal characteristics.
+      - Derive MOS-capacitor behavior and long-channel MOSFET I–V characteristics, and explain short-channel effects and leakage.
+      - Explain the scaling roadmap (Dennard, FinFET, GAA, CFET, backside power) and where compound semiconductors and optoelectronic devices fit.
+    chapters:
+      - {id: "09-01", slug: crystals-and-energy-bands, title: "Crystals, Energy Bands and the Semiconductor", hours: 8, topics: "Crystal structure, Miller indices, band diagrams, bandgap, direct vs indirect, effective mass"}
+      - {id: "09-02", slug: carriers-doping-fermi-level, title: "Carriers, Doping and the Fermi Level", hours: 9, topics: "Density of states, Fermi–Dirac statistics, intrinsic carriers, donors/acceptors, n·p = n_i², temperature dependence"}
+      - {id: "09-03", slug: drift-and-diffusion, title: "Carrier Transport: Drift and Diffusion", hours: 8, topics: "Mobility, scattering, velocity saturation, resistivity, diffusion, Einstein relation, band bending"}
+      - {id: "09-04", slug: generation-recombination-continuity, title: "Generation, Recombination and the Continuity Equation", hours: 7, topics: "SRH/radiative/Auger recombination, lifetime, quasi-Fermi levels, continuity equation, diffusion length"}
+      - {id: "09-05", slug: pn-junction-electrostatics, title: "PN Junction Electrostatics", hours: 8, topics: "Built-in potential, depletion approximation, field and potential profiles, depletion width"}
+      - {id: "09-06", slug: pn-junction-iv-and-capacitance, title: "PN Junction I–V, Capacitance and Breakdown", hours: 9, topics: "Ideal diode equation (derived), non-idealities, junction and diffusion capacitance, avalanche and Zener breakdown, Schottky diodes"}
+      - {id: "09-07", slug: bipolar-junction-transistor, title: "The Bipolar Junction Transistor", hours: 9, topics: "Operation, current gain, Ebers–Moll, Early effect, high-level injection, HBTs"}
+      - {id: "09-08", slug: mos-capacitor, title: "The MOS Capacitor", hours: 9, topics: "Accumulation/depletion/inversion, threshold voltage derivation, C–V curves, oxide charges, high-k/metal gate"}
+      - {id: "09-09", slug: long-channel-mosfet, title: "The Long-Channel MOSFET", hours: 10, topics: "Gradual-channel derivation of I–V, saturation, body effect, channel-length modulation, subthreshold conduction, square law"}
+      - {id: "09-10", slug: short-channel-effects-and-leakage, title: "Short-Channel Effects and Leakage", hours: 8, topics: "Velocity saturation, DIBL, Vt roll-off, subthreshold slope limit, gate leakage, GIDL, variability"}
+      - {id: "09-11", slug: cmos-and-scaling, title: "CMOS and Scaling: Moore, Dennard and Beyond", hours: 6, topics: "CMOS inverter preview, Moore's law, Dennard scaling and its end, power density, node naming vs physical dimensions"}
+      - {id: "09-12", slug: finfet-gaa-cfet-backside-power, title: "Advanced Transistors: FinFET, GAA, CFET and Backside Power", hours: 6, topics: "Electrostatic control, FinFET, nanosheet GAA, forksheet, CFET, backside power delivery, 2D-material channels (outlook)"}
+      - {id: "09-13", slug: compound-and-wide-bandgap-semiconductors, title: "Compound and Wide-Bandgap Semiconductors", hours: 6, topics: "GaAs, InP, GaN, SiC; HEMTs and HBTs; why RF and power use them; substrates and cost"}
+      - {id: "09-14", slug: optoelectronic-devices, title: "Optoelectronic Devices", hours: 7, topics: "LEDs, laser diodes, photodiodes, APDs/SPADs, CMOS image sensors, solar cells"}
+
+  # ---------------------------------------------------------------------------
+  - id: "10"
+    slug: electronics-1
+    title: Electronics I (Microelectronic Circuits)
+    term: 3
+    review_hours: 6
+    overview: >-
+      Turning devices into circuits: diode circuits, transistor biasing, small-signal models,
+      single-stage MOS and BJT amplifiers, current mirrors, and the non-idealities of real op-amps.
+    equivalents:
+      - "Electronics I / Microelectronic Circuits I (junior)"
+      - "MIT 6.012 (circuits half); Berkeley EE105"
+    textbooks:
+      - "Sedra & Smith, *Microelectronic Circuits* (first half)"
+      - "Razavi, *Fundamentals of Microelectronics*"
+    free_courses:
+      - "MIT OCW 6.012 Microelectronic Devices and Circuits"
+      - "MIT OCW 6.002 (amplifier lectures)"
+    prerequisites: ["07", "09"]
+    fe: [electronics]
+    objectives:
+      - Analyze diode circuits (rectifiers, clippers, regulators) with appropriate diode models.
+      - DC-bias MOSFET and BJT circuits and verify the operating region.
+      - Derive small-signal models (g_m, r_o, r_π) from large-signal equations and use them to compute gain and input/output resistance.
+      - Analyze and compare all single-stage MOS and BJT amplifier configurations.
+      - Design current sources and mirrors and analyze their output resistance.
+      - Quantify op-amp non-idealities (finite gain, GBW, slew rate, offset, bias current, CMRR, PSRR) and their effect on circuits.
+    chapters:
+      - {id: "10-01", slug: diodes-and-diode-circuits, title: "Diodes and Diode Circuits", hours: 10, topics: "Diode models (ideal, constant-drop, exponential, small-signal), rectifiers, ripple, clippers/clampers, Zener regulators"}
+      - {id: "10-02", slug: mosfet-dc-operation-and-biasing, title: "MOSFET DC Operation and Biasing", hours: 10, topics: "Regions of operation, square law, DC analysis, biasing schemes, PMOS, the MOSFET as a switch"}
+      - {id: "10-03", slug: bjt-dc-operation-and-biasing, title: "BJT DC Operation and Biasing", hours: 9, topics: "Active/saturation/cutoff, β, DC analysis, bias stability, BJT as a switch"}
+      - {id: "10-04", slug: small-signal-models, title: "Small-Signal Models", hours: 10, topics: "Linearization, g_m, r_o, r_π, hybrid-π and T models, body effect, validity limits"}
+      - {id: "10-05", slug: amplifier-fundamentals, title: "Amplifier Fundamentals", hours: 6, topics: "Voltage/current/transconductance/transresistance amplifiers, input/output resistance, cascading, decibels, power efficiency"}
+      - {id: "10-06", slug: mos-single-stage-amplifiers, title: "MOS Single-Stage Amplifiers", hours: 12, topics: "Common-source (with/without degeneration), common-gate, common-drain; gain, R_in, R_out; intrinsic gain"}
+      - {id: "10-07", slug: bjt-single-stage-amplifiers, title: "BJT Single-Stage Amplifiers", hours: 10, topics: "Common-emitter, common-base, common-collector; emitter degeneration; MOS vs BJT comparison"}
+      - {id: "10-08", slug: current-sources-and-mirrors, title: "Current Sources and Current Mirrors", hours: 8, topics: "Basic mirror, output resistance, cascode mirror, Wilson mirror, mismatch, biasing ICs"}
+      - {id: "10-09", slug: real-op-amps-nonidealities, title: "Real Op-Amps: Non-Idealities", hours: 10, topics: "Finite gain, GBW, slew rate, offset, bias currents, CMRR, PSRR, output swing, datasheet reading"}
+      - {id: "10-10", slug: op-amp-application-circuits, title: "Op-Amp Application Circuits", hours: 8, topics: "Instrumentation amplifier, active filters, precision rectifier, comparators and Schmitt triggers, transimpedance amplifier"}
+
+  # ---------------------------------------------------------------------------
+  - id: "11"
+    slug: signals-and-systems
+    title: Signals and Systems
+    term: 3
+    review_hours: 6
+    overview: >-
+      The mathematics of signals and linear time-invariant systems in continuous and discrete
+      time: convolution, Fourier series and transforms, Laplace and z-transforms, and sampling.
+      This is the language of DSP, communications, control and circuits alike.
+    equivalents:
+      - "Signals and Systems (junior)"
+      - "MIT 6.003; Berkeley EE120; Stanford EE102A"
+    textbooks:
+      - "Oppenheim & Willsky, *Signals and Systems*"
+      - "Lathi, *Linear Systems and Signals*"
+    free_courses:
+      - "MIT OCW 6.003 Signals and Systems"
+      - "Berkeley EE16B (frequency-domain content)"
+    prerequisites: ["02", "07"]
+    fe: [linear_systems, signal_processing]
+    objectives:
+      - Classify signals and systems (linearity, time invariance, causality, stability) and compute convolutions in continuous and discrete time.
+      - Compute Fourier series and Fourier transforms and use their properties to analyze LTI systems in frequency.
+      - Use the Laplace and z-transforms, including regions of convergence, to analyze stability and system functions.
+      - Apply the sampling theorem, explain aliasing and design anti-aliasing and reconstruction filters.
+      - Relate time-domain, frequency-domain and pole-zero descriptions of the same system.
+    chapters:
+      - {id: "11-01", slug: signals-classification-and-operations, title: "Signals: Classification and Operations", hours: 8, topics: "CT/DT, periodic, energy/power, even/odd, time shift/scale/reversal, impulse, step, complex exponentials"}
+      - {id: "11-02", slug: system-properties, title: "Systems and Their Properties", hours: 7, topics: "Linearity, time invariance, causality, stability (BIBO), memory, invertibility"}
+      - {id: "11-03", slug: convolution, title: "Convolution", hours: 10, topics: "Impulse response, convolution sum and integral, graphical convolution, properties"}
+      - {id: "11-04", slug: lti-systems-and-differential-equations, title: "LTI Systems and Differential/Difference Equations", hours: 8, topics: "LTI properties from h(t), differential and difference equations, block diagrams, eigenfunctions"}
+      - {id: "11-05", slug: fourier-series, title: "Fourier Series", hours: 10, topics: "Exponential and trigonometric forms, convergence, Gibbs phenomenon, Parseval, LTI response to periodic inputs"}
+      - {id: "11-06", slug: continuous-time-fourier-transform, title: "The Continuous-Time Fourier Transform", hours: 12, topics: "Definition, properties, transform pairs, convolution/multiplication duality, frequency response, energy spectra"}
+      - {id: "11-07", slug: discrete-time-fourier-transform, title: "The Discrete-Time Fourier Transform", hours: 8, topics: "DTFT, periodicity in ω, properties, DT frequency response"}
+      - {id: "11-08", slug: laplace-transform-and-system-functions, title: "The Laplace Transform and System Functions", hours: 10, topics: "Bilateral/unilateral, ROC, poles and zeros, stability and causality, system functions, geometric evaluation of frequency response"}
+      - {id: "11-09", slug: z-transform, title: "The z-Transform", hours: 10, topics: "Definition, ROC, properties, inverse z-transform, system functions, stability in the z-plane"}
+      - {id: "11-10", slug: sampling-aliasing-reconstruction, title: "Sampling, Aliasing and Reconstruction", hours: 10, topics: "Sampling theorem, aliasing, anti-aliasing filters, ideal and ZOH reconstruction, bandpass sampling"}
+      - {id: "11-11", slug: modulation-and-filtering-applications, title: "Modulation and Filtering Applications", hours: 7, topics: "AM, frequency shifting, ideal vs practical filters, introduction to communication systems"}
+
+  # ---------------------------------------------------------------------------
+  - id: "12"
+    slug: electronics-2
+    title: Electronics II
+    term: 4
+    review_hours: 6
+    overview: >-
+      Real amplifiers: differential pairs, cascodes and multistage amplifiers, high-frequency
+      response, feedback, stability and compensation, output stages, op-amp internals,
+      oscillators and noise. This is the bridge to analog IC design.
+    equivalents:
+      - "Electronics II / Microelectronic Circuits II (junior/senior)"
+      - "Berkeley EE140 (intro); Stanford EE114; MIT 6.301"
+    textbooks:
+      - "Sedra & Smith, *Microelectronic Circuits* (second half)"
+      - "Razavi, *Design of Analog CMOS Integrated Circuits* (early chapters)"
+      - "Gray, Hurst, Lewis & Meyer, *Analysis and Design of Analog Integrated Circuits* (reference)"
+    free_courses:
+      - "MIT OCW 6.301 Solid-State Circuits"
+      - "MIT OCW 6.012 (frequency response and feedback lectures)"
+    prerequisites: ["10", "11"]
+    fe: [electronics, control_systems]
+    objectives:
+      - Analyze differential pairs (differential/common-mode gain, CMRR) and multistage amplifiers with active loads and cascodes.
+      - Compute amplifier frequency response using device capacitances, the Miller approximation and time-constant methods.
+      - Analyze the four feedback topologies and their effect on gain, bandwidth and impedances.
+      - Assess stability with loop gain, phase margin and gain margin, and apply frequency compensation.
+      - Analyze output stages, two-stage op-amp internals and oscillator conditions.
+      - Compute input-referred noise from thermal, shot and flicker sources.
+    chapters:
+      - {id: "12-01", slug: differential-pairs, title: "Differential Pairs", hours: 10, topics: "MOS and BJT pairs, large-signal behavior, differential and common-mode gain, CMRR, mismatch and offset"}
+      - {id: "12-02", slug: active-loads-cascodes-multistage, title: "Active Loads, Cascodes and Multistage Amplifiers", hours: 10, topics: "Active loads, cascode amplifiers, telescopic gain, multistage analysis, DC coupling and level shifting"}
+      - {id: "12-03", slug: frequency-response-miller-poles-zeros, title: "Frequency Response: Device Capacitances, Miller Effect, Poles and Zeros", hours: 12, topics: "MOSFET/BJT capacitances, f_T, Miller theorem, dominant pole, CS/CG/CD high-frequency response"}
+      - {id: "12-04", slug: high-frequency-analysis-methods, title: "High-Frequency Analysis Methods", hours: 8, topics: "Open-circuit time constants, zero-value time constants, short-circuit time constants, pole splitting"}
+      - {id: "12-05", slug: feedback-topologies, title: "Feedback: Theory and the Four Topologies", hours: 12, topics: "Loop gain, desensitivity, bandwidth extension, series/shunt topologies, effect on impedances, return-ratio analysis"}
+      - {id: "12-06", slug: stability-and-compensation, title: "Stability and Frequency Compensation", hours: 10, topics: "Phase and gain margin, Bode stability, dominant-pole and Miller compensation, right-half-plane zero, nulling resistor"}
+      - {id: "12-07", slug: output-stages, title: "Output Stages and Power Amplifiers", hours: 8, topics: "Class A, B, AB; efficiency; crossover distortion; thermal considerations; class D preview"}
+      - {id: "12-08", slug: op-amp-internals, title: "Op-Amp Internals", hours: 10, topics: "Two-stage CMOS op-amp, folded cascode, slew rate origin, CMFB, rail-to-rail stages"}
+      - {id: "12-09", slug: oscillators, title: "Oscillators", hours: 8, topics: "Barkhausen criterion, RC/Wien, LC, crystal, ring oscillators, amplitude stabilization"}
+      - {id: "12-10", slug: noise-in-circuits, title: "Noise in Circuits", hours: 10, topics: "Thermal, shot, flicker noise; noise spectral density; input-referred noise; noise in amplifiers; kT/C; noise figure preview"}
+
+  # ---------------------------------------------------------------------------
+  - id: "13"
+    slug: electromagnetics
+    title: Electromagnetics
+    term: 4
+    review_hours: 6
+    overview: >-
+      Maxwell's equations and their engineering consequences: waves, reflection, transmission
+      lines and the Smith chart, waveguides and antennas. The basis for RF, signal integrity
+      and photonics.
+    equivalents:
+      - "Electromagnetics I–II (junior)"
+      - "MIT 6.013; Berkeley EE117"
+    textbooks:
+      - "Ulaby & Ravaioli, *Fundamentals of Applied Electromagnetics*"
+      - "Cheng, *Field and Wave Electromagnetics*"
+      - "Griffiths, *Introduction to Electrodynamics* (physics perspective)"
+    free_courses:
+      - "MIT OCW 6.013 Electromagnetics and Applications"
+      - "NPTEL electromagnetic theory courses"
+    prerequisites: ["01", "04", "07"]
+    fe: [electromagnetics]
+    objectives:
+      - Use vector calculus (gradient, divergence, curl and the integral theorems) in Cartesian, cylindrical and spherical coordinates.
+      - Solve electrostatic and magnetostatic boundary-value problems and compute capacitance and inductance of structures.
+      - Derive plane-wave solutions from Maxwell's equations and compute propagation, attenuation, skin depth and power flow.
+      - Analyze transmission lines in time and frequency domain, including reflections, standing waves and input impedance.
+      - Use the Smith chart for impedance matching.
+      - Explain waveguide modes and antenna fundamentals (radiation patterns, gain, effective aperture).
+    chapters:
+      - {id: "13-01", slug: vector-calculus-refresher, title: "Vector Calculus Refresher", hours: 10, topics: "Coordinate systems, gradient, divergence, curl, Laplacian, divergence and Stokes theorems"}
+      - {id: "13-02", slug: electrostatics-boundary-value-problems, title: "Electrostatics: Boundary Conditions and Boundary-Value Problems", hours: 10, topics: "Boundary conditions, Poisson/Laplace equations, method of images, capacitance of real structures"}
+      - {id: "13-03", slug: magnetostatics-and-inductance, title: "Magnetostatics and Inductance", hours: 8, topics: "Vector potential, inductance of structures, magnetic materials, boundary conditions"}
+      - {id: "13-04", slug: maxwells-equations, title: "Maxwell's Equations and Time-Varying Fields", hours: 10, topics: "Differential and integral forms, displacement current, time-harmonic (phasor) fields, Poynting theorem"}
+      - {id: "13-05", slug: plane-waves, title: "Plane Waves in Lossless and Lossy Media", hours: 10, topics: "Wave equation, intrinsic impedance, polarization, lossy media, skin depth, good conductors"}
+      - {id: "13-06", slug: reflection-and-transmission, title: "Reflection and Transmission of Waves", hours: 8, topics: "Normal and oblique incidence, Snell's law, Fresnel coefficients, total internal reflection, Brewster angle"}
+      - {id: "13-07", slug: transmission-lines-time-domain, title: "Transmission Lines: Time Domain", hours: 10, topics: "Telegrapher's equations, characteristic impedance, reflections, bounce diagrams, TDR"}
+      - {id: "13-08", slug: transmission-lines-sinusoidal-steady-state, title: "Transmission Lines: Sinusoidal Steady State", hours: 10, topics: "Propagation constant, input impedance, VSWR, quarter-wave transformer, lossy lines"}
+      - {id: "13-09", slug: smith-chart-and-matching, title: "The Smith Chart and Impedance Matching", hours: 10, topics: "Smith chart construction, single-stub and lumped matching, bandwidth of matching"}
+      - {id: "13-10", slug: waveguides-and-resonators, title: "Waveguides and Resonators", hours: 6, topics: "Rectangular waveguide modes, cutoff, cavity resonators, dielectric waveguides (optical fiber preview)"}
+      - {id: "13-11", slug: radiation-and-antennas, title: "Radiation and Antenna Fundamentals", hours: 8, topics: "Hertzian dipole, radiation patterns, directivity, gain, effective aperture, Friis equation, arrays preview"}
+
+  # ---------------------------------------------------------------------------
+  - id: "14"
+    slug: computer-organization-and-architecture
+    title: Computer Organization and Architecture
+    term: 4
+    review_hours: 6
+    overview: >-
+      How processors and accelerators are built and why they perform the way they do: ISAs
+      (RISC-V primary, with Arm and x86 and their licensing models), pipelines, speculation,
+      out-of-order execution, memory hierarchy, multicore, GPUs and AI accelerators, roofline
+      analysis, and how benchmarks are gamed.
+    equivalents:
+      - "Computer Organization + Computer Architecture (junior/senior)"
+      - "MIT 6.004 / 6.823; Berkeley CS61C / CS152; Stanford EE282"
+    textbooks:
+      - "Patterson & Hennessy, *Computer Organization and Design* (RISC-V Edition)"
+      - "Hennessy & Patterson, *Computer Architecture: A Quantitative Approach*"
+      - "Harris & Harris, *Digital Design and Computer Architecture* (RISC-V Edition)"
+    free_courses:
+      - "MIT OCW 6.004 Computation Structures"
+      - "MIT OCW 6.823 Computer System Architecture"
+      - "Berkeley CS61C (public lecture materials)"
+    prerequisites: ["05", "08"]
+    fe: [computer_systems, digital_systems]
+    companion: "LLM inference engineering; datacenter networking"
+    objectives:
+      - Use the iron law of performance and Amdahl's law to reason about speedups.
+      - Read and write RISC-V assembly, and contrast RISC-V, Arm and x86 ISAs and their business models.
+      - Design single-cycle and pipelined datapaths and resolve data and control hazards.
+      - Analyze caches, virtual memory and multicore coherence quantitatively.
+      - Explain GPU (SIMT) and AI-accelerator (systolic, dataflow, low-precision) architectures and analyze them with the roofline model.
+      - Critically evaluate benchmark and TOPS claims.
+    chapters:
+      - {id: "14-01", slug: performance-power-iron-law, title: "Performance, Power and the Iron Law", hours: 7, topics: "CPI, clock rate, iron law, Amdahl's law, power and energy, performance per watt"}
+      - {id: "14-02", slug: isa-risc-v-arm-x86, title: "Instruction Set Architecture: RISC-V, Arm and x86", hours: 10, topics: "ISA design principles, RISC-V base and extensions, Arm and x86 contrast, licensing models (open, architecture license, core license)"}
+      - {id: "14-03", slug: assembly-and-the-compilation-stack, title: "Assembly and the Compilation Stack", hours: 8, topics: "RISC-V assembly, calling conventions, compilation, linking, loading, ABIs"}
+      - {id: "14-04", slug: computer-arithmetic-and-number-formats, title: "Computer Arithmetic and Number Formats", hours: 7, topics: "Integer arithmetic, IEEE 754, bfloat16, FP8/MX formats, integer quantization"}
+      - {id: "14-05", slug: single-cycle-datapath, title: "Single-Cycle Datapath and Control", hours: 8, topics: "Datapath elements, control unit, executing instructions, CPI = 1 and its cost"}
+      - {id: "14-06", slug: pipelining-and-hazards, title: "Pipelining and Hazards", hours: 10, topics: "Five-stage pipeline, data hazards, forwarding, stalls, control hazards, pipeline performance"}
+      - {id: "14-07", slug: branch-prediction-and-speculation, title: "Branch Prediction and Speculation", hours: 7, topics: "Static/dynamic predictors, BTB, return stack, speculation, Spectre-class side channels"}
+      - {id: "14-08", slug: out-of-order-and-superscalar, title: "Out-of-Order and Superscalar Execution", hours: 9, topics: "ILP, register renaming, Tomasulo, reorder buffer, superscalar width, limits of ILP"}
+      - {id: "14-09", slug: memory-hierarchy-and-caches, title: "Memory Hierarchy and Caches", hours: 10, topics: "Locality, cache organization, AMAT, replacement and write policies, multilevel caches, prefetching"}
+      - {id: "14-10", slug: virtual-memory, title: "Virtual Memory, TLBs and the OS Interface", hours: 7, topics: "Paging, page tables, TLBs, protection, exceptions and interrupts"}
+      - {id: "14-11", slug: io-buses-and-interconnect, title: "I/O, Buses and Interconnect", hours: 5, topics: "Memory-mapped I/O, interrupts, DMA, on-chip buses (AXI), PCIe preview, NoCs"}
+      - {id: "14-12", slug: multicore-coherence-consistency, title: "Multicore, Coherence and Memory Consistency", hours: 8, topics: "Thread-level parallelism, snooping and directory coherence, MESI, consistency models, synchronization"}
+      - {id: "14-13", slug: gpus-and-simt, title: "GPUs and SIMT", hours: 7, topics: "SIMD vs SIMT, warps, occupancy, memory coalescing, tensor cores"}
+      - {id: "14-14", slug: ai-accelerators, title: "AI Accelerators: Systolic Arrays, Dataflow and Low Precision", hours: 9, topics: "Matrix-multiply engines, systolic arrays, dataflow taxonomies, on-chip SRAM vs HBM, sparsity, low precision"}
+      - {id: "14-15", slug: roofline-and-benchmarks, title: "The Roofline Model, Benchmarks and How They Are Gamed", hours: 4, topics: "Roofline, arithmetic intensity, SPEC, MLPerf, Geekbench, TOPS vs delivered throughput, benchmark gaming"}
+
+  # ---------------------------------------------------------------------------
+  - id: "15"
+    slug: control-systems
+    title: Control Systems
+    term: 5
+    review_hours: 5
+    overview: >-
+      Feedback control from modeling to design: transfer functions, time response, root locus,
+      Bode/Nyquist stability, PID and lead/lag compensation, state space and digital control,
+      applied to PLLs, voltage regulators and thermal management.
+    equivalents:
+      - "Feedback Control Systems (junior/senior)"
+      - "MIT 6.302; Berkeley EE C128"
+    textbooks:
+      - "Franklin, Powell & Emami-Naeini, *Feedback Control of Dynamic Systems*"
+      - "Ogata, *Modern Control Engineering*"
+      - "Åström & Murray, *Feedback Systems* (free online)"
+    free_courses:
+      - "MIT OCW 6.302 Feedback Systems"
+      - "MIT OCW 2.04A Systems and Controls"
+    prerequisites: ["07", "11"]
+    fe: [control_systems]
+    objectives:
+      - Model electrical, mechanical and thermal systems as transfer functions and block diagrams.
+      - Relate pole locations to time-response specifications and compute steady-state error.
+      - Design controllers with root locus and with Bode/Nyquist methods (phase margin, gain margin).
+      - Tune PID and design lead/lag compensators to meet specifications.
+      - Formulate state-space models, test controllability/observability and place poles.
+      - Discretize controllers and analyze PLLs and regulators as feedback systems.
+    chapters:
+      - {id: "15-01", slug: modeling-dynamic-systems, title: "Modeling Dynamic Systems", hours: 8, topics: "Electrical, mechanical, thermal analogs; linearization about an operating point"}
+      - {id: "15-02", slug: transfer-functions-and-block-diagrams, title: "Transfer Functions and Block Diagrams", hours: 7, topics: "Transfer functions, block-diagram algebra, signal-flow graphs, Mason's rule"}
+      - {id: "15-03", slug: time-response, title: "Time Response and Specifications", hours: 7, topics: "First/second-order response, rise time, overshoot, settling time, dominant poles"}
+      - {id: "15-04", slug: feedback-and-steady-state-error, title: "Feedback Properties and Steady-State Error", hours: 7, topics: "Sensitivity, disturbance rejection, system type, error constants"}
+      - {id: "15-05", slug: stability-routh-hurwitz, title: "Stability and the Routh–Hurwitz Criterion", hours: 5, topics: "BIBO stability, Routh array, special cases, stability ranges for gain"}
+      - {id: "15-06", slug: root-locus, title: "Root Locus", hours: 8, topics: "Root-locus rules, design with root locus, effect of added poles and zeros"}
+      - {id: "15-07", slug: frequency-domain-design, title: "Frequency-Domain Design: Bode, Nyquist and Margins", hours: 10, topics: "Nyquist criterion, gain and phase margin, relation to damping and overshoot"}
+      - {id: "15-08", slug: pid-control, title: "PID Control", hours: 6, topics: "P, PI, PD, PID actions; tuning methods; integrator windup; derivative filtering"}
+      - {id: "15-09", slug: lead-lag-compensation, title: "Lead and Lag Compensation", hours: 7, topics: "Lead/lag design in frequency domain and root locus"}
+      - {id: "15-10", slug: state-space-introduction, title: "State-Space Introduction", hours: 8, topics: "State equations, solution, controllability, observability, pole placement, observers"}
+      - {id: "15-11", slug: digital-control, title: "Digital Control", hours: 5, topics: "Sampling, ZOH, discretization (Tustin), discrete-time stability, controller implementation"}
+      - {id: "15-12", slug: control-applications-pll-regulators-thermal, title: "Applications: PLLs, Voltage Regulators and Thermal Management", hours: 6, topics: "PLL as a control loop, regulator loop compensation, DVFS and thermal throttling loops"}
+
+  # ---------------------------------------------------------------------------
+  - id: "16"
+    slug: digital-signal-processing
+    title: Digital Signal Processing
+    term: 5
+    review_hours: 5
+    overview: >-
+      Discrete-time signal processing for engineers who will build or buy DSP hardware: DTFT,
+      DFT/FFT, spectral analysis, FIR and IIR design, multirate systems, quantization and
+      fixed-point effects, and DSP hardware architectures.
+    equivalents:
+      - "Digital Signal Processing (senior)"
+      - "MIT 6.341; Berkeley EE123"
+    textbooks:
+      - "Oppenheim & Schafer, *Discrete-Time Signal Processing*"
+      - "Lyons, *Understanding Digital Signal Processing*"
+    free_courses:
+      - "MIT OCW 6.341 Discrete-Time Signal Processing"
+      - "NPTEL digital signal processing courses"
+    prerequisites: ["11", "05"]
+    fe: [signal_processing]
+    objectives:
+      - Compute and interpret the DTFT, DFT and FFT, including leakage, windowing and resolution.
+      - Design FIR filters (window method, Parks–McClellan) and IIR filters (bilinear transform) to specifications.
+      - Design decimators and interpolators, including polyphase implementations.
+      - Quantify quantization noise and fixed-point effects (coefficient quantization, overflow, limit cycles).
+      - Map DSP algorithms onto hardware (MAC units, pipelining, CORDIC) and estimate their cost.
+    chapters:
+      - {id: "16-01", slug: discrete-time-systems-review, title: "Discrete-Time Signals and Systems Review", hours: 5, topics: "Difference equations, impulse response, stability, DSP system view"}
+      - {id: "16-02", slug: dtft-and-z-transform-for-dsp, title: "DTFT and z-Transform for DSP", hours: 6, topics: "Frequency response, pole-zero design intuition, minimum phase, all-pass"}
+      - {id: "16-03", slug: the-dft, title: "The DFT and Its Properties", hours: 8, topics: "DFT as sampled DTFT, circular convolution, zero-padding, linear convolution via DFT"}
+      - {id: "16-04", slug: the-fft, title: "The FFT Algorithm", hours: 7, topics: "Radix-2 DIT/DIF, butterflies, operation counts, FFT hardware"}
+      - {id: "16-05", slug: spectral-analysis-and-windowing, title: "Spectral Analysis and Windowing", hours: 7, topics: "Leakage, windows and their tradeoffs, resolution, periodogram, ADC testing with FFTs"}
+      - {id: "16-06", slug: fir-filter-design, title: "FIR Filter Design", hours: 9, topics: "Linear phase, window method, frequency sampling, Parks–McClellan, filter order estimates"}
+      - {id: "16-07", slug: iir-filter-design, title: "IIR Filter Design", hours: 8, topics: "Butterworth/Chebyshev/elliptic, bilinear transform, prewarping, FIR vs IIR tradeoffs"}
+      - {id: "16-08", slug: filter-structures, title: "Filter Structures and Implementation", hours: 6, topics: "Direct forms, transposed, cascade of biquads, lattice, sensitivity"}
+      - {id: "16-09", slug: multirate-dsp, title: "Multirate DSP: Decimation, Interpolation and Polyphase", hours: 8, topics: "Downsampling, upsampling, polyphase filters, CIC filters, sample-rate conversion"}
+      - {id: "16-10", slug: quantization-and-fixed-point, title: "Quantization and Fixed-Point Effects", hours: 7, topics: "Quantization noise model, SQNR = 6.02N + 1.76 dB, coefficient quantization, overflow, scaling, limit cycles"}
+      - {id: "16-11", slug: dsp-hardware-architectures, title: "DSP Hardware Architectures", hours: 7, topics: "MAC units, DSP cores, SIMD/VLIW, FPGA DSP slices, ASIC datapaths, CORDIC, power/area tradeoffs"}
+
+  # ---------------------------------------------------------------------------
+  - id: "17"
+    slug: communication-systems
+    title: Communication Systems
+    term: 5
+    review_hours: 5
+    overview: >-
+      How information moves over noisy channels: random processes and noise, analog and
+      digital modulation, matched filtering and BER, information theory and Shannon capacity,
+      channel coding, wireless channels, OFDM, MIMO and multiple access, how 4G/5G and Wi-Fi
+      apply them, and the computer-networking layer above.
+    equivalents:
+      - "Communication Systems / Digital Communications (senior)"
+      - "MIT 6.450; Berkeley EE121"
+    textbooks:
+      - "Lathi & Ding, *Modern Digital and Analog Communication Systems*"
+      - "Proakis & Salehi, *Communication Systems Engineering*"
+      - "Tse & Viswanath, *Fundamentals of Wireless Communication* (free online)"
+      - "Kurose & Ross, *Computer Networking: A Top-Down Approach* (networking chapter)"
+    free_courses:
+      - "MIT OCW 6.450 Principles of Digital Communication I"
+      - "MIT OCW 6.02 Introduction to EECS II: Digital Communication Systems"
+    prerequisites: ["03", "11"]
+    fe: [communications, computer_networks]
+    companion: "datacenter networking"
+    objectives:
+      - Characterize random processes by autocorrelation and PSD and compute noise power and SNR through systems.
+      - Analyze baseband and bandpass digital modulation (PAM, PSK, QAM) including pulse shaping and ISI.
+      - Derive the matched filter and compute bit-error rates in AWGN.
+      - Apply Shannon capacity and explain how channel codes approach it.
+      - Explain OFDM, MIMO and multiple-access schemes and map them onto 4G/5G and Wi-Fi.
+      - Describe layered network models, addressing and routing at FE level.
+    chapters:
+      - {id: "17-01", slug: random-processes-and-psd, title: "Random Processes and Power Spectral Density", hours: 9, topics: "Stationarity, autocorrelation, Wiener–Khinchin, PSD through LTI systems, Gaussian processes"}
+      - {id: "17-02", slug: noise-and-snr, title: "Noise and SNR in Communication Systems", hours: 6, topics: "Thermal noise kTB, AWGN model, noise bandwidth, SNR, Eb/N0"}
+      - {id: "17-03", slug: analog-modulation, title: "Analog Modulation (Brief)", hours: 5, topics: "AM, DSB-SC, SSB, FM, Carson's rule, superheterodyne receiver"}
+      - {id: "17-04", slug: baseband-digital-transmission, title: "Baseband Digital Transmission", hours: 8, topics: "PAM, line codes, pulse shaping, ISI, Nyquist criterion, raised cosine, eye diagrams"}
+      - {id: "17-05", slug: matched-filters-and-detection, title: "Matched Filters and Optimal Detection", hours: 8, topics: "Matched filter derivation, correlation receiver, signal space, ML/MAP detection"}
+      - {id: "17-06", slug: bandpass-digital-modulation, title: "Bandpass Digital Modulation and BER", hours: 10, topics: "I/Q representation, BPSK, QPSK, M-PSK, M-QAM, FSK, constellations, BER/SER, EVM, spectral efficiency"}
+      - {id: "17-07", slug: information-theory-and-shannon, title: "Information Theory and Shannon Capacity", hours: 8, topics: "Entropy, mutual information, channel capacity, Shannon–Hartley, the Shannon limit"}
+      - {id: "17-08", slug: channel-coding, title: "Channel Coding", hours: 9, topics: "Block codes, Hamming, CRC, convolutional codes and Viterbi, LDPC and polar intuition, coding gain"}
+      - {id: "17-09", slug: wireless-channels, title: "Wireless Channels: Fading and Multipath", hours: 6, topics: "Path loss, shadowing, multipath, delay spread, coherence bandwidth/time, Doppler, Rayleigh fading"}
+      - {id: "17-10", slug: ofdm, title: "OFDM", hours: 7, topics: "Orthogonal subcarriers, FFT implementation, cyclic prefix, PAPR, OFDMA"}
+      - {id: "17-11", slug: mimo-and-beamforming, title: "MIMO and Beamforming Basics", hours: 6, topics: "Diversity, spatial multiplexing, capacity scaling, beamforming"}
+      - {id: "17-12", slug: multiple-access-and-cellular-wifi, title: "Multiple Access, Cellular and Wi-Fi Systems", hours: 8, topics: "TDMA/FDMA/CDMA/OFDMA, CSMA/CA, cellular architecture, how 4G/5G and Wi-Fi apply the course"}
+      - {id: "17-13", slug: computer-networks-fundamentals, title: "Computer Networks Fundamentals", hours: 8, topics: "OSI and TCP/IP models, Ethernet, IP addressing and subnetting, routing and switching, TCP/UDP, network security basics (FE Computer Networks)"}
+
+  # ---------------------------------------------------------------------------
+  - id: "18"
+    slug: embedded-systems-and-microcontrollers
+    title: Embedded Systems and Microcontrollers
+    term: 5
+    review_hours: 5
+    overview: >-
+      Building products around microcontrollers: MCU architecture (Arm Cortex-M, RISC-V),
+      bare-metal C, interrupts, timers and DMA, serial buses and analog interfaces, RTOS
+      concepts, boot and firmware update, ultra-low-power design, sensors and hardware security.
+    equivalents:
+      - "Embedded Systems / Microcontrollers (junior/senior)"
+      - "Berkeley EECS149; UT Austin EE319K"
+    textbooks:
+      - "Valvano, *Embedded Systems* series (Cortex-M)"
+      - "Yiu, *The Definitive Guide to Arm Cortex-M3 and Cortex-M4 Processors*"
+      - "White, *Making Embedded Systems*"
+      - "Lee & Seshia, *Introduction to Embedded Systems* (free online)"
+    free_courses:
+      - "Berkeley EECS149 (Lee & Seshia materials)"
+      - "UT Austin 'Embedded Systems — Shape the World' (edX)"
+    prerequisites: ["05", "08", "10", "14"]
+    fe: [computer_systems, digital_systems, software_engineering]
+    objectives:
+      - Describe MCU architectures (core, bus matrix, memory map, peripherals) and choose an MCU for a requirement.
+      - Write bare-metal C that configures peripherals through registers, with correct use of volatile and interrupts.
+      - Use timers, DMA and serial buses (UART, SPI, I²C) and analog interfaces (ADC, DAC, PWM).
+      - Explain RTOS scheduling, synchronization and priority inversion.
+      - Compute power budgets and battery life for duty-cycled sensor nodes.
+      - Explain secure boot, roots of trust, TEEs and side-channel threats.
+    chapters:
+      - {id: "18-01", slug: microcontroller-architecture, title: "Microcontroller Architecture", hours: 7, topics: "Cortex-M and RISC-V MCU cores, memory map, buses, flash/SRAM, clocks and resets, MCU selection"}
+      - {id: "18-02", slug: bare-metal-c-and-toolchain, title: "Bare-Metal C and the Build Toolchain", hours: 8, topics: "Startup code, vector table, linker scripts, volatile, register access, HALs vs bare metal"}
+      - {id: "18-03", slug: interrupts-exceptions-timers, title: "Interrupts, Exceptions and Timers", hours: 8, topics: "NVIC, priorities, latency, ISR design, timers, capture/compare, PWM generation, watchdogs"}
+      - {id: "18-04", slug: dma-and-data-movement, title: "DMA and Data Movement", hours: 5, topics: "DMA controllers, double buffering, peripheral-to-memory streaming, bus contention"}
+      - {id: "18-05", slug: gpio-uart-spi-i2c, title: "Peripherals and Serial Buses: GPIO, UART, SPI, I²C", hours: 8, topics: "GPIO electrical characteristics, UART framing, SPI modes, I²C protocol and addressing, I3C preview"}
+      - {id: "18-06", slug: adc-dac-pwm, title: "Analog Interfaces: ADC, DAC and PWM", hours: 6, topics: "MCU ADC specs, sampling and reference, oversampling, DAC, PWM as a DAC"}
+      - {id: "18-07", slug: rtos-concepts, title: "RTOS Concepts", hours: 8, topics: "Tasks, scheduling (rate-monotonic), semaphores, mutexes, queues, priority inversion, FreeRTOS/Zephyr"}
+      - {id: "18-08", slug: boot-and-firmware-update, title: "Boot, Bootloaders and Firmware Update", hours: 5, topics: "Boot sequence, bootloaders, OTA/DFU, A/B images, rollback"}
+      - {id: "18-09", slug: ultra-low-power-design, title: "Ultra-Low-Power Design", hours: 9, topics: "Power modes, duty cycling, always-on domains, sensor hubs, energy per operation, battery-life budgets"}
+      - {id: "18-10", slug: sensors, title: "Sensors: IMU, PPG, MEMS and Audio", hours: 7, topics: "MEMS accelerometers/gyros, PPG optical front ends, MEMS microphones, environmental sensors, sensor fusion"}
+      - {id: "18-11", slug: hardware-security, title: "Hardware Security", hours: 7, topics: "Root of trust, secure boot, TEE/TrustZone, key storage, PUFs, side-channel and fault attacks, certifications"}
+
+  # ---------------------------------------------------------------------------
+  - id: "19"
+    slug: digital-vlsi-design
+    title: Digital VLSI Design
+    term: 6
+    review_hours: 6
+    overview: >-
+      Designing digital chips: the CMOS inverter, logic families, sizing and logical effort,
+      interconnect, power, SRAM, timing and clocking, and the full ASIC flow (synthesis, place
+      and route, static timing, signoff) using open-source Yosys/OpenROAD/OpenLane on the
+      SkyWater 130 nm PDK, plus design-for-test and verification.
+    equivalents:
+      - "Digital VLSI / Digital Integrated Circuits (senior)"
+      - "MIT 6.374; Berkeley EECS151/251A; Stanford EE271"
+    textbooks:
+      - "Weste & Harris, *CMOS VLSI Design: A Circuits and Systems Perspective*"
+      - "Rabaey, Chandrakasan & Nikolić, *Digital Integrated Circuits: A Design Perspective*"
+      - "Sutherland, Sproull & Harris, *Logical Effort*"
+    free_courses:
+      - "MIT OCW 6.374 Analysis and Design of Digital Integrated Circuits"
+      - "Berkeley EECS151 (public lecture materials)"
+    prerequisites: ["08", "09", "10", "14"]
+    fe: [digital_systems, electronics]
+    objectives:
+      - Analyze the static and dynamic behavior of the CMOS inverter and of static CMOS gates.
+      - Size logic paths with logical effort and estimate interconnect delay with Elmore models and repeaters.
+      - Estimate and reduce dynamic and leakage power.
+      - Analyze sequential timing (setup/hold, skew, jitter) and SRAM cell stability.
+      - Run an RTL-to-GDS flow with open-source tools and interpret synthesis, timing and power reports.
+      - Explain scan-based DFT, BIST and ATPG, and modern verification methods (UVM, formal, emulation).
+    chapters:
+      - {id: "19-01", slug: cmos-inverter-static, title: "The CMOS Inverter: Static Characteristics", hours: 8, topics: "VTC, switching threshold, noise margins, sizing for symmetry"}
+      - {id: "19-02", slug: cmos-inverter-dynamic, title: "The CMOS Inverter: Dynamic Behavior and Delay", hours: 8, topics: "Load capacitance, RC delay model, propagation delay, rise/fall, FO4"}
+      - {id: "19-03", slug: logic-families, title: "Combinational Logic Families", hours: 8, topics: "Static CMOS, ratioed logic, pass-transistor and transmission gates, dynamic and domino logic"}
+      - {id: "19-04", slug: sizing-and-logical-effort, title: "Transistor Sizing and Logical Effort", hours: 9, topics: "Logical/electrical/branching effort, optimal stage count, path optimization"}
+      - {id: "19-05", slug: interconnect, title: "Interconnect", hours: 8, topics: "Wire R and C, Elmore delay, distributed RC, repeaters, crosstalk, scaling of wires"}
+      - {id: "19-06", slug: power-and-low-power-design, title: "Power and Low-Power Design", hours: 9, topics: "P = αCV²f, short-circuit and leakage power, DVFS, clock gating, power gating, multi-Vt, energy-delay tradeoffs"}
+      - {id: "19-07", slug: sequential-timing-and-clocking, title: "Sequential Circuits, Timing and Clocking", hours: 9, topics: "Flip-flop and latch timing, setup/hold, skew and jitter, clock distribution, time borrowing"}
+      - {id: "19-08", slug: sram-design, title: "SRAM Design", hours: 8, topics: "6T cell, read/write stability, sense amplifiers, array organization, assist techniques, register files"}
+      - {id: "19-09", slug: layout-and-standard-cells, title: "Layout, Design Rules and Standard Cells", hours: 6, topics: "Layers, design rules, stick diagrams, standard-cell libraries, DRC/LVS"}
+      - {id: "19-10", slug: synthesis-and-sta, title: "The ASIC Flow I: Synthesis and Static Timing Analysis", hours: 9, topics: "Logic synthesis, constraints (SDC), STA, timing corners, OCV, Yosys/OpenSTA"}
+      - {id: "19-11", slug: place-route-signoff, title: "The ASIC Flow II: Floorplan, Place and Route, Signoff", hours: 10, topics: "Floorplanning, placement, CTS, routing, parasitic extraction, signoff, OpenLane/OpenROAD on Sky130"}
+      - {id: "19-12", slug: design-for-test, title: "Design for Test: Scan, BIST and ATPG", hours: 6, topics: "Fault models, scan chains, ATPG, MBIST/LBIST, test compression, JTAG"}
+      - {id: "19-13", slug: verification-methods, title: "Verification: Simulation, UVM, Formal and Emulation", hours: 8, topics: "Verification planning, coverage, UVM concepts, assertions, formal equivalence and property checking, emulation and prototyping"}
+
+  # ---------------------------------------------------------------------------
+  - id: "20"
+    slug: analog-and-mixed-signal-ic-design
+    title: Analog and Mixed-Signal IC Design
+    term: 6
+    review_hours: 6
+    overview: >-
+      Designing analog and mixed-signal blocks in CMOS: gm/ID methodology, two-stage op-amps,
+      bandgap references, LDOs, comparators, data converters (SAR, pipeline, sigma-delta,
+      flash, DACs), PLLs and jitter, layout and matching, and why analog does not scale like digital.
+    equivalents:
+      - "Analog IC Design + Data Converters (senior/first-year graduate)"
+      - "Berkeley EE140/240A; Stanford EE214A"
+    textbooks:
+      - "Razavi, *Design of Analog CMOS Integrated Circuits*"
+      - "Carusone, Johns & Martin, *Analog Integrated Circuit Design*"
+      - "Pelgrom, *Analog-to-Digital Conversion*"
+    free_courses:
+      - "Razavi's analog design lectures (UCLA, public video)"
+      - "NPTEL analog IC design courses"
+    prerequisites: ["12", "09"]
+    fe: [electronics]
+    objectives:
+      - Size transistors with the gm/ID methodology to meet gain, bandwidth and power targets.
+      - Design and compensate a two-stage op-amp to a specification and verify it in simulation.
+      - Analyze bandgap references, LDOs and comparators.
+      - Explain data-converter specifications and compare SAR, pipeline, sigma-delta and flash ADCs and DAC architectures.
+      - Analyze PLL loop dynamics and jitter.
+      - Explain matching, PVT variation and layout techniques, and why analog area and power do not shrink with digital scaling.
+    chapters:
+      - {id: "20-01", slug: analog-design-fundamentals-gm-id, title: "Analog Design Fundamentals in Nanometer CMOS", hours: 8, topics: "gm/ID methodology, intrinsic gain, f_T, design space exploration, corners"}
+      - {id: "20-02", slug: two-stage-op-amp-design, title: "Two-Stage Op-Amp Design", hours: 12, topics: "Specifications, topology, Miller compensation design, slew, CMRR/PSRR, design procedure, simulation verification"}
+      - {id: "20-03", slug: bandgap-references, title: "Bandgap and Voltage References", hours: 8, topics: "PTAT/CTAT, bandgap derivation, curvature, sub-1V references, startup"}
+      - {id: "20-04", slug: ldo-regulators, title: "Low-Dropout Regulators", hours: 8, topics: "LDO architecture, dropout, load/line regulation, PSRR, stability, capless LDOs"}
+      - {id: "20-05", slug: comparators-and-sample-and-hold, title: "Comparators and Sample-and-Hold Circuits", hours: 8, topics: "Latched comparators, offset, kickback, metastability, bootstrapped switches, kT/C"}
+      - {id: "20-06", slug: data-converter-fundamentals, title: "Data Converter Fundamentals", hours: 7, topics: "Quantization, INL/DNL, SNR/SNDR/SFDR/ENOB, figures of merit (Walden, Schreier)"}
+      - {id: "20-07", slug: nyquist-adcs, title: "Nyquist ADCs: Flash, SAR and Pipeline", hours: 10, topics: "Flash, SAR (capacitive DAC), pipeline, time-interleaving, calibration"}
+      - {id: "20-08", slug: sigma-delta-converters, title: "Oversampling and Sigma-Delta Converters", hours: 9, topics: "Oversampling, noise shaping, loop order, continuous-time ΣΔ, decimation filters"}
+      - {id: "20-09", slug: dacs, title: "DACs", hours: 6, topics: "Resistor, current-steering and capacitive DACs, segmentation, dynamic errors"}
+      - {id: "20-10", slug: plls-and-jitter, title: "PLLs and Jitter", hours: 10, topics: "Charge-pump PLL, loop dynamics, phase noise and jitter, fractional-N, all-digital PLLs"}
+      - {id: "20-11", slug: layout-matching-pvt, title: "Layout, Matching and PVT Variation", hours: 7, topics: "Pelgrom mismatch, common-centroid, guard rings, parasitics, Monte Carlo, corners"}
+      - {id: "20-12", slug: why-analog-does-not-scale, title: "Why Analog Does Not Scale Like Digital", hours: 5, topics: "Headroom, intrinsic gain, matching vs area, kT/C, digitally assisted analog"}
+
+  # ---------------------------------------------------------------------------
+  - id: "21"
+    slug: rf-and-microwave-engineering
+    title: RF and Microwave Engineering
+    term: 6
+    review_hours: 5
+    overview: >-
+      Radio hardware from S-parameters to standards: matching, noise figure and linearity,
+      LNAs, mixers, VCOs and power amplifiers, transceiver architectures, the RF front end,
+      antennas and beamforming, link budgets, modem baseband architecture and today's wireless standards.
+    equivalents:
+      - "RF/Microwave Engineering + RF IC Design (senior/first-year graduate)"
+      - "Berkeley EE142; Stanford EE314A; MIT 6.776"
+    textbooks:
+      - "Pozar, *Microwave Engineering*"
+      - "Razavi, *RF Microelectronics*"
+      - "Lee, *The Design of CMOS Radio-Frequency Integrated Circuits*"
+    free_courses:
+      - "MIT OCW 6.776 High Speed Communication Circuits"
+      - "Berkeley EE142 (public materials)"
+    prerequisites: ["12", "13", "17"]
+    fe: [electromagnetics, communications, electronics]
+    objectives:
+      - Use S-parameters and design lumped and distributed matching networks.
+      - Compute cascaded noise figure, P1dB, IP3 and dynamic range of a receiver chain.
+      - Analyze LNAs, mixers, VCOs and PAs and the efficiency–linearity tradeoff (including envelope tracking and DPD).
+      - Compare transceiver architectures and front-end components (filters, switches, duplexers).
+      - Compute link budgets and explain antenna arrays, beamforming and mmWave constraints.
+      - Map modem architecture and wireless standards (cellular, Wi-Fi, BLE, UWB, GNSS, NTN) to the underlying RF and comms concepts.
+    chapters:
+      - {id: "21-01", slug: s-parameters, title: "S-Parameters and Network Analysis", hours: 8, topics: "Wave variables, S-parameters, conversions, VNA measurement, de-embedding, stability circles"}
+      - {id: "21-02", slug: impedance-matching-networks, title: "Impedance Matching Networks", hours: 7, topics: "L, π and T networks, Q and bandwidth, distributed matching, broadband matching limits"}
+      - {id: "21-03", slug: noise-figure-and-linearity, title: "Noise Figure and Linearity", hours: 8, topics: "Noise figure, Friis cascade, P1dB, IP2/IP3, intermodulation, dynamic range, blocking"}
+      - {id: "21-04", slug: low-noise-amplifiers, title: "Low-Noise Amplifiers", hours: 7, topics: "Inductively degenerated CS LNA, noise matching, gain/NF/linearity tradeoffs"}
+      - {id: "21-05", slug: mixers, title: "Mixers", hours: 6, topics: "Active/passive mixers, conversion gain, image problem, LO leakage, harmonic mixing"}
+      - {id: "21-06", slug: oscillators-and-vcos, title: "Oscillators and VCOs", hours: 6, topics: "LC VCOs, phase noise (Leeson), tuning range, quadrature generation"}
+      - {id: "21-07", slug: power-amplifiers, title: "Power Amplifiers", hours: 9, topics: "Classes A–F, efficiency vs linearity, PAPR, back-off, Doherty, envelope tracking, DPD"}
+      - {id: "21-08", slug: transceiver-architectures, title: "Transceiver Architectures", hours: 7, topics: "Superheterodyne, zero-IF, low-IF, direct RF sampling, software-defined radio"}
+      - {id: "21-09", slug: rf-front-end, title: "The RF Front End: Filters, Switches and Modules", hours: 6, topics: "SAW/BAW filters, duplexers, switches, tuners, front-end modules, carrier aggregation complexity"}
+      - {id: "21-10", slug: antennas-arrays-mmwave, title: "Antennas, Arrays, Beamforming and mmWave", hours: 8, topics: "Antenna parameters, phased arrays, analog/digital/hybrid beamforming, mmWave path loss and packaging"}
+      - {id: "21-11", slug: link-budgets, title: "Link Budgets", hours: 5, topics: "Friis, sensitivity, fade margin, BLE/Wi-Fi/cellular link budgets"}
+      - {id: "21-12", slug: modem-baseband-and-standards, title: "Modem Baseband Architecture and Wireless Standards", hours: 9, topics: "Modem datapath, cellular (4G/5G/NTN), Wi-Fi generations, BLE/LE Audio, UWB, GNSS"}
+
+  # ---------------------------------------------------------------------------
+  - id: "22"
+    slug: power-electronics-and-energy-conversion
+    title: Power Electronics and Energy Conversion
+    term: 6
+    review_hours: 5
+    overview: >-
+      Converting and delivering power efficiently, from wearables to AI racks: switching
+      converters and magnetics, converter control, LDO vs switcher tradeoffs, PMICs, batteries,
+      datacenter power delivery, wide-bandgap devices, plus the machines and power-system
+      fundamentals the FE exam expects.
+    equivalents:
+      - "Power Electronics (senior) + Electric Machines and Power Systems (intro)"
+      - "MIT 6.334; Berkeley EE113; Berkeley EE137A"
+    textbooks:
+      - "Erickson & Maksimović, *Fundamentals of Power Electronics*"
+      - "Mohan, Undeland & Robbins, *Power Electronics: Converters, Applications, and Design*"
+      - "Glover, Overbye & Sarma, *Power System Analysis and Design* (power-systems chapters)"
+      - "Chapman, *Electric Machinery Fundamentals* (machines chapter)"
+    free_courses:
+      - "MIT OCW 6.334 Power Electronics"
+      - "University of Colorado Boulder power electronics specialization (Coursera, Erickson)"
+    prerequisites: ["07", "10", "15"]
+    fe: [power_systems, electronics]
+    objectives:
+      - Analyze buck, boost, buck-boost and flyback converters in steady state with volt-second and charge balance.
+      - Design inductors and transformers for converters and estimate losses.
+      - Model converter dynamics and design voltage- and current-mode control loops.
+      - Compare LDOs and switching regulators, and explain PMIC, battery-charging and fuel-gauge architecture.
+      - Analyze datacenter power delivery (48 V distribution, VRMs, PDN impedance, IR drop) and the role of GaN and SiC.
+      - Solve FE-level machines and power-systems problems (three-phase, per-unit, transformers, transmission, power flow, faults).
+    chapters:
+      - {id: "22-01", slug: power-conversion-principles, title: "Power Conversion Principles", hours: 6, topics: "Efficiency, linear vs switching conversion, LDO vs switcher, energy flow, power density"}
+      - {id: "22-02", slug: buck-converter-steady-state, title: "Steady-State Analysis and the Buck Converter", hours: 9, topics: "Volt-second balance, charge balance, small-ripple approximation, CCM/DCM, buck design"}
+      - {id: "22-03", slug: boost-buck-boost-topologies, title: "Boost, Buck-Boost and Other Topologies", hours: 7, topics: "Boost, buck-boost, Ćuk/SEPIC, conversion ratios, non-idealities"}
+      - {id: "22-04", slug: isolated-converters, title: "Isolated Converters: Flyback and Forward", hours: 6, topics: "Transformer models, flyback, forward, bridge converters, isolation requirements"}
+      - {id: "22-05", slug: magnetics-design, title: "Magnetics Design", hours: 7, topics: "Magnetic circuits, core loss, saturation, inductor and transformer design, integrated magnetics"}
+      - {id: "22-06", slug: converter-losses-and-wide-bandgap, title: "Converter Losses and Wide-Bandgap Switches", hours: 7, topics: "Conduction and switching losses, Si vs GaN vs SiC, figures of merit, soft switching"}
+      - {id: "22-07", slug: converter-dynamics-and-control, title: "Converter Dynamics and Control", hours: 9, topics: "Averaged models, small-signal transfer functions, voltage-mode and current-mode control, compensation"}
+      - {id: "22-08", slug: pmics, title: "PMICs and Power Management for SoCs", hours: 6, topics: "Multi-rail PMIC architecture, sequencing, DVFS support, power domains, efficiency at light load"}
+      - {id: "22-09", slug: batteries-charging-fuel-gauging, title: "Batteries, Charging and Fuel Gauging", hours: 8, topics: "Li-ion chemistry basics, CC/CV charging, fuel gauging, wearable battery-life engineering"}
+      - {id: "22-10", slug: datacenter-power-delivery, title: "Datacenter Power Delivery", hours: 8, topics: "Grid to chip, 48 V distribution, VRMs, vertical/integrated power delivery, PDN impedance, IR drop"}
+      - {id: "22-11", slug: electric-machines, title: "Electric Machines and Drives", hours: 6, topics: "DC machines, induction and synchronous machines, torque–speed, inverters and motor drives (FE level)"}
+      - {id: "22-12", slug: power-systems-fundamentals, title: "Power Systems Fundamentals", hours: 8, topics: "Per-unit system, transformers in power systems, transmission-line models, power flow basics, faults and protection, grid integration of renewables and storage"}
+
+  # ---------------------------------------------------------------------------
+  - id: "23"
+    slug: memory-and-storage-technology
+    title: Memory and Storage Technology
+    term: 6
+    review_hours: 3
+    overview: >-
+      The technologies that hold data: SRAM, DRAM and its interfaces (DDR, LPDDR, GDDR), HBM
+      in depth, NAND flash and SSD controllers, emerging memories, compute-in-memory, and the
+      memory wall that shapes AI system design.
+    equivalents:
+      - "Memory Systems / Semiconductor Memory (senior elective)"
+    textbooks:
+      - "Jacob, Ng & Wang, *Memory Systems: Cache, DRAM, Disk*"
+      - "Weste & Harris, *CMOS VLSI Design* (SRAM/DRAM chapters)"
+      - "JEDEC standards (public summaries) for DDR/LPDDR/HBM"
+    free_courses:
+      - "ETH Zürich Computer Architecture lectures (Mutlu) — memory systems lectures"
+    prerequisites: ["14", "19"]
+    fe: [computer_systems, electrical_materials]
+    companion: "LLM inference engineering"
+    objectives:
+      - Quantify the memory wall with bandwidth, latency and energy-per-bit numbers.
+      - Explain DRAM cell, array and refresh operation and the DDR/LPDDR/GDDR/HBM interface tradeoffs.
+      - Explain HBM architecture (stacking, TSVs, base die, interposer) and its cost and supply constraints.
+      - Explain NAND flash cells, 3D NAND scaling and SSD controller functions.
+      - Evaluate emerging memories and compute-in-memory claims against their physics.
+    chapters:
+      - {id: "23-01", slug: memory-hierarchy-and-memory-wall, title: "The Memory Hierarchy and the Memory Wall", hours: 4, topics: "Bandwidth, latency, energy per bit across the hierarchy, why AI is memory-bound"}
+      - {id: "23-02", slug: sram-technology, title: "SRAM Technology", hours: 4, topics: "Bitcell scaling, density trends, assist circuits, SRAM in advanced nodes"}
+      - {id: "23-03", slug: dram-cells-arrays-refresh, title: "DRAM Cells, Arrays and Refresh", hours: 7, topics: "1T1C cell, sense amplifiers, banks, refresh, timing parameters, row hammer, DRAM scaling"}
+      - {id: "23-04", slug: dram-interfaces, title: "DRAM Interfaces: DDR, LPDDR and GDDR", hours: 6, topics: "Interface evolution, prefetch, signaling, power tradeoffs, where each is used"}
+      - {id: "23-05", slug: hbm-in-depth, title: "HBM in Depth", hours: 7, topics: "Stacked dies, TSVs, base die, wide interface, interposers, generations, cost, yield and supply"}
+      - {id: "23-06", slug: nand-flash-and-3d-nand, title: "NAND Flash and 3D NAND", hours: 7, topics: "Floating gate vs charge trap, SLC/MLC/TLC/QLC, 3D stacking, endurance and retention"}
+      - {id: "23-07", slug: ssd-controllers, title: "SSD Controllers and Storage Systems", hours: 5, topics: "FTL, wear leveling, ECC (LDPC), NVMe, write amplification"}
+      - {id: "23-08", slug: emerging-memories, title: "Emerging Memories: MRAM, ReRAM, PCM, FeRAM", hours: 5, topics: "Physics, embedded NVM, density/endurance/speed tradeoffs, adoption status"}
+      - {id: "23-09", slug: compute-in-memory, title: "Compute-in-Memory and Near-Memory Computing", hours: 5, topics: "Analog and digital CIM, processing-in-memory, claims vs reality"}
+
+  # ---------------------------------------------------------------------------
+  - id: "24"
+    slug: high-speed-io-signal-integrity-and-photonics
+    title: High-Speed I/O, Signal Integrity and Photonics
+    term: 6
+    review_hours: 3
+    overview: >-
+      Moving bits between chips at hundreds of gigabits per second: loss, reflection and
+      crosstalk; eye diagrams and jitter; SerDes architecture and equalization; PCIe, CXL,
+      Ethernet, UCIe and NVLink/UALink; and the photonics (lasers, modulators, silicon
+      photonics, linear-drive and co-packaged optics) that take over when copper runs out.
+    equivalents:
+      - "High-Speed Digital Design / Signal Integrity + Optoelectronics (senior/graduate elective)"
+      - "Stanford EE273 (historical); Berkeley EE290 high-speed links"
+    textbooks:
+      - "Bogatin, *Signal and Power Integrity — Simplified*"
+      - "Hall & Heck, *Advanced Signal Integrity for High-Speed Digital Designs*"
+      - "Dally & Poulton, *Digital Systems Engineering*"
+      - "Saleh & Teich, *Fundamentals of Photonics*"
+    free_courses:
+      - "MIT OCW 6.776 (links material)"
+      - "Texas A&M ECEN 720 High-Speed Links (public lecture notes, Palermo)"
+    prerequisites: ["13", "17", "12"]
+    fe: [electromagnetics, communications, digital_systems]
+    companion: "datacenter networking"
+    objectives:
+      - Compute channel loss, reflections and crosstalk and read eye diagrams and BER bathtubs.
+      - Explain SerDes architecture (NRZ/PAM4, CTLE/FFE/DFE equalization, CDR, DSP-based receivers, FEC).
+      - Compare interconnect standards (PCIe, CXL, Ethernet, UCIe, NVLink/UALink) by reach, bandwidth, latency and energy per bit.
+      - Explain photonic components (lasers, modulators, photodetectors, fiber) and silicon photonics.
+      - Evaluate linear-drive and co-packaged optics against pluggable optics.
+    chapters:
+      - {id: "24-01", slug: signal-integrity-fundamentals, title: "Signal Integrity Fundamentals", hours: 7, topics: "Insertion loss, skin effect and dielectric loss, reflections, crosstalk, return paths, power integrity link"}
+      - {id: "24-02", slug: eye-diagrams-jitter-ber, title: "Eye Diagrams, Jitter and BER", hours: 6, topics: "Eye diagrams, jitter decomposition, bathtub curves, BER targets"}
+      - {id: "24-03", slug: serdes-architecture, title: "SerDes Architecture and Equalization", hours: 8, topics: "NRZ vs PAM4, TX FFE, CTLE, DFE, CDR, PLL/clocking, energy per bit"}
+      - {id: "24-04", slug: dsp-serdes-and-fec, title: "DSP-Based SerDes and FEC", hours: 5, topics: "ADC-based receivers, digital equalization, FEC and latency, MLSD"}
+      - {id: "24-05", slug: pcie-cxl-ethernet, title: "Interconnect Standards: PCIe, CXL and Ethernet", hours: 6, topics: "Generations, rates, encodings, reach, CXL memory semantics, Ethernet SerDes lanes"}
+      - {id: "24-06", slug: d2d-memory-phys-scale-up, title: "Die-to-Die Links, Memory PHYs and Scale-Up Fabrics", hours: 6, topics: "UCIe, BoW, memory PHYs, NVLink and UALink, energy/bit and bandwidth density"}
+      - {id: "24-07", slug: photonics-fundamentals, title: "Photonics Fundamentals", hours: 8, topics: "Lasers, modulators (EML, MZM, ring), photodetectors, fiber, WDM, link budgets"}
+      - {id: "24-08", slug: silicon-photonics, title: "Silicon Photonics and Optical Transceivers", hours: 6, topics: "Si photonics platforms, integration, pluggable transceivers, DSP in optics"}
+      - {id: "24-09", slug: lpo-and-cpo, title: "Linear-Drive and Co-Packaged Optics", hours: 4, topics: "LPO/LRO, CPO, power and reliability tradeoffs, ecosystem status"}
+
+  # ---------------------------------------------------------------------------
+  - id: "25"
+    slug: fabrication-packaging-test-and-reliability
+    title: Semiconductor Fabrication, Packaging, Test and Reliability
+    term: 6
+    review_hours: 5
+    overview: >-
+      How chips are made, packaged, tested and qualified: process flow, lithography through
+      High-NA EUV, deposition/etch/CMP/implant/metrology, yield and die cost, foundries and
+      PDKs, advanced packaging and chiplets, thermal engineering, reliability physics,
+      qualification standards, test and post-silicon validation.
+    equivalents:
+      - "Microfabrication / IC Process Technology + Packaging and Reliability (senior elective)"
+      - "Berkeley EE143; MIT 6.152J"
+    textbooks:
+      - "Plummer, Deal & Griffin, *Silicon VLSI Technology*"
+      - "May & Spanos, *Fundamentals of Semiconductor Manufacturing and Process Control*"
+      - "Tummala, *Fundamentals of Microsystems Packaging*"
+      - "Bushnell & Agrawal, *Essentials of Electronic Testing*"
+    free_courses:
+      - "MIT OCW 6.152J Micro/Nano Processing Technology"
+      - "Berkeley EE143 (public materials)"
+    prerequisites: ["09", "19"]
+    fe: [electrical_materials, ethics_professional_practice]
+    companion: "semiconductor capital equipment"
+    objectives:
+      - Describe a CMOS process flow (FEOL, MOL, BEOL) and the role of each unit process.
+      - Explain lithography resolution limits and the economics of multipatterning, EUV and High-NA EUV.
+      - Compute die cost from wafer cost, die area and yield models.
+      - Compare packaging options (flip-chip, 2.5D, 3D, hybrid bonding, chiplets) and their thermal and cost implications.
+      - Explain reliability mechanisms (EM, TDDB, BTI, HCI, ESD, latch-up) and qualification standards.
+      - Describe the test flow (wafer sort, final test, burn-in, binning) and post-silicon validation.
+    chapters:
+      - {id: "25-01", slug: process-flow-overview, title: "Process Flow Overview: FEOL, MOL and BEOL", hours: 7, topics: "Wafer start to finished wafer, CMOS process modules, interconnect stacks"}
+      - {id: "25-02", slug: lithography, title: "Lithography: DUV, Multipatterning, EUV and High-NA", hours: 8, topics: "Rayleigh criterion, immersion, multipatterning, EUV sources and masks, High-NA, OPC, cost per layer"}
+      - {id: "25-03", slug: deposition-etch-cmp-implant-metrology, title: "Deposition, Etch, CMP, Implant and Metrology", hours: 8, topics: "CVD/ALD/PVD, epitaxy, plasma etch, ALE, CMP, ion implantation, anneal, metrology and inspection"}
+      - {id: "25-04", slug: yield-and-die-cost, title: "Yield Models and Die Cost", hours: 7, topics: "Defect density, Poisson/Murphy/negative-binomial yield, die per wafer, die cost, cost per transistor trends"}
+      - {id: "25-05", slug: foundries-pdks-specialty-processes, title: "Foundries, PDKs and Specialty Processes", hours: 6, topics: "Foundry model, PDK contents, MPW shuttles, RF-SOI, BCD, FD-SOI, embedded NVM"}
+      - {id: "25-06", slug: packaging-fundamentals, title: "Packaging I: Wire Bond, Flip-Chip, Substrates, SiP and PoP", hours: 6, topics: "Package functions, wire bond, flip-chip bumps, substrates, fan-out, SiP, PoP"}
+      - {id: "25-07", slug: advanced-packaging-and-chiplets, title: "Packaging II: 2.5D, 3D, Hybrid Bonding and Chiplets", hours: 7, topics: "Silicon interposers, bridges, TSVs, hybrid bonding, chiplet economics, known-good die"}
+      - {id: "25-08", slug: thermal-engineering, title: "Thermal Engineering", hours: 6, topics: "Thermal resistance networks, junction temperature, heat spreading, cooling (air, liquid, immersion), hotspots"}
+      - {id: "25-09", slug: reliability-physics, title: "Reliability Physics", hours: 8, topics: "Electromigration, TDDB, BTI, HCI, ESD, latch-up, acceleration models, FIT and MTTF"}
+      - {id: "25-10", slug: qualification-and-functional-safety, title: "Qualification and Functional Safety", hours: 5, topics: "JEDEC qualification, AEC-Q100, ISO 26262 and ASIL, safety mechanisms"}
+      - {id: "25-11", slug: test-ate-sort-burn-in, title: "Test: ATE, Wafer Sort, Burn-In and Binning", hours: 6, topics: "Test flow, ATE, probe cards, test time and cost, burn-in, speed binning, yield learning"}
+      - {id: "25-12", slug: post-silicon-validation, title: "Post-Silicon Validation and Bring-Up", hours: 4, topics: "First silicon, bring-up, debug infrastructure, characterization, respin decisions"}
+
+  # ---------------------------------------------------------------------------
+  - id: "26"
+    slug: engineering-design-and-professional-practice
+    title: Engineering Design and Professional Practice
+    term: 7
+    review_hours: 2
+    overview: >-
+      How engineering decisions are made and paid for: requirements and specifications, design
+      reviews and standards bodies, engineering economics from NRE to gross margin, build vs
+      buy vs license, schedule and respin risk, team structures, and engineering ethics.
+    equivalents:
+      - "Senior Design / Engineering Professional Practice + Engineering Economics"
+    textbooks:
+      - "Ulrich & Eppinger, *Product Design and Development*"
+      - "Newnan, Eschenbach & Lavelle, *Engineering Economic Analysis* (FE economics review)"
+      - "NSPE Code of Ethics for Engineers (free)"
+    free_courses:
+      - "MIT OCW 2.009 / 6.UAP project-course materials (design process)"
+    prerequisites: ["19", "20"]
+    fe: [ethics_professional_practice, engineering_economics]
+    objectives:
+      - Write measurable requirements and specifications and run a design review.
+      - Build a chip business case from NRE, die cost, ASP, volume and gross margin.
+      - Analyze build vs buy vs license, node selection, monolithic vs chiplet and ASIC vs merchant-silicon decisions.
+      - Identify schedule and respin risks and their mitigations.
+      - Apply engineering-ethics frameworks and FE engineering-economics methods.
+    chapters:
+      - {id: "26-01", slug: requirements-and-specifications, title: "Requirements, Specifications and the Design Process", hours: 5, topics: "Market requirements to product specs, traceability, design process models"}
+      - {id: "26-02", slug: design-reviews-and-standards, title: "Design Reviews, Documentation and Standards Bodies", hours: 4, topics: "Review gates, documentation, IEEE/JEDEC/3GPP/PCI-SIG processes, standards essential patents"}
+      - {id: "26-03", slug: engineering-economics-1, title: "Engineering Economics I: NRE, Die Cost, ASP and Gross Margin", hours: 7, topics: "Cost stack, NRE amortization, mask costs, gross margin, FE time-value-of-money review"}
+      - {id: "26-04", slug: engineering-economics-2, title: "Engineering Economics II: Build, Buy or License; Node; Chiplets; ASIC vs Merchant", hours: 8, topics: "IP licensing models, node selection, monolithic vs chiplet, custom ASIC vs merchant silicon"}
+      - {id: "26-05", slug: schedule-and-respin-risk, title: "Schedule and Risk: Why Respins Happen", hours: 6, topics: "Tapeout schedules, respin causes, risk registers, mitigation (emulation, margins, ECO metal layers)"}
+      - {id: "26-06", slug: team-structures-and-sizing, title: "Engineering Team Structures and Sizing", hours: 5, topics: "Org structures, team sizing for chip projects, outsourcing, design services"}
+      - {id: "26-07", slug: engineering-ethics, title: "Engineering Ethics and Professional Responsibility", hours: 5, topics: "Codes of ethics, licensure, safety, IP and export control awareness, case studies"}
+
+  # ---------------------------------------------------------------------------
+  - id: "27"
+    slug: system-architectures
+    title: System Architectures (Case-Study Course)
+    term: 7
+    review_hours: 2
+    overview: >-
+      End-to-end analyses of real product classes (smartphone SoC, wearables, PC SoC,
+      automotive E/E and ADAS compute, the AI datacenter server and rack, edge AI/IoT), each
+      decomposed with the tools of the earlier courses into power, thermal, area, cost and
+      performance budgets.
+    equivalents:
+      - "Systems-design case-study capstone seminar"
+    textbooks:
+      - "Selected public sources (Hot Chips, ISSCC, teardown reports, company technical docs) cited per chapter"
+    free_courses:
+      - "Hot Chips symposium presentations (public)"
+    prerequisites: ["18", "19", "20", "21", "22", "23", "24", "25"]
+    fe: []
+    companion: "datacenter networking; LLM inference engineering"
+    objectives:
+      - Decompose a product into subsystems with power, thermal, area, BOM and performance budgets.
+      - Explain the architecture of each case-study system and the tradeoffs that shaped it.
+      - Trace a system-level requirement down to device- and circuit-level consequences.
+      - Identify where value and margin accrue in each system's silicon content.
+    chapters:
+      - {id: "27-01", slug: system-analysis-method, title: "Method: Analyzing a System End to End", hours: 4, topics: "Budgets (power, thermal, area, cost, BOM), block diagrams, bottleneck analysis"}
+      - {id: "27-02", slug: smartphone-soc, title: "The Smartphone SoC", hours: 8, topics: "CPU/GPU/NPU/ISP/modem integration, memory, power and thermal envelope, process node choices"}
+      - {id: "27-03", slug: wearables-smartwatch, title: "Wearables I: The Smartwatch", hours: 7, topics: "Always-on domains, sensor hubs, PMIC, battery life, display power, radios"}
+      - {id: "27-04", slug: wearables-earbuds-and-glasses, title: "Wearables II: Earbuds and Smart Glasses / XR", hours: 8, topics: "Audio SoCs, LE Audio, tiny batteries, XR compute/thermal/display constraints, split rendering"}
+      - {id: "27-05", slug: pc-soc, title: "The PC SoC", hours: 6, topics: "CPU/GPU/NPU, unified memory, chiplet vs monolithic, power states"}
+      - {id: "27-06", slug: automotive-ee-architecture, title: "Automotive E/E Architecture and ADAS Compute", hours: 9, topics: "Domain vs zonal, in-vehicle networks, ADAS/AD compute, functional safety, software-defined vehicle"}
+      - {id: "27-07", slug: ai-datacenter-server-and-rack, title: "The AI Datacenter Server and Rack", hours: 10, topics: "Accelerators, HBM, scale-up and scale-out fabrics, power delivery, liquid cooling, rack-scale design"}
+      - {id: "27-08", slug: edge-ai-and-iot, title: "Edge AI and IoT", hours: 6, topics: "MCU/NPU edge inference, connectivity choices, energy harvesting, security"}
+
+  # ---------------------------------------------------------------------------
+  - id: "28"
+    slug: technical-diligence-and-leadership-fluency
+    title: Technical Diligence and Engineering Leadership Fluency
+    term: 7
+    review_hours: 2
+    overview: >-
+      The practitioner's course: a framework for evaluating a chip company's technology,
+      validating claims, silicon maturity scales, domain question banks, red and green flags,
+      evaluating engineering teams, integration risk, a business↔engineering translation
+      table, and 25+ realistic conversation scenarios with annotated debriefs.
+    equivalents:
+      - "No university equivalent. Draws on industry diligence practice."
+    textbooks:
+      - "Curriculum courses 09–27 (this repo)"
+      - "Public company filings, conference papers and technical documentation (cited per chapter)"
+    free_courses: []
+    prerequisites: ["26", "27"]
+    fe: []
+    companion: "semiconductor capital equipment; datacenter networking; LLM inference engineering; quantum computing"
+    objectives:
+      - Apply a structured framework to evaluate a chip company's technology and roadmap.
+      - Validate performance, efficiency and maturity claims using first-principles checks.
+      - Ask domain-specific diagnostic questions and distinguish strong from evasive answers.
+      - Assess engineering-team quality and post-acquisition integration risk.
+      - Translate between business metrics and engineering metrics in conversation.
+    chapters:
+      - {id: "28-01", slug: technology-evaluation-framework, title: "A Framework for Evaluating a Chip Company's Technology", hours: 6, topics: "Architecture, implementation, IP position, team, roadmap, ecosystem, manufacturing"}
+      - {id: "28-02", slug: validating-claims, title: "Validating Claims: TOPS/W, Benchmarks, Tapeout Status", hours: 6, topics: "Peak vs delivered, test conditions, MPW vs production silicon, sanity checks from first principles"}
+      - {id: "28-03", slug: silicon-maturity-scales, title: "Maturity Scales for Silicon", hours: 4, topics: "Concept to production, steppings, ES/QS/production, qualification status, software maturity"}
+      - {id: "28-04", slug: question-banks-digital-ai-memory-interconnect, title: "Domain Question Banks I: Digital/CPU, AI Accelerators, Memory, Interconnect and Optics", hours: 6, topics: "Diagnostic questions with strong/evasive answer patterns"}
+      - {id: "28-05", slug: question-banks-analog-rf-power-packaging-embedded, title: "Domain Question Banks II: Analog/Mixed-Signal, RF, Power, Packaging, Embedded", hours: 6, topics: "Diagnostic questions with strong/evasive answer patterns"}
+      - {id: "28-06", slug: red-and-green-flags, title: "Red Flags and Green Flags", hours: 4, topics: "Technical, organizational and commercial signals"}
+      - {id: "28-07", slug: evaluating-engineering-teams, title: "Evaluating Engineering Teams", hours: 5, topics: "Team composition, track record, tapeout history, tooling, culture, key-person risk"}
+      - {id: "28-08", slug: integration-risk, title: "Post-Acquisition Integration Risk", hours: 5, topics: "Tool/flow/process migration, roadmap overlap, retention, IP and licensing issues"}
+      - {id: "28-09", slug: business-engineering-translation, title: "The Business ↔ Engineering Translation Table", hours: 3, topics: "Mapping margin, cost, schedule and risk to engineering metrics and back"}
+      - {id: "28-10", slug: conversation-scenarios, title: "Conversation Scenarios", hours: 15, topics: "25+ dialogues with VPs of Engineering and chief architects, with annotated debriefs"}
+
+# -----------------------------------------------------------------------------
+capstones:
+  - {id: C1, slug: analog-design, title: "Analog: two-stage op-amp or buck converter in ngspice", hours: 40, prerequisites: ["20", "22"]}
+  - {id: C2, slug: rtl-to-layout, title: "Digital: RTL to layout (OpenLane/Sky130) or Verilator + synthesis", hours: 50, prerequisites: ["19"]}
+  - {id: C3, slug: wearable-sensor-node, title: "Embedded/system: wearable sensor node design", hours: 35, prerequisites: ["18", "21", "22"]}
+  - {id: C4, slug: diligence-memo, title: "Practitioner: technical diligence memo on a public chip product", hours: 35, prerequisites: ["28"]}
+
+checkpoint_hours: 8
+weekly_hours: 11
+study_weeks_per_year: 46
+
+# Capstones are scheduled inside Term 7 in this order (course ids and capstone ids).
+term7_sequence: ["26", "C1", "C2", "27", "C3", "28", "C4"]
+
+paths:
+  fast_track:
+    title: Practitioner fast track
+    # Fast-track mode: read the chapter, work the examples, do the concept check and the [A] problems.
+    # Estimated at 60% of full chapter hours. Courses 26–28 are done in full.
+    factor: 0.6
+    full_courses: ["26", "27", "28"]
+    chapters: ["00-01", "00-02", "00-03", "00-04", "00-05",
+               "01-01", "01-03", "01-05", "02-01", "04-05", "04-11",
+               "06-01", "06-02", "06-03", "06-08", "06-10",
+               "07-01", "07-02", "07-05", "07-07",
+               "08-01", "08-02", "08-06", "08-10",
+               "09-09", "09-10", "09-11", "09-12", "09-13",
+               "10-05", "10-09", "11-06", "11-10", "12-10",
+               "14-01", "14-02", "14-09", "14-13", "14-14", "14-15",
+               "17-06", "17-07", "17-10", "18-01", "18-09", "18-11",
+               "19-06", "19-10", "19-11", "20-06", "20-12",
+               "21-03", "21-07", "21-12", "22-01", "22-09", "22-10",
+               "23-01", "23-05", "24-03", "24-05", "24-06", "24-09",
+               "25-02", "25-04", "25-07", "25-11"]
+  fe_prep:
+    title: FE preparation
+    # All of Terms 1–5, plus the power-systems, materials, economics and ethics chapters from later terms.
+    terms: [1, 2, 3, 4, 5]
+    chapters: ["09-01", "22-01", "22-11", "22-12", "25-09", "26-03", "26-07"]
+    checkpoints: [1, 2, 3, 4, 5]

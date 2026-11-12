@@ -1,0 +1,89 @@
+name: CI
+
+# Runs every check on every push and pull request:
+#   docs      generated files up to date, internal links, chapter-template structure, markdown lint
+#   verify    every verify/ script (all published numbers) + every notebook executes cleanly
+#   spice     every ngspice netlist with EXPECT lines matches its published answer
+#   hdl       every Verilog testbench prints TEST PASSED (Icarus) + Verilator lint
+#   site      the MkDocs site builds
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - name: Generated files are up to date
+        run: |
+          python tools/build_curriculum.py --check
+          python tools/build_glossary.py --check
+          python tools/progress_stats.py --check
+      - name: Internal links and anchors
+        run: python tools/check_links.py
+      - name: Chapter template structure
+        run: python tools/check_structure.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Markdown lint
+        run: npx --yes markdownlint-cli2@0.13.0
+
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Unit tests for the verification toolkit
+        run: python -m pytest -q tools/tests
+      - name: Verification scripts (every published number)
+        run: python tools/run_verify.py
+      - name: Execute all notebooks
+        run: python tools/run_notebooks.py
+
+  spice:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - run: sudo apt-get update && sudo apt-get install -y ngspice
+      - name: ngspice netlists vs published answers
+        run: python tools/run_spice.py
+
+  hdl:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: sudo apt-get update && sudo apt-get install -y iverilog verilator
+      - name: Self-checking testbenches
+        run: python tools/run_hdl.py
+
+  site:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install mkdocs-material pymdown-extensions
+      - name: Build MkDocs site
+        run: mkdocs build

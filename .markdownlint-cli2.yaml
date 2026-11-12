@@ -1,0 +1,28 @@
+# markdownlint configuration for the curriculum.
+# Rules are relaxed where they conflict with math-heavy teaching prose.
+config:
+  default: true
+  MD013: false            # line length: prose and tables are long
+  MD024:
+    siblings_only: true   # repeated subheadings (e.g. "Solution") allowed in different sections
+  MD025: false            # front-matter/title handling
+  MD033:
+    allowed_elements: [a, details, summary, br, sub, sup, img, div, span, kbd]
+  MD036: false            # bold lines used as labels
+  MD037: false            # math like $a * b$ trips "spaces inside emphasis"
+  MD041: false            # files start with a status comment, not a heading
+  MD045: false            # images: alt text checked in review instead
+  MD049: false            # emphasis style (underscores appear in math)
+  MD050: false            # strong style
+  MD060: false            # table column style (newer markdownlint versions)
+  MD028: false            # blank line inside blockquote: used between adjacent callouts
+  MD051: false            # link fragments: validated by tools/check_links.py instead
+  MD056: false            # table column count: math with | inside tables
+globs:
+  - "**/*.md"
+ignores:
+  - "site/**"
+  - "docs/**"
+  - "node_modules/**"
+  - ".venv/**"
+  - "**/.ipynb_checkpoints/**"
