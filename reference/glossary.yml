@@ -585,3 +585,41 @@
 - term: Dual-slope ADC
   definition: An integrating converter that integrates the input for a fixed time and times the de-integration with a reference; its result is independent of R and C, and integrating over whole mains periods rejects hum.
   chapter: "01-05"
+
+# ---------------------------------------------------------------- 01-06
+- term: Substitution (integration)
+  definition: Evaluating ∫ f(g(x)) g'(x) dx as ∫ f(u) du with u = g(x), the chain rule in reverse; for definite integrals the limits change to g(a) and g(b).
+  chapter: "01-06"
+- term: Integration by parts
+  definition: ∫ u dv = uv − ∫ v du, the product rule in reverse; used for products such as x e^x, ln x and e^(ax) cos bx.
+  chapter: "01-06"
+- term: Partial fractions
+  definition: Writing a proper rational function as a sum of simple terms, one per factor of the denominator; in circuit analysis each term is a natural mode (pole) of the response.
+  chapter: "01-06"
+- term: Orthogonality
+  definition: The property that sinusoids of different integer frequencies multiply to zero average over a common period; it makes Fourier coefficients computable and harmonic powers additive.
+  chapter: "01-06"
+- term: Fourier coefficient
+  definition: The amplitude of one harmonic in a periodic signal, b_n = (2/T)∫ x(t) sin(nωt) dt (and a_n with cosine), found by orthogonality.
+  chapter: "01-06"
+- term: Total harmonic distortion (THD)
+  definition: The RMS of all harmonics above the fundamental divided by the fundamental's amplitude; a ±1 square wave has THD of 48 %.
+  chapter: "01-06"
+- term: Improper integral
+  definition: An integral over an infinite interval or of an unbounded integrand, defined as a limit; it converges if the limit is finite (for example ∫₁^∞ x^(−p) dx converges only for p > 1).
+  chapter: "01-06"
+- term: Equivalent noise bandwidth (ENBW)
+  definition: The width of an ideal brick-wall filter passing the same white-noise power as a real filter, ∫₀^∞ |H(f)|² df divided by the passband gain; (π/2) f_c for one pole.
+  chapter: "01-06"
+- term: Elmore delay
+  definition: The first moment (time centroid) of a network's impulse response, computed directly from its resistances and capacitances; a fast, somewhat pessimistic interconnect delay estimate.
+  chapter: "01-06"
+- term: Simpson's rule
+  definition: Numerical integration fitting parabolas through triples of samples, with weights h/3 × (1, 4, 2, 4, …, 4, 1); its error falls as h⁴.
+  chapter: "01-06"
+- term: Gibbs phenomenon
+  definition: The persistent overshoot, about 9 % of the jump, of truncated Fourier series near a discontinuity; it narrows but does not shrink as harmonics are added.
+  chapter: "01-06"
+- term: Flicker (1/f) noise
+  definition: Noise whose power spectral density falls as 1/f, so every decade of frequency carries equal power; dominant at low frequencies in MOSFETs.
+  chapter: "01-06"

@@ -1,0 +1,29 @@
+* Example 01-06.4 -- Fourier coefficients of a +/-1 V, 1 kHz square wave, computed as integrals.
+* b_n = (2/T) * integral over one period of x(t) sin(n w t). B-sources form the products
+* x(t) sin(n w t) as node voltages, and .meas INTEG integrates them over T = 1 ms.
+* Expected: b1 = 4/pi, b2 = 0 (even harmonics vanish), b3 = 4/(3 pi), b5 = 4/(5 pi).
+*
+* EXPECT b1 key:../../chapters/01-06-techniques-of-integration.md#Ex_01-06.4a rtol=1e-3
+* EXPECT b3 key:../../chapters/01-06-techniques-of-integration.md#Ex_01-06.4b rtol=1e-3
+* EXPECT b5 key:../../chapters/01-06-techniques-of-integration.md#Ex_01-06.4c rtol=1e-3
+* EXPECT b2 0 atol=1e-3
+
+VSQ sq 0 PULSE(1 -1 0.5m 1n 1n 0.5m 1m)
+BX1 p1 0 V = v(sq)*sin(2*pi*1k*time)
+BX2 p2 0 V = v(sq)*sin(2*pi*2k*time)
+BX3 p3 0 V = v(sq)*sin(2*pi*3k*time)
+BX5 p5 0 V = v(sq)*sin(2*pi*5k*time)
+R1  sq 0 1k
+
+.options reltol=1e-6
+.tran 0.1u 1m 0 0.1u
+
+.meas tran i1 INTEG v(p1) FROM=0 TO=1m
+.meas tran i2 INTEG v(p2) FROM=0 TO=1m
+.meas tran i3 INTEG v(p3) FROM=0 TO=1m
+.meas tran i5 INTEG v(p5) FROM=0 TO=1m
+.meas tran b1 PARAM='2000*i1'
+.meas tran b2 PARAM='2000*i2'
+.meas tran b3 PARAM='2000*i3'
+.meas tran b5 PARAM='2000*i5'
+.end
