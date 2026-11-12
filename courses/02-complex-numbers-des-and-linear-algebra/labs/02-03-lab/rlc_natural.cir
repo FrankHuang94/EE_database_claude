@@ -1,0 +1,29 @@
+* Chapter 02-03 -- natural responses of series RLC circuits.
+* Circuit 1 (Example 02-03.2): L = 10 uH, C = 1 uF, R = 1 Ohm; v_C(0) = 5 V, i(0) = 0.
+*           The first negative peak should be -3.023 V at pi/omega_d = 10.06 us.
+* Circuit 2 (Problem 02-03.8): L = 1 mH, C = 10 uF, R = 2 Ohm; v_C(0) = 0, i(0) = 1 A
+*           flowing into the capacitor. The first peak should be 8.626 V at 147.8 us.
+*
+* EXPECT vmin1 key:../../chapters/02-03-second-order-linear-odes.md#Ex_02-03.2f rtol=1e-3
+* EXPECT tmin1 key:../../chapters/02-03-second-order-linear-odes.md#Ex_02-03.2e scale=1e-6 rtol=2e-3
+* EXPECT vmax2 key:../../solutions/02-03-solutions.md#02-03.8g rtol=1e-3
+* EXPECT tmax2 key:../../solutions/02-03-solutions.md#02-03.8f scale=1e-6 rtol=2e-3
+
+* circuit 1: capacitor top node c1, loop c1 -> R -> L -> ground
+C1  c1  0   1u  IC=5
+R1  c1  m1  1
+L1  m1  0   10u IC=0
+
+* circuit 2: the 1 A inductor current flows from ground through L into the capacitor's top node
+C2  c2  0   10u IC=0
+R2  c2  m2  2
+L2  0   m2  1m  IC=1
+
+.options reltol=1e-7
+.tran 2n 300u 0 2n UIC
+
+.meas tran vmin1 MIN v(c1) FROM=0 TO=15u
+.meas tran tmin1 MIN_AT v(c1) FROM=0 TO=15u
+.meas tran vmax2 MAX v(c2) FROM=0 TO=300u
+.meas tran tmax2 MAX_AT v(c2) FROM=0 TO=300u
+.end

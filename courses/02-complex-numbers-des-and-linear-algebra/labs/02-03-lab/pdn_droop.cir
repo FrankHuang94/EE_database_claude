@@ -1,0 +1,32 @@
+* Chapter 02-03, Example 02-03.5 -- supply droop after a load step.
+* An ideal 0.75 V regulator feeds the die through R = 1 mOhm and L = 25 pH; the die has
+* C = 100 nF of decoupling capacitance. At t = 0 the load current steps from 0 to 10 A
+* (1 ps rise). Expected worst droop 160.3 mV at about 2.535 ns, ringing at 100.7 MHz.
+* Circuit 2 repeats it with C = 4.938 uF (characteristic impedance = 2.25 mOhm target):
+* expected worst droop 24.95 mV.
+*
+* EXPECT droop1 key:../../chapters/02-03-second-order-linear-odes.md#Ex_02-03.5e scale=1e-3 rtol=2e-3
+* EXPECT tdroop1 key:../../chapters/02-03-second-order-linear-odes.md#Ex_02-03.5f scale=1e-9 rtol=5e-3
+* EXPECT droop2 key:../../chapters/02-03-second-order-linear-odes.md#Ex_02-03.5l scale=1e-3 rtol=2e-3
+
+V1  vrm1 0    DC 0.75
+R1  vrm1 m1   1m
+L1  m1   die1 25p   IC=0
+C1  die1 0    100n  IC=0.75
+I1  die1 0    PULSE(0 10 0 1p 1p 1 2)
+BD1 d1   0    V = 0.75 - v(die1)
+
+V2  vrm2 0    DC 0.75
+R2  vrm2 m2   1m
+L2  m2   die2 25p   IC=0
+C2  die2 0    4.938u IC=0.75
+I2  die2 0    PULSE(0 10 0 1p 1p 1 2)
+BD2 d2   0    V = 0.75 - v(die2)
+
+.options reltol=1e-7
+.tran 1p 60n 0 1p UIC
+
+.meas tran droop1  MAX v(d1) FROM=0 TO=10n
+.meas tran tdroop1 MAX_AT v(d1) FROM=0 TO=10n
+.meas tran droop2  MAX v(d2) FROM=0 TO=60n
+.end

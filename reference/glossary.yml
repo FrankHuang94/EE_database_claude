@@ -178,7 +178,7 @@
   chapter: "00-02"
   see_also: [Characteristic impedance, Reflection coefficient]
 - term: Characteristic impedance
-  definition: Z0, the ratio of voltage to current for a single wave traveling along a transmission line (typically 50 Ω for coaxial cable and RF systems).
+  definition: Z0, the ratio of voltage to current for a single wave traveling along a transmission line (typically 50 Ω for coaxial cable and RF systems). For a lumped LC tank the analogous quantity is √(L/C), which sets the voltage swing per ampere of current step and the damping needed.
   chapter: "00-02"
 - term: Reflection coefficient
   definition: Γ = (R − Z0)/(R + Z0), the ratio of reflected to incident wave voltage at a termination R on a line of characteristic impedance Z0; +1 for an open, −1 for a short, 0 for a matched load.
@@ -876,4 +876,49 @@
   definition: Positive feedback in which rising temperature raises power dissipation (for example leakage), which raises temperature further; it runs away when the loop gain R_th·dP/dT reaches 1.
   chapter: "02-02"
   see_also: [Thermal resistance]
+- term: Characteristic equation
+  definition: The polynomial equation obtained by substituting y = e^{st} into a linear constant-coefficient ODE, such as s² + 2αs + ω₀² = 0; its roots set the decay rates and oscillation frequencies of every natural response.
+  chapter: "02-03"
+- term: Natural frequency
+  definition: ω₀ = 1/√(LC) (rad/s), the frequency at which a second-order system would oscillate with no damping; for a mass on a spring, √(k/m).
+  chapter: "02-03"
+- term: Neper frequency
+  definition: α (1/s), the decay rate of a second-order system's envelope e^{−αt}; R/(2L) for a series RLC and 1/(2RC) for a parallel RLC.
+  chapter: "02-03"
+- term: Damping ratio
+  definition: 'ζ = α/ω₀, the single number that classifies a second-order system: underdamped (ζ < 1, rings), critically damped (ζ = 1) or overdamped (ζ > 1); overshoot depends only on ζ.'
+  chapter: "02-03"
+- term: Quality factor
+  definition: Q = 1/(2ζ) = ω₀ × energy stored / power dissipated; the amplitude decays by a factor e in Q/π cycles, and Q also sets the sharpness of resonance.
+  chapter: "02-03"
+  see_also: [Damping ratio]
+- term: Underdamped
+  definition: A second-order system with ζ < 1, whose complex characteristic roots −α ± jω_d give a sinusoidal response inside a decaying envelope.
+  chapter: "02-03"
+- term: Critically damped
+  definition: A second-order system with ζ = 1, whose repeated root gives the response (c₁ + c₂t)e^{−αt}; the boundary between ringing and creeping, though not the fastest to settle within a tolerance band.
+  chapter: "02-03"
+- term: Overdamped
+  definition: A second-order system with ζ > 1, whose two real negative roots give a sum of decaying exponentials with no overshoot; more damping makes it slower.
+  chapter: "02-03"
+- term: Damped natural frequency
+  definition: ω_d = ω₀√(1 − ζ²), the frequency at which an underdamped system actually rings.
+  chapter: "02-03"
+  see_also: [Natural frequency]
+- term: Reduction of order
+  definition: Finding a second solution of a linear ODE by writing y = u(t)y₁(t) with a known solution y₁; for a repeated characteristic root it gives te^{−αt}.
+  chapter: "02-03"
+- term: Wronskian
+  definition: W = y₁y₂′ − y₁′y₂; two solutions of a second-order linear ODE are independent, and can match any initial conditions, exactly when W ≠ 0.
+  chapter: "02-03"
+- term: Overshoot
+  definition: The amount by which a step response exceeds its final value, as a fraction of the step; exp(−πζ/√(1 − ζ²)) for a second-order system (16.3% at ζ = 0.5, 4.3% at ζ = 0.707).
+  chapter: "02-03"
+- term: Target impedance
+  definition: The highest impedance a power-delivery network may present to the load, V_DD × allowed ripple / current step; designers keep the network's impedance below it across frequency.
+  chapter: "02-03"
+  see_also: [Power delivery network]
+- term: Power delivery network
+  definition: The regulators, board and package wiring, and decoupling capacitors that carry current from the supply to the transistors; its inductance and the die's capacitance form a resonant tank that causes supply droop on load steps.
+  chapter: "02-03"
 

@@ -235,3 +235,14 @@ R&D % = R&D ÷ revenue.
 
 - **Paper:** A. Vassighi and M. Sachdev, "Thermal runaway in integrated circuits," *IEEE Transactions on Device and Materials Reliability*, vol. 6, no. 2, pp. 300–305, June 2006, DOI 10.1109/TDMR.2006.876577. Rising standby leakage raises junction temperature, which raises leakage further; under burn-in conditions the loop can run away. The paper describes the triggering conditions and the thermal management needed to avoid them. The same material appears in the authors' book *Thermal and Power Management of Integrated Circuits* (Springer, 2006) [Established].
 - **Sources:** [IEEE record (via document index)](https://manuscript.isc.ac/Inventory/49/1125305.htm); [Springer book page](https://link.springer.com/book/10.1007/0-387-29749-9). Checked Nov 2026.
+
+## R-032 · PDN target impedance method
+
+- **Paper:** L. D. Smith, R. E. Anderson, D. W. Forehand, T. J. Pelc and T. Roy (Sun Microsystems), "Power distribution system design methodology and capacitor selection for modern CMOS technology," *IEEE Transactions on Advanced Packaging*, vol. 22, no. 3, pp. 284–291, Aug. 1999, DOI 10.1109/6040.784476. The method identifies a target impedance over a broad frequency range and chooses the regulator, bulk and ceramic capacitors, modeled in SPICE, so that the network stays below it [Established].
+- **Formula in common use:** Z_target = V_DD × allowed ripple fraction / transient current step, as restated in vendor application notes [Established].
+- **Sources:** [Scilit record](https://scilit.com/publications/0ab4248b497aba5db9060887e1451436); [MPS application note, "Meeting the impedance mask: strategies for PDN design and optimization"](https://media.monolithicpower.cn/mps_cms_document/a/i/aip_meeting-the-impedance-mask_strategies-for-pdn-design-and-optimization_r1.0.pdf). The IEEE full text was not fetched. Checked Nov 2026.
+
+## R-033 · Quartz crystal resonator Q
+
+- **Values:** a high-stability 5 MHz quartz crystal unit has a Q of about 2–3 million; for AT- and SC-cut resonators the maximum Q × f is about 16 million with f in MHz, so Q falls with frequency. Quartz's low intrinsic loss is why its Q is so high [Established].
+- **Source:** J. R. Vig, *Quartz Crystal Resonators and Oscillators for Frequency Control and Timing Applications — A Tutorial* (U.S. Army CECOM; several revisions, e.g. 2008), [copy hosted by Pletronics](https://www.pletronics.com/wp-content/uploads/2025/08/Vig_tutorial.pdf) and [DTIC report ADA254892](https://apps.dtic.mil/sti/pdfs/ADA254892.pdf). Checked Nov 2026.

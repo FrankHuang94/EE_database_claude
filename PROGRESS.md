@@ -9,9 +9,9 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 > - Course 00 is complete and audited (🏁).
 > - Course 01 is complete and audited (🏁): ten chapters reviewed, exam, flashcards and equation sheet.
 >
-> - Course 02: 02-01 (pilot) and 02-02 are verified.
+> - Course 02: 02-01 (pilot), 02-02 and 02-03 are verified.
 >
-> **Next: write 02-03 Second-Order Linear ODEs and the Characteristic Equation** (chapter, problems, solutions, verify, lab with notebook and ngspice RLC netlists, figures, glossary), then 02-04 to 02-10, then the Course 02 exam, flashcards (02-01 cards exist), equation sheet and independent audit.
+> **Next: write 02-04 Forced Response and Resonance** (chapter, problems, solutions, verify, lab with notebook and ngspice netlists, figures, glossary), then 02-05 to 02-10, then the Course 02 exam, flashcards (02-01 cards exist), equation sheet and independent audit.
 >
 > When pilot feedback arrives, apply it to the pilots and to every chapter written since, before continuing.
 
@@ -35,11 +35,11 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 |---|---|---|---|---|---|---|---|---|---|
 | 00 | 5 | 5 | 5 | 5 | 22,489 | 52 | 229 | 5 | 5 / 3 / 1 |
 | 01 | 10 | 10 | 10 | 10 | 57,268 | 162 | 1104 | 10 | 10 / 13 / 0 |
-| 02 | 10 | 2 | 2 | 0 | 17,274 | 33 | 222 | 2 | 2 / 3 / 0 |
+| 02 | 10 | 3 | 3 | 0 | 23,725 | 48 | 345 | 3 | 3 / 5 / 0 |
 | 07 | 11 | 1 | 1 | 0 | 8,902 | 18 | 149 | 1 | 1 / 6 / 0 |
-| **Total** | **307** | **18** | **18** | **15** | **105,933** | **265** | **1704** | **18** | **18 / 25 / 1** |
+| **Total** | **307** | **19** | **19** | **15** | **112,384** | **280** | **1827** | **19** | **19 / 27 / 1** |
 
-Glossary terms: **264** · Flashcards: **218**
+Glossary terms: **278** · Flashcards: **218**
 
 <!-- END STATS -->
 
@@ -49,7 +49,7 @@ Glossary terms: **264** · Flashcards: **218**
 |---|---|---|---|
 | 00 | 🏁 audited | ✅ 2026-11-12 | 5 chapters reviewed: 52 problems, 229 machine-checked chapter/lab values, exam (15 questions, 27 keyed values), 56 flashcards, equation sheet. The audit found 4 critical, 11 major and 12 minor items; all were fixed (see session log). |
 | 01 | 🏁 audited | ✅ 2026-11-12 | 10 chapters reviewed: 162 problems, 1,104 machine-checked chapter, solution and lab values, 10 lab notebooks and 13 ngspice netlists; exam (15 questions, 128 points, 110 keyed values), 107 flashcards, equation sheet. Three independent reviewers found 5 critical, 25 major and about 40 minor items; all were fixed (see session log). |
-| 02 | 🔄 in progress | — | 02-01 ✅ verified (pilot): 18 problems, 118 machine-checked values, lab notebook. 02-02 ✅ verified: 15 problems, 104 machine-checked values, notebook + 3 ngspice netlists (ramp/sinusoid RC and RL; thermal RC model and runaway). |
+| 02 | 🔄 in progress | — | 02-01 ✅ verified (pilot): 18 problems, 118 machine-checked values, lab notebook. 02-02 ✅ verified: 15 problems, 104 machine-checked values, notebook + 3 ngspice netlists (ramp/sinusoid RC and RL; thermal RC model and runaway). 02-03 ✅ verified: 15 problems, 123 machine-checked values, notebook + 2 ngspice netlists (RLC ring-down, PDN droop). |
 | 07 | 🔄 in progress (pilot) | — | 07-02 ✅ verified: 16 problems, 128 machine-checked values, 6 ngspice netlists, lab notebook. Other chapters planned. |
 | all others | ⬜ planned (stubs only) | — | |
 
@@ -89,6 +89,7 @@ Changes relative to the original build brief's chapter plan.
 
 | Date | Session summary |
 |---|---|
+| 2026-11-12 | Phase 2. 02-03 Second-Order Linear ODEs written and verified: 15 problems, 123 keyed values, notebook (roots and responses, step specifications, energy, PDN design space) and 2 ngspice netlists; research log R-032 (PDN target impedance, Smith et al. 1999) and R-033 (quartz Q, Vig). |
 | 2026-11-12 | Phase 2. 02-02 First-Order Linear ODEs written and verified: 15 problems, 104 keyed values, notebook (direction fields and blow-up, Euler/backward Euler/trapezoid, logistic fit, thermal runaway) and 3 ngspice netlists; research log R-029 (JESD51-2A), R-030 (3DMark stability), R-031 (thermal runaway). |
 | 2026-11-12 | Phase 2. Course 01 completed: 01-10 written, exam (15 questions), flashcards, equation sheet and course notes. Independent audit by three fresh reviewers (01-01–01-04, 01-05–01-07, 01-08–01-10 plus course materials): 5 critical, 25 major and about 40 minor findings, all fixed. Highlights: Bode-phase slope claim corrected; Newton-ratio explanation fixed (01-04.14); lab 01-07's 60° load now changes R and L (425 W, ngspice-confirmed); duration/convexity analogy corrected; RSS restated in terms of standard deviations; hypotheses added to Newton and L'Hôpital; reciprocal rule derived; new material on hyperbolic functions, logarithmic differentiation, trigonometric substitution (finite-wire field example), completing the square, area/volume/arc length/centroids, limit-comparison/integral/root tests, constant-voltage actuator energy balance, 2-variable Taylor and D-test proof, least-squares and shadow-price proofs, Green's theorem proof, divergence/curl box pictures, orientation rules, curved-surface flux, cylindrical Gauss's law and coax; coordinate-convention callout and vector-field arrows per notation.md; 13 new problems; many missing answer keys added; exam rebalanced (series and divergence-theorem parts; Q11 → A, Q15 → C); new research-log entry R-028 (IEC 62053-21) and power limits added to R-007. Course 01 marked reviewed. |
 | 2026-11-12 | Phase 2. Course 00 audit: an independent reviewer found 4 critical, 11 major and 12 minor items, all fixed. The fixes covered: CV² per transition (now ½CV² average); WSTS "Micro" is MPU + MCU + DSP; re-keyed ADI R&D per employee; a sourced and re-tagged logic-growth figure (R-016) and a new EDA-concentration entry (R-024); respin timing reconciled across full-layer, metal-only and firmware cases; a dated fab-cycle and mask-count claim; first-silicon figures leading with the trend; a derivative refresher added to 00-04; floating-point and ngspice-tolerance corrections; the exam rebuilt to 15 questions (3 diligence items, all values keyed); hours re-budgeted (≈17 h). Course 00 marked reviewed. 01-01 written and verified (15 problems, 123 values). |
