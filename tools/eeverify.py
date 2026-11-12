@@ -83,8 +83,9 @@ def parse_value(raw: str) -> Published:
     t = s.replace(" ", "")
     m = re.fullmatch(r"([-+]?[\d.]+(?:[eE][-+]?\d+)?)?([-+])j([\d.]+(?:[eE][-+]?\d+)?)", t)
     if m:
-        re_part = _parse_real(m.group(1)) if m.group(1) else Num(0.0, 0.0)
         im = _parse_real(m.group(3))
+        # an omitted real part is an exact zero published at the imaginary part's precision
+        re_part = _parse_real(m.group(1)) if m.group(1) else Num(0.0, im.halfulp)
         if m.group(2) == "-":
             im = Num(-im.value, im.halfulp)
         return Published(raw, "rect", (re_part, im))
@@ -93,7 +94,7 @@ def parse_value(raw: str) -> Published:
         im = _parse_real(m.group(2))
         if m.group(1) == "-":
             im = Num(-im.value, im.halfulp)
-        return Published(raw, "rect", (Num(0.0, 0.0), im))
+        return Published(raw, "rect", (Num(0.0, im.halfulp), im))
     return Published(raw, "real", (_parse_real(s),))
 
 

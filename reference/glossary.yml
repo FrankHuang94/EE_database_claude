@@ -1,3 +1,87 @@
 # Glossary source. One entry per term; see tools/build_glossary.py for the schema.
 # Keep definitions to one or two sentences; the chapter carries the full treatment.
-[]
+
+# ---------------------------------------------------------------- 02-01
+- term: Complex number
+  definition: A number z = x + jy with real part x and imaginary part y (both real numbers), drawn as a point or arrow in the complex plane.
+  chapter: "02-01"
+  see_also: [Imaginary unit, Complex plane]
+- term: Imaginary unit
+  definition: The number j defined by j² = −1 (written i in mathematics; EE uses j because i denotes current). Multiplying by j rotates a complex number 90° counterclockwise.
+  chapter: "02-01"
+- term: Complex plane
+  definition: The plane in which a complex number x + jy is plotted at horizontal coordinate x (real axis) and vertical coordinate y (imaginary axis).
+  chapter: "02-01"
+- term: Rectangular form
+  definition: Writing a complex number by its components, z = x + jy. Convenient for addition and subtraction.
+  chapter: "02-01"
+  see_also: [Polar form]
+- term: Polar form
+  definition: Writing a complex number by its magnitude and angle, z = r∠θ = r(cos θ + j sin θ) = re^{jθ}. Convenient for multiplication, division, powers and roots.
+  chapter: "02-01"
+  see_also: [Rectangular form, Euler's formula]
+- term: Magnitude
+  definition: The length |z| = √(x² + y²) of a complex number's arrow (also called modulus or absolute value).
+  chapter: "02-01"
+- term: Angle (argument)
+  definition: The direction ∠z of a complex number's arrow, measured counterclockwise from the positive real axis; computed with the quadrant-aware atan2(y, x). This curriculum reports principal values in (−180°, 180°].
+  chapter: "02-01"
+- term: Complex conjugate
+  definition: For z = x + jy, the number z* = x − jy, its mirror image across the real axis. z z* = |z|², which is why conjugates are used to divide complex numbers.
+  chapter: "02-01"
+- term: De Moivre's theorem
+  definition: (r∠θ)ⁿ = rⁿ∠nθ. Raising a complex number to a power raises its magnitude to that power and multiplies its angle.
+  chapter: "02-01"
+- term: Roots of unity
+  definition: The N complex numbers e^{j2πk/N} (k = 0 … N−1) whose N-th power is 1, equally spaced on the unit circle. They are the twiddle factors of the FFT.
+  chapter: "02-01"
+- term: Euler's formula
+  definition: e^{jθ} = cos θ + j sin θ for real θ. It connects exponentials and sinusoids and makes r∠θ and re^{jθ} the same number.
+  chapter: "02-01"
+- term: Complex exponential
+  definition: A signal e^{st} with complex s = σ + jω. It rotates at ω rad/s while its magnitude grows (σ > 0), decays (σ < 0) or stays constant (σ = 0); its real part is a growing, decaying or steady sinusoid.
+  chapter: "02-01"
+- term: Sinusoid
+  definition: A signal of the form A cos(ωt + φ), with amplitude A, angular frequency ω and phase φ. This curriculum always uses the cosine as the reference form.
+  chapter: "02-01"
+- term: Angular frequency
+  definition: ω = 2πf, the rate of a sinusoid's phase advance in rad/s, where f is the frequency in hertz.
+  chapter: "02-01"
+- term: Phase
+  definition: The angle φ in A cos(ωt + φ), fixing where in its cycle a sinusoid is at t = 0. A time delay t_d is a phase lag of ωt_d.
+  chapter: "02-01"
+- term: RMS value
+  definition: Root-mean-square value, √(average of v²). For a sinusoid of amplitude V_m it is V_m/√2; it is the value that delivers the same average power to a resistor as a DC voltage of that size.
+  chapter: "02-01"
+- term: Phasor
+  definition: The complex number V = V_m∠φ representing the sinusoid V_m cos(ωt + φ) at a known frequency ω, so that v(t) = Re{V e^{jωt}}. This curriculum uses peak-amplitude, cosine-reference phasors.
+  chapter: "02-01"
+  see_also: [Sinusoidal steady state, Impedance]
+- term: Sinusoidal steady state
+  definition: The response of a stable linear system to a sinusoidal input after transients have died out, a sinusoid at the input frequency whose amplitude and phase follow from phasor analysis.
+  chapter: "02-01"
+- term: Frequency response
+  definition: The complex gain H(jω) of a linear system at angular frequency ω. Its magnitude scales a sinusoid's amplitude and its angle shifts the sinusoid's phase.
+  chapter: "02-01"
+  see_also: [Corner frequency]
+- term: Corner frequency
+  definition: For a single-pole response H = 1/(1 + jωτ), the frequency ω = 1/τ where |H| = 1/√2 (−3 dB) and the phase is −45°; commonly used to define bandwidth.
+  chapter: "02-01"
+- term: Impedance
+  definition: The ratio Z = V/I of voltage phasor to current phasor for an element or network, in ohms. Resistor R, inductor jωL, capacitor 1/(jωC).
+  chapter: "02-01"
+  see_also: [Reactance, Phasor]
+- term: Reactance
+  definition: The imaginary part X of an impedance Z = R + jX, in ohms. Positive for inductors (ωL), negative for capacitors (−1/(ωC)).
+  chapter: "02-01"
+- term: Resonance
+  definition: The condition in an LC-containing circuit where inductive and capacitive reactances cancel (ω₀ = 1/√(LC) in a series RLC), making the impedance purely resistive and the response peak.
+  chapter: "02-01"
+- term: I/Q (in-phase/quadrature)
+  anchor: iq
+  definition: Representation of a bandpass signal by two baseband components, in-phase (I) and quadrature (Q), which together form one complex sample stream I + jQ; the native signal format of modern radios.
+  chapter: "02-01"
+  see_also: [Error vector magnitude]
+- term: Error vector magnitude
+  definition: EVM, the RMS distance between transmitted (or received) constellation points and their ideal positions, relative to the signal, often quoted in dB. It sets the highest usable QAM order.
+  chapter: "02-01"

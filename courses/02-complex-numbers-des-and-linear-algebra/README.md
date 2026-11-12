@@ -27,7 +27,7 @@ The three mathematical workhorses of EE. Complex numbers and phasors turn sinuso
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [02-01 · Complex Numbers, Euler's Formula and Phasors](chapters/02-01-complex-numbers-euler-and-phasors.md) | 10 | ⬜ planned | — |
+| [02-01 · Complex Numbers, Euler's Formula and Phasors](chapters/02-01-complex-numbers-euler-and-phasors.md) | 10 | ✅ verified | [problems](problems/02-01-problems.md) · [solutions](solutions/02-01-solutions.md) · [lab](labs/02-01-lab/README.md) · [verify](verify/verify_02_01.py) |
 | [02-02 · First-Order Linear ODEs](chapters/02-02-first-order-linear-odes.md) | 10 | ⬜ planned | — |
 | [02-03 · Second-Order Linear ODEs and the Characteristic Equation](chapters/02-03-second-order-linear-odes.md) | 12 | ⬜ planned | — |
 | [02-04 · Forced Response and Resonance](chapters/02-04-forced-response-and-resonance.md) | 10 | ⬜ planned | — |
@@ -37,6 +37,8 @@ The three mathematical workhorses of EE. Complex numbers and phasors turn sinuso
 | [02-08 · Eigenvalues and Eigenvectors](chapters/02-08-eigenvalues-and-eigenvectors.md) | 12 | ⬜ planned | — |
 | [02-09 · Systems of Linear ODEs and the Matrix Exponential](chapters/02-09-systems-of-odes-and-matrix-exponential.md) | 10 | ⬜ planned | — |
 | [02-10 · Numerical Methods for Engineers](chapters/02-10-numerical-methods.md) | 8 | ⬜ planned | — |
+
+**Course resources:** [Flashcards (Anki CSV)](../../flashcards/02-complex-numbers-des-and-linear-algebra.csv)
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 

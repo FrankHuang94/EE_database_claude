@@ -29,6 +29,7 @@ def test_parse_rect_and_polar():
     assert p.kind == "rect" and p.parts[0].value == 3 and p.parts[1].value == -4.5
     p = parse_value("−j2")
     assert p.kind == "rect" and p.parts[0].value == 0 and p.parts[1].value == -2
+    assert p.parts[0].halfulp == p.parts[1].halfulp == 0.5  # implied real part at the same precision
     p = parse_value("2.236∠−63.43°")
     assert p.kind == "polar" and p.parts[0].value == 2.236 and p.parts[1].value == -63.43
 

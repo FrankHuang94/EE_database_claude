@@ -87,7 +87,8 @@ def build() -> str:
             current = L
             lid = L.lower() if L != "#" else "other"
             out += [f'<a id="letter-{lid}"></a>', "", f"## {L}", ""]
-        line = f'<a id="{e["anchor"]}"></a>**{e["term"]}** — {e["definition"].strip()}'
+        definition = e["definition"].strip().replace("*", "\\*")  # z* must not start emphasis
+        line = f'<a id="{e["anchor"]}"></a>**{e["term"]}** — {definition}'
         if e.get("chapter"):
             line += f" *First defined in* [{e['chapter']}]({paths[e['chapter']]})."
         if e.get("see_also"):

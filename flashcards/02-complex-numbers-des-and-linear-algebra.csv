@@ -1,0 +1,33 @@
+#separator:comma
+#html:true
+#columns:Front,Back,Tags
+#tags column:3
+"What does multiplying a complex number by \(j\) do geometrically?","Rotates it 90° counterclockwise; magnitude unchanged (\(j = 1\angle 90^\circ\)).",bsee::02 bsee::02-01
+"Rectangular to polar: magnitude and angle of \(x + jy\)?","\(r = \sqrt{x^2+y^2}\), \(\theta = \operatorname{atan2}(y, x)\) — never plain \(\arctan(y/x)\) without checking the quadrant.",bsee::02 bsee::02-01
+"Polar to rectangular: \(r\angle\theta\) = ?","\(r\cos\theta + j\,r\sin\theta\)",bsee::02 bsee::02-01
+"Multiplying complex numbers in polar form?","Magnitudes multiply, angles add: \(r_1\angle\theta_1 \cdot r_2\angle\theta_2 = r_1r_2\angle(\theta_1+\theta_2)\).",bsee::02 bsee::02-01
+"Dividing complex numbers in polar form?","Magnitudes divide, angles subtract.",bsee::02 bsee::02-01
+"How do you divide \((a+jb)/(c+jd)\) in rectangular form?","Multiply top and bottom by the conjugate \(c - jd\); the denominator becomes \(c^2 + d^2\).",bsee::02 bsee::02-01
+"\(z z^*\) = ?","\(|z|^2 = x^2 + y^2\) (real and non-negative).",bsee::02 bsee::02-01
+"Powers of \(j\): \(j, j^2, j^3, j^4\)?","\(j, -1, -j, 1\) — repeating with period 4. Also \(1/j = -j\).",bsee::02 bsee::02-01
+"State Euler's formula.","\(e^{j\theta} = \cos\theta + j\sin\theta\) (\(\theta\) real, radians).",bsee::02 bsee::02-01
+"Two ways to derive Euler's formula?","(1) Substitute \(j\theta\) into the Taylor series of \(e^x\) and group real/imaginary terms. (2) Show \(f(\theta) = (\cos\theta + j\sin\theta)e^{-j\theta}\) has zero derivative, so \(f = f(0) = 1\).",bsee::02 bsee::02-01
+"\(\cos\theta\) and \(\sin\theta\) in terms of complex exponentials?","\(\cos\theta = (e^{j\theta}+e^{-j\theta})/2\), \(\sin\theta = (e^{j\theta}-e^{-j\theta})/(2j)\).",bsee::02 bsee::02-01
+"De Moivre's theorem?","\((r\angle\theta)^n = r^n\angle n\theta\).",bsee::02 bsee::02-01
+"How many \(n\)-th roots does a nonzero complex number have, and where are they?","Exactly \(n\), equally spaced by \(360^\circ/n\) on a circle of radius \(r^{1/n}\): \(r^{1/n}\angle(\theta + 360^\circ k)/n\).",bsee::02 bsee::02-01
+"What does \(e^{st}\) look like for \(s = \sigma + j\omega\)?","A rotating arrow (rate \(\omega\)) whose length \(e^{\sigma t}\) grows (\(\sigma>0\)), decays (\(\sigma<0\)) or stays constant (\(\sigma=0\)); its real part is a growing/decaying/steady sinusoid.",bsee::02 bsee::02-01
+"Phasor of \(V_m\cos(\omega t + \phi)\)?","\(\mathbf{V} = V_m\angle\phi = V_m e^{j\phi}\), with \(v(t) = \operatorname{Re}\{\mathbf{V}e^{j\omega t}\}\).",bsee::02 bsee::02-01
+"Convert \(\sin x\) to the cosine reference.","\(\sin x = \cos(x - 90^\circ)\); also \(-\sin x = \cos(x + 90^\circ)\) and \(-\cos x = \cos(x \pm 180^\circ)\).",bsee::02 bsee::02-01
+"Time-domain derivative \(dv/dt\) in the phasor domain?","Multiply the phasor by \(j\omega\): amplitude ×ω, phase +90°.",bsee::02 bsee::02-01
+"Steady-state integral \(\int v\,dt\) in the phasor domain?","Divide the phasor by \(j\omega\): amplitude ÷ω, phase −90°.",bsee::02 bsee::02-01
+"Why can't you add phasors of different frequencies?","Phasors are snapshots of arrows rotating at one shared rate; different-frequency arrows change their relative angle, so the sum isn't a fixed phasor (it beats).",bsee::02 bsee::02-01
+"Uniqueness lemma for phasors?","If \(\operatorname{Re}\{\mathbf{X}e^{j\omega t}\} = \operatorname{Re}\{\mathbf{Y}e^{j\omega t}\}\) for all \(t\) (\(\omega\ne0\)), then \(\mathbf{X} = \mathbf{Y}\) — check \(t=0\) and \(t=\pi/2\omega\).",bsee::02 bsee::02-01
+"Frequency response of \(\tau\dot y + y = x\)?","\(H(j\omega) = 1/(1 + j\omega\tau)\): \(|H| = 1/\sqrt{1+(\omega\tau)^2}\), \(\angle H = -\arctan(\omega\tau)\).",bsee::02 bsee::02-01
+"Single-pole response at its corner \(\omega = 1/\tau\)?","\(|H| = 1/\sqrt2 \approx 0.707\) (−3 dB), phase −45°.",bsee::02 bsee::02-01
+"Impedances of R, L, C?","\(R\), \(j\omega L\), \(1/(j\omega C) = -j/(\omega C)\).",bsee::02 bsee::02-01
+"Series RLC resonance frequency and impedance there?","\(\omega_0 = 1/\sqrt{LC}\); \(Z = R\) (reactances cancel), current is maximum and in phase with the source.",bsee::02 bsee::02-01
+"A time delay \(t_d\) corresponds to what phase shift at frequency \(f\)?","\(360^\circ \times f\,t_d\) lag (e.g., 1 ns = 360° at 1 GHz).",bsee::02 bsee::02-01
+"RMS value of a sinusoid of amplitude \(V_m\)?","\(V_m/\sqrt{2} \approx 0.707\,V_m\).",bsee::02 bsee::02-01
+"Average power from voltage and current phasors (peak)?","\(P = \tfrac12\operatorname{Re}\{\mathbf{V}\mathbf{I}^*\} = \tfrac12 V_mI_m\cos(\theta_v-\theta_i)\) — not \(\tfrac12\operatorname{Re}\{\mathbf{V}\mathbf{I}\}\).",bsee::02 bsee::02-01
+"Cost of a complex multiply in hardware?","4 real multiplies + 2 adds directly, or 3 multiplies + 5 adds/subtracts (Ungar/'Gauss' form); with constant twiddles, 3 mult + 3 add.",bsee::02 bsee::02-01 bsee::practitioner
+"Why does 4096-QAM need about 6 dB more SNR than 1024-QAM?","64×64 vs 32×32 grid at similar average power: adjacent points about half as far apart; \(10\log_{10}(4095/1023) \approx 6.02\) dB. It buys only +20% peak rate (12 vs 10 bits/symbol).",bsee::02 bsee::02-01 bsee::practitioner

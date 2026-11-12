@@ -22,7 +22,7 @@ def main() -> int:
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     write = "--write" in sys.argv
     filt = args[0] if args else None
-    os.environ.setdefault("MPLBACKEND", "Agg")
+    os.environ.pop("MPLBACKEND", None)  # let the kernel use its inline backend so figures are captured
     os.environ["PYTHONPATH"] = str(ROOT / "tools") + os.pathsep + os.environ.get("PYTHONPATH", "")
     nbs = [p for p in sorted(ROOT.glob("**/*.ipynb"))
            if ".ipynb_checkpoints" not in str(p) and "/site/" not in str(p) and "/docs/" not in str(p)]

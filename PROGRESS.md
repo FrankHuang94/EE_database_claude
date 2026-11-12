@@ -4,10 +4,7 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 
 ## Next step
 
-> **Phase 0 (scaffold) is complete. Phase 1 (pilot) is in progress.** Write the two pilot chapters, each with problem set, worked solutions, lab and verify script:
->
-> 1. `02-01` Complex Numbers, Euler's Formula and Phasors
-> 2. `07-02` First-Order RC and RL Transients
+> **Phase 0 (scaffold) is complete. Phase 1 (pilot) is in progress.** `02-01` is written and verified. Next: write `07-02` First-Order RC and RL Transients with problem set, worked solutions, ngspice-verified lab and verify script.
 >
 > Then get CI green and **stop and ask the learner for feedback** on rigor, pacing, math level, length and format before Phase 2.
 
@@ -29,10 +26,10 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 
 | Course | Chapters | Written | Verified | Reviewed | Words | Problems | Verified numbers | Labs | Notebooks / netlists / testbenches |
 |---|---|---|---|---|---|---|---|---|---|
-| — | | | | | | | | | |
-| **Total** | **307** | **0** | **0** | **0** | **0** | **0** | **0** | **0** | **0 / 0 / 0** |
+| 02 | 10 | 1 | 1 | 0 | 8,891 | 17 | 99 | 1 | 1 / 0 / 0 |
+| **Total** | **307** | **1** | **1** | **0** | **8,891** | **17** | **99** | **1** | **1 / 0 / 0** |
 
-Glossary terms: **0** · Flashcards: **0**
+Glossary terms: **25** · Flashcards: **29**
 
 <!-- END STATS -->
 
@@ -40,7 +37,9 @@ Glossary terms: **0** · Flashcards: **0**
 
 | Course | Status | Audit | Notes |
 |---|---|---|---|
-| 00–28 | ⬜ planned (stubs only) | — | Pilot chapters 02-01 and 07-02 are being written ahead of their courses |
+| 02 | 🔄 in progress (pilot) | — | 02-01 ✅ verified: 17 problems, 111 machine-checked values, lab notebook. Other chapters planned. |
+| 07 | 🔄 in progress (pilot) | — | 07-02 being written |
+| all others | ⬜ planned (stubs only) | — | |
 
 Course status values: ⬜ planned · 🔄 in progress · ✅ complete (all chapters verified, exam + flashcards + glossary done) · 🏁 audited (independent review findings fixed).
 
