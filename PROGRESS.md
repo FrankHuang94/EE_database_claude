@@ -4,7 +4,7 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 
 ## Next step
 
-> **Phase 0 (scaffold) is complete. Phase 1 (pilot) is in progress.** `02-01` is written and verified. Next: write `07-02` First-Order RC and RL Transients with problem set, worked solutions, ngspice-verified lab and verify script.
+> **Phase 1 (pilot) is complete: STOPPED for learner feedback.** Both pilot chapters (`02-01`, `07-02`) are written and verified, and CI is green. Do **not** start Phase 2 until the learner has given feedback on rigor, pacing, math level, length and format. Then apply the feedback to CLAUDE.md (template/style rules) and to the two pilot chapters, and start Phase 2 with Course 00 (Orientation), then Course 01.
 >
 > Then get CI green and **stop and ask the learner for feedback** on rigor, pacing, math level, length and format before Phase 2.
 
@@ -13,7 +13,7 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | Phase | Scope | Status |
 |---|---|---|
 | 0 · Scaffold | Structure, CLAUDE.md, CURRICULUM.md, README, STUDY_PLAN, SETUP, env files, CI, tooling, notation | ✅ complete |
-| 1 · Pilot | 02-01 and 07-02, complete with problems, solutions, labs, verification; then stop for feedback | 🔄 in progress |
+| 1 · Pilot | 02-01 and 07-02, complete with problems, solutions, labs, verification; then stop for feedback | ✅ complete — awaiting learner feedback |
 | 2 · Courses | Terms 1 → 7 in prerequisite order; per-course audit; term checkpoints | ⬜ not started |
 | 3 · Capstones and practitioner layer | Capstones C1–C4, practitioner playbooks and case studies, reference files, final STUDY_PLAN | ⬜ not started |
 | 4 · Final QA | Full CI pass, glossary/objective/cross-link audits, final report | ⬜ not started |
@@ -26,10 +26,11 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 
 | Course | Chapters | Written | Verified | Reviewed | Words | Problems | Verified numbers | Labs | Notebooks / netlists / testbenches |
 |---|---|---|---|---|---|---|---|---|---|
-| 02 | 10 | 1 | 1 | 0 | 8,891 | 17 | 99 | 1 | 1 / 0 / 0 |
-| **Total** | **307** | **1** | **1** | **0** | **8,891** | **17** | **99** | **1** | **1 / 0 / 0** |
+| 02 | 10 | 1 | 1 | 0 | 8,891 | 17 | 111 | 1 | 1 / 0 / 0 |
+| 07 | 11 | 1 | 0 | 0 | 8,644 | 16 | 128 | 1 | 1 / 6 / 0 |
+| **Total** | **307** | **2** | **1** | **0** | **17,535** | **33** | **239** | **2** | **2 / 6 / 0** |
 
-Glossary terms: **25** · Flashcards: **29**
+Glossary terms: **48** · Flashcards: **53**
 
 <!-- END STATS -->
 
@@ -38,7 +39,7 @@ Glossary terms: **25** · Flashcards: **29**
 | Course | Status | Audit | Notes |
 |---|---|---|---|
 | 02 | 🔄 in progress (pilot) | — | 02-01 ✅ verified: 17 problems, 111 machine-checked values, lab notebook. Other chapters planned. |
-| 07 | 🔄 in progress (pilot) | — | 07-02 being written |
+| 07 | 🔄 in progress (pilot) | — | 07-02 ✅ verified: 16 problems, 128 machine-checked values, 6 ngspice netlists, lab notebook. Other chapters planned. |
 | all others | ⬜ planned (stubs only) | — | |
 
 Course status values: ⬜ planned · 🔄 in progress · ✅ complete (all chapters verified, exam + flashcards + glossary done) · 🏁 audited (independent review findings fixed).
@@ -52,6 +53,8 @@ Course status values: ⬜ planned · 🔄 in progress · ✅ complete (all chapt
 | 3 | **FE Reference Handbook version.** 10.6 reportedly applies from July 2026; not verified on ncees.org. | Phase 0 | Verify before the first checkpoint; checkpoints cite only formula content, not page numbers. |
 | 4 | **Open-source ASIC flow status.** The OpenLane/Sky130 ecosystem has reorganized; installation steps in SETUP.md §6 are deliberately deferred. | Phase 0 | Research and verify when building Course 19. |
 | 5 | **Synchrophasor 20 frames/s rate** in IEC/IEEE 60255-118-1:2018 not confirmed ([R-005](reference/research-log.md#r-005--synchrophasor-standards)). | Phase 0 | Only cite rates confirmed for C37.118.1-2011 unless verified. |
+| 7 | **Pilot feedback pending.** Rigor, pacing, math level, length and format of 02-01 and 07-02 to be confirmed by the learner before Phase 2. | Phase 1 | Learner |
+| 8 | **Pilot chapters link forward to planned chapters** (e.g., 07-01, 02-02, 06-08) whose stubs exist but are unwritten; pilot chapters restate the needed facts in recap boxes. | Phase 1 | Re-check these cross-references when the linked chapters are written. |
 | 6 | **MkDocs Material end of life.** The mkdocs-material build prints that Material for MkDocs reaches end of life on 5 May 2027 and names Zensical as its successor. | Phase 0 | Site still builds; evaluate migration in Phase 4 (content is plain Markdown, so low risk). |
 
 ## Change log
@@ -71,4 +74,5 @@ Changes relative to the original build brief's chapter plan.
 
 | Date | Session summary |
 |---|---|
+| 2026-11-12 | Phase 1. Pilot chapters 02-01 (≈ 8.9k words incl. tables, 17 problems, 111 checked values) and 07-02 (16 problems, 128 checked values, 6 ngspice netlists) with labs, figures, glossary (48 terms) and flashcards (53). Independent reviewer audit run on both chapters; findings fixed. Stopped for feedback. |
 | 2026-11-12 | Phase 0. Repo created; curriculum data model + generators; CLAUDE.md, CURRICULUM.md (29 courses, 307 chapters), README, STUDY_PLAN, SETUP, notation; verification toolkit (answer-key checker, ngspice/HDL/notebook runners, link and structure checkers); CI; smoke tests pass. Research log R-001–R-013. |

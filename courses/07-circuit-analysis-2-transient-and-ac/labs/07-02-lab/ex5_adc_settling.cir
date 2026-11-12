@@ -1,0 +1,14 @@
+* Example 07-02.5 -- settling of an ADC sampling network to 16-bit accuracy.
+* A full-scale 1 V step charges C_S = 20 pF through R = 100 Ohm (tau = 2 ns). Settling to within
+* 1/2 LSB of 16 bits means reaching 1 - 2^-17 = 0.99999237 V.
+*
+* EXPECT t_settle key:../../chapters/07-02-first-order-rc-rl-transients.md#Ex_07-02.5c scale=1e-9 rtol=2e-3
+
+VSTEP in 0 PWL(0 0 1f 1)
+R1    in a 100
+CS    a  0 20p IC=0
+
+.options reltol=1e-9 abstol=1e-18 vntol=1e-12 chgtol=1e-20
+.tran 1p 40n 0 1p UIC
+.meas tran t_settle WHEN v(a)=0.99999237 CROSS=1
+.end

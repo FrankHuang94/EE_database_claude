@@ -6,6 +6,8 @@ A netlist opts in by containing one or more EXPECT comment lines:
     * EXPECT <meas_name> <value> [rtol=1e-3] [atol=...]
     * EXPECT <meas_name> key:<relative/path.md>#<ANSWER-KEY-ID> [scale=1e-3] [rtol=2e-3]
 
+(Write spaces in an answer-key ID as underscores, e.g. #Ex_07-02.2e for 'Ex 07-02.2e'.)
+
 The first form compares a `.meas` result with a literal value. The second form
 links the simulation to a published answer: it reads the value from the answer-key
 table in the given Markdown file (path relative to the netlist), multiplies it by
@@ -36,6 +38,8 @@ def expected_value(spec: str, netlist: Path) -> float:
     if spec.startswith("key:"):
         rel, ident = spec[4:].split("#", 1)
         key = load_answer_key((netlist.parent / rel).resolve())
+        if ident not in key and ident.replace("_", " ") in key:
+            ident = ident.replace("_", " ")  # IDs with spaces are written with underscores in netlists
         if ident not in key:
             raise KeyError(f"{ident} not in {rel}")
         pub = key[ident][0]

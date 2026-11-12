@@ -1,0 +1,29 @@
+* Examples 07-02.2 and 07-02.3 -- switched RC circuit with Thevenin reduction, then sequential switching.
+* A 24 V source is connected through R1 = 6 kOhm to node A at t = 0. R2 = 3 kOhm and C = 2 uF
+* run from node A to ground; C starts uncharged. The switch opens again at t = 10 ms (Example 07-02.3).
+* A 0 V source (VSENSE) in series with R1 measures i_R1.
+*
+* EXPECT vc_tau  key:../../chapters/07-02-first-order-rc-rl-transients.md#Ex_07-02.2e rtol=1e-3
+* EXPECT t_7v    key:../../chapters/07-02-first-order-rc-rl-transients.md#Ex_07-02.2f scale=1e-3 rtol=1e-3
+* EXPECT ir1_0p  key:../../chapters/07-02-first-order-rc-rl-transients.md#Ex_07-02.2d scale=1e-3 rtol=1e-3
+* EXPECT vc_10m  key:../../chapters/07-02-first-order-rc-rl-transients.md#Ex_07-02.3a rtol=1e-3
+* EXPECT vc_20m  key:../../chapters/07-02-first-order-rc-rl-transients.md#Ex_07-02.3c rtol=1e-3
+
+VS    in  0   DC 24
+S1    in  sw  ctrl 0 swmod
+VCTRL ctrl 0  PWL(0 1 10m 1 10.0001m 0)
+.model swmod SW(Ron=1m Roff=1e12 Vt=0.5 Vh=0.1)
+R1    sw  b   6k
+VSENSE b  a   DC 0
+R2    a   0   3k
+C1    a   0   2u IC=0
+
+.options reltol=1e-6
+.tran 1u 25m 0 1u UIC
+
+.meas tran vc_tau FIND v(a) AT=4m
+.meas tran t_7v   WHEN v(a)=7 CROSS=1
+.meas tran ir1_0p FIND i(VSENSE) AT=1u
+.meas tran vc_10m FIND v(a) AT=10m
+.meas tran vc_20m FIND v(a) AT=20m
+.end

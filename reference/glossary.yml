@@ -85,3 +85,79 @@
 - term: Error vector magnitude
   definition: EVM, the RMS distance between transmitted (or received) constellation points and their ideal positions, relative to the signal, often quoted in dB. It sets the highest usable QAM order.
   chapter: "02-01"
+
+# ---------------------------------------------------------------- 07-02
+- term: Transient
+  definition: The part of a circuit's response that dies out after a disturbance (such as a switching event), as the circuit moves from one steady state to another.
+  chapter: "07-02"
+  see_also: [Time constant]
+- term: Natural response
+  definition: The response of a circuit with no sources acting, driven only by the energy initially stored in its capacitors and inductors; for a first-order circuit, an exponential decay.
+  chapter: "07-02"
+- term: Step response
+  definition: The response of a circuit to a source that switches from one constant value to another; for a first-order circuit, an exponential approach to the new final value.
+  chapter: "07-02"
+- term: Time constant
+  definition: τ, the characteristic time of a first-order exponential response e^{−t/τ}; τ = R_Th·C for an RC circuit and τ = L/R_Th for an RL circuit. After one τ, 63.2 % of the change is complete.
+  chapter: "07-02"
+  see_also: [Thevenin resistance, Settling time]
+- term: First-order circuit
+  definition: A circuit whose behavior is described by a first-order differential equation, typically one with a single (equivalent) capacitor or inductor.
+  chapter: "07-02"
+- term: Continuity of capacitor voltage and inductor current
+  definition: The rule that v_C and i_L cannot change instantaneously (it would take infinite current or voltage, and infinite power). Other circuit variables can jump at switching instants.
+  chapter: "07-02"
+- term: State variable
+  definition: A variable that fully captures a circuit's stored energy and memory, namely capacitor voltages and inductor currents. Knowing them at one instant (plus the inputs) determines the future response.
+  chapter: "07-02"
+- term: Thevenin resistance
+  definition: R_Th, the resistance seen looking into two terminals of a linear circuit with its independent sources turned off; it sets the time constant seen by a capacitor or inductor connected there.
+  chapter: "07-02"
+- term: Rise time
+  definition: The time a response takes to go from 10 % to 90 % of its total change; τ·ln 9 ≈ 2.2τ for a single pole, so t_r ≈ 0.35/f_3dB.
+  chapter: "07-02"
+- term: Settling time
+  definition: The time a response takes to come and stay within a specified error band of its final value; τ·ln(1/ε) for a first-order system, and (N+1)·ln 2 · τ to reach ½ LSB of an N-bit converter.
+  chapter: "07-02"
+- term: Propagation delay
+  definition: The time from an input transition to the output crossing 50 % of its swing; for an RC model, τ·ln 2 ≈ 0.69τ.
+  chapter: "07-02"
+- term: Dynamic power
+  definition: Power consumed by charging and discharging capacitances in switching circuits, P = αCV²f, independent of the resistance of the charging path.
+  chapter: "07-02"
+  see_also: [Activity factor]
+- term: Activity factor
+  definition: α, the fraction of clock cycles in which a node makes a 0→1 transition; it scales the dynamic power αCV²f.
+  chapter: "07-02"
+- term: Adiabatic charging
+  definition: Charging a capacitor with a slowly ramped or stepped source so that the voltage across the series resistance stays small, reducing the loss below ½CV² (to CV²/2N for N equal steps).
+  chapter: "07-02"
+- term: Inductive kick
+  definition: The large voltage an inductor develops (v = L di/dt) when its current is interrupted abruptly; it can arc switch contacts or break down transistors unless a flyback path is provided.
+  chapter: "07-02"
+  see_also: [Flyback diode]
+- term: Flyback diode
+  definition: A diode placed across an inductive load so that, when the driving switch opens, the inductor's current circulates through the diode, clamping the switch voltage to about one diode drop above the supply. Also called a freewheeling diode.
+  chapter: "07-02"
+- term: Integrating factor
+  definition: A multiplier (e^{t/τ} for τ x' + x = u) that turns the left side of a first-order linear ODE into an exact derivative, giving the general solution as an integral of the input.
+  chapter: "07-02"
+- term: Convolution
+  definition: The operation y(t) = ∫ h(t−λ) u(λ) dλ that gives a linear time-invariant system's output from its input and impulse response; for a first-order low-pass, an exponentially weighted average of past inputs.
+  chapter: "07-02"
+- term: Integrator (op-amp)
+  definition: An op-amp circuit with a capacitor in the feedback path and a resistor at the input, giving v_out = −(1/RC)∫v_in dt; a resistor across the capacitor makes it a "leaky" integrator (a first-order low-pass).
+  chapter: "07-02"
+- term: Sample-and-hold
+  definition: A circuit that connects a capacitor to a signal through a switch (sample), then disconnects it to hold the voltage while it is converted; its settling and kT/C noise limit ADC accuracy.
+  chapter: "07-02"
+- term: Least significant bit (LSB)
+  definition: The smallest step an N-bit converter resolves, full scale / 2^N; errors and noise are often expressed in LSBs.
+  chapter: "07-02"
+- term: kT/C noise
+  anchor: ktc-noise
+  definition: The thermal noise sampled onto a capacitor through any resistance, with RMS value √(kT/C), about 64 µV for 1 pF at 300 K; independent of the resistance.
+  chapter: "07-02"
+- term: Repeater
+  definition: A buffer inserted along a long on-chip wire to break it into shorter segments, converting delay that grows with the square of length into delay that grows linearly.
+  chapter: "07-02"

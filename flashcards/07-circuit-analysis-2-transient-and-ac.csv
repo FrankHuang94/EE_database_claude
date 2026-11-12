@@ -1,0 +1,28 @@
+#separator:comma
+#html:true
+#columns:Front,Back,Tags
+#tags column:3
+"Which two circuit quantities can never jump at a switching instant, and why?","Capacitor voltage and inductor current: a jump would need infinite current (\(i = C\,dv/dt\)) or infinite voltage (\(v = L\,di/dt\)) — i.e., stored energy changing in zero time.",bsee::07 bsee::07-02
+"DC steady-state models of C and L?","Capacitor → open circuit; inductor → short circuit.",bsee::07 bsee::07-02
+"Time constant of an RC circuit? Of an RL circuit?","\(\tau = R_{Th}C\); \(\tau = L/R_{Th}\), with \(R_{Th}\) seen by the storage element (independent sources off).",bsee::07 bsee::07-02
+"Why does a larger R speed up an RL transient but slow an RC one?","In RL the resistor dissipates the inductor's energy (faster with larger R); in RC it throttles the charging current (slower with larger R).",bsee::07 bsee::07-02
+"The master formula for any variable in a first-order circuit?","\(x(t) = x(\infty) + [x(t_0^+) - x(\infty)]\,e^{-(t-t_0)/\tau}\) — same τ for every variable.",bsee::07 bsee::07-02
+"How do you find the initial value of a NON-state variable (e.g., a resistor current) after switching?","Draw the \(t_0^+\) circuit with C replaced by a voltage source \(v_C(t_0^+)\) (or L by a current source \(i_L(t_0^+)\)) and solve it.",bsee::07 bsee::07-02
+"Percent complete after 1, 2, 3, 5 time constants?","63.2%, 86.5%, 95.0%, 99.3%.",bsee::07 bsee::07-02
+"50% delay of a first-order step response?","\(\tau\ln 2 \approx 0.693\tau\).",bsee::07 bsee::07-02
+"10–90% rise time of a single pole, and its link to bandwidth?","\(t_r = \tau\ln 9 \approx 2.2\tau = 0.35/f_{3dB}\).",bsee::07 bsee::07-02
+"Settling time to within ε of final value?","\(t = \tau\ln(1/\varepsilon)\); 0.1% takes 6.9τ.",bsee::07 bsee::07-02
+"Settling time for an N-bit ADC (½ LSB, full-scale step)?","\((N+1)\ln 2\cdot\tau\): 9.0τ at 12 bits, 11.8τ at 16 bits.",bsee::07 bsee::07-02
+"Energy lost charging a capacitor from 0 to V through a resistor?","½CV² — exactly half of the CV² drawn from the source, independent of R.",bsee::07 bsee::07-02
+"CMOS dynamic power formula and its origin?","\(P = \alpha C V_{DD}^2 f\): each 0→1→0 cycle draws \(CV_{DD}^2\) from the supply regardless of transistor strength.",bsee::07 bsee::07-02 bsee::practitioner
+"How can you charge a capacitor with less than ½CV² loss?","Charge it in N steps (loss CV²/2N) or with a slow ramp (adiabatic charging) so the resistor never sees a large voltage.",bsee::07 bsee::07-02
+"Square-wave (0/V, 50% duty) steady state through an RC: \(V_{max}\), \(V_{min}\)?","With \(k = e^{-T/2\tau}\): \(V_{max} = V/(1+k)\), \(V_{min} = Vk/(1+k)\); ripple ≈ \(VT/(4\tau)\) when \(T \ll \tau\).",bsee::07 bsee::07-02
+"General solution of \(\tau\dot x + x = u(t)\)?","\(x(t) = x(0)e^{-t/\tau} + \frac{1}{\tau}\int_0^t e^{-(t-\lambda)/\tau}u(\lambda)\,d\lambda\) — an exponentially weighted average of past inputs (a convolution).",bsee::07 bsee::07-02
+"Ramp response of a first-order low-pass in steady state?","It tracks the ramp delayed by τ (constant error kτ).",bsee::07 bsee::07-02
+"What happens when you interrupt an inductor's current with no flyback path?","\(v = L\,di/dt\) grows as large as needed — switch arcs or transistor breaks down.",bsee::07 bsee::07-02
+"Resistor vs diode flyback across an inductive load: tradeoff?","Resistor: faster decay (τ = L/R) but switch sees supply + I₀R. Diode: switch sees supply + 0.7 V but slow decay (slower relay release).",bsee::07 bsee::07-02
+"Ideal inverting op-amp integrator output?","\(v_{out} = v_{out}(0) - \frac{1}{RC}\int v_{in}\,dt\); add \(R_f \parallel C\) (leaky integrator: τ = \(R_fC\), DC gain \(-R_f/R\)) to stop it drifting into the rail.",bsee::07 bsee::07-02
+"kT/C noise at 300 K for 1 pF? Does it depend on R?","≈ 64 µV rms; no — it depends only on C (and T).",bsee::07 bsee::07-02
+"The central tradeoff in an ADC sampling capacitor?","Bigger C → lower kT/C noise but longer settling (τ = RC) → needs a stronger driver or more time.",bsee::07 bsee::07-02 bsee::practitioner
+"Why does on-chip wire delay grow with the square of length?","Both R and C are proportional to length, so RC ∝ length²; repeaters break long wires into segments.",bsee::07 bsee::07-02 bsee::practitioner
+"Two equal capacitors, one at V₀, connected through R: final voltage and energy lost?","\(V_0/2\) each; half the initial energy (\(\tfrac14 CV_0^2\)) is lost, independent of R.",bsee::07 bsee::07-02

@@ -1,0 +1,26 @@
+* Problem 07-02.14 -- relay-coil flyback: resistor clamp vs diode clamp.
+* Coil: L = 100 mH with series resistance R_coil = 200 Ohm, carrying I0 = 12 V / 200 Ohm = 60 mA when the
+* driver transistor turns off at t = 0. Each loop starts with the inductor current as an initial condition.
+*  (b) resistor flyback: R_f = 300 Ohm across the coil.
+*  (c) diode flyback: the forward-biased diode is modeled as a constant 0.7 V drop. That is exact here
+*      because the current stays positive over the measured interval.
+*
+* EXPECT t10_res   key:../../solutions/07-02-solutions.md#07-02.14d scale=1e-3 rtol=1e-3
+* EXPECT t10_diode key:../../solutions/07-02-solutions.md#07-02.14f scale=1e-3 rtol=1e-3
+
+* (b) resistor clamp loop: 0 -> L -> R_coil -> VSENSE -> R_f -> 0
+LB     0  nb2 0.1 IC=0.06
+RCB    nb2 nb3 200
+VSB    nb3 nb4 DC 0
+RFB    nb4 0   300
+* (c) diode clamp loop: 0 -> L -> R_coil -> VSENSE -> 0.7 V drop -> 0
+LC     0  nc2 0.1 IC=0.06
+RCC    nc2 nc3 200
+VSC    nc3 nc4 DC 0
+VDC    nc4 0   DC 0.7
+
+.options reltol=1e-6
+.tran 0.1u 3m 0 0.1u UIC
+.meas tran t10_res   WHEN i(VSB)=0.006 FALL=1
+.meas tran t10_diode WHEN i(VSC)=0.006 FALL=1
+.end

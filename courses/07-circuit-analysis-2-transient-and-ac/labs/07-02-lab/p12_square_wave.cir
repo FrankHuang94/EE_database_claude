@@ -1,0 +1,22 @@
+* Problem 07-02.12 -- periodic steady state of an RC low-pass driven by a 0/1 V square wave, f = 1 kHz.
+* Branch 1: tau = 0.5 ms (R = 1 kOhm, C = 0.5 uF). Branch 2: tau = 5 ms (R = 1 kOhm, C = 5 uF).
+* Run long enough (>= 20 tau) to reach periodic steady state, then measure max/min over the last period.
+*
+* EXPECT vmax1 key:../../solutions/07-02-solutions.md#07-02.12a rtol=1e-3
+* EXPECT vmin1 key:../../solutions/07-02-solutions.md#07-02.12b rtol=2e-3
+* EXPECT vmax2 key:../../solutions/07-02-solutions.md#07-02.12d rtol=1e-3
+* EXPECT vmin2 key:../../solutions/07-02-solutions.md#07-02.12e rtol=1e-3
+
+VSQ  in 0 PULSE(0 1 0 1n 1n 0.499999m 1m)
+R1   in o1 1k
+C1   o1 0 0.5u IC=0
+R2   in o2 1k
+C2   o2 0 5u IC=0
+
+.options reltol=1e-6
+.tran 2u 150m 0 2u UIC
+.meas tran vmax1 MAX v(o1) FROM=149m TO=150m
+.meas tran vmin1 MIN v(o1) FROM=149m TO=150m
+.meas tran vmax2 MAX v(o2) FROM=149m TO=150m
+.meas tran vmin2 MIN v(o2) FROM=149m TO=150m
+.end

@@ -64,7 +64,7 @@ def build() -> str:
                 keys += key_rows(text)
         for pf in (d / "problems").glob("*.md") if (d / "problems").exists() else []:
             probs += len(re.findall(r"^### Problem ", pf.read_text(encoding="utf-8"), re.M))
-        for sf in [*(d / "solutions").glob("*.md"), *(d / "exam").glob("*.md")]:
+        for sf in [*(d / "solutions").glob("*.md"), *(d / "exam").glob("*.md"), *(d / "labs").glob("*/README.md")]:
             keys += key_rows(sf.read_text(encoding="utf-8"))
         labs = len(list((d / "labs").glob("*/README.md")))
         nb = len(list(d.glob("labs/**/*.ipynb")))
