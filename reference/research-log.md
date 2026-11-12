@@ -20,6 +20,15 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-012 | Desktop CPU maximum boost clocks | Nov 2026 |
 | R-013 | ABET curriculum minimums; semester-credit workload | Nov 2026 |
 | R-014 | Nominal mains voltages (IEC 60038, ANSI C84.1) | Nov 2026 |
+| R-015 | Lithography exposure field (reticle limit) | Nov 2026 |
+| R-016 | Global semiconductor market (WSTS/SIA) | Nov 2026 |
+| R-017 | R&D intensity of major chip companies (10-Ks) | Nov 2026 |
+| R-018 | Functional verification study (Wilson Research Group / Siemens EDA) | Nov 2026 |
+| R-019 | Advanced-node design and mask cost estimates | Nov 2026 |
+| R-020 | Fab cycle time and mask/EUV layer counts | Nov 2026 |
+| R-021 | Learning-science evidence (testing, spacing, interleaving) | Nov 2026 |
+| R-022 | FE Electrical & Computer pass rates | Nov 2026 |
+| R-023 | US semiconductor workforce (SIA/Oxford Economics) | Nov 2026 |
 
 ---
 
@@ -94,3 +103,88 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 - **IEC 60038 (50 Hz systems):** the preferred low-voltage values are 230 V single-phase and 230/400 V three-phase (phase-to-neutral / phase-to-phase), with supply at the connection point expected within ±10%. These replaced the older 220/380 V and 240/415 V systems [Established]. Sources: [IEC 60038 summary (Wikipedia)](https://en.wikipedia.org/wiki/IEC_60038); [VDE preview of IEC 60038 ed. 7.0](https://www.vde-verlag.de/iec-normen/preview-pdf/info_iec60038%7Bed7.0%7Db.pdf).
 - **North America (60 Hz):** the nominal residential voltage is 120 V single-phase (120/240 V split-phase service), under ANSI C84.1 [Established]. The ANSI tolerance bands were not verified against the standard text. Source: [IEC 60038 summary (Wikipedia)](https://en.wikipedia.org/wiki/IEC_60038), which also lists the 60 Hz values.
 - Checked Nov 2026 via secondary sources; neither standard's text was consulted directly.
+
+## R-015 · Lithography exposure field (the "reticle limit")
+
+- **Standard scanners (DUV and 0.33-NA EUV):** the maximum exposure field is **26 mm × 33 mm ≈ 858 mm²**, which caps the size of a single die printed in one exposure [Established].
+- **High-NA EUV (0.55 NA):** anamorphic 4×/8× optics halve the field to **26 mm × 16.5 mm ≈ 429 mm²**. Larger dies must be stitched from two exposures or split into chiplets. Larger (6 × 12 inch) masks are being pursued by ASML and chipmakers to restore the full field [Established for the field size; mask transition timing is an industry plan].
+- **Sources:** [IEEE Spectrum, "This Machine Could Keep Moore's Law on Track"](https://spectrum.ieee.org/high-na-euv); [Tom's Hardware on 6×12-inch High-NA photomasks](https://www.tomshardware.com/tech-industry/semiconductors/tsmc-samsung-and-intel-shore-up-support-with-asml-to-deploy-larger-high-na-euv-photomasks-6-12-inch-photomask-transition-may-take-years-despite-unified-effort). Checked Nov 2026.
+
+## R-016 · Global semiconductor market (WSTS / SIA)
+
+**2025 actuals.** WSTS reported US\$795.6 B, +26.2% (Q4 release, 6 Mar 2026). SIA reported \$791.7 B, +25.6% (6 Feb 2026, on a different measurement basis) [Established]. Sources: [WSTS 2025 release](https://www.wsts.org/76/103/Global-Semiconductor-Market-grows-26-in-2025-to-796B); [SIA release](https://www.semiconductors.org/global-annual-semiconductor-sales-increase-25-6-to-791-7-billion-in-2025/).
+
+**2025 by segment (WSTS, US\$ B; segments tie to the total).**
+
+| Segment | 2025 sales (US\$ B) | Share |
+|---|---|---|
+| Logic | 299.5 | 37.6% |
+| Memory | 230.0 | 28.9% |
+| Analog | 86.5 | 10.9% |
+| Micro | 84.9 | 10.7% |
+| Optoelectronics | 43.0 | 5.4% |
+| Discretes | 30.7 | 3.9% |
+| Sensors | 20.9 | 2.6% |
+
+**Forecasts.** The WSTS Spring 2026 forecast (2 Jun 2026) put 2026 at \$1,511 B (+89.9%, driven by memory at +249%) and 2027 at \$1,914 B [Industry estimate]. An August 2026 Q2 update reported first-half 2026 at \$702 B (+102% YoY). Its re-run model implied about \$1,655 B for 2026, but WSTS states these are not new forecast values. The Autumn 2026 forecast is due in December 2026. Sources: [WSTS Spring 2026](https://www.wsts.org/76/103/Global-Semiconductor-Market-Surges-Beyond-15T-2026); [WSTS Q2 2026](https://www.wsts.org/76/Global-Semiconductor-Market-records-exceptional-growth-in-Q2-2026).
+
+**Caveat.** Segment rows come via secondary reproductions of the WSTS table. Gathered via search snippets because the WSTS site was unreachable from the build environment.
+
+## R-017 · R&D intensity (latest fiscal-year 10-K / annual reports)
+
+R&D % = R&D ÷ revenue.
+
+| Company | Fiscal year | Revenue (US\$ B) | R&D (US\$ B) | R&D % | Notes |
+|---|---|---|---|---|---|
+| NVIDIA | FY2026 | 215.9 | 18.5 | 8.6% | ~42,000 employees, ~31,000 in R&D |
+| AMD | FY2025 | 34.6 | 8.1 | 23.4% | |
+| Intel | FY2025 | 52.9 | 13.8 | 26.1% | |
+| Qualcomm | FY2026 | 43.1 | 10.2 | 23.7% | FY2025: 20.4% |
+| Broadcom | FY2025 | 63.9 | 11.0 | 17.2% | ~33,000 employees; ~57% R&D, per secondary sources |
+| Texas Instruments | FY2025 | 17.7 | 2.08 | 11.8% | |
+| Analog Devices | FY2025 | 11.0 | 1.77 | 16.0% | ~24,500 employees; ~13,000 in engineering roles |
+
+[Established] for revenue and R&D; [Industry estimate] for headcount splits. Sources: SEC 10-K filings ([NVIDIA](https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/nvda-20260125.htm), [AMD](https://www.sec.gov/Archives/edgar/data/2488/000000248826000018/amd-20251227.htm), [Intel](https://www.sec.gov/Archives/edgar/data/50863/000005086326000011/intc-20251227.htm), [Qualcomm](https://www.sec.gov/Archives/edgar/data/0000804328/000080432826000128/qcom-20260927.htm), [Broadcom](https://www.sec.gov/Archives/edgar/data/1730168/000173016825000121/avgo-20251102.htm), [ADI](https://www.sec.gov/Archives/edgar/data/6281/000000628125000153/adi-20251101.htm)); [TI annual report](https://investor.ti.com/static-files/fc9d9346-cf77-40db-902a-e9961e9c5736).
+
+## R-018 · Functional verification study (Wilson Research Group / Siemens EDA)
+
+- **IC/ASIC first-silicon success:** 5% in the 2026 study (released 8 Sep 2026; the recruitment method changed, which limits comparison) and 14% in 2024. It was about 30–33% from 2010–2020 and 24% in 2022 [Established as reported by the study].
+- **Share of project time in verification:** 49% (IC/ASIC, 2026); earlier studies 53–57%.
+- **Schedule:** about 75% of IC/ASIC projects were behind schedule (2024 and 2026).
+- **Verification vs design engineers:** about a 1:1 mean peak headcount ratio (2022 study), with verification headcount growing faster (6.2% vs 2.7% CAGR, 2007–2022).
+- **Respins:** "logic or functional flaws" are the #1 cause of respins. Exact 2024 and 2026 percentages are UNVERIFIED.
+- **Sources:** [Siemens 2026 study blog](https://blogs.sw.siemens.com/verificationhorizons/2026/09/08/the-2026-functional-verification-study/); [2024 report PDF](https://static.sw.cdn.siemens.com/siemens-disw-assets/public/1NyfMZJ3nuPhMGQCGFDITG/en-US/ic-asic-functional-verification-trend-report-wp-86424-d3.pdf); [SemiEngineering, "First-Time Silicon Success Plummets"](https://semiengineering.com/first-time-silicon-success-plummets/); [2022 study, part 8](https://blogs.sw.siemens.com/verificationhorizons/2022/12/12/part-8-the-2022-wilson-research-group-functional-verification-study/).
+
+## R-019 · Advanced-node design and mask cost estimates [Contested]
+
+- **IBS design-cost estimates** (from-scratch designs with no IP reuse):
+  - c. 2021: 28 nm ≈ \$40 M, 7 nm ≈ \$217 M, 5 nm ≈ \$416 M, 3 nm up to ≈ \$590 M.
+  - Arm's 2023 F-1 prospectus, citing IBS (Jul 2022): 7 nm ≈ \$249 M, 2 nm ≈ \$725 M, of which software, verification and IP qualification are about 71%.
+  - Earlier 2018 estimates were higher, e.g. 5 nm ≈ \$542 M.
+- **Critique:** industry critics (SemiAnalysis, 2022, second-hand) argue IBS figures run 50–66% above typical real-world costs.
+- **Mask sets:** reported at roughly \$10–30 M at 3 nm, from secondary sources only (UNVERIFIED).
+- **Source:** [Arm F-1](https://www.sec.gov/Archives/edgar/data/1973239/000119312523216983/d393891df1.htm).
+
+## R-020 · Fab cycle time and mask/EUV layer counts
+
+- **Days per mask layer:** fabs average about 1–1.5 days per mask layer (best about 0.8). 28 nm used about 40–50 mask layers and 7 nm about 80–85 (SemiEngineering, ["Battling Fab Cycle Times"](https://semiengineering.com/battling-fab-cycle-times), 2017) [Industry estimate].
+- **Wafer cycle time:** about 12 weeks on average and 14–20 weeks for advanced processes, across 400–1,400 process steps ([BCG × SIA, Apr 2021](https://www.semiconductors.org/wp-content/uploads/2021/05/BCG-x-SIA-Strengthening-the-Global-Semiconductor-Value-Chain-April-2021_1.pdf)) [Industry estimate].
+- **EUV layers (secondary reports):** about 14 at TSMC N5 and about 19–25 at N3 variants. Total mask counts at N3/N2 are UNVERIFIED.
+
+## R-021 · Learning-science evidence
+
+- **Testing effect:** Roediger & Karpicke (2006), "Test-enhanced learning: Taking memory tests improves long-term retention," *Psychological Science* 17(3), 249–255. Restudy wins at 5 minutes, but testing wins at 2 days and 1 week. One-week recall in Experiment 2 was 61% (STTT) vs 40% (SSSS) [Established].
+- **Spacing effect:** Cepeda, Pashler, Vul, Wixted & Rohrer (2006), "Distributed practice in verbal recall tasks: A review and quantitative synthesis," *Psychological Bulletin* 132(3), 354–380. Across 839 assessments, spaced practice beats massed practice, and the optimal gap grows with the retention interval [Established].
+- **Interleaving:** Rohrer & Taylor (2007), "The shuffling of mathematics problems improves learning," *Instructional Science* 35, 481–498. One week later, mixed practice scored 63% vs blocked 20%, despite worse performance during practice (60% vs 89%) [Established].
+- **Technique review:** Dunlosky, Rawson, Marsh, Nathan & Willingham (2013), *Psychological Science in the Public Interest* 14(1), 4–58. **High utility:** practice testing and distributed practice. **Moderate:** elaborative interrogation, self-explanation and interleaved practice. **Low:** summarization, highlighting, keyword mnemonic, imagery and rereading [Established].
+
+## R-022 · FE Electrical & Computer pass rates
+
+- **First-time takers from ABET programs within 12 months of graduation:** 70% (Jan–Jun 2026 cohort; NCEES table updated July 2026, n = 1,782) and 64% (Jul–Dec 2025 cohort, via PPI).
+- **All first-time takers, calendar 2024:** 62% ([NCEES 2025 Engineering Forum presentation](https://ncees.org/wp-content/uploads/2025/08/2025-Engineering-Forum-Presentation_FINAL.pdf)) [Established].
+- **Caveat:** non-ABET and self-study candidates are outside the 70% population.
+
+## R-023 · US semiconductor workforce
+
+- **Headline figures:** SIA / Oxford Economics, *Chipping Away* (25 Jul 2023): about 345,000 US semiconductor workers in early 2023, projected to about 460,000 by 2030. About 67,000 of the new jobs are at risk of going unfilled: roughly 39% technicians, 41% engineers and 20% computer scientists [Industry estimate].
+- **Source:** [report PDF](https://www.semiconductors.org/wp-content/uploads/2023/07/SIA_July2023_ChippingAway_website.pdf).

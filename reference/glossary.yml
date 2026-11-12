@@ -161,3 +161,106 @@
 - term: Repeater
   definition: A buffer inserted along a long on-chip wire to break it into shorter segments, converting delay that grows with the square of length into delay that grows linearly.
   chapter: "07-02"
+
+# ---------------------------------------------------------------- 00-02
+- term: Abstraction
+  definition: A simplified description of a system level that exposes a contract (inputs, outputs, assumptions) and hides internal detail, so that the level above can be designed without the detail.
+  chapter: "00-02"
+- term: Lumped-matter discipline
+  definition: The conditions under which fields can be replaced by voltages and currents in lumped elements obeying KVL and KCL, chiefly that the circuit is small compared with the signal wavelength (or line delay is short compared with edge time).
+  chapter: "00-02"
+  see_also: [Transmission line, Wavelength]
+- term: Wavelength
+  definition: The distance λ = v/f a wave travels in one period, where v is the propagation speed and f the frequency.
+  chapter: "00-02"
+- term: Transmission line
+  definition: A pair of conductors along which signals travel as waves with finite speed, so that voltage and current vary with position and reflections occur at impedance changes.
+  chapter: "00-02"
+  see_also: [Characteristic impedance, Reflection coefficient]
+- term: Characteristic impedance
+  definition: Z0, the ratio of voltage to current for a single wave traveling along a transmission line (typically 50 Ω for coaxial cable and RF systems).
+  chapter: "00-02"
+- term: Reflection coefficient
+  definition: Γ = (R − Z0)/(R + Z0), the ratio of reflected to incident wave voltage at a termination R on a line of characteristic impedance Z0; +1 for an open, −1 for a short, 0 for a matched load.
+  chapter: "00-02"
+- term: Static discipline
+  definition: The rule defining valid digital levels with separate output (V_OL, V_OH) and input (V_IL, V_IH) thresholds, so that every gate restores clean levels and leaves noise margins.
+  chapter: "00-02"
+  see_also: [Noise margin]
+- term: Noise margin
+  definition: The amount of noise a digital connection can tolerate, NM_L = V_IL − V_OL and NM_H = V_OH − V_IH.
+  chapter: "00-02"
+- term: Regeneration
+  definition: Restoring a signal to clean logic levels at each stage, so that noise does not accumulate along a chain; the key advantage of digital over analog processing.
+  chapter: "00-02"
+- term: Q-function
+  definition: Q(x), the probability that a standard normal random variable exceeds x; it gives error probabilities for decisions in Gaussian noise and falls off extremely fast (Q(6) ≈ 1e-9).
+  chapter: "00-02"
+- term: Level shifter
+  definition: A circuit that translates logic levels between two voltage domains so that families with incompatible thresholds can communicate.
+  chapter: "00-02"
+- term: Instruction-set architecture (ISA)
+  definition: The contract between hardware and software, namely the instructions, registers, memory model and exceptions a program can rely on, independent of how a processor implements them.
+  chapter: "00-02"
+- term: Process design kit (PDK)
+  definition: The files a foundry gives designers to use its process, including device models, design rules, layer definitions and often standard-cell libraries, abstracting the fab's recipes.
+  chapter: "00-02"
+- term: Reticle limit
+  definition: The largest area one lithography exposure can print, 26 mm × 33 mm ≈ 858 mm² on standard scanners (half that with High-NA EUV); it caps the size of a single die without stitching.
+  chapter: "00-02"
+  see_also: [Chiplet]
+- term: Chiplet
+  definition: A die designed to be combined with other dies inside one package, so that a system can exceed the reticle limit or mix processes; chiplets communicate over die-to-die links.
+  chapter: "00-02"
+- term: Side channel
+  definition: An unintended leak of information through physical behavior such as timing, power consumption or electromagnetic emission, which can reveal secrets that the logical abstraction hides.
+  chapter: "00-02"
+
+# ---------------------------------------------------------------- 00-04
+- term: SPICE
+  definition: Simulation Program with Integrated Circuit Emphasis, the standard family of circuit simulators that solve a netlist's nodal equations for DC, AC and transient behavior; ngspice is an open-source version.
+  chapter: "00-04"
+  see_also: [Netlist, Modified nodal analysis]
+- term: Netlist
+  definition: A text description of a circuit listing each element, its value and the nodes it connects; the input to a circuit simulator (node 0 is ground).
+  chapter: "00-04"
+- term: Operating point
+  definition: The DC voltages and currents of a circuit with its sources at their DC values (capacitors open, inductors shorted); also called the bias point.
+  chapter: "00-04"
+- term: AC analysis
+  definition: A simulation of a circuit's small-signal sinusoidal response versus frequency, computed with phasors after linearizing around the operating point.
+  chapter: "00-04"
+- term: Transient analysis
+  definition: A simulation of a circuit's voltages and currents versus time for arbitrary input waveforms, computed step by step with numerical integration.
+  chapter: "00-04"
+- term: Modified nodal analysis
+  definition: The formulation SPICE uses, namely KCL at every node plus extra equations for voltage sources, giving a linear system G·v = i (re-linearized each iteration for nonlinear devices).
+  chapter: "00-04"
+- term: Newton–Raphson method
+  definition: An iterative root-finding method, x_{k+1} = x_k − g(x_k)/g′(x_k), that circuit simulators use to solve nonlinear equations; it converges quadratically near a solution but can overshoot far from it.
+  chapter: "00-04"
+- term: Hardware description language (HDL)
+  definition: A language such as Verilog, SystemVerilog or VHDL for describing digital hardware structure and behavior, used for simulation and synthesis.
+  chapter: "00-04"
+- term: Testbench
+  definition: Simulation-only code that instantiates a design, applies inputs and checks outputs; the executable form of a design's specification.
+  chapter: "00-04"
+  see_also: [Self-checking testbench]
+- term: Self-checking testbench
+  definition: A testbench that compares the design's outputs with independently computed expected values and reports pass or fail automatically, rather than relying on a human reading waveforms.
+  chapter: "00-04"
+- term: Functional coverage
+  definition: A measure of which specified behaviors, input combinations or corner cases a verification run has actually exercised; used to decide when verification is complete.
+  chapter: "00-04"
+- term: Formal verification
+  definition: Using mathematical proof (model checking, equivalence checking) to show that a design satisfies a property for all possible inputs, instead of testing examples.
+  chapter: "00-04"
+- term: Machine epsilon
+  definition: The gap between 1 and the next representable floating-point number, 2^−52 ≈ 2.22×10^−16 for IEEE 754 double precision; the relative precision of a computation.
+  chapter: "00-04"
+- term: Catastrophic cancellation
+  definition: The loss of significant digits when subtracting two nearly equal floating-point numbers; avoided by algebraic rearrangement or series expansion.
+  chapter: "00-04"
+- term: Electronic design automation (EDA)
+  definition: The software used to design and verify chips and boards, covering simulation, synthesis, place-and-route, timing and verification; dominated commercially by Synopsys, Cadence and Siemens EDA.
+  chapter: "00-04"

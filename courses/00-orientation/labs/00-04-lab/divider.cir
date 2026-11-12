@@ -1,0 +1,38 @@
+* Example 00-04.1 and 00-04.2 -- your first netlist: a voltage divider, and the SPICE "M" trap.
+* Circuit 1: 5 V source, R1 = 3 kOhm from node in to node out, R2 = 2 kOhm from out to ground.
+* Circuit 2: the same divider written with a typo. In SPICE, "M" means MILLI (1e-3), not mega.
+*           R1 below is therefore 1 milliohm, not 1 megohm; mega is written "MEG".
+*
+* EXPECT vout   key:../../chapters/00-04-toolchain-walkthrough.md#Ex_00-04.1a rtol=1e-6
+* EXPECT isrc   key:../../chapters/00-04-toolchain-walkthrough.md#Ex_00-04.1b scale=-1e-3 rtol=1e-6
+* EXPECT vtypo  key:../../chapters/00-04-toolchain-walkthrough.md#Ex_00-04.2b rtol=1e-6
+* EXPECT vb4    key:../../solutions/00-04-solutions.md#00-04.4b rtol=1e-6
+
+V1  in   0 DC 5
+R1  in   out 3k
+R2  out  0 2k
+
+V2  in2  0 DC 5
+R3  in2  out2 1M
+R4  out2 0 1MEG
+
+* Problem 00-04.4: 10 V; R1 = 1k (n1-a), R2 = 2k (a-0), R3 = 1k (a-b), R4 = 1k (b-0)
+V4  n1   0 DC 10
+R41 n1   a4 1k
+R42 a4   0 2k
+R43 a4   b4 1k
+R44 b4   0 1k
+
+.op
+.control
+op
+let vout = v(out)
+let isrc = i(V1)
+let vtypo = v(out2)
+let vb4 = v(b4)
+echo "vout = $&vout"
+echo "isrc = $&isrc"
+echo "vtypo = $&vtypo"
+echo "vb4 = $&vb4"
+.endc
+.end

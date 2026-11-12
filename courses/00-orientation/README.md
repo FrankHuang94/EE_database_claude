@@ -26,9 +26,9 @@ A map of electrical engineering and of this curriculum: the subdisciplines, the 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
 | [00-01 · The Map of Electrical Engineering](chapters/00-01-map-of-electrical-engineering.md) | 2 | ⬜ planned | — |
-| [00-02 · The Abstraction Stack: Physics to Software](chapters/00-02-the-abstraction-stack.md) | 2 | ⬜ planned | — |
+| [00-02 · The Abstraction Stack: Physics to Software](chapters/00-02-the-abstraction-stack.md) | 2 | ✅ verified | [problems](problems/00-02-problems.md) · [solutions](solutions/00-02-solutions.md) · [lab](labs/00-02-lab/README.md) · [verify](verify/verify_00_02.py) |
 | [00-03 · How to Study This Curriculum](chapters/00-03-how-to-study-this-curriculum.md) | 1.5 | ⬜ planned | — |
-| [00-04 · Toolchain Setup Walkthrough](chapters/00-04-toolchain-walkthrough.md) | 2.5 | ⬜ planned | — |
+| [00-04 · Toolchain Setup Walkthrough](chapters/00-04-toolchain-walkthrough.md) | 2.5 | ✅ verified | [problems](problems/00-04-problems.md) · [solutions](solutions/00-04-solutions.md) · [lab](labs/00-04-lab/README.md) · [verify](verify/verify_00_04.py) |
 | [00-05 · How Chip Companies' Engineering Organizations Work](chapters/00-05-how-chip-companies-are-organized.md) | 2 | ⬜ planned | — |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)

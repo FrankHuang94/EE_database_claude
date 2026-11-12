@@ -59,7 +59,7 @@ The full map, with university equivalents, textbook alignment, objectives and ch
 
 | Term | Course | Chapters | Hours | Written |
 |---|---|---|---|---|
-| 1 | [00 · Orientation](courses/00-orientation/README.md) | 5 | 10 | 0/5 |
+| 1 | [00 · Orientation](courses/00-orientation/README.md) | 5 | 10 | 2/5 |
 | 1 | [01 · Calculus for Engineers](courses/01-calculus-for-engineers/README.md) | 10 | 116 | 0/10 |
 | 1 | [02 · Complex Numbers, Differential Equations and Linear Algebra](courses/02-complex-numbers-des-and-linear-algebra/README.md) | 10 | 110 | 1/10 |
 | 1 | [03 · Probability, Statistics and Random Variables for EE](courses/03-probability-statistics-and-random-variables/README.md) | 6 | 43 | 0/6 |

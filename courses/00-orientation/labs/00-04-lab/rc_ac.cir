@@ -1,0 +1,23 @@
+* Example 00-04.5 and Problem 00-04.5 -- an AC (frequency-sweep) analysis of RC low-pass filters.
+* Circuit 1: R = 1 kOhm, C = 1 uF.   Circuit 2: R = 10 kOhm, C = 10 nF.
+* An AC source of amplitude 1 makes v(out) equal to the transfer function H(j*2*pi*f).
+*
+* EXPECT f3db_1   key:../../chapters/00-04-toolchain-walkthrough.md#Ex_00-04.5a rtol=1e-3
+* EXPECT f3db_2   key:../../solutions/00-04-solutions.md#00-04.5a scale=1e3 rtol=1e-3
+* EXPECT db_10k_2 key:../../solutions/00-04-solutions.md#00-04.5b rtol=1e-3
+
+V1  in1 0 DC 0 AC 1
+R1  in1 o1 1k
+C1  o1  0  1u
+V2  in2 0 DC 0 AC 1
+R2  in2 o2 10k
+C2  o2  0  10n
+
+.control
+* (AC measurements in ngspice-42 are most reliable inside a .control block)
+ac dec 2000 1 1meg
+meas ac f3db_1   WHEN vdb(o1)=-3.0103 FALL=1
+meas ac f3db_2   WHEN vdb(o2)=-3.0103 FALL=1
+meas ac db_10k_2 FIND vdb(o2) AT=10k
+.endc
+.end

@@ -1,0 +1,39 @@
+* Example 00-02.5 and Problem 00-02.10 -- when the lumped-circuit abstraction fails.
+* A 1 V step from a source with resistance R_s drives a 50-ohm transmission line with a 1 ns
+* one-way delay, open at the far end. (The 1e12-ohm resistors only keep the nodes from floating.)
+*   Circuit 1: R_s = 10 ohm, fast 10 ps edge  -> the far end rings: 1.667, 0.556, 1.296 V ...
+*   Circuit 2: R_s = 10 ohm, slow 50 ns edge  -> the line behaves like a lumped wire: no overshoot
+*   Circuit 3: R_s = 25 ohm, fast 10 ps edge  -> Problem 00-02.10
+*
+* EXPECT far1_a key:../../chapters/00-02-the-abstraction-stack.md#Ex_00-02.5b rtol=2e-3
+* EXPECT far1_b key:../../chapters/00-02-the-abstraction-stack.md#Ex_00-02.5c rtol=2e-3
+* EXPECT far1_c key:../../chapters/00-02-the-abstraction-stack.md#Ex_00-02.5d rtol=2e-3
+* EXPECT max2   key:../../chapters/00-02-the-abstraction-stack.md#Ex_00-02.5e rtol=5e-3
+* EXPECT far3_a key:../../solutions/00-02-solutions.md#00-02.10b rtol=2e-3
+* EXPECT far3_b key:../../solutions/00-02-solutions.md#00-02.10c rtol=2e-3
+* EXPECT far3_c key:../../solutions/00-02-solutions.md#00-02.10d rtol=2e-3
+
+V1  s1 0 PWL(0 0 10p 1)
+RS1 s1 a1 10
+T1  a1 0 b1 0 Z0=50 TD=1n
+RL1 b1 0 1e12
+
+V2  s2 0 PWL(0 0 50n 1)
+RS2 s2 a2 10
+T2  a2 0 b2 0 Z0=50 TD=1n
+RL2 b2 0 1e12
+
+V3  s3 0 PWL(0 0 10p 1)
+RS3 s3 a3 25
+T3  a3 0 b3 0 Z0=50 TD=1n
+RL3 b3 0 1e12
+
+.tran 1p 120n 0 5p
+.meas tran far1_a FIND v(b1) AT=1.5n
+.meas tran far1_b FIND v(b1) AT=3.5n
+.meas tran far1_c FIND v(b1) AT=5.5n
+.meas tran max2   MAX  v(b2) FROM=0 TO=120n
+.meas tran far3_a FIND v(b3) AT=1.5n
+.meas tran far3_b FIND v(b3) AT=3.5n
+.meas tran far3_c FIND v(b3) AT=5.5n
+.end
