@@ -375,3 +375,51 @@
 - term: Triangular distribution
   definition: A probability distribution defined by a minimum, most-likely and maximum value, with mean (a + m + b)/3; a simple model of skewed task-duration risk.
   chapter: "00-05"
+
+# ---------------------------------------------------------------- 01-01
+- term: Function
+  definition: A rule that assigns exactly one output to each allowed input; in engineering both input and output usually carry units (for example voltage as a function of time).
+  chapter: "01-01"
+  see_also: [Domain and range, Inverse function]
+- term: Domain and range
+  definition: The domain is the set of allowed inputs of a function; the range is the set of outputs it can produce.
+  chapter: "01-01"
+- term: Inverse function
+  definition: The function that undoes a one-to-one function, so that f⁻¹(f(x)) = x; for example ln undoes exp. Solving an equation for a variable applies an inverse.
+  chapter: "01-01"
+- term: Power law
+  definition: A relation y = kxⁿ; doubling x multiplies y by 2ⁿ, and on log-log axes it is a straight line with slope n.
+  chapter: "01-01"
+  see_also: [Log-log plot]
+- term: Exponential function
+  definition: The function eˣ (e ≈ 2.71828), whose rate of change equals its value; physical decays are written y₀e^(−t/τ) with time constant τ.
+  chapter: "01-01"
+  see_also: [Natural logarithm, Half-life]
+- term: Natural logarithm
+  definition: ln y, the inverse of eˣ, defined for y > 0; it turns products into sums, ln(ab) = ln a + ln b.
+  chapter: "01-01"
+- term: Half-life
+  definition: The time for an exponentially decaying quantity to halve, τ ln 2 ≈ 0.693τ; for growth the same expression is the doubling time.
+  chapter: "01-01"
+- term: dBm
+  definition: Power expressed in decibels relative to 1 mW, 10·log10(P / 1 mW); 0 dBm = 1 mW and 30 dBm = 1 W.
+  chapter: "01-01"
+  see_also: [Decibel]
+- term: Radian
+  definition: The angle that subtends an arc equal to the radius; 2π rad = 360° and 1 rad ≈ 57.30°. Calculus formulas for sin and cos hold only in radians.
+  chapter: "01-01"
+- term: Semilog plot
+  definition: A graph with one logarithmic axis (usually the vertical); an exponential function plots as a straight line on it.
+  chapter: "01-01"
+- term: Log-log plot
+  definition: A graph with both axes logarithmic; a power law y = kxⁿ plots as a straight line of slope n.
+  chapter: "01-01"
+- term: Thermal voltage
+  definition: V_T = kT/q, the voltage scale of thermal energy per unit charge; about 25.85 mV at 300 K. It sets the ~60 mV/decade slope of diode and subthreshold transistor currents.
+  chapter: "01-01"
+- term: Dynamic voltage and frequency scaling (DVFS)
+  definition: Lowering supply voltage and clock frequency together when full performance is not needed; because dynamic power scales roughly as V²f, power falls roughly as the cube of voltage.
+  chapter: "01-01"
+- term: Link margin
+  definition: Received power minus receiver sensitivity, in dB; the extra loss a radio link can tolerate before it fails.
+  chapter: "01-01"
