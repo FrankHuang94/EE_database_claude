@@ -37,10 +37,18 @@ Single- and multivariable calculus taught through electrical examples: charge an
 | [01-09 · Multivariable Calculus I: Partial Derivatives and Gradients](chapters/01-09-multivariable-calculus-1.md) | 12 | ✅ verified | [problems](problems/01-09-problems.md) · [solutions](solutions/01-09-solutions.md) · [lab](labs/01-09-lab/README.md) · [verify](verify/verify_01_09.py) |
 | [01-10 · Multivariable Calculus II: Multiple, Line and Surface Integrals](chapters/01-10-multivariable-calculus-2.md) | 12 | ✅ verified | [problems](problems/01-10-problems.md) · [solutions](solutions/01-10-solutions.md) · [lab](labs/01-10-lab/README.md) · [verify](verify/verify_01_10.py) |
 
+**Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/01-calculus-for-engineers.csv) · [Equation sheet](../../reference/equation-sheets/01-calculus-for-engineers.md)
+
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 
 <!-- END GENERATED -->
 
 ## Course notes
 
-*(Hand-written notes for this course go below the generated block.)*
+**How to approach this course.** Course 01 is the longest of Term 1 (about 116 hours) and the mathematical foundation for everything after it. Chapters 01-01 to 01-08 are single-variable calculus (Calculus I–II), and 01-09 and 01-10 are multivariable calculus (Calculus III). Do them in order. If your algebra is rusty, the Math refresher callouts in 01-01 and 01-02 fill the gaps. Work at least the [A] and [B] problems of every chapter before moving on: the problem sets, not the reading, are where the skills form. Each lab pairs a notebook with ngspice netlists where a circuit can confirm the mathematics (01-10's lab is a notebook only, since its subject is fields and geometry).
+
+**What to master cold.** Exponentials and decibels (01-01), the derivative rules and $i = C\,dv/dt$ (01-03), linearization and Newton's method (01-04), RMS and energy integrals (01-07), Taylor approximations with their error terms (01-08), sensitivity analysis and Lagrange multipliers (01-09), and the integral laws of 01-10. Course 02 (complex numbers, ODEs and linear algebra), Courses 06–07 (circuits) and Course 13 (electromagnetics) build directly on them. The [equation sheet](../../reference/equation-sheets/01-calculus-for-engineers.md) collects them.
+
+**Assessment.** The [course final exam](exam/README.md) has 15 questions, takes 180 minutes, and allows a calculator and the equation sheet but not Python. Aim for at least 70%. One part of question 11 is a short-answer diligence question about die cost. The [flashcards](../../flashcards/01-calculus-for-engineers.csv) (101 cards) are for spaced review alongside the chapters.
+
+**Perishable content.** Most of this course is timeless mathematics. The dated facts are in the practitioner sections: the 6 GHz Wi-Fi limits ([R-007](../../reference/research-log.md#r-007--us-6-ghz-unlicensed-band)), the reticle limit ([R-015](../../reference/research-log.md#r-015--lithography-exposure-field-the-reticle-limit)), op-amp slew rates ([R-025](../../reference/research-log.md#r-025--op-amp-slew-rate-and-bandwidth-ti-lm358)), accelerator power ratings ([R-026](../../reference/research-log.md#r-026--ai-accelerator-power-ratings)) and subthreshold operation ([R-027](../../reference/research-log.md#r-027--subthreshold-and-near-threshold-operation)). Check those entries once a year.

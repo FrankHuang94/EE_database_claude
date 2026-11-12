@@ -1,0 +1,105 @@
+#separator:comma
+#html:true
+#columns:Front,Back,Tags
+#tags column:3
+"Convert a power ratio and a voltage ratio to dB.","\(10\log_{10}(P_2/P_1)\) for power; \(20\log_{10}(V_2/V_1)\) for voltage, valid only when both voltages are across equal impedances.",bsee::01 bsee::01-01
+"3 dB, 10 dB and 20 dB as power ratios? As amplitude ratios?","Power: ≈2×, 10×, 100×. Amplitude: ≈1.41×, 3.16×, 10×.",bsee::01 bsee::01-01
+"0 dBm, 30 dBm and −30 dBm in watts?","1 mW, 1 W and 1 µW. dBm is absolute power referenced to 1 mW; never add two dBm values.",bsee::01 bsee::01-01
+"How long does \(e^{-t/\tau}\) take to fall to a fraction \(p\)?","\(t = \tau\ln(1/p)\): 0.69τ to half, 2.3τ to 10%, 4.6τ to 1%.",bsee::01 bsee::01-01
+"Thermal voltage \(V_T\) at 300 K?","\(V_T = kT/q \approx 25.85\) mV.",bsee::01 bsee::01-01
+"Why must the argument of \(e^x\), \(\ln x\) or \(\sin x\) be dimensionless?","Their power series add \(x\), \(x^2\), \(x^3\)…, which only makes sense for a pure number. Write \(e^{-t/\tau}\), \(\ln(I/I_S)\), \(\sin(\omega t)\) with ω in rad/s.",bsee::01 bsee::01-01
+"Diode or BJT voltage change per decade of current at room temperature?","\(V_T\ln 10 \approx 59.5\) mV per decade.",bsee::01 bsee::01-01
+"How do you recognize exponential vs power-law data on a plot?","Exponential: straight line on semi-log axes (log y vs x). Power law: straight line on log–log axes, with slope = exponent.",bsee::01 bsee::01-01
+"1 rad in degrees; ω for 60 Hz?","57.30°; \(\omega = 2\pi\cdot60 \approx 377\) rad/s.",bsee::01 bsee::01-01
+"Change of base for logarithms?","\(\log_b x = \ln x/\ln b\); e.g. \(\log_{10}x = \ln x/2.3026\).",bsee::01 bsee::01-01
+"\(\lim_{x\to0}\sin x/x\)? Where does it matter?","1 (radians). It gives \(\sin x \approx x\) for small angles and is the key step in differentiating sin.",bsee::01 bsee::01-02
+"\(\lim_{n\to\infty}(1 + x/n)^n\)?","\(e^x\): continuous compounding; at \(n = 365\), \((1 + 1/n)^n = 2.715\) vs \(e = 2.718\).",bsee::01 bsee::01-02
+"What three conditions make \(f\) continuous at \(a\)?","\(f(a)\) exists, \(\lim_{x\to a}f(x)\) exists, and they are equal.",bsee::01 bsee::01-02
+"Which circuit quantities must be continuous at a switching event, and why?","Capacitor voltage and inductor current: a jump would need infinite current (\(i = C\,dv/dt\)) or infinite voltage (\(v = L\,di/dt\)).",bsee::01 bsee::01-02
+"How many bisection steps for 3 more decimal digits?","About 10 (\(2^{10} = 1024\)); width after \(n\) steps is \((b - a)/2^n\).",bsee::01 bsee::01-02
+"High-frequency behavior of a one-pole low-pass \(1/\sqrt{1 + (f/f_c)^2}\)?","\(\approx f_c/f\): −20 dB/decade, on an asymptote through 0 dB at \(f_c\). The true gain at \(f_c\) is −3.01 dB.",bsee::01 bsee::01-02
+"How do you find a limit at infinity of a rational function?","Keep only the leading terms of numerator and denominator: equal degree gives the ratio of coefficients.",bsee::01 bsee::01-02
+"What does the intermediate value theorem guarantee?","A continuous function that changes sign on \([a, b]\) has a root there; the basis of bisection.",bsee::01 bsee::01-02
+"Why does a forward difference fail for very small \(h\) in floating point?","Round-off: subtracting nearly equal numbers loses digits. Best \(h \approx 10^{-8}\) (≈ √machine epsilon) in double precision.",bsee::01 bsee::01-02
+"What does 'settled within 1%' mean for an exponential, and after how long?","\(e^{-t/\tau} < 0.01\), i.e. after 4.6τ; after 5τ it is within 0.7%.",bsee::01 bsee::01-02
+"Definition of the derivative?","\(f'(x) = \lim_{h\to0}\big(f(x + h) - f(x)\big)/h\): the slope of the tangent, the instantaneous rate.",bsee::01 bsee::01-03
+"Chain rule?","\(\big(f(g(x))\big)' = f'(g(x))\,g'(x)\); e.g. \((e^{-t/\tau})' = -e^{-t/\tau}/\tau\).",bsee::01 bsee::01-03
+"Product and quotient rules?","\((fg)' = f'g + fg'\); \((f/g)' = (f'g - fg')/g^2\).",bsee::01 bsee::01-03
+"Capacitor and inductor laws?","\(i = C\,dv/dt\); \(v = L\,di/dt\). 1 µF at 1 V/µs draws 1 A; 1 µH at 1 A/µs develops 1 V.",bsee::01 bsee::01-03
+"Small-signal resistance of a diode at 1 mA?","\(r_d = V_T/I \approx 26\ \Omega\); it halves when the current doubles.",bsee::01 bsee::01-03
+"Derivative of \(\sin(\omega t)\)?","\(\omega\cos(\omega t)\): differentiation multiplies a sinusoid's amplitude by ω and advances its phase 90°.",bsee::01 bsee::01-03
+"What is slew rate, and how does it limit full-power bandwidth?","The maximum \(dv/dt\) of an amplifier output. A sine of peak \(V_p\) needs \(\omega V_p\), so \(f_{max} = SR/(2\pi V_p)\).",bsee::01 bsee::01-03
+"Implicit differentiation of \(I = I_S(e^{V/V_T} - 1)\)?","\(dV/dI = V_T/(I + I_S) \approx V_T/I\).",bsee::01 bsee::01-03
+"Why is the central difference better than the forward difference?","Its error is \(\propto h^2\), not \(h\), so it reaches higher accuracy at a larger, round-off-safe step (≈ 10⁻⁵).",bsee::01 bsee::01-03
+"Is \(\lvert x\rvert\) differentiable at 0?","No: the left and right slopes (−1 and +1) differ. Continuity does not imply differentiability.",bsee::01 bsee::01-03
+"How do you classify a critical point in one variable?","\(f' = 0\); \(f'' > 0\) minimum, \(f'' < 0\) maximum, \(f'' = 0\) inconclusive. Always check endpoints too.",bsee::01 bsee::01-04
+"Maximum power transfer condition and value?","\(R_L = R_s\); \(P_{max} = V_s^2/(4R_s)\), with only 50% efficiency. Used for signals, not power delivery.",bsee::01 bsee::01-04
+"How much power is lost with a 2× load mismatch?","About 11% (89% of \(P_{max}\)) either way: optima are flat because the slope is zero there.",bsee::01 bsee::01-04
+"Minimum of \(ax + b/x\)?","At \(x = \sqrt{b/a}\), value \(2\sqrt{ab}\); the two terms are equal at the optimum.",bsee::01 bsee::01-04
+"Linearization formula and its error?","\(f(x_0 + \Delta x) \approx f(x_0) + f'(x_0)\Delta x\); error is second order, \(\tfrac12f''\Delta x^2\). This is the small-signal idea.",bsee::01 bsee::01-04
+"Newton's method update?","\(x_{k+1} = x_k - g(x_k)/g'(x_k)\); digits roughly double per step near a simple root, but it can diverge from a poor start.",bsee::01 bsee::01-04
+"How does SPICE find a DC operating point, and how does it keep Newton from diverging?","Newton's method on the nonlinear circuit equations, with damping and step limiting (capping the voltage change per iteration).",bsee::01 bsee::01-04
+"When does L'Hôpital's rule apply?","Only to 0/0 or ∞/∞ forms: then \(\lim f/g = \lim f'/g'\).",bsee::01 bsee::01-04
+"How small must a signal be for the diode small-signal model?","Swing ≪ \(V_T\) ≈ 26 mV; about 10% error at 5 mV.",bsee::01 bsee::01-04
+"What does the mean value theorem say?","Somewhere in \((a, b)\), \(f'(c) = \big(f(b) - f(a)\big)/(b - a)\): the average rate is attained at some instant.",bsee::01 bsee::01-04
+"Fundamental theorem of calculus?","\(\int_a^b f\,dx = F(b) - F(a)\) where \(F' = f\); and \(\frac{d}{dx}\int_a^x f\,dt = f(x)\).",bsee::01 bsee::01-05
+"Charge from current; energy from power?","\(q = \int i\,dt\); \(w = \int p\,dt\). 1 Ah = 3600 C; 1 kWh = 3.6 MJ.",bsee::01 bsee::01-05
+"Capacitor voltage from its current?","\(v_C(t) = v_C(0) + \frac{1}{C}\int_0^t i\,dt'\).",bsee::01 bsee::01-05
+"Energy lost charging a capacitor from a fixed source through R?","\(\tfrac12CV^2\), whatever R: half the \(CV^2\) the source delivers.",bsee::01 bsee::01-05
+"Area under \(Ae^{-t/\tau}\) from 0 to ∞?","\(A\tau\): the 'equivalent rectangle'.",bsee::01 bsee::01-05
+"Average of a full-wave and half-wave rectified sine of peak \(V_m\)?","\(2V_m/\pi \approx 0.637V_m\) and \(V_m/\pi \approx 0.318V_m\).",bsee::01 bsee::01-05
+"Average of \(\sin^2\) over a period?","½, which is why \(P = \tfrac12I_m^2R\) and RMS uses √2.",bsee::01 bsee::01-05
+"Ideal op-amp integrator output?","\(v_{out} = -\frac{1}{RC}\int v_{in}\,dt\); a square wave in gives a triangle wave out.",bsee::01 bsee::01-05
+"Trapezoid vs Simpson error orders?","\(h^2\) vs \(h^4\): halving h cuts the error to ¼ vs 1/16.",bsee::01 bsee::01-05
+"Why integrate over 16.67 ms or 20 ms in precision meters?","A whole number of mains periods (60 / 50 Hz): the integral of the hum is then zero.",bsee::01 bsee::01-05
+"Why does a coulomb-counting fuel gauge drift?","Integration accumulates a constant sensor offset forever; gauges recalibrate at known states (full charge, rested open-circuit voltage).",bsee::01 bsee::01-05
+"Integration by parts?","\(\int u\,dv = uv - \int v\,du\); pick \(u\) that simplifies when differentiated (LIATE).",bsee::01 bsee::01-06
+"\(\int_0^\infty t^ne^{-t}dt\)?","\(n!\); so \(\int_0^\infty te^{-t/\tau}dt = \tau^2\).",bsee::01 bsee::01-06
+"Orthogonality of sines over one period?","\(\int_0^T\sin(m\omega t)\sin(n\omega t)dt = 0\) for \(m \ne n\), \(T/2\) for \(m = n\): the basis of Fourier series.",bsee::01 bsee::01-06
+"Noise bandwidth of a one-pole low-pass?","\((\pi/2)f_c \approx 1.571f_c\): 57% more noise power than \(f_c\) suggests.",bsee::01 bsee::01-06
+"Thermal noise of 1 kΩ at 300 K?","\(\sqrt{4kTR} \approx 4.07\) nV/√Hz; scales as √R.",bsee::01 bsee::01-06
+"kT/C noise at 1 pF and 300 K?","\(\sqrt{kT/C} \approx 64.3\) µV rms, independent of R.",bsee::01 bsee::01-06
+"Fourier fundamental of a ±A square wave?","\((4/\pi)A \approx 1.273A\), carrying 81% of the power; harmonics \(4A/(n\pi)\) for odd n.",bsee::01 bsee::01-06
+"When does \(\int_1^\infty x^{-p}dx\) converge?","Only for \(p > 1\). At \(p = 1\) (1/f noise) every decade carries equal power.",bsee::01 bsee::01-06
+"Partial fractions: what do you do first if the degree of the numerator ≥ the denominator's?","Polynomial long division; then split the proper remainder into simple fractions.",bsee::01 bsee::01-06
+"Elmore delay vs 50% delay for a single pole?","Elmore = τ; 50% delay = τ ln 2; ratio 1.443.",bsee::01 bsee::01-06
+"Definition of RMS?","\(V_{rms} = \sqrt{\frac{1}{T}\int_0^Tv^2dt}\): the DC voltage that heats a resistor equally.",bsee::01 bsee::01-07
+"RMS of sine, square and triangle (peak \(V_p\))?","\(0.707V_p\), \(V_p\), \(0.577V_p\); crest factors 1.414, 1, 1.732.",bsee::01 bsee::01-07
+"PWM at duty D and peak \(V_p\): average and RMS?","Average \(DV_p\); RMS \(\sqrt{D}V_p\).",bsee::01 bsee::01-07
+"RMS of DC plus ripple?","\(\sqrt{V_{dc}^2 + V_{ac,rms}^2}\): orthogonal parts add in quadrature.",bsee::01 bsee::01-07
+"Average AC power with phase angle φ?","\(P = V_{rms}I_{rms}\cos\varphi = \tfrac12V_pI_p\cos\varphi\).",bsee::01 bsee::01-07
+"Usable energy of a capacitor discharged from \(V_1\) to \(V_1/2\)?","75% of \(\tfrac12CV_1^2\), because energy goes as \(V^2\).",bsee::01 bsee::01-07
+"Gaussian coverage within ±1σ, ±2σ, ±3σ?","68.27%, 95.45%, 99.73% (two-sided).",bsee::01 bsee::01-07
+"RMS quantization error of an ideal ADC?","\(\Delta/\sqrt{12} \approx 0.29\) LSB, from the variance of a uniform density.",bsee::01 bsee::01-07
+"Ideal N-bit ADC SNR for a full-scale sine?","\(6.02N + 1.76\) dB; 12 bits gives 74.0 dB.",bsee::01 bsee::01-07
+"What does an MTBF of 1,000,000 h mean?","About one failure per million device-hours across a fleet (≈ 114 device-years), not a lifetime of one unit.",bsee::01 bsee::01-07
+"Geometric series sum?","\(\sum_{k\ge0}r^k = 1/(1 - r)\) for \(\lvert r\rvert < 1\); e.g. the DC gain of \(y[n] = ry[n-1] + x[n]\).",bsee::01 bsee::01-08
+"Does the harmonic series converge?","No: \(\sum 1/k\) grows like \(\ln n\) (≈ 14.4 at 10⁶ terms). \(\sum 1/k^2 = \pi^2/6\) converges.",bsee::01 bsee::01-08
+"Taylor series of \(f\) about \(a\)?","\(\sum f^{(n)}(a)(x - a)^n/n!\), valid inside its radius of convergence.",bsee::01 bsee::01-08
+"Maclaurin series of \(e^x\), \(\sin x\), \(\cos x\)?","\(\sum x^n/n!\); \(x - x^3/6 + \cdots\); \(1 - x^2/2 + x^4/24 - \cdots\).",bsee::01 bsee::01-08
+"Lagrange remainder?","\(R_n = f^{(n+1)}(\xi)(x - a)^{n+1}/(n + 1)!\) for some ξ between a and x; bound it by the largest value of \(f^{(n+1)}\).",bsee::01 bsee::01-08
+"Alternating-series error bound?","For alternating terms shrinking to 0, the error is less than the first omitted term.",bsee::01 bsee::01-08
+"Small-angle error of \(\sin x \approx x\) at 0.1 rad?","About 0.17% (\(x^2/6\)).",bsee::01 bsee::01-08
+"Closed-loop gain error from finite loop gain?","\(G = A/(1 + A\beta) \approx (1/\beta)(1 - 1/(A\beta))\): relative error ≈ 1/loop gain.",bsee::01 bsee::01-08
+"HD2 and HD3 from Taylor coefficients?","HD2 ≈ \(\frac{a_2}{2a_1}A\); HD3 ≈ \(\frac{a_3}{4a_1}A^2\). HD2 rises 20 dB and HD3 40 dB per decade of amplitude.",bsee::01 bsee::01-08
+"HD2 of an exponential device for 1 mV input?","\(A/(4V_T)\) ≈ 0.97% (−40 dB).",bsee::01 bsee::01-08
+"Partial derivative \(\partial f/\partial x\)?","The rate of change of f with x, holding all other variables fixed.",bsee::01 bsee::01-09
+"Total differential?","\(df = f_x\,dx + f_y\,dy\): the linear sensitivity to small changes in all inputs.",bsee::01 bsee::01-09
+"Worst-case vs RSS tolerance stacking?","Worst case adds \(\lvert\)sensitivity × tolerance\(\rvert\); RSS adds them in quadrature, for independent errors.",bsee::01 bsee::01-09
+"What does the gradient tell you?","Its direction is steepest ascent, its length the steepest rate, and it is perpendicular to level curves.",bsee::01 bsee::01-09
+"Directional derivative?","\(D_{\mathbf u}f = \nabla f\cdot\mathbf u\) for a unit vector u.",bsee::01 bsee::01-09
+"Second-derivative test in two variables?","\(D = f_{xx}f_{yy} - f_{xy}^2\): \(D > 0, f_{xx} > 0\) min; \(D > 0, f_{xx} < 0\) max; \(D < 0\) saddle.",bsee::01 bsee::01-09
+"Lagrange condition and the meaning of λ?","\(\nabla f = \lambda\nabla g\) on \(g = c\); λ is the change in the optimal value per unit of constraint (a shadow price).",bsee::01 bsee::01-09
+"Elasticities of CMOS dynamic power \(P = \alpha CV^2f\)?","2 in V and 1 in f; 3 together when V scales with f (DVFS).",bsee::01 bsee::01-09
+"Square-law MOSFET \(g_m\)?","\(g_m = 2I_D/(V_{GS} - V_{TH})\); intrinsic gain \(g_mr_o \approx 2V_A/V_{ov}\).",bsee::01 bsee::01-09
+"Gradient-descent stability limit?","Step \(\eta < 2/\lambda_{max}\) of the Hessian; a large condition number makes convergence slow.",bsee::01 bsee::01-09
+"Area and volume elements in polar, cylindrical and spherical coordinates?","\(r\,dr\,d\theta\); \(r\,dr\,d\theta\,dz\); \(\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\). Never forget the Jacobian.",bsee::01 bsee::01-10
+"\(\int_{-\infty}^\infty e^{-x^2}dx\)?","\(\sqrt\pi \approx 1.772\), found by squaring and switching to polar coordinates.",bsee::01 bsee::01-10
+"What does Fubini's theorem allow?","Evaluating a double integral as nested single integrals in either order; swapping the order can make a hard integral easy.",bsee::01 bsee::01-10
+"What makes a vector field conservative?","Line integrals depend only on endpoints ⇔ \(\mathbf F = \nabla\varphi\) ⇔ curl-free on a region without holes. That is why voltage is well defined in electrostatics.",bsee::01 bsee::01-10
+"Divergence and curl, physically?","Divergence: net outflow per unit volume (source density). Curl: circulation per unit area (rotation).",bsee::01 bsee::01-10
+"Divergence theorem and Stokes' theorem?","Flux out of a closed surface = ∭ div F dV. Circulation around a loop = flux of curl F through any surface it bounds.",bsee::01 bsee::01-10
+"Gauss's law and Ampère's law (static)?","\(\oint\mathbf E\cdot d\mathbf A = Q_{enc}/\varepsilon_0\); \(\oint\mathbf B\cdot d\mathbf l = \mu_0I_{enc}\).",bsee::01 bsee::01-10
+"Magnetic field 1 cm from a 1 A wire?","\(B = \mu_0I/(2\pi r) = 20\) µT.",bsee::01 bsee::01-10
+"Copper skin depth at 100 kHz and 1 MHz?","\(\delta = \sqrt{\rho/(\pi f\mu_0)}\): about 0.21 mm and 0.066 mm.",bsee::01 bsee::01-10
+"Dies-per-wafer formula, and why do big dies cost more than proportionally?","\(\pi d^2/(4A) - \pi d/\sqrt{2A}\). Edge loss grows in relative size and yield \(e^{-AD_0}\) falls exponentially with area.",bsee::01 bsee::01-10

@@ -32,12 +32,12 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | Course | Chapters | Written | Verified | Reviewed | Words | Problems | Verified numbers | Labs | Notebooks / netlists / testbenches |
 |---|---|---|---|---|---|---|---|---|---|
 | 00 | 5 | 5 | 5 | 5 | 22,489 | 52 | 229 | 5 | 5 / 3 / 1 |
-| 01 | 10 | 10 | 10 | 0 | 52,411 | 151 | 851 | 10 | 10 / 13 / 0 |
+| 01 | 10 | 10 | 10 | 0 | 52,411 | 151 | 952 | 10 | 10 / 13 / 0 |
 | 02 | 10 | 1 | 1 | 0 | 9,185 | 18 | 118 | 1 | 1 / 0 / 0 |
 | 07 | 11 | 1 | 1 | 0 | 8,902 | 18 | 149 | 1 | 1 / 6 / 0 |
-| **Total** | **307** | **17** | **17** | **5** | **92,987** | **239** | **1347** | **17** | **17 / 22 / 1** |
+| **Total** | **307** | **17** | **17** | **5** | **92,987** | **239** | **1448** | **17** | **17 / 22 / 1** |
 
-Glossary terms: **236** · Flashcards: **111**
+Glossary terms: **236** · Flashcards: **212**
 
 <!-- END STATS -->
 

@@ -5,3 +5,4 @@ One sheet per course: the equations you should be able to write from memory (or 
 | Course | Sheet |
 |---|---|
 | 00 · Orientation | [00-orientation.md](00-orientation.md) |
+| 01 · Calculus for Engineers | [01-calculus-for-engineers.md](01-calculus-for-engineers.md) |
