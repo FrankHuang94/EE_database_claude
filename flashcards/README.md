@@ -14,4 +14,6 @@ Math is written as `\(...\)` (inline) and `\[...\]` (display), which Anki render
 
 | Course | File | Cards |
 |---|---|---|
-| — | *(decks are added as courses are completed)* | |
+| 00 · Orientation | [00-orientation.csv](00-orientation.csv) | 56 |
+| 02 · Complex Numbers, ODEs, Linear Algebra (02-01 so far) | [02-complex-numbers-des-and-linear-algebra.csv](02-complex-numbers-des-and-linear-algebra.csv) | 29 |
+| 07 · Circuit Analysis II (07-02 so far) | [07-circuit-analysis-2-transient-and-ac.csv](07-circuit-analysis-2-transient-and-ac.csv) | 26 |

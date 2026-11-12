@@ -1,0 +1,60 @@
+#separator:comma
+#html:true
+#columns:Front,Back,Tags
+#tags column:3
+"What are electrical engineering's two broad purposes?","Moving and converting energy; and sensing, moving, storing and processing information.",bsee::00 bsee::00-01
+"How do you convert a battery's mAh rating to energy?","Energy (Wh) = capacity (Ah) × nominal voltage (V); 1 Wh = 3600 J.",bsee::00 bsee::00-01
+"Power of a link from energy per bit?","\(P = E_b \times R_b\): e.g., 5 pJ/bit × 112 Gb/s = 0.56 W.",bsee::00 bsee::00-01
+"Landauer limit at 300 K?","\(kT\ln 2 \approx 2.87\times10^{-21}\) J per bit erased; practical logic uses ~10⁵–10⁶× more.",bsee::00 bsee::00-01
+"Shannon capacity formula?","\(C = B\log_2(1 + \text{SNR})\), SNR as a power ratio.",bsee::00 bsee::00-01
+"Doubling bandwidth vs doubling SNR: which raises Shannon capacity more?","Bandwidth: doubles C. Doubling SNR adds only ~1 bit/s/Hz at high SNR.",bsee::00 bsee::00-01
+"Five ideas that unify EE?","Linearity/superposition, frequency domain, feedback, abstraction, tradeoffs (PPA + cost + schedule).",bsee::00 bsee::00-01
+"What does PPA stand for?","Performance, power, area — the core chip design tradeoff (plus cost and schedule).",bsee::00 bsee::00-01
+"2025 global semiconductor sales (WSTS) and the two biggest segments?","≈ US$795.6 B (+26.2%); logic ≈ 37.6%, memory ≈ 28.9% (as of Nov 2026, R-016).",bsee::00 bsee::00-01 bsee::practitioner
+"Fabless vs foundry vs IDM vs OSAT?","Fabless: designs only. Foundry: manufactures others' designs. IDM: designs and manufactures. OSAT: outsourced assembly and test.",bsee::00 bsee::00-01
+"How should you sanity-check a TAM claim?","Rebuild it bottom-up (units × attach rate × price) and compare with the actual market segment size.",bsee::00 bsee::00-01 bsee::practitioner
+"What is an abstraction in engineering?","A simplified contract for a level of a system that hides internal detail so the level above can be designed without it.",bsee::00 bsee::00-02
+"Levels of the abstraction stack?","Physics → device → circuit → logic/block → chip → package → board/system → software.",bsee::00 bsee::00-02
+"When is the lumped-circuit abstraction valid?","When the circuit is small vs the wavelength (rule of thumb < λ/10), or line delay < ~t_r/6.",bsee::00 bsee::00-02
+"Wavelength formula, and λ at 60 Hz and 1 GHz in free space?","\(\lambda = v/f\); ≈ 5000 km at 60 Hz, 30 cm at 1 GHz.",bsee::00 bsee::00-02
+"Signal speed on an FR-4 circuit board?","≈ c/2 ≈ 15 cm/ns (εr ≈ 4).",bsee::00 bsee::00-02
+"Define noise margins.","\(NM_L = V_{IL} - V_{OL}\), \(NM_H = V_{OH} - V_{IH}\).",bsee::00 bsee::00-02
+"Why must a digital gate have gain > 1?","To turn a merely valid input into a strongly valid output, restoring noise margin at every stage.",bsee::00 bsee::00-02
+"How does noise accumulate in an analog chain of N stages?","Variances add: σ grows as \(\sigma\sqrt{N}\); SNR falls by \(10\log_{10}N\) dB.",bsee::00 bsee::00-02
+"Per-stage error probability for a digital decision in Gaussian noise?","\(p = Q(d/\sigma)\), d = distance to threshold. Q(6) ≈ 1e-9, Q(10) ≈ 7.6e-24.",bsee::00 bsee::00-02
+"Reflection coefficient at a termination R on a line of impedance Z0?","\(\Gamma = (R - Z_0)/(R + Z_0)\): +1 open, −1 short, 0 matched.",bsee::00 bsee::00-02
+"Why can a 1 V source produce 1.67 V at an open transmission-line end?","The open end reflects with Γ = +1, doubling the launched wave (here 0.833 V); later reflections ring down to 1 V.",bsee::00 bsee::00-02
+"What is the reticle limit?","Max single-exposure field: 26 × 33 mm ≈ 858 mm² (High-NA EUV: 26 × 16.5 mm) — a driver of chiplets.",bsee::00 bsee::00-02 bsee::practitioner
+"Give three ways abstractions leak.","Timing (wire delay, skew), noise/power (droop, crosstalk, CV² heat), security (side channels), reliability (aging).",bsee::00 bsee::00-02
+"Which two learning techniques are rated high utility (Dunlosky et al. 2013)?","Practice testing (retrieval practice) and distributed practice (spacing).",bsee::00 bsee::00-03
+"What is the illusion of competence?","Mistaking recognition of familiar material (e.g., rereading a solution) for the ability to recall and apply it.",bsee::00 bsee::00-03
+"Interleaved vs blocked practice result (Rohrer & Taylor 2007)?","1 week later: 63% vs 20%, even though interleaved scored worse during practice (60% vs 89%).",bsee::00 bsee::00-03
+"Testing-effect result (Roediger & Karpicke 2006)?","1-week recall ~61% with self-testing vs ~40% for rereading only.",bsee::00 bsee::00-03
+"The five-step problem-solving protocol?","Understand (sketch, label units) → plan (principle) → execute symbolically → check (units, limits, magnitude) → reflect (error log).",bsee::00 bsee::00-03
+"Units of RC, and of L/R?","Both seconds: Ω·F = s; H/Ω = s.",bsee::00 bsee::00-03
+"Volt in SI base units?","kg·m²·s⁻³·A⁻¹ (V = W/A).",bsee::00 bsee::00-03
+"Why must the argument of exp() or log() be dimensionless?","Because these functions are power series; adding terms like x and x² requires x to have no units.",bsee::00 bsee::00-03
+"What is a Fermi estimate for?","A quick order-of-magnitude check that exposes which assumption matters most.",bsee::00 bsee::00-03
+"Why do spaced-review intervals expand?","Each successful review increases memory stability, so recall takes longer to decay to the review threshold.",bsee::00 bsee::00-03
+"Criteria for moving on from a chapter?","Concept check from memory; ≥80% of [A]/[B] problems unaided; derive the key result blank-page; explain it in 2 minutes.",bsee::00 bsee::00-03
+"In SPICE, what does the suffix M mean? How do you write mega?","M (any case) = milli (1e-3); mega = MEG.",bsee::00 bsee::00-04
+"Main SPICE analyses?",".op (DC operating point), .dc (sweep), .ac (small-signal frequency response), .tran (time domain); .meas extracts numbers.",bsee::00 bsee::00-04
+"Why does SPICE report a negative current for a source delivering power?","It reports current flowing INTO the + terminal; a delivering source's current flows out of +.",bsee::00 bsee::00-04
+"How does SPICE solve nonlinear circuits?","Newton–Raphson: linearize each device at the guess, solve the linear (MNA) system, repeat; it limits junction-voltage steps to keep exponentials in range.",bsee::00 bsee::00-04
+"Newton–Raphson update?","\(x_{k+1} = x_k - g(x_k)/g'(x_k)\); near the root correct digits roughly double each step.",bsee::00 bsee::00-04
+"What is a self-checking testbench?","Simulation code that compares the design's outputs with independently computed expected values and reports PASS/FAIL automatically.",bsee::00 bsee::00-04
+"Why can't processors be verified exhaustively?","A 64-input-bit block has 2⁶⁴ ≈ 1.8e19 vectors — ~585 years at 1e9/s; use directed + random + coverage + formal.",bsee::00 bsee::00-04
+"Double-precision machine epsilon?","\(2^{-52} \approx 2.22\times10^{-16}\) — about 16 significant digits.",bsee::00 bsee::00-04
+"Why is 0.1 + 0.2 == 0.3 False in Python?","0.1 and 0.2 aren't exact in binary; the sum is 0.30000000000000004. Compare with a tolerance.",bsee::00 bsee::00-04
+"What is catastrophic cancellation, and the fix?","Subtracting nearly equal numbers loses digits (1 − cos(1e-8) → 0); rewrite algebraically (2 sin²(x/2)) or use a series.",bsee::00 bsee::00-04
+"What is a tapeout?","Sending the final design to manufacturing for masks; after it, changes need new masks and months.",bsee::00 bsee::00-05
+"Name the main engineering functions of a chip company.","Architecture, RTL design, verification, DFT, physical design, analog/RF, package/SI/PI, CAD, firmware/software, validation, test/product engineering, quality/reliability, operations, applications.",bsee::00 bsee::00-05
+"Metal-only respin vs full respin?","Metal-only (e.g., A0→A1) changes only upper interconnect masks using spare gates — faster/cheaper; full (A0→B0) changes all layers.",bsee::00 bsee::00-05
+"Fab cycle time rules of thumb?","~1–1.5 days per mask layer; ~14–20 weeks for advanced processes (R-020).",bsee::00 bsee::00-05 bsee::practitioner
+"Latest IC/ASIC first-silicon success rates (Wilson Research Group)?","14% (2024); 5% (2026, recruitment method changed). ~49% of project time in verification; ~75% of projects behind schedule.",bsee::00 bsee::00-05 bsee::practitioner
+"Why does first-silicon success fall as chips integrate more blocks?","P(all n blocks bug-free) = pⁿ: 0.98⁵⁰ ≈ 36%; each block must be ~99.9% clean for 95% overall.",bsee::00 bsee::00-05
+"Why do plans built from most-likely durations run late?","Task durations are right-skewed; means exceed modes, so the sum of modes is met well under half the time.",bsee::00 bsee::00-05
+"Mean of a triangular distribution (min a, mode m, max b)?","\((a + m + b)/3\).",bsee::00 bsee::00-05
+"Why are leading-edge design-cost figures (e.g., $725 M at 2 nm) contested?","They assume from-scratch design with no reuse and include software/verification/IP qualification (~71%); critics say real costs are lower.",bsee::00 bsee::00-05 bsee::practitioner
+"Strong answer to 'what escaped in your last tapeouts?'","Specific steppings, root causes and process changes since — not 'everything worked'.",bsee::00 bsee::00-05 bsee::practitioner
+"Why should verification be independent of design?","Like an audit: checks written by the designer share the designer's misunderstandings and miss the same bugs.",bsee::00 bsee::00-05

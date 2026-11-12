@@ -4,4 +4,4 @@ One sheet per course: the equations you should be able to write from memory (or 
 
 | Course | Sheet |
 |---|---|
-| — | *(none yet; the first sheets arrive with Course 02 and Course 07)* |
+| 00 · Orientation | [00-orientation.md](00-orientation.md) |

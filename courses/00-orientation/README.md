@@ -31,10 +31,16 @@ A map of electrical engineering and of this curriculum: the subdisciplines, the 
 | [00-04 · Toolchain Setup Walkthrough](chapters/00-04-toolchain-walkthrough.md) | 2.5 | ✅ verified | [problems](problems/00-04-problems.md) · [solutions](solutions/00-04-solutions.md) · [lab](labs/00-04-lab/README.md) · [verify](verify/verify_00_04.py) |
 | [00-05 · How Chip Companies' Engineering Organizations Work](chapters/00-05-how-chip-companies-are-organized.md) | 2 | ✅ verified | [problems](problems/00-05-problems.md) · [solutions](solutions/00-05-solutions.md) · [lab](labs/00-05-lab/README.md) · [verify](verify/verify_00_05.py) |
 
+**Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/00-orientation.csv) · [Equation sheet](../../reference/equation-sheets/00-orientation.md)
+
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 
 <!-- END GENERATED -->
 
 ## Course notes
 
-*(Hand-written notes for this course go below the generated block.)*
+**How to approach this course.** Course 00 is short (about 10 hours) and deliberately light on mathematics. Its job is to give you a mental map, a working toolchain and a study method before the heavy lifting starts in Course 01. Do it in order. 00-04 (toolchain) must be finished before any lab in later courses.
+
+**Assessment.** The [course final exam](exam/README.md) takes 90 minutes. Aim for at least 70%. It doubles as a check that you can use the calculators, ngspice and the verification tools.
+
+**Perishable content.** Chapters 00-01, 00-03 and 00-05 cite market, R&D, verification-survey and learning-science data, each dated and logged in [reference/research-log.md](../../reference/research-log.md) (R-016 to R-023). Check those entries for updates once a year.
