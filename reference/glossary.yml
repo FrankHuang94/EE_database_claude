@@ -697,3 +697,42 @@
   definition: Output at integer multiples of an input sinusoid's frequency, produced by nonlinearity; HD2 ≈ (a₂/2a₁)A and HD3 ≈ (a₃/4a₁)A² from the Taylor coefficients.
   chapter: "01-08"
   see_also: [Total harmonic distortion (THD)]
+
+# ---------------------------------------------------------------- 01-09
+- term: Partial derivative
+  definition: The rate of change of a function of several variables with respect to one of them, all others held fixed, ∂f/∂x; a sensitivity.
+  chapter: "01-09"
+- term: Level curve
+  definition: The set of points where a function of two variables takes a constant value; a contour line. The gradient is perpendicular to it.
+  chapter: "01-09"
+- term: Total differential
+  definition: df = (∂f/∂x)dx + (∂f/∂y)dy + …, the linear approximation of a change in f from small changes in all its inputs; the basis of small-signal models and tolerance analysis.
+  chapter: "01-09"
+- term: Transconductance
+  definition: g_m = ∂I_out/∂V_in, the change in a device's output current per unit change of its controlling voltage; for a square-law MOSFET g_m = 2I_D/(V_GS − V_TH).
+  chapter: "01-09"
+- term: Intrinsic gain
+  definition: g_m·r_o, the largest voltage gain a single transistor can provide, set by its transconductance and output resistance.
+  chapter: "01-09"
+  see_also: [Transconductance]
+- term: Gradient
+  definition: The vector of partial derivatives ∇f; it points in the direction of steepest increase, its length is that steepest rate, and it is perpendicular to level curves.
+  chapter: "01-09"
+- term: Directional derivative
+  definition: The rate of change of f along a unit vector u, D_u f = ∇f · u.
+  chapter: "01-09"
+- term: Gradient descent
+  definition: Minimizing a function by repeated steps x ← x − η∇f; stable only for step sizes below 2 divided by the largest curvature, and slow when the condition number is large. The workhorse of neural-network training.
+  chapter: "01-09"
+- term: Hessian
+  definition: The matrix of second partial derivatives of a function; its determinant and signs classify critical points as minima, maxima or saddles.
+  chapter: "01-09"
+- term: Lagrange multiplier
+  definition: The factor λ in ∇f = λ∇g at a constrained optimum; it equals the rate of change of the optimal value with the constraint level, a shadow price.
+  chapter: "01-09"
+- term: Water-filling
+  definition: The capacity-maximizing allocation of power across channels of different noise, P_i = max(0, μ − N_i), with a common level μ set by the total power.
+  chapter: "01-09"
+- term: Bandgap reference
+  definition: A circuit that adds a junction voltage (falling about 2 mV/K) to a voltage proportional to absolute temperature so that the temperature coefficients cancel; its output sits near the silicon bandgap, about 1.2 V.
+  chapter: "01-09"

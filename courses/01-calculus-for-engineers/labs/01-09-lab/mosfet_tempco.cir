@@ -1,0 +1,36 @@
+* Examples 01-09.2 and 01-09.3 -- partial derivatives read from SPICE models.
+* M1: a level-1 (square-law) NMOS with k = KP*W/L = 2 mA/V^2, VTH = 0.5 V, LAMBDA = 1/VA = 0.1 /V,
+*     biased at VGS = 0.8 V, VDS = 1.0 V. ngspice reports gm = dID/dVGS and gds = dID/dVDS.
+* D1: a diode with IS = 1e-14 A, EG = 1.12 eV and XTI = 3 (IS ~ T^3 exp(-Eg/kT)) carrying 1 mA.
+*     A DC sweep of temperature gives dV/dT by a central difference over 25.85..27.85 C.
+*
+* EXPECT id   key:../../chapters/01-09-multivariable-calculus-1.md#Ex_01-09.2a scale=1e-6 rtol=1e-4
+* EXPECT gm   key:../../chapters/01-09-multivariable-calculus-1.md#Ex_01-09.2b scale=1e-3 rtol=1e-4
+* EXPECT gds  key:../../chapters/01-09-multivariable-calculus-1.md#Ex_01-09.2c scale=1e-6 rtol=1e-4
+* EXPECT va   key:../../chapters/01-09-multivariable-calculus-1.md#Ex_01-09.3a rtol=1e-4
+* EXPECT dvdt key:../../chapters/01-09-multivariable-calculus-1.md#Ex_01-09.3b scale=1e-3 rtol=2e-3
+
+.options temp=26.85 tnom=26.85
+VG g 0 0.8
+VD d 0 1.0
+M1 d g 0 0 nm W=1u L=1u
+.model nm NMOS LEVEL=1 VTO=0.5 KP=2m LAMBDA=0.1
+I1 0 a DC 1m
+D1 a 0 dm
+.model dm D(IS=1e-14 N=1 EG=1.12 XTI=3)
+
+.control
+op
+let id = -i(VD)
+let gm = @m1[gm]
+let gds = @m1[gds]
+let va = v(a)
+echo "id = $&id"
+echo "gm = $&gm"
+echo "gds = $&gds"
+echo "va = $&va"
+dc temp 25.85 27.85 1
+let dvdt = (v(a)[2] - v(a)[0])/2
+echo "dvdt = $&dvdt"
+.endc
+.end
