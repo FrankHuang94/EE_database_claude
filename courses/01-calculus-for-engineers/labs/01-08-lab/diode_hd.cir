@@ -1,0 +1,32 @@
+* Example 01-08.5 -- harmonic distortion of an exponential device, measured by Fourier integrals.
+* A diode biased at 1 mV-scale drive: V = 0.6547 V (about 1 mA) plus A cos(wt), f = 1 kHz, T = 300 K.
+* Circuit 1: A = 1 mV.  Circuit 2: A = 3 mV.
+* c_n = (2/T) * integral of i(t) cos(n w t) over one period (the 2/T cancels in the ratios).
+* Taylor prediction: HD2 = A/(4 V_T), HD3 = A^2/(24 V_T^2).
+*
+* EXPECT hd2_1m key:../../chapters/01-08-sequences-series-and-taylor.md#Ex_01-08.5a rtol=2e-3
+* EXPECT hd3_1m key:../../chapters/01-08-sequences-series-and-taylor.md#Ex_01-08.5c scale=100 rtol=3e-3
+* EXPECT hd2_3m key:README.md#Lab_01-08.a rtol=2e-3
+
+.options temp=26.85 tnom=26.85 reltol=1e-7 abstol=1e-15 vntol=1e-9
+V1  a 0 SIN(0.6547 1m 1k 0 0 90)
+D1  a 0 dm
+V2  b 0 SIN(0.6547 3m 1k 0 0 90)
+D2  b 0 dm
+.model dm D(IS=1e-14 N=1)
+BA1 p11 0 V = -i(V1)*cos(2*pi*1k*time)
+BA2 p12 0 V = -i(V1)*cos(2*pi*2k*time)
+BA3 p13 0 V = -i(V1)*cos(2*pi*3k*time)
+BB1 p21 0 V = -i(V2)*cos(2*pi*1k*time)
+BB2 p22 0 V = -i(V2)*cos(2*pi*2k*time)
+
+.tran 0.1u 2m 0 0.1u
+.meas tran c11 INTEG v(p11) FROM=1m TO=2m
+.meas tran c12 INTEG v(p12) FROM=1m TO=2m
+.meas tran c13 INTEG v(p13) FROM=1m TO=2m
+.meas tran c21 INTEG v(p21) FROM=1m TO=2m
+.meas tran c22 INTEG v(p22) FROM=1m TO=2m
+.meas tran hd2_1m PARAM='100*c12/c11'
+.meas tran hd3_1m PARAM='100*c13/c11'
+.meas tran hd2_3m PARAM='100*c22/c21'
+.end

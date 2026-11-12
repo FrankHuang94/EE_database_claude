@@ -1,0 +1,41 @@
+* Example 01-08.3 and Problem 01-08.9 -- the gain error of a feedback amplifier, about 1/(A beta).
+* The op-amp is a voltage-controlled voltage source of gain A (ideal otherwise).
+* Circuit 1: non-inverting, ideal gain 100 (R2 = 99k, R1 = 1k), A = 1e5.
+* Circuit 2: non-inverting, ideal gain 11 (R2 = 10k, R1 = 1k), A = 2e5.
+* Circuit 3: the same with A = 1000.
+* Input 10 mV DC; gain = v(out)/v(in). The errors are printed directly (in % or ppm) so that
+* ngspice's six-digit output resolves them.
+*
+* EXPECT g1 key:../../chapters/01-08-sequences-series-and-taylor.md#Ex_01-08.3a rtol=1e-5
+* EXPECT e1 key:../../chapters/01-08-sequences-series-and-taylor.md#Ex_01-08.3b rtol=1e-3
+* EXPECT e2 key:../../solutions/01-08-solutions.md#01-08.9b rtol=1e-3
+* EXPECT g3 key:../../solutions/01-08-solutions.md#01-08.9c rtol=1e-5
+* EXPECT e3 key:../../solutions/01-08-solutions.md#01-08.9d rtol=1e-3
+
+VIN in 0 DC 10m
+E1  o1 0 in f1 1e5
+R11 o1 f1 99k
+R12 f1 0  1k
+E2  o2 0 in f2 2e5
+R21 o2 f2 10k
+R22 f2 0  1k
+E3  o3 0 in f3 1000
+R31 o3 f3 10k
+R32 f3 0  1k
+
+.control
+op
+let g1 = v(o1)/v(in)
+let g2 = v(o2)/v(in)
+let g3 = v(o3)/v(in)
+let e1 = 100*(g1/100 - 1)
+let e2 = 1e6*(1 - g2/11)
+let e3 = 100*(1 - g3/11)
+echo "g1 = $&g1"
+echo "g2 = $&g2"
+echo "g3 = $&g3"
+echo "e1 = $&e1"
+echo "e2 = $&e2"
+echo "e3 = $&e3"
+.endc
+.end

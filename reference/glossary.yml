@@ -657,3 +657,43 @@
 - term: Effective number of bits (ENOB)
   definition: (SINAD − 1.76)/6.02, the resolution of an ideal ADC with the same measured signal-to-noise-and-distortion ratio as a real one.
   chapter: "01-07"
+
+# ---------------------------------------------------------------- 01-08
+- term: Sequence
+  definition: An ordered list a₁, a₂, a₃, …; it converges to L if its terms approach L as n grows.
+  chapter: "01-08"
+- term: Series
+  definition: An infinite sum Σ a_k, defined as the limit of its partial sums; it converges if that limit is finite.
+  chapter: "01-08"
+- term: Geometric series
+  definition: Σ a r^k, which sums to a/(1 − r) for |r| < 1 and diverges otherwise; models reflections, feedback loops, digital filters and annuities.
+  chapter: "01-08"
+- term: Harmonic series
+  definition: Σ 1/k, which diverges (slowly, like ln n) even though its terms shrink to zero.
+  chapter: "01-08"
+- term: Ratio test
+  definition: A series converges if |a_{k+1}/a_k| tends to a limit below 1 and diverges if above 1; suited to factorials and powers.
+  chapter: "01-08"
+- term: Power series
+  definition: Σ c_k (x − a)^k; it converges inside a radius of convergence, where it can be differentiated and integrated term by term.
+  chapter: "01-08"
+- term: Radius of convergence
+  definition: The distance from a power series' center within which it converges; it equals the distance to the nearest singularity, including complex ones.
+  chapter: "01-08"
+- term: Taylor series
+  definition: f(x) = Σ f^(k)(a)(x − a)^k / k!, the power series matching every derivative of f at a (a Maclaurin series when a = 0).
+  chapter: "01-08"
+  see_also: [Lagrange remainder]
+- term: Lagrange remainder
+  definition: The error of a degree-n Taylor polynomial, f^(n+1)(ξ)(x − a)^(n+1)/(n + 1)! for some ξ between a and x; bounding f^(n+1) bounds the error.
+  chapter: "01-08"
+- term: Binomial series
+  definition: (1 + x)^α = 1 + αx + α(α − 1)x²/2! + …, valid for |x| < 1 and any real α; the source of (1 + x)^n ≈ 1 + nx.
+  chapter: "01-08"
+- term: Loop gain
+  definition: The product Aβ of forward gain and feedback fraction around a feedback loop; the closed-loop gain error is about 1/(Aβ).
+  chapter: "01-08"
+- term: Harmonic distortion
+  definition: Output at integer multiples of an input sinusoid's frequency, produced by nonlinearity; HD2 ≈ (a₂/2a₁)A and HD3 ≈ (a₃/4a₁)A² from the Taylor coefficients.
+  chapter: "01-08"
+  see_also: [Total harmonic distortion (THD)]

@@ -33,7 +33,7 @@ Single- and multivariable calculus taught through electrical examples: charge an
 | [01-05 · Integrals: Accumulating Charge and Energy](chapters/01-05-integrals.md) | 12 | ✅ verified | [problems](problems/01-05-problems.md) · [solutions](solutions/01-05-solutions.md) · [lab](labs/01-05-lab/README.md) · [verify](verify/verify_01_05.py) |
 | [01-06 · Techniques of Integration](chapters/01-06-techniques-of-integration.md) | 12 | ✅ verified | [problems](problems/01-06-problems.md) · [solutions](solutions/01-06-solutions.md) · [lab](labs/01-06-lab/README.md) · [verify](verify/verify_01_06.py) |
 | [01-07 · Applications of Integration](chapters/01-07-applications-of-integration.md) | 10 | ✅ verified | [problems](problems/01-07-problems.md) · [solutions](solutions/01-07-solutions.md) · [lab](labs/01-07-lab/README.md) · [verify](verify/verify_01_07.py) |
-| [01-08 · Sequences, Series and Taylor Expansions](chapters/01-08-sequences-series-and-taylor.md) | 12 | ⬜ planned | — |
+| [01-08 · Sequences, Series and Taylor Expansions](chapters/01-08-sequences-series-and-taylor.md) | 12 | ✅ verified | [problems](problems/01-08-problems.md) · [solutions](solutions/01-08-solutions.md) · [lab](labs/01-08-lab/README.md) · [verify](verify/verify_01_08.py) |
 | [01-09 · Multivariable Calculus I: Partial Derivatives and Gradients](chapters/01-09-multivariable-calculus-1.md) | 12 | ⬜ planned | — |
 | [01-10 · Multivariable Calculus II: Multiple, Line and Surface Integrals](chapters/01-10-multivariable-calculus-2.md) | 12 | ⬜ planned | — |
 
