@@ -1,0 +1,34 @@
+* Chapter 02-02 -- first-order circuits driven by a ramp and by a switched-on sinusoid.
+* Circuit 1 (Example 02-02.3): 0.5 V/ms ramp into an RC low-pass, tau = 2 kOhm x 100 nF = 200 us.
+*           The tracking error v(in1) - v(out1) at 1 ms should be S*tau*(1 - e^-5) = 99.33 mV.
+* Circuit 2 (Example 02-02.4): 1 V, 2 kHz cosine switched onto an RC low-pass with f_c = 1 kHz
+*           (1 kOhm, 159.155 nF), capacitor initially at 0 V. Steady amplitude 1/sqrt(5) = 0.4472 V,
+*           measured once the 159 us transient has died out (1.5 ms to 2 ms).
+* Circuit 3 (Problem 02-02.9): 10 V, 5 kHz cosine into 10 Ohm + 1 mH from zero current.
+*           Steady current amplitude 1/sqrt(1 + pi^2) = 0.3033 A, measured from 0.8 ms to 1 ms.
+*
+* EXPECT err1m  key:../../chapters/02-02-first-order-linear-odes.md#Ex_02-02.3b scale=1e-3 rtol=1e-3
+* EXPECT amp2   key:../../chapters/02-02-first-order-linear-odes.md#Ex_02-02.4d rtol=1e-3
+* EXPECT amp3   key:../../solutions/02-02-solutions.md#02-02.9c rtol=1e-3
+
+V1  in1  0     PWL(0 0 2m 1)
+R1  in1  out1  2k
+C1  out1 0     100n IC=0
+BE1 e1   0     V = v(in1) - v(out1)
+
+V2  in2  0     SIN(0 1 2k 0 0 90)
+R2  in2  out2  1k
+C2  out2 0     159.155n IC=0
+
+V3  in3  0     SIN(0 10 5k 0 0 90)
+R3  in3  a3    10
+L3  a3   0     1m IC=0
+VS3 a3   b3    DC 0
+
+.options reltol=1e-6
+.tran 0.2u 2m 0 0.2u UIC
+
+.meas tran err1m FIND v(e1) AT=1m
+.meas tran amp2  MAX v(out2) FROM=1.5m TO=2m
+.meas tran amp3  MAX i(L3) FROM=0.8m TO=1m
+.end

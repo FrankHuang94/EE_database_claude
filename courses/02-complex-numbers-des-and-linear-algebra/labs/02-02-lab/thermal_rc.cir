@@ -1,0 +1,22 @@
+* Chapter 02-02, Example 02-02.5 -- a chip's thermal model as an electrical RC network.
+* Analogy: node voltage = temperature (deg C), current = power (W), capacitance = heat
+* capacity (J/K), resistance = thermal resistance (K/W). Ambient is a 35 V source.
+* Heat in: 80 A (dynamic power) plus a behavioral source for the leakage,
+*          P_leak = 10 * exp((T - 25)/30).
+* R_th = 0.25 K/W, C_th = 50 J/K, starting at ambient (35 deg C). It settles at the stable
+* equilibrium 64.25 deg C (local time constant 18 s); measured at 300 s.
+* (thermal_runaway.cir repeats the model with R_th = 0.40 K/W.)
+*
+* EXPECT t1_300 key:../../chapters/02-02-first-order-linear-odes.md#Ex_02-02.5a rtol=1e-4
+
+VA1  amb1 0    DC 35
+RT1  t1   amb1 0.25
+CT1  t1   0    50 IC=35
+IP1  0    t1   DC 80
+BL1  0    t1   I = 10*exp((v(t1) - 25)/30)
+
+.options reltol=1e-6
+.tran 10m 300 0 50m UIC
+
+.meas tran t1_300 FIND v(t1) AT=300
+.end

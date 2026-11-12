@@ -1,0 +1,19 @@
+* Chapter 02-02, Example 02-02.5 continued -- thermal runaway in the RC thermal model.
+* Same model as thermal_rc.cir, but R_th = 0.40 K/W, beyond the critical 0.329 K/W:
+* no equilibrium exists and the temperature runs away. Measured: the time at which it
+* crosses 150 deg C. The run stops at 103 s, before the exponential leakage term makes the
+* model (and, in reality, the chip) fail.
+*
+* EXPECT t150   key:README.md#Lab_02-02.c rtol=2e-3
+
+VA2  amb2 0    DC 35
+RT2  t2   amb2 0.40
+CT2  t2   0    50 IC=35
+IP2  0    t2   DC 80
+BL2  0    t2   I = 10*exp((v(t2) - 25)/30)
+
+.options reltol=1e-6
+.tran 10m 103 0 50m UIC
+
+.meas tran t150 WHEN v(t2)=150 CROSS=1
+.end

@@ -820,4 +820,60 @@
   definition: The expected lifetime of a non-repairable component, 1/λ for a constant failure rate λ; MTBF is the analogous figure for repairable systems, and the two are often used loosely as synonyms.
   chapter: "01-07"
   see_also: [Mean time between failures (MTBF)]
+- term: Ordinary differential equation
+  definition: An equation relating an unknown function of one variable to its derivatives; its order is that of the highest derivative. A first-order ODE y' = f(t, y) describes any system with a single store of charge, flux, heat or money.
+  chapter: "02-02"
+- term: Initial-value problem
+  definition: A differential equation together with the value of the unknown at a starting time, y(t₀) = y₀, which fixes the arbitrary constant of the general solution.
+  chapter: "02-02"
+- term: Direction field
+  definition: A plot of short segments with slope f(t, y) at a grid of points for y' = f(t, y); solutions run tangent to the segments, so the field shows their behavior before any algebra.
+  chapter: "02-02"
+- term: Equilibrium solution
+  definition: A constant solution y* of an autonomous equation y' = f(y), where f(y*) = 0; it is stable if f'(y*) < 0, with local time constant −1/f'(y*), and unstable if f'(y*) > 0.
+  chapter: "02-02"
+- term: Phase line
+  definition: A one-dimensional picture of an autonomous equation y' = f(y), marking the equilibria and arrows showing where y rises or falls between them.
+  chapter: "02-02"
+  see_also: [Equilibrium solution]
+- term: Separable equation
+  definition: A first-order equation y' = a(t)b(y), solved by integrating dy/b(y) = a(t) dt; constant solutions where b(y) = 0 must be checked separately.
+  chapter: "02-02"
+- term: Logistic equation
+  definition: N' = rN(1 − N/K), growth proportional to the current base and to the remaining room; its S-shaped solution models adoption, epidemics and populations, rising fastest at N = K/2.
+  chapter: "02-02"
+- term: Discount factor
+  definition: D(t) = exp(−∫ r dt), the present value of one unit due at time t; it is exactly the integrating factor of the balance equation B' − r(t)B = deposits.
+  chapter: "02-02"
+  see_also: [Integrating factor]
+- term: Method of undetermined coefficients
+  definition: Finding a particular solution of a linear ODE by guessing the input's form (constant, polynomial, exponential, sinusoid) with unknown coefficients and matching; multiply the guess by t when it already solves the homogeneous equation.
+  chapter: "02-02"
+- term: Steady-state response
+  definition: The part of a stable linear system's response that remains after the transient decays, set by the input alone; for a sinusoidal input it is the phasor answer.
+  chapter: "02-02"
+  see_also: [Transient]
+- term: Existence and uniqueness theorem
+  definition: A linear first-order IVP with continuous coefficients has exactly one solution on the whole interval of continuity; a nonlinear one y' = f(t, y) has a unique local solution when f and ∂f/∂y are continuous (Picard–Lindelöf).
+  chapter: "02-02"
+- term: Finite-time blow-up
+  definition: A solution of a nonlinear ODE reaching infinity at a finite time although the equation is smooth, as for y' = y² with y = 1/(1 − t); it signals superlinear positive feedback.
+  chapter: "02-02"
+- term: Bernoulli equation
+  definition: y' + p(t)y = q(t)yⁿ, made linear by the substitution v = y^(1−n); the logistic equation is the case n = 2.
+  chapter: "02-02"
+- term: Euler's method
+  definition: The simplest numerical ODE solver, y_{n+1} = y_n + h f(t_n, y_n); first-order accurate, and on y' = −y/τ stable only for steps h < 2τ. Its implicit (backward) form is stable for any step.
+  chapter: "02-02"
+- term: Stiff system
+  definition: A system of differential equations whose time constants span many orders of magnitude, so explicit methods need steps set by the fastest one; circuit simulators therefore use implicit methods.
+  chapter: "02-02"
+  see_also: [Euler's method]
+- term: Thermal resistance
+  definition: R_th (K/W), the temperature rise per watt of heat flowing along a path; with heat capacity C_th it forms a thermal time constant R_th C_th, the thermal analog of an RC circuit.
+  chapter: "02-02"
+- term: Thermal runaway
+  definition: Positive feedback in which rising temperature raises power dissipation (for example leakage), which raises temperature further; it runs away when the loop gain R_th·dP/dT reaches 1.
+  chapter: "02-02"
+  see_also: [Thermal resistance]
 

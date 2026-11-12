@@ -219,3 +219,19 @@ R&D % = R&D ÷ revenue.
 
 - **Standard:** IEC 62053-21:2020 (edition 2.0, published June 2020) covers static meters for AC active energy in 50 Hz and 60 Hz networks, in accuracy classes **0.5, 1 and 2** (nominally 0.5%, 1% and 2%). It replaced the 2003 edition and its 2016 amendment and moved the safety requirements to IEC 62052-31. Europe adopted it as EN IEC 62053-21:2021. A third edition was reported to be in development [Established].
 - **Sources:** [IEC webstore, IEC 62053-21:2020](https://webstore.iec.ch/publication/28660); [IECEE listing](https://www.iecee.org/certification/iec-standards/iec-62053-212020). Checked Nov 2026.
+
+## R-029 · JEDEC thermal test environments (JESD51-2A)
+
+- **Standard:** JEDEC JESD51-2A, *Integrated Circuits Thermal Test Method Environmental Conditions — Natural Convection (Still Air)*, January 2007. The junction-to-ambient thermal resistance θJA is measured in a sealed enclosure of low-conductivity, high-emissivity walls with a nominal interior of 305 mm × 305 mm × 305 mm, with the package mounted on standardized test boards (JESD51-3 and JESD51-7 for surface-mount packages) [Established].
+- **Caveat:** vendors themselves note that θJA describes this test environment, not an end product, and that it is a poor predictor of junction temperature in a real system whose heat paths differ [Established].
+- **Sources:** [Richtek AN061, "Application and Definition of Thermal Resistances on Datasheet"](https://www.richtek.com/m/Design%20Support/Technical%20Document/AN061?sc_lang=en); [Diodes Incorporated, "Understanding thermal resistance and characterization parameters in datasheets"](https://www.diodes.com/zh/design/support/perspective/understanding-thermal-resistance-and-characterization-parameters-in-datasheets); JESD51-2A listing at a standards reseller. The JEDEC document itself was not fetched. Checked Nov 2026.
+
+## R-030 · 3DMark stress tests and frame-rate stability
+
+- **Method:** UL's 3DMark stress tests run a benchmark scene in a loop and report **frame-rate stability**, the average frame rate of the worst loop divided by that of the best loop, as a percentage. A run passes at **97% or more** with all loops completed. Loop counts and durations differ between test editions (for example about 20 loops, or about 20 minutes for the Wild Life Extreme stress test) [Established].
+- **Sources:** UL support article ["Stress Test result screen"](https://support.benchmarks.ul.com/support/solutions/articles/44002134931-stress-test-result-screen) and UL news ["Using 3DMark to measure sustained performance"](https://benchmarks.ul.com/news/using-3dmark-to-measure-sustained-performance). UL's sites did not resolve from the build environment, so these details were taken from search-result excerpts of those pages. Checked Nov 2026.
+
+## R-031 · Thermal runaway in integrated circuits
+
+- **Paper:** A. Vassighi and M. Sachdev, "Thermal runaway in integrated circuits," *IEEE Transactions on Device and Materials Reliability*, vol. 6, no. 2, pp. 300–305, June 2006, DOI 10.1109/TDMR.2006.876577. Rising standby leakage raises junction temperature, which raises leakage further; under burn-in conditions the loop can run away. The paper describes the triggering conditions and the thermal management needed to avoid them. The same material appears in the authors' book *Thermal and Power Management of Integrated Circuits* (Springer, 2006) [Established].
+- **Sources:** [IEEE record (via document index)](https://manuscript.isc.ac/Inventory/49/1125305.htm); [Springer book page](https://link.springer.com/book/10.1007/0-387-29749-9). Checked Nov 2026.
