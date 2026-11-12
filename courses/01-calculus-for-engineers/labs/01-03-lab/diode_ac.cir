@@ -1,0 +1,22 @@
+* Example 01-03.5 -- a diode's small-signal resistance r_d = V_T / I, measured by AC analysis.
+* A DC current source biases each diode; a 1 A AC test current then produces an AC voltage
+* whose magnitude equals the small-signal resistance in ohms. Temperature 300 K (V_T = 25.85 mV).
+*
+* EXPECT rd_1m key:../../chapters/01-03-derivatives.md#Ex_01-03.5b rtol=1e-3
+* EXPECT rd_2m key:README.md#Lab_01-03.a rtol=1e-3
+
+.options temp=26.85 tnom=26.85
+I1 0 d1 DC 1m AC 1
+D1 d1 0 dmod
+I2 0 d2 DC 2m AC 1
+D2 d2 0 dmod
+.model dmod D(IS=1e-14 N=1)
+
+.control
+ac lin 1 1k 1k
+let rd_1m = vm(d1)
+let rd_2m = vm(d2)
+echo "rd_1m = $&rd_1m"
+echo "rd_2m = $&rd_2m"
+.endc
+.end

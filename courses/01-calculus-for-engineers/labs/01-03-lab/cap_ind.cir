@@ -1,0 +1,32 @@
+* Problem 01-03.7, Example 01-03.2(b) and Example 01-03.3 -- i = C dv/dt and v = L di/dt.
+* Circuit 1: trapezoidal voltage (0 -> 10 V in 2 ms, hold to 5 ms, back to 0 V at 6 ms) across 10 uF.
+* Circuit 2: a 0 -> 5 V ramp in 1 ms across 1 uF.
+* Circuit 3: a current source forces 100 mA through 10 mH, then ramps it to 0 in 1 us (relay turn-off).
+* 0 V sources (VS1, VS2) measure the capacitor currents.
+*
+* EXPECT ic1_ramp_up   key:../../solutions/01-03-solutions.md#01-03.7a scale=1e-3 rtol=1e-4
+* EXPECT ic1_hold      0 atol=1e-6
+* EXPECT ic1_ramp_down key:../../solutions/01-03-solutions.md#01-03.7b scale=1e-3 rtol=1e-4
+* EXPECT ic2_ramp      key:../../chapters/01-03-derivatives.md#Ex_01-03.2b scale=1e-3 rtol=1e-4
+* EXPECT vl_kick       key:../../chapters/01-03-derivatives.md#Ex_01-03.3a rtol=1e-4
+
+V1  n1 0   PWL(0 0 2m 10 5m 10 6m 0 8m 0)
+VS1 n1 c1  DC 0
+C1  c1 0   10u IC=0
+
+V2  n2 0   PWL(0 0 1m 5 2m 5)
+VS2 n2 c2  DC 0
+C2  c2 0   1u IC=0
+
+I3  0  n3  PWL(0 0.1 1u 0.1 2u 0 3u 0)
+L3  n3 0   10m IC=0.1
+
+.options reltol=1e-6
+.tran 0.1u 8m 0 2u UIC
+
+.meas tran ic1_ramp_up   FIND i(VS1) AT=1m
+.meas tran ic1_hold      FIND i(VS1) AT=3.5m
+.meas tran ic1_ramp_down FIND i(VS1) AT=5.5m
+.meas tran ic2_ramp      FIND i(VS2) AT=0.5m
+.meas tran vl_kick       FIND v(n3)  AT=1.5u
+.end

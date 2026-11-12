@@ -7,9 +7,9 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 > **Phase 2 is under way** (the learner asked on 2026-11-12 to continue Phase 2 while pilot feedback is pending).
 >
 > - Course 00 is complete and audited (🏁).
-> - Course 01: 01-01 and 01-02 are verified.
+> - Course 01: 01-01, 01-02 and 01-03 are verified.
 >
-> **Next: write 01-03 Derivatives** (chapter, problems, solutions, verify, lab, figures, glossary), then 01-04 → 01-10. Course 01 flashcards are written at course end (about 8–12 cards per chapter). After that, write the Course 01 exam, flashcards and equation sheet, run the independent audit, fix its findings and push.
+> **Next: write 01-04 Applications of Derivatives** (chapter, problems, solutions, verify, lab, figures, glossary), then 01-05 → 01-10. Course 01 flashcards are written at course end (about 8–12 cards per chapter). After that, write the Course 01 exam, flashcards and equation sheet, run the independent audit, fix its findings and push.
 >
 > When pilot feedback arrives, apply it to the pilots and to every chapter written since, before continuing.
 
@@ -32,12 +32,12 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | Course | Chapters | Written | Verified | Reviewed | Words | Problems | Verified numbers | Labs | Notebooks / netlists / testbenches |
 |---|---|---|---|---|---|---|---|---|---|
 | 00 | 5 | 5 | 5 | 5 | 22,489 | 52 | 229 | 5 | 5 / 3 / 1 |
-| 01 | 10 | 2 | 2 | 0 | 10,977 | 30 | 220 | 2 | 2 / 2 / 0 |
+| 01 | 10 | 3 | 3 | 0 | 16,331 | 46 | 294 | 3 | 3 / 4 / 0 |
 | 02 | 10 | 1 | 1 | 0 | 9,185 | 18 | 118 | 1 | 1 / 0 / 0 |
 | 07 | 11 | 1 | 1 | 0 | 8,902 | 18 | 149 | 1 | 1 / 6 / 0 |
-| **Total** | **307** | **9** | **9** | **5** | **51,553** | **118** | **716** | **9** | **9 / 11 / 1** |
+| **Total** | **307** | **10** | **10** | **5** | **56,907** | **134** | **790** | **10** | **10 / 13 / 1** |
 
-Glossary terms: **141** · Flashcards: **111**
+Glossary terms: **153** · Flashcards: **111**
 
 <!-- END STATS -->
 
@@ -46,7 +46,7 @@ Glossary terms: **141** · Flashcards: **111**
 | Course | Status | Audit | Notes |
 |---|---|---|---|
 | 00 | 🏁 audited | ✅ 2026-11-12 | 5 chapters reviewed: 52 problems, 229 machine-checked chapter/lab values, exam (15 questions, 27 keyed values), 56 flashcards, equation sheet. The audit found 4 critical, 11 major and 12 minor items; all were fixed (see session log). |
-| 01 | 🔄 in progress | — | 01-01 ✅ verified: 15 problems, 123 machine-checked values, lab notebook. 01-02 ✅ verified: 15 problems, 97 machine-checked values, notebook + 2 ngspice netlists. |
+| 01 | 🔄 in progress | — | 01-01 ✅ verified: 15 problems, 123 machine-checked values, lab notebook. 01-02 ✅ verified: 15 problems, 97 machine-checked values, notebook + 2 ngspice netlists. 01-03 ✅ verified: 16 problems, 74 machine-checked values, notebook + 2 ngspice netlists. |
 | 02 | 🔄 in progress (pilot) | — | 02-01 ✅ verified: 17 problems, 111 machine-checked values, lab notebook. Other chapters planned. |
 | 07 | 🔄 in progress (pilot) | — | 07-02 ✅ verified: 16 problems, 128 machine-checked values, 6 ngspice netlists, lab notebook. Other chapters planned. |
 | all others | ⬜ planned (stubs only) | — | |

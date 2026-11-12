@@ -197,3 +197,13 @@ R&D % = R&D ÷ revenue.
 - **Big-3 vendors:** Synopsys (including Ansys since 2025), Cadence and Siemens EDA dominate commercial EDA. Estimates of their combined share range from about 60–65% (market-research reports covering EDA tools only) to over 85% (SemiAnalysis, May 2026, on a revenue basis that includes IP, emulation hardware and simulation software) **[Contested: depends on market definition]**.
 - **Approximate CY2025 revenues (SemiAnalysis estimates):** Synopsys about \$8 B including Ansys; Cadence about \$5.3 B; Siemens EDA about \$2.2–2.5 B **[Industry estimate]**.
 - **Sources:** [SemiAnalysis, "EDA Market Primer"](https://newsletter.semianalysis.com/p/eda-market-primer) (paywalled; figures from its public summary); [MarketResearch.com EDA global report summary](https://marketresearch.com/Prof-Research-v4036/Electronic-Design-Automation-EDA-Global-39562423). Checked Nov 2026.
+
+## R-025 · Op-amp slew rate and bandwidth (TI LM358)
+
+- **LM358 / LM358A:** typical slew rate 0.3 V/µs and gain–bandwidth 0.7 MHz. **LM358B / LM358BA:** 0.5 V/µs and 1.2 MHz (revision history of the TI datasheet) **[Established]**.
+- **Source:** [TI LM358 datasheet](https://www.ti.com/product/LM358/datasheet) (electrical characteristics and revision history, via TI's document viewer). Checked Nov 2026.
+
+## R-026 · AI accelerator power ratings
+
+- **NVIDIA HGX B200:** 1,000 W per GPU (SXM6, 180 GB), per Lenovo's server product guide and SemiAnalysis. **Full-specification B200:** reported at up to 1,200 W (trade press). The lower HGX rating is attributed to air-cooling limits in some reports **[Industry estimate: OEM and analyst documents rather than NVIDIA's own datasheet]**.
+- **Sources:** [Lenovo Press LP2226, ThinkSystem NVIDIA HGX B200 product guide](https://lenovopress.lenovo.com/LP2226); [SemiAnalysis InferenceX, NVIDIA B200](https://inferencex.semianalysis.com/chips/b200); [TweakTown on the 1,200 W full-spec B200](https://www.tweaktown.com/news/97059/). Checked Nov 2026.

@@ -469,3 +469,42 @@
 - term: Amdahl's law
   definition: Speedup on N processors is 1/((1 − p) + p/N) when a fraction p of the work parallelizes; as N → ∞ it approaches 1/(1 − p), so the serial fraction caps scaling.
   chapter: "01-02"
+
+# ---------------------------------------------------------------- 01-03
+- term: Derivative
+  definition: The instantaneous rate of change f'(a) = lim_{h→0} (f(a + h) − f(a))/h, the slope of the tangent line; its units are the output's units per input unit.
+  chapter: "01-03"
+  see_also: [Difference quotient, Differentiable]
+- term: Differentiable
+  definition: Having a derivative at a point; differentiability implies continuity, but not conversely (|x| is continuous with a corner at 0).
+  chapter: "01-03"
+- term: Power rule
+  definition: d/dx xⁿ = n xⁿ⁻¹, valid for every real exponent n (for x > 0).
+  chapter: "01-03"
+- term: Product rule
+  definition: (fg)' = f'g + fg'; the derivative of a product has one term for each factor's change.
+  chapter: "01-03"
+- term: Quotient rule
+  definition: (f/g)' = (f'g − fg')/g², valid where g ≠ 0.
+  chapter: "01-03"
+- term: Chain rule
+  definition: (f(g(x)))' = f'(g(x))·g'(x); rates of nested quantities multiply, as in d/dt sin(ωt) = ω cos(ωt).
+  chapter: "01-03"
+- term: Implicit differentiation
+  definition: Differentiating both sides of an equation that defines y in terms of x, treating y as a function of x; used to differentiate ln x, arctan x and curves such as circles.
+  chapter: "01-03"
+- term: Second derivative
+  definition: The derivative of the derivative, f''(x) or d²y/dx²; it measures curvature (concavity) and, for position, acceleration.
+  chapter: "01-03"
+- term: Elasticity (sensitivity)
+  definition: The dimensionless ratio of relative changes, S = d ln y / d ln x = (x/y)(dy/dx); for y = kxⁿ it equals n. Engineers call it sensitivity, economists elasticity.
+  chapter: "01-03"
+- term: Slew rate
+  definition: The maximum rate of change dv/dt an amplifier's output can produce, usually in V/µs; it limits the full-power bandwidth to SR/(2πV_p).
+  chapter: "01-03"
+- term: Small-signal conductance
+  definition: The slope dI/dV of a nonlinear device's I–V curve at its operating point; for a diode g_d ≈ I/V_T, so r_d = V_T/I ≈ 26 Ω at 1 mA.
+  chapter: "01-03"
+- term: Central difference
+  definition: The numerical derivative (f(x + h) − f(x − h))/(2h), whose truncation error falls as h² rather than h.
+  chapter: "01-03"
