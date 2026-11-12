@@ -29,7 +29,7 @@ Single- and multivariable calculus taught through electrical examples: charge an
 | [01-01 · Functions, Models and Units](chapters/01-01-functions-models-and-units.md) | 8 | ✅ verified | [problems](problems/01-01-problems.md) · [solutions](solutions/01-01-solutions.md) · [lab](labs/01-01-lab/README.md) · [verify](verify/verify_01_01.py) |
 | [01-02 · Limits and Continuity](chapters/01-02-limits-and-continuity.md) | 8 | ✅ verified | [problems](problems/01-02-problems.md) · [solutions](solutions/01-02-solutions.md) · [lab](labs/01-02-lab/README.md) · [verify](verify/verify_01_02.py) |
 | [01-03 · Derivatives: Rates of Change in Circuits](chapters/01-03-derivatives.md) | 12 | ✅ verified | [problems](problems/01-03-problems.md) · [solutions](solutions/01-03-solutions.md) · [lab](labs/01-03-lab/README.md) · [verify](verify/verify_01_03.py) |
-| [01-04 · Applications of Derivatives](chapters/01-04-applications-of-derivatives.md) | 12 | ⬜ planned | — |
+| [01-04 · Applications of Derivatives](chapters/01-04-applications-of-derivatives.md) | 12 | ✅ verified | [problems](problems/01-04-problems.md) · [solutions](solutions/01-04-solutions.md) · [lab](labs/01-04-lab/README.md) · [verify](verify/verify_01_04.py) |
 | [01-05 · Integrals: Accumulating Charge and Energy](chapters/01-05-integrals.md) | 12 | ⬜ planned | — |
 | [01-06 · Techniques of Integration](chapters/01-06-techniques-of-integration.md) | 12 | ⬜ planned | — |
 | [01-07 · Applications of Integration](chapters/01-07-applications-of-integration.md) | 10 | ⬜ planned | — |

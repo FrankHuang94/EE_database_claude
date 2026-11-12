@@ -1,0 +1,41 @@
+* Example 01-04.1 and Problem 01-04.5 -- maximum power transfer found by sweeping the load.
+* Circuit 1: 10 V source with 50 Ohm internal resistance; the load RL1 is swept from 10 to 200 Ohm.
+* Circuit 2: 1 V sensor with 2 kOhm internal resistance; the load RL2 is swept from 0.2 to 10 kOhm.
+* A 0 V source in series with each load measures its current; p = v * i is the load power.
+* deriv(p) = 0 locates the maximum, which is where calculus says dP/dRL = 0.
+*
+* EXPECT pmax1  key:../../chapters/01-04-applications-of-derivatives.md#Ex_01-04.1b rtol=1e-6
+* EXPECT ropt1  key:../../chapters/01-04-applications-of-derivatives.md#Ex_01-04.1a rtol=1e-3
+* EXPECT p100   key:../../chapters/01-04-applications-of-derivatives.md#Ex_01-04.1d rtol=1e-4
+* EXPECT pmax2  key:../../solutions/01-04-solutions.md#01-04.5b scale=1e-6 rtol=1e-6
+* EXPECT ropt2  key:../../solutions/01-04-solutions.md#01-04.5a scale=1e3 rtol=1e-3
+
+VS1  in1 0   DC 10
+RS1  in1 o1  50
+VM1  o1  l1  DC 0
+RL1  l1  0   50
+
+VS2  in2 0   DC 1
+RS2  in2 o2  2k
+VM2  o2  l2  DC 0
+RL2  l2  0   2k
+
+.control
+dc RL1 10 200 0.1
+let p1 = v(o1)*i(vm1)
+let dp1 = deriv(p1)
+meas dc pmax1 MAX p1
+meas dc ropt1 WHEN dp1=0
+meas dc p100 FIND p1 AT=100
+echo "pmax1 = $&pmax1"
+echo "ropt1 = $&ropt1"
+echo "p100 = $&p100"
+dc RL2 200 10000 1
+let p2 = v(o2)*i(vm2)
+let dp2 = deriv(p2)
+meas dc pmax2 MAX p2
+meas dc ropt2 WHEN dp2=0
+echo "pmax2 = $&pmax2"
+echo "ropt2 = $&ropt2"
+.endc
+.end

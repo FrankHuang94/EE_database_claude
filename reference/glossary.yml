@@ -508,3 +508,43 @@
 - term: Central difference
   definition: The numerical derivative (f(x + h) − f(x − h))/(2h), whose truncation error falls as h² rather than h.
   chapter: "01-03"
+
+# ---------------------------------------------------------------- 01-04
+- term: Critical point
+  definition: A point where f'(x) = 0 or f' does not exist; interior maxima and minima occur only at critical points (Fermat's theorem).
+  chapter: "01-04"
+- term: Second derivative test
+  definition: At a critical point, f'' < 0 indicates a local maximum and f'' > 0 a local minimum; f'' = 0 is inconclusive. The size of f'' measures how sharp the optimum is.
+  chapter: "01-04"
+- term: Mean value theorem
+  definition: For f continuous on [a, b] and differentiable inside, f'(c) = (f(b) − f(a))/(b − a) for some c in (a, b); hence a bound on |f'| bounds the change of f.
+  chapter: "01-04"
+- term: Maximum power transfer
+  definition: A source of resistance R_s delivers the most power to a load R_L = R_s, namely V_s²/(4R_s), at only 50 % efficiency; used for weak signals (RF, sensors), never for power delivery.
+  chapter: "01-04"
+- term: Linearization
+  definition: Replacing a function near a point by its tangent line, L(x) = f(a) + f'(a)(x − a); the error grows as the square of the distance from a.
+  chapter: "01-04"
+  see_also: [Small-signal model]
+- term: Small-signal model
+  definition: A linear model of a nonlinear device valid for small deviations about a DC operating point, built from slopes such as g_d = dI/dV or a transistor's g_m.
+  chapter: "01-04"
+- term: Root sum of squares (RSS)
+  definition: Combining independent error contributions as the square root of the sum of their squares; less pessimistic than adding them worst-case.
+  chapter: "01-04"
+- term: Newton's method
+  definition: Root finding by repeatedly solving the tangent-line approximation, x_{k+1} = x_k − f(x_k)/f'(x_k); converges quadratically near a simple root but can diverge from a poor start.
+  chapter: "01-04"
+  see_also: [Newton–Raphson method, Quadratic convergence]
+- term: Quadratic convergence
+  definition: Convergence in which each error is proportional to the square of the previous one, so the number of correct digits roughly doubles per step.
+  chapter: "01-04"
+- term: Related rates
+  definition: Rates of change linked by differentiating a relationship among quantities with respect to time, for example i = V dC/dt for a moving-plate capacitor.
+  chapter: "01-04"
+- term: L'Hopital's rule
+  definition: For 0/0 or ∞/∞ forms, lim f/g = lim f'/g' when the latter exists (named for L'Hôpital); other indeterminate forms are first rewritten as quotients.
+  chapter: "01-04"
+- term: Minimum-energy point
+  definition: The supply voltage at which a digital circuit's energy per operation is smallest, where falling switching energy balances rising leakage energy; typically a few hundred millivolts in subthreshold CMOS.
+  chapter: "01-04"
