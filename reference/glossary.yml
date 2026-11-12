@@ -623,3 +623,37 @@
 - term: Flicker (1/f) noise
   definition: Noise whose power spectral density falls as 1/f, so every decade of frequency carries equal power; dominant at low frequencies in MOSFETs.
   chapter: "01-06"
+
+# ---------------------------------------------------------------- 01-07
+- term: Crest factor
+  definition: Peak value divided by RMS value; √2 for a sine, 1 for a square wave, √3 for a triangle. Instruments and amplifiers specify the crest factor they can handle.
+  chapter: "01-07"
+- term: Form factor
+  definition: RMS value divided by the rectified average; π/(2√2) ≈ 1.111 for a sine. Average-responding meters assume this value.
+  chapter: "01-07"
+- term: Apparent power
+  definition: S = V_rms·I_rms, in volt-amperes; real power is S times the power factor. Wiring and transformers must be sized for S.
+  chapter: "01-07"
+  see_also: [Power factor]
+- term: Power factor
+  definition: Real power divided by apparent power; cos φ for sinusoids with phase difference φ, and lower still when the current is distorted.
+  chapter: "01-07"
+- term: True-RMS meter
+  definition: A meter that computes the square root of the mean square of the signal, reading correctly for any waveform within its bandwidth and crest-factor limits, unlike average-responding meters calibrated for sines.
+  chapter: "01-07"
+  see_also: [RMS value, Form factor]
+- term: Electron-volt
+  definition: The work done moving one electron through 1 V, 1.602×10⁻¹⁹ J; the natural energy unit of semiconductor physics.
+  chapter: "01-07"
+- term: Probability density function
+  definition: A non-negative function f(x) with total area 1, whose area over an interval is the probability of landing in it; the density itself is not a probability and can exceed 1.
+  chapter: "01-07"
+- term: Mean time between failures (MTBF)
+  definition: The reciprocal of a constant failure rate, 1/λ; a fleet statistic (failures per unit-hour), not an expected lifetime of an individual unit.
+  chapter: "01-07"
+- term: Quantization noise
+  definition: The rounding error of an ADC, modeled as uniform over ±½ LSB, with RMS Δ/√12 ≈ 0.29 LSB; it sets the ideal SNR of 6.02N + 1.76 dB.
+  chapter: "01-07"
+- term: Effective number of bits (ENOB)
+  definition: (SINAD − 1.76)/6.02, the resolution of an ideal ADC with the same measured signal-to-noise-and-distortion ratio as a real one.
+  chapter: "01-07"

@@ -1,0 +1,34 @@
+* Examples 01-07.1 and 01-07.3 -- RMS values and average AC power, measured by ngspice integrals.
+* Circuit 1: 12 V PWM, 25 % duty, 1 kHz.     Expected average 3 V, RMS 6 V.
+* Circuit 2: +/-1 V triangle, 1 kHz.          Expected RMS 1/sqrt(3) = 0.5774 V.
+* Circuit 3: 170 V peak, 60 Hz cosine into R = 14.722 Ohm in series with L = 22.546 mH
+*            (|Z| = 17 Ohm at 30 degrees), so i = 10 cos(wt - 30 deg) A in steady state.
+*            Expected average power 736.1 W and RMS current 7.071 A. Measured over 6 cycles
+*            (100-200 ms), after the start-up transient (L/R = 1.5 ms) has died out.
+*
+* EXPECT pwm_avg key:../../chapters/01-07-applications-of-integration.md#Ex_01-07.1d rtol=2e-3
+* EXPECT pwm_rms key:../../chapters/01-07-applications-of-integration.md#Ex_01-07.1e rtol=2e-3
+* EXPECT tri_rms key:../../chapters/01-07-applications-of-integration.md#Ex_01-07.1c rtol=2e-3
+* EXPECT p_avg   key:../../chapters/01-07-applications-of-integration.md#Ex_01-07.3a rtol=2e-3
+* EXPECT i_rms   key:README.md#Lab_01-07.a rtol=2e-3
+
+V1  pwm 0 PULSE(0 12 0 1n 1n 0.25m 1m)
+R1  pwm 0 1k
+V2  tri 0 PULSE(-1 1 0 0.4999995m 0.4999995m 1n 1m)
+R2  tri 0 1k
+
+V3  s   0 SIN(0 170 60 0 0 90)
+VS3 s   a DC 0
+R3  a   b 14.722
+L3  b   0 22.546m
+BP  p   0 V = v(s)*i(VS3)
+
+.options reltol=1e-6
+.tran 1u 200m 0 1u
+
+.meas tran pwm_avg AVG v(pwm) FROM=1m TO=11m
+.meas tran pwm_rms RMS v(pwm) FROM=1m TO=11m
+.meas tran tri_rms RMS v(tri) FROM=1m TO=11m
+.meas tran p_avg   AVG v(p)   FROM=100m TO=200m
+.meas tran i_rms   RMS i(VS3) FROM=100m TO=200m
+.end
