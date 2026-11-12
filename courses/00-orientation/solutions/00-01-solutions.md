@@ -20,7 +20,7 @@ Other reasonable answers are fine.
 
 ### Solution 00-01.2
 
-Energy $= 0.300\text{ Ah} \times 3.85\text{ V} = 1.155$ Wh $= 1.155 \times 3600 = 4158$ J. Over 48 hours, average power $= 1.155/48 = 0.0241$ W $= 24.1$ mW. That is about 40 times less than the phone in Example 00-01.1 draws, which shows why wearable SoCs are designed around always-on, ultra-low-power domains.
+Energy $= 0.300\text{ Ah} \times 3.85\text{ V} = 1.155$ Wh $= 1.155 \times 3600 = 4158$ J. Over 48 hours, average power $= 1.155/48 = 0.0241$ W $= 24.1$ mW. That is about 27 times less than the phone in Example 00-01.1 draws, which shows why wearable SoCs are designed around always-on, ultra-low-power domains.
 
 ### Solution 00-01.3
 
@@ -51,7 +51,7 @@ Bandwidth helps far more, which is why spectrum is valuable and channel widths k
 
 ### Solution 00-01.8
 
-(a) NVIDIA: $18.5\times10^9/42\,000 = \$440$k per employee. ADI: $1.766\times10^9/24\,500 = \$72.1$k per employee.
+(a) NVIDIA: $18.5\times10^9/42\,000 = \$440$k per employee. ADI: $1.77\times10^9/24\,500 = \$72.2$k per employee.
 (b) Any two of the following:
 
 - R&D expense includes far more than salaries (compute, EDA licenses, mask sets, prototypes and stock compensation), and the mix differs by business.
@@ -100,7 +100,7 @@ Bandwidth helps far more, which is why spectrum is valuable and channel widths k
 | 00-01.7a | 2024 sales | 630.4 | US$ B |
 | 00-01.7b | logic / analog ratio | 3.46 | — |
 | 00-01.8a | NVIDIA R&D per employee | 440 | k$ |
-| 00-01.8b | ADI R&D per employee | 72.1 | k$ |
+| 00-01.8b | ADI R&D per employee | 72.2 | k$ |
 | 00-01.9a | run time at 0.75 W | 48.0 | min |
 | 00-01.9b | run time at 0.5 W | 72.0 | min |
 | 00-01.10a | end-to-end efficiency | 79.6 | % |

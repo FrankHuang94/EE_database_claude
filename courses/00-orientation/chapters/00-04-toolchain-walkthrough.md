@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 00-04 · Toolchain Setup Walkthrough
 
 | | |
@@ -6,7 +6,7 @@
 | **Course** | [00 · Orientation](../README.md) |
 | **University equivalent** | The first lab session of a circuits or digital-design course (SPICE and HDL simulator introduction), plus the numerical-computing introduction of an engineering-computation course |
 | **Prerequisites** | [00-02 The Abstraction Stack](00-02-the-abstraction-stack.md). Installation steps are in [SETUP.md](../../../SETUP.md). |
-| **Estimated study hours** | 2.5 |
+| **Estimated study hours** | 3.5 |
 | **Last verified** | 2026-11-12 |
 
 **Learning objectives.** After this chapter you can:
@@ -97,6 +97,8 @@ Real circuits contain **nonlinear** devices: a diode's current depends exponenti
 3. Solve the resulting linear system to get a new guess.
 4. Repeat until the change is below a tolerance.
 
+> **Math refresher — derivatives and tangent lines.** The derivative $g'(V)$ is the slope of the graph of $g$ at the point $V$: how much $g$ changes per unit change in $V$, for a very small change. The *tangent line* at $V_k$ is the straight line through $(V_k, g(V_k))$ with that slope, $g(V_k) + g'(V_k)(V - V_k)$. Two slopes are all this chapter needs: a straight line $aV + b$ has slope $a$, and the exponential $e^{V/V_T}$ has slope $e^{V/V_T}/V_T$ (it grows in proportion to itself). Course 01 derives both properly in [01-03](../../01-calculus-for-engineers/chapters/01-03-derivatives.md). Newton's method sets the tangent line to zero and solves for $V$.
+
 In one variable: to solve $g(V) = 0$, iterate
 
 $$
@@ -105,7 +107,7 @@ $$
 
 Near the solution Newton converges extremely fast: the number of correct digits roughly doubles each step. Far from it, the exponential can make it overshoot wildly. That is why SPICE adds safeguards (step limiting, source stepping), and why "convergence failures" are a familiar annoyance (Problem 00-04.9).
 
-For **transient** analysis SPICE repeats this at every time step, approximating the derivatives in $i = C\,dv/dt$ and $v = L\,di/dt$ by finite differences. The **time step** trades accuracy for run time. SPICE chooses it adaptively to keep a local error estimate within a relative tolerance, by default 0.1% (`reltol = 1e-3`). For **AC** analysis, SPICE linearizes the circuit at its DC operating point and solves one complex (phasor) linear system per frequency.
+For **transient** analysis SPICE repeats this at every time step, approximating the derivatives in $i = C\,dv/dt$ and $v = L\,di/dt$ by finite differences. The **time step** trades accuracy for run time. SPICE chooses it adaptively, shrinking the step where the waveform changes quickly, so that an estimate of the local truncation error stays within a tolerance built from `reltol` (default $10^{-3}$), `abstol` and a truncation-error factor `trtol` (default 7). The same `reltol` also sets when the Newton iterations count as converged. For **AC** analysis, SPICE linearizes the circuit at its DC operating point and solves one complex (phasor) linear system per frequency.
 
 > **Going deeper.** Numerical integration of stiff circuit equations, convergence aids and the choice between the trapezoidal and Gear methods are covered in [02-10 Numerical Methods](../../02-complex-numbers-des-and-linear-algebra/chapters/02-10-numerical-methods.md).
 
@@ -122,7 +124,7 @@ Computers store real numbers in **binary floating point** (IEEE 754 double preci
 1. **Equality tests fail.** In Python, `0.1 + 0.2 == 0.3` is `False`: the sum is 0.30000000000000004. Always compare with a tolerance, e.g. `math.isclose(a, b, rel_tol=1e-9)`. The repository's verify scripts compare each published value with a tolerance of half a unit in its last digit, which tests exactly what a reader can see.
 2. **Cancellation destroys accuracy.** Subtracting two nearly equal numbers leaves only their few differing digits. For tiny $x$, `1 - math.cos(x)` returns 0, because $\cos x$ rounds to exactly 1. The mathematically identical $2\sin^2(x/2)$ gives the right answer. When results look suspicious, look for a subtraction of near-equal quantities.
 
-The **machine epsilon**, $\varepsilon = 2^{-52} \approx 2.22\times10^{-16}$, is the gap between 1 and the next representable number, and so the relative precision of a double.
+The **machine epsilon**, $\varepsilon = 2^{-52} \approx 2.22\times10^{-16}$ (here $\varepsilon$ is a number-format constant, unrelated to permittivity), is the gap between 1 and the next representable number, and so the relative precision of a double.
 
 ### 3.5 The repository's checks, from the inside
 
@@ -168,9 +170,9 @@ When you change a value in a chapter (or make a typo), step 6 fails and names th
 
 (a) `numpy.finfo(float).eps` $= 2^{-52} = 2.22\times10^{-16}$.
 
-(b) `0.1 + 0.2 - 0.3` returns $5.55\times10^{-17}$, not 0. The error is a fraction of one unit in the last place of 0.3, harmless if you compare with a tolerance and wrong if you test equality.
+(b) `0.1 + 0.2 - 0.3` returns $5.55\times10^{-17}$, not 0. The error is exactly one unit in the last place (ulp) of 0.3, i.e. $2^{-54}$: harmless if you compare with a tolerance and wrong if you test equality.
 
-(c) `1 - math.cos(1e-8)` returns **0.0**. The Taylor series ([01-08](../../01-calculus-for-engineers/chapters/01-08-sequences-series-and-taylor.md)) gives $1 - \cos x \approx x^2/2 = 5.00\times10^{-17}$. But $\cos(10^{-8}) = 1 - 5\times10^{-17}$, and that difference is below half of machine epsilon, so it rounds to exactly 1. The stable form `2*math.sin(x/2)**2` returns $5.00\times10^{-17}$.
+(c) `1 - math.cos(1e-8)` returns **0.0**. The Taylor series ([01-08](../../01-calculus-for-engineers/chapters/01-08-sequences-series-and-taylor.md)) gives $1 - \cos x \approx x^2/2 = 5.00\times10^{-17}$. But $\cos(10^{-8}) = 1 - 5\times10^{-17}$. Just below 1, adjacent doubles are $2^{-53} \approx 1.11\times10^{-16}$ apart, so $1 - \delta$ rounds to exactly 1 whenever $\delta < 2^{-54} \approx 5.55\times10^{-17}$. Here $\delta = 5\times10^{-17}$, so the result is exactly 1. The stable form `2*math.sin(x/2)**2` returns $5.00\times10^{-17}$.
 
 **Sanity check.** Whenever an expression is a difference of nearly equal terms, rewrite it algebraically or with a series before trusting it.
 
@@ -253,14 +255,14 @@ Everything in this chapter is runnable. The lab ([labs/00-04-lab/](../labs/00-04
 
 ### State of the art (as of Nov 2026)
 
-- **Three EDA vendors dominate commercial chip-design software:** Synopsys, Cadence and Siemens EDA **[Established]**. Their simulators, synthesis and place-and-route tools, and their foundry-certified sign-off flows, are deeply embedded in every chip company's workflow. EDA licenses are a significant line in a chip company's R&D budget, and access to sign-off-certified flows for a given foundry node is a practical prerequisite for taping out there.
-- **Verification dominates the effort.** In the 2026 Wilson Research Group / Siemens EDA study, IC/ASIC teams reported spending a mean of **49%** of project time on verification. About three in four projects missed schedule, and only **5%** reported first-silicon success. That last figure is down from 14% in 2024, though the study's recruitment method changed ([R-018](../../../reference/research-log.md#r-018--functional-verification-study-wilson-research-group--siemens-eda)) **[Established as reported; methodology caveats apply]**.
-- **Open-source flows** (ngspice, Icarus/Verilator, Yosys, OpenROAD) are mature enough for education, research and some older-node production designs. They are not the norm at the leading edge **[Established]**.
+- **Three EDA vendors dominate commercial chip-design software:** Synopsys (which acquired Ansys in 2025), Cadence and Siemens EDA **[Established]**. Estimates of their combined share range from about 60% to over 85%, depending on whether IP, emulation hardware and simulation software are counted ([R-024](../../../reference/research-log.md#r-024--eda-market-concentration)) **[Contested]**. Their simulators, synthesis and place-and-route tools, and their foundry-certified sign-off flows, are deeply embedded in chip companies' workflows. Access to sign-off-certified flows for a given foundry node is a practical prerequisite for taping out there. Public companies rarely break out EDA spending, so ask about it directly in diligence.
+- **Verification dominates the effort.** In the 2026 Wilson Research Group / Siemens EDA study, IC/ASIC teams reported spending a mean of **49%** of project time on verification, and about three in four projects missed schedule. First-silicon success fell from about 30% (2010–2020) to 14% in 2024; the 2026 edition reports 5%, but it changed how respondents were recruited ([R-018](../../../reference/research-log.md#r-018--functional-verification-study-wilson-research-group--siemens-eda)) **[Established as reported; methodology caveats apply]**.
+- **Open-source flows** (ngspice, Icarus/Verilator, Yosys, OpenROAD) are used for education, research and some older-node tapeouts on open process design kits such as SkyWater 130 nm and GlobalFoundries 180 nm. They are not used for leading-edge sign-off, which requires foundry-certified commercial flows **[Established]**.
 
 ### Why it matters commercially
 
 - **Simulation capacity is a competitive input.** A team that can run more corners, more random tests and more emulation cycles finds bugs earlier. Compute farms, emulators and EDA licenses are capital-like investments that a diligence review should ask about.
-- **A respin is expensive in both dollars and calendar time.** Every bug that escapes simulation costs a new mask set and months of delay ([26-05](../../26-engineering-design-and-professional-practice/chapters/26-05-schedule-and-respin-risk.md)). The value of verification is the respin it prevents.
+- **A respin is expensive in both dollars and calendar time.** A hardware bug that escapes simulation and cannot be hidden by firmware costs at least new metal masks and weeks of delay; if it needs transistor-layer changes, a new mask set and months ([00-05](00-05-how-chip-companies-are-organized.md), [26-05](../../26-engineering-design-and-professional-practice/chapters/26-05-schedule-and-respin-risk.md)). The value of verification is the respin it prevents.
 
 ### Marketing vs Reality
 
@@ -371,7 +373,7 @@ Now work the problem set: [00-04 problems](../problems/00-04-problems.md) (solut
 - **ngspice User's Manual** (free, on the ngspice website): the chapters on circuit description, analyses and the `.meas` statement.
 - **Harris & Harris, *Digital Design and Computer Architecture*:** the HDL chapter and its testbench section.
 - **D. Goldberg, "What Every Computer Scientist Should Know About Floating-Point Arithmetic,"** *ACM Computing Surveys*, 1991: the classic, readable reference.
-- **Agarwal & Lang:** the appendix on SPICE.
+- **L. W. Nagel, *SPICE2: A Computer Program to Simulate Semiconductor Circuits*,** UC Berkeley ERL Memo M520, 1975: the original SPICE thesis, still a clear account of how the solver works.
 
 ## 14. Sources
 

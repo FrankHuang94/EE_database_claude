@@ -32,6 +32,11 @@ v.check("Ex 00-04.3b", 0.1 + 0.2 - 0.3)
 x = 1e-8
 v.check("Ex 00-04.3c", 2 * math.sin(x / 2) ** 2)
 v.assert_true("naive 1 - cos(1e-8) is exactly 0 in double precision", 1 - math.cos(x) == 0.0)
+v.assert_true("0.1+0.2-0.3 is exactly one ulp of 0.3 (2^-54)",
+              0.1 + 0.2 - 0.3 == np.spacing(0.3) == 2.0**-54)
+v.assert_true("doubles just below 1 are 2^-53 apart", 1.0 - np.nextafter(1.0, 0.0) == 2.0**-53)
+v.assert_true("1 - delta rounds to 1 only if delta < 2^-54: cos(1.4e-8) != 1",
+              math.cos(1.4e-8) == 1 - 2.0**-53 and (1.4e-8) ** 2 / 2 > 2.0**-54 > 1e-16 / 2)
 v.check("Ex 00-04.4a", 2**3)
 v.check("Ex 00-04.4b", 2**64 / 1e9 / (365.25 * 24 * 3600))
 v.check("Ex 00-04.5a", 1 / (2 * math.pi * 1e3 * 1e-6))

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 00-01 · The Map of Electrical Engineering
 
 | | |
@@ -6,7 +6,7 @@
 | **Course** | [00 · Orientation](../README.md) |
 | **University equivalent** | A freshman "Introduction to Electrical and Computer Engineering" seminar: the survey of subdisciplines and career paths that opens most BSEE programs |
 | **Prerequisites** | None. Algebra and the idea of a logarithm. |
-| **Estimated study hours** | 2 |
+| **Estimated study hours** | 3 |
 | **Last verified** | 2026-11-12 |
 
 **Learning objectives.** After this chapter you can:
@@ -33,7 +33,7 @@ Electrical engineering is the discipline of using electricity and electromagneti
 Electricity carries two very different payloads:
 
 - **Energy.** The interesting quantities are watts and joules. A 1% efficiency gain in a 100 MW datacenter is worth a megawatt.
-- **Information.** The interesting quantities are bits, bits per second and errors. A 1% error rate makes a link useless.
+- **Information.** The interesting quantities are bits, bits per second and errors. An *uncorrected* bit error rate of 1% would make most links unusable, which is why every modern link wraps its data in error-correcting codes and specifies the error rate *after* correction.
 
 The same electrons do both, and the same circuit laws govern both. What differs is what the engineer optimizes.
 
@@ -109,7 +109,7 @@ Battery capacity is quoted in milliampere-hours (mAh), which is a *charge*: 1 mA
 Physics sets floors under both halves of EE:
 
 - **Energy to process information.** Landauer's principle states that erasing one bit of information dissipates at least $kT\ln 2$ of energy, where $k$ is Boltzmann's constant and $T$ the temperature in kelvin. At room temperature (300 K) that is $2.87\times10^{-21}$ J. A logic gate switching about a femtojoule ($10^{-15}$ J) uses hundreds of thousands of times more (Example 00-01.3). There is enormous theoretical room left, but practical limits (noise, speed, reliability) bind long before Landauer's.
-- **Information through a noisy channel.** Shannon showed that a channel of bandwidth $B$ (Hz) with signal-to-noise power ratio SNR can carry at most $C = B\log_2(1 + \text{SNR})$ bits per second without error ([17-07](../../17-communication-systems/chapters/17-07-information-theory-and-shannon.md)). Modern Wi-Fi and cellular systems operate within a few decibels of this limit.
+- **Information through a noisy channel.** Shannon showed that a channel of bandwidth $B$ (Hz) with signal-to-noise power ratio SNR can carry at most $C = B\log_2(1 + \text{SNR})$ bits per second without error (here $C$ is capacity, not capacitance) ([17-07](../../17-communication-systems/chapters/17-07-information-theory-and-shannon.md)). The best modern error-correcting codes (such as LDPC codes) come within a fraction of a decibel of this limit in theory and simulation; deployed systems give up more to overheads such as pilot signals, guard intervals and implementation losses.
 
 ### 3.5 The semiconductor industry in numbers (as of Nov 2026)
 
@@ -172,7 +172,7 @@ Chip companies are among the most R&D-intensive businesses in the economy. In th
 - 64 links: $64 \times 0.560 = 35.8$ W.
 
 **Units check.** J/bit × bit/s = J/s = W ✓.
-**Interpretation.** 36 W just to move data off a chip is a large share of a power budget. That is why I/O energy per bit is a headline metric for AI systems, and why cutting it (shorter reach, co-packaged optics) attracts so much investment ([24](../../24-high-speed-io-signal-integrity-and-photonics/README.md)).
+**Interpretation.** 36 W just to move 7.2 Tb/s off a chip is significant: about 4% of an illustrative 1 kW accelerator's power for one group of links, spent without computing anything. That is why I/O energy per bit is a headline metric for AI systems, and why cutting it (shorter reach, co-packaged optics) attracts so much investment ([24](../../24-high-speed-io-signal-integrity-and-photonics/README.md)).
 
 ### Example 00-01.3 — How far from the physical limit? (tier B)
 
@@ -184,7 +184,7 @@ Chip companies are among the most R&D-intensive businesses in the economy. In th
 
 ### Example 00-01.4 — Reading the market data like an analyst (tier B)
 
-**Setup.** Using WSTS 2025 data ([R-016](../../../reference/research-log.md#r-016--global-semiconductor-market-wsts--sia)): total \$795.6 B; logic \$299.5 B (up 38.8% from 2024); memory \$230.0 B. Find (a) memory's share of the market, (b) the combined share of logic and memory, and (c) logic sales in 2024.
+**Setup.** Using WSTS 2025 data as reproduced by SIA ([R-016](../../../reference/research-log.md#r-016--global-semiconductor-market-wsts--sia)): total \$795.6 B; logic \$299.5 B (up 38.8% from 2024); memory \$230.0 B **[Industry estimate]**. Find (a) memory's share of the market, (b) the combined share of logic and memory, and (c) logic sales in 2024.
 
 **Solution.**
 
@@ -192,7 +192,7 @@ Chip companies are among the most R&D-intensive businesses in the economy. In th
 (b) $(299.5 + 230.0)/795.6 = 66.6\%$.
 (c) $299.5/1.388 = \$215.8$ B.
 
-**Interpretation.** Two segments, both driven heavily by AI datacenter demand, account for two-thirds of the market. Analog (10.9%) and microcontrollers (10.7%) are smaller but structurally different businesses: long product lives, thousands of customers and less dependence on leading-edge fabs ([26-03](../../26-engineering-design-and-professional-practice/chapters/26-03-engineering-economics-1.md)).
+**Interpretation.** Two segments, both driven heavily by AI datacenter demand, account for two-thirds of the market. Analog (10.9%) is a smaller but structurally different business: long product lives, thousands of customers and less dependence on leading-edge fabs. The "Micro" segment (10.7%) mixes two kinds of business: microcontrollers, which resemble analog in those respects, and PC and server microprocessors, which are leading-edge products with a few large customers ([26-03](../../26-engineering-design-and-professional-practice/chapters/26-03-engineering-economics-1.md)).
 
 ### Example 00-01.5 — Shannon's limit for a Wi-Fi channel (tier C)
 
@@ -267,7 +267,7 @@ The lab ([labs/00-01-lab/](../labs/00-01-lab/README.md)) is a set of small calcu
 
 ### State of the market (as of Nov 2026)
 
-- **AI is reshaping the industry's mix.** In 2025 logic grew 38.8% and memory sales reached \$230 B ([R-016](../../../reference/research-log.md#r-016--global-semiconductor-market-wsts--sia)) **[Established]**. WSTS's Spring 2026 forecast projected 2026 sales of about \$1.51 trillion (+89.9%), driven by memory (+249%) **[Industry estimate]**. Forecasts in a boom are volatile: WSTS's own August 2026 update reported a first half that ran even hotter, and its next official forecast is due in December 2026.
+- **AI is reshaping the industry's mix.** In 2025 logic grew about 39% and memory sales reached about \$230 B ([R-016](../../../reference/research-log.md#r-016--global-semiconductor-market-wsts--sia)) **[Industry estimate]**. SIA's preliminary February 2026 release put logic at +39.9% and memory at \$223 B; its revised mid-2026 figures are +38.8% and \$230 B. Preliminary and revised industry data routinely differ by a few percent, so always note which release you are quoting. WSTS's Spring 2026 forecast projected 2026 sales of about \$1.51 trillion (+89.9%), driven by memory (+249%) **[Industry estimate]**. Forecasts in a boom are volatile: WSTS's own August 2026 update reported a first half that ran even hotter, and its next official forecast is due in December 2026.
 - **R&D intensity differs by business model.** A company with very large revenue can spend the most absolute R&D at the lowest percentage. In the latest filings, NVIDIA spent about \$18.5 B (8.6% of revenue) against Intel's \$13.8 B (26.1%) ([R-017](../../../reference/research-log.md#r-017--rd-intensity-latest-fiscal-year-10-k--annual-reports)) **[Established]**. Neither percentage alone says which company is investing more effectively.
 
 ### Why it matters commercially

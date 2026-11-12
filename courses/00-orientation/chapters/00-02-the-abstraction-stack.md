@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 00-02 · The Abstraction Stack: Physics to Software
 
 | | |
@@ -6,7 +6,7 @@
 | **Course** | [00 · Orientation](../README.md) |
 | **University equivalent** | The opening abstraction lectures of MIT 6.002 (the lumped-matter and digital abstractions; Agarwal & Lang, ch. 1) and the "great ideas" chapter of a computer-organization course (Patterson & Hennessy, ch. 1) |
 | **Prerequisites** | [00-01 The Map of Electrical Engineering](00-01-map-of-electrical-engineering.md). Algebra only; one normal-distribution calculation uses the Q-function, which is defined where it is used. |
-| **Estimated study hours** | 2 |
+| **Estimated study hours** | 3.5 |
 | **Last verified** | 2026-11-12 |
 
 **Learning objectives.** After this chapter you can:
@@ -76,7 +76,7 @@ Circuit theory, the subject of Courses 06 and 07, treats a circuit as **lumped e
 2. no net charge accumulates *inside* an element (so the current entering it equals the current leaving it, and KCL holds);
 3. signals change slowly compared with the time electromagnetic waves take to cross the circuit.
 
-The third condition is the one that fails in practice. A wave travels at speed $v$ (in m/s): $c = 3.00\times10^8$ m/s in vacuum and roughly $c/\sqrt{\varepsilon_r}$ in a material with relative permittivity $\varepsilon_r$. Common circuit-board laminate (FR-4) has $\varepsilon_r \approx 4$, so on a board $v \approx c/2$, about 15 cm per nanosecond. A sinusoid of frequency $f$ has **wavelength**
+The third condition is the one that fails in practice. A wave travels at speed $v$ (in m/s; in this chapter $v$ without a subscript is a speed, not a voltage): $c = 3.00\times10^8$ m/s in vacuum and roughly $c/\sqrt{\varepsilon_r}$ in a material with relative permittivity $\varepsilon_r$. Common circuit-board laminate (FR-4) has $\varepsilon_r \approx 4$, so on a board $v \approx c/2$, about 15 cm per nanosecond. A sinusoid of frequency $f$ has **wavelength**
 
 $$
 \lambda = \frac{v}{f}\qquad(\text{m} = \text{m/s} \div \text{1/s}).
@@ -84,7 +84,7 @@ $$
 
 If a circuit's largest dimension $\ell$ is small compared with $\lambda$, every point on a wire sees essentially the same voltage at the same instant, and the lumped abstraction holds. A common rule of thumb is $\ell < \lambda/10$; cautious designers use $\lambda/20$. When the condition fails, wires must be modeled as **transmission lines**: signals travel along them as waves and can reflect at their ends ([13-07](../../13-electromagnetics/chapters/13-07-transmission-lines-time-domain.md)).
 
-**Digital signals.** A digital signal is not one frequency. What matters is how fast its edges are. A widely used rule from signal-integrity practice is to treat a wire as a transmission line once its one-way delay exceeds about **one-sixth of the signal's rise time**. Equivalently, use the edge's effective bandwidth $f \approx 0.35/t_r$ ([07-02](../../07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md)) in the wavelength test. Rules of thumb from different authors range from $t_r/4$ to $t_r/10$; they agree on the order of magnitude. Figure 2 shows the lumped regime for common structures.
+**Digital signals.** A digital signal is not one frequency. What matters is how fast its edges are. A widely used rule from signal-integrity practice is to treat a wire as a transmission line once its one-way delay exceeds about **one-sixth of the signal's rise time**. A related approach plugs the edge's effective bandwidth $f \approx 0.35/t_r$ ([07-02](../../07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md)) into the wavelength test. With $\ell < \lambda/10$ that allows a delay of up to $t_r/3.5$, looser than the one-sixth rule; with the cautious $\lambda/20$ it allows $t_r/7$, close to it. Rules of thumb from different authors range from about $t_r/3$ to $t_r/10$; they agree on the order of magnitude, which is all a rule of thumb should be trusted for. Figure 2 shows the lumped regime for common structures.
 
 ![Largest lumped size versus frequency, in free space and on a circuit board](../../../assets/figures/00-02/lumped-regime.svg)
 
@@ -106,7 +106,7 @@ $$
 NM_L = V_{IL} - V_{OL}, \qquad NM_H = V_{OH} - V_{IH}.
 $$
 
-Any noise smaller than the noise margin is absorbed: the receiving gate still sees a valid level. Because the stricter output levels are produced fresh by every gate, the noise does **not accumulate** from stage to stage. To satisfy the static discipline, a gate must have *gain* greater than 1 in its transition region: it must turn an input that is merely valid ($\le V_{IL}$) into an output that is strongly valid ($\le V_{OL}$). That is why digital logic is built from amplifying devices (transistors), never from passive parts alone ([19-01](../../19-digital-vlsi-design/chapters/19-01-cmos-inverter-static.md)).
+Any noise smaller than the noise margin is absorbed: the receiving gate still sees a valid level. Because the stricter output levels are produced fresh by every gate, the noise does **not accumulate** from stage to stage. To satisfy the static discipline, a gate must have *gain* greater than 1 in magnitude in its transition region: it must turn an input that is merely valid into an output that is strongly valid. For a non-inverting buffer, an input just below $V_{IL}$ must produce an output below $V_{OL}$; for an inverter, the most common CMOS gate, the same input must produce an output above $V_{OH}$. Either way the output swings over a wider range than the input. That is why digital logic is built from amplifying devices (transistors), never from passive parts alone ([19-01](../../19-digital-vlsi-design/chapters/19-01-cmos-inverter-static.md)).
 
 ### 3.4 Why digital wins at scale: regeneration
 
@@ -122,7 +122,7 @@ $$
 
 where $Q(x)$ is the probability that a standard normal variable exceeds $x$, the familiar upper-tail probability from statistics ([03-02](../../03-probability-statistics-and-random-variables/chapters/03-02-random-variables-and-distributions.md)). For $N$ stages the probability that *any* stage errs is $1 - (1 - p)^N \approx Np$ when $p$ is small.
 
-The Q-function falls off extraordinarily fast. At $d/\sigma = 10$, $p \approx 7.6\times10^{-24}$, so a billion stages would still essentially never err. At $d/\sigma = 3.3$ it is about $4\times10^{-4}$, which is unusable. Digital design therefore lives on a **cliff**: comfortably far from it, errors are effectively impossible; near it, they arrive in a rush. This is why digital systems can contain billions of gates and run for years without a logic error, while an analog signal chain degrades with every stage it passes through.
+The Q-function falls off extraordinarily fast. At $d/\sigma = 10$, $p \approx 7.6\times10^{-24}$, so a billion stages would still essentially never err. At $d/\sigma = 10/3 \approx 3.33$ it is about $4.3\times10^{-4}$, which is unusable. Digital design therefore lives on a **cliff**: comfortably far from it, errors are effectively impossible; near it, they arrive in a rush. This is why digital systems can contain billions of gates and run for years without a logic error, while an analog signal chain degrades with every stage it passes through.
 
 ![Analog noise accumulation versus digital regeneration](../../../assets/figures/00-02/regeneration.svg)
 
@@ -137,7 +137,7 @@ Every abstraction is valid only within its assumptions. Here are the leaks that 
 | Lumped circuit | Signals travel instantly | Wires approach a wavelength or an edge's length: reflections, ringing (Example 00-02.5) | Signal-integrity and package engineers |
 | Digital logic | Voltages are 0 or 1 | Noise approaches the noise margin: crosstalk, supply droop, ground bounce | Circuit designers, power-integrity engineers |
 | Synchronous timing | Everything settles within one clock period | Wire and gate delays add up; clocks arrive at different times (skew) | Static-timing and physical-design engineers |
-| "Power is free" (RTL view) | Logic only computes | Every transition costs $CV^2$ (§3.8 of [07-02](../../07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md)); heat must leave the package | Power and thermal engineers |
+| "Power is free" (RTL view) | Logic only computes | Every 0→1 transition draws $CV^2$ from the supply, half stored and half burned, and the 1→0 transition burns the stored half; on average that is $\tfrac{1}{2}CV^2$ per transition (§3.8 of [07-02](../../07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md)). Heat must leave the package | Power and thermal engineers |
 | ISA | Software sees only architectural state | Timing and power depend on data, leaking secrets (side channels such as Spectre-class attacks) | Security architects |
 | Reliability | Devices behave identically for the product's life | Transistors age (BTI, HCI); wires electromigrate ([25-09](../../25-fabrication-packaging-test-and-reliability/chapters/25-09-reliability-physics.md)) | Reliability engineers |
 
@@ -145,7 +145,7 @@ A recurring theme of this curriculum, and of good technical diligence, is to ask
 
 ### 3.6 The stack in numbers
 
-Length scales span about ten orders of magnitude:
+Length scales span about twelve orders of magnitude, from atoms to datacenters:
 
 - atoms are spaced about 0.2–0.3 nm apart;
 - the smallest transistor features are a few tens of atoms across;
@@ -211,13 +211,13 @@ Time scales span a similar range: a gate switches in picoseconds, a clock cycle 
 
 (b) $d = 0.5$ V, so $d/\sigma = 10$ and $p = Q(10) = 7.62\times10^{-24}$. Over 100 stages: $\approx 100p = 7.6\times10^{-22}$, which is negligible.
 
-(c) $d/\sigma = 3.33$ and $p = Q(3.33) = 4.29\times10^{-4}$. Over 100 stages: $1 - (1 - p)^{100} = 0.0420$, a 4.20% chance of at least one error. Tripling the noise moved the system from impossible errors to frequent ones. That is the cliff.
+(c) $d/\sigma = 0.5/0.15 = 10/3$ and $p = Q(10/3) = 4.29\times10^{-4}$. Over 100 stages: $1 - (1 - p)^{100} = 0.0420$, a 4.20% chance of at least one error. Tripling the noise moved the system from impossible errors to frequent ones. That is the cliff.
 
 **Sanity check.** In (c), $Np = 0.0429$ is close to the exact 0.0420, because $p$ is small ✓.
 
 ### Example 00-02.4 — The speed of light inside a chip (tier B)
 
-**Setup.** A signal must cross a 20 mm die. Even in the best case, it cannot travel faster than about $v = 1.5\times10^8$ m/s in the chip's insulators. How long does the crossing take, and what fraction of a 3 GHz clock period is that?
+**Setup.** A signal must cross a 20 mm die. Even as an ideal wave, it cannot travel faster than about $v = 1.5\times10^8$ m/s in a silicon-dioxide insulator ($\varepsilon_r \approx 3.9$). (Low-k insulators, with $\varepsilon_r \approx 2.5$–3, allow about $1.7$–$1.9\times10^8$ m/s.) How long does the crossing take, and what fraction of a 3 GHz clock period is that?
 
 **Solution.** $t = \ell/v = 0.020/1.5\times10^8 = 1.33\times10^{-10}$ s $= 133$ ps. The clock period is $1/3\times10^9 = 333$ ps, so the crossing takes $133/333 = 40.0\%$ of a cycle, *before* any gate delay or the much slower RC delay of real on-chip wires.
 
@@ -264,7 +264,7 @@ Time scales span a similar range: a gate switches in picoseconds, a clock cycle 
 | Ex 00-02.2d | $NM_H$, B → A | −0.4 | V |
 | Ex 00-02.3a | analog noise after 100 stages | 0.500 | V |
 | Ex 00-02.3b | $Q(10)$ | 7.62×10^-24 | — |
-| Ex 00-02.3c | $Q(3.33)$ | 4.29×10^-4 | — |
+| Ex 00-02.3c | $Q(10/3)$ | 4.29×10^-4 | — |
 | Ex 00-02.3d | error probability, 100 stages, σ = 150 mV | 4.20 | % |
 | Ex 00-02.4a | time of flight across 20 mm | 133 | ps |
 | Ex 00-02.4b | fraction of a 3 GHz cycle | 40.0 | % |
@@ -285,7 +285,7 @@ The lab in [labs/00-02-lab/](../labs/00-02-lab/README.md) has three parts:
 2. **Regeneration.** A Monte Carlo simulation of a million bits through analog and digital chains. Turn the per-stage noise σ up and watch the digital error rate fall off the cliff.
 3. **Reflections.** An ngspice transmission-line netlist (Example 00-02.5 and Problem 00-02.10), plus a Python lattice calculation that reproduces it.
 
-**Predict, then run.** In Part 2, before you run it, predict the digital error rate per stage for σ = 0.2 V (threshold distance 0.5 V). Then predict how many of the million simulated bits will be wrong after 10 stages. Use $Q(2.5) \approx 0.0062$.
+**Predict, then run.** In Part 2, before you run it, predict the digital error rate per stage for σ = 0.2 V (threshold distance 0.5 V). Then predict how many of the million simulated bits will be wrong at least once in 10 stages. Use $Q(2.5) \approx 0.0062$.
 
 ## 6. Engineering tradeoffs
 
@@ -329,7 +329,7 @@ The lab in [labs/00-02-lab/](../labs/00-02-lab/README.md) has three parts:
 
 ### State of the art (as of Nov 2026)
 
-- **The reticle limit has become an architecture driver.** The largest AI and server processors are built at or near the 858 mm² single-exposure limit. Beyond it, designs are split into multiple dies connected inside one package (chiplets, 2.5D/3D integration). High-NA EUV's halved field makes the boundary even more prominent ([R-015](../../../reference/research-log.md#r-015--lithography-exposure-field-the-reticle-limit)) **[Established]**. Packaging, once a back-end afterthought, is now a first-class abstraction boundary ([25-07](../../25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md)).
+- **The reticle limit has become an architecture driver.** The largest AI processor dies are built close to the 858 mm² single-exposure limit: NVIDIA's H100 die, for example, is widely reported at about 814 mm² ([R-015](../../../reference/research-log.md#r-015--lithography-exposure-field-the-reticle-limit)) **[Industry estimate]**. Beyond the limit, designs are split into multiple dies connected inside one package (chiplets, 2.5D/3D integration). High-NA EUV's halved field makes the boundary even more prominent ([R-015](../../../reference/research-log.md#r-015--lithography-exposure-field-the-reticle-limit)) **[Established for the field sizes]**. Packaging, once a back-end afterthought, is now a first-class abstraction boundary ([25-07](../../25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md)).
 - **Interface standards are abstraction contracts with commercial stakes.** Die-to-die standards such as UCIe aim to let chiplets from different vendors interoperate, much as PCIe did for boards. Whether that mix-and-match market materializes at scale is still **[Contested]**; [24-06](../../24-high-speed-io-signal-integrity-and-photonics/chapters/24-06-d2d-memory-phys-scale-up.md) covers its status.
 
 ### Why it matters commercially

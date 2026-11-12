@@ -64,10 +64,10 @@ Repeat Example 00-02.5 with source resistance $R_s = 25\ \Omega$ ($Z_0 = 50\ \Om
 
 ### Problem 00-02.11 [C] (security)
 
-A 32-bit register is written once per operation. Each bit that switches charges about 10 fF at 0.8 V.
+A 32-bit register is written once per operation. Each bit's output node has about 10 fF of capacitance, and the supply is 0.8 V. A bit that rises from 0 to 1 draws $CV^2$ from the supply; a bit that falls draws nothing from the supply (it dumps its stored charge to ground).
 
-(a) What is the difference in supply energy between writing a value that switches all 32 bits and one that switches none? (Use $CV^2$ per switching bit.)
-(b) At $10^8$ operations per second, what average power difference does that make?
+(a) The register holds 0x00000000. What is the difference in supply energy between writing 0xFFFFFFFF (all 32 bits rise) and writing 0x00000000 again (no bit changes)?
+(b) If a data-dependent difference of this size occurs on each of $10^8$ operations per second, what average power difference does that make?
 (c) Explain how an attacker measuring supply current could exploit this, and name one countermeasure.
 
 ### Problem 00-02.12 [C]

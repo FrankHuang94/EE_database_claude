@@ -37,7 +37,7 @@ Using $\lambda = c/f$:
 
 (a) $\lambda = 2\times10^8/2\times10^4 = 1.00\times10^4$ m $= 10$ km, so the cable is $1/10\,000 = 1.0\times10^{-4}$ wavelengths: **lumped**.
 (b) $\lambda = 1.5\times10^8/16\times10^9 = 9.375$ mm, so the trace is $300/9.375 = 32.0$ wavelengths: **a transmission line**, which must be impedance-controlled and probably equalized.
-(c) $\lambda = 1.5\times10^8/10^9 = 0.150$ m, so the trace is $5/150 = 0.0333$ wavelengths: **lumped** (just under λ/10 at 1 GHz, but faster edges would change that).
+(c) $\lambda = 1.5\times10^8/10^9 = 0.150$ m, so the trace is $5/150 = 0.0333$ wavelengths: **lumped** (a third of λ/10 at 1 GHz, but faster edges would change that).
 
 ### Solution 00-02.5
 
@@ -79,9 +79,9 @@ The ringing is **smaller** than with 10 Ω (overshoot 33% instead of 67%) and di
 
 ### Solution 00-02.11
 
-(a) $\Delta E = 32 \times CV^2 = 32 \times 10\times10^{-15} \times 0.8^2 = 2.05\times10^{-13}$ J $= 0.205$ pJ.
+(a) Each rising bit draws $CV^2$ from the supply, and rewriting the same value draws nothing, so $\Delta E = 32 \times CV^2 = 32 \times 10\times10^{-15} \times 0.8^2 = 2.05\times10^{-13}$ J $= 0.205$ pJ.
 (b) $\Delta P = 0.205\text{ pJ} \times 10^8\text{ s}^{-1} = 2.05\times10^{-5}$ W $= 20.5$ µW.
-(c) The supply current depends on how many bits change, which is the **Hamming distance** between successive register values, and therefore on the secret data being processed (e.g., key bytes in a cryptographic operation). By recording thousands of power traces and correlating them with hypotheses about the key ("correlation power analysis"), an attacker can recover the key even though each individual difference is tiny. **Countermeasures:** masking (randomizing the data representation), hiding (constant-switching or dual-rail logic so every operation draws the same energy), and adding noise or random delays ([18-11](../../18-embedded-systems-and-microcontrollers/chapters/18-11-hardware-security.md)).
+(c) The supply current depends on how many bits change and in which direction. To first order it tracks the **Hamming distance** between successive register values, and therefore the secret data being processed (e.g., key bytes in a cryptographic operation). By recording thousands of power traces and correlating them with hypotheses about the key ("correlation power analysis"), an attacker can recover the key even though each individual difference is tiny. **Countermeasures:** masking (randomizing the data representation), hiding (constant-switching or dual-rail logic so every operation draws the same energy), and adding noise or random delays ([18-11](../../18-embedded-systems-and-microcontrollers/chapters/18-11-hardware-security.md)).
 
 ### Solution 00-02.12
 

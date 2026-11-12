@@ -20,7 +20,7 @@ Chapter sections 3.2–3.4 and Example 00-02.5 cover the background:
 
 1. Open the notebook and run all cells.
 2. **Part 1:** use the `lumped(size, freq, v)` helper to classify five structures of your own choosing, for example a phone's internal antenna feed, a USB cable and a chip package trace.
-3. **Part 2:** before running the regeneration cell with `sigma = 0.2`, predict the per-stage digital error rate and how many of 1,000,000 bits will be wrong after 10 stages. Run it and compare.
+3. **Part 2:** before running the regeneration cell with `sigma = 0.2`, predict the per-stage digital error rate and how many of 1,000,000 bits will be wrong at least once in 10 stages (an error at one stage is regenerated, possibly wrongly, by the next). Run it and compare.
 4. **Part 3:**
    - From the repository root, run `python tools/run_spice.py 00-02` and confirm that the netlist reproduces Example 00-02.5 and Problem 00-02.10.
    - Then change `RS1` in the netlist to `50` and predict the far-end waveform before running it. (Hint: what is $\Gamma_s$?)

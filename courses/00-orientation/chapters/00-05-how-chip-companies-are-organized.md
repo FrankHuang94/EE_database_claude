@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 00-05 · How Chip Companies' Engineering Organizations Work
 
 | | |
@@ -6,7 +6,7 @@
 | **Course** | [00 · Orientation](../README.md) |
 | **University equivalent** | No direct course; covers the industry-practice material of a senior design or engineering-management seminar, built from public industry data |
 | **Prerequisites** | [00-01](00-01-map-of-electrical-engineering.md), [00-02](00-02-the-abstraction-stack.md), [00-04](00-04-toolchain-walkthrough.md). Basic probability (independent events, expected value). |
-| **Estimated study hours** | 2 |
+| **Estimated study hours** | 2.5 |
 | **Last verified** | 2026-11-12 |
 
 **Learning objectives.** After this chapter you can:
@@ -19,12 +19,12 @@
 
 ## 1. Big picture
 
-A chip is the product of dozens of specialist functions working against an unforgiving deadline: the **tapeout**, when the design is sent to the fab to make masks. After tapeout, fixing a mistake means new masks and months of delay, so the whole organization is structured to catch errors before that moment. Understanding how a chip company's engineering is organized is what lets you read its roadmap, judge its execution risk and ask the questions that separate a well-run team from a hopeful one.
+A chip is the product of dozens of specialist functions working against an unforgiving deadline: the **tapeout**, when the design is sent to the fab to make masks. After tapeout, fixing a hardware mistake means new masks and weeks to months of delay, unless the bug can be worked around in firmware, so the whole organization is structured to catch errors before that moment. Understanding how a chip company's engineering is organized is what lets you read its roadmap, judge its execution risk and ask the questions that separate a well-run team from a hopeful one.
 
 - **Specialization is extreme:** architecture, RTL design, verification, physical design, DFT, analog, software and test are distinct careers with distinct tools.
 - **Verification dominates the effort:** roughly half of project time ([R-018](../../../reference/research-log.md#r-018--functional-verification-study-wilson-research-group--siemens-eda)).
 - **The fab is a fixed-latency pipeline:** months from tapeout to first silicon ([R-020](../../../reference/research-log.md#r-020--fab-cycle-time-and-maskeuv-layer-counts)).
-- **First-silicon success is the exception, not the rule:** in the latest industry study, only 5% of IC/ASIC projects reported it (§3.4).
+- **First-silicon success is the exception, not the rule:** in the longest-running industry study it fell from about 30% (2010–2020) to 14% in 2024. The 2026 edition reports 5%, but it changed how it recruited respondents, so treat that figure with care (§3.4).
 - **Schedule risk is asymmetric:** tasks overrun far more than they underrun, which is why plans built from "most likely" estimates are usually late (§3.6).
 
 ## 2. Intuition first
@@ -41,7 +41,7 @@ A chip project is like a large M&A transaction with a hard closing date.
 
 As in a deal, the most dangerous risks are the ones nobody owns, at the boundaries between workstreams.
 
-*Where the analogy breaks:* a deal can sometimes be fixed after closing with side letters and adjustments. A silicon bug often cannot be fixed at all without new masks, though firmware workarounds and spare "ECO" gates help. And unlike most deals, a chip project's success is tested against physics, so it either works or it does not.
+*Where the analogy breaks:* a deal can sometimes be fixed after closing with side letters and adjustments. A silicon bug often cannot be fixed without new masks. Firmware workarounds can hide some bugs with no new masks at all, and spare "ECO" gates placed in the design reduce a fix to new metal masks only (§3.2). And unlike most deals, a chip project's success is tested against physics, so it either works or it does not.
 
 ### The lifecycle at a glance
 
@@ -99,17 +99,17 @@ Silicon versions are called **steppings**. A common convention, though it varies
 - the letter changes for a full-layer revision (A0 → B0);
 - the number changes for a **metal-only** revision (A0 → A1).
 
-A metal-only fix rewires spare logic gates placed in the design for exactly this purpose (an "ECO", engineering change order). It changes only the upper interconnect masks, so it is cheaper and faster. Fabs often hold ("park") some wafers from the first run just before the metal layers, so a metal fix can restart from there (Example 00-05.1).
+A metal-only fix rewires spare logic gates placed in the design for exactly this purpose (an "ECO", engineering change order). It changes only metal and via masks, not the transistor layers. Those may include the expensive, finely patterned lower metal layers, but a metal-only fix is still much cheaper and faster than a full-layer revision. Fabs often hold ("park") some wafers from the first run just before the metal layers, so a metal fix can restart from there (Example 00-05.1).
 
 ### 3.3 The fab is a pipeline with long latency
 
-A wafer passes through hundreds of process steps; industry surveys cite **400–1,400**. Fabs average roughly **1 to 1.5 days per mask layer**, and leading-edge processes use roughly **80 or more mask layers** ([R-020](../../../reference/research-log.md#r-020--fab-cycle-time-and-maskeuv-layer-counts)) **[Industry estimate]**. Average wafer cycle time is about 12 weeks, and **14–20 weeks for advanced processes**. Mask making, packaging and testing add more time. Faster-than-normal processing is available at a premium ("hot lots"), but the physics of each step sets a floor.
+A wafer passes through hundreds of process steps; industry surveys cite **400–1,400**. Fabs average roughly **1 to 1.5 days per mask layer**. A 2017 industry survey put 28 nm at about 40–50 mask layers and 7 nm at about 80–85; public counts for today's 3 nm and 2 nm processes are not available, but they are at least as high ([R-020](../../../reference/research-log.md#r-020--fab-cycle-time-and-maskeuv-layer-counts)) **[Industry estimate, 2017 data]**. A 2021 BCG/SIA study put average wafer cycle time at about 12 weeks, and **14–20 weeks for advanced processes** **[Industry estimate, 2021 data]**. Mask making, packaging and testing add more time. Faster-than-normal processing is available at a premium ("hot lots"), but the physics of each step sets a floor.
 
 ### 3.4 Verification statistics and what they mean
 
 The longest-running public study of chip verification practice, the Wilson Research Group / Siemens EDA functional verification study ([R-018](../../../reference/research-log.md#r-018--functional-verification-study-wilson-research-group--siemens-eda)), reports:
 
-- **First-silicon success** for IC/ASIC projects was **14% in 2024** and **5% in 2026**. The 2026 study changed its recruitment method, which limits comparison. Through 2010–2020 it was about 30%.
+- **First-silicon success** for IC/ASIC projects was about **30% through 2010–2020**, **24% in 2022** and **14% in 2024**. The 2026 edition reports **5%**, but it changed how it recruited respondents, so the drop from 14% to 5% may partly reflect who answered. The robust signal is the decade-long decline.
 - **Time spent on verification:** about **49%** of project time (2026), down slightly from the mid-50s in earlier studies.
 - **Schedule:** about **three in four** projects finished behind schedule.
 - **Root causes:** "logic or functional flaws" remain the number-one cause of respins.
@@ -120,7 +120,7 @@ Why is success so rare? Simple probability explains much of it. A modern SoC int
 
 ### 3.5 What chip projects cost: a contested number
 
-Published estimates of the cost to design a leading-edge chip come mainly from one firm, International Business Strategies (IBS). Its figures have been widely quoted: for example, about \$217–249 million at 7 nm and about \$725 million at 2 nm ([R-019](../../../reference/research-log.md#r-019--advanced-node-design-and-mask-cost-estimates-contested)). **They are contested.** They assume a design built from scratch with no IP reuse, and about 71% of the 2 nm figure is software, verification and IP qualification rather than chip design proper. Industry critics have argued that real-world costs run substantially lower. Use such figures as orders of magnitude, and always ask: **cost of what, under which assumptions?** [Course 26](../../26-engineering-design-and-professional-practice/README.md) builds the cost stack bottom-up.
+Published estimates of the cost to design a leading-edge chip come mainly from one firm, International Business Strategies (IBS). Its figures have been widely quoted: for example, about \$217–249 million at 7 nm and about \$725 million at 2 nm ([R-019](../../../reference/research-log.md#r-019--advanced-node-design-and-mask-cost-estimates-contested)). **They are contested.** They assume a design built from scratch with no IP reuse, and about 71% of the 2 nm figure is software, verification and IP qualification rather than the hardware design and layout work itself. (Verification is part of chip design, as §3.4 stresses; the point is that the headline mixes many cost categories.) Industry critics have argued that real-world costs run substantially lower. Use such figures as orders of magnitude, and always ask: **cost of what, under which assumptions?** [Course 26](../../26-engineering-design-and-professional-practice/README.md) builds the cost stack bottom-up.
 
 ### 3.6 Why schedules slip: skewed task durations
 
@@ -255,8 +255,8 @@ The lab ([labs/00-05-lab/](../labs/00-05-lab/README.md)) is a schedule-risk simu
 
 ### State of practice (as of Nov 2026)
 
-- **Verification is the bottleneck, and getting harder.** In the latest Wilson Research Group / Siemens EDA study, first-silicon success fell to a reported 5%, three in four projects missed schedule, and functional flaws remained the top respin cause. Firmware, security, power and clock issues are growing contributors ([R-018](../../../reference/research-log.md#r-018--functional-verification-study-wilson-research-group--siemens-eda)) **[Established as reported; methodology caveats]**.
-- **Fab latency is structural.** Advanced wafers take 14–20 weeks ([R-020](../../../reference/research-log.md#r-020--fab-cycle-time-and-maskeuv-layer-counts)), so every respin costs a calendar quarter or more. That latency is why emulation and FPGA prototyping, which let software run on the design before tapeout, are now standard at large companies.
+- **Verification is the bottleneck, and getting harder.** In the Wilson Research Group / Siemens EDA study, first-silicon success fell from about 30% (2010–2020) to 14% (2024), with a reported 5% in 2026 under a changed survey method. About three in four projects missed schedule, and functional flaws remained the top respin cause ([R-018](../../../reference/research-log.md#r-018--functional-verification-study-wilson-research-group--siemens-eda)) **[Established as reported; methodology caveats]**.
+- **Fab latency is structural.** Advanced wafers take 14–20 weeks from start ([R-020](../../../reference/research-log.md#r-020--fab-cycle-time-and-maskeuv-layer-counts), 2021 data), so a full-layer respin costs a calendar quarter or more. A metal-only fix from parked wafers can take weeks rather than months (Example 00-05.1), and a firmware workaround needs no new silicon at all. That latency is why emulation and FPGA prototyping, which let software run on the design before tapeout, are now standard at large companies.
 - **Engineering talent is the scarce input.** In US projections, roughly 67,000 semiconductor jobs created by 2030 risk going unfilled ([R-023](../../../reference/research-log.md#r-023--us-semiconductor-workforce)) **[Industry estimate]**. Retaining key engineers is a central post-acquisition risk ([28-08](../../28-technical-diligence-and-leadership-fluency/chapters/28-08-integration-risk.md)).
 
 ### Why it matters commercially
@@ -292,7 +292,7 @@ The lab ([labs/00-05-lab/](../labs/00-05-lab/README.md)) is a schedule-risk simu
 <details>
 <summary>Answer</summary>
 
-Tapeout is sending the final design database to manufacturing to make masks. After it, any fix requires new masks and another fab cycle of months, so the organization concentrates its checks before tapeout.
+Tapeout is sending the final design database to manufacturing to make masks. After it, a hardware fix needs new masks: a full-layer revision costs months, a metal-only revision from parked wafers costs weeks, and only some bugs can be hidden by firmware. So the organization concentrates its checks before tapeout.
 
 </details>
 

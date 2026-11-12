@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 00-03 · How to Study This Curriculum
 
 | | |
@@ -6,7 +6,7 @@
 | **Course** | [00 · Orientation](../README.md) |
 | **University equivalent** | The "how to learn engineering" component of a first-year engineering seminar, informed by cognitive-science research on learning |
 | **Prerequisites** | [00-01](00-01-map-of-electrical-engineering.md), [00-02](00-02-the-abstraction-stack.md). No mathematics beyond algebra. |
-| **Estimated study hours** | 1.5 |
+| **Estimated study hours** | 2 |
 | **Last verified** | 2026-11-12 |
 
 **Learning objectives.** After this chapter you can:
@@ -99,9 +99,9 @@ Before trusting any calculation, simulation or marketing claim, estimate it to w
 
 ### 3.6 Spacing, made concrete
 
-A simple model captures the main idea. After you learn an item, your probability of recalling it after time $t$ decays like $R(t) = e^{-t/S}$, where $S$ is the item's *stability* (in days). This forgetting model is a simplification used here only for intuition. Each successful review increases $S$. If you review when $R$ has fallen to a target such as 90%, the interval is $t = S\ln(1/0.9) \approx 0.105S$, and since $S$ grows with every review, the intervals expand.
+A simple model captures the main idea. After you learn an item, your probability of recalling it after time $t$ decays like $R(t) = e^{-t/S}$, where $S$ is the item's *stability* (in days). (In this section $R$ is recall and $S$ stability, not resistance or siemens.) This forgetting model is a simplification used here only for intuition. Each successful review increases $S$. If you review when $R$ has fallen to a target such as 90%, the interval is $t = S\ln(1/0.9) \approx 0.105S$, and since $S$ grows with every review, the intervals expand.
 
-Spaced-repetition software implements this idea. A classic scheduler multiplies each successful interval by an "ease" factor of about 2.5, giving intervals of 1, 2.5, 6, 16, 39, 98 and 244 days (Example 00-03.4). Seven successful reviews carry a card across a full year. With about 3 new cards a day (roughly this curriculum's pace), the review load stays at a few minutes a day, which is why the study plan budgets 10–15 minutes of daily Anki.
+Spaced-repetition software implements this idea. Schedulers in the SM-2 family (the basis of Anki's default) grow each successful interval by an "ease" factor that starts at 2.5; SM-2 itself begins with fixed intervals of 1 and 6 days and multiplies after that. Example 00-03.4 uses a simplified version that multiplies from the first interval: 1, 2.5, 6, 16, 39, 98 and 244 days. Six successful reviews fall within the first year, and the seventh, at day 406, carries the card past it. With about 3 new cards a day (roughly this curriculum's pace), the review load stays at a few minutes a day, which is why the study plan budgets 10–15 minutes of daily Anki.
 
 ### 3.7 The error log and mastery criteria
 
@@ -166,16 +166,16 @@ The lab shows how to automate these checks with SymPy's units module.
 
 **Solution.** Power = transistors × activity × frequency × energy per switch $= 2\times10^{10} \times 0.1 \times 3\times10^9 \times 5\times10^{-16}$ J $= 3000$ W.
 
-The estimate is about 10× too high, so one assumption is badly off. The weakest one is the 10% activity: most transistors in a large chip (cache arrays, idle units, gated clocks) switch far less often. Solving backward for a 250 W chip gives $\alpha = 250/(2\times10^{10} \times 3\times10^9 \times 5\times10^{-16}) = 0.0083$, under 1%. **The estimate taught us something real:** average switching activity in large chips is low, and that is precisely what clock gating and power gating exploit ([19-06](../../19-digital-vlsi-design/chapters/19-06-power-and-low-power-design.md)). That is the value of a Fermi estimate: not the number, but the assumption it exposes.
+The estimate is about 10× too high, so one assumption is badly off. The weakest one is the 10% activity: most transistors in a large chip (cache arrays, idle units, gated clocks) switch far less often. Solving backward for a 250 W chip gives $\alpha = 250/(2\times10^{10} \times 3\times10^9 \times 5\times10^{-16}) = 0.0083$, under 1%. **The estimate points at something real, though it cannot prove it alone:** the 0.5 fJ per switch is uncertain too, and the estimate ignores leakage. Independent evidence from chip power analysis confirms that average switching activity in large chips is low, and that is precisely what clock gating and power gating exploit ([19-06](../../19-digital-vlsi-design/chapters/19-06-power-and-low-power-design.md)). That is the value of a Fermi estimate: not the number, but the assumption it exposes.
 
 ### Example 00-03.4 — A spaced-review schedule (tier B)
 
-**Setup.** A flashcard is first reviewed 1 day after learning, and each successful review multiplies the next interval by 2.5. (a) List the intervals. (b) How many successful reviews does it take for the cumulative time to exceed one year? (c) If you add 3 new cards per day and each card needs about 7 reviews in its first year, at about 8 seconds per review, how much daily time does reviewing take in steady state?
+**Setup.** A flashcard is first reviewed 1 day after learning, and each successful review multiplies the next interval by 2.5. (a) List the intervals. (b) How many successful reviews does it take for the cumulative time to exceed one year? (c) If you add 3 new cards per day and each card needs about 7 reviews in its first year (the 6 scheduled reviews plus roughly one repeat after a lapse), at about 8 seconds per review, how much daily time does reviewing take in steady state?
 
 **Solution.**
 
 (a) The intervals are 1, 2.5, 6.25, 15.6, 39.1, 97.7 and 244 days.
-(b) The cumulative sums are 1, 3.5, 9.75, 25.4, 64.4, 162 and **406** days. Seven reviews cover more than a year.
+(b) The cumulative sums are 1, 3.5, 9.75, 25.4, 64.4, 162 and **406** days. Six reviews fall within the first 365 days; the seventh takes the card past one year.
 (c) $3 \times 7 = 21$ reviews per day, which at 8 s each is $168$ s $= 2.8$ minutes per day, plus extra reviews for cards you get wrong. The 10–15 minutes budgeted in [STUDY_PLAN.md](../../../STUDY_PLAN.md) is generous.
 
 ### Example 00-03.5 — Reading the interleaving study like an analyst (tier B)

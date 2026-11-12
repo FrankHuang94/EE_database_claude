@@ -4,7 +4,7 @@
 
 The complete map of the Self-Taught BSEE: every course and chapter, with university equivalents, textbook alignment, prerequisites, learning objectives and estimated study hours. For the week-by-week schedule see [STUDY_PLAN.md](STUDY_PLAN.md). For build status see [PROGRESS.md](PROGRESS.md).
 
-**At a glance:** 29 courses · 307 chapters · 7 terms · 4 capstones · ≈ 2740 study hours in total (courses 2529 h, capstones 160 h, term checkpoints 56 h).
+**At a glance:** 29 courses · 307 chapters · 7 terms · 4 capstones · ≈ 2750 study hours in total (courses 2536 h, capstones 160 h, term checkpoints 56 h).
 
 > **About the hour estimates.** Hours cover reading, working the examples, the full problem set and the lab for each chapter, for a strong learner meeting the material for the first time. At 10–12 hours per week, the full curriculum is a multi-year undertaking; see [STUDY_PLAN.md](STUDY_PLAN.md) for the calendar and the shorter practitioner fast track.
 
@@ -12,7 +12,7 @@ The complete map of the Self-Taught BSEE: every course and chapter, with univers
 
 | Course | Term | Chapters | Hours | Typical university equivalent |
 |---|---|---|---|---|
-| [00 · Orientation](#course-00) | 1 | 5 | 10 | Freshman 'Introduction to Electrical Engineering' seminar |
+| [00 · Orientation](#course-00) | 1 | 5 | 17 | Freshman 'Introduction to Electrical Engineering' seminar |
 | [01 · Calculus for Engineers](#course-01) | 1 | 10 | 116 | Calculus I–III (single variable + multivariable) |
 | [02 · Complex Numbers, Differential Equations and Linear Algebra](#course-02) | 1 | 10 | 110 | Differential Equations + Linear Algebra (sophomore math) |
 | [03 · Probability, Statistics and Random Variables for EE](#course-03) | 1 | 6 | 43 | Probability and Random Processes for EE (junior) |
@@ -166,7 +166,7 @@ The NCEES FE Electrical and Computer exam (spec effective July 2020, 110 questio
 
 ## Term 1 — Foundations
 
-The mathematics, physics and programming that every later course assumes. *Term total: ≈ 465 hours + checkpoint (8 h).*
+The mathematics, physics and programming that every later course assumes. *Term total: ≈ 472 hours + checkpoint (8 h).*
 
 <a id="course-00"></a>
 
@@ -180,7 +180,7 @@ A map of electrical engineering and of this curriculum: the subdisciplines, the 
 - **Free courses:** MIT OCW 6.002 (Circuits and Electronics), lecture 1, for the abstraction idea
 - **Prerequisites:** none
 - **FE areas served:** —
-- **Study hours:** ≈ 10 (10 chapter hours + 0 review/exam)
+- **Study hours:** ≈ 17 (14.5 chapter hours + 2.5 review/exam)
 
 **Learning objectives.** By the end of the course you can:
 
@@ -191,11 +191,11 @@ A map of electrical engineering and of this curriculum: the subdisciplines, the 
 
 | Chapter | Hours | Key topics |
 |---|---|---|
-| [00-01 · The Map of Electrical Engineering](courses/00-orientation/chapters/00-01-map-of-electrical-engineering.md) | 2 | Subdisciplines (circuits, devices, signals, communications, controls, power, EM/RF, computer engineering); how they connect; where the semiconductor industry sits |
-| [00-02 · The Abstraction Stack: Physics to Software](courses/00-orientation/chapters/00-02-the-abstraction-stack.md) | 2 | Physics → device → circuit → block → chip → package → board → system → software; what each layer hides; where abstractions leak |
-| [00-03 · How to Study This Curriculum](courses/00-orientation/chapters/00-03-how-to-study-this-curriculum.md) | 1.5 | Study loop, problem-solving protocol, spaced repetition with Anki, using verify scripts and labs, when to move on |
-| [00-04 · Toolchain Setup Walkthrough](courses/00-orientation/chapters/00-04-toolchain-walkthrough.md) | 2.5 | Python env, Jupyter, ngspice, Icarus Verilog/Verilator, GTKWave, Yosys; running the repo's checks; optional hardware kit |
-| [00-05 · How Chip Companies' Engineering Organizations Work](courses/00-orientation/chapters/00-05-how-chip-companies-are-organized.md) | 2 | Architecture, design, verification, physical design, DFT, analog/RF, software, product/test engineering, ops; spec-to-production lifecycle; headcount ratios |
+| [00-01 · The Map of Electrical Engineering](courses/00-orientation/chapters/00-01-map-of-electrical-engineering.md) | 3 | Subdisciplines (circuits, devices, signals, communications, controls, power, EM/RF, computer engineering); how they connect; where the semiconductor industry sits |
+| [00-02 · The Abstraction Stack: Physics to Software](courses/00-orientation/chapters/00-02-the-abstraction-stack.md) | 3.5 | Physics → device → circuit → block → chip → package → board → system → software; what each layer hides; where abstractions leak |
+| [00-03 · How to Study This Curriculum](courses/00-orientation/chapters/00-03-how-to-study-this-curriculum.md) | 2 | Study loop, problem-solving protocol, spaced repetition with Anki, using verify scripts and labs, when to move on |
+| [00-04 · Toolchain Setup Walkthrough](courses/00-orientation/chapters/00-04-toolchain-walkthrough.md) | 3.5 | Python env, Jupyter, ngspice, Icarus Verilog/Verilator, GTKWave, Yosys; running the repo's checks; optional hardware kit |
+| [00-05 · How Chip Companies' Engineering Organizations Work](courses/00-orientation/chapters/00-05-how-chip-companies-are-organized.md) | 2.5 | Architecture, design, verification, physical design, DFT, analog/RF, software, product/test engineering, ops; spec-to-production lifecycle; headcount ratios |
 
 <a id="course-01"></a>
 

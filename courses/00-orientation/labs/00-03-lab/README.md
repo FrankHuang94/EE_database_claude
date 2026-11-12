@@ -46,4 +46,4 @@ The same six reviews, spent differently, give opposite outcomes. Crammed reviews
 
 ## Optional hardware version
 
-None. Instead, install Anki and import [flashcards/02-complex-numbers-des-and-linear-algebra.csv](../../../../flashcards/02-complex-numbers-des-and-linear-algebra.csv) following [flashcards/README.md](../../../../flashcards/README.md).
+None. Instead, install Anki and import [flashcards/00-orientation.csv](../../../../flashcards/00-orientation.csv) following [flashcards/README.md](../../../../flashcards/README.md).

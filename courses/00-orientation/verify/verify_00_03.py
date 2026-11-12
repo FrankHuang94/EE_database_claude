@@ -52,7 +52,7 @@ iv = [2.5**k for k in range(7)]
 cum = list(accumulate(iv))
 v.check("Ex 00-03.4a", iv[6])
 v.check("Ex 00-03.4b", cum[6])
-v.assert_true("6 reviews are not enough, 7 are", cum[5] < 365 < cum[6])
+v.assert_true("6 reviews fall within 365 days, the 7th (day 406) passes a year", cum[5] < 365 < cum[6])
 v.check("Ex 00-03.4c", 3 * 7 * 8 / 60)
 # Example 5
 v.check("Ex 00-03.5a", 63 / 20)

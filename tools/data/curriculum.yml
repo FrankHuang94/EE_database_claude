@@ -44,7 +44,7 @@ courses:
     slug: orientation
     title: Orientation
     term: 1
-    review_hours: 0
+    review_hours: 2.5
     overview: >-
       A map of electrical engineering and of this curriculum: the subdisciplines, the
       abstraction stack from physics to software, how to study without an instructor,
@@ -63,11 +63,11 @@ courses:
       - Install and smoke-test the curriculum toolchain (Python, Jupyter, ngspice, Icarus Verilog).
       - Describe the main engineering functions in a chip company and how a product moves from spec to production.
     chapters:
-      - {id: "00-01", slug: map-of-electrical-engineering, title: "The Map of Electrical Engineering", hours: 2, topics: "Subdisciplines (circuits, devices, signals, communications, controls, power, EM/RF, computer engineering); how they connect; where the semiconductor industry sits"}
-      - {id: "00-02", slug: the-abstraction-stack, title: "The Abstraction Stack: Physics to Software", hours: 2, topics: "Physics → device → circuit → block → chip → package → board → system → software; what each layer hides; where abstractions leak"}
-      - {id: "00-03", slug: how-to-study-this-curriculum, title: "How to Study This Curriculum", hours: 1.5, topics: "Study loop, problem-solving protocol, spaced repetition with Anki, using verify scripts and labs, when to move on"}
-      - {id: "00-04", slug: toolchain-walkthrough, title: "Toolchain Setup Walkthrough", hours: 2.5, topics: "Python env, Jupyter, ngspice, Icarus Verilog/Verilator, GTKWave, Yosys; running the repo's checks; optional hardware kit"}
-      - {id: "00-05", slug: how-chip-companies-are-organized, title: "How Chip Companies' Engineering Organizations Work", hours: 2, topics: "Architecture, design, verification, physical design, DFT, analog/RF, software, product/test engineering, ops; spec-to-production lifecycle; headcount ratios"}
+      - {id: "00-01", slug: map-of-electrical-engineering, title: "The Map of Electrical Engineering", hours: 3, topics: "Subdisciplines (circuits, devices, signals, communications, controls, power, EM/RF, computer engineering); how they connect; where the semiconductor industry sits"}
+      - {id: "00-02", slug: the-abstraction-stack, title: "The Abstraction Stack: Physics to Software", hours: 3.5, topics: "Physics → device → circuit → block → chip → package → board → system → software; what each layer hides; where abstractions leak"}
+      - {id: "00-03", slug: how-to-study-this-curriculum, title: "How to Study This Curriculum", hours: 2, topics: "Study loop, problem-solving protocol, spaced repetition with Anki, using verify scripts and labs, when to move on"}
+      - {id: "00-04", slug: toolchain-walkthrough, title: "Toolchain Setup Walkthrough", hours: 3.5, topics: "Python env, Jupyter, ngspice, Icarus Verilog/Verilator, GTKWave, Yosys; running the repo's checks; optional hardware kit"}
+      - {id: "00-05", slug: how-chip-companies-are-organized, title: "How Chip Companies' Engineering Organizations Work", hours: 2.5, topics: "Architecture, design, verification, physical design, DFT, analog/RF, software, product/test engineering, ops; spec-to-production lifecycle; headcount ratios"}
 
   # ---------------------------------------------------------------------------
   - id: "01"

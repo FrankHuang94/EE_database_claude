@@ -58,7 +58,7 @@ Respin probability went from $1 - 0.30 = 0.70$ to $1 - 0.14 = 0.86$, a factor of
 - These are self-reported survey results with possible selection bias.
 - Definitions of "success" may differ.
 - The mix of projects shifts over time: more of them are larger and on advanced nodes.
-- The 2026 study changed its recruitment method again.
+- The 2026 study changed how it recruited respondents, which limits comparison with earlier years.
 
 ### Solution 00-05.9
 

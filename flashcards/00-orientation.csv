@@ -47,11 +47,11 @@
 "Double-precision machine epsilon?","\(2^{-52} \approx 2.22\times10^{-16}\) — about 16 significant digits.",bsee::00 bsee::00-04
 "Why is 0.1 + 0.2 == 0.3 False in Python?","0.1 and 0.2 aren't exact in binary; the sum is 0.30000000000000004. Compare with a tolerance.",bsee::00 bsee::00-04
 "What is catastrophic cancellation, and the fix?","Subtracting nearly equal numbers loses digits (1 − cos(1e-8) → 0); rewrite algebraically (2 sin²(x/2)) or use a series.",bsee::00 bsee::00-04
-"What is a tapeout?","Sending the final design to manufacturing for masks; after it, changes need new masks and months.",bsee::00 bsee::00-05
+"What is a tapeout?","Sending the final design to manufacturing for masks; after it, hardware fixes need new masks (months for a full-layer respin, weeks for metal-only from parked wafers) unless firmware can work around the bug.",bsee::00 bsee::00-05
 "Name the main engineering functions of a chip company.","Architecture, RTL design, verification, DFT, physical design, analog/RF, package/SI/PI, CAD, firmware/software, validation, test/product engineering, quality/reliability, operations, applications.",bsee::00 bsee::00-05
-"Metal-only respin vs full respin?","Metal-only (e.g., A0→A1) changes only upper interconnect masks using spare gates — faster/cheaper; full (A0→B0) changes all layers.",bsee::00 bsee::00-05
+"Metal-only respin vs full respin?","Metal-only (e.g., A0→A1) rewires spare gates by changing only metal/via masks (possibly including costly lower metals) — faster/cheaper; full (A0→B0) changes transistor layers too.",bsee::00 bsee::00-05
 "Fab cycle time rules of thumb?","~1–1.5 days per mask layer; ~14–20 weeks for advanced processes (R-020).",bsee::00 bsee::00-05 bsee::practitioner
-"Latest IC/ASIC first-silicon success rates (Wilson Research Group)?","14% (2024); 5% (2026, recruitment method changed). ~49% of project time in verification; ~75% of projects behind schedule.",bsee::00 bsee::00-05 bsee::practitioner
+"Latest IC/ASIC first-silicon success rates (Wilson Research Group)?","~30% (2010–2020) → 14% (2024); the 2026 study reports 5% but changed its respondent recruitment, so lead with the trend. ~49% of project time in verification; ~75% of projects behind schedule.",bsee::00 bsee::00-05 bsee::practitioner
 "Why does first-silicon success fall as chips integrate more blocks?","P(all n blocks bug-free) = pⁿ: 0.98⁵⁰ ≈ 36%; each block must be ~99.9% clean for 95% overall.",bsee::00 bsee::00-05
 "Why do plans built from most-likely durations run late?","Task durations are right-skewed; means exceed modes, so the sum of modes is met well under half the time.",bsee::00 bsee::00-05
 "Mean of a triangular distribution (min a, mode m, max b)?","\((a + m + b)/3\).",bsee::00 bsee::00-05

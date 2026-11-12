@@ -108,6 +108,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 
 - **Standard scanners (DUV and 0.33-NA EUV):** the maximum exposure field is **26 mm × 33 mm ≈ 858 mm²**, which caps the size of a single die printed in one exposure [Established].
 - **High-NA EUV (0.55 NA):** anamorphic 4×/8× optics halve the field to **26 mm × 16.5 mm ≈ 429 mm²**. Larger dies must be stitched from two exposures or split into chiplets. Larger (6 × 12 inch) masks are being pursued by ASML and chipmakers to restore the full field [Established for the field size; mask transition timing is an industry plan].
+- **Largest single dies:** NVIDIA's GH100 (H100) die is widely reported at about 814 mm² with about 80 billion transistors on TSMC 4N, close to the field limit; its predecessor GA100 was about 826 mm² [Industry estimate: from NVIDIA's Hopper launch materials as reproduced by trade press; the primary whitepaper was not fetched from the build environment]. Sources: [TechPowerUp GH100 database](https://www.techpowerup.com/gpu-specs/nvidia-gh100.g1011); [Notebookcheck, H100 launch](https://www.notebookcheck.net/Nvidia-unveils-H100-Hopper-compute-GPU-and-Grace-superchip-architectures.609352.0.html).
 - **Sources:** [IEEE Spectrum, "This Machine Could Keep Moore's Law on Track"](https://spectrum.ieee.org/high-na-euv); [Tom's Hardware on 6×12-inch High-NA photomasks](https://www.tomshardware.com/tech-industry/semiconductors/tsmc-samsung-and-intel-shore-up-support-with-asml-to-deploy-larger-high-na-euv-photomasks-6-12-inch-photomask-transition-may-take-years-despite-unified-effort). Checked Nov 2026.
 
 ## R-016 · Global semiconductor market (WSTS / SIA)
@@ -128,7 +129,9 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 
 **Forecasts.** The WSTS Spring 2026 forecast (2 Jun 2026) put 2026 at \$1,511 B (+89.9%, driven by memory at +249%) and 2027 at \$1,914 B [Industry estimate]. An August 2026 Q2 update reported first-half 2026 at \$702 B (+102% YoY). Its re-run model implied about \$1,655 B for 2026, but WSTS states these are not new forecast values. The Autumn 2026 forecast is due in December 2026. Sources: [WSTS Spring 2026](https://www.wsts.org/76/103/Global-Semiconductor-Market-Surges-Beyond-15T-2026); [WSTS Q2 2026](https://www.wsts.org/76/Global-Semiconductor-Market-records-exceptional-growth-in-Q2-2026).
 
-**Caveat.** Segment rows come via secondary reproductions of the WSTS table. Gathered via search snippets because the WSTS site was unreachable from the build environment.
+**Logic growth and revisions.** SIA's 2026 State of the U.S. Semiconductor Industry report (Jul 2026) gives logic at \$299.5 B, +38.8% year on year, consistent with the segment table above and with the 2024 logic value of \$215.8 B in the WSTS Autumn 2025 forecast table. SIA's preliminary release of 6 Feb 2026 gave logic +39.9% (\$301.9 B) and memory +34.8% (\$223.1 B). Sources: [SIA 2026 State of the Industry](https://www.semiconductors.org/wp-content/uploads/2026/07/SIA_2026_State-of-the-Semiconductor-Industry.pdf); [SIA release, 6 Feb 2026](https://www.semiconductors.org/global-annual-semiconductor-sales-increase-25-6-to-791-7-billion-in-2025/); [WSTS Autumn 2025 forecast (JEITA mirror)](https://www.jeita.or.jp/japanese/stat/wsts/docs/20251202WSTS.pdf). Checked Nov 2026.
+
+**Caveat.** Segment rows and growth rates come via secondary reproductions of the WSTS table and search-result excerpts of the SIA documents, because the WSTS, SIA and JEITA sites were unreachable from the build environment. Treat segment-level figures as **[Industry estimate]** until checked against the primary PDFs.
 
 ## R-017 · R&D intensity (latest fiscal-year 10-K / annual reports)
 
@@ -188,3 +191,9 @@ R&D % = R&D ÷ revenue.
 
 - **Headline figures:** SIA / Oxford Economics, *Chipping Away* (25 Jul 2023): about 345,000 US semiconductor workers in early 2023, projected to about 460,000 by 2030. About 67,000 of the new jobs are at risk of going unfilled: roughly 39% technicians, 41% engineers and 20% computer scientists [Industry estimate].
 - **Source:** [report PDF](https://www.semiconductors.org/wp-content/uploads/2023/07/SIA_July2023_ChippingAway_website.pdf).
+
+## R-024 · EDA market concentration
+
+- **Big-3 vendors:** Synopsys (including Ansys since 2025), Cadence and Siemens EDA dominate commercial EDA. Estimates of their combined share range from about 60–65% (market-research reports covering EDA tools only) to over 85% (SemiAnalysis, May 2026, on a revenue basis that includes IP, emulation hardware and simulation software) **[Contested: depends on market definition]**.
+- **Approximate CY2025 revenues (SemiAnalysis estimates):** Synopsys about \$8 B including Ansys; Cadence about \$5.3 B; Siemens EDA about \$2.2–2.5 B **[Industry estimate]**.
+- **Sources:** [SemiAnalysis, "EDA Market Primer"](https://newsletter.semianalysis.com/p/eda-market-primer) (paywalled; figures from its public summary); [MarketResearch.com EDA global report summary](https://marketresearch.com/Prof-Research-v4036/Electronic-Design-Automation-EDA-Global-39562423). Checked Nov 2026.

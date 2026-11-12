@@ -55,7 +55,7 @@ A transient simulation covers 1 ms with a fixed 1 ns time step. (a) How many tim
 
 A 5 V source drives a diode through 1 kΩ. The diode current is $I_D = I_s(e^{V_D/V_T} - 1)$ with $I_s = 10^{-14}$ A and $V_T = 25.852$ mV. KCL gives $g(V_D) = \frac{5 - V_D}{1000} - I_s(e^{V_D/V_T} - 1) = 0$.
 
-(a) Write the Newton–Raphson update $V_{k+1} = V_k - g(V_k)/g'(V_k)$ explicitly.
+(a) Using $g'(V_D) = -\frac{1}{1000} - \frac{I_s}{V_T}e^{V_D/V_T}$ (the slopes of a straight line and of an exponential; see the Math refresher in chapter §3.2), write the Newton–Raphson update $V_{k+1} = V_k - g(V_k)/g'(V_k)$ explicitly.
 (b) Starting from $V_0 = 0.70$ V, perform three iterations (use Python or a calculator), and report the converged $V_D$ and diode current.
 (c) Starting from $V_0 = 0.60$ V, plain Newton takes 32 iterations to converge to 1 nV. Compute the first iterate from 0.60 V and explain what goes wrong. What safeguard does SPICE add?
 

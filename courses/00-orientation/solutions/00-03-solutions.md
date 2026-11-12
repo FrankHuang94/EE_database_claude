@@ -41,7 +41,7 @@ Check: Ω·F = (kg·m²·s⁻³·A⁻²)(kg⁻¹·m⁻²·s⁴·A²) = s ✓.
 4. **Check.**
    - *Units:* V/Ω = A, A·Ω = V, A²·Ω = W ✓.
    - *Limit:* with $R_{int} \to 0$, $I \to 12/5.5 = 2.18$ A and the efficiency tends to 100%. Our results are slightly lower ✓.
-   - *Magnitude:* 22 W from a 12 V battery is ordinary, about a car interior lamp ✓.
+   - *Magnitude:* 22 W from a 12 V battery is ordinary, about a car brake or turn-signal bulb (21 W is a common rating) ✓.
 
 ### Solution 00-03.5
 

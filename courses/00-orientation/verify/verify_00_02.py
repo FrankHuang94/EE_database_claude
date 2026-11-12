@@ -73,6 +73,17 @@ sims = (rng.normal(0, 0.15, (200_000, 100)) > 0.5).any(axis=1).mean()
 v.assert_true("Ex3 Monte Carlo matches 4.20 % within sampling error", abs(sims - 0.0420) < 0.0015, f"{sims:.4f}")
 
 v.check("Ex 00-02.4a", 0.020 / 1.5e8 * 1e12)
+C0 = 2.998e8
+v.assert_true("SiO2 (er 3.9) gives ~1.5e8 m/s", round(C0 / math.sqrt(3.9) / 1e8, 1) == 1.5)
+v.assert_true("low-k (er 2.5-3) gives 1.7-1.9e8 m/s",
+              round(C0 / math.sqrt(3.0) / 1e8, 1) == 1.7 and round(C0 / math.sqrt(2.5) / 1e8, 1) == 1.9)
+v.assert_true("Q(10/3) = 4.29e-4 but Q(3.33) = 4.34e-4 and Q(3.3) = 4.8e-4",
+              round(norm.sf(10 / 3), 6) == 4.29e-4 and round(norm.sf(3.33), 6) == 4.34e-4
+              and round(norm.sf(3.3), 5) == 4.8e-4)
+v.assert_true("atoms (0.25 nm) to datacenter (~300 m) is ~12 orders of magnitude",
+              round(math.log10(300 / 0.25e-9)) == 12)
+v.assert_true("lambda/10 with f = 0.35/tr allows tr/3.5; lambda/20 allows tr/7",
+              math.isclose(0.1 / 0.35, 1 / 3.5) and math.isclose(0.05 / 0.35, 1 / 7))
 v.check("Ex 00-02.4b", 100 * (0.020 / 1.5e8) / (1 / 3e9))
 
 gs, launched, arr = far_end_arrivals(10.0)
