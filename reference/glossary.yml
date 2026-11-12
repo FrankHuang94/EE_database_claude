@@ -264,3 +264,114 @@
 - term: Electronic design automation (EDA)
   definition: The software used to design and verify chips and boards, covering simulation, synthesis, place-and-route, timing and verification; dominated commercially by Synopsys, Cadence and Siemens EDA.
   chapter: "00-04"
+
+# ---------------------------------------------------------------- 00-03
+- term: Retrieval practice
+  definition: Learning by actively recalling information (self-testing, solving problems) rather than re-reading it; the "testing effect" is among the most robust findings in learning science.
+  chapter: "00-03"
+- term: Spacing effect
+  definition: The finding that practice distributed over time produces more durable learning than the same practice massed together; the best gap grows with how long the material must be retained.
+  chapter: "00-03"
+  see_also: [Spaced repetition]
+- term: Interleaving
+  definition: Mixing different problem types within a practice session, which forces choosing the method and improves later performance even though it feels harder during practice.
+  chapter: "00-03"
+- term: Illusion of competence
+  definition: The mistaken feeling of mastery produced by recognizing familiar material (for example, while re-reading a solution), as opposed to being able to recall and apply it unaided.
+  chapter: "00-03"
+- term: Spaced repetition
+  definition: A review method, often implemented in flashcard software such as Anki, that schedules each item at expanding intervals just before it would be forgotten.
+  chapter: "00-03"
+- term: Dimensional analysis
+  definition: Checking that every term of an equation has the same physical units (and that arguments of exp, log and trig functions are dimensionless) to catch errors and derive relationships.
+  chapter: "00-03"
+- term: SI base units
+  definition: The seven base units of the International System of Units (kg, m, s, A, K, mol, cd), from which all others, including V, Ω, F and H, are derived.
+  chapter: "00-03"
+- term: Fermi estimate
+  definition: An order-of-magnitude estimate built from rounded assumptions and simple multiplication, used to sanity-check calculations and claims.
+  chapter: "00-03"
+- term: Error log
+  definition: A running record of every mistake, its cause and the rule that prevents it, used to target review and to avoid repeating errors.
+  chapter: "00-03"
+
+# ---------------------------------------------------------------- 00-01
+- term: Electrical engineering
+  definition: The discipline of using electricity and electromagnetism to move and convert energy and to sense, move, store and process information.
+  chapter: "00-01"
+- term: Energy per bit
+  definition: The energy (typically pJ/bit) consumed to move, store or process one bit; power = energy per bit × data rate. A key efficiency metric for links, memories and accelerators.
+  chapter: "00-01"
+- term: Watt-hour
+  definition: A unit of energy equal to one watt for one hour, 3600 J; battery energy in Wh = capacity in Ah × voltage.
+  chapter: "00-01"
+- term: Performance, power, area (PPA)
+  definition: The three primary metrics traded off in chip design, almost always considered together with cost and schedule.
+  chapter: "00-01"
+- term: Landauer limit
+  definition: The minimum energy to erase one bit of information, kT ln 2 (about 2.9×10^−21 J at 300 K); practical logic uses orders of magnitude more.
+  chapter: "00-01"
+- term: Shannon capacity
+  definition: The maximum error-free data rate of a channel with bandwidth B and signal-to-noise ratio SNR, C = B log2(1 + SNR).
+  chapter: "00-01"
+- term: Decibel
+  definition: A logarithmic ratio, 10·log10 of a power ratio (or 20·log10 of an amplitude ratio for equal impedances); 3 dB ≈ 2× power, 10 dB = 10× power.
+  chapter: "00-01"
+- term: Fabless
+  definition: A chip company that designs chips but outsources manufacturing to foundries (and assembly and test to OSATs).
+  chapter: "00-01"
+  see_also: [Foundry]
+- term: Foundry
+  definition: A company that manufactures chips designed by its customers, supplying them with a process and its PDK.
+  chapter: "00-01"
+- term: Integrated device manufacturer (IDM)
+  definition: A chip company that both designs and manufactures its own chips in its own fabs.
+  chapter: "00-01"
+- term: OSAT
+  definition: Outsourced semiconductor assembly and test, a company that packages and tests chips for others.
+  chapter: "00-01"
+- term: Total addressable market (TAM)
+  definition: The total revenue opportunity for a product if it won every possible customer; credible only when rebuilt bottom-up from units, attach rates and prices.
+  chapter: "00-01"
+
+# ---------------------------------------------------------------- 00-05
+- term: Tapeout
+  definition: The milestone at which a chip's final design database is sent to manufacturing to make masks; after it, design changes require new masks and another fab cycle.
+  chapter: "00-05"
+  see_also: [Respin]
+- term: RTL
+  definition: Register-transfer level, the description of digital logic in an HDL (Verilog/SystemVerilog) as registers and the logic between them, from which synthesis produces gates.
+  chapter: "00-05"
+- term: Design verification
+  definition: The engineering function (and activity) of demonstrating, before tapeout, that a design's RTL implements its specification, using simulation, coverage, formal methods and emulation.
+  chapter: "00-05"
+- term: Physical design
+  definition: Converting synthesized logic into a manufacturable layout (floorplanning, placement, clock-tree synthesis, routing) and closing timing, power and design-rule signoff.
+  chapter: "00-05"
+- term: Design for test (DFT)
+  definition: Design features (scan chains, built-in self-test, test access) that make manufactured chips testable for defects at low cost.
+  chapter: "00-05"
+- term: Stepping
+  definition: A silicon revision of a chip (e.g., A0, A1, B0); commonly the number changes for metal-only revisions and the letter for full-layer revisions, though conventions vary.
+  chapter: "00-05"
+- term: Respin
+  definition: A new manufacturing pass of a chip with corrected masks after a bug or shortfall is found in silicon, either metal-only or full-layer.
+  chapter: "00-05"
+- term: Engineering change order (ECO)
+  definition: A late design change made with minimal disruption, often by rewiring spare gates through metal-layer changes only.
+  chapter: "00-05"
+- term: First-silicon success
+  definition: A chip's first manufactured version (A0) being functionally correct and shippable without a respin; reported for a minority of IC/ASIC projects in industry surveys.
+  chapter: "00-05"
+- term: Wafer cycle time
+  definition: The time a wafer spends in the fab from start to finish, roughly 1–1.5 days per mask layer and 14–20 weeks for advanced processes.
+  chapter: "00-05"
+- term: Non-recurring engineering (NRE)
+  definition: One-time costs of developing a product (design labor, EDA tools, IP licenses, masks, prototypes), as opposed to per-unit manufacturing cost.
+  chapter: "00-05"
+- term: Emulation
+  definition: Running a chip design on specialized hardware (emulators or FPGA prototypes) thousands to millions of times faster than simulation, so software can run before tapeout.
+  chapter: "00-05"
+- term: Triangular distribution
+  definition: A probability distribution defined by a minimum, most-likely and maximum value, with mean (a + m + b)/3; a simple model of skewed task-duration risk.
+  chapter: "00-05"
