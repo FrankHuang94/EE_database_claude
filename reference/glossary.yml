@@ -548,3 +548,40 @@
 - term: Minimum-energy point
   definition: The supply voltage at which a digital circuit's energy per operation is smallest, where falling switching energy balances rising leakage energy; typically a few hundred millivolts in subthreshold CMOS.
   chapter: "01-04"
+
+# ---------------------------------------------------------------- 01-05
+- term: Riemann sum
+  definition: An approximation of accumulated quantity, Σ f(x_k*) Δx, from samples of f on a partition; left, right, midpoint and trapezoid are common choices.
+  chapter: "01-05"
+  see_also: [Definite integral]
+- term: Definite integral
+  definition: The limit of Riemann sums ∫_a^b f(x) dx, equal to the signed area under f; its units are those of f times those of x.
+  chapter: "01-05"
+- term: Antiderivative
+  definition: A function F with F' = f; any two differ by a constant, written ∫ f dx = F + C.
+  chapter: "01-05"
+- term: Fundamental theorem of calculus
+  definition: Part 1, the accumulated area ∫_a^x f has derivative f(x); part 2, ∫_a^b f = F(b) − F(a) for any antiderivative F. Integration and differentiation are inverse operations.
+  chapter: "01-05"
+- term: Accumulation function
+  definition: A(x) = ∫_a^x f(t) dt, the running total of f from a fixed start; for a current it is the charge delivered so far.
+  chapter: "01-05"
+- term: Average value
+  definition: (1/(b − a)) ∫_a^b f dx, the height of the rectangle with the same area; over one period it is a signal's DC value.
+  chapter: "01-05"
+- term: Trapezoidal rule
+  definition: Numerical integration joining samples with straight lines; its error falls as the square of the step. SPICE's default transient integration method.
+  chapter: "01-05"
+- term: Ampere-hour
+  definition: A unit of charge, 1 Ah = 3600 C, used for battery capacity; 1 mAh = 3.6 C.
+  chapter: "01-05"
+- term: Coulomb counting
+  definition: Estimating a battery's state of charge by integrating measured current over time; offsets accumulate, so gauges recalibrate at known states.
+  chapter: "01-05"
+- term: Integrator
+  definition: A circuit or algorithm whose output is the running integral of its input, such as an op-amp with capacitive feedback, v_out = −(1/RC)∫ v_in dt, or a digital accumulator.
+  chapter: "01-05"
+  see_also: [Integrator (op-amp)]
+- term: Dual-slope ADC
+  definition: An integrating converter that integrates the input for a fixed time and times the de-integration with a reference; its result is independent of R and C, and integrating over whole mains periods rejects hum.
+  chapter: "01-05"

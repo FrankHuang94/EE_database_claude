@@ -1,0 +1,24 @@
+* Problem 01-05.11 -- an op-amp integrator, v_out = -(1/RC) * integral of v_in, RC = 1 ms.
+* The op-amp is modeled as a voltage-controlled voltage source with gain 1e6 (an ideal op-amp
+* without output limits, so saturation is not modeled).
+* Circuit 1: a 0.5 V step input.  Circuit 2: a +/-1 V, 1 kHz square wave starting at +1 V.
+*
+* EXPECT vo_2m  key:../../solutions/01-05-solutions.md#01-05.11a rtol=1e-3
+* EXPECT pp2    key:../../solutions/01-05-solutions.md#01-05.11d rtol=2e-3
+
+V1  in1  0     DC 0.5
+R1  in1  m1    10k
+C1  m1   out1  100n IC=0
+E1  out1 0     0 m1 1e6
+
+V2  in2  0     PULSE(1 -1 0.5m 1n 1n 0.5m 1m)
+R2  in2  m2    10k
+C2  m2   out2  100n IC=0
+E2  out2 0     0 m2 1e6
+
+.options reltol=1e-6
+.tran 1u 5m 0 2u UIC
+
+.meas tran vo_2m FIND v(out1) AT=2m
+.meas tran pp2   PP v(out2) FROM=0 TO=5m
+.end

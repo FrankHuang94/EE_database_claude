@@ -1,0 +1,32 @@
+* Problem 01-05.5 and Example 01-05.3 -- capacitors integrate current; charging loses 1/2 C V^2.
+* Circuit 1: current pulses (+10 mA for 1 ms, -5 mA for 2 ms) into 2 uF that starts at 1 V.
+* Circuit 2: a 5 V step charges 100 uF through 1 kOhm (tau = 0.1 s). B-sources turn the
+*            resistor power i^2 R and the source power 5 i into node voltages so that .meas INTEG
+*            can integrate them into energies (joules appear as volt-seconds).
+*
+* EXPECT v1_1m  key:../../solutions/01-05-solutions.md#01-05.5a rtol=1e-3
+* EXPECT v1_3m  key:../../solutions/01-05-solutions.md#01-05.5b rtol=2e-3
+* EXPECT e_r    key:../../chapters/01-05-integrals.md#Ex_01-05.3c scale=1e-3 rtol=2e-3
+* EXPECT e_src  key:../../chapters/01-05-integrals.md#Ex_01-05.3b scale=1e-3 rtol=2e-3
+* EXPECT e_c    key:../../chapters/01-05-integrals.md#Ex_01-05.3a scale=1e-3 rtol=2e-3
+
+I1  0  n1  PWL(0 10m 1m 10m 1.0001m -5m 3m -5m 3.0001m 0 1 0)
+C1  n1 0   2u IC=1
+
+V2  s2 0   PWL(0 0 1u 5 10 5)
+VS2 s2 a2  DC 0
+R2  a2 n2  1k
+C2  n2 0   100u IC=0
+BPR pr 0   V = i(VS2)*i(VS2)*1000
+BPS ps 0   V = 5*i(VS2)
+
+.options reltol=1e-6
+.tran 10u 2 0 1m UIC
+
+.meas tran v1_1m FIND v(n1) AT=1m
+.meas tran v1_3m FIND v(n1) AT=3.5m
+.meas tran e_r   INTEG v(pr) FROM=0 TO=2
+.meas tran e_src INTEG v(ps) FROM=0 TO=2
+.meas tran vc_end FIND v(n2) AT=2
+.meas tran e_c   PARAM='0.5*100u*vc_end*vc_end'
+.end
