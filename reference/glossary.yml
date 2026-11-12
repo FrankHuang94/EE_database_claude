@@ -423,3 +423,49 @@
 - term: Link margin
   definition: Received power minus receiver sensitivity, in dB; the extra loss a radio link can tolerate before it fails.
   chapter: "01-01"
+
+# ---------------------------------------------------------------- 01-02
+- term: Limit
+  definition: The value L that f(x) approaches as x approaches a (without equaling a), written lim_{x→a} f(x) = L; the value f(a) itself plays no role.
+  chapter: "01-02"
+  see_also: [One-sided limit, Continuity]
+- term: One-sided limit
+  definition: A limit taken from one side only, x → a⁻ (from below) or x → a⁺ (from above). Circuit analysis writes v(0⁻) and v(0⁺) for the values just before and just after a switching instant.
+  chapter: "01-02"
+- term: Indeterminate form
+  definition: An expression such as 0/0, ∞/∞ or ∞ − ∞ whose form alone does not determine a limit; it must be resolved by algebra, standard limits or L'Hôpital's rule.
+  chapter: "01-02"
+- term: Squeeze theorem
+  definition: If g(x) ≤ f(x) ≤ h(x) near a and g and h share the limit L, then f also tends to L. Used to prove sin θ/θ → 1.
+  chapter: "01-02"
+- term: Continuity
+  definition: f is continuous at a if f(a) is defined, the limit at a exists, and the two are equal; informally, the graph can be drawn without lifting the pen.
+  chapter: "01-02"
+- term: Removable discontinuity
+  definition: A point where a function's limit exists but its value is missing or different; redefining the value as the limit removes it (for example sin x/x at 0).
+  chapter: "01-02"
+- term: Jump discontinuity
+  definition: A point where both one-sided limits exist but differ, as for the unit step at t = 0 or a capacitor's current at a switching instant.
+  chapter: "01-02"
+- term: Intermediate value theorem
+  definition: A continuous function on [a, b] takes every value between f(a) and f(b); in particular, a sign change guarantees a root in between.
+  chapter: "01-02"
+  see_also: [Bisection method]
+- term: Bisection method
+  definition: Root finding by repeatedly halving a bracket that contains a sign change; after n steps the bracket width is (b − a)/2ⁿ, about 3.3 steps per decimal digit, and it cannot fail once a bracket is found.
+  chapter: "01-02"
+- term: Asymptote
+  definition: A line that a curve approaches in a limit, horizontal (x → ∞), vertical (f → ±∞ at a finite x) or slanted; Bode-plot straight lines are asymptotes of a frequency response.
+  chapter: "01-02"
+- term: Difference quotient
+  definition: The slope (f(a + h) − f(a))/h of the secant line through two nearby points; its limit as h → 0 is the derivative.
+  chapter: "01-02"
+- term: Unit step function
+  definition: u(t), equal to 0 for t < 0 and 1 for t ≥ 0; it models a switch closing at t = 0 and has a jump discontinuity there.
+  chapter: "01-02"
+- term: Sinc function
+  definition: sin(x)/x (sometimes normalized as sin(πx)/(πx)); its removable discontinuity at 0 is filled with the limit 1. It appears throughout sampling and Fourier analysis.
+  chapter: "01-02"
+- term: Amdahl's law
+  definition: Speedup on N processors is 1/((1 − p) + p/N) when a fraction p of the work parallelizes; as N → ∞ it approaches 1/(1 − p), so the serial fraction caps scaling.
+  chapter: "01-02"

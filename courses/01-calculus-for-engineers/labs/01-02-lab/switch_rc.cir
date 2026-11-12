@@ -1,0 +1,26 @@
+* Example 01-02.3 -- one-sided limits at a switching instant.
+* A 5 V step (rising in 1 ns at t = 0) drives R = 10 kOhm into an uncharged C = 100 nF.
+* A 0 V source (VSC) in series with C measures the capacitor current.
+* Expected: v_C stays continuous (essentially 0 at 1 ns, 5 mV at 1 us), i_C jumps to about 0.5 mA,
+* and v_C approaches 5 V.
+*
+* EXPECT ic_1u   key:README.md#Lab_01-02.b scale=1e-3 rtol=2e-3
+* EXPECT ic_1u   key:../../chapters/01-02-limits-and-continuity.md#Ex_01-02.3b scale=1e-3 rtol=2e-3
+* EXPECT vc_1u   key:README.md#Lab_01-02.d scale=1e-3 rtol=5e-3
+* EXPECT vc_1n   0 atol=1e-5
+* EXPECT vc_20m  key:README.md#Lab_01-02.c rtol=1e-4
+* EXPECT vc_20m  key:../../chapters/01-02-limits-and-continuity.md#Ex_01-02.3c rtol=1e-4
+
+V1   in 0  PWL(0 0 1n 5 1 5)
+R1   in a  10k
+VSC  a  c  DC 0
+C1   c  0  100n IC=0
+
+.options reltol=1e-6
+.tran 0.1u 20m 0 5u UIC
+
+.meas tran vc_1n  FIND v(a) AT=1n
+.meas tran ic_1u  FIND i(VSC) AT=1u
+.meas tran vc_1u  FIND v(a) AT=1u
+.meas tran vc_20m FIND v(a) AT=20m
+.end
