@@ -12,7 +12,7 @@ This is the single source of truth for symbols, units and sign conventions acros
 | Decimal sign | Point, not comma. Thousands separated by a thin space or comma only in prose. | 1 000 000 or 1,000,000 |
 | Logarithms | $\ln$ = natural log; $\log_{10}$ written explicitly; $\log_2$ for information. Never a bare "log". | $\ln 2 = 0.693$ |
 | Decibels | Power ratio: $10\log_{10}(P_2/P_1)$. Amplitude ratio (same impedance): $20\log_{10}(V_2/V_1)$. dBm = dB relative to 1 mW; dBV = relative to 1 V rms. | 3 dB ≈ 2× power |
-| Angles | Radians in all formulas. Degrees only for reporting phase, always with the ° symbol. | $\phi = 30^\circ = \pi/6$ |
+| Angles | Radians in all formulas. Degrees only for reporting phase, always with the ° symbol. A phase written in degrees inside a function, as in $\cos(\omega t + 30^\circ)$, is accepted shorthand for $\cos(\omega t + \pi/6)$: convert to radians before evaluating. | $\phi = 30^\circ = \pi/6$ |
 | Numerical tolerance | Published answers are correctly rounded; see `tools/eeverify.py`. | |
 
 ## 2. Complex numbers and phasors
@@ -40,9 +40,13 @@ The total-, DC-, small-signal- and phasor-quantity convention (Sedra & Smith sty
 | Phasor of a small signal | bold UPPERCASE symbol, lowercase subscript | $\mathbf{V}_{gs}$ |
 | Generic time-domain circuit variable | lowercase | $v(t)$, $i(t)$, $v_C(t)$, $i_L(t)$ |
 
+- **Word and label subscripts are not part of this case convention.** Subscripts such as *in*, *out*, *s* (source), *Th* (Thevenin), *N* (Norton), *C*, *L*, *R1* simply name a signal or element. So $v_{in}(t)$ is a generic input voltage, not a small-signal quantity. The case convention above applies to device-terminal subscripts (GS, D, BE, …).
+- **Thevenin/Norton:** $V_{Th}$, $R_{Th}$, $I_N$ (mixed-case subscript *Th*). Do not confuse $V_{Th}$ with the MOSFET threshold $V_{TH}$; chapters that use both spell out which is meant.
+- **Unit step and switching:** $u(t) = 0$ for $t < 0$ and $1$ for $t > 0$; $u(t - t_0)$ switches at $t_0$.
 - **Passive sign convention:** current is referenced *into* the terminal marked +. Then $p = vi$ is the power **absorbed** by the element (negative means it delivers power).
 - **Node voltages** are referenced to ground: $v_A$ is the voltage of node A relative to ground; $v_{AB} = v_A - v_B$.
 - **Switching instants:** $t_0^-$ is just before the switch event and $t_0^+$ just after; $v_C$ and $i_L$ are continuous across $t_0$.
+- **Letters reused for first-order work:** $k$ is Boltzmann's constant; a ramp slope is $m$ (V/s); the square-wave decay factor in Chapter 07-02 is $\rho = e^{-T/(2\tau)}$; dummy integration variables are $\lambda$ and $\xi$ ($s$ is reserved for the Laplace variable).
 - **Time constant** $\tau$ (s). **Undamped natural frequency** $\omega_0$ (rad/s). **Damping ratio** $\zeta$. **Neper frequency** $\alpha$ (1/s). **Quality factor** $Q$.
 - **Op-amps:** open-loop gain $A$ (or $A_0$ at DC), unity-gain frequency $\omega_t$ / $f_t$; feedback factor $\beta$; loop gain $L = A\beta$ (in Course 12, $T$ is also used where the textbook does).
 

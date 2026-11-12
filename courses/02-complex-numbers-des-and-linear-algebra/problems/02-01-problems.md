@@ -144,6 +144,15 @@ $p(t) = \tfrac{1}{2}V_mI_m\cos(\theta_v - \theta_i) + \tfrac{1}{2}V_mI_m\cos(2\o
 (b) Show that the average power is $P = \tfrac{1}{2}\operatorname{Re}\lbrace\mathbf{V}\mathbf{I}^{\ast}\rbrace$.
 (c) For $\mathbf{V} = 10\angle 30^\circ$ V and $\mathbf{I} = 2\angle -15^\circ$ A, compute $P$. Then compute the incorrect quantity $\tfrac{1}{2}\operatorname{Re}\lbrace\mathbf{V}\mathbf{I}\rbrace$ and explain why it is wrong.
 
+### Problem 02-01.18 [B]
+
+Damped sinusoids as complex exponentials (chapter §3.7). Let $s = -2 + j10$ (in 1/s).
+
+(a) Write $e^{st}$ in the form (magnitude) × (rotation), and show that $y(t) = e^{-2t}\cos 10t$ equals $\operatorname{Re}\lbrace e^{st}\rbrace$.
+(b) How long does the envelope $e^{-2t}$ take to halve? What is the period of the oscillation? How many oscillation periods fit into one halving time?
+(c) Evaluate $y(0.5\text{ s})$.
+(d) Show that $s = -2 \pm j10$ are the roots of $s^2 + 4s + 104 = 0$. (In [02-03](../chapters/02-03-second-order-linear-odes.md) you will see that this is the characteristic equation of a ringing second-order circuit.)
+
 ---
 
 ## Objective coverage
@@ -151,7 +160,7 @@ $p(t) = \tfrac{1}{2}V_mI_m\cos(\theta_v - \theta_i) + \tfrac{1}{2}V_mI_m\cos(2\o
 | Learning objective (chapter 02-01) | Problems |
 |---|---|
 | 1. Convert forms; complex arithmetic, powers and roots | 1, 2, 3, 5, 6, 8 |
-| 2. Derive and use Euler's formula; trig identities | 7, 16, 17(a) |
+| 2. Derive and use Euler's formula; trig identities; complex exponentials | 7, 16, 17(a), 18 |
 | 3. Phasors; adding same-frequency sinusoids | 4, 9, 10, 16(c) |
 | 4. Calculus as $j\omega$; sinusoidal steady state of ODEs; impedance | 11, 12, 13, 14 |
 | 5. Geometric interpretation; complex arithmetic in hardware | 10, 15, 17(c) |

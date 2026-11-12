@@ -56,7 +56,7 @@ $\tau = RC = (10^4)(10^{-6}) = 10$ ms.
 
 (b) At $0^+$: $i = (5 - 0)/10\text{ kΩ} = 0.500$ mA. Just after 5 ms the input is 0 and $v_C = 1.967$ V, so $i = (0 - 1.967)/10\text{ kΩ} = -0.1967$ mA. The current reverses as the capacitor discharges back into the source.
 
-(c) The sketch rises along an exponential to 1.97 V at 5 ms, with initial slope 0.5 V/ms, then decays exponentially through 0.72 V at 15 ms and 0.27 V at 25 ms. The pulse is much shorter than τ, so the capacitor charges only about 39% of the way.
+(c) The sketch rises along an exponential to 1.97 V at 5 ms, with initial slope 0.5 V/ms, then decays exponentially through 0.72 V at 15 ms and 0.27 V at 25 ms. The pulse lasts only half a time constant, so the capacitor charges only about 39% of the way.
 
 ### Solution 07-02.7
 
@@ -91,11 +91,11 @@ $\tau = RC = (10^4)(10^{-6}) = 10$ ms.
 
 ### Solution 07-02.10
 
-(a) From chapter §3.10 with $x(0) = 0$: $x(t) = k(t - \tau) + k\tau\,e^{-t/\tau}$. With $k = 2$ V/ms and $\tau = 1$ ms, $x(t) = 2(t - 1) + 2e^{-t}$ V, with $t$ in ms.
+(a) From chapter §3.10 with $x(0) = 0$: $x(t) = m(t - \tau) + m\tau\,e^{-t/\tau}$. With $m = 2$ V/ms and $\tau = 1$ ms, $x(t) = 2(t - 1) + 2e^{-t}$ V, with $t$ in ms.
 
 (b) $x(5) = 2(4) + 2e^{-5} = 8 + 0.0135 = 8.013$ V. The input at that moment is 10 V.
 
-(c) Once $e^{-t/\tau} \approx 0$, $x = k(t - \tau)$. That is the input delayed by $\tau = 1$ ms, or equivalently below the input by a constant $k\tau = 2.00$ V.
+(c) Once $e^{-t/\tau} \approx 0$, $x = m(t - \tau)$. That is the input delayed by $\tau = 1$ ms, or equivalently below the input by a constant $m\tau = 2.00$ V.
 
 ### Solution 07-02.11
 
@@ -109,13 +109,13 @@ The ideal integrator would read 10 V at 10 ms. The leaky version tracks it initi
 
 ### Solution 07-02.12
 
-Use $V_{max} = \frac{V}{1 + k}$, $V_{min} = \frac{Vk}{1 + k}$ and ripple $= V\frac{1 - k}{1 + k}$, with $k = e^{-T/(2\tau)}$, $V = 1$ V and $T = 1$ ms.
+Use $V_{max} = \frac{V}{1 + \rho}$, $V_{min} = \frac{V\rho}{1 + \rho}$ and ripple $= V\frac{1 - \rho}{1 + \rho}$, with $\rho = e^{-T/(2\tau)}$, $V = 1$ V and $T = 1$ ms.
 
-(a) $\tau = 0.5$ ms: $k = e^{-1} = 0.3679$. So $V_{max} = 1/1.3679 = 0.7311$ V,† $V_{min} = 0.2689$ V,† ripple $= 0.4621$ V.
+(a) $\tau = 0.5$ ms: $\rho = e^{-1} = 0.3679$. So $V_{max} = 1/1.3679 = 0.7311$ V,† $V_{min} = 0.2689$ V,† ripple $= 0.4621$ V.
 
-(b) $\tau = 5$ ms: $k = e^{-0.1} = 0.9048$. So $V_{max} = 1/1.9048 = 0.5250$ V,† $V_{min} = 0.4750$ V,† ripple $= 0.04996$ V. The approximation gives $VT/(4\tau) = 1/20 = 0.0500$ V, which agrees to 0.1%.
+(b) $\tau = 5$ ms: $\rho = e^{-0.1} = 0.9048$. So $V_{max} = 1/1.9048 = 0.5250$ V,† $V_{min} = 0.4750$ V,† ripple $= 0.04996$ V. The approximation gives $VT/(4\tau) = 1/20 = 0.0500$ V, which agrees to 0.1%.
 
-(c) The larger τ, because it gives a nearly constant output (here 0.5 V ± 2.5%) equal to the duty cycle × V. The cost is response time: when the PWM duty cycle changes, the output takes about 5τ (25 ms here) to settle to the new level. Ripple and response speed trade off directly. A second-order filter improves the trade ([07-08](../chapters/07-08-filters-and-resonance.md)).
+(c) The larger τ, because it gives a nearly constant output equal to the duty cycle × V: here 0.5 V ± 0.025 V, i.e. ±5% of the 0.5 V level. The cost is response time: when the PWM duty cycle changes, the output takes about 5τ (25 ms here) to settle to the new level. Ripple and response speed trade off directly. A second-order filter improves the trade ([07-08](../chapters/07-08-filters-and-resonance.md)).
 
 ### Solution 07-02.13
 
@@ -135,7 +135,7 @@ Use $V_{max} = \frac{V}{1 + k}$, $V_{min} = \frac{Vk}{1 + k}$ and ripple $= V\fr
 
 (a) $I_0 = 12/200 = 60.0$ mA.
 
-(b) At turn-off, the coil current (60 mA) continues through $R_f$. The coil's top is at +12 V. Current flows down through the coil and back up through $R_f$, so the coil's bottom (the transistor's terminal) rises to $12 + I_0R_f$. Requiring $12 + 0.06R_f \le 30$ gives $R_f \le 300\ \Omega$.
+(b) At turn-off, the coil current (60 mA) continues through $R_f$. The coil's top is at +12 V; the low-side transistor connects to its bottom. Current flows down through the coil and back up through $R_f$, so the coil's bottom (the transistor's terminal) rises to $12 + I_0R_f$. Requiring $12 + 0.06R_f \le 30$ gives $R_f \le 300\ \Omega$.
 
 (c) The decay loop contains $L$, $R_{coil}$ and $R_f$ in series: $\tau = L/(R_{coil} + R_f) = 0.1/500 = 0.200$ ms.
 
@@ -150,6 +150,8 @@ The diode version is about **2.1× slower** to release, the price of the much lo
 
 (g) The total energy dissipated is $\tfrac{1}{2}LI_0^2 = \tfrac{1}{2}(0.1)(0.06^2) = 1.80\times10^{-4}$ J $= 0.180$ mJ in either case. The flyback method changes only where it is dissipated and how fast.
 
+(h) While the relay is on, $R_f$ sits directly across the 12 V supply (in parallel with the coil): it dissipates $12^2/300 = 0.480$ W and draws 40 mA. The transistor must carry $60 + 40 = 100$ mA instead of 60 mA. That waste is two-thirds of the coil's own 0.72 W, all the time the relay is on. **Better:** put a diode in series with $R_f$, so the diode–resistor string conducts only at turn-off (switch voltage $12 + 0.7 + I_0R_f$, so choose $R_f \le 288\ \Omega$ to stay at 30 V). Alternatively use a diode in series with a Zener for a sharp, defined clamp.
+
 ### Solution 07-02.15
 
 (a) $N_\tau = (12 + 1)\ln 2 = 9.011$.
@@ -158,7 +160,7 @@ The diode version is about **2.1× slower** to release, the price of the much lo
 
 (c) $v_n = \sqrt{kT/C} = \sqrt{4.142\times10^{-21}/10^{-11}} = 20.35$ µV rms. The 12-bit LSB is $3.3/4096 = 805.7$ µV, so the noise is 0.0253 LSB: negligible.
 
-(d) The 16-bit LSB is $3.3/65536 = 50.35$ µV, so the noise is $20.35/50.35 = 0.404$ LSB rms. That is significant: it costs more than a third of a bit of effective resolution and makes the low-order bits noisy.
+(d) The 16-bit LSB is $3.3/65536 = 50.35$ µV, so the kT/C noise is $20.35/50.35 = 0.404$ LSB rms. Ideal quantization noise is $1/\sqrt{12} = 0.2887$ LSB rms. Independent noises add in power, so the total is $\sqrt{0.2887^2 + 0.404^2} = 0.4967$ LSB rms. Effective resolution falls by $\log_2(0.4967/0.2887) = 0.783$ bit, so this front end turns a 16-bit converter into roughly a 15.2-bit one.
 
 (e) Require $\sqrt{kT/C} \le 0.1 \times 50.35$ µV $= 5.035$ µV, so $C \ge kT/(5.035\times10^{-6})^2 = 4.142\times10^{-21}/2.535\times10^{-11} = 163.4$ pF.
 With 16-bit settling ($N_\tau = 17\ln 2 = 11.78$) in 100 ns: $\tau_{max} = 8.486$ ns, so $R_{max} = 8.486\text{ ns}/163.4\text{ pF} = 51.95\ \Omega$.
@@ -173,6 +175,39 @@ With 16-bit settling ($N_\tau = 17\ln 2 = 11.78$) in 100 ns: $\tau_{max} = 8.486
 (c) Before: $\tfrac{1}{2}(10^{-6})(10^2) = 50.0$ µJ. After: $2 \times \tfrac{1}{2}(10^{-6})(5^2) = 25.0$ µJ. Dissipated: 25.0 µJ, half of the original, **independent of R**, by the same argument as Problem 13(a).
 
 (d) With $R = 0$ exactly, the circuit equations have no consistent solution: an instantaneous voltage change would need infinite current. Physically, real wires always have some resistance and inductance. With very small R, the energy is radiated as electromagnetic waves or dissipated in a spark, or the circuit rings through its parasitic inductance until resistance damps it. The 25 µJ is lost one way or another; the idealized model has simply hidden where.
+
+### Solution 07-02.17
+
+(a) Remove the capacitor and apply a test voltage $v_T$ at node A. The test source must supply the current through $R_1$, minus the current the VCCS already pushes into the node: $i_T = \dfrac{v_T}{R_1} - g\,v_T$. So
+
+$$
+R_{Th} = \frac{v_T}{i_T} = \frac{1}{1/R_1 - g}.
+$$
+
+(b) $g = 0.25$ mS and $1/R_1 = 0.5$ mS, so $R_{Th} = 1/(0.25\text{ mS}) = 4.00$ kΩ. The dependent source makes the node look *more* resistive than $R_1$ alone. Then $\tau = R_{Th}C = (4\times10^{3})(10^{-5}) = 40.0$ ms, $v_A(t) = 1\cdot e^{-t/40\text{ ms}}$ V, and $v_A(40\text{ ms}) = e^{-1} = 0.3679$ V.
+
+(c) $g = 1$ mS: $R_{Th} = 1/(0.5 - 1)\text{ mS} = -2.00$ kΩ, a **negative** resistance. Then $\tau = R_{Th}C = -20.0$ ms, and $v_A(t) = e^{-t/\tau} = e^{+t/20\text{ ms}}$ V. It *grows*: $v_A(20\text{ ms}) = e = 2.718$ V and $v_A(100\text{ ms}) = e^5 = 148.4$ V. Physically, the VCCS supplies more current than $R_1$ can drain, so any voltage on the capacitor is amplified (positive feedback). In a real circuit the growth stops when something saturates, such as a supply rail. This happens whenever $g > 1/R_1 = 0.5$ mS.
+
+(d) Deliberately unstable, exponentially regenerating circuits are **latches** and **comparators**. A cross-coupled pair of inverters (the heart of every SRAM cell, sense amplifier and flip-flop) amplifies a tiny initial voltage difference exponentially, with "time constant" $C/(g_m - 1/R)$, until it snaps to a full logic level. How long that takes when the initial difference is tiny is the origin of **metastability** ([08-10](../../08-digital-logic-design/chapters/08-10-timing-metastability-cdc.md), [20-05](../../20-analog-and-mixed-signal-ic-design/chapters/20-05-comparators-and-sample-and-hold.md)).
+
+### Solution 07-02.18
+
+(a) Before switching the capacitor is an open circuit, so no current flows in $R_a$ and $v_C(0^-) = 5$ V. In position b: $\tau = R_bC = (4\times10^{3})(10^{-6}) = 4.00$ ms, and $v_C(\infty) = -10$ V.
+
+(b) For $t \ge 0$: $v_C(t) = -10 + (5 - (-10))e^{-t/4\text{ ms}} = -10 + 15e^{-t/4\text{ ms}}$ V.
+For all $t$, the capacitor sits at 5 V before the switch and follows the expression above after it. Using the unit step:
+
+$$
+v_C(t) = 5 + \big(15e^{-t/4\text{ ms}} - 15\big)\,u(t)\ \text{V}.
+$$
+
+Check: for $t < 0$, $u = 0$ gives 5 V ✓; for $t > 0$, it gives $-10 + 15e^{-t/\tau}$ ✓.
+
+(c) At $0^+$ the capacitor is still at 5 V, so the current from the −10 V source through $R_b$ into the capacitor is $(-10 - 5)/4\text{ kΩ} = -3.75$ mA. The negative sign means current actually flows *out* of the capacitor toward the −10 V source.
+Zero crossing: $15e^{-t/\tau} = 10$ gives $t = \tau\ln 1.5 = 4 \times 0.4055 = 1.622$ ms.
+$v_C(8\text{ ms}) = -10 + 15e^{-2} = -10 + 2.030 = -7.970$ V.
+
+(d) Either works electrically. A make-before-break switch briefly connects both sources through $R_a + R_b = 5$ kΩ, drawing $(5 - (-10))/5\text{ kΩ} = 3$ mA, which is harmless. If the overlap is much shorter than τ = 4 ms, it barely disturbs the capacitor. Break-before-make leaves the capacitor floating for an instant, which is also harmless because it simply holds its voltage. The choice matters when the sources could be shorted directly with no resistors in between: then break-before-make is mandatory.
 
 ---
 
@@ -243,12 +278,17 @@ With 16-bit settling ($N_\tau = 17\ln 2 = 11.78$) in 100 ns: $\tau_{max} = 8.486
 | 07-02.14f | time to 10 % (diode) | 0.9499 | ms |
 | 07-02.14g | transistor voltage with diode | 12.7 | V |
 | 07-02.14h | energy dissipated during release | 0.180 | mJ |
+| 07-02.14i | power in $R_f$ while relay is on | 0.480 | W |
+| 07-02.14j | transistor on-current with $R_f$ | 100 | mA |
+| 07-02.14k | maximum $R_f$ with a series diode | 288 | Ω |
 | 07-02.15a | time constants, 12-bit | 9.011 | — |
 | 07-02.15b | $\tau_{max}$ | 11.10 | ns |
 | 07-02.15c | $R_{max}$ | 1.110 | kΩ |
 | 07-02.15d | kT/C noise, 10 pF | 20.35 | µV |
 | 07-02.15e | noise in 12-bit LSB | 0.0253 | — |
 | 07-02.15f | noise in 16-bit LSB | 0.404 | — |
+| 07-02.15i | total noise (quantization + kT/C), 16-bit | 0.4967 | LSB |
+| 07-02.15j | effective resolution lost | 0.783 | bit |
 | 07-02.15g | capacitor for 0.1 LSB at 16 bits | 163.4 | pF |
 | 07-02.15h | $R_{max}$ with that capacitor | 51.95 | Ω |
 | 07-02.16a | final voltage | 5.00 | V |
@@ -256,3 +296,18 @@ With 16-bit settling ($N_\tau = 17\ln 2 = 11.78$) in 100 ns: $\tau_{max} = 8.486
 | 07-02.16c | energy before | 50.0 | µJ |
 | 07-02.16d | energy after | 25.0 | µJ |
 | 07-02.16e | energy dissipated | 25.0 | µJ |
+| 07-02.17a | $R_{Th}$ for $g$ = 0.25 mS | 4.00 | kΩ |
+| 07-02.17b | τ for $g$ = 0.25 mS | 40.0 | ms |
+| 07-02.17c | $v_A(40\text{ ms})$ | 0.3679 | V |
+| 07-02.17d | $R_{Th}$ for $g$ = 1 mS | −2.00 | kΩ |
+| 07-02.17e | τ for $g$ = 1 mS | −20.0 | ms |
+| 07-02.17f | $v_A(20\text{ ms})$ for $g$ = 1 mS | 2.718 | V |
+| 07-02.17g | $v_A(100\text{ ms})$ for $g$ = 1 mS | 148.4 | V |
+| 07-02.17h | instability threshold $g$ | 0.5 | mS |
+| 07-02.18a | $v_C(0^-)$ | 5 | V |
+| 07-02.18b | τ | 4.00 | ms |
+| 07-02.18c | $v_C(\infty)$ | −10 | V |
+| 07-02.18d | current into C at $0^+$ | −3.75 | mA |
+| 07-02.18e | zero-crossing time | 1.622 | ms |
+| 07-02.18f | $v_C(8\text{ ms})$ | −7.970 | V |
+| 07-02.18g | make-before-break overlap current | 3 | mA |

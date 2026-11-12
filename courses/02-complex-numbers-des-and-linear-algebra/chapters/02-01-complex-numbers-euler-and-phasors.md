@@ -218,7 +218,7 @@ e^{j\theta} &= 1 + j\theta + \frac{(j\theta)^2}{2!} + \frac{(j\theta)^3}{3!} + \
 \end{aligned}
 $$
 
-The regrouping in the third line is legitimate because the series converges absolutely (the sum of the absolute values of its terms is the convergent series for $e^{\lvert\theta\rvert}$). Figure 4 shows the partial sums for $\theta = 2$: each new term is the previous one rotated by 90° and shrunk by a factor $\theta/n$, so the partial sums spiral in onto the point $\cos 2 + j\sin 2$ on the unit circle.
+The regrouping in the third line is legitimate because the series converges absolutely (the sum of the absolute values of its terms is the convergent series for $e^{\lvert\theta\rvert}$). Figure 4 shows the partial sums for $\theta = 2$: each new term is the previous one rotated by 90° and scaled by a factor $\theta/n$. For $\theta = 2$ the first terms do not shrink (the scale factors are 2, 1, 2/3, …), so the partial sums first swing outward, then spiral in onto the point $\cos 2 + j\sin 2$ on the unit circle once $n > \theta$.
 
 ![Taylor partial sums of e^{j2} spiralling in to the unit circle](../../../assets/figures/02-01/euler-taylor.svg)
 
@@ -278,7 +278,7 @@ with:
 - **period** $T = 1/f = 2\pi/\omega$ seconds;
 - **phase** $\phi$ in radians or degrees.
 
-We always use the **cosine** as the reference. Convert everything else to it first:
+Writing the phase in degrees inside the cosine, as in $\cos(\omega t + 30^\circ)$, is standard engineering shorthand: it means $\cos(\omega t + \pi/6)$, and you must convert to radians before evaluating ([notation](../../../reference/notation.md)). We always use the **cosine** as the reference. Convert everything else to it first:
 
 - $\sin x = \cos(x - 90^\circ)$ (a sine lags the cosine by a quarter cycle);
 - $-\cos x = \cos(x \pm 180^\circ)$ (a negative amplitude is a 180° phase shift);
@@ -327,7 +327,7 @@ Applying the lemma to $\mathbf{D} = \mathbf{X} - \mathbf{Y}$ shows that two same
 **What phasors cannot do.** Phasor arithmetic is valid only for **linear** operations on sinusoids of a **single frequency**:
 
 - You cannot add phasors of different frequencies. Their arrows rotate at different rates, so no single snapshot describes both (Problem 02-01.16).
-- You cannot multiply two sinusoids by multiplying their phasors, because $\operatorname{Re}\lbrace\mathbf{X}\rbrace\operatorname{Re}\lbrace\mathbf{Y}\rbrace \ne \operatorname{Re}\lbrace\mathbf{X}\mathbf{Y}\rbrace$ in general. Instantaneous power $p = vi$ is such a product, which is why AC power needs its own rules (Problem 02-01.17; [07-06](../../07-circuit-analysis-2-transient-and-ac/chapters/07-06-ac-power-and-power-factor.md)).
+- You cannot multiply two sinusoids by multiplying their phasors. The product $\operatorname{Re}\lbrace\mathbf{X}e^{j\omega t}\rbrace\cdot\operatorname{Re}\lbrace\mathbf{Y}e^{j\omega t}\rbrace$ contains a constant term and a term at $2\omega$ (Problem 02-01.17), so it is not a sinusoid at $\omega$ at all and has no phasor. Instantaneous power $p = vi$ is such a product, which is why AC power needs its own rules (Problem 02-01.17; [07-06](../../07-circuit-analysis-2-transient-and-ac/chapters/07-06-ac-power-and-power-factor.md)).
 
 ### 3.10 Calculus becomes algebra
 
@@ -361,7 +361,7 @@ $$
 a_n\frac{d^ny}{dt^n} + \cdots + a_1\frac{dy}{dt} + a_0y = X_m\cos(\omega t + \phi).
 $$
 
-Its full solution is a **transient** part, which for a stable system dies away (in [07-02](../../07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md) it is a decaying exponential), plus a **steady-state** part that persists. [02-04](02-04-forced-response-and-resonance.md) proves that the steady-state part is a sinusoid at the input frequency. For now, accept that and write it as $y_{ss}(t) = \operatorname{Re}\lbrace\mathbf{Y}e^{j\omega t}\rbrace$. Substituting, and using $d^k/dt^k \leftrightarrow (j\omega)^k$ and linearity:
+Try a solution of the form $y_p(t) = \operatorname{Re}\lbrace\mathbf{Y}e^{j\omega t}\rbrace$, a sinusoid at the input frequency with an unknown phasor $\mathbf{Y}$. Substituting, and using $d^k/dt^k \leftrightarrow (j\omega)^k$ and linearity:
 
 $$
 \operatorname{Re}\Big\lbrace\big[a_n(j\omega)^n + \cdots + a_1(j\omega) + a_0\big]\mathbf{Y}\,e^{j\omega t}\Big\rbrace = \operatorname{Re}\lbrace\mathbf{X}e^{j\omega t}\rbrace, \qquad \mathbf{X} = X_m\angle\phi .
@@ -372,6 +372,8 @@ By the uniqueness lemma, the phasors on both sides are equal. **The differential
 $$
 \mathbf{Y} = H(j\omega)\,\mathbf{X}, \qquad H(j\omega) = \frac{1}{a_n(j\omega)^n + \cdots + a_1(j\omega) + a_0}.
 $$
+
+**Why this is the steady state.** The computation above *constructs* a particular solution: with this $\mathbf{Y}$, $y_p$ satisfies the differential equation exactly. Every solution is $y_p$ plus a solution of the homogeneous equation (the same equation with zero input; [02-02](02-02-first-order-linear-odes.md)–[02-03](02-03-second-order-linear-odes.md)). For a **stable** system all homogeneous solutions decay to zero, so after the transient only $y_p$ remains. The construction needs one condition: the denominator $P(j\omega) = a_n(j\omega)^n + \cdots + a_0$ must not be zero. It vanishes only when the input frequency hits an *undamped* natural frequency of the system, such as a lossless LC circuit driven exactly at resonance. There is then no sinusoidal steady state, and the response grows without bound ([02-04](02-04-forced-response-and-resonance.md)).
 
 The complex number $H(j\omega)$ is the system's **frequency response**. Its magnitude $\lvert H\rvert$ multiplies the amplitude, and its angle $\angle H$ adds to the phase:
 
@@ -433,7 +435,7 @@ Polar forms:
 
 **Solution.**
 
-(a) In rectangular form this would take seven multiplications. In polar form, $1 + j = \sqrt{2}\angle 45^\circ$, so by De Moivre
+(a) In rectangular form you would multiply repeatedly (cleverly: $(1 + j)^2 = 2j$, then $(2j)^2 = -4$, then $(-4)^2 = 16$). In polar form it is one step: $1 + j = \sqrt{2}\angle 45^\circ$, so by De Moivre
 
 $$
 (1 + j)^8 = (\sqrt{2})^8\angle(8 \times 45^\circ) = 16\angle 360^\circ = 16 .
@@ -495,7 +497,7 @@ with $\sqrt{2} = 1.414$.
 
 ![RC low-pass response: numerically solved output converges onto the phasor prediction](../../../assets/figures/02-01/rc-steady-state.svg)
 
-*Figure 7. The numerical solution of the ODE (orange) starts at zero, overshoots briefly while the transient decays, then coincides with the phasor prediction (dashed).*
+*Figure 7. The numerical solution of the ODE (orange) starts at zero, lags below the steady-state curve while the transient $-3.585\,e^{-t/\tau}$ V decays, and merges with the phasor prediction (dashed) within about 5τ. A first-order system never overshoots.*
 
 ### Example 02-01.5 — A series RLC circuit, solved as an ODE in the phasor domain (tier C)
 
@@ -596,7 +598,7 @@ Complex numbers are mathematics, but choosing *how* to represent and compute wit
 | Represent radio signals as complex baseband (I/Q) instead of a real intermediate frequency | One datapath handles every modulation format; lower sample rate for a given bandwidth; image rejection in principle | Two matched mixer/filter/ADC paths; any I/Q gain or phase mismatch creates an image that must be calibrated out; more area and power | RF/system architect |
 | Build complex multipliers with 3 real multiplications instead of 4 ([R-011](../../../reference/research-log.md#r-011--complex-multiplication-with-three-real-multiplications)) | 25% fewer multipliers, which saves area and power in FFT and beamforming engines | Three extra additions; a longer critical path; one bit of word growth in the pre-added terms | DSP/ASIC datapath architect |
 | Use fixed-point instead of floating-point complex arithmetic | Much smaller and lower-power arithmetic units | Limited dynamic range: overflow handling, scaling and quantization noise must be budgeted ([16-10](../../16-digital-signal-processing/chapters/16-10-quantization-and-fixed-point.md)) | DSP architect; algorithm team |
-| Polar (magnitude + phase) instead of Cartesian (I/Q) transmitter architecture | Allows efficient, strongly nonlinear power amplifiers to carry the amplitude path | The phase and amplitude signals occupy much wider bandwidth than the I/Q signal, and the two paths must be time-aligned precisely | RF architect |
+| Polar (magnitude + phase) instead of Cartesian (I/Q) transmitter architecture | Allows a highly efficient, strongly nonlinear (switching) power amplifier: the PA amplifies a constant-envelope, phase-modulated signal, and the amplitude is restored by modulating its supply | The phase and amplitude signals occupy much wider bandwidth than the I/Q signal, and the two paths must be time-aligned precisely | RF architect |
 | Peak versus RMS phasor convention in a spec or model | Consistency within a team | Mixing conventions silently introduces factor-of-2 power errors | Whoever owns the spec or model |
 
 ## 7. Numbers to know
@@ -609,7 +611,7 @@ Complex numbers are mathematics, but choosing *how* to represent and compute wit
 | $\lvert H\rvert$ of a single pole at its corner | $1/\sqrt{2} = 0.7071$ (−3.01 dB), phase −45° | Defines "bandwidth" |
 | RMS of a sinusoid | $0.7071 \times$ peak | Peak = RMS × 1.414 |
 | Grid frequency | 50 Hz or 60 Hz, giving $\omega$ = 314.16 or 376.99 rad/s | [R-006](../../../reference/research-log.md#r-006--power-grid-frequencies) |
-| Mains peak voltage | 120 V rms (North America) → 169.7 V peak; 230 V rms (Europe) → 325.3 V peak | Nominal voltages [Established] |
+| Mains peak voltage | 120 V rms (North America) → 169.7 V peak; 230 V rms (Europe) → 325.3 V peak | Nominal voltages, [R-014](../../../reference/research-log.md#r-014--nominal-mains-voltages) |
 | Phase of a time delay | $360^\circ \times f \times t_d$; 1 ns = 360° at 1 GHz | Timing becomes phase at high frequency |
 | 4096-QAM (Wi-Fi 7) transmit EVM limit | ≤ −38 dB, an RMS error of 1.26% of the signal | As of Nov 2026, [R-002](../../../reference/research-log.md#r-002--ieee-80211-evm-requirements) |
 | 5G NR frequency range FR1 | 410–7125 MHz | As of Nov 2026, [R-003](../../../reference/research-log.md#r-003--3gpp-nr-frequency-ranges) |
@@ -645,17 +647,17 @@ Complex numbers are mathematics, but choosing *how* to represent and compute wit
 - **Every modem is a complex-number machine.** Cellular and Wi-Fi chips mix the received RF signal down to two baseband signals, in-phase (I) and quadrature (Q), which together form one complex sample stream. The demodulator, equalizer and decoder operate on complex numbers throughout. Wi-Fi 7 (IEEE 802.11be-2024) supports channels up to 320 MHz wide and 4096-QAM constellations ([R-002](../../../reference/research-log.md#r-002--ieee-80211-evm-requirements)) **[Established]**.
 - **FFT engines.** OFDM-based standards (4G, 5G, Wi-Fi) use an FFT on every received symbol. Each radix-2 FFT stage is a set of complex multiplications by roots of unity (§3.5).
 - **Multiplier economics.** A complex multiply needs 4 real multiplications and 2 additions, or 3 multiplications and 5 additions/subtractions with the Ungar/"Gauss" rearrangement ([R-011](../../../reference/research-log.md#r-011--complex-multiplication-with-three-real-multiplications)) **[Established]**. In massive-MIMO base stations and automotive radar, where thousands of complex multiplies run in parallel, that 25% difference in multipliers shows up in die area and power.
-- **The power grid measures phasors directly.** Phasor measurement units (PMUs) timestamp voltage and current phasors from GPS time and stream them to grid operators. IEEE C37.118.1-2011 specifies reporting rates up to 50 frames/s on 50 Hz systems and 60 frames/s on 60 Hz systems ([R-005](../../../reference/research-log.md#r-005--synchrophasor-standards)) **[Established]**.
+- **The power grid measures phasors directly.** Phasor measurement units (PMUs) timestamp voltage and current phasors from GPS time and stream them to grid operators. The measurement standard is now IEC/IEEE 60255-118-1:2018, which superseded IEEE C37.118.1-2011. The 2011 standard defined reporting rates from 10 up to the system frequency: 10, 25 or 50 frames/s on 50 Hz systems and 10 to 60 frames/s on 60 Hz systems, with higher rates permitted ([R-005](../../../reference/research-log.md#r-005--synchrophasor-standards)) **[Established]**.
 
 ### Why it matters commercially
 
-The quality of a radio's complex signal path sets the highest constellation order it can use, and therefore its peak data rate, which is the number on the spec sheet. The limiting impairments are I/Q gain and phase mismatch, oscillator phase noise and power-amplifier distortion, which together appear as EVM. The calibration and digital-correction algorithms that fix them (I/Q imbalance correction, digital pre-distortion) are hard-won IP. They are a large part of why RF/modem teams are scarce and why acquiring one is often cheaper than building one.
+The quality of a radio's complex signal path sets the highest constellation order it can use, and therefore its peak data rate, which is the number on the spec sheet. The limiting impairments are I/Q gain and phase mismatch, oscillator phase noise and power-amplifier distortion, which together appear as EVM. The calibration and digital-correction algorithms that fix them (I/Q imbalance correction, digital pre-distortion) are hard-won IP. They are a large part of why experienced RF/modem teams are scarce, and why build-versus-buy for such a team is a recurring strategic question ([26-04](../../26-engineering-design-and-professional-practice/chapters/26-04-engineering-economics-2.md)).
 
 ### Marketing vs Reality
 
 **Claim pattern 1: "4096-QAM delivers 20% faster Wi-Fi."** The arithmetic is right: 4096-QAM carries $\log_2 4096 = 12$ bits per symbol versus 10 for 1024-QAM, a 20% peak gain. But the constellation is a 64 × 64 grid instead of 32 × 32 within a similar average power. Adjacent points are therefore about half as far apart, so the receiver needs about $10\log_{10}(4095/1023) = 6.02$ dB more signal-to-noise ratio to tell them apart. The transmitter must also hold its EVM to −38 dB instead of −35 dB ([R-002](../../../reference/research-log.md#r-002--ieee-80211-evm-requirements)). Under realistic conditions the radio falls back to lower orders. **Sanity check:** ask at what distance, signal strength and channel width a throughput number was measured, and whether it is a PHY rate or measured application throughput.
 
-**Claim pattern 2: "Our FFT/beamforming accelerator delivers N GMAC/s."** Ask whether a *complex* multiply-accumulate is counted as one operation or as the four real multiplies inside it. The same silicon can be described with numbers 4× apart. The same inflation reappears in TOPS claims for AI accelerators ([28-02](../../28-technical-diligence-and-leadership-fluency/chapters/28-02-validating-claims.md)).
+**Claim pattern 2: "Our FFT/beamforming accelerator delivers N GMAC/s."** Ask whether a *complex* multiply-accumulate is counted as one operation or as the four real multiplies inside it. The same silicon can be described with numbers 4× apart, or 8× apart in "ops" figures that also count each multiply-accumulate as two operations (a multiply and an add), as TOPS ratings conventionally do. The same inflation reappears in TOPS claims for AI accelerators ([28-02](../../28-technical-diligence-and-leadership-fluency/chapters/28-02-validating-claims.md)).
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -805,6 +807,6 @@ Now work the full problem set: [02-01 problems](../problems/02-01-problems.md) (
 3. Research log [R-002](../../../reference/research-log.md#r-002--ieee-80211-evm-requirements): IEEE 802.11ax/be EVM limits and 802.11be status.
 4. Research log [R-003](../../../reference/research-log.md#r-003--3gpp-nr-frequency-ranges): 3GPP NR frequency ranges.
 5. Research log [R-005](../../../reference/research-log.md#r-005--synchrophasor-standards): synchrophasor standards and PMU reporting rates.
-6. Research log [R-006](../../../reference/research-log.md#r-006--power-grid-frequencies): power-grid frequencies.
+6. Research log [R-006](../../../reference/research-log.md#r-006--power-grid-frequencies): power-grid frequencies; [R-014](../../../reference/research-log.md#r-014--nominal-mains-voltages): nominal mains voltages.
 7. Research log [R-011](../../../reference/research-log.md#r-011--complex-multiplication-with-three-real-multiplications): three-multiplication complex product (Higham 1992, citing Knuth).
 8. Textbook alignment as listed in §13. All text, examples and problems in this chapter are original.

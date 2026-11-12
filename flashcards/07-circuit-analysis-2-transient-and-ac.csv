@@ -16,9 +16,9 @@
 "Energy lost charging a capacitor from 0 to V through a resistor?","½CV² — exactly half of the CV² drawn from the source, independent of R.",bsee::07 bsee::07-02
 "CMOS dynamic power formula and its origin?","\(P = \alpha C V_{DD}^2 f\): each 0→1→0 cycle draws \(CV_{DD}^2\) from the supply regardless of transistor strength.",bsee::07 bsee::07-02 bsee::practitioner
 "How can you charge a capacitor with less than ½CV² loss?","Charge it in N steps (loss CV²/2N) or with a slow ramp (adiabatic charging) so the resistor never sees a large voltage.",bsee::07 bsee::07-02
-"Square-wave (0/V, 50% duty) steady state through an RC: \(V_{max}\), \(V_{min}\)?","With \(k = e^{-T/2\tau}\): \(V_{max} = V/(1+k)\), \(V_{min} = Vk/(1+k)\); ripple ≈ \(VT/(4\tau)\) when \(T \ll \tau\).",bsee::07 bsee::07-02
+"Square-wave (0/V, 50% duty) steady state through an RC: \(V_{max}\), \(V_{min}\)?","With \(\rho = e^{-T/2\tau}\): \(V_{max} = V/(1+\rho)\), \(V_{min} = V\rho/(1+\rho)\); ripple ≈ \(VT/(4\tau)\) when \(T \ll \tau\).",bsee::07 bsee::07-02
 "General solution of \(\tau\dot x + x = u(t)\)?","\(x(t) = x(0)e^{-t/\tau} + \frac{1}{\tau}\int_0^t e^{-(t-\lambda)/\tau}u(\lambda)\,d\lambda\) — an exponentially weighted average of past inputs (a convolution).",bsee::07 bsee::07-02
-"Ramp response of a first-order low-pass in steady state?","It tracks the ramp delayed by τ (constant error kτ).",bsee::07 bsee::07-02
+"Ramp response of a first-order low-pass in steady state?","It tracks the ramp (slope m) delayed by τ, with constant error mτ.",bsee::07 bsee::07-02
 "What happens when you interrupt an inductor's current with no flyback path?","\(v = L\,di/dt\) grows as large as needed — switch arcs or transistor breaks down.",bsee::07 bsee::07-02
 "Resistor vs diode flyback across an inductive load: tradeoff?","Resistor: faster decay (τ = L/R) but switch sees supply + I₀R. Diode: switch sees supply + 0.7 V but slow decay (slower relay release).",bsee::07 bsee::07-02
 "Ideal inverting op-amp integrator output?","\(v_{out} = v_{out}(0) - \frac{1}{RC}\int v_{in}\,dt\); add \(R_f \parallel C\) (leaky integrator: τ = \(R_fC\), DC gain \(-R_f/R\)) to stop it drifting into the rail.",bsee::07 bsee::07-02
@@ -26,3 +26,5 @@
 "The central tradeoff in an ADC sampling capacitor?","Bigger C → lower kT/C noise but longer settling (τ = RC) → needs a stronger driver or more time.",bsee::07 bsee::07-02 bsee::practitioner
 "Why does on-chip wire delay grow with the square of length?","Both R and C are proportional to length, so RC ∝ length²; repeaters break long wires into segments.",bsee::07 bsee::07-02 bsee::practitioner
 "Two equal capacitors, one at V₀, connected through R: final voltage and energy lost?","\(V_0/2\) each; half the initial energy (\(\tfrac14 CV_0^2\)) is lost, independent of R.",bsee::07 bsee::07-02
+"What does a negative Thevenin resistance seen by a capacitor mean?","τ = R_Th·C is negative: the response grows as \(e^{+t/|\tau|}\) (positive feedback) until something saturates — the regenerative action of latches and comparators.",bsee::07 bsee::07-02
+"Why can a bare resistor across a relay coil be a bad flyback design?","It conducts the whole time the coil is energized, wasting power and loading the switch; put a diode in series with it (or use a diode + Zener).",bsee::07 bsee::07-02

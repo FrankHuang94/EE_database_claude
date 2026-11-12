@@ -123,6 +123,24 @@ v.check("PL 07-02.b", 0.2 * 10)
 v.check("PL 07-02.c", (656 * 10) * (0.2e-15 * 10) * 1e12)
 v.check("PL 07-02.d", (656 * 20) * (0.2e-15 * 20) * 1e12)
 v.check("PL 07-02.e", 1 / (2 * math.pi * 300e-9 / Nt) / 1e6)
+v.check("PL 07-02.f", 0.38 * (656 * 10) * (0.2e-15 * 10) * 1e12)
+# distributed RC line: 50 % delay ≈ 0.38 RC, checked by simulating a 200-segment RC ladder
+nseg = 200
+Rseg, Cseg = 1.0 / nseg, 1.0 / nseg  # total R = C = 1 (normalized)
+def ladder(t, y):
+    vin = 1.0
+    dv = np.empty_like(y)
+    for i in range(nseg):
+        left = vin if i == 0 else y[i - 1]
+        right = y[i + 1] if i < nseg - 1 else None
+        i_in = (left - y[i]) / Rseg
+        i_out = (y[i] - right) / Rseg if right is not None else 0.0
+        dv[i] = (i_in - i_out) / Cseg
+    return dv
+sl = solve_ivp(ladder, (0, 3), np.zeros(nseg), method="LSODA", rtol=1e-8, atol=1e-10, dense_output=True)
+tg = np.linspace(0, 3, 30001)
+t50 = tg[np.argmax(sl.sol(tg)[-1] >= 0.5)]
+v.assert_true("distributed RC line 50 % delay ≈ 0.38 RC", abs(t50 - 0.38) < 0.01, f"t50 = {t50:.4f} RC")
 # the landmark table in §3.7: rise time derivation and fraction table
 t = np.linspace(0, 10, 1_000_001)
 y = 1 - np.exp(-t)
@@ -250,6 +268,9 @@ VD = 0.7
 v.check("07-02.14f", tauD * ln((I0_14 + VD / Rc) / (0.1 * I0_14 + VD / Rc)) * 1e3)
 v.check("07-02.14g", 12 + VD)
 v.check("07-02.14h", 0.5 * L14 * I0_14**2 * 1e3)
+v.check("07-02.14i", 12**2 / Rf)
+v.check("07-02.14j", (I0_14 + 12 / Rf) * 1e3)
+v.check("07-02.14k", (30 - 12 - 0.7) / I0_14)
 # diode case by ODE with an exponential diode (Is = 1e-14 A, n = 1): shows the constant-drop model is close
 VT = k_B * T / 1.602176634e-19
 Is = 1e-14
@@ -270,6 +291,10 @@ v.check("07-02.15c", t15 / 10e-12 / 1e3)
 v.check("07-02.15d", vn15 * 1e6)
 v.check("07-02.15e", vn15 / (3.3 / 4096))
 v.check("07-02.15f", vn15 / (3.3 / 65536))
+qn = 1 / math.sqrt(12)
+tot = math.hypot(qn, vn15 / (3.3 / 65536))
+v.check("07-02.15i", tot)
+v.check("07-02.15j", math.log2(tot / qn))
 Cmin = k_B * T / (0.1 * 3.3 / 65536) ** 2
 v.check("07-02.15g", Cmin * 1e12)
 v.check("07-02.15h", (100e-9 / (17 * ln(2))) / Cmin)
@@ -285,6 +310,38 @@ s = ode(lambda t, y: [-(y[0] - y[1]) / R16 / C16, (y[0] - y[1]) / R16 / C16, (y[
         10e-3, [V16, 0.0, 0.0])
 v.assert_true("P16 two-capacitor ODE: final voltages and dissipated energy",
               abs(s.sol(10e-3)[0] - 5) < 1e-6 and abs(s.sol(10e-3)[2] - 25e-6) < 1e-10)
+
+# Problem 17: dependent source (test-source method), stable and unstable cases
+R1_17, C17 = 2e3, 10e-6
+for g, ids in [(0.25e-3, ("07-02.17a", "07-02.17b", "07-02.17c")), (1e-3, ("07-02.17d", "07-02.17e", None))]:
+    Rth = 1 / (1 / R1_17 - g)
+    v.check(ids[0], Rth / 1e3)
+    v.check(ids[1], Rth * C17 * 1e3)
+    sk = ode(lambda t, y: [(-y[0] / R1_17 + g * y[0]) / C17], 0.1, 1.0)  # KCL at node A
+    if ids[2]:
+        v.check(ids[2], sk.sol(0.04)[0], tol=5e-5)
+    else:
+        v.check("07-02.17f", sk.sol(0.02)[0], tol=5e-4)
+        v.check("07-02.17g", sk.sol(0.1)[0], tol=0.05)
+v.check("07-02.17h", 1 / R1_17 * 1e3)
+vt = 1.0  # test-source check of R_Th formula
+v.assert_true("P17 test-source current gives R_Th", math.isclose(vt / (vt / R1_17 - 0.25e-3 * vt), 4000.0))
+
+# Problem 18: two-position switch
+tau18 = 4e3 * 1e-6
+v.check("07-02.18a", 5)
+v.check("07-02.18b", tau18 * 1e3)
+v.check("07-02.18c", -10)
+v.check("07-02.18d", (-10 - 5) / 4e3 * 1e3)
+v.check("07-02.18e", tau18 * ln(15 / 10) * 1e3)
+s18 = ode(lambda t, y: [(-10 - y[0]) / tau18], 0.02, 5.0)
+v.check("07-02.18f", s18.sol(8e-3)[0], tol=5e-4)
+v.check("07-02.18g", (5 - (-10)) / (1e3 + 4e3) * 1e3)
+ustep = lambda t: np.where(t > 0, 1.0, 0.0)  # noqa: E731
+tt18 = np.linspace(-5e-3, 20e-3, 2501)
+unified = 5 + (15 * np.exp(-np.clip(tt18, 0, None) / tau18) - 15) * ustep(tt18)
+piecewise = np.where(tt18 > 0, -10 + 15 * np.exp(-np.clip(tt18, 0, None) / tau18), 5.0)
+v.assert_true("P18 unit-step expression equals the piecewise answer", np.allclose(unified, piecewise))
 
 # =============================================================================== lab expected results
 tau_l = par(6e3, 6e3) * 2e-6

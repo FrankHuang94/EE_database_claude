@@ -26,11 +26,11 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 
 | Course | Chapters | Written | Verified | Reviewed | Words | Problems | Verified numbers | Labs | Notebooks / netlists / testbenches |
 |---|---|---|---|---|---|---|---|---|---|
-| 02 | 10 | 1 | 1 | 0 | 8,891 | 17 | 111 | 1 | 1 / 0 / 0 |
-| 07 | 11 | 1 | 0 | 0 | 8,644 | 16 | 128 | 1 | 1 / 6 / 0 |
-| **Total** | **307** | **2** | **1** | **0** | **17,535** | **33** | **239** | **2** | **2 / 6 / 0** |
+| 02 | 10 | 1 | 1 | 0 | 9,185 | 18 | 118 | 1 | 1 / 0 / 0 |
+| 07 | 11 | 1 | 1 | 0 | 8,902 | 18 | 149 | 1 | 1 / 6 / 0 |
+| **Total** | **307** | **2** | **2** | **0** | **18,087** | **36** | **267** | **2** | **2 / 6 / 0** |
 
-Glossary terms: **48** · Flashcards: **53**
+Glossary terms: **48** · Flashcards: **55**
 
 <!-- END STATS -->
 
@@ -74,5 +74,5 @@ Changes relative to the original build brief's chapter plan.
 
 | Date | Session summary |
 |---|---|
-| 2026-11-12 | Phase 1. Pilot chapters 02-01 (≈ 8.9k words incl. tables, 17 problems, 111 checked values) and 07-02 (16 problems, 128 checked values, 6 ngspice netlists) with labs, figures, glossary (48 terms) and flashcards (53). Independent reviewer audit run on both chapters; findings fixed. Stopped for feedback. |
+| 2026-11-12 | Phase 1. Pilot chapters 02-01 (18 problems, 118 machine-checked values) and 07-02 (18 problems, 149 machine-checked values, 6 ngspice netlists) with labs, figures, glossary (48 terms) and flashcards (55). An independent reviewer subagent audited both chapters and found 3 critical, 8 major and ~25 minor issues, all in labels, prose and reasoning rather than computed numbers. All were fixed: an off-by-one term-count label, a wrong 'overshoot' caption, a ±% error, resistor-flyback on-state cost, an ENOB-loss calculation, a rise-time caveat, stronger ngspice coverage (i_C jumps, 72 V switch voltage), PMU standard citation, a rigor gap in the steady-state argument, notation clashes (k, s, V_Th), and added Problems 02-01.18 and 07-02.17–18 (damped exponentials, dependent sources and negative R_Th, two-position switch with u(t)). Stopped for feedback. |
 | 2026-11-12 | Phase 0. Repo created; curriculum data model + generators; CLAUDE.md, CURRICULUM.md (29 courses, 307 chapters), README, STUDY_PLAN, SETUP, notation; verification toolkit (answer-key checker, ngspice/HDL/notebook runners, link and structure checkers); CI; smoke tests pass. Research log R-001–R-013. |

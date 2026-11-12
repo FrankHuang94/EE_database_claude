@@ -39,7 +39,7 @@ Check your predictions against these only after you have made them.
 | Part | Prediction | Expected result |
 |---|---|---|
 | A | Angles of $-1 - j$, $-5$, $-j3$, $2 - j2$ | −135°, 180°, −90°, −45° |
-| B | Terms needed for error < $10^{-6}$ at $\theta = \pi$ | 16 terms, since the first omitted term, $\pi^{17}/17!$, is about $8\times10^{-7}$ |
+| B | Highest power $N$ needed for error < $10^{-6}$ at $\theta = \pi$ | $N = 16$, i.e. 17 terms ($n = 0, \ldots, 16$); the first omitted term, $\pi^{17}/17!$, is about $8\times10^{-7}$ |
 | C | `ph2` for $v_2$ to oppose $v_1$; resulting amplitude | −60°, so $v_2 = 5\cos(\omega t - 150^\circ)$; amplitude 5 V |
 | C | `ph2` for $v_2$ to align with $v_1$; resulting amplitude | 120°; amplitude 15 V |
 | D | $C = 1\ \mu$F: $\omega RC$, $\lvert H\rvert$, output amplitude, phase | 6.283; 0.1572; 0.7859 V; −80.96° |
@@ -51,7 +51,7 @@ Check your predictions against these only after you have made them.
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
 | Lab 02-01.A1 | angle of −1 − j | −135.0 | ° |
-| Lab 02-01.B1 | terms needed at θ = π | 16 | — |
+| Lab 02-01.B1 | highest power N needed at θ = π | 16 | — |
 | Lab 02-01.C1 | opposing amplitude | 5 | V |
 | Lab 02-01.C2 | aligned amplitude | 15 | V |
 | Lab 02-01.D1 | $\omega RC$ with 1 µF | 6.283 | — |
@@ -62,6 +62,8 @@ Check your predictions against these only after you have made them.
 | Lab 02-01.E1 | peak current with R = 2 Ω | 5.000 | A |
 | Lab 02-01.E2 | Q with R = 2 Ω | 7.071 | — |
 | Lab 02-01.Q1 | steady-state output at t = 0 (discussion Q1) | 3.58 | V |
+| Lab 02-01.H1 | amplitude ratio with 50 Ω source | 0.835 | — |
+| Lab 02-01.H2 | delay with 50 Ω source | 92.8 | µs |
 
 ## Discussion questions
 
@@ -77,5 +79,5 @@ Check your predictions against these only after you have made them.
 1. Build the RC low-pass of Example 02-01.4: generator → 1 kΩ → output node → 100 nF → ground.
 2. Set the generator to a 1 kHz sine of 1 V amplitude. That is safer than 5 V and makes no difference for a linear circuit.
 3. Put channel 1 on the input and channel 2 on the output. Measure the amplitude ratio and the time between corresponding zero crossings.
-4. **Expected:** ratio ≈ 0.847 and delay ≈ 89 µs (a 32° lag), within component tolerance. Typical parts are ±5% (R) and ±10% (C), so a few percent of disagreement is normal.
+4. **Expected:** ratio ≈ 0.847 and delay ≈ 89 µs (a 32° lag) for an ideal source. A typical function generator has a 50 Ω output resistance, which adds to the 1 kΩ: with $R = 1050\ \Omega$, expect a ratio of about 0.835 and a delay of about 92.8 µs. Typical parts are ±5% (R) and ±10% (C), so a few percent of further disagreement is normal.
 5. Sweep the frequency from 100 Hz to 20 kHz and record the ratio and phase at a few points. Compare them with $\lvert H\rvert$ and $\angle H$. You have just measured a Bode plot, the subject of [07-07](../../../07-circuit-analysis-2-transient-and-ac/chapters/07-07-frequency-response-and-bode-plots.md).

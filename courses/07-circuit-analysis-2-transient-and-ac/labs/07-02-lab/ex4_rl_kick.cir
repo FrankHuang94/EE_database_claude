@@ -2,20 +2,30 @@
 * For t < 0 the inductor carried I0 = 12 V / 4 Ohm = 3 A (R2 was shorted by the inductor at DC).
 * At t = 0 the switch opens and disconnects the source and R1; the inductor current must keep
 * flowing, so it freewheels through R2 = 20 Ohm. We simulate t >= 0 with the inductor's initial
-* current as an initial condition (UIC). VSENSE measures the inductor current.
+* current as an initial condition (UIC). VSENSE measures the inductor current. The 12 V source, the
+* (now open) switch and R1 are included so that the voltage across the open switch can be measured.
 *
 * EXPECT va_0p   key:../../chapters/07-02-first-order-rc-rl-transients.md#Ex_07-02.4c rtol=1e-3
 * EXPECT il_10m  key:../../chapters/07-02-first-order-rc-rl-transients.md#Ex_07-02.4f rtol=1e-3
+* EXPECT vsw_0p  key:../../chapters/07-02-first-order-rc-rl-transients.md#Ex_07-02.4d rtol=1e-3
 
 L1     a  b  0.2 IC=3
 VSENSE b  0  DC 0
 R2     a  0  20
+VS     in 0  DC 12
+S1     in sw ctrl 0 swmod
+VCTRL  ctrl 0 DC 0
+.model swmod SW(Ron=1m Roff=1e12 Vt=0.5 Vh=0.1)
+R1     sw a  4
 
 .options reltol=1e-6
 .tran 1u 40m 0 1u UIC
 
 .meas tran va_0p  FIND v(a) AT=2u
 .meas tran il_10m FIND i(VSENSE) AT=10m
+* behavioral source that outputs the switch voltage v(in) - v(sw)
+BSW    swv 0 V=v(in)-v(sw)
+.meas tran vsw_0p FIND v(swv) AT=2u
 * (time for the current to fall to 10 % of I0 = tau*ln(10) = 23.03 ms)
 .meas tran t_10pct WHEN i(VSENSE)=0.3 FALL=1
 * EXPECT t_10pct 0.02302585 rtol=1e-3

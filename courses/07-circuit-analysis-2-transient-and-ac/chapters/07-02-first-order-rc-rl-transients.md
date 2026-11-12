@@ -1,4 +1,4 @@
-<!-- status: draft -->
+<!-- status: verified -->
 # 07-02 · First-Order RC and RL Transients
 
 | | |
@@ -48,7 +48,7 @@ An inductor resists changes in *current*, the way a heavy flywheel resists chang
 
 A mean-reverting interest-rate model (the Vasicek model, familiar from fixed income) has drift $dr = \kappa(\theta - r)\,dt$: the short rate moves toward its long-run level $\theta$ at a speed proportional to its distance from it. Strip out the random shock term and this is the RC equation exactly. Compare $\frac{dv_C}{dt} = \frac{1}{RC}(V_S - v_C)$: here $\theta \leftrightarrow V_S$, $\kappa \leftrightarrow 1/(RC)$, and the **half-life of a rate shock**, $\ln 2/\kappa$, is the circuit's 50% delay $\tau\ln 2$. Everything in §3.7 about "how many time constants until it's 99% done" is the same calculation you would do for how long a rate shock takes to decay.
 
-*Where the analogy breaks:* the circuit has no random shocks at everyday scales, though it does at the microvolt level: thermal noise on a capacitor is the "kT/C" noise of §9. More importantly, the circuit obeys **energy conservation**. Charging a capacitor through any resistor wastes exactly as much energy as it stores (§3.8), a constraint with no counterpart in a rate model. And the analogy has nothing that plays the inductor's role (inertia).
+*Where the analogy breaks:* the circuit has no random shocks at everyday scales, though it does at the microvolt level: thermal noise on a capacitor is the "kT/C" noise of §9. More importantly, the circuit obeys **energy conservation**. Charging a capacitor from zero through any resistor wastes exactly as much energy as it stores (§3.8), a constraint with no counterpart in a rate model. And the analogy has nothing that plays the inductor's role (inertia).
 
 ## 3. Theory
 
@@ -185,7 +185,7 @@ $$
 t_r = t_{90} - t_{10} = \tau\big(\ln 10 - \ln\tfrac{10}{9}\big) = \tau\ln 9 = 2.197\,\tau .
 $$
 
-**Settling to an accuracy.** To get within a fraction $\varepsilon$ of the final value, wait $t = \tau\ln(1/\varepsilon)$. For 0.1% that is $\tau\ln 1000 = 6.91\tau$. An **N-bit ADC** sampling a full-scale step must settle to within half a least-significant bit, $\varepsilon = 2^{-(N+1)}$, so
+**Settling to an accuracy.** To get within a fraction $\varepsilon$ of the total step (the change from initial to final value), wait $t = \tau\ln(1/\varepsilon)$. For 0.1% that is $\tau\ln 1000 = 6.91\tau$. An **N-bit ADC** sampling a full-scale step must settle to within half a least-significant bit, $\varepsilon = 2^{-(N+1)}$, so
 
 $$
 t_{settle} = (N + 1)\ln 2\cdot\tau ,
@@ -199,7 +199,7 @@ $$
 \boxed{\,t_r = \frac{\ln 9}{2\pi f_{3dB}} \approx \frac{0.35}{f_{3dB}}\,}
 $$
 
-This is the bridge between the time domain and the frequency domain that every oscilloscope datasheet uses ([R-010](../../../reference/research-log.md#r-010--rise-time-and-bandwidth)). A 100 MHz single-pole system cannot produce edges faster than about 3.5 ns.
+This is the standard bridge between the time and frequency domains ([R-010](../../../reference/research-log.md#r-010--rise-time-and-bandwidth)). It is exact for one pole and close for gently rolling-off (Gaussian-like) responses. Instruments with a sharper, higher-order roll-off, such as many oscilloscopes above about 1 GHz, follow $t_r \approx 0.40$–$0.45/f_{3dB}$ instead. A 100 MHz single-pole system cannot produce edges faster than about 3.5 ns.
 
 ### 3.8 Energy: the charging loss you cannot avoid
 
@@ -235,22 +235,22 @@ The quadratic dependence on $V_{DD}$ is why lowering supply voltage is the most 
 
 When a circuit switches more than once, apply the master formula **one interval at a time**. The value of the state variable at the end of one interval is the initial condition for the next, and τ may change between intervals if the circuit's resistance changes (Example 07-02.3).
 
-**Square-wave drive in steady state.** Drive an RC low-pass with a square wave alternating between $V$ (for $T/2$) and 0 (for $T/2$). After many periods the output repeats every cycle, rising from a minimum $V_{min}$ to a maximum $V_{max}$ and falling back. Let $k = e^{-T/(2\tau)}$. During the high half-period the output charges toward $V$; during the low half it discharges toward 0:
+**Square-wave drive in steady state.** Drive an RC low-pass with a square wave alternating between $V$ (for $T/2$) and 0 (for $T/2$). After many periods the output repeats every cycle, rising from a minimum $V_{min}$ to a maximum $V_{max}$ and falling back. Let $\rho = e^{-T/(2\tau)}$, the fraction of any deviation that survives half a period. During the high half-period the output charges toward $V$; during the low half it discharges toward 0:
 
 $$
-V_{max} = V + (V_{min} - V)\,k, \qquad V_{min} = V_{max}\,k .
+V_{max} = V + (V_{min} - V)\,\rho, \qquad V_{min} = V_{max}\,\rho .
 $$
 
-Substitute the second equation into the first: $V_{max} = V - Vk + V_{max}k^2$. So $V_{max}(1 - k^2) = V(1 - k)$, and dividing by $1 - k^2 = (1 - k)(1 + k)$:
+Substitute the second equation into the first: $V_{max} = V - V\rho + V_{max}\rho^2$. So $V_{max}(1 - \rho^2) = V(1 - \rho)$, and dividing by $1 - \rho^2 = (1 - \rho)(1 + \rho)$:
 
 $$
-V_{max} = \frac{V}{1 + k}, \qquad V_{min} = \frac{Vk}{1 + k}, \qquad \text{ripple } = V_{max} - V_{min} = V\,\frac{1 - k}{1 + k}.
+V_{max} = \frac{V}{1 + \rho}, \qquad V_{min} = \frac{V\rho}{1 + \rho}, \qquad \text{ripple } = V_{max} - V_{min} = V\,\frac{1 - \rho}{1 + \rho}.
 $$
 
 Two limits make sense:
 
-- **Fast circuit ($T \gg \tau$):** $k \to 0$, so the output swings fully between 0 and $V$.
-- **Slow circuit ($T \ll \tau$):** $k \approx 1 - \frac{T}{2\tau}$. The output sits near the average $V/2$ with small ripple $\approx \frac{VT}{4\tau}$. The circuit is acting as an averaging filter. This is how a PWM signal from a microcontroller becomes an analog voltage ([18-06](../../18-embedded-systems-and-microcontrollers/chapters/18-06-adc-dac-pwm.md)).
+- **Fast circuit ($T \gg \tau$):** $\rho \to 0$, so the output swings fully between 0 and $V$.
+- **Slow circuit ($T \ll \tau$):** $\rho \approx 1 - \frac{T}{2\tau}$. The output sits near the average $V/2$ with small ripple $\approx \frac{VT}{4\tau}$. The circuit is acting as an averaging filter. This is how a PWM signal from a microcontroller becomes an analog voltage ([18-06](../../18-embedded-systems-and-microcontrollers/chapters/18-06-adc-dac-pwm.md)).
 
 ![Square-wave response for tau = T/20, T/2 and 5T](../../../assets/figures/07-02/square-wave.svg)
 
@@ -272,19 +272,19 @@ $$
 
 The first term is the natural response: the memory of the initial condition, fading away. The second is the **forced response**, a weighted average of past inputs in which an input from $(t - \lambda)$ seconds ago carries weight $e^{-(t-\lambda)/\tau}$. This "exponentially weighted moving average" is a **convolution**, the central operation of Signals and Systems ([11-03](../../11-signals-and-systems/chapters/11-03-convolution.md)). For a constant input it reduces to the step response; for a sinusoid it reproduces the phasor steady state of 02-01 plus a decaying transient.
 
-**Ramp input.** Let $u(t) = kt$ (for example $k$ in V/s) and $x(0) = 0$. Substitute $s = t - \lambda$, so $\lambda = t - s$:
+**Ramp input.** Let $u(t) = mt$, a ramp of slope $m$ (in V/s), and $x(0) = 0$. Substitute $\xi = t - \lambda$ (the age of each past input), so $\lambda = t - \xi$:
 
 $$
-x(t) = \frac{k}{\tau}\int_0^t e^{-s/\tau}(t - s)\,ds = \frac{k}{\tau}\Big[t\,\tau\big(1 - e^{-t/\tau}\big) - \big(\tau^2 - \tau^2e^{-t/\tau} - \tau t\,e^{-t/\tau}\big)\Big],
+x(t) = \frac{m}{\tau}\int_0^t e^{-\xi/\tau}(t - \xi)\,d\xi = \frac{m}{\tau}\Big[t\,\tau\big(1 - e^{-t/\tau}\big) - \big(\tau^2 - \tau^2e^{-t/\tau} - \tau t\,e^{-t/\tau}\big)\Big],
 $$
 
-using $\int_0^t e^{-s/\tau}ds = \tau(1 - e^{-t/\tau})$ and, by parts, $\int_0^t s\,e^{-s/\tau}ds = \tau^2 - \tau^2e^{-t/\tau} - \tau t\,e^{-t/\tau}$. Simplifying (the $t\,e^{-t/\tau}$ terms cancel):
+using $\int_0^t e^{-\xi/\tau}d\xi = \tau(1 - e^{-t/\tau})$ and, by parts, $\int_0^t \xi\,e^{-\xi/\tau}d\xi = \tau^2 - \tau^2e^{-t/\tau} - \tau t\,e^{-t/\tau}$. Simplifying (the $t\,e^{-t/\tau}$ terms cancel):
 
 $$
-x(t) = k(t - \tau) + k\tau\,e^{-t/\tau}.
+x(t) = m(t - \tau) + m\tau\,e^{-t/\tau}.
 $$
 
-After the transient dies out, the output is the input **delayed by exactly τ**, trailing it by a constant error $k\tau$. That is a useful fact about any first-order tracking system, from a sensor filter to a thermal-management loop ([15-04](../../15-control-systems/chapters/15-04-feedback-and-steady-state-error.md)).
+After the transient dies out, the output is the input **delayed by exactly τ**, trailing it by a constant error $m\tau$. That is a useful fact about any first-order tracking system, from a sensor filter to a thermal-management loop ([15-04](../../15-control-systems/chapters/15-04-feedback-and-steady-state-error.md)).
 
 ![Ramp response: output tracks the input with a lag of tau](../../../assets/figures/07-02/ramp-response.svg)
 
@@ -294,7 +294,7 @@ After the transient dies out, the output is the input **delayed by exactly τ**,
 
 Suppose an inductor carries current $I_0$ and the switch feeding it opens. The current cannot stop instantly, so it must flow *somewhere*. If the only path is the opening switch, $v_L = L\,di/dt$ grows as large as needed to force the current through: the switch contacts arc, or a transistor switch breaks down. This is why every relay coil, solenoid and motor driver has a deliberate **flyback path**.
 
-- **A resistor $R_f$ across the inductor.** The current continues through $R_f$ and decays with $\tau = L/R_f$. The inductor voltage jumps to $-I_0R_f$ (polarity reversed relative to normal operation). A larger $R_f$ empties the energy faster but produces a larger spike. Example 07-02.4 shows a 12 V circuit putting 72 V across its switch.
+- **A resistor $R_f$ across the inductor.** The current continues through $R_f$ and decays with $\tau = L/R_f$. The inductor voltage jumps to $-I_0R_f$ (polarity reversed relative to normal operation). A larger $R_f$ empties the energy faster but produces a larger spike. Example 07-02.4 shows a 12 V circuit putting 72 V across its switch. A real coil also has winding resistance, so a resistor placed directly across it **draws current the whole time the load is on**, wasting power and loading the switch (Problem 07-02.14). The usual fix is a diode in series with the resistor, or a diode plus Zener: it conducts only at turn-off.
 - **A diode across the inductor** (the classic flyback or freewheeling diode). It clamps the voltage to about one diode drop, the gentlest option for the switch. But the energy now drains only through the coil's own resistance and the diode, so the current decays slowly, and a relay releases more slowly (Problem 07-02.14).
 - **A Zener or TVS clamp:** an intermediate choice, a higher clamp voltage for faster decay.
 
@@ -498,11 +498,11 @@ The lab is in [labs/07-02-lab/](../labs/07-02-lab/README.md). It has two halves.
 
 | Knob | Improves | Costs | Typical decision owner |
 |---|---|---|---|
-| Upsize a driver transistor (lower $R_{on}$) | Shorter RC delay, faster edges | Larger input capacitance loads the previous stage; more area and leakage; the $CV^2$ energy is unchanged | Circuit / standard-cell designer; synthesis tool |
+| Upsize a driver transistor (lower $R_{on}$) | Shorter RC delay, faster edges | The load's $CV^2$ energy is unchanged, but the larger input capacitance adds switched capacitance (and energy) on the previous stage; more area and leakage | Circuit / standard-cell designer; synthesis tool |
 | Lower supply voltage $V_{DD}$ | Quadratic reduction in switching energy ($CV^2$) | Higher transistor resistance → longer τ → lower maximum frequency; less noise margin | SoC architect, power team (DVFS policy) |
 | Larger ADC sampling capacitor | Lower kT/C noise (∝ $1/\sqrt{C}$) | Longer settling (τ ∝ C): needs a stronger, higher-power driver or longer acquisition time | Mixed-signal designer; board-level applications engineer |
 | Larger RC on a debounce or filter input | Rejects more noise and switch bounce | Slower response to real events; larger component values | Embedded hardware engineer |
-| Resistor flyback with larger $R_f$ across an inductive load | Faster energy removal (τ = L/R) and faster relay release | Higher voltage spike on the switch; needs a higher-voltage-rated (larger, costlier) transistor | Power / embedded hardware engineer |
+| Resistor flyback with larger $R_f$ across an inductive load | Faster energy removal (τ = L/R) and faster relay release | Higher voltage spike on the switch, needing a higher-voltage-rated (larger, costlier) transistor; a bare resistor also wastes power while the load is on (add a series diode) | Power / embedded hardware engineer |
 | Diode flyback instead of resistor | Minimal switch voltage stress (≈ supply + 0.7 V) | Slow current decay: slower relay or solenoid release; the coil dissipates the energy | Embedded hardware engineer |
 | Wider or thicker on-chip wires | Lower wire resistance → lower RC delay | More capacitance per length and less routing density; more metal layers cost money | Physical designer; process/PDK team |
 
@@ -519,7 +519,7 @@ The lab is in [labs/07-02-lab/](../labs/07-02-lab/README.md). It has two halves.
 | Charging loss | ½CV², independent of R | Fundamental |
 | kT/C noise at 300 K | 64.4 µV rms (1 pF), 14.4 µV rms (20 pF) | [R-009](../../../reference/research-log.md#r-009--ktc-noise) |
 | On-chip wire capacitance | ≈ 0.2 fF/µm | Rule of thumb, [R-004](../../../reference/research-log.md#r-004--on-chip-interconnect) |
-| Research-stage tight-pitch wire resistance | ≈ 656 Ω/µm (Ru lines, 16 nm pitch, imec 2025) | [Industry estimate], [R-004](../../../reference/research-log.md#r-004--on-chip-interconnect) |
+| Research-stage tight-pitch wire resistance | as low as 656 Ω/µm (Ru lines, 16 nm pitch, imec 2025) | [Industry estimate], [R-004](../../../reference/research-log.md#r-004--on-chip-interconnect) |
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -547,14 +547,14 @@ The lab is in [labs/07-02-lab/](../labs/07-02-lab/README.md). It has two halves.
 
 ### State of the art (as of Nov 2026)
 
-- **Wires, not transistors, increasingly set speed.** An on-chip wire has capacitance of roughly 0.2 fF/µm ([R-004](../../../reference/research-log.md#r-004--on-chip-interconnect)) **[Established rule of thumb]**. Its resistance per µm rises steeply as wires shrink: imec reported research-stage ruthenium lines at 16 nm pitch at about 656 Ω/µm ([R-004](../../../reference/research-log.md#r-004--on-chip-interconnect)) **[Industry estimate, research result]**.
-  - **Worked illustration:** a 10 µm wire at those values has $R \approx 6.6$ kΩ and $C \approx 2$ fF, so $RC \approx 13$ ps.
+- **Wires, not transistors, increasingly set speed.** An on-chip wire has capacitance of roughly 0.2 fF/µm ([R-004](../../../reference/research-log.md#r-004--on-chip-interconnect)) **[Established rule of thumb]**. Its resistance per µm rises steeply as wires shrink: imec reported research-stage ruthenium lines at 16 nm pitch with resistance as low as 656 Ω/µm ([R-004](../../../reference/research-log.md#r-004--on-chip-interconnect)) **[Industry estimate, research result]**.
+  - **Worked illustration:** a 10 µm wire at those values has total $R \approx 6.6$ kΩ and $C \approx 2$ fF, so its RC product is about 13 ps. A wire is not a single R and a single C: both are spread along its length. A *distributed* RC line's 50% delay is about $0.38RC \approx 5$ ps, not the lumped $0.69RC$ of §3.7 ([19-05](../../19-digital-vlsi-design/chapters/19-05-interconnect.md) derives this).
   - **Why it gets worse:** both R and C grow with length, so wire RC grows with the **square** of length. Doubling the wire quadruples its RC.
   - **How industry responds:** repeaters (re-buffering long wires), new metals (Ru, Mo) and backside power delivery, which frees front-side routing tracks. These are major process and capital-equipment topics.
 
   > **Deeper:** see companion repo *Semiconductor Capital Equipment*.
-- **Precision data converters live and die by settling.** Vendor application notes size ADC drivers with exactly the $(N+1)\ln 2$ rule of §3.7 ([R-008](../../../reference/research-log.md#r-008--sar-adc-settling)) **[Established]**. The ADC's headline resolution is only achievable if the system designer meets it.
-- **Fast power switches make inductive kick everyone's problem.** GaN and SiC transistors switch in nanoseconds. Even a few nanohenries of package or board inductance then produce large $L\,di/dt$ overshoots, a reliability concern addressed with layout, snubbers and gate-drive shaping ([22-06](../../22-power-electronics-and-energy-conversion/chapters/22-06-converter-losses-and-wide-bandgap.md)) **[Established]**.
+- **Precision data converters live and die by settling.** Vendor application notes size ADC drivers with the settling rule of §3.7. TI states it as $(N+1)\ln 2$ time constants for a full-scale step; Analog Devices writes it as $\ln(V_{step}/\tfrac{1}{2}\text{LSB})$ for the actual step, which is often the smaller charge-kickback step when the sampling capacitor connects ([R-008](../../../reference/research-log.md#r-008--sar-adc-settling)) **[Established]**. The ADC's headline resolution is only achievable if the system designer meets it.
+- **Fast power switches make inductive kick everyone's problem.** This is physics, not a market claim. Wide-bandgap (GaN, SiC) power transistors switch in nanoseconds, so even a few nanohenries of package or board inductance produce large $L\,di/dt$ overshoots. Layout, snubbers and gate-drive shaping keep them in check, as Course 22 covers ([22-06](../../22-power-electronics-and-energy-conversion/chapters/22-06-converter-losses-and-wide-bandgap.md)).
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -564,6 +564,7 @@ The lab is in [labs/07-02-lab/](../labs/07-02-lab/README.md). It has two halves.
 | PL 07-02.c | lumped RC of that wire | 13.1 | ps |
 | PL 07-02.d | RC of a 20 µm wire | 52.5 | ps |
 | PL 07-02.e | minimum sampling-network bandwidth for 16 bits in 300 ns | 6.3 | MHz |
+| PL 07-02.f | distributed 50 % delay of the 10 µm wire (0.38 RC) | 5.0 | ps |
 
 ### Why it matters commercially
 

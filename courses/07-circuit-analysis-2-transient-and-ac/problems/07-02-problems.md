@@ -3,7 +3,7 @@
 Chapter: [07-02](../chapters/07-02-first-order-rc-rl-transients.md) · Worked solutions: [07-02 solutions](../solutions/07-02-solutions.md)
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
-**Conventions:** passive sign convention; switches act instantaneously; "a long time" means DC steady state; answers to 3–4 significant figures. Use $k = 1.381\times10^{-23}$ J/K and $T = 300$ K where needed.
+**Conventions:** passive sign convention; switches act instantaneously; "a long time" means DC steady state; $u(t)$ is the unit step (0 for $t < 0$, 1 for $t > 0$); answers to 3–4 significant figures. Use Boltzmann's constant $k = 1.381\times10^{-23}$ J/K and $T = 300$ K where needed.
 
 Several problems have an ngspice netlist in [labs/07-02-lab](../labs/07-02-lab/README.md) that confirms the published answer. Try the problem first, then run the netlist.
 
@@ -37,7 +37,7 @@ A 9 V source drives a 3 Ω resistor in series with a 2 mH inductor and has done 
 
 ### Problem 07-02.5 [B] (design)
 
-A microcontroller's power-on-reset circuit uses a 10 µF capacitor that is charged to 3.3 V. When the supply is removed, the capacitor must keep the voltage across a load resistor $R$ at or above 3.0 V for at least 50 ms. Model the load as a pure resistor. What is the minimum value of $R$?
+A microcontroller's supply **hold-up** capacitor (10 µF, charged to 3.3 V) must keep the circuit running briefly after the main supply fails, long enough to save data. When the supply is removed, the capacitor must keep the voltage across the load $R$ at or above 3.0 V for at least 50 ms. Model the load as a pure resistor. What is the minimum value of $R$?
 
 ### Problem 07-02.6 [B]
 
@@ -49,7 +49,7 @@ An RC low-pass ($R = 10$ kΩ, $C = 1$ µF, initially uncharged) is driven by a s
 
 ### Problem 07-02.7 [B]
 
-A 2 A current source in parallel with $R_1 = 10\ \Omega$ is connected at $t = 0$ (by a switch) to a series combination of $R_2 = 15\ \Omega$ and $L = 50$ mH, which carries no current before $t = 0$.
+A 2 A current source drives current *up* into a top node; $R_1 = 10\ \Omega$ connects that node to ground (the bottom node). At $t = 0$ a switch connects a series combination of $R_2 = 15\ \Omega$ and $L = 50$ mH from the top node to ground. The inductor carries no current before $t = 0$.
 
 (a) Find the Norton/Thevenin resistance seen by the inductor, τ and $i_L(\infty)$.
 (b) Find $v_L(0^+)$.
@@ -71,7 +71,7 @@ A 12 V source in series with $R_1 = 2$ kΩ feeds node A, where a 5 µF capacitor
 
 ### Problem 07-02.10 [B]
 
-An RC low-pass with $\tau = 1$ ms, initially at rest, is driven by a ramp $u(t) = kt$ with $k = 2$ V/ms.
+An RC low-pass with $\tau = 1$ ms, initially at rest, is driven by a ramp input $mt$ with slope $m = 2$ V/ms.
 
 (a) Using the general solution (chapter §3.10), write the output $x(t)$.
 (b) Evaluate $x(5\text{ ms})$.
@@ -104,7 +104,7 @@ A 0/1 V square wave of frequency 1 kHz (50% duty) drives an RC low-pass. Using t
 
 ### Problem 07-02.14 [C] (design: relay flyback)
 
-A relay coil, modeled as $L = 100$ mH in series with its winding resistance $R_{coil} = 200\ \Omega$, is switched by a transistor from a 12 V supply. The transistor is rated for 30 V.
+A relay coil, modeled as $L = 100$ mH in series with its winding resistance $R_{coil} = 200\ \Omega$, has its top terminal at +12 V. A **low-side** transistor switch connects its bottom terminal to ground. The transistor is rated for 30 V.
 
 (a) Find the coil current $I_0$ just before the transistor turns off.
 (b) A resistor $R_f$ is connected across the coil as a flyback path. Find the largest $R_f$ that keeps the transistor voltage at or below 30 V at turn-off.
@@ -113,6 +113,7 @@ A relay coil, modeled as $L = 100$ mH in series with its winding resistance $R_{
 (e) The resistor is replaced by a diode with a constant 0.7 V forward drop. Find the transistor voltage at turn-off and the time constant of the decay.
 (f) With the diode, find the time for the current to fall to 10% of $I_0$. Hint: the diode acts as a constant voltage source in the loop, so the current approaches $-0.7\text{ V}/R_{coil}$, not zero; it is clamped at zero when it gets there.
 (g) How much energy is dissipated in total during release, and does it depend on the flyback method?
+(h) Back to the resistor flyback of (b): while the relay is **on**, how much power does $R_f$ dissipate, and how much current must the transistor carry? Suggest a flyback network that keeps the fast release without this cost.
 
 ### Problem 07-02.15 [C] (design: ADC front end)
 
@@ -121,7 +122,7 @@ A 12-bit SAR ADC with a 3.3 V full scale has a 10 pF sampling capacitor and a 10
 (a) How many time constants are needed for ½-LSB settling?
 (b) What is the largest allowable time constant, and the largest allowable total series resistance?
 (c) Compute the kT/C noise and express it in LSBs.
-(d) The same front end is reused with a 16-bit ADC (same full scale and capacitor). Express the kT/C noise in 16-bit LSBs and comment.
+(d) The same front end is reused with a 16-bit ADC (same full scale and capacitor). Express the kT/C noise in 16-bit LSBs. An ideal converter's quantization noise is $1/\sqrt{12}$ LSB rms; combine the two (they are independent, so add their squares) and find how many bits of effective resolution the kT/C noise costs.
 (e) To bring kT/C noise down to 0.1 LSB rms at 16 bits, how large must the sampling capacitor be? With that capacitor and the same 100 ns window, what is the largest allowable series resistance? Explain the tradeoff this exposes.
 
 ### Problem 07-02.16 [C] (the two-capacitor puzzle)
@@ -133,15 +134,33 @@ A 1 µF capacitor charged to 10 V is connected at $t = 0$ through a 1 kΩ resist
 (c) Compute the stored energy before and after, and the energy dissipated. Does the dissipated energy depend on the resistor value?
 (d) If the resistor were literally zero, where would the "missing" energy go? (Discuss briefly.)
 
+### Problem 07-02.17 [B] (dependent source; test-source method)
+
+Node A connects to ground through $R_1 = 2$ kΩ and through a capacitor $C = 10$ µF. A voltage-controlled current source (VCCS) pushes a current $g\,v_A$ *into* node A from ground. At $t = 0$ the capacitor voltage is 1 V.
+
+(a) Using a test voltage source $v_T$ at node A (capacitor removed), find the Thevenin resistance seen by the capacitor as a function of $g$.
+(b) For $g = 0.25$ mS, find $R_{Th}$ and τ, write $v_A(t)$, and evaluate $v_A(40\text{ ms})$.
+(c) For $g = 1$ mS, find $R_{Th}$ and the "time constant". Write $v_A(t)$, evaluate it at 20 ms and 100 ms, and describe what happens physically. For what values of $g$ does this occur?
+(d) Where in electronics is this behavior *wanted*? (Hint: think of a circuit that must decide quickly between 0 and 1.)
+
+### Problem 07-02.18 [B] (two-position switch; step-function notation)
+
+A two-position switch has held a 1 µF capacitor connected through $R_a = 1$ kΩ to a +5 V source for a long time. At $t = 0$ it moves to position b, which connects the capacitor through $R_b = 4$ kΩ to a −10 V source.
+
+(a) Find $v_C(0^-)$, τ after switching and $v_C(\infty)$.
+(b) Write $v_C(t)$ for $t \ge 0$, then write a single expression valid for **all** $t$ using the unit step $u(t)$.
+(c) Find the current from the −10 V source into the capacitor at $t = 0^+$ (with sign), the time at which $v_C$ crosses zero, and $v_C(8\text{ ms})$.
+(d) Real two-position switches are either break-before-make or make-before-break. Which would you specify here, and does the brief overlap of a make-before-break switch harm anything?
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 07-02) | Problems |
 |---|---|
-| 1. Derive and solve the first-order ODE (natural and step response) | 1, 3, 4, 7, 16 |
-| 2. Initial and final values; τ from $R_{Th}$ | 3, 4, 7, 8 |
-| 3. Initial–final–τ method; sequential switching; periodic drive | 6, 8, 12 |
+| 1. Derive and solve the first-order ODE (natural and step response) | 1, 3, 4, 7, 16, 17 |
+| 2. Initial and final values; τ from $R_{Th}$ (including dependent sources) | 3, 4, 7, 8, 17, 18 |
+| 3. Initial–final–τ method; sequential switching; periodic drive; step-function notation | 6, 8, 12, 18 |
 | 4. Energy in transients; ½CV² loss; CMOS dynamic power | 4, 13, 14, 16 |
 | 5. Delay, rise time, settling, ADC settling, bandwidth | 2, 5, 9, 15 |
 | 6. Op-amp integrators; ramp response | 10, 11 |

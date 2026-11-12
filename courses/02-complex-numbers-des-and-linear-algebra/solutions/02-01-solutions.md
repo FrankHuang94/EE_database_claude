@@ -292,6 +292,16 @@ $$
 $P = \tfrac{1}{2}(10)(2)\cos 45^\circ = 10 \times 0.7071 = 7.071$ W.
 The incorrect quantity: $\mathbf{V}\mathbf{I} = 20\angle 15^\circ$, so $\tfrac{1}{2}\operatorname{Re}\lbrace\mathbf{V}\mathbf{I}\rbrace = 10\cos 15^\circ = 9.659$ W, which is wrong. Average power depends on the angle *between* voltage and current ($\theta_v - \theta_i$), which the conjugate produces. Multiplying phasors directly adds the angles instead, a quantity with no physical meaning here. Units: V × A = W ✓.
 
+### Solution 02-01.18
+
+(a) $e^{st} = e^{(-2 + j10)t} = e^{-2t}\,e^{j10t}$: a magnitude $e^{-2t}$ that decays, times a unit-length rotation $e^{j10t}$ at 10 rad/s. By Euler, $e^{st} = e^{-2t}(\cos 10t + j\sin 10t)$, whose real part is $e^{-2t}\cos 10t = y(t)$. ✓
+
+(b) Halving: $e^{-2t} = \tfrac{1}{2}$ gives $t = \ln 2/2 = 0.3466$ s. Period: $T = 2\pi/10 = 0.6283$ s. Ratio: $0.3466/0.6283 = 0.5516$, so the envelope halves in a little over half an oscillation. This is a heavily damped ring.
+
+(c) $y(0.5) = e^{-1}\cos 5 = 0.3679 \times 0.2837 = 0.1044$. The angle 5 is in **radians**, about 286.5°.
+
+(d) Quadratic formula: $s = \dfrac{-4 \pm \sqrt{16 - 416}}{2} = \dfrac{-4 \pm \sqrt{-400}}{2} = \dfrac{-4 \pm j20}{2} = -2 \pm j10$. ✓ The real part (−2) sets the decay rate; the imaginary part (10) sets the oscillation frequency.
+
 ---
 
 ## Answer key
@@ -338,7 +348,7 @@ The incorrect quantity: $\mathbf{V}\mathbf{I} = 20\angle 15^\circ$, so $\tfrac{1
 | 02-01.12c | $\mathbf{I}$ | 0.2491∠−51.49° | A |
 | 02-01.12d | resistor voltage amplitude | 12.45 | V |
 | 02-01.12e | inductor voltage amplitude | 15.65 | V |
-| 02-01.13a | $\omega_0$ | 316228 | rad/s |
+| 02-01.13a | $\omega_0$ | 3.162×10^5 | rad/s |
 | 02-01.13b | $f_0$ | 50.33 | kHz |
 | 02-01.13c | $Z$ at 25 kHz | 100.0 − j479.5 | Ω |
 | 02-01.13d | $Z$ at 25 kHz polar | 489.9∠−78.22° | Ω |
@@ -357,3 +367,8 @@ The incorrect quantity: $\mathbf{V}\mathbf{I} = 20\angle 15^\circ$, so $\tfrac{1
 | 02-01.16c | fast-oscillation frequency | 442 | Hz |
 | 02-01.17a | average power $P$ | 7.071 | W |
 | 02-01.17b | incorrect $\tfrac{1}{2}\operatorname{Re}\lbrace\mathbf{V}\mathbf{I}\rbrace$ | 9.659 | W |
+| 02-01.18a | envelope halving time | 0.3466 | s |
+| 02-01.18b | oscillation period | 0.6283 | s |
+| 02-01.18c | periods per halving time | 0.5516 | — |
+| 02-01.18d | $y(0.5\text{ s})$ | 0.1044 | — |
+| 02-01.18e | root with positive imaginary part | −2 + j10 | 1/s |

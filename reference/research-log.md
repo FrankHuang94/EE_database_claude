@@ -19,6 +19,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-011 | Complex multiplication with three real multiplications | Nov 2026 |
 | R-012 | Desktop CPU maximum boost clocks | Nov 2026 |
 | R-013 | ABET curriculum minimums; semester-credit workload | Nov 2026 |
+| R-014 | Nominal mains voltages (IEC 60038, ANSI C84.1) | Nov 2026 |
 
 ---
 
@@ -87,3 +88,9 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 
 - **ABET minimums:** the ABET *Criteria for Accrediting Engineering Programs* (2025–2026), Criterion 5 (Curriculum), require at least **30 semester credit hours** of college-level mathematics and basic sciences and at least **45 semester credit hours** of engineering topics [Established]. Source: [ABET criteria 2025–2026](https://www.abet.org/accreditation/accreditation-criteria/criteria-for-accrediting-engineering-programs-2025-2026/).
 - **Credit-hour workload:** traditionally, one semester credit = one hour of class plus about two hours of outside work per week for about 15 weeks, ≈ 45 hours. Source: e.g., [Washington and Lee credit definition](https://www.wlu.edu/university-registrar/policies-and-procedures/undergraduate-credit-definition), based on the long-standing federal definition in 34 CFR 600.2. That federal definition was amended in 2025 and its current wording was not verified, so this is used only as an approximate convention [Industry estimate].
+
+## R-014 · Nominal mains voltages
+
+- **IEC 60038 (50 Hz systems):** the preferred low-voltage values are 230 V single-phase and 230/400 V three-phase (phase-to-neutral / phase-to-phase), with supply at the connection point expected within ±10%. These replaced the older 220/380 V and 240/415 V systems [Established]. Sources: [IEC 60038 summary (Wikipedia)](https://en.wikipedia.org/wiki/IEC_60038); [VDE preview of IEC 60038 ed. 7.0](https://www.vde-verlag.de/iec-normen/preview-pdf/info_iec60038%7Bed7.0%7Db.pdf).
+- **North America (60 Hz):** the nominal residential voltage is 120 V single-phase (120/240 V split-phase service), under ANSI C84.1 [Established]. The ANSI tolerance bands were not verified against the standard text. Source: [IEC 60038 summary (Wikipedia)](https://en.wikipedia.org/wiki/IEC_60038), which also lists the 60 Hz values.
+- Checked Nov 2026 via secondary sources; neither standard's text was consulted directly.
