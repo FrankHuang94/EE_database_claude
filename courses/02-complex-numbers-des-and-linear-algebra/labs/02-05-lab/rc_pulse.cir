@@ -1,0 +1,16 @@
+* Chapter 02-05, Example 02-05.4 -- a 5 V, 2 ms pulse through an RC low-pass (tau = 1 ms).
+* Expected: 4.323 V at 2 ms (end of the pulse) and 1.590 V at 3 ms.
+*
+* EXPECT v2m key:../../chapters/02-05-laplace-transform-for-odes.md#Ex_02-05.4a rtol=1e-3
+* EXPECT v3m key:../../chapters/02-05-laplace-transform-for-odes.md#Ex_02-05.4b rtol=1e-3
+
+V1  in   0    PULSE(0 5 0 1n 1n 2m 10m)
+R1  in   out  1k
+C1  out  0    1u
+
+.options reltol=1e-6
+.tran 1u 6m 0 1u
+
+.meas tran v2m FIND v(out) AT=2m
+.meas tran v3m FIND v(out) AT=3m
+.end

@@ -9,9 +9,9 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 > - Course 00 is complete and audited (🏁).
 > - Course 01 is complete and audited (🏁): ten chapters reviewed, exam, flashcards and equation sheet.
 >
-> - Course 02: 02-01 (pilot), 02-02, 02-03 and 02-04 are verified.
+> - Course 02: 02-01 (pilot), 02-02, 02-03, 02-04 and 02-05 are verified.
 >
-> **Next: write 02-05 The Laplace Transform for ODEs** (chapter, problems, solutions, verify, lab with notebook and ngspice netlists, figures, glossary), then 02-06 to 02-10, then the Course 02 exam, flashcards (02-01 cards exist), equation sheet and independent audit.
+> **Next: write 02-06 Vectors, Matrices and Linear Systems** (chapter, problems, solutions, verify, lab with notebook and an ngspice nodal-analysis netlist, figures, glossary), then 02-07 to 02-10, then the Course 02 exam, flashcards (02-01 cards exist), equation sheet and independent audit.
 >
 > When pilot feedback arrives, apply it to the pilots and to every chapter written since, before continuing.
 
@@ -35,11 +35,11 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 |---|---|---|---|---|---|---|---|---|---|
 | 00 | 5 | 5 | 5 | 5 | 22,489 | 52 | 229 | 5 | 5 / 3 / 1 |
 | 01 | 10 | 10 | 10 | 10 | 57,268 | 162 | 1104 | 10 | 10 / 13 / 0 |
-| 02 | 10 | 4 | 4 | 0 | 29,934 | 63 | 461 | 4 | 4 / 7 / 0 |
+| 02 | 10 | 5 | 5 | 0 | 35,345 | 78 | 522 | 5 | 5 / 9 / 0 |
 | 07 | 11 | 1 | 1 | 0 | 8,902 | 18 | 149 | 1 | 1 / 6 / 0 |
-| **Total** | **307** | **20** | **20** | **15** | **118,593** | **295** | **1943** | **20** | **20 / 29 / 1** |
+| **Total** | **307** | **21** | **21** | **15** | **124,004** | **310** | **2004** | **21** | **21 / 31 / 1** |
 
-Glossary terms: **285** · Flashcards: **218**
+Glossary terms: **293** · Flashcards: **218**
 
 <!-- END STATS -->
 
@@ -49,7 +49,7 @@ Glossary terms: **285** · Flashcards: **218**
 |---|---|---|---|
 | 00 | 🏁 audited | ✅ 2026-11-12 | 5 chapters reviewed: 52 problems, 229 machine-checked chapter/lab values, exam (15 questions, 27 keyed values), 56 flashcards, equation sheet. The audit found 4 critical, 11 major and 12 minor items; all were fixed (see session log). |
 | 01 | 🏁 audited | ✅ 2026-11-12 | 10 chapters reviewed: 162 problems, 1,104 machine-checked chapter, solution and lab values, 10 lab notebooks and 13 ngspice netlists; exam (15 questions, 128 points, 110 keyed values), 107 flashcards, equation sheet. Three independent reviewers found 5 critical, 25 major and about 40 minor items; all were fixed (see session log). |
-| 02 | 🔄 in progress | — | 02-01 ✅ verified (pilot): 18 problems, 118 machine-checked values, lab notebook. 02-02 ✅ verified: 15 problems, 104 machine-checked values, notebook + 3 ngspice netlists (ramp/sinusoid RC and RL; thermal RC model and runaway). 02-03 ✅ verified: 15 problems, 123 machine-checked values, notebook + 2 ngspice netlists (RLC ring-down, PDN droop). 02-04 ✅ verified: 15 problems, 116 machine-checked values, notebook + 2 ngspice AC netlists (RLC low-pass, 13.56 MHz antenna). |
+| 02 | 🔄 in progress | — | 02-01 ✅ verified (pilot): 18 problems, 118 machine-checked values, lab notebook. 02-02 ✅ verified: 15 problems, 104 machine-checked values, notebook + 3 ngspice netlists (ramp/sinusoid RC and RL; thermal RC model and runaway). 02-03 ✅ verified: 15 problems, 123 machine-checked values, notebook + 2 ngspice netlists (RLC ring-down, PDN droop). 02-04 ✅ verified: 15 problems, 116 machine-checked values, notebook + 2 ngspice AC netlists (RLC low-pass, 13.56 MHz antenna). 02-05 ✅ verified: 15 problems, 61 machine-checked values (107 checks with identities), notebook + 2 ngspice netlists (RLC step as circuit and as XSPICE s_xfer block; RC pulse). |
 | 07 | 🔄 in progress (pilot) | — | 07-02 ✅ verified: 16 problems, 128 machine-checked values, 6 ngspice netlists, lab notebook. Other chapters planned. |
 | all others | ⬜ planned (stubs only) | — | |
 
@@ -89,6 +89,7 @@ Changes relative to the original build brief's chapter plan.
 
 | Date | Session summary |
 |---|---|
+| 2026-11-17 | Phase 2. 02-05 The Laplace Transform for ODEs written and verified: 15 problems, 61 keyed values, notebook (table checks, partial fractions with SymPy and SciPy, pole map, final-value-theorem traps) and 2 ngspice netlists, one simulating H(s) directly with the XSPICE s_xfer block; research log R-036 (Verilog-AMS Laplace filters, ngspice s_xfer), and the research-log index back-filled for R-024 to R-036. |
 | 2026-11-17 | Phase 2. 02-04 Forced Response and Resonance written and verified: 15 problems, 116 keyed values, notebook (complex replacement, resonant peak, half-power bandwidth, beats and build-up) and 2 ngspice AC netlists; research log R-034 (ISO/IEC 14443 / NFC) and R-035 (32.768 kHz crystal Q and start-up). |
 | 2026-11-12 | Phase 2. 02-03 Second-Order Linear ODEs written and verified: 15 problems, 123 keyed values, notebook (roots and responses, step specifications, energy, PDN design space) and 2 ngspice netlists; research log R-032 (PDN target impedance, Smith et al. 1999) and R-033 (quartz Q, Vig). |
 | 2026-11-12 | Phase 2. 02-02 First-Order Linear ODEs written and verified: 15 problems, 104 keyed values, notebook (direction fields and blow-up, Euler/backward Euler/trapezoid, logistic fit, thermal runaway) and 3 ngspice netlists; research log R-029 (JESD51-2A), R-030 (3DMark stability), R-031 (thermal runaway). |

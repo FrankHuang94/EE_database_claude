@@ -31,7 +31,7 @@ The three mathematical workhorses of EE. Complex numbers and phasors turn sinuso
 | [02-02 · First-Order Linear ODEs](chapters/02-02-first-order-linear-odes.md) | 10 | ✅ verified | [problems](problems/02-02-problems.md) · [solutions](solutions/02-02-solutions.md) · [lab](labs/02-02-lab/README.md) · [verify](verify/verify_02_02.py) |
 | [02-03 · Second-Order Linear ODEs and the Characteristic Equation](chapters/02-03-second-order-linear-odes.md) | 12 | ✅ verified | [problems](problems/02-03-problems.md) · [solutions](solutions/02-03-solutions.md) · [lab](labs/02-03-lab/README.md) · [verify](verify/verify_02_03.py) |
 | [02-04 · Forced Response and Resonance](chapters/02-04-forced-response-and-resonance.md) | 10 | ✅ verified | [problems](problems/02-04-problems.md) · [solutions](solutions/02-04-solutions.md) · [lab](labs/02-04-lab/README.md) · [verify](verify/verify_02_04.py) |
-| [02-05 · The Laplace Transform for ODEs](chapters/02-05-laplace-transform-for-odes.md) | 10 | ⬜ planned | — |
+| [02-05 · The Laplace Transform for ODEs](chapters/02-05-laplace-transform-for-odes.md) | 10 | ✅ verified | [problems](problems/02-05-problems.md) · [solutions](solutions/02-05-solutions.md) · [lab](labs/02-05-lab/README.md) · [verify](verify/verify_02_05.py) |
 | [02-06 · Vectors, Matrices and Linear Systems](chapters/02-06-vectors-matrices-and-linear-systems.md) | 12 | ⬜ planned | — |
 | [02-07 · Determinants, Inverses, Rank and Vector Spaces](chapters/02-07-determinants-inverses-and-vector-spaces.md) | 10 | ⬜ planned | — |
 | [02-08 · Eigenvalues and Eigenvectors](chapters/02-08-eigenvalues-and-eigenvectors.md) | 12 | ⬜ planned | — |

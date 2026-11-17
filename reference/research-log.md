@@ -29,6 +29,19 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-021 | Learning-science evidence (testing, spacing, interleaving) | Nov 2026 |
 | R-022 | FE Electrical & Computer pass rates | Nov 2026 |
 | R-023 | US semiconductor workforce (SIA/Oxford Economics) | Nov 2026 |
+| R-024 | EDA market concentration | Nov 2026 |
+| R-025 | Op-amp slew rate and bandwidth (TI LM358) | Nov 2026 |
+| R-026 | AI accelerator power ratings | Nov 2026 |
+| R-027 | Subthreshold and near-threshold operation | Nov 2026 |
+| R-028 | Electricity-meter accuracy classes (IEC 62053-21) | Nov 2026 |
+| R-029 | JEDEC thermal test environments (JESD51-2A) | Nov 2026 |
+| R-030 | 3DMark stress tests and frame-rate stability | Nov 2026 |
+| R-031 | Thermal runaway in integrated circuits | Nov 2026 |
+| R-032 | PDN target impedance method | Nov 2026 |
+| R-033 | Quartz crystal resonator Q | Nov 2026 |
+| R-034 | NFC and ISO/IEC 14443: carrier and data rates | Nov 2026 |
+| R-035 | 32.768 kHz tuning-fork crystals: Q and start-up | Nov 2026 |
+| R-036 | S-domain blocks in design tools: Verilog-AMS and ngspice | Nov 2026 |
 
 ---
 
@@ -256,3 +269,9 @@ R&D % = R&D ÷ revenue.
 
 - **Values:** typical tuning-fork crystal Q of **40,000–70,000** (Maxim/Dallas Application Note 58); some SMD parts are specified at a minimum Q of 20,000. A properly designed oscillator with a suitable crystal **usually starts within one second**; high series resistance (ESR) and excessive load capacitance are the main causes of slow start-up (AN58), and Microchip's AN2648 also lists high Q and weak amplifier drive [Established; vendor design guidance].
 - **Sources:** [Maxim/Dallas Application Note 58, "Crystal Considerations for Dallas Real-Time Clocks"](https://www.ercankoclar.com/wp-content/uploads/2018/03/Application-Note-58-Crystal-Considerations-for-Dallas-Real-Time-Clocks.pdf); [Analog Devices design note, "Crystal Considerations with Analog Devices Real-Time Clocks"](https://www.analog.com/en/resources/design-notes/crystal-considerations-with-analog-devices-realtime-clocks-rtcs.html); [Microchip AN2648, "Selecting and Testing 32 kHz Crystal Oscillators for AVR MCUs"](https://www.microchip.com/content/dam/mchp/documents/MCU08/ApplicationNotes/ApplicationNotes/AN2648-Selecting_Testing-32KHz-Crystal-Osc-for-AVR-MCUs-00002648.pdf). Checked Nov 2026.
+
+## R-036 · S-domain blocks in design tools: Verilog-AMS and ngspice
+
+- **Verilog-AMS:** the Accellera *Verilog-AMS Language Reference Manual*, version 2.4.0 (30 May 2014), §4.5.11 "Laplace transform filters", defines analog operators that "implement lumped linear continuous-time filters": `laplace_zp` (zero-pole form; zeros and poles given as real/imaginary pairs), `laplace_zd` (zero-denominator), `laplace_np` (numerator-pole) and `laplace_nd` (numerator-denominator; polynomial coefficients listed from the constant term upward), each with an optional tolerance argument [Established].
+- **ngspice:** the XSPICE code-model library shipped with ngspice includes `s_xfer`, an "s-domain transfer function block" whose parameters are numerator and denominator polynomial coefficients (`num_coeff`, `den_coeff`) plus a frequency-scaling parameter (`denormalized_freq`), so it represents rational transfer functions only. Confirmed from the ngspice-42 code-model library (`analog.cm`) and by running the 02-05 lab netlist [Established].
+- **Sources:** [Verilog-AMS LRM 2.4.0 (copy hosted by the Designer's Guide Community)](https://designers-guide.org/verilog-ams/VlogAMS-2.4.0.pdf), also available from Accellera; ngspice-42 as packaged for Ubuntu (`analog.cm`, model `s_xfer`). The ngspice website (ngspice.sourceforge.io) blocked the build environment, so its manual chapter on XSPICE code models was not fetched. Checked Nov 2026.

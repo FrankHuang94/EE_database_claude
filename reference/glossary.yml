@@ -946,3 +946,37 @@
   definition: The maximally flat filter response; a second-order Butterworth section has ζ = 0.707 (Q = 0.707), no peak, and −3.01 dB at its natural frequency.
   chapter: "02-04"
 
+
+# ---------------------------------------------------------------- 02-05
+- term: Laplace transform
+  definition: F(s) = ∫ f(t) e^(−st) dt from 0⁻ to ∞, with s = σ + jω complex; it turns differentiation into multiplication by s (minus initial conditions), so linear constant-coefficient ODEs become algebra.
+  chapter: "02-05"
+  see_also: [Transfer function, Partial fractions]
+- term: Unit impulse
+  definition: δ(t), the idealized pulse of zero width and unit area (a generalized function); ∫ δ(t) f(t) dt = f(0), its transform is 1, and it models a sudden kick such as a charge dumped onto a capacitor.
+  chapter: "02-05"
+  see_also: [Unit step function, Impulse response]
+- term: Transfer function
+  definition: H(s) = Y(s)/X(s), the ratio of output to input transforms of a linear time-invariant system with zero initial conditions; it equals the transform of the impulse response, and H(jω) is the frequency response.
+  chapter: "02-05"
+  see_also: [Poles and zeros, Impulse response]
+- term: Poles and zeros
+  definition: The roots of a rational transfer function's denominator (poles) and numerator (zeros). Each pole p gives a natural mode e^(pt), so all poles in the left half-plane means stable; zeros set how much of each mode appears.
+  chapter: "02-05"
+  see_also: [Transfer function, Characteristic equation]
+- term: Impulse response
+  definition: h(t), a system's output when the input is δ(t) with zero initial conditions; its transform is the transfer function, and the output for any input is the convolution h * x.
+  chapter: "02-05"
+  see_also: [Convolution, Transfer function]
+- term: Initial-value theorem
+  definition: f(0⁺) = lim sF(s) as s → ∞, valid when F(s) is strictly proper; it checks an inverse transform's starting value without inverting.
+  chapter: "02-05"
+  see_also: [Final-value theorem]
+- term: Final-value theorem
+  definition: f(∞) = lim sF(s) as s → 0, valid only if f actually settles, that is, every pole of sF(s) lies in the open left half-plane; applied to an unstable or oscillating signal it gives a wrong answer.
+  chapter: "02-05"
+  see_also: [Initial-value theorem, DC gain]
+- term: DC gain
+  definition: H(0), the steady-state output per unit of constant input for a stable system; it is also the final value of the unit-step response.
+  chapter: "02-05"
+  see_also: [Transfer function, Final-value theorem]
