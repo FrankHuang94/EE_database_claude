@@ -1,0 +1,26 @@
+* Chapter 02-04, Example 02-04.2 -- frequency response of a series RLC low-pass.
+* L = 10 mH, C = 1 uF, R = 50 Ohm (w0 = 1e4 rad/s, f0 = 1591.55 Hz, zeta = 0.25, Q = 2);
+* output across the capacitor, 1 V AC source.
+* Expected: gain Q = 2 at f0; peak 2.066 at w = 9354 rad/s (1488.7 Hz).
+* The peak frequency is compared with the key in rad/s using scale = 1/(2 pi).
+*
+* EXPECT gpeak key:../../chapters/02-04-forced-response-and-resonance.md#Ex_02-04.2g rtol=1e-3
+* EXPECT fpeak key:../../chapters/02-04-forced-response-and-resonance.md#Ex_02-04.2f scale=0.1591549 rtol=1e-3
+* EXPECT gf0   key:../../chapters/02-04-forced-response-and-resonance.md#Ex_02-04.2c rtol=1e-4
+
+V1  in  0   DC 0 AC 1
+R1  in  a   50
+L1  a   out 10m
+C1  out 0   1u
+
+.ac lin 200001 1000 2000
+
+* AC magnitudes are measured inside a control block (ngspice's .meas cannot read vm() here)
+.control
+run
+let mag = mag(v(out))
+meas ac gpeak MAX mag
+meas ac fpeak MAX_AT mag
+meas ac gf0   FIND mag AT=1591.549
+.endc
+.end

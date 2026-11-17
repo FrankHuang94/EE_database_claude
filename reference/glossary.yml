@@ -921,4 +921,28 @@
 - term: Power delivery network
   definition: The regulators, board and package wiring, and decoupling capacitors that carry current from the supply to the transistors; its inductance and the die's capacitance form a resonant tank that causes supply droop on load steps.
   chapter: "02-03"
+- term: Particular solution
+  definition: Any one solution of a forced (nonhomogeneous) linear ODE; the general solution is a particular solution plus the general homogeneous solution.
+  chapter: "02-04"
+- term: Exponential response formula
+  definition: For p(D)y = e^{st} with p(s) ≠ 0, a particular solution is y = e^{st}/p(s); when s is a simple root of p, y = t e^{st}/p'(s) instead (the resonant case).
+  chapter: "02-04"
+- term: Complex replacement
+  definition: Solving an ODE with input cos ωt by solving it with input e^{jωt} and taking the real part; valid because the equation has real coefficients. It is the proof behind phasor analysis.
+  chapter: "02-04"
+  see_also: [Phasor]
+- term: Half-power bandwidth
+  definition: The width ω₂ − ω₁ of the band over which a resonant response stays within 1/√2 of its peak (half the power); for a second-order band-pass it equals ω₀/Q exactly, with ω₁ω₂ = ω₀².
+  chapter: "02-04"
+  see_also: [Quality factor]
+- term: Beats
+  definition: The slow swelling and fading of a sum of two sinusoids of nearly equal frequency, or of an undamped system forced near its natural frequency; the envelope varies at half the difference frequency.
+  chapter: "02-04"
+- term: Variation of parameters
+  definition: A general method for particular solutions of linear ODEs, y_p = u₁y₁ + u₂y₂ with u₁′ = −y₂g/W and u₂′ = y₁g/W (W the Wronskian); it works for any continuous input.
+  chapter: "02-04"
+  see_also: [Wronskian]
+- term: Butterworth response
+  definition: The maximally flat filter response; a second-order Butterworth section has ζ = 0.707 (Q = 0.707), no peak, and −3.01 dB at its natural frequency.
+  chapter: "02-04"
 

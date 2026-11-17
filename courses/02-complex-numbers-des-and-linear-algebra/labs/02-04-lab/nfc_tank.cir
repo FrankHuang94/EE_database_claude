@@ -1,0 +1,25 @@
+* Chapter 02-04, Example 02-04.4 -- a 13.56 MHz series-resonant antenna loop.
+* L = 1 uH, C = 137.759 pF, R = 3 Ohm (Q = 28.40); output across R (proportional to current).
+* Expected: half-power frequencies 13.32 and 13.80 MHz (bandwidth 477.5 kHz);
+* gain at the upper subcarrier sideband (13.56 + 0.8475 MHz) 0.2787.
+*
+* EXPECT f1   key:../../chapters/02-04-forced-response-and-resonance.md#Ex_02-04.4e scale=1e6 rtol=1e-3
+* EXPECT f2   key:../../chapters/02-04-forced-response-and-resonance.md#Ex_02-04.4f scale=1e6 rtol=1e-3
+* EXPECT gsb  key:../../chapters/02-04-forced-response-and-resonance.md#Ex_02-04.4g rtol=1e-3
+
+V1  in  0   DC 0 AC 1
+L1  in  a   1u
+C1  a   out 137.759p
+R1  out 0   3
+
+.ac lin 400001 12e6 15.5e6
+
+* AC magnitudes are measured inside a control block (ngspice's .meas cannot read vm() here)
+.control
+run
+let mag = mag(v(out))
+meas ac f1  WHEN mag=0.70710678 CROSS=1
+meas ac f2  WHEN mag=0.70710678 CROSS=2
+meas ac gsb FIND mag AT=14.4075e6
+.endc
+.end
