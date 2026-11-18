@@ -96,3 +96,19 @@
 "Core saturation, and why gaps help?","Above B_s the core adds nothing and inductance collapses. A gap g adds g/µ₀ to the magnetic path, raising saturation current many-fold at the cost of inductance per turn. Ferrite (N87) B_s: 0.49 T at 25 °C, 0.39 T at 100 °C.",bsee::04 bsee::04-06
 "Soft vs hard magnetic materials?","Soft (ferrite, Si steel, powder cores): narrow B–H loops, low loss, used in inductors and transformers. Hard (NdFeB, ferrite magnets): wide loops, stay magnetized, used in motors and speakers.",bsee::04 bsee::04-06
 "What stores a bit in MRAM?","A magnetic tunnel junction: its tunneling resistance is lower when the two magnetic layers are parallel. Embedded MRAM is in production at 28, 22 and 16 nm foundry processes (as of Nov 2026).",bsee::04 bsee::04-06
+"Faraday's law?","ℰ = −N dΦ/dt: EMF equals the rate of change of flux linkage (1 Wb/s = 1 V). Flux can change through B, area or orientation.",bsee::04 bsee::04-07
+"Lenz's law?","The induced current opposes the change in flux that causes it: energy conservation. Increasing flux in → induced field out.",bsee::04 bsee::04-07
+"When does KVL fail?","Around loops threaded by changing magnetic flux: ∮E·dl = −dΦ/dt ≠ 0, so voltage depends on path (probe ground leads, ground loops).",bsee::04 bsee::04-07
+"Motional EMF and the power balance?","ℰ = Bℓv. The current feels a retarding force IℓB; mechanical power Fv equals electrical I²R. The field converts work, never does it.",bsee::04 bsee::04-07
+"Generator EMF and back-EMF?","Rotating coil: ℰ = NBAω sin ωt. A running motor generates back-EMF ∝ speed; stall current V/R is far larger than running current.",bsee::04 bsee::04-07
+"Skin depth?","δ = √(ρ/(πfµ)): copper 8.4 mm at 60 Hz, 0.21 mm at 100 kHz, 65 µm at 1 MHz, 2.1 µm at 1 GHz. Current crowds within ~δ of the surface; R rises ~√f.",bsee::04 bsee::04-07
+"Why laminations, ferrites and litz wire?","Laminations and ferrites cut eddy-current paths in cores (eddy loss ∝ f²t²B²/ρ). Litz wire uses insulated, transposed strands thinner than δ.",bsee::04 bsee::04-07
+"Inductance definition and solenoid formula?","L = NΦ/i, v = L di/dt. Long solenoid L = µ₀N²A/ℓ (∝ N²); finite coils are lower (Nagaoka: ~8% for length 5× diameter).",bsee::04 bsee::04-07
+"Magnetic circuit and gapped core?","Reluctance R = l/(µ_rµ₀A); Φ = NI/R; L = N²/R. A gap g adds g/(µ₀A), often dominating: L falls, saturation current rises by the same factor.",bsee::04 bsee::04-07
+"Magnetic energy and energy density?","U = ½LI²; u = B²/(2µ) ≈ 0.4 MJ/m³ at 1 T in air. In a gapped core the gap holds most of the energy (95% for 0.5 mm in µ_r 2000 ferrite).",bsee::04 bsee::04-07
+"Mutual inductance and coupling coefficient?","v₂ = M di₁/dt; M = k√(L₁L₂), 0 ≤ k ≤ 1. Two coaxial loops far apart: M ∝ 1/d³, so coupling collapses with distance.",bsee::04 bsee::04-07
+"Ideal transformer relations?","v₂/v₁ = N₂/N₁, i₂/i₁ = N₁/N₂, R_seen = (N₁/N₂)²R_L. Needs changing flux; passes no DC; isolates galvanically.",bsee::04 bsee::04-07
+"Coax inductance and what LC gives?","L/ℓ = (µ₀/2π) ln(b/a). With C/ℓ = 2πε/ln(b/a): Z₀ = √(L/C) and LC = µ₀ε, so wave speed c/√ε_r regardless of geometry.",bsee::04 bsee::04-07
+"Power inductor datasheet parameters?","L, DCR, saturation current (inductance drop of 20–30%), rms current (thermal rise), SRF. E.g. XAL7070-102: 1.0 µH, 2.55 mΩ, Isat 34.8 A, Irms 20 A, SRF 64 MHz.",bsee::04 bsee::04-07
+"Why do integrated regulators switch at ~100 MHz?","Ripple ∝ 1/(fL): at 140 MHz, nH air-core package inductors suffice (Intel FIVR); the cost is switching loss.",bsee::04 bsee::04-07
+"Qi wireless charging evolution (as of Nov 2026)?","5 W (v1.0, 2010) → 15 W (v1.2, 2015) → MPP with magnets at 360 kHz (v2.0, 2023) → 25 W (v2.2, 2025; Qi2 25W). Magnets raise coupling k.",bsee::04 bsee::04-07

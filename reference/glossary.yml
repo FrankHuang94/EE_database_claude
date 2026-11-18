@@ -1787,3 +1787,45 @@
 - term: Magnetic tunnel junction
   definition: Two ferromagnetic layers separated by a nanometer-thin oxide whose tunneling resistance depends on whether their magnetizations are parallel; the storage element of MRAM.
   chapter: "04-06"
+
+# ---------------------------------------------------------------- 04-07
+- term: Magnetic flux
+  definition: The surface integral of B, Φ = ∬ B · dA, in webers (1 Wb = 1 T·m² = 1 V·s); its rate of change induces EMF.
+  chapter: "04-07"
+- term: Faraday's law
+  definition: The EMF around a closed loop equals minus the rate of change of magnetic flux through it, ℰ = −N dΦ/dt; changing flux makes the electric field non-conservative, so voltage then depends on the path.
+  chapter: "04-07"
+  see_also: [Lenz's law]
+- term: Lenz's law
+  definition: The induced current flows so as to oppose the change in flux that produced it (the minus sign in Faraday's law), a consequence of energy conservation.
+  chapter: "04-07"
+- term: Motional EMF
+  definition: The EMF Bℓv across a conductor of length ℓ moving at speed v through a field B, the Lorentz force on its charges; the basis of generators.
+  chapter: "04-07"
+- term: Back-EMF
+  definition: The EMF a running motor's rotating coil generates against its supply, proportional to speed; it limits running current, so a stalled motor draws far more current than a spinning one.
+  chapter: "04-07"
+- term: Eddy currents
+  definition: Currents induced in bulk conductors by changing magnetic flux; they cause braking, heating and core loss, which laminated and ferrite cores reduce.
+  chapter: "04-07"
+- term: Inductance
+  definition: Flux linkage per ampere, L = NΦ/i (henries), so that v = L di/dt; a long solenoid has µ₀N²A/ℓ, a core with reluctance R has N²/R. It scales as turns squared.
+  chapter: "04-07"
+- term: Reluctance
+  definition: The magnetic-circuit analogue of resistance, R = l/(µ_r µ₀ A) (A/Wb); flux = NI/R, series reluctances add, and a small air gap often dominates a core's reluctance.
+  chapter: "04-07"
+- term: Mutual inductance
+  definition: The flux linked in one coil per ampere in another, M (henries), so that v₂ = M di₁/dt; M = k√(L₁L₂).
+  chapter: "04-07"
+- term: Coupling coefficient
+  definition: k = M/√(L₁L₂), from 0 (no shared flux) to 1 (all flux shared); near 1 for windings on a common core, much lower for separated coils such as a wireless charger's.
+  chapter: "04-07"
+- term: Magnetic energy density
+  definition: The energy per unit volume in a magnetic field, u = B²/(2µ) (about 0.4 MJ/m³ at 1 T in air); in a gapped core most of the energy sits in the gap.
+  chapter: "04-07"
+- term: Transformer
+  definition: Windings sharing a magnetic flux; ideally v₂/v₁ = N₂/N₁, i₂/i₁ = N₁/N₂ and impedances scale by (N₁/N₂)². It needs changing flux and provides galvanic isolation.
+  chapter: "04-07"
+- term: Self-resonant frequency
+  definition: The frequency at which an inductor's winding capacitance resonates with its inductance; above it the part behaves as a capacitor, not an inductor.
+  chapter: "04-07"

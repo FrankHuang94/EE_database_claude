@@ -1,0 +1,24 @@
+* Chapter 04-07, Example 04-07.7 -- two coupled coils of a wireless-charging link at 360 kHz.
+* L1 = L2 = 10 uH with coupling k = 0.5, so M = k sqrt(L1 L2) = 5 uH. A 1 A (amplitude) AC current
+* drives the primary; the secondary is open (1 GOhm). The open-circuit secondary voltage is
+* omega M I = 11.31 V and the primary voltage omega L1 I = 22.62 V.
+*
+* EXPECT voc key:../../chapters/04-07-faraday-lenz-and-inductance.md#Ex_04-07.7b rtol=1e-4
+* EXPECT v1  key:../../chapters/04-07-faraday-lenz-and-inductance.md#Ex_04-07.7c rtol=1e-4
+
+I1 0 p AC 1
+L1 p 0 10u
+L2 s 0 10u
+K1 L1 L2 0.5
+RS s 0 1G
+
+.ac lin 21 350k 370k
+
+.control
+run
+let voc = mag(v(s))
+let v1 = mag(v(p))
+meas ac voc FIND voc AT=360k
+meas ac v1 FIND v1 AT=360k
+.endc
+.end
