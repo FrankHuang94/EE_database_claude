@@ -80,3 +80,19 @@
 "Distributed RC wire delay?","t₅₀ ≈ 0.38RC with R = rL and C = cL, so delay ∝ L². A lumped RC (0.69RC) overestimates; repeaters make long-wire delay linear in L.",bsee::04 bsee::04-05
 "What happens to wire RC when all cross-section dimensions shrink by s?","Resistance per length rises by 1/s²; capacitance per length stays about the same. Local wires keep pace; global wires slow every node.",bsee::04 bsee::04-05
 "Why move power delivery to the wafer's back side?","Thick, short backside wires cut IR drop and free front-side tracks for signals. Intel ships PowerVia on 18A (Panther Lake, late 2025); TSMC's A16 Super Power Rail was shown for 2027 (as of Nov 2026).",bsee::04 bsee::04-05
+"Magnetic force on a moving charge?","F = qv × B, perpendicular to v and B, magnitude |q|vB sin θ. It does no work: it bends paths, never changes speed.",bsee::04 bsee::04-06
+"Orbit radius and cyclotron frequency?","r = mv/(|q|B); f_c = |q|B/(2πm), independent of speed (28.0 GHz/T for electrons). Motion along B is unaffected: helices.",bsee::04 bsee::04-06
+"How does an implanter's analyzer magnet pick one ion species?","Ions accelerated through V circle with r = √(2mV/q)/B, so radius grows as √m; a slit passes one mass (e.g. ¹¹B⁺ at 9.55 cm for 10 keV in 0.5 T).",bsee::04 bsee::04-06
+"Velocity selector and E×B drift?","Crossed E and B pass only v = E/B undeflected. A charge released in crossed fields drifts at E/B along E × B, whatever its charge or mass.",bsee::04 bsee::04-06
+"Force on a current, and torque on a coil?","F = IL × B. A coil has moment m = NIA (A·m²); torque τ = m × B, energy U = −m·B: the DC motor principle.",bsee::04 bsee::04-06
+"Biot–Savart law and the long-wire field?","dB = (µ₀/4π) I dl × r̂/r². Long wire: B = µ₀I/(2πr) = 20 µT at 1 cm per ampere (Earth ≈ 50 µT). Loop center: µ₀I/(2R).",bsee::04 bsee::04-06
+"Force between parallel wires?","F/L = µ₀I₁I₂/(2πd): attract for same-direction currents, repel for opposite. Goes as current squared: 20 N/m at 1 kA, 1 cm; 2000 N/m at 10 kA.",bsee::04 bsee::04-06
+"Ampère's law and its standard results?","∮B·dl = µ₀I_enc. Inside a wire B ∝ r; solenoid B = µ₀nI; toroid B = µ₀NI/(2πr) confined to the core; coax B = 0 outside.",bsee::04 bsee::04-06
+"Gauss's law for magnetism?","∮B·dA = 0: no magnetic monopoles, so field lines close on themselves.",bsee::04 bsee::04-06
+"Hall voltage and what it measures?","V_H = IB/(nqt). Sign → carrier type (electrons vs holes); size → density n; with resistivity, mobility µ = |R_H|σ.",bsee::04 bsee::04-06
+"Why are Hall sensors semiconductors, not metals?","V_H ∝ 1/n: copper's 8.5×10²⁸ m⁻³ gives sub-µV; silicon at 10¹⁶ cm⁻³ gives mV from mA.",bsee::04 bsee::04-06
+"How does a Hall current sensor reject stray fields?","Two Hall plates see the conductor's field with opposite signs but a uniform stray field with the same sign; subtracting doubles the signal and cancels the stray field.",bsee::04 bsee::04-06
+"B, H, M and relative permeability?","B = µ₀(H + M); ∮H·dl = I_free. Linear materials: B = µ_rµ₀H, µ_r ≈ 1 for most, hundreds to tens of thousands for ferromagnets.",bsee::04 bsee::04-06
+"Core saturation, and why gaps help?","Above B_s the core adds nothing and inductance collapses. A gap g adds g/µ₀ to the magnetic path, raising saturation current many-fold at the cost of inductance per turn. Ferrite (N87) B_s: 0.49 T at 25 °C, 0.39 T at 100 °C.",bsee::04 bsee::04-06
+"Soft vs hard magnetic materials?","Soft (ferrite, Si steel, powder cores): narrow B–H loops, low loss, used in inductors and transformers. Hard (NdFeB, ferrite magnets): wide loops, stay magnetized, used in motors and speakers.",bsee::04 bsee::04-06
+"What stores a bit in MRAM?","A magnetic tunnel junction: its tunneling resistance is lower when the two magnetic layers are parallel. Embedded MRAM is in production at 28, 22 and 16 nm foundry processes (as of Nov 2026).",bsee::04 bsee::04-06

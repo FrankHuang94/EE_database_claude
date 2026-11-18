@@ -1743,3 +1743,47 @@
 - term: Backside power delivery
   definition: Routing a chip's power supply through thick wires on the back of the thinned wafer, freeing front-side wiring for signals and cutting IR drop; Intel ships it as PowerVia on 18A, and TSMC plans it for A16.
   chapter: "04-05"
+
+# ---------------------------------------------------------------- 04-06
+- term: Magnetic field
+  definition: The field B (tesla; 1 T = 10⁴ gauss) that exerts force qv × B on moving charges; produced by currents and magnetic moments, with field lines that always close on themselves.
+  chapter: "04-06"
+- term: Lorentz force
+  definition: The total electromagnetic force on a charge, F = q(E + v × B); the magnetic part is perpendicular to the velocity and does no work.
+  chapter: "04-06"
+- term: Cyclotron frequency
+  definition: The orbital frequency of a charge in a uniform magnetic field, f_c = |q|B/(2πm), independent of speed; 28.0 GHz per tesla for an electron.
+  chapter: "04-06"
+- term: Magnetic dipole moment
+  definition: m = NIA for a current loop (A·m²), pointing along the loop's normal; in a field it feels torque m × B and has energy −m · B, and far away it makes a 1/r³ dipole field.
+  chapter: "04-06"
+- term: Biot–Savart law
+  definition: The field of a current element, dB = (µ₀/4π) I dl × r̂ / r²; integrated, it gives µ₀I/(2πr) for a long wire and µ₀I/(2R) at the center of a loop.
+  chapter: "04-06"
+- term: Vacuum permeability
+  definition: The constant µ₀ = 1.25663706127 × 10⁻⁶ N/A² (CODATA 2022), measured since the 2019 SI redefinition and within a part in 10⁹ of 4π × 10⁻⁷.
+  chapter: "04-06"
+- term: Ampere's law
+  definition: (Ampère's law.) For steady currents, ∮ B · dl = µ₀ I_enc around any closed loop; with symmetry it gives the fields of wires, solenoids (µ₀nI), toroids and coaxial cables (zero outside).
+  chapter: "04-06"
+- term: Solenoid
+  definition: A long helical coil whose interior field is nearly uniform, B = µ₀nI with n turns per meter, and whose exterior field is small.
+  chapter: "04-06"
+- term: Hall effect
+  definition: The transverse voltage V_H = IB/(nqt) across a current-carrying conductor in a magnetic field; its sign gives the carrier type and its size the carrier density, and semiconductor Hall plates make magnetic sensors.
+  chapter: "04-06"
+- term: Relative permeability
+  definition: The factor µ_r in B = µ_r µ₀ H for a linear magnetic material; near 1 for most materials, hundreds to tens of thousands for ferromagnets below saturation.
+  chapter: "04-06"
+- term: Ferromagnetism
+  definition: Strong, spontaneous alignment of atomic magnetic moments in domains (iron, nickel, cobalt, ferrites), giving high permeability, saturation and hysteresis.
+  chapter: "04-06"
+- term: Saturation flux density
+  definition: The flux density B_s at which a ferromagnetic core is fully magnetized; beyond it the core adds nothing and inductance collapses. About 0.49 T for N87 ferrite at 25 °C (0.39 T at 100 °C), 1.5–1.8 T for silicon steel.
+  chapter: "04-06"
+- term: Hysteresis (magnetic)
+  definition: The dependence of a ferromagnet's B on its magnetic history, traced as a B–H loop; soft materials (cores) have narrow loops, hard materials (permanent magnets) wide ones.
+  chapter: "04-06"
+- term: Magnetic tunnel junction
+  definition: Two ferromagnetic layers separated by a nanometer-thin oxide whose tunneling resistance depends on whether their magnetizations are parallel; the storage element of MRAM.
+  chapter: "04-06"
