@@ -1,0 +1,23 @@
+* Lab 02-10 -- the DC operating point of Example 02-10.2, found by ngspice's Newton iteration.
+* 5 V source, 1 kOhm, diode with IS = 1e-14 A, N = 1, at ngspice's default 27 C (V_T = 25.86 mV).
+* ngspice also places GMIN (1e-12 S) across the junction; at 0.69 V that adds under 1 pA, negligible here.
+*
+* EXPECT vd key:../../chapters/02-10-numerical-methods.md#Ex_02-10.2a rtol=2e-4
+* EXPECT id key:../../chapters/02-10-numerical-methods.md#Ex_02-10.2b scale=-1e-3 rtol=2e-4
+
+V1 in 0 DC 5
+R1 in a 1k
+D1 a 0 DMOD
+.model DMOD D(IS=1e-14 N=1)
+
+.op
+.control
+op
+let vd = v(a)
+let id = i(V1)
+echo "vd = $&vd"
+echo "id = $&id"
+* Show the iteration count ngspice needed (printed for interest, not checked)
+rusage totiter
+.endc
+.end

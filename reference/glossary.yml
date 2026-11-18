@@ -1177,3 +1177,32 @@
 - term: Kalman filter
   definition: The optimal linear estimator of a state-space system's state from noisy measurements (Kalman, 1960), alternating model-based prediction with measurement correction; widely used in navigation, tracking and sensor fusion.
   chapter: "02-09"
+
+# ---------------------------------------------------------------- 02-10
+- term: Unit roundoff
+  definition: u = ε/2, the largest relative error of rounding one real number to the nearest floating-point number; 2⁻⁵³ ≈ 1.1×10⁻¹⁶ in double precision, so each basic operation satisfies fl(x∘y) = (x∘y)(1 + δ) with |δ| ≤ u.
+  chapter: "02-10"
+  see_also: [Machine epsilon]
+- term: Companion model
+  definition: The conductance-plus-current-source equivalent that SPICE substitutes for a nonlinear device at each Newton iteration (its tangent line) or for a capacitor or inductor at each time step (its discretized law), so the circuit can be solved by linear MNA.
+  chapter: "02-10"
+  see_also: [Newton–Raphson method, Modified nodal analysis]
+- term: Junction voltage limiting
+  definition: A Newton-iteration safeguard in SPICE device models that compresses large steps in a pn-junction voltage above a critical voltage to a logarithmic step, preventing the exponential current law from overflowing or stalling convergence.
+  chapter: "02-10"
+- term: Order of accuracy
+  definition: The exponent p in a numerical method's global error ∝ hᵖ; halving the step divides the error by 2ᵖ (Euler 1, Heun 2, RK4 4).
+  chapter: "02-10"
+- term: Runge–Kutta method
+  definition: An explicit one-step ODE integrator that combines several slope evaluations within each step; the classical RK4 method uses four and is fourth-order accurate.
+  chapter: "02-10"
+- term: A-stability
+  definition: The property that a numerical integrator is stable for every decaying mode (Re hλ < 0) at any step size; backward Euler and the trapezoidal rule are A-stable, explicit methods never are.
+  chapter: "02-10"
+  see_also: [Stiff system]
+- term: Trapezoidal ringing
+  definition: A numerical artifact of the trapezoidal rule, whose amplification factor tends to −1 for very fast modes, so stiff components flip sign every step instead of decaying; it is damped by Gear methods or by mixing in backward Euler.
+  chapter: "02-10"
+- term: Iterative refinement
+  definition: Improving a computed solution of Ax = b by computing the residual r = b − Ax in higher precision, solving A d = r with the existing (often low-precision) factors, and updating x ← x + d; it converges when κ·u_low is well below 1.
+  chapter: "02-10"

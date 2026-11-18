@@ -58,6 +58,11 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-050 | Matrix exponential algorithms | Nov 2026 |
 | R-051 | Kalman filter and battery gauging models | Nov 2026 |
 | R-052 | State-space sequence models: S4 and Mamba | Nov 2026 |
+| R-053 | ngspice numerical defaults and junction limiting | Nov 2026 |
+| R-054 | SPICE and SPICE2 origins | Nov 2026 |
+| R-055 | HPL-MxP mixed-precision benchmark | Nov 2026 |
+| R-056 | Low-precision floating-point formats | Nov 2026 |
+| R-057 | Patriot missile timing error | Nov 2026 |
 
 ---
 
@@ -391,3 +396,46 @@ R&D % = R&D ÷ revenue.
   - **Mamba:** A. Gu and T. Dao, "Mamba: Linear-Time Sequence Modeling with Selective State Spaces," COLM 2024 (arXiv:2312.00752). §2 uses $h'(t) = \mathbf{A}h(t) + \mathbf{B}x(t)$, $y = \mathbf{C}h$, discretized by the "zero-order hold (ZOH)": $\bar{\mathbf{A}} = \exp(\Delta\mathbf{A})$, $\bar{\mathbf{B}} = (\Delta\mathbf{A})^{-1}(\exp(\Delta\mathbf{A}) - \mathbf{I})\cdot\Delta\mathbf{B}$. Its "selective" mechanism makes Δ, B and C depend on the input.
   - [Established]
 - **Sources:** [arXiv:2111.00396](https://arxiv.org/abs/2111.00396); [arXiv:2312.00752](https://arxiv.org/abs/2312.00752); the venue for Mamba is from the OpenReview record (COLM 2024). Checked Nov 2026.
+
+## R-053 · ngspice numerical defaults and junction limiting
+
+- **Values (ngspice master source code):**
+  - `src/spicelib/analysis/cktntask.c` sets the default task options: `TSKabstol = 1e-12` (A), `TSKreltol = 1e-3`, `TSKvoltTol = 1e-6` (V), `TSKgmin = 1e-12` (S), `TSKdcMaxIter = 100`, `TSKtranMaxIter = 10`, `TSKintegrateMethod = TRAPEZOIDAL` with `TSKmaxOrder = 2`, `TSKxmu = 0.5` ("xmu=0: Backward Euler … xmu=0.5: trapezoidal (standard) … xmu=0.49: good damping of current ringing"), and a default temperature of 300.15 K.
+  - `src/spicelib/devices/devsup.c` defines `DEVpnjlim`. If a new junction voltage exceeds `vcrit` and changes by more than $2V_T$, the step is replaced by $v_{old} + V_T(2 + \ln(\Delta v/V_T - 2))$ (or $V_T\ln(v_{new}/V_T)$ from a non-positive start).
+  - `src/spicelib/devices/dio/diotemp.c` sets `vcrit = vte·log(vte/(√2·Is))`.
+  - `dioload.c` adds GMIN in parallel with the junction.
+  - The ngspice-42 build used here reported 5 iterations for the 02-10 diode operating point [Established].
+- **Sources:** [ngspice git repository (SourceForge)](https://sourceforge.net/p/ngspice/ngspice/ci/master/tree/), files as named. The ngspice manual (ngspice.sourceforge.io) was unreachable from the build environment. Checked Nov 2026.
+
+## R-054 · SPICE and SPICE2 origins
+
+- **Values:**
+  - L. W. Nagel and D. O. Pederson, "SPICE (Simulation Program with Integrated Circuit Emphasis)," UC Berkeley ERL Memorandum ERL-M382, 12 April 1973 (presented at the 16th Midwest Symposium on Circuit Theory).
+  - L. W. Nagel, "SPICE2: A Computer Program to Simulate Semiconductor Circuits," ERL-M520 (PhD thesis), 9 May 1975.
+  - The thesis conclusions state that "the Newton-Raphson algorithm appears to be the unanimous choice for a nonlinear equation solution method" (and that it needs modification, of which simple-limiting methods are discussed). They state that the Modified Nodal Analysis method required "substantially less computational effort" than the alternatives tested, and they describe trapezoidal integration with truncation-error time-step control as the method employed; Gear methods were evaluated [Established].
+- **Sources:** [ERL-M382](https://www2.eecs.berkeley.edu/Pubs/TechRpts/1973/22871.html); [ERL-M520](https://www2.eecs.berkeley.edu/Pubs/TechRpts/1975/9602.html) (scanned thesis, text extracted by OCR). Checked Nov 2026.
+
+## R-055 · HPL-MxP mixed-precision benchmark
+
+- **Values:** HPL-MxP performs an "LU factorization and iterative refinement performed afterwards to bring the solution back to 64-bit accuracy", with low-precision (likely 16-bit) LU. GMRES may use the L and U factors as a preconditioner. The rules set 16-bit floating point as the lowest allowed precision, a scaled backward error ≤ 16 with ε = 2⁻⁵³, and a rate counted as (2/3 n³ + 3/2 n²)/time. FP8 results are "no longer admissible as of November 2025". **November 2026 list:** No. 1 El Capitan (LLNL), **16.680 EFlop/s**, against its HPL Rmax of **1.8090 EFlop/s** (TOP500 rank 2), a speed-up of **9.2**. LineShine, the TOP500 No. 1, ranks 4th on HPL-MxP at 7.922 EFlop/s [Established].
+- **Sources:** [hpl-mxp.org](https://hpl-mxp.org/), [rules](https://hpl-mxp.org/rules.md), [results](https://hpl-mxp.org/results.md); [TOP500 November 2026](https://www.top500.org/lists/top500/2026/11/). Checked Nov 2026.
+
+## R-056 · Low-precision floating-point formats
+
+- **Values:**
+  - OCP "8-bit Floating Point Specification (OFP8)," Revision 1.0, approved 20 June 2023 (a 1 Dec 2023 correction fixed the stated biases). It defines E4M3 (bias 7, no infinities, maximum magnitude **448**) and E5M2 (bias 15, maximum magnitude **57,344**).
+  - bfloat16: "one sign bit, eight exponent bits, and seven mantissa bits" (Google Cloud blog, 23 Aug 2019).
+  - IEEE 754 binary16: a sign bit, 5 exponent bits and 10 explicitly stored fraction bits (from the Python and NumPy documentation; the IEEE 754-2019 text is paywalled and was not read).
+  - [Established]
+- **Sources:** [OCP OFP8 Rev 1.0](https://opencompute.org/documents/ocp-8-bit-floating-point-specification-ofp8-revision-1-0-2023-06-20-pdf); [Google Cloud blog on bfloat16](https://cloud.google.com/blog/products/ai-machine-learning/bfloat16-the-secret-to-high-performance-on-cloud-tpus); [Python struct docs](https://docs.python.org/3/library/struct.html). Checked Nov 2026.
+
+## R-057 · Patriot missile timing error
+
+- **Values:** U.S. GAO, "Patriot Missile Defense: Software Problem Led to System Failure at Dhahran, Saudi Arabia," GAO/IMTEC-92-26 (B-247094), letter dated 4 February 1992.
+  - Time was kept "in tenths of seconds but is expressed as an integer", in registers "only 24 bits long".
+  - The battery had been "in operation for over 100 consecutive hours"; 28 soldiers were killed.
+  - Appendix II tabulates, for 100 hours, an inaccuracy of **0.3433 s** and a range-gate shift of **687 m**; at 20 hours, 0.0687 s and 137 m.
+  - Skeel ("Roundoff Error and the Patriot Missile," *SIAM News* 25(4), 1992) explains the drift: 0.1 chopped to 23 binary places equals $0.1(1 - 2^{-20})$, so the clock was off by $2^{-20}$ of the elapsed time, 0.3433 s after 100 hours.
+  - The GAO's range-gate figure is its own tabulated value and is not simply speed × timing error.
+  - [Established]
+- **Sources:** [GAO report (Justia republication of the full scan)](https://gao.justia.com/department-of-defense/1992/2/patriot-missile-defense-imtec-92-26/IMTEC-92-26-full-report.pdf); [Skeel, SIAM News (mirror)](https://w3.ual.es/~plopez/docencia/itis/patriot.htm). gao.gov blocked the build environment. Checked Nov 2026.

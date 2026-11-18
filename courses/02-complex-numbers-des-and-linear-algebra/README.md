@@ -36,7 +36,7 @@ The three mathematical workhorses of EE. Complex numbers and phasors turn sinuso
 | [02-07 · Determinants, Inverses, Rank and Vector Spaces](chapters/02-07-determinants-inverses-and-vector-spaces.md) | 10 | ✅ verified | [problems](problems/02-07-problems.md) · [solutions](solutions/02-07-solutions.md) · [lab](labs/02-07-lab/README.md) · [verify](verify/verify_02_07.py) |
 | [02-08 · Eigenvalues and Eigenvectors](chapters/02-08-eigenvalues-and-eigenvectors.md) | 12 | ✅ verified | [problems](problems/02-08-problems.md) · [solutions](solutions/02-08-solutions.md) · [lab](labs/02-08-lab/README.md) · [verify](verify/verify_02_08.py) |
 | [02-09 · Systems of Linear ODEs and the Matrix Exponential](chapters/02-09-systems-of-odes-and-matrix-exponential.md) | 10 | ✅ verified | [problems](problems/02-09-problems.md) · [solutions](solutions/02-09-solutions.md) · [lab](labs/02-09-lab/README.md) · [verify](verify/verify_02_09.py) |
-| [02-10 · Numerical Methods for Engineers](chapters/02-10-numerical-methods.md) | 8 | ⬜ planned | — |
+| [02-10 · Numerical Methods for Engineers](chapters/02-10-numerical-methods.md) | 8 | ✅ verified | [problems](problems/02-10-problems.md) · [solutions](solutions/02-10-solutions.md) · [lab](labs/02-10-lab/README.md) · [verify](verify/verify_02_10.py) |
 
 **Course resources:** [Flashcards (Anki CSV)](../../flashcards/02-complex-numbers-des-and-linear-algebra.csv)
 
