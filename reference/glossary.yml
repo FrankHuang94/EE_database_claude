@@ -1620,3 +1620,39 @@
 - term: Charged-device model (CDM)
   definition: The component ESD test of JS-002, modeling a charged device discharging quickly to ground through one pin; the industry-recommended target is 250 V, trending lower for high-speed parts.
   chapter: "04-02"
+
+# ---------------------------------------------------------------- 04-03
+- term: Electric flux
+  definition: The surface integral of the electric field's normal component, Φ = ∬ E · n̂ dA (V·m); it counts field lines crossing a surface, and through a closed surface it equals the enclosed charge over ε₀.
+  chapter: "04-03"
+  see_also: [Flux, Gauss's law]
+- term: Gaussian surface
+  definition: An imaginary closed surface chosen to apply Gauss's law, ideally one on which the field is constant and perpendicular (or parallel, carrying no flux), such as a sphere, coaxial cylinder or pillbox.
+  chapter: "04-03"
+- term: Solid angle
+  definition: The 3-D analogue of an angle, Ω = A/r², the area a cone cuts from a sphere over the radius squared, in steradians; a full sphere is 4π sr.
+  chapter: "04-03"
+- term: Electrostatic equilibrium
+  definition: The state of a conductor whose free charges have stopped moving; the field inside the metal is zero, net charge sits on the surface, and the field just outside is perpendicular with magnitude σ/ε₀.
+  chapter: "04-03"
+- term: Surface charge density
+  definition: Charge per unit area, σ (C/m²); on a conductor it is largest where the surface curves most sharply, and the field just outside is σ/ε₀.
+  chapter: "04-03"
+- term: Faraday cage
+  definition: A closed conducting enclosure; its empty interior has zero electrostatic field whatever the outside charges, and it shields both ways only when grounded. Seams, apertures and low-frequency magnetic fields limit real shields.
+  chapter: "04-03"
+- term: Grounding
+  definition: Connecting a conductor to a large charge reservoir (the earth or a circuit's ground plane) that can supply or absorb charge freely, fixing its potential and draining the charge induced on its outer surface.
+  chapter: "04-03"
+- term: Relative permittivity
+  definition: The factor ε_r by which a material's polarization reduces the field of a given free charge, so that ε = ε_r ε₀; about 11.7 for silicon and 3.9 for thermal SiO₂.
+  chapter: "04-03"
+- term: Depletion region
+  definition: The layer around a pn junction stripped of mobile carriers, leaving fixed ionized dopants (−qN_A on the p side, +qN_D on the n side); Gauss's law gives its triangular field, peaking at the junction.
+  chapter: "04-03"
+- term: Capacitive sensing
+  definition: Detecting a finger or object by the change it makes in an electrode's capacitance; self-capacitance sensing sees a finger add C_F to the pad's parasitic C_P, mutual-capacitance sensing sees the transmit-receive coupling fall.
+  chapter: "04-03"
+- term: Coaxial line
+  definition: An inner conductor inside a coaxial outer conductor carrying equal and opposite charge; the field λ/(2πε₀r) is confined between them, strongest at the inner conductor, and zero outside.
+  chapter: "04-03"
