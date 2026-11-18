@@ -34,7 +34,7 @@ Calculus-based electricity and magnetism with the mechanics, waves and modern ph
 | [04-05 · Current, Resistance and Conduction](chapters/04-05-current-resistance-and-conduction.md) | 8 | ✅ verified | [problems](problems/04-05-problems.md) · [solutions](solutions/04-05-solutions.md) · [lab](labs/04-05-lab/README.md) · [verify](verify/verify_04_05.py) |
 | [04-06 · Magnetic Fields and Forces](chapters/04-06-magnetic-fields-and-forces.md) | 10 | ✅ verified | [problems](problems/04-06-problems.md) · [solutions](solutions/04-06-solutions.md) · [lab](labs/04-06-lab/README.md) · [verify](verify/verify_04_06.py) |
 | [04-07 · Faraday's Law, Lenz's Law and Inductance](chapters/04-07-faraday-lenz-and-inductance.md) | 10 | ✅ verified | [problems](problems/04-07-problems.md) · [solutions](solutions/04-07-solutions.md) · [lab](labs/04-07-lab/README.md) · [verify](verify/verify_04_07.py) |
-| [04-08 · Energy in Fields and Maxwell's Equations (Preview)](chapters/04-08-maxwell-preview.md) | 6 | ⬜ planned | — |
+| [04-08 · Energy in Fields and Maxwell's Equations (Preview)](chapters/04-08-maxwell-preview.md) | 6 | ✅ verified | [problems](problems/04-08-problems.md) · [solutions](solutions/04-08-solutions.md) · [lab](labs/04-08-lab/README.md) · [verify](verify/verify_04_08.py) |
 | [04-09 · Waves and Optics Basics](chapters/04-09-waves-and-optics.md) | 10 | ⬜ planned | — |
 | [04-10 · Introduction to Quantum Mechanics](chapters/04-10-intro-quantum-mechanics.md) | 10 | ⬜ planned | — |
 | [04-11 · Introduction to Solid-State Physics](chapters/04-11-intro-solid-state-physics.md) | 10 | ⬜ planned | — |

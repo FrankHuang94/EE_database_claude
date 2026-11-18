@@ -1829,3 +1829,26 @@
 - term: Self-resonant frequency
   definition: The frequency at which an inductor's winding capacitance resonates with its inductance; above it the part behaves as a capacitor, not an inductor.
   chapter: "04-07"
+
+# ---------------------------------------------------------------- 04-08
+- term: Displacement current
+  definition: The term ε₀ dΦ_E/dt that Maxwell added to Ampère's law; a changing electric field makes a magnetic field as a current does, so a charging capacitor's gap carries a displacement current equal to its lead current.
+  chapter: "04-08"
+- term: Maxwell's equations
+  definition: Gauss's law, Gauss's law for magnetism, Faraday's law and the Ampère–Maxwell law; with the Lorentz force they are all of classical electromagnetism and predict waves travelling at 1/√(µ₀ε₀) = c.
+  chapter: "04-08"
+- term: Electromagnetic wave
+  definition: Self-sustaining oscillating E and B fields, perpendicular to each other and to the direction of travel, with E = cB; speed c/√ε_r in a dielectric. Radio, light and board signals are all such waves.
+  chapter: "04-08"
+- term: Impedance of free space
+  definition: η₀ = √(µ₀/ε₀) ≈ 376.7 Ω, the ratio E/H in a plane wave in vacuum; η₀/√ε_r in a dielectric.
+  chapter: "04-08"
+- term: Poynting vector
+  definition: S = E × B/µ₀ (W/m²), the power flow per unit area in an electromagnetic field; it shows energy entering resistors and capacitors through the surrounding fields, and gives a plane wave's intensity E₀²/(2η₀).
+  chapter: "04-08"
+- term: Loss tangent
+  definition: tan δ, the ratio of a dielectric's lossy to stored response; it makes waves decay at about πf√ε_r tan δ / c nepers per meter, about 0.025 for FR-4-class laminates and 0.004 for low-loss ones at 10 GHz.
+  chapter: "04-08"
+- term: Specific absorption rate (SAR)
+  definition: RF power absorbed per kilogram of tissue (W/kg); exposure limits include 1.6 W/kg averaged over 1 g (US FCC) and 2 W/kg over 10 g (ICNIRP), so limits must be compared with their averaging mass.
+  chapter: "04-08"

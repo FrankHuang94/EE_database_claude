@@ -1,0 +1,16 @@
+* Chapter 04-08, Example 04-08.3 -- propagation delay of a 100 mm stripline in FR-4 (er = 4.6).
+* A lossless 50 Ohm line with delay TD = 100 mm x sqrt(4.6) / c = 715.4 ps, driven by a matched
+* 50 Ohm source with a 20 ps edge and terminated in 50 Ohm. The 50% crossing at the far end lags
+* the near end by the line delay.
+*
+* EXPECT tpd key:../../chapters/04-08-maxwell-preview.md#Ex_04-08.3e scale=1e-12 rtol=1e-3
+
+VS  src 0 PWL(0 0 50p 0 70p 1 10n 1)
+RS  src in 50
+T1  in 0 out 0 Z0=50 TD=715.415p
+RL  out 0 50
+
+.tran 1p 3n
+
+.meas tran tpd TRIG v(in) VAL=0.25 RISE=1 TARG v(out) VAL=0.25 RISE=1
+.end

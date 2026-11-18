@@ -112,3 +112,15 @@
 "Power inductor datasheet parameters?","L, DCR, saturation current (inductance drop of 20–30%), rms current (thermal rise), SRF. E.g. XAL7070-102: 1.0 µH, 2.55 mΩ, Isat 34.8 A, Irms 20 A, SRF 64 MHz.",bsee::04 bsee::04-07
 "Why do integrated regulators switch at ~100 MHz?","Ripple ∝ 1/(fL): at 140 MHz, nH air-core package inductors suffice (Intel FIVR); the cost is switching loss.",bsee::04 bsee::04-07
 "Qi wireless charging evolution (as of Nov 2026)?","5 W (v1.0, 2010) → 15 W (v1.2, 2015) → MPP with magnets at 360 kHz (v2.0, 2023) → 25 W (v2.2, 2025; Qi2 25W). Magnets raise coupling k.",bsee::04 bsee::04-07
+"Displacement current?","i_d = ε₀ dΦ_E/dt, added by Maxwell to Ampère's law. In a charging capacitor's gap it equals the lead current and makes the same magnetic field, though no charge crosses.",bsee::04 bsee::04-08
+"Maxwell's equations in words?","Charges source E (Gauss); no magnetic charges (∮B·dA = 0); changing B makes circulating E (Faraday); currents and changing E make circulating B (Ampère–Maxwell).",bsee::04 bsee::04-08
+"Where does the wave equation come from?","Faraday: ∂E/∂x = −∂B/∂t. Ampère–Maxwell: −∂B/∂x = µ₀ε₀∂E/∂t. Combined: ∂²E/∂x² = µ₀ε₀∂²E/∂t², waves at c = 1/√(µ₀ε₀).",bsee::04 bsee::04-08
+"Plane-wave relations?","E ⟂ B ⟂ direction of travel; E = cB; E/H = η₀ ≈ 376.7 Ω; λf = c (30 cm at 1 GHz). In a dielectric: v = c/√ε_r, η = η₀/√ε_r.",bsee::04 bsee::04-08
+"Signal delay on a PCB?","t = L√ε_eff/c: stripline in ε_r 4.6 ≈ 7.15 ps/mm (~180 ps/inch); microstrip is faster (ε_eff ≈ 3), since part of its field is in air.",bsee::04 bsee::04-08
+"Poynting vector and plane-wave intensity?","S = E × B/µ₀ (W/m²); ⟨S⟩ = E₀²/(2η₀) = E_rms²/η₀ = average energy density × c. 100 V/m amplitude ≈ 13.3 W/m².",bsee::04 bsee::04-08
+"How does energy reach a resistor?","Through the surrounding field: E along the wire and B circling it give S pointing into the surface; ∮S·dA = VI = I²R.",bsee::04 bsee::04-08
+"Reflection at a dielectric (normal incidence)?","Γ = (η₂ − η₁)/(η₂ + η₁); air to ε_r = 4: Γ = −1/3, 11% of power reflected. Same formula with Z₀ for transmission lines.",bsee::04 bsee::04-08
+"Dielectric loss on a board?","α ≈ πf√ε_r tan δ / c Np/m (×8.686 for dB). At 10 GHz: FR-4-class (tan δ ≈ 0.025) ≈ 45 dB/m; low-loss (≈ 0.0037) ≈ 6.4 dB/m.",bsee::04 bsee::04-08
+"When is a trace a transmission line?","When its delay is a noticeable fraction of the signal's rise time (or its length of the wavelength); then reflections and termination matter.",bsee::04 bsee::04-08
+"5G NR frequency ranges (as of Nov 2026)?","FR1 410–7125 MHz; FR2-1 24.25–52.6 GHz; FR2-2 52.6–71 GHz (3GPP TS 38.104 v19.6.0).",bsee::04 bsee::04-08
+"RF exposure limits for the public?","FCC: 1.6 W/kg over any 1 g (100 kHz–6 GHz), 1 mW/cm² power density 1.5–100 GHz. ICNIRP 2020: 2 W/kg over 10 g, 20 W/m² absorbed above 6 GHz. Compare with averaging mass.",bsee::04 bsee::04-08
