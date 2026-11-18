@@ -66,7 +66,7 @@ At $(2, 0.5)$: $\mathbf{F} = (0.25, 0)$ and $\mathbf{J} = \begin{bmatrix} 4 & 1 
 - Heun: $k_1 = -2$ and $k_2 = -2(1 - 0.2) = -1.6$, so $y = 1 + 0.05(-3.6) = $ **0.82**.
 - RK4: $k_1 = -2$, $k_2 = -1.8$, $k_3 = -1.82$, $k_4 = -1.636$, so $y = 1 + \tfrac{0.1}{6}(-2 - 3.6 - 3.64 - 1.636) = $ **0.8187333**.
 
-The exact value is $e^{-0.2} = $ **0.8187308**. The one-step errors are 0.0187, 0.0013 and $2.6\times10^{-6}$. These are the Taylor series of $e^{-0.2}$ truncated after one, two and four terms. For a linear problem, an order-$p$ Runge–Kutta method reproduces exactly the first $p + 1$ terms of $e^{h\lambda}$.
+The exact value is $e^{-0.2} = $ **0.8187308**. The one-step errors are 0.0187, 0.0013 and $2.6\times10^{-6}$. These are the Taylor series of $e^{-0.2}$ truncated after its first-, second- and fourth-order terms (2, 3 and 5 terms). For a linear problem, an order-$p$ Runge–Kutta method reproduces exactly the first $p + 1$ terms of $e^{h\lambda}$.
 
 ### Solution 02-10.9
 
@@ -82,7 +82,7 @@ The exact factor, $e^{-3} = 0.0498$, is positive.
 
 ### Solution 02-10.10
 
-(a) Backward Euler gives $i_{n+1} = (C/h)(v_{n+1} - v_n)$: a conductance $G = C/h = $ **0.1 S** in parallel with a current source of value $Gv_n = $ **0.2 A**, which carries the memory of the previous voltage.
+(a) Backward Euler gives $i_{n+1} = (C/h)(v_{n+1} - v_n)$: a conductance $G = C/h = $ **0.1 S** in parallel with a current source of value $Gv_n = $ **0.2 A**, injecting current into the capacitor's top node (the chapter's $-Cv_n/h$ drawn from it), which carries the memory of the previous voltage.
 
 (b) The capacitor current flows into the resistor: $G(v_{n+1} - v_n) + v_{n+1}/R = 0$. So $v_{n+1} = Gv_n/(G + 1/R) = 0.2/0.11 = $ **1.818 V**. The exact value is $2e^{-h/RC} = 2e^{-0.1} = $ **1.810 V**. The error, about 0.5%, is backward Euler's first-order error for $h/\tau = 0.1$.
 
@@ -112,9 +112,35 @@ Near $10^8 \approx 2^{26.6}$, single precision's 23 fraction bits leave a spacin
 
 (a) Half: $10^3\times2^{-11} = $ **0.4883**. Single: $10^3\times2^{-24} = $ **5.960×10⁻⁵**.
 
-(b) Passes needed: half, $\ln(10^{-16}/0.4883)/\ln0.4883 \approx $ **50.4**; single, $\ln(10^{-16}/5.96\times10^{-5})/\ln(5.96\times10^{-5}) \approx $ **2.787**, that is, 3 passes. Single-precision factorization plus three cheap $O(n^2)$ refinement passes gives double-precision accuracy. Half precision barely converges at this κ.
+(b) The floor is $\kappa u_{64} = 10^3\times2^{-53} = 1.1\times10^{-13}$: no number of passes goes below it, because the residual itself is only that accurate. Passes needed to reach $10^{-13}$: half, $\ln(10^{-13}/0.4883)/\ln0.4883 \approx $ **40.8**; single, $\ln(10^{-13}/5.96\times10^{-5})/\ln(5.96\times10^{-5}) \approx $ **2.077**, that is, 3 passes (after 2 the error, $(5.96\times10^{-5})^3 = 2.1\times10^{-13}$, is already within a factor of 2 of the floor). Single-precision factorization plus two or three cheap $O(n^2)$ refinement passes gives the full double-precision solve's accuracy; the lab's run stalls near $2\times10^{-14}$ after 2 passes, consistent with this floor. Half precision barely converges at this κ.
 
 (c) The contraction factor must be below 1: $\kappa < 1/u = 2^{11} = $ **2048**. In practice, schemes that use FP16 factorization apply extra techniques, such as scaling, or GMRES-based refinement preconditioned by the low-precision factors, to handle harder matrices.
+
+### Solution 02-10.16
+
+(a) $e^{0.65/0.02586} = 8.24\times10^{10}$, so $i(0.65) = 8.24\times10^{-4}$ A and $G = i/V_T \approx $ **0.03172 S** (using $e^{v/V_T}$ exactly, without the −1). Then $I_{eq} = i - Gv = 8.24\times10^{-4} - 0.03172\times0.65 = $ **−0.01980 A**. Each diode becomes a 31.7 mS conductance in parallel with a current source.
+
+(b) KCL at $a$: $(v_a - 5)/R + G(v_a - v_b) + I_{eq} = 0$. KCL at $b$: $-G(v_a - v_b) - I_{eq} + Gv_b + I_{eq} = 0$. In matrix form,
+
+$$
+\begin{bmatrix} 1/R + G & -G \\ -G & 2G\end{bmatrix}\begin{bmatrix} v_a \\ v_b\end{bmatrix} = \begin{bmatrix} 5/R - I_{eq} \\ 0\end{bmatrix}.
+$$
+
+The second row gives $v_a = 2v_b$ (equal diodes share the voltage). Substituting into the first row, $(1/R + G)(2v_b) - Gv_b = 5/R - I_{eq}$, so $v_b(2/R + G) = 5/R - I_{eq}$ and $v_b = (0.005 + 0.01980)/(0.002 + 0.03172) = 0.7354$ V. So $v_a = $ **1.471 V**: the step proposes **0.7354 V** across each diode, up from 0.65 V.
+
+(c) $\lvert\Delta v_a\rvert = 0.171$ V, against $10^{-3}\times1.471 + 10^{-6} \approx 1.5$ mV. Not converged.
+
+(d) $a = (0.7354 - 0.65)/V_T = 3.302 > 0$, so the limited voltage is $0.65 + V_T\big(2 + \ln(3.302 - 2)\big) = 0.65 + 0.02586\times2.264 = $ **0.7085 V**. The rule halves the proposed step, keeping the next exponential evaluation from jumping by a factor of $e^{3.3}$.
+
+(e) The converged solution has $(5 - 2v)/R = I_S(e^{v/V_T} - 1)$, which gives **0.6884 V** per diode and **3.623 mA**. (Plain Newton from the starting guess, without limiting, takes 8 iterations to reach $10^{-12}$ V.)
+
+### Solution 02-10.17
+
+(a) The trapezoidal rule is $y_{n+1} = y_n + \tfrac h2\big(-y_n - y_{n+1}\big)$, so $y_{n+1}(1 + h/2) = y_n(1 - h/2)$.
+
+(b) $h = 0.1$: $y(1) = (0.95/1.05)^{10} = $ **0.3676**, an error of **3.069×10⁻⁴** against $e^{-1} = 0.3679$. $h = 0.05$: $(0.975/1.025)^{20} = 0.3678$, an error of **7.666×10⁻⁵**. The ratio is $3.069/0.7666 = $ **4.003**: halving $h$ quarters the error, so the method is **second order**.
+
+(c) Backward Euler at $h = 0.1$: $(1/1.1)^{10} = 0.3855$, an error of **0.01766**, about 58 times larger, as its first order predicts.
 
 ---
 
@@ -167,6 +193,18 @@ Near $10^8 \approx 2^{26.6}$, single precision's 23 fraction bits leave a spacin
 | 02-10.14c | speed-up | 5000 | — |
 | 02-10.15a | half-precision contraction | 0.4883 | — |
 | 02-10.15b | single-precision contraction | 5.960×10^-5 | — |
-| 02-10.15c | half-precision passes | 50.4 | — |
-| 02-10.15d | single-precision passes | 2.787 | — |
+| 02-10.15c | half-precision passes | 40.8 | — |
+| 02-10.15d | single-precision passes | 2.077 | — |
 | 02-10.15e | half-precision κ limit | 2048 | — |
+| 02-10.16a | companion conductance | 0.03172 | S |
+| 02-10.16b | companion current source | −0.01980 | A |
+| 02-10.16c | v_a after one step | 1.471 | V |
+| 02-10.16d | proposed diode voltage | 0.7354 | V |
+| 02-10.16e | limited diode voltage | 0.7085 | V |
+| 02-10.16f | converged voltage per diode | 0.6884 | V |
+| 02-10.16g | converged current | 3.623 | mA |
+| 02-10.17a | y(1), h = 0.1 | 0.3676 | — |
+| 02-10.17b | error, h = 0.1 | 3.069×10^-4 | — |
+| 02-10.17c | error, h = 0.05 | 7.666×10^-5 | — |
+| 02-10.17d | error ratio | 4.003 | — |
+| 02-10.17e | backward-Euler error, h = 0.1 | 0.01766 | — |

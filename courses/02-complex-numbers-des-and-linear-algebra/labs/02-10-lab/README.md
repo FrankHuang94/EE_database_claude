@@ -47,7 +47,7 @@ Chapter sections 3.1–3.6 and Examples 02-10.1 to 02-10.6.
 
 ## Discussion questions
 
-1. Plain Newton from 0.6 V eventually converged. Why would a real simulator still fail on it, and which of its safeguards (limiting, GMIN, source stepping) would rescue it?
+1. Plain Newton from 0 V took 173 iterations, beyond ngspice's default limit of 100 DC iterations, so a real simulator would give up. Which of its safeguards (limiting, GMIN, source stepping) would rescue it, and why does the 0.6 V start, at 33 iterations, scrape through?
 2. Why can an AI accelerator accumulate a dot product of FP8 or BF16 values safely in FP32, but not in BF16? Use the stalled float16 sum of Part 1 as evidence.
 3. In Part 5, refinement in single precision converged in two passes. Would it converge for κ = 10⁸? What would you change?
 

@@ -227,8 +227,9 @@ v.assert_true("P13: modified Newton converges in one step", 2.0 - 2 * (2.0 - 1) 
 v.check("02-10.14a", 10e-6 / 2e-12); v.check("02-10.14b", 10e-6 / 10e-9); v.check("02-10.14c", (10e-6 / 2e-12) / (10e-6 / 10e-9))
 kap, uh, us = 1e3, 2.0**-11, 2.0**-24
 v.check("02-10.15a", kap * uh); v.check("02-10.15b", kap * us)
-v.check("02-10.15c", math.log(1e-16 / (kap * uh)) / math.log(kap * uh))
-v.check("02-10.15d", math.log(1e-16 / (kap * us)) / math.log(kap * us))
+v.check("02-10.15c", math.log(1e-13 / (kap * uh)) / math.log(kap * uh))
+v.check("02-10.15d", math.log(1e-13 / (kap * us)) / math.log(kap * us))
+v.assert_true("double-precision floor kappa*u64 is about 1.1e-13", abs(kap * 2.0**-53 - 1.11e-13) < 1e-15)
 v.check("02-10.15e", 1 / uh)
 
 # ---------------------------------------------------------------- lab handout
@@ -242,5 +243,59 @@ for _ in range(20000):
     s32 = np.float32(s32 + np.float32(0.1))
 v.check("Lab 02-10.c", float(s32))
 v.check("Lab 02-10.d", float(np.spacing(np.float32(1e8))))
+
+# audit additions -------------------------------------------------------------
+_IS, _R, _Vs = 1e-14, 1e3, 5.0
+_VT = 1.380649e-23 * 300.15 / 1.602176634e-19
+_f = lambda v_: (_Vs - v_) / _R - _IS * (math.exp(v_ / _VT) - 1)  # noqa: E731
+_fp = lambda v_: -1 / _R - _IS / _VT * math.exp(v_ / _VT)  # noqa: E731
+_vc = _VT * math.log(_VT / (math.sqrt(2) * _IS))
+def _pnj(vn, vo):
+    if vn > _vc and abs(vn - vo) > 2 * _VT:
+        if vo > 0:
+            a_ = (vn - vo) / _VT
+            return vo + _VT * (2 + math.log(a_ - 2)) if a_ > 0 else vo - _VT * (2 + math.log(2 - a_))
+        return _VT * math.log(vn / _VT)
+    return vn
+def _spice3(vn, vo):
+    if vn > _vc and abs(vn - vo) > 2 * _VT:
+        if vo > 0:
+            a_ = 1 + (vn - vo) / _VT
+            return vo + _VT * math.log(a_) if a_ > 0 else _vc
+        return _VT * math.log(vn / _VT)
+    return vn
+def _newton(v0, lim=None, spice=False):
+    v_, seq = v0, [v0]
+    for k in range(1, 500):
+        vn = v_ - _f(v_) / _fp(v_)
+        if lim:
+            vn = lim(vn, v_)
+        seq.append(vn)
+        if (abs(vn - v_) < 1e-3 * abs(vn) + 1e-6) if spice else abs(vn - v_) < 1e-12:
+            return k, seq
+        v_ = vn
+v.check("Ex 02-10.2i", _newton(0.7, spice=True)[0])
+v.check("Ex 02-10.2j", _newton(0.6, spice=True)[0])
+v.check("Ex 02-10.2k", _newton(0.6, _pnj, spice=True)[0])
+v.check("Ex 02-10.2l", _newton(0.6, _spice3)[1][1])
+v.check("Ex 02-10.2m", _newton(0.6, _spice3)[0])
+# 16 · two diodes in series
+def _comp(vd):
+    G_ = _IS / _VT * math.exp(vd / _VT)
+    return G_, _IS * (math.exp(vd / _VT) - 1) - G_ * vd
+_G, _Ieq = _comp(0.65)
+v.check("02-10.16a", _G); v.check("02-10.16b", _Ieq)
+_x = np.linalg.solve(np.array([[1 / _R + _G, -_G], [-_G, 2 * _G]]), np.array([_Vs / _R - _Ieq, 0.0]))
+v.check("02-10.16c", _x[0]); v.check("02-10.16d", _x[0] - _x[1])
+v.check("02-10.16e", _pnj(_x[0] - _x[1], 0.65))
+from scipy.optimize import brentq as _bq  # noqa: E402
+_vstar = _bq(lambda v_: (_Vs - 2 * v_) / _R - _IS * (math.exp(v_ / _VT) - 1), 0.3, 0.9, xtol=1e-15)
+v.check("02-10.16f", _vstar); v.check("02-10.16g", (_Vs - 2 * _vstar) / _R * 1e3)
+# 17 · trapezoidal order
+_tr = lambda h_: ((1 - h_ / 2) / (1 + h_ / 2)) ** round(1 / h_)  # noqa: E731
+v.check("02-10.17a", _tr(0.1)); v.check("02-10.17b", abs(_tr(0.1) - math.exp(-1)))
+v.check("02-10.17c", abs(_tr(0.05) - math.exp(-1)))
+v.check("02-10.17d", abs(_tr(0.1) - math.exp(-1)) / abs(_tr(0.05) - math.exp(-1)))
+v.check("02-10.17e", abs((1 / 1.1) ** 10 - math.exp(-1)))
 
 v.finish()

@@ -4,7 +4,7 @@
 | | |
 |---|---|
 | **Course** | [02 · Complex Numbers, Differential Equations and Linear Algebra](../README.md) |
-| **University equivalent** | A first numerical-methods course for engineers (Chapra & Canale, *Numerical Methods for Engineers*: roots of equations, ODE integration, error analysis; Heath, *Scientific Computing*: floating point, conditioning, stiffness), plus the "how SPICE works" material of a circuit-simulation course (Najm, *Circuit Simulation*) |
+| **University equivalent** | An introduction to the topics of a first numerical-methods course for engineers (Chapra & Canale, *Numerical Methods for Engineers*: roots of equations, ODE integration, error analysis; Heath, *Scientific Computing*: floating point, conditioning, stiffness), plus the "how SPICE works" material of a circuit-simulation course (Najm, *Circuit Simulation*) |
 | **Prerequisites** | [02-09](02-09-systems-of-odes-and-matrix-exponential.md) (stability of sampled systems), [02-06](02-06-vectors-matrices-and-linear-systems.md) (elimination, pivoting, MNA), [02-08](02-08-eigenvalues-and-eigenvectors.md) (singular values), [01-08](../../01-calculus-for-engineers/chapters/01-08-sequences-series-and-taylor.md) (Taylor series) |
 | **Estimated study hours** | 8 |
 | **Last verified** | 2026-11-18 |
@@ -87,11 +87,25 @@ $$
 x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)} .
 $$
 
-**Quadratic convergence.** Let $x^*$ be the root and $e_k = x_k - x^*$ the error. Expand $f(x_k)$ about $x^*$, using $f(x^*) = 0$: $f(x_k) = f'(x^*)e_k + \tfrac12f''(x^*)e_k^2 + \dots$. Then
+**Quadratic convergence.** Let $x^*$ be the root and $e_k = x_k - x^*$ the error. Expand both $f(x_k)$ and $f'(x_k)$ about $x^*$, using $f(x^*) = 0$ and writing $f'$, $f''$ for their values at $x^*$:
 
 $$
-e_{k+1} = e_k - \frac{f(x_k)}{f'(x_k)} \approx \frac{f''(x^*)}{2f'(x^*)}\,e_k^2 .
+f(x_k) = f'e_k + \tfrac12f''e_k^2 + O(e_k^3), \qquad f'(x_k) = f' + f''e_k + O(e_k^2) .
 $$
+
+Divide, using $1/(1 + \epsilon) = 1 - \epsilon + O(\epsilon^2)$ with $\epsilon = (f''/f')e_k$:
+
+$$
+\frac{f(x_k)}{f'(x_k)} = e_k\left(1 + \frac{f''}{2f'}e_k\right)\left(1 - \frac{f''}{f'}e_k\right) + O(e_k^3) = e_k - \frac{f''}{2f'}e_k^2 + O(e_k^3) .
+$$
+
+Then
+
+$$
+e_{k+1} = e_k - \frac{f(x_k)}{f'(x_k)} = \frac{f''(x^*)}{2f'(x^*)}\,e_k^2 + O(e_k^3) .
+$$
+
+The expansion of $f'(x_k)$ matters: replacing it by $f'(x^*)$ would give the same size of error with the wrong sign.
 
 So near a simple root, each iteration roughly *squares* the error: the number of correct digits doubles every step. That makes Newton the default root finder, and SPICE's DC engine (§3.3).
 
@@ -104,7 +118,7 @@ So near a simple root, each iteration roughly *squares* the error: the number of
 
 The cures are a good starting guess, **damping** or **limiting** the step, and bracketing safeguards that fall back on bisection.
 
-**Systems.** For $n$ equations $\mathbf{F}(\mathbf{x}) = \mathbf{0}$, the tangent becomes the Jacobian matrix $\mathbf{J}$ of partial derivatives ([01-10](../../01-calculus-for-engineers/chapters/01-10-multivariable-calculus-2.md)). Each Newton step solves a linear system:
+**Systems.** For $n$ equations $\mathbf{F}(\mathbf{x}) = \mathbf{0}$, the tangent line becomes the first-order expansion $\mathbf{F}(\mathbf{x} + \Delta\mathbf{x}) \approx \mathbf{F}(\mathbf{x}) + \mathbf{J}(\mathbf{x})\,\Delta\mathbf{x}$, where the **Jacobian matrix** has entries $J_{ij} = \partial F_i/\partial x_j$: row $i$ holds the partial derivatives of equation $i$ ([01-09](../../01-calculus-for-engineers/chapters/01-09-multivariable-calculus-1.md)). Setting the expansion to zero, each Newton step solves a linear system:
 
 $$
 \mathbf{J}(\mathbf{x}_k)\,\Delta\mathbf{x} = -\mathbf{F}(\mathbf{x}_k), \qquad \mathbf{x}_{k+1} = \mathbf{x}_k + \Delta\mathbf{x} .
@@ -128,8 +142,14 @@ For one diode, this is exactly scalar Newton (Example 02-10.3); for a whole circ
 
 **Safeguards that make it work.**
 
-- **Junction voltage limiting.** A diode's current grows by a factor of $e$ every 26 mV, so an unlimited Newton step of a fraction of a volt can request an absurd current. When a proposed junction voltage exceeds a critical value $V_{crit} = V_T\ln\!\big(V_T/(\sqrt2I_S)\big)$ and changes by more than $2V_T$, SPICE replaces the step with a logarithmically compressed one (Example 02-10.2).
-- **GMIN.** A tiny conductance (by default $10^{-12}$ S) is placed across every junction, so no node is ever left without a DC path, which would make the matrix singular.
+- **Junction voltage limiting.** A diode's current grows by a factor of $e$ every 26 mV, so an unlimited Newton step of a fraction of a volt can request an absurd current. When a proposed junction voltage $v_{new}$ exceeds a critical value $V_{crit} = V_T\ln\!\big(V_T/(\sqrt2I_S)\big)$ and differs from the previous value $v_{old}$ by more than $2V_T$, SPICE replaces the step with a logarithmically compressed one. ngspice's rule (`DEVpnjlim`, [R-053](../../../reference/research-log.md#r-053--ngspice-numerical-defaults-and-junction-limiting)) is, for $v_{old} > 0$ and a forward step with $a = (v_{new} - v_{old})/V_T > 0$,
+
+$$
+v_{new} \leftarrow v_{old} + V_T\big(2 + \ln(a - 2)\big),
+$$
+
+  and, from $v_{old} \le 0$, $v_{new} \leftarrow V_T\ln(v_{new}/V_T)$. A step of many volts becomes a step of a few $V_T$. Classic SPICE3 used the gentler $v_{old} + V_T\ln(1 + a)$, so iterate sequences, and iteration counts, differ between simulators (Example 02-10.2).
+- **GMIN.** A tiny conductance (by default $10^{-12}$ S) is placed across every junction, so a reverse-biased or cut-off junction never leaves its node without a DC path, which would make the matrix singular. (A node connected only through capacitors still has no DC path; that is a netlist error GMIN does not fix.)
 - **Continuation.** If plain Newton fails, SPICE can solve a sequence of easier problems: ramp the sources up from zero (**source stepping**), or start with a large GMIN and reduce it (**GMIN stepping**). Each solution is the starting guess for the next.
 
 These heuristics are why "my circuit won't converge" is usually a modeling problem (a floating node, an unrealistic device parameter, a positive-feedback loop with several operating points), not a bug.
@@ -180,7 +200,7 @@ $$
 i_{n+1} = \frac{C}{h}(v_{n+1} - v_n),
 $$
 
-which is again a **companion model**: a conductance $C/h$ in parallel with a current source $-Cv_n/h$, stamped into the same MNA matrix. So a transient simulation is a sequence of DC-like solves, one per time step.
+which is again a **companion model**: a conductance $C/h$ in parallel with a current source of value $Cv_n/h$ that injects current *into* the capacitor's top node (equivalently, $-Cv_n/h$ drawn from it), stamped into the same MNA matrix. So a transient simulation is a sequence of DC-like solves, one per time step.
 
 **Trapezoidal ringing.** The trapezoidal rule is second order and A-stable, and it is ngspice's default integration method ([R-053](../../../reference/research-log.md#r-053--ngspice-numerical-defaults-and-junction-limiting)). But as $h\lambda \to -\infty$, its factor tends to −1. A very fast mode is therefore not damped; it flips sign every step, producing a small numerical oscillation ("trapezoidal ringing"). Backward Euler damps such modes strongly, but it is only first order and smears real ringing too. That is why simulators offer Gear (backward-differentiation) methods as an alternative, and why ngspice's trapezoidal setting includes a damping parameter.
 
@@ -198,7 +218,9 @@ $$
 \frac{\lVert\delta\mathbf{x}\rVert}{\lVert\mathbf{x}\rVert} \le \kappa(\mathbf{A})\,\frac{\lVert\delta\mathbf{b}\rVert}{\lVert\mathbf{b}\rVert}, \qquad \kappa(\mathbf{A}) = \lVert\mathbf{A}\rVert\,\lVert\mathbf{A}^{-1}\rVert = \frac{\sigma_{\max}}{\sigma_{\min}} ,
 $$
 
-using the 2-norm and the singular values of 02-08. The bound is attained for the worst perturbation. **Rule of thumb:** you can lose up to $\log_{10}\kappa$ decimal digits. A double-precision solve with $\kappa = 10^{10}$ may have only about 6 correct digits, *however good the algorithm*. Perturbations of $\mathbf{A}$ itself obey the same kind of bound.
+using the 2-norm and the singular values of 02-08.
+
+> **Math refresher — matrix norms.** The 2-norm of a matrix is the largest factor by which it stretches any vector, $\lVert\mathbf{A}\rVert = \max_{\mathbf{x}\ne\mathbf{0}}\lVert\mathbf{A}\mathbf{x}\rVert/\lVert\mathbf{x}\rVert$. So, by definition, $\lVert\mathbf{A}\mathbf{x}\rVert \le \lVert\mathbf{A}\rVert\lVert\mathbf{x}\rVert$ for every $\mathbf{x}$, which is the inequality used twice above. From the SVD, the largest stretch is $\sigma_{\max}$ (02-08 §3.9). $\mathbf{A}^{-1}$ has the reciprocal singular values, $\mathbf{A}^{-1} = \mathbf{V}\boldsymbol{\Sigma}^{-1}\mathbf{U}^\mathsf{T}$, so its largest stretch is $1/\sigma_{\min}$. Multiplying the two gives $\kappa = \sigma_{\max}/\sigma_{\min}$. The bound is attained for the worst perturbation. **Rule of thumb:** you can lose up to $\log_{10}\kappa$ decimal digits. A double-precision solve with $\kappa = 10^{10}$ may have only about 6 correct digits, *however good the algorithm*. Perturbations of $\mathbf{A}$ itself obey the same kind of bound.
 
 **Stable algorithms, ill-conditioned problems.** Gaussian elimination with partial pivoting (02-06) is *backward stable* in practice: it computes the exact solution of a nearby problem, with perturbations of order $u\lVert\mathbf{A}\rVert$. So the computed error is about $\kappa u$, the best any method can do. An *unstable* algorithm, such as elimination without pivoting on a small pivot, or the normal equations on a nearly dependent least-squares problem (which squares κ, 02-07), adds error that the problem itself does not demand. The professional's question about any bad result is therefore twofold: is the problem ill-conditioned, or is the algorithm unstable?
 
@@ -209,7 +231,7 @@ using the 2-norm and the singular values of 02-08. The bound is attained for the
 3. solve $\mathbf{A}\,\mathbf{d} = \mathbf{r}$ with the low-precision factors (a cheap $n^2$ step);
 4. update $\mathbf{x} \leftarrow \mathbf{x} + \mathbf{d}$ and repeat.
 
-Each pass multiplies the error by roughly $\kappa\,u_{\text{low}}$. So refinement converges to double-precision accuracy whenever $\kappa\,u_{\text{low}}$ is comfortably below 1. This is how matrix engines built for AI can produce FP64-quality answers to scientific problems ([R-055](../../../reference/research-log.md#r-055--hpl-mxp-mixed-precision-benchmark)).
+Each pass multiplies the error by roughly $\kappa\,u_{\text{low}}$, so refinement converges whenever $\kappa\,u_{\text{low}}$ is comfortably below 1. It converges to the accuracy that the high-precision residual allows: a forward error of about $\kappa\,u_{\text{high}}$, the same floor as a direct solve in high precision. For double precision at $\kappa = 10^3$ that is about $10^{-13}$, not $10^{-16}$. This is how matrix engines built for AI can produce FP64-quality answers to scientific problems ([R-055](../../../reference/research-log.md#r-055--hpl-mxp-mixed-precision-benchmark)).
 
 ## 4. Worked examples
 
@@ -223,17 +245,17 @@ Each pass multiplies the error by roughly $\kappa\,u_{\text{low}}$. So refinemen
 
 **Solution.**
 
-(a) Neither 0.1, 0.2 nor 0.3 is exactly representable. The computed result is **5.551×10⁻¹⁷**, not 0, which is $2^{-54}$: one rounding unit at the scale of 0.3. Never test floating-point results for exact equality; compare with a tolerance.
+(a) Neither 0.1, 0.2 nor 0.3 is exactly representable. The computed result is **5.551×10⁻¹⁷**, not 0, which is $2^{-54}$: one **ulp** (unit in the last place, the spacing between adjacent doubles) at the scale of 0.3. Never test floating-point results for exact equality; compare with a tolerance.
 
 (b) $\cos(10^{-8}) = 1 - 5\times10^{-17} + \dots$, which rounds to exactly 1 because the gap below 1 is $1.1\times10^{-16}$. The direct formula therefore returns **0**: 100% error. The identity gives $2\sin^2(5\times10^{-9}) = $ **5.000×10⁻¹⁷**, correct to full precision, because it contains no subtraction of nearly equal numbers.
 
-(c) Here $\sqrt{b^2 - 4ac} = \sqrt{10^{16} - 4}$ is within one rounding unit of $10^8$. The textbook formula $(-b + \sqrt{b^2 - 4ac})/2a$ subtracts two numbers that agree in about 16 digits, and returns **−7.451×10⁻⁹**, a 25% error. The stable route computes the large root without cancellation, $x_1 = (-b - \sqrt{b^2 - 4ac})/2a \approx -10^8$, then uses the product of the roots, $x_1x_2 = c/a$: $x_2 = c/(ax_1) = $ **−1.000×10⁻⁸**, correct to full precision.
+(c) Here $\sqrt{b^2 - 4ac} = \sqrt{10^{16} - 4}$ is within one ulp of $10^8$. The textbook formula $(-b + \sqrt{b^2 - 4ac})/2a$ subtracts two numbers that agree in about 16 digits, and returns **−7.451×10⁻⁹**, a 25% error. The stable route computes the large root without cancellation, $x_1 = (-b - \sqrt{b^2 - 4ac})/2a \approx -10^8$, then uses the product of the roots, $x_1x_2 = c/a$: $x_2 = c/(ax_1) = $ **−1.000×10⁻⁸**, correct to full precision.
 
 **Check.** For (c), $x_2 \approx -c/b = -10^{-8}$ when $b^2 \gg 4ac$ ✓, and the product $x_1x_2 = 1 = c/a$ ✓.
 
 ### Example 02-10.2 — Newton's method on a diode circuit (tier B)
 
-**Setup.** A 5 V source drives a 1 kΩ resistor in series with a diode to ground. The diode has $I_S = 10^{-14}$ A and ideality 1, at 27 °C, so $V_T = kT/q = 25.86$ mV. Solve for the diode voltage $v$ by Newton's method:
+**Setup.** A 5 V source drives a 1 kΩ resistor in series with a diode to ground. (To show convergence clearly, iterate until successive iterates differ by less than $10^{-12}$ V. SPICE's own test, $\lvert\Delta v\rvert < \text{reltol}\cdot\lvert v\rvert + \text{vntol} \approx 0.7$ mV here, stops sooner.) The diode has $I_S = 10^{-14}$ A and ideality 1, at 27 °C, so $V_T = kT/q = 25.86$ mV. Solve for the diode voltage $v$ by Newton's method:
 
 1. from a good guess, $v_0 = 0.7$ V;
 2. from a poor guess, $v_0 = 0.6$ V;
@@ -251,11 +273,11 @@ $$
 
 *From $v_0 = 0.6$ V:* at 0.6 V the diode carries only 0.12 mA, while the resistor supplies 4.4 mA. The tangent is fairly flat, so the first step jumps to **1.366 V**, where $e^{v/V_T}$ is about $10^{23}$. From there each step can only reduce $v$ by about $V_T$, because $f \approx -I_Se^{v/V_T}$ and $f' \approx f/V_T$. Newton crawls down in 26 mV steps and needs **33** iterations. From $v_0 = 0$, the first step lands at 5 V, and it takes 173 iterations. In a real simulator such a step would overflow the exponential or exceed the iteration limit.
 
-*With limiting:* ngspice's rule caps a junction-voltage step above $V_{crit} = V_T\ln\big(V_T/(\sqrt2I_S)\big) = $ **0.7303 V** to a logarithmic one. From 0.6 V the iterates become 0.7376, 0.7163, 0.7009, 0.6940, … V, converging in **8** iterations; from 0 V, in 9.
+*With limiting:* ngspice's rule caps a junction-voltage step above $V_{crit} = V_T\ln\big(V_T/(\sqrt2I_S)\big) = $ **0.7303 V** to a logarithmic one. From 0.6 V the iterates become 0.7376, 0.7163, 0.7009, 0.6940, … V, converging in **8** iterations; from 0 V, in 9. Under SPICE's looser stopping test the counts are **3** from 0.7 V, and **30** (plain) or **6** (limited) from 0.6 V. With classic SPICE3 limiting, $v_{old} + V_T\ln(1 + a)$, the first limited step from 0.6 V lands at **0.6885 V** instead, and convergence to $10^{-12}$ V takes **6** iterations: the limiting rule changes the path, not the answer.
 
 **Checks.** At the root, the diode current $10^{-14}e^{0.6929/0.02586} = 4.307$ mA matches the resistor current ✓. The diode's small-signal conductance there is $I/V_T = $ **166.5 mS** (a resistance of about 6 Ω), much larger than the resistor's 1 mS. That is why the error constant $f''/2f'$ is large far from the root and small near it.
 
-![Error versus iteration on a log scale for three runs: plain Newton from 0.7 V plunges to machine precision in five steps; plain Newton from 0.6 V stays near 0.7 V of error for about 27 iterations before plunging; Newton with junction limiting from 0.6 V reaches machine precision in eight steps.](../../../assets/figures/02-10/newton-convergence.svg)
+![Error versus iteration on a log scale for three runs: plain Newton from 0.7 V plunges to machine precision in five steps; plain Newton from 0.6 V first overshoots to about 0.67 V of error, then crawls down by about 26 mV per iteration for some 25 iterations before plunging; Newton with junction limiting from 0.6 V reaches machine precision in eight steps.](../../../assets/figures/02-10/newton-convergence.svg)
 
 *Figure 02-10.2 — Newton's method on the diode circuit. Near the root the error is squared each step (the curve steepens); after an overshoot, plain Newton crawls for dozens of iterations; limiting the junction-voltage step restores fast convergence.*
 
@@ -319,7 +341,7 @@ $$
 
 Find the condition number. Then perturb $b_2$ by $10^{-4}$, a 0.0035% change in $\mathbf{b}$, and find the new solution. How many digits can a double-precision solve be trusted to?
 
-**Solution.** The singular values are about 2.00005 and $5.0\times10^{-5}$, so $\kappa = $ **4.000×10⁴**. With $b_2 = 2.0002$, the solution becomes $\mathbf{x} = (0, 2)$: a **100%** change in $\mathbf{x}$ from a 0.0035% change in $\mathbf{b}$. That is within the bound $\kappa\times3.5\times10^{-5} = 1.41$ (141%). In double precision, up to $\log_{10}\kappa = $ **4.6** of the 16 digits may be lost, leaving about 11 trustworthy digits. No algorithm can do better, because the sensitivity belongs to the problem: the two equations are nearly the same line.
+**Solution.** $\mathbf{A}$ is symmetric, so its singular values are the magnitudes of its eigenvalues, the roots of $\lambda^2 - 2.0001\lambda + 0.0001 = 0$: about 2.00005 and $5.0\times10^{-5}$. So $\kappa = $ **4.000×10⁴**. With $b_2 = 2.0002$, the solution becomes $\mathbf{x} = (0, 2)$: a **100%** change in $\mathbf{x}$ from a 0.0035% change in $\mathbf{b}$. That is within the bound $\kappa\times3.5\times10^{-5} = 1.41$ (141%). In double precision, up to $\log_{10}\kappa = $ **4.6** of the 16 digits may be lost, leaving about 11 trustworthy digits. No algorithm can do better, because the sensitivity belongs to the problem: the two equations are nearly the same line.
 
 **Interpretation.** If the 0.0001 coefficient came from measured data with 0.01% uncertainty, the solution would be meaningless. The fix is to change the problem: make independent measurements (better conditioning), or solve for the well-determined combination $x_1 + x_2$ only. Running a more precise solver would not help.
 
@@ -339,6 +361,11 @@ Find the condition number. Then perturb $b_2$ by $10^{-4}$, a 0.0035% change in 
 | Ex 02-10.2f | critical voltage | 0.7303 | V |
 | Ex 02-10.2g | iterations from 0.6 V, with limiting | 8 | — |
 | Ex 02-10.2h | small-signal conductance | 166.5 | mS |
+| Ex 02-10.2i | iterations from 0.7 V, SPICE stopping test | 3 | — |
+| Ex 02-10.2j | iterations from 0.6 V, plain, SPICE test | 30 | — |
+| Ex 02-10.2k | iterations from 0.6 V, limited, SPICE test | 6 | — |
+| Ex 02-10.2l | first SPICE3-limited step from 0.6 V | 0.6885 | V |
+| Ex 02-10.2m | iterations with SPICE3 limiting, to 1e-12 V | 6 | — |
 | Ex 02-10.3a | diode current at 0.7 V | 5.670 | mA |
 | Ex 02-10.3b | companion conductance | 0.2192 | S |
 | Ex 02-10.3c | companion current source | −0.1478 | A |
@@ -428,9 +455,9 @@ The lab ([labs/02-10-lab/](../labs/02-10-lab/README.md)) has a notebook and one 
 
 ### State of the art (as of Nov 2026)
 
-- **SPICE's numerical recipe has lasted half a century.** SPICE (Nagel and Pederson, Berkeley, 1973) and SPICE2 (Nagel's 1975 thesis) established the recipe. The thesis concludes that "the Newton-Raphson algorithm appears to be the unanimous choice for a nonlinear equation solution method", describes simple step-limiting methods as essential, and reports that modified nodal analysis "requires substantially less computational effort to solve" than the hybrid formulation it was compared with ([R-054](../../../reference/research-log.md#r-054--spice-and-spice2-origins)) **[Established]**. The open-source descendant ngspice still defaults to trapezoidal integration, reltol $10^{-3}$, vntol 1 µV, abstol 1 pA, GMIN $10^{-12}$ S and 100 DC iterations, with junction limiting in its device models ([R-053](../../../reference/research-log.md#r-053--ngspice-numerical-defaults-and-junction-limiting)) **[Established]**.
-- **Mixed precision reaches supercomputer scale.** The HPL-MxP benchmark solves the same dense system as HPL, with an LU factorization in low precision (down to 16-bit) followed by iterative refinement to 64-bit accuracy. On the November 2026 list, El Capitan leads at 16.680 EFlop/s, 9.2 times its 1.809 EFlop/s FP64 HPL result. The new HPL No. 1, LineShine, ranks fourth on HPL-MxP. FP8 results have not been admissible since November 2025 ([R-055](../../../reference/research-log.md#r-055--hpl-mxp-mixed-precision-benchmark)) **[Established]**.
-- **Formats for AI are now standardized beyond IEEE 754.** The OCP's 2023 OFP8 specification defines E4M3 (maximum 448) and E5M2 (maximum 57,344), and bfloat16 keeps FP32's 8 exponent bits with 7 fraction bits ([R-056](../../../reference/research-log.md#r-056--low-precision-floating-point-formats)) **[Established]**.
+- **SPICE's numerical recipe has lasted half a century.** SPICE (Nagel and Pederson, Berkeley, 1973) and SPICE2 (Nagel's 1975 thesis) established the recipe. The thesis concludes that "the Newton-Raphson algorithm appears to be the unanimous choice for a nonlinear equation solution method", describes simple step-limiting methods as essential, and reports that modified nodal analysis required "substantially less computational effort" than the alternatives tested ([R-054](../../../reference/research-log.md#r-054--spice-and-spice2-origins)) **[Established]**. The open-source descendant ngspice still defaults to trapezoidal integration, reltol $10^{-3}$, vntol 1 µV, abstol 1 pA, GMIN $10^{-12}$ S and 100 DC iterations, with junction limiting in its device models ([R-053](../../../reference/research-log.md#r-053--ngspice-numerical-defaults-and-junction-limiting)) **[Established]**.
+- **Mixed precision reaches supercomputer scale.** The HPL-MxP benchmark solves the same dense system as HPL, with an LU factorization in low precision (down to 16-bit) followed by iterative refinement to 64-bit accuracy. On the November 2026 list, El Capitan leads at 16.680 EFlop/s, 9.2 times its 1.809 EFlop/s FP64 HPL result. LineShine, HPL No. 1 since June 2026, ranks fourth on HPL-MxP. FP8 results have not been admissible since November 2025 ([R-055](../../../reference/research-log.md#r-055--hpl-mxp-mixed-precision-benchmark)) **[Established]**.
+- **Formats for AI are specified outside IEEE 754.** The industry consortium OCP's 2023 OFP8 specification (not an IEEE standard; IEEE's P3109 project, authorized in 2023, is developing one for such formats, [R-056](../../../reference/research-log.md#r-056--low-precision-floating-point-formats)) defines E4M3 (maximum 448) and E5M2 (maximum 57,344), and bfloat16 keeps FP32's 8 exponent bits with 7 fraction bits ([R-056](../../../reference/research-log.md#r-056--low-precision-floating-point-formats)) **[Established]**.
 - **Rounding can be lethal.** In the 1991 Dhahran failure, a Patriot battery's clock counted tenths of a second in 24-bit registers. GAO reported a timing inaccuracy of 0.3433 s after about 100 hours, shifting the range gate by 687 m, so the incoming missile was not tracked; 28 soldiers died. Skeel's analysis traced the drift to the chopped binary value of 0.1 ([R-057](../../../reference/research-log.md#r-057--patriot-missile-timing-error)) **[Established]**.
 
 ### Why it matters commercially
@@ -439,7 +466,7 @@ Numerical choices are product decisions. Simulator robustness and speed determin
 
 ### Marketing vs Reality
 
-- **"An exaflop machine."** *Reality:* in which precision? The same system is 1.8 EFlop/s in FP64 HPL and 16.7 EFlop/s in HPL-MxP; AI FLOPS in FP8 or FP4 are higher again. Ask which benchmark, and whether the answer was refined to full accuracy.
+- **"An exaflop machine."** *Reality:* in which precision? The same system is 1.8 EFlop/s in FP64 HPL and 16.7 EFlop/s in HPL-MxP; AI FLOPS in FP8 or FP4 (4-bit floating point, typically 1 sign, 2 exponent and 1 fraction bit) are higher again. Ask which benchmark, and whether the answer was refined to full accuracy.
 - **"Our simulator is 10× faster than SPICE."** *Reality:* at what tolerances, and against what reference? Loosening reltol buys speed. Ask for accuracy against a tight-tolerance reference at equal settings.
 - **"Quantized to FP8 with no accuracy loss."** *Reality:* it depends on per-tensor scaling, on accumulation precision, and on which layers stay in higher precision. Ask for task-level accuracy and the precision map.
 - **"Results are deterministic."** *Reality:* floating-point addition is not associative, so parallel reductions in different orders give slightly different answers unless reproducibility is engineered in. Ask whether results are bit-reproducible across runs and hardware.
@@ -465,7 +492,7 @@ Numerical choices are product decisions. Simulator robustness and speed determin
 
    <details><summary>Answer</summary>
 
-   None of the three decimals is exactly representable in binary. Each is rounded, and the rounded sum of the first two differs from the rounded 0.3 by one rounding unit ($5.55\times10^{-17}$).
+   None of the three decimals is exactly representable in binary. Each is rounded, and the rounded sum of the first two differs from the rounded 0.3 by one ulp at that scale ($5.55\times10^{-17}$).
 
    </details>
 
@@ -513,7 +540,7 @@ Numerical choices are product decisions. Simulator robustness and speed determin
 
    <details><summary>Answer</summary>
 
-   The expensive factorization tolerates low precision as long as $\kappa u_{16}$ is well below 1. Each refinement pass computes the residual in FP64 and corrects the solution, shrinking the error by about $\kappa u_{16}$ per pass until FP64 accuracy is reached.
+   The expensive factorization tolerates low precision as long as $\kappa u_{16}$ is well below 1. Each refinement pass computes the residual in FP64 and corrects the solution, shrinking the error by about $\kappa u_{16}$ per pass until it reaches the floor set by the FP64 residual, a forward error of about $\kappa u_{64}$: the accuracy of a full FP64 solve.
 
    </details>
 
@@ -549,7 +576,8 @@ Numerical choices are product decisions. Simulator robustness and speed determin
 
 ## 13. Further study
 
-- Heath, *Scientific Computing: An Introductory Survey*, chapters 1 (error and floating point), 5 (nonlinear equations) and 9 (initial-value problems and stiffness).
+- Heath, *Scientific Computing: An Introductory Survey*, chapters 1 (error and floating point), 2 (linear systems and conditioning), 5 (nonlinear equations) and 9 (initial-value problems and stiffness).
+- Within this curriculum: numerical integration (quadrature) in [01-06](../../01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md) §3.7, and finite-difference derivatives in [01-03](../../01-calculus-for-engineers/chapters/01-03-derivatives.md) §3.9.
 - Chapra and Canale, *Numerical Methods for Engineers*, parts on roots of equations and ordinary differential equations.
 - Goldberg, D., "What Every Computer Scientist Should Know About Floating-Point Arithmetic," *ACM Computing Surveys*, 1991, the classic tutorial.
 - Najm, *Circuit Simulation* (Wiley, 2010), for MNA, companion models, Newton iteration and integration inside SPICE.

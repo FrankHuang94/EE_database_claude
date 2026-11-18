@@ -22,7 +22,7 @@ Give machine epsilon (the gap between 1 and the next representable number) for d
 
 ### Problem 02-10.3 [A]
 
-Bisection starts with a bracket of length 1. How many steps does it need to locate a root to within $10^{-6}$?
+Bisection starts with a bracket of length 1. How many steps does it need to shrink the bracket to a length of at most $10^{-6}$?
 
 ### Problem 02-10.4 [A]
 
@@ -37,7 +37,7 @@ Apply Newton's method to $f(x) = x^2 - 2$ from $x_0 = 1$. Show that the iteratio
 
 ### Problem 02-10.6 [B]
 
-Solve $x = \cos x$ (a) by Newton's method on $f(x) = x - \cos x$ from $x_0 = 1$, and (b) by the fixed-point iteration $x_{k+1} = \cos x_k$. Count the iterations each needs to reach $10^{-10}$ accuracy, and explain the fixed-point iteration's rate from $\lvert f'\rvert$ of the map at the root.
+Solve $x = \cos x$ (a) by Newton's method on $f(x) = x - \cos x$ from $x_0 = 1$, and (b) by the fixed-point iteration $x_{k+1} = \cos x_k$. Count the iterations each needs to reach $10^{-10}$ accuracy, and explain the fixed-point iteration's rate from $\lvert g'\rvert$, the derivative of the map $g(x) = \cos x$, at the root.
 
 ### Problem 02-10.7 [B]
 
@@ -89,8 +89,26 @@ In single precision, what is the spacing between adjacent representable numbers 
 **Mixed-precision iterative refinement.** A system with $\kappa = 10^3$ is factored in low precision and refined in double. Each refinement pass multiplies the error by about $\kappa u_{\text{low}}$.
 
 (a) Find that factor for half precision ($u = 2^{-11}$) and for single precision ($u = 2^{-24}$).
-(b) Starting from an error of about $\kappa u_{\text{low}}$, about how many passes does each need to reach $10^{-16}$?
+(b) With the residual computed in double precision, the error cannot fall below about $\kappa u_{64} \approx 10^{-13}$. Starting from an error of about $\kappa u_{\text{low}}$, about how many passes does each need to reach $10^{-13}$?
 (c) Above what κ does half-precision refinement stop converging at all?
+
+### Problem 02-10.16 [B]
+
+**One SPICE Newton iteration, by hand.** A 5 V source drives a 1 kΩ resistor into node $a$; diode 1 runs from $a$ to node $b$, and diode 2 from $b$ to ground. Each diode has $I_S = 10^{-14}$ A and $V_T = 25.86$ mV. Start from the guess $v_a = 1.3$ V, $v_b = 0.65$ V (0.65 V across each diode).
+
+(a) Find each diode's companion model at 0.65 V: the conductance $G = (I_S/V_T)e^{v/V_T}$ and the current source $I_{eq} = i(v) - Gv$.
+(b) Stamp the two nodal equations of the linearized circuit and solve them: this is one Newton step. What voltage does it propose across each diode?
+(c) Apply SPICE's convergence test with reltol = $10^{-3}$ and vntol = 1 µV to the change in $v_a$. Has it converged?
+(d) The proposed diode voltage exceeds $V_{crit} = 0.7303$ V and changed by more than $2V_T$. Apply ngspice's limiting rule (§3.3) to the step from 0.65 V.
+(e) Iterating to convergence gives what voltage per diode, and what current?
+
+### Problem 02-10.17 [B]
+
+**The trapezoidal rule's order, measured.** Integrate $y' = -y$, $y(0) = 1$, to $t = 1$.
+
+(a) Show that each trapezoidal step multiplies $y$ by $(1 - h/2)/(1 + h/2)$.
+(b) Find $y(1)$ and its error for $h = 0.1$ and $h = 0.05$, and the error ratio. What order does it show?
+(c) Compare with backward Euler's error at $h = 0.1$.
 
 ---
 
@@ -100,7 +118,7 @@ In single precision, what is the spacing between adjacent representable numbers 
 |---|---|
 | 1. Floating point, machine epsilon, cancellation, low precision | 1, 2, 5, 12 |
 | 2. Bisection and Newton–Raphson; convergence and failure | 3, 4, 6, 7, 13 |
-| 3. SPICE's Newton iteration and companion models | 7, 10 |
-| 4. ODE integrators and their order | 8, 10 |
+| 3. SPICE's Newton iteration and companion models | 7, 10, 16 |
+| 4. ODE integrators and their order | 8, 10, 17 |
 | 5. Stability regions, stiffness, implicit methods | 9, 14 |
 | 6. Conditioning and mixed precision | 11, 15 |

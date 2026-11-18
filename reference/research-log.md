@@ -428,6 +428,7 @@ R&D % = R&D ÷ revenue.
   - bfloat16: "one sign bit, eight exponent bits, and seven mantissa bits" (Google Cloud blog, 23 Aug 2019).
   - IEEE 754 binary16: a sign bit, 5 exponent bits and 10 explicitly stored fraction bits (from the Python and NumPy documentation; the IEEE 754-2019 text is paywalled and was not read).
   - [Established]
+- **IEEE P3109:** an IEEE SA project, "Arithmetic Formats for Machine Learning", with its PAR approved 15 Feb 2023 and listed as an active PAR (not yet a published standard). Its working group's public interim report (draft 0.9.1, Oct 2024) and a June 2026 arXiv paper describe formats parameterized by width, precision, signedness and the presence of infinities, aligned with IEEE 754-2019 [Established that the project exists; final status unconfirmed]. Sources: [IEEE SA P3109 PAR](https://standards.ieee.org/ieee/3109/11165/); [P3109 working group](https://sagroups.ieee.org/p3109wgpublic); [arXiv 2606.04028](https://arxiv.org/abs/2606.04028). Checked Nov 2026.
 - **Sources:** [OCP OFP8 Rev 1.0](https://opencompute.org/documents/ocp-8-bit-floating-point-specification-ofp8-revision-1-0-2023-06-20-pdf); [Google Cloud blog on bfloat16](https://cloud.google.com/blog/products/ai-machine-learning/bfloat16-the-secret-to-high-performance-on-cloud-tpus); [Python struct docs](https://docs.python.org/3/library/struct.html). Checked Nov 2026.
 
 ## R-057 · Patriot missile timing error
