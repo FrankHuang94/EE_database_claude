@@ -305,4 +305,22 @@ v.check("Lab 02-05.c", 100 * math.exp(-sig_new * math.pi / wd_new))
 v.assert_true("Lab: FVT values of the trap table", sp.limit(s * 2 / (s**2 + 4), s, 0) == 0
               and sp.limit(s * 1 / (s - 1), s, 0) == 0 and sp.limit(s * F11b, s, 0) == 2)
 
+# 16 · piecewise, impulsive and periodic inputs (numerical ODE as an independent check)
+from scipy.integrate import solve_ivp as _ivp, quad as _quad  # noqa: E402
+_v = lambda t_: t_ if t_ < 1 else 1.0  # noqa: E731
+_y16 = _ivp(lambda t_, y_: [_v(t_) - y_[0]], (0, 2), [0.0], rtol=1e-12, atol=1e-14, max_step=1e-3)
+v.check("02-05.16a", _y16.y[0, -1])
+_y16c = _ivp(lambda t_, y_: [-y_[0]], (1, 2), [0.5], rtol=1e-12, atol=1e-14)   # impulse 0.5 at t = 1 -> jump of 0.5
+v.check("02-05.16b", _y16c.y[0, -1])
+_sq = sum(_quad(lambda t_: math.exp(-t_), 2 * k, 2 * k + 1)[0] for k in range(60))
+v.check("02-05.16c", _sq)
+ss_, tt_ = sp.symbols("ss_ tt_", positive=True)
+v.assert_true("t u(t-2) transform", sp.simplify(sp.integrate(tt_ * sp.exp(-ss_ * tt_), (tt_, 2, sp.oo)) - sp.exp(-2 * ss_) * (1 / ss_**2 + 2 / ss_)) == 0)
+# 17 · convolution
+_h = lambda t_: math.exp(-t_) - math.exp(-2 * t_)  # noqa: E731
+v.check("02-05.17a", _quad(lambda l_: _h(1 - l_) * 1.0, 0, 1)[0])
+v.check("02-05.17b", _quad(lambda l_: _h(1 - l_) * math.exp(-3 * l_), 0, 1)[0])
+v.check("02-05.17c", _quad(lambda t_: t_ * math.sin(2 * t_) * math.exp(-t_), 0, 60, limit=400)[0])
+v.check("02-05.17d", _quad(lambda t_: 0.5 * (1 - math.cos(2 * t_)) * math.exp(-t_), 0, 60, limit=400)[0])
+
 v.finish()

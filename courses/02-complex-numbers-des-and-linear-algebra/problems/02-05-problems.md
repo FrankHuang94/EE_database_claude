@@ -88,6 +88,24 @@ Solve $y'' + 4y = \sin t$ with $y(0) = y'(0) = 0$, and evaluate $y(\pi/2)$. Whic
 (b) How large is the slow $e^{-t}$ term, as a percentage of the final value?
 (c) How long does the response take to settle within 1% of its final value? Compare with perfect cancellation.
 
+### Problem 02-05.16 [B]
+
+**Piecewise, impulsive and periodic inputs.** The system is $y' + y = v(t)$ with $y(0^-) = 0$ (an RC filter with τ = 1 s; $t$ in seconds).
+
+(a) Transform $t\,u(t - 2)$ correctly, showing the rewrite.
+(b) The input is a ramp-and-hold: $v = t$ for $0 \le t < 1$ and $v = 1$ for $t \ge 1$. Write $v$ with unit steps, find $Y(s)$ and $y(t)$, and evaluate $y(2)$.
+(c) Instead, the input is an impulse $0.5\,\delta(t - 1)$. Find $y(t)$ and $y(2)$.
+(d) Find the transform of the square wave that equals 1 for the first half of each 2 s period and 0 for the second half, and evaluate it at $s = 1$.
+
+### Problem 02-05.17 [B]
+
+**Convolution and the other transform rules.**
+
+(a) For $y'' + 3y' + 2y = g(t)$ with zero initial conditions, find the impulse response and write $y(t)$ as a convolution integral valid for any input $g$.
+(b) Evaluate the integral for $g = 1$ and check it against a partial-fraction solution. Find $y(1)$.
+(c) Use the same integral, or partial fractions, for $g = e^{-3t}$, and find $y(1)$.
+(d) Use the multiplication-by-$t$ rule to find $\mathcal{L}\{t\sin2t\}$, and the integral rule to find $\mathcal{L}\{\int_0^t\sin2\lambda\,d\lambda\}$. Evaluate both at $s = 1$, and check the second by integrating first.
+
 ---
 
 ## Objective coverage
@@ -95,8 +113,8 @@ Solve $y'' + 4y = \sin t$ with $y(0) = y'(0) = 0$, and evaluate $y(\pi/2)$. Whic
 | Learning objective (chapter 02-05) | Problems |
 |---|---|
 | 1. Definition; transforms from the integral; convergence | 1, 2 |
-| 2. Properties: derivative, shifts, multiplication by t, convolution | 2, 3, 9, 12 |
+| 2. Properties: derivative, shifts, multiplication by t, convolution | 2, 3, 9, 12, 16, 17 |
 | 3. Inversion by partial fractions | 4, 5, 6, 14, 15 |
-| 4. Solving IVPs, including switched and impulsive inputs | 7, 8, 9, 10 |
+| 4. Solving IVPs, including switched and impulsive inputs | 7, 8, 9, 10, 16, 17 |
 | 5. Initial- and final-value theorems | 6, 11, 13 |
 | 6. Transfer functions, poles, zeros, impulse response | 10, 13, 14, 15 |

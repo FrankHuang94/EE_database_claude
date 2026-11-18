@@ -66,7 +66,7 @@ $$
 y = \tfrac13\sin t - \tfrac16\sin2t, \qquad y(\pi/2) = \tfrac13 - 0 = 0.3333 .
 $$
 
-$\tfrac13\sin t$ is the steady state at the input frequency (ERF: $1/p(j) = 1/(4 - 1)$). $-\tfrac16\sin2t$ is the natural response at $\omega_0 = 2$, which never decays because there is no damping.
+$\tfrac13\sin t$ is the steady state at the input frequency (ERF: $1/p(j) = 1/(4 - 1)$). $-\tfrac16\sin2t$ is a natural mode at $\omega_0 = 2$, which never decays because there is no damping. All of $y$ is the *zero-state* response here (the initial conditions are zero), yet it contains a natural mode: the split by cause and the split by form are different (chapter §3.4).
 
 ### Solution 02-05.9
 
@@ -134,6 +134,32 @@ $$
 
 ---
 
+### Solution 02-05.16
+
+(a) Write $t = (t - 2) + 2$: $t\,u(t - 2) = (t - 2)u(t - 2) + 2u(t - 2)$. By the time-shift rule this transforms to $e^{-2s}\left(\dfrac{1}{s^2} + \dfrac{2}{s}\right)$. Transforming only $(t - 2)u(t - 2)$ would drop the $2u(t - 2)$ step.
+
+(b) $v = t\,u(t) - (t - 1)u(t - 1)$: the second ramp, starting at 1 s, cancels the slope of the first. So $V = (1 - e^{-s})/s^2$ and $Y = (1 - e^{-s})/\big(s^2(s + 1)\big)$. Partial fractions: $\dfrac{1}{s^2(s + 1)} = \dfrac{1}{s^2} - \dfrac1s + \dfrac{1}{s + 1}$, the ramp response $r(t) = t - 1 + e^{-t}$. Then
+
+$$
+y(t) = r(t)u(t) - r(t - 1)u(t - 1),
+$$
+
+and $y(2) = (1 + e^{-2}) - e^{-1} = $ **0.7675**. (Check: for $t \ge 1$ the input is constant at 1, so $y$ should approach 1, and $y(t) = 1 + e^{-t} - e^{-(t - 1)} \to 1$ ✓.)
+
+(c) $Y = 0.5e^{-s}/(s + 1)$, so $y = 0.5e^{-(t - 1)}u(t - 1)$: nothing until 1 s, then a jump to 0.5 and a decay. $y(2) = 0.5e^{-1} = $ **0.1839**. The impulse of area 0.5 delivers its whole "charge" at once, so $y$ jumps by 0.5 (for $y' + y = q_0\delta$ the jump in $y$ is $q_0$).
+
+(d) One period: $F_1 = \int_0^1e^{-st}dt = (1 - e^{-s})/s$, with $T = 2$. So $F = \dfrac{1 - e^{-s}}{s(1 - e^{-2s})} = \dfrac{1}{s(1 + e^{-s})}$, and $F(1) = 1/(1 + e^{-1}) = $ **0.7311**.
+
+### Solution 02-05.17
+
+(a) $H = \dfrac{1}{s^2 + 3s + 2} = \dfrac{1}{s + 1} - \dfrac{1}{s + 2}$, so $h(t) = e^{-t} - e^{-2t}$, and by the convolution theorem $y(t) = \displaystyle\int_0^t\big(e^{-(t - \lambda)} - e^{-2(t - \lambda)}\big)g(\lambda)\,d\lambda$.
+
+(b) With $g = 1$: $\int_0^te^{-(t - \lambda)}d\lambda = 1 - e^{-t}$ and $\int_0^te^{-2(t - \lambda)}d\lambda = \tfrac12(1 - e^{-2t})$, so $y = \tfrac12 - e^{-t} + \tfrac12e^{-2t}$. Partial fractions agree: $\dfrac{1}{s(s + 1)(s + 2)} = \dfrac{1/2}{s} - \dfrac{1}{s + 1} + \dfrac{1/2}{s + 2}$ ✓. $y(1) = 0.5 - 0.3679 + 0.0677 = $ **0.1998**.
+
+(c) $Y = \dfrac{1}{(s + 1)(s + 2)(s + 3)} = \dfrac{1/2}{s + 1} - \dfrac{1}{s + 2} + \dfrac{1/2}{s + 3}$, so $y = \tfrac12e^{-t} - e^{-2t} + \tfrac12e^{-3t}$ and $y(1) = 0.1839 - 0.1353 + 0.0249 = $ **0.07350**.
+
+(d) $\mathcal{L}\{t\sin2t\} = -\dfrac{d}{ds}\dfrac{2}{s^2 + 4} = \dfrac{4s}{(s^2 + 4)^2}$, which is $4/25 = $ **0.16** at $s = 1$. The integral rule gives $\mathcal{L}\{\int_0^t\sin2\lambda\,d\lambda\} = \dfrac{1}{s}\cdot\dfrac{2}{s^2 + 4}$, which is $2/5 = $ **0.4** at $s = 1$. Check: $\int_0^t\sin2\lambda\,d\lambda = \tfrac12(1 - \cos2t)$, whose transform is $\tfrac12\left(\dfrac1s - \dfrac{s}{s^2 + 4}\right) = \dfrac{2}{s(s^2 + 4)}$ ✓.
+
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
@@ -176,3 +202,10 @@ $$
 | 02-05.15d | slow tail as % of final | 10.10 | % |
 | 02-05.15e | 1 % settling time | 2.313 | s |
 | 02-05.15f | settling time with perfect cancellation | 0.4605 | s |
+| 02-05.16a | y(2), ramp-and-hold | 0.7675 | — |
+| 02-05.16b | y(2), delayed impulse | 0.1839 | — |
+| 02-05.16c | square-wave transform at s = 1 | 0.7311 | — |
+| 02-05.17a | y(1) for g = 1 | 0.1998 | — |
+| 02-05.17b | y(1) for g = e^-3t | 0.07350 | — |
+| 02-05.17c | L{t sin 2t} at s = 1 | 0.16 | — |
+| 02-05.17d | L{integral of sin 2t} at s = 1 | 0.4 | — |

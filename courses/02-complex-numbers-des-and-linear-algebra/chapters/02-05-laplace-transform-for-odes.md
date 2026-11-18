@@ -4,7 +4,7 @@
 | | |
 |---|---|
 | **Course** | [02 · Complex Numbers, Differential Equations and Linear Algebra](../README.md) |
-| **University equivalent** | The Laplace-transform unit of a sophomore differential-equations course (MIT 18.03 Unit IV: definition, rules, partial fractions, step and delta functions, convolution, transfer functions and poles; Boyce & DiPrima, chapter on the Laplace transform) |
+| **University equivalent** | The Laplace-transform unit of a sophomore differential-equations course (MIT 18.03SC Unit III: definition, rules, partial fractions, step and delta functions, convolution, transfer functions and poles; Boyce & DiPrima, chapter on the Laplace transform) |
 | **Prerequisites** | [01-06 Techniques of Integration](../../01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md) (improper integrals, partial fractions, completing the square), [02-03](02-03-second-order-linear-odes.md) and [02-04](02-04-forced-response-and-resonance.md) |
 | **Estimated study hours** | 10 |
 | **Last verified** | 2026-11-17 |
@@ -76,7 +76,7 @@ $$
 \mathcal{L}\{u(t - a)\} = \int_a^\infty e^{-st}dt = \frac{e^{-as}}{s} .
 $$
 
-The **unit impulse** $\delta(t)$ (Dirac delta) is the limit of a pulse of height $1/\varepsilon$ and width ε as ε → 0: zero width, unit area. Its transform is the limit of $\frac{1}{\varepsilon}\cdot\frac{1 - e^{-\varepsilon s}}{s}$, which tends to **1** (by L'Hôpital, 01-04). Physically, an impulse is a kick: a hammer blow, an electrostatic discharge, or a charge $Q$ dumped onto a capacitor in a negligibly short time, $i = Q\delta(t)$.
+The **unit impulse** $\delta(t)$ (Dirac delta) is the limit of a pulse of height $1/\varepsilon$ and width ε as ε → 0: zero width, unit area. Its transform is the limit of $\frac{1}{\varepsilon}\cdot\frac{1 - e^{-\varepsilon s}}{s}$, which tends to **1** (by L'Hôpital, 01-04). Physically, an impulse is a kick: a hammer blow, an electrostatic discharge, or a charge $q_0$ dumped onto a capacitor in a negligibly short time, $i = q_0\delta(t)$.
 
 ### 3.2 Properties, derived
 
@@ -117,7 +117,7 @@ where the order of integration was swapped over the region $0 \le \lambda \le t$
 
 ### 3.3 Inversion by partial fractions
 
-Solving an ODE produces a rational $Y(s) = N(s)/D(s)$. If the degree of $N$ is lower than that of $D$ (a *proper* fraction), split it into simple terms, each with a known inverse ([01-06](../../01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md) §3.4):
+Inverting by table lookup relies on **uniqueness**: two functions with the same transform agree at every point where both are continuous (Lerch's theorem), so the table gives *the* inverse, up to the values at jumps. Solving an ODE produces a rational $Y(s) = N(s)/D(s)$. If the degree of $N$ is lower than that of $D$ (a *proper* fraction), split it into simple terms, each with a known inverse ([01-06](../../01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md) §3.4):
 
 | Factor of $D(s)$ | Partial-fraction term | Inverse transform |
 |---|---|---|
@@ -125,9 +125,9 @@ Solving an ODE produces a rational $Y(s) = N(s)/D(s)$. If the degree of $N$ is l
 | repeated pole, multiplicity 2 | $\dfrac{A_1}{s - p} + \dfrac{A_2}{(s - p)^2}$ | $A_1e^{pt} + A_2te^{pt}$ |
 | complex pair $-\alpha \pm j\omega$ | $\dfrac{B(s + \alpha) + C\omega}{(s + \alpha)^2 + \omega^2}$ | $e^{-\alpha t}(B\cos\omega t + C\sin\omega t)$ |
 
-**Coefficients.** For a simple pole, the **cover-up (residue) formula** is $A = \big[(s - p)Y(s)\big]_{s = p}$. For a double pole, $A_2 = \big[(s - p)^2Y\big]_{s = p}$ and $A_1 = \frac{d}{ds}\big[(s - p)^2Y\big]_{s = p}$. For a complex pair, complete the square and match coefficients, or apply the cover-up formula at the complex pole and combine the conjugate terms. Every pole contributes one natural mode, and its residue sets how strongly that mode is excited. This is Heaviside's method, the reason engineers call the poles of a circuit its *natural frequencies*.
+**Coefficients.** For a simple pole, the **cover-up (residue) formula** is $A = \big[(s - p)Y(s)\big]_{s = p}$. For a double pole, multiply by $(s - p)^2$: $(s - p)^2Y = A_1(s - p) + A_2 + (s - p)^2R(s)$, where $R(s)$ holds the other terms. Setting $s = p$ gives $A_2 = \big[(s - p)^2Y\big]_{s = p}$, and differentiating once before setting $s = p$ gives $A_1 = \frac{d}{ds}\big[(s - p)^2Y\big]_{s = p}$. For a complex pair, complete the square and match coefficients, or apply the cover-up formula at the complex pole and combine the conjugate terms. Every pole contributes its natural mode ($e^{pt}$ for a simple pole; $e^{pt}$ and $te^{pt}$ for a double one), and its coefficients set how strongly that mode is excited. This is Heaviside's method, the reason engineers call the poles of a circuit its *natural frequencies*.
 
-If $N$ has degree equal to or greater than $D$, divide first: the polynomial part inverts to impulses and their derivatives, which arise when an ideal input contains a jump that the system passes straight through.
+If $N$ has degree equal to or greater than $D$, divide first: the polynomial part inverts to impulses and their derivatives, which arise when the system *differentiates* its input. A capacitor driven by an ideal voltage step is the standard case: $I(s) = sC\cdot V/s = CV$, an impulse of current $CV\delta(t)$ that delivers the charge $CV$ instantly. They also arise when the input is itself impulsive.
 
 ### 3.4 Solving initial-value problems
 
@@ -138,26 +138,30 @@ The procedure, for $ay'' + by' + cy = f(t)$ with $y(0^-)$ and $y'(0^-)$:
 **Step 2.** Solve for $Y(s)$:
 
 $$
-Y(s) = \underbrace{\frac{F(s)}{as^2 + bs + c}}_{\text{zero-state (forced)}} + \underbrace{\frac{(as + b)\,y(0^-) + a\,y'(0^-)}{as^2 + bs + c}}_{\text{zero-input (natural)}} .
+Y(s) = \underbrace{\frac{F(s)}{as^2 + bs + c}}_{\text{zero-state}} + \underbrace{\frac{(as + b)\,y(0^-) + a\,y'(0^-)}{as^2 + bs + c}}_{\text{zero-input}} .
 $$
 
 **Step 3.** Invert by partial fractions.
 
-The decomposition of 02-02 §3.5 falls out automatically: one term depends only on the input, the other only on the initial state. The denominator $as^2 + bs + c$ is the characteristic polynomial of 02-03, so its roots, the **poles**, are the natural modes.
+The decomposition of 02-02 §3.5 falls out automatically: one term depends only on the input, the other only on the initial state. This split is by *cause*. It is not the split by *form* into natural (homogeneous) and forced (particular) parts: the zero-state term's partial fractions include the poles of $1/(as^2 + bs + c)$, so it contains natural modes too. Example 02-05.2's zero-state response, $2 - 6e^{-2t} + 4e^{-3t}$, has the forced constant 2 and two natural modes. The denominator $as^2 + bs + c$ is the characteristic polynomial of 02-03, so its roots, the **poles**, are the natural modes.
 
-**Why $0^-$.** If the input switches at $t = 0$, quantities such as an inductor's voltage can jump. Using values just *before* the switch ($0^-$, which are known from the circuit's history) lets the transform compute what happens across the jump, including any impulse. Initial values at $0^+$ are then outputs of the analysis, not inputs.
+**Why $0^-$.** If the input switches at $t = 0$, quantities such as an inductor's voltage can jump. Using values just *before* the switch ($0^-$, which are known from the circuit's history) lets the transform compute what happens across the jump, including any impulse. Initial values at $0^+$ are then outputs of the analysis, not inputs. A one-line check of the convention: the derivative of the unit step is the impulse, and indeed $\mathcal{L}\{u'\} = s\cdot\frac{1}{s} - u(0^-) = 1 = \mathcal{L}\{\delta\}$. Using $u(0^+) = 1$ instead would give 0 and lose the impulse.
 
 ### 3.5 Switching and impulsive inputs
 
 Inputs that turn on, off, or kick are where the transform saves the most work:
 
 - **A delayed step:** $Vu(t - a) \;\to\; Ve^{-as}/s$.
-- **A rectangular pulse** of height $V$ from 0 to $T$: $V\big[u(t) - u(t - T)\big] \;\to\; V\dfrac{1 - e^{-Ts}}{s}$. By the time-shift rule the response is the step response minus the same step response delayed by $T$ (Example 02-05.4, Figure 2).
-- **An impulse** of area $Q$: $Q\delta(t) \to Q$. The response to a unit impulse with zero initial conditions is the **impulse response** $h(t)$, and since $\mathcal{L}\{\delta\} = 1$, its transform is $H(s)$ itself.
+- **A rectangular pulse** of height $V$ from 0 to $T$: $V\big[u(t) - u(t - T)\big] \;\to\; V\dfrac{1 - e^{-Ts}}{s}$. By the time-shift rule the response is the step response minus the same step response delayed by $T$ (Example 02-05.4, Figure 1).
+- **An impulse** of area $q_0$: $q_0\delta(t) \to q_0$. The response to a unit impulse with zero initial conditions is the **impulse response** $h(t)$, and since $\mathcal{L}\{\delta\} = 1$, its transform is $H(s)$ itself.
+- **A shifted impulse** at $t = a > 0$: $\delta(t - a) \to e^{-as}$, by the time-shift rule. The impulse is defined by what it does inside an integral, the **sifting property**: $\int f(t)\,\delta(t - a)\,dt = f(a)$ for any $f$ continuous at $a$, because the narrow unit-area pulse averages $f$ over a vanishing interval around $a$. With $f = e^{-st}$ this gives $e^{-as}$ directly.
+- **Piecewise inputs.** Write the input as a sum of pieces, each in the form $f(t - a)u(t - a)$, *before* transforming. The trap: $t\,u(t - 2)$ is not $(t - 2)u(t - 2)$. Write $t = (t - 2) + 2$, so $t\,u(t - 2) = (t - 2)u(t - 2) + 2u(t - 2) \to e^{-2s}\left(\dfrac{1}{s^2} + \dfrac{2}{s}\right)$. A ramp that rises at unit slope for 1 s and then holds is $t\,u(t) - (t - 1)u(t - 1) \to (1 - e^{-s})/s^2$.
+- **Periodic inputs.** If $f$ has period $T$ and $F_1$ is the transform of one period, split the integral into periods: $F(s) = \sum_{k\ge0}e^{-ksT}F_1(s) = \dfrac{F_1(s)}{1 - e^{-sT}}$ for $\operatorname{Re}s > 0$ (a geometric series). A square wave equal to $V$ for the first half of each period and 0 for the second has $F_1 = V(1 - e^{-sT/2})/s$, so $F(s) = \dfrac{V}{s\left(1 + e^{-sT/2}\right)}$.
+- **Any input at all.** With zero initial conditions $Y = H(s)G(s)$, so the convolution theorem gives $y(t) = \int_0^th(t - \lambda)\,g(\lambda)\,d\lambda$ for an arbitrary input $g$, even one known only as measured data. For $y'' + 3y' + 2y = g(t)$, $H = 1/\big((s + 1)(s + 2)\big)$ gives $h = e^{-t} - e^{-2t}$ and $y(t) = \int_0^t\big(e^{-(t - \lambda)} - e^{-2(t - \lambda)}\big)g(\lambda)\,d\lambda$ (Problem 02-05.17).
 
 ![RC response to a rectangular pulse as the sum of two shifted step responses](../../../assets/figures/02-05/pulse-response.svg)
 
-*Figure 2. The time-shift rule in action: a pulse is a step up at 0 plus a step down at T, so the response is the difference of two step responses.*
+*Figure 1. The time-shift rule in action: a pulse is a step up at 0 plus a step down at T, so the response is the difference of two step responses.*
 
 ### 3.6 Transfer functions, poles and zeros
 
@@ -169,16 +173,16 @@ $$
 
 $H(s)$ is the **transfer function**. Everything from the previous chapters lives in it:
 
-- **Poles** (roots of $D$) are the characteristic roots of 02-03: their positions in the complex plane decide whether each natural mode decays, oscillates or grows (Figure 1). **The system is stable exactly when every pole has a negative real part.**
+- **Poles** (roots of $D$) are the characteristic roots of 02-03: their positions in the complex plane decide whether each natural mode decays, oscillates or grows (Figure 2). **The system is stable exactly when every pole has a negative real part.**
 - **Zeros** (roots of $N$) are frequencies the system blocks: an input $e^{z t}$ at a zero $z$ produces no forced response.
 - **Impulse response:** $h(t) = \mathcal{L}^{-1}\{H\}$. By the convolution theorem, the zero-state response to any input is $y = h * x$ (Figure 3): the system's output is a weighted sum of its past inputs, weighted by its impulse response. This generalizes the fading-memory integral of 02-02 §3.4 and is the foundation of [11-03](../../11-signals-and-systems/chapters/11-03-convolution.md).
 - **Frequency response:** for a stable system, $H(j\omega)$, the transfer function on the imaginary axis, is the frequency response of 02-04.
 
-For the series RLC with output across the capacitor, $H(s) = \dfrac{\omega_0^2}{s^2 + 2\alpha s + \omega_0^2}$: two poles at $-\alpha \pm j\omega_d$ and no finite zeros. Setting $s = j\omega$ recovers 02-04's $H(j\omega)$ exactly.
+For the series RLC with output across the capacitor, $H(s) = \dfrac{\omega_0^2}{s^2 + 2\alpha s + \omega_0^2}$: two poles at $-\alpha \pm j\omega_d$ when underdamped (two real poles otherwise) and no finite zeros. Setting $s = j\omega$ recovers 02-04's $H(j\omega)$ exactly.
 
 ![Pole locations in the complex plane and the time-domain modes they produce](../../../assets/figures/02-05/s-plane-modes.svg)
 
-*Figure 1. Left-half-plane poles give decaying modes, poles on the imaginary axis give sustained oscillation or a constant, and right-half-plane poles give growth. Height above the axis sets the oscillation frequency.*
+*Figure 2. Left-half-plane poles give decaying modes, poles on the imaginary axis give sustained oscillation or a constant, and right-half-plane poles give growth. Height above the axis sets the oscillation frequency.*
 
 ![Impulse response, input and their convolution](../../../assets/figures/02-05/convolution.svg)
 
@@ -314,7 +318,7 @@ The lab ([labs/02-05-lab/](../labs/02-05-lab/README.md)) has a notebook and two 
 
 1. **Transforms by machine.** SymPy computes transforms and inverses; check them against the table and the derived properties.
 2. **Partial fractions.** Use `sympy.apart` and `scipy.signal.residue` on the examples, including repeated and complex poles. *Predict first:* how many terms does $1/(s^2(s + 1))$ split into?
-3. **Poles and modes.** Place poles interactively and watch the impulse response change. *Predict first:* what does moving a pole pair toward the imaginary axis do to the ringing?
+3. **Poles and modes.** Compare the impulse responses of five fixed pole positions, from the left half-plane to the right. *Predict first:* what does moving a pole pair toward the imaginary axis do to the ringing?
 4. **The final-value trap.** Apply the final-value theorem to stable and unstable transforms and compare with simulation.
 5. **ngspice, `rlc_step_vs_sxfer.cir`.** The RLC of Example 02-05.3 as a circuit and as an XSPICE `s_xfer` block implementing $H(s)$ directly: both give 44.43% overshoot.
 6. **ngspice, `rc_pulse.cir`.** The pulse of Example 02-05.4: confirm 4.323 V at 2 ms and 1.590 V at 3 ms.
@@ -357,7 +361,7 @@ The lab ([labs/02-05-lab/](../labs/02-05-lab/README.md)) has a notebook and two 
 
 - **Designers write blocks as transfer functions.** The Accellera Verilog-AMS language reference manual (version 2.4.0, 2014) defines analog filter operators that implement $H(s)$ directly, specified by zeros and poles (`laplace_zp`) or by numerator and denominator polynomials (`laplace_nd`), with mixed forms as well ([R-036](../../../reference/research-log.md#r-036--s-domain-blocks-in-design-tools-verilog-ams-and-ngspice)) **[Established]**. Mixed-signal teams use such blocks to model PLLs, filters and regulators at system level long before transistor-level design is finished ([20](../../20-analog-and-mixed-signal-ic-design/README.md)).
 - **Open-source simulators support it too.** ngspice's XSPICE extension includes an `s_xfer` code model for rational transfer functions in $s$, used in this chapter's lab; it handles only ratios of polynomials ([R-036](../../../reference/research-log.md#r-036--s-domain-blocks-in-design-tools-verilog-ams-and-ngspice)) **[Established]**.
-- **Transistor-level simulators do not use the transform.** SPICE's transient analysis integrates the circuit equations step by step (02-02 §3.9), because real circuits are nonlinear; the Laplace transform is the designer's tool for insight, not the simulator's engine **[Established]**.
+- **Transient simulation does not use the transform.** SPICE's transient analysis integrates the nonlinear circuit equations step by step (02-02 §3.9, [02-10](02-10-numerical-methods.md)), so the Laplace transform is the designer's tool for insight there, not the simulator's engine. Its small-signal `.AC` analysis is the exception in spirit: it linearizes the circuit at the operating point and solves the resulting complex equations at $s = j\omega$, frequency by frequency, which is the phasor method of 02-01 applied to the whole circuit **[Established: standard SPICE analysis types]**.
 
 ### Why it matters commercially
 
@@ -459,12 +463,12 @@ Transfer functions are the shared language of every engineering conversation abo
 ## 13. Further study
 
 - Boyce & DiPrima, *Elementary Differential Equations and Boundary Value Problems*, chapter 6 (the Laplace transform: definition, IVPs, step functions, impulse functions, convolution).
-- MIT OCW 18.03SC *Differential Equations*, Unit IV (Laplace transform, poles, transfer functions, convolution, the delta function).
+- MIT OCW 18.03SC *Differential Equations*, Unit III (Fourier series and the Laplace transform: poles, transfer functions, convolution, the delta function).
 - Kreyszig, *Advanced Engineering Mathematics*, chapter on Laplace transforms (with an extended table).
 - Oppenheim & Willsky, *Signals and Systems*, chapter on the Laplace transform (the engineering view of poles, zeros and regions of convergence).
 
 ## 14. Sources
 
 1. Boyce, W. E., DiPrima, R. C. and Meade, D. B., *Elementary Differential Equations and Boundary Value Problems*, Wiley: Laplace transform properties, step and impulse functions, convolution.
-2. MIT OpenCourseWare, 18.03SC *Differential Equations*, Unit IV: Laplace Transform.
+2. MIT OpenCourseWare, 18.03SC *Differential Equations*, Unit III: Fourier Series and Laplace Transform.
 3. Accellera, *Verilog-AMS Language Reference Manual*, version 2.4.0 (30 May 2014), §4.5.11 Laplace transform filters; ngspice-42 XSPICE code-model library, model `s_xfer`. [R-036]
