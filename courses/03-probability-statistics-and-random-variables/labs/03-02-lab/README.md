@@ -34,7 +34,7 @@ Chapter sections 3.1–3.8 and Examples 03-02.1 to 03-02.7. No circuit simulatio
 | 3 | Poisson process | count mean and variance both close to 2 (seeded run: 2.0061 and 2.0136); empty windows 0.1333 against $e^{-2} = 0.1353$ |
 | 4 | memorylessness | exponential survivors to 500 h: 0.6065 (theory), mean remaining life about 1000 h (seeded 998.2 h). Weibull shape 3: survivors 0.9148, mean remaining life 558.4 h |
 | 5 | Monte Carlo BER | measured BER within Poisson scatter of $Q(A/\sigma)$ at $A/\sigma$ = 2, 3, 4; 100 errors at $A/\sigma = 4$ need $3.157\times10^6$ bits |
-| 6 | dual-Dirac | crossings beyond $DJ/2 + 3\sigma$: seeded $6.710\times10^{-4}$ against $\tfrac12Q(3) = 6.749\times10^{-4}$; the far Dirac contributes about $10^{-22}$. Eye opening at $10^{-12}$ from the bathtub 6.367 ps, equal to $1\,\text{UI} - TJ$ |
+| 6 | dual-Dirac | crossings beyond $DJ/2 + 3\sigma$: seeded $6.710\times10^{-4}$ against $\tfrac12Q(3) = 6.749\times10^{-4}$; the far Dirac contributes about $10^{-22}$. Eye opening at $10^{-12}$ from the bathtub 6.367 ps, equal to $1\,\text{UI} - TJ$ (industry convention); the literal model, a factor 4 lower in BER, gives 6.837 ps (multiplier 13.677) |
 | Your turn 1 | offset slicer at $A/\sigma = 4$ | $\tfrac12[Q(3.5) + Q(4.5)] = 1.180\times10^{-4}$ |
 
 <!-- answer-key -->
@@ -52,12 +52,23 @@ Chapter sections 3.1–3.8 and Examples 03-02.1 to 03-02.7. No circuit simulatio
 | Lab 03-02.j | near-Dirac tail fraction | 6.749×10^-4 | — |
 | Lab 03-02.k | eye opening at 1e-12 | 6.367 | ps |
 | Lab 03-02.l | BER with offset slicer | 1.180×10^-4 | — |
+| Lab 03-02.m | eye opening at 1e-12, literal model | 6.837 | ps |
+| Lab 03-02.n | literal multiplier 2 Qinv(4e-12) | 13.677 | — |
+| Lab 03-02.o | BER bound from 1e12 error-free bits at 95% | 2.996×10^-12 | — |
 
 ## Discussion questions
 
 1. Part 1 shows that $10^5$ samples see nothing beyond 5σ. A vendor claims a BER of $10^{-15}$ from a measurement of $10^{12}$ bits with no errors. What did they actually measure, and what model are they relying on for the rest?
 2. In Part 3, what would you see in the count variance if events arrived in bursts of two? Which real mechanisms produce bursty errors in a link or memory?
 3. A supplier quotes 50 FIT for a component that is known to wear out (for example a flash cell or an electrolytic capacitor). Using Part 4, explain what that FIT number can and cannot tell you about field returns in year five.
+
+<details><summary>Answers to the discussion questions</summary>
+
+1. Zero errors in $10^{12}$ bits demonstrate, at 95% confidence, only a BER below $-\ln0.05/10^{12} = 2.996\times10^{-12}$ (03-01). The remaining three decades to $10^{-15}$ come from a model: a Gaussian (dual-Dirac) extrapolation of the bathtub walls, which is only as good as the Gaussian tail assumption.
+2. If errors came in bursts of two, the count's variance would be twice its mean (a Poisson number of bursts, each of two errors: variance $\lambda\,\mathbb{E}[K^2] = 4\lambda$ against mean $2\lambda$; 03-04 §3.5). Bursty mechanisms include decision-feedback equalizer error propagation in links and multi-cell upsets, where one particle strike flips adjacent memory cells.
+3. A FIT number is a constant rate; for a wear-out part the hazard rises, so year-five returns will exceed FIT × hours, and Part 4's Weibull survivors have less remaining life (558 h against 1000 h), not the same. Ask for the Weibull shape or the $B_1$ life at the mission profile, not the FIT.
+
+</details>
 
 ## Optional hardware version
 

@@ -77,6 +77,25 @@ v.check("T 03-02.i", Q(a0 / g1))
 v.check("T 03-02.j", Q(a0 / g1) / 1e-12)
 v.check("T 03-02.k", -math.expm1(-1000e-9 * HOURS_PER_YEAR) * 100)
 v.check("T 03-02.l", 1e6 / HOURS_PER_YEAR)
+# literal dual-Dirac model: BER(t) = rho_T [Q((t + DJ/2)/s)/2 + Q((t - DJ/2)/s)/2]; build it by integrating the
+# edge-position density (two Diracs blurred by RJ) and solve for the eye at 1e-12 with rho_T = 1/2
+DJ7, RJ7, UI7 = 8.0, 1.2, 1e12 / 32e9
+edge_pdf = lambda x: 0.5 * norm.pdf(x, -DJ7 / 2, RJ7) + 0.5 * norm.pdf(x, DJ7 / 2, RJ7)  # noqa: E731
+ber_lit = lambda tt: 0.5 * quad(edge_pdf, tt, tt + 40, epsabs=0, epsrel=1e-12, limit=200)[0]  # noqa: E731
+t_lit = brentq(lambda tt: math.log(ber_lit(tt)) - math.log(1e-12), DJ7 / 2, UI7 / 2, xtol=1e-12)
+mult_lit = 2 * (t_lit - DJ7 / 2) / RJ7
+v.check("T 03-02.m", mult_lit)
+v.assert_true("literal multiplier equals 2 Qinv(4e-12)", abs(mult_lit - 2 * Qinv(4e-12)) < 1e-6)
+v.check("T 03-02.n", (2 * Qinv(1e-12) - mult_lit) * RJ7)
+cost15 = (2 * Qinv(1e-15) - 2 * Qinv(1e-12)) * RJ7
+v.check("T 03-02.o", cost15 / UI7 * 100)
+v.check("T 03-02.p", cost15 / (UI7 - DJ7 - 2 * Qinv(1e-12) * RJ7) * 100)
+v.check("T 03-02.q", 692 / 11.4)
+v.check("T 03-02.r", math.hypot(1.0, 1.0))
+# Q-function bounds (lower bound by integration by parts; half-exponential bound) at several x
+for xx in (0.5, 1.0, 3.0, 5.0, 8.0):
+    phi = norm.pdf(xx)
+    v.assert_true(f"Q bounds hold at {xx}", xx * phi / (1 + xx * xx) < Q(xx) < phi / xx and Q(xx) <= 0.5 * exp(-xx * xx / 2))
 
 # ---------------------------------------------------------------- Example 03-02.1: known-good die
 pk = [bpmf(4, k, 0.1) for k in range(5)]
@@ -96,6 +115,9 @@ v.check("Ex 03-02.2g", 5 * lam_y)
 v.check("Ex 03-02.2d", -math.expm1(-5 * lam_y))
 v.check("Ex 03-02.2e", 1e4 * lam_y)
 v.check("Ex 03-02.2f", sum(ppmf(1e4 * lam_y, k) for k in range(81)))
+v.check("Ex 03-02.2h", 1e4 * lam_y * (1 - 0.32))
+v.check("Ex 03-02.2i", 1e4 * lam_y * 1.5)
+v.check("Ex 03-02.2j", 1e4 * (11.4 + 2.0) * 100 * 1e-9 * HOURS_PER_YEAR)
 v.assert_true("fleet CDF matches scipy", abs(poisson.cdf(80, 1e4 * lam_y) - sum(ppmf(1e4 * lam_y, k) for k in range(81))) < 1e-12)
 
 # ---------------------------------------------------------------- Example 03-02.3: Poisson vs binomial
@@ -122,6 +144,8 @@ cond = (S(5 * HOURS_PER_YEAR) - S(10 * HOURS_PER_YEAR)) / S(5 * HOURS_PER_YEAR)
 v.check("Ex 03-02.4d", cond)
 v.assert_true("memoryless: conditional equals unconditional", abs(cond + math.expm1(-r * 5 * HOURS_PER_YEAR)) < 1e-15)
 v.check("Ex 03-02.4e", 1e6 * r * HOURS_PER_YEAR)
+v.check("Ex 03-02.4f", 1e6 * -math.expm1(-r * HOURS_PER_YEAR))
+v.check("Ex 03-02.4g", r * 87_660)
 
 # ---------------------------------------------------------------- Example 03-02.5: Gaussian tolerances
 v.check("Ex 03-02.5a", norm.cdf(9900, 10_000, 50) + norm.sf(10_100, 10_000, 50))
@@ -147,6 +171,7 @@ v.check("Ex 03-02.7d", (ui - 8 - m12 * 1.2) / ui)
 v.check("Ex 03-02.7e", 8 + m15 * 1.2)
 v.check("Ex 03-02.7g", (m15 - m12) * 1.2)
 v.check("Ex 03-02.7i", 0.7 * ui)
+v.check("Ex 03-02.7j", m12 * 1.2)
 rj_max = (0.7 * ui - 8) / m12
 v.check("Ex 03-02.7f", rj_max)
 v.check("Ex 03-02.7h", (1 - rj_max / 1.2) * 100)
@@ -301,5 +326,48 @@ left = brentq(lambda t: math.log(ber_t(t)) - math.log(1e-12), 4, 31.25 / 2)
 right = brentq(lambda t: math.log(ber_t(t)) - math.log(1e-12), 31.25 / 2, 31.25 - 4)
 v.check("Lab 03-02.k", right - left)
 v.check("Lab 03-02.l", 0.5 * (Q(3.5) + Q(4.5)))
+ber_lit_lab = lambda t: 0.25 * (Q((t - 4) / 1.2) + Q((31.25 - t - 4) / 1.2))  # noqa: E731
+l2 = brentq(lambda t: math.log(ber_lit_lab(t)) - math.log(1e-12), 4, 31.25 / 2)
+r2 = brentq(lambda t: math.log(ber_lit_lab(t)) - math.log(1e-12), 31.25 / 2, 31.25 - 4)
+v.check("Lab 03-02.m", r2 - l2)
+v.check("Lab 03-02.n", 2 * Qinv(4e-12))
+v.check("Lab 03-02.o", -math.log(0.05) / 1e12)
+
+# ---------------------------------------------------------------- Problems 03-02.17 to 03-02.20
+v.check("03-02.17a", 0.3**2)
+v.assert_true("geometric survival is memoryless", all(abs((0.3 ** (m + n)) / (0.3**m) - 0.3**n) < 1e-15 for m in range(5) for n in range(5)))
+A18, s18, P1, P0 = 100.0, 20.0, 0.1, 0.9
+# MAP threshold from the likelihood-ratio condition, solved numerically
+yth = brentq(lambda y: P1 * norm.pdf(y, A18, s18) - P0 * norm.pdf(y, -A18, s18), -50, 50)
+v.check("03-02.18a", yth)
+v.assert_true("threshold matches the closed form", abs(yth - s18**2 / (2 * A18) * math.log(P0 / P1)) < 1e-9)
+ber18 = lambda th: P1 * norm.cdf(th, A18, s18) + P0 * norm.sf(th, -A18, s18)  # noqa: E731
+v.check("03-02.18b", ber18(yth))
+v.check("03-02.18c", ber18(0.0))
+v.check("03-02.18d", ber18(0.0) / ber18(yth))
+v.check("03-02.18e", (A18 - yth) / s18)
+v.check("03-02.18f", (A18 + yth) / s18)
+v.assert_true("MAP threshold minimizes the error", ber18(yth) < min(ber18(yth - 0.5), ber18(yth + 0.5)))
+phi5 = exp(-12.5) / math.sqrt(2 * math.pi)
+v.check("03-02.19a", phi5)
+v.check("03-02.19b", 5 * phi5 / 26)
+v.check("03-02.19c", phi5 / 5)
+v.check("03-02.19d", quad(norm.pdf, 5, 40)[0])
+v.check("03-02.19e", 0.5 * exp(-12.5))
+v.check("03-02.19f", 0.5 * exp(-12.5) / Q(5))
+v.check("03-02.19g", 0.5 * erfc(3))
+v.check("03-02.19h", 3 * math.sqrt(2))
+v.assert_true("half erfc(3) equals Q(3 sqrt 2)", abs(0.5 * erfc(3) / Q(3 * math.sqrt(2)) - 1) < 1e-12)
+I0, I1, s0, s1 = 1.0, 21.0, 1.0, 3.0
+ber20 = lambda th: 0.5 * (norm.sf(th, I0, s0) + norm.cdf(th, I1, s1))  # noqa: E731
+v.check("03-02.20a", ber20(11.0))
+teq = (s1 * I0 + s0 * I1) / (s0 + s1)
+v.check("03-02.20b", teq)
+v.check("03-02.20c", ber20(teq))
+v.assert_true("equal-sigma BER is Q of the Q-factor", abs(ber20(teq) / Q((I1 - I0) / (s0 + s1)) - 1) < 1e-12)
+topt = brentq(lambda th: norm.pdf(th, I0, s0) - norm.pdf(th, I1, s1), 3, 10)   # densities equal at the optimum
+v.check("03-02.20d", topt)
+v.check("03-02.20e", ber20(topt))
+v.check("03-02.20f", ber20(11.0) / ber20(topt))
 
 sys.exit(v.finish())

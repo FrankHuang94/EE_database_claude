@@ -30,13 +30,13 @@ Chapter sections 3.1–3.9 and Examples 03-03.1 to 03-03.7. As in Labs 03-01 and
 | Part | Quantity | Expected |
 |---|---|---|
 | 1 | retransmissions | theory $\mathbb{E}[K] = 1.1275$, σ = 0.3791; the seeded 200,000-packet run gives 1.1267 and 0.3779 |
-| 2 | good dies per wafer | mean 540 in both models (seeded 539.99 and 540.04); standard deviation 7.141 in theory for independent dies (seeded 7.118) but about 47 with clustering |
+| 2 | good dies per wafer | mean 540 in both models (seeded 539.99 and 540.04); standard deviation 7.141 in theory for independent dies (seeded 7.118) but 47.17 with clustering (seeded 47.11), by the law of total variance of 03-04 §3.5 |
 | 3 | inductor current | variance 0.75 A², RMS 10.04 A; random-phase sinusoid of amplitude 2: mean square 2 |
 | 4 | functions | $P(X^2 > 4) = 2Q(2) = 0.04550$ (seeded 0.04558); standard deviation over mean of $X^2$: 1.414; log-normal mean over median 1.269 (seeded 1.2704) |
 | 5 | Chebyshev | at ±3σ: uniform 0, Gaussian about 0.0027, Laplace about 0.014, three-point 0.1111, which equals the bound $1/9$ |
 | 6 | PAPR | OFDM at $10^{-4}$: seeded 9.60 dB against the complex-Gaussian 9.643 dB; DFT-spread OFDM about 3 dB lower (seeded 6.67 dB) |
 | 7 | ADC loading | optimum $k = 3.924$, SNR 40.60 dB; measured SNRs within about 0.3 dB of the formula; at $k = 3$ about 33.4 dB |
-| Your turn 1 | 12-bit loading | optimum $k = 5.013$, 62.71 dB; at $k = 4$ only 51.87 dB |
+| Your turn 1 | 12-bit loading | optimum $k = 5.013$, 62.71 dB; at the 8-bit optimum $k = 3.924$ only 50.43 dB, a loss of 12.29 dB |
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -53,6 +53,9 @@ Chapter sections 3.1–3.9 and Examples 03-03.1 to 03-03.7. As in Labs 03-01 and
 | Lab 03-03.j | optimum SNR, 8 bits | 40.60 | dB |
 | Lab 03-03.k | formula SNR at k = 3, 8 bits | 33.44 | dB |
 | Lab 03-03.l | Laplace tail beyond ±3 at unit variance | 0.01437 | — |
+| Lab 03-03.m | standard deviation with clustering | 47.17 | — |
+| Lab 03-03.n | 12-bit SNR at k = 3.924 | 50.43 | dB |
+| Lab 03-03.o | loss against the 12-bit optimum | 12.29 | dB |
 
 ## Discussion questions
 

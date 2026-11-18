@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 03-03 · Expectation, Variance and Functions of Random Variables
 
 | | |
@@ -20,7 +20,7 @@
 
 ## 1. Big picture
 
-A distribution answers every question about a random quantity, but engineers need numbers: good dies per wafer, the power of a noisy signal, the leakage of a billion transistors, the headroom an OFDM signal needs. Two summaries answer most of these: the **expectation** (the long-run average) and the **variance** (the spread around it). This chapter derives both, shows that for a voltage they are DC level and AC power, and then asks what a function does to a distribution: a square-law detector, an exponential device law, a clipping amplifier.
+Engineers need numbers from distributions: good dies per wafer, the power of a noisy signal, the leakage of a billion transistors, an OFDM signal's headroom. Two summaries answer most of these: the **expectation** (the long-run average) and the **variance** (the spread around it). This chapter derives both, shows that for a voltage they are DC level and AC power, and asks what a function (a square-law detector, an exponential device law, a clipping amplifier) does to a distribution.
 
 - **Yield economics:** expected good dies per wafer follow from linearity of expectation, even when defects cluster ([25](../../25-fabrication-packaging-test-and-reliability/README.md)).
 - **Power and heating:** the RMS current, not the average, sets conduction loss ([22](../../22-power-electronics-and-energy-conversion/README.md)).
@@ -29,11 +29,7 @@ A distribution answers every question about a random quantity, but engineers nee
 
 ## 2. Intuition first
 
-**The expectation is a center of mass.** Put a mass $p_X(k)$ at each value $k$ on a number line; the balance point is $\mathbb{E}[X]$. It is also the long-run average of many independent repetitions, which is how a fab or a datacenter experiences it: you never get 0.4 bad dies in one package, but over a million packages you get 0.4 per package.
-
-**The variance is a moment of inertia.** It weights each squared distance from the balance point by its probability. Its square root, the standard deviation, has the units of $X$ and measures a typical deviation.
-
-**For a voltage, these are power.** Feed a random voltage $V$ into a 1 Ω resistor. The average power is $\mathbb{E}[V^2]$, the mean square. It splits into the power of the DC level and the power of the fluctuations:
+**The expectation is a center of mass** (put mass $p_X(k)$ at each value $k$; the balance point is $\mathbb{E}[X]$) and the long-run average of many repetitions: no package holds 0.4 bad dies, but a million packages average 0.4. **The variance is a moment of inertia**, and its square root, the standard deviation, measures a typical deviation in the units of $X$. **For a voltage, these are power:** into 1 Ω, the average power $\mathbb{E}[V^2]$ splits into DC and fluctuation power:
 
 ```mermaid
 flowchart LR
@@ -46,7 +42,7 @@ flowchart LR
 
 *Figure 1. The moments of a random voltage are its DC level and its power.*
 
-**A finance analogy, and its limit.** You know this split from portfolio theory: the expected square of a return is the squared mean plus the variance. You also know **convexity**: an option's payoff is convex in the underlying, so uncertainty raises its expected value. Engineers meet the same effect constantly: leakage is convex (exponential) in threshold voltage, so variability *raises* average leakage (Jensen's inequality, §3.7). *Where the analogy breaks:* in finance variance is a risk to be paid for; in signals it is often the signal itself (an AC waveform has all its power in the variance), and what matters is the ratio of signal variance to noise variance.
+**A finance analogy, and its limit.** The expected square of a return is the squared mean plus the variance, and an option's convex payoff gains value from uncertainty. Leakage is likewise convex (exponential) in threshold voltage, so variability *raises* average leakage (Jensen's inequality, §3.7). *Where the analogy breaks:* in finance variance is a risk to be paid for; in signals it is often the signal itself, and what matters is the ratio of signal to noise variance.
 
 ## 3. Theory
 
@@ -58,9 +54,7 @@ $$
 \mathbb{E}[X] = \sum_kk\,p_X(k), \qquad \mathbb{E}[X] = \int_{-\infty}^{\infty}x\,f_X(x)\,dx .
 $$
 
-It has the units of $X$ and is often written $\mu$ or $\mu_X$. Two checks follow at once from the definition: the expectation of a constant is the constant, and if $X \ge 0$ then $\mathbb{E}[X] \ge 0$.
-
-The expectation need not be a value $X$ can take. A package of four chiplets with die-defect probability 0.1 (Example 03-02.1) holds on average 0.4 bad dies; no package holds 0.4.
+It has the units of $X$, is often written $\mu$ or $\mu_X$, and need not be a value $X$ can take (Example 03-02.1's four-chiplet package averages 0.4 bad dies). The expectation of a constant is the constant, and $X \ge 0$ implies $\mathbb{E}[X] \ge 0$.
 
 ### 3.2 Functions of a random variable, linearity and indicators
 
@@ -92,7 +86,7 @@ $$
 N = \sum_{i=1}^nI_{A_i} \quad\Longrightarrow\quad \mathbb{E}[N] = \sum_{i=1}^nP(A_i) .
 $$
 
-This gives expected good dies, failing bits or colliding ID pairs without any distribution, and stays exact when the events are correlated. For a binomial count, $\mathbb{E}[N] = np$.
+This gives expected good dies or failing bits without any distribution, exactly, even for correlated events; for a binomial count, $\mathbb{E}[N] = np$.
 
 **Expectation from the survival function.** For a nonnegative lifetime $T$ with survival function $R(t) = P(T > t)$, swapping the order of integration gives
 
@@ -106,7 +100,7 @@ $$
 \text{MTTF}_{\text{pair}} = \frac{2}{r} - \frac{1}{2r} = \frac{1.5}{r} .
 $$
 
-Redundancy buys only 50% more mean life, because after the first failure the survivor is unprotected: with $r = 10^{-5}$ per hour, 100,000 h becomes **150,000 h**. (Problem 03-03.8 shows that triple modular redundancy *lowers* the MTTF.)
+Redundancy buys only 50% more mean life, since the survivor of the first failure is unprotected: with $r = 10^{-5}$ per hour, 100,000 h becomes **150,000 h**. (Problem 03-03.8 shows that triple modular redundancy *lowers* the MTTF.)
 
 ### 3.3 Variance, standard deviation and moments
 
@@ -126,15 +120,13 @@ The variance has units of $X$ squared (V², A²). Since it cannot be negative, $
 
 **Shifting and scaling.** $\operatorname{Var}(aX + b) = a^2\operatorname{Var}(X)$, so the **standardized** variable $Z = (X - \mu)/\sigma$ has mean 0 and variance 1, the step behind every Gaussian probability in 03-02.
 
-Unlike means, variances add only for independent (more generally, uncorrelated) terms, as [03-04](03-04-joint-distributions-and-clt.md) proves; clustered defects and common-mode noise add covariance terms.
+Variances add only for uncorrelated terms ([03-04](03-04-joint-distributions-and-clt.md)); clustered defects and common-mode noise add covariance terms.
 
 $\mathbb{E}[X^n]$ is the $n$th **moment** and $\mathbb{E}[(X - \mu)^n]$ the $n$th central moment. The first two describe location and spread; higher ones describe shape.
 
 > **Going deeper — skewness and kurtosis.** $\mathbb{E}[(X - \mu)^3]/\sigma^3$ is the **skewness**: zero for symmetric distributions, positive for a long right tail (leakage, §3.6). $\mathbb{E}[(X - \mu)^4]/\sigma^4$ is the **kurtosis**: 3 for any Gaussian (Example 03-03.5). A measured kurtosis well above 3 flags heavier-than-Gaussian tails, a reason to distrust Q-function extrapolations to $10^{-12}$.
 
 ### 3.4 Means and variances of the standard distributions
-
-03-02 quoted these results; here are the derivations.
 
 **Bernoulli** ($X = 1$ with probability $p$): $\mathbb{E}[X] = p$, and since $X^2 = X$, $\mathbb{E}[X^2] = p$, so $\operatorname{Var}(X) = p - p^2 = p(1 - p)$.
 
@@ -158,9 +150,9 @@ $$
 
 so $\operatorname{Var}(K) = 2x/q^2 + 1/q - 1/q^2 = (2x + q - 1)/q^2 = (1 - q)/q^2$.
 
-**Uniform** on $[a, b]$: $\mathbb{E}[X] = (a + b)/2$ by symmetry, and $\operatorname{Var}(X) = (b - a)^2/12$ (the integral of $(x - \mu)^2/(b - a)$ over the interval, done in 01-07 for quantization noise).
+**Uniform** on $[a, b]$: $\mathbb{E}[X] = (a + b)/2$ by symmetry, and $\operatorname{Var}(X) = (b - a)^2/12$ (integrated in 01-07).
 
-**Exponential** (rate $r$): $\mathbb{E}[T] = \int_0^\infty e^{-rt}dt = 1/r$ by the survival formula. Integrating by parts twice, $\mathbb{E}[T^2] = \int_0^\infty t^2re^{-rt}dt = 2/r^2$, so $\operatorname{Var}(T) = 1/r^2$: **the standard deviation equals the mean.** A constant-rate lifetime is extremely variable, which is why an MTTF says so little about any one unit.
+**Exponential** (rate $r$): $\mathbb{E}[T] = \int_0^\infty e^{-rt}dt = 1/r$ by the survival formula. Integrating by parts twice, $\mathbb{E}[T^2] = \int_0^\infty t^2re^{-rt}dt = 2/r^2$, so $\operatorname{Var}(T) = 1/r^2$: **the standard deviation equals the mean.** So an MTTF says little about any one unit.
 
 **Gaussian** $\mathcal{N}(\mu, \sigma^2)$: by symmetry about $\mu$, $\mathbb{E}[X] = \mu$. For the variance, take the standard normal $Z$ and integrate by parts with $u = z$ and $dv = z\,e^{-z^2/2}dz$ (so $v = -e^{-z^2/2}$):
 
@@ -182,22 +174,22 @@ Then $X = \mu + \sigma Z$ has variance $\sigma^2$: the parameters of the Gaussia
 
 ### 3.5 Power of a random signal
 
-Let $V$ be the value of a voltage at a randomly chosen instant (or across an ensemble of identically built circuits). Into a resistance $R$ the average power is $\mathbb{E}[V^2]/R$, and the variance identity becomes a power decomposition:
+Let $V$ be a voltage at a random instant (or across identically built circuits). Into $R$ the average power is $\mathbb{E}[V^2]/R$, and the variance identity becomes a power decomposition:
 
 $$
 \underbrace{\mathbb{E}[V^2]}_{\text{total}} = \underbrace{(\mathbb{E}[V])^2}_{\text{DC}} + \underbrace{\operatorname{Var}(V)}_{\text{AC}}, \qquad V_{\text{rms}} = \sqrt{\mathbb{E}[V^2]} .
 $$
 
-The AC power is the variance, and the **AC RMS** value (what an AC-coupled true-RMS meter reads) is the standard deviation. Two consequences matter constantly.
+The AC power is the variance, and the **AC RMS** value (what an AC-coupled true-RMS meter reads) is the standard deviation.
 
 - **Uncorrelated powers add.** For a DC level plus zero-mean noise $N$, linearity gives $\mathbb{E}[(V_0 + N)^2] = V_0^2 + 2V_0\mathbb{E}[N] + \mathbb{E}[N^2] = V_0^2 + \sigma_N^2$. For two independent zero-mean signals the cross term $\mathbb{E}[XY]$ also vanishes ([03-04](03-04-joint-distributions-and-clt.md)): noise powers, not noise voltages, add.
-- **A periodic waveform sampled at a random time** is a random variable whose moments are its time averages. A sinusoid $A\cos\Theta$ with Θ uniform on $[0, 2\pi)$ has mean 0 and mean square $A^2/2$; a triangle wave of peak $A$ is uniform on $[-A, A]$, with mean square $A^2/3$. When time and ensemble averages agree in general is the question of **ergodicity** ([03-06](03-06-random-processes-preview.md)).
+- **A periodic waveform sampled at a random time** is a random variable whose moments are its time averages. A sinusoid $A\cos\Theta$ with Θ uniform on $[0, 2\pi)$ has mean 0 and mean square $A^2/2$; a triangle wave of peak $A$ is uniform on $[-A, A]$, with mean square $A^2/3$. When time and ensemble averages agree in general is **ergodicity** ([03-06](03-06-random-processes-preview.md)).
 
 ADC quantization error, uniform on $\pm\Delta/2$ with power $\Delta^2/12$, gave the ideal $6.02N + 1.76$ dB in [01-07](../../01-calculus-for-engineers/chapters/01-07-applications-of-integration.md); §3.9 redoes it for noise-like signals, where clipping enters.
 
 ### 3.6 The distribution of a function of a random variable
 
-Sometimes you need the whole distribution of $Y = g(X)$, not only its mean: the probability that a detector output exceeds a threshold, or the 99.9th percentile of leakage.
+Sometimes you need the whole distribution of $Y = g(X)$: the chance a detector output crosses a threshold, or the 99.9th percentile of leakage.
 
 **The CDF method** always works. Write the event $\{Y \le y\}$ as an event about $X$, compute its probability, and differentiate:
 
@@ -213,7 +205,7 @@ $$
 
 *Physical picture:* probability is conserved; where $g$ stretches the axis the density thins, where it compresses the axis the density piles up.
 
-**Linear functions keep the Gaussian shape.** If $X \sim \mathcal{N}(\mu, \sigma^2)$, then $Y = aX + b$ has $f_Y(y) = f_X((y - b)/a)/|a|$, which is $\mathcal{N}(a\mu + b, a^2\sigma^2)$: an amplifier keeps Gaussian noise Gaussian.
+**Linear functions keep the Gaussian shape:** $Y = aX + b$ has $f_Y(y) = f_X((y - b)/a)/|a|$, so $\mathcal{N}(\mu, \sigma^2)$ becomes $\mathcal{N}(a\mu + b, a^2\sigma^2)$.
 
 **A square law is not one-to-one.** $Y = X^2$ (the output of an ideal power detector, or the instantaneous power of a noise voltage in 1 Ω) has two preimages, $x = \pm\sqrt{y}$, each with $|g'(x)| = 2\sqrt{y}$:
 
@@ -223,31 +215,31 @@ $$
 
 For zero-mean Gaussian $X$ this is a scaled **chi-square density with one degree of freedom** (Example 03-03.5), strongly skewed: most samples have power below the mean, a few much more.
 
-**An exponential law makes a log-normal.** If $X \sim \mathcal{N}(\mu, s^2)$ and $Y = e^X$, then $g'(x) = e^x = y$ and
+**An exponential law makes a log-normal.** If $X \sim \mathcal{N}(\mu, \sigma_\ell^2)$ (so $\sigma_\ell$ is the standard deviation of $\ln Y$) and $Y = e^X$, then $g'(x) = e^x = y$ and
 
 $$
-f_Y(y) = \frac{1}{y\,s\sqrt{2\pi}}\exp\Big[-\frac{(\ln y - \mu)^2}{2s^2}\Big], \qquad y > 0 .
+f_Y(y) = \frac{1}{y\,\sigma_\ell\sqrt{2\pi}}\exp\Big[-\frac{(\ln y - \mu)^2}{2\sigma_\ell^2}\Big], \qquad y > 0 .
 $$
 
 $Y$ is **log-normal**: its logarithm is Gaussian. Because $e^x$ is increasing, percentiles map directly: the median of $Y$ is $e^\mu$. Its mean, from the expectation rule with completing the square in the exponent, is
 
 $$
-\mathbb{E}[e^X] = \int_{-\infty}^{\infty}e^x\frac{e^{-(x - \mu)^2/(2s^2)}}{s\sqrt{2\pi}}dx = e^{\mu + s^2/2}\int_{-\infty}^{\infty}\frac{e^{-(x - \mu - s^2)^2/(2s^2)}}{s\sqrt{2\pi}}dx = e^{\mu + s^2/2} ,
+\mathbb{E}[e^X] = \int_{-\infty}^{\infty}e^x\frac{e^{-(x - \mu)^2/(2\sigma_\ell^2)}}{\sigma_\ell\sqrt{2\pi}}dx = e^{\mu + \sigma_\ell^2/2}\int_{-\infty}^{\infty}\frac{e^{-(x - \mu - \sigma_\ell^2)^2/(2\sigma_\ell^2)}}{\sigma_\ell\sqrt{2\pi}}dx = e^{\mu + \sigma_\ell^2/2} ,
 $$
 
-since the last integrand is a Gaussian density centered at $\mu + s^2$. **The mean exceeds the median by the factor $e^{s^2/2}$.** Applying the same rule to $e^{2X}$ gives $\mathbb{E}[Y^2] = e^{2\mu + 2s^2}$, so $\operatorname{Var}(Y) = e^{2\mu + s^2}(e^{s^2} - 1)$.
+since the last integrand is a Gaussian density centered at $\mu + \sigma_\ell^2$. **The mean exceeds the median by the factor $e^{\sigma_\ell^2/2}$.** Applying the same rule to $e^{2X}$ gives $\mathbb{E}[Y^2] = e^{2\mu + 2\sigma_\ell^2}$, so $\operatorname{Var}(Y) = e^{2\mu + \sigma_\ell^2}(e^{\sigma_\ell^2} - 1)$.
 
-This matters for every chip. In subthreshold, a MOSFET's drain current depends exponentially on its gate overdrive, $I \propto e^{(V_{GS} - V_{TH})/(nV_T)}$, where $V_T = kT/q$ is the thermal voltage and $n$ is a slope factor somewhat above 1 (a textbook device result that [09](../../09-semiconductor-devices/README.md) derives). Random dopant and line-edge variation make $V_{TH}$ approximately Gaussian across devices, so off-state leakage is approximately log-normal (Figure 2, Example 03-03.6).
+This matters for every chip. Subthreshold drain current is exponential in gate overdrive, $I \propto e^{(V_{GS} - V_{TH})/(nV_T)}$, with $V_T = kT/q$ the thermal voltage and slope factor $n$ somewhat above 1 (derived in [09](../../09-semiconductor-devices/README.md)). Random dopant and line-edge variation make $V_{TH}$ roughly Gaussian across devices, so off-state leakage is roughly log-normal (Figure 2, Example 03-03.6).
 
 ![Left: a Gaussian density of threshold-voltage shift with 25 mV standard deviation. Right: the resulting log-normal density of off-current relative to its median, skewed right, with the median at 1 and the mean at 1.269.](../../../assets/figures/03-03/lognormal-leakage.svg)
 
 *Figure 2. A Gaussian threshold-voltage spread passes through the exponential subthreshold law and comes out log-normal: skewed right, with its mean above its median.*
 
-**Generating random samples (inverse transform).** If $U$ is uniform on $[0, 1]$ and $F$ is a continuous, strictly increasing CDF, then $Y = F^{-1}(U)$ has CDF $P(U \le F(y)) = F(y)$. For the exponential this gives $T = -\ln(1 - U)/r$ (or $-\ln U/r$, since $1 - U$ is also uniform). Simulators build every distribution this way from a uniform generator (Problem 03-03.12).
+**Inverse transform sampling.** For $U$ uniform on $[0, 1]$ and a continuous, strictly increasing CDF $F$, $Y = F^{-1}(U)$ has CDF $P(U \le F(y)) = F(y)$; for the exponential, $T = -\ln(1 - U)/r$. Simulators build distributions this way (Problem 03-03.12).
 
 ### 3.7 Inequalities: Markov, Chebyshev and Jensen
 
-Often you know only a mean and a variance. Two inequalities still bound the tails, and a third tells you which way a nonlinear function biases an average.
+With only a mean and a variance, two inequalities still bound the tails, and a third gives the direction in which a nonlinear function biases an average.
 
 **Markov's inequality.** For $X \ge 0$ and $a > 0$, $P(X \ge a) \le \mathbb{E}[X]/a$. *Proof:* $X \ge a\,I_{\{X\ge a\}}$ for every outcome (when the indicator is 1, $X \ge a$; when it is 0, $X \ge 0$). Take expectations: $\mathbb{E}[X] \ge a\,P(X \ge a)$. A useful special case: for a count $N$, $P(N \ge 1) \le \mathbb{E}[N]$, the union bound of 03-01 in disguise.
 
@@ -267,7 +259,7 @@ Chebyshev holds for every distribution, so it is loose for any particular one:
 | ±3σ | 11.11% | 0.2700% |
 | 1 ppm two-sided | $k = 1000$ | $k = 4.892$ |
 
-To guarantee 1 ppm with no knowledge of the distribution you need 1000σ of margin; if you trust a Gaussian model you need 4.892σ. The gap is the value of distributional knowledge, and the risk of distributional error.
+A distribution-free 1 ppm guarantee needs 1000σ of margin; a trusted Gaussian model needs 4.892σ. The gap is the value of distributional knowledge, and the risk of distributional error.
 
 **Jensen's inequality.** If $g$ is convex (curving upward, $g'' \ge 0$), then
 
@@ -275,38 +267,40 @@ $$
 \mathbb{E}[g(X)] \ge g(\mathbb{E}[X]) .
 $$
 
-*Proof:* a convex function lies above its tangent line at $\mu = \mathbb{E}[X]$: $g(x) \ge g(\mu) + g'(\mu)(x - \mu)$ for all $x$. Take expectations; the last term averages to zero. For concave $g$ the inequality reverses. Examples:
+*Proof:* a convex function lies above its tangent at $\mu = \mathbb{E}[X]$: $g(x) \ge g(\mu) + g'(\mu)(x - \mu)$. Take expectations; the last term averages to zero. Concave $g$ reverses it. Examples:
 
 - $g(x) = x^2$: the variance is nonnegative.
-- $g(x) = e^x$: the log-normal factor $e^{s^2/2}$ above; leakage at the median threshold voltage underestimates the average.
+- $g(x) = e^x$: the log-normal factor $e^{\sigma_\ell^2/2}$ above; leakage at the median threshold voltage underestimates the average.
 - Arrhenius failure rates $e^{-E_a/(kT)}$ are convex in temperature over the operating range, so temperature cycling raises the average rate (Problem 03-03.14).
 
 ### 3.8 Crest factor and peak-to-average power ratio of random signals
 
 The **crest factor** is the peak value divided by the RMS value; the **peak-to-average power ratio** (PAPR) is peak power over average power, the square of the crest factor, so the two are the same number in dB. For deterministic periodic waveforms the peak is well defined ([01-07](../../01-calculus-for-engineers/chapters/01-07-applications-of-integration.md)): a sinusoid has crest factor $\sqrt2$, a PAPR of **3.010 dB**; a triangle wave $\sqrt3$, or **4.771 dB**.
 
-A Gaussian signal has no peak: any level is exceeded eventually. Its PAPR is defined **at a stated probability** $p$, read from the complementary CDF (CCDF) of its power ([R-066](../../../reference/research-log.md#r-066--papr-ccdf-and-crest-factor-of-communication-signals)).
+**Two conventions.** For a radio signal, "power" can mean two things. The *instantaneous power of the real waveform*, $x(t)^2$, swings twice per carrier cycle; by this measure a sinusoid peaks 3.010 dB above its average. The *envelope power*, $|z(t)|^2$ for the complex baseband signal $z$ (the carrier's amplitude squared, averaged over one cycle), is what CCDF instruments, crest-factor specifications and amplifier back-off use; by this measure a constant-envelope carrier has a PAPR of **0 dB**. Compare waveforms only within one convention.
 
-- **Real Gaussian noise**, $X \sim \mathcal{N}(0, \sigma^2)$: the power exceeds $x\sigma^2$ when $|X| > \sqrt{x}\,\sigma$, with probability $2Q(\sqrt{x})$. At $p = 10^{-4}$, $\sqrt{x} = Q^{-1}(5\times10^{-5}) = 3.891$ and the PAPR is **11.80 dB**.
-- **A complex Gaussian signal**, the many-subcarrier limit of OFDM: by the central limit theorem ([03-04](03-04-joint-distributions-and-clt.md)) a sum of many independently modulated subcarriers has independent Gaussian real and imaginary parts, and 03-04 shows that its instantaneous power $P$ is then **exponential**, $P(P > x\bar P) = e^{-x}$ for average power $\bar P$. The PAPR at probability $p$ is $10\log_{10}\ln(1/p)$ dB: **6.632 dB** at $10^{-2}$, **8.393** at $10^{-3}$, **9.643** at $10^{-4}$ and **11.40** at $10^{-6}$ (Figure 3).
+A Gaussian model has no peak: any level is eventually exceeded. Its PAPR is defined **at a stated probability** $p$, read from the complementary CDF (CCDF) of its power ([R-066](../../../reference/research-log.md#r-066--papr-ccdf-and-crest-factor-of-communication-signals)). (A real OFDM symbol of $N$ subcarriers with bounded constellations cannot exceed about $10\log_{10}N$ dB, **24.08 dB** for $N = 256$, but such peaks are so improbable that the Gaussian CCDF governs practical levels.)
 
-![CCDF of instantaneous power relative to average on a log scale: a sinusoid drops to zero at 3.01 dB; a complex Gaussian (OFDM) reaches 1e-4 at 9.64 dB; a real Gaussian reaches 1e-4 at 11.80 dB.](../../../assets/figures/03-03/papr-ccdf.svg)
+- **Real Gaussian noise** (real-waveform convention; the up-converted OFDM waveform at the carrier looks like this), $X \sim \mathcal{N}(0, \sigma^2)$: the power exceeds $x\sigma^2$ when $|X| > \sqrt{x}\,\sigma$, with probability $2Q(\sqrt{x})$. At $p = 10^{-4}$, $\sqrt{x} = Q^{-1}(5\times10^{-5}) = 3.891$ and the PAPR is **11.80 dB**.
+- **A complex Gaussian signal** (envelope convention), the many-subcarrier limit of OFDM at baseband: by the central limit theorem ([03-04](03-04-joint-distributions-and-clt.md)) a sum of many independently modulated subcarriers has independent Gaussian real and imaginary parts, and 03-04 shows that its envelope power $P$ is then **exponential**, $\Pr(P > x\bar P) = e^{-x}$ for average power $\bar P$. The PAPR at probability $p$ is $10\log_{10}\ln(1/p)$ dB: **6.632 dB** at $10^{-2}$, **8.393** at $10^{-3}$, **9.643** at $10^{-4}$ and **11.40** at $10^{-6}$ (Figure 3). Like for like, OFDM needs 9.643 dB more headroom than a constant-envelope carrier at $10^{-4}$, or $11.80 - 3.010 = $ **8.790 dB** more in the real-waveform convention.
 
-*Figure 3. CCDFs of instantaneous power. A sinusoid never exceeds 3.01 dB above its average; noise-like signals have no hard peak, so their PAPR must be quoted at a probability.*
+![CCDF of power relative to average on a log scale, in two conventions: a sinusoid's real-waveform power drops to zero at 3.01 dB and a real Gaussian reaches 1e-4 at 11.80 dB; a complex Gaussian's envelope power reaches 1e-4 at 9.64 dB, while a constant envelope sits at 0 dB.](../../../assets/figures/03-03/papr-ccdf.svg)
 
-**Clipping and memorylessness.** If an amplifier clips power above $c = x\bar P$, the expected excess power is $\mathbb{E}[(P - c)^+]$, with $(u)^+ = \max(u, 0)$. Given $P > c$, the excess of an exponential is again exponential with mean $\bar P$ (03-02), so
+*Figure 3. CCDFs of power above average. Real waveforms (sinusoid, real Gaussian) use instantaneous power; the complex Gaussian uses envelope power, the instrument convention, in which a constant envelope sits at 0 dB. Noise-like signals have no hard peak, so PAPR is quoted at a probability.*
+
+**Clipping: lost power and distortion.** If an amplifier limits the envelope power at $c = x\bar P$, the power it fails to deliver (the *lost*, or clipped-off, power) is $\mathbb{E}[(P - c)^+]$, with $(u)^+ = \max(u, 0)$. Given $P > c$, the excess of an exponential is again exponential with mean $\bar P$ (03-02), so
 
 $$
-\mathbb{E}[(P - c)^+] = P(P > c)\,\mathbb{E}[P - c \mid P > c] = e^{-x}\,\bar P .
+\mathbb{E}[(P - c)^+] = \Pr(P > c)\,\mathbb{E}[P - c \mid P > c] = e^{-x}\,\bar P :
 $$
 
-The clipped fraction of the power equals the clipping probability (Problem 03-03.16).
+the lost fraction equals the clipping probability. Spectrum and error-vector limits constrain something else: the power of the *error signal*, the difference between the clipped and unclipped envelopes, $\mathbb{E}\big[(R - \sqrt c)^2;\ R > \sqrt c\big] \approx \bar P\,e^{-x}/(2x)$ to leading order for large $x$. It is roughly 10 dB below the lost power at practical back-offs (Example 03-03.7, Problem 03-03.16).
 
 The **envelope** $R = \sqrt{P}$ of the complex signal follows by change of variables: $f_R(r) = f_P(r^2)\cdot2r = (2r/\bar P)\,e^{-r^2/\bar P}$, the **Rayleigh** distribution, with $\mathbb{E}[R] = \sqrt{\pi\bar P}/2$ (Problem 03-03.13). Example 03-03.7 uses it to find the average efficiency of a power amplifier.
 
 ### 3.9 Loading an ADC with a noise-like signal
 
-An $N$-bit ADC spans $\pm V_{FS}$ with step $\Delta = 2V_{FS}/2^N$. A noise-like input (an OFDM baseband signal, a sensor's noise floor) has no peak, so the designer chooses a **loading factor** $k = V_{FS}/\sigma$, the full scale in units of the signal's standard deviation. Two noise sources compete.
+An $N$-bit ADC spans $\pm V_{FS}$ with step $\Delta = 2V_{FS}/2^N$. A noise-like input (OFDM at baseband, a sensor's noise floor) has no peak, so the designer chooses a **loading factor** $k = V_{FS}/\sigma$ (a pure number; not Boltzmann's constant). Two noise sources compete.
 
 **Granular noise.** Inside the range, the error is uniform with power $\Delta^2/12 = (2k\sigma)^2/(12\cdot4^N) = k^2\sigma^2/(3\cdot4^N)$, so the granular SNR is
 
@@ -326,15 +320,15 @@ with $\phi(z) = e^{-z^2/2}/\sqrt{2\pi}$. (Expand $(z - k)^2$ and use $\int_k^\in
 
 ![SNR versus loading factor for 8-, 10- and 12-bit ADCs with a Gaussian input. Each curve rises steeply while clipping dominates, peaks at k of about 3.9, 4.5 and 5.0, then falls slowly along the dashed granular-only line.](../../../assets/figures/03-03/adc-loading.svg)
 
-*Figure 4. Loading an ADC with a Gaussian signal. Left of the peak, clipping dominates; right of it, wasted headroom costs 6 dB per doubling. More bits make granular noise smaller, so the optimum moves to more headroom.*
+*Figure 4. Loading an ADC with a Gaussian signal. Left of the peak, clipping dominates; right of it, headroom costs 6 dB per doubling. More bits shrink granular noise, moving the optimum to more headroom.*
 
-Numerically, the optimum is $k = $ **3.924** for 8 bits (SNR **40.60 dB**) and $k = $ **5.013** for 12 bits (SNR **62.71 dB**). A 12-bit converter loaded at $k = 4$ reaches only **51.87 dB**: clipping wastes nearly two bits. More resolution deserves more headroom.
+Numerically, the optimum is $k = $ **3.924** for 8 bits (SNR **40.60 dB**) and $k = $ **5.013** for 12 bits (SNR **62.71 dB**). A 12-bit converter loaded at $k = 4$ reaches only **51.87 dB**: clipping wastes **1.80** bits. More resolution deserves more headroom.
 
 ## 4. Worked examples
 
 ### Example 03-03.1 — Means and variances from a PMF (tier A)
 
-**Setup.** (a) For the number $X$ of bad dies in the four-chiplet package of Example 03-02.1 ($n = 4$, $p = 0.1$), compute $\mathbb{E}[X]$, $\mathbb{E}[X^2]$, $\operatorname{Var}(X)$ and $\sigma_X$ from the PMF, and check them against the binomial formulas. (b) A 12,000-bit packet fails with probability $p_e = 0.1131$ (Example 03-02.3) and is resent until it arrives intact. Find the mean and standard deviation of the number of transmissions $K$, and the link's efficiency (useful packets per transmission).
+**Setup.** (a) For the number $X$ of bad dies in the four-chiplet package of Example 03-02.1 ($n = 4$, $p = 0.1$), compute $\mathbb{E}[X]$, $\mathbb{E}[X^2]$, $\operatorname{Var}(X)$ and $\sigma_X$ from the PMF, and check them against the binomial formulas. (b) A 12,000-bit packet fails with probability $p_e = 0.1131$ (Example 03-02.3) and is resent until intact. Find the mean and standard deviation of the number of transmissions $K$, and the link's efficiency (useful packets per transmission).
 
 **Solution.** (a) From the PMF (0.6561, 0.2916, 0.0486, 0.0036, 0.0001 for $k = 0$ to 4):
 
@@ -344,9 +338,9 @@ $$
 
 So $\mathbb{E}[X] = $ **0.4**, $\mathbb{E}[X^2] = $ **0.52**, $\operatorname{Var}(X) = 0.52 - 0.16 = $ **0.36** and $\sigma_X = $ **0.6** dies. The formulas agree: $np = 0.4$ and $np(1 - p) = 0.36$.
 
-(b) $K$ is geometric with $q = 1 - p_e = $ **0.8869** (from the unrounded $p_e = 0.11308$). $\mathbb{E}[K] = 1/q = $ **1.1275** transmissions, $\operatorname{Var}(K) = p_e/q^2 = $ **0.1438** and $\sigma_K = $ **0.3791**. The efficiency, $1/\mathbb{E}[K] = q$, means retransmission costs 11.3% of the link's capacity.
+(b) $K$ is geometric with $q = 1 - p_e = $ **0.8869** (from the unrounded $p_e = 0.11308$). $\mathbb{E}[K] = 1/q = $ **1.1275** transmissions, $\operatorname{Var}(K) = p_e/q^2 = $ **0.1438** and $\sigma_K = $ **0.3791**. The efficiency, $1/\mathbb{E}[K] = q$, so retransmission costs **11.31%** of capacity.
 
-**Sanity check.** A mean of 0.4 bad dies with σ = 0.6 fits most packages having none ✓.
+**Sanity check.** Mean 0.4, σ = 0.6: most packages have none ✓.
 
 ### Example 03-03.2 — Expected good dies on a wafer, with or without clustering (tier A)
 
@@ -366,7 +360,7 @@ So **540** good dies on average, a yield of $540/600 = $ **0.9** (90%), and an e
 
 ### Example 03-03.3 — RMS current and conduction loss in a buck converter (tier B)
 
-**Setup.** A buck converter's inductor carries a 10 A average current with a triangular ripple of 3 A peak to peak. The inductor's winding resistance is 4 mΩ. (a) Find the RMS current and the conduction loss. (b) At light load the converter runs at the boundary of discontinuous conduction: the current ramps between 0 and 20 A, still averaging 10 A. Find the RMS current and the loss now.
+**Setup.** A buck converter's inductor carries a 10 A average current with a triangular ripple of 3 A peak to peak. The inductor's winding resistance is 4 mΩ. (a) Find the RMS current and the conduction loss. (b) With a smaller inductor the ripple grows to the boundary of discontinuous conduction: the current ramps between 0 and 20 A, still averaging 10 A. Find the RMS current and the loss now.
 
 **Solution.** (a) Sampled at a random time, a triangle wave is uniform over its range, so the ripple is uniform on $[-1.5, 1.5]$ A, with mean 0 and variance $3^2/12 = 0.75$ A². Then
 
@@ -378,11 +372,11 @@ $I_{\text{rms}} = $ **10.04 A**, and the loss is $100.75\times0.004 = $ **0.4030
 
 (b) Now the current is uniform on $[0, 20]$ A, with variance $20^2/12$ A², so $\mathbb{E}[I^2] = 100 + 33.33$ A², $I_{\text{rms}} = $ **11.55 A**, and the loss is **0.5333 W**: **33.33%** more than DC alone.
 
-**Units check.** A² × Ω = W ✓. **Sanity check.** $I_{\text{rms}} \ge |\mathbb{E}[I]|$ always (Jensen), with equality only for pure DC ✓. Converter designers therefore size inductors and switches by RMS current: large ripple saves inductance but costs efficiency ([22](../../22-power-electronics-and-energy-conversion/README.md)).
+**Units check.** A² × Ω = W ✓. **Sanity check.** $I_{\text{rms}} \ge |\mathbb{E}[I]|$ always (Jensen), with equality only for pure DC ✓. Designers size inductors and switches by RMS current: large ripple saves inductance but costs efficiency ([22](../../22-power-electronics-and-energy-conversion/README.md)).
 
 ### Example 03-03.4 — What an average-responding meter reads on noise (tier B)
 
-**Setup.** An average-responding AC voltmeter measures $\mathbb{E}[|V|]$ and multiplies by the sine's form factor $\pi/(2\sqrt2) = 1.1107$, so that it reads the RMS value of a sinusoid correctly ([01-07](../../01-calculus-for-engineers/chapters/01-07-applications-of-integration.md)). What does it read on zero-mean Gaussian noise of RMS value σ? Express the error in dB.
+**Setup.** An average-responding voltmeter reports $\mathbb{E}[|V|]$ times the sine's form factor $\pi/(2\sqrt2) = 1.1107$ ([01-07](../../01-calculus-for-engineers/chapters/01-07-applications-of-integration.md)). What does it read on zero-mean Gaussian noise of RMS value σ, in dB?
 
 **Solution.** By the expectation rule and symmetry,
 
@@ -390,13 +384,13 @@ $$
 \mathbb{E}[|X|] = 2\int_0^\infty x\frac{e^{-x^2/(2\sigma^2)}}{\sigma\sqrt{2\pi}}dx = \frac{2\sigma^2}{\sigma\sqrt{2\pi}}\Big[-e^{-x^2/(2\sigma^2)}\Big]_0^\infty = \sigma\sqrt{\frac2\pi} = 0.7979\,\sigma .
 $$
 
-The meter reads $1.1107\times0.7979\,\sigma = $ **0.8862**σ (exactly $\sqrt\pi/2$), which is **−1.049 dB**: it underreads noise by 11.4%. The same factor $\sqrt\pi/2$, and the same 1.05 dB, appears when an instrument averages the Rayleigh-distributed envelope of noise instead of its power (Problem 03-03.13).
+The meter reads $1.1107\times0.7979\,\sigma = $ **0.8862**σ (exactly $\sqrt\pi/2$), which is **−1.049 dB**: it underreads noise by **11.38%**. The same factor $\sqrt\pi/2$, and the same 1.05 dB, appears when an instrument averages the Rayleigh-distributed envelope of noise instead of its power (Problem 03-03.13).
 
-**Sanity check.** Gaussian noise spends more time near zero than a sine, so its rectified average is a smaller fraction of its RMS ✓.
+**Sanity check.** Noise spends more time near zero than a sine, so its rectified average is a smaller fraction of its RMS ✓.
 
 ### Example 03-03.5 — A square-law detector on Gaussian noise (tier B)
 
-**Setup.** A power detector outputs $Y = X^2$, where $X \sim \mathcal{N}(0, \sigma^2)$ is the instantaneous noise voltage (power in 1 Ω). (a) Find the density of $Y$. (b) Find $\mathbb{E}[Y]$, $\operatorname{Var}(Y)$ and the ratio of the standard deviation to the mean. (c) What fraction of instantaneous samples exceed four times the average power?
+**Setup.** A power detector outputs $Y = X^2$ for noise $X \sim \mathcal{N}(0, \sigma^2)$. (a) Find $f_Y$. (b) Find $\mathbb{E}[Y]$, $\operatorname{Var}(Y)$ and the standard deviation over the mean. (c) What fraction of samples exceed four times the average power?
 
 **Solution.** (a) From §3.6 with the two roots $\pm\sqrt y$:
 
@@ -404,11 +398,11 @@ $$
 f_Y(y) = \frac{2}{2\sqrt y}\cdot\frac{e^{-y/(2\sigma^2)}}{\sigma\sqrt{2\pi}} = \frac{1}{\sigma\sqrt{2\pi y}}e^{-y/(2\sigma^2)}, \qquad y > 0 .
 $$
 
-(b) $\mathbb{E}[Y] = \mathbb{E}[X^2] = \sigma^2$. For the variance, integrate by parts with $u = z^3$, $dv = z\,e^{-z^2/2}dz$ to get $\mathbb{E}[Z^4] = 3\,\mathbb{E}[Z^2] = 3$, so $\mathbb{E}[X^4] = 3\sigma^4$ and $\operatorname{Var}(Y) = 2\sigma^4$. The standard deviation is $\sqrt2\sigma^2$, **1.414** times the mean: one sample of noise power is a poor estimate of the average, and many must be averaged ([03-05](03-05-estimation-and-hypothesis-testing.md)).
+(b) $\mathbb{E}[Y] = \mathbb{E}[X^2] = \sigma^2$. For the variance, integrate by parts with $u = z^3$, $dv = z\,e^{-z^2/2}dz$ to get $\mathbb{E}[Z^4] = 3\,\mathbb{E}[Z^2] = 3$, so $\mathbb{E}[X^4] = 3\sigma^4$ and $\operatorname{Var}(Y) = 2\sigma^4$. The standard deviation is $\sqrt2\sigma^2$, **1.414** times the mean: one sample of noise power is a poor estimate, and many must be averaged ([03-05](03-05-estimation-and-hypothesis-testing.md)).
 
 (c) $P(Y > 4\sigma^2) = P(|X| > 2\sigma) = 2Q(2) = $ **0.04550**.
 
-**Units check.** $f_Y$ has units 1/V² when $y$ is in V² ✓ ($1/(\sigma\sqrt{y})$). **Sanity check.** $\int_0^\infty f_Y\,dy = 1$: substitute $y = \sigma^2u^2$ to recover the Gaussian integral ✓.
+**Checks.** $f_Y$ has units 1/V² ✓, and substituting $y = \sigma^2u^2$ turns $\int f_Y\,dy$ into the Gaussian integral, 1 ✓.
 
 ### Example 03-03.6 — Log-normal leakage: why the mean beats the median (tier C)
 
@@ -417,40 +411,40 @@ $$
 **Solution.** (a) $V_T = 1.380649\times10^{-23}\times300/1.602177\times10^{-19} = $ **25.85 mV**. The exponent $X = -\Delta V_{TH}/(nV_T)$ is Gaussian with mean 0 and standard deviation
 
 $$
-s = \frac{25\text{ mV}}{1.4\times25.85\text{ mV}} = 0.6907 .
+\sigma_\ell = \frac{25\text{ mV}}{1.4\times25.85\text{ mV}} = 0.6907 .
 $$
 
-So $I_{\text{off}}/I_0 = e^X$ is log-normal with median $e^0 = 1$ and mean $e^{s^2/2} = $ **1.269**. The coefficient of variation (standard deviation over mean) is $\sqrt{e^{s^2} - 1} = $ **0.7819**.
+So $I_{\text{off}}/I_0 = e^X$ is log-normal with median $e^0 = 1$ and mean $e^{\sigma_\ell^2/2} = $ **1.269**. The coefficient of variation (standard deviation over mean) is $\sqrt{e^{\sigma_\ell^2} - 1} = $ **0.7819**.
 
-(b) $P(e^X > 2) = P(X > \ln2) = Q(\ln2/s) = Q(1.0035) = $ **0.1578**: about one transistor in six leaks more than twice the median. The 99.9th percentile is $e^{s\,Q^{-1}(10^{-3})} = e^{0.6907\times3.090} = $ **8.453** times the median.
+(b) $P(e^X > 2) = P(X > \ln2) = Q(\ln2/\sigma_\ell) = Q(1.0035) = $ **0.1578**: about one transistor in six leaks more than twice the median. The 99.9th percentile is $e^{\sigma_\ell\,Q^{-1}(10^{-3})} = e^{0.690745\times3.090232} = $ **8.453** times the median.
 
-(c) The sum of $10^8$ independent leakages is very close to $10^8$ times the mean (the law of large numbers, 03-04): **0.1269 A**. The median device would predict 0.1 A, 21% low; by Jensen's inequality the error always goes this way for a convex law.
+(c) The sum of $10^8$ independent leakages is very close to $10^8$ times the mean (the law of large numbers, 03-04): **0.1269 A**. The median device would predict 0.1 A, **21.22%** low; by Jensen's inequality the error always goes this way for a convex law.
 
 **Units check.** $\Delta V_{TH}/(nV_T)$ is dimensionless ✓. **Sanity check.** The mean (1.269) lies between the median (1) and the 99.9th percentile (8.45), pulled right by the long tail ✓. *Practitioner note:* power estimates for large arrays must use the mean device, not the median one, and the right tail, not the typical device, drives standby-current limits and the parts a production test must screen out.
 
 ### Example 03-03.7 — OFDM headroom and power-amplifier efficiency (tier C)
 
-**Setup.** An OFDM transmitter's complex baseband signal is well modeled as complex Gaussian, so its instantaneous power is exponential with mean $\bar P$. (a) Find the PAPR at a CCDF probability of $10^{-4}$ and compare it with a sinusoid. (b) If the power amplifier saturates only 8 dB above $\bar P$, how often does it clip, and what fraction of the power is clipped? (c) An ideal class-B amplifier delivering a sinusoid of amplitude $r$ from a supply allowing amplitude $r_{\max}$ has efficiency $\eta = (\pi/4)(r/r_{\max})$; its DC current is proportional to $r$ and its output power to $r^2$. With $r_{\max}$ set at the $10^{-4}$ PAPR, find its average efficiency for the OFDM signal.
+**Setup.** An OFDM transmitter's complex baseband signal is well modeled as complex Gaussian, so its instantaneous power is exponential with mean $\bar P$. (a) Find the PAPR at a CCDF probability of $10^{-4}$ and compare it with a constant-envelope carrier. (b) If the power amplifier saturates only 8 dB above $\bar P$, how often does it clip, what fraction of the power is lost, and what is the power of the resulting error signal? (c) An ideal class-B amplifier delivering a sinusoid of amplitude $a$ from a supply allowing amplitude $a_{\max}$ has efficiency $\eta = (\pi/4)(a/a_{\max})$; its DC current is proportional to $a$ and its output power to $a^2$. With $a_{\max}$ set at the $10^{-4}$ PAPR, find its average efficiency for the OFDM signal.
 
-**Solution.** (a) $P(P > x\bar P) = e^{-x} = 10^{-4}$ gives $x = \ln10^4 = 9.210$, a PAPR of **9.643 dB**, against **3.010 dB** for a sinusoid.
+**Solution.** (a) $\Pr(P > x\bar P) = e^{-x} = 10^{-4}$ gives $x = \ln10^4 = 9.210$, a PAPR of **9.643 dB** in the envelope convention, against 0 dB for a constant-envelope carrier. (In the real-waveform convention, 11.80 dB against **3.010 dB** for a sinusoid, a similar gap of 8.790 dB.)
 
-(b) $x = 10^{0.8} = 6.310$: the clipping probability is $e^{-6.310} = $ **1.819×10⁻³**, and by the memoryless result of §3.8 the clipped fraction of the power is also $1.819\times10^{-3}$, or **−27.40 dB** relative to the average.
+(b) $x = 10^{0.8} = 6.310$: the clipping probability is $e^{-6.310} = $ **1.819×10⁻³**, and by the memoryless result of §3.8 the lost fraction of the power is also $1.819\times10^{-3}$, or **−27.40 dB** relative to the average. The error signal's power, integrating $(r - \sqrt x)^2$ against the Rayleigh density beyond $\sqrt x$, is **−39.25 dB**: about 12 dB lower, and the quantity that error-vector and spectrum limits constrain.
 
 (c) Average efficiency is average output power over average DC power, both expectations over the envelope $R$:
 
 $$
-\bar\eta = \frac{\mathbb{E}[\text{output power}]}{\mathbb{E}[\text{DC power}]} = \frac{\pi}{4}\,\frac{\mathbb{E}[R^2]}{r_{\max}\,\mathbb{E}[R]} .
+\bar\eta = \frac{\mathbb{E}[\text{output power}]}{\mathbb{E}[\text{DC power}]} = \frac{\pi}{4}\,\frac{\mathbb{E}[R^2]}{a_{\max}\,\mathbb{E}[R]} .
 $$
 
-$R$ is Rayleigh with $\mathbb{E}[R^2] = \bar P$ and $\mathbb{E}[R] = \sqrt{\pi\bar P}/2$, and $r_{\max} = \sqrt{x\bar P}$, so $\bar P$ cancels:
+$R$ is Rayleigh with $\mathbb{E}[R^2] = \bar P$ and $\mathbb{E}[R] = \sqrt{\pi\bar P}/2$, and $a_{\max} = \sqrt{x\bar P}$, so $\bar P$ cancels:
 
 $$
 \bar\eta = \frac{\pi}{4}\cdot\frac{1}{\sqrt{9.210}\cdot\sqrt\pi/2} = 0.2920 .
 $$
 
-The average efficiency is **29.20%**, against **78.54%** ($\pi/4$) for a full-scale sinusoid. (The $10^{-4}$ of samples above $r_{\max}$ are ignored here.)
+The average efficiency is **29.20%**, against **78.54%** ($\pi/4$) for a full-scale sinusoid. (The $10^{-4}$ of samples above $a_{\max}$ are ignored here.)
 
-**Units check.** The ratio of powers is dimensionless ✓. **Sanity check.** A constant-envelope sinusoid with the same average power, $r = \sqrt{\bar P}$, would give $(\pi/4)/\sqrt{9.210} = $ **25.88%**. The OFDM signal does slightly better because class-B DC power follows the average envelope $\mathbb{E}[R]$, which is below the RMS envelope $\sqrt{\bar P}$ (Jensen) ✓. This loss drives crest-factor reduction, predistortion and single-carrier-like uplinks (§9; [21](../../21-rf-and-microwave-engineering/README.md)).
+**Units check.** The ratio of powers is dimensionless ✓. **Sanity check.** A constant-envelope sinusoid with the same average power, $a = \sqrt{\bar P}$, would give $(\pi/4)/\sqrt{9.210} = $ **25.88%**. The OFDM signal does slightly better because class-B DC power follows the average envelope $\mathbb{E}[R]$, which is below the RMS envelope $\sqrt{\bar P}$ (Jensen) ✓. This loss drives crest-factor reduction, predistortion and single-carrier-like uplinks (§9; [21](../../21-rf-and-microwave-engineering/README.md)).
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -493,6 +487,11 @@ The average efficiency is **29.20%**, against **78.54%** ($\pi/4$) for a full-sc
 | Ex 03-03.7d | clipped power fraction at 8 dB | −27.40 | dB |
 | Ex 03-03.7e | class-B average efficiency, OFDM | 29.20 | % |
 | Ex 03-03.7f | class-B efficiency, full-scale sinusoid | 78.54 | % |
+| Ex 03-03.7h | real-waveform PAPR gap | 8.790 | dB |
+| Ex 03-03.7i | error-signal power at 8 dB back-off | −39.25 | dB |
+| Ex 03-03.1i | capacity lost to retransmission | 11.31 | % |
+| Ex 03-03.4e | average-meter underreading on noise | 11.38 | % |
+| Ex 03-03.6h | median-device underestimate of block leakage | 21.22 | % |
 | Ex 03-03.7g | class-B efficiency, sinusoid at the same average power | 25.88 | % |
 
 ## 5. Simulate it
@@ -511,24 +510,23 @@ The lab ([labs/03-03-lab/](../labs/03-03-lab/README.md)) is a notebook of sampli
 
 | Knob | Improves | Costs | Typical decision owner |
 |---|---|---|---|
-| Power-amplifier back-off (headroom above average power) | Less clipping and distortion, cleaner spectrum | Average efficiency, which falls roughly in proportion to amplitude back-off | RF system and PA designers |
+| Power-amplifier back-off | Less clipping and distortion | Average efficiency (ideal class B falls with amplitude, class A with power) | RF system and PA designers |
 | Crest-factor reduction and digital predistortion | Lets the PA run closer to saturation | Digital power, some in-band error (EVM), design effort | Transmitter architects |
 | ADC loading factor | Clipping noise (more headroom) or granular noise (less headroom) | The other one; the optimum moves with resolution | Mixed-signal and receiver designers |
-| Inductor ripple ratio in a converter | Smaller, cheaper inductor; faster transient response | Higher RMS current, conduction and core loss | Power-electronics designers |
+| Inductor ripple ratio | Smaller inductor, faster transients | Higher RMS current and loss | Power-electronics designers |
 | Statistical (mean) leakage models | Correct power for large arrays | Variability data, statistical libraries | Power sign-off engineers |
 
 ## 7. Numbers to know
 
 | Quantity | Value | Note |
 |---|---|---|
-| Means and variances | binomial $np$, $np(1 - p)$; Poisson λ, λ; geometric $1/q$, $(1 - q)/q^2$; exponential $1/r$, $1/r^2$; uniform width $w$: variance $w^2/12$ | §3.4 table |
 | Power decomposition | $\mathbb{E}[V^2] = (\mathbb{E}[V])^2 + \operatorname{Var}(V)$ | total = DC + AC |
 | Gaussian mean absolute value | $0.7979\sigma$ ($\sqrt{2/\pi}$) | Average meters read noise 1.049 dB low |
 | Chebyshev at ±3σ | at most 11.11% outside | Gaussian: 0.2700% |
-| Log-normal mean over median | $e^{s^2/2}$ | Leakage, lifetimes |
-| PAPR: sine, triangle | 3.010 dB, 4.771 dB | Crest factor $\sqrt2$, $\sqrt3$ |
-| PAPR of a complex Gaussian (OFDM limit) at $10^{-4}$ | 9.643 dB | $10\log_{10}\ln(1/p)$ |
-| Measured LTE downlink crest factor (20 MHz, as of Nov 2026) | 11.65 dB; uplink SC-FDMA 5.15–6.03 dB | Rohde & Schwarz [R-066](../../../reference/research-log.md#r-066--papr-ccdf-and-crest-factor-of-communication-signals) |
+| Log-normal mean over median | $e^{\sigma_\ell^2/2}$ | Leakage, lifetimes |
+| PAPR, real-waveform convention: sine, triangle | 3.010 dB, 4.771 dB | Crest factor $\sqrt2$, $\sqrt3$ |
+| PAPR, envelope convention: constant envelope; complex Gaussian (OFDM limit) at $10^{-4}$ | 0 dB; 9.643 dB | $10\log_{10}\ln(1/p)$; instruments use this convention |
+| Measured LTE crest factors (20 MHz; R&S measurement June 2016, checked Nov 2026) | 11.65 dB; uplink SC-FDMA 5.15–6.03 dB | Rohde & Schwarz [R-066](../../../reference/research-log.md#r-066--papr-ccdf-and-crest-factor-of-communication-signals) |
 | ADC SNR with Gaussian input, granular only | $6.02N + 4.77 - 20\log_{10}k$ dB | Optimum $k$: 3.924 (8 bits), 5.013 (12 bits) |
 
 <!-- answer-key -->
@@ -556,40 +554,43 @@ The lab ([labs/03-03-lab/](../labs/03-03-lab/README.md)) is a notebook of sampli
 | T 03-03.u | optimum SNR, 12 bits | 62.71 | dB |
 | T 03-03.v | 12-bit SNR at k = 4 | 51.87 | dB |
 | T 03-03.w | complex Gaussian exceedance at 11.65 dB | 4.5×10^-7 | — |
+| T 03-03.x | real-waveform PAPR gap at 1e-4 | 8.790 | dB |
+| T 03-03.y | bound on OFDM peak, 256 subcarriers | 24.08 | dB |
+| T 03-03.z | bits wasted by k = 4 at 12 bits | 1.80 | — |
 
 ## 8. Common mistakes
 
 1. **Assuming variances add without independence.** Means always add; variances add only for uncorrelated terms. Clustered defects and common-mode noise break the variance sum.
 2. **Computing $g(\mathbb{E}[X])$ instead of $\mathbb{E}[g(X)]$.** For any nonlinear $g$ they differ, and Jensen tells you the direction: leakage at the median $V_{TH}$, power at the average current and failure rate at the average temperature all underestimate.
-3. **Confusing RMS with the mean.** Heating follows $\mathbb{E}[I^2]$; a DC ammeter's average reading understates conduction loss whenever there is ripple.
+3. **Confusing RMS with the mean.** Heating follows $\mathbb{E}[I^2]$; an average reading understates loss whenever there is ripple.
 4. **Forgetting the $1/|g'|$ factor (or a branch) in a change of variables.** A non-monotonic $g$ such as $x^2$ has several preimages, and each contributes.
-5. **Quoting a PAPR without a probability.** For noise-like signals, "PAPR = 10 dB" is meaningless until you say at what CCDF level, and a capture's "crest factor" grows with its length.
+5. **Quoting a PAPR without a probability or a convention.** State the CCDF level and whether envelope or real-waveform power; a capture's "crest factor" grows with its length.
 6. **Reading a single noise-power sample as the average.** Its standard deviation is $\sqrt2$ times the mean; average many samples.
-7. **Using the mean of a skewed quantity as "typical".** For log-normal leakage or exponential lifetimes the median and the mean differ; state which one a specification uses.
+7. **Using the mean of a skewed quantity as "typical".** For log-normal leakage or exponential lifetimes, state whether a specification uses the median or the mean.
 
 ## 9. Practitioner lens
 
 ### State of the art (as of Nov 2026)
 
-- **PAPR is measured as a CCDF:** the time a signal spends at or above each power level relative to its average. Multi-tone signals approach the Gaussian-noise curve as tones are added (Keysight application note 5968-6875E, July 2024) ([R-066](../../../reference/research-log.md#r-066--papr-ccdf-and-crest-factor-of-communication-signals)) **[Established]**.
-- **OFDM downlinks and single-carrier-like uplinks.** Rohde & Schwarz measured a crest factor of 11.65 dB on a 20 MHz LTE downlink (OFDMA) test signal, against 5.15 dB (QPSK), 5.60 dB (16QAM) and 6.03 dB (64QAM) for a fully allocated SC-FDMA uplink, and about 4 dB for single-carrier WCDMA (application note 1MA271, June 2016). LTE adopted SC-FDMA for the uplink because the lower PAPR allows efficient handset power amplifiers. 5G NR uses CP-OFDM in the downlink and offers DFT-spread OFDM as an uplink option, restricted to single-layer transmission (Darsena et al., 2020, summarizing 3GPP TS 38.211) ([R-066](../../../reference/research-log.md#r-066--papr-ccdf-and-crest-factor-of-communication-signals)) **[Established]**.
-- **Crest-factor reduction plus digital predistortion** is the typical OFDM transmitter approach, per the same R&S note ([R-066](../../../reference/research-log.md#r-066--papr-ccdf-and-crest-factor-of-communication-signals)) **[Established]**.
+- **PAPR is measured as a CCDF** of power relative to average; multi-tone signals approach the Gaussian-noise curve as tones are added (Keysight application note 5968-6875E, current printing July 2024) ([R-066](../../../reference/research-log.md#r-066--papr-ccdf-and-crest-factor-of-communication-signals)) **[Established]**.
+- **OFDM downlinks and single-carrier-like uplinks.** Rohde & Schwarz measured a crest factor of 11.65 dB on a 20 MHz LTE downlink (OFDMA) test signal, against 5.15 dB (QPSK), 5.60 dB (16QAM) and 6.03 dB (64QAM) for a fully allocated SC-FDMA uplink, and about 4 dB for single-carrier WCDMA (application note 1MA271, June 2016). The lower PAPR, which allows efficient handset amplifiers, is why LTE chose SC-FDMA for the uplink. 5G NR offers DFT-spread OFDM as a single-layer uplink option (Darsena et al., 2020, summarizing 3GPP TS 38.211) ([R-066](../../../reference/research-log.md#r-066--papr-ccdf-and-crest-factor-of-communication-signals)) **[Established]**.
+- **Crest-factor reduction plus digital predistortion** is the typical OFDM transmitter approach (same R&S note) ([R-066](../../../reference/research-log.md#r-066--papr-ccdf-and-crest-factor-of-communication-signals)) **[Established]**.
 
 ### Why it matters commercially
 
-Expectations are how engineering becomes a business case. Expected good dies per wafer set cost per die; RMS current sets converter size and loss; mean (not median) leakage sets standby power and battery life in wearables and IoT parts. PAPR links a waveform choice directly to amplifier efficiency, and so to handset battery life and base-station electricity cost: in the ideal class-B model, 3 dB less back-off is worth a factor of $\sqrt2$ in efficiency. ADC loading decides whether a receiver's extra bits are real.
+Expected good dies set cost per die; RMS current sets converter loss; mean leakage sets standby power and battery life in wearables and IoT parts. PAPR links a waveform choice to amplifier efficiency, and so to battery life and base-station electricity cost (ideal class B: 3 dB less back-off is worth a factor of $\sqrt2$). ADC loading decides whether extra bits are real.
 
 ### Marketing vs Reality
 
-- **"Our waveform has a PAPR of 7 dB."** *Reality:* at which CCDF probability, measured over how long, and after which processing? A Gaussian-like signal shows a higher peak the longer you capture (11.65 dB on the LTE capture corresponds to a probability of about $4.5\times10^{-7}$ for an ideal complex Gaussian). Ask for the CCDF curve, not a number.
-- **"Typical standby current: 1 µA."** *Reality:* "typical" usually means a median part at room temperature; leakage is log-normal across parts and exponential in temperature, so the mean and hot maximum can be several times higher. Ask for the maximum over temperature.
-- **"16-bit ADC."** *Reality:* resolution is not performance; loading, clipping, noise and distortion set the delivered SNR. Ask for SNR and SINAD with a realistic signal.
+- **"Our waveform has a PAPR of 7 dB."** *Reality:* at which CCDF probability and convention, over how long a capture, after which processing? (11.65 dB on the LTE capture corresponds to a probability of about $4.5\times10^{-7}$ for an ideal complex Gaussian.) Ask for the CCDF curve.
+- **"Typical standby current: 1 µA."** *Reality:* "typical" usually means a median part at room temperature; log-normal spread and exponential temperature dependence make the mean and hot maximum several times higher. Ask for the maximum over temperature.
+- **"16-bit ADC."** *Reality:* resolution is not performance; loading, clipping, noise and distortion set the delivered SNR. Ask for SNR and SINAD (signal to noise-and-distortion ratio) with a realistic signal.
 
 ### Questions for engineering leaders
 
-1. **"How much back-off does your PA run, and at what CCDF level is that set?"** *Strong:* the waveform's CCDF, the PAPR at a stated probability after crest-factor reduction, the resulting efficiency and the EVM and ACLR it meets. *Evasive:* "we have plenty of margin".
-2. **"Is your power model based on the median device or on statistical leakage?"** *Strong:* statistical libraries or Monte Carlo, mean leakage for arrays, a corner for maxima, and correlation with measured silicon. *Evasive:* "typical corner".
-3. **"How did you choose the ADC full-scale for this signal?"** *Strong:* the signal's distribution and crest factor, the clipping rate and the resulting SNR trade, with AGC strategy. *Evasive:* "we scale to full scale".
+1. **"How much back-off does your PA run, and at what CCDF level is that set?"** *Strong:* the CCDF after crest-factor reduction, the resulting efficiency, and the error-vector magnitude (EVM) and adjacent-channel leakage ratio (ACLR) met. *Evasive:* "plenty of margin".
+2. **"Is your power model based on the median device or on statistical leakage?"** *Strong:* mean leakage for arrays, corners for maxima, correlated with silicon. *Evasive:* "typical corner".
+3. **"How did you choose the ADC full-scale for this signal?"** *Strong:* the signal's distribution, the clipping rate and SNR trade, and the automatic gain control (AGC) strategy. *Evasive:* "full scale".
 
 ## 10. Concept check
 
@@ -613,7 +614,7 @@ Expectations are how engineering becomes a business case. Expected good dies per
 
    <details><summary>Answer</summary>
 
-   Above, by the factor $e^{s^2/2}$. The exponential is convex, so by Jensen's inequality $\mathbb{E}[e^X] \ge e^{\mathbb{E}[X]}$.
+   Above, by the factor $e^{\sigma_\ell^2/2}$. The exponential is convex, so by Jensen's inequality $\mathbb{E}[e^X] \ge e^{\mathbb{E}[X]}$.
 
    </details>
 
@@ -621,15 +622,15 @@ Expectations are how engineering becomes a business case. Expected good dies per
 
    <details><summary>Answer</summary>
 
-   Its instantaneous power has no upper bound (the exponential or chi-square tail goes on forever), so any level is eventually exceeded. Only "exceeded a fraction $p$ of the time" defines a number.
+   Its power has no practical upper bound (the Gaussian model's tail goes on forever, and a real OFDM symbol's bound of about $10\log_{10}N$ dB is essentially never reached). Only "exceeded a fraction $p$ of the time", with the convention stated, defines a useful number.
 
    </details>
 
-5. An 8-bit ADC's optimal loading for a Gaussian input is about 3.9σ. Why is the 12-bit optimum larger?
+5. Why does a standby-power estimate for a large SRAM array use the mean leakage, not the median device's?
 
    <details><summary>Answer</summary>
 
-   More bits shrink the granular noise, so clipping noise becomes the dominant term sooner; buying headroom (larger $k$) to cut clipping is then worth the 6 dB per doubling it costs in granular noise. The optimum moves to about 5.0σ.
+   The array's leakage is a sum, so by linearity its expectation is $N$ times the mean, and a sum of many is close to its expectation. Log-normal leakage has its mean above its median, so a median-based estimate is low.
 
    </details>
 
@@ -661,14 +662,14 @@ Problem set: [03-03 problems](../problems/03-03-problems.md) · [solutions](../s
 ## 12. Connections
 
 - **Previous:** [03-02](03-02-random-variables-and-distributions.md) (the distributions whose moments are derived here), [01-07](../../01-calculus-for-engineers/chapters/01-07-applications-of-integration.md) (RMS, crest factor and quantization noise for deterministic waveforms).
-- **Next:** [03-04 Joint Distributions, Correlation and the CLT](03-04-joint-distributions-and-clt.md) proves that variances of independent terms add, shows why the power of a complex Gaussian is exponential, and explains why sums become Gaussian.
+- **Next:** [03-04](03-04-joint-distributions-and-clt.md) proves that independent variances add, that complex-Gaussian power is exponential, and that sums become Gaussian.
 - **Used in:** [03-05](03-05-estimation-and-hypothesis-testing.md) (estimating moments from data), [03-06](03-06-random-processes-preview.md) (noise power), [17](../../17-communication-systems/README.md) and [21](../../21-rf-and-microwave-engineering/README.md) (PAPR, back-off), [20](../../20-analog-and-mixed-signal-ic-design/README.md) (ADC loading), [22](../../22-power-electronics-and-energy-conversion/README.md) (RMS currents).
 
 ## 13. Further study
 
 - Bertsekas, D. P. and Tsitsiklis, J. N., *Introduction to Probability*, 2nd ed., chapters 2 and 3 (expectation and variance) and 4 (derived distributions).
-- Leon-Garcia, A., *Probability, Statistics, and Random Processes for Electrical Engineering*, 3rd ed., chapters 3 and 4 (expected values, functions of a random variable, the Markov and Chebyshev inequalities).
-- MIT OpenCourseWare 6.041SC, the lectures on expectation, variance and derived distributions.
+- Leon-Garcia, A., *Probability, Statistics, and Random Processes for Electrical Engineering*, 3rd ed., chapters 3 and 4.
+- MIT OpenCourseWare 6.041SC lectures on these topics.
 - Keysight application note 5968-6875E, *Characterizing Digitally Modulated Signals with CCDF Curves*, for how PAPR is measured in practice.
 
 ## 14. Sources

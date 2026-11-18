@@ -125,6 +125,8 @@ v.check("Ex 03-05.4a", poisson.cdf(80, lam0))
 v.check("Ex 03-05.4b", kc)
 v.check("Ex 03-05.4c", poisson.cdf(kc, lam0))
 v.check("Ex 03-05.4d", poisson.cdf(kc, 0.8 * lam0))
+v.check("Ex 03-05.4e", lam0)
+v.check("Ex 03-05.4f", 0.8 * lam0)
 
 # ---------------------------------------------------------------- Example 03-05.5
 mu5, s5, lsl5, usl5 = 1.205, 0.006, 1.170, 1.230
@@ -152,6 +154,8 @@ v.check("Ex 03-05.6c", a6 * (-log(0.9)) ** (1 / g6))
 v.check("Ex 03-05.6d", quad(lambda tt: exp(-((tt / a6) ** g6)), 0, 20 * a6)[0])    # MTTF = area under R
 v.check("Ex 03-05.6e", xb)
 v.check("Ex 03-05.6f", yb)
+v.check("Ex 03-05.6g", (1 - 0.3) / 8.4)
+v.check("Ex 03-05.6h", (8 - 0.3) / 8.4)
 
 # ---------------------------------------------------------------- Example 03-05.7
 af7 = arrhenius(0.7, 55, 125)
@@ -163,6 +167,34 @@ v.check("Ex 03-05.7d", poisson_upper(0, 0.6) / D7 * 1e9)
 v.check("Ex 03-05.7e", poisson_upper(0, 0.9) / D7 * 1e9)
 v.check("Ex 03-05.7f", poisson_upper(1, 0.9) / D7 * 1e9)
 v.check("Ex 03-05.7g", math.ceil(poisson_upper(0, 0.9) * 1e9 / 10 / (1000 * af7)))
+
+# ---------------------------------------------------------------- Example 03-05.8 (two proportions)
+pA, pB = 912 / 1000, 931 / 1000
+pool = (912 + 931) / 2000
+se8 = sqrt(pool * (1 - pool) * (2 / 1000))
+z8 = (pB - pA) / se8
+v.check("Ex 03-05.8a", pool)
+v.check("Ex 03-05.8b", se8)
+v.check("Ex 03-05.8c", z8)
+v.check("Ex 03-05.8d", norm.sf(z8))
+zb8 = norm.isf(0.2)
+n8 = (norm.isf(0.05) + zb8) ** 2 * (0.91 * 0.09 + 0.92 * 0.08) / 0.01**2
+v.check("Ex 03-05.8e", n8)
+v.check("Ex 03-05.8f", math.ceil(n8))
+v.check("Ex 03-05.8g", zb8)
+# Monte Carlo check of the sample-size formula: power at n8 is close to 0.80
+rng8 = np.random.default_rng(2026)
+na = math.ceil(n8)
+xa, xb8 = rng8.binomial(na, 0.91, 40000), rng8.binomial(na, 0.92, 40000)
+pp8 = (xa + xb8) / (2 * na)
+zz8 = (xb8 - xa) / na / np.sqrt(pp8 * (1 - pp8) * 2 / na)
+v.assert_true("two-proportion sample size gives about 80% power", abs(np.mean(zz8 > norm.isf(0.05)) - 0.80) < 0.01)
+# Poisson-chi-square identity: P(N <= c; lam) = P(chi2_{2c+2} > 2 lam)
+v.assert_true("Poisson-chi-square identity", all(abs(poisson.cdf(c, lam) - chi2.sf(2 * lam, 2 * c + 2)) < 1e-14
+                                                  for c in range(4) for lam in (0.3, 2.0, 7.5)))
+# sample-size derivation: power at n = ((z_a + z_b) sigma/delta)^2 equals 1 - beta
+nss = ((norm.isf(0.05) + norm.isf(0.1)) * 1.0 / 0.5) ** 2
+v.assert_true("sample-size formula gives the stated power", abs(norm.cdf(0.5 * sqrt(nss) / 1.0 - norm.isf(0.05)) - 0.9) < 1e-12)
 
 # ================================================================ solutions
 d = np.array([3, 5, 4, 6, 7], float)
@@ -280,5 +312,26 @@ D_lab = 231 * 1000 * 77.65
 v.assert_true("bound at c = 1 exceeds 150 FIT and at c = 0 does not",
               poisson_upper(1, 0.9) / D_lab * 1e9 > 150 > poisson_upper(0, 0.9) / D_lab * 1e9)
 v.check("Lab 03-05.i", 1 - exp(-lam7))
+
+# ---------------------------------------------------------------- Problem 03-05.17 (paired versus Welch)
+bef = np.array([1.20, 0.85, 1.45, 0.95, 1.10, 1.38, 0.72, 1.31])
+aft = np.array([1.12, 0.80, 1.36, 0.90, 1.05, 1.27, 0.70, 1.22])
+dd = bef - aft
+sd17 = dd.std(ddof=1)
+t17 = dd.mean() / (sd17 / sqrt(8))
+v.check("03-05.17a", dd.mean())
+v.check("03-05.17b", sd17)
+v.check("03-05.17k", sd17 / sqrt(8))
+v.check("03-05.17c", t17)
+v.check("03-05.17d", tdist.sf(t17, 7))
+sb17, sa17 = bef.std(ddof=1), aft.std(ddof=1)
+se17 = sqrt(sb17**2 / 8 + sa17**2 / 8)
+nu17 = se17**4 / ((sb17**2 / 8) ** 2 / 7 + (sa17**2 / 8) ** 2 / 7)
+v.check("03-05.17e", sb17)
+v.check("03-05.17f", sa17)
+v.check("03-05.17g", se17)
+v.check("03-05.17h", dd.mean() / se17)
+v.check("03-05.17i", nu17)
+v.check("03-05.17j", tdist.sf(dd.mean() / se17, nu17))
 
 sys.exit(v.finish())

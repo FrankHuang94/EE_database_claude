@@ -56,7 +56,7 @@ def fig_qfunction():
     axes[0].set_title("Q(z) is the upper-tail area", fontsize=10)
     axes[1].semilogy(x, q, color=B, lw=2, label="Q(x)")
     axes[1].semilogy(x, upper, "--", color=O, label="e^(−x²/2)/(x√(2π)) (upper bound)")
-    axes[1].semilogy(x, chern, ":", color=G, label="½e^(−x²/2) (Chernoff bound)")
+    axes[1].semilogy(x, chern, ":", color=G, label="½e^(−x²/2) (tightened Chernoff bound)")
     for xv, lab in ((3, "1.35e-3"), (4.5, "3.4e-6"), (6, "9.9e-10"), (7.034, "1e-12")):
         axes[1].plot([xv], [norm.sf(xv)], "o", color="k", ms=3.5)
         axes[1].annotate(lab, (xv, norm.sf(xv)), xytext=(-40, -12), textcoords="offset points", fontsize=7)
@@ -84,7 +84,7 @@ def fig_bathtub():
     ax.set_ylim(1e-17, 1)
     ax.set_xlabel("sampling instant within the unit interval (ps)")
     ax.set_ylabel("bit error rate")
-    ax.set_title("Bathtub curve, dual-Dirac jitter: DJ = 8 ps, RJ = 1.2 ps rms, 32 GT/s (Example 03-02.7)", fontsize=9)
+    ax.set_title("Bathtub curve, dual-Dirac jitter in the industry Q-scale convention: DJ = 8 ps, RJ = 1.2 ps rms, 32 GT/s", fontsize=9)
     fig.tight_layout()
     save(fig, f"{OUT}/bathtub.svg")
 

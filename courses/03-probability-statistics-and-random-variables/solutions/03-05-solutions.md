@@ -56,7 +56,7 @@ Point estimate: $2/(5\times10^8)$ per hour $= $ **4 FIT**. With $c = 2$, $\lambd
 
 (b) $0.040 < 0.05$: reject $H_0$; the evidence favors lower leakage.
 
-(c) Two-sided, $p = $ **0.08012**, not significant at 5%. The one-sided test is appropriate only if the direction was specified before seeing the data (the change was designed to lower leakage and an increase would be treated the same as no improvement). Choosing the sidedness after looking at the data halves the true significance level.
+(c) Two-sided, $p = $ **0.08012**, not significant at 5%. The one-sided test is appropriate only if the direction was specified before seeing the data (the change was designed to lower leakage and an increase would be treated the same as no improvement). Choosing the sidedness after looking at the data halves the reported p-value, and so doubles the true significance level: you would reject whenever $|z| > 1.645$, which under $H_0$ happens 10% of the time, so a nominal 5% test is really a 10% test.
 
 ### Solution 03-05.9
 
@@ -125,6 +125,20 @@ So $E_a = $ **0.7870 eV**.
 (b) At 0.5 eV, $AF = \exp[(0.5/k)(1/328.15 - 1/398.15)] = $ **22.39**, so 591 units demonstrate only $0.9163\times10^9/(591\times1000\times22.39) = $ **69.24 FIT**.
 
 (c) The same test "demonstrates" 20 FIT or 69 FIT depending on an assumed activation energy that the test itself does not measure. FIT claims are only as good as the acceleration model; ask which $E_a$ was assumed, for which mechanisms, and what supports it.
+
+### Solution 03-05.17
+
+(a) The differences are 0.08, 0.05, 0.09, 0.05, 0.05, 0.11, 0.02 and 0.09 mV: mean $\bar d = $ **0.0675 mV**, standard deviation $s_d = $ **0.02964 mV**. Then
+
+$$
+t = \frac{\bar d}{s_d/\sqrt8} = \frac{0.0675}{0.010480} = 6.441 ,
+$$
+
+so $t = $ **6.441** with 7 degrees of freedom, and the one-sided p-value is **1.766×10⁻⁴**: the update clearly lowers offset.
+
+(b) The before and after samples have standard deviations **0.2622** and **0.2347 mV**, so $\text{SE} = \sqrt{0.2622^2/8 + 0.2347^2/8} = $ **0.1244 mV** and $t = 0.0675/0.1244 = $ **0.5425**. The Welch formula gives $\nu = $ **13.83**, and the one-sided p-value is **0.2981**: nothing detected.
+
+(c) The unit-to-unit spread of offsets (about 0.25 mV) is about eight times the spread of the changes (0.03 mV). Pairing subtracts each unit from itself and removes the shared part, exactly the differential trick of 03-04: $\operatorname{Var}(B - A) = \sigma_B^2 + \sigma_A^2 - 2\operatorname{Cov}$, small when before and after are strongly correlated. The unpaired test throws that correlation away. Pair whenever the same units can be measured under both conditions (before/after, two test sockets, two temperatures); when they cannot, as in a split lot, a matched design (pairing wafers or lots) recovers some of the benefit.
 
 ---
 
@@ -200,3 +214,14 @@ So $E_a = $ **0.7870 eV**.
 | 03-05.16b | units required | 591 | — |
 | 03-05.16c | acceleration factor at 0.5 eV | 22.39 | — |
 | 03-05.16d | demonstrated FIT at 0.5 eV | 69.24 | FIT |
+| 03-05.17a | mean difference | 0.0675 | mV |
+| 03-05.17b | standard deviation of differences | 0.02964 | mV |
+| 03-05.17c | paired t statistic | 6.441 | — |
+| 03-05.17d | paired one-sided p-value | 1.766×10^-4 | — |
+| 03-05.17e | standard deviation before | 0.2622 | mV |
+| 03-05.17f | standard deviation after | 0.2347 | mV |
+| 03-05.17g | unpaired standard error | 0.1244 | mV |
+| 03-05.17h | Welch t statistic | 0.5425 | — |
+| 03-05.17i | Welch degrees of freedom | 13.83 | — |
+| 03-05.17j | Welch one-sided p-value | 0.2981 | — |
+| 03-05.17k | standard error of the mean difference | 0.010480 | mV |

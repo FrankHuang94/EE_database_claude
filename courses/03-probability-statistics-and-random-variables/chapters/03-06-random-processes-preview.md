@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 03-06 · Random Processes Preview: Noise
 
 | | |
@@ -19,7 +19,7 @@
 
 ## 1. Big picture
 
-Every measurement and every link ends at a noise floor. Chapters 03-02 to 03-05 treated noise as a random *variable*: its value at one instant. Real noise is a random *waveform*, and the questions engineers ask are about time: how fast does it fluctuate, how much of its power falls in my bandwidth, does averaging for longer help? A **random process** answers them. Its **autocorrelation** says how long the noise remembers its past; its **power spectral density** says where its power sits in frequency; and **ergodicity** says when one long recording tells you about the whole population. This chapter previews those ideas, which Courses 11, 16, 17 and 20 develop, and uses them on the three physical noises every chip designer budgets: thermal, shot and flicker.
+Every measurement and every link ends at a noise floor. Chapters 03-02 to 03-05 treated noise as a random *variable*: its value at one instant. Real noise is a random *waveform*, and the questions engineers ask are about time: how fast does it fluctuate, how much of its power falls in my bandwidth, does averaging for longer help? A **random process** answers them. Its **autocorrelation** says how long the noise remembers its past; its **power spectral density** says where its power sits in frequency; and **ergodicity** says when one long recording tells you about the whole population. This chapter previews those ideas, which [17-01](../../17-communication-systems/chapters/17-01-random-processes-and-psd.md) develops for signals and [12-10](../../12-electronics-2/chapters/12-10-noise-in-circuits.md) for circuits, and uses them on the three physical noises every chip designer budgets: thermal, shot and flicker.
 
 - **Receivers:** sensitivity starts from $kT_0 = -174$ dBm/Hz plus bandwidth plus noise figure ([17](../../17-communication-systems/README.md), [21](../../21-rf-and-microwave-engineering/README.md)).
 - **Data converters and sensors:** kT/C noise sizes sampling capacitors; 1/f noise limits precision DC measurement ([20](../../20-analog-and-mixed-signal-ic-design/README.md)).
@@ -72,7 +72,7 @@ $$
 
 because the second cosine averages to zero over the uniform phase. The process is WSS, and its autocorrelation never decays: a sinusoid remembers its phase forever (Example 03-06.1).
 
-**Exponentially correlated noise.** White noise passed through an RC low-pass filter has (Course 11 derives it)
+**Exponentially correlated noise.** White noise passed through an RC low-pass filter has ([17-01](../../17-communication-systems/chapters/17-01-random-processes-and-psd.md) derives it)
 
 $$
 R_X(\tau) = \sigma^2e^{-|\tau|/\tau_c}, \qquad \tau_c = RC .
@@ -92,7 +92,7 @@ A stationary process is **ergodic** (in the mean, or in power) if these converge
 
 **A non-ergodic process.** Let each amplifier in a population have a fixed random offset $V_{os}$, Gaussian across units, plus white noise. The ensemble mean is zero, but a time average on one unit converges to *that unit's* offset, however long you wait (Example 03-06.2). Statistics across units (offset spread, yield) can only be learned by measuring many units: the distinction between 03-05's sample of parts and a long recording of one part.
 
-**How fast does a time average converge?** For a WSS process with covariance $C_X(\tau) = R_X(\tau) - \mu^2$, the variance of the time average follows from the variance-of-a-sum rule of 03-04 with the sum replaced by an integral:
+**How fast does a time average converge?** For a WSS process with covariance $C_X(\tau) = R_X(\tau) - \mu^2$, the variance of the time average follows from the variance-of-a-sum rule of 03-04 with the sum replaced by an integral. In the $T\times T$ square of time pairs $(s, t)$, the pairs with lag $\tau = t - s$ form a diagonal strip of length $T - |\tau|$, and $C_X$ is even, so
 
 $$
 \operatorname{Var}\big(\langle x\rangle_T\big) = \frac{1}{T^2}\int_0^T\!\!\int_0^TC_X(t - s)\,ds\,dt = \frac2T\int_0^T\Big(1 - \frac\tau T\Big)C_X(\tau)\,d\tau .
@@ -103,6 +103,8 @@ For exponentially correlated noise with $T \gg \tau_c$, the integral approaches 
 $$
 \operatorname{Var}\big(\langle x\rangle_T\big) \approx \frac{2\sigma^2\tau_c}{T}, \qquad N_{\text{eff}} = \frac{T}{2\tau_c} .
 $$
+
+**The ergodicity test.** The exact formula shows when the variance goes to zero: exactly when the time-averaged covariance $\frac1T\int_0^TC_X(\tau)\,d\tau$ does. A covariance that decays, or that oscillates (the random-phase sinusoid), averages to zero, and the process is ergodic in the mean. A covariance with a constant floor, the signature of a random DC component such as a unit's own offset, does not, and the process is not ergodic.
 
 A recording of length $T$ is worth only about $T/(2\tau_c)$ independent samples, **however fast you sample it**. Sampling faster than the correlation time adds numbers but not information (Example 03-06.6). This is the continuous-time version of 03-04's warning about averaging correlated data.
 
@@ -124,7 +126,7 @@ $$
 R_X(\tau) = \sigma^2e^{-|\tau|/\tau_c} \quad\Longleftrightarrow\quad G_X(f) = \frac{4\sigma^2\tau_c}{1 + (2\pi f\tau_c)^2} ,
 $$
 
-flat up to a corner at $f_c = 1/(2\pi\tau_c)$ and falling as $1/f^2$ above it (Figure 2). Shorter memory pushes the corner up and lowers the flat level: the same power spread wider. The random-phase sinusoid's $\tfrac{A^2}{2}\cos\omega\tau$ transforms into two spectral lines of $A^2/4$ each at $\pm f_0$: all its power at one frequency.
+flat up to a corner at $f_L = 1/(2\pi\tau_c)$ and falling as $1/f^2$ above it (Figure 2). Shorter memory pushes the corner up and lowers the flat level: the same power spread wider. The random-phase sinusoid's $\tfrac{A^2}{2}\cos\omega\tau$ transforms into two spectral lines of $A^2/4$ each at $\pm f_0$: all its power at one frequency.
 
 ![Left: exponential autocorrelations with correlation times of 1 ms and 0.1 ms. Right: their one-sided Lorentzian power spectral densities on log-log axes, flat to corners at 159 Hz and 1592 Hz and falling as 1/f² above.](../../../assets/figures/03-06/autocorr-psd.svg)
 
@@ -136,7 +138,7 @@ $$
 S_Y(f) = |H(f)|^2S_X(f) .
 $$
 
-(Course 11 proves it; intuitively, each frequency component is scaled in amplitude by $|H|$, so in power by $|H|^2$.) The output power of white noise is then $(N_0/2)\int|H|^2df$, so a filter's effect on white noise is captured by its **equivalent noise bandwidth**, the width of an ideal brick-wall filter of the same peak gain that passes the same noise power. For a first-order RC low-pass filter it is
+([17-01](../../17-communication-systems/chapters/17-01-random-processes-and-psd.md) proves it; intuitively, each frequency component is scaled in amplitude by $|H|$, so in power by $|H|^2$.) The output power of white noise is then $(N_0/2)\int|H|^2df$, so a filter's effect on white noise is captured by its **equivalent noise bandwidth**, the width of an ideal brick-wall filter of the same peak gain that passes the same noise power. For a first-order RC low-pass filter it is
 
 $$
 B_N = \int_0^\infty\frac{df}{1 + (f/f_{3\text{dB}})^2} = \frac{\pi}{2}f_{3\text{dB}} = \frac{1}{4RC} ,
@@ -148,7 +150,7 @@ $$
 
 ### 3.5 Thermal noise
 
-Every resistor at temperature $T$ generates a random open-circuit voltage from the thermal motion of its electrons (Johnson–Nyquist noise). It is Gaussian (a sum of enormous numbers of tiny contributions, 03-04), zero-mean and white up to frequencies far beyond electronics (terahertz at room temperature), with one-sided density
+Every resistor at absolute temperature $T$ (in this section $T$ is temperature; elsewhere in the chapter it is an averaging time) generates a random open-circuit voltage from the thermal motion of its electrons (Johnson–Nyquist noise). It is Gaussian (a sum of enormous numbers of tiny contributions, 03-04), zero-mean and white up to frequencies far beyond electronics (terahertz at room temperature), with one-sided density
 
 $$
 \overline{v_n^2}/\Delta f = 4kTR \quad (\text{V}^2/\text{Hz}), \qquad \text{or a current } \overline{i_n^2}/\Delta f = 4kT/R .
@@ -176,13 +178,19 @@ $$
 
 ### 3.6 Shot noise
 
-Current is carried by discrete charges whose arrivals are random. If electrons cross a barrier (a diode junction, a photodiode) independently at average rate $I/q$, the number in a time $T$ is Poisson with mean $N = IT/q$ and variance equal to its mean (03-02). The current measured by averaging over $T$, $\hat I = qN_T/T$, then has
+Current is carried by discrete charges whose arrivals are random. If electrons cross a barrier (a diode junction, a photodiode) independently at average rate $I/q$, the number $N_T$ in a time $T$ is Poisson with mean $\bar N = IT/q$ and variance equal to its mean (03-02). The current measured by averaging over $T$, $\hat I = qN_T/T$, then has
 
 $$
 \operatorname{Var}(\hat I) = \frac{q^2}{T^2}\cdot\frac{IT}{q} = \frac{qI}{T} .
 $$
 
-Averaging over $T$ is a filter whose one-sided noise bandwidth is $1/(2T)$ (a rectangular window), so the one-sided density is the variance divided by the bandwidth:
+Averaging over $T$ is a filter with gain $|H(f)| = |\sin(\pi fT)/(\pi fT)|$ (a rectangular window), whose one-sided noise bandwidth is, with $u = \pi fT$ and the standard integral $\int_0^\infty\sin^2u/u^2\,du = \pi/2$,
+
+$$
+B_N = \int_0^\infty\frac{\sin^2(\pi fT)}{(\pi fT)^2}\,df = \frac{1}{\pi T}\cdot\frac\pi2 = \frac{1}{2T} ,
+$$
+
+so the one-sided density is the variance divided by the bandwidth:
 
 $$
 \overline{i_n^2}/\Delta f = \frac{qI/T}{1/(2T)} = 2qI .
@@ -238,7 +246,7 @@ The spread grows like $\sqrt t$ without bound. A random walk is not stationary, 
 
 **Solution.** (a) The ensemble mean is 0 and the ensemble power is $1^2 + 0.1^2 = $ **1.01 mV²**. For large τ the noise terms decorrelate but the offset is common to both samples: $R_X(\tau) = \mathbb{E}[V_{os}^2] = $ **1 mV²**, which does not decay.
 
-(b) To that unit's own $V_{os}$, not to the ensemble mean 0. The process is stationary but not ergodic: an autocorrelation that does not decay to $\mu^2$ is the warning sign.
+(b) To that unit's own $V_{os}$, not to the ensemble mean 0. The process is stationary but not ergodic: its covariance has a constant floor, $C_X(\tau) \to 1$ mV², so its time average (§3.3) never goes to zero.
 
 (c) $P(|V_{os}| > 2\text{ mV}) = 2Q(2) = $ **0.04550**. Only measurements across many units, not a longer recording of one, reveal this spread.
 
@@ -262,7 +270,7 @@ The spread grows like $\sqrt t$ without bound. A random walk is not stationary, 
 
 (c) $\tau_c = RC = $ **100 ns**, so samples 50 ns apart have correlation $e^{-0.5} = $ **0.6065**. A sampler that takes successive samples faster than about $RC$ sees strongly correlated noise.
 
-**Simulation.** The netlist [labs/03-06-lab/rc_noise.cir](../labs/03-06-lab/rc_noise.cir) runs an ngspice noise analysis: the output density at 1 kHz is 12.87 nV/√Hz and the integrated noise is 20.35 µV, for both 10 kΩ and 1 MΩ.
+**Simulation.** The netlist [labs/03-06-lab/rc_noise.cir](../labs/03-06-lab/rc_noise.cir) runs an ngspice noise analysis: the 10 kΩ output density at 1 kHz is 12.87 nV/√Hz, and the integrated noise is 20.35 µV for both 10 kΩ and 1 MΩ.
 
 ### Example 03-06.5 — Shot noise against thermal noise (tier B)
 
@@ -270,7 +278,7 @@ The spread grows like $\sqrt t$ without bound. A random walk is not stationary, 
 
 **Solution.** (a) $\sqrt{2qI} = \sqrt{2\times1.602\times10^{-19}\times10^{-3}} = $ **17.90 pA/√Hz**; over 1 GHz, **0.5661 µA** rms. The ratio is $10^{-3}/0.5661\times10^{-6} = $ **1767**, or **64.94 dB**.
 
-(b) $\sqrt{4kT/R} = $ **4.070 pA/√Hz**. Setting $2qI = 4kT/R$ gives $I = 2kT/(qR) = 2V_T/R = $ **51.70 µA**. Above about 52 µA the shot noise of the current exceeds the resistor's thermal noise; this is why low-current sensors (photodiodes, bolometers) are often shot-noise limited.
+(b) $\sqrt{4kT/R} = $ **4.070 pA/√Hz**. Setting $2qI = 4kT/R$ gives $I = 2kT/(qR) = 2V_T/R = $ **51.70 µA**. Below about 52 µA the 1 kΩ resistor's thermal noise dominates; above it, shot noise does. The crossover $2V_T/R$ falls as $R$ rises: with a 1 MΩ transimpedance resistor it is only **51.70 nA**. That is why photodiode receivers, which use large resistors for gain, are often shot-noise limited even at nanoamp currents.
 
 ### Example 03-06.6 — Averaging correlated noise: how many independent samples? (tier C)
 
@@ -329,6 +337,7 @@ so σ of the average is **44.70 µV** exactly and **44.72 µV** approximately.
 | Ex 03-06.5d | DC-to-noise ratio | 64.94 | dB |
 | Ex 03-06.5e | 1 kΩ current-noise density | 4.070 | pA/√Hz |
 | Ex 03-06.5f | crossover current | 51.70 | µA |
+| Ex 03-06.5g | crossover current, 1 MΩ | 51.70 | nA |
 | Ex 03-06.6a | σ of the average, exact | 44.70 | µV |
 | Ex 03-06.6b | σ of the average, approximate | 44.72 | µV |
 | Ex 03-06.6c | effective independent samples | 500 | — |
@@ -435,7 +444,7 @@ Noise sets the physical limit of almost every product the learner covers. Sensor
 
    <details><summary>Answer</summary>
 
-   Its statistics do not change with time, but each unit's time average converges to its own offset, not to the population mean; the autocorrelation never decays to $\mu^2$.
+   Its statistics do not change with time, but each unit's time average converges to its own offset, not to the population mean. The covariance has a constant floor (the offset variance), so its time average does not go to zero. A sinusoid's covariance never decays either, but it oscillates and averages to zero, so that process is ergodic.
 
    </details>
 
@@ -505,7 +514,7 @@ Problem set: [03-06 problems](../problems/03-06-problems.md) · [solutions](../s
 
 - **Previous:** [03-05](03-05-estimation-and-hypothesis-testing.md) (chi-square intervals for noise power), [03-04](03-04-joint-distributions-and-clt.md) (covariance, averaging, the CLT), [01-06](../../01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md) (noise bandwidth, kT/C).
 - **Next:** this completes Course 03. [04 · Physics for EE](../../04-physics-for-ee/README.md) supplies the statistical-mechanics background (equipartition) assumed in §3.5.
-- **Used in:** [11 Signals and Systems](../../11-signals-and-systems/README.md) (filtering random signals, $S_Y = |H|^2S_X$), [16 Digital Signal Processing](../../16-digital-signal-processing/README.md) (spectral estimation), [17 Communication Systems](../../17-communication-systems/README.md) (noise in receivers), [20 Analog and Mixed-Signal IC Design](../../20-analog-and-mixed-signal-ic-design/README.md) (circuit noise, chopping), [21 RF and Microwave](../../21-rf-and-microwave-engineering/README.md) (noise figure), [24](../../24-high-speed-io-signal-integrity-and-photonics/README.md) (jitter and phase noise).
+- **Used in:** [17-01](../../17-communication-systems/chapters/17-01-random-processes-and-psd.md) (random processes, $S_Y = |H|^2S_X$), [12-10](../../12-electronics-2/chapters/12-10-noise-in-circuits.md) (noise in circuits), [16 Digital Signal Processing](../../16-digital-signal-processing/README.md) (spectral estimation), [17 Communication Systems](../../17-communication-systems/README.md) (noise in receivers), [20 Analog and Mixed-Signal IC Design](../../20-analog-and-mixed-signal-ic-design/README.md) (circuit noise, chopping), [21 RF and Microwave](../../21-rf-and-microwave-engineering/README.md) (noise figure), [24](../../24-high-speed-io-signal-integrity-and-photonics/README.md) (jitter and phase noise).
 
 ## 13. Further study
 

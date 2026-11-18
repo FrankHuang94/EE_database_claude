@@ -145,6 +145,9 @@
 - term: Convolution
   definition: The operation y(t) = ∫ h(t−λ) u(λ) dλ that gives a linear time-invariant system's output from its input and impulse response; for a first-order low-pass, an exponentially weighted average of past inputs.
   chapter: "07-02"
+- term: Dither
+  definition: A small random signal added before a quantizer so that the quantization error stops tracking the signal. Triangular-PDF dither two steps wide makes the mean and power of the total error independent of the input, at the cost of tripling the error power.
+  chapter: "03-04"
 - term: Integrator (op-amp)
   definition: An op-amp circuit with a capacitor in the feedback path and a resistor at the input, giving v_out = −(1/RC)∫v_in dt; a resistor across the capacitor makes it a "leaky" integrator (a first-order low-pass).
   chapter: "07-02"
@@ -1305,7 +1308,7 @@
   chapter: "03-02"
   see_also: [Dual-Dirac model]
 - term: Dual-Dirac model
-  definition: "A model of jitter as two spikes DJ(δδ) apart blurred by Gaussian random jitter of rms σ, giving total jitter TJ(BER) = DJ(δδ) + 2·Q_BER·σ (2Q_BER = 14.069 at 1e-12)."
+  definition: "A model of jitter as two spikes DJ(δδ) apart blurred by Gaussian random jitter of rms σ, giving total jitter TJ(BER) = DJ(δδ) + 2·Q_BER·σ, where the industry convention defines Q(Q_BER) = BER (2Q_BER = 14.069 at 1e-12; the literal model gives 13.68)."
   chapter: "03-02"
 - term: Bathtub curve
   definition: "A curve shaped like a bathtub, used in two senses: bit error rate against sampling instant across the unit interval, and failure rate against age (infant mortality, flat mid-life, wear-out)."
@@ -1342,7 +1345,7 @@
   definition: The distribution of a sum of squared independent standard normals; with one degree of freedom it describes the instantaneous power of Gaussian noise, whose standard deviation is √2 times its mean.
   chapter: "03-03"
 - term: Log-normal distribution
-  definition: The distribution of e^X for Gaussian X; skewed right, with median e^μ and mean e^(μ + s²/2). Subthreshold leakage across devices is approximately log-normal.
+  definition: The distribution of e^X for Gaussian X; skewed right, with median e^μ and mean e^(μ + σ_ℓ²/2), where σ_ℓ is the standard deviation of X. Subthreshold leakage across devices is approximately log-normal.
   chapter: "03-03"
 - term: Rayleigh distribution
   definition: The distribution of the envelope R of a complex Gaussian signal, f(r) = (2r/P̄)e^(−r²/P̄), when the power R² is exponential with mean P̄; mean √(πP̄)/2.
@@ -1357,7 +1360,7 @@
   definition: For a convex function g, E[g(X)] ≥ g(E[X]); averaging through an exponential or square law raises the result, so leakage or failure rate at the average input underestimates the average.
   chapter: "03-03"
 - term: Peak-to-average power ratio (PAPR)
-  definition: Peak power over average power, the square of the crest factor; for noise-like signals such as OFDM it must be quoted at a stated CCDF probability (9.64 dB at 1e-4 for a complex Gaussian).
+  definition: Peak power over average power, the square of the crest factor; for noise-like signals such as OFDM it must be quoted at a stated CCDF probability and convention. Instruments use envelope power, in which a constant-envelope carrier is 0 dB and a complex Gaussian is 9.64 dB at 1e-4; for real waveforms a sinusoid is 3.01 dB.
   chapter: "03-03"
   see_also: [Crest factor, CCDF]
 - term: CCDF
@@ -1377,6 +1380,12 @@
 - term: Conditional distribution
   definition: The distribution of Y given X = x, the joint distribution divided by the marginal of X along that slice.
   chapter: "03-04"
+- term: Conditional expectation
+  definition: "E[Y | X = x], the mean of the conditional distribution of Y given X = x; evaluated at the random X, E[Y | X] is itself a random variable, the minimum mean-square-error predictor of Y, and E[E[Y | X]] = E[Y] (law of iterated expectations)."
+  chapter: "03-04"
+- term: Law of total variance
+  definition: "Var(Y) = E[Var(Y | X)] + Var(E[Y | X]): the average spread within groups plus the spread of the group means. Explains why mixed wafers, lots or tools vary far more than any one group."
+  chapter: "03-04"
 - term: Covariance
   definition: "Cov(X, Y) = E[(X − μ_X)(Y − μ_Y)] = E[XY] − μ_Xμ_Y; zero for independent variables, and the cross term in the variance of a sum."
   chapter: "03-04"
@@ -1395,6 +1404,9 @@
 - term: Central limit theorem
   definition: The standardized sum of many independent terms with finite variance tends to a Gaussian, whatever their distribution; accurate near the center, unreliable far into the tails.
   chapter: "03-04"
+- term: Cauchy distribution
+  definition: "The density 1/(π(1 + x²)), the ratio of two independent standard Gaussians; its tails are so heavy that it has no mean or variance, so the CLT does not apply and an average of Cauchy samples is still Cauchy."
+  chapter: "03-04"
 - term: Jointly Gaussian
   definition: Variables whose joint density is the multivariate normal; their marginals and linear combinations are Gaussian, and for them uncorrelated means independent.
   chapter: "03-04"
@@ -1406,6 +1418,9 @@
   chapter: "03-04"
 - term: Forward error correction (FEC)
   definition: Adding redundant symbols so the receiver can correct errors without retransmission; it lets links run at a raw BER near 1e-4 and still deliver 1e-13 or better.
+  chapter: "03-04"
+- term: Decision-feedback equalizer (DFE)
+  definition: A receiver equalizer that subtracts the interference of earlier symbols computed from its own past decisions; one wrong decision can then cause a burst of errors, which transmitter precoding limits to about two bit errors.
   chapter: "03-04"
 - term: Reed–Solomon code
   definition: A block code over m-bit symbols; RS(n, k) sends n symbols with k data symbols and corrects up to t = (n − k)/2 wrong symbols per codeword, as in Ethernet's RS(544,514).
@@ -1446,7 +1461,16 @@
   definition: The probability that a test rejects the null hypothesis when a specified alternative is true, 1 − β; it grows with sample size and effect size.
   chapter: "03-05"
 - term: Process capability (Cp, Cpk)
-  definition: "Cp = (USL − LSL)/(6σ) compares the specification window with the process spread; Cpk = min(USL − μ, μ − LSL)/(3σ) also charges for an off-center mean. Automotive defaults: Cpk ≥ 1.33 ongoing, ≥ 1.67 initial or critical."
+  definition: "Cp = (USL − LSL)/(6σ) compares the specification window with the process spread; Cpk = min(USL − μ, μ − LSL)/(3σ) also charges for an off-center mean. Automotive defaults (AIAG, 1995 manuals): Cpk ≥ 1.33 for stable ongoing production; preliminary studies and significant characteristics are judged on Ppk, expecting ≥ 1.67."
+  chapter: "03-05"
+- term: Ppk
+  definition: The process performance index, Cpk's formula with the overall standard deviation of all the data (including drift and lot-to-lot shifts) instead of the within-subgroup σ; equal to Cpk only for a process in statistical control.
+  chapter: "03-05"
+- term: Statistical process control (SPC)
+  definition: "Monitoring a process with control charts, plots of subgroup statistics against limits (typically ±3 standard errors around the grand mean), to detect drift or shifts; a process whose points stay inside the limits is \"in statistical control\"."
+  chapter: "03-05"
+- term: Welch t-test
+  definition: A two-sample test of means that does not assume equal variances, using SE = √(s₁²/n₁ + s₂²/n₂) and an approximate degrees-of-freedom formula; for paired data, test the differences instead.
   chapter: "03-05"
 - term: Part Average Testing (PAT)
   definition: An automotive outlier screen (AEC-Q001) that rejects parts passing specification but lying beyond the median ± 6 robust sigma (interquartile range/1.35) of their population.
@@ -1467,7 +1491,7 @@
   definition: A thermally activated rate ∝ exp(−E_a/(kT)); the acceleration factor between temperatures is exp[(E_a/k)(1/T_use − 1/T_stress)], exponential in the often-uncertain activation energy.
   chapter: "03-05"
 - term: HTOL
-  definition: High-temperature operating life test; JEDEC JESD47 specifies at least 125 °C junction temperature for 1000 h on 3 lots of 77 units with zero failures.
+  definition: High-temperature operating life test; JEDEC JESD47G (2009) specifies at least 125 °C junction temperature for 1000 h on 3 lots of 77 units with zero failures (the HTOL row of the current revision, Rev N listed Aug 2026, was not checked).
   chapter: "03-05"
 
 # ---------------------------------------------------------------- 03-06

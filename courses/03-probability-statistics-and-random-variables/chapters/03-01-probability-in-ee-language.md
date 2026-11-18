@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 03-01 · Probability in EE Language
 
 | | |
@@ -45,7 +45,7 @@ flowchart LR
 
 *Figure 1. The probability tree of wafer test. The shipped population is the two "passes" leaves; the fraction of it that is bad is the defect level (Examples 03-01.4 and 03-01.7).*
 
-**An analogy from credit, and where it breaks.** Two loans that each default with probability 1% default together with probability $10^{-4}$ only if they are independent. In 2008 many structured products assumed near-independence and discovered correlation: a shared cause (house prices) made joint defaults far more likely. Engineering has the same trap. Two "independent" power supplies on the same circuit breaker, or two dies from the same particle-contaminated wafer region, fail together far more often than the product of their failure probabilities (Example 03-01.6). *Where the analogy breaks:* in engineering the physics often tells you when independence is justified. Thermal noise in one bit interval is independent of the next, so random bit errors really are close to independent. Burst errors from an equalizer, or clustered defects on a wafer, are not, and the physics tells you that too.
+**An analogy from credit, and where it breaks.** Two loans that each default with probability 1% default together with probability $10^{-4}$ only if they are independent. In 2008 many structured products assumed low, stable default correlation (a Gaussian copula with thin joint tails) and discovered otherwise: a shared cause (house prices) made joint defaults far more likely. Engineering has the same trap. Two "independent" power supplies on the same circuit breaker, or two dies from the same particle-contaminated wafer region, fail together far more often than the product of their failure probabilities (Example 03-01.6). *Where the analogy breaks:* in engineering the physics often tells you when independence is justified. Thermal noise in one bit interval is independent of the next, so random bit errors really are close to independent. Burst errors from an equalizer, or clustered defects on a wafer, are not, and the physics tells you that too.
 
 ## 3. Theory
 
@@ -148,7 +148,7 @@ $$
 P(A) = \sum_{i=1}^mP(B_i)\,P(A \mid B_i) .
 $$
 
-*Derivation:* $A$ is the disjoint union of the pieces $A \cap B_i$, so by additivity $P(A) = \sum_iP(A \cap B_i)$, and each term is $P(B_i)P(A \mid B_i)$ by the multiplication rule. On a tree, it says: add up the probabilities of all the leaves where $A$ happens. A fab's overall yield is the weighted average of its lines' yields, with weights equal to their shares of production (Example 03-01.3).
+*Derivation:* $A$ is the disjoint union of the pieces $A \cap B_i$, so by additivity $P(A) = \sum_iP(A \cap B_i)$, and each term is $P(B_i)P(A \mid B_i)$ by the multiplication rule. On a tree, it says: add up the probabilities of all the leaves where $A$ happens. A fab's overall yield is the weighted average of its lines' yields, with weights equal to their shares of the dies produced (Example 03-01.3).
 
 ### 3.5 Bayes' rule
 
@@ -164,7 +164,7 @@ $$
 \underbrace{\frac{P(A \mid B)}{P(A^c \mid B)}}_{\text{posterior odds}} = \underbrace{\frac{P(B \mid A)}{P(B \mid A^c)}}_{\text{likelihood ratio}} \times \underbrace{\frac{P(A)}{P(A^c)}}_{\text{prior odds}} .
 $$
 
-**The base-rate effect.** A test with a strong likelihood ratio still gives a weak posterior when the prior is small. A machine-health alarm that fires for 99% of real faults and for 1% of healthy machines, on a fleet where 0.1% of machines are faulty, is right only about 9% of the time when it fires: the 1% false-alarm rate applied to the 99.9% healthy majority swamps the true alarms. Engineers meet this in test (most rejected parts may be good, Example 03-01.4), in radar and in fraud detection. Confusing $P(\text{alarm} \mid \text{fault})$ with $P(\text{fault} \mid \text{alarm})$ is the classic error.
+**The base-rate effect.** A test with a strong likelihood ratio still gives a weak posterior when the prior is small. A machine-health alarm that fires for 99% of real faults and for 1% of healthy machines, on a fleet where 0.1% of machines are faulty, is right only about 9% of the time when it fires: the 1% false-alarm rate applied to the 99.9% healthy majority swamps the true alarms. Engineers meet this in test (a large share of rejected parts can be good: 15% in Example 03-01.4, and a majority when yield is high), in radar and in fraud detection. Confusing $P(\text{alarm} \mid \text{fault})$ with $P(\text{fault} \mid \text{alarm})$ is the classic error.
 
 **Decisions: maximum a posteriori (MAP) detection.** A receiver sees a noisy observation $y$ and must decide which symbol was sent. Deciding $\hat{s}(y)$ is wrong with probability $1 - P(\hat{s}(y) \mid y)$ for that observation, so the probability of error is smallest, observation by observation and therefore overall, when $\hat{s}(y)$ is the symbol with the **largest posterior** $P(s \mid y)$. That is the **MAP rule**. By Bayes' rule $P(s \mid y) \propto P(s)P(y \mid s)$, so MAP compares likelihoods weighted by priors. With equal priors it reduces to the **maximum-likelihood (ML)** rule, pick the $s$ that makes $y$ most likely, which is what most receivers implement. With skewed priors the two differ, sometimes dramatically (Example 03-01.5). The Gaussian version of this decision is the subject of [03-02](03-02-random-variables-and-distributions.md) and Course 17.
 
@@ -266,9 +266,11 @@ The defect level falls in proportion to the *untested* fraction $1 - T$, and it 
 
 **Solution.** (a) $P(L \cup M) = 0.05 + 0.04 - 0.01 = $ **0.08**. (b) Independence would make $P(L \cap M) = 0.05\times0.04 = 0.002$, so $P(L \cup M) = $ **0.088**. (c) They are not independent: $P(L \cap M) = 0.01$ is five times the product. Equivalently, $P(M \mid L) = 0.01/0.05 = $ **0.2**, against $P(M) = 0.04$: a die with a logic fault is five times as likely to have a memory fault. A shared cause, such as a defect-dense wafer region, is the usual explanation. Positive correlation *lowers* the total failure rate here, because the failures pile onto the same dies.
 
+**Sanity check.** $0.08 \le 0.05 + 0.04$ (the union bound) and $0.08 \ge 0.05$ (the larger single event) ✓.
+
 ### Example 03-01.3 — Two fabs: total probability and Bayes (tier B)
 
-**Setup.** A product is built in two fabs. Fab A makes 60% of the wafers with a die yield of 92%; fab B makes 40% at 85%. (a) What is the overall yield? (b) A die picked at random fails. What is the probability it came from fab B? (c) Given that a die is good, what is the probability it came from fab B?
+**Setup.** A product is built in two fabs. Fab A makes 60% of the dies with a die yield of 92%; fab B makes 40% at 85%. (a) What is the overall yield? (b) A die picked at random fails. What is the probability it came from fab B? (c) Given that a die is good, what is the probability it came from fab B?
 
 **Solution.** (a) Total probability: $Y = 0.6\times0.92 + 0.4\times0.85 = 0.552 + 0.340 = $ **0.892**.
 
@@ -300,13 +302,15 @@ The defect level falls in proportion to the *untested* fraction $1 - T$, and it 
 
 (b) After either observation, "0 was sent" is more probable (0.6786 and 0.9942). So MAP always decides 0, and it errs exactly when a 1 was sent: probability **0.05**. The ML rule believes the received bit and errs whenever the channel flips it: probability **0.1**. Here MAP halves the error rate by ignoring the data entirely.
 
-(c) MAP follows a received 1 only when $P(1)\times0.9 > P(0)\times0.1$, that is when $P(1) > 0.1$. Below that prior, the channel's 10% flip rate produces more false 1s than true ones.
+(c) MAP follows a received 1 only when $P(1)\times0.9 > P(0)\times0.1$, that is when $P(1) > $ **0.1**. Below that prior, the channel's 10% flip rate produces more false 1s than true ones.
+
+**Sanity check.** The posteriors for each received bit sum to 1 ($0.3214 + 0.6786$, $0.005814 + 0.9942$) ✓, and the MAP error 0.05 can be no worse than "always guess 0", which it equals ✓.
 
 **Interpretation.** Minimizing the error probability is not always the goal. A missed alarm may cost far more than a false one, and the decision rule should then weigh the two errors by their costs, not just their probabilities. Detection theory (Course 17) does exactly that. But the example shows why priors matter: with skewed priors, ignoring them leaves performance on the table.
 
 ### Example 03-01.6 — Redundancy, voting and common-mode failures (tier B)
 
-**Setup.** (a) A module survives a mission with probability $R$. Compare a single module with TMR (perfect voter) at $R = 0.99$, 0.9 and 0.4. (b) Two power supplies each fail with probability $q = 0.01$ per year. Find the probability both fail if failures are independent, and if 10% of each supply's failure probability is common-mode (β = 0.1). (c) What does "five nines" availability allow per year?
+**Setup.** (a) A module survives a mission with probability $R$. Compare a single module with TMR (perfect voter) at $R = 0.99$, 0.9 and 0.4. (b) Two power supplies each fail with probability $q = 0.01$ per year, with no repair during the year (a mission model). Find the probability both fail if failures are independent, and if 10% of each supply's failure probability is common-mode (β = 0.1). (c) What does "five nines" availability allow per year?
 
 **Solution.** (a) $R_{\text{TMR}} = 3R^2 - 2R^3$:
 
@@ -318,7 +322,7 @@ The defect level falls in proportion to the *untested* fraction $1 - T$, and it 
 
 At $R = 0.99$, TMR cuts the failure probability from 1% to 0.03%, about 34-fold. At $R = 0.4$ it makes things worse.
 
-(b) Independent: $q^2 = $ **1×10⁻⁴**. With β = 0.1: $\beta q + (1 - \beta q)\big((1 - \beta)q\big)^2 = 0.001 + 0.999\times(0.009)^2 = $ **1.081×10⁻³**, about **10.81** times worse. The common-mode term $\beta q = 0.001$ dominates.
+(b) Independent: $q^2 = $ **1×10⁻⁴**. With β = 0.1: $\beta q + (1 - \beta q)\big((1 - \beta)q\big)^2 = 0.001 + 0.999\times(0.009)^2 = $ **1.081×10⁻³**, about **10.81** times worse. The common-mode term $\beta q = 0.001$ dominates. With repair, a failed supply is replaced within hours, so independent double failures need overlapping outages and become far rarer still, which makes the common-mode term dominate even more.
 
 (c) $(1 - 0.99999)\times8766\text{ h}\times60 = $ **5.260 minutes** of downtime a year.
 
@@ -334,7 +338,7 @@ At $R = 0.99$, TMR cuts the failure probability from 1% to 0.03%, about 34-fold.
 
 (c) $1 - 0.5^{0.001} = $ **692.9 DPPM**, about 7 per 10,000 shipped parts, even at "three nines" of coverage. The headline coverage number means little without the yield.
 
-**Check.** The approximation $\text{DL} \approx (1 - T)\ln(1/Y)$ gives $0.01\times0.2231 = 2.231\times10^{-3}$ for (a), within 0.1% ✓.
+**Check.** The approximation $\text{DL} \approx (1 - T)\ln(1/Y)$ gives $0.01\times0.2231 = 2.231\times10^{-3}$ for (a), within about 0.1% ✓.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -376,6 +380,11 @@ At $R = 0.99$, TMR cuts the failure probability from 1% to 0.03%, about 34-fold.
 | Ex 03-01.4f | escape-probability reduction factor | 113 | — |
 | Ex 03-01.5e | P(sent 0 given received 1) | 0.6786 | — |
 | Ex 03-01.5f | P(sent 0 given received 0) | 0.9942 | — |
+| Ex 03-01.5g | prior above which MAP follows a received 1 | 0.1 | — |
+| N 03-01.i | bits for a 95% zero-error test at 1e-12 | 3.0×10^12 | bits |
+| C 03-01.a | union-bound check, exact value | 0.00995 | — |
+| C 03-01.b | shipped defect fraction at 90% yield | 0.11 | % |
+| C 03-01.c | shipped defect fraction at 50% yield | 1 | % |
 | Ex 03-01.6h | TMR failure-probability improvement at R = 0.99 | 34 | — |
 | T 03-01.a | alarm posterior in the base-rate illustration | 9 | % |
 | T 03-01.b | collision probability, 10,000 IDs of 32 bits | 0.01157 | — |
@@ -399,7 +408,7 @@ The lab ([labs/03-01-lab/](../labs/03-01-lab/README.md)) is a notebook of Monte 
 |---|---|---|---|
 | Fault coverage (more test patterns, design for test) | Lower defect level (DPPM falls in proportion to the untested fraction) | Test time per die, tester capacity, area for test logic | Test and product engineering |
 | Test limits (guard bands) | Fewer escapes | More overkill: good dies scrapped | Product and quality engineering |
-| Redundancy (duplication, TMR) | Reliability, if failures are independent and modules are good ($R > 0.5$) | Area, power and cost (about ×2 or ×3), plus the voter | System and safety architects |
+| Redundancy (duplication, TMR) | Reliability: duplication always helps if failures are independent; TMR only if $R > 0.5$ | Area, power and cost (about ×2 or ×3), plus the voter | System and safety architects |
 | Separation of redundant units (feeds, locations, designs) | Removes common-mode failures, which otherwise dominate | Cost and complexity | Datacenter and safety engineering |
 | Forward error correction | Lower delivered BER for the same channel | Latency, overhead bits, decoder power | Link and PHY architects |
 | BER test duration | Confidence in a low-BER claim | Tester time: about $3/p$ bits for 95% confidence | Validation engineering |
@@ -418,7 +427,7 @@ The lab ([labs/03-01-lab/](../labs/03-01-lab/README.md)) is a notebook of Monte 
 | PCIe target BER, Gen 1–5 (NRZ), as of Nov 2026 | $10^{-12}$ | [R-059](../../../reference/research-log.md#r-059--serial-link-bit-error-rate-targets-pcie-and-ethernet) |
 | PCIe 6.0 first-bit error rate, as of Nov 2026 | $10^{-6}$, with FEC, CRC and retry | [R-059](../../../reference/research-log.md#r-059--serial-link-bit-error-rate-targets-pcie-and-ethernet) |
 | Ethernet 400G/800G/1.6T BER objective, as of Nov 2026 | $10^{-13}$ at the MAC | [R-059](../../../reference/research-log.md#r-059--serial-link-bit-error-rate-targets-pcie-and-ethernet) |
-| Automotive and JEDEC qualification lot | 3 lots × 77 units, zero failures | Shows < 1% defective at 90% confidence [R-061](../../../reference/research-log.md#r-061--qualification-sample-sizes-aec-q100-and-jedec-jesd47) |
+| Automotive and JEDEC qualification sample, as of Nov 2026 (JESD47G; AEC-Q100 per a 2020 NASA summary; current revisions not checked) | 3 lots × 77 units, zero failures | Shows < 1% defective at 90% confidence [R-061](../../../reference/research-log.md#r-061--qualification-sample-sizes-aec-q100-and-jedec-jesd47) |
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -447,9 +456,9 @@ The lab ([labs/03-01-lab/](../labs/03-01-lab/README.md)) is a notebook of Monte 
 
 ### State of the art (as of Nov 2026)
 
-- **Serial links are specified by bit error rate.** PCI Express through Gen 5, with NRZ signaling, targets a BER of $10^{-12}$. PCIe 6.0 moved to PAM4 at 64 GT/s, where that raw BER is not feasible. It instead targets a *first-bit error rate* below $10^{-6}$ and adds a light forward error correction, a 64-bit CRC and a fast link-level retry. With a 256-byte flit (236 bytes of payload, 6 of link-layer data, 8 of CRC and 6 of FEC), the retry probability per flit is about $5\times10^{-6}$ ([R-059](../../../reference/research-log.md#r-059--serial-link-bit-error-rate-targets-pcie-and-ethernet)) **[Established; from presentations by a PCI-SIG board member and an IP vendor; the specification text was not read]**. Ethernet's 400G, 800G and 1.6T objectives specify a BER of $10^{-13}$ at the MAC service interface, or the equivalent frame loss ratio of $6.2\times10^{-11}$ for 64-byte frames ([R-059](../../../reference/research-log.md#r-059--serial-link-bit-error-rate-targets-pcie-and-ethernet)) **[Established]**.
-- **Proving a BER takes time.** If a test sees zero errors in $n$ bits, the BER is below $p$ with confidence $C = 1 - (1 - p)^n \approx 1 - e^{-np}$. So 95% confidence needs $n = -\ln(0.05)/p \approx 3/p$ bits. At $10^{-12}$ that is $3.0\times10^{12}$ bits: **93.62 s** on a 32 Gb/s lane, or **7.489 s** at 400 Gb/s. At $10^{-15}$ and 400 Gb/s it takes **2.080 hours**. IEEE 802.3 contributors use this ITU-T formula when choosing test objectives ([R-060](../../../reference/research-log.md#r-060--zero-error-ber-tests-and-confidence)) **[Established]**.
-- **Qualification samples are small on purpose.** AEC-Q100 automotive qualification and JEDEC's JESD47 run their major stresses, such as 1000 hours of high-temperature operating life, on 3 lots of 77 units with zero failures allowed. That shows, at 90% confidence, that no more than 1% of the population is defective (an "LTPD of 1"). A NASA summary of AEC-Q100 is explicit that this sample "is NOT sufficient or intended for process control or PPM evaluation"; low-ppm targets are met by process control and screening ([R-061](../../../reference/research-log.md#r-061--qualification-sample-sizes-aec-q100-and-jedec-jesd47)) **[Established]**.
+- **Serial links are specified by bit error rate.** PCI Express through Gen 5, with NRZ (two-level) signaling, targets a BER of $10^{-12}$. PCIe 6.0 moved to PAM4 (four-level signaling, two bits per symbol) at 64 GT/s (gigatransfers, or symbols, per second per lane), where that raw BER is not feasible. It instead targets a *first-bit error rate* below $10^{-6}$ and adds a light forward error correction, a 64-bit CRC (cyclic redundancy check, an error-detecting code) and a fast link-level retry. With a 256-byte flit (the fixed-size block the link sends: 236 bytes of transaction-layer packet space, 6 of link-layer data, 8 of CRC and 6 of FEC), the retry probability per flit is about $5\times10^{-6}$ ([R-059](../../../reference/research-log.md#r-059--serial-link-bit-error-rate-targets-pcie-and-ethernet)) **[Established; from presentations by a PCI-SIG board member and an IP vendor; the specification text was not read]**. Ethernet's 400G, 800G and 1.6T objectives specify a BER of $10^{-13}$ at the MAC service interface (where the Ethernet controller hands frames to the system), or the equivalent frame loss ratio of $6.2\times10^{-11}$ for 64-byte frames ([R-059](../../../reference/research-log.md#r-059--serial-link-bit-error-rate-targets-pcie-and-ethernet)) **[Established]**.
+- **Proving a BER takes time.** "Confidence" here is a statement about the test, not about this link. If the true BER were $p$ or worse, a run of $n$ bits would be error-free with probability at most $(1 - p)^n \approx e^{-np}$. Choosing $n$ so that this is 5% means a link at the limit would pass only 1 time in 20: that is "95% confidence", $C = 1 - (1 - p)^n$. It is *not* the probability that this link's BER is below $p$ given the clean run, which would need a prior (Bayes, §3.5; [03-05](03-05-estimation-and-hypothesis-testing.md) §3.2). So 95% confidence needs $n = -\ln(0.05)/p \approx 3/p$ bits. At $10^{-12}$ that is **3.0×10¹²** bits: **93.62 s** on a 32 Gb/s lane, or **7.489 s** at 400 Gb/s. At $10^{-15}$ and 400 Gb/s it takes **2.080 hours**. IEEE 802.3 contributors use this ITU-T formula when choosing test objectives ([R-060](../../../reference/research-log.md#r-060--zero-error-ber-tests-and-confidence)) **[Established]**.
+- **Qualification samples are small on purpose.** AEC-Q100 automotive qualification and JEDEC's JESD47 run their major stresses, such as 1000 hours of high-temperature operating life, on 3 lots of 77 units with zero failures allowed (per JESD47G, 2009, and a 2020 NASA summary of AEC-Q100; the current revisions were not checked). That shows, at 90% confidence, that no more than 1% of the population is defective (an "LTPD of 1"). A NASA summary of AEC-Q100 is explicit that this sample "is NOT sufficient or intended for process control or PPM evaluation"; low-ppm targets are met by process control and screening ([R-061](../../../reference/research-log.md#r-061--qualification-sample-sizes-aec-q100-and-jedec-jesd47)) **[Established]**.
 - **Defect level is managed through fault coverage.** The Williams–Brown relation of §3.8 is standard teaching in test engineering, and its message, that shipped DPPM scales with the untested fraction and with $\ln(1/Y)$, drives coverage targets ([R-062](../../../reference/research-log.md#r-062--defect-level-and-fault-coverage)) **[Established]**.
 
 ### Why it matters commercially
@@ -477,7 +486,7 @@ Probability numbers are contract terms. A link's BER sets how much forward error
 
    <details><summary>Answer</summary>
 
-   The union bound gives $1000\times10^{-5} = 0.01$, which needs no assumption beyond rarity. If failures are independent, the exact value $1 - (1 - 10^{-5})^{1000} = 0.00995$ agrees. Positively correlated failures make the true value smaller, never larger than the bound.
+   The union bound gives $1000\times10^{-5} = 0.01$. It is valid with no assumption at all, and accurate because the events are rare. If failures are independent, the exact value $1 - (1 - 10^{-5})^{1000} = $ **0.00995** agrees. Positively correlated failures make the true value smaller, never larger than the bound.
 
    </details>
 
@@ -493,7 +502,7 @@ Probability numbers are contract terms. A link's BER sets how much forward error
 
    <details><summary>Answer</summary>
 
-   No. The shipped defect fraction depends on how many bad parts arrive: it is (bad fraction × 1%)/(pass fraction). At 90% yield it is about 0.11% (Example 03-01.4); at 50% yield it would be about 1%. Also, "99% of shipped parts good" would be a very poor result for most products.
+   No. The shipped defect fraction depends on how many bad parts arrive: it is (bad fraction × 1%)/(pass fraction). At 90% yield it is about **0.11**% (Example 03-01.4); at 50% yield it would be about **1**%. Also, "99% of shipped parts good" would be a very poor result for most products.
 
    </details>
 

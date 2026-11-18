@@ -17,7 +17,7 @@ $X(t) = A\cos(\omega t + \Theta)$ with Θ uniform on $[0, \pi]$ (not $[0, 2\pi)$
 
 ### Problem 03-06.2 [A]
 
-A WSS voltage has autocorrelation $R_X(\tau) = 4e^{-|\tau|/\tau_c} + 1$ V². Find (a) the total average power, (b) the DC power and the possible mean values, (c) the AC power, and (d) the correlation coefficient between samples τ_c apart.
+A WSS voltage has autocorrelation $R_X(\tau) = 4e^{-|\tau|/\tau_c} + 1$ V². Assume it is ergodic, so its autocovariance decays to zero. Find (a) the total average power, (b) the DC power and the possible mean values, (c) the AC power, and (d) the correlation coefficient between samples τ_c apart.
 
 ### Problem 03-06.3 [B]
 

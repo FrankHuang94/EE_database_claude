@@ -36,7 +36,7 @@ $$
 P(\text{fail}) = 1 - \sum_{k=0}^{2}\binom{255}{k}(10^{-3})^k(0.999)^{255 - k} .
 $$
 
-The three terms are $0.999^{255} = 0.7748$, $255\times10^{-3}\times0.999^{254} = 0.1978$ and $\binom{255}{2}\times10^{-6}\times0.999^{253} = 0.02515$, which sum to 0.9977. So $P(\text{fail}) = $ **2.263×10⁻³**.
+The three terms are $0.999^{255} = 0.7748$, $255\times10^{-3}\times0.999^{254} = 0.1978$ and $\binom{255}{2}\times10^{-6}\times0.999^{253} = 0.02514$, which sum to 0.9977. So $P(\text{fail}) = $ **2.263×10⁻³**.
 
 (b) Uncoded: $1 - 0.999^{255} = $ **0.2252**.
 
@@ -70,7 +70,7 @@ The three terms are $0.999^{255} = 0.7748$, $255\times10^{-3}\times0.999^{254} =
 
 (b) Both posteriors favor believing the received bit, so MAP decides 1 for a received 1 and 0 for a received 0 (here the same as ML). It errs when a 1 is missed or a 0 is read as 1: $0.5\times0.01 + 0.5\times0.001 = $ **0.0055**.
 
-(c) A missed 1 happens when too few photons arrive or the amplifier noise pushes the signal below threshold. A false 1 needs noise alone to cross the threshold, which is rarer because the threshold sits well above the dark level. Real receivers set the threshold to balance the two (Course 17).
+(c) The noise is not the same on the two levels. Photon arrivals are random (shot noise), and their fluctuation grows with the optical power, so the "1" level is much noisier than the dark "0" level. A threshold midway between the levels therefore sits fewer noise standard deviations from the 1 level than from the 0 level, and misses of 1s dominate. The error-minimizing threshold sits below the midpoint, toward the quieter 0 level (Problem 03-02.20 works this out).
 
 ### Solution 03-01.9
 
@@ -88,7 +88,7 @@ The three terms are $0.999^{255} = 0.7748$, $255\times10^{-3}\times0.999^{254} =
 
 (a) The fan bank works with 4 good fans or exactly 3: $R_{3/4} = 0.97^4 + 4\times0.97^3\times0.03 = 0.8853 + 0.1095 = $ **0.9948**.
 
-(b) Power: $1 - 0.02^2 = 0.9996$. The three blocks are in series: $R = 0.9996\times0.995\times0.9948 = $ **0.9894**. The motherboard, the only single point of failure, dominates the 1.06% failure probability.
+(b) Power: $1 - 0.02^2 = 0.9996$. The three blocks are in series: $R = 0.9996\times0.995\times0.9948 = $ **0.9894**. The motherboard (0.50% failure probability) and the 3-of-4 fan bank (0.52%) contribute almost equally to the 1.06%; the redundant supplies contribute only 0.04%.
 
 ### Solution 03-01.12
 
@@ -137,6 +137,50 @@ The roots are **0.5010** and **0.9990**. TMR helps for $0.5010 < R < 0.9990$.
 (c) $n \ge \ln0.1/\ln(1 - 10^{-5}) = 230{,}257.4$: **230,258** units, all passing.
 
 (d) Demonstrating ppm-level quality by sampling would take hundreds of thousands of units per qualification, which is impractical. Qualification shows the design and process are sound (no systematic failure mechanism at the 1% level); DPPM is controlled by statistical process control, screening and test coverage, and verified by field returns over millions of shipped parts.
+
+### Solution 03-01.17
+
+(a) Treat $A \cup B$ as one event: $P((A \cup B) \cup C) = P(A \cup B) + P(C) - P((A \cup B) \cap C)$. Distribute the intersection, $(A \cup B) \cap C = (A \cap C) \cup (B \cap C)$, and apply the two-event rule again, noting that $(A \cap C) \cap (B \cap C) = A \cap B \cap C$:
+
+$$
+P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(A \cap B) - P(A \cap C) - P(B \cap C) + P(A \cap B \cap C) .
+$$
+
+(b) $B$ is the disjoint union of $A \cap B$ and $A^c \cap B$, so $P(A^c \cap B) = P(B) - P(A)P(B) = (1 - P(A))P(B) = P(A^c)P(B)$. Applying the same argument with $A^c$ in place of $B$'s partner gives $P(A^c \cap B^c) = P(A^c) - P(A^c \cap B) = P(A^c)(1 - P(B)) = P(A^c)P(B^c)$.
+
+(c) Device $i + 1$ avoids the $i$ IDs already taken with probability $1 - i/N$, so $P(\text{no collision}) = \prod_{i=0}^{k-1}(1 - i/N) \approx \exp\big(-\sum_{i=0}^{k-1}i/N\big) = e^{-k(k-1)/(2N)} \approx e^{-k^2/(2N)}$, using $1 - x \approx e^{-x}$. Setting this to ½ gives $k^2 = 2N\ln2$, so $k_{50} = \sqrt{2\ln2}\,\sqrt N = $ **1.177**$\sqrt N$. For $N = 10^6$: **1177.4**, and the exact product first passes 50% at **1178** codes.
+
+### Solution 03-01.18
+
+(a) The tree branches first on the die's state (bad 0.05, good 0.95), then on run 1 (flag or pass), then on run 2 with the same conditional probabilities as run 1: that is what conditional independence means.
+
+(b) $P(\text{flag}_1) = 0.05(0.9) + 0.95(0.04) = $ **0.083**. $P(\text{both}) = 0.05(0.9)^2 + 0.95(0.04)^2 = $ **0.04202**. So $P(\text{flag}_2 \mid \text{flag}_1) = 0.04202/0.083 = $ **0.5063**, far above $P(\text{flag}_2) = 0.083$: the runs' results are strongly *dependent*, because both depend on the same die. Conditional independence given the state does not make the results independent.
+
+(c) $P(\text{bad} \mid \text{flag}_1) = 0.045/0.083 = $ **0.5422**; $P(\text{bad} \mid \text{both}) = 0.0405/0.04202 = $ **0.9638**. One flag is a coin toss, because false flags from the large good population rival true ones; a second, conditionally independent flag makes the die almost certainly bad. Retesting rejects is a cheap way to recover good dies (overkill), provided the test's errors are random rather than systematic.
+
+### Solution 03-01.19
+
+(a) Series: $A = 0.9995^2 = $ **0.9990**. Downtime $(1 - 0.99900025)\times8766\times60 = $ **525.8 min** a year (about 8.8 hours).
+
+(b) A pair is down only when both members are: $1 - 0.0005^2$. Two pairs in series: $A = (1 - 2.5\times10^{-7})^2 = $ **0.9999995**, and the downtime is **15.78 s** a year.
+
+(c) Each pair's unavailability is $\beta u + (1 - \beta u)\big((1 - \beta)u\big)^2 \approx 0.1\times0.0005 = 5.0\times10^{-5}$, and two pairs give about **52.81 min** a year: 200 times the independent result, and only a tenfold gain over no redundancy. Independent redundancy buys "six nines"; a 10% common-mode share caps it near four. (Availability is a long-run fraction, so these figures also assume outages that are short and independent of each other.)
+
+### Solution 03-01.20
+
+(a) With $u = 1 - T$, the cost per shipped die is $C(u) = c_0\ln(1/u) + L\,u\ln(1/Y)$. Setting $dC/du = -c_0/u + L\ln(1/Y) = 0$ gives
+
+$$
+u^* = \frac{c_0}{L\ln(1/Y)} = \frac{0.02}{500\times0.1625} = 2.461\times10^{-4} .
+$$
+
+So $T^* = $ **0.999754**, $\text{DL} = u^*\ln(1/Y) = $ **40.00 DPPM**, and the cost is $0.02\ln(1/u^*) + 500\times4\times10^{-5} = 0.1662 + 0.0200 = $ **\$0.1862** per shipped die.
+
+(b) With $L = \$5000$, $u^* = $ **2.461×10⁻⁵**, $T^* = $ **0.9999754**, $\text{DL} = $ **4.000 DPPM**, and the cost rises to **\$0.2322**.
+
+(c) $\text{DL}^* = u^*\ln(1/Y) = c_0/L$: the yield cancels. At the optimum, the escape cost per shipped die, $L\cdot\text{DL}^* = c_0$, equals the price of one more e-fold of coverage. A higher liability buys a proportionally lower defect level; a lower yield needs more coverage to reach it, but the target itself is set by economics, not by the process.
+
+(d) With $c_0/L = 0.02/500 = 40$ DPPM, a 1 DPPM promise is 40 times below this supplier's economic optimum. Either their test cost per e-fold is far lower than \$0.02, or the customer's escape cost is far higher than they admit, or the promise rests on something other than test coverage (screening, process control). Ask which.
 
 ---
 
@@ -191,3 +235,30 @@ The roots are **0.5010** and **0.9990**. TMR helps for $0.5010 < R < 0.9990$.
 | 03-01.16a | confidence from 0 of 231 | 0.9019 | — |
 | 03-01.16b | units for 0.1% at 90% | 2302 | — |
 | 03-01.16c | units for 10 ppm at 90% | 230258 | — |
+| 03-01.17a | sqrt(2 ln 2) | 1.177 | — |
+| 03-01.17b | approximate 50% point, N = 1e6 | 1177.4 | codes |
+| 03-01.17c | exact 50% point, N = 1e6 | 1178 | codes |
+| 03-01.18a | P(flag on run 1) | 0.083 | — |
+| 03-01.18b | P(flag on both runs) | 0.04202 | — |
+| 03-01.18c | P(flag 2 given flag 1) | 0.5063 | — |
+| 03-01.18d | P(bad given one flag) | 0.5422 | — |
+| 03-01.18e | P(bad given two flags) | 0.9638 | — |
+| 03-01.19a | series availability | 0.9990 | — |
+| 03-01.19b | series downtime | 525.8 | min/yr |
+| 03-01.19c | availability with redundant pairs | 0.9999995 | — |
+| 03-01.19d | downtime with redundant pairs | 15.78 | s/yr |
+| 03-01.19e | downtime with 10% common mode | 52.81 | min/yr |
+| 03-01.19f | common-mode unavailability per pair, approx | 5.0×10^-5 | — |
+| 03-01.20a | optimal untested fraction, L = 500 | 2.461×10^-4 | — |
+| 03-01.20b | optimal coverage, L = 500 | 0.999754 | — |
+| 03-01.20c | optimal defect level, L = 500 | 40.00 | DPPM |
+| 03-01.20d | test cost at the optimum, L = 500 | 0.1662 | $ |
+| 03-01.20e | total cost per die, L = 500 | 0.1862 | $ |
+| 03-01.20f | optimal untested fraction, L = 5000 | 2.461×10^-5 | — |
+| 03-01.20g | optimal coverage, L = 5000 | 0.9999754 | — |
+| 03-01.20h | optimal defect level, L = 5000 | 4.000 | DPPM |
+| 03-01.20i | total cost per die, L = 5000 | 0.2322 | $ |
+| 03-01.20j | ln(1/Y) at 85% yield | 0.1625 | — |
+| 03-01.11c | motherboard failure probability | 0.50 | % |
+| 03-01.11d | fan-bank failure probability | 0.52 | % |
+| 03-01.11e | supply-pair failure probability | 0.04 | % |

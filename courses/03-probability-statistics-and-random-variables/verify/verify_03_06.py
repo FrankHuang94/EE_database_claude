@@ -116,6 +116,16 @@ v.check("Ex 03-06.5c", 1e-3 / (ish * sqrt(1e9)))
 v.check("Ex 03-06.5d", 20 * log10(1e-3 / (ish * sqrt(1e9))))
 v.check("Ex 03-06.5e", sqrt(4 * k * 300 / 1e3) * 1e12)
 v.check("Ex 03-06.5f", 4 * k * 300 / 1e3 / (2 * q) * 1e6)
+v.check("Ex 03-06.5g", 4 * k * 300 / 1e6 / (2 * q) * 1e9)
+# rectangular-window noise bandwidth: integral of sinc^2(fT) over f >= 0 equals 1/(2T)
+Tw = 1e-3
+bn_rect = quad(lambda u: (np.sin(u) / u) ** 2 if u else 1.0, 0, 2e4 * np.pi, limit=20000)[0] / (np.pi * Tw)
+v.assert_true("rectangular window ENBW = 1/(2T)", abs(bn_rect * 2 * Tw - 1) < 2e-4)
+# ergodicity test: time-averaged covariance -> 0 for a cosine, not for a constant floor
+for Ttest in (1e2, 1e4):
+    osc = quad(lambda tt: np.cos(2 * np.pi * tt), 0, Ttest, limit=50000)[0] / Ttest
+    v.assert_true("oscillating covariance averages to zero", abs(osc) < 1e-3)
+v.assert_true("constant floor does not average out", abs(quad(lambda tt: 1.0, 0, 1e4)[0] / 1e4 - 1) < 1e-12)
 
 # ---------------------------------------------------------------- Example 03-06.6
 s6, tc6, T6 = 1e-3, 1e-3, 1.0

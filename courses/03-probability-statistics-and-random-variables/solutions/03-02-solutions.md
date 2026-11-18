@@ -43,7 +43,7 @@ The defect count is Poisson with λ = $AD_0 = 0.2$.
 | 0 | $0.96^{50} = $ **0.1299** | $e^{-2} = $ **0.1353** |
 | 2 | $\binom{50}{2}0.04^2\,0.96^{48} = $ **0.2762** | $2e^{-2} = $ **0.2707** |
 
-The Poisson is **4.2%** high at $k = 0$ and **2.0%** low at $k = 2$. Here $p = 0.04$ is not tiny and $n = 50$ is not huge: the factor $(1 - p)^{n}$ is $e^{n\ln(1 - p)}$ with $\ln0.96 = -0.0408$, not $-0.04$, and the binomial cannot exceed 50 events. In Example 03-02.3 ($p = 10^{-4}$, $n = 12{,}000$) these effects are negligible.
+The Poisson is **4.2%** high at $k = 0$ and **2.0%** low at $k = 2$. Here $p = 0.04$ is not tiny and $n = 50$ is not huge: the factor $(1 - p)^{n}$ is $e^{n\ln(1 - p)}$ with $\ln0.96 = -0.0408$, not $-0.04$, so the binomial's variance $np(1 - p) = 1.92$ is below the Poisson's 2. In Example 03-02.3 ($p = 10^{-4}$, $n = 12{,}000$) these effects are negligible.
 
 ### Solution 03-02.6
 
@@ -120,6 +120,40 @@ Geometric with success probability 0.98. (a) Fail, fail, succeed: $0.02^2\times0
 ### Solution 03-02.16
 
 (a) **Poisson**: many atoms, each very unlikely to emit toward the array in a given day, independently. (b) **Exponential**: the waiting time between events of a constant-rate Poisson process. (c) **Binomial** with $n = 100$, if dies fail independently with the same probability; clustering breaks this, and real yield models add a clustering parameter. (d) **Geometric**, if each attempt succeeds independently with the same probability. (e) **Gaussian**: the sum of a vast number of independent electron motions (03-04). (f) **Uniform** on $[0, 2\pi)$, because the observation time is unrelated to the oscillator's phase.
+
+### Solution 03-02.17
+
+(a) $P(K > n) = (1 - q)^n$: no success in the first $n$ trials. So $P(K > m + n \mid K > m) = (1 - q)^{m+n}/(1 - q)^m = (1 - q)^n = P(K > n)$.
+
+(b) Memorylessness with $n = 1$ gives $P(K > m + 1) = P(K > m)\,P(K > 1) = s\,P(K > m)$ for every $m$. Starting from $P(K > 0) = 1$ and applying this $n$ times, $P(K > n) = s^n$. Then $P(K = k) = P(K > k - 1) - P(K > k) = s^{k-1}(1 - s)$: geometric with success probability $q = 1 - s$. No other PMF on $1, 2, \dots$ is memoryless.
+
+(c) By memorylessness the three failures are irrelevant: $P(\text{more than two further}) = 0.3^2 = $ **0.09**.
+
+### Solution 03-02.18
+
+(a) The Gaussian densities share the factor $1/(\sigma\sqrt{2\pi})$, so the rule is $P_1e^{-(y - A)^2/(2\sigma^2)} > P_0e^{-(y + A)^2/(2\sigma^2)}$. Take logarithms: $\ln P_1 - (y - A)^2/(2\sigma^2) > \ln P_0 - (y + A)^2/(2\sigma^2)$. Expanding, the $y^2$ and $A^2$ terms cancel and $(y + A)^2 - (y - A)^2 = 4Ay$, so $4Ay/(2\sigma^2) > \ln(P_0/P_1)$, that is $y > (\sigma^2/2A)\ln(P_0/P_1)$. Here $y_{\text{th}} = (400/200)\ln9 = $ **4.394 mV**.
+
+(b) With threshold $y_{\text{th}}$: $\text{BER} = P_1Q\big((A - y_{\text{th}})/\sigma\big) + P_0Q\big((A + y_{\text{th}})/\sigma\big) = 0.1\,Q(4.780) + 0.9\,Q(5.220) = $ **1.682×10⁻⁷**. With threshold 0: $Q(5) = $ **2.867×10⁻⁷**. The MAP threshold is better by a factor of **1.705**.
+
+(c) Toward the less likely level ($+A$), making it harder to decide 1. Fewer of the frequent 0s are misread, at the cost of more misses of the rare 1s; with 9 times as many 0s, the trade pays.
+
+### Solution 03-02.19
+
+(a) $\phi(5) = e^{-12.5}/\sqrt{2\pi} = 1.487\times10^{-6}$. Lower bound $5\phi(5)/26 = $ **2.859×10⁻⁷**; upper bound $\phi(5)/5 = $ **2.973×10⁻⁷**; exact $Q(5) = $ **2.867×10⁻⁷**, between them and much closer to the lower bound.
+
+(b) $\tfrac12e^{-12.5} = $ **1.863×10⁻⁶**, 6.5 times too high: a valid bound, useful for proofs and quick exponents, but loose at a given $x$ because it misses the $1/x$ factor.
+
+(c) $Q(x) = \tfrac12\operatorname{erfc}(x/\sqrt2)$, so $\tfrac12\operatorname{erfc}(3) = Q(3\sqrt2) = Q(4.243) = $ **1.105×10⁻⁵**.
+
+### Solution 03-02.20
+
+(a) $\text{BER} = \tfrac12\big[Q\big((11 - 1)/1\big) + Q\big((21 - 11)/3\big)\big] = \tfrac12[Q(10) + Q(3.333)] = $ **2.145×10⁻⁴**, almost all from the noisy 1 level.
+
+(b) Equal distances in σ: $(t - I_0)/\sigma_0 = (I_1 - t)/\sigma_1$ gives $t = (\sigma_1I_0 + \sigma_0I_1)/(\sigma_0 + \sigma_1) = (3 + 21)/4 = $ **6 µA**. Both distances are then $(I_1 - I_0)/(\sigma_0 + \sigma_1) = 20/4 = 5$ standard deviations, so $\text{BER} = \tfrac12[Q(5) + Q(5)] = Q(5) = $ **2.867×10⁻⁷**.
+
+(c) Minimizing $\tfrac12[Q((t - 1)/1) + Q((21 - t)/3)]$ numerically gives $t = $ **6.163 µA** and $\text{BER} = $ **2.505×10⁻⁷**, only slightly better than (b), and **857** times better than the midway threshold.
+
+(d) The equal-σ threshold of (b): it is almost optimal, simple to compute from the two levels and noises, and it reduces the link to one number, the Q-factor $(I_1 - I_0)/(\sigma_0 + \sigma_1)$. Because the levels and noises drift with laser power, temperature and aging, receivers track the optimum adaptively (Course 24); a fixed midway threshold would waste three orders of magnitude of BER.
 
 ---
 
@@ -199,3 +233,24 @@ Geometric with success probability 0.98. (a) Fail, fail, succeed: $0.02^2\times0
 | 03-02.15d | Q(7.5) | 3.191×10^-14 | — |
 | 03-02.15e | Q(1.5) | 0.06681 | — |
 | 03-02.15c | shifted ±3σ out-of-spec | 66811 | ppm |
+| 03-02.17a | P(more than two further attempts) | 0.09 | — |
+| 03-02.18a | MAP threshold | 4.394 | mV |
+| 03-02.18b | BER with the MAP threshold | 1.682×10^-7 | — |
+| 03-02.18c | BER with threshold 0 | 2.867×10^-7 | — |
+| 03-02.18d | improvement factor | 1.705 | — |
+| 03-02.18e | distance of the 1 level, in σ | 4.780 | — |
+| 03-02.18f | distance of the 0 level, in σ | 5.220 | — |
+| 03-02.19a | phi(5) | 1.487×10^-6 | — |
+| 03-02.19b | lower bound at 5 | 2.859×10^-7 | — |
+| 03-02.19c | upper bound at 5 | 2.973×10^-7 | — |
+| 03-02.19d | Q(5) | 2.867×10^-7 | — |
+| 03-02.19e | half exp(−12.5) | 1.863×10^-6 | — |
+| 03-02.19f | ratio of the half-exponential bound to Q(5) | 6.5 | — |
+| 03-02.19g | half erfc(3) | 1.105×10^-5 | — |
+| 03-02.19h | 3√2 | 4.243 | — |
+| 03-02.20a | BER, midway threshold | 2.145×10^-4 | — |
+| 03-02.20b | equal-σ threshold | 6 | µA |
+| 03-02.20c | BER, equal-σ threshold | 2.867×10^-7 | — |
+| 03-02.20d | optimal threshold | 6.163 | µA |
+| 03-02.20e | BER, optimal threshold | 2.505×10^-7 | — |
+| 03-02.20f | improvement over the midway threshold | 857 | — |

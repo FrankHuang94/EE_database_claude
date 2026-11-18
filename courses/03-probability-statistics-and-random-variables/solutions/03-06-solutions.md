@@ -20,7 +20,7 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (a) $R_X(0) = 4 + 1 = $ **5 V²**.
 
-(b) As τ → ∞ the correlated part dies away and $R_X \to \mu^2 = 1$ V²: DC power **1 V²**, so the mean is +1 V or −1 V (the autocorrelation cannot tell the sign).
+(b) As τ → ∞ the correlated part dies away and $R_X \to \mu^2 = 1$ V²: DC power **1 V²**, so the mean is +1 V or −1 V (the autocorrelation cannot tell the sign). The ergodicity assumption matters: without it, the constant could be a random DC level with zero mean, like the offsets of Example 03-06.2, which give the same $R_X$.
 
 (c) AC power $5 - 1 = $ **4 V²**.
 
@@ -82,11 +82,11 @@ $\sqrt{2qIB} = \sqrt{2\times1.602\times10^{-19}\times10^{-5}\times10^8} = $ **17
 
 ### Solution 03-06.11
 
-(a) $f_c = 1/(2\pi\times10^{-3}) = $ **159.2 Hz**.
+(a) $f_L = 1/(2\pi\times10^{-3}) = $ **159.2 Hz**.
 
 (b) $G(0) = 4\sigma^2\tau_c = 4\times10^{-6}\times10^{-3} = 4\times10^{-9}$ V²/Hz, or **63.25 µV/√Hz**.
 
-(c) $\int_0^{f_c}G\,df = \sigma^2\cdot\frac{2}{\pi}\arctan(2\pi f_c\tau_c) = \sigma^2\cdot\frac2\pi\cdot\frac\pi4$: **0.5**. Half the power lies below the corner; the $1/f^2$ tail holds the other half.
+(c) $\int_0^{f_L}G\,df = \sigma^2\cdot\frac{2}{\pi}\arctan(2\pi f_L\tau_c) = \sigma^2\cdot\frac2\pi\cdot\frac\pi4$: **0.5**. Half the power lies below the corner; the $1/f^2$ tail holds the other half.
 
 ### Solution 03-06.12
 
@@ -106,7 +106,7 @@ For a random walk the rms error grows as $\sqrt t$. After 100 µs: $1\text{ ps}\
 
 (b) At $R_b = $ **10 GHz**.
 
-(c) Three-quarters of the signal's power, and the fundamental of the fastest pattern (1010…), sit below $R_b/2$, so the channel's loss there largely sets how open the eye is. Equalizers are specified against the loss at that frequency.
+(c) Three-quarters of the signal's power, and the fundamental of the fastest pattern (1010…), sit at or below $R_b/2$, so the channel's loss there largely sets how open the eye is. Equalizers are specified against the loss at that frequency.
 
 ### Solution 03-06.15
 
@@ -125,7 +125,7 @@ For a random walk the rms error grows as $\sqrt t$. After 100 µs: $1\text{ ps}\
 
 (b) For 40 dB SNR the signal must be 100 times the rms noise: **7.668 µV** (A) or **8.971 µV** (B).
 
-(c) Most of this band lies above Option A's 10 Hz corner, where its white floor (5 nV/√Hz) beats the zero-drift part's 8 nV/√Hz; three decades of 1/f noise below 10 Hz cost A less than B's higher floor over 100 Hz. In a 0.01–1 Hz band the result reverses: A gives **34.53 nV** and B **8.931 nV**, because now the whole band sits deep in A's 1/f region. The right amplifier depends on the band, which is why noise must be compared as a spectrum, not a single number.
+(c) Most of this band lies above Option A's 10 Hz corner, where its white floor (5 nV/√Hz) beats the zero-drift part's 8 nV/√Hz; the 1/f term over the band's three decades, two of them below the 10 Hz corner, costs A less than B's higher floor over 100 Hz. In a 0.01–1 Hz band the result reverses: A gives **34.53 nV** and B **8.931 nV**, because now the whole band sits deep in A's 1/f region. The right amplifier depends on the band, which is why noise must be compared as a spectrum, not a single number.
 
 ---
 

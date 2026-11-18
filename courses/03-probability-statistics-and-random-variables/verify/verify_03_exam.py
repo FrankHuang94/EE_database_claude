@@ -31,14 +31,15 @@ HPY = 8766.0
 
 # ---------------------------------------------------------------- the exam's table of values
 table = (HERE.parent / "exam" / "README.md").read_text()
-for arg, val in (("2.0512", 0.02012), ("3.5009", 2.319e-4), ("4.5016", 3.372e-6), ("7.1667", 3.842e-13),
+for arg, val in (("2.0512", 0.02012), ("3.5009", 2.319e-4), ("2.5", 6.210e-3), ("0.23", 0.4090), ("7.1667", 3.842e-13),
                  ("7.5", 3.191e-14), ("7.8333", 2.376e-15)):
     v.assert_true(f"table Q({arg})", abs(Q(float(arg)) / val - 1) < 6e-4)
 v.assert_true("table inverse Q and multipliers", round(Qinv(0.05), 3) == 1.645 and round(Qinv(0.01), 3) == 2.326
               and round(Qinv(1e-12), 3) == 7.034 and round(2 * Qinv(1e-12), 3) == 14.069 and round(2 * Qinv(1e-15), 3) == 15.883)
 v.assert_true("table t and Poisson bounds", round(tdist.ppf(0.975, 7), 3) == 2.365
               and round(chi2.ppf(0.6, 4) / 2, 3) == 2.022 and round(chi2.ppf(0.9, 4) / 2, 3) == 3.890)
-v.assert_true("table rows present", all(s in table for s in ("Q(2.0512)", "Q(4.5016)", "t_{0.025,7}")))
+v.assert_true("table rows present", all(s in table for s in ("Q(2.0512)", "Q(2.5)", "Q(0.23)", "z_{0.1}", "t_{0.025,7}")))
+v.assert_true("table z_0.1", round(Qinv(0.1), 4) == 1.2816)
 
 # ---------------------------------------------------------------- 1 · enumeration over the 8 block outcomes
 pf = (0.02, 0.05, 0.01)
@@ -74,22 +75,24 @@ f3 = binom.sf(1, 10_000, 2e-5)
 v.check("X03.3d", f3)
 v.check("X03.3e", sum(kk * f3 ** (kk - 1) * (1 - f3) for kk in range(1, 50)))
 
-# ---------------------------------------------------------------- 4 · reliability
-fit4 = 8 * 50 + 400 + 1200
-r4 = fit4 * 1e-9
-p4 = -math.expm1(-r4 * HPY)
-v.check("X03.4a", fit4)
-v.check("X03.4j", r4 * HPY)
-v.check("X03.4b", p4)
-v.check("X03.4c", quad(lambda u: exp(-u), 0, 60)[0] / r4 / HPY)
-v.check("X03.4d", exp(-r4 * 7 * HPY))
-v.check("X03.4e", (exp(-r4 * 3 * HPY) - exp(-r4 * 4 * HPY)) / exp(-r4 * 3 * HPY))
-N4 = 50_000
-mu4, sd4 = N4 * p4, sqrt(N4 * p4 * (1 - p4))
-v.check("X03.4f", mu4)
-v.check("X03.4g", sd4)
-v.check("X03.4h", Q((1000.5 - mu4) / sd4))
-v.check("X03.4i", binom.sf(1000, N4, p4))
+# ---------------------------------------------------------------- 4 · one-sided z-test, power, sample size
+se4 = 0.8 / sqrt(25)
+z4 = (11.6 - 12.0) / se4
+thr4 = 12.0 - Qinv(0.05) * se4
+v.check("X03.4a", se4)
+v.check("X03.4b", z4)
+v.check("X03.4c", norm.cdf(z4))
+v.check("X03.4d", thr4)
+pw4 = norm.cdf((thr4 - 11.7) / se4)
+v.check("X03.4e", pw4)
+n4 = ((Qinv(0.05) + Qinv(0.1)) * 0.8 / 0.3) ** 2
+v.check("X03.4f", n4)
+v.check("X03.4g", math.ceil(n4))
+# Monte Carlo: the power of the 25-part test at 11.7 mA
+rng4 = np.random.default_rng(2026)
+xb4 = rng4.normal(11.7, 0.8, (200_000, 25)).mean(axis=1)
+v.assert_true("power by simulation", abs(np.mean(xb4 <= thr4) - pw4) < 0.005)
+v.assert_true("choosing sidedness afterwards doubles alpha", abs(2 * Q(Qinv(0.05)) - 0.10) < 1e-12)
 
 # ---------------------------------------------------------------- 5 · Gaussian decisions (by integration)
 A, s5 = 90.0, 12.0
@@ -184,7 +187,14 @@ v.check("X03.11d", m11 + tq * se11)
 v.check("X03.11e", 12 / (6 * s11))
 v.check("X03.11f", cpk11)
 v.check("X03.11g", sek)
-v.check("X03.11h", cpk11 - Qinv(0.05) * sek)
+v.check("X03.11h", cpk11 - 1.645 * sek)
+v.assert_true("bound is near 0.965 whichever z is used", abs(cpk11 - Qinv(0.05) * sek - 0.965) < 5e-4)
+c11 = 1.764                                    # the rounded value the hand iteration uses
+v.check("X03.11k", (c11 - 1.33) / 1.645)
+v.check("X03.11l", c11**2 / (2 * ((c11 - 1.33) / 1.645) ** 2))
+lb = lambda n: c11 - 1.645 * sqrt(1 / (9 * n) + c11**2 / (2 * (n - 1)))  # noqa: E731
+v.check("X03.11m", lb(24))
+v.check("X03.11n", lb(25))
 v.check("X03.11i", math.ceil(brentq(lambda n: cpk11 - Qinv(0.05) * sqrt(1 / (9 * n) + cpk11**2 / (2 * (n - 1))) - 1.33, 3, 5000)))
 
 # ---------------------------------------------------------------- 12 · HTOL to field
@@ -196,10 +206,13 @@ v.check("X03.12b", D12)
 v.check("X03.12c", 1 / D12 * 1e9)
 v.check("X03.12d", lu(0.6) / D12 * 1e9)
 v.check("X03.12e", lu(0.9) / D12 * 1e9)
-b1 = brentq(lambda t: exp(-((t / 2500) ** 3)) - 0.99, 1, 2500)
+b1 = brentq(lambda t: exp(-((t / 25_000) ** 3)) - 0.99, 1, 25_000)
 v.check("X03.12f", b1)
 v.check("X03.12g", b1 * af12)
 v.check("X03.12h", b1 * af12 / HPY)
+f1000 = -math.expm1(-((1000 / 25_000) ** 3))
+v.check("X03.12i", f1000)
+v.check("X03.12j", 300 * f1000)
 
 # ---------------------------------------------------------------- 13 · noise budget
 es = sqrt(4 * K_J * 290 * 200)
@@ -213,5 +226,20 @@ v.check("X03.13e", tot * sqrt(2e7) * 1e6)
 v.check("X03.13f", 10 * log10(K_J * 290 / 1e-3) + 10 * log10(2e7) + 10 * log10(F))
 v.check("X03.13g", sqrt(K_J * 300 / 2e-12) * 1e6)
 
-v.assert_true("solutions cite every question", all(re.search(rf"\*\*{i}\.\*\*", (HERE.parent / "exam" / "solutions.md").read_text()) for i in range(1, 15)))
+# ---------------------------------------------------------------- 15 · averaging correlated noise; 1/f band power
+var15 = 2 * 1.0**2 * 2e-3 / 1.0
+v.check("X03.15a", sqrt(var15))
+v.check("X03.15b", 1.0 / (2 * 2e-3))
+v.check("X03.15c", round(1.0 / 1e-5))
+# exact variance of the average for exponential covariance (the approximation is within 0.2%)
+exact15 = 2 / 1.0 * quad(lambda tau: (1 - tau / 1.0) * exp(-tau / 2e-3), 0, 1.0, points=[0.01, 0.05])[0]
+v.assert_true("approximation 2 sigma^2 tau_c / T within 0.3%", abs(exact15 / var15 - 1) < 3e-3)
+ew2, fk = (5e-9) ** 2, 20.0
+band = lambda f1, f2: quad(lambda f: ew2 * (1 + fk / f), f1, f2, points=[1.0])[0]  # noqa: E731
+v.check("X03.15d", sqrt(band(0.1, 10)) * 1e9)
+v.check("X03.15e", sqrt(ew2 * 9.9) * 1e9)
+v.check("X03.15f", sqrt(band(0.01, 10)) * 1e9)
+v.check("X03.15g", ew2 * fk * math.log(10))
+
+v.assert_true("solutions cite every question", all(re.search(rf"\*\*{i}\.\*\*", (HERE.parent / "exam" / "solutions.md").read_text()) for i in range(1, 16)))
 sys.exit(v.finish())

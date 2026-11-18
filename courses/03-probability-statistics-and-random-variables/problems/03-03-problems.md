@@ -21,7 +21,7 @@ $X$ has density $f_X(x) = 3x^2/8$ on $[0, 2]$ (Problem 03-02.2). (a) Find $\math
 
 ### Problem 03-03.3 [A]
 
-Mean, median and mode. (a) For an exponential lifetime with mean 1000 h, find the median and the mode. (b) For the log-normal leakage of Example 03-03.6 ($s = 0.6907$, median 1), find the mode, using $f_Y$ from §3.6. (c) Order the three for each distribution, and say which one a "typical" specification should quote.
+Mean, median and mode. (a) For an exponential lifetime with mean 1000 h, find the median and the mode. (b) For the log-normal leakage of Example 03-03.6 ($\sigma_\ell = 0.6907$, median 1), find the mode, using $f_Y$ from §3.6. (c) Order the three for each distribution, and say which one a "typical" specification should quote.
 
 ### Problem 03-03.4 [B]
 
@@ -53,7 +53,7 @@ A 50 Ω receiver input sees a 10 mV-amplitude sinusoid plus independent zero-mea
 
 ### Problem 03-03.11 [B]
 
-**Meters and crest factor.** An average-responding meter reads $1.1107\,\mathbb{E}[|V|]$. (a) Find its relative error on uniform noise (and hence on any triangle wave) and on Gaussian noise. (b) A true-RMS meter clips inputs beyond 3 times the RMS value (a crest-factor rating of 3). For Gaussian noise, find the fraction of time it clips, the clipped power as a fraction of σ² (use the clipping formula of §3.9), and the resulting bias of the reading.
+**Meters and crest factor.** An average-responding meter reads $1.1107\,\mathbb{E}[|V|]$. (a) Find its relative error on uniform noise (and hence on any triangle wave) and on Gaussian noise. (b) A true-RMS meter clips inputs beyond 3 times the RMS value (a crest-factor rating of 3). For Gaussian noise, find the fraction of time it clips, the mean square it loses, $\mathbb{E}[X^2] - \mathbb{E}[\text{clip}(X)^2]$, as a fraction of σ², and the resulting bias of the reading. Why is the loss not the clipping-noise power $D_{\text{clip}}$ of §3.9? Repeat the bias for a crest-factor rating of 4.
 
 ### Problem 03-03.12 [B]
 
@@ -80,9 +80,13 @@ A 50 Ω receiver input sees a 10 mV-amplitude sinusoid plus independent zero-mea
 **OFDM back-off.** The power of an OFDM signal is exponential with mean $\bar P$.
 
 (a) Show that $\mathbb{E}[(P - c)^+] = \bar P\,e^{-c/\bar P}$.
-(b) For back-offs of 6, 8 and 10 dB (saturation at $x\bar P$ with $10\log_{10}x$ equal to the back-off), find the clipping probability and the clipped power fraction in dB.
+(b) For back-offs of 6, 8 and 10 dB (saturation at $x\bar P$ with $10\log_{10}x$ equal to the back-off), find the clipping probability and the lost (clipped-off) power fraction in dB.
 (c) Find the ideal class-B average efficiency (Example 03-03.7) at each back-off, ignoring the clipped samples.
-(d) A standard requires the clipped power to be below −30 dBc. Which back-off would you choose, and what tools could recover some efficiency?
+(d) Find the back-off that keeps the lost power below −30 dB. Error-vector and spectrum limits, however, constrain the power of the error signal, $\mathbb{E}[(R - \sqrt{x})^2;\ R > \sqrt{x}]$ with $\bar P = 1$ (§3.8). Compute it numerically at 8 dB, and find the back-off at which it reaches −30 dB and the efficiency there. Which criterion would you design to, and what tools could recover some efficiency?
+
+### Problem 03-03.17 [B]
+
+**A detector with a DC offset.** The input to a square-law detector is $X \sim \mathcal{N}(0.5, 1)$ (volts), and the output is $Y = X^2$. (a) Derive $f_Y$ using both branches of the inverse. (b) Evaluate $f_Y(1)$. (c) Find $\mathbb{E}[Y]$ without integrating. (d) Find $P(Y > 4)$.
 
 ---
 
@@ -93,6 +97,6 @@ A 50 Ω receiver input sees a 10 mV-amplitude sinusoid plus independent zero-mea
 | 1. Expectation, functions of a random variable, linearity and indicators | 1, 2, 4, 8 |
 | 2. Variance, moments, means and variances of standard distributions | 1, 2, 3, 5, 6, 7 |
 | 3. DC, AC and total power; RMS | 9, 10, 11 |
-| 4. Distributions of functions of a random variable | 3, 12, 13 |
+| 4. Distributions of functions of a random variable | 3, 12, 13, 17 |
 | 5. Markov, Chebyshev and Jensen inequalities | 4, 6, 14 |
 | 6. Crest factor, PAPR, headroom and clipping | 11, 15, 16 |

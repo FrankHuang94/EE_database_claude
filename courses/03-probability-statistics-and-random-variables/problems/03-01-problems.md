@@ -83,7 +83,7 @@ Two test failures $A$ and $B$ occur with $P(A) = 0.2$ and $P(B) = 0.3$. (a) If $
 (b) For which module reliabilities is this TMR system better than one module alone? Solve $0.999(3R^2 - 2R^3) = R$.
 (c) Explain the upper limit you find.
 
-### Problem 03-01.14 [C]
+### Problem 03-01.14 [B]
 
 **Coverage for an automotive target.** A design has 70% yield.
 
@@ -103,15 +103,41 @@ Two test failures $A$ and $B$ occur with $P(A) = 0.2$ and $P(B) = 0.3$. (a) If $
 
 **What a qualification sample proves.** (a) Zero failures in 231 units: with what confidence is the defective fraction below 1%? (b) How many units with zero failures would show a defective fraction below 0.1% at 90% confidence? (c) Below 10 ppm? (d) What does this say about using qualification to demonstrate automotive DPPM targets?
 
+### Problem 03-01.17 [B]
+
+**Three derivations.** (a) Starting from $P(A \cup B) = P(A) + P(B) - P(A \cap B)$, derive inclusion–exclusion for three events, $P(A \cup B \cup C)$. (b) Prove that if $A$ and $B$ are independent, so are $A^c$ and $B$, and so are $A^c$ and $B^c$. (c) Show that $k$ devices with random IDs from $N$ equally likely values avoid any collision with probability about $e^{-k^2/(2N)}$, and derive the 50% collision point $k_{50} \approx \sqrt{2N\ln2} \approx 1.18\sqrt N$. Evaluate it for six-digit codes ($N = 10^6$).
+
+### Problem 03-01.18 [B]
+
+**Retest and conditional independence.** 5% of dies are bad. A test flags a bad die with probability 0.9 and a good die with probability 0.04. Two runs of the test on the same die are conditionally independent given whether the die is bad.
+(a) Draw the probability tree for two test runs.
+(b) Find $P(\text{flag}_1)$, $P(\text{flag}_1 \cap \text{flag}_2)$ and $P(\text{flag}_2 \mid \text{flag}_1)$. Are the two runs' results independent?
+(c) Find $P(\text{bad} \mid \text{flag}_1)$ and $P(\text{bad} \mid \text{both flag})$, and say what retesting buys.
+
+### Problem 03-01.19 [B]
+
+**Nines of availability.** A web service needs two servers in series (both must be up). Each is available 99.95% of the time, and outages are independent.
+(a) Find the service's availability and its downtime in minutes per year.
+(b) Each server is replaced by a redundant pair that works if either member is up. Find the availability and the yearly downtime in seconds.
+(c) Now 10% of each server's downtime comes from a cause that takes down both members of its pair at once. Treating unavailabilities like failure probabilities in the beta-factor model, find the yearly downtime in minutes, and comment.
+
+### Problem 03-01.20 [C]
+
+**Designing the test: coverage against escape cost.** A product has 85% yield. Raising the fault coverage $T$ costs tester time: model the test cost per shipped die as $c_0\ln\big(1/(1 - T)\big)$ with $c_0 = \$0.02$, so each e-fold cut in the untested fraction costs another two cents. Each defective part that ships costs \$L in returns, penalties and lost business. Use $\text{DL} \approx (1 - T)\ln(1/Y)$.
+(a) With $L = \$500$, write the cost per shipped die as a function of $u = 1 - T$, find the coverage that minimizes it, and the resulting defect level and cost.
+(b) Repeat for an automotive customer whose escapes cost \$5000 each.
+(c) Show that the optimal defect level is $c_0/L$, independent of yield, and interpret the result.
+(d) A supplier promises 1 DPPM to a customer who charges \$500 per escape. What does (c) say about that promise?
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 03-01) | Problems |
 |---|---|
-| 1. Sample spaces, axioms, inclusion–exclusion, union bound | 1, 2, 4 |
-| 2. Counting; rare-event approximation | 2, 3, 4, 5 |
-| 3. Conditional probability, multiplication rule, total probability | 6, 7, 11 |
+| 1. Sample spaces, axioms, inclusion–exclusion, union bound | 1, 2, 17 |
+| 2. Counting; rare-event approximation | 2, 3, 4, 5, 17 |
+| 3. Conditional probability, multiplication rule, total probability, probability trees | 6, 7, 11, 18 |
 | 4. Bayes' rule, base rates, MAP detection | 7, 8, 14 |
-| 5. Independence, conditional independence, system reliability | 9, 10, 11, 12, 13 |
-| 6. Sanity-checking BER, DPPM, availability and qualification claims | 2, 14, 15, 16 |
+| 5. Independence, conditional independence, system reliability | 9, 10, 11, 12, 13, 17, 18, 19 |
+| 6. Sanity-checking BER, DPPM, availability and qualification claims | 2, 14, 15, 16, 19, 20 |

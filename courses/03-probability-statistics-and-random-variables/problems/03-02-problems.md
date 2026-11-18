@@ -49,7 +49,7 @@ A drive is specified with an MTTF of $10^6$ hours under a constant failure rate.
 
 ### Problem 03-02.10 [B]
 
-An ideal quantizer with step Δ = 1 mV rounds its input, so the error $e$ is uniform on $[-0.5, 0.5]$ mV. (a) Write the PDF and CDF of $e$. (b) Find $P(|e| > 0.4\text{ mV})$ and $F_e(0.3\text{ mV})$.
+An ideal quantizer with step Δ = 1 mV rounds a busy input that varies over many steps, so the error $e$ is well modeled as uniform on $[-0.5, 0.5]$ mV. (a) Write the PDF and CDF of $e$. (b) Find $P(|e| > 0.4\text{ mV})$ and $F_e(0.3\text{ mV})$.
 
 ### Problem 03-02.11 [B]
 
@@ -63,7 +63,7 @@ A link runs exactly at BER $10^{-12}$, so $A/\sigma = Q^{-1}(10^{-12}) = 7.0345$
 
 **Comparator offset.** Levels ±A with $A/\sigma = 6$ are sliced by a comparator whose threshold sits 0.5σ above zero instead of at zero. Equal priors. (a) Find the BER. (b) Compare it with the ideal threshold, and explain the asymmetry between the two error types.
 
-### Problem 03-02.14 [C]
+### Problem 03-02.14 [B]
 
 **A 64 GT/s jitter budget.** The link has $DJ(\delta\delta) = 4$ ps and random jitter of 0.4 ps rms.
 
@@ -84,6 +84,32 @@ A link runs exactly at BER $10^{-12}$, so $A/\sigma = Q^{-1}(10^{-12}) = 7.0345$
 
 Name the distribution that best models each quantity, and the assumption behind it: (a) the number of alpha-particle upsets in a memory per day; (b) the time between them; (c) the number of failing dies among 100 on a wafer; (d) the number of attempts until a link trains; (e) the thermal-noise voltage across a resistor at an instant; (f) the phase of a free-running oscillator observed at a random time.
 
+### Problem 03-02.17 [B]
+
+**Memorylessness, both ways.** Let $K$ be the number of trials until the first success, with success probability $q$ per trial.
+(a) Show that $P(K > m + n \mid K > m) = P(K > n)$.
+(b) Conversely, suppose $K$ takes values $1, 2, \dots$ and is memoryless. Let $s = P(K > 1)$. Show that $P(K > n) = s^n$, so $K$ must be geometric. (This is why the geometric is the only memoryless distribution on the positive integers, as the exponential is on the positive reals.)
+(c) A link retrains until it locks, each attempt succeeding with probability 0.7. After three failed attempts, what is the probability that more than two further attempts are needed?
+
+### Problem 03-02.18 [B]
+
+**Deriving the MAP threshold.** A receiver sees $Y = \pm A + N$ with $A = 100$ mV, Gaussian noise σ = 20 mV, and priors $P_1 = 0.1$ (for $+A$) and $P_0 = 0.9$.
+(a) Starting from "decide 1 when $P_1f(y \mid +A) > P_0f(y \mid -A)$", derive the threshold $y_{\text{th}} = (\sigma^2/2A)\ln(P_0/P_1)$ and evaluate it.
+(b) Find the error probability with this threshold and with the midway threshold 0, and their ratio.
+(c) Which way did the threshold move, and why does that lower the error probability?
+
+### Problem 03-02.19 [B]
+
+**Bounds and erfc.** (a) Evaluate the lower bound $x\phi(x)/(1 + x^2)$ and the upper bound $\phi(x)/x$ at $x = 5$, and check that the exact $Q(5)$ lies between them. (b) Evaluate $\tfrac12e^{-x^2/2}$ at $x = 5$; is it a useful estimate there? (c) A data sheet quotes an error probability of $\tfrac12\operatorname{erfc}(3)$. Convert it to Q-function form and evaluate it.
+
+### Problem 03-02.20 [C]
+
+**An optical receiver with unequal noise.** In an optical link, the photocurrent for a 0 is 1 µA and for a 1 is 21 µA. Shot noise grows with the light, so the noise is σ₀ = 1 µA on a 0 and σ₁ = 3 µA on a 1 (Gaussian). Bits are equally likely.
+(a) Find the BER with the threshold midway, at 11 µA.
+(b) Find the threshold that puts it the same number of standard deviations from both levels, and the resulting BER. Show that this BER equals $Q\big((I_1 - I_0)/(\sigma_0 + \sigma_1)\big)$, the optical "Q-factor" formula.
+(c) Find the exact BER-minimizing threshold numerically, and its BER.
+(d) As the receiver designer, which threshold would you implement, and why do optical receivers often adjust their threshold adaptively?
+
 ---
 
 ## Objective coverage
@@ -91,8 +117,8 @@ Name the distribution that best models each quantity, and the assumption behind 
 | Learning objective (chapter 03-02) | Problems |
 |---|---|
 | 1. PMF, PDF and CDF; interval probabilities | 1, 2, 10 |
-| 2. Bernoulli, binomial, geometric, Poisson; Poisson limit | 3, 4, 5, 6, 16 |
+| 2. Bernoulli, binomial, geometric, Poisson; Poisson limit | 3, 4, 5, 6, 16, 17 |
 | 3. Uniform and exponential; memorylessness; FIT | 7, 8, 9, 10, 16 |
-| 4. Gaussian and the Q-function | 11, 12, 13, 15 |
-| 5. BER in Gaussian noise; dual-Dirac jitter | 12, 13, 14 |
+| 4. Gaussian and the Q-function | 11, 12, 13, 15, 19 |
+| 5. BER in Gaussian noise; dual-Dirac jitter | 12, 13, 14, 18, 20 |
 | 6. When models fail | 5, 15, 16 |

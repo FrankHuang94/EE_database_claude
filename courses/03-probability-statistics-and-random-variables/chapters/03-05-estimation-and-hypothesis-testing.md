@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 03-05 · Estimation and Hypothesis Testing for Engineers
 
 | | |
@@ -13,7 +13,7 @@
 
 1. Estimate a mean, a variance and a proportion from data, explain bias and why the sample variance divides by $n - 1$, and compute standard errors.
 2. Construct and correctly interpret confidence intervals for a mean (z and Student-t), a proportion, a variance or noise power (chi-square), and an upper bound on a failure rate from a count of failures.
-3. Run a hypothesis test with a stated significance level, compute a p-value, and size a test for a required power, while avoiding the multiple-testing trap.
+3. Run a hypothesis test with a stated significance level, compute a p-value, compare two groups (independent or paired), and size a test for a required power, while avoiding the multiple-testing trap.
 4. Compute Cp and Cpk, convert them to defect rates, judge them against automotive thresholds, and account for the sampling error of an estimated Cpk.
 5. Model lifetimes with the Weibull distribution, fit it on a Weibull plot by least squares, and convert an accelerated life test into a field failure rate with the Arrhenius model.
 
@@ -30,13 +30,13 @@ Chapters 03-01 to 03-04 ran forward: given a model, predict the data. Engineerin
 
 **An estimate is a random variable.** Measure 10 parts, average them, and you get a number. Measure 10 different parts and you get a different number. The **estimator** (the recipe) has a distribution, the **sampling distribution**, and its spread is the uncertainty of any single estimate. Everything in this chapter follows from computing that distribution with the tools of 03-02 to 03-04.
 
-**A confidence interval is a net thrown at a fixed target.** The true mean does not move; the interval does, from experiment to experiment. A "95% confidence interval" is a recipe whose nets catch the true value in 95% of experiments (Figure 1). It is not a 95% probability that the true value lies in *this particular* interval, a distinction with real consequences when people stack decisions on it.
+**A confidence interval is a net thrown at a fixed target.** The true mean does not move; the interval does, from experiment to experiment. A "95% confidence interval" is a recipe whose nets catch the true value in 95% of experiments (Figure 1). It is not a 95% probability that the true value lies in *this particular* interval. *Where the picture breaks:* a real thrower could walk over and check each net; you never learn which of your intervals missed.
 
 ![Fifty simulated experiments, each giving a 95% confidence interval for a mean from 10 measurements; 48 intervals cover the true mean, 2 miss it.](../../../assets/figures/03-05/ci-coverage.svg)
 
 *Figure 1. Fifty experiments, fifty different intervals: about 95% of them catch the fixed true mean. Any single interval either contains it or does not.*
 
-**A hypothesis test is a court with a presumption.** The null hypothesis is presumed (the process has not changed, the vendor's rate is right), and data must be surprising enough under it to convict. The significance level is the conviction rate of the innocent, and the power is the conviction rate of the guilty.
+**A hypothesis test is a court with a presumption.** The null hypothesis is presumed (the process has not changed, the vendor's rate is right), and data must be surprising enough under it to convict. The significance level is the conviction rate of the innocent, and the power is the conviction rate of the guilty. *Where it breaks:* a court weighs evidence qualitatively and never states its error rates; a test fixes α in advance, and its verdict says nothing about the probability that $H_0$ is true.
 
 **A finance analogy, and its limits.** You estimate expected returns and volatilities from history, and you know that a Sharpe ratio from three years of data is noisy and that backtests overfit. The same disciplines apply. *Where the analogy breaks:* engineers can usually run new, controlled experiments and design them for the precision they need (sample size, stress level), while markets offer one history. And engineering processes, unlike markets, are often stable enough that the independent, identically distributed assumption is reasonable, if it is checked.
 
@@ -54,13 +54,19 @@ $$
 S^2 = \frac{1}{n - 1}\sum_{i=1}^n(X_i - \bar X)^2 .
 $$
 
-*Why $n - 1$?* Expand the sum around the true mean: $\sum(X_i - \bar X)^2 = \sum(X_i - \mu)^2 - n(\bar X - \mu)^2$. Taking expectations, $\mathbb{E}\big[\sum(X_i - \bar X)^2\big] = n\sigma^2 - n\cdot\sigma^2/n = (n - 1)\sigma^2$. The deviations are measured from $\bar X$, which is fitted to the same data and so sits closer to them than μ does; one of the $n$ "degrees of freedom" is used up estimating the mean. Dividing by $n - 1$ makes $\mathbb{E}[S^2] = \sigma^2$. (The sample standard deviation $S$ is still slightly biased low, because the square root is concave; for $n \ge 10$ the bias is under 3% and usually ignored.)
+*Why $n - 1$?* Expand around the true mean, using $\sum(X_i - \mu) = n(\bar X - \mu)$ for the cross term:
+
+$$
+\sum\big[(X_i - \mu) - (\bar X - \mu)\big]^2 = \sum(X_i - \mu)^2 - 2(\bar X - \mu)\cdot n(\bar X - \mu) + n(\bar X - \mu)^2 = \sum(X_i - \mu)^2 - n(\bar X - \mu)^2 .
+$$
+
+ Taking expectations, $\mathbb{E}\big[\sum(X_i - \bar X)^2\big] = n\sigma^2 - n\cdot\sigma^2/n = (n - 1)\sigma^2$. The deviations are measured from $\bar X$, which is fitted to the same data and so sits closer to them than μ does; one of the $n$ "degrees of freedom" is used up estimating the mean. Dividing by $n - 1$ makes $\mathbb{E}[S^2] = \sigma^2$. (The sample standard deviation $S$ is still slightly biased low, because the square root is concave; for $n \ge 10$ the bias is under 3% and usually ignored.)
 
 A **proportion**, such as a yield, is a mean of indicators: $\hat p = (\text{number of successes})/n$, unbiased with standard error $\sqrt{p(1 - p)/n}$.
 
 ### 3.2 Confidence intervals
 
-**Mean, σ known.** By the CLT, $\bar X$ is approximately $\mathcal{N}(\mu, \sigma^2/n)$, so $P\big(|\bar X - \mu| \le z\sigma/\sqrt n\big) = 1 - 2Q(z)$. Choosing $z = z_{\alpha/2}$ with $Q(z_{\alpha/2}) = \alpha/2$ gives the $100(1 - \alpha)\%$ interval
+**Mean, σ known.** By the CLT, $\bar X$ is approximately $\mathcal{N}(\mu, \sigma^2/n)$, so $P\big(|\bar X - \mu| \le z\sigma/\sqrt n\big) = 1 - 2Q(z)$. Choosing $z = z_{\alpha/2}$ with $Q(z_{\alpha/2}) = \alpha/2$ (an *upper-tail* critical value: $z_a$ and $t_{a,\nu}$ leave probability $a$ above them) gives the $100(1 - \alpha)\%$ interval
 
 $$
 \bar X \pm z_{\alpha/2}\frac{\sigma}{\sqrt n}, \qquad z_{0.025} = 1.960 \text{ for 95\%} .
@@ -70,13 +76,13 @@ $$
 
 **Proportions.** For large $n$, $\hat p \pm z_{\alpha/2}\sqrt{\hat p(1 - \hat p)/n}$. With zero failures in $n$ trials this formula collapses to zero width, which is absurd. Use the exact bound of 03-01 instead: $p_U = 1 - \alpha^{1/n} \approx -\ln\alpha/n$, which is the "**rule of three**": with no failures in $n$ trials, the 95% upper bound on the failure probability is about $3/n$.
 
-**Variance and noise power: the chi-square interval.** For Gaussian data, $\nu S^2/\sigma^2$ has the **chi-square distribution** with ν = n − 1 degrees of freedom (the sum of ν squared standard normals, 03-03). If the mean is known to be zero, as for AC-coupled noise, use the mean square $\frac1n\sum X_i^2$ and ν = n. Then
+**Variance and noise power: the chi-square interval.** For Gaussian data, $\nu S^2/\sigma^2$ has the **chi-square distribution** with ν = n − 1 degrees of freedom (the sum of ν squared standard normals, 03-03). If the mean is known to be zero, as for AC-coupled noise, use the mean square $\hat\sigma_0^2 = \frac1n\sum X_i^2$ in place of $S^2$, with ν = n. Then
 
 $$
 \frac{\nu S^2}{\chi^2_{1-\alpha/2,\nu}} \le \sigma^2 \le \frac{\nu S^2}{\chi^2_{\alpha/2,\nu}} ,
 $$
 
-where $\chi^2_{q,\nu}$ is the $q$ quantile. Variances are hard to pin down: with 50 samples the 95% interval spans more than a factor of two (Example 03-05.3). This is 03-03's warning about noise-power samples made quantitative.
+where $\chi^2_{q,\nu}$ is the *lower-tail* $q$ quantile (probability $q$ below it). Beware: many texts, Montgomery and Runger among them, write the same number as $\chi^2_{1-q,\nu}$. Unlike the t-interval, this interval fails badly for non-Gaussian data (heavy tails, deterministic components), so check the shape first. Variances are hard to pin down: with 50 samples the 95% interval spans more than a factor of two (Example 03-05.3). This is 03-03's warning about noise-power samples made quantitative.
 
 > **Going deeper — where Student's t comes from.** For Gaussian data, $\bar X$ and $S^2$ are independent (a special property of the Gaussian), $Z = (\bar X - \mu)/(\sigma/\sqrt n)$ is standard normal, and $V = \nu S^2/\sigma^2$ is chi-square with ν degrees of freedom. Then $T = Z/\sqrt{V/\nu}$, a standard normal divided by an independent estimate of its own scale. Working out its density by the methods of 03-03 and 03-04 gives $f_T(t) \propto (1 + t^2/\nu)^{-(\nu+1)/2}$, whose polynomial tails explain the larger multipliers. W. S. Gosset derived it in 1908 while working on small-sample quality control at a brewery, publishing as "Student".
 
@@ -88,7 +94,7 @@ $$
 P(N \le c;\ \lambda = rD) = \alpha \quad\Longrightarrow\quad r_U = \frac{\lambda_U(c)}{D}, \qquad \lambda_U(c) = \tfrac12\chi^2_{1-\alpha,\,2c+2} .
 $$
 
-The chi-square form is an identity between the Poisson CDF and the chi-square distribution with $2c + 2$ degrees of freedom. For $c = 0$ it reduces to $e^{-\lambda_U} = \alpha$, or $\lambda_U = -\ln\alpha$, the zero-error rule of 03-01. Values of $\lambda_U$:
+*Why chi-square?* Think of failures as a unit-rate Poisson process in "λ-time". Seeing $c$ or fewer by time λ means the $(c + 1)$th arrival came later: $\{N \le c\} = \{T_{c+1} > \lambda\}$. The arrival time $T_{c+1}$ is a sum of $c + 1$ independent unit exponential gaps (03-02; Problem 03-04.8 builds its density by convolution). Twice a unit exponential is chi-square with 2 degrees of freedom, because 03-04 showed that $Z_1^2 + Z_2^2$ is exponential with mean 2. So $2T_{c+1}$ is chi-square with $2c + 2$ degrees of freedom, $P(N \le c;\ \lambda) = P(\chi^2_{2c+2} > 2\lambda)$, and setting this to α gives the formula. For $c = 0$ it reduces to $e^{-\lambda_U} = \alpha$, or $\lambda_U = -\ln\alpha$, the zero-error rule of 03-01. Values of $\lambda_U$:
 
 | Failures $c$ | 60% confidence | 90% confidence | 95% confidence |
 |---|---|---|---|
@@ -110,13 +116,21 @@ A test has five parts.
 
 **One-sided or two-sided.** If only a decrease matters, the p-value counts one tail; if any change matters, both tails, which doubles it.
 
-**Sizing a test.** To detect a shift δ in a mean with one-sided level α and power $1 - \beta$, the sample mean's distribution under the alternative must sit far enough from the rejection threshold:
+**Sizing a test.** To detect a fall δ in a mean, reject when $\bar X \le \mu_0 - z_\alpha\sigma/\sqrt n$, which has probability α under $H_0$. Under $H_1$ the sample mean is centered at $\mu_0 - \delta$ with the same standard error, so the power is $\Phi(\delta\sqrt n/\sigma - z_\alpha)$. Picture two Gaussians δ apart with the threshold between them, $z_\alpha$ standard errors from one center and $z_\beta$ from the other. Setting the power to $1 - \beta$ means $\delta\sqrt n/\sigma - z_\alpha = z_\beta$, so
 
 $$
 n = \Big(\frac{(z_\alpha + z_\beta)\,\sigma}{\delta}\Big)^2 .
 $$
 
 Halving the detectable shift quadruples the sample size, the $1/\sqrt n$ law again.
+
+**Comparing two groups.** Most real questions compare: vendor A with vendor B, a split lot before and after a process change. For independent samples the variances of the two means add (03-04), so the difference $\bar X_1 - \bar X_2$ has standard error
+
+$$
+\text{SE} = \sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}, \qquad \nu \approx \frac{\text{SE}^4}{(s_1^2/n_1)^2/(n_1 - 1) + (s_2^2/n_2)^2/(n_2 - 1)} ,
+$$
+
+and $(\bar X_1 - \bar X_2)/\text{SE}$ is compared with $z$ for large samples, or with Student's t on ν degrees of freedom (the **Welch t-test**). **Paired data**, the same units measured twice, reduce to one sample: test the mean of the differences, whose spread excludes the unit-to-unit variation and is often far smaller (Problem 03-05.17). For **two proportions**, such as yields, use $\hat p_1 - \hat p_2$ with standard error $\sqrt{\hat p(1 - \hat p)(1/n_1 + 1/n_2)}$, where $\hat p$ pools both samples under $H_0$ (Example 03-05.8).
 
 **Statistical versus engineering significance.** With enough data, any trivially small change becomes "statistically significant"; with too little, important changes go undetected. Report the estimated effect with its confidence interval, not just the verdict.
 
@@ -145,9 +159,11 @@ The NIST/SEMATECH e-Handbook tabulates these as 0.27%, 64 ppm, 0.6 ppm and 2 ppb
 
 *Figure 2. The same spread centered and shifted by 5 mV. Cp is unchanged; Cpk falls because the mean moved toward the upper limit. (The out-of-specification tails, a few ppm, are too thin to see at this scale.)*
 
-**Automotive thresholds.** The AIAG manuals used across the automotive supply chain set default targets of $C_{pk} \ge 1.33$ for ongoing production of stable processes and $\ge 1.67$ for initial studies and critical characteristics, unless the customer specifies otherwise; AEC-Q100 qualification applies $C_{pk} > 1.67$ to some electrical and package characteristics ([R-068](../../../reference/research-log.md#r-068--process-capability-and-outlier-screening)).
+**Cpk versus Ppk, and control charts.** $P_p$ and $P_{pk}$ use the same formulas with the *overall* σ of all the data, including drift and lot-to-lot shifts; $C_p$ and $C_{pk}$ use the short-term, *within-subgroup* σ (for example, within each hourly sample). By 03-04's total variance, overall variance = within + between, so the two agree only for a process **in statistical control**, one whose subgroup means stay inside limits at ±3 standard errors around the grand mean on a **control chart**, the basic tool of **statistical process control** (SPC). A Cpk well above Ppk says the process drifts.
 
-**An estimated Cpk is itself uncertain.** With $\bar x$ and $s$ in place of μ and σ, $\hat C_{pk}$ scatters around the truth. A widely used normal approximation (Bissell, as given in the NIST/SEMATECH e-Handbook) for its standard error is
+**Automotive thresholds.** The AIAG manuals (1995 editions, as quoted by Steiner et al.; current editions not checked) set a default of $C_{pk} \ge 1.33$ for stable ongoing production, and judge preliminary studies, unstable but predictable processes and significant characteristics on $P_{pk}$, expecting ≥ 1.67, unless the customer specifies otherwise. AEC-Q100 applies $C_{pk} > 1.67$ to electrical distributions where applicable ([R-068](../../../reference/research-log.md#r-068--process-capability-and-outlier-screening)).
+
+**An estimated Cpk is itself uncertain.** With $\bar x$ and $s$ in place of μ and σ, $\hat C_{pk}$ scatters around the truth. A widely used normal approximation (Bissell, 1990; the NIST/SEMATECH e-Handbook states it for the one-sided indices $C_{pu}$ and $C_{pl}$, the smaller of which is $C_{pk}$) for its standard error is
 
 $$
 \text{SE}(\hat C_{pk}) \approx \sqrt{\frac{1}{9n} + \frac{\hat C_{pk}^2}{2(n - 1)}} .
@@ -171,7 +187,7 @@ $$
 R(t) = e^{-(t/\alpha)^\gamma}, \qquad h(t) = \frac{\gamma}{\alpha}\Big(\frac{t}{\alpha}\Big)^{\gamma - 1} ,
 $$
 
-with **characteristic life** α (the time by which 63.2% have failed, since $R(\alpha) = e^{-1}$) and **shape** γ (Figure 3). With γ < 1 the hazard falls, the signature of infant mortality; γ = 1 is the exponential; γ > 1 is wear-out. These are the three regions of the bathtub curve. Its mean is $\alpha\Gamma(1 + 1/\gamma)$ and its median $\alpha(\ln2)^{1/\gamma}$. The NIST/SEMATECH e-Handbook notes that the Weibull can be derived as an extreme-value ("weakest link") distribution, the time to the first of many competing failure processes, which suits capacitors, dielectrics and interconnects ([R-069](../../../reference/research-log.md#r-069--weibull-model-and-arrhenius-acceleration)).
+with **characteristic life** α (the time by which 63.2% have failed, since $R(\alpha) = e^{-1}$) and **shape** γ (Figure 3). With γ < 1 the hazard falls, the signature of infant mortality; γ = 1 is the exponential; γ > 1 is wear-out. These are the three regions of the bathtub curve. Its mean is $\alpha\Gamma(1 + 1/\gamma)$ and its median $\alpha(\ln2)^{1/\gamma}$. The NIST/SEMATECH e-Handbook notes that the Weibull can be derived as an extreme-value ("weakest link") distribution, the time to the first of many competing failure processes, which suits dielectric breakdown and other weakest-link mechanisms ([R-069](../../../reference/research-log.md#r-069--weibull-model-and-arrhenius-acceleration)). Not every mechanism is Weibull: electromigration lifetimes are conventionally **lognormal** (03-03), described by a median life $t_{50}$ and the standard deviation of $\ln t$ ([R-072](../../../reference/research-log.md#r-072--lifetime-distributions-by-failure-mechanism)). (Here α is the Weibull scale, following the NIST handbook, not a significance level; many reliability texts write η.)
 
 ![Left: Weibull hazard rates against time for shape 0.5 (falling), 1 (constant) and 2.5 (rising). Right: a Weibull plot of eight failure times with a fitted straight line of slope 2.498.](../../../assets/figures/03-05/weibull.svg)
 
@@ -185,7 +201,7 @@ $$
 \ln\big(-\ln(1 - F(t))\big) = \gamma\ln t - \gamma\ln\alpha .
 $$
 
-Sort $n$ failure times, assign each the plotting position $F_i \approx (i - 0.3)/(n + 0.4)$ (Bernard's median-rank approximation), and plot $y_i = \ln(-\ln(1 - F_i))$ against $x_i = \ln t_i$. A straight line confirms the model; its least-squares slope estimates γ and its intercept gives α.
+Sort $n$ failure times, assign each the plotting position $F_i \approx (i - 0.3)/(n + 0.4)$ (Bernard's median-rank approximation), and plot $y_i = \ln(-\ln(1 - F_i))$ against $x_i = \ln t_i$. A straight line confirms the model; its least-squares slope estimates γ and its intercept gives α. The recipe assumes every unit failed. With survivors (suspensions), the normal case in reliability testing, the ranks must be adjusted or the fit done by maximum likelihood ([25](../../25-fabrication-packaging-test-and-reliability/README.md)).
 
 > **Math refresher — least squares.** To fit $y = a + bx$ to points $(x_i, y_i)$, minimize $\sum(y_i - a - bx_i)^2$. Setting both partial derivatives to zero gives $b = \sum(x_i - \bar x)(y_i - \bar y)/\sum(x_i - \bar x)^2$ and $a = \bar y - b\bar x$: the sample version of 03-04's regression line, with slope $\widehat{\operatorname{Cov}}/\widehat{\operatorname{Var}}$. [01-09](../../01-calculus-for-engineers/chapters/01-09-multivariable-calculus-1.md) derived it as an optimization problem.
 
@@ -197,7 +213,7 @@ $$
 AF = \frac{r(T_{\text{stress}})}{r(T_{\text{use}})} = \exp\Big[\frac{E_a}{k}\Big(\frac{1}{T_{\text{use}}} - \frac{1}{T_{\text{stress}}}\Big)\Big] .
 $$
 
-JEDEC's qualification standard JESD47 runs high-temperature operating life (HTOL) at a junction temperature of at least 125 °C for 1000 hours on three lots of 77 units with zero failures ([R-061](../../../reference/research-log.md#r-061--qualification-sample-sizes-aec-q100-and-jedec-jesd47)). Its explanatory note works the example of $E_a = 0.7$ eV, 125 °C stress and 55 °C use, giving "78.6", so that 1000 h of stress is "equivalent to 9 years of use" ([R-069](../../../reference/research-log.md#r-069--weibull-model-and-arrhenius-acceleration)). With the exact constants ($k = 8.617333\times10^{-5}$ eV/K, kelvin = °C + 273.15) the factor is **77.65**, about 8.9 years; the note's 78.6 comes from rounding $k$ to $8.6\times10^{-5}$ and the offset to 273. The point is not the third digit: the factor is exponential in $E_a$, which is often uncertain by ±0.2 eV, so the field rate inferred from a test is uncertain by much more than the test's statistics suggest (Problem 03-05.16).
+JEDEC's qualification standard JESD47 (Rev G, 2009) runs high-temperature operating life (HTOL) at a junction temperature of at least 125 °C for 1000 hours on three lots of 77 units with zero failures ([R-061](../../../reference/research-log.md#r-061--qualification-sample-sizes-aec-q100-and-jedec-jesd47)). Its explanatory note works the example of $E_a = 0.7$ eV, 125 °C stress and 55 °C use, giving "78.6", so that 1000 h of stress is "equivalent to 9 years of use" ([R-069](../../../reference/research-log.md#r-069--weibull-model-and-arrhenius-acceleration)). With the exact constants ($k = 8.617333\times10^{-5}$ eV/K, kelvin = °C + 273.15) the factor is **77.65**, about 8.9 years; the note's 78.6 comes from rounding $k$ to $8.6\times10^{-5}$ and the offset to 273. The point is not the third digit: the factor is exponential in $E_a$, which is often uncertain by ±0.2 eV, so the field rate inferred from a test is uncertain by much more than the test's statistics suggest (Problem 03-05.16).
 
 Combining §3.3 and §3.7: zero failures in $N$ units for $t$ hours at acceleration $AF$ bounds the use-condition failure rate at
 
@@ -219,7 +235,7 @@ $$
 
 **Setup.** (a) A test floor passes 912 of 1000 dies. Find the yield estimate, its standard error and a 95% confidence interval. (b) A different lot ships 300 parts to a customer with zero returns. What is the 95% upper bound on the return rate?
 
-**Solution.** (a) $\hat p = $ **0.912**, standard error $\sqrt{0.912\times0.088/1000} = $ **0.008959**, and the 95% interval is $0.912 \pm 0.01756$: **[0.8944, 0.9296]**. Distinguishing yields that differ by 1% would need several thousand dies.
+**Solution.** (a) $\hat p = $ **0.912**, standard error $\sqrt{0.912\times0.088/1000} = $ **0.008959**, and the 95% interval is $0.912 \pm 0.01756$: **[0.8944, 0.9296]**. Distinguishing yields that differ by one point takes thousands of dies per group (Example 03-05.8).
 
 (b) $p_U = 1 - 0.05^{1/300} = $ **0.009936**, close to the rule of three, $3/300 = 0.01$. Zero returns from 300 parts cannot demonstrate better than about 1%.
 
@@ -237,11 +253,11 @@ that is, **[0.7001, 1.545] mV²**, or **−1.549 dB to +1.890 dB** around the es
 
 ### Example 03-05.4 — Testing a vendor's soft-error rate (tier B)
 
-**Setup.** A vendor's rate predicts a mean of λ₀ = 99.93 upsets per year across a fleet (Example 03-02.2). A year of operation records 80. (a) Test $H_0$: the vendor's rate is right, against $H_1$: the true rate is lower, at α = 0.05. (b) If the true rate were 20% lower, how likely is this test to detect it?
+**Setup.** A vendor's rate predicts a mean of λ₀ = $10^4\times1140\text{ FIT}\times8766\text{ h} = 99.932$ upsets per year across a fleet (Example 03-02.2). A year of operation records 80. (a) Test $H_0$: the vendor's rate is right, against $H_1$: the true rate is lower, at α = 0.05. (b) If the true rate were 20% lower, how likely is this test to detect it?
 
-**Solution.** (a) Under $H_0$ the count is Poisson(99.93). The one-sided p-value is $P(N \le 80) = $ **0.02300** (03-02). Since 0.023 < 0.05, reject $H_0$: the fleet's rate is significantly below the vendor's figure, perhaps because of altitude, shielding or conservative vendor data.
+**Solution.** (a) Under $H_0$ the count is Poisson(99.932). The one-sided p-value is $P(N \le 80) = $ **0.02300** (03-02). Since 0.023 < 0.05, reject $H_0$: the fleet's rate is significantly below the vendor's figure, perhaps because of altitude, shielding or conservative vendor data.
 
-(b) The rejection region is $N \le k$ with $P(N \le k \mid H_0) \le 0.05$; the largest such $k$ is **83** (probability **0.04696**). If the true mean is $0.8\times99.93 = 79.94$, the power is $P(N \le 83 \mid 79.94) = $ **0.6602**: a one-year, fleet-wide test misses a 20% reduction a third of the time.
+(b) The rejection region is $N \le k$ with $P(N \le k \mid H_0) \le 0.05$; the largest such $k$ is **83** (probability **0.04696**). If the true mean is $0.8\times99.932 = 79.946$, the power is $P(N \le 83 \mid 79.946) = $ **0.6602**: a one-year, fleet-wide test misses a 20% reduction a third of the time.
 
 **Practitioner note.** Before acting on (a), ask whether the fleet's logging catches every upset (an undercount looks like a lower rate) and whether conditions match the vendor's normalization (03-02's rates are normalized to a New York City reference flux).
 
@@ -251,23 +267,23 @@ that is, **[0.7001, 1.545] mV²**, or **−1.549 dB to +1.890 dB** around the es
 
 **Solution.** (a) $C_p = 60/36 = $ **1.667**. $C_{pu} = (1.230 - 1.205)/0.018 = $ **1.389** and $C_{pl} = (1.205 - 1.170)/0.018 = $ **1.944**, so $C_{pk} = $ **1.389**. The out-of-specification rate is $Q(25/6) + Q(35/6) = $ **15.46 ppm**, almost all from the upper limit.
 
-(b) It meets the 1.33 ongoing default but not the 1.67 expected of an initial study or critical characteristic. Centering the process (moving 5 mV) would raise Cpk to 1.667 without touching the spread, usually the cheaper fix.
+(b) It meets the 1.33 default for stable ongoing production. A preliminary study or a significant characteristic is judged on Ppk against 1.67; if this σ already includes lot-to-lot drift, Ppk = 1.389 falls short. Centering the process (moving 5 mV) would raise the index to 1.667 without touching the spread, usually the cheaper fix.
 
 (c) $\text{SE} \approx \sqrt{1/270 + 1.389^2/58} = $ **0.1923**, so the one-sided 95% lower bound is $1.389 - 1.645\times0.1923 = $ **1.073**. Thirty parts do not even demonstrate 1.33 with confidence.
 
 ### Example 03-05.6 — A Weibull fit to stress-test failures (tier C)
 
-**Setup.** Eight interconnect test structures fail on an accelerated electromigration stress at 457, 714, 823, 912, 976, 1182, 1600 and 1706 hours. Fit a Weibull distribution on a Weibull plot, and find the $B_{10}$ life and the MTTF at stress.
+**Setup.** Eight gate-oxide test capacitors fail on an accelerated time-dependent dielectric breakdown (TDDB) stress, in which a sustained electric field eventually shorts the oxide, at 457, 714, 823, 912, 976, 1182, 1600 and 1706 hours. Fit a Weibull distribution on a Weibull plot, and find the $B_{10}$ life and the MTTF at stress.
 
-**Solution.** Plotting positions $F_i = (i - 0.3)/8.4$ run from 0.08333 to 0.9167. With $x_i = \ln t_i$ and $y_i = \ln(-\ln(1 - F_i))$, the means are $\bar x = 6.875$ and $\bar y = -0.5141$, and the least-squares slope is $\hat\gamma = $ **2.498** (Figure 3). The intercept $\bar y - \hat\gamma\bar x$ equals $-\hat\gamma\ln\hat\alpha$, giving $\hat\alpha = $ **1189 h**.
+**Solution.** Plotting positions $F_i = (i - 0.3)/8.4$ run from **0.08333** to **0.9167**. With $x_i = \ln t_i$ and $y_i = \ln(-\ln(1 - F_i))$, the means are $\bar x = 6.875$ and $\bar y = -0.5141$, and the least-squares slope is $\hat\gamma = $ **2.498** (Figure 3). The intercept $\bar y - \hat\gamma\bar x$ equals $-\hat\gamma\ln\hat\alpha$, giving $\hat\alpha = $ **1189 h**.
 
 $B_{10} = 1189\times(-\ln0.9)^{1/2.498} = $ **483.1 h** and $\text{MTTF} = 1189\,\Gamma(1 + 1/2.498) = $ **1055 h**.
 
-**Interpretation.** γ ≈ 2.5 means wear-out: the hazard rises with age, so an MTTF or a FIT rate from this mechanism would be meaningless; the low percentiles matter. With eight failures the estimates are uncertain: Lab 03-05 shows γ̂ from repeated eight-unit tests ranging from about 1.3 to 4.2 (5th to 95th percentile) when the true value is 2.5. Field lifetimes follow by scaling α with an acceleration model for current density and temperature ([25](../../25-fabrication-packaging-test-and-reliability/README.md)).
+**Interpretation.** γ ≈ 2.5 means wear-out: the hazard rises with age, so an MTTF or a FIT rate from this mechanism would be meaningless; the low percentiles matter. With eight failures the estimates are uncertain: Lab 03-05 shows γ̂ from repeated eight-unit tests ranging from about 1.3 to 4.2 (5th to 95th percentile) when the true value is 2.5. Field lifetimes follow by scaling α with an acceleration model for voltage and temperature ([25](../../25-fabrication-packaging-test-and-reliability/README.md)).
 
 ### Example 03-05.7 — From an HTOL test to a field FIT bound (tier C)
 
-**Setup.** A qualification runs 231 units (3 lots × 77) for 1000 h at a junction temperature of 125 °C with zero failures. Assume a single mechanism with $E_a = 0.7$ eV and use at 55 °C. (a) Find the acceleration factor and the equivalent field time. (b) Find upper bounds on the field failure rate at 60% and 90% confidence. (c) What bound at 90% if one unit had failed? (d) How many units would a zero-failure, 1000 h test need to demonstrate 10 FIT at 90% confidence?
+**Setup.** A qualification runs 231 units (3 lots × 77) for 1000 h at a junction temperature of 125 °C with zero failures. Assume a single mechanism with $E_a = 0.7$ eV and use at 55 °C, and a year of 8766 h. (a) Find the acceleration factor and the equivalent field time. (b) Find upper bounds on the field failure rate at 60% and 90% confidence. (c) What bound at 90% if one unit had failed? (d) How many units would a zero-failure, 1000 h test need to demonstrate 10 FIT at 90% confidence?
 
 **Solution.** (a) $AF = \exp\big[(0.7/8.617333\times10^{-5})(1/328.15 - 1/398.15)\big] = $ **77.65**, so 1000 h of stress represents $77{,}650$ h, or **8.858 years**, of use per unit.
 
@@ -278,6 +294,26 @@ $B_{10} = 1189\times(-\ln0.9)^{1/2.498} = $ **483.1 h** and $\text{MTTF} = 1189\
 (d) $D \ge 2.303\times10^9/10 = 2.303\times10^8$ equivalent hours, so $N \ge 2.303\times10^8/(1000\times77.65)$: **2966** units.
 
 **Interpretation.** A standard qualification demonstrates only tens to a hundred FIT; single-digit FIT claims rest on far larger data sets (accumulated qualification and field data across products) or on longer tests, and every one rests on the assumed $E_a$. Ask for the confidence level, the device-hours and the activation energy behind any FIT number.
+
+### Example 03-05.8 — A split-lot yield comparison (tier B)
+
+**Setup.** A split lot runs 1000 dies through the old recipe A (912 pass) and 1000 through a new recipe B (931 pass). (a) At α = 0.05, one-sided, is B better? (b) How many dies per arm would detect a true improvement from 0.91 to 0.92 with 80% power?
+
+**Solution.** (a) Under $H_0$ (equal yields) the pooled estimate is $\hat p = 1843/2000 = $ **0.9215**, so
+
+$$
+\text{SE} = \sqrt{0.9215\times0.0785\times\big(\tfrac1{1000} + \tfrac1{1000}\big)} = 0.01203, \qquad z = \frac{0.931 - 0.912}{0.01203} = 1.580 .
+$$
+
+So SE = **0.01203** and $z = $ **1.580**, with p-value $Q(1.580) = $ **0.05710**: not significant at 5%, although B's yield is 1.9 points higher.
+
+(b) The sizing argument of §3.4, with each arm's variance $p(1 - p)$ and $z_{0.2} = 0.8416$, gives
+
+$$
+n = \frac{(z_{0.05} + z_{0.2})^2\,\big(0.91\times0.09 + 0.92\times0.08\big)}{0.01^2} = 9613.9 ,
+$$
+
+so **9614** dies per arm. **Sanity check.** At 1000 per arm, the standard error of a difference (about 1.2 points) exceeds the 1-point effect: small yield gains need large splits, or paired designs that cancel wafer-to-wafer variation.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -304,6 +340,8 @@ $B_{10} = 1189\times(-\ln0.9)^{1/2.498} = $ **483.1 h** and $\text{MTTF} = 1189\
 | Ex 03-05.4b | critical count | 83 | — |
 | Ex 03-05.4c | actual significance level | 0.04696 | — |
 | Ex 03-05.4d | power against a 20% lower rate | 0.6602 | — |
+| Ex 03-05.4e | fleet mean under the vendor's rate | 99.932 | — |
+| Ex 03-05.4f | fleet mean 20% lower | 79.946 | — |
 | Ex 03-05.5a | Cp | 1.667 | — |
 | Ex 03-05.5b | Cpu | 1.389 | — |
 | Ex 03-05.5c | Cpk | 1.389 | — |
@@ -317,6 +355,8 @@ $B_{10} = 1189\times(-\ln0.9)^{1/2.498} = $ **483.1 h** and $\text{MTTF} = 1189\
 | Ex 03-05.6d | MTTF at stress | 1055 | h |
 | Ex 03-05.6e | mean of ln t | 6.875 | — |
 | Ex 03-05.6f | mean of y | −0.5141 | — |
+| Ex 03-05.6g | first plotting position | 0.08333 | — |
+| Ex 03-05.6h | last plotting position | 0.9167 | — |
 | Ex 03-05.7a | acceleration factor | 77.65 | — |
 | Ex 03-05.7b | equivalent field time per unit | 8.858 | years |
 | Ex 03-05.7c | equivalent device-hours | 1.794×10^7 | h |
@@ -324,17 +364,25 @@ $B_{10} = 1189\times(-\ln0.9)^{1/2.498} = $ **483.1 h** and $\text{MTTF} = 1189\
 | Ex 03-05.7e | FIT bound at 90% | 128.4 | FIT |
 | Ex 03-05.7f | FIT bound at 90%, one failure | 216.9 | FIT |
 | Ex 03-05.7g | units for 10 FIT at 90% | 2966 | — |
+| Ex 03-05.8a | pooled yield | 0.9215 | — |
+| Ex 03-05.8b | standard error of the difference | 0.01203 | — |
+| Ex 03-05.8c | z statistic | 1.580 | — |
+| Ex 03-05.8d | one-sided p-value | 0.05710 | — |
+| Ex 03-05.8e | dies per arm, exact | 9613.9 | — |
+| Ex 03-05.8f | dies per arm | 9614 | — |
+| Ex 03-05.8g | z for 80% power | 0.8416 | — |
 
 ## 5. Simulate it
 
 The lab ([labs/03-05-lab/](../labs/03-05-lab/README.md)) is a notebook of sampling experiments:
 
 1. **Why $n - 1$.** Average the two variance estimators over many small samples. *Predict first:* how biased is dividing by $n$ when $n = 5$?
-2. **Coverage.** Repeat Figure 1's experiment 10,000 times with z and t intervals at $n = 5$ and $n = 30$, and count misses.
+2. **Coverage.** Repeat Figure 1's experiment 20,000 times with z and t intervals at $n = 5$ and $n = 30$, and count misses.
 3. **Noise power.** Check the chi-square interval's coverage for 50-sample noise measurements.
 4. **Power curves.** Simulate the one-sided test of Example 03-05.4 across true rates.
 5. **Cpk scatter.** Estimate Cpk from repeated 30-part and 125-part studies of the same process.
 6. **Weibull plots.** Fit γ from repeated eight-unit tests and watch the scatter.
+7. **FIT-bound coverage.** Simulate HTOL tests at a known rate and count how often the 90% bound covers it.
 
 ## 6. Engineering tradeoffs
 
@@ -356,7 +404,7 @@ The lab ([labs/03-05-lab/](../labs/03-05-lab/README.md)) is a notebook of sampli
 | Poisson upper bounds, $c = 0$ | 0.9163 (60%), 2.303 (90%), 2.996 (95%) | $-\ln\alpha$ |
 | False alarms in 20 tests at 5% | 64.15% | Adjust α for many tests |
 | Cp → ppm (centered) | 1.00: 2700; 1.33: 63; 1.67: 0.57; 2.00: 0.002 | [R-068](../../../reference/research-log.md#r-068--process-capability-and-outlier-screening) |
-| AIAG default capability, as of Nov 2026 | Cpk ≥ 1.33 ongoing; ≥ 1.67 initial or critical | Customer requirements override |
+| AIAG default capability (1995 manuals; current editions not checked) | Cpk ≥ 1.33 stable ongoing; Ppk ≥ 1.67 preliminary or significant | Customer requirements override |
 | Robust sigma | interquartile range / 1.349 | AEC-Q001 PAT uses 1.35 |
 | Weibull shape | < 1 infant mortality; 1 random; > 1 wear-out | 63.2% failed at α |
 | Arrhenius, 0.7 eV, 125 °C → 55 °C | AF = 77.65 (JEDEC's note: 78.6) | 1000 h ≈ 8.9 years |
@@ -406,7 +454,7 @@ The lab ([labs/03-05-lab/](../labs/03-05-lab/README.md)) is a notebook of sampli
 
 - **Capability targets come from the automotive supply chain.** AIAG's QS-9000-era manuals set default targets of $C_{pk} \ge 1.33$ for stable ongoing processes and $P_{pk} \ge 1.67$ for chronically unstable but predictable ones, and the PPAP manual ties approval to $P_{pk} > 1.67$ with interim actions between 1.33 and 1.67 (quoted by Steiner, Abraham and MacKay, University of Waterloo, 1998). A NASA NEPP comparison of AEC-Q100 with MIL-PRF-38535 (2020) lists $C_{pk} > 1.67$ for AEC-Q100 electrical distributions where applicable ([R-068](../../../reference/research-log.md#r-068--process-capability-and-outlier-screening)) **[Established; current AIAG editions are paywalled and were not read]**.
 - **Outlier screening.** AEC-Q001's static Part Average Testing sets limits at the median ± 6 robust sigma (interquartile range/1.35) from a reference population of at least 30 parts per lot, with dynamic per-lot variants (described in US patent 10,118,200 quoting AEC-Q001 Rev-C) ([R-068](../../../reference/research-log.md#r-068--process-capability-and-outlier-screening)) **[Established]**.
-- **Qualification and acceleration.** JEDEC JESD47 (Rev G, 2009; Rev N current as of Aug 2026 per a standards-store listing) specifies 1000 h HTOL on 3 × 77 units with zero failures and explains Arrhenius acceleration with its 0.7 eV example ([R-061](../../../reference/research-log.md#r-061--qualification-sample-sizes-aec-q100-and-jedec-jesd47), [R-069](../../../reference/research-log.md#r-069--weibull-model-and-arrhenius-acceleration)). The NIST/SEMATECH e-Handbook of Statistical Methods (last updated 2022) remains a standard free reference for capability, Weibull and reliability methods **[Established]**.
+- **Qualification and acceleration.** JEDEC JESD47G (2009) specifies 1000 h HTOL on 3 × 77 units with zero failures and explains Arrhenius acceleration with its 0.7 eV example; a standards-store listing checked in Nov 2026 shows Rev N (Aug 2026) as current, and its HTOL row was not checked ([R-061](../../../reference/research-log.md#r-061--qualification-sample-sizes-aec-q100-and-jedec-jesd47), [R-069](../../../reference/research-log.md#r-069--weibull-model-and-arrhenius-acceleration)). The NIST/SEMATECH e-Handbook of Statistical Methods (last updated 2022) remains a standard free reference for capability, Weibull and reliability methods **[Established]**.
 
 ### Why it matters commercially
 
@@ -501,6 +549,9 @@ Problem set: [03-05 problems](../problems/03-05-problems.md) · [solutions](../s
 [Type I and type II errors](../../../reference/glossary.md#type-i-and-type-ii-errors) ·
 [Statistical power](../../../reference/glossary.md#statistical-power) ·
 [Process capability (Cp, Cpk)](../../../reference/glossary.md#process-capability-cp-cpk) ·
+[Ppk](../../../reference/glossary.md#ppk) ·
+[Statistical process control (SPC)](../../../reference/glossary.md#statistical-process-control-spc) ·
+[Welch t-test](../../../reference/glossary.md#welch-t-test) ·
 [Part Average Testing (PAT)](../../../reference/glossary.md#part-average-testing-pat) ·
 [Hazard rate](../../../reference/glossary.md#hazard-rate) ·
 [Weibull distribution](../../../reference/glossary.md#weibull-distribution) ·
@@ -531,3 +582,4 @@ Problem set: [03-05 problems](../problems/03-05-problems.md) · [solutions](../s
 4. Steiner, S., Abraham, B. and MacKay, J., "Understanding Process Capability Indices", University of Waterloo IIQP, 1998 (quoting AIAG QS-9000, APQP and PPAP manuals, 1995). [R-068]
 5. JEDEC JESD47G, *Stress-Test-Driven Qualification of Integrated Circuits*, March 2009, Table 1 and note (a). [R-061], [R-069]
 6. AEC-Q001 Part Average Testing, as described in US patent 10,118,200 B2; NASA NEPP, "MIL-PRF-38535 vs. AEC-Q100", 2020. [R-068]
+7. Lifetime distributions by mechanism: Najm, F. N., IEEE IRPS 2019 (electromigration, lognormal); Costa, U. M. S. et al., *Physica A*, 2006 (oxide breakdown, Weibull). [R-072]

@@ -3,7 +3,7 @@
 Chapter: [03-05](../chapters/03-05-estimation-and-hypothesis-testing.md) · Worked solutions: [03-05 solutions](../solutions/03-05-solutions.md)
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
-**Conventions:** measurements are independent and, where intervals use t or chi-square, Gaussian. Use `scipy.stats` (norm, t, chi2, poisson) or tables. $k = 8.617333\times10^{-5}$ eV/K; kelvin = °C + 273.15. Answers to 4 significant figures unless exact.
+**Conventions:** measurements are independent and, where intervals use t or chi-square, Gaussian. Use `scipy.stats` (norm, t, chi2, poisson) or tables. $k = 8.617333\times10^{-5}$ eV/K; kelvin = °C + 273.15; a year is 8766 hours. Answers to 4 significant figures unless exact.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 
@@ -75,6 +75,19 @@ A capacitor population wears out with Weibull parameters α = 20 years and γ = 
 
 **Planning an HTOL test.** A product must demonstrate ≤ 20 FIT at 60% confidence at 55 °C, from a 1000 h test at 125 °C with zero failures. (a) Assuming $E_a = 0.7$ eV, find the equivalent device-hours and the number of units required. (b) If the true activation energy is 0.5 eV, what does the same test actually demonstrate? (c) What does this say about FIT claims?
 
+### Problem 03-05.17 [B]
+
+**Paired or unpaired?** A firmware trim update is applied to eight amplifiers, and each one's offset (mV) is measured before and after.
+
+| Unit | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---|---|---|---|---|---|---|---|
+| Before | 1.20 | 0.85 | 1.45 | 0.95 | 1.10 | 1.38 | 0.72 | 1.31 |
+| After | 1.12 | 0.80 | 1.36 | 0.90 | 1.05 | 1.27 | 0.70 | 1.22 |
+
+(a) Analyze the data as paired: find the mean and standard deviation of the differences (before − after), the t statistic and the one-sided p-value for "the update lowers offset".
+(b) Analyze the same numbers, wrongly, as two independent samples with the Welch test: find the standard error, t, the Welch degrees of freedom and the one-sided p-value.
+(c) Explain the difference, and say when a paired design is possible.
+
 ---
 
 ## Objective coverage
@@ -83,6 +96,6 @@ A capacitor population wears out with Weibull parameters α = 20 years and γ = 
 |---|---|
 | 1. Estimators, bias, sample variance, standard error | 1, 3, 4 |
 | 2. Confidence intervals: mean, proportion, variance, failure rate | 2, 3, 4, 5, 6, 7 |
-| 3. Hypothesis tests, p-values, power, multiple testing | 8, 9, 10 |
+| 3. Hypothesis tests, p-values, power, multiple testing, two-group comparisons | 8, 9, 10, 17 |
 | 4. Process capability, its uncertainty, outlier screening | 11, 12, 13 |
 | 5. Weibull lifetimes and Arrhenius acceleration | 14, 15, 16 |

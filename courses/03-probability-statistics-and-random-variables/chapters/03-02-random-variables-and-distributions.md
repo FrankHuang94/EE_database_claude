@@ -1,10 +1,10 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 03-02 · Random Variables and Distributions
 
 | | |
 |---|---|
 | **Course** | [03 · Probability, Statistics and Random Variables for EE](../README.md) |
-| **University equivalent** | The discrete and continuous random-variable units of a junior probability course for engineers (MIT 6.041/6.431 lectures 5–8: PMFs, the binomial, geometric and Poisson laws, PDFs and CDFs, the exponential and normal distributions; Bertsekas & Tsitsiklis, chapters 2 and 3; Leon-Garcia, chapters 3 and 4) |
+| **University equivalent** | The discrete and continuous random-variable units of a junior probability course for engineers (MIT 6.041/6.431 lectures 5–8, and 13–15 for the Bernoulli and Poisson processes: PMFs, the binomial, geometric and Poisson laws, PDFs and CDFs, the exponential and normal distributions; expectation is in 03-03; Bertsekas & Tsitsiklis, chapters 2 and 3; Leon-Garcia, chapters 3 and 4) |
 | **Prerequisites** | [03-01 Probability in EE Language](03-01-probability-in-ee-language.md) (counting, independence, the $e^{-np}$ rule), [01-05 Integrals](../../01-calculus-for-engineers/chapters/01-05-integrals.md) and [01-10](../../01-calculus-for-engineers/chapters/01-10-multivariable-calculus-2.md) (double integrals in polar coordinates) |
 | **Estimated study hours** | 8 |
 | **Last verified** | 2026-11-18 |
@@ -122,18 +122,18 @@ It sums to 1 because $\sum_k\lambda^k/k! = e^\lambda$ (the Taylor series of [01-
 
 ![Two bar charts comparing binomial and Poisson probabilities with the same mean of 1.2: for n = 12,000 the bars are indistinguishable; for n = 12 the binomial is visibly narrower.](../../../assets/figures/03-02/binomial-poisson.svg)
 
-*Figure 2. Binomial and Poisson with the same mean, λ = 1.2 (Example 03-02.3). With 12,000 trials the two agree to four digits; with 12 trials the binomial is narrower, because it cannot exceed $n$ and its trials are not rare.*
+*Figure 2. Binomial and Poisson with the same mean, λ = 1.2 (Example 03-02.3). With 12,000 trials the two agree to four digits; with 12 trials the binomial is narrower: its variance $np(1 - p) = 1.08$ is smaller than the Poisson's 1.2, because its trials are not rare.*
 
-**The Poisson process.** If events occur independently at a constant average rate $r$ (per hour, per bit, per square centimeter), the number in an interval of length $t$ is Poisson with $\lambda = rt$. Two consequences matter constantly:
+**The Poisson process.** If events occur independently at a constant average rate $r$ (per hour, per bit, per square centimeter), the number in an interval of length $t$ is Poisson with $\lambda = rt$. *Why:* slice $[0, t]$ into $n$ short slots, each holding an event with probability $rt/n$ independently; the count is binomial$(n, rt/n)$, and as $n \to \infty$ the limit just derived makes it Poisson with mean $rt$. Two consequences matter constantly:
 
 - **Probability of none:** $P(0) = e^{-rt}$. For defects at density $D_0$ per unit area on a die of area $A$, the yield is $Y = P(\text{no defect}) = e^{-AD_0}$, the Poisson yield model used in [01-10](../../01-calculus-for-engineers/chapters/01-10-multivariable-calculus-2.md).
-- **Counts add:** independent Poisson counts with means $\lambda_1$ and $\lambda_2$ add to a Poisson count with mean $\lambda_1 + \lambda_2$, because the underlying events simply pool. A fleet's soft-error count is Poisson with the fleet's total rate (Example 03-02.2).
+- **Counts add:** independent Poisson counts with means $\lambda_1$ and $\lambda_2$ add to a Poisson count with mean $\lambda_1 + \lambda_2$: the two event streams pool into one with the summed rate (03-04 §3.4 proves it by convolution). A fleet's soft-error count is Poisson with the fleet's total rate (Example 03-02.2).
 
 **Failure rates in FIT.** Reliability engineers quote constant failure rates in **FIT**, failures per $10^9$ device-hours ([R-064](../../../reference/research-log.md#r-064--soft-error-rates-and-fit)). A part rated $F$ FIT fails at $r = F\times10^{-9}$ per hour, so in $t$ hours the expected number of failures is $rt$, and the probability of at least one is $1 - e^{-rt}$. Soft errors in SRAM are quoted in FIT per megabit.
 
 ### 3.5 Uniform and exponential
 
-**Uniform.** A variable equally likely anywhere in $[a, b]$ has the flat density $f_X(x) = 1/(b - a)$ on that interval and zero outside. Its CDF rises linearly. The rounding error of an ideal quantizer with step Δ is the standard example: uniform on $[-\Delta/2, \Delta/2]$, as Course 01 assumed for ADC noise.
+**Uniform.** A variable equally likely anywhere in $[a, b]$ has the flat density $f_X(x) = 1/(b - a)$ on that interval and zero outside. Its CDF rises linearly. The rounding error of an ideal quantizer with step Δ is the standard example: for an input that varies over many steps (or is dithered, 03-04), the error is well modeled as uniform on $[-\Delta/2, \Delta/2]$, as Course 01 assumed for ADC noise. (A constant input gives a constant error, not a uniform one.)
 
 **Exponential: the waiting time of a Poisson process.** Let $T$ be the time to the first event of a Poisson process with rate $r$. "The first event comes after $t$" means "no event in $[0, t]$", so
 
@@ -179,7 +179,7 @@ By symmetry $Q(-x) = 1 - Q(x)$, so $P(|Z| > x) = 2Q(x)$. Calculators and softwar
 
 ![Left: the standard normal density with the area beyond z = 2 shaded. Right: Q(x) on a log scale from 0.5 to 8, with its upper bound and the Chernoff bound, and marked values at 3, 4.5, 6 and 7.03.](../../../assets/figures/03-02/q-function.svg)
 
-*Figure 3. The Q-function. It falls faster and faster as $x$ grows, and the simple upper bound becomes accurate deep in the tail.*
+*Figure 3. The Q-function. It falls faster and faster as $x$ grows, and the simple upper bound becomes accurate deep in the tail. The dotted curve is $\tfrac12e^{-x^2/2}$, a tightened form of the Chernoff bound $e^{-x^2/2}$.*
 
 **Bounds that make the tail intuitive.** For $x > 0$,
 
@@ -187,42 +187,60 @@ $$
 \frac{x}{1 + x^2}\cdot\frac{e^{-x^2/2}}{\sqrt{2\pi}} < Q(x) < \frac{e^{-x^2/2}}{x\sqrt{2\pi}}, \qquad Q(x) \le \tfrac12e^{-x^2/2} .
 $$
 
-*Upper bound, derived:* for $z > x > 0$, $z/x > 1$, so $\int_x^\infty e^{-z^2/2}dz < \int_x^\infty(z/x)e^{-z^2/2}dz = e^{-x^2/2}/x$. The two-sided bound shows that for large $x$, $Q(x) \approx e^{-x^2/2}/(x\sqrt{2\pi})$: within 2% at $x = 7$. The tail falls like $e^{-x^2/2}$, faster than any exponential in $x$. Each additional σ of margin buys more orders of magnitude than the last, and a small error in σ moves a $10^{-12}$ estimate a long way.
+*Upper bound, derived:* for $z > x > 0$, $z/x > 1$, so $\int_x^\infty e^{-z^2/2}dz < \int_x^\infty(z/x)e^{-z^2/2}dz = e^{-x^2/2}/x$. The two-sided bound shows that for large $x$, $Q(x) \approx e^{-x^2/2}/(x\sqrt{2\pi})$: within 2% at $x = 7$.
+
+> **Going deeper — the other two bounds.** *Lower bound:* write $\phi(z) = e^{-z^2/2}/\sqrt{2\pi}$ and integrate by parts with $z\phi(z) = -\phi'(z)$: $Q(x) = \int_x^\infty\frac1z\,z\phi(z)\,dz = \frac{\phi(x)}{x} - \int_x^\infty\frac{\phi(z)}{z^2}dz > \frac{\phi(x)}{x} - \frac{Q(x)}{x^2}$, since $1/z^2 < 1/x^2$ on the range. Solving for $Q(x)$ gives $Q(x) > x\phi(x)/(1 + x^2)$. *The ½e^{−x²/2} bound:* substitute $z = x + u$: $Q(x) = \frac{e^{-x^2/2}}{\sqrt{2\pi}}\int_0^\infty e^{-xu}e^{-u^2/2}du \le \frac{e^{-x^2/2}}{\sqrt{2\pi}}\int_0^\infty e^{-u^2/2}du = \tfrac12e^{-x^2/2}$, using $e^{-xu} \le 1$ for $x, u \ge 0$ (Problem 03-02.19). The tail falls like $e^{-x^2/2}$, faster than any exponential in $x$. Each additional σ of margin buys more orders of magnitude than the last, and a small error in σ moves a $10^{-12}$ estimate a long way.
 
 **Values to know.** $Q(1) = 0.1587$, $Q(2) = 0.02275$, $Q(3) = 1.350\times10^{-3}$, $Q(4.5) = 3.398\times10^{-6}$, $Q(6) = 9.866\times10^{-10}$, $Q(7) = 1.280\times10^{-12}$. Inverting: $Q(x) = 10^{-9}$ at $x = 5.998$, $10^{-12}$ at **7.034**, $10^{-15}$ at **7.941**.
 
 ### 3.7 Binary decisions in Gaussian noise
 
-A receiver sends bits as $+A$ (for 1) or $-A$ (for 0) volts. The sampled value is $y = \pm A + n$, where $n$ is Gaussian noise with mean 0 and standard deviation σ. With equally likely bits, the MAP rule of [03-01](03-01-probability-in-ee-language.md) §3.5 compares $y$ with the threshold 0, midway between the two levels. A sent 1 is misread when $n < -A$, and a sent 0 when $n > A$; by symmetry both have probability
+A receiver sends bits as $+A$ (for 1) or $-A$ (for 0) volts. The sampled value is $Y = \pm A + N$, where the noise $N$ is Gaussian with mean 0 and standard deviation σ. The MAP rule of [03-01](03-01-probability-in-ee-language.md) §3.5 extends to a continuous $Y$ with densities in place of probabilities (the common width $dy$ of a small interval around $y$ cancels from both sides): decide 1 when $P_1f(y \mid +A) > P_0f(y \mid -A)$. With Gaussian densities, taking logarithms and cancelling the $y^2$ terms leaves $2Ay/\sigma^2 > \ln(P_0/P_1)$, that is,
+
+$$
+y > y_{\text{th}} = \frac{\sigma^2}{2A}\ln\frac{P_0}{P_1} ,
+$$
+
+which is 0 for equally likely bits: the threshold sits midway between the levels, and with unequal priors it moves toward the less likely level (Problem 03-02.18). A sent 1 is misread when $N < -A$, and a sent 0 when $N > A$; by symmetry both have probability
 
 $$
 \boxed{\text{BER} = Q\!\left(\frac{A}{\sigma}\right)} .
 $$
 
-The ratio $A/\sigma$, the distance from each level to the threshold measured in noise standard deviations, is the whole story. A BER of $10^{-12}$ needs $A/\sigma = 7.034$; in decibels, $20\log_{10}7.034 = $ **16.94 dB**. Losing 1 dB of signal at that operating point drops $A/\sigma$ to 6.269 and raises the BER **181**-fold, to $1.811\times10^{-10}$ (Problem 03-02.12), which is why link budgets are fought over in tenths of a decibel. With unequal priors the MAP threshold moves toward the less likely level, and with more than two levels (PAM4) each pair of neighbors contributes its own Q term (Course 17).
+The ratio $A/\sigma$, the distance from each level to the threshold measured in noise standard deviations, is the whole story. A BER of $10^{-12}$ needs $A/\sigma = 7.034$; in decibels, $20\log_{10}7.034 = $ **16.94 dB**. Losing 1 dB of signal at that operating point drops $A/\sigma$ to 6.269 and raises the BER **181**-fold, to $1.811\times10^{-10}$ (Problem 03-02.12), which is why link budgets are fought over in tenths of a decibel. With more than two levels (PAM4) each pair of neighbors contributes its own Q term (Course 17).
 
 ### 3.8 Timing jitter at a target BER: the dual-Dirac model
 
-A serial receiver samples each bit in the middle of its **unit interval** (UI), the bit period. Data edges arrive early or late by the **jitter**, and a bit is sampled wrongly when an edge crosses the sampling instant. Jitter has two kinds of parts:
+A serial-link receiver (the receive half of a **SerDes**, the serializer–deserializer at each end of a high-speed link) samples each bit in the middle of its **unit interval** (UI), the bit period. Data edges arrive early or late by the **jitter**, and a bit is sampled wrongly when an edge crosses the sampling instant. Jitter has two kinds of parts:
 
-- **Random jitter (RJ):** Gaussian, from thermal and phase noise, characterized by its rms value σ. Unbounded, so it sets the far tails.
+- **Random jitter (RJ):** Gaussian, from thermal noise and the phase noise of the clock (generated by a phase-locked loop, PLL, that multiplies a reference clock), characterized by its rms value σ. Unbounded, so it sets the far tails.
 - **Deterministic jitter (DJ):** bounded, from inter-symbol interference, duty-cycle distortion and crosstalk. It has a fixed peak-to-peak range.
 
-The **dual-Dirac model** approximates the deterministic part by two spikes ("Dirac deltas") a distance $DJ(\delta\delta)$ apart, each blurred by the Gaussian RJ. Deep in the tails, where the BER is tiny, only the nearer spike matters at each edge of the eye, and the crossing probability beyond a distance $Q_{\text{BER}}\,\sigma$ from it is a Gaussian tail. Each edge of the eye loses $DJ/2 + Q_{\text{BER}}\sigma$, so the **total jitter** at a target BER is
+The **dual-Dirac model** approximates the deterministic part by two spikes ("Dirac deltas") a distance $DJ(\delta\delta)$ apart, each blurred by the Gaussian RJ.
+
+**Deriving the walls.** Put the sampling instant a time $t$ after the nominal edge position. A bit can be misread only where the data change, a fraction $\rho_T$ of bits (the **transition density**, ½ for random data). Such an edge sits at $-DJ/2$ or $+DJ/2$ with probability ½ each, plus Gaussian RJ, and the bit is misread if the edge lands after the sampling instant:
 
 $$
-TJ(\text{BER}) = DJ(\delta\delta) + 2\,Q_{\text{BER}}\,\sigma_{RJ} .
+\text{BER}(t) = \rho_T\Big[\tfrac12Q\Big(\frac{t + DJ/2}{\sigma}\Big) + \tfrac12Q\Big(\frac{t - DJ/2}{\sigma}\Big)\Big] \approx \frac{\rho_T}{2}\,Q\Big(\frac{t - DJ/2}{\sigma}\Big) ,
 $$
 
-The convention in the jitter literature defines $Q_{\text{BER}}$ by $\text{BER} = \rho_T\operatorname{erfc}(Q_{\text{BER}}/\sqrt2)$, where $\rho_T$ is the transition density. With the usual $\rho_T = 1/2$ this is simply $Q(Q_{\text{BER}}) = \text{BER}$, so $2Q_{\text{BER}} = $ **14.069** at $10^{-12}$ and **15.883** at $10^{-15}$ ([R-063](../../../reference/research-log.md#r-063--jitter-the-dual-dirac-model-and-the-q-scale)). (With $\rho_T = 1$ the multiplier at $10^{-12}$ becomes 14.26. Check which convention a tool uses before comparing numbers.) Two composition rules follow from the model and the Gaussian's properties ([03-04](03-04-joint-distributions-and-clt.md)): independent random jitters add in quadrature, $\sigma = \sqrt{\sigma_1^2 + \sigma_2^2}$, while deterministic jitters add roughly linearly.
+because deep in the tail only the nearer spike matters. Each edge of the eye loses $DJ/2 + x\sigma$, where $(\rho_T/2)Q(x) = \text{BER}$.
+
+**The industry convention.** Instruments and standards instead *define* the multiplier $Q_{\text{BER}}$ (a number of σ's, named after the Q-function it inverts) by $Q(Q_{\text{BER}}) = \text{BER}$, equivalently $\text{BER} = \rho_T\operatorname{erfc}(Q_{\text{BER}}/\sqrt2)$ at $\rho_T = 1/2$, dropping the factor $\rho_T/2$. The **total jitter** at a target BER is then
+
+$$
+TJ(\text{BER}) = DJ(\delta\delta) + 2\,Q_{\text{BER}}\,\sigma_{RJ} ,
+$$
+
+with $2Q_{\text{BER}} = $ **14.069** at $10^{-12}$ and **15.883** at $10^{-15}$ ([R-063](../../../reference/research-log.md#r-063--jitter-the-dual-dirac-model-and-the-q-scale)). The literal model at $\rho_T = 1/2$ needs $Q(x) = 4\times10^{-12}$, giving $2x = $ **13.68**: the convention is slightly conservative, by **0.47 ps** of eye in Example 03-02.7. Use 14.069 because specifications and instruments do, and state the convention when comparing numbers. (Some tools use the erfc form with $\rho_T = 1$, giving **14.26**.) Two composition rules follow from the model and the Gaussian's properties ([03-04](03-04-joint-distributions-and-clt.md)): independent random jitters add in quadrature, $\sigma = \sqrt{\sigma_1^2 + \sigma_2^2}$, while deterministic jitters add roughly linearly.
 
 The eye's horizontal opening at the target BER is $1\,\text{UI} - TJ$. Plotting the BER against the sampling instant gives the **bathtub curve** (Figure 4), whose walls are Gaussian tails.
 
 ![Bathtub curve: bit error rate on a log scale against sampling instant across a 31.25 ps unit interval, with steep walls and an eye opening of 6.37 ps marked at 1e-12.](../../../assets/figures/03-02/bathtub.svg)
 
-*Figure 4. A bathtub curve for DJ = 8 ps and RJ = 1.2 ps rms at 32 GT/s (Example 03-02.7). The walls are Gaussian tails, so lowering the target BER from $10^{-12}$ to $10^{-15}$ costs only a little more eye.*
+*Figure 4. A bathtub curve for DJ = 8 ps and RJ = 1.2 ps rms at 32 GT/s (Example 03-02.7), in the industry Q-scale convention. The walls are Gaussian tails: lowering the target BER from $10^{-12}$ to $10^{-15}$ costs 2.2 ps, only **7.0%** of the UI but **34.18%** of the remaining eye.*
 
-> **Going deeper — why the model is a model.** The two Diracs are a fitting device, not physics: real deterministic jitter has a continuous distribution. Instruments fit the dual-Dirac form to the measured tails, so $DJ(\delta\delta)$ is usually smaller than the true peak-to-peak deterministic jitter, and the model is accurate only near the BER range it was fitted to. Standards specify jitter in this form precisely so that different instruments agree ([R-063](../../../reference/research-log.md#r-063--jitter-the-dual-dirac-model-and-the-q-scale)).
+> **Going deeper — why the model is a model.** The two Diracs are a fitting device, not physics: real deterministic jitter has a continuous distribution. Instruments fit the dual-Dirac form to the measured tails, so $DJ(\delta\delta)$ is usually smaller than the true peak-to-peak deterministic jitter, and the model is accurate only near the BER range it was fitted to. Standards specify jitter in this form because it gives well-defined, measurable quantities, though different instruments' fitting methods can still disagree ([R-063](../../../reference/research-log.md#r-063--jitter-the-dual-dirac-model-and-the-q-scale)).
 
 ## 4. Worked examples
 
@@ -250,7 +268,7 @@ They sum to 1 ✓. $F_X(1) = 0.6561 + 0.2916 = $ **0.9477**.
 
 (b) $P(0) = e^{-0.009993} = $ **0.9901**. Over 5 years, $\lambda = $ **0.04997** and $P(\ge1) = 1 - e^{-0.04997} = $ **0.04874**: about one device in 20.
 
-(c) The fleet's count is Poisson with mean $10^4\times0.009993 = $ **99.93**. Summing the Poisson PMF from 0 to 80 gives $P(N \le 80) = $ **0.02300**. A year with 80 or fewer upsets would be unusual (about 2%), so a fleet operator could use such counts to test whether the vendor's rate applies at their altitude and shielding (03-05).
+(c) The fleet's count is Poisson with mean $10^4\times1.14\times10^{-6}\times8766 = $ **99.932** (use the unrounded λ: the tail below is sensitive to it). Summing the Poisson PMF from 0 to 80 gives $P(N \le 80) = $ **0.02300**. A year with 80 or fewer upsets would be unusual (about 2%) *against the point estimate*. But the vendor's 11.4 FIT/Mb carries a 90% interval of −32%/+50%, which puts the fleet's expected count anywhere from **67.95** to **149.9**, so 80 is fully consistent with the vendor's data. Alpha particles (from trace radioactivity in package materials) add 2.0 FIT/Mb more, for about **117.5** upsets a year. Testing a rate claim must carry the claim's own uncertainty (03-05).
 
 **Units check.** FIT × hours × $10^{-9}$ = expected failures ✓. **Sanity check.** For small λ, $P(\ge1) \approx \lambda$: $0.04997$ against 0.04874 ✓.
 
@@ -267,13 +285,13 @@ They sum to 1 ✓. $F_X(1) = 0.6561 + 0.2916 = $ **0.9477**.
 | 2 | 0.2169 | **0.2169** |
 | 2 or more | 0.3374 | **0.3374** |
 
-They agree to four digits (Figure 2). A code that corrects one error per packet would still fail a third of packets here: this BER is far too high for such a code.
+They agree to four digits (Figure 2). A code that corrects one error per packet would still fail a third of packets here: this BER is far too high for such a code. **Check:** $P(0) + P(1) + P(\ge2) = 0.3012 + 0.3614 + 0.3374 = 1$ ✓.
 
 (b) A packet fails with $p_e = 1 - e^{-0.12}$ (to excellent accuracy) $= $ **0.1131**. Transmissions are geometric with $q = 1 - p_e$: $P(K = 2) = p_e(1 - p_e) = $ **0.1003**, and $P(K > 3) = p_e^3 = $ **1.446×10⁻³**.
 
 ### Example 03-02.4 — Exponential lifetimes and FIT (tier B)
 
-**Setup.** A part is rated 50 FIT. (a) What is the probability it fails within 10 years? (b) What is its MTTF, in hours and years? (c) A unit has survived 5 years. What is the probability it fails in the next 5? (d) How many failures should a fleet of one million units expect in its first year?
+**Setup.** A part is rated 50 FIT. (a) What is the probability it fails within 10 years? (b) What is its MTTF, in hours and years? (c) A unit has survived 5 years. What is the probability it fails in the next 5? (d) How many failures should a fleet of one million units expect in its first year, if failed units are replaced?
 
 **Solution.** $r = 50\times10^{-9} = 5\times10^{-8}$ per hour.
 
@@ -283,7 +301,9 @@ They agree to four digits (Figure 2). A code that corrects one error per packet 
 
 (c) Memoryless: $1 - e^{-5\times10^{-8}\times43{,}830} = $ **2.189×10⁻³**, the same as for a new part over 5 years.
 
-(d) $10^6\times5\times10^{-8}\times8766 = $ **438.3** failures.
+(d) With replacement, each of the $10^6$ sockets sees a Poisson count with mean $rt$: $10^6\times5\times10^{-8}\times8766 = $ **438.3** failures. (Without replacement the expected count is $10^6(1 - e^{-rt}) = $ **438.2**.)
+
+**Units check.** $r$ is per hour and $t$ in hours, so $rt$ is dimensionless ✓. **Sanity check.** $1 - e^{-rt} \approx rt$ for small $rt$, so (a) is close to $5\times10^{-8}\times87{,}660 = 4.383\times10^{-3}$ ✓.
 
 ### Example 03-02.5 — Gaussian tolerances (tier B)
 
@@ -303,6 +323,8 @@ They agree to four digits (Figure 2). A code that corrects one error per packet 
 
 (b) $Q^{-1}(10^{-12}) = 7.034$, so $A = 7.034\times15 = $ **105.5 mV**. In dB, $20\log_{10}7.034 = $ **16.94 dB**, against the present $20\log_{10}6.667 = $ **16.48 dB**. Less than half a decibel separates $1.3\times10^{-11}$ from $10^{-12}$.
 
+**Units check.** $A$ and σ are both in mV, so $A/\sigma$ is dimensionless ✓. **Sanity check.** Raising $A/\sigma$ from 6.667 to 7.034 lowers the BER, as it must ✓.
+
 ### Example 03-02.7 — A 32 GT/s jitter budget (tier C)
 
 **Setup.** A 32 GT/s link has deterministic jitter $DJ(\delta\delta) = 8$ ps and random jitter of 1.2 ps rms. (a) Find the unit interval and the total jitter at $10^{-12}$. (b) What eye opening remains, in ps and UI? (c) Find the total jitter at $10^{-15}$. (d) The receiver needs 0.3 UI of opening at $10^{-12}$. How much random jitter can the link tolerate?
@@ -315,7 +337,7 @@ They agree to four digits (Figure 2). A code that corrects one error per packet 
 
 (d) $TJ \le 0.7\times31.25 = $ **21.875** ps, so $\sigma_{RJ} \le (21.875 - 8)/14.069 = $ **0.9862 ps**: the random jitter must fall by about 18%.
 
-**Sanity check.** Every 1 ps rms of random jitter costs 14 ps of eye at $10^{-12}$, so RJ dominates the budget at high data rates ✓.
+**Sanity check.** RJ's contribution here, $14.069\times1.2 = $ **16.88 ps**, exceeds DJ's 8 ps, and both are below the 31.25 ps UI ✓.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -331,7 +353,7 @@ They agree to four digits (Figure 2). A code that corrects one error per packet 
 | Ex 03-02.2b | expected upsets per device-year | 9.993×10^-3 | — |
 | Ex 03-02.2c | P(no upset in a year) | 0.9901 | — |
 | Ex 03-02.2d | P(at least one upset in 5 years) | 0.04874 | — |
-| Ex 03-02.2e | fleet expected upsets per year | 99.93 | — |
+| Ex 03-02.2e | fleet expected upsets per year | 99.932 | — |
 | Ex 03-02.2f | P(80 or fewer fleet upsets) | 0.02300 | — |
 | Ex 03-02.3a | Poisson P(0) | 0.3012 | — |
 | Ex 03-02.3b | Poisson P(1) | 0.3614 | — |
@@ -345,6 +367,12 @@ They agree to four digits (Figure 2). A code that corrects one error per packet 
 | Ex 03-02.4c | MTTF | 2282 | years |
 | Ex 03-02.4d | P(fail in next 5 years, given 5 survived) | 2.189×10^-3 | — |
 | Ex 03-02.4e | first-year fleet failures | 438.3 | — |
+| Ex 03-02.4f | first-year fleet failures without replacement | 438.2 | — |
+| Ex 03-02.4g | rt over 10 years (sanity check) | 4.383×10^-3 | — |
+| Ex 03-02.2h | fleet expected upsets, low end of vendor interval | 67.95 | — |
+| Ex 03-02.2i | fleet expected upsets, high end of vendor interval | 149.9 | — |
+| Ex 03-02.2j | fleet expected upsets including alpha | 117.5 | — |
+| Ex 03-02.7j | random-jitter contribution at 1e-12 | 16.88 | ps |
 | Ex 03-02.5a | fraction outside ±2σ | 0.04550 | — |
 | Ex 03-02.5b | fraction outside ±3σ | 0.002700 | — |
 | Ex 03-02.5c | P(V < 0.72 V) | 1.350×10^-3 | — |
@@ -379,7 +407,7 @@ The lab ([labs/03-02-lab/](../labs/03-02-lab/README.md)) is a notebook of sampli
 | Signal amplitude or equalization (raise $A/\sigma$) | BER, exponentially: each dB near $10^{-12}$ is worth more than an order of magnitude | Power, swing limits, crosstalk to neighbors | SerDes and PHY designers |
 | Lower random jitter (cleaner clocks, PLL design) | Eye opening, at 14× leverage at $10^{-12}$ | PLL power and area, clock distribution cost | Clocking and SerDes designers |
 | Pre-assembly die test (known-good die) | Package yield, which otherwise falls as $Y^n$ | Test time and probe cost per die | Test and packaging engineering |
-| Error correction or memory scrubbing | Tolerance of Poisson soft errors | Area, latency, background bandwidth | Memory and reliability architects |
+| Error-correcting codes (ECC) or memory scrubbing (rereading and correcting stored data before errors accumulate) | Tolerance of Poisson soft errors | Area, latency, background bandwidth | Memory and reliability architects |
 | Burn-in | Removes early failures before shipment | Time, ovens, some wear on good parts | Reliability and manufacturing |
 | Gaussian versus measured-tail models | Simple, analytic budgets | Can be badly wrong when tails are non-Gaussian (crosstalk, interference) | Signal-integrity and validation engineers |
 
@@ -391,9 +419,9 @@ The lab ([labs/03-02-lab/](../labs/03-02-lab/README.md)) is a notebook of sampli
 | $Q(3)$, $Q(4.5)$, $Q(6)$ | $1.350\times10^{-3}$, $3.398\times10^{-6}$, $9.866\times10^{-10}$ | $Q(4.5)$ is Six Sigma's "3.4 ppm" [R-065](../../../reference/research-log.md#r-065--six-sigma-34-ppm-and-the-15σ-shift) |
 | $Q^{-1}$ at $10^{-9}$, $10^{-12}$, $10^{-15}$ | 5.998, 7.034, 7.941 | σ of margin needed |
 | BER of ±A in Gaussian noise | $Q(A/\sigma)$; $10^{-12}$ needs 16.94 dB | Threshold midway |
-| Total-jitter multiplier $2Q_{\text{BER}}$ | 14.069 at $10^{-12}$; 15.883 at $10^{-15}$ | Transition density 1/2 [R-063](../../../reference/research-log.md#r-063--jitter-the-dual-dirac-model-and-the-q-scale) |
+| Total-jitter multiplier $2Q_{\text{BER}}$ | 14.069 at $10^{-12}$; 15.883 at $10^{-15}$ | Industry convention; literal model 13.68 [R-063](../../../reference/research-log.md#r-063--jitter-the-dual-dirac-model-and-the-q-scale) |
 | 1 FIT | 1 failure per $10^9$ device-hours | [R-064](../../../reference/research-log.md#r-064--soft-error-rates-and-fit) |
-| SRAM soft-error rate, as of Nov 2026 | about 700 FIT/Mb (65 nm planar) down to about 11 FIT/Mb (7 nm FinFET), neutron-induced | AMD UG116 [R-064](../../../reference/research-log.md#r-064--soft-error-rates-and-fit) |
+| FPGA block-RAM soft-error rate, as of Nov 2026 | 692 FIT/Mb (65 nm planar) to 11.4 (7 nm FinFET); not monotone (90 nm: 484; 20 nm: 58); neutron-induced | AMD UG116 [R-064](../../../reference/research-log.md#r-064--soft-error-rates-and-fit) |
 | Poisson: probability of none | $e^{-\lambda}$ | Poisson yield $e^{-AD_0}$ |
 
 <!-- answer-key -->
@@ -414,6 +442,12 @@ The lab ([labs/03-02-lab/](../labs/03-02-lab/README.md)) is a notebook of sampli
 | T 03-02.b | Q(2) | 0.02275 | — |
 | T 03-02.c | Q(7) | 1.280×10^-12 | — |
 | T 03-02.d | multiplier at 1e-12 with transition density 1 | 14.26 | — |
+| T 03-02.m | literal dual-Dirac multiplier at 1e-12, transition density 1/2 | 13.68 | — |
+| T 03-02.n | extra eye margin of the convention, Example 03-02.7 | 0.47 | ps |
+| T 03-02.o | eye cost of 1e-15 over 1e-12, share of UI | 7.0 | % |
+| T 03-02.p | eye cost of 1e-15 over 1e-12, share of remaining eye | 34.18 | % |
+| T 03-02.q | block-RAM SER ratio, 65 nm to 7 nm | 60.70 | — |
+| T 03-02.r | sum of two 1 ps rms jitters | 1.414 | ps |
 | T 03-02.e | upper bound over Q at x = 7, excess | 2 | % |
 | T 03-02.f | Q(8) | 6.221×10^-16 | — |
 | T 03-02.g | Q(7)/Q(8) | 2057 | — |
@@ -444,19 +478,19 @@ The lab ([labs/03-02-lab/](../labs/03-02-lab/README.md)) is a notebook of sampli
 ### State of the art (as of Nov 2026)
 
 - **Serial-link jitter is budgeted with the dual-Dirac model.** Measurement vendors define total jitter as $TJ(\text{BER}) = DJ(\delta\delta) + 2Q_{\text{BER}}\sigma$, with $Q_{\text{BER}} = 7.0$ at $10^{-12}$ for transition density 1/2 (Keysight), and tabulate the rms-to-peak multiplier as 14.069 at $10^{-12}$ (Renesas). The same sources state the composition rules: random jitter adds in quadrature, deterministic jitter approximately linearly ([R-063](../../../reference/research-log.md#r-063--jitter-the-dual-dirac-model-and-the-q-scale)) **[Established]**.
-- **Soft-error rates have fallen per bit as SRAM shrank.** AMD's device reliability report (UG116, v10.22, 13 Nov 2026) lists neutron-induced real-time soft-error rates for its block RAM of 692 FIT/Mb at 65 nm, 42 at 28 nm, 15 at 16 nm FinFET and 11.4 at 7 nm, normalized to New York City per JEDEC JESD89A. The figures are revised as field data accumulate (the 16 nm value was 20 FIT/Mb in 2018) ([R-064](../../../reference/research-log.md#r-064--soft-error-rates-and-fit)) **[Established for the trend; individual values vendor-measured and revised]**. Per-device totals still grow, because devices hold more bits.
+- **Per bit, block-RAM soft-error rates have fallen about 60-fold, mostly with FinFETs.** AMD's device reliability report (UG116, v10.22, 13 Nov 2026) lists real-time soft-error rates (neutrons and their secondaries; alpha particles excluded) for its block RAM, normalized to New York City per JEDEC JESD89A: 484 FIT/Mb at 90 nm, 692 at 65 nm, 72 (Artix-7 class) and 42 (Kintex-7 and Virtex-7) at 28 nm, 58 at 20 nm planar, 15 at 16 nm and 11.4 at 7 nm, both FinFET (FinFETs are 3-D transistors, used below 20 nm). From 65 nm to 7 nm that is a factor of **60.70**, but the decline is not monotone, and most of it came with the move to FinFETs. The figures are revised as field data accumulate (the 16 nm value was 20 FIT/Mb in 2018) ([R-064](../../../reference/research-log.md#r-064--soft-error-rates-and-fit)) **[Established for these values; vendor-measured and revised]**. Per-device totals still grow, because devices hold more bits.
 - **"Six Sigma" quality is a Gaussian tail claim.** Motorola's quality program, credited to engineer Bill Smith, quotes 3.4 defects per million: the one-sided tail $Q(4.5)$ of a ±6σ specification after allowing the process mean to drift by 1.5σ. The 1.5σ shift is a convention, and it remains controversial ([R-065](../../../reference/research-log.md#r-065--six-sigma-34-ppm-and-the-15σ-shift)) **[Established for the arithmetic; the shift is Contested]**.
 
 ### Why it matters commercially
 
-Distributions turn into money through their tails. A SerDes design's power and area are set by the margin it needs at $10^{-12}$ or $10^{-15}$, which is a Q-function calculation, so a vendor whose clocking has 20% less random jitter can trade it for lower power or a longer reach. Soft-error rates decide how much error-correcting code a datacenter or automotive chip needs, which costs area and latency. Multi-die packages multiply die yields, which is why known-good-die testing and chiplet test strategy are business decisions. And reliability claims in FIT, MTTF and "nines" all rest on a constant-rate exponential model, which is only valid in mid-life.
+Distributions turn into money through their tails. A SerDes design's power and area are set by the margin it needs at $10^{-12}$ or $10^{-15}$, which is a Q-function calculation, so a vendor whose clocking has 20% less random jitter can trade it for lower power or a longer reach. Soft-error rates decide how much error-correcting code a datacenter or automotive chip needs, which costs area and latency. Multi-die packages multiply die yields, which is why known-good-die testing and chiplet test strategy are business decisions. And FIT and MTTF arithmetic rests on a constant-rate exponential model, which is only valid in mid-life.
 
 ### Marketing vs Reality
 
 - **"MTTF of 1 million hours."** *Reality:* that is a failure rate of 1000 FIT, about 0.9% per year, not a 114-year life. Ask for the annualized failure rate, and for the wear-out life, which the exponential model does not describe.
 - **"Our link has 0.4 UI of eye margin."** *Reality:* at which BER, and with which jitter convention? An eye measured on a short capture shows the core of the distribution; the $10^{-12}$ eye is set by extrapolated Gaussian tails. Ask how the extrapolation was done and validated.
 - **"Six Sigma quality."** *Reality:* 3.4 ppm only if the process is Gaussian into its far tail and drifts no more than 1.5σ. Ask for measured defect rates.
-- **"Soft errors are negligible at FinFET nodes."** *Reality:* per bit, yes, much lower; per chip, a large AI accelerator with hundreds of megabytes of SRAM still sees upsets, and the alpha-particle contribution depends on the package. Ask for the FIT per chip and the ECC strategy.
+- **"Soft errors are negligible at FinFET nodes."** *Reality:* per bit, yes, much lower; per chip, a large AI accelerator with hundreds of megabytes of SRAM still sees upsets, and the alpha-particle contribution (from trace radioactivity in package materials) depends on the package. Ask for the FIT per chip and the ECC strategy.
 
 ### Questions for engineering leaders
 

@@ -84,6 +84,78 @@ v.check("T 03-04.c", sqrt(10 * 1.0**2))
 v.check("T 03-04.d", sqrt(1 - 0.6**2))
 v.check("T 03-04.e", sqrt(1 - 0.8**2))
 v.assert_true("12 uniforms minus 6 cannot exceed 6", 12 * 1 - 6 == 6)
+# TPDF dither: total error power with nonsubtractive triangular dither, averaged over the input offset
+# E[(Q(x + d) - x)^2] for x uniform over one step and d triangular on [-1, 1] (Delta = 1)
+xs_ = np.linspace(-0.5, 0.5, 401)
+tot_pow = []
+for x0 in xs_:
+    g = lambda d: (np.round(x0 + d) - x0) ** 2 * max(0.0, 1 - abs(d))  # noqa: E731
+    tot_pow.append(quad(g, -1, 1, points=[-0.5 - x0, 0.5 - x0, 1.5 - x0, -1.5 - x0, 0], limit=200)[0])
+v.assert_true("TPDF: total error power is 1/4 for every input", max(abs(np.array(tot_pow) - 0.25)) < 1e-9)
+v.check("T 03-04.f", 10 * math.log10((1 / 12 + 1 / 6) / (1 / 12)))
+# law of total variance on the clustered wafer (enumerated exactly from binomial PMFs)
+pb = 0.1
+yc_g, ye_g = (0.95 - pb * 0.75) / (1 - pb), (0.80 - pb * 0.50) / (1 - pb)
+
+
+def wafer_pmf(yc, ye):
+    pc, pe = binom.pmf(np.arange(401), 400, yc), binom.pmf(np.arange(201), 200, ye)
+    return np.convolve(pc, pe)
+
+
+pmf_g, pmf_b = wafer_pmf(yc_g, ye_g), wafer_pmf(0.75, 0.50)
+kk = np.arange(601)
+m_g, m_b = float(kk @ pmf_g), float(kk @ pmf_b)
+var_g, var_b = float(kk**2 @ pmf_g) - m_g**2, float(kk**2 @ pmf_b) - m_b**2
+mix = (1 - pb) * pmf_g + pb * pmf_b
+m_mix = float(kk @ mix)
+var_mix = float(kk**2 @ mix) - m_mix**2
+within, between = (1 - pb) * var_g + pb * var_b, (1 - pb) * pb * (m_g - m_b) ** 2
+v.assert_true("mixture mean is 540", abs(m_mix - 540) < 1e-9)
+v.assert_true("total variance law holds on the exact mixture", abs(var_mix - within - between) < 1e-7)
+v.check("T 03-04.m", yc_g)
+v.check("T 03-04.n", ye_g)
+v.check("T 03-04.k", m_g)
+v.check("T 03-04.l", var_g)
+v.check("T 03-04.g", within)
+v.check("T 03-04.h", between)
+v.check("T 03-04.i", var_mix)
+v.check("T 03-04.j", sqrt(var_mix))
+v.check("T 03-04.o", sqrt(49 + 0.5 * 0.5 * 100**2))
+# MMSE decomposition on a small joint table: E[(Y - g(X))^2] = E[Var(Y|X)] + E[(E[Y|X] - g(X))^2]
+Jm = np.array([[0.2, 0.1, 0.1], [0.05, 0.25, 0.3]])
+ysm = np.array([0.0, 1.0, 3.0])
+pxm = Jm.sum(1)
+cmean = (Jm @ ysm) / pxm
+cvar = (Jm @ ysm**2) / pxm - cmean**2
+for gx in (np.array([0.0, 0.0]), np.array([1.0, 2.0]), cmean):
+    lhs = sum(Jm[i, j] * (ysm[j] - gx[i]) ** 2 for i in range(2) for j in range(3))
+    rhs = float(pxm @ cvar) + float(pxm @ (cmean - gx) ** 2)
+    v.assert_true("MMSE decomposition", abs(lhs - rhs) < 1e-12)
+# jointly Gaussian: completing the square and the factorization (i) x (ii)
+for (rr, uu, ww) in ((0.8, 0.3, -1.2), (-0.5, 1.7, 0.4)):
+    v.assert_true("completing the square", abs(uu * uu - 2 * rr * uu * ww + ww * ww - ((ww - rr * uu) ** 2 + (1 - rr * rr) * uu * uu)) < 1e-12)
+for (xx, yy) in ((0.4, 0.05), (-1.1, -0.2), (2.0, 0.17)):
+    fi = norm.pdf(xx, 0, sx)
+    fii = norm.pdf(yy, rho * sy * xx / sx, sy * sqrt(1 - rho * rho))
+    v.assert_true("bivariate density factors into (i)(ii)", abs(f2(xx, yy) - fi * fii) < 1e-10 * f2(xx, yy))
+# Z1, Z2 recipe reproduces the covariance and the variance of a linear combination
+a_, b_, sX, sY, r_ = 2.0, -3.0, 1.5, 0.7, 0.6
+L = np.array([[sX, 0], [sY * r_, sY * sqrt(1 - r_ * r_)]])
+Cv = L @ L.T
+v.assert_true("recipe gives the covariance matrix", np.allclose(Cv, [[sX * sX, r_ * sX * sY], [r_ * sX * sY, sY * sY]]))
+v.assert_true("linear combination variance", abs((a_ * sX + b_ * r_ * sY) ** 2 + (b_ * sY * sqrt(1 - r_ * r_)) ** 2
+                                                 - (a_ * a_ * sX * sX + b_ * b_ * sY * sY + 2 * a_ * b_ * r_ * sX * sY)) < 1e-12)
+# Cauchy: tan of a uniform angle and ratio of Gaussians have density 1/(pi(1+x^2)); averages stay Cauchy
+cau = lambda x: 1 / (math.pi * (1 + x * x))  # noqa: E731
+# P(tan(Theta) <= x) = (atan(x) + pi/2)/pi for Theta uniform on (-pi/2, pi/2); compare with the integrated density
+v.assert_true("tan(uniform) is Cauchy", all(abs((math.atan(x) + math.pi / 2) / math.pi - quad(cau, -INF, x)[0]) < 1e-9 for x in (-3, 0.2, 5)))
+for zz in (0.0, 0.7, 2.5):
+    ratio = 2 * quad(lambda yv: yv * norm.pdf(zz * yv) * norm.pdf(yv), 0, 40)[0]
+    v.assert_true("ratio of standard Gaussians is Cauchy", abs(ratio - cau(zz)) < 1e-12)
+    s2 = quad(lambda x: cau(x) * cau(2 * zz - x), -INF, INF)[0] * 2      # density of (X1 + X2)/2
+    v.assert_true("average of two Cauchy is Cauchy", abs(s2 - cau(zz)) < 1e-9)
+v.assert_true("Cauchy mean diverges", quad(lambda x: x * cau(x), 0, 1e6, limit=500)[0] > 4)
 
 # ---------------------------------------------------------------- Example 03-04.1
 J1 = [[0.85, 0.05], [0.05, 0.05]]           # rows X = 0, 1; columns Y = 0, 1
@@ -269,8 +341,42 @@ v.check("03-04.16f", pp / pr)
 lb = brentq(lambda L: log(poisson.sf(7, L)) - log(pr), 1e-3, 1, xtol=1e-14)
 v.check("03-04.16c", lb)
 v.check("03-04.16d", 2 * lb)
-v.check("03-04.16e", 2.4e-4 * 2 * lb / lam16)
+v.check("03-04.16h", 2.4e-4 * 2 * lb / lam16)
+v.check("03-04.16e", -math.expm1(math.log1p(-2 * lb / n) / 10))
 v.check("03-04.16g", lam16 / (2 * lb))
+
+# Problem 17: compound Poisson, by exact enumeration of the distribution of S
+pk = {1: 0.6, 2: 0.3, 3: 0.1}
+EK = sum(k * p_ for k, p_ in pk.items())
+VK = sum(k * k * p_ for k, p_ in pk.items()) - EK**2
+kpmf = np.zeros(4)
+for k, p_ in pk.items():
+    kpmf[k] = p_
+sp = np.zeros(1)
+sp[0] = 1.0
+s_pmf = np.zeros(400)
+for nn in range(0, 120):
+    w_ = poisson.pmf(nn, 4)
+    s_pmf[: len(sp)] += w_ * sp[:400]
+    sp = np.convolve(sp, kpmf)
+ss = np.arange(400)
+ES = float(ss @ s_pmf)
+VS = float(ss**2 @ s_pmf) - ES**2
+v.assert_true("compound PMF sums to 1", abs(s_pmf.sum() - 1) < 1e-12)
+v.check("03-04.17a", EK)
+v.check("03-04.17b", VK)
+v.check("03-04.17c", ES)
+v.check("03-04.17d", VS)
+v.check("03-04.17e", sqrt(VS))
+v.check("03-04.17f", VS / ES)
+
+# Problem 18: min and max of exponentials by integrating survival functions
+r1, r2 = 2e-5, 1e-5
+v.check("03-04.18a", quad(lambda u: exp(-u), 0, 60)[0] / (r1 + r2))
+v.check("03-04.18b", quad(lambda u: exp(-u) * exp(-u * r2 / r1), 0, 60)[0])      # int r1 e^{-r1 t} e^{-r2 t} dt, u = r1 t
+mt_max = quad(lambda u: 1 - (1 - exp(-u)) * (1 - exp(-u * r2 / r1)), 0, 80)[0] / r1
+v.check("03-04.18c", mt_max)
+v.check("03-04.18d", (mt_max * r2 - 1) * 100)
 
 # ================================================================ lab handout
 v.check("Lab 03-04.a", 0.05 - 0.1 * 0.1)

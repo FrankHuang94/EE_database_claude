@@ -72,7 +72,7 @@ The in-phase and quadrature noise of a receiver are independent $\mathcal{N}(0, 
 
 ### Problem 03-04.14 [C]
 
-**Optimal cancellation.** $X_1$ and $X_2$ have standard deviations 2 and 1 and correlation 0.6 (for example, a noisy measurement and a reference sensor that sees part of the same noise). (a) Find $\operatorname{Var}(X_1 - 2X_2)$. (b) Find the coefficient $a$ that minimizes $\operatorname{Var}(X_1 - aX_2)$ and the minimum variance. (c) Interpret the result in terms of §3.7, and as a finance hedge ratio.
+**Optimal cancellation.** $X_1$ and $X_2$ have standard deviations 2 and 1 and correlation 0.6 (for example, a noisy measurement and a reference sensor that sees part of the same noise). (a) Find $\operatorname{Var}(X_1 - 2X_2)$. (b) Find the coefficient $a$ that minimizes $\operatorname{Var}(X_1 - aX_2)$ and the minimum variance. (c) Interpret the result in terms of §3.8, and as a finance hedge ratio.
 
 ### Problem 03-04.15 [C]
 
@@ -80,7 +80,7 @@ The in-phase and quadrature noise of a receiver are independent $\mathcal{N}(0, 
 
 (a) Find the uncorrectable codeword ratio at a pre-FEC BER of $10^{-4}$, exactly and with the Poisson approximation.
 (b) Find, numerically, the pre-FEC BER at which the uncorrectable codeword ratio is $10^{-10}$.
-(c) A weaker code with $n = 528$ symbols and $t = 7$ sees the same pre-FEC BER of $2.4\times10^{-4}$. Find its uncorrectable codeword ratio, and compare with Example 03-04.7.
+(c) The weaker RS(528,514) "KR4" code of 25 Gb/s-per-lane Ethernet ($n = 528$, $t = 7$, also 10-bit symbols) sees the same pre-FEC BER of $2.4\times10^{-4}$. Find its uncorrectable codeword ratio, and compare with Example 03-04.7.
 
 ### Problem 03-04.16 [C]
 
@@ -89,7 +89,24 @@ The in-phase and quadrature noise of a receiver are independent $\mathcal{N}(0, 
 - random errors: wrong symbols are Poisson with mean λ, and the codeword fails with 16 or more;
 - paired errors: errors arrive as bursts that each corrupt two adjacent symbols, bursts are Poisson with mean λ/2, and the codeword fails with 8 or more bursts.
 
-(a) Find the uncorrectable codeword ratio in each case. (b) To what mean number of wrong symbols, and what pre-FEC BER, must the paired-error link be improved to match the random-error failure rate? (c) Relate the result to the IEEE practice described in §9.
+(a) Find the uncorrectable codeword ratio in each case. (b) To what mean number of wrong symbols, and what pre-FEC BER (inverting $p_s = 1 - (1 - p)^{10}$), must the paired-error link be improved to match the random-error failure rate? (c) Relate the result to the IEEE practice described in §9.
+
+### Problem 03-04.17 [B]
+
+**Multi-bit upsets: a random sum.** Particle strikes on a memory arrive as a Poisson count $N$ with mean 4 per day. Each strike independently upsets $K$ adjacent bits, with $P(K = 1) = 0.6$, $P(K = 2) = 0.3$ and $P(K = 3) = 0.1$. Let $S$ be the total number of upset bits in a day.
+
+(a) Find $\mathbb{E}[K]$ and $\operatorname{Var}(K)$.
+(b) Condition on $N$ and use iterated expectations and total variance to find $\mathbb{E}[S]$, $\operatorname{Var}(S)$ and $\sigma_S$.
+(c) Compare $\operatorname{Var}(S)$ with the variance of a Poisson count of the same mean. What does the difference mean for an error-correcting code that fixes one bit per word?
+
+### Problem 03-04.18 [B]
+
+**Series and parallel lifetimes.** Two independent parts have exponential lifetimes $T_1$ and $T_2$ with rates $r_1 = 2\times10^{-5}$ and $r_2 = 1\times10^{-5}$ per hour.
+
+(a) A system that needs both parts (series) fails at $\min(T_1, T_2)$. Show that this lifetime is exponential and find its MTTF.
+(b) Find the probability that part 1 fails first.
+(c) A redundant system that works while either part works (parallel) fails at $\max(T_1, T_2)$. Find its MTTF from the survival function.
+(d) By what percentage does the redundant pair beat the better part alone? Why does pairing unequal parts gain so little?
 
 ---
 
@@ -97,7 +114,7 @@ The in-phase and quadrature noise of a receiver are independent $\mathcal{N}(0, 
 
 | Learning objective (chapter 03-04) | Problems |
 |---|---|
-| 1. Joint, marginal and conditional distributions; independence | 1, 2, 3 |
+| 1. Joint, marginal and conditional distributions; independence; conditioning (iterated expectations, total variance) | 1, 2, 3, 17, 18 |
 | 2. Covariance, correlation, variance of sums | 1, 2, 4, 5, 6, 11, 14 |
 | 3. Sums of independent variables by convolution | 7, 8 |
 | 4. Law of large numbers and the CLT, and their limits | 4, 9, 10, 11 |

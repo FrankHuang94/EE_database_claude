@@ -103,6 +103,9 @@ for n_bits, kk, sk in ((8, "r", "s"), (12, "t", "u")):
     v.check(f"T 03-03.{sk}", -opt.fun)
 v.check("T 03-03.v", snr_db(12, 4))
 v.check("T 03-03.w", exp(-(10 ** 1.165)))
+v.check("T 03-03.x", 10 * math.log10(Qinv(5e-5) ** 2) - 10 * math.log10(2))     # real Gaussian minus sinusoid
+v.check("T 03-03.y", 10 * math.log10(256))
+v.check("T 03-03.z", (snr_db(12, 5.013210467, True) - snr_db(12, 4)) / (20 * math.log10(2)))
 # sanity on the PAPR CCDFs: real Gaussian power CCDF is 2Q(sqrt x); complex Gaussian e^-x via a 2-D integral
 x_test = 3.0
 cplx = quad(lambda rr: rr * exp(-rr * rr / 2), sqrt(2 * x_test), INF)[0]   # |Z|^2/2 with E = 1: R^2 = 2P
@@ -124,6 +127,7 @@ v.check("Ex 03-03.1e", q)
 v.check("Ex 03-03.1f", gm1)
 v.check("Ex 03-03.1g", gvar)
 v.check("Ex 03-03.1h", sqrt(gvar))
+v.check("Ex 03-03.1i", (1 - q) * 100)
 
 # ---------------------------------------------------------------- Example 03-03.2
 mean_good = 400 * 0.95 + 200 * 0.80
@@ -153,6 +157,7 @@ v.check("Ex 03-03.4a", form)
 v.check("Ex 03-03.4b", eabs)
 v.check("Ex 03-03.4c", form * eabs)
 v.check("Ex 03-03.4d", 20 * math.log10(form * eabs))
+v.check("Ex 03-03.4e", (1 - form * eabs) * 100)
 v.assert_true("meter reading on noise equals sqrt(pi)/2", abs(form * eabs - sqrt(math.pi) / 2) < 1e-12)
 
 # ---------------------------------------------------------------- Example 03-03.5
@@ -175,6 +180,7 @@ v.check("Ex 03-03.6d", sqrt(m2_ln - mean_ln**2) / mean_ln)
 v.check("Ex 03-03.6e", norm.sf(log(2), 0, s))
 v.check("Ex 03-03.6f", exp(norm.isf(1e-3, 0, s)))
 v.check("Ex 03-03.6g", 1e8 * 1e-9 * mean_ln)
+v.check("Ex 03-03.6h", (1 - 1 / mean_ln) * 100)
 
 # ---------------------------------------------------------------- Example 03-03.7
 x4 = log(1e4)
@@ -191,6 +197,17 @@ er2 = quad(lambda r: r * r * fR(r), 0, INF)[0]
 v.check("Ex 03-03.7e", math.pi / 4 * er2 / (sqrt(x4) * er) * 100)
 v.check("Ex 03-03.7f", math.pi / 4 * 100)
 v.check("Ex 03-03.7g", math.pi / 4 / sqrt(x4) * 100)
+v.check("Ex 03-03.7h", 10 * math.log10(Qinv(5e-5) ** 2) - 10 * math.log10(2))
+
+
+def envelope_error_power(x):
+    """E[(R - sqrt x)^2; R > sqrt x] for a Rayleigh envelope with E[R^2] = 1."""
+    a = sqrt(x)
+    return quad(lambda r: (r - a) ** 2 * 2 * r * exp(-r * r), a, a + 15)[0]
+
+
+v.check("Ex 03-03.7i", 10 * math.log10(envelope_error_power(x8)))
+v.assert_true("error power approaches e^-x/(2x) for large x", abs(envelope_error_power(30) / (exp(-30) / 60) - 1) < 0.15)
 
 # ================================================================ solutions
 m1, m2, var = moments_pmf([0, 1, 2, 3], [0.5, 0.3, 0.15, 0.05])
@@ -246,6 +263,7 @@ v.check("03-03.6c", lo)
 v.check("03-03.6d", hi)
 v.check("03-03.6e", lo + hi)
 v.check("03-03.6f", 2 * Q(2))
+v.check("03-03.6g", 0.25 / (lo + hi))
 
 mttf_y = 1 / (1000e-9) / HOURS_PER_YEAR
 v.check("03-03.7a", mttf_y)
@@ -280,8 +298,12 @@ uni_rms = sqrt(quad(lambda x: x * x / (2 * a), -a, a)[0])
 v.check("03-03.11a", (form * uni_abs / uni_rms - 1) * 100)
 v.check("03-03.11b", (form * eabs - 1) * 100)
 v.check("03-03.11c", 2 * Q(3) * 100)
-v.check("03-03.11d", clip_power(3))
-v.check("03-03.11e", (sqrt(1 - clip_power(3)) - 1) * 100)
+lost_ms = lambda kk: 2 * quad(lambda z: (z * z - kk * kk) * phi(z), kk, INF)[0]  # noqa: E731
+v.assert_true("lost mean square closed form", abs(lost_ms(3) - 2 * ((1 - 9) * Q(3) + 3 * phi(3))) < 1e-12)
+v.check("03-03.11d", lost_ms(3))
+v.check("03-03.11e", (sqrt(1 - lost_ms(3)) - 1) * 100)
+v.check("03-03.11f", clip_power(3))
+v.check("03-03.11g", (sqrt(1 - lost_ms(4)) - 1) * 100)
 
 fyu = lambda y: 1 / (2 * sqrt(y))  # noqa: E731
 v.assert_true("density of U^2 integrates to 1", abs(quad(fyu, 0, 1)[0] - 1) < 1e-8)
@@ -312,6 +334,7 @@ v.check("03-03.15j", opt10.x)
 v.check("03-03.15k", -opt10.fun)
 v.check("03-03.15l", snr_db(10, opt10.x, clipping=False))
 v.check("03-03.15m", 10 * math.log10(1.5 * 4.0**10))
+v.check("03-03.15n", snr_db(10, opt10.x, clipping=False) + opt10.fun)
 
 
 def efficiency(x):
@@ -326,6 +349,17 @@ for db, (pk_, ck, ek) in ((6, ("a", "b", "c")), (8, ("d", "e", "f")), (10, ("g",
 x30 = brentq(lambda x: exp(-x) - 1e-3, 1, 20)
 v.check("03-03.16j", 10 * math.log10(x30))
 v.check("03-03.16k", efficiency(x30))
+v.check("03-03.16l", 10 * math.log10(envelope_error_power(10 ** 0.8)))
+bo30 = brentq(lambda d: 10 * math.log10(envelope_error_power(10 ** (d / 10))) + 30, 4, 9, xtol=1e-10)
+v.check("03-03.16m", bo30)
+v.check("03-03.16n", efficiency(10 ** (bo30 / 10)))
+fy17 = lambda y: (phi(sqrt(y) - 0.5) + phi(-sqrt(y) - 0.5)) / (2 * sqrt(y))  # noqa: E731
+v.assert_true("two-branch density integrates to 1", abs(quad(fy17, 0, 1)[0] + quad(fy17, 1, INF)[0] - 1) < 1e-8)
+v.check("03-03.17a", fy17(1.0))
+v.check("03-03.17b", quad(lambda y: y * fy17(y), 0, 1)[0] + quad(lambda y: y * fy17(y), 1, INF)[0])
+v.check("03-03.17c", quad(fy17, 4, INF)[0])
+v.check("03-03.17d", Q(1.5))
+v.check("03-03.17e", Q(2.5))
 
 # ================================================================ lab handout
 v.check("Lab 03-03.a", 1 / q)
@@ -344,5 +378,17 @@ v.check("Lab 03-03.j", -opt8.fun)
 v.check("Lab 03-03.k", snr_db(8, 3))
 b_lap = 1 / sqrt(2)
 v.check("Lab 03-03.l", 2 * quad(lambda x: exp(-x / b_lap) / (2 * b_lap), 3, INF)[0])
+# total variance of the clustered wafer model (one wafer in ten is bad)
+pb = 0.1
+yc_good, ye_good = (0.95 - pb * 0.75) / (1 - pb), (0.80 - pb * 0.50) / (1 - pb)
+m_g, m_b = 400 * yc_good + 200 * ye_good, 400 * 0.75 + 200 * 0.50
+v_g = 400 * yc_good * (1 - yc_good) + 200 * ye_good * (1 - ye_good)
+v_b = 400 * 0.75 * 0.25 + 200 * 0.5 * 0.5
+var_tot = (1 - pb) * v_g + pb * v_b + (1 - pb) * pb * (m_g - m_b) ** 2
+v.check("Lab 03-03.m", sqrt(var_tot))
+opt8_12 = minimize_scalar(lambda k: -snr_db(8, k), bounds=(2, 8), method="bounded", options={"xatol": 1e-9}).x
+opt12 = minimize_scalar(lambda k: -snr_db(12, k), bounds=(2, 8), method="bounded", options={"xatol": 1e-9})
+v.check("Lab 03-03.n", snr_db(12, opt8_12))
+v.check("Lab 03-03.o", -opt12.fun - snr_db(12, opt8_12))
 
 sys.exit(v.finish())

@@ -32,7 +32,7 @@ $\mathbb{E}[X] = 0$ and $\mathbb{E}[XY] = \mathbb{E}[X^3] = (-1 + 0 + 1)/3 = 0$,
 
 (a) Worst case: all ten at +10 Ω, a deviation of **100 Ω**. Each deviation has σ = $20/\sqrt{12} = 5.774$ Ω, so the total has σ = $\sqrt{10}\times5.774 = $ **18.26 Ω**.
 
-(b) 50 Ω is $50/18.26 = 2.739$σ, so the CLT gives $2Q(2.739) = $ **0.006170**.
+(b) 50 Ω is $50/(\sqrt{10}\times20/\sqrt{12}) = 2.7386$σ, so the CLT gives $2Q(2.7386) = $ **0.006170**.
 
 (c) The CLT overestimates by 25%. Each term is bounded, so the sum can never exceed 100 Ω, and its tails fall faster than a Gaussian's (Figure 1). The CLT is accurate near the center; at 2.7σ with only ten terms, the bounded shape still shows. For tolerance analysis this error is on the safe side.
 
@@ -68,7 +68,7 @@ $1.96\times5/\sqrt n \le 0.5$ gives $n \ge (1.96\times10)^2 = 384.1$ (with $z = 
 
 (a) Mean $600\times0.1 = $ **60**, σ = $\sqrt{600\times0.1\times0.9} = $ **7.348**.
 
-(b) $P(N > 75) = P(N \ge 76) \approx Q\big((75.5 - 60)/7.348\big) = Q(2.109) = $ **0.01746**.
+(b) $P(N > 75) = P(N \ge 76) \approx Q\big((75.5 - 60)/\sqrt{54}\big) = Q(2.1093) = $ **0.01746**.
 
 (c) The exact value is 0.02000, so the CLT is 13% low. The binomial with small $p$ is skewed right (like the Poisson), so its upper tail is heavier than the symmetric Gaussian's. In the opposite case of Problem 03-04.4 (bounded, light tails) the CLT erred the other way; in both, the error grows the further out you go.
 
@@ -100,7 +100,7 @@ $1.96\times5/\sqrt n \le 0.5$ gives $n \ge (1.96\times10)^2 = 384.1$ (with $z = 
 
 (b) $\operatorname{Var}(X_1 - aX_2) = 4 - 2a(1.2) + a^2$, minimized at $a = 1.2$ (setting the derivative $-2.4 + 2a$ to zero), with minimum $4 - 2.88 + 1.44 = $ **2.56**.
 
-(c) $a = \operatorname{Cov}/\sigma_2^2 = \rho\sigma_1/\sigma_2$ is the regression slope of §3.7, and the minimum $\sigma_1^2(1 - \rho^2)$ is the conditional variance: subtracting the best linear prediction of $X_1$ from $X_2$ removes exactly the correlated part. In finance this is the minimum-variance hedge ratio. In electronics it is how a reference sensor, a replica circuit or an adaptive canceler removes correlated noise; the residual $\sqrt{1 - \rho^2}$ shows why cancellation needs very high correlation.
+(c) $a = \operatorname{Cov}/\sigma_2^2 = \rho\sigma_1/\sigma_2$ is the regression slope of §3.8, and the minimum $\sigma_1^2(1 - \rho^2)$ is the conditional variance: subtracting from $X_1$ its best linear prediction from $X_2$, $aX_2$, removes exactly the correlated part. In finance this is the minimum-variance hedge ratio. In electronics it is how a reference sensor, a replica circuit or an adaptive canceler removes correlated noise; the residual $\sqrt{1 - \rho^2}$ shows why cancellation needs very high correlation.
 
 ### Solution 03-04.15
 
@@ -108,15 +108,45 @@ $1.96\times5/\sqrt n \le 0.5$ gives $n \ge (1.96\times10)^2 = 384.1$ (with $z = 
 
 (b) Solving $\text{UCR}(p) = 10^{-10}$ by bisection on $\log\text{UCR}$ gives $p = $ **3.338×10⁻⁴**.
 
-(c) With $t = 7$ and $n = 528$: mean 1.266 wrong symbols, and $P(N \ge 8) = $ **5.154×10⁻⁵**, about $6\times10^7$ times worse than RS(544,514)'s $8.152\times10^{-13}$. Doubling the correction capability moves the failure point from 8 to 16 errors, deep into a tail that falls roughly like $\lambda^k/k!$. Stronger codes cost parity overhead and decoder power and latency, which is the tradeoff standards bodies weigh.
+(c) For the KR4 code, $t = 7$ and $n = 528$: mean 1.266 wrong symbols, and $P(N \ge 8) = $ **5.154×10⁻⁵**, about $6\times10^7$ times worse than RS(544,514)'s $8.152\times10^{-13}$. Doubling the correction capability moves the failure point from 8 to 16 errors, deep into a tail that falls roughly like $\lambda^k/k!$. Stronger codes cost parity overhead and decoder power and latency, which is the tradeoff standards bodies weigh.
 
 ### Solution 03-04.16
 
 (a) Random errors: $P(\text{Poisson}(1.304) \ge 16) = $ **9.839×10⁻¹³**. Paired errors: $P(\text{Poisson}(0.652) \ge 8) = $ **4.552×10⁻⁷**, about $4.6\times10^5$ times worse with the same average number of wrong symbols. Pairing halves the number of independent events needed to fail.
 
-(b) Solve $P(\text{Poisson}(\lambda_b) \ge 8) = 9.839\times10^{-13}$: $\lambda_b = $ **0.1204** bursts, or **0.2408** wrong symbols per codeword. Since $p_s \approx mp$ at these rates, the pre-FEC BER must fall in the same ratio, to about $2.4\times10^{-4}\times0.2408/1.304 = $ **4.431×10⁻⁵**: 5.4 times lower.
+(b) Solve $P(\text{Poisson}(\lambda_b) \ge 8) = 9.839\times10^{-13}$: $\lambda_b = $ **0.1204** bursts, or **0.2408** wrong symbols per codeword. Then $p_s = 0.2408/544$, and inverting $p_s = 1 - (1 - p)^{10}$ gives $p = 1 - (1 - p_s)^{1/10} = $ **4.427×10⁻⁵**, 5.4 times lower. (Because $p_s \approx mp$ at these rates, scaling $2.4\times10^{-4}$ by $0.2408/1.304$ gives nearly the same, 4.431×10⁻⁵.)
 
-(c) This is the effect the IEEE analyses capture with their burst parameter $a$ (§9): correlated errors demand a lower pre-FEC BER, and interleaving codewords, which separates the symbols of a burst into different codewords, recovers much of the loss.
+(c) The direction matches the IEEE analyses of §9 (correlated errors demand a lower pre-FEC BER), but the size does not, and the reasons are instructive. The IEEE "multiply by 2" is bookkeeping: with precoding each error event costs about two bit errors, so a BER that counts every bit error is about twice the event rate. What hurts the code is how many *symbols* an event spoils. Two bit errors inside one 10-bit symbol cost one symbol, like a random error; only events that straddle a symbol boundary, or that bit multiplexing spreads across symbols, cost two. This toy model makes every event cost two symbols, the worst case, so its 5.4-fold penalty exceeds the IEEE worst-case shift (from about 3×10⁻⁴ to about 1.9×10⁻⁴). Interleaving codewords, which sends the symbols of a burst to different codewords, recovers much of the loss.
+
+### Solution 03-04.17
+
+(a) $\mathbb{E}[K] = 0.6(1) + 0.3(2) + 0.1(3) = $ **1.5** bits, $\mathbb{E}[K^2] = 0.6 + 1.2 + 0.9 = 2.7$, so $\operatorname{Var}(K) = 2.7 - 2.25 = $ **0.45** bits².
+
+(b) Given $N$, $S$ is a sum of $N$ independent copies of $K$, so $\mathbb{E}[S \mid N] = 1.5N$ and $\operatorname{Var}(S \mid N) = 0.45N$. Iterated expectations give $\mathbb{E}[S] = 1.5\,\mathbb{E}[N] = $ **6** bits per day. Total variance gives
+
+$$
+\operatorname{Var}(S) = \mathbb{E}[0.45N] + \operatorname{Var}(1.5N) = 0.45(4) + 2.25(4) = 1.8 + 9 = 10.8\ \text{bits}^2 ,
+$$
+
+so **10.8** bits² and $\sigma_S = $ **3.286** bits. Check: for Poisson $N$, $\operatorname{Var}(S) = \lambda\,\mathbb{E}[K^2] = 4(2.7)$ ✓.
+
+(c) A Poisson count with mean 6 has variance 6; $S$ has **1.8** times that ($\mathbb{E}[K^2]/\mathbb{E}[K]$). Upsets arrive in clusters, so the count is overdispersed, and worse, a single strike can put two or three wrong bits in one word, which a code that corrects one bit per word cannot fix. That is the case for spreading the bits of each word apart in the layout, so that one strike upsets bits of different words.
+
+### Solution 03-04.18
+
+(a) $P(\min > t) = P(T_1 > t)P(T_2 > t) = e^{-(r_1 + r_2)t}$, an exponential with rate $3\times10^{-5}$ per hour: MTTF $= 1/(3\times10^{-5}) = $ **33,333 h**. Series failure rates add.
+
+(b) $P(T_1 < T_2) = \int_0^\infty r_1e^{-r_1t}\,e^{-r_2t}\,dt = r_1/(r_1 + r_2) = $ **0.6667**: the weaker part usually goes first.
+
+(c) $P(\max \le t) = (1 - e^{-r_1t})(1 - e^{-r_2t})$, so $R(t) = e^{-r_1t} + e^{-r_2t} - e^{-(r_1 + r_2)t}$ and, integrating the survival function (03-03),
+
+$$
+\text{MTTF} = \frac1{r_1} + \frac1{r_2} - \frac1{r_1 + r_2} = 50{,}000 + 100{,}000 - 33{,}333 = 116{,}667\ \text{h} .
+$$
+
+So **116,667 h**.
+
+(d) The better part alone lasts 100,000 h on average, so the pair gains only **16.67%**. Two-thirds of the time the weak part fails first and contributes almost nothing; the system then rides on the strong part alone. With equal parts (03-03) the gain is 50%. Redundancy pays when the parts are comparable and failures independent.
 
 ---
 
@@ -145,7 +175,7 @@ $1.96\times5/\sqrt n \le 0.5$ gives $n \ge (1.96\times10)^2 = 384.1$ (with $z = 
 | 03-04.4a | worst-case deviation | 100 | Ω |
 | 03-04.4b | standard deviation of the total | 18.26 | Ω |
 | 03-04.4c | CLT estimate of P(deviation > 50 Ω) | 0.006170 | — |
-| 03-04.4d | 50 Ω in standard deviations | 2.739 | — |
+| 03-04.4d | 50 Ω in standard deviations | 2.7386 | — |
 | 03-04.4e | exact P(deviation > 50 Ω) | 0.004938 | — |
 | 03-04.4f | CLT overestimate | 25 | % |
 | 03-04.5a | total noise | 13.00 | µV |
@@ -163,7 +193,7 @@ $1.96\times5/\sqrt n \le 0.5$ gives $n \ge (1.96\times10)^2 = 384.1$ (with $z = 
 | 03-04.10a | mean defective dies | 60 | — |
 | 03-04.10b | standard deviation | 7.348 | — |
 | 03-04.10c | CLT estimate of P(N > 75) | 0.01746 | — |
-| 03-04.10d | standardized distance | 2.109 | — |
+| 03-04.10d | standardized distance | 2.1093 | — |
 | 03-04.10e | exact P(N > 75) | 0.02000 | — |
 | 03-04.10f | CLT shortfall | 13 | % |
 | 03-04.11a | standard error at n = 100 | 0.1411 | — |
@@ -189,6 +219,17 @@ $1.96\times5/\sqrt n \le 0.5$ gives $n \ge (1.96\times10)^2 = 384.1$ (with $z = 
 | 03-04.16b | UCR, paired errors | 4.552×10^-7 | — |
 | 03-04.16c | required mean bursts | 0.1204 | — |
 | 03-04.16d | required mean wrong symbols | 0.2408 | — |
-| 03-04.16e | required pre-FEC BER | 4.431×10^-5 | — |
+| 03-04.16e | required pre-FEC BER, exact inversion | 4.427×10^-5 | — |
+| 03-04.16h | required pre-FEC BER, linear scaling | 4.431×10^-5 | — |
 | 03-04.16f | paired over random failure ratio | 4.6×10^5 | — |
 | 03-04.16g | required BER reduction factor | 5.4 | — |
+| 03-04.17a | mean bits per strike | 1.5 | bits |
+| 03-04.17b | variance of bits per strike | 0.45 | bits² |
+| 03-04.17c | mean upset bits per day | 6 | bits |
+| 03-04.17d | variance of upset bits per day | 10.8 | bits² |
+| 03-04.17e | standard deviation of upset bits | 3.286 | bits |
+| 03-04.17f | variance over Poisson variance | 1.8 | — |
+| 03-04.18a | series MTTF | 33333 | h |
+| 03-04.18b | P(part 1 fails first) | 0.6667 | — |
+| 03-04.18c | parallel MTTF | 116667 | h |
+| 03-04.18d | gain over the better part | 16.67 | % |

@@ -179,6 +179,7 @@ v.check("03-01.10a", sum(0.25 for o in outs if o[0] == 1 and o[2] == 1))
 v.check("03-01.10b", sum(0.25 for o in outs if o == (1, 1, 1)))
 fan = sum(binom_pmf(4, k, 0.97) for k in (3, 4))
 v.check("03-01.11a", fan); v.check("03-01.11b", (1 - 0.02**2) * 0.995 * fan)
+v.check("03-01.11c", 0.5); v.check("03-01.11d", (1 - fan) * 100); v.check("03-01.11e", 0.02**2 * 100)
 q12, b12 = 0.02, 0.05
 f12 = b12 * q12 + (1 - b12 * q12) * ((1 - b12) * q12) ** 2
 v.check("03-01.12a", q12**2); v.check("03-01.12b", f12); v.check("03-01.12c", f12 / q12**2)
@@ -199,5 +200,69 @@ v.check("Lab 03-01.a", p_any(12_000, 1e-5))
 v.check("Lab 03-01.b", math.exp(-3.0))
 v.check("Lab 03-01.c", next(k for k in range(2, 5000) if 1 - no_collision(k, N16) >= 0.5))
 v.check("Lab 03-01.d", float((1 - Y4) * (1 - det) / pp) * 1e6)
+nbad = 1e6 * 0.1 * 0.01
+v.check("Lab 03-01.e", nbad)
+sig_dppm = math.sqrt(nbad) / (1e6 * 0.883) * 1e6
+v.check("Lab 03-01.f", sig_dppm)
+v.check("Lab 03-01.g", (1173 - 1132.5) / sig_dppm)
+v.check("Lab 03-01.h", 1e6 * (1 / 0.01**2) / nbad)          # 1/sqrt(N_bad) = 1% needs 10^4 bad dies
+v.check("Lab 03-01.i", -math.log(0.05) / 1e-15 / 100e9 / 3600)
+
+# ---------------------------------------------------------------- unkeyed numbers flagged by the course audit
+v.check("Ex 03-01.5g", brentq(lambda p1: p1 * 0.9 - (1 - p1) * 0.1, 1e-6, 0.999))   # MAP follows a received 1
+v.check("N 03-01.i", -math.log(0.05) / 1e-12)
+v.check("C 03-01.a", p_any(1000, 1e-5))
+v.check("C 03-01.b", 0.1 * 0.01 / (0.9 * 0.98 + 0.1 * 0.01) * 100)
+v.check("C 03-01.c", 0.5 * 0.01 / (0.5 * 0.98 + 0.5 * 0.01) * 100)
+
+# ---------------------------------------------------------------- Problems 03-01.17 to 03-01.20
+# (a) three-event inclusion-exclusion and (b) complements, checked by brute force on a random finite space
+import random
+rnd = random.Random(2026)
+pts = [rnd.random() for _ in range(40)]
+w = [x / sum(pts) for x in pts]
+P = lambda S: sum(w[i] for i in S)  # noqa: E731
+Aev, Bev, Cev = {i for i in range(40) if i % 2}, {i for i in range(40) if i % 3 == 0}, {i for i in range(40) if i < 17}
+lhs = P(Aev | Bev | Cev)
+rhs = P(Aev) + P(Bev) + P(Cev) - P(Aev & Bev) - P(Aev & Cev) - P(Bev & Cev) + P(Aev & Bev & Cev)
+v.assert_true("three-event inclusion-exclusion", abs(lhs - rhs) < 1e-14)
+# independent product space: complements stay independent
+pa, pb_ = 0.3, 0.6
+v.assert_true("complements of independent events", abs((1 - pa) * pb_ - (pb_ - pa * pb_)) < 1e-15 and abs((1 - pa) * (1 - pb_) - (1 - pa - pb_ + pa * pb_)) < 1e-15)
+v.check("03-01.17a", math.sqrt(2 * math.log(2)))
+v.check("03-01.17b", math.sqrt(2 * 1e6 * math.log(2)))
+v.check("03-01.17c", next(k for k in range(2, 5000) if 1 - no_collision(k, 10**6) >= 0.5))
+pbad, sens, fal = 0.05, 0.9, 0.04
+f1 = pbad * sens + (1 - pbad) * fal
+f12 = pbad * sens**2 + (1 - pbad) * fal**2
+v.check("03-01.18a", f1)
+v.check("03-01.18b", f12)
+v.check("03-01.18c", f12 / f1)
+v.check("03-01.18d", pbad * sens / f1)
+v.check("03-01.18e", pbad * sens**2 / f12)
+MIN_PER_YEAR = 8766 * 60
+u19 = 1 - 0.9995
+a_s = (1 - u19) ** 2
+v.check("03-01.19a", a_s)
+v.check("03-01.19b", (1 - a_s) * MIN_PER_YEAR)
+a_p = (1 - u19**2) ** 2
+v.check("03-01.19c", a_p)
+v.check("03-01.19d", (1 - a_p) * MIN_PER_YEAR * 60)
+up = 0.1 * u19 + (1 - 0.1 * u19) * (0.9 * u19) ** 2
+v.check("03-01.19e", (1 - (1 - up) ** 2) * MIN_PER_YEAR)
+v.check("03-01.19f", up)
+c0, Y20 = 0.02, 0.85
+for L, keys in ((500, "abcde"), (5000, "fg h i")):
+    cost = lambda u: c0 * math.log(1 / u) + L * u * math.log(1 / Y20)  # noqa: E731
+    us = math.exp(brentq(lambda lu: -c0 + L * math.exp(lu) * math.log(1 / Y20), -30, 0))   # dC/du = 0, solved in log u
+    v.assert_true(f"optimum is a minimum (L = {L})", cost(us) < min(cost(us * 1.01), cost(us / 1.01)))
+    if L == 500:
+        v.check("03-01.20a", us); v.check("03-01.20b", 1 - us); v.check("03-01.20c", us * math.log(1 / Y20) * 1e6)
+        v.check("03-01.20d", c0 * math.log(1 / us)); v.check("03-01.20e", cost(us))
+    else:
+        v.check("03-01.20f", us); v.check("03-01.20g", 1 - us); v.check("03-01.20h", us * math.log(1 / Y20) * 1e6)
+        v.check("03-01.20i", cost(us))
+    v.assert_true("optimal DL equals c0/L", abs(us * math.log(1 / Y20) - c0 / L) < 1e-15)
+v.check("03-01.20j", math.log(1 / Y20))
 
 sys.exit(v.finish())
