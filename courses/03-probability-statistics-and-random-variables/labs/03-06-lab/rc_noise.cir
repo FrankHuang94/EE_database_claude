@@ -1,0 +1,29 @@
+* Example 03-06.4 -- thermal noise of a 10 kOhm resistor filtered by 10 pF, by ngspice noise analysis.
+* .noise integrates the output noise spectral density over frequency (onoise_total).
+* Low-frequency density sqrt(4kTR) = 12.87 nV/sqrt(Hz); total sqrt(kT/C) = 20.35 uV rms; T = 300 K.
+* The second circuit swaps in 1 MOhm: the density rises tenfold but the total is unchanged (kT/C).
+*
+* EXPECT dens key:../../chapters/03-06-random-processes-preview.md#Ex_03-06.4d scale=1e-9 rtol=1e-3
+* EXPECT vtot key:../../chapters/03-06-random-processes-preview.md#Ex_03-06.4c scale=1e-6 rtol=1e-3
+* EXPECT vtot2 key:../../chapters/03-06-random-processes-preview.md#Ex_03-06.4c scale=1e-6 rtol=1e-3
+
+.options temp=26.85 tnom=26.85
+V1 in 0 DC 0 AC 1
+R1 in o 10k
+C1 o  0 10p
+V2 in2 0 DC 0 AC 1
+R2 in2 o2 1meg
+C2 o2  0 10p
+
+.control
+noise v(o) V1 dec 100 1 1e12
+setplot noise1
+let dens = onoise_spectrum[300]
+echo "dens = $&dens"
+setplot noise2
+echo "vtot = $&onoise_total"
+noise v(o2) V2 dec 100 1 1e12
+setplot noise4
+echo "vtot2 = $&onoise_total"
+.endc
+.end

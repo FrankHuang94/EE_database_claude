@@ -1469,3 +1469,47 @@
 - term: HTOL
   definition: High-temperature operating life test; JEDEC JESD47 specifies at least 125 °C junction temperature for 1000 h on 3 lots of 77 units with zero failures.
   chapter: "03-05"
+
+# ---------------------------------------------------------------- 03-06
+- term: Random process
+  definition: A rule assigning a waveform to each outcome of an experiment; at any fixed time its value is a random variable, and the collection of waveforms is the ensemble.
+  chapter: "03-06"
+- term: Sample function
+  definition: One waveform of a random process, such as the noise recorded from one particular amplifier.
+  chapter: "03-06"
+- term: Autocorrelation function
+  definition: R_X(t₁, t₂) = E[X(t₁)X(t₂)]; for a stationary process R_X(τ), whose value at τ = 0 is the average power and whose decay measures how long the process remembers.
+  chapter: "03-06"
+- term: Wide-sense stationary
+  definition: A random process with constant mean and an autocorrelation that depends only on the time difference τ.
+  chapter: "03-06"
+- term: Ergodicity
+  definition: The property that time averages along one sample function converge to ensemble averages; it licenses measuring a process with one long recording. Unit-to-unit offsets are not ergodic.
+  chapter: "03-06"
+- term: Correlation time
+  definition: The time scale τ_c over which a process's autocorrelation decays (RC for RC-filtered noise); a record of length T holds about T/(2τ_c) independent samples.
+  chapter: "03-06"
+- term: Power spectral density
+  definition: The distribution of a stationary process's average power over frequency, in power per hertz; the Fourier transform of the autocorrelation. Circuit noise densities are usually one-sided.
+  chapter: "03-06"
+- term: Wiener–Khinchin theorem
+  definition: For a wide-sense stationary process, the power spectral density is the Fourier transform of the autocorrelation function.
+  chapter: "03-06"
+- term: White noise
+  definition: Noise with a flat power spectral density, so that samples at different times are uncorrelated; an idealization valid within the bandwidth of interest.
+  chapter: "03-06"
+- term: Thermal noise
+  definition: Johnson–Nyquist noise of a resistor at temperature T, white and Gaussian with one-sided density 4kTR (V²/Hz); 4.07 nV/√Hz for 1 kΩ at 300 K.
+  chapter: "03-06"
+- term: Noise figure
+  definition: 10 log₁₀ of the noise factor F, the ratio of a system's total output noise to the part due to a source at 290 K; a receiver's noise floor is −174 dBm/Hz + 10 log₁₀B + NF.
+  chapter: "03-06"
+- term: Shot noise
+  definition: Noise from the random, independent arrival of discrete charges across a barrier, with one-sided density 2qI; it follows from Poisson statistics.
+  chapter: "03-06"
+- term: Random walk
+  definition: The running sum (integral) of white noise, whose spread grows as √t without bound; it models accumulated phase error in free-running oscillators.
+  chapter: "03-06"
+- term: Chopper stabilization
+  definition: Modulating a low-frequency signal above an amplifier's 1/f corner, amplifying it there and demodulating it, which removes offset and 1/f noise at the cost of switching artifacts; the basis of zero-drift amplifiers.
+  chapter: "03-06"

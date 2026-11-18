@@ -75,6 +75,8 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-067 | RS(544,514) "KP4" FEC and pre-FEC BER | Nov 2026 |
 | R-068 | Process capability and outlier screening | Nov 2026 |
 | R-069 | Weibull model and Arrhenius acceleration | Nov 2026 |
+| R-070 | Thermal noise reference: kT0 and 290 K | Nov 2026 |
+| R-071 | Op-amp noise specifications: 1/f and zero-drift | Nov 2026 |
 
 ---
 
@@ -532,3 +534,16 @@ R&D % = R&D ÷ revenue.
 - **Weibull:** NIST/SEMATECH e-Handbook of Statistical Methods (last updated 27 Apr 2022), §8.1.6.2: CDF $1 - e^{-(t/\alpha)^\gamma}$, with "α the scale parameter (the Characteristic Life), γ (gamma) the Shape Parameter"; "When γ = 1, the Weibull reduces to the Exponential Model"; "The Weibull model can be derived theoretically as a form of Extreme Value Distribution, governing the time to occurrence of the 'weakest link' of many competing failure processes"; shape 2 gives the Rayleigh distribution. The handbook warns that notation varies between authors [Established].
 - **Arrhenius example:** JEDEC JESD47G (March 2009), Table 1 note (a): "with apparent activation energy of 0.7 eV, 125 °C stress temperature and 55 °C use temperature, the acceleration factor (Arrhenius equation) is 78.6. This means 1000h stress duration is equivalent to 9 years of use. This might be shorter than the application requirement." Derived here: with k = 8.617333×10⁻⁵ eV/K and kelvin = °C + 273.15 the factor is 77.65 (8.858 years); the note's 78.6 follows from k = 8.6×10⁻⁵ eV/K and an offset of 273 [Established; the rounding explanation is a derivation].
 - **Sources:** [NIST/SEMATECH e-Handbook §8.1.6.2](https://www.itl.nist.gov/div898/handbook/apr/section1/apr162.htm); [JESD47G (hosted copy)](https://designers-guide.org/forum/Attachments/JESD47G.pdf). Checked Nov 2026.
+
+## R-070 · Thermal noise reference: kT0 and 290 K
+
+- **Claim:** Keysight application note 5952-8255E, *Fundamentals of RF and Microwave Noise Figure Measurements* (published 15 May 2026): "Friis suggested a reference source temperature of 290 K (denoted by T0)"; "The power spectral density kT0, furthermore, is the even number 4.00 x 10-21 watts per hertz of bandwidth (–174 dBm/Hz). The IRE (forerunner of the IEEE) adopted 290 K as the standard temperature for determining noise figure" [Established].
+- **Derived here:** with the exact SI value $k = 1.380649\times10^{-23}$ J/K, $kT_0 = 4.0039\times10^{-21}$ W/Hz $= -173.98$ dBm/Hz.
+- **Source:** [Keysight 5952-8255E](https://www.keysight.com/content/dam/keysight/en/doc/gate/application-notes/5952-8255.pdf). Checked Nov 2026.
+
+## R-071 · Op-amp noise specifications: 1/f and zero-drift
+
+- **Bipolar low-noise op-amp:** Texas Instruments OPAx211 datasheet, SBOS377L (October 2006, revised January 2020): "Low voltage noise: 1.1 nV/√Hz at 1 kHz"; "Input voltage noise: 80 nVPP (0.1 to 10 Hz)"; noise density 1.4 nV/√Hz at 100 Hz (typical values) [Established for this part].
+- **Zero-drift op-amp:** Texas Instruments OPAx189 datasheet, SBOS830I (September 2017, revised October 2021): input voltage noise 17 nVRMS and 0.1 µVPP for f = 0.1 Hz to 10 Hz; noise density 5.2 nV/√Hz at 10 Hz, 100 Hz, 1 kHz and 10 kHz; "zero-drift" architecture with "0.005 μV/°C" offset drift (typical values) [Established for this part].
+- **Derived here:** a flat 5.2 nV/√Hz over 0.1–10 Hz integrates to $5.2\sqrt{9.9} = 16.36$ nV rms, consistent with the specified 17 nV rms, so the zero-drift part shows essentially no 1/f noise; its peak-to-peak-to-rms ratio is 0.1 µV/17 nV ≈ 5.9.
+- **Sources:** [TI OPA211 datasheet](https://www.ti.com/lit/ds/symlink/opa211.pdf); [TI OPA189 datasheet](https://www.ti.com/lit/ds/symlink/opa189.pdf). Checked Nov 2026.

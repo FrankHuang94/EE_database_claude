@@ -111,3 +111,22 @@
 "How to fit a Weibull?","Plot \(\ln(-\ln(1-F_i))\) against \(\ln t_i\) with \(F_i \approx (i - 0.3)/(n + 0.4)\); the least-squares slope is γ.",bsee::03 bsee::03-05
 "Arrhenius acceleration factor?","\(AF = \exp[(E_a/k)(1/T_{use} - 1/T_{stress})]\), T in kelvin, k = 8.617e-5 eV/K. 0.7 eV, 125 → 55 °C: 77.65 (JEDEC's note: 78.6, from rounded constants) [R-069].",bsee::03 bsee::03-05
 "What FIT does a standard HTOL (231 units, 1000 h, 125 °C, 0 fails) demonstrate at 55 °C?","With 0.7 eV: about 51 FIT at 60% and 128 FIT at 90% confidence. Single-digit FIT needs far more device-hours, and every FIT rests on the assumed \(E_a\).",bsee::03 bsee::03-05 bsee::practitioner
+"What is a random process?","A random waveform: an ensemble of sample functions. At each fixed time its value is a random variable; along one sample function it is a time series.",bsee::03 bsee::03-06
+"Wide-sense stationary?","Constant mean and an autocorrelation that depends only on the lag: \(R_X(t, t+\tau) = R_X(\tau)\). \(R_X(0)\) is the average power.",bsee::03 bsee::03-06
+"Autocorrelation of a random-phase sinusoid \(A\cos(\omega t + \Theta)\)?","\((A^2/2)\cos\omega\tau\): stationary, never decays (it remembers its phase forever); spectrum two lines of \(A^2/4\).",bsee::03 bsee::03-06
+"Ergodicity?","Time averages along one waveform equal ensemble averages. Unit-to-unit offsets are not ergodic: one unit's long average gives only its own offset.",bsee::03 bsee::03-06
+"How many independent samples in a record of length \(T\) with correlation time \(\tau_c\)?","About \(T/(2\tau_c)\), however fast you sample: Var(time average) ≈ \(2\sigma^2\tau_c/T\).",bsee::03 bsee::03-06
+"Wiener–Khinchin theorem?","The PSD of a WSS process is the Fourier transform of its autocorrelation; the area under the PSD is the average power.",bsee::03 bsee::03-06
+"One-sided vs two-sided PSD?","One-sided \(G(f) = 2S(f)\) for \(f \ge 0\). \(4kTR\) and \(2qI\) are one-sided; \(N_0/2\) is two-sided.",bsee::03 bsee::03-06
+"Exponential autocorrelation ↔ PSD?","\(\sigma^2 e^{-|\tau|/\tau_c}\) ↔ one-sided Lorentzian \(4\sigma^2\tau_c/(1+(2\pi f\tau_c)^2)\), corner \(1/(2\pi\tau_c)\); half the power lies below the corner.",bsee::03 bsee::03-06
+"Filtering a random process?","\(S_Y(f) = |H(f)|^2 S_X(f)\). For white noise, output power = density × noise bandwidth; one RC pole: \(B_N = (\pi/2)f_{3dB} = 1/(4RC)\).",bsee::03 bsee::03-06
+"Thermal noise of a resistor?","One-sided \(4kTR\) V²/Hz (or \(4kT/R\) A²/Hz): 4.07 nV/√Hz for 1 kΩ at 300 K; white and Gaussian.",bsee::03 bsee::03-06
+"Derive \(4kTR\) from kT/C?","Equipartition: \(\tfrac12 C\overline{v^2} = \tfrac12 kT\) so \(\overline{v^2} = kT/C\). An RC's noise bandwidth is \(1/(4RC)\), so the density must be \(4kTR\).",bsee::03 bsee::03-06
+"Why −174 dBm/Hz?","Available thermal noise power is \(kT\) per Hz; at the reference \(T_0 = 290\) K, \(kT_0 = 4.00\times10^{-21}\) W/Hz = −174 dBm/Hz [R-070].",bsee::03 bsee::03-06 bsee::practitioner
+"Receiver noise floor?","\(-174\text{ dBm/Hz} + 10\log_{10}B + \text{NF}\): a 20 MHz channel with 7 dB NF sits at about −94 dBm.",bsee::03 bsee::03-06
+"Shot noise and its origin?","One-sided \(2qI\) A²/Hz: Poisson charge arrivals have count variance equal to the mean. 17.9 pA/√Hz at 1 mA.",bsee::03 bsee::03-06
+"Flicker (1/f) noise and averaging?","Density² ∝ 1/f: equal power per decade (\(e_w^2 f_c\ln10\)). Longer averaging reaches lower frequencies and adds 1/f noise, so it does not converge like white noise.",bsee::03 bsee::03-06
+"How do zero-drift (chopper) amplifiers beat 1/f noise?","They modulate the signal above the 1/f corner, amplify, and demodulate: flat noise to near DC, at the cost of switching artifacts and often a higher white floor.",bsee::03 bsee::03-06
+"Low-noise bipolar vs zero-drift op-amp (TI datasheets, as of Nov 2026)?","OPA211: 1.1 nV/√Hz at 1 kHz but 80 nVpp in 0.1–10 Hz. OPA189 (zero-drift): 5.2 nV/√Hz flat, 17 nV rms in 0.1–10 Hz [R-071].",bsee::03 bsee::03-06 bsee::practitioner
+"Random walk?","The integral of white noise: variance grows linearly with time, spread as \(\sqrt t\), never settling. Free-running oscillator phase behaves this way, so clocks are locked by PLLs.",bsee::03 bsee::03-06
+"kT/C sizing rule for an ADC?","Making kT/C noise equal to quantization noise needs about 0.83 pF at 12 bits (1 V range) and 214 pF at 16 bits: each bit quadruples C.",bsee::03 bsee::03-06

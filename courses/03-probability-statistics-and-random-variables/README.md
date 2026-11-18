@@ -31,7 +31,7 @@ An accelerated course for a learner who already knows probability and statistics
 | [03-03 · Expectation, Variance and Functions of Random Variables](chapters/03-03-expectation-and-functions-of-rvs.md) | 6 | ✅ verified | [problems](problems/03-03-problems.md) · [solutions](solutions/03-03-solutions.md) · [lab](labs/03-03-lab/README.md) · [verify](verify/verify_03_03.py) |
 | [03-04 · Joint Distributions, Correlation and the CLT](chapters/03-04-joint-distributions-and-clt.md) | 8 | ✅ verified | [problems](problems/03-04-problems.md) · [solutions](solutions/03-04-solutions.md) · [lab](labs/03-04-lab/README.md) · [verify](verify/verify_03_04.py) |
 | [03-05 · Estimation and Hypothesis Testing for Engineers](chapters/03-05-estimation-and-hypothesis-testing.md) | 6 | ✅ verified | [problems](problems/03-05-problems.md) · [solutions](solutions/03-05-solutions.md) · [lab](labs/03-05-lab/README.md) · [verify](verify/verify_03_05.py) |
-| [03-06 · Random Processes Preview: Noise](chapters/03-06-random-processes-preview.md) | 6 | ⬜ planned | — |
+| [03-06 · Random Processes Preview: Noise](chapters/03-06-random-processes-preview.md) | 6 | ✅ verified | [problems](problems/03-06-problems.md) · [solutions](solutions/03-06-solutions.md) · [lab](labs/03-06-lab/README.md) · [verify](verify/verify_03_06.py) |
 
 **Course resources:** [Flashcards (Anki CSV)](../../flashcards/03-probability-statistics-and-random-variables.csv)
 
