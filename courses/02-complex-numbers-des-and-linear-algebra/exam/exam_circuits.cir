@@ -1,0 +1,103 @@
+* Course 02 final exam -- the circuit answers of Questions 2, 5, 9 and 13, confirmed in ngspice.
+* Q2:  series RLC (100 Ohm, 0.1 H, 20 uF) driven by 10 V peak at 1000 rad/s (159.155 Hz),
+*      then at the in-phase frequency 707.1 rad/s (112.540 Hz).
+* Q5:  series RLC (0.5 Ohm, 1 uH, 1 uF), 1 V step from rest, output across C.
+* Q9:  three-node ladder, 1 mA into node 1 (circuit a) and into node 3 (circuit b).
+* Q13: series RLC (3 Ohm, 1 uH, 0.5 uF), source off, v_C(0) = 1 V, i_L(0) = 0.
+*      L13 is oriented so that i(L13) is the current flowing INTO the capacitor's top node.
+*
+* EXPECT im2   key:solutions.md#X02.2c scale=1e-3 rtol=1e-4
+* EXPECT ip2   key:solutions.md#X02.2d rtol=5e-4
+* EXPECT vc2   key:solutions.md#X02.2e rtol=1e-4
+* EXPECT pc2   key:solutions.md#X02.2f rtol=1e-4
+* EXPECT pw2   key:solutions.md#X02.2g rtol=1e-4
+* EXPECT ir2   key:solutions.md#X02.2i scale=1e-3 rtol=1e-4
+* EXPECT vpk5  key:solutions.md#X02.5i rtol=1e-3
+* EXPECT tpk5  key:solutions.md#X02.5g scale=1e-6 rtol=2e-3
+* EXPECT v9a1  key:solutions.md#X02.9e rtol=1e-6
+* EXPECT v9a2  key:solutions.md#X02.9f rtol=1e-6
+* EXPECT v9a3  key:solutions.md#X02.9g rtol=1e-6
+* EXPECT v9b1  key:solutions.md#X02.9i rtol=1e-6
+* EXPECT v9b2  key:solutions.md#X02.9j rtol=1e-6
+* EXPECT v9b3  key:solutions.md#X02.9k rtol=1e-6
+* EXPECT vc13  key:solutions.md#X02.13c rtol=1e-3
+* EXPECT il13  key:solutions.md#X02.13d rtol=1e-3
+* EXPECT imn13 key:solutions.md#X02.13f rtol=1e-3
+* EXPECT tmn13 key:solutions.md#X02.13e scale=1e-6 rtol=5e-3
+
+* Q2: phasor circuit
+V2  s2  0   DC 0 AC 10
+R2  s2  a2  100
+L2  a2  b2  0.1
+C2  b2  0   20u
+
+* Q5: supply output filter, 1 V step (1 ps edge) from rest
+V5  s5  0   PULSE(0 1 0 1p 1p 1 2)
+R5  s5  a5  0.5
+L5  a5  c5  1u  IC=0
+C5  c5  0   1u  IC=0
+
+* Q9a: 1 mA into node 1
+I9a 0   na1 DC 1m
+Ra1 na1 0   1k
+Ra2 na1 na2 2k
+Ra3 na2 0   2k
+Ra4 na2 na3 1k
+Ra5 na3 0   1k
+
+* Q9b: the same ladder, 1 mA into node 3
+I9b 0   nb3 DC 1m
+Rb1 nb1 0   1k
+Rb2 nb1 nb2 2k
+Rb3 nb2 0   2k
+Rb4 nb2 nb3 1k
+Rb5 nb3 0   1k
+
+* Q13: natural response; current flows from ground through L13 and R13 into the capacitor
+C13 c13 0   0.5u IC=1
+R13 m13 c13 3
+L13 0   m13 1u   IC=0
+
+.options reltol=1e-7
+
+.control
+op
+let v9a1 = v(na1)
+let v9a2 = v(na2)
+let v9a3 = v(na3)
+let v9b1 = v(nb1)
+let v9b2 = v(nb2)
+let v9b3 = v(nb3)
+echo "v9a1 = $&v9a1"
+echo "v9a2 = $&v9a2"
+echo "v9a3 = $&v9a3"
+echo "v9b1 = $&v9b1"
+echo "v9b2 = $&v9b2"
+echo "v9b3 = $&v9b3"
+
+* i(V2) flows into the source's + terminal, so the loop current is its negative
+ac lin 1 159.1549431 159.1549431
+let i2  = -i(V2)
+let im2 = mag(i2)
+let ip2 = ph(i2) * 180 / pi
+let vc2 = mag(v(b2))
+let pc2 = ph(v(b2)) * 180 / pi
+let pw2 = 0.5 * mag(i2) * mag(i2) * 100
+echo "im2 = $&im2"
+echo "ip2 = $&ip2"
+echo "vc2 = $&vc2"
+echo "pc2 = $&pc2"
+echo "pw2 = $&pw2"
+ac lin 1 112.5395395 112.5395395
+let ir2 = mag(i(V2))
+echo "ir2 = $&ir2"
+
+tran 1n 8u 0 1n uic
+meas tran vpk5  MAX v(c5) FROM=1u TO=6u
+meas tran tpk5  MAX_AT v(c5) FROM=1u TO=6u
+meas tran vc13  FIND v(c13) AT=1u
+meas tran il13  FIND i(L13) AT=1u
+meas tran imn13 MIN i(L13) FROM=0.1u TO=3u
+meas tran tmn13 MIN_AT i(L13) FROM=0.1u TO=3u
+.endc
+.end
