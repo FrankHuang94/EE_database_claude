@@ -1930,3 +1930,43 @@
 - term: Qubit
   definition: A two-level quantum system in a superposition α|0⟩ + β|1⟩ with |α|² + |β|² = 1; measurement returns 0 or 1 with probabilities |α|² and |β|², and n qubits need 2ⁿ amplitudes to describe classically.
   chapter: "04-10"
+# ---- 04-11
+- term: Crystal lattice
+  definition: A periodic array of points in space at each of which an identical group of atoms (the basis) sits; silicon is a diamond lattice, two interpenetrating face-centered cubic lattices, with 8 atoms per cubic cell of side 0.5431 nm.
+  chapter: "04-11"
+- term: Fermi energy
+  definition: The highest occupied electron energy at absolute zero, E_F = (ħ²/2m)(3π²n)^(2/3) for a free-electron gas (about 7 eV in copper); at finite temperature the Fermi level is the energy whose occupation probability is one half.
+  chapter: "04-11"
+- term: Fermi–Dirac distribution
+  definition: The probability f(E) = 1/(1 + e^((E − E_F)/kT)) that an electron state of energy E is occupied in equilibrium; it falls from 0.9 to 0.1 over about 4.4 kT and reduces to the Boltzmann factor far above E_F.
+  chapter: "04-11"
+- term: Density of states
+  definition: The number of electron states per unit energy (and per unit volume), g(E) ∝ √E for free electrons; multiplied by the occupation f(E) it gives how many electrons sit at each energy.
+  chapter: "04-11"
+- term: Phonon
+  definition: A quantum of lattice vibration; phonons carry heat, scatter electrons (raising a metal's resistance with temperature) and supply the crystal momentum for light absorption or emission in indirect-gap semiconductors.
+  chapter: "04-11"
+- term: Energy band
+  definition: A range of closely spaced allowed electron energies in a crystal, formed when each atomic level of N coupled atoms splits into N levels; each band holds two electrons per primitive cell.
+  chapter: "04-11"
+- term: Band gap
+  definition: The range of energies with no allowed electron states between the top of the valence band and the bottom of the conduction band, E_g = E_c − E_v (1.12 eV in silicon); it sets intrinsic carrier density, absorption edge and breakdown strength.
+  chapter: "04-11"
+- term: Bloch's theorem
+  definition: In a periodic potential the electron eigenstates are plane waves times a function with the lattice period, ψ_k(x) = e^(ikx) u_k(x); such waves travel through a perfect crystal without scattering.
+  chapter: "04-11"
+- term: Effective mass
+  definition: The mass m* = ħ²/(d²E/dk²) with which an electron in a band responds to external forces, set by the band's curvature; light effective masses mean high mobility.
+  chapter: "04-11"
+- term: Hole
+  definition: An empty state near the top of an otherwise full valence band, which carries current as a positive charge with positive effective mass; holes are the carriers of p-type silicon and PMOS transistors.
+  chapter: "04-11"
+- term: Intrinsic carrier concentration
+  definition: The electron (and equal hole) density of a pure semiconductor, n_i = √(N_c N_v) e^(−E_g/2kT); about 9.65×10⁹ cm⁻³ for silicon at 300 K and rising several hundredfold by 400 K.
+  chapter: "04-11"
+- term: Direct band gap
+  definition: A band gap whose conduction-band minimum lies at the same crystal momentum as the valence-band maximum (GaAs, GaN), so electrons and holes recombine by emitting light efficiently; indirect gaps (Si, Ge, SiC) need a phonon.
+  chapter: "04-11"
+- term: Wide-bandgap semiconductor
+  definition: A semiconductor with a gap well above silicon's, chiefly SiC (about 3.2–3.26 eV) and GaN (3.4 eV), whose high breakdown field and negligible intrinsic carriers suit high-voltage, high-temperature and fast-switching power devices.
+  chapter: "04-11"

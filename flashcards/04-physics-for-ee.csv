@@ -3,10 +3,8 @@
 #columns:Front,Back,Tags
 #tags column:3
 "Volt and ohm in SI base units?","V = W/A = kg·m²/(s³·A); Ω = V/A = kg·m²/(s³·A²). Every electrical unit is mechanics plus the ampere.",bsee::04 bsee::04-01
-"Energy units: eV, Wh, kWh in joules?","1 eV = 1.602176634×10⁻¹⁹ J (exact); 1 Wh = 3600 J; 1 kWh = 3.6 MJ. Battery energy (Wh) = Ah × V.",bsee::04 bsee::04-01
 "What does an accelerometer at rest on a table read? In free fall?","+1 g upward at rest (the table's push per unit mass); zero in free fall. It measures specific force, acceleration minus gravity.",bsee::04 bsee::04-01
 "Work–energy theorem?","Net work equals the change in kinetic energy: \(\int F\,dx = \tfrac12mv_2^2 - \tfrac12mv_1^2\), from \(a = v\,dv/dx\).",bsee::04 bsee::04-01
-"Mechanical power, linear and rotational?","\(P = Fv\) and \(P = \tau\omega\) (ω in rad/s; ω = 2π·rpm/60). The twin of \(P = vi\). 1 hp ≈ 745.7 W.",bsee::04 bsee::04-01
 "Impulse–momentum theorem, and why foam protects a dropped device?","\(\int F\,dt = \Delta p\). The momentum change is fixed by the impact speed; foam stretches the stopping time, so force and deceleration fall in proportion.",bsee::04 bsee::04-01
 "Half-sine shock pulse: peak versus average deceleration?","Peak = (π/2) × average = (π/2)·v/Δt. A 1.5 m drop (5.42 m/s) stopped in 0.2 ms: about 2765 g average, 4344 g peak.",bsee::04 bsee::04-01
 "Simple harmonic oscillator: frequency and energy?","\(\omega_0 = \sqrt{k_s/m}\); \(K + U = \tfrac12k_sA^2\) constant; each store averages half; peak speed \(A\omega_0\), peak acceleration \(A\omega_0^2\).",bsee::04 bsee::04-01
@@ -15,18 +13,15 @@
 "Force–voltage analogy?","F ↔ v, velocity ↔ i, x ↔ q, m ↔ L, b ↔ R, 1/k_s ↔ C. Springs in series (one force) map to capacitors in parallel.",bsee::04 bsee::04-01
 "Accelerometer sensitivity and bandwidth?","Deflection \(x = a/\omega_0^2\) below resonance: 15.53 nm per g at 4 kHz. With Q = 0.707 the bandwidth is \(f_0\). Four times the bandwidth costs sixteen times the deflection.",bsee::04 bsee::04-01
 "Thermomechanical (Brownian) noise of a proof mass?","Force noise \(4kTb\) (twin of 4kTR) gives \(a_n = \sqrt{4kT\omega_0/(mQ)}\): 35 µg/√Hz for 5 µg, 4 kHz, Q = 0.707. Lower it with more mass or higher Q.",bsee::04 bsee::04-01
-"Equipartition for a spring?","\(\tfrac12k_s\overline{x^2} = \tfrac12kT\), so \(x_{\text{rms}} = \sqrt{kT/k_s}\), independent of mass and damping: 64 pm for 1 N/m at 300 K. The mechanical kT/C.",bsee::04 bsee::04-01
 "Why do watch crystals run at 32,768 Hz?","32,768 = 2¹⁵: fifteen divide-by-two stages give exactly 1 Hz.",bsee::04 bsee::04-01
 "Resonator frequency by dimensions?","\(\omega_0 \propto (1/L)\sqrt{E/\rho}\): shrinking a structure tenfold raises its frequency tenfold. √(E/ρ) ≈ 8.5 km/s in silicon.",bsee::04 bsee::04-01
 "Elementary charge, and electrons per coulomb?","e = 1.602176634×10⁻¹⁹ C exactly (2019 SI); 1 C = 6.242×10¹⁸ electrons. 1 mA for 1 s moves 6.24×10¹⁵ electrons.",bsee::04 bsee::04-02
 "Coulomb's law?","F = q₁q₂/(4πε₀r²) along the line joining the charges; like signs repel. k_e = 1/(4πε₀) ≈ 8.988×10⁹ N·m²/C².",bsee::04 bsee::04-02
 "Electric field of a point charge, and its definition?","E = F/q (V/m = N/C). Point charge: E = k_e q/r², radially away from a positive charge, toward a negative one.",bsee::04 bsee::04-02
-"Superposition in electrostatics?","The total field is the vector sum of each charge's field; for continuous charge, integrate dE = k_e dq/r² with components. Use symmetry to kill components first.",bsee::04 bsee::04-02
 "Field of an infinite line charge λ at distance r?","E = λ/(2πε₀r), falling as 1/r. A finite rod looks infinite close in (r ≪ length) and like a point charge far away.",bsee::04 bsee::04-02
 "Field of an infinite sheet σ? Of two opposite sheets?","One sheet: E = σ/(2ε₀), independent of distance. Two plates ±σ: E = σ/ε₀ between, zero outside (the capacitor field).",bsee::04 bsee::04-02
 "On-axis field of a ring (charge Q, radius R)?","E_z = k_e Q z/(z² + R²)^{3/2}: zero at the center, peaks at z = R/√2, and becomes k_e Q/z² far away.",bsee::04 bsee::04-02
 "Electric dipole: moment, far field, torque, energy?","p = qd from − to +. Far field ∝ 1/r³ (2k_e p/r³ on axis, k_e p/r³ on the bisector). Uniform field: τ = pE sin θ, U = −pE cos θ, no net force.",bsee::04 bsee::04-02
-"Why does a dipole field fall as 1/r³?","The two charges' 1/r² fields nearly cancel; the leftover is their difference, (d/r) times smaller, so k_e q/r² × d/r ∝ p/r³.",bsee::04 bsee::04-02
 "Kinetic energy and speed after accelerating through V?","qV = ½mv², so v = √(2qV/m). An electron through 1 V gains 1 eV = 1.602×10⁻¹⁹ J; through 2 kV it reaches 2.65×10⁷ m/s (0.088c).",bsee::04 bsee::04-02
 "Exit angle of a charged beam through deflection plates?","tan θ = V_d L/(2 V_a d), independent of the particle's charge and mass, because both acceleration and deflection scale with q/m.",bsee::04 bsee::04-02
 "Breakdown fields of air and thermal SiO₂?","Air ≈ 3 MV/m (3 kV/mm); thermal SiO₂ > 10 MV/cm, about 1000× more. A 1.2 nm oxide at 1 V carries 8.3 MV/cm.",bsee::04 bsee::04-02
@@ -37,11 +32,9 @@
 "Electric flux through a flat surface in a uniform field?","Φ = EA cos θ (V·m), θ between E and the surface normal: maximum face-on, zero edge-on. On a closed surface the normal points outward.",bsee::04 bsee::04-03
 "Gauss's law?","∮ E·n̂ dA = Q_enc/ε₀: net flux out of any closed surface equals the enclosed charge over ε₀. 1 nC gives 112.9 V·m.",bsee::04 bsee::04-03
 "Why does Gauss's law need the inverse-square law?","Flux through a sphere is E·4πr²; it is independent of r only if E ∝ 1/r². Experiments confirm the exponent is 2 to parts in 10¹⁶.",bsee::04 bsee::04-03
-"Do charges outside a Gaussian surface affect the field on it?","Yes: they change E at every point, but their net flux through the closed surface is zero, so they drop out of Gauss's law.",bsee::04 bsee::04-03
 "When is Gauss's law useful for finding E?","Only with symmetry (spherical, cylindrical, planar), where a surface has E constant and perpendicular on part and parallel on the rest. A cube, a finite rod or a dipole has none.",bsee::04 bsee::04-03
 "Field of a uniformly charged solid sphere? Of a thin shell?","Solid: E = k_eQr/R³ inside (linear), k_eQ/r² outside. Shell: zero everywhere inside, k_eQ/r² outside.",bsee::04 bsee::04-03
 "Field of a coaxial line with ±λ?","E = λ/(2πε₀r) between the conductors, largest at the inner conductor; zero outside, since the enclosed charge is zero.",bsee::04 bsee::04-03
-"Pillbox result for an infinite sheet, and for a slab of density ρ?","Sheet: E = σ/(2ε₀). Slab of thickness t: E = ρx/ε₀ inside (zero at the midplane), ρt/(2ε₀) outside.",bsee::04 bsee::04-03
 "Properties of a conductor in electrostatic equilibrium?","E = 0 inside the metal; net charge on the surface; field just outside perpendicular with magnitude σ/ε₀; an empty cavity is field-free.",bsee::04 bsee::04-03
 "Why is the field outside a conductor σ/ε₀, not σ/(2ε₀)?","An isolated sheet sends half its flux each way; on a conductor the other charges cancel the field inside the metal, so all the flux goes outward.",bsee::04 bsee::04-03
 "A charge sits inside a neutral metal shell. Is the outside shielded?","No: −q gathers on the inner wall and +q on the outer surface, so outside sees q. Grounding the shell drains the outer charge and shields both ways.",bsee::04 bsee::04-03
@@ -52,10 +45,8 @@
 "Why is the electrostatic field conservative, and what does that buy?","A point charge's field is radial, so work depends only on start and end distances; superposition extends this to any static charges. ∮E·dl = 0, so voltage (a potential function) is well defined: KVL.",bsee::04 bsee::04-04
 "Potential from field, and field from potential?","V_b − V_a = −∫_a^b E·dl (V falls along E); E = −∇V. A uniform field E over distance d drops V by Ed.",bsee::04 bsee::04-04
 "Potential of a point charge, and of several?","V = k_e q/r (zero at infinity). Potentials add as plain numbers: V = Σ k_e q_i/r_i, no vector components.",bsee::04 bsee::04-04
-"Can V be zero where E is not, or E zero where V is not?","Yes to both: midway between ±q, V = 0 but E is strong; at a charged ring's center, E = 0 but V = k_eQ/R. Field is the slope of potential, not its level.",bsee::04 bsee::04-04
 "Why is a conductor an equipotential, and where is its field strongest?","E = 0 inside means no work moving through it. An isolated sphere has E = V/R at its surface, so sharp (small-radius) parts carry the strongest field at a given voltage.",bsee::04 bsee::04-04
 "Capacitance of parallel plates, a coax and a sphere?","εA/d; 2πεℓ/ln(b/a); isolated sphere 4πε₀R (1 mm sphere ≈ 0.111 pF, the Earth ≈ 0.709 mF).",bsee::04 bsee::04-04
-"Capacitors in series and parallel?","Parallel: C = C₁ + C₂ (same V, charges add). Series: 1/C = 1/C₁ + 1/C₂ (same Q, voltages add); the smallest capacitor takes the largest voltage.",bsee::04 bsee::04-04
 "Best coax inner radius for breakdown with fixed outer radius b?","V_max = E_bd a ln(b/a) is largest at b/a = e, giving V_max = E_bd b/e.",bsee::04 bsee::04-04
 "How does a dielectric raise capacitance?","Its aligned dipoles leave bound charge at its faces that partly cancels the free charge; E falls to σ_f/(ε_rε₀), so V falls and C rises by ε_r = 1 + χ.",bsee::04 bsee::04-04
 "Electric displacement D and its boundary rule?","D = ε₀E + P = εE; ∮D·dA = Q_free. With no free interface charge, normal D is continuous: ε₁E₁n = ε₂E₂n.",bsee::04 bsee::04-04
@@ -75,7 +66,6 @@
 "Resistance from geometry, and sheet resistance?","R = ρL/A. For a film of thickness t, R_s = ρ/t (Ω/□) and R = R_s·(L/W). 1 oz PCB copper: 34 µm, ≈ 0.49 mΩ/□.",bsee::04 bsee::04-05
 "Temperature dependence of copper's resistance?","ρ = ρ₀[1 + α(T − 20 °C)] with α = 0.00393 /°C: +31% from 20 to 100 °C. Resistance doubles as a thermometer.",bsee::04 bsee::04-05
 "Why do narrow copper wires get worse?","Below the ~40 nm mean free path, surface and grain-boundary scattering raise ρ, and a 2–3 nm barrier/liner steals area (30% of a 20 × 40 nm line).",bsee::04 bsee::04-05
-"Joule heating, globally and locally?","P = IV = I²R = V²/R; per volume p = J·E = σE² = ρJ². Heat concentrates where current crowds.",bsee::04 bsee::04-05
 "Electromigration?","High current density pushes metal atoms along the electron flow, forming voids and hillocks; it caps DC current density (ITRS 2015 projected ~0.3 MA/cm² for minimum Cu lines by 2026), mainly a power-grid problem.",bsee::04 bsee::04-05
 "Distributed RC wire delay?","t₅₀ ≈ 0.38RC with R = rL and C = cL, so delay ∝ L². A lumped RC (0.69RC) overestimates; repeaters make long-wire delay linear in L.",bsee::04 bsee::04-05
 "What happens to wire RC when all cross-section dimensions shrink by s?","Resistance per length rises by 1/s²; capacitance per length stays about the same. Local wires keep pace; global wires slow every node.",bsee::04 bsee::04-05
@@ -86,9 +76,7 @@
 "Velocity selector and E×B drift?","Crossed E and B pass only v = E/B undeflected. A charge released in crossed fields drifts at E/B along E × B, whatever its charge or mass.",bsee::04 bsee::04-06
 "Force on a current, and torque on a coil?","F = IL × B. A coil has moment m = NIA (A·m²); torque τ = m × B, energy U = −m·B: the DC motor principle.",bsee::04 bsee::04-06
 "Biot–Savart law and the long-wire field?","dB = (µ₀/4π) I dl × r̂/r². Long wire: B = µ₀I/(2πr) = 20 µT at 1 cm per ampere (Earth ≈ 50 µT). Loop center: µ₀I/(2R).",bsee::04 bsee::04-06
-"Force between parallel wires?","F/L = µ₀I₁I₂/(2πd): attract for same-direction currents, repel for opposite. Goes as current squared: 20 N/m at 1 kA, 1 cm; 2000 N/m at 10 kA.",bsee::04 bsee::04-06
 "Ampère's law and its standard results?","∮B·dl = µ₀I_enc. Inside a wire B ∝ r; solenoid B = µ₀nI; toroid B = µ₀NI/(2πr) confined to the core; coax B = 0 outside.",bsee::04 bsee::04-06
-"Gauss's law for magnetism?","∮B·dA = 0: no magnetic monopoles, so field lines close on themselves.",bsee::04 bsee::04-06
 "Hall voltage and what it measures?","V_H = IB/(nqt). Sign → carrier type (electrons vs holes); size → density n; with resistivity, mobility µ = |R_H|σ.",bsee::04 bsee::04-06
 "Why are Hall sensors semiconductors, not metals?","V_H ∝ 1/n: copper's 8.5×10²⁸ m⁻³ gives sub-µV; silicon at 10¹⁶ cm⁻³ gives mV from mA.",bsee::04 bsee::04-06
 "How does a Hall current sensor reject stray fields?","Two Hall plates see the conductor's field with opposite signs but a uniform stray field with the same sign; subtracting doubles the signal and cancels the stray field.",bsee::04 bsee::04-06
@@ -99,7 +87,6 @@
 "Faraday's law?","ℰ = −N dΦ/dt: EMF equals the rate of change of flux linkage (1 Wb/s = 1 V). Flux can change through B, area or orientation.",bsee::04 bsee::04-07
 "Lenz's law?","The induced current opposes the change in flux that causes it: energy conservation. Increasing flux in → induced field out.",bsee::04 bsee::04-07
 "When does KVL fail?","Around loops threaded by changing magnetic flux: ∮E·dl = −dΦ/dt ≠ 0, so voltage depends on path (probe ground leads, ground loops).",bsee::04 bsee::04-07
-"Motional EMF and the power balance?","ℰ = Bℓv. The current feels a retarding force IℓB; mechanical power Fv equals electrical I²R. The field converts work, never does it.",bsee::04 bsee::04-07
 "Generator EMF and back-EMF?","Rotating coil: ℰ = NBAω sin ωt. A running motor generates back-EMF ∝ speed; stall current V/R is far larger than running current.",bsee::04 bsee::04-07
 "Skin depth?","δ = √(ρ/(πfµ)): copper 8.4 mm at 60 Hz, 0.21 mm at 100 kHz, 65 µm at 1 MHz, 2.1 µm at 1 GHz. Current crowds within ~δ of the surface; R rises ~√f.",bsee::04 bsee::04-07
 "Why laminations, ferrites and litz wire?","Laminations and ferrites cut eddy-current paths in cores (eddy loss ∝ f²t²B²/ρ). Litz wire uses insulated, transposed strands thinner than δ.",bsee::04 bsee::04-07
@@ -108,7 +95,6 @@
 "Magnetic energy and energy density?","U = ½LI²; u = B²/(2µ) ≈ 0.4 MJ/m³ at 1 T in air. In a gapped core the gap holds most of the energy (95% for 0.5 mm in µ_r 2000 ferrite).",bsee::04 bsee::04-07
 "Mutual inductance and coupling coefficient?","v₂ = M di₁/dt; M = k√(L₁L₂), 0 ≤ k ≤ 1. Two coaxial loops far apart: M ∝ 1/d³, so coupling collapses with distance.",bsee::04 bsee::04-07
 "Ideal transformer relations?","v₂/v₁ = N₂/N₁, i₂/i₁ = N₁/N₂, R_seen = (N₁/N₂)²R_L. Needs changing flux; passes no DC; isolates galvanically.",bsee::04 bsee::04-07
-"Coax inductance and what LC gives?","L/ℓ = (µ₀/2π) ln(b/a). With C/ℓ = 2πε/ln(b/a): Z₀ = √(L/C) and LC = µ₀ε, so wave speed c/√ε_r regardless of geometry.",bsee::04 bsee::04-07
 "Power inductor datasheet parameters?","L, DCR, saturation current (inductance drop of 20–30%), rms current (thermal rise), SRF. E.g. XAL7070-102: 1.0 µH, 2.55 mΩ, Isat 34.8 A, Irms 20 A, SRF 64 MHz.",bsee::04 bsee::04-07
 "Why do integrated regulators switch at ~100 MHz?","Ripple ∝ 1/(fL): at 140 MHz, nH air-core package inductors suffice (Intel FIVR); the cost is switching loss.",bsee::04 bsee::04-07
 "Qi wireless charging evolution (as of Nov 2026)?","5 W (v1.0, 2010) → 15 W (v1.2, 2015) → MPP with magnets at 360 kHz (v2.0, 2023) → 25 W (v2.2, 2025; Qi2 25W). Magnets raise coupling k.",bsee::04 bsee::04-07
@@ -152,3 +138,17 @@
 "How does flash program and erase?","Fowler–Nordheim tunneling through a ~10 nm (1997-era) oxide at ~8–10 MV/cm. 7 → 10 MV/cm raises the current ~10⁷×: fast writes, years of retention.",bsee::04 bsee::04-10
 "Qubit measurement statistics?","α|0⟩ + β|1⟩ gives 0 with probability |α|², 1 with |β|². N shots: binomial, σ = √(Np(1−p)); n qubits need 2ⁿ amplitudes classically.",bsee::04 bsee::04-10
 "Logical-qubit claims to check?","Ask: which code, what distance, detected or corrected errors, error per cycle vs physical qubits. Willow: d = 7, 0.143%/cycle, Λ = 2.14. Helios: '94' (detected) vs '48' (corrected).",bsee::04 bsee::04-10
+"Diamond structure: atoms per cubic cell and silicon's density?","FCC (4) with a two-atom basis: 8 atoms per cubic cell. a = 0.5431 nm gives 4.99×10²² atoms/cm³; nearest neighbors √3a/4 = 0.235 nm.",bsee::04 bsee::04-11
+"Free-electron Fermi energy?","k_F = (3π²n)^(1/3), E_F = ħ²k_F²/2m, v_F = ħk_F/m. Copper: 7.0 eV, 1.57×10⁶ m/s, T_F ≈ 82,000 K.",bsee::04 bsee::04-11
+"Fermi–Dirac distribution and its width?","f(E) = 1/(1 + e^((E−E_F)/kT)). ½ at E_F; 0.9 → 0.1 over 2kT ln 9 ≈ 4.4kT (0.11 eV at 300 K). Boltzmann limit far above E_F.",bsee::04 bsee::04-11
+"Why did Drude's heat capacity fail?","Pauli: only electrons within ~kT of E_F can absorb heat. C_el = (π²/2)Nk(T/T_F), about 1% of the classical 3/2 Nk at 300 K.",bsee::04 bsee::04-11
+"Free-electron density of states?","g(E) ∝ √E; g(E_F) = 3N/(2E_F). Average energy at 0 K = (3/5)E_F.",bsee::04 bsee::04-11
+"Tight-binding band?","E = E₀ − 2t cos ka: width 4t, N states per band (2N with spin). Two atoms: E₀ ± t (bonding/antibonding).",bsee::04 bsee::04-11
+"Why do gaps open at k = ±π/a?","Bragg reflection makes two standing waves, on and between the ions, with energies ±U apart from the free value: E_g = 2|U| for V = 2U cos(2πx/a).",bsee::04 bsee::04-11
+"Group velocity, crystal momentum, effective mass?","v = (1/ħ)dE/dk; ħ dk/dt = F; 1/m* = (1/ħ²)d²E/dk². Tight binding: m* = ħ²/(2ta²) at the bottom, negative at the top.",bsee::04 bsee::04-11
+"Metal vs semiconductor vs insulator?","A band holds 2 electrons per primitive cell. Partly filled band: metal. Full band + small gap: semiconductor (Si 8 e⁻/cell fill 4 bands). Full + big gap: insulator.",bsee::04 bsee::04-11
+"Intrinsic carrier concentration?","n_i = √(N_c N_v) e^(−E_g/2kT). Si at 300 K: 9.65×10⁹ cm⁻³ (old 1.45×10¹⁰ superseded); ~560× higher at 400 K.",bsee::04 bsee::04-11
+"What is a hole?","An empty state near the valence-band top: J = +e v_j and positive mass |m*|. Real: positive Hall sign in p-type silicon.",bsee::04 bsee::04-11
+"Direct vs indirect gap?","Photon k ≈ 10⁻³ π/a, so optical transitions are vertical. Direct (GaAs, GaN): efficient emitters. Indirect (Si, Ge, SiC): need a phonon, poor LEDs.",bsee::04 bsee::04-11
+"Band gaps to know (300 K)?","Ge 0.66–0.67, Si 1.12, GaAs 1.42, 4H-SiC ≈ 3.2–3.26, GaN 3.4, β-Ga₂O₃ 4.9, diamond 5.5, SiO₂ ≈ 9 eV.",bsee::04 bsee::04-11
+"Wide-bandgap power market (Yole, 2026)?","SiC $11B by 2031 (20% CAGR); xEV power $14.5B, SiC MOSFET 21.5% CAGR; GaN $3.5B by 2031 (35%, down from 42% a year earlier). SiC overcapacity reported.",bsee::04 bsee::04-11
