@@ -71,6 +71,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-063 | Jitter: the dual-Dirac model and the Q-scale | Nov 2026 |
 | R-064 | Soft-error rates and FIT | Nov 2026 |
 | R-065 | Six Sigma: 3.4 ppm and the 1.5σ shift | Nov 2026 |
+| R-066 | PAPR, CCDF and crest factor of communication signals | Nov 2026 |
 
 ---
 
@@ -499,3 +500,11 @@ R&D % = R&D ÷ revenue.
 - **Claim and origin:** J. S. Ramberg, "Six Sigma: Fad or Fundamental?", *Quality Digest*, May 2000: "Should the process mean shift by 1.5 sigma, the defective rate would increase to 3.4 PPM defectives"; "The late Bill Smith, a reliability engineer at Motorola, is widely credited with originating Six Sigma"; "The 1.5-sigma deviation remains controversial." Motorola received the Baldrige award in 1988 (NIST recipients list) [Established for the arithmetic; the shift convention is Contested].
 - **Derived here:** $Q(4.5) = 3.398\times10^{-6}$; a centered ±6σ process has $2Q(6) = 1.97\times10^{-9}$.
 - **Sources:** [Quality Digest, May 2000](https://qualitydigest.com/may00/html/sixsigmapro.html); [NIST Baldrige recipients](https://www.nist.gov/baldrige/award-recipients). Checked Nov 2026.
+
+## R-066 · PAPR, CCDF and crest factor of communication signals
+
+- **CCDF method:** Keysight application note 5968-6875E, *Characterizing Digitally Modulated Signals with CCDF Curves* (published 19 Jul 2024): "A CCDF curve shows how much time the signal spends at or above a given power level. The power level is expressed in dB relative to the average power"; "as the number of tones increases, the CCDF curves begin to resemble the Additive White Gaussian Noise (AWGN) curve" [Established].
+- **LTE measurements:** Rohde & Schwarz application note 1MA271_0e, *5G Waveform Candidates* (June 2016): "CCDF measurement of a 20 MHz LTE Downlink Signal (E-TM 1.1); Crest Factor = 11.65 dB"; 20 MHz LTE uplink (SC-FDMA, 100 RB): "QPSK (yellow; 5.15 dB Crest Factor), 16QAM (blue; 5.60 dB) and 64QAM (green; 6.03 dB)"; WCDMA "typical crest factor ~4 dB"; "The high PAPR in OFDM was the reason for introducing a slightly modified access technology for the LTE Uplink"; "Typically Crest Factor Reduction (CFR) techniques are applied to reduce PAPR and Digital Pre-Distortion (DPD) algorithms will then correct for" amplifier nonlinearity. R&S 1MA138_0E (Dec 2008): "The maximum PAPR for LTE is approximately 12 dB" [Established; measured crest factors depend on capture length].
+- **5G NR uplink:** D. Darsena, G. Gelli and F. Verde, "Beamforming and precoding techniques", Wiley 5G Ref (arXiv:2004.05079, 2020): "The NR PHY is based on Orthogonal Frequency-Division Multiplexing (OFDM) with cyclic prefix (CP), with optional support for Discrete Fourier Transform (DFT) precoded OFDM (DFT-s-OFDM) in the UL"; "if DFT-s-OFDM is employed, only single-layer transmission is allowed" (citing 3GPP TS 38.211). The 3GPP specification text itself was not read [Established].
+- **Derived here:** for a complex Gaussian signal the instantaneous power is exponential, so the PAPR at CCDF probability $p$ is $10\log_{10}\ln(1/p)$: 6.632 dB at $10^{-2}$, 9.643 dB at $10^{-4}$, 11.40 dB at $10^{-6}$. The 11.65 dB measured LTE crest factor corresponds to an exceedance probability of about $4.5\times10^{-7}$ under that model, consistent with a long capture.
+- **Sources:** [Keysight 5968-6875E](https://www.keysight.com/content/dam/keysight/en/doc/gate/application-notes-archived/5968-6875.pdf); [R&S 1MA271](https://scdn.rohde-schwarz.com/ur/pws/dl_downloads/dl_application/application_notes/1ma271/1MA271_0e_5G_waveform_candidates.pdf); [R&S 1MA138](https://scdn.rohde-schwarz.com/ur/pws/dl_downloads/dl_application/application_notes/1ma138/1MA138_0e_RF_chipset_verification_for_LTE.pdf); [arXiv:2004.05079](https://arxiv.org/abs/2004.05079). Checked Nov 2026.

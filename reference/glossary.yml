@@ -1313,3 +1313,56 @@
 - term: Soft error
   definition: A non-destructive change of a stored bit caused by a particle strike (neutrons or alpha particles); it is corrected by rewriting, and its rate is quoted in FIT per megabit.
   chapter: "03-02"
+
+# ---------------------------------------------------------------- 03-03
+- term: Expectation
+  definition: The probability-weighted average of a random variable, Σ k·p(k) or ∫ x·f(x) dx; its long-run average over many independent trials, also called the mean.
+  chapter: "03-03"
+- term: Linearity of expectation
+  definition: E[aX + bY + c] = aE[X] + bE[Y] + c for any random variables, independent or not; it gives expected counts as sums of probabilities.
+  chapter: "03-03"
+  see_also: [Indicator variable]
+- term: Indicator variable
+  definition: A random variable equal to 1 if an event occurs and 0 otherwise, so its expectation is the event's probability; counts are sums of indicators.
+  chapter: "03-03"
+- term: Variance
+  definition: "The expected squared deviation from the mean, Var(X) = E[(X − μ)²] = E[X²] − μ²; for a zero-mean voltage in 1 Ω it is the AC power."
+  chapter: "03-03"
+  see_also: [Standard deviation]
+- term: Standard deviation
+  definition: The square root of the variance, σ, in the units of the random variable; for a signal it is the AC RMS value.
+  chapter: "03-03"
+- term: Moment
+  definition: "E[Xⁿ], the nth moment of a random variable; the first is the mean, and central moments E[(X − μ)ⁿ] give variance (n = 2), skewness (3) and kurtosis (4) after standardizing."
+  chapter: "03-03"
+- term: Change of variables
+  definition: The rule f_Y(y) = Σ f_X(xᵢ)/|g′(xᵢ)| over the points xᵢ with g(xᵢ) = y, giving the density of Y = g(X); probability is conserved as the axis is stretched or compressed.
+  chapter: "03-03"
+- term: Chi-square distribution
+  definition: The distribution of a sum of squared independent standard normals; with one degree of freedom it describes the instantaneous power of Gaussian noise, whose standard deviation is √2 times its mean.
+  chapter: "03-03"
+- term: Log-normal distribution
+  definition: The distribution of e^X for Gaussian X; skewed right, with median e^μ and mean e^(μ + s²/2). Subthreshold leakage across devices is approximately log-normal.
+  chapter: "03-03"
+- term: Rayleigh distribution
+  definition: The distribution of the envelope R of a complex Gaussian signal, f(r) = (2r/P̄)e^(−r²/P̄), when the power R² is exponential with mean P̄; mean √(πP̄)/2.
+  chapter: "03-03"
+- term: Markov's inequality
+  definition: For a nonnegative random variable, P(X ≥ a) ≤ E[X]/a.
+  chapter: "03-03"
+- term: Chebyshev's inequality
+  definition: P(|X − μ| ≥ kσ) ≤ 1/k² for any distribution with finite variance; a guarantee that is loose for any particular distribution (11.1% at 3σ against 0.27% for a Gaussian).
+  chapter: "03-03"
+- term: Jensen's inequality
+  definition: For a convex function g, E[g(X)] ≥ g(E[X]); averaging through an exponential or square law raises the result, so leakage or failure rate at the average input underestimates the average.
+  chapter: "03-03"
+- term: Peak-to-average power ratio (PAPR)
+  definition: Peak power over average power, the square of the crest factor; for noise-like signals such as OFDM it must be quoted at a stated CCDF probability (9.64 dB at 1e-4 for a complex Gaussian).
+  chapter: "03-03"
+  see_also: [Crest factor, CCDF]
+- term: CCDF
+  definition: Complementary cumulative distribution function, P(X > x) = 1 − F(x); for signals, the fraction of time the instantaneous power exceeds each level above average.
+  chapter: "03-03"
+- term: Loading factor
+  definition: An ADC's full-scale amplitude divided by the RMS of a noise-like input, k = V_FS/σ; it trades clipping noise (small k) against granular quantization noise (large k).
+  chapter: "03-03"

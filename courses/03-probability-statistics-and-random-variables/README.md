@@ -28,7 +28,7 @@ An accelerated course for a learner who already knows probability and statistics
 |---|---|---|---|
 | [03-01 · Probability in EE Language](chapters/03-01-probability-in-ee-language.md) | 6 | ✅ verified | [problems](problems/03-01-problems.md) · [solutions](solutions/03-01-solutions.md) · [lab](labs/03-01-lab/README.md) · [verify](verify/verify_03_01.py) |
 | [03-02 · Random Variables and Distributions](chapters/03-02-random-variables-and-distributions.md) | 8 | ✅ verified | [problems](problems/03-02-problems.md) · [solutions](solutions/03-02-solutions.md) · [lab](labs/03-02-lab/README.md) · [verify](verify/verify_03_02.py) |
-| [03-03 · Expectation, Variance and Functions of Random Variables](chapters/03-03-expectation-and-functions-of-rvs.md) | 6 | ⬜ planned | — |
+| [03-03 · Expectation, Variance and Functions of Random Variables](chapters/03-03-expectation-and-functions-of-rvs.md) | 6 | ✅ verified | [problems](problems/03-03-problems.md) · [solutions](solutions/03-03-solutions.md) · [lab](labs/03-03-lab/README.md) · [verify](verify/verify_03_03.py) |
 | [03-04 · Joint Distributions, Correlation and the CLT](chapters/03-04-joint-distributions-and-clt.md) | 8 | ⬜ planned | — |
 | [03-05 · Estimation and Hypothesis Testing for Engineers](chapters/03-05-estimation-and-hypothesis-testing.md) | 6 | ⬜ planned | — |
 | [03-06 · Random Processes Preview: Noise](chapters/03-06-random-processes-preview.md) | 6 | ⬜ planned | — |

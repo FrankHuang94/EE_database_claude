@@ -17,5 +17,5 @@ Math is written as `\(...\)` (inline) and `\[...\]` (display), which Anki render
 | 00 · Orientation | [00-orientation.csv](00-orientation.csv) | 56 |
 | 01 · Calculus for Engineers | [01-calculus-for-engineers.csv](01-calculus-for-engineers.csv) | 107 |
 | 02 · Complex Numbers, ODEs, Linear Algebra | [02-complex-numbers-des-and-linear-algebra.csv](02-complex-numbers-des-and-linear-algebra.csv) | 140 |
-| 03 · Probability, Statistics and Random Variables (03-01 to 03-02 so far) | [03-probability-statistics-and-random-variables.csv](03-probability-statistics-and-random-variables.csv) | 46 |
+| 03 · Probability, Statistics and Random Variables (03-01 to 03-03 so far) | [03-probability-statistics-and-random-variables.csv](03-probability-statistics-and-random-variables.csv) | 68 |
 | 07 · Circuit Analysis II (07-02 so far) | [07-circuit-analysis-2-transient-and-ac.csv](07-circuit-analysis-2-transient-and-ac.csv) | 26 |
