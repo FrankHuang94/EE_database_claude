@@ -54,9 +54,12 @@ A2r = (U4[:, :2] * s4[:2]) @ Vt4[:2]
 v.assert_true("Eckart-Young: rank-2 truncation error equals sigma_3", np.isclose(np.linalg.norm(R4 - A2r, 2), s4[2]))
 th_ = sp.Symbol("theta", real=True)
 Rth = M([[sp.cos(th_), -sp.sin(th_)], [sp.sin(th_), sp.cos(th_)]])
-v.assert_true("rotation eigenvalues e^{+-j theta}",
-              set(sp.simplify(e.rewrite(sp.exp)) for e in Rth.eigenvals()) == {sp.exp(sp.I * th_), sp.exp(-sp.I * th_)}
-              or all(sp.simplify(sp.Abs(e) - 1) == 0 for e in Rth.eigenvals()))
+_rot_ok = True
+for _th in (0.3, 1.1, 2.5):
+    _R = np.array([[math.cos(_th), -math.sin(_th)], [math.sin(_th), math.cos(_th)]])
+    _ev = np.sort_complex(np.linalg.eigvals(_R))
+    _rot_ok &= np.allclose(_ev, np.sort_complex(np.array([np.exp(-1j * _th), np.exp(1j * _th)])))
+v.assert_true("rotation eigenvalues e^{+-j theta} (numeric, three angles)", bool(_rot_ok))
 al, w0 = sp.symbols("alpha omega_0", positive=True)
 v.assert_true("companion matrix polynomial = lambda^2 + 2 alpha lambda + w0^2",
               sp.expand((M([[0, 1], [-w0**2, -2 * al]]) - lam * sp.eye(2)).det() - (lam**2 + 2 * al * lam + w0**2)) == 0)
@@ -123,6 +126,13 @@ v.check("Ex 02-08.5a", f5s / 1e6); v.check("Ex 02-08.5b", f5a / 1e6)
 v.check("Ex 02-08.5c", (f5s - f5a) / 1e3)
 v.check("Ex 02-08.5d", f5s / f5a)
 v.check("Ex 02-08.5e", 1 / (2 * (f5s - f5a)) * 1e6)
+from scipy.integrate import solve_ivp as _ivp  # noqa: E402
+_L, _C, _Cc = 1e-6, 1e-9, 0.1e-9
+_Cm = np.array([[_C + _Cc, -_Cc], [-_Cc, _C + _Cc]]); _Ci = np.linalg.inv(_Cm)
+_T = 1 / (2 * (f5s - f5a))
+_sol = _ivp(lambda t_, x: np.r_[_Ci @ (-x[2:]), x[:2] / _L], (0, _T), [1, 0, 0, 0], rtol=1e-12, atol=1e-15)
+_x = _sol.y[:, -1]
+v.check("Ex 02-08.5k", (0.5 * _C * _x[0] ** 2 + 0.5 * _L * _x[2] ** 2) / (0.5 * (_C + _Cc)) * 100)
 v.assert_true("Ex 5: in-phase frequency equals the uncoupled 1/(2 pi sqrt(LC))",
               np.isclose(f5s, 1 / (2 * math.pi * math.sqrt(1e-15))))
 
@@ -250,5 +260,21 @@ xs = np.linspace(0, 1, 80); ys = np.linspace(0, 1, 60)
 img = (np.outer(np.sin(np.pi * ys), np.sin(np.pi * xs)) + 0.5 * np.outer(np.cos(3 * ys), xs**2)
        + 0.25 * np.outer(ys, np.cos(5 * xs)))
 v.check("Lab 02-08.e", np.linalg.matrix_rank(img))
+
+# 16 · MIMO streams
+_H = np.array([[2, 1], [1, 2.0]])
+_sv = np.linalg.svd(_H, compute_uv=False)
+v.check("02-08.16a", _sv[0]); v.check("02-08.16b", _sv[1])
+_snr = 5 * _sv**2
+v.check("02-08.16c", 10 * math.log10(_snr[0])); v.check("02-08.16d", 10 * math.log10(_snr[1]))
+v.check("02-08.16e", float(np.sum(np.log2(1 + _snr)))); v.check("02-08.16f", math.log2(1 + 10 * _sv[0] ** 2))
+# 17 · similarity
+_A17 = np.array([[4, 1], [2, 3.0]]); _M17 = np.array([[1, 1], [0, 1.0]])
+_B17 = np.linalg.inv(_M17) @ _A17 @ _M17
+v.check("02-08.17a", _B17[1, 0]); v.check("02-08.17b", _B17[1, 1])
+v.check("02-08.17c", np.trace(_B17)); v.check("02-08.17d", np.linalg.det(_B17))
+v.assert_true("similar matrices share eigenvalues", np.allclose(np.sort(np.linalg.eigvals(_A17).real), np.sort(np.linalg.eigvals(_B17).real)))
+v.assert_true("Hermitian example [[2, j], [-j, 2]] has eigenvalues 1 and 3", np.allclose(np.linalg.eigvalsh(np.array([[2, 1j], [-1j, 2]])), [1, 3]))
+v.assert_true("rotation eigenvector (1, -j) for +j", np.allclose(np.array([[0, -1], [1, 0]]) @ np.array([1, -1j]), 1j * np.array([1, -1j])))
 
 v.finish()

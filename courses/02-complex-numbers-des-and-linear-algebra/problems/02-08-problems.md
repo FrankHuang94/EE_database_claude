@@ -78,13 +78,13 @@ Find the critical point of $f(x, y) = x^2 + xy + y^2 - 3x$, and decide whether i
 (b) Find the singular values of $\begin{bmatrix} 3 & 0 \\ 0 & -2\end{bmatrix}$ and its condition number. Where does the minus sign go?
 (c) What are the singular values of any orthogonal matrix, and why?
 
-### Problem 02-08.13 [C]
+### Problem 02-08.13 [B]
 
 **Coupled tanks.** Two resonators, each $L = 4.7$ µH in parallel with $C = 220$ pF to ground, are coupled by $C_c = 22$ pF.
 
 (a) Find the two normal-mode frequencies and the split.
-(b) Resonator 1 is set ringing and resonator 2 starts at rest. How long until the energy has moved completely to resonator 2?
-(c) For small coupling, show that the fractional split is approximately $C_c/C$.
+(b) Resonator 1 is set ringing and resonator 2 starts at rest (both inductor currents zero). How long until the energy has moved (almost) completely to resonator 2?
+(c) Define the fractional split as $f_1/f_2 - 1$. For small coupling, show that it is approximately $C_c/C$, and find how good the approximation is here.
 
 ### Problem 02-08.14 [C]
 
@@ -106,6 +106,22 @@ $$
 (b) What fraction of the total variance lies in the first principal component? What are the standard deviations along each component?
 (c) The wanted signal appears with opposite signs on the two sensors ($+s$ on sensor 1 and $-s$ on sensor 2). By what factor does the differential combination improve the amplitude signal-to-noise ratio over a single sensor? How much of that gain comes from the noise correlation?
 
+### Problem 02-08.16 [B]
+
+**MIMO streams from the SVD.** A 2×2 link has the real channel matrix $\mathbf{H} = \begin{bmatrix}2 & 1\\ 1 & 2\end{bmatrix}$ and white receiver noise of power $N$ per antenna. The transmitter has total power $P$, with $P/N = 10$ (10 dB).
+
+(a) Find the singular values and the singular vectors of $\mathbf{H}$, and describe the two parallel channels the SVD creates.
+(b) Split the power equally between the two streams. Find each stream's SNR, $(P/2)\sigma_i^2/N$, in dB.
+(c) Find the total capacity $\sum_i\log_2\big(1 + (P/2)\sigma_i^2/N\big)$ in bit/s/Hz, and compare it with sending all the power on the strong stream alone.
+
+### Problem 02-08.17 [B]
+
+**Similar matrices.** Two matrices are **similar** if $\mathbf{B} = \mathbf{M}^{-1}\mathbf{A}\mathbf{M}$ for some invertible $\mathbf{M}$: the same linear map written in a different basis.
+
+(a) Show that similar matrices have the same characteristic polynomial, and so the same eigenvalues, trace and determinant. How are their eigenvectors related?
+(b) With $\mathbf{A} = \begin{bmatrix}4 & 1\\ 2 & 3\end{bmatrix}$ and $\mathbf{M} = \begin{bmatrix}1 & 1\\ 0 & 1\end{bmatrix}$, compute $\mathbf{B}$ and check (a).
+(c) Diagonalization is a similarity transformation. Which $\mathbf{M}$ makes $\mathbf{M}^{-1}\mathbf{A}\mathbf{M}$ diagonal?
+
 ---
 
 ## Objective coverage
@@ -113,9 +129,9 @@ $$
 | Learning objective (chapter 02-08) | Problems |
 |---|---|
 | 1. Eigenvalues, eigenvectors and their geometry | 1, 2, 3, 4 |
-| 2. Trace/determinant checks, powers and inverses, diagonalization | 2, 4, 5, 6 |
+| 2. Trace/determinant checks, powers and inverses, diagonalization | 2, 4, 5, 6, 17 |
 | 3. Powers, recurrences, Markov chains, stability | 6, 7, 8 |
 | 4. Complex eigenvalues as rotation and poles | 3, 8 |
 | 5. Symmetric matrices, the spectral theorem, positive definiteness | 1, 9, 10, 11, 15 |
-| 6. The SVD, rank, low-rank approximation, conditioning | 12, 14, 15 |
+| 6. The SVD, rank, low-rank approximation, conditioning, MIMO channels | 12, 14, 15, 16 |
 | Application: coupled resonators and normal modes | 13 |

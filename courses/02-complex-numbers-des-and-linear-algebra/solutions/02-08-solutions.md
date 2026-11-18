@@ -33,7 +33,7 @@ The eigenvectors carry over to powers, inverses and shifts, and the eigenvalues 
 
 (b) The reflection keeps $(1, 1)$, so λ = 1, and flips $(1, -1)$, so λ = **−1**. *Check:* the reflection is $\begin{bmatrix} 0 & 1 \\ 1 & 0\end{bmatrix}$, with trace 0 and determinant −1 ✓.
 
-(c) No real direction survives a 90° rotation, so the eigenvalues are complex: $e^{\pm j90°} = \pm j$, with imaginary parts ±**1**. *Check:* $\begin{bmatrix} 0 & -1 \\ 1 & 0\end{bmatrix}$ has trace 0 and determinant 1, and indeed $j + (-j) = 0$ and $j(-j) = 1$ ✓.
+(c) No real direction survives a 90° rotation, so the eigenvalues are complex: $e^{\pm j90°} = \pm j$, with imaginary parts ±**1**. *Check:* $\begin{bmatrix} 0 & -1 \\ 1 & 0\end{bmatrix}$ has trace 0 and determinant 1, and indeed $j + (-j) = 0$ and $j(-j) = 1$ ✓. The eigenvectors are complex too. For λ = $j$, $(\mathbf{R} - j\mathbf{I})\mathbf{x} = \mathbf{0}$ gives $-jx_1 - x_2 = 0$, so $\mathbf{x} = (1, -j)$; check: $\mathbf{R}(1, -j) = (j, 1) = j(1, -j)$ ✓. For λ = $-j$, the conjugate, $(1, j)$.
 
 ### Solution 02-08.4
 
@@ -121,7 +121,11 @@ $$
 \mathbf{A} = 2\cdot\tfrac{1}{\sqrt2}(1, 1)\cdot\tfrac{1}{\sqrt2}(1, 1)^\mathsf{T},
 $$
 
-a single outer product.
+a single outer product. The full SVD completes both bases with the null-space direction $\mathbf{u}_2 = \mathbf{v}_2 = \tfrac{1}{\sqrt2}(1, -1)$, for which $\mathbf{A}\mathbf{v}_2 = \mathbf{0}$:
+
+$$
+\mathbf{A} = \underbrace{\tfrac{1}{\sqrt2}\begin{bmatrix}1 & 1\\ 1 & -1\end{bmatrix}}_{\mathbf{U}}\underbrace{\begin{bmatrix}2 & 0\\ 0 & 0\end{bmatrix}}_{\boldsymbol{\Sigma}}\underbrace{\tfrac{1}{\sqrt2}\begin{bmatrix}1 & 1\\ 1 & -1\end{bmatrix}}_{\mathbf{V}^\mathsf{T}} .
+$$
 
 (b) Singular values are never negative: they are **3** and **2**. The sign moves into $\mathbf{U}$: $\mathbf{U} = \begin{bmatrix} 1 & 0 \\ 0 & -1\end{bmatrix}$, $\boldsymbol{\Sigma} = \operatorname{diag}(3, 2)$, $\mathbf{V} = \mathbf{I}$. The condition number is $3/2 = $ **1.5**.
 
@@ -131,13 +135,13 @@ a single outer product.
 
 (a) $f_1 = 1/(2\pi\sqrt{4.7\text{ µH}\times220\text{ pF}}) = $ **4.949 MHz** (in phase). The out-of-phase mode sees $220 + 2\times22 = 264$ pF, so $f_2 = $ **4.518 MHz**. The split is **431.2 kHz**.
 
-(b) Complete transfer takes half a beat period: $1/(2\times431.2\text{ kHz}) = $ **1.159 µs**.
+(b) Essentially complete transfer takes half a beat period (exact only for weak coupling): $1/(2\times431.2\text{ kHz}) = $ **1.159 µs**.
 
 (c) $f_1/f_2 = \sqrt{1 + 2C_c/C} = \sqrt{1.2} = 1.0954$, a fractional split of **0.09545**. For small $x$, $\sqrt{1 + 2x} \approx 1 + x$, so $f_1/f_2 - 1 \approx C_c/C = 0.1$. The approximation is about 5% high at this fairly strong coupling, and improves as $C_c/C$ shrinks.
 
 ### Solution 02-08.14
 
-(a) $\mathbf{A}^\mathsf{T}\mathbf{A} = \begin{bmatrix} 14 & 27.8 \\ 27.8 & 55.22\end{bmatrix}$. Its eigenvalues are $\sigma_1^2$ and $\sigma_2^2$, so σ₁ = **8.320** and σ₂ = **0.05888**.
+(a) $\mathbf{A}^\mathsf{T}\mathbf{A} = \begin{bmatrix} 14 & 27.8 \\ 27.8 & 55.22\end{bmatrix}$. Its eigenvalues are $\sigma_1^2$ and $\sigma_2^2$, so $\sigma_1 = $ **8.320** and $\sigma_2 = $ **0.05888**.
 
 (b) The rank-1 approximation keeps $\sigma_1^2/(\sigma_1^2 + \sigma_2^2) = $ **99.995%** of $\lVert\mathbf{A}\rVert_F^2$. Its Frobenius error is $\sigma_2 = $ **0.05888**, against entries of size 2–6.
 
@@ -160,6 +164,22 @@ With *uncorrelated* noise, the noise along $\mathbf{q}_2$ would have the full st
 ---
 
 ## Answer key
+
+### Solution 02-08.16
+
+(a) $\mathbf{H}$ is symmetric and positive definite, so its SVD is its spectral decomposition. The eigenvalues of $\begin{bmatrix}2 & 1\\ 1 & 2\end{bmatrix}$ are 3 and 1, so $\sigma_1 = $ **3** and $\sigma_2 = $ **1**, with $\mathbf{u}_1 = \mathbf{v}_1 = (1, 1)/\sqrt2$ and $\mathbf{u}_2 = \mathbf{v}_2 = (1, -1)/\sqrt2$. Sending a stream on $\mathbf{v}_1$ (both antennas in phase) and receiving along $\mathbf{u}_1$ gives a channel with amplitude gain 3; the out-of-phase pair gives gain 1. The white noise keeps its power on each output (§3.9).
+
+(b) Stream 1: $(P/2)\sigma_1^2/N = 5\times9 = 45$, which is **16.53 dB**. Stream 2: $5\times1 = 5$, which is **6.990 dB**.
+
+(c) $\log_2 46 + \log_2 6 = 5.524 + 2.585 = $ **8.109** bit/s/Hz. All power on stream 1 gives $\log_2(1 + 10\times9) = \log_2 91 = $ **6.508** bit/s/Hz. Two streams win by about 25% here, even though the second is 10 dB weaker: capacity grows only logarithmically with SNR, so spreading power over parallel channels pays. (The optimal "water-filling" split gives a little more; Course 17.)
+
+### Solution 02-08.17
+
+(a) $\det(\mathbf{B} - \lambda\mathbf{I}) = \det\big(\mathbf{M}^{-1}(\mathbf{A} - \lambda\mathbf{I})\mathbf{M}\big) = \det\mathbf{M}^{-1}\det(\mathbf{A} - \lambda\mathbf{I})\det\mathbf{M} = \det(\mathbf{A} - \lambda\mathbf{I})$, using $\mathbf{M}^{-1}\mathbf{I}\mathbf{M} = \mathbf{I}$ and the product rule for determinants. Same polynomial, so the same eigenvalues, and therefore the same trace (their sum) and determinant (their product). If $\mathbf{A}\mathbf{x} = \lambda\mathbf{x}$, then $\mathbf{B}(\mathbf{M}^{-1}\mathbf{x}) = \mathbf{M}^{-1}\mathbf{A}\mathbf{x} = \lambda\,\mathbf{M}^{-1}\mathbf{x}$: the eigenvectors of $\mathbf{B}$ are $\mathbf{M}^{-1}$ times those of $\mathbf{A}$, the same directions expressed in the new basis.
+
+(b) $\mathbf{M}^{-1} = \begin{bmatrix}1 & -1\\ 0 & 1\end{bmatrix}$ and $\mathbf{A}\mathbf{M} = \begin{bmatrix}4 & 5\\ 2 & 5\end{bmatrix}$, so $\mathbf{B} = \begin{bmatrix}2 & 0\\ 2 & 5\end{bmatrix}$. Check: trace $2 + 5 = 7 = 4 + 3$ ✓ and determinant $10 = 12 - 2$ ✓. $\mathbf{B}$ is triangular, so its eigenvalues 2 and 5 can be read off, and they are the roots of $\lambda^2 - 7\lambda + 10$, the characteristic polynomial of $\mathbf{A}$ ✓.
+
+(c) Take $\mathbf{M} = \mathbf{X}$, the matrix of eigenvectors of $\mathbf{A}$: $(1, 1)$ for λ = 5 and $(1, -2)$ for λ = 2. Then $\mathbf{X}^{-1}\mathbf{A}\mathbf{X} = \operatorname{diag}(5, 2)$. Diagonalizing is choosing the basis in which the map only stretches.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -222,3 +242,13 @@ With *uncorrelated* noise, the noise along $\mathbf{q}_2$ would have the full st
 | 02-08.15f | SNR improvement with correlated noise | 2.236 | — |
 | 02-08.15g | SNR improvement with uncorrelated noise | 1.414 | — |
 | 02-08.15h | factor due to the correlation | 1.581 | — |
+| 02-08.16a | sigma 1 | 3 | — |
+| 02-08.16b | sigma 2 | 1 | — |
+| 02-08.16c | stream 1 SNR | 16.53 | dB |
+| 02-08.16d | stream 2 SNR | 6.990 | dB |
+| 02-08.16e | two-stream capacity | 8.109 | bit/s/Hz |
+| 02-08.16f | single-stream capacity | 6.508 | bit/s/Hz |
+| 02-08.17a | B21 | 2 | — |
+| 02-08.17b | B22 | 5 | — |
+| 02-08.17c | trace | 7 | — |
+| 02-08.17d | determinant | 10 | — |

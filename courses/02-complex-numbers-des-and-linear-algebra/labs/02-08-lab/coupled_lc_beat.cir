@@ -1,0 +1,21 @@
+* Lab 02-08 -- energy beating between two coupled LC resonators (Example 02-08.5), in the time domain.
+* L = 1 uH and C = 1 nF to ground at each node, Cc = 0.1 nF between the nodes, no damping.
+* Start: v1 = 1 V, v2 = 0, both inductor currents zero. The energy stored in resonator 1's own
+* L and C, e1 = C v1^2 / 2 + L i1^2 / 2, should first reach (almost) zero after half a beat period,
+* 1 / (2 x 438.5 kHz) = 1.140 us.
+*
+* EXPECT tbeat key:../../chapters/02-08-eigenvalues-and-eigenvectors.md#Ex_02-08.5e scale=1e-6 rtol=5e-3
+
+C1  n1 0  1n   IC=1
+L1  n1 0  1u   IC=0
+C2  n2 0  1n   IC=0
+L2  n2 0  1u   IC=0
+Cc  n1 n2 0.1n IC=1
+
+.options reltol=1e-7
+.control
+tran 0.2n 2u 0 0.2n uic
+let e1 = 0.5 * 1e-9 * v(n1) * v(n1) + 0.5 * 1e-6 * i(L1) * i(L1)
+meas tran tbeat MIN_AT e1 FROM=0.6u TO=1.7u
+.endc
+.end

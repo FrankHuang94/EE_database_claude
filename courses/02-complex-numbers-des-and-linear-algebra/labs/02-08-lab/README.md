@@ -1,6 +1,6 @@
 # Lab 02-08 · Eigenvalues and Eigenvectors
 
-**Chapter:** [02-08](../../chapters/02-08-eigenvalues-and-eigenvectors.md) · **Notebook:** [02-08-eigen.ipynb](02-08-eigen.ipynb) · **Netlist:** [coupled_lc.cir](coupled_lc.cir) · **Time:** about 75 minutes
+**Chapter:** [02-08](../../chapters/02-08-eigenvalues-and-eigenvectors.md) · **Notebook:** [02-08-eigen.ipynb](02-08-eigen.ipynb) · **Netlists:** [coupled_lc.cir](coupled_lc.cir), [coupled_lc_beat.cir](coupled_lc_beat.cir) · **Time:** about 75 minutes
 
 ## Objective
 
@@ -30,7 +30,7 @@ Chapter sections 3.1–3.9, and Examples 02-08.1 to 02-08.6.
 | Part | Quantity | Expected |
 |---|---|---|
 | 1 | Example 02-08.1 | eigenvalues 5 and 2; $\mathbf{A}^5$ = [[2094, 1031], [2062, 1063]]; no real eigenvector for the rotation |
-| 2 | wearable chain | eigenvalues 1, 0.9338, 0.7462; steady state (0.1786, 0.1071, 0.7143); 0.9479 mA; within 0.01 of steady state after 66 steps (the $0.9338^k$ estimate gives about 67) |
+| 2 | wearable chain | eigenvalues 1, 0.9338, 0.7462; steady state (0.1786, 0.1071, 0.7143); 0.9479 mA; every component within 0.01 (absolute) of the steady state after 66 steps. The chapter's relative criterion, $0.9338^k = 0.01$, gives 67.2 steps; the absolute count is a little smaller because the starting deviation is about 0.82 rather than 1 |
 | 3 | spirals | $r = 0.95$ decays to 0.5404 after 12 steps; $r = 1.02$ grows to 1.268 |
 | 4 | 20-node ladder | eigenvalues from 0.02234 to 3.978 S, equal to $2 - 2\cos(k\pi/21)$; modes are sampled sines; $\mathbf{Q}^\mathsf{T}\mathbf{Q} = \mathbf{I}$ |
 | 5 | coupled resonators | the in-phase mode stays at 5.033 MHz for every $C_c$; complete transfer at 1.140 µs for $C_c = 0.1$ nF |
@@ -48,7 +48,7 @@ Chapter sections 3.1–3.9, and Examples 02-08.1 to 02-08.6.
 
 ## Discussion questions
 
-1. The power method needed hundreds of iterations, yet the chain is within 1% after about 66 steps. Why does the power method's stopping tolerance ($10^{-12}$) take so much longer, and which eigenvalue sets its speed?
+1. The power method needed hundreds of iterations, yet the chain is within 0.01 of its steady state after 66 steps. Why does the power method's stopping tolerance ($10^{-12}$) take so much longer, and which eigenvalue sets its speed?
 2. In Part 5, the eigenvectors of the capacitance matrix do not depend on $C_c$, but the eigenvalues do. Why? What would break this if the two resonators were not identical?
 3. In Part 6, how would you choose the rank $k$ for real data, where the noise level is not known in advance?
 
