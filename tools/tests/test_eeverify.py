@@ -56,3 +56,16 @@ def test_unchecked_entry_fails(tmp_path):
     v = Verifier.from_files("t", md)
     with pytest.raises(SystemExit):
         v.finish()
+
+
+def test_run_python_blocks(tmp_path):
+    from eeverify import run_python_blocks
+    md = tmp_path / "doc.md"
+    md.write_text(
+        "Intro\n\n```python\nx = 2 + 3\nprint(x)\n```\n\n```text\n5\n```\n\n"
+        "```python\n# not run\nraise SystemExit\n```\n\n```python\nprint(x * 2)\n```\n\n```text\n11\n```\n",
+        encoding="utf-8")
+    v = Verifier("t", {})
+    ns = run_python_blocks(v, md)
+    assert ns["x"] == 5
+    assert v.passes == 1 and len(v.failures) == 1      # first block matches; third prints 10, not 11

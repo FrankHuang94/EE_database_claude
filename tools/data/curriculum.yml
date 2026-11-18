@@ -256,7 +256,7 @@ courses:
       - Write C programs that use pointers, arrays, structs and dynamic memory correctly.
       - Manipulate bits, masks and fixed-width integers the way firmware manipulates hardware registers.
       - Choose appropriate data structures (arrays, ring buffers, linked lists, hash tables, trees) and reason about algorithmic complexity.
-      - Apply basic software-engineering practice: version control, testing, requirements and design methods.
+      - "Apply basic software-engineering practice: version control, testing, requirements and design methods."
     chapters:
       - {id: "05-01", slug: python-fundamentals, title: "Python Fundamentals for Engineers", hours: 8, topics: "Types, control flow, functions, modules, files, exceptions, virtual environments"}
       - {id: "05-02", slug: numpy-and-vectorization, title: "NumPy, Vectorization and Numerical Computing", hours: 8, topics: "Arrays, broadcasting, vectorization, complex arrays, floating point"}

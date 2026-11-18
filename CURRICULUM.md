@@ -356,7 +356,7 @@ Python for engineering computation and C for hardware-adjacent programming, plus
 2. Write C programs that use pointers, arrays, structs and dynamic memory correctly.
 3. Manipulate bits, masks and fixed-width integers the way firmware manipulates hardware registers.
 4. Choose appropriate data structures (arrays, ring buffers, linked lists, hash tables, trees) and reason about algorithmic complexity.
-5. {'Apply basic software-engineering practice': 'version control, testing, requirements and design methods.'}
+5. Apply basic software-engineering practice: version control, testing, requirements and design methods.
 
 | Chapter | Hours | Key topics |
 |---|---|---|

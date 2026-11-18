@@ -21,13 +21,24 @@ Supported value formats in the key:
 
 At the end, ``v.finish()`` fails if any key entry was never checked, or any
 check referenced an ID not in the key. Exit status is non-zero on failure.
+
+For programming chapters, ``run_python_blocks(v, path)`` executes every fenced
+```python block of a Markdown file, in order and in one shared namespace, and
+records one assertion per block. A ```python block immediately followed by a
+```text block must print exactly that text. A block whose first line is
+``# not run`` is skipped (use it for deliberately broken or interactive code).
 """
 from __future__ import annotations
 
 import cmath
+import contextlib
+import io
 import math
+import os
 import re
 import sys
+import tempfile
+import traceback
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -239,3 +250,56 @@ def deg(c: complex) -> float:
 
 def repo_root() -> Path:
     return Path(__file__).resolve().parents[1]
+
+
+# --------------------------------------------------------------------------- code blocks in Markdown
+_FENCE = re.compile(r"^```([A-Za-z0-9_+-]*)[ \t]*\n(.*?)^```[ \t]*$", re.M | re.S)
+
+
+def markdown_code_blocks(path: str | Path) -> list[tuple[str, str, int, int]]:
+    """Return (language, code, start, end) for every top-level fenced block, in order."""
+    text = Path(path).read_text(encoding="utf-8")
+    return [(m.group(1).lower(), m.group(2), m.start(), m.end()) for m in _FENCE.finditer(text)]
+
+
+def run_python_blocks(v: "Verifier", path: str | Path, label: str | None = None) -> dict:
+    """Execute every ```python block of a Markdown file and check outputs shown in ```text blocks.
+
+    Blocks run in order in one namespace, inside a temporary working directory (so example
+    code may create files). Returns the final namespace so a verify script can reuse values
+    the examples computed.
+    """
+    path = Path(path)
+    text = path.read_text(encoding="utf-8")
+    blocks = markdown_code_blocks(path)
+    name = label or path.stem
+    ns: dict = {"__name__": "__main__"}
+    old_cwd = os.getcwd()
+    with tempfile.TemporaryDirectory() as tmp:
+        os.chdir(tmp)
+        try:
+            for i, (lang, code, _start, end) in enumerate(blocks):
+                if lang != "python" or code.lstrip().startswith("# not run"):
+                    continue
+                expected = None
+                if i + 1 < len(blocks) and blocks[i + 1][0] == "text" and not text[end:blocks[i + 1][2]].strip():
+                    expected = blocks[i + 1][1]
+                buf = io.StringIO()
+                line = text.count("\n", 0, _start) + 1
+                try:
+                    with contextlib.redirect_stdout(buf):
+                        exec(compile(code, f"{path.name}:{line}", "exec"), ns)
+                except Exception:  # noqa: BLE001 - report any failure of the example code
+                    v.assert_true(f"{name} code block at line {line} runs", False,
+                                  traceback.format_exc(limit=2).strip().splitlines()[-1])
+                    continue
+                if expected is None:
+                    v.assert_true(f"{name} code block at line {line} runs", True)
+                else:
+                    got = "\n".join(l.rstrip() for l in buf.getvalue().rstrip().splitlines())
+                    want = "\n".join(l.rstrip() for l in expected.rstrip().splitlines())
+                    v.assert_true(f"{name} code block at line {line} prints its shown output", got == want,
+                                  f"expected {want!r}, got {got!r}")
+        finally:
+            os.chdir(old_cwd)
+    return ns
