@@ -1,0 +1,32 @@
+* Lab 02-09 -- two coupled capacitors (Example 02-09.2) and the driven version (Problem 02-09.9).
+* R = 1 kOhm, C = 1 uF, so tau = RC = 1 ms. State vector x = (v1, v2); A = (1/tau)[[-2, 1], [1, -2]].
+* Free decay: C1 starts at 1 V, C2 at 0 V. Driven: the left resistor goes to a 1 V source; both start at 0 V.
+*
+* EXPECT tpk  key:../../chapters/02-09-systems-of-odes-and-matrix-exponential.md#Ex_02-09.2a scale=1e-3 rtol=2e-3
+* EXPECT v2pk key:../../chapters/02-09-systems-of-odes-and-matrix-exponential.md#Ex_02-09.2b rtol=1e-3
+* EXPECT v1t  key:../../chapters/02-09-systems-of-odes-and-matrix-exponential.md#Ex_02-09.2c rtol=1e-3
+* EXPECT v2t  key:../../chapters/02-09-systems-of-odes-and-matrix-exponential.md#Ex_02-09.2d rtol=1e-3
+* EXPECT w2t  key:../../solutions/02-09-solutions.md#02-09.9c rtol=1e-3
+
+* ---- free decay
+C1 n1 0 1u IC=1
+C2 n2 0 1u IC=0
+R1 n1 0  1k
+R2 n2 0  1k
+Rm n1 n2 1k
+
+* ---- driven from 1 V
+Vs  s  0 DC 1
+C3 m1 0 1u IC=0
+C4 m2 0 1u IC=0
+R3 s  m1 1k
+R4 m2 0  1k
+Rn m1 m2 1k
+
+.tran 1u 5m 0 1u UIC
+.meas tran tpk  MAX_AT v(n2)
+.meas tran v2pk MAX v(n2)
+.meas tran v1t  FIND v(n1) AT=1m
+.meas tran v2t  FIND v(n2) AT=1m
+.meas tran w2t  FIND v(m2) AT=1m
+.end

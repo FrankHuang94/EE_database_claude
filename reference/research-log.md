@@ -54,6 +54,10 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-046 | Yield-curve factors: Litterman and Scheinkman | Nov 2026 |
 | R-047 | PageRank as an eigenvector | Nov 2026 |
 | R-048 | Eckart-Young theorem | Nov 2026 |
+| R-049 | Foster and Cauer thermal models | Nov 2026 |
+| R-050 | Matrix exponential algorithms | Nov 2026 |
+| R-051 | Kalman filter and battery gauging models | Nov 2026 |
+| R-052 | State-space sequence models: S4 and Mamba | Nov 2026 |
 
 ---
 
@@ -364,3 +368,26 @@ R&D % = R&D ÷ revenue.
 
 - **Citation:** C. Eckart and G. Young, "The approximation of one matrix by another of lower rank," *Psychometrika*, 1(3), pp. 211–218, September 1936, DOI 10.1007/BF02288367. The truncated SVD is the best low-rank approximation; the 2-norm error statement used in 02-08 is the standard form given in Strang and in Trefethen and Bau [Established].
 - **Source:** [Springer record](https://link.springer.com/article/10.1007/BF02288367). Checked Nov 2026.
+
+## R-049 · Foster and Cauer thermal models
+
+- **Values:** Infineon Application Note AN2015-10, "Transient thermal measurements and thermal equivalent circuit models," V1.2 (2020-04-14; replaces AN2008-03), §2.1: $Z_{th}(t) = \sum_{i=1}^n r_i(1 - e^{-t/\tau_i})$ with $\tau_i = r_ic_i$. On the Cauer (continued-fraction, ladder) model: it "reflects the real, physical setup of the semiconductor… The network nodes therefore allow access to the internal temperatures of the layer sequence." On the Foster (partial-fraction) model: "The network nodes do not have any physical significance. This illustration is used in datasheets, as the coefficients can be easily extracted from a measured cooling curve." Converting Foster to Cauer "is not unambiguous" [Established].
+- **Source:** [Infineon AN2015-10 (Infineon community copy)](https://community.infineon.com/gfawx74859/attachments/gfawx74859/cnigbt/53/1/Infineon-Thermal_equivalent_circuit_models-ApplicationNotes-v01_02-EN.pdf). Other vendors' equivalent notes were not checked. Checked Nov 2026.
+
+## R-050 · Matrix exponential algorithms
+
+- **Values:** C. Moler and C. Van Loan, "Nineteen Dubious Ways to Compute the Exponential of a Matrix," *SIAM Review* 20(4):801–836, 1978, DOI 10.1137/1020098; and "…Twenty-Five Years Later," *SIAM Review* 45(1):3–49, 2003, DOI 10.1137/S00361445024180. Of scaling and squaring: "When properly implemented, the resulting algorithm is one of the most effective we know." The conclusions decline to name a single best method ("Answering that question is very risky"). The 2003 paper quotes MATLAB's help text, "EXPM is computed using a scaling and squaring algorithm with a Pade approximation". SciPy's `scipy.linalg.expm` documentation states that it implements the Al-Mohy and Higham (2009) scaling-and-squaring Padé algorithm [Established].
+- **Sources:** Crossref records; [1978 paper (university-hosted copy)](https://msvlab.ntou.edu.tw/grades/Engineering-Mathematics-100-2/19ways-1978.pdf); [2003 paper (preprint copy)](https://www.cs.jhu.edu/~misha/ReadingSeminar/Papers/Moler03.pdf); SciPy 1.18 docstring, read locally. Checked Nov 2026.
+
+## R-051 · Kalman filter and battery gauging models
+
+- **Values:** R. E. Kalman, "A New Approach to Linear Filtering and Prediction Problems," *Transactions of the ASME, Journal of Basic Engineering* 82(1):35–45, March 1960, DOI 10.1115/1.3662552. From the abstract: "The filtering problem is shown to be the dual of the noise-free regulator problem." Texas Instruments SLUAB20A (2025), on battery fuel gauges: "Many battery gauge algorithms use an equivalent circuit model for the battery" [Established]. No vendor document stating that a specific commercial gauge uses a Kalman filter was found, so the curriculum does not claim one.
+- **Sources:** Crossref record; [retyped copy (Yale)](https://www.cs.yale.edu/homes/yry/readings/general/Kalman1960.pdf); [TI SLUAB20A](https://www.ti.com/lit/pdf/sluab20). Checked Nov 2026.
+
+## R-052 · State-space sequence models: S4 and Mamba
+
+- **Values:**
+  - **S4:** A. Gu, K. Goel and C. Ré, "Efficiently Modeling Long Sequences with Structured State Spaces," ICLR 2022 (arXiv:2111.00396). It uses the continuous model $x' = Ax + Bu$, $y = Cx + Du$, discretized with the bilinear method ("we follow prior work in using the bilinear method").
+  - **Mamba:** A. Gu and T. Dao, "Mamba: Linear-Time Sequence Modeling with Selective State Spaces," COLM 2024 (arXiv:2312.00752). §2 uses $h'(t) = \mathbf{A}h(t) + \mathbf{B}x(t)$, $y = \mathbf{C}h$, discretized by the "zero-order hold (ZOH)": $\bar{\mathbf{A}} = \exp(\Delta\mathbf{A})$, $\bar{\mathbf{B}} = (\Delta\mathbf{A})^{-1}(\exp(\Delta\mathbf{A}) - \mathbf{I})\cdot\Delta\mathbf{B}$. Its "selective" mechanism makes Δ, B and C depend on the input.
+  - [Established]
+- **Sources:** [arXiv:2111.00396](https://arxiv.org/abs/2111.00396); [arXiv:2312.00752](https://arxiv.org/abs/2312.00752); the venue for Mamba is from the OpenReview record (COLM 2024). Checked Nov 2026.

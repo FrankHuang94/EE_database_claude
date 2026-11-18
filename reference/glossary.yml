@@ -1146,3 +1146,34 @@
 - term: Principal component analysis
   definition: Finding the eigenvectors of a data set's covariance matrix (equivalently the singular vectors of the centered data), ordered by the variance they carry, to describe or compress the data with a few uncorrelated components.
   chapter: "02-08"
+
+# ---------------------------------------------------------------- 02-09
+- term: State-space model
+  definition: The description x' = Ax + Bu, y = Cx + Du of a linear system, with state vector x (for circuits, capacitor voltages and inductor currents); the eigenvalues of A are the system's poles.
+  chapter: "02-09"
+  see_also: [State variable, Matrix exponential, Transfer function]
+- term: Matrix exponential
+  definition: e^{At} = I + At + (At)²/2! + …, the matrix that maps an initial state to the state at time t for x' = Ax; computed by diagonalization, by (sI − A)⁻¹, or numerically by scaling and squaring.
+  chapter: "02-09"
+- term: Phase portrait
+  definition: The family of trajectories of a two-state system drawn in the state plane; for linear systems it is a node, saddle, spiral or center, set by the trace and determinant of A.
+  chapter: "02-09"
+- term: Saddle point
+  definition: An equilibrium whose matrix has real eigenvalues of opposite sign (negative determinant); trajectories approach along one eigenvector and leave along the other, so it is unstable.
+  chapter: "02-09"
+- term: Zero-order hold
+  definition: Holding a sampled input constant over each sample period; it gives the exact discretization A_d = e^{AT}, B_d = A⁻¹(e^{AT} − I)B of a state-space model, mapping poles as z = e^{sT}.
+  chapter: "02-09"
+- term: Thermal impedance
+  definition: Z_th(t), the temperature rise per watt in response to a power step; it rises from near zero for very short pulses to the steady thermal resistance, and datasheets give it as a Foster RC network.
+  chapter: "02-09"
+  see_also: [Foster network, Cauer network, Thermal resistance]
+- term: Foster network
+  definition: An RC model written as a series chain of parallel R–C pairs, Z(t) = Σ Rᵢ(1 − e^(−t/τᵢ)); it is a modal (eigenvalue) expansion whose nodes have no physical meaning, so it cannot be cascaded with other stages.
+  chapter: "02-09"
+- term: Cauer network
+  definition: An RC ladder model whose capacitors connect to a reference at each node, mirroring physical layers in series; unlike a Foster network it can be cascaded with models of further stages.
+  chapter: "02-09"
+- term: Kalman filter
+  definition: The optimal linear estimator of a state-space system's state from noisy measurements (Kalman, 1960), alternating model-based prediction with measurement correction; widely used in navigation, tracking and sensor fusion.
+  chapter: "02-09"

@@ -1,0 +1,20 @@
+* Lab 02-09 -- electrical analog of the two-node chip thermal model (Example 02-09.5).
+* Temperature (K above ambient) -> voltage (V); power (W) -> current (A);
+* thermal resistance (K/W) -> resistance (Ohm); heat capacity (J/K) -> capacitance (F).
+* Die: Cd = 2 F; die-to-sink Rdh = 0.5 Ohm; sink: Ch = 50 F; sink-to-ambient Rha = 1.5 Ohm; P = 10 A from t = 0.
+*
+* EXPECT td1   key:../../chapters/02-09-systems-of-odes-and-matrix-exponential.md#Ex_02-09.5e rtol=1e-3
+* EXPECT td10  key:../../chapters/02-09-systems-of-odes-and-matrix-exponential.md#Ex_02-09.5f rtol=1e-3
+* EXPECT td100 key:../../chapters/02-09-systems-of-odes-and-matrix-exponential.md#Ex_02-09.5g rtol=1e-3
+
+Ip  0 d DC 10
+Cd  d 0 2  IC=0
+Rdh d h 0.5
+Ch  h 0 50 IC=0
+Rha h 0 1.5
+
+.tran 2m 120 0 2m UIC
+.meas tran td1   FIND v(d) AT=1
+.meas tran td10  FIND v(d) AT=10
+.meas tran td100 FIND v(d) AT=100
+.end
