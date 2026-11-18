@@ -124,3 +124,17 @@
 "When is a trace a transmission line?","When its delay is a noticeable fraction of the signal's rise time (or its length of the wavelength); then reflections and termination matter.",bsee::04 bsee::04-08
 "5G NR frequency ranges (as of Nov 2026)?","FR1 410–7125 MHz; FR2-1 24.25–52.6 GHz; FR2-2 52.6–71 GHz (3GPP TS 38.104 v19.6.0).",bsee::04 bsee::04-08
 "RF exposure limits for the public?","FCC: 1.6 W/kg over any 1 g (100 kHz–6 GHz), 1 mW/cm² power density 1.5–100 GHz. ICNIRP 2020: 2 W/kg over 10 g, 20 W/m² absorbed above 6 GHz. Compare with averaging mass.",bsee::04 bsee::04-08
+"Wave speed, wavelength and frequency?","v = λf = ω/k. String v = √(T/µ); sound in air ≈ 343 m/s; light c/n. Frequency is set by the source and is unchanged across boundaries; λ changes.",bsee::04 bsee::04-09
+"Constructive and destructive interference?","Path difference mλ: amplitudes add; (m + ½)λ: they cancel. Two equal waves: I = 4I₀cos²(δ/2), energy redistributed, not destroyed.",bsee::04 bsee::04-09
+"Two-slit fringe spacing?","Δy = λL/d. 633 nm, 0.2 mm slits, 1 m: 3.165 mm.",bsee::04 bsee::04-09
+"How does a phased array steer its beam?","Progressive phase Δφ between elements points the beam where kd sin θ = Δφ. Spacing above λ/2 risks grating lobes; steering widens the beam.",bsee::04 bsee::04-09
+"Standing waves and string modes?","Opposite waves sum to 2A cos(kx) cos(ωt) with fixed nodes. Fixed ends: λ_n = 2L/n, f_n = nv/(2L). Laser cavity mode spacing c/(2nL).",bsee::04 bsee::04-09
+"Quarter-wave anti-reflection coating?","Thickness λ/(4n_c), ideal n_c = √(n₀n_s); R = ((n₀n_s − n_c²)/(n₀n_s + n_c²))². MgF₂ on glass at 550 nm: 4% → 1.4%.",bsee::04 bsee::04-09
+"Diffraction limits?","Slit: first zero sin θ = λ/a. Circular aperture: 1.22λ/D (Rayleigh criterion). Smaller apertures or longer wavelengths spread more.",bsee::04 bsee::04-09
+"Lithography resolution?","CD = k₁λ/NA, k₁ ≥ 0.25. EUV 13.5 nm: NA 0.33 → 13 nm, NA 0.55 (High-NA) → 8 nm (ASML). Depth of focus ∝ λ/NA².",bsee::04 bsee::04-09
+"Snell's law and normal-incidence reflectance?","n₁ sin θ₁ = n₂ sin θ₂ (from the normal). R = ((n₁ − n₂)/(n₁ + n₂))²: glass 4%, silicon ≈ 31%.",bsee::04 bsee::04-09
+"Total internal reflection and fiber NA?","Beyond sin θ_c = n₂/n₁ all light reflects. Fiber NA = √(n₁² − n₂²) (≈ 0.1 single-mode, ≈ 0.2 multimode) sets the acceptance cone.",bsee::04 bsee::04-09
+"Fiber loss and dispersion (G.652.D)?","Cable loss ≤ 0.40 dB/km (1310–1625 nm), ≤ 0.30 dB/km (C-band). Dispersion ≈ 17 ps/(nm·km) at 1550 nm, ≈ 0 at 1310 nm; spreading Δt = DLΔλ.",bsee::04 bsee::04-09
+"Malus's law and Brewster's angle?","I = I₀cos²θ through a polarizer (½ for unpolarized light). tan θ_B = n₂/n₁: reflected light is fully polarized (56.3° for glass).",bsee::04 bsee::04-09
+"400G Ethernet optics (IEEE 802.3)?","SR8: 8 × 850 nm lanes, 100 m OM4 MMF. DR4: 4 × 1310 nm lanes, 500 m parallel SMF. FR4: 4 CWDM wavelengths 1271–1331 nm, 2 km on one SMF.",bsee::04 bsee::04-09
+"Co-packaged optics claims to check?","NVIDIA: 3.5× power efficiency (~30 W vs ~9 W per port), '63×' signal integrity (64× in its own blog). Broadcom: 70% power cut, 'more than 3.5×' (70% is 3.33×).",bsee::04 bsee::04-09

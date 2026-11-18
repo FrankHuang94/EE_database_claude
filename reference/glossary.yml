@@ -1852,3 +1852,44 @@
 - term: Specific absorption rate (SAR)
   definition: RF power absorbed per kilogram of tissue (W/kg); exposure limits include 1.6 W/kg averaged over 1 g (US FCC) and 2 W/kg over 10 g (ICNIRP), so limits must be compared with their averaging mass.
   chapter: "04-08"
+
+# ---------------------------------------------------------------- 04-09
+- term: Wave equation
+  definition: ∂²y/∂x² = (1/v²)∂²y/∂t², satisfied by any shape travelling as f(x ∓ vt); v = √(T/µ) on a string, ≈ 343 m/s for sound in air, c/n for light.
+  chapter: "04-09"
+- term: Interference
+  definition: The addition of waves arriving with different phases; constructive where path differences are whole wavelengths, destructive at half-wavelengths, redistributing (not destroying) energy.
+  chapter: "04-09"
+- term: Phased array
+  definition: A row or grid of antennas fed with progressive phase steps so their waves add in a chosen direction, sin θ = Δφ/(kd); steers beams electronically and needs spacing near λ/2 to avoid grating lobes.
+  chapter: "04-09"
+- term: Standing wave
+  definition: The sum of equal waves travelling in opposite directions, 2A cos(kx) cos(ωt), with fixed nodes half a wavelength apart; confined between reflectors it sets resonant modes such as f_n = nv/(2L).
+  chapter: "04-09"
+- term: Diffraction
+  definition: The spreading of a wave through an aperture or around an edge by about λ/aperture radians; a slit's first zero is at sin θ = λ/a, a circular aperture's at 1.22λ/D.
+  chapter: "04-09"
+- term: Rayleigh criterion
+  definition: Two point sources are just resolved when one's diffraction peak falls on the other's first dark ring, 1.22λ/D apart in angle; in lithography the analogous limit is CD = k₁λ/NA with k₁ ≥ 0.25.
+  chapter: "04-09"
+- term: Numerical aperture
+  definition: NA = n sin θ_max, the half-angle of the cone of light a lens or fiber accepts; it sets lithography resolution (∝ 1/NA) and fiber acceptance (√(n₁² − n₂²)).
+  chapter: "04-09"
+- term: Snell's law
+  definition: n₁ sin θ₁ = n₂ sin θ₂ for refraction at a boundary (angles from the normal), from requiring wavefronts to match along the surface.
+  chapter: "04-09"
+- term: Total internal reflection
+  definition: Complete reflection of light going from higher to lower index at angles beyond the critical angle sin θ_c = n₂/n₁; it guides light in optical fibers and silicon waveguides.
+  chapter: "04-09"
+- term: Optical fiber
+  definition: A glass core of slightly higher index than its cladding that guides light by total internal reflection; single-mode fiber (≈ 9 µm core) for long reach, multimode for short links at 850 nm.
+  chapter: "04-09"
+- term: Chromatic dispersion
+  definition: The spreading of a light pulse because different wavelengths travel at different speeds; about 17 ps/(nm·km) at 1550 nm and near zero at 1310 nm in standard single-mode fiber.
+  chapter: "04-09"
+- term: Polarization (light)
+  definition: The direction in which a transverse wave's electric field oscillates; a polarizer transmits I₀ cos²θ (Malus's law), and reflection at Brewster's angle tan θ_B = n₂/n₁ removes one polarization.
+  chapter: "04-09"
+- term: Co-packaged optics
+  definition: Optical engines placed in the same package as a switch or processor chip, shortening the electrical path to cut power per bit; announced by NVIDIA and Broadcom for 2025–2026 switches (as of Nov 2026).
+  chapter: "04-09"

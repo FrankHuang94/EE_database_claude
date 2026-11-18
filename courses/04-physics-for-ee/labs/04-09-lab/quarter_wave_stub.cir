@@ -1,0 +1,21 @@
+* Chapter 04-09, Example 04-09.4 -- standing waves on an open-circuited quarter-wave line.
+* A lossless 50 Ohm line with a one-way delay of 0.25 ns, open at the far end, is driven by a
+* 1 A AC current source through a 1 kOhm shunt (to keep the source well defined). At 1 GHz the
+* line is a quarter wavelength long: the reflected wave returns inverted at the input and the
+* input impedance falls to zero; at 2 GHz (a half wavelength) it is open again.
+*
+* EXPECT fmin key:../../chapters/04-09-waves-and-optics.md#Ex_04-09.4e scale=1e9 rtol=1e-3
+
+IIN 0 in AC 1
+RSH in 0 1k
+T1  in 0 far 0 Z0=50 TD=0.25n
+RFAR far 0 1G
+
+.ac lin 2001 0.5g 1.5g
+
+.control
+run
+let zmag = vm(in)
+meas ac fmin MIN_AT zmag
+.endc
+.end
