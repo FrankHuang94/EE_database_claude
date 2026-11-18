@@ -32,7 +32,7 @@ Chapter sections 3.1–3.4 (determinants, volume, inverses), 3.7 (rank and the c
 | 1 | cofactor time growth | about ×$n$ per step; 12!/9! = 1,320 times longer at $n = 12$ than at $n = 9$ |
 | 2 | `inv(A) @ b` vs `solve(A, b)` | the inverse is roughly 3× slower (machine-dependent) and no more accurate |
 | 3 | Example 02-07.3 | rank 2; null space (−2, 1, 0, 0), (−1, 0, −2, 1); condition $b_1 - 2b_2 + b_3 = 0$ |
-| 3 | noisy rank-2 matrix | rank 5 at NumPy's default tolerance (the noise exceeds it), 2 at a tolerance of $10^{-10}$ |
+| 3 | noisy rank-2 matrix | rank 5 at NumPy's default tolerance of $1.13\times10^{-14}$: three of the four noise singular values lie above it and the smallest ($1.05\times10^{-14}$) just below, so the default-tolerance rank of noisy data is essentially arbitrary; rank 2 at a tolerance of $10^{-10}$, matched to the data's accuracy |
 | 4 | Example 02-07.4 | all three methods agree: 0.3996 V and 10.025 mV/°C; $\mathbf{A}^\mathsf{T}\mathbf{e} = \mathbf{0}$ |
 | 4 | polynomial degree | SSE falls from $3.87\times10^{-5}$ to $1.806\times10^{-5}$ V² (degree 2), then to essentially 0 at degree 4, which interpolates the noise |
 | 5 | Example 02-07.5 | rank 3, two independent loops, $\mathbf{G}$ as in 02-06, $\mathbf{R}$ symmetric with first column (1.074, 0.4815, 0.2593) kΩ |

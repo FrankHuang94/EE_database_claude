@@ -4,7 +4,7 @@
 | | |
 |---|---|
 | **Course** | [02 · Complex Numbers, Differential Equations and Linear Algebra](../README.md) |
-| **University equivalent** | The middle units of a sophomore linear-algebra course (MIT 18.06 lectures 3 and 5–10 on inverses, vector spaces, column and null spaces, rank and the complete solution; lectures 15–16 on projections and least squares; lectures 18–20 on determinants and Cramer's rule; Strang, *Introduction to Linear Algebra*, chapters 2.5, 3, 4.1–4.3 and 5) |
+| **University equivalent** | The middle units of a sophomore linear-algebra course (MIT 18.06 lectures 3 and 5–10 on inverses, vector spaces, column and null spaces, rank and the complete solution; lecture 12 on graphs and networks; lectures 14–17 on orthogonality, projections, least squares, orthonormal bases and Gram–Schmidt; lectures 18–20 on determinants and Cramer's rule; Strang, *Introduction to Linear Algebra*, chapters 2.5, 3, 4.1–4.3 and 5) |
 | **Prerequisites** | [02-06 Vectors, Matrices and Linear Systems](02-06-vectors-matrices-and-linear-systems.md) (elimination, LU, projection onto a line, nodal analysis) |
 | **Estimated study hours** | 10 |
 | **Last verified** | 2026-11-18 |
@@ -87,7 +87,7 @@ $$
 
 The first gives $\det\mathbf{A}^{-1} = 1/\det\mathbf{A}$, because $\det\mathbf{A}\,\det\mathbf{A}^{-1} = \det\mathbf{I} = 1$. The second means every statement about rows also holds for columns. And by rule 3 applied to all $n$ rows, $\det(c\mathbf{A}) = c^n\det\mathbf{A}$.
 
-> **Going deeper — the two product rules.** *Products:* if $\det\mathbf{B} \ne 0$, the function $d(\mathbf{A}) = \det(\mathbf{A}\mathbf{B})/\det\mathbf{B}$ satisfies all three rules. $d(\mathbf{I}) = 1$; exchanging rows of $\mathbf{A}$ exchanges the same rows of $\mathbf{A}\mathbf{B}$; and row $i$ of $\mathbf{A}\mathbf{B}$ is (row $i$ of $\mathbf{A}$)·$\mathbf{B}$, which is linear in row $i$ of $\mathbf{A}$. The three rules determine the function completely (they reduce any matrix to a triangular one), so $d(\mathbf{A}) = \det\mathbf{A}$. If $\det\mathbf{B} = 0$, then $\mathbf{B}$ is singular, so $\mathbf{A}\mathbf{B}$ is too, and both sides are 0. *Transposes:* from $\mathbf{P}\mathbf{A} = \mathbf{L}\mathbf{U}$, transposing gives $\mathbf{A}^\mathsf{T}\mathbf{P}^\mathsf{T} = \mathbf{U}^\mathsf{T}\mathbf{L}^\mathsf{T}$. Triangular matrices have the same diagonal as their transposes, and $\det\mathbf{P} = \det\mathbf{P}^\mathsf{T} = \pm1$, so the product rule gives $\det\mathbf{A}^\mathsf{T} = \det\mathbf{A}$.
+> **Going deeper — the two product rules.** *Products:* if $\det\mathbf{B} \ne 0$, the function $d(\mathbf{A}) = \det(\mathbf{A}\mathbf{B})/\det\mathbf{B}$ satisfies all three rules. $d(\mathbf{I}) = 1$; exchanging rows of $\mathbf{A}$ exchanges the same rows of $\mathbf{A}\mathbf{B}$; and row $i$ of $\mathbf{A}\mathbf{B}$ is (row $i$ of $\mathbf{A}$)·$\mathbf{B}$, which is linear in row $i$ of $\mathbf{A}$. The three rules determine the function completely (they reduce any matrix to a triangular one), so $d(\mathbf{A}) = \det\mathbf{A}$. If $\det\mathbf{B} = 0$, then $\mathbf{B}$ is singular, so $\mathbf{A}\mathbf{B}$ is too, and both sides are 0. *Transposes:* from $\mathbf{P}\mathbf{A} = \mathbf{L}\mathbf{U}$, transposing gives $\mathbf{A}^\mathsf{T}\mathbf{P}^\mathsf{T} = \mathbf{U}^\mathsf{T}\mathbf{L}^\mathsf{T}$. Triangular matrices have the same diagonal as their transposes. A permutation matrix is $\mathbf{I}$ with its rows exchanged, so $\det\mathbf{P} = \pm1$ by rule 2; and $\mathbf{P}^\mathsf{T} = \mathbf{P}^{-1}$, so $\det\mathbf{P}^\mathsf{T} = 1/\det\mathbf{P}$, which equals $\det\mathbf{P}$ when that is ±1. The product rule then gives $\det\mathbf{A}^\mathsf{T} = \det\mathbf{A}$.
 
 ### 3.2 Formulas: 2×2, cofactors, and why they are not used for large matrices
 
@@ -99,13 +99,19 @@ $$
 
 The middle step drops two determinants that have a zero column, which is zero by the column version of the zero-row rule. The last step uses the triangular rule for the first term, and one row exchange for the second, which turns $\begin{bmatrix} 0 & b \\ c & 0\end{bmatrix}$ into a diagonal matrix with determinant $cb$, hence $-bc$.
 
-**Cofactor expansion.** The same splitting applied to row 1 of an $n\times n$ matrix gives
+**Cofactor expansion, derived.** Split row 1 of an $n\times n$ matrix into its $n$ pieces with rule 3: $\det\mathbf{A} = \sum_j\det\mathbf{A}^{(j)}$, where $\mathbf{A}^{(j)}$ keeps rows 2 to $n$ of $\mathbf{A}$ but has row 1 equal to $(0, \dots, a_{1j}, \dots, 0)$. Evaluate one piece in three steps.
+
+1. Move column $j$ to the front by $j - 1$ exchanges of adjacent columns. Each exchange flips the sign (the column version of rule 2, valid because $\det\mathbf{A}^\mathsf{T} = \det\mathbf{A}$), so the sign is $(-1)^{j-1}$. Row 1 is now $(a_{1j}, 0, \dots, 0)$, and the lower-right $(n-1)\times(n-1)$ block is the **minor** $\mathbf{M}_{1j}$: $\mathbf{A}$ with row 1 and column $j$ deleted, its other columns in their original order.
+2. If $a_{1j} = 0$ the piece is zero (a zero row). Otherwise subtract multiples of row 1 to clear the first column below it; elimination does not change the determinant, and row 1 has zeros elsewhere, so the block $\mathbf{M}_{1j}$ is untouched.
+3. Now eliminate inside $\mathbf{M}_{1j}$, which never touches row 1 or column 1. The matrix becomes triangular with diagonal $a_{1j}$ followed by the pivots of $\mathbf{M}_{1j}$, so the piece equals $(-1)^{j-1}a_{1j}\det\mathbf{M}_{1j}$.
+
+Summing the pieces, and writing $(-1)^{j-1} = (-1)^{1+j}$:
 
 $$
 \det\mathbf{A} = a_{11}C_{11} + a_{12}C_{12} + \dots + a_{1n}C_{1n}, \qquad C_{1j} = (-1)^{1+j}\det\mathbf{M}_{1j},
 $$
 
-where the **minor** $\mathbf{M}_{1j}$ is $\mathbf{A}$ with row 1 and column $j$ deleted, and $C_{1j}$ is the **cofactor**. The signs alternate in a checkerboard, starting with $+$ in the top-left corner. Any row or column can be used for the expansion. For 3×3:
+where $C_{1j}$ is the **cofactor**. Any row works: move row $i$ to the top with $i - 1$ adjacent row exchanges (keeping the other rows in order) and expand along it, which gives the sign $(-1)^{i+j}$. Any column works too, by $\det\mathbf{A}^\mathsf{T} = \det\mathbf{A}$. The signs alternate in a checkerboard, starting with $+$ in the top-left corner. For 3×3:
 
 $$
 \det\begin{bmatrix} a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \\ a_{31} & a_{32} & a_{33}\end{bmatrix} = a_{11}(a_{22}a_{33} - a_{23}a_{32}) - a_{12}(a_{21}a_{33} - a_{23}a_{31}) + a_{13}(a_{21}a_{32} - a_{22}a_{31}) .
@@ -159,7 +165,7 @@ The left block becomes $\mathbf{I}$ and the right block becomes $\mathbf{A}^{-1}
 
 **Rules.** $(\mathbf{A}\mathbf{B})^{-1} = \mathbf{B}^{-1}\mathbf{A}^{-1}$ (undo the last operation first: $\mathbf{B}^{-1}\mathbf{A}^{-1}\mathbf{A}\mathbf{B} = \mathbf{B}^{-1}\mathbf{B} = \mathbf{I}$). $(\mathbf{A}^\mathsf{T})^{-1} = (\mathbf{A}^{-1})^\mathsf{T}$ (transpose $\mathbf{A}\mathbf{A}^{-1} = \mathbf{I}$). The inverse of a diagonal matrix inverts each diagonal entry. The inverse of a symmetric matrix is symmetric.
 
-**Cost, and the rule of practice.** Computing $\mathbf{A}^{-1}$ costs about $2n^3$ flops, three times an LU factorization. And $\mathbf{A}^{-1}\mathbf{b}$ is usually less accurate than solving with the LU factors. So the inverse is a tool for *thinking* and for formulas, and for the occasional case where its entries themselves are wanted. To solve $\mathbf{A}\mathbf{x} = \mathbf{b}$, factor and substitute.
+**Cost, and the rule of practice.** Computing $\mathbf{A}^{-1}$ costs about $2n^3$ flops, three times an LU factorization. And computing $\mathbf{A}^{-1}\mathbf{b}$ is not *backward stable*: the solution it returns can leave a larger residual $\lVert\mathbf{A}\mathbf{x} - \mathbf{b}\rVert$ than solving with the LU factors, although the error in $\mathbf{x}$ itself is often similar ([02-10](02-10-numerical-methods.md) §3.6). So the inverse is a tool for *thinking* and for formulas, and for the occasional case where its entries themselves are wanted. To solve $\mathbf{A}\mathbf{x} = \mathbf{b}$, factor and substitute.
 
 **The inverse of a conductance matrix is a resistance matrix.** For a grounded resistive circuit, $\mathbf{G}\mathbf{v} = \mathbf{i}$ gives $\mathbf{v} = \mathbf{R}\mathbf{i}$ with $\mathbf{R} = \mathbf{G}^{-1}$, in ohms. Column $j$ of $\mathbf{R}$ is the set of node voltages produced by 1 A injected at node $j$ (and nothing else). So:
 
@@ -179,9 +185,9 @@ $$
 
 *Derivation.* Let $\mathbf{X}_i$ be the identity matrix with column $i$ replaced by $\mathbf{x}$. Then $\mathbf{A}\mathbf{X}_i$ has columns $\mathbf{A}\mathbf{e}_1, \dots, \mathbf{A}\mathbf{x}, \dots, \mathbf{A}\mathbf{e}_n$, which are the columns of $\mathbf{A}$ with column $i$ replaced by $\mathbf{A}\mathbf{x} = \mathbf{b}$. In other words, $\mathbf{A}\mathbf{X}_i = \mathbf{B}_i$. Expanding $\det\mathbf{X}_i$ along its row $i$ gives $x_i$, so the product rule yields $\det\mathbf{A}\cdot x_i = \det\mathbf{B}_i$.
 
-Applying the rule to each column of $\mathbf{I}$ gives the **adjugate formula** for the inverse, $\mathbf{A}^{-1} = \mathbf{C}^\mathsf{T}/\det\mathbf{A}$, where $\mathbf{C}$ is the matrix of cofactors. The 2×2 inverse above is its smallest case.
+Applying the rule to each column of $\mathbf{I}$ gives the **adjugate formula** for the inverse. Column $j$ of $\mathbf{A}^{-1}$ solves $\mathbf{A}\mathbf{x} = \mathbf{e}_j$, so its entry $i$ is $\det\mathbf{B}_i/\det\mathbf{A}$, where $\mathbf{B}_i$ is $\mathbf{A}$ with column $i$ replaced by $\mathbf{e}_j$. Expand $\det\mathbf{B}_i$ down that column: its only nonzero entry is the 1 in row $j$, so $\det\mathbf{B}_i = (-1)^{i+j}\det\mathbf{M}_{ji} = C_{ji}$. Hence $(\mathbf{A}^{-1})_{ij} = C_{ji}/\det\mathbf{A}$, that is $\mathbf{A}^{-1} = \mathbf{C}^\mathsf{T}/\det\mathbf{A}$, where $\mathbf{C}$ is the matrix of cofactors (here $\mathbf{C}$ means cofactors; §3.9 uses $\mathbf{C}$ for branch conductances). The transpose appears because the row index of the inverse is the column index of the cofactor. The 2×2 inverse above is its smallest case.
 
-**When to use it.** Cramer's rule needs $n + 1$ determinants, so it is hopeless numerically for large $n$. Its value is *symbolic*. For a 2- or 3-node circuit it gives closed-form expressions, such as a gain as a ratio of polynomials in the component values. Those show how each component enters, which is what a designer wants when choosing values or estimating sensitivity. The denominator, $\det\mathbf{A}$, is common to every unknown. For circuits with capacitors and inductors analyzed in the $s$-domain, that common denominator is the characteristic polynomial, whose roots are the poles of [02-05](02-05-laplace-transform-for-odes.md).
+**When to use it.** Cramer's rule needs $n + 1$ determinants, so it is hopeless numerically for large $n$. Its value is *symbolic*. For a 2- or 3-node circuit it gives closed-form expressions, such as a gain as a ratio of polynomials in the component values. Those show how each component enters, which is what a designer wants when choosing values or estimating sensitivity. The denominator, $\det\mathbf{A}$, is common to every unknown. For circuits with capacitors and inductors analyzed in the $s$-domain, that common denominator is a rational function of $s$ (an inductor stamps $1/(sL)$). After clearing the powers of $s$, its numerator is the characteristic polynomial (barring cancellations), whose roots are the poles of [02-05](02-05-laplace-transform-for-odes.md).
 
 ### 3.6 Vector spaces, independence, basis and dimension
 
@@ -192,6 +198,8 @@ The **span** of a set of vectors is the set of all their linear combinations; it
 Vectors $\mathbf{v}_1, \dots, \mathbf{v}_k$ are **linearly independent** if the only combination $c_1\mathbf{v}_1 + \dots + c_k\mathbf{v}_k$ equal to $\mathbf{0}$ is the one with every $c_i = 0$. Otherwise they are **dependent**: some combination with nonzero weights vanishes, and at least one of the vectors is a combination of the others. To test, put the vectors in the columns of a matrix $\mathbf{V}$ and ask whether $\mathbf{V}\mathbf{c} = \mathbf{0}$ has a nonzero solution: eliminate and count pivots. For $n$ vectors in $\mathbb{R}^n$, the matrix is square, and the test is $\det\mathbf{V} \ne 0$.
 
 A **basis** of a subspace is a set of independent vectors that spans it. Every vector in the subspace is then a combination of the basis vectors *in exactly one way*: if two combinations gave the same vector, their difference would be a vanishing combination with nonzero weights. All bases of a subspace have the same number of vectors, its **dimension**. ($\mathbb{R}^n$ has dimension $n$, and the unit vectors are its standard basis.)
+
+> **Going deeper — why every basis has the same size.** Suppose $\mathbf{w}_1, \dots, \mathbf{w}_m$ span a subspace and $\mathbf{v}_1, \dots, \mathbf{v}_n$ in it are independent. Each $\mathbf{v}_j$ is a combination of the $\mathbf{w}$'s, so $\mathbf{V} = \mathbf{W}\mathbf{K}$ for some $m\times n$ matrix $\mathbf{K}$ whose column $j$ holds the weights for $\mathbf{v}_j$. If $n > m$, then $\mathbf{K}$ is wide, elimination leaves it a free column, and $\mathbf{K}\mathbf{c} = \mathbf{0}$ has a nonzero solution (§3.7). Then $\mathbf{V}\mathbf{c} = \mathbf{W}\mathbf{K}\mathbf{c} = \mathbf{0}$, contradicting independence. So an independent set is never larger than a spanning set. Two bases are both, so each is at most the size of the other: they are equal.
 
 You have already met a vector space that is not a set of lists. The solutions of $y'' + 2\alpha y' + \omega_0^2y = 0$ form a vector space, because sums and multiples of solutions are solutions (superposition, [02-03](02-03-second-order-linear-odes.md)). It has dimension 2, and for distinct characteristic roots $e^{s_1t}$ and $e^{s_2t}$ are a basis. That is why exactly two initial conditions pin down a solution.
 
@@ -205,8 +213,8 @@ For an $m\times n$ matrix $\mathbf{A}$, two subspaces matter most.
 **Finding them by elimination.** Elimination works for rectangular matrices too. When a column has no pivot available, skip to the next column. The result is an **echelon form** $\mathbf{U}$, a staircase with the pivots on its steps. Continue upward and divide by the pivots to get the **reduced row echelon form** $\mathbf{R}$. Then:
 
 - The **rank** $r$ is the number of pivots.
-- The **pivot columns** of the *original* $\mathbf{A}$ are a basis for $C(\mathbf{A})$, so $\dim C(\mathbf{A}) = r$. (Row operations change the columns, but not the dependencies among them.)
-- The other $n - r$ columns are **free columns**, and their variables are free. For each free variable, set it to 1 and the other free variables to 0, and solve for the pivot variables. The resulting **special solutions** form a basis for $N(\mathbf{A})$, so $\dim N(\mathbf{A}) = n - r$.
+- The **pivot columns** of the *original* $\mathbf{A}$ are a basis for $C(\mathbf{A})$, so $\dim C(\mathbf{A}) = r$. Row operations change the columns, but not the dependencies among them: each row operation is invertible, so $\mathbf{A}\mathbf{x} = \mathbf{0}$ exactly when $\mathbf{R}\mathbf{x} = \mathbf{0}$, and any combination of columns that vanishes for $\mathbf{R}$ vanishes for $\mathbf{A}$. In $\mathbf{R}$ the pivot columns are distinct unit vectors, so they are independent, and every other column is a combination of them, with weights read off its entries in the pivot rows. The same holds for the columns of $\mathbf{A}$.
+- The other $n - r$ columns are **free columns**, and their variables are free. For each free variable, set it to 1 and the other free variables to 0, and solve for the pivot variables. The resulting **special solutions** $\mathbf{s}_1, \dots, \mathbf{s}_{n-r}$ form a basis for $N(\mathbf{A})$, so $\dim N(\mathbf{A}) = n - r$. *They are independent:* each has a 1 in its own free slot and 0 in the other free slots, so a combination of them vanishes only if every weight does. *They span:* if $\mathbf{x}$ is any null vector with free-variable values $x_{f_1}, \dots, x_{f_{n-r}}$, then $\mathbf{x} - \sum_ix_{f_i}\mathbf{s}_i$ is a null vector whose free variables are all zero, and $\mathbf{R}\mathbf{x} = \mathbf{0}$ then forces its pivot variables to zero too. So $\mathbf{x} = \sum_ix_{f_i}\mathbf{s}_i$.
 
 This gives the **rank–nullity theorem**:
 
@@ -259,6 +267,8 @@ $$
 
 Setting every partial derivative with respect to $x_j$ to zero ([01-09](../../01-calculus-for-engineers/chapters/01-09-multivariable-calculus-1.md)) gives $-2\mathbf{A}^\mathsf{T}\mathbf{b} + 2\mathbf{A}^\mathsf{T}\mathbf{A}\mathbf{x} = \mathbf{0}$: the same equations.
 
+> **Math refresher — gradients of linear and quadratic forms.** For a constant vector $\mathbf{c}$, $\mathbf{x}^\mathsf{T}\mathbf{c} = \sum_kx_kc_k$, so $\partial/\partial x_j$ gives $c_j$: the gradient is $\mathbf{c}$. For a symmetric matrix $\mathbf{M}$, $\mathbf{x}^\mathsf{T}\mathbf{M}\mathbf{x} = \sum_k\sum_lx_kM_{kl}x_l$. Differentiating with respect to $x_j$ picks out the terms with $k = j$ and those with $l = j$: $\sum_lM_{jl}x_l + \sum_kx_kM_{kj} = 2(\mathbf{M}\mathbf{x})_j$, using $M_{kj} = M_{jk}$. So the gradient is $2\mathbf{M}\mathbf{x}$, the matrix version of $d(mx^2)/dx = 2mx$. Above, $\mathbf{c} = \mathbf{A}^\mathsf{T}\mathbf{b}$ and $\mathbf{M} = \mathbf{A}^\mathsf{T}\mathbf{A}$.
+
 **When the solution is unique.** $\mathbf{A}^\mathsf{T}\mathbf{A}$ is invertible exactly when the columns of $\mathbf{A}$ are independent. If $\mathbf{A}^\mathsf{T}\mathbf{A}\mathbf{x} = \mathbf{0}$, then $0 = \mathbf{x}^\mathsf{T}\mathbf{A}^\mathsf{T}\mathbf{A}\mathbf{x} = \lVert\mathbf{A}\mathbf{x}\rVert^2$, so $\mathbf{A}\mathbf{x} = \mathbf{0}$, and independence forces $\mathbf{x} = \mathbf{0}$. In fitting terms: the model's parameters must not be redundant. A model with two offset terms cannot tell them apart.
 
 **Fitting a straight line.** For data $(t_i, b_i)$ and the model $b \approx c + dt$, the matrix $\mathbf{A}$ has a column of ones and a column of the $t_i$. The normal equations are
@@ -275,9 +285,27 @@ $$
 
 The orthogonality conditions say that the residuals sum to zero (perpendicular to the column of ones) and are uncorrelated with $t$ (perpendicular to the $t$ column). Any model that is *linear in its parameters* fits the same way: polynomials, sums of known sinusoids, $a + b\ln t$. So do some models that can be made linear, such as an exponential decay fitted through its logarithm (Problem 02-07.14).
 
-> **Going deeper — how software actually solves least squares.** Forming $\mathbf{A}^\mathsf{T}\mathbf{A}$ squares the sensitivity of the problem to rounding (its *condition number*, [02-10](02-10-numerical-methods.md)). For badly scaled or nearly dependent columns, such as high-degree polynomial fits, that can lose half the available digits. Libraries therefore factor $\mathbf{A}$ itself: by QR factorization, which orthogonalizes the columns (usually with Householder reflections), or by the singular value decomposition. SciPy's `scipy.linalg.lstsq` defaults to LAPACK's SVD-based driver `gelsd`, and NumPy's `numpy.linalg.lstsq` likewise returns singular values. Use the normal equations to understand and to derive; use `lstsq` to compute. See Trefethen and Bau, lectures 7–11.
+**Orthonormal bases and Gram–Schmidt.** Least squares is easiest when the columns are **orthonormal**: unit length and mutually perpendicular, $\mathbf{q}_i^\mathsf{T}\mathbf{q}_j = 0$ for $i \ne j$ and 1 for $i = j$. Collected in an $m\times n$ matrix $\mathbf{Q}$, that says $\mathbf{Q}^\mathsf{T}\mathbf{Q} = \mathbf{I}$. The normal equations then collapse to $\hat{\mathbf{x}} = \mathbf{Q}^\mathsf{T}\mathbf{b}$, each coefficient a single dot product, and the projection is $\mathbf{p} = \mathbf{Q}\mathbf{Q}^\mathsf{T}\mathbf{b}$. A *square* $\mathbf{Q}$ with orthonormal columns is an **orthogonal matrix**: $\mathbf{Q}^{-1} = \mathbf{Q}^\mathsf{T}$, and it preserves lengths, because $\lVert\mathbf{Q}\mathbf{x}\rVert^2 = \mathbf{x}^\mathsf{T}\mathbf{Q}^\mathsf{T}\mathbf{Q}\mathbf{x} = \lVert\mathbf{x}\rVert^2$. Rotations and reflections are orthogonal matrices, and 02-08 uses them throughout.
 
-![Left: five calibration points of sensor voltage versus temperature, the least-squares line through them, and short vertical residual segments. Right: a sketch of b, its projection p onto the column-space plane, and the error e perpendicular to that plane.](../../../assets/figures/02-07/least-squares.svg)
+The **Gram–Schmidt process** turns independent columns $\mathbf{a}_1, \dots, \mathbf{a}_n$ into orthonormal ones spanning the same space. Take each column in turn, subtract its projections onto the directions already built, and normalize:
+
+$$
+\mathbf{w}_k = \mathbf{a}_k - \sum_{i<k}(\mathbf{q}_i^\mathsf{T}\mathbf{a}_k)\,\mathbf{q}_i, \qquad \mathbf{q}_k = \frac{\mathbf{w}_k}{\lVert\mathbf{w}_k\rVert} .
+$$
+
+Each $\mathbf{w}_k$ is perpendicular to every earlier $\mathbf{q}_j$: dotting with $\mathbf{q}_j$ gives $\mathbf{q}_j^\mathsf{T}\mathbf{a}_k - \mathbf{q}_j^\mathsf{T}\mathbf{a}_k = 0$, because the earlier $\mathbf{q}$'s are orthonormal. And $\mathbf{w}_k \ne \mathbf{0}$, because independence means $\mathbf{a}_k$ is not a combination of the earlier columns.
+
+**A = QR.** Read the process backward: $\mathbf{a}_k = \sum_{i<k}(\mathbf{q}_i^\mathsf{T}\mathbf{a}_k)\mathbf{q}_i + \lVert\mathbf{w}_k\rVert\mathbf{q}_k$, a combination of $\mathbf{q}_1, \dots, \mathbf{q}_k$ only. In matrix form $\mathbf{A} = \mathbf{Q}\mathbf{R}$, where $\mathbf{R}$ (the triangular factor, not the echelon form of §3.7) is upper triangular with $r_{ik} = \mathbf{q}_i^\mathsf{T}\mathbf{a}_k$ and $r_{kk} = \lVert\mathbf{w}_k\rVert > 0$. Substituting into the normal equations gives $\mathbf{R}^\mathsf{T}\mathbf{Q}^\mathsf{T}\mathbf{Q}\mathbf{R}\hat{\mathbf{x}} = \mathbf{R}^\mathsf{T}\mathbf{Q}^\mathsf{T}\mathbf{b}$. Cancel $\mathbf{Q}^\mathsf{T}\mathbf{Q} = \mathbf{I}$ and the invertible $\mathbf{R}^\mathsf{T}$:
+
+$$
+\mathbf{R}\,\hat{\mathbf{x}} = \mathbf{Q}^\mathsf{T}\mathbf{b},
+$$
+
+solved by back substitution, without ever forming $\mathbf{A}^\mathsf{T}\mathbf{A}$. Example 02-07.6 works one through.
+
+> **Going deeper — how software actually solves least squares.** Forming $\mathbf{A}^\mathsf{T}\mathbf{A}$ squares the sensitivity of the problem to rounding (its *condition number*, [02-10](02-10-numerical-methods.md)). For badly scaled or nearly dependent columns, such as high-degree polynomial fits, that can lose half the available digits. Libraries therefore factor $\mathbf{A}$ itself: by QR factorization, computed with Householder reflections rather than classical Gram–Schmidt, which loses orthogonality in floating point, or by the singular value decomposition. SciPy's `scipy.linalg.lstsq` defaults to LAPACK's SVD-based driver `gelsd`, and NumPy's `numpy.linalg.lstsq` likewise returns singular values. Use the normal equations to understand and to derive; use `lstsq` to compute. See Trefethen and Bau, lectures 7–11.
+
+![Three panels: the five calibration points of sensor voltage versus temperature with the least-squares line; the residuals at each temperature; and a sketch of b, its projection p onto the column-space plane, and the error e perpendicular to that plane.](../../../assets/figures/02-07/least-squares.svg)
 
 *Figure 02-07.2 — Least squares (Example 02-07.4). The fitted line minimizes the sum of squared vertical residuals; geometrically, $\mathbf{A}\hat{\mathbf{x}}$ is the projection of the data vector onto the column space, and the residual vector is perpendicular to it.*
 
@@ -287,8 +315,8 @@ Here is the connection between this chapter's subspaces and the conductance matr
 
 Three steps then rebuild nodal analysis.
 
-1. **Voltage across each branch:** $\mathbf{e} = \mathbf{A}\mathbf{v}$, since row $k$ computes $v_{\text{start}} - v_{\text{end}}$.
-2. **Ohm's law, branch by branch:** the branch currents are $\mathbf{y} = \mathbf{C}\mathbf{e}$, where $\mathbf{C}$ is the diagonal matrix of branch conductances.
+1. **Voltage across each branch:** $\mathbf{e} = \mathbf{A}\mathbf{v}$, since row $k$ computes $v_{\text{start}} - v_{\text{end}}$. (In this section $\mathbf{e}$ holds branch voltages, not the least-squares error of §3.8.)
+2. **Ohm's law, branch by branch:** the branch currents are $\mathbf{y} = \mathbf{C}\mathbf{e}$, where $\mathbf{C}$ is the diagonal matrix of branch conductances (not the cofactor matrix of §3.5).
 3. **KCL at each node:** $\mathbf{A}^\mathsf{T}\mathbf{y} = \mathbf{f}$, where $\mathbf{f}$ holds the source currents injected at the nodes. Column $p$ of $\mathbf{A}$ has $+1$ for branches leaving node $p$ and $-1$ for branches arriving, so $(\mathbf{A}^\mathsf{T}\mathbf{y})_p$ is the net branch current leaving node $p$.
 
 Chaining the three:
@@ -300,7 +328,7 @@ $$
 Everything 02-06 observed about $\mathbf{G}$ now has a reason:
 
 - **Symmetry:** $(\mathbf{A}^\mathsf{T}\mathbf{C}\mathbf{A})^\mathsf{T} = \mathbf{A}^\mathsf{T}\mathbf{C}^\mathsf{T}\mathbf{A} = \mathbf{A}^\mathsf{T}\mathbf{C}\mathbf{A}$.
-- **The stamp:** each branch contributes $g_k$ times (its row of $\mathbf{A}$)ᵀ(its row of $\mathbf{A}$), which is exactly the resistor stamp.
+- **The stamp:** each branch contributes $g_k\mathbf{a}_k\mathbf{a}_k^\mathsf{T}$, where $\mathbf{a}_k^\mathsf{T}$ is its row of $\mathbf{A}$, which is exactly the resistor stamp.
 - **Singularity without ground:** every row of $\mathbf{A}$ sums to zero, so the constant vector $(1, \dots, 1)$ is in $N(\mathbf{A})$. For a connected circuit that is all of it, so $\dim N(\mathbf{A}) = 1$ and $\operatorname{rank}\mathbf{A} = n - 1$: only $n - 1$ node equations are independent. Grounding a node deletes its column. The remaining **reduced incidence matrix** has independent columns, and $\mathbf{G}$ becomes invertible.
 - **Loops:** the left null space $N(\mathbf{A}^\mathsf{T})$ holds the branch-current patterns that satisfy KCL with no sources. These are currents circulating around loops. Its dimension is $b - \operatorname{rank}\mathbf{A} = b - n + 1$, the number of **independent loops**, and so the number of equations mesh analysis needs ([06-05](../../06-circuit-analysis-1-dc/chapters/06-05-mesh-analysis.md)).
 - **Power:** $\mathbf{v}^\mathsf{T}\mathbf{G}\mathbf{v} = (\mathbf{A}\mathbf{v})^\mathsf{T}\mathbf{C}(\mathbf{A}\mathbf{v}) = \sum_kg_ke_k^2$ is the total power dissipated, never negative. Matrices with this property are called *positive semidefinite*, or *positive definite* when the sum is zero only for $\mathbf{v} = \mathbf{0}$, as for a grounded network. They are central to [02-08](02-08-eigenvalues-and-eigenvectors.md).
@@ -365,7 +393,7 @@ $$
 
 So $\mathbf{v} = (10, 16, 14)/4 = $ **(2.5, 4, 3.5) V**.
 
-**Check.** $\mathbf{K}^{-1}\mathbf{b}$: row 1 gives $0.75 + 1 + 0.75 = 2.5$ ✓; row 2 gives $0.5 + 2 + 1.5 = 4$ ✓; row 3 gives $0.25 + 1 + 2.25 = 3.5$ ✓. The lab confirms columns 1 and 2 in ngspice by injecting 1 A at one node at a time.
+**Check.** $\mathbf{K}^{-1}\mathbf{b}$: row 1 gives $0.75 + 1 + 0.75 = 2.5$ ✓; row 2 gives $0.5 + 2 + 1.5 = 4$ ✓; row 3 gives $0.25 + 1 + 2.25 = 3.5$ ✓. The lab confirms column 1 and the middle entry $R_{22}$ in ngspice by injecting 1 A at one node at a time, and it also checks the Cramer voltages directly.
 
 ### Example 02-07.3 — Rank, null space and the complete solution (tier B)
 
@@ -416,13 +444,13 @@ $$
 
 Eliminate: subtract 40 × row 1 from row 2, giving $(12000 - 8000)d = 200.22 - 160.12$, so $4000\,d = 40.10$ and $d = $ **0.010025 V/°C = 10.025 mV/°C** (exact for these data). Then $c = (4.003 - 200d)/5 = $ **0.3996 V**.
 
-The residuals $V_i - (c + dT_i)$ are $(2.4, -2.1, 0.4, -4.1, 3.4)$ mV. Their sum of squares is $3.87\times10^{-5}$ V², so their RMS is $\sqrt{3.87\times10^{-5}/5} = $ **2.782 mV**. A reading of 1.000 V corresponds to $T = (1.000 - c)/d = $ **59.89 °C**.
+The residuals $V_i - (c + dT_i)$ are $(2.4, -2.1, 0.4, -4.1, 3.4)$ mV. Their sum of squares is $3.87\times10^{-5}$ V², so their RMS is $\sqrt{3.87\times10^{-5}/5} = $ **2.782 mV**. As an estimate of the measurement noise, divide by the degrees of freedom instead: two fitted parameters leave $5 - 2 = 3$, so $\sqrt{3.87\times10^{-5}/3} = $ **3.592 mV**. A reading of 1.000 V corresponds to $T = (1.000 - c)/d = $ **59.89 °C**.
 
-**Checks.** The residuals sum to zero ($2.4 - 2.1 + 0.4 - 4.1 + 3.4 = 0$) ✓, and they are orthogonal to the temperatures: $0(2.4) + 20(-2.1) + 40(0.4) + 60(-4.1) + 80(3.4) = 0$ ✓. Both conditions are $\mathbf{A}^\mathsf{T}\mathbf{e} = \mathbf{0}$. The regression formula agrees: $\bar{T} = 40$, $\bar{V} = 0.8006$, and $\hat{d} = \sum(T_i - \bar{T})(V_i - \bar{V})/\sum(T_i - \bar{T})^2 = 40.10/4000$ ✓. *Sanity:* the RMS residual of a few millivolts is a few tenths of a degree at 10 mV/°C, a plausible calibration quality. Two parameters fitted to five points leave three degrees of freedom for estimating the noise.
+**Checks.** The residuals sum to zero ($2.4 - 2.1 + 0.4 - 4.1 + 3.4 = 0$) ✓, and they are orthogonal to the temperatures: $0(2.4) + 20(-2.1) + 40(0.4) + 60(-4.1) + 80(3.4) = 0$ ✓. Both conditions are $\mathbf{A}^\mathsf{T}\mathbf{e} = \mathbf{0}$. The regression formula agrees: $\bar{T} = 40$, $\bar{V} = 0.8006$, and $\hat{d} = \sum(T_i - \bar{T})(V_i - \bar{V})/\sum(T_i - \bar{T})^2 = 40.10/4000$ ✓. *Sanity:* the RMS residual of a few millivolts is a few tenths of a degree at 10 mV/°C, a plausible calibration quality. The fit itself absorbs some of the noise, which is why the degrees-of-freedom estimate is the larger of the two.
 
 ### Example 02-07.5 — The resistance matrix of a circuit, from its graph (tier C)
 
-**Setup.** Take the circuit of Example 02-06.5 (Figure 02-07.3). (a) Write its full incidence matrix, with nodes 0 to 3 and branches $a$ = 1→2, $b$ = 1→3, $c$ = 2→0, $d$ = 2→3, $e$ = 3→0. Find its rank and the number of independent loops. (b) Show that $\mathbf{A}_r^\mathsf{T}\mathbf{C}\mathbf{A}_r$ reproduces 02-06's $\mathbf{G}$, where $\mathbf{A}_r$ is the incidence matrix with the ground column deleted. (c) Compute $\mathbf{R} = \mathbf{G}^{-1}$, interpret its first column, and identify the driving-point resistances.
+**Setup.** Take the circuit of Example 02-06.5 (Figure 02-07.3). (a) Write its full incidence matrix, with nodes 0 to 3 and branches $a$ = 1→2, $b$ = 1→3, $c$ = 2→0, $d$ = 2→3, $e$ = 3→0. Find its rank and the number of independent loops. (b) Show that $\mathbf{A}_r^\mathsf{T}\mathbf{C}\mathbf{A}_r$ reproduces 02-06's $\mathbf{G}$, where $\mathbf{A}_r$ is the incidence matrix with the ground column deleted. (c) Compute the resistance matrix $\mathbf{R} = \mathbf{G}^{-1}$ (not the echelon form of Example 02-07.3), interpret its first column, and identify the driving-point resistances.
 
 **Solution.** (a) With columns for nodes 0, 1, 2 and 3:
 
@@ -452,6 +480,22 @@ For example, $R_{11} = C_{11}/\det\mathbf{G} = (2.5\cdot3 - 0.25)/6.75 = 7.25/6.
 Column 1 gives the node voltages per milliampere injected at node 1, so 10 mA gives $(10.74, 4.815, 2.593)$ V, exactly the solution of Example 02-06.5 ✓. The driving-point resistances are **1.074 kΩ** (node 1, matching 02-06's input resistance), **0.6296 kΩ** (node 2) and **0.4074 kΩ** (node 3). The transfer resistance $R_{31} = $ **0.2593 kΩ** says that 1 mA injected at node 1 raises node 3 by 0.2593 V. By reciprocity, 1 mA injected at node 3 raises node 1 by the same amount.
 
 **Checks.** $R_{33}$ by series and parallel combination, with the current source removed (an open circuit). From node 3 there are two ways to node 2: through $R_b$ and $R_a$ in series via node 1 (3 kΩ), or directly through $R_d$ (2 kΩ). In parallel they give $3\parallel2 = 1.2$ kΩ. Adding $R_c$ (1 kΩ) from node 2 to ground gives 2.2 kΩ. That is in parallel with $R_e$ (0.5 kΩ) from node 3 to ground: $0.5\parallel2.2 = 0.4074$ kΩ ✓. Symmetry $R_{kj} = R_{jk}$ ✓, and all entries are positive ✓. The lab injects 1 mA at node 2 in ngspice and reads column 2.
+
+### Example 02-07.6 — Least squares by Gram–Schmidt and QR (tier B)
+
+**Setup.** An ADC is calibrated with inputs of 0, 1 and 2 V, which read 1, 2 and 4 LSB. Fit code $= c + d\cdot$input by least squares, using QR rather than the normal equations. Then check the result against the normal equations.
+
+**Solution.** The columns are $\mathbf{a}_1 = (1, 1, 1)$ and $\mathbf{a}_2 = (0, 1, 2)$, and $\mathbf{b} = (1, 2, 4)$.
+
+*Gram–Schmidt.* $r_{11} = \lVert\mathbf{a}_1\rVert = \sqrt3 = $ **1.732**, so $\mathbf{q}_1 = (1, 1, 1)/\sqrt3$. Then $r_{12} = \mathbf{q}_1^\mathsf{T}\mathbf{a}_2 = 3/\sqrt3 = \sqrt3$, and $\mathbf{w}_2 = \mathbf{a}_2 - \sqrt3\,\mathbf{q}_1 = (0, 1, 2) - (1, 1, 1) = (-1, 0, 1)$. So $r_{22} = \lVert\mathbf{w}_2\rVert = \sqrt2 = $ **1.414** and $\mathbf{q}_2 = (-1, 0, 1)/\sqrt2$:
+
+$$
+\mathbf{Q} = \begin{bmatrix} 1/\sqrt3 & -1/\sqrt2 \\ 1/\sqrt3 & 0 \\ 1/\sqrt3 & 1/\sqrt2\end{bmatrix}, \qquad \mathbf{R} = \begin{bmatrix}\sqrt3 & \sqrt3 \\ 0 & \sqrt2\end{bmatrix}.
+$$
+
+*Solve.* $\mathbf{Q}^\mathsf{T}\mathbf{b} = (7/\sqrt3,\ 3/\sqrt2) = ($**4.041**, **2.121**$)$. Back substitution: $\sqrt2\,d = 3/\sqrt2$ gives $d = $ **1.5** LSB/V, and $\sqrt3\,c + \sqrt3\,d = 7/\sqrt3$ gives $c = 7/3 - 1.5 = $ **0.8333** LSB.
+
+**Checks.** $\mathbf{Q}^\mathsf{T}\mathbf{Q} = \mathbf{I}$: $\mathbf{q}_1\cdot\mathbf{q}_2 = (-1 + 0 + 1)/\sqrt6 = 0$ ✓. $\mathbf{Q}\mathbf{R}$ reproduces $\mathbf{A}$: column 2 is $\sqrt3\,\mathbf{q}_1 + \sqrt2\,\mathbf{q}_2 = (1, 1, 1) + (-1, 0, 1) = (0, 1, 2)$ ✓. The normal equations $\begin{bmatrix}3 & 3\\ 3 & 5\end{bmatrix}\begin{bmatrix}c\\ d\end{bmatrix} = \begin{bmatrix}7\\ 10\end{bmatrix}$ give $2d = 3$ and the same $c$ ✓. The residual $\mathbf{b} - \mathbf{A}\hat{\mathbf{x}} = (0.1667, -0.3333, 0.1667)$ is orthogonal to both $\mathbf{q}$'s ✓. *Why bother:* QR works with $\mathbf{A}$'s own columns, so its sensitivity to rounding is that of $\mathbf{A}$, not the squared sensitivity of $\mathbf{A}^\mathsf{T}\mathbf{A}$ ([02-10](02-10-numerical-methods.md) §3.6).
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -488,6 +532,13 @@ Column 1 gives the node voltages per milliampere injected at node 1, so 10 mA gi
 | Ex 02-07.5g | R22 | 0.6296 | kΩ |
 | Ex 02-07.5h | R33 | 0.4074 | kΩ |
 | Ex 02-07.5i | R32 | 0.1852 | kΩ |
+| Ex 02-07.4f | noise estimate with 3 degrees of freedom | 3.592 | mV |
+| Ex 02-07.6a | r11 | 1.732 | — |
+| Ex 02-07.6b | r22 | 1.414 | — |
+| Ex 02-07.6c | first entry of Qᵀb | 4.041 | — |
+| Ex 02-07.6d | second entry of Qᵀb | 2.121 | — |
+| Ex 02-07.6e | slope d | 1.5 | LSB/V |
+| Ex 02-07.6f | offset c | 0.8333 | LSB |
 
 *Recomputed by [verify_02_07.py](../verify/verify_02_07.py). Examples 02-07.2 and 02-07.5 are also confirmed in ngspice in the lab.*
 
@@ -566,7 +617,7 @@ The lab ([labs/02-07-lab/](../labs/02-07-lab/README.md)) has a notebook and one 
 
 ### Why it matters commercially
 
-Rank is the hidden variable behind several headline numbers. A MIMO data-rate claim assumes a channel rich enough in scattering to support that many independent layers. In line-of-sight or small-device settings, rank, and with it the throughput multiple, can collapse. Wearables and XR devices fit few antennas, which caps their stream count whatever the network supports. In AI, low-rank adaptation is what makes it cheap to keep many customized variants of one base model, which changes the economics of fine-tuning and serving. In manufacturing, every calibration coefficient fitted per unit costs test time, so the number of calibration points and parameters is a cost decision as much as an accuracy one.
+Rank is the hidden variable behind several headline numbers. A MIMO data-rate claim assumes a channel rich enough in scattering to support that many independent layers. In line-of-sight links with closely spaced, co-polarized antennas, or in small device settings, rank, and with it the throughput multiple, can collapse. Wearables and XR devices fit few antennas, which caps their stream count whatever the network supports (each stream needs its own antenna and receive chain) **[Established]**. In AI, low-rank adaptation makes it cheap to keep many customized variants of one base model ([R-043](../../../reference/research-log.md#r-043--lora-low-rank-adaptation)), which changes the economics of fine-tuning and serving **[Industry estimate: the size of the cost change depends on the deployment]**. In manufacturing, every calibration coefficient fitted per unit costs test time, so the number of calibration points and parameters is a cost decision as much as an accuracy one.
 
 ### Marketing vs Reality
 

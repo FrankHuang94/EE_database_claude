@@ -7,6 +7,10 @@
 * EXPECT va2 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.2h rtol=1e-6
 * EXPECT va3 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.2d rtol=1e-6
 * EXPECT vb2 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.2c rtol=1e-6
+* Copy "z" injects (1, 2, 3) A at nodes 1, 2, 3: the right-hand side of the Cramer example.
+* EXPECT vz1 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.2e rtol=1e-6
+* EXPECT vz2 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.2f rtol=1e-6
+* EXPECT vz3 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.2g rtol=1e-6
 *
 * Example 02-07.5: the circuit of Example 02-06.5. Copy "c" injects 1 mA at node 2, copy "d" at node 3 (volts = kOhm).
 * EXPECT vc1 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.5e rtol=1e-3
@@ -40,6 +44,15 @@ Rb0 b1 0  1
 Rb1 b1 b2 1
 Rb2 b2 b3 1
 Rb3 b3 0  1
+
+* ---- ladder, (1, 2, 3) A into nodes 1, 2, 3 (Cramer example)
+Iz1 0 z1 DC 1
+Iz2 0 z2 DC 2
+Iz3 0 z3 DC 3
+Rz0 z1 0  1
+Rz1 z1 z2 1
+Rz2 z2 z3 1
+Rz3 z3 0  1
 
 * ---- Example 02-06.5 circuit, 1 mA into node 2
 Ic  0 c2 DC 1m
@@ -109,6 +122,12 @@ let vk1 = v(k1)
 let vk2 = v(k2)
 let vk3 = v(k3)
 let ik = (v(k3) - v(k2))/1k
+let vz1 = v(z1)
+let vz2 = v(z2)
+let vz3 = v(z3)
+echo "vz1 = $&vz1"
+echo "vz2 = $&vz2"
+echo "vz3 = $&vz3"
 echo "va1 = $&va1"
 echo "va2 = $&va2"
 echo "va3 = $&va3"

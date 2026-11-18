@@ -270,4 +270,56 @@ for deg, key in ((2, "Lab 02-07.d"), (4, "Lab 02-07.e")):
     cpoly = np.polyfit(T, V, deg)
     v.check(key, float(np.sum((np.polyval(cpoly, T) - V) ** 2)))
 
+# audit additions -------------------------------------------------------------
+# Example 02-07.4 noise estimate with m - 2 degrees of freedom
+_T = np.array([0, 20, 40, 60, 80.0]); _V = np.array([0.402, 0.598, 0.801, 0.997, 1.205])
+_A4 = np.c_[np.ones(5), _T]
+_x4, _ssr4, *_ = np.linalg.lstsq(_A4, _V, rcond=None)
+v.check("Ex 02-07.4f", math.sqrt(_ssr4[0] / 3) * 1e3)
+# Example 02-07.6 QR least squares (numpy QR, sign-normalized to positive diagonal)
+_A6 = np.array([[1, 0], [1, 1], [1, 2.0]]); _b6 = np.array([1, 2, 4.0])
+_Q6, _R6 = np.linalg.qr(_A6)
+_sg = np.sign(np.diag(_R6)); _Q6 = _Q6 * _sg; _R6 = (_R6.T * _sg).T
+v.check("Ex 02-07.6a", _R6[0, 0]); v.check("Ex 02-07.6b", _R6[1, 1])
+_qb = _Q6.T @ _b6
+v.check("Ex 02-07.6c", _qb[0]); v.check("Ex 02-07.6d", _qb[1])
+_x6 = np.linalg.solve(_R6, _qb)
+v.check("Ex 02-07.6e", _x6[1]); v.check("Ex 02-07.6f", _x6[0])
+v.assert_true("QR agrees with the normal equations", np.allclose(_x6, np.linalg.solve(_A6.T @ _A6, _A6.T @ _b6)))
+# 16 subspaces: test closure numerically on samples
+_rng = np.random.default_rng(0)
+def _closed(member, sampler):
+    pts = [sampler() for _ in range(20)]
+    if not member(np.zeros(3)):
+        return False
+    return all(member(a + b) and member(-2.5 * a) for a in pts for b in pts)
+_sets = [
+    (lambda x: abs(x[0] + 2 * x[1] - x[2]) < 1e-9, lambda: (lambda u, w: np.array([u, w, u + 2 * w]))(*_rng.standard_normal(2))),
+    (lambda x: abs(x[0] + 2 * x[1] - x[2] - 1) < 1e-9, lambda: (lambda u, w: np.array([u, w, u + 2 * w - 1]))(*_rng.standard_normal(2))),
+    (lambda x: np.linalg.norm(np.cross(x, [1, 2, 3])) < 1e-9, lambda: _rng.standard_normal() * np.array([1, 2, 3.0])),
+    (lambda x: x[0] >= -1e-12, lambda: np.abs(_rng.standard_normal(3))),
+    (lambda x: (abs(x[1]) < 1e-12 and abs(x[2]) < 1e-12) or (abs(x[0]) < 1e-12 and abs(x[2]) < 1e-12),
+     lambda: np.array([_rng.standard_normal(), 0, 0]) if _rng.random() < 0.5 else np.array([0, _rng.standard_normal(), 0])),
+    (lambda x: abs(x[0] - x[1]) < 1e-9 and abs(x[1] - x[2]) < 1e-9, lambda: _rng.standard_normal() * np.ones(3)),
+]
+v.check("02-07.16a", sum(_closed(m_, s_) for m_, s_ in _sets))
+v.check("02-07.16b", 3 - np.linalg.matrix_rank(np.array([[1, 2, -1.0]])))
+v.check("02-07.17a", np.linalg.det(np.array([[0, 2, 1], [1, 1, 1], [2, 0, 3.0]])))
+_a18 = np.array([1, 2, 2.0]); _P = np.outer(_a18, _a18) / (_a18 @ _a18)
+v.check("02-07.18a", _P[0, 0]); v.check("02-07.18b", _P[1, 1]); v.check("02-07.18c", np.trace(_P))
+v.check("02-07.18d", (_P @ np.array([1, 0, 0.0]))[1])
+v.assert_true("P^2 = P, P^T = P, (I-P)b perpendicular to a", np.allclose(_P @ _P, _P) and np.allclose(_P, _P.T) and abs(((np.eye(3) - _P) @ np.array([1, 0, 0.0])) @ _a18) < 1e-12)
+_M19 = _rng.standard_normal((5, 3)) @ _rng.standard_normal((3, 7))
+_r19 = np.linalg.matrix_rank(_M19)
+v.check("02-07.19a", 7 - _r19); v.check("02-07.19b", 5 - _r19)
+_Atri = np.array([[1, -1, 0], [0, 1, -1], [-1, 0, 1.0]])
+v.check("02-07.19c", np.linalg.matrix_rank(_Atri))
+v.assert_true("triangle: (1,1,1) in N(A) and N(A^T)", np.allclose(_Atri @ np.ones(3), 0) and np.allclose(_Atri.T @ np.ones(3), 0))
+_A20 = np.array([[1, 1], [2, 0], [2, 1.0]]); _b20 = np.array([3, 3, 3.0])
+_Q20, _R20 = np.linalg.qr(_A20); _sg = np.sign(np.diag(_R20)); _Q20 = _Q20 * _sg; _R20 = (_R20.T * _sg).T
+v.check("02-07.20a", _R20[0, 0]); v.check("02-07.20b", _R20[0, 1])
+_x20 = np.linalg.solve(_R20, _Q20.T @ _b20)
+v.check("02-07.20c", _x20[0]); v.check("02-07.20d", _x20[1])
+v.check("02-07.20e", np.linalg.norm(_b20 - _A20 @ _x20))
+
 v.finish()

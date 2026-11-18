@@ -226,6 +226,65 @@ Every column is a multiple of $\mathbf{u}$, and every row is a multiple of $\mat
 
 ## Answer key
 
+### Solution 02-07.16
+
+A subspace must contain $\mathbf{0}$ and be closed under addition and scalar multiplication.
+
+- (a) **Yes**, dimension 2: if $\mathbf{u}$ and $\mathbf{v}$ satisfy $x + 2y - z = 0$, so does $c\mathbf{u} + d\mathbf{v}$, because the left side is linear. It is the null space of $[1\ 2\ -1]$, with $3 - 1 = 2$ free variables.
+- (b) **No**: $\mathbf{0}$ gives $0 \ne 1$. (Doubling a vector in it also leaves it.)
+- (c) **Yes**, dimension 1: all multiples of $(1, 2, 3)$.
+- (d) **No**: $(1, 0, 0)$ is in it but $-1\cdot(1, 0, 0)$ is not, so it is not closed under scaling.
+- (e) **No**: $(1, 0, 0)$ and $(0, 1, 0)$ are in it but their sum $(1, 1, 0)$ is on neither axis, so it is not closed under addition.
+- (f) **Yes**, dimension 1: all multiples of $(1, 1, 1)$.
+
+So **3** of the six are subspaces.
+
+### Solution 02-07.17
+
+(a) Suppose row $i$ is $\sum_{k\ne i}c_k\,\text{row}_k$. By rule 3 (linearity in row $i$), the determinant splits into $\sum_kc_k\det\mathbf{A}_k$, where $\mathbf{A}_k$ has row $k$ copied into row $i$. Each $\mathbf{A}_k$ has two equal rows, so each term is zero.
+
+(b) Adding a multiple of column $j$ to column $i$ of $\mathbf{A}$ is adding a multiple of row $j$ to row $i$ of $\mathbf{A}^\mathsf{T}$, which does not change $\det\mathbf{A}^\mathsf{T}$. Since $\det\mathbf{A} = \det\mathbf{A}^\mathsf{T}$, $\det\mathbf{A}$ is unchanged too.
+
+(c) The (1, 1) entry is zero, so exchange rows 1 and 2 (one exchange, a factor −1): $\begin{bmatrix}1 & 1 & 1\\ 0 & 2 & 1\\ 2 & 0 & 3\end{bmatrix}$. Subtract 2 × row 1 from row 3: $(0, -2, 1)$. Add row 2 to row 3: $(0, 0, 2)$. The pivots are 1, 2 and 2, so $\det = -(1\cdot2\cdot2) = $ **−4**. Cofactor check down column 1: $0\cdot C_{11} - 1\cdot\det\begin{bmatrix}2 & 1\\ 0 & 3\end{bmatrix} + 2\cdot\det\begin{bmatrix}2 & 1\\ 1 & 1\end{bmatrix} = -6 + 2 = -4$ ✓.
+
+### Solution 02-07.18
+
+(a) $\mathbf{P}^\mathsf{T} = \mathbf{A}\big((\mathbf{A}^\mathsf{T}\mathbf{A})^{-1}\big)^\mathsf{T}\mathbf{A}^\mathsf{T} = \mathbf{P}$, because $\mathbf{A}^\mathsf{T}\mathbf{A}$ is symmetric and so is its inverse. And $\mathbf{P}^2 = \mathbf{A}(\mathbf{A}^\mathsf{T}\mathbf{A})^{-1}(\mathbf{A}^\mathsf{T}\mathbf{A})(\mathbf{A}^\mathsf{T}\mathbf{A})^{-1}\mathbf{A}^\mathsf{T} = \mathbf{P}$. Geometrically, projecting twice changes nothing ($\mathbf{P}^2 = \mathbf{P}$): a vector already in the column space stays put. Symmetry says the projection is *orthogonal*: the error $\mathbf{b} - \mathbf{P}\mathbf{b}$ is perpendicular to the space.
+
+(b) For one column, $\mathbf{P} = \mathbf{a}\mathbf{a}^\mathsf{T}/(\mathbf{a}^\mathsf{T}\mathbf{a})$ with $\mathbf{a}^\mathsf{T}\mathbf{a} = 9$:
+
+$$
+\mathbf{P} = \frac19\begin{bmatrix}1 & 2 & 2\\ 2 & 4 & 4\\ 2 & 4 & 4\end{bmatrix},
+$$
+
+so $P_{11} = $ **0.1111** and $P_{22} = $ **0.4444**. Its trace is $(1 + 4 + 4)/9 = $ **1**, the dimension of the line it projects onto.
+
+(c) $\mathbf{P}\mathbf{b}$ is the first column of $\mathbf{P}$: $(0.1111, 0.2222, 0.2222)$. $(\mathbf{I} - \mathbf{P})^2 = \mathbf{I} - 2\mathbf{P} + \mathbf{P}^2 = \mathbf{I} - \mathbf{P}$, and it is symmetric, so it is a projection too: onto the plane perpendicular to $\mathbf{a}$. Then $(\mathbf{I} - \mathbf{P})\mathbf{b} = (0.8889, -0.2222, -0.2222)$, and its dot product with $\mathbf{a}$ is $(8 - 4 - 4)/9 = 0$ ✓.
+
+### Solution 02-07.19
+
+(a) With $m = 5$, $n = 7$ and $r = 3$: the column space has dimension **3** (in $\mathbb{R}^5$), the null space $n - r = $ **4** (in $\mathbb{R}^7$), the row space **3** (in $\mathbb{R}^7$) and the left null space $m - r = $ **2** (in $\mathbb{R}^5$).
+
+(b) With $+1$ at each branch's start and $-1$ at its end:
+
+$$
+\mathbf{A} = \begin{bmatrix}1 & -1 & 0\\ 0 & 1 & -1\\ -1 & 0 & 1\end{bmatrix}.
+$$
+
+The rows sum to zero (row 3 is minus the sum of rows 1 and 2), so the rank is **2**. The null space is spanned by $(1, 1, 1)$: raising all three node voltages together produces no branch voltage. The left null space ($\mathbf{A}^\mathsf{T}\mathbf{y} = \mathbf{0}$) is spanned by $(1, 1, 1)$ in branch space: equal currents in the three branches circulate around the loop and satisfy KCL at every node. Its dimension, $b - r = 3 - 2 = 1$, is the number of independent loops ✓.
+
+### Solution 02-07.20
+
+(a) $r_{11} = \lVert\mathbf{a}_1\rVert = 3$, so $\mathbf{q}_1 = (1, 2, 2)/3$. Then $r_{12} = \mathbf{q}_1\cdot\mathbf{a}_2 = (1 + 0 + 2)/3 = 1$, and $\mathbf{w}_2 = \mathbf{a}_2 - \mathbf{q}_1 = (2/3, -2/3, 1/3)$, whose length is $\sqrt{(4 + 4 + 1)/9} = 1$. So $r_{22} = 1$ and $\mathbf{q}_2 = (2/3, -2/3, 1/3)$:
+
+$$
+\mathbf{A} = \begin{bmatrix}1/3 & 2/3\\ 2/3 & -2/3\\ 2/3 & 1/3\end{bmatrix}\begin{bmatrix}3 & 1\\ 0 & 1\end{bmatrix}.
+$$
+
+(b) $\mathbf{Q}^\mathsf{T}\mathbf{b} = \big((3 + 6 + 6)/3,\ (6 - 6 + 3)/3\big) = (5, 1)$. Back substitution: $x_2 = $ **1**, then $3x_1 + 1 = 5$ gives $x_1 = 4/3 = $ **1.333**. Normal equations: $\mathbf{A}^\mathsf{T}\mathbf{A} = \begin{bmatrix}9 & 3\\ 3 & 2\end{bmatrix}$ and $\mathbf{A}^\mathsf{T}\mathbf{b} = (15, 6)$; then $9(4/3) + 3 = 15$ ✓ and $3(4/3) + 2 = 6$ ✓.
+
+(c) $\mathbf{e} = \mathbf{b} - \mathbf{A}\hat{\mathbf{x}} = (3, 3, 3) - (7/3, 8/3, 11/3) = (2/3, 1/3, -2/3)$, of length $\sqrt{(4 + 1 + 4)/9} = $ **1**. Dot products: with $\mathbf{a}_1$, $(2 + 2 - 4)/3 = 0$ ✓; with $\mathbf{a}_2$, $(2 + 0 - 2)/3 = 0$ ✓.
+
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
@@ -304,3 +363,18 @@ Every column is a multiple of $\mathbf{u}$, and every row is a multiple of $\mat
 | 02-07.15d | ratio | 256 | — |
 | 02-07.15e | full-update memory in 16-bit storage | 32 | MiB |
 | 02-07.15f | factored memory in 16-bit storage | 128 | KiB |
+| 02-07.16a | number of subspaces | 3 | — |
+| 02-07.16b | dimension of the plane in (a) | 2 | — |
+| 02-07.17a | determinant | −4 | — |
+| 02-07.18a | P11 | 0.1111 | — |
+| 02-07.18b | P22 | 0.4444 | — |
+| 02-07.18c | trace of P | 1 | — |
+| 02-07.18d | second entry of Pb | 0.2222 | — |
+| 02-07.19a | dim N(A), 5×7 rank 3 | 4 | — |
+| 02-07.19b | dim N(Aᵀ), 5×7 rank 3 | 2 | — |
+| 02-07.19c | rank of the triangle incidence matrix | 2 | — |
+| 02-07.20a | r11 | 3 | — |
+| 02-07.20b | r12 | 1 | — |
+| 02-07.20c | x1 | 1.333 | — |
+| 02-07.20d | x2 | 1 | — |
+| 02-07.20e | residual length | 1 | — |

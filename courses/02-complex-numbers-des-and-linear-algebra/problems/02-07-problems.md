@@ -91,7 +91,7 @@ Fit a straight line $b = c + dt$ by least squares to the points $(0, 1)$, $(1, 3
 (b) use it to recover the node voltages of Problem 02-06.11 (5 mA into node 1, 1 mA drawn from node 2);
 (c) check $R_{11}$ and $R_{22}$ by series and parallel combination.
 
-### Problem 02-07.12 [C]
+### Problem 02-07.12 [B]
 
 **Two-port parameters.** A π network has a 1 kΩ resistor between port 1 and port 2, a 500 Ω shunt from port 1 to ground and a 1 kΩ shunt from port 2 to ground.
 
@@ -118,7 +118,7 @@ Fit a straight line $b = c + dt$ by least squares to the points $(0, 1)$, $(1, 3
 (a) Fit $\ln v = a + bt$ by least squares, and find $V_0 = e^a$ and the time constant $\tau = -1/b$.
 (b) A direct nonlinear least-squares fit of $v = V_0e^{-t/\tau}$, minimizing the squared errors in volts, gives $V_0 = 5.003$ V and $\tau = 2.010$ ms. Explain why the two fits differ, and which errors each one treats as most important.
 
-### Problem 02-07.15 [C]
+### Problem 02-07.15 [B]
 
 **Low rank.**
 
@@ -127,15 +127,52 @@ Fit a straight line $b = c + dt$ by least squares to the points $(0, 1)$, $(1, 3
 (c) A $d\times d$ weight update with $d = 4096$ is replaced by a product $\mathbf{B}\mathbf{A}$ with $r = 8$. Compare the number of parameters, and the memory in 16-bit storage (2 bytes per number).
 (d) Compare the multiply–adds needed to apply each form to one vector.
 
+### Problem 02-07.16 [A]
+
+**Is it a subspace?** Decide which of these subsets of $\mathbb{R}^3$ are subspaces. For each one that is, give its dimension; for each one that is not, name the rule it breaks.
+
+(a) The plane $x + 2y - z = 0$. (b) The plane $x + 2y - z = 1$. (c) The line through the origin and $(1, 2, 3)$. (d) All vectors with $x \ge 0$. (e) The union of the $x$-axis and the $y$-axis. (f) All vectors with $x = y = z$.
+
+### Problem 02-07.17 [B]
+
+**Determinant properties from the three rules.** Use only rules 1–3 of §3.1 and the consequences derived there.
+
+(a) Show that if one row is a combination of the other rows, the determinant is zero.
+(b) Show that adding a multiple of one column to another leaves the determinant unchanged.
+(c) Evaluate $\det\begin{bmatrix}0 & 2 & 1\\ 1 & 1 & 1\\ 2 & 0 & 3\end{bmatrix}$ by elimination, counting row exchanges, and check it by cofactor expansion down column 1.
+
+### Problem 02-07.18 [B]
+
+**Projection matrices.**
+
+(a) For $\mathbf{P} = \mathbf{A}(\mathbf{A}^\mathsf{T}\mathbf{A})^{-1}\mathbf{A}^\mathsf{T}$ (independent columns), show that $\mathbf{P}^\mathsf{T} = \mathbf{P}$ and $\mathbf{P}^2 = \mathbf{P}$, and explain each property geometrically.
+(b) For projection onto the line through $\mathbf{a} = (1, 2, 2)$, write $\mathbf{P}$ and find its trace.
+(c) Project $\mathbf{b} = (1, 0, 0)$. Show that $\mathbf{I} - \mathbf{P}$ is also a projection, and that $(\mathbf{I} - \mathbf{P})\mathbf{b}$ is perpendicular to $\mathbf{a}$.
+
+### Problem 02-07.19 [B]
+
+**The four subspaces.**
+
+(a) A $5\times7$ matrix has rank 3. Give the dimensions of its column space, null space, row space and left null space, and say which space each lives in.
+(b) Three nodes are joined in a triangle by branches 1→2, 2→3 and 3→1. Write the $3\times3$ incidence matrix (rows are branches, columns nodes). Find its rank and a basis for its null space and its left null space, and interpret each physically.
+
+### Problem 02-07.20 [B]
+
+**Gram–Schmidt by hand.** Let $\mathbf{a}_1 = (1, 2, 2)$ and $\mathbf{a}_2 = (1, 0, 1)$.
+
+(a) Apply Gram–Schmidt to find $\mathbf{q}_1$ and $\mathbf{q}_2$, and write $\mathbf{A} = \mathbf{Q}\mathbf{R}$.
+(b) Use $\mathbf{R}\hat{\mathbf{x}} = \mathbf{Q}^\mathsf{T}\mathbf{b}$ to find the least-squares solution for $\mathbf{b} = (3, 3, 3)$, and check it with the normal equations.
+(c) Find the residual and its length, and check that it is orthogonal to both columns.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 02-07) | Problems |
 |---|---|
-| 1. Determinants: computation, properties, volume, invertibility test | 1, 2, 9 |
+| 1. Determinants: computation, properties, volume, invertibility test | 1, 2, 9, 17 |
 | 2. Inverses, Gauss–Jordan, Cramer's rule, cost | 3, 5, 6, 11, 12 |
-| 3. Linear independence, basis, dimension | 4, 7, 15 |
-| 4. Rank, column and null spaces, complete solution | 7, 8, 13, 15 |
-| 5. Least squares and data fitting | 10, 14 |
-| 6. Incidence matrices; resistance matrices | 11, 12, 13 |
+| 3. Linear independence, basis, dimension | 4, 7, 15, 16, 20 |
+| 4. Rank, column and null spaces, complete solution | 7, 8, 13, 15, 16, 19 |
+| 5. Least squares and data fitting | 10, 14, 18, 20 |
+| 6. Incidence matrices; resistance matrices | 11, 12, 13, 19 |
