@@ -46,6 +46,10 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-038 | HPL and the TOP500 list | Nov 2026 |
 | R-039 | Google TPU v1 matrix unit | Nov 2026 |
 | R-040 | NVIDIA H100 and Rubin: arithmetic and memory figures | Nov 2026 |
+| R-041 | 5G NR MIMO layers | Nov 2026 |
+| R-042 | Wi-Fi spatial streams: 802.11ax and 802.11be | Nov 2026 |
+| R-043 | LoRA: low-rank adaptation | Nov 2026 |
+| R-044 | GPS: four satellites and least squares | Nov 2026 |
 
 ---
 
@@ -306,3 +310,27 @@ R&D % = R&D ÷ revenue.
 - **H100 SXM** (NVIDIA product page): FP64 34 TFLOPS; FP64 Tensor Core 67 TFLOPS; FP16 and BF16 Tensor Core **1,979 TFLOPS "with sparsity"**; GPU memory bandwidth **3.35 TB/s** (80 GB). NVIDIA's Hopper architecture article says structured sparsity doubles the throughput of standard Tensor Core operations, so the dense FP16 figure is about **989.5 TFLOPS**. That is this curriculum's halving; NVIDIA's page does not print a dense number [Established].
 - **Rubin GPU** (NVIDIA Vera Rubin NVL72 page, per GPU): FP16/BF16 **4 PFLOPS**, footnoted "Dense specification"; **288 GB HBM4 at 19.2 TB/s**; FP64 33 TFLOPS. NVIDIA labels these figures as projected and subject to change, and press reports (seen in search snippets only) cite an earlier 22 TB/s bandwidth figure [Established as published; vendor-projected].
 - **Sources:** [NVIDIA H100](https://www.nvidia.com/en-us/data-center/h100/); [NVIDIA Hopper architecture in depth](https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/); [NVIDIA Vera Rubin NVL72](https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/). Checked Nov 2026.
+
+## R-041 · 5G NR MIMO layers
+
+- **Values:** in 3GPP NR Release 15, a PDSCH (downlink data channel) can carry up to **8 layers**, using two codewords for 5–8 layers (TS 38.211 clause 7.3.1.3, Table 7.3.1.3-1). A PUSCH (uplink data channel) carries a single codeword mapped onto up to **4 layers** (TS 38.211 clause 6.3.1.3). Release 18 extends the PUSCH maximum to **8 layers**, with new 8-port codebooks and two codewords for more than four layers [Established].
+- **Sources:**
+  - Ericsson authors, ["5G NR: The Next Generation Wireless Access Technology" overview, arXiv:1806.06898](https://arxiv.org/abs/1806.06898), based on TS 38.211 V15.1.0: "A PDSCH can have two codewords to support up to 8-layer transmission"; "PUSCH supports a single codeword that can be mapped up to 4 layers".
+  - [NTT DOCOMO Technical Journal Vol. 26 No. 2 (Release 18)](https://www.docomo.ne.jp/english/corporate/technology/rd/technical_journal/bn/vol26_2/004.html): "Up to Rel-17, specifications were established for PDSCH transmission with a maximum of 8 MIMO layers and PUSCH transmission with a maximum of four MIMO layers. In Rel-18 … the maximum number of layers for PUSCH transmission is extended to 8."
+  - TS 38.211 clause text was read on a third-party mirror (itecspec.com). 3gpp.org and etsi.org blocked the build environment, so the official specification files were not opened.
+- Checked Nov 2026.
+
+## R-042 · Wi-Fi spatial streams: 802.11ax and 802.11be
+
+- **Values:** IEEE 802.11ax (Wi-Fi 6) supports up to **8 spatial streams**. IEEE 802.11be-2024 (Wi-Fi 7) also supports up to **8**: "802.11be and 802.11bn-compliant devices shall support up to 8 streams" (survey by Geraci et al.). The 802.11be Specification Framework Document (11-19/1262r23, January 2021) had set "a maximum of 16 spatial streams for SU-MIMO", but that target was not carried into the approved amendment. A Cisco Meraki guide: "limited to 8, like the previous generation. The IEEE committee initially considered having support for 16 spatial streams, but there is no provision for that…". The IEEE SA lists 802.11be Board Approval on **26 Sep 2024** and publication on **22 Jul 2025** [Established].
+- **Sources:** [Geraci et al., arXiv:2507.09613](https://arxiv.org/abs/2507.09613); [IEEE SA, 802.11be-2024](https://standards.ieee.org/ieee/802.11be/7516/); IEEE 802.11 document 11-19/1262r23 (TGbe SFD); Cisco Meraki Wi-Fi 7 technical guide; MathWorks WLAN Toolbox documentation for 802.11ax (`wlanHESUConfig`: 1 to 8 space-time streams). The IEEE standard text itself was not opened (paywalled). Checked Nov 2026.
+
+## R-043 · LoRA: low-rank adaptation
+
+- **Values:** E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang and W. Chen, "LoRA: Low-Rank Adaptation of Large Language Models," ICLR 2022, arXiv:2106.09685. Abstract: "Compared to GPT-3 175B fine-tuned with Adam, LoRA can reduce the number of trainable parameters by 10,000 times and the GPU memory requirement by 3 times." The paper's GPT-3 experiments use ranks r = 1, 2, 4, 8 and 64 [Established].
+- **Sources:** [arXiv:2106.09685](https://arxiv.org/abs/2106.09685); [ICLR 2022 poster page](https://iclr.cc/virtual/2022/poster/6319). Checked Nov 2026.
+
+## R-044 · GPS: four satellites and least squares
+
+- **Values:** "To estimate the three position coordinates and the receiver time offset, a GPS receiver needs to track at least 4 satellites", and since a receiver typically observes more than four, "GPS positioning … works on the principle of least squares estimation", after linearizing the observation model. The U.S. government's GPS site states that the 24-slot constellation "ensures users can view at least four satellites from virtually any point on the planet" [Established].
+- **Sources:** [P. F. de Bakker, GPS course reader, TU Delft CTB3310, 2017](https://filelist.tudelft.nl/CiTG/Over%20faculteit/Afdelingen/Geoscience%20%26%20Remote%20sensing/Study/gpsreader.pdf); [gps.gov, Space Segment](https://www.gps.gov/space-segment). Checked Nov 2026.

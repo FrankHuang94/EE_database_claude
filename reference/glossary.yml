@@ -1035,3 +1035,64 @@
 - term: Arithmetic intensity
   definition: Operations performed per byte moved from memory. A workload whose intensity is below a machine's ridge point (peak operations per second ÷ memory bandwidth) is memory-bound; a matrix–vector product has about 1 flop per byte in 16-bit precision.
   chapter: "02-06"
+
+# ---------------------------------------------------------------- 02-07
+- term: Determinant
+  definition: The number det A attached to a square matrix, fixed by three rules (det I = 1, a row exchange flips the sign, linearity in each row); it equals ± the product of the pivots, is zero exactly when A is singular, and |det A| is the volume scale factor of the map x → Ax.
+  chapter: "02-07"
+  see_also: [Cofactor, Inverse matrix]
+- term: Cofactor
+  definition: C_ij = (−1)^(i+j) times the determinant of the matrix with row i and column j deleted; expanding along a row, det A = Σ a_ij C_ij. Practical only for small matrices.
+  chapter: "02-07"
+- term: Inverse matrix
+  definition: A⁻¹ with A⁻¹A = AA⁻¹ = I, existing exactly when det A ≠ 0. Computed by Gauss–Jordan elimination at about 2n³ flops; for solving systems, LU is cheaper and more accurate.
+  chapter: "02-07"
+- term: Cramer's rule
+  definition: For a nonsingular system, xᵢ = det(Bᵢ)/det(A), where Bᵢ is A with column i replaced by b. Useful for small symbolic results, never for large numerical systems.
+  chapter: "02-07"
+- term: Vector space
+  definition: A set closed under addition and scalar multiplication obeying the usual algebra rules, such as Rⁿ, polynomials, or the solutions of a homogeneous linear ODE.
+  chapter: "02-07"
+  see_also: [Subspace, Basis]
+- term: Subspace
+  definition: A subset of a vector space that contains 0 and is closed under addition and scalar multiplication, such as a line or plane through the origin, a column space or a null space.
+  chapter: "02-07"
+- term: Linear independence
+  definition: Vectors are independent if the only combination of them equal to 0 has all weights zero; otherwise one of them is a combination of the others.
+  chapter: "02-07"
+- term: Basis
+  definition: A set of independent vectors that spans a subspace; every vector in the subspace is then a unique combination of the basis vectors.
+  chapter: "02-07"
+- term: Dimension
+  definition: The number of vectors in any basis of a subspace (all bases have the same number).
+  chapter: "02-07"
+- term: Rank
+  definition: The number of pivots of a matrix, equal to the dimension of its column space (and of its row space). Numerically, the rank counts singular values above a stated tolerance.
+  chapter: "02-07"
+  see_also: [Column space, Null space, Rank–nullity theorem]
+- term: Column space
+  definition: C(A), the set of all combinations Ax of the columns of A; Ax = b is solvable exactly when b lies in it.
+  chapter: "02-07"
+- term: Null space
+  definition: N(A), the set of all solutions of Ax = 0; every solution of Ax = b is one particular solution plus a vector in N(A).
+  chapter: "02-07"
+- term: Rank–nullity theorem
+  definition: For an m×n matrix of rank r, dim C(A) + dim N(A) = r + (n − r) = n.
+  chapter: "02-07"
+- term: Least squares
+  definition: Choosing x̂ to minimize ‖b − Ax‖² when Ax = b has no exact solution; geometrically, Ax̂ is the projection of b onto the column space, so the residual is orthogonal to every column.
+  chapter: "02-07"
+  see_also: [Normal equations, Projection]
+- term: Normal equations
+  definition: AᵀA x̂ = Aᵀb, the square system whose solution is the least-squares fit; uniquely solvable when A has independent columns. Software prefers QR or SVD, which avoid squaring the condition number.
+  chapter: "02-07"
+- term: Incidence matrix
+  definition: The branch-by-node matrix of a circuit graph, with +1 at each branch's start node and −1 at its end node. Its rank is n − 1 for a connected graph, the conductance matrix is AᵀCA, and its left null space holds the loop currents.
+  chapter: "02-07"
+- term: Reciprocity
+  definition: In a linear network of resistors (and other reciprocal elements), the response at node k to a current injected at node j equals the response at j to the same current injected at k; mathematically, the resistance matrix G⁻¹ is symmetric.
+  chapter: "02-07"
+- term: Driving-point resistance
+  definition: The resistance seen looking into a node with respect to ground, equal to the diagonal entry R_jj of the resistance matrix G⁻¹; the voltage at node j per ampere injected there.
+  chapter: "02-07"
+  see_also: [Thevenin resistance]

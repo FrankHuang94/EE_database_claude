@@ -1,0 +1,133 @@
+* Lab 02-07 -- columns of resistance matrices R = G^-1, read off by injecting a unit current at one node.
+* Column j of R is the vector of node voltages when 1 A (or 1 mA) is injected at node j and nothing else.
+* Reciprocity check: R_kj measured by injecting at j equals R_jk measured by injecting at k.
+*
+* Example 02-07.2: 1-ohm ladder, ground-1-2-3-ground. Copy "a" injects 1 A at node 1, copy "b" at node 2.
+* EXPECT va1 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.2b rtol=1e-6
+* EXPECT va2 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.2h rtol=1e-6
+* EXPECT va3 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.2d rtol=1e-6
+* EXPECT vb2 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.2c rtol=1e-6
+*
+* Example 02-07.5: the circuit of Example 02-06.5. Copy "c" injects 1 mA at node 2, copy "d" at node 3 (volts = kOhm).
+* EXPECT vc1 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.5e rtol=1e-3
+* EXPECT vc2 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.5g rtol=1e-3
+* EXPECT vc3 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.5i rtol=1e-3
+* EXPECT vd1 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.5f rtol=1e-3
+* EXPECT vd3 key:../../chapters/02-07-determinants-inverses-and-vector-spaces.md#Ex_02-07.5h rtol=1e-3
+*
+* Problem 02-07.11 (copy "e"), Problem 02-07.12 (copies "f", "g") and Problem 02-07.13 (copies "h", "k").
+* EXPECT ve1 key:../../solutions/02-07-solutions.md#02-07.11b rtol=1e-3
+* EXPECT ve2 key:../../solutions/02-07-solutions.md#02-07.11c rtol=1e-3
+* EXPECT vf1 key:../../solutions/02-07-solutions.md#02-07.12b rtol=1e-6
+* EXPECT vf2 key:../../solutions/02-07-solutions.md#02-07.12c rtol=1e-6
+* EXPECT vg2 key:../../solutions/02-07-solutions.md#02-07.12d rtol=1e-6
+* EXPECT vh1 key:../../solutions/02-07-solutions.md#02-07.13c rtol=1e-6
+* EXPECT vh2 key:../../solutions/02-07-solutions.md#02-07.13d rtol=1e-6
+* EXPECT vk1 key:../../solutions/02-07-solutions.md#02-07.13f rtol=1e-3
+* EXPECT vk2 key:../../solutions/02-07-solutions.md#02-07.13g rtol=1e-3
+* EXPECT vk3 key:../../solutions/02-07-solutions.md#02-07.13h rtol=1e-3
+* EXPECT ik  key:../../solutions/02-07-solutions.md#02-07.13i scale=1e-3 rtol=1e-3
+
+* ---- ladder, 1 A into node 1
+Ia  0 a1 DC 1
+Ra0 a1 0  1
+Ra1 a1 a2 1
+Ra2 a2 a3 1
+Ra3 a3 0  1
+* ---- ladder, 1 A into node 2
+Ib  0 b2 DC 1
+Rb0 b1 0  1
+Rb1 b1 b2 1
+Rb2 b2 b3 1
+Rb3 b3 0  1
+
+* ---- Example 02-06.5 circuit, 1 mA into node 2
+Ic  0 c2 DC 1m
+Rca c1 c2 1k
+Rcb c1 c3 2k
+Rcc c2 0  1k
+Rcd c2 c3 2k
+Rce c3 0  500
+* ---- same circuit, 1 mA into node 3
+Id  0 d3 DC 1m
+Rda d1 d2 1k
+Rdb d1 d3 2k
+Rdc d2 0  1k
+Rdd d2 d3 2k
+Rde d3 0  500
+
+* ---- Problem 02-06.11 / 02-07.11 circuit, 1 mA into node 1
+Ie  0 e1 DC 1m
+Re1 e1 0  2k
+Re2 e1 e2 1k
+Re3 e2 0  4k
+
+* ---- Problem 02-07.12 pi network: 1 mA into port 1 (copy f), into port 2 (copy g)
+If  0 f1 DC 1m
+Rfs f1 f2 1k
+Rf1 f1 0  500
+Rf2 f2 0  1k
+Ig  0 g2 DC 1m
+Rgs g1 g2 1k
+Rg1 g1 0  500
+Rg2 g2 0  1k
+
+* ---- Problem 02-07.13 bridge, balanced (h) and with the 3-0 resistor at 2k (k); 1 mA into node 1
+Ih  0 h1 DC 1m
+Rh12 h1 h2 1k
+Rh13 h1 h3 1k
+Rh23 h2 h3 1k
+Rh20 h2 0  1k
+Rh30 h3 0  1k
+Ik  0 k1 DC 1m
+Rk12 k1 k2 1k
+Rk13 k1 k3 1k
+Rk23 k2 k3 1k
+Rk20 k2 0  1k
+Rk30 k3 0  2k
+
+.op
+.control
+op
+let va1 = v(a1)
+let va2 = v(a2)
+let va3 = v(a3)
+let vb2 = v(b2)
+let vc1 = v(c1)
+let vc2 = v(c2)
+let vc3 = v(c3)
+let vd1 = v(d1)
+let vd3 = v(d3)
+let ve1 = v(e1)
+let ve2 = v(e2)
+let vf1 = v(f1)
+let vf2 = v(f2)
+let vg2 = v(g2)
+let vh1 = v(h1)
+let vh2 = v(h2)
+let vk1 = v(k1)
+let vk2 = v(k2)
+let vk3 = v(k3)
+let ik = (v(k3) - v(k2))/1k
+echo "va1 = $&va1"
+echo "va2 = $&va2"
+echo "va3 = $&va3"
+echo "vb2 = $&vb2"
+echo "vc1 = $&vc1"
+echo "vc2 = $&vc2"
+echo "vc3 = $&vc3"
+echo "vd1 = $&vd1"
+echo "vd3 = $&vd3"
+echo "ve1 = $&ve1"
+echo "ve2 = $&ve2"
+echo "vf1 = $&vf1"
+echo "vf2 = $&vf2"
+echo "vg2 = $&vg2"
+echo "vh1 = $&vh1"
+echo "vh2 = $&vh2"
+echo "vk1 = $&vk1"
+echo "vk2 = $&vk2"
+echo "vk3 = $&vk3"
+echo "ik = $&ik"
+.endc
+.end
