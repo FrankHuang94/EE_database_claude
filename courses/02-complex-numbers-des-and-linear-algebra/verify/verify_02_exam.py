@@ -74,7 +74,7 @@ v.check("X02.3e", brentq(lambda h: 1 - h / tau, 1e-3, 0.03) * 1e3)
 
 # 4 · first-order methods
 y = sp.Function("y")
-ysol = sp.dsolve(sp.Eq(t * y(t).diff(t) + 2 * y(t), t**2), y(t), ics={y(1): 0}).rhs
+ysol = sp.dsolve(sp.Eq(t * y(t).diff(t) + 3 * y(t), t), y(t), ics={y(1): 0}).rhs
 v.check("X02.4a", float(ysol.subs(t, 2)))
 k, tau4 = 2.0, 0.5            # V/ms and ms
 vr = solve_ivp(lambda x, yy: [(k * x - yy[0]) / tau4], (0, 10), [0.0], rtol=1e-11, atol=1e-13, dense_output=True)
@@ -105,11 +105,6 @@ v.check("X02.5h", (-res.fun - 1) * 100)
 v.check("X02.5i", -res.fun)
 v.check("X02.5j", 4 / a5 * 1e6)
 v.check("X02.5k", brentq(lambda r: r / (2 * L5) - w05, 0.1, 10))
-zeta_e = brentq(lambda zz: math.exp(-math.pi * zz / math.sqrt(1 - zz**2)) - 0.25, 0.01, 0.99)
-v.check("X02.5l", zeta_e)
-wd_e = 2 * math.pi / 2e-6
-v.check("X02.5m", wd_e)
-v.check("X02.5n", wd_e / math.sqrt(1 - zeta_e**2))
 
 # 6 · forced response and resonance
 y6 = sp.dsolve(sp.Eq(y(t).diff(t, 2) + 4 * y(t), 3 * sp.cos(2 * t)), y(t),
@@ -239,8 +234,6 @@ x2inf = np.linalg.matrix_power(M2, 2000) @ np.array([0, 1.0])
 v.check("X02.11f", x2inf[0])
 v.check("X02.11g", x2inf @ np.array([10, 0.1]))
 v.check("X02.11h", np.sort(np.linalg.eigvals(M2).real)[0])
-v.check("X02.11i", -1 / math.log(ev[0]))
-v.check("X02.11j", -1 / math.log(np.sort(np.linalg.eigvals(M2).real)[0]))
 
 # 12 · symmetric matrices and SVD
 K12 = np.array([[2, -1], [-1, 2.0]])
@@ -260,10 +253,10 @@ v.assert_true("rank-1 error equals sigma2",
               abs(np.linalg.norm(H - sv[0] * np.outer(U12[:, 0], Vt12[0]), 2) - sv[1]) < 1e-12)
 
 # 13 · state space (built from R, L, C; time in microseconds)
-R13, L13, C13 = 3.0, 1e-6, 0.5e-6
+R13, L13, C13 = 4.0, 1e-6, 1e-6 / 3
 A13 = np.array([[0, 1 / C13], [-1 / L13, -R13 / L13]]) * 1e-6
 B13 = np.array([0, 1 / L13]) * 1e-6
-v.assert_true("A = [[0, 2], [-1, -3]] per us", np.allclose(A13, [[0, 2], [-1, -3]]))
+v.assert_true("A = [[0, 3], [-1, -4]] per us", np.allclose(A13, [[0, 3], [-1, -4]]))
 v.check("X02.13a", np.trace(A13))
 v.check("X02.13b", np.linalg.det(A13))
 x0 = np.array([1.0, 0.0])
@@ -282,17 +275,22 @@ lam13 = np.linalg.eigvals(A13).real
 v.check("X02.13j", min(2 / abs(lam13)))
 
 # 14 · numerical methods
-v.check("X02.14a", np.finfo(np.float64).eps, rtol=1e-3)
-v.check("X02.14b", np.finfo(np.float32).eps, rtol=1e-3)
+v.check("X02.14a", 1.0 - float(np.nextafter(np.float32(1), np.float32(0))))
+v.check("X02.14b", (1.0 - float(np.nextafter(np.float32(1), np.float32(0)))) / 2)
 xx = sp.Rational(1, 10**4)
 v.check("X02.14c", float(sp.N(1 - sp.cos(xx), 30)), rtol=1e-4)
 v.assert_true("float32 1 - cos(1e-4) is exactly 0", float(np.float32(1) - np.cos(np.float32(1e-4))) == 0.0)
 v.assert_true("float32 2 sin^2(x/2) is accurate",
               abs(float(2 * np.sin(np.float32(5e-5)) ** 2) / float(1 - sp.cos(xx)) - 1) < 1e-6)
-xs14 = [1.0]
+from scipy.optimize import brentq as _bq14  # noqa: E402
+f14 = lambda x_: x_**3 - 2 * x_ - 5  # noqa: E731
+fp14 = lambda x_: 3 * x_**2 - 2  # noqa: E731
+r14 = _bq14(f14, 2, 3, xtol=1e-15)
+xs14 = [2.0]
 for _ in range(3):
-    xs14.append(xs14[-1] - (xs14[-1] ** 2 - 2) / (2 * xs14[-1]))
-e = [x - math.sqrt(2) for x in xs14]
+    xs14.append(xs14[-1] - f14(xs14[-1]) / fp14(xs14[-1]))
+e = [x - r14 for x in xs14]
+v.check("X02.14w", r14)
 v.check("X02.14d", xs14[2])
 v.check("X02.14e", xs14[3])
 v.check("X02.14f", e[1])
@@ -300,10 +298,10 @@ v.check("X02.14g", e[2])
 v.check("X02.14h", e[3])
 v.check("X02.14i", e[2] / e[1] ** 2)
 v.check("X02.14j", e[3] / e[2] ** 2)
-v.check("X02.14k", 2 / (2 * 2 * math.sqrt(2)))
+v.check("X02.14k", 6 * r14 / (2 * fp14(r14)))
 v.check("X02.14u", e[0])
 v.check("X02.14v", e[1] / e[0] ** 2)
-v.check("X02.14l", math.ceil(math.log2(1 / 1e-6)))
+v.check("X02.14l", math.ceil(math.log2(0.5 / 1e-8)))
 order = math.log2(3.2e-5 / 2.0e-6)
 v.check("X02.14m", order)
 v.check("X02.14n", 2.0e-6 / 2**order)
@@ -318,11 +316,13 @@ v.check("X02.14t", (1 - h14 / 2) / (1 + h14 / 2))
 v.assert_true("trapezoidal slow factor matches exp(-0.01) to 6 digits", abs((1 - h14 / 2) / (1 + h14 / 2) - math.exp(-0.01)) < 1e-6)
 
 # 15 · conditioning
-K15 = np.array([[1, 1], [1, 1.001]])
+K15 = np.array([[2, 1], [1, 0.5005]])
 kap = np.linalg.cond(K15)
 v.check("X02.15a", kap)
 v.check("X02.15b", kap * 2.0**-11)
 v.check("X02.15c", kap * 2.0**-24)
 v.check("X02.15d", kap * 2.0**-53)
+_l15 = np.linalg.eigvalsh(K15)
+v.check("X02.15e", _l15[1]); v.check("X02.15f", _l15[0])
 
 sys.exit(v.finish())

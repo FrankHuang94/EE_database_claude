@@ -30,7 +30,7 @@ $$
 
 (c) $\mathbf{V}_C = Z_C\mathbf{I} = 50\angle-90° \times 0.08944\angle-26.57° = 4.472\angle-116.57°$ V, so $v_C(t) = 4.472\cos(1000t - 116.57°)$ V.
 
-(d) From the source: $P = \tfrac12V_mI_m\cos\theta = \tfrac12(10)(0.08944)\cos26.57° = 0.4000$ W. From the resistor, the only element that dissipates: $P = \tfrac12I_m^2R = \tfrac12(0.08944)^2(100) = 0.4000$ W ✓. The factor ½ is there because phasors carry peak values.
+(d) From the source: $P = \tfrac12V_mI_m\cos\theta = \tfrac12(10)(0.08944)\cos26.57° = 0.4000$ W. Check from the resistor, the only element that dissipates: $P = \tfrac12I_m^2R = \tfrac12(0.08944)^2(100) = 0.4000$ W ✓. The factor ½ is there because phasors carry peak values.
 
 (e) The current is in phase when the reactances cancel, $\omega L = 1/(\omega C)$, at $\omega_0 = 1/\sqrt{LC} = 1/\sqrt{0.1\times20\times10^{-6}} = 707.1$ rad/s. Then $Z = R$ and the current amplitude is $10/100 = 0.1$ A $=$ **100 mA**.
 
@@ -42,15 +42,15 @@ $$
 
 (b) $v(10\text{ ms}) = 5 - 4e^{-0.5} = 2.574$ V. For $v = 4$ V: $4e^{-t/\tau} = 1$, so $t = \tau\ln4 = 27.73$ ms.
 
-(c) Forward Euler on $v' = (5 - v)/\tau$ multiplies the error by $1 - h/\tau$ each step. Stability needs $|1 - h/\tau| < 1$, so $h < 2\tau = $ **40 ms**. The factor is negative for $h > \tau$, so the numerical solution alternates around the exact one unless $h \le \tau = $ **20 ms**. Accuracy needs a much smaller step still, say $\tau/20$.
+(c) Forward Euler on $v' = (5 - v)/\tau$ multiplies the deviation from the final value, $v - 5$, by $1 - h/\tau$ each step. Stability needs $|1 - h/\tau| < 1$, so $h < 2\tau = $ **40 ms**. The factor is negative for $h > \tau$, so the deviation alternates in sign, and the numerical solution overshoots the final value back and forth, unless $h \le \tau = $ **20 ms**. Accuracy needs a much smaller step still, say $\tau/20$.
 
-**4.** *(02-02)* (a) Divide by $t$: $y' + (2/t)y = t$. The integrating factor is $\mu = e^{\int 2/t\,dt} = t^2$, and $t^2y' + 2ty = (t^2y)'$, so $(t^2y)' = t^3$ and $t^2y = t^4/4 + K$. From $y(1) = 0$, $K = -1/4$:
+**4.** *(02-02)* (a) Divide by $t$: $y' + (3/t)y = 1$. The integrating factor is $\mu = e^{\int 3/t\,dt} = t^3$, and $t^3y' + 3t^2y = (t^3y)'$, so $(t^3y)' = t^3$ and $t^3y = t^4/4 + K$. From $y(1) = 0$, $K = -1/4$:
 
 $$
-y(t) = \frac{t^2}{4} - \frac{1}{4t^2}, \qquad y(2) = 1 - \frac{1}{16} = 0.9375 .
+y(t) = \frac{t}{4} - \frac{1}{4t^3}, \qquad y(2) = \frac12 - \frac{1}{32} = 0.46875 .
 $$
 
-Check: $y' = t/2 + 1/(2t^3)$, so $ty' + 2y = t^2/2 + 1/(2t^2) + t^2/2 - 1/(2t^2) = t^2$ ✓.
+Check: $y' = 1/4 + 3/(4t^4)$, so $ty' + 3y = t/4 + 3/(4t^3) + 3t/4 - 3/(4t^3) = t$ ✓.
 
 (b) The equation is $\tau v' + v = kt$. Try $v_p = at + b$: $\tau a + at + b = kt$, so $a = k$ and $b = -k\tau$. Adding the natural response and using $v(0) = 0$:
 
@@ -81,8 +81,6 @@ $$
 The first peak is where $v_C' = 0$ first, at $t_p = \pi/\omega_d = 3.245$ µs. There the bracket equals $-1$, so $v_C = 1 + e^{-\alpha\pi/\omega_d}$ and the overshoot is $e^{-\pi\zeta/\sqrt{1 - \zeta^2}} = e^{-0.8112} = 44.43\%$, a peak of **1.444 V**. The envelope rule gives the 2% settling time as $4/\alpha = 16$ µs. That is about 2.5 ring periods, consistent with $Q = 2$.
 
 (d) Critical damping needs ζ = 1, $\alpha = \omega_0$: $R = 2\sqrt{L/C} = $ **2 Ω**.
-
-(e) Invert the overshoot formula: $\zeta = -\ln(0.25)/\sqrt{\pi^2 + \ln^2 0.25} = 1.386/3.434 = 0.4037$. Successive peaks are one ring period apart, so $\omega_d = 2\pi/(2\text{ µs}) = 3.142\times10^6$ rad/s and $\omega_0 = \omega_d/\sqrt{1 - \zeta^2} = 3.434\times10^6$ rad/s.
 
 **6.** *(02-04)* (a) The homogeneous roots are $\pm j2$, and the input is at that same frequency, so the ordinary guess fails: multiply it by $t$. Write $y_p = t\,g(t)$ with $g = A\cos2t + B\sin2t$, which satisfies $g'' = -4g$. Then $y_p'' = 2g' + tg''$, so $y_p'' + 4y_p = 2g'$. Setting $2g' = 3\cos2t$ needs $g' = -2A\sin2t + 2B\cos2t = 1.5\cos2t$, so $A = 0$, $B = 0.75$ and $y_p = 0.75\,t\sin2t$. The general solution adds $c_1\cos2t + c_2\sin2t$; $y(0) = 0$ gives $c_1 = 0$ and $y'(0) = 2c_2 = 0$ gives $c_2 = 0$. So
 
@@ -148,7 +146,7 @@ $$
 \begin{bmatrix}v_1\\ v_2\\ v_3\end{bmatrix} = \begin{bmatrix}1\\ 0\\ 0\end{bmatrix}\text{ mA}.
 $$
 
-It is symmetric because each stamp is symmetric. Each diagonal entry is the total conductance at that node, at least the sum of the magnitudes of the off-diagonal entries in its row; nodes 1 and 3 have strictly more, because of their resistors to ground.
+It is symmetric because each stamp is symmetric. Each diagonal entry is the total conductance at that node: the sum of the magnitudes of the off-diagonal entries in its row plus the conductance to ground. Every node here has a resistor to ground, so all three rows are strictly dominant: $1.5 > 0.5$, $2 > 0.5 + 1$ and $2 > 1$.
 
 (b) Eliminate: $\ell_{21} = -0.5/1.5 = -1/3$, which changes row 2 to $(0,\ 2 - 1/6,\ -1) = (0,\ 11/6,\ -1)$. Then $\ell_{32} = -1/(11/6) = -6/11$, which changes row 3 to $(0,\ 0,\ 2 - 6/11) = (0, 0, 16/11)$:
 
@@ -201,7 +199,7 @@ $$
 
 $p_5 = \tfrac23(1 - 0.16807) = 0.5546$. Within 0.01 needs $\tfrac23(0.7)^k \le 0.01$, so $(0.7)^k \le 0.015$ and $k \ge \ln0.015/\ln0.7 = 11.77$: **12 slots**. (Check: $k = 11$ leaves 0.0132; $k = 12$ leaves 0.0092.)
 
-(d) Now $\mathbf{M} = \begin{bmatrix}0.7 & 0.2\\ 0.3 & 0.8\end{bmatrix}$. Steady state: $-0.3p + 0.2q = 0$ with $p + q = 1$ gives $p = 0.4$. The average power is $0.4(10) + 0.6(0.1) = 4.060$ mW, a 39% cut. The trace is 1.5, so the second eigenvalue is $1.5 - 1 = 0.5$. (For any two-state chain it is 1 minus the two exit probabilities: $1 - 0.3 - 0.2$.) It sets how fast the chain forgets where it started: deviations from the steady state shrink by 0.5 per slot, a time constant of $-1/\ln0.5 = 1.443$ slots, against $-1/\ln0.7 = 2.804$ slots before.
+(d) Now $\mathbf{M} = \begin{bmatrix}0.7 & 0.2\\ 0.3 & 0.8\end{bmatrix}$. Steady state: $-0.3p + 0.2q = 0$ with $p + q = 1$ gives $p = 0.4$. The average power is $0.4(10) + 0.6(0.1) = 4.060$ mW, a 39% cut. The trace is 1.5, so the second eigenvalue is $1.5 - 1 = 0.5$. (For any two-state chain it is 1 minus the two exit probabilities: $1 - 0.3 - 0.2$.) It sets how fast the chain forgets where it started: deviations from the steady state now shrink by 0.5 per slot instead of 0.7.
 
 **12.** *(02-08)* (a) $\det(\mathbf{K} - \lambda\mathbf{I}) = (2 - \lambda)^2 - 1 = 0$, so $\lambda = 1$ and $\lambda = 3$, with orthonormal eigenvectors $\mathbf{q}_1 = (1, 1)/\sqrt2$ and $\mathbf{q}_2 = (1, -1)/\sqrt2$:
 
@@ -218,49 +216,41 @@ Positive definite three ways: both eigenvalues are positive; the pivots, 2 and $
 **13.** *(02-09)* (a) KVL gives $u = Ri_L + L\,di_L/dt + v_C$, and the capacitor gives $C\,dv_C/dt = i_L$. So
 
 $$
-v_C' = \frac{i_L}{C} = 2\times10^6\,i_L\ \text{V/s}, \qquad i_L' = \frac{u - v_C - Ri_L}{L} = 10^6(u - v_C - 3i_L)\ \text{A/s}.
+v_C' = \frac{i_L}{C} = 3\times10^6\,i_L\ \text{V/s}, \qquad i_L' = \frac{u - v_C - Ri_L}{L} = 10^6(u - v_C - 4i_L)\ \text{A/s}.
 $$
 
-Per microsecond the factors $10^6$ drop out, giving $\mathbf{A} = \begin{bmatrix}0 & 2\\ -1 & -3\end{bmatrix}$ and $\mathbf{B} = (0, 1)$. The trace is −3 and the determinant is $0 - (2)(-1) = 2$. Since $\text{tr}^2 - 4\det = 1 > 0$, $\det > 0$ and $\text{tr} < 0$, the eigenvalues are real, distinct and negative: a **stable node** (overdamped, no ringing). They are the roots of $\lambda^2 + 3\lambda + 2$: −1 and −2 per µs.
+Per microsecond the factors $10^6$ drop out, giving $\mathbf{A} = \begin{bmatrix}0 & 3\\ -1 & -4\end{bmatrix}$ and $\mathbf{B} = (0, 1)$. The trace is −4 and the determinant is $0 - (3)(-1) = 3$. Since $\text{tr}^2 - 4\det = 4 > 0$, $\det > 0$ and $\text{tr} < 0$, the eigenvalues are real, distinct and negative: a **stable node** (overdamped, no ringing). They are the roots of $\lambda^2 + 4\lambda + 3$: −1 and −3 per µs.
 
-(b) For $\lambda = -1$: $(\mathbf{A} + \mathbf{I})\mathbf{x} = \mathbf{0}$ gives $x_1 + 2x_2 = 0$, eigenvector $(2, -1)$. For $\lambda = -2$: $2x_1 + 2x_2 = 0$, eigenvector $(1, -1)$. Fit $(1, 0) = c_1(2, -1) + c_2(1, -1)$: $c_1 = 1$, $c_2 = -1$. So
-
-$$
-v_C(t) = 2e^{-t} - e^{-2t}\ \text{V}, \qquad i_L(t) = -e^{-t} + e^{-2t}\ \text{A} \qquad (t \text{ in µs}).
-$$
-
-At 1 µs: $v_C = 0.7358 - 0.1353 = 0.6004$ V and $i_L = -0.3679 + 0.1353 = -0.2325$ A. The current is most negative where $i_L' = e^{-t} - 2e^{-2t} = 0$, at $e^{-t} = 1/2$, $t = \ln2 = 0.6931$ µs, where $i_L = -1/2 + 1/4 = -0.25$ A. The negative sign means the capacitor discharges through the loop. Check: $v_C' = -2e^{-t} + 2e^{-2t} = 2i_L$ ✓.
-
-(c) With $\mathbf{X} = \begin{bmatrix}2 & 1\\ -1 & -1\end{bmatrix}$, $\mathbf{X}^{-1} = \begin{bmatrix}1 & 1\\ -1 & -2\end{bmatrix}$, and
+(b) For $\lambda = -1$: $(\mathbf{A} + \mathbf{I})\mathbf{x} = \mathbf{0}$ gives $x_1 + 3x_2 = 0$, eigenvector $(3, -1)$. For $\lambda = -3$: $3x_1 + 3x_2 = 0$, eigenvector $(1, -1)$. Fit $(1, 0) = c_1(3, -1) + c_2(1, -1)$: $c_1 = \tfrac12$, $c_2 = -\tfrac12$. So
 
 $$
-e^{\mathbf{A}t} = \mathbf{X}e^{\boldsymbol{\Lambda}t}\mathbf{X}^{-1} = \begin{bmatrix}2e^{-t} - e^{-2t} & 2e^{-t} - 2e^{-2t}\\ -e^{-t} + e^{-2t} & -e^{-t} + 2e^{-2t}\end{bmatrix}.
+v_C(t) = \tfrac32e^{-t} - \tfrac12e^{-3t}\ \text{V}, \qquad i_L(t) = -\tfrac12e^{-t} + \tfrac12e^{-3t}\ \text{A} \qquad (t \text{ in µs}).
 $$
 
-At $t = 0$ it is $\mathbf{I}$ ✓, and its first column, the response to $\mathbf{x}(0) = (1, 0)$, is exactly (b) ✓.
+At 1 µs: $v_C = 0.5518 - 0.0249 = 0.5269$ V and $i_L = -0.1839 + 0.0249 = -0.1590$ A. The current is most negative where $i_L' = \tfrac12e^{-t} - \tfrac32e^{-3t} = 0$, at $e^{2t} = 3$, $t = \tfrac12\ln3 = 0.5493$ µs, where $i_L = \tfrac12\big(3^{-3/2} - 3^{-1/2}\big) = -0.19245$ A. The negative sign means the capacitor discharges through the loop. Check: $v_C' = -\tfrac32e^{-t} + \tfrac32e^{-3t} = 3i_L$ ✓, and $\mathbf{x}(0) = (1, 0)$ ✓.
 
-(d) $(s\mathbf{I} - \mathbf{A})^{-1} = \dfrac{1}{s^2 + 3s + 2}\begin{bmatrix}s + 3 & 2\\ -1 & s\end{bmatrix}$. With $\mathbf{C} = (1, 0)$ and $D = 0$:
+(c) $(s\mathbf{I} - \mathbf{A})^{-1} = \dfrac{1}{s^2 + 4s + 3}\begin{bmatrix}s + 4 & 3\\ -1 & s\end{bmatrix}$. With $\mathbf{C} = (1, 0)$ and $D = 0$:
 
 $$
-\frac{V_C(s)}{U(s)} = \frac{2}{s^2 + 3s + 2}\quad(s\text{ in rad/µs}), \quad\text{or}\quad \frac{2\times10^{12}}{s^2 + 3\times10^6s + 2\times10^{12}}\ \text{in SI}.
+\frac{V_C(s)}{U(s)} = \frac{3}{s^2 + 4s + 3}\quad(s\text{ in rad/µs}), \quad\text{or}\quad \frac{3\times10^{12}}{s^2 + 4\times10^6s + 3\times10^{12}}\ \text{in SI}.
 $$
 
-The DC gain is $2/2 = $ **1**. The steady state is $-\mathbf{A}^{-1}\mathbf{B}\cdot1$, with $\mathbf{A}^{-1} = \tfrac12\begin{bmatrix}-3 & -2\\ 1 & 0\end{bmatrix}$, giving $(1, 0)$: $v_C = 1$ V and no current, as a capacitor in DC steady state requires.
+The DC gain is $3/3 = $ **1**. The steady state is $-\mathbf{A}^{-1}\mathbf{B}\cdot1$, with $\mathbf{A}^{-1} = \tfrac13\begin{bmatrix}-4 & -3\\ 1 & 0\end{bmatrix}$, giving $(1, 0)$: $v_C = 1$ V and no current, as a capacitor in DC steady state requires.
 
-(e) The eigenvalues of $\mathbf{A}_d = e^{\mathbf{A}T}$ are $e^{\lambda T}$: $e^{-0.1} = 0.9048$ and $e^{-0.2} = 0.8187$, inside the unit circle as they must be. Forward Euler multiplies each mode by $1 + h\lambda$. It needs $|1 - 2h| < 1$ for the fast mode, so $h < 1$ µs; the slow mode allows up to 2 µs. The fast mode sets the limit.
+(d) The eigenvalues of $\mathbf{A}_d = e^{\mathbf{A}T}$ are $e^{\lambda T}$: $e^{-0.1} = 0.9048$ and $e^{-0.3} = 0.7408$, inside the unit circle as they must be. Forward Euler multiplies each mode by $1 + h\lambda$. It needs $|1 - 3h| < 1$ for the fast mode, so $h < 2/3 = $ **0.6667 µs**; the slow mode allows up to 2 µs. The fast mode sets the limit.
 
-**14.** *(02-10)* (a) Double precision: $\epsilon = 2^{-52} = 2.220\times10^{-16}$. Single: $\epsilon = 2^{-23} = 1.192\times10^{-7}$. The Taylor series gives $1 - \cos x = x^2/2 - x^4/24 + \dots = 5.000\times10^{-9}$ for $x = 10^{-4}$ (the second term is $4\times10^{-18}$). In single precision the computed cosine, $0.999\,999\,995$, must be rounded to a float. The floats just below 1 are $2^{-24} = 5.96\times10^{-8}$ apart, and $5\times10^{-9}$ is less than half that gap, so the cosine rounds to exactly 1. The subtraction then gives 0: a 100% error. The information was destroyed when the cosine was rounded, and the subtraction exposes it. The fix uses $1 - \cos x = 2\sin^2(x/2)$: $\sin(5\times10^{-5})$ is stored to full relative precision, and squaring and doubling it gives $5.000\times10^{-9}$ correctly.
+**14.** *(02-10)* (a) With 23 fraction bits, the floats in $[1, 2)$ are $2^{-23}$ apart, and those in $[\tfrac12, 1)$ half as far: the spacing just below 1 is $2^{-24} = 5.960\times10^{-8}$. The Taylor series gives $1 - \cos x = x^2/2 - x^4/24 + \dots = 5.000\times10^{-9}$ for $x = 10^{-4}$ (the second term is $4\times10^{-18}$). In single precision the computed cosine, $0.999\,999\,995$, must be rounded to a float. It lies less than half a spacing ($2.98\times10^{-8}$) below 1, so it rounds to exactly 1, and the subtraction gives 0: a 100% error. The information was destroyed when the cosine was rounded, and the subtraction exposes it. The fix uses $1 - \cos x = 2\sin^2(x/2)$: $\sin(5\times10^{-5})$ is stored to full relative precision, and squaring and doubling it gives $5.000\times10^{-9}$ correctly.
 
-(b) Newton's step is $x_{k+1} = x_k - (x_k^2 - 2)/(2x_k) = \tfrac12(x_k + 2/x_k)$:
+(b) $f'(x) = 3x^2 - 2$, so $x_{k+1} = x_k - (x_k^3 - 2x_k - 5)/(3x_k^2 - 2)$. The root is $x^* = 2.0945515$.
 
-| $k$ | $x_k$ | $e_k = x_k - \sqrt2$ | $e_k/e_{k-1}^2$ |
+| $k$ | $x_k$ | $e_k = x_k - x^*$ | $e_k/e_{k-1}^2$ |
 |---|---|---|---|
-| 0 | 1 | −0.4142 | — |
-| 1 | 1.5 | 0.08579 | 0.5000 |
-| 2 | 1.416667 | 2.453×10⁻³ | 0.3333 |
-| 3 | 1.414216 | 2.124×10⁻⁶ | 0.3529 |
+| 0 | 2 | −0.09455 | — |
+| 1 | 2.1 | 5.449×10⁻³ | 0.6095 |
+| 2 | 2.094568 | 1.664×10⁻⁵ | 0.5605 |
+| 3 | 2.0945515 | 1.559×10⁻¹⁰ | 0.5630 |
 
-Exactly, $x_{k+1} - \sqrt2 = (x_k - \sqrt2)^2/(2x_k)$, so the ratio is $1/(2x_k)$, which tends to $f''/(2f') = 1/(2\sqrt2) = 0.3536$. The number of correct digits roughly doubles each step. Bisection halves the bracket each step: $2^{-n} < 10^{-6}$ needs $n > \log_2 10^6 = 19.93$, so **20 steps**, against Newton's 3 to reach $2\times10^{-6}$.
+The theoretical limit is $f''(x^*)/(2f'(x^*)) = 6x^*/\big(2(3x^{*2} - 2)\big) = 0.5630$: the ratios settle onto it, and the correct digits roughly double each step. Bisection halves the bracket each step: $0.5\times2^{-n} < 10^{-8}$ needs $n > \log_2(5\times10^7) = 25.58$, so **26 steps**, against Newton's 3 to reach $10^{-10}$.
 
 (c) Halving $h$ divided the error by $3.2\times10^{-5}/2.0\times10^{-6} = 16 = 2^4$, so the method is **fourth order** (RK4 behaves this way). Halving again should give $2.0\times10^{-6}/16 = 1.25\times10^{-7}$.
 
@@ -271,13 +261,13 @@ Exactly, $x_{k+1} - \sqrt2 = (x_k - \sqrt2)^2/(2x_k)$, so the ratio is $1/(2x_k)
 
 Both handle the slow mode well. Its factors are $1/1.01 = 0.9901$ for backward Euler and $0.995/1.005 = 0.99005$ for trapezoidal, against an exact $e^{-0.01} = 0.99005$. The second-order trapezoidal rule is the more accurate.
 
-**15.** *(02-10)* (a) $\mathbf{K}$ is symmetric, so $\kappa = \lambda_{\max}/\lambda_{\min}$. Its trace is 2.001 and its determinant is 0.001, so $\lambda = \tfrac12\left(2.001 \pm \sqrt{2.001^2 - 0.004}\right)$, giving $2.0005$ and $4.999\times10^{-4}$. So $\kappa = 4002$. Quick check: $\lambda_{\min} \approx \det/\lambda_{\max}$, so $\kappa \approx \lambda_{\max}^2/\det = 2.0005^2/0.001 = 4002$ ✓.
+**15.** *(02-10)* (a) $\mathbf{K}$ is symmetric, so $\kappa = \lambda_{\max}/\lambda_{\min}$. Its trace is 2.5005 and its determinant is $1.001 - 1 = 0.001$, so $\lambda = \tfrac12\left(2.5005 \pm \sqrt{2.5005^2 - 0.004}\right)$, giving $2.5001$ and $4.000\times10^{-4}$. So $\kappa = 6250.5$. Quick check: $\lambda_{\min} \approx \det/\lambda_{\max}$, so $\kappa \approx \lambda_{\max}^2/\det = 2.5001^2/0.001 = 6250$ ✓. Physically, the second row is almost half the first: the two paths are nearly redundant.
 
 (b) $\kappa u$ is about:
 
-- **FP16:** $4002\times2^{-11} = 1.954$. The error can exceed 100%: no correct digits.
-- **FP32:** $4002\times2^{-24} = 2.385\times10^{-4}$, about 3 to 4 correct digits.
-- **FP64:** $4002\times2^{-53} = 4.443\times10^{-13}$, about 12 digits.
+- **FP16:** $6250.5\times2^{-11} = 3.052$. The error can be several times the answer: no correct digits.
+- **FP32:** $6250.5\times2^{-24} = 3.726\times10^{-4}$, about 3 correct digits.
+- **FP64:** $6250.5\times2^{-53} = 6.939\times10^{-13}$, about 12 digits.
 
 (c) Rubric: 2 of the question's 5 points. Award 1 for the reasoning and 1 for two good questions.
 
@@ -315,7 +305,7 @@ Both handle the slow mode well. Its factors are $1/1.01 = 0.9901$ for backward E
 | X02.3c | time to reach 4 V | 27.73 | ms |
 | X02.3d | largest stable Euler step | 40 | ms |
 | X02.3e | largest non-alternating Euler step | 20 | ms |
-| X02.4a | y(2) | 0.9375 | — |
+| X02.4a | y(2) | 0.46875 | — |
 | X02.4b | ramp response at 1 ms | 1.135 | V |
 | X02.4c | ramp tracking error | 1 | V |
 | X02.4d | ramp time lag | 0.5 | ms |
@@ -332,9 +322,6 @@ Both handle the slow mode well. Its factors are $1/1.01 = 0.9901$ for backward E
 | X02.5i | peak voltage | 1.444 | V |
 | X02.5j | 2% settling estimate | 16 | µs |
 | X02.5k | critical-damping resistance | 2 | Ω |
-| X02.5l | damping ratio from 25% overshoot | 0.4037 | — |
-| X02.5m | omega_d from 2 µs ring period | 3.142×10^6 | rad/s |
-| X02.5n | inferred omega_0 | 3.434×10^6 | rad/s |
 | X02.6a | y(pi/4), resonant case | 0.5890 | — |
 | X02.6b | envelope growth rate | 0.75 | per unit time |
 | X02.6c | steady-state amplitude at omega = 2 | 2.425 | — |
@@ -393,8 +380,6 @@ Both handle the slow mode well. Its factors are $1/1.01 = 0.9901$ for backward E
 | X02.11f | new fraction awake | 0.4 | — |
 | X02.11g | new average power | 4.060 | mW |
 | X02.11h | new second eigenvalue | 0.5 | — |
-| X02.11i | old time constant | 2.804 | slots |
-| X02.11j | new time constant | 1.443 | slots |
 | X02.12a | smaller eigenvalue of K | 1 | — |
 | X02.12b | larger eigenvalue of K | 3 | — |
 | X02.12c | second pivot of K | 1.5 | — |
@@ -403,28 +388,28 @@ Both handle the slow mode well. Its factors are $1/1.01 = 0.9901$ for backward E
 | X02.12f | condition number of H | 3 | — |
 | X02.12g | strong-channel gain | 16.53 | dB |
 | X02.12h | weak-channel gain | 6.990 | dB |
-| X02.13a | trace of A | −3 | 1/µs |
-| X02.13b | det A | 2 | 1/µs² |
-| X02.13c | v_C at 1 µs | 0.6004 | V |
-| X02.13d | i_L at 1 µs | −0.2325 | A |
-| X02.13e | time of most negative current | 0.6931 | µs |
-| X02.13f | most negative current | −0.25 | A |
+| X02.13a | trace of A | −4 | 1/µs |
+| X02.13b | det A | 3 | 1/µs² |
+| X02.13c | v_C at 1 µs | 0.5269 | V |
+| X02.13d | i_L at 1 µs | −0.1590 | A |
+| X02.13e | time of most negative current | 0.5493 | µs |
+| X02.13f | most negative current | −0.19245 | A |
 | X02.13g | DC gain | 1 | — |
 | X02.13h | discrete eigenvalue, slow mode | 0.9048 | — |
-| X02.13i | discrete eigenvalue, fast mode | 0.8187 | — |
-| X02.13j | largest stable Euler step | 1 | µs |
-| X02.14a | double machine epsilon | 2.220×10^-16 | — |
-| X02.14b | single machine epsilon | 1.192×10^-7 | — |
+| X02.13i | discrete eigenvalue, fast mode | 0.7408 | — |
+| X02.13j | largest stable Euler step | 0.6667 | µs |
+| X02.14a | single-precision spacing just below 1 | 5.960×10^-8 | — |
+| X02.14b | half of that spacing | 2.98×10^-8 | — |
 | X02.14c | 1 − cos(1e-4) | 5.000×10^-9 | — |
-| X02.14d | Newton x2 | 1.416667 | — |
-| X02.14e | Newton x3 | 1.414216 | — |
-| X02.14f | Newton error e1 | 0.08579 | — |
-| X02.14g | Newton error e2 | 2.453×10^-3 | — |
-| X02.14h | Newton error e3 | 2.124×10^-6 | — |
-| X02.14i | ratio e2/e1² | 0.3333 | — |
-| X02.14j | ratio e3/e2² | 0.3529 | — |
-| X02.14k | limiting ratio | 0.3536 | — |
-| X02.14l | bisection steps | 20 | — |
+| X02.14d | Newton x2 | 2.094568 | — |
+| X02.14e | Newton x3 | 2.0945515 | — |
+| X02.14f | Newton error e1 | 5.449×10^-3 | — |
+| X02.14g | Newton error e2 | 1.664×10^-5 | — |
+| X02.14h | Newton error e3 | 1.559×10^-10 | — |
+| X02.14i | ratio e2/e1² | 0.5605 | — |
+| X02.14j | ratio e3/e2² | 0.5630 | — |
+| X02.14k | limiting ratio | 0.5630 | — |
+| X02.14l | bisection steps | 26 | — |
 | X02.14m | order of accuracy | 4 | — |
 | X02.14n | predicted error at h = 0.005 | 1.25×10^-7 | — |
 | X02.14o | largest stable Euler step | 2 | ms |
@@ -433,9 +418,12 @@ Both handle the slow mode well. Its factors are $1/1.01 = 0.9901$ for backward E
 | X02.14r | trapezoidal fast factor | −0.6667 | — |
 | X02.14s | backward-Euler slow factor | 0.9901 | — |
 | X02.14t | trapezoidal slow factor | 0.99005 | — |
-| X02.14u | Newton error e0 | −0.4142 | — |
-| X02.14v | ratio e1/e0² | 0.5000 | — |
-| X02.15a | condition number | 4002 | — |
-| X02.15b | FP16 error estimate | 1.954 | — |
-| X02.15c | FP32 error estimate | 2.385×10^-4 | — |
-| X02.15d | FP64 error estimate | 4.443×10^-13 | — |
+| X02.14u | Newton error e0 | −0.09455 | — |
+| X02.14v | ratio e1/e0² | 0.6095 | — |
+| X02.15a | condition number | 6250.5 | — |
+| X02.15b | FP16 error estimate | 3.052 | — |
+| X02.15c | FP32 error estimate | 3.726×10^-4 | — |
+| X02.15d | FP64 error estimate | 6.939×10^-13 | — |
+| X02.14w | root of x³ − 2x − 5 | 2.0945515 | — |
+| X02.15e | larger eigenvalue of K | 2.5001 | S |
+| X02.15f | smaller eigenvalue of K | 4.000×10^-4 | S |
