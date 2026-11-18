@@ -127,7 +127,9 @@ v.assert_true("Ex 5: die amplitudes -4.616 and -15.38", np.allclose(sorted(c5 * 
 v.check("Ex 02-09.6a", math.exp(-0.5)); v.check("Ex 02-09.6b", math.exp(-1.5))
 v.check("Ex 02-09.6c", min(np.linalg.eigvals(np.eye(2) + A2 * 0.5)))
 v.check("Ex 02-09.6d", min(np.linalg.eigvals(np.eye(2) + A2 * 1.0)))
-v.check("Ex 02-09.6e", 2 / 3)
+from scipy.optimize import brentq as _bq, minimize_scalar as _ms  # noqa: E402
+_lam2 = np.linalg.eigvals(A2).real
+v.check("Ex 02-09.6e", _bq(lambda T_: max(abs(1 + T_ * _lam2)) - 1, 0.1, 1.5))
 v.assert_true("Ex 6: exact discrete eigenvalues e^{lambda T}", np.allclose(sorted(np.linalg.eigvals(expm(A2 * 0.5))), [math.exp(-1.5), math.exp(-0.5)]))
 
 # ---------------------------------------------------------------- numbers to know
@@ -152,7 +154,7 @@ v.check("02-09.5a", x5[0]); v.check("02-09.5b", x5[1])
 x6 = expm(np.array([[-1, -4], [1, -1.0]]) * 0.5) @ [1, 0]
 v.check("02-09.6a", x6[0]); v.check("02-09.6b", x6[1])
 v.assert_true("P6: closed form e^-t (cos 2t, 0.5 sin 2t)", np.allclose(x6, math.exp(-0.5) * np.array([math.cos(1), 0.5 * math.sin(1)])))
-v.check("02-09.7a", 0.5); v.check("02-09.7b", (expm(np.array([[-2, 1], [0, -2.0]]) * 0.5) @ [0, 1])[0])
+v.check("02-09.7a", _ms(lambda t_: -(expm(np.array([[-2, 1], [0, -2.0]]) * t_) @ [0, 1])[0], bounds=(0.01, 3), method="bounded", options={"xatol": 1e-10}).x); v.check("02-09.7b", (expm(np.array([[-2, 1], [0, -2.0]]) * 0.5) @ [0, 1])[0])
 E8 = expm(np.array([[0, 1], [-2, -3.0]]))
 v.check("02-09.8a", E8[0, 0]); v.check("02-09.8b", E8[0, 1])
 v.assert_true("P8: entries 2e^-1 - e^-2 and e^-1 - e^-2", np.isclose(E8[0, 0], 2 * math.exp(-1) - math.exp(-2))
@@ -168,7 +170,7 @@ kk = sp.Symbol("k")
 v.check("02-09.11a", float(sp.solve(M([[-1, kk], [1, -2]]).det(), kk)[0]))
 tau12, T12 = 2e-3, 0.5e-3
 v.check("02-09.12a", math.exp(-T12 / tau12)); v.check("02-09.12b", 1 - math.exp(-T12 / tau12))
-v.check("02-09.12c", 1 - T12 / tau12); v.check("02-09.12d", 2 * tau12 * 1e3)
+v.check("02-09.12c", 1 - T12 / tau12); v.check("02-09.12d", _bq(lambda T_: abs(1 - T_ / tau12) - 1, 1e-5, 1e-2) * 1e3)
 
 # ---------------------------------------------------------------- Problems 13-15
 Lr = 1e-6
@@ -196,5 +198,39 @@ v.check("Lab 02-09.a", sum(r * (1 - math.exp(-0.1 / q)) for r, q in zip(Rf, taus
 v.check("Lab 02-09.b", 20 * math.log(100))
 v.check("Lab 02-09.c", 2 / np.max(np.abs(w5)))
 v.check("Lab 02-09.d", 2 * math.pi / 2)
+
+# audit additions -------------------------------------------------------------
+# Example 5: eigenvectors and coefficients
+_A5 = np.array([[-1, 1], [0.04, -0.0533333333]])
+_w5, _V5 = np.linalg.eig(_A5)
+_V5 = _V5 / _V5[0]                          # scale so first entries are 1
+_o = np.argsort(_w5)                        # fast (more negative) first
+v.check("Ex 02-09.5p", _V5[1, _o[0]]); v.check("Ex 02-09.5q", _V5[1, _o[1]])
+_c5 = np.linalg.solve(_V5[:, _o], np.array([-20, -15.0]))
+v.check("Ex 02-09.5s", _c5[0]); v.check("Ex 02-09.5r", _c5[1])
+# Example 7: latch
+_tau7, _a7 = 10.0, 3.0                       # ps
+_J7 = np.array([[-1, -_a7], [-_a7, -1]]) / _tau7
+_e7 = np.sort(np.linalg.eigvals(_J7).real)
+v.check("Ex 02-09.7a", -1 / _e7[0]); v.check("Ex 02-09.7b", 1 / _e7[1])
+_sol7 = solve_ivp(lambda t_, d: [_e7[1] * d[0]], (0, 200), [1e-6], rtol=1e-12, atol=1e-18, dense_output=True,
+                  events=lambda t_, d: d[0] - 0.5)
+v.check("Ex 02-09.7c", _sol7.t_events[0][0])
+v.check("Ex 02-09.7d", math.log(10) / _e7[1])
+_s7 = _bq(lambda s_: s_ - math.tanh(3 * s_), 0.5, 1.0, xtol=1e-14)
+v.check("Ex 02-09.7e", _s7)
+v.check("Ex 02-09.7f", 3 * (1 - math.tanh(3 * _s7) ** 2))
+# Problem 16: latch a = 2, tau = 20 ps
+_J16 = np.array([[-1, -2.0], [-2.0, -1]]) / 20.0
+_e16 = np.sort(np.linalg.eigvals(_J16).real)
+v.check("02-09.16a", 1 / _e16[1]); v.check("02-09.16b", -1 / _e16[0])
+v.check("02-09.16c", 0.5 * math.exp(-_e16[1] * 200))
+# Problem 17: ramp input by the convolution integral (numerical quadrature)
+from scipy.integrate import quad as _quad  # noqa: E402
+_A17 = np.array([[-1, 0], [1, -2.0]]); _B17 = np.array([1, 0.0])
+_x17 = [_quad(lambda l_: (expm(_A17 * (1 - l_)) @ _B17)[k] * l_, 0, 1)[0] for k in (0, 1)]
+v.check("02-09.17a", _x17[0]); v.check("02-09.17b", _x17[1])
+v.check("02-09.10b", 1 / 3)
+v.assert_true("Sol 10 DC gain equals -C A^-1 B for the RC pair", abs(float(H10.subs(s, 0)) - 1 / 3) < 1e-12)
 
 v.finish()

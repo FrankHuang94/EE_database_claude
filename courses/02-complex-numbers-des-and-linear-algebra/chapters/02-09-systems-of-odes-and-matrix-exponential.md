@@ -4,7 +4,7 @@
 | | |
 |---|---|
 | **Course** | [02 · Complex Numbers, Differential Equations and Linear Algebra](../README.md) |
-| **University equivalent** | The linear-systems unit of a sophomore differential-equations course (MIT 18.03 Unit V: first-order systems, eigenvalue solutions, the phase plane, the matrix exponential; MIT 18.06 lecture 23; Boyce & DiPrima, chapter on systems of first-order linear equations), plus the state-space introduction of a first signals-and-systems or controls course |
+| **University equivalent** | The linear-systems unit of a sophomore differential-equations course (MIT 18.03SC Unit IV: first-order systems, linearization near equilibria, eigenvalue solutions, the phase plane, the matrix exponential; MIT 18.06 lecture 23; Boyce & DiPrima, chapter on systems of first-order linear equations), plus the state-space introduction of a first signals-and-systems or controls course |
 | **Prerequisites** | [02-08 Eigenvalues and Eigenvectors](02-08-eigenvalues-and-eigenvectors.md), [02-05](02-05-laplace-transform-for-odes.md) (transfer functions and poles), [02-04](02-04-forced-response-and-resonance.md) (variation of parameters) |
 | **Estimated study hours** | 10 |
 | **Last verified** | 2026-11-18 |
@@ -14,7 +14,7 @@
 1. Write a circuit or a higher-order ODE in state-space form $\mathbf{x}' = \mathbf{A}\mathbf{x} + \mathbf{B}u$, $y = \mathbf{C}\mathbf{x} + Du$, choosing capacitor voltages and inductor currents as the states.
 2. Solve $\mathbf{x}' = \mathbf{A}\mathbf{x}$ by eigenvector expansion, for real, complex and repeated eigenvalues, and fit the initial conditions.
 3. Define the matrix exponential $e^{\mathbf{A}t}$, compute it by diagonalization or by $(s\mathbf{I} - \mathbf{A})^{-1}$, and use its properties.
-4. Classify the equilibrium of a 2-state system (node, saddle, spiral, center) from its trace and determinant, and decide stability from eigenvalues.
+4. Classify the equilibrium of a 2-state system (node, saddle, spiral, center) from its trace and determinant, decide stability from eigenvalues, and linearize a nonlinear system at an operating point with its Jacobian.
 5. Find forced responses with the convolution formula, steady states with $-\mathbf{A}^{-1}\mathbf{B}u$, and transfer functions with $\mathbf{C}(s\mathbf{I} - \mathbf{A})^{-1}\mathbf{B} + D$.
 6. Discretize a state-space model exactly with a zero-order hold, map $s$-plane poles to the $z$-plane, and explain why forward Euler can go unstable.
 
@@ -60,7 +60,7 @@ $$
 
 With several inputs and outputs, $\mathbf{B}$, $\mathbf{C}$ and $D$ simply gain columns and rows.
 
-**Choosing states for a circuit.** Take the voltage across each capacitor and the current through each inductor, as long as they are independent; a loop of capacitors alone, for example, removes one. These are the quantities that cannot jump, because they hold energy ($\tfrac12Cv^2$ and $\tfrac12Li^2$). Then:
+**Choosing states for a circuit.** Take the voltage across each capacitor and the current through each inductor, as long as they are independent. A loop of capacitors (and voltage sources) removes one capacitor voltage, and dually a cutset of inductors (and current sources), such as two inductors in series with nothing else at their junction, removes one inductor current. These are the quantities that cannot jump, because they hold energy ($\tfrac12Cv^2$ and $\tfrac12Li^2$). Then:
 
 1. use KCL to find each capacitor current, giving $C\,v_C' = (\text{that current})$;
 2. use KVL to find each inductor voltage, giving $L\,i_L' = (\text{that voltage})$;
@@ -122,7 +122,7 @@ $$
 e^{\mathbf{A}t} = \mathbf{I} + \mathbf{A}t + \frac{(\mathbf{A}t)^2}{2!} + \frac{(\mathbf{A}t)^3}{3!} + \cdots .
 $$
 
-The series converges for every square matrix and every $t$. Differentiating it term by term gives $\frac{d}{dt}e^{\mathbf{A}t} = \mathbf{A} + \mathbf{A}^2t + \frac{\mathbf{A}^3t^2}{2!} + \dots = \mathbf{A}e^{\mathbf{A}t}$, and at $t = 0$ it is $\mathbf{I}$. Therefore
+The series converges for every square matrix and every $t$: with any matrix norm satisfying $\lVert\mathbf{X}\mathbf{Y}\rVert \le \lVert\mathbf{X}\rVert\lVert\mathbf{Y}\rVert$, each term obeys $\lVert(\mathbf{A}t)^k/k!\rVert \le (\lVert\mathbf{A}\rVert\lvert t\rvert)^k/k!$, and those numbers sum to $e^{\lVert\mathbf{A}\rVert\lvert t\rvert}$, which is finite. Differentiating it term by term gives $\frac{d}{dt}e^{\mathbf{A}t} = \mathbf{A} + \mathbf{A}^2t + \frac{\mathbf{A}^3t^2}{2!} + \dots = \mathbf{A}e^{\mathbf{A}t}$, and at $t = 0$ it is $\mathbf{I}$. Therefore
 
 $$
 \boxed{\mathbf{x}(t) = e^{\mathbf{A}t}\mathbf{x}_0}
@@ -132,8 +132,8 @@ solves $\mathbf{x}' = \mathbf{A}\mathbf{x}$ with $\mathbf{x}(0) = \mathbf{x}_0$.
 
 **Properties.**
 
-- $e^{\mathbf{A}(t + s)} = e^{\mathbf{A}t}e^{\mathbf{A}s}$: running for $s$ and then for $t$ is running for $t + s$.
-- $(e^{\mathbf{A}t})^{-1} = e^{-\mathbf{A}t}$: the exponential is always invertible.
+- $e^{\mathbf{A}(t + s)} = e^{\mathbf{A}t}e^{\mathbf{A}s}$: running for $s$ and then for $t$ is running for $t + s$. *Why:* both sides, as functions of $t$, solve $\mathbf{X}' = \mathbf{A}\mathbf{X}$ and equal $e^{\mathbf{A}s}$ at $t = 0$, so by uniqueness they are equal.
+- $(e^{\mathbf{A}t})^{-1} = e^{-\mathbf{A}t}$: the exponential is always invertible (set $s = -t$ above: $e^{\mathbf{A}t}e^{-\mathbf{A}t} = e^{\mathbf{0}} = \mathbf{I}$).
 - **But** $e^{(\mathbf{A} + \mathbf{B})t} = e^{\mathbf{A}t}e^{\mathbf{B}t}$ only when $\mathbf{A}\mathbf{B} = \mathbf{B}\mathbf{A}$. The scalar rule fails because matrix products do not commute.
 
 **Computing it.**
@@ -172,7 +172,7 @@ The **equilibrium** of $\mathbf{x}' = \mathbf{A}\mathbf{x}$ is $\mathbf{x} = \ma
 |---|---|---|---|
 | $\Delta < 0$ | real, opposite signs | **saddle**: unstable, trajectories approach along one eigenvector and leave along the other | a circuit with an active element (negative resistance) |
 | $\Delta > 0$, $T^2 \ge 4\Delta$ | real, same sign | **node**: stable if $T < 0$ | overdamped RLC; coupled RC networks |
-| $\Delta > 0$, $T^2 < 4\Delta$ | complex pair | **spiral**: stable if $T < 0$ | underdamped RLC |
+| $\Delta > 0$, $T^2 < 4\Delta$, $T \ne 0$ | complex pair | **spiral**: stable if $T < 0$ | underdamped RLC |
 | $\Delta > 0$, $T = 0$ | $\pm j\omega$ | **center**: closed orbits | lossless LC tank |
 
 So **a 2×2 system is stable exactly when $T < 0$ and $\Delta > 0$**. If $\Delta > 0$, the eigenvalues are either both real with the same sign or a complex pair, and $T < 0$ makes the sign (or the shared real part) negative. If $\Delta < 0$, the eigenvalues are real with opposite signs, and one of them is positive. For larger systems the Routh–Hurwitz criterion generalizes this test ([15-05](../../15-control-systems/chapters/15-05-stability-routh-hurwitz.md)).
@@ -217,7 +217,7 @@ $$
 y(t) = y_{ss} + \sum_{i=1}^nk_ie^{\lambda_it} .
 $$
 
-If the output starts at zero, then $y(0) = 0$ gives $y_{ss} = -\sum k_i$. Writing $r_i = -k_i$ and $\tau_i = -1/\lambda_i$ puts the step response in the form used everywhere in practice:
+If the output starts at zero, then $y(0) = 0$ gives $y_{ss} = -\sum k_i$. Writing $r_i = -k_i$ and $\tau_i = -1/\lambda_i$ puts the step response in the form used everywhere in practice. (The $\tau_i$ are real because an RC or thermal network's eigenvalues are real and negative: with $\mathbf{C}$ the diagonal matrix of capacitances and $\mathbf{G}$ the symmetric conductance matrix, $\mathbf{A} = -\mathbf{C}^{-1}\mathbf{G}$ is similar to the symmetric negative-definite matrix $-\mathbf{C}^{-1/2}\mathbf{G}\mathbf{C}^{-1/2}$, so it has the same real, negative eigenvalues.)
 
 $$
 y(t) = \sum_{i=1}^nr_i\big(1 - e^{-t/\tau_i}\big), \qquad \sum_{i=1}^nr_i = y_{ss} .
@@ -246,6 +246,24 @@ The last form holds when $\mathbf{A}$ is invertible. This discretization is **ex
 The eigenvalues map as $z = e^{\lambda T}$. The left half of the $s$-plane maps inside the unit circle ($\lvert e^{\lambda T}\rvert = e^{\operatorname{Re}(\lambda)T} < 1$), so a stable continuous system always gives a stable sampled one. This is the bridge between the poles of 02-05 and the $z$-plane poles of digital filters ([11-09](../../11-signals-and-systems/chapters/11-09-z-transform.md)).
 
 **Forward Euler is not exact.** The simplest numerical method replaces the derivative by a forward difference, $\mathbf{x}_{k+1} = \mathbf{x}_k + T\mathbf{A}\mathbf{x}_k$, that is, $\mathbf{A}_d \approx \mathbf{I} + \mathbf{A}T$: the first two terms of the exponential series. Its eigenvalues are $1 + \lambda T$ instead of $e^{\lambda T}$. For a decaying real mode, $\lvert1 + \lambda T\rvert < 1$ requires $T < 2/\lvert\lambda\rvert$. Above that step size, a perfectly stable circuit simulates as an exploding one (Example 02-09.6). Systems whose time constants span a wide range (**stiff** systems) force tiny steps on explicit methods. That is why circuit simulators use implicit methods such as backward Euler and the trapezoidal rule ([02-10](02-10-numerical-methods.md); [02-02](02-02-first-order-linear-odes.md) §3.9).
+
+### 3.8 Nonlinear systems: linearizing at an equilibrium
+
+Real circuits are nonlinear: $\mathbf{x}' = \mathbf{f}(\mathbf{x})$, with $\mathbf{f}$ built from diode, transistor and saturation curves. Everything in this chapter still applies near an **equilibrium** $\mathbf{x}^*$, a state where $\mathbf{f}(\mathbf{x}^*) = \mathbf{0}$ (a DC operating point). Write $\mathbf{x} = \mathbf{x}^* + \boldsymbol{\delta}$ and expand each component of $\mathbf{f}$ to first order in $\boldsymbol{\delta}$ ([01-09](../../01-calculus-for-engineers/chapters/01-09-multivariable-calculus-1.md)):
+
+$$
+\boldsymbol{\delta}' = \mathbf{f}(\mathbf{x}^* + \boldsymbol{\delta}) \approx \underbrace{\mathbf{f}(\mathbf{x}^*)}_{\mathbf{0}} + \mathbf{J}\boldsymbol{\delta}, \qquad J_{ij} = \left.\frac{\partial f_i}{\partial x_j}\right|_{\mathbf{x}^*} .
+$$
+
+The **Jacobian matrix** $\mathbf{J}$ plays the role of $\mathbf{A}$: small deviations obey the linear system $\boldsymbol{\delta}' = \mathbf{J}\boldsymbol{\delta}$, and the eigenvalues of $\mathbf{J}$ decide whether the operating point is stable. This is the **small-signal model** of Courses 10 and 12 in matrix form. The classification of §3.4 carries over, with one caveat (*Hartman–Grobman*, stated here without proof): the linearization predicts the local behavior correctly whenever no eigenvalue of $\mathbf{J}$ lies on the imaginary axis. A center or a zero eigenvalue is decided by the nonlinear terms.
+
+**A latch and metastability.** Two cross-coupled inverters store a bit. Normalize each node voltage so that 0 is the switching point, and model each inverter as $\tau x_1' = -x_1 - \tanh(ax_2)$, $\tau x_2' = -x_2 - \tanh(ax_1)$, with gain $a > 1$ at the switching point and τ the inverter's time constant. The origin is an equilibrium. There $\tanh(ax) \approx ax$, so
+
+$$
+\mathbf{J} = \frac{1}{\tau}\begin{bmatrix} -1 & -a \\ -a & -1\end{bmatrix}, \qquad \lambda = \frac{-1 - a}{\tau}\ \text{along}\ (1, 1), \qquad \lambda = \frac{a - 1}{\tau}\ \text{along}\ (1, -1) .
+$$
+
+The determinant is $(1 - a^2)/\tau^2 < 0$: a **saddle**. Equal deviations decay, but any imbalance along $(1, -1)$, one node up and the other down, grows as $e^{(a - 1)t/\tau}$ until the latch falls into one of its two stable states. Started almost exactly at the saddle, the latch takes a long, unpredictable time to decide: **metastability**, the reason synchronizers between clock domains use chains of flip-flops (Example 02-09.7, [08](../../08-digital-logic-design/README.md)).
 
 ## 4. Worked examples
 
@@ -366,7 +384,9 @@ $$
 
 *Modes:* $T = -1.05333$ and $\Delta = 0.05333 - 0.04 = 0.01333$, so the eigenvalues are $\lambda = -1.0405$ and $-0.01281$ s⁻¹. The time constants are $\tau_1 = $ **0.9611 s** (the die equilibrating with the sink) and $\tau_2 = $ **78.04 s** (the sink heating up).
 
-*Die temperature:* from $\mathbf{x}(t) = \mathbf{x}_{ss} + e^{\mathbf{A}t}(\mathbf{0} - \mathbf{x}_{ss})$, expanded in eigenvectors, the die temperature has the form $T_d(t) = 20 - 4.616e^{-t/\tau_1} - 15.38e^{-t/\tau_2}$ K. That gives **3.181 K** at 1 s, **6.466 K** at 10 s and **15.73 K** at 100 s.
+The eigenvalues come from $\lambda^2 + 1.05333\lambda + 0.01333 = 0$: $\lambda = \tfrac12\big(-1.05333 \pm \sqrt{1.05333^2 - 4\times0.01333}\big) = \tfrac12(-1.05333 \pm 1.02771)$.
+
+*Die temperature:* $\mathbf{x}(t) = \mathbf{x}_{ss} + e^{\mathbf{A}t}(\mathbf{0} - \mathbf{x}_{ss})$, so expand the initial deviation $\mathbf{0} - \mathbf{x}_{ss} = (-20, -15)$ K in eigenvectors. Row 1 of $(\mathbf{A} - \lambda\mathbf{I})\mathbf{v} = \mathbf{0}$ reads $(-1 - \lambda)v_1 + v_2 = 0$, so with $v_1 = 1$, $v_2 = 1 + \lambda$: $\mathbf{v}_1 = (1,\ $**−0.04052**$)$ and $\mathbf{v}_2 = (1,\ $**0.9872**$)$. Solve $c_1\mathbf{v}_1 + c_2\mathbf{v}_2 = (-20, -15)$: the first row gives $c_1 = -20 - c_2$, and the second then gives $0.8104 + 1.0277c_2 = -15$, so $c_2 = $ **−15.38** and $c_1 = $ **−4.616**. The die temperature is the first component, $T_d(t) = 20 - 4.616e^{-t/\tau_1} - 15.38e^{-t/\tau_2}$ K. That gives **3.181 K** at 1 s, **6.466 K** at 10 s and **15.73 K** at 100 s.
 
 *Foster model:* $Z_{th}(t) = T_d(t)/P = R_1(1 - e^{-t/\tau_1}) + R_2(1 - e^{-t/\tau_2})$, with $R_1 = $ **0.4616 K/W** and $R_2 = $ **1.538 K/W**.
 
@@ -401,6 +421,18 @@ The slow mode, the one that matters at long times, would allow $T < 2$ ms. But t
 
 **Check.** The exact $\mathbf{A}_d = e^{\mathbf{A}T}$ has the same eigenvectors as $\mathbf{A}$, and eigenvalues $e^{\lambda T}$, which lie inside the unit circle for every $T > 0$ ✓.
 
+### Example 02-09.7 — How long a latch takes to decide (tier B)
+
+**Setup.** Model a latch as in §3.8 with inverter gain $a = 3$ and τ = 10 ps. (a) Classify the equilibrium at the origin and find its time constants. (b) An input leaves the two nodes imbalanced by $\delta_0 = 1$ µV (normalized units, where the stable states sit near ±1). How long until the imbalance reaches 0.5 and the latch has effectively decided? (c) Find the stable states and their decay rate.
+
+**Solution.** (a) $\mathbf{J} = \frac{1}{\tau}\begin{bmatrix} -1 & -3 \\ -3 & -1\end{bmatrix}$ has trace $-2/\tau$ and determinant $-8/\tau^2 < 0$: a saddle. The eigenvalues are $-4/\tau$ along $(1, 1)$, time constant **2.5 ps**, and $+2/\tau$ along $(1, -1)$, growth time constant $\tau/(a - 1) = $ **5 ps**.
+
+(b) The imbalance grows as $\delta_0e^{2t/\tau}$, so it reaches 0.5 when $t = \frac{\tau}{2}\ln\frac{0.5}{10^{-6}} = 5\text{ ps}\times\ln(5\times10^5) = $ **65.61 ps**. Every factor of 10 closer to perfect balance adds $5\ln10 = $ **11.51 ps**: the decision time grows without bound as the imbalance shrinks, which is why it cannot be guaranteed.
+
+(c) By symmetry look for $x_1 = s$, $x_2 = -s$: then $s = \tanh(3s)$, and iterating $s \leftarrow \tanh(3s)$ from 1 gives $s = $ **0.9949**. There $\frac{d}{dx}\tanh(3x) = 3(1 - s^2) = 0.0305$, so $\mathbf{J} = \frac{1}{\tau}\begin{bmatrix} -1 & -0.0305 \\ -0.0305 & -1\end{bmatrix}$, with eigenvalues of about $-0.97/\tau$ and $-1.03/\tau$: a stable node. The latch holds its bit.
+
+**Units check.** τ in ps, so the growth rate $(a - 1)/\tau$ is per ps, and the times come out in ps ✓. **Sanity check.** A larger gain shortens the growth time constant $\tau/(a - 1)$, which is why synchronizer flip-flops are designed for high gain at the switching point ✓.
+
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
@@ -424,6 +456,16 @@ The slow mode, the one that matters at long times, would allow $T < 2$ ms. But t
 | Ex 02-09.5g | die rise at 100 s | 15.73 | K |
 | Ex 02-09.5h | Foster R1 | 0.4616 | K/W |
 | Ex 02-09.5i | Foster R2 | 1.538 | K/W |
+| Ex 02-09.5p | second entry of v1 | −0.04052 | — |
+| Ex 02-09.5q | second entry of v2 | 0.9872 | — |
+| Ex 02-09.5r | coefficient c2 | −15.38 | K |
+| Ex 02-09.5s | coefficient c1 | −4.616 | K |
+| Ex 02-09.7a | decay time constant along (1, 1) | 2.5 | ps |
+| Ex 02-09.7b | growth time constant along (1, −1) | 5 | ps |
+| Ex 02-09.7c | time to resolve from 1 µV to 0.5 | 65.61 | ps |
+| Ex 02-09.7d | extra time per factor of 10 | 11.51 | ps |
+| Ex 02-09.7e | stable state | 0.9949 | — |
+| Ex 02-09.7f | slope of tanh(3x) at the stable state | 0.0305 | — |
 | Ex 02-09.6a | exact discrete eigenvalue (slow), T = 0.5 ms | 0.6065 | — |
 | Ex 02-09.6b | exact discrete eigenvalue (fast), T = 0.5 ms | 0.2231 | — |
 | Ex 02-09.6c | Euler eigenvalue (fast), T = 0.5 ms | −0.5 | — |
@@ -466,7 +508,7 @@ The lab ([labs/02-09-lab/](../labs/02-09-lab/README.md)) has a notebook and thre
 | Determinant of the exponential | $\det e^{\mathbf{A}t} = e^{\operatorname{tr}(\mathbf{A})t}$ | Never zero |
 | Exact sampling | $\mathbf{A}_d = e^{\mathbf{A}T}$, poles map as $z = e^{sT}$ | Left half-plane → inside the unit circle |
 | Forward Euler stability, real mode λ | $T < 2/\lvert\lambda\rvert$ | The fastest mode sets the limit |
-| Memory of a sampled first-order mode | $(\tau/\Delta)\ln100 \approx$ **4.605** $\tau/\Delta$ steps to decay to 1% | |
+| Memory of a sampled first-order mode | $(\tau/h)\ln100 \approx$ **4.605** $\tau/h$ steps of length $h$ to decay to 1% | |
 | Foster thermal impedance | $Z_{th}(t) = \sum R_i(1 - e^{-t/\tau_i})$, $\sum R_i = R_{th}$ | Datasheet format [R-049] |
 
 <!-- answer-key -->
@@ -491,8 +533,8 @@ The lab ([labs/02-09-lab/](../labs/02-09-lab/README.md)) has a notebook and thre
 
 - **Datasheets publish thermal modes.** Power-device vendors tabulate transient thermal impedance as Foster RC networks, $Z_{th}(t) = \sum r_i(1 - e^{-t/\tau_i})$. Infineon's application note on thermal equivalent circuits states that the Foster form is used "in datasheets, as the coefficients can be easily extracted from a measured cooling curve", but that its "network nodes do not have any physical significance". Only the Cauer (ladder) form maps onto the physical layers ([R-049](../../../reference/research-log.md#r-049--foster-and-cauer-thermal-models)) **[Established]**.
 - **Tools compute $e^{\mathbf{A}t}$ by scaling and squaring.** MATLAB's `expm` and SciPy's `scipy.linalg.expm` both use scaling and squaring with Padé approximation. Moler and Van Loan, who surveyed the "dubious ways" in 1978 and again in 2003, call it "one of the most effective" methods, while declining to name any single method as best ([R-050](../../../reference/research-log.md#r-050--matrix-exponential-algorithms)) **[Established]**.
-- **Estimation runs on state-space models.** Kalman's 1960 filter estimates the state of $\mathbf{x}' = \mathbf{A}\mathbf{x} + \mathbf{B}u$ from noisy measurements, and is the basis of navigation, tracking and sensor fusion. Battery fuel gauges likewise rely on state models of the cell: TI notes that "many battery gauge algorithms use an equivalent circuit model for the battery" ([R-051](../../../reference/research-log.md#r-051--kalman-filter-and-battery-gauging-models)) **[Established]**.
-- **State-space models in AI.** Structured state-space sequence models apply $\mathbf{x}' = \mathbf{A}\mathbf{x} + \mathbf{B}u$ to token sequences. S4 (ICLR 2022) discretizes with the bilinear method. Mamba (COLM 2024) uses exactly the zero-order hold of §3.7, $\bar{\mathbf{A}} = \exp(\Delta\mathbf{A})$, and makes Δ, $\mathbf{B}$ and $\mathbf{C}$ depend on the input ("selective"), so the model can choose what to remember ([R-052](../../../reference/research-log.md#r-052--state-space-sequence-models-s4-and-mamba)) **[Established]**. Because they run as recurrences, these models carry a fixed-size state from token to token, unlike attention, whose key–value cache grows with context.
+- **Estimation runs on state-space models.** Kalman's 1960 filter estimates the state of a linear state-space model from noisy measurements (the 1960 paper treats the discrete-time model $\mathbf{x}_{k+1} = \mathbf{A}_d\mathbf{x}_k + \mathbf{B}_du_k$ of §3.7; the continuous-time version is the Kalman–Bucy filter of 1961), and is the basis of navigation, tracking and sensor fusion. Battery fuel gauges likewise rely on state models of the cell: TI notes that "many battery gauge algorithms use an equivalent circuit model for the battery" ([R-051](../../../reference/research-log.md#r-051--kalman-filter-and-battery-gauging-models)) **[Established]**.
+- **State-space models in AI.** Structured state-space sequence models apply $\mathbf{x}' = \mathbf{A}\mathbf{x} + \mathbf{B}u$ to token sequences. S4 (ICLR 2022) discretizes with the bilinear method. Mamba (COLM 2024) uses exactly the zero-order hold of §3.7, $\bar{\mathbf{A}} = \exp(\Delta\mathbf{A})$, where Δ is the step size (that literature's symbol for this chapter's $T$ or $h$, not the determinant of §3.4), and makes Δ, $\mathbf{B}$ and $\mathbf{C}$ depend on the input ("selective"), so the model can choose what to remember ([R-052](../../../reference/research-log.md#r-052--state-space-sequence-models-s4-and-mamba)) **[Established]**. Because they run as recurrences, these models carry a fixed-size state from token to token, unlike attention, whose key–value cache grows with context.
 
 > **Deeper:** see companion repo *LLM Inference Engineering* for how state-space and attention architectures differ in memory traffic and serving cost.
 
@@ -536,7 +578,7 @@ The state-space view explains several numbers that drive product decisions. **Bu
 
    <details><summary>Answer</summary>
 
-   $\mathbf{x}(t) = e^{-4t}\mathbf{x}(0)$: it stays on the eigenvector's line and decays with time constant 0.25.
+   $\mathbf{x}(t) = e^{-4t}\mathbf{x}(0)$: it stays on the eigenvector's line and decays with time constant 0.25 (in the time unit of $t$, since λ = −4 per unit time).
 
    </details>
 
@@ -576,7 +618,7 @@ The state-space view explains several numbers that drive product decisions. **Bu
 
    <details><summary>Answer</summary>
 
-   It is a sum of modes $R_i(1 - e^{-t/\tau_i})$. Short pulses excite only the fast modes (the die and solder, with small $R_i$ and small $\tau_i$); long pulses let the slow, large-$R_i$ modes (package and heat sink) fill up.
+   It is a sum of modes $R_i(1 - e^{-t/\tau_i})$. Short pulses excite only the fast modes (small $R_i$ and small $\tau_i$, dominated by the heat capacity close to the junction); long pulses let the slow, large-$R_i$ modes fill up. Foster terms are modes of the whole network, not individual layers, although fast modes are mostly set by the material near the die.
 
    </details>
 

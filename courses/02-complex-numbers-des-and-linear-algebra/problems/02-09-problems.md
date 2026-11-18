@@ -39,11 +39,11 @@ Solve $\mathbf{x}' = \begin{bmatrix} 1 & 2 \\ 2 & 1\end{bmatrix}\mathbf{x}$ with
 
 ### Problem 02-09.6 [B]
 
-Solve $\mathbf{x}' = \begin{bmatrix} -1 & -4 \\ 1 & -1\end{bmatrix}\mathbf{x}$ with $\mathbf{x}(0) = (1, 0)$ by computing $e^{\mathbf{A}t}$. (Hint: write $\mathbf{A} = -\mathbf{I} + \mathbf{K}$ and compute $\mathbf{K}^2$.) Evaluate $\mathbf{x}(0.5)$.
+Solve $\mathbf{x}' = \begin{bmatrix} -1 & -4 \\ 1 & -1\end{bmatrix}\mathbf{x}$ with $\mathbf{x}(0) = (1, 0)$ twice: first with the complex-eigenvector construction of §3.2 (real and imaginary parts of $e^{\lambda t}\mathbf{v}$), then by computing $e^{\mathbf{A}t}$. (Hint: write $\mathbf{A} = -\mathbf{I} + \mathbf{K}$ and compute $\mathbf{K}^2$.) Evaluate $\mathbf{x}(0.5)$.
 
 ### Problem 02-09.7 [B]
 
-Solve $\mathbf{x}' = \begin{bmatrix} -2 & 1 \\ 0 & -2\end{bmatrix}\mathbf{x}$ with $\mathbf{x}(0) = (0, 1)$. When does $x_1$ peak, and what is its peak value?
+Solve $\mathbf{x}' = \begin{bmatrix} -2 & 1 \\ 0 & -2\end{bmatrix}\mathbf{x}$ with $\mathbf{x}(0) = (0, 1)$, using the generalized-eigenvector construction of §3.2 (then check against $e^{\mathbf{A}t}$). When does $x_1$ peak, and what is its peak value?
 
 ### Problem 02-09.8 [B]
 
@@ -94,11 +94,27 @@ where $\mathbf{C}_m$ is the capacitance matrix of 02-08 §3.8. Find the eigenval
 
 ### Problem 02-09.15 [C]
 
-**A state-space layer, as in sequence models.** A one-state continuous model $h' = ah + bx$ with $a = -1/\tau$ and $b = 1/\tau$ ($\tau = 50$ ms) is sampled with step $\Delta = 1$ ms by a zero-order hold.
+**A state-space layer, as in sequence models.** A one-state continuous model $h' = ah + bx$ with $a = -1/\tau$ and $b = 1/\tau$ ($\tau = 50$ ms) is sampled with step $h = 1$ ms by a zero-order hold. (Sequence-model papers write this step as Δ.)
 
-(a) Find $\bar{a} = e^{a\Delta}$ and $\bar{b} = (e^{a\Delta} - 1)\,b/a$, and compare with forward Euler.
-(b) After an input impulse, how many steps until the state has decayed to 1%? How does that "memory length" scale with τ/Δ?
+(a) Find $\bar{a} = e^{ah}$ and $\bar{b} = (e^{ah} - 1)\,b/a$, and compare with forward Euler.
+(b) After an input impulse, how many steps until the state has decayed to 1%? How does that "memory length" scale with τ/h?
 (c) Show that for a constant input the sampled model's step response equals the continuous one at every sample time.
+
+### Problem 02-09.16 [B]
+
+**Linearizing a latch.** A latch is modeled as in §3.8 with inverter gain $a = 2$ and τ = 20 ps: $\tau x_1' = -x_1 - \tanh(2x_2)$, $\tau x_2' = -x_2 - \tanh(2x_1)$.
+
+(a) Find the Jacobian at the origin, classify the equilibrium, and give the growth and decay time constants with their eigenvector directions.
+(b) A synchronizer gives the latch 200 ps to resolve its imbalance to 0.5 (normalized units). What is the smallest initial imbalance that resolves in time?
+(c) Why does doubling the allowed time reduce the failure rate enormously rather than by half?
+
+### Problem 02-09.17 [B]
+
+**A forced response by convolution.** For $\mathbf{x}' = \begin{bmatrix} -1 & 0 \\ 1 & -2\end{bmatrix}\mathbf{x} + \begin{bmatrix} 1 \\ 0\end{bmatrix}u$ with $\mathbf{x}(0) = \mathbf{0}$ and the ramp input $u(t) = t$:
+
+(a) Find $e^{\mathbf{A}t}$.
+(b) Use the convolution formula $\mathbf{x}(t) = \int_0^te^{\mathbf{A}(t - \lambda)}\mathbf{B}\,u(\lambda)\,d\lambda$ to find $\mathbf{x}(t)$, and evaluate it at $t = 1$.
+(c) Check $x_1$ by solving its scalar equation directly, and check that $x_2(0) = 0$.
 
 ---
 
@@ -107,8 +123,8 @@ where $\mathbf{C}_m$ is the capacitance matrix of 02-08 §3.8. Find the eigenval
 | Learning objective (chapter 02-09) | Problems |
 |---|---|
 | 1. State-space form from circuits and ODEs | 1, 2, 9, 13 |
-| 2. Eigenvector solutions: real, complex, repeated | 5, 6, 7 |
+| 2. Eigenvector solutions: real, complex, repeated | 5, 6, 7 (complex and generalized eigenvectors) |
 | 3. The matrix exponential | 3, 6, 8 |
-| 4. Phase plane and stability | 4, 5, 11 |
-| 5. Forced response, steady state, transfer function | 1, 9, 10, 14 |
+| 4. Phase plane and stability; linearization at an equilibrium | 4, 5, 11, 16 |
+| 5. Forced response, steady state, transfer function | 1, 9, 10, 14, 17 |
 | 6. Sampling: zero-order hold versus Euler | 12, 15 |
