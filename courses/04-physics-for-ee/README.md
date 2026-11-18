@@ -36,7 +36,7 @@ Calculus-based electricity and magnetism with the mechanics, waves and modern ph
 | [04-07 · Faraday's Law, Lenz's Law and Inductance](chapters/04-07-faraday-lenz-and-inductance.md) | 10 | ✅ verified | [problems](problems/04-07-problems.md) · [solutions](solutions/04-07-solutions.md) · [lab](labs/04-07-lab/README.md) · [verify](verify/verify_04_07.py) |
 | [04-08 · Energy in Fields and Maxwell's Equations (Preview)](chapters/04-08-maxwell-preview.md) | 6 | ✅ verified | [problems](problems/04-08-problems.md) · [solutions](solutions/04-08-solutions.md) · [lab](labs/04-08-lab/README.md) · [verify](verify/verify_04_08.py) |
 | [04-09 · Waves and Optics Basics](chapters/04-09-waves-and-optics.md) | 10 | ✅ verified | [problems](problems/04-09-problems.md) · [solutions](solutions/04-09-solutions.md) · [lab](labs/04-09-lab/README.md) · [verify](verify/verify_04_09.py) |
-| [04-10 · Introduction to Quantum Mechanics](chapters/04-10-intro-quantum-mechanics.md) | 10 | ⬜ planned | — |
+| [04-10 · Introduction to Quantum Mechanics](chapters/04-10-intro-quantum-mechanics.md) | 10 | ✅ verified | [problems](problems/04-10-problems.md) · [solutions](solutions/04-10-solutions.md) · [lab](labs/04-10-lab/README.md) · [verify](verify/verify_04_10.py) |
 | [04-11 · Introduction to Solid-State Physics](chapters/04-11-intro-solid-state-physics.md) | 10 | ⬜ planned | — |
 
 **Course resources:** [Flashcards (Anki CSV)](../../flashcards/04-physics-for-ee.csv)

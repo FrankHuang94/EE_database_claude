@@ -138,3 +138,17 @@
 "Malus's law and Brewster's angle?","I = I₀cos²θ through a polarizer (½ for unpolarized light). tan θ_B = n₂/n₁: reflected light is fully polarized (56.3° for glass).",bsee::04 bsee::04-09
 "400G Ethernet optics (IEEE 802.3)?","SR8: 8 × 850 nm lanes, 100 m OM4 MMF. DR4: 4 × 1310 nm lanes, 500 m parallel SMF. FR4: 4 CWDM wavelengths 1271–1331 nm, 2 km on one SMF.",bsee::04 bsee::04-09
 "Co-packaged optics claims to check?","NVIDIA: 3.5× power efficiency (~30 W vs ~9 W per port), '63×' signal integrity (64× in its own blog). Broadcom: 70% power cut, 'more than 3.5×' (70% is 3.33×).",bsee::04 bsee::04-09
+"Photon energy in convenient units?","E = hc/λ = 1239.84 eV·nm / λ (≈ 1.24/λ[µm] eV). 850 nm → 1.46 eV; 1310 nm → 0.95 eV; 1550 nm → 0.80 eV.",bsee::04 bsee::04-10
+"Photoelectric effect: what depends on frequency and what on intensity?","Max kinetic energy hf − φ depends on frequency only; intensity sets the number of electrons. Below threshold f₀ = φ/h, no emission at any intensity.",bsee::04 bsee::04-10
+"Why can't silicon detect 1550 nm light?","Photons of 0.80 eV are below Si's 1.12 eV gap (edge ≈ 1107 nm). Telecom receivers use Ge or InGaAs.",bsee::04 bsee::04-10
+"Photodiode responsivity formula?","R = ηeλ/(hc) = ηλ[µm]/1.24 A/W. η = 1 at 850 nm gives 0.686 A/W.",bsee::04 bsee::04-10
+"De Broglie wavelength?","λ = h/p = h/√(2mE). A 100 eV electron: 0.123 nm, about an atomic spacing, so crystals diffract electrons.",bsee::04 bsee::04-10
+"What does |ψ|² mean?","Probability density: |ψ(x)|²dx is the probability of finding the particle in dx; ∫|ψ|²dx = 1.",bsee::04 bsee::04-10
+"Uncertainty principle and its engineering use?","Δx·Δp ≥ ħ/2. Squeezing an electron into a small region forces a momentum spread, so a minimum (confinement) kinetic energy.",bsee::04 bsee::04-10
+"Infinite-well energy levels?","E_n = n²h²/(8mL²) = n²·0.376 eV for an electron (m₀) in a 1 nm well. Scales as 1/L² and 1/m.",bsee::04 bsee::04-10
+"Hydrogen levels and the Bohr radius?","E_n = −13.6 eV/n²; a₀ = 0.0529 nm. Lyman α (2→1) at 121.5 nm; Hα (3→2) ≈ 656 nm.",bsee::04 bsee::04-10
+"Tunneling probability through a thick barrier?","T ≈ 16(E/V₀)(1−E/V₀)e^(−2κd), κ = √(2m(V₀−E))/ħ. For 2.1 eV below the top, κ ≈ 7.4 nm⁻¹: each 0.1 nm costs ~4.4×.",bsee::04 bsee::04-10
+"Why did Intel adopt high-k at 45 nm?","Its 65 nm SiO₂ gate was ~1.2 nm (5 atomic layers) and tunneling leakage was limiting. A thicker hafnium-based high-k cut leakage >10× at the same capacitance.",bsee::04 bsee::04-10
+"How does flash program and erase?","Fowler–Nordheim tunneling through a ~10 nm (1997-era) oxide at ~8–10 MV/cm. 7 → 10 MV/cm raises the current ~10⁷×: fast writes, years of retention.",bsee::04 bsee::04-10
+"Qubit measurement statistics?","α|0⟩ + β|1⟩ gives 0 with probability |α|², 1 with |β|². N shots: binomial, σ = √(Np(1−p)); n qubits need 2ⁿ amplitudes classically.",bsee::04 bsee::04-10
+"Logical-qubit claims to check?","Ask: which code, what distance, detected or corrected errors, error per cycle vs physical qubits. Willow: d = 7, 0.143%/cycle, Λ = 2.14. Helios: '94' (detected) vs '48' (corrected).",bsee::04 bsee::04-10

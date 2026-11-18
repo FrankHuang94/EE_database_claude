@@ -1893,3 +1893,40 @@
 - term: Co-packaged optics
   definition: Optical engines placed in the same package as a switch or processor chip, shortening the electrical path to cut power per bit; announced by NVIDIA and Broadcom for 2025–2026 switches (as of Nov 2026).
   chapter: "04-09"
+# ---- 04-10
+- term: Photon
+  definition: The quantum of light, a packet of energy E = hf = hc/λ (1239.84 eV·nm divided by the wavelength) and momentum h/λ; light is emitted and absorbed one photon at a time.
+  chapter: "04-10"
+- term: Photoelectric effect
+  definition: Ejection of electrons from a surface by light, which occurs only if each photon's energy exceeds the work function; the maximum kinetic energy hf − φ grows with frequency, not intensity.
+  chapter: "04-10"
+- term: Work function
+  definition: The minimum energy φ needed to remove an electron from a material's surface into vacuum, typically 2–6 eV; it sets the photoelectric threshold and the tunneling barrier in field emission and STM.
+  chapter: "04-10"
+- term: Responsivity
+  definition: A photodetector's output current per unit optical power, R = ηeλ/(hc) = ηλ[µm]/1.24 A/W, where η is the quantum efficiency (electrons per incident photon).
+  chapter: "04-10"
+- term: De Broglie wavelength
+  definition: The wavelength λ = h/p associated with a particle of momentum p; about 0.12 nm for a 100 eV electron, comparable to atomic spacings, which is why electrons diffract from crystals.
+  chapter: "04-10"
+- term: Wavefunction
+  definition: The complex amplitude ψ(x, t) that describes a quantum particle; |ψ|² is the probability density of finding it at x, and the total probability integrates to 1.
+  chapter: "04-10"
+- term: Uncertainty principle
+  definition: Heisenberg's limit Δx·Δp ≥ ħ/2 on how sharply position and momentum can both be defined; confinement to a small region forces a momentum spread and hence a minimum kinetic energy.
+  chapter: "04-10"
+- term: Schrodinger equation
+  definition: The wave equation of quantum mechanics, −(ħ²/2m)ψ″ + Vψ = Eψ in its time-independent 1-D form; its allowed solutions give the energy levels of wells, atoms and crystals. (Written Schrödinger in the text.)
+  chapter: "04-10"
+- term: Quantum confinement
+  definition: The rise and spreading of energy levels when a particle is squeezed into a region comparable to its de Broglie wavelength, E_n = n²h²/(8mL²) for an infinite well; it tunes quantum-well lasers and quantum-dot colors.
+  chapter: "04-10"
+- term: Quantum tunneling
+  definition: Passage of a particle through a barrier higher than its energy, with probability falling roughly as e^(−2κd), κ = √(2m(V₀ − E))/ħ; it causes gate-oxide leakage and enables flash memory, STM and tunnel diodes.
+  chapter: "04-10"
+- term: Fowler–Nordheim tunneling
+  definition: Tunneling through a triangular barrier formed when a strong field tilts an insulator's band; the current rises steeply with field (about seven orders of magnitude from 7 to 10 MV/cm in SiO₂) and is used to program and erase flash.
+  chapter: "04-10"
+- term: Qubit
+  definition: A two-level quantum system in a superposition α|0⟩ + β|1⟩ with |α|² + |β|² = 1; measurement returns 0 or 1 with probabilities |α|² and |β|², and n qubits need 2ⁿ amplitudes to describe classically.
+  chapter: "04-10"
