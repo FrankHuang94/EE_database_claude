@@ -28,7 +28,7 @@ Python for engineering computation and C for hardware-adjacent programming, plus
 |---|---|---|---|
 | [05-01 · Python Fundamentals for Engineers](chapters/05-01-python-fundamentals.md) | 8 | ✅ verified | [problems](problems/05-01-problems.md) · [solutions](solutions/05-01-solutions.md) · [lab](labs/05-01-lab/README.md) · [verify](verify/verify_05_01.py) |
 | [05-02 · NumPy, Vectorization and Numerical Computing](chapters/05-02-numpy-and-vectorization.md) | 8 | ✅ verified | [problems](problems/05-02-problems.md) · [solutions](solutions/05-02-solutions.md) · [lab](labs/05-02-lab/README.md) · [verify](verify/verify_05_02.py) |
-| [05-03 · SciPy, SymPy and Matplotlib](chapters/05-03-scipy-sympy-matplotlib.md) | 8 | ⬜ planned | — |
+| [05-03 · SciPy, SymPy and Matplotlib](chapters/05-03-scipy-sympy-matplotlib.md) | 8 | ✅ verified | [problems](problems/05-03-problems.md) · [solutions](solutions/05-03-solutions.md) · [lab](labs/05-03-lab/README.md) · [verify](verify/verify_05_03.py) |
 | [05-04 · Jupyter, Testing and Reproducible Workflows](chapters/05-04-reproducible-workflows.md) | 6 | ⬜ planned | — |
 | [05-05 · C Fundamentals](chapters/05-05-c-fundamentals.md) | 10 | ⬜ planned | — |
 | [05-06 · C Pointers, Arrays and Memory](chapters/05-06-c-pointers-and-memory.md) | 10 | ⬜ planned | — |

@@ -2026,3 +2026,21 @@
 - term: Random seed
   definition: The starting value of a pseudo-random generator (np.random.default_rng(seed)); the same seed reproduces the same numbers, making simulations and tests repeatable.
   chapter: "05-02"
+- term: Root-finding
+  definition: Solving f(x) = 0 numerically, the way a nonlinear circuit (a diode with a resistor) is solved; bracketing methods need an interval where f changes sign, while guess-based methods need a good starting point and can fail silently.
+  chapter: "05-03"
+  see_also: [Bisection method, Brent's method, Newton's method]
+- term: Brent's method
+  definition: A bracketing root-finder (SciPy's brentq) that combines bisection's guaranteed convergence with faster secant and inverse-quadratic steps; it never leaves the bracket and typically needs a few times fewer evaluations than bisection.
+  chapter: "05-03"
+  see_also: [Root-finding, Bisection method]
+- term: Nonlinear least squares
+  definition: Fitting a model whose parameters enter nonlinearly (such as a time constant in an exponential) by iteratively minimizing the sum of squared residuals from a starting guess, as SciPy's curve_fit does; it also estimates the parameters' standard errors.
+  chapter: "05-03"
+  see_also: [Least squares, Residual]
+- term: Residual
+  definition: The difference between a measured value and a model's prediction (or, in root-finding, the value f(x) at a claimed root); random residuals at the noise level mean the model is adequate, while a systematic pattern means physics is missing.
+  chapter: "05-03"
+- term: Symbolic computation
+  definition: Manipulating formulas exactly, with symbols rather than numbers (SymPy solves, simplifies, differentiates and integrates); used to derive or check hand results and to keep exact rationals such as 470000/53.
+  chapter: "05-03"
