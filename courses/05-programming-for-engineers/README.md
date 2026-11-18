@@ -26,7 +26,7 @@ Python for engineering computation and C for hardware-adjacent programming, plus
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [05-01 · Python Fundamentals for Engineers](chapters/05-01-python-fundamentals.md) | 8 | ⬜ planned | — |
+| [05-01 · Python Fundamentals for Engineers](chapters/05-01-python-fundamentals.md) | 8 | ✅ verified | [problems](problems/05-01-problems.md) · [solutions](solutions/05-01-solutions.md) · [lab](labs/05-01-lab/README.md) · [verify](verify/verify_05_01.py) |
 | [05-02 · NumPy, Vectorization and Numerical Computing](chapters/05-02-numpy-and-vectorization.md) | 8 | ⬜ planned | — |
 | [05-03 · SciPy, SymPy and Matplotlib](chapters/05-03-scipy-sympy-matplotlib.md) | 8 | ⬜ planned | — |
 | [05-04 · Jupyter, Testing and Reproducible Workflows](chapters/05-04-reproducible-workflows.md) | 6 | ⬜ planned | — |
@@ -35,6 +35,8 @@ Python for engineering computation and C for hardware-adjacent programming, plus
 | [05-07 · Bit Manipulation and Fixed-Width Integers](chapters/05-07-bit-manipulation.md) | 8 | ⬜ planned | — |
 | [05-08 · Data Structures and Algorithms You Will Need](chapters/05-08-data-structures-and-algorithms.md) | 12 | ⬜ planned | — |
 | [05-09 · Software Engineering Practices](chapters/05-09-software-engineering-practices.md) | 6 | ⬜ planned | — |
+
+**Course resources:** [Flashcards (Anki CSV)](../../flashcards/05-programming-for-engineers.csv)
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 

@@ -77,6 +77,22 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-069 | Weibull model and Arrhenius acceleration | Nov 2026 |
 | R-070 | Thermal noise reference: kT0 and 290 K | Nov 2026 |
 | R-071 | Op-amp noise specifications: 1/f and zero-drift | Nov 2026 |
+| R-072 | Lifetime distributions by failure mechanism | Nov 2026 |
+| R-073 | CODATA 2022 fundamental constants | Nov 2026 |
+| R-074 | MEMS inertial sensors: datasheet figures | Nov 2026 |
+| R-075 | 32.768 kHz timing: quartz crystals and MEMS oscillators | Nov 2026 |
+| R-076 | MEMS market size | Nov 2026 |
+| R-077 | ESD models, targets and dielectric breakdown | Nov 2026 |
+| R-078 | Gauss-law applications: silicon permittivity, capacitive sensing and Coulomb's-law tests | Nov 2026 |
+| R-079 | Dielectric constants, capacitor materials and DRAM cells | Nov 2026 |
+| R-080 | Conduction: interconnect metals, electromigration and backside power | Nov 2026 |
+| R-081 | Hall sensors, magnetic core materials and MRAM | Nov 2026 |
+| R-082 | Inductive power transfer, power inductors and integrated magnetics | Nov 2026 |
+| R-083 | Board dielectrics, propagation, 5G bands and RF exposure | Nov 2026 |
+| R-084 | Optical interconnect standards, fiber, EUV and co-packaged optics | Nov 2026 |
+| R-085 | Quantum effects in devices and quantum computing | Nov 2026 |
+| R-086 | Crystals, band gaps, intrinsic carriers and wide-bandgap markets | Nov 2026 |
+| R-087 | Python releases, floating point and developer usage | Nov 2026 |
 
 ---
 
@@ -697,3 +713,13 @@ R&D % = R&D ÷ revenue.
 - **Power GaN market:** Yole Group, *Power GaN 2026*, as reported by *Semiconductor Today* (20 Aug 2026): $3.5 billion in 2031 at a 35% CAGR; "Consumer and mobile electronics remain the market's anchor segment by revenue, expected to reach $1.7bn in 2031"; "Innoscience held the top spot in 2025". The 2025 edition had forecast "$3bn by 2030 at 42% CAGR" [Industry estimate]. yolegroup.com served a bot challenge, so trade-press reprints were used.
 - **Derived here:** copper free-electron values from n = 8.49×10²⁸ m⁻³ (E_F 7.044 eV, v_F 1.574×10⁶ m/s, T_F 8.17×10⁴ K); silicon n_i ≈ 6.8×10⁹ cm⁻³ from the rounded Nc, Nv; implied 2025 market sizes $3.68 billion (SiC) and $0.58 billion (GaN) by discounting the 2031 forecasts at their CAGRs.
 - **Sources:** [NIST silicon lattice parameter](https://physics.nist.gov/cgi-bin/cuu/Value?asil); [Hu ch. 1–3](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch1-3.pdf); [Tsao et al. (copy)](https://djena.engineering.cornell.edu/papers-new/2017/tsao2018ultrawide.pdf); [arXiv:2410.06798](https://arxiv.org/abs/2410.06798); [PVEducation silicon](https://www.pveducation.org/pvcdrom/materials/general-properties-of-silicon); [PVEducation n_i](https://www.pveducation.org/pvcdrom/pn-junctions/intrinsic-carrier-concentration); [Altermatt et al.](https://unsworks.unsw.edu.au/entities/publication/2c330f15-ece8-4dfd-b035-ec5d867c1d8d/full); [Compound Semiconductor](https://compoundsemiconductor.net/article/124477/Power_SiC_enters_the_AI_age_says_Yole); [Semiconductor Today, xEV](https://semiconductor-today.com/news_items/2026/aug/yole-170826.shtml); [Semiconductor Today, GaN](https://semiconductor-today.com/news_items/2026/aug/yole-200826.shtml). Checked Nov 2026.
+
+## R-087 · Python releases, floating point and developer usage
+
+- **Python releases:** python.org Downloads page (read Nov 2026): "Python 3.15.2 Oct. 25, 2026 … Python 3.15.1 Oct. 21, 2026 … Python 3.15.0 Oct. 9, 2026"; Python Developer's Guide, "Status of Python versions": 3.15 bugfix, first released 2026-10-09, end of life 2031-10; 3.10 reached end of life on 2026-10-01; "The main branch is currently the future Python 3.16". PEP 790 lists 3.15.2 on 2026-10-26 (a time-zone difference with python.org) [Established].
+- **Release cadence:** Ł. Langa, PEP 602, "Annual Release Cycle for Python" (Active): "feature versions are released predictably every twelve months, in October every year"; two years of bugfix releases, then three years of security fixes (two full years from 3.13 on). PEP 2026, "Calendar versioning for Python": "Status : Rejected" [Established].
+- **Free-threaded CPython:** PEP 703 (Final, Python 3.13) and PEP 779 (Final, resolution 16 Jun 2025): "Phase II would make the free-threaded build officially supported but still optional"; "What's new in Python 3.14": "The free-threaded build of Python is now supported and no longer experimental … The performance penalty on single-threaded code in free-threaded mode is now roughly 5-10%, depending on the platform and C compiler used." No decision to make it the default was found as of Nov 2026 [Established for status; Industry estimate for the penalty].
+- **NumPy 2.0:** NumPy news (16 Jun 2024): "NumPy 2.0.0 is the first major release since 2006 … It includes breaking changes that could not happen in a regular minor release - including an ABI break, changes to type promotion rules, and API changes"; release notes: type promotion now follows NEP 50, which "can lead to changes in output dtypes and lower precision results for mixed-[dtype operations]". NumPy 2.5.0 was released 21 Jun 2026 [Established].
+- **Floating point:** IEEE SA, "IEEE 754-2019 — IEEE Standard for Floating-Point Arithmetic": "Active Standard … Superseding 754-2008 … Published: 2019-07-22"; a revision project, P754, is open. Python Tutorial §15: "almost all platforms map Python floats to IEEE 754 binary64 'double precision' values. IEEE 754 binary64 values contain 53 bits of precision"; the stored 0.1 is "3602879701896397 / 2 ** 55". Checked locally: `sys.float_info.epsilon == 2**-52` [Established].
+- **Usage surveys:** Stack Overflow Developer Survey 2026 (30,903 valid responses; language question n = 14,099): "Python 8,184 58.0% … C++ 3,425 24.3% C 3,070 21.8% Rust 2,542 18.0%". Survey 2025 (49,009 responses): Python 57.9%, C 22%, C++ 23.5%; "Python's adoption … saw a 7 percentage point increase from 2024 to 2025"; "Rust is yet again the most admired programming language (72%)". Self-selected samples recruited through Stack Overflow, which over-represent web and back-end developers [Industry estimate].
+- **Sources:** [python.org downloads](https://www.python.org/downloads/); [devguide versions](https://devguide.python.org/versions/); [PEP 602](https://peps.python.org/pep-0602/); [PEP 2026](https://peps.python.org/pep-2026/); [PEP 779](https://peps.python.org/pep-0779/); [What's new in 3.14](https://docs.python.org/3/whatsnew/3.14.html); [NumPy news](https://numpy.org/news/); [NumPy 2.0.0 notes](https://numpy.org/doc/stable/release/2.0.0-notes.html); [IEEE 754-2019](https://standards.ieee.org/ieee/754/6210/); [Python floating-point tutorial](https://docs.python.org/3/tutorial/floatingpoint.html); [Stack Overflow 2026](https://survey.stackoverflow.co/2026/); [Stack Overflow 2025](https://survey.stackoverflow.co/2025/technology). Checked Nov 2026.

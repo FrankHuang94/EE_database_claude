@@ -1,0 +1,18 @@
+#separator:comma
+#html:true
+#columns:Front,Back,Tags
+#tags column:3
+"Notebook vs script vs interpreter?","Notebook: cells run in the order you execute them (restart and run all before trusting it). Script: runs top to bottom every time; used for production and verify scripts. Interpreter: one line at a time, for quick checks.",bsee::05 bsee::05-01
+"What is a virtual environment for?","A per-project interpreter and package set (python -m venv .venv; pip install -r requirements.txt), so versions can be pinned and one project's upgrade cannot break another.",bsee::05 bsee::05-01
+"7 / 2, 7 // 2, -7 // 2, -7 % 2 in Python?","3.5, 3, -4, 1. / always gives a float; // rounds toward minus infinity; % takes the divisor's sign so a == (a // b) * b + a % b. (C truncates: -7 / 2 is -3.)",bsee::05 bsee::05-01
+"Why is 0.1 + 0.2 != 0.3?","0.1, 0.2 and 0.3 are each rounded to binary64; the rounded sum is one step (5.55e-17) above float(0.3). Compare with math.isclose or a tolerance, never ==.",bsee::05 bsee::05-01
+"float64 facts to know?","53 significant bits (~15–17 digits), machine epsilon 2^-52 ≈ 2.22e-16, largest ≈ 1.8e308, integers exact up to 2^53 ≈ 9.0e15. Python int has unlimited size.",bsee::05 bsee::05-01
+"List, tuple, dict, set?","list: ordered, mutable. tuple: ordered, immutable. dict: key → value, fast look-up. set: unique items, fast membership. Index from 0; s[a:b] has b − a items.",bsee::05 bsee::05-01
+"b = a for a list: what happens?","No copy: b is a second name for the same list, so a change through either name shows in both. Copy with list(a) (shallow) or copy.deepcopy(a). 'is' tests identity, '==' tests value.",bsee::05 bsee::05-01
+"Why is [[0] * 3] * 3 a bug?","It holds three references to one inner list, so setting grid[0][0] changes every row. Use [[0] * 3 for _ in range(3)].",bsee::05 bsee::05-01
+"The mutable-default trap?","def f(x, acc=[]) evaluates [] once, at definition, so calls share it. Use acc=None and create the list inside.",bsee::05 bsee::05-01
+"Comprehension syntax?","[expr for x in items if condition]; also {k: v for ...} and {x for ...}. Use for simple transforms; use a loop when logic needs more than a line.",bsee::05 bsee::05-01
+"How should a function handle invalid input?","Raise a specific exception (raise ValueError('…')) with a clear message, rather than return a plausible wrong value. Callers catch specific exceptions; never use a bare except:.",bsee::05 bsee::05-01
+"How to read a traceback?","From the bottom up: last line = exception type and message; above it, the failing line; above that, the chain of calls that led there.",bsee::05 bsee::05-01
+"Reading numbers from a CSV safely?","Use the csv module (csv.DictReader), open files in a with block, and convert fields with float/int: text '1000' sorts before '993'.",bsee::05 bsee::05-01
+"Bisection in one line?","Keep an interval where f changes sign and halve it until it is shorter than tol: ceil(log2(width/tol)) steps (34 to go from 1 to 1e-10). Needs only f's values.",bsee::05 bsee::05-01

@@ -1967,3 +1967,37 @@
 - term: Wide-bandgap semiconductor
   definition: A semiconductor with a gap well above silicon's, chiefly SiC (about 3.2–3.26 eV) and GaN (3.4 eV), whose high breakdown field and negligible intrinsic carriers suit high-voltage, high-temperature and fast-switching power devices.
   chapter: "04-11"
+# ---- 05-01
+- term: Interpreter
+  definition: A program that reads source code and executes it at run time (Python compiles it to bytecode first), with no separate build step; mistakes surface only when the offending line runs.
+  chapter: "05-01"
+- term: Virtual environment
+  definition: A per-project folder holding a Python interpreter and its own installed packages, so library versions can be pinned per project (created with python -m venv and filled from requirements.txt).
+  chapter: "05-01"
+- term: Dynamic typing
+  definition: Types belong to objects, not to names, so a name can refer to values of different types over time; checked at run time (type hints document intent but do not enforce it).
+  chapter: "05-01"
+- term: Floor division
+  definition: Division that rounds the quotient down toward minus infinity (Python's //), paired with a remainder (%) that takes the divisor's sign; −7 // 2 is −4 in Python but C's integer division gives −3.
+  chapter: "05-01"
+- term: Floating-point number
+  definition: A number stored as sign, exponent and fraction in binary; IEEE 754 binary64 (Python float, C double) has 53 significant bits (about 16 decimal digits), so most decimals such as 0.1 are approximated.
+  chapter: "05-01"
+- term: Mutable object
+  definition: An object whose contents can change after creation (Python lists, dicts, sets); immutable objects (numbers, strings, tuples) cannot, which makes sharing them safe.
+  chapter: "05-01"
+- term: Aliasing (programming)
+  definition: Two or more names referring to the same object, so a change made through one is visible through the others; assignment in Python never copies.
+  chapter: "05-01"
+- term: List comprehension
+  definition: A one-expression loop that builds a list, such as [r * 1000 for r in values if r > 0]; dict and set comprehensions work the same way.
+  chapter: "05-01"
+- term: Exception
+  definition: An object signalling an error that stops normal execution until handled by try/except; raising one with a clear message is how code refuses invalid input instead of returning a wrong value.
+  chapter: "05-01"
+- term: Traceback
+  definition: The report Python prints when an exception is not handled, listing the chain of calls that led to the error and ending with the failing line and the exception message; read it from the bottom up.
+  chapter: "05-01"
+- term: Module (Python)
+  definition: A .py file whose functions and names are loaded with import; a package is a folder of modules, and the standard library and pip-installed packages are both used this way.
+  chapter: "05-01"
