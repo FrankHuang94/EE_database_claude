@@ -181,7 +181,7 @@ Eliminate with $\ell_{21} = -2/3$: $u_{22} = 1.25 - 2/3 = 0.5833$ and $c_2 = -1 
 
 (b) $2n^2 = 8\times10^6$ flops, which takes **0.16 ms**.
 
-(c) $\tfrac23n^3/(2n^2) = n/3 = $ **666.7**: about 667 right-hand sides cost as much as the factorization.
+(c) $\tfrac23n^3/(2n^2) = n/3 = $ **666.7**: about 667 right-hand sides cost as much as the factorization, counting flops. In time the break-even comes sooner. Triangular solves do about 2 flops per matrix entry read (8 bytes in FP64), about 0.25 flop/byte, so they run at memory speed, well below the 50 GFLOP/s that the cache-friendly factorization reaches (the arithmetic-intensity argument of Example 02-06.6). Each solve therefore costs several times its flop share, and the break-even is several times fewer than 667 solves.
 
 (d) Factoring grows as $n^3$, by **8**; each solve grows as $n^2$, by **4**.
 

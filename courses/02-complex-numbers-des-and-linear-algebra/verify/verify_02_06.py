@@ -371,4 +371,16 @@ v.assert_true("Lab: correlation coefficient = cos(theta) of centered vectors",
               abs(np.corrcoef(xs, ys)[0, 1] - xc @ yc / (np.linalg.norm(xc) * np.linalg.norm(yc))) < 1e-12)
 v.check("Lab 02-06.h", np.corrcoef(xs, ys)[0, 1])
 
+# audit additions: weak dominance can be singular; a grounded chain's last pivot is 1/n
+v.assert_true("[[1,1],[1,1]] is weakly dominant and singular", abs(np.linalg.det(np.array([[1.0, 1.0], [1.0, 1.0]]))) < 1e-15)
+_n = 10
+_G = 2 * np.eye(_n) - np.eye(_n, k=1) - np.eye(_n, k=-1)
+_G[-1, -1] = 1.0   # open far end; node 1 grounded through 1 S
+_piv = [float(_G[0, 0])]
+_A = _G.copy()
+for _k in range(_n - 1):
+    _A[_k + 1:, _k:] -= np.outer(_A[_k + 1:, _k] / _A[_k, _k], _A[_k, _k:])
+    _piv.append(float(_A[_k + 1, _k + 1]))
+v.assert_true("chain of n unit resistors grounded at one end: last pivot 1/n", abs(_piv[-1] - 1 / _n) < 1e-12)
+
 v.finish()
