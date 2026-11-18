@@ -1206,3 +1206,60 @@
 - term: Iterative refinement
   definition: Improving a computed solution of Ax = b by computing the residual r = b − Ax in higher precision, solving A d = r with the existing (often low-precision) factors, and updating x ← x + d; it converges when κ·u_low is well below 1.
   chapter: "02-10"
+
+# ---------------------------------------------------------------- 03-01
+- term: Sample space
+  definition: The set of all possible outcomes of a random experiment, such as every possible error pattern in a block of bits; events are subsets of it.
+  chapter: "03-01"
+- term: Union bound
+  definition: "The inequality P(A1 ∪ … ∪ An) ≤ P(A1) + … + P(An), valid for any events: the probability that anything goes wrong is at most the sum of the individual probabilities; tight for rare, nearly disjoint events."
+  chapter: "03-01"
+  see_also: [Inclusion–exclusion principle]
+- term: Inclusion–exclusion principle
+  definition: P(A ∪ B) = P(A) + P(B) − P(A ∩ B), which corrects the double counting of outcomes in both events.
+  chapter: "03-01"
+- term: Conditional probability
+  definition: P(A | B) = P(A ∩ B)/P(B), the probability of A among the outcomes where B occurred.
+  chapter: "03-01"
+  see_also: [Bayes' rule]
+- term: Total probability theorem
+  definition: For events B1, …, Bm that partition the sample space, P(A) = Σ P(Bi) P(A | Bi), a weighted average over the cases.
+  chapter: "03-01"
+- term: Bayes' rule
+  definition: P(A | B) = P(A) P(B | A)/P(B), which turns the probability of an observation given a cause into the probability of the cause given the observation.
+  chapter: "03-01"
+  see_also: [Base-rate effect, Maximum a posteriori (MAP) detection]
+- term: Base-rate effect
+  definition: Even an accurate test produces mostly false positives when the condition it detects is rare, because its false-positive rate applies to the large unaffected majority.
+  chapter: "03-01"
+- term: Maximum a posteriori (MAP) detection
+  definition: Choosing the hypothesis with the largest posterior probability given the observation, which minimizes the probability of error; with equal priors it reduces to maximum-likelihood detection.
+  chapter: "03-01"
+- term: Statistical independence
+  definition: Events A and B are independent if P(A ∩ B) = P(A) P(B), so learning one tells nothing about the other; several events are independent only if every subcollection satisfies the product rule.
+  chapter: "03-01"
+- term: Conditional independence
+  definition: Events that are independent once a third event (such as a die's true state) is known, even though they may be dependent unconditionally.
+  chapter: "03-01"
+- term: Bit error rate (BER)
+  definition: The probability, or long-run fraction, that a transmitted bit is received in error; serial-link standards specify targets such as 1e-12.
+  chapter: "03-01"
+- term: Fault coverage
+  definition: The fraction of modeled faults (for example stuck-at faults) that a set of test patterns detects.
+  chapter: "03-01"
+  see_also: [Defect level (DPPM)]
+- term: Defect level (DPPM)
+  definition: The fraction of shipped (test-passing) parts that are defective, usually in defective parts per million; the Williams–Brown model gives DL = 1 − Y^(1−T).
+  chapter: "03-01"
+- term: Overkill
+  definition: Good parts wrongly rejected by a production test, the false positives of the test.
+  chapter: "03-01"
+- term: Triple modular redundancy (TMR)
+  definition: Running three copies of a module with a majority voter, giving reliability 3R² − 2R³, better than one module only when R > 0.5.
+  chapter: "03-01"
+- term: Common-mode failure
+  definition: A failure that takes down several redundant units at once through a shared cause (power feed, design bug, environment), defeating redundancy.
+  chapter: "03-01"
+- term: Lot tolerance percent defective (LTPD)
+  definition: The defective percentage that a sampling plan rejects with high confidence (usually 90%); zero failures in 230 samples demonstrates LTPD 1.
+  chapter: "03-01"

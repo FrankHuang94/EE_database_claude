@@ -64,6 +64,10 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-056 | Low-precision floating-point formats | Nov 2026 |
 | R-057 | Patriot missile timing error | Nov 2026 |
 | R-058 | Integrated voltage regulators and backside power delivery | Nov 2026 |
+| R-059 | Serial-link bit-error-rate targets: PCIe and Ethernet | Nov 2026 |
+| R-060 | Zero-error BER tests and confidence | Nov 2026 |
+| R-061 | Qualification sample sizes: AEC-Q100 and JEDEC JESD47 | Nov 2026 |
+| R-062 | Defect level and fault coverage | Nov 2026 |
 
 ---
 
@@ -447,3 +451,29 @@ R&D % = R&D ÷ revenue.
 - **FIVR:** E. A. Burton et al. (Intel), "FIVR — Fully integrated voltage regulators on 4th generation Intel Core SoCs," *Proc. IEEE APEC 2014*, pp. 432–439. The paper states that 4th-generation Core microprocessors are powered by fully integrated voltage regulators: switching converters on the die, with the inductors in the package substrate [Established]. The 4th-generation Core (Haswell) launched in 2013.
 - **PowerVia:** Intel presented a backside power delivery test chip built on Intel 4 at the 2023 VLSI Symposium. Press coverage of the paper reports about 30% less voltage droop than a frontside-powered Intel 4 core and a 6.7% higher maximum frequency [Industry estimate: vendor-reported, from secondary coverage]. PowerVia is part of the Intel 18A process.
 - **Sources:** [Burton et al. 2014 (PDF copy)](https://xdevs.com/doc/_Metrology/burton2014.pdf); [IEEE Spectrum on backside power](https://spectrum.ieee.org/backside-power-delivery-2661088734); [AnandTech, "Intel details PowerVia chipmaking tech" (Jun 2023)](https://www.anandtech.com/show/18894). The IEEE papers' full text was not fetched. Checked Nov 2026.
+
+## R-059 · Serial-link bit-error-rate targets: PCIe and Ethernet
+
+- **PCIe Gen 1–5 (NRZ):** a BER of $10^{-12}$. Synopsys (G. Ruggles, "Optimizing PCIe 6.0 Designs at 64GT/s," 19 Apr 2021): "the bit error rate (BER) of 1e-12 that we are used to for PCIe is not feasible … with the target being 1e-6 for the First Bit Error Rate (FBER)." A Tektronix/Anritsu PCIe Gen 5 receiver-test webinar (Mar 2021) checks "BER <1E(-12)" [Established; the PCI-SIG specification text was not read].
+- **PCIe 6.0 (64 GT/s, PAM4, flit mode):** D. Das Sharma (Intel; PCI-SIG board), IEEE San Diego CAS/SSCS slides (27 Aug 2021) and OFA Workshop 2022 slides: FBER < $10^{-6}$; 256-byte flit of "236B TLP, 6B DLP, 8B CRC, 6B FEC"; FEC "3-way interleaved, single symbol correct"; "Retry probability per flit is 5 x 10-6"; reliability target "0 < FIT << 1 for a x16". Peer-reviewed summary: Das Sharma, *IEEE Micro* 41(1):23–29, 2021 (abstract only seen) [Established].
+- **IEEE 802.3:** the 100G projects (802.3ba/bj/bm) adopted "a BER better than or equal to 10-12 at the MAC/PLS service interface" (Anslow, 400GbE study group, Sep 2013). The 802.3bs objectives (approved 17 Mar 2016) set "a BER of better than or equal to 10-13 at the MAC/PLS service interface (or the frame loss ratio equivalent)", and a May 2026 study-group contribution states the same $10^{-13}$ for 400GE, 800GE and 1.6TE, with a frame loss ratio below $6.2\times10^{-11}$ for 64-octet frames [Established].
+- **Sources:** [Synopsys article](https://www.synopsys.com/articles/pcie-6-designs.html); [Das Sharma 2021 slides](https://ewh.ieee.org/r6/san_diego/sscs/events/slides/2021_08_27_PCIe6.0_IEEE_CAS_iDLP_Debendra.pdf); [Das Sharma OFA 2022](https://www.openfabrics.org/wp-content/uploads/2022-workshop/2022-workshop-presentations/206_DDasSharma.pdf); [Anslow 2013](https://www.ieee802.org/3/400GSG/public/13_09/anslow_400_01_0913.pdf); [802.3bs objectives](https://www.ieee802.org/3/bs/Objectives_16_0317.pdf); [Brown et al., May 2026](https://www.ieee802.org/3/400GPL/public/2605/brown_400GPL_01b_2605.pdf). Checked Nov 2026.
+
+## R-060 · Zero-error BER tests and confidence
+
+- **Formula:** with zero errors observed in $n$ bits, the confidence that the BER is below $p$ is $C = 1 - (1 - p)^n$, so $n = \ln(1 - C)/\ln(1 - p) \approx -\ln(1 - C)/p$. An IEEE 802.3 contribution (Anslow, Nov 2013) quotes this ITU-T G.Sup39 formula and its consequences at 400 Gb/s: 95% confidence that BER < $10^{-12}$ takes 7.5 s; at $10^{-15}$, 2 hours [Established].
+- **Derived here:** $-\ln0.05 = 2.996$, so 95% needs $2.996/p$ bits: 93.62 s at 32 Gb/s and $10^{-12}$; 7.489 s at 400 Gb/s; 2.080 h at $10^{-15}$ and 400 Gb/s.
+- **Source:** [Anslow, IEEE 802.3 400GbE SG, Nov 2013](https://www.ieee802.org/3/400GSG/public/13_11/anslow_400_02_1113.pdf). Checked Nov 2026.
+
+## R-061 · Qualification sample sizes: AEC-Q100 and JEDEC JESD47
+
+- **JEDEC JESD47G** (*Stress-Test-Driven Qualification of Integrated Circuits*, March 2009), Table 1: high-temperature operating life at $T_j \ge 125$ °C for 1000 h on "3 Lots / 77 units" with "0 Fail"; its Table A gives 230 samples for LTPD 1 with zero failures. A standards-store listing shows JESD47N (Aug 2026) as the current revision; whether its HTOL row is unchanged was not verified [Established for Rev G].
+- **AEC-Q100:** a NASA NEPP workshop presentation (Lilani et al., "MIL-PRF-38535 vs. AEC-Q100," 2020): "No fails in 231 devices (77 devices from 3 lots) … LTPD = 1, meaning a maximum of 1% failures at 90% confidence level," and "This sample size is NOT sufficient or intended for process control or PPM evaluation." AEC-Q100 Rev J is dated 11 Aug 2023 (title of the AEC document, seen via search; aecouncil.com was unreachable) [Established].
+- **Derived here:** $0.99^{231} = 0.098$, so zero failures in 231 gives 90.2% confidence that the defective fraction is below 1%.
+- **Sources:** [JESD47G (hosted copy)](https://designers-guide.org/forum/Attachments/JESD47G.pdf); [NASA NEPP 2020](https://nepp.nasa.gov/workshops/etw2020/talks/15-JUN-MON/1630-Lilani-Yarbrough-Harzstark-Cozzolino-NEPP-ETW-AEC_pt2.pdf); [NSAI listing of JESD47N](https://shop.standards.ie/en-ie/standards/jedec-jesd47n-2026-1137371_saig_jedec_jedec_4039270/). Checked Nov 2026.
+
+## R-062 · Defect level and fault coverage
+
+- **Paper:** T. W. Williams and N. C. Brown, "Defect Level as a Function of Fault Coverage," *IEEE Transactions on Computers*, vol. C-30, no. 12, pp. 987–988, Dec. 1981, DOI 10.1109/TC.1981.1675742 (citation confirmed via Crossref; full text paywalled).
+- **Formula:** $\text{DL} = 1 - Y^{1 - T}$, as taught in university test-engineering courses (for example NYCU "Introduction to EDA," Spring 2026, lecture 9), with the table Y = 90%, T = 90% → about 10,000 DPM. Clustered (negative-binomial) refinements are used with fab data [Established].
+- **Sources:** [Crossref record](https://doi.org/10.1109/TC.1981.1675742); [NYCU EDA lecture](https://tiger.iee.nycu.edu.tw/course/EDAIntro2026Spring/materials/lec9.pdf). Checked Nov 2026.

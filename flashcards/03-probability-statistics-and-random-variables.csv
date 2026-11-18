@@ -1,0 +1,27 @@
+#separator:comma
+#html:true
+#columns:Front,Back,Tags
+#tags column:3
+"The three axioms of probability?","Nonnegativity \(P(A) \ge 0\); normalization \(P(\Omega) = 1\); additivity for disjoint events. Everything else (complements, inclusion–exclusion, the union bound) is derived.",bsee::03 bsee::03-01
+"Inclusion–exclusion for two events?","\(P(A \cup B) = P(A) + P(B) - P(A \cap B)\): adding the two counts the overlap twice.",bsee::03 bsee::03-01
+"The union bound, and when it is tight?","\(P(A_1 \cup \dots \cup A_n) \le \sum P(A_i)\), for any events, with no independence needed. Tight when the events are rare and nearly disjoint; useless once the sum nears 1.",bsee::03 bsee::03-01
+"Probability that \(n\) independent bits at BER \(p\) contain an error?","\(1 - (1 - p)^n \approx 1 - e^{-np} \approx np\) when \(np \ll 1\). Compute it as \(-\mathrm{expm1}(n\,\mathrm{log1p}(-p))\) to avoid cancellation.",bsee::03 bsee::03-01
+"At BER 1e-12 on a 32 Gb/s lane, how often does an error occur?","0.032 errors per second: one every 31.25 s on average. Rare per bit is not rare per second.",bsee::03 bsee::03-01
+"Probability of exactly \(k\) errors in \(n\) independent bits?","\(\binom{n}{k}p^k(1 - p)^{n - k}\): the number of patterns times the probability of each (the binomial distribution).",bsee::03 bsee::03-01
+"Birthday problem: when do random IDs from N values start colliding?","Around \(k \approx \sqrt{N}\): \(P(\text{collision}) \approx 1 - e^{-k(k - 1)/(2N)}\). With 16-bit IDs, 302 devices make a collision more likely than not.",bsee::03 bsee::03-01
+"Definition of conditional probability, and its meaning?","\(P(A \mid B) = P(A \cap B)/P(B)\): the fraction of the outcomes where \(B\) happened that also have \(A\), a renormalized probability law on \(B\).",bsee::03 bsee::03-01
+"Total probability theorem?","For a partition \(B_1, \dots, B_m\): \(P(A) = \sum_iP(B_i)P(A \mid B_i)\). A fab's yield is the share-weighted average of its lines' yields.",bsee::03 bsee::03-01
+"Bayes' rule, and its odds form?","\(P(A \mid B) = P(A)P(B \mid A)/P(B)\). Posterior odds = likelihood ratio × prior odds.",bsee::03 bsee::03-01
+"What is the base-rate effect?","A test with a small false-positive rate still gives mostly false alarms when the condition is rare, because the false-positive rate applies to the large healthy majority. A 99%/1% alarm on a 0.1% fault rate is right only about 9% of the time.",bsee::03 bsee::03-01
+"MAP versus ML detection?","MAP picks the symbol with the largest posterior \(P(s \mid y) \propto P(s)P(y \mid s)\) and minimizes error probability. ML ignores priors; the two agree when priors are equal. With skewed priors MAP can ignore the data entirely.",bsee::03 bsee::03-01
+"Definition of independence, and what it does not imply?","\(P(A \cap B) = P(A)P(B)\). Pairwise independence does not imply mutual independence: two fair bits and their XOR are pairwise independent but jointly determined.",bsee::03 bsee::03-01
+"What is conditional independence? Give an EE example.","Independent once a third quantity is known. Two tests of the same die can be independent given its true state yet dependent overall, because both reflect that state.",bsee::03 bsee::03-01
+"Reliability of series and parallel systems?","Series: \(\prod R_i\) (10 parts at 0.99 give 0.904). Parallel: \(1 - \prod(1 - R_i)\) (two at 0.99 give 0.9999).",bsee::03 bsee::03-01
+"TMR reliability and its break-even?","\(3R^2 - 2R^3\) with a perfect voter. Better than one module only for \(R > 0.5\); an imperfect voter also caps the useful range from above.",bsee::03 bsee::03-01
+"Common-mode (beta-factor) failures in a duplicated system?","\(P(\text{both fail}) \approx \beta q + ((1 - \beta)q)^2\). Even β = 0.1 at q = 0.01 makes the risk about 11 times the independent \(q^2\).",bsee::03 bsee::03-01
+"Downtime per year for three, four and five nines?","99.9%: 8.766 h; 99.99%: 52.60 min; 99.999%: 5.260 min.",bsee::03 bsee::03-01
+"Williams–Brown defect level?","\(\text{DL} = 1 - Y^{1 - T} \approx (1 - T)\ln(1/Y)\) for yield \(Y\) and fault coverage \(T\). DPPM scales with the untested fraction: each tenfold cut needs ten times fewer untested faults.",bsee::03 bsee::03-01
+"Why does better yield lower DPPM with the same test?","Defect level is \(P(\text{bad} \mid \text{pass})\); higher yield lowers the prior \(P(\text{bad})\), so fewer bad dies reach the tester to escape (Bayes).",bsee::03 bsee::03-01
+"How many error-free bits show BER < p at 95% confidence?","\(-\ln(0.05)/p \approx 3/p\). At \(10^{-12}\): \(3.0\times10^{12}\) bits, 93.6 s at 32 Gb/s; at \(10^{-15}\) and 400 Gb/s, about 2 hours.",bsee::03 bsee::03-01
+"Serial-link BER targets (as of Nov 2026)?","PCIe Gen 1–5 (NRZ): \(10^{-12}\). PCIe 6.0 (PAM4): first-bit error rate \(10^{-6}\) with FEC, CRC and retry. Ethernet 400G/800G/1.6T: \(10^{-13}\) at the MAC [R-059].",bsee::03 bsee::03-01 bsee::practitioner
+"What does zero failures in 3 lots × 77 units of qualification prove?","That the defective fraction is below about 1% at 90% confidence (LTPD 1). It cannot demonstrate ppm quality: that would take hundreds of thousands of units [R-061].",bsee::03 bsee::03-01 bsee::practitioner
