@@ -1263,3 +1263,53 @@
 - term: Lot tolerance percent defective (LTPD)
   definition: The defective percentage that a sampling plan rejects with high confidence (usually 90%); zero failures in 230 samples demonstrates LTPD 1.
   chapter: "03-01"
+
+# ---------------------------------------------------------------- 03-02
+- term: Random variable
+  definition: A function that assigns a number to each outcome of a random experiment, such as the number of bit errors in a packet or the noise voltage at a sampling instant.
+  chapter: "03-02"
+- term: Probability mass function (PMF)
+  definition: For a discrete random variable, p_X(k) = P(X = k); the values are non-negative and sum to 1.
+  chapter: "03-02"
+- term: Cumulative distribution function (CDF)
+  definition: F_X(x) = P(X ≤ x), which rises from 0 to 1; any interval probability is a difference of CDF values, and the density is its derivative.
+  chapter: "03-02"
+- term: Binomial distribution
+  definition: The number of successes in n independent trials each succeeding with probability p, with PMF C(n,k) p^k (1 − p)^(n − k).
+  chapter: "03-02"
+- term: Geometric distribution
+  definition: The number of independent trials up to and including the first success, with PMF (1 − q)^(k−1) q; it is memoryless.
+  chapter: "03-02"
+- term: Poisson distribution
+  definition: "The count of rare independent events with mean λ: P(k) = e^(−λ) λ^k/k!, the limit of the binomial as n grows with np = λ fixed."
+  chapter: "03-02"
+- term: Poisson process
+  definition: Events occurring independently at a constant average rate; counts in an interval are Poisson and the gaps between events are exponential.
+  chapter: "03-02"
+- term: Exponential distribution
+  definition: The waiting time to the first event of a Poisson process with rate r, P(T > t) = e^(−rt), with mean 1/r; the model behind constant failure rates.
+  chapter: "03-02"
+  see_also: [Memoryless property, FIT (failures in time)]
+- term: Memoryless property
+  definition: P(T > s + t | T > s) = P(T > t), so a surviving item is as good as new; only the exponential (continuous) and geometric (discrete) distributions have it.
+  chapter: "03-02"
+- term: FIT (failures in time)
+  definition: A failure rate of one failure per 10^9 device-hours; soft-error rates of memories are quoted in FIT per megabit.
+  chapter: "03-02"
+- term: Gaussian distribution
+  definition: The normal (bell-curve) distribution with density e^(−(x−μ)²/(2σ²))/(σ√(2π)); thermal noise and sums of many independent small effects follow it.
+  chapter: "03-02"
+  see_also: [Q-function]
+- term: Jitter
+  definition: The deviation of a signal's edges from their ideal times, split into unbounded Gaussian random jitter (RJ) and bounded deterministic jitter (DJ).
+  chapter: "03-02"
+  see_also: [Dual-Dirac model]
+- term: Dual-Dirac model
+  definition: "A model of jitter as two spikes DJ(δδ) apart blurred by Gaussian random jitter of rms σ, giving total jitter TJ(BER) = DJ(δδ) + 2·Q_BER·σ (2Q_BER = 14.069 at 1e-12)."
+  chapter: "03-02"
+- term: Bathtub curve
+  definition: "A curve shaped like a bathtub, used in two senses: bit error rate against sampling instant across the unit interval, and failure rate against age (infant mortality, flat mid-life, wear-out)."
+  chapter: "03-02"
+- term: Soft error
+  definition: A non-destructive change of a stored bit caused by a particle strike (neutrons or alpha particles); it is corrected by rewriting, and its rate is quoted in FIT per megabit.
+  chapter: "03-02"

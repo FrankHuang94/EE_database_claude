@@ -10,12 +10,12 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 > - Course 01 is complete and audited (🏁): ten chapters reviewed, exam, flashcards and equation sheet.
 > - Course 02 is complete and audited (🏁): ten chapters reviewed, exam, 140 flashcards and equation sheet.
 >
-> - Course 03: 03-01 ✅ verified.
+> - Course 03: 03-01 ✅ verified; 03-02 ✅ verified.
 >
-> **Next: write 03-02 · Random Variables and Distributions** (Bernoulli, binomial, Poisson, geometric, uniform, exponential, Gaussian and the Q-function; PMF, PDF and CDF).
+> **Next: write 03-03 · Expectation, Variance and Functions of Random Variables** (moments, transformation of variables, power of a random signal, RMS).
 >
-> - Sourced facts for Course 03's practitioner sections were gathered on 2026-11-18 into the session scratchpad file `c03_facts.md`. 03-01 used the BER targets, zero-error test confidence, qualification sample sizes and Williams–Brown (now R-059 to R-062). Still unused: the KP4 RS(544,514) pre-FEC BER (about 2.4e-4 for 400G optics), the dual-Dirac jitter model (TJ = DJ + 2Q·RJ, 2Q = 14.069 at 1e-12), AEC-Q100/AIAG Cpk thresholds, Six Sigma 3.4 ppm (Q(4.5)), JEDEC FIT and HTOL with the Arrhenius 0.7 eV note, the NIST/SEMATECH e-Handbook, kT0 = −174 dBm/Hz, OFDM PAPR (LTE about 11.65 dB crest factor) and SRAM soft-error rates (AMD UG116). A scratchpad does not survive the session: re-gather them if it is gone, and log each one used as R-063 onward.
-> - Natural homes: Q-function, jitter and PAPR in 03-02/03-03; Cpk, Six Sigma, HTOL/Arrhenius and Weibull in 03-05; kT0 and white noise in 03-06.
+> - Sourced facts for Course 03's practitioner sections were gathered on 2026-11-18 into the session scratchpad file `c03_facts.md`. 03-01 used the BER targets, zero-error test confidence, qualification sample sizes and Williams–Brown (R-059 to R-062); 03-02 used the dual-Dirac jitter model, SRAM soft-error rates (AMD UG116) and Six Sigma 3.4 ppm (R-063 to R-065). Still unused: the KP4 RS(544,514) pre-FEC BER (about 2.4e-4 for 400G optics), AEC-Q100/AIAG Cpk thresholds, JEDEC FIT and HTOL with the Arrhenius 0.7 eV note, the NIST/SEMATECH e-Handbook, kT0 = −174 dBm/Hz and OFDM PAPR (LTE about 11.65 dB crest factor). A scratchpad does not survive the session: re-gather them if it is gone, and log each one used as R-066 onward.
+> - Natural homes: PAPR, crest factor and RMS in 03-03; KP4 pre-FEC BER (errors in a block, CLT) in 03-04; Cpk, HTOL/Arrhenius and Weibull in 03-05 (Six Sigma's 1.5σ shift was introduced in 03-02 and can be revisited there); kT0 and white noise in 03-06.
 >
 > When pilot feedback arrives, apply it to the pilots and to every chapter written since, before continuing.
 
@@ -40,11 +40,11 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | 00 | 5 | 5 | 5 | 5 | 22,489 | 52 | 229 | 5 | 5 / 3 / 1 |
 | 01 | 10 | 10 | 10 | 10 | 57,268 | 162 | 1104 | 10 | 10 / 13 / 0 |
 | 02 | 10 | 10 | 10 | 10 | 86,743 | 171 | 1316 | 10 | 10 / 18 / 0 |
-| 03 | 6 | 1 | 1 | 0 | 7,569 | 16 | 100 | 1 | 1 / 0 / 0 |
+| 03 | 6 | 2 | 2 | 0 | 14,529 | 32 | 251 | 2 | 2 / 0 / 0 |
 | 07 | 11 | 1 | 1 | 0 | 8,902 | 18 | 149 | 1 | 1 / 6 / 0 |
-| **Total** | **307** | **27** | **27** | **25** | **182,971** | **419** | **2898** | **27** | **27 / 40 / 1** |
+| **Total** | **307** | **28** | **28** | **25** | **189,931** | **435** | **3049** | **28** | **28 / 40 / 1** |
 
-Glossary terms: **376** · Flashcards: **352**
+Glossary terms: **391** · Flashcards: **375**
 
 <!-- END STATS -->
 
@@ -55,7 +55,7 @@ Glossary terms: **376** · Flashcards: **352**
 | 00 | 🏁 audited | ✅ 2026-11-12 | 5 chapters reviewed: 52 problems, 229 machine-checked chapter/lab values, exam (15 questions, 27 keyed values), 56 flashcards, equation sheet. The audit found 4 critical, 11 major and 12 minor items; all were fixed (see session log). |
 | 01 | 🏁 audited | ✅ 2026-11-12 | 10 chapters reviewed: 162 problems, 1,104 machine-checked chapter, solution and lab values, 10 lab notebooks and 13 ngspice netlists; exam (15 questions, 128 points, 110 keyed values), 107 flashcards, equation sheet. Three independent reviewers found 5 critical, 25 major and about 40 minor items; all were fixed (see session log). |
 | 02 | 🏁 audited | ✅ 2026-11-18 | 10 chapters reviewed: 171 problems, 1,316 machine-checked chapter, solution and lab values, 10 lab notebooks and 18 ngspice netlists; exam (15 questions, 128 points, 210 minutes, 146 keyed values, 18 ngspice checks), 140 flashcards, equation sheet. Four independent reviewers found 1 critical, about 25 major and about 130 minor items; all were fixed (see session log). |
-| 03 | 🔄 in progress | — | 03-01 ✅ verified: 16 problems, 100 machine-checked values, Monte Carlo lab notebook, 3 figures; research log R-059 to R-062; 23 flashcards. |
+| 03 | 🔄 in progress | — | 03-01 ✅ verified: 16 problems, 100 machine-checked values, Monte Carlo lab notebook, 3 figures; research log R-059 to R-062; 23 flashcards. 03-02 ✅ verified: 16 problems, 151 machine-checked values, sampling lab notebook (histograms, Poisson limit, Poisson process, memorylessness, Monte Carlo BER, dual-Dirac bathtub), 3 figures; research log R-063 to R-065; 23 flashcards. |
 | 07 | 🔄 in progress (pilot) | — | 07-02 ✅ verified: 16 problems, 128 machine-checked values, 6 ngspice netlists, lab notebook. Other chapters planned. |
 | all others | ⬜ planned (stubs only) | — | |
 
@@ -97,6 +97,7 @@ Changes relative to the original build brief's chapter plan.
 
 | Date | Session summary |
 |---|---|
+| 2026-11-18 | Phase 2. 03-02 Random Variables and Distributions written and verified (PMF/PDF/CDF; binomial, geometric and Poisson with the Poisson limit and Poisson yield; uniform and exponential with memorylessness and FIT arithmetic; Gaussian with the √(2π) proof, Q-function and its bounds; BER = Q(A/σ); dual-Dirac jitter and the bathtub curve): 16 problems, 151 keyed values (189 checks), sampling notebook, 3 figures, 15 glossary terms, 23 flashcards; research log R-063 (dual-Dirac jitter), R-064 (SRAM soft-error rates, FIT), R-065 (Six Sigma's 1.5σ shift). |
 | 2026-11-18 | Phase 2. 03-01 Probability in EE Language written and verified (axioms, union bound and the e^{-np} rule, counting and birthday collisions, conditioning and total probability, Bayes' rule with base rates and MAP detection, independence and conditional independence, series/parallel/TMR reliability with common-mode failures, Williams–Brown defect level derived from Bayes): 16 problems, 100 keyed values (109 checks), Monte Carlo notebook, 3 figures, 17 glossary terms, 23 flashcards; research log R-059 (PCIe and Ethernet BER targets), R-060 (zero-error BER tests), R-061 (AEC-Q100/JESD47 qualification samples), R-062 (Williams–Brown). |
 | 2026-11-18 | Phase 2. **Course 02 completed and audited (🏁).** Wrote the final exam (15 questions, 128 points; solutions, verify script with 146 keyed values, ngspice netlist for the circuit questions), extended the flashcards to 140 cards, wrote the equation sheet and course notes. Four fresh reviewers audited 02-01..02-10, the exam, cards and sheet: 1 critical (02-09 concept check on Euler pole placement), about 25 major, about 130 minor findings, all fixed. Major fixes: 02-03 overshoot formulas restricted to all-pole reference steps (log decrement for load steps), PLL closed-loop zero quantified, target impedance checked across frequency; 02-04 duplication rule, derived build-up envelope, NFC Q criterion (Q ≤ 7.742); 02-05 zero-state vs natural terminology, shifted impulses and sifting, piecewise and periodic inputs, convolution solutions; 02-06 diagonal dominance and threshold pivoting; 02-07 cofactor and rank–nullity derivations, Gram–Schmidt and QR; 02-08 complex SVD for MIMO, Hermitian and unitary matrices, Schur argument; 02-09 linearization and latch metastability; 02-10 full Newton expansion, Jacobian, ngspice and SPICE3 limiting rules, refinement floor κu₆₄; exam trimmed to 210 minutes and reused items replaced. Added 32 problems across the course, R-058 (FIVR, PowerVia), P3109 in R-056. tools/run_verify.py now accepts chapter-style filters and fails when nothing matches. Gathered sourced facts for Course 03. |
 | 2026-11-18 | Phase 2. 02-10 Numerical Methods for Engineers written and verified (floating point and AI formats, bisection and Newton, how SPICE solves DC with companion models, limiting and GMIN, Euler/RK/implicit integrators, stability regions and stiffness, conditioning and mixed-precision refinement); all ten Course 02 chapters now verified. Research log R-053 (ngspice defaults and DEVpnjlim from source), R-054 (SPICE/SPICE2 reports), R-055 (HPL-MxP Nov 2026), R-056 (OFP8, bfloat16, binary16), R-057 (Patriot GAO report and Skeel). |

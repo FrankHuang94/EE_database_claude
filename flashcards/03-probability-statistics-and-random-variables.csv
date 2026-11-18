@@ -25,3 +25,26 @@
 "How many error-free bits show BER < p at 95% confidence?","\(-\ln(0.05)/p \approx 3/p\). At \(10^{-12}\): \(3.0\times10^{12}\) bits, 93.6 s at 32 Gb/s; at \(10^{-15}\) and 400 Gb/s, about 2 hours.",bsee::03 bsee::03-01
 "Serial-link BER targets (as of Nov 2026)?","PCIe Gen 1–5 (NRZ): \(10^{-12}\). PCIe 6.0 (PAM4): first-bit error rate \(10^{-6}\) with FEC, CRC and retry. Ethernet 400G/800G/1.6T: \(10^{-13}\) at the MAC [R-059].",bsee::03 bsee::03-01 bsee::practitioner
 "What does zero failures in 3 lots × 77 units of qualification prove?","That the defective fraction is below about 1% at 90% confidence (LTPD 1). It cannot demonstrate ppm quality: that would take hundreds of thousands of units [R-061].",bsee::03 bsee::03-01 bsee::practitioner
+"PMF, PDF and CDF: how are they related?","PMF \(p_X(k) = P(X = k)\) for discrete \(X\); PDF \(f_X\) is a density, \(P(a < X \le b) = \int_a^b f_X\); CDF \(F_X(x) = P(X \le x)\) is the running sum or integral. \(f_X = dF_X/dx\).",bsee::03 bsee::03-02
+"Why can a PDF exceed 1 but a PMF cannot?","A PMF value is a probability. A PDF value is probability per unit of \(x\); only its integral over an interval is a probability.",bsee::03 bsee::03-02
+"Binomial PMF and when it applies?","\(\binom nk p^k(1-p)^{n-k}\): the number of successes in \(n\) independent trials with the same probability \(p\). Mean \(np\).",bsee::03 bsee::03-02
+"Geometric distribution: PMF and use?","Trials until the first success: \(P(K = k) = (1-q)^{k-1}q\). Retransmissions, link-training attempts. \(P(K > k) = (1-q)^k\).",bsee::03 bsee::03-02
+"Poisson PMF, and when does it approximate the binomial?","\(P(k) = \lambda^k e^{-\lambda}/k!\), mean and variance λ. It is the binomial's limit for large \(n\), small \(p\), fixed \(\lambda = np\); the error is at most about \(np^2\) (Le Cam).",bsee::03 bsee::03-02
+"Poisson yield model?","With defect density \(D_0\) and die area \(A\), defects per die are Poisson with \(\lambda = AD_0\), so yield (no defect) is \(e^{-AD_0}\).",bsee::03 bsee::03-02
+"What is a FIT?","One failure per \(10^9\) device-hours. Rates in FIT add for parts in series. 1000 FIT is about 0.9% per year [R-064].",bsee::03 bsee::03-02
+"Convert a FIT rate into a probability over time \(t\)?","Constant rate \(r = \text{FIT}\times10^{-9}\) per hour: \(P(\text{fail by } t) = 1 - e^{-rt} \approx rt\) when \(rt \ll 1\).",bsee::03 bsee::03-02
+"Exponential distribution: where does it come from?","The waiting time to the first event of a constant-rate process: \(P(T > t) = e^{-rt}\). Mean \(1/r\). Gaps of a Poisson process are exponential.",bsee::03 bsee::03-02
+"Memoryless property?","\(P(T > s + t \mid T > s) = P(T > t)\): a survivor is as good as new. Only the exponential (continuous) and geometric (discrete) have it. False for wear-out.",bsee::03 bsee::03-02
+"What does an MTTF of \(10^6\) hours mean?","A constant failure rate of 1000 FIT, about 0.9% per year. It is not a 114-year life; wear-out ends real life much sooner.",bsee::03 bsee::03-02 bsee::practitioner
+"Q-function definition?","\(Q(x) = P(Z > x)\) for standard normal \(Z\) \(= \tfrac12\operatorname{erfc}(x/\sqrt2)\). \(P(X > a) = Q((a - \mu)/\sigma)\).",bsee::03 bsee::03-02
+"Within ±1σ, ±2σ, ±3σ of a Gaussian mean?","68.27%, 95.45%, 99.73%.",bsee::03 bsee::03-02
+"Q(3), Q(4.5), Q(6)?","\(1.350\times10^{-3}\), \(3.398\times10^{-6}\) (Six Sigma's 3.4 ppm), \(9.866\times10^{-10}\).",bsee::03 bsee::03-02
+"\(Q^{-1}\) at \(10^{-9}\), \(10^{-12}\), \(10^{-15}\)?","5.998, 7.034, 7.941: the σ of margin needed.",bsee::03 bsee::03-02
+"Bounds on Q(x) for large x?","\(\frac{x}{1 + x^2}\phi(x) < Q(x) < \phi(x)/x\) with \(\phi(x) = e^{-x^2/2}/\sqrt{2\pi}\), and \(Q(x) \le \tfrac12e^{-x^2/2}\). The tail falls like \(e^{-x^2/2}\).",bsee::03 bsee::03-02
+"BER of a binary ±A signal in Gaussian noise σ, threshold at 0?","\(Q(A/\sigma)\). \(10^{-12}\) needs \(A/\sigma = 7.034\), or 16.94 dB.",bsee::03 bsee::03-02
+"What does 1 dB of lost signal cost near BER \(10^{-12}\)?","\(A/\sigma\) falls from 7.034 to 6.269, and the BER rises about 181-fold to \(1.8\times10^{-10}\).",bsee::03 bsee::03-02
+"Dual-Dirac total jitter formula?","\(TJ(\text{BER}) = DJ(\delta\delta) + 2Q_{\text{BER}}\sigma_{RJ}\), with \(2Q_{\text{BER}} = 14.069\) at \(10^{-12}\) and 15.883 at \(10^{-15}\) (transition density 1/2) [R-063].",bsee::03 bsee::03-02
+"How do independent random jitters combine?","In quadrature: \(\sigma = \sqrt{\sigma_1^2 + \sigma_2^2}\). Attack the largest term first.",bsee::03 bsee::03-02
+"Eye opening at a target BER?","\(1\,\text{UI} - TJ(\text{BER})\). At 32 GT/s (31.25 ps) with DJ 8 ps and RJ 1.2 ps rms: 6.367 ps at \(10^{-12}\).",bsee::03 bsee::03-02
+"Six Sigma's 3.4 ppm: where does it come from?","Limits at ±6σ with the mean assumed to drift 1.5σ: \(Q(4.5) = 3.4\times10^{-6}\). The centered ±6σ figure is 2 ppb. The 1.5σ shift is a convention, not a law [R-065].",bsee::03 bsee::03-02 bsee::practitioner
+"When does a Gaussian tail model fail?","When tails are bounded or heavier than Gaussian: crosstalk, interference, bursty or clustered errors. Fit the model near the BER it is used at, and distrust extrapolation many decades out.",bsee::03 bsee::03-02

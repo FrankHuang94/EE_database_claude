@@ -68,6 +68,9 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-060 | Zero-error BER tests and confidence | Nov 2026 |
 | R-061 | Qualification sample sizes: AEC-Q100 and JEDEC JESD47 | Nov 2026 |
 | R-062 | Defect level and fault coverage | Nov 2026 |
+| R-063 | Jitter: the dual-Dirac model and the Q-scale | Nov 2026 |
+| R-064 | Soft-error rates and FIT | Nov 2026 |
+| R-065 | Six Sigma: 3.4 ppm and the 1.5σ shift | Nov 2026 |
 
 ---
 
@@ -477,3 +480,22 @@ R&D % = R&D ÷ revenue.
 - **Paper:** T. W. Williams and N. C. Brown, "Defect Level as a Function of Fault Coverage," *IEEE Transactions on Computers*, vol. C-30, no. 12, pp. 987–988, Dec. 1981, DOI 10.1109/TC.1981.1675742 (citation confirmed via Crossref; full text paywalled).
 - **Formula:** $\text{DL} = 1 - Y^{1 - T}$, as taught in university test-engineering courses (for example NYCU "Introduction to EDA," Spring 2026, lecture 9), with the table Y = 90%, T = 90% → about 10,000 DPM. Clustered (negative-binomial) refinements are used with fab data [Established].
 - **Sources:** [Crossref record](https://doi.org/10.1109/TC.1981.1675742); [NYCU EDA lecture](https://tiger.iee.nycu.edu.tw/course/EDAIntro2026Spring/materials/lec9.pdf). Checked Nov 2026.
+
+## R-063 · Jitter: the dual-Dirac model and the Q-scale
+
+- **Model and convention:** R. Stephens, *Jitter Analysis: The dual-Dirac Model, RJ/DJ, and Q-Scale*, Keysight white paper 5989-3206EN (text dated Dec 2004; printing of 5 Apr 2023): "TJ(BER) ≡ 2QBERxσ + DJ(δδ)", with BER = ρT·erfc(Q/√2); "For transition density, ρT = 1/2, BER = 10–11 corresponds to Q = 6.7, for BER = 10–12, Q = 7.0". Composition rules from the same paper: random jitter adds in quadrature, and "DJTotal(δδ) ≈ DJ1(δδ) + DJ2(δδ) + …" [Established].
+- **Multiplier table:** Renesas (IDT) AN-815, *Understanding Jitter Units*, Rev A (27 Mar 2014), Table 1: rms-to-peak-to-peak multiplier 11.996 at $10^{-9}$, 14.069 at $10^{-12}$ and 15.883 at $10^{-15}$ [Established].
+- **Derived here:** $Q^{-1}(10^{-12}) = 7.0345$, so $2Q = 14.069$; with ρT = 1, $Q(Q_{\text{BER}}) = 5\times10^{-13}$ gives $2Q = 14.26$.
+- **Sources:** [Keysight 5989-3206EN](https://www.keysight.com/zz/en/assets/7018-01309/white-papers/5989-3206.pdf); [Renesas AN-815](https://renesas.com/ja/document/apn/815-understanding-jitter-units). The T11 MJSQ document is members-only and was not read. Checked Nov 2026.
+
+## R-064 · Soft-error rates and FIT
+
+- **FIT:** "One FIT equals 1 failure per 1 billion device hours" (AMD UG116); Infineon/Cypress AN54908: "One FIT is a single failure in 10^9 device hours" [Established].
+- **SRAM soft-error rates:** AMD *Device Reliability Report* (UG116), v10.22, released 13 Nov 2026, real-time (neutron-induced) block-RAM soft-error rates normalized to New York City per JESD89A/89-1A: 692 FIT/Mb (65 nm, Virtex-5), 42 (28 nm, 7 series), 58 (20 nm, UltraScale), 15 (16 nm FinFET, UltraScale+; alpha adds 7), 11.4 (7 nm, Versal, −32%/+50%; alpha adds 2.0). The 2018 edition (v10.9) listed 20 FIT/Mb for 16 nm, so values are revised as data accumulate [Established for the trend; values vendor-measured].
+- **Sources:** [AMD UG116, SEU and soft-error-rate measurements](https://docs.amd.com/r/en-US/ug116/SEU-and-Soft-Error-Rate-Measurements); [Infineon AN54908](https://www.infineon.com/). Checked Nov 2026.
+
+## R-065 · Six Sigma: 3.4 ppm and the 1.5σ shift
+
+- **Claim and origin:** J. S. Ramberg, "Six Sigma: Fad or Fundamental?", *Quality Digest*, May 2000: "Should the process mean shift by 1.5 sigma, the defective rate would increase to 3.4 PPM defectives"; "The late Bill Smith, a reliability engineer at Motorola, is widely credited with originating Six Sigma"; "The 1.5-sigma deviation remains controversial." Motorola received the Baldrige award in 1988 (NIST recipients list) [Established for the arithmetic; the shift convention is Contested].
+- **Derived here:** $Q(4.5) = 3.398\times10^{-6}$; a centered ±6σ process has $2Q(6) = 1.97\times10^{-9}$.
+- **Sources:** [Quality Digest, May 2000](https://qualitydigest.com/may00/html/sixsigmapro.html); [NIST Baldrige recipients](https://www.nist.gov/baldrige/award-recipients). Checked Nov 2026.
