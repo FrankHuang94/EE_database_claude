@@ -1,0 +1,54 @@
+* Lab 02-06 -- IR drop on a power rail (Problem 02-06.14), solved by ngspice as G v = i.
+* Five 20 mOhm segments from a 1.000 V pad to five taps, each tap drawing 0.2 A.
+* Rail "s": fed from the left end only. Rail "d": a second pad after a sixth segment at the right end.
+* The drop at tap k is 1 V - v(tap k).
+*
+* EXPECT ds1  key:../../solutions/02-06-solutions.md#02-06.14b scale=1e-3 rtol=1e-6
+* EXPECT ds3  key:../../solutions/02-06-solutions.md#02-06.14f scale=1e-3 rtol=1e-6
+* EXPECT ds5  key:../../solutions/02-06-solutions.md#02-06.14c scale=1e-3 rtol=1e-6
+* EXPECT dd3  key:../../solutions/02-06-solutions.md#02-06.14d scale=1e-3 rtol=1e-6
+* EXPECT id1  key:../../solutions/02-06-solutions.md#02-06.14g rtol=1e-6
+
+VDD  pad 0 DC 1
+
+* single-fed rail
+Rs1 pad s1 20m
+Rs2 s1  s2 20m
+Rs3 s2  s3 20m
+Rs4 s3  s4 20m
+Rs5 s4  s5 20m
+Is1 s1 0 DC 0.2
+Is2 s2 0 DC 0.2
+Is3 s3 0 DC 0.2
+Is4 s4 0 DC 0.2
+Is5 s5 0 DC 0.2
+
+* double-fed rail; Vsense (0 V) measures the current in the first segment
+Vsense pad dp DC 0
+Rd1 dp  d1 20m
+Rd2 d1  d2 20m
+Rd3 d2  d3 20m
+Rd4 d3  d4 20m
+Rd5 d4  d5 20m
+Rd6 d5  pad 20m
+Id1 d1 0 DC 0.2
+Id2 d2 0 DC 0.2
+Id3 d3 0 DC 0.2
+Id4 d4 0 DC 0.2
+Id5 d5 0 DC 0.2
+
+.op
+.control
+op
+let ds1 = 1 - v(s1)
+let ds3 = 1 - v(s3)
+let ds5 = 1 - v(s5)
+let dd3 = 1 - v(d3)
+let id1 = i(Vsense)
+echo "ds1 = $&ds1"
+echo "ds3 = $&ds3"
+echo "ds5 = $&ds5"
+echo "dd3 = $&dd3"
+echo "id1 = $&id1"
+.endc
+.end

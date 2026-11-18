@@ -980,3 +980,58 @@
   definition: H(0), the steady-state output per unit of constant input for a stable system; it is also the final value of the unit-step response.
   chapter: "02-05"
   see_also: [Transfer function, Final-value theorem]
+
+# ---------------------------------------------------------------- 02-06
+- term: Vector
+  definition: An ordered list of n numbers, written as a column; pictured as an arrow in space, a set of related quantities (such as node voltages), or a sampled signal.
+  chapter: "02-06"
+  see_also: [Linear combination, Dot product]
+- term: Linear combination
+  definition: A sum c₁v₁ + … + c_kv_k of vectors times scalars. Every matrix–vector product Ax is the linear combination of A's columns with weights x.
+  chapter: "02-06"
+- term: Norm
+  definition: The length of a vector, ‖v‖ = √(v·v); for a sampled signal, ‖v‖/√N is its RMS value. For complex vectors, ‖v‖² = Σ|vᵢ|².
+  chapter: "02-06"
+  see_also: [Dot product]
+- term: Projection
+  definition: The closest point to b on the line through a, p = (a·b / a·a) a, characterized by the error b − p being perpendicular to a; the basis of least squares.
+  chapter: "02-06"
+- term: Matrix
+  definition: A rectangular m×n array of numbers; multiplying it by a vector is a linear map from n-component to m-component vectors.
+  chapter: "02-06"
+  see_also: [Matrix multiplication]
+- term: Matrix multiplication
+  definition: The product AB defined so that (AB)x = A(Bx); entry (i, j) is row i of A dotted with column j of B. It is associative but not commutative, and an n×n product costs n³ multiply–adds.
+  chapter: "02-06"
+- term: Transpose
+  definition: Aᵀ, the matrix with rows and columns exchanged, (Aᵀ)ᵢⱼ = aⱼᵢ. The transpose of a product reverses the order, (AB)ᵀ = BᵀAᵀ; a matrix equal to its transpose is symmetric.
+  chapter: "02-06"
+- term: Singular matrix
+  definition: A square matrix whose columns are dependent, so Ax = b has no solution for most b and infinitely many for the rest; elimination on it cannot produce a full set of nonzero pivots.
+  chapter: "02-06"
+- term: Gaussian elimination
+  definition: Solving Ax = b by subtracting multiples of rows to reach an upper-triangular system, then back-substituting; it costs about (2/3)n³ flops for an n×n system.
+  chapter: "02-06"
+  see_also: [Pivot, LU factorization]
+- term: Pivot
+  definition: The diagonal entry used to eliminate the entries below it at each step of Gaussian elimination; it must be nonzero, and should not be small relative to the entries below it.
+  chapter: "02-06"
+- term: LU factorization
+  definition: A = LU, with L lower triangular holding the elimination multipliers and U upper triangular holding the pivots (PA = LU with row exchanges). Factor once in O(n³), then solve each right-hand side in O(n²).
+  chapter: "02-06"
+- term: Partial pivoting
+  definition: Exchanging rows at each elimination step so that the largest-magnitude entry in the column becomes the pivot; it keeps every multiplier at most 1 in magnitude and prevents roundoff from swamping the solution.
+  chapter: "02-06"
+- term: Conductance matrix
+  definition: The matrix G of nodal analysis, G v = i. Diagonal entries are the total conductance at each node; off-diagonal entries are minus the conductance between two nodes. It is symmetric, sparse and, once a node is grounded, nonsingular.
+  chapter: "02-06"
+  see_also: [Stamp, Modified nodal analysis]
+- term: Stamp
+  definition: The fixed pattern of matrix entries one circuit element contributes to the nodal or MNA equations; a resistor of conductance g between nodes a and b adds +g at (a, a) and (b, b) and −g at (a, b) and (b, a).
+  chapter: "02-06"
+- term: Sparse matrix
+  definition: A matrix whose entries are almost all zero, stored and factored by keeping only the nonzeros; circuit and power-grid matrices have a few nonzeros per row.
+  chapter: "02-06"
+- term: Arithmetic intensity
+  definition: Operations performed per byte moved from memory. A workload whose intensity is below a machine's ridge point (peak operations per second ÷ memory bandwidth) is memory-bound; a matrix–vector product has about 1 flop per byte in 16-bit precision.
+  chapter: "02-06"

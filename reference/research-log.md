@@ -42,6 +42,10 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-034 | NFC and ISO/IEC 14443: carrier and data rates | Nov 2026 |
 | R-035 | 32.768 kHz tuning-fork crystals: Q and start-up | Nov 2026 |
 | R-036 | S-domain blocks in design tools: Verilog-AMS and ngspice | Nov 2026 |
+| R-037 | KLU and sparse solvers in circuit simulation | Nov 2026 |
+| R-038 | HPL and the TOP500 list | Nov 2026 |
+| R-039 | Google TPU v1 matrix unit | Nov 2026 |
+| R-040 | NVIDIA H100 and Rubin: arithmetic and memory figures | Nov 2026 |
 
 ---
 
@@ -275,3 +279,30 @@ R&D % = R&D ÷ revenue.
 - **Verilog-AMS:** the Accellera *Verilog-AMS Language Reference Manual*, version 2.4.0 (30 May 2014), §4.5.11 "Laplace transform filters", defines analog operators that "implement lumped linear continuous-time filters": `laplace_zp` (zero-pole form; zeros and poles given as real/imaginary pairs), `laplace_zd` (zero-denominator), `laplace_np` (numerator-pole) and `laplace_nd` (numerator-denominator; polynomial coefficients listed from the constant term upward), each with an optional tolerance argument [Established].
 - **ngspice:** the XSPICE code-model library shipped with ngspice includes `s_xfer`, an "s-domain transfer function block" whose parameters are numerator and denominator polynomial coefficients (`num_coeff`, `den_coeff`) plus a frequency-scaling parameter (`denormalized_freq`), so it represents rational transfer functions only. Confirmed from the ngspice-42 code-model library (`analog.cm`) and by running the 02-05 lab netlist [Established].
 - **Sources:** [Verilog-AMS LRM 2.4.0 (copy hosted by the Designer's Guide Community)](https://designers-guide.org/verilog-ams/VlogAMS-2.4.0.pdf), also available from Accellera; ngspice-42 as packaged for Ubuntu (`analog.cm`, model `s_xfer`). The ngspice website (ngspice.sourceforge.io) blocked the build environment, so its manual chapter on XSPICE code models was not fetched. Checked Nov 2026.
+
+## R-037 · KLU and sparse solvers in circuit simulation
+
+- **KLU:** T. A. Davis and E. Palamadai Natarajan, "Algorithm 907: KLU, a direct sparse solver for circuit simulation problems," *ACM Transactions on Mathematical Software*, vol. 37, no. 3, article 36, pp. 36:1–36:17, Sept. 2010, DOI 10.1145/1824801.1824814. KLU permutes the matrix to block triangular form, applies a fill-reducing ordering to each block, and factors with a Gilbert–Peierls left-looking sparse LU. The KLU user guide explains why: circuit matrices are typically permutable into block triangular form with many 1-by-1 blocks, plus a handful of dense rows and columns (from voltage and current sources) that fall outside the diagonal blocks and cause no fill-in. Fill-in is so low that solvers built on dense BLAS kernels (SuperLU, UMFPACK) are slower on these matrices [Established].
+- **ngspice:**
+  - ngspice-42 (24 Dec 2023) introduced a "new optional matrix solver KLU (select by 'option klu')".
+  - From ngspice-43 (14 Jul 2024), `klu` is among the standard `./configure` options, so it is compiled in by default.
+  - In the current source, the default task settings set the KLU mode to off (`TSKkluMODE = CKTkluOFF`), so the long-standing Sparse 1.3 solver stays the default unless KLU is selected.
+  - The ngspice-42 build used for this curriculum reports "Compiled with KLU Direct Linear Solver" [Established].
+- **Sources:** [Crossref record](https://api.crossref.org/works/10.1145/1824801.1824814); [KLU user guide source and bibliography (SuiteSparse repository)](https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/KLU/Doc); [ngspice NEWS](https://sourceforge.net/p/ngspice/ngspice/ci/master/tree/NEWS?format=raw) and source file `src/spicelib/analysis/cktntask.c`. The ACM full text returned HTTP 403, so the KLU rationale comes from the authors' user guide rather than the paper body. Checked Nov 2026.
+
+## R-038 · HPL and the TOP500 list
+
+- **What HPL solves:** "a (random) dense linear system in double precision (64 bits) arithmetic", using a right-looking LU factorization with row partial pivoting (netlib HPL page). TOP500 rules require the algorithm to "conform to LU factorization with partial pivoting" with an operation count of 2/3 n³ + O(n²), which excludes fast matrix-multiplication algorithms such as Strassen's. HPL's reference test code counts 2/3 N³ − 1/2 N² flops for the factorization plus 2N² for the solve [Established].
+- **List of November 2026:** the 68th TOP500 list was published 17 Nov 2026 in Chicago. No. 1 is **LineShine** at the National Supercomputing Centre in Shenzhen (NSCS), China: 13,789,440 cores, **Rmax 2,198.40 PFlop/s**, **Rpeak 2,735.82 PFlop/s**. It entered the list at No. 1 in June 2026, displacing El Capitan, now No. 2 at 1,809.00 PFlop/s [Established].
+- **Sources:** [HPL (netlib)](https://www.netlib.org/benchmark/hpl/); [TOP500 Linpack rules](https://top500.org/project/linpack/); [HPL_pdtest.c](https://raw.githubusercontent.com/icl-utk-edu/hpl/main/testing/ptest/HPL_pdtest.c); [TOP500 November 2026](https://top500.org/lists/top500/2026/11/) and [the full list](https://top500.org/lists/top500/list/2026/11/). The November 2026 figures postdate the author's training data and were read directly from top500.org. Checked Nov 2026.
+
+## R-039 · Google TPU v1 matrix unit
+
+- **Values:** the first-generation TPU's matrix unit "contains 256x256 MACs that can perform 8-bit multiply-and-adds" (65,536 in all), uses systolic execution "to save energy", runs at a 700 MHz clock with 28 MiB of on-chip memory, and "offers a peak throughput of 92 TeraOps/second (TOPS)" [Established].
+- **Source:** N. P. Jouppi, C. Young, N. Patil, D. Patterson et al., "In-Datacenter Performance Analysis of a Tensor Processing Unit," *Proc. 44th International Symposium on Computer Architecture (ISCA '17)*, Toronto, June 2017, DOI 10.1145/3079856.3080246; [arXiv:1704.04760](https://arxiv.org/abs/1704.04760). Checked Nov 2026.
+
+## R-040 · NVIDIA H100 and Rubin: arithmetic and memory figures
+
+- **H100 SXM** (NVIDIA product page): FP64 34 TFLOPS; FP64 Tensor Core 67 TFLOPS; FP16 and BF16 Tensor Core **1,979 TFLOPS "with sparsity"**; GPU memory bandwidth **3.35 TB/s** (80 GB). NVIDIA's Hopper architecture article says structured sparsity doubles the throughput of standard Tensor Core operations, so the dense FP16 figure is about **989.5 TFLOPS**. That is this curriculum's halving; NVIDIA's page does not print a dense number [Established].
+- **Rubin GPU** (NVIDIA Vera Rubin NVL72 page, per GPU): FP16/BF16 **4 PFLOPS**, footnoted "Dense specification"; **288 GB HBM4 at 19.2 TB/s**; FP64 33 TFLOPS. NVIDIA labels these figures as projected and subject to change, and press reports (seen in search snippets only) cite an earlier 22 TB/s bandwidth figure [Established as published; vendor-projected].
+- **Sources:** [NVIDIA H100](https://www.nvidia.com/en-us/data-center/h100/); [NVIDIA Hopper architecture in depth](https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/); [NVIDIA Vera Rubin NVL72](https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/). Checked Nov 2026.
