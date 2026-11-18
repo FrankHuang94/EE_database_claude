@@ -29,7 +29,7 @@ Chapter sections 3.3–3.6 (the three cases), 3.7 (initial conditions), 3.8 (ste
 |---|---|---|
 | 1 | ζ = 0.1 ring-down to 5% | $\omega_0t = \ln20/0.1 = 30.0$, about 4.74 cycles |
 | 2 | overshoot and peak time | simulation equals the formulas: 16.303% and $3.628/\omega_0$ at ζ = 0.5 |
-| 2 | 2% settling | fastest near ζ = 0.78 ($3.605/\omega_0$); critical damping $5.834/\omega_0$ |
+| 2 | 2% settling | fastest near ζ = 0.78: $3.605/\omega_0$ on the notebook's grid of ζ values (the exact optimum, ζ = 0.7797 in Example 02-03.3, gives 3.602); critical damping $5.834/\omega_0$ |
 | 3 | energy | 12.500 µJ at the start; $dw/dt + Ri^2 \approx 0$ to numerical precision |
 | 3 | first negative peak | −3.023 V at 10.06 µs |
 | 4 | droop with C doubled or L halved | 114.0 mV either way, from 160.3 mV |
@@ -54,4 +54,4 @@ Chapter sections 3.3–3.6 (the three cases), 3.7 (initial conditions), 3.8 (ste
 
 ## Optional hardware version
 
-With a 10 mH inductor, a 100 nF capacitor, resistors of 10 Ω, 100 Ω and 680 Ω, a function generator and an oscilloscope: build the series RLC ($f_0 \approx 5$ kHz) and drive it with a low-frequency square wave through the resistor. Measure the capacitor voltage. With 10 Ω (plus the inductor's own winding resistance) it rings; with about 630 Ω ($2\sqrt{L/C}$) it is close to critically damped. From the 10 Ω trace, read the overshoot and ringing period and infer ζ and $\omega_0$ as in Example 02-03.4. The inferred ζ will exceed the value computed from 10 Ω alone, because the inductor's winding resistance adds damping.
+With a 10 mH inductor, a 100 nF capacitor, resistors of 10 Ω, 100 Ω and 560 Ω, a function generator and an oscilloscope: build the series RLC ($f_0 \approx 5$ kHz) and drive it with a low-frequency square wave through the resistor. Measure the capacitor voltage. With 10 Ω (plus the inductor's own winding resistance) it rings; critical damping needs a total of $2\sqrt{L/C} = 632\ \Omega$, which the 560 Ω resistor plus the generator's typical 50 Ω output resistance nearly reaches. That output resistance is in series with every resistor you try: with the 10 Ω resistor the loop resistance is about 60 Ω plus the winding resistance, so expect ζ around 6× the value 10 Ω alone predicts (use a buffered source if you want a lighter damping). From the 10 Ω trace, read the overshoot and ringing period and infer ζ and $\omega_0$ as in Example 02-03.4. The inferred ζ will exceed the value computed from 10 Ω alone, because the inductor's winding resistance adds damping.

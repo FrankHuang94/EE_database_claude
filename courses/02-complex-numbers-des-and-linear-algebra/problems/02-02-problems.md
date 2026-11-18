@@ -81,7 +81,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 (a) When does the installed base reach half the capacity?
 (b) How long does it take to go from 10% to 90% of capacity?
 (c) What is the installed base after 3 years?
-(d) An analyst fits pure exponential growth, $N_0e^{rt}$, to the first two years of data and extrapolates to year 6. What does that predict, and what does the logistic model say? What is the lesson for market sizing?
+(d) An analyst fits pure exponential growth, $N_0e^{rt}$, to the first two years of data. Suppose the fit recovers the true early rate, $r = 0.8$/yr, and the analyst extrapolates to year 6. What does that predict, and what does the logistic model say? What is the lesson for market sizing?
 
 ### Problem 02-02.11 [B]
 
@@ -115,11 +115,20 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 02-02.15 [C]
 
-**A switch that turns off slowly.** A sampling capacitor $C = 10$ pF, charged to $v_0$, discharges through a transistor switch whose resistance rises as it turns off: $R(t) = R_0e^{t/T}$, with $R_0 = 100$ Ω and $T = 2$ ns.
+**A switch that turns off slowly.** A capacitor $C = 10$ pF, to be reset to zero, charged to $v_0$, discharges through a transistor switch whose resistance rises as it turns off: $R(t) = R_0e^{t/T}$, with $R_0 = 100$ Ω and $T = 2$ ns.
 
 (a) Write the ODE for $v(t)$ and solve it (it is linear and separable, with a variable coefficient).
 (b) What fraction of $v_0$ remains at $t = 2$ ns, and as $t \to \infty$?
-(c) Compare with a switch of constant resistance $R_0$. What does this say about how fast a sampling switch must turn off, relative to $R_0C$?
+(c) Compare with a switch of constant resistance $R_0$. What does this say about how slowly a reset switch must turn off, relative to $R_0C$, to leave less than 0.1% of the old charge?
+
+### Problem 02-02.16 [A]
+
+**Reading a direction field.** Consider $y' = t - y$.
+
+(a) Find the slope of the direction field at the points $(t, y) = (0, 0)$, $(1, 0)$, $(0, 1)$ and $(2, 1)$.
+(b) Show that the isoclines (curves of constant slope $c$) are parallel straight lines, and find them.
+(c) One isocline is itself a solution. Find it, verify it by substitution, and explain from the direction field why every other solution approaches it.
+(d) Solve the equation with $y(0) = 0$ and evaluate $y(2)$.
 
 ---
 
@@ -128,7 +137,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 02-02) | Problems |
 |---|---|
 | 1. Classify ODEs; verify solutions of initial-value problems | 1, 11 |
-| 2. Direction fields, phase lines, equilibria and their stability | 3, 10, 13 |
+| 2. Direction fields, phase lines, equilibria and their stability | 3, 10, 13, 16 |
 | 3. Separable equations, including nonlinear ones | 2, 10, 13, 15 |
 | 4. Integrating factor; discount factor; Bernoulli substitution | 4, 5, 6, 11(b), 13, 15 |
 | 5. Natural and forced responses; step, ramp, exponential and sinusoidal inputs | 7, 8, 9, 14 |

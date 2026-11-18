@@ -403,7 +403,7 @@ Apply the calculus rules to the three passive elements. Each element law becomes
 
 Units check: $\omega L$ has units $(1/\text{s})(\text{V}\cdot\text{s}/\text{A}) = \text{V}/\text{A} = \Omega$, and $1/(\omega C)$ has units $1/\big((1/\text{s})(\text{A}\cdot\text{s}/\text{V})\big) = \text{V}/\text{A} = \Omega$. ✓ The imaginary part of an impedance is its **reactance**: positive (inductive) for $L$, negative (capacitive) for $C$. Because KVL and KCL are linear, they hold for phasors too. Every resistive-circuit technique from Course 06 therefore carries over to AC circuits with $R$ replaced by $Z$. That is the whole of [07-05](../../07-circuit-analysis-2-transient-and-ac/chapters/07-05-sinusoidal-steady-state-and-impedance.md).
 
-> **Going deeper — why exponentials are special.** For any linear time-invariant (LTI) system with impulse response $h(t)$, the output for input $e^{st}$ is $\int h(\lambda)e^{s(t-\lambda)}d\lambda = \Big(\int h(\lambda)e^{-s\lambda}d\lambda\Big)e^{st} = H(s)\,e^{st}$. The output is the input multiplied by a constant: complex exponentials are the **eigenfunctions** of LTI systems, and $H(s)$ is the eigenvalue. Sinusoids inherit this property because they are sums of two exponentials. That is the deep reason phasors work, and the foundation of Fourier and Laplace analysis ([11-04](../../11-signals-and-systems/chapters/11-04-lti-systems-and-differential-equations.md)).
+> **Going deeper — why exponentials are special.** For any linear time-invariant (LTI) system with impulse response $h(t)$, the output for input $e^{st}$ (for every $s$ where the integral below converges) is $\int h(\lambda)e^{s(t-\lambda)}d\lambda = \Big(\int h(\lambda)e^{-s\lambda}d\lambda\Big)e^{st} = H(s)\,e^{st}$. The output is the input multiplied by a constant: complex exponentials are the **eigenfunctions** of LTI systems, and $H(s)$ is the eigenvalue. Sinusoids inherit this property because they are sums of two exponentials. That is the deep reason phasors work, and the foundation of Fourier and Laplace analysis ([11-04](../../11-signals-and-systems/chapters/11-04-lti-systems-and-differential-equations.md)).
 
 ## 4. Worked examples
 
@@ -491,7 +491,13 @@ with $\sqrt{2} = 1.414$.
    $v_{out}(t) = 4.234\cos(2\pi\cdot 1000\,t - 32.14^\circ)$ V.
 5. Time delay: a lag of 32.14° at $f = 1$ kHz ($T = 1$ ms) is $t_d = \dfrac{32.14^\circ}{360^\circ}\times 1\ \text{ms} = 89.3\ \mu\text{s}$.
 
-**Check by substitution.** With $\mathbf{V}_{out} = H\mathbf{V}_{in}$, the left side of the phasor equation is $(1 + j\omega\tau)H\mathbf{V}_{in} = \mathbf{V}_{in}$, the right side. ✓ The verification script also substitutes the time-domain answer into the ODE at many instants and confirms the residual is zero to machine precision.
+**Check by substitution.** Substitute the time-domain answer into the ODE. Write $\phi = 32.14^\circ$, so $\tan\phi = \omega\tau = 0.6283$ and $\cos\phi = 1/\sqrt{1 + (\omega\tau)^2} = 0.8467 = \lvert H\rvert$. With $v_{out} = 4.234\cos(\omega t - \phi)$,
+
+$$
+\tau\frac{dv_{out}}{dt} + v_{out} = 4.234\big[\cos(\omega t - \phi) - \omega\tau\sin(\omega t - \phi)\big] = \frac{4.234}{\cos\phi}\big[\cos\phi\cos(\omega t - \phi) - \sin\phi\sin(\omega t - \phi)\big] = \frac{4.234}{0.8467}\cos\omega t = 5.000\cos\omega t,
+$$
+
+which is $v_{in}$ ✓ (the bracket is $\cos\big((\omega t - \phi) + \phi\big)$). The verification script repeats this check numerically at many instants.
 **Units check.** $\omega\tau$ = (rad/s)(s), dimensionless ✓. $\lvert H\rvert$ is a ratio of volts to volts ✓.
 **Sanity check.** The input frequency (1 kHz) is below the corner frequency $f_c = 1/(2\pi\tau) = 1.59$ kHz, so we expect modest attenuation (less than 3 dB) and a lag of less than 45°. We got $0.8467$ (−1.4 dB) and $32^\circ$. ✓ Figure 7 solves the ODE numerically from rest: after a transient lasting a few $\tau$, the output settles onto exactly this sinusoid.
 
@@ -610,8 +616,8 @@ Complex numbers are mathematics, but choosing *how* to represent and compute wit
 | 3-4-5 triangle angle | $\arctan(4/3) = 53.13^\circ$ | Handy for checking work |
 | $\lvert H\rvert$ of a single pole at its corner | $1/\sqrt{2} = 0.7071$ (−3.01 dB), phase −45° | Defines "bandwidth" |
 | RMS of a sinusoid | $0.7071 \times$ peak | Peak = RMS × 1.414 |
-| Grid frequency | 50 Hz or 60 Hz, giving $\omega$ = 314.16 or 376.99 rad/s | [R-006](../../../reference/research-log.md#r-006--power-grid-frequencies) |
-| Mains peak voltage | 120 V rms (North America) → 169.7 V peak; 230 V rms (Europe) → 325.3 V peak | Nominal voltages, [R-014](../../../reference/research-log.md#r-014--nominal-mains-voltages) |
+| Grid frequency (as of Nov 2026) | 50 Hz or 60 Hz, giving $\omega$ = 314.16 or 376.99 rad/s | [R-006](../../../reference/research-log.md#r-006--power-grid-frequencies) |
+| Mains peak voltage (as of Nov 2026) | 120 V rms (North America) → 169.7 V peak; 230 V rms (Europe) → 325.3 V peak | Nominal voltages, [R-014](../../../reference/research-log.md#r-014--nominal-mains-voltages) |
 | Phase of a time delay | $360^\circ \times f \times t_d$; 1 ns = 360° at 1 GHz | Timing becomes phase at high frequency |
 | 4096-QAM (Wi-Fi 7) transmit EVM limit | ≤ −38 dB, an RMS error of 1.26% of the signal | As of Nov 2026, [R-002](../../../reference/research-log.md#r-002--ieee-80211-evm-requirements) |
 | 5G NR frequency range FR1 | 410–7125 MHz | As of Nov 2026, [R-003](../../../reference/research-log.md#r-003--3gpp-nr-frequency-ranges) |
@@ -647,7 +653,7 @@ Complex numbers are mathematics, but choosing *how* to represent and compute wit
 - **Every modem is a complex-number machine.** Cellular and Wi-Fi chips mix the received RF signal down to two baseband signals, in-phase (I) and quadrature (Q), which together form one complex sample stream. The demodulator, equalizer and decoder operate on complex numbers throughout. Wi-Fi 7 (IEEE 802.11be-2024) supports channels up to 320 MHz wide and 4096-QAM constellations ([R-002](../../../reference/research-log.md#r-002--ieee-80211-evm-requirements)) **[Established]**.
 - **FFT engines.** OFDM-based standards (4G, 5G, Wi-Fi) use an FFT on every received symbol. Each radix-2 FFT stage is a set of complex multiplications by roots of unity (§3.5).
 - **Multiplier economics.** A complex multiply needs 4 real multiplications and 2 additions, or 3 multiplications and 5 additions/subtractions with the Ungar/"Gauss" rearrangement ([R-011](../../../reference/research-log.md#r-011--complex-multiplication-with-three-real-multiplications)) **[Established]**. In massive-MIMO base stations and automotive radar, where thousands of complex multiplies run in parallel, that 25% difference in multipliers shows up in die area and power.
-- **The power grid measures phasors directly.** Phasor measurement units (PMUs) timestamp voltage and current phasors from GPS time and stream them to grid operators. The measurement standard is now IEC/IEEE 60255-118-1:2018, which superseded IEEE C37.118.1-2011. The 2011 standard defined reporting rates from 10 up to the system frequency: 10, 25 or 50 frames/s on 50 Hz systems and 10 to 60 frames/s on 60 Hz systems, with higher rates permitted ([R-005](../../../reference/research-log.md#r-005--synchrophasor-standards)) **[Established]**.
+- **The power grid measures phasors directly.** Phasor measurement units (PMUs) timestamp voltage and current phasors from GPS time and stream them to grid operators. The measurement standard is now IEC/IEEE 60255-118-1:2018, which superseded IEEE C37.118.1-2011. The 2011 standard defined reporting rates from 10 up to the system frequency: 10, 25 or 50 frames/s on 50 Hz systems and 10, 12, 15, 20, 30 or 60 frames/s on 60 Hz systems ([R-005](../../../reference/research-log.md#r-005--synchrophasor-standards)) **[Established]**.
 
 ### Why it matters commercially
 

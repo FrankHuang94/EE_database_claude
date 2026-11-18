@@ -108,7 +108,7 @@ At $t = 0$ with $\omega_d = 3$: $W = $ **3**.
 
 ### Solution 02-03.11
 
-With OS = 0.10, $\ln\text{OS} = -2.303$, so $\zeta = 2.303/\sqrt{\pi^2 + 2.303^2} = $ **0.5912**. The peak time gives $\omega_d = \pi/(50\text{ µs}) = $ **62.83 krad/s**, so $\omega_0 = \omega_d/\sqrt{1 - \zeta^2} = $ **77.90 krad/s**, and $Q = 1/(2\zeta) = $ **0.8458**. A loop with about 10% overshoot and ζ near 0.6 is a common, reasonable PLL design point.
+With OS = 0.10, $\ln\text{OS} = -2.303$, so $\zeta = 2.303/\sqrt{\pi^2 + 2.303^2} = $ **0.5912**. The peak time gives $\omega_d = \pi/(50\text{ µs}) = $ **62.83 krad/s**, so $\omega_0 = \omega_d/\sqrt{1 - \zeta^2} = $ **77.90 krad/s**, and $Q = 1/(2\zeta) = $ **0.8458**. These formulas are valid here only because the loop is all-pole. A charge-pump (type-II) loop has a closed-loop zero, which adds a derivative-like kick and raises the overshoot: simulating its step response gives **25.27%** overshoot at ζ = 0.5912, and a 10% overshoot would need ζ ≈ **1.243**. Reading such a trace with the all-pole formula would badly underestimate the damping it actually has. For loops with zeros, fit the measured response to the full transfer function, or use the decay ratio of successive peaks (the logarithmic decrement).
 
 ### Solution 02-03.12
 
@@ -128,11 +128,19 @@ With OS = 0.10, $\ln\text{OS} = -2.303$, so $\zeta = 2.303/\sqrt{\pi^2 + 2.303^2
 
 ### Solution 02-03.14
 
-(a) $Z_t = 0.8\times0.05/50 = $ **0.8 mΩ**. $\sqrt{L/C} = \sqrt{5\times10^{-12}/10^{-6}} = $ **2.236 mΩ**, about 2.8× the target: the design does not meet it.
+(a) $Z_t = 0.8\times0.05/50 = $ **0.8 mΩ**. $\sqrt{L/C} = \sqrt{5\times10^{-12}/10^{-6}} = $ **2.236 mΩ**, about 2.8× the target: even the first-droop estimate fails.
 
 (b) First droop $\approx \Delta I\sqrt{L/C} = 50\times2.236\text{ mΩ} = $ **111.8 mV**, or **13.98%** of the rail against the 5% allowed. The network resonates at $f_0 = 1/\big(2\pi\sqrt{LC}\big) = $ **71.18 MHz**.
 
 (c) To make $\sqrt{L/C} = Z_t$: with $L = 5$ pH, $C = L/Z_t^2 = $ **7.813 µF**; with $C = 1$ µF, $L = Z_t^2C = $ **0.64 pH**. Neither is easy, which is why high-current processors combine more on-die and in-package capacitance, many more power bumps (lower $L$), and voltage regulation inside the package.
+
+(d) Matching $\sqrt{L/C}$ to $Z_t$ only sizes the first droop. The target-impedance test asks for $\lvert Z(j\omega)\rvert \le Z_t$ at every frequency, and a lossless LC tank has $Z(j\omega) = j\omega L/(1 - \omega^2LC)$, which is infinite at $\omega_0$. With resistance $R$ in series with each element, the load sees
+
+$$
+Z = \frac{(R + sL)\big(R + \frac{1}{sC}\big)}{2R + sL + \frac{1}{sC}} = \frac{R^2 + \frac{L}{C} + R\big(sL + \frac{1}{sC}\big)}{2R + sL + \frac{1}{sC}} .
+$$
+
+With $R^2 = L/C$ the numerator is $R\big(2R + sL + \frac{1}{sC}\big)$, so $Z = R = \sqrt{L/C}$ exactly, at every frequency: a flat impedance. This *constant-resistance* condition is why decoupling capacitors are chosen partly for their equivalent series resistance.
 
 ### Solution 02-03.15
 
@@ -145,6 +153,24 @@ With OS = 0.10, $\ln\text{OS} = -2.303$, so $\zeta = 2.303/\sqrt{\pi^2 + 2.303^2
 (d) A net resistance of **zero** puts the roots on the imaginary axis, giving a steady sinusoid. In a real oscillator the active device's negative resistance weakens as the amplitude grows (its gain compresses), so the amplitude rises until the net resistance averages to zero, then holds: nonlinearity, not linear theory, sets the final amplitude ([12-09](../../12-electronics-2/chapters/12-09-oscillators.md)).
 
 ---
+
+### Solution 02-03.16
+
+(a) After a long time at DC, the capacitor is an open circuit and the inductor a short, so no current flows: $i(0^-) = 0$ and the whole 10 V appears across the capacitor, $v_C(0^-) = 10$ V.
+
+(b) The capacitor voltage and the inductor current cannot jump, so $v_C(0^+) = 10$ V and $i(0^+) = 0$. The series current is the capacitor current, so $v_C'(0^+) = i(0^+)/C = 0$. (The *source* jumped; the inductor voltage takes up the jump: $L\,i'(0^+) = 2 - 0 - 10 = -8$ V.)
+
+(c) $LCv_C'' + RCv_C' + v_C = 2$ gives $s^2 + 5s + 4 = 0$, so $s = -1$ and $s = -4$ s⁻¹: real and distinct, **overdamped** ($\alpha = 2.5$ s⁻¹ > $\omega_0 = 2$ rad/s, ζ = 1.25).
+
+(d) $v_C = 2 + Ae^{-t} + Be^{-4t}$. The conditions give $A + B = 8$ and $-A - 4B = 0$, so $A = 32/3$ and $B = -8/3$:
+
+$$
+v_C(t) = 2 + \tfrac{32}{3}e^{-t} - \tfrac{8}{3}e^{-4t}\ \text{V}.
+$$
+
+Check: $v_C(0) = 2 + 8 = 10$ ✓ and $v_C'(0) = -32/3 + 32/3 = 0$ ✓. At 1 s, $v_C = 2 + 3.924 - 0.0488 = $ **5.875 V**. It falls monotonically toward 2 V, dominated by the slow root.
+
+(e) $i = Cv_C' = 0.25\big(-\tfrac{32}{3}e^{-t} + \tfrac{32}{3}e^{-4t}\big) = \tfrac{8}{3}\big(e^{-4t} - e^{-t}\big)$ A. It is most negative where $i' = \tfrac{8}{3}\big(-4e^{-4t} + e^{-t}\big) = 0$, so $e^{3t} = 4$ and $t = \ln4/3 = $ **0.4621 s**. There $e^{-t} = 4^{-1/3} = 0.6300$ and $e^{-4t} = 0.1575$, so $i = $ **−1.260 A**: the capacitor discharges, current flowing back toward the source.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -187,6 +213,8 @@ With OS = 0.10, $\ln\text{OS} = -2.303$, so $\zeta = 2.303/\sqrt{\pi^2 + 2.303^2
 | 02-03.11b | ωd | 62.83 | krad/s |
 | 02-03.11c | ω0 | 77.90 | krad/s |
 | 02-03.11d | Q | 0.8458 | — |
+| 02-03.11e | type-II overshoot at ζ = 0.5912 | 25.27 | % |
+| 02-03.11f | type-II ζ for 10 % overshoot | 1.243 | — |
 | 02-03.12a | ω0 | 316.2 | krad/s |
 | 02-03.12b | Q | 63.25 | — |
 | 02-03.12c | cycles to fall by e | 20.13 | — |
@@ -209,3 +237,9 @@ With OS = 0.10, $\ln\text{OS} = -2.303$, so $\zeta = 2.303/\sqrt{\pi^2 + 2.303^2
 | 02-03.15b | envelope time constant | 1.000 | ms |
 | 02-03.15c | time to grow 1000-fold | 6.908 | ms |
 | 02-03.15d | cycles to grow 1000-fold | 10.94 | — |
+| 02-03.16a | v_C(0+) | 10 | V |
+| 02-03.16b | slow root | −1 | 1/s |
+| 02-03.16c | fast root | −4 | 1/s |
+| 02-03.16d | v_C(1 s) | 5.875 | V |
+| 02-03.16e | time of most negative current | 0.4621 | s |
+| 02-03.16f | most negative current | −1.260 | A |

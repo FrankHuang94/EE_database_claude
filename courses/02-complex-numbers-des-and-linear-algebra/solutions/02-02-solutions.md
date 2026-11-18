@@ -55,9 +55,9 @@ Standard form: $y' - y/t = t^2$, so $p = -1/t$ and $\mu = e^{-\ln t} = 1/t$ (for
 
 ### Solution 02-02.6
 
-(a) Separable: $B = B_0e^{\int_0^t r\,ds}$. Here $\int_0^{10}(0.02 + 0.004s)\,ds = 0.2 + 0.2 = 0.4$, so $B(10) = 100\,000\,e^{0.4} = $ **\$149,182**.
+(a) Separable: $B = B_0e^{\int_0^t r\,d\lambda}$. Here $\int_0^{10}(0.02 + 0.004\lambda)\,d\lambda = 0.2 + 0.2 = 0.4$, so $B(10) = 100\,000\,e^{0.4} = $ **\$149,182**.
 
-(b) $D(t) = e^{-\int_0^t r\,ds} = e^{-(0.02t + 0.002t^2)}$, and $D(10) = e^{-0.4} = $ **0.6703**. It is the present value of \$1 due at year 10 under this rate path. Multiplying the ODE $B' - rB = 0$ by $D$ gives $(DB)' = 0$: the present value of the balance stays constant, which is just another way to say $B(10) = B_0/D(10)$.
+(b) $D(t) = e^{-\int_0^t r\,d\lambda} = e^{-(0.02t + 0.002t^2)}$, and $D(10) = e^{-0.4} = $ **0.6703**. It is the present value of \$1 due at year 10 under this rate path. Multiplying the ODE $B' - rB = 0$ by $D$ gives $(DB)' = 0$: the present value of the balance stays constant, which is just another way to say $B(10) = B_0/D(10)$.
 
 (c) $\mu = e^{-0.05t}$, so $(e^{-0.05t}B)' = 10\,000\,e^{-0.05t}$. Integrating from 0 to $t$:
 
@@ -77,7 +77,7 @@ $$
 
 So $e = 8(1 - e^{-t/4})$ °C.
 
-(a) The steady lag is $\tau = $ **4 s** in time, and $S\tau = 2 \times 4 = $ **8 °C** in temperature.
+(a) The steady lag is $\tau = $ **4 s** in time, and $m\tau = 2 \times 4 = $ **8 °C** in temperature.
 
 (b) Within 1% of the final error when $e^{-t/4} \le 0.01$: $t = 4\ln100 = $ **18.42 s**.
 
@@ -125,7 +125,7 @@ Use $N(t) = K\big/\big(1 + \frac{K - N_0}{N_0}e^{-rt}\big)$ with $(K - N_0)/N_0 
 
 (c) $N(3) = 200/(1 + 99e^{-2.4}) = $ **20.04 million**.
 
-(d) Pure exponential growth from 2 million at the same early rate predicts $2e^{0.8\times6} = $ **243.0 million** at year 6, more than the entire capacity of 200 million. The logistic model gives $200/(1 + 99e^{-4.8}) = $ **110.2 million**. In the early phase the two curves are indistinguishable, so early data pin down $r$ but say almost nothing about $K$. Market sizing that extrapolates early growth overstates the market; the capacity must come from independent evidence (addressable users, replacement cycles).
+(d) With the fitted rate equal to the true $r = 0.8$/yr (an actual fit to noisy data returns a slightly different rate, and so a different extrapolation), pure exponential growth from 2 million predicts $2e^{0.8\times6} = $ **243.0 million** at year 6, more than the entire capacity of 200 million. The logistic model gives $200/(1 + 99e^{-4.8}) = $ **110.2 million**. In the early phase the two curves are indistinguishable, so early data pin down $r$ but say almost nothing about $K$. Market sizing that extrapolates early growth overstates the market; the capacity must come from independent evidence (addressable users, replacement cycles).
 
 ### Solution 02-02.11
 
@@ -188,7 +188,7 @@ $$
 v' = -\frac{e^{-t/T}}{R_0C}\,v .
 $$
 
-Separate: $\ln(v/v_0) = -\frac{1}{R_0C}\int_0^te^{-s/T}ds = -\frac{T}{R_0C}\left(1 - e^{-t/T}\right)$. With $R_0C = 100\times10^{-11} = 1$ ns and $T/(R_0C) = 2$:
+Separate: $\ln(v/v_0) = -\frac{1}{R_0C}\int_0^te^{-\lambda/T}d\lambda = -\frac{T}{R_0C}\left(1 - e^{-t/T}\right)$. With $R_0C = 100\times10^{-11} = 1$ ns and $T/(R_0C) = 2$:
 
 $$
 v(t) = v_0\exp\!\left[-2\left(1 - e^{-t/T}\right)\right].
@@ -196,9 +196,19 @@ $$
 
 (b) At $t = 2$ ns: $\exp[-2(1 - e^{-1})] = $ **0.2825**. As $t \to \infty$: $e^{-2} = $ **0.1353**. The capacitor *never* discharges below 13.5%.
 
-(c) With a constant $R_0$, $v = v_0e^{-t/(1\text{ ns})}$: 0.1353 at 2 ns and zero eventually. The slowly opening switch delivers a total "discharge budget" of only $T/(R_0C) = 2$ time constants, however long you wait. So a reset or sampling switch must stay fully on for many $R_0C$ before it starts to turn off; how long it takes to turn off sets what fraction of the old charge is left behind. (Course 20 treats the related charge-injection and signal-dependent turn-off errors.)
+(c) With a constant $R_0$, $v = v_0e^{-t/(1\text{ ns})}$: 0.1353 at 2 ns and zero eventually. The slowly opening switch delivers a total "discharge budget" of only $T/(R_0C) = 2$ time constants, however long you wait. In general the fraction left is $e^{-T/(R_0C)}$, so leaving less than 0.1% needs $T/(R_0C) \ge \ln1000 = $ **6.908**: a reset switch must turn off no faster than about $7R_0C$, or stay fully on that long before it starts to turn off. A track-and-hold switch is the opposite case. There the goal is to freeze the voltage at an instant, so it should turn off *fast* (Course 20 treats its charge-injection and signal-dependent turn-off errors).
 
 ---
+
+### Solution 02-02.16
+
+(a) The slope is $t - y$: 0 at (0, 0), **1** at (1, 0), **−1** at (0, 1) and **1** at (2, 1).
+
+(b) The slope equals $c$ where $t - y = c$, that is on the line $y = t - c$. Every isocline has slope 1 in the $(t, y)$ plane, so they are parallel lines, one for each $c$.
+
+(c) On the isocline $c = 1$, the line $y = t - 1$, the field's slope is 1, the same as the line's own slope. So the field is tangent to the line all along it, and it is a solution. Check: $y' = 1$ and $t - y = t - (t - 1) = 1$ ✓. Above the line, $y > t - 1$, so the slope $t - y < 1$: a solution there rises more slowly than the line and the gap closes. Below it the slope exceeds 1 and the solution catches up. Solutions cannot cross (uniqueness, §3.7), so every solution approaches the line from its own side.
+
+(d) Standard form $y' + y = t$, with $\mu = e^t$: $(ye^t)' = te^t$, so $ye^t = (t - 1)e^t + C$ and $y = t - 1 + Ce^{-t}$. From $y(0) = 0$, $C = 1$: $y = t - 1 + e^{-t}$, which approaches the line $t - 1$ as (c) predicted. Then $y(2) = 1 + e^{-2} = $ **1.135**.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -257,3 +267,8 @@ $$
 | 02-02.15a | R0C | 1 | ns |
 | 02-02.15b | fraction left at 2 ns | 0.2825 | — |
 | 02-02.15c | final fraction left | 0.1353 | — |
+| 02-02.15d | T/(R0C) for under 0.1% left | 6.908 | — |
+| 02-02.16a | slope at (1, 0) | 1 | — |
+| 02-02.16b | slope at (0, 1) | −1 | — |
+| 02-02.16c | slope at (2, 1) | 1 | — |
+| 02-02.16d | y(2) with y(0) = 0 | 1.135 | — |

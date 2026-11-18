@@ -34,7 +34,7 @@ A first-order system has one place to store energy and can only relax. Give it a
 
 Push a child on a swing and let go. The swing trades energy back and forth: all potential at the top of the arc, all kinetic at the bottom. Friction and air resistance skim a little off every swing, so the arcs shrink until it stops. If the swing were sitting in thick syrup instead, it would never swing back at all: it would ooze down to the bottom and stop. Between those extremes is a special amount of friction where it returns to rest as fast as possible without overshooting.
 
-An LC circuit does the same with charge. A charged capacitor pushes current through the inductor; the inductor's current keeps flowing after the capacitor is empty (inertia) and charges it the other way; then the process reverses. Energy alternates between the capacitor's electric field ($\tfrac12Cv^2$) and the inductor's magnetic field ($\tfrac12Li^2$). A resistor plays the role of friction (Figure 6).
+An LC circuit does the same with charge. A charged capacitor pushes current through the inductor; the inductor's current keeps flowing after the capacitor is empty (inertia) and charges it the other way; then the process reverses. Energy alternates between the capacitor's electric field ($\tfrac12Cv^2$) and the inductor's magnetic field ($\tfrac12Li^2$). A resistor plays the role of friction (Figure 5).
 
 ### Two numbers describe everything
 
@@ -144,6 +144,8 @@ $$
 y(t) = (c_1 + c_2t)\,e^{-\alpha t}.
 $$
 
+The same argument extends to equations of any order: a characteristic root $s$ repeated $m$ times contributes the $m$ solutions $e^{st}, te^{st}, \dots, t^{m-1}e^{st}$.
+
 The factor $t$ is the same one you met in 01-04 (L'Hôpital, as two time constants merge) and in 02-02 (an input matching the system's own rate). It always signals a repeated root.
 
 ### 3.6 Underdamped: complex roots (0 < ζ < 1)
@@ -160,7 +162,7 @@ $$
 y(t) = e^{-\alpha t}\big(A\cos\omega_dt + B\sin\omega_dt\big) = Me^{-\alpha t}\cos(\omega_dt - \phi),
 $$
 
-with $M = \sqrt{A^2 + B^2}$ and $\tan\phi = B/A$. The response is a sinusoid at $\omega_d$ inside a decaying **envelope** $\pm Me^{-\alpha t}$ (Figure 1). Note what each part of the root does: the **real part** $-\alpha$ sets the decay, and the **imaginary part** $\omega_d$ sets the oscillation.
+with $M = \sqrt{A^2 + B^2}$ and $\phi = \operatorname{atan2}(B, A)$, the quadrant-correct angle of the point $(A, B)$ (02-01 §3.3). The response is a sinusoid at $\omega_d$ inside a decaying **envelope** $\pm Me^{-\alpha t}$ (Figure 1). Note what each part of the root does: the **real part** $-\alpha$ sets the decay, and the **imaginary part** $\omega_d$ sets the oscillation.
 
 ![Natural responses for underdamped, critically damped and overdamped cases](../../../assets/figures/02-03/three-cases.svg)
 
@@ -183,13 +185,21 @@ $$
 
 ### 3.8 The step response and its specifications
 
-Apply a constant input $X$ at $t = 0$, starting from rest: $y'' + 2\alpha y' + \omega_0^2y = \omega_0^2X$. A constant particular solution, $y_p = X$, is the final value, so $y = X + y_h$ and the initial conditions $y(0) = 0$, $y'(0) = 0$ fix the homogeneous part. For the underdamped case,
+Apply a constant input $X$ at $t = 0$, starting from rest: $y'' + 2\alpha y' + \omega_0^2y = \omega_0^2X$. A constant particular solution, $y_p = X$, is the final value, so $y = X + y_h$ and the initial conditions $y(0) = 0$, $y'(0) = 0$ fix the homogeneous part. For the underdamped case, $y_h = e^{-\alpha t}(A\cos\omega_dt + B\sin\omega_dt)$ with, from §3.7 applied to $y_h(0) = -X$ and $y_h'(0) = 0$, $A = -X$ and $B = -\alpha X/\omega_d$. So
 
 $$
 y(t) = X\left[1 - e^{-\alpha t}\left(\cos\omega_dt + \frac{\alpha}{\omega_d}\sin\omega_dt\right)\right],
 $$
 
-and for the critically damped case, $y(t) = X\big[1 - (1 + \omega_0t)e^{-\omega_0t}\big]$ (Problem 02-03.6). Four numbers summarize the underdamped response (Figure 3).
+For the critically damped case, $y(t) = X\big[1 - (1 + \omega_0t)e^{-\omega_0t}\big]$ (Problem 02-03.6). For the overdamped case, with real roots $s_1 \ne s_2$, the conditions $c_1 + c_2 = -X$ and $s_1c_1 + s_2c_2 = 0$ give
+
+$$
+y(t) = X\left[1 + \frac{s_2e^{s_1t} - s_1e^{s_2t}}{s_1 - s_2}\right],
+$$
+
+which rises monotonically and is dominated by the slower root.
+
+The specifications below assume this setting: an **all-pole** second-order system (no $s$ terms in the numerator of its transfer function, [02-05](02-05-laplace-transform-for-odes.md)) responding to a step **from rest**. A load-step disturbance on a regulator, or a loop whose closed-loop response has a zero, violates the assumption, and the formulas then misread ζ (see Common mistakes). Four numbers summarize the underdamped response (Figure 2).
 
 **Peak time.** Differentiate: $y'(t) = X\dfrac{\omega_0^2}{\omega_d}e^{-\alpha t}\sin\omega_dt$ (Problem 02-03.7). It first returns to zero at $t_p = \pi/\omega_d$.
 
@@ -199,7 +209,7 @@ $$
 \text{OS} = e^{-\alpha\pi/\omega_d} = \exp\!\left(\frac{-\pi\zeta}{\sqrt{1 - \zeta^2}}\right).
 $$
 
-It depends *only* on ζ: 16.3% at ζ = 0.5, 4.3% at ζ = 0.707 (Figure 4).
+It depends *only* on ζ: 16.3% at ζ = 0.5, 4.3% at ζ = 0.707 (Figure 3).
 
 **Settling time.** The envelope falls to a fraction ε of the step in about $\ln(1/\varepsilon)/\alpha$; for a ±2% band that is about $4/(\zeta\omega_0)$, the common rule of thumb, accurate for small ζ.
 
@@ -209,19 +219,19 @@ Inverting the overshoot formula gives ζ from a measured overshoot: $\zeta = \df
 
 ![Step responses for five damping ratios with the ±2% band](../../../assets/figures/02-03/step-family.svg)
 
-*Figure 3. Lightly damped responses ring for a long time. Heavily damped ones creep. The fastest entry into the ±2% band comes from a slight overshoot (ζ ≈ 0.78), not from critical damping (Example 02-03.3).*
+*Figure 2. Lightly damped responses ring for a long time. Heavily damped ones creep. The fastest entry into the ±2% band comes from a slight overshoot (ζ ≈ 0.78), not from critical damping (Example 02-03.3).*
 
 ![Overshoot and settling time versus damping ratio](../../../assets/figures/02-03/overshoot-settling.svg)
 
-*Figure 4. Left: overshoot depends only on ζ. Right: 2% settling time is minimized near ζ = 0.78; its jagged left side reflects successive ring peaks leaving the band.*
+*Figure 3. Left: overshoot depends only on ζ. Right: 2% settling time is minimized near ζ = 0.78; its jagged left side reflects successive ring peaks leaving the band.*
 
 ### 3.9 The roots in the complex plane
 
-Plotting $s_1$ and $s_2$ (Figure 2) turns the three cases into geometry. For ζ < 1 the roots lie on a circle of radius $\omega_0$ (since $\alpha^2 + \omega_d^2 = \omega_0^2$), at an angle θ from the negative real axis with $\cos\theta = \zeta$. As ζ increases from 0, the pair slides around the circle from the imaginary axis to $-\omega_0$, meets there at ζ = 1, and then splits along the real axis, one root heading toward zero and the other toward $-\infty$.
+Plotting $s_1$ and $s_2$ (Figure 4) turns the three cases into geometry. For ζ < 1 the roots lie on a circle of radius $\omega_0$ (since $\alpha^2 + \omega_d^2 = \omega_0^2$), at an angle θ from the negative real axis with $\cos\theta = \zeta$. As ζ increases from 0, the pair slides around the circle from the imaginary axis to $-\omega_0$, meets there at ζ = 1, and then splits along the real axis, one root heading toward zero and the other toward $-\infty$.
 
 ![Characteristic roots in the complex plane for several damping ratios](../../../assets/figures/02-03/root-locus.svg)
 
-*Figure 2. Roots move around a circle of radius ω₀ as ζ grows, meet at −ω₀ when ζ = 1, then split along the real axis.*
+*Figure 4. Roots move around a circle of radius ω₀ as ζ grows, meet at −ω₀ when ζ = 1, then split along the real axis.*
 
 **Stability.** Every term $e^{st}$ decays if and only if $\operatorname{Re}s < 0$: **all roots in the left half-plane** means stable. Roots on the imaginary axis give undying oscillation, and roots in the right half-plane give growth. This is the circuit designer's and control engineer's central picture ([15-05](../../15-control-systems/chapters/15-05-stability-routh-hurwitz.md)). An oscillator is built precisely by pushing a pair of roots onto, or just past, the imaginary axis with an active circuit that supplies a *negative* resistance ([12-09](../../12-electronics-2/chapters/12-09-oscillators.md)).
 
@@ -243,11 +253,11 @@ $$
 \frac{dw}{dt} = Lii' + Cvv' = i(-Ri - v) + vi = -Ri^2 \le 0 .
 $$
 
-Energy only ever drains, through the resistor, so with $R > 0$ every natural response decays: a physical proof of stability that needs no algebra. With $R = 0$ the energy is constant and the tank rings forever (Figure 6).
+Energy only ever drains, through the resistor, so with $R > 0$ every natural response decays: a physical proof of stability that needs no algebra. With $R = 0$ the energy is constant and the tank rings forever (Figure 5).
 
 ![Energy in the capacitor, the inductor and in total during an underdamped ring-down](../../../assets/figures/02-03/energy-exchange.svg)
 
-*Figure 6. Energy alternates between the capacitor and the inductor, and the total falls in steps whenever current flows through the resistor.*
+*Figure 5. Energy alternates between the capacitor and the inductor, and the total falls in steps whenever current flows through the resistor.*
 
 **Quality factor.** For light damping, the energy decays as $e^{-2\alpha t}$, so in one radian of oscillation ($t = 1/\omega_0$) it loses a fraction of about $2\alpha/\omega_0 = 2\zeta = 1/Q$. Hence
 
@@ -295,13 +305,13 @@ At $t = \pi/\omega_d = $ **10.06 µs**, $v_C = -5e^{-\alpha\pi/\omega_d} = $ **�
 
 *Slightly underdamped.* Set the overshoot to 2%: $\pi\zeta/\sqrt{1 - \zeta^2} = \ln50 = 3.912$. Squaring, $\pi^2\zeta^2 = 15.30(1 - \zeta^2)$, so $\zeta^2 = 15.30/(\pi^2 + 15.30) = 0.6079$ and ζ = **0.7797**. The peak then just touches the top of the band, so the response settles the first time it rises through 98%. Solving $y(t) = 0.98$ numerically gives $\omega_0t_s = $ **3.602**.
 
-The slightly underdamped design settles **1.62×** faster than the critically damped one (Figure 3).
+The slightly underdamped design settles **1.62×** faster than the critically damped one (Figure 2).
 
 **Sanity check.** The rule of thumb $4/(\zeta\omega_0) = 5.13/\omega_0$ is pessimistic here, because the rule assumes the slowly decaying envelope sets settling, while at ζ ≈ 0.78 the response never leaves the band after entering it ✓. **The lesson:** "critically damped" is a boundary, not an optimum. Control and regulator designers usually aim for ζ between about 0.5 and 0.8.
 
 ### Example 02-03.4 — Diagnosing a loop from a scope trace (tier B)
 
-**Setup.** A voltage regulator's response to a load step overshoots by 25%, with the first peak 2 µs after the step. Estimate ζ, $\omega_0$ and $Q$, and say whether the design is healthy.
+**Setup.** A voltage regulator is commanded to step its output from 0.9 V to 1.0 V (a reference step, as in dynamic voltage scaling), and its closed loop behaves as an all-pole second-order system. The output overshoots by 25% of the 0.1 V step, with the first peak 2 µs after the command. Estimate ζ, $\omega_0$ and $Q$, and say whether the design is healthy.
 
 **Solution.** With OS = 0.25, $\ln\text{OS} = -1.386$, so
 
@@ -314,6 +324,8 @@ The peak time gives $\omega_d = \pi/t_p = \pi/(2\text{ µs}) = $ **1.571 Mrad/s*
 **Interpretation.** ζ ≈ 0.4 is lightly damped for a regulator: the loop's phase margin is low, roughly 40° by the common rule ζ ≈ PM/100 that [15](../../15-control-systems/README.md) derives. A design review would ask for more compensation, accepting a slightly slower response for less ringing.
 
 **Units check.** ζ is dimensionless; rad/µs = Mrad/s ✓. **Sanity check.** Overshoot $\exp(-\pi\times0.4037/0.9149) = 0.250$ ✓.
+
+**What if the trace were a load step?** A load step is a disturbance, not a command: the output deviation starts at zero with a nonzero slope and returns to its starting value, so "25% overshoot" is undefined and the first extreme arrives about a quarter period after the step, not half a period (Example 02-03.5). For such traces use only the decay of the ringing. Successive peaks of the same sign, one period $2\pi/\omega_d$ apart, shrink by the factor $e^{-2\pi\alpha/\omega_d}$, so the **logarithmic decrement** $\delta = \ln(\text{peak}_k/\text{peak}_{k+1})$ gives $\zeta = \delta/\sqrt{4\pi^2 + \delta^2}$, and the peak spacing gives $\omega_d$.
 
 ### Example 02-03.5 — Supply droop on a processor (tier C)
 
@@ -333,13 +345,13 @@ $$
 v(t) = 0.74 + e^{-\alpha t}\big(A\cos\omega_dt + B\sin\omega_dt\big)\text{ V}.
 $$
 
-Minimizing numerically, the worst droop is **160.3 mV** at **2.535 ns**, which is **21.37%** of the rail (Figure 5). For light damping the droop is close to $\Delta I\,Z_0 = $ **158.1 mV**: the capacitor, starved of charge while the inductor's current ramps up, sags by about $\Delta I/(C\omega_0) = \Delta I\sqrt{L/C}$.
+Minimizing numerically, the worst droop is **160.3 mV** at **2.535 ns**, which is **21.37%** of the rail (Figure 6). For light damping the droop is close to $\Delta I\,Z_0 = $ **158.1 mV**: the capacitor, starved of charge while the inductor's current ramps up, sags by about $\Delta I/(C\omega_0) = \Delta I\sqrt{L/C}$.
 
-(c) $Z_t = 0.03\times0.75/10 = $ **2.25 mΩ**. Making $Z_0 = Z_t$ at the same inductance needs $C = L/Z_t^2 = $ **4.938 µF**, about **49.4×** more capacitance. With it, the worst droop falls to **24.95 mV** (Figure 5), still slightly beyond the 22.5 mV budget because the 10 mV resistive drop adds to it. Real designs also lower $L$ (more power bumps, capacitors closer to the die) and add damping through the capacitors' own series resistance.
+(c) $Z_t = 0.03\times0.75/10 = $ **2.25 mΩ**. Making $Z_0 = Z_t$ at the same inductance needs $C = L/Z_t^2 = $ **4.938 µF**, about **49.4×** more capacitance. With it, the worst droop falls to **24.95 mV** (Figure 6), still slightly beyond the 22.5 mV budget because the 10 mV resistive drop adds to it. Matching $Z_0$ to the target meets the *first-droop* budget only to first order. The target-impedance method (§9) asks that the impedance the load sees, $Z(j\omega) = (R + j\omega L)\parallel\big(1/(j\omega C)\big)$, stay below $Z_t$ at *every* frequency. A lightly damped tank peaks near resonance at roughly $QZ_0$: here $Q = Z_0/R = 2.25$, and the computed peak is **5.544 mΩ** at **14.21 MHz**, **2.464×** the target. A load that pulses near that frequency would ring the rail far beyond budget. A flat profile needs damping: resistance $R_L = Z_0$ in series with the inductor and $R_C = Z_0$ in series with the capacitor make $Z(j\omega) = Z_0$ exactly, at every frequency (Problem 02-03.14(d)). Real designs therefore lower $L$ (more power bumps, capacitors closer to the die) and choose capacitors whose own series resistance supplies the damping.
 
 ![Supply droop after a 10 A load step for two decoupling capacitances](../../../assets/figures/02-03/pdn-droop.svg)
 
-*Figure 5. With 100 nF the rail rings at 101 MHz and droops 160 mV. With 4.94 µF the characteristic impedance matches the 2.25 mΩ target and the droop is about 25 mV.*
+*Figure 6. With 100 nF the rail rings at 101 MHz and droops 160 mV. With 4.94 µF the characteristic impedance matches the 2.25 mΩ target and the droop is about 25 mV.*
 
 **Units check.** $\Delta I\cdot Z_0$: A × Ω = V ✓. **Sanity check.** $\pi/(2\omega_d) = 2.48$ ns, close to the 2.535 ns of the minimum: for light damping the worst droop arrives about a quarter period after the step ✓.
 
@@ -392,6 +404,9 @@ Minimizing numerically, the worst droop is **160.3 mV** at **2.535 ns**, which i
 | Ex 02-03.5m | quarter period π/(2ωd) | 2.48 | ns |
 | Ex 02-03.5n | ω0 | 6.325×10^8 | rad/s |
 | Ex 02-03.5o | droop budget, 3 % of 0.75 V | 22.5 | mV |
+| Ex 02-03.5p | peak impedance with 4.938 µF | 5.544 | mΩ |
+| Ex 02-03.5q | frequency of the impedance peak | 14.21 | MHz |
+| Ex 02-03.5r | peak impedance ÷ target | 2.464 | — |
 | C 02-03.1 | concept check 1: ζ | 0.0632 | — |
 | C 02-03.2 | concept check 1: critical R | 63.2 | Ω |
 | C 02-03.3 | concept check 7: √(L/C) | 15.8 | mΩ |
@@ -454,13 +469,14 @@ The lab ([labs/02-03-lab/](../labs/02-03-lab/README.md)) has a notebook and two 
 5. **Assuming more damping is always better.** Beyond ζ = 1, more damping makes the response slower, not safer.
 6. **Taking the complex solution as the answer.** For real circuits combine the conjugate pair into $e^{-\alpha t}(A\cos\omega_dt + B\sin\omega_dt)$ with real $A$ and $B$.
 7. **Using the settling-time rule of thumb near ζ = 1.** $4/(\zeta\omega_0)$ assumes a slowly decaying envelope; it fails for heavily damped or overdamped responses.
+8. **Applying the overshoot formula to the wrong response.** $\text{OS} = e^{-\pi\zeta/\sqrt{1 - \zeta^2}}$ and $t_p = \pi/\omega_d$ hold only for an all-pole system stepped from rest. A regulator's load-step response, or a PLL whose closed loop has a zero, overshoots differently and peaks at a different time. For those, estimate ζ from the decay ratio of successive peaks.
 
 ## 9. Practitioner lens
 
 ### State of the art (as of Nov 2026)
 
-- **Power delivery is designed to a target impedance.** Smith and colleagues at Sun Microsystems formalized the method in 1999: compute the impedance the power-delivery network may present, $Z_{target} = V_{DD}\times\text{allowed ripple}/\Delta I$, and choose regulators and capacitors so that the network's impedance stays below it across frequency ([R-032](../../../reference/research-log.md#r-032--pdn-target-impedance-method)) **[Established]**. The LC resonance of package inductance with on-die capacitance, in the tens to hundreds of megahertz, is where the impedance peaks and where the first droop of Example 02-03.5 comes from **[Established]**.
-- **The currents are now enormous.** An AI accelerator rated around 1,000 W ([R-026](../../../reference/research-log.md#r-026--ai-accelerator-power-ratings)) at a core voltage below 1 V draws over a thousand amperes, so its target impedance is a small fraction of a milliohm. That is why the industry is moving power delivery closer to the die, with integrated voltage regulators and backside power delivery ([22-10](../../22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md)) **[Industry estimate: the current follows from the power and voltage; individual products differ]**.
+- **Power delivery is designed to a target impedance.** Smith and colleagues at Sun Microsystems formalized the method in 1999: compute the impedance the power-delivery network may present, $Z_{target} = V_{DD}\times\text{allowed ripple}/\Delta I$, and choose regulators and capacitors so that the network's impedance stays below it across frequency ([R-032](../../../reference/research-log.md#r-032--pdn-target-impedance-method)) **[Established]**. The LC resonance of package inductance with on-die capacitance (about 100 MHz for the illustrative values of Example 02-03.5) is where the impedance peaks and where the first droop comes from. This follows from the analysis of this chapter; real packages have several such resonances, set by their own L and C.
+- **The currents are now enormous.** An AI accelerator rated around 1,000 W ([R-026](../../../reference/research-log.md#r-026--ai-accelerator-power-ratings)) at a core voltage below 1 V draws over a thousand amperes, so its target impedance is a small fraction of a milliohm. This is one reason power delivery has moved closer to the die. Intel's fully integrated voltage regulators (FIVR) have powered its processors since the 4th-generation Core in 2013, and Intel's backside power delivery (PowerVia) reported about 30% less droop on its 2023 test chip ([R-058](../../../reference/research-log.md#r-058--integrated-voltage-regulators-and-backside-power-delivery)) **[Established: the products exist; the droop figure is vendor-reported]**. Course 22 treats both ([22-10](../../22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md)). The current figure itself follows from the power and voltage **[Industry estimate: individual products differ]**.
 - **Resonators exploit very high Q.** A high-stability 5 MHz quartz crystal reaches a $Q$ of about 2–3 million, and for AT- and SC-cut quartz the product $Q\times f$ is limited to about $1.6\times10^7$ with $f$ in MHz ([R-033](../../../reference/research-log.md#r-033--quartz-crystal-resonator-q)) **[Established]**. In the language of this chapter, ζ is below $10^{-6}$, so a crystal rings for hundreds of thousands of cycles after a kick.
 
 ### Why it matters commercially
@@ -592,3 +608,4 @@ Second-order dynamics set real product limits. A processor's maximum frequency i
 3. Smith, L. D., Anderson, R. E., Forehand, D. W., Pelc, T. J. and Roy, T., "Power distribution system design methodology and capacitor selection for modern CMOS technology," *IEEE Transactions on Advanced Packaging*, vol. 22, no. 3, pp. 284–291, Aug. 1999. [R-032]
 4. Vig, J. R., *Quartz Crystal Resonators and Oscillators for Frequency Control and Timing Applications — A Tutorial*. [R-033]
 5. Research log [R-026](../../../reference/research-log.md#r-026--ai-accelerator-power-ratings): AI accelerator power ratings.
+6. Burton, E. A. et al., "FIVR — Fully integrated voltage regulators on 4th generation Intel Core SoCs," *Proc. IEEE APEC*, 2014, pp. 432–439; Intel PowerVia (VLSI Symposium 2023), as reported. [R-058]

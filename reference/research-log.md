@@ -63,6 +63,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-055 | HPL-MxP mixed-precision benchmark | Nov 2026 |
 | R-056 | Low-precision floating-point formats | Nov 2026 |
 | R-057 | Patriot missile timing error | Nov 2026 |
+| R-058 | Integrated voltage regulators and backside power delivery | Nov 2026 |
 
 ---
 
@@ -92,7 +93,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 
 ## R-005 · Synchrophasor standards
 
-- **Measurement:** IEC/IEEE 60255-118-1:2018 (supersedes IEEE C37.118.1-2011/1a-2014; a revision was approved Nov 2025). **Data transfer:** IEEE C37.118.2-2024. Sources: [IEEE SA 60255-118-1](https://standards.ieee.org/ieee/60255-118-1/5724/), [IEEE SA C37.118.2](https://standards.ieee.org/ieee/C37.118.2/7077/).
+- **Measurement:** IEC/IEEE 60255-118-1:2018 (supersedes IEEE C37.118.1-2011/1a-2014; a revision project (PAR) was approved in Nov 2025, not yet a new edition). **Data transfer:** IEEE C37.118.2-2024. Sources: [IEEE SA 60255-118-1](https://standards.ieee.org/ieee/60255-118-1/5724/), [IEEE SA C37.118.2](https://standards.ieee.org/ieee/C37.118.2/7077/).
 - **Reporting rates (C37.118.1-2011 Table 1):** 50 Hz systems use 10/25/50 frames/s; 60 Hz systems use 10/12/15/20/30/60 frames/s. The 20 frames/s rate in the 2018 edition is **unverified**.
 
 ## R-006 · Power-grid frequencies
@@ -439,3 +440,9 @@ R&D % = R&D ÷ revenue.
   - The GAO's range-gate figure is its own tabulated value and is not simply speed × timing error.
   - [Established]
 - **Sources:** [GAO report (Justia republication of the full scan)](https://gao.justia.com/department-of-defense/1992/2/patriot-missile-defense-imtec-92-26/IMTEC-92-26-full-report.pdf); [Skeel, SIAM News (mirror)](https://w3.ual.es/~plopez/docencia/itis/patriot.htm). gao.gov blocked the build environment. Checked Nov 2026.
+
+## R-058 · Integrated voltage regulators and backside power delivery
+
+- **FIVR:** E. A. Burton et al. (Intel), "FIVR — Fully integrated voltage regulators on 4th generation Intel Core SoCs," *Proc. IEEE APEC 2014*, pp. 432–439. The paper states that 4th-generation Core microprocessors are powered by fully integrated voltage regulators: switching converters on the die, with the inductors in the package substrate [Established]. The 4th-generation Core (Haswell) launched in 2013.
+- **PowerVia:** Intel presented a backside power delivery test chip built on Intel 4 at the 2023 VLSI Symposium. Press coverage of the paper reports about 30% less voltage droop than a frontside-powered Intel 4 core and a 6.7% higher maximum frequency [Industry estimate: vendor-reported, from secondary coverage]. PowerVia is part of the Intel 18A process.
+- **Sources:** [Burton et al. 2014 (PDF copy)](https://xdevs.com/doc/_Metrology/burton2014.pdf); [IEEE Spectrum on backside power](https://spectrum.ieee.org/backside-power-delivery-2661088734); [AnandTech, "Intel details PowerVia chipmaking tech" (Jun 2023)](https://www.anandtech.com/show/18894). The IEEE papers' full text was not fetched. Checked Nov 2026.

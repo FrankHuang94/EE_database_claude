@@ -50,9 +50,9 @@ The powers of $j$ repeat every 4: $j^1 = j$, $j^2 = -1$, $j^3 = -j$, $j^4 = 1$.
 
 (c) $\sin x = \cos(x - 90^\circ)$, so $4\sin(\omega t + 60^\circ) = 4\cos(\omega t - 30^\circ)$: $\mathbf{V} = 4\angle -30^\circ$ V.
 
-(d) $v(t) = \operatorname{Re}\lbrace 8e^{-j150^\circ}e^{j1000t}\rbrace = 8\cos(1000t - 150^\circ)$ V.
+(d) $v(t) = \operatorname{Re}\lbrace 8e^{-j150^\circ}e^{j1000t}\rbrace = 8\cos(1000t - 150^\circ)$ V: amplitude 8 V, phase −150°.
 
-(e) $-j2 = 2\angle -90^\circ$, so $i(t) = 2\cos(\omega t - 90^\circ) = 2\sin\omega t$ A.
+(e) $-j2 = 2\angle -90^\circ$, so $i(t) = 2\cos(\omega t - 90^\circ) = 2\sin\omega t$ A: amplitude 2 A, phase −90°.
 
 ### Solution 02-01.5
 
@@ -203,12 +203,12 @@ $Z = 100 + j469.2\ \Omega = 479.7\angle 77.97^\circ\ \Omega$: **inductive** abov
 (a) Transform with $d/dt \to j\omega$:
 
 $$
-\big[(j\omega)^2 + 2\zeta\omega_n(j\omega) + \omega_n^2\big]\mathbf{Y} = \omega_n^2\mathbf{X}
+\big[(j\omega)^2 + 2\zeta\omega_0(j\omega) + \omega_0^2\big]\mathbf{Y} = \omega_0^2\mathbf{X}
 \quad\Rightarrow\quad
-H(j\omega) = \frac{\omega_n^2}{\omega_n^2 - \omega^2 + j2\zeta\omega_n\omega}.
+H(j\omega) = \frac{\omega_0^2}{\omega_0^2 - \omega^2 + j2\zeta\omega_0\omega}.
 $$
 
-Divide the numerator and denominator by $\omega_n^2$ and let $u = \omega/\omega_n$:
+Divide the numerator and denominator by $\omega_0^2$ and let $u = \omega/\omega_0$:
 
 $$
 H = \frac{1}{(1 - u^2) + j2\zeta u}, \qquad
@@ -224,14 +224,14 @@ The atan2 matters: above resonance $1 - u^2 < 0$, the denominator is in quadrant
 - $\omega = 1000$ ($u = 1$): denominator $0 + j0.2$, so **$H = 5.000\angle -90.00^\circ$**.
 - $\omega = 2000$ ($u = 2$): denominator $-3 + j0.4$ (quadrant II), magnitude $3.027$, so $\lvert H\rvert = 0.3304$; the denominator angle is $180^\circ - 7.59^\circ = 172.41^\circ$. **$H = 0.3304\angle -172.41^\circ$.**
 
-(c) $\lvert H\rvert$ is largest where $D(u) = (1 - u^2)^2 + 4\zeta^2u^2$ is smallest. Treat $D$ as a function of $w = u^2$: $D = (1 - w)^2 + 4\zeta^2 w$. Setting $dD/dw = -2(1 - w) + 4\zeta^2 = 0$ gives $w = 1 - 2\zeta^2$, which is positive only if $\zeta < 1/\sqrt{2}$. So $u_{pk} = \sqrt{1 - 2\zeta^2}$ and $\omega_{pk} = \omega_n\sqrt{1 - 2\zeta^2}$. Substituting back:
+(c) $\lvert H\rvert$ is largest where $D(u) = (1 - u^2)^2 + 4\zeta^2u^2$ is smallest. Treat $D$ as a function of $w = u^2$: $D = (1 - w)^2 + 4\zeta^2 w$. Setting $dD/dw = -2(1 - w) + 4\zeta^2 = 0$ gives $w = 1 - 2\zeta^2$, which is positive only if $\zeta < 1/\sqrt{2}$. So $u_{pk} = \sqrt{1 - 2\zeta^2}$ and $\omega_{pk} = \omega_0\sqrt{1 - 2\zeta^2}$. Substituting back:
 
 $$
 D_{min} = (2\zeta^2)^2 + 4\zeta^2(1 - 2\zeta^2) = 4\zeta^2 - 4\zeta^4 = 4\zeta^2(1 - \zeta^2),
 \qquad \lvert H\rvert_{max} = \frac{1}{2\zeta\sqrt{1 - \zeta^2}} .
 $$
 
-For $\zeta = 0.1$: $\omega_{pk} = 1000\sqrt{0.98} = 989.9$ rad/s and $\lvert H\rvert_{max} = 1/(0.2\times 0.99499) = 5.025$. The peak sits just below $\omega_n$ and is barely higher than the value 5.000 at $\omega_n$.
+For $\zeta = 0.1$: $\omega_{pk} = 1000\sqrt{0.98} = 989.9$ rad/s and $\lvert H\rvert_{max} = 1/(0.2\times 0.99499) = 5.025$. The peak sits just below $\omega_0$ and is barely higher than the value 5.000 at $\omega_0$.
 
 (d) A lightly damped system amplifies inputs near its resonance by about $1/(2\zeta)$. A chip's power-delivery network (package inductance with on-die capacitance) is such a resonator. If the processor's current demand fluctuates near that resonant frequency, for example a workload that toggles at that rate, the supply voltage can ring far more than the same current step would cause at other frequencies, causing timing failures. Designers add damping (decoupling capacitors with resistance, on-die damping) for this reason ([22-10](../../22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md)).
 
@@ -304,6 +304,19 @@ The incorrect quantity: $\mathbf{V}\mathbf{I} = 20\angle 15^\circ$, so $\tfrac{1
 
 ---
 
+### Solution 02-01.19
+
+(a) Multiply each corner by $w = 2\angle30^\circ = 1.732 + j1$:
+
+- $0 \mapsto 0$;
+- $1 \mapsto 1.732 + j1$;
+- $1 + j = \sqrt2\angle45^\circ \mapsto 2\sqrt2\angle75^\circ = 0.7321 + j2.732$ (check: $(1.732 + j)(1 + j) = 1.732 - 1 + j(1.732 + 1)$ ✓);
+- $j \mapsto 2\angle120^\circ = -1 + j1.732$.
+
+(b) Multiplying by $w$ multiplies every magnitude by $\lvert w\rvert = 2$ and adds $\angle w = 30^\circ$ to every angle: a rotation by 30° counterclockwise about the origin combined with a uniform scaling by 2. The image is a square of side 2, so its area is $2^2 = 4$: areas scale by $\lvert w\rvert^2$. In a receiver this is a gain of 2 (6.02 dB) and a phase shift of 30°, applied to the whole constellation at once.
+
+(c) The inverse map divides by $w$: $1/w = 0.5\angle-30^\circ = 0.4330 - j0.25$. Check: $(1.732 + j)(0.4330 - j0.25) = 0.75 + 0.25 + j(0.4330 - 0.4330) = 1$ ✓. This is what a receiver's phase-and-gain correction does.
+
 ## Answer key
 
 <!-- answer-key -->
@@ -372,3 +385,10 @@ The incorrect quantity: $\mathbf{V}\mathbf{I} = 20\angle 15^\circ$, so $\tfrac{1
 | 02-01.18c | periods per halving time | 0.5516 | — |
 | 02-01.18d | $y(0.5\text{ s})$ | 0.1044 | — |
 | 02-01.18e | root with positive imaginary part | −2 + j10 | 1/s |
+| 02-01.4f | amplitude of $v(t)$ for $8\angle -150^\circ$ | 8 | V |
+| 02-01.4g | amplitude of $i(t)$ for $-j2$ | 2 | A |
+| 02-01.19a | image of 1 | 1.732 + j1 | — |
+| 02-01.19b | image of 1 + j | 0.7321 + j2.732 | — |
+| 02-01.19c | image of j | −1 + j1.732 | — |
+| 02-01.19d | area of the image square | 4 | — |
+| 02-01.19e | inverse map 1/w | 0.4330 − j0.25 | — |

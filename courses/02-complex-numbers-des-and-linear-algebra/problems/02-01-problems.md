@@ -112,12 +112,12 @@ A series RLC circuit has $R = 100\ \Omega$, $L = 1$ mH and $C = 10$ nF.
 A second-order system (a mass–spring–damper, or an RLC circuit; see [02-03](../chapters/02-03-second-order-linear-odes.md)) obeys
 
 $$
-\frac{d^2y}{dt^2} + 2\zeta\omega_n\frac{dy}{dt} + \omega_n^2\,y = \omega_n^2\cos\omega t .
+\frac{d^2y}{dt^2} + 2\zeta\omega_0\frac{dy}{dt} + \omega_0^2\,y = \omega_0^2\cos\omega t .
 $$
 
-(a) Derive the frequency response $H(j\omega) = \mathbf{Y}/\mathbf{X}$ and write $\lvert H\rvert$ and $\angle H$ in terms of the ratio $u = \omega/\omega_n$.
-(b) For $\zeta = 0.1$ and $\omega_n = 1000$ rad/s, evaluate $H$ (polar) at $\omega = 500$, $1000$ and $2000$ rad/s.
-(c) By minimizing the denominator of $\lvert H\rvert^2$, show that the peak response occurs at $\omega_{pk} = \omega_n\sqrt{1 - 2\zeta^2}$ (for $\zeta < 1/\sqrt{2}$) with peak value $1/\big(2\zeta\sqrt{1 - \zeta^2}\big)$. Evaluate both for $\zeta = 0.1$.
+(a) Derive the frequency response $H(j\omega) = \mathbf{Y}/\mathbf{X}$ and write $\lvert H\rvert$ and $\angle H$ in terms of the ratio $u = \omega/\omega_0$.
+(b) For $\zeta = 0.1$ and $\omega_0 = 1000$ rad/s, evaluate $H$ (polar) at $\omega = 500$, $1000$ and $2000$ rad/s.
+(c) By minimizing the denominator of $\lvert H\rvert^2$, show that the peak response occurs at $\omega_{pk} = \omega_0\sqrt{1 - 2\zeta^2}$ (for $\zeta < 1/\sqrt{2}$) with peak value $1/\big(2\zeta\sqrt{1 - \zeta^2}\big)$. Evaluate both for $\zeta = 0.1$.
 (d) Interpret: why might a lightly damped power-delivery network on a chip be dangerous?
 
 ### Problem 02-01.15 [C] (hardware design)
@@ -153,6 +153,14 @@ Damped sinusoids as complex exponentials (chapter §3.7). Let $s = -2 + j10$ (in
 (c) Evaluate $y(0.5\text{ s})$.
 (d) Show that $s = -2 \pm j10$ are the roots of $s^2 + 4s + 104 = 0$. (In [02-03](../chapters/02-03-second-order-linear-odes.md) you will see that this is the characteristic equation of a ringing second-order circuit.)
 
+### Problem 02-01.19 [A]
+
+Multiplication as scale and rotate (chapter §3.4). An I/Q receiver multiplies every received sample by $w = 2\angle30^\circ$.
+
+(a) Find the images of the four corners $0$, $1$, $1 + j$ and $j$ of the unit square, in rectangular form.
+(b) Describe the map geometrically, and find the area of the image of the square.
+(c) Which single complex number undoes the map? Give it in polar and rectangular form.
+
 ---
 
 ## Objective coverage
@@ -163,4 +171,4 @@ Damped sinusoids as complex exponentials (chapter §3.7). Let $s = -2 + j10$ (in
 | 2. Derive and use Euler's formula; trig identities; complex exponentials | 7, 16, 17(a), 18 |
 | 3. Phasors; adding same-frequency sinusoids | 4, 9, 10, 16(c) |
 | 4. Calculus as $j\omega$; sinusoidal steady state of ODEs; impedance | 11, 12, 13, 14 |
-| 5. Geometric interpretation; complex arithmetic in hardware | 10, 15, 17(c) |
+| 5. Geometric interpretation; complex arithmetic in hardware | 10, 15, 17(c), 19 |

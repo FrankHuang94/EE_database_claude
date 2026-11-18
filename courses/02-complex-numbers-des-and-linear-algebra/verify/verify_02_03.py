@@ -165,6 +165,15 @@ Cn = L5 / Zt**2
 v.check("Ex 02-03.5j", Cn * 1e6)
 v.check("Ex 02-03.5k", Cn / C5)
 v.check("Ex 02-03.5l", pdn(L5, 4.938e-6)[0] * 1e3)
+_f = np.logspace(6, 9, 300001)
+_s = 2j * np.pi * _f
+_Z = np.abs((1e-3 + _s * L5) / (1 + _s * 4.938e-6 * (1e-3 + _s * L5)))
+v.check("Ex 02-03.5p", _Z.max() * 1e3)
+v.check("Ex 02-03.5q", _f[_Z.argmax()] / 1e6)
+v.check("Ex 02-03.5r", _Z.max() / 2.25e-3)
+_Z0 = math.sqrt(L5 / 4.938e-6)
+_Zc = (_Z0 + _s * L5) * (_Z0 + 1 / (_s * 4.938e-6)) / (2 * _Z0 + _s * L5 + 1 / (_s * 4.938e-6))
+v.assert_true("R_L = R_C = Z0 gives a flat impedance", np.allclose(np.abs(_Zc), _Z0, rtol=1e-9))
 a5 = R5 / (2 * L5)
 v.check("Ex 02-03.5m", math.pi / (2 * math.sqrt(w05**2 - a5**2)) * 1e9)
 v.check("Ex 02-03.5n", w05)
@@ -249,6 +258,31 @@ v.check("02-03.11a", z11)
 v.check("02-03.11b", wd11 / 1e3)
 v.check("02-03.11c", wd11 / math.sqrt(1 - z11**2) / 1e3)
 v.check("02-03.11d", 1 / (2 * z11))
+from scipy import signal as _sig  # noqa: E402
+from scipy.optimize import brentq as _brentq  # noqa: E402
+
+
+def _os_type2(z):
+    tt_ = np.linspace(0, 40, 400001)
+    _, yy_ = _sig.step(_sig.lti([2 * z, 1.0], [1.0, 2 * z, 1.0]), T=tt_)
+    return (yy_.max() - 1) * 100
+
+
+v.check("02-03.11e", _os_type2(z11))
+v.check("02-03.11f", _brentq(lambda z: _os_type2(z) - 10, 0.8, 2.0, xtol=1e-6))
+# 16 · switched series RLC: 10 V -> 2 V at t = 0, R = 5, L = 1, C = 0.25
+from scipy.integrate import solve_ivp as _ivp  # noqa: E402
+from scipy.optimize import minimize_scalar as _ms  # noqa: E402
+R16, L16, C16 = 5.0, 1.0, 0.25
+v.check("02-03.16a", 10.0 * (1 / C16) / (1 / C16))  # DC steady state: no current, full 10 V across C
+r16 = np.sort(np.roots([L16 * C16, R16 * C16, 1]).real)
+v.check("02-03.16b", r16[1])
+v.check("02-03.16c", r16[0])
+sol16 = _ivp(lambda t_, x: [x[1] / C16, (2 - x[0] - R16 * x[1]) / L16], (0, 5), [10.0, 0.0], rtol=1e-11, atol=1e-13, dense_output=True)
+v.check("02-03.16d", sol16.sol(1.0)[0])
+m16 = _ms(lambda t_: sol16.sol(t_)[1], bounds=(0.05, 2), method="bounded", options={"xatol": 1e-10})
+v.check("02-03.16e", m16.x)
+v.check("02-03.16f", m16.fun)
 L12, C12, R12 = 100e-6, 100e-9, 0.5
 w012 = 1 / math.sqrt(L12 * C12)
 Q12 = math.sqrt(L12 / C12) / R12

@@ -22,7 +22,9 @@ def find_scripts(filt: str | None):
         for p in sorted(ROOT.glob(pat)):
             if p.name.startswith("_"):
                 continue
-            if filt and filt not in str(p.relative_to(ROOT)):
+            rel = str(p.relative_to(ROOT))
+            # accept chapter-style filters such as "02-07" for scripts named verify_02_07.py
+            if filt and filt not in rel and filt.replace("-", "_") not in rel:
                 continue
             found.append(p)
     return found
@@ -31,6 +33,9 @@ def find_scripts(filt: str | None):
 def main() -> int:
     filt = sys.argv[1] if len(sys.argv) > 1 else None
     scripts = find_scripts(filt)
+    if filt and not scripts:
+        print(f"verify: no verify script matches '{filt}'")
+        return 1
     env = dict(os.environ, PYTHONPATH=str(ROOT / "tools") + os.pathsep + os.environ.get("PYTHONPATH", ""),
                MPLBACKEND="Agg")
     failed = []

@@ -131,7 +131,9 @@ v.assert_true("j^2026 by exact integer power", sp.I ** 2026 == -1)
 v.check("02-01.4a", polar(12, -45))
 v.check("02-01.4b", 3 * cmath.exp(1j * math.pi / 2))  # -3 sin x = 3 cos(x + 90°)
 v.check("02-01.4c", polar(4, 60 - 90))
-v.check("02-01.4d", -150.0)
+v.check("02-01.4d", deg(8 * cmath.exp(-1j * math.radians(150))))
+v.check("02-01.4f", abs(8 * cmath.exp(-1j * math.radians(150))))
+v.check("02-01.4g", abs(-2j))
 v.check("02-01.4e", deg(-2j))
 xs = np.linspace(0, 10, 101)
 v.assert_true("-3 sin x == 3 cos(x + 90°)", np.allclose(-3 * np.sin(xs), 3 * np.cos(xs + math.pi / 2)))
@@ -282,5 +284,15 @@ r18 = max(np.roots([1, 4, 104]), key=lambda z: z.imag)
 v.check("02-01.18e", complex(r18))
 tt18 = np.linspace(0, 3, 301)
 v.assert_true("P18 Re{e^(st)} = e^(-2t) cos 10t", np.allclose(np.exp(s18 * tt18).real, np.exp(-2 * tt18) * np.cos(10 * tt18)))
+
+# 19 · scale and rotate
+w19 = 2 * cmath.exp(1j * math.radians(30))
+v.check("02-01.19a", w19 * 1)
+v.check("02-01.19b", w19 * (1 + 1j))
+v.check("02-01.19c", w19 * 1j)
+corners = np.array([0, 1, 1 + 1j, 1j]) * w19
+xs19, ys19 = corners.real, corners.imag
+v.check("02-01.19d", 0.5 * abs(np.dot(xs19, np.roll(ys19, -1)) - np.dot(ys19, np.roll(xs19, -1))))  # shoelace
+v.check("02-01.19e", 1 / w19)
 
 v.finish()

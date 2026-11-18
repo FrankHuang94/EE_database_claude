@@ -52,7 +52,7 @@ Nlog = Ks / (1 + (Ks - N0s) / N0s * sp.exp(-rs * t))
 v.assert_true("§3.3 logistic solution satisfies N' = rN(1 - N/K)", sp.simplify(sp.diff(Nlog, t) - rs * Nlog * (1 - Nlog / Ks)) == 0)
 v.assert_true("§3.7 y = t^2 and y = 0 both solve y' = 2 sqrt(y)", sp.simplify(sp.diff(t**2, t) - 2 * sp.sqrt(t**2)).subs(t, 2) == 0)
 v.assert_true("§3.7 1/(1 - t) solves y' = y^2", sp.simplify(sp.diff(1 / (1 - t), t) - (1 / (1 - t)) ** 2) == 0)
-v.assert_true("§3.10 thermal units: (K/W)(J/K) = s", True)
+v.assert_true("§3.10 thermal units: (K/W)(J/K) = s", sp.simplify((sp.Symbol("K") / sp.Symbol("W")) * (sp.Symbol("J") / sp.Symbol("K")) - sp.Symbol("J") / sp.Symbol("W")) == 0)
 
 # ---------------------------------------------------------------- Example 1: cooling die
 tau1 = 2 * 15
@@ -232,6 +232,8 @@ sol15 = num_ivp(lambda tt, vv: [-vv[0] / (100 * math.exp(tt / T15) * 10e-12)], 1
 v.check("02-02.15a", R0C * 1e9)
 v.check("02-02.15b", sol15.y[0, -1])
 v.check("02-02.15c", math.exp(-T15 / R0C))
+from scipy.optimize import brentq  # noqa: E402
+v.check("02-02.15d", brentq(lambda x: math.exp(-x) - 1e-3, 0.1, 50))
 v.assert_true("15: closed form at 2 ns", abs(sol15.y[0, -1] - math.exp(-2 * (1 - math.exp(-1)))) < 1e-9)
 
 # ---------------------------------------------------------------- lab handout
@@ -253,5 +255,15 @@ v.check("Lab 02-02.e", thermal(0.32, 35.0, 300, 1e9).y[0, -1])
 T32 = brentq(lambda T: f5(T, 0.32), Ta, T0 + Tc * math.log(Tc / (0.32 * PL0)))
 v.check("Lab 02-02.g", T32)
 v.check("Lab 02-02.h", Cth / (1 / 0.32 - PL(T32) / Tc))
+
+# 16 · direction field of y' = t - y
+f16 = lambda tt, yy: tt - yy  # noqa: E731
+v.check("02-02.16a", f16(1, 0))
+v.check("02-02.16b", f16(0, 1))
+v.check("02-02.16c", f16(2, 1))
+Y16 = sp.Function("y")
+y16 = sp.dsolve(sp.Eq(Y16(t).diff(t), t - Y16(t)), Y16(t), ics={Y16(0): 0}).rhs
+v.check("02-02.16d", float(y16.subs(t, 2)))
+v.assert_true("y = t - 1 solves y' = t - y", sp.simplify(sp.diff(t - 1, t) - (t - (t - 1))) == 0)
 
 v.finish()

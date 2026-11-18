@@ -568,7 +568,7 @@ The state-space view explains several numbers that drive product decisions. **Bu
 
    <details><summary>Answer</summary>
 
-   Exact: $z = e^{-1000\times0.001} = e^{-1} = 0.368$, safely inside the unit circle. Euler: $1 + (-1000)(0.001) = 0$, on the edge of a qualitative change; any faster pole would land outside $[-1, 1]$.
+   Exact: $z = e^{-1000\times0.001} = e^{-1} = 0.368$, safely inside the unit circle. Euler: $1 + (-1000)(0.001) = 0$, on the edge of a qualitative change. A faster pole lands at a negative $z$, so its mode alternates in sign from step to step (for example $-1500$ s⁻¹ gives $z = -0.5$, still stable). Only poles faster than $-2000$ s⁻¹, where $T > 2/\lvert\lambda\rvert$, land outside the unit circle and make the simulation unstable.
 
    </details>
 

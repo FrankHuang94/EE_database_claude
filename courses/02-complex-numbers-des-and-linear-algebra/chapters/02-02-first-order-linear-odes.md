@@ -50,7 +50,7 @@ Every first-order equation $y' = f(t, y)$ assigns a slope to every point of the 
 
 ### An analogy from finance: an account with fees and deposits
 
-A fund receives constant contributions $d$ per year, and charges a fee proportional to its balance at rate $k$ per year. The balance obeys $B' = d - kB$, the bathtub again. It approaches $B_\infty = d/k$: at that level, the fees exactly consume the contributions. With interest instead of fees, $B' = rB + d$, the same equation with the sign of the feedback flipped, and the balance grows without bound. The sign of the coefficient of $B$ decides between "settles" and "runs away". Section 3.4 shows that the integrating factor, the key tool of this chapter, *is* the discount factor $e^{-rt}$ of your valuation models.
+A fund receives constant contributions $d$ per year, and charges a fee proportional to its balance at rate $c$ per year. The balance obeys $B' = d - cB$, the bathtub again. It approaches $B_\infty = d/c$: at that level, the fees exactly consume the contributions. With interest instead of fees, $B' = rB + d$, the same equation with the sign of the feedback flipped, and the balance grows without bound. The sign of the coefficient of $B$ decides between "settles" and "runs away". Section 3.4 shows that the integrating factor, the key tool of this chapter, *is* the discount factor $e^{-rt}$ of your valuation models.
 
 *Where the analogy breaks:* real rates and fees change over time and money is discrete. The mathematics handles time-varying rates (§3.4), but discrete compounding is a difference equation, which is the subject of [11-09](../../11-signals-and-systems/chapters/11-09-z-transform.md). Circuits have no analogue of a negative balance being disallowed, so a voltage can happily cross zero where a balance might not.
 
@@ -145,7 +145,7 @@ The equilibria $N = 0$ (unstable, since $f'(0) = r$) and $N = K$ (stable, since 
 
 ### 3.4 Linear equations and the integrating factor
 
-Separation fails for $y' + p(t)y = g(t)$ whenever $g \ne 0$. The general method is to multiply by a cleverly chosen function $\mu(t)$, the **integrating factor**, that turns the left side into the derivative of a product.
+Separation fails for $y' + p(t)y = g(t)$ in general: it works only when $g$ is a constant multiple of $p$ (or zero), as in $y' + 3y = 6$, which is $y' = 3(2 - y)$. The general method is to multiply by a cleverly chosen function $\mu(t)$, the **integrating factor**, that turns the left side into the derivative of a product.
 
 **Derivation.** Multiply the standard form by $\mu(t) > 0$:
 
@@ -165,18 +165,18 @@ $$
 y(t) = \frac{1}{\mu(t)}\left[\int \mu(t)\,g(t)\,dt + C\right].
 $$
 
-For an initial-value problem, define $P(t) = \int_{t_0}^t p(s)\,ds$ so that $\mu(t_0) = 1$. Integrating from $t_0$ to $t$ gives the form worth remembering:
+For an initial-value problem, define $P(t) = \int_{t_0}^t p(\lambda)\,d\lambda$ so that $\mu(t_0) = 1$. Integrating from $t_0$ to $t$ gives the form worth remembering:
 
 $$
-\boxed{\,y(t) = y_0\,e^{-P(t)} + \int_{t_0}^{t} e^{-\left(P(t) - P(s)\right)}\,g(s)\,ds\,}
+\boxed{\,y(t) = y_0\,e^{-P(t)} + \int_{t_0}^{t} e^{-\left(P(t) - P(\lambda)\right)}\,g(\lambda)\,d\lambda\,}
 $$
 
-Read it as two pieces. The first term is the initial condition, decaying (or growing) on its own. The second is the sum of every past input $g(s)\,ds$, each weighted by how much it has decayed between time $s$ and now.
+Read it as two pieces. The first term is the initial condition, decaying (or growing) on its own. The second is the sum of every past input $g(\lambda)\,d\lambda$, each weighted by how much it has decayed between time $\lambda$ and now.
 
-**Constant coefficients: fading memory.** For $\tau y' + y = x(t)$, the standard form has $p = 1/\tau$ and $g = x/\tau$, so $P(t) - P(s) = (t - s)/\tau$ and, with $t_0 = 0$,
+**Constant coefficients: fading memory.** For $\tau y' + y = x(t)$, the standard form has $p = 1/\tau$ and $g = x/\tau$, so $P(t) - P(\lambda) = (t - \lambda)/\tau$ and, with $t_0 = 0$,
 
 $$
-y(t) = y_0e^{-t/\tau} + \frac{1}{\tau}\int_0^t e^{-(t - s)/\tau}\,x(s)\,ds.
+y(t) = y_0e^{-t/\tau} + \frac{1}{\tau}\int_0^t e^{-(t - \lambda)/\tau}\,x(\lambda)\,d\lambda.
 $$
 
 The output is a weighted average of past inputs with exponentially fading weights: an input from one time constant ago counts $e^{-1} = 36.8\%$ as much as the present one. This integral is a **convolution** of the input with the impulse response $\frac{1}{\tau}e^{-t/\tau}$, the central object of [11-03](../../11-signals-and-systems/chapters/11-03-convolution.md).
@@ -184,10 +184,10 @@ The output is a weighted average of past inputs with exponentially fading weight
 **Finance: the integrating factor is the discount factor.** A balance earning a time-varying rate $r(t)$ with deposits $d(t)$ obeys $B' - r(t)B = d(t)$. Here $p = -r$, so the integrating factor is
 
 $$
-\mu(t) = e^{-\int_0^t r(s)\,ds} = D(t),
+\mu(t) = e^{-\int_0^t r(\lambda)\,d\lambda} = D(t),
 $$
 
-the continuous-time **discount factor**. The step $(\mu B)' = \mu d$ says: *the present value of the balance grows only by the present value of each new deposit.* Then the boxed formula reads $B(t) = B_0/D(t) + \int_0^t d(s)\,D(s)/D(t)\,ds$: the future value of the initial balance plus the future value of every deposit. You have used this formula for years; the integrating factor is its derivation.
+the continuous-time **discount factor**. The step $(\mu B)' = \mu d$ says: *the present value of the balance grows only by the present value of each new deposit.* Then the boxed formula reads $B(t) = B_0/D(t) + \int_0^t d(\lambda)\,D(\lambda)/D(t)\,d\lambda$: the future value of the initial balance plus the future value of every deposit. You have used this formula for years; the integrating factor is its derivation.
 
 > **Math refresher — choosing the antiderivative of p.** Any antiderivative works, because a constant added to $\int p\,dt$ multiplies $\mu$ by a constant, which cancels between $\mu y$ and $\mu g$. For $p(t) = 2/t$ on $t > 0$, take $\int p\,dt = 2\ln t$, so $\mu = e^{2\ln t} = t^2$.
 
@@ -199,7 +199,7 @@ Linearity gives the solutions a structure that you will use in every later cours
 
 1. **Superposition.** If $y_1$ solves the equation with input $g_1$ and $y_2$ with input $g_2$, then $ay_1 + by_2$ solves it with input $ag_1 + bg_2$. The proof is one line: the left side $y' + py$ is linear in $y$.
 2. **Homogeneous plus particular.** Every solution is $y = y_h + y_p$: any one particular solution $y_p$ of the full equation, plus the general solution $y_h = Ce^{-P(t)}$ of the homogeneous equation. The difference of two solutions solves the homogeneous equation, so nothing else is possible.
-3. **Zero-input plus zero-state.** The boxed formula splits the response into the part due to the initial condition alone (the *zero-input* or **natural response**) and the part due to the input alone, starting from rest (the *zero-state* or **forced response**). Circuit analysts and control engineers use this split.
+3. **Zero-input plus zero-state.** The boxed formula splits the response into the part due to the initial condition alone (the **zero-input response**) and the part due to the input alone, starting from rest (the **zero-state response**). This split is by *cause*. Do not confuse it with the split by *form* in item 2: this course calls the homogeneous part $y_h$ the **natural response** and the particular part $y_p$ the **forced response**. The two splits differ, because the zero-state response also contains the natural mode (for a step from rest it is $X - Xe^{-t/\tau}$). Some circuit texts use "natural" for the zero-input response; check the convention when you read them. Circuit analysts and control engineers use this split.
 4. **Transient plus steady state.** For a stable constant-coefficient system ($\tau > 0$), the homogeneous part $Ce^{-t/\tau}$ dies away. What remains is the **steady-state** response, determined by the input alone. The constant $C$ only adjusts the **transient** so that the initial condition is met.
 
 **The step response.** For a constant input $x(t) = X$, try a constant particular solution: $y_p = X$. With $y(0) = y_0$,
@@ -217,12 +217,12 @@ For $\tau y' + y = x(t)$, a particular solution has the same form as the input. 
 | Input $x(t)$ | Guess for $y_p$ | Result |
 |---|---|---|
 | constant $X$ | constant $a$ | $y_p = X$ |
-| ramp $St$ | $a + bt$ | $y_p = S(t - \tau)$ |
+| ramp $mt$ | $a + bt$ | $y_p = m(t - \tau)$ |
 | exponential $e^{-\alpha t}$, $\alpha\tau \ne 1$ | $ae^{-\alpha t}$ | $y_p = \dfrac{e^{-\alpha t}}{1 - \alpha\tau}$ |
 | exponential with $\alpha\tau = 1$ | $ate^{-t/\tau}$ | $y_p = \dfrac{t}{\tau}e^{-t/\tau}$ |
 | $\cos\omega t$ | $a\cos\omega t + b\sin\omega t$ | $y_p = \dfrac{\cos(\omega t - \varphi)}{\sqrt{1 + (\omega\tau)^2}}$, $\varphi = \arctan\omega\tau$ |
 
-**Ramp.** Substitute $y_p = a + bt$: $\tau b + a + bt = St$, so $b = S$ and $a = -S\tau$. The output runs parallel to the input, **lagging by exactly $\tau$ in time**, which is an error of $S\tau$ in value (Figure 3). A temperature sensor with a 4 s time constant in an oven ramping 2 °C/s reads 8 °C low, forever.
+**Ramp.** Substitute $y_p = a + bt$: $\tau b + a + bt = mt$, so $b = m$ and $a = -m\tau$. The output runs parallel to the input, **lagging by exactly $\tau$ in time**, which is an error of $m\tau$ in value (Figure 3). A temperature sensor with a 4 s time constant in an oven ramping 2 °C/s reads 8 °C low, forever.
 
 **Exponential, and the matched case.** Substituting $ae^{-\alpha t}$ gives $a(1 - \alpha\tau) = 1$. When the input decays at exactly the system's own rate, $\alpha\tau = 1$, the guess fails (it solves the homogeneous equation). Multiply the guess by $t$: $y_p = ate^{-t/\tau}$ gives $\tau a e^{-t/\tau}(1 - t/\tau) + ate^{-t/\tau} = e^{-t/\tau}$, so $a = 1/\tau$. The factor $t$ is the first-order version of **resonance**: driving a system at its natural rate produces a response with a growing envelope factor. [02-04](02-04-forced-response-and-resonance.md) develops the second-order version.
 
@@ -257,7 +257,7 @@ Two classic failures show what the hypotheses buy:
 
 Uniqueness also explains the phase line: two different solutions of a well-behaved equation can never cross, because at the crossing point they would share an initial condition.
 
-> **Going deeper — where Theorem 2 comes from.** Picard's proof rewrites the IVP as an integral equation $y(t) = y_0 + \int_{t_0}^t f(s, y(s))\,ds$ and iterates $y_{k+1}(t) = y_0 + \int_{t_0}^t f(s, y_k(s))\,ds$. If $\partial f/\partial y$ is bounded by $L$, each iteration shrinks the distance between successive guesses by a factor $L\lvert t - t_0\rvert$, so on a short enough interval they converge to a unique fixed point (the contraction-mapping principle). Boyce & DiPrima prove this in their section on existence and uniqueness.
+> **Going deeper — where Theorem 2 comes from.** Picard's proof rewrites the IVP as an integral equation $y(t) = y_0 + \int_{t_0}^t f(\lambda, y(\lambda))\,d\lambda$ and iterates $y_{k+1}(t) = y_0 + \int_{t_0}^t f(\lambda, y_k(\lambda))\,d\lambda$. If $\partial f/\partial y$ is bounded by $L$, each iteration shrinks the distance between successive guesses by a factor $L\lvert t - t_0\rvert$, so on a short enough interval they converge to a unique fixed point (the contraction-mapping principle). Boyce & DiPrima prove this in their section on existence and uniqueness.
 
 ### 3.8 Substitutions: Bernoulli equations
 
@@ -357,27 +357,27 @@ Then $i(1\text{ ms}) = 2.4 - 2e^{-0.5} = 1.187$ A. For 2.3 A: $2e^{-t/\tau} = 0.
 
 ### Example 02-02.3 — Tracking a ramp (tier B)
 
-**Setup.** A supply ramps up at $S = 0.5$ V/ms (a "soft start") and is filtered by an RC low-pass with $\tau = 200$ µs, starting from 0 V. Solve for the output, and find the tracking error at $t = 1$ ms and as $t \to \infty$.
+**Setup.** A supply ramps up at $m = 0.5$ V/ms (a "soft start") and is filtered by an RC low-pass with $\tau = 200$ µs, starting from 0 V. Solve for the output, and find the tracking error at $t = 1$ ms and as $t \to \infty$.
 
-**Solution.** The equation is $\tau v' + v = St$, with $v(0) = 0$. Standard form: $v' + v/\tau = St/\tau$, with $\mu = e^{t/\tau}$:
+**Solution.** The equation is $\tau v' + v = mt$, with $v(0) = 0$. Standard form: $v' + v/\tau = mt/\tau$, with $\mu = e^{t/\tau}$:
 
 $$
-(ve^{t/\tau})' = \frac{S}{\tau}\,te^{t/\tau}.
+(ve^{t/\tau})' = \frac{m}{\tau}\,te^{t/\tau}.
 $$
 
 Integrate by parts ($u = t$, $dw = e^{t/\tau}dt$): $\int te^{t/\tau}dt = \tau te^{t/\tau} - \tau^2e^{t/\tau}$. So
 
 $$
-ve^{t/\tau} = S(t - \tau)e^{t/\tau} + C \;\Longrightarrow\; v = S(t - \tau) + Ce^{-t/\tau}.
+ve^{t/\tau} = m(t - \tau)e^{t/\tau} + C \;\Longrightarrow\; v = m(t - \tau) + Ce^{-t/\tau}.
 $$
 
-From $v(0) = 0$, $C = S\tau$, so $v(t) = S(t - \tau) + S\tau e^{-t/\tau}$. The tracking error is
+From $v(0) = 0$, $C = m\tau$, so $v(t) = m(t - \tau) + m\tau e^{-t/\tau}$. The tracking error is
 
 $$
-e(t) = St - v(t) = S\tau\left(1 - e^{-t/\tau}\right).
+e(t) = mt - v(t) = m\tau\left(1 - e^{-t/\tau}\right).
 $$
 
-As $t \to \infty$, $e \to S\tau = 0.5\text{ V/ms}\times0.2\text{ ms} = 0.1$ V, or 100 mV. At $t = 1$ ms $= 5\tau$, $e = 100(1 - e^{-5}) = 99.33$ mV.
+As $t \to \infty$, $e \to m\tau = 0.5\text{ V/ms}\times0.2\text{ ms} = 0.1$ V, or 100 mV. At $t = 1$ ms $= 5\tau$, $e = 100(1 - e^{-5}) = 99.33$ mV.
 
 **Units check.** V/ms × ms = V ✓. **Sanity check.** The output runs parallel to the ramp, delayed by $\tau$ = 200 µs (Figure 3), and the particular solution matches the table in §3.6 ✓.
 
@@ -433,7 +433,13 @@ Without the leakage feedback, $\tau_0 = R_{th}C_{th} = 12.5$ s. Define the **the
 
 (c) The leakage grows exponentially and the heat removal only linearly, so the curves cross again (Figure 5). Bracketing and bisection give $T_u = 124.9$ °C. There $dP_{leak}/dT = 279.8/30 = 9.33$ W/K, which exceeds $1/R_{th} = 4$ W/K, so $f'(T_u) > 0$: unstable. Below $T_u$, the chip returns to 64.25 °C. If anything pushes it above $T_u$ (a burst of activity, a fan failure), heat generation beats removal and the temperature diverges: **thermal runaway**. This equilibrium is the boundary of the safe region.
 
-(d) As $R_{th}$ grows, the removal line flattens until it just touches the generation curve. At that point both $f(T) = 0$ and $f'(T) = 0$ hold. The second condition gives $R_{th}P_{leak}(T)/T_c = 1$, so $P_{leak} = T_c/R_{th}$ and $T = T_0 + T_c\ln\big(T_c/(R_{th}P_{L0})\big)$. Substituting into the first leaves one equation in $R_{th}$. Solving it numerically (Newton's method or bisection) gives $R_{crit} = 0.3289$ K/W, touching at 91.31 °C. A heat sink 31.6% worse than the design value leaves no operating point at all.
+(d) As $R_{th}$ grows, the removal line flattens until it just touches the generation curve. At that point both $f(T) = 0$ and $f'(T) = 0$ hold. The second condition gives $R_{th}P_{leak}(T)/T_c = 1$, so $P_{leak} = T_c/R_{th}$ and $T = T_0 + T_c\ln\big(T_c/(R_{th}P_{L0})\big)$. Substituting into $f(T) = 0$, which says $P_{dyn} + T_c/R_{th} = (T - T_a)/R_{th}$, gives $T = T_a + R_{th}P_{dyn} + T_c$. Equating the two expressions for $T$ leaves one equation in $R_{th}$:
+
+$$
+T_a + R_{th}P_{dyn} + T_c = T_0 + T_c\ln\!\left(\frac{T_c}{R_{th}P_{L0}}\right).
+$$
+
+Solving it numerically (Newton's method or bisection) gives $R_{crit} = 0.3289$ K/W, touching at 91.31 °C. A heat sink 31.6% worse than the design value leaves no operating point at all.
 
 ![Heat generated and heat removed versus temperature for three thermal resistances](../../../assets/figures/02-02/thermal-runaway.svg)
 
@@ -508,7 +514,7 @@ The lab ([labs/02-02-lab/](../labs/02-02-lab/README.md)) has a notebook and thre
 | Fraction of a step complete after τ, 2τ, 3τ, 4τ, 5τ | 63.2%, 86.5%, 95.0%, 98.2%, 99.3% | $1 - e^{-n}$ |
 | Time to 50% | $0.693\tau$ | $\tau\ln 2$ |
 | 10–90% rise time | $2.197\tau$ | $\tau\ln 9$ |
-| Ramp lag | $\tau$ in time, $S\tau$ in value | Constant forever |
+| Ramp lag | $\tau$ in time, $m\tau$ in value | Constant forever |
 | First-order filter at $\omega\tau = 1$ | −3.01 dB, −45° | Corner frequency $1/(2\pi\tau)$ |
 | Logistic 10% → 90% | $4.394/r$ | $2\ln 9/r$, independent of $N_0$ |
 | Thermal time constant | $R_{th}C_{th}$ | K/W × J/K = s |
@@ -606,7 +612,7 @@ Thermal design sets what a product can actually deliver. A phone SoC's sustained
 
    <details><summary>Answer</summary>
 
-   Lag $\tau = 1$ ms; error $S\tau = 2\text{ V/s}\times10^{-3}\text{ s} = 2$ mV.
+   Lag $\tau = 1$ ms; error $m\tau = 2\text{ V/s}\times10^{-3}\text{ s} = 2$ mV.
 
    </details>
 

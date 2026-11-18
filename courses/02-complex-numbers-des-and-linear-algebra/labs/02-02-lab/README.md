@@ -31,7 +31,7 @@ Chapter sections 3.2 (equilibria and stability), 3.3 (the logistic equation), 3.
 | 2 | forward Euler at $h = 3\tau$ | grows by a factor −2 per step: unstable |
 | 2 | backward Euler and trapezoid at $h = 3\tau$ | stable (factors 0.25 and −0.2 per step) |
 | 2 | error ratio when $h$ halves | about 2 for both Euler methods (first order), 4 for the trapezoid (second order) |
-| 3 | capacity fitted from 3 years | far from the true 200 million, with an error bar that does not cover it |
+| 3 | capacity fitted from 3 years | essentially unconstrained: over 50 noise draws the fitted $K$ scatters far below and far above 200 million (some fits run to the bound), and the error bar often fails to cover the truth |
 | 3 | capacity fitted from 10 years | close to 200 million |
 | 4 | $R_{th} = 0.25$ K/W from 35 °C and from 120 °C | settles at 64.25 °C |
 | 4 | $R_{th} = 0.25$ K/W from 130 °C | runs away past 300 °C in about 14.4 s |

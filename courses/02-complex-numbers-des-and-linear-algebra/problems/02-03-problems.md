@@ -75,7 +75,7 @@ Solve $y'' + 4y' + 4y = 0$ with $y(0) = 2$ and $y'(0) = -1$. Evaluate $y(1)$. Do
 
 ### Problem 02-03.11 [B]
 
-**From a scope trace to a model.** A PLL's frequency step response overshoots by 10%, with its first peak 50 µs after the step. Find ζ, $\omega_d$, $\omega_0$ and $Q$.
+**From a scope trace to a model.** A frequency synthesizer uses a type-I phase-locked loop with a simple RC loop filter, so its closed-loop response is all-pole second order. Its frequency step response overshoots by 10%, with its first peak 50 µs after the step. Find ζ, $\omega_d$, $\omega_0$ and $Q$. Then explain why the same reading would mislead you for a charge-pump (type-II) loop, whose closed-loop transfer function is $(2\zeta\omega_0s + \omega_0^2)/(s^2 + 2\zeta\omega_0s + \omega_0^2)$.
 
 ### Problem 02-03.12 [B]
 
@@ -99,7 +99,8 @@ Solve $y'' + 4y' + 4y = 0$ with $y(0) = 2$ and $y'(0) = -1$. Evaluate $y(1)$. Do
 
 (a) Find the target impedance and the characteristic impedance $\sqrt{L/C}$. Does the design meet the target?
 (b) Estimate the first droop, and its percentage of the rail. At what frequency does the network resonate?
-(c) Keeping $L$, how much capacitance would meet the target? Keeping $C$, how small must $L$ be?
+(c) Keeping $L$, how much capacitance would make $\sqrt{L/C}$ equal the target? Keeping $C$, how small must $L$ be?
+(d) Even with $\sqrt{L/C}$ equal to the target, why does a lossless network still fail the target-impedance test? Show that adding resistance $R = \sqrt{L/C}$ in series with both the inductor and the capacitor makes the impedance seen by the load equal to $\sqrt{L/C}$ at every frequency.
 
 ### Problem 02-03.15 [C]
 
@@ -110,6 +111,16 @@ Solve $y'' + 4y' + 4y = 0$ with $y(0) = 2$ and $y'(0) = -1$. Evaluate $y(1)$. Do
 (c) How long, and how many cycles, does a small disturbance take to grow 1000-fold?
 (d) What net resistance gives a steady oscillation? Explain why a real oscillator's amplitude stops growing.
 
+### Problem 02-03.16 [B]
+
+**A switched circuit with an initial state.** A series circuit of $R = 5\ \Omega$, $L = 1$ H and $C = 0.25$ F has been connected to a 10 V DC source for a long time. At $t = 0$ the source steps down to 2 V.
+
+(a) Analyze the circuit at $t = 0^-$ to find $v_C(0^-)$ and $i(0^-)$.
+(b) Find $v_C(0^+)$, $i(0^+)$ and $v_C'(0^+)$, saying which continuity rule gives each.
+(c) Find the characteristic roots and classify the damping.
+(d) Find $v_C(t)$ for $t \ge 0$ and evaluate it at $t = 1$ s.
+(e) Find $i(t)$, and the time and value of its most negative point.
+
 ---
 
 ## Objective coverage
@@ -118,7 +129,7 @@ Solve $y'' + 4y' + 4y = 0$ with $y(0) = 2$ and $y'(0) = -1$. Evaluate $y(1)$. Do
 |---|---|
 | 1. Standard form; α, $\omega_0$, ζ, $Q$ | 1, 12, 13 |
 | 2. Characteristic equation; three cases; repeated root | 2, 3, 4, 5 |
-| 3. Initial conditions from circuit states; natural response | 3, 5, 8, 9 |
-| 4. Step-response specifications; inferring ζ and $\omega_0$ | 6, 7, 11, 13 |
+| 3. Initial conditions from circuit states; natural response | 3, 5, 8, 9, 16 |
+| 4. Step-response specifications; inferring ζ and $\omega_0$ | 6, 7, 11, 13, 16 |
 | 5. Roots in the complex plane; stability; Wronskian; energy | 8, 10, 12, 15 |
 | 6. Ringing and droop in real systems | 13, 14 |
