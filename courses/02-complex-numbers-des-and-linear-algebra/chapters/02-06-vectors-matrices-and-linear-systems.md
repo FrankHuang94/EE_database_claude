@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 02-06 · Vectors, Matrices and Linear Systems
 
 | | |

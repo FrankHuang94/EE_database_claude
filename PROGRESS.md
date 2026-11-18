@@ -8,18 +8,12 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 >
 > - Course 00 is complete and audited (🏁).
 > - Course 01 is complete and audited (🏁): ten chapters reviewed, exam, flashcards and equation sheet.
+> - Course 02 is complete and audited (🏁): ten chapters reviewed, exam, 140 flashcards and equation sheet.
 >
-> - Course 02: all ten chapters are verified (02-01 is the pilot).
+> **Next: start Course 03 (Probability, Statistics and Random Variables for EE), chapter 03-01 · Probability in EE Language.**
 >
-> **Next: finish Course 02.**
->
-> 1. Write the course exam (`courses/02-complex-numbers-des-and-linear-algebra/exam/README.md`): 10–15 problems with a time limit, solutions and an answer key.
-> 2. Extend the flashcards (`flashcards/02-…csv`; the 02-01 cards exist) to the full course, 50–150 cards.
-> 3. Write the equation sheet (`reference/equation-sheets/02-…md`).
-> 4. Run an independent audit by a fresh reviewer subagent, fix every finding, and mark the chapters reviewed.
-> 5. Push.
->
-> Then start Course 03 (Probability, Statistics and Random Variables).
+> - Sourced facts for Course 03's practitioner sections were gathered on 2026-11-18 and are in the session scratchpad file `c03_facts.md`: serial-link BER targets (PCIe, IEEE 802.3, KP4 FEC), the dual-Dirac jitter model, AEC-Q100 and Cpk practice, Six Sigma's 3.4 ppm, JEDEC FIT and HTOL, the NIST/SEMATECH e-Handbook, the −174 dBm/Hz noise floor, OFDM PAPR, SRAM soft-error rates and the Williams–Brown defect-level model. A scratchpad does not survive the session: if it is gone, re-gather them, and log each one used as R-059 onward.
+> - Planned 03-01 worked examples: packet error probability from BER, inclusion–exclusion for test failures, fab-mix yield and Bayes, test escapes in DPPM, a binary channel where MAP decoding ignores the received bit, TMR reliability, and the Williams–Brown model derived as a Bayes result.
 >
 > When pilot feedback arrives, apply it to the pilots and to every chapter written since, before continuing.
 
@@ -29,7 +23,7 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 |---|---|---|
 | 0 · Scaffold | Structure, CLAUDE.md, CURRICULUM.md, README, STUDY_PLAN, SETUP, env files, CI, tooling, notation | ✅ complete |
 | 1 · Pilot | 02-01 and 07-02, complete with problems, solutions, labs, verification; then stop for feedback | ✅ complete — feedback still pending; learner asked to continue meanwhile |
-| 2 · Courses | Terms 1 → 7 in prerequisite order; per-course audit; term checkpoints | 🔄 in progress: Course 00 🏁, Course 01 started |
+| 2 · Courses | Terms 1 → 7 in prerequisite order; per-course audit; term checkpoints | 🔄 in progress: Courses 00, 01 and 02 🏁; Course 03 next |
 | 3 · Capstones and practitioner layer | Capstones C1–C4, practitioner playbooks and case studies, reference files, final STUDY_PLAN | ⬜ not started |
 | 4 · Final QA | Full CI pass, glossary/objective/cross-link audits, final report | ⬜ not started |
 
@@ -43,9 +37,9 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 |---|---|---|---|---|---|---|---|---|---|
 | 00 | 5 | 5 | 5 | 5 | 22,489 | 52 | 229 | 5 | 5 / 3 / 1 |
 | 01 | 10 | 10 | 10 | 10 | 57,268 | 162 | 1104 | 10 | 10 / 13 / 0 |
-| 02 | 10 | 10 | 10 | 0 | 79,600 | 153 | 1214 | 10 | 10 / 17 / 0 |
+| 02 | 10 | 10 | 10 | 10 | 86,743 | 171 | 1316 | 10 | 10 / 18 / 0 |
 | 07 | 11 | 1 | 1 | 0 | 8,902 | 18 | 149 | 1 | 1 / 6 / 0 |
-| **Total** | **307** | **26** | **26** | **15** | **168,259** | **385** | **2696** | **26** | **26 / 39 / 1** |
+| **Total** | **307** | **26** | **26** | **25** | **175,402** | **403** | **2798** | **26** | **26 / 40 / 1** |
 
 Glossary terms: **359** · Flashcards: **329**
 
@@ -57,7 +51,7 @@ Glossary terms: **359** · Flashcards: **329**
 |---|---|---|---|
 | 00 | 🏁 audited | ✅ 2026-11-12 | 5 chapters reviewed: 52 problems, 229 machine-checked chapter/lab values, exam (15 questions, 27 keyed values), 56 flashcards, equation sheet. The audit found 4 critical, 11 major and 12 minor items; all were fixed (see session log). |
 | 01 | 🏁 audited | ✅ 2026-11-12 | 10 chapters reviewed: 162 problems, 1,104 machine-checked chapter, solution and lab values, 10 lab notebooks and 13 ngspice netlists; exam (15 questions, 128 points, 110 keyed values), 107 flashcards, equation sheet. Three independent reviewers found 5 critical, 25 major and about 40 minor items; all were fixed (see session log). |
-| 02 | 🔄 in progress | — | 02-01 ✅ verified (pilot): 18 problems, 118 machine-checked values, lab notebook. 02-02 ✅ verified: 15 problems, 104 machine-checked values, notebook + 3 ngspice netlists (ramp/sinusoid RC and RL; thermal RC model and runaway). 02-03 ✅ verified: 15 problems, 123 machine-checked values, notebook + 2 ngspice netlists (RLC ring-down, PDN droop). 02-04 ✅ verified: 15 problems, 116 machine-checked values, notebook + 2 ngspice AC netlists (RLC low-pass, 13.56 MHz antenna). 02-05 ✅ verified: 15 problems, 61 machine-checked values (107 checks with identities), notebook + 2 ngspice netlists (RLC step as circuit and as XSPICE s_xfer block; RC pulse). 02-06 ✅ verified: 15 problems, 165 machine-checked values (204 checks with identities), notebook (signals as vectors, matmul cost, hand-written elimination, pivoting, stamping, sparse 2-D power grid) + 2 ngspice netlists (nodal analysis incl. MNA; power-rail IR drop). 02-07 ✅ verified: 15 problems, 121 machine-checked values (153 checks with identities), notebook (determinant as area and cost, inverse vs solve, exact and numerical rank, least squares and overfitting, incidence matrices) + 1 ngspice netlist (resistance-matrix columns and reciprocity, 20 checks). 02-08 ✅ verified: 15 problems, 101 machine-checked values (129 checks with identities), notebook (eigenpairs, wearable power-state Markov chain, spirals, ladder modes, coupled resonators, SVD low-rank) + 1 ngspice netlist (coupled-LC normal modes driven by eigenvector patterns, 4 checks). 02-09 ✅ verified: 15 problems, 63 machine-checked values (89 checks with identities), notebook (three solution methods, dubious series, phase portraits, Foster thermal model, ZOH vs Euler, SSM memory) + 3 ngspice netlists (coupled RC, thermal analog, Foster pulse; 9 checks). 02-10 ✅ verified: 15 problems, 94 machine-checked values (111 checks with identities), notebook (floating point and low-precision sums, Newton with ngspice's junction limiting and companion models, order, stiffness, conditioning and mixed-precision refinement) + 1 ngspice netlist (diode operating point). |
+| 02 | 🏁 audited | ✅ 2026-11-18 | 10 chapters reviewed: 171 problems, 1,316 machine-checked chapter, solution and lab values, 10 lab notebooks and 18 ngspice netlists; exam (15 questions, 128 points, 210 minutes, 146 keyed values, 18 ngspice checks), 140 flashcards, equation sheet. Four independent reviewers found 1 critical, about 25 major and about 130 minor items; all were fixed (see session log). |
 | 07 | 🔄 in progress (pilot) | — | 07-02 ✅ verified: 16 problems, 128 machine-checked values, 6 ngspice netlists, lab notebook. Other chapters planned. |
 | all others | ⬜ planned (stubs only) | — | |
 
@@ -79,6 +73,8 @@ Course status values: ⬜ planned · 🔄 in progress · ✅ complete (all chapt
 | 10 | **00-02 length.** At about 5,900 words, 00-02 exceeds the 4,000-word ceiling for survey chapters. Its derivations (regeneration, Q-function error rates, transmission-line reflections) make it a core-theory chapter in practice. | Phase 2 (Course 00 audit) | Accepted for now; budget raised to 3.5 h. Revisit after learner feedback on length. |
 | 11 | **NVIDIA H100 die size (814 mm²)** is from trade-press reproductions of NVIDIA's launch materials; the whitepaper itself was not fetched ([R-015](reference/research-log.md#r-015--lithography-exposure-field-the-reticle-limit)). | Phase 2 (Course 00 audit) | Confirm from NVIDIA's Hopper whitepaper. |
 | 12 | **UL benchmark pages unreachable.** benchmarks.ul.com and support.benchmarks.ul.com do not resolve from the build environment, so the 3DMark stress-test method ([R-030](reference/research-log.md#r-030--3dmark-stress-tests-and-frame-rate-stability)) was taken from search-result excerpts. | Phase 2 (02-02) | Re-check against UL's pages from a network that reaches them. |
+| 13 | **02-06 length.** At about 10,500 words, 02-06 exceeds the 8,000-word ceiling for core chapters. It carries both the linear-algebra foundations and the matrix form of nodal analysis, plus the arithmetic-intensity material the practitioner layer uses. | Phase 2 (Course 02 audit) | Accepted for now; a split into two chapters would change the curriculum map. Revisit after learner feedback on length. |
+| 14 | **Primary sources behind bot checks.** top500.org, hpl-mxp.org, nvidia.com and several standards stores could not be opened by the Course 02 reviewers, so the November 2026 TOP500 and HPL-MxP tables (R-038, R-055) and NVIDIA's Rubin page (R-040) were checked against press coverage. | Phase 2 (Course 02 audit) | Re-check against the primary pages from a network that reaches them. |
 
 ## Change log
 
@@ -97,6 +93,7 @@ Changes relative to the original build brief's chapter plan.
 
 | Date | Session summary |
 |---|---|
+| 2026-11-18 | Phase 2. **Course 02 completed and audited (🏁).** Wrote the final exam (15 questions, 128 points; solutions, verify script with 146 keyed values, ngspice netlist for the circuit questions), extended the flashcards to 140 cards, wrote the equation sheet and course notes. Four fresh reviewers audited 02-01..02-10, the exam, cards and sheet: 1 critical (02-09 concept check on Euler pole placement), about 25 major, about 130 minor findings, all fixed. Major fixes: 02-03 overshoot formulas restricted to all-pole reference steps (log decrement for load steps), PLL closed-loop zero quantified, target impedance checked across frequency; 02-04 duplication rule, derived build-up envelope, NFC Q criterion (Q ≤ 7.742); 02-05 zero-state vs natural terminology, shifted impulses and sifting, piecewise and periodic inputs, convolution solutions; 02-06 diagonal dominance and threshold pivoting; 02-07 cofactor and rank–nullity derivations, Gram–Schmidt and QR; 02-08 complex SVD for MIMO, Hermitian and unitary matrices, Schur argument; 02-09 linearization and latch metastability; 02-10 full Newton expansion, Jacobian, ngspice and SPICE3 limiting rules, refinement floor κu₆₄; exam trimmed to 210 minutes and reused items replaced. Added 32 problems across the course, R-058 (FIVR, PowerVia), P3109 in R-056. tools/run_verify.py now accepts chapter-style filters and fails when nothing matches. Gathered sourced facts for Course 03. |
 | 2026-11-18 | Phase 2. 02-10 Numerical Methods for Engineers written and verified (floating point and AI formats, bisection and Newton, how SPICE solves DC with companion models, limiting and GMIN, Euler/RK/implicit integrators, stability regions and stiffness, conditioning and mixed-precision refinement); all ten Course 02 chapters now verified. Research log R-053 (ngspice defaults and DEVpnjlim from source), R-054 (SPICE/SPICE2 reports), R-055 (HPL-MxP Nov 2026), R-056 (OFP8, bfloat16, binary16), R-057 (Patriot GAO report and Skeel). |
 | 2026-11-18 | Phase 2. 02-09 Systems of Linear ODEs and the Matrix Exponential written and verified (state space from circuits, eigenvector and e^At solutions, phase plane, forced response and transfer functions, Foster/Cauer thermal modes, ZOH vs Euler, state-space sequence models): 15 problems, 63 keyed values, notebook and 3 ngspice netlists; research log R-049 (Infineon Foster/Cauer note), R-050 (Moler–Van Loan, expm algorithms; not "best", "one of the most effective"), R-051 (Kalman 1960, battery-gauge models), R-052 (S4 bilinear, Mamba ZOH), checked against saved documents. |
 | 2026-11-18 | Phase 2. 02-08 Eigenvalues and Eigenvectors written and verified (Markov chains, complex eigenvalues as poles, spectral theorem, positive definiteness, coupled-resonator normal modes, SVD, low-rank approximation and MIMO): 15 problems, 101 keyed values, notebook and 1 ngspice netlist; research log R-045 (5G NR Type II CSI as eigenvector feedback), R-046 (Litterman–Scheinkman yield-curve factors; method description contested), R-047 (PageRank), R-048 (Eckart–Young), checked against saved pages. |

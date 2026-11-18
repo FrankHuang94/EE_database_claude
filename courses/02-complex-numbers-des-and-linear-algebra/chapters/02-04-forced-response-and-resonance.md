@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 02-04 · Forced Response and Resonance
 
 | | |

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 02-02 · First-Order Linear ODEs
 
 | | |
@@ -276,6 +276,8 @@ $$
 which is linear in $v$. The logistic equation is the Bernoulli case $n = 2$. Problem 02-02.13 works one.
 
 > **Going deeper — exact equations.** An equation $M(t, y) + N(t, y)\,y' = 0$ is *exact* if $\partial M/\partial y = \partial N/\partial t$. Then it is $\frac{d}{dt}\Phi(t, y) = 0$ for a potential $\Phi$, and the solutions are the level curves $\Phi = C$. This is the conservative-field test of [01-10](../../01-calculus-for-engineers/chapters/01-10-multivariable-calculus-2.md) in another guise. Exact equations seldom arise in circuits, so this curriculum does not develop them further.
+
+**Homogeneous equations, $y' = F(y/t)$.** When the right side depends only on the ratio $y/t$, substitute $v = y/t$. Then $y = vt$ and $y' = v + tv'$, so the equation becomes $v + tv' = F(v)$, which is separable: $dv/\big(F(v) - v\big) = dt/t$. For example, $y' = y/t + 1$ gives $tv' = 1$, so $v = \ln t + C$ and $y = t\ln t + Ct$ for $t > 0$. (Check: $y' = \ln t + 1 + C = y/t + 1$ ✓.) Discrete-time first-order recurrences, $y_{k+1} = ay_k + b$, are the sampled cousins of these equations; [02-08](02-08-eigenvalues-and-eigenvectors.md) and [02-09](02-09-systems-of-odes-and-matrix-exponential.md) §3.7 treat them.
 
 ### 3.9 Euler's method and step-size stability
 

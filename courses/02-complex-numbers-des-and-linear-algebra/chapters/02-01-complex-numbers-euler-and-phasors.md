@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 02-01 · Complex Numbers, Euler's Formula and Phasors
 
 | | |

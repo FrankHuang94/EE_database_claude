@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 02-09 · Systems of Linear ODEs and the Matrix Exponential
 
 | | |
@@ -241,7 +241,7 @@ $$
 \mathbf{x}_{k+1} = \mathbf{A}_d\mathbf{x}_k + \mathbf{B}_du_k, \qquad \mathbf{A}_d = e^{\mathbf{A}T}, \qquad \mathbf{B}_d = \int_0^Te^{\mathbf{A}\sigma}\,d\sigma\,\mathbf{B} = \mathbf{A}^{-1}(e^{\mathbf{A}T} - \mathbf{I})\mathbf{B} .
 $$
 
-The last form holds when $\mathbf{A}$ is invertible. This discretization is **exact** at the sample times, for any $T$: no approximation has been made.
+The integral form comes from the convolution formula of §3.5 over one period: $\mathbf{x}_{k+1} = e^{\mathbf{A}T}\mathbf{x}_k + \int_0^Te^{\mathbf{A}(T - \lambda)}\mathbf{B}u_k\,d\lambda$, and substituting $\sigma = T - \lambda$ gives $\int_0^Te^{\mathbf{A}\sigma}d\sigma\,\mathbf{B}u_k$. Integrating the series term by term, $\int_0^Te^{\mathbf{A}\sigma}d\sigma = \sum_k\mathbf{A}^kT^{k+1}/(k+1)!$, which equals $\mathbf{A}^{-1}(e^{\mathbf{A}T} - \mathbf{I})$ when $\mathbf{A}$ is invertible. This discretization is **exact** at the sample times, for any $T$: no approximation has been made.
 
 The eigenvalues map as $z = e^{\lambda T}$. The left half of the $s$-plane maps inside the unit circle ($\lvert e^{\lambda T}\rvert = e^{\operatorname{Re}(\lambda)T} < 1$), so a stable continuous system always gives a stable sampled one. This is the bridge between the poles of 02-05 and the $z$-plane poles of digital filters ([11-09](../../11-signals-and-systems/chapters/11-09-z-transform.md)).
 

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 02-07 · Determinants, Inverses, Rank and Vector Spaces
 
 | | |

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 02-10 · Numerical Methods for Engineers
 
 | | |

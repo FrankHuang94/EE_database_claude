@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 02-03 · Second-Order Linear ODEs and the Characteristic Equation
 
 | | |

@@ -58,7 +58,7 @@ That makes three independent eigenvectors in all, so **yes**, the matrix is diag
 
 λ = 3 is repeated, and $\mathbf{A} - 3\mathbf{I} = \begin{bmatrix} 0 & 1 \\ 0 & 0\end{bmatrix}$ has rank 1, so its null space is one-dimensional, spanned by $(1, 0)$. A second independent eigenvector is missing: $\mathbf{A}$ is defective.
 
-Write $\mathbf{A} = 3\mathbf{I} + \mathbf{N}$ with $\mathbf{N} = \begin{bmatrix} 0 & 1 \\ 0 & 0\end{bmatrix}$. Since $\mathbf{N}^2 = \mathbf{0}$ and $\mathbf{I}$ commutes with $\mathbf{N}$, the binomial theorem stops after two terms: $\mathbf{A}^k = 3^k\mathbf{I} + k\,3^{k-1}\mathbf{N}$. So
+Write $\mathbf{A} = 3\mathbf{I} + \mathbf{N}$ with $\mathbf{N} = \begin{bmatrix} 0 & 1 \\ 0 & 0\end{bmatrix}$. Since $\mathbf{N}^2 = \mathbf{0}$ and $\mathbf{I}$ commutes with $\mathbf{N}$, the binomial theorem stops after two terms: $\mathbf{A}^k = 3^k\mathbf{I} + k\,3^{k-1}\mathbf{N}$. (The binomial expansion $(\mathbf{X} + \mathbf{Y})^k = \sum_i\binom{k}{i}\mathbf{X}^{k-i}\mathbf{Y}^i$ is valid for matrices only when $\mathbf{X}\mathbf{Y} = \mathbf{Y}\mathbf{X}$, because it needs to reorder the factors; here $\mathbf{X} = 3\mathbf{I}$ commutes with everything, and every term with $\mathbf{N}^2$ or higher vanishes.) So
 
 $$
 \mathbf{A}^4 = \begin{bmatrix} 81 & \mathbf{108} \\ 0 & 81\end{bmatrix}, \qquad 108 = 4\cdot3^3\ ✓.

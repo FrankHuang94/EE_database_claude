@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 02-08 · Eigenvalues and Eigenvectors
 
 | | |
