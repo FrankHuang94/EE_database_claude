@@ -18,3 +18,19 @@
 "Equipartition for a spring?","\(\tfrac12k_s\overline{x^2} = \tfrac12kT\), so \(x_{\text{rms}} = \sqrt{kT/k_s}\), independent of mass and damping: 64 pm for 1 N/m at 300 K. The mechanical kT/C.",bsee::04 bsee::04-01
 "Why do watch crystals run at 32,768 Hz?","32,768 = 2¹⁵: fifteen divide-by-two stages give exactly 1 Hz.",bsee::04 bsee::04-01
 "Resonator frequency by dimensions?","\(\omega_0 \propto (1/L)\sqrt{E/\rho}\): shrinking a structure tenfold raises its frequency tenfold. √(E/ρ) ≈ 8.5 km/s in silicon.",bsee::04 bsee::04-01
+"Elementary charge, and electrons per coulomb?","e = 1.602176634×10⁻¹⁹ C exactly (2019 SI); 1 C = 6.242×10¹⁸ electrons. 1 mA for 1 s moves 6.24×10¹⁵ electrons.",bsee::04 bsee::04-02
+"Coulomb's law?","F = q₁q₂/(4πε₀r²) along the line joining the charges; like signs repel. k_e = 1/(4πε₀) ≈ 8.988×10⁹ N·m²/C².",bsee::04 bsee::04-02
+"Electric field of a point charge, and its definition?","E = F/q (V/m = N/C). Point charge: E = k_e q/r², radially away from a positive charge, toward a negative one.",bsee::04 bsee::04-02
+"Superposition in electrostatics?","The total field is the vector sum of each charge's field; for continuous charge, integrate dE = k_e dq/r² with components. Use symmetry to kill components first.",bsee::04 bsee::04-02
+"Field of an infinite line charge λ at distance r?","E = λ/(2πε₀r), falling as 1/r. A finite rod looks infinite close in (r ≪ length) and like a point charge far away.",bsee::04 bsee::04-02
+"Field of an infinite sheet σ? Of two opposite sheets?","One sheet: E = σ/(2ε₀), independent of distance. Two plates ±σ: E = σ/ε₀ between, zero outside (the capacitor field).",bsee::04 bsee::04-02
+"On-axis field of a ring (charge Q, radius R)?","E_z = k_e Q z/(z² + R²)^{3/2}: zero at the center, peaks at z = R/√2, and becomes k_e Q/z² far away.",bsee::04 bsee::04-02
+"Electric dipole: moment, far field, torque, energy?","p = qd from − to +. Far field ∝ 1/r³ (2k_e p/r³ on axis, k_e p/r³ on the bisector). Uniform field: τ = pE sin θ, U = −pE cos θ, no net force.",bsee::04 bsee::04-02
+"Why does a dipole field fall as 1/r³?","The two charges' 1/r² fields nearly cancel; the leftover is their difference, (d/r) times smaller, so k_e q/r² × d/r ∝ p/r³.",bsee::04 bsee::04-02
+"Kinetic energy and speed after accelerating through V?","qV = ½mv², so v = √(2qV/m). An electron through 1 V gains 1 eV = 1.602×10⁻¹⁹ J; through 2 kV it reaches 2.65×10⁷ m/s (0.088c).",bsee::04 bsee::04-02
+"Exit angle of a charged beam through deflection plates?","tan θ = V_d L/(2 V_a d), independent of the particle's charge and mass, because both acceleration and deflection scale with q/m.",bsee::04 bsee::04-02
+"Breakdown fields of air and thermal SiO₂?","Air ≈ 3 MV/m (3 kV/mm); thermal SiO₂ > 10 MV/cm, about 1000× more. A 1.2 nm oxide at 1 V carries 8.3 MV/cm.",bsee::04 bsee::04-02
+"Human-body model (HBM) ESD network?","100 pF discharged through 1.5 kΩ (JS-001): peak 0.667 A per kV, τ = 150 ns. 2 kV gives 1.333 A peak and 200 µJ stored.",bsee::04 bsee::04-02
+"IEC 61000-4-2 system-level ESD network, versus HBM?","150 pF through 330 Ω, τ ≈ 50 ns: at 8 kV about 24 A peak against 5.3 A for HBM. A chip's HBM rating does not cover a connector's system-level test.",bsee::04 bsee::04-02
+"Industry-recommended ESD qualification targets?","1 kV HBM and 250 V CDM are safe with basic factory controls (Industry Council, JEP155/JEP157); below about 500 V HBM or 125 V CDM, advanced controls are needed.",bsee::04 bsee::04-02
+"CDM versus HBM?","HBM: a charged person discharges into a pin (slow, 100 pF/1.5 kΩ). CDM (JS-002): the charged device itself discharges through one pin to ground, a sub-nanosecond, high-current event.",bsee::04 bsee::04-02

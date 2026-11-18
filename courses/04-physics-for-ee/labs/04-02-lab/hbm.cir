@@ -1,0 +1,20 @@
+* Chapter 04-02, Example 04-02.8 -- idealized human-body-model (HBM) ESD discharge.
+* A 100 pF capacitor charged to 2 kV discharges through 1.5 kOhm into a grounded pin
+* (the device is modeled as a short; real testers add parasitic L and C).
+* Expected: peak current 1.333 A at t = 0+, time constant 150 ns, current 0.1804 A at 300 ns.
+*
+* EXPECT ipk   key:../../chapters/04-02-charge-coulomb-and-electric-fields.md#Ex_04-02.8c rtol=1e-3
+* EXPECT i300  key:../../chapters/04-02-charge-coulomb-and-electric-fields.md#Ex_04-02.8e rtol=2e-3
+
+C1  a  0  100p IC=2000
+R1  a  0  1.5k
+
+.tran 0.1n 1u UIC
+
+.control
+run
+let i = v(a) / 1500
+meas tran ipk  MAX i
+meas tran i300 FIND i AT=300n
+.endc
+.end

@@ -1582,3 +1582,41 @@
 - term: Thermomechanical noise
   definition: The random force 4kTb (N²/Hz) that the damping gas exerts on a mechanical structure, the twin of a resistor's 4kTR; it sets an accelerometer's noise floor √(4kTω₀/(mQ)).
   chapter: "04-01"
+
+# ---------------------------------------------------------------- 04-02
+- term: Electric charge
+  definition: The property that makes matter feel electric forces; it comes in two signs, is conserved, and is quantized in multiples of the elementary charge. Measured in coulombs (1 C = 1 A·s).
+  chapter: "04-02"
+- term: Elementary charge
+  definition: The charge of a proton, e = 1.602176634 × 10⁻¹⁹ C exactly (an electron carries −e); one coulomb is 6.242 × 10¹⁸ elementary charges.
+  chapter: "04-02"
+- term: Coulomb's law
+  definition: The force between point charges, F = q₁q₂/(4πε₀r²) along the line joining them; repulsive for like signs, attractive for unlike, falling as the inverse square of distance.
+  chapter: "04-02"
+- term: Vacuum permittivity
+  definition: The constant ε₀ = 8.854 × 10⁻¹² F/m that sets the strength of electric forces in vacuum (k_e = 1/(4πε₀) ≈ 8.988 × 10⁹ N·m²/C²); measured, not exact, since the 2019 SI redefinition.
+  chapter: "04-02"
+- term: Electric field
+  definition: The force per unit charge a small test charge would feel at a point, E = F/q (V/m); a point charge's field is q/(4πε₀r²) pointing away from a positive charge.
+  chapter: "04-02"
+- term: Superposition (electrostatics)
+  definition: The principle that the field (or force) of many charges is the vector sum of their individual fields; for continuous charge the sum becomes an integral.
+  chapter: "04-02"
+- term: Charge density
+  definition: Charge per unit length (λ, C/m), area (σ, C/m²) or volume (ρ, C/m³), used to integrate the fields of continuous distributions.
+  chapter: "04-02"
+- term: Electric dipole
+  definition: Charges ±q a distance d apart, with dipole moment p = qd pointing from − to +; its far field falls as 1/r³, and in a uniform field it feels torque pE sin θ but no net force.
+  chapter: "04-02"
+- term: Dielectric breakdown
+  definition: The sudden failure of an insulator when the field is strong enough to tear electrons loose and start an avalanche; about 3 MV/m in air and above 10 MV/cm in thermal SiO₂.
+  chapter: "04-02"
+- term: Electrostatic discharge (ESD)
+  definition: The sudden flow of charge between objects at different potentials, typically a spark from a charged person or device; ICs are protected on-chip and qualified against standard ESD models.
+  chapter: "04-02"
+- term: Human-body model (HBM)
+  definition: The component ESD test of ANSI/ESDA/JEDEC JS-001, modeling a charged person as 100 pF discharged through 1.5 kΩ (peak current 0.667 A per kV); the industry-recommended qualification target is 1 kV.
+  chapter: "04-02"
+- term: Charged-device model (CDM)
+  definition: The component ESD test of JS-002, modeling a charged device discharging quickly to ground through one pin; the industry-recommended target is 250 V, trending lower for high-speed parts.
+  chapter: "04-02"

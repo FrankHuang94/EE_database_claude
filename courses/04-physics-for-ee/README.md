@@ -28,7 +28,7 @@ Calculus-based electricity and magnetism with the mechanics, waves and modern ph
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
 | [04-01 · Mechanics Essentials for EE](chapters/04-01-mechanics-essentials.md) | 8 | ✅ verified | [problems](problems/04-01-problems.md) · [solutions](solutions/04-01-solutions.md) · [lab](labs/04-01-lab/README.md) · [verify](verify/verify_04_01.py) |
-| [04-02 · Charge, Coulomb's Law and Electric Fields](chapters/04-02-charge-coulomb-and-electric-fields.md) | 10 | ⬜ planned | — |
+| [04-02 · Charge, Coulomb's Law and Electric Fields](chapters/04-02-charge-coulomb-and-electric-fields.md) | 10 | ✅ verified | [problems](problems/04-02-problems.md) · [solutions](solutions/04-02-solutions.md) · [lab](labs/04-02-lab/README.md) · [verify](verify/verify_04_02.py) |
 | [04-03 · Gauss's Law](chapters/04-03-gauss-law.md) | 8 | ⬜ planned | — |
 | [04-04 · Electric Potential, Capacitance and Dielectrics](chapters/04-04-potential-capacitance-and-dielectrics.md) | 10 | ⬜ planned | — |
 | [04-05 · Current, Resistance and Conduction](chapters/04-05-current-resistance-and-conduction.md) | 8 | ⬜ planned | — |
