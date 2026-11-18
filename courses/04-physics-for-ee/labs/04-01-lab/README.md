@@ -52,7 +52,7 @@ Chapter sections 3.3 (energy), 3.4 (impulse), 3.6 (the oscillator and Q), 3.7 (t
 | Lab 04-01.i | quasi-static shock deflection | 67.44 | µm |
 | Lab 04-01.j | simulated peak shock deflection | 60.31 | µm |
 | Lab 04-01.k | equipartition rms displacement | 36.21 | pm |
-| Lab 04-01.l | Q at which 2π/Q is 10% too large | 32.43 | — |
+| Lab 04-01.l | Q at which 2π/Q is 10% too large | 32.39 | — |
 
 ## Discussion questions
 
@@ -63,7 +63,7 @@ Chapter sections 3.3 (energy), 3.4 (impulse), 3.6 (the oscillator and Q), 3.7 (t
 <details><summary>Answers to the discussion questions</summary>
 
 1. Whether it conserves (or bounds) energy for a lossless system. Forward Euler multiplies the energy by $1 + (\omega_0\Delta t)^2$ every step; symplectic (semi-implicit) and trapezoidal methods do not add energy. Check it by simulating an ideal LC tank for many periods and watching the amplitude: it should neither grow nor decay.
-2. The fraction lost per cycle is exactly $1 - e^{-2\pi/Q_d}$ with $Q_d = \omega_d/(2\alpha)$, and $2\pi/Q$ is its first-order expansion. The relative error is about $\pi/Q$ and reaches 10% at Q = 32.43; below a few tens, use the exact form.
+2. The fraction lost per cycle is exactly $1 - e^{-2\pi/Q_d}$ with $Q_d = \omega_d/(2\alpha)$, and $2\pi/Q$ is its first-order expansion. The relative error is about $\pi/Q$ and reaches 10% at Q = 32.39; below a few tens, use the exact form.
 3. Datasheets specify survival of a shock (a peak in *g* and a pulse duration) rather than accurate measurement during it: the mass is expected to hit stops. Ask for the shock-survival rating and pulse duration, how many shocks it was tested for, the post-shock offset shift, and whether stiction (the mass sticking to a stop) was tested.
 
 </details>

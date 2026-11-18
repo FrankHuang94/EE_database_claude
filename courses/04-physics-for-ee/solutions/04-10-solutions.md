@@ -20,7 +20,7 @@ Each photon carries $hc/\lambda = 2.337\times10^{-19}$ J, so the rate is $10^{-5
 
 (b) $h = $ slope × $e$ = **6.630×10⁻³⁴ J·s**, within 0.06% of the exact value: the rounding of the voltages is the only error.
 
-(c) $\varphi = hf_1 - eV_1$ = **2.150 eV**.
+(c) With the exact $h$, $\varphi = hf_1 - eV_1$ = **2.150 eV**. Using the fitted line instead (its intercept, which is what an experimenter has) gives **2.152 eV**; the difference is the rounding of the measured voltages.
 
 ### Solution 04-10.4
 
@@ -96,6 +96,7 @@ Solving $T(d) = 10^{-10}$ with the exact formula: **1.635 nm**. (The exponential
 | 04-10.3a | h/e from the slope | 4.138×10^-15 | V·s |
 | 04-10.3b | Planck's constant | 6.630×10^-34 | J·s |
 | 04-10.3c | work function | 2.150 | eV |
+| 04-10.3d | work function from the fitted intercept | 2.152 | eV |
 | 04-10.4a | 30 keV electron wavelength | 0.007081 | nm |
 | 04-10.4b | thermal neutron wavelength | 0.1809 | nm |
 | 04-10.5a | momentum spread | 1.055×10^-26 | kg·m/s |

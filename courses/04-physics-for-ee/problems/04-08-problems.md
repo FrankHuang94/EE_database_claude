@@ -51,21 +51,25 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **When is displacement current negligible?** For a material with conductivity σ and permittivity ε, compare the displacement and conduction current densities with the ratio $\omega\varepsilon/\sigma$. Evaluate it at 1 GHz for (a) copper (σ = 5.95×10⁷ S/m, $\varepsilon_r$ ≈ 1) and (b) seawater (σ = 4 S/m, $\varepsilon_r$ = 81). What does (b) suggest about radio under the sea?
 
-### Problem 04-08.11 [C]
+### Problem 04-08.11 [B]
 
 **Checking the wave equation.** Show that $E = E_0\cos(kx - \omega t)$ satisfies $\partial^2E/\partial x^2 = \mu\varepsilon\,\partial^2E/\partial t^2$ only if $\omega/k = 1/\sqrt{\mu\varepsilon}$, and find $k$ at 10 GHz in a material with $\varepsilon_r$ = 4.6.
 
-### Problem 04-08.12 [C]
+### Problem 04-08.12 [B]
 
 **Measuring a board's effective permittivity.** A microstrip test coupon shows a delay of 5.9 ps/mm. Find $\varepsilon_{\text{eff}}$, and explain why it is lower than the laminate's $\varepsilon_r$ of 4.6.
 
-### Problem 04-08.13 [C]
+### Problem 04-08.13 [B]
 
 **Why the averaging mass matters.** A device deposits 20 mW in the tissue nearest it. (a) If that power spreads evenly over 10 g, find the SAR and compare with ICNIRP's 2 W/kg. (b) If 30% of it lands in the hottest 1 g, find that gram's SAR and compare with the FCC's 1.6 W/kg. (c) What does this say about comparing limits?
 
-### Problem 04-08.14 [C]
+### Problem 04-08.14 [B]
 
 **A magnetic field from an AC capacitor.** A 1 nF capacitor with circular plates of radius 2 cm has a 10 V, 10 MHz sinusoid across it. Find the current amplitude and the magnetic-field amplitude at the plates' edge.
+
+### Problem 04-08.15 [C]
+
+**Power flows through the dielectric, not the copper.** A coaxial cable (inner radius $a$ = 0.5 mm, outer radius $b$ = 2 mm, perfect conductors) connects a 10 V DC source to a resistive load drawing 2 A. (a) Write $E(r)$ and $H(r)$ between the conductors and the Poynting vector $S(r)$, and evaluate $S$ at $r$ = 1 mm. (b) Integrate $S$ over the annulus $a < r < b$ and show that the total equals $VI$. (c) Where, then, does the energy delivered to the load travel?
 
 ---
 
@@ -77,4 +81,4 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 2. Displacement current | 4, 10, 14 |
 | 3. Maxwell's equations | 4, 10, 11 |
 | 4. Waves: speed, wavelength, impedance, reflection | 2, 3, 6, 11, 12 |
-| 5. Poynting vector, board loss and RF exposure | 5, 7, 8, 9, 13 |
+| 5. Poynting vector, board loss and RF exposure | 5, 7, 8, 9, 13, 15 |

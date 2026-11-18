@@ -75,13 +75,17 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Efficiency of a wireless link.** The coils of Example 04-07.7 (10 µH each, $k$ = 0.5, 360 kHz) are each resonated with a series capacitor, so only resistances remain at resonance. Each coil has 0.1 Ω of resistance and the receiver drives a 5 Ω load. (a) Show that the receiver reflects a resistance $(\omega M)^2/(R_2 + R_L)$ into the transmitter, and evaluate it. (b) Find the link efficiency $\eta = \frac{R_{\text{refl}}}{R_{\text{refl}} + R_1}\cdot\frac{R_L}{R_2 + R_L}$. (c) Find each coil's quality factor $\omega L/R$.
 
+### Problem 04-07.17 [B]
+
+**The electric field inside a changing solenoid.** A long solenoid of radius $R$ = 2.0 cm has a uniform field inside that rises at 0.50 T/s. (a) Use Faraday's law on a circle of radius $r$ to find the induced electric field at $r$ = 1.0 cm (inside). (b) Find it at $r$ = 3.0 cm (outside, where $B$ = 0). (c) Find the EMF around a wire loop of radius 3.0 cm, and explain why the field outside is not zero even though $B$ is.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 04-07) | Problems |
 |---|---|
-| 1. Flux, Faraday's and Lenz's laws, motional EMF, generators and motors | 1, 2, 3, 4 |
+| 1. Flux, Faraday's and Lenz's laws, motional EMF, generators and motors | 1, 2, 3, 4, 17 |
 | 2. Eddy currents and the skin effect | 5, 13, 15 |
 | 3. Self- and mutual inductance, cores and reluctance | 6, 7, 8, 10, 12, 14 |
 | 4. Magnetic energy and energy density | 7, 9, 12 |

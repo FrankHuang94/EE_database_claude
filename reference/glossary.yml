@@ -646,7 +646,7 @@
   chapter: "01-07"
   see_also: [RMS value, Form factor]
 - term: Electron-volt
-  definition: The work done moving one electron through 1 V, 1.602×10⁻¹⁹ J; the natural energy unit of semiconductor physics.
+  definition: The energy an electron gains (or the work done on it) crossing 1 V, exactly 1.602176634×10⁻¹⁹ J since 2019; the natural unit for band gaps, photon energies and per-electron energies. Also written electronvolt.
   chapter: "01-07"
 - term: Probability density function
   definition: A non-negative function f(x) with total area 1, whose area over an interval is the probability of landing in it; the density itself is not a probability and can exceed 1.
@@ -1562,9 +1562,6 @@
   chapter: "04-01"
 - term: Moment of inertia
   definition: Rotational inertia, I = Σ m r² (kg·m²); ½MR² for a uniform disk. It plays the role of mass in rotation.
-  chapter: "04-01"
-- term: Electronvolt
-  definition: The energy an electron gains crossing 1 V, exactly 1.602176634 × 10⁻¹⁹ J; the natural unit for bandgaps, photon energies and per-electron energies.
   chapter: "04-01"
 - term: Simple harmonic oscillator
   definition: A system whose restoring force is proportional to displacement, m ẍ = −k_s x, which oscillates sinusoidally at ω₀ = √(k_s/m) while energy sloshes between kinetic and potential stores.

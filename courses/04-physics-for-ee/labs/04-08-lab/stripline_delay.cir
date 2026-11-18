@@ -1,16 +1,69 @@
 * Chapter 04-08, Example 04-08.3 -- propagation delay of a 100 mm stripline in FR-4 (er = 4.6).
-* A lossless 50 Ohm line with delay TD = 100 mm x sqrt(4.6) / c = 715.4 ps, driven by a matched
-* 50 Ohm source with a 20 ps edge and terminated in 50 Ohm. The 50% crossing at the far end lags
-* the near end by the line delay.
+* Independent check: the line is built from its per-unit-length inductance and capacitance rather than
+* from a delay value. For a 50 Ohm line in a dielectric of relative permittivity er,
+*   L' = Z0 sqrt(er) / c = 357.7 nH/m   and   C' = sqrt(er) / (c Z0) = 143.1 pF/m,
+* so sqrt(L'C') = sqrt(er)/c and the delay should be 100 mm x sqrt(4.6) / c = 715.4 ps. The line is
+* modeled as 1000 LC sections (0.1 mm each; section cutoff ~450 GHz, far above a 20 ps edge's
+* bandwidth), driven by a matched 50 Ohm source and terminated in 50 Ohm. The 50% crossing at the far
+* end lags the near end by the line delay. A second copy uses ngspice's ideal line (T element) with
+* the computed delay, for comparison.
 *
-* EXPECT tpd key:../../chapters/04-08-maxwell-preview.md#Ex_04-08.3e scale=1e-12 rtol=1e-3
+* EXPECT tpd  key:../../chapters/04-08-maxwell-preview.md#Ex_04-08.3e scale=1e-12 rtol=2e-3
+* EXPECT tpdt key:../../chapters/04-08-maxwell-preview.md#Ex_04-08.3e scale=1e-12 rtol=1e-3
+
+.param Z0=50 ER=4.6 C0=299792458 LEN=0.1 NSEC=1000
+.param LS={Z0*sqrt(ER)/C0*LEN/NSEC} CS={sqrt(ER)/(C0*Z0)*LEN/NSEC}
+
+.subckt sec a b
+L1 a b {LS}
+C1 b 0 {CS}
+.ends
+.subckt s10 a b
+X1 a n1 sec
+X2 n1 n2 sec
+X3 n2 n3 sec
+X4 n3 n4 sec
+X5 n4 n5 sec
+X6 n5 n6 sec
+X7 n6 n7 sec
+X8 n7 n8 sec
+X9 n8 n9 sec
+X10 n9 b sec
+.ends
+.subckt s100 a b
+X1 a n1 s10
+X2 n1 n2 s10
+X3 n2 n3 s10
+X4 n3 n4 s10
+X5 n4 n5 s10
+X6 n5 n6 s10
+X7 n6 n7 s10
+X8 n7 n8 s10
+X9 n8 n9 s10
+X10 n9 b s10
+.ends
 
 VS  src 0 PWL(0 0 50p 0 70p 1 10n 1)
 RS  src in 50
-T1  in 0 out 0 Z0=50 TD=715.415p
+XA  in m1 s100
+XB  m1 m2 s100
+XC  m2 m3 s100
+XD  m3 m4 s100
+XE  m4 m5 s100
+XF  m5 m6 s100
+XG  m6 m7 s100
+XH  m7 m8 s100
+XI  m8 m9 s100
+XJ  m9 out s100
 RL  out 0 50
 
-.tran 1p 3n
+VS2 src2 0 PWL(0 0 50p 0 70p 1 10n 1)
+RS2 src2 in2 50
+T1  in2 0 out2 0 Z0=50 TD=715.415p
+RL2 out2 0 50
 
-.meas tran tpd TRIG v(in) VAL=0.25 RISE=1 TARG v(out) VAL=0.25 RISE=1
+.tran 0.2p 2n
+
+.meas tran tpd  TRIG v(in) VAL=0.25 RISE=1 TARG v(out) VAL=0.25 RISE=1
+.meas tran tpdt TRIG v(in2) VAL=0.25 RISE=1 TARG v(out2) VAL=0.25 RISE=1
 .end

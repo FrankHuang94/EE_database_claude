@@ -24,9 +24,9 @@
 "Electric dipole: moment, far field, torque, energy?","p = qd from − to +. Far field ∝ 1/r³ (2k_e p/r³ on axis, k_e p/r³ on the bisector). Uniform field: τ = pE sin θ, U = −pE cos θ, no net force.",bsee::04 bsee::04-02
 "Kinetic energy and speed after accelerating through V?","qV = ½mv², so v = √(2qV/m). An electron through 1 V gains 1 eV = 1.602×10⁻¹⁹ J; through 2 kV it reaches 2.65×10⁷ m/s (0.088c).",bsee::04 bsee::04-02
 "Exit angle of a charged beam through deflection plates?","tan θ = V_d L/(2 V_a d), independent of the particle's charge and mass, because both acceleration and deflection scale with q/m.",bsee::04 bsee::04-02
-"Breakdown fields of air and thermal SiO₂?","Air ≈ 3 MV/m (3 kV/mm); thermal SiO₂ > 10 MV/cm, about 1000× more. A 1.2 nm oxide at 1 V carries 8.3 MV/cm.",bsee::04 bsee::04-02
+"Breakdown fields of air and thermal SiO₂?","Air ≈ 3 MV/m (3 kV/mm); thermal SiO₂ > 10 MV/cm, about 300× more. A 1.2 nm oxide at 1 V carries 8.3 MV/cm.",bsee::04 bsee::04-02
 "Human-body model (HBM) ESD network?","100 pF discharged through 1.5 kΩ (JS-001): peak 0.667 A per kV, τ = 150 ns. 2 kV gives 1.333 A peak and 200 µJ stored.",bsee::04 bsee::04-02
-"IEC 61000-4-2 system-level ESD network, versus HBM?","150 pF through 330 Ω, τ ≈ 50 ns: at 8 kV about 24 A peak against 5.3 A for HBM. A chip's HBM rating does not cover a connector's system-level test.",bsee::04 bsee::04-02
+"IEC 61000-4-2 system-level ESD network, versus HBM?","150 pF through 330 Ω, τ ≈ 50 ns: at 8 kV the RC model gives 24 A against 5.3 A for HBM, and the standard specifies a 30 A first peak (3.75 A/kV). A chip's HBM rating does not cover a connector's system-level test.",bsee::04 bsee::04-02
 "Industry-recommended ESD qualification targets?","1 kV HBM and 250 V CDM are safe with basic factory controls (Industry Council, JEP155/JEP157); below about 500 V HBM or 125 V CDM, advanced controls are needed.",bsee::04 bsee::04-02
 "CDM versus HBM?","HBM: a charged person discharges into a pin (slow, 100 pF/1.5 kΩ). CDM (JS-002): the charged device itself discharges through one pin to ground, a sub-nanosecond, high-current event.",bsee::04 bsee::04-02
 "Electric flux through a flat surface in a uniform field?","Φ = EA cos θ (V·m), θ between E and the surface normal: maximum face-on, zero edge-on. On a closed surface the normal points outward.",bsee::04 bsee::04-03
@@ -53,7 +53,7 @@
 "Equivalent oxide thickness (EOT)?","EOT = Σ t_i × 3.9/ε_r,i: the SiO₂ thickness with the same C per area. 2 nm HfO₂ (ε_r 25) = 0.312 nm. Physical thickness sets tunneling; EOT sets capacitance.",bsee::04 bsee::04-04
 "Layered dielectrics: which layer has the strongest field?","The lowest-permittivity layer: D is the same in every layer, so E = D/ε is largest where ε is smallest (e.g. the SiO₂ interface layer under HfO₂).",bsee::04 bsee::04-04
 "Energy stored in a capacitor, and where it lives?","U = Q²/2C = ½CV² = ½QV, stored in the field at density u = ½εE². Switching C through V each cycle costs dynamic power αCV²f.",bsee::04 bsee::04-04
-"Energy lost when two equal capacitors share charge?","Half the initial energy, dissipated in the connecting resistance whatever its value (with none, radiated). DRAM reads are charge sharing: ΔV = (V_cell − V_BL)·C_s/(C_s + C_BL).",bsee::04 bsee::04-04
+"Energy lost when a charged capacitor shares charge with an equal uncharged one?","Half the initial energy, dissipated in the connecting resistance whatever its value (with none, radiated). DRAM reads are charge sharing: ΔV = (V_cell − V_BL)·C_s/(C_s + C_BL).",bsee::04 bsee::04-04
 "Electrostatic pressure, and the chuck force?","p = ½ε₀E² = D²/2ε₀ in a vacuum or air gap (≈ 40 Pa at 3 MV/m). A chuck's F = ε₀SV²/[2(g + l/ε_r)²] → D²S/2ε₀ at zero gap: 36.9 N for a 200 mm wafer at 1 kV on 0.54 mm alumina.",bsee::04 bsee::04-04
 "MLCC classes and DC-bias loss?","C0G (class 1): 0 ± 30 ppm/°C, no DC-bias loss. X5R/X7R (class 2, BaTiO₃, ε_r 1000–4000): ±15% over temperature, and lose capacitance with DC bias (Murata: 100 µF X5R at 1.8 V ≈ 90 µF; Y5V ≈ 60 µF).",bsee::04 bsee::04-04
 "Current density in terms of carriers?","J = nqv_d (A/m²); current I is the flux of J through a surface. For electrons J points opposite to their drift.",bsee::04 bsee::04-05
@@ -110,7 +110,7 @@
 "When is a trace a transmission line?","When its delay is a noticeable fraction of the signal's rise time (or its length of the wavelength); then reflections and termination matter.",bsee::04 bsee::04-08
 "5G NR frequency ranges (as of Nov 2026)?","FR1 410–7125 MHz; FR2-1 24.25–52.6 GHz; FR2-2 52.6–71 GHz (3GPP TS 38.104 v19.6.0).",bsee::04 bsee::04-08
 "RF exposure limits for the public?","FCC: 1.6 W/kg over any 1 g (100 kHz–6 GHz), 1 mW/cm² power density 1.5–100 GHz. ICNIRP 2020: 2 W/kg over 10 g, 20 W/m² absorbed above 6 GHz. Compare with averaging mass.",bsee::04 bsee::04-08
-"Wave speed, wavelength and frequency?","v = λf = ω/k. String v = √(T/µ); sound in air ≈ 343 m/s; light c/n. Frequency is set by the source and is unchanged across boundaries; λ changes.",bsee::04 bsee::04-09
+"Wave speed, wavelength and frequency?","v = λf = ω/k. String v = √(F_T/µ) (F_T = tension); sound in air ≈ 343 m/s; light c/n. Frequency is set by the source and is unchanged across boundaries; λ changes.",bsee::04 bsee::04-09
 "Constructive and destructive interference?","Path difference mλ: amplitudes add; (m + ½)λ: they cancel. Two equal waves: I = 4I₀cos²(δ/2), energy redistributed, not destroyed.",bsee::04 bsee::04-09
 "Two-slit fringe spacing?","Δy = λL/d. 633 nm, 0.2 mm slits, 1 m: 3.165 mm.",bsee::04 bsee::04-09
 "How does a phased array steer its beam?","Progressive phase Δφ between elements points the beam where kd sin θ = Δφ. Spacing above λ/2 risks grating lobes; steering widens the beam.",bsee::04 bsee::04-09
@@ -135,7 +135,7 @@
 "Hydrogen levels and the Bohr radius?","E_n = −13.6 eV/n²; a₀ = 0.0529 nm. Lyman α (2→1) at 121.5 nm; Hα (3→2) ≈ 656 nm.",bsee::04 bsee::04-10
 "Tunneling probability through a thick barrier?","T ≈ 16(E/V₀)(1−E/V₀)e^(−2κd), κ = √(2m(V₀−E))/ħ. For 2.1 eV below the top, κ ≈ 7.4 nm⁻¹: each 0.1 nm costs ~4.4×.",bsee::04 bsee::04-10
 "Why did Intel adopt high-k at 45 nm?","Its 65 nm SiO₂ gate was ~1.2 nm (5 atomic layers) and tunneling leakage was limiting. A thicker hafnium-based high-k cut leakage >10× at the same capacitance.",bsee::04 bsee::04-10
-"How does flash program and erase?","Fowler–Nordheim tunneling through a ~10 nm (1997-era) oxide at ~8–10 MV/cm. 7 → 10 MV/cm raises the current ~10⁷×: fast writes, years of retention.",bsee::04 bsee::04-10
+"How does flash program and erase?","Fowler–Nordheim tunneling through a ~10 nm (1997-era) oxide at ~8–10 MV/cm. 7 → 10 MV/cm raises the current 10⁴–10⁵× in simple models, ~10⁷× in real cells (1997 review): fast writes, years of retention.",bsee::04 bsee::04-10
 "Qubit measurement statistics?","α|0⟩ + β|1⟩ gives 0 with probability |α|², 1 with |β|². N shots: binomial, σ = √(Np(1−p)); n qubits need 2ⁿ amplitudes classically.",bsee::04 bsee::04-10
 "Logical-qubit claims to check?","Ask: which code, what distance, detected or corrected errors, error per cycle vs physical qubits. Willow: d = 7, 0.143%/cycle, Λ = 2.14. Helios: '94' (detected) vs '48' (corrected).",bsee::04 bsee::04-10
 "Diamond structure: atoms per cubic cell and silicon's density?","FCC (4) with a two-atom basis: 8 atoms per cubic cell. a = 0.5431 nm gives 4.99×10²² atoms/cm³; nearest neighbors √3a/4 = 0.235 nm.",bsee::04 bsee::04-11

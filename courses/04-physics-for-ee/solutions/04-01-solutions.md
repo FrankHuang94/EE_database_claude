@@ -88,7 +88,7 @@ The accelerometer reads the floor's upward push per unit mass, $a + g$ (upward p
 
 (b) $Q = \omega_0/(2\alpha) = 2\pi\times10^5/(2\times138.63) = $ **2266**.
 
-(c) $2\pi/Q = $ **0.2773%** per cycle.
+(c) The amplitude halves in 500 cycles, so the energy falls to a quarter: the fraction lost per cycle is exactly $1 - 4^{-1/500} = 1 - e^{-2\alpha/f_0}$ = **0.2769%**. The light-damping formula $2\pi/Q$ gives 0.2773%, the same to 0.15%.
 
 (d) $f_0/Q = $ **44.13 Hz**.
 
@@ -104,7 +104,7 @@ The accelerometer reads the floor's upward push per unit mass, $a + g$ (upward p
 
 (b) With $Q = 1/\sqrt2$, the −3 dB bandwidth equals $f_0$: 1, 4 and 16 kHz.
 
-(c) $0.9703\text{ nm}/1000 = $ **0.9703 pm**, about a hundredth of a silicon atom's spacing: wide-bandwidth sensors need extraordinary readout resolution.
+(c) $0.9703\text{ nm}/1000 = $ **0.9703 pm**, about 1/240 of the 0.235 nm Si–Si bond length: wide-bandwidth sensors need extraordinary readout resolution.
 
 ### Solution 04-01.13
 
@@ -190,7 +190,7 @@ So **2.706 µg**.
 | 04-01.9f | total energy | 0.09 | J |
 | 04-01.10a | decay rate | 138.6 | 1/s |
 | 04-01.10b | quality factor | 2266 | — |
-| 04-01.10c | energy lost per cycle | 0.2773 | % |
+| 04-01.10c | energy lost per cycle | 0.2769 | % |
 | 04-01.10d | half-power bandwidth | 44.13 | Hz |
 | 04-01.11a | springs in series | 75 | N/m |
 | 04-01.11b | springs in parallel | 400 | N/m |

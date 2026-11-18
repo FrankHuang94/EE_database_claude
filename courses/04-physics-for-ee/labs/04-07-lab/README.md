@@ -31,7 +31,7 @@ Chapter sections 3.1 to 3.7 and Examples 04-07.3 to 04-07.5 and 04-07.7; Problem
 |---|---|---|
 | 1 | magnet through a 1 cm loop | peak EMF 5.395 mV at 1 m/s and 10.79 mV at 2 m/s; the area under the approach pulse is 62.77 µWb at both speeds |
 | 2 | 1 mm copper wire | $R_{ac}/R_{dc}$ = 1.466 at 100 kHz and 4.094 at 1 MHz; doubles at 202.7 kHz |
-| 3 | 500-turn, 10 cm × 1 cm-radius coil | 0.9074 mH against 0.9870 mH for the long formula: Nagaoka's K = 0.9194 |
+| 3 | 500-turn, 10 cm × 1 cm-radius coil | 0.9081 mH against 0.9870 mH for the long formula: Nagaoka's K = 0.9201 |
 | 4 | coaxial 5 cm loops 5 cm apart | M = 24.70 nH by both methods; $1/d^3$ far away |
 | 5 | gapped core for 100 µH | gap 0.1761 mm, saturating at 3.120 A at 100 °C |
 | netlist | coupled coils at 360 kHz | 11.31 V open-circuit at the receiver, 22.62 V across the transmitter |
@@ -41,8 +41,8 @@ Chapter sections 3.1 to 3.7 and Examples 04-07.3 to 04-07.5 and 04-07.7; Problem
 |---|---|---|---|
 | Lab 04-07.a | peak EMF at 1 m/s | 5.395 | mV |
 | Lab 04-07.b | frequency at which a 1 mm wire's resistance doubles | 202.7 | kHz |
-| Lab 04-07.c | Nagaoka's coefficient | 0.9194 | — |
-| Lab 04-07.d | finite-solenoid inductance | 0.9074 | mH |
+| Lab 04-07.c | Nagaoka's coefficient | 0.9201 | — |
+| Lab 04-07.d | finite-solenoid inductance | 0.9081 | mH |
 | Lab 04-07.e | mutual inductance of the loops | 24.70 | nH |
 | Lab 04-07.f | gap for 100 µH | 0.1761 | mm |
 | Lab 04-07.g | saturation current at that gap | 3.120 | A |
@@ -59,7 +59,7 @@ Chapter sections 3.1 to 3.7 and Examples 04-07.3 to 04-07.5 and 04-07.7; Problem
 1. The coil's output is $M\,di/dt$, proportional to the *rate of change* of current, so it must be integrated (by a circuit or in software) to give the current itself. At low frequency $di/dt$ is small and the signal sinks into noise and offset; Rogowski coils and current transformers cannot measure DC, which is why Hall sensors (04-06) are used when DC matters.
 2. Only the AC ripple sees the skin effect; the DC component spreads over the whole conductor. With a large DC and small ripple, a single conductor sized for DC resistance may be fine; when ripple loss matters, use foil, litz or several thinner parallel wires whose size is comparable to the skin depth at the switching frequency (about 0.09 mm at 500 kHz).
 3. Real inductors are short, flat or spiral, sit near ground planes and other conductors, and have currents that redistribute with frequency (skin and proximity effects). No closed-form formula captures these; field solvers compute the actual current distribution and flux, as Part 3 did for the simplest case.
-4. Coupling between traces falls steeply with distance: doubling the spacing of two distant traces cuts their mutual inductance (and inductive crosstalk) by about eight. Close neighbors and traces sharing a return path dominate crosstalk, so spacing and a solid nearby return plane are the main remedies.
+4. Coupling between traces falls steeply with distance. Small coaxial loops (dipoles) follow the $1/d^3$ law of Part 4, but long parallel traces over a return plane at height $h$ couple roughly as $1/(1 + (s/h)^2)$: doubling the spacing of two distant traces cuts their mutual inductance (and inductive crosstalk) by about four. Close neighbors and traces sharing a return path dominate crosstalk, so spacing and a solid nearby return plane are the main remedies.
 
 </details>
 

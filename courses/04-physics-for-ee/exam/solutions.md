@@ -1,6 +1,6 @@
 # Course 04 · Final Exam — Solutions
 
-Exam: [README.md](README.md). All numbers are recomputed by [verify_04_exam.py](../verify/verify_04_exam.py), and the circuit answers to Questions 4, 13 and 14 are confirmed in ngspice by [exam_circuits.cir](exam_circuits.cir). Each solution names the chapter to revisit if you lost points.
+Exam: [README.md](README.md). All numbers are recomputed by [verify_04_exam.py](../verify/verify_04_exam.py), and the circuit answers to Questions 4 and 14 are confirmed in ngspice by [exam_circuits.cir](exam_circuits.cir), and those to Question 13 by [exam_coils.cir](exam_coils.cir). Each solution names the chapter to revisit if you lost points.
 
 **1.** *(04-01)* (a) $f_0 = \frac{1}{2\pi}\sqrt{k_s/m} = \frac{1}{2\pi}\sqrt{2.0/1.0\times10^{-9}} = 44{,}721/2\pi$ = **7118 Hz**.
 
@@ -12,13 +12,13 @@ Exam: [README.md](README.md). All numbers are recomputed by [verify_04_exam.py](
 
 (b) $F = eE$ = **1.440×10⁻¹⁴ N along −x** (the electron's charge is negative).
 
-(c) $p = qd = 2.0\times10^{-9}\times0.04$ = **8.0×10⁻¹¹ C·m**, pointing from − to + (along −x).
+(c) $p = qd = 2.0\times10^{-9}\times0.04$ = **8.000×10⁻¹¹ C·m**, pointing from − to + (along −x).
 
 (d) On the axis, $E = 2pk_e/r^3 = 2\times8.0\times10^{-11}\times8.98755\times10^9/1$ = **1.438 V/m**. The $1/r^3$ fall-off is why distant dipoles (and well-paired differential signals) couple so weakly.
 
 **3.** *(04-03)* (a) Inside a uniform sphere $E = k_eQr/R^3 = 8.98755\times10^9\times10^{-8}\times0.005/10^{-6}$ = **4.494×10⁵ V/m**; outside, $E = k_eQ/r^2 = 89.8755/0.0004$ = **2.247×10⁵ V/m**.
 
-(b) A Gaussian pillbox from the neutral p region to the junction encloses charge $-eN_Ax_p$ per area: $E_{\max} = eN_Ax_p/\varepsilon = 1.602\times10^{-19}\times10^{23}\times5\times10^{-8}/(11.7\times8.854\times10^{-12})$ = **7.733×10⁶ V/m** (77 kV/cm).
+(b) Take a pillbox of face area $A$ with one face in the neutral p region (where $E = 0$) and the other at the junction. Only that face has flux, $EA$, and the box encloses the depleted acceptors' charge $-eN_Ax_pA$; Gauss's law $\varepsilon EA = -eN_Ax_pA$ gives a field of magnitude $eN_Ax_p/\varepsilon$ pointing from n to p. Numerically, $E_{\max} = eN_Ax_p/\varepsilon = 1.602\times10^{-19}\times10^{23}\times5\times10^{-8}/(11.7\times8.854\times10^{-12})$ = **7.733×10⁶ V/m** (77 kV/cm).
 
 (c) The field rises linearly across the region, so the drop is the triangle's area: $\tfrac12E_{\max}x_p$ = **0.1933 V**.
 
@@ -34,7 +34,7 @@ Exam: [README.md](README.md). All numbers are recomputed by [verify_04_exam.py](
 
 (b) $t_{50}\approx0.38RC = 0.38\times6250\times20\times10^{-15}$ = **47.50 ps**.
 
-(c) $R$ and $C$ both halve, so the delay falls fourfold: **11.875 ps**. Delay ∝ $L^2$ is why long wires get repeaters.
+(c) $R$ and $C$ both fall to a third, so the delay falls ninefold: **5.278 ps**. Delay ∝ $L^2$ is why long wires get repeaters.
 
 (d) $J = 20\times10^{-6}/(8\times10^{-16}\ \text{m}^2) = 2.5\times10^{10}$ A/m² = **2.500 MA/cm²**, the range where electromigration limits must be checked.
 
@@ -72,9 +72,9 @@ Exam: [README.md](README.md). All numbers are recomputed by [verify_04_exam.py](
 
 (b) $E_1 = h^2/(8m^*L^2)$ = **87.69 meV**; $E_2 - E_1 = 3E_1$ = **263.1 meV**; $\lambda = 1239.84/263.1$ nm = **4.713 µm**, in the mid-infrared (the principle of quantum-well infrared detectors).
 
-(c) $\kappa = \sqrt{2m_0\times2.1\ \text{eV}}/\hbar = 7.42\times10^9$ m⁻¹; the factor is $e^{2\kappa\times0.5\ \text{nm}} = e^{7.42}$ = **1676**: half a nanometer cuts tunneling more than a thousandfold.
+(c) $\kappa = \sqrt{2m_0\times2.1\ \text{eV}}/\hbar = 7.42\times10^9$ m⁻¹; the factor is $e^{2\kappa\times0.5\ \text{nm}} = e^{7.424}$ = **1676**: half a nanometer cuts tunneling more than a thousandfold.
 
-**12.** *(04-11)* (a) $k_F = (3\pi^2n)^{1/3} = 1.2018\times10^{10}$ m⁻¹, $E_F = \hbar^2k_F^2/2m_0$ = **5.501 eV**, $v_F = \hbar k_F/m_0$ = **1.391×10⁶ m/s**.
+**12.** *(04-11)* (a) Periodic boundary conditions allow $\vec k = (2\pi/L)(n_x, n_y, n_z)$, one state per volume $(2\pi/L)^3$ of $k$-space. Filling the $N$ electrons two per state up to $k_F$: $N = 2\cdot\tfrac43\pi k_F^3/(2\pi/L)^3 = Vk_F^3/(3\pi^2)$, so $k_F = (3\pi^2n)^{1/3}$ and $E_F = \hbar^2k_F^2/2m = \frac{\hbar^2}{2m}(3\pi^2n)^{2/3}$. For silver, $k_F = (3\pi^2n)^{1/3} = 1.2018\times10^{10}$ m⁻¹, $E_F = \hbar^2k_F^2/2m_0$ = **5.501 eV**, $v_F = \hbar k_F/m_0$ = **1.391×10⁶ m/s**.
 
 (b) $(\pi^2/3)(kT/E_F) = 3.290\times0.025852/5.501$ = **0.01546**.
 
@@ -82,7 +82,7 @@ Exam: [README.md](README.md). All numbers are recomputed by [verify_04_exam.py](
 
 (d) Equal exponents need equal $E_g/T$: $398.15\times3.26/1.12$ = **1159 K**.
 
-(e) A silicon device at 125–150 °C has hundreds of times its room-temperature intrinsic carriers, so junction leakage (∝ $n_i$ or $n_i^2$) climbs steeply and can threaten thermal runaway; margins and derating are essential. For SiC the same leakage mechanism would not matter until roughly 1,100 K, so the semiconductor is not the limit at 150 °C; packaging, gate-oxide reliability and contacts are. *Rubric:* 4 points for the silicon leakage argument, 4 for the SiC contrast, 4 for naming the real limit (package or oxide).
+(e) A silicon device at 125–150 °C has hundreds of times its room-temperature intrinsic carriers, so junction leakage (∝ $n_i$ or $n_i^2$) climbs steeply and can threaten thermal runaway; margins and derating are essential. For SiC the same leakage mechanism would not matter until roughly 1,100 K, so the semiconductor is not the limit at 150 °C; packaging, gate-oxide reliability and contacts are. *Rubric for (e), 4 points:* 1.5 for the silicon leakage argument, 1.5 for the SiC contrast, 1 for naming the real limit (package or oxide). For (a), 1 point for the counting derivation and 1 for the numbers.
 
 **13.** *(04-07)* (a) $M = k\sqrt{L_1L_2}$ = **9.600 µH**.
 
@@ -100,7 +100,7 @@ Exam: [README.md](README.md). All numbers are recomputed by [verify_04_exam.py](
 
 (c) $t = \tau\ln10$ = **345.4 ns**. An amp-level pulse lasting hundreds of nanoseconds is why every I/O pin carries an ESD clamp.
 
-**15.** *(Diligence; 04-10, 04-11, 04-10, 04-10)* Rubric: 2 points per claim, 1 for the physics and 1 for a pointed question (8 in total).
+**15.** *(Diligence; 04-10, 04-11, 04-10, 04-10)* Rubric: 2 points per claim, 1 for the physics and what is wrong or missing, 1 for a pointed question (8 in total).
 
 (a) A 1550 nm photon carries 0.80 eV, below silicon's 1.12 eV gap, so silicon is transparent at 1550 nm and cannot detect it; telecom receivers use germanium or InGaAs. *Ask:* "What is the responsivity at 1550 nm, and what absorbing material is used?" (Only a germanium or III–V absorber on silicon makes the claim plausible.)
 
@@ -122,7 +122,7 @@ Exam: [README.md](README.md). All numbers are recomputed by [verify_04_exam.py](
 | X04.1c | damping ratio | 0.7143 | — |
 | X04.2a | field at the midpoint | 8.988×10^4 | V/m |
 | X04.2b | force on an electron | 1.440×10^-14 | N |
-| X04.2c | dipole moment | 8.0×10^-11 | C·m |
+| X04.2c | dipole moment | 8.000×10^-11 | C·m |
 | X04.2d | far field at 1 m | 1.438 | V/m |
 | X04.3a | field inside the sphere at 0.5 cm | 4.494×10^5 | V/m |
 | X04.3b | field outside at 2.0 cm | 2.247×10^5 | V/m |
@@ -136,7 +136,7 @@ Exam: [README.md](README.md). All numbers are recomputed by [verify_04_exam.py](
 | X04.5a | wire resistance | 6250 | Ω |
 | X04.5b | wire capacitance | 20 | fF |
 | X04.5c | 50% delay | 47.50 | ps |
-| X04.5d | delay at half length | 11.875 | ps |
+| X04.5d | delay at a third of the length | 5.278 | ps |
 | X04.5e | current density | 2.500 | MA/cm² |
 | X04.6a | ¹¹B⁺ radius | 11.94 | cm |
 | X04.6b | BF₂⁺ radius | 25.20 | cm |

@@ -58,7 +58,7 @@ Chapter sections 3.2 to 3.6 and Examples 04-02.3, 04-02.4, 04-02.6 and 04-02.8; 
 
 1. The midpoint error falls as $1/N^2$ but grows rapidly as the observation point approaches the charges, because the field varies on the scale of the distance. Near a 50 µm gap the mesh must be much finer than 50 µm at the facing edges; solvers refine the mesh adaptively where fields change fastest.
 2. No: the dipole formula describes the field far from a compact pair of charges, and inside a junction you are between the charge layers, not far from them. Use superposition of the actual charge distribution, or Gauss's law for the planar geometry (04-03): the field is confined between the two charge layers, like a parallel-plate capacitor, and is zero outside.
-3. The system-level test (IEC 61000-4-2): users touch the contacts directly, and its peak current is about 4.5 times the HBM's at the same voltage. Component HBM and CDM ratings matter in the factory; product-level protection at the connector is designed against the system-level pulse.
+3. The system-level test (IEC 61000-4-2): users touch the contacts directly, and its peak current is about 4.5 times the HBM's at the same voltage in the idealized RC model (the standard specifies a first peak of 3.75 A/kV, 30 A at 8 kV). Component HBM and CDM ratings matter in the factory; product-level protection at the connector is designed against the system-level pulse.
 
 </details>
 

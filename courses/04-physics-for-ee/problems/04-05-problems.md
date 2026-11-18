@@ -3,7 +3,7 @@
 Chapter: [04-05](../chapters/04-05-current-resistance-and-conduction.md) · Worked solutions: [04-05 solutions](../solutions/04-05-solutions.md)
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
-**Conventions:** $e = 1.602176634\times10^{-19}$ C; $m_e = 9.1093837139\times10^{-31}$ kg; $\varepsilon_0 = 8.8541878188\times10^{-12}$ F/m. Copper: $\rho = 1.68$ µΩ·cm at 20 °C, $n = 8.49\times10^{28}$ m⁻³ (from 8.96 g/cm³ and 63.546 g/mol), α = 0.00393 /°C, Fermi speed $1.57\times10^6$ m/s. Lightly doped silicon: µₙ = 1400 and µₚ = 470 cm²/V·s. Answers to 4 significant figures unless exact.
+**Conventions:** $e = 1.602176634\times10^{-19}$ C; $m_e = 9.1093837139\times10^{-31}$ kg; $\varepsilon_0 = 8.8541878188\times10^{-12}$ F/m. Copper: $\rho = 1.68$ µΩ·cm at 20 °C, $n = 8.491\times10^{28}$ m⁻³ (from 8.96 g/cm³ and 63.546 g/mol), α = 0.00393 /°C, Fermi speed $1.57\times10^6$ m/s. Lightly doped silicon: µₙ = 1400 and µₚ = 470 cm²/V·s. Answers to 4 significant figures unless exact.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 

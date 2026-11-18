@@ -202,6 +202,12 @@ v.check("04-06.15c", (0.39 / k15) / (0.39 / k8))
 v.check("04-06.16a", loop_B_axis(1.0, 0.01, 0.1) * 1e9)
 v.check("04-06.16b", MU0 * pi * 0.01**2 / (2 * pi * 0.1**3) * 1e9)
 v.check("04-06.16c", loop_B_axis(1.0, 0.01, 0.1) / (MU0 * pi * 0.01**2 / (2 * pi * 0.1**3)))
+a17, I17 = 1e-3, 3.0
+J017 = I17 / quad(lambda r: (r / a17) * 2 * pi * r, 0, a17)[0]          # J0 from the total current
+v.check("04-06.17a", J017)
+J17 = lambda r: J017 * r / a17 if r <= a17 else 0.0
+v.check("04-06.17b", enclosed_field(J17, 0.5e-3, [a17]))
+v.check("04-06.17c", enclosed_field(J17, 2e-3, [a17]))
 
 # ---------------------------------------------------------------- lab
 Tp = 2 * pi * MP / (E_CH * 0.1)

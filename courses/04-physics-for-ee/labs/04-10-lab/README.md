@@ -27,7 +27,7 @@ Chapter sections 3.1 to 3.5 and Examples 04-10.5 and 04-10.7; Problems 04-10.3 a
 
 | Part | Quantity | Expected |
 |---|---|---|
-| 1 | infinite well, 1 nm | 0.3757, 1.503, 3.381, 6.011 eV against the formula's 0.3760, 1.504, 3.384, 6.017 eV |
+| 1 | infinite well, 1 nm | 0.3757, 1.503, 3.381, 6.011 eV against the formula's 0.3760, 1.504, 3.384, 6.016 eV |
 | 1 | finite well, 1 eV deep, 2 nm wide | 4 bound states; ground state 0.06554 eV (exact 0.06557 eV) |
 | 2 | rectangular barrier, 1 eV electron, 3.1 eV | 1.245×10⁻⁶ at 1.0 nm and 6.388×10⁻⁸ at 1.2 nm, matching the exact formula |
 | 2 | tilted barrier, 0.5 m₀ | about 4×10⁻¹⁶ at 7 MV/cm and 8×10⁻¹² at 10 MV/cm |

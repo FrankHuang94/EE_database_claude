@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 04-08 · Energy in Fields and Maxwell's Equations (Preview)
 
 | | |
@@ -19,7 +19,7 @@
 
 ## 1. Big picture
 
-Four chapters of laws (Gauss, Gauss for magnetism, Faraday, Ampère) almost complete classical electromagnetism. Maxwell found the missing piece in 1865: a changing *electric* field acts like a current and makes a magnetic field, just as a changing magnetic field makes an electric field. With that one term the equations predict self-sustaining waves of electric and magnetic field travelling at $1/\sqrt{\mu_0\varepsilon_0}$, which turned out to be the measured speed of light. Light, radio, Wi-Fi, 5G and the signals on every circuit-board trace are the same phenomenon. This chapter previews the result; [Course 13](../../13-electromagnetics/README.md) develops it fully.
+Four chapters of laws (Gauss, Gauss for magnetism, Faraday, Ampère) almost complete classical electromagnetism. Maxwell found the missing piece in 1861–62 (and in 1865 showed that it predicts waves): a changing *electric* field acts like a current and makes a magnetic field, just as a changing magnetic field makes an electric field. With that one term the equations predict self-sustaining waves of electric and magnetic field travelling at $1/\sqrt{\mu_0\varepsilon_0}$, which turned out to be the measured speed of light. Light, radio, Wi-Fi, 5G and the signals on every circuit-board trace are the same phenomenon. This chapter previews the result; [Course 13](../../13-electromagnetics/README.md) develops it fully.
 
 - **Signals on boards and chips:** fast signals travel as electromagnetic waves guided by traces, at speed $c/\sqrt{\varepsilon_{\text{eff}}}$, which sets delay budgets and timing ([24](../../24-high-speed-io-signal-integrity-and-photonics/README.md)).
 - **Wireless:** antennas launch and capture these waves; 5G uses bands from below 1 GHz to 71 GHz ([17](../../17-communication-systems/README.md), [21](../../21-rf-and-microwave-engineering/README.md)).
@@ -116,7 +116,7 @@ $$
 v = \frac{1}{\sqrt{\mu_0\varepsilon_0}} = c = 299\,792\,458\ \text{m/s} .
 $$
 
-Maxwell computed this from electrical measurements, found it matched the measured speed of light, and concluded that light is an electromagnetic wave. (Since 2019, $c$ is exact and $\mu_0$ and $\varepsilon_0$ are measured, but their product is fixed at $1/c^2$.)
+Maxwell computed this from electrical measurements, found it matched the measured speed of light, and concluded that light is an electromagnetic wave. ($c$ has been exact by definition since 1983, when the metre was defined from it; since 2019 $\mu_0$ and $\varepsilon_0$ are measured, but their product is fixed at $1/c^2$.)
 
 **Properties of the wave.** Substituting $E_y = E_0\cos(kx - \omega t)$ into the first equation gives $B_z = (E_0/c)\cos(kx - \omega t)$:
 
@@ -427,7 +427,7 @@ Every gain in data rate pushes signals to higher frequency, where the physics of
 
    <details><summary>Answer</summary>
 
-   A transmission line: its delay is about 15 × 7.15 ≈ 107 ps (in FR-4), several times the rise time, so reflections and termination matter.
+   A transmission line: its delay is about 150 mm × 7.15 ps/mm ≈ 1.07 ns (in FR-4), some 35 times the rise time, so reflections and termination matter.
 
    </details>
 

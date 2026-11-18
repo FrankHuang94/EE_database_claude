@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 04-03 · Gauss's Law
 
 | | |
@@ -312,7 +312,7 @@ Thick overlays weaken the signal in proportion; higher-permittivity materials st
 
 (b) $0.8449/33 = $ **2.560%**.
 
-(c) Halving the field for the same charge doubles the voltage: $C_F$ halves to **0.4225 pF**.
+(c) For the same charge the field is unchanged, but it now spans twice the thickness, so the voltage doubles and $C_F$ halves to **0.4225 pF**.
 
 **Sanity check, and a calibration.** Infineon's design guide benchmarks its hardware with $C_P$ ≈ 33 pF and a finger capacitance of only 0.1 pF ([R-078](../../../reference/research-log.md#r-078--gauss-law-applications-silicon-permittivity-capacitive-sensing-and-coulombs-law-tests)), about eight times below our estimate. The parallel-plate model is an upper bound: a real finger is curved, covers the pad only partly, and loses field lines to other conductors. Trust the model's scaling ($\propto\varepsilon_rA/d$) and the datasheet's magnitude: a touch changes the pad's capacitance by well under a percent.
 

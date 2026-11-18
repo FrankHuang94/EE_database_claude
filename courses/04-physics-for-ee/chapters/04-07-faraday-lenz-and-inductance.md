@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 04-07 · Faraday's Law, Lenz's Law and Inductance
 
 | | |
@@ -192,7 +192,7 @@ the current ratio following from power conservation ($v_1i_1 = v_2i_2$). A trans
 
 (b) The current flows in a shell of area about $2\pi a\delta$ instead of $\pi a^2$, so $R_{ac}/R_{dc} \approx a/(2\delta) = 0.5/(2\times0.06523) = $ **3.832**.
 
-(c) The current does not stop abruptly at depth δ; it decays exponentially, and in a curved wire the inner layers are slightly smaller. The exact ratio, **4.094**, is close to the refined approximation $a/(2\delta) + \tfrac14$.
+(c) For a flat conductor, exponential decay is exactly equivalent to a uniform layer of thickness δ, so the decay itself is not the error; curvature is. A shell of thickness δ in a round wire has area $\pi a^2 - \pi(a - \delta)^2 = 2\pi a\delta - \pi\delta^2$, smaller than $2\pi a\delta$; using it gives $a^2/(2a\delta - \delta^2)$ = **4.100**, whose first-order form is $a/(2\delta) + \tfrac14$ = **4.082**. The exact Bessel-function result, **4.094**, lies between them.
 
 **Interpretation.** A 1 mm wire at 1 MHz has four times its DC resistance; at the 100 kHz to few-MHz frequencies of switching converters, winding loss is dominated by skin and proximity effects, which is why litz wire and flat foil windings exist.
 
@@ -278,6 +278,8 @@ the current ratio following from power conservation ($v_1i_1 = v_2i_2$). A trans
 | Ex 04-07.3d | skin depth at 1 GHz | 2.063 | µm |
 | Ex 04-07.3e | AC/DC resistance, shell estimate | 3.832 | — |
 | Ex 04-07.3f | AC/DC resistance, exact | 4.094 | — |
+| Ex 04-07.3g | AC/DC resistance, curved shell | 4.100 | — |
+| Ex 04-07.3h | AC/DC resistance, first-order curvature correction | 4.082 | — |
 | Ex 04-07.4a | solenoid inductance | 0.9870 | mH |
 | Ex 04-07.4b | stored energy at 2 A | 1.974 | mJ |
 | Ex 04-07.4c | field inside | 12.57 | mT |
@@ -359,8 +361,8 @@ The netlist `coupled_coils.cir` simulates Example 04-07.7.
 
 ### State of the art (as of Nov 2026)
 
-- **Wireless charging.** The Wireless Power Consortium's Qi specification went from 5 W (version 1.0, 2010) to 15 W (version 1.2, 2015); version 2.0 (April 2023) introduced the Magnetic Power Profile, with magnetic attachment and alignment and a 360 kHz operating frequency; version 2.2 (April 2025) supports up to 25 W, and the current version is 2.2.1, branded "Qi2 25W" at its July 2025 launch. The WPC reports more than 1.5 billion Qi2-certified devices within a year of introduction ([R-082](../../../reference/research-log.md#r-082--inductive-power-transfer-power-inductors-and-integrated-magnetics)) **[Established; the device count is an Industry estimate]**.
-- **Power inductors.** A representative voltage-regulator inductor, Coilcraft's XAL7070-102 (2012 datasheet revision), is 1.0 µH ±20% with 2.55 mΩ typical DCR, a 34.8 A saturation current (defined as a 30% inductance drop), a 20 A rms rating for a 20 °C rise, and a 64 MHz self-resonant frequency ([R-082](../../../reference/research-log.md#r-082--inductive-power-transfer-power-inductors-and-integrated-magnetics)) **[Established]**.
+- **Wireless charging.** The Wireless Power Consortium's Qi specification went from 5 W (version 1.0, 2010) to 15 W (version 1.2, 2015); version 2.0 (April 2023) introduced the Magnetic Power Profile, with magnetic attachment and alignment and a 360 kHz operating frequency; version 2.2 (April 2025) supports up to 25 W, and the current version is 2.2.1, branded "Qi2 25W" at its July 2025 launch. The WPC reports more than 1.5 billion Qi2-certified products within a year of introduction ([R-082](../../../reference/research-log.md#r-082--inductive-power-transfer-power-inductors-and-integrated-magnetics)) **[Established; the device count is an Industry estimate]**.
+- **Power inductors.** A representative voltage-regulator inductor, Coilcraft's XAL7070-102 (2012 datasheet revision), is 1.0 µH with 2.55 mΩ typical DCR, a 34.8 A saturation current (defined as a 30% inductance drop), a 20 A rms rating for a 20 °C rise, and a 64 MHz self-resonant frequency ([R-082](../../../reference/research-log.md#r-082--inductive-power-transfer-power-inductors-and-integrated-magnetics)) **[Established]**.
 - **Integrated voltage regulators.** Intel's FIVR (APEC 2014) put 140 MHz multiphase buck regulators on the processor die with non-magnetic package-trace inductors: 59 inductors on 10 rails in a 20 mm × 8 mm area ([R-082](../../../reference/research-log.md#r-082--inductive-power-transfer-power-inductors-and-integrated-magnetics)) **[Established]**.
 - **On-chip inductors.** Spiral inductors in standard CMOS reach quality factors of only about 5–20 at gigahertz frequencies, limited by metal resistance and substrate losses; patterned ground shields improved Q by up to 33% at 1–2 GHz in a classic 1998 study ([R-082](../../../reference/research-log.md#r-082--inductive-power-transfer-power-inductors-and-integrated-magnetics)) **[Established]**.
 

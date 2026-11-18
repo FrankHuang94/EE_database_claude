@@ -128,6 +128,7 @@ slope, icpt = np.polyfit(fs, [0.605, 1.247], 1)
 v.check("04-10.3a", slope)
 v.check("04-10.3b", slope * E_CH)
 v.check("04-10.3c", H * fs[0] / E_CH - 0.605)
+v.check("04-10.3d", -icpt)                                         # V_s = (h/e) f - phi/e
 v.check("04-10.4a", lam_db(ME, 30000 * E_CH) * 1e9)
 v.check("04-10.4b", lam_db(1.675e-27, 0.025 * E_CH) * 1e9)
 dp5 = HBAR / (2 * 5e-9)

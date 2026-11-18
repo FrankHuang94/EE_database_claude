@@ -145,7 +145,9 @@ v.check("Ex 04-03.4e", line_field(lam, 5e-3) + line_field(-lam, 5e-3))
 v.check("Ex 04-03.4f", 3e6 / line_field(1.0, a) * 1e9)
 q5 = 2e-9
 v.check("Ex 04-03.5a", np.linalg.norm(point_field(q5, (0, 0, 0), (0.02, 0, 0))))
-v.check("Ex 04-03.5b", 0)
+# field in the metal at 3.5 cm: the point charge plus the induced -q (r = 3 cm) and +q (r = 4 cm) shells
+v.check("Ex 04-03.5b", np.linalg.norm(point_field(q5, (0, 0, 0), (0.035, 0, 0))) - q5 * shell_axial(0.03, 0.035)
+        + q5 * shell_axial(0.04, 0.035))
 s_in, s_out = -q5 / (4 * pi * 0.03**2), q5 / (4 * pi * 0.04**2)
 v.check("Ex 04-03.5c", s_in)
 v.check("Ex 04-03.5d", s_out)
@@ -183,7 +185,8 @@ v.check("Ex 04-03.7d", 3 * EPS0 * Afing / 4e-3 * 1e12)
 # ---------------------------------------------------------------- solutions
 v.check("04-03.1a", 500 * 6)
 v.check("04-03.1b", abs(np.dot([0, 0, -500], [np.sin(radians(40)), 0, cos(radians(40))])) * 6)
-v.check("04-03.1c", 0)
+shed = [((0, 0, 1), 6.0), ((0, 0, -1), 6.0), ((1, 0, 0), 2.5 * 3), ((-1, 0, 0), 2.5 * 3), ((0, 1, 0), 2.5 * 2), ((0, -1, 0), 2.5 * 2)]
+v.check("04-03.1c", sum(np.dot([0, 0, -500], n) * area for n, area in shed))   # 2 m × 3 m × 2.5 m closed box
 v.check("04-03.2a", EPS0 * -5000)
 v.check("04-03.3a", np.linalg.norm(point_field(5e-9, (0, 0, 0), (0.1, 0, 0))))
 v.check("04-03.3b", cube_flux(5e-9, (0, 0, 0), half=0.5)[0])
@@ -208,7 +211,16 @@ lam6 = rho6 * pi * a6**2
 v.check("04-03.6a", rho6 * 0.5e-3 / (2 * EPS0))
 v.check("04-03.6b", line_field(lam6, a6))
 v.check("04-03.6c", cylinder_field(rho6, a6, 5e-3))
-v.check("04-03.7a", 0)
+def ring_of_lines(lam_total, radius, p, n=4000):
+    """2-D field at point p from a cylindrical shell modeled as n parallel line charges."""
+    ang = 2 * pi * (np.arange(n) + 0.5) / n
+    dx, dy = p[0] - radius * np.cos(ang), p[1] - radius * np.sin(ang)
+    d2 = dx**2 + dy**2
+    k = lam_total / n / (2 * pi * EPS0)
+    return np.array([np.sum(k * dx / d2), np.sum(k * dy / d2)])
+
+
+v.check("04-03.7a", np.linalg.norm(ring_of_lines(3e-9, 0.01, (0.005, 0)) + ring_of_lines(-1e-9, 0.03, (0.005, 0))))
 v.check("04-03.7b", line_field(3e-9, 0.02))
 v.check("04-03.7c", line_field(2e-9, 0.04))
 for key, xx in (("04-03.8a", 0.0), ("04-03.8b", 0.5e-3), ("04-03.8c", 1e-3), ("04-03.8d", 11e-3)):

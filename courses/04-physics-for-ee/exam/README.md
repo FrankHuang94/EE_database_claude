@@ -1,7 +1,7 @@
 # Course 04 · Final Exam (Physics for EE)
 
 **Time limit:** 180 minutes. **Allowed:** a scientific calculator and the [Course 04 equation sheet](../../../reference/equation-sheets/04-physics-for-ee.md) printed without its chapter links. No notes, no Python.
-**Instructions:** answer all 15 questions and show every step. Each [A] is worth 5 points, each [B] 8 and each [C] 12 (119 points in total; 83 or more, about 70%, is a strong pass). Within a question, the lettered parts carry equal weight. Give numerical answers to 4 significant figures unless told otherwise, with units and, for vectors, directions. Question 15 is a short-answer diligence question graded against the rubric in the solutions. Solutions are in a separate file, [solutions.md](solutions.md). Open it only after you finish.
+**Instructions:** answer all 15 questions and show every step. Each [A] is worth 5 points, each [B] 8 and each [C] 12 (119 points in total; 83 or more, about 70%, is a strong pass). Within a question, the lettered parts carry equal weight unless the question states otherwise. Questions 3 and 12 ask for short derivations; show the reasoning, not just the formula. Give numerical answers to 4 significant figures unless told otherwise, with units and, for vectors, directions. Question 15 is a short-answer diligence question graded against the rubric in the solutions. Solutions are in a separate file, [solutions.md](solutions.md). Open it only after you finish.
 
 **Constants:** $h = 6.62607015\times10^{-34}$ J·s, $\hbar = h/2\pi$, $e = 1.602176634\times10^{-19}$ C, $c = 299\,792\,458$ m/s, $k = 1.380649\times10^{-23}$ J/K (all exact); $m_0 = 9.1093837139\times10^{-31}$ kg; $\varepsilon_0 = 8.8541878188\times10^{-12}$ F/m, $\mu_0 = 1.25663706127\times10^{-6}$ H/m, $1/(4\pi\varepsilon_0) = 8.98755\times10^9$ N·m²/C²; 1 u = $1.66054\times10^{-27}$ kg; $g = 9.80665$ m/s²; $R = 8.314462618$ J/(mol·K); $hc$ = 1239.84 eV·nm; $kT$ = 25.85 meV at 300 K.
 
@@ -19,7 +19,7 @@
 (d) Find the field magnitude on the $x$-axis 1.0 m away, using the far-field dipole formula.
 
 **3 [B] · Gauss's law twice.** (a) A sphere of radius 1.0 cm carries 10 nC spread uniformly through its volume. Find the field at 0.5 cm and at 2.0 cm from its center.
-(b) On the p side of a silicon pn junction ($\varepsilon_r$ = 11.7), acceptors at $10^{17}$ cm⁻³ are fully depleted over $x_p$ = 50 nm. Find the peak field at the junction.
+(b) On the p side of a silicon pn junction ($\varepsilon_r$ = 11.7), acceptors at $10^{17}$ cm⁻³ are fully depleted over $x_p$ = 50 nm. Using a Gaussian pillbox, derive the peak field at the junction, $E_{\max} = eN_Ax_p/\varepsilon$, and evaluate it.
 (c) Find the potential drop across the p-side depletion region.
 
 **4 [B] · Gate stacks and DRAM reads.** (a) A gate stack has 0.6 nm of SiO₂ ($\varepsilon_r$ = 3.9) under 1.5 nm of HfO₂ ($\varepsilon_r$ = 25). Find its equivalent oxide thickness.
@@ -30,7 +30,7 @@
 **5 [B] · A thin wire.** A copper interconnect is 100 µm long, 20 nm wide and 40 nm tall, with an effective resistivity of 5.0 µΩ·cm (size effect included; take as given) and capacitance 0.20 fF/µm.
 (a) Find its resistance and total capacitance.
 (b) Estimate its 50% delay as a distributed RC line.
-(c) Find the delay if the wire were half as long.
+(c) Find the delay if the wire were a third as long.
 (d) Find the current density, in MA/cm², when it carries 20 µA.
 
 **6 [A] · An implanter magnet.** Singly charged ions are accelerated through 40 kV and enter a 0.80 T analyzer field at right angles. Take masses of 11 u for ¹¹B⁺, 10 u for ¹⁰B⁺ and 49 u for BF₂⁺.
@@ -60,7 +60,8 @@
 (b) Model a GaAs quantum well as an infinite well 8.0 nm wide with $m^*$ = 0.067 $m_0$ (take as given). Find $E_1$, the 2→1 spacing and the emitted wavelength.
 (c) Using $T\propto e^{-2\kappa d}$ for an electron 2.1 eV below the top of an oxide barrier (free-electron mass), by what factor does tunneling fall when the oxide thickens from 1.5 to 2.0 nm?
 
-**12 [C] · Free electrons and intrinsic carriers.** (a) Silver has $n = 5.86\times10^{28}$ conduction electrons per m³ (take as given). Find its Fermi energy and Fermi speed.
+**12 [C] · Free electrons and intrinsic carriers.** Parts (a) to (d) carry 2 points each and (e) 4 points.
+(a) By counting the states of free electrons in a box of volume $V$ (two per allowed wavevector), derive $E_F = \frac{\hbar^2}{2m}(3\pi^2n)^{2/3}$. Silver has $n = 5.86\times10^{28}$ conduction electrons per m³ (take as given): find its Fermi energy and Fermi speed.
 (b) Find the ratio of its electronic heat capacity to Drude's classical prediction at 300 K.
 (c) Using $n_i = 5.29\times10^{19}(T/300)^{2.54}e^{-6726/T}$ cm⁻³, find silicon's $n_i$ at a junction temperature of 125 °C and its ratio to the 300 K value.
 (d) At what temperature does 4H-SiC's factor $e^{-E_g/2kT}$ ($E_g$ = 3.26 eV) equal silicon's ($E_g$ = 1.12 eV) at 125 °C?

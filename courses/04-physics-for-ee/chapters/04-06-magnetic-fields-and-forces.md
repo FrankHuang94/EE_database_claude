@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 04-06 · Magnetic Fields and Forces
 
 | | |
@@ -114,7 +114,7 @@ $$
 
 circling the wire. One ampere gives 20 µT at 1 cm, comparable to the Earth's field (roughly 50 µT): this is why a compass near a power cable misreads, and why paired supply and return conductors (whose fields cancel) are good practice.
 
-**A circular loop on its axis.** Every element of a loop of radius $R$ is at distance $\sqrt{R^2 + z^2}$ from a point on the axis, and the components perpendicular to the axis cancel around the loop, leaving
+**A circular loop on its axis.** Every element of a loop of radius $R$ is at distance $\sqrt{R^2 + z^2}$ from a point on the axis, and each $d\vec\ell$ is perpendicular to the line joining it to that point, so Biot–Savart gives $dB = \mu_0I\,d\ell/\big(4\pi(R^2 + z^2)\big)$. The components perpendicular to the axis cancel around the loop; the axial component is the fraction $R/\sqrt{R^2 + z^2}$ of each $dB$, and the elements add up to $\oint d\ell = 2\pi R$, leaving
 
 $$
 B_z = \frac{\mu_0IR^2}{2(R^2 + z^2)^{3/2}}, \qquad B_{\text{center}} = \frac{\mu_0I}{2R} .
@@ -174,7 +174,7 @@ where $R_H$ is the **Hall coefficient**. Three consequences make this one of the
 
 - **The sign of $V_H$ reveals the sign of the carriers.** For the same current direction, electrons and holes pile up on the *same* side (both are pushed the same way, since reversing both $q$ and $\vec v_d$ leaves the force unchanged), giving opposite Hall voltages. This is how holes were shown to be real positive carriers.
 - **The size of $V_H$ measures carrier density**, and combined with resistivity it gives mobility, $\mu = |R_H|\sigma$. Hall measurements characterize every new semiconductor material ([09-03](../../09-semiconductor-devices/chapters/09-03-drift-and-diffusion.md)).
-- **Few carriers mean a big signal.** In copper, $n$ is so large that 1 A in 1 T across 0.1 mm gives under a microvolt; a lightly doped semiconductor gives millivolts from a milliampere (Example 04-06.6). Hall *sensors* are therefore semiconductor devices, integrated with amplifiers on ordinary CMOS chips.
+- **Few carriers mean a big signal.** In copper, $n$ is so large that 1 A in 1 T in a strip 0.1 mm thick gives under a microvolt; a lightly doped semiconductor gives millivolts from a milliampere (Example 04-06.6). Hall *sensors* are therefore semiconductor devices, integrated with amplifiers on ordinary CMOS chips.
 
 ![A Hall bar: current flows to the right in an n-type bar with the magnetic field into the page; electrons drifting left are pushed toward the top edge, which charges negative while the bottom charges positive, giving a Hall voltage across the bar.](../../../assets/figures/04-06/hall-effect.svg)
 
@@ -260,9 +260,9 @@ Saturation is a design limit for every power inductor: a MnZn ferrite such as TD
 
 **Setup.** (a) A copper strip 0.1 mm thick carries 1 A in a 1 T field. Find the Hall voltage. (b) A silicon Hall plate 10 µm thick with $10^{16}$ electrons per cm³ carries 1 mA in 0.1 T. Find the Hall voltage. (c) A measurement on the silicon plate gives 6.242 mV; find $n$. (d) Its resistivity is measured as 0.4458 Ω·cm; find the electron mobility.
 
-**Solution.** (a) $V_H = IB/(net) = 1\times1/(8.49\times10^{28}\times1.602\times10^{-19}\times10^{-4}) = $ **0.7351 µV**.
+**Solution.** (a) $V_H = IB/(net) = 1\times1/(8.491\times10^{28}\times1.602\times10^{-19}\times10^{-4}) = $ **0.7351 µV**.
 
-(b) $n = 10^{22}$ m⁻³: $V_H = 10^{-3}\times0.1/(10^{22}\times1.602\times10^{-19}\times10^{-5}) = $ **6.242 mV**, about 8500 times copper's at a thousandth of the current and a tenth of the field.
+(b) $n = 10^{22}$ m⁻³: $V_H = 10^{-3}\times0.1/(10^{22}\times1.602\times10^{-19}\times10^{-5}) = $ **6.242 mV**, about 8500 times copper's at a thousandth of the current, a tenth of the field and a tenth of the thickness.
 
 (c) $n = IB/(etV_H)$ = **1.000×10¹⁶ cm⁻³**.
 
@@ -390,7 +390,7 @@ The lab ([labs/04-06-lab/](../labs/04-06-lab/README.md)) is a notebook in five p
 - **Hall switches.** TI's DRV5032 targets "cell phone, laptop, or tablet case sensing": the 5 Hz-sampling version averages 0.54 µA, with operate-point options from 3.4 mT to 63 mT and a 1.65–5.5 V supply ([R-081](../../../reference/research-log.md#r-081--hall-sensors-magnetic-core-materials-and-mram)) **[Established]**.
 - **Hall current sensors.** Allegro's automotive-grade ACS724 (datasheet revision of March 2026) has a 1.2 mΩ primary conductor, 120 kHz bandwidth, sensitivities from 40 to 800 mV/A depending on range (400 mV/A for ±5 A, 40 mV/A for ±50 A at 5 V) and a 2400 V rms isolation test rating ([R-081](../../../reference/research-log.md#r-081--hall-sensors-magnetic-core-materials-and-mram)) **[Established]**.
 - **Core materials.** TDK's N87 MnZn ferrite (datasheet of June 2025) saturates at 490 mT at 25 °C and 390 mT at 100 °C and is optimized for 25–500 kHz; Magnetics Inc. lists 1.5 T for its High Flux (NiFe) powder cores, 1.05 T for Kool Mµ (FeSiAl) and 1.5–1.8 T for grain-oriented silicon steel ([R-081](../../../reference/research-log.md#r-081--hall-sensors-magnetic-core-materials-and-mram)) **[Established]**.
-- **Embedded MRAM.** Samsung began commercial shipment of eMRAM on its 28 nm FD-SOI process in March 2019; GlobalFoundries put eMRAM on 22FDX into production in February 2020 (100,000-cycle endurance, 10-year retention from −40 to 125 °C); NXP and TSMC announced automotive 16 nm FinFET eMRAM in May 2023 with one-million-cycle endurance and 20-year retention at 150 °C, with first products sampling from early 2025 ([R-081](../../../reference/research-log.md#r-081--hall-sensors-magnetic-core-materials-and-mram)) **[Established for the announcements; performance figures are vendor claims]**.
+- **Embedded MRAM.** Samsung began commercial shipment of eMRAM on its 28 nm FD-SOI process in March 2019; GlobalFoundries put eMRAM on 22FDX into production in February 2020 (100,000-cycle endurance, 10-year retention from −40 to 125 °C); NXP and TSMC announced automotive 16 nm FinFET eMRAM in May 2023 with one-million-cycle endurance and 20-year retention at 150 °C, with first products planned to sample from early 2025 ([R-081](../../../reference/research-log.md#r-081--hall-sensors-magnetic-core-materials-and-mram)) **[Established for the announcements; performance figures are vendor claims]**.
 
 ### Why it matters commercially
 
@@ -440,7 +440,7 @@ Magnetic sensing and magnetics are large, steady businesses inside the semicondu
 
    <details><summary>Answer</summary>
 
-   $V_H = IB/(nqt)$: the Hall voltage is inversely proportional to carrier density. A semiconductor has $10^6$ or more times fewer carriers than copper, so it gives a millivolt signal instead of nanovolts.
+   $V_H = IB/(nqt)$: the Hall voltage is inversely proportional to carrier density. A semiconductor has $10^6$ or more times fewer carriers than copper, so it gives a millivolt signal instead of a sub-microvolt one.
 
    </details>
 

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 04-02 · Charge, Coulomb's Law and Electric Fields
 
 | | |
@@ -134,15 +134,15 @@ $$
 E = k_eq\Big[\frac{1}{(r - d/2)^2} - \frac{1}{(r + d/2)^2}\Big] = k_eq\,\frac{2rd}{(r^2 - d^2/4)^2} \approx \frac{2k_ep}{r^3}\qquad(r \gg d) .
 $$
 
-On the perpendicular bisector the field is $k_ep/(r^2 + d^2/4)^{3/2} \approx k_ep/r^3$, pointing opposite to $\vec p$. The two charges nearly cancel at a distance, leaving a field one power of $r$ weaker than a point charge's. That is why neutral objects barely interact at a distance, and why a dipole's influence is local.
+On the perpendicular bisector each charge is a distance $s = \sqrt{r^2 + d^2/4}$ away and contributes $k_eq/s^2$. The components along the bisector cancel; the components parallel to the dipole axis, each $k_eq/s^2\times(d/2)/s$, add, both pointing from $+q$ toward $-q$. The field is therefore $2k_eq(d/2)/s^3 = k_ep/(r^2 + d^2/4)^{3/2} \approx k_ep/r^3$, pointing opposite to $\vec p$. The two charges nearly cancel at a distance, leaving a field one power of $r$ weaker than a point charge's. That is why neutral objects barely interact at a distance, and why a dipole's influence is local.
 
-**Torque and energy in a uniform field.** In a uniform field the forces $+q\vec E$ and $-q\vec E$ cancel, so a dipole feels no net force, but they form a couple with torque
+**Torque and energy in a uniform field.** In a uniform field the forces $+q\vec E$ and $-q\vec E$ cancel, so a dipole feels no net force, but they form a couple. Let θ be the angle between $\vec p$ and $\vec E$. Each force has magnitude $qE$ and acts at a lever arm $(d/2)\sin\theta$ about the center, and both turn the dipole the same way, so the torque is $2qE(d/2)\sin\theta$. Rotating the dipole against this torque through $d\theta$ takes work $\tau\,d\theta$, which is stored as potential energy: $dU = pE\sin\theta\,d\theta$, so $U = -pE\cos\theta$ (zero at θ = 90°). In summary,
 
 $$
-\tau = pE\sin\theta, \qquad U = -\vec p\cdot\vec E = -pE\cos\theta ,
+\tau = pE\sin\theta, \qquad U = -\vec p\cdot\vec E = -pE\cos\theta .
 $$
 
-where θ is the angle between $\vec p$ and $\vec E$. The torque turns the dipole toward the field (θ = 0, the minimum of $U$), and rotating it from aligned to anti-aligned costs $2pE$. Polar molecules aligning with a field are the microscopic origin of a dielectric's permittivity ([04-04](04-04-potential-capacitance-and-dielectrics.md)). In a *nonuniform* field the two forces differ and a dipole is pulled toward the stronger field, which is why a charged comb picks up neutral bits of paper.
+The torque turns the dipole toward the field (θ = 0, the minimum of $U$), and rotating it from aligned to anti-aligned costs $2pE$. Polar molecules aligning with a field are the microscopic origin of a dielectric's permittivity ([04-04](04-04-potential-capacitance-and-dielectrics.md)). In a *nonuniform* field the two forces differ and a dipole is pulled toward the stronger field, which is why a charged comb picks up neutral bits of paper.
 
 ### 3.6 Charges moving in a uniform field
 
@@ -154,7 +154,7 @@ $$
 
 An electron accelerated through 100 V reaches about $5.9\times10^6$ m/s, about 2% of the speed of light, so classical mechanics is accurate (Example 04-02.7); at tens of kilovolts relativity matters. Ion implanters use the same physics to drive dopant ions into silicon at energies of keV, and electron-beam lithography and microscopy at tens of keV.
 
-**Fields large enough to break things.** A strong enough field rips electrons from atoms and starts an avalanche: dielectric **breakdown**. Dry air at sea level breaks down at about 3 MV/m (3 kV/mm), which is why a person charged to a few kilovolts can make a spark across a millimeter or so. Thermally grown SiO₂, the classic gate insulator, withstands more than 10 MV/cm, a thousand times more ([R-077](../../../reference/research-log.md#r-077--esd-models-targets-and-dielectric-breakdown)); a gate oxide a couple of nanometers thick carrying about a volt is already within a factor of a few of that limit, which is why oxides need careful reliability engineering.
+**Fields large enough to break things.** A strong enough field rips electrons from atoms and starts an avalanche: dielectric **breakdown**. Dry air at sea level breaks down at about 3 MV/m (3 kV/mm), which is why a person charged to a few kilovolts can make a spark across a millimeter or so. Thermally grown SiO₂, the classic gate insulator, withstands more than 10 MV/cm, over three hundred times more ([R-077](../../../reference/research-log.md#r-077--esd-models-targets-and-dielectric-breakdown)); a gate oxide a couple of nanometers thick carrying about a volt is already within a factor of a few of that limit, which is why oxides need careful reliability engineering.
 
 ## 4. Worked examples
 
@@ -168,7 +168,7 @@ An electron accelerated through 100 V reaches about $5.9\times10^6$ m/s, about 2
 
 (c) $4.5\times3600 = $ **16,200 C**.
 
-**Sanity check.** A node charge of a million electrons fluctuates by about $\sqrt{10^6} = 1000$ electrons if charge arrives randomly (03-06's shot noise): a 0.1% effect, which is why small capacitors are noisy.
+**Sanity check.** Six million electrons sounds like a lot, but thermal agitation makes any capacitor's charge fluctuate by $\sqrt{kTC}$ whatever its voltage (03-06's kT/C noise): about 400 electrons rms for 1 pF at 300 K, 0.006% of this charge but the whole signal of a node holding only a few thousand. That is why small capacitors are noisy.
 
 ### Example 04-02.2 — Electric force against gravity (tier A)
 
@@ -363,7 +363,7 @@ The netlist `hbm.cir` simulates Example 04-02.8.
 ### State of the art (as of Nov 2026)
 
 - **ESD qualification targets.** The Industry Council on ESD Target Levels, whose white papers JEDEC published as JEP155 (HBM) and JEP157 (CDM), concluded that 1 kV HBM and 250 V CDM are safe targets with basic factory ESD controls, and that advanced controls are needed below about 500 V HBM and 125 V CDM; JEP155 itself states that 500 V HBM allows safe manufacturing with a standard ESD control process. High-pin-count, high-speed designs are pushing CDM targets toward 125 V ([R-077](../../../reference/research-log.md#r-077--esd-models-targets-and-dielectric-breakdown)) **[Established]**.
-- **Test models.** HBM testing to ANSI/ESDA/JEDEC JS-001 (2024 edition) uses 100 pF through 1.5 kΩ; its classes run from 0Z (under 50 V) to 3B (8 kV and above), with class 1C covering 1000 to 2000 V. CDM (JS-002) models a charged *device* discharging to ground, a much faster event. The system-level test of IEC 61000-4-2, applied to whole products, uses 150 pF through 330 Ω at 2 to 8 kV, so its peak current is several times an HBM pulse's at the same voltage: about 24 A at 8 kV against about 5.3 A ([R-077](../../../reference/research-log.md#r-077--esd-models-targets-and-dielectric-breakdown)) **[Established]**.
+- **Test models.** HBM testing to ANSI/ESDA/JEDEC JS-001 (2024 edition) uses 100 pF through 1.5 kΩ; its classes run from 0Z (under 50 V) to 3B (8 kV and above), with class 1C covering 1000 to 2000 V. CDM (JS-002) models a charged *device* discharging to ground, a much faster event. The system-level test of IEC 61000-4-2, applied to whole products, uses 150 pF through 330 Ω at 2 to 8 kV, so its peak current is several times an HBM pulse's at the same voltage: the idealized RC networks give 24 A against 5.3 A at 8 kV, and the standard actually specifies a sharper first peak of 3.75 A/kV, 30 A at 8 kV ([R-077](../../../reference/research-log.md#r-077--esd-models-targets-and-dielectric-breakdown)) **[Established]**.
 - **Fields in manufacturing.** Electrostatic chucks clamp wafers with Coulomb force across a thin insulator (or, in the Johnsen–Rahbek type, a slightly conductive layer that gives a strong force at lower voltage); a peer-reviewed measurement on a 200 mm wafer at 1 kV found a holding force of about 40 N, matching a capacitor-pressure calculation that 04-04 explains ([R-077](../../../reference/research-log.md#r-077--esd-models-targets-and-dielectric-breakdown)) **[Established]**.
 
 ### Why it matters commercially
@@ -429,7 +429,7 @@ ESD is a cost and a constraint at once. Every pin of every IC carries protection
 
    <details><summary>Answer</summary>
 
-   Not necessarily: the IEC network (150 pF, 330 Ω) delivers about 4.5 times the HBM peak current at the same voltage and more energy. Component and system ratings are different tests.
+   Not necessarily: the IEC network (150 pF, 330 Ω) delivers about 4.5 times the HBM peak current at the same voltage in the idealized RC model (the standard's specified first peak, 3.75 A/kV, is higher still) and more energy. Component and system ratings are different tests.
 
    </details>
 

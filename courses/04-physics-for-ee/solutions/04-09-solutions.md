@@ -12,9 +12,9 @@ $\lambda = c/f = $ **12.49 cm**; $T = 1/f = $ **0.4167 ns**; $k = 2\pi/\lambda =
 
 ### Solution 04-09.2
 
-(a) $v = \sqrt{T/\mu} = \sqrt{100/0.002} = $ **223.6 m/s**; $f_1 = v/(2L) = $ **223.6 Hz**.
+(a) $v = \sqrt{F_T/\mu} = \sqrt{100/0.002} = $ **223.6 m/s**; $f_1 = v/(2L) = $ **223.6 Hz**.
 
-(b) $f_1 = \sqrt{T/\mu}/(2L)$, so $T = \mu(2Lf_1)^2 = 0.002\times(440)^2 = $ **387.2 N**. Frequency goes as the square root of tension: doubling the pitch needs four times the tension.
+(b) $f_1 = \sqrt{F_T/\mu}/(2L)$, so $F_T = \mu(2Lf_1)^2 = 0.002\times(440)^2 = $ **387.2 N**. Frequency goes as the square root of tension: doubling the pitch needs four times the tension.
 
 ### Solution 04-09.3
 

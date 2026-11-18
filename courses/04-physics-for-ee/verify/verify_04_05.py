@@ -71,6 +71,7 @@ T50 = rc_line_t50()
 v.check("T 04-05.a", N_CU)
 v.check("T 04-05.b", T50)
 v.check("T 04-05.c", ALPHA * (100 - 20) * 100)
+v.check("T 04-05.d", brentq(lambda t: 1 - (4 / pi) * np.exp(-pi**2 * t / 4) - 0.5, 0.1, 1))   # slowest mode only
 
 # ---------------------------------------------------------------- examples
 v.check("Ex 04-05.1a", 1 / E_CH)

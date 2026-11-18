@@ -22,7 +22,7 @@ Chapter sections 3.1 to 3.5 and Examples 04-09.2 to 04-09.4 and 04-09.7; Problem
 3. **Part 2:** predict an 8-element λ/2 array's beamwidth at broadside and at 30°, and what a full-wavelength spacing does.
 4. **Part 3:** predict the first diffraction zeros of a slit and a circular aperture.
 5. **Part 4:** predict where the MgF₂ coating's reflectance is lowest.
-6. **Part 5:** predict the dispersion spreading over 10 km and 100 km.
+6. **Part 5:** predict the fiber's acceptance half-angle, then the dispersion spreading over 10 km and 100 km.
 7. From the repository root, run `python tools/run_spice.py 04-09` to simulate the stub.
 
 ## Expected results
@@ -33,7 +33,8 @@ Chapter sections 3.1 to 3.5 and Examples 04-09.2 to 04-09.4 and 04-09.7; Problem
 | 2 | 8 elements, λ/2 | −3 dB beamwidth 12.80° at broadside, 14.84° steered to 30°; grating lobes at ±90° with λ spacing |
 | 3 | diffraction zeros | slit at sin θ = 1.0000 λ/a; circle at 1.2197 λ/D |
 | 4 | MgF₂ coating | minimum 1.411% at 550 nm; 1.721% at 450 nm and 1.563% at 650 nm |
-| 5 | dispersion, 0.1 nm source | 17 ps over 10 km (29.4 Gb/s limit); 170 ps over 100 km |
+| 5 | fiber acceptance (core 1.468, cladding 1.463) | 6.953° by ray tracing, matching the NA formula |
+| 5 | dispersion, 0.1 nm source | 3.4 ps over 2 km, 17 ps over 10 km (29.4 Gb/s limit), 170 ps over 100 km |
 | netlist | quarter-wave stub | input-impedance minimum at 1.000 GHz |
 
 <!-- answer-key -->

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 04-04 · Electric Potential, Capacitance and Dielectrics
 
 | | |
@@ -59,7 +59,7 @@ $$
 \oint\vec E\cdot d\vec l = 0 .
 $$
 
-A field with this property is **conservative** ([01-10 §3.5](../../01-calculus-for-engineers/chapters/01-10-multivariable-calculus-2.md)). Two consequences carry the rest of the chapter: a potential function exists, and (as 04-03 claimed) field lines cannot form closed loops or connect two points of a conductor through a field-free region. When magnetic fields change, the loop integral is no longer zero (Faraday's law, [04-07](04-07-faraday-lenz-and-inductance.md)), and "voltage between two points" starts to depend on the path. That is the physics behind ground bounce and inductive pickup.
+A field with this property is **conservative** ([01-10 §3.5](../../01-calculus-for-engineers/chapters/01-10-multivariable-calculus-2.md)). Two consequences carry the rest of the chapter: a potential function exists, and (as 04-03 claimed) field lines cannot form closed loops or run from one point of a conductor to another (the return path through the field-free metal would close a loop with nonzero circulation). When magnetic fields change, the loop integral is no longer zero (Faraday's law, [04-07](04-07-faraday-lenz-and-inductance.md)), and "voltage between two points" starts to depend on the path. That is the physics behind ground bounce and inductive pickup.
 
 ### 3.2 Potential energy and electric potential
 
@@ -210,7 +210,7 @@ $$
 U = \int_0^Q\frac{q}{C}\,dq = \frac{Q^2}{2C} = \frac12CV^2 = \frac12QV .
 $$
 
-The factor ½ appears because the early charge moved through a small voltage. A digital gate switching a load capacitance $C$ through $V$ stores $\tfrac12CV^2$ on each rising edge and dumps it on the falling edge; at clock rate $f$ with activity factor α, that is the dynamic power $\alpha CV^2f$ of [19](../../19-digital-vlsi-design/README.md).
+The factor ½ appears because the early charge moved through a small voltage. A digital gate charging a load capacitance $C$ to $V$ draws charge $CV$ from the supply, which delivers $CV^2$: half is dissipated in the pull-up transistor (the same loss as charge sharing, below) and half is stored, then dumped to ground on the falling edge. Each full 0→1→0 cycle therefore costs $CV^2$, and at clock rate $f$ with activity factor α that is the dynamic power $\alpha CV^2f$ of [19](../../19-digital-vlsi-design/README.md).
 
 **Energy lives in the field.** For a parallel-plate capacitor, $\tfrac12CV^2 = \tfrac12(\varepsilon A/d)(Ed)^2 = \tfrac12\varepsilon E^2\cdot(Ad)$. The volume between the plates is $Ad$, so the energy per unit volume is
 
@@ -310,7 +310,7 @@ The pressure is set by the field in the gap, $D/\varepsilon_0$, which is $\varep
 
 ![Breakdown voltage of an air coax with a 2 mm outer radius against the ratio of inner to outer radius: it rises from zero, peaks at 2207 volts when the ratio is 1 over e, and falls to zero as the inner conductor fills the gap.](../../../assets/figures/04-04/coax-optimum.svg)
 
-*Figure 3. The optimum is broad: a/b anywhere from about 0.25 to 0.55 stays within 10% of the best.*
+*Figure 3. The optimum is broad: a/b anywhere from about 0.22 to 0.54 stays within 10% of the best.*
 
 ### Example 04-04.6 — A high-k gate stack (tier C)
 
@@ -340,7 +340,7 @@ The pressure is set by the field in the gap, $D/\varepsilon_0$, which is $\varep
 
 ### Example 04-04.8 — Holding a wafer with an electrostatic chuck (tier C)
 
-**Setup.** Shim and Sugai measured a Coulomb-type chuck: a 200 mm wafer on alumina ($\varepsilon_r$ = 8.8) 0.54 mm thick, at 1 kV ([R-079](../../../reference/research-log.md#r-079--dielectric-constants-capacitor-materials-and-dram-cells)). Find (a) the capacitance and the charge, (b) $D$, (c) the field inside the alumina and in a thin gap above it, (d) the clamping pressure and force at zero gap.
+**Setup.** Shim and Sugai measured a Coulomb-type chuck: a 200 mm wafer on alumina ($\varepsilon_r$ = 8.8) 0.54 mm thick, at 1 kV ([R-077](../../../reference/research-log.md#r-077--esd-models-targets-and-dielectric-breakdown)). Find (a) the capacitance and the charge, (b) $D$, (c) the field inside the alumina and in a thin gap above it, (d) the clamping pressure and force at zero gap.
 
 **Solution.** The area is $S = \pi(0.1)^2 = 0.03142$ m².
 
@@ -448,7 +448,7 @@ The netlist `charge_sharing.cir` simulates Example 04-04.7.
 | Energy density; pressure in air at 3 MV/m | $\tfrac12\varepsilon E^2$; about 40 Pa | |
 | Best coax for breakdown | $b/a = e$ | |
 | Relative permittivity | SiO₂ 3.9; Si 11.7; HfO₂, ZrO₂ 25; Al₂O₃ 9; SiOCH low-k 2.7–2.9; class 2 ceramics 1000–4000 | [R-079](../../../reference/research-log.md#r-079--dielectric-constants-capacitor-materials-and-dram-cells), [R-078](../../../reference/research-log.md#r-078--gauss-law-applications-silicon-permittivity-capacitive-sensing-and-coulombs-law-tests) |
-| DRAM cell capacitance, as of Nov 2026 | below 10 fF in recent generations (from about 25 fF earlier) | [R-079](../../../reference/research-log.md#r-079--dielectric-constants-capacitor-materials-and-dram-cells) **[Industry estimate]** |
+| DRAM cell capacitance (TechInsights, about 2021–22; checked Nov 2026) | below 10 fF in recent generations (from about 25 fF earlier) | [R-079](../../../reference/research-log.md#r-079--dielectric-constants-capacitor-materials-and-dram-cells) **[Industry estimate]** |
 
 ## 8. Common mistakes
 
@@ -458,14 +458,14 @@ The netlist `charge_sharing.cir` simulates Example 04-04.7.
 4. **Treating capacitance as depending on charge or voltage.** For a linear capacitor it depends only on geometry and material. (Ferroelectric ceramics are nonlinear, and then "capacitance" must be quoted at a bias.)
 5. **Mixing up series and parallel formulas.** Capacitors combine like resistors' conductances: parallel adds, series adds reciprocals.
 6. **Forgetting that layered dielectrics put the biggest field in the lowest-ε layer.**
-7. **Expecting a lossless resistor to save the energy in charge sharing.** Half the energy is lost whatever the resistance; only inductors or switched converters avoid it.
+7. **Expecting a smaller (or zero) resistance to save the energy in charge sharing.** Half the energy is lost whatever the resistance; only inductors or switched converters avoid it.
 8. **Reading an MLCC's nominal capacitance as its working capacitance.** Check the DC-bias and temperature curves at the operating point.
 
 ## 9. Practitioner lens
 
 ### State of the art (as of Nov 2026)
 
-- **Gate dielectrics.** SiO₂ ($\varepsilon_r$ = 3.9) gave way to hafnium-based high-k gate dielectrics: a 2019 review co-authored by Intel researchers lists HfO₂ and ZrO₂ at 25 and Al₂O₃ at 9, and a 2012 review puts the useful high-k range at 10–30 ([R-079](../../../reference/research-log.md#r-079--dielectric-constants-capacitor-materials-and-dram-cells)) **[Established]**.
+- **Gate dielectrics.** SiO₂ ($\varepsilon_r$ = 3.9) gave way to hafnium-based high-k gate dielectrics: a 2019 review with an Intel co-author lists HfO₂ and ZrO₂ at 25 and Al₂O₃ at 9, and a 2012 review puts the useful high-k range at 10–30 ([R-079](../../../reference/research-log.md#r-079--dielectric-constants-capacitor-materials-and-dram-cells)) **[Established]**.
 - **Interconnect low-k.** The same review traces the low-k path: fluorinated oxide (SiOF, $k$ ≈ 3.7–3.9), then carbon-doped oxides (SiOCH) at about 3.0 and then 2.7–2.9, then porous films below 2.5, with films at $k \le 2.3$ hitting "a breaking point" by the mid-2010s. The 2022 IEEE roadmap (IRDS) says reduction of the inter-metal dielectric's κ "is slowing down because of problems with manufacturability" and points to air gaps as the alternative ([R-079](../../../reference/research-log.md#r-079--dielectric-constants-capacitor-materials-and-dram-cells)) **[Established]**.
 - **DRAM cells.** A 2017 dissertation gives the long-standing rule of about 25 fF per cell; TechInsights reports that recent generations (D1z, D1a, around 2021–22) are below 10 fF per cell and that keeping above about 7 fF will need dielectrics with $k > 50$. Stacks of ZrO₂/Al₂O₃/ZrO₂ are widely used ([R-079](../../../reference/research-log.md#r-079--dielectric-constants-capacitor-materials-and-dram-cells)) **[Industry estimate]**.
 - **Ceramic capacitors.** EIA codes: C0G (class 1) holds 0 ± 30 ppm/°C from −55 to +125 °C; X7R and X5R (class 2, BaTiO₃-based with $\varepsilon_r$ of 1000–4000) allow ±15% over −55 to +125 °C and −55 to +85 °C. Murata's own example: a 100 µF, 6.3 V part at 1.8 V DC loses about 10% if X5R and about 40% if Y5V, while C0G shows almost no DC-bias effect ([R-079](../../../reference/research-log.md#r-079--dielectric-constants-capacitor-materials-and-dram-cells)) **[Established]**.

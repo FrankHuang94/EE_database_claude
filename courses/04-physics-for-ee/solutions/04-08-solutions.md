@@ -76,6 +76,14 @@ $t/L = \sqrt{\varepsilon_{\text{eff}}}/c$, so $\varepsilon_{\text{eff}} = (c\tim
 
 $i = \omega CV = 2\pi\times10^7\times10^{-9}\times10 = $ **0.6283 A**. At the edge, the full displacement current is enclosed: $B = \mu_0i/(2\pi R) = $ **6.283 µT**.
 
+### Solution 04-08.15
+
+(a) Gauss's law around the inner conductor (charge λ per length) gives $E = \lambda/(2\pi\varepsilon r)$, and $V = \int_a^bE\,dr = (\lambda/2\pi\varepsilon)\ln(b/a)$, so $E(r) = V/\big(r\ln(b/a)\big)$, pointing radially outward. Ampère's law around the inner conductor gives $H(r) = I/(2\pi r)$, circling it. $\vec E$ and $\vec H$ are perpendicular, so $S = EH = \dfrac{VI}{2\pi r^2\ln(b/a)}$, directed along the cable toward the load. At $r$ = 1 mm: $E = 10/(10^{-3}\times\ln4)$ = **7213 V/m**, $H = 2/(2\pi\times10^{-3})$ = **318.3 A/m**, $S$ = **2.296×10⁶ W/m²**.
+
+(b) $P = \int_a^bS\,2\pi r\,dr = \dfrac{VI}{\ln(b/a)}\int_a^b\frac{dr}{r} = VI$ = **20.00 W**, exactly the power the load absorbs. *Units:* (V/m)(A/m) = W/m², times area gives W ✓.
+
+(c) Through the dielectric between the conductors. The copper only guides the fields (and, if resistive, absorbs a little power that flows into it from the surrounding field). The same picture explains why a cable's dielectric, not its conductors, sets the wave speed (§3.4 of the chapter).
+
 ---
 
 ## Answer key
@@ -113,3 +121,7 @@ $i = \omega CV = 2\pi\times10^7\times10^{-9}\times10 = $ **0.6283 A**. At the ed
 | 04-08.13b | SAR in the hottest 1 g | 6 | W/kg |
 | 04-08.14a | current amplitude | 0.6283 | A |
 | 04-08.14b | magnetic field at the edge | 6.283 | µT |
+| 04-08.15a | field at 1 mm | 7213 | V/m |
+| 04-08.15b | H at 1 mm | 318.3 | A/m |
+| 04-08.15c | Poynting vector at 1 mm | 2.296×10^6 | W/m² |
+| 04-08.15d | total power through the annulus | 20.00 | W |

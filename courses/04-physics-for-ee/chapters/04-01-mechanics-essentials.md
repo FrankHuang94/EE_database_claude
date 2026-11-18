@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 04-01 · Mechanics Essentials for EE
 
 | | |
@@ -252,6 +252,8 @@ $$
 
 using $b = m\omega_0/Q$. It falls with a heavier proof mass and a higher Q, and rises with resonant frequency. This mechanical floor is set by physics alone; the readout electronics add their own noise on top (Examples 04-01.6 and 04-01.7).
 
+> **Going deeper — the noise integral.** Problem 04-01.14 uses $\int_0^\infty\frac{d\omega}{(k_s - m\omega^2)^2 + b^2\omega^2} = \frac{\pi}{2k_sb}$. The integrand is $|H(j\omega)|^2$ for the displacement response $H = 1/(k_s - m\omega^2 + jb\omega)$ to a force, and Parseval's theorem turns the frequency integral into a time integral of the impulse response squared: $\int_{-\infty}^{\infty}|H|^2\,d\omega = 2\pi\int_0^\infty h(t)^2\,dt$. For an underdamped oscillator $h(t) = e^{-\alpha t}\sin(\omega_dt)/(m\omega_d)$ with $\alpha = b/2m$ and $\omega_d^2 = \omega_0^2 - \alpha^2$. Using $\sin^2 = \tfrac12(1 - \cos2\omega_dt)$, $\int_0^\infty e^{-2\alpha t}\sin^2(\omega_dt)\,dt = \frac{1}{4\alpha} - \frac{\alpha}{4(\alpha^2 + \omega_d^2)} = \frac{\omega_d^2}{4\alpha\omega_0^2}$, so $\int_0^\infty h^2\,dt = \frac{1}{4\alpha m^2\omega_0^2} = \frac{1}{2bk_s}$. The integrand is even in ω, so the integral from 0 to ∞ is half of $2\pi/(2bk_s)$: $\pi/(2k_sb)$.
+
 ## 4. Worked examples
 
 ### Example 04-01.1 — Battery energy in mechanical terms (tier A)
@@ -278,7 +280,7 @@ $$
 
 with a pure number $C$ set by the shape and the mode.
 
-(b) $\sqrt{169\times10^9/2329} = $ **8518 m/s**: this is the speed of sound in silicon along that direction.
+(b) $\sqrt{169\times10^9/2329} = $ **8518 m/s**: this is the speed of extensional sound waves along a thin silicon bar in that direction (bulk longitudinal waves, which also feel the material's resistance to sideways squeezing, travel somewhat faster).
 
 (c) The frequency rises **tenfold**: small structures are stiff for their mass, which is why MEMS resonators reach tens of megahertz while a guitar string sits at hundreds of hertz.
 
@@ -314,7 +316,7 @@ with a pure number $C$ set by the shape and the mode.
 
 **Solution.** (a) $\omega_0 = \sqrt{1000/0.01} = $ **316.2 rad/s**, $f_0 = $ **50.33 Hz**; $\zeta = 0.4/(2\sqrt{1000\times0.01}) = $ **0.06325**, so $Q = 1/(2\zeta) = $ **7.906**.
 
-(b) $\alpha = b/(2m) = $ **20 s⁻¹**: the amplitude falls by $e$ in $1/\alpha = $ **50 ms**, which is $Q/\pi = $ **2.516** cycles (Figure 1, right).
+(b) $\alpha = b/(2m) = $ **20 s⁻¹**: the amplitude falls by $e$ in $1/\alpha = $ **50 ms**, which is $Q/\pi = $ **2.516** cycles of the natural frequency (2.511 cycles of the slightly slower damped ringing; Figure 1, right).
 
 (c) $L = 0.01$ H, $R = 0.4$ Ω and $C = 1/1000$ F = 1 mF. The current's half-power frequencies are $\omega = \sqrt{\alpha^2 + \omega_0^2} \mp \alpha$ (02-04), giving **47.25 Hz** and **53.61 Hz**, a bandwidth of **6.366 Hz** = $f_0/Q$.
 
@@ -451,7 +453,7 @@ The netlist `msd_analog.cir` simulates the RLC twin of Example 04-01.5.
 | Oscillator | $\omega_0 = \sqrt{k_s/m}$; $Q = m\omega_0/b$ | Amplitude falls by $e$ in $Q/\pi$ cycles |
 | Accelerometer sensitivity | $x/a = 1/\omega_0^2$: 15.53 nm per *g* at 4 kHz | |
 | Thermomechanical noise | $a_n = \sqrt{4kT\omega_0/(mQ)}$ | 34.99 µ*g*/√Hz for 5 µg, 4 kHz, Q = 0.707 |
-| Speed of sound in silicon ⟨110⟩ | ≈ 8.5 km/s | $\sqrt{E/\rho}$ |
+| Extensional (thin-bar) sound speed in silicon ⟨110⟩ | ≈ 8.5 km/s | $\sqrt{E/\rho}$; bulk waves are faster |
 | Consumer MEMS accelerometer noise, as of Nov 2026 | 160–180 µ*g*/√Hz | Bosch BMI270, BMI323 [R-074](../../../reference/research-log.md#r-074--mems-inertial-sensors-datasheet-figures) |
 | 32.768 kHz quartz parabola, as of Nov 2026 | ≈ −0.035 ppm/°C², turnover ≈ 25 °C | Micro Crystal, NDK [R-075](../../../reference/research-log.md#r-075--32768-khz-timing-quartz-crystals-and-mems-oscillators) |
 
@@ -481,7 +483,7 @@ Every wearable, phone and car carries several MEMS sensors and at least one timi
 ### Marketing vs Reality
 
 - **"160 µ*g*/√Hz: ultra-low noise."** *Reality:* a density must be integrated over the bandwidth you use: $160\times\sqrt{80}$ ≈ 1.4 m*g* rms in 80 Hz (the BMI270 datasheet quotes 1.51 m*g* rms for its 80 Hz setting). Ask for the rms noise in your bandwidth, and for offset drift over temperature, which often dominates slow measurements.
-- **"MEMS timing beats quartz."** *Reality:* it depends on the specification. A 32 kHz MEMS oscillator rated 100 ppm over −40 to +85 °C is not more stable than a quartz crystal's parabola over that range; temperature-compensated MEMS parts reach ±0.1 ppm, and so do compensated quartz parts. Ask for stability over your temperature range, aging, supply current and start-up time.
+- **"MEMS timing beats quartz."** *Reality:* it depends on the specification. Over −40 to +85 °C an uncompensated quartz crystal's parabola drifts to about −148 ppm at the cold end, while a 32 kHz MEMS oscillator rated ±100 ppm stays within its band: comparable, with the MEMS part somewhat better at the extremes and the crystal far better near room temperature. Temperature-compensated MEMS parts reach ±0.1 ppm, and so do compensated quartz parts. Ask for stability over your temperature range, aging, supply current and start-up time.
 - **"Survives a 10,000 *g* shock."** *Reality:* a shock rating is a survival test, not a measurement range (Lab 04-01 shows an ordinary drop pushing a proof mass into its stops). Ask for the pulse duration, the number of shocks, the post-shock offset shift and stiction testing.
 - **"Always-on motion sensing at microamps."** *Reality:* only in the low-rate, low-power mode. Ask which mode and output data rate the quoted current applies to, and what the gyroscope adds.
 
@@ -562,7 +564,7 @@ Problem set: [04-01 problems](../problems/04-01-problems.md) · [solutions](../s
 [Impulse](../../../reference/glossary.md#impulse) ·
 [Torque](../../../reference/glossary.md#torque) ·
 [Moment of inertia](../../../reference/glossary.md#moment-of-inertia) ·
-[Electronvolt](../../../reference/glossary.md#electronvolt) ·
+[Electronvolt](../../../reference/glossary.md#electron-volt) ·
 [Simple harmonic oscillator](../../../reference/glossary.md#simple-harmonic-oscillator) ·
 [Force–voltage analogy](../../../reference/glossary.md#force-voltage-analogy) ·
 [MEMS](../../../reference/glossary.md#mems) ·

@@ -49,7 +49,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 04-11.10 [B]
 
-**Gaps and light.** (a) What band gap emits at 450 nm (a blue InGaN LED)? (b) Find the absorption cut-off wavelength of β-Ga₂O₃ (4.9 eV). (c) Find the photon energy at 1310 nm; which of Ge (0.67 eV), Si (1.12 eV) and GaAs (1.42 eV) can detect it? (d) Find the wavenumber of a photon at silicon's absorption edge (1.12 eV) and (e) its ratio to silicon's zone-edge wavenumber π/a ($a$ = 0.543102 nm).
+**Gaps and light.** (a) What band gap emits at 450 nm (a blue InGaN LED)? (b) Find the absorption cut-off wavelength of β-Ga₂O₃ (4.9 eV). (c) Find the photon energy at 1310 nm; which of Ge (0.67 eV), Si (1.12 eV) and GaAs (1.42 eV) can detect it? (d) Find the wavenumber of a photon at silicon's absorption edge (1.12 eV) and (e) its ratio to π/a ($a$ = 0.543102 nm), the scale of silicon's Brillouin zone.
 
 ### Problem 04-11.11 [C]
 

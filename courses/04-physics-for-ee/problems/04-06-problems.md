@@ -3,7 +3,7 @@
 Chapter: [04-06](../chapters/04-06-magnetic-fields-and-forces.md) · Worked solutions: [04-06 solutions](../solutions/04-06-solutions.md)
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
-**Conventions:** $e = 1.602176634\times10^{-19}$ C; $m_e = 9.1093837139\times10^{-31}$ kg; $m_p = 1.67262192595\times10^{-27}$ kg; 1 u = 1.66054×10⁻²⁷ kg; $\mu_0 = 1.25663706127\times10^{-6}$ N/A². Copper has $8.49\times10^{28}$ conduction electrons per m³. Answers to 4 significant figures unless exact.
+**Conventions:** $e = 1.602176634\times10^{-19}$ C; $m_e = 9.1093837139\times10^{-31}$ kg; $m_p = 1.67262192595\times10^{-27}$ kg; 1 u = 1.66054×10⁻²⁷ kg; $\mu_0 = 1.25663706127\times10^{-6}$ N/A². Copper has $8.491\times10^{28}$ conduction electrons per m³. Answers to 4 significant figures unless exact.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 
@@ -75,6 +75,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A loop as a dipole.** (a) Show that a loop's on-axis field $\mu_0IR^2/[2(R^2 + z^2)^{3/2}]$ becomes $\mu_0m/(2\pi z^3)$ for $z \gg R$, with $m = I\pi R^2$. (b) For $R$ = 1 cm, $I$ = 1 A and $z$ = 10 cm, find the exact field, the dipole approximation, and their ratio.
 
+### Problem 04-06.17 [B]
+
+**A wire with non-uniform current.** A long straight wire of radius $a$ = 1.0 mm carries a total current of 3.0 A, with current density growing linearly from the axis, $J(r) = J_0\,r/a$. (a) Find $J_0$. (b) Use Ampère's law to find $B$ at $r$ = 0.5 mm, inside the wire. (c) Find $B$ at $r$ = 2.0 mm, outside it. (d) How does $B$ grow with $r$ inside, and why does it differ from a uniform wire's?
+
 ---
 
 ## Objective coverage
@@ -83,6 +87,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Lorentz force on charges and currents; torque and moment | 1, 3, 4, 5, 6, 7 |
 | 2. Biot–Savart fields | 2, 8, 9, 16 |
-| 3. Ampère's law and Gauss's law for magnetism | 10, 11, 14 |
+| 3. Ampère's law and Gauss's law for magnetism | 10, 11, 14, 17 |
 | 4. The Hall effect and Hall sensors | 12, 13, 14 |
 | 5. Magnetic materials, cores and saturation | 15 |

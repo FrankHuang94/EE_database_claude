@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 04-10 · Introduction to Quantum Mechanics
 
 | | |
@@ -131,7 +131,7 @@ $$
 \kappa = \frac{\sqrt{2m(V_0 - E)}}{\hbar} ,
 $$
 
-so the wave's amplitude decays by $e^{-\kappa d}$ across the barrier, and a weak wave emerges on the far side (Figure 3). Matching ψ and $d\psi/dx$ at both edges (four equations, solved in the lab) gives the exact transmission probability
+so the wave's amplitude decays by $e^{-\kappa d}$ across the barrier, and a weak wave emerges on the far side (Figure 3). Matching ψ and $d\psi/dx$ at both edges (four equations, solved below and numerically in the lab) gives the exact transmission probability
 
 $$
 T = \Big[1 + \frac{V_0^2\sinh^2(\kappa d)}{4E(V_0 - E)}\Big]^{-1} \approx 16\frac E{V_0}\Big(1 - \frac E{V_0}\Big)e^{-2\kappa d}\qquad(\kappa d \gg 1) .
@@ -139,9 +139,23 @@ $$
 
 The exponential dominates. For an electron 2.1 eV below the top of a barrier (free-electron mass), $\kappa$ = 7.4 nm⁻¹, so each extra 0.1 nm of barrier cuts $T$ by $e^{2\times0.742} \approx 4.4$: a factor of about 140,000 between 1.2 nm and 2.0 nm (Example 04-10.7). Real oxides need the electron's effective mass in the oxide and a barrier tilted by the applied field, but the exponential sensitivity remains.
 
+> **Going deeper — deriving the transmission formula.** Let $k = \sqrt{2mE}/\hbar$ outside and κ inside. With unit incident amplitude, $\psi = e^{ikx} + re^{-ikx}$ for $x < 0$, $\psi = Ce^{\kappa x} + De^{-\kappa x}$ in the barrier and $\psi = te^{ikx}$ for $x > d$. Continuity of ψ and $\psi'$ at $x = d$ gives two equations, which solve to
+>
+> $$
+> C = \tfrac12te^{ikd}\big(1 + \tfrac{ik}{\kappa}\big)e^{-\kappa d}, \qquad D = \tfrac12te^{ikd}\big(1 - \tfrac{ik}{\kappa}\big)e^{\kappa d} .
+> $$
+>
+> At $x = 0$, $1 + r = C + D$ and $ik(1 - r) = \kappa(C - D)$; dividing the second by $ik$ and adding eliminates $r$: $2 = C(1 - i\kappa/k) + D(1 + i\kappa/k)$. Substituting $C$ and $D$ and multiplying out, with $\delta = k/\kappa - \kappa/k$,
+>
+> $$
+> \frac{e^{-ikd}}{t} = \cosh\kappa d - \frac{i\delta}{2}\sinh\kappa d, \qquad \frac{1}{|t|^2} = \cosh^2\kappa d + \frac{\delta^2}{4}\sinh^2\kappa d = 1 + \Big(1 + \frac{\delta^2}{4}\Big)\sinh^2\kappa d .
+> $$
+>
+> Now $1 + \delta^2/4 = (k/\kappa + \kappa/k)^2/4 = (k^2 + \kappa^2)^2/(4k^2\kappa^2)$, and $k^2 + \kappa^2 = 2mV_0/\hbar^2$, so $1 + \delta^2/4 = V_0^2/\big(4E(V_0 - E)\big)$. Because the wave has the same $k$ on both sides, the transmitted fraction of the probability current is $T = |t|^2$, which is the formula above. When $\kappa d \gg 1$, $\sinh\kappa d \approx e^{\kappa d}/2$ and the 1 is negligible, giving $T \approx 16(E/V_0)(1 - E/V_0)e^{-2\kappa d}$. The lab solves the same four equations numerically and checks them against this result.
+
 **Gate leakage.** By its 65 nm generation, Intel had thinned the silicon dioxide gate insulator to about 1.2 nm, roughly five atomic layers, and leakage current tunneling through it had become a serious power problem. At 45 nm (2007) it replaced the SiO₂ with a *thicker* hafnium-based high-k dielectric (04-04's equivalent oxide thickness), cutting gate leakage more than tenfold; Intel's engineers attributed the leakage at 1.2 nm to "quantum effects" ([R-085](../../../reference/research-log.md#r-085--quantum-effects-in-devices-and-quantum-computing)). Tunneling set a floor on oxide thickness that only a material change could get around.
 
-**Flash memory.** A flash cell stores charge on a floating gate surrounded by oxide. To write it, a strong field (around 8–10 MV/cm) tilts the oxide's barrier into a triangle thin enough for electrons to tunnel through it (**Fowler–Nordheim tunneling**); the current is so sensitive to field that raising it from 7 to 10 MV/cm increases it by about seven orders of magnitude. Remove the field and the barrier is thick again, holding the charge for years. A 1997 review put the practical tunnel-oxide thickness near 10 nm, with direct tunneling setting a floor around 6 nm and aging pushing it to 7–8 nm ([R-085](../../../reference/research-log.md#r-085--quantum-effects-in-devices-and-quantum-computing)).
+**Flash memory.** A flash cell stores charge on a floating gate surrounded by oxide. To write it, a strong field (around 8–10 MV/cm) tilts the oxide's barrier into a triangle thin enough for electrons to tunnel through it (**Fowler–Nordheim tunneling**); the current is extraordinarily sensitive to field: raising it from 7 to 10 MV/cm increases the current by four to five orders of magnitude in simple tunneling models (the lab computes one) and by about seven in real cells, according to a 1997 review. Remove the field and the barrier is thick again, holding the charge for years. A 1997 review put the practical tunnel-oxide thickness near 10 nm, with direct tunneling setting a floor around 6 nm and aging pushing it to 7–8 nm ([R-085](../../../reference/research-log.md#r-085--quantum-effects-in-devices-and-quantum-computing)).
 
 **More tunneling devices.** The scanning tunneling microscope images individual atoms because its tip-to-surface current changes about tenfold per 0.1 nm of gap. Magnetic tunnel junctions (04-06) store bits in MRAM; Josephson junctions, tunneling of superconducting pairs, are the heart of superconducting qubits.
 

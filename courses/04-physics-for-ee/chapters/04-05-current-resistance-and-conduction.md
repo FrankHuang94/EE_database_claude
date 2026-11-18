@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 04-05 · Current, Resistance and Conduction
 
 | | |
@@ -60,7 +60,7 @@ $$
 \vec J = nq\vec v_d .
 $$
 
-For electrons ($q = -e$), $\vec J$ points opposite to their velocity. Copper has one conduction electron per atom; from its density (8.96 g/cm³) and molar mass (63.55 g/mol), $n = 8.49\times10^{28}$ m⁻³. A current of 1 A through 1 mm² ($J = 10^6$ A/m²) then drifts at $J/(ne) = 74$ µm/s (Example 04-05.1).
+For electrons ($q = -e$), $\vec J$ points opposite to their velocity. Copper has one conduction electron per atom; from its density (8.96 g/cm³) and molar mass (63.55 g/mol), $n = 8.491\times10^{28}$ m⁻³. A current of 1 A through 1 mm² ($J = 10^6$ A/m²) then drifts at $J/(ne) = 74$ µm/s (Example 04-05.1).
 
 **Charge conservation.** Charge cannot appear or vanish. If more current flows out of a closed surface than in, the charge inside must fall:
 
@@ -96,7 +96,7 @@ This is **Ohm's law** in its local form: current density proportional to field, 
 
 **Copper by the numbers.** With $\rho = 1.68$ µΩ·cm ([R-080](../../../reference/research-log.md#r-080--conduction-interconnect-metals-electromigration-and-backside-power)), $\sigma = 5.95\times10^7$ S/m and $\tau = \sigma m/(ne^2) = 24.9$ fs, so electrons collide about $4\times10^{13}$ times per second. Copper's mobility, 44 cm²/V·s, is *lower* than silicon's: metals conduct well because they have vast numbers of carriers, not because each is especially mobile.
 
-**The mean free path, and Drude's mistake.** How far does an electron fly between collisions? Drude multiplied τ by the classical thermal speed, $\sqrt{3kT/m} \approx 1.2\times10^5$ m/s at 300 K, and got about 3 nm, comparable to a few atomic spacings, which made collisions with atoms look plausible. Quantum mechanics ([04-11](04-11-intro-solid-state-physics.md)) shows the conducting electrons move at the much higher **Fermi speed**, about $1.57\times10^6$ m/s in copper in the free-electron model, giving $\lambda = v_F\tau \approx 39$ nm (Example 04-05.2). That matches modern first-principles values for copper of 39–40 nm ([R-080](../../../reference/research-log.md#r-080--conduction-interconnect-metals-electromigration-and-backside-power)). Electrons in a perfect crystal do not hit atoms at all; they scatter off lattice vibrations, impurities, grain boundaries and surfaces. That 39 nm figure is why copper wires narrower than about 40 nm get worse (§3.4).
+**The mean free path, and Drude's mistake.** How far does an electron fly between collisions? Drude multiplied τ by the classical thermal speed, $\sqrt{3kT/m} \approx 1.2\times10^5$ m/s at 300 K, and got about 3 nm, comparable to a few atomic spacings, which made collisions with atoms look plausible. Quantum mechanics ([04-11](04-11-intro-solid-state-physics.md)) shows the conducting electrons move at the much higher **Fermi speed**, about $1.57\times10^6$ m/s in copper in the free-electron model, giving $\lambda = v_F\tau \approx 39$ nm (Example 04-05.2). That matches modern first-principles values for copper of 39–41 nm ([R-080](../../../reference/research-log.md#r-080--conduction-interconnect-metals-electromigration-and-backside-power)). Electrons in a perfect crystal do not hit atoms at all; they scatter off lattice vibrations, impurities, grain boundaries and surfaces. That 39 nm figure is why copper wires narrower than about 40 nm get worse (§3.3).
 
 > **Going deeper — what Drude got right and wrong.** The relaxation-time picture survives into modern transport theory (the Boltzmann equation), and $\sigma = ne^2\tau/m$ remains correct with $m$ replaced by an effective mass and τ evaluated for electrons near the Fermi energy. Drude's predictions of heat capacity and the speed of electrons were badly wrong, because electrons obey Fermi–Dirac statistics: only those near the Fermi energy can change state. That correction (Sommerfeld, 1928) is the start of 04-11.
 
@@ -164,7 +164,23 @@ $$
 t_{50} \approx 0.38\,RC, \qquad R = rL,\quad C = cL ,
 $$
 
-a result that the lab and the netlist confirm by simulation (Figure 3). Two scalings follow:
+a result that the lab and the netlist confirm by simulation (Figure 3).
+
+> **Going deeper — the diffusion equation and the 0.38.** Take a slice of wire of length $dx$: it has series resistance $r\,dx$ and capacitance $c\,dx$ to ground. Ohm's law along the slice gives $\partial v/\partial x = -r\,i$, and KCL at its node (the current lost from the wire charges the slice's capacitance) gives $\partial i/\partial x = -c\,\partial v/\partial t$. Differentiating the first and substituting the second:
+>
+> $$
+> \frac{\partial^2 v}{\partial x^2} = rc\,\frac{\partial v}{\partial t} ,
+> $$
+>
+> the diffusion (heat) equation, not a wave equation: on-chip wires are resistive enough that signals spread rather than propagate. The boundary conditions are $v(0, t) = V$ (the driver applies a step), $\partial v/\partial x = 0$ at $x = L$ (no current leaves the open end) and $v(x, 0) = 0$. Trying solutions that are a fixed shape in $x$ times a decay in $t$ gives modes $\sin\big((2n+1)\pi x/2L\big)$, each decaying as $e^{-(2n+1)^2\pi^2t/(4RC)}$ with $R = rL$, $C = cL$; at the far end
+>
+> $$
+> \frac{v(L, t)}{V} = 1 - \frac{4}{\pi}\sum_{n=0}^{\infty}\frac{(-1)^n}{2n+1}\,e^{-(2n+1)^2\pi^2t/(4RC)} .
+> $$
+>
+> Keeping only the slowest mode and setting this to ½ gives $t_{50} = (4RC/\pi^2)\ln(8/\pi) = 0.3788\,RC$; the other modes change only the fourth digit (0.3787). Every term scales with $RC = rcL^2$, which is where the $L^2$ comes from.
+
+Two scalings follow:
 
 - **Delay grows as $L^2$**, because both $R$ and $C$ grow with $L$. Doubling a wire's length quadruples its delay. Long wires are therefore broken by **repeaters** (buffers) so delay grows only linearly (Problem 04-05.16), or routed on thick upper metal layers.
 - **Shrinking the cross-section hurts.** If a wire's width, thickness and spacing all shrink by a factor $s$, its resistance per length rises by $1/s^2$ while its capacitance per length, set by ratios of dimensions, stays about the same. Local wires that shrink in length with the transistors roughly keep their delay; wires that must cross a whole chip get slower with every node.
@@ -185,7 +201,7 @@ That is why interconnect engineering has three levers: lower the resistivity of 
 
 (b) $J = 1/10^{-6} = $ **10⁶ A/m²**, which is **100 A/cm²**.
 
-(c) $v_d = J/(ne) = 10^6/(8.49\times10^{28}\times1.602\times10^{-19}) = $ **73.51 µm/s**.
+(c) $v_d = J/(ne) = 10^6/(8.491\times10^{28}\times1.602\times10^{-19}) = $ **73.51 µm/s**.
 
 (d) $1/(73.51\times10^{-6})$ s = **3.779 hours**.
 
@@ -193,11 +209,11 @@ That is why interconnect engineering has three levers: lower the resistivity of 
 
 ### Example 04-05.2 — Copper in the Drude model (tier B)
 
-**Setup.** Copper has $\rho = 1.68$ µΩ·cm and $n = 8.49\times10^{28}$ m⁻³. Find (a) σ, (b) τ, (c) the mobility in cm²/V·s, (d) the mean free path using the Fermi speed $1.57\times10^6$ m/s, and (e) the classical thermal speed $\sqrt{3kT/m}$ at 300 K and the mean free path it would imply.
+**Setup.** Copper has $\rho = 1.68$ µΩ·cm and $n = 8.491\times10^{28}$ m⁻³. Find (a) σ, (b) τ, (c) the mobility in cm²/V·s, (d) the mean free path using the Fermi speed $1.57\times10^6$ m/s, and (e) the classical thermal speed $\sqrt{3kT/m}$ at 300 K and the mean free path it would imply.
 
 **Solution.** (a) $\sigma = 1/\rho = 1/(1.68\times10^{-8}) = $ **5.952×10⁷ S/m**.
 
-(b) $\tau = \sigma m/(ne^2) = 5.952\times10^7\times9.109\times10^{-31}/(8.49\times10^{28}\times(1.602\times10^{-19})^2) = $ **24.88 fs**.
+(b) $\tau = \sigma m/(ne^2) = 5.952\times10^7\times9.109\times10^{-31}/(8.491\times10^{28}\times(1.602\times10^{-19})^2) = $ **24.88 fs**.
 
 (c) $\mu = e\tau/m = $ 4.375×10⁻³ m²/V·s = **43.75 cm²/V·s**.
 
@@ -205,7 +221,7 @@ That is why interconnect engineering has three levers: lower the resistivity of 
 
 (e) $\sqrt{3\times1.381\times10^{-23}\times300/9.109\times10^{-31}} = $ **1.168×10⁵ m/s**, giving $\lambda = $ **2.905 nm**, a factor of 13 too short.
 
-**Interpretation.** Only the quantum (Fermi) speed gives the measured 39–40 nm. The free-electron Fermi speed is itself an approximation for copper, so the agreement is partly fortunate; the first-principles value agrees.
+**Interpretation.** Only the quantum (Fermi) speed gives the first-principles value of 39–41 nm. The free-electron Fermi speed is itself an approximation for copper, so the agreement is partly fortunate; the first-principles value agrees.
 
 ### Example 04-05.3 — Silicon's controllable resistivity (tier B)
 
@@ -323,9 +339,10 @@ That is why interconnect engineering has three levers: lower the resistivity of 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
-| T 04-05.a | conduction electrons per m³ in copper | 8.49×10^28 | m⁻³ |
+| T 04-05.a | conduction electrons per m³ in copper | 8.491×10^28 | m⁻³ |
 | T 04-05.b | distributed-line 50% delay coefficient | 0.3787 | — |
 | T 04-05.c | copper resistance rise, 20 to 100 °C | 31 | % |
+| T 04-05.d | single-mode estimate of the 50% delay coefficient | 0.3788 | — |
 
 ## 5. Simulate it
 
@@ -355,7 +372,7 @@ The netlist `wire_rc.cir` simulates the 1 mm wire of Example 04-05.6.
 |---|---|---|
 | Copper bulk resistivity | 1.68 µΩ·cm | [R-080](../../../reference/research-log.md#r-080--conduction-interconnect-metals-electromigration-and-backside-power) |
 | Copper conduction-electron density | 8.49×10²⁸ m⁻³ | One per atom |
-| Copper mean free time; mean free path | about 25 fs; 39–40 nm | Free-electron Drude estimate; first-principles value |
+| Copper mean free time; mean free path | about 25 fs; 39–41 nm | Free-electron Drude estimate; first-principles value |
 | Drift speed, 1 A in 1 mm² of copper | about 74 µm/s | |
 | Copper temperature coefficient | 0.00393 /°C at 20 °C | +31% from 20 to 100 °C |
 | Silicon mobilities (lightly doped) | µₙ ≈ 1400, µₚ ≈ 470 cm²/V·s | [R-080](../../../reference/research-log.md#r-080--conduction-interconnect-metals-electromigration-and-backside-power) |
@@ -416,7 +433,7 @@ Interconnect has become a large share of the cost and the performance budget of 
 
    <details><summary>Answer</summary>
 
-   Conductivity is $ne\mu$, so it depends on the product. Pure silicon has much higher mobility than copper but $10^{12}$ times fewer carriers, so copper conducts about $10^{11}$ times better.
+   Conductivity is $ne\mu$, so it depends on the product. Pure silicon has much higher mobility than copper but about $10^{13}$ times fewer carriers, so copper conducts about $10^{11}$ times better.
 
    </details>
 

@@ -96,7 +96,7 @@ which is $\tfrac12(4\pi\varepsilon_0R)V^2$ ✓.
 
 ### Solution 04-04.12
 
-The capacitor supplies $\Delta Q = I\Delta t = 2\times0.5\times10^{-6} = 1$ µC, so $\Delta V = \Delta Q/C$: (a) **10 mV**, (b) **11.11 mV**, (c) **16.67 mV**. Designing with the nominal value would understate the droop by 10% for X5R and 40% for Y5V at this mild bias; at biases near the rating, class 2 losses can be much larger.
+The capacitor supplies $\Delta Q = I\Delta t = 2\times0.5\times10^{-6} = 1$ µC, so $\Delta V = \Delta Q/C$: (a) **10 mV**, (b) **11.11 mV**, (c) **16.67 mV**. The real droop is 11% (X5R) and 67% (Y5V) larger than the nominal estimate at this mild bias; at biases near the rating, class 2 losses can be much larger.
 
 ### Solution 04-04.13
 
@@ -112,7 +112,7 @@ The capacitor supplies $\Delta Q = I\Delta t = 2\times0.5\times10^{-6} = 1$ µC,
 
 (b) Need $(V_{\text{cell}} - 0.55)\times8/88 \ge 0.040$, so $V_{\text{cell}} \ge 0.55 + 0.44 = $ **0.99 V**.
 
-(c) The cell may lose **0.11 V**, which is $Q = C_s\Delta V = 8\ \text{fF}\times0.11 = $ **0.88 fC**, or $0.88\times10^{-15}/1.602\times10^{-19} = $ **5493 electrons**. Spread over a refresh interval of tens of milliseconds ([23](../../23-memory-and-storage-technology/README.md)), that budget allows an average leakage of only tens of attoamperes.
+(c) The cell may lose **0.11 V**, which is $Q = C_s\Delta V = 8\ \text{fF}\times0.11 = $ **0.88 fC**, or $0.88\times10^{-15}/1.602\times10^{-19} = $ **5493 electrons**. Spread over a refresh interval of tens of milliseconds ([23](../../23-memory-and-storage-technology/README.md)), that budget allows an average leakage of only about ten femtoamperes (0.88 fC over 64 ms is 14 fA).
 
 ### Solution 04-04.15
 

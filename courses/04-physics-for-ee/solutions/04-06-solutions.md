@@ -66,9 +66,9 @@ Inside, $B = \mu_0Ir/(2\pi a^2)$: at 0.5 mm, $2\times10^{-7}\times10\times0.5\ti
 
 ### Solution 04-06.12
 
-(a) $V_H = IB/(net) = 10\times0.5/(8.49\times10^{28}\times1.602\times10^{-19}\times10^{-4}) = $ **3.675 µV**.
+(a) $V_H = IB/(net) = 10\times0.5/(8.491\times10^{28}\times1.602\times10^{-19}\times10^{-4}) = $ **3.675 µV**.
 
-(b) $n = 10^{21}$ m⁻³: $V_H = 0.5\times10^{-3}\times0.05/(10^{21}\times1.602\times10^{-19}\times5\times10^{-6}) = $ **31.21 mV**, nearly 10,000 times larger with 1/20,000 of the current.
+(b) $n = 10^{21}$ m⁻³: $V_H = 0.5\times10^{-3}\times0.05/(10^{21}\times1.602\times10^{-19}\times5\times10^{-6}) = $ **31.21 mV**, about 8,500 times larger with 1/20,000 of the current, a tenth of the field and a twentieth of the thickness.
 
 (c) $R_H = 1/(ne) = $ **6.242×10⁻³ m³/C** in magnitude (negative for electrons).
 
@@ -105,6 +105,16 @@ which is **0.04787 T/A**: the 0.5 mm gap has 20 times the magnetic "resistance" 
 (a) For $z \gg R$, $(R^2 + z^2)^{3/2} \approx z^3$, so $B \approx \mu_0IR^2/(2z^3) = \mu_0(I\pi R^2)/(2\pi z^3) = \mu_0m/(2\pi z^3)$.
 
 (b) Exact: $1.2566\times10^{-6}\times10^{-4}/(2\times(0.0101)^{3/2}) = $ **61.90 nT**. Dipole: $m = \pi\times10^{-4}$ A·m², giving **62.83 nT**. Ratio **0.9852**: within 1.5% at ten radii, the correction being $(1 + R^2/z^2)^{-3/2} \approx 1 - \tfrac32(R/z)^2$.
+
+### Solution 04-06.17
+
+(a) The total current is $I = \int_0^aJ_0\frac ra\,2\pi r\,dr = \frac{2\pi J_0a^2}{3}$, so $J_0 = 3I/(2\pi a^2) = 9/(2\pi\times10^{-6})$ = **1.432×10⁶ A/m²**.
+
+(b) A circle of radius $r < a$ encloses $I_{\text{enc}} = \int_0^rJ_0\frac{r'}{a}2\pi r'\,dr' = I(r/a)^3$. Ampère's law, $B\cdot2\pi r = \mu_0I_{\text{enc}}$, gives $B = \mu_0I r^2/(2\pi a^3) = 2\times10^{-7}\times3\times(0.5)^3/(5\times10^{-4})$ = **1.500×10⁻⁴ T**.
+
+(c) Outside, all 3 A is enclosed: $B = \mu_0I/(2\pi r)$ = **3.000×10⁻⁴ T**, the same as for any current distribution with this total.
+
+(d) Inside, $B\propto r^2$, against $B\propto r$ for a uniform wire, because the enclosed current grows as $r^3$ instead of $r^2$. Current crowded toward the surface (as in the skin effect, 04-07) puts the field there too; outside, only the total matters.
 
 ---
 
@@ -153,3 +163,6 @@ which is **0.04787 T/A**: the 0.5 mm gap has 20 times the magnetic "resistance" 
 | 04-06.16a | exact on-axis field | 61.90 | nT |
 | 04-06.16b | dipole approximation | 62.83 | nT |
 | 04-06.16c | exact over dipole | 0.9852 | — |
+| 04-06.17a | J₀ | 1.432×10^6 | A/m² |
+| 04-06.17b | B at 0.5 mm | 1.500×10^-4 | T |
+| 04-06.17c | B at 2.0 mm | 3.000×10^-4 | T |

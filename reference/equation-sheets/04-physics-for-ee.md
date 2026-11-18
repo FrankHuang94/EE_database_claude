@@ -8,7 +8,7 @@ The relations to know cold from Course 04, each with its conditions and the chap
 |---|---|---|
 | $W = \int\vec F\cdot d\vec s = \Delta K$; $P = Fv = \tau\omega$; $\vec J = \int\vec F\,dt = \Delta\vec p$ | Work–energy and impulse–momentum | [04-01](../../courses/04-physics-for-ee/chapters/04-01-mechanics-essentials.md) |
 | Drop from height $h$: $v = \sqrt{2gh}$; half-sine pulse peak = $(\pi/2)\times$ average | Shock design | [04-01](../../courses/04-physics-for-ee/chapters/04-01-mechanics-essentials.md) |
-| $\omega_0 = \sqrt{k_s/m}$, $Q = m\omega_0/b$, $\zeta = 1/(2Q)$; energy decays by $e$ in $Q/\pi$ cycles | Spring–mass–damper ≡ series RLC | [04-01](../../courses/04-physics-for-ee/chapters/04-01-mechanics-essentials.md) |
+| $\omega_0 = \sqrt{k_s/m}$, $Q = m\omega_0/b$, $\zeta = 1/(2Q)$; amplitude decays by $e$ in $Q/\pi$ cycles (energy in $Q/2\pi$) | Spring–mass–damper ≡ series RLC | [04-01](../../courses/04-physics-for-ee/chapters/04-01-mechanics-essentials.md) |
 | Accelerometer: $x/a = 1/\omega_0^2$; Brownian floor $a_n = \sqrt{4kT\omega_0/(mQ)}$ per √Hz | Below resonance; equipartition $\tfrac12k_s\overline{x^2} = \tfrac12kT$ | [04-01](../../courses/04-physics-for-ee/chapters/04-01-mechanics-essentials.md) |
 
 ## Electrostatics and Gauss's law
@@ -78,8 +78,8 @@ The relations to know cold from Course 04, each with its conditions and the chap
 
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
-| $v = \lambda f$; string $\sqrt{T/\mu}$; light in a medium $c/n$ |  | [04-09](../../courses/04-physics-for-ee/chapters/04-09-waves-and-optics.md) |
-| Two slits: bright at $d\sin\theta = m\lambda$, spacing $\lambda L/d$; standing waves $L = m\lambda/2$ | Interference | [04-09](../../courses/04-physics-for-ee/chapters/04-09-waves-and-optics.md) |
+| $v = \lambda f$; string $\sqrt{F_T/\mu}$; light in a medium $c/n$ |  | [04-09](../../courses/04-physics-for-ee/chapters/04-09-waves-and-optics.md) |
+| Two slits: bright at $d\sin\theta = m\lambda$, spacing $\lambda L/d$; standing waves $L = m\lambda/2$ (both ends fixed, or both open) | Interference | [04-09](../../courses/04-physics-for-ee/chapters/04-09-waves-and-optics.md) |
 | Single slit first null $\sin\theta = \lambda/a$; circular $1.22\lambda/D$; lithography CD $= k_1\lambda/\text{NA}$, $k_1 \ge 0.25$ | Diffraction | [04-09](../../courses/04-physics-for-ee/chapters/04-09-waves-and-optics.md) |
 | Snell $n_1\sin\theta_1 = n_2\sin\theta_2$; critical $\sin\theta_c = n_2/n_1$; reflectance $((n_1 - n_2)/(n_1 + n_2))^2$ | Normal incidence for $R$ | [04-09](../../courses/04-physics-for-ee/chapters/04-09-waves-and-optics.md) |
 | Fiber NA $= \sqrt{n_1^2 - n_2^2}$; Malus $I = I_0\cos^2\theta$; Brewster $\tan\theta_B = n_2/n_1$ |  | [04-09](../../courses/04-physics-for-ee/chapters/04-09-waves-and-optics.md) |
@@ -103,7 +103,7 @@ The relations to know cold from Course 04, each with its conditions and the chap
 | Diamond lattice: 8 atoms per cubic cell; Si $a$ = 0.5431 nm, $5.0\times10^{22}$ atoms/cm³ |  | [04-11](../../courses/04-physics-for-ee/chapters/04-11-intro-solid-state-physics.md) |
 | $k_F = (3\pi^2n)^{1/3}$, $E_F = \hbar^2k_F^2/2m$, $v_F = \hbar k_F/m$; $g(E)\propto\sqrt E$, $g(E_F) = 3N/(2E_F)$ | Free-electron gas | [04-11](../../courses/04-physics-for-ee/chapters/04-11-intro-solid-state-physics.md) |
 | Fermi–Dirac $f = 1/(1 + e^{(E - E_F)/kT})$; 90%→10% over $4.39kT$; $C_{\text{el}} = (\pi^2/2)Nk(T/T_F)$ | Boltzmann limit far above $E_F$ | [04-11](../../courses/04-physics-for-ee/chapters/04-11-intro-solid-state-physics.md) |
-| Tight binding $E = E_0 - 2t\cos ka$ (width $4t$); Bragg gap $E_g = 2|U|$ at $k = \pm\pi/a$ | 2 electrons per primitive cell per band | [04-11](../../courses/04-physics-for-ee/chapters/04-11-intro-solid-state-physics.md) |
+| Tight binding $E = E_0 - 2t\cos ka$ (width $4t$); Bragg gap $E_g = 2|U|$ at $k = \pm\pi/a$ for $V = 2U\cos(2\pi x/a)$ (weak potential, first order) | 2 electrons per primitive cell per band | [04-11](../../courses/04-physics-for-ee/chapters/04-11-intro-solid-state-physics.md) |
 | $v = \hbar^{-1}dE/dk$; $\hbar\,dk/dt = F$; $1/m^* = \hbar^{-2}d^2E/dk^2$ | Holes: $+e$, mass $|m^*|$ | [04-11](../../courses/04-physics-for-ee/chapters/04-11-intro-solid-state-physics.md) |
 | $np = N_cN_v e^{-E_g/kT}$; $n_i = \sqrt{N_cN_v}\,e^{-E_g/2kT}$ (Si $9.65\times10^9$ cm⁻³ at 300 K) | Non-degenerate | [04-11](../../courses/04-physics-for-ee/chapters/04-11-intro-solid-state-physics.md) |
 | Absorption edge $\lambda_c = 1239.84/E_g$ nm; direct gaps emit efficiently, indirect need a phonon |  | [04-11](../../courses/04-physics-for-ee/chapters/04-11-intro-solid-state-physics.md) |

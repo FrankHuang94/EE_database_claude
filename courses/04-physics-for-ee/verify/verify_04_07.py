@@ -17,7 +17,7 @@ from pathlib import Path
 import numpy as np
 from scipy.integrate import dblquad, quad, solve_ivp
 from scipy.optimize import brentq
-from scipy.special import ellipe, ellipk, jv
+from scipy.special import ellipe, ellipk, ellipkm1, jv
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2] / "tools"))
@@ -96,6 +96,9 @@ for key, f, scale in (("Ex 04-07.3a", 60, 1e3), ("Ex 04-07.3b", 1e5, 1e3), ("Ex 
     v.check(key, skin_depth(RHO_CU, f) * scale)
 v.check("Ex 04-07.3e", 0.5e-3 / (2 * skin_depth(RHO_CU, 1e6)))
 v.check("Ex 04-07.3f", ac_ratio(0.5e-3, 1e6))
+d3 = skin_depth(RHO_CU, 1e6)
+v.check("Ex 04-07.3g", pi * 0.5e-3**2 / (pi * 0.5e-3**2 - pi * (0.5e-3 - d3) ** 2))   # current in a curved shell of depth δ
+v.check("Ex 04-07.3h", 0.5e-3 / (2 * d3) + 0.25)
 N4, l4, r4 = 500, 0.1, 0.01
 B4 = MU0 * N4 / l4 * 2
 L4 = N4 * B4 * pi * r4**2 / 2                          # flux linkage per ampere
@@ -208,6 +211,11 @@ Zin = 1 / i[0]
 v.check("04-07.16a", (Zin - R16).real)
 v.check("04-07.16b", abs(i[1]) ** 2 * RL16 / (abs(i[0]) ** 2 * Zin.real))
 v.check("04-07.16c", w16 * L16 / R16)
+R17, dBdt = 0.02, 0.5
+flux_rate = lambda r: quad(lambda rr: dBdt * 2 * pi * rr if rr <= R17 else 0.0, 0, r, points=[R17] if r > R17 else None)[0]
+v.check("04-07.17a", flux_rate(0.01) / (2 * pi * 0.01) * 1e3)      # Faraday: E 2 pi r = d(flux)/dt
+v.check("04-07.17b", flux_rate(0.03) / (2 * pi * 0.03) * 1e3)
+v.check("04-07.17c", flux_rate(0.03) * 1e3)
 
 # ---------------------------------------------------------------- lab
 mdip, Rl = 1.0, 0.01
@@ -215,8 +223,25 @@ Phi = lambda z: MU0 * mdip * Rl**2 / (2 * (Rl**2 + z**2) ** 1.5)
 z_peak = brentq(lambda z: deriv(lambda zz: deriv(Phi, zz, 1e-6), z, 1e-6), 1e-4, 0.02)
 v.check("Lab 04-07.a", abs(deriv(Phi, z_peak, 1e-7)) * 1.0 * 1e3)
 v.check("Lab 04-07.b", brentq(lambda f: ac_ratio(0.5e-3, f) - 2, 1e4, 1e7) / 1e3)
-Lsheet = (500 / 0.1) ** 2 * 2 * quad(lambda s: (0.1 - s) * M_loops(0.01, 0.01, s), 0, 0.1, limit=400, points=[1e-6, 1e-4])[0]
-v.check("Lab 04-07.c", Lsheet / (MU0 * 500**2 * pi * 0.01**2 / 0.1))
+# Current-sheet inductance from ring-to-ring mutual inductances. M(s) has a log singularity at s = 0, so the
+# first millimetre is integrated in u = ln s (ds = e^u du), which makes the integrand smooth and tiny at u → -∞.
+def M_equal(r, s):
+    """M of two coaxial loops of radius r a distance s apart, using K(1 - p) directly so tiny s stays accurate."""
+    p = s * s / (4 * r * r + s * s)                      # 1 - m
+    k = sqrt(1 - p)
+    return MU0 * r * ((2 / k - k) * ellipkm1(p) - 2 / k * ellipe(1 - p))
+
+
+sheet_f = lambda s: (0.1 - s) * M_equal(0.01, s)
+near = quad(lambda u: sheet_f(np.exp(u)) * np.exp(u), log(1e-30), log(1e-3), limit=400, epsabs=0, epsrel=1e-12)[0]
+far = quad(sheet_f, 1e-3, 0.1, limit=400, epsabs=0, epsrel=1e-12)[0]
+Lsheet = (500 / 0.1) ** 2 * 2 * (near + far)
+L_long = MU0 * 500**2 * pi * 0.01**2 / 0.1
+k2n = 4 * 0.01**2 / (4 * 0.01**2 + 0.1**2)            # Nagaoka's closed form (complete elliptic integrals)
+kn, kpn = sqrt(k2n), sqrt(1 - k2n)
+K_nag = 4 / (3 * pi * kpn) * ((kpn**2 / k2n) * (ellipk(k2n) - ellipe(k2n)) + ellipe(k2n) - kn)
+v.assert_true("ring-sum inductance matches Nagaoka's closed form", abs(Lsheet / L_long / K_nag - 1) < 1e-6)
+v.check("Lab 04-07.c", Lsheet / L_long)
 v.check("Lab 04-07.d", Lsheet * 1e3)
 Mneu = MU0 / (4 * pi) * 0.05**2 * dblquad(lambda p1, p2: cos(p1 - p2) / sqrt(2 * 0.05**2 * (1 - cos(p1 - p2)) + 0.05**2),
                                          0, 2 * pi, 0, 2 * pi)[0]

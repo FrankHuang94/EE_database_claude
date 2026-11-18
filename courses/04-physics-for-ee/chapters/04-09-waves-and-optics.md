@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 04-09 · Waves and Optics Basics
 
 | | |
@@ -57,10 +57,10 @@ $$
 
 Any function of $x - vt$ solves it: substitute $y = f(x - vt)$ and both sides equal $f''$. The shape slides along at speed $v$ without changing. Functions of $x + vt$ travel the other way.
 
-**Where $v$ comes from: a string.** Take a short piece of string of length $dx$, mass $\mu\,dx$ (µ is mass per length), under tension $T$. If the string makes a small angle with the axis, the vertical components of tension at the two ends are $T\,\partial y/\partial x$ evaluated at $x + dx$ and at $x$, and their difference is the net vertical force, $T\,\partial^2y/\partial x^2\,dx$. Newton's second law (04-01) gives $\mu\,dx\,\partial^2y/\partial t^2 = T\,\partial^2y/\partial x^2\,dx$, which is the wave equation with
+**Where $v$ comes from: a string.** Take a short piece of string of length $dx$, mass $\mu\,dx$ (µ is mass per length), under tension $F_T$. If the string makes a small angle with the axis, the vertical components of tension at the two ends are $F_T\,\partial y/\partial x$ evaluated at $x + dx$ and at $x$, and their difference is the net vertical force, $F_T\,\partial^2y/\partial x^2\,dx$. Newton's second law (04-01) gives $\mu\,dx\,\partial^2y/\partial t^2 = F_T\,\partial^2y/\partial x^2\,dx$, which is the wave equation with
 
 $$
-v = \sqrt{T/\mu} .
+v = \sqrt{F_T/\mu} .
 $$
 
 Stiffer (higher tension) means faster; heavier means slower. Every wave has an analogous pair: for sound in a gas, $v = \sqrt{\gamma RT/M}$ (about 343 m/s in air at 20 °C); for light, $v = 1/\sqrt{\mu\varepsilon} = c/n$.
@@ -96,9 +96,9 @@ $$
 kd\sin\theta = \Delta\varphi \quad\Longrightarrow\quad \sin\theta = \frac{\Delta\varphi}{kd} .
 $$
 
-Changing Δφ electronically steers the beam with no moving parts: 5G millimeter-wave phones and base stations, automotive radar and satellite terminals all do this (Example 04-09.2). Elements spaced more than half a wavelength apart produce unwanted extra beams (**grating lobes**), which is why array elements are typically λ/2 apart.
+Changing Δφ electronically steers the beam with no moving parts: 5G millimeter-wave phones and base stations, automotive radar and satellite terminals all do this (Example 04-09.2). Elements spaced too far apart produce unwanted extra beams (**grating lobes**): with spacing $d$, they appear once $d > \lambda/(1 + |\sin\theta_0|)$ when steering to angle $\theta_0$, so a spacing of λ/2 guarantees none at any steering angle, which is why array elements are typically λ/2 apart.
 
-**Thin films.** Light reflecting from the top and bottom surfaces of a thin layer interferes. A layer a quarter-wavelength thick (in the layer's material) sends the second reflection back half a wavelength later, so the two cancel if they have equal strength. An **anti-reflection coating** on glass therefore uses a quarter-wave layer with index $n_c = \sqrt{n_{\text{glass}}}$ (Example 04-09.3). The same physics colors soap bubbles and oil films and makes the dielectric mirrors and filters inside lasers and optical transceivers.
+**Thin films.** Light reflecting from the top and bottom surfaces of a thin layer interferes. A layer a quarter-wavelength thick (in the layer's material) sends the second reflection back half a wavelength later, so the two cancel if they have equal strength. (This needs both reflections to undergo the same phase flip, which happens when the indices increase in order, $n_{\text{air}} < n_c < n_{\text{glass}}$, as for a coating on glass.) An **anti-reflection coating** on glass therefore uses a quarter-wave layer with index $n_c = \sqrt{n_{\text{glass}}}$ (Example 04-09.3). The same physics colors soap bubbles and oil films and makes the dielectric mirrors and filters inside lasers and optical transceivers.
 
 **Beats.** Two waves of slightly different frequency $f_1$ and $f_2$ drift in and out of phase, so their sum swells and fades at the **beat frequency** $|f_1 - f_2|$. Musicians tune by eliminating beats; radios and optical coherent receivers deliberately mix signals to shift them to a lower frequency (heterodyning, [17](../../17-communication-systems/README.md)).
 
@@ -120,7 +120,7 @@ $$
 
 These are the **resonant modes**. Drive the system at one of them and the reflections reinforce every round trip: resonance, the wave version of the driven oscillator of [02-04](../../02-complex-numbers-des-and-linear-algebra/chapters/02-04-forced-response-and-resonance.md). Examples:
 
-- **Laser cavities.** A semiconductor laser chip is a Fabry–Pérot cavity between its cleaved facets; its allowed modes are spaced $\Delta f = c/(2nL)$ (Example 04-09.4). Single-wavelength lasers add gratings to pick one mode.
+- **Laser cavities.** A semiconductor laser chip is a Fabry–Pérot cavity between its cleaved facets; its allowed modes are spaced $\Delta f = c/(2nL)$ (Example 04-09.4), where strictly $n$ is the *group* index, which for real laser materials exceeds the phase index because the index varies with wavelength. Single-wavelength lasers add gratings to pick one mode.
 - **Transmission-line stubs.** A line open at its far end reflects a wave that returns to the input inverted after a round trip of half a wavelength when the line is a quarter-wave long: the input then looks like a short circuit. RF circuits use such stubs as filters and tuning elements; the netlist of Example 04-09.4 shows it.
 - **Crystal and MEMS resonators** (04-01) are standing acoustic waves; microwave cavities and on-chip ring resonators are standing electromagnetic waves.
 
@@ -214,7 +214,7 @@ In datacenters, the reach of copper at hundreds of gigabits per second is a mete
 
 **Solution.** (a) $\lambda = c/f = $ **0.2998 m**. The speed of sound is $\sqrt{1.4\times8.314\times293.15/0.02897} = 343.2$ m/s, so $\lambda = $ **0.3432 m**: similar wavelengths, a million times different frequencies.
 
-(b) $v = \sqrt{T/\mu} = \sqrt{60/5\times10^{-4}} = $ **346.4 m/s**. $f_1 = v/(2L) = $ **266.5 Hz**; $f_3 = 3f_1 = $ **799.4 Hz**.
+(b) $v = \sqrt{F_T/\mu} = \sqrt{60/5\times10^{-4}} = $ **346.4 m/s**. $f_1 = v/(2L) = $ **266.5 Hz**; $f_3 = 3f_1 = $ **799.4 Hz**.
 
 **Units check.** $\sqrt{\text{N}/(\text{kg/m})} = \sqrt{\text{kg·m/s}^2\cdot\text{m/kg}}$ = m/s ✓.
 
@@ -240,15 +240,15 @@ In datacenters, the reach of copper at hundreds of gigabits per second is a mete
 
 (c) Thickness $550/(4\times1.38) = $ **99.64 nm**; $R = \big(\frac{1.5 - 1.904}{1.5 + 1.904}\big)^2 = $ **1.411%**.
 
-**Interpretation.** One layer cuts reflection from 4% to 1.4% at the design wavelength (less elsewhere); multilayer stacks reach well under 0.5% across the visible. The quarter-wave formula is the optical twin of the quarter-wave impedance transformer of RF engineering: a quarter-wave section of impedance $\sqrt{Z_1Z_2}$ matches $Z_1$ to $Z_2$ ([13-09](../../13-electromagnetics/chapters/13-09-smith-chart-and-matching.md)).
+**Interpretation.** One layer cuts reflection from 4% to 1.4% at the design wavelength (less effectively elsewhere); multilayer stacks reach well under 0.5% across the visible. The quarter-wave formula is the optical twin of the quarter-wave impedance transformer of RF engineering: a quarter-wave section of impedance $\sqrt{Z_1Z_2}$ matches $Z_1$ to $Z_2$ ([13-09](../../13-electromagnetics/chapters/13-09-smith-chart-and-matching.md)).
 
 ### Example 04-09.4 — Resonators: a laser cavity and a line stub (tier B)
 
 **Setup.** (a) A semiconductor laser chip 300 µm long with refractive index 3.5 emits near 1310 nm. Find its longitudinal-mode spacing in frequency and in wavelength, and about how many half-wavelengths fit in the cavity. (b) A 50 Ω transmission line with a one-way delay of 0.25 ns is open at its far end. At what frequency does its input look like a short circuit? Confirm in ngspice.
 
-**Solution.** (a) $\Delta f = c/(2nL) = 2.998\times10^8/(2\times3.5\times3\times10^{-4}) = $ **142.8 GHz**; $\Delta\lambda = \lambda^2/(2nL) = $ **0.8172 nm**; $2nL/\lambda = $ **1603** half-wavelengths.
+**Solution.** (a) $\Delta f = c/(2nL) = 2.998\times10^8/(2\times3.5\times3\times10^{-4}) = $ **142.8 GHz**; $\Delta\lambda = \lambda^2/(2nL) = $ **0.8172 nm**; $2nL/\lambda = $ **1603** half-wavelengths. (These use the phase index, 3.5; real laser materials have a somewhat larger group index, which narrows the spacing in proportion.)
 
-(b) The input looks shorted when the line is a quarter-wavelength long: the wave travels to the open end and back (half a period) and returns inverted. The delay is a quarter period at $f = 1/(4\times0.25\ \text{ns}) = $ **1 GHz**.
+(b) The input looks shorted when the line is a quarter-wavelength long: the wave travels to the open end and back (half a period) and returns inverted. The delay is a quarter period at $f = 1/(4\times0.25\ \text{ns}) = $ **1.000 GHz**.
 
 **Simulation.** The netlist [labs/04-09-lab/quarter_wave_stub.cir](../labs/04-09-lab/quarter_wave_stub.cir) sweeps the input impedance from 0.5 to 1.5 GHz and finds its minimum at 1.000 GHz.
 
@@ -315,7 +315,7 @@ In datacenters, the reach of copper at hundreds of gigabits per second is a mete
 | Ex 04-09.4a | laser mode spacing | 142.8 | GHz |
 | Ex 04-09.4b | laser mode spacing | 0.8172 | nm |
 | Ex 04-09.4c | half-wavelengths in the cavity | 1603 | — |
-| Ex 04-09.4e | quarter-wave frequency of the stub | 1 | GHz |
+| Ex 04-09.4e | quarter-wave frequency of the stub | 1.000 | GHz |
 | Ex 04-09.5a | k₁ at NA 0.33 | 0.3178 | — |
 | Ex 04-09.5b | k₁ at NA 0.55 | 0.3259 | — |
 | Ex 04-09.5c | CD at k₁ = 0.25, NA 0.33 | 10.23 | nm |
@@ -368,7 +368,7 @@ The netlist `quarter_wave_stub.cir` simulates the stub of Example 04-09.4.
 
 | Quantity | Value | Note |
 |---|---|---|
-| Wave speed | $v = \lambda f$; string $\sqrt{T/\mu}$; sound in air ≈ 343 m/s; light $c/n$ | |
+| Wave speed | $v = \lambda f$; string $\sqrt{F_T/\mu}$; sound in air ≈ 343 m/s; light $c/n$ | |
 | Two-slit fringe spacing | λL/d | |
 | Diffraction | slit $\lambda/a$; circular aperture $1.22\lambda/D$ | Rayleigh criterion |
 | Lithography resolution | $CD = k_1\lambda/\text{NA}$, $k_1 \ge 0.25$ | [R-084](../../../reference/research-log.md#r-084--optical-interconnect-standards-fiber-euv-and-co-packaged-optics) |
@@ -396,7 +396,7 @@ The netlist `quarter_wave_stub.cir` simulates the stub of Example 04-09.4.
 
 - **EUV and High-NA lithography.** ASML's EUV scanners use 13.5 nm light; the 0.33-NA NXE platform (first shipped 2010) prints 13 nm critical dimensions, and the 0.55-NA EXE platform prints 8 nm, which ASML equates to 1.7× smaller features and 2.9× higher density, with an exposure field half the size. ASML lists the EXE:5200B at 8 nm resolution and at least 175 wafers per hour at a 50 mJ/cm² dose; the first High-NA modules shipped to Intel in December 2023 ([R-084](../../../reference/research-log.md#r-084--optical-interconnect-standards-fiber-euv-and-co-packaged-optics)) **[Established for λ, NA and specifications; Industry estimate for the density framing]**.
 - **Datacenter optics standards.** IEEE 802.3 defines 400 Gb/s Ethernet optics including SR8 (eight 850 nm lanes, 100 m of OM4 multimode fiber; 802.3cm-2020), DR4 (four 1310 nm lanes, 500 m of parallel single-mode fiber; 802.3bs-2017) and FR4 (four wavelengths at 1271–1331 nm on one fiber, 2 km; 802.3cu-2021). IEEE 802.3df-2024 set 800 Gb/s objectives to 500 m and 2 km over eight single-mode pairs, and the P802.3dj project targets 200 Gb/s lanes for 800 Gb/s and 1.6 Tb/s ([R-084](../../../reference/research-log.md#r-084--optical-interconnect-standards-fiber-euv-and-co-packaged-optics)) **[Established; P802.3dj completion not verified]**.
-- **Co-packaged optics.** NVIDIA announced Spectrum-X and Quantum-X Photonics switches with co-packaged optics in March 2025, claiming 3.5× better power efficiency (a later blog cites about 30 W per pluggable interface against as low as 9 W), with availability planned for 2026. Broadcom announced its 102.4 Tb/s Tomahawk 6 – Davisson CPO switch in October 2025, claiming a 70% cut in optical-interconnect power ([R-084](../../../reference/research-log.md#r-084--optical-interconnect-standards-fiber-euv-and-co-packaged-optics)) **[Industry estimate: vendor claims]**.
+- **Co-packaged optics.** NVIDIA announced Spectrum-X and Quantum-X Photonics switches with co-packaged optics in March 2025, claiming 3.5× better power efficiency (a later blog cites about 30 W per pluggable interface against as low as 9 W), with availability planned for 2026; general availability had not been confirmed from a primary source when this was checked in Nov 2026. Broadcom announced its 102.4 Tb/s Tomahawk 6 – Davisson CPO switch in October 2025, claiming a 70% cut in optical-interconnect power ([R-084](../../../reference/research-log.md#r-084--optical-interconnect-standards-fiber-euv-and-co-packaged-optics)) **[Industry estimate: vendor claims]**.
 
 ### Why it matters commercially
 

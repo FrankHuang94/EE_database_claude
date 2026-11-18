@@ -111,8 +111,8 @@ def ladder_t50(r_tot, c_tot, n=200):
 t_full = ladder_t50(rw, cw)
 v.assert_true("ladder 50% delay is 0.38 RC to 1%", abs(t_full / (rw * cw) / 0.38 - 1) < 0.01)
 v.check("X04.5c", 0.38 * rw * cw * 1e12)
-v.assert_true("half-length ladder delay is a quarter", abs(ladder_t50(rw / 2, cw / 2) / t_full - 0.25) < 1e-3)
-v.check("X04.5d", 0.38 * (rw / 2) * (cw / 2) * 1e12)
+v.assert_true("third-length ladder delay is a ninth", abs(ladder_t50(rw / 3, cw / 3) / t_full - 1 / 9) < 1e-3)
+v.check("X04.5d", 0.38 * (rw / 3) * (cw / 3) * 1e12)
 v.check("X04.5e", 20e-6 / (20e-9 * 40e-9) / 1e10)
 
 

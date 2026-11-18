@@ -18,7 +18,7 @@ Problems: [04-05 problems](../problems/04-05-problems.md) · Chapter: [04-05](..
 
 (a) $J = 10/2.5 = $ **4 A/mm²**, which is $4\times10^6$ A/m².
 
-(b) $v_d = J/(ne) = 4\times10^6/(8.49\times10^{28}\times1.602\times10^{-19}) = $ **294.0 µm/s**: about a meter an hour.
+(b) $v_d = J/(ne) = 4\times10^6/(8.491\times10^{28}\times1.602\times10^{-19}) = $ **294.0 µm/s**: about a meter an hour.
 
 ### Solution 04-05.3
 
@@ -30,7 +30,7 @@ Problems: [04-05 problems](../problems/04-05-problems.md) · Chapter: [04-05](..
 
 (a) $\rho = 1.68\times(1 + 0.00393\times80) = $ **2.208 µΩ·cm**.
 
-(b) $\tau = m/(ne^2\rho) = 9.109\times10^{-31}/(8.49\times10^{28}\times2.567\times10^{-38}\times2.208\times10^{-8}) = $ **18.93 fs**.
+(b) $\tau = m/(ne^2\rho) = 9.109\times10^{-31}/(8.491\times10^{28}\times2.567\times10^{-38}\times2.208\times10^{-8}) = $ **18.93 fs**.
 
 (c) $\lambda = v_F\tau = 1.57\times10^6\times18.93\times10^{-15} = $ **29.71 nm**. (The Fermi speed barely changes with temperature; the extra collisions shorten τ.)
 

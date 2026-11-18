@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 04-11 · Introduction to Solid-State Physics
 
 | | |
@@ -54,7 +54,7 @@ A **crystal** repeats a group of atoms (the **basis**) at every point of a **lat
 
 Silicon's four valence electrons form four covalent bonds, one to each neighbor. With $a$ = 0.543102 nm ([R-086](../../../reference/research-log.md#r-086--crystals-band-gaps-intrinsic-carriers-and-wide-bandgap-markets)), silicon has $8/a^3 = 4.994\times10^{22}$ atoms per cm³ (Example 04-11.1). Doping is measured against this: $10^{16}$ dopants per cm³ is one per five million silicon atoms.
 
-Lattice constants are measured by X-ray diffraction (04-09): atomic planes a distance $d$ apart reflect strongly only where reflections from successive planes add in phase, $2d\sin\theta = m\lambda$ (**Bragg's law**). The same condition applied to electron waves inside the crystal creates band gaps (§3.4).
+Lattice constants are measured by X-ray diffraction (04-09): atomic planes a distance $d$ apart reflect strongly only where reflections from successive planes add in phase, $2d\sin\theta = m\lambda$ (**Bragg's law**; here θ is measured from the planes, not from their normal as in 04-09's refraction). The same condition applied to electron waves inside the crystal creates band gaps (§3.4).
 
 ### 3.2 The free-electron gas: Fermi energy and Sommerfeld's correction
 
@@ -252,7 +252,7 @@ $$
 n_i = \sqrt{N_cN_v}\;e^{-E_g/2kT} .
 $$
 
-$N_c$ and $N_v$ grow as $T^{3/2}$ ([09-02](../../09-semiconductor-devices/chapters/09-02-carriers-doping-fermi-level.md) derives them). For silicon, rounded values $N_c \approx 3\times10^{19}$ and $N_v \approx 1\times10^{19}$ cm⁻³ give $n_i \approx 6.8\times10^9$ cm⁻³ at 300 K (Example 04-11.6) against the best measured $9.65\times10^9$ cm⁻³ ([R-086](../../../reference/research-log.md#r-086--crystals-band-gaps-intrinsic-carriers-and-wide-bandgap-markets)); the one-digit prefactors and the gap's temperature dependence explain most of the difference. The exponential is what matters:
+$N_c$ and $N_v$ grow as $T^{3/2}$ ([09-02](../../09-semiconductor-devices/chapters/09-02-carriers-doping-fermi-level.md) derives them). For silicon, rounded values $N_c \approx 3\times10^{19}$ and $N_v \approx 1\times10^{19}$ cm⁻³ give $n_i \approx 6.8\times10^9$ cm⁻³ at 300 K (Example 04-11.6) against the best measured $9.65\times10^9$ cm⁻³ ([R-086](../../../reference/research-log.md#r-086--crystals-band-gaps-intrinsic-carriers-and-wide-bandgap-markets)); the rounded prefactors explain the difference: with $N_c = 3\times10^{19}$, an $N_v$ near $2\times10^{19}$ cm⁻³ would reproduce the measured value, so the one-digit $N_v$ is the main culprit. The exponential is what matters:
 
 - Silicon's ~$10^{10}$ cm⁻³ is one carrier per $5\times10^{12}$ atoms, so pure silicon barely conducts (04-05). That is what makes it useful: $10^{15}$–$10^{20}$ cm⁻³ of donors or acceptors (**doping**, 09-02) set the carrier density by design rather than by temperature.
 - From 300 to 400 K silicon's $n_i$ rises several hundredfold, and junction leakage (proportional to $n_i$ or $n_i^2$ by mechanism) with it: the Arrhenius behavior of 03-05, and a main reason chips have maximum junction temperatures.
@@ -278,7 +278,7 @@ CMOS uses both: NMOS conducts with conduction-band electrons, PMOS with valence-
 
 A photon can lift a valence electron into the conduction band only if $hf \ge E_g$ (04-10), so a semiconductor absorbs wavelengths shorter than $\lambda_c = 1239.84\text{ eV·nm}/E_g$; LEDs and lasers emit near $E_g$ when electrons and holes recombine.
 
-**Direct and indirect gaps.** A near-infrared photon's wavenumber is about $10^{-3}$ of silicon's zone-edge $\pi/a$ (Problem 04-11.10), so optical transitions change an electron's energy but hardly its $k$: they are vertical on an $E$–$k$ diagram.
+**Direct and indirect gaps.** A near-infrared photon's wavenumber is of order $10^{-3}$ of the crystal-momentum scale $\pi/a$ that sets silicon's Brillouin zone (Problem 04-11.10), so optical transitions change an electron's energy but hardly its $k$: they are vertical on an $E$–$k$ diagram.
 
 - In a **direct-gap** material (GaAs, GaN) the conduction-band minimum lies above the valence-band maximum at $k = 0$; electrons and holes recombine by emitting a photon alone, so LEDs and lasers use direct gaps.
 - In an **indirect-gap** material (Si, Ge, 4H-SiC, diamond) the conduction minimum sits at another $k$; recombination must also create or absorb a phonon to supply the crystal momentum, a much less likely process. Silicon is a poor emitter but a fine detector (absorption well above the gap is strong), which is why silicon photonics borrows its lasers from III–V materials ([24-07](../../24-high-speed-io-signal-integrity-and-photonics/chapters/24-07-photonics-fundamentals.md)).
@@ -313,7 +313,7 @@ Gaps are from [R-086](../../../reference/research-log.md#r-086--crystals-band-ga
 
 **Setup.** Copper has $n = 8.49\times10^{28}$ m⁻³. Find (a) $k_F$, (b) $E_F$, (c) $v_F$, (d) $T_F$, (e) the 0 K average energy, (f) the classical $\tfrac32kT$ at 300 K, and (g) the Fermi wavelength.
 
-**Solution.** (a) $(3\pi^2n)^{1/3} = (2.5138\times10^{30})^{1/3}$ = **1.360×10¹⁰ m⁻¹**. (b) $\hbar^2k_F^2/2m = (1.05457\times10^{-34}\times1.3597\times10^{10})^2/(2\times9.1094\times10^{-31}) = 1.1285\times10^{-18}$ J = **7.044 eV**. (c) $\hbar k_F/m$ = **1.574×10⁶ m/s**. (d) $E_F/k$ = **8.174×10⁴ K**. (e) $\tfrac35E_F$ = **4.226 eV**. (f) $\tfrac32\times25.85$ meV = **38.78 meV**. (g) $2\pi/k_F$ = **0.4621 nm**, about the spacing between copper atoms.
+**Solution.** (a) $(3\pi^2n)^{1/3} = (2.5138\times10^{30})^{1/3}$ = **1.360×10¹⁰ m⁻¹**. (b) $\hbar^2k_F^2/2m = (1.05457\times10^{-34}\times1.3597\times10^{10})^2/(2\times9.1094\times10^{-31}) = 1.1285\times10^{-18}$ J = **7.044 eV**. (c) $\hbar k_F/m$ = **1.574×10⁶ m/s**. (d) $E_F/k$ = **8.174×10⁴ K**. (e) $\tfrac35E_F$ = **4.226 eV**. (f) $\tfrac32\times25.85$ meV = **38.78 meV**. (g) $2\pi/k_F$ = **0.4621 nm**, comparable to copper's cubic lattice constant, $(4/n)^{1/3}$ ≈ 0.36 nm.
 
 **Units check.** $\hbar k/m$: (kg·m²/s)(m⁻¹)/kg = m/s ✓. **Sanity check.** $v_F$ matches the $1.57\times10^6$ m/s 04-05 took from tables. At 0 K the electrons average 4.2 eV of kinetic energy, over 100 times classical thermal energy: the Pauli principle, not heat, sets their speed.
 
@@ -337,7 +337,7 @@ Gaps are from [R-086](../../../reference/research-log.md#r-086--crystals-band-ga
 
 **Setup.** A 1-D lattice of period $a$ = 0.5 nm has $V(x) = 2U\cos(2\pi x/a)$ with $U$ = 0.2 eV. Find (a) the zone-edge wavenumber, (b) the free-electron energy there, (c), (d) the two standing-wave energies, and (e) the exact gap.
 
-**Solution.** (a) $\pi/a$ = **6.283×10⁹ m⁻¹**; the wavelength is $2a$ = 1 nm, the Bragg condition. (b) $\hbar^2(\pi/a)^2/2m = 2.410\times10^{-19}$ J = **1.504 eV**. (c) $1.504 - 0.2$ = **1.304 eV**; (d) **1.704 eV**. (e) Diagonalizing the Hamiltonian in 21 plane waves (the lab's method) gives edges 1.3009 and 1.7007 eV and a gap of **0.3999 eV**: mixing with other plane waves lowers both edges by about 3 meV but the gap by only 0.1 meV.
+**Solution.** (a) $\pi/a$ = **6.283×10⁹ m⁻¹**; the wavelength is $2a$ = 1 nm, the Bragg condition. (b) $\hbar^2(\pi/a)^2/2m = 2.410\times10^{-19}$ J = **1.504 eV**. (c) $1.504 - 0.2$ = **1.304 eV**; (d) **1.704 eV**. (e) Diagonalizing the Hamiltonian in 21 plane waves (the lab's method; it uses 31, which changes nothing at this precision) gives edges 1.3009 and 1.7007 eV and a gap of **0.3999 eV**: mixing with other plane waves lowers both edges by about 3 meV but the gap by only 0.1 meV.
 
 **Sanity check.** The gap is twice the potential's Fourier amplitude whatever $a$ and $m$; $a$ only sets where the gap appears.
 
@@ -441,10 +441,10 @@ The lab ([labs/04-11-lab/](../labs/04-11-lab/README.md)) is a notebook in five p
 
 ### State of the art (as of Nov 2026)
 
-- **Reference values move.** Silicon's 300 K intrinsic carrier concentration, long quoted as 1.45×10¹⁰ cm⁻³, was shown in 1991 to be inconsistent with the best data (about 1.0×10¹⁰); a 2003 reassessment accounting for band-gap narrowing gave 9.65×10⁹ cm⁻³ **[Established]**. A 2025 review of simulation parameters traces much of 4H-SiC's 3.2–3.26 eV spread to low-temperature excitonic values **[Contested at the second decimal]** ([R-086](../../../reference/research-log.md#r-086--crystals-band-gaps-intrinsic-carriers-and-wide-bandgap-markets)).
+- **Reference values move.** Silicon's 300 K intrinsic carrier concentration, long quoted as 1.45×10¹⁰ cm⁻³, was shown to be inconsistent with the best data: a review proposed 1.08×10¹⁰, and a 1991 measurement gave about 1.0×10¹⁰; a 2003 reassessment accounting for band-gap narrowing gave 9.65×10⁹ cm⁻³ **[Established]**. A 2025 review of simulation parameters traces much of 4H-SiC's 3.2–3.26 eV spread to low-temperature excitonic values **[Contested at the second decimal]** ([R-086](../../../reference/research-log.md#r-086--crystals-band-gaps-intrinsic-carriers-and-wide-bandgap-markets)).
 - **Wide-bandgap power.** Yole Group forecasts, as reported in the trade press in June and August 2026 (Yole's own pages were not reachable) **[Industry estimate]**:
   - power SiC devices reach $11 billion by 2031, a 20% compound annual growth rate (CAGR) from 2025, with 800 V platforms about half of battery-EV shipments by 2031;
-  - xEV power devices reach $14.5 billion by 2031, with SiC MOSFETs growing at 21.5% a year while silicon IGBT modules stay largest at almost $7 billion; Bosch, Renesas and Rohm were reported to be reassessing SiC manufacturing footprints amid overcapacity;
+  - xEV power devices reach $14.5 billion by 2031, with SiC MOSFETs growing at 21.5% a year while silicon IGBT modules remain a market of almost $7 billion; Bosch, Renesas and Rohm were reported to be reassessing SiC manufacturing footprints amid overcapacity;
   - power GaN reaches $3.5 billion by 2031 at a 35% CAGR, consumer and mobile the largest segment ($1.7 billion), Innoscience the 2025 leader; the previous edition forecast $3 billion by 2030 at 42% ([R-086](../../../reference/research-log.md#r-086--crystals-band-gaps-intrinsic-carriers-and-wide-bandgap-markets)).
 
 ### Why it matters commercially

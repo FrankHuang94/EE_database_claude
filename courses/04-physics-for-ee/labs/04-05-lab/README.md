@@ -29,7 +29,7 @@ Chapter sections 3.2 to 3.5 and Examples 04-05.2 and 04-05.6; Problems 04-05.11 
 |---|---|---|
 | 1 | Drude simulation, $E$ = 10 kV/m | drift ≈ −42 m/s at τ = 25 fs and ≈ −86 m/s at 50 fs, against −44.0 and −87.9 m/s from $-e\tau E/m$ |
 | 2 | tapered trace, 1 mm → 0.2 mm over 100 mm | 99.23 mΩ; the average-width estimate (82.21 mΩ) is 17% low |
-| 3 | self-heating, 1 Ω at 20 °C, θ = 30 K/W | 59.68 °C at 1 A; runaway above 2.912 A |
+| 3 | self-heating, 1 Ω at 20 °C, θ = 30 K/W, 25 °C ambient | 59.68 °C at 1 A; runaway above 2.912 A |
 | 4 | distributed RC line | 0.3466 RC with one section, converging to 0.3787 RC |
 | netlist | 1 mm wire, 20 π-sections | 50% delay 1.402 ns |
 

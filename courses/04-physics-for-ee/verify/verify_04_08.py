@@ -154,6 +154,15 @@ v.check("04-08.13b", 0.3 * 20e-3 / 1e-3)
 i14 = 2 * pi * 10e6 * 1e-9 * 10
 v.check("04-08.14a", i14)
 v.check("04-08.14b", MU0 * i14 / (2 * pi * 0.02) * 1e6)
+# 15: coax energy flow. E from the potential (integrate a 1/r field normalized to V), H from Ampère, S = E H.
+a15, b15, V15, I15 = 0.5e-3, 2e-3, 10.0, 2.0
+shape = quad(lambda r: 1 / r, a15, b15)[0]
+E15 = lambda r: V15 / shape / r
+H15 = lambda r: I15 / (2 * pi * r)
+v.check("04-08.15a", E15(1e-3))
+v.check("04-08.15b", H15(1e-3))
+v.check("04-08.15c", E15(1e-3) * H15(1e-3))
+v.check("04-08.15d", quad(lambda r: E15(r) * H15(r) * 2 * pi * r, a15, b15)[0])
 
 # ---------------------------------------------------------------- lab (analytic references the FDTD reproduces)
 ErL, EtL = fresnel(ETA0, ETA0 / 2)

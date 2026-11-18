@@ -205,7 +205,7 @@ a10 = log(2) / (500 / 1e5)
 Q10 = 2 * pi * 1e5 / (2 * a10)
 v.check("04-01.10a", a10)
 v.check("04-01.10b", Q10)
-v.check("04-01.10c", 2 * pi / Q10 * 100)
+v.check("04-01.10c", (1 - exp(-2 * a10 / 1e5)) * 100)          # energy ∝ amplitude²; one period is 1/f0
 v.check("04-01.10d", 1e5 / Q10)
 v.check("04-01.11a", 1 / (1 / 100 + 1 / 300))
 v.check("04-01.11b", 100 + 300)
@@ -278,6 +278,7 @@ sh = solve_ivp(lambda t, y: [y[1], -a_in(t) - b6 / m6 * y[1] - k6 / m6 * y[0]], 
                max_step=5e-8, rtol=1e-10, atol=1e-18)
 v.check("Lab 04-01.j", np.max(np.abs(sh.y[0])) * 1e6)
 v.check("Lab 04-01.k", sqrt(KB * T300 / k6) * 1e12)
-v.check("Lab 04-01.l", brentq(lambda Q: ((2 * pi / Q) - (1 - exp(-2 * pi / Q))) / (1 - exp(-2 * pi / Q)) - 0.1, 5, 200))
+qd = lambda Q: Q * sqrt(1 - 1 / (4 * Q * Q))                      # Q_d = omega_d / (2 alpha)
+v.check("Lab 04-01.l", brentq(lambda Q: ((2 * pi / Q) - (1 - exp(-2 * pi / qd(Q)))) / (1 - exp(-2 * pi / qd(Q))) - 0.1, 5, 200))
 
 sys.exit(v.finish())

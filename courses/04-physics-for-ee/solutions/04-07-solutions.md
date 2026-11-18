@@ -76,7 +76,7 @@ $R_{\text{seen}} = (N_1/N_2)^2R_L$, so $N_1/N_2 = \sqrt{800/8} = $ **10**.
 
 (b) Neglecting the core, $L = \mu_0N^2A/g$, so $g = \mu_0\times49\times4\times10^{-5}/10^{-5} = $ **0.2463 mm**.
 
-(c) $B = \mu_0NI/g$ reaches 0.39 T at $I = 0.39\times2.463\times10^{-4}/(1.2566\times10^{-6}\times7) = $ **10.92 A**, above 10 A ✓. (The core's reluctance, 5% of the gap's here, would raise it slightly further while lowering $L$ by a similar amount; a real design iterates.)
+(c) $B = \mu_0NI/g$ reaches 0.39 T at $I = 0.39\times2.463\times10^{-4}/(1.2566\times10^{-6}\times7) = $ **10.92 A**, above 10 A ✓. (The problem neglects the core's reluctance. For a typical ferrite path, 5 cm long with $\mu_r$ = 2000, it would be $0.05/(2000\times2.463\times10^{-4}) \approx 10\%$ of the gap's, raising the saturation current slightly further while lowering $L$ by a similar fraction; a real design iterates.)
 
 ### Solution 04-07.13
 
@@ -90,7 +90,7 @@ With $B = B_{\max}\sin\omega t$, the time average of $(dB/dt)^2$ is $\omega^2B_{
 
 (b) $\pi^2\times50^2\times1.5^2\times(3.5\times10^{-4})^2/(6\times4.7\times10^{-7}) = $ **2412 W/m³**, which is **0.3152 W/kg**. (Real cores also have hysteresis and "excess" loss, typically larger than this classical eddy part.)
 
-(c) At 400 Hz with 0.1 mm: **1.647 W/kg**. Loss scales as $(ft)^2$: eight times the frequency and $(0.1/0.35)^2 = 0.082$ times the thickness squared nearly cancel.
+(c) At 400 Hz with 0.1 mm: **1.647 W/kg**. Loss scales as $(ft)^2$: eight times the frequency multiplies it by 64 and $(0.1/0.35)^2 = 0.082$ divides most of that back out, so the loss still rises about 5.2 times. Frequency enters squared, so thinner laminations only partly compensate.
 
 ### Solution 04-07.14
 
@@ -115,6 +115,14 @@ With $B = B_{\max}\sin\omega t$, the time average of $(dB/dt)^2$ is $\omega^2B_{
 (b) $\eta = \frac{25.08}{25.18}\times\frac{5}{5.1} = $ **0.9765**.
 
 (c) $Q = \omega L/R = 2\pi\times360\times10^3\times10^{-5}/0.1 = $ **226.2**. High-Q coils and good coupling ($kQ \gg 1$) are what make efficient wireless power possible; real phone coils have lower Q and coupling, and real systems lose more in rectifiers and electronics.
+
+### Solution 04-07.17
+
+(a) By symmetry the induced $E$ circles the axis with the same magnitude everywhere on a circle of radius $r$. Faraday's law, $\oint\vec E\cdot d\vec\ell = -d\Phi/dt$, gives $E\cdot2\pi r = \pi r^2\,dB/dt$ inside, so $E = \frac r2\frac{dB}{dt} = 0.005\times0.5$ = **2.500 mV/m**.
+
+(b) Outside, the circle encloses all the flux, $\pi R^2B$: $E\cdot2\pi r = \pi R^2\,dB/dt$, so $E = \frac{R^2}{2r}\frac{dB}{dt} = \frac{4\times10^{-4}}{0.06}\times0.5$ = **3.333 mV/m**.
+
+(c) $\mathcal E = \pi R^2\,dB/dt = \pi\times4\times10^{-4}\times0.5$ = **0.6283 mV**, whatever the loop's radius as long as it encloses the solenoid. The field outside is not zero because Faraday's law links $E$ to the flux *enclosed by the path*, not to $B$ on the path: the changing flux inside drives a circulating $E$ everywhere around it. This non-conservative field is why the voltage a meter reads near a transformer depends on how its leads are routed.
 
 ---
 
@@ -166,3 +174,6 @@ With $B = B_{\max}\sin\omega t$, the time average of $(dB/dt)^2$ is $\omega^2B_{
 | 04-07.16a | reflected resistance | 25.08 | Ω |
 | 04-07.16b | link efficiency | 0.9765 | — |
 | 04-07.16c | coil quality factor | 226.2 | — |
+| 04-07.17a | induced field at 1.0 cm | 2.500 | mV/m |
+| 04-07.17b | induced field at 3.0 cm | 3.333 | mV/m |
+| 04-07.17c | EMF around the 3.0 cm loop | 0.6283 | mV |
