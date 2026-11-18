@@ -31,7 +31,7 @@ Calculus-based electricity and magnetism with the mechanics, waves and modern ph
 | [04-02 · Charge, Coulomb's Law and Electric Fields](chapters/04-02-charge-coulomb-and-electric-fields.md) | 10 | ✅ verified | [problems](problems/04-02-problems.md) · [solutions](solutions/04-02-solutions.md) · [lab](labs/04-02-lab/README.md) · [verify](verify/verify_04_02.py) |
 | [04-03 · Gauss's Law](chapters/04-03-gauss-law.md) | 8 | ✅ verified | [problems](problems/04-03-problems.md) · [solutions](solutions/04-03-solutions.md) · [lab](labs/04-03-lab/README.md) · [verify](verify/verify_04_03.py) |
 | [04-04 · Electric Potential, Capacitance and Dielectrics](chapters/04-04-potential-capacitance-and-dielectrics.md) | 10 | ✅ verified | [problems](problems/04-04-problems.md) · [solutions](solutions/04-04-solutions.md) · [lab](labs/04-04-lab/README.md) · [verify](verify/verify_04_04.py) |
-| [04-05 · Current, Resistance and Conduction](chapters/04-05-current-resistance-and-conduction.md) | 8 | ⬜ planned | — |
+| [04-05 · Current, Resistance and Conduction](chapters/04-05-current-resistance-and-conduction.md) | 8 | ✅ verified | [problems](problems/04-05-problems.md) · [solutions](solutions/04-05-solutions.md) · [lab](labs/04-05-lab/README.md) · [verify](verify/verify_04_05.py) |
 | [04-06 · Magnetic Fields and Forces](chapters/04-06-magnetic-fields-and-forces.md) | 10 | ⬜ planned | — |
 | [04-07 · Faraday's Law, Lenz's Law and Inductance](chapters/04-07-faraday-lenz-and-inductance.md) | 10 | ⬜ planned | — |
 | [04-08 · Energy in Fields and Maxwell's Equations (Preview)](chapters/04-08-maxwell-preview.md) | 6 | ⬜ planned | — |

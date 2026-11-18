@@ -1696,3 +1696,50 @@
 - term: Charge sharing
   definition: Connecting capacitors at different voltages so their charge redistributes to a common voltage; charge is conserved but energy is lost (half, for equal capacitors), and it is how a DRAM cell is read onto its bit line.
   chapter: "04-04"
+
+# ---------------------------------------------------------------- 04-05
+- term: Electric current
+  definition: The rate at which charge crosses a surface, I = dQ/dt (amperes); conventional current points the way positive charge would move, opposite to electron motion in a metal.
+  chapter: "04-05"
+- term: Current density
+  definition: Current per unit area as a vector field, J = nqv_d (A/m²); the current through a surface is the flux of J, and J = σE in an ohmic material.
+  chapter: "04-05"
+- term: Continuity equation
+  definition: Charge conservation in local form, ∇ · J = −∂ρ/∂t; integrated over a node that stores no charge it becomes Kirchhoff's current law.
+  chapter: "04-05"
+- term: Drift velocity
+  definition: The small average velocity carriers acquire from a field on top of their fast random motion; about 74 µm/s for 1 A in 1 mm² of copper.
+  chapter: "04-05"
+- term: Drude model
+  definition: The classical picture of conduction in which carriers accelerate in a field and lose their momentum in random collisions every τ on average, giving σ = ne²τ/m and Ohm's law.
+  chapter: "04-05"
+- term: Mobility
+  definition: Drift speed per unit field, µ = eτ/m (cm²/V·s); copper about 44, lightly doped silicon about 1400 for electrons and 470 for holes. Conductivity is neµ.
+  chapter: "04-05"
+- term: Resistivity
+  definition: The material property ρ = 1/σ (Ω·m) that sets resistance R = ρL/A; copper is 1.68 µΩ·cm in bulk and rises with temperature and in wires narrower than its mean free path.
+  chapter: "04-05"
+- term: Ohm's law
+  definition: Current proportional to voltage, V = IR, or locally J = σE; it holds for metals and doped semiconductors at moderate fields and fails at high fields, high frequencies, very short lengths and in junctions.
+  chapter: "04-05"
+- term: Mean free path
+  definition: The average distance a carrier travels between scattering events, λ = v_F τ; about 39–40 nm for electrons in copper at room temperature, which is why narrower copper wires lose conductivity.
+  chapter: "04-05"
+- term: Sheet resistance
+  definition: The resistance of a square of a thin film, R_s = ρ/t (Ω/□); a trace's resistance is R_s times its number of squares, L/W.
+  chapter: "04-05"
+- term: Temperature coefficient of resistance
+  definition: The fractional change of resistance per degree, α in ρ = ρ₀[1 + α(T − T₀)]; 0.00393 /°C for annealed copper at 20 °C, negative for semiconductors and thermistors.
+  chapter: "04-05"
+- term: Joule heating
+  definition: The conversion of electrical energy to heat in a resistance, P = I²R = V²/R, or locally p = J · E = ρJ² per unit volume.
+  chapter: "04-05"
+- term: Electromigration
+  definition: The slow drift of metal atoms pushed by the electron current at high current density, forming voids and hillocks; it caps the DC current density in on-chip wires, especially power grids.
+  chapter: "04-05"
+- term: Distributed RC line
+  definition: A wire whose resistance and capacitance are spread along its length; driven by a step, its far end reaches 50% at about 0.38 RC, so delay grows as length squared.
+  chapter: "04-05"
+- term: Backside power delivery
+  definition: Routing a chip's power supply through thick wires on the back of the thinned wafer, freeing front-side wiring for signals and cutting IR drop; Intel ships it as PowerVia on 18A, and TSMC plans it for A16.
+  chapter: "04-05"

@@ -65,3 +65,18 @@
 "Energy lost when two equal capacitors share charge?","Half the initial energy, dissipated in the connecting resistance whatever its value (with none, radiated). DRAM reads are charge sharing: ΔV = (V_cell − V_BL)·C_s/(C_s + C_BL).",bsee::04 bsee::04-04
 "Electrostatic pressure, and the chuck force?","p = ½ε₀E² = D²/2ε₀ in a vacuum or air gap (≈ 40 Pa at 3 MV/m). A chuck's F = ε₀SV²/[2(g + l/ε_r)²] → D²S/2ε₀ at zero gap: 36.9 N for a 200 mm wafer at 1 kV on 0.54 mm alumina.",bsee::04 bsee::04-04
 "MLCC classes and DC-bias loss?","C0G (class 1): 0 ± 30 ppm/°C, no DC-bias loss. X5R/X7R (class 2, BaTiO₃, ε_r 1000–4000): ±15% over temperature, and lose capacitance with DC bias (Murata: 100 µF X5R at 1.8 V ≈ 90 µF; Y5V ≈ 60 µF).",bsee::04 bsee::04-04
+"Current density in terms of carriers?","J = nqv_d (A/m²); current I is the flux of J through a surface. For electrons J points opposite to their drift.",bsee::04 bsee::04-05
+"Drift speed of 1 A in 1 mm² of copper, and why signals are still fast?","About 74 µm/s (n = 8.49×10²⁸ m⁻³). The wire is already full of electrons; the signal travels with the field at a large fraction of c.",bsee::04 bsee::04-05
+"Continuity equation and KCL?","∇·J = −∂ρ/∂t: outflow equals the rate of charge loss. At a node storing no charge, currents in = currents out (KCL); with capacitance, C dV/dt = net inflow.",bsee::04 bsee::04-05
+"Drude model in one line?","m dv/dt = −eE − mv/τ → v_d = −(eτ/m)E, so J = σE with σ = ne²τ/m = neµ: Ohm's law from random collisions.",bsee::04 bsee::04-05
+"Copper's Drude numbers?","ρ 1.68 µΩ·cm, σ 5.95×10⁷ S/m, τ ≈ 25 fs, µ ≈ 44 cm²/V·s, λ = v_Fτ ≈ 39 nm (Fermi speed 1.57×10⁶ m/s).",bsee::04 bsee::04-05
+"Why does copper conduct better than silicon despite lower mobility?","σ = neµ: copper has ~10¹² times more carriers than pure silicon, which outweighs silicon's ~30× higher mobility.",bsee::04 bsee::04-05
+"Silicon conductivity and mobilities?","σ = e(nµₙ + pµₚ); lightly doped Si µₙ ≈ 1400, µₚ ≈ 470 cm²/V·s. Pure Si ≈ 3×10⁵ Ω·cm; 10¹⁵ donors/cm³ ≈ 4.5 Ω·cm.",bsee::04 bsee::04-05
+"Resistance from geometry, and sheet resistance?","R = ρL/A. For a film of thickness t, R_s = ρ/t (Ω/□) and R = R_s·(L/W). 1 oz PCB copper: 34 µm, ≈ 0.49 mΩ/□.",bsee::04 bsee::04-05
+"Temperature dependence of copper's resistance?","ρ = ρ₀[1 + α(T − 20 °C)] with α = 0.00393 /°C: +31% from 20 to 100 °C. Resistance doubles as a thermometer.",bsee::04 bsee::04-05
+"Why do narrow copper wires get worse?","Below the ~40 nm mean free path, surface and grain-boundary scattering raise ρ, and a 2–3 nm barrier/liner steals area (30% of a 20 × 40 nm line).",bsee::04 bsee::04-05
+"Joule heating, globally and locally?","P = IV = I²R = V²/R; per volume p = J·E = σE² = ρJ². Heat concentrates where current crowds.",bsee::04 bsee::04-05
+"Electromigration?","High current density pushes metal atoms along the electron flow, forming voids and hillocks; it caps DC current density (ITRS 2015 projected ~0.3 MA/cm² for minimum Cu lines by 2026), mainly a power-grid problem.",bsee::04 bsee::04-05
+"Distributed RC wire delay?","t₅₀ ≈ 0.38RC with R = rL and C = cL, so delay ∝ L². A lumped RC (0.69RC) overestimates; repeaters make long-wire delay linear in L.",bsee::04 bsee::04-05
+"What happens to wire RC when all cross-section dimensions shrink by s?","Resistance per length rises by 1/s²; capacitance per length stays about the same. Local wires keep pace; global wires slow every node.",bsee::04 bsee::04-05
+"Why move power delivery to the wafer's back side?","Thick, short backside wires cut IR drop and free front-side tracks for signals. Intel ships PowerVia on 18A (Panther Lake, late 2025); TSMC's A16 Super Power Rail was shown for 2027 (as of Nov 2026).",bsee::04 bsee::04-05

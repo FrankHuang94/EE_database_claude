@@ -1,0 +1,54 @@
+* Chapter 04-05, Example 04-05.6 -- a 1 mm on-chip copper wire as a distributed RC line.
+* Total R = 29.87 kOhm and C = 123.96 fF, modeled by 20 pi-sections (C/20 at interior nodes,
+* C/40 at the far end). A 1 V step drives the near end; the far end is open.
+* Exact distributed-line theory gives a 50% delay of 0.3787 RC = 1.402 ns.
+*
+* EXPECT t50 key:../../chapters/04-05-current-resistance-and-conduction.md#Ex_04-05.6i scale=1e-9 rtol=2e-3
+
+VIN n0 0 PWL(0 0 0.1p 1 1u 1)
+R1 n0 n1 1493.33
+R2 n1 n2 1493.33
+R3 n2 n3 1493.33
+R4 n3 n4 1493.33
+R5 n4 n5 1493.33
+R6 n5 n6 1493.33
+R7 n6 n7 1493.33
+R8 n7 n8 1493.33
+R9 n8 n9 1493.33
+R10 n9 n10 1493.33
+R11 n10 n11 1493.33
+R12 n11 n12 1493.33
+R13 n12 n13 1493.33
+R14 n13 n14 1493.33
+R15 n14 n15 1493.33
+R16 n15 n16 1493.33
+R17 n16 n17 1493.33
+R18 n17 n18 1493.33
+R19 n18 n19 1493.33
+R20 n19 n20 1493.33
+C1 n1 0 6.19795e-15
+C2 n2 0 6.19795e-15
+C3 n3 0 6.19795e-15
+C4 n4 0 6.19795e-15
+C5 n5 0 6.19795e-15
+C6 n6 0 6.19795e-15
+C7 n7 0 6.19795e-15
+C8 n8 0 6.19795e-15
+C9 n9 0 6.19795e-15
+C10 n10 0 6.19795e-15
+C11 n11 0 6.19795e-15
+C12 n12 0 6.19795e-15
+C13 n13 0 6.19795e-15
+C14 n14 0 6.19795e-15
+C15 n15 0 6.19795e-15
+C16 n16 0 6.19795e-15
+C17 n17 0 6.19795e-15
+C18 n18 0 6.19795e-15
+C19 n19 0 6.19795e-15
+C20 n20 0 3.09898e-15
+
+.options reltol=1e-6
+.tran 1p 10n 0 5p
+
+.meas tran t50 TRIG v(n0) VAL=0.5 RISE=1 TARG v(n20) VAL=0.5 RISE=1
+.end
