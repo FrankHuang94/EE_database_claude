@@ -1537,3 +1537,48 @@
 - term: Chopper stabilization
   definition: Modulating a low-frequency signal above an amplifier's 1/f corner, amplifying it there and demodulating it, which removes offset and 1/f noise at the cost of switching artifacts; the basis of zero-drift amplifiers.
   chapter: "03-06"
+
+# ---------------------------------------------------------------- 04-01
+- term: Newton's laws of motion
+  definition: "(1) A body with no net force keeps a constant velocity; (2) the net force equals the rate of change of momentum, F = dp/dt = ma for constant mass; (3) forces come in equal and opposite pairs."
+  chapter: "04-01"
+- term: Work
+  definition: The energy transferred by a force acting along a displacement, W = ∫F·dr (J); only the component of force along the motion does work.
+  chapter: "04-01"
+- term: Kinetic energy
+  definition: The energy of motion, ½mv² for translation and ½Iω² for rotation; by the work–energy theorem, net work equals its change.
+  chapter: "04-01"
+- term: Potential energy
+  definition: Energy stored by position against a conservative force, with F = −dU/dx; mgh for gravity near the Earth and ½k_s x² for a spring.
+  chapter: "04-01"
+- term: Momentum
+  definition: The product p = mv (kg·m/s); conserved in an isolated system, and changed only by impulse.
+  chapter: "04-01"
+- term: Impulse
+  definition: The time integral of force, J = ∫F dt (N·s), equal to the change in momentum; a short, violent impact and a longer, gentler stop can carry the same impulse.
+  chapter: "04-01"
+- term: Torque
+  definition: The turning effect of a force, τ = rF⊥ (N·m); for rotation it plays the role of force, and mechanical power is P = τω.
+  chapter: "04-01"
+- term: Moment of inertia
+  definition: Rotational inertia, I = Σ m r² (kg·m²); ½MR² for a uniform disk. It plays the role of mass in rotation.
+  chapter: "04-01"
+- term: Electronvolt
+  definition: The energy an electron gains crossing 1 V, exactly 1.602176634 × 10⁻¹⁹ J; the natural unit for bandgaps, photon energies and per-electron energies.
+  chapter: "04-01"
+- term: Simple harmonic oscillator
+  definition: A system whose restoring force is proportional to displacement, m ẍ = −k_s x, which oscillates sinusoidally at ω₀ = √(k_s/m) while energy sloshes between kinetic and potential stores.
+  chapter: "04-01"
+  see_also: [Quality factor, Force–voltage analogy]
+- term: Force–voltage analogy
+  definition: The mapping of a mass–spring–damper onto a series RLC circuit (force ↔ voltage, velocity ↔ current, mass ↔ L, damping ↔ R, compliance 1/k_s ↔ C); it turns mechanical systems into circuits that SPICE can simulate.
+  chapter: "04-01"
+- term: MEMS
+  definition: Micro-electro-mechanical systems, mechanical structures (springs, masses, membranes, resonators) a few micrometers in size made with semiconductor processes and read out electrically; accelerometers, gyroscopes, microphones and timing resonators are MEMS.
+  chapter: "04-01"
+- term: Proof mass
+  definition: The suspended mass in an accelerometer or gyroscope whose displacement relative to its package measures acceleration (deflection a/ω₀² below resonance) or rotation.
+  chapter: "04-01"
+- term: Thermomechanical noise
+  definition: The random force 4kTb (N²/Hz) that the damping gas exerts on a mechanical structure, the twin of a resistor's 4kTR; it sets an accelerometer's noise floor √(4kTω₀/(mQ)).
+  chapter: "04-01"

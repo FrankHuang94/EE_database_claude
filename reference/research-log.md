@@ -554,3 +554,30 @@ R&D % = R&D ÷ revenue.
 - **Electromigration is lognormal:** F. N. Najm, "Efficient Simulation of Electromigration Damage in Large Chip Power Grids Using Accurate Physical Models (Invited Paper)", IEEE International Reliability Physics Symposium (IRPS), 2019: "Due to random manufacturing variations, these TTF values are random samples, and they are known to follow a lognormal distribution", citing J. R. Lloyd and J. Kitchin, *J. Appl. Phys.* 69(4):2117–2127, 1991; Black's-model parameters "are extracted by regression from the measured TTFs using lognormal plots" [Established].
 - **Oxide breakdown is Weibull:** U. M. S. Costa et al., "An Improved Description of the Dielectric Breakdown in Oxides Based on a Generalized Weibull distribution", *Physica A* (2006), doi 10.1016/j.physa.2005.07.017: charge- and time-to-breakdown "are usually assumed to be Weibull distributed" [Established].
 - **Sources:** [Najm 2019](https://www.eecg.utoronto.ca/~najm/papers/irps19-najm.pdf); [Costa et al., arXiv cond-mat/0602515](https://arxiv.org/abs/cond-mat/0602515). Checked Nov 2026.
+
+## R-073 · CODATA 2022 fundamental constants
+
+- **Exact by definition (SI, 2019):** $c = 299\,792\,458$ m/s; $h = 6.626\,070\,15\times10^{-34}$ J·s; $e = 1.602\,176\,634\times10^{-19}$ C; $k = 1.380\,649\times10^{-23}$ J/K (BIPM SI Brochure, 9th edition, 2019) [Established].
+- **Measured (NIST, 2022 CODATA recommended values, read from physics.nist.gov in Nov 2026):** vacuum electric permittivity "8.854 187 8188(14) x 10-12 F m-1"; vacuum magnetic permeability "1.256 637 061 27(20) x 10-6 N A-2"; electron mass "9.109 383 7139(28) x 10-31 kg"; proton mass "1.672 621 925 95(52) x 10-27 kg"; Newtonian constant of gravitation "6.674 30(15) x 10-11 m3 kg-1 s-2" [Established].
+- **Sources:** [NIST CODATA: ε₀](https://physics.nist.gov/cgi-bin/cuu/Value?ep0); [μ₀](https://physics.nist.gov/cgi-bin/cuu/Value?mu0); [mₑ](https://physics.nist.gov/cgi-bin/cuu/Value?me); [mₚ](https://physics.nist.gov/cgi-bin/cuu/Value?mp); [G](https://physics.nist.gov/cgi-bin/cuu/Value?bg). Checked Nov 2026.
+
+## R-074 · MEMS inertial sensors: datasheet figures
+
+- **Bosch BMI270** (datasheet BST-BMI270-DS000-08, revision 1.6, March 2026): "16 bit digital, triaxial accelerometer with ±2g/±4g/±8g/±16g range"; output noise density "0.16 mg/√Hz" at range 8 g, normal mode, 25 °C; "typ. 685 µA (in full ODR and aliasing free operation)"; accelerometer-only low-power mode at 25 Hz 10 µA; rms noise 1.51 mg at 80 Hz bandwidth [Established].
+- **Bosch BMI323** (BST-BMI323-DS000-13, revision 1.7, 15 April 2026): noise density 180 µg/√Hz in high-performance mode at range 8 g (the unit glyph is garbled in text extraction and was read as µg/√Hz); "typ. 790 µA (in full ODR and aliasing free operation)" [Established].
+- **Sources:** [BMI270 datasheet](https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi270-ds000.pdf); [BMI323 datasheet](https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi323-ds000.pdf). Checked Nov 2026.
+
+## R-075 · 32.768 kHz timing: quartz crystals and MEMS oscillators
+
+- **Quartz tuning fork, Micro Crystal CM7V-T1A** (datasheet version 8.0, 10.2016): "Turnover temperature T0 25 ±5 °C"; "Frequency vs. temperature ΔF/F0 –0.035 ppm/°C² (T - T0)2 ±10%"; motional capacitance C1 = 3.7 fF typical; series resistance 50 kΩ typical, 70 kΩ maximum; "operates under vacuum in a hermetically sealed ceramic package" [Established].
+- **NDK NX2012SE** (document NDKX01-00015-001, DigiKey-hosted copy): "Turnover temperature +20 to +30 °C … Parabolic coefficient -0.04 ppm/°C2" (maximum) [Established].
+- **SiTime SiT1532** MEMS 32.768 kHz oscillator (Rev 2.0, 6 April 2025): frequency tolerance 10 ppm at 25 °C; stability 75 ppm over −10 to +70 °C and 100 ppm over −40 to +85 °C; core current 0.90 µA [Established]. **SiTime SiT5356** (Rev 1.08, 1 January 2023): "a ±100 ppb precision MEMS Super-TCXO", −40 to +105 °C [Established].
+- **MEMS resonator Q:** Melamud et al. (SiTime), Solid-State Sensors, Actuators and Microsystems Workshop, Hilton Head, 2012, pp. 66–69: "The typical resonator quality factor, Q, of 144,000" at 48 MHz [Established].
+- **Derived here:** the CM7V-T1A's motional inductance $1/(\omega^2C_1)$ = 6376 H and Q = $1/(\omega R_SC_1)$ = 2.63×10⁴ at typical values; −126 ppm at 85 °C from the parabola.
+- **Sources:** [Micro Crystal CM7V-T1A](https://www.microcrystal.com/fileadmin/Media/Products/32kHz/Datasheet/CM7V-T1A.pdf); [NDK NX2012SE](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/8456/MU01260-32.768K.pdf); [SiT1532](https://www.sitime.com/datasheet/SiT1532); [SiT5356](https://www.sitime.com/datasheet/SiT5356); [Melamud et al. 2012](https://transducer-research-foundation.org/technical_digests/HiltonHead_2012/hh2012_0066.pdf). Checked Nov 2026.
+
+## R-076 · MEMS market size
+
+- **Yole Group, Status of the MEMS Industry 2025** (press release reprinted with permission by the Edge AI and Vision Alliance, 19 June 2025): "$15.4 billion global MEMS revenue in 2024 … 5% YoY growth"; "With a $19.2 billion forecast by 2030, the MEMS market will have a 3.7% CAGR from 2024 to 2030" [Industry estimate].
+- **Yole Group, Status of the MEMS Industry 2026**, as quoted by Bosch Semiconductors (13 August 2026): "the MEMS market is expected to grow from the current 17.1 billion US dollars to around 24 billion by 2031" [Industry estimate]. The 2026 edition's growth rate implies a 2024 base of about $15.9 billion, not the $15.4 billion of the 2025 edition; the Yole pages themselves returned 403.
+- **Sources:** [Edge AI and Vision Alliance reprint](https://www.edge-ai-vision.com/2025/06/mems-market-regains-momentum-leading-companies-navigate-the-post-inventory-growth-era/); [Bosch Semiconductors, Aug 2026](https://www.bosch-semiconductors.com/stories-and-events/bosch-is-one-of-the-top-leaders-in-the-mems-market/). Checked Nov 2026.

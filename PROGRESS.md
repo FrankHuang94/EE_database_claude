@@ -11,11 +11,13 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 > - Course 02 is complete and audited (🏁): ten chapters reviewed, exam, 140 flashcards and equation sheet.
 > - Course 03 is complete and audited (🏁): six chapters reviewed, exam (15 questions), 134 flashcards and equation sheet.
 >
-> **Next: Course 04 · Physics for EE, starting with 04-01 Mechanics Essentials for EE** (then 04-02 to 04-11 in order; Course 05 follows, then the Term 1 checkpoint).
+> - Course 04: 04-01 ✅ verified.
 >
-> 1. Before writing, gather sourced facts for Course 04's practitioner sections (for example: interconnect resistivity and the copper-to-alternative-metal question at advanced nodes, dielectric constants of low-k and high-k films, magnetic materials in power inductors, optical interconnect wavelengths, and the state of quantum-computing qubits for the companion-repo pointer). New research-log entries start at R-073.
-> 2. Write 04-01 with the full template, 10–20 problems with worked solutions, a lab notebook, figures and a verify script; then commit `feat(04-01): …`, update this file and run the generators.
-> 3. Lab discussion questions now carry worked answers in 03-01 and 03-02 (audit finding). Give every new lab README an "Answers to the discussion questions" block from Course 04 on, and backfill the older labs (open issue 16).
+> **Next: 04-02 Charge, Coulomb's Law and Electric Fields** (then 04-03 to 04-11 in order; Course 05 follows, then the Term 1 checkpoint).
+>
+> - Figures for 04-02 are drafted in `assets/figures/src/fig_04_02.py` (field lines, continuous distributions, HBM discharge); the example numbers use the CODATA 2022 constants of R-073.
+> - Sourced facts for Course 04's practitioner sections were gathered on 2026-11-18 into the session scratchpad files `c04_facts_A.md` (04-01 to 04-04: MEMS, ESD targets and HBM/CDM/IEC models, SiO₂ breakdown, electrostatic chucks, capacitive touch, dielectric constants, MLCC DC bias, DRAM cell capacitance), `c04_facts_B.md` (04-05 to 04-08: metal resistivities and the size effect, electromigration limits, Mo/Ru and backside power, Hall sensors, magnetic materials, eMRAM, Qi wireless power, power and on-chip inductors, FIVR, PCB laminates, 5G bands, SAR limits) and `c04_facts_C.md` (04-09 to 04-11, pending). If the scratchpad is gone, re-gather the facts for the chapter being written. New research-log entries start at R-077.
+> - Lab discussion questions now carry worked answers (from 03-01 on). Keep doing this for every new lab, and backfill older labs (open issue 16).
 >
 > When pilot feedback arrives, apply it to the pilots and to every chapter written since, before continuing.
 
@@ -25,7 +27,7 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 |---|---|---|
 | 0 · Scaffold | Structure, CLAUDE.md, CURRICULUM.md, README, STUDY_PLAN, SETUP, env files, CI, tooling, notation | ✅ complete |
 | 1 · Pilot | 02-01 and 07-02, complete with problems, solutions, labs, verification; then stop for feedback | ✅ complete — feedback still pending; learner asked to continue meanwhile |
-| 2 · Courses | Terms 1 → 7 in prerequisite order; per-course audit; term checkpoints | 🔄 in progress: Courses 00, 01, 02 and 03 🏁; Course 04 next |
+| 2 · Courses | Terms 1 → 7 in prerequisite order; per-course audit; term checkpoints | 🔄 in progress: Courses 00, 01, 02 and 03 🏁; Course 04 started |
 | 3 · Capstones and practitioner layer | Capstones C1–C4, practitioner playbooks and case studies, reference files, final STUDY_PLAN | ⬜ not started |
 | 4 · Final QA | Full CI pass, glossary/objective/cross-link audits, final report | ⬜ not started |
 
@@ -41,10 +43,11 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | 01 | 10 | 10 | 10 | 10 | 57,268 | 162 | 1104 | 10 | 10 / 13 / 0 |
 | 02 | 10 | 10 | 10 | 10 | 86,743 | 171 | 1316 | 10 | 10 / 18 / 0 |
 | 03 | 6 | 6 | 6 | 6 | 46,010 | 108 | 1019 | 6 | 6 / 1 / 0 |
+| 04 | 11 | 1 | 1 | 0 | 7,444 | 16 | 129 | 1 | 1 / 1 / 0 |
 | 07 | 11 | 1 | 1 | 0 | 8,902 | 18 | 149 | 1 | 1 / 6 / 0 |
-| **Total** | **307** | **32** | **32** | **31** | **221,412** | **511** | **3817** | **32** | **32 / 41 / 1** |
+| **Total** | **307** | **33** | **33** | **31** | **228,856** | **527** | **3946** | **33** | **33 / 42 / 1** |
 
-Glossary terms: **462** · Flashcards: **463**
+Glossary terms: **476** · Flashcards: **479**
 
 <!-- END STATS -->
 
@@ -56,6 +59,7 @@ Glossary terms: **462** · Flashcards: **463**
 | 01 | 🏁 audited | ✅ 2026-11-12 | 10 chapters reviewed: 162 problems, 1,104 machine-checked chapter, solution and lab values, 10 lab notebooks and 13 ngspice netlists; exam (15 questions, 128 points, 110 keyed values), 107 flashcards, equation sheet. Three independent reviewers found 5 critical, 25 major and about 40 minor items; all were fixed (see session log). |
 | 02 | 🏁 audited | ✅ 2026-11-18 | 10 chapters reviewed: 171 problems, 1,316 machine-checked chapter, solution and lab values, 10 lab notebooks and 18 ngspice netlists; exam (15 questions, 128 points, 210 minutes, 146 keyed values, 18 ngspice checks), 140 flashcards, equation sheet. Four independent reviewers found 1 critical, about 25 major and about 130 minor items; all were fixed (see session log). |
 | 03 | 🏁 audited | ✅ 2026-11-18 | 6 chapters reviewed: 108 problems, 914 machine-checked chapter, solution and lab values, 9 lab notebooks and an ngspice RC-noise netlist; exam (15 questions, 123 points, 180 minutes, 105 keyed values), 134 flashcards, equation sheet, research log R-059 to R-072. Three independent reviewers found 3 critical, 18 major and about 80 minor items; all were fixed (see session log). |
+| 04 | 🔄 in progress | — | 04-01 ✅ verified: 16 problems, 129 machine-checked values, lab notebook (integrators and energy, Q two ways, accelerometer tradeoff, Brownian proof mass, drop shock) plus an ngspice RLC-twin netlist, 3 figures; research log R-073 to R-076; 14 glossary terms; 16 flashcards. |
 | 07 | 🔄 in progress (pilot) | — | 07-02 ✅ verified: 16 problems, 128 machine-checked values, 6 ngspice netlists, lab notebook. Other chapters planned. |
 | all others | ⬜ planned (stubs only) | — | |
 
@@ -121,3 +125,4 @@ Changes relative to the original build brief's chapter plan.
 | 2026-11-12 | Phase 1. Pilot chapters 02-01 (18 problems, 118 machine-checked values) and 07-02 (18 problems, 149 machine-checked values, 6 ngspice netlists) with labs, figures, glossary (48 terms) and flashcards (55). An independent reviewer subagent audited both chapters and found 3 critical, 8 major and ~25 minor issues, all in labels, prose and reasoning rather than computed numbers. All were fixed: an off-by-one term-count label, a wrong 'overshoot' caption, a ±% error, resistor-flyback on-state cost, an ENOB-loss calculation, a rise-time caveat, stronger ngspice coverage (i_C jumps, 72 V switch voltage), PMU standard citation, a rigor gap in the steady-state argument, notation clashes (k, s, V_Th), and added Problems 02-01.18 and 07-02.17–18 (damped exponentials, dependent sources and negative R_Th, two-position switch with u(t)). Stopped for feedback. |
 | 2026-11-12 | Phase 0. Repo created; curriculum data model + generators; CLAUDE.md, CURRICULUM.md (29 courses, 307 chapters), README, STUDY_PLAN, SETUP, notation; verification toolkit (answer-key checker, ngspice/HDL/notebook runners, link and structure checkers); CI; smoke tests pass. Research log R-001–R-013. |
 | 2026-11-18 | Phase 2. **Course 03 completed and audited (🏁).** Wrote the final exam (15 questions, 123 points; solutions and verify script with 105 keyed values), the equation sheet, course notes and 134 flashcards. Three fresh reviewers audited 03-01..03-06, the exam, sheet and cards: 3 critical, 18 major and about 80 minor findings, all fixed. Critical: 03-05 Solution 8(c) said post-hoc sidedness halves α (it doubles it); 03-06 Example 5 drew the wrong conclusion from the shot/thermal crossover (now 51.70 nA at 1 MΩ, photodiode receivers); exam Q9(a) called a worse average better. Major: 03-03 PAPR envelope versus real-waveform conventions, the bounded OFDM peak, meter-clipping bias, lost versus error power; 03-04 new §3.5 on conditional expectation, iterated expectations, total variance, random sums and the MMSE predictor, with the wafer mixture (σ = 47.17) and new problems on multi-bit upsets and min/max lifetimes; jointly Gaussian results derived by completing the square and the Z₁, Z₂ recipe; Cauchy made self-contained; IEEE burst factor re-read from the Wang 2022 deck (×2 converts error events to bit errors); KP4/KR4 naming sourced; 03-05 Poisson–chi-square bound and sample-size formula derived, Cpk versus Ppk and SPC defined, AIAG 1.67 attributed to Ppk (1995 manuals), two-sample tests (Welch, paired, two proportions) with a split-lot example and a paired-versus-Welch problem, Example 6 recast as TDDB (EM is lognormal, R-072); 03-06 ergodicity criterion (time-averaged covariance), derivations of the time-average variance and the 1/(2T) window bandwidth, forward links to 17-01 and 12-10; exam Q4 replaced by a hypothesis-test question, Q15 added on averaging correlated and 1/f noise, Q12 made consistent (α = 25,000 h); 03-01 frequentist meaning of zero-error "confidence", four new problems (proofs, retest with conditional independence, availability, coverage-versus-escape-cost design with DL* = c₀/L); 03-02 literal dual-Dirac model derived (13.68) against the 14.069 convention in chapter and lab, AMD UG116 soft-error table re-read and the trend restated (not monotone), MAP threshold and Q bounds derived, four new problems including an optical receiver with unequal noise. Trimmed 03-03 and 03-04 to the 8,000-word cap. |
+| 2026-11-18 | Phase 2. **Course 04 started: 04-01 Mechanics Essentials for EE ✅ verified.** SI units and dimensional analysis, Newton's laws, work and energy, impulse and drop tests, rotation, the oscillator with Q as an energy ratio, the force–voltage analogy and the MEMS accelerometer (sensitivity–bandwidth tradeoff, thermomechanical 4kTb noise via equipartition). 7 worked examples, 16 problems, 129 keyed values (139 checks), notebook and ngspice netlist, 3 figures, R-073 to R-076 (CODATA 2022, Bosch IMUs, quartz versus MEMS timing, MEMS market). Three background agents gathered sourced facts for all of Course 04. |

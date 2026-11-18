@@ -1,0 +1,29 @@
+* Chapter 04-01, Example 04-01.5 -- the RLC twin of a mass-spring-damper (force-voltage analogy).
+* m = 10 g -> L = 10 mH; b = 0.4 N*s/m -> R = 0.4 Ohm; k_s = 1000 N/m -> C = 1/k_s = 1 mF.
+* A 1 V AC source plays a 1 N force; the loop current plays the velocity.
+* Expected: current half-power frequencies 47.25 and 53.61 Hz (bandwidth f0/Q = 6.366 Hz);
+* capacitor voltage (the spring force k_s x) equal to Q = 7.906 times the drive at f0 = 50.33 Hz.
+*
+* EXPECT f1    key:../../chapters/04-01-mechanics-essentials.md#Ex_04-01.5h rtol=1e-3
+* EXPECT f2    key:../../chapters/04-01-mechanics-essentials.md#Ex_04-01.5i rtol=1e-3
+* EXPECT gq    key:../../chapters/04-01-mechanics-essentials.md#Ex_04-01.5d rtol=1e-3
+
+V1  in  0   DC 0 AC 1
+L1  in  a   10m
+C1  a   b   1m
+R1  b   0   0.4
+
+.ac lin 200001 30 80
+
+* AC magnitudes are measured inside a control block (ngspice's .meas cannot read vm() here)
+.control
+run
+let curr = mag(v(b)) / 0.4
+let imax = 2.5
+let rel  = curr / imax
+let vcap = mag(v(a) - v(b))
+meas ac f1 WHEN rel=0.70710678 CROSS=1
+meas ac f2 WHEN rel=0.70710678 CROSS=2
+meas ac gq FIND vcap AT=50.3292121
+.endc
+.end

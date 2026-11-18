@@ -1,0 +1,20 @@
+#separator:comma
+#html:true
+#columns:Front,Back,Tags
+#tags column:3
+"Volt and ohm in SI base units?","V = W/A = kg·m²/(s³·A); Ω = V/A = kg·m²/(s³·A²). Every electrical unit is mechanics plus the ampere.",bsee::04 bsee::04-01
+"Energy units: eV, Wh, kWh in joules?","1 eV = 1.602176634×10⁻¹⁹ J (exact); 1 Wh = 3600 J; 1 kWh = 3.6 MJ. Battery energy (Wh) = Ah × V.",bsee::04 bsee::04-01
+"What does an accelerometer at rest on a table read? In free fall?","+1 g upward at rest (the table's push per unit mass); zero in free fall. It measures specific force, acceleration minus gravity.",bsee::04 bsee::04-01
+"Work–energy theorem?","Net work equals the change in kinetic energy: \(\int F\,dx = \tfrac12mv_2^2 - \tfrac12mv_1^2\), from \(a = v\,dv/dx\).",bsee::04 bsee::04-01
+"Mechanical power, linear and rotational?","\(P = Fv\) and \(P = \tau\omega\) (ω in rad/s; ω = 2π·rpm/60). The twin of \(P = vi\). 1 hp ≈ 745.7 W.",bsee::04 bsee::04-01
+"Impulse–momentum theorem, and why foam protects a dropped device?","\(\int F\,dt = \Delta p\). The momentum change is fixed by the impact speed; foam stretches the stopping time, so force and deceleration fall in proportion.",bsee::04 bsee::04-01
+"Half-sine shock pulse: peak versus average deceleration?","Peak = (π/2) × average = (π/2)·v/Δt. A 1.5 m drop (5.42 m/s) stopped in 0.2 ms: about 2765 g average, 4344 g peak.",bsee::04 bsee::04-01
+"Simple harmonic oscillator: frequency and energy?","\(\omega_0 = \sqrt{k_s/m}\); \(K + U = \tfrac12k_sA^2\) constant; each store averages half; peak speed \(A\omega_0\), peak acceleration \(A\omega_0^2\).",bsee::04 bsee::04-01
+"Damped oscillator: ζ, Q and decay rate?","\(\zeta = b/(2\sqrt{k_sm})\), \(Q = 1/(2\zeta) = m\omega_0/b\), \(\alpha = b/(2m) = \omega_0/(2Q)\). Amplitude falls by e in Q/π cycles.",bsee::04 bsee::04-01
+"Q as an energy ratio?","\(Q = 2\pi\) × (energy stored)/(energy lost per cycle), exact as Q grows large. Q = 10,000 loses 2π/10,000 of its energy per cycle.",bsee::04 bsee::04-01
+"Force–voltage analogy?","F ↔ v, velocity ↔ i, x ↔ q, m ↔ L, b ↔ R, 1/k_s ↔ C. Springs in series (one force) map to capacitors in parallel.",bsee::04 bsee::04-01
+"Accelerometer sensitivity and bandwidth?","Deflection \(x = a/\omega_0^2\) below resonance: 15.53 nm per g at 4 kHz. With Q = 0.707 the bandwidth is \(f_0\). Four times the bandwidth costs sixteen times the deflection.",bsee::04 bsee::04-01
+"Thermomechanical (Brownian) noise of a proof mass?","Force noise \(4kTb\) (twin of 4kTR) gives \(a_n = \sqrt{4kT\omega_0/(mQ)}\): 35 µg/√Hz for 5 µg, 4 kHz, Q = 0.707. Lower it with more mass or higher Q.",bsee::04 bsee::04-01
+"Equipartition for a spring?","\(\tfrac12k_s\overline{x^2} = \tfrac12kT\), so \(x_{\text{rms}} = \sqrt{kT/k_s}\), independent of mass and damping: 64 pm for 1 N/m at 300 K. The mechanical kT/C.",bsee::04 bsee::04-01
+"Why do watch crystals run at 32,768 Hz?","32,768 = 2¹⁵: fifteen divide-by-two stages give exactly 1 Hz.",bsee::04 bsee::04-01
+"Resonator frequency by dimensions?","\(\omega_0 \propto (1/L)\sqrt{E/\rho}\): shrinking a structure tenfold raises its frequency tenfold. √(E/ρ) ≈ 8.5 km/s in silicon.",bsee::04 bsee::04-01

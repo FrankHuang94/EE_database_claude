@@ -27,7 +27,7 @@ Calculus-based electricity and magnetism with the mechanics, waves and modern ph
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [04-01 · Mechanics Essentials for EE](chapters/04-01-mechanics-essentials.md) | 8 | ⬜ planned | — |
+| [04-01 · Mechanics Essentials for EE](chapters/04-01-mechanics-essentials.md) | 8 | ✅ verified | [problems](problems/04-01-problems.md) · [solutions](solutions/04-01-solutions.md) · [lab](labs/04-01-lab/README.md) · [verify](verify/verify_04_01.py) |
 | [04-02 · Charge, Coulomb's Law and Electric Fields](chapters/04-02-charge-coulomb-and-electric-fields.md) | 10 | ⬜ planned | — |
 | [04-03 · Gauss's Law](chapters/04-03-gauss-law.md) | 8 | ⬜ planned | — |
 | [04-04 · Electric Potential, Capacitance and Dielectrics](chapters/04-04-potential-capacitance-and-dielectrics.md) | 10 | ⬜ planned | — |
@@ -38,6 +38,8 @@ Calculus-based electricity and magnetism with the mechanics, waves and modern ph
 | [04-09 · Waves and Optics Basics](chapters/04-09-waves-and-optics.md) | 10 | ⬜ planned | — |
 | [04-10 · Introduction to Quantum Mechanics](chapters/04-10-intro-quantum-mechanics.md) | 10 | ⬜ planned | — |
 | [04-11 · Introduction to Solid-State Physics](chapters/04-11-intro-solid-state-physics.md) | 10 | ⬜ planned | — |
+
+**Course resources:** [Flashcards (Anki CSV)](../../flashcards/04-physics-for-ee.csv)
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 
