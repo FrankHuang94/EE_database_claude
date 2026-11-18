@@ -1,0 +1,73 @@
+* Lab 02-08 -- normal modes of two capacitively coupled LC resonators (chapter section 3.8).
+* Each resonator: L to ground in parallel with C to ground (and 20 kOhm of damping so the peaks are finite).
+* Coupling capacitor Cc between the two resonator nodes.
+* Drive pattern = eigenvector: in phase (+1, +1) excites only the in-phase mode; anti-phase (+1, -1)
+* excites only the out-of-phase mode. The peak of |v| then sits exactly at that mode's frequency.
+*
+* Example 02-08.5: L = 1 uH, C = 1 nF, Cc = 0.1 nF -> 5.033 MHz (in phase), 4.594 MHz (out of phase)
+* EXPECT f5s key:../../chapters/02-08-eigenvalues-and-eigenvectors.md#Ex_02-08.5a scale=1e6 rtol=5e-4
+* EXPECT f5a key:../../chapters/02-08-eigenvalues-and-eigenvectors.md#Ex_02-08.5b scale=1e6 rtol=5e-4
+* Problem 02-08.13: L = 4.7 uH, C = 220 pF, Cc = 22 pF -> 4.949 MHz, 4.518 MHz
+* EXPECT f13s key:../../solutions/02-08-solutions.md#02-08.13a scale=1e6 rtol=5e-4
+* EXPECT f13a key:../../solutions/02-08-solutions.md#02-08.13b scale=1e6 rtol=5e-4
+
+* ---- Example 02-08.5, in-phase drive
+I5s1 0 s1 AC 1m
+I5s2 0 s2 AC 1m
+L5s1 s1 0 1u
+C5s1 s1 0 1n
+R5s1 s1 0 20k
+L5s2 s2 0 1u
+C5s2 s2 0 1n
+R5s2 s2 0 20k
+C5sc s1 s2 0.1n
+* ---- Example 02-08.5, anti-phase drive
+I5a1 0 a1 AC 1m
+I5a2 a2 0 AC 1m
+L5a1 a1 0 1u
+C5a1 a1 0 1n
+R5a1 a1 0 20k
+L5a2 a2 0 1u
+C5a2 a2 0 1n
+R5a2 a2 0 20k
+C5ac a1 a2 0.1n
+
+* ---- Problem 02-08.13, in-phase drive
+I13s1 0 p1 AC 1m
+I13s2 0 p2 AC 1m
+L13s1 p1 0 4.7u
+C13s1 p1 0 220p
+R13s1 p1 0 20k
+L13s2 p2 0 4.7u
+C13s2 p2 0 220p
+R13s2 p2 0 20k
+C13sc p1 p2 22p
+* ---- Problem 02-08.13, anti-phase drive
+I13a1 0 q1 AC 1m
+I13a2 q2 0 AC 1m
+L13a1 q1 0 4.7u
+C13a1 q1 0 220p
+R13a1 q1 0 20k
+L13a2 q2 0 4.7u
+C13a2 q2 0 220p
+R13a2 q2 0 20k
+C13ac q1 q2 22p
+
+.ac lin 16001 4.3e6 5.3e6
+.control
+run
+* AC magnitudes are measured inside a control block (ngspice's .meas cannot read vm() here)
+let m5s = mag(v(s1))
+let m5a = mag(v(a1))
+let m13s = mag(v(p1))
+let m13a = mag(v(q1))
+meas ac f5s MAX_AT m5s
+meas ac f5a MAX_AT m5a
+meas ac f13s MAX_AT m13s
+meas ac f13a MAX_AT m13a
+echo "f5s = $&f5s"
+echo "f5a = $&f5a"
+echo "f13s = $&f13s"
+echo "f13a = $&f13a"
+.endc
+.end

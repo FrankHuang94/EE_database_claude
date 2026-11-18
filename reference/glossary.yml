@@ -1096,3 +1096,53 @@
   definition: The resistance seen looking into a node with respect to ground, equal to the diagonal entry R_jj of the resistance matrix G⁻¹; the voltage at node j per ampere injected there.
   chapter: "02-07"
   see_also: [Thevenin resistance]
+
+# ---------------------------------------------------------------- 02-08
+- term: Eigenvalue
+  definition: A number λ for which Ax = λx has a nonzero solution x; the roots of det(A − λI) = 0. They sum to the trace and multiply to the determinant.
+  chapter: "02-08"
+  see_also: [Eigenvector, Characteristic polynomial]
+- term: Eigenvector
+  definition: A nonzero vector x that a matrix only scales, Ax = λx; any nonzero multiple is also an eigenvector. In eigenvector coordinates a diagonalizable matrix acts as independent scalings.
+  chapter: "02-08"
+- term: Characteristic polynomial
+  definition: det(A − λI), a degree-n polynomial in λ whose roots are the eigenvalues; for 2×2 it is λ² − (trace)λ + det.
+  chapter: "02-08"
+  see_also: [Characteristic equation]
+- term: Trace
+  definition: The sum of a square matrix's diagonal entries, equal to the sum of its eigenvalues.
+  chapter: "02-08"
+- term: Diagonalization
+  definition: Writing A = XΛX⁻¹ with eigenvectors in X and eigenvalues in Λ, possible when A has n independent eigenvectors; it gives powers as Aᵏ = XΛᵏX⁻¹.
+  chapter: "02-08"
+- term: Defective matrix
+  definition: A square matrix with fewer independent eigenvectors than its size (a repeated eigenvalue short of eigenvectors); it cannot be diagonalized, and its powers and exponentials contain extra factors k or t.
+  chapter: "02-08"
+- term: Markov chain
+  definition: A random process that moves between states with fixed transition probabilities; its distribution evolves as u_{k+1} = Pu_k, its steady state is the eigenvector for λ = 1, and its convergence rate is set by the second-largest |λ|.
+  chapter: "02-08"
+- term: Spectral theorem
+  definition: Every real symmetric matrix has real eigenvalues and orthonormal eigenvectors, A = QΛQᵀ = Σ λᵢqᵢqᵢᵀ.
+  chapter: "02-08"
+- term: Orthogonal matrix
+  definition: A square matrix Q with orthonormal columns, so QᵀQ = I and Q⁻¹ = Qᵀ; it is a rotation or reflection, preserves lengths and angles, and has all singular values equal to 1.
+  chapter: "02-08"
+- term: Positive definite matrix
+  definition: A symmetric matrix with xᵀAx > 0 for every nonzero x; equivalently all eigenvalues positive, or all pivots positive. Grounded conductance matrices, nonsingular covariance matrices and Hessians at strict minima are examples.
+  chapter: "02-08"
+- term: Normal mode
+  definition: A pattern of motion in which every part of a coupled linear system oscillates at the same frequency; mathematically an eigenvector of the system, such as the in-phase and out-of-phase modes of two coupled resonators.
+  chapter: "02-08"
+- term: Singular value decomposition
+  definition: A = UΣVᵀ for any matrix, with orthogonal U and V and non-negative singular values on the diagonal of Σ; it maps the unit sphere to an ellipsoid with semi-axes σᵢ.
+  chapter: "02-08"
+  see_also: [Low-rank approximation, Condition number]
+- term: Low-rank approximation
+  definition: Keeping the first k terms of the SVD, A_k = Σ_{i≤k} σᵢuᵢvᵢᵀ, the closest rank-k matrix to A (Eckart–Young), with 2-norm error σ_{k+1}.
+  chapter: "02-08"
+- term: Condition number
+  definition: κ = σ_max/σ_min for a square invertible matrix, the worst-case amplification of relative error when solving Ax = b; a large κ, not a small determinant, means nearly singular.
+  chapter: "02-08"
+- term: Principal component analysis
+  definition: Finding the eigenvectors of a data set's covariance matrix (equivalently the singular vectors of the centered data), ordered by the variance they carry, to describe or compress the data with a few uncorrelated components.
+  chapter: "02-08"

@@ -9,9 +9,9 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 > - Course 00 is complete and audited (🏁).
 > - Course 01 is complete and audited (🏁): ten chapters reviewed, exam, flashcards and equation sheet.
 >
-> - Course 02: 02-01 (pilot) and 02-02 to 02-07 are verified.
+> - Course 02: 02-01 (pilot) and 02-02 to 02-08 are verified.
 >
-> **Next: write 02-08 Eigenvalues and Eigenvectors** (chapter, problems, solutions, verify, lab with notebook, figures, glossary; include the SVD and low-rank approximation, promised by 02-07, and positive-definite matrices such as G), then 02-09 and 02-10, then the Course 02 exam, flashcards (02-01 cards exist), equation sheet and independent audit.
+> **Next: write 02-09 Systems of Linear ODEs and the Matrix Exponential** (chapter, problems, solutions, verify, lab with notebook and an ngspice state-space check, figures, glossary; build on 02-08's eigenvector expansion and companion matrices, and solve the coupled resonators of Example 02-08.5 in time), then 02-10, then the Course 02 exam, flashcards (02-01 cards exist), equation sheet and independent audit.
 >
 > When pilot feedback arrives, apply it to the pilots and to every chapter written since, before continuing.
 
@@ -35,11 +35,11 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 |---|---|---|---|---|---|---|---|---|---|
 | 00 | 5 | 5 | 5 | 5 | 22,489 | 52 | 229 | 5 | 5 / 3 / 1 |
 | 01 | 10 | 10 | 10 | 10 | 57,268 | 162 | 1104 | 10 | 10 / 13 / 0 |
-| 02 | 10 | 7 | 7 | 0 | 55,552 | 108 | 808 | 7 | 7 / 12 / 0 |
+| 02 | 10 | 8 | 8 | 0 | 64,373 | 123 | 909 | 8 | 8 / 13 / 0 |
 | 07 | 11 | 1 | 1 | 0 | 8,902 | 18 | 149 | 1 | 1 / 6 / 0 |
-| **Total** | **307** | **23** | **23** | **15** | **144,211** | **340** | **2290** | **23** | **23 / 34 / 1** |
+| **Total** | **307** | **24** | **24** | **15** | **153,032** | **355** | **2391** | **24** | **24 / 35 / 1** |
 
-Glossary terms: **327** · Flashcards: **218**
+Glossary terms: **342** · Flashcards: **218**
 
 <!-- END STATS -->
 
@@ -49,7 +49,7 @@ Glossary terms: **327** · Flashcards: **218**
 |---|---|---|---|
 | 00 | 🏁 audited | ✅ 2026-11-12 | 5 chapters reviewed: 52 problems, 229 machine-checked chapter/lab values, exam (15 questions, 27 keyed values), 56 flashcards, equation sheet. The audit found 4 critical, 11 major and 12 minor items; all were fixed (see session log). |
 | 01 | 🏁 audited | ✅ 2026-11-12 | 10 chapters reviewed: 162 problems, 1,104 machine-checked chapter, solution and lab values, 10 lab notebooks and 13 ngspice netlists; exam (15 questions, 128 points, 110 keyed values), 107 flashcards, equation sheet. Three independent reviewers found 5 critical, 25 major and about 40 minor items; all were fixed (see session log). |
-| 02 | 🔄 in progress | — | 02-01 ✅ verified (pilot): 18 problems, 118 machine-checked values, lab notebook. 02-02 ✅ verified: 15 problems, 104 machine-checked values, notebook + 3 ngspice netlists (ramp/sinusoid RC and RL; thermal RC model and runaway). 02-03 ✅ verified: 15 problems, 123 machine-checked values, notebook + 2 ngspice netlists (RLC ring-down, PDN droop). 02-04 ✅ verified: 15 problems, 116 machine-checked values, notebook + 2 ngspice AC netlists (RLC low-pass, 13.56 MHz antenna). 02-05 ✅ verified: 15 problems, 61 machine-checked values (107 checks with identities), notebook + 2 ngspice netlists (RLC step as circuit and as XSPICE s_xfer block; RC pulse). 02-06 ✅ verified: 15 problems, 165 machine-checked values (204 checks with identities), notebook (signals as vectors, matmul cost, hand-written elimination, pivoting, stamping, sparse 2-D power grid) + 2 ngspice netlists (nodal analysis incl. MNA; power-rail IR drop). 02-07 ✅ verified: 15 problems, 121 machine-checked values (153 checks with identities), notebook (determinant as area and cost, inverse vs solve, exact and numerical rank, least squares and overfitting, incidence matrices) + 1 ngspice netlist (resistance-matrix columns and reciprocity, 20 checks). |
+| 02 | 🔄 in progress | — | 02-01 ✅ verified (pilot): 18 problems, 118 machine-checked values, lab notebook. 02-02 ✅ verified: 15 problems, 104 machine-checked values, notebook + 3 ngspice netlists (ramp/sinusoid RC and RL; thermal RC model and runaway). 02-03 ✅ verified: 15 problems, 123 machine-checked values, notebook + 2 ngspice netlists (RLC ring-down, PDN droop). 02-04 ✅ verified: 15 problems, 116 machine-checked values, notebook + 2 ngspice AC netlists (RLC low-pass, 13.56 MHz antenna). 02-05 ✅ verified: 15 problems, 61 machine-checked values (107 checks with identities), notebook + 2 ngspice netlists (RLC step as circuit and as XSPICE s_xfer block; RC pulse). 02-06 ✅ verified: 15 problems, 165 machine-checked values (204 checks with identities), notebook (signals as vectors, matmul cost, hand-written elimination, pivoting, stamping, sparse 2-D power grid) + 2 ngspice netlists (nodal analysis incl. MNA; power-rail IR drop). 02-07 ✅ verified: 15 problems, 121 machine-checked values (153 checks with identities), notebook (determinant as area and cost, inverse vs solve, exact and numerical rank, least squares and overfitting, incidence matrices) + 1 ngspice netlist (resistance-matrix columns and reciprocity, 20 checks). 02-08 ✅ verified: 15 problems, 101 machine-checked values (129 checks with identities), notebook (eigenpairs, wearable power-state Markov chain, spirals, ladder modes, coupled resonators, SVD low-rank) + 1 ngspice netlist (coupled-LC normal modes driven by eigenvector patterns, 4 checks). |
 | 07 | 🔄 in progress (pilot) | — | 07-02 ✅ verified: 16 problems, 128 machine-checked values, 6 ngspice netlists, lab notebook. Other chapters planned. |
 | all others | ⬜ planned (stubs only) | — | |
 
@@ -89,6 +89,7 @@ Changes relative to the original build brief's chapter plan.
 
 | Date | Session summary |
 |---|---|
+| 2026-11-18 | Phase 2. 02-08 Eigenvalues and Eigenvectors written and verified (Markov chains, complex eigenvalues as poles, spectral theorem, positive definiteness, coupled-resonator normal modes, SVD, low-rank approximation and MIMO): 15 problems, 101 keyed values, notebook and 1 ngspice netlist; research log R-045 (5G NR Type II CSI as eigenvector feedback), R-046 (Litterman–Scheinkman yield-curve factors; method description contested), R-047 (PageRank), R-048 (Eckart–Young), checked against saved pages. |
 | 2026-11-18 | Phase 2. 02-07 Determinants, Inverses, Rank and Vector Spaces written and verified (adds least squares and circuit incidence matrices): 15 problems, 121 keyed values, notebook and 1 ngspice netlist; research log R-041 (5G NR MIMO layers), R-042 (Wi-Fi spatial streams; Wi-Fi 7 is 8, not 16), R-043 (LoRA), R-044 (GPS four satellites and least squares), found by a fact-finding subagent and re-checked against the saved pages. |
 | 2026-11-18 | Phase 2. 02-06 Vectors, Matrices and Linear Systems written and verified: 15 problems, 165 keyed values, notebook and 2 ngspice netlists (15 simulator checks); research log R-037 (KLU, ngspice solver options), R-038 (HPL, TOP500 Nov 2026), R-039 (TPU v1), R-040 (H100 and Rubin specs), found by a fact-finding subagent and re-checked against the saved primary pages. |
 | 2026-11-17 | Phase 2. 02-05 The Laplace Transform for ODEs written and verified: 15 problems, 61 keyed values, notebook (table checks, partial fractions with SymPy and SciPy, pole map, final-value-theorem traps) and 2 ngspice netlists, one simulating H(s) directly with the XSPICE s_xfer block; research log R-036 (Verilog-AMS Laplace filters, ngspice s_xfer), and the research-log index back-filled for R-024 to R-036. |

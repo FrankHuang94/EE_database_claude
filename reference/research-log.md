@@ -50,6 +50,10 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-042 | Wi-Fi spatial streams: 802.11ax and 802.11be | Nov 2026 |
 | R-043 | LoRA: low-rank adaptation | Nov 2026 |
 | R-044 | GPS: four satellites and least squares | Nov 2026 |
+| R-045 | 5G NR Type II CSI and eigenvector feedback | Nov 2026 |
+| R-046 | Yield-curve factors: Litterman and Scheinkman | Nov 2026 |
+| R-047 | PageRank as an eigenvector | Nov 2026 |
+| R-048 | Eckart-Young theorem | Nov 2026 |
 
 ---
 
@@ -334,3 +338,29 @@ R&D % = R&D ÷ revenue.
 
 - **Values:** "To estimate the three position coordinates and the receiver time offset, a GPS receiver needs to track at least 4 satellites", and since a receiver typically observes more than four, "GPS positioning … works on the principle of least squares estimation", after linearizing the observation model. The U.S. government's GPS site states that the 24-slot constellation "ensures users can view at least four satellites from virtually any point on the planet" [Established].
 - **Sources:** [P. F. de Bakker, GPS course reader, TU Delft CTB3310, 2017](https://filelist.tudelft.nl/CiTG/Over%20faculteit/Afdelingen/Geoscience%20%26%20Remote%20sensing/Study/gpsreader.pdf); [gps.gov, Space Segment](https://www.gps.gov/space-segment). Checked Nov 2026.
+
+## R-045 · 5G NR Type II CSI and eigenvector feedback
+
+- **Values:** in 3GPP TS 38.214, clause 5.2.2.2.3 "Type II Codebook", the UE reports a precoder built as a weighted combination of L orthogonal DFT beams (the number of beams, `numberOfBeams`, and the phase alphabet, `phaseAlphabetSize`, are configured), with amplitude and phase coefficients. "The UE shall not report RI > 2" for Type II. For the Release 16 Enhanced Type II codebook (clause 5.2.2.2.5), "The UE shall not report υ>4". Vendor authors (Samsung and Huawei, in Jin et al.) describe Type II as intended "to facilitate refined resolution quantized channel eigenvector feedback, which is tailored for spatially multiplexing data to multiple UEs", "intentionally limited to a maximum of rank two in Release 15" and "later extended to rank four in Release 16" [Established].
+- **Sources:**
+  - TS 38.214 V17.2.0 text, read from a third-party copy (Clemson University project files); 3gpp.org and etsi.org blocked the build environment, and the Release 15 edition itself was not opened.
+  - [Jin et al., "Massive MIMO Evolution Towards 3GPP Release 18," arXiv:2210.08218](https://arxiv.org/abs/2210.08218); its journal publication was not confirmed.
+  - [Ning et al., arXiv:2601.05092](https://arxiv.org/abs/2601.05092) (preprint): "Under ideal feedback, the beamforming vector would be the dominant eigenvector of the channel covariance."
+- Checked Nov 2026.
+
+## R-046 · Yield-curve factors: Litterman and Scheinkman
+
+- **Finding:** R. Litterman and J. Scheinkman, "Common Factors Affecting Bond Returns," *Journal of Fixed Income*, 1(1), pp. 54–61, June 1991, DOI 10.3905/jfi.1991.692347. Most of the variation in Treasury returns is explained by three factors, interpreted as **level, steepness and curvature** [Established].
+- **Method description is [Contested]:** Bliss (1997, Federal Reserve Bank of Atlanta *Economic Review*) describes the method as factor analysis; Pérignon and Villa (2006) and Hautsch and Ou (2009) describe it as principal components. The original article was not read, and a precise share of variance for the three factors was not verified, so the curriculum states only "most".
+- **Sources:** [Crossref record](https://api.crossref.org/works/10.3905/jfi.1991.692347); [Bliss 1997 (Kellogg-hosted copy)](https://www.kellogg.northwestern.edu/faculty/mcdonald/ftp/d67/Bliss_termstructure.pdf); lecture slides (J. Pan, SAIF) for the factor names. Checked Nov 2026.
+
+## R-047 · PageRank as an eigenvector
+
+- **Values:** S. Brin and L. Page, "The anatomy of a large-scale hypertextual Web search engine," *Computer Networks and ISDN Systems*, 30(1–7), pp. 107–117, April 1998, DOI 10.1016/S0169-7552(98)00110-X: "PageRank or PR(A) can be calculated using a simple iterative algorithm, and corresponds to the principal eigenvector of the normalized link matrix of the web"; "We usually set d to 0.85" [Established, historical].
+- **Note:** as printed, the paper's formula PR(A) = (1 − d) + d Σ … sums to the number of pages rather than 1, despite the paper's statement that the PageRanks form a probability distribution; normalized versions are standard in textbooks.
+- **Sources:** [Google Research archive copy](https://research.google.com/pubs/archive/334.pdf); [Stanford SNAP course copy](https://snap.stanford.edu/class/cs224w-readings/Brin98Anatomy.pdf). Checked Nov 2026.
+
+## R-048 · Eckart-Young theorem
+
+- **Citation:** C. Eckart and G. Young, "The approximation of one matrix by another of lower rank," *Psychometrika*, 1(3), pp. 211–218, September 1936, DOI 10.1007/BF02288367. The truncated SVD is the best low-rank approximation; the 2-norm error statement used in 02-08 is the standard form given in Strang and in Trefethen and Bau [Established].
+- **Source:** [Springer record](https://link.springer.com/article/10.1007/BF02288367). Checked Nov 2026.
