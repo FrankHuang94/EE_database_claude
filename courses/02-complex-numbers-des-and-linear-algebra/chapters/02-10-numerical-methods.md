@@ -142,13 +142,7 @@ For one diode, this is exactly scalar Newton (Example 02-10.3); for a whole circ
 
 **Safeguards that make it work.**
 
-- **Junction voltage limiting.** A diode's current grows by a factor of $e$ every 26 mV, so an unlimited Newton step of a fraction of a volt can request an absurd current. When a proposed junction voltage $v_{new}$ exceeds a critical value $V_{crit} = V_T\ln\!\big(V_T/(\sqrt2I_S)\big)$ and differs from the previous value $v_{old}$ by more than $2V_T$, SPICE replaces the step with a logarithmically compressed one. ngspice's rule (`DEVpnjlim`, [R-053](../../../reference/research-log.md#r-053--ngspice-numerical-defaults-and-junction-limiting)) is, for $v_{old} > 0$ and a forward step with $a = (v_{new} - v_{old})/V_T > 0$,
-
-$$
-v_{new} \leftarrow v_{old} + V_T\big(2 + \ln(a - 2)\big),
-$$
-
-  and, from $v_{old} \le 0$, $v_{new} \leftarrow V_T\ln(v_{new}/V_T)$. A step of many volts becomes a step of a few $V_T$. Classic SPICE3 used the gentler $v_{old} + V_T\ln(1 + a)$, so iterate sequences, and iteration counts, differ between simulators (Example 02-10.2).
+- **Junction voltage limiting.** A diode's current grows by a factor of $e$ every 26 mV, so an unlimited Newton step of a fraction of a volt can request an absurd current. When a proposed junction voltage $v_{new}$ exceeds a critical value $V_{crit} = V_T\ln\!\big(V_T/(\sqrt2I_S)\big)$ and differs from the previous value $v_{old}$ by more than $2V_T$, SPICE replaces the step with a logarithmically compressed one. ngspice's rule (`DEVpnjlim`, [R-053](../../../reference/research-log.md#r-053--ngspice-numerical-defaults-and-junction-limiting)) is, for $v_{old} > 0$ and a forward step with $a = (v_{new} - v_{old})/V_T > 0$, $v_{new} \leftarrow v_{old} + V_T\big(2 + \ln(a - 2)\big)$, and, from $v_{old} \le 0$, $v_{new} \leftarrow V_T\ln(v_{new}/V_T)$. A step of many volts becomes a step of a few $V_T$. Classic SPICE3 used the gentler $v_{old} + V_T\ln(1 + a)$, so iterate sequences, and iteration counts, differ between simulators (Example 02-10.2).
 - **GMIN.** A tiny conductance (by default $10^{-12}$ S) is placed across every junction, so a reverse-biased or cut-off junction never leaves its node without a DC path, which would make the matrix singular. (A node connected only through capacitors still has no DC path; that is a netlist error GMIN does not fix.)
 - **Continuation.** If plain Newton fails, SPICE can solve a sequence of easier problems: ramp the sources up from zero (**source stepping**), or start with a large GMIN and reduce it (**GMIN stepping**). Each solution is the starting guess for the next.
 
