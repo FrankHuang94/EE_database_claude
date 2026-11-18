@@ -1366,3 +1366,50 @@
 - term: Loading factor
   definition: An ADC's full-scale amplitude divided by the RMS of a noise-like input, k = V_FS/σ; it trades clipping noise (small k) against granular quantization noise (large k).
   chapter: "03-03"
+
+# ---------------------------------------------------------------- 03-04
+- term: Joint distribution
+  definition: The joint PMF p(x, y) or PDF f(x, y) of two or more random variables, giving the probability of any combination of values; marginals alone do not determine it.
+  chapter: "03-04"
+- term: Marginal distribution
+  definition: The distribution of one variable obtained from a joint distribution by summing or integrating out the others.
+  chapter: "03-04"
+- term: Conditional distribution
+  definition: The distribution of Y given X = x, the joint distribution divided by the marginal of X along that slice.
+  chapter: "03-04"
+- term: Covariance
+  definition: "Cov(X, Y) = E[(X − μ_X)(Y − μ_Y)] = E[XY] − μ_Xμ_Y; zero for independent variables, and the cross term in the variance of a sum."
+  chapter: "03-04"
+- term: Correlation coefficient
+  definition: ρ = Cov(X, Y)/(σ_X σ_Y), between −1 and 1; it measures only linear association, so uncorrelated variables can still be dependent.
+  chapter: "03-04"
+- term: Moment-generating function
+  definition: M(s) = E[e^{sX}]; for independent variables the MGF of a sum is the product of their MGFs, which turns convolution into multiplication.
+  chapter: "03-04"
+- term: Law of large numbers
+  definition: The sample mean of independent, identically distributed variables converges to their expectation as the sample grows; its standard error falls like σ/√n.
+  chapter: "03-04"
+- term: Standard error
+  definition: The standard deviation of an estimate; for the mean of n independent samples, σ/√n.
+  chapter: "03-04"
+- term: Central limit theorem
+  definition: The standardized sum of many independent terms with finite variance tends to a Gaussian, whatever their distribution; accurate near the center, unreliable far into the tails.
+  chapter: "03-04"
+- term: Jointly Gaussian
+  definition: Variables whose joint density is the multivariate normal; their marginals and linear combinations are Gaussian, and for them uncorrelated means independent.
+  chapter: "03-04"
+- term: Regression line
+  definition: "The conditional mean E[Y | X = x] = μ_Y + ρ(σ_Y/σ_X)(x − μ_X) of jointly Gaussian variables, the best prediction of Y from X; the remaining spread is σ_Y√(1 − ρ²)."
+  chapter: "03-04"
+- term: Differential signaling
+  definition: Sending a signal as equal and opposite voltages on two wires and receiving their difference, which doubles the signal and cancels interference common to both wires.
+  chapter: "03-04"
+- term: Forward error correction (FEC)
+  definition: Adding redundant symbols so the receiver can correct errors without retransmission; it lets links run at a raw BER near 1e-4 and still deliver 1e-13 or better.
+  chapter: "03-04"
+- term: Reed–Solomon code
+  definition: A block code over m-bit symbols; RS(n, k) sends n symbols with k data symbols and corrects up to t = (n − k)/2 wrong symbols per codeword, as in Ethernet's RS(544,514).
+  chapter: "03-04"
+- term: Uncorrectable codeword ratio
+  definition: The fraction of codewords with more wrong symbols than the code can correct; for independent errors, the binomial tail P(N > t).
+  chapter: "03-04"

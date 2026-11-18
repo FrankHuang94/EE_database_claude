@@ -72,6 +72,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-064 | Soft-error rates and FIT | Nov 2026 |
 | R-065 | Six Sigma: 3.4 ppm and the 1.5σ shift | Nov 2026 |
 | R-066 | PAPR, CCDF and crest factor of communication signals | Nov 2026 |
+| R-067 | RS(544,514) "KP4" FEC and pre-FEC BER | Nov 2026 |
 
 ---
 
@@ -508,3 +509,10 @@ R&D % = R&D ÷ revenue.
 - **5G NR uplink:** D. Darsena, G. Gelli and F. Verde, "Beamforming and precoding techniques", Wiley 5G Ref (arXiv:2004.05079, 2020): "The NR PHY is based on Orthogonal Frequency-Division Multiplexing (OFDM) with cyclic prefix (CP), with optional support for Discrete Fourier Transform (DFT) precoded OFDM (DFT-s-OFDM) in the UL"; "if DFT-s-OFDM is employed, only single-layer transmission is allowed" (citing 3GPP TS 38.211). The 3GPP specification text itself was not read [Established].
 - **Derived here:** for a complex Gaussian signal the instantaneous power is exponential, so the PAPR at CCDF probability $p$ is $10\log_{10}\ln(1/p)$: 6.632 dB at $10^{-2}$, 9.643 dB at $10^{-4}$, 11.40 dB at $10^{-6}$. The 11.65 dB measured LTE crest factor corresponds to an exceedance probability of about $4.5\times10^{-7}$ under that model, consistent with a long capture.
 - **Sources:** [Keysight 5968-6875E](https://www.keysight.com/content/dam/keysight/en/doc/gate/application-notes-archived/5968-6875.pdf); [R&S 1MA271](https://scdn.rohde-schwarz.com/ur/pws/dl_downloads/dl_application/application_notes/1ma271/1MA271_0e_5G_waveform_candidates.pdf); [R&S 1MA138](https://scdn.rohde-schwarz.com/ur/pws/dl_downloads/dl_application/application_notes/1ma138/1MA138_0e_RF_chipset_verification_for_LTE.pdf); [arXiv:2004.05079](https://arxiv.org/abs/2004.05079). Checked Nov 2026.
+
+## R-067 · RS(544,514) "KP4" FEC and pre-FEC BER
+
+- **Code and analysis method:** P. Anslow (Ciena), "RS(544,514) FEC performance including precoding", IEEE P802.3cd Task Force, July 2016: "The IEEE 802.3bs Task Force has adopted RS(544,514) FEC"; "RS(544,514) FEC (which has 10-bit symbols)". With random errors, the BER at the FEC input that gives a frame loss ratio of 6.2E-10 ("equivalent to BER = 1E-12 with random errors") is 3.8E-4, and 2.3E-4 for FLR 6.2E-13. With a burst-continuation probability a = 0.75 the requirement for FLR 6.2E-10 tightens to 2.3E-4 for the P802.3bs D1.5 configuration, 5.9E-5 with no multiplexing and 2.5E-5 with 2:1 bit multiplexing; these burst values include the extra errors from the bursts. The contribution allots "a BER of 2.4E-4 in the optical sub-link" [Established].
+- **Formulas:** X. Wang, X. He and H. Ren, IEEE P802.3df contribution, 28 Sept 2022: SER_in = 1 − (1 − BER_in)^m; UCR = Σ_{i=t+1}^{n} C(n,i) SER^i (1 − SER)^{n−i}; BER_out ≈ (t+1)/(n·m)·UCR; "For RS(544,514), n = 544, k = 514, t = 15, m = 10"; "BER objective: 1E-13, equivalent to FLR 6.2E-11 for 64-byte frames"; "Pre-FEC BER: ~2.4E-4?" (question mark in the original); "To account for burst errors, multiply this BER by 2 for a = 0.75 with precoding" [Established].
+- **Derived here:** at a random-error pre-FEC BER of 2.4×10⁻⁴, SER = 2.397×10⁻³, mean 1.304 wrong symbols per codeword, UCR = 8.152×10⁻¹³ (Poisson 9.839×10⁻¹³; a Gaussian approximation gives about 7×10⁻³⁶). At 3.8×10⁻⁴, UCR = 6.304×10⁻¹⁰, consistent with the FLR of 6.2×10⁻¹⁰ quoted above. The normative IEEE 802.3 clause text was not read.
+- **Sources:** [Anslow, IEEE P802.3cd, July 2016](https://www.ieee802.org/3/cd/public/July16/anslow_3cd_01_0716.pdf); [Wang et al., IEEE P802.3df, Sept 2022](https://www.ieee802.org/3/df/public/22_10/22_0928/wang_3df_01b_220928.pdf). Checked Nov 2026.
