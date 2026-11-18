@@ -91,3 +91,23 @@
 "Ethernet KP4 FEC numbers (as of Nov 2026)?","RS(544,514), 10-bit symbols, \(t = 15\). Pre-FEC BER about \(2.4\times10^{-4}\) planned for optics; 3.8e-4 gives the 1e-12-equivalent frame loss with random errors [R-067].",bsee::03 bsee::03-04 bsee::practitioner
 "Why not use the CLT for FEC failure rates?","Failure needs 16 errors when the mean is 1.3: over 12σ out. Exact binomial gives about 8e-13; the Gaussian about 7e-36.",bsee::03 bsee::03-04
 "Why do error bursts hurt FEC?","They put several wrong symbols into one codeword, so fewer independent events cause a failure; IEEE analyses lower the allowed pre-FEC BER and interleave codewords.",bsee::03 bsee::03-04 bsee::practitioner
+"Why does the sample variance divide by \(n - 1\)?","Deviations are measured from \(\bar X\), fitted to the same data, so \(\mathbb{E}[\sum(X_i - \bar X)^2] = (n-1)\sigma^2\). Dividing by \(n-1\) makes \(S^2\) unbiased.",bsee::03 bsee::03-05
+"What does a 95% confidence interval promise?","That the procedure covers the true value in 95% of repeated experiments. Any one interval either contains it or not.",bsee::03 bsee::03-05
+"95% interval for a mean, σ known vs unknown?","\(\bar X \pm 1.960\,\sigma/\sqrt n\); with σ estimated, \(\bar X \pm t_{0.025,n-1}S/\sqrt n\) (2.776 at n = 5, 2.262 at n = 10, 2.045 at n = 30).",bsee::03 bsee::03-05
+"Rule of three?","Zero failures in \(n\) trials: 95% upper bound on the failure probability ≈ \(3/n\) (exactly \(1 - 0.05^{1/n}\)).",bsee::03 bsee::03-05
+"Confidence interval for a variance or noise power?","\(\nu S^2/\chi^2_{0.975,\nu} \le \sigma^2 \le \nu S^2/\chi^2_{0.025,\nu}\). With 50 samples the 95% interval spans −1.5 to +1.9 dB.",bsee::03 bsee::03-05
+"Upper bound on a failure rate from \(c\) failures in \(D\) device-hours?","\(r_U = \tfrac12\chi^2_{\text{conf},2c+2}/D\). For \(c = 0\): 0.916 (60%), 2.303 (90%), 2.996 (95%) divided by \(D\).",bsee::03 bsee::03-05
+"p-value?","The probability, if \(H_0\) is true, of a result at least as extreme as observed. Not the probability that \(H_0\) is true.",bsee::03 bsee::03-05
+"Type I error, type II error, power?","Type I: rejecting a true \(H_0\) (rate α). Type II: missing a real effect (rate β). Power = 1 − β.",bsee::03 bsee::03-05
+"Sample size to detect a mean shift δ (one-sided)?","\(n = ((z_\alpha + z_\beta)\sigma/\delta)^2\): halving δ quadruples \(n\).",bsee::03 bsee::03-05
+"Multiple-testing trap?","20 independent tests at 5% on an unchanged process: 64% chance of at least one false alarm. Bonferroni: test each at α/m.",bsee::03 bsee::03-05
+"Cp and Cpk?","\(C_p = (\text{USL} - \text{LSL})/(6\sigma)\); \(C_{pk} = \min(\text{USL} - \mu, \mu - \text{LSL})/(3\sigma)\), which also charges for being off center.",bsee::03 bsee::03-05
+"Out-of-spec rate for centered Cp 1.00, 1.33, 1.67, 2.00?","2700 ppm, 63 ppm, 0.57 ppm, 2 ppb (±3σ, ±4σ, ±5σ, ±6σ windows).",bsee::03 bsee::03-05
+"Automotive capability defaults (AIAG, as of Nov 2026)?","Cpk ≥ 1.33 for stable ongoing processes; ≥ 1.67 for initial studies and critical characteristics, unless the customer specifies otherwise [R-068].",bsee::03 bsee::03-05 bsee::practitioner
+"How uncertain is a Cpk from 30 parts?","Standard error ≈ \(\sqrt{1/(9n) + C_{pk}^2/(2(n-1))}\), about 0.2 at Cpk 1.4–1.5: a measured 1.5 does not demonstrate 1.33.",bsee::03 bsee::03-05
+"AEC-Q001 Part Average Testing?","Reject parts beyond median ± 6 robust sigma, robust sigma = interquartile range/1.35 (the Gaussian IQR is 1.349σ); robust statistics resist outliers [R-068].",bsee::03 bsee::03-05 bsee::practitioner
+"Hazard rate?","\(h(t) = f(t)/R(t)\), the failure rate among survivors; \(R(t) = \exp(-\int_0^t h)\).",bsee::03 bsee::03-05
+"Weibull reliability and the meaning of its shape?","\(R = e^{-(t/\alpha)^\gamma}\); 63.2% failed at α. γ < 1 infant mortality, γ = 1 random, γ > 1 wear-out.",bsee::03 bsee::03-05
+"How to fit a Weibull?","Plot \(\ln(-\ln(1-F_i))\) against \(\ln t_i\) with \(F_i \approx (i - 0.3)/(n + 0.4)\); the least-squares slope is γ.",bsee::03 bsee::03-05
+"Arrhenius acceleration factor?","\(AF = \exp[(E_a/k)(1/T_{use} - 1/T_{stress})]\), T in kelvin, k = 8.617e-5 eV/K. 0.7 eV, 125 → 55 °C: 77.65 (JEDEC's note: 78.6, from rounded constants) [R-069].",bsee::03 bsee::03-05
+"What FIT does a standard HTOL (231 units, 1000 h, 125 °C, 0 fails) demonstrate at 55 °C?","With 0.7 eV: about 51 FIT at 60% and 128 FIT at 90% confidence. Single-digit FIT needs far more device-hours, and every FIT rests on the assumed \(E_a\).",bsee::03 bsee::03-05 bsee::practitioner

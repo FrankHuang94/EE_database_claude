@@ -73,6 +73,8 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-065 | Six Sigma: 3.4 ppm and the 1.5σ shift | Nov 2026 |
 | R-066 | PAPR, CCDF and crest factor of communication signals | Nov 2026 |
 | R-067 | RS(544,514) "KP4" FEC and pre-FEC BER | Nov 2026 |
+| R-068 | Process capability and outlier screening | Nov 2026 |
+| R-069 | Weibull model and Arrhenius acceleration | Nov 2026 |
 
 ---
 
@@ -516,3 +518,17 @@ R&D % = R&D ÷ revenue.
 - **Formulas:** X. Wang, X. He and H. Ren, IEEE P802.3df contribution, 28 Sept 2022: SER_in = 1 − (1 − BER_in)^m; UCR = Σ_{i=t+1}^{n} C(n,i) SER^i (1 − SER)^{n−i}; BER_out ≈ (t+1)/(n·m)·UCR; "For RS(544,514), n = 544, k = 514, t = 15, m = 10"; "BER objective: 1E-13, equivalent to FLR 6.2E-11 for 64-byte frames"; "Pre-FEC BER: ~2.4E-4?" (question mark in the original); "To account for burst errors, multiply this BER by 2 for a = 0.75 with precoding" [Established].
 - **Derived here:** at a random-error pre-FEC BER of 2.4×10⁻⁴, SER = 2.397×10⁻³, mean 1.304 wrong symbols per codeword, UCR = 8.152×10⁻¹³ (Poisson 9.839×10⁻¹³; a Gaussian approximation gives about 7×10⁻³⁶). At 3.8×10⁻⁴, UCR = 6.304×10⁻¹⁰, consistent with the FLR of 6.2×10⁻¹⁰ quoted above. The normative IEEE 802.3 clause text was not read.
 - **Sources:** [Anslow, IEEE P802.3cd, July 2016](https://www.ieee802.org/3/cd/public/July16/anslow_3cd_01_0716.pdf); [Wang et al., IEEE P802.3df, Sept 2022](https://www.ieee802.org/3/df/public/22_10/22_0928/wang_3df_01b_220928.pdf). Checked Nov 2026.
+
+## R-068 · Process capability and outlier screening
+
+- **AIAG defaults:** S. Steiner, B. Abraham and J. MacKay, "Understanding Process Capability Indices", University of Waterloo IIQP (1998), quoting AIAG's QS-9000 *Quality System Requirements* (1995): "For stable processes and normally distributed data, a Cpk value ≥ 1.33 should be achieved. • For chronically unstable processes with output meeting specification and a predictable pattern, a Ppk value ≥ 1.67 should be achieved"; the APQP manual (Ford Powertrain): "Significant Characteristics (SCs) must be in a state of statistical control with Ppk ≥ 1.67 and Cpk ≥ 1.33"; the PPAP manual (1995): "Pp and Ppk > 1.67 The process probably meets customer requirements … 1.33 ≤ Ppk ≤ 1.67 The process may not meet customer requirements … until an ongoing Cpk ≥ 1.33 is achieved." Current AIAG editions are paywalled and were not read [Established for the conventional thresholds].
+- **AEC-Q100:** NASA NEPP, Lilani et al., "MIL-PRF-38535 vs. AEC-Q100" (2020), lists AEC-Q100 electrical distributions with "Where applicable, Cpk >1.67" [Established].
+- **Cp and defect rates:** NIST/SEMATECH e-Handbook of Statistical Methods, §6.1.6: Cp 1.00, 1.33, 1.66, 2.00 ↔ rejects 0.27%, 64 ppm, 0.6 ppm, 2 ppb for a centered process; approximate confidence limits for Cpu and Cpl, $\hat C_{pu} \pm z\sqrt{1/(9n) + \hat C_{pu}^2/(2(n-1))}$ (normal approximation; Bissell 1990 cited). Derived here: exactly ±4σ gives 63.34 ppm and ±5σ gives 0.5733 ppm [Established].
+- **Part Average Testing:** US patent 10,118,200 B2, describing AEC-Q001 Rev-C (Jul 2003): reference data from at least 30 parts per lot (N ≥ 180); "The 'robust mean' is defined as the median"; "The 'robust sigma' is defined as the difference between [the quartiles], divided by 1.35"; "Calculate the upper and lower Static PAT limits as 'Robust Mean'±6*'Robust Sigma'". The current AEC-Q001 revision was not confirmed on the AEC site [Established].
+- **Sources:** [Steiner et al. 1998](https://sas.uwaterloo.ca/~shsteine/papers/cap.pdf); [NASA NEPP 2020](https://nepp.nasa.gov/workshops/etw2020/talks/15-JUN-MON/1630-Lilani-Yarbrough-Harzstark-Cozzolino-NEPP-ETW-AEC_pt2.pdf); [NIST/SEMATECH e-Handbook §6.1.6](https://www.itl.nist.gov/div898/handbook/pmc/section1/pmc16.htm); [US 10,118,200 B2](https://patents.google.com/patent/US10118200B2/en). Checked Nov 2026.
+
+## R-069 · Weibull model and Arrhenius acceleration
+
+- **Weibull:** NIST/SEMATECH e-Handbook of Statistical Methods (last updated 27 Apr 2022), §8.1.6.2: CDF $1 - e^{-(t/\alpha)^\gamma}$, with "α the scale parameter (the Characteristic Life), γ (gamma) the Shape Parameter"; "When γ = 1, the Weibull reduces to the Exponential Model"; "The Weibull model can be derived theoretically as a form of Extreme Value Distribution, governing the time to occurrence of the 'weakest link' of many competing failure processes"; shape 2 gives the Rayleigh distribution. The handbook warns that notation varies between authors [Established].
+- **Arrhenius example:** JEDEC JESD47G (March 2009), Table 1 note (a): "with apparent activation energy of 0.7 eV, 125 °C stress temperature and 55 °C use temperature, the acceleration factor (Arrhenius equation) is 78.6. This means 1000h stress duration is equivalent to 9 years of use. This might be shorter than the application requirement." Derived here: with k = 8.617333×10⁻⁵ eV/K and kelvin = °C + 273.15 the factor is 77.65 (8.858 years); the note's 78.6 follows from k = 8.6×10⁻⁵ eV/K and an offset of 273 [Established; the rounding explanation is a derivation].
+- **Sources:** [NIST/SEMATECH e-Handbook §8.1.6.2](https://www.itl.nist.gov/div898/handbook/apr/section1/apr162.htm); [JESD47G (hosted copy)](https://designers-guide.org/forum/Attachments/JESD47G.pdf). Checked Nov 2026.

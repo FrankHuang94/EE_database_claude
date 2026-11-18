@@ -1413,3 +1413,59 @@
 - term: Uncorrectable codeword ratio
   definition: The fraction of codewords with more wrong symbols than the code can correct; for independent errors, the binomial tail P(N > t).
   chapter: "03-04"
+
+# ---------------------------------------------------------------- 03-05
+- term: Estimator
+  definition: A rule for computing a parameter's value from data, such as the sample mean; the result, an estimate, is itself a random variable with a sampling distribution.
+  chapter: "03-05"
+- term: Bias
+  definition: The difference between an estimator's expected value and the true parameter; mean square error equals bias squared plus variance.
+  chapter: "03-05"
+- term: Sample variance
+  definition: S² = Σ(Xᵢ − X̄)²/(n − 1), unbiased for σ² because one degree of freedom is used up estimating the mean.
+  chapter: "03-05"
+- term: Confidence interval
+  definition: An interval computed from data by a procedure that covers the true parameter in a stated fraction (for example 95%) of repeated experiments; any single interval either contains the truth or not.
+  chapter: "03-05"
+- term: Student t distribution
+  definition: The distribution of (X̄ − μ)/(S/√n) for Gaussian data, with n − 1 degrees of freedom; heavier-tailed than the Gaussian, so small-sample intervals use larger multipliers (2.776 for ν = 4 at 95%).
+  chapter: "03-05"
+- term: Rule of three
+  definition: With zero failures in n independent trials, the 95% upper confidence bound on the failure probability is about 3/n.
+  chapter: "03-05"
+- term: Hypothesis test
+  definition: A decision rule that rejects a null hypothesis when data would be sufficiently unlikely under it, with a stated significance level α (false-alarm probability).
+  chapter: "03-05"
+- term: p-value
+  definition: The probability, if the null hypothesis is true, of a test statistic at least as extreme as the one observed; not the probability that the null hypothesis is true.
+  chapter: "03-05"
+- term: Type I and type II errors
+  definition: Rejecting a true null hypothesis (false alarm, probability α) and failing to reject a false one (missed detection, probability β).
+  chapter: "03-05"
+- term: Statistical power
+  definition: The probability that a test rejects the null hypothesis when a specified alternative is true, 1 − β; it grows with sample size and effect size.
+  chapter: "03-05"
+- term: Process capability (Cp, Cpk)
+  definition: "Cp = (USL − LSL)/(6σ) compares the specification window with the process spread; Cpk = min(USL − μ, μ − LSL)/(3σ) also charges for an off-center mean. Automotive defaults: Cpk ≥ 1.33 ongoing, ≥ 1.67 initial or critical."
+  chapter: "03-05"
+- term: Part Average Testing (PAT)
+  definition: An automotive outlier screen (AEC-Q001) that rejects parts passing specification but lying beyond the median ± 6 robust sigma (interquartile range/1.35) of their population.
+  chapter: "03-05"
+- term: Hazard rate
+  definition: The failure rate among survivors, h(t) = f(t)/R(t); constant for the exponential, falling for infant mortality, rising for wear-out.
+  chapter: "03-05"
+- term: Weibull distribution
+  definition: A lifetime model with R(t) = exp(−(t/α)^γ); characteristic life α (63.2% failed) and shape γ (< 1 infant mortality, 1 random, > 1 wear-out).
+  chapter: "03-05"
+- term: B10 life
+  definition: The time by which 10% of a population has failed, α(−ln 0.9)^(1/γ) for a Weibull; percentile lives matter more than MTTF for wear-out.
+  chapter: "03-05"
+- term: Accelerated life test
+  definition: A test at elevated stress (temperature, voltage, humidity) that makes failures occur sooner, with an acceleration model used to translate results to use conditions.
+  chapter: "03-05"
+- term: Arrhenius model
+  definition: A thermally activated rate ∝ exp(−E_a/(kT)); the acceleration factor between temperatures is exp[(E_a/k)(1/T_use − 1/T_stress)], exponential in the often-uncertain activation energy.
+  chapter: "03-05"
+- term: HTOL
+  definition: High-temperature operating life test; JEDEC JESD47 specifies at least 125 °C junction temperature for 1000 h on 3 lots of 77 units with zero failures.
+  chapter: "03-05"
