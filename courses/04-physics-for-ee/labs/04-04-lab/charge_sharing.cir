@@ -1,0 +1,35 @@
+* Chapter 04-04, Example 04-04.7 -- charge sharing between capacitors loses energy in any resistance.
+* Circuits A and B: 1 uF charged to 10 V connected to 1 uF at 0 V through 10 Ohm (A) or 1 kOhm (B).
+*   Both settle at 5 V; the resistor dissipates 25 uJ, half the initial 50 uJ, whatever its value.
+*   B-sources turn the resistor power (v_a - v_b)^2 / R into a node voltage so .meas INTEG gives joules.
+* Circuit C: a DRAM-style read. A 10 fF cell at 1 V shares charge with a 100 fF bit line precharged
+*   to 0.5 V; the bit line moves by 45.45 mV.
+*
+* EXPECT vfa   key:../../chapters/04-04-potential-capacitance-and-dielectrics.md#Ex_04-04.7a rtol=1e-4
+* EXPECT eloss_a key:../../chapters/04-04-potential-capacitance-and-dielectrics.md#Ex_04-04.7d scale=1e-6 rtol=2e-3
+* EXPECT eloss_b key:../../chapters/04-04-potential-capacitance-and-dielectrics.md#Ex_04-04.7d scale=1e-6 rtol=2e-3
+* EXPECT dvbl  key:../../chapters/04-04-potential-capacitance-and-dielectrics.md#Ex_04-04.7e scale=1e-3 rtol=1e-3
+
+C1A a1 0 1u IC=10
+RA  a1 b1 10
+C2A b1 0 1u IC=0
+BPA pa 0 V = (v(a1)-v(b1))*(v(a1)-v(b1))/10
+
+C1B a2 0 1u IC=10
+RB  a2 b2 1k
+C2B b2 0 1u IC=0
+BPB pb 0 V = (v(a2)-v(b2))*(v(a2)-v(b2))/1000
+
+CS  c1 0 10f IC=1
+RBL c1 c2 1k
+CBL c2 0 100f IC=0.5
+
+.options reltol=1e-6
+.tran 1n 5m 0 0.5u UIC
+
+.meas tran vfa     FIND v(a1) AT=5m
+.meas tran eloss_a INTEG v(pa) FROM=0 TO=5m
+.meas tran eloss_b INTEG v(pb) FROM=0 TO=5m
+.meas tran vbl     FIND v(c2) AT=5m
+.meas tran dvbl    PARAM='vbl-0.5'
+.end

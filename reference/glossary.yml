@@ -1656,3 +1656,43 @@
 - term: Coaxial line
   definition: An inner conductor inside a coaxial outer conductor carrying equal and opposite charge; the field λ/(2πε₀r) is confined between them, strongest at the inner conductor, and zero outside.
   chapter: "04-03"
+
+# ---------------------------------------------------------------- 04-04
+- term: Electric potential
+  definition: Potential energy per unit charge, V = U/q (volts, J/C), defined because the electrostatic field is conservative; V_b − V_a = −∫ E · dl, a point charge gives k_e q/r, and potentials add as scalars.
+  chapter: "04-04"
+  see_also: [Conservative field, Equipotential]
+- term: Equipotential
+  definition: A surface (or line) of constant potential; moving along it takes no work, field lines cross it at right angles, and every conductor in equilibrium is one.
+  chapter: "04-04"
+- term: Capacitance
+  definition: The charge a pair of conductors holds per volt of potential difference, C = Q/V (farads); it depends only on geometry and the insulator, e.g. ε A/d for parallel plates and 2πεℓ/ln(b/a) for a coax.
+  chapter: "04-04"
+- term: Dielectric
+  definition: An insulator that polarizes in an electric field, reducing the field of a given free charge by its relative permittivity ε_r and raising a capacitor's capacitance by the same factor.
+  chapter: "04-04"
+  see_also: [Relative permittivity]
+- term: Polarization (dielectric)
+  definition: The dipole moment per unit volume P (C/m²) induced in a dielectric by electronic, ionic or orientational response; at the dielectric's faces it appears as bound surface charge σ_b = P.
+  chapter: "04-04"
+- term: Electric displacement
+  definition: The field D = ε₀E + P = εE (C/m²), whose flux through a closed surface equals the enclosed free charge; its normal component is continuous across a boundary without free charge.
+  chapter: "04-04"
+- term: Equivalent oxide thickness (EOT)
+  definition: The SiO₂ thickness giving the same capacitance per area as a gate stack, EOT = Σ t_i × 3.9/ε_r,i; a 2 nm HfO₂ layer (ε_r = 25) counts as 0.312 nm.
+  chapter: "04-04"
+- term: High-k dielectric
+  definition: An insulator with permittivity well above SiO₂'s 3.9 (HfO₂ and ZrO₂ about 25), used in transistor gates and DRAM capacitors to get high capacitance from a physically thicker, less leaky film.
+  chapter: "04-04"
+- term: Low-k dielectric
+  definition: An interconnect insulator with permittivity below SiO₂'s 3.9 (SiOF, carbon-doped SiOCH at 2.7–3.0, porous films below 2.5, air gaps at 1), used to cut wire capacitance, delay and power.
+  chapter: "04-04"
+- term: Multilayer ceramic capacitor (MLCC)
+  definition: A capacitor of many thin ceramic layers interleaved with electrodes; class 1 (C0G) is stable, while class 2 (X5R, X7R) uses BaTiO₃ with ε_r in the thousands and loses capacitance with DC bias and temperature.
+  chapter: "04-04"
+- term: Electric energy density
+  definition: The energy stored per unit volume in an electric field, u = ½εE² (J/m³); integrated over space it equals a capacitor's ½CV², and in a vacuum gap it equals the electrostatic pressure on the conductors.
+  chapter: "04-04"
+- term: Charge sharing
+  definition: Connecting capacitors at different voltages so their charge redistributes to a common voltage; charge is conserved but energy is lost (half, for equal capacitors), and it is how a DRAM cell is read onto its bit line.
+  chapter: "04-04"
