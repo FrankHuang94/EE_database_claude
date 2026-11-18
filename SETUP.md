@@ -6,6 +6,7 @@ Everything in this curriculum runs on free, open-source tools. Only the first bl
 |---|---|---|
 | Python 3.10+ with NumPy, SciPy, SymPy, Matplotlib | Labs, verification scripts, figures | Course 01 |
 | JupyterLab | Lab notebooks | Course 01 |
+| A C compiler (GCC or Clang) with AddressSanitizer | C labs (`make c`) | Course 05 (05-05 onward) |
 | ngspice | Circuit simulation | Course 06 (first used in 07-02) |
 | Icarus Verilog | Verilog simulation | Course 08 |
 | Verilator | Fast simulation, lint | Course 08 |
@@ -69,7 +70,7 @@ sudo apt-get update
 ```
 
 ```bash
-sudo apt-get install -y ngspice iverilog verilator gtkwave yosys
+sudo apt-get install -y build-essential ngspice iverilog verilator gtkwave yosys
 ```
 
 ### macOS (Homebrew)
@@ -77,6 +78,8 @@ sudo apt-get install -y ngspice iverilog verilator gtkwave yosys
 ```bash
 brew install ngspice icarus-verilog verilator yosys
 ```
+
+The C compiler comes with Apple's command-line tools (`xcode-select --install`); its Clang supports the sanitizers `make c` uses, except leak detection, which runs only on Linux.
 
 For waveforms, either install GTKWave (`brew install --cask gtkwave`; if that cask is unavailable for your macOS version, use the alternative below) or view `.vcd` files with a waveform-viewer extension in VS Code.
 
@@ -102,13 +105,13 @@ python tools/run_verify.py
 
 You should see `PASS` for the smoke netlist (an RC circuit whose voltage at one time constant must equal 63.2% of the step), `PASS` for the smoke testbench (a half adder), and `PASS` for every verification script.
 
-To run **every** check that CI runs (generated files, links, template structure, markdown lint, verification, notebooks, ngspice, HDL):
+To run **every** check that CI runs (generated files, links, template structure, markdown lint, verification, notebooks, ngspice, HDL, C):
 
 ```bash
 make check
 ```
 
-Markdown lint uses Node.js (`npx`). If you don't have Node, run the other targets individually (`make verify spice hdl notebooks`).
+Markdown lint uses Node.js (`npx`). If you don't have Node, run the other targets individually (`make verify spice hdl c notebooks`).
 
 ## 5. Reading the material as a website (optional)
 

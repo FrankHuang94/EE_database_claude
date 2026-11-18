@@ -5,6 +5,7 @@ name: CI
 #   verify    every verify/ script (all published numbers) + every notebook executes cleanly
 #   spice     every ngspice netlist with EXPECT lines matches its published answer
 #   hdl       every Verilog testbench prints TEST PASSED (Icarus) + Verilator lint
+#   c         every *_test.c compiles with -Werror and runs clean under ASan/UBSan, printing TEST PASSED
 #   site      the MkDocs site builds
 on:
   push:
@@ -76,6 +77,16 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y iverilog verilator
       - name: Self-checking testbenches
         run: python tools/run_hdl.py
+
+  c:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Self-checking C programs (strict warnings, ASan and UBSan)
+        run: python tools/run_c.py
 
   site:
     runs-on: ubuntu-24.04

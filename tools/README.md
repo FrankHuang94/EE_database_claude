@@ -9,11 +9,12 @@
 | [run_verify.py](run_verify.py) | Runs every `verify/` script |
 | [run_spice.py](run_spice.py) | Runs every ngspice netlist with `* EXPECT` lines and compares against published answers |
 | [run_hdl.py](run_hdl.py) | Compiles and runs every `*_tb.v` testbench with Icarus Verilog; lints designs with Verilator |
+| [run_c.py](run_c.py) | Compiles every `*_test.c` (with the other `.c` files in its directory) using strict warnings and AddressSanitizer/UndefinedBehaviorSanitizer, runs it and requires `TEST PASSED`; `*_demo.c` files are compiled only |
 | [run_notebooks.py](run_notebooks.py) | Executes every notebook top to bottom |
 | [check_links.py](check_links.py) | Checks every relative link and anchor in the Markdown |
 | [check_structure.py](check_structure.py) | Enforces the chapter template, problem/solution consistency and flashcard format |
 | [plotstyle.py](plotstyle.py) | Shared Matplotlib style and `save()` helper for figures |
-| [smoke/](smoke/) | Toolchain smoke tests (RC netlist, half-adder testbench) |
+| [smoke/](smoke/) | Toolchain smoke tests (RC netlist, half-adder testbench, saturating-adder C test) |
 
 ## The answer-key convention
 

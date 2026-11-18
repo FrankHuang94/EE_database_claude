@@ -1,11 +1,11 @@
 # Self-Taught BSEE — local checks (the same ones CI runs).
-# Usage: make check | make verify | make spice | make hdl | make notebooks | make docs | make figures | make site
+# Usage: make check | make verify | make spice | make hdl | make c | make notebooks | make docs | make figures | make site
 
 PY ?= python
 
-.PHONY: check docs verify spice hdl notebooks generated figures site
+.PHONY: check docs verify spice hdl c notebooks generated figures site
 
-check: generated docs verify spice hdl notebooks
+check: generated docs verify spice hdl c notebooks
 	@echo "All checks passed."
 
 generated:
@@ -27,6 +27,9 @@ spice:
 
 hdl:
 	$(PY) tools/run_hdl.py
+
+c:
+	$(PY) tools/run_c.py
 
 notebooks:
 	$(PY) tools/run_notebooks.py
