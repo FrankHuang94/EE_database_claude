@@ -2001,3 +2001,28 @@
 - term: Module (Python)
   definition: A .py file whose functions and names are loaded with import; a package is a folder of modules, and the standard library and pip-installed packages are both used this way.
   chapter: "05-01"
+# ---- 05-02
+- term: Vectorization
+  definition: Writing a computation as operations on whole arrays so compiled library code does the looping, typically 10 to 100 times faster than an element-by-element Python loop.
+  chapter: "05-02"
+- term: dtype
+  definition: The single element type of a NumPy array (int8, uint8, int64, float32, float64, complex128, bool), fixing its range, precision and memory use.
+  chapter: "05-02"
+- term: Broadcasting
+  definition: NumPy's rule for combining arrays of different shapes; trailing axes must match or be 1, and size-1 axes are stretched without copying, so a column and a row combine into a full table.
+  chapter: "05-02"
+- term: View (NumPy)
+  definition: An array that shares memory with another, as produced by basic slicing, reshaping and transposing; writing through a view changes the original, unlike a copy.
+  chapter: "05-02"
+- term: Boolean mask
+  definition: An array of True/False values from an elementwise comparison, used to select elements (x[mask]) or count them (mask.sum()); combine masks with &, | and ~.
+  chapter: "05-02"
+- term: NaN
+  definition: Not a Number, the IEEE 754 value produced by undefined operations such as 0/0; it propagates through arithmetic and compares unequal to everything, including itself.
+  chapter: "05-02"
+- term: Integer overflow
+  definition: A result outside a fixed-width integer type's range; in NumPy arrays and C it wraps around modulo 2^n (uint8 200 + 100 = 44) rather than raising an error.
+  chapter: "05-02"
+- term: Random seed
+  definition: The starting value of a pseudo-random generator (np.random.default_rng(seed)); the same seed reproduces the same numbers, making simulations and tests repeatable.
+  chapter: "05-02"

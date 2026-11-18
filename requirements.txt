@@ -1,6 +1,6 @@
 # Self-Taught BSEE — Python dependencies (Python 3.10+; tested with 3.12 and 3.13)
 # Install:  python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
-numpy>=1.26
+numpy>=2.0
 scipy>=1.11
 sympy>=1.12
 matplotlib>=3.8
