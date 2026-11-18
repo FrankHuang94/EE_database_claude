@@ -1,0 +1,33 @@
+* Course 04 final exam, Question 13 -- a wireless-power link at 128 kHz.
+* Coils of 24 uH with k = 0.4 (M = 9.6 uH), driven by a 2 A-amplitude current; the receiver is open
+* (1 GOhm). The open-circuit receiver voltage is omega M I = 15.44 V and the transmitter coil's own
+* voltage omega L1 I = 38.60 V. A second pair with k = 0.2 receives half: 7.721 V.
+*
+* EXPECT voc  key:solutions.md#X04.13b rtol=5e-4
+* EXPECT v1   key:solutions.md#X04.13c rtol=5e-4
+* EXPECT voc2 key:solutions.md#X04.13f rtol=5e-4
+
+I1 0 p AC 2
+L1 p 0 24u
+L2 s 0 24u
+K1 L1 L2 0.4
+RS s 0 1G
+
+I2 0 q AC 2
+L3 q 0 24u
+L4 r 0 24u
+K2 L3 L4 0.2
+RR r 0 1G
+
+.ac lin 21 118k 138k
+
+.control
+run
+let voc = mag(v(s))
+let v1 = mag(v(p))
+let voc2 = mag(v(r))
+meas ac voc FIND voc AT=128k
+meas ac v1 FIND v1 AT=128k
+meas ac voc2 FIND voc2 AT=128k
+.endc
+.end

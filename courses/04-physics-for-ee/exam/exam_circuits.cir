@@ -1,0 +1,33 @@
+* Course 04 final exam -- circuit answers confirmed in ngspice.
+* Circuit A (Question 4): a 10 fF DRAM cell at 1.0 V shares charge with a 60 fF bit line precharged
+*   to 0.5 V through the access switch, modeled as 1 MOhm so the ~9 ns transient is well resolved
+*   (the final voltage and the dissipated energy do not depend on the resistance). A B-source turns the switch power into a node voltage so
+*   .meas INTEG gives the dissipated energy in joules.
+* Question 13's coupled coils are in exam_coils.cir.
+* Circuit B (Question 14): the human-body model, 100 pF at 2 kV discharged through 1.5 kOhm into a
+*   short; a zero-volt source measures the current.
+*
+* EXPECT vbl    key:solutions.md#X04.4c rtol=1e-4
+* EXPECT dvbl   key:solutions.md#X04.4d scale=1e-3 rtol=1e-3
+* EXPECT eloss  key:solutions.md#X04.4e scale=1e-15 rtol=2e-3
+* EXPECT ipk    key:solutions.md#X04.14a rtol=2e-3
+* EXPECT t10    key:solutions.md#X04.14e scale=1e-9 rtol=2e-3
+
+CS  c1 0 10f IC=1
+RSW c1 c2 1Meg
+CBL c2 0 60f IC=0.5
+BPW pw 0 V = (v(c1)-v(c2))*(v(c1)-v(c2))/1e6
+
+CH  h1 0 100p IC=2000
+RH  h1 h2 1.5k
+VAM h2 0 DC 0
+
+.options reltol=1e-6
+.tran 0.1n 2u 0 0.1n UIC
+
+.meas tran vbl   FIND v(c2) AT=1u
+.meas tran dvbl  PARAM='vbl-0.5'
+.meas tran eloss INTEG v(pw) FROM=0 TO=1u
+.meas tran ipk   MAX i(VAM)
+.meas tran t10   WHEN i(VAM)=0.13333333 FALL=1
+.end

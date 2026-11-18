@@ -148,7 +148,7 @@ v.assert_true("reduced-mass H-alpha rounds to the measured 656.5 nm (vacuum)", r
 q9 = sqrt(2 * ME * 4.5 * E_CH) / HBAR
 v.check("04-10.9a", q9)
 v.check("04-10.9b", exp(2 * q9 * 1e-10))
-v.check("04-10.10a", brentq(lambda d: log(tunnel_T(1.0, 3.1, d)) - log(1e-10), 0.5e-9, 3e-9) * 1e9)
+v.check("04-10.10a", brentq(lambda d: log(tunnel_T(1.0, 3.1, d)) - log(1e-10), 0.5e-9, 3e-9, xtol=1e-20) * 1e9)
 n11 = 1.806e-17 / (photon_eV(550) * E_CH)
 v.check("04-10.11a", n11)
 v.check("04-10.11b", 0.6 * n11)

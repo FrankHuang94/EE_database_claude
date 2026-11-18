@@ -157,7 +157,7 @@ def fd_integral(fun, x_res):
 x2 = fd_integral(lambda f: 4 * KB * T300 * b6 / ((k6 - m6 * (2 * pi * f) ** 2) ** 2 + (b6 * 2 * pi * f) ** 2), f06)
 v.assert_true("integral of 4kTb|H|^2 equals kT/k_s", abs(x2 / (KB * T300 / k6) - 1) < 1e-6)
 v.check("Ex 04-01.7e", sqrt(x2) * 1e12)
-v.check("Ex 04-01.7f", brentq(lambda mm: sqrt(4 * KB * T300 * w06 / (mm * Q6)) / G * 1e6 - 10, 1e-10, 1e-6) * 1e9)
+v.check("Ex 04-01.7f", brentq(lambda mm: sqrt(4 * KB * T300 * w06 / (mm * Q6)) / G * 1e6 - 10, 1e-10, 1e-6, xtol=1e-22) * 1e9)
 
 # ================================================================ solutions
 v.check("04-01.2a", 3.6e6 / QE)
@@ -215,7 +215,7 @@ for key, f0 in (("a", 1e3), ("b", 4e3), ("c", 16e3)):
 v.check("04-01.12d", G / (2 * pi * 16e3) ** 2 * 1e12 / 1000)
 an13 = 20e-6 * G
 w013 = 2 * pi * 2000
-m13 = brentq(lambda mm: sqrt(4 * KB * T300 * w013 / (mm * 2.0)) - an13, 1e-12, 1e-6)
+m13 = brentq(lambda mm: sqrt(4 * KB * T300 * w013 / (mm * 2.0)) - an13, 1e-12, 1e-6, xtol=1e-24)
 v.check("04-01.13a", an13)
 v.check("04-01.13b", m13 * 1e9)
 v.check("04-01.13c", m13 * w013**2)
