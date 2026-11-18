@@ -1,7 +1,7 @@
 * Chapter 02-04, Example 02-04.2 -- frequency response of a series RLC low-pass.
 * L = 10 mH, C = 1 uF, R = 50 Ohm (w0 = 1e4 rad/s, f0 = 1591.55 Hz, zeta = 0.25, Q = 2);
 * output across the capacitor, 1 V AC source.
-* Expected: gain Q = 2 at f0; peak 2.066 at w = 9354 rad/s (1488.7 Hz).
+* Expected: gain Q = 2 at f0; peak 2.066 at w = 9354 rad/s (1488.8 Hz).
 * The peak frequency is compared with the key in rad/s using scale = 1/(2 pi).
 *
 * EXPECT gpeak key:../../chapters/02-04-forced-response-and-resonance.md#Ex_02-04.2g rtol=1e-3

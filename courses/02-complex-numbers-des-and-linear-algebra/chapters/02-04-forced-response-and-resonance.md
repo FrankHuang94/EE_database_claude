@@ -20,7 +20,7 @@
 
 ## 1. Big picture
 
-The previous chapter left a second-order system alone and watched it ring down. This chapter *drives* it. Push a swing once and it rings; push it periodically and the outcome depends dramatically on *when* you push. In time with its natural rhythm, small pushes build a large motion: **resonance**. Out of time, the swing barely moves. That sensitivity to frequency is both a tool and a hazard. Every radio receiver, filter and oscillator uses resonance to pick one frequency out of many. Every power-delivery network, mechanical mount and bridge must be designed so that resonance does not amplify a disturbance into a failure. The mathematics is a short step from 02-03: the forced response is the natural response plus one particular solution, and for sinusoidal inputs the phasors of 02-01 find it with algebra alone.
+The previous chapter left a second-order system alone and watched it ring down. This chapter *drives* it. Push a swing once and it rings; push it periodically and the outcome depends dramatically on *when* you push. In time with its natural rhythm, small pushes build a large motion: **resonance**. Out of time, the swing barely moves. That sensitivity to frequency is both a tool and a hazard. Every radio receiver, filter and oscillator uses resonance to pick one frequency out of many. Every power-delivery network, mechanical mount and bridge must be designed so that resonance does not amplify a disturbance into a failure. The mathematics is a short step from 02-03: the complete response is the natural (homogeneous) response plus one particular (forced) solution, and for sinusoidal inputs the phasors of 02-01 find it with algebra alone.
 
 - **Filters and frequency response:** every analog filter, audio crossover and anti-aliasing filter is a forced linear system described by its gain and phase versus frequency ([07-07](../../07-circuit-analysis-2-transient-and-ac/chapters/07-07-frequency-response-and-bode-plots.md), [07-08](../../07-circuit-analysis-2-transient-and-ac/chapters/07-08-filters-and-resonance.md)).
 - **Tuned radios and NFC:** a 13.56 MHz contactless-payment antenna is a series or parallel resonant circuit whose $Q$ trades signal strength against data bandwidth (Example 02-04.4).
@@ -48,7 +48,7 @@ Consider a portfolio manager who rebalances toward a target allocation with some
 flowchart LR
     F["input f(t)"] --> S["linear system<br/>y'' + 2αy' + ω₀²y = f"]
     S --> SS["steady state y_p<br/>(set by the input)"]
-    S --> TR["transient y_h<br/>(set by initial conditions,<br/>decays as e^(−αt))"]
+    S --> TR["transient y_h<br/>(set by initial conditions,<br/>decays; e^(−αt) envelope<br/>when underdamped)"]
     SS --> Y["total y = y_h + y_p"]
     TR --> Y
 ```
@@ -67,7 +67,7 @@ where $f(t)$ is the input, often a source voltage scaled by $\omega_0^2$ (§3.4)
 
 - **General solution = homogeneous + particular.** If $y_p$ is any one solution of the forced equation, every solution is $y = y_h + y_p$, where $y_h$ is the general solution of the homogeneous equation found in 02-03. The difference of two forced solutions solves the homogeneous equation, so nothing else is possible.
 - **Superposition of inputs.** If $y_1$ responds to $f_1$ and $y_2$ to $f_2$, then $y_1 + y_2$ responds to $f_1 + f_2$. A complicated input can be broken into simple pieces, each solved separately. Fourier series ([01-06](../../01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md)) do this for any periodic input.
-- **Transient and steady state.** For a stable system (α > 0), $y_h$ decays as $e^{-\alpha t}$. What remains is the steady-state response, which depends on the input alone. The two initial conditions fix the constants of $y_h$, which must be applied to the *total* solution.
+- **Transient and steady state.** For a stable system (α > 0), $y_h$ decays: with an $e^{-\alpha t}$ envelope when underdamped or critically damped, and at the rate of the slower root, $-\alpha + \sqrt{\alpha^2 - \omega_0^2}$, when overdamped. What remains is the steady-state response, which depends on the input alone. The two initial conditions fix the constants of $y_h$, which must be applied to the *total* solution.
 
 ### 3.2 Undetermined coefficients
 
@@ -79,9 +79,11 @@ For inputs built from polynomials, exponentials and sinusoids, guess a particula
 | $e^{at}$ | $Ae^{at}$ |
 | $\cos\omega t$ or $\sin\omega t$ | $A\cos\omega t + B\sin\omega t$ |
 | $e^{at}\cos\omega t$ | $e^{at}(A\cos\omega t + B\sin\omega t)$ |
+| (polynomial of degree $n$) × $e^{at}$ | $e^{at}$ × (general polynomial of degree $n$) |
+| (polynomial of degree $n$) × $\cos\omega t$ or $\sin\omega t$ | $P(t)\cos\omega t + R(t)\sin\omega t$, with $P$, $R$ general polynomials of degree $n$ |
 | sum of the above | sum of the matching guesses (superposition) |
 
-**The duplication rule.** If any term of the guess already solves the *homogeneous* equation, the guess cannot work: substituting it gives zero, not $f$. Multiply that part of the guess by $t$ (by $t^2$ if $t$ times it is also a homogeneous solution, which happens for a repeated root). This is exactly the "matched input" case of 02-02 §3.6 and the repeated-root case of 02-03 §3.5, and it is the algebraic signature of **resonance** (§3.6).
+**The duplication rule.** If any term of the guess already solves the *homogeneous* equation, the guess cannot work: substituting it gives zero, not $f$. Multiply the *entire* guess for that input term by $t$ (by $t^2$ if $t$ times it is also a homogeneous solution, which happens for a repeated root). Multiplying only the offending part is a common error. For $y'' + 2y' = t$ the roots are 0 and −2, and the guess $At + B$ contains the constant $B$, a homogeneous solution. Multiplying only $B$ by $t$ gives $At + Bt = Ct$, which cannot work: $2C = t$ has no solution. Multiplying the whole guess gives $y_p = t(At + B) = At^2 + Bt$, so $y_p'' + 2y_p' = 2A + 4At + 2B = t$, giving $A = 1/4$ and $B = -1/4$. This is exactly the "matched input" case of 02-02 §3.6 and the repeated-root case of 02-03 §3.5, and it is the algebraic signature of **resonance** (§3.6).
 
 ### 3.3 The exponential response formula and complex replacement
 
@@ -117,7 +119,7 @@ $$
 p(D)\,y = e^{s_0t},\ p(s_0) = 0,\ p'(s_0) \ne 0 \quad\Longrightarrow\quad y_p = \frac{te^{s_0t}}{p'(s_0)} .
 $$
 
-The factor $t$ is the duplication rule of §3.2, now derived rather than guessed.
+The factor $t$ is the duplication rule of §3.2, now derived rather than guessed. Differentiating once more handles a **double root** ($p(s_0) = p'(s_0) = 0$, $p''(s_0) \ne 0$): the same argument gives $y_p = t^2e^{s_0t}/p''(s_0)$.
 
 ### 3.4 Frequency response of a second-order system
 
@@ -197,25 +199,37 @@ $$
 y = \frac{F}{\omega_0^2 - \omega^2}\big(\cos\omega t - \cos\omega_0t\big) = \frac{2F}{\omega_0^2 - \omega^2}\sin\frac{(\omega_0 - \omega)t}{2}\,\sin\frac{(\omega_0 + \omega)t}{2},
 $$
 
-using the identity $\cos A - \cos B = -2\sin\frac{A + B}{2}\sin\frac{A - B}{2}$. A fast oscillation at the average frequency is modulated by a slow envelope at half the difference frequency: **beats** (Figure 4). Musicians tune instruments by listening for beats to slow down and vanish; RF engineers see the same pattern when two oscillators are close in frequency.
+using the identity $\cos A - \cos B = -2\sin\frac{A + B}{2}\sin\frac{A - B}{2}$. A fast oscillation at the average frequency is modulated by a slow envelope at half the difference frequency: **beats** (Figure 3). Musicians tune instruments by listening for beats to slow down and vanish; RF engineers see the same pattern when two oscillators are close in frequency.
 
 ![Beats when an undamped system is forced near its natural frequency](../../../assets/figures/02-04/beats.svg)
 
-*Figure 4. Forcing at 9.5 rad/s near a 10 rad/s resonance: the response swells and fades with a beat period of 2π/0.5 = 12.6 s.*
+*Figure 3. Forcing at 9.5 rad/s near a 10 rad/s resonance: the response swells and fades with a beat period of 2π/0.5 = 12.6 s.*
 
 ### 3.7 Resonant build-up and the transient
 
-Drive a damped system at $\omega_0$, starting from rest. The steady state has amplitude $Q$ times the static response, and the transient (the natural response, with $e^{-\alpha t}$ envelope) must cancel it at $t = 0$. For light damping, the sum has the envelope
+Drive a damped system at $\omega_0$, starting from rest: $y'' + 2\alpha y' + \omega_0^2y = \omega_0^2X\cos\omega_0t$, where $X$ is the static response. The steady state comes from complex replacement: $p(j\omega_0) = -\omega_0^2 + j2\alpha\omega_0 + \omega_0^2 = j2\alpha\omega_0$, so
 
 $$
-\text{amplitude}(t) \approx Q\left(1 - e^{-\alpha t}\right)\times\text{static response}, \qquad \frac{1}{\alpha} = \frac{2Q}{\omega_0}
+y_p = \operatorname{Re}\!\left[\frac{\omega_0^2X}{j2\alpha\omega_0}e^{j\omega_0t}\right] = \frac{\omega_0}{2\alpha}X\sin\omega_0t = QX\sin\omega_0t .
 $$
 
-(Figure 3). The response takes about $2Q/\omega_0$ seconds, or $Q/\pi$ cycles, per time constant to build up, and about $4.6$ time constants to reach 99%. **A high-Q resonator is both selective and slow**: the same $Q$ that narrows the bandwidth to $\omega_0/Q$ stretches the settling time to about $Q/\omega_0$. Bandwidth × settling time is roughly constant, a recurring theme of Courses 11 and 17.
+Add the natural response for light damping, $e^{-\alpha t}(A\cos\omega_dt + B\sin\omega_dt)$. Then $y(0) = 0$ gives $A = 0$, and $y'(0) = QX\omega_0 + B\omega_d = 0$ gives $B = -QX\omega_0/\omega_d$:
+
+$$
+y(t) = QX\left[\sin\omega_0t - \frac{\omega_0}{\omega_d}e^{-\alpha t}\sin\omega_dt\right].
+$$
+
+When ζ ≪ 1, $\omega_d = \omega_0\sqrt{1 - \zeta^2} \approx \omega_0$, and the two sines stay nearly in phase while the transient lasts, so
+
+$$
+y(t) \approx QX\left(1 - e^{-\alpha t}\right)\sin\omega_0t, \qquad \frac{1}{\alpha} = \frac{2Q}{\omega_0}
+$$
+
+(Figure 4). For moderate damping the small frequency difference makes the true envelope beat slightly around this curve. The response takes about $2Q/\omega_0$ seconds, or $Q/\pi$ cycles, per time constant to build up, and about $4.6$ time constants to reach 99%. **A high-Q resonator is both selective and slow**: the same $Q$ that narrows the bandwidth to $\omega_0/Q$ stretches the build-up and settling time constant to $2Q/\omega_0$ (99% takes about $9.2Q/\omega_0$). Bandwidth × settling time is roughly constant, a recurring theme of Courses 11 and 17.
 
 ![Resonant build-up of a Q = 10 system and linear growth of an undamped one](../../../assets/figures/02-04/resonance-buildup.svg)
 
-*Figure 3. Driven at ω₀ from rest, a Q = 10 system grows toward 10 times its static response with time constant 2Q/ω₀; an undamped one grows without limit.*
+*Figure 4. Driven at ω₀ from rest, a Q = 10 system grows toward 10 times its static response with time constant 2Q/ω₀; an undamped one grows without limit.*
 
 ### 3.8 Variation of parameters
 
@@ -233,7 +247,7 @@ $$
 u_1'y_1' + u_2'y_2' = g .
 $$
 
-These two linear equations for $u_1'$ and $u_2'$ have determinant equal to the Wronskian $W = y_1y_2' - y_1'y_2 \ne 0$ (02-03 §3.10). Solving (Cramer's rule, [02-07](02-07-determinants-inverses-and-vector-spaces.md)):
+These two linear equations for $u_1'$ and $u_2'$ have determinant equal to the Wronskian $W = y_1y_2' - y_1'y_2 \ne 0$ (02-03 §3.10). Solve by elimination. Multiply the first equation by $y_2'$ and the second by $y_2$ and subtract: $u_1'(y_1y_2' - y_1'y_2) = -y_2g$. Multiply the first by $y_1'$ and the second by $y_1$ and subtract: $u_2'(y_1'y_2 - y_1y_2') = -y_1g$. Dividing by $W$:
 
 $$
 u_1' = -\frac{y_2\,g}{W}, \qquad u_2' = \frac{y_1\,g}{W}, \qquad y_p = -y_1\int\frac{y_2g}{W}\,dt + y_2\int\frac{y_1g}{W}\,dt .
@@ -288,7 +302,7 @@ $$
 
 The peak is at $\omega_0\sqrt{1 - 2(0.0625)} = $ **9354 rad/s**, with height $1/\big(2\times0.25\sqrt{1 - 0.0625}\big) = $ **2.066**, which is **+6.30 dB**, barely above the value $Q = 2$ at $\omega_0$.
 
-**Units check.** $r$ and $2\zeta r$ are dimensionless, so $H$ is a pure ratio ✓. **Sanity check.** At $2\omega_0$ the asymptote $1/r^2 = 0.25$ is close to the exact 0.316; the difference is the damping term ✓.
+**Units check.** $r$ and $2\zeta r$ are dimensionless, so $H$ is a pure ratio ✓. **Sanity check.** At $2\omega_0$ the asymptote $1/r^2 = 0.25$ is below the exact 0.316 because the asymptote drops the 1 in $1 - r^2$, which is not negligible at $r^2 = 4$: without damping the gain would be $1/\lvert1 - 4\rvert = 0.333$, and damping lowers that slightly, to 0.316 ✓.
 
 ### Example 02-04.3 — Undamped resonance and beats (tier B)
 
@@ -302,19 +316,19 @@ The peak is at $\omega_0\sqrt{1 - 2(0.0625)} = $ **9354 rad/s**, with height $1/
 
 ### Example 02-04.4 — Tuning a 13.56 MHz antenna (tier B)
 
-**Setup.** A contactless-card reader's antenna loop has $L = 1$ µH and a total series resistance of 3 Ω (illustrative values). It is tuned with a series capacitor to the 13.56 MHz carrier. The card answers by load modulation on a subcarrier at 847.5 kHz, which puts data sidebands at 13.56 MHz ± 847.5 kHz ([R-034](../../../reference/research-log.md#r-034--nfc-and-isoiec-14443-carrier-and-data-rates)). (a) Find the tuning capacitor, $Q$, the bandwidth and the half-power frequencies. (b) How strongly are the subcarrier sidebands attenuated relative to the carrier? (c) What $Q$, and what total resistance, would make the half-power band just wide enough to pass both sidebands?
+**Setup.** A contactless-card reader's antenna loop has $L = 1$ µH and a total series resistance of 3 Ω (illustrative values). It is tuned with a series capacitor to the 13.56 MHz carrier. The card answers by load modulation on a subcarrier at 847.5 kHz, which puts data sidebands at 13.56 MHz ± 847.5 kHz ([R-034](../../../reference/research-log.md#r-034--nfc-and-isoiec-14443-carrier-and-data-rates)). (a) Find the tuning capacitor, $Q$, the bandwidth and the half-power frequencies. (b) How strongly are the subcarrier sidebands attenuated relative to the carrier? (c) What $Q$, and what total resistance, would make the half-power bandwidth equal to the sideband spacing, $2\times847.5$ kHz? Do both sidebands then fall inside the half-power band? If not, what $Q$ is needed?
 
 **Solution.** (a) $C = 1/\big((2\pi f_0)^2L\big) = $ **137.8 pF**. $Q = \omega_0L/R = 85.20/3 = $ **28.40**, so the bandwidth is $f_0/Q = $ **477.5 kHz**. The half-power frequencies, from §3.5, are **13.32 MHz** and **13.80 MHz**.
 
 (b) At $f = 13.56 + 0.8475$ MHz, $\lvert H_{BP}\rvert = 1/\sqrt{1 + Q^2(f/f_0 - f_0/f)^2} = $ **0.2787**, or **−11.10 dB**; the lower sideband sees **0.2630**. The data sidebands are about 3.59 and 3.80 times weaker than the carrier (Figure 5).
 
-(c) Requiring $f_0/Q = 2\times847.5$ kHz gives $Q = $ **8.0**, and $R = \omega_0L/Q = $ **10.65 Ω**: about 7.65 Ω of deliberate damping resistance added. Because the band is centered geometrically rather than arithmetically, the upper sideband then sees **0.718** and the lower **0.695**, both close to the half-power value of 0.707.
+(c) Requiring $f_0/Q = 2\times847.5$ kHz gives $Q = $ **8.0**, and $R = \omega_0L/Q = $ **10.65 Ω**: about 7.65 Ω of deliberate damping resistance added. Because the band is centered geometrically rather than arithmetically, the upper sideband then sees **0.718** and the lower **0.695**: the lower sideband falls just *outside* the half-power band. To keep it at or above 0.707, solve $Q(r - 1/r) = -1$ at $r = f_l/f_0 = 1 - 0.8475/13.56$: $Q \le$ **7.742**, which needs a total resistance of at least **11.00 Ω**.
 
 **Interpretation.** Higher $Q$ means a larger resonant current, so more field and more power delivered to the card, but a narrower band that attenuates the data. Antenna designers therefore lower $Q$ on purpose, trading field strength for data integrity. The same tradeoff appears in every tuned receiver.
 
 ![Response of a 13.56 MHz antenna at two Q values, with the subcarrier sidebands marked](../../../assets/figures/02-04/nfc-tuning.svg)
 
-*Figure 5. At Q = 28.4 the ±847.5 kHz data sidebands fall well outside the band; at Q = 8 they sit close to the half-power points.*
+*Figure 5. At Q = 28.4 the ±847.5 kHz data sidebands fall well outside the band; at Q = 8 they sit close to the half-power points, the lower one just outside.*
 
 **Units check.** $\omega_0L$ in ohms: (rad/s)(H) = Ω ✓.
 
@@ -328,7 +342,7 @@ The peak is at $\omega_0\sqrt{1 - 2(0.0625)} = $ **9354 rad/s**, with height $1/
 
 (c) Near resonance, $r - 1/r \approx 2\Delta f/f_0$, so the band-pass factor is $1/\sqrt{1 + (2Q\Delta f/f_0)^2} = 1/\sqrt{1 + (3.052)^2} = $ **0.3114**: a 1 Hz error, about 31 parts per million, cuts the response to under a third.
 
-**Interpretation.** The crystal's enormous $Q$ is why a watch keeps time to seconds per month, and the same $Q$ makes it slow. An oscillator built around it starts from noise, and its start-up time is set by how much excess negative resistance the amplifier provides, but it cannot settle faster than the crystal's own time scale. Vendor guides put typical start-up of 32.768 kHz crystal oscillators within about a second, and list high $Q$, high series resistance and heavy load capacitance as causes of slow starts ([R-035](../../../reference/research-log.md#r-035--32768-khz-tuning-fork-crystals-q-and-start-up)). For a wearable that wakes its clock often, that start-up time and the oscillator's current are real product tradeoffs.
+**Interpretation.** A watch's accuracy is set mainly by the crystal's frequency tolerance and temperature coefficient (an error of 20 ppm is $20\times10^{-6}\times30\times86\,400 \approx 52$ s in a 30-day month). What the enormous $Q$ buys is a frequency that is insensitive to the amplifier and the rest of the circuit, and the same $Q$ makes it slow. An oscillator built around it starts from noise, and its start-up time is set by how much excess negative resistance the amplifier provides, but it cannot settle faster than the crystal's own time scale. Vendor guides put typical start-up of 32.768 kHz crystal oscillators within about a second, and list high $Q$, high series resistance and heavy load capacitance as causes of slow starts ([R-035](../../../reference/research-log.md#r-035--32768-khz-tuning-fork-crystals-q-and-start-up)). For a wearable that wakes its clock often, that start-up time and the oscillator's current are real product tradeoffs.
 
 **Units check.** $Q$ is dimensionless, so $2Q/\omega_0$ is in seconds ✓.
 
@@ -346,6 +360,9 @@ The peak is at $\omega_0\sqrt{1 - 2(0.0625)} = $ **9354 rad/s**, with height $1/
 | Ex 02-04.2f | peak frequency | 9354 | rad/s |
 | Ex 02-04.2g | peak gain | 2.066 | — |
 | Ex 02-04.2h | peak gain in dB | 6.30 | dB |
+| Ex 02-04.2i | phase at r = 1 | −90 | ° |
+| Ex 02-04.2j | undamped gain at r = 2 | 0.333 | — |
+| Fig 02-04.a | beat period, 2π/0.5 | 12.6 | s |
 | Ex 02-04.3a | envelope at 5 s, tuned | 0.25 | m |
 | Ex 02-04.3b | ω0² − ω² | 9.75 | rad²/s² |
 | Ex 02-04.3c | largest detuned amplitude | 0.2051 | m |
@@ -366,6 +383,8 @@ The peak is at $\omega_0\sqrt{1 - 2(0.0625)} = $ **9354 rad/s**, with height $1/
 | Ex 02-04.4l | added damping resistance | 7.65 | Ω |
 | Ex 02-04.4m | upper sideband gain at Q = 8 | 0.718 | — |
 | Ex 02-04.4n | lower sideband gain at Q = 8 | 0.695 | — |
+| Ex 02-04.4p | largest Q keeping the lower sideband at half power | 7.742 | — |
+| Ex 02-04.4q | smallest total resistance for that | 11.00 | Ω |
 | Ex 02-04.4o | half-power value 1/√2 | 0.707 | — |
 | Ex 02-04.5a | ω0 | 2.059×10^5 | rad/s |
 | Ex 02-04.5b | build-up time constant | 0.4857 | s |
@@ -376,6 +395,7 @@ The peak is at $\omega_0\sqrt{1 - 2(0.0625)} = $ **9354 rad/s**, with height $1/
 | Ex 02-04.5g | 2QΔf/f0 at 1 Hz | 3.052 | — |
 | Ex 02-04.5h | relative amplitude at 1 Hz off | 0.3114 | — |
 | Ex 02-04.5i | 1 Hz in parts per million | 31 | ppm |
+| Ex 02-04.5j | time error from 20 ppm in 30 days | 52 | s |
 | T 02-04.a | capacitor voltage at Q = 50 from a 1 V source | 50 | V |
 | T 02-04.b | carrier-to-sideband amplitude ratio, upper | 3.59 | — |
 | T 02-04.c | carrier-to-sideband amplitude ratio, lower | 3.80 | — |
@@ -389,7 +409,7 @@ The lab ([labs/02-04-lab/](../labs/02-04-lab/README.md)) has a notebook and two 
 1. **Complex replacement by machine.** Compute $H(j\omega)$ symbolically from the ODE, and compare with a time-domain simulation run until the transient dies. *Predict first:* how many cycles must you wait at $Q = 20$ before the steady state is within 1%?
 2. **Bode plots and the peak.** Sweep ζ, measure the peak frequency and height numerically, and compare with §3.4. *Predict first:* at which ζ does the peak disappear?
 3. **Bandwidth.** Measure the half-power frequencies for several $Q$ and confirm $\omega_2 - \omega_1 = \omega_0/Q$ and $\omega_1\omega_2 = \omega_0^2$.
-4. **Beats and build-up.** Animate the transition from beats (no damping, detuned) to resonant build-up (damped, tuned).
+4. **Beats and build-up.** Plot the transition, in three panels, from beats (no damping, detuned) to resonant build-up (damped, tuned).
 5. **ngspice, `rlc_ac.cir`.** An AC sweep of Example 02-04.2: confirm the 2.066 peak at 9354 rad/s and the gain $Q = 2$ at $\omega_0$.
 6. **ngspice, `nfc_tank.cir`.** An AC sweep of the antenna of Example 02-04.4: confirm the 477.5 kHz bandwidth and the −11.10 dB sideband.
 
@@ -438,7 +458,7 @@ The lab ([labs/02-04-lab/](../labs/02-04-lab/README.md)) has a notebook and two 
 ### State of the art (as of Nov 2026)
 
 - **Contactless payment and NFC are tuned resonant circuits.** ISO/IEC 14443 proximity cards and readers use a 13.56 MHz carrier; the base data rate is 106 kbit/s, and the card answers by load modulation on an 847.5 kHz subcarrier ($f_c/16$). Higher rates of about 212, 424 and 848 kbit/s are defined as further divisions of the carrier ([R-034](../../../reference/research-log.md#r-034--nfc-and-isoiec-14443-carrier-and-data-rates)) **[Established]**. Every faster rate widens the sidebands, so the antenna's $Q$ must fall to pass them.
-- **Watch crystals trade start-up for stability.** 32.768 kHz tuning-fork crystals have $Q$ of roughly 40,000–70,000 in vendor data, and design guides expect start-up within about a second, slowed by high $Q$, high series resistance and heavy load capacitance ([R-035](../../../reference/research-log.md#r-035--32768-khz-tuning-fork-crystals-q-and-start-up)) **[Established]**. This is one reason low-power microcontrollers commonly keep the 32 kHz clock running through sleep while faster clocks are switched off and restarted.
+- **Watch crystals trade start-up for stability.** 32.768 kHz tuning-fork crystals have $Q$ of roughly 40,000–70,000 in vendor data, and design guides expect start-up within about a second, slowed by high $Q$, high series resistance and heavy load capacitance ([R-035](../../../reference/research-log.md#r-035--32768-khz-tuning-fork-crystals-q-and-start-up)) **[Industry estimate: vendor design guidance]**. Slow start-up is one reason a low-power design may keep the 32 kHz clock running through sleep rather than restart it, a choice each product weighs against the oscillator's running current.
 - **Unwanted resonances are designed out.** A power-delivery network's impedance peaks at its LC resonance (02-03); if the processor's activity varies near that frequency, the supply rings up just as the swing does in §2. Power-integrity engineers keep the impedance under the target across frequency and damp the peaks ([R-032](../../../reference/research-log.md#r-032--pdn-target-impedance-method)) **[Established]**.
 
 ### Why it matters commercially
@@ -520,7 +540,7 @@ Resonance sets what a radio, antenna, timing or power product can do. Antenna an
 
    <details><summary>Answer</summary>
 
-   Beats: the loudness swells and fades 2 times per second (the envelope $\lvert\sin\rvert$ peaks twice per period of the difference frequency).
+   Beats: the loudness swells and fades 2 times per second (the envelope $\lvert\sin(\Delta\omega t/2)\rvert$ peaks once per period of the difference frequency, which is 2 Hz here).
 
    </details>
 

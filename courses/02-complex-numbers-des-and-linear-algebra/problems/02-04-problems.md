@@ -85,7 +85,7 @@ Solve $y'' + 3y' + 2y = 10\cos t$ with $y(0) = 0$ and $y'(0) = 0$. Identify the 
 (b) Find the current, the power delivered, and the rms voltage across the capacitor.
 (c) The capacitor is rated for 50 V. Is that adequate?
 
-### Problem 02-04.13 [C]
+### Problem 02-04.13 [B]
 
 **A MEMS gyroscope's drive resonator.** A MEMS gyroscope's proof mass is driven at the resonance of its drive mode, $f_0 = 25$ kHz with $Q = 10\,000$ (illustrative values).
 
@@ -110,6 +110,18 @@ Solve $y'' + 3y' + 2y = 10\cos t$ with $y(0) = 0$ and $y'(0) = 0$. Identify the 
 (b) Find $f_0$ and $\lvert Z\rvert$ at $f_0$, at 50 MHz and at DC.
 (c) What voltage ripple does the 1 A component cause at each of those frequencies? What does this imply for software and hardware design?
 
+### Problem 02-04.16 [B]
+
+**Variation of parameters with a changing Wronskian.** Solve $y'' - 3y' + 2y = \dfrac{1}{1 + e^{-t}}$ (a smooth "soft-start" input).
+
+(a) Find two homogeneous solutions and their Wronskian.
+(b) Use variation of parameters to find a particular solution, and evaluate it at $t = 0$.
+(c) Why would undetermined coefficients not work here?
+
+### Problem 02-04.17 [B]
+
+**A product input.** Find a particular solution of $y'' + 4y = t\sin t$ by undetermined coefficients, and evaluate it at $t = \pi/2$. Explain why no factor of $t$ beyond the input's own is needed.
+
 ---
 
 ## Objective coverage
@@ -117,7 +129,7 @@ Solve $y'' + 3y' + 2y = 10\cos t$ with $y(0) = 0$ and $y'(0) = 0$. Identify the 
 | Learning objective (chapter 02-04) | Problems |
 |---|---|
 | 1. Homogeneous + particular; superposition; transient and steady state | 2, 6, 14 |
-| 2. Undetermined coefficients, the duplication rule; variation of parameters | 1, 2, 5, 11 |
+| 2. Undetermined coefficients, the duplication rule; variation of parameters | 1, 2, 5, 11, 16, 17 |
 | 3. Exponential response formula; complex replacement | 3, 4, 5, 6 |
 | 4. Frequency response; peak; half-power bandwidth | 7, 8, 9, 14 |
 | 5. Undamped resonance, beats, build-up; Q versus settling | 5(a), 10, 13 |

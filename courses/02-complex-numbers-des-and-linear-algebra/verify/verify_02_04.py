@@ -130,6 +130,15 @@ v.check("Ex 02-04.4k", R8)
 v.check("Ex 02-04.4l", R8 - R4)
 v.check("Ex 02-04.4m", Hser(fu, R8))
 v.check("Ex 02-04.4n", Hser(fl, R8))
+from scipy.optimize import brentq as _bq  # noqa: E402
+R_edge = _bq(lambda R: Hser(fl, R) - 1 / math.sqrt(2), 5, 20, xtol=1e-12)
+v.check("Ex 02-04.4p", w04 * L4 / R_edge)
+v.check("Ex 02-04.4q", R_edge)
+_H2 = lambda r, z=0.25: 1 / complex(1 - r**2, 2 * z * r)  # noqa: E731
+v.check("Ex 02-04.2i", math.degrees(cmath.phase(_H2(1.0))))
+v.check("Ex 02-04.2j", abs(_H2(2.0, 0.0)))
+v.check("Fig 02-04.a", 2 * math.pi / 0.5)
+v.check("Ex 02-04.5j", 20e-6 * 30 * 86400)
 v.check("Ex 02-04.4o", 1 / math.sqrt(2))
 v.check("T 02-04.a", 50 * 1)
 v.check("T 02-04.b", 1 / Hser(fu))
@@ -256,5 +265,16 @@ v.check("Lab 02-04.c", pk.x * w02 / (2 * math.pi))
 v.check("Lab 02-04.d", w02 / (2 * math.pi))
 v.check("Lab 02-04.e", Hser(fu, R8))
 v.check("Lab 02-04.f", fu / 1e6)
+
+# 16 · variation of parameters, non-constant Wronskian
+t16 = sp.symbols("t16", real=True)
+yp16 = (sp.exp(t16) + sp.exp(2 * t16)) * sp.log(1 + sp.exp(-t16)) - sp.exp(t16)
+v.assert_true("P16 y_p solves y'' - 3y' + 2y = 1/(1 + e^-t)",
+              sp.simplify(sp.diff(yp16, t16, 2) - 3 * sp.diff(yp16, t16) + 2 * yp16 - 1 / (1 + sp.exp(-t16))) == 0)
+v.check("02-04.16a", float(yp16.subs(t16, 0)))
+# 17 · product input
+yp17 = -sp.Rational(2, 9) * sp.cos(t16) + t16 / 3 * sp.sin(t16)
+v.assert_true("P17 y_p solves y'' + 4y = t sin t", sp.simplify(sp.diff(yp17, t16, 2) + 4 * yp17 - t16 * sp.sin(t16)) == 0)
+v.check("02-04.17a", float(yp17.subs(t16, sp.pi / 2)))
 
 v.finish()

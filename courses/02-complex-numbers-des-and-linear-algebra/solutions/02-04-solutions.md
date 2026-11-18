@@ -139,6 +139,44 @@ At $\omega_0 = 1/\sqrt{LC}$ the real part of the denominator vanishes, so $Z = \
 
 ---
 
+### Solution 02-04.16
+
+(a) The characteristic equation $s^2 - 3s + 2 = (s - 1)(s - 2) = 0$ gives $y_1 = e^t$ and $y_2 = e^{2t}$. Their Wronskian is $W = y_1y_2' - y_1'y_2 = e^t\cdot2e^{2t} - e^t\cdot e^{2t} = e^{3t}$, which changes with $t$.
+
+(b) With $g = 1/(1 + e^{-t})$:
+
+$$
+u_1' = -\frac{y_2g}{W} = -\frac{e^{-t}}{1 + e^{-t}} \;\Longrightarrow\; u_1 = \ln\left(1 + e^{-t}\right),
+$$
+
+since $\frac{d}{dt}\ln(1 + e^{-t}) = -e^{-t}/(1 + e^{-t})$. For $u_2' = y_1g/W = e^{-2t}/(1 + e^{-t})$, substitute $w = e^{-t}$, $dt = -dw/w$:
+
+$$
+u_2 = -\int\frac{w}{1 + w}\,dw = -\int\left(1 - \frac{1}{1 + w}\right)dw = -e^{-t} + \ln\left(1 + e^{-t}\right).
+$$
+
+So $y_p = u_1y_1 + u_2y_2 = \left(e^t + e^{2t}\right)\ln\left(1 + e^{-t}\right) - e^t$. At $t = 0$: $y_p(0) = 2\ln2 - 1 = $ **0.3863**. Check numerically: substituting $y_p$ into the equation leaves a residual of zero (the verify script does this symbolically).
+
+(c) The input $1/(1 + e^{-t})$ is not a polynomial, exponential or sinusoid, and differentiating it keeps producing new functions, so no finite guess closes.
+
+### Solution 02-04.17
+
+The input is (degree-1 polynomial) × $\sin t$, so guess $y_p = (At + B)\cos t + (Ct + D)\sin t$. The homogeneous solutions are $\cos2t$ and $\sin2t$, and no term of the guess is among them, so no extra factor of $t$ is needed. Differentiating twice:
+
+$$
+y_p'' = (2C - B - At)\cos t + (-2A - D - Ct)\sin t,
+$$
+
+$$
+y_p'' + 4y_p = (3At + 3B + 2C)\cos t + (3Ct + 3D - 2A)\sin t .
+$$
+
+Matching $t\sin t$: $3A = 0$, $3B + 2C = 0$, $3C = 1$ and $3D - 2A = 0$. So $A = 0$, $C = 1/3$, $D = 0$, $B = -2/9$:
+
+$$
+y_p = -\tfrac29\cos t + \tfrac{t}{3}\sin t, \qquad y_p(\pi/2) = \frac{\pi}{6} = \textbf{0.5236}.
+$$
+
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
@@ -205,3 +243,5 @@ At $\omega_0 = 1/\sqrt{LC}$ the real part of the denominator vanishes, so $Z = \
 | 02-04.15f | ripple at f0 | 250.5 | mV |
 | 02-04.15g | ripple at 50 MHz | 10.50 | mV |
 | 02-04.15h | ripple at DC | 1.000 | mV |
+| 02-04.16a | y_p(0) | 0.3863 | — |
+| 02-04.17a | y_p(π/2) | 0.5236 | — |
