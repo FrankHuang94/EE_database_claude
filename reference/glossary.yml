@@ -2112,3 +2112,40 @@
 - term: Two's complement
   definition: The standard binary representation of signed integers, in which an n-bit pattern with top bit set represents its unsigned value minus 2^n; range −2^(n−1) to 2^(n−1) − 1. Mandatory in C23.
   chapter: "05-05"
+- term: Pointer
+  definition: A variable holding a memory address, with a type saying what is stored there (int *p points to an int); &x gives an address and *p the object at it. Pointers let functions modify caller data and pass buffers without copying.
+  chapter: "05-06"
+  see_also: [Dereference, Null pointer, Pointer arithmetic]
+- term: Dereference
+  definition: To access the object a pointer points to (*p in C, or p->field for a struct); dereferencing an invalid or null pointer is undefined behavior.
+  chapter: "05-06"
+- term: Null pointer
+  definition: A pointer value (NULL) that points to no object, used to signal "none" or failure (malloc returns NULL when out of memory); must be checked before dereferencing.
+  chapter: "05-06"
+- term: Pointer arithmetic
+  definition: Adding an integer to a pointer advances it by whole elements (sizeof the pointed-to type), so a[i] is *(a + i); subtracting two pointers into one array gives the number of elements between them.
+  chapter: "05-06"
+- term: C string
+  definition: An array of char terminated by a zero byte; it needs strlen + 1 bytes of storage, and functions find its end by scanning for the zero, so a missing terminator or a too-small buffer causes overflows.
+  chapter: "05-06"
+- term: Struct padding
+  definition: Unused bytes a compiler inserts between and after struct fields so that each field is aligned to its size; field order changes a struct's size (uint8, uint32, uint16 is 12 bytes; uint32, uint16, uint8 is 8).
+  chapter: "05-06"
+- term: Stack (memory)
+  definition: The region holding local variables and function call frames, allocated on function entry and released on return; fast but small (megabytes on desktops, kilobytes on MCUs), and a pointer to a returned function's local dangles.
+  chapter: "05-06"
+- term: Heap (memory)
+  definition: The region for dynamic allocation (malloc, calloc, realloc, free), whose blocks live until freed; flexible in size but subject to leaks, fragmentation and unpredictable allocation time.
+  chapter: "05-06"
+- term: Buffer overflow
+  definition: Reading or writing past the end (or before the start) of an array or buffer, corrupting or leaking neighboring memory; a leading cause of security vulnerabilities in C and C++.
+  chapter: "05-06"
+- term: Use after free
+  definition: Accessing heap memory after it has been freed (or moved by realloc), through a dangling pointer; the memory may already belong to something else, so results are silently wrong or exploitable.
+  chapter: "05-06"
+- term: Memory leak
+  definition: Heap memory that is never freed after its last pointer is lost; harmless in a short program, fatal in a long-running device that slowly exhausts its RAM.
+  chapter: "05-06"
+- term: Memory safety
+  definition: The guarantee that a program cannot access memory outside the objects it is entitled to (no overflows, use after free or invalid pointers); C and C++ lack it, Rust, Python and Java provide it, and hardware such as Arm MTE and CHERI can enforce parts of it.
+  chapter: "05-06"
