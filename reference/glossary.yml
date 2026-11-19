@@ -3358,3 +3358,41 @@
 - term: Reset synchronizer
   definition: Two flip-flops that assert a domain's reset asynchronously but release it on the domain's clock edge, so every flip-flop in the domain leaves reset in the same cycle.
   chapter: "08-10"
+- term: Memory array
+  definition: A grid of bit cells organized in rows and columns, with a row decoder that selects one wordline and column multiplexers that select the addressed word from the selected row.
+  chapter: "08-11"
+  see_also: [Wordline and bitline, Column multiplexer]
+- term: Wordline and bitline
+  definition: The row wire (wordline) that connects every cell of a memory row to its column wires, and the column wires (bitlines) that carry each cell's data to the sense amplifiers or bring write data in.
+  chapter: "08-11"
+  see_also: [Memory array]
+- term: Column multiplexer
+  definition: The multiplexer that selects one word out of the several held in a memory row, using the low-order address bits, so that the array can be kept roughly square.
+  chapter: "08-11"
+  see_also: [Memory array]
+- term: Register file
+  definition: A small, fast memory of a processor's registers with several read and write ports used in the same cycle; its area grows roughly as the square of the number of ports.
+  chapter: "08-11"
+- term: Read-only memory (ROM)
+  definition: A memory whose contents are fixed at manufacture (or programmed once); as logic, a 2^n by m ROM implements any n-input, m-output function by storing its truth table.
+  chapter: "08-11"
+  see_also: [Lookup table (LUT)]
+- term: Programmable logic array (PLA)
+  definition: A two-level logic structure with a programmable AND plane forming product terms and a programmable OR plane summing them into outputs; its size grows with the number of products rather than with 2^n.
+  chapter: "08-11"
+- term: Lookup table (LUT)
+  definition: A small memory of 2^k configuration bits selected by k inputs, able to implement any k-input function; the basic logic element of FPGAs (usually k = 4 or 6).
+  chapter: "08-11"
+  see_also: [Field-programmable gate array (FPGA), Shannon expansion]
+- term: Field-programmable gate array (FPGA)
+  definition: A chip of lookup tables, flip-flops, block RAMs, DSP blocks and I/O joined by programmable routing, configured after manufacture by loading a bitstream.
+  chapter: "08-11"
+  see_also: [Lookup table (LUT), Block RAM, Bitstream]
+- term: Block RAM
+  definition: A hard, synchronous memory block (typically a few to tens of kbit, often dual-ported) embedded in an FPGA's fabric; reads take one clock cycle.
+  chapter: "08-11"
+  see_also: [Field-programmable gate array (FPGA)]
+- term: Bitstream
+  definition: The configuration data that sets every LUT, routing switch and mode bit of an FPGA; SRAM-based FPGAs load it at every power-up, usually from flash.
+  chapter: "08-11"
+  see_also: [Field-programmable gate array (FPGA)]
