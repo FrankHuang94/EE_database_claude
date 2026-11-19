@@ -380,7 +380,7 @@ courses:
       - Analyze timing (propagation and contamination delay, setup/hold, maximum clock frequency) and explain metastability and clock-domain crossing.
       - Take a design through an open-source FPGA flow.
     chapters:
-      - {id: "08-01", slug: number-systems-and-codes, title: "Number Systems and Codes", hours: 7, topics: "Binary, hex, two's complement, overflow, fixed-point, Gray code, BCD, ASCII, error-detecting codes"}
+      - {id: "08-01", slug: number-systems-and-codes, title: "Number Systems and Codes", hours: 8, topics: "Binary, hex, two's complement, overflow, fixed-point, Gray code, BCD, ASCII, error-detecting codes"}
       - {id: "08-02", slug: boolean-algebra-and-gates, title: "Boolean Algebra and Logic Gates", hours: 8, topics: "Axioms and theorems, De Morgan, SOP/POS, canonical forms, gates, universal gates"}
       - {id: "08-03", slug: logic-minimization, title: "Logic Minimization: K-Maps and Beyond", hours: 8, topics: "K-maps, don't cares, prime implicants, Quine–McCluskey idea, how synthesis tools minimize"}
       - {id: "08-04", slug: combinational-building-blocks, title: "Combinational Building Blocks", hours: 10, topics: "Mux, decoder, encoder, priority encoder, adders, subtractors, comparators, ALU, hazards"}

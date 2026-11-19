@@ -126,6 +126,19 @@ def mux_eval(sel, data):
     return data[sel]
 
 
+def two_level_literals(net, inputs):
+    """Literal count of a two-level netlist: inputs of the first-level gates that come from a primary input
+    or from an inverter on one."""
+    inv = {o for o, op, _ in net if op == "not"}
+    first = [g for g in net if g[1] != "not" and all(i in inputs or i in inv for i in g[2])]
+    return sum(len(g[2]) for g in first)
+
+
+def cmos_transistors(net):
+    """Static CMOS count from a netlist of NAND/NOR/NOT gates: 2 per gate input (inverter = 2)."""
+    return sum(2 * len(ins) for _, op, ins in net if op in ("nand", "nor", "not"))
+
+
 F1 = {1, 2, 6, 7}
 dat = []
 for ab in range(4):
@@ -133,7 +146,13 @@ for ab in range(4):
     dat.append({(0, 0): "0", (1, 1): "1", (0, 1): "C", (1, 0): "C'"}[(lo, hi)])
 v.assert_true("Ex1 data inputs C, C', 0, 1", dat == ["C", "C'", "0", "1"])
 v.check("Ex 08-04.1a", mux_tree_count(3))
-v.check("Ex 08-04.1b", 4 * 2 * 3 + 2 * 4 + 2 * 2)
+mux4_nand = [("s1n", "not", ["s1"]), ("s0n", "not", ["s0"])] + [
+    (f"p{k}", "nand", [f"d{k}", "s1" if k >> 1 else "s1n", "s0" if k & 1 else "s0n"]) for k in range(4)] + [
+    ("y", "nand", [f"p{k}" for k in range(4)])]
+v.assert_true("Ex1: the NAND-NAND netlist is a 4:1 multiplexer", all(
+    int(not all(int(not (d >> k & 1 and (s1 if k >> 1 else 1 - s1) and (s0 if k & 1 else 1 - s0))) for k in range(4)))
+    == (d >> (2 * s1 + s0) & 1) for d in range(16) for s1 in (0, 1) for s0 in (0, 1)))
+v.check("Ex 08-04.1b", cmos_transistors(mux4_nand))
 S_on = [m for m in range(8) if bin(m).count("1") % 2 == 1]
 C_on = [m for m in range(8) if bin(m).count("1") >= 2]
 v.check("Ex 08-04.2a", len(S_on))
@@ -171,6 +190,7 @@ v.check("Ex 08-04.5c", r[3])
 r = addsub(6, (-3) & 15, 1, 4)
 v.check("Ex 08-04.5d", r[1])
 v.check("Ex 08-04.5e", r[3])
+v.check("Ex 08-04.5f", r[2])
 r = addsub(0b1011, 0b1101, 1, 4)
 v.check("Ex 08-04.6a", r[2])
 v.check("Ex 08-04.6b", r[4] ^ r[3])
@@ -194,7 +214,7 @@ v.assert_true("Ex7 no glitch when S rises", glitch(unit_delay_trace(mux_net, ins
 v.assert_true("Ex7 consensus term removes the glitch", all(
     glitch(unit_delay_trace(fix_net, ins, {"s": a, "d0": 1, "d1": 1}, {"s": 1 - a, "d0": 1, "d1": 1}), "y", 1) is None
     for a in (0, 1)))
-v.check("Ex 08-04.7c", 6)
+v.check("Ex 08-04.7c", two_level_literals(fix_net, ins))
 v.check("Th 08-04.a", mux_tree_count(6))
 v.check("Th 08-04.b", 2 ** 6)
 v.check("N 08-04.a", 50 / 30)
@@ -297,7 +317,8 @@ v.assert_true("P12 no glitch when A rises",
               glitch(unit_delay_trace(f12, ["a", "b", "c"], {"a": 0, "b": 1, "c": 1}, {"a": 1, "b": 1, "c": 1}), "y", 1) is None)
 v.check("08-04.12a", g12[0])
 v.check("08-04.12b", g12[1])
-v.check("08-04.12c", 6)
+f12fix = f12[:-1] + [("t2", "and", ["b", "c"]), ("y", "or", ["t0", "t1", "t2"])]
+v.check("08-04.12c", two_level_literals(f12fix, ["a", "b", "c"]))
 f13 = [("an", "not", ["a"]), ("u0", "or", ["a", "b"]), ("u1", "or", ["an", "c"]), ("y", "and", ["u0", "u1"])]
 g13 = glitch(unit_delay_trace(f13, ["a", "b", "c"], {"a": 0, "b": 0, "c": 0}, {"a": 1, "b": 0, "c": 0}), "y", 0)
 v.assert_true("P13 no glitch when A falls",
@@ -306,7 +327,8 @@ f13fix = f13[:-1] + [("u2", "or", ["b", "c"]), ("y", "and", ["u0", "u1", "u2"])]
 v.assert_true("P13 consensus sum removes the glitch", all(glitch(unit_delay_trace(
     f13fix, ["a", "b", "c"], {"a": x, "b": 0, "c": 0}, {"a": 1 - x, "b": 0, "c": 0}), "y", 0) is None for x in (0, 1)))
 v.check("08-04.13a", g13[1])
-v.check("08-04.13b", 6)
+v.check("08-04.13b", two_level_literals(f13fix, ["a", "b", "c"]))
+v.check("08-04.13c", g13[0])
 # carry-select adder: low RCA4 from c0; two high RCA4 with constant carry ins; muxes as 1-unit gates
 low = arrival(rca_net(4), rca_inputs(4))
 hi = arrival(rca_net(4, "k"), rca_inputs(4, "k"))

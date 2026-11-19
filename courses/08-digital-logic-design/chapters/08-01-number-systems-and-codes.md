@@ -6,7 +6,7 @@
 | **Course** | [08 · Digital Logic Design](../README.md) |
 | **University equivalent** | The opening "number systems and codes" chapter of a sophomore digital-design course (Harris & Harris, *Digital Design and Computer Architecture*, ch. 1; Mano & Ciletti, *Digital Design*, ch. 1), plus the error-detecting-code material of an introductory coding course |
 | **Prerequisites** | [05-07 Bit Manipulation](../../05-programming-for-engineers/chapters/05-07-bit-manipulation.md) (bits, hex, two's complement in C, fixed point), [05-02 NumPy and Vectorization](../../05-programming-for-engineers/chapters/05-02-numpy-and-vectorization.md) (§3.6, the IEEE 754 binary64 format), [03-01 Probability in EE Language](../../03-probability-statistics-and-random-variables/chapters/03-01-probability-in-ee-language.md) (bit-error probabilities) |
-| **Estimated study hours** | 7 |
+| **Estimated study hours** | 8 |
 | **Last verified** | 2026-11-19 |
 
 **Learning objectives.** After this chapter you can:
@@ -110,13 +110,13 @@ In every case, overflow ⇔ $c_n \ne c_{n-1}$. The carry rule needs one XOR gate
 
 ### 3.5 Fixed point and accumulator width
 
-A **fixed-point** number is an integer with an implied scale $2^{-f}$. In the common **Q** notation, a signed **Q$m$.$f$** number has $m$ integer bits (including the sign) and $f$ fractional bits, $m + f$ bits in all. Its resolution, the value of one **LSB** (least significant bit), is $2^{-f}$, and its range is $-2^{m-1}$ to $2^{m-1} - 2^{-f}$. 05-07 §3.6 used the Q15 format (Q1.15) in software; the hardware rules are the same, and two of them set datapath widths.
+A **fixed-point** number is an integer with an implied scale $2^{-f}$. In the common **Q** notation, a signed **Q$m$.$f$** number has $m$ integer bits (including the sign) and $f$ fractional bits, $m + f$ bits in all. Its resolution, the value of one **LSB** (least significant bit), is $2^{-f}$, and its range is $-2^{m-1}$ to $2^{m-1} - 2^{-f}$. 05-07 §3.6 used the Q15 format (Q1.15) in software; the hardware rules are the same, and two of them set datapath widths. Conventions differ between vendors: some documents count only the fractional bits ("Q15") or leave the sign bit out of $m$ (writing Q0.15 for the same 16-bit format), so check a datasheet's definition before trusting its Q numbers.
 
 **Product width.** Multiplying an $a$-bit by a $b$-bit two's-complement number needs $a + b$ bits, and the fractional bits add: Q$m_1$.$f_1$ × Q$m_2$.$f_2$ is Q$(m_1 + m_2)$.$(f_1 + f_2)$. The extra integer bit is needed for exactly one case, the product of the two most negative values: in 8 bits, (−128) × (−128) = +16 384 = $2^{14}$, which needs 16 bits as a signed number, while every other product fits in 15.
 
-**Accumulator width.** Adding $N$ numbers can grow the magnitude by a factor of $N$, so the sum needs about $\lceil\log_2N\rceil$ extra bits (**guard bits**) beyond one term's width. A dot product of 1024 int8 × int8 products, the core of a neural-network layer, therefore needs a 16 + 10 = 26-bit accumulator to be overflow-free in every case (Example 08-01.3). AI accelerators use 32-bit accumulators for int8 arithmetic for this reason, and the accumulator, not the multiplier, often dominates the energy of a multiply–accumulate (MAC) unit.
+**Accumulator width.** Adding $N$ numbers can grow the magnitude by a factor of $N$, so the sum needs about $\lceil\log_2N\rceil$ extra bits (**guard bits**) beyond one term's width. A dot product of 1024 int8 × int8 products, the core of a neural-network layer, therefore needs a 16 + 10 = 26-bit accumulator to be overflow-free in every case (Example 08-01.3). AI accelerators commonly use 32-bit accumulators for int8 arithmetic for this reason; [08-09](08-09-arithmetic-circuits.md) §3.9 compares the energy of the multiply and the add in such a multiply–accumulate (MAC) unit.
 
-**Rounding and quantization error.** Dropping the low bits of a result (**truncation**) always rounds toward −∞ in two's complement, a bias of about half an LSB on average. **Rounding to nearest** adds half an LSB before truncating, which removes the bias. With fine enough quantization, the rounding error behaves like a uniform random variable on $[-\tfrac12, \tfrac12]$ LSB, with RMS value $\text{LSB}/\sqrt{12}$ (03-02's uniform distribution; [16-10](../../16-digital-signal-processing/chapters/16-10-quantization-and-fixed-point.md) builds on this).
+**Rounding and quantization error.** Dropping the low bits of a result (**truncation**) always rounds toward −∞ in two's complement, a bias of about half an LSB on average. **Rounding to nearest** adds half an LSB before truncating ("round half up"). That removes the average bias except on exact ties, values exactly halfway between two outputs, which always round up and leave a small positive bias. **Round half to even** (convergent rounding) sends each tie to the neighbor whose last bit is 0, so ties go up and down equally often and no bias remains; it is the default rounding of IEEE 754 floating point (§3.6) and is common in DSP hardware. With fine enough quantization, the rounding error behaves like a uniform random variable on $[-\tfrac12, \tfrac12]$ LSB, with RMS value $\text{LSB}/\sqrt{12}$ (03-02's uniform distribution; [16-10](../../16-digital-signal-processing/chapters/16-10-quantization-and-fixed-point.md) builds on this).
 
 ### 3.6 Floating-point formats as hardware fields
 
@@ -148,7 +148,7 @@ Three design choices stand out:
 
 - **bfloat16** keeps FP32's 8-bit exponent and so its range, and gives up precision. Converting FP32 to bfloat16 is just rounding away the low 16 bits, and training rarely overflows. That is why it displaced FP16 for training.
 - **E5M2** follows the IEEE pattern (it is FP16 with the low 8 bits removed), keeping range for gradients.
-- **E4M3** spends the all-ones exponent on ordinary numbers instead of infinity, keeping a single NaN pattern. Its largest value is $1.75 \times 2^8 = 448$ rather than the 240 the IEEE pattern would allow, which matters at only 8 bits.
+- **E4M3** spends the all-ones exponent on ordinary numbers instead of infinity, keeping a single NaN code (exponent and mantissa all ones, one for each sign). Its largest value is $1.75 \times 2^8 = 448$ rather than the 240 the IEEE pattern would allow, which matters at only 8 bits.
 
 ![Relative spacing of FP16, bfloat16 and FP8 values](../../../assets/figures/08-01/format-spacing.svg)
 
@@ -171,7 +171,7 @@ $$
 and the inverse runs from the top: $b_{n-1} = g_{n-1}$, then $b_i = g_i \oplus b_{i+1}$, so each binary bit is the XOR of all Gray bits at or above it. To see why consecutive values differ in one bit, note that incrementing $B$ flips a run of trailing ones and the 0 above them; in $G = B \oplus (B \gg 1)$ the flips in adjacent positions cancel in pairs, leaving exactly one changed bit. Gray code matters wherever a multi-bit value is sampled while it changes:
 
 - a rotary encoder's disk whose binary count goes 0111 → 1000 would, for an instant, read anything from 0000 to 1111, since four sensors never switch at exactly the same moment; in Gray code only one bit is in transit, so the reading is either the old value or the new one;
-- the same property makes Gray-coded pointers the standard way to pass a FIFO's fill count between clock domains ([08-10](08-10-timing-metastability-cdc.md)).
+- the same property makes Gray-coded read and write pointers the standard way to pass a FIFO's positions between clock domains; the fill count is then computed from the two pointers ([08-10](08-10-timing-metastability-cdc.md)).
 
 **Text: ASCII and UTF-8.** ASCII assigns the 128 basic Latin characters, digits and controls to 7-bit codes ('A' = 41₁₆). Unicode extends the assignment to over a million **code points**, and **UTF-8** stores them in 1 to 4 bytes, using the top bits of each byte to show how the code point is split:
 
@@ -186,7 +186,7 @@ So 'é' (U+00E9) is C3 A9, '€' (U+20AC) is E2 82 AC, and the emoji U+1F600 is 
 
 Bits flip: from noise on a link ([03-01](../../03-probability-statistics-and-random-variables/chapters/03-01-probability-in-ee-language.md)), from alpha particles and cosmic-ray neutrons in memory, from worn flash cells. A code adds **redundant** bits so that a corrupted word is recognizable, and sometimes repairable.
 
-**Parity.** Append one bit so that the total number of 1s is even (**even parity**). Any single flipped bit makes the count odd, so it is detected; but two flips restore an even count and pass unnoticed. Parity detects every odd number of errors and no even number. With independent bit errors of probability $p$, an $n$-bit parity-protected word escapes detection mostly through double errors, with probability about $\binom{n}{2}p^2$. For $n = 8$ and $p = 10^{-6}$ that is $2.8\times10^{-11}$.
+**Parity.** Append one bit so that the total number of 1s is even (**even parity**). Any single flipped bit makes the count odd, so it is detected; but two flips restore an even count and pass unnoticed. Parity detects every odd number of errors and no even number. With independent bit errors of probability $p$, an $n$-bit parity-protected word ($n$ counting the parity bit) escapes detection mostly through double errors, with probability about $\binom{n}{2}p^2$. For a byte plus its parity bit, $n = 9$, and $p = 10^{-6}$ that is $3.6\times10^{-11}$.
 
 **Hamming distance.** The **distance** between two code words is the number of bit positions in which they differ, and a code's **minimum distance** $d_{min}$ is the smallest distance between any two of its words. A code with minimum distance $d_{min}$:
 
@@ -203,20 +203,29 @@ $$
 
 The receiver recomputes the three parities over the received word. If bit $k$ flipped, exactly the checks whose groups contain position $k$ fail, that is, the checks corresponding to the 1s in the binary representation of $k$. So the three results, read as a binary number $s_4s_2s_1$ called the **syndrome**, *equal the position of the error*; a syndrome of 0 means no single error. Flip that bit back and the word is corrected. This code has $d_{min} = 3$: it corrects one error (**SEC**, single error correcting).
 
-**SEC-DED.** Two errors give a nonzero syndrome that points at the wrong bit, so "correcting" them makes things worse. Adding one overall parity bit raises $d_{min}$ to 4 and separates the cases:
+**SEC-DED.** Two errors give a nonzero syndrome that points at the wrong bit, so "correcting" them makes things worse. Adding one overall parity bit raises $d_{min}$ to 4. Here is why. The XOR of two code words is again a code word (every check is an XOR, so it is preserved), and their distance is the number of 1s in that XOR, its **weight**: $d_{min}$ is the smallest weight of a nonzero code word. Hamming code words have weight at least 3, and the overall parity bit makes every weight even, so a weight-3 word gains a fourth 1 and the minimum becomes 4. The extended code separates the cases:
 
 - syndrome ≠ 0 and the overall parity fails: one error, correct it;
 - syndrome ≠ 0 and the overall parity passes: two errors, report them as uncorrectable;
 - syndrome = 0 and the overall parity fails: the overall parity bit itself flipped.
 
-This **SEC-DED** (single error correcting, double error detecting) scheme protects server memory. For $k$ data bits a SEC code needs the smallest $r$ check bits with $2^r \ge k + r + 1$ (each nonzero syndrome must name one of the $k + r$ positions), plus one bit for DED. For 64 data bits, $r = 7$, so 8 check bits make a **(72,64)** code: memory modules for servers are 72 bits wide for this reason, an overhead of 12.5%.
+This **SEC-DED** (single error correcting, double error detecting) scheme protects server memory. For $k$ data bits a SEC code needs the smallest $r$ check bits with $2^r \ge k + r + 1$ (each nonzero syndrome must name one of the $k + r$ positions), plus one bit for DED. For 64 data bits, $r = 7$, so 8 check bits make a **(72,64)** code, an overhead of 12.5%: this is why server memory modules of the DDR4 generation and earlier are 72 bits wide. DDR5 modules split into two independent 32-bit subchannels with their own check bits (§9).
 
 **Cyclic redundancy checks.** Links and storage need to detect **bursts**, runs of adjacent corrupted bits, which parity handles poorly. A **CRC** treats the message bits as the coefficients of a polynomial over the two-element field, where addition is XOR and there are no carries. With an agreed **generator polynomial** $g(x)$ of degree $r$:
 
 - the sender appends $r$ zeros to the message $M(x)$ (computing $M(x)x^r$), divides by $g(x)$ in this arithmetic and transmits the $r$-bit **remainder** after the message, so that the whole transmitted word is divisible by $g(x)$;
 - the receiver divides what it receives by $g(x)$; a nonzero remainder means an error.
 
-An error pattern $E(x)$ escapes detection only if $g(x)$ divides $E(x)$. With a well-chosen $g(x)$ of degree $r$, a CRC detects every single-bit error, every error burst of length $r$ or less, and every odd number of errors if $x + 1$ is a factor of $g(x)$. The division is a shift register with XOR feedback taps, a few dozen gates for a 32-bit CRC ([08-07](08-07-registers-counters-shift-registers.md) builds the related LFSR). Example 08-01.7 works a 3-bit CRC by hand; Ethernet uses a 32-bit one (§9).
+> **Math refresher — arithmetic mod 2 and polynomial division.** In the two-element field GF(2) the only numbers are 0 and 1, with $1 + 1 = 0$: addition is XOR, and subtraction is the same as addition. A bit string is the list of coefficients of a polynomial, highest power first: 1101 is $x^3 + x^2 + 1$. Polynomials over GF(2) add by XOR-ing coefficients and multiply as usual, with coefficients reduced mod 2. Long division works as in school, but each step XORs the divisor under the current leading 1 instead of subtracting, and nothing ever borrows. Dividing $A(x)$ by $g(x)$ of degree $r$ leaves a remainder of degree below $r$, an $r$-bit string, with $A(x) = Q(x)g(x) + R(x)$.
+
+If the transmitted word is $T(x)$ (a multiple of $g$) and the channel flips the bits marked by an error pattern $E(x)$, the receiver sees $T(x) + E(x)$, whose remainder is the remainder of $E(x)$ alone. So an error pattern $E(x)$ escapes detection only if $g(x)$ divides $E(x)$. With a well-chosen $g(x)$ of degree $r$, a CRC detects every single-bit error, every error burst of length $r$ or less, and every odd number of errors if $x + 1$ is a factor of $g(x)$.
+
+> **Going deeper — why those three guarantees hold.** Take $g(x)$ of degree $r \ge 1$ with a constant term of 1 (every practical CRC polynomial has one).
+>
+> - *Single errors.* $E(x) = x^i$. If $g$ divided $x^i$, every factor of $g$ would be a power of $x$, so $g$ would have no constant term. It has one, so $g \nmid x^i$.
+> - *Bursts of length at most $r$.* Such an error is $E(x) = x^iB(x)$, where $B(x)$ has a constant term of 1 and degree below $r$ (the burst's first and last flipped bits). Since $g$ has no factor $x$, $g \mid x^iB$ would require $g \mid B$, impossible for a nonzero $B$ of lower degree than $g$.
+> - *Odd numbers of errors.* Evaluate at $x = 1$: $E(1)$ is the number of flipped bits mod 2, so $E(1) = 1$ for an odd count. If $(x + 1) \mid g$ and $g \mid E$, then $E(1) = 0$, a contradiction.
+ The division is a shift register with XOR feedback taps, a few dozen gates for a 32-bit CRC ([08-07](08-07-registers-counters-shift-registers.md) builds the related LFSR). Example 08-01.7 works a 3-bit CRC by hand; Ethernet uses a 32-bit one (§9).
 
 Codes for communication links go much further than these: convolutional, Reed–Solomon, LDPC and polar codes approach Shannon's limits ([17-08](../../17-communication-systems/chapters/17-08-channel-coding.md)). Hamming codes and CRCs remain the workhorses inside chips, because they are cheap and fast enough to sit in every memory and every link.
 
@@ -281,7 +290,7 @@ Codes for communication links go much further than these: convolutional, Reed–
 | E4M3 | 3 | **0.1015625** | **+1.5625%** | 6.25% |
 | E5M2 | 2 | **0.09375** | **−6.25%** | 12.5% |
 
-Every error is within the bound: half the spacing, relative to the smallest value in the binade, $2^{-(m+1)}$. In 8-bit floating point, a stored weight carries only one or two significant decimal digits. That is enough for inference, where each output sums many products and individual errors average out, but not for the accumulation itself, which is why accelerators accumulate in FP32 or wider (§9).
+Every error is within the bound: half the spacing, relative to the smallest value in the binade, $2^{-(m+1)}$. In 8-bit floating point, a stored weight carries only one or two significant decimal digits. That is enough for inference, where each output sums many products and individual errors average out, but not for the accumulation itself, which is why the running sums are kept in a much wider format, often FP32. How wide an accelerator really keeps its sums is worth asking: some implementations keep fewer accumulator bits than the format they report.
 
 **Sanity check.** Each stored value is a whole number of its format's spacing near 0.1, $2^{-4-m}$, and lies within half a spacing of 0.1 ✓. E4M3's 0.1015625 happens to equal the 8-bit fixed-point value of Example 08-01.1: its spacing, $2^{-7}$, is twice the fixed-point word's, but 0.1 rounds up to 13/128 = 26/256 in both.
 
@@ -321,17 +330,17 @@ Every error is within the bound: half the spacing, relative to the smallest valu
 
 ```text
 1101000
-1011        XOR at bit 0:  0110000
- 1011       XOR at bit 1:  0011100
-  1011      XOR at bit 2:  0001010
-   1011     XOR at bit 3:  0000001
+1011        XOR under x^6:  0110000
+ 1011       XOR under x^5:  0011100
+  1011      XOR under x^4:  0001010
+   1011     XOR under x^3:  0000001
 ```
 
 The remainder is the last three bits, **001**, so the transmitted word is 1101 001.
 
 (b) Dividing 1101001 by 1011 the same way leaves **000**: the word is a multiple of $g(x)$.
 
-(c) An error in position $k$ (counting from the left, 0 to 6) leaves the remainder of $x^{6-k}$ divided by $g(x)$. These are 101, 111, 110, 011, 100, 010 and 001 for $k$ = 0 to 6: seven different nonzero values. This $g(x)$ generates a cyclic form of the Hamming(7,4) code, so the remainder can even locate, and correct, a single error.
+(c) An error in the coefficient of $x^i$ leaves the remainder of $x^i$ divided by $g(x)$. For $i$ = 6 down to 0 (left to right in the word), these are 101, 111, 110, 011, 100, 010 and 001: seven different nonzero values. This $g(x)$ generates a cyclic form of the Hamming(7,4) code, so the remainder can even locate, and correct, a single error.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -359,6 +368,11 @@ The remainder is the last three bits, **001**, so the transmitted word is 1101 0
 | Ex 08-01.4h | E4M3 relative error | 1.5625 | % |
 | Ex 08-01.4i | 0.1 in E5M2 | 0.09375 | — |
 | Ex 08-01.4j | E5M2 relative error | −6.25 | % |
+| Ex 08-01.4k | FP32 bound | 5.96e-6 | % |
+| Ex 08-01.4l | FP16 bound | 0.0488 | % |
+| Ex 08-01.4m | bfloat16 bound | 0.391 | % |
+| Ex 08-01.4n | E4M3 bound | 6.25 | % |
+| Ex 08-01.4o | E5M2 bound | 12.5 | % |
 | Ex 08-01.5a | Gray code of 1011, 1110₂, as an integer | 14 | — |
 | Ex 08-01.5b | bits changing, binary 7 → 8 | 4 | — |
 | Ex 08-01.5c | bits changing, Gray 7 → 8 | 1 | — |
@@ -378,7 +392,7 @@ The remainder is the last three bits, **001**, so the transmitted word is 1101 0
 | Th 08-01.f | FP16 smallest normal | 6.104e-5 | — |
 | Th 08-01.g | E4M3 smallest normal | 0.01563 | — |
 | Th 08-01.h | bfloat16 machine epsilon | 7.813e-3 | — |
-| Th 08-01.i | parity escape probability, 8 bits at 10⁻⁶ | 2.8e-11 | — |
+| Th 08-01.i | parity escape probability, 9 bits at 10⁻⁶ | 3.6e-11 | — |
 
 *Every value in this table is recomputed by [verify_08_01.py](../verify/verify_08_01.py) by an independent route: conversions with exact rational arithmetic, two's-complement sums by bit-level simulation of a ripple adder, the float formats by enumerating every bit pattern of each format, the codes by matrix arithmetic over GF(2) and brute-force error injection. The Verilog lab checks the Gray and Hamming circuits exhaustively.*
 
@@ -457,7 +471,7 @@ The lab is in [labs/08-01-lab/](../labs/08-01-lab/README.md).
   - **How coarse is 4-bit?** E2M1 (bias 1) has the magnitudes 0, 0.5, 1, 1.5, 2, 3, 4 and 6: **15** distinct values with sign, the largest **6**. Everything else is done by the block scales, which is why scaling schemes, not element formats, are where vendors differ.
   - **Standards.** IEEE 754-2019 remains the floating-point standard, with a revision project (P754) open ([R-087](../../../reference/research-log.md#r-087--python-releases-floating-point-and-developer-usage)). IEEE P3109 is defining machine-learning formats and has published interim reports, but no ratified standard as of Nov 2026 **[Established]** (that the project exists; its final content is open).
 - **Memory carries ECC at two levels** ([R-144](../../../reference/research-log.md#r-144--dram-error-correction)).
-  - Server memory modules are 72 bits wide for (72,64) SEC-DED, as §3.8 derived.
+  - **DDR4 and earlier** server modules are 72 bits wide for (72,64) SEC-DED, as §3.8 derived. **DDR5** modules have two independent subchannels of 32 data bits, each with 4 or 8 check bits on an ECC module, for 72 or 80 data lines in all **[Established]** (the module organization defined by JEDEC's DDR5 standard, as summarized in the DDR5 article cited in R-144). SEC-DED on 32 data bits needs only 7 check bits ($2^6 = 64 \ge 32 + 6 + 1$, plus one for DED), so a subchannel with 8 check bits has spare capacity, which platforms can spend on stronger codes, such as codes that survive the failure of a whole DRAM chip. The 8-check-bit layout costs 25% instead of 12.5%.
   - DDR5 adds **on-die ECC** inside each DRAM chip: a single-error-correcting Hamming code with 128 data bits and 8 check bits, a (136,128) code costing **6.25%** of the array **[Established]**. Eight check bits is the minimum: $2^7$ = 128 < 128 + 7 + 1, but $2^8$ = 256 ≥ 137. It is invisible to the host, it has no double-error detection, and a double error can be miscorrected into a triple. It exists because ever-smaller DRAM cells fail more often; it complements, and does not replace, the system-level ECC of server modules.
   - JEDEC's JESD79-5C update (April 2024) extended DDR5 to 8800 MT/s and added per-row activation counting against Rowhammer attacks **[Established]**.
 - **Every Ethernet frame ends in a CRC-32** ([R-145](../../../reference/research-log.md#r-145--ethernet-crc-32)).
@@ -483,7 +497,7 @@ The lab is in [labs/08-01-lab/](../labs/08-01-lab/README.md).
 
 - **A narrower format is a cheaper chip, on paper.** Halving the bits per value roughly halves the memory and bandwidth per parameter, and a multiplier's area grows with the square of its width (§6), so each step from FP16 to FP8 to FP4 multiplies a datasheet's peak throughput. What the customer gets depends on whether models keep their accuracy at that width, which depends on scaling schemes and software support. Format support is therefore a competitive lever for accelerator vendors and a diligence item for anyone valuing one.
 - **Industry formats are negotiated.** FP8 and MX were standardized through OCP by groups of competitors, while NVFP4 is one vendor's format. Whether a format becomes a multi-vendor standard decides whether software written for one chip runs on another.
-- **ECC is capacity paid for.** A server module carries 9 DRAM chips' worth of bits for every 8 of data, and DDR5's on-die ECC spends another 6.25% of every array. Those overheads are part of memory pricing, and of why server and consumer memory differ.
+- **ECC is capacity paid for.** A DDR4 server module stores 9 bits for every 8 of data; a DDR5 module with 8 check bits per 32-bit subchannel stores 10 for every 8; and DDR5's on-die ECC spends another 6.25% of every array. Those overheads are part of memory pricing, and of why server and consumer memory differ.
 
 ### Marketing vs Reality
 
@@ -557,12 +571,12 @@ It detects up to 3 errors, or corrects 1 error and simultaneously detects 2 (SEC
 
 </details>
 
-**Q6.** Why are server memory modules 72 bits wide?
+**Q6.** Why were server memory modules 72 bits wide through DDR4, and what changed in DDR5?
 
 <details>
 <summary>Answer</summary>
 
-To store 64 data bits plus 8 check bits of a (72,64) SEC-DED code: 7 bits locate any single error among 71 positions, and the eighth detects double errors.
+To store 64 data bits plus the 8 check bits of a (72,64) SEC-DED code: 7 bits locate any single error among 71 positions, and the eighth detects double errors. DDR5 modules split into two 32-bit subchannels, each with 4 or 8 check bits (72 or 80 lines in all); with 8 check bits per 32 data bits, more than SEC-DED needs, platforms can use stronger codes.
 
 </details>
 

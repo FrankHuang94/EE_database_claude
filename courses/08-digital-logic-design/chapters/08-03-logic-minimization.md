@@ -11,7 +11,7 @@
 
 **Learning objectives.** After this chapter you can:
 
-1. Draw Karnaugh maps of two to four variables and read minimal sum-of-products and product-of-sums expressions from them.
+1. Draw Karnaugh maps of two to five variables and read minimal sum-of-products and product-of-sums expressions from them.
 2. Use don't-care conditions to simplify logic further, and state what the resulting circuit does on the don't-care inputs.
 3. Define implicants, prime implicants and essential prime implicants, prove that a minimal sum of products uses only prime implicants, and choose a minimum cover when the choice is not forced.
 4. Carry out the Quine–McCluskey method with Petrick's method on small functions, and explain why exact minimization does not scale.
@@ -79,7 +79,7 @@ Because consecutive labels differ in one bit, **cells that touch horizontally or
 **Reading a minimal SOP from a map:**
 
 1. Circle groups of 1s that are rectangles of 1, 2, 4, 8 or 16 cells (powers of two), including groups that wrap around edges and the four corners.
-2. Make every group as large as possible: a group of $2^j$ cells eliminates $j$ variables. Large groups are prime implicants.
+2. Make every group as large as possible: a group of $2^j$ cells eliminates $j$ variables. A group that cannot be enlarged is a prime implicant.
 3. Use as few groups as possible to cover every 1. Groups may overlap.
 4. Write each group as the product of the variables that are constant across it: true if constant 1, complemented if constant 0.
 
@@ -116,6 +116,8 @@ Sometimes certain input combinations never occur, or their output does not matte
 **The catch.** Once the logic is built, every X has *some* definite value, decided by the groups that happen to cover it. If the "impossible" input ever does occur (at power-up, after a glitch, after a radiation upset, or because a later design change makes it reachable), the circuit outputs whatever the minimization chose. Safety-critical designs often specify the don't-care outputs explicitly instead (for example "illegal state → go to reset"), trading some area for predictable behavior. The Verilog lab measures what each implementation does on the codes 10 to 15.
 
 ### 3.6 The Quine–McCluskey method and Petrick's method
+
+**Five variables.** Draw two four-variable maps side by side, one for $E = 0$ and one for $E = 1$ (with $E$ the least significant variable). Cells in the same position in the two maps differ only in $E$, so they are adjacent: a group may span both maps if it has the same shape and position in each, and then $E$ drops out of its term. Groups confined to one map keep $E$ or $\overline{E}$.
 
 Karnaugh maps work up to about five or six variables, beyond which adjacency is hard to see. The **Quine–McCluskey** (QM) method does the same two steps by tabulation, and is the ancestor of all algorithmic minimizers.
 
@@ -318,9 +320,9 @@ with 3 terms and (c) **8** literals, and it is the **only** minimum.
 
 (b) NAND-NAND: six NAND2s ($6 \times 4 = 24$) and a NAND6 ($2 \times 6 = 12$): **36** transistors. OAI32: one transistor pair per literal, $2 \times 5 = 10$, plus the inverter's 2: **12** transistors.
 
-(c) The NAND6 has a 6-high nMOS stack, far beyond the practical limit of about 4 (08-02 §3.8), so in practice it would be split into more levels. The OAI32's pull-down is $(A \| B \| C)$ in series with $(D \| E)$, 2 high, and its pull-up is the series chain $A$–$B$–$C$ in parallel with $D$–$E$, **3** high.
+(c) The NAND6 has a **6**-high nMOS stack, far beyond the practical limit of about 4 (08-02 §3.8), so in practice it would be split into more levels. The OAI32's pull-down is $(A \| B \| C)$ in series with $(D \| E)$, **2** high, and its pull-up is the series chain $A$–$B$–$C$ in parallel with $D$–$E$, **3** high.
 
-**Sanity check.** Multiplying out $(A + B + C)(D + E)$ gives the six products of $F$ ✓. The factored form is three times smaller here, which is why synthesis tools work with multi-level networks; and both implementations have two stages, so this particular factoring costs no delay.
+**Sanity check.** Multiplying out $(A + B + C)(D + E)$ gives the six products of $F$ ✓. The factored form is three times smaller here, which is why synthesis tools work with multi-level networks. Both implementations have two stages, but stage count is a poor guide to delay: the NAND6's 6-high stack and the OAI32's 3-high pMOS chain are both slow, and comparing them properly needs the logical-effort method of [19-04](../../19-digital-vlsi-design/chapters/19-04-sizing-and-logical-effort.md).
 
 ### Answer key
 
@@ -349,6 +351,8 @@ with 3 terms and (c) **8** literals, and it is the **only** minimum.
 | Ex 08-03.7b | literals, factored | 5 | — |
 | Ex 08-03.7c | transistors, NAND-NAND | 36 | — |
 | Ex 08-03.7d | transistors, OAI32 + inverter | 12 | — |
+| Ex 08-03.7f | NAND6 nMOS stack height | 6 | — |
+| Ex 08-03.7g | OAI32 pull-down stack height | 2 | — |
 | Ex 08-03.7e | tallest stack in the OAI32 | 3 | — |
 | Th 08-03.a | product terms in four variables | 81 | — |
 | Th 08-03.b | minterms covered by a 2-literal term in four variables | 4 | — |
@@ -409,12 +413,12 @@ The lab is in [labs/08-03-lab/](../labs/08-03-lab/README.md).
 - **Open-source synthesis is real and maintained** ([R-150](../../../reference/research-log.md#r-150--logic-synthesis-tools)) **[Established]** (from the repositories' own text).
   - **ABC**, "System for Sequential Logic Synthesis and Formal Verification", is maintained at UC Berkeley (Alan Mishchenko) and was updated as recently as 18 Nov 2026. It represents logic as and-inverter graphs and is described in Brayton and Mishchenko, "ABC: An Academic Industrial-Strength Verification Tool" (CAV 2010).
   - **Yosys** is an ISC-licensed RTL synthesis framework with "extensive Verilog-2005 support"; it now uses the slang and sv-elab libraries for SystemVerilog and supports "an (informally defined) synthesizable subset of SystemVerilog in version IEEE 1800-2017 or IEEE 1800-2023". It ships ABC in its source tree and maps to a cell library with `abc -liberty`.
-  - **Espresso**, the two-level minimizer of Brayton, Hachtel, McMullen and Sangiovanni-Vincentelli (1984), is still the reference heuristic, and its algorithms live on inside commercial tools.
+  - **Espresso**, the two-level minimizer of Brayton, Hachtel, McMullen and Sangiovanni-Vincentelli (1984), is still the reference heuristic for two-level minimization.
 - **Commercial EDA is concentrated and growing** ([R-151](../../../reference/research-log.md#r-151--eda-industry-revenue-and-structure)).
-  - Synopsys reported FY2025 revenue of **$7.054 B** (up about 15% from $6.127 B), including $756.6 M from Ansys, whose acquisition closed on 17 Jul 2025 **[Established]** (company release).
-  - Cadence reported FY2025 revenue of **$5.297 B** (up from $4.641 B) **[Established]** (company release).
+  - Synopsys reported FY2025 revenue of **$7.054 B**, up about **15.1**% from $6.127 B. That includes $756.6 M from Ansys, whose acquisition closed on 17 Jul 2025 **[Established]** (company release); without it, revenue was **$6.297 B**, up only about **2.8**%: most of the headline growth was bought.
+  - Cadence reported FY2025 revenue of **$5.297 B**, up **14.1**% from $4.641 B **[Established]** (company release). Together the two reported **$12.351 B**.
   - SEMI's ESD Alliance put industry revenue for Q2 2026 at **$5,710.8 M**, up 12.2% from Q2 2025 **[Industry estimate]** (aggregated survey).
-  - Market-share estimates for the "Big Three" (Synopsys, Cadence, Siemens EDA) range from about 85% to 90% of industry revenue; one 2024 estimate is Synopsys 31%, Cadence 30%, Siemens 13% **[Contested]** (methods differ: whether Ansys is counted, and Siemens does not report EDA revenue separately).
+  - Market-share estimates for the "Big Three" (Synopsys, Cadence, Siemens EDA) range from about 74% to about 90% of industry revenue. The low end is one 2024 estimate, Synopsys 31%, Cadence 30% and Siemens 13%, measured against a total that includes semiconductor IP and other categories; the high end counts EDA software alone **[Contested]** (methods differ: what the denominator includes, whether Ansys is counted, and Siemens does not report EDA revenue separately).
   - These excerpts were cross-checked across sources but the company and SEMI pages could not be opened from the build environment (open issue 32).
 
 <!-- answer-key -->
@@ -425,6 +429,7 @@ The lab is in [labs/08-03-lab/](../labs/08-03-lab/README.md).
 | PL 08-03.c | Cadence FY2025 growth | 14.1 | % |
 | PL 08-03.d | Synopsys FY2025 revenue excluding Ansys | 6.297 | $B |
 | PL 08-03.e | ESD Alliance Q2 2026 revenue, annualized | 22.8 | $B |
+| PL 08-03.f | Synopsys FY2025 growth excluding Ansys | 2.8 | % |
 
 ### Why it matters commercially
 
@@ -436,6 +441,7 @@ The lab is in [labs/08-03-lab/](../labs/08-03-lab/README.md).
 
 - **"Our AI-driven synthesis improves PPA by X%."** *Reality:* power, performance and area gains are design-, node- and constraint-specific, and are usually reported against the vendor's own previous flow. *Sanity check:* ask for results on your designs, at your constraints, with equivalence checking passed and the same sign-off timing.
 - **"The EDA market is $X billion."** *Reality:* totals depend on whether semiconductor IP, simulation software from acquisitions such as Ansys, and services are counted; the ESD Alliance's "electronic system design" figure includes IP. *Sanity check:* ask which categories are included before comparing growth rates or shares.
+- **"Revenue grew 15%."** *Reality:* Synopsys's FY2025 growth was about 15.1% as reported but about 2.8% without the acquired Ansys revenue (§9 above). Reported growth mixes organic growth with acquisitions. *Sanity check:* ask for organic growth on a like-for-like basis, and which part of the business it came from.
 - **"Optimal logic."** *Reality:* exact minimization is intractable for real designs, so every tool is heuristic; "optimal" means "best this tool found within its run time". *Sanity check:* ask how results vary with effort settings and run time.
 
 ### Questions for engineering leaders

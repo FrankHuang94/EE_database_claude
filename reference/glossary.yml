@@ -2920,7 +2920,7 @@
   chapter: "08-01"
   see_also: [Floating-point number, FP8]
 - term: FP8
-  definition: The two 8-bit floating-point formats used for AI, E4M3 (largest value 448, no infinities, one NaN pattern) and E5M2 (largest value 57 344, IEEE-style specials), standardized by the Open Compute Project in 2023.
+  definition: The two 8-bit floating-point formats used for AI, E4M3 (largest value 448, no infinities, one NaN code per sign) and E5M2 (largest value 57 344, IEEE-style specials), standardized by the Open Compute Project in 2023.
   chapter: "08-01"
   see_also: [bfloat16, Block floating point]
 - term: Block floating point
@@ -2949,7 +2949,7 @@
   chapter: "08-01"
   see_also: [SEC-DED, Hamming distance]
 - term: SEC-DED
-  definition: Single-error-correcting, double-error-detecting; a Hamming code plus an overall parity bit (minimum distance 4), as in the (72,64) code of server memory, which corrects one flipped bit per word and flags two.
+  definition: Single-error-correcting, double-error-detecting; a Hamming code plus an overall parity bit (minimum distance 4), as in the (72,64) code of DDR4-generation server memory, which corrects one flipped bit per word and flags two; DDR5 ECC modules give each 32-bit subchannel 4 or 8 check bits.
   chapter: "08-01"
   see_also: [Hamming code]
 - term: Cyclic redundancy check (CRC)

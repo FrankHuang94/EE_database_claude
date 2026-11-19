@@ -101,6 +101,8 @@ def fig_hazard():
     for t in range(0, 10):
         ax.axvline(t, color="0.9", lw=0.6, zorder=0)
     ax.set_xlim(-1.6, 9)
+    ax.set_xticks(range(0, 10))
+    ax.set_xticklabels([str(t - 2) for t in range(0, 10)])   # S falls at t = 0, as in the text
     ax.set_ylim(-1.2, len(labels) * 1.4)
     ax.set_yticks([])
     ax.set_xlabel("time (gate delays)")

@@ -23,7 +23,7 @@
 
 Every digital chip, from a hearing-aid controller to a 208-billion-transistor AI accelerator, computes with a handful of operations on 1s and 0s. In 1854 George Boole turned logical reasoning into algebra; in 1938 Claude Shannon's master's thesis showed that the same algebra describes networks of relay switches. That observation is why a circuit can be designed by writing equations, simplified by manipulating them, and checked by proving two equations equal. This chapter teaches the algebra and the gates that implement it, down to the transistor switches inside a CMOS gate.
 
-- **Logic synthesis is applied Boolean algebra.** When an engineer writes `assign y = a & b | c;`, a synthesis tool rewrites it with the theorems of §3.3, maps it onto the gates of a cell library and proves the result equivalent to the original (§3.5).
+- **Logic synthesis is applied Boolean algebra.** When an engineer writes `assign y = a & b | c;`, a synthesis tool rewrites it with the theorems of §3.3 and maps it onto the gates of a cell library, and a separate equivalence-checking step proves the result equivalent to the original (§3.5).
 - **NAND and NOR are the workhorses.** Static CMOS makes inverting gates naturally, so libraries are built around NAND, NOR, inverters and compound AND-OR-INVERT gates (§3.8).
 - **Truth tables are hardware.** An FPGA's lookup table *is* a stored truth table; programming it means writing the integer of §3.4 into a small memory ([08-11](08-11-memories-and-programmable-logic.md)).
 - **Cost is counted in gates and transistors.** Area, delay and power estimates start from transistor counts and logic levels, the metrics of §3.9.
@@ -62,7 +62,7 @@ of them: 4 functions of one variable, 16 of two, 256 of three, 65 536 of four, a
 
 ### 3.2 The axioms, and duality
 
-Boolean algebra can be built from a small set of axioms, as Euclid built geometry. For a set $\{0, 1\}$ with operations $+$, $\cdot$ and $\overline{\phantom{A}}$, a standard choice (Huntington's postulates, 1904) is:
+Boolean algebra can be built from a small set of axioms, as Euclid built geometry. For a set $\{0, 1\}$ with two distinct elements 0 and 1 and operations $+$, $\cdot$ and $\overline{\phantom{A}}$ whose results stay in the set (closure), a standard choice of the remaining postulates (Huntington's, 1904) is:
 
 | Axiom | Form | Dual form |
 |---|---|---|
@@ -102,7 +102,7 @@ The theorems a designer uses daily, each with its dual:
 **Proofs from the axioms.** The proofs show how the axioms are used; each step names its rule.
 
 - **T2:** $A + A = (A + A)\cdot 1 = (A + A)(A + \overline{A}) = A + A\overline{A} = A + 0 = A$, using A1, A4, the dual distributive law A3 and A4 again.
-- **T1:** $A + 1 = A + (A + \overline{A}) = (A + A) + \overline{A} = A + \overline{A} = 1$, using A4, associativity and T2.
+- **T1:** $A + 1 = (A + 1)\cdot 1 = (A + 1)(A + \overline{A}) = A + 1\cdot\overline{A} = A + \overline{A} = 1$, using A1, A4, the dual distributive law A3, A1 (with A2) and A4. (A shorter route through associativity would need T4 proved first, which takes more work than it saves.)
 - **T5:** $A + AB = A\cdot 1 + AB = A(1 + B) = A \cdot 1 = A$, using A1, A3, T1 and A1.
 - **T6:** $AB + A\overline{B} = A(B + \overline{B}) = A \cdot 1 = A$. This is the engine of logic minimization: two products that differ in one variable merge, and the variable disappears ([08-03](08-03-logic-minimization.md)).
 - **T7:** $A + \overline{A}B = (A + \overline{A})(A + B) = 1\cdot(A + B) = A + B$, by the dual distributive law.
@@ -331,7 +331,7 @@ $$
 
 **4** literals.
 
-(d) Distributing, $\overline{F} = A\overline{C} + AD + \overline{B}\,\overline{C} + \overline{B}D$: four products, **8** literals. No product is redundant; for instance $AD$ alone covers the row 1001, where none of the other three products is 1.
+(d) Distributing, $\overline{F} = A\overline{C} + AD + \overline{B}\,\overline{C} + \overline{B}D$: four products, **8** literals. No product is redundant; for instance $AD$ alone covers the row 1111, where none of the other three products is 1.
 
 **Sanity check.** $(A + \overline{B})$ is 1 in 12 of the 16 rows and $(\overline{C} + D)$ in 12; independent variables, so their AND is 1 in $16 \times \tfrac{12}{16}\times\tfrac{12}{16} = 9$ rows ✓, matching (b). The POS form is half the size of the SOP form here, which is why both forms are worth knowing.
 
@@ -385,7 +385,7 @@ since $\overline{P} = \overline{\overline{A} + B} = A\overline{B}$ and $\overlin
 
 (d) Both networks have a tallest stack of **2** transistors: $A$ then ($B$ ∥ $C$) in the PDN, and the series $B$–$C$ pair in the PUN.
 
-**Sanity check.** This is an OR-AND-INVERT gate, OAI21. Built from simple gates it would be an OR2 (6 transistors), a NAND2 (4) and two stages; the compound gate does it in one stage with 6 ✓.
+**Sanity check.** This is an OR-AND-INVERT gate, OAI21. Built from simple gates it would be an OR2 (a NOR2 plus an inverter, 6 transistors) feeding a NAND2 (4): 10 transistors in three inverting stages. The compound gate does it in one stage with 6 ✓.
 
 ### Example 08-02.7 · Counting functions, and the Shannon expansion (tier C)
 
@@ -496,7 +496,7 @@ The lab is in [labs/08-02-lab/](../labs/08-02-lab/README.md).
 3. **Complementing without swapping operators.** $\overline{AB + C}$ is $(\overline{A} + \overline{B})\overline{C}$, not $\overline{A}\,\overline{B} + \overline{C}$. Keep the grouping in parentheses when applying De Morgan.
 4. **Chaining NANDs as if they were associative.** A three-input NAND is not two two-input NANDs in a row (§3.6).
 5. **Forgetting that CMOS gates invert.** An AND gate in a CMOS library is a NAND plus an inverter, with an extra stage of delay.
-6. **Drawing a PUN identical to the PDN.** The pull-up network is the series-parallel *dual*; copying the PDN's structure gives a short circuit in some input states and a floating output in others.
+6. **Drawing a PUN identical to the PDN.** The pull-up network is the series-parallel *dual*. A copied pull-up conducts when the PDN's function of the *complemented* inputs is 1, so the output shorts the supply in rows where both networks conduct and floats where neither does. For a NAND2 the copy (series pMOS) floats for inputs 01 and 10 and never shorts; for a NOR2 (parallel pMOS) it shorts for 01 and 10 and never floats. (For self-dual functions, such as the majority function of a mirror adder's carry, the copied structure happens to be correct.)
 7. **Trusting an expression that "looks equivalent".** Prove it: tabulate both sides, or let a tool check equivalence. Most logic bugs are rows nobody checked.
 
 ## 9. Practitioner lens
@@ -510,7 +510,7 @@ The lab is in [labs/08-02-lab/](../labs/08-02-lab/README.md).
   - drive strengths come as separate cells: `nand2_2` has 8 transistors, twice the NAND2's count, to drive about twice the load, and the library offers inverters from `_1` to `_16`;
   - the basic D flip-flop `dfxtp_1` has **24** transistors, as many as **6** NAND2s ([08-06](08-06-latches-and-flip-flops.md)).
 - **The open PDK is a teaching and prototyping platform.** Google's `skywater-pdk` repository still describes its content as an "experimental preview / alpha release"; its last commit is from May 2023, and maintained packaging continues in the open_pdks project **[Established]** (from the repositories' own text and history).
-- **Transistor counts keep climbing** ([R-149](../../../reference/research-log.md#r-149--chip-transistor-counts)). NVIDIA's Blackwell B200 GPU (announced March 2024) has 208 billion transistors on two reticle-limit dies joined by a 10 TB/s link, about **104** billion per die. Apple's M4 (May 2024) has 28 billion on a second-generation 3 nm process **[Established]** (vendor-disclosed figures, from search excerpts of the announcements and coverage).
+- **Transistor counts keep climbing** ([R-149](../../../reference/research-log.md#r-149--chip-transistor-counts)). NVIDIA's Blackwell B200 GPU (announced March 2024) has 208 billion transistors on two reticle-limit dies joined by a 10 TB/s link, about **104** billion per die. Apple's M4 (May 2024) has 28 billion on a second-generation 3 nm process, so the B200 package holds about **7.4** times as many **[Established]** (vendor-disclosed figures, from search excerpts of the announcements and coverage).
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |

@@ -7,7 +7,7 @@ From number systems and Boolean algebra to finite state machines, timing and FPG
 | | |
 |---|---|
 | **Term** | 2 |
-| **Study hours** | ≈ 106 |
+| **Study hours** | ≈ 107 |
 | **University equivalents** | Digital Design / Digital Logic (sophomore); MIT 6.004 (first half), MIT 6.111; Berkeley CS61C (logic portion), EECS 151 (intro) |
 | **Textbook alignment** | Harris & Harris, *Digital Design and Computer Architecture* (RISC-V Edition); Mano & Ciletti, *Digital Design* |
 | **Free courses** | MIT OCW 6.004 Computation Structures; MIT OCW 6.111 Introductory Digital Systems Laboratory |
@@ -27,7 +27,7 @@ From number systems and Boolean algebra to finite state machines, timing and FPG
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [08-01 · Number Systems and Codes](chapters/08-01-number-systems-and-codes.md) | 7 | ✅ verified | [problems](problems/08-01-problems.md) · [solutions](solutions/08-01-solutions.md) · [lab](labs/08-01-lab/README.md) · [verify](verify/verify_08_01.py) |
+| [08-01 · Number Systems and Codes](chapters/08-01-number-systems-and-codes.md) | 8 | ✅ verified | [problems](problems/08-01-problems.md) · [solutions](solutions/08-01-solutions.md) · [lab](labs/08-01-lab/README.md) · [verify](verify/verify_08_01.py) |
 | [08-02 · Boolean Algebra and Logic Gates](chapters/08-02-boolean-algebra-and-gates.md) | 8 | ✅ verified | [problems](problems/08-02-problems.md) · [solutions](solutions/08-02-solutions.md) · [lab](labs/08-02-lab/README.md) · [verify](verify/verify_08_02.py) |
 | [08-03 · Logic Minimization: K-Maps and Beyond](chapters/08-03-logic-minimization.md) | 8 | ✅ verified | [problems](problems/08-03-problems.md) · [solutions](solutions/08-03-solutions.md) · [lab](labs/08-03-lab/README.md) · [verify](verify/verify_08_03.py) |
 | [08-04 · Combinational Building Blocks](chapters/08-04-combinational-building-blocks.md) | 10 | ✅ verified | [problems](problems/08-04-problems.md) · [solutions](solutions/08-04-solutions.md) · [lab](labs/08-04-lab/README.md) · [verify](verify/verify_08_04.py) |
@@ -48,7 +48,7 @@ Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 
 
 ## Course notes
 
-**How to approach this course.** Course 08 closes Term 2 and is planned at about 106 hours: the chapters' own estimates add to 100, plus review and the exam. It leaves the continuous world of Courses 06 and 07 for the discrete one. Signals become 1s and 0s, circuits become equations in Boolean algebra, and designs are written as code (Verilog) and checked by testbenches. Every digital chip, from a hearing-aid controller to an AI accelerator, is built from what this course teaches: gates, flip-flops, state machines, adders and memories, held together by timing.
+**How to approach this course.** Course 08 closes Term 2 and is planned at about 107 hours: the chapters' own estimates add to 101, plus review and the exam. It leaves the continuous world of Courses 06 and 07 for the discrete one. Signals become 1s and 0s, circuits become equations in Boolean algebra, and designs are written as code (Verilog) and checked by testbenches. Every digital chip, from a hearing-aid controller to an AI accelerator, is built from what this course teaches: gates, flip-flops, state machines, adders and memories, held together by timing.
 
 The twelve chapters fall into four blocks:
 

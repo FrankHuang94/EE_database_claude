@@ -132,13 +132,13 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 
 ### Term 2 — Circuits and Digital Logic
 
-≈ 303 hours · ≈ 28 weeks · ends around program week 72 (≈ 1.6 years in, at 46 study weeks/year)
+≈ 304 hours · ≈ 28 weeks · ends around program week 72 (≈ 1.6 years in, at 46 study weeks/year)
 
 | Weeks | Course | Hours |
 |---|---|---|
 | 45–52 | [06 · Circuit Analysis I (DC)](courses/06-circuit-analysis-1-dc/README.md) | 86 |
 | 53–62 | [07 · Circuit Analysis II (Transient and AC)](courses/07-circuit-analysis-2-transient-and-ac/README.md) | 103 |
-| 62–71 | [08 · Digital Logic Design](courses/08-digital-logic-design/README.md) | 106 |
+| 62–72 | [08 · Digital Logic Design](courses/08-digital-logic-design/README.md) | 107 |
 | 72 | **Term 2 checkpoint** (FE-style exam + error log review) | 8 |
 
 <details><summary>Chapter-level weeks</summary>
@@ -169,7 +169,7 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 60–61 | 07-10 Two-Port Networks | 7 |
 | 61 | 07-11 Three-Phase Circuits | 5 |
 | 61–62 | 07 review + final exam | 6 |
-| 62 | 08-01 Number Systems and Codes | 7 |
+| 62–63 | 08-01 Number Systems and Codes | 8 |
 | 63 | 08-02 Boolean Algebra and Logic Gates | 8 |
 | 63–64 | 08-03 Logic Minimization: K-Maps and Beyond | 8 |
 | 64–65 | 08-04 Combinational Building Blocks | 10 |
@@ -177,11 +177,11 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 66–67 | 08-06 Latches, Flip-Flops and Sequential Timing | 8 |
 | 67 | 08-07 Registers, Counters and Shift Registers | 7 |
 | 67–68 | 08-08 Finite State Machines | 12 |
-| 68–69 | 08-09 Arithmetic Circuits | 8 |
+| 69 | 08-09 Arithmetic Circuits | 8 |
 | 69–70 | 08-10 Timing, Metastability and Clock-Domain Crossing | 10 |
-| 70 | 08-11 Memories and Programmable Logic | 5 |
+| 70–71 | 08-11 Memories and Programmable Logic | 5 |
 | 71 | 08-12 FPGA Implementation Flow | 5 |
-| 71 | 08 review + final exam | 6 |
+| 71–72 | 08 review + final exam | 6 |
 | 72 | Term 2 checkpoint | 8 |
 
 </details>
@@ -195,7 +195,7 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 72–83 | [09 · Semiconductor Devices](courses/09-semiconductor-devices/README.md) | 116 |
 | 83–92 | [10 · Electronics I (Microelectronic Circuits)](courses/10-electronics-1/README.md) | 99 |
 | 92–101 | [11 · Signals and Systems](courses/11-signals-and-systems/README.md) | 106 |
-| 101–102 | **Term 3 checkpoint** (FE-style exam + error log review) | 8 |
+| 102 | **Term 3 checkpoint** (FE-style exam + error log review) | 8 |
 
 <details><summary>Chapter-level weeks</summary>
 
@@ -203,15 +203,15 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 |---|---|---|
 | 72–73 | 09-01 Crystals, Energy Bands and the Semiconductor | 8 |
 | 73–74 | 09-02 Carriers, Doping and the Fermi Level | 9 |
-| 74 | 09-03 Carrier Transport: Drift and Diffusion | 8 |
+| 74–75 | 09-03 Carrier Transport: Drift and Diffusion | 8 |
 | 75 | 09-04 Generation, Recombination and the Continuity Equation | 7 |
 | 75–76 | 09-05 PN Junction Electrostatics | 8 |
 | 76–77 | 09-06 PN Junction I–V, Capacitance and Breakdown | 9 |
-| 77 | 09-07 The Bipolar Junction Transistor | 9 |
+| 77–78 | 09-07 The Bipolar Junction Transistor | 9 |
 | 78 | 09-08 The MOS Capacitor | 9 |
 | 78–79 | 09-09 The Long-Channel MOSFET | 10 |
 | 79–80 | 09-10 Short-Channel Effects and Leakage | 8 |
-| 80 | 09-11 CMOS and Scaling: Moore, Dennard and Beyond | 6 |
+| 80–81 | 09-11 CMOS and Scaling: Moore, Dennard and Beyond | 6 |
 | 81 | 09-12 Advanced Transistors: FinFET, GAA, CFET and Backside Power | 6 |
 | 81–82 | 09-13 Compound and Wide-Bandgap Semiconductors | 6 |
 | 82 | 09-14 Optoelectronic Devices | 7 |
@@ -219,27 +219,27 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 83–84 | 10-01 Diodes and Diode Circuits | 10 |
 | 84–85 | 10-02 MOSFET DC Operation and Biasing | 10 |
 | 85 | 10-03 BJT DC Operation and Biasing | 9 |
-| 85–86 | 10-04 Small-Signal Models | 10 |
+| 86 | 10-04 Small-Signal Models | 10 |
 | 86–87 | 10-05 Amplifier Fundamentals | 6 |
 | 87–88 | 10-06 MOS Single-Stage Amplifiers | 12 |
 | 88–89 | 10-07 BJT Single-Stage Amplifiers | 10 |
 | 89–90 | 10-08 Current Sources and Current Mirrors | 8 |
-| 90 | 10-09 Real Op-Amps: Non-Idealities | 10 |
+| 90–91 | 10-09 Real Op-Amps: Non-Idealities | 10 |
 | 91 | 10-10 Op-Amp Application Circuits | 8 |
 | 91–92 | 10 review + final exam | 6 |
-| 92 | 11-01 Signals: Classification and Operations | 8 |
+| 92–93 | 11-01 Signals: Classification and Operations | 8 |
 | 93 | 11-02 Systems and Their Properties | 7 |
 | 93–94 | 11-03 Convolution | 10 |
 | 94–95 | 11-04 LTI Systems and Differential/Difference Equations | 8 |
 | 95–96 | 11-05 Fourier Series | 10 |
 | 96–97 | 11-06 The Continuous-Time Fourier Transform | 12 |
-| 97 | 11-07 The Discrete-Time Fourier Transform | 8 |
+| 97–98 | 11-07 The Discrete-Time Fourier Transform | 8 |
 | 98 | 11-08 The Laplace Transform and System Functions | 10 |
-| 98–99 | 11-09 The z-Transform | 10 |
+| 99 | 11-09 The z-Transform | 10 |
 | 99–100 | 11-10 Sampling, Aliasing and Reconstruction | 10 |
 | 100–101 | 11-11 Modulation and Filtering Applications | 7 |
 | 101 | 11 review + final exam | 6 |
-| 101–102 | Term 3 checkpoint | 8 |
+| 102 | Term 3 checkpoint | 8 |
 
 </details>
 
@@ -264,38 +264,38 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 105–106 | 12-04 High-Frequency Analysis Methods | 8 |
 | 106–107 | 12-05 Feedback: Theory and the Four Topologies | 12 |
 | 107–108 | 12-06 Stability and Frequency Compensation | 10 |
-| 108 | 12-07 Output Stages and Power Amplifiers | 8 |
+| 108–109 | 12-07 Output Stages and Power Amplifiers | 8 |
 | 109 | 12-08 Op-Amp Internals | 10 |
-| 109–110 | 12-09 Oscillators | 8 |
+| 110 | 12-09 Oscillators | 8 |
 | 110–111 | 12-10 Noise in Circuits | 10 |
 | 111–112 | 12 review + final exam | 6 |
-| 112 | 13-01 Vector Calculus Refresher | 10 |
+| 112–113 | 13-01 Vector Calculus Refresher | 10 |
 | 113 | 13-02 Electrostatics: Boundary Conditions and Boundary-Value Problems | 10 |
-| 113–114 | 13-03 Magnetostatics and Inductance | 8 |
+| 114 | 13-03 Magnetostatics and Inductance | 8 |
 | 114–115 | 13-04 Maxwell's Equations and Time-Varying Fields | 10 |
 | 115–116 | 13-05 Plane Waves in Lossless and Lossy Media | 10 |
 | 116–117 | 13-06 Reflection and Transmission of Waves | 8 |
 | 117–118 | 13-07 Transmission Lines: Time Domain | 10 |
-| 118 | 13-08 Transmission Lines: Sinusoidal Steady State | 10 |
+| 118–119 | 13-08 Transmission Lines: Sinusoidal Steady State | 10 |
 | 119 | 13-09 The Smith Chart and Impedance Matching | 10 |
-| 119–120 | 13-10 Waveguides and Resonators | 6 |
+| 120 | 13-10 Waveguides and Resonators | 6 |
 | 120–121 | 13-11 Radiation and Antenna Fundamentals | 8 |
 | 121 | 13 review + final exam | 6 |
 | 121–122 | 14-01 Performance, Power and the Iron Law | 7 |
 | 122–123 | 14-02 Instruction Set Architecture: RISC-V, Arm and x86 | 10 |
-| 123 | 14-03 Assembly and the Compilation Stack | 8 |
+| 123–124 | 14-03 Assembly and the Compilation Stack | 8 |
 | 124 | 14-04 Computer Arithmetic and Number Formats | 7 |
 | 124–125 | 14-05 Single-Cycle Datapath and Control | 8 |
 | 125–126 | 14-06 Pipelining and Hazards | 10 |
 | 126 | 14-07 Branch Prediction and Speculation | 7 |
-| 126–127 | 14-08 Out-of-Order and Superscalar Execution | 9 |
+| 127 | 14-08 Out-of-Order and Superscalar Execution | 9 |
 | 127–128 | 14-09 Memory Hierarchy and Caches | 10 |
 | 128–129 | 14-10 Virtual Memory, TLBs and the OS Interface | 7 |
 | 129 | 14-11 I/O, Buses and Interconnect | 5 |
 | 129–130 | 14-12 Multicore, Coherence and Memory Consistency | 8 |
 | 130–131 | 14-13 GPUs and SIMT | 7 |
 | 131 | 14-14 AI Accelerators: Systolic Arrays, Dataflow and Low Precision | 9 |
-| 131–132 | 14-15 The Roofline Model, Benchmarks and How They Are Gamed | 4 |
+| 132 | 14-15 The Roofline Model, Benchmarks and How They Are Gamed | 4 |
 | 132 | 14 review + final exam | 6 |
 | 132–133 | Term 4 checkpoint | 8 |
 
@@ -319,7 +319,7 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 |---|---|---|
 | 133–134 | 15-01 Modeling Dynamic Systems | 8 |
 | 134 | 15-02 Transfer Functions and Block Diagrams | 7 |
-| 134–135 | 15-03 Time Response and Specifications | 7 |
+| 135 | 15-03 Time Response and Specifications | 7 |
 | 135–136 | 15-04 Feedback Properties and Steady-State Error | 7 |
 | 136 | 15-05 Stability and the Routh–Hurwitz Criterion | 5 |
 | 136–137 | 15-06 Root Locus | 8 |
@@ -333,7 +333,7 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 141–142 | 16-01 Discrete-Time Signals and Systems Review | 5 |
 | 142 | 16-02 DTFT and z-Transform for DSP | 6 |
 | 142–143 | 16-03 The DFT and Its Properties | 8 |
-| 143 | 16-04 The FFT Algorithm | 7 |
+| 143–144 | 16-04 The FFT Algorithm | 7 |
 | 144 | 16-05 Spectral Analysis and Windowing | 7 |
 | 144–145 | 16-06 FIR Filter Design | 9 |
 | 145–146 | 16-07 IIR Filter Design | 8 |
@@ -342,15 +342,15 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 147–148 | 16-10 Quantization and Fixed-Point Effects | 7 |
 | 148 | 16-11 DSP Hardware Architectures | 7 |
 | 148–149 | 16 review + final exam | 5 |
-| 149 | 17-01 Random Processes and Power Spectral Density | 9 |
+| 149–150 | 17-01 Random Processes and Power Spectral Density | 9 |
 | 150 | 17-02 Noise and SNR in Communication Systems | 6 |
-| 150 | 17-03 Analog Modulation (Brief) | 5 |
+| 150–151 | 17-03 Analog Modulation (Brief) | 5 |
 | 151 | 17-04 Baseband Digital Transmission | 8 |
 | 151–152 | 17-05 Matched Filters and Optimal Detection | 8 |
 | 152–153 | 17-06 Bandpass Digital Modulation and BER | 10 |
 | 153–154 | 17-07 Information Theory and Shannon Capacity | 8 |
 | 154 | 17-08 Channel Coding | 9 |
-| 154–155 | 17-09 Wireless Channels: Fading and Multipath | 6 |
+| 155 | 17-09 Wireless Channels: Fading and Multipath | 6 |
 | 155–156 | 17-10 OFDM | 7 |
 | 156 | 17-11 MIMO and Beamforming Basics | 6 |
 | 156–157 | 17-12 Multiple Access, Cellular and Wi-Fi Systems | 8 |
@@ -358,14 +358,14 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 158 | 17 review + final exam | 5 |
 | 158–159 | 18-01 Microcontroller Architecture | 7 |
 | 159 | 18-02 Bare-Metal C and the Build Toolchain | 8 |
-| 159–160 | 18-03 Interrupts, Exceptions and Timers | 8 |
+| 160 | 18-03 Interrupts, Exceptions and Timers | 8 |
 | 160–161 | 18-04 DMA and Data Movement | 5 |
 | 161 | 18-05 Peripherals and Serial Buses: GPIO, UART, SPI, I²C | 8 |
 | 161–162 | 18-06 Analog Interfaces: ADC, DAC and PWM | 6 |
 | 162–163 | 18-07 RTOS Concepts | 8 |
 | 163 | 18-08 Boot, Bootloaders and Firmware Update | 5 |
 | 163–164 | 18-09 Ultra-Low-Power Design | 9 |
-| 164 | 18-10 Sensors: IMU, PPG, MEMS and Audio | 7 |
+| 164–165 | 18-10 Sensors: IMU, PPG, MEMS and Audio | 7 |
 | 165 | 18-11 Hardware Security | 7 |
 | 165–166 | 18 review + final exam | 5 |
 | 166 | Term 5 checkpoint | 8 |
@@ -378,12 +378,12 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 
 | Weeks | Course | Hours |
 |---|---|---|
-| 166–176 | [19 · Digital VLSI Design](courses/19-digital-vlsi-design/README.md) | 112 |
+| 166–177 | [19 · Digital VLSI Design](courses/19-digital-vlsi-design/README.md) | 112 |
 | 177–186 | [20 · Analog and Mixed-Signal IC Design](courses/20-analog-and-mixed-signal-ic-design/README.md) | 104 |
 | 186–194 | [21 · RF and Microwave Engineering](courses/21-rf-and-microwave-engineering/README.md) | 91 |
 | 194–203 | [22 · Power Electronics and Energy Conversion](courses/22-power-electronics-and-energy-conversion/README.md) | 92 |
 | 203–207 | [23 · Memory and Storage Technology](courses/23-memory-and-storage-technology/README.md) | 53 |
-| 207–213 | [24 · High-Speed I/O, Signal Integrity and Photonics](courses/24-high-speed-io-signal-integrity-and-photonics/README.md) | 59 |
+| 208–213 | [24 · High-Speed I/O, Signal Integrity and Photonics](courses/24-high-speed-io-signal-integrity-and-photonics/README.md) | 59 |
 | 213–220 | [25 · Semiconductor Fabrication, Packaging, Test and Reliability](courses/25-fabrication-packaging-test-and-reliability/README.md) | 83 |
 | 220–221 | **Term 6 checkpoint** (FE-style exam + error log review) | 8 |
 
@@ -393,31 +393,31 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 |---|---|---|
 | 166–167 | 19-01 The CMOS Inverter: Static Characteristics | 8 |
 | 167–168 | 19-02 The CMOS Inverter: Dynamic Behavior and Delay | 8 |
-| 168 | 19-03 Combinational Logic Families | 8 |
+| 168–169 | 19-03 Combinational Logic Families | 8 |
 | 169 | 19-04 Transistor Sizing and Logical Effort | 9 |
 | 169–170 | 19-05 Interconnect | 8 |
 | 170–171 | 19-06 Power and Low-Power Design | 9 |
 | 171–172 | 19-07 Sequential Circuits, Timing and Clocking | 9 |
 | 172 | 19-08 SRAM Design | 8 |
-| 172–173 | 19-09 Layout, Design Rules and Standard Cells | 6 |
+| 173 | 19-09 Layout, Design Rules and Standard Cells | 6 |
 | 173–174 | 19-10 The ASIC Flow I: Synthesis and Static Timing Analysis | 9 |
 | 174–175 | 19-11 The ASIC Flow II: Floorplan, Place and Route, Signoff | 10 |
 | 175 | 19-12 Design for Test: Scan, BIST and ATPG | 6 |
 | 175–176 | 19-13 Verification: Simulation, UVM, Formal and Emulation | 8 |
-| 176 | 19 review + final exam | 6 |
+| 176–177 | 19 review + final exam | 6 |
 | 177 | 20-01 Analog Design Fundamentals in Nanometer CMOS | 8 |
 | 177–178 | 20-02 Two-Stage Op-Amp Design | 12 |
 | 178–179 | 20-03 Bandgap and Voltage References | 8 |
 | 179–180 | 20-04 Low-Dropout Regulators | 8 |
-| 180 | 20-05 Comparators and Sample-and-Hold Circuits | 8 |
+| 180–181 | 20-05 Comparators and Sample-and-Hold Circuits | 8 |
 | 181 | 20-06 Data Converter Fundamentals | 7 |
 | 181–182 | 20-07 Nyquist ADCs: Flash, SAR and Pipeline | 10 |
 | 182–183 | 20-08 Oversampling and Sigma-Delta Converters | 9 |
 | 183 | 20-09 DACs | 6 |
-| 183–184 | 20-10 PLLs and Jitter | 10 |
+| 184 | 20-10 PLLs and Jitter | 10 |
 | 184–185 | 20-11 Layout, Matching and PVT Variation | 7 |
 | 185 | 20-12 Why Analog Does Not Scale Like Digital | 5 |
-| 185–186 | 20 review + final exam | 6 |
+| 186 | 20 review + final exam | 6 |
 | 186–187 | 21-01 S-Parameters and Network Analysis | 8 |
 | 187 | 21-02 Impedance Matching Networks | 7 |
 | 187–188 | 21-03 Noise Figure and Linearity | 8 |
@@ -427,7 +427,7 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 190–191 | 21-07 Power Amplifiers | 9 |
 | 191 | 21-08 Transceiver Architectures | 7 |
 | 191–192 | 21-09 The RF Front End: Filters, Switches and Modules | 6 |
-| 192 | 21-10 Antennas, Arrays, Beamforming and mmWave | 8 |
+| 192–193 | 21-10 Antennas, Arrays, Beamforming and mmWave | 8 |
 | 193 | 21-11 Link Budgets | 5 |
 | 193–194 | 21-12 Modem Baseband Architecture and Wireless Standards | 9 |
 | 194 | 21 review + final exam | 5 |
@@ -436,25 +436,25 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 196 | 22-03 Boost, Buck-Boost and Other Topologies | 7 |
 | 196–197 | 22-04 Isolated Converters: Flyback and Forward | 6 |
 | 197 | 22-05 Magnetics Design | 7 |
-| 197–198 | 22-06 Converter Losses and Wide-Bandgap Switches | 7 |
+| 198 | 22-06 Converter Losses and Wide-Bandgap Switches | 7 |
 | 198–199 | 22-07 Converter Dynamics and Control | 9 |
 | 199 | 22-08 PMICs and Power Management for SoCs | 6 |
-| 199–200 | 22-09 Batteries, Charging and Fuel Gauging | 8 |
+| 200 | 22-09 Batteries, Charging and Fuel Gauging | 8 |
 | 200–201 | 22-10 Datacenter Power Delivery | 8 |
 | 201 | 22-11 Electric Machines and Drives | 6 |
-| 201–202 | 22-12 Power Systems Fundamentals | 8 |
+| 202 | 22-12 Power Systems Fundamentals | 8 |
 | 202–203 | 22 review + final exam | 5 |
 | 203 | 23-01 The Memory Hierarchy and the Memory Wall | 4 |
 | 203 | 23-02 SRAM Technology | 4 |
 | 203–204 | 23-03 DRAM Cells, Arrays and Refresh | 7 |
-| 204 | 23-04 DRAM Interfaces: DDR, LPDDR and GDDR | 6 |
+| 204–205 | 23-04 DRAM Interfaces: DDR, LPDDR and GDDR | 6 |
 | 205 | 23-05 HBM in Depth | 7 |
 | 205–206 | 23-06 NAND Flash and 3D NAND | 7 |
 | 206 | 23-07 SSD Controllers and Storage Systems | 5 |
 | 206–207 | 23-08 Emerging Memories: MRAM, ReRAM, PCM, FeRAM | 5 |
 | 207 | 23-09 Compute-in-Memory and Near-Memory Computing | 5 |
 | 207 | 23 review + final exam | 3 |
-| 207–208 | 24-01 Signal Integrity Fundamentals | 7 |
+| 208 | 24-01 Signal Integrity Fundamentals | 7 |
 | 208–209 | 24-02 Eye Diagrams, Jitter and BER | 6 |
 | 209 | 24-03 SerDes Architecture and Equalization | 8 |
 | 209–210 | 24-04 DSP-Based SerDes and FEC | 5 |
@@ -462,19 +462,19 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 210–211 | 24-06 Die-to-Die Links, Memory PHYs and Scale-Up Fabrics | 6 |
 | 211–212 | 24-07 Photonics Fundamentals | 8 |
 | 212 | 24-08 Silicon Photonics and Optical Transceivers | 6 |
-| 212 | 24-09 Linear-Drive and Co-Packaged Optics | 4 |
+| 212–213 | 24-09 Linear-Drive and Co-Packaged Optics | 4 |
 | 213 | 24 review + final exam | 3 |
 | 213 | 25-01 Process Flow Overview: FEOL, MOL and BEOL | 7 |
-| 213–214 | 25-02 Lithography: DUV, Multipatterning, EUV and High-NA | 8 |
+| 214 | 25-02 Lithography: DUV, Multipatterning, EUV and High-NA | 8 |
 | 214–215 | 25-03 Deposition, Etch, CMP, Implant and Metrology | 8 |
-| 215 | 25-04 Yield Models and Die Cost | 7 |
+| 215–216 | 25-04 Yield Models and Die Cost | 7 |
 | 216 | 25-05 Foundries, PDKs and Specialty Processes | 6 |
 | 216–217 | 25-06 Packaging I: Wire Bond, Flip-Chip, Substrates, SiP and PoP | 6 |
 | 217 | 25-07 Packaging II: 2.5D, 3D, Hybrid Bonding and Chiplets | 7 |
 | 217–218 | 25-08 Thermal Engineering | 6 |
-| 218 | 25-09 Reliability Physics | 8 |
+| 218–219 | 25-09 Reliability Physics | 8 |
 | 219 | 25-10 Qualification and Functional Safety | 5 |
-| 219 | 25-11 Test: ATE, Wafer Sort, Burn-In and Binning | 6 |
+| 219–220 | 25-11 Test: ATE, Wafer Sort, Burn-In and Binning | 6 |
 | 220 | 25-12 Post-Silicon Validation and Bring-Up | 4 |
 | 220 | 25 review + final exam | 5 |
 | 220–221 | Term 6 checkpoint | 8 |
@@ -488,37 +488,37 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | Weeks | Course | Hours |
 |---|---|---|
 | 221–225 | [26 · Engineering Design and Professional Practice](courses/26-engineering-design-and-professional-practice/README.md) | 42 |
-| 225–228 | Capstone C1: Analog: two-stage op-amp or buck converter in ngspice | 40 |
+| 225–229 | Capstone C1: Analog: two-stage op-amp or buck converter in ngspice | 40 |
 | 229–233 | Capstone C2: Digital: RTL to layout (OpenLane/Sky130) or Verilator + synthesis | 50 |
-| 233–238 | [27 · System Architectures (Case-Study Course)](courses/27-system-architectures/README.md) | 60 |
+| 233–239 | [27 · System Architectures (Case-Study Course)](courses/27-system-architectures/README.md) | 60 |
 | 239–242 | Capstone C3: Embedded/system: wearable sensor node design | 35 |
 | 242–247 | [28 · Technical Diligence and Engineering Leadership Fluency](courses/28-technical-diligence-and-leadership-fluency/README.md) | 62 |
-| 247–250 | Capstone C4: Practitioner: technical diligence memo on a public chip product | 35 |
+| 247–251 | Capstone C4: Practitioner: technical diligence memo on a public chip product | 35 |
 | 251 | **Term 7 checkpoint** (FE-style exam + error log review) | 8 |
 
 <details><summary>Chapter-level weeks</summary>
 
 | Weeks | Item | Hours |
 |---|---|---|
-| 221 | 26-01 Requirements, Specifications and the Design Process | 5 |
+| 221–222 | 26-01 Requirements, Specifications and the Design Process | 5 |
 | 222 | 26-02 Design Reviews, Documentation and Standards Bodies | 4 |
-| 222 | 26-03 Engineering Economics I: NRE, Die Cost, ASP and Gross Margin | 7 |
+| 222–223 | 26-03 Engineering Economics I: NRE, Die Cost, ASP and Gross Margin | 7 |
 | 223 | 26-04 Engineering Economics II: Build, Buy or License; Node; Chiplets; ASIC vs Merchant | 8 |
 | 223–224 | 26-05 Schedule and Risk: Why Respins Happen | 6 |
 | 224 | 26-06 Engineering Team Structures and Sizing | 5 |
 | 224–225 | 26-07 Engineering Ethics and Professional Responsibility | 5 |
 | 225 | 26 review + final exam | 2 |
-| 225–228 | Capstone C1 | 40 |
+| 225–229 | Capstone C1 | 40 |
 | 229–233 | Capstone C2 | 50 |
 | 233 | 27-01 Method: Analyzing a System End to End | 4 |
-| 233–234 | 27-02 The Smartphone SoC | 8 |
+| 234 | 27-02 The Smartphone SoC | 8 |
 | 234–235 | 27-03 Wearables I: The Smartwatch | 7 |
-| 235 | 27-04 Wearables II: Earbuds and Smart Glasses / XR | 8 |
+| 235–236 | 27-04 Wearables II: Earbuds and Smart Glasses / XR | 8 |
 | 236 | 27-05 The PC SoC | 6 |
 | 236–237 | 27-06 Automotive E/E Architecture and ADAS Compute | 9 |
 | 237–238 | 27-07 The AI Datacenter Server and Rack | 10 |
 | 238 | 27-08 Edge AI and IoT | 6 |
-| 238 | 27 review + final exam | 2 |
+| 238–239 | 27 review + final exam | 2 |
 | 239–242 | Capstone C3 | 35 |
 | 242 | 28-01 A Framework for Evaluating a Chip Company's Technology | 6 |
 | 242–243 | 28-02 Validating Claims: TOPS/W, Benchmarks, Tapeout Status | 6 |
@@ -527,11 +527,11 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 244 | 28-05 Domain Question Banks II: Analog/Mixed-Signal, RF, Power, Packaging, Embedded | 6 |
 | 244–245 | 28-06 Red Flags and Green Flags | 4 |
 | 245 | 28-07 Evaluating Engineering Teams | 5 |
-| 245 | 28-08 Post-Acquisition Integration Risk | 5 |
+| 245–246 | 28-08 Post-Acquisition Integration Risk | 5 |
 | 246 | 28-09 The Business ↔ Engineering Translation Table | 3 |
 | 246–247 | 28-10 Conversation Scenarios | 15 |
 | 247 | 28 review + final exam | 2 |
-| 247–250 | Capstone C4 | 35 |
+| 247–251 | Capstone C4 | 35 |
 | 251 | Term 7 checkpoint | 8 |
 
 </details>

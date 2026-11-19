@@ -162,9 +162,6 @@ v.assert_true("Ex7 factored form equals the SOP", table_of(lambda a, b, c, d, e:
 (t7, l7), _, _ = min_covers(on7, 0, 5)
 v.assert_true("Ex7 the six-term SOP is minimal", (t7, l7) == (6, 12))
 v.check("Ex 08-03.7a", l7)
-v.check("Ex 08-03.7b", 5)                      # literal count of (A + B + C)(D + E), checked equal above
-v.check("Ex 08-03.7c", 6 * 2 * 2 + 2 * 6)      # six NAND2 (2 literals each) and one NAND6, 2 per input
-v.check("Ex 08-03.7d", 2 * 5 + 2)
 
 
 def stack(net):
@@ -181,6 +178,29 @@ def dual(net):
 T = lambda x: ("T", x)
 oai32_pdn = ("S", [("P", [T("A"), T("B"), T("C")]), ("P", [T("D"), T("E")])])
 v.check("Ex 08-03.7e", max(stack(oai32_pdn), stack(dual(oai32_pdn))))
+
+
+def leaves(net):
+    return 1 if net[0] == "T" else sum(leaves(x) for x in net[1])
+
+
+def gate_transistors(pdn):
+    """A static CMOS gate: one nMOS per leaf in the pull-down, one pMOS per leaf in its dual."""
+    return leaves(pdn) + leaves(dual(pdn))
+
+
+def nand(k):
+    return ("S", [T(f"x{i}") for i in range(k)])
+
+
+inv = T("a")
+_, sols7, _ = min_covers(on7, 0, 5)
+terms7 = [sum(x is not None for x in c) for c in next(iter(sols7))]          # literals per product of the minimal SOP
+v.check("Ex 08-03.7b", leaves(oai32_pdn))                         # literals of (A + B + C)(D + E)
+v.check("Ex 08-03.7c", sum(gate_transistors(nand(k)) for k in terms7) + gate_transistors(nand(len(terms7))))
+v.check("Ex 08-03.7d", gate_transistors(oai32_pdn) + gate_transistors(inv))
+v.check("Ex 08-03.7f", stack(nand(len(terms7))))
+v.check("Ex 08-03.7g", stack(oai32_pdn))
 v.check("Th 08-03.a", len(cubes(4)))
 v.check("Th 08-03.b", 2 ** (4 - 2))
 
@@ -191,6 +211,7 @@ v.check("PL 08-03.b", 100 * (SNPS25 / SNPS24 - 1))
 v.check("PL 08-03.c", 100 * (CDNS25 / CDNS24 - 1))
 v.check("PL 08-03.d", SNPS25 - ANSYS)
 v.check("PL 08-03.e", 4 * 5.7108)
+v.check("PL 08-03.f", 100 * ((SNPS25 - ANSYS) / SNPS24 - 1))
 
 # ================================================================= solutions
 for key, idx in (("08-03.1a", [0, 2, 4, 6]), ("08-03.1b", [2, 3, 6, 7])):
@@ -214,6 +235,12 @@ v.assert_true("P5 published cover", table_of(lambda a, b, c, d: N(b) | (N(a) & N
 on = mask([0, 1, 2, 3, 4, 5, 6, 8, 10, 12])
 v.check("08-03.6a", min_covers(on, 0, 4)[0][1])
 v.check("08-03.6b", min_covers(0xFFFF & ~on, 0, 4)[0][1])
+_, sols6, _ = min_covers(0xFFFF & ~on, 0, 4)
+cover6 = next(iter(sols6))                                    # minimal SOP of F', i.e. F = NOT(sum of these)
+v.assert_true("08-03.6: every literal of F' is uncomplemented, so F is one AOI gate on the true inputs",
+              all(x in (None, 1) for c in cover6 for x in c))
+aoi6 = ("P", [("S", [T(f"v{i}") for i, x in enumerate(c) if x is not None]) for c in cover6])
+v.check("08-03.6c", gate_transistors(aoi6))
 v.assert_true("P6 published POS", table_of(lambda a, b, c, d: (N(a) | N(d)) & (N(a) | N(b) | N(c)) & (N(b) | N(c) | N(d)), 4) == on)
 seg = mask([0, 2, 3, 5, 6, 7, 8, 9])
 v.check("08-03.7a", min_covers(seg, mask(range(10, 16)), 4)[0][1])
@@ -263,9 +290,12 @@ f14 = lambda a, b, c, d, e, f: (a | b) & (c | d) & (e | f)
 on14 = table_of(f14, 6)
 (t14, l14), _, _ = min_covers(on14, 0, 6)
 v.check("08-03.14a", l14)
-v.check("08-03.14b", 6)
-v.check("08-03.14c", 8 * 2 * 3 + 2 * 8)
-v.check("08-03.14d", 2 * 6 + 2)
+oai222_pdn = ("S", [("P", [T("A"), T("B")]), ("P", [T("C"), T("D")]), ("P", [T("E"), T("F")])])
+_, sols14, _ = min_covers(on14, 0, 6)
+terms14 = [sum(x is not None for x in c) for c in next(iter(sols14))]
+v.check("08-03.14b", leaves(oai222_pdn))
+v.check("08-03.14c", sum(gate_transistors(nand(k)) for k in terms14) + gate_transistors(nand(len(terms14))))
+v.check("08-03.14d", gate_transistors(oai222_pdn) + gate_transistors(inv))
 v.check("08-03.14e", 8)
 oai222 = ("S", [("P", [T("A"), T("B")]), ("P", [T("C"), T("D")]), ("P", [T("E"), T("F")])])
 v.check("08-03.14f", max(stack(oai222), stack(dual(oai222))))

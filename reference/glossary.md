@@ -704,7 +704,7 @@
 
 <a id="fowler-nordheim-tunneling"></a>**Fowler–Nordheim tunneling** — Tunneling through a triangular barrier formed when a strong field tilts an insulator's band; the current rises steeply with field (about seven orders of magnitude from 7 to 10 MV/cm in SiO₂) and is used to program and erase flash. *First defined in* [04-10](../courses/04-physics-for-ee/chapters/04-10-intro-quantum-mechanics.md).
 
-<a id="fp8"></a>**FP8** — The two 8-bit floating-point formats used for AI, E4M3 (largest value 448, no infinities, one NaN pattern) and E5M2 (largest value 57 344, IEEE-style specials), standardized by the Open Compute Project in 2023. *First defined in* [08-01](../courses/08-digital-logic-design/chapters/08-01-number-systems-and-codes.md). *See also:* [bfloat16](#bfloat16), [Block floating point](#block-floating-point).
+<a id="fp8"></a>**FP8** — The two 8-bit floating-point formats used for AI, E4M3 (largest value 448, no infinities, one NaN code per sign) and E5M2 (largest value 57 344, IEEE-style specials), standardized by the Open Compute Project in 2023. *First defined in* [08-01](../courses/08-digital-logic-design/chapters/08-01-number-systems-and-codes.md). *See also:* [bfloat16](#bfloat16), [Block floating point](#block-floating-point).
 
 <a id="frequency-response"></a>**Frequency response** — The complex gain H(jω) of a linear system at angular frequency ω. Its magnitude scales a sinusoid's amplitude and its angle shifts the sinusoid's phase. *First defined in* [02-01](../courses/02-complex-numbers-des-and-linear-algebra/chapters/02-01-complex-numbers-euler-and-phasors.md). *See also:* [Corner frequency](#corner-frequency).
 
@@ -1656,7 +1656,7 @@
 
 <a id="scrambler"></a>**Scrambler** — A circuit that XORs data with a pseudo-random sequence so that long runs of identical bits become unlikely, giving a receiver transitions to recover the clock from; the descrambler applies the same sequence to restore the data. *First defined in* [08-07](../courses/08-digital-logic-design/chapters/08-07-registers-counters-shift-registers.md). *See also:* [Pseudo-random bit sequence (PRBS)](#pseudo-random-bit-sequence-prbs).
 
-<a id="sec-ded"></a>**SEC-DED** — Single-error-correcting, double-error-detecting; a Hamming code plus an overall parity bit (minimum distance 4), as in the (72,64) code of server memory, which corrects one flipped bit per word and flags two. *First defined in* [08-01](../courses/08-digital-logic-design/chapters/08-01-number-systems-and-codes.md). *See also:* [Hamming code](#hamming-code).
+<a id="sec-ded"></a>**SEC-DED** — Single-error-correcting, double-error-detecting; a Hamming code plus an overall parity bit (minimum distance 4), as in the (72,64) code of DDR4-generation server memory, which corrects one flipped bit per word and flags two; DDR5 ECC modules give each 32-bit subchannel 4 or 8 check bits. *First defined in* [08-01](../courses/08-digital-logic-design/chapters/08-01-number-systems-and-codes.md). *See also:* [Hamming code](#hamming-code).
 
 <a id="second-derivative"></a>**Second derivative** — The derivative of the derivative, f''(x) or d²y/dx²; it measures curvature (concavity) and, for position, acceleration. *First defined in* [01-03](../courses/01-calculus-for-engineers/chapters/01-03-derivatives.md).
 

@@ -120,7 +120,7 @@ Semiconductor work conventionally uses cm and eV. Chapters convert to SI explici
 ## 9. Digital and architecture
 
 - Verilog/SystemVerilog code uses `snake_case` for signals and `UPPER_CASE` for parameters; active-low signals end in `_n` (e.g., `rst_n`).
-- Number bases: `0x` prefix for hexadecimal, `0b` for binary in prose and C; Verilog literals as `8'hFF`.
+- Number bases: `0x` prefix for hexadecimal, `0b` for binary in prose and C; Verilog literals as `8'hFF`. Number-system chapters (Course 08) may instead write the base as a subscript (1011₂, 3F7₁₆), the textbook convention, and say so in their conventions.
 - Bit numbering: bit 0 is the least-significant bit.
 - Performance: CPI, IPC, $f_{clk}$; energy in J (pJ/op, pJ/bit), power in W.
 

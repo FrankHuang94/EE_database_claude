@@ -17,7 +17,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 08-02.2 [A]
 
-**Duality and proof.** (a) Write the dual of $A + \overline{A}B = A + B$ and of $A(A + B) = A$. (b) Prove $A + \overline{A}B = A + B$ by perfect induction. How many rows does the proof need? (c) Prove $(A + B)(A + C) = A + BC$ algebraically, starting from the left side and naming each theorem you use.
+**Duality and proof.** (a) Write the dual of $A + \overline{A}B = A + B$ and of $A(A + B) = A$. (b) Prove $A + \overline{A}B = A + B$ by perfect induction. How many rows does the proof need? (c) Prove $A(\overline{A} + B) = AB$ algebraically from the axioms of §3.2, naming each axiom you use.
 
 ### Problem 08-02.3 [A]
 

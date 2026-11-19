@@ -163,6 +163,22 @@ for val, kv, ke in ((r32, "Ex 08-01.4a", "Ex 08-01.4b"), (r16, "Ex 08-01.4c", "E
                     (r52, "Ex 08-01.4i", "Ex 08-01.4j")):
     v.check(kv, val)
     v.check(ke, float((Fraction(val) - x01) / x01 * 100))
+def bound_pct(vals_or_next):
+    """Half the spacing at 2^-4 relative to 2^-4, from the format's own neighbours (percent)."""
+    lo = Fraction(1, 16)
+    nxt = vals_or_next(lo)
+    return float((Fraction(nxt) - lo) / 2 / lo * 100)
+
+
+def nxt_from(vals):
+    return lambda lo: min(x for x in vals if x > lo)
+
+
+v.check("Ex 08-01.4k", bound_pct(lambda lo: Fraction(float(np.nextafter(np.float32(0.0625), np.float32(1))))))
+v.check("Ex 08-01.4l", bound_pct(lambda lo: Fraction(float(np.nextafter(np.float16(0.0625), np.float16(1))))))
+v.check("Ex 08-01.4m", bound_pct(nxt_from(bf_vals)))
+v.check("Ex 08-01.4n", bound_pct(nxt_from(fp8_e4m3)))
+v.check("Ex 08-01.4o", bound_pct(nxt_from(fp8_e5m2)))
 v.check("Th 08-01.a", float(np.finfo(np.float32).max))
 v.check("Th 08-01.b", float(np.finfo(np.float16).max))
 v.check("Th 08-01.c", float(bf_vals[-1]))
@@ -271,7 +287,7 @@ v.assert_true("x^3+x+1: the 7 single-bit errors give 7 distinct nonzero remainde
 
 # ---------------------------------------------------------------- parity escape probability
 pe = 1e-6
-v.check("Th 08-01.i", sum(math.comb(8, kk) * pe ** kk * (1 - pe) ** (8 - kk) for kk in range(2, 9, 2)))
+v.check("Th 08-01.i", sum(math.comb(9, kk) * pe ** kk * (1 - pe) ** (9 - kk) for kk in range(2, 10, 2)))
 
 # ---------------------------------------------------------------- solutions
 # P1
@@ -352,6 +368,8 @@ v.check("08-01.9c", (bf16(pi32) - math.pi) / math.pi * 100)
 e43 = float(nearest(float_values(4, 3, "e4m3"), Fraction(math.pi)))
 v.check("08-01.9d", e43)
 v.check("08-01.9e", (e43 - math.pi) / math.pi * 100)
+v.check("08-01.9f", bound_pct(nxt_from(bf_vals)))
+v.check("08-01.9g", bound_pct(nxt_from(fp8_e4m3)))
 # P10: Gray decode by searching the reflected code
 v.check("08-01.10a", gray_reflect(4).index("1101"))
 # P11
@@ -408,6 +426,7 @@ bits = 0
 while 2 ** bits < 10000:
     bits += 1
 v.check("08-01.15d", bits)
+v.check("08-01.15e", 100 * (4 * 4 / bits - 1))
 
 
 # ---------------------------------------------------------------- section 7 (numbers to know)
@@ -520,5 +539,6 @@ pairs = sum(1 for a in range(-8, 8) for b in range(-8, 8) if not -8 <= a + b <= 
 v.check("Lab 08-01.n", pairs)
 e4m3_patterns = 2 * (len(float_values(4, 3, "e4m3")) + 1)   # positive values and +0, doubled for sign
 v.check("Lab 08-01.o", e4m3_patterns)
+v.check("Lab 08-01.p", 100 / prob(sd, 8, 1e-3))
 
 v.finish()

@@ -44,14 +44,14 @@ The last two columns agree in every row.
 
 $$
 \begin{aligned}
-(A + B)(A + C) &= AA + AC + BA + BC && \text{distributivity (A3), twice} \\
-&= A + AC + AB + BC && \text{idempotence (T2), commutativity} \\
-&= A(1 + C + B) + BC && \text{distributivity} \\
-&= A + BC && \text{null element (T1), identity (A1).}
+A(\overline{A} + B) &= A\overline{A} + AB && \text{distributivity (A3)} \\
+&= 0 + AB && \text{complement (A4, dual form)} \\
+&= AB + 0 && \text{commutativity (A2)} \\
+&= AB && \text{identity (A1).}
 \end{aligned}
 $$
 
-This is the dual distributive law, which in Huntington's system is an axiom; the derivation shows it is also consistent with the other theorems.
+Each step uses an axiom directly, so the proof does not lean on any theorem whose own proof might use the result. (Proving an axiom, such as the dual distributive law, from theorems that were derived *from* it would be circular; perfect induction is the independent check for axioms.)
 
 ### Solution 08-02.3
 

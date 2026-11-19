@@ -75,7 +75,7 @@ $$
 F = (\overline{A} + \overline{D})(\overline{A} + \overline{B} + \overline{C})(\overline{B} + \overline{C} + \overline{D}) ,
 $$
 
-**8** literals. The POS is cheaper (3 sum terms, 8 literals against 5 product terms, 10 literals), so build it as NOR-NOR or, better, as an OAI gate.
+**8** literals. The POS is cheaper (3 sum terms, 8 literals against 5 product terms, 10 literals). Every literal in it is complemented, so De Morgan gives $F = \overline{AD + ABC + BCD}$: a single **AOI** gate (one AND2 leg and two AND3 legs) on the *uncomplemented* inputs, with no input inverters, at 2 transistors per literal: **16** transistors in one stage. (An OAI gate on these sums would produce $\overline{F}$ and need inverters on every input.)
 
 ### Solution 08-03.7
 
@@ -195,6 +195,7 @@ $$
 | 08-03.5a | literals, minimal SOP | 3 | — |
 | 08-03.6a | literals, minimal SOP | 10 | — |
 | 08-03.6b | literals, minimal POS | 8 | — |
+| 08-03.6c | transistors, AOI on true inputs | 16 | — |
 | 08-03.7a | literals with don't cares | 6 | — |
 | 08-03.7b | literals without don't cares | 11 | — |
 | 08-03.7c | minimal solutions without don't cares | 2 | — |

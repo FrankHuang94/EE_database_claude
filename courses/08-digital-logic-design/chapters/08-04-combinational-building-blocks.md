@@ -182,9 +182,11 @@ A **hazard** is a possibility of a momentary wrong output (a **glitch**) after a
 
 ![Timing diagram of the multiplexer hazard](../../../assets/figures/08-04/mux-hazard.svg)
 
-*Figure 2. The static-1 hazard traced above, simulated with unit delays. $S$ falls at $t = 2$; $SD_1$ turns off one delay later, but $\overline{S}D_0$ turns on only after the inverter, so for one gate delay neither term holds $Y$ at 1.*
+*Figure 2. The static-1 hazard traced above, simulated with unit delays. $S$ falls at $t = 0$; $SD_1$ turns off one delay later, but $\overline{S}D_0$ turns on only after the inverter, so for one gate delay neither term holds $Y$ at 1.*
 
-The cause is visible on the Karnaugh map: the two product terms are adjacent groups that do not overlap, and the input change crosses from one to the other. **The cure is the consensus term**: add $D_0D_1$, which covers the boundary and stays at 1 throughout. $Y = \overline{S}\,D_0 + S\,D_1 + D_0D_1$ is logically the same function (08-02 T8) and hazard-free for single-input changes. The general rule for two-level logic: **a sum of products is free of static-1 hazards for single-variable changes if every pair of adjacent 1s on the map is covered by a common product term**, which holds when all prime implicants are included. Minimal covers are therefore exactly the covers most likely to be hazardous.
+The cause is visible on the Karnaugh map: the two product terms are adjacent groups that do not overlap, and the input change crosses from one to the other. **The cure is the consensus term**: add $D_0D_1$, which covers the boundary and stays at 1 throughout. $Y = \overline{S}\,D_0 + S\,D_1 + D_0D_1$ is logically the same function (08-02 T8) and hazard-free for single-input changes. The general rule for two-level logic: **a sum of products is free of static-1 hazards for single-variable changes if every pair of adjacent 1s on the map is covered by a common product term**. Why: during a change of one input $X$ between two adjacent 1-cells, every other input is constant. A product term that contains neither $X$ nor $\overline{X}$ and covers both cells stays at 1 throughout, whatever the gate delays, and holds the OR output at 1. If no single term covers both cells, the output is held first by a term containing $X$ (or $\overline{X}$) and then by another containing the opposite literal, and with unequal delays there can be a moment when neither is 1. Including all prime implicants guarantees the condition, because the two adjacent cells form an implicant that lies inside some prime. Minimization often drops exactly those consensus terms, so a minimal cover is frequently hazardous; it is not always (a minimal cover that happens to contain every prime is hazard-free).
+
+**Static-0 hazards are the dual.** A product of sums can glitch to 1 while it should stay 0, when an input change crosses between adjacent 0-cells covered by different sum terms. The cure is the dual consensus term: for $(A + B)(\overline{A} + C)$, add $(B + C)$ (Problem 08-04.13).
 
 **When do glitches matter?** In a synchronous design, combinational outputs are sampled by flip-flops only at clock edges, after the inputs have settled ([08-06](08-06-latches-and-flip-flops.md)), so glitches on data paths are harmless to correctness. They matter when a signal is used *without* waiting for a clock:
 
@@ -258,7 +260,7 @@ Glitches also cost **power**: each spurious transition charges and discharges ca
 
 **Solution.** (a) $A$ = 0101, $B$ = 0111. With SUB = 1 the adder sees $\overline{B}$ = 1000 and $C_0 = 1$: $0101 + 1000 + 1 = 1110$, which is **−2** as a signed number. No column produced a carry out of the top: $C_4$ = **0** (unsigned: a borrow, $5 < 7$). The carries into and out of the top column are both 0, so $V$ = **0**.
 
-(b) $A$ = 0110, $B = -3$ = 1101, $\overline{B}$ = 0010: $0110 + 0010 + 1 = 1001$, which reads as **−7**. The true answer, 9, does not fit in 4 bits. The carry into the top column is 1 and the carry out is 0, so $V$ = **1**: overflow, correctly flagged.
+(b) $A$ = 0110, $B = -3$ = 1101, $\overline{B}$ = 0010: $0110 + 0010 + 1 = 1001$, which reads as **−7**. The true answer, 9, does not fit in 4 bits. The carry into the top column is 1 and the carry out is $C_4$ = **0**, so $V$ = **1**: overflow, correctly flagged.
 
 **Sanity check.** In (b) two positive numbers were effectively added ($6 + 3$) and the result's sign bit came out 1: the sign rule of 08-01 also flags overflow ✓.
 
@@ -312,6 +314,7 @@ Glitches also cost **power**: each spurious transition charges and discharges ca
 | Ex 08-04.5c | $5 - 7$, overflow | 0 | — |
 | Ex 08-04.5d | $6 - (-3)$, signed result | -7 | — |
 | Ex 08-04.5e | $6 - (-3)$, overflow | 1 | — |
+| Ex 08-04.5f | $6 - (-3)$, carry out | 0 | — |
 | Ex 08-04.6a | unsigned compare, carry out | 0 | — |
 | Ex 08-04.6b | signed compare, $N \oplus V$ | 1 | — |
 | Ex 08-04.6c | XNOR gates, 32-bit equality | 32 | — |
@@ -373,8 +376,8 @@ The lab is in [labs/08-04-lab/](../labs/08-04-lab/README.md).
 3. **Forgetting the valid output.** A priority encoder outputs 00 both for "input 0 active" and "nothing active".
 4. **Reading the carry out as signed overflow**, or forgetting that in subtraction $C_n = 0$ means a borrow.
 5. **Comparing signed numbers with the unsigned rule.** Signed less-than is $N \oplus V$, not $N$ alone and not $\overline{C_n}$.
-6. **Assuming the critical path is the longest wire, or the most gates in the schematic.** It is the slowest *sensitizable* input-to-output path; compute arrival times.
-7. **Minimizing away a consensus term on a clock, reset or asynchronous output.** The minimal cover is exactly the hazardous one.
+6. **Assuming the critical path is the longest wire, or the most gates in the schematic.** It is the slowest *sensitizable* input-to-output path, one along which some input change can actually propagate to the output (a path whose side inputs can all be set to let the change through); compute arrival times.
+7. **Minimizing away a consensus term on a clock, reset or asynchronous output.** Minimization often removes exactly the consensus terms that prevent hazards.
 8. **Gating a clock with combinational logic.** Any glitch becomes an extra clock edge; use library clock-gating cells ([19-06](../../19-digital-vlsi-design/chapters/19-06-power-and-low-power-design.md)).
 
 ## 9. Practitioner lens
@@ -382,7 +385,7 @@ The lab is in [labs/08-04-lab/](../labs/08-04-lab/README.md).
 ### State of the art (as of Nov 2026)
 
 - **Discrete logic still ships, and its datasheets teach guardbanding** ([R-152](../../../reference/research-log.md#r-152--discrete-logic-propagation-delays)). Texas Instruments' SN74HC151 8:1 multiplexer (datasheet SCLS110F, revised Feb 2022; the part dates from 1982) specifies, at 4.5 V with a 50 pF load, a select-to-output delay of 30 ns typical, 50 ns maximum at 25 °C and 63 ns maximum over the commercial temperature range **[Established]** (datasheet values, read from search excerpts; open issue 32). The maximum is **1.67×** the typical at room temperature and **2.1×** over temperature. Other vendors' sheets for "the same" 74HC151 differ from TI's, and from their own earlier revisions, so a design must use the limits of the exact part it buys.
-- **On-chip, the same blocks are thousands of times faster.** A 74HC151's tens of nanoseconds are dominated by the 50 pF board load and the package. Inside a modern chip, a multiplexer drives a few femtofarads and switches in picoseconds; Example 08-04.4's 15 ps per unit is an illustrative order of magnitude, not a measured figure for any process ([19-02](../../19-digital-vlsi-design/chapters/19-02-cmos-inverter-dynamic.md)).
+- **On-chip, the same blocks are thousands of times faster.** A 74HC151's tens of nanoseconds come from an older, slower process, several internal gate stages and output buffers sized to drive board loads of tens of picofarads (the datasheet's 50 pF test load). Inside a modern chip, a multiplexer drives a few femtofarads and switches in picoseconds; Example 08-04.4's 15 ps per unit is an illustrative order of magnitude, not a measured figure for any process ([19-02](../../19-digital-vlsi-design/chapters/19-02-cmos-inverter-dynamic.md)).
 - **The blocks of this chapter dominate datapaths.** Adders, multiplexers and comparators make up most of the logic in processor execution units and in the multiply-accumulate arrays of AI accelerators ([08-09](08-09-arithmetic-circuits.md), [14-14](../../14-computer-organization-and-architecture/chapters/14-14-ai-accelerators.md)), which is why their delay and energy receive more design effort than any other logic.
 
 ### Why it matters commercially

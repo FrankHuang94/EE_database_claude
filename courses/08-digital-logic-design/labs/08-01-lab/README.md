@@ -80,6 +80,7 @@ Part 4's exact silent-failure probabilities per code word:
 | Lab 08-01.m | SEC-DED words flagged uncorrectable, p = 10⁻³ | 2.783e-5 | — |
 | Lab 08-01.n | overflowing 4-bit pairs | 64 | — |
 | Lab 08-01.o | finite E4M3 bit patterns, +0 and −0 counted separately | 254 | — |
+| Lab 08-01.p | simulated words to see 100 SEC-DED failures at p = 10⁻³ | 1.8e9 | — |
 
 **Reading the key.** Each scheme's silent failures start at a particular number of bit errors $w$, and their probability is then about $A\,p^{w}$, where $A$ counts the bad patterns of that weight. Parity fails on 2 errors ($A = \binom{9}{2} = 36$) and SEC miscorrects every 2-error pattern ($A = \binom{7}{2} = 21$): both scale as $p^2$, so a tenfold rise in $p$ costs about 100×. SEC-DED fails first on 3 errors ($A = \binom{8}{3} = 56$) and the CRC on the 7 weight-3 code words, so both scale as $p^3$: about 1000×. The ratios fall a little short of 100 and 1000 because of the $(1-p)^{n-w}$ factors and, slightly, the higher-weight terms. Lines g and m together show SEC-DED's real bargain: at $p = 10^{-3}$ about 500 times as many words are flagged (2.783e-5) as slip through (5.573e-8), and a flagged word can be re-read or reported, which a silent one cannot.
 

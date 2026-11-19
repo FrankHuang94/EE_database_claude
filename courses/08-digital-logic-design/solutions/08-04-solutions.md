@@ -144,7 +144,7 @@ The same bits give "overflowed" (unsigned) and "correct" (signed); which flag ma
 
 ### Solution 08-04.13
 
-(a) The two sum terms hand over when $A$ changes. If $A$ **rises**, $A + B$ rises at $t = 1$, while $\overline{A}$ falls at $t = 1$ and $\overline{A} + C$ falls only at $t = 2$. For $1 \le t < 2$ both AND inputs are 1, so the output rises at $t = 2$ for **1** unit: a static-0 hazard. When $A$ falls, $A + B$ falls at $t = 1$, before $\overline{A} + C$ rises at $t = 2$, so the output stays 0.
+(a) The two sum terms hand over when $A$ changes. If $A$ **rises**, $A + B$ rises at $t = 1$, while $\overline{A}$ falls at $t = 1$ and $\overline{A} + C$ falls only at $t = 2$. For $1 \le t < 2$ both AND inputs are 1, so the output rises at $t$ = **2** for **1** unit: a static-0 hazard. When $A$ falls, $A + B$ falls at $t = 1$, before $\overline{A} + C$ rises at $t = 2$, so the output stays 0.
 
 (b) Add the consensus sum term $B + C$ (the dual of T8): $F = (A + B)(\overline{A} + C)(B + C)$, **6** literals. With $B = C = 0$ it holds the output at 0 throughout.
 
@@ -213,6 +213,7 @@ The same bits give "overflowed" (unsigned) and "correct" (signed); which flag ma
 | 08-04.12c | literals, hazard-free SOP | 6 | — |
 | 08-04.13a | glitch width, static-0 | 1 | units |
 | 08-04.13b | literals, hazard-free POS | 6 | — |
+| 08-04.13c | glitch start, static-0 | 2 | units |
 | 08-04.14a | low-half carry out ready | 9 | units |
 | 08-04.14b | high halves ready | 9 | units |
 | 08-04.14c | carry-select total delay | 10 | units |

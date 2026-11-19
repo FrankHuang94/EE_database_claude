@@ -41,7 +41,7 @@ python tools/run_spice.py 08-02
 3. **Universal gates (Part 3).** Convert SOP expressions to NAND-NAND and POS to NOR-NOR, and check each conversion on every row. Search for the smallest NAND circuit that makes XOR.
 4. **Switch networks (Part 4).** Describe a pull-down network as nested series and parallel connections, let the notebook build the dual pull-up network, and confirm that exactly one network conducts in every row.
 5. **ngspice (the chapter's guided exercise).** *Predict first:* the NAND2's output voltage for each input pair, and the current drawn from the 1.8 V supply once the output has settled. Then run `nand2_cmos.cir`.
-6. **Verilog.** Run the testbench, then break something: swap the series and parallel connections in the `nand2_cmos` pull-up network and watch the testbench catch it. (In a real circuit that mistake gives a short circuit in some states and a floating output in others; in the simulator, look for `x` and `z` values.)
+6. **Verilog.** Run the testbench, then break something: swap the series and parallel connections in the `nand2_cmos` pull-up network and watch the testbench catch it. (In a real circuit the swapped NAND pull-up leaves the output floating for inputs 01 and 10; the same mistake in a NOR would short the supply instead. In the simulator, look for `z`.)
 
 ## Expected results
 

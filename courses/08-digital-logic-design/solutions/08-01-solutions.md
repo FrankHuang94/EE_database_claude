@@ -77,7 +77,7 @@ In (c) the operands have opposite signs, so overflow is impossible, as the sign 
 
 (b) C500₁₆ = 1 10001 0100000000: $s$ = 1, $E$ = 17, $F$ = 0.25, so the value is −1.25 × 2² = **−5**.
 
-(c) 2048 = 2¹¹, and with 10 fraction bits the spacing in $[2^{11}, 2^{12})$ is $2^{11-10}$ = **2**. 2049 lies exactly halfway between 2048 and 2050. Round-to-nearest-even picks the neighbor with an even last fraction bit, **2048**. Above 2048, FP16 cannot represent every integer.
+(c) 2048 = 2¹¹, and with 10 fraction bits the spacing in $[2^{11}, 2^{12})$ is $2^{11-10}$ = **2**. 2049 lies exactly halfway between 2048 and 2050. Round-to-nearest-even (ties to even, §3.5 and §3.6) picks the neighbor with an even last fraction bit, **2048**. Above 2048, FP16 cannot represent every integer.
 
 ### Solution 08-01.9
 
@@ -133,7 +133,7 @@ In (c) the operands have opposite signs, so overflow is impossible, as the sign 
 
 (b) A burst that flips four adjacent bits starting at position $k$ is the error polynomial $E(x) = (x^3 + x^2 + x + 1)\,x^k$. Since $g(x)$ has a nonzero constant term, it shares no factor with $x^k$. And $x^3 + x^2 + x + 1$ has lower degree than $g(x)$, so $g(x)$ cannot divide it. Hence $g(x)$ never divides $E(x)$, and every such burst leaves a nonzero remainder. The same argument covers every burst of length 4 or less, whatever its interior bits.
 
-(c) Any error pattern that is itself a multiple of $g(x)$ passes undetected: for example $E(x) = g(x)\,x^3$, which flips bits 7, 4 and 3 of the 14-bit word (counting from the right, from 0). The received word is then still a multiple of $g(x)$, so its remainder is **0**. Every CRC has such patterns, because $r$ check bits can distinguish at most $2^r$ remainders. A random error pattern therefore escapes with probability about $2^{-r}$, here 1/16, which is why links use 32-bit CRCs.
+(c) Any error pattern that is itself a multiple of $g(x)$ passes undetected: for example $E(x) = g(x)\,x^3 = x^7 + x^4 + x^3$, which flips the coefficients of $x^7$, $x^4$ and $x^3$ in the 14-bit word. The received word is then still a multiple of $g(x)$, so its remainder is **0**. Every CRC has such patterns, because $r$ check bits can distinguish at most $2^r$ remainders. A random error pattern therefore escapes with probability about $2^{-r}$, here 1/16, which is why links use 32-bit CRCs.
 
 ### Solution 08-01.15
 
@@ -143,7 +143,7 @@ In (c) the operands have opposite signs, so overflow is impossible, as the sign 
 
 - 7 + 9 = 16 > 9: add 6, giving 22 = 1 0110, so the digit is 6 with a carry.
 - 5 + 7 + 1 = 13 > 9: add 6, giving 19 = 1 0011, so the digit is 3 with a carry.
-- 8 + 4 + 1 = 13: the digit is 3 with a carry.
+- 8 + 4 + 1 = 13 > 9: add 6, giving 19 = 1 0011, so the digit is 3 with a carry.
 - 0 + 0 + 1 = 1.
 
 The result is **1336** ✓.
@@ -196,6 +196,8 @@ The result is **1336** ✓.
 | 08-01.9c | its relative error | −0.03080 | % |
 | 08-01.9d | nearest E4M3 value to π | 3.25 | — |
 | 08-01.9e | its relative error | 3.451 | % |
+| 08-01.9f | bfloat16 bound | 0.391 | % |
+| 08-01.9g | E4M3 bound | 6.25 | % |
 | 08-01.10a | Gray 1101 in binary (1001₂) | 9 | — |
 | 08-01.11a | UTF-8 of Ω, CE A9 as a 16-bit integer | 52905 | — |
 | 08-01.11b | code point decoded from E6 97 A5 (U+65E5) | 26085 | — |
@@ -213,3 +215,4 @@ The result is **1336** ✓.
 | 08-01.15b | BCD sum 0857 + 0479 | 1336 | — |
 | 08-01.15c | BCD bits for 9999 | 16 | bits |
 | 08-01.15d | binary bits for 9999 | 14 | bits |
+| 08-01.15e | BCD size penalty | 14 | % |

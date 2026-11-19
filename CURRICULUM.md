@@ -4,7 +4,7 @@
 
 The complete map of the Self-Taught BSEE: every course and chapter, with university equivalents, textbook alignment, prerequisites, learning objectives and estimated study hours. For the week-by-week schedule see [STUDY_PLAN.md](STUDY_PLAN.md). For build status see [PROGRESS.md](PROGRESS.md).
 
-**At a glance:** 29 courses · 307 chapters · 7 terms · 4 capstones · ≈ 2760 study hours in total (courses 2542 h, capstones 160 h, term checkpoints 56 h).
+**At a glance:** 29 courses · 307 chapters · 7 terms · 4 capstones · ≈ 2760 study hours in total (courses 2543 h, capstones 160 h, term checkpoints 56 h).
 
 > **About the hour estimates.** Hours cover reading, working the examples, the full problem set and the lab for each chapter, for a strong learner meeting the material for the first time. At 10–12 hours per week, the full curriculum is a multi-year undertaking; see [STUDY_PLAN.md](STUDY_PLAN.md) for the calendar and the shorter practitioner fast track.
 
@@ -20,7 +20,7 @@ The complete map of the Self-Taught BSEE: every course and chapter, with univers
 | [05 · Programming for Engineers](#course-05) | 1 | 9 | 80 | Intro to Programming (Python) + Programming in C for Engineers |
 | [06 · Circuit Analysis I (DC)](#course-06) | 2 | 11 | 86 | Circuits I (sophomore) |
 | [07 · Circuit Analysis II (Transient and AC)](#course-07) | 2 | 11 | 103 | Circuits II (sophomore/junior) |
-| [08 · Digital Logic Design](#course-08) | 2 | 12 | 106 | Digital Design / Digital Logic (sophomore) |
+| [08 · Digital Logic Design](#course-08) | 2 | 12 | 107 | Digital Design / Digital Logic (sophomore) |
 | [09 · Semiconductor Devices](#course-09) | 3 | 14 | 116 | Solid-State / Semiconductor Devices (junior) |
 | [10 · Electronics I (Microelectronic Circuits)](#course-10) | 3 | 10 | 99 | Electronics I / Microelectronic Circuits I (junior) |
 | [11 · Signals and Systems](#course-11) | 3 | 11 | 106 | Signals and Systems (junior) |
@@ -372,7 +372,7 @@ Python for engineering computation and C for hardware-adjacent programming, plus
 
 ## Term 2 — Circuits and Digital Logic
 
-The two core abstractions of EE, linear circuits and Boolean logic. *Term total: ≈ 295 hours + checkpoint (8 h).*
+The two core abstractions of EE, linear circuits and Boolean logic. *Term total: ≈ 296 hours + checkpoint (8 h).*
 
 <a id="course-06"></a>
 
@@ -458,7 +458,7 @@ From number systems and Boolean algebra to finite state machines, timing and FPG
 - **Free courses:** MIT OCW 6.004 Computation Structures; MIT OCW 6.111 Introductory Digital Systems Laboratory
 - **Prerequisites:** [05 · Programming for Engineers](#course-05)
 - **FE areas served:** Digital Systems, Computer Systems
-- **Study hours:** ≈ 106 (100 chapter hours + 6 review/exam)
+- **Study hours:** ≈ 107 (101 chapter hours + 6 review/exam)
 
 **Learning objectives.** By the end of the course you can:
 
@@ -471,7 +471,7 @@ From number systems and Boolean algebra to finite state machines, timing and FPG
 
 | Chapter | Hours | Key topics |
 |---|---|---|
-| [08-01 · Number Systems and Codes](courses/08-digital-logic-design/chapters/08-01-number-systems-and-codes.md) | 7 | Binary, hex, two's complement, overflow, fixed-point, Gray code, BCD, ASCII, error-detecting codes |
+| [08-01 · Number Systems and Codes](courses/08-digital-logic-design/chapters/08-01-number-systems-and-codes.md) | 8 | Binary, hex, two's complement, overflow, fixed-point, Gray code, BCD, ASCII, error-detecting codes |
 | [08-02 · Boolean Algebra and Logic Gates](courses/08-digital-logic-design/chapters/08-02-boolean-algebra-and-gates.md) | 8 | Axioms and theorems, De Morgan, SOP/POS, canonical forms, gates, universal gates |
 | [08-03 · Logic Minimization: K-Maps and Beyond](courses/08-digital-logic-design/chapters/08-03-logic-minimization.md) | 8 | K-maps, don't cares, prime implicants, Quine–McCluskey idea, how synthesis tools minimize |
 | [08-04 · Combinational Building Blocks](courses/08-digital-logic-design/chapters/08-04-combinational-building-blocks.md) | 10 | Mux, decoder, encoder, priority encoder, adders, subtractors, comparators, ALU, hazards |
