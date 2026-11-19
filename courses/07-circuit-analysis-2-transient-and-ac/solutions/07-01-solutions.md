@@ -86,6 +86,23 @@ $f_{SR} = 1/(2\pi\sqrt{0.4\ \text{nH}\times100\ \text{nF}}) = $ **25.16 MHz**. A
 
 At DC the capacitor is an open circuit and the inductor a short, so the source drives 2 kΩ and 4 kΩ in series: $i_L = 12/6 = $ **2 mA**, and the capacitor sits at node a, $v_C = 2\ \text{mA}\times4\ \text{kΩ} = $ **8 V**. Energies: $\tfrac12\times1\ \text{µF}\times64 = $ **32 µJ** and $\tfrac12\times10\ \text{mH}\times(2\ \text{mA})^2 = $ **20 nJ**.
 
+### Solution 07-01.15
+
+(a) In series, $C_{eq} = (1/2 + 1/3)^{-1}$ µF = **1.2 µF**. Series aiding, the terminal voltage is the sum, $5 + 2 = $ **7 V**.
+
+(b) The two capacitors store $\tfrac12(2\ \mu\text{F})(5^2) + \tfrac12(3\ \mu\text{F})(2^2) = 25 + 6 = $ **31 µJ**. The equivalent capacitor at 7 V would store $\tfrac12(1.2\ \mu\text{F})(7^2) = $ **29.4 µJ**.
+
+(c) Seen from the resistor, the pair behaves as 1.2 µF at 7 V, so the terminal voltage decays as $7e^{-t/\tau}$ with $\tau = RC_{eq} = 10\ \text{k}\Omega\times1.2\ \mu\text{F} = $ **12 ms**, to zero. The same current flows through both capacitors, so each loses the same charge, $Q = C_{eq}\times7\ \text{V} = 8.4$ µC. Their final voltages are:
+
+- 2 µF: $5 - 8.4/2 = $ **0.8 V**;
+- 3 µF: $2 - 8.4/3 = $ **−0.8 V**.
+
+The terminal voltage is $0.8 - 0.8 = 0$, as it must be, but neither capacitor is empty.
+
+(d) The resistor dissipates $\int i^2R\,dt = \tfrac12C_{eq}(7^2) = $ **29.4 µJ**, the equivalent capacitor's energy. The capacitors keep $\tfrac12(2\ \mu\text{F})(0.8^2) + \tfrac12(3\ \mu\text{F})(0.8^2) = 0.64 + 0.96 = $ **1.6 µJ**, exactly the difference $31 - 29.4$.
+
+The series combination is defined by the terminal relation $i = C_{eq}\,dv/dt$. Any charge distribution with the same terminal voltage looks the same from outside. The energy trapped by the mismatch between the two capacitors' charges is invisible at the terminals and cannot be extracted through them. That is why series-connected cells or capacitors in a battery or supercapacitor stack need balancing.
+
 ---
 
 ## Answer key
@@ -135,3 +152,12 @@ At DC the capacitor is an open circuit and the inductor a short, so the source d
 | 07-01.14b | capacitor voltage | 8 | V |
 | 07-01.14c | capacitor energy | 32 | µJ |
 | 07-01.14d | inductor energy | 20 | nJ |
+| 07-01.15a | equivalent capacitance | 1.2 | µF |
+| 07-01.15b | initial terminal voltage | 7 | V |
+| 07-01.15c | energy in the two capacitors | 31 | µJ |
+| 07-01.15d | energy of the equivalent | 29.4 | µJ |
+| 07-01.15e | time constant | 12 | ms |
+| 07-01.15f | final voltage, 2 µF | 0.8 | V |
+| 07-01.15g | final voltage, 3 µF | −0.8 | V |
+| 07-01.15h | energy dissipated | 29.4 | µJ |
+| 07-01.15i | energy left | 1.6 | µJ |

@@ -104,11 +104,17 @@ $$
 
 (b) Write $s = (s + \alpha) - \alpha$: $i_\delta(t) = \dfrac{1}{L}e^{-\alpha t}\Big(\cos\omega_dt - \dfrac{\alpha}{\omega_d}\sin\omega_dt\Big)$. At $0^+$: $1/L = $ **1000 A per V·s**. (A unit voltage impulse puts 1 V·s across the inductor at once, giving it $1/L$ amperes.)
 
-(c) Zero where $\tan\omega_dt = \omega_d/\alpha$: $t = \arctan(\omega_d/\alpha)/\omega_d = $ **45.22 µs**. The step response is the integral of the impulse response, so the step response's current has its peak exactly where the impulse response crosses zero: 45.22 µs, as Problem 07-03.14 found.
+(c) Zero where $\tan\omega_dt = \omega_d/\alpha$: $t = \arctan(\omega_d/\alpha)/\omega_d = $ **45.22 µs**. The step response is the integral of the impulse response, so the step response's current has its peak exactly where the impulse response crosses zero: 45.22 µs, as Solution 07-03.14(c) found.
 
 ### Solution 07-04.10
 
-(a) Flux linkage is conserved through the switching instant (the s-domain shows an impulse of voltage, of finite area, so no flux can change discontinuously in total): $L_1\cdot1 + L_2\cdot0 = (L_1 + L_2)\,i$, so $i = 10/40 = $ **0.2500 A**.
+(a) In the s-domain, each inductor is $sL$ in series with an initial-condition source $Li(0^-)$ (07-04 §3.2). After the switch opens, the two inductors form one loop, carrying a common current $I(s)$. Its KVL contains only the two inductors: the 10 mH one contributes $sL_1I - L_1i_1(0^-)$, and the 30 mH one $sL_2I - L_2\cdot0$. Setting the sum to zero gives
+
+$$
+I(s) = \frac{L_1i_1(0^-)}{s(L_1 + L_2)} = \frac{0.01}{0.04\,s} = \frac{0.25}{s} ,
+$$
+
+so $i = $ **0.2500 A** from $0^+$ on. In the time domain, each inductor sees a voltage impulse at $t = 0$. Because the loop contains nothing else, the two impulses are equal and opposite, so the total flux linkage $L_1i_1 + L_2i_2$ is conserved: $L_1\cdot1 + L_2\cdot0 = (L_1 + L_2)\,i$.
 
 (b) Before: $\tfrac12(0.01)(1^2) = $ **5.000 mJ**. After: $\tfrac12(0.04)(0.25^2) = $ **1.250 mJ**.
 
@@ -134,7 +140,15 @@ $$
 
 ### Solution 07-04.12
 
-(a) With $V_b = V_o/K$, KCL at node a: $(V_a - V_{in})/R + (V_a - V_b)/R + sC(V_a - V_o) = 0$; at node b: $(V_b - V_a)/R + sCV_b = 0$. Eliminating $V_a$:
+(a) With $V_b = V_o/K$, KCL at node a: $(V_a - V_{in})/R + (V_a - V_b)/R + sC(V_a - V_o) = 0$; at node b: $(V_b - V_a)/R + sCV_b = 0$. Write $x = sRC$ and multiply each equation by $R$. Node b gives $V_a = (1 + x)V_b = (1 + x)V_o/K$. Node a becomes $(2 + x)V_a - V_b - xV_o = V_{in}$. Substituting:
+
+$$
+\frac{V_o}{K}\big[(2 + x)(1 + x) - 1\big] - xV_o = V_{in}
+\quad\Longrightarrow\quad
+\frac{V_o}{K}\big[x^2 + (3 - K)x + 1\big] = V_{in} ,
+$$
+
+so
 
 $$
 H(s) = \frac{K}{(sRC)^2 + (3 - K)\,sRC + 1} .
@@ -146,7 +160,13 @@ $$
 
 ### Solution 07-04.13
 
-(a) Writing $x = sRC$ and solving the three node equations (each node: current in through the left resistor, out through the right resistor and the capacitor) gives $V_3/V_{in} = 1/(x^3 + 5x^2 + 6x + 1)$; the cross terms come from each section loading the previous one.
+(a) Write $x = sRC$ and multiply each node equation by $R$. Work back from the output, where each node has current in through the left resistor and out through the right resistor and the capacitor:
+
+- node 3 (no right resistor): $V_3 - V_2 + xV_3 = 0$, so $V_2 = (1 + x)V_3$;
+- node 2: $(2 + x)V_2 - V_1 - V_3 = 0$, so $V_1 = (2 + x)(1 + x)V_3 - V_3 = (x^2 + 3x + 1)V_3$;
+- node 1: $(2 + x)V_1 - V_{in} - V_2 = 0$, so $V_{in} = (2 + x)(x^2 + 3x + 1)V_3 - (1 + x)V_3 = (x^3 + 5x^2 + 6x + 1)V_3$.
+
+So $V_3/V_{in} = 1/(x^3 + 5x^2 + 6x + 1)$. The cross terms come from each section loading the previous one; three buffered sections would give $(1 + x)^3 = x^3 + 3x^2 + 3x + 1$.
 
 (b) The loop $V_{in} = -KV_3$ has a nonzero solution when $1 + K/(x^3 + 5x^2 + 6x + 1) = 0$:
 
@@ -167,6 +187,52 @@ All coefficients are positive, so the cubic condition requires $5\times6 > 1 + K
 (c) With 0.205 Ω in total: $f_z = $ **352.9 kHz**, back inside the window. The cost: a load step $\Delta I$ produces an immediate output step $\Delta I\times R$ across that resistance before the loop responds, here $0.05\times0.205 = $ **10.25 mV**, and the resistor adds output noise and ripple.
 
 (d) No: $1/(2\pi\times0.1\times2.2\times10^{-6}) = 723.4$ kHz, ten times the printed 72.3 kHz. The note's physics is right; its arithmetic slipped a decimal place (§9).
+
+### Solution 07-04.15
+
+(a) $H(s) = 1/(1 + s\tau)$ with $\tau = RC$ = 1 ms, so $h(t) = (1/\tau)e^{-t/\tau}$ (units 1/s; its area is 1, the DC gain).
+
+(b) With $v_{in}(\lambda) = k\lambda$:
+
+$$
+v_{out}(t) = \int_0^t\frac1\tau e^{-(t - \lambda)/\tau}k\lambda\,d\lambda = \frac{k}{\tau}e^{-t/\tau}\int_0^t\lambda e^{\lambda/\tau}\,d\lambda .
+$$
+
+Integrating by parts, $\int_0^t\lambda e^{\lambda/\tau}d\lambda = \big[\tau\lambda e^{\lambda/\tau} - \tau^2e^{\lambda/\tau}\big]_0^t = \tau te^{t/\tau} - \tau^2e^{t/\tau} + \tau^2$. Hence
+
+$$
+v_{out}(t) = k\big[t - \tau(1 - e^{-t/\tau})\big] .
+$$
+
+(c) $V_{in} = k/s^2$, so $V_{out} = k/[s^2(1 + s\tau)]$. Partial fractions give $k\big[1/s^2 - \tau/s + \tau^2/(1 + s\tau)\big]$; check by recombining: $k[(1 + s\tau) - s\tau(1 + s\tau) + s^2\tau^2]/[s^2(1 + s\tau)] = k/[s^2(1 + s\tau)]$ ✓. Inverting, $v_{out} = k[t - \tau + \tau e^{-t/\tau}]$: the same function, and the same as 07-02's ramp response. The s-domain replaced the integration by parts with algebra.
+
+(d) The values:
+
+- at 1 ms: $v_{out} = 1 - (1 - e^{-1}) = $ **0.3679 V**, a lag of **0.6321 V**;
+- at 5 ms: $v_{out} = 5 - (1 - e^{-5}) = $ **4.007 V**, a lag of **0.9933 V**.
+
+The lag settles to $k\tau = $ **1 V**: in steady state the output follows the ramp one time constant late, which is how a ramp test measures τ.
+
+### Solution 07-04.16
+
+(a) With $\omega$ = 1000 rad/s and $\tau$ = 1 ms ($\omega\tau = 1$):
+
+$$
+V_{out}(s) = \frac{1}{1 + s\tau}\cdot\frac{10s}{s^2 + \omega^2} = \frac{K_0}{s + 1/\tau} + \frac{K_1}{s - j\omega} + \frac{K_1^*}{s + j\omega} .
+$$
+
+The residues:
+
+- at $s = -1/\tau = -1000$: $K_0 = (1/\tau)\cdot10s/(s^2 + \omega^2) = 1000\times10\times(-1000)/(2\times10^6) = -5$ V;
+- at $s = j\omega$: $K_1 = \tfrac12\times10\,H(j\omega) = 5/(1 + j) = 3.536\angle{-45°}$ V.
+
+So $v_{out}(t) = 7.071\cos(1000t - 45°) - 5e^{-1000t}$ V.
+
+(b) $H(j\omega) = 1/(1 + j) = $ **0.7071** at **−45°**, so the steady state is $10\times0.7071\cos(1000t - 45°)$: amplitude **7.071 V**, as the general result of §3.9 says.
+
+(c) The transient starts at **−5 V**, exactly cancelling the steady-state part's $7.071\cos(-45°) = 5$ V, because the capacitor starts uncharged. At 1 ms, $v_{out} = 7.071\cos(1 - 0.7854) - 5e^{-1} = 6.909 - 1.839 = $ **5.069 V**. The transient falls below $0.01\times7.071$ when $5e^{-t/\tau} < 0.07071$, that is after $t = \tau\ln(5/0.07071) = $ **4.259 ms**.
+
+(d) The transient's size is set by the mismatch at $t = 0$ between the capacitor voltage (0) and the steady-state output's value there. With phase φ the steady state is $7.071\cos(1000t + \phi - 45°)$. It is 0 at $t = 0$ when $\phi - 45° = \pm90°$, so the switch-on phase is **φ = −45°**. Switching on at that instant (or at φ = 135°) gives no transient at all. The same reasoning explains why the inrush current of a transformer or capacitor bank depends on the point of the waveform at which the breaker closes.
 
 ---
 
@@ -231,3 +297,16 @@ All coefficients are positive, so the cubic condition requires $5\times6 > 1 + K
 | 07-04.14c | ESR zero of the ceramic | 14.47 | MHz |
 | 07-04.14d | zero with 0.2 Ω added | 352.9 | kHz |
 | 07-04.14e | step across 0.205 Ω at 50 mA | 10.25 | mV |
+| 07-04.15a | $v_{out}$ at 1 ms | 0.3679 | V |
+| 07-04.15b | lag at 1 ms | 0.6321 | V |
+| 07-04.15c | $v_{out}$ at 5 ms | 4.007 | V |
+| 07-04.15d | lag at 5 ms | 0.9933 | V |
+| 07-04.15e | final lag | 1 | V |
+| 07-04.16a | $\lvert H(j\omega)\rvert$ | 0.7071 | — |
+| 07-04.16b | $\angle H(j\omega)$ | −45 | ° |
+| 07-04.16c | steady-state amplitude | 7.071 | V |
+| 07-04.16d | transient at $0^+$ | −5 | V |
+| 07-04.16e | $v_{out}$ at 1 ms | 5.069 | V |
+| 07-04.16f | time for the transient to fall below 1% | 4.259 | ms |
+| 07-04.16g | switch-on phase with no transient | −45 | ° |
+| 07-04.16h | residue magnitude at $j\omega$ | 3.536 | V |

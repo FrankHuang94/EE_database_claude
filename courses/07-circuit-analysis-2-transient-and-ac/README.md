@@ -38,7 +38,7 @@ Circuits with memory. Capacitors and inductors, first- and second-order transien
 | [07-10 · Two-Port Networks](chapters/07-10-two-port-networks.md) | 7 | ✅ verified | [problems](problems/07-10-problems.md) · [solutions](solutions/07-10-solutions.md) · [lab](labs/07-10-lab/README.md) · [verify](verify/verify_07_10.py) |
 | [07-11 · Three-Phase Circuits](chapters/07-11-three-phase-circuits.md) | 5 | ✅ verified | [problems](problems/07-11-problems.md) · [solutions](solutions/07-11-solutions.md) · [lab](labs/07-11-lab/README.md) · [verify](verify/verify_07_11.py) |
 
-**Course resources:** [Flashcards (Anki CSV)](../../flashcards/07-circuit-analysis-2-transient-and-ac.csv)
+**Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/07-circuit-analysis-2-transient-and-ac.csv) · [Equation sheet](../../reference/equation-sheets/07-circuit-analysis-2-transient-and-ac.md)
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 

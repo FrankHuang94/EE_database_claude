@@ -135,13 +135,13 @@ $$
 
 (d) 0.3 Ω, essentially $Z_0$, is the best of the three (a finer search puts the optimum near 0.25 Ω), confirming the rule. Too little ESR and the electrolytic simply joins the ceramic as a larger, still lightly damped capacitance (a new tank with $L$, ringing more slowly); too much ESR and the damper is disconnected at the ringing frequency, so the ceramic rings almost as before.
 
-(e) A series resistor raises the loop resistance to 0.35 Ω, so ζ = $0.35/(2\times0.3162) = 0.5534$ and OS = $e^{-\pi(0.5534)/0.8329} = 12.40\%$: a peak of **13.49 V**, no better than the damper. But at 2 A it drops **0.60 V** and dissipates **1.20 W** continuously. The electrolytic damper costs nothing in steady state, so it is the better fix; a series resistor also worsens the regulation of the supply under load.
+(e) A series resistor raises the loop resistance to 0.35 Ω, so ζ = $0.35/(2\times0.3162) = 0.5534$ and OS = $e^{-\pi(0.5534)/0.8329} = 12.40\%$: a peak of **13.49 V**, slightly lower than the damper's 13.70 V. But at 2 A it drops **0.60 V** and dissipates **1.20 W** continuously. The electrolytic damper costs nothing in steady state, so it is the better fix; a series resistor also worsens the regulation of the supply under load.
 
 ### Solution 07-03.12
 
 (a) $Z_0 = \sqrt{8\times10^{-9}/2\times10^{-9}} = $ **2.000 Ω**; ζ = $R/(2Z_0) = 1/4 = $ **0.2500**. The gate voltage is the capacitor voltage of a series RLC, so OS = 44.43% and the gate peaks at $12\times1.4443 = $ **17.33 V**.
 
-(b) $R = 2Z_0 = $ **4.000 Ω**. TI's gate-drive guide gives the same rule as its optimum external gate resistor, $2\sqrt{L_S/C_{ISS}}$ minus the driver and internal gate resistances, with $L_S$ the source inductance ([R-113](../../../reference/research-log.md#r-113--rc-snubbers-and-gate-drive-damping)); here the whole 8 nH loop is used.
+(b) $R = 2Z_0 = $ **4.000 Ω**. TI's gate-drive guide gives the same rule as its optimum external gate resistor, $2\sqrt{L_S/C_{ISS}}$ minus the driver and internal gate resistances, with $L_S$ the inductance that resonates with $C_{ISS}$ in the gate-drive loop ([R-113](../../../reference/research-log.md#r-113--rc-snubbers-and-gate-drive-damping)): here, the whole 8 nH loop.
 
 (c) With $\omega_0 = 1/\sqrt{1.6\times10^{-17}} = 2.5\times10^8$ rad/s, the critically damped response $1 - (1 + x)e^{-x}$ reaches 10% at $x = 0.5318$ and 90% at $x = 3.890$, so $t_r = 3.358/\omega_0 = $ **13.43 ns**.
 
@@ -170,11 +170,11 @@ $$
 
 The slope of $v_L$ follows from $v_L = V - v_R - v_C$: its derivative is $-\dot v_R - \dot v_C = -50\,000$ V/s.
 
-(c) $i_{pk} = (V/Z_0)\exp\big(-\zeta\arccos\zeta/\sqrt{1 - \zeta^2}\big) = 0.1581\times0.7976 = $ **126.1 mA**†.
+(c) $i_{pk} = (V/Z_0)\exp\big(-\zeta\arccos\zeta/\sqrt{1 - \zeta^2}\big) = 0.1581\times0.7976 = $ **126.1 mA**†, at $t = \arccos\zeta/\omega_d = $ **45.22 µs**.
 
 (d) $v_L$ has $D = 5$ V (final value 0) and slope $-50\,000$ V/s, so its extremes satisfy $\tan\omega_dt = 31\,225\times(-50\,000)/\big(5000\times(-50\,000) + 10^9\times5\big) = -0.3287$. The ratio is negative, so $\omega_dt = \pi - 0.3175 = 2.824$: $t = $ **90.44 µs**, where $v_L = $ **−3.181 V**†.
 
-(e) Once the capacitor voltage passes the source voltage (the overshoot), KVL leaves $v_L = V - v_R - v_C$ negative: the inductor is now slowing the current down, returning its energy to the circuit. A negative inductor voltage simply means the current is falling.
+(e) $v_L = L\,di/dt$, so $v_L$ turns negative exactly when the current starts to fall: at the current peak, $\omega_dt = \arccos\zeta$, that is $t$ = 45.22 µs from (c). By KVL, that is the instant when $v_R + v_C$ reaches $V$, well before the capacitor voltage itself passes $V$ (at $\omega_dt = \pi - \arccos\zeta$, $t = $ **55.39 µs**). From then on the inductor slows the current down, returning its stored energy to the circuit. This happens for every damping, even an overdamped circuit that never overshoots, because the current must return to its final value of zero: a negative inductor voltage simply means the current is falling.
 
 ### Solution 07-03.15
 
@@ -197,6 +197,40 @@ The slope of $v_L$ follows from $v_L = V - v_R - v_C$: its derivative is $-\dot 
 (d) A 100 MHz scope attenuates a 125 MHz ring substantially, so much of it may not be seen at all (Tektronix makes this point for its 11 pF, 6-inch example); a 500 MHz scope shows it in full. The danger is the faster scope: it shows ringing that is not in the circuit.
 
 (e) Change the ground-lead length (or switch to a spring) and watch the ringing frequency. If the frequency moves, the ringing belongs to the probe; if it does not, it comes from the circuit (the test Tektronix recommends, [R-114](../../../reference/research-log.md#r-114--oscilloscope-probe-ground-lead-ringing)).
+
+### Solution 07-03.17
+
+(a) Each integrator's inverting input is a virtual ground, so the input currents flow into the feedback network (06-10).
+
+- A1: $(v_{in} + v_3)/R = -C\,\dot v_1 - v_1/R_Q$.
+- A2: $v_1/R = -C\,\dot v_2$, so $v_1 = -RC\,\dot v_2$.
+- A3: $v_3 = -v_2$.
+
+Substitute $v_1$ and $v_3$ into A1's equation:
+
+$$
+\frac{v_{in} - v_2}{R} = RC^2\,\ddot v_2 + \frac{RC}{R_Q}\,\dot v_2
+\quad\Longrightarrow\quad
+\ddot v_2 + \frac{1}{R_QC}\,\dot v_2 + \frac{1}{(RC)^2}\,v_2 = \frac{v_{in}}{(RC)^2} .
+$$
+
+(b) Compare with $\ddot x + 2\alpha\dot x + \omega_0^2x$:
+
+- $\omega_0 = 1/(RC) = $ **10 000 rad/s** ($f_0$ = 1.592 kHz);
+- $\alpha = 1/(2R_QC)$, so $\zeta = \alpha/\omega_0 = R/(2R_Q) = $ **0.1**;
+- $Q = R_Q/R = $ **5**.
+
+$R$ and $C$ set the frequency; $R_Q$ alone sets the damping.
+
+(c) The DC gain is 1, so $v_2 \to$ **1 V**. With no zeros and the circuit at rest, the standard formulas apply:
+
+- the overshoot is $e^{-\pi\zeta/\sqrt{1 - \zeta^2}} = e^{-0.3157} = $ **72.92%**;
+- the peak is **1.729 V**;
+- it occurs at $t_p = \pi/\omega_d = \pi/(10^4\sqrt{0.99}) = $ **315.7 µs**.
+
+(d) $R_Q = QR = R/\sqrt2 = $ **7.071 kΩ** (equivalently $R/(2\zeta)$ with $\zeta = 1/\sqrt2$). The overshoot falls to $e^{-\pi} = $ **4.321%**.
+
+(e) The op-amps are active elements. They supply energy, and, more to the point, the loop is not a reciprocal resistor network. The current into A1 depends on $v_3$, but nothing about $v_1$ drives back into A3 the same way, so the symmetry that §3.9's proof needed ($G_{12}$ appearing equally in both equations) is broken. Two integrators in a loop with an inversion behave like an inductor and a capacitor exchanging energy. This **two-integrator loop** is the basis of state-variable and Tow–Thomas active filters, which realize any $\omega_0$ and $Q$ with resistors, capacitors and op-amps alone.
 
 ---
 
@@ -301,6 +335,8 @@ The slope of $v_L$ follows from $v_L = V - v_R - v_C$: its derivative is $-\dot 
 | 07-03.14f | peak current | 126.1 | mA |
 | 07-03.14g | time of the $v_L$ minimum | 90.44 | µs |
 | 07-03.14h | minimum $v_L$ | −3.181 | V |
+| 07-03.14i | time of the current peak | 45.22 | µs |
+| 07-03.14j | time $v_C$ first reaches $V$ | 55.39 | µs |
 | 07-03.15a | $f_0$ | 5.033 | MHz |
 | 07-03.15b | α | −50.00 | 10³ s⁻¹ |
 | 07-03.15c | growth time constant | 20.00 | µs |
@@ -315,3 +351,12 @@ The slope of $v_L$ follows from $v_L = V - v_R - v_C$: its derivative is $-\dot 
 | 07-03.16f | $Z_0$ with the spring | 37.27 | Ω |
 | 07-03.16g | ζ with the spring | 0.6708 | — |
 | 07-03.16h | overshoot with the spring | 5.83 | % |
+| 07-03.17a | $\omega_0$ | 10000 | rad/s |
+| 07-03.17b | ζ | 0.1 | — |
+| 07-03.17c | $Q$ | 5 | — |
+| 07-03.17d | final value | 1 | V |
+| 07-03.17e | overshoot | 72.92 | % |
+| 07-03.17f | peak | 1.729 | V |
+| 07-03.17g | peak time | 315.7 | µs |
+| 07-03.17h | $R_Q$ for a Butterworth response | 7.071 | kΩ |
+| 07-03.17i | Butterworth overshoot | 4.321 | % |

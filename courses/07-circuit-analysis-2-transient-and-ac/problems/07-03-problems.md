@@ -81,15 +81,25 @@ Example 07-03.3's input (12 V, cable $L$ = 1 µH and $R$ = 50 mΩ, a 10 µF cera
 
 **Is it the circuit or the probe?** A 10× passive probe has 10.8 pF of input capacitance (its 10 MΩ input resistance is negligible here) and a 6-inch ground lead of about 150 nH. It measures a fast edge from a 50 Ω source. Treat the source resistance, the ground lead and the probe capacitance as a series RLC driven by the edge. (a) Find $f_0$, $Z_0$ and ζ. (b) What overshoot does the probe itself add to an ideal step? (c) A ground spring cuts the inductance to 15 nH. Repeat (a) and (b). (d) Would a 100 MHz oscilloscope show the ringing of (a) clearly? A 500 MHz one? (e) Describe a quick bench test that tells probe ringing from circuit ringing.
 
+### Problem 07-03.17 [B]
+
+**A second-order op-amp circuit.** Three ideal op-amps form a loop, all with $R$ = 10 kΩ and $C$ = 10 nF:
+
+- A1 is an inverting integrator: inputs $v_{in}$ and $v_3$ each through $R$ to its inverting input, $C$ in feedback, and a damping resistor $R_Q$ in parallel with $C$. Its output is $v_1$.
+- A2 is an inverting integrator ($R$ in, $C$ in feedback) driven by $v_1$. Its output is $v_2$.
+- A3 is a unity-gain inverter, $v_3 = -v_2$.
+
+(a) Write each op-amp's equation and derive the differential equation for $v_2$. (b) Find $\omega_0$, ζ and $Q$ in terms of $R$, $C$ and $R_Q$, and evaluate them for $R_Q$ = 50 kΩ. (c) With all capacitors uncharged, $v_{in}$ steps from 0 to 1 V at $t = 0$. Find $v_2$'s final value, overshoot, peak and peak time. (d) Choose $R_Q$ for a Butterworth response ($Q = 1/\sqrt2$) and find the new overshoot. (e) §3.9 proved that resistors and capacitors alone cannot ring. Why does this circuit ring?
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 07-03) | Problems |
 |---|---|
-| 1. Derive the equation of series, parallel and general circuits; α, $\omega_0$, ζ, $Q$, $Z_0$ | 1, 2, 8, 9, 11, 15 |
+| 1. Derive the equation of series, parallel and general circuits; α, $\omega_0$, ζ, $Q$, $Z_0$ | 1, 2, 8, 9, 11, 15, 17 |
 | 2. Initial conditions $x(0^+)$, $\dot x(0^+)$ and final values | 3, 7, 8, 14 |
 | 3. Natural and step responses in all three cases; peaks and zero crossings | 4, 5, 6, 7, 8, 13, 14 |
-| 4. Reading and specifying ringing; when the formulas apply | 4, 6, 8, 12, 14, 16 |
-| 5. Damping design; why RC circuits cannot ring | 5, 9, 10, 11, 12 |
+| 4. Reading and specifying ringing; when the formulas apply | 4, 6, 8, 12, 14, 16, 17 |
+| 5. Damping design; why RC circuits cannot ring | 5, 9, 10, 11, 12, 17 |
 | 6. Ringing in hardware and evaluating claims | 10, 11, 12, 13, 15, 16 |

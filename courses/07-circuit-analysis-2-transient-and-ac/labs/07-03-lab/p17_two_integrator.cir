@@ -1,0 +1,29 @@
+* Problem 07-03.17 in ngspice: the three-op-amp two-integrator loop (R = 10 k, C = 10 nF, RQ = 50 k),
+* op-amps modeled as voltage-controlled sources of gain 1e6 with the non-inverting inputs grounded.
+* A 1 V input step at t = 0 (1 ns ramp); all capacitors start uncharged (uic).
+*
+* EXPECT pk  key:../../solutions/07-03-solutions.md#07-03.17f rtol=5e-4
+* EXPECT tpk key:../../solutions/07-03-solutions.md#07-03.17g scale=1e-6 rtol=2e-3
+
+Vin in 0 PWL(0 0 1n 1)
+R1a in n1 10k
+R1b v3 n1 10k
+C1  n1 v1 10n IC=0
+RQ  n1 v1 50k
+E1  v1 0 0 n1 1e6
+R2  v1 n2 10k
+C2  n2 v2 10n IC=0
+E2  v2 0 0 n2 1e6
+R3a v2 n3 10k
+R3b n3 v3 10k
+E3  v3 0 0 n3 1e6
+
+.options reltol=1e-7 abstol=1e-15 vntol=1e-10
+.control
+tran 0.1u 2m 0 0.1u uic
+meas tran pk max v(v2) from=0 to=1m
+meas tran tp max_at v(v2) from=0 to=1m
+let tpk = tp - 0.5n
+print tpk
+.endc
+.end

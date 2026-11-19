@@ -24,6 +24,7 @@ Chapter sections 3.2 to 3.10 and Examples 07-03.1 to 07-03.6. The one tool used 
 | [ex5_snubber.cir](ex5_snubber.cir) | A switch node with no snubber and four RC snubbers | Example 07-03.5 |
 | [ex6_rc_ladder.cir](ex6_rc_ladder.cir) | A loaded and a buffered two-section RC ladder | Example 07-03.6 |
 | [problems.cir](problems.cir) | Problems 07-03.4, .6, .7, .8, .12, .13, .14 and .16 | Solution answer key |
+| [p17_two_integrator.cir](p17_two_integrator.cir) | Problem 07-03.17: the three-op-amp two-integrator loop | Solution answer key |
 
 Each netlist begins with `* EXPECT` lines naming the measurement and the published answer it must reproduce. Run them all from the repository root:
 
@@ -77,4 +78,4 @@ python tools/run_spice.py 07-03
 
 ## Optional hardware version
 
-With a bench supply set to 12 V, a 1 m pair of wires, a 10 µF ceramic capacitor (X7R, at least 25 V rated) and an oscilloscope with a short ground spring, plug the wires onto the capacitor while triggering on the rising edge and record the peak. Then add a 47 µF aluminum electrolytic (35 V) across the ceramic and repeat. Use a supply whose current limit is set to a few amperes, keep the voltage at or below 12 V so that even a doubled peak stays inside the capacitor's rating, and estimate the wire pair's inductance from the ringing frequency with the method of chapter §3.10. Expect the peak and the damping to differ from the ideal model, since the supply's own output capacitance and the ceramic's DC-bias loss both change the circuit.
+With a bench supply set to 12 V, a 1 m pair of wires, a 10 µF ceramic capacitor (X7R, rated 50 V or more: a hot plug can ring to twice the supply, and the chapter's §9 shows real class II parts going beyond that) and an oscilloscope with a short ground spring, plug the wires onto the capacitor while triggering on the rising edge and record the peak. Then add a 47 µF aluminum electrolytic (35 V) across the ceramic and repeat. Use a supply whose current limit is set to a few amperes, keep the voltage at or below 12 V so that even a doubled peak stays inside the capacitor's rating, and estimate the wire pair's inductance from the ringing frequency with the method of chapter §3.10. Expect the peak and the damping to differ from the ideal model, since the supply's own output capacitance and the ceramic's DC-bias loss both change the circuit.

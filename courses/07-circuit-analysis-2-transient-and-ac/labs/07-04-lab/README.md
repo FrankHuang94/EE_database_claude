@@ -22,6 +22,7 @@ Chapter sections 3.2 to 3.8 and Examples 07-04.1 to 07-04.6. You need Python wit
 | [ex2_pz.cir](ex2_pz.cir) | ngspice's pole–zero analysis of Example 07-04.2's filter | Chapter answer key |
 | [ex6_wien_pz.cir](ex6_wien_pz.cir) | ngspice's pole–zero analysis of the Wien bridge at K = 2.9 | Chapter answer key |
 | [problems.cir](problems.cir) | Problems 07-04.4, 07-04.6 and 07-04.11 | Solution answer key |
+| [p15_p16.cir](p15_p16.cir) | Problems 07-04.15 (ramp) and 07-04.16 (switched-on sinusoid) | Solution answer key |
 
 The pole–zero analyses have netlists of their own because `.pz` reports the poles of everything in a netlist. Each netlist begins with `* EXPECT` lines naming the measurement and the published answer it must reproduce. Run them all from the repository root:
 

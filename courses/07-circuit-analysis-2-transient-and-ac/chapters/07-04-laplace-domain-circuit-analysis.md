@@ -14,8 +14,8 @@
 1. Derive the s-domain models of resistors, inductors and capacitors, including their initial conditions in series (voltage-source) and parallel (current-source) form, and transform any switched circuit.
 2. Apply impedances, dividers, nodal and mesh analysis and Thévenin–Norton equivalents in the s-domain to circuits of any order, and identify the characteristic polynomial as the determinant of the circuit equations.
 3. Derive transfer functions directly from a circuit, locate their poles and zeros, and explain each zero from the circuit's structure.
-4. Find impulse, step and complete responses, including the impulsive currents and voltages of ideal switching, and check them with the initial- and final-value theorems.
-5. Decide stability from pole locations, explain why passive circuits cannot be unstable while active ones can, and find the gain at which an active circuit starts to oscillate.
+4. Find impulse, step, convolution and complete responses (including the sinusoidal steady state from $H(j\omega)$ and the impulsive currents and voltages of ideal switching), and check them with the initial- and final-value theorems.
+5. Decide stability from pole locations, explain why passive circuits cannot have growing natural modes while active ones can, and find the gain at which an active circuit starts to oscillate.
 6. Use pole–zero reasoning in practice (output-capacitor ESR and regulator stability, pole–zero analysis in a simulator, loop measurements) and evaluate claims about it.
 
 ## 1. Big picture
@@ -170,13 +170,47 @@ where $P_{ic}$ collects the initial-condition terms. Both parts share the denomi
 
 A circuit is **stable** when every bounded input produces a bounded output; for the circuits here that means every pole of every transfer function lies in the open left half-plane, so every natural mode decays.
 
-**Passive circuits cannot be unstable.** In a circuit of positive resistors, capacitors and inductors with no sources inside, the stored energy can only fall: its rate of change is minus the power in the resistors (07-03 §3.11's argument generalizes). A natural mode that grew would increase the energy, so every natural frequency has $\operatorname{Re}s \le 0$. Equality is possible only for a lossless part of the circuit (an LC loop with no resistance), which rings forever but does not grow.
+**Passive circuits cannot have growing natural modes.** In a circuit of positive resistors, capacitors and inductors with no sources inside, the stored energy can only fall: its rate of change is minus the power in the resistors (the energy argument of [02-03 §3.11](../../02-complex-numbers-des-and-linear-algebra/chapters/02-03-second-order-linear-odes.md), generalized). A natural mode that grew would increase the energy, so every natural frequency has $\operatorname{Re}s \le 0$. If every mode feels some resistance, all poles are strictly in the left half-plane and the circuit is stable in the bounded-input, bounded-output sense above. A lossless part (an LC loop with no resistance) puts poles on the imaginary axis: it rings forever without growing on its own, so it is only **marginally stable**. Driven at its resonant frequency, its response grows linearly without bound (02-04's resonance), so it is not BIBO-stable.
 
 **Active circuits can be.** A dependent source (a transistor or op-amp model) can supply energy, and can push poles into the right half-plane. That is how every oscillator works (Example 07-04.6), and it is how amplifiers fail.
 
-**A quick test for low orders.** For a quadratic $s^2 + a_1s + a_0$, the roots' sum is $-a_1$ and their product $a_0$ (02-08's trace and determinant). Both roots have negative real parts exactly when $a_1 > 0$ and $a_0 > 0$: if the roots are real, a positive product means equal signs and a positive sum's negative means both negative; if complex, their common real part is $-a_1/2$. For a cubic $s^3 + a_2s^2 + a_1s + a_0$, the condition is that all coefficients are positive **and** $a_2a_1 > a_0$; this is the third-order case of the Routh–Hurwitz criterion, derived in [15-05](../../15-control-systems/chapters/15-05-stability-routh-hurwitz.md) (Problem 07-04.13 checks it numerically).
+**A quick test for low orders.** For a quadratic $s^2 + a_1s + a_0$, the roots' sum is $-a_1$ and their product $a_0$ (02-08's trace and determinant). Both roots have negative real parts exactly when $a_1 > 0$ and $a_0 > 0$: if the roots are real, a positive product means they have the same sign, and their sum, $-a_1$, is negative, so both are negative; if complex, their common real part is $-a_1/2$. For a cubic $s^3 + a_2s^2 + a_1s + a_0$, the condition is that all coefficients are positive **and** $a_2a_1 > a_0$; this is the third-order case of the Routh–Hurwitz criterion, derived in [15-05](../../15-control-systems/chapters/15-05-stability-routh-hurwitz.md) (Problem 07-04.13 checks it numerically).
 
 > **Going deeper — positive-real impedances.** The driving-point impedance of any passive RLC network is a *positive-real* function: real for real $s$, with $\operatorname{Re}Z(s) \ge 0$ whenever $\operatorname{Re}s \ge 0$. Its poles and zeros all lie in the closed left half-plane, and those on the imaginary axis are simple. The converse also holds: every positive-real function can be built from R, L, C and ideal transformers, a result of network synthesis due to Brune (1931) and refined by Bott and Duffin (1949), who showed transformers are unnecessary ([R-121](../../../reference/research-log.md#r-121--heavisides-operational-calculus-and-network-synthesis)). Network synthesis is the theory behind passive filter design ([07-08](07-08-filters-and-resonance.md)).
+
+### 3.9 Convolution and the sinusoidal steady state
+
+The transfer function has two more readings, one in time and one in frequency, and both are used constantly later.
+
+**Convolution.** The **impulse response** $h(t) = \mathcal{L}^{-1}\{H(s)\}$ is the zero-state response to a unit impulse. Any input can be viewed as a train of impulses: the slice of input at time λ is an impulse of area $x(\lambda)\,d\lambda$, which produces $h(t - \lambda)\,x(\lambda)\,d\lambda$ at time $t$. Linearity adds them up:
+
+$$
+y(t) = \int_0^t h(t - \lambda)\,x(\lambda)\,d\lambda \equiv (h * x)(t) ,
+$$
+
+the **convolution** of $h$ and $x$ (zero initial conditions, input starting at 0). Its transform is the product $H(s)X(s)$. To see this, write the transform of $y$ and swap the order of integration over the region $0 \le \lambda \le t$:
+
+$$
+\begin{aligned}
+Y(s) &= \int_0^\infty e^{-st}\int_0^t h(t - \lambda)x(\lambda)\,d\lambda\,dt = \int_0^\infty x(\lambda)\int_\lambda^\infty e^{-st}h(t - \lambda)\,dt\,d\lambda \\
+&= \int_0^\infty x(\lambda)e^{-s\lambda}\,d\lambda\int_0^\infty e^{-su}h(u)\,du = X(s)H(s) ,
+\end{aligned}
+$$
+
+with $u = t - \lambda$ in the inner integral. So multiplying transforms in the s-domain is convolving in time. For an RC low-pass, $H = 1/(1 + s\tau)$ gives $h = (1/\tau)e^{-t/\tau}$, and $h * x$ is exactly the convolution form of [07-02 §3.10](07-02-first-order-rc-rl-transients.md). The s-domain does the integral for you; Problem 07-04.15 compares the two routes for a ramp. Course 11 develops convolution for signals in general ([11-03](../../11-signals-and-systems/chapters/11-03-convolution.md)).
+
+**Sinusoidal steady state.** Drive a stable $H(s)$ with $x = \cos\omega t$ from $t = 0$. Then $X(s) = s/(s^2 + \omega^2) = \tfrac12\big[1/(s - j\omega) + 1/(s + j\omega)\big]$, and the partial fractions of $Y = HX$ contain two kinds of term:
+
+- terms at the poles of $H$, which decay, because $H$ is stable: the **transient**;
+- terms at $s = \pm j\omega$, with residues $\tfrac12H(j\omega)$ and $\tfrac12H(-j\omega) = \tfrac12H(j\omega)^*$ (a real circuit's $H$ has real coefficients).
+
+The second pair adds to
+
+$$
+y_{ss}(t) = \tfrac12H(j\omega)e^{j\omega t} + \tfrac12H(j\omega)^*e^{-j\omega t} = \operatorname{Re}\big[H(j\omega)e^{j\omega t}\big] = \lvert H(j\omega)\rvert\cos\big(\omega t + \angle H(j\omega)\big) .
+$$
+
+**After the transient dies, a sinusoid comes out as the same sinusoid, scaled by $\lvert H(j\omega)\rvert$ and shifted by $\angle H(j\omega)$.** This is the bridge to phasors (07-05), where $s = j\omega$ from the start, and to Bode plots (07-07), which draw $\lvert H(j\omega)\rvert$ and $\angle H(j\omega)$. The transient part is what the phasor method leaves out. Its size depends on the switch-on instant and on the initial conditions, and Problem 07-04.16 computes it.
 
 ## 4. Worked examples
 
@@ -247,10 +281,10 @@ $$
 (c) DC gain: $H(0) = $ **0.5**, the 50 Ω divider (inductor short, capacitors open). The step response, from the partial fractions $\tfrac{1}{2p} - \tfrac{1}{2(p + 1)} - \tfrac{1}{2(p^2 + p + 1)}$, is
 
 $$
-y(\tau) = \tfrac12 - \tfrac12e^{-\tau} - \tfrac{1}{\sqrt3}\,e^{-\tau/2}\sin\!\big(\tfrac{\sqrt3}{2}\tau\big), \qquad \tau = \omega_ct .
+y(\theta) = \tfrac12 - \tfrac12e^{-\theta} - \tfrac{1}{\sqrt3}\,e^{-\theta/2}\sin\!\big(\tfrac{\sqrt3}{2}\theta\big), \qquad \theta = \omega_ct .
 $$
 
-It peaks at $\tau = 4.922$, that is $t = $ **0.7834 µs**, at $y = 0.5407$: an overshoot of **8.15%**. A complex pole pair with ζ = 0.5 alone would overshoot 16.3%; the real pole slows the start and halves the overshoot.
+It peaks at $\theta = 4.922$ (θ is dimensionless time, not a time constant), that is $t = $ **0.7834 µs**, at $y = 0.5407$: an overshoot of **8.15%**. A complex pole pair with ζ = 0.5 alone would overshoot 16.3%; the real pole slows the start and halves the overshoot.
 
 **Units check.** $RC$ and $L/R$ are in seconds; $p$ is dimensionless ✓.
 **Sanity check.** $H(0) = 0.5$ and $H(p) \approx 1/(2p^3)$ for large $p$: a third-order filter falls three times as fast as an RC above its corner ✓.
@@ -317,7 +351,7 @@ The pole barely moves, but the zero moves by a factor of 100 with the ESR. Above
 
 ![The Wien-bridge poles as the gain varies](../../../assets/figures/07-04/wien-poles.svg)
 
-*Figure 3. Example 07-04.6: the circuit's two poles as the amplifier gain K rises from 0 to 3.5. At K = 0 they are real (a passive RC circuit); they meet near K = 1, travel around a circle of radius ω₀, and cross the imaginary axis at K = 3.*
+*Figure 3. Example 07-04.6: the circuit's two poles as the amplifier gain K rises from 0 to 3.5. At K = 0 they are real (a passive RC circuit); they meet at K = 1, travel around a circle of radius ω₀, and cross the imaginary axis at K = 3.*
 
 **Solution.**
 
@@ -410,7 +444,7 @@ The lab is in [labs/07-04-lab/](../labs/07-04-lab/README.md).
 |---|---|---|
 | Inductor initial-condition source | $L\,i(0^-)$ in V·s, or $i(0^-)/s$ in parallel | §3.2 |
 | Capacitor initial-condition source | $v(0^-)/s$ in series, or $C\,v(0^-)$ in A·s in parallel | §3.2 |
-| ESR zero | $f_z = 1/(2\pi R_{ESR}C)$: about 30 kHz for 10 µF tantalum at 0.5 Ω, above 3 MHz for 10 µF ceramic at 5 mΩ | TI AN-1482, [R-117](../../../reference/research-log.md#r-117--ldo-stability-and-output-capacitor-esr) **[Industry estimate: typical ESRs]** |
+| ESR zero | $f_z = 1/(2\pi R_{ESR}C)$: about 30 kHz for 10 µF tantalum at 0.5 Ω, above 3 MHz for 10 µF ceramic at 5 mΩ | TI AN-1482, [R-117](../../../reference/research-log.md#r-117--ldo-stability-and-output-capacitor-esr) **[Industry estimate]** (typical ESRs) |
 | Legacy LDO ESR window | TPS760xx: at least 2.2 µF with ESR 0.1–20 Ω (datasheet 1998, rev. 2001); TI's 1999 "tunnel of death" example: 0.2–9 Ω at 4.7 µF | [R-117](../../../reference/research-log.md#r-117--ldo-stability-and-output-capacitor-esr) **[Established]** |
 | Typical stable ESR ranges | electrolytic-stable LDOs about 0.1–10 Ω; ceramic-stable designs from 0 Ω up to about 0.5 Ω | TI AN-1482 **[Industry estimate]** |
 | Current LDOs | "Stable with 1-µF output capacitors" (TPS7A26, TPS7A25); TPS7A20: 1 µF ceramic, ESR ≤ 100 mΩ; onsemi NCP114: no minimum ESR, maximum below 2 Ω | [R-117](../../../reference/research-log.md#r-117--ldo-stability-and-output-capacitor-esr) **[Established]** |
@@ -433,7 +467,7 @@ The lab is in [labs/07-04-lab/](../labs/07-04-lab/README.md).
 3. **Forgetting the initial-condition source when finding a voltage.** In Example 07-04.1 the capacitor voltage is $I/(sC)$ *plus* $v_C(0^-)/s$.
 4. **Applying the final-value theorem without checking the poles.** A lossless LC tank or an unstable circuit has no final value, whatever $\lim sF(s)$ says.
 5. **Assuming the overshoot formula applies to every variable.** Zeros change overshoot; compute the step response.
-6. **Expecting a passive circuit to oscillate, or trusting an active one not to.** Passive RLC circuits have poles in the closed left half-plane; any circuit with gain must be checked.
+6. **Expecting a passive circuit to oscillate, or trusting an active one not to.** Passive RLC circuits have poles in the closed left half-plane (lossless parts on the axis are only marginally stable); any circuit with gain must be checked.
 7. **Cancelling a pole against a zero carelessly.** An exact cancellation on paper is approximate in hardware and leaves a slow residual mode (02-05).
 
 ## 9. Practitioner lens
@@ -446,7 +480,7 @@ The lab is in [labs/07-04-lab/](../labs/07-04-lab/README.md).
   - Designs since have moved the zero inside the chip, into the error amplifier's compensation, so they tolerate ESR down to zero. TI's TPS7A26 and TPS7A25 datasheets state "Stable with 1-µF output capacitors" and assume the capacitance derates to 50%; the TPS7A20 sets a *maximum* ESR of 100 mΩ; onsemi's NCP114 has "no requirement for the minimum value" of ESR, a maximum below 2 Ω, and discourages tantalum ([R-117](../../../reference/research-log.md#r-117--ldo-stability-and-output-capacitor-esr)) **[Established]**. The window has turned around: old parts needed enough ESR, new ones need little enough.
   - **Check the vendor's arithmetic.** SLVA115A's Equation 1 prints the ESR zero for 0.1 Ω and 2.2 µF as 72.3 kHz; §3.5's formula gives **723.4 kHz**, ten times higher (our arithmetic). The physics in the note is right; one printed number is not.
 - **Simulators find poles and zeros the same way you do.** ngspice's `.pz` analysis computes the poles and zeros of a voltage or transimpedance transfer function from the circuit's s-domain equations. Its manual (version 47, Aug 2026) warns that the method is "a sub-optimal numerical search" that may miss roots of large circuits or "find an excessive number" of them. Its XSPICE `s_xfer` model simulates any rational $H(s)$ directly ([R-118](../../../reference/research-log.md#r-118--pole-zero-analysis-and-s-domain-models-in-ngspice)) **[Established]**. This chapter's lab runs `.pz` (ngspice-42) on Example 07-04.2 and recovers the three Butterworth poles.
-- **Loops are measured without opening them.** R. D. Middlebrook's 1975 paper made the voltage- and current-injection methods standard: a small resistor is inserted in the loop and a test signal injected across it, so the loop keeps its operating point ([R-119](../../../reference/research-log.md#r-119--loop-gain-measurement-by-injection)) **[Established, from the abstract]**. OMICRON Lab's note uses a 10 Ω injection resistor and states the method's validity conditions; its Bode 100 analyzer covers 1 Hz to 50 MHz. TI's AN-1889 does it with a signal generator, an oscilloscope and a 20 Ω resistor, and recommends a phase margin of at least 45–50° **[Industry estimate for the margin]**.
+- **Loops are measured without opening them.** R. D. Middlebrook's 1975 paper made the voltage- and current-injection methods standard: a small resistor is inserted in the loop and a test signal injected across it, so the loop keeps its operating point ([R-119](../../../reference/research-log.md#r-119--loop-gain-measurement-by-injection)) **[Established]** (from the abstract). OMICRON Lab's note uses a 10 Ω injection resistor and states the method's validity conditions; its Bode 100 analyzer covers 1 Hz to 50 MHz. TI's AN-1889 does it with a signal generator, an oscilloscope and a 20 Ω resistor, and recommends a phase margin of at least 45–50° **[Industry estimate]** (for the margin).
 - **Amplifiers trade stability for speed by moving poles.** TI's OPA627 is unity-gain stable; its decompensated sibling OPA637 is "stable in gains ≥ 5" and offers a higher gain–bandwidth product (the datasheet quotes 80 MHz at a gain of 10). The OPA847 is stable only for gains of +12 or more, with a 3.9 GHz gain–bandwidth product ([R-120](../../../reference/research-log.md#r-120--decompensated-op-amps)) **[Established]**. Feedback places the closed-loop poles; less feedback (higher gain) keeps them safely in the left half-plane, which is the subject of 07-07 and Course 12.
 
 <!-- answer-key -->
@@ -525,7 +559,7 @@ It subtracts a scaled derivative of the all-pole response, so the output first m
 <details>
 <summary>Answer</summary>
 
-No. Its stored energy can only fall (the resistors only absorb power), so no natural mode can grow; lossless LC loops can sit on the imaginary axis, but nothing goes beyond it.
+No. Its stored energy can only fall (the resistors only absorb power), so no natural mode can grow. Lossless LC loops can sit on the imaginary axis, but nothing goes beyond it. Such a loop is only marginally stable: it does not grow on its own, but a sinusoid at its resonant frequency drives it without bound.
 
 </details>
 

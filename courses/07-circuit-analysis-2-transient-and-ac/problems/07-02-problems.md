@@ -29,7 +29,7 @@ For any first-order response:
 
 ### Problem 07-02.3 [A]
 
-A 10 V source in series with a 1 kΩ resistor is connected at $t = 0$ (by a switch) to node A. From node A to ground are a 4 kΩ resistor and an initially uncharged 1 µF capacitor. Find $v_C(0^+)$, $i_C(0^+)$, $v_C(\infty)$, $i_C(\infty)$, the Thevenin resistance seen by the capacitor, τ, and $v_C(t)$.
+A 10 V source in series with a 1 kΩ resistor is connected at $t = 0$ (by a switch) to node A. From node A to ground are a 4 kΩ resistor and an initially uncharged 1 µF capacitor. Start by deriving the differential equation for $v_C$ from KCL at node A, and identify τ and the final value from it. Then find $v_C(0^+)$, $i_C(0^+)$, $v_C(\infty)$, $i_C(\infty)$, the Thevenin resistance seen by the capacitor, τ, and $v_C(t)$, and check that the two routes agree.
 
 ### Problem 07-02.4 [A]
 
@@ -168,7 +168,7 @@ A practical op-amp differentiator has $C$ = 100 nF in series with $R_s$ = 1 kΩ 
 
 | Learning objective (chapter 07-02) | Problems |
 |---|---|
-| 1. Derive and solve the first-order ODE (natural and step response) | 1, 3, 4, 7, 16, 17 |
+| 1. Derive and solve the first-order ODE (natural and step response) | 3, 7, 16, 17 |
 | 2. Initial and final values; τ from $R_{Th}$ (including dependent sources) | 3, 4, 7, 8, 17, 18 |
 | 3. Initial–final–τ method; sequential switching; periodic drive; step-function notation | 6, 8, 12, 18 |
 | 4. Energy in transients; ½CV² loss; CMOS dynamic power | 4, 13, 14, 16 |

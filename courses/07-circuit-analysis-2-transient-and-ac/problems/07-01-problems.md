@@ -55,7 +55,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **An integrator and its offset.** An op-amp integrator has $R$ = 100 kΩ and $C$ = 1 µF, with its output initially at 0 V. (a) A 0.5 V input is applied for 2 s. Find the output. (b) With the input grounded, the op-amp's 1 mV input offset acts like a 1 mV input. How far does the output drift in 10 s, and how long until it reaches a −12 V rail?
 
-### Problem 07-01.12 [C]
+### Problem 07-01.12 [B]
 
 **Power into an inductor at AC.** A 1 mH inductor carries $i(t) = 2\sin(\omega t)$ A at 1 kHz. (a) Find $v(t)$ and its peak. (b) Find $p(t)$, its peak, its average and its frequency. (c) Find the peak stored energy, and explain how energy can flow in and out while the average power is zero.
 
@@ -67,6 +67,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **DC steady state with both elements.** A 12 V source feeds node a through 2 kΩ. From node a, a 1 µF capacitor goes to ground, and a 10 mH inductor in series with 4 kΩ also goes to ground. After a long time, find the inductor current, the capacitor voltage and the energy each element stores.
 
+### Problem 07-01.15 [B]
+
+**Pre-charged capacitors in series.** A 2 µF capacitor charged to 5 V and a 3 µF capacitor charged to 2 V are connected in series, aiding (the + terminal of one to the − terminal of the other). At $t = 0$ the pair is connected across a 10 kΩ resistor. (a) Find the equivalent capacitance and its initial voltage. (b) Find the energy stored in the two capacitors, and the energy the equivalent capacitor would store. (c) Find the time constant and the final voltage on each capacitor. (d) Find the energy dissipated in the resistor and the energy left in the capacitors. Explain why the equivalent capacitor describes the terminal behavior but not the stored energy.
+
 ---
 
 ## Objective coverage
@@ -74,7 +78,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 07-01) | Problems |
 |---|---|
 | 1. Element laws in differential and integral form | 1, 2, 3, 11, 12 |
-| 2. Stored energy; zero average power in steady state | 1, 2, 6, 7, 12, 14 |
+| 2. Stored energy; zero average power in steady state | 1, 2, 6, 7, 12, 14, 15 |
 | 3. Continuity, DC behavior and the inductive kick | 6, 8, 14 |
-| 4. Series and parallel combinations; the capacitive divider | 4, 5, 6 |
+| 4. Series and parallel combinations, including initial conditions; the capacitive divider | 4, 5, 6, 15 |
 | 5. Real capacitors and inductors; decoupling | 9, 10, 13 |

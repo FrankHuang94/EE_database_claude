@@ -210,7 +210,7 @@ $$
 \boxed{\,t_r = \frac{\ln 9}{2\pi f_{3dB}} \approx \frac{0.35}{f_{3dB}}\,}
 $$
 
-This is the standard bridge between the time and frequency domains ([R-010](../../../reference/research-log.md#r-010--rise-time-and-bandwidth)). It is exact for one pole and close for gently rolling-off (Gaussian-like) responses. Instruments with a sharper, higher-order roll-off, such as many oscilloscopes above about 1 GHz, follow $t_r \approx 0.40$–$0.45/f_{3dB}$ instead. A 100 MHz single-pole system cannot produce edges faster than about 3.5 ns.
+This is the standard bridge between the time and frequency domains ([R-010](../../../reference/research-log.md#r-010--rise-time-and-bandwidth)). It is exact for one pole and close for gently rolling-off (Gaussian-like) responses. Instruments with a sharper, higher-order ("brick-wall-like") roll-off, as many modern oscilloscopes have, follow $t_r \approx 0.40$–$0.45/f_{3dB}$ instead. A 100 MHz single-pole system cannot produce edges faster than about 3.5 ns.
 
 ### 3.8 Energy: the charging loss you cannot avoid
 
@@ -584,13 +584,13 @@ The lab is in [labs/07-02-lab/](../labs/07-02-lab/README.md). It has two halves.
 
 ### State of the art (as of Nov 2026)
 
-- **Wires, not transistors, increasingly set speed.** An on-chip wire has capacitance of roughly 0.2 fF/µm ([R-004](../../../reference/research-log.md#r-004--on-chip-interconnect)) **[Established rule of thumb]**. Its resistance per µm rises steeply as wires shrink: imec reported research-stage ruthenium lines at 16 nm pitch with resistance as low as 656 Ω/µm ([R-004](../../../reference/research-log.md#r-004--on-chip-interconnect)) **[Industry estimate, research result]**.
+- **Wires, not transistors, increasingly set speed.** An on-chip wire has capacitance of roughly 0.2 fF/µm ([R-004](../../../reference/research-log.md#r-004--on-chip-interconnect)) **[Established]** (rule of thumb). Its resistance per µm rises steeply as wires shrink, because the cross-section falls and electrons scatter more at the surfaces and grain boundaries. Even a record research result is high: imec's ruthenium lines at 16 nm pitch averaged 656 Ω/µm, so a wire only a few micrometers long already has kilohms of resistance ([R-004](../../../reference/research-log.md#r-004--on-chip-interconnect)) **[Industry estimate]** (research result).
   - **Worked illustration:** a 10 µm wire at those values has total $R \approx 6.6$ kΩ and $C \approx 2$ fF, so its RC product is about 13 ps. A wire is not a single R and a single C: both are spread along its length. A *distributed* RC line's 50% delay is about $0.38RC \approx 5$ ps, not the lumped $0.69RC$ of §3.7 ([19-05](../../19-digital-vlsi-design/chapters/19-05-interconnect.md) derives this).
   - **Why it gets worse:** both R and C grow with length, so wire RC grows with the **square** of length. Doubling the wire quadruples its RC.
   - **How industry responds:** repeaters (re-buffering long wires), new metals (Ru, Mo) and backside power delivery, which frees front-side routing tracks. These are major process and capital-equipment topics.
 
   > **Deeper:** see companion repo *Semiconductor Capital Equipment*.
-- **Precision data converters live and die by settling.** Vendor application notes size ADC drivers with the settling rule of §3.7. TI states it as $(N+1)\ln 2$ time constants for a full-scale step; Analog Devices writes it as $\ln(V_{step}/\tfrac{1}{2}\text{LSB})$ for the actual step, which is often the smaller charge-kickback step when the sampling capacitor connects ([R-008](../../../reference/research-log.md#r-008--sar-adc-settling)) **[Established]**. The ADC's headline resolution is only achievable if the system designer meets it.
+- **Precision data converters live and die by settling.** Vendor application notes size ADC drivers with the settling rule of §3.7. TI states it as $(N+1)\ln 2$ time constants for a full-scale step; Analog Devices writes it as $\ln(V_{step}/\tfrac{1}{2}\text{LSB})$, so a design can budget for the actual step at the ADC input rather than always for full scale ([R-008](../../../reference/research-log.md#r-008--sar-adc-settling)) **[Established]**. The ADC's headline resolution is only achievable if the system designer meets it.
 - **Fast power switches make inductive kick everyone's problem.** This is physics, not a market claim. Wide-bandgap (GaN, SiC) power transistors switch in nanoseconds, so even a few nanohenries of package or board inductance produce large $L\,di/dt$ overshoots. Layout, snubbers and gate-drive shaping keep them in check, as Course 22 covers ([22-06](../../22-power-electronics-and-energy-conversion/chapters/22-06-converter-losses-and-wide-bandgap.md)).
 
 <!-- answer-key -->

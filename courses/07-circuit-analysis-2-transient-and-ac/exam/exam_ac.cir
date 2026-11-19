@@ -1,0 +1,236 @@
+* Course 07 final exam -- the AC answers (Questions 6, 9, 10, 11, 12, 13 and 14) confirmed in ngspice.
+* Each block is a separate circuit; every circuit is solved at each analysis frequency, and each block's
+* results are read after the analysis at its own frequency. In ngspice i(V) is the current entering the
+* source's + node, so the current a source delivers is -i(V). Phases are converted to degrees.
+* Q6: 10 V peak at 1e4 rad/s; (6t) R2 removed for the Thevenin voltage; (6z) source zeroed and a 1 A
+*     test current for Z_Th; (6m) the conjugate-matched load 19.2308 ohm + 615.38 uH.
+* Q10: K couples the coils (k = 0.9, dots at each inductor's first node); a second pair in series aiding.
+* Q11: the resistive T network driven (a) into a 50 ohm load, (b) by 2 V behind 50 ohm (S11 = V1 - 1,
+*      S21 = V2), (c) from port 2 the same way (S22).
+* Q12: RMS phasors; balanced delta load 30 + j40 ohm (40 ohm = 127.324 mH at 50 Hz); a second copy has
+*      the 152.789 uF star-connected capacitors added.
+* Q13: the 5.4019 V fundamental applied at the switch node, with and without the 10 mohm ESR.
+* Q14: the L-section (1.43575 nH, 2.29720 pF) into 12.5 ohm, driven by 1 V for Z_in.
+*
+* EXPECT q6e   key:solutions.md#X07.6e rtol=2e-4
+* EXPECT q6f   key:solutions.md#X07.6f rtol=2e-4
+* EXPECT q6g   key:solutions.md#X07.6g rtol=2e-4
+* EXPECT q6h   key:solutions.md#X07.6h rtol=2e-4
+* EXPECT q6i   key:solutions.md#X07.6i rtol=2e-4
+* EXPECT q6j   key:solutions.md#X07.6j rtol=5e-4
+* EXPECT q6k   key:solutions.md#X07.6k rtol=2e-4
+* EXPECT q6l   key:solutions.md#X07.6l rtol=5e-4
+* EXPECT q6m   key:solutions.md#X07.6m rtol=5e-4
+* EXPECT q6n   key:solutions.md#X07.6n rtol=2e-4
+* EXPECT q6o   key:solutions.md#X07.6o rtol=1e-4
+* EXPECT q9d   key:solutions.md#X07.9d rtol=1e-4
+* EXPECT q9e   key:solutions.md#X07.9e rtol=2e-4
+* EXPECT q9f   key:solutions.md#X07.9f rtol=2e-4
+* EXPECT q9g   key:solutions.md#X07.9g rtol=2e-4
+* EXPECT q9h   key:solutions.md#X07.9h rtol=2e-4
+* EXPECT q9k   key:solutions.md#X07.9k rtol=5e-4
+* EXPECT q10b  key:solutions.md#X07.10b scale=1e-3 rtol=1e-4
+* EXPECT q10d  key:solutions.md#X07.10d rtol=2e-4
+* EXPECT q10f  key:solutions.md#X07.10f rtol=5e-4
+* EXPECT q10g  key:solutions.md#X07.10g rtol=5e-4
+* EXPECT q11i  key:solutions.md#X07.11i rtol=2e-4
+* EXPECT q11j  key:solutions.md#X07.11j rtol=2e-4
+* EXPECT q11k  key:solutions.md#X07.11k rtol=5e-4
+* EXPECT q11l  key:solutions.md#X07.11l rtol=2e-4
+* EXPECT q11m  key:solutions.md#X07.11m rtol=2e-4
+* EXPECT q12b  key:solutions.md#X07.12b rtol=5e-4
+* EXPECT q12f  key:solutions.md#X07.12f rtol=2e-4
+* EXPECT q12g  key:solutions.md#X07.12g rtol=2e-4
+* EXPECT q12i  key:solutions.md#X07.12i rtol=5e-4
+* EXPECT q13d  key:solutions.md#X07.13d rtol=5e-4
+* EXPECT q13g  key:solutions.md#X07.13g scale=1e-3 rtol=2e-4
+* EXPECT q13h  key:solutions.md#X07.13h scale=1e-3 rtol=2e-4
+* EXPECT q13n  key:solutions.md#X07.13n rtol=5e-4
+* EXPECT q14g  key:solutions.md#X07.14g rtol=1e-5
+* EXPECT q14n  key:solutions.md#X07.14n rtol=2e-4
+* EXPECT q14o  key:solutions.md#X07.14o rtol=2e-4
+* EXPECT q14p  key:solutions.md#X07.14p rtol=2e-4
+* EXPECT q14q  key:solutions.md#X07.14q rtol=5e-4
+
+* ---- Q6
+V6   n61 0 AC 10
+R61  n61 n62 20
+L6   n62 0 10m
+C6   n62 n63 10u
+R62  n63 0 10
+* Thevenin voltage (R2 removed)
+V6t  t61 0 AC 10
+R6t1 t61 t62 20
+L6t  t62 0 10m
+C6t  t62 t63 10u
+R6tx t63 0 1e15
+* Thevenin impedance (source zeroed, 1 A test current into node 3)
+R6z1 z62 0 20
+L6z  z62 0 10m
+C6z  z62 z63 10u
+I6z  0 z63 AC 1
+* conjugate-matched load
+V6m  m61 0 AC 10
+R6m1 m61 m62 20
+L6m  m62 0 10m
+C6m  m62 m63 10u
+R6mL m63 m64 19.230769
+L6mL m64 0 0.61538462m
+* ---- Q9: series RLC (output across R) and the unity-gain Sallen-Key
+V9   n91 0 AC 1
+L9   n91 n92 10u
+C9   n92 n93 1n
+R9   n93 0 5
+V9s  s91 0 AC 1
+R9a  s91 sA 10k
+R9b  sA sB 10k
+C9b  sB 0 11.253954n
+C9a  sA sout 22.507908n
+E9   sout 0 sB sout 1e9
+* ---- Q10: coupled coils with a 50 ohm load; a second pair in series aiding
+V10  n101 0 AC 1
+L101 n101 0 4m
+L102 n102 0 1m
+R10  n102 0 50
+K10  L101 L102 0.9
+V10s s101 0 AC 1
+L10a s101 s102 4m
+L10b s102 0 1m
+K10s L10a L10b 0.9
+* ---- Q11: T network
+V11a a111 0 AC 1
+R11a a111 a11m 10
+R11b a11m a112 20
+R11c a11m 0 100
+R11L a112 0 50
+V11b b11g 0 AC 2
+R11g b11g b111 50
+R11d b111 b11m 10
+R11e b11m b112 20
+R11f b11m 0 100
+R11o b112 0 50
+V11c c11g 0 AC 2
+R11h c11g c112 50
+R11i c111 c11m 10
+R11j c11m c112 20
+R11k c11m 0 100
+R11p c111 0 50
+* ---- Q12: three-phase delta load, without and with star capacitors
+VA12 A12 0 AC 230.94011 0
+VB12 B12 0 AC 230.94011 -120
+VC12 C12 0 AC 230.94011 120
+RAB  A12 xab 30
+LAB  xab B12 127.32395m
+RBC  B12 xbc 30
+LBC  xbc C12 127.32395m
+RCA  C12 xca 30
+LCA  xca A12 127.32395m
+VA22 A22 0 AC 230.94011 0
+VB22 B22 0 AC 230.94011 -120
+VC22 C22 0 AC 230.94011 120
+RAB2 A22 yab 30
+LAB2 yab B22 127.32395m
+RBC2 B22 ybc 30
+LBC2 ybc C22 127.32395m
+RCA2 C22 yca 30
+LCA2 yca A22 127.32395m
+CA2  A22 st 152.78875u
+CB2  B22 st 152.78875u
+CC2  C22 st 152.78875u
+* ---- Q13: output filter (1 ohm with and without ESR; 10 ohm without)
+V13a w1 0 AC 5.4018979
+L13a w1 o1 2.2u
+R13a o1 0 1
+R13e o1 e1 10m
+C13a e1 0 47u
+V13b w2 0 AC 5.4018979
+L13b w2 o2 2.2u
+R13b o2 0 1
+C13b o2 0 47u
+V13c w3 0 AC 1
+L13c w3 o3 2.2u
+R13c o3 0 10
+C13c o3 0 47u
+V13d w4 0 AC 1
+L13d w4 o4 2.2u
+R13d o4 0 1
+C13d o4 0 47u
+* ---- Q14: L-section into 12.5 ohm
+V14  n141 0 AC 1
+C14  n141 0 2.2972037p
+L14  n141 n142 1.4357523n
+R14  n142 0 12.5
+
+.control
+ac lin 1 1591.5494 1591.5494
+let q6e = vm(n62)
+let q6f = 180/pi*vp(n62)
+let q6g = vm(n63)/10
+let q6h = 180/pi*vp(n63)
+let q6i = 0.5*vm(n63)^2/10
+let q6j = 0.5*10*real(-i(V6))
+let q6k = vm(t63)
+let q6l = 180/pi*vp(t63)
+let q6m = real(v(z63))
+let q6n = imag(v(z63))
+let q6o = 0.5*vm(m63,m64)^2/19.230769
+print q6e q6f q6g q6h q6i q6j q6k q6l q6m q6n q6o
+ac lin 1 1.5915494Meg 1.5915494Meg
+let q9d = vm(n92,n93)
+print q9d
+ac lin 1 1.5Meg 1.5Meg
+let q9e = vdb(n93)
+let q9f = 180/pi*vp(n93)
+print q9e q9f
+ac lin 1 1.7Meg 1.7Meg
+let q9g = vdb(n93)
+let q9h = 180/pi*vp(n93)
+print q9g q9h
+ac lin 1 1k 1k
+let q9k = vdb(sout)
+let q10b = imag(1/(-i(V10s)))/(2*pi*1000)
+let q11i = real(1/(-i(V11a)))
+let q11j = real(v(a112))
+let q11k = real(v(b111)) - 1
+let q11l = real(v(b112))
+let q11m = real(v(c112)) - 1
+print q9k q10b q11i q11j q11k q11l q11m
+ac lin 1 10k 10k
+let z10 = 1/(-i(V10))
+let q10d = real(z10)
+let q10f = imag(z10)
+let q10g = mag(i(L102))/mag(i(L101))
+print q10d q10f q10g
+ac lin 1 50 50
+let ia = -i(VA12)
+let ic = -i(VC12)
+let q12b = mag(ia)
+let vab = v(A12) - v(B12)
+let vcb = v(C12) - v(B12)
+let q12f = real(vab)*real(ia) + imag(vab)*imag(ia)
+let q12g = real(vcb)*real(ic) + imag(vcb)*imag(ic)
+let q12i = mag(i(VA22))
+print q12b q12f q12g q12i
+ac lin 1 15.651640k 15.651640k
+let q13d = vdb(o4)
+let q13n = vdb(o3)
+print q13d q13n
+ac lin 1 500k 500k
+let q13g = vm(o1)
+let q13h = vm(o2)
+print q13g q13h
+ac lin 1 2.4G 2.4G
+let q14g = real(1/(-i(V14)))
+print q14g
+ac lin 1 2.2G 2.2G
+let z14 = 1/(-i(V14))
+let q14n = real(z14)
+let q14o = imag(z14)
+print q14n q14o
+ac lin 1 2.6G 2.6G
+let z14b = 1/(-i(V14))
+let q14p = real(z14b)
+let q14q = imag(z14b)
+print q14p q14q
+.endc
+.end

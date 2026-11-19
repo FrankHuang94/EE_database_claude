@@ -19,6 +19,7 @@ Chapter sections 3.1 to 3.7 and Examples 07-01.1 to 07-01.6. You need Python wit
 |---|---|---|
 | [07-01-storage.ipynb](07-01-storage.ipynb) | The guided notebook (Parts 1 to 4) | Its own `assert`s |
 | [storage.cir](storage.cir) | Examples 07-01.1 to 07-01.6 and Problems 07-01.3, 07-01.6, 07-01.7, 07-01.11 and 07-01.14 in ngspice: piecewise-linear sources, a switch and a diode, an AC sweep of the real-capacitor model, and op-amp integrator and differentiator | Chapter and solution answer keys |
+| [p15_series_precharged.cir](p15_series_precharged.cir) | Problem 07-01.15: pre-charged series capacitors discharged through a resistor | Solution answer key |
 
 The netlist is run in CI by [`tools/run_spice.py`](../../../../tools/run_spice.py).
 

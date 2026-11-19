@@ -151,6 +151,10 @@ res = minimize_scalar(lambda lf: zmag(10 ** lf, 10e-6, 0.5e-9, 5e-3), bounds=(5,
 v.check("Ex 07-01.5e", 10 ** res.x / 1e6)
 v.check("Ex 07-01.5f", zmag(1e5, 10e-6, 0.5e-9, 5e-3))
 v.check("Ex 07-01.5g", zmag(1e8, 10e-6, 0.5e-9, 5e-3))
+res4 = minimize_scalar(lambda lf: zmag(10 ** lf, 4e-6, 0.5e-9, 5e-3), bounds=(5, 8), method="bounded",
+                       options={"xatol": 1e-12})
+v.check("Ex 07-01.5h", 10 ** res4.x / 1e6)
+v.check("Ex 07-01.5i", zmag(1e5, 4e-6, 0.5e-9, 5e-3))
 
 
 # ---- Example 07-01.6: integrate the integrator's ODE; differentiate the triangle numerically
@@ -283,5 +287,22 @@ rh = minimize_scalar(lambda lf: zmag(10 ** lf, 1e-6, 0.5e-9, 5e-3), bounds=(5, 9
                      options={"xatol": 1e-12})
 v.check("Lab 07-01.h", 10 ** rh.x / 1e6)
 v.check("Lab 07-01.i", brentq(lambda Lp: 1 / (2 * math.pi * math.sqrt(Lp * 1e-12 * 10e-6)) - 10e6, 0.1, 1000, xtol=1e-12))
+
+# P15: pre-charged series capacitors discharged through 10 k (simulated)
+C1p, C2p, Rp = 2e-6, 3e-6, 10e3
+s15 = solve_ivp(lambda t, x: [-(x[0] + x[1]) / Rp / C1p, -(x[0] + x[1]) / Rp / C2p], (0, 0.3), [5.0, 2.0],
+                rtol=1e-11, atol=1e-14, dense_output=True)
+v15f = s15.y[:, -1]
+v.check("07-01.15b", 5.0 + 2.0)
+tc = brentq(lambda t: s15.sol(t).sum() - 7.0 / math.e, 1e-4, 0.1)
+v.check("07-01.15e", 1e3 * tc)
+v.check("07-01.15a", 1e6 * tc / Rp)
+v.check("07-01.15c", 1e6 * (0.5 * C1p * 25 + 0.5 * C2p * 4))
+v.check("07-01.15d", 1e6 * 0.5 * (tc / Rp) * 49)
+v.check("07-01.15f", v15f[0])
+v.check("07-01.15g", v15f[1])
+tt15 = np.linspace(0, 0.3, 300001)
+v.check("07-01.15h", 1e6 * np.trapezoid(s15.sol(tt15).sum(axis=0) ** 2 / Rp, tt15))
+v.check("07-01.15i", 1e6 * (0.5 * C1p * v15f[0] ** 2 + 0.5 * C2p * v15f[1] ** 2))
 
 v.finish()

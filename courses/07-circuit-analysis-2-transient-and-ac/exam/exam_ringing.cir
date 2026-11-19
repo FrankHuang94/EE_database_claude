@@ -1,0 +1,43 @@
+* Course 07 final exam -- the microsecond-scale transients (Questions 4 and 13c) confirmed in ngspice.
+* Q4: a 10 V step into a series RLC at rest (step at t = 0 with a 1 ns ramp; the half-nanosecond offset is
+*     negligible at these tolerances).
+* Q13c: the buck converter's output filter with the switch node held at its 3 V average and a 1 ohm load;
+*     a 2 A current sink steps on at t = 10 us (the exam's t = 0). ESR is ignored, as in the question.
+*
+* EXPECT q4i   key:solutions.md#X07.4i rtol=1e-4
+* EXPECT q4j   key:solutions.md#X07.4j scale=1e-6 rtol=1e-3
+* EXPECT q4l   key:solutions.md#X07.4l rtol=1e-3
+* EXPECT q4k   key:solutions.md#X07.4k scale=1e-6 rtol=2e-3
+* EXPECT q13k  key:solutions.md#X07.13k rtol=1e-3
+* EXPECT q13j  key:solutions.md#X07.13j scale=1e-6 rtol=2e-3
+
+* ---- Q4
+V4   s4 0 PWL(0 0 1n 10)
+R4   s4 x4 20
+L4   x4 y4 1m
+VI4  y4 c4 DC 0
+C4   c4 0 1u
+* ---- Q13c
+V13  sw 0 DC 3
+L13  sw o 2.2u
+C13  o 0 47u
+R13  o 0 1
+I13  o 0 PWL(0 0 10u 0 10.001u 2)
+
+.options reltol=1e-7 abstol=1e-15 vntol=1e-10
+.control
+tran 2n 200u 0 2n
+meas tran q4i max v(c4) from=0 to=200u
+meas tran tvp max_at v(c4) from=0 to=200u
+meas tran q4l max i(VI4) from=0 to=100u
+meas tran tip max_at i(VI4) from=0 to=100u
+let q4j = tvp - 0.5n
+let q4k = tip - 0.5n
+print q4j q4k
+meas tran vmin min v(o) from=10u to=60u
+meas tran tmin min_at v(o) from=10u to=60u
+let q13k = 3 - vmin
+let q13j = tmin - 10.0005u
+print q13k q13j
+.endc
+.end

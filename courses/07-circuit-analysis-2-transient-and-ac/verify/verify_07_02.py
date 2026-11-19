@@ -14,6 +14,7 @@ from pathlib import Path
 
 import numpy as np
 from scipy.integrate import quad, solve_ivp
+from scipy.optimize import brentq
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2] / "tools"))
@@ -337,6 +338,9 @@ v.check("07-02.18e", tau18 * ln(15 / 10) * 1e3)
 s18 = ode(lambda t, y: [(-10 - y[0]) / tau18], 0.02, 5.0)
 v.check("07-02.18f", s18.sol(8e-3)[0], tol=5e-4)
 v.check("07-02.18g", (5 - (-10)) / (1e3 + 4e3) * 1e3)
+# short overlap: both sources connected, capacitor still at 5 V (simulate 1 us of overlap)
+ov = solve_ivp(lambda t, x: [((5 - x[0]) / 1e3 + (-10 - x[0]) / 4e3) / 1e-6], (0, 1e-6), [5.0], rtol=1e-12, atol=1e-15)
+v.check("07-02.18h", 1e3 * (ov.y[0, -1] - (-10)) / 4e3)
 ustep = lambda t: np.where(t > 0, 1.0, 0.0)  # noqa: E731
 tt18 = np.linspace(-5e-3, 20e-3, 2501)
 unified = 5 + (15 * np.exp(-np.clip(tt18, 0, None) / tau18) - 15) * ustep(tt18)
@@ -388,5 +392,8 @@ v.check("Lab 07-02.6", 0.5 * 1e-6 * 5**2 / 10 * 1e6)
 v.check("Lab 07-02.7", VTh_l * (1 - exp(-10e-3 / tau_l)))
 v.check("Lab 07-02.8", 12 + 0.06 * 1000)
 v.check("Lab 07-02.9", 0.1 / (200 + 1000) * 1e6)
+
+n_tc = {N: brentq(lambda x: math.exp(-x) - 2.0 ** -(N + 1), 1, 30) for N in (12, 16)}
+v.check("Lab 07-02.10", n_tc[16] / n_tc[12])
 
 v.finish()

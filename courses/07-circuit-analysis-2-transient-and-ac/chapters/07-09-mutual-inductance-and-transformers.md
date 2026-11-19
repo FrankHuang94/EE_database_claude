@@ -384,11 +384,11 @@ The lab is in [labs/07-09-lab](../labs/07-09-lab/README.md).
 | Ideal transformer | $V_2/V_1 = N_2/N_1$; $I_2/I_1 = N_1/N_2$; $Z_{in} = (N_1/N_2)^2Z_L$ | §3.5 |
 | Transformer equation | $V_{rms} = 4.443\,fNAB_m$ | §3.9 |
 | Maximum efficiency | where copper loss = core loss: $x^* = \sqrt{P_{core}/P_{cu}}$ | §3.8 |
-| US distribution-transformer efficiency, 50 kVA single-phase liquid-immersed (at 50% load) | 99.11% (from 2016); 99.15% (compliance from 23 Apr 2029) | [R-135](../../../reference/research-log.md#r-135--distribution-transformer-efficiency-standards) **[Established; under review, §9]** |
+| US distribution-transformer efficiency, 50 kVA single-phase liquid-immersed (at 50% load) | 99.11% (from 2016); 99.15% (compliance from 23 Apr 2029) | [R-135](../../../reference/research-log.md#r-135--distribution-transformer-efficiency-standards) **[Established]** (under review, §9) |
 | Same, 167 kVA | 99.33% → 99.46% | [R-135](../../../reference/research-log.md#r-135--distribution-transformer-efficiency-standards) **[Established]** |
 | Same, low-voltage dry-type three-phase 75 kVA (at 35% load) | 98.60% → 98.88% | [R-135](../../../reference/research-log.md#r-135--distribution-transformer-efficiency-standards) **[Established]** |
 | Qi wireless charging | 5 W (v1.0, 2010); 15 W (v1.2, 2015); Magnetic Power Profile at 360 kHz (v2.0, 2023); 25 W (v2.2, 2025) | [R-136](../../../reference/research-log.md#r-136--qi-wireless-charging-versions) **[Established]** |
-| GaN charger switching frequency | about 180 kHz at full load (a 65 W GaN reference design) versus "around 100KHz" for silicon | [R-137](../../../reference/research-log.md#r-137--high-frequency-charger-transformers) **[Industry estimate: vendor claim]** |
+| GaN charger switching frequency | about 180 kHz at full load (a 65 W GaN reference design) versus "around 100KHz" for silicon | [R-137](../../../reference/research-log.md#r-137--high-frequency-charger-transformers) **[Industry estimate]** (vendor claim) |
 
 ## 8. Common mistakes
 
@@ -411,7 +411,7 @@ The lab is in [labs/07-09-lab](../labs/07-09-lab/README.md).
   - A 75 kVA three-phase dry-type unit goes from 98.60% to 98.88% at 35% load, cutting losses from **372.7 W** to **297.3 W** (**20.2%**).
   - Example 07-09.4's transformer was built to meet the 50 kVA level exactly.
 - **The rule is in practice a core-material decision.** DOE set single-phase units above 100 kVA and three-phase units from 15 to under 500 kVA at a level "expected to predominantly be met via use of amorphous cores", and said that beyond a certain loss reduction amorphous cores become "by far the most cost effective approach … due to the significant reduction in no-load losses". That is Example 07-09.5's arithmetic at fleet scale. DOE estimated about 48 000 t of amorphous alloy demand against about 45 000 t of stated capacity (**107%**). It also recorded industry concerns about inrush current and brittleness **[Established]**.
-- **And it is under review.** On 15 Jun 2026 DOE requested information (91 FR 35903) on how the 2024 standards interact with national-security supply constraints for transformers and core steel, following a Presidential determination of 20 Apr 2026. As of 19 Nov 2026 the Federal Register shows no later rule changing the 2029 levels **[Established; perishable, re-check before relying on it]**.
+- **And it is under review.** On 15 Jun 2026 DOE requested information (91 FR 35903) on how the 2024 standards interact with national-security supply constraints for transformers and core steel, following a Presidential determination of 20 Apr 2026. As of 19 Nov 2026 the Federal Register shows no later rule changing the 2029 levels **[Established]** (perishable, re-check before relying on it).
 - **Wireless charging is loosely coupled coils, tuned** ([R-136](../../../reference/research-log.md#r-136--qi-wireless-charging-versions)) **[Established]**.
   - The Wireless Power Consortium's history of the Qi specification records 5 W in version 1.0 (Jul 2010) and up to 15 W in 1.2 (Oct 2015).
   - Version 2.0 (Apr 2023) introduced a Magnetic Power Profile with magnets to align the coils and a 360 kHz operating frequency, the frequency of Problem 07-09.12.
@@ -419,8 +419,8 @@ The lab is in [labs/07-09-lab](../labs/07-09-lab/README.md).
   - The same page also calls version 2.2.1 "the current version", so which version is current is **[Contested]** on the publisher's own page.
   - Problem 07-09.12 shows why alignment magnets matter: link efficiency holds up while $k$ is a few tenths and collapses as $k$ approaches the coils' own losses.
 - **Faster switches shrink charger transformers** ([R-137](../../../reference/research-log.md#r-137--high-frequency-charger-transformers)).
-  - A GaN Systems (now Infineon) 65 W quasi-resonant flyback reference design reaches "approximately 180KHz" at full load, and its manual says silicon designs are limited to "around 100KHz". Its transformer turns ratio of 7.5 with a 20 V output reflects **150 V** onto the primary **[Industry estimate: vendor claims]**.
-  - For the OPPO 50W Mini charger (2020), Navitas's launch text described replacing a 50 kHz wire-wound transformer "with over 20mm height" by "a new high-speed 800kHz, 8mm planar transformer", **16** times the frequency. A Navitas technical article on the same product says "~400 kHz", **8** times **[Contested between the two vendor texts]**.
+  - A GaN Systems (now Infineon) 65 W quasi-resonant flyback reference design reaches "approximately 180KHz" at full load, and its manual says silicon designs are limited to "around 100KHz". Its transformer turns ratio of 7.5 with a 20 V output reflects **150 V** onto the primary **[Industry estimate]** (vendor claims).
+  - For the OPPO 50W Mini charger (2020), Navitas's launch text described replacing a 50 kHz wire-wound transformer "with over 20mm height" by "a new high-speed 800kHz, 8mm planar transformer", **16** times the frequency. A Navitas technical article on the same product says "~400 kHz", **8** times **[Contested]** (between the two vendor texts).
   - Either way the direction is §3.9's: $NA \propto 1/f$, limited in practice by core and winding losses that rise with frequency.
 
 <!-- answer-key -->

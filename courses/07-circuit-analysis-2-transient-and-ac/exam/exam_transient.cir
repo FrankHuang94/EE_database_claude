@@ -1,0 +1,58 @@
+* Course 07 final exam -- the millisecond-scale transients (Questions 2, 3 and 5) confirmed in ngspice.
+* ngspice finds each pre-switching state itself from the DC operating point.
+* Q3: the switch closes at t = 1 ms (the exam's t = 0) and opens at 41 ms; zero-volt sources read the
+*     currents in R3 and in the capacitor (into its top terminal).
+* Q5: the input steps from 2 V to 5 V at t = 1 ms (the exam's t = 0).
+*
+* EXPECT q2b   key:solutions.md#X07.2b rtol=5e-4
+* EXPECT q2tr  key:solutions.md#X07.2c scale=1e-3 rtol=5e-4
+* EXPECT q2ts  key:solutions.md#X07.2f scale=1e-3 rtol=2e-4
+* EXPECT q3a   key:solutions.md#X07.3a rtol=1e-6
+* EXPECT q3d   key:solutions.md#X07.3d scale=1e-3 rtol=1e-3
+* EXPECT q3e   key:solutions.md#X07.3e scale=1e-3 rtol=1e-3
+* EXPECT q3f   key:solutions.md#X07.3f scale=1e-3 rtol=2e-4
+* EXPECT q3g   key:solutions.md#X07.3g rtol=5e-4
+* EXPECT q3i   key:solutions.md#X07.3i rtol=5e-4
+* EXPECT q5g   key:solutions.md#X07.5g rtol=5e-4
+* EXPECT q5h   key:solutions.md#X07.5h rtol=5e-4
+
+* ---- Q2: 3.3 V step into 10 k and 100 nF
+V2   s2 0 PWL(0 0 1n 3.3)
+R2   s2 c2 10k
+C2   c2 0 100n
+* ---- Q3: switching twice
+V3   n31 0 DC 12
+R31  n31 a3 4k
+R32  a3 0 12k
+VC3  a3 ac3 DC 0
+C3   ac3 0 10u
+S3   a3 sw3 ctl3 0 swmod
+VR3  sw3 r3 DC 0
+R33  r3 0 6k
+Vctl ctl3 0 PWL(0 0 1m 0 1.000001m 1 41m 1 41.000001m 0)
+.model swmod sw vt=0.5 vh=0 ron=1e-6 roff=1e15
+* ---- Q5: two-section RC ladder, input 2 V -> 5 V
+V5   n51 0 PWL(0 2 1m 2 1.000001m 5)
+R51  n51 n52 1k
+C51  n52 0 1u
+R52  n52 n53 1k
+C52  n53 0 1u
+
+.options reltol=1e-7 abstol=1e-15 vntol=1e-10 chgtol=1e-18
+.control
+tran 1u 102m 0 1u
+meas tran q2b find v(c2) at=2m
+meas tran q2tr trig v(c2) val=0.33 rise=1 targ v(c2) val=2.97 rise=1
+meas tran q2ts when v(c2)=3.2995972 rise=1
+meas tran q3a find v(a3) at=0.5m
+meas tran q3d find i(VR3) at=1.002m
+meas tran q3e find i(VC3) at=1.002m
+meas tran t7 when v(a3)=7 fall=1
+let q3f = t7 - 1m
+print q3f
+meas tran q3g find v(a3) at=41m
+meas tran q3i find v(a3) at=101m
+meas tran q5g find v(n53) at=2m
+meas tran q5h find v(n53) at=3m
+.endc
+.end

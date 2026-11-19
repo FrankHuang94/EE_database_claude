@@ -67,6 +67,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **An ESR window in numbers.** A legacy LDO needs at least 2.2 µF of output capacitance with an ESR between 0.1 Ω and 20 Ω (chapter §9). (a) Find the range of ESR-zero frequencies this allows with 2.2 µF. (b) A designer substitutes a 2.2 µF ceramic capacitor with 5 mΩ of ESR. Where is its zero? (c) The designer adds a 0.2 Ω resistor in series with the ceramic. Where is the zero now, and what voltage step does a 50 mA load step produce across the added resistance and the ESR? (d) An application note prints the zero for 0.1 Ω and 2.2 µF as 72.3 kHz. Is it right?
 
+### Problem 07-04.15 [B]
+
+**Convolution and the ramp.** An RC low-pass ($R$ = 1 kΩ, $C$ = 1 µF) starts uncharged and is driven from $t = 0$ by the ramp $v_{in} = kt$, with $k$ = 1 V/ms. (a) Find the impulse response $h(t)$. (b) Find $v_{out}(t)$ by evaluating the convolution integral $h * v_{in}$. (c) Find it again from $H(s)V_{in}(s)$ by partial fractions, and compare with 07-02's ramp response. (d) Find $v_{out}$ and the lag $v_{in} - v_{out}$ at 1 ms and at 5 ms, and the lag the output settles to.
+
+### Problem 07-04.16 [B]
+
+**Switching on a sinusoid.** The same uncharged RC low-pass is connected at $t = 0$ to $v_{in} = 10\cos(1000t)$ V. (a) Find $V_{out}(s)$ and, by partial fractions, the complete response. (b) Identify the steady-state part, and confirm that it equals $\lvert H(j\omega)\rvert\cos(\omega t + \angle H(j\omega))$ times the input amplitude. (c) Find the transient's initial value, $v_{out}$ at 1 ms, and the time after which the transient stays below 1% of the steady-state amplitude. (d) With $v_{in} = 10\cos(1000t + \phi)$, which switch-on phase φ between −90° and +90° makes the transient vanish, and why?
+
 ---
 
 ## Objective coverage
@@ -75,7 +83,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. s-domain element models with initial conditions | 1, 4, 5, 10 |
 | 2. Impedances, dividers, nodal/mesh, Thévenin in s; characteristic polynomial | 2, 5, 6, 7, 8, 12 |
-| 3. Transfer functions; poles and zeros from circuit structure | 2, 7, 8, 11, 14 |
-| 4. Impulse, step and complete responses; IVT/FVT; impulsive switching | 3, 4, 5, 9, 10, 11 |
+| 3. Transfer functions; poles and zeros from circuit structure | 2, 7, 8, 11, 14, 16 |
+| 4. Impulse, step, convolution and complete responses; sinusoidal steady state from $H(j\omega)$; IVT/FVT; impulsive switching | 3, 4, 5, 9, 10, 11, 15, 16 |
 | 5. Stability; passive versus active; onset of oscillation | 12, 13 |
 | 6. Pole–zero reasoning in practice | 11, 14 |

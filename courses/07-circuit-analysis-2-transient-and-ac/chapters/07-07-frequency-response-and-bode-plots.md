@@ -622,7 +622,7 @@ The lab is in [labs/07-07-lab](../labs/07-07-lab/README.md).
 
 ### State of the art (as of Nov 2026)
 
-- **Bode's plots are 86 years old and unchanged** ([R-127](../../../reference/research-log.md#r-127--bodes-gainphase-work)) **[Established; quotations from scanned text]**.
+- **Bode's plots are 86 years old and unchanged** ([R-127](../../../reference/research-log.md#r-127--bodes-gainphase-work)) **[Established]** (quotations from scanned text).
   - H. W. Bode published the gain–phase relations, the definition of phase margin and the bandwidth cost of feedback in "Relations Between Attenuation and Phase in Feedback Amplifier Design," *Bell System Technical Journal* 19(3):421–454, July 1940.
   - It opens with the designer's dilemma: feedback's benefits are lost "unless he can finally adjust the phase and attenuation characteristics around the feedback loop so the amplifier will not spontaneously burst into uncontrollable singing".
   - Its price list: "roughly one octave for each ten db of feedback in the useful band", plus "an additional allowance of an octave or so". So 30 dB of feedback needs control over at least four octaves, a band **16** times wider than the useful one. At 60 dB, seven octaves, or **128** times, is the "more than a hundred times" Bode wrote. This is the gain–phase relation of §3.6 turned into a design budget.
@@ -638,8 +638,8 @@ The lab is in [labs/07-07-lab](../labs/07-07-lab/README.md).
   - Gain–bandwidth is not one number for every part. TI's OPA1612 lists 80 MHz at a gain of 100 but 40 MHz at a gain of 1, the signature of a second pole near crossover (§3.8). The OPA192 lists its 10 MHz under the symbol "GBW" but names it "unity gain bandwidth".
 - **Oscilloscope bandwidth is a −3 dB point, and the rise-time constant is contested** ([R-130](../../../reference/research-log.md#r-130--oscilloscope-bandwidth-and-rise-time)).
   - Tektronix's *XYZs of Oscilloscopes* primer (2011) defines bandwidth as the frequency at which a sine "is attenuated to 70.7%" **[Established]**.
-  - The primer recommends a "5 Times Rule" (bandwidth at least five times the highest frequency component), which it says gives "less than ±2% error". It relates bandwidth and rise time with a constant k "between 0.35 and 0.45", "typically" 0.35 below 1 GHz **[Industry estimate: vendor rules of thumb]**. Example 07-07.6 derived the 1.94% and the 0.35 for a single-pole response.
-  - Tektronix's own 4 Series B datasheet (Apr 2025) lists "calculated rise time" for each bandwidth model, from 200 MHz (2.3 ns) to 1.5 GHz (333 ps). Those pairs imply k of **0.46** to **0.50**, even below 1 GHz **[Contested against the primer]**.
+  - The primer recommends a "5 Times Rule" (bandwidth at least five times the highest frequency component), which it says gives "less than ±2% error". It relates bandwidth and rise time with a constant k "between 0.35 and 0.45", "typically" 0.35 below 1 GHz **[Industry estimate]** (vendor rules of thumb). Example 07-07.6 derived the 1.94% and the 0.35 for a single-pole response.
+  - Tektronix's own 4 Series B datasheet (Apr 2025) lists "calculated rise time" for each bandwidth model, from 200 MHz (2.3 ns) to 1.5 GHz (333 ps). Those pairs imply k of **0.46** to **0.50**, even below 1 GHz **[Contested]** (against the primer).
   - The explanation is the shape of the roll-off (§3.7). Modern instruments correct their response digitally to be flat almost to the bandwidth and then fall steeply. That is closer to a brick-wall response (k ≈ 0.45) than to a single pole (0.35). A calculated rise time therefore encodes the maker's assumed k: compare instruments by measured step response, not by the calculated figure.
 
 <!-- answer-key -->

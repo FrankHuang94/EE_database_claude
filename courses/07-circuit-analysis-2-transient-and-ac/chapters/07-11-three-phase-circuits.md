@@ -308,7 +308,7 @@ The lab is in [labs/07-11-lab](../labs/07-11-lab/README.md).
 ### State of the art (as of Nov 2026)
 
 - **Standard voltages** ([R-014](../../../reference/research-log.md#r-014--nominal-mains-voltages), [R-142](../../../reference/research-log.md#r-142--three-phase-distribution-voltages)) **[Established]**. IEC 60038 (edition 7.0, 2009) lists the standard low-voltage AC systems. That edition completed the transition to 230/400 V and 400/690 V and added 230 V (50 Hz) and 230/400 V (60 Hz). The pairs are $\sqrt3$ apart after rounding: 400/√3 = **230.9 V** and 690/√3 = **398.4 V**. North America uses 120/208 V and 277/480 V (480/√3 = **277.1 V**).
-- **Data-center distribution in North America** ([R-142](../../../reference/research-log.md#r-142--three-phase-distribution-voltages)) **[Industry estimate: vendor white paper]**.
+- **Data-center distribution in North America** ([R-142](../../../reference/research-log.md#r-142--three-phase-distribution-voltages)) **[Industry estimate]** (vendor white paper).
   - A 2022 Legrand/Server Technology white paper describes the usual path: 277/480 V to the building, stepped down by a power-distribution-unit (PDU) transformer to 208/120 V.
   - The alternative is 240/415 V, obtained with an autotransformer and no PDU transformer. The paper reports UPS makers' claim that eliminating the PDU transformer gains about 2% in efficiency, and a further 0.2–0.3% from running servers at 240 V rather than 208 V (one supply's figures: 92.8% at 208 V, 93.1% at 240 V).
   - Example 07-11.5 shows the underlying physics: half the current and a quarter of the copper loss for the same power.
@@ -333,7 +333,7 @@ The lab is in [labs/07-11-lab](../labs/07-11-lab/README.md).
 
 ### Marketing vs Reality
 
-- **A vendor table of rack power by voltage.** The Legrand/Server Technology paper's Table 2 lists three-phase 208 V at 30 A as 10.8 kW for both its full and its 80%-continuous rating. The continuous figure should be **8.6 kW**. It lists 208 V at 60 A as 17.3 kW in both columns, where the full rating is **21.6 kW** **[Contested: arithmetic errors in the source]**. Its 415 V and single-phase rows are correct. *Sanity check:* recompute every row with $\sqrt3V_LI_L$ and the 80% factor.
+- **A vendor table of rack power by voltage.** The Legrand/Server Technology paper's Table 2 lists three-phase 208 V at 30 A as 10.8 kW for both its full and its 80%-continuous rating. The continuous figure should be **8.6 kW**. It lists 208 V at 60 A as 17.3 kW in both columns, where the full rating is **21.6 kW** **[Contested]** (arithmetic errors in the source). Its 415 V and single-phase rows are correct. *Sanity check:* recompute every row with $\sqrt3V_LI_L$ and the 80% factor.
 - **"2% more efficient at 415 V."** *Reality:* the gain comes from removing a transformer stage and from server supplies running at a better input voltage; it depends on the transformer's loading and the supplies' efficiency curves (07-09 §3.8). *Sanity check:* ask for measured loss at the facility's real load profile.
 - **"Balanced load."** *Reality:* single-phase loads drift out of balance as racks change, and nonlinear loads add triplen currents even when balanced. *Sanity check:* ask for measured neutral current and per-phase loading.
 

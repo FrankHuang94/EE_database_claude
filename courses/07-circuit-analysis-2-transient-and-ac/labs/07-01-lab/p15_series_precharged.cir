@@ -1,0 +1,21 @@
+* Problem 07-01.15 in ngspice: 2 uF at 5 V and 3 uF at 2 V in series aiding, discharged through 10 k
+* from t = 0 (initial conditions set with uic). The final voltages are read after 25 time constants.
+*
+* EXPECT f1  key:../../solutions/07-01-solutions.md#07-01.15f rtol=1e-4
+* EXPECT f2  key:../../solutions/07-01-solutions.md#07-01.15g rtol=1e-4
+* EXPECT tau key:../../solutions/07-01-solutions.md#07-01.15e scale=1e-3 rtol=1e-3
+
+C1  a m 2u IC=5
+C2  m 0 3u IC=2
+R1  a 0 10k
+
+.options reltol=1e-7 abstol=1e-15 vntol=1e-10
+.control
+tran 10u 300m 0 10u uic
+meas tran va find v(a) at=300m
+meas tran f2 find v(m) at=300m
+let f1 = va - f2
+print f1
+meas tran tau when v(a)=2.5751734 fall=1
+.endc
+.end

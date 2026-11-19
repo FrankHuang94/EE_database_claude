@@ -23,6 +23,14 @@ Every numerical answer below appears in the answer key at the end. Each one is r
 
 ### Solution 07-02.3
 
+**The differential equation.** For $t > 0$, KCL at node A (currents leaving) gives $(v_C - 10)/1\text{ kΩ} + v_C/4\text{ kΩ} + C\,dv_C/dt = 0$. Multiply by 800 Ω, the parallel combination of the two resistors:
+
+$$
+(800\ \Omega)(1\ \mu\text{F})\,\frac{dv_C}{dt} + v_C = 10\times\frac{800}{1000} = 8\ \text{V} .
+$$
+
+This is the standard first-order form $\tau\,dv_C/dt + v_C = v_C(\infty)$, with $\tau$ = 0.800 ms and a final value of 8 V. Its solution from $v_C(0) = 0$ is $v_C = 8(1 - e^{-t/\tau})$ (07-02 §3.4). The initial–final–τ route below must agree.
+
 **Initial values.** The capacitor is uncharged, so $v_C(0^+) = v_C(0^-) = 0$. In the $0^+$ circuit the capacitor acts as a 0 V source, a short to ground. The 4 kΩ resistor then has 0 V across it and carries no current, and all the current from the source flows into the capacitor: $i_C(0^+) = 10\text{ V}/1\text{ kΩ} = 10.0$ mA.
 
 **Final values.** The capacitor is an open circuit, so the two resistors form a divider: $v_C(\infty) = 10\cdot\frac{4}{1 + 4} = 8.00$ V, and $i_C(\infty) = 0$.
@@ -207,7 +215,7 @@ Check: for $t < 0$, $u = 0$ gives 5 V ✓; for $t > 0$, it gives $-10 + 15e^{-t/
 Zero crossing: $15e^{-t/\tau} = 10$ gives $t = \tau\ln 1.5 = 4 \times 0.4055 = 1.622$ ms.
 $v_C(8\text{ ms}) = -10 + 15e^{-2} = -10 + 2.030 = -7.970$ V.
 
-(d) Either works electrically. A make-before-break switch briefly connects both sources through $R_a + R_b = 5$ kΩ, drawing $(5 - (-10))/5\text{ kΩ} = 3$ mA, which is harmless. If the overlap is much shorter than τ = 4 ms, it barely disturbs the capacitor. Break-before-make leaves the capacitor floating for an instant, which is also harmless because it simply holds its voltage. The choice matters when the sources could be shorted directly with no resistors in between: then break-before-make is mandatory.
+(d) Either works electrically. A make-before-break switch briefly connects both sources to the capacitor's node. During an overlap much shorter than τ = 4 ms, the capacitor holds that node at 5 V, so $R_a$ carries almost nothing and $R_b$ carries $(5 - (-10))/4\text{ kΩ} = $ **3.75 mA**, the same as just after a clean switch. Only an overlap lasting several τ would let the node settle, after which the sources would drive a steady $(5 - (-10))/(R_a + R_b) = $ **3 mA** through both resistors. Either current is harmless, and a short overlap barely disturbs the capacitor. Break-before-make leaves the capacitor floating for an instant, which is also harmless because it simply holds its voltage. The choice matters when the sources could be shorted directly with no resistors in between: then break-before-make is mandatory.
 
 ### Solution 07-02.19
 
@@ -332,7 +340,8 @@ The edge lasts only 1% of $\tau$, so the capacitor barely charges and the branch
 | 07-02.18d | current into C at $0^+$ | −3.75 | mA |
 | 07-02.18e | zero-crossing time | 1.622 | ms |
 | 07-02.18f | $v_C(8\text{ ms})$ | −7.970 | V |
-| 07-02.18g | make-before-break overlap current | 3 | mA |
+| 07-02.18g | steady source-to-source current (long overlap) | 3 | mA |
+| 07-02.18h | current in $R_b$ during a short overlap | 3.75 | mA |
 | 07-02.19a | τ | 0.100 | ms |
 | 07-02.19b | $R_fC$ | 1.00 | ms |
 | 07-02.19c | $v_{out}(0^+)$ for the 0.5 V step | −5.00 | V |

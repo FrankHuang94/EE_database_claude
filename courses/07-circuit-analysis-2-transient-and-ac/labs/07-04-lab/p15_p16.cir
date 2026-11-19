@@ -1,0 +1,25 @@
+* Problems 07-04.15 and 07-04.16 in ngspice: an RC low-pass (1 k, 1 uF) driven from t = 0 by a
+* 1 V/ms ramp, and by 10 cos(1000 t) switched on at t = 0 (a 1000/(2 pi) Hz SIN source with a 90-degree
+* phase, since ngspice's SIN is a sine). Both capacitors start uncharged (uic).
+*
+* EXPECT p15a key:../../solutions/07-04-solutions.md#07-04.15a rtol=5e-4
+* EXPECT p15c key:../../solutions/07-04-solutions.md#07-04.15c rtol=2e-4
+* EXPECT p16e key:../../solutions/07-04-solutions.md#07-04.16e rtol=2e-4
+* EXPECT p16c key:../../solutions/07-04-solutions.md#07-04.16c rtol=5e-4
+
+V15  r15 0 PWL(0 0 10m 10)
+R15  r15 o15 1k
+C15  o15 0 1u IC=0
+V16  s16 0 SIN(0 10 159.15494 0 0 90)
+R16  s16 o16 1k
+C16  o16 0 1u IC=0
+
+.options reltol=1e-7 abstol=1e-15 vntol=1e-10
+.control
+tran 1u 40m 0 1u uic
+meas tran p15a find v(o15) at=1m
+meas tran p15c find v(o15) at=5m
+meas tran p16e find v(o16) at=1m
+meas tran p16c max v(o16) from=30m to=40m
+.endc
+.end

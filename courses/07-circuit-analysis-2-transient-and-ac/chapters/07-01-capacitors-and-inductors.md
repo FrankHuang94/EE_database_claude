@@ -38,7 +38,7 @@ A capacitor is a **reservoir of charge**: current flowing in raises its voltage,
 
 ### The finance analogy, and where it breaks
 
-A capacitor's voltage is like an account **balance**, and its current like the **cash flow**: the balance is the running total of the flows, $v(t) = v(t_0) + \frac1C\int i\,dt$, so it changes only as fast as money moves, and capacitance is the "size" of the account (how much balance one coulomb buys, inversely). An inductor is like a **momentum business**, an order book whose run rate (the current) changes only gradually in response to pressure (the voltage). *Where it breaks:* money can be wired instantly, but charge cannot move in zero time through real resistance, and an inductor's "momentum" is enforced by physics (Faraday's law), not by contracts; an attempt to stop it instantly does not just fail, it produces a destructive voltage.
+A capacitor's voltage is like an account **balance**, and its current like the **cash flow**: the balance is the running total of the flows, $v(t) = v(t_0) + \frac1C\int i\,dt$, so it changes only as fast as money moves, and capacitance sets the size of the account: one coulomb moves the balance by $1/C$ volts, so a larger $C$ is a larger account that the same flow moves less. An inductor is like a **momentum business**, an order book whose run rate (the current) changes only gradually in response to pressure (the voltage). *Where it breaks:* money can be wired instantly, but charge cannot move in zero time through real resistance, and an inductor's "momentum" is enforced by physics (Faraday's law), not by contracts; an attempt to stop it instantly does not just fail, it produces a destructive voltage.
 
 ### Duality
 
@@ -57,19 +57,19 @@ $$
 Integrating from a starting time $t_0$ gives the integral form,
 
 $$
-v(t) = v(t_0) + \frac1C\int_{t_0}^{t} i(\lambda)\,d\lambda,
+v(t) = v(t_0) + \frac1C\int_{t_0}^{t} i(\xi)\,d\xi,
 $$
 
 which says the voltage is the running total of the current. The units check: A·s/F = C/(C/V) = V. A constant voltage means zero current: **at DC, a capacitor is an open circuit.**
 
-> **Math refresher — derivative and integral as inverse operations.** The derivative gives a rate of change; the integral accumulates a rate into a total (01-03, 01-05). If $i = C\,dv/dt$, then integrating both sides from $t_0$ to $t$ gives $\int i\,d\lambda = C\,[v(t) - v(t_0)]$: the fundamental theorem of calculus. A piecewise-linear voltage therefore has a piecewise-constant current, and a piecewise-constant current a piecewise-linear voltage (Example 07-01.1).
+> **Math refresher — derivative and integral as inverse operations.** The derivative gives a rate of change; the integral accumulates a rate into a total (01-03, 01-05). If $i = C\,dv/dt$, then integrating both sides from $t_0$ to $t$ gives $\int i\,d\xi = C\,[v(t) - v(t_0)]$: the fundamental theorem of calculus. A piecewise-linear voltage therefore has a piecewise-constant current, and a piecewise-constant current a piecewise-linear voltage (Example 07-01.1).
 
 ### 3.2 The inductor
 
 A coil carrying current $i$ produces magnetic flux, and the flux linking its $N$ turns, the **flux linkage** $\lambda = N\Phi$, is proportional to the current: $\lambda = Li$, where the **inductance** $L$ (henries, H = Wb/A = V·s/A) depends on geometry and core (04-07: $L = \mu N^2A/\ell$ for a long solenoid). Faraday's law says a changing flux linkage induces a voltage $d\lambda/dt$, and with the passive sign convention, that is the voltage across the inductor:
 
 $$
-v = L\,\frac{di}{dt}, \qquad i(t) = i(t_0) + \frac1L\int_{t_0}^{t} v(\lambda)\,d\lambda.
+v = L\,\frac{di}{dt}, \qquad i(t) = i(t_0) + \frac1L\int_{t_0}^{t} v(\xi)\,d\xi.
 $$
 
 A constant current means zero voltage: **at DC, an inductor is a short circuit.** The sign follows Lenz's law: an increasing current entering the + terminal makes that terminal positive, opposing the increase.
@@ -216,7 +216,7 @@ below which the part behaves as a capacitor and above which it behaves as an ind
 
 (b) One capacitor: $L\,di/dt = 0.5\ \text{nH}\times1\ \text{A}/1\ \text{ns} = $ **0.5 V**, twenty times the limit. Paralleling $N$ identical capacitors divides the ESL by $N$, so $N \ge 0.5/0.025 = $ **20** capacitors (25 pH in total), placed with low-inductance connections (whose own inductance must also be counted).
 
-(c) $f_{SR} = 1/(2\pi\sqrt{0.5\ \text{nH}\times10\ \text{µF}}) = $ **2.251 MHz**. At 100 kHz the part is capacitive, $|Z| \approx 1/(2\pi fC) = $ **0.159 Ω**; at 100 MHz it is inductive, $|Z| \approx 2\pi fL = $ **0.314 Ω**, and adding capacitance would not help there; only lower inductance does.
+(c) $f_{SR} = 1/(2\pi\sqrt{0.5\ \text{nH}\times10\ \text{µF}}) = $ **2.251 MHz**. At 100 kHz the part is capacitive, $|Z| \approx 1/(2\pi fC) = $ **0.159 Ω**; at 100 MHz it is inductive, $|Z| \approx 2\pi fL = $ **0.314 Ω**, and adding capacitance would not help there; only lower inductance does. These use the nominal 10 µF, as datasheet impedance curves usually do. At the working voltage the part has only the derated 4 µF, which raises $f_{SR}$ to **3.559 MHz** and the impedance at 100 kHz to **0.398 Ω**: DC-bias derating costs low-frequency impedance as well as charge.
 
 **Units check.** A·s/V = F; H × A/s = V; 1/√(H·F) = 1/s ✓.
 
@@ -267,6 +267,8 @@ below which the part behaves as a capacitor and above which it behaves as an ind
 | Ex 07-01.5e | self-resonant frequency | 2.251 | MHz |
 | Ex 07-01.5f | impedance at 100 kHz | 0.159 | Ω |
 | Ex 07-01.5g | impedance at 100 MHz | 0.314 | Ω |
+| Ex 07-01.5h | self-resonant frequency at the derated 4 µF | 3.559 | MHz |
+| Ex 07-01.5i | impedance at 100 kHz, derated | 0.398 | Ω |
 | Ex 07-01.6a | integrator slope | −10 | V/ms |
 | Ex 07-01.6b | time to reach −10 V | 1 | ms |
 | Ex 07-01.6c | triangle slope | 4000 | V/s |
@@ -322,13 +324,13 @@ Open [labs/07-01-lab/](../labs/07-01-lab/README.md): a notebook and an ngspice n
 ### State of the art (as of Nov 2026)
 
 - **Class II ceramics lose much of their capacitance under bias.** A Samsung Electro-Mechanics engineer's example: a 1 µF, 6.3 V X5R MLCC falls to 0.36 µF at 3 V DC, a 64% loss at under half its rated voltage, with further loss from aging under bias that datasheets typically do not specify ([R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)) **[Established]**. The EIA temperature code (X5R, X7R) describes only temperature drift.
-- **Capacitor counts are rising with electrification and AI.** Murata gave about 1,000 MLCCs for a high-end smartphone and 3,000–5,000 per car in 2021, with some driver-assisted electric vehicles above 10,000 ([R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)) **[Industry estimate]**; a trade report citing a broker puts AI servers at up to about 25,000 MLCCs against about 2,000 in conventional servers ([R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)) **[Industry estimate]**.
+- **Capacitor counts are rising with electrification and AI.** Murata gave about 1,000 MLCCs for a high-end smartphone and 3,000–5,000 per car in 2021, with some driver-assisted electric vehicles above 10,000 ([R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)) **[Industry estimate]**; DIGITIMES Asia (2025), citing the broker SK Securities, puts an AI server at about eight times the MLCCs of a conventional server, and separately quotes unattributed estimates of up to about 25,000 against 2,000, a ratio of 12.5: the two figures disagree ([R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)) **[Industry estimate]**.
 - **Inductor ratings are not comparable across vendors.** Saturation current is defined at a 20% inductance drop by Vishay's IHLP series, at 30% by Coilcraft's XAL series, and at both 10% and 30% by one Würth series, whose two figures for the same part differ by a factor of about 2.7 ([R-111](../../../reference/research-log.md#r-111--electrolytic-life-supercapacitors-inductor-saturation-and-silicon-capacitors), [R-082](../../../reference/research-log.md#r-082--inductive-power-transfer-power-inductors-and-integrated-magnetics)) **[Established]** for Vishay and Coilcraft, **[Industry estimate]** for Würth (search excerpt).
 - **Capacitance is moving into the package.** Murata offers silicon capacitors at a claimed 1.3 µF/mm², under 40 µm thick, for mounting next to the die ([R-111](../../../reference/research-log.md#r-111--electrolytic-life-supercapacitors-inductor-saturation-and-silicon-capacitors)) **[Industry estimate]**; TSMC reported deep-trench capacitors in its CoWoS silicon interposer at up to 340 nF/mm² (IEDM 2019, read from a search excerpt) ([R-111](../../../reference/research-log.md#r-111--electrolytic-life-supercapacitors-inductor-saturation-and-silicon-capacitors)) **[Industry estimate]**.
 
 ### Why it matters commercially
 
-Passive components are low-priced and high-volume, but they gate production and performance. A phone, a server board or an electric vehicle cannot ship without every one of its capacitors and inductors, and MLCC supply is concentrated: estimates put Murata at roughly 30–40% of the market and Samsung Electro-Mechanics at around 20–25%, depending on the source and on whether units or revenue are counted ([R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)) **[Contested]**. In power delivery for processors and AI accelerators, the decoupling network (board, package and on-die capacitance) and the regulator's inductors are part of the performance budget: the voltage margin lost to droop is frequency or power that cannot be used. For a buyer or investor, the questions are where the capacitance and inductance physically sit (board, package, die), whose parts and processes they depend on, and how much of the power and area budget they consume.
+Passive components are low-priced and high-volume, but they gate production and performance. A phone, a server board or an electric vehicle cannot ship without every one of its capacitors and inductors, and MLCC supply is concentrated: estimates put Murata at roughly 30–40% of the market and Samsung Electro-Mechanics anywhere from about 10% to 25% (one trade article gives both 24% and a "10% to 20%" grouping), depending on the source and on whether units or revenue are counted ([R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)) **[Contested]**. In power delivery for processors and AI accelerators, the decoupling network (board, package and on-die capacitance) and the regulator's inductors are part of the performance budget: the voltage margin lost to droop is frequency or power that cannot be used. For a buyer or investor, the questions are where the capacitance and inductance physically sit (board, package, die), whose parts and processes they depend on, and how much of the power and area budget they consume.
 
 ### Marketing vs Reality
 

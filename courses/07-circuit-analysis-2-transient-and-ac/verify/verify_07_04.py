@@ -327,6 +327,44 @@ v.check("07-04.14c", fz(5e-3, 2.2e-6) / 1e6)
 v.check("07-04.14d", fz(0.205, 2.2e-6) / 1e3)
 v.check("07-04.14e", 0.05 * 0.205 * 1e3)
 
+# P15: RC low-pass driven by a ramp; simulated, and the convolution integral done numerically
+tau15 = 1e-3
+s15 = solve_ivp(lambda t, x: [(1000.0 * t - x[0]) / tau15], (0, 6e-3), [0.0], rtol=1e-11, atol=1e-14,
+                dense_output=True)
+lam = np.linspace(0, 1e-3, 200001)
+conv = np.trapezoid(np.exp(-(1e-3 - lam) / tau15) / tau15 * 1000.0 * lam, lam)
+v.assert_true("P15 convolution integral matches the simulation at 1 ms", abs(conv - s15.sol(1e-3)[0]) < 1e-8)
+v.check("07-04.15a", s15.sol(1e-3)[0])
+v.check("07-04.15b", 1.0 - s15.sol(1e-3)[0])
+v.check("07-04.15c", s15.sol(5e-3)[0])
+v.check("07-04.15d", 5.0 - s15.sol(5e-3)[0])
+s15b = solve_ivp(lambda t, x: [(1000.0 * t - x[0]) / tau15], (0, 0.05), [0.0], rtol=1e-11, atol=1e-14)
+v.check("07-04.15e", 1000.0 * 0.05 - s15b.y[0, -1])
+# P16: switching on 10 cos(1000 t); the steady state by a lock-in on the late waveform
+H16 = 1 / (1 + 1j * 1000 * tau15)
+v.check("07-04.16a", abs(H16))
+v.check("07-04.16b", np.degrees(np.angle(H16)))
+
+
+def sim16(phi):
+    return solve_ivp(lambda t, x: [(10 * np.cos(1000 * t + phi) - x[0]) / tau15], (0, 0.07), [0.0],
+                     rtol=1e-11, atol=1e-14, dense_output=True)
+
+
+s16 = sim16(0.0)
+tl = np.linspace(0.03, 0.03 + 2 * pi / 1000 * 5, 50001)
+yl = s16.sol(tl)[0]
+ph16 = 2 * np.trapezoid(yl * np.exp(-1j * 1000 * tl), tl) / (tl[-1] - tl[0])
+v.check("07-04.16c", abs(ph16))
+v.check("07-04.16h", abs(ph16) / 2)
+tr16 = lambda t: s16.sol(t)[0] - (ph16 * np.exp(1j * 1000 * t)).real  # noqa: E731
+v.check("07-04.16d", tr16(0.0))
+v.check("07-04.16e", s16.sol(1e-3)[0])
+v.check("07-04.16f", 1e3 * brentq(lambda t: abs(tr16(t)) - 0.01 * abs(ph16), 1e-4, 0.02))
+phi0 = brentq(lambda ph: (sim16(ph).sol(0.003)[0] - (abs(ph16) * np.exp(1j * (1000 * 0.003 + ph + np.angle(ph16)))).real),
+              -1.2, -0.4)
+v.check("07-04.16g", np.degrees(phi0))
+
 # ================================================================================ Lab handout
 den = [1, 11000, 1.1e8]
 num = np.polymul([1 / 20000, 1], [1.1e8 / 11])

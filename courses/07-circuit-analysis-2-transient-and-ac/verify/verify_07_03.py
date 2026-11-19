@@ -260,7 +260,8 @@ for zz, key in ((0.1, "a"), (0.25, "b"), (0.5, "c"), (0.707, "d")):
 v.check("N 07-03.e", 1 / (2 * pi * sqrt(150e-9 * 10.8e-12)) / 1e6)
 
 # ============================================================================== Practitioner lens
-v.check("PL 07-03.a", 2 * sqrt(1e-6 / 22e-6))
+v.check("PL 07-03.a", sqrt(1e-6 / 22e-6))
+v.check("PL 07-03.a2", sqrt(10e-6 / 22e-6))
 for (R, L, C, idZ, idz, idv, idi) in ((0.1, 0.5e-6, 1e-6, "b", "c", "d", "e"), (0.1, 5e-6, 1e-6, None, None, "f", "g")):
     A = series_A(R, L, C)
     sol = simulate(A, [30 / L, 0], [0, 0], 4 * pi * sqrt(L * C), n_steps=400)
@@ -471,6 +472,8 @@ v.check("07-03.14f", extreme(lambda t: sol.sol(t)[0], 0, 100e-6)[1] * 1e3)
 t14, v14 = extreme(vL, 0, 150e-6, "min")
 v.check("07-03.14g", t14 * 1e6)
 v.check("07-03.14h", v14)
+v.check("07-03.14i", extreme(lambda t: sol.sol(t)[0], 0, 100e-6)[0] * 1e6)
+v.check("07-03.14j", 1e6 * brentq(lambda t: sol.sol(t)[1] - 5.0, 1e-6, 80e-6))
 # P15: parallel tank with net conductance 1/R - g
 Gnet = 1 / 10e3 - 0.2e-3
 A = np.array([[-Gnet / 1e-9, -1 / 1e-9], [1 / 1e-6, 0]])
@@ -499,5 +502,38 @@ v.check("Lab 07-03.b", damping_from_eigs(A)[2])
 sol = simulate(A, [12 / 2e-6, 0], [0, 0], 400e-6)
 v.check("Lab 07-03.c", extreme(lambda t: sol.sol(t)[1], 0, 40e-6)[1])
 v.check("Lab 07-03.d", extreme(lambda t: sol.sol(t)[0], 0, 20e-6)[1])
+
+# P17: three-op-amp two-integrator loop, simulated from the op-amp KCL equations
+R17, C17 = 10e3, 10e-9
+
+
+def a17(RQ):
+    # states (v1, v2): C dv1/dt = -(vin + v3)/R - v1/RQ with v3 = -v2;  C dv2/dt = -v1/R
+    return np.array([[-1 / (RQ * C17), 1 / (R17 * C17)], [-1 / (R17 * C17), 0.0]])
+
+
+ev17 = np.linalg.eigvals(a17(50e3))
+v.check("07-03.17a", abs(ev17[0]))
+v.check("07-03.17b", -ev17[0].real / abs(ev17[0]))
+v.check("07-03.17c", abs(ev17[0]) / (-2 * ev17[0].real))
+
+
+def step17(RQ):
+    A = a17(RQ)
+    return solve_ivp(lambda t, x: A @ x + np.array([-1.0 / (R17 * C17), 0.0]), (0, 0.02), [0.0, 0.0],
+                     rtol=1e-11, atol=1e-14, dense_output=True)
+
+
+s17 = step17(50e3)
+v.check("07-03.17d", s17.y[1, -1])
+t17, p17 = extreme(lambda t: s17.sol(t)[1], 0, 1e-3)
+v.check("07-03.17e", 100 * (p17 - 1))
+v.check("07-03.17f", p17)
+v.check("07-03.17g", 1e6 * t17)
+RQb = brentq(lambda RQ: -np.linalg.eigvals(a17(RQ))[0].real / abs(np.linalg.eigvals(a17(RQ))[0]) - 1 / math.sqrt(2),
+             1e3, 50e3)
+v.check("07-03.17h", RQb / 1e3)
+sb17 = step17(RQb)
+v.check("07-03.17i", 100 * (extreme(lambda t: sb17.sol(t)[1], 0, 2e-3)[1] - 1))
 
 v.finish()
