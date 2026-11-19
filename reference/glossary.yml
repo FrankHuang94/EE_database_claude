@@ -3896,3 +3896,58 @@
 - term: Charge-coupled device
   definition: An image sensor made of a dense array of MOS capacitors held in deep depletion, which collect photo-generated electrons in proportion to light and shift the charge packets to an output amplifier by sequencing the gate voltages.
   chapter: "09-08"
+# ---- 09-09
+- term: MOSFET
+  definition: The metal–oxide–semiconductor field-effect transistor, a MOS capacitor with source and drain junctions, in which the gate voltage sets the inversion charge of a channel and the drain voltage drives it; the most widely used semiconductor device.
+  chapter: "09-09"
+- term: Gradual-channel approximation
+  definition: The assumption that the potential along a MOSFET channel varies slowly compared with the vertical field, so each slice of channel behaves as a MOS capacitor biased by the local channel potential; it yields the long-channel I–V equations.
+  chapter: "09-09"
+- term: Linear region
+  definition: The MOSFET operating region with V_DS below V_Dsat, where I_D = (W/L)μC_ox(V_GS − V_t − mV_DS/2)V_DS and the device acts as a voltage-controlled resistor for small V_DS (also called the triode region).
+  chapter: "09-09"
+- term: Saturation region
+  definition: The MOSFET operating region with V_DS above V_Dsat = (V_GS − V_t)/m, where the channel is pinched off at the drain and the current is nearly independent of V_DS; not the same as a bipolar transistor's saturation.
+  chapter: "09-09"
+- term: Pinch-off
+  definition: The vanishing of a MOSFET's inversion charge at the drain end of the channel when V_DS reaches V_Dsat; beyond it, the extra drain voltage drops across a short depleted region that carriers cross at high field.
+  chapter: "09-09"
+- term: Square law
+  definition: The long-channel saturation current I_Dsat = (W/2mL)μC_ox(V_GS − V_t)², with m = 1 in its simplest form; the first-order model of analog design and the basis of SPICE level 1.
+  chapter: "09-09"
+- term: Bulk-charge factor
+  definition: The factor m = 1 + C_dep/C_ox = 1 + 3T_ox/W_dmax (typically about 1.2) by which raising the channel potential also deepens the depletion charge; it lowers V_Dsat and I_Dsat and sets the subthreshold swing m × 60 mV/decade.
+  chapter: "09-09"
+- term: Body effect
+  definition: The rise of a MOSFET's threshold with source-to-body reverse bias, V_t = V_t0 + γ(√(2φ_B + V_SB) − √(2φ_B)); the body acts as a weak second gate.
+  chapter: "09-09"
+- term: Body-effect parameter
+  definition: The coefficient γ = √(2qN_Aε_s)/C_ox (V^1/2) that sets how strongly source-to-body bias shifts a MOSFET's threshold.
+  chapter: "09-09"
+- term: Overdrive voltage
+  definition: The amount by which the gate-source voltage exceeds threshold, V_ov = V_GS − V_t; drive current, transconductance efficiency (2/V_ov) and V_Dsat all depend on it.
+  chapter: "09-09"
+- term: Surface mobility
+  definition: The carrier mobility in a MOSFET inversion layer, several times below bulk mobility because of surface-roughness and phonon scattering, and falling as the vertical field rises.
+  chapter: "09-09"
+- term: Universal mobility
+  definition: The observation that silicon MOSFET surface mobilities fall on one curve against the effective vertical field; Hu fits electrons with 540/[1 + (E_eff/0.9 MV/cm)^1.85] cm²/V·s.
+  chapter: "09-09"
+- term: Channel-length modulation
+  definition: The shortening of a saturated MOSFET's effective channel as the pinch-off point moves toward the source with rising V_DS, which gives finite output resistance, often written I_D ∝ (1 + λV_DS).
+  chapter: "09-09"
+- term: Transconductance efficiency
+  definition: The ratio g_m/I_D, the transconductance obtained per unit of bias current; 2/V_ov for a MOSFET in strong inversion, at most 1/(mV_T) in weak inversion, and 1/V_T for a bipolar transistor.
+  chapter: "09-09"
+- term: Subthreshold conduction
+  definition: MOSFET current below threshold, carried by diffusion in a weak inversion layer and rising exponentially with gate voltage, I_D ∝ e^((V_GS − V_t)/mV_T); it sets off-state leakage.
+  chapter: "09-09"
+- term: Subthreshold swing
+  definition: The gate-voltage change per decade of subthreshold current, S = mV_T ln 10, which cannot fall below 59.5 mV/decade at 300 K for a conventional transistor.
+  chapter: "09-09"
+- term: Off-state current
+  definition: The drain current I_off at V_GS = 0 and V_DS = V_DD, mainly subthreshold leakage, equal to the threshold-defining current times 10^(−V_t/S); it sets standby power.
+  chapter: "09-09"
+- term: Retrograde doping
+  definition: A channel doping profile with a lightly doped surface layer over a heavily doped region, which fixes the depletion width, makes the body effect nearly linear and reduces impurity scattering in the channel.
+  chapter: "09-09"

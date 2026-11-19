@@ -175,6 +175,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-167 | Diode, breakdown and contact references | Nov 2026 |
 | R-168 | Bipolar transistor references | Nov 2026 |
 | R-169 | MOS capacitor and gate-stack references | Nov 2026 |
+| R-170 | Long-channel MOSFET references | Nov 2026 |
 
 ---
 
@@ -1750,3 +1751,15 @@ R&D % = R&D ÷ revenue.
 - **IEEE Spectrum, "The High-k Solution" (Bohr, Chau, Ghani, Mistry, 1 Oct 2007):** Intel 45 nm transistors "with a hafnium-based oxide and metal gate electrodes"; SiO₂ scaled "from about 100 nm down to 1.2 nm" and stopped after the 90 nm generation because of tunneling leakage [Established]. The IEDM 2007 paper (Mistry et al., pp. 247–250, DOI 10.1109/IEDM.2007.4418914) was identified from Crossref metadata only.
 - **Derived here:** flat-band and threshold voltages, the exact Poisson–Boltzmann surface charge (including its exact agreement with the depletion approximation at φ_s = 2φ_B), C–V values and extraction, oxide-charge densities, poly depletion, T_oxe, EOT and CET arithmetic.
 - **Sources:** [C. Hu, ch. 5](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch5-1.pdf); [C. Hu, ch. 7](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch7.pdf); [IRDS 2024 More Moore tables](https://irds.ieee.org/images/files/pdf/2024/2024IRDS_MM_Tables.xlsx); [IEEE Spectrum, The High-k Solution](https://spectrum.ieee.org/the-highk-solution); [Crossref record](https://api.crossref.org/works/10.1109/IEDM.2007.4418914). Checked Nov 2026.
+
+## R-170 · Long-channel MOSFET references
+
+*Hu's chapters 6 and 7 (downloaded earlier in the session) read on 19 Nov 2026; the universal-mobility fit read from the text and checked against the page image of Fig. 6–9. Derived values are recomputed by `courses/09-semiconductor-devices/verify/verify_09_09.py`.*
+
+- **Hu, ch. 6, §6.3:** I_ds = W C_oxe(V_gs − V_t)μ_ns V_ds/L at small V_ds; surface mobilities "several times smaller than the bulk mobilities"; effective field (E_b + E_t)/2 ≈ (V_gs + V_t + 0.2 V)/6T_oxe for N⁺-poly NFETs; Eq. (6.3.7) μ_ns = 540 cm²/Vs/[1 + ((V_gs + V_t + 0.2 V)/5.4T_oxe)^1.85], which, against the figure's axis in MV/cm, is 540/[1 + (E_eff/0.9 MV/cm)^1.85]; hole Eq. (6.3.8) with 185 cm²/Vs; "all silicon MOSFETs exhibit essentially the same surface mobility … Si's universal effective mobility"; lower than bulk because of surface roughness scattering; data after a 1996 IEEE paper [Established].
+- **Hu, §6.4–6.6:** body effect V_t(V_sb) = V_t0 + αV_sb with α = C_dep/C_oxe = 3T_oxe/W_dmax, and for uniform doping V_t = V_t0 + γ(√(2φ_B + V_sb) − √(2φ_B)) with γ = √(2qN_aε_s)/C_oxe; steep retrograde doping; Q_inv(x) = −C_oxe(V_gs − mV_cs − V_t), "m is typically around 1.2"; I_ds (6.6.4), V_dsat = (V_gs − V_t)/m (6.6.5), I_dsat = (W/2mL)C_oxe μ_ns(V_gs − V_t)² (6.6.6); pinch-off [Established].
+- **Hu, §6.13–6.14:** output conductance g_ds and intrinsic voltage gain g_msat/g_ds; small g_ds needs large L and small T_ox, W_dep and X_j; f_T limited by input RC [Established].
+- **Hu, ch. 7, §7.2:** subthreshold current; dφ_s/dV_gs = C_oxe/(C_oxe + C_dep) ≡ 1/η; I_ds ∝ e^(qV_g/ηkT); swing S = η × 60 mV per decade; "A practical and common definition of Vt is the Vgs at which Ids = 100 nA × W/L … (Some companies may use 200 nA instead of 100 nA.)"; I_off(nA) = 100 (W/L) 10^(−V_t/S); "if Ioff is a modest 100 nA per transistor, a cell-phone chip containing one hundred million transistors would consume 10 A even in standby" [Established].
+- **Hu, Table 7–1:** I_off for HP devices 0.15, 0.34, 0.61, 0.84, 0.37 µA/µm and LSTP 1E-5 to 3E-5 µA/µm across the 90 to 22 nm nodes (from the ITRS) [Established as roadmap targets].
+- **Derived here:** device parameters, linear and saturation currents (m-model and exact bulk-charge), body effect, channel-length modulation estimate, small-signal parameters and f_T, subthreshold swing and off-current for the chapter's 10 µm/1 µm transistor; the g_m/I_D interpolation in the lab uses the EKV-model form (named, not quoted).
+- **Sources:** [C. Hu, ch. 6](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch6-1.pdf); [C. Hu, ch. 7](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch7.pdf). Checked Nov 2026.

@@ -36,7 +36,7 @@ The physics of the transistor, from crystals and energy bands through PN junctio
 | [09-06 · PN Junction I–V, Capacitance and Breakdown](chapters/09-06-pn-junction-iv-and-capacitance.md) | 9 | ✅ verified | [problems](problems/09-06-problems.md) · [solutions](solutions/09-06-solutions.md) · [lab](labs/09-06-lab/README.md) · [verify](verify/verify_09_06.py) |
 | [09-07 · The Bipolar Junction Transistor](chapters/09-07-bipolar-junction-transistor.md) | 9 | ✅ verified | [problems](problems/09-07-problems.md) · [solutions](solutions/09-07-solutions.md) · [lab](labs/09-07-lab/README.md) · [verify](verify/verify_09_07.py) |
 | [09-08 · The MOS Capacitor](chapters/09-08-mos-capacitor.md) | 9 | ✅ verified | [problems](problems/09-08-problems.md) · [solutions](solutions/09-08-solutions.md) · [lab](labs/09-08-lab/README.md) · [verify](verify/verify_09_08.py) |
-| [09-09 · The Long-Channel MOSFET](chapters/09-09-long-channel-mosfet.md) | 10 | ⬜ planned | — |
+| [09-09 · The Long-Channel MOSFET](chapters/09-09-long-channel-mosfet.md) | 10 | ✅ verified | [problems](problems/09-09-problems.md) · [solutions](solutions/09-09-solutions.md) · [lab](labs/09-09-lab/README.md) · [verify](verify/verify_09_09.py) |
 | [09-10 · Short-Channel Effects and Leakage](chapters/09-10-short-channel-effects-and-leakage.md) | 8 | ⬜ planned | — |
 | [09-11 · CMOS and Scaling: Moore, Dennard and Beyond](chapters/09-11-cmos-and-scaling.md) | 6 | ⬜ planned | — |
 | [09-12 · Advanced Transistors: FinFET, GAA, CFET and Backside Power](chapters/09-12-finfet-gaa-cfet-backside-power.md) | 6 | ⬜ planned | — |
