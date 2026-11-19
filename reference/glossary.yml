@@ -2910,3 +2910,48 @@
   definition: Connecting a supply's feedback (sense) inputs to the load's terminals with separate wires so that it regulates the voltage at the load, raising its own output by the drop in the current-carrying wires.
   chapter: "06-11"
   see_also: [Four-terminal (Kelvin) measurement, Negative feedback]
+- term: Guard bits
+  definition: Extra high-order bits in an accumulator that keep a sum of many terms from overflowing; a sum of N terms needs ceil(log2 N) of them beyond the width of one term.
+  chapter: "08-01"
+  see_also: [Fixed-point arithmetic, Integer overflow]
+- term: bfloat16
+  definition: A 16-bit floating-point format with 1 sign, 8 exponent and 7 fraction bits; it keeps FP32's range (about 3.4×10^38) at about 2.4 decimal digits of precision, and FP32 converts to it by rounding away the low 16 bits.
+  chapter: "08-01"
+  see_also: [Floating-point number, FP8]
+- term: FP8
+  definition: The two 8-bit floating-point formats used for AI, E4M3 (largest value 448, no infinities, one NaN pattern) and E5M2 (largest value 57 344, IEEE-style specials), standardized by the Open Compute Project in 2023.
+  chapter: "08-01"
+  see_also: [bfloat16, Block floating point]
+- term: Block floating point
+  definition: Storing a block of numbers with one shared scale (exponent) and a few bits per element, so each block gets its own range; the OCP MX formats share one 8-bit power-of-two scale per 32 elements.
+  chapter: "08-01"
+  see_also: [FP8, Fixed-point arithmetic]
+- term: Binary-coded decimal (BCD)
+  definition: Storing each decimal digit in its own 4-bit group (97 is 1001 0111); it wastes 6 of 16 patterns per digit, and binary addition of BCD digits needs a +6 correction when a digit sum exceeds 9.
+  chapter: "08-01"
+- term: Gray code
+  definition: An ordering of the 2^n bit patterns in which consecutive values differ in exactly one bit; the reflected binary Gray code is G = B XOR (B >> 1), used for encoders and for pointers that cross clock domains.
+  chapter: "08-01"
+- term: UTF-8
+  definition: The variable-length encoding of Unicode code points in 1 to 4 bytes, identical to ASCII for U+0000 to U+007F; continuation bytes start with 10, so a receiver can find character boundaries from any point in a stream.
+  chapter: "08-01"
+- term: Parity bit
+  definition: A bit appended so that the number of 1s in a word is even (or odd); it detects any odd number of bit errors and no even number.
+  chapter: "08-01"
+  see_also: [Hamming distance]
+- term: Hamming distance
+  definition: The number of bit positions in which two words differ; a code whose words are at least d_min apart detects up to d_min − 1 errors or corrects up to floor((d_min − 1)/2).
+  chapter: "08-01"
+  see_also: [Hamming code, Parity bit]
+- term: Hamming code
+  definition: A single-error-correcting code whose check bits sit at power-of-two positions, so the syndrome of a word with one flipped bit is that bit's position; Hamming(7,4) protects 4 data bits with 3 check bits.
+  chapter: "08-01"
+  see_also: [SEC-DED, Hamming distance]
+- term: SEC-DED
+  definition: Single-error-correcting, double-error-detecting; a Hamming code plus an overall parity bit (minimum distance 4), as in the (72,64) code of server memory, which corrects one flipped bit per word and flags two.
+  chapter: "08-01"
+  see_also: [Hamming code]
+- term: Cyclic redundancy check (CRC)
+  definition: An error-detecting check formed as the remainder of the message polynomial divided by a generator polynomial over GF(2); a degree-r CRC catches every burst of length r or less, and Ethernet frames end in a 32-bit one.
+  chapter: "08-01"
+  see_also: [Hamming distance]

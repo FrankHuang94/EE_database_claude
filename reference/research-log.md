@@ -148,6 +148,11 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-140 | Vector network analyzers | Nov 2026 |
 | R-141 | SerDes channel loss budgets | Nov 2026 |
 | R-142 | Three-phase distribution voltages | Nov 2026 |
+| R-143 | Block-scaled AI number formats | Nov 2026 |
+| R-144 | DRAM error correction | Nov 2026 |
+| R-145 | Ethernet CRC-32 | Nov 2026 |
+| R-146 | Unicode releases | Nov 2026 |
+| R-147 | Accelerator throughput specifications | Nov 2026 |
 
 ---
 
@@ -1422,3 +1427,44 @@ R&D % = R&D ÷ revenue.
 - **IEEE History Center (ETHW), "Milestones: Sakuma Frequency Converter Station, 1965" (dedication #305, 13 Oct 2026)** [Established]: "used a 300-megawatt frequency converter based on a mercury-arc rectifier to enable the first large-scale power exchange between Japan's eastern 50 Hz grid and western 60 Hz grid"; "In 1895, Tokyo Electric Light Company adopted a '50 Hz' generator manufactured by AEG of Germany. Two years later, Osaka Electric Light Company introduced a '60 Hz' generator from General Electric". Today's total converter capacity was not verified.
 - **Course 07 audit update (19 Nov 2026), from web-search excerpts only:** IEC 60038:2009+AMD1:2021 CSV is the consolidated edition 7.1 (2021-12-15); per the IEC Webstore listing, the amendment adds a 30 kV value to Table 3 and replaces 1 050 kV with 1 100 kV in Table 5, so the low-voltage values above are unchanged [Established]. The Legrand/Server Technology paper's PDF is titled "…in Data Centers" but trade sites distribute it as "…in North American Data Centers" (Data Center Knowledge, 22 Dec 2021). The PDF host could not be reached during the audit, so the column placement of its 415 V rows was not re-checked.
 - **Sources:** [IEC Webstore, IEC 60038 consolidated version](https://webstore.iec.ch/en/publication/72877); [Data Center Knowledge listing](https://www.datacenterknowledge.com/energy/power-efficiency-gains-deploying-415-vac-power-distribution-north-american-data-centers); [IEC 60038 preview](https://www.vde-verlag.de/iec-normen/preview-pdf/info_iec60038%7Bed7.0%7Db.pdf); [Legrand/Server Technology white paper](https://cdn10.servertech.com/assets/documents/documents/1023/original/DPC_STI_PowerEfficiencyGains_WhitePaper.pdf); [ETHW Sakuma Milestone](https://ethw.org/Milestones:Sakuma_Frequency_Converter_Station,_1965). Checked Nov 2026.
+
+## R-143 · Block-scaled AI number formats
+
+*Gathered by a research subagent (Course 08 facts file, entries F-0807 and F-0808) and cross-checked by web search on 19 Nov 2026. The OCP and NVIDIA hosts could not be reached from the build environment, so every item below is from search-result excerpts of the named pages; re-check against the primary documents when they can be opened.*
+
+- **OCP Microscaling Formats (MX) Specification v1.0** (September 2023), announced by OCP on 17 Oct 2023 on behalf of AMD, Arm, Intel, Meta, Microsoft, NVIDIA and Qualcomm: "The initial specification introduces four concrete floating point and integer-based data formats (MXFP8, MXFP6, MXFP4, and MXINT8)". Element types: MXFP8 E5M2 or E4M3, MXFP6 E3M2 or E2M3, MXFP4 E2M1, MXINT8. Every concrete format uses blocks of 32 elements sharing one 8-bit power-of-two scale (E8M0), so MXFP4 costs 4 + 8/32 = 4.25 bits per element. The block size and scale format were read from secondary documentation (pychop and Intel Neural Compressor docs), consistent across sources [Established]. An "OCP_MicroXcaling_Spec_v1.1.0.pdf" was uploaded to the OCP site in Oct 2026 and was not read.
+- **NVIDIA NVFP4** (NVIDIA Technical Blog, "Introducing NVFP4 for Efficient and Accurate Low-precision Inference", June 2025): 4-bit E2M1 values (about −6 to 6), one FP8 E4M3 scale per 16-value block and a second-level FP32 scale per tensor: "This second-level scaling factor is done at a per-tensor level with FP32, which adjusts the original tensor's distribution such that the micro-blocks can be effectively encoded using E4M3 scale factors." About 4.5 bits per value [Established]. NVIDIA claims an accuracy loss of 1% or less against FP8 on its chosen benchmarks (DeepSeek-R1-0528) [Industry estimate: vendor claim].
+- **Sources:** [OCP MX announcement](https://www.opencompute.org/blog/amd-arm-intel-meta-microsoft-nvidia-and-qualcomm-standardize-next-generation-narrow-precision-data-formats-for-ai); [OCP MX v1.0 specification](https://opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf); [pychop MX documentation](https://pychop.readthedocs.io/en/latest/ocp_mx.html); [Intel Neural Compressor, Microscaling Quantization](https://intel.github.io/neural-compressor/latest/docs/source/3x/PT_MXQuant.html); [NVIDIA NVFP4 blog](https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference); [repost at edge-ai-vision.com](https://www.edge-ai-vision.com/2025/07/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/). Checked Nov 2026 (search excerpts).
+
+## R-144 · DRAM error correction
+
+*Course 08 facts file entries F-0813 and F-0814, cross-checked by web search on 19 Nov 2026; search-result excerpts only (JESD79-5 itself is paywalled).*
+
+- **DDR5 on-die ECC:** Micron's *DDR5 New Features* white paper: "DDR5 SDRAM ECC is implemented as single error correction (SEC), pairing 128 data bits with 8 parity bits to form a 136-bit codeword." Academic papers describe it as a Hamming code with (n = 136, k = 128, d = 3), invisible to the system, able to miscorrect some double-bit errors into triple-bit errors, and separate from rank-level (side-band) ECC [Established].
+- **JESD79-5C:** JEDEC announced the update on 17 Apr 2024: timings to 8800 Mbps, Per-Row Activation Counting (PRAC) against Rowhammer, and removal of Partial Array Self-Refresh for security reasons [Established]. Excerpts disagree on the previous speed ceiling, so none is quoted.
+- **Sources:** [Micron DDR5 New Features white paper](https://www.micron.cn/content/dam/micron/global/public/products/white-paper/ddr5-new-features-white-paper.pdf); [Synopsys, Key Features of DDR5](https://www.synopsys.com/designware-ip/technical-bulletin/ddr5-features.html); [Synopsys, Error Correction Code (ECC) in DDR Memories](https://www.synopsys.com/designware-ip/technical-bulletin/error-correction-code-ddr.html); [Patel et al., DSN 2019](https://people.cs.rutgers.edu/~mp2099/files/patel_dsn19_understanding_paper.pdf); [JEDEC JESD79-5C release (Business Wire)](https://www.businesswire.com/news/home/20240417886230/en/JEDEC-Updates-JESD79-5C-DDR5-SDRAM-Standard-Elevating-Performance-and-Security-for-Next-Gen-Technologies). Checked Nov 2026 (search excerpts).
+
+## R-145 · Ethernet CRC-32
+
+*Course 08 facts file entries F-0811 and F-0812, cross-checked by web search on 19 Nov 2026; search-result excerpts only.*
+
+- **Frame check sequence:** IEEE 802.3 clause 3.2.9 uses G(x) = x³² + x²⁶ + x²³ + x²² + x¹⁶ + x¹² + x¹¹ + x¹⁰ + x⁸ + x⁷ + x⁵ + x⁴ + x² + x + 1 (04C11DB7₁₆ for the terms below x³²). The first 32 bits are complemented, M(x)·x³² is divided by G(x), and the remainder is complemented; the FCS covers addresses, length/type, data and pad. Quoted via Intel's Triple-Speed Ethernet IP user guide; the IEEE text itself was not read [Established].
+- **Hamming distance:** P. Koopman, "32-Bit Cyclic Redundancy Codes for Internet Applications," IEEE DSN 2002, the first exhaustive search of 32-bit CRC polynomials: the IEEE 802.3 CRC-32 detects up to three independent bit errors in a 1500-byte payload (HD = 4), and other polynomials reach higher HD at those lengths [Established]. Taken from abstracts and excerpts; the paper's tables were not opened.
+- **Sources:** [Intel Triple-Speed Ethernet IP user guide, CRC checking](https://www.intel.com/content/www/us/en/docs/programmable/683402/24-3/crc-checking.html); [Koopman 2002, CMU repository](https://kilthub.cmu.edu/articles/journal_contribution/32-Bit_Cyclic_Redundancy_Codes_for_Internet_Applications/6620594); [Koopman 2002, copy](https://typeset.io/pdf/32-bit-cyclic-redundancy-codes-for-internet-applications-1vyanily1r.pdf). Checked Nov 2026 (search excerpts).
+
+## R-146 · Unicode releases
+
+*Course 08 facts file entries F-0809 and F-0810; search-result excerpts only (unicode.org could not be reached from the build environment).*
+
+- **Unicode 17.0** (released 9 Sep 2025): "Unicode 17.0 adds 4803 characters, for a total of 159,801 characters", including four new scripts [Established].
+- **Unicode 18.0** (Sep 2026): press coverage (Linuxiac) reports 13,007 new characters and a total of 172,808; Unicode's beta page said 13,047 and 172,848 [Contested: final totals not seen on Unicode's release page].
+- **Code space:** U+0000 to U+10FFFF, 17 planes of 65,536 code points = 1,114,112 (from the UTF-8 definition in chapter 08-01; computed) [Established].
+- **Sources:** [Unicode 17.0.0](https://www.unicode.org/versions/Unicode17.0.0); [Unicode 17.0 announcement](https://blog.unicode.org/2025/09/unicode-170-release-announcement.html); [Unicode 18.0 beta](https://www.unicode.org/versions/beta-18.0.0.html); [Linuxiac on Unicode 18.0](https://linuxiac.com/unicode-18-0-released-with-13007-new-characters/). Checked Nov 2026 (search excerpts).
+
+## R-147 · Accelerator throughput specifications
+
+*Course 08 facts file entry F-0850, cross-checked by web search on 19 Nov 2026; search-result excerpts only.*
+
+- **NVIDIA HGX B200 (8 GPUs):** "FP4 Tensor Core 144 PFLOPS | 72 PFLOPS"; the footnote says the specification is shown as sparse | dense and dense is one-half of the sparse figure. The DGX B200 datasheet uses the same convention. Per GPU: 18 PFLOPS sparse, 9 dense, matching third-party per-GPU tables (Lenovo Press LP2226) [Established].
+- **Headline figures:** GTC 2024 coverage quoted "up to 20 petaFLOPS of FP4" for B200 [Contested: which configuration the headline refers to]. For later parts (HGX B300) a third-party analysis notes that dense FP4 is not simply half of sparse, so the ½ rule should not be assumed beyond B200.
+- **Sources:** [NVIDIA HGX platform](https://www.nvidia.com/en-in/data-center/hgx); [NVIDIA DGX B200](https://www.nvidia.com/en-gb/data-center/dgx-b200.md); [NVIDIA HGX B200 PCF summary](https://images.nvidia.com/aem-dam/Solutions/documents/HGX-B200-PCF-Summary.pdf); [Lenovo Press LP2226](https://lenovopress.lenovo.com/LP2226). Checked Nov 2026 (search excerpts).
