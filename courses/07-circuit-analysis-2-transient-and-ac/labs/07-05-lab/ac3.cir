@@ -1,0 +1,73 @@
+* Example 07-05.7 (a VCCS amplifier model at 1e4 rad/s, and its Thevenin impedance by a 1 A test source),
+* Problem 07-05.14 (the Delta network at 1000 rad/s: j10 ohm = 10 mH, -j10 ohm = 100 uF) and
+* Problem 07-05.15 (the Miller amplifier at 10 kHz, a VCVS of -50 behind 100 ohm). Phases in degrees.
+*
+* EXPECT e7c  key:../../chapters/07-05-sinusoidal-steady-state-and-impedance.md#Ex_07-05.7c rtol=2e-4
+* EXPECT e7d  key:../../chapters/07-05-sinusoidal-steady-state-and-impedance.md#Ex_07-05.7d rtol=2e-4
+* EXPECT e7e  key:../../chapters/07-05-sinusoidal-steady-state-and-impedance.md#Ex_07-05.7e rtol=2e-4
+* EXPECT e7f  key:../../chapters/07-05-sinusoidal-steady-state-and-impedance.md#Ex_07-05.7f rtol=2e-4
+* EXPECT p14i key:../../solutions/07-05-solutions.md#07-05.14h rtol=2e-4
+* EXPECT p14a key:../../solutions/07-05-solutions.md#07-05.14i rtol=2e-4
+* EXPECT p14p key:../../solutions/07-05-solutions.md#07-05.14j rtol=2e-4
+* EXPECT p15x key:../../solutions/07-05-solutions.md#07-05.15c rtol=2e-4
+* EXPECT p15o key:../../solutions/07-05-solutions.md#07-05.15e rtol=5e-4
+* EXPECT p15r key:../../solutions/07-05-solutions.md#07-05.15h rtol=5e-4
+* EXPECT p15i key:../../solutions/07-05-solutions.md#07-05.15i rtol=2e-4
+
+* ---- Example 07-05.7
+V7   s7 0 AC 1
+R71  s7 x7 1k
+C7   x7 0 100n
+Rf7  x7 o7 10k
+R72  o7 0 2k
+G7   o7 0 x7 0 10m
+* test-source copy (source off)
+R7t1 xt 0 1k
+C7t  xt 0 100n
+Rf7t xt ot 10k
+R7t2 ot 0 2k
+G7t  ot 0 xt 0 10m
+I7t  0 ot AC 1
+* ---- Problem 07-05.14
+V14  a14 0 AC 10
+Rab  a14 b14 10
+Lbc  b14 c14 10m
+Cca  c14 a14 100u
+Rbd  b14 0 10
+Rcd  c14 0 5
+* ---- Problem 07-05.15 (and a test-current copy for Z_in)
+V15  s15 0 AC 0.1
+Rs15 s15 x15 1k
+Ri15 x15 0 10k
+Cf15 x15 o15 1n
+E15  e15 0 x15 0 -50
+Ro15 e15 o15 100
+RL15 o15 0 10k
+Ri1t xt15 0 10k
+Cf1t xt15 ot15 1n
+E1t  et15 0 xt15 0 -50
+Ro1t et15 ot15 100
+RL1t ot15 0 10k
+I15t 0 xt15 AC 1
+
+.control
+ac lin 1 1591.5494 1591.5494
+let e7c = vm(o7)
+let e7d = 180/pi*vp(o7)
+let e7e = real(v(ot))
+let e7f = imag(v(ot))
+print e7c e7d e7e e7f
+ac lin 1 159.15494 159.15494
+let i14 = -i(V14)
+let p14i = mag(i14)
+let p14a = 180/pi*ph(i14)
+let p14p = 0.5*10*real(i14)
+print p14i p14a p14p
+ac lin 1 10k 10k
+let p15x = vm(x15)
+let p15o = vm(o15)
+let p15r = real(v(xt15))
+let p15i = imag(v(xt15))
+print p15x p15o p15r p15i
+.endc
+.end

@@ -167,6 +167,7 @@ where $x_n$ is the natural response of §3.1. Its two constants come from the de
   $$
   A_1 = \frac{\dot x(0^+) - s_2D}{s_1 - s_2}, \qquad A_2 = \frac{s_1D - \dot x(0^+)}{s_1 - s_2} .
   $$
+
 - **Critically damped:** $B_1 = D$ and $-\alpha B_1 + B_2 = \dot x(0^+)$, so $x_n = \big[D + (\dot x(0^+) + \alpha D)\,t\big]e^{-\alpha t}$.
 - **Underdamped:** $B_1 = D$ and $-\alpha B_1 + \omega_dB_2 = \dot x(0^+)$, so
   $$
@@ -194,10 +195,12 @@ Apply a step $V$ to a series RLC at rest ($v_C(0) = 0$, $i(0) = 0$). The $0^+$ c
   v_C(t) = V\left[1 - e^{-\alpha t}\left(\cos\omega_dt + \frac{\alpha}{\omega_d}\sin\omega_dt\right)\right].
   $$
   This is 02-03's all-pole step response: overshoot $\text{OS} = e^{-\pi\zeta/\sqrt{1 - \zeta^2}}$ at $t_p = \pi/\omega_d$.
+
 - **Current:** $D = 0$ and $\dot i(0^+) = v_L(0^+)/L = V/L$, so $i(t) = \dfrac{V}{\omega_dL}e^{-\alpha t}\sin\omega_dt$. Its first peak is where $\tan\omega_dt = \omega_d/\alpha$, that is $\omega_dt = \arccos\zeta$ (because $\cos\theta = \alpha/\omega_0 = \zeta$ for that angle). Substituting, and using $\omega_dL\cdot\omega_0/\omega_d = \omega_0L = Z_0$:
   $$
   \boxed{\,i_{pk} = \frac{V}{Z_0}\exp\!\left(-\frac{\zeta\arccos\zeta}{\sqrt{1 - \zeta^2}}\right) \;\approx\; \frac{V}{Z_0}\ \ \text{for small } \zeta\,}
   $$
+
 - **Inductor voltage:** $v_L = L\,di/dt = Ve^{-\alpha t}\left(\cos\omega_dt - \dfrac{\alpha}{\omega_d}\sin\omega_dt\right)$. It **jumps** to $V$ at $0^+$, then swings negative.
 - **Resistor voltage:** $v_R = Ri = \dfrac{2\alpha V}{\omega_d}e^{-\alpha t}\sin\omega_dt$, using $R/L = 2\alpha$.
 

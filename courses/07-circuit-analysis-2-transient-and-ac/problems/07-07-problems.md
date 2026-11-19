@@ -67,6 +67,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Damping the supply filter.** Example 07-07.3's filter ($L$ = 4.7 µH, $R_s$ = 30 mΩ, $C$ = 22 µF, $R_L$ = 10 Ω) amplifies by 19 dB near 15.7 kHz. Add a damping branch across $C$: $R_d = \sqrt{L/C}$ in series with $C_d = 4C$. (a) Find $R_d$ and explain why $C_d$ is needed in series with it. (b) Find the gain at the original $f_0$ = 15.68 kHz with and without the damper. (c) Find the new peak gain and its frequency. (d) Find the gain at 500 kHz with the damper, and explain why the damper costs almost no attenuation there.
 
+### Problem 07-07.15 [B]
+
+**A right-half-plane zero.** Compare $H_1(s) = 10\,\dfrac{1 + s/10^4}{(1 + s/10^3)(1 + s/10^5)}$ and $H_2(s) = 10\,\dfrac{1 - s/10^4}{(1 + s/10^3)(1 + s/10^5)}$, with $s$ in rad/s. (a) Show that their magnitudes are equal at every frequency. (b) Find each phase at $\omega = 10^3$, $10^4$ and $10^5$ rad/s. (c) Find each one's total phase change from DC to very high frequency, and explain why a feedback loop containing $H_2$ is harder to stabilize. (d) Use the initial-value theorem to find the value and the initial slope of $H_2$'s response to a 1 V step, and describe how the response starts.
+
 ---
 
 ## Objective coverage
@@ -76,6 +80,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Decibels, nepers, reference levels | 1, 2 |
 | 2. $H(j\omega)$ from a circuit or $H(s)$; Bode form | 4, 5, 14 |
 | 3. Asymptotic Bode plots and corrections | 3, 4, 5, 6 |
-| 4. Reading Bode plots; minimum phase; delay | 2, 7, 10, 12 |
+| 4. Reading Bode plots; minimum phase; delay | 2, 7, 10, 12, 15 |
 | 5. Bandwidth, rise time, cascades, gain–bandwidth | 8, 9, 11 |
 | 6. Datasheet specifications and practice | 8, 11, 13, 14 |

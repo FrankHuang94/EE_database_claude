@@ -18,17 +18,19 @@ Problems: [07-06 problems](../problems/07-06-problems.md) · Chapter: [07-06](..
 
 $S = \tfrac12\mathbf{V}\mathbf{I}^* = \tfrac12(100\angle20°)(5\angle15°) = 250\angle35°$ VA $= 204.8 + j143.4$ VA. So $\lvert S\rvert$ = **250.0 VA**, $P$ = **204.8 W**, $Q$ = **143.4 var**, and PF $= \cos35° = $ **0.8192**, lagging (voltage leads current, $Q > 0$).
 
+With the current's phase as the time reference, the decomposition of 07-06 §3.4 gives $p(t) = 204.8(1 + \cos2\omega t) - 143.4\sin2\omega t$ W. The two oscillating terms combine into one sinusoid of amplitude $\sqrt{P^2 + Q^2} = \lvert S\rvert$, so $p$ swings between $P + \lvert S\rvert = $ **454.8 W** and $P - \lvert S\rvert = $ **−45.2 W**. For part of each cycle the load returns energy to the source.
+
 ### Solution 07-06.3
 
 An ideal inductor absorbs **0 W**. Its reactive power is $Q = I_{rms}^2X = 1^2\times2\pi\times1000\times0.01 = $ **62.83 var**.
 
 ### Solution 07-06.4
 
-The loads in parallel: $Z_p = Z_1Z_2/(Z_1 + Z_2) = (36\,750 + j13\,500)/2725 = $ **13.49 + j4.954 Ω**. The line current is $\mathbf{I}_{rms} = 230/(Z_{line} + Z_p) = $ **15.65 A ∠ −21.37°**, and the load voltage $\mathbf{V}_{L} = \mathbf{I}Z_p = $ **224.9 V ∠ −1.195°**. Complex powers (source delivering, others absorbing):
+The loads in parallel: $Z_p = Z_1Z_2/(Z_1 + Z_2) = (36\,750 + j13\,500)/2725 = $ **13.49 + j4.954 Ω**. The line current is $\mathbf{I}_{rms} = 230/(Z_{line} + Z_p) = $ **15.65 A ∠ −21.37°**, and the load voltage $\mathbf{V}_{load,rms} = \mathbf{I}_{rms}Z_p = $ **224.9 V ∠ −1.195°**. All phasors in this solution are RMS, so $S = \mathbf{V}_{rms}\mathbf{I}_{rms}^*$ with no factor ½. Complex powers (source delivering, others absorbing):
 
 | Element | $S$ (VA) |
 |---|---|
-| Source, delivered: $230\,\mathbf{I}^*$ | 3352.2 + j1311.4 |
+| Source, delivered: $230\,\mathbf{I}_{rms}^*$ | 3352.2 + j1311.4 |
 | Line: $I^2(0.2 + j0.4)$ | 49.0 + j98.0 |
 | Load 1: $V_L^2/Z_1^*$ | 1617.9 + j1213.4 |
 | Load 2: $V_L^2/30$ | 1685.3 + j0 |
@@ -90,6 +92,8 @@ The loss scales as $1/(V^2\,\text{PF}^2)$: raising the voltage from 230 V to 400
 | 07-06.2b | P | 204.8 | W |
 | 07-06.2c | Q | 143.4 | var |
 | 07-06.2d | PF | 0.8192 | — |
+| 07-06.2e | maximum instantaneous power | 454.8 | W |
+| 07-06.2f | minimum instantaneous power | −45.2 | W |
 | 07-06.3a | real power | 0 | W |
 | 07-06.3b | reactive power | 62.83 | var |
 | 07-06.4a | line current | 15.65 | A |

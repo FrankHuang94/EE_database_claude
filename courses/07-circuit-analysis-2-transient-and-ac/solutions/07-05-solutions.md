@@ -44,7 +44,7 @@ $$
 \begin{pmatrix}10 - j0.4128 & j31.83\\ j31.83 & 20 - j31.83\end{pmatrix}\begin{pmatrix}\mathbf{I}_1\\ \mathbf{I}_2\end{pmatrix} = \begin{pmatrix}100\\ -43.30 - j25.00\end{pmatrix} .
 $$
 
-Solving: $\mathbf{I}_1 = $ **1.745 A ∠ −41.06°**, $\mathbf{I}_2 = $ **2.769 A ∠ −82.17°**, and the capacitor current $\mathbf{I}_1 - \mathbf{I}_2 = $ **1.853 A ∠ 59.57°**. Note that $L$ and $C$ almost cancel in mesh 1 at 50 Hz ($j31.42 - j31.83$), which is why mesh 1's own impedance is nearly resistive.
+Solving: $\mathbf{I}_1 = $ **1.745 A ∠ −41.06°**, $\mathbf{I}_2 = $ **2.769 A ∠ −82.17°**, and the capacitor current $\mathbf{I}_1 - \mathbf{I}_2 = $ **1.853 A ∠ 59.57°**. Note that $L$ and $C$ almost cancel in mesh 1 at 50 Hz ($j$**31.42** $- j$**31.83** Ω), which is why mesh 1's own impedance is nearly resistive.
 
 ### Solution 07-05.6
 
@@ -57,7 +57,7 @@ In time: $v(t) = 2.5 + 0.954\cos(2\pi\cdot1000\,t - 17.44°)$ V. The two parts c
 
 ### Solution 07-05.7
 
-Short the output: all the source current flows through the inductor, $\mathbf{I}_{sc} = 1/(j\omega L) = 1/(j62.83)$ A $= $ **15.92 mA ∠ −90°**. With the source shorted, the output sees $j\omega L$ in parallel with 100 Ω: $Z_N = j62.83\times100/(100 + j62.83) = $ **28.30 + j45.05 Ω** ($53.20\angle57.86°$ Ω). The Norton equivalent is $\mathbf{I}_{sc}$ in parallel with $Z_N$, valid at 1 MHz.
+Short the output: all the source current flows through the inductor, $\mathbf{I}_{sc} = 1/(j\omega L) = 1/(j62.83)$ A $= $ **15.92 mA ∠ −90°**. With the source shorted, the output sees $j\omega L$ in parallel with 100 Ω: $Z_N = j62.83\times100/(100 + j62.83) = $ **28.30 + j45.05 Ω** (**53.20** Ω ∠ **57.86°**). The Norton equivalent is $\mathbf{I}_{sc}$ in parallel with $Z_N$, valid at 1 MHz.
 
 ### Solution 07-05.8
 
@@ -65,11 +65,11 @@ $f_0 = 1/(2\pi\sqrt{10^{-2}\times10^{-6}}) = $ **1.592 kHz**. At resonance $j\om
 
 ### Solution 07-05.9
 
-(a) $\mathbf{I} = 10\angle{-30°} = 8.660 - j5.000$ A. $\mathbf{V}_S = 100 + (8.660 - j5)(1 + j2) = 100 + 18.66 + j12.32$, so $\lvert\mathbf{V}_S\rvert = $ **119.3 V** (at 5.93°) and the drop is **19.30 V**.
+(a) $\mathbf{I} = 10\angle{-30°} = 8.660 - j5.000$ A. $\mathbf{V}_S = 100 + (8.660 - j5)(1 + j2) = 100 + 18.66 + j12.32$, so $\lvert\mathbf{V}_S\rvert = $ **119.3 V** (at **5.93°**) and the drop is **19.30 V**.
 
-(b) The approximation gives $10(1\times\cos30° + 2\times\sin30°) = $ **18.66 V**, 0.64 V low. The rule neglects the quadrature component (here 12.3 V, far from small compared with 100 V), which adds to the magnitude in second order. It is good only when the line drop is a few percent of the voltage.
+(b) The approximation gives $10(1\times\cos30° + 2\times\sin30°) = $ **18.66 V**, **0.64 V** low. The rule neglects the quadrature component (here **12.32 V**, far from small compared with 100 V), which adds to the magnitude in second order. It is good only when the line drop is a few percent of the voltage.
 
-(c) The compensated line current is the in-phase part, **8.660 A** ∠ 0° (the capacitor supplies the 5 A reactive part locally). $\mathbf{V}_S = 100 + 8.66(1 + j2) = 108.66 + j17.32$, so $\lvert\mathbf{V}_S\rvert = 110.03$ V and the drop falls to **10.03 V**. Cancelling the reactive current roughly halved the drop: the line's large reactance now carries only in-phase current. This is the voltage-support side of power-factor correction (07-06).
+(c) The compensated line current is the in-phase part, **8.660 A** ∠ 0° (the capacitor supplies the 5 A reactive part locally). $\mathbf{V}_S = 100 + 8.66(1 + j2) = 108.66 + j17.32$, so $\lvert\mathbf{V}_S\rvert = $ **110.03 V** and the drop falls to **10.03 V**. Cancelling the reactive current roughly halved the drop: the line's large reactance now carries only in-phase current. This is the voltage-support side of power-factor correction (07-06).
 
 ### Solution 07-05.10
 
@@ -89,11 +89,11 @@ Balance $Z_1Z_4 = Z_2Z_3$ gives $\big(R_x + \frac{1}{j\omega C_x}\big)R_4 = \big
 
 (a) $H = -R_f/\big(R_s + 1/(j\omega C)\big)$. Its corner is $f_c = 1/(2\pi R_sC) = 1.592$ kHz.
 
-- 100 Hz: $\lvert H\rvert = $ **0.6271**, at −93.60°.
-- 1.592 kHz: $H = -10/(1 - j) $, so $\lvert H\rvert = 10/\sqrt2 = $ **7.071**, at −135.0°.
-- 100 kHz: $\lvert H\rvert = $ **9.999**, at −179.09°.
+- 100 Hz: $\lvert H\rvert = $ **0.6271**, at **−93.60°**.
+- 1.592 kHz: $H = -10/(1 - j) $, so $\lvert H\rvert = 10/\sqrt2 = $ **7.071**, at **−135.0°**.
+- 100 kHz: $\lvert H\rvert = $ **9.999**, at **−179.09°**.
 
-(b) The ideal differentiator's gain $\omega R_fC$ is 0.6283, 10.00 and **628.3** at the three frequencies. At 100 Hz the practical circuit is within 0.2% of ideal; at the corner it is 3 dB below; at 100 kHz it is capped at $R_f/R_s = 10$, 63 times below the ideal.
+(b) The ideal differentiator's gain $\omega R_fC$ is **0.6283**, **10.00** and **628.3** at the three frequencies. At 100 Hz the practical circuit is within 0.2% of ideal; at the corner it is 3 dB below; at 100 kHz it is capped at $R_f/R_s = 10$, 63 times below the ideal.
 
 (c) It is the same fact seen in frequency: 07-02 found that the series resistor turned an impulse into a finite spike of height $(R_f/R_s)V$ and limited the response to fast changes to $R_f/R_s$. Fast changes are high frequencies, and the phasor gain tops out at exactly $R_f/R_s$.
 
@@ -101,13 +101,60 @@ Balance $Z_1Z_4 = Z_2Z_3$ gives $\big(R_x + \frac{1}{j\omega C_x}\big)R_4 = \big
 
 (a) $Z = R_e\parallel\big(R_i + \frac{1}{j\omega C_m}\big)$:
 
-- 5 kHz: $Z = 495.1 - j38.66$ Ω, $\lvert Z\rvert = $ **496.6 Ω** at −4.46°.
+- 5 kHz: $Z = 495.1 - j38.66$ Ω, $\lvert Z\rvert = $ **496.6 Ω** at **−4.46°**.
 - 50 kHz: $Z = 308.7 - j152.3$ Ω, $\lvert Z\rvert = $ **344.2 Ω** at **−26.26°**.
-- 1 MHz: $Z = 188.0 - j12.41$ Ω, $\lvert Z\rvert = $ **188.4 Ω** at −3.78°.
+- 1 MHz: $Z = 188.0 - j12.41$ Ω, $\lvert Z\rvert = $ **188.4 Ω** at **−3.78°**.
 
 (b) At low frequency the membrane capacitance blocks the intracellular path, so $Z \to R_e$ = **500 Ω**. At high frequency it shorts, and $Z \to R_e\parallel R_i = $ **187.5 Ω**. In between, $Z = R_e\,\dfrac{1 + j\omega R_iC_m}{1 + j\omega(R_e + R_i)C_m}$ has a pole at $1/(2\pi(R_e + R_i)C_m) = $ **39.79 kHz** and a zero at $1/(2\pi R_iC_m) = $ **106.1 kHz**, and the phase is most negative at their geometric mean, **64.97 kHz**.
 
 (c) The two limits measure two different things: the low-frequency value is the extracellular resistance alone, and the high-frequency value adds the intracellular path. One frequency gives one complex number, a blend of both paths with weights that depend on the unknown $C_m$; measurements at several frequencies (or the full curve) let a fit separate $R_e$, $R_i$ and $C_m$, and with them extracellular and total body water. This is the principle of multi-frequency bioimpedance analysis (§9).
+
+### Solution 07-05.14
+
+(a) The Δ–Y formulas of 06-03 hold for impedances unchanged. The sum of the Δ impedances is $10 + j10 - j10 = 10$ Ω. Each Y arm is the product of the two Δ impedances meeting at its node, divided by the sum:
+
+- $Z_a = Z_{ab}Z_{ca}/10 = 10(-j10)/10 = $ **−j10 Ω**;
+- $Z_b = Z_{ab}Z_{bc}/10 = 10(j10)/10 = $ **j10 Ω**;
+- $Z_c = Z_{bc}Z_{ca}/10 = (j10)(-j10)/10 = $ **10 Ω**.
+
+A resistor and two reactances in Δ become a different mixture in Y. The equivalence holds only at this one frequency.
+
+(b) From a, the current passes $Z_a$ to the star point, then splits between the b path ($Z_b$ + 10 Ω = 10 + j10 Ω) and the c path ($Z_c$ + 5 Ω = 15 Ω):
+
+$$
+Z_{ad} = -j10 + \frac{(10 + j10)\times15}{25 + j10} = -j10 + (7.241 + j3.103) = \textbf{7.241 − j6.897 Ω} ,
+$$
+
+which is **10.00 Ω** at **−43.60°**.
+
+(c) $\mathbf{I} = 10/Z_{ad} = $ **1.000 A ∠ 43.60°**, leading the voltage because the network is capacitive overall. The average power is $\tfrac12\lvert\mathbf{I}\rvert^2\operatorname{Re}Z_{ad} = \tfrac12\times1\times7.241 = $ **3.621 W**, all of it in the 10 Ω, 10 Ω and 5 Ω resistors.
+
+### Solution 07-05.15
+
+(a) Work in microsiemens: $1/R_s$ = 1000, $1/R_{in}$ = 100, $j\omega C_f = j62.83$, $1/R_o$ = 10 000 and $1/R_L$ = 100 µS. The amplifier delivers $(-50\mathbf{V}_x - \mathbf{V}_o)/R_o$ into node o. KCL, currents leaving:
+
+$$
+\begin{aligned}
+\text{node x:}\quad (1100 + j62.83)\mathbf{V}_x - j62.83\,\mathbf{V}_o &= 1000\,\mathbf{V}_S = 100 ,\\
+\text{node o:}\quad (500\,000 - j62.83)\mathbf{V}_x + (10\,100 + j62.83)\mathbf{V}_o &= 0 .
+\end{aligned}
+$$
+
+The second gives the actual voltage gain $K = \mathbf{V}_o/\mathbf{V}_x = -(500\,000 - j62.83)/(10\,100 + j62.83) = $ **49.50 ∠ 179.64°**, slightly less than 50 because $R_o$ drops part of the output. Substituting, $\mathbf{V}_x[(1100 + j62.83) - j62.83K] = 100$:
+
+$$
+\mathbf{V}_x = \frac{100}{1119.7 + j3173.2} = \textbf{0.02972 V ∠ −70.56°} ,
+$$
+
+and $\mathbf{V}_o = K\mathbf{V}_x = $ **1.471 V ∠ 109.07°**, a gain from the source of **14.71**, far below 50: the input node is heavily loaded.
+
+(b) Replace $\mathbf{V}_S$ and $R_s$ by a test current $\mathbf{I}_t$ into node x, and keep the dependent source. Node o still forces $\mathbf{V}_o = K\mathbf{V}_x$, and node x gives $\mathbf{I}_t = [1/R_{in} + j\omega C_f(1 - K)]\mathbf{V}_x$. So
+
+$$
+Y_{in} = 100 + j62.83(1 - K)\ \mu\text{S} = 119.7 + j3173\ \mu\text{S}, \qquad Z_{in} = \textbf{11.87 − j314.7 Ω} .
+$$
+
+(c) The capacitor's current is $j\omega C_f(\mathbf{V}_x - \mathbf{V}_o) = j\omega C_f(1 - K)\mathbf{V}_x$: from the input, it looks like a capacitance $C_f(1 - K)$ to ground. The Miller estimate with $K = -50$ gives 51 nF in parallel with 10 kΩ, which is **9.729 − j311.8 Ω**. The exact effective capacitance is $C_f\operatorname{Re}(1 - K)$ = **50.50 nF**: smaller because the true gain is 49.50, and $K$ is not exactly 180° out of phase, which adds the small extra conductance (119.7 µS instead of 100 µS). A 1 nF feedback capacitor looks like 50 nF at the input. That is why a transistor's small base–collector capacitance dominates an amplifier's input at high frequency (07-10, Problem 07-10.10; Course 12).
 
 ---
 
@@ -138,12 +185,16 @@ Balance $Z_1Z_4 = Z_2Z_3$ gives $\big(R_x + \frac{1}{j\omega C_x}\big)R_4 = \big
 | 07-05.5d | angle of $\mathbf{I}_2$ | −82.17 | ° |
 | 07-05.5e | $\lvert\mathbf{I}_C\rvert$ | 1.853 | A |
 | 07-05.5f | angle of $\mathbf{I}_C$ | 59.57 | ° |
+| 07-05.5g | inductor reactance at 50 Hz | 31.42 | Ω |
+| 07-05.5h | capacitor reactance magnitude at 50 Hz | 31.83 | Ω |
 | 07-05.6a | DC part | 2.500 | V |
 | 07-05.6b | AC amplitude | 0.9540 | V |
 | 07-05.6c | AC phase | −17.44 | ° |
 | 07-05.7a | $\lvert\mathbf{I}_{sc}\rvert$ | 15.92 | mA |
 | 07-05.7b | $Z_N$ real part | 28.30 | Ω |
 | 07-05.7c | $Z_N$ imaginary part | 45.05 | Ω |
+| 07-05.7d | $\lvert Z_N\rvert$ | 53.20 | Ω |
+| 07-05.7e | angle of $Z_N$ | 57.86 | ° |
 | 07-05.8a | resonant frequency | 1.592 | kHz |
 | 07-05.8b | current | 0.1000 | A |
 | 07-05.8c | inductor (and capacitor) voltage | 10.00 | V |
@@ -153,6 +204,10 @@ Balance $Z_1Z_4 = Z_2Z_3$ gives $\big(R_x + \frac{1}{j\omega C_x}\big)R_4 = \big
 | 07-05.9c | approximate drop | 18.66 | V |
 | 07-05.9d | compensated line current | 8.660 | A |
 | 07-05.9e | compensated drop | 10.03 | V |
+| 07-05.9f | angle of $\mathbf{V}_S$ | 5.93 | ° |
+| 07-05.9g | error of the approximation | 0.64 | V |
+| 07-05.9h | quadrature component | 12.32 | V |
+| 07-05.9i | compensated $\lvert\mathbf{V}_S\rvert$ | 110.03 | V |
 | 07-05.10a | balance frequency | 1.592 | kHz |
 | 07-05.10b | $R_3/R_4$ | 2 | — |
 | 07-05.11a | $R_x$ | 2.000 | Ω |
@@ -162,6 +217,11 @@ Balance $Z_1Z_4 = Z_2Z_3$ gives $\big(R_x + \frac{1}{j\omega C_x}\big)R_4 = \big
 | 07-05.12b | gain at the corner | 7.071 | — |
 | 07-05.12c | gain at 100 kHz | 9.999 | — |
 | 07-05.12d | ideal gain at 100 kHz | 628.3 | — |
+| 07-05.12e | phase at 100 Hz | −93.60 | ° |
+| 07-05.12f | phase at the corner | −135.0 | ° |
+| 07-05.12g | phase at 100 kHz | −179.09 | ° |
+| 07-05.12h | ideal gain at 100 Hz | 0.6283 | — |
+| 07-05.12i | ideal gain at the corner | 10.00 | — |
 | 07-05.13a | $\lvert Z\rvert$ at 5 kHz | 496.6 | Ω |
 | 07-05.13b | $\lvert Z\rvert$ at 50 kHz | 344.2 | Ω |
 | 07-05.13c | angle at 50 kHz | −26.26 | ° |
@@ -171,3 +231,27 @@ Balance $Z_1Z_4 = Z_2Z_3$ gives $\big(R_x + \frac{1}{j\omega C_x}\big)R_4 = \big
 | 07-05.13g | pole frequency | 39.79 | kHz |
 | 07-05.13h | zero frequency | 106.1 | kHz |
 | 07-05.13i | frequency of the most negative phase | 64.97 | kHz |
+| 07-05.13j | angle at 5 kHz | −4.46 | ° |
+| 07-05.13k | angle at 1 MHz | −3.78 | ° |
+| 07-05.14a | $Z_a$ (reactance) | −10 | Ω |
+| 07-05.14b | $Z_b$ (reactance) | 10 | Ω |
+| 07-05.14c | $Z_c$ | 10 | Ω |
+| 07-05.14d | Re $Z_{ad}$ | 7.241 | Ω |
+| 07-05.14e | Im $Z_{ad}$ | −6.897 | Ω |
+| 07-05.14f | $\lvert Z_{ad}\rvert$ | 10.00 | Ω |
+| 07-05.14g | angle of $Z_{ad}$ | −43.60 | ° |
+| 07-05.14h | source current | 1.000 | A |
+| 07-05.14i | angle of the current | 43.60 | ° |
+| 07-05.14j | average power | 3.621 | W |
+| 07-05.15a | $\lvert K\rvert$ | 49.50 | — |
+| 07-05.15b | angle of $K$ | 179.64 | ° |
+| 07-05.15c | $\lvert\mathbf{V}_x\rvert$ | 0.02972 | V |
+| 07-05.15d | angle of $\mathbf{V}_x$ | −70.56 | ° |
+| 07-05.15e | $\lvert\mathbf{V}_o\rvert$ | 1.471 | V |
+| 07-05.15f | angle of $\mathbf{V}_o$ | 109.07 | ° |
+| 07-05.15g | gain from the source | 14.71 | — |
+| 07-05.15h | Re $Z_{in}$ | 11.87 | Ω |
+| 07-05.15i | Im $Z_{in}$ | −314.7 | Ω |
+| 07-05.15j | Miller estimate, real part | 9.729 | Ω |
+| 07-05.15k | Miller estimate, imaginary part | −311.8 | Ω |
+| 07-05.15l | effective Miller capacitance | 50.50 | nF |

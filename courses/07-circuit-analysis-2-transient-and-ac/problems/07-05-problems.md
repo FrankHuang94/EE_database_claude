@@ -29,7 +29,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 07-05.5 [B]
 
-**Mesh analysis at 50 Hz.** Mesh 1 contains a source $\mathbf{V}_1 = 100\angle0°$ V, $R_1$ = 10 Ω and $L$ = 0.1 H, and shares a 100 µF capacitor with mesh 2. Mesh 2 contains the capacitor, $R_2$ = 20 Ω and a source $\mathbf{V}_2 = 50\angle30°$ V that pushes current counterclockwise. Take both mesh currents clockwise. Find $\mathbf{I}_1$, $\mathbf{I}_2$ and the capacitor current $\mathbf{I}_1 - \mathbf{I}_2$.
+**Mesh analysis at 50 Hz.** Mesh 1 contains a source $\mathbf{V}_1 = 100\angle0°$ V that pushes current clockwise, $R_1$ = 10 Ω and $L$ = 0.1 H, and shares a 100 µF capacitor with mesh 2. Mesh 2 contains the capacitor, $R_2$ = 20 Ω and a source $\mathbf{V}_2 = 50\angle30°$ V that pushes current counterclockwise. Take both mesh currents clockwise. Find $\mathbf{I}_1$, $\mathbf{I}_2$ and the capacitor current $\mathbf{I}_1 - \mathbf{I}_2$.
 
 ### Problem 07-05.6 [B]
 
@@ -63,6 +63,22 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A tissue impedance model.** A simplified model of biological tissue puts an extracellular resistance $R_e$ = 500 Ω in parallel with an intracellular path, a resistance $R_i$ = 300 Ω in series with a cell-membrane capacitance $C_m$ = 5 nF. (a) Find $Z$ at 5 kHz, 50 kHz and 1 MHz. (b) What are its limits at very low and very high frequency, and why? (c) Explain why measuring at several frequencies can separate extracellular from intracellular fluid, while a single frequency cannot.
 
+### Problem 07-05.14 [B]
+
+**Δ–Y with impedances.** At the operating frequency, nodes a, b and c are joined in Δ by $Z_{ab}$ = 10 Ω, $Z_{bc}$ = j10 Ω and $Z_{ca}$ = −j10 Ω. Node b connects to node d through 10 Ω, and node c to node d through 5 Ω. (a) Convert the Δ to its equivalent Y. (b) Find the impedance between nodes a and d. (c) A source $10\angle0°$ V (peak) is connected with + at a and − at d. Find the source current and the average power it delivers.
+
+### Problem 07-05.15 [B]
+
+**The Miller effect, with a dependent source.** An inverting amplifier is modeled at 10 kHz as follows:
+
+- $\mathbf{V}_S = 0.1\angle0°$ V drives node x through $R_s$ = 1 kΩ;
+- $R_{in}$ = 10 kΩ goes from node x to ground;
+- $C_f$ = 1 nF joins node x to the output node o;
+- the amplifier is a voltage-controlled voltage source of $-50\,\mathbf{V}_x$ behind $R_o$ = 100 Ω, driving node o;
+- $R_L$ = 10 kΩ goes from node o to ground.
+
+(a) Write the nodal equations, and find $\mathbf{V}_x$, $\mathbf{V}_o$ and the gain $\lvert\mathbf{V}_o/\mathbf{V}_S\rvert$. (b) With a test source, find the impedance looking into node x (everything except $\mathbf{V}_S$ and $R_s$). (c) Compare it with the Miller estimate, $C_f(1 + 50)$ in parallel with $R_{in}$, and explain the difference.
+
 ---
 
 ## Objective coverage
@@ -71,7 +87,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Impedance and admittance; R, X, G, B, Q, D | 1, 2, 3, 4, 13 |
 | 2. Series–parallel equivalents; LCR-meter modes | 3, 4, 11 |
-| 3. Phasor nodal, mesh, Thévenin/Norton, superposition | 5, 6, 7 |
+| 3. Phasor nodal, mesh, Thévenin/Norton (including dependent sources and test sources), superposition, Δ–Y | 5, 6, 7, 14, 15 |
 | 4. Phasor diagrams; voltage drop | 8, 9 |
 | 5. AC bridges and op-amp circuits | 10, 11, 12 |
 | 6. When phasors apply; impedance in practice | 6, 12, 13 |

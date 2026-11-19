@@ -89,7 +89,7 @@ $$
 
 with $X_0$ any DC part. Other common cases, from the definition: a square wave of amplitude $\pm A$ has RMS $A$; a triangle or sawtooth of peak $A$ (symmetric about zero, or from 0 to $A$ respectively) has RMS $A/\sqrt3$; a half-wave rectified sine of peak $A$ has RMS $A/2$.
 
-**Crest factor** is peak over RMS: $\sqrt2 = 1.414$ for a sinusoid, $\sqrt3$ for a triangle. Meters that compute true RMS must handle the crest factor of the signal; an "average-responding" meter calibrated for sinusoids reads non-sinusoidal waveforms wrongly (06-11).
+**Crest factor** is peak over RMS: $\sqrt2 = 1.414$ for a sinusoid, $\sqrt3$ for a triangle. Meters that compute true RMS must handle the crest factor of the signal. A cheaper "average-responding" meter measures the average of the rectified signal and multiplies it by the sinusoid's **form factor**, RMS/average $= (V_m/\sqrt2)/(2V_m/\pi) = \pi/(2\sqrt2) = $ **1.111**. It therefore reads any other waveform wrongly: a square wave, whose RMS equals its rectified average, reads **11.1%** high.
 
 ### 3.4 Complex power
 
@@ -104,6 +104,14 @@ where * is the complex conjugate. Writing $\mathbf{V}_{rms} = V_{rms}\angle\thet
 - **Real power** $P = \operatorname{Re}S = V_{rms}I_{rms}\cos\theta$, in watts (W): the average power of §3.2.
 - **Reactive power** $Q = \operatorname{Im}S = V_{rms}I_{rms}\sin\theta$, in volt-amperes reactive (var): the amplitude of the energy exchange. $Q > 0$ for inductive loads (current lags), $Q < 0$ for capacitive loads (current leads).
 - **Apparent power** $\lvert S\rvert = V_{rms}I_{rms}$, in volt-amperes (VA): what the wires and transformers must carry.
+
+**Why $Q$ is the amplitude of the energy exchange.** Take the current as the reference, $i = I_m\cos\omega t$, so $v = V_m\cos(\omega t + \theta)$. The product formula of §3.2 gives $p = \tfrac12V_mI_m[\cos\theta + \cos(2\omega t + \theta)]$. Expanding $\cos(2\omega t + \theta) = \cos2\omega t\cos\theta - \sin2\omega t\sin\theta$ splits it into two parts:
+
+$$
+p(t) = \underbrace{P\,(1 + \cos2\omega t)}_{\text{never negative, average }P} \;-\; \underbrace{Q\sin2\omega t}_{\text{average zero}} .
+$$
+
+The first term is the power that flows one way only and is consumed. The second surges into the load and back out again at twice the line frequency, with amplitude $Q$: reactive power is the peak rate of that back-and-forth exchange. For an inductor, $Q_L = \omega LI_{rms}^2 = 2\omega\overline{W}_L$, where $\overline{W}_L = \tfrac12LI_{rms}^2$ is its average stored energy. For a capacitor, $Q_C = -\omega CV_{rms}^2 = -2\omega\overline{W}_C$. So for any load, $Q = 2\omega(\overline{W}_L - \overline{W}_C)$: positive when magnetic storage dominates, negative when electric storage does. This is the physical anchor for the sign convention.
 
 With $\mathbf{V}_{rms} = Z\mathbf{I}_{rms}$: $S = Z\lvert\mathbf{I}_{rms}\rvert^2 = (R + jX)I_{rms}^2$, so $P = I_{rms}^2R$ and $Q = I_{rms}^2X$: resistance absorbs real power, reactance reactive power. The **power triangle** draws $P$, $Q$ and $\lvert S\rvert$ as the sides of a right triangle with angle θ.
 
@@ -157,7 +165,7 @@ $$
 \boxed{\,\text{PF} = \frac{P}{V_{rms}I_{rms}} = \underbrace{\cos\phi_1}_{\text{displacement}}\times\underbrace{\frac{I_1}{I_{rms}}}_{\text{distortion}} = \frac{\cos\phi_1}{\sqrt{1 + \text{THD}^2}}\,}
 $$
 
-with the **total harmonic distortion** $\text{THD} = \sqrt{I_2^2 + I_3^2 + \cdots}/I_1$. A pulsed current exactly in phase with the voltage can therefore have a poor power factor without any phase shift at all (Example 07-06.5), and no capacitor fixes it: the cure is to shape the current, with an **active power-factor-correction** stage (a boost converter controlled to draw sinusoidal current, Course 22), or with passive filtering. Harmonic currents also add in a three-phase system's neutral wire ([07-11](07-11-three-phase-circuits.md)).
+with the **total harmonic distortion** $\text{THD} = \sqrt{I_2^2 + I_3^2 + \cdots}/I_1$. A pulsed current exactly in phase with the voltage can therefore have a poor power factor without any phase shift at all (Example 07-06.5), and no capacitor fixes it: the cure is to shape the current, with an **active power-factor-correction** stage (a boost converter controlled to draw sinusoidal current, Course 22), or with passive filtering. In a three-phase system, the triplen harmonic currents (3rd, 9th, 15th, …) add in the neutral wire while the others cancel ([07-11](07-11-three-phase-circuits.md)).
 
 > **Going deeper — reactive power with distortion.** For non-sinusoidal waveforms, $P^2 + Q^2$ no longer equals $\lvert S\rvert^2$: the remainder, sometimes called distortion power $D$ with $\lvert S\rvert^2 = P^2 + Q^2 + D^2$, accounts for the harmonic currents that carry no power. Definitions of reactive power for distorted waveforms differ between standards (IEEE Std 1459 is the reference for the debate), and meters do not all agree; when a number is quoted, ask which definition it uses.
 
@@ -178,7 +186,7 @@ $$
 \boxed{\,P_{max} = \frac{\lvert\mathbf{V}_{Th}\rvert^2}{8R_{Th}} = \frac{V_{Th,rms}^2}{4R_{Th}}\,}
 $$
 
-If the load must be purely resistive ($X_L = 0$), setting $dP_L/dR_L = 0$ gives $R_L = \sqrt{R_{Th}^2 + X_{Th}^2} = \lvert Z_{Th}\rvert$ instead, with less power (Example 07-06.4). As in 06-09, a matched source wastes as much power as it delivers (50% efficiency): conjugate matching is for signals (antennas, RF amplifier stages, sensors), not for power delivery, where the source impedance is kept far below the load's.
+If the load must be purely resistive ($X_L = 0$), its power is $P_L = \tfrac12\lvert\mathbf{V}_{Th}\rvert^2R_L/[(R_{Th} + R_L)^2 + X_{Th}^2]$. Setting $dP_L/dR_L = 0$ makes the numerator of the derivative vanish: $(R_{Th} + R_L)^2 + X_{Th}^2 - 2R_L(R_{Th} + R_L) = 0$, that is $R_{Th}^2 + X_{Th}^2 - R_L^2 = 0$. So $R_L = \sqrt{R_{Th}^2 + X_{Th}^2} = \lvert Z_{Th}\rvert$, with less power than the conjugate match (Example 07-06.4). As in 06-09, a matched source wastes as much power as it delivers (50% efficiency): conjugate matching is for signals (antennas, RF amplifier stages, sensors), not for power delivery, where the source impedance is kept far below the load's.
 
 ## 4. Worked examples
 
@@ -188,7 +196,7 @@ If the load must be purely resistive ($X_L = 0$), setting $dP_L/dR_L = 0$ gives 
 
 **Solution.**
 
-(a) $\omega = 377.0$ rad/s, so $X = \omega L = 7.540$ Ω and $Z = 10 + j7.540$ Ω $= $ **12.52 Ω ∠ 37.02°**.
+(a) $\omega = $ **377.0 rad/s**, so $X = \omega L = $ **7.540 Ω** and $Z = 10 + j7.540$ Ω $= $ **12.52 Ω ∠ 37.02°**.
 
 (b) $I_{rms} = 120/12.52 = $ **9.582 A**, lagging the voltage by 37.02°.
 
@@ -214,7 +222,7 @@ If the load must be purely resistive ($X_L = 0$), setting $dP_L/dR_L = 0$ gives 
 (b) The components are at different frequencies, so their RMS values add in quadrature: $I_{rms} = \sqrt{(10^2 + 3^2)/2} = $ **7.382 A**. The peak occurs at $\omega t = 0$, where both cosines are 1: **13.00 A**, so the crest factor is $13/7.382 = $ **1.761**, above a sinusoid's 1.414. THD $= 3/10 = $ **30.0%**.
 
 **Units check.** A² averaged, then square-rooted, gives A ✓.
-**Sanity check.** A pure sinusoid of the same 10 A fundamental would have an RMS of 7.071 A; the third harmonic adds only 0.31 A, because quadrature sums are dominated by the largest term ✓.
+**Sanity check.** A pure sinusoid of the same 10 A fundamental would have an RMS of **7.071 A**; the third harmonic adds only **0.311 A**, because quadrature sums are dominated by the largest term ✓.
 
 ### Example 07-06.3 · A small business corrects its power factor (tier B)
 
@@ -256,7 +264,7 @@ If the load must be purely resistive ($X_L = 0$), setting $dP_L/dR_L = 0$ gives 
 
 **Solution.**
 
-(a) Only the fundamental carries power (§3.7), and it is in phase, so $P = V_{rms}I_1$ and $I_1 = 100/230 = $ **0.4348 A** (RMS). The fundamental of alternating rectangular pulses of height $I_p$ and width $W$ centered on the cosine's peaks has peak amplitude $\frac{4I_p}{\pi}\sin\frac{\omega W}{2}$ (Fourier series, Course 11); with $\omega W/2 = 2\pi\times50\times1.25\times10^{-3} = 0.3927$ rad, $I_p = \dfrac{\pi\sqrt2\,I_1}{4\sin0.3927} = $ **1.262 A**.
+(a) Only the fundamental carries power (§3.7), and it is in phase, so $P = V_{rms}I_1$ and $I_1 = 100/230 = $ **0.4348 A** (RMS). The fundamental of alternating rectangular pulses of height $I_p$ and width $W$ centered on the cosine's peaks has peak amplitude $a_1 = \frac{4I_p}{\pi}\sin\frac{\omega W}{2}$. To see this, use the Fourier coefficient of [01-06 §3.3](../../01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md), $a_1 = \frac2T\int_Ti\cos\omega t\,dt$. The positive pulse, centered on $t = 0$, contributes $\frac2TI_p\int_{-W/2}^{W/2}\cos\omega t\,dt = \frac{4I_p}{\omega T}\sin\frac{\omega W}{2}$. The negative pulse, centered on $T/2$, contributes the same, because there both $i$ and $\cos\omega t$ change sign. With $\omega T = 2\pi$ the total is $\frac{8I_p}{2\pi}\sin\frac{\omega W}{2}$, as stated, and the same integral with $\cos3\omega t$ gives part (d). with $\omega W/2 = 2\pi\times50\times1.25\times10^{-3} = 0.3927$ rad, $I_p = \dfrac{\pi\sqrt2\,I_1}{4\sin0.3927} = $ **1.262 A**.
 
 (b) The current is $\pm I_p$ for a fraction $d = 2W/T = 0.25$ of the time and zero otherwise, so $I_{rms} = I_p\sqrt{d} = $ **0.6310 A**, and $\lvert S\rvert = 230\times0.6310 = $ **145.1 VA**.
 
@@ -273,9 +281,9 @@ If the load must be purely resistive ($X_L = 0$), setting $dP_L/dR_L = 0$ gives 
 
 ### Example 07-06.6 · A data-center power supply (tier B)
 
-**Setup.** A server power supply delivers 2 kW (DC) at 94% efficiency from a 230 V (RMS) line. Find its input power, apparent power and RMS input current at a power factor of 0.95, and again at 0.70. How many more such supplies fit on a 32 A (RMS) branch circuit at 0.95 than at 0.70?
+**Setup.** A server power supply delivers 2 kW (DC) at 94% efficiency from a 230 V (RMS) line. Find its input power, apparent power and RMS input current at a power factor of 0.95, and again at 0.70. How many such supplies fit on a 32 A (RMS) branch circuit at each power factor?
 
-**Solution.** Input power $P_{in} = 2000/0.94 = $ **2128 W** in both cases. At PF 0.95: $\lvert S\rvert = 2128/0.95 = $ **2240 VA** and $I = 2240/230 = $ **9.738 A**. At PF 0.70: $\lvert S\rvert = $ **3040 VA** and $I = $ **13.22 A**. A 32 A circuit carries $\lfloor32/9.738\rfloor = $ **3** supplies at PF 0.95 but only $\lfloor32/13.22\rfloor = $ **2** at 0.70.
+**Solution.** Input power $P_{in} = 2000/0.94 = $ **2128 W** in both cases. At PF 0.95: $\lvert S\rvert = 2128/0.95 = $ **2240 VA** and $I = 2240/230 = $ **9.738 A**. At PF 0.70: $\lvert S\rvert = $ **3040 VA** and $I = $ **13.22 A**. A 32 A circuit carries $\lfloor32/9.738\rfloor = $ **3** supplies at PF 0.95 but only $\lfloor32/13.22\rfloor = $ **2** at 0.70: one supply fewer for the same useful power. Many electrical codes also limit continuous loads to 80% of the breaker rating (07-11 §9). At 25.6 A the counts fall to **2** and **1**.
 
 **Units check.** W ÷ (dimensionless) = VA; VA ÷ V = A ✓.
 **Sanity check.** The real power, and so the energy bill at the meter, is the same in both cases; what the poor power factor costs is distribution capacity, which in a data center is often the binding constraint ✓.
@@ -283,6 +291,8 @@ If the load must be purely resistive ($X_L = 0$), setting $dP_L/dR_L = 0$ gives 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
+| Th 07-06.a | sinusoid form factor | 1.111 | — |
+| Th 07-06.b | square-wave reading error of an average-responding meter | 11.1 | % |
 | Ex 07-06.1a | $\lvert Z\rvert$ | 12.52 | Ω |
 | Ex 07-06.1b | impedance angle | 37.02 | ° |
 | Ex 07-06.1c | $I_{rms}$ | 9.582 | A |
@@ -293,12 +303,16 @@ If the load must be purely resistive ($X_L = 0$), setting $dP_L/dR_L = 0$ gives 
 | Ex 07-06.1h | maximum instantaneous power | 2068 | W |
 | Ex 07-06.1i | minimum instantaneous power | −231.7 | W |
 | Ex 07-06.1j | fraction of the cycle with p < 0 | 21 | % |
+| Ex 07-06.1k | ω | 377.0 | rad/s |
+| Ex 07-06.1l | reactance | 7.540 | Ω |
 | Ex 07-06.2a | triangle RMS | 0.5774 | V |
 | Ex 07-06.2b | triangle crest factor | 1.732 | — |
 | Ex 07-06.2c | RMS of the two-tone current | 7.382 | A |
 | Ex 07-06.2d | peak of the two-tone current | 13.00 | A |
 | Ex 07-06.2e | its crest factor | 1.761 | — |
 | Ex 07-06.2f | THD | 30.0 | % |
+| Ex 07-06.2g | RMS of the fundamental alone | 7.071 | A |
+| Ex 07-06.2h | increase from the third harmonic | 0.311 | A |
 | Ex 07-06.3a | $\lvert S\rvert$ before | 16.55 | kVA |
 | Ex 07-06.3b | PF before | 0.8461 | — |
 | Ex 07-06.3c | current before | 71.94 | A |
@@ -311,6 +325,7 @@ If the load must be purely resistive ($X_L = 0$), setting $dP_L/dR_L = 0$ gives 
 | Ex 07-06.3j | kvar to reach unity PF | 8.819 | kvar |
 | Ex 07-06.3k | current at unity PF | 60.87 | A |
 | Ex 07-06.3l | demand surcharge removed | 6.4 | % |
+| Ex 07-06.3m | sum of the apparent-power magnitudes | 17.33 | kVA |
 | Ex 07-06.4a | $P_{max}$ | 0.2500 | W |
 | Ex 07-06.4b | best resistive load | 58.31 | Ω |
 | Ex 07-06.4c | power to it | 0.2308 | W |
@@ -329,6 +344,8 @@ If the load must be purely resistive ($X_L = 0$), setting $dP_L/dR_L = 0$ gives 
 | Ex 07-06.6e | current at PF 0.70 | 13.22 | A |
 | Ex 07-06.6f | supplies per 32 A at PF 0.95 | 3 | — |
 | Ex 07-06.6g | supplies per 32 A at PF 0.70 | 2 | — |
+| Ex 07-06.6h | supplies at 80% (25.6 A), PF 0.95 | 2 | — |
+| Ex 07-06.6i | supplies at 80% (25.6 A), PF 0.70 | 1 | — |
 
 *Every value in this table is recomputed by [verify_07_06.py](../verify/verify_07_06.py), most by numerical integration of $v(t)i(t)$ over a period rather than by the phasor formulas; ngspice confirms Examples 07-06.1 and 07-06.3 in [labs/07-06-lab](../labs/07-06-lab/README.md).*
 
@@ -377,7 +394,7 @@ The lab is in [labs/07-06-lab/](../labs/07-06-lab/README.md).
 
 1. **Using peak values in RMS formulas** (or the reverse): $P = V_{rms}I_{rms}\cos\theta = \tfrac12V_mI_m\cos\theta$.
 2. **Forgetting the conjugate** in $S = \mathbf{V}_{rms}\mathbf{I}_{rms}^*$; the product without it depends on the time origin.
-3. **Adding apparent powers.** Complex powers add; their magnitudes do not (16.55 kVA is not 12.5 + 4 kVA in Example 07-06.3).
+3. **Adding apparent powers.** Complex powers add; their magnitudes do not (in Example 07-06.3 the total is 16.55 kVA, not the 13.33 + 4 = **17.33 kVA** that adding the motor's and the heater's apparent powers would give).
 4. **Sign of Q.** Inductive loads absorb positive Q; capacitors absorb negative Q (they supply reactive power).
 5. **Assuming PF = cos θ for distorted currents.** It is only the displacement part; distortion lowers the true PF further.
 6. **Adding a capacitor to a rectifier's poor power factor.** Distortion is not a phase shift; current shaping is the cure.
@@ -388,9 +405,9 @@ The lab is in [labs/07-06-lab/](../labs/07-06-lab/README.md).
 
 ### State of the art (as of Nov 2026)
 
-- **Harmonic limits drive power-factor correction in consumer electronics.** IEC 61000-3-2 sets harmonic current limits for equipment with input current up to 16 A per phase on public low-voltage networks; the current text is edition 5.0 (2018) consolidated with amendments of 2020 and 2024, and the standard notes that its limits "have not yet been considered" for systems below 220 V line-to-neutral ([R-122](../../../reference/research-log.md#r-122--power-factor-harmonics-and-utility-tariffs)) **[Established]**. onsemi's power-factor-correction handbook states that the Class D limits, for personal computers, televisions and monitors, apply from 75 W of input power and cover harmonics up to the 39th, which is why such supplies carry PFC stages **[Industry estimate]** (a manufacturer handbook, the standard's clause not read). In 120 V markets, PFC requirements arrive through efficiency programs and customer specifications rather than this standard (our inference from its scope).
+- **Harmonic limits drive power-factor correction in consumer electronics.** IEC 61000-3-2 sets harmonic current limits for equipment with input current up to 16 A per phase on public low-voltage networks; the current text is edition 5.0 (2018) consolidated with amendments of 2020 and 2024, and the standard notes that its limits "have not yet been considered" for systems below 220 V line-to-neutral ([R-122](../../../reference/research-log.md#r-122--power-factor-harmonics-and-utility-tariffs)) **[Established]**. onsemi's power-factor-correction handbook states that the Class D limits, for personal computers, televisions and monitors, apply from 75 W of input power and cover harmonics up to the 39th, which is why such supplies carry PFC stages **[Established]** (from a manufacturer's handbook; the standard's clause itself was not read). In 120 V markets, PFC requirements arrive through efficiency programs and customer specifications rather than this standard (our inference from its scope).
 - **Efficiency programs specify power factor.** The 80 PLUS program, administered by CLEAResult, certifies power supplies on efficiency at several load points and on a minimum "true power factor", which its test protocol (revision 6.7.3, Jul 2025) defines as $P/S$ "including the effect of both displacement and distortion". For 115 V internal supplies the summary table requires PF ≥ 0.90 for Standard to Gold and PF ≥ 0.95 for Platinum and above, with Titanium and the new Ruby tier tested at 20% load, where PF is hardest to hold. For redundant data-center supplies, Ruby requires 90/91/95/96.5/92% efficiency at 5/10/20/50/100% load and PF ≥ 0.96 from 20% load up ([R-122](../../../reference/research-log.md#r-122--power-factor-harmonics-and-utility-tariffs)) **[Established]**. *Caveat:* the program's web page gives PF ≥ 0.95 for Bronze to Gold in its per-tier text but 0.90 in its table; this chapter follows the table **[Contested]**.
-- **Utilities bill for poor power factor.** Austin Energy and Minnesota Power adjust a commercial customer's billed demand when PF falls below 0.90, as billed kW = measured kW × 0.90 / PF; Minnesota Power's example turns 100 kW at PF 0.70 into **128.6 kW** (129 kW as published). The City of Dover, Delaware, uses 0.95 ([R-122](../../../reference/research-log.md#r-122--power-factor-harmonics-and-utility-tariffs)) **[Established]** (from the utilities' customer pages; thresholds vary by utility and change).
+- **Utilities bill for poor power factor.** Austin Energy and Minnesota Power adjust a commercial customer's billed demand when PF falls below 0.90, as billed kW = measured kW × 0.90 / PF; Minnesota Power's example turns 100 kW at PF 0.70 into **128.6 kW** (129 kW as published), and Austin Energy's turns 13.5 kW at PF 0.87 into **14.0 kW**. The City of Dover, Delaware, uses 0.95, so its example of 250 kW at PF 0.85 bills as **279.4 kW** ([R-122](../../../reference/research-log.md#r-122--power-factor-harmonics-and-utility-tariffs)) **[Established]** (from the utilities' customer pages; thresholds vary by utility and change).
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |

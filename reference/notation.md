@@ -10,7 +10,7 @@ This is the single source of truth for symbols, units and sign conventions acros
 | Units in math | Upright text: `\text{}` or `\,\mathrm{}` | $\tau = 2.2\ \text{ms}$ |
 | Significant figures | Final answers to 3–4 significant figures unless the data justify more. Intermediate values carried at full precision. | $v = 1.43\ \text{V}$ |
 | Decimal sign | Point, not comma. Thousands separated by a thin space or comma only in prose. | 1 000 000 or 1,000,000 |
-| Logarithms | $\ln$ = natural log; $\log_{10}$ written explicitly; $\log_2$ for information. Never a bare "log". | $\ln 2 = 0.693$ |
+| Logarithms | $\ln$ = natural log; $\log_{10}$ written explicitly, or as $\lg$ (the ISO 80000-2 symbol, used in decibel formulas from Course 07 on); $\log_2$ for information. Never a bare "log". | $\ln 2 = 0.693$; $20\lg2 = 6.02$ dB |
 | Decibels | Power ratio: $10\log_{10}(P_2/P_1)$. Amplitude ratio (same impedance): $20\log_{10}(V_2/V_1)$. dBm = dB relative to 1 mW; dBV = relative to 1 V rms. | 3 dB ≈ 2× power |
 | Angles | Radians in all formulas. Degrees only for reporting phase, always with the ° symbol. A phase written in degrees inside a function, as in $\cos(\omega t + 30^\circ)$, is accepted shorthand for $\cos(\omega t + \pi/6)$: convert to radians before evaluating. | $\phi = 30^\circ = \pi/6$ |
 | Numerical tolerance | Published answers are correctly rounded; see `tools/eeverify.py`. | |

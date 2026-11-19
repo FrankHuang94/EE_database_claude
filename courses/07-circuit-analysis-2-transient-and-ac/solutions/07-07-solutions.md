@@ -163,6 +163,28 @@ The phase confirms it is minimum-phase: −45° at the first corner, then −135
 
 (d) At 500 kHz the gain is **−60.17 dB**, the same as without the damper. Far above resonance $C$ already shorts the output and the inductor sets the attenuation; the damper's branch, at 0.46 Ω, is in parallel with $C$'s **0.0145 Ω** and changes almost nothing. The damper trades a larger capacitor and a resistor for a **16.8 dB** reduction in peaking without losing high-frequency attenuation.
 
+### Solution 07-07.15
+
+(a) The zero factors are $1 \pm j\omega/10^4$, whose magnitudes are both $\sqrt{1 + (\omega/10^4)^2}$. Everything else is shared, so $\lvert H_1(j\omega)\rvert = \lvert H_2(j\omega)\rvert$ at every frequency. A magnitude plot cannot tell them apart.
+
+(b) Each phase is the zero's angle minus the two poles' angles. The left-half-plane zero contributes $+\arctan(\omega/10^4)$; the right-half-plane zero contributes $-\arctan(\omega/10^4)$.
+
+| ω (rad/s) | zero | poles | $H_1$ | $H_2$ |
+|---|---|---|---|---|
+| $10^3$ | ±5.71° | −45° − 0.57° | **−39.86°** | **−51.28°** |
+| $10^4$ | ±45° | −84.29° − 5.71° | **−45.00°** | **−135.0°** |
+| $10^5$ | ±84.29° | −89.43° − 45° | **−50.14°** | **−218.7°** |
+
+(c) $H_1$ goes from 0° to $-90°$ (two poles, one zero: $-180° + 90°$). $H_2$ goes from 0° to **−270°**: its zero *adds* lag, just like a third pole, while raising the gain like a zero. In a loop, the extra lag arrives at frequencies where the gain is still high, so the phase reaches −180° while the loop gain is still large. Phase margin is lost, and compensation cannot recover it by cancelling the zero, because a cancelling pole would have to sit in the right half-plane, where it would be unstable itself. This is the "non-minimum-phase" limitation of boost converters (Course 22) and of some transistor stages (Course 12).
+
+(d) For a 1 V step, $Y(s) = H_2(s)/s$:
+
+- $y(0^+) = \lim_{s\to\infty}sY = H_2(\infty) = $ **0**, since the denominator's degree is higher;
+- the initial slope is $\lim_{s\to\infty}s^2Y = \lim sH_2(s)$, which tends to $10\times(-1/10^4)/(10^{-3}\times10^{-5}) = $ **−100 000 V/s**;
+- the final value is $H_2(0) = $ **10 V**.
+
+The response starts by heading the wrong way, below zero, before turning round and rising to +10 V: the time-domain signature of a right-half-plane zero (07-04 §9). $H_1$'s slope starts at +100 000 V/s and heads straight for 10 V.
+
 ---
 
 ## Answer key
@@ -290,3 +312,13 @@ The phase confirms it is minimum-phase: −45° at the first corner, then −135
 | 07-07.14g | DC power $R_d$ alone would burn at 5 V | 54 | W |
 | 07-07.14h | reduction in peaking | 16.8 | dB |
 | 07-07.14i | reactance of C at 500 kHz | 0.0145 | Ω |
+| 07-07.15a | phase of $H_1$ at $10^3$ | −39.86 | ° |
+| 07-07.15b | phase of $H_2$ at $10^3$ | −51.28 | ° |
+| 07-07.15c | phase of $H_1$ at $10^4$ | −45.00 | ° |
+| 07-07.15d | phase of $H_2$ at $10^4$ | −135.0 | ° |
+| 07-07.15e | phase of $H_1$ at $10^5$ | −50.14 | ° |
+| 07-07.15f | phase of $H_2$ at $10^5$ | −218.7 | ° |
+| 07-07.15g | total phase of $H_2$ | −270 | ° |
+| 07-07.15h | step response at $0^+$ | 0 | V |
+| 07-07.15i | initial slope of the step response | −100000 | V/s |
+| 07-07.15j | final value | 10 | V |

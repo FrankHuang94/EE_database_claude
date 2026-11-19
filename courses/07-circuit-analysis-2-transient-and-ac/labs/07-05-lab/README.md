@@ -20,6 +20,7 @@ Chapter sections 3.2 to 3.7 and Examples 07-05.1 to 07-05.6. You need Python wit
 | [07-05-phasors.ipynb](07-05-phasors.ipynb) | The guided notebook (Parts 1 to 4) | Its own `assert`s |
 | [ac.cir](ac.cir) | AC analyses of Example 07-05.2 (1 kHz) and Problem 07-05.5 (50 Hz) | Chapter and solution answer keys |
 | [ac2.cir](ac2.cir) | AC analyses of Example 07-05.3 (10 kHz), the all-pass of Example 07-05.6 (3 kHz) and the tissue model of Problem 07-05.13 (50 kHz) | Chapter and solution answer keys |
+| [ac3.cir](ac3.cir) | AC analyses of Example 07-05.7 (a dependent source and a test-source Thévenin impedance), Problem 07-05.14 (Δ network) and Problem 07-05.15 (Miller effect) | Chapter and solution answer keys |
 
 Each netlist begins with `* EXPECT` lines naming the measurement and the published answer it must reproduce. Run them from the repository root:
 
@@ -42,7 +43,7 @@ python tools/run_spice.py 07-05
 | 1 | steady state | the lock-in amplitudes and phases match 7.542 V ∠ −70.33° and 10.80 V ∠ −56.28° |
 | 2 | two readings | $C_s$ and $C_p$ agree at 1 kHz and differ by a factor $1 + D^2$ that grows with frequency |
 | 3 | phasor diagram | with a capacitive load the reactive drop subtracts and the source voltage can fall below the load voltage |
-| 4 | all-pass | RMS unchanged, peak changed (1.333 V to 1.134 V) |
+| 4 | all-pass | RMS unchanged (0.9873 V for the 8-harmonic unit square wave); peak changed from 1.180 V (the Gibbs overshoot) to 2.444 V. Example 07-05.6's two-tone input shows the same effect: 1.333 V to 1.134 V |
 | 5 | larger ESL | see the key |
 
 <!-- answer-key -->
@@ -51,6 +52,7 @@ python tools/run_spice.py 07-05
 | Lab 07-05.a | series-mode capacitance at 100 kHz with 20 nH ESL | 10.86 | µF |
 | Lab 07-05.b | self-resonant frequency with 20 nH ESL | 355.9 | kHz |
 | Lab 07-05.c | −90° frequency of the hardware all-pass with 15 nF | 1.061 | kHz |
+| Lab 07-05.d | −90° frequency with 16 nF | 0.9947 | kHz |
 
 ## Discussion questions
 
@@ -70,4 +72,4 @@ python tools/run_spice.py 07-05
 
 ## Optional hardware version
 
-With a function generator, two 1% resistors (10 kΩ), a 15 nF film capacitor and a general-purpose op-amp on ±5 V supplies, build the all-pass of chapter §3.7. Drive it with a 1 kHz sine and measure the phase shift between input and output on a two-channel oscilloscope (the time between zero crossings times 360° × f). Then switch the generator to a square wave and compare the shapes. Expect the −90° point near 1.061 kHz with 15 nF (the nearest standard value to 15.92 nF), and small departures from a perfect all-pass because of resistor mismatch and the op-amp's finite bandwidth.
+With a function generator, two 1% resistors (10 kΩ), a 15 nF film capacitor and a general-purpose op-amp on ±5 V supplies, build the all-pass of chapter §3.7. Drive it with a 1 kHz sine and measure the phase shift between input and output on a two-channel oscilloscope (the time between zero crossings times 360° × f). Then switch the generator to a square wave and compare the shapes. Expect the −90° point near 1.061 kHz with 15 nF (the nearest E12 value to 15.92 nF; the E24 series also offers 16 nF, which would put it at 0.9947 kHz), and small departures from a perfect all-pass because of resistor mismatch and the op-amp's finite bandwidth.

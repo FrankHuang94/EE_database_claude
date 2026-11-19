@@ -50,7 +50,7 @@ $n \ge \lg(10^5 - 1)/(2\lg5) = 5.000/1.398$ = **3.577**, so the order is **4**. 
 
 ### Solution 07-08.9
 
-$f_0 = 1/\big(2\pi\sqrt{10^4\times10^4\times22\times10^{-9}\times10\times10^{-9}}\big)$ = **1.073 kHz**. $Q = \tfrac12\sqrt{22/10}$ = **0.7416**, slightly above the Butterworth 0.7071, so a small peak exists: $1/(2\zeta\sqrt{1 - \zeta^2})$ with ζ = **0.6742** is 1.0042, or **0.036 dB**, at $f_0\sqrt{1 - 2\zeta^2}$ = **323.5 Hz**. In practice that is flat.
+$f_0 = 1/\big(2\pi\sqrt{10^4\times10^4\times22\times10^{-9}\times10\times10^{-9}}\big)$ = **1.073 kHz**. $Q = \tfrac12\sqrt{22/10}$ = **0.7416**, slightly above the Butterworth 0.7071, so a small peak exists: $1/(2\zeta\sqrt{1 - \zeta^2})$ with ζ = **0.6742** is **1.0042**, or **0.036 dB**, at $f_0\sqrt{1 - 2\zeta^2}$ = **323.5 Hz**. In practice that is flat.
 
 ### Solution 07-08.10
 
@@ -116,6 +116,32 @@ the notch form of §3.1 with $\omega_0/Q = R/L$, so $Q = \omega_0L/R = Z_0/R$. H
 
 Solving for an error of 0.01 dB gives GBW ≈ **670 kHz**, about **67** times the cutoff for this filter. The required ratio grows with the section $Q$; manufacturers' rules of thumb are of this order (§9).
 
+### Solution 07-08.15
+
+(a) $C = 1/(\omega_0^2L) = 1/[(2\pi\times10^7)^2\times10^{-6}] = $ **253.3 pF**. $Z_0 = \sqrt{L/C} = \omega_0L = $ **62.83 Ω**. The coil's losses look like a parallel resistance $R_p = Q_c\,\omega_0L = $ **6283 Ω** (07-08 §3.4).
+
+(b) The unloaded $Q$ is the coil's: $Q_u = R_p/Z_0 = $ **100**. Loaded, the tank sees $R_p$, the source's 1 kΩ and the load's 2 kΩ in parallel, $1/(1/6283 + 1/1000 + 1/2000) = $ **602.7 Ω**, so $Q_L = 602.7/62.83 = $ **9.593** and the bandwidth is $10\ \text{MHz}/9.593 = $ **1.042 MHz**. Loading cuts $Q$ tenfold: the circuit, not the coil, sets the bandwidth.
+
+(c) At resonance $L$ and $C$ cancel, and the power reaching the tank divides between the coil's $R_p$ and the load in proportion to their conductances (the same voltage drives both): $159.2/(159.2 + 500) = $ **24.15%** is lost in the coil, and **75.85%** reaches the load.
+
+(d) With the tank, the source sees $R_p\parallel2\ \text{k}\Omega = 1517$ Ω, so the load gets $1517/2517 = 0.6027$ of the source voltage. Without the tank, it gets $2000/3000 = 0.6667$. The insertion loss is $20\lg(0.6667/0.6027) = $ **0.876 dB**. The coil's $Q_u$ of 100 is ten times the $Q_L$ the circuit needs, so the loss is small; §3.9's $-20\lg(1 - Q_L/Q_u)$ gives exactly the same 0.876 dB. The formula holds for unequal terminations too, because the voltage ratio is $(G_s + G_L)/(G_s + G_L + G_p) = 1 - R_{total}/R_p = 1 - Q_L/Q_u$.
+
+### Solution 07-08.16
+
+(a) With $R_2 = R_3 = 20$ kΩ and $R_1$ = 10 kΩ, the $Q$ formula of §3.10 gives $Q = 20\text{k}\sqrt{C_1C_2}/[C_2(20\text{k} + 20\text{k} + 40\text{k})] = \tfrac14\sqrt{C_1/C_2}$. Butterworth needs $Q = 1/\sqrt2$, so $C_1/C_2 = 16Q^2 = $ **8**. Then $\omega_0 = 1/(R_2\sqrt{C_1C_2}) = 1/(20\text{k}\times C_2\sqrt8)$ gives $C_2 = $ **281.3 pF** and $C_1 = $ **2.251 nF**. The DC gain is $-R_2/R_1 = -2$.
+
+(b) At DC: $20\lg2 = $ **6.021 dB**. At 30 kHz, a Butterworth second-order section is down by $10\lg(1 + 3^4) = 19.14$ dB, so the gain is $6.021 - 19.14 = $ **−13.12 dB**.
+
+(c) An anti-aliasing filter must keep attenuating far above its corner, up to the converter's sampling rate and beyond. A Sallen–Key low-pass leaks signal at high frequency through its feedback capacitor into the op-amp's rising output impedance (§3.8). The MFB section's capacitor $C_2$ feeds a virtual ground, so it lacks that leakage path. It also provides gain and inversion in the same op-amp, and its sensitivities are low.
+
+### Solution 07-08.17
+
+(a) From §3.10, $Q = \tfrac12\sqrt{R_2/R_1}$, so Butterworth needs $R_2 = 2R_1$, and then $\omega_0 = 1/(CR_1\sqrt2)$. So $R_1 = 1/(\sqrt2\times2\pi\times200\times47\ \text{nF}) = $ **11.97 kΩ** and $R_2 = $ **23.94 kΩ**.
+
+(b) The high-pass Butterworth response is $\lvert H\rvert^2 = 1/[1 + (f_c/f)^4]$. At 50 Hz, $f_c/f = 4$, so the attenuation is $10\lg(1 + 4^4) = $ **24.10 dB**.
+
+(c) We need $10\lg(1 + 4^{2n}) \ge 40$, so $4^{2n} \ge 9999$ and $n \ge 3.322$. The lowest order is **4**, which gives $10\lg(1 + 4^8) = $ **48.16 dB**. Two cascaded second-order sections with $Q$ = 0.541 and 1.307 realize it (§3.7), not two Butterworth sections.
+
 ---
 
 ## Answer key
@@ -174,6 +200,7 @@ Solving for an error of 0.01 dB gives GBW ≈ **670 kHz**, about **67** times th
 | 07-08.9c | peak | 0.036 | dB |
 | 07-08.9d | peak frequency | 323.5 | Hz |
 | 07-08.9e | ζ | 0.6742 | — |
+| 07-08.9f | peak gain as a ratio | 1.0042 | — |
 | 07-08.10a | $f_0$ | 1.592 | kHz |
 | 07-08.10b | K for Q = 0.7071 | 1.586 | — |
 | 07-08.10c | its $R_f/R_g$ | 0.586 | — |
@@ -208,3 +235,24 @@ Solving for an error of 0.01 dB gives GBW ≈ **670 kHz**, about **67** times th
 | 07-08.14i | error, GBW 100 kHz | 0.42 | dB |
 | 07-08.14j | GBW for a 0.01 dB error | 670 | kHz |
 | 07-08.14k | as a multiple of the cutoff | 67 | — |
+| 07-08.15a | C | 253.3 | pF |
+| 07-08.15b | $Z_0$ | 62.83 | Ω |
+| 07-08.15c | coil's parallel resistance | 6283 | Ω |
+| 07-08.15d | unloaded Q | 100 | — |
+| 07-08.15e | total parallel resistance | 602.7 | Ω |
+| 07-08.15f | loaded Q | 9.593 | — |
+| 07-08.15g | bandwidth | 1.042 | MHz |
+| 07-08.15h | fraction lost in the coil | 24.15 | % |
+| 07-08.15i | fraction reaching the load | 75.85 | % |
+| 07-08.15j | insertion loss | 0.876 | dB |
+| 07-08.16a | capacitor ratio | 8 | — |
+| 07-08.16b | $C_2$ | 281.3 | pF |
+| 07-08.16c | $C_1$ | 2.251 | nF |
+| 07-08.16d | DC gain | 6.021 | dB |
+| 07-08.16e | gain at 30 kHz | −13.12 | dB |
+| 07-08.17a | $R_1$ | 11.97 | kΩ |
+| 07-08.17b | $R_2$ | 23.94 | kΩ |
+| 07-08.17c | attenuation at 50 Hz | 24.10 | dB |
+| 07-08.17d | minimum order (continuous) | 3.322 | — |
+| 07-08.17e | lowest order | 4 | — |
+| 07-08.17f | fourth-order attenuation at 50 Hz | 48.16 | dB |

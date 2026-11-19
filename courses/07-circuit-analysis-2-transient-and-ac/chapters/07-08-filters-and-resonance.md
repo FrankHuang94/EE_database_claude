@@ -81,13 +81,15 @@ $$
 Q = \frac{\omega_0L}{R} = \frac{1}{\omega_0RC} = \frac{Z_0}{R} .
 $$
 
-**Bandwidth.** The power delivered, $\tfrac12\lvert\mathbf{I}\rvert^2R$, falls to half its peak where $\lvert Z\rvert = \sqrt2R$, that is, where the reactance equals $\pm R$. Write $\omega L - 1/(\omega C) = \pm R$, multiply by $\omega/L$, and use $1/(LC) = \omega_0^2$ and $R/L = \omega_0/Q$:
+**Bandwidth.** The power delivered, $\tfrac12\lvert\mathbf{I}\rvert^2R$, falls to half its peak where $\lvert Z\rvert = \sqrt2R$, that is, where the reactance equals $\pm R$. Below resonance the reactance is $-R$ (frequency $\omega_1$), above it $+R$ ($\omega_2$). Write $\omega L - 1/(\omega C) = \mp R$, multiply by $\omega/L$, and use $1/(LC) = \omega_0^2$ and $R/L = \omega_0/Q$. The upper signs give $\omega_1$ and the lower signs $\omega_2$:
 
 $$
-\omega^2 \mp \frac{\omega_0}{Q}\,\omega - \omega_0^2 = 0
+\omega^2 \pm \frac{\omega_0}{Q}\,\omega - \omega_0^2 = 0
 \quad\Longrightarrow\quad
-\omega_{1,2} = \omega_0\left(\sqrt{1 + \frac{1}{4Q^2}} \mp \frac{1}{2Q}\right).
+\omega_{1,2} = \omega_0\left(\sqrt{1 + \frac{1}{4Q^2}} \mp \frac{1}{2Q}\right),
 $$
+
+taking the positive root of each quadratic.
 
 So, exactly,
 
@@ -139,7 +141,7 @@ The **loaded $Q$** $Q_L$ is always below $Q_u$, so the bandwidth $\omega_0/Q_L$ 
 
 ### 3.5 One Q, four meanings
 
-For a second-order resonator, the following are all the same number (exactly for the energy and pole definitions, and to an accuracy that improves as $Q$ grows for the others):
+For a second-order resonator, the following are all the same number (exactly for the pole, band-pass bandwidth and energy definitions, and to an accuracy that improves as $Q$ grows for the ringing count):
 
 | View | Formula | Where it was derived |
 |---|---|---|
@@ -148,7 +150,7 @@ For a second-order resonator, the following are all the same number (exactly for
 | Energy | $Q = 2\pi\,\dfrac{\text{energy stored}}{\text{energy lost per cycle}}$ (at resonance) | below |
 | Ringing | the envelope decays as $e^{-\omega_0t/(2Q)}$: by a factor $e$ in $Q/\pi$ cycles (approximately, for high $Q$) | 07-03 |
 
-**The energy definition, derived for the series circuit.** At resonance the current is $i = I_m\cos\omega_0t$. The total stored energy is constant: $w = \tfrac12Li^2 + \tfrac12Cv_C^2 = \tfrac12LI_m^2$, because when the current is at its peak the capacitor voltage is zero and the energy simply moves between them. The resistor dissipates $\tfrac12I_m^2R$ on average, so per cycle $T_0 = 2\pi/\omega_0$ it loses $\tfrac12I_m^2R\,T_0$. Then
+**The energy definition, derived for the series circuit.** At resonance the current is $i = I_m\cos\omega_0t$. The capacitor voltage is $v_C = \frac1C\int i\,dt = \frac{I_m}{\omega_0C}\sin\omega_0t$, so $\tfrac12Cv_C^2 = \tfrac12\frac{I_m^2}{\omega_0^2C}\sin^2\omega_0t = \tfrac12LI_m^2\sin^2\omega_0t$, using $1/(\omega_0^2C) = L$. Adding $\tfrac12Li^2 = \tfrac12LI_m^2\cos^2\omega_0t$ gives a total stored energy $w = \tfrac12LI_m^2$ that is constant at every instant: the energy simply moves between the two elements. The resistor dissipates $\tfrac12I_m^2R$ on average, so per cycle $T_0 = 2\pi/\omega_0$ it loses $\tfrac12I_m^2R\,T_0$. Then
 
 $$
 2\pi\,\frac{\tfrac12LI_m^2}{\tfrac12I_m^2R\cdot2\pi/\omega_0} = \frac{\omega_0L}{R} = Q . \;✓
@@ -205,7 +207,7 @@ $$
 H(s)H(-s) = \frac{1}{1 + \big(-s^2/\omega_c^2\big)^n} .
 $$
 
-Its poles satisfy $(-s^2)^n = -\omega_c^{2n}$: $2n$ points equally spaced on a circle of radius $\omega_c$. The stable filter $H(s)$ takes the $n$ in the left half-plane,
+Its poles satisfy $(-s^2)^n = -\omega_c^{2n}$. Write $-1 = e^{j(2k - 1)\pi}$ for any integer $k$ and take the $n$th root: $-s^2 = \omega_c^2e^{j(2k - 1)\pi/n}$. Taking square roots, $s = \pm j\,\omega_ce^{j(2k - 1)\pi/(2n)}$: $2n$ points equally spaced on a circle of radius $\omega_c$ (the $n$th roots of 02-01 §3.5). Multiplying by $j = e^{j\pi/2}$ rotates each point by 90°, so with the + sign and $k = 1, \dots, n$ the poles sit at angles $\pi/2 + (2k - 1)\pi/(2n)$, all between 90° and 270°: the left half-plane. The other $n$ (the − sign) are their mirror images, belonging to $H(-s)$. The stable filter $H(s)$ takes the $n$ in the left half-plane, and $e^{j(\pi/2 + \alpha)} = -\sin\alpha + j\cos\alpha$ gives
 
 $$
 s_k = \omega_c\big(-\sin\alpha_k + j\cos\alpha_k\big), \qquad \alpha_k = \frac{(2k - 1)\pi}{2n},\quad k = 1, \dots, n .
@@ -277,7 +279,7 @@ Two standard designs follow:
 
 Why are phone filters built from acoustic resonators rather than inductors and capacitors? The answer follows from §3.4.
 
-Put one parallel resonator between a source and a load, each of resistance $R$, and compare the output at resonance with the output without the resonator. The source sees $R_{p}\parallel R$, and the load voltage is
+Connect one parallel resonator in shunt across the line from a source to a load, each of resistance $R$, and compare the output at resonance with the output without the resonator. The source sees $R_{p}\parallel R$, and the load voltage is
 
 $$
 \mathbf{V}_{L} = \mathbf{V}_S\,\frac{R_p\parallel R}{R + R_p\parallel R} .
@@ -291,7 +293,37 @@ $$
 \text{insertion loss} = -20\lg\Big(1 - \frac{Q_L}{Q_u}\Big)\ \text{dB}.
 $$
 
-The **loaded $Q$** is set by the job: a filter passing a band $B$ around $f_0$ needs $Q_L \approx f_0/B$. The **unloaded $Q$** is set by the technology. Insertion loss stays small only if $Q_u \gg Q_L$. A filter passing a 20 MHz band at 2 GHz needs $Q_L$ ≈ 100. Resonators with $Q_u$ = 200 would lose 6.02 dB per resonator, three-quarters of the power. With $Q_u$ = 2000 the loss is 0.45 dB. A real filter uses several resonators in a ladder, and the losses add. This is the engineering reason behind the acoustic-resonator industry of §9: at gigahertz frequencies, small inductors cannot reach the $Q$ that phone filters need, and acoustic resonators can.
+The **loaded $Q$** is set by the job: a filter passing a band $B$ around $f_0$ needs $Q_L \approx f_0/B$. The **unloaded $Q$** is set by the technology. Insertion loss stays small only if $Q_u \gg Q_L$. A filter passing a 20 MHz band at 2 GHz needs $Q_L$ ≈ 100. Resonators with $Q_u$ = 200 would lose 6.02 dB per resonator, three-quarters of the power. With $Q_u$ = 2000 the loss is 0.45 dB. A real filter uses several resonators in a ladder, and their losses accumulate, though not simply as the sum of single-resonator figures, because each resonator in a ladder works at its own loaded $Q$ (Example 07-08.6). This is the engineering reason behind the acoustic-resonator industry of §9: at gigahertz frequencies, small inductors cannot reach the $Q$ that phone filters need, and acoustic resonators can.
+
+### 3.10 High-pass, band-pass and multiple-feedback sections
+
+The low-pass is the template; the other responses follow from it.
+
+**Low-pass to high-pass.** Replace $s/\omega_c$ by $\omega_c/s$ in any low-pass transfer function. The response the low-pass had at frequency ω now appears at $\omega_c^2/\omega$, so the pass band and stop band swap about $\omega_c$. A Butterworth high-pass of order $n$ has $\lvert H\rvert^2 = 1/[1 + (\omega_c/\omega)^{2n}]$, with the same attenuation an octave *below* the corner as the low-pass has an octave above. In a circuit, the substitution exchanges the roles of resistors and capacitors. The **Sallen–Key high-pass** is the low-pass of §3.8 with each R and C swapped: the input passes through $C$ to node A and through a second $C$ to node B, the op-amp's input; $R_1$ goes from node A to the output and $R_2$ from node B to ground. KCL at B gives $\mathbf{V}_A = \mathbf{V}_B[1 + 1/(sCR_2)]$, and KCL at A then gives
+
+$$
+H(s) = \frac{s^2C^2R_1R_2}{s^2C^2R_1R_2 + 2sCR_1 + 1}, \qquad \omega_0 = \frac{1}{C\sqrt{R_1R_2}}, \qquad Q = \frac12\sqrt{\frac{R_2}{R_1}} .
+$$
+
+The resistor ratio now sets $Q$, as the capacitor ratio did in the low-pass. A Butterworth section needs $R_2 = 2R_1$.
+
+**Band-pass.** A band from $f_L$ to $f_H$ that spans more than about an octave is built as a high-pass at $f_L$ in cascade with a low-pass at $f_H$; each section is designed on its own, and the two barely interact if the corners are far apart (Example 07-08.7). A narrow band needs a single resonant section of high $Q$, the active counterpart of §3.2's series RLC ([10-10](../../10-electronics-1/chapters/10-10-op-amp-application-circuits.md)).
+
+**The multiple-feedback (MFB) low-pass.** Sallen–Key uses the op-amp as a follower inside positive feedback. The MFB section uses it as an inverting integrator:
+
+- $R_1$ from the input to node A;
+- $C_1$ from node A to ground;
+- $R_2$ from node A back to the output;
+- $R_3$ from node A to the op-amp's inverting input, which is a virtual ground;
+- $C_2$ from that input to the output.
+
+The current through $R_3$ must all flow into $C_2$, so $\mathbf{V}_A/R_3 = -sC_2\mathbf{V}_o$. KCL at node A, $(\mathbf{V}_A - \mathbf{V}_{in})/R_1 + sC_1\mathbf{V}_A + (\mathbf{V}_A - \mathbf{V}_o)/R_2 + \mathbf{V}_A/R_3 = 0$, then gives
+
+$$
+H(s) = \frac{-R_2/R_1}{s^2C_1C_2R_2R_3 + sC_2\big(R_2 + R_3 + R_2R_3/R_1\big) + 1}, \qquad \omega_0 = \frac{1}{\sqrt{R_2R_3C_1C_2}}, \qquad Q = \frac{\sqrt{R_2R_3C_1C_2}}{C_2(R_2 + R_3 + R_2R_3/R_1)} .
+$$
+
+With all three resistors equal to $R$ (a gain of −1), $Q = \tfrac13\sqrt{C_1/C_2}$, so a Butterworth section needs $C_1 = 4.5\,C_2$. The MFB section inverts, and its sensitivity to component values is low. Because its op-amp's output reaches the input only through $C_2$ into a virtual ground, it avoids the Sallen–Key's stop-band leakage at high frequency, which is why TI's filter guide prefers it for many designs (§9).
 
 ## 4. Worked examples
 
@@ -307,7 +339,7 @@ The **loaded $Q$** is set by the job: a filter passing a band $B$ around $f_0$ n
 
 (c) At resonance $Z = R$, so $I = 10\ \text{mV}/10\ \Omega$ = **1.000 mA**, and $\lvert V_L\rvert = \lvert V_C\rvert = I Z_0$ = **1.000 V**: $Q$ = 100 times the source.
 
-(d) Stored energy $\tfrac12LI_m^2 = \tfrac12\times10^{-4}\times10^{-6}$ = **50.0 pJ**. Average power $\tfrac12I_m^2R$ = 5 nW, times one period $1/f_0$ = 628.3 ns, gives **3.142 pJ** per cycle. Then $2\pi\times50.0/3.142$ = **100.0** ✓.
+(d) Stored energy $\tfrac12LI_m^2 = \tfrac12\times10^{-4}\times10^{-6}$ = **50.0 pJ**. Average power $\tfrac12I_m^2R$ = **5.00 µW**, times one period $1/f_0$ = **628.3 ns**, gives **3.142 pJ** per cycle. Then $2\pi\times50.0/3.142$ = **100.0** ✓.
 
 **Units check.** $\sqrt{\text{H}/\text{F}} = \sqrt{\Omega\text{s}/(\text{s}/\Omega)} = \Omega$ ✓.
 **Sanity check.** A 1.6 MHz resonator with a 16 kHz bandwidth is the classic AM-radio tuned circuit: it selects one station's channel.
@@ -318,7 +350,7 @@ The **loaded $Q$** is set by the job: a filter passing a band $B$ around $f_0$ n
 
 **Solution.**
 
-(a) $\omega_0L = 2\pi\times10.7\ \text{MHz}\times1\ \text{µH}$ = 67.23 Ω, so $r = 67.23/80$ = **0.8404 Ω**. By §3.4, $R_p = r(1 + Q_c^2)$ = **5379 Ω** and $L_p = L(1 + 1/80^2)$ = 1.000156 µH.
+(a) $\omega_0L = 2\pi\times10.7\ \text{MHz}\times1\ \text{µH}$ = **67.23 Ω**, so $r = 67.23/80$ = **0.8404 Ω**. By §3.4, $R_p = r(1 + Q_c^2)$ = **5379 Ω** and $L_p = L(1 + 1/80^2)$ = **1.000156 µH**.
 
 (b) Resonance of the parallel equivalent: $C = 1/(\omega_0^2L_p)$ = **221.2 pF**.
 
@@ -401,10 +433,34 @@ and the order is **3**. The sections (§3.7) are one real pole at 20 kHz and one
 
 (b) $-20\lg(1 - Q_L/Q_u)$ (§3.9): **6.02 dB** for $Q_u$ = 200, **0.92 dB** for 1000, **0.45 dB** for 2000.
 
-(c) Losses add along a ladder. Four resonators with $Q_u$ = 200 would lose about **24 dB**, wasting nearly all of a transmitter's power and a receiver's sensitivity. With $Q_u$ = 2000 the same four lose under 2 dB. Selectivity at gigahertz frequencies is therefore a question of resonator $Q$, which is why the industry builds filters from acoustic resonators whose $Q$ is far above what chip inductors reach (§9).
+(c) Losses accumulate along a ladder, but not by simple addition. Adding four single-resonator figures would predict about **24 dB** for $Q_u$ = 200, an overestimate, because each resonator in a ladder has its own loaded $Q$ and stores its own share of the energy. A circuit simulation of a fourth-order Butterworth band-pass (2 GHz, 20 MHz wide, built from the 07-08 §3.6 prototype by the band-pass transformation) with every resonator at $Q_u$ = 200 loses **11.00 dB** at band center: over nine-tenths of a transmitter's power and a matching share of a receiver's sensitivity. With $Q_u$ = 2000 the same filter loses **1.134 dB**. Selectivity at gigahertz frequencies is therefore a question of resonator $Q$, which is why the industry builds filters from acoustic resonators whose $Q$ is far above what chip inductors reach (§9).
 
 **Units check.** Ratios of $Q$ values are dimensionless ✓.
 **Sanity check.** As $Q_u \to \infty$ the loss tends to 0 dB, and as $Q_u \to Q_L$ it diverges: a resonator cannot be loaded to a higher $Q$ than its own.
+
+> **Going deeper — the dissipation loss of a ladder.** S. B. Cohn's 1959 analysis of coupled-resonator filters gives the band-center loss as $\Delta L \approx 4.343\,(f_0/B)\sum_kg_k/Q_{u,k}$ dB, where $g_k$ are the low-pass prototype values. For four Butterworth resonators ($\sum g_k = 5.226$) with $Q_u$ = 200 it gives **11.35 dB**, close to the simulated 11.00 dB. The formula shows what matters: loss grows with the number of resonators, with the selectivity $f_0/B$, and inversely with $Q_u$.
+
+### Example 07-08.7 · A voice-band filter from two sections (tier B)
+
+**Setup.** A telephone-grade channel passes 300 Hz to 3.4 kHz. Build it from a unity-gain Sallen–Key Butterworth high-pass at 300 Hz with $C$ = 100 nF, followed by an MFB Butterworth low-pass at 3.4 kHz with $R_1 = R_2 = R_3$ = 10 kΩ. (a) Find $R_1$ and $R_2$ of the high-pass. (b) Find $C_1$ and $C_2$ of the low-pass. (c) Find the cascade's gain at 50 Hz, 300 Hz, 1 kHz, 3.4 kHz and 20 kHz.
+
+**Solution.**
+
+(a) Butterworth needs $Q = 1/\sqrt2$, so $R_2 = 2R_1$, and then $\omega_0 = 1/(CR_1\sqrt2)$. So $R_1 = 1/(\sqrt2\times2\pi\times300\times100\ \text{nF}) = $ **3.751 kΩ** and $R_2 = $ **7.503 kΩ**.
+
+(b) $C_1 = 4.5\,C_2$ and $\omega_0 = 1/(R\sqrt{C_1C_2}) = 1/(RC_2\sqrt{4.5})$, so $C_2 = 1/(2\pi\times3400\times10^4\times2.121) = $ **2.207 nF** and $C_1 = $ **9.930 nF**.
+
+(c) Each section is Butterworth, so the cascade's gain is $1/\sqrt{[1 + (300/f)^4][1 + (f/3400)^4]}$ in magnitude:
+
+- at 50 Hz: **−31.13 dB**, from the high-pass's 12 dB per octave below its corner;
+- at 300 Hz and at 3.4 kHz: **−3.011 dB**, the corner of one section, with only 0.0003 dB from the other;
+- at 1 kHz: **−0.0674 dB**, essentially flat;
+- at 20 kHz: **−30.79 dB**.
+
+The MFB section inverts, so the cascade's phase at 1 kHz is close to **−179.5°**: 180° from the inversion, nearly cancelled lags and leads from the two sections.
+
+**Units check.** $1/(\Omega\cdot\text{F})$ is s⁻¹ ✓.
+**Sanity check.** The corners are more than three octaves apart, so the sections hardly interact; the 0.07 dB dip at 1 kHz is the sum of the two sections' tails ✓.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -420,6 +476,8 @@ and the order is **3**. The sections (§3.7) are one real pole at 20 kHz and one
 | Ex 07-08.1i | stored energy | 50.0 | pJ |
 | Ex 07-08.1j | energy lost per cycle | 3.142 | pJ |
 | Ex 07-08.1k | Q from energy | 100.0 | — |
+| Ex 07-08.1l | average power at resonance | 5.00 | µW |
+| Ex 07-08.1m | period at resonance | 628.3 | ns |
 | Ex 07-08.2a | coil series resistance | 0.8404 | Ω |
 | Ex 07-08.2b | $R_p$ | 5379 | Ω |
 | Ex 07-08.2c | capacitance | 221.2 | pF |
@@ -430,6 +488,8 @@ and the order is **3**. The sections (§3.7) are one real pole at 20 kHz and one
 | Ex 07-08.2h | share of power in the coil | 55.3 | % |
 | Ex 07-08.2i | share in the source resistance | 14.9 | % |
 | Ex 07-08.2j | share delivered to the load | 29.8 | % |
+| Ex 07-08.2k | coil reactance at 10.7 MHz | 67.23 | Ω |
+| Ex 07-08.2l | equivalent parallel inductance | 1.000156 | µH |
 | Ex 07-08.3a | L | 1.125 | µH |
 | Ex 07-08.3b | C | 450.2 | pF |
 | Ex 07-08.3c | gain at DC | −6.02 | dB |
@@ -462,7 +522,21 @@ and the order is **3**. The sections (§3.7) are one real pole at 20 kHz and one
 | Ex 07-08.6b | loss, $Q_u$ = 200 | 6.02 | dB |
 | Ex 07-08.6c | loss, $Q_u$ = 1000 | 0.92 | dB |
 | Ex 07-08.6d | loss, $Q_u$ = 2000 | 0.45 | dB |
-| Ex 07-08.6e | four resonators, $Q_u$ = 200 | 24 | dB |
+| Ex 07-08.6e | four resonators, simple additive model | 24 | dB |
+| Ex 07-08.6f | four-resonator Butterworth, simulated, $Q_u$ = 200 | 11.00 | dB |
+| Ex 07-08.6g | the same, $Q_u$ = 2000 | 1.134 | dB |
+| Ex 07-08.6h | Cohn's estimate, $Q_u$ = 200 | 11.35 | dB |
+| Ex 07-08.6i | sum of the prototype values | 5.226 | — |
+| Ex 07-08.7a | high-pass $R_1$ | 3.751 | kΩ |
+| Ex 07-08.7b | high-pass $R_2$ | 7.503 | kΩ |
+| Ex 07-08.7c | MFB $C_2$ | 2.207 | nF |
+| Ex 07-08.7d | MFB $C_1$ | 9.930 | nF |
+| Ex 07-08.7e | gain at 50 Hz | −31.13 | dB |
+| Ex 07-08.7f | gain at 300 Hz | −3.011 | dB |
+| Ex 07-08.7g | gain at 1 kHz | −0.0674 | dB |
+| Ex 07-08.7h | gain at 3.4 kHz | −3.011 | dB |
+| Ex 07-08.7i | gain at 20 kHz | −30.79 | dB |
+| Ex 07-08.7j | phase at 1 kHz | −179.5 | ° |
 
 ## 5. Simulate it
 
@@ -545,11 +619,11 @@ The lab is in [labs/07-08-lab](../labs/07-08-lab/README.md).
   - Its capacitor advice is short: "Use C0G (NP0) dielectrics" and 1% tolerance parts. The 2002 analysis note (SLOA024B) adds "X7R is OK in a pinch" **[Established]**.
   - The same 2002 note quantifies §3.8's sensitivity warning. An equal-component section with $K$ = 2.9 has a nominal $Q$ of 10, but "worst case analysis with 1% resistors results in Q=16". Our check: with $R_f/R_g$ = 1.9 off by 1% in each resistor, $K$ = 2.938 and $Q$ = **16.2** **[Established]**.
   - It also explains the Sallen–Key low-pass's high-frequency leak. Far above cutoff the capacitors short the signal path, and the output becomes a divider of the op-amp's output impedance against $R_1$: $V_o/V_i \approx Z_o/R_1$. That ratio *rises* at 20 dB/decade as the op-amp's loop gain falls **[Established]**.
-  - SLOA049D's fix is a passive RC after the op-amp, 100 Ω and 47 nF, which it says puts a pole "at about 40 kHz". Those values give **33.9 kHz** **[Contested]** (check the arithmetic).
+  - SLOA049D's fix is a passive RC after the op-amp, 100 Ω and 47 nF, which it says puts a pole "at about 40 kHz". Those values give **33.9 kHz** (our arithmetic: the note's figure is a source error).
 - **How fast must the op-amp be?** TI's rules of thumb disagree in detail but agree on a factor of about 100 **[Industry estimate]**.
   - Kugelstadt (TI, *Op Amps for Everyone*, 2002) asks for open-loop gain "100 times (40 dB above) the peak gain (Q) of a filter section" for 1% gain error, and for a first-order section $f_T = 100\cdot\text{Gain}\cdot f_c$.
   - Baker (TI *Analog Applications Journal*, 2015) uses $f_{GBW} = 100\times Q\times G\times f_C$. For Problem 07-08.14's third-order 10 kHz filter ($Q$ = 1, $G$ = 1) that gives **1.0 MHz**, against the 670 kHz that the problem's exact calculation needs for 0.01 dB.
-  - Applied to the same filter, the two rules give answers about 10% apart. Treat "100×" as a margin, not a law.
+  - Read as written, both rules ask for about 1 MHz for that section, while the exact calculation shows 670 kHz suffices. Treat "100×" as a margin, not a law.
 - **Anti-aliasing filters are sized in LSBs** ([R-132](../../../reference/research-log.md#r-132--active-filter-practice)) **[Established]**.
   - *Op Amps for Everyone* (ch. 13) notes that sampling at the Nyquist rate "usually [needs] a steep transition 10th or higher order filter", while oversampling can "drastically reduce" the required steepness.
   - Out-of-band signals must be attenuated below 1 LSB of the converter, which is **72.2 dB** for 12 bits. The same section also says "≤ ½ LSB" (**78.3 dB**) **[Contested]** (within the source).

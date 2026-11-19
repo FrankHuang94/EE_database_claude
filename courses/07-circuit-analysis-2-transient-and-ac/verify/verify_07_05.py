@@ -86,6 +86,12 @@ v.check("Ex 07-05.2b", deg(Vn[0]))
 v.check("Ex 07-05.2c", abs(Vn[1]))
 v.check("Ex 07-05.2d", deg(Vn[1]))
 v.check("Ex 07-05.2e", 1 / (2 * pi * math.sqrt(L1 * C1)) / 1e3)
+Vs_only = freq_resp(A, B, Cv, Dv, w) @ np.array([10.0, 0.0])
+Is_only = freq_resp(A, B, Cv, Dv, w) @ np.array([0.0, 0.01 * cmath.exp(-1j * pi / 2)])
+v.check("Ex 07-05.2f", abs(Vs_only[1]))
+v.check("Ex 07-05.2g", deg(Vs_only[1]))
+v.check("Ex 07-05.2h", abs(Is_only[1]))
+v.check("Ex 07-05.2i", deg(Is_only[1]))
 u2 = lambda t: np.array([10 * math.cos(w * t), 0.01 * math.cos(w * t - pi / 2)])  # noqa: E731
 V2_lock = lockin(A, B, Cv[1:], Dv[1:], u2, w, n_settle=40)
 v.assert_true("Ex2 time-domain lock-in agrees with the phasor V2", abs(V2_lock - Vn[1]) < 1e-4)
@@ -161,6 +167,32 @@ v.check("Ex 07-05.6h", -cmath.phase(H3) / (3 * w1) * 1e6)
 v.check("Ex 07-05.6i", math.sqrt(np.mean(vout**2)))
 v.assert_true("Ex6 RMS unchanged by the all-pass", abs(math.sqrt(np.mean(vin**2)) - math.sqrt(np.mean(vout**2))) < 1e-6)
 
+# ================================================================================ Example 7 (VCCS, test source)
+w7 = 1e4
+
+
+def ex7(vs, it):
+    """Nodes x, o; KCL with currents leaving: VCCS draws gm*Vx out of node o. Returns (Vx, Vo)."""
+    G1, Gc, Gf, G2, gm = 1e-3, 1j * w7 * 100e-9, 1e-4, 5e-4, 10e-3
+    Y = np.array([[G1 + Gc + Gf, -Gf], [-Gf + gm, Gf + G2]])
+    return np.linalg.solve(Y, np.array([vs * G1, it]))
+
+
+vx7, vo7 = ex7(1.0, 0.0)
+v.check("Ex 07-05.7a", abs(vx7))
+v.check("Ex 07-05.7b", deg(vx7))
+v.check("Ex 07-05.7c", abs(vo7))
+v.check("Ex 07-05.7d", deg(vo7))
+zth7 = ex7(0.0, 1.0)[1]
+v.check("Ex 07-05.7e", zth7.real)
+v.check("Ex 07-05.7f", zth7.imag)
+v.check("Ex 07-05.7g", 1 / (1e-4 + 5e-4))
+v.check("Ex 07-05.7i", abs(zth7))
+# short-circuit current: replace node o by ground and sum the currents into the short
+vx_sc = 1e-3 / (1e-3 + 1j * w7 * 100e-9 + 1e-4)
+v.check("Ex 07-05.7h", 1e3 * abs(vx_sc * 1e-4 - 10e-3 * vx_sc))
+v.assert_true("Ex7 Isc equals VTh/ZTh", abs(abs(vo7 / zth7) - abs(vx_sc * 1e-4 - 10e-3 * vx_sc)) < 1e-12)
+
 # ================================================================================ Problems
 Y = 1 / (60 + 80j)
 v.check("07-05.1a", Y.real * 1e3)
@@ -200,6 +232,8 @@ v.check("07-05.5c", abs(I2))
 v.check("07-05.5d", deg(I2))
 v.check("07-05.5e", abs(I1 - I2))
 v.check("07-05.5f", deg(I1 - I2))
+v.check("07-05.5g", 2 * pi * 50 * 0.1)
+v.check("07-05.5h", 1 / (2 * pi * 50 * 100e-6))
 # P6: time-domain simulation with DC + AC, then lock-in and mean
 R1, R2, C = 1e3, 1e3, 100e-9
 A, B = [[-(1 / R1 + 1 / R2) / C]], [[1 / (R1 * C)]]
@@ -217,6 +251,8 @@ v.check("07-05.7a", abs(Isc) * 1e3)
 ZN = Voc / Isc
 v.check("07-05.7b", ZN.real)
 v.check("07-05.7c", ZN.imag)
+v.check("07-05.7d", abs(ZN))
+v.check("07-05.7e", deg(ZN))
 # P8
 R, L, C = 10.0, 10e-3, 1e-6
 w0 = 1 / math.sqrt(L * C)
@@ -233,6 +269,10 @@ v.check("07-05.9b", abs(Vs9) - 100)
 v.check("07-05.9c", 10 * (math.cos(pi / 6) + 2 * math.sin(pi / 6)))
 v.check("07-05.9d", I9.real)
 v.check("07-05.9e", abs(100 + I9.real * (1 + 2j)) - 100)
+v.check("07-05.9f", deg(Vs9))
+v.check("07-05.9g", (abs(Vs9) - 100) - 10 * (math.cos(pi / 6) + 2 * math.sin(pi / 6)))
+v.check("07-05.9h", Vs9.imag)
+v.check("07-05.9i", abs(100 + I9.real * (1 + 2j)))
 # P10
 R, C = 1e4, 1e-8
 ratio = lambda w: (R + 1 / (1j * w * C)) * (1 / R + 1j * w * C)  # noqa: E731
@@ -253,6 +293,11 @@ v.check("07-05.12a", abs(H12(100)))
 v.check("07-05.12b", abs(H12(1 / (2 * pi * 1e3 * 100e-9))))
 v.check("07-05.12c", abs(H12(100e3)))
 v.check("07-05.12d", 2 * pi * 100e3 * 10e3 * 100e-9)
+v.check("07-05.12e", deg(H12(100)))
+v.check("07-05.12f", deg(H12(1 / (2 * pi * 1e3 * 100e-9))))
+v.check("07-05.12g", deg(H12(100e3)))
+v.check("07-05.12h", 2 * pi * 100 * 10e3 * 100e-9)
+v.check("07-05.12i", 1 / (1e3 * 100e-9) * 10e3 * 100e-9)
 # P13
 Re, Ri, Cm = 500.0, 300.0, 5e-9
 Zt = lambda f: Re * (Ri + 1 / (1j * 2 * pi * f * Cm)) / (Re + Ri + 1 / (1j * 2 * pi * f * Cm))  # noqa: E731
@@ -266,6 +311,8 @@ v.check("07-05.13g", 1 / (2 * pi * (Re + Ri) * Cm) / 1e3)
 v.check("07-05.13h", 1 / (2 * pi * Ri * Cm) / 1e3)
 fmin = minimize_scalar(lambda lf: deg(Zt(10**lf)), bounds=(3, 7), method="bounded", options={"xatol": 1e-10}).x
 v.check("07-05.13i", 10**fmin / 1e3)
+v.check("07-05.13j", deg(Zt(5e3)))
+v.check("07-05.13k", deg(Zt(1e6)))
 
 # ================================================================================ Lab handout
 w = 2 * pi * 100e3
@@ -273,6 +320,7 @@ Z = 0.1 + 1j * w * 20e-9 + 1 / (1j * w * 10e-6)
 v.check("Lab 07-05.a", -1 / (w * Z.imag) * 1e6)
 v.check("Lab 07-05.b", 1 / (2 * pi * math.sqrt(20e-9 * 10e-6)) / 1e3)
 v.check("Lab 07-05.c", 1 / (2 * pi * 10e3 * 15e-9) / 1e3)
+v.check("Lab 07-05.d", brentq(lambda f: math.degrees(cmath.phase((1 - 2j * pi * f * 10e3 * 16e-9) / (1 + 2j * pi * f * 10e3 * 16e-9))) + 90, 100, 1e4) / 1e3)
 
 # ================================================================================ Numbers to know (section 7)
 v.check("N 07-05.a", 1 / (2 * pi * 50 * 1e-6) / 1e3)
@@ -310,5 +358,74 @@ i_s = np.cos(2 * pi * f * t)
 v_s = np.cos(2 * pi * f * (t - dt))
 ph = lambda x: np.angle(np.sum(x * np.exp(-1j * 2 * pi * f * t)))  # noqa: E731
 v.check("PL 07-05.m", abs(ph(v_s) - ph(i_s)) * 180 / pi)
+
+# P14: the original Delta network solved by nodal analysis (no Delta-Y conversion); 1 A test current a -> d
+Yab, Ybc, Yca, Ybd, Ycd = 1 / 10, 1 / 10j, 1 / -10j, 1 / 10, 1 / 5
+# nodes a, b, c (d is ground)
+Y14 = np.array([[Yab + Yca, -Yab, -Yca],
+                [-Yab, Yab + Ybc + Ybd, -Ybc],
+                [-Yca, -Ybc, Ybc + Yca + Ycd]])
+Zad = np.linalg.solve(Y14, np.array([1.0, 0, 0]))[0]
+# Y arms: from the Y equivalent's open-circuit two-terminal impedances (Z_ab = Za + Zb etc. with the third open)
+
+
+def delta_z(p_, q_):
+    """Impedance between two nodes of the Delta alone (third node floating), by nodal analysis."""
+    ys = {("a", "b"): Yab, ("b", "c"): Ybc, ("c", "a"): Yca}
+    nodes = [n for n in "abc" if n != q_]
+    M = np.zeros((2, 2), complex)
+    for (m, n), y in ys.items():
+        for i, x in enumerate(nodes):
+            if x in (m, n):
+                M[i, i] += y
+                other = n if x == m else m
+                if other in nodes:
+                    M[i, nodes.index(other)] -= y
+    rhs = np.array([1.0 if x == p_ else 0.0 for x in nodes])
+    return np.linalg.solve(M, rhs)[nodes.index(p_)]
+
+
+Zab_oc, Zbc_oc, Zca_oc = delta_z("a", "b"), delta_z("b", "c"), delta_z("c", "a")
+Za14 = (Zab_oc + Zca_oc - Zbc_oc) / 2
+Zb14 = (Zab_oc + Zbc_oc - Zca_oc) / 2
+Zc14 = (Zbc_oc + Zca_oc - Zab_oc) / 2
+v.check("07-05.14a", Za14.imag)
+v.check("07-05.14b", Zb14.imag)
+v.check("07-05.14c", Zc14.real)
+v.check("07-05.14d", Zad.real)
+v.check("07-05.14e", Zad.imag)
+v.check("07-05.14f", abs(Zad))
+v.check("07-05.14g", deg(Zad))
+I14 = 10 / Zad
+v.check("07-05.14h", abs(I14))
+v.check("07-05.14i", deg(I14))
+v.check("07-05.14j", 0.5 * (10 * np.conj(I14)).real)
+# P15: nodal with the VCVS's internal node e = -50 Vx (unknowns Vx, Vo, Ie through the source)
+w15 = 2 * pi * 1e4
+
+
+def p15(drive_vs, it=0.0):
+    Gs = 1e-3 if drive_vs else 0.0
+    yc = 1j * w15 * 1e-9
+    M = np.array([[Gs + 1e-4 + yc, -yc], [-yc + 50 / 100, yc + 1 / 100 + 1e-4]])
+    return np.linalg.solve(M, np.array([0.1 * Gs + it, 0.0]))
+
+
+vx15, vo15 = p15(True)
+K15 = vo15 / vx15
+v.check("07-05.15a", abs(K15))
+v.check("07-05.15b", deg(K15))
+v.check("07-05.15c", abs(vx15))
+v.check("07-05.15d", deg(vx15))
+v.check("07-05.15e", abs(vo15))
+v.check("07-05.15f", deg(vo15))
+v.check("07-05.15g", abs(vo15 / 0.1))
+zin15 = p15(False, 1.0)[0]
+v.check("07-05.15h", zin15.real)
+v.check("07-05.15i", zin15.imag)
+zm = 1 / (1e-4 + 1j * w15 * 1e-9 * 51)
+v.check("07-05.15j", zm.real)
+v.check("07-05.15k", zm.imag)
+v.check("07-05.15l", 1e9 * (1 / zin15 - 1e-4).imag / w15)
 
 v.finish()

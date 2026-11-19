@@ -1,0 +1,58 @@
+* Problems 07-08.15 (a loaded tank at 10 MHz: L = 1 uH with its coil loss as 6283.19 ohm in parallel,
+* C = 253.303 pF, 1 k source, 2 k load), 07-08.16 (MFB Butterworth low-pass, gain -2, 10 kHz) and
+* 07-08.17 (unity-gain Sallen-Key Butterworth high-pass, 200 Hz). Op-amps are voltage-controlled sources.
+*
+* EXPECT il15  key:../../solutions/07-08-solutions.md#07-08.15j rtol=5e-4
+* EXPECT bw15  key:../../solutions/07-08-solutions.md#07-08.15g scale=1e6 rtol=1e-3
+* EXPECT g30k  key:../../solutions/07-08-solutions.md#07-08.16e rtol=5e-4
+* EXPECT g0    key:../../solutions/07-08-solutions.md#07-08.16d rtol=2e-4
+* EXPECT a50   key:../../solutions/07-08-solutions.md#07-08.17c rtol=5e-4
+
+* ---- 07-08.15 with and without the tank
+V15  s 0 AC 1
+Rs15 s x 1k
+L15  x 0 1u
+C15  x 0 253.30296p
+Rp15 x 0 6283.1853
+RL15 x 0 2k
+V15d sd 0 AC 1
+Rs1d sd xd 1k
+RL1d xd 0 2k
+* ---- 07-08.16 MFB
+V16  i6 0 AC 1
+R61  i6 P6 10k
+C61  P6 0 2.2507908n
+R62  P6 o6 20k
+R63  P6 N6 20k
+C62  N6 o6 281.34885p
+E6   o6 0 0 N6 1e8
+* ---- 07-08.17 Sallen-Key high-pass
+V17  i7 0 AC 1
+C71  i7 A7 47n
+C72  A7 B7 47n
+R72  B7 0 23.944583k
+R71  A7 o7 11.972291k
+E7   o7 0 B7 0 1
+
+.control
+ac lin 1 10Meg 10Meg
+let il15 = db(vm(xd)/vm(x))
+print il15
+ac lin 20001 9Meg 11Meg
+meas ac vpk max vm(x)
+let vh = vpk/sqrt(2)
+meas ac flo when vm(x)=vh rise=1
+meas ac fhi when vm(x)=vh fall=1
+let bw15 = fhi - flo
+print bw15
+ac lin 1 1 1
+let g0 = vdb(o6)
+print g0
+ac lin 1 30k 30k
+let g30k = vdb(o6)
+print g30k
+ac lin 1 50 50
+let a50 = -vdb(o7)
+print a50
+.endc
+.end

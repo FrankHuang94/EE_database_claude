@@ -61,13 +61,25 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A notch.** A resistor $R$ = 50 Ω is in series from input to output, and a series LC ($L$ = 100 µH) goes from the output to ground. (a) Choose $C$ to notch 1 MHz. (b) Derive $H$ and show it is a notch with $Q = Z_0/R$. (c) Find the −3 dB width of the notch and its edges, and the attenuation at 990 kHz.
 
-### Problem 07-08.13 [C]
+### Problem 07-08.13 [B]
 
 **Insertion loss.** (a) Derive, for one parallel resonator between a source and a load of equal resistance $R$, the insertion loss at resonance in terms of $Q_L$ and $Q_u$. (b) A filter needs $Q_L$ = 50. Find the loss for $Q_u$ = 100 and 1000. (c) What $Q_u$ keeps the loss at 1 dB?
 
 ### Problem 07-08.14 [C]
 
 **A third-order active filter, and the op-amp it needs.** Design a third-order Butterworth low-pass at 10 kHz as an RC section buffered by a follower, followed by a unity-gain Sallen–Key section with equal resistors. Use 1 nF for the RC section and $C_2$ = 1 nF in the Sallen–Key section. (a) Find all the component values. (b) Find the ideal gain at 10 kHz and 20 kHz. (c) Model each follower with a dominant-pole op-amp ($A_0 = 10^5$) and find the gain at 10 kHz for gain–bandwidth products of 1 MHz and 100 kHz. What ratio of GBW to cutoff keeps the error below 0.01 dB here?
+
+### Problem 07-08.15 [B]
+
+**A loaded tank.** A parallel tank of $L$ = 1 µH (coil $Q_c$ = 100 at 10 MHz) and $C$ chosen to resonate at 10 MHz is driven from a source with 1 kΩ of resistance and feeds a 2 kΩ load. (a) Find $C$, $Z_0$ and the coil's equivalent parallel resistance $R_p$. (b) Find the unloaded $Q$, the loaded $Q$ and the bandwidth. (c) At 10 MHz, what fraction of the power reaching the tank is lost in the coil? (d) Find the insertion loss: the load voltage with the tank in place compared with the load connected directly to the source.
+
+### Problem 07-08.16 [B]
+
+**A multiple-feedback low-pass.** Design an MFB Butterworth low-pass with $f_c$ = 10 kHz and a DC gain of −2, using $R_1$ = 10 kΩ and $R_2 = R_3$ = 20 kΩ (§3.10). (a) Find the capacitor ratio and $C_1$, $C_2$. (b) Find the gain, in dB, at DC and at 30 kHz. (c) Why might a designer choose this section over a Sallen–Key low-pass for an anti-aliasing filter ahead of a converter?
+
+### Problem 07-08.17 [B]
+
+**Removing mains hum.** A sensor's useful signal lies above 200 Hz; 50 Hz hum must be attenuated. (a) Design a unity-gain Sallen–Key Butterworth high-pass at 200 Hz with $C$ = 47 nF (§3.10). (b) Find its attenuation at 50 Hz. (c) What Butterworth order is needed for at least 40 dB at 50 Hz with the corner at 200 Hz, and what attenuation does it give?
 
 ---
 
@@ -76,8 +88,8 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 07-08) | Problems |
 |---|---|
 | 1. Filter types and specifications | 1, 8, 12 |
-| 2. Series and parallel resonance; Q four ways; loaded Q | 2, 3, 4, 5, 6 |
+| 2. Series and parallel resonance; Q four ways; loaded Q | 2, 3, 4, 5, 6, 15 |
 | 3. Passive design, prototypes and scaling | 7, 12 |
-| 4. Butterworth order and sections | 8, 14 |
-| 5. Active filters: Sallen–Key, sensitivity, op-amp limits | 9, 10, 11, 14 |
-| 6. Resonator Q, insertion loss and technologies | 5, 13 |
+| 4. Butterworth order and sections | 8, 14, 16, 17 |
+| 5. Active filters: Sallen–Key, MFB, high-pass and band-pass sections, sensitivity, op-amp limits | 9, 10, 11, 14, 16, 17 |
+| 6. Resonator Q, insertion loss and technologies | 13, 15 |

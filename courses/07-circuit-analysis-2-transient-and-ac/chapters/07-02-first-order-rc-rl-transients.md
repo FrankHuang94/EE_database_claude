@@ -346,6 +346,7 @@ All of the branch current $i$ flows on through $R_f$ (none enters the op-amp), s
   $$
 
   The impulse becomes a finite spike of height $-(R_f/R_s)V$ that decays with $\tau = R_sC$. Its area, $\int_0^\infty v_{out}\,dt = -(R_f/R_s)V\tau = -R_fCV$, equals the area of the ideal differentiator's impulse, so for slow-moving inputs nothing has been lost.
+
 - **Ramp of slope $m$.** The capacitor voltage $v_C$ obeys $\tau\,dv_C/dt + v_C = v_{in}$, the ramp case of §3.10, so $v_C = m(t - \tau) + m\tau e^{-t/\tau}$ and
 
   $$

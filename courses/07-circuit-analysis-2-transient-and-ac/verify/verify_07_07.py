@@ -18,6 +18,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from scipy import signal
 from scipy.integrate import quad, solve_ivp
 from scipy.optimize import brentq, minimize_scalar
 from scipy.special import erfinv, sici
@@ -155,6 +156,11 @@ pk100 = minimize_scalar(lambda lf: -abs(lc_H(100, 10**lf)), bounds=(3.5, 5), met
 v.check("Ex 07-07.3m", dB(lc_H(100, 10**pk100.x)))
 v.check("Ex 07-07.3n", 10**pk100.x / 1e3)
 v.check("Ex 07-07.3o", 10 * abs(lc_H(10, 10**pk.x)))
+v.check("Ex 07-07.3p", abs(lc_H(10, 10**pk.x)))
+eig100 = np.linalg.eigvals(np.array(lc(100)[0]))
+zeta100 = -eig100.real.mean() / math.sqrt(np.prod(eig100).real)
+v.check("Ex 07-07.3q", zeta100)
+v.check("Ex 07-07.3r", 1 / (2 * zeta100))
 # lock-in confirmation of the peak gain by integrating the state equations into steady state
 fpk = 10**pk.x
 wpk = 2 * pi * fpk
@@ -521,4 +527,22 @@ v.check("Lab 07-07.c", lab[4] * 10.0)  # w0 = wt = 10 MHz in the lab
 v.check("Lab 07-07.d", 2 * z90 * f3g)
 v.check("Lab 07-07.e", math.log(9) / (2 * pi))
 v.check("Lab 07-07.f", (x90 - x10) / (2 * pi))
+# P15: minimum- versus non-minimum-phase zero (unwrapped phase along a dense sweep; simulated step)
+den15 = np.polymul([1e-3, 1], [1e-5, 1])
+H15 = {1: signal.lti(10 * np.array([1e-4, 1]), den15), 2: signal.lti(10 * np.array([-1e-4, 1]), den15)}
+wgrid = np.logspace(0, 8, 80001)
+ph15 = {k: np.degrees(np.unwrap(np.angle(signal.freqresp(h, wgrid)[1]))) for k, h in H15.items()}
+for wv, (ka, kb) in ((1e3, ("07-07.15a", "07-07.15b")), (1e4, ("07-07.15c", "07-07.15d")), (1e5, ("07-07.15e", "07-07.15f"))):
+    i = int(np.argmin(abs(wgrid - wv)))
+    v.check(ka, ph15[1][i])
+    v.check(kb, ph15[2][i])
+v.check("07-07.15g", round(ph15[2][-1] / 90) * 90)
+assert np.allclose(abs(signal.freqresp(H15[1], wgrid)[1]), abs(signal.freqresp(H15[2], wgrid)[1]))
+ts15 = np.linspace(0, 0.02, 400001)
+_, y15 = signal.step(H15[2], T=ts15)
+v.check("07-07.15h", y15[0])
+v.check("07-07.15i", (y15[1] - y15[0]) / (ts15[1] - ts15[0]), tol=500)
+v.check("07-07.15j", y15[-1])
+v.assert_true("P15 H2 step response dips below zero first", y15[:2000].min() < -0.1)
+
 v.finish()

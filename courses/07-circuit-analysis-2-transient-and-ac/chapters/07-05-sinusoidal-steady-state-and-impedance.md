@@ -115,7 +115,7 @@ The only new skill is complex arithmetic, which a calculator or a few lines of P
 
 **Several frequencies.** If sources run at different frequencies (including DC, where $\omega = 0$: capacitors open, inductors short), phasors cannot be combined across them. Use superposition: solve the circuit once per frequency with only that frequency's sources active, convert each result to a time function, and add **in time**. Adding phasors of different frequencies is meaningless, because their rotating arrows turn at different rates.
 
-> **Going deeper — what SPICE's AC analysis does.** An AC sweep ([07-04 §9](07-04-laplace-domain-circuit-analysis.md#9-practitioner-lens)) builds the circuit's modified nodal equations of 06-04 with each element's admittance at $j\omega$ (a capacitor stamps $j\omega C$, an inductor $1/(j\omega L)$, a nonlinear device its small-signal linearization at the DC operating point) and solves the complex linear system at each frequency of the sweep. The results are phasors. That is why an AC analysis says nothing about clipping or slew limits: it is this section, automated.
+**What SPICE's AC analysis does.** An AC sweep ([07-04 §9](07-04-laplace-domain-circuit-analysis.md#9-practitioner-lens)) builds the circuit's modified nodal equations of 06-04 at $s = j\omega$ and solves the complex linear system at each frequency of the sweep. A capacitor stamps the admittance $j\omega C$. An inductor, like a voltage source, gets a branch-current unknown with the branch equation $\mathbf{V} = j\omega L\mathbf{I}$, which keeps the matrix well behaved at DC, where $1/(j\omega L)$ would be infinite. A nonlinear device contributes its small-signal linearization at the DC operating point. The results are phasors. That is why an AC analysis says nothing about clipping or slew limits: it is this section, automated.
 
 ### 3.5 Phasor diagrams
 
@@ -123,16 +123,16 @@ A phasor diagram draws the phasors of a circuit as arrows in the complex plane. 
 
 **Reading a series RL.** With $\mathbf{I}$ as reference, $\mathbf{V}_R = R\mathbf{I}$ lies along it and $\mathbf{V}_L = j\omega L\mathbf{I}$ points 90° ahead; their sum is the source voltage, the hypotenuse. The diagram shows at a glance that $\lvert\mathbf{V}_R\rvert + \lvert\mathbf{V}_L\rvert$ exceeds $\lvert\mathbf{V}_S\rvert$: element voltages measured with a meter do not add up to the source.
 
-**Voltage drop along a line.** A source feeds a load through a line of impedance $R + jX$. Take the load voltage $\mathbf{V}_L$ as reference ($\angle0$) and let the load current lag it by θ (an inductive load): $\mathbf{I} = I\angle{-\theta}$. Then
+**Voltage drop along a line.** A source feeds a load through a line of impedance $R + jX$. Take the load voltage $\mathbf{V}_{load}$ as reference ($\angle0$) and let the load current lag it by θ (an inductive load): $\mathbf{I} = I\angle{-\theta}$. Then
 
 $$
-\mathbf{V}_S = \mathbf{V}_L + (R + jX)\,I(\cos\theta - j\sin\theta) = \underbrace{V_L + I(R\cos\theta + X\sin\theta)}_{\text{in phase with }\mathbf{V}_L} + j\,I(X\cos\theta - R\sin\theta) .
+\mathbf{V}_S = \mathbf{V}_{load} + (R + jX)\,I(\cos\theta - j\sin\theta) = \underbrace{V_{load} + I(R\cos\theta + X\sin\theta)}_{\text{in phase with }\mathbf{V}_{load}} + j\,I(X\cos\theta - R\sin\theta) .
 $$
 
-When the line drop is small compared with $V_L$, the quadrature term barely changes the magnitude ($\lvert\mathbf{V}_S\rvert \approx$ the in-phase part, because the quadrature part enters only in second order), so
+When the line drop is small compared with $V_{load}$, the quadrature term barely changes the magnitude ($\lvert\mathbf{V}_S\rvert \approx$ the in-phase part, because the quadrature part enters only in second order), so
 
 $$
-\lvert\mathbf{V}_S\rvert - V_L \approx I\,(R\cos\theta + X\sin\theta) .
+\lvert\mathbf{V}_S\rvert - V_{load} \approx I\,(R\cos\theta + X\sin\theta) .
 $$
 
 The line's reactance contributes to the drop only through the reactive part of the current ($\sin\theta$): this is why power engineers care about the load's phase (07-06) and why voltage on long lines depends on reactive current.
@@ -204,7 +204,7 @@ $$
 Solving (Cramer's rule or a complex linear solver): $\mathbf{V}_1 = 2.539 - j7.102$ V $=$ **7.542 V ∠ −70.33°** and $\mathbf{V}_2 = 5.999 - j8.986$ V $=$ **10.80 V ∠ −56.28°**. So $v_2(t) = 10.80\cos(2\pi\cdot1000\,t - 56.28°)$ V.
 
 **Units check.** mS × V = mA on every row ✓.
-**Sanity check.** $\lvert\mathbf{V}_2\rvert$ exceeds the 10 V source: the current source pushes 10 mA into node 2, and the inductor–capacitor combination is near a resonance at $1/(2\pi\sqrt{LC})$ = **1.592 kHz**, so voltages larger than the source are plausible. The ngspice netlist in the lab confirms both phasors ✓.
+**Sanity check.** $\lvert\mathbf{V}_2\rvert$ exceeds the 10 V source, which needs explaining. Superposition does it. $\mathbf{V}_S$ alone gives $\mathbf{V}_2$ = **6.220 V ∠ −35.89°**, a gain of only 0.62, and $\mathbf{I}_S$ alone gives **5.426 V ∠ −79.81°**. Neither exceeds 10 V, but the two phasors are only 44° apart, so they add to 10.80 V. The size comes from two sources adding nearly in phase, not from resonance: the LC resonance, at $1/(2\pi\sqrt{LC})$ = **1.592 kHz**, is well away from 1 kHz. The ngspice netlist in the lab confirms both phasors ✓.
 
 ### Example 07-05.3 · A Thévenin equivalent at one frequency (tier B)
 
@@ -214,14 +214,14 @@ Solving (Cramer's rule or a complex linear solver): $\mathbf{V}_1 = 2.539 - j7.1
 
 (a) $Z_C = 1/(j\omega C) = -j1591.5$ Ω. Open-circuit voltage: the divider $\mathbf{V}_{Th} = 10\,Z_C/(R_1 + Z_C) = 7.170 - j4.505$ V $=$ **8.467 V ∠ −32.14°** (no current in $R_2$). Thévenin impedance, source shorted: $Z_{Th} = R_2 + R_1\parallel Z_C = 500 + (716.96 - j450.48) = $ **1217 − j450.5 Ω** ($1298\angle{-20.31°}$ Ω).
 
-(b) $\mathbf{V}_L = \mathbf{V}_{Th}\,R_L/(Z_{Th} + R_L) = 3.502 - j1.320$ V $=$ **3.743 V ∠ −20.66°**. Nodal analysis at node a and the output node gives the same phasor (the lab's notebook does it in two lines).
+(b) $\mathbf{V}_{load} = \mathbf{V}_{Th}\,R_L/(Z_{Th} + R_L) = 3.502 - j1.320$ V $=$ **3.743 V ∠ −20.66°**. Nodal analysis at node a and the output node gives the same phasor (the lab's notebook does it in two lines).
 
 **Units check.** All impedances in Ω; the divider ratio is dimensionless ✓.
 **Sanity check.** The equivalent is valid at 10 kHz only: at another frequency $Z_C$, and therefore both $\mathbf{V}_{Th}$ and $Z_{Th}$, change. A Thévenin equivalent of an AC network is a frequency-by-frequency statement ✓.
 
 ### Example 07-05.4 · A phasor diagram and the voltage-drop rule (tier B)
 
-**Setup.** A load of impedance $Z_L = 18.4 + j13.8$ Ω is fed through a line of $0.5 + j0.3$ Ω, and its voltage is $23\angle0°$ V. (a) Find the current. (b) Find the source voltage and the drop as a percentage of the load voltage. (c) Compare with the approximation of §3.5.
+**Setup.** A load of impedance $Z_{load} = 18.4 + j13.8$ Ω is fed through a line of $0.5 + j0.3$ Ω, and its voltage is $23\angle0°$ V. (a) Find the current. (b) Find the source voltage and the drop as a percentage of the load voltage. (c) Compare with the approximation of §3.5.
 
 **Solution.**
 
@@ -257,11 +257,11 @@ Equating real and imaginary parts gives two conditions: $R_x = R_2R_3/R_4$ and $
 (c) No: ω cancels from both conditions, so the bridge balances at every frequency. That makes it convenient (the source frequency need not be stable) and is one reason this particular arrangement measures inductors with a capacitor standard, which is easier to make precise than an inductor standard.
 
 **Units check.** Ω²·F = Ω·(Ω·F) = Ω·s = H ✓.
-**Sanity check.** The inductor's $Q$ at 1 kHz is $\omega L/R = 314.2/20 = $ **15.71**; arm 4's matching $Q$ is $\omega C_4R_4 = 6283\times50\times10^{-9}\times5\times10^4 = 15.71$ ✓: at balance the two arms have equal phase angles.
+**Sanity check.** The inductor's $Q$ at 1 kHz is $\omega L/R = 314.2/20 = $ **15.71**; arm 4's matching $Q$ is $\omega C_4R_4 = 6283\times50\times10^{-9}\times5\times10^4 = 15.71$ ✓: at balance the two arms have equal phase angles. This is a Maxwell bridge, with the parallel RC in arm 4. For coils with $Q$ above about 10, like this one, practitioners usually prefer the Hay bridge, which puts the RC in series and whose balance is easier to reach at high $Q$.
 
 ### Example 07-05.6 · An all-pass filter changes a waveform's shape (tier C)
 
-**Setup.** The all-pass phase shifter of §3.7 has $R$ = 10 kΩ and $C$ chosen for a −90° shift at 1 kHz. (a) Find $C$ and the phase shift at 3 kHz, 100 Hz and 10 kHz. (b) The input is $\cos(2\pi\cdot1000\,t) + \tfrac13\cos(2\pi\cdot3000\,t)$ V, the first two terms of a square wave. Write the output and compare its peak with the input's. (c) Find the time delay of each component.
+**Setup.** The all-pass phase shifter of §3.7 has $R$ = 10 kΩ and $C$ chosen for a −90° shift at 1 kHz. (a) Find $C$ and the phase shift at 3 kHz, 100 Hz and 10 kHz. (b) The input is $\cos(2\pi\cdot1000\,t) + \tfrac13\cos(2\pi\cdot3000\,t)$ V, a two-tone signal whose two components peak together at $t = 0$. Write the output and compare its peak with the input's. (c) Find the time delay of each component.
 
 **Solution.**
 
@@ -279,6 +279,47 @@ Both amplitudes are unchanged, yet the waveform is different: the input peaks at
 
 **Units check.** degrees ÷ (degrees × Hz) = s ✓.
 **Sanity check.** $\lvert H\rvert = 1$ at all frequencies, so the RMS value of the waveform is unchanged ($\sqrt{(1^2 + (1/3)^2)/2}$ = **0.7454 V** for both), while the peak changes. Phase matters for waveforms even when it does not matter for power or for a spectrum analyzer's display ✓.
+
+### Example 07-05.7 · A dependent source, and Thévenin by test source (tier B)
+
+**Setup.** A small-signal amplifier model is driven at $\omega = 10^4$ rad/s:
+
+- $\mathbf{V}_S = 1\angle0°$ V drives node x through $R_1$ = 1 kΩ;
+- $C$ = 100 nF goes from node x to ground;
+- a feedback resistor $R_f$ = 10 kΩ joins node x to the output node o;
+- $R_2$ = 2 kΩ goes from node o to ground;
+- a voltage-controlled current source draws $g_m\mathbf{V}_x$ from node o to ground, with $g_m$ = 10 mS.
+
+(a) Find $\mathbf{V}_x$ and $\mathbf{V}_o$. (b) Find the Thévenin equivalent at node o, using a test source for $Z_{Th}$. (c) Compare $Z_{Th}$ with $R_f\parallel R_2$, and explain the difference.
+
+**Solution.** Work in millisiemens, volts and milliamperes. The admittances are $1/R_1$ = 1, $j\omega C$ = j1, $1/R_f$ = 0.1, $1/R_2$ = 0.5 and $g_m$ = 10 mS.
+
+(a) KCL, currents leaving each node. The dependent source's current $g_m\mathbf{V}_x$ leaves node o:
+
+$$
+\begin{aligned}
+\text{node x:}\quad (1 + j1 + 0.1)\mathbf{V}_x - 0.1\mathbf{V}_o &= 1 ,\\
+\text{node o:}\quad (10 - 0.1)\mathbf{V}_x + (0.1 + 0.5)\mathbf{V}_o &= 0 .
+\end{aligned}
+$$
+
+The second gives $\mathbf{V}_o = -16.5\,\mathbf{V}_x$. Substituting into the first, $(2.75 + j1)\mathbf{V}_x = 1$, so $\mathbf{V}_x = (2.75 - j1)/8.5625$ = **0.3417 V ∠ −19.98°**, and $\mathbf{V}_o = -16.5\mathbf{V}_x$ = **5.639 V ∠ 160.02°**. The node equations are not symmetric, because the dependent source couples node x to node o one way only (06-06).
+
+(b) The open-circuit voltage is (a)'s output: $\mathbf{V}_{Th} = 5.639\angle160.02°$ V. For $Z_{Th}$, turn off $\mathbf{V}_S$ but **keep the dependent source**, since its current depends on the circuit's own voltages. Drive node o with a 1 mA test current and solve for $\mathbf{V}_o$:
+
+- node x gives $\mathbf{V}_x = 0.1\mathbf{V}_o/(1.1 + j1)$;
+- node o gives $0.6\mathbf{V}_o + 9.9\mathbf{V}_x = 1$.
+
+So $\mathbf{V}_o[0.6 + 0.99/(1.1 + j1)] = \mathbf{V}_o(1.0928 - j0.4480) = 1$, giving $\mathbf{V}_o = 0.7835 + j0.3212$ V per mA:
+
+$$
+Z_{Th} = \textbf{783.5 + j321.2 Ω} .
+$$
+
+(c) $R_f\parallel R_2$ = **1667 Ω**, purely resistive, is what you would get by wrongly switching off the dependent source. The real output impedance is half that, because the transconductance fights any change in output voltage. It is also *inductive*, although the circuit contains no inductor. A test voltage at the output reaches node x through $R_f$ and is delayed by $C$, so the current the dependent source draws lags the test voltage, which is how an inductor behaves. Transistor circuits with capacitance and gain routinely show such "active inductance". Only a test source, with the dependent source left on, reveals it.
+
+**Units check.** mS × V = mA in every equation; V/mA = kΩ ✓.
+**Sanity check.** The short-circuit current $\mathbf{V}_{Th}/Z_{Th}$ must equal the current a short at node o would carry. Shorting o makes node x see $1 + j1 + 0.1$ mS, so $\mathbf{V}_x = 1/(1.1 + j1)$, and the short carries $\mathbf{V}_x(0.1 - 10)$ mA, which is 6.659 mA. Dividing 5.639 V by $\lvert Z_{Th}\rvert$ = 846.7 Ω gives the same 6.659 mA ✓.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -300,12 +341,16 @@ Both amplitudes are unchanged, yet the waveform is different: the input peaks at
 | Ex 07-05.2c | $\lvert\mathbf{V}_2\rvert$ | 10.80 | V |
 | Ex 07-05.2d | angle of $\mathbf{V}_2$ | −56.28 | ° |
 | Ex 07-05.2e | LC resonance | 1.592 | kHz |
+| Ex 07-05.2f | $\lvert\mathbf{V}_2\rvert$, $\mathbf{V}_S$ alone | 6.220 | V |
+| Ex 07-05.2g | its angle | −35.89 | ° |
+| Ex 07-05.2h | $\lvert\mathbf{V}_2\rvert$, $\mathbf{I}_S$ alone | 5.426 | V |
+| Ex 07-05.2i | its angle | −79.81 | ° |
 | Ex 07-05.3a | $\lvert\mathbf{V}_{Th}\rvert$ | 8.467 | V |
 | Ex 07-05.3b | angle of $\mathbf{V}_{Th}$ | −32.14 | ° |
 | Ex 07-05.3c | $Z_{Th}$ real part | 1217 | Ω |
 | Ex 07-05.3d | $Z_{Th}$ imaginary part | −450.5 | Ω |
-| Ex 07-05.3e | $\lvert\mathbf{V}_L\rvert$ | 3.743 | V |
-| Ex 07-05.3f | angle of $\mathbf{V}_L$ | −20.66 | ° |
+| Ex 07-05.3e | $\lvert\mathbf{V}_{load}\rvert$ | 3.743 | V |
+| Ex 07-05.3f | angle of $\mathbf{V}_{load}$ | −20.66 | ° |
 | Ex 07-05.4a | $\lvert\mathbf{I}\rvert$ | 1.000 | A |
 | Ex 07-05.4b | angle of $\mathbf{I}$ | −36.87 | ° |
 | Ex 07-05.4c | $\lvert\mathbf{V}_S\rvert$ | 23.58 | V |
@@ -323,6 +368,15 @@ Both amplitudes are unchanged, yet the waveform is different: the input peaks at
 | Ex 07-05.6g | delay at 1 kHz | 0.2500 | ms |
 | Ex 07-05.6h | delay at 3 kHz | 132.5 | µs |
 | Ex 07-05.6i | RMS value, input and output | 0.7454 | V |
+| Ex 07-05.7a | $\lvert\mathbf{V}_x\rvert$ | 0.3417 | V |
+| Ex 07-05.7b | angle of $\mathbf{V}_x$ | −19.98 | ° |
+| Ex 07-05.7c | $\lvert\mathbf{V}_o\rvert$ | 5.639 | V |
+| Ex 07-05.7d | angle of $\mathbf{V}_o$ | 160.02 | ° |
+| Ex 07-05.7e | $R_{Th}$ | 783.5 | Ω |
+| Ex 07-05.7f | $X_{Th}$ | 321.2 | Ω |
+| Ex 07-05.7g | $R_f\parallel R_2$ | 1667 | Ω |
+| Ex 07-05.7h | short-circuit current | 6.659 | mA |
+| Ex 07-05.7i | $\lvert Z_{Th}\rvert$ | 846.7 | Ω |
 
 *Every value in this table is recomputed by [verify_07_05.py](../verify/verify_07_05.py), which solves each circuit's complex nodal equations and checks steady states against time-domain simulation; ngspice AC analyses in [labs/07-05-lab](../labs/07-05-lab/README.md) confirm the circuit results.*
 
@@ -452,6 +506,7 @@ The lab is in [labs/07-05-lab/](../labs/07-05-lab/README.md).
   - The watches' repeatability was 1.3% (coefficient of variation) against DXA's 0.7%, so more repeat readings are needed to see the same change.
 
   *Finance analogy:* two return series can correlate at 0.98 and still differ in level, as an index fund does from its index by its fee. The analogy breaks down because a calibration offset can be measured and removed, while poor precision can only be averaged down. *Sanity check:* ask for bias and limits of agreement (the Bland–Altman method for comparing two measurement methods) and for repeatability, not correlation.
+
 - **"The capacitor measures 10 µF."** *Reality:* at what frequency, and in series or parallel mode? Example 07-05.1's capacitor is 10.08 µF or 7.194 µF at 100 kHz depending on the mode. *Sanity check:* compare parts only at the same frequency, mode and signal level.
 - **"Lab-grade impedance spectroscopy in the vehicle."** *Reality:* the vehicle measures a few chosen frequencies (one per DFT on NXP's cell controller, up to five at once on TI's), not a full laboratory sweep. Frequencies below 0.1 Hz take long acquisitions that drift. *Sanity check:* ask which frequencies, how long each takes, and the accuracy at the cell's real impedance.
 

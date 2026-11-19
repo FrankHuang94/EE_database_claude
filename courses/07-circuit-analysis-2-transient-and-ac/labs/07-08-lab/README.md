@@ -23,6 +23,8 @@ Chapter sections 3.1 to 3.9 and Examples 07-08.1 to 07-08.6. You need Python wit
 | [ex2_tank.cir](ex2_tank.cir) | Example 07-08.2: the loaded tank's impedance and bandwidth | Chapter answer key |
 | [ex3_butter.cir](ex3_butter.cir) | Example 07-08.3: the 50 Ω Butterworth low-pass | Chapter answer key |
 | [ex5_sallen_key.cir](ex5_sallen_key.cir) | Example 07-08.5 and the guided exercise: Sallen–Key sections with an ideal and a finite-GBW op-amp | Chapter answer key and this handout |
+| [ex6_ex7.cir](ex6_ex7.cir) | Example 07-08.6 (a lossy four-resonator Butterworth band-pass ladder at 2 GHz) and Example 07-08.7 (the Sallen–Key high-pass and MFB low-pass voice-band cascade) | Chapter answer key |
+| [p15_p17.cir](p15_p17.cir) | Problems 07-08.15 (loaded tank), 07-08.16 (MFB low-pass) and 07-08.17 (Sallen–Key high-pass) | Solution answer key |
 
 Run the netlists from the repository root:
 

@@ -38,7 +38,7 @@ Chapter 07-05 solved a circuit at one frequency. This chapter solves it at all f
 
 **An analogy from finance.** On a log-price chart, a constant growth rate is a straight line, and a change in growth rate is a kink. A Bode magnitude plot is the same idea: each pole is a point where the curve's "growth rate" (its slope) drops by 20 dB per decade, and each zero is a point where it rises by 20 dB per decade. Adding decibels along a signal chain is like adding log returns over consecutive periods. *Where the analogy breaks:* a price chart has no second panel, whereas the frequency response also has a phase. For the large class of "minimum-phase" circuits the phase is fixed by the magnitude curve (§3.6), something with no counterpart in a price series.
 
-**What the phase means physically.** A low-pass RC circuit's output lags its input because the capacitor takes time to charge. At low frequency the lag is a negligible fraction of the period. At high frequency the capacitor current leads its voltage by 90°, and the output lags by almost 90°. More poles mean more lag: two poles approach −180°. That growing lag is what makes feedback loops unstable when too much gain survives to high frequency, the central concern of Bode's own work.
+**What the phase means physically.** A low-pass RC circuit's output lags its input because the capacitor takes time to charge. At low frequency the lag is a negligible fraction of the period. At high frequency the capacitor's impedance is small, so the resistor sets the current, which is then nearly in phase with the input. The capacitor's voltage, the output, always lags its own current by 90°, so the output lags the input by almost 90°. More poles mean more lag: two poles approach −180°. That growing lag is what makes feedback loops unstable when too much gain survives to high frequency, the central concern of Bode's own work.
 
 ## 3. Theory
 
@@ -255,7 +255,7 @@ $$
 A(j\omega) = \frac{A_0}{1 + j\omega/\omega_a},
 $$
 
-where $A_0$ is the DC open-loop gain (130 dB typical for the op-amp of §9) and $\omega_a$ the dominant pole, for that op-amp only about 3 Hz. Above $\omega_a$, $\lvert A\rvert \approx A_0\omega_a/\omega$, falling at −20 dB/decade to reach 1 at the **unity-gain frequency** $\omega_t = A_0\omega_a$. The product $A_0\omega_a$, in hertz $f_t = A_0f_a$, is the **gain–bandwidth product** (GBW).
+where $A_0$ is the DC open-loop gain (130 dB typical for the op-amp of §9) and $\omega_a$ the dominant pole; for that op-amp, $f_a = \omega_a/2\pi$ is only about 3 Hz. Above $\omega_a$, $\lvert A\rvert \approx A_0\omega_a/\omega$, falling at −20 dB/decade to reach 1 at the **unity-gain frequency** $\omega_t = A_0\omega_a$. The product $A_0\omega_a$, in hertz $f_t = A_0f_a$, is the **gain–bandwidth product** (GBW).
 
 **Closed loop.** In a non-inverting amplifier, a fraction $\beta = R_g/(R_g + R_f)$ of the output is fed back (06-10). With finite $A$, the output is $A(\mathbf{V}_{in} - \beta\mathbf{V}_{out})$, so
 
@@ -273,7 +273,7 @@ $$
 
 **Closed-loop gain × closed-loop bandwidth = GBW**, whatever the gain. A 10 MHz op-amp gives 1 MHz of bandwidth at a gain of 10 and 100 kHz at a gain of 100. Two consequences matter in practice:
 
-- **The bandwidth depends on $1/\beta$, the "noise gain", not on the signal gain.** An inverting amplifier of gain $-R_f/R_g$ has the same $\beta = R_g/(R_g + R_f)$ as a non-inverting one of gain $1 + R_f/R_g$. So an inverting gain of −100 has bandwidth $f_t/101$, not $f_t/100$.
+- **The bandwidth depends on $1/\beta$, the "noise gain", not on the signal gain.** An inverting amplifier of gain $-R_f/R_g$ has the same $\beta = R_g/(R_g + R_f)$ as a non-inverting one of gain $1 + R_f/R_g$. So an inverting gain of −100 has bandwidth $f_t/101$, not $f_t/100$. To see it, apply superposition at the inverting input: $\mathbf{V}_- = \mathbf{V}_{in}R_f/(R_g + R_f) + \mathbf{V}_{out}R_g/(R_g + R_f)$, with $\mathbf{V}_{out} = -A\mathbf{V}_-$. Solving gives $H = -\dfrac{R_f}{R_g}\cdot\dfrac{A\beta}{1 + A\beta}$, with the same $\beta = R_g/(R_g + R_f)$. With the single-pole $A$, $A\beta/(1 + A\beta) = A_0\beta/[(1 + A_0\beta) + j\omega/\omega_a]$, a pole at $\omega_a(1 + A_0\beta) \approx \beta\omega_t$: the bandwidth is $f_t/(1 + R_f/R_g)$.
 - **The closed-loop bandwidth hardly depends on $A_0$.** Datasheets specify $A_0$ loosely (a typical value and a minimum perhaps 25 dB lower), but GBW sets the bandwidth. $A_0$ sets the *DC accuracy*: the gain error is $1/(1 + A_0\beta)$, a relative error of about $1/(A_0\beta)$.
 
 **The Bode-plot picture.** Plot $\lvert A\rvert$ and the horizontal line $1/\beta$ on the same axes. The closed-loop gain follows $1/\beta$ wherever $\lvert A\rvert \gg 1/\beta$, and follows $\lvert A\rvert$ beyond the intersection. The intersection *is* the closed-loop bandwidth. The vertical distance between the curves is the **loop gain** $\lvert A\beta\rvert$ in decibels: the "excess gain" that feedback spends on accuracy.
@@ -282,7 +282,7 @@ $$
 
 ### 3.9 A preview of stability margins
 
-07-04 showed that feedback places the closed-loop poles at the roots of $1 + T(s) = 0$, where $T = A\beta$ is the **loop gain**. On a Bode plot the danger is a frequency where $\lvert T\rvert = 1$ and $\angle T = -180°$. There the fed-back signal returns with equal amplitude and inverted, so $1 + T = 0$ and the circuit can sustain an oscillation with no input. The **phase margin** measures the distance from that condition:
+§3.8's closed-loop gain $H = A/(1 + A\beta)$ has its poles where $1 + T(s) = 0$, with $T = A\beta$ the **loop gain**. (The curriculum's [notation file](../../../reference/notation.md) writes the loop gain as $L$. This chapter uses $T$, the common textbook symbol, to avoid confusion with inductance.) On a Bode plot the danger is a frequency where $\lvert T\rvert = 1$ and $\angle T = -180°$. There the fed-back signal returns with equal amplitude and inverted, so $1 + T = 0$ and the circuit can sustain an oscillation with no input. The **phase margin** measures the distance from that condition:
 
 $$
 \text{PM} = 180° + \angle T(j\omega_c), \qquad \text{where } \lvert T(j\omega_c)\rvert = 1 .
@@ -382,11 +382,11 @@ $$
 
 with $K = R_L/(R_L + R_s) = 0.9970$ (**−0.0260 dB**), $\omega_0^2 = (1 + R_s/R_L)/(LC)$, giving $f_0$ = **15.68 kHz**, and $2\zeta/\omega_0 = (L/R_L + R_sC)/(1 + R_s/R_L)$, giving ζ = **0.05548** and $Q = 1/(2\zeta)$ = **9.012**. These match 07-03 exactly, because the denominator here is 07-03's characteristic polynomial: the same poles govern the turn-on ringing and the frequency response.
 
-(b) The asymptotes put the gain at $f_0$ at $20\lg K$ ≈ 0 dB. The exact gain there is $K/(2\zeta)$, which is **19.07 dB** (the correction $20\lg Q$ = **19.10 dB**). The exact peak is $K/(2\zeta\sqrt{1 - \zeta^2})$ = 9.00, or **19.08 dB**, at $f_0\sqrt{1 - 2\zeta^2}$ = **15.63 kHz**. The phase at $f_0$ is **−90.00°**.
+(b) The asymptotes put the gain at $f_0$ at $20\lg K$ ≈ 0 dB. The exact gain there is $K/(2\zeta)$, which is **19.07 dB** (the correction $20\lg Q$ = **19.10 dB**). The exact peak is $K/(2\zeta\sqrt{1 - \zeta^2})$ = **9.00**, or **19.08 dB**, at $f_0\sqrt{1 - 2\zeta^2}$ = **15.63 kHz**. The phase at $f_0$ is **−90.00°**.
 
 (c) Above $f_0$ the asymptote falls at −40 dB/decade: at 500 kHz it predicts $20\lg K - 40\lg(500/15.68)$ = **−60.18 dB**, and the exact value is **−60.17 dB**. At 100 kHz the exact attenuation is **−32.00 dB**. Far above the corner the asymptote is excellent.
 
-(d) With $R_L$ = 100 Ω the load damps less: ζ = 0.03476, $Q$ = 14.38, and the peak is **23.16 dB** (×14.4) at **15.64 kHz**.
+(d) With $R_L$ = 100 Ω the load damps less: ζ = **0.03476**, $Q$ = **14.38**, and the peak is **23.16 dB** (×14.4) at **15.64 kHz**.
 
 (e) The filter does its job at 500 kHz, cutting the converter's ripple a thousandfold. But near 15.6 kHz it *amplifies* by a factor of 9: a 10 mV disturbance at that frequency becomes **90.0 mV** at the output. A lightly loaded rail is worse. Any noise source near the resonance, such as a load that switches on and off at kilohertz rates, is magnified. This is why supply filters are damped (Problem 07-07.14), and why a Bode plot of a filter must include the region near its corner, where the asymptotes say nothing about the danger.
 
@@ -505,6 +505,9 @@ Solving $y = 0.1$ and $y = 0.9$ numerically gives a displayed rise time of **2.1
 | Ex 07-07.3m | peak gain, 100 Ω load | 23.16 | dB |
 | Ex 07-07.3n | peak frequency, 100 Ω load | 15.64 | kHz |
 | Ex 07-07.3o | 10 mV disturbance at the peak, at the output | 90.0 | mV |
+| Ex 07-07.3p | peak gain as a ratio | 9.00 | — |
+| Ex 07-07.3q | ζ with a 100 Ω load | 0.03476 | — |
+| Ex 07-07.3r | Q with a 100 Ω load | 14.38 | — |
 | Ex 07-07.4a | magnitude at 1 MHz | −2.967 | dB |
 | Ex 07-07.4b | magnitude at 10 MHz | −17.03 | dB |
 | Ex 07-07.4c | magnitude at 100 MHz | −19.96 | dB |
@@ -639,7 +642,7 @@ The lab is in [labs/07-07-lab](../labs/07-07-lab/README.md).
 - **Oscilloscope bandwidth is a −3 dB point, and the rise-time constant is contested** ([R-130](../../../reference/research-log.md#r-130--oscilloscope-bandwidth-and-rise-time)).
   - Tektronix's *XYZs of Oscilloscopes* primer (2011) defines bandwidth as the frequency at which a sine "is attenuated to 70.7%" **[Established]**.
   - The primer recommends a "5 Times Rule" (bandwidth at least five times the highest frequency component), which it says gives "less than ±2% error". It relates bandwidth and rise time with a constant k "between 0.35 and 0.45", "typically" 0.35 below 1 GHz **[Industry estimate]** (vendor rules of thumb). Example 07-07.6 derived the 1.94% and the 0.35 for a single-pole response.
-  - Tektronix's own 4 Series B datasheet (Apr 2025) lists "calculated rise time" for each bandwidth model, from 200 MHz (2.3 ns) to 1.5 GHz (333 ps). Those pairs imply k of **0.46** to **0.50**, even below 1 GHz **[Contested]** (against the primer).
+  - Tektronix's own 4 Series B datasheet (Apr 2025) lists "calculated rise time" for each bandwidth model, from 200 MHz (2.3 ns) to 1.5 GHz (333 ps). Those pairs imply k of **0.45** to **0.50**, even below 1 GHz **[Contested]** (against the primer). The 1.5 GHz model's 0.50 exceeds even the brick-wall value of 0.446 discussed next, so that calculated figure assumes a slower response than any filter shape explains.
   - The explanation is the shape of the roll-off (§3.7). Modern instruments correct their response digitally to be flat almost to the bandwidth and then fall steeply. That is closer to a brick-wall response (k ≈ 0.45) than to a single pole (0.35). A calculated rise time therefore encodes the maker's assumed k: compare instruments by measured step response, not by the calculated figure.
 
 <!-- answer-key -->

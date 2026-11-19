@@ -18,7 +18,8 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from scipy.optimize import brentq, minimize_scalar
+from scipy import signal
+from scipy.optimize import brentq, fsolve, minimize_scalar
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2] / "tools"))
@@ -123,6 +124,9 @@ v.check("Ex 07-08.1k", 2 * pi * w_t.mean() / Ecyc)
 f0e2, Lc, Qc = 10.7e6, 1e-6, 80
 rc = 2 * pi * f0e2 * Lc / Qc
 v.check("Ex 07-08.2a", rc)
+v.check("Ex 07-08.2k", 2 * pi * 10.7e6 * 1e-6)
+Zcoil = 1j * 2 * pi * 10.7e6 * 1e-6 + 2 * pi * 10.7e6 * 1e-6 / 80
+v.check("Ex 07-08.2l", 1e6 * (-1 / (1 / Zcoil).imag) / (2 * pi * 10.7e6))
 v.check("Ex 07-08.2b", rc * (1 + Qc**2))
 # choose C so the coil (r + jwL) in parallel with C has zero susceptance at 10.7 MHz
 Yc = 1 / (rc + 2j * pi * f0e2 * Lc)
@@ -331,6 +335,7 @@ fp9, pk9 = peak_search(H9, 30, 3e3)
 v.check("07-08.9c", dB(pk9))
 v.check("07-08.9d", fp9)
 v.check("07-08.9e", 1 / (2 * q9))
+v.check("07-08.9f", 10 ** (dB(pk9) / 20))
 # P10
 f010, _ = f0_q(sk_lp(10e3, 10e3, 10e-9, 10e-9, 1.5), 10, 1e5)
 v.check("07-08.10a", f010 / 1e3)
@@ -468,5 +473,129 @@ v.check("Lab 07-08.c", fpk / (f2 - f1) / pi, tol=0.5)
 qs6, _ = bw_q(6)
 v.check("Lab 07-08.d", max(qs6))
 v.check("Lab 07-08.e", brentq(lambda q: il(q, 100) - 0.5, 150, 1e5))
+
+# Example 1 (audit addition): average power and period at resonance, from the series circuit itself
+L1e, C1e, R1e = 100e-6, 100e-12, 10.0
+f01 = brentq(lambda f: (2j * pi * f * L1e + 1 / (2j * pi * f * C1e)).imag, 1e6, 3e6)
+I1 = 10e-3 / abs(R1e + 2j * pi * f01 * L1e + 1 / (2j * pi * f01 * C1e))
+v.check("Ex 07-08.1l", 1e6 * 0.5 * I1 ** 2 * R1e)
+v.check("Ex 07-08.1m", 1e9 / f01)
+
+# ---- Example 6 (audit addition): four-resonator Butterworth band-pass ladder with lossy resonators
+g4 = [2 * math.sin((2 * k - 1) * pi / 8) for k in range(1, 5)]
+v.check("Ex 07-08.6i", sum(g4))
+
+
+def ladder_loss(Qu, f0=2e9, wfrac=0.01, R0=50.0):
+    w0 = 2 * pi * f0
+    els = [("V", "s", "0", 1.0), ("R", "s", "n0", R0)]
+    node = "n0"
+    for k, gk in enumerate(g4):
+        if k % 2 == 0:   # shunt parallel resonator at the current node
+            Cs, Ls = gk / (R0 * w0 * wfrac), R0 * wfrac / (w0 * gk)
+            els += [("C", node, "0", Cs), ("L", node, "0", Ls), ("R", node, "0", Qu / (w0 * Cs))]
+        else:            # series resonator to a new node
+            Ls, Cs = gk * R0 / (w0 * wfrac), wfrac / (w0 * gk * R0)
+            nxt = f"n{k}"
+            els += [("R", node, f"r{k}", w0 * Ls / Qu), ("L", f"r{k}", f"m{k}", Ls), ("C", f"m{k}", nxt, Cs)]
+            node = nxt
+    els += [("R", node, "0", R0)]
+    return -dB(2 * mna(els, f0, node, inp="s"))
+
+
+v.check("Ex 07-08.6f", ladder_loss(200))
+v.check("Ex 07-08.6g", ladder_loss(2000))
+v.check("Ex 07-08.6h", 4.343 * 100 * sum(g4) / 200)
+
+# ---- Example 7 (audit addition): voice-band cascade, components found by fitting the Butterworth response
+
+
+def hp_sec(R1, R2, Cc=100e-9):
+    return [("C", "in", "A", Cc), ("C", "A", "B", Cc), ("R", "B", "0", R2), ("R", "A", "h", R1),
+            ("E", "h", "0", 1.0, ("B", "0"))]
+
+
+def mfb_sec(C1, C2, R=10e3, inp="h"):
+    return [("R", inp, "P", R), ("C", "P", "0", C1), ("R", "P", "out", R), ("R", "P", "N", R),
+            ("C", "N", "out", C2), ("E", "out", "0", -1e8, ("N", "0"))]
+
+
+def bw_fit(build, fc, node, x0, hp=False):
+    def err(x):
+        H = [abs(mna([("V", "in", "0", 1.0)] + build(*x), f, node)) for f in (fc, 2 * fc if not hp else fc / 2)]
+        ref = [1 / math.sqrt(2), 1 / math.sqrt(1 + 2.0 ** 4)]
+        return [H[0] - ref[0], H[1] - ref[1]]
+    return fsolve(err, x0, xtol=1e-12)
+
+
+R1h, R2h = bw_fit(lambda a, b: hp_sec(a * 1e3, b * 1e3), 300, "h", [3.0, 6.0], hp=True)
+v.check("Ex 07-08.7a", R1h)
+v.check("Ex 07-08.7b", R2h)
+C1m, C2m = bw_fit(lambda a, b: mfb_sec(a * 1e-9, b * 1e-9, inp="in"), 3400, "out", [10.0, 2.0])
+v.check("Ex 07-08.7c", C2m)
+v.check("Ex 07-08.7d", C1m)
+casc = [("V", "in", "0", 1.0)] + hp_sec(R1h * 1e3, R2h * 1e3) + mfb_sec(C1m * 1e-9, C2m * 1e-9)
+for f, k in ((50, "Ex 07-08.7e"), (300, "Ex 07-08.7f"), (1000, "Ex 07-08.7g"), (3400, "Ex 07-08.7h"), (20e3, "Ex 07-08.7i")):
+    v.check(k, dB(mna(casc, f, "out")))
+v.check("Ex 07-08.7j", deg(mna(casc, 1000, "out")))
+
+# P15-P17 (audit additions)
+f15, L15 = 10e6, 1e-6
+C15 = brentq(lambda C: 1 / (2 * pi * f15 * L15) - 2 * pi * f15 * C, 1e-12, 1e-9)
+Rp15 = 100 * 2 * pi * f15 * L15
+v.check("07-08.15a", C15 * 1e12)
+v.check("07-08.15b", math.sqrt(L15 / C15))
+v.check("07-08.15c", Rp15)
+tank = lambda f, load=True: mna([("V", "in", "0", 1.0), ("R", "in", "x", 1e3), ("L", "x", "0", L15), ("C", "x", "0", C15),  # noqa: E731
+                                 ("R", "x", "0", Rp15)] + ([("R", "x", "0", 2e3)] if load else []), f, "x")
+v.check("07-08.15d", Rp15 / math.sqrt(L15 / C15))
+Rt15 = 1 / (1 / Rp15 + 1e-3 + 5e-4)
+v.check("07-08.15e", Rt15)
+pk15 = abs(tank(f15))
+lo15 = brentq(lambda f: abs(tank(f)) - pk15 / math.sqrt(2), 5e6, f15)
+hi15 = brentq(lambda f: abs(tank(f)) - pk15 / math.sqrt(2), f15, 2e7)
+v.check("07-08.15g", (hi15 - lo15) / 1e6)
+v.check("07-08.15f", f15 / (hi15 - lo15), tol=0.01)
+vx = abs(tank(f15))
+pcoil, pload = vx ** 2 / Rp15, vx ** 2 / 2e3
+v.check("07-08.15h", 100 * pcoil / (pcoil + pload))
+v.check("07-08.15i", 100 * pload / (pcoil + pload))
+direct = abs(mna([("V", "in", "0", 1.0), ("R", "in", "x", 1e3), ("R", "x", "0", 2e3)], f15, "x"))
+v.check("07-08.15j", -dB(vx / direct))
+
+
+def mfb16(f, C1, C2):
+    return mna([("V", "in", "0", 1.0), ("R", "in", "P", 10e3), ("C", "P", "0", C1), ("R", "P", "out", 20e3),
+                ("R", "P", "N", 20e3), ("C", "N", "out", C2), ("E", "out", "0", -1e8, ("N", "0"))], f, "out")
+
+
+def fit16(x):
+    c1, c2 = x[0] * 1e-9, x[1] * 1e-12
+    return [abs(mfb16(f, c1, c2)) / 2 - 1 / math.sqrt(1 + (f / 1e4) ** 4) for f in (1e4, 2e4)]
+
+
+c1n, c2n = fsolve(fit16, [2.0, 300.0], xtol=1e-12)
+v.check("07-08.16b", c2n)
+v.check("07-08.16c", c1n)
+v.check("07-08.16a", c1n * 1e3 / c2n)
+v.check("07-08.16d", dB(mfb16(1.0, c1n * 1e-9, c2n * 1e-12)))
+v.check("07-08.16e", dB(mfb16(3e4, c1n * 1e-9, c2n * 1e-12)))
+
+
+def hp17(f, R1, R2, Cc=47e-9):
+    return mna([("V", "in", "0", 1.0), ("C", "in", "A", Cc), ("C", "A", "B", Cc), ("R", "B", "0", R2),
+                ("R", "A", "out", R1), ("E", "out", "0", 1.0, ("B", "0"))], f, "out")
+
+
+r1n, r2n = fsolve(lambda x: [abs(hp17(f, x[0] * 1e3, x[1] * 1e3)) - 1 / math.sqrt(1 + (200 / f) ** 4) for f in (200, 100)],
+                  [10.0, 20.0], xtol=1e-12)
+v.check("07-08.17a", r1n)
+v.check("07-08.17b", r2n)
+v.check("07-08.17c", -dB(hp17(50, r1n * 1e3, r2n * 1e3)))
+v.check("07-08.17d", brentq(lambda n: 10 * math.log10(1 + 4 ** (2 * n)) - 40, 1, 10))
+nmin17, _ = signal.buttord(2 * pi * 200, 2 * pi * 50, 3.0103, 40, analog=True)
+v.check("07-08.17e", nmin17)
+b4, a4 = signal.butter(4, 2 * pi * 200, btype="high", analog=True)
+v.check("07-08.17f", -dB(signal.freqs(b4, a4, [2 * pi * 50])[1][0]))
 
 v.finish()

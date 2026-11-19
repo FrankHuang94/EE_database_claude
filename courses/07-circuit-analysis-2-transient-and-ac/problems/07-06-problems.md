@@ -17,7 +17,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 07-06.2 [A]
 
-**Power from phasors.** A load has $\mathbf{V} = 100\angle20°$ V and $\mathbf{I} = 5\angle{-15°}$ A (peak). Find $S$, $P$, $Q$, the power factor and whether it is leading or lagging.
+**Power from phasors.** A load has $\mathbf{V} = 100\angle20°$ V and $\mathbf{I} = 5\angle{-15°}$ A (peak). Find $S$, $P$, $Q$, the power factor and whether it is leading or lagging. Then write the instantaneous power $p(t)$, taking the current's phase as the time reference, and find its largest and smallest values.
 
 ### Problem 07-06.3 [A]
 
@@ -47,17 +47,17 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Harmonics and power factor.** A load on a sinusoidal 230 V (RMS) supply draws a fundamental current of 5 A (RMS) in phase with the voltage, plus 2 A (RMS) of third harmonic and 1 A (RMS) of fifth. Find the RMS current, the THD, the power factor and the real power.
 
-### Problem 07-06.10 [C]
+### Problem 07-06.10 [B]
 
 **Displacement and distortion together.** A load's current has its fundamental lagging the voltage by 30°, and a THD of 50%. Find its true power factor. What would a meter that assumes sinusoidal current report?
 
-### Problem 07-06.11 [B]
+### Problem 07-06.11 [A]
 
-**A data-center supply at half load.** A redundant data-center supply delivers 1.5 kW at 96% efficiency (an 80 PLUS Titanium 50%-load figure, chapter §7) with power factor 0.95 from 230 V (RMS). Find its input power, its losses, its apparent power and its input current.
+**A data-center supply at half load.** A redundant data-center supply delivers 1.5 kW at 96% efficiency (the 80 PLUS Titanium requirement at 50% load, [R-122](../../../reference/research-log.md#r-122--power-factor-harmonics-and-utility-tariffs)) with power factor 0.95 from 230 V (RMS). Find its input power, its losses, its apparent power and its input current.
 
 ### Problem 07-06.12 [C]
 
-**Why distribution voltage and power factor matter together.** A load of 50 kW is supplied through cables of 0.05 Ω total resistance. Find the cable loss at (a) 230 V and PF 1, (b) 230 V and PF 0.8, (c) 400 V and PF 0.8. Express each loss as a percentage of the load power, and state the scaling law.
+**Why distribution voltage and power factor matter together.** A load of 50 kW is supplied through cables of 0.05 Ω total resistance. Find the cable loss at (a) 230 V and PF 1, (b) 230 V and PF 0.8, (c) 400 V and PF 0.8, still treated as a single-phase supply for comparison (in practice 400 V is a three-phase line-to-line voltage, 07-11). Express each loss as a percentage of the load power, and state the scaling law.
 
 ---
 
@@ -65,7 +65,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 | Learning objective (chapter 07-06) | Problems |
 |---|---|
-| 1. Instantaneous and average power; reactive elements | 2, 3 |
+| 1. Instantaneous and average power; reactive elements | 2 |
 | 2. RMS values, harmonics, crest factor | 1, 9 |
 | 3. Complex, real, reactive, apparent power; conservation | 2, 3, 4 |
 | 4. Power factor (displacement, distortion); correction | 5, 6, 7, 9, 10 |
