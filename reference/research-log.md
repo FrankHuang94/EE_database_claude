@@ -183,6 +183,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-175 | Optoelectronic device references | Nov 2026 |
 | R-176 | Diode and protection-device data sheets | Nov 2026 |
 | R-177 | MOSFET and load-switch data sheets | Nov 2026 |
+| R-178 | Bipolar transistor data sheets | Nov 2026 |
 
 ---
 
@@ -1870,3 +1871,10 @@ R&D % = R&D ÷ revenue.
 - **onsemi BSS138** (BSS138/D, Rev. 7, April 2024): V_GS(th) 0.8/1.3/1.5 V (min/typ/max) at I_D = 1 mA; V_GS(th) temperature coefficient −2 mV/°C; R_DS(on) 0.7 Ω typical, 3.5 Ω maximum at V_GS = 10 V, 0.22 A; 1.0/6.0 Ω at 4.5 V; 1.1/5.8 Ω at 10 V and T_J = 125 °C; g_FS 0.12 S minimum, 0.5 S typical [Established]. [Data sheet](https://www.onsemi.com/pdf/datasheet/bss138-d.pdf).
 - **TI CSD17573Q5B** (SLPS492B, June 2014, revised April 2017): 30 V; V_GS(th) 1.1/1.4/1.8 V at 250 µA; R_DS(on) 1.19 mΩ typical, 1.45 mΩ maximum at V_GS = 4.5 V, 35 A; 0.84/1.00 mΩ at 10 V; g_fs 181 S; C_iss 6920 pF; Q_g (4.5 V) 49 nC; Q_gd 11.9 nC; SON 5 × 6 mm [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/csd17573q5b.pdf).
 - **TI TPS22918** (SLVSD76C, February 2016, revised July 2017): 1–5.5 V, 2 A load switch; R_ON 52 mΩ typical at V_IN = 5 V, 53 mΩ at 3.3 V; quiescent current 8.3 µA typical at 3.3 V; configurable rise time to limit inrush; quick output discharge [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/tps22918.pdf).
+
+## R-178 · Bipolar transistor data sheets
+
+*Read on 19 Nov 2026 from the PDFs at the URLs below, as downloaded. Specifications are tagged [Established] as specifications of those parts.*
+
+- **onsemi 2N3903/2N3904** (2N3903/D, Rev. 9, August 2021): V_CEO 40 V, V_CBO 60 V, V_EBO 6 V, I_C 200 mA continuous; P_D 625 mW at 25 °C, derate 5.0 mW/°C; R_θJA 200 °C/W; 2N3904 h_FE minimum 40 (0.1 mA), 70 (1 mA), 100–300 (10 mA), 60 (50 mA), 30 (100 mA), all at V_CE = 1 V; V_CE(sat) ≤ 0.2 V (10 mA, I_B 1 mA), ≤ 0.3 V (50 mA, 5 mA); V_BE(sat) 0.65–0.85 V (10/1 mA), ≤ 0.95 V (50/5 mA); f_T ≥ 300 MHz; h_fe 100–400 at 1 mA [Established]. [Data sheet](https://www.onsemi.com/pdf/datasheet/2n3903-d.pdf).
+- **onsemi 2N3906** (2N3906/D, Rev. 4, February 2010): h_FE minimum 60 (0.1 mA), 80 (1 mA), 100–300 (10 mA), 60 (50 mA), 30 (100 mA); V_CE(sat) ≤ 0.25 V (10/1 mA), ≤ 0.4 V (50/5 mA); V_BE(sat) 0.65–0.85 V (10/1 mA), ≤ 0.95 V (50/5 mA); f_T ≥ 250 MHz [Established]. [Data sheet](https://www.onsemi.com/pdf/datasheet/2n3906-d.pdf).

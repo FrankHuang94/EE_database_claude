@@ -4207,3 +4207,17 @@
 - term: Load switch
   definition: An integrated MOSFET switch with its gate driver and controlled turn-on, used to connect or disconnect a power rail from a load while limiting inrush current.
   chapter: "10-02"
+# ---------------------------------------------------------------- 10-03
+- term: Forward-active region
+  definition: The bipolar operating region with the base-emitter junction forward-biased and the base-collector junction reverse-biased, where I_C ≈ βI_B and the collector acts as a current source.
+  chapter: "10-03"
+- term: Four-resistor bias
+  definition: The standard discrete BJT bias, a base divider with an emitter resistor (and a collector resistor), giving I_E = (V_Th − V_BE)/(R_E + R_Th/(β + 1)), nearly independent of β when R_Th is much less than (β + 1)R_E.
+  chapter: "10-03"
+- term: Forced beta
+  definition: The ratio I_C/I_B imposed on a saturated bipolar transistor by its circuit, smaller than the device's β; switches are designed with a forced beta near 10 so every device saturates.
+  chapter: "10-03"
+- term: Emitter degeneration
+  definition: A resistor in series with a bipolar transistor's emitter, which provides negative feedback that stabilizes the bias against β, V_BE and temperature, at the cost of headroom and gain.
+  chapter: "10-03"
+  see_also: [Source degeneration]

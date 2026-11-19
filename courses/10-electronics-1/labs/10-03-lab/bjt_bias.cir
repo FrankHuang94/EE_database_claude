@@ -1,0 +1,29 @@
+* Lab 10-03 -- the four-resistor bias of Example 10-03.3 with a Gummel-Poon NPN (BF = 100, no Early effect,
+* no high-injection roll-off). IS = 2.23805e-15 A is chosen so that V_BE = 0.700 V at the example's 1.286 mA,
+* which makes the simulator's exponential junction agree with the chapter's constant-drop model at this
+* operating point; the check therefore confirms the circuit algebra (divider loading, base current, alpha),
+* not the 0.7 V convention. The temperature is 300 K so that V_T = 25.852 mV.
+*
+* EXPECT ic key:../../chapters/10-03-bjt-dc-operation-and-biasing.md#Ex_10-03.3d scale=1e-3 rtol=1e-3
+* EXPECT vc key:../../chapters/10-03-bjt-dc-operation-and-biasing.md#Ex_10-03.3f rtol=2e-4
+* EXPECT ve key:../../chapters/10-03-bjt-dc-operation-and-biasing.md#Ex_10-03.3g rtol=1e-3
+
+.options temp=26.85 tnom=26.85 reltol=1e-7
+VCC vcc 0 DC 12
+R1 vcc b 47k
+R2 b 0 10k
+RC vcc c 4.7k
+RE e 0 1k
+Q1 c b e qnpn
+.model qnpn NPN(IS=2.23805e-15 BF=100)
+
+.control
+op
+let ic = (12 - v(c)) / 4.7k
+let vc = v(c)
+let ve = v(e)
+echo "ic = $&ic"
+echo "vc = $&vc"
+echo "ve = $&ve"
+.endc
+.end
