@@ -3186,3 +3186,51 @@
 - term: Synchronous design
   definition: A discipline in which all state is held in flip-flops clocked by a common clock, every feedback loop contains a register and asynchronous inputs are synchronized, so correctness reduces to setup and hold checks on each register-to-register path.
   chapter: "08-06"
+- term: Register
+  definition: A group of flip-flops sharing a clock that stores a multi-bit word, usually with an enable that lets it hold its value instead of loading a new one.
+  chapter: "08-07"
+  see_also: [Shift register]
+- term: Shift register
+  definition: A chain of flip-flops in which each clock edge moves every bit one stage along; with parallel load and output it converts between parallel words and serial bit streams.
+  chapter: "08-07"
+  see_also: [Register, Serializer and deserializer]
+- term: Serializer and deserializer
+  definition: The circuits (SerDes) that convert a parallel word into a fast serial bit stream for transmission and back again at the receiver, built around shift registers and a clock multiplied or recovered to the bit rate.
+  chapter: "08-07"
+  see_also: [Shift register]
+- term: Synchronous counter
+  definition: A counter whose flip-flops all share one clock, each bit toggling when the bits below it say so (all 1s when counting up), so every output changes at the same edge.
+  chapter: "08-07"
+  see_also: [Ripple counter, Modulo-N counter]
+- term: Ripple counter
+  definition: A counter in which each flip-flop is clocked by the output of the previous one; it needs no counting logic but its outputs settle one clock-to-Q delay per stage after the clock, passing through transient states.
+  chapter: "08-07"
+  see_also: [Synchronous counter]
+- term: Modulo-N counter
+  definition: A counter that cycles through N states and then returns to 0, such as a decade (modulo-10) counter; it needs the smallest number of flip-flops n with 2^n at least N.
+  chapter: "08-07"
+  see_also: [Synchronous counter]
+- term: Ring counter
+  definition: A shift register whose output feeds its input, initialized with a single 1, so the 1 circulates through n states of n flip-flops with one-hot outputs.
+  chapter: "08-07"
+  see_also: [Johnson counter]
+- term: Johnson counter
+  definition: A twisted-ring counter that feeds the complement of its last stage back to its first, giving 2n states from n flip-flops with one bit changing per step.
+  chapter: "08-07"
+  see_also: [Ring counter]
+- term: Linear-feedback shift register (LFSR)
+  definition: A shift register whose input is the XOR of selected stages (the taps); with taps from a primitive polynomial it steps through all 2^n - 1 nonzero states before repeating.
+  chapter: "08-07"
+  see_also: [Primitive polynomial, Pseudo-random bit sequence (PRBS)]
+- term: Primitive polynomial
+  definition: An irreducible polynomial of degree n over GF(2) whose root generates all 2^n - 1 nonzero field elements; used as an LFSR's feedback, it gives maximal length.
+  chapter: "08-07"
+  see_also: [Linear-feedback shift register (LFSR)]
+- term: Pseudo-random bit sequence (PRBS)
+  definition: A deterministic, periodic bit stream with noise-like statistics, normally the output of a maximal-length LFSR, used as a standard test pattern for links (PRBS7, PRBS15, PRBS23, PRBS31).
+  chapter: "08-07"
+  see_also: [Linear-feedback shift register (LFSR), Scrambler]
+- term: Scrambler
+  definition: A circuit that XORs data with a pseudo-random sequence so that long runs of identical bits become unlikely, giving a receiver transitions to recover the clock from; the descrambler applies the same sequence to restore the data.
+  chapter: "08-07"
+  see_also: [Pseudo-random bit sequence (PRBS)]

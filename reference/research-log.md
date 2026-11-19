@@ -160,6 +160,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-152 | Discrete logic propagation delays | Nov 2026 |
 | R-153 | HDL standards and open-source tools | Nov 2026 |
 | R-154 | Flip-flop timing data | Nov 2026 |
+| R-155 | PRBS and LFSR references | Nov 2026 |
 
 ---
 
@@ -1548,3 +1549,13 @@ R&D % = R&D ÷ revenue.
   - CLK→Q (rising_edge) cell_rise 0.3070411 ns and cell_fall 0.2971512 ns at 0.0531329 ns clock transition and 0.00343455 pF load; the tables span 0.0005 to 0.162058 pF.
 - **TI SN74LVC74A** (SN54LVC74A/SN74LVC74A dual D flip-flop, datasheet SCAS287 family, current revision SCAS287V, May 2024): at VCC = 3.3 V ± 0.3 V, "tsu Setup time before CLK↑ Data ... 3" ns (3.4 ns at 2.7 V); "th Hold time, data after CLK↑ 1" ns; CLK pulse duration 3.3 ns minimum; tpd CLK→Q 5.2 ns maximum with CL = 50 pF [Established: datasheet values from search excerpts, possibly from an earlier revision; recheck against SCAS287V].
 - **Sources:** [sky130_fd_sc_hd repository](https://github.com/google/skywater-pdk-libs-sky130_fd_sc_hd); [TI SN74LVC74A datasheet](https://ti.com/document-viewer/SN74LVC74A/datasheet/GUID-125DB029-8491-4631-AC64-929339A4BB97); [SN74LVC74A, older copy](https://pccomponents.com/datasheets/TI-SN74LVC74A.PDF). Checked Nov 2026.
+
+## R-155 · PRBS and LFSR references
+
+*From search excerpts (vendor and IEEE pages unreachable from the build environment), Course 08 facts file entries F-0841 to F-0843; Swan's theorem from a search excerpt of a later paper's abstract. That each PRBS polynomial below is primitive, and that no degree-8 trinomial is irreducible, is proved independently by `verify_08_07.py`.*
+
+- **Standard PRBS polynomials:** PRBS7 $x^7 + x^6 + 1$, PRBS15 $x^{15} + x^{14} + 1$, PRBS23 $x^{23} + x^{18} + 1$, PRBS31 $x^{31} + x^{28} + 1$, as tabulated in Intel's E-Tile Transceiver PHY User Guide ("Data Pattern Generation") and AMD transceiver documentation, which attribute them to ITU-T O.150 / O.151; several O.150 sequences are defined inverted [Established; search excerpts, tables not read verbatim].
+- **IEEE 802.3 PRBS31:** defined as a test pattern for 10GBASE-R in clause 49.2.8; 802.3ae-era reflector discussion: "PRBS31 differs from O.150 in that for every 1 in O.150, D4.1 has a 0" (the same polynomial, bit-inverted). IEEE P802.3dj (2025) material carries PRBS31 and its PAM4 form PRBS31Q into the 200 Gb/s-per-lane generation [Established; search excerpts, the clause text itself not seen].
+- **Xilinx XAPP052:** P. Alfke, "Efficient Shift Registers, LFSR Counters, and Long Pseudo-Random Sequence Generators", version 1.1, 7 July 1996, written for the XC4000; tabulates maximal-length taps up to 168 bits, "based on unpublished research done by Wayne Stahnke while he was at Fairchild Semiconductor in 1970" [Established; search excerpt of university copies, individual tap entries not checked against the PDF].
+- **Swan's theorem:** R. G. Swan, "Factorization of polynomials over finite fields", *Pacific Journal of Mathematics* 12(3), 1962, pp. 1099–1106. A later abstract (Bluher) summarizes: Swan proved that trinomials $x^{8k} + x^m + 1$ with $8k > m$ have an even number of irreducible factors, so they cannot be irreducible [Established; summary from the later abstract, Swan's own statement not read].
+- **Sources:** [Intel E-Tile PHY User Guide, Data Pattern Generation](https://intel.com/content/www/us/en/docs/programmable/683723/current/data-pattern-generation.html); [AMD transceiver document](https://docs.amd.com/api/khub/documents/gYlAK_4raq3aAZ_rFGSPmQ/content); [IEEE 802.3dj presentation (Dudek, Mar 2025)](https://ieee802.org/3/dj/public/25_03/dudek_3dj_01_2503.pdf); [802.3ae reflector message](https://grouper.ieee.org/groups/802/3/10G_study/email/msg05450.html); [XAPP052, University of Idaho copy](https://www.webpages.uidaho.edu/~jfrenzel/440/Handouts/lfsr_XAPP052.pdf); [Swan 1962, Pacific J. Math.](https://msp.org/pjm/1962/12-3/p27.xhtml); [Bluher, arXiv math/0406538](https://www.arxiv.org/abs/math/0406538). Checked Nov 2026.
