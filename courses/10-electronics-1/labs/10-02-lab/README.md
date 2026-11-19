@@ -13,6 +13,7 @@ The chapter's square-law model (§3.1), its region checks (§3.2), the sensitivi
 ## Files
 
 - [10-02-mosfet-bias.ipynb](10-02-mosfet-bias.ipynb): the notebook (Parts 1–4).
+- [mosfet_regions.cir](mosfet_regions.cir): ngspice triode point (Example 10-02.1b), mirror with channel-length modulation (Example 10-02.5b) and body effect (Example 10-02.7a).
 - [mosfet_bias.cir](mosfet_bias.cir): ngspice operating points of Examples 10-02.2 and 10-02.3 with the level-1 (square-law) MOSFET.
 
 ## Procedure
@@ -27,7 +28,7 @@ The chapter's square-law model (§3.1), its region checks (§3.2), the sensitivi
 
 | Part | Quantity | Expected |
 |---|---|---|
-| 1 | Edge of saturation | at $R_D$ = 11.2 kΩ; the current changes by only a few percent across the sweep |
+| 1 | Edge of saturation | at $R_D$ = 11.2 kΩ; the current is constant while saturated, then falls in triode, to **0.155** mA at 20 kΩ (**−38**% from 0.250 mA) |
 | 2 | Current spread | fixed bias several times worse than degenerated, which is worse than the current reference |
 | 3 | $R_{on}$ | falls as $1/V_{ov}$ |
 | 4 | Iteration | converges in three or four passes |
@@ -41,6 +42,12 @@ The chapter's square-law model (§3.1), its region checks (§3.2), the sensitivi
 | Lab 10-02.d | improvement from degeneration | 3.55 | — |
 | Lab 10-02.e | resistance excess at 0.1 V drop | 4.0 | % |
 | Lab 10-02.f | g_m R of the reference | 14.0 | — |
+| Lab 10-02.g | current at R_D = 20 kΩ | 0.155 | mA |
+| Lab 10-02.h | change from the saturated current | -38 | % |
+| Lab 10-02.i | sample σ of the thresholds, seed 1002 | 24.66 | mV |
+| Lab 10-02.j | sample σ below 25 mV | 1.35 | % |
+| Lab 10-02.k | population σ of I_D with curvature | 7.67 | % |
+| Lab 10-02.l | linear prediction | 7.68 | % |
 
 ## Discussion questions
 
@@ -50,7 +57,7 @@ The chapter's square-law model (§3.1), its region checks (§3.2), the sensitivi
 
 ### Answers
 
-1. The first-order formula uses the slope at the nominal point. The square law curves upward: a threshold that falls by 25 mV raises the current by more than one that rises by 25 mV lowers it. The standard deviation weighs both directions, and the sample's spread comes out a little under the linear estimate, **7.56**% against 7.7%, while the mean shifts slightly upward.
+1. Mostly sampling noise. The 10,000 thresholds drawn with seed 1002 happen to have a standard deviation of **24.66** mV, **1.35**% below the intended 25 mV, and the current's spread scales with it; other seeds give values on both sides of 7.7%. The square law's curvature is a much smaller effect: for a Gaussian threshold the exact population spread, including curvature, is **7.67**%, against **7.68**% from the linear formula. To see the population value rather than one sample, raise the sample size or average over seeds; to compare two bias schemes fairly, use the same samples for both, as Part 2 does.
 2. In the reference, 2.45 V sits across a 10 kΩ resistor, so a threshold shift of 25 mV changes the current by only about 1%: an effective degeneration of $g_mR$ = **14.0** rather than 2.6. It costs a second transistor and a resistor, and the mirror that copies the current adds its own errors (channel-length modulation, mismatch between the two transistors; 10-08).
 3. The formula keeps only the linear term. At a drop $V_{DS}$, the triode current is $k_n(V_{ov}V_{DS} - V_{DS}^2/2)$, so the actual resistance is $1/[k_n(V_{ov} - V_{DS}/2)]$, larger by the factor $V_{ov}/(V_{ov} - V_{DS}/2)$: about **4.0**% at 0.1 V with 1.3 V of overdrive.
 

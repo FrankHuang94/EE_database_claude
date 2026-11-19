@@ -51,7 +51,7 @@ def ddx(f, x, h=1e-6):
 # ------------------------------------------------------------------ data-sheet values (quoted, R-177)
 for k_, val in (("T 10-02.a", 0.8), ("T 10-02.b", 1.5), ("T 10-02.c", 1.1), ("T 10-02.d", 1.8), ("T 10-02.e", -2),
                 ("T 10-02.f", 1.19), ("T 10-02.g", 0.84), ("T 10-02.h", 0.7), ("T 10-02.i", 1.1), ("T 10-02.j", 2),
-                ("T 10-02.k", 52)):
+                ("T 10-02.k", 52), ("T 10-02.n", 53)):
     v.check(k_, val)
 
 # ------------------------------------------------------------------ Example 1
@@ -103,6 +103,10 @@ v.check("Ex 10-02.3h", min(roots))
 gm3 = ddx(lambda vgs: 0.5 * 4e-3 * (vgs - 0.5) ** 2, 2.0 - vs3)
 v.check("Ex 10-02.3i", gm3 * 1e3)
 v.check("Ex 10-02.3j", 1 + gm3 * 1e3)
+# both roots of the bias equation V_G = V_GS + R_S k/2 (V_GS - V_TN)^2, found numerically, and their centre
+_r_hi = brentq(lambda x: x + 1e3 * 0.5 * 4e-3 * (x - 0.5) ** 2 - 2.0, 0.5, 2.0)
+_r_lo = brentq(lambda x: x + 1e3 * 0.5 * 4e-3 * (x - 0.5) ** 2 - 2.0, -3.0, 0.25)
+v.check("Ex 10-02.3k", 0.5 * (_r_hi + _r_lo))
 
 # ------------------------------------------------------------------ Example 4: re-solve at shifted thresholds
 lo, hi = bias3(0.45)[2], bias3(0.55)[2]
@@ -138,6 +142,9 @@ i52 = ids(g5l, 2.0, 4e-3, 0.5, 0.1)
 v.check("Ex 10-02.5e", i52 * 1e3)
 v.check("Ex 10-02.5f", (i52 / i5l - 1) * 100)
 v.check("Ex 10-02.5g", ref(0.45)[1] * 1e3)
+v.check("T 10-02.o", ddx(lambda x: ids(x, x, 4e-3, 0.5), g5) * 10e3)
+v.check("T 10-02.p", -ddx(lambda vt: ids(g5, g5, 4e-3, vt), 0.5) / i5 * 0.05 * 100)   # fixed V_GS
+v.check("T 10-02.q", -ddx(lambda vt: ref(vt)[1], 0.5, 1e-5) / i5 * 0.05 * 100)        # re-solved reference
 v.check("Ex 10-02.5h", ref(0.55)[1] * 1e3)
 
 # ------------------------------------------------------------------ Example 6: switches
@@ -147,9 +154,9 @@ v.check("Ex 10-02.6b", 20**2 * 1.19e-3)
 v.check("Ex 10-02.6c", 20**2 * 1.45e-3)
 v.check("Ex 10-02.6d", 20**2 * 0.84e-3)
 v.check("Ex 10-02.6e", 1.1 / 0.7)
-v.check("Ex 10-02.6f", 2 * 0.052)
-v.check("Ex 10-02.6g", 2**2 * 0.052)
-v.check("Ex 10-02.6h", 2 * 0.052 / 3.3 * 100)
+v.check("Ex 10-02.6f", 2 * 0.053)                     # 53 mOhm typical at V_IN = 3.3 V (R-177)
+v.check("Ex 10-02.6g", 2**2 * 0.053)
+v.check("Ex 10-02.6h", 2 * 0.053 / 3.3 * 100)
 
 
 # ------------------------------------------------------------------ Example 7: body effect, two unknowns at once
@@ -180,6 +187,9 @@ for _ in range(3):
 v.check("Ex 10-02.7g", its[0])
 v.check("Ex 10-02.7h", its[1])
 v.check("Ex 10-02.7i", its[2])
+# the naive update V_S <- R_S I_D(V_S) (threshold and V_GS both from the old V_S): its slope at the solution
+naive = lambda x: ids(2.5 - x, 10.0, 2e-3, 0.5 + 0.4 * (math.sqrt(0.7 + x) - math.sqrt(0.7))) * 2e3  # noqa: E731
+v.check("T 10-02.r", ddx(naive, vs7, 1e-6))
 
 # guided exercise predictions (first-order)
 v.check("T 10-02.l", 2 * 0.025 / (vgs3 - 0.5) * 100)
@@ -257,6 +267,9 @@ vsd12 = brentq(lambda x: ids(3.3, x, 2.0, 0.8) - 1.0, 0, 2.5, xtol=1e-14)   # ex
 v.assert_true("PMOS switch: the exact triode drop at 1 A is within 5% of I R_on", abs(vsd12 / ron12 - 1) < 0.05)
 v.check("10-02.12b", 1.0 * ron12)
 v.check("10-02.12c", 1.0**2 * ron12)
+v.check("10-02.12d", vsd12)
+v.check("10-02.12e", vsd12 * 1.0)
+v.check("10-02.12f", (vsd12 / (1.0 * ron12) - 1) * 100)
 
 # ------------------------------------------------------------------ lab: Monte Carlo of the three bias schemes
 rng = np.random.default_rng(1002)
@@ -271,5 +284,17 @@ v.check("Lab 10-02.d", fixed.std() / fixed.mean() / (deg.std() / deg.mean()))
 r_exact = 0.1 / ids(1.8, 0.1, 50e-3, 0.5)
 v.check("Lab 10-02.e", (r_exact / ron - 1) * 100)
 v.check("Lab 10-02.f", ddx(lambda x: ids(x, x, 4e-3, 0.5), g5) * 10e3)
+vd20 = brentq(lambda vd: (3.3 - vd) / 20e3 - ids(1.0, vd, 2e-3, 0.5), 0, 3.3, xtol=1e-15)
+i20 = (3.3 - vd20) / 20e3
+v.check("Lab 10-02.g", i20 * 1e3)
+v.check("Lab 10-02.h", (i20 / ids(1.0, 3.0, 2e-3, 0.5) - 1) * 100)
+v.check("Lab 10-02.i", dvt.std() * 1e3)
+v.check("Lab 10-02.j", (1 - dvt.std() / 0.025) * 100)
+from scipy.integrate import quad as _quad  # noqa: E402
+_pdf = lambda d: math.exp(-0.5 * (d / 0.025) ** 2) / (0.025 * math.sqrt(2 * math.pi))  # noqa: E731
+_m1 = _quad(lambda d: ids(vgs3, 5, 4e-3, 0.5 + d) * _pdf(d), -0.2, 0.2, points=[0])[0]
+_m2 = _quad(lambda d: ids(vgs3, 5, 4e-3, 0.5 + d) ** 2 * _pdf(d), -0.2, 0.2, points=[0])[0]
+v.check("Lab 10-02.k", math.sqrt(_m2 - _m1 ** 2) / _m1 * 100)
+v.check("Lab 10-02.l", 2 * 0.025 / (vgs3 - 0.5) * 100)
 
 v.finish()

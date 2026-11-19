@@ -102,7 +102,7 @@ $$
 \frac{\delta I_D}{I_D} = \frac{2\,\delta(V_{GS} - V_{TN})}{V_{ov}} = -\frac{2\,\delta V_{TN}}{V_{ov}} .
 $$
 
-With a typical overdrive of 0.2–0.5 V, a 50 mV threshold shift changes the current by 20–50%. Thresholds vary that much: a discrete small-signal MOSFET such as onsemi's BSS138 is specified from 0.8 to 1.5 V [1], and a power MOSFET such as TI's CSD17573Q5B from 1.1 to 1.8 V [2]. They also drift with temperature, about −2 mV/K for the BSS138 [1]. Fixing $V_{GS}$ and hoping is therefore not a bias strategy.
+With an overdrive of 0.2–0.5 V, typical of discrete bias, a 50 mV threshold shift changes the current by 20–50%; at the 0.1 V overdrives common in low-power analog bias it changes it by 100%. Thresholds vary that much: a discrete small-signal MOSFET such as onsemi's BSS138 is specified from 0.8 to 1.5 V [1], and a power MOSFET such as TI's CSD17573Q5B from 1.1 to 1.8 V [2]. They also drift with temperature, about −2 mV/K for the BSS138 [1]. Fixing $V_{GS}$ and hoping is therefore not a bias strategy.
 
 ### 3.4 Bias networks and negative feedback
 
@@ -116,13 +116,25 @@ $$
 
 The degeneration divides the sensitivity by $1 + g_mR_S$, the **loop gain plus one**, the first appearance of a factor that dominates feedback theory (Course 12). The price is headroom (the voltage $I_DR_S$ is lost from the signal swing) and, in an amplifier, gain, unless $R_S$ is bypassed by a capacitor at signal frequencies.
 
-**Drain-to-gate feedback.** A resistor from drain to gate (with the gate otherwise floating at DC) sets $V_{GS} = V_{DS}$: the transistor is always saturated, and an increase in current lowers the drain and hence the gate. It saves a resistor and a supply of headroom but ties the operating point to the drain voltage.
+**Drain-to-gate feedback.** A resistor from drain to gate (with the gate otherwise floating at DC, so it carries no current) sets $V_{GS} = V_{DS} = V_{DD} - I_DR_D$: the transistor is always saturated, since $V_{DS} = V_{GS} > V_{ov}$, and an increase in current lowers the drain and hence the gate. The same differentiation as for degeneration, now with $\delta V_{GS} = -R_D\,\delta I_D$, gives
 
-**Current-source bias.** The most robust approach sets the current directly. A resistor $R_{ref}$ from the supply feeds a **diode-connected** transistor (gate tied to drain), whose voltage adjusts itself to carry whatever current arrives: $I_{ref} = (V_{DD} - V_{GS})/R_{ref}$, nearly independent of $V_{TN}$ when $V_{DD}$ is several volts more than $V_{GS}$. A second transistor with the same $V_{GS}$ then copies the current: a **current mirror** (§3.5, and 10-08 in full).
+$$
+\frac{\delta I_D}{I_D} = -\frac{2\,\delta V_{TN}}{V_{ov}}\cdot\frac{1}{1 + g_mR_D} .
+$$
+
+The suppression factor is $1 + g_mR_D$, and it comes free: $R_D$ is the load resistor already there. The cost is that the operating point is tied to the drain voltage, which can no longer be chosen independently.
+
+**Current-source bias.** The most robust approach sets the current directly. A resistor $R_{ref}$ from the supply feeds a **diode-connected** transistor (gate tied to drain), whose voltage adjusts itself to carry whatever current arrives: $I_{ref} = (V_{DD} - V_{GS})/R_{ref}$, nearly independent of $V_{TN}$ when $V_{DD}$ is several volts more than $V_{GS}$. Electrically this is drain feedback with $R_D = R_{ref}$, so
+
+$$
+\frac{\delta I_{ref}}{I_{ref}} = -\frac{2\,\delta V_{TN}}{V_{ov}}\cdot\frac{1}{1 + g_mR_{ref}} ,
+$$
+
+and because $R_{ref}$ can be large (it need not leave signal swing), $g_mR_{ref}$ can be 10 or more: Example 10-02.5 has $g_mR_{ref}$ = **14.0**, so its 28.6% fixed-bias sensitivity to a 50 mV shift falls to $28.6/15$ = **1.90**%. A second transistor with the same $V_{GS}$ then copies the current: a **current mirror** (§3.5, and 10-08 in full).
 
 **Comparing the three.** Figure 2 plots each scheme's current against threshold shift, for the designs of Examples 10-02.3 to 10-02.5.
 
-*Figure 2. Drain current against threshold shift for a fixed gate voltage, a divider with a 1 kΩ source resistor, and a 10 kΩ current reference, each set to roughly the same nominal current.*
+*Figure 2. Fractional change in drain current against threshold shift for a fixed gate voltage, a divider with a 1 kΩ source resistor (Example 10-02.3, 0.849 mA nominal) and a 10 kΩ current reference (Example 10-02.5, 0.245 mA nominal). The nominal currents differ; the fractional changes are what the schemes are compared on.*
 
 ![Bias stability](../../../assets/figures/10-02/bias-stability.svg)
 
@@ -156,7 +168,7 @@ The conduction loss is $I^2R_{on}$. Integrated **load switches** package a MOSFE
 
 ### 3.7 The body effect in a bias calculation
 
-When a transistor's source sits above its body, for instance with a source resistor and the body at ground, the threshold depends on the source voltage, which depends on the current, which depends on the threshold. Solve by iteration: guess $V_S$, compute $V_{TN}(V_{SB})$, solve the square law for $I_D$ and hence a new $V_S = I_DR_S$, and repeat. Each pass multiplies the error by a factor less than one (the source feedback again), so a few passes suffice (Example 10-02.7). In integrated circuits the body effect is avoided where it matters by putting a transistor in its own well tied to its source, which PMOS devices in an n-well allow in a standard process.
+When a transistor's source sits above its body, for instance with a source resistor and the body at ground, the threshold depends on the source voltage, which depends on the current, which depends on the threshold. Solve by iteration: guess $V_S$, compute $V_{TN}(V_{SB})$, then solve the *degenerated* quadratic $V_S = R_S\tfrac12k_n(V_G - V_S - V_{TN})^2$ for $V_S$ with that threshold held fixed, and repeat. Each pass multiplies the error by a factor well below one (the source feedback is inside each solve), so a few passes suffice (Example 10-02.7). The tempting shortcut, computing $I_D = \tfrac12k_n(V_G - V_S - V_{TN})^2$ from the *old* $V_S$ and setting $V_S = I_DR_S$, multiplies the error by about $-g_mR_S(1 + \chi)$ per pass, with $\chi$ the body-effect factor of 10-04; in Example 10-02.7 that is about **−3.4**, and the iteration diverges. In integrated circuits the body effect is avoided where it matters by putting a transistor in its own well tied to its source, which PMOS devices in an n-well allow in a standard process.
 
 ## 4. Worked examples
 
@@ -204,7 +216,7 @@ When a transistor's source sits above its body, for instance with a source resis
 
 (a) No gate current, so $V_G = 5 \times 2/5$ = **2.0** V. Assume saturation: $2.0 = V_{GS} + R_S\tfrac12k_n(V_{GS} - 0.5)^2 = V_{GS} + 2(V_{GS} - 0.5)^2$. The physical root is $V_{GS}$ = **1.151** V, so $V_{ov}$ = **0.651** V, $I_D$ = **0.849** mA, $V_S$ = **0.849** V, $V_D$ = 5 − 2 × 0.849 = **3.303** V and $V_{DS}$ = **2.454** V, well above $V_{ov}$: saturation confirmed.
 
-(b) The quadratic's other root is $V_{GS}$ = **−0.651** V, below threshold, where the square law does not apply (the transistor would be off). The two roots are symmetric about $V_{TN}$ only in the formula.
+(b) The quadratic's other root is $V_{GS}$ = **−0.651** V, below threshold, where the square law does not apply (the transistor would be off). The two roots are not symmetric about $V_{TN}$: writing $x = V_{GS} - V_{TN}$, the bias equation $(k_nR_S/2)x^2 + x - (V_G - V_{TN}) = 0$ has roots summing to $-2/(k_nR_S)$, so they are centred on $V_{TN} - 1/(k_nR_S)$ = **0.25** V.
 
 (c) $g_m = k_nV_{ov}$ = **2.61** mS, so $1 + g_mR_S$ = **3.61**.
 
@@ -240,7 +252,7 @@ When a transistor's source sits above its body, for instance with a source resis
 
 ### Example 10-02.6 · MOSFETs as switches (tier B)
 
-**Setup.** (a) An integrated NMOS switch has $k_n$ = 50 mA/V² and $V_{TN}$ = 0.5 V, driven at $V_{GS}$ = 1.8 V. Find $R_{on}$. (b) A CSD17573Q5B carries 20 A. Find its conduction loss at $V_{GS}$ = 4.5 V (typical and maximum $R_{DS(on)}$) and at 10 V (typical) [2]. (c) By what factor does a BSS138's typical $R_{DS(on)}$ rise from 25 °C to 125 °C [1]? (d) A TPS22918 load switch (52 mΩ typical) passes 2 A from a 3.3 V rail [3]. Find the drop, the loss and the drop as a percentage of the rail.
+**Setup.** (a) An integrated NMOS switch has $k_n$ = 50 mA/V² and $V_{TN}$ = 0.5 V, driven at $V_{GS}$ = 1.8 V. Find $R_{on}$. (b) A CSD17573Q5B carries 20 A. Find its conduction loss at $V_{GS}$ = 4.5 V (typical and maximum $R_{DS(on)}$) and at 10 V (typical) [2]. (c) By what factor does a BSS138's typical $R_{DS(on)}$ rise from 25 °C to 125 °C [1]? (d) A TPS22918 load switch (53 mΩ typical at a 3.3 V input; 52 mΩ at 5 V) passes 2 A from a 3.3 V rail [3]. Find the drop, the loss and the drop as a percentage of the rail.
 
 **Solution.**
 
@@ -250,7 +262,7 @@ When a transistor's source sits above its body, for instance with a source resis
 
 (c) $1.1/0.7$ = **1.57**.
 
-(d) **0.104** V, **0.208** W and **3.15**% of the rail.
+(d) **0.106** V, **0.212** W and **3.21**% of the rail. (A guaranteed design would use the 71 mΩ maximum over −40 to 85 °C at 3.3 V [3].)
 
 **Sanity check.** A power MOSFET of about 1 mΩ handles 20 A with half a watt of loss; the same current through a 0.7 V diode would dissipate 14 W.
 
@@ -284,6 +296,11 @@ When a transistor's source sits above its body, for instance with a source resis
 | T 10-02.i | BSS138 R_DS(on) at 125 °C, typical | 1.1 | Ω |
 | T 10-02.j | TPS22918 maximum current | 2 | A |
 | T 10-02.k | TPS22918 R_ON at 5 V | 52 | mΩ |
+| T 10-02.n | TPS22918 R_ON at 3.3 V | 53 | mΩ |
+| T 10-02.o | g_m R_ref of Example 10-02.5 | 14.0 | — |
+| T 10-02.p | fixed-bias sensitivity, Example 10-02.5 | 28.6 | % |
+| T 10-02.q | current-reference sensitivity, Example 10-02.5 | 1.90 | % |
+| T 10-02.r | naive body-effect iteration factor | -3.4 | — |
 | T 10-02.l | predicted σ, fixed bias | 7.7 | % |
 | T 10-02.m | predicted σ, degenerated bias | 2.1 | % |
 | Ex 10-02.1a | I_D, 2 kΩ | 0.250 | mA |
@@ -307,6 +324,7 @@ When a transistor's source sits above its body, for instance with a source resis
 | Ex 10-02.3h | rejected root | -0.651 | V |
 | Ex 10-02.3i | g_m | 2.61 | mS |
 | Ex 10-02.3j | degeneration factor | 3.61 | — |
+| Ex 10-02.3k | centre of the two roots | 0.25 | V |
 | Ex 10-02.4a | I_D at V_TN 0.45 V, degenerated | 0.885 | mA |
 | Ex 10-02.4b | I_D at V_TN 0.55 V, degenerated | 0.813 | mA |
 | Ex 10-02.4c | change, low threshold, degenerated | 4.27 | % |
@@ -330,9 +348,9 @@ When a transistor's source sits above its body, for instance with a source resis
 | Ex 10-02.6c | power MOSFET loss, 4.5 V maximum | 0.580 | W |
 | Ex 10-02.6d | power MOSFET loss, 10 V typical | 0.336 | W |
 | Ex 10-02.6e | BSS138 R_DS(on) ratio, 125 °C to 25 °C | 1.57 | — |
-| Ex 10-02.6f | load-switch drop | 0.104 | V |
-| Ex 10-02.6g | load-switch loss | 0.208 | W |
-| Ex 10-02.6h | drop as share of the rail | 3.15 | % |
+| Ex 10-02.6f | load-switch drop | 0.106 | V |
+| Ex 10-02.6g | load-switch loss | 0.212 | W |
+| Ex 10-02.6h | drop as share of the rail | 3.21 | % |
 | Ex 10-02.7a | V_S with body effect | 1.071 | V |
 | Ex 10-02.7b | V_TN with body effect | 0.698 | V |
 | Ex 10-02.7c | I_D with body effect | 0.535 | mA |
@@ -344,18 +362,18 @@ When a transistor's source sits above its body, for instance with a source resis
 | Ex 10-02.7i | iteration 3 | 1.071 | V |
 | Ex 10-02.7j | threshold at the first pass | 0.719 | V |
 
-*Every value is recomputed by [verify_10_02.py](../verify/verify_10_02.py) by an independent route: operating points by nodal root finding on the full three-region model (the solver is not told the region), the region then read off the solution; sensitivities by re-solving at shifted thresholds and by numerical differentiation; the body-effect point by a two-variable root finder. Data-sheet values are quoted (R-177). The ngspice netlist in the lab confirms Examples 10-02.2 and 10-02.3.*
+*Every value is recomputed by [verify_10_02.py](../verify/verify_10_02.py) by an independent route: operating points by nodal root finding on the full three-region model (the solver is not told the region), the region then read off the solution; sensitivities by re-solving at shifted thresholds and by numerical differentiation; the body-effect point by a two-variable root finder. Data-sheet values are quoted (R-177) and were checked by hand against the cited PDFs; the script can only restate them, and several switch-loss values (Example 10-02.6) are plain arithmetic on them. The ngspice netlists in the lab confirm Examples 10-02.1(b), 10-02.2, 10-02.3, 10-02.5(b) and 10-02.7(a).*
 
 ## 5. Simulate it
 
-The lab, [labs/10-02-lab](../labs/10-02-lab/README.md), has a notebook and an ngspice netlist:
+The lab, [labs/10-02-lab](../labs/10-02-lab/README.md), has a notebook and two ngspice netlists:
 
 1. Maps the regions of operation and sweeps load lines across them (Figure 1), including the PMOS case.
 2. Runs a Monte Carlo of 10,000 transistors with a threshold spread of σ = 25 mV through the three bias schemes, and compares the current distributions.
 3. Plots on-resistance against gate drive for a switch, with the square-law estimate.
 4. Solves the body-effect bias by iteration and by direct root finding.
 
-The netlist (`mosfet_bias.cir`) uses SPICE's level-1 MOSFET, which is the square law, to confirm the operating points of Examples 10-02.2 and 10-02.3.
+The netlists use SPICE's level-1 MOSFET, which is the square law: `mosfet_bias.cir` confirms the operating points of Examples 10-02.2 and 10-02.3, and `mosfet_regions.cir` the triode point of Example 10-02.1(b), the mirror with channel-length modulation of Example 10-02.5(b) and the body-effect point of Example 10-02.7(a).
 
 **Guided exercise (predict, then run).** **Before running Part 2**, predict: with σ = 25 mV of threshold spread, what is the standard deviation of the drain current, in percent, for the fixed-$V_{GS}$ bias of Example 10-02.4, and for the degenerated bias? Then run it. (About $2 \times 25/651$ = 7.7% and 7.7/3.61 = 2.1%, by the first-order formulas.)
 
@@ -374,13 +392,13 @@ The netlist (`mosfet_bias.cir`) uses SPICE's level-1 MOSFET, which is the square
 
 | Quantity | Typical value | Note |
 |---|---|---|
-| Overdrive for analog bias | 0.1–0.3 V | larger for speed, smaller for $g_m/I_D$ |
+| Overdrive | 0.1–0.3 V in analog bias; 0.2–0.5 V or more in discrete bias and switches | larger for speed and matching, smaller for $g_m/I_D$ |
 | Threshold spread, discrete MOSFET | 0.7 V min-to-max (BSS138: 0.8–1.5 V) [1] | specified, not typical |
 | Threshold temperature coefficient | about −2 mV/K [1] | |
 | Fixed-bias current sensitivity | $2\,\delta V_{TN}/V_{ov}$: 50 mV / 0.5 V → 20% | §3.3 |
 | Power MOSFET on-resistance | about 1 mΩ at 10 V gate drive (CSD17573Q5B: 0.84 mΩ typical) [2] | 30 V class, 5 × 6 mm package |
 | On-resistance rise, 25 → 125 °C | about 1.5× (BSS138 typical 0.7 → 1.1 Ω) [1] | |
-| Load switch | 52 mΩ, 2 A (TPS22918) [3] | |
+| Load switch | 52 mΩ at 5 V, 53 mΩ at 3.3 V typical; 71 mΩ maximum; 2 A (TPS22918) [3] | |
 
 ## 8. Common mistakes
 
@@ -402,9 +420,9 @@ The netlist (`mosfet_bias.cir`) uses SPICE's level-1 MOSFET, which is the square
 
 ### Why it matters commercially
 
-- **Bias circuits are a large share of every analog die.** References, mirrors and their start-up circuits are on every mixed-signal chip; their accuracy over process and temperature is a design-review topic in its own right (Course 20).
-- **On-resistance and gate charge decide power-stage efficiency.** In a phone's battery path or a server's voltage regulator, milliohms are watts and watts are thermal design and battery life (Course 22).
-- **Spec ranges are a yield and margin problem.** A circuit that works for the typical device but not for the extreme of the data-sheet range will fail in the field at a predictable rate.
+- **Bias circuits are on every analog die** **[Industry estimate]**. References, mirrors and their start-up circuits appear on every mixed-signal chip; their accuracy over process and temperature is a design-review topic in its own right (Course 20).
+- **On-resistance and gate charge decide power-stage efficiency** **[Established]**. In a phone's battery path or a server's voltage regulator, milliohms are watts and watts are thermal design and battery life (Course 22).
+- **Spec ranges are a yield and margin problem** **[Established]**. A circuit that works for the typical device but not for the extreme of the data-sheet range will fail in the field at a predictable rate.
 
 ### Marketing vs Reality
 
@@ -489,6 +507,7 @@ No: $V_{SG}$ = 0.3 V is below $|V_{TP}|$, so it is in cutoff (apart from subthre
 
 - A. S. Sedra and K. C. Smith, *Microelectronic Circuits*, ch. 5 (MOSFETs: device structure and physical operation, current–voltage characteristics, DC circuits, biasing).
 - B. Razavi, *Fundamentals of Microelectronics*, ch. 6 (physics of MOS transistors) and the biasing sections of ch. 7.
+- MIT OpenCourseWare, 6.002 *Circuits and Electronics* (Spring 2007, A. Agarwal), video lectures on the MOSFET switch, the MOSFET amplifier and large-signal analysis.
 - Data sheets [1]–[3]: read the electrical-characteristics table of a small-signal MOSFET and a power MOSFET side by side.
 
 ## 14. Sources

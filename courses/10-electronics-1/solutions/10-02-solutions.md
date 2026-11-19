@@ -66,7 +66,7 @@ $30^2 \times 1.19$ mΩ = **1.071** W typical, $30^2 \times 1.45$ mΩ = **1.305**
 
 ### Solution 10-02.11
 
-(a) $\sigma_I/I = 2\sigma_{V_T}/V_{ov} \le 0.05$ needs $V_{ov} \ge 2 \times 0.02/0.05$ = **0.8** V, so $k_n = 2I_D/V_{ov}^2$ = **0.625** mA/V².
+(a) $\sigma_I/I = 2\sigma_{V_{TN}}/V_{ov} \le 0.05$ needs $V_{ov} \ge 2 \times 0.02/0.05$ = **0.8** V, so $k_n = 2I_D/V_{ov}^2$ = **0.625** mA/V².
 
 (b) At $V_{ov}$ = 0.2 V, $g_m = 2I_D/V_{ov}$ = **2.0** mS, and $1 + g_mR_S$ = **11**: σ = **1.82**% with the resistor, against **20**% without. Degeneration buys stability without forcing a large overdrive, at the cost of 1 V of headroom across $R_S$.
 
@@ -74,7 +74,7 @@ $30^2 \times 1.19$ mΩ = **1.071** W typical, $30^2 \times 1.45$ mΩ = **1.305**
 
 (a) $R_{on} = 1/[k_p(V_{SG} - |V_{TP}|)] = 1/(2 \times 2.5)$ = **0.2** Ω.
 
-(b) **0.2** V and **0.2** W.
+(b) With the linear $R_{on}$: **0.2** V and **0.2** W. That is the deep-triode approximation. Solving the triode equation exactly, $k_p(V_{ov}V_{SD} - V_{SD}^2/2) = 1$ A, i.e. $V_{SD}^2 - 5V_{SD} + 1 = 0$, gives $V_{SD} = (5 - \sqrt{21})/2$ = **0.209** V and **0.209** W, about **4**% more: at 1 A the drop is no longer small next to the 2.5 V overdrive.
 
 (c) A PMOS on the high side turns on with its gate pulled to ground, a voltage the system already has. An NMOS there would need its gate driven *above* the rail (a charge pump or bootstrap), though for the same size it would have two to three times lower resistance because electrons are more mobile. Load switches and ideal-diode controllers (10-01) include such charge pumps so they can use NMOS.
 
@@ -138,3 +138,6 @@ $30^2 \times 1.19$ mΩ = **1.071** W typical, $30^2 \times 1.45$ mΩ = **1.305**
 | 10-02.12a | R_on | 0.2 | Ω |
 | 10-02.12b | drop at 1 A | 0.2 | V |
 | 10-02.12c | loss at 1 A | 0.2 | W |
+| 10-02.12d | exact drop at 1 A | 0.209 | V |
+| 10-02.12e | exact loss at 1 A | 0.209 | W |
+| 10-02.12f | excess over the linear estimate | 4 | % |

@@ -1,0 +1,58 @@
+* Lab 10-02 -- three more operating points with SPICE's level-1 MOSFET (the chapter's square law):
+* Example 10-02.1(b), a transistor pushed into triode by a 12 kOhm drain resistor (k_n = 2 mA/V^2);
+* Example 10-02.5(b), a diode-connected reference and its mirror with LAMBDA = 0.1 V^-1 (k_n = 4 mA/V^2);
+*   level 1 multiplies the saturation current by (1 + LAMBDA V_DS), as the example does;
+* Example 10-02.7(a), the body effect with GAMMA = 0.4 V^0.5 and PHI (= 2 phi_F) = 0.7 V, body at ground.
+*
+* EXPECT vds1  key:../../chapters/10-02-mosfet-dc-operation-and-biasing.md#Ex_10-02.1e rtol=2e-4
+* EXPECT id1   key:../../chapters/10-02-mosfet-dc-operation-and-biasing.md#Ex_10-02.1f scale=1e-3 rtol=2e-4
+* EXPECT vgs5  key:../../chapters/10-02-mosfet-dc-operation-and-biasing.md#Ex_10-02.5c rtol=2e-4
+* EXPECT iref5 key:../../chapters/10-02-mosfet-dc-operation-and-biasing.md#Ex_10-02.5d scale=1e-3 rtol=2e-4
+* EXPECT iout5 key:../../chapters/10-02-mosfet-dc-operation-and-biasing.md#Ex_10-02.5e scale=1e-3 rtol=2e-4
+* EXPECT vs7   key:../../chapters/10-02-mosfet-dc-operation-and-biasing.md#Ex_10-02.7a rtol=5e-4
+* EXPECT vt7   key:../../chapters/10-02-mosfet-dc-operation-and-biasing.md#Ex_10-02.7b rtol=1e-3
+* EXPECT id7   key:../../chapters/10-02-mosfet-dc-operation-and-biasing.md#Ex_10-02.7c scale=1e-3 rtol=1e-3
+
+.model n2 NMOS (LEVEL=1 KP=200u VTO=0.5 LAMBDA=0)
+.model n4l NMOS (LEVEL=1 KP=400u VTO=0.5 LAMBDA=0.1)
+.model n2b NMOS (LEVEL=1 KP=200u VTO=0.5 LAMBDA=0 GAMMA=0.4 PHI=0.7)
+
+* Example 1(b)
+VDD1 dd1 0 DC 3.3
+VG1 g1 0 DC 1.0
+RD1 dd1 d1 12k
+M1 d1 g1 0 0 n2 W=10u L=1u
+
+* Example 5(b): reference M5a (diode-connected) and mirror M5b with its drain held at 2.0 V
+VDD5 dd5 0 DC 3.3
+RR5 dd5 g5 10k
+M5a g5 g5 0 0 n4l W=10u L=1u
+VD5 d5 0 DC 2.0
+M5b d5 g5 0 0 n4l W=10u L=1u
+
+* Example 7(a): gate at 2.5 V, 2 kOhm source resistor, body at ground, drain at 5 V
+VDD7 dd7 0 DC 5
+VG7 g7 0 DC 2.5
+M7 dd7 g7 s7 0 n2b W=10u L=1u
+RS7 s7 0 2k
+
+.control
+op
+let vds1 = v(d1)
+let id1 = (3.3 - v(d1)) / 12k
+let vgs5 = v(g5)
+let iref5 = (3.3 - v(g5)) / 10k
+let iout5 = -i(VD5)
+let vs7 = v(s7)
+let id7 = v(s7) / 2k
+let vt7 = 0.5 + 0.4 * (sqrt(0.7 + v(s7)) - sqrt(0.7))
+echo "vds1 = $&vds1"
+echo "id1 = $&id1"
+echo "vgs5 = $&vgs5"
+echo "iref5 = $&iref5"
+echo "iout5 = $&iout5"
+echo "vs7 = $&vs7"
+echo "vt7 = $&vt7"
+echo "id7 = $&id7"
+.endc
+.end
