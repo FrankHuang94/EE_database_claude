@@ -34,7 +34,7 @@ Chapter sections 3.1 (Big-O), 3.3 (ring buffers), 3.6 (hash tables), 3.7 (heaps)
 | 1 | `TEST PASSED` |
 | 2 | capacity 2048 after 8 resizes (8 → 16 → … → 2048); 1000 keys need at least $1000/0.75 = 1334$ slots |
 | 3 | load $1000/2048 = 0.488$; formula 1.48 probes; measured 1.52 |
-| 4 | the program hangs. With the new rule the table fills completely at 8 entries; `map_put` first searches for the new key, and a search for an absent key in a full table never meets an empty slot, so it loops forever. Even before that point, probe counts near load 1 explode (the formula gives about 22 successful probes at α = 0.977). An open-addressing table must never fill completely |
+| 4 | the program hangs. With the new rule the table fills completely at 8 entries; `map_put` first searches for the new key, and a search for an absent key in a full table never meets an empty slot, so it loops forever. Even before that point, probe counts explode as the load approaches 1. An open-addressing table must never fill completely |
 | 5 | linear search slope ≈ 1.0; binary search ≈ 15.2 comparisons at $n$ = 65,536; insertion sort slope 2.00, merge sort slope ≈ 1.2; probe counts within about 10% of the formulas at α = 0.5, 0.75 and 0.9 |
 
 <!-- answer-key -->
@@ -64,4 +64,4 @@ Chapter sections 3.1 (Big-O), 3.3 (ring buffers), 3.6 (hash tables), 3.7 (heaps)
 
 ## Optional hardware version
 
-On a microcontroller board with a UART, implement the ring buffer in the receive interrupt, send a long burst from a PC while the main loop deliberately stalls, and compare the `dropped` counter with the overflow predicted from the baud rate, the buffer size and the stall time.
+On a microcontroller board with a UART, implement the ring buffer in the receive interrupt (with the atomic counters and publish-last order of Example 05-08.2; the lab's `ds.c` version is single-threaded and is not safe to share with an interrupt as written), send a long burst from a PC while the main loop deliberately stalls, and compare the `dropped` counter with the overflow predicted from the baud rate, the buffer size and the stall time.

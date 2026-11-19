@@ -5,7 +5,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
-/* ---- ring buffer of bytes; capacity must be a power of two */
+/* ---- ring buffer of bytes; capacity must be a power of two.
+ * Single-threaded: to share one with an interrupt handler, use the atomic counters of
+ * Example 05-08.2 (publish after touching the data). */
 typedef struct {
     uint8_t *data;
     uint32_t cap, head, tail, dropped;           /* head and tail are free-running counters */

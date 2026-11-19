@@ -149,11 +149,13 @@ int main(void)
 10 0x3A3C 14908 -400 -25.0 44 33 22 11
 ```
 
-**9.** *(05-07)* (a) **Derivation.** For an $n$-bit pattern $x$, the complement $\sim x$ has a 1 exactly where $x$ has a 0, so $x + \sim x$ has all $n$ bits set: $x + \sim x = 2^n - 1$. Rearranging, $\sim x + 1 = 2^n - x$. Hardware arithmetic on $n$ bits is modulo $2^n$, and $2^n - x \equiv -x \pmod{2^n}$. In two's complement the pattern congruent to $-x$ modulo $2^n$ *is* the representation of $-x$ (whenever $-x$ is in range, that is for every $x$ except $-2^{n-1}$), so $\sim x + 1$ represents $-x$. (Full marks need the all-ones sum, the modular step, and the range exception.)
+**9.** *(05-07)* (a) **Derivation**, in four steps. (1) Let a pattern have unsigned value $U$ and two's-complement value $S$. Since $S = U$ when the top bit is 0 and $S = U - 2^n$ when it is 1, always $S \equiv U \pmod{2^n}$. (2) The complement $\sim x$ has a 1 exactly where $x$ has a 0, so adding them produces no carries and sets every bit: $U + U_{\sim x} = 2^n - 1$, that is $U_{\sim x} = 2^n - 1 - U$. (3) Hence $\sim x + 1$ has unsigned value $2^n - U \equiv -U \equiv -S \pmod{2^n}$, and $n$-bit hardware arithmetic is exactly arithmetic modulo $2^n$. (4) Among the $n$-bit two's-complement values, $-2^{n-1}$ to $2^{n-1} - 1$, exactly one is congruent to $-S$; if $-S$ is in that range, it is $-S$ itself, so $\sim x + 1$ represents $-x$. The single exception is $x = -2^{n-1}$, whose negation $2^{n-1}$ is out of range: there $\sim x + 1$ gives back $x$ itself (and in C, negating `INT_MIN` overflows). (Rubric, 4 points: one each for $S \equiv U$, the carry-free all-ones sum, the modular step, and uniqueness with the range exception.)
 
 (b) $0.6 \times 32768 = 19660.8 \to$ **19661**; $-0.4 \times 32768 = -13107.2 \to$ **−13107**. The product is $-257{,}696{,}727$; adding $2^{14}$ and shifting right by 15 (an arithmetic shift, which rounds toward −∞) gives **−7864**, representing $-7864/32768 = -0.239990$: an error of **9.8×10⁻⁶** (+0.32 of a Q15 step), from rounding both inputs and the product.
 
 (c) $\Delta/\sqrt{12} = 2^{-15}/\sqrt{12}$ = **8.81×10⁻⁶**. Four more bits gain $4 \times 6.02$ = **24.08 dB**.
+
+(d) Without `volatile`, the compiler sees a loop whose condition reads memory that nothing in the loop writes, so at `-O2` it reads `UART_SR` once and turns the loop into an infinite one (or removes it); at `-O0` every read happens, which is why the bug hides until the optimized build. Fix: `#define UART_SR (*(volatile uint32_t *)0x40011000u)`, so every access really happens, in order. `volatile` does **not** make a read-modify-write atomic (an interrupt can still intervene between the read and the write), and it does not order ordinary, non-volatile memory accesses around it or synchronize threads; those need critical sections, the peripheral's set/clear registers, or C11 atomics (05-07 §3.4, 05-08 §3.3).
 
 ```c
 #include <math.h>
@@ -176,7 +178,7 @@ int main(void)
 
 **10.** *(05-08)* (a) $\lfloor\log_2 5000\rfloor + 1 = 12 + 1$ = **13**. (b) $64\log_2 64$ = **384**. (c) $\lceil\log_2 8!\rceil = \lceil\log_2 40320\rceil = \lceil 15.30\rceil$ = **16**. (d) $(5 - 4294967294) \bmod 2^{32}$ = **7**: the counters wrapped, but unsigned subtraction still gives the count.
 
-**11.** *(05-08)* (a) Key 1 → slot 3 (1 probe); key 2 → 5 (1); key 3, home 3 taken → **4** (2); key 4, home 4 taken, 5 taken → **6** (3); key 5 → 7 (1); key 6, home 7 taken, wraps → **0** (2). Total **10** probes; average **1.67** per successful search. (b) Load factor $6/8 = 0.75$: $\tfrac12(1 + 1/0.25^2)$ = **8.5** probes. (c) 9; 4 rises above 9: `[4, 9]`; 7 stays: `[4, 9, 7]`; 1 enters at index 3, swaps with 9 (index 1), then with 4 (index 0): **`[1, 4, 7, 9]`**.
+**11.** *(05-08)* (a) Key 1 → slot 3 (1 probe); key 2 → 5 (1); key 3, home 3 taken → **4** (2); key 4, home 4 taken, 5 taken → **6** (3); key 5 → 7 (1); key 6, home 7 taken, wraps → **0** (2). Total **10** probes; average **1.67** per successful search. (b) Load factor $6/8 = 0.75$: $\tfrac12(1 + 1/0.25^2)$ = **8.5** probes. (c) 9; 4 rises above 9: `[4, 9]`; 7 stays: `[4, 9, 7]`; 1 enters at index 3, swaps with 9 (index 1), then with 4 (index 0): **`[1, 4, 7, 9]`**. (d) The tree has 50 at the root, 30 (with children 20 and 40) on the left and 70 on the right. In-order: **20 30 40 50 70** (sorted, as for any BST). Post-order: **20 40 30 70 50**. Freeing must be **post-order**: a node's children are freed before the node itself, because freeing the parent first would destroy the only pointers to its children (a leak, or a use after free if they are then read).
 
 ```python
 homes = [3, 5, 3, 4, 7, 7]
@@ -195,7 +197,7 @@ print(placed, probes, f"{probes / 6:.2f}")
 [3, 5, 4, 6, 7, 0] 10 1.67
 ```
 
-**12.** *(05-09)* (a) Decisions: the `for` (1), the `if` (1) and its `&&` (1), and the `else if` (1): $M = 4 + 1$ = **5**. (b) $N + 1$ = **5** tests for 4 conditions (one minimal set is found below). (c) **9, 10, 11, 199, 200, 201** (6 tests). (d) $40 \times 0.5 \times 0.6 \times 0.4$ = **4.8** defects.
+**12.** *(05-09)* (a) Decisions: the `for` (1), the `if` (1) and its `&&` (1), and the `else if` (1): $M = 4 + 1$ = **5**. (b) $N + 1$ = **5** tests for 4 conditions (one minimal set is found below). (c) **9, 10, 11, 199, 200, 201** (6 tests; the parameter is an integer, so 9 and 11 are the nearest values on either side of 10). (d) $40 \times 0.5 \times 0.6 \times 0.4$ = **4.8** defects.
 
 ```python
 from itertools import combinations, product
@@ -247,9 +249,9 @@ int main(void)
 3 0
 ```
 
-Runs above 10: {12, 13} (length 2), {15, 16, 17} (3), {11} (1, too short) and {14, 15} (2, at the very end): **3** qualifying runs. The classic bug is forgetting the final check after the loop, which misses the run that reaches the end of the array and returns **2**; the test data were chosen to end inside a run for exactly that reason. The `len > 0` guard keeps `min_len = 0` from counting empty "runs". The function makes one pass: **$O(n)$** time and $O(1)$ memory. (Grading: correct loop and end-of-array handling 6 points, `const` and `size_t` usage 2, the answer 3 with the bug named 2, Big-O 1; partial credit for a correct algorithm with minor syntax errors.)
+Runs above 10: {12, 13} (length 2), {15, 16, 17} (3), {11} (1, too short) and {14, 15} (2, at the very end): **3** qualifying runs. The wrong version counts a run only when it meets a sample at or below `thr`, so it never counts a run that is still open when the array ends: it misses {14, 15} and returns **2**. The test data were chosen to end inside a run for exactly that reason. The `len > 0` guard keeps `min_len = 0` from counting empty "runs". The function makes one pass: **$O(n)$** time and $O(1)$ memory. (Grading, 12 points: correct loop and end-of-array handling 6, `const` and `size_t` usage 1, the result 3 for 2 points, the wrong version's result and reason 2, Big-O 1; partial credit for a correct algorithm with minor syntax errors.)
 
-**14.** *(05-03)* (a) Trapezoidal rule with $h$ = 1 ms: $h\,[\tfrac12(0) + 2 + 3 + 2 + 1 + \tfrac12(0)] = 8$ mA·ms = **8 µC**. (b) At $V$ = 0.70 V the resistor carries $(5 - 0.70)/1000 = 4.300$ mA but the diode equation demands $10^{-14}e^{0.70/0.025852} = 10^{-14}e^{27.077} = 5.748$ mA, so the residual is **−1.448 mA**, about a third of the current itself: 0.70 V is **not** the operating point (the true root is 0.6925 V, 05-03). Do not trust it. (c) **Always substitute a numerical answer back into the equation it claims to solve**, and check that the residual is small *relative to the problem's scale*. Solvers that stop when successive steps are small (rather than when the function is near zero) can stop at non-roots, as SciPy's secant `newton` did in Lab 05-03; or a user may simply have rounded too coarsely, as here: 0.70 differs from 0.6925 by only 7.5 mV, but the exponential turns that into a 33% current error.
+**14.** *(05-03)* (a) Trapezoidal rule with $h$ = 1 ms: $h\,[\tfrac12(0) + 2 + 3 + 2 + 1 + \tfrac12(0)] = 8$ mA·ms = **8 µC**. (b) At $V$ = 0.70 V the resistor carries $(5 - 0.70)/1000 = 4.300$ mA but the diode equation demands $10^{-14}e^{0.70/0.025852} = 10^{-14}e^{27.077} = 5.748$ mA, so the residual is **−1.448 mA**, about a third of the current itself: 0.70 V is **not** the operating point (the true root is 0.6925 V, 05-03). Do not trust it. (c) **Always substitute a numerical answer back into the equation it claims to solve**, and check that the residual is small *relative to the problem's scale*. Solvers that stop when successive steps are small (rather than when the function is near zero) can stop at non-roots, as SciPy's secant `newton` did in Lab 05-03; or a user may simply have rounded too coarsely, as here: 0.70 differs from 0.6925 by only 7.5 mV, but the exponential turns that into a 33% current error. (d) $f'(V) = -1/1000 - (I_s/V_T)e^{V/V_T}$; at 0.70 V it is $-0.001 - 5.748\times10^{-3}/0.025852 = -0.2233$ A/V. Newton's step: $V_1 = 0.70 - f(0.70)/f'(0.70) = 0.70 - (-1.448\times10^{-3})/(-0.2233)$ = **0.6935 V**, within 1 mV of the root after one step (the next step lands within 0.1 mV): from a good starting point Newton converges fast, which is why an answer of 0.70 V signals a solver stopped early or a value rounded by hand.
 
 ```python
 import math
@@ -257,10 +259,13 @@ import math
 charge = 1e-3 * (0 / 2 + 2 + 3 + 2 + 1 + 0 / 2) * 1e-3          # mA * s -> C
 residual = (5 - 0.70) / 1000 - 1e-14 * (math.exp(0.70 / 0.025852) - 1)
 print(f"{charge * 1e6:.1f} uC, residual {residual * 1e3:.3f} mA")
+slope = -1 / 1000 - 1e-14 / 0.025852 * math.exp(0.70 / 0.025852)
+print(f"f'(0.70) = {slope:.4f} A/V, one Newton step: {0.70 - residual / slope:.4f} V")
 ```
 
 ```text
 8.0 uC, residual -1.448 mA
+f'(0.70) = -0.2233 A/V, one Newton step: 0.6935 V
 ```
 
 **15.** *(05-04 to 05-09)* (a) **Rubric** (2 points per claim, 8 in all; credit for questions that ask for evidence, not reassurance):
@@ -274,7 +279,7 @@ print(f"{charge * 1e6:.1f} uC, residual {residual * 1e3:.3f} mA")
 
 (b) $1 - (1 - 0.002)^{500}$ = **0.632** (about $1 - e^{-1}$, since $500 \times 0.002 = 1$).
 
-(c) A 500-device canary misses a 0.2% defect more than a third of the time (and rarer defects most of the time), so updating the whole fleet within an hour leaves almost no chance to detect a defect before every device has it. The strong practice is staged rollout (canary, then 1%, 10%, 100%) with time at each stage to collect telemetry, and automatic halting and rollback. Fast fleet-wide updates are a valuable capability for urgent security fixes, but as a default they convert every escaped defect into a fleet-wide incident. (4 points for (b) and (c).)
+(c) A 500-device canary misses a 0.2% defect more than a third of the time (and rarer defects most of the time), so updating the whole fleet within an hour leaves almost no chance to detect a defect before every device has it. The strong practice is staged rollout (canary, then 1%, 10%, 100%) with time at each stage to collect telemetry, and automatic halting and rollback. Fast fleet-wide updates are a valuable capability for urgent security fixes, but as a default they convert every escaped defect into a fleet-wide incident. (2 points each for (b) and (c).)
 
 ---
 
@@ -339,4 +344,6 @@ print(f"{charge * 1e6:.1f} uC, residual {residual * 1e3:.3f} mA")
 | X05.13b | result with the end-of-array bug | 2 | — |
 | X05.14a | charge | 8 | µC |
 | X05.14b | residual at 0.70 V | −1.448 | mA |
+| X05.14c | f′ at 0.70 V | −0.2233 | A/V |
+| X05.14d | estimate after one Newton step | 0.6935 | V |
 | X05.15a | canary detection probability | 0.632 | — |

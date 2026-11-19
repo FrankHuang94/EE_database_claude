@@ -66,6 +66,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A queue from two stacks.** A queue can be built from an "inbox" stack (for enqueues) and an "outbox" stack (for dequeues): to dequeue, pop from the outbox, first moving every inbox element into it if the outbox is empty. (a) Enqueue 1 to 8, dequeue 3 times, enqueue 9, then dequeue everything. Count element moves between stacks. (b) Show that every operation is $O(1)$ amortized.
 
+### Problem 05-08.13 [B]
+
+**Recursion on a tree.** (a) Insert the keys 8, 3, 10, 1, 6, 14, 4, 7, 13, in that order, into an empty binary search tree. Sketch the tree, and give its pre-order, in-order and post-order traversals and its height (the number of levels). (b) Write a recursive function that counts the keys lying in a range $[lo, hi]$, visiting only subtrees that can contain such keys, and apply it to $[4, 10]$. (c) If the same nine keys arrive in increasing order, what is the tree's height, and how many stack frames does a recursive in-order traversal hold at its deepest (count the call made on an empty child)? (d) A microcontroller has 2 KB of stack free for a traversal whose frames take 32 bytes each. What is the tallest tree it can walk recursively?
+
 ---
 
 ## Objective coverage
@@ -75,5 +79,5 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Big-O and counting operations | 1, 9, 10, 12 |
 | 2. Linear structures | 2, 4, 5, 6, 12 |
 | 3. Hash tables | 2, 7 |
-| 4. Trees, heaps and tries | 2, 8 |
+| 4. Trees, heaps and tries | 2, 8, 13 |
 | 5. Searching and sorting | 3, 9, 10, 11 |

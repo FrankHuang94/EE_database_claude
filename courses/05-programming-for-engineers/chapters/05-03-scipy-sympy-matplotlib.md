@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 05-03 · SciPy, SymPy and Matplotlib
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | Scientific computing with Python, continued (MIT 6.0002 and typical "computational methods for engineers" labs; VanderPlas, *Python Data Science Handbook*, ch. 4 on Matplotlib) |
 | **Prerequisites** | [05-02 NumPy, Vectorization and Numerical Computing](05-02-numpy-and-vectorization.md) |
 | **Estimated study hours** | 8 |
-| **Last verified** | 2026-11-18 |
+| **Last verified** | 2026-11-19 |
 
 **Learning objectives.** After this chapter you can:
 

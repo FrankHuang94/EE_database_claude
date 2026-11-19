@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 05-01 · Python Fundamentals for Engineers
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | Introduction to programming in Python, first half (MIT 6.0001 lectures 1–8; Downey, *Think Python*, chs. 1–11 and 14) |
 | **Prerequisites** | [00-04 Toolchain Walkthrough](../../00-orientation/chapters/00-04-toolchain-walkthrough.md) (installing Python and running a notebook); algebra |
 | **Estimated study hours** | 8 |
-| **Last verified** | 2026-11-18 |
+| **Last verified** | 2026-11-19 |
 
 **Learning objectives.** After this chapter you can:
 

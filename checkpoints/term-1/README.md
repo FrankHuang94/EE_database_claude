@@ -133,7 +133,7 @@ for i in range(n):
 
 (A) O(n) · (B) O(n log n) · (C) O(n²) · (D) O(2ⁿ)
 
-**44.** *Numeric entry.* What is the maximum number of comparisons binary search needs to find a key among 1,000,000 sorted items?
+**44.** *Numeric entry.* What is the maximum number of comparisons (each a three-way less/equal/greater test) binary search needs to find a key among 1,000,000 sorted items?
 
 **45.** Bytes arrive in an interrupt handler and are processed later, in arrival order, by the main loop. The most suitable data structure is:
 (A) a stack · (B) a queue implemented as a ring buffer · (C) a binary search tree · (D) a hash table
@@ -148,7 +148,7 @@ for i in range(n):
 **49.** Which sorting algorithm is stable and has $O(n\log n)$ worst-case running time?
 (A) quicksort · (B) heapsort · (C) merge sort · (D) selection sort
 
-**50.** *Numeric entry.* What is the cyclomatic complexity of this function?
+**50.** *Numeric entry.* What is the cyclomatic complexity of this function? Count each `and` and `or` as a decision.
 
 ```python
 # not run

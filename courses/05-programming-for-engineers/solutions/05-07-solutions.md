@@ -340,6 +340,65 @@ sum 0x479E, checksum 0xB861, re-check 0xFFFF
 
 The 32-bit sum is `0x2479C`; folding the carry gives $0x479C + 0x2$ = `0x479E`; the complement is the checksum **`0xB861`**. A receiver sums all ten words including the checksum; since $x + \sim x$ is all ones, a correct header gives **`0xFFFF`**, and anything else means corruption. Ones'-complement addition makes the result independent of byte order and of the order of the words, which is why it was chosen; it detects all single-bit errors but not, for example, two words swapped.
 
+### Solution 05-07.13
+
+The simulation models the peripheral's rules: a 1 written to a write-1-to-clear bit clears it, the read/write bits take the written value, and the read-only bit ignores writes.
+
+```c
+#include <stdint.h>
+#include <stdio.h>
+
+#define RXNE    (1u << 0)                       /* read-only: set by hardware when data arrives */
+#define OVR     (1u << 1)                       /* write-1-to-clear: overrun */
+#define TC      (1u << 2)                       /* write-1-to-clear: transfer complete */
+#define RW_MASK (3u << 8)                       /* bits 9:8, interrupt enables, read/write */
+#define W1C_MASK (OVR | TC)
+
+static uint32_t status_reg;                     /* stands in for the hardware register */
+
+static void hw_write(uint32_t v)                /* what the peripheral does with a write */
+{
+    status_reg &= ~(v & W1C_MASK);              /* a 1 written to a W1C bit clears it */
+    status_reg = (status_reg & ~RW_MASK) | (v & RW_MASK);   /* R/W bits take the written value */
+}                                               /* read-only bits ignore writes */
+
+static void attempt(const char *name, uint32_t (*make_write)(uint32_t read))
+{
+    status_reg = RXNE | OVR | TC | (1u << 8);   /* 0x107: data waiting, both flags set, IRQ on */
+    uint32_t w = make_write(status_reg);
+    hw_write(w);
+    printf("%-22s wrote 0x%03X, status now 0x%03X\n", name, (unsigned)w, (unsigned)status_reg);
+}
+
+static uint32_t naive_rmw(uint32_t r) { return r | OVR; }               /* STATUS |= OVR */
+static uint32_t plain_assign(uint32_t r) { (void)r; return OVR; }       /* STATUS = OVR */
+static uint32_t keep_rw(uint32_t r) { return (r & RW_MASK) | OVR; }     /* STATUS = (STATUS & RW_MASK) | OVR */
+
+int main(void)
+{
+    attempt("STATUS |= OVR", naive_rmw);
+    attempt("STATUS = OVR", plain_assign);
+    attempt("keep R/W bits, add OVR", keep_rw);
+    return 0;
+}
+```
+
+```text
+STATUS |= OVR          wrote 0x107, status now 0x101
+STATUS = OVR           wrote 0x002, status now 0x005
+keep R/W bits, add OVR wrote 0x102, status now 0x105
+```
+
+(a) `STATUS |= OVR` reads `0x107` and writes back `0x107`, which contains a 1 in bit 2 as well as bit 1: it clears **both** `OVR` and `TC`, leaving **`0x101`** (257). The transfer-complete event is lost before anyone handled it, a bug that appears only when the two flags happen to be set together.
+
+(b) `STATUS = OVR` writes `0x002`. It clears only `OVR`, but it also writes 0 to the read/write interrupt-enable bits, leaving **`0x005`** (5): the receive interrupt is now silently disabled.
+
+(c) Preserve the read/write bits and write 1 only where a flag should be cleared: `STATUS = (STATUS & RW_MASK) | OVR;` writes `0x102` and leaves **`0x105`** (261), with `OVR` cleared, `TC` still pending and the interrupt still enabled. (Many real parts avoid the problem by design, keeping flags and enables in separate registers, or providing a separate "flag clear" register.)
+
+(d) If `STATUS` is not declared through a `volatile` pointer, the optimizer sees a loop whose condition reads memory that nothing in the loop writes, reads it once, and turns the loop into an infinite one (or deletes it). At `-O0` every read happens, so the bug hides until the release build. Declare the register `volatile`, as in §3.4.
+
+(e) The main loop reads `CTRL` (with `RX_EN` = 1 and `TX_EN` = 0), the interrupt fires, the handler reads `CTRL`, clears `RX_EN`, writes it back and returns; the main loop then writes its stale copy with `TX_EN` set and **`RX_EN` still set**, undoing the handler. Fixes: disable interrupts around the main loop's read-modify-write (a short critical section), or use the peripheral's atomic set/clear registers so that neither side reads and writes back the whole register. `volatile` alone does not help: it makes each access happen, not the three steps indivisible.
+
 ---
 
 ## Answer key
@@ -376,3 +435,6 @@ The 32-bit sum is `0x2479C`; folding the carry gives $0x479C + 0x2$ = `0x479E`; 
 | 05-07.11b | RMS truncation error, theory | 1.76×10^-5 | — |
 | 05-07.12a | IPv4 header checksum | 47201 | — |
 | 05-07.12b | re-check sum | 65535 | — |
+| 05-07.13a | status after the read-modify-write (0x101) | 257 | — |
+| 05-07.13b | status after the plain assignment (0x005) | 5 | — |
+| 05-07.13c | status after the correct write (0x105) | 261 | — |

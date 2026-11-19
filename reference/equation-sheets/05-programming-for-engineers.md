@@ -68,7 +68,7 @@ The rules, formulas and numbers to know cold from Course 05, each with its condi
 | Set `r \|= m`; clear `r &= ~m`; toggle `r ^= m`; test `r & m`; field: `(r >> p) & (2^w − 1)`; insert: clear, then OR `(v & mask) << p` | Unsigned types; `1u << 31` | [05-07](../../courses/05-programming-for-engineers/chapters/05-07-bit-manipulation.md) |
 | `volatile` for registers and ISR-shared variables; it does not make read-modify-write atomic | Beware write-1-to-clear bits | [05-07](../../courses/05-programming-for-engineers/chapters/05-07-bit-manipulation.md) |
 | Little-endian: least significant byte at the lowest address (x86, most Arm MCUs); network order is big-endian | Serialize with shifts | [05-07](../../courses/05-programming-for-engineers/chapters/05-07-bit-manipulation.md) |
-| Q15: $x = q/2^{15}$, range $[-1, 1 - 2^{-15}]$; product `(a*b + 2^14) >> 15`, saturate $(-1)(-1)$ | Q30 intermediate in 32 bits | [05-07](../../courses/05-programming-for-engineers/chapters/05-07-bit-manipulation.md) |
+| Q15: $x = q/2^{15}$, range $[-1, 1 - 2^{-15}]$; product `(a*b + 2^14) >> 15`, saturate $(-1)(-1)$ | Q30 intermediate in 32 bits; `>>` of a negative value assumed arithmetic (GCC, Clang; implementation-defined in C) | [05-07](../../courses/05-programming-for-engineers/chapters/05-07-bit-manipulation.md) |
 | Rounding error RMS $\Delta/\sqrt{12}$; truncation RMS $\Delta/\sqrt3$ (biased); ≈6.02 dB per bit; ideal SNR $6.02N + 1.76$ dB | Uniform-error model | [05-07](../../courses/05-programming-for-engineers/chapters/05-07-bit-manipulation.md) |
 | Power of two: `x && !(x & (x-1))`; `x % 2^k == x & (2^k − 1)`; `x &= x − 1` clears the lowest set bit | Unsigned `x` | [05-07](../../courses/05-programming-for-engineers/chapters/05-07-bit-manipulation.md) |
 
@@ -77,19 +77,20 @@ The rules, formulas and numbers to know cold from Course 05, each with its condi
 | Rule or formula | Conditions / notes | Chapter |
 |---|---|---|
 | $f = O(g)$: $f(n) \le c\,g(n)$ for $n \ge n_0$; costs at $n = 10^6$ and $10^9$/s: $\log n$ 20 ns, $n$ 1 ms, $n\log n$ 20 ms, $n^2$ 17 min | Growth rate dominates constants at large $n$ | [05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md) |
-| Binary search: at most $\lfloor\log_2 n\rfloor + 1$ comparisons | Sorted data | [05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md) |
-| Insertion sort: inversions + ~$n$; $n(n-1)/4$ on random data; merge sort $T(n) = 2T(n/2) + n = n\log_2 n$, worst $n\lceil\log n\rceil - 2^{\lceil\log n\rceil} + 1$ | Merge sort is stable | [05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md) |
-| Comparison-sort lower bound $\lceil\log_2 n!\rceil \approx n\log_2 n - 1.44n$; counting sort $O(n + k)$ | Keys in a range of $k$ | [05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md) |
-| Ring buffer (size $N = 2^k$, free-running counters): slot `c & (N−1)`, count `head − tail`, full when $N$ | Wrap-safe unsigned arithmetic | [05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md) |
-| Linear probing at load α: successful $\tfrac12(1 + \frac1{1-\alpha})$, miss $\tfrac12(1 + \frac1{(1-\alpha)^2})$; chaining $1 + \alpha/2$, $1 + \alpha$ | Resize before α ≈ 0.75; never fill | [05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md) |
+| Binary search: at most $\lfloor\log_2 n\rfloor + 1$ comparisons | Sorted data; one three-way comparison per step | [05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md) |
+| Insertion sort: inversions + ~$n$; $n(n-1)/4$ on random data; merge sort $T(n) \le 2T(n/2) + n$ gives $\le n\log_2 n$ (a merge costs at most $n - 1$); exact worst $n\lceil\log n\rceil - 2^{\lceil\log n\rceil} + 1$ | Merge sort is stable | [05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md) |
+| Comparison-sort lower bound $\lceil\log_2 n!\rceil \approx n\log_2 n - 1.44n$ (a bound, not always achievable: 29 for $n = 12$, true minimum 30); counting sort $O(n + k)$ | Keys in a range of $k$ | [05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md) |
+| Ring buffer (size $N = 2^k$, free-running counters): slot `c & (N−1)`, count `head − tail`, full when $N$ | Wrap-safe unsigned arithmetic; with an ISR: publish the counter after the data (release/acquire atomics), counters no wider than the CPU's atomic access | [05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md) |
+| Linear probing at load α: successful $\tfrac12(1 + \frac1{1-\alpha})$, miss $\tfrac12(1 + \frac1{(1-\alpha)^2})$; chaining $1 + \alpha/2$, miss $\alpha$ | Probing counts slots incl. the empty one; chaining counts key comparisons. Resize before α ≈ 0.75; never fill | [05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md) |
 | Binary heap (0-based): children $2i+1$, $2i+2$, parent $\lfloor(i-1)/2\rfloor$; push and pop $O(\log n)$ | Priority queue | [05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md) |
+| Recursion: base case + smaller subproblem; BST in-order = sorted, pre-order to copy, post-order to free; stack depth = height (+1) frames | MISRA C Rule 17.2 forbids recursion | [05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md) |
 | FNV-1a (32-bit): $h_0$ = 2166136261; $h \leftarrow (h \oplus \text{byte}) \times 16777619 \bmod 2^{32}$ | Non-cryptographic | [05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md) |
 
 ## Software engineering
 
 | Rule or formula | Conditions / notes | Chapter |
 |---|---|---|
-| Cyclomatic complexity $M = E - N + 2P$ = decisions + 1 | Basis-path test count; flag $M$ > 10–15 | [05-09](../../courses/05-programming-for-engineers/chapters/05-09-software-engineering-practices.md) |
+| Cyclomatic complexity $M = E - N + 2P$ = decisions + 1 | Extended count includes each `&&`/`\|\|` (state the convention); basis-path test count; flag $M$ > 10–15 | [05-09](../../courses/05-programming-for-engineers/chapters/05-09-software-engineering-practices.md) |
 | MC/DC: each condition independently flips the decision; ≥ $N + 1$ tests (vs $2^N$) | Required for DO-178C Level A | [05-09](../../courses/05-programming-for-engineers/chapters/05-09-software-engineering-practices.md) |
 | Boundary values: just below, at, just above each edge | Where `<` vs `<=` bugs live | [05-09](../../courses/05-programming-for-engineers/chapters/05-09-software-engineering-practices.md) |
 | Escapes through filters: $D\prod(1 - p_i)$ | Independence is optimistic | [05-09](../../courses/05-programming-for-engineers/chapters/05-09-software-engineering-practices.md) |

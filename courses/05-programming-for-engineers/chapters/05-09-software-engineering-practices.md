@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 05-09 · Software Engineering Practices
 
 | | |
@@ -62,7 +62,8 @@ The **V-model** deserves a picture, because hardware verification and safety sta
 
 ```mermaid
 flowchart LR
-    R["System requirements"] --> A["Architecture"]
+    N["User needs"] --> R["System requirements"]
+    R --> A["Architecture"]
     A --> D["Module design"]
     D --> C["Code"]
     C --> U["Unit tests"]
@@ -72,9 +73,10 @@ flowchart LR
     D -.verifies.- U
     A -.verifies.- I
     R -.verifies.- S
+    N -.validates.- AT
 ```
 
-Each level on the left is verified by the matching level on the right: module design by unit tests, architecture by integration tests, system requirements by system tests. Agile teams in safety-relevant fields typically run short iterations *inside* a V-model framework: the documents and traces are still produced, incrementally.
+Each level on the left is checked by the matching level on the right: module design by unit tests, architecture by integration tests, system requirements by system tests, and the users' needs by acceptance tests. The top pair is different in kind: the lower levels **verify** that the product was built as specified ("built right"), while acceptance testing **validates** that the specification was what the users needed ("the right thing built"). Agile teams in safety-relevant fields typically run short iterations *inside* a V-model framework: the documents and traces are still produced, incrementally.
 
 The agile approach was crystallized in the 2001 *Manifesto for Agile Software Development*, which values "individuals and interactions over processes and tools, working software over comprehensive documentation, customer collaboration over contract negotiation, and responding to change over following a plan", while noting that the items on the right still have value. Process choice is a risk decision: the cost of a late discovery, the stability of requirements, and the regulatory evidence required.
 
@@ -96,7 +98,7 @@ $$
 M = E - N + 2P,
 $$
 
-where $E$ is the number of edges, $N$ the number of nodes and $P$ the number of connected components (1 for a single function). For structured code it equals the number of **decision points** (each `if`, `elif`, loop condition and boolean `and`/`or` operator) plus one. $M$ is also the minimum number of test cases needed to exercise a set of independent paths (basis-path testing). Many coding standards flag functions with $M$ above 10 to 15 for splitting (Example 05-09.2).
+where $E$ is the number of edges, $N$ the number of nodes and $P$ the number of connected components (1 for a single function). For structured code it equals the number of **decision points** plus one. Conventions differ on what counts: McCabe's original graph has one node per statement, so it counts each `if`, `elif` and loop condition; the **extended** count (Myers, 1977), used here and by most tools, also counts each `and`/`or` operator, because short-circuit evaluation compiles into a separate branch for each one. State which convention a number uses. $M$ is also the minimum number of test cases needed to exercise a set of independent paths (basis-path testing). Many coding standards flag functions with $M$ above 10 to 15 for splitting (Example 05-09.2).
 
 ### 3.4 Testing levels and test design
 
@@ -267,7 +269,7 @@ for size in range(1, 9):
 
 **Setup.** A firmware release injects 50 defects. Code review catches 60% of the defects it sees, unit tests 50% of what remains, integration tests 40%, and system tests 30%. (a) Assuming independence, how many defects are expected to escape, and what is the overall removal efficiency? (b) What if code review is skipped? (c) What if the filters are correlated?
 
-**Solution.** (a) $f_{\text{escape}} = 0.4 \times 0.5 \times 0.6 \times 0.7$ = **0.084**, so $50 \times 0.084$ = **4.2** defects are expected to escape: a removal efficiency of **91.6%**. (b) Without review, $f = 0.5 \times 0.6 \times 0.7 = 0.21$: **10.5** escapes, 2.5 times as many, because review removed $1/(1 - 0.6) = 2.5$ times as many defects as are left without it. (c) Real filters are correlated: a defect subtle enough to pass review is more likely than average to pass unit tests too. A Monte Carlo model in which each defect has a hidden "difficulty" makes the point:
+**Solution.** (a) $f_{\text{escape}} = 0.4 \times 0.5 \times 0.6 \times 0.7$ = **0.084**, so $50 \times 0.084$ = **4.2** defects are expected to escape: a removal efficiency of **91.6%**. (b) Without review, $f = 0.5 \times 0.6 \times 0.7 = 0.21$: **10.5** escapes, 2.5 times as many: review lets through only 40% of the defects that reach it, so removing it multiplies the escapes by $1/0.4$ = 2.5. (c) Real filters are correlated: a defect subtle enough to pass review is more likely than average to pass unit tests too. A Monte Carlo model in which each defect has a hidden "difficulty" makes the point:
 
 ```python
 import random

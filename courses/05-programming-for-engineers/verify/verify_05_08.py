@@ -100,7 +100,24 @@ rate = 6 * 4000
 v.check("05-08.4a", rate * 0.012)
 v.check("05-08.4b", 1 << math.ceil(math.log2(rate * 0.012)))
 v.check("05-08.4c", 2**32 / rate / 3600)
-v.check("05-08.5a", 5)                                          # one rewrite per node
+class _Node:                                                    # reverse a 5-node list, counting pointer writes
+    def __init__(self, value, nxt):
+        self.value, self.next = value, nxt
+
+
+lst = None
+for value in (5, 4, 3, 2, 1):
+    lst = _Node(value, lst)
+prev, cur, writes = None, lst, 0
+while cur is not None:
+    cur.next, prev, cur = prev, cur, cur.next
+    writes += 1
+values, node = [], prev
+while node is not None:
+    values.append(node.value)
+    node = node.next
+v.assert_true("reversal gives 5 4 3 2 1", values == [5, 4, 3, 2, 1])
+v.check("05-08.5a", writes)
 alpha = 1 - 1 / math.sqrt(19)
 v.assert_true("alpha solves the 10-probe condition", abs(lp_fail(alpha) - 10) < 1e-12)
 v.check("05-08.7a", alpha)
@@ -142,7 +159,40 @@ v.check("Lab 05-08.a", cap)
 v.check("Lab 05-08.b", resizes)
 v.check("Lab 05-08.c", 1000 / cap)
 v.check("Lab 05-08.d", lp_succ(1000 / cap))
-v.check("Lab 05-08.e", 2)                                       # same scenario as Example 05-08.2
+v.check("Lab 05-08.e", dropped)                                 # same scenario as Example 05-08.2
 v.assert_true("lab drop count equals the example's", dropped == 2)
+
+
+# ---------------------------------------------------------------- Problem 05-08.13: BST built with Python dicts
+def bst_insert(t, k):
+    if t is None:
+        return {"k": k, "l": None, "r": None}
+    if k < t["k"]:
+        t["l"] = bst_insert(t["l"], k)
+    elif k > t["k"]:
+        t["r"] = bst_insert(t["r"], k)
+    return t
+
+
+def bst_height(t):
+    return 0 if t is None else 1 + max(bst_height(t["l"]), bst_height(t["r"]))
+
+
+def bst_keys(t):
+    return [] if t is None else bst_keys(t["l"]) + [t["k"]] + bst_keys(t["r"])
+
+
+keys13 = [8, 3, 10, 1, 6, 14, 4, 7, 13]
+t13 = None
+for k in keys13:
+    t13 = bst_insert(t13, k)
+v.check("05-08.13a", bst_height(t13))
+v.check("05-08.13b", sum(1 for k in bst_keys(t13) if 4 <= k <= 10))
+chain13 = None
+for k in sorted(keys13):
+    chain13 = bst_insert(chain13, k)
+v.check("05-08.13c", bst_height(chain13))
+v.check("05-08.13d", bst_height(chain13) + 1)                   # one frame per level plus the empty-child call
+v.check("05-08.13e", 2048 // 32 - 1)
 
 sys.exit(v.finish())

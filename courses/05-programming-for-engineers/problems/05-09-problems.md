@@ -61,13 +61,36 @@ def clamp_gain(g):
 
 **Debounced low-battery alarm.** Extend Example 05-09.1: LOW_BATT asserts only after **3 consecutive** samples below 3.30 V, and deasserts when a sample is at or above 3.40 V. (a) Write the function and tests including the sequence 3.25, 3.25, 3.31, 3.25, 3.25, 3.25, 3.35, 3.41 V. At which sample does the alarm assert and at which does it clear? (b) A colleague's version resets the counter only on samples ≥ 3.40 V. Which test catches it?
 
-### Problem 05-09.11 [C]
+### Problem 05-09.11 [B]
 
 **Estimating defects nobody has found.** Two reviewers inspect the same design independently. Reviewer A finds 25 defects, reviewer B finds 30, and 15 are found by both. Estimate the total number of defects and the number still undiscovered (the capture–recapture method). State the assumptions.
 
-### Problem 05-09.12 [C]
+### Problem 05-09.12 [B]
 
 **Canary releases.** A firmware update is first sent to a "canary" group of devices. A defect affects 0.1% of devices (independently). (a) With 1000 canary devices, what is the chance that at least one shows the defect? (b) How many devices give 95% confidence of seeing it at least once? (c) What does this imply for rare defects?
+
+### Problem 05-09.13 [B]
+
+**Critique a design.** A battery-monitor firmware handles messages from a fuel-gauge chip in its UART interrupt handler:
+
+```python
+# not run
+battery_mv = 0                     # global: written here, read anywhere
+alarm_on = False
+
+def on_uart_byte(b):               # interrupt handler, one call per received byte
+    global battery_mv, alarm_on
+    buf.append(b)
+    if b == ord("\n"):
+        fields = bytes(buf).decode().split(",")
+        battery_mv = int(fields[2])                                  # field 2 holds millivolts
+        if battery_mv < 3300:
+            alarm_on = True
+            write_reg(0x40020014, read_reg(0x40020014) | 0x20)      # LED on
+        buf.clear()
+```
+
+(a) Identify at least four violations of the design principles of §3.3 (abstraction, information hiding, low coupling, high cohesion) or of the firmware practices of 05-07 and 05-08, and say what each will cost. (b) Propose a restructured design: name the modules and give each one's interface. (c) Which parts become testable on a PC, and which requirement of Example 05-09.1 does the current code violate?
 
 ---
 
@@ -77,6 +100,6 @@ def clamp_gain(g):
 |---|---|
 | 1. Testable requirements and traceability | 1, 9, 10 |
 | 2. Process models | 2, 12 |
-| 3. Design principles and complexity | 3 |
+| 3. Design principles and complexity | 3, 13 |
 | 4. Test design and coverage | 4, 5, 6, 10 |
 | 5. Version control, review, release and defect filters | 7, 8, 11, 12 |

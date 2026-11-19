@@ -126,6 +126,18 @@ csum = ~ones_complement_sum(hdr) & 0xFFFF
 v.check("05-07.12a", csum)
 v.check("05-07.12b", ones_complement_sum(hdr[:5] + [csum] + hdr[6:]))
 
+
+def w1c_write(reg, value, w1c=0b110, rw=0x300):
+    """Peripheral semantics: 1s clear W1C bits, R/W bits load the value, other bits ignore writes."""
+    kept = reg & ~(value & w1c)
+    return (kept & ~rw) | (value & rw)
+
+
+reg0 = 0x107
+v.check("05-07.13a", w1c_write(reg0, reg0 | 0b10))
+v.check("05-07.13b", w1c_write(reg0, 0b10))
+v.check("05-07.13c", w1c_write(reg0, (reg0 & 0x300) | 0b10))
+
 # ---------------------------------------------------------------- lab
 pending = 0b11
 pending &= ~(pending | 0b01)                         # write back what was read, OR bit 0: each 1 clears

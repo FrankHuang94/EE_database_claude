@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 05-07 · Bit Manipulation and Fixed-Width Integers
 
 | | |
@@ -24,7 +24,7 @@ Hardware speaks in bits. A microcontroller's timer, ADC or radio is configured b
 - **Firmware and drivers:** every peripheral register access is a mask-and-shift operation (Section 3.4).
 - **Communication protocols:** packet headers, checksums and byte order decide whether two devices understand each other (Section 3.5).
 - **Low-power signal processing:** fixed-point arithmetic lets a few-milliwatt MCU filter sensor data without a floating-point unit; the same idea, at 8 bits and below, underlies the integer formats used for neural-network inference on edge and datacenter accelerators (Section 3.6).
-- **Failures:** integer width and conversion mistakes have destroyed a rocket and disabled an aircraft's power system (05-05, [R-093](../../../reference/research-log.md#r-093--software-failures-from-numeric-conversions-and-counters)).
+- **Failures:** integer width and conversion mistakes have destroyed a rocket and could have cut all AC power on an airliner (05-05, [R-093](../../../reference/research-log.md#r-093--software-failures-from-numeric-conversions-and-counters)).
 
 ## 2. Intuition first
 
@@ -191,7 +191,7 @@ $$
 
 The same formula gives the noise of an ideal $N$-bit ADC, and from it the famous $6.02N + 1.76$ dB signal-to-noise ratio for a full-scale sine (Course 20). Every fractional bit added halves $\Delta$ and buys about 6 dB.
 
-**Representation error that accumulates.** Most decimal fractions are not exact in binary. 0.1 is $0.000110011001100\ldots_2$, repeating forever. The Patriot missile system's clock counted tenths of a second and multiplied by 0.1 stored with 23 fractional bits, *chopped* (truncated) rather than rounded. The chopped value is $0.1(1 - 2^{-20})$, too small by $2^{-20}$ of itself, so the computed time fell behind the true time by $2^{-20}$ of the elapsed time: 0.3433 s after 100 hours of continuous operation, enough to misplace the tracking gate by 687 m (02-10; [R-057](../../../reference/research-log.md#r-057--patriot-missile-timing-error)) **[Established]**. A small per-operation error, multiplied by millions of ticks, became a failure.
+**Representation error that accumulates.** Most decimal fractions are not exact in binary. 0.1 is $0.000110011001100\ldots_2$, repeating forever. The Patriot missile system's clock counted tenths of a second and multiplied by 0.1 stored with 23 fractional bits, *chopped* (truncated) rather than rounded. The chopped value is $0.1(1 - 2^{-20})$, too small by $2^{-20}$ of itself, so a time computed from the tick count fell behind the true time by $2^{-20}$ of the elapsed time: 0.3433 s after 100 hours of continuous operation. A uniform lag like that would have done little harm on its own, because tracking uses the *difference* between the times of two radar pulses, and the same relative error in both times nearly cancels. The failure came from an inconsistency: during the Gulf deployment the software had been modified, and a more accurate time conversion was used for one of the two times but not the other, so a truncated time was subtracted from an accurate one, the 0.3433 s did not cancel, and the tracking gate was misplaced by 687 m (02-10; [R-057](../../../reference/research-log.md#r-057--patriot-missile-timing-error)) **[Established]**. A small per-operation error, multiplied by millions of ticks, became a failure when two parts of the code disagreed about it: a lesson in consistency as much as in precision.
 
 > **Going deeper — fixed point and neural-network inference.** Quantized inference stores weights and activations as 8-bit (or narrower) integers with a scale factor per tensor or per channel, multiplies them in integer arithmetic with wide accumulators, and rescales the result: exactly the Q-format pattern above, with the scale chosen per layer instead of fixed at $2^{-15}$. The engineering questions are the same too: how many bits keep the error acceptable, where to round, and how to avoid overflow in the accumulators. **Deeper:** see companion repo *LLM Inference Engineering*.
 
@@ -200,7 +200,7 @@ The same formula gives the noise of an ideal $N$-bit ADC, and from it the famous
 - **Power of two:** a positive integer $x$ is a power of two exactly when `(x & (x - 1)) == 0`, because subtracting 1 flips the lowest 1 bit and every bit below it.
 - **Cheap modulo:** for $n$ a power of two, `x % n` equals `x & (n - 1)` for unsigned `x`. Ring buffers (05-08) use this with sizes like 256 or 1024.
 - **Lowest set bit:** `x & -x` (for unsigned `x`) isolates it.
-- **Counting 1 bits (population count)** and finding the highest set bit have compiler built-ins (`__builtin_popcount`) and, in C23, standard functions in `<stdbit.h>`; processors execute them in one instruction.
+- **Counting 1 bits (population count)** and finding the highest set bit have compiler built-ins (`__builtin_popcount`) and, in C23, standard functions in `<stdbit.h>`; many processors execute them in one instruction, while others (small microcontrollers) need a short loop or table.
 - **Parity** (whether the number of 1 bits is odd) is the basis of simple error detection; XOR-ing all the bits computes it.
 
 ## 4. Worked examples
@@ -373,7 +373,7 @@ int main(void)
 
 ### Example 05-07.5 · The dead band of a fixed-point filter
 
-**Setup.** The moving-average filter of 05-05, $y \leftarrow y + \alpha(x - y)$, is implemented in Q15 on an MCU without a floating-point unit, with $\alpha = 1 - e^{-0.1}$ and the update `y += (alpha_q * (x - y)) >> 15` (a truncating, arithmetic shift). The input steps from 0 to $x$ = 10,000 (in Q15 counts). (a) Find `alpha_q`. (b) Where does the output stop, and why? (c) How does rounding the update change that?
+**Setup.** The exponential moving-average filter of 05-05 (a first-order recursive, or IIR, filter), $y \leftarrow y + \alpha(x - y)$, is implemented in Q15 on an MCU without a floating-point unit, with $\alpha = 1 - e^{-0.1}$ and the update `y += (alpha_q * (x - y)) >> 15` (a truncating, arithmetic shift). The input steps from 0 to $x$ = 10,000 (in Q15 counts). (a) Find `alpha_q`. (b) Where does the output stop, and why? (c) How does rounding the update change that?
 
 **Solution.** (a) $\alpha_q = \text{round}(0.0951626 \times 32768) = \text{round}(3118.3)$ = **3118**.
 
@@ -575,7 +575,7 @@ Bit-level details are where hardware and software teams' work meets, and where i
 
    <details><summary>Answer</summary>
 
-   0.1 has no exact binary representation; chopped to 23 fractional bits it was too small by $2^{-20}$ of its value. Time was computed as ticks × (stored 0.1), so the error was a fixed fraction of the elapsed time: proportional to how long the system had been running, 0.3433 s after 100 hours.
+   0.1 has no exact binary representation; chopped to 23 fractional bits it was too small by $2^{-20}$ of its value. Time was computed as ticks × (stored 0.1), so the error was a fixed fraction of the elapsed time: proportional to how long the system had been running, 0.3433 s after 100 hours. On its own that lag would largely have cancelled, because tracking subtracts two times; it caused the failure because a modified routine converted one of the two times more accurately than the other, so the errors no longer matched.
 
    </details>
 

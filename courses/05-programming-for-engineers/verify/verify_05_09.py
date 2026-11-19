@@ -8,7 +8,13 @@ canary statistics from closed forms, and coverage by Python's line table.
 """
 from __future__ import annotations
 
+import ast
+import dis
+import io
+import json
 import math
+import re
+import tokenize
 import sys
 from fractions import Fraction
 from itertools import combinations, product
@@ -41,18 +47,23 @@ def mcdc_minimum(f, n):
     return None
 
 
-def cfg_complexity(decisions_with_two_exits: int) -> int:
-    """Build a toy CFG for a chain of binary decisions and return E - N + 2 (independent of the keyword count)."""
-    k = decisions_with_two_exits
-    nodes = 2 + 2 * k                                           # entry, exit, and per decision: test + merge
-    edges = 1 + 2 * k + (k - 1) + 1                             # entry->D1; Di->Mi twice; Mi->D(i+1); Mk->exit
-    return edges - nodes + 2
+def token_complexity(source: str) -> int:
+    """Extended cyclomatic complexity from the token stream (not the syntax tree the text uses):
+    1 + the number of decision keywords if/elif/for/while and short-circuit operators and/or."""
+    toks = tokenize.generate_tokens(io.StringIO(source).readline)
+    return 1 + sum(1 for t in toks if t.type == tokenize.NAME and t.string in {"if", "elif", "for", "while", "and", "or"})
+
+
+CH_TEXT = CH.read_text(encoding="utf-8")
+SOL_TEXT = SOL.read_text(encoding="utf-8")
+CLASSIFY_SRC = re.search(r"SOURCE = \'\'\'(.*?)\'\'\'", CH_TEXT, re.S).group(1)       # the code of Example 05-09.2
+BODIES = ast.literal_eval(re.search(r"bodies = (\{.*?\n\})", SOL_TEXT, re.S).group(1))  # the bodies of Solution 05-09.3
 
 
 # ---------------------------------------------------------------- examples
 v.check("Ex 05-09.1a", float((Fraction("3.40") - Fraction("3.30")) * 1000))
 v.check("Ex 05-09.1b", 3 * 2 + 2)                              # 3 points per threshold x 2, plus 2 hold tests
-v.check("Ex 05-09.2a", cfg_complexity(6))
+v.check("Ex 05-09.2a", token_complexity(CLASSIFY_SRC))
 v.check("Ex 05-09.3a", 2**3)
 v.check("Ex 05-09.3b", 2)
 v.check("Ex 05-09.3c", mcdc_minimum(lambda p, t, o: p and (t or o), 3))
@@ -64,8 +75,8 @@ v.check("Ex 05-09.4c", float(100 * (1 - f_esc)))
 v.check("Ex 05-09.4d", float(50 * Fraction(5, 10) * Fraction(6, 10) * Fraction(7, 10)))
 
 # ---------------------------------------------------------------- solutions
-v.check("05-09.3a", cfg_complexity(4))
-v.check("05-09.3b", cfg_complexity(4))
+v.check("05-09.3a", token_complexity(BODIES["c"]))
+v.check("05-09.3b", token_complexity(BODIES["d"]))
 v.check("05-09.4a", 6 + 6)
 v.check("05-09.4b", 6 * 6)
 
@@ -109,10 +120,28 @@ v.check("05-09.12a", -math.expm1(1000 * math.log1p(-0.001)))
 v.check("05-09.12b", math.ceil(math.log(0.05) / math.log1p(-0.001)))
 
 # ---------------------------------------------------------------- lab
-v.check("Lab 05-09.a", 1)                                       # only v = 3.30 distinguishes < from <=
-v.assert_true("only the 3.30 V case separates < from <=", sum((v_ < 3.30) != (v_ <= 3.30) for v_ in (3.29, 3.30, 3.31, 3.39, 3.40, 3.41, 3.35)) == 1)
+v.check("Lab 05-09.a", sum((v_ < 3.30) != (v_ <= 3.30) for v_ in (3.29, 3.30, 3.31, 3.39, 3.40, 3.41, 3.35)))   # cases separating < from <=
 v.check("Lab 05-09.b", sum(1 for volts, s in ((3.39, True), (3.35, True), (3.35, False)) if (volts < 3.30) != s))
-v.check("Lab 05-09.c", 100 * 9 / 11)
+nb = json.loads((C_DIR / "labs" / "05-09-lab" / "05-09-practices.ipynb").read_text(encoding="utf-8"))
+cell = next("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code" and "def debounce" in "".join(c["source"]))
+ns: dict = {}
+exec(cell.split("def coverage")[0], ns)                         # only the function under test
+deb = ns["debounce"].__code__
+executable = {line for _, line in dis.findlinestarts(deb) if line and line > deb.co_firstlineno}
+hits: set = set()
+
+
+def _tracer(frame, event, arg):
+    if frame.f_code is deb and event == "line":
+        hits.add(frame.f_lineno)
+    return _tracer
+
+
+sys.settrace(_tracer)
+for samples in ([3.25, 3.25], [3.35, 3.36]):
+    ns["debounce"](samples)
+sys.settrace(None)
+v.check("Lab 05-09.c", 100 * len(hits & executable) / len(executable))
 v.check("Lab 05-09.d", mcdc_minimum(lambda p, d, t, o: p and d and (t or o), 4))
 rates = [0.6, 0.3, 0.5, 0.4, 0.3]
 v.check("Lab 05-09.e", 100 * math.prod(1 - r for r in rates))

@@ -28,7 +28,7 @@ print(a, b, n * inner)
 
 ### Solution 05-08.2
 
-(a) A **ring buffer**: $O(1)$ push and pop, no allocation, safe between one interrupt producer and one consumer. (b) A **min-heap priority queue** keyed by expiry time: $O(1)$ to see the next timer, $O(\log n)$ to insert or remove. (c) A **hash table** keyed by serial number: $O(1)$ average lookup. (d) A **balanced search tree** (or a sorted array if entries arrive in order, which logs usually do): $O(\log n)$ to find the start, then walk forward in order; a hash table cannot answer range queries. (e) A **stack**: undo removes the most recent action first, $O(1)$ per push and pop.
+(a) A **ring buffer**: $O(1)$ push and pop, no allocation, and safe between one interrupt producer and one consumer without disabling interrupts, provided each side publishes its counter after touching the data, with the atomic ordering of Example 05-08.2. (b) A **min-heap priority queue** keyed by expiry time: $O(1)$ to see the next timer, $O(\log n)$ to insert or remove. (c) A **hash table** keyed by serial number: $O(1)$ average lookup. (d) A **balanced search tree** (or a sorted array if entries arrive in order, which logs usually do): $O(\log n)$ to find the start, then walk forward in order; a hash table cannot answer range queries. (e) A **stack**: undo removes the most recent action first, $O(1)$ per push and pop.
 
 ### Solution 05-08.3
 
@@ -254,7 +254,7 @@ print("merge sort worst, n = 12:", 12 * math.ceil(math.log2(12)) - 2 ** math.cei
 merge sort worst, n = 12: 33
 ```
 
-(a) The minimum worst-case comparisons are **7** for 5 elements, **29** for 12 and **525** for 100. Stirling's two-term estimate is low for small $n$ (4.40 versus 6.91 for $n = 5$) because it omits the $\tfrac12\log_2(2\pi n)$ term, but its relative error shrinks as $n$ grows (520.1 versus 524.8 for $n = 100$, under 1%). (b) Merge sort's worst case for 12 elements is $12 \times 4 - 16 + 1$ = **33** comparisons, 4 more than the bound of 29. (Optimal sorting networks and merge-insertion sorting come closer for small $n$; for large $n$ merge sort's excess is only a small fraction of $n\log n$.)
+(a) The lower bounds are **7** comparisons for 5 elements, **29** for 12 and **525** for 100. A lower bound is not the same as the true minimum: for 5 elements, 7 comparisons can be achieved, so the bound is exact; for 12 elements the true minimum is 30, one more than the bound (Wells, 1965, by exhaustive computer search; Knuth, *The Art of Computer Programming*, vol. 3, §5.3.1); for 100 elements the true minimum is not known. Stirling's two-term estimate is low for small $n$ (4.40 versus 6.91 for $n = 5$) because it omits the $\tfrac12\log_2(2\pi n)$ term, but its relative error shrinks as $n$ grows (520.1 versus 524.8 for $n = 100$, under 1%). (b) Merge sort's worst case for 12 elements is $12 \times 4 - 16 + 1$ = **33** comparisons: 4 more than the bound of 29, and 3 more than the best any algorithm can do. (Optimal sorting networks and merge-insertion sorting come closer for small $n$; for large $n$ merge sort's excess is only a small fraction of $n\log n$.)
 
 ### Solution 05-08.11
 
@@ -328,6 +328,113 @@ print(first, rest, q.moves)
 
 (a) The first dequeue moves all 8 elements (the outbox is empty); the next two dequeues move nothing; after 9 is enqueued, five more dequeues drain the outbox, and the sixth finds it empty and moves the single element 9. Total: **9** moves for 9 elements, and FIFO order is preserved: `1 2 3`, then `4 … 9`. (b) Each element is pushed onto the inbox once, moved to the outbox at most once, and popped once: at most 3 stack operations per element over its whole life. So any sequence of $m$ operations costs $O(m)$ in total, $O(1)$ amortized per operation, even though a single dequeue may cost $O(n)$. This is the same accounting argument as for the doubling array.
 
+### Solution 05-08.13
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct tnode {
+    int key;
+    struct tnode *left, *right;
+} tnode_t;
+
+static tnode_t *insert(tnode_t *t, int key)
+{
+    if (t == NULL) {
+        tnode_t *n = malloc(sizeof *n);
+        if (n == NULL) {
+            exit(1);
+        }
+        n->key = key;
+        n->left = n->right = NULL;
+        return n;
+    }
+    if (key < t->key) {
+        t->left = insert(t->left, key);
+    } else if (key > t->key) {
+        t->right = insert(t->right, key);
+    }
+    return t;
+}
+
+static void walk(const tnode_t *t, int order)           /* 0 pre-order, 1 in-order, 2 post-order */
+{
+    if (t == NULL) return;
+    if (order == 0) printf(" %d", t->key);
+    walk(t->left, order);
+    if (order == 1) printf(" %d", t->key);
+    walk(t->right, order);
+    if (order == 2) printf(" %d", t->key);
+}
+
+static int height(const tnode_t *t)
+{
+    if (t == NULL) return 0;
+    int hl = height(t->left), hr = height(t->right);
+    return 1 + (hl > hr ? hl : hr);
+}
+
+static int count_range(const tnode_t *t, int lo, int hi)  /* keys in [lo, hi] */
+{
+    if (t == NULL) return 0;
+    if (t->key < lo) return count_range(t->right, lo, hi);   /* whole left subtree is too small */
+    if (t->key > hi) return count_range(t->left, lo, hi);    /* whole right subtree is too large */
+    return 1 + count_range(t->left, lo, hi) + count_range(t->right, lo, hi);
+}
+
+static void free_tree(tnode_t *t)
+{
+    if (t == NULL) return;
+    free_tree(t->left);
+    free_tree(t->right);
+    free(t);
+}
+
+int main(void)
+{
+    const int keys[] = {8, 3, 10, 1, 6, 14, 4, 7, 13};
+    const char *names[] = {"pre-order:", "in-order:", "post-order:"};
+    tnode_t *root = NULL;
+    for (size_t i = 0; i < sizeof keys / sizeof keys[0]; i++) {
+        root = insert(root, keys[i]);
+    }
+    for (int order = 0; order < 3; order++) {
+        printf("%-11s", names[order]);
+        walk(root, order);
+        printf("\n");
+    }
+    printf("height %d; keys in [4, 10]: %d\n", height(root), count_range(root, 4, 10));
+    free_tree(root);
+
+    tnode_t *chain = NULL;
+    for (int k = 1; k <= 14; k++) {
+        for (size_t i = 0; i < sizeof keys / sizeof keys[0]; i++) {
+            if (keys[i] == k) chain = insert(chain, k);     /* the same keys, in increasing order */
+        }
+    }
+    printf("sorted insertion: height %d\n", height(chain));
+    free_tree(chain);
+    return 0;
+}
+```
+
+```text
+pre-order:  8 3 1 6 4 7 10 14 13
+in-order:   1 3 4 6 7 8 10 13 14
+post-order: 1 4 7 6 3 13 14 10 8
+height 4; keys in [4, 10]: 5
+sorted insertion: height 9
+```
+
+(a) The tree has 8 at the root; 3 (with children 1 and 6, and 6 with children 4 and 7) on the left; 10 (with right child 14, whose left child is 13) on the right. The traversals are printed above; in-order gives the keys sorted, as it must for a BST. The height is **4** levels: 8, then 3 and 10, then 1, 6 and 14, then 4, 7 and 13.
+
+(b) `count_range` returns **5** (the keys 4, 6, 7, 8 and 10). It prunes: at a node whose key is below `lo`, every key in its left subtree is smaller still, so only the right subtree is searched, and symmetrically above `hi`. The cost is proportional to the height plus the number of keys found, not to the size of the tree: the range query that hash tables cannot answer.
+
+(c) Inserted in increasing order, each key becomes the right child of the previous one: a chain of height **9**. A recursive in-order traversal descends the whole chain before printing anything, holding one frame per node plus one for the call on the last node's empty child: **10** frames at the deepest point.
+
+(d) $2048/32$ = 64 frames. A tree of height $h$ needs $h + 1$ frames at the deepest point, so the tallest tree is $h$ = **63**. A balanced tree of height 63 could hold $2^{63} - 1$ keys, far more than memory, so balance makes recursion safe; a chain of 64 nodes would already overflow the stack. Firmware therefore either keeps trees balanced (with a provable height bound) or walks them with a loop and an explicit stack array of fixed size.
+
 ---
 
 ## Answer key
@@ -354,6 +461,11 @@ print(first, rest, q.moves)
 | 05-08.10b | lower bound, n = 12 | 29 | — |
 | 05-08.10c | lower bound, n = 100 | 525 | — |
 | 05-08.10d | merge-sort worst case, n = 12 | 33 | — |
+| 05-08.13a | height of the BST | 4 | levels |
+| 05-08.13b | keys in [4, 10] | 5 | — |
+| 05-08.13c | height after sorted insertion | 9 | levels |
+| 05-08.13d | deepest stack frames, in-order on the chain | 10 | — |
+| 05-08.13e | tallest tree walkable in 2 KB at 32 bytes per frame | 63 | levels |
 | 05-08.11a | counting-sort steps n + k | 1004096 | — |
 | 05-08.11b | counter memory | 16384 | bytes |
 | 05-08.11c | median code | 2047 | — |

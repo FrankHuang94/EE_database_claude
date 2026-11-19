@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 05-08 · Data Structures and Algorithms You Will Need
 
 | | |
@@ -14,7 +14,7 @@
 1. State and apply Big-O notation, derive the cost of simple algorithms by counting operations, and distinguish worst-case, average and amortized cost.
 2. Implement and use the core linear structures (dynamic array, ring buffer, linked list, stack and queue) and choose among them for a given access pattern.
 3. Explain how hash tables work (hashing, collisions, load factor, resizing) and predict their probe counts.
-4. Describe binary search trees, heaps (priority queues) and tries, and their operation costs.
+4. Describe binary search trees, heaps (priority queues) and tries, and their operation costs, and write recursive functions that build and walk a tree.
 5. Derive the costs of binary search, insertion sort and merge sort, explain the $n\log n$ lower bound for comparison sorting, and choose a search or sort method for a situation.
 
 ## 1. Big picture
@@ -77,7 +77,13 @@ An elegant implementation uses two **free-running unsigned counters** and a powe
 - number of stored items: `head - tail`, which is correct even after the counters wrap past $2^{32}$, by unsigned modular arithmetic (05-05);
 - empty when `head == tail`; full when `head - tail == N`.
 
-This distinguishes "full" from "empty" without wasting a slot or keeping a separate count, and with a single producer and a single consumer each counter is written by only one side, which is the basis of lock-free interrupt-to-main-loop queues. (On multi-core systems the two sides also need memory-ordering guarantees, C11 atomics, which this course leaves to Course 18.) When the buffer is full the producer must choose a policy: drop the new item, overwrite the oldest, or block. Example 05-08.2 implements drop-newest and counts drops, because silent data loss is the classic ring-buffer bug.
+This distinguishes "full" from "empty" without wasting a slot or keeping a separate count, and with a single producer and a single consumer each counter is written by only one side, which is the basis of **lock-free** interrupt-to-main-loop queues: neither side ever waits for the other or disables interrupts. Lock-free is not care-free, though. Three conditions must hold, and a ring buffer that ignores them works in every test and fails in the field:
+
+1. **Publish last.** The producer writes the byte *and then* advances `head`; the consumer reads the byte *and then* advances `tail`. Advancing first would let the other side use a slot that is not yet ready.
+2. **Stop the compiler (and the hardware) from reordering or caching.** With ordinary variables the compiler may keep `head` in a register inside the main loop's polling loop and never see the interrupt's update, or move the data write after the `head` update, because a single-threaded program could not tell the difference. `volatile` stops the caching but does not order the non-volatile data write. The portable fix is C11's `<stdatomic.h>`: store each counter with **release** ordering (everything written before it is visible first) and load the other side's counter with **acquire** ordering (Example 05-08.2). On multi-core chips this ordering is also enforced in the hardware.
+3. **Read and write each counter in one indivisible access.** A 32-bit counter on an 8- or 16-bit microcontroller is read in two or four pieces, and an interrupt between the pieces produces a torn value. There, use counters no wider than the machine word (8-bit counters allow up to 128 slots; cast `(uint8_t)(head - tail)`, because of 05-05's integer promotion), or disable the interrupt briefly around the main loop's access.
+
+Course 18 treats interrupt-safe design in depth. When the buffer is full the producer must choose a policy: drop the new item, overwrite the oldest, or block. Example 05-08.2 implements drop-newest and counts drops, because silent data loss is the classic ring-buffer bug.
 
 ### 3.4 Linked lists
 
@@ -112,10 +118,10 @@ A **hash table** stores key–value pairs in an array of $m$ slots and computes 
 
 | Scheme | Successful search (average probes) | Unsuccessful search |
 |---|---|---|
-| Separate chaining | $1 + \alpha/2$ | $1 + \alpha$ |
+| Separate chaining | $1 + \alpha/2$ | $\alpha$ |
 | Linear probing | $\tfrac12\left(1 + \dfrac{1}{1-\alpha}\right)$ | $\tfrac12\left(1 + \dfrac{1}{(1-\alpha)^2}\right)$ |
 
-For linear probing at $\alpha = 0.75$: 2.5 probes for a successful search and 8.5 for an unsuccessful one; at $\alpha = 0.9$: 5.5 and 50.5. Linear probing degrades sharply as the table fills, because occupied slots clump into runs ("primary clustering"). So tables **resize**: when $\alpha$ passes a threshold (often 0.5 to 0.75 for open addressing), allocate a table twice as large and reinsert everything, which is amortized $O(1)$ per insertion by the same geometric argument as the dynamic array. Linear probing remains popular despite clustering because consecutive probes hit the same cache lines.
+Conventions differ between texts, so state which one you use. Here the chaining figures count **key comparisons** (an unsuccessful search compares the key with every element of its chain, $\alpha$ on average; some texts add 1 for reaching the slot), while the linear-probing figures count **slots examined**, including the empty slot that ends an unsuccessful search. For linear probing at $\alpha = 0.75$: 2.5 probes for a successful search and 8.5 for an unsuccessful one; at $\alpha = 0.9$: 5.5 and 50.5. Linear probing degrades sharply as the table fills, because occupied slots clump into runs ("primary clustering"). So tables **resize**: when $\alpha$ passes a threshold (often 0.5 to 0.75 for open addressing), allocate a table twice as large and reinsert everything, which is amortized $O(1)$ per insertion by the same geometric argument as the dynamic array. Linear probing remains popular despite clustering because consecutive probes hit the same cache lines.
 
 ### 3.7 Trees, heaps and tries
 
@@ -127,17 +133,17 @@ A **trie** (prefix tree) branches on successive characters or bits of the key ra
 
 ### 3.8 Searching and sorting
 
-**Linear search** checks items one by one: $n$ comparisons in the worst case, about $n/2$ on average for a present key. **Binary search** on a sorted array compares with the middle element and discards half: after $k$ comparisons at most $n/2^k$ candidates remain, so it needs at most $\lfloor\log_2 n\rfloor + 1$ comparisons: 20 for a million items, 30 for a billion. The catch is that the array must be sorted, and keeping it sorted costs $O(n)$ per insertion.
+**Linear search** checks items one by one: $n$ comparisons in the worst case, about $n/2$ on average for a present key. **Binary search** on a sorted array compares the target with the middle element and discards half. Here a **comparison** means one three-way test of the target against an element (less, equal or greater), as in the code of Problem 05-08.3; code that tests `==` and `<` separately can make two per step. If $m$ candidates remain, one comparison either finds the key or leaves at most $\lfloor m/2 \rfloor$, so after $k$ comparisons at most $\lfloor n/2^k \rfloor$ remain. The search must have ended once that number reaches 0, which happens when $2^k > n$, that is at $k = \lfloor\log_2 n\rfloor + 1$. So binary search needs at most $\lfloor\log_2 n\rfloor + 1$ comparisons: 20 for a million items, 30 for a billion. The catch is that the array must be sorted, and keeping it sorted costs $O(n)$ per insertion.
 
 **Insertion sort** builds a sorted prefix one element at a time, shifting larger elements right to make room. Each element moves past every larger element before it, so the work equals the number of **inversions** (out-of-order pairs) plus about $n$. A random permutation has $\binom n2/2 = n(n-1)/4$ inversions on average, so insertion sort is $\Theta(n^2)$ on average and in the worst case, but $O(n)$ on input that is already nearly sorted, and very fast for small $n$, which is why real sorting libraries switch to it for short runs.
 
-**Merge sort** splits the array in half, sorts each half recursively, and merges the two sorted halves in one linear pass. Its comparison count satisfies the **recurrence**
+**Merge sort** splits the array in half, sorts each half recursively, and merges the two sorted halves in one linear pass. Merging two sorted lists of total length $n$ takes at most $n - 1$ comparisons: each comparison sends one element to the output, and the last element needs none. So the worst-case comparison count satisfies $T(n) = 2T(n/2) + (n - 1)$; replacing $n - 1$ by $n$ gives a slightly larger, simpler **recurrence** that bounds it from above:
 
 $$
-T(n) = 2\,T(n/2) + n, \qquad T(1) = 0.
+T(n) \le 2\,T(n/2) + n, \qquad T(1) = 0.
 $$
 
-Unrolling it for $n = 2^k$: level $j$ of the recursion has $2^j$ subproblems of size $n/2^j$, whose merges cost $n$ in total; there are $k = \log_2 n$ levels; so $T(n) = n\log_2 n$, that is $\Theta(n\log n)$ in every case. It needs $O(n)$ extra memory for merging and is **stable**: equal keys keep their original order, which matters when sorting records by one field after another.
+Unrolling the bound for $n = 2^k$: level $j$ of the recursion has $2^j$ subproblems of size $n/2^j$, whose merges cost $n$ in total; there are $k = \log_2 n$ levels; so $T(n) \le n\log_2 n$. (Solving the exact recurrence gives $n\log_2 n - n + 1$ for $n = 2^k$, the worst-case formula of Problem 05-08.9; even the best case, $\tfrac12 n\log_2 n$, has the same growth.) Merge sort is $\Theta(n\log n)$ in every case. It needs $O(n)$ extra memory for merging and is **stable**: equal keys keep their original order, which matters when sorting records by one field after another.
 
 **Quicksort** partitions around a pivot element and recurses on both sides: $O(n\log n)$ on average and in place, but $O(n^2)$ in the worst case if the pivots are consistently bad, which randomized pivot choice makes vanishingly unlikely. **Heapsort** builds a heap and repeatedly removes the maximum: $O(n\log n)$ worst case, in place, not stable. Library sorts combine these ideas (Python's `sorted` is an adaptive, stable merge sort that exploits already-sorted runs).
 
@@ -148,6 +154,110 @@ $$
 $$
 
 Merge sort is therefore optimal up to lower-order terms. Sorts that do not compare keys, such as **counting sort** and **radix sort**, escape the bound by exploiting the keys' structure (small integers, fixed-width bit patterns): $O(n + k)$ for $n$ keys drawn from $k$ values. Sorting 12-bit ADC codes needs only an array of 4096 counters.
+
+### 3.9 Recursion, and walking a tree
+
+A function is **recursive** when it calls itself on a smaller version of its own problem. Every recursive function has two parts: a **base case** small enough to answer directly (an empty list, an empty tree, an array of one element) and a **recursive step** that reduces the problem and combines the answers. Merge sort is one: sort each half, then merge. The way to read, and to write, a recursive function is the way mathematical induction works: check the base case; then *assume* that the recursive call returns the right answer for the smaller input, and check that the step combines it correctly. If both hold, the function is correct for every size, without tracing the calls one by one.
+
+Trees are where recursion is most natural, because a tree is itself defined recursively: a binary tree is either empty, or a node with a left and a right subtree, each a binary tree. Insertion into a BST, the standard **traversals** (orders of visiting every node), the height, and freeing the tree are each a few lines:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct tnode {
+    int key;
+    struct tnode *left, *right;
+} tnode_t;
+
+static tnode_t *insert(tnode_t *t, int key)          /* returns the (possibly new) subtree root */
+{
+    if (t == NULL) {                                    /* base case: an empty tree */
+        tnode_t *n = malloc(sizeof *n);
+        if (n == NULL) {
+            exit(1);
+        }
+        n->key = key;
+        n->left = n->right = NULL;
+        return n;
+    }
+    if (key < t->key) {
+        t->left = insert(t->left, key);                 /* smaller problem: one subtree */
+    } else if (key > t->key) {
+        t->right = insert(t->right, key);
+    }
+    return t;                                           /* duplicates are ignored */
+}
+
+static void in_order(const tnode_t *t)                  /* left subtree, node, right subtree */
+{
+    if (t == NULL) return;
+    in_order(t->left);
+    printf(" %d", t->key);
+    in_order(t->right);
+}
+
+static void pre_order(const tnode_t *t)                 /* node first: copies, serializes */
+{
+    if (t == NULL) return;
+    printf(" %d", t->key);
+    pre_order(t->left);
+    pre_order(t->right);
+}
+
+static int height(const tnode_t *t)                     /* levels on the longest root-to-leaf path */
+{
+    if (t == NULL) return 0;
+    int hl = height(t->left), hr = height(t->right);
+    return 1 + (hl > hr ? hl : hr);
+}
+
+static void free_tree(tnode_t *t)                       /* post-order: children before their parent */
+{
+    if (t == NULL) return;
+    free_tree(t->left);
+    free_tree(t->right);
+    free(t);
+}
+
+int main(void)
+{
+    const int keys[] = {50, 30, 70, 20, 40, 60, 80};
+    tnode_t *root = NULL;
+    for (size_t i = 0; i < sizeof keys / sizeof keys[0]; i++) {
+        root = insert(root, keys[i]);
+    }
+    printf("in-order:");
+    in_order(root);
+    printf("\npre-order:");
+    pre_order(root);
+    printf("\nheight %d\n", height(root));
+    free_tree(root);
+
+    tnode_t *chain = NULL;
+    for (int k = 1; k <= 7; k++) {
+        chain = insert(chain, 10 * k);                  /* sorted input */
+    }
+    printf("same keys inserted in sorted order: height %d\n", height(chain));
+    free_tree(chain);
+    return 0;
+}
+```
+
+```text
+in-order: 20 30 40 50 60 70 80
+pre-order: 50 30 20 40 70 60 80
+height 3
+same keys inserted in sorted order: height 7
+```
+
+- **In-order** (left subtree, node, right subtree) visits a BST's keys in sorted order, which is how a tree lists its contents in order in $O(n)$.
+- **Pre-order** (node first) visits each parent before its children: the order in which to copy or serialize a tree, so that inserting the keys in that order rebuilds the same shape.
+- **Post-order** (children first) visits each node after both its subtrees, which is exactly what `free_tree` needs: freeing a parent first would lose the only pointers to its children.
+
+The second tree makes §3.7's warning concrete: the same seven keys inserted in sorted order produce a chain of height 7 instead of 3, and every operation on it costs $O(n)$.
+
+**The cost of recursion is stack.** Each call that has not yet returned holds a stack frame (05-06) with its parameters, locals and return address, so memory grows with the recursion depth: about $\log_2 n$ frames for a balanced tree, but $n$ for a chain or for recursion along a linked list. A desktop thread's megabytes of stack survive depths of tens of thousands; a microcontroller with a few kilobytes may manage only a few dozen frames, and overflowing it corrupts memory silently. This is why safety-critical C forbids recursion outright (MISRA C Rule 17.2, "Functions shall not call themselves, either directly or indirectly", Required in the 2012 and 2023 editions, [R-092](../../../reference/research-log.md#r-092--c-language-standards-coding-standards-and-embedded-usage)), and why firmware rewrites recursion as loops, with an explicit stack of fixed size where one is needed. Recursion along a list converts to a loop easily (Problem 05-08.5's in-place reverse is one); recursion on a tree is bounded by the tree's height, which a balanced tree keeps at $O(\log n)$ (Problem 05-08.13).
 
 ## 4. Worked examples
 
@@ -181,6 +291,7 @@ n = 10000000: binary 24 comparisons, linear avg 5000000, n log n sort 0.233 s, q
 **Solution.** The buffer holds `A`–`H`; `I` and `J` find it full and are **dropped** (2 drops). Popping 3 removes `A B C`; `K` and `L` fit in the freed slots; draining yields `D E F G H K L`, **7** bytes.
 
 ```c
+#include <stdatomic.h>
 #include <stdint.h>
 #include <stdio.h>
 
@@ -189,28 +300,33 @@ _Static_assert((RB_SIZE & (RB_SIZE - 1u)) == 0, "RB_SIZE must be a power of two"
 
 typedef struct {
     uint8_t data[RB_SIZE];
-    uint32_t head, tail;                               /* free-running counters */
-    uint32_t dropped;
+    _Atomic uint32_t head;                             /* written only by the producer */
+    _Atomic uint32_t tail;                             /* written only by the consumer */
+    uint32_t dropped;                                  /* written only by the producer */
 } ringbuf_t;
 
 static int rb_push(ringbuf_t *rb, uint8_t byte)        /* called by the producer (the ISR) */
 {
-    if (rb->head - rb->tail == RB_SIZE) {              /* full */
+    uint32_t head = atomic_load_explicit(&rb->head, memory_order_relaxed);
+    uint32_t tail = atomic_load_explicit(&rb->tail, memory_order_acquire);
+    if (head - tail == RB_SIZE) {                      /* full */
         rb->dropped++;
         return -1;
     }
-    rb->data[rb->head & (RB_SIZE - 1u)] = byte;
-    rb->head++;
+    rb->data[head & (RB_SIZE - 1u)] = byte;            /* 1. write the byte ... */
+    atomic_store_explicit(&rb->head, head + 1u, memory_order_release);   /* 2. ... then publish it */
     return 0;
 }
 
 static int rb_pop(ringbuf_t *rb, uint8_t *byte)        /* called by the consumer (the main loop) */
 {
-    if (rb->head == rb->tail) {                        /* empty */
+    uint32_t tail = atomic_load_explicit(&rb->tail, memory_order_relaxed);
+    uint32_t head = atomic_load_explicit(&rb->head, memory_order_acquire);
+    if (head == tail) {                                /* empty */
         return -1;
     }
-    *byte = rb->data[rb->tail & (RB_SIZE - 1u)];
-    rb->tail++;
+    *byte = rb->data[tail & (RB_SIZE - 1u)];           /* 1. read the byte ... */
+    atomic_store_explicit(&rb->tail, tail + 1u, memory_order_release);   /* 2. ... then free the slot */
     return 0;
 }
 
@@ -239,6 +355,8 @@ int main(void)
 stored 8, dropped 2; popped: A B C; drained: D E F G H K L
 near wrap: head 2, tail 4294967290, count 8
 ```
+
+The counters are C11 atomics, written only by their owner: each side loads its own counter with relaxed ordering (nobody else writes it), loads the other side's with acquire ordering, and publishes its update with release ordering *after* touching the data, the three conditions of §3.3. On a single-core microcontroller these compile to ordinary loads and stores plus compiler barriers, so the safety costs essentially nothing.
 
 The second test starts the counters just below $2^{32}$: after 8 pushes `head` has wrapped to 2 while `tail` is still 4,294,967,290, and `head - tail` is still exactly **8** (full), because unsigned subtraction is arithmetic modulo $2^{32}$. The `dropped` counter matters more than it looks: a buffer that silently discards data under load is a classic field failure. A designer sizes the buffer from the worst-case gap between consumer runs: at 115,200 baud a UART delivers about 11,520 bytes per second (10 bits per byte), so a main loop that can stall for 5 ms needs at least 58 slots, and the next power of two, 64.
 
@@ -296,7 +414,7 @@ timer home 2 -> slot 4 (3 probes)
 average probes to find a stored key: 1.50
 ```
 
-(a) `spi` and `uart` share home slot 5, so `uart` moves to 6 (2 probes); `gpio` and `timer` share slot 2, and `timer` must pass the occupied slot 3 (`i2c`) to reach 4 (3 probes). (b) A later search for a key retraces its insertion probes, so the average successful search costs $9/6$ = **1.50** probes. The formula $\tfrac12(1 + 1/(1-\alpha))$ at $\alpha = 6/8 = 0.75$ predicts 2.5; this small table did better than average, since the formula describes the expected value over random keys, in large tables. (c) For an unsuccessful search the formula predicts $\tfrac12(1 + 1/0.25^2)$ = **8.5** probes; here a missing key with home slot 1 would probe slots 1 through 7 and stop at empty slot 0: 7 probes. This is why open-addressing tables resize before they are three-quarters full.
+(a) `spi` and `uart` share home slot 5, so `uart` moves to 6 (2 probes); `gpio` and `timer` share slot 2, and `timer` must pass the occupied slot 3 (`i2c`) to reach 4 (3 probes). (b) A later search for a key retraces its insertion probes, so the average successful search costs $9/6$ = **1.50** probes. The formula $\tfrac12(1 + 1/(1-\alpha))$ at $\alpha = 6/8 = 0.75$ predicts 2.5; this small table did better than average, since the formula describes the expected value over random keys, in large tables. (c) For an unsuccessful search the formula predicts $\tfrac12(1 + 1/0.25^2)$ = **8.5** probes; here a missing key with home slot 1 would find slots 1 to 6 all occupied and stop at empty slot 7: 7 probes, counting the empty slot as the formula does. This is why open-addressing tables resize before they are three-quarters full.
 
 **Sanity check.** Two collisions among 6 keys in 8 slots is unsurprising: the birthday bound puts the first collision near $\sqrt{8} \approx 3$ keys ✓.
 

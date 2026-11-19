@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 05-06 · C Pointers, Arrays and Memory
 
 | | |

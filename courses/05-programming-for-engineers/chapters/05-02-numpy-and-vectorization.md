@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 05-02 · NumPy, Vectorization and Numerical Computing
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | Scientific computing with Python, first weeks (VanderPlas, *Python Data Science Handbook*, ch. 2; MIT 6.0002's numerical lectures); floating-point arithmetic as taught in an introductory numerical-methods course |
 | **Prerequisites** | [05-01 Python Fundamentals for Engineers](05-01-python-fundamentals.md) |
 | **Estimated study hours** | 8 |
-| **Last verified** | 2026-11-18 |
+| **Last verified** | 2026-11-19 |
 
 **Learning objectives.** After this chapter you can:
 

@@ -108,11 +108,11 @@ Questions: [README.md](README.md). Every numerical answer, and the letter of eve
 
 **47. Answer: (A) 6.0.** Left to right: `7 / 2` is integer division, 3; then `3 * 2.0` = 6.0. *([05-05](../../courses/05-programming-for-engineers/chapters/05-05-c-fundamentals.md))*
 
-**48. Answer: 30.** $f(5) = 2(1 + 2 + 3 + 4 + 5) = 30$. *([05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md))*
+**48. Answer: 30.** Unwind the recursion to its base case: $f(5) = 2 \times 5 + f(4) = \cdots = 2(5 + 4 + 3 + 2 + 1) + f(0) = 30$ (05-08 §3.9). *([05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md))*
 
 **49. Answer: (C) merge sort.** Quicksort is $O(n^2)$ in the worst case; heapsort and selection sort are not stable. *([05-08](../../courses/05-programming-for-engineers/chapters/05-08-data-structures-and-algorithms.md))*
 
-**50. Answer: 5.** Decision points: the first `if`, the `while`, the second `if` and its `and`: 4, so $M = 4 + 1 = 5$. *([05-09](../../courses/05-programming-for-engineers/chapters/05-09-software-engineering-practices.md))*
+**50. Answer: 5.** Decision points: the first `if`, the `while`, the second `if` and its `and`: 4, so $M = 4 + 1 = 5$. (Counting `and` is the extended convention most tools use; McCabe's statement-level count would give 4.) *([05-09](../../courses/05-programming-for-engineers/chapters/05-09-software-engineering-practices.md))*
 
 ---
 

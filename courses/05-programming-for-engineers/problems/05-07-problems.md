@@ -59,6 +59,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **The Internet checksum.** IPv4 headers carry a 16-bit ones'-complement checksum: add the header's 16-bit big-endian words with the checksum field set to 0, fold any carries out of bit 15 back into the low 16 bits, and take the bitwise complement. Compute the checksum of the header words `4500 0073 0000 4000 4011 0000 C0A8 0001 C0A8 00C7` (hex), and show that summing the header *with* the checksum inserted gives `0xFFFF`.
 
+### Problem 05-07.13 [B]
+
+**A status register that bites.** A UART's `STATUS` register (an illustrative design, typical of real parts) has bit 0 `RXNE` (read-only, set when a byte arrives), bit 1 `OVR` (overrun) and bit 2 `TC` (transfer complete), both **write-1-to-clear**, and bits 9:8 interrupt enables (read/write). It currently reads `0x107`. Firmware wants to clear `OVR` only. (a) What does `STATUS |= OVR` write, and what does the register then hold? Which information was lost? (b) What about `STATUS = OVR`? (c) Write the correct statement and give the result. Confirm all three with a simulated register. (d) A polling loop `while (!(STATUS & RXNE)) { }` works at `-O0` and hangs at `-O2`. Why, and what is the fix? (e) The main loop executes `CTRL |= TX_EN` while an interrupt handler executes `CTRL &= ~RX_EN` on the same register. Give an interleaving in which the handler's change is lost, and two ways to prevent it.
+
 ---
 
 ## Objective coverage
@@ -67,6 +71,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Binary, hex and two's complement | 1, 3, 4 |
 | 2. Masks, shifts and bit fields | 2, 5, 8, 9 |
-| 3. Register access | 5 |
+| 3. Register access | 5, 13 |
 | 4. Byte order and serialization | 6, 12 |
 | 5. Fixed point, rounding and quantization | 3, 7, 10, 11 |

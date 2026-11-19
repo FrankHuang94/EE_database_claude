@@ -128,7 +128,14 @@ h = []
 for x in (9, 4, 7, 1):
     heapq.heappush(h, x)
 v.assert_true("heapq gives the array [1, 4, 7, 9]", h == [1, 4, 7, 9])
-v.check("X05.12a", 4 + 1)
+import re  # noqa: E402
+
+exam_text = (HERE.parent / "exam" / "README.md").read_text(encoding="utf-8")
+count_bad_src = re.search(r"int count_bad\(.*?\n\}", exam_text, re.S).group(0)
+count_bad_src = re.sub(r"/\*.*?\*/", "", count_bad_src, flags=re.S)
+tokens = re.findall(r"\bif\b|\bfor\b|\bwhile\b|&&|\|\|", count_bad_src)   # decisions in the C source itself
+v.assert_true("count_bad has an else-if counted once as an if", "else if" in count_bad_src)
+v.check("X05.12a", len(tokens) + 1)
 v.check("X05.12b", mcdc_min(lambda a_, b_, c_, d_: a_ and (b_ or c_) and d_, 4))
 v.check("X05.12c", 40 * Fraction(5, 10) * Fraction(6, 10) * Fraction(4, 10))
 
@@ -146,6 +153,10 @@ v.check("X05.13a", sum(1 for r in runs if r >= 2))
 v.check("X05.13b", sum(1 for r in runs[:-1] if r >= 2) if data[-1] > 10 else sum(1 for r in runs if r >= 2))
 v.check("X05.14a", float(Fraction(1, 1000) * (Fraction(0, 2) + 2 + 3 + 2 + 1 + Fraction(0, 2))) * 1000)
 v.check("X05.14b", ((5 - 0.70) / 1000 - 1e-14 * math.expm1(0.70 / 0.025852)) * 1e3)
+dfdv = (lambda h: ((5 - (0.70 + h)) / 1000 - 1e-14 * math.expm1((0.70 + h) / 0.025852)
+                   - ((5 - (0.70 - h)) / 1000 - 1e-14 * math.expm1((0.70 - h) / 0.025852))) / (2 * h))(1e-7)   # central difference
+v.check("X05.14c", dfdv)
+v.check("X05.14d", 0.70 - ((5 - 0.70) / 1000 - 1e-14 * math.expm1(0.70 / 0.025852)) / dfdv)
 v.check("X05.15a", -math.expm1(500 * math.log1p(-0.002)))
 
 sys.exit(v.finish())

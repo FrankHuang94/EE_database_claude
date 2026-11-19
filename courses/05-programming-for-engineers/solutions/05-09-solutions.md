@@ -223,6 +223,27 @@ print(f"{1 - 0.999 ** 1000:.3f} {math.ceil(math.log(0.05) / math.log(0.999))}")
 0.632 2995
 ```
 
+### Solution 05-09.13
+
+(a) Violations, and what each costs:
+
+1. **Low cohesion.** One function buffers bytes, frames and parses messages, applies the alarm policy and drives an LED. Any change to any of the four touches the interrupt handler, the riskiest code in the system.
+2. **No information hiding.** The message format ("field 2 holds millivolts") and the LED's register address and bit are written into the handler. A new fuel-gauge firmware version or a board revision means editing interrupt code, and nobody can find all the places that know the format.
+3. **Coupling through globals.** `battery_mv` and `alarm_on` are written in an interrupt and readable (and writable) anywhere. Every reader is coupled to the handler's timing; a multi-byte value read by the main loop can be torn by an interrupt (05-08's ring-buffer conditions), and no module can be tested without setting up global state.
+4. **A read-modify-write on a register inside an interrupt.** If the main loop also changes that register with its own read-modify-write, one of the two updates can be lost (05-07, Problem 05-07.13).
+5. **Slow, failure-prone work in interrupt context.** Decoding and splitting a string lengthens interrupt latency, and a malformed message makes `int(fields[2])` raise inside the handler (an `IndexError` or `ValueError`), with nobody to catch it.
+6. **No abstraction over the hardware.** Raw `read_reg`/`write_reg` calls instead of a HAL function such as `led_set(on)` tie the logic to one board.
+
+(b) One responsibility per module, connected through narrow interfaces:
+
+- **UART driver** (the interrupt handler): `on_uart_byte(b)` only pushes the byte into a ring buffer (05-08); the main loop calls `uart_read(byte_out) -> ok`.
+- **Fuel-gauge protocol**: `parse_line(text) -> reading or error`, the only module that knows the message format, validating field count and range.
+- **Battery monitor**: a pure function `update(state, millivolts) -> state` implementing the requirement (thresholds, hold band, and any debounce), with no I/O and no globals.
+- **LED HAL**: `led_set(on)`, the only code that knows the register, using the chip's set/clear registers or a critical section.
+- **Main loop**: reads bytes, assembles lines, calls the parser, feeds the monitor and sets the LED from the returned state.
+
+(c) The protocol parser and the battery monitor contain all the logic and touch no hardware, so they can be unit-tested on a PC: feed the parser good, short and garbled lines; feed the monitor the boundary sequences of Example 05-09.1 and the lab. Only the thin driver and HAL need the target board (or a hardware-in-the-loop rig). The current code violates the requirement's second half: it asserts the alarm below 3.30 V but **never deasserts it**, even at or above 3.40 V, because nothing sets `alarm_on` back to `False` or turns the LED off. A restructured monitor with its own unit tests would have exposed that on day one.
+
 ---
 
 ## Answer key
