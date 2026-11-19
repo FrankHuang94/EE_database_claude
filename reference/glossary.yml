@@ -4057,3 +4057,37 @@
 - term: Two-dimensional channel material
   definition: An atomically thin semiconductor, such as a transition-metal dichalcogenide, proposed as a transistor channel for its ultimate thinness; the IRDS judges it not yet mature for manufacturing.
   chapter: "09-12"
+- term: Compound semiconductor
+  definition: A semiconductor made of two or more elements, such as GaAs, InP, GaN or SiC; III–V compounds offer light electrons and direct gaps, while SiC and GaN offer wide gaps and high critical fields.
+  chapter: "09-13"
+- term: Semi-insulating substrate
+  definition: An undoped or compensated wafer (for example GaAs, with about 10⁸ Ω·cm intrinsic resistivity) that barely conducts, so microwave circuits built on it lose little signal to the substrate.
+  chapter: "09-13"
+- term: Drift layer
+  definition: The thick, lightly doped region of a power device that holds the blocking voltage when off and carries the current when on; its thickness and doping set the breakdown voltage and much of the on-resistance.
+  chapter: "09-13"
+- term: Specific on-resistance
+  definition: A power device's on-resistance multiplied by its active area (Ω·cm²), the area-independent figure for comparing technologies; Baliga's limit for a drift layer is 4V_B²/(εμE_c³).
+  chapter: "09-13"
+- term: Baliga's figure of merit
+  definition: The material figure εμE_c³ that sets the lowest specific on-resistance of a unipolar power device at a given blocking voltage; the cube on the critical field gives wide-bandgap materials their advantage.
+  chapter: "09-13"
+  see_also: [Specific on-resistance, Critical field]
+- term: Heterojunction
+  definition: A junction between two different semiconductors, with steps in the conduction and valence bands at the interface; used to confine carriers, separate them from dopants and block unwanted injection.
+  chapter: "09-13"
+- term: Modulation doping
+  definition: Placing donors in a wide-gap barrier so their electrons fall into an undoped narrow-gap channel next to it, separating the electrons from the ionized donors and keeping their mobility high.
+  chapter: "09-13"
+- term: Two-dimensional electron gas
+  definition: A sheet of electrons confined in a thin quantum well at a heterojunction (2DEG), free to move along the interface; the channel of a HEMT, with densities of order 10¹³ cm⁻² in AlGaN/GaN.
+  chapter: "09-13"
+- term: High-electron-mobility transistor
+  definition: A field-effect transistor whose channel is a two-dimensional electron gas at a heterojunction (HEMT), modulated by a gate on the barrier; used in RF amplifiers and, in GaN, in fast power switches.
+  chapter: "09-13"
+- term: Spontaneous polarization
+  definition: The built-in electric polarization of an unstrained polar crystal such as wurtzite GaN or AlN along its c-axis; its change at a heterojunction leaves a fixed bound sheet charge.
+  chapter: "09-13"
+- term: Piezoelectric polarization
+  definition: Electric polarization created by mechanical strain in a piezoelectric crystal; in AlGaN grown on GaN it adds to the spontaneous polarization and increases the 2DEG density.
+  chapter: "09-13"
