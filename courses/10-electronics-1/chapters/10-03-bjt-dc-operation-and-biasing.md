@@ -47,7 +47,7 @@ The bipolar transistor was the first transistor of commercial electronics and re
 
 ## 3. Theory
 
-> **Notation and course values.** For an NPN: $V_{BE}$, $V_{CE}$, $I_B$, $I_C$ and $I_E = I_B + I_C$, all positive in the active region. $\beta = I_C/I_B$ (the data sheet's $h_{FE}$), $\alpha = I_C/I_E = \beta/(\beta + 1)$. $V_A$ is the Early voltage. Hand analysis uses $V_{BE}$ = 0.7 V in the active region, $V_{CE,sat}$ = 0.2 V in saturation and $V_T$ = 25.852 mV. For a PNP, use $V_{EB}$, $V_{EC}$ and currents flowing out of the collector and into the emitter.
+> **Notation and course values.** For an NPN: $V_{BE}$, $V_{CE}$, $I_B$, $I_C$ and $I_E = I_B + I_C$, all positive in the active region. $\beta = I_C/I_B$ (the data sheet's $h_{FE}$), $\alpha = I_C/I_E = \beta/(\beta + 1)$. $V_A$ is the Early voltage. Hand analysis uses $V_{BE}$ = 0.7 V in the active region, $V_{CE,sat}$ = 0.2 V in saturation (data sheets write $V_{CE(sat)}$ for their guaranteed values) and $V_T$ = 25.852 mV. For a PNP, use $V_{EB}$, $V_{EC}$ and currents flowing out of the collector and into the emitter.
 
 ### 3.1 The active region as a circuit model
 
@@ -57,7 +57,7 @@ $$
 I_C = I_Se^{V_{BE}/V_T}\left(1 + \frac{V_{CE}}{V_A}\right), \qquad I_B = \frac{I_C}{\beta}, \qquad I_E = \frac{I_C}{\alpha} = (\beta + 1)I_B .
 $$
 
-Because $I_C$ changes by a factor of ten for every 60 mV of $V_{BE}$, any collector current from microamperes to tens of milliamperes needs $V_{BE}$ between about 0.55 and 0.75 V for a small transistor. Replacing the exponential with a fixed **0.7 V** is the constant-drop model of 10-01, accurate to a few tens of millivolts, which is good enough whenever the bias network drops volts across its resistors. Neglecting the Early term (set $V_A \to \infty$) is the usual first pass; it returns in mirrors (§3.5) and in gain (10-04).
+Because $I_C$ changes by a factor of ten for every 60 mV of $V_{BE}$, any collector current from microamperes to tens of milliamperes needs $V_{BE}$ between about 0.5 and 0.8 V for a small transistor. Replacing the exponential with a fixed **0.7 V** is the constant-drop model of 10-01, accurate to a few tens of millivolts, which is good enough whenever the bias network drops volts across its resistors. Neglecting the Early term (set $V_A \to \infty$) is the usual first pass; it returns in mirrors (§3.5) and in gain (10-04).
 
 **The regions.**
 
@@ -83,7 +83,7 @@ A transistor is active while $V_{CE}$ exceeds about 0.3 V (so the collector junc
 
 The simplest bias drives the base from a voltage through a resistor: $I_B = (V_{BB} - 0.7)/R_B$ and $I_C = \beta I_B$. The collector current is proportional to β, which a data sheet lets vary threefold, and β itself rises with temperature. Example 10-03.1 shows the consequence: a design that works with β = 100 saturates with β = 300.
 
-The opposite extreme, holding $V_{BE}$ fixed, is worse in another way. At fixed $V_{BE}$ the current follows $e^{V_{BE}/V_T}$, and $V_{BE}$ at constant current falls by about 2 mV/K (09-06), so at fixed $V_{BE}$ the current rises by about $2/25.85$ = 7.7% per kelvin: it doubles every 9 K, and grows about fiftyfold from 25 °C to 85 °C (Example 10-03.4).
+The opposite extreme, holding $V_{BE}$ fixed, is worse in another way. At fixed $V_{BE}$ the current follows $e^{V_{BE}/V_T}$, and $V_{BE}$ at constant current falls by about 2 mV/K (09-06), so near room temperature the current at fixed $V_{BE}$ rises by about $2/25.85$ = 7.7% per kelvin, a doubling every 9 K. That rate is local. Over a wide range the shift in $V_{BE}$, about $(2\text{ mV/K})\,\Delta T$, is divided by the thermal voltage *at the hot temperature*, which has grown: from 25 °C to 85 °C the 120 mV shift is worth $e^{120/30.86}$, about fiftyfold (Example 10-03.4), not the $e^{120/25.85} \approx$ **104**-fold that a constant 7.7%/K would give. The loop-gain analysis of thermal runaway below (Example 10-03.7, the lab) uses the local rate at the operating temperature, which is right for small disturbances.
 
 ### 3.4 The four-resistor bias
 
@@ -203,25 +203,25 @@ The product is the **thermal loop gain** $L$. A small temperature disturbance is
 
 (b) $I_{out} = 1/(1 + 2/100)$ = **0.9804** mA, **−1.96**%.
 
-(c) $I_{out} = 0.9804 \times (1 + 3/50)/(1 + 0.7/50)$ = **1.025** mA, **+2.49**%: the Early effect overcorrects the base-current error.
+(c) Treating the two corrections as independent factors, $I_{out} \approx 0.9804 \times (1 + 3/50)/(1 + 0.7/50)$ = **1.025** mA, **+2.49**%: the Early effect overcorrects the base-current error. Solving the two transistors' equations together (Early effect on the collector currents, base currents $I_Se^{V_{BE}/V_T}/\beta$) gives $I_{out} = 1 \times 1.06/(1 + 0.014 + 0.02)$ = **1.0251** mA, **+2.51**%; the product form is accurate to second order.
 
 **Sanity check.** The two errors are of similar size and opposite sign here only by coincidence of the chosen voltages; a mirror's accuracy depends on its output voltage, which is why precision mirrors use cascodes (10-08).
 
 ### Example 10-03.6 · Switching a relay from a logic pin (tier B)
 
-**Setup.** A 2N3904 switches a 12 V relay coil of 240 Ω from a 3.3 V logic output. (a) Find the coil current. (b) With a forced β of 10, find the base current and the base resistor, using the data sheet's maximum $V_{BE(sat)}$ of 0.85 V. (c) With the standard 470 Ω, find $I_B$ and the forced β. (d) Find the transistor's dissipation using the maximum $V_{CE(sat)}$ of 0.3 V at 50 mA [1]. (e) What else does the circuit need?
+**Setup.** A 2N3904 switches a 12 V relay coil of 240 Ω from a 3.3 V logic output. (a) Find the coil current. (b) With a forced β of 10, find the base current and the base resistor, using the data sheet's maximum $V_{BE(sat)}$ at this current, 0.95 V at 50 mA and 5 mA of base current. (c) With the next lower standard value, 430 Ω, find $I_B$ and the forced β. (d) Find the transistor's dissipation using the maximum $V_{CE(sat)}$ of 0.3 V at 50 mA [1]. (e) What else does the circuit need?
 
 **Solution.**
 
 (a) $12/240$ = **50** mA.
 
-(b) $I_B$ = **5.0** mA and $R_B = (3.3 - 0.85)/5\text{ mA}$ = **490** Ω.
+(b) $I_B$ = **5.0** mA and $R_B = (3.3 - 0.95)/5\text{ mA}$ = **470** Ω. (The 0.85 V maximum belongs to the 10 mA row; using it here would size $R_B$ at 490 Ω and leave the transistor short of base drive.)
 
-(c) $I_B = 2.45/470$ = **5.21** mA, forced β = **9.59**.
+(c) $I_B = 2.35/430$ = **5.47** mA, forced β = **9.15**. The exact 470 Ω would give a forced β of exactly 10 at the worst-case $V_{BE(sat)}$, no margin at all; rounding the resistor *down* buys the margin.
 
-(d) Collector: $0.3 \times 50$ = **15** mW; base: $0.85 \times 5.21$ = **4.43** mW; total **19.4** mW, far below the 625 mW rating [1].
+(d) Collector: $0.3 \times 50$ = **15** mW; base: $0.95 \times 5.47$ = **5.19** mW; total **20.2** mW, far below the 625 mW rating [1].
 
-(e) A flyback diode across the coil: interrupting 50 mA in an inductor would otherwise drive the collector far above the 40 V $V_{CEO}$ rating [1]. Also check that the logic pin can source 5 mA.
+(e) A flyback diode across the coil: interrupting 50 mA in an inductor would otherwise drive the collector far above the 40 V $V_{CEO}$ rating [1]. Also check that the logic pin can source 5.5 mA at a high level of 3.3 V; many cannot, and a weaker pin calls for a MOSFET instead (10-02).
 
 **Sanity check.** The data sheet guarantees only β ≥ 60 at 50 mA [1]; a forced β of 10 leaves a sixfold margin, so every transistor in production saturates.
 
@@ -233,13 +233,13 @@ The product is the **thermal loop gain** $L$. A small temperature disturbance is
 
 (a) $P$ = **50** mW and $\Delta T$ = **10** K.
 
-(b) $dI_C/dT = I_C(2\text{ mV/K})/V_T$ = 0.774 mA/K and $dT/dI_C = V_{CE}R_{\theta JA}$ = 1000 K/A, so $L$ = **0.774** and $1/(1 - L)$ = **4.42**: any temperature disturbance is more than quadrupled. A slightly larger current, voltage or thermal resistance would push $L$ past 1.
+(b) $dI_C/dT = I_C(2\text{ mV/K})/V_T$ = 0.774 mA/K and $dT/dI_C = V_{CE}R_{\theta JA}$ = 1000 K/A, so $L$ = **0.774** and $1/(1 - L)$ = **4.42**: any temperature disturbance is more than quadrupled. Since $L$ is proportional to current, voltage and thermal resistance, raising any of them by $1/0.774 - 1$ = **29**% would push $L$ past 1.
 
 (c) $dI_C/dT = 0.002/(100 + 2.585)$, so $L$ = **0.0195** and the amplification is **1.020**.
 
 (d) $V_T/I_C$ = **2.585** Ω, which is the emitter's own small-signal resistance (10-04): 100 Ω of $R_E$ is 39 times larger, and $L$ falls by that factor.
 
-**Sanity check.** At a fixed $V_{BE}$, the transistor's own heating does a third of the work of a runaway; a hundred ohms of emitter resistance makes it irrelevant.
+**Sanity check.** At a fixed $V_{BE}$, the transistor is already three-quarters of the way to runaway ($L$ = 0.774 of the 1 that defines it); a hundred ohms of emitter resistance makes it irrelevant.
 
 ### Answer key
 
@@ -255,6 +255,7 @@ The product is the **thermal loop gain** $L$. A small temperature disturbance is
 | T 10-03.g | 2N3904 V_BE(sat) at 50 mA, max | 0.95 | V |
 | T 10-03.h | 2N3904 thermal resistance | 200 | K/W |
 | T 10-03.i | current growth per kelvin at fixed V_BE | 7.7 | % |
+| T 10-03.p | constant-rate growth over 60 K | 104 | — |
 | T 10-03.j | mirror error at β = 100 | 2 | % |
 | T 10-03.k | 2N3904 β at 50 mA, min | 60 | — |
 | T 10-03.l | 2N3904 power rating | 625 | mW |
@@ -296,14 +297,18 @@ The product is the **thermal loop gain** $L$. A small temperature disturbance is
 | Ex 10-03.5c | error | -1.96 | % |
 | Ex 10-03.5d | I_out with Early effect | 1.025 | mA |
 | Ex 10-03.5e | error with Early effect | 2.49 | % |
+| Ex 10-03.5f | I_out with Early effect, solved together | 1.0251 | mA |
+| Ex 10-03.5g | error, solved together | 2.51 | % |
 | Ex 10-03.6a | coil current | 50 | mA |
 | Ex 10-03.6b | base current | 5.0 | mA |
-| Ex 10-03.6c | base resistor | 490 | Ω |
-| Ex 10-03.6d | I_B with 470 Ω | 5.21 | mA |
-| Ex 10-03.6e | forced β | 9.59 | — |
+| Ex 10-03.6c | base resistor | 470 | Ω |
+| Ex 10-03.6d | I_B with 430 Ω | 5.47 | mA |
+| Ex 10-03.6e | forced β | 9.15 | — |
 | Ex 10-03.6f | collector dissipation | 15 | mW |
-| Ex 10-03.6g | base dissipation | 4.43 | mW |
-| Ex 10-03.6h | total dissipation | 19.4 | mW |
+| Ex 10-03.6g | base dissipation | 5.19 | mW |
+| Ex 10-03.6h | total dissipation | 20.2 | mW |
+| Ex 10-03.6i | base resistor with the 10 mA row | 490 | Ω |
+| Ex 10-03.6j | base drive needed | 5.5 | mA |
 | Ex 10-03.7a | dissipation | 50 | mW |
 | Ex 10-03.7b | temperature rise | 10 | K |
 | Ex 10-03.7c | loop gain, fixed V_BE | 0.774 | — |
@@ -311,19 +316,20 @@ The product is the **thermal loop gain** $L$. A small temperature disturbance is
 | Ex 10-03.7e | loop gain, R_E = 100 Ω | 0.0195 | — |
 | Ex 10-03.7f | amplification, R_E = 100 Ω | 1.020 | — |
 | Ex 10-03.7g | V_T/I_C | 2.585 | Ω |
+| Ex 10-03.7h | increase that makes L = 1 | 29 | % |
 
-*Every value is recomputed by [verify_10_03.py](../verify/verify_10_03.py) by an independent route: bias networks as linear systems of Kirchhoff equations (the transistor as a 0.7 V source and a current-controlled current source), with the region checked from the solved voltages; the mirror with an exponential transistor and the Early effect; sensitivities by re-solving; the thermal loop gain by numerically differentiating a self-heated exponential transistor. Data-sheet values are quoted (R-178). The lab's ngspice netlist confirms Example 10-03.3.*
+*Every value is recomputed by [verify_10_03.py](../verify/verify_10_03.py) by an independent route: bias networks as linear systems of Kirchhoff equations (the transistor as a 0.7 V source and a current-controlled current source), with the region checked from the solved voltages; the mirror with an exponential transistor and the Early effect; sensitivities by re-solving; the thermal loop gain by numerically differentiating a self-heated exponential transistor. Data-sheet values are quoted (R-178) and were checked by hand against the cited PDFs (an earlier draft used the wrong $V_{BE(sat)}$ row in Example 10-03.6, which a script restating the literal could not catch); the switch and thermal arithmetic of Examples 10-03.6 and 10-03.7 restates the stated model. The lab's ngspice netlists confirm Examples 10-03.1(b), 10-03.3 and 10-03.5 and Problem 10-03.6.*
 
 ## 5. Simulate it
 
-The lab, [labs/10-03-lab](../labs/10-03-lab/README.md), has a notebook and an ngspice netlist:
+The lab, [labs/10-03-lab](../labs/10-03-lab/README.md), has a notebook and two ngspice netlists:
 
 1. Sweeps β from 50 to 400 through the three bias networks of Figure 2 and marks where each saturates.
 2. Runs a Monte Carlo of β (uniform 100–300, the 2N3904's range at 10 mA [1]) and $V_{BE}$ (±20 mV) through the four-resistor bias.
 3. Simulates the self-heated transistor of Example 10-03.7 as a dynamic thermal system, with and without $R_E$, and shows runaway when the loop gain exceeds one.
 4. Simulates the saturated switch's turn-off delay with a charge-control model (09-07).
 
-The netlist (`bjt_bias.cir`) runs Example 10-03.3 with a Gummel–Poon transistor.
+The netlists run Example 10-03.3 (`bjt_bias.cir`), and Example 10-03.1(b), the mirror of Example 10-03.5 with and without the Early effect and Problem 10-03.6's collector feedback (`bjt_more.cir`), with a Gummel–Poon transistor.
 
 **Guided exercise (predict, then run).** **Before running Part 2**, predict: with β uniform between 100 and 300, what is the spread (maximum over minimum) of $I_C$ in Example 10-03.3's bias? Then run it. (From Example 10-03.3, $I_C$ rises from 1.286 mA at β = 100 to 1.363 mA at β = 300, a ratio of **1.06**; ±20 mV of $V_{BE}$ adds about ±**1.4**%, that is $0.02/(V_{Th} - V_{BE})$.)
 
@@ -370,9 +376,9 @@ The netlist (`bjt_bias.cir`) runs Example 10-03.3 with a Gummel–Poon transisto
 
 ### Why it matters commercially
 
-- **Bias stability is yield.** A bias that drifts with β fails a fraction of units in production; one that drifts with temperature fails in the field.
-- **Thermal runaway is a reliability failure mode.** Output stages, linear regulators and paralleled transistors fail by it if the thermal loop is not designed; emitter (or source) resistors are cheap insurance.
-- **Legacy bipolar products are long-lived.** Industrial and automotive designs keep bipolar parts in production for decades, so the skills remain commercially relevant even where new designs use CMOS.
+- **Bias stability is yield** **[Established]**. A bias that drifts with β fails a fraction of units in production; one that drifts with temperature fails in the field.
+- **Thermal runaway is a reliability failure mode** **[Established]**. Output stages, linear regulators and paralleled transistors fail by it if the thermal loop is not designed; emitter (or source) resistors are cheap insurance.
+- **Legacy bipolar products are long-lived** **[Industry estimate]**. Industrial and automotive designs keep bipolar parts in production for decades (the 2N3904 itself is still in current data sheets [1]), so the skills remain commercially relevant even where new designs use CMOS.
 
 ### Marketing vs Reality
 
@@ -449,6 +455,7 @@ It is the product of how much the current rises per kelvin and how much the junc
 
 - A. S. Sedra and K. C. Smith, *Microelectronic Circuits*, ch. 6 (BJTs: device operation, current–voltage characteristics, DC circuits, biasing, the BJT as a switch).
 - B. Razavi, *Fundamentals of Microelectronics*, ch. 4 (physics of bipolar transistors) and ch. 5 (bipolar amplifiers: biasing).
+- MIT OpenCourseWare, 6.012 *Microelectronic Devices and Circuits* (Fall 2009), lecture notes on the bipolar junction transistor and its large-signal models.
 - The 2N3904 and 2N3906 data sheets [1, 2]: read the β and saturation tables with this chapter's Examples 1 and 6.
 
 ## 14. Sources

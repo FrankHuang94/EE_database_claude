@@ -14,6 +14,7 @@ The chapter's constant-$V_{BE}$ model (§3.1–3.2), the four-resistor bias and 
 
 - [10-03-bjt-bias.ipynb](10-03-bjt-bias.ipynb): the notebook (Parts 1–4).
 - [bjt_bias.cir](bjt_bias.cir): ngspice operating point of Example 10-03.3 with a Gummel–Poon transistor.
+- [bjt_more.cir](bjt_more.cir): ngspice base-current bias (Example 10-03.1b), the mirror with and without the Early effect (Example 10-03.5) and collector feedback (Problem 10-03.6).
 
 ## Procedure
 
@@ -27,9 +28,9 @@ The chapter's constant-$V_{BE}$ model (§3.1–3.2), the four-resistor bias and 
 
 | Part | Quantity | Expected |
 |---|---|---|
-| 1 | First to saturate | base-current bias, then collector feedback; the four-resistor bias never does in this range |
+| 1 | First to saturate | base-current bias; collector feedback never saturates (its $V_{CB} = I_BR_B$ stays positive), and the four-resistor bias does not in this range |
 | 2 | Spread | under 10% end to end |
-| 3 | Runaway | the fixed-$V_{BE}$ transistor's current grows without limit above about 13 mA; $R_E$ stops it |
+| 3 | Runaway | with $V_{BE}$ fixed, cold currents of 4.0 and 4.5 mA settle at **6.74** and **9.09** mA; 5.0 mA, above the **4.76** mA cold threshold ($I_{crit}/e$), runs away; with $R_E$ = 10 Ω, 13.5 mA settles at **16.3** mA |
 | 4 | Storage delay | longer with heavier overdrive |
 
 <!-- answer-key -->
@@ -38,6 +39,10 @@ The chapter's constant-$V_{BE}$ model (§3.1–3.2), the four-resistor bias and 
 | Lab 10-03.a | largest over smallest I_C | 1.089 | — |
 | Lab 10-03.b | σ of I_C | 1.76 | % |
 | Lab 10-03.c | mean I_C | 1.338 | mA |
+| Lab 10-03.d | cold-start runaway threshold | 4.76 | mA |
+| Lab 10-03.e | settled current from 4.0 mA cold | 6.74 | mA |
+| Lab 10-03.f | settled current from 4.5 mA cold | 9.09 | mA |
+| Lab 10-03.g | settled current from 13.5 mA cold, R_E = 10 Ω | 16.3 | mA |
 
 ## Discussion questions
 
@@ -48,7 +53,7 @@ The chapter's constant-$V_{BE}$ model (§3.1–3.2), the four-resistor bias and 
 ### Answers
 
 1. The ±20 mV of $V_{BE}$ moves the current by about ±1.4% (§5 of the chapter), and the extremes of β and $V_{BE}$ can occur together: 1.06 × (1.014/0.986) ≈ 1.09. The two effects add because each enters the denominator or numerator of $I_E = (V_{Th} - V_{BE})/(R_E + R_{Th}/(\beta + 1))$ independently, and both are small.
-2. Below the threshold, each degree of heating raises the current by less than enough to cause another degree, so the series of increments converges to a slightly higher operating point. Above it, each increment causes a larger one, and the series diverges: the loop gain passing one is the boundary between the two.
+2. Below the threshold, each degree of heating raises the current by less than enough to cause another degree, so the increments form a converging series and the current settles at a hotter operating point. The loop gain $bI$ grows with the current itself, so the settled point must still have $bI < 1$, that is $I < I_{crit}$; because heating multiplies the cold current by $e^{bI}$, which reaches $e$ at $I_{crit}$, only cold currents below $I_{crit}/e$ can settle. Just above that, there is no operating point at all: the current lingers near $I_{crit}$, where the loop gain is close to one, and then runs away. A 10% change in the cold current (4.5 to 5.0 mA) crosses the boundary.
 3. The extra base current beyond what the collector needs ($I_B - I_C/\beta$) is stored as excess charge in the base and collector (09-07 §3.10). At turn-off that charge must be removed before the collector current can fall, so more overdrive means more stored charge and a longer delay.
 
 ## Optional hardware extension

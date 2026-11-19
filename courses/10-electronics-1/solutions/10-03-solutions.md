@@ -66,7 +66,7 @@ At fixed $V_{BE}$, $L = (I_C/V_T)(2\text{ mV/K})(V_{CE}R_{\theta JA})$, which re
 
 (a) $I_B$ = **2.0** mA and $R_B = (1.8 - 0.85)/2\text{ mA}$ = **475** Ω.
 
-(b) $I_B = (1.8 - 0.98)/475$ = **1.73** mA, forced β **11.6**, still far below the minimum β of 100 at 10 mA [1]: saturated, with margin. The lesson is that from 1.8 V logic, $V_{BE}$'s temperature drift takes a large bite (14%) out of the base drive.
+(b) $I_B = (1.8 - 0.98)/475$ = **1.73** mA, forced β **11.6**, still far below the 25 °C minimum β of 100 at 10 mA [1]. β itself falls in the cold (the data sheet's gain curves show it lower at −55 °C than at 25 °C [1]), but even half of 100 leaves a fourfold margin over 11.6: saturated, with margin. The lesson is that from 1.8 V logic, $V_{BE}$'s temperature drift takes a large bite (14%) out of the base drive.
 
 (c) $(5 - 2 - 0.2)/20\text{ mA}$ = **140** Ω.
 

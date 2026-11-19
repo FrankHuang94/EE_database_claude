@@ -1,0 +1,61 @@
+* Lab 10-03 -- three more bias circuits with a Gummel-Poon NPN (BF as stated, no high-injection roll-off):
+*   Example 10-03.1(b): base-current bias, beta = 100;
+*   Example 10-03.5(b, c): a two-transistor mirror with beta = 100, without and with an Early voltage of 50 V
+*     (Q2's collector at 3 V); SPICE's Early effect scales the collector current by about 1 + V_CB/VAF, which
+*     for these voltages differs from the chapter's (1 + V_CE/V_A) factor by under 0.1%;
+*   Problem 10-03.6(b): collector-to-base feedback, beta = 100.
+* In each circuit IS is chosen so that V_BE = 0.700 V at that example's current (disclosed, as in bjt_bias.cir),
+* so the checks confirm the circuit algebra with base currents, not the 0.7 V convention. T = 300 K.
+*
+* EXPECT ic1  key:../../chapters/10-03-bjt-dc-operation-and-biasing.md#Ex_10-03.1b scale=1e-3 rtol=1e-3
+* EXPECT vc1  key:../../chapters/10-03-bjt-dc-operation-and-biasing.md#Ex_10-03.1c rtol=2e-3
+* EXPECT io5  key:../../chapters/10-03-bjt-dc-operation-and-biasing.md#Ex_10-03.5b scale=1e-3 rtol=2e-4
+* EXPECT io5a key:../../chapters/10-03-bjt-dc-operation-and-biasing.md#Ex_10-03.5d scale=1e-3 rtol=2e-3
+* EXPECT ic6  key:../../solutions/10-03-solutions.md#10-03.6b scale=1e-3 rtol=1e-3
+* EXPECT vc6  key:../../solutions/10-03-solutions.md#10-03.6c rtol=1e-3
+
+.options temp=26.85 tnom=26.85 reltol=1e-7
+* Example 1(b)
+VCC1 vcc1 0 DC 5
+VBB1 bb1 0 DC 2
+RB1 bb1 b1 100k
+RC1 vcc1 c1 2k
+Q1 c1 b1 0 q1
+.model q1 NPN(IS=2.26183e-15 BF=100)
+* Example 5(b): mirror without Early effect
+VCC5 vcc5 0 DC 5
+RR5 vcc5 r5 4.3k
+Q5a r5 r5 0 q5
+VC5 c5 0 DC 3
+Q5b c5 r5 0 q5
+.model q5 NPN(IS=1.70575e-15 BF=100)
+* Example 5(c): the same mirror with VAF = 50 V (Q1 diode-connected, so V_CB = 0 there)
+VCC5a vcc5a 0 DC 5
+RR5a vcc5a r5a 4.3k
+Q5c r5a r5a 0 q5a
+VC5a c5a 0 DC 3
+Q5d c5a r5a 0 q5a
+.model q5a NPN(IS=1.70575e-15 BF=100 VAF=50)
+* Problem 6(b): collector-to-base feedback
+VCC6 vcc6 0 DC 5
+RC6 vcc6 c6 2k
+RB6 c6 b6 200k
+Q6 c6 b6 0 q6
+.model q6 NPN(IS=1.86132e-15 BF=100)
+
+.control
+op
+let ic1 = (5 - v(c1)) / 2k
+let vc1 = v(c1)
+let io5 = -i(VC5)
+let io5a = -i(VC5a)
+let ic6 = (5 - v(c6)) / 2k - (v(c6) - v(b6)) / 200k
+let vc6 = v(c6)
+echo "ic1 = $&ic1"
+echo "vc1 = $&vc1"
+echo "io5 = $&io5"
+echo "io5a = $&io5a"
+echo "ic6 = $&ic6"
+echo "vc6 = $&vc6"
+.endc
+.end

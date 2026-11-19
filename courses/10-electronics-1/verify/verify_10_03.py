@@ -58,7 +58,7 @@ for k_, val in (("T 10-03.a", 100), ("T 10-03.b", 300), ("T 10-03.c", 30), ("T 1
                 ("T 10-03.f", 0.85), ("T 10-03.g", 0.95), ("T 10-03.h", 200), ("T 10-03.k", 60), ("T 10-03.l", 625),
                 ("T 10-03.m", 40)):
     v.check(k_, val)
-v.check("T 10-03.i", ddx(lambda t: math.log(math.exp(0.002 * t / VT)), 0.0) * 100)   # d(ln I)/dT at fixed V_BE
+
 v.check("T 10-03.j", (1 - 1 / (1 + 2 / 100)) * 100)
 
 # ------------------------------------------------------------------ Example 1
@@ -133,19 +133,34 @@ io2 = mirror(1e-3, 100, va=50, vce2=3.0)
 io2_ch = (1e-3 / (1 + 2 / 100)) * (1 + 3.0 / 50) / (1 + 0.7 / 50)
 v.check("Ex 10-03.5d", io2_ch * 1e3)
 v.check("Ex 10-03.5e", (io2_ch / 1e-3 - 1) * 100)
-v.assert_true("the exponential mirror agrees with the chapter's Early-effect estimate within 0.2%",
-              abs(io2 / io2_ch - 1) < 2e-3, f"{io2*1e3:.5f} mA")
+# solved together: exponential transistors, Early effect on the collector currents only (base current
+# I_S e^(V_BE/V_T)/beta, as in SPICE's Gummel-Poon model), Q1's collector at 0.7 V and Q2's at 3 V as stated
+def mirror_gp(iref, beta, va, vce1, vce2):
+    vbe = brentq(lambda x: 1e-15 * math.exp(x / VT) * (1 + vce1 / va + 2 / beta) - iref, 0.3, 1.0, xtol=1e-15)
+    return 1e-15 * math.exp(vbe / VT) * (1 + vce2 / va)
+
+
+io2x = mirror_gp(1e-3, 100, 50.0, 0.7, 3.0)
+v.check("Ex 10-03.5f", io2x * 1e3)
+v.check("Ex 10-03.5g", (io2x / 1e-3 - 1) * 100)
+v.assert_true("the product form agrees with the joint solution within 0.05%", abs(io2x / io2_ch - 1) < 5e-4,
+              f"{io2x*1e3:.5f} mA")
+v.assert_true("beta-modulated base currents (I_B = I_C/beta) move the answer by under 0.1%", abs(io2 / io2x - 1) < 1e-3)
 
 # ------------------------------------------------------------------ Example 6
 v.check("Ex 10-03.6a", 12 / 240 * 1e3)
 v.check("Ex 10-03.6b", 0.05 / 10 * 1e3)
-v.check("Ex 10-03.6c", (3.3 - 0.85) / 5e-3)
-ib6 = (3.3 - 0.85) / 470
+VBESAT50 = 0.95                                   # 2N3904 V_BE(sat) max at 50 mA / 5 mA (R-178), the row that applies
+v.check("Ex 10-03.6c", (3.3 - VBESAT50) / 5e-3)
+v.check("Ex 10-03.6i", (3.3 - 0.85) / 5e-3)        # what the 10 mA row would give
+ib6 = (3.3 - VBESAT50) / 430
+v.assert_true("430 Ohm is the E24 value just below 470 Ohm", 430 < 470 and 430 in (390, 430, 470))
 v.check("Ex 10-03.6d", ib6 * 1e3)
 v.check("Ex 10-03.6e", 0.05 / ib6)
 v.check("Ex 10-03.6f", 0.3 * 0.05 * 1e3)
-v.check("Ex 10-03.6g", 0.85 * ib6 * 1e3)
-v.check("Ex 10-03.6h", (0.3 * 0.05 + 0.85 * ib6) * 1e3)
+v.check("Ex 10-03.6g", VBESAT50 * ib6 * 1e3)
+v.check("Ex 10-03.6h", (0.3 * 0.05 + VBESAT50 * ib6) * 1e3)
+v.check("Ex 10-03.6j", ib6 * 1e3)
 
 
 # ------------------------------------------------------------------ Example 7: thermal loop by numerical differentiation
@@ -163,6 +178,10 @@ for k_, ka, re in (("Ex 10-03.7c", "Ex 10-03.7d", 0.0), ("Ex 10-03.7e", "Ex 10-0
     v.check(k_, L)
     v.check(ka, 1 / (1 - L))
 v.check("Ex 10-03.7g", 1 / ddx(lambda vbe: 1e-15 * math.exp(vbe / VT), VT * math.log(0.01 / 1e-15)))
+L0 = ddx(lambda t: ic_of_T(t, 0.0), 0.0, 1e-3) * 5 * 200
+# the factor by which the operating current must rise for L = 1 (L is proportional to I_C at fixed V_CE, R_theta)
+fac = brentq(lambda f: ddx(lambda t: ic_of_T(t, 0.0, 0.01 * f), 0.0, 1e-3) * 5 * 200 - 1, 1.0, 2.0)
+v.check("Ex 10-03.7h", (fac - 1) * 100)
 
 # ------------------------------------------------------------------ solutions
 for k_, b in (("10-03.2a", 50), ("10-03.2b", 100), ("10-03.2c", 300)):
@@ -244,5 +263,35 @@ ics_mc = np.array([four_resistor(12, 47e3, 10e3, 1e3, 4.7e3, b, vbe=x)["ic"] for
 v.check("Lab 10-03.a", ics_mc.max() / ics_mc.min())
 v.check("Lab 10-03.b", ics_mc.std() / ics_mc.mean() * 100)
 v.check("Lab 10-03.c", ics_mc.mean() * 1e3)
+
+# d(ln I)/dT at fixed V_BE from the course model (2 mV/K over V_T): this restates the model by design
+v.check("T 10-03.i", ddx(lambda t: math.log(ic_of_T(t, 0.0)), 0.0) * 100)
+v.check("T 10-03.p", ic_of_T(60.0, 0.0, i0=1e-4) / ic_of_T(0.0, 0.0, i0=1e-4))   # constant-rate model over 60 K (current-independent ratio)
+
+# lab Part 3: steady states of I = I0 exp(b I), b = (2 mV/K) V_CE R_theta / V_T, found by integrating the thermal ODE
+from scipy.integrate import solve_ivp as _ivp  # noqa: E402
+
+
+def lab_run(i0, re=0.0, tau=10.0, t_end=400.0):
+    vb = VT * math.log(i0 / 1e-15) + i0 * re
+    def ic(dT):
+        dT = min(max(dT, -50.0), 100.0)
+        return brentq(lambda i: VT * math.log(i / 1e-15) - 0.002 * dT + i * re - vb, 1e-9, 1e6)
+    ev = lambda t, y: y[0] - 60  # noqa: E731
+    ev.terminal = True
+    sol = _ivp(lambda t, y: [(5 * ic(y[0]) * 200 - y[0]) / tau], (0, t_end), [0.0], max_step=0.5, events=ev,
+               rtol=1e-9, atol=1e-9)
+    return sol.t[-1], ic(sol.y[0][-1])
+
+
+bth = 0.002 * 5 * 200 / VT
+_grid = np.linspace(0, 2 / bth, 8001)
+# the largest cold current for which I = I0 exp(b I) still has a solution (the curve touches the line)
+v.check("Lab 10-03.d", brentq(lambda i0: min(i0 * math.exp(bth * i) - i for i in _grid), 1e-3, 1e-2, xtol=1e-12) * 1e3)
+for key, i0, re in (("Lab 10-03.e", 0.004, 0.0), ("Lab 10-03.f", 0.0045, 0.0), ("Lab 10-03.g", 0.0135, 10.0)):
+    tend, iend = lab_run(i0, re)
+    v.assert_true(f"{key}: settled (no runaway) by 400 s", tend > 399)
+    v.check(key, iend * 1e3)
+v.assert_true("5.0 mA cold runs away before 400 s", lab_run(0.005)[0] < 399)
 
 v.finish()
