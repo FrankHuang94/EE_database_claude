@@ -4296,3 +4296,20 @@
   definition: A common-source transistor followed by a common-gate transistor in series; the upper device multiplies the output resistance by about g_mr_o, raising the gain toward (g_mr_o)² at the cost of one more overdrive of headroom.
   chapter: "10-06"
   see_also: [Intrinsic gain, Source degeneration]
+# ---------------------------------------------------------------- 10-07
+- term: Common-emitter amplifier
+  definition: The bipolar gain stage with the input at the base, the output at the collector and the emitter at signal ground (or through a degeneration resistor); its gain −g_m(R_C ∥ r_o) equals the DC voltage across R_C divided by V_T when r_o is negligible.
+  chapter: "10-07"
+- term: Common-base amplifier
+  definition: The bipolar stage with the base at signal ground, the input at the emitter and the output at the collector; a non-inverting current buffer with input resistance about r_e = α/g_m and current gain α.
+  chapter: "10-07"
+- term: Emitter follower
+  definition: The common-collector bipolar stage, with the input at the base and the output at the emitter; gain (β + 1)R_E'/(R_sig + r_π + (β + 1)R_E'), input resistance r_π + (β + 1)R_E' and output resistance about r_e + R_sig/(β + 1).
+  chapter: "10-07"
+  see_also: [Buffer amplifier, Source follower]
+- term: Resistance reflection
+  definition: The rule that a resistance in a bipolar transistor's emitter appears multiplied by β + 1 when seen from the base, and a resistance in the base appears divided by β + 1 when seen from the emitter.
+  chapter: "10-07"
+- term: Bypass capacitor
+  definition: A capacitor placed across a bias element (typically an emitter or source resistor) so that it carries DC bias current but is a short circuit at signal frequencies, restoring the stage's full gain.
+  chapter: "10-07"

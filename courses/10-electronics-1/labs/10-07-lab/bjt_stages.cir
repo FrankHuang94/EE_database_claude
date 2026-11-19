@@ -1,0 +1,111 @@
+* Lab 10-07 -- bipolar single stages by AC analysis, with Gummel-Poon NPNs (BF = 100, no Early effect, no
+* high-injection roll-off), at 300 K so that V_T = 25.852 mV.
+* (1) Example 10-07.1: the four-resistor bias of Example 10-03.3 (IS = 2.23805e-15 A, so V_BE = 0.700 V at the
+*     example's 1.286 mA), R_E bypassed, driven from 1 kOhm into a coupled 10 kOhm load; a second, unloaded copy
+*     driven at the base gives A_vo and the stage input resistance.
+* (2) Example 10-07.2: the same with R_E split into 100 Ohm unbypassed and 900 Ohm bypassed.
+* (3) Example 10-07.4: common base at I_C = 1 mA (IS = 1e-15 A; emitter current sink 1.0101 mA), R_C = 5 kOhm,
+*     driven from 50 Ohm through a coupling capacitor.
+* (4) Example 10-07.5: emitter follower at I_C = 1 mA: base fed from a 10 kOhm source whose 0.1 V DC offset
+*     cancels the 10 uA base-current drop (so V_B = 0 V), R_E = 5 kOhm to -5.764317 V (I_E = 1.0101 mA),
+*     coupled 1 kOhm load; a second copy measures the output resistance with a 1 A AC test current.
+*
+* EXPECT g1 key:../../chapters/10-07-bjt-single-stage-amplifiers.md#Ex_10-07.1i rtol=1e-3
+* EXPECT a1 key:../../chapters/10-07-bjt-single-stage-amplifiers.md#Ex_10-07.1e rtol=1e-3
+* EXPECT r1 key:../../chapters/10-07-bjt-single-stage-amplifiers.md#Ex_10-07.1d scale=1e3 rtol=1e-3
+* EXPECT g2 key:../../chapters/10-07-bjt-single-stage-amplifiers.md#Ex_10-07.2e rtol=1e-3
+* EXPECT g3 key:../../chapters/10-07-bjt-single-stage-amplifiers.md#Ex_10-07.4d rtol=1e-3
+* EXPECT r3 key:../../chapters/10-07-bjt-single-stage-amplifiers.md#Ex_10-07.4a rtol=1e-3
+* EXPECT g4 key:../../chapters/10-07-bjt-single-stage-amplifiers.md#Ex_10-07.5e rtol=1e-3
+* EXPECT r4 key:../../chapters/10-07-bjt-single-stage-amplifiers.md#Ex_10-07.5g rtol=1e-3
+
+.options temp=26.85 tnom=26.85 reltol=1e-8 abstol=1e-15 vntol=1e-9
+VCC vcc 0 DC 12
+.model qa NPN(IS=2.23805e-15 BF=100)
+.model qb NPN(IS=1e-15 BF=100)
+
+* (1) discrete CE, bypassed, loaded
+VS1 s1 0 DC 0 AC 1
+RSIG1 s1 x1 1k
+CIN1 x1 b1 1
+R11 vcc b1 47k
+R21 b1 0 10k
+RC1 vcc c1 4.7k
+RE1 e1 0 1k
+CE1 e1 0 1
+Q1 c1 b1 e1 qa
+COUT1 c1 o1 1
+RL1 o1 0 10k
+* (1') unloaded copy driven at the base through a coupling capacitor
+VS1U s1u 0 DC 0 AC 1
+CIN1U s1u b1u 1
+R11U vcc b1u 47k
+R21U b1u 0 10k
+RC1U vcc c1u 4.7k
+RE1U e1u 0 1k
+CE1U e1u 0 1
+Q1U c1u b1u e1u qa
+
+* (2) partly bypassed
+VS2 s2 0 DC 0 AC 1
+RSIG2 s2 x2 1k
+CIN2 x2 b2 1
+R12 vcc b2 47k
+R22 b2 0 10k
+RC2 vcc c2 4.7k
+RE21 e2 m2 100
+RE22 m2 0 900
+CE2 m2 0 1
+Q2 c2 b2 e2 qa
+COUT2 c2 o2 1
+RL2 o2 0 10k
+
+* (3) common base
+VCC3 vcc3 0 DC 10
+VB3 b3 0 DC 1.5
+RC3 vcc3 c3 5k
+Q3 c3 b3 e3 qb
+IE3 e3 0 DC 1.0101010101m
+VS3 s3 0 DC 0 AC 1
+RSIG3 s3 x3 50
+CIN3 x3 e3 1
+
+* (4) emitter follower
+VEE vee 0 DC -5.764317151988
+VS4 s4 0 DC 0.1 AC 1
+RSIG4 s4 b4 10k
+Q4 vcc b4 e4 qb
+RE4 e4 vee 5k
+COUT4 e4 o4 1
+RL4 o4 0 1k
+VS4R s4r 0 DC 0.1
+RSIG4R s4r b4r 10k
+Q4R vcc b4r e4r qb
+RE4R e4r vee 5k
+IX4 0 e4r DC 0 AC 1
+
+.control
+op
+let ic1 = @q1[ic]
+let ve4 = v(e4)
+echo "ic1 = $&ic1"
+echo "ve4 = $&ve4"
+ac lin 1 1k 1k
+let g1 = real(v(o1))
+let a1 = real(v(c1u))
+let r1 = -1 / real(i(vs1u))
+let g2 = real(v(o2))
+let g3 = real(v(c3))
+let r3 = real(v(e3)) / real((v(s3) - v(x3)) / 50)
+let g4 = real(v(o4))
+let r4 = real(v(e4r))
+echo "g1 = $&g1"
+echo "a1 = $&a1"
+echo "r1 = $&r1"
+echo "g2 = $&g2"
+echo "g3 = $&g3"
+echo "r3 = $&r3"
+echo "g4 = $&g4"
+echo "r4 = $&r4"
+.endc
+.end
