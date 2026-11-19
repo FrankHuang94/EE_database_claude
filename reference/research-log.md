@@ -182,6 +182,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-174 | Compound and wide-bandgap references | Nov 2026 |
 | R-175 | Optoelectronic device references | Nov 2026 |
 | R-176 | Diode and protection-device data sheets | Nov 2026 |
+| R-177 | MOSFET and load-switch data sheets | Nov 2026 |
 
 ---
 
@@ -1861,3 +1862,11 @@ R&D % = R&D ÷ revenue.
 - **TI LM74700-Q1** (SNOSD17G, revised Dec 2020): ideal-diode controller driving an external N-channel MOSFET; regulates the anode-to-cathode drop at 20 mV; 3.2–65 V input; −65 V reverse rating; reverse-current blocking in < 0.75 µs; AEC-Q100; guideline "(20 mV / I_Load(Nominal)) ≤ R_DS(ON) ≤ (50 mV / I_Load(Nominal))" [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/lm74700-q1.pdf).
 - **TI TPD1E10B06** (SLLSEB1G, revised Aug 2024): IEC 61000-4-2 level 4, ±30 kV contact and air-gap; IEC 61000-4-5 surge 6 A (8/20 µs); I/O capacitance 12 pF typical; R_DYN 0.4 Ω typical; breakdown ±6 V minimum; leakage ≤ 100 nA; clamp ≤ 10 V at I_PP = 1 A; "data rates up to 400Mbps" [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/tpd1e10b06.pdf).
 - **Course teaching models (not data):** the "course diode" (I_S = 10⁻¹⁵ A, n = 1) and the lab's "course rectifier diode" (I_S = 10 nA, n = 1.9) are illustrative models chosen to give realistic forward drops; they do not describe a particular part.
+
+## R-177 · MOSFET and load-switch data sheets
+
+*All read on 19 Nov 2026 from the PDFs at the URLs below, as downloaded. Data-sheet specifications are tagged [Established] as specifications of those parts.*
+
+- **onsemi BSS138** (BSS138/D, Rev. 7, April 2024): V_GS(th) 0.8/1.3/1.5 V (min/typ/max) at I_D = 1 mA; V_GS(th) temperature coefficient −2 mV/°C; R_DS(on) 0.7 Ω typical, 3.5 Ω maximum at V_GS = 10 V, 0.22 A; 1.0/6.0 Ω at 4.5 V; 1.1/5.8 Ω at 10 V and T_J = 125 °C; g_FS 0.12 S minimum, 0.5 S typical [Established]. [Data sheet](https://www.onsemi.com/pdf/datasheet/bss138-d.pdf).
+- **TI CSD17573Q5B** (SLPS492B, June 2014, revised April 2017): 30 V; V_GS(th) 1.1/1.4/1.8 V at 250 µA; R_DS(on) 1.19 mΩ typical, 1.45 mΩ maximum at V_GS = 4.5 V, 35 A; 0.84/1.00 mΩ at 10 V; g_fs 181 S; C_iss 6920 pF; Q_g (4.5 V) 49 nC; Q_gd 11.9 nC; SON 5 × 6 mm [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/csd17573q5b.pdf).
+- **TI TPS22918** (SLVSD76C, February 2016, revised July 2017): 1–5.5 V, 2 A load switch; R_ON 52 mΩ typical at V_IN = 5 V, 53 mΩ at 3.3 V; quiescent current 8.3 µA typical at 3.3 V; configurable rise time to limit inrush; quick output discharge [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/tps22918.pdf).

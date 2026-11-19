@@ -4193,3 +4193,17 @@
 - term: Ideal-diode controller
   definition: An integrated circuit that drives a MOSFET so that it conducts like a diode with a forward drop of tens of millivolts and blocks reverse current, replacing ORing and reverse-polarity diodes.
   chapter: "10-01"
+# ---------------------------------------------------------------- 10-02
+- term: Diode-connected transistor
+  definition: A transistor with its gate tied to its drain (or base to collector), which is always saturated (active) and behaves as a two-terminal device whose voltage sets itself to carry the current fed to it; the input half of a current mirror.
+  chapter: "10-02"
+- term: Current mirror
+  definition: Two or more transistors sharing a gate (base) voltage with one diode-connected, so that the others copy its current in the ratio of their sizes, independent of the threshold to first order.
+  chapter: "10-02"
+  see_also: [Diode-connected transistor]
+- term: On-resistance
+  definition: The drain-to-source resistance of a MOSFET switched fully on, about 1/[μC_ox(W/L)(V_GS − V_TH)] in deep triode; data sheets quote R_DS(on) at stated gate voltages and temperatures.
+  chapter: "10-02"
+- term: Load switch
+  definition: An integrated MOSFET switch with its gate driver and controlled turn-on, used to connect or disconnect a power rail from a load while limiting inrush current.
+  chapter: "10-02"

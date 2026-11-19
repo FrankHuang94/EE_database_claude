@@ -28,7 +28,7 @@ Turning devices into circuits: diode circuits, transistor biasing, small-signal 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
 | [10-01 · Diodes and Diode Circuits](chapters/10-01-diodes-and-diode-circuits.md) | 10 | ✅ verified | [problems](problems/10-01-problems.md) · [solutions](solutions/10-01-solutions.md) · [lab](labs/10-01-lab/README.md) · [verify](verify/verify_10_01.py) |
-| [10-02 · MOSFET DC Operation and Biasing](chapters/10-02-mosfet-dc-operation-and-biasing.md) | 10 | ⬜ planned | — |
+| [10-02 · MOSFET DC Operation and Biasing](chapters/10-02-mosfet-dc-operation-and-biasing.md) | 10 | ✅ verified | [problems](problems/10-02-problems.md) · [solutions](solutions/10-02-solutions.md) · [lab](labs/10-02-lab/README.md) · [verify](verify/verify_10_02.py) |
 | [10-03 · BJT DC Operation and Biasing](chapters/10-03-bjt-dc-operation-and-biasing.md) | 9 | ⬜ planned | — |
 | [10-04 · Small-Signal Models](chapters/10-04-small-signal-models.md) | 10 | ⬜ planned | — |
 | [10-05 · Amplifier Fundamentals](chapters/10-05-amplifier-fundamentals.md) | 6 | ⬜ planned | — |

@@ -1,0 +1,43 @@
+* Lab 10-02 -- operating points of Examples 10-02.2 (PMOS) and 10-02.3 (divider bias with source
+* degeneration), with SPICE's level-1 MOSFET, which is the square law of the chapter:
+* I_D = (KP/2)(W/L)(V_GS - VTO)^2 (1 + LAMBDA V_DS) in saturation. Bodies are tied to sources, so there is
+* no body effect, and LAMBDA = 0 as in the examples.
+*   NMOS: KP = 400 uA/V^2, W/L = 10  -> k_n = 4 mA/V^2, VTO = 0.5 V
+*   PMOS: KP = 100 uA/V^2, W/L = 10  -> k_p = 1 mA/V^2, VTO = -0.5 V
+*
+* EXPECT idn key:../../chapters/10-02-mosfet-dc-operation-and-biasing.md#Ex_10-02.3d scale=1e-3 rtol=1e-3
+* EXPECT vs  key:../../chapters/10-02-mosfet-dc-operation-and-biasing.md#Ex_10-02.3e rtol=1e-3
+* EXPECT vdn key:../../chapters/10-02-mosfet-dc-operation-and-biasing.md#Ex_10-02.3f rtol=2e-4
+* EXPECT idp key:../../chapters/10-02-mosfet-dc-operation-and-biasing.md#Ex_10-02.2b scale=1e-3 rtol=1e-3
+* EXPECT vdp key:../../chapters/10-02-mosfet-dc-operation-and-biasing.md#Ex_10-02.2c rtol=1e-3
+
+* Example 10-02.3
+VDD vdd 0 DC 5
+R1 vdd g 3Meg
+R2 g 0 2Meg
+RD vdd dn 2k
+RS sn 0 1k
+M1 dn g sn sn nch W=10u L=1u
+.model nch NMOS(LEVEL=1 KP=400u VTO=0.5 LAMBDA=0)
+
+* Example 10-02.2
+VDP vddp 0 DC 3.3
+VGP gp 0 DC 2.1
+RDP dp 0 4k
+M2 dp gp vddp vddp pch W=10u L=1u
+.model pch PMOS(LEVEL=1 KP=100u VTO=-0.5 LAMBDA=0)
+
+.control
+op
+let idn = v(sn) / 1k
+let vs = v(sn)
+let vdn = v(dn)
+let idp = v(dp) / 4k
+let vdp = v(dp)
+echo "idn = $&idn"
+echo "vs = $&vs"
+echo "vdn = $&vdn"
+echo "idp = $&idp"
+echo "vdp = $&vdp"
+.endc
+.end
