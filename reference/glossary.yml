@@ -4355,3 +4355,21 @@
   definition: An op-amp that continuously measures and cancels its own offset (by autozeroing or chopping), achieving microvolt offset and near-zero drift at the cost of bandwidth, switching artifacts and higher current noise.
   chapter: "10-09"
   see_also: [Offset drift]
+# ---------------------------------------------------------------- 10-10
+- term: Precision rectifier
+  definition: A rectifier with its diode inside an op-amp's feedback loop, so the diode's forward drop is divided by the loop gain; its accuracy at high frequency is limited by the op-amp's slew through about two diode drops at each zero crossing.
+  chapter: "10-10"
+- term: Comparator
+  definition: An amplifier designed to switch between two output levels according to the sign of its differential input, uncompensated and with fast saturation recovery, often with a push-pull or open-drain logic output.
+  chapter: "10-10"
+  see_also: [Schmitt trigger]
+- term: Schmitt trigger
+  definition: A comparator with positive feedback that gives two switching thresholds, so a slowly varying, noisy input switches the output once instead of chattering; the threshold separation is its hysteresis.
+  chapter: "10-10"
+  see_also: [Hysteresis (switching)]
+- term: Hysteresis (switching)
+  definition: The difference between the input level at which a switching circuit changes state on a rising input and the level at which it changes back on a falling input; it should exceed the input noise's peak-to-peak value.
+  chapter: "10-10"
+- term: Open-drain output
+  definition: An output stage that can only pull its pin low; a pull-up resistor supplies the high level, which allows wired-OR connections and level shifting at the cost of a resistor-capacitor rise time and static current when low.
+  chapter: "10-10"

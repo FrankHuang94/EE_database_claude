@@ -1,0 +1,57 @@
+* Lab 10-10 -- (1) Example 10-10.1(a): a unity-gain difference amplifier with its four 10 kOhm resistors at the
+* worst-case corners of a 0.1% tolerance (R1 and R4 high, R2 and R3 low), with an ideal op-amp (high-gain VCVS);
+* common-mode and differential gains give the CMRR. (2) Example 10-10.7: the photodiode TIA (R_F = 100 kOhm,
+* C_in = 14 pF) with a single-pole op-amp (G = 1 S into R_p || C_p with A_0 = R_p = 1e8 and GBW = 1/(2 pi C_p) = 10 MHz), without and with
+* C_F = 2.105 pF: peak transimpedance relative to R_F, and the -3 dB frequency.
+*
+* EXPECT cmrr key:../../chapters/10-10-op-amp-application-circuits.md#Ex_10-10.1a rtol=1e-3
+* EXPECT pk key:../../chapters/10-10-op-amp-application-circuits.md#Ex_10-10.7c rtol=2e-3
+* EXPECT f3 key:../../chapters/10-10-op-amp-application-circuits.md#Ex_10-10.7g scale=1e6 rtol=1e-3
+
+.subckt opamp inp inm out PARAMS: RP=1 CP=1
+G1 0 x inp inm 1
+RP1 x 0 {RP}
+CP1 x 0 {CP}
+E1 out 0 x 0 1
+.ends
+
+* (1) difference amplifier, common-mode drive
+VCM cm 0 DC 0 AC 1
+R1C cm nm 10.01k
+R2C nm oc 9.99k
+R3C cm np 9.99k
+R4C np 0 10.01k
+EC oc 0 np nm 1e9
+* differential drive (+0.5 / -0.5)
+VD1 d1 0 DC 0 AC -0.5
+VD2 d2 0 DC 0 AC 0.5
+R1D d1 nmd 10.01k
+R2D nmd od 9.99k
+R3D d2 npd 9.99k
+R4D npd 0 10.01k
+ED od 0 npd nmd 1e9
+
+* (2) TIA without and with C_F; photocurrent 1 A AC into the inverting node
+IPD0 0 n0 DC 0 AC 1
+CIN0 n0 0 14p
+RF0 o0 n0 100k
+X0 0 n0 o0 opamp RP=1e8 CP=1.5915494309e-8
+IPD1 0 n1 DC 0 AC 1
+CIN1 n1 0 14p
+RF1 o1 n1 100k
+CF1 o1 n1 2.105p
+X1 0 n1 o1 opamp RP=1e8 CP=1.5915494309e-8
+
+.control
+ac lin 1 1k 1k
+let cmrr = vm(od) / vm(oc)
+echo "cmrr = $&cmrr"
+ac dec 4000 10k 10Meg
+let z0 = vm(o0) / 100k
+let pk = vecmax(z0)
+echo "pk = $&pk"
+let z1 = vm(o1) / vm(o1)[0]
+meas ac f3 when z1=0.7071067811865476 fall=1
+echo "f3 = $&f3"
+.endc
+.end

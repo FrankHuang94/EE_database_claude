@@ -188,6 +188,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-180 | Image-sensor pixel readout | Nov 2026 |
 | R-181 | Transistor matching | Nov 2026 |
 | R-182 | Op-amp data sheets | Nov 2026 |
+| R-183 | Instrumentation amplifier and comparator data sheets | Nov 2026 |
 
 ---
 
@@ -1908,3 +1909,10 @@ R&D % = R&D ÷ revenue.
 - **TI TLV9061/TLV9062/TLV9064** (SBOS839N, March 2017, revised July 2026), §6.10 at 25 °C, R_L = 10 kΩ to V_S/2: V_OS ±0.3 mV typ, ±1.6 mV max (V_S = 5 V), ±2 mV max over −40 to 125 °C; drift ±0.53 µV/°C typ; PSRR ±7 typ, ±80 max µV/V; V_CM (V−) − 0.1 to (V+) + 0.1 V; CMRR 103 dB typ (80 min) for (V−) − 0.1 V < V_CM < (V+) − 1.4 V and 87 dB typ (57 min) over the full range at 5.5 V; I_B ±0.5 pA typ; e_n 10 nV/√Hz at 10 kHz and 16 at 1 kHz; A_OL 130 dB typ (104 min) at 5.5 V, 10 kΩ; GBW 10 MHz; phase margin 55°; SR 6.5 V/µs; output swing 20 mV max (10 kΩ) and 60 mV max (2 kΩ) from the rails; I_SC ±50 mA; features: supply 1.8–5.5 V, 538 µA quiescent current [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/tlv9062.pdf).
 - **TI OPA333/OPA2333** (SBOS351E, March 2006, revised December 2015), §6.6: V_OS 2 µV typ, 10 µV max; drift 0.02 typ, 0.05 µV/°C max; PSRR 1 typ, 5 µV/V max; I_B ±70 pA typ, ±200 pA max; CMRR 130 dB typ (106 min); A_OL 130 dB typ (106 min); GBW 350 kHz; SR 0.16 V/µs; output within 30 typ / 50 max mV of the rails at 10 kΩ; I_SC ±5 mA; I_Q 17 µA typ, 25 max; supply 1.8–5.5 V [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/opa333.pdf).
 - **TI OPA1611/OPA1612** (SBOS450C, July 2009, revised August 2014), §6.4: THD+N 0.000015% at 1 kHz; GBW 40 MHz (G = 1), 80 MHz (G = 100); SR 27 V/µs; full-power bandwidth 4 MHz for 1 Vpp, with the footnote formula SR/(2πV_P) (which gives 8.6 MHz for 1 Vpp; the table and footnote disagree, noted in 10-09); e_n 1.1 nV/√Hz typ at 1 kHz; V_OS ±100 µV typ, ±500 µV max; drift 1 typ, 4 µV/°C max; I_B ±60 nA typ, ±250 nA max; I_OS ±25 typ, ±175 nA max; V_CM (V−) + 2 to (V+) − 2 V; CMRR 120 typ, 110 dB min; A_OL 130 dB typ at 10 kΩ; output within 0.6 V of the rails at 2 kΩ; I_SC +55/−62 mA; I_Q 3.6 mA typ per channel; supply ±2.25 to ±18 V [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/opa1611.pdf).
+
+## R-183 · Instrumentation amplifier and comparator data sheets
+
+*Read on 19 Nov 2026 from the PDFs at the URLs below, as downloaded. Specifications are tagged [Established] as specifications of those parts.*
+
+- **TI INA333** (SBOS445C, July 2008, revised December 2015), §6.5 at V_S = 1.8–5.5 V, 25 °C: gain G = 1 + (100 kΩ/R_G), range 1 to 1000; offset referred to input ±10 ± 25/G µV typ, ±25 ± 75/G µV max; offset drift ±0.1 ± 0.5/G µV/°C (typical column); CMRR (dc to 60 Hz, full common-mode range) 90 typ / 80 min dB at G = 1, 110 / 100 dB at G = 10, 115 / 100 dB at G = 100 and 1000; I_B ±70 pA typ, ±200 pA max; input noise 50 nV/√Hz at G = 100; gain error at G = 100 ±0.07% typ, ±0.25% max; quiescent current 50 µA typ, 75 µA max; laser-trimmed resistors; the application section warns that tens of ohms in series with REF noticeably degrade CMRR [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/ina333.pdf).
+- **TI TLV3201/TLV3202** (SBOS561C, March 2012, revised May 2024), §6.5–6.6 at V_CC = 5 V: input offset 1 mV typ, 3 mV max (TLV3201); drift 1 typ, 10 µV/°C max; internal input hysteresis 1.2 mV; I_B 1 pA typ, 50 pA max at 25 °C; propagation delay 47 ns typ, 50 ns max (low to high, 20 mV overdrive, C_L = 15 pF); rise time 2.9 ns; push-pull output; I_Q 40 µA typ, 50 µA max [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/tlv3201.pdf).
