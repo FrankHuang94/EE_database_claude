@@ -157,6 +157,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-149 | Chip transistor counts | Nov 2026 |
 | R-150 | Logic synthesis tools | Nov 2026 |
 | R-151 | EDA industry revenue and structure | Nov 2026 |
+| R-152 | Discrete logic propagation delays | Nov 2026 |
 
 ---
 
@@ -1511,3 +1512,12 @@ R&D % = R&D ÷ revenue.
 - **ESD Alliance** (SEMI), Electronic Design Market Data, Q2 2026 (Oct 2026): "Electronic System Design (ESD) industry revenue increased 12.2% to $5,710.8 million in the second quarter of 2026" (from $5,089.4 M); the category includes semiconductor IP [Industry estimate: aggregated survey].
 - **Market shares:** TrendForce (Jun 2025) for 2024: "Synopsys, Cadence, and Siemens hold 31%, 30%, and 13% market shares respectively"; Griffin Securities (DAC, Jul 2026): Big Three ≈ 90% of industry revenue; SemiAnalysis: over 85%, Siemens EDA estimated at $2.2–2.5 B (Siemens does not report it separately) [Contested: methods differ].
 - **Sources:** [Synopsys FY2025 results](https://news.synopsys.com/2025-12-10-Synopsys-Posts-Financial-Results-for-Fourth-Quarter-and-Fiscal-Year-2025); [Synopsys 8-K Ex. 99.1](https://www.sec.gov/Archives/edgar/data/883241/000119312525314200/d29055dex991.htm); [Synopsys–Ansys closing](https://news.synopsys.com/2025-07-17-Synopsys-Completes-Acquisition-of-ANSYS); [Cadence FY2025 (Business Wire)](https://www.businesswire.com/news/home/20260216202086/en); [SEMI ESD Alliance Q2 2026](https://www.semi.org/en/semi-press-release/electronic-system-design-industry-posts-$5.7-billion-in-revenue-in-q2-2026-esd-alliance-reports); [TrendForce](https://www.trendforce.com/news/2025/06/02/news-china-revenue-at-risk-as-u-s-curbs-slam-eda-giants-impact-on-synopsys-cadence-and-more/); [Griffin Securities DAC presentation](https://www.semi.org/sites/semi.org/files/2026-09/DAC%20presentation%20%28July%202026%29%207%20%281%29.pdf); [SemiAnalysis EDA primer](https://newsletter.semianalysis.com/p/eda-market-primer). Checked Nov 2026 (search excerpts).
+
+## R-152 · Discrete logic propagation delays
+
+*Course 08 facts file entries F-0829 and F-0830, cross-checked by web search on 19 Nov 2026; search-result excerpts only (ti.com and nexperia.com unreachable from the build environment; open issue 32).*
+
+- **Texas Instruments SN74HC151** (SN54HC151, SN74HC151 8-line to 1-line data selectors/multiplexers, SCLS110F, Dec 1982 – revised Feb 2022): at VCC = 4.5 V, CL = 50 pF, tpd from A, B or C (select) to Y: 30 ns typical, 50 ns maximum at 25 °C, 63 ns maximum over the SN74 recommended free-air temperature range [Established: datasheet values from search excerpts].
+- **Nexperia/NXP 74HC151 and 74HCT151:** excerpts of different revisions and families (HC versus HCT) disagree (for example 19 ns typical and 34/43/51 ns maximum in one HC table; 22/38/48/57 ns attributed to HC in one excerpt and to HCT in another; 7/15/19/22 ns for the current HCT row). Not used for numbers in the chapter; cited only to show that "the same" part number differs by vendor and revision [Contested].
+- **74HC283 4-bit adder** (legacy second sources): Hitachi HD74HC283, C0 to C4 at 4.5 V, 50 pF: 19 ns typical, 30 ns maximum at 25 °C, 38 ns maximum over −40 to +85 °C; ST M74HC283 about 20 ns typical, 30/38 ns maximum [Established for those documents; ballpark only].
+- **Sources:** [TI SN74HC151 datasheet](https://ti.com/document-viewer/SN74HC151/datasheet/GUID-2F1817E3-2C22-49C2-9E51-E36AC796E4B4); [TI SN74HC151 PDF](https://www.ti.com/lit/gpn/sn74hc151); [Nexperia 74HC151 (copy)](https://pdf.elecfans.com/p/8854924.html); [NXP 74HC151 (copy)](https://datasheetq.com/en/pdf-html/920297-2015/NXP/9page/74HC151.html); [Hitachi HD74HC283 (copy)](https://dtsheet.com/doc/466617/hitachi-hd74hc283); [ST M74HC283 (Mouser copy)](https://www.mouser.com/datasheet/2/389/stmicroelectronics_cd00000296-1204153.pdf). Checked Nov 2026 (search excerpts).

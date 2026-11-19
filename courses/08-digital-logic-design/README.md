@@ -30,7 +30,7 @@ From number systems and Boolean algebra to finite state machines, timing and FPG
 | [08-01 · Number Systems and Codes](chapters/08-01-number-systems-and-codes.md) | 7 | ✅ verified | [problems](problems/08-01-problems.md) · [solutions](solutions/08-01-solutions.md) · [lab](labs/08-01-lab/README.md) · [verify](verify/verify_08_01.py) |
 | [08-02 · Boolean Algebra and Logic Gates](chapters/08-02-boolean-algebra-and-gates.md) | 8 | ✅ verified | [problems](problems/08-02-problems.md) · [solutions](solutions/08-02-solutions.md) · [lab](labs/08-02-lab/README.md) · [verify](verify/verify_08_02.py) |
 | [08-03 · Logic Minimization: K-Maps and Beyond](chapters/08-03-logic-minimization.md) | 8 | ✅ verified | [problems](problems/08-03-problems.md) · [solutions](solutions/08-03-solutions.md) · [lab](labs/08-03-lab/README.md) · [verify](verify/verify_08_03.py) |
-| [08-04 · Combinational Building Blocks](chapters/08-04-combinational-building-blocks.md) | 10 | ⬜ planned | — |
+| [08-04 · Combinational Building Blocks](chapters/08-04-combinational-building-blocks.md) | 10 | ✅ verified | [problems](problems/08-04-problems.md) · [solutions](solutions/08-04-solutions.md) · [lab](labs/08-04-lab/README.md) · [verify](verify/verify_08_04.py) |
 | [08-05 · Introduction to Verilog/SystemVerilog and Testbenches](chapters/08-05-verilog-and-testbenches.md) | 12 | ⬜ planned | — |
 | [08-06 · Latches, Flip-Flops and Sequential Timing](chapters/08-06-latches-and-flip-flops.md) | 8 | ⬜ planned | — |
 | [08-07 · Registers, Counters and Shift Registers](chapters/08-07-registers-counters-shift-registers.md) | 7 | ⬜ planned | — |

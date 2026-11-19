@@ -146,8 +146,9 @@
   definition: The time a response takes to come and stay within a specified error band of its final value; τ·ln(1/ε) for a first-order system, and (N+1)·ln 2 · τ to reach ½ LSB of an N-bit converter.
   chapter: "07-02"
 - term: Propagation delay
-  definition: The time from an input transition to the output crossing 50 % of its swing; for an RC model, τ·ln 2 ≈ 0.69τ.
+  definition: The time from an input transition to the output crossing 50 % of its swing; for an RC model, τ·ln 2 ≈ 0.69τ. In digital timing, t_pd is the longest such delay from any input change until the output is final, and the delays along a path add (08-04).
   chapter: "07-02"
+  see_also: [Contamination delay, Critical path]
 - term: Dynamic power
   definition: Power consumed by charging and discharging capacitances in switching circuits, P = αCV²f, independent of the resistance of the charging path.
   chapter: "07-02"
@@ -3056,3 +3057,50 @@
   definition: Automatic translation of a register-transfer-level description into an optimized netlist of library cells, by elaboration, technology-independent optimization, technology mapping and timing-driven refinement.
   chapter: "08-03"
   see_also: [Technology mapping, And-inverter graph (AIG)]
+- term: Multiplexer
+  definition: A block that connects one of 2^k data inputs to its output, chosen by k select lines; a 2^(n-1)-input multiplexer with an inverter can implement any n-input function, which is how FPGA lookup tables work.
+  chapter: "08-04"
+  see_also: [Shannon expansion, Decoder]
+- term: Decoder
+  definition: A block with n inputs and 2^n outputs, exactly one of which is 1 (the minterm of the inputs); with an enable input it is also a demultiplexer, and it selects rows in memories and decodes instructions.
+  chapter: "08-04"
+- term: Priority encoder
+  definition: A block that outputs the number of the highest-priority active input, plus a valid flag that is 0 when no input is active; used for interrupt arbitration and leading-one detection.
+  chapter: "08-04"
+- term: Tristate buffer
+  definition: A buffer whose output is either driven to the input value or disconnected (high impedance, Z), so that several drivers can share one wire as long as exactly one is enabled.
+  chapter: "08-04"
+- term: Half adder
+  definition: A block that adds two bits, giving sum S = A XOR B and carry C = AB.
+  chapter: "08-04"
+  see_also: [Full adder]
+- term: Full adder
+  definition: A block that adds two bits and a carry in, giving S = A XOR B XOR Cin (three-input parity) and Cout = majority(A, B, Cin) = G + P·Cin.
+  chapter: "08-04"
+  see_also: [Generate and propagate, Ripple-carry adder]
+- term: Ripple-carry adder
+  definition: An n-bit adder made of n full adders with each carry out feeding the next carry in; small, but its delay grows linearly with n because a carry may have to travel through every column.
+  chapter: "08-04"
+- term: Generate and propagate
+  definition: In an adder column, generate G = AB means the column produces a carry by itself, and propagate P = A XOR B means it passes an incoming carry on, so Cout = G + P·Cin; the basis of all fast adders.
+  chapter: "08-04"
+- term: Arithmetic-logic unit (ALU)
+  definition: A block that performs one of several arithmetic and logical operations on two words, chosen by an operation code, and reports status flags; the computational core of a processor datapath.
+  chapter: "08-04"
+  see_also: [Status flags]
+- term: Status flags
+  definition: The Z (zero), N (negative, the result's sign bit), C (carry out) and V (signed overflow) bits produced by an ALU; unsigned A < B is a borrow (C = 0 after A − B) and signed A < B is N XOR V.
+  chapter: "08-04"
+- term: Contamination delay
+  definition: The shortest time from an input change until an output starts to change (t_cd); it bounds how soon a new input can disturb a downstream register and sets hold-time constraints.
+  chapter: "08-04"
+- term: Critical path
+  definition: The slowest input-to-output path through a block of logic; its propagation delay limits the clock frequency of the design.
+  chapter: "08-04"
+- term: Hazard
+  definition: The possibility of a momentary wrong output after an input change, caused by unequal path delays; a static-1 hazard dips to 0 when the output should stay 1, and is removed in two-level logic by adding consensus terms.
+  chapter: "08-04"
+  see_also: [Glitch, Consensus theorem]
+- term: Glitch
+  definition: A brief unintended pulse on a signal while logic settles; harmless on data sampled by flip-flops after settling, but dangerous on clocks, asynchronous resets and signals leaving the clock domain, and a waste of energy everywhere.
+  chapter: "08-04"
