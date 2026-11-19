@@ -67,7 +67,7 @@ The full map, with university equivalents, textbook alignment, objectives and ch
 | 1 | [05 · Programming for Engineers](courses/05-programming-for-engineers/README.md) | 9 | 80 | 9/9 |
 | 2 | [06 · Circuit Analysis I (DC)](courses/06-circuit-analysis-1-dc/README.md) | 11 | 86 | 11/11 |
 | 2 | [07 · Circuit Analysis II (Transient and AC)](courses/07-circuit-analysis-2-transient-and-ac/README.md) | 11 | 103 | 11/11 |
-| 2 | [08 · Digital Logic Design](courses/08-digital-logic-design/README.md) | 12 | 106 | 4/12 |
+| 2 | [08 · Digital Logic Design](courses/08-digital-logic-design/README.md) | 12 | 106 | 5/12 |
 | 3 | [09 · Semiconductor Devices](courses/09-semiconductor-devices/README.md) | 14 | 116 | 0/14 |
 | 3 | [10 · Electronics I (Microelectronic Circuits)](courses/10-electronics-1/README.md) | 10 | 99 | 0/10 |
 | 3 | [11 · Signals and Systems](courses/11-signals-and-systems/README.md) | 11 | 106 | 0/11 |

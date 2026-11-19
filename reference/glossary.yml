@@ -3104,3 +3104,40 @@
 - term: Glitch
   definition: A brief unintended pulse on a signal while logic settles; harmless on data sampled by flip-flops after settling, but dangerous on clocks, asynchronous resets and signals leaving the clock domain, and a waste of energy everywhere.
   chapter: "08-04"
+- term: Verilog
+  definition: A hardware description language created in 1984 and standardized as IEEE 1364 (1995, 2001, 2005); since 2009 it is formally part of SystemVerilog (IEEE 1800).
+  chapter: "08-05"
+  see_also: [SystemVerilog, Hardware description language (HDL)]
+- term: SystemVerilog
+  definition: The IEEE 1800 hardware design and verification language (current edition 1800-2023), a superset of Verilog adding the logic type, always_comb/always_ff, enums, assertions, classes, constrained randomization and coverage.
+  chapter: "08-05"
+- term: Synthesizable subset
+  definition: The part of an HDL that synthesis tools turn into hardware (continuous assignments, combinational and clocked always blocks, case, constant-bound loops, parameters); delays, system tasks, file I/O and most initial blocks are simulation-only.
+  chapter: "08-05"
+- term: Continuous assignment
+  definition: A Verilog assign statement, which drives a net with an expression that is re-evaluated whenever any operand changes; it describes combinational logic.
+  chapter: "08-05"
+- term: Blocking assignment
+  definition: The Verilog assignment a = b inside a procedural block, which updates a immediately so that later statements see the new value; correct for combinational logic, a source of races in clocked blocks.
+  chapter: "08-05"
+  see_also: [Non-blocking assignment, Race condition]
+- term: Non-blocking assignment
+  definition: The Verilog assignment a <= b, whose right-hand side is evaluated immediately but whose update is deferred to the end of the time step, so all registers in a clocked block sample their inputs simultaneously like real flip-flops.
+  chapter: "08-05"
+  see_also: [Blocking assignment]
+- term: Race condition
+  definition: A situation in which a simulation result depends on the arbitrary order in which concurrent processes execute, typically from blocking assignments in clocked blocks that read each other's outputs.
+  chapter: "08-05"
+- term: Latch inference
+  definition: Synthesis creating a latch because a combinational block leaves an output unassigned on some path, so the output must hold its previous value; prevented by default assignments, complete case/if statements or always_comb.
+  chapter: "08-05"
+- term: Four-valued logic
+  definition: The simulation model in which each bit is 0, 1, X (unknown) or Z (undriven); 0 dominates AND and 1 dominates OR, other combinations with X or Z give X, and === compares the four values literally.
+  chapter: "08-05"
+- term: Design under test (DUT)
+  definition: The design instantiated inside a testbench, whose outputs are driven, observed and checked against a reference model.
+  chapter: "08-05"
+  see_also: [Testbench]
+- term: Linting
+  definition: Static checking of source code for suspicious constructs (width mismatches, inferred latches, unused signals, incomplete sensitivity lists) without simulating it; Verilator's --lint-only mode is a widely used HDL linter.
+  chapter: "08-05"

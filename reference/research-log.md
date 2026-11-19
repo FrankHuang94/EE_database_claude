@@ -158,6 +158,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-150 | Logic synthesis tools | Nov 2026 |
 | R-151 | EDA industry revenue and structure | Nov 2026 |
 | R-152 | Discrete logic propagation delays | Nov 2026 |
+| R-153 | HDL standards and open-source tools | Nov 2026 |
 
 ---
 
@@ -1521,3 +1522,16 @@ R&D % = R&D ÷ revenue.
 - **Nexperia/NXP 74HC151 and 74HCT151:** excerpts of different revisions and families (HC versus HCT) disagree (for example 19 ns typical and 34/43/51 ns maximum in one HC table; 22/38/48/57 ns attributed to HC in one excerpt and to HCT in another; 7/15/19/22 ns for the current HCT row). Not used for numbers in the chapter; cited only to show that "the same" part number differs by vendor and revision [Contested].
 - **74HC283 4-bit adder** (legacy second sources): Hitachi HD74HC283, C0 to C4 at 4.5 V, 50 pF: 19 ns typical, 30 ns maximum at 25 °C, 38 ns maximum over −40 to +85 °C; ST M74HC283 about 20 ns typical, 30/38 ns maximum [Established for those documents; ballpark only].
 - **Sources:** [TI SN74HC151 datasheet](https://ti.com/document-viewer/SN74HC151/datasheet/GUID-2F1817E3-2C22-49C2-9E51-E36AC796E4B4); [TI SN74HC151 PDF](https://www.ti.com/lit/gpn/sn74hc151); [Nexperia 74HC151 (copy)](https://pdf.elecfans.com/p/8854924.html); [NXP 74HC151 (copy)](https://datasheetq.com/en/pdf-html/920297-2015/NXP/9page/74HC151.html); [Hitachi HD74HC283 (copy)](https://dtsheet.com/doc/466617/hitachi-hd74hc283); [ST M74HC283 (Mouser copy)](https://www.mouser.com/datasheet/2/389/stmicroelectronics_cd00000296-1204153.pdf). Checked Nov 2026 (search excerpts).
+
+## R-153 · HDL standards and open-source tools
+
+*Tool facts read directly from the repositories with `git` on 19 Nov 2026; standards facts from search excerpts (IEEE and Accellera pages unreachable from the build environment), Course 08 facts file entries F-0831 to F-0837.*
+
+- **IEEE 1800-2023 (SystemVerilog):** "Board Approval 2023-12-06"; "Published: 2024-02-28"; supersedes 1800-2017. Accellera sponsors free download through the IEEE GET program [Established; search excerpts].
+- **IEEE 1800-2009:** "This standard represents a merger of two previous standards: IEEE Std 1364(TM)-2005 Verilog hardware description language (HDL) and IEEE Std 1800-2005 SystemVerilog." [Established; search excerpt]. Verilog's earlier history (Gateway Design Automation, 1984; IEEE 1364-1995, -2001, -2005) is standard textbook history.
+- **Icarus Verilog** (steveicarus/iverilog): annotated tags `v12_0` (2022-12-26) and `v13_0` (2026-03-01); the README: "Icarus Verilog is intended to compile ALL of the Verilog HDL, as described in the IEEE 1364 standard. Of course, it's not quite there yet." and supports "a (slowly growing) subset" of IEEE 1800 [Established].
+- **Verilator** (verilator/verilator, commit c90daea, 19 Nov 2026): `Changes` lists "Verilator 5.054 2026-11-01", "Verilator 5.052 2026-09-05", "Verilator 5.050 2026-07-01"; the README: "Welcome to Verilator, the fastest Verilog/SystemVerilog simulator" and "single thread is about 100 times faster than interpreted Verilog simulators" [Established for versions; Industry estimate for the speed claim, the project's own].
+- **cocotb** (cocotb/cocotb): tags `v2.0.1` (2025-11-15) and `v2.1.0` (2026-08-30); "cocotb is a framework empowering users to write VHDL and Verilog testbenches in Python." [Established].
+- **GTKWave** (gtkwave/gtkwave): newest tag v3.3.116 (Jul 2023); main branch `meson.build` "version: '4.0.0-prealpha'", CHANGELOG "[Unreleased]", with "Current limitations compared to GTKWave LTS 3.3" [Established; read by the research subagent with git].
+- **This build environment and CI:** Icarus Verilog 12.0 and Verilator 5.020 (the Ubuntu 24.04 packages), confirmed with `iverilog -V` and `verilator --version`.
+- **Sources:** [IEEE 1800-2023](https://standards.ieee.org/ieee/1800/6700); [Accellera IEEE GET announcement](https://accellera.org/news/press-releases/394-accellera-announces-ieee-1800-2023-standard-available-through-ieee-get-program); [IEEE 1800-2009](https://standards.ieee.org/ieee/1800/3989); [steveicarus/iverilog](https://github.com/steveicarus/iverilog); [verilator/verilator](https://github.com/verilator/verilator); [cocotb/cocotb](https://github.com/cocotb/cocotb); [gtkwave/gtkwave](https://github.com/gtkwave/gtkwave). Checked Nov 2026.
