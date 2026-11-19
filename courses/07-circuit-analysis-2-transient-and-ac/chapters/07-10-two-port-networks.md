@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 07-10 · Two-Port Networks
 
 | | |

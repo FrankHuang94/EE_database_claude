@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 07-05 · Sinusoidal Steady State, Phasors and Impedance
 
 | | |

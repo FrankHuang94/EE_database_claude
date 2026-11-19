@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 07-02 · First-Order RC and RL Transients
 
 | | |

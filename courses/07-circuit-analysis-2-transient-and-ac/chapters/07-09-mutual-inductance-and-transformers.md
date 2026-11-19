@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 07-09 · Mutual Inductance and Transformers
 
 | | |

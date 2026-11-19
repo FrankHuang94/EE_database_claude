@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 07-01 · Capacitors and Inductors
 
 | | |

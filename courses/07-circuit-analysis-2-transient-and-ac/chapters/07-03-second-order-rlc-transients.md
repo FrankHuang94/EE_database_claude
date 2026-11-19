@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 07-03 · Second-Order RLC Transients
 
 | | |

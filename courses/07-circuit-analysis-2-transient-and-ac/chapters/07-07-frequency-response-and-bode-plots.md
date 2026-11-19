@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 07-07 · Frequency Response and Bode Plots
 
 | | |
