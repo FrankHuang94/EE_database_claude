@@ -22,3 +22,4 @@ Math is written as `\(...\)` (inline) and `\[...\]` (display), which Anki render
 | 05 · Programming for Engineers (05-01 to 05-09) | [05-programming-for-engineers.csv](05-programming-for-engineers.csv) | 128 |
 | 06 · Circuit Analysis I | [06-circuit-analysis-1-dc.csv](06-circuit-analysis-1-dc.csv) | 122 |
 | 07 · Circuit Analysis II | [07-circuit-analysis-2-transient-and-ac.csv](07-circuit-analysis-2-transient-and-ac.csv) | 134 |
+| 08 · Digital Logic Design | [08-digital-logic-design.csv](08-digital-logic-design.csv) | 106 |

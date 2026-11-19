@@ -1,0 +1,110 @@
+#separator:comma
+#html:true
+#columns:Front,Back,Tags
+#tags column:3
+"Range of an \(n\)-bit two's-complement number?","\(-2^{n-1}\) to \(2^{n-1}-1\): −128 to 127 for 8 bits, −32 768 to 32 767 for 16.",bsee::08 bsee::08-01
+"How do you negate a two's-complement number, and why does it work?","Invert every bit and add 1: \(-x = 2^n - x = (2^n - 1 - x) + 1\), and \(2^n - 1 - x\) is \(x\) inverted.",bsee::08 bsee::08-01
+"How is signed overflow detected in an adder?","\(V = C_n \oplus C_{n-1}\): the carries into and out of the top bit differ. Equivalently, two same-sign operands give a result of the other sign.",bsee::08 bsee::08-01
+"How do you sign-extend a two's-complement number?","Copy the top (sign) bit into every new high bit; the value is unchanged.",bsee::08 bsee::08-01
+"Resolution and range of a signed Q\(m\).\(f\) number?","Resolution \(2^{-f}\); range \(-2^{m-1}\) to \(2^{m-1} - 2^{-f}\). Q1.15 covers −1 to just under +1 in steps of \(2^{-15}\).",bsee::08 bsee::08-01
+"Width of the product of an \(a\)-bit and a \(b\)-bit signed number, and the one case that needs the top bit?","\(a + b\) bits; only (most negative) × (most negative), e.g. \((-128)^2 = 2^{14}\) in 8 bits, needs it.",bsee::08 bsee::08-01
+"How many guard bits does a sum of \(N\) terms need?","\(\lceil\log_2 N\rceil\).",bsee::08 bsee::08-01
+"Truncation versus rounding to nearest in two's complement?","Truncation always rounds toward −∞ (average bias about −½ LSB); rounding to nearest adds ½ LSB first and removes the bias.",bsee::08 bsee::08-01
+"Gray code of binary \(b\), and why use it?","\(g = b \oplus (b \gg 1)\). Successive values differ in exactly one bit, so a value sampled mid-change is either the old or the new one (counters crossing clock domains, encoders).",bsee::08 bsee::08-01
+"IEEE float value for normal numbers, and the bias?","\(x = (-1)^s \times 1.F \times 2^{E - \text{bias}}\), bias \(= 2^{e-1} - 1\) (127 for FP32).",bsee::08 bsee::08-01
+"What can a code with minimum distance \(d\) do?","Detect \(d - 1\) errors, or correct \(\lfloor (d-1)/2 \rfloor\). Hamming codes have \(d = 3\) (correct 1); SEC-DED \(d = 4\).",bsee::08 bsee::08-01
+"How many check bits does a SEC-DED code need for 64 data bits?","Smallest \(r\) with \(2^r \ge 64 + r + 1\) is 7, plus 1 for DED: 8, a (72,64) code (12.5% overhead).",bsee::08 bsee::08-01
+"What does a Hamming syndrome tell you?","The binary position of a single flipped bit (0 = no error). Flip that bit to correct the word.",bsee::08 bsee::08-01
+"What errors does a CRC with a well-chosen degree-\(r\) generator always detect?","Every single-bit error, every burst of length \(\le r\), and every odd number of errors if \(x + 1\) divides \(g(x)\).",bsee::08 bsee::08-01
+"How many Boolean functions of \(n\) inputs exist?","\(2^{2^n}\): 16 for 2 inputs, 256 for 3, 65 536 for 4.",bsee::08 bsee::08-02
+"State De Morgan's theorems.","\(\overline{AB} = \overline{A} + \overline{B}\) and \(\overline{A + B} = \overline{A}\,\overline{B}\).",bsee::08 bsee::08-02
+"The consensus theorem?","\(AB + \overline{A}C + BC = AB + \overline{A}C\): the term \(BC\) is redundant.",bsee::08 bsee::08-02
+"Simplify \(A + \overline{A}B\).","\(A + B\).",bsee::08 bsee::08-02
+"Why is NAND-NAND logic equivalent to AND-OR?","By De Morgan, \(\overline{\overline{AB}\cdot\overline{CD}} = AB + CD\): pushing the output bubbles back onto the inputs of the second gate turns it into an OR.",bsee::08 bsee::08-02
+"Why are NAND and NOR natural in static CMOS, and AND and OR not?","A static CMOS gate is inverting: its pull-down network conducts to pull the output low. AND and OR need an extra inverter (6 transistors for a 2-input AND).",bsee::08 bsee::08-02
+"Transistor counts: inverter, NAND2, AND2, \(k\)-input NOR, AOI22?","2, 4, 6, \(2k\), 8.",bsee::08 bsee::08-02
+"In a static CMOS NAND, how are the nMOS and pMOS transistors connected?","nMOS in series (pull-down conducts only when all inputs are 1), pMOS in parallel (pull-up conducts if any input is 0): the networks are duals.",bsee::08 bsee::08-02
+"State the Shannon expansion and one use.","\(f = \overline{x}f_{x=0} + x f_{x=1}\). It is a 2:1 multiplexer on \(x\); recursively it gives LUTs, BDDs and equivalence checking.",bsee::08 bsee::08-02
+"What is a function's lookup-table integer?","The integer whose bit \(i\) is the output in truth-table row \(i\): 3-input parity is 150, majority 232.",bsee::08 bsee::08-02
+"How many minterms does a product term with \(k\) of \(n\) literals cover?","\(2^{n-k}\).",bsee::08 bsee::08-03
+"Why are K-map rows and columns in the order 00, 01, 11, 10?","Gray order: adjacent cells differ in one variable, so a rectangle of \(2^k\) adjacent 1s is one product term.",bsee::08 bsee::08-03
+"What is a prime implicant, and what is an essential one?","An implicant that cannot be enlarged; it is essential if it alone covers some minterm. Essential primes must appear in every minimal cover.",bsee::08 bsee::08-03
+"Is the largest group on a K-map always part of the minimal cover?","No. A large prime whose cells are all covered by essential primes is redundant (e.g. \(BD\) in \(\sum m(1,5,6,7,11,12,13,15)\)).",bsee::08 bsee::08-03
+"How do you get a minimal product of sums from a K-map?","Group the 0s to get a minimal SOP for \(\overline{F}\), then apply De Morgan.",bsee::08 bsee::08-03
+"How should don't cares be used?","Include them in groups when that makes a group larger; never add a group just to cover a don't care.",bsee::08 bsee::08-03
+"Why don't synthesis tools use K-maps?","Exact minimization grows exponentially; tools use heuristics such as Espresso and multi-level optimization for tens to thousands of inputs.",bsee::08 bsee::08-03
+"Full-adder equations?","\(S = A \oplus B \oplus C_{in}\); \(C_{out} = AB + C_{in}(A \oplus B) = G + PC_{in}\).",bsee::08 bsee::08-04
+"Ripple-carry adder delay in the unit-delay model?","\(2n\) units to the top sum bit, \(2n + 1\) to the carry out: linear in width.",bsee::08 bsee::08-04
+"How does an adder subtract?","\(A - B = A + \overline{B} + 1\): invert \(B\) and set the carry-in to 1. A carry out of 0 means a borrow.",bsee::08 bsee::08-04
+"How many 2:1 multiplexers build a \(2^k\):1 multiplexer?","\(2^k - 1\), in \(k\) levels.",bsee::08 bsee::08-04
+"How can a \(2^{n-1}\):1 multiplexer implement any \(n\)-input function?","Use \(n - 1\) inputs as selects; each data input is 0, 1, \(x\) or \(\overline{x}\) for the remaining input.",bsee::08 bsee::08-04
+"How does a decoder implement a function?","Each output is one minterm; OR the outputs of the function's minterms.",bsee::08 bsee::08-04
+"What is a static-1 hazard, and how is it removed?","A momentary 0 when an input change moves between 1-cells covered by different terms; add the consensus term covering both cells.",bsee::08 bsee::08-04
+"What does a priority encoder output?","The index of the highest-priority active input, plus a valid flag for when no input is active.",bsee::08 bsee::08-04
+"How does Verilog size the expression in `c = a + b` with 4-bit operands and a 4-bit `c`, versus an 8-bit `p`?","By context: with 4-bit `c` the sum wraps mod 16 (9 + 12 → 5); with 8-bit `p` the operands extend first and the carry is kept (21).",bsee::08 bsee::08-05
+"What happens when a signed and an unsigned operand meet in a Verilog expression?","The whole expression becomes unsigned: the signed operand is zero-extended, not sign-extended.",bsee::08 bsee::08-05
+"Difference between `>>` and `>>>`?","`>>` shifts in zeros; `>>>` shifts in the sign bit, but only if the operand is `signed`.",bsee::08 bsee::08-05
+"Blocking `=` versus nonblocking `<=`: which in clocked blocks, and why?","Nonblocking: all right-hand sides are read before any update, so registers update together like real flip-flops (`x <= y; y <= x;` swaps). Blocking assignments execute in order.",bsee::08 bsee::08-05
+"What makes an `always @(*)` block infer a latch?","Some path through it leaves an output unassigned (a missing `else` or `case` branch). Assign defaults first or add a `default`.",bsee::08 bsee::08-05
+"What makes a testbench self-checking?","It compares outputs with a reference model or expected values and reports pass or fail itself, instead of relying on someone reading waveforms.",bsee::08 bsee::08-05
+"Fraction of \(M\) cases covered by \(M\) random vectors?","About \(1 - 1/e\) ≈ 63.2%; covering all takes about \(M(\ln M + 0.577)\) vectors.",bsee::08 bsee::08-05
+"Why can't a 32-bit adder be tested exhaustively?","\(2^{65}\) input combinations with carry-in: about \(1.2 \times 10^6\) years at a million per second. Use random, corner-case and formal checks.",bsee::08 bsee::08-05
+"Latch versus flip-flop?","A latch is level-sensitive: transparent while its clock is active. A flip-flop is edge-triggered: it samples \(D\) only at the clock edge.",bsee::08 bsee::08-06
+"Why is a cross-coupled inverter pair bistable?","Its two stable points have loop gain below 1; the middle point, where loop gain exceeds 1, is unstable (metastable), so disturbances grow away from it.",bsee::08 bsee::08-06
+"Define setup and hold time.","\(D\) must be stable \(t_{\text{setup}}\) before and \(t_{\text{hold}}\) after the clock edge, or the flip-flop may capture either value or go metastable.",bsee::08 bsee::08-06
+"Setup constraint for a register-to-register path?","\(t_{pcq} + t_{pd} + t_{\text{setup}} \le T_c\), with the slowest delays.",bsee::08 bsee::08-06
+"Hold constraint, and why can't slowing the clock fix a violation?","\(t_{ccq} + t_{cd} \ge t_{\text{hold}}\). \(T_c\) does not appear: it is a race at the same edge. Fix it by adding delay to the short path.",bsee::08 bsee::08-06
+"What sets the gain from pipelining \(k\) stages?","\(T_c = t_{\text{logic}}/k + t_{pcq} + t_{\text{setup}}\): the register overhead stays per stage, so throughput rises less than \(k\) times and latency rises.",bsee::08 bsee::08-06
+"Which delays are used for setup checks and which for hold checks?","Setup: the slowest (propagation) delays at the slow corner. Hold: the fastest (contamination) delays at the fast corner.",bsee::08 bsee::08-06
+"States used by ring, Johnson and binary counters with \(n\) flip-flops?","\(n\), \(2n\) and \(2^n\).",bsee::08 bsee::08-07
+"Johnson counter sequence for 4 bits from 0000?","0000, 1000, 1100, 1110, 1111, 0111, 0011, 0001: complement of the last stage fed back, one bit changes per step.",bsee::08 bsee::08-07
+"Why must a ripple counter's outputs not be decoded right after the edge?","Stages toggle one after another (settling \(n\,t_{cq}\)), so the outputs pass through false values, e.g. 0111 → 0110 → 0100 → 0000 → 1000.",bsee::08 bsee::08-07
+"Period of a maximal-length \(n\)-bit LFSR, and the condition for it?","\(2^n - 1\) (every nonzero state); the characteristic polynomial must be primitive.",bsee::08 bsee::08-07
+"Ones and zeros in one period of an m-sequence?","\(2^{n-1}\) ones and \(2^{n-1} - 1\) zeros.",bsee::08 bsee::08-07
+"Why is the all-zero state excluded from an XOR-feedback LFSR?","XOR of zeros is zero, so the register would stay at zero forever: a lock-up state.",bsee::08 bsee::08-07
+"Name two standard PRBS polynomials and their periods.","PRBS7 \(x^7 + x^6 + 1\), 127 bits; PRBS31 \(x^{31} + x^{28} + 1\), 2 147 483 647 bits.",bsee::08 bsee::08-07
+"Why is an LFSR never used alone for cryptography?","It is linear: \(2n\) consecutive output bits determine the taps and state (Berlekamp–Massey), so all past and future output is predictable.",bsee::08 bsee::08-07
+"Moore versus Mealy machine?","Moore outputs depend only on the state; Mealy outputs depend on the state and current input, so they react one cycle earlier and may need fewer states but can glitch.",bsee::08 bsee::08-08
+"Flip-flops for \(N\) states with binary and one-hot encoding?","\(\lceil\log_2 N\rceil\) and \(N\).",bsee::08 bsee::08-08
+"Why do FPGA tools often choose one-hot encoding?","Flip-flops are plentiful, and one-hot next-state logic is shallow (each state bit depends on a few others), so it is fast and small in LUTs.",bsee::08 bsee::08-08
+"The three-block style of FSM in Verilog?","1) a clocked state register with reset; 2) combinational next-state logic in `always @(*)` with a default; 3) output logic.",bsee::08 bsee::08-08
+"What should an FSM do in an illegal state?","Recover to a safe state (a `default` branch or a safe-state attribute), since noise, radiation or a bad power-up can put it there.",bsee::08 bsee::08-08
+"How do you check if two states are equivalent?","Same outputs and, for every input, equivalent next states; partition refinement finds all equivalent states.",bsee::08 bsee::08-08
+"In an overlapping sequence detector, where does the machine go after a detection?","To the state for the longest suffix of the pattern seen that is also a prefix of it (for 1101, the suffix ""1"").",bsee::08 bsee::08-08
+"Group generate and propagate combination (prefix operator)?","\((G, P)\circ(G', P') = (G + PG', PP')\), high block on the left; associative, so carries form a parallel prefix.",bsee::08 bsee::08-09
+"Kogge–Stone: levels and operators for \(n\) bits?","\(\log_2 n\) levels, \(n\log_2 n - n + 1\) operators, minimal fan-out but many long wires.",bsee::08 bsee::08-09
+"Brent–Kung: levels and operators?","\(2\log_2 n - 1\) levels, \(2n - 2 - \log_2 n\) operators, fan-out 1: compact and slower.",bsee::08 bsee::08-09
+"Sklansky's tradeoff?","Minimum levels (\(\log_2 n\)) with only \((n/2)\log_2 n\) operators, but a fan-out of \(n/2\) on the last level.",bsee::08 bsee::08-09
+"Full adders in an \(n \times n\) Dadda multiplier?","\(n^2 - 4n + 3\) (35 for 8 bits, 195 for 16), plus \(n - 1\) half adders and a \(2n - 2\)-bit final adder.",bsee::08 bsee::08-09
+"What does radix-4 Booth recoding buy?","Halves the partial products to \(n/2\) for signed multiplication, using digits −2 to +2.",bsee::08 bsee::08-09
+"Barrel shifter cost for \(n\) bits?","\(n\log_2 n\) two-input multiplexers in \(\log_2 n\) levels.",bsee::08 bsee::08-09
+"SQNR of an ideal \(b\)-bit quantizer for a full-scale sine?","\(6.02b + 1.76\) dB.",bsee::08 bsee::08-09
+"Rough 45 nm energies (Horowitz 2014): 8-bit add, 32-bit add, 8-bit multiply, 32-bit multiply, 64-bit read from 32 KB cache?","0.03, 0.1, 0.2, 3.1 and 20 pJ. Data movement costs far more than arithmetic.",bsee::08 bsee::08-09
+"Why saturate instead of wrapping in DSP arithmetic?","Two's-complement overflow turns the largest positive value into the most negative, a huge error; saturating clips to the nearest representable value.",bsee::08 bsee::08-09
+"Setup and hold constraints with clock skew \(\delta\) (capture clock late)?","\(T_c \ge t_{pcq} + t_{pd} + t_{\text{setup}} - \delta\) and \(t_{ccq} + t_{cd} \ge \delta + t_{\text{hold}}\): positive skew helps setup and hurts hold.",bsee::08 bsee::08-10
+"Why is ""useful skew"" not free?","Delaying a flip-flop's clock gives the path into it more time but takes the same amount from the path out of it.",bsee::08 bsee::08-10
+"How does cycle-to-cycle jitter enter the timing checks?","It shortens a period, so it is subtracted from the setup budget; it does not affect the hold check, which compares the same edge.",bsee::08 bsee::08-10
+"Synchronizer MTBF formula?","\(\text{MTBF} = e^{S/\tau}/(T_W F_C F_D)\), with resolution time \(S = T_c - t_{pcq} - t_{\text{setup}}\) for two flip-flops.",bsee::08 bsee::08-10
+"Why does a third synchronizer stage help so much?","It adds another full \(S\) of resolution time, multiplying the MTBF by \(e^{S/\tau}\), often 10²⁰ or more.",bsee::08 bsee::08-10
+"Why must logic never sit between the two synchronizer flip-flops?","Its delay comes straight out of the resolution time \(S\), and the MTBF falls exponentially.",bsee::08 bsee::08-10
+"How do multi-bit values cross clock domains safely?","Gray-coded counters, a request/acknowledge handshake, or an asynchronous FIFO; never by synchronizing each bit independently.",bsee::08 bsee::08-10
+"Why do asynchronous-FIFO pointers have one more bit than the address?","The extra wrap bit distinguishes full (same address, different wrap bit) from empty (identical pointers).",bsee::08 bsee::08-10
+"Why are FIFO full and empty flags ""conservative""?","They use pointers that are a few cycles old, so the FIFO may look full or empty too long, never too short: throughput, not data, is lost.",bsee::08 bsee::08-10
+"How can a short pulse be lost crossing into a slower clock domain?","If it is shorter than the destination period, no destination edge may sample it; convert it to a toggle (pulse synchronizer) or a handshake.",bsee::08 bsee::08-10
+"Why does raising the destination clock rate hurt MTBF so badly?","It shrinks the resolution time \(S\) inside an exponent, and also raises \(F_C\) in the denominator.",bsee::08 bsee::08-10
+"SRAM cell and DRAM cell, in one line each?","SRAM: 6 transistors (cross-coupled inverters plus two access transistors), fast and static. DRAM: 1 transistor + 1 capacitor, dense but leaks, so it needs refresh.",bsee::08 bsee::08-11
+"Why are memory arrays organized roughly square?","A single column of words would need a huge decoder and very long data wires; folding into rows and columns keeps decoders and wires short.",bsee::08 bsee::08-11
+"Address split for a square 64 K × 16 SRAM?","1 Mbit as 1024 × 1024: 10 row bits and 6 column bits (64 words per row).",bsee::08 bsee::08-11
+"Why do multi-ported register files get expensive?","Each port adds wordlines and bitlines to every cell (area roughly \((R + W)^2\)) and each read port needs a \(w(R - 1)\)-mux tree.",bsee::08 bsee::08-11
+"ROM size for an \(n\)-input, \(m\)-output function?","\(2^n m\) bits: practical for small \(n\), hopeless for an 8 × 8 multiplier (1 Mbit).",bsee::08 bsee::08-11
+"Functions a \(k\)-input LUT can implement?","All \(2^{2^k}\): 65 536 for a 4-LUT; it is a \(2^k\)-bit memory addressed by the inputs.",bsee::08 bsee::08-11
+"What are an FPGA's main resources?","LUT-plus-flip-flop logic cells, carry chains, block RAMs, DSP (multiply-accumulate) blocks, I/O and a configurable routing network.",bsee::08 bsee::08-11
+"FPGA versus ASIC break-even volume?","\(N/(f - a)\): ASIC NRE divided by the unit-cost saving. Schedule, risk and flexibility also weigh.",bsee::08 bsee::08-11
+"Steps of an FPGA implementation flow?","Synthesis (RTL to LUTs, flip-flops and hard blocks) → placement → routing → static timing analysis → bitstream generation.",bsee::08 bsee::08-12
+"Where do multiplier-to-DSP mapping and FSM re-encoding happen?","In synthesis.",bsee::08 bsee::08-12
+"What does slack mean, and against what?","Constraint period minus path delay; it is only meaningful if the constraint matches the real clock.",bsee::08 bsee::08-12
+"Typical breakdown of an FPGA critical path?","Clock-to-Q, logic (LUTs), routing and setup; routing is often the largest part (about two thirds of the lab's gate-level adder path).",bsee::08 bsee::08-12
+"Why was the lab's `a + b` adder about 3× faster than the gate-level one?","Synthesis mapped `+` onto the dedicated carry chain; the hand-built gates went through general LUTs and routing.",bsee::08 bsee::08-12
+"What does a placement-seed sweep buy?","A few percent of frequency from a different placement; never the factor of 3 that better architecture or hard blocks give.",bsee::08 bsee::08-12
+"Name steps an ASIC flow needs that an FPGA flow does not.","Floorplanning and power grid, clock-tree synthesis, detailed routing with design rules, parasitic extraction, DRC/LVS sign-off and mask data (GDSII).",bsee::08 bsee::08-12
+"Why register a design's inputs and outputs before measuring \(f_{\max}\)?","So the reported frequency reflects register-to-register paths in the core, not unconstrained pin-to-pin paths.",bsee::08 bsee::08-12
