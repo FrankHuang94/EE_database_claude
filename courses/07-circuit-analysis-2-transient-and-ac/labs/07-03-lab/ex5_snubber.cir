@@ -1,0 +1,43 @@
+* Example 07-03.5 -- a 48 V edge into a switch node (2 nH loop, 0.1 ohm, 250 pF output capacitance),
+* without a snubber and with RC snubbers Rd = sqrt(L/C) = 2.828 ohm, Cd = C, 2C, 4C and 10C.
+*
+* EXPECT ex5v0  key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.5d rtol=1e-3
+* EXPECT ex5v1  key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.5f rtol=2e-3
+* EXPECT ex5v2  key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.5g rtol=2e-3
+* EXPECT ex5v4  key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.5h rtol=2e-3
+* EXPECT ex5v10 key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.5i rtol=2e-3
+
+V1   in 0 PWL(0 0 1p 48)
+R0   in a0 0.1
+L0   a0 n0 2n
+C0   n0 0 250p
+R1   in a1 0.1
+L1   a1 n1 2n
+C1   n1 0 250p
+Rd1  n1 d1 2.8284271
+Cd1  d1 0 250p
+R2   in a2 0.1
+L2   a2 n2 2n
+C2   n2 0 250p
+Rd2  n2 d2 2.8284271
+Cd2  d2 0 500p
+R4   in a4 0.1
+L4   a4 n4 2n
+C4   n4 0 250p
+Rd4  n4 d4 2.8284271
+Cd4  d4 0 1n
+R10  in a10 0.1
+L10  a10 n10 2n
+C10  n10 0 250p
+Rd10 n10 d10 2.8284271
+Cd10 d10 0 2.5n
+
+.control
+tran 1p 60n 0 1p uic
+meas tran ex5v0 max v(n0) from=0 to=20n
+meas tran ex5v1 max v(n1) from=0 to=40n
+meas tran ex5v2 max v(n2) from=0 to=40n
+meas tran ex5v4 max v(n4) from=0 to=40n
+meas tran ex5v10 max v(n10) from=0 to=40n
+.endc
+.end

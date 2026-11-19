@@ -1,0 +1,89 @@
+* Problems 07-03.4, .6, .7, .8, .12, .13, .14 and .16 in ngspice.
+*
+* EXPECT p4i   key:../../solutions/07-03-solutions.md#07-03.4f rtol=1e-3
+* EXPECT p4v   key:../../solutions/07-03-solutions.md#07-03.4h rtol=1e-3
+* EXPECT p6i   key:../../solutions/07-03-solutions.md#07-03.6e scale=1e-3 rtol=1e-3
+* EXPECT p6v   key:../../solutions/07-03-solutions.md#07-03.6h rtol=1e-3
+* EXPECT p7v   key:../../solutions/07-03-solutions.md#07-03.7k rtol=1e-3
+* EXPECT p8v   key:../../solutions/07-03-solutions.md#07-03.8i rtol=1e-3
+* EXPECT p12v  key:../../solutions/07-03-solutions.md#07-03.12c rtol=1e-3
+* EXPECT p13a  key:../../solutions/07-03-solutions.md#07-03.13b rtol=2e-3
+* EXPECT p13b  key:../../solutions/07-03-solutions.md#07-03.13d rtol=2e-3
+* EXPECT p14i  key:../../solutions/07-03-solutions.md#07-03.14f scale=1e-3 rtol=1e-3
+* EXPECT p14v  key:../../solutions/07-03-solutions.md#07-03.14h rtol=1e-3
+* EXPECT p16a  1.506 rtol=1e-3
+* EXPECT p16b  1.0583 rtol=1e-3
+
+* P4: 10 uF at 100 V discharged through 1 mH and 2 ohm (loop current measured through V4)
+C4   c4 0 10u IC=100
+V4   c4 x4 DC 0
+L4   x4 y4 1m
+R4   y4 0 2
+* P6: 2 mA step into 2 kohm || 10 mH || 10 nF
+I6   0 t6 PWL(0 0 1n 2m)
+R6   t6 0 2k
+L6   t6 0 10m
+C6   t6 0 10n
+* P7: 12 V, 2 ohm, 0.5 mH into node a with 50 uF and (until 1 ms) 4 ohm to ground
+V7   in7 0 DC 12
+R7   in7 a7 2
+L7   a7 b7 0.5m
+C7   b7 0 50u
+S7   b7 r7 ctl7 0 swmod
+R72  r7 0 4
+Vct7 ctl7 0 PWL(0 1 1m 1 1.0000001m 0)
+* P8: 11 V step, 100 ohm to node a; 1 uF to ground; 10 mH + 10 ohm to ground
+V8   in8 0 PWL(0 0 1n 11)
+R8   in8 a8 100
+C8   a8 0 1u
+L8   a8 b8 10m
+R82  b8 0 10
+* P12: 12 V gate drive, 1 ohm, 8 nH, 2 nF
+V12  in12 0 PWL(0 0 1p 12)
+R12  in12 a12 1
+L12  a12 g12 8n
+C12  g12 0 2n
+* P13: 400 V resonant charging through 10 mH and a near-ideal diode into 1 uF, from 0 V and from -200 V
+V13  in13 0 DC 400
+L13  in13 a13 10m
+D13  a13 c13 dsharp
+C13  c13 0 1u IC=0
+L14  in13 a14 10m
+D14  a14 c14 dsharp
+C14  c14 0 1u IC=-200
+.model dsharp d(is=1e-12 n=0.05)
+* P14: 5 V step into 10 ohm, 1 mH, 1 uF
+V15  in15 0 PWL(0 0 1n 5)
+R15  in15 a15 10
+L15  a15 b15 1m
+C15  b15 0 1u
+* P16: probe on a 50 ohm source: 150 nH lead with 10.8 pF, then 15 nH; a 1 V step
+V16  in16 0 PWL(0 0 1p 1)
+R16  in16 a16 50
+L16  a16 p16 150n
+C16  p16 0 10.8p
+R17  in16 a17 50
+L17  a17 p17 15n
+C17  p17 0 10.8p
+.model swmod sw vt=0.5 vh=0 ron=1e-6 roff=1e12
+
+.control
+tran 50n 4m 0 50n uic
+meas tran p4i max i(V4) from=0 to=1m
+meas tran p4v min v(c4) from=0 to=0.5m
+meas tran p6i max i(L6) from=0 to=100u
+meas tran p6v max v(t6) from=0 to=50u
+meas tran p8v max v(a8) from=0 to=1m
+let vl15 = v(a15) - v(b15)
+meas tran p14v min vl15 from=10u to=200u
+meas tran p14i max i(L15) from=0 to=200u
+meas tran p13a find v(c13) at=1m
+meas tran p13b find v(c14) at=1m
+tran 50n 4m 0 50n
+meas tran p7v max v(b7) from=1m to=3m
+tran 1p 40n 0 1p uic
+meas tran p12v max v(g12) from=0 to=20n
+meas tran p16a max v(p16) from=0 to=20n
+meas tran p16b max v(p17) from=0 to=20n
+.endc
+.end

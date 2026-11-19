@@ -28,7 +28,7 @@ Circuits with memory. Capacitors and inductors, first- and second-order transien
 |---|---|---|---|
 | [07-01 · Capacitors and Inductors](chapters/07-01-capacitors-and-inductors.md) | 7 | ✅ verified | [problems](problems/07-01-problems.md) · [solutions](solutions/07-01-solutions.md) · [lab](labs/07-01-lab/README.md) · [verify](verify/verify_07_01.py) |
 | [07-02 · First-Order RC and RL Transients](chapters/07-02-first-order-rc-rl-transients.md) | 10 | ✅ verified | [problems](problems/07-02-problems.md) · [solutions](solutions/07-02-solutions.md) · [lab](labs/07-02-lab/README.md) · [verify](verify/verify_07_02.py) |
-| [07-03 · Second-Order RLC Transients](chapters/07-03-second-order-rlc-transients.md) | 10 | ⬜ planned | — |
+| [07-03 · Second-Order RLC Transients](chapters/07-03-second-order-rlc-transients.md) | 10 | ✅ verified | [problems](problems/07-03-problems.md) · [solutions](solutions/07-03-solutions.md) · [lab](labs/07-03-lab/README.md) · [verify](verify/verify_07_03.py) |
 | [07-04 · Laplace-Domain Circuit Analysis](chapters/07-04-laplace-domain-circuit-analysis.md) | 12 | ⬜ planned | — |
 | [07-05 · Sinusoidal Steady State, Phasors and Impedance](chapters/07-05-sinusoidal-steady-state-and-impedance.md) | 10 | ⬜ planned | — |
 | [07-06 · AC Power and Power Factor](chapters/07-06-ac-power-and-power-factor.md) | 8 | ⬜ planned | — |

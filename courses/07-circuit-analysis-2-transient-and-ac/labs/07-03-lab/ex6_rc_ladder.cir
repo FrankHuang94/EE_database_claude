@@ -1,0 +1,25 @@
+* Example 07-03.6 -- a two-section RC ladder (1 kohm, 1 uF, 1 kohm, 1 uF) driven by a 1 V step, and
+* the same two sections isolated by an ideal unity-gain buffer (a VCVS).
+*
+* EXPECT ex6load key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.6e scale=1e-3 rtol=1e-3
+* EXPECT ex6buf  key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.6f scale=1e-3 rtol=1e-3
+* EXPECT ex6max  1.0 rtol=1e-4
+
+V1   in 0 PWL(0 0 1n 1)
+R1   in n1 1k
+C1   n1 0 1u
+R2   n1 n2 1k
+C2   n2 0 1u
+R3   in m1 1k
+C3   m1 0 1u
+E1   b1 0 m1 0 1
+R4   b1 m2 1k
+C4   m2 0 1u
+
+.control
+tran 2u 60m 0 2u uic
+meas tran ex6load when v(n2)=0.5 rise=1
+meas tran ex6buf when v(m2)=0.5 rise=1
+meas tran ex6max max v(n2) from=0 to=60m
+.endc
+.end

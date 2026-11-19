@@ -177,6 +177,22 @@
 - term: Integrator (op-amp)
   definition: An op-amp circuit with a capacitor in the feedback path and a resistor at the input, giving v_out = −(1/RC)∫v_in dt; a resistor across the capacitor makes it a "leaky" integrator (a first-order low-pass).
   chapter: "07-02"
+- term: Second-order circuit
+  definition: A circuit whose behavior is described by a second-order differential equation, typically one with two independent storage elements (a capacitor and an inductor, or two capacitors that cannot be combined); its natural response has two characteristic roots.
+  chapter: "07-03"
+- term: State equations
+  definition: A circuit's first-order differential equations written for its state variables (capacitor voltages and inductor currents), ẋ = Ax + g·u; the eigenvalues of the state matrix A are the circuit's natural frequencies.
+  chapter: "07-03"
+  see_also: [State variable]
+- term: Ringing
+  definition: A decaying oscillation after a switching edge, caused by energy sloshing between an inductance and a capacitance; its frequency is about 1/(2π√(LC)) and its decay is set by how resistance compares with √(L/C).
+  chapter: "07-03"
+- term: Snubber
+  definition: A network, usually a resistor in series with a capacitor, placed across a ringing switch or tank to damp it; the rule of thumb is R ≈ √(L/C) of the parasitic tank and C several times its capacitance, at a cost of C·V²·f_sw in power.
+  chapter: "07-03"
+- term: Hot-plug overshoot
+  definition: The voltage spike, up to nearly twice the supply, when a supply is connected through cable inductance to low-loss (ceramic) input capacitors that form a lightly damped series RLC; cured with a lossy bulk capacitor or other damping.
+  chapter: "07-03"
 - term: Differentiator (op-amp)
   definition: An op-amp circuit with a capacitor at the input and a resistor in the feedback path, giving v_out = −RC dv_in/dt; a resistor in series with the capacitor caps its gain for fast changes, turning a step's impulse into a finite exponential spike.
   chapter: "07-02"

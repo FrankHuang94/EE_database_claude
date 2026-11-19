@@ -1,0 +1,24 @@
+* Example 07-03.4 -- a 5 V supply switched on abruptly into an LC filter (4.7 uH with 30 mohm, 22 uF)
+* loaded by 10 ohm and by 100 ohm.
+*
+* EXPECT ex4v10  key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.4i rtol=1e-3
+* EXPECT ex4v100 key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.4k rtol=1e-3
+* EXPECT ex4fin  key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.4g rtol=1e-3
+
+V1   in 0 PWL(0 0 1n 5)
+R1   in a1 0.03
+L1   a1 o1 4.7u
+C1   o1 0 22u
+RL1  o1 0 10
+R2   in a2 0.03
+L2   a2 o2 4.7u
+C2   o2 0 22u
+RL2  o2 0 100
+
+.control
+tran 10n 3m 0 10n uic
+meas tran ex4v10 max v(o1) from=0 to=60u
+meas tran ex4v100 max v(o2) from=0 to=60u
+meas tran ex4fin find v(o1) at=2.99m
+.endc
+.end

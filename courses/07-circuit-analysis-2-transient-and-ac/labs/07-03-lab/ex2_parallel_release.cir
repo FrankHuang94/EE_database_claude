@@ -1,0 +1,34 @@
+* Example 07-03.2 -- an inductor released into a parallel RC: initial conditions from the DC operating
+* point, then an overdamped second-order response. The switch opens at t = 10 us (so the chapter's
+* t = 0 is 10 us here); ngspice finds the pre-switch DC state itself (inductor short, capacitor open).
+*
+* EXPECT ex2i   key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.2a rtol=1e-3
+* EXPECT ex2min key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.2j rtol=1e-3
+* EXPECT ex2t   key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.2i scale=1e-6 rtol=2e-3
+* EXPECT ex2nc  key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.2l rtol=1e-3
+
+V1   in 0 DC 10
+R1   in s 10
+S1   s a ctl 0 swmod
+Vctl ctl 0 PWL(0 1 10u 1 10.001u 0)
+L1   a 0 10m
+C1   a 0 1u
+R2   a 0 25
+* the same release with no capacitor (07-02's inductive kick)
+V2   in2 0 DC 10
+R3   in2 s2 10
+S2   s2 b ctl 0 swmod
+L2   b 0 10m
+R4   b 0 25
+.model swmod sw vt=0.5 vh=0 ron=1e-4 roff=1e12
+
+.control
+tran 20n 1m 0 20n
+meas tran ex2i find i(L1) at=9u
+meas tran ex2min min v(a) from=10u to=1m
+meas tran tmin_abs min_at v(a) from=10u to=1m
+let ex2t = tmin_abs - 10.0005u
+print ex2t
+meas tran ex2nc min v(b) from=10u to=1m
+.endc
+.end

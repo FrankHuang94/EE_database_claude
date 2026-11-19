@@ -1,0 +1,53 @@
+* Example 07-03.3 and Problem 07-03.11 -- a 12 V supply hot-plugged through 1 uH and 50 mohm into a
+* 10 uF ceramic capacitor; then the same with a 47 uF electrolytic (ESR 0.1, 0.3, 1.0 ohm) across the
+* ceramic, and with a 0.3 ohm resistor in series instead.
+*
+* EXPECT ex3v  key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.3e rtol=1e-3
+* EXPECT ex3t  key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.3f scale=1e-6 rtol=1e-3
+* EXPECT ex3i  key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.3g rtol=1e-3
+* EXPECT ex3ti key:../../chapters/07-03-second-order-rlc-transients.md#Ex_07-03.3h scale=1e-6 rtol=2e-3
+* EXPECT p11b  key:../../solutions/07-03-solutions.md#07-03.11b rtol=2e-3
+* EXPECT p11c  key:../../solutions/07-03-solutions.md#07-03.11c rtol=2e-3
+* EXPECT p11d  key:../../solutions/07-03-solutions.md#07-03.11d rtol=2e-3
+* EXPECT p11f  key:../../solutions/07-03-solutions.md#07-03.11f rtol=1e-3
+* EXPECT p11i  key:../../solutions/07-03-solutions.md#07-03.11i rtol=2e-3
+
+V1   in 0 PWL(0 0 1n 12)
+* bare ceramic
+R1   in a1 0.05
+L1   a1 c1 1u
+C1   c1 0 10u
+* with a 47 uF electrolytic, ESR 0.1 / 0.3 / 1.0 ohm
+R2   in a2 0.05
+L2   a2 c2 1u
+C2   c2 0 10u
+Rb2  c2 b2 0.1
+Cb2  b2 0 47u
+R3   in a3 0.05
+L3   a3 c3 1u
+C3   c3 0 10u
+Rb3  c3 b3 0.3
+Cb3  b3 0 47u
+R4   in a4 0.05
+L4   a4 c4 1u
+C4   c4 0 10u
+Rb4  c4 b4 1.0
+Cb4  b4 0 47u
+* a 0.3 ohm series resistor instead
+R5   in a5 0.35
+L5   a5 c5 1u
+C5   c5 0 10u
+
+.control
+tran 5n 100u 0 5n uic
+meas tran ex3v max v(c1) from=0 to=30u
+meas tran ex3t max_at v(c1) from=0 to=30u
+meas tran ex3i max i(L1) from=0 to=20u
+meas tran ex3ti max_at i(L1) from=0 to=20u
+meas tran p11b max v(c2) from=0 to=60u
+meas tran p11c max v(c3) from=0 to=60u
+meas tran p11d max v(c4) from=0 to=60u
+meas tran p11f max v(c5) from=0 to=30u
+meas tran p11i max i(L3) from=0 to=30u
+.endc
+.end

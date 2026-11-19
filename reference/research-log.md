@@ -117,6 +117,11 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-109 | PCB copper, wire gauge and four-terminal shunts | Nov 2026 |
 | R-110 | MLCCs: DC bias, temperature codes, counts and market share | Nov 2026 |
 | R-111 | Electrolytic life, supercapacitors, inductor saturation and silicon capacitors | Nov 2026 |
+| R-112 | Hot-plug overshoot with ceramic input capacitors | Nov 2026 |
+| R-113 | RC snubbers and gate-drive damping | Nov 2026 |
+| R-114 | Oscilloscope probe ground-lead ringing | Nov 2026 |
+| R-115 | GaN power-loop inductance, switching speed and output capacitance | Nov 2026 |
+| R-116 | PDN target impedance in vendor practice | Nov 2026 |
 
 ---
 
@@ -1060,3 +1065,82 @@ R&D % = R&D ÷ revenue.
   - [Murata silicon capacitor release](https://www.murata.com/news/capacitor/siliconcapacitors/2021/0618).
   - [Murata Hot Chips 2025 poster](https://hc2025.hotchips.org/assets/program/posters/HC2025.Murata.High%20Density%20Si-IPD.Jatlaoui.pdf).
   - Checked Nov 2026.
+
+## R-112 · Hot-plug overshoot with ceramic input capacitors
+
+*Gathered by a research subagent (07-03 facts file, entries F-0736 to F-0740); primary documents opened unless stated.*
+
+- **Mechanism and the 2× bound (G. Perica, Linear Technology, "Ceramic capacitors in dc/dc-input filters: OK, but watch out for those transients", *EDN*, 10 May 2001, pp. 107–114, the magazine version of LT Application Note 88)** [Established]:
+  - "RIN, LEQ, CIN, and REQ constitute a series-resonant tank."
+  - "In a lossless linear circuit, the peak voltage would reach 2•VIN. With losses, the peak voltage is less than 2•VIN."
+  - "With the nonlinear Y5V capacitor, the peak voltage reaches 3•VIN, showing the effect of the significantly lower capacitance at the higher bias voltage."
+  - Bench: a 24 V laptop adapter (1000 µF output, 1–10 µH output inductor, 3–10 ft cable) into a 10 µF ceramic peaked at 57.2 V. With a 22 µF ceramic, the fixes gave (Table 4): none 40.8 V; extra 22 µF ceramic with 0.5 Ω in series 30 V; tantalum 33 V; 30 V TVS 35 V (Table 3 lists the TVS case at 32 V, an inconsistency in the article); a 47 µF, 35 V aluminum electrolytic with 0.44 Ω ESR 25 V, described as "critical damping".
+  - Our arithmetic, not the article's: $2\sqrt{1\ \mu\text{H}/22\ \mu\text{F}}$ = 0.43 Ω, close to the 0.44 Ω ESR.
+  - LT Application Note 88 itself (March 2001) could not be opened (analog.com outside the build environment's network); its title, author and date are from search excerpts.
+- **LT3684 datasheet, Rev A, p. 16, "Hot Plugging Safely"** (text read from a third-party mirror; Figure 9 not seen) [Established]: the ceramic input capacitor and the source's stray inductance form "an under damped tank circuit, and the voltage at the VIN pin … can ring to twice the nominal input voltage"; a 24 V supply through six feet of 24-gauge twisted pair into 4.7 µF "rings as high as 50V and the input current peaks at 26A"; "A 0.7Ω resistor is added in series with the input to eliminate the voltage overshoot".
+- **onsemi AND90059/D, Rev 1, Aug 2021, "Understanding eFuse Input Voltage Transients from Hot Plug Events"** [Established]: the hot plug is "a Simplified Series RLC Circuit"; case 1 (30 V, 0.1 Ω, 0.5 µH, 1 µF) peaks at 54 V (80% surge) and 38 A; case 7 (5 µH) 58 V and 13 A; "the max capacitor voltage (Max Vc) is never more than twice the supply voltage"; a 12-inch 18-gauge cable with the supply measured 500 nH and 120 mΩ; a 33 V Zener cut the peak from 54 V to 48 V.
+- **TI SLUAAL8, May 2023, "How to Solve Voltage Overshoot While Hot Plugging"** (E. Galloway) [Established]: damping condition "Ri + Rc > 2 √(Li/Ci)"; recommends an RC snubber (2 Ω, 0.5 W anti-surge resistor with 2.2 µF, plus 0.1 µF at the pin) rather than relying on the IC pin's capacitor; a TVS or Zener as a costlier alternative.
+- **Sources:**
+  - [EDN article, archive copy](https://www.pe2bz.philpem.me.uk/Comm01/-%20-%20Parts-NonActive/Capacitor/82784.pdf).
+  - [LT AN88](https://www.analog.com/media/en/technical-documentation/application-notes/an88f.pdf) (not opened).
+  - [LT3684 datasheet pages, mirror](https://www.omo-ic.com/pdf/364574/LT3684EDD-TRPBF/P16-P18.html).
+  - [onsemi AND90059/D](https://www.onsemi.com/pub/Collateral/AND90059-D.PDF).
+  - [TI SLUAAL8](https://www.ti.com/lit/an/sluaal8/sluaal8.pdf).
+  - Checked Nov 2026.
+
+## R-113 · RC snubbers and gate-drive damping
+
+*Gathered by a research subagent (07-03 facts file, entries F-0741 to F-0743 and F-0750).*
+
+- **P. C. Todd, "Snubber Circuits: Theory, Design and Application", Unitrode Power Supply Design Seminar SEM-900, Topic 2, May 1993 (TI SLUP100; read from a TI E2E-hosted copy, the official URL requiring a TI login)** [Established]:
+  - "the value of the resistor must be close to the impedance of the parasitic resonance which it is intended to damp"; "The snubber capacitance will generally be two to four times" the switch's output capacitance.
+  - "Increase the value of the capacitor until the frequency of the ringing to be damped has been halved … the additional capacitance is three times the original circuit value. This is a near optimum value for the capacitor since it allows damping very near Q = 1."
+  - Example: 2 µH leakage inductance and 330 pF give a 78 V spike per ampere, 6.2 MHz ringing and a 78 Ω characteristic impedance; with 1000 pF added the ringing falls to 3.1 MHz. Power "p = 2f(1/2C V²) = f C V²": 1000 pF at 400 V and 100 kHz dissipates 16.0 W.
+- **J. Falin, TI SLVA255, Sep 2006, "Minimizing Ringing at the Switch Node of a Boost Converter"** [Established]: ringing at 217 MHz, halved to 113 MHz by 300 pF, so the parasitic capacitance is 100 pF (the paper's C_ADD/3 approximation) and the inductance 5.4 nH; the snubber resistor is the characteristic impedance (7.3 Ω, rounded to 10 Ω) with 330 pF; the peak fell from 9.8 V to 8 V. The note counts the snubber loss as ½·C·V²·f.
+- **[Contested] terminology and loss formula (our analysis):** both notes call $R = \sqrt{L/C}$ "critical damping", but with $C_d$ = 3–4 C the ringing pair has ζ ≈ 0.5 (chapter 07-03, Example 07-03.5). The loss is $C_dV^2f$ when the snubber capacitor is charged from a voltage source through resistance (Todd) and approaches ½C_dV²f when an inductor's current charges it (SLVA255's boost turn-off).
+- **L. Balogh, TI SLUA618A, "Fundamentals of MOSFET and IGBT Gate Driver Circuits", Mar 2017, rev. Oct 2018** [Established]: "the source inductor and the CISS capacitor form a resonant circuit"; "RGATE,OPT = 2 × √(LS/CISS) − (RDRV + RG,I)" (Eq. 15), the series-RLC critical-damping rule; for transformer coupling, "RC ≥ 2 × √(LM/CC)". The note's sentence that higher resistance will "underdamp" the oscillation is evidently a slip for overdamp, and is not quoted.
+- **Sources:**
+  - [Todd, SEM-900 Topic 2 (TI E2E copy)](https://e2e.ti.com/cfs-file/__key/communityserver-discussions-components-files/196/SEM_5F00_900.pdf).
+  - [TI SLVA255](https://www.ti.com/lit/an/slva255/slva255.pdf).
+  - [TI SLUA618A](https://www.ti.com/lit/ml/slua618a/slua618a.pdf).
+  - Checked Nov 2026.
+
+## R-114 · Oscilloscope probe ground-lead ringing
+
+*Gathered by a research subagent (07-03 facts file, entries F-0744 to F-0746).*
+
+- **Tektronix, *ABCs of Probes* primer, 60W-6053-17, Jun 2024** [Established for the mechanism; the 140 MHz figure is a single-vendor typical value]: "The ground lead reactive elements L and Cin form a series resonant circuit with only Rin for damping. When this series resonant circuit is hit with a pulse, it will ring"; "an 11 pF passive probe with 6-inch ground lead will ring at about 140 MHz"; with a 100 MHz scope the ringing "may not be seen at all", with a 200 MHz scope it "will be apparent"; "If you see the ringing frequency change … you'll know that it's ground-lead related"; ground springs for signals below 30 Vrms. The primer gives no inductance value.
+- **Tektronix P6136 instruction manual, 070-6025-04 (undated; distributor mirror)** [Established for this probe; Industry estimate as a general value]: "A six-inch ground lead has approximately 150 nH of inductance, which produces an f0 of approximately 130 MHz" with the probe's typical 10.8 pF; the low-inductance lead gives "approximately 32 nH instead of 150 nH". Our arithmetic gives 125 MHz.
+- **Teledyne LeCroy, "Passive Probe Ground Lead Effects", Jun 2013** [Industry estimate]: "Using 20 nH per inch as a rule of thumb"; a 10-inch ground loop of about 200 nH with a 9.5 pF probe cut the −3 dB bandwidth "from >500 MHz to 175 MHz" with resonance at 115 MHz; ground blade or spring accessories "may have an inductance of 10-20 nH".
+- **Keysight, "Understanding Oscilloscope Probe Specifications", 3124-1574.EN, Aug 2024** [Industry estimate]: probe-extension wires add "as much as 25 nH of inductive loading per inch", and ground leads similarly add uncompensated inductance.
+- **Sources:**
+  - [Tektronix ABCs of Probes](https://download.tek.com/document/02_ABCs-of-Probes-Primer.pdf).
+  - [Tektronix P6136 manual (mirror)](https://valuetronics.com/cdn/shop/files/Tektronix_P6136_Instruction_Manual.pdf).
+  - [Teledyne LeCroy note](https://www.teledynelecroy.com/doc/passive-probe-ground-lead-effects).
+  - [Keysight app note (distributor mirror)](https://assets.testequity.com/te1/Documents/pdf/keysight/Keysight_Understanding-Oscilloscope-Probe-Specifications_App_Note_1124.pdf).
+  - Checked Nov 2026.
+
+## R-115 · GaN power-loop inductance, switching speed and output capacitance
+
+*Gathered by a research subagent (07-03 facts file, entries F-0747 to F-0749).*
+
+- **EPC white papers WP010 ("Optimizing PCB Layout", 2019) and WP009 ("Impact of Parasitics on Performance", 2020), D. Reusch** [Industry estimate for the figures, one vendor's boards; Established for the mechanism]: in a 12 V to 1.2 V, 1 MHz eGaN buck, switch-node overshoot fell "from 100% of the input voltage to 30%" when the high-frequency loop inductance fell from 1.6 nH to 0.4 nH; raising it "from around 0.4 nH to 2.9 nH results in additional loss, decreasing efficiency by over 4%"; eGaN package inductance is "a couple hundred pico Henry", so the PCB layout dominates. A 2021 EPC webinar shows 70% overshoot at about 1.0 nH and 30% at about 0.4 nH (20 A).
+- **EPC How2AppNote 007 (2021)** [Industry estimate]: a 48 V to 12 V, 500 kHz buck with EPC2045 reached 60 V/ns against 12 V/ns for a 100 V silicon MOSFET at the same peak overshoot; "Parasitic inductances cause higher overshoot voltages and slower switching transitions."
+- **TI LMG3422R030/LMG3426R030/LMG3427R030 datasheet, SNOSDA7F, rev. Aug 2024** [Established]: "20V/ns to 150V/ns slew rate"; power-loop inductance estimated from the ringing frequency, "Lpl = 1/(4π² f²ring Cring)", with Cring the output capacitance at the bus voltage plus board and load capacitance; "Typically, the power loop inductance of the Layout Example is around 2.5nH"; COSS 170 pF typical (130 pF minimum) at 400 V; time-related output capacitance 430 pF (0–400 V).
+- **EPC2045 datasheet, revised 4 Feb 2025** [Established]: COSS 295 pF typical, 443 pF maximum at 50 V; COSS(TR) 500 pF (0–50 V); CISS 767 pF typical; internal gate resistance 0.6 Ω.
+- **Caveat:** output capacitance depends strongly on voltage; state which value (at the operating voltage, or time-related) a ringing estimate uses. Our arithmetic: 2.5 nH with 170 pF rings at about 244 MHz.
+- **Sources:**
+  - [EPC WP010](https://epc-co.com/epc/documents/papers/Optimizing%20PCB%20Layout%20with%20eGaN%20FETs.pdf).
+  - [EPC WP009](https://epc-co.com/epc/Portals/0/epc/documents/papers/Impact%20of%20Parasitcs%20on%20Performance.pdf).
+  - [EPC layout webinar](https://epc-co.com/epc/Portals/0/epc/documents/presentations/High-Performance%20Layout%20Techniques%20to%20Maximize%20GaN%20Device%20Performance.pdf).
+  - [EPC How2AppNote 007](https://epc-co.com/epc/Portals/0/epc/documents/application-notes/How2AppNote007%20-%20Design%20an%20eGaN%20FET%20Based%20Power%20Stage%20with%20an%20Optimal%20Layout.pdf).
+  - [EPC2045 datasheet](https://epc-co.com/epc/Portals/0/epc/documents/datasheets/EPC2045_datasheet.pdf).
+  - [TI LMG342xR030 datasheet](https://www.ti.com/lit/ds/symlink/lmg3422r030.pdf).
+  - Checked Nov 2026.
+
+## R-116 · PDN target impedance in vendor practice
+
+*Gathered by a research subagent (Course 07 facts file, entry F-0715).* Extends R-032.
+
+- **TI, "Sitara Processor Power Distribution Networks: Implementation and Analysis", SPRAC76H (Nov 2022, revised Oct 2025), §5 and Table 7-1** [Established]: "ZTARGET = (Voltage Rail × %Ripple)/(0.5 × IMax)" (the 0.5 assumes a step of half the maximum current); the impedance must stay below target from DC to F_MAX, beyond which "the dominance of the parasitic planar spreading inductance and package inductances" prevents further improvement; "Typical mid-frequency capacitors have capacitance in the range of 1 nF –100 nF, ESR in the range of 10-100 mΩ, and ESL in the range of 0.5 nH – 1 nH"; for the AM570x VDD_CORE rail, a 57 mΩ target up to 20 MHz with a decoupling-loop inductance of at most 2 nH. The regulator is modeled as a series R–L that turns inductive above about 0.5–1 MHz. No package-inductance value is given.
+- **Source:** [TI SPRAC76H](https://www.ti.com/document-viewer/lit/html/SPRAC76G/GUID-AF67D124-C8FB-4892-A7E1-D65C51297D92). Checked Nov 2026.
