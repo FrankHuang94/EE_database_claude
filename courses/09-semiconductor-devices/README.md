@@ -32,7 +32,7 @@ The physics of the transistor, from crystals and energy bands through PN junctio
 | [09-02 · Carriers, Doping and the Fermi Level](chapters/09-02-carriers-doping-fermi-level.md) | 9 | ✅ verified | [problems](problems/09-02-problems.md) · [solutions](solutions/09-02-solutions.md) · [lab](labs/09-02-lab/README.md) · [verify](verify/verify_09_02.py) |
 | [09-03 · Carrier Transport: Drift and Diffusion](chapters/09-03-drift-and-diffusion.md) | 8 | ✅ verified | [problems](problems/09-03-problems.md) · [solutions](solutions/09-03-solutions.md) · [lab](labs/09-03-lab/README.md) · [verify](verify/verify_09_03.py) |
 | [09-04 · Generation, Recombination and the Continuity Equation](chapters/09-04-generation-recombination-continuity.md) | 7 | ✅ verified | [problems](problems/09-04-problems.md) · [solutions](solutions/09-04-solutions.md) · [lab](labs/09-04-lab/README.md) · [verify](verify/verify_09_04.py) |
-| [09-05 · PN Junction Electrostatics](chapters/09-05-pn-junction-electrostatics.md) | 8 | ⬜ planned | — |
+| [09-05 · PN Junction Electrostatics](chapters/09-05-pn-junction-electrostatics.md) | 8 | ✅ verified | [problems](problems/09-05-problems.md) · [solutions](solutions/09-05-solutions.md) · [lab](labs/09-05-lab/README.md) · [verify](verify/verify_09_05.py) |
 | [09-06 · PN Junction I–V, Capacitance and Breakdown](chapters/09-06-pn-junction-iv-and-capacitance.md) | 9 | ⬜ planned | — |
 | [09-07 · The Bipolar Junction Transistor](chapters/09-07-bipolar-junction-transistor.md) | 9 | ⬜ planned | — |
 | [09-08 · The MOS Capacitor](chapters/09-08-mos-capacitor.md) | 9 | ⬜ planned | — |

@@ -3652,3 +3652,43 @@
 - term: Dark current
   definition: The current an image-sensor pixel or photodiode collects with no light, mainly thermal generation through traps in depleted regions and at interfaces; it scales roughly with n_i and so grows rapidly with temperature.
   chapter: "09-04"
+# ---- 09-05
+- term: PN junction
+  definition: The boundary between p-type and n-type regions of one crystal, where carrier diffusion leaves a depleted layer of fixed ions, an internal field and a built-in potential; the basis of diodes, bipolar transistors and the source and drain of MOSFETs.
+  chapter: "09-05"
+  see_also: [Depletion region, Built-in potential]
+- term: Built-in potential
+  definition: The electrostatic potential difference across a PN junction in equilibrium, V_bi = (kT/q) ln(N_A N_D/n_i²), equal to the difference of the two sides' Fermi levels before contact; about 0.6–0.9 V in silicon and not measurable with a voltmeter.
+  chapter: "09-05"
+- term: Depletion approximation
+  definition: The model of a junction's space-charge region as completely empty of carriers between sharp edges and exactly neutral outside, which turns Poisson's equation into simple integrals; accurate to a few percent except near flat band.
+  chapter: "09-05"
+- term: Quasi-neutral region
+  definition: The part of a doped region outside a depletion layer, where majority carriers balance the dopant charge and the field is small.
+  chapter: "09-05"
+- term: Poisson's equation
+  definition: The relation d²V/dx² = −ρ/ε between electrostatic potential and charge density (or dE/dx = ρ/ε); solved across junctions and MOS structures to find fields and potentials.
+  chapter: "09-05"
+- term: Step junction
+  definition: A PN junction whose doping changes abruptly from N_A to N_D, with depletion width W = √(2ε(V_bi − V_A)(1/N_A + 1/N_D)/q).
+  chapter: "09-05"
+  see_also: [One-sided junction, Linearly graded junction]
+- term: One-sided junction
+  definition: A strongly asymmetric junction (P⁺N or N⁺P) whose depletion region, capacitance and breakdown voltage are set by the lightly doped side, W ≈ √(2ε(V_bi − V_A)/(qN)).
+  chapter: "09-05"
+- term: Linearly graded junction
+  definition: A junction whose net doping varies linearly through it, N_D − N_A = ax; its depletion width grows as the cube root of the voltage, W = (12ε(V_bi − V_A)/(qa))^(1/3).
+  chapter: "09-05"
+- term: Debye length
+  definition: The screening length L_D = √(εkT/(q²N)) over which mobile carriers smooth out a charge disturbance; 41 nm at 10¹⁶ cm⁻³ in silicon, and the scale of the soft edges of a depletion region.
+  chapter: "09-05"
+- term: Junction capacitance
+  definition: The small-signal capacitance of a reverse-biased junction, ε/W per unit area, from charge uncovered at the depletion edges; about 1 fF/µm² at W = 0.1 µm, falling with reverse bias.
+  chapter: "09-05"
+  see_also: [C–V profiling]
+- term: C–V profiling
+  definition: Extracting doping from capacitance–voltage data, using the slope of 1/C² against voltage (which gives the doping of the lightly doped side) and its intercept (which gives the built-in potential).
+  chapter: "09-05"
+- term: Critical field
+  definition: The peak electric field at which a junction breaks down by avalanche, about 3×10⁵ V/cm in silicon (rising slowly with doping); with it, breakdown voltage scales as εE_c²/(2qN) and drift-region resistance as V²/E_c³.
+  chapter: "09-05"

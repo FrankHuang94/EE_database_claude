@@ -171,6 +171,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-163 | Carrier statistics, dopants and dopant fluctuation | Nov 2026 |
 | R-164 | Carrier transport in silicon | Nov 2026 |
 | R-165 | Recombination parameters and solar-cell records | Nov 2026 |
+| R-166 | Junction electrostatics references | Nov 2026 |
 
 ---
 
@@ -1697,3 +1698,14 @@ R&D % = R&D ÷ revenue.
 - **Hu, ch. 2, §2.6–2.8:** recombination lifetime; "In silicon, direct recombination is unimportant and the lifetime is highly variable and determined by the density of recombination centers"; quasi-Fermi levels, with electrons and holes "only loosely coupled by the recombination/generation mechanism, which is a slow process (has a long time constant around 1 µs)" while intra-band scattering has "0.1 ps mean free time" [Established].
 - **Solar-cell records:** Fraunhofer ISE, *Photovoltaics Report* (updated 14 July 2026), citing Solar Cell Efficiency Tables version 68 (May 2026): "The record lab cell efficiency is 28.1% for monocrystalline wafer-based technology" [Established]. LONGi (September 2026): a hybrid interdigitated back-contact cell "has attained a photoelectric conversion efficiency of 28.29%, verified by Institute for Solar Energy Research Hamelin (ISFH)", described as 96.2% of the theoretical limit, implying about 29.4% [Contested: company claim, not yet independently tabulated].
 - **Sources:** M. E. Levinshtein, S. L. Rumyantsev and M. S. Shur (eds.), *Handbook Series on Semiconductor Parameters, Vol. 1* (World Scientific, 1996), library copy at [bdt.semi.ac.cn](https://bdt.semi.ac.cn/library/upload/files/2020/7/14133813301.pdf) (cite the book); [C. Hu, ch. 2](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch2-2.pdf); [Fraunhofer ISE Photovoltaics Report](https://www.ise.fraunhofer.de/content/dam/ise/de/documents/publications/studies/Photovoltaics-Report.pdf); [LONGi release](https://www.longi.com/en/news/isfh-hibc-crystalline-silicon-cell-efficiency/). Checked Nov 2026.
+
+## R-166 · Junction electrostatics references
+
+*Read from the downloaded handbook copy and Hu's chapters 4 and 7 on 19 Nov 2026. Derived values are recomputed by `courses/09-semiconductor-devices/verify/verify_09_05.py`.*
+
+- **Silicon (Levinshtein & Rumyantsev, §1.1):** "Dielectric constant 11.7"; "Breakdown field (V cm⁻¹) ~ 3 x 10⁵" [Established as an order of magnitude; the handbook also gives breakdown voltage and field against doping for abrupt junctions, so the value varies with doping].
+- **Other materials (§2.1, §4.1, §3.1):** breakdown field about 10⁵ V/cm for Ge, about 4 × 10⁵ V/cm for GaAs, and 10⁶–10⁷ V/cm reported for diamond; GaAs static dielectric constant 12.9 [Established].
+- **Hu, ch. 4, §4.4:** "PN junction is prevalent in semiconductor devices and its capacitance is an unwelcome capacitive load to the devices and the circuits. C_dep can be lowered by reducing the junction area and increasing W_dep by reducing the doping concentration(s) and/or applying a reverse bias. Numerically, C ≈ 1 fF/µm² when W_dep = 0.1 µm"; the 1/C² against voltage plot gives doping and built-in potential [Established].
+- **Hu, ch. 7, §7.8 (SOI):** "SOI provides a speed advantage because the source/drain to body junction capacitance is practically eliminated as the source and drain diffusion regions extend vertically to the buried oxide. The cost of an SOI wafer is higher than an ordinary Si wafer" [Established].
+- **Derived here:** the one-sided-junction relations V_br ≈ ε_s E_c²/(2qN), W = 2V_br/E_c and the drift-region resistance per area 4V_br²/(ε_s μ E_c³) (the "silicon limit"), evaluated for 200 V and 600 V with E_c = 3 × 10⁵ V/cm and the 09-03 mobility model; the full Poisson solution of a 10¹⁷/10¹⁶ cm⁻³ junction (half-density width 0.3118 µm against 0.3318 µm in the depletion approximation).
+- **Sources:** M. E. Levinshtein, S. L. Rumyantsev and M. S. Shur (eds.), *Handbook Series on Semiconductor Parameters, Vol. 1* (World Scientific, 1996), library copy at [bdt.semi.ac.cn](https://bdt.semi.ac.cn/library/upload/files/2020/7/14133813301.pdf) (cite the book); [C. Hu, ch. 4](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch4-1.pdf); [C. Hu, ch. 7](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch7.pdf). Checked Nov 2026.
