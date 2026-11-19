@@ -1,0 +1,152 @@
+* Lab 06-10 -- op-amp circuits in ngspice with near-ideal op-amps (E sources, gain 1e8) and, where
+* the chapter needs them, finite gain, offset and bias-current sources, and a saturating output.
+*
+* EXPECT ex1out  key:../../chapters/06-10-ideal-op-amp.md#Ex_06-10.1b rtol=1e-6
+* EXPECT ex2out  key:../../chapters/06-10-ideal-op-amp.md#Ex_06-10.2a rtol=1e-6
+* EXPECT ex3out  key:../../chapters/06-10-ideal-op-amp.md#Ex_06-10.3a scale=1e-3 rtol=1e-3
+* EXPECT ex3cm   key:../../chapters/06-10-ideal-op-amp.md#Ex_06-10.3b scale=-1e-3 rtol=1e-3
+* EXPECT ex4vos  key:../../chapters/06-10-ideal-op-amp.md#Ex_06-10.4b scale=1e-3 rtol=1e-5
+* EXPECT ex4ibm  key:../../chapters/06-10-ideal-op-amp.md#Ex_06-10.4c scale=-1e-3 rtol=1e-6
+* EXPECT ex4ibp  key:../../chapters/06-10-ideal-op-amp.md#Ex_06-10.4d scale=1e-3 rtol=1e-6
+* EXPECT ex5out  key:../../chapters/06-10-ideal-op-amp.md#Ex_06-10.5b scale=1e-3 rtol=1e-3
+* EXPECT ex5cm   key:../../chapters/06-10-ideal-op-amp.md#Ex_06-10.5d scale=-1e-3 rtol=2e-3
+* EXPECT p1out   key:../../solutions/06-10-solutions.md#06-10.1b rtol=1e-3
+* EXPECT p3out   key:../../solutions/06-10-solutions.md#06-10.3a rtol=1e-6
+* EXPECT p4out   key:../../solutions/06-10-solutions.md#06-10.4b rtol=1e-3
+* EXPECT p9vm    key:../../solutions/06-10-solutions.md#06-10.9c rtol=1e-3
+* EXPECT p11gain key:../../solutions/06-10-solutions.md#06-10.11a rtol=1e-4
+
+* ---- Example 06-10.1: inverting, 10k and 47k, 0.5 V in
+V1   i1 0 DC 0.5
+R11  i1 n1 10k
+R12  n1 o1 47k
+E1   o1 0 0 n1 1e8
+* ---- Example 06-10.2: summing DAC, code 101 (5 V, 0 V, 5 V) into 10k, 20k, 40k; Rf = 10k
+V2a  b2a 0 DC 5
+V2b  b2b 0 DC 0
+V2c  b2c 0 DC 5
+R2a  b2a n2 10k
+R2b  b2b n2 20k
+R2c  b2c n2 40k
+R2f  n2 o2 10k
+E2   o2 0 0 n2 1e8
+* ---- Example 06-10.3: difference amp, G = 100, bridge inputs (1.25 V and 1.25 V + 1.24875 mV)
+V3a  v31 0 DC 1.25
+V3b  v32 0 DC 1.2512487512
+R31  v31 n3 1k
+R32  n3 o3 100k
+R33  v32 p3 1k
+R34  p3 0 100k
+E3   o3 0 p3 n3 1e8
+* worst corner (R2/R1 high, R4/R3 low) with 1.25 V on both inputs
+V3c  v3c 0 DC 1.25
+R31w v3c n3w 0.99k
+R32w n3w o3w 101k
+R33w v3c p3w 1.01k
+R34w p3w 0 99k
+E3w  o3w 0 p3w n3w 1e8
+* ---- Example 06-10.4: gain 101 (1k, 100k) with 10k source resistance; LM358 limits one term at a time
+* (a) 7 mV offset in series with the + input, signal 0
+V4a  s4a 0 DC 0
+R4sa s4a x4a 10k
+V4os p4a x4a DC 7m
+R41a n4a 0 1k
+R42a n4a o4a 100k
+E4a  o4a 0 p4a n4a 1e8
+* (b) 250 nA flowing out of the - input (PNP input stage)
+V4b  s4b 0 DC 0
+R4sb s4b p4b 10k
+R41b n4b 0 1k
+R42b n4b o4b 100k
+I4bm 0 n4b DC 250n
+E4b  o4b 0 p4b n4b 1e8
+* (c) 250 nA flowing out of the + input, through the 10k source resistance
+V4c  s4c 0 DC 0
+R4sc s4c p4c 10k
+R41c n4c 0 1k
+R42c n4c o4c 100k
+I4cp 0 p4c DC 250n
+E4c  o4c 0 p4c n4c 1e8
+* ---- Example 06-10.5: three-op-amp in-amp, R = 25k, RG = 500, unity difference stage (nominal and worst corner)
+.subckt inamp vp vm out params: ra=10k rb=10k rc=10k rd=10k
+Ea  oa 0 vp na 1e8
+Eb  ob 0 vm nb 1e8
+Rfa na oa 25k
+Rfb nb ob 25k
+RG  na nb 500
+R1  ob n {ra}
+R2  n out {rb}
+R3  oa p {rc}
+R4  p 0 {rd}
+Ec  out 0 p n 1e8
+.ends
+V5p  v5p 0 DC 1.2512487512
+V5m  v5m 0 DC 1.25
+X5   v5p v5m o5 inamp ra=10k rb=10k rc=10k rd=10k
+V5c  v5c 0 DC 1.25
+X5w  v5c v5c o5w inamp ra=9.9k rb=10.1k rc=10.1k rd=9.9k
+* ---- Problem 06-10.1: inverting, 4.7k and 100k, 0.1 V
+V61  i61 0 DC 0.1
+R611 i61 n61 4.7k
+R612 n61 o61 100k
+E61  o61 0 0 n61 1e8
+* ---- Problem 06-10.3: summing 1 V, -0.5 V, 2 V into 10k, 20k, 40k; Rf = 20k
+V63a a63 0 DC 1
+V63b b63 0 DC -0.5
+V63c c63 0 DC 2
+R63a a63 n63 10k
+R63b b63 n63 20k
+R63c c63 n63 40k
+R63f n63 o63 20k
+E63  o63 0 0 n63 1e8
+* ---- Problem 06-10.4: difference amp G = 10 with R4 = 101k; v1 = 2.00 V, v2 = 2.05 V
+V64a a64 0 DC 2.00
+V64b b64 0 DC 2.05
+R641 a64 n64 10k
+R642 n64 o64 100k
+R643 b64 p64 10k
+R644 p64 0 101k
+E64  o64 0 p64 n64 1e8
+* ---- Problem 06-10.9: inverting gain -4.7 with a smoothly saturating output at +/-12 V, 3 V in
+V69  i69 0 DC 3
+R691 i69 n69 10k
+R692 n69 o69 47k
+B69  o69 0 V = 12*tanh(1e5*(0 - v(n69))/12)
+* ---- Problem 06-10.11: inverting, R2/R1 = 100, A = 1e4
+V611 i611 0 DC 1
+R6111 i611 n611 1k
+R6112 n611 o611 100k
+E611 o611 0 0 n611 1e4
+
+.control
+op
+let ex1out = v(o1)
+let ex2out = v(o2)
+let ex3out = v(o3)
+let ex3cm = v(o3w)
+let ex4vos = v(o4a)
+let ex4ibm = v(o4b)
+let ex4ibp = v(o4c)
+let ex5out = v(o5)
+let ex5cm = v(o5w)
+let p1out = v(o61)
+let p3out = v(o63)
+let p4out = v(o64)
+let p9vm = v(n69)
+let p11gain = v(o611)
+echo "ex1out = $&ex1out"
+echo "ex2out = $&ex2out"
+echo "ex3out = $&ex3out"
+echo "ex3cm = $&ex3cm"
+echo "ex4vos = $&ex4vos"
+echo "ex4ibm = $&ex4ibm"
+echo "ex4ibp = $&ex4ibp"
+echo "ex5out = $&ex5out"
+echo "ex5cm = $&ex5cm"
+echo "p1out = $&p1out"
+echo "p3out = $&p3out"
+echo "p4out = $&p4out"
+echo "p9vm = $&p9vm"
+echo "p11gain = $&p11gain"
+.endc
+.end

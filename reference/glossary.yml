@@ -2580,3 +2580,45 @@
   definition: A converter control method that continually adjusts its input operating point (for example by perturb and observe) to extract the most power from a varying source such as a solar cell or thermoelectric generator.
   chapter: "06-09"
   see_also: [Maximum power transfer]
+
+# ---------------------------------------------------------------- 06-10
+- term: Operational amplifier
+  definition: A high-gain differential amplifier, v_out = A(v+ − v−), with very high input resistance and low output resistance, used almost always with negative feedback so that the external components, not A, set the circuit's behavior.
+  chapter: "06-10"
+  see_also: [VCVS, Virtual short, Negative feedback]
+- term: Virtual short
+  definition: The ideal op-amp rule v+ = v− (with no input current), valid only while negative feedback is active and the output is inside its range; with the + input grounded it makes the − input a virtual ground.
+  chapter: "06-10"
+  see_also: [Operational amplifier, Negative feedback]
+- term: Negative feedback
+  definition: Returning a fraction of a system's output to subtract from its input, which trades excess gain for gains set by passive components, lower sensitivity to the amplifier's parameters and corrected errors.
+  chapter: "06-10"
+  see_also: [Loop gain, Virtual short]
+- term: Noise gain
+  definition: The gain 1 + R2/R1 from a signal at the op-amp's + input (offset voltage, input noise) to its output; it is the same for inverting and non-inverting stages and sets the finite-gain error, about (noise gain)/A.
+  chapter: "06-10"
+  see_also: [Input offset voltage, Loop gain]
+- term: Common-mode rejection ratio (CMRR)
+  definition: The ratio of differential gain to common-mode gain, A_d/A_cm, usually in dB; for a difference amplifier built from resistors of tolerance t it is at worst about (1 + G)/(4t).
+  chapter: "06-10"
+  see_also: [Instrumentation amplifier]
+- term: Instrumentation amplifier
+  definition: A differential amplifier with high input resistance on both inputs and gain set by one resistor, classically two non-inverting stages followed by a difference amplifier, G = (1 + 2R/R_G)(R2/R1); its first stage multiplies the CMRR by its gain.
+  chapter: "06-10"
+  see_also: [Common-mode rejection ratio (CMRR)]
+- term: Transimpedance amplifier
+  definition: A current-to-voltage converter, v_out = −R_f i_in, formed by feeding a current into an op-amp's virtual ground; it presents zero input resistance, and large R_f makes bias current a significant error.
+  chapter: "06-10"
+  see_also: [Input bias current]
+- term: Input offset voltage
+  definition: V_OS, the small DC voltage that, applied between an op-amp's inputs, would bring its output to zero; modeled as a source in series with the + input and amplified by the noise gain (OPA187 10 µV max, LM358 7 mV max at 25 °C).
+  chapter: "06-10"
+  see_also: [Noise gain, Input bias current]
+- term: Input bias current
+  definition: I_B, the small DC current flowing into (or, for PNP input stages, out of) each op-amp input; through a resistance R it produces an error I_B R that is amplified like a signal.
+  chapter: "06-10"
+  see_also: [Input offset current, Input offset voltage]
+- term: Input offset current
+  definition: I_OS, the difference between an op-amp's two input bias currents; it is the error that remains when the two inputs see equal resistances (a compensation resistor R1∥R2 at the + input).
+  chapter: "06-10"
+  see_also: [Input bias current]

@@ -112,6 +112,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-104 | Compact models and gm/ID design | Nov 2026 |
 | R-105 | Thevenin and Norton history and Power over Ethernet | Nov 2026 |
 | R-106 | The 50 ohm standard | Nov 2026 |
+| R-107 | Op-amp datasheets and analog revenue | Nov 2026 |
 
 ---
 
@@ -928,3 +929,30 @@ R&D % = R&D ÷ revenue.
   - Polyethylene ($\varepsilon_r$ = 2.25) gives 51.1 Ω for minimum loss, confirming the "about 51 ohms" claim.
   - The physics is standard transmission-line theory (Pozar, *Microwave Engineering*) [Established].
 - **Sources:** [Hackaday, "What's Special About Fifty Ohms" (11 Jul 2016)](https://hackaday.com/2016/07/11/whats-special-about-fifty-ohms); [Altium, "Mysterious 50 Ohm Impedance"](https://resources.altium.com/p/mysterious-50-ohm-impedance-where-it-came-and-why-we-use-it). Checked Nov 2026 (search excerpts).
+
+## R-107 · Op-amp datasheets and analog revenue
+
+*Primary documents read in full* (datasheet electrical-characteristics tables and the companies' SEC filings), Nov 2026.
+
+- **TI OPA187 (datasheet SBOS807E, Dec 2016, revised May 2020)** [Established]:
+  - 36 V zero-drift op-amp.
+  - At 25 °C: $V_{OS}$ ±1 µV typical, ±10 µV maximum; drift 0.001 µV/°C typical (0.015 µV/°C maximum).
+  - $I_B$ ±100 pA typical, ±350 pA maximum.
+  - Open-loop gain 160 dB typical; gain-bandwidth 550 kHz; differential input impedance 100 MΩ ∥ 6 pF; quiescent current 100 µA per amplifier (typical).
+- **TI LM358 family (datasheet SLOS068AB, June 1976, revised Oct 2024)** [Established]:
+  - LM358 at 25 °C: $V_{OS}$ 3 mV typical, 7 mV maximum; $I_B$ −20 nA typical, −250 nA maximum (the minus sign: current flows out of the PNP inputs); $I_{OS}$ 2 nA typical, 50 nA maximum; gain-bandwidth 0.7 MHz.
+  - LM358B: $V_{OS}$ ±0.3 mV typical, ±3.0 mV maximum; $I_B$ −10 nA typical, −35 nA maximum; gain-bandwidth 1.2 MHz.
+- **Texas Instruments, Form 10-K for 2025** [Established]:
+  - Revenue $17,682 million.
+  - Analog segment (power and signal chain) revenue $14,006 million, up 15%, about 79% of the total.
+- **Analog Devices, fiscal 2025 (year ended 1 Nov 2025; Q4 FY2025 earnings release, Form 8-K exhibit 99.1, and Form 10-K)** [Established]:
+  - Revenue $11,019.7 million, up 17%.
+  - By end market: industrial 45%, automotive 30%, consumer 13%, communications 13% (rounded; they sum to 101%).
+- **Not found:** a reliable public figure for op-amp market share. Company segment revenues include power management, data converters and much else, so they are not op-amp revenues.
+- **Sources:**
+  - [TI OPA187 datasheet](https://www.ti.com/lit/ds/symlink/opa187.pdf).
+  - [TI LM358 datasheet](https://www.ti.com/lit/ds/symlink/lm358.pdf).
+  - [TI 2025 Form 10-K](https://www.sec.gov/Archives/edgar/data/97476/000009747626000059/txn-20251231.htm).
+  - [ADI Q4 FY2025 earnings release](https://www.sec.gov/Archives/edgar/data/6281/000000628125000151/adiq425exhibit991.htm).
+  - [ADI FY2025 Form 10-K](https://www.sec.gov/Archives/edgar/data/6281/000000628125000153/adi-20251101.htm).
+  - Checked Nov 2026.

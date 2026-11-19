@@ -35,7 +35,7 @@ The foundation of circuit theory: elements, Kirchhoff's laws, systematic nodal a
 | [06-07 · Linearity and Superposition](chapters/06-07-linearity-and-superposition.md) | 6 | ✅ verified | [problems](problems/06-07-problems.md) · [solutions](solutions/06-07-solutions.md) · [lab](labs/06-07-lab/README.md) · [verify](verify/verify_06_07.py) |
 | [06-08 · Thevenin and Norton Equivalents](chapters/06-08-thevenin-and-norton.md) | 10 | ✅ verified | [problems](problems/06-08-problems.md) · [solutions](solutions/06-08-solutions.md) · [lab](labs/06-08-lab/README.md) · [verify](verify/verify_06_08.py) |
 | [06-09 · Maximum Power Transfer](chapters/06-09-maximum-power-transfer.md) | 4 | ✅ verified | [problems](problems/06-09-problems.md) · [solutions](solutions/06-09-solutions.md) · [lab](labs/06-09-lab/README.md) · [verify](verify/verify_06_09.py) |
-| [06-10 · The Ideal Op-Amp](chapters/06-10-ideal-op-amp.md) | 10 | ⬜ planned | — |
+| [06-10 · The Ideal Op-Amp](chapters/06-10-ideal-op-amp.md) | 10 | ✅ verified | [problems](problems/06-10-problems.md) · [solutions](solutions/06-10-solutions.md) · [lab](labs/06-10-lab/README.md) · [verify](verify/verify_06_10.py) |
 | [06-11 · Practical DC Circuits and Measurement](chapters/06-11-practical-dc-circuits-and-measurement.md) | 4 | ⬜ planned | — |
 
 **Course resources:** [Flashcards (Anki CSV)](../../flashcards/06-circuit-analysis-1-dc.csv)
