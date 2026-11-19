@@ -186,6 +186,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-178 | Bipolar transistor data sheets | Nov 2026 |
 | R-179 | Class-D audio amplifier data sheet | Nov 2026 |
 | R-180 | Image-sensor pixel readout | Nov 2026 |
+| R-181 | Transistor matching | Nov 2026 |
 
 ---
 
@@ -1892,3 +1893,9 @@ R&D % = R&D ÷ revenue.
 *Read on 19 Nov 2026. The primary paper could not be downloaded (IEEE Xplore refused automated access); the claim below was read in the Wikipedia article, which cites the paper for it. Tagged [Established] because the 4T pixel structure is standard textbook and review material.*
 
 - **4T active pixel:** a pinned photodiode, a floating diffusion and four transistors (transfer gate, reset gate, selection gate and a source-follower readout transistor); the source follower buffers the pixel voltage onto the column without removing the accumulated charge [Established]. Primary source: E. R. Fossum and D. B. Hondongwa, "A Review of the Pinned Photodiode for CCD and CMOS Image Sensors," *IEEE J. Electron Devices Society*, vol. 2, no. 3, pp. 33–43, 2014, doi:10.1109/JEDS.2014.2306412. Read via [Wikipedia, "Active-pixel sensor"](https://en.wikipedia.org/wiki/Active-pixel_sensor). Used in 10-06. See open issue 39.
+
+## R-181 · Transistor matching
+
+*Bibliographic record confirmed on 19 Nov 2026 through the Crossref API (title, authors, journal, volume, issue, pages, date, DOI); the paper itself was not opened (IEEE Xplore refuses automated access). The area law is the paper's widely cited result and standard textbook material. Tagged [Established].*
+
+- **Pelgrom, Duinmaijer and Welbers, "Matching properties of MOS transistors,"** *IEEE J. Solid-State Circuits*, vol. 24, no. 5, pp. 1433–1439, Oct. 1989, doi:10.1109/JSSC.1989.572629: the standard deviation of the parameter difference between closely spaced, identically drawn transistors scales as 1/√(WL), σ(ΔV_TH) = A_VT/√(WL) [Established]. A 1988 ESSCIRC paper of the same title by Pelgrom and Duinmaijer also exists (doi:10.1109/ESSCIRC.1988.5468276). The A_VT value used in 10-08 (3.5 mV·µm) is illustrative, not a specific process's figure. Used in 10-08.

@@ -4313,3 +4313,22 @@
 - term: Bypass capacitor
   definition: A capacitor placed across a bias element (typically an emitter or source resistor) so that it carries DC bias current but is a short circuit at signal frequencies, restoring the stage's full gain.
   chapter: "10-07"
+# ---------------------------------------------------------------- 10-08
+- term: Compliance voltage
+  definition: The lowest output voltage at which a current source still delivers its intended current with its intended output resistance; V_ov for a basic MOS mirror, V_TN + 2V_ov for a simple cascode mirror.
+  chapter: "10-08"
+  see_also: [Current mirror]
+- term: Cascode current mirror
+  definition: A current mirror with a second stacked transistor on each side, which holds the output transistor's drain at the reference transistor's drain voltage and raises the output resistance to about g_mr_o², at the cost of extra compliance voltage.
+  chapter: "10-08"
+  see_also: [Cascode, Current mirror]
+- term: Wilson current mirror
+  definition: A three-transistor bipolar mirror with feedback that reduces the base-current error to 2/(β² + 2β + 2) and raises the output resistance to about βr_o/2.
+  chapter: "10-08"
+  see_also: [Current mirror]
+- term: Beta helper
+  definition: A transistor added to a bipolar current mirror to supply the mirror's base currents from the supply, cutting the reference's base-current loss by a factor of about β.
+  chapter: "10-08"
+- term: Pelgrom's law
+  definition: The empirical rule that the random threshold difference between two closely spaced, identically drawn MOSFETs has a standard deviation A_VT/√(WL), falling with the square root of gate area; A_VT is a process constant.
+  chapter: "10-08"

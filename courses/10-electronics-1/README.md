@@ -34,7 +34,7 @@ Turning devices into circuits: diode circuits, transistor biasing, small-signal 
 | [10-05 · Amplifier Fundamentals](chapters/10-05-amplifier-fundamentals.md) | 6 | ✅ verified | [problems](problems/10-05-problems.md) · [solutions](solutions/10-05-solutions.md) · [lab](labs/10-05-lab/README.md) · [verify](verify/verify_10_05.py) |
 | [10-06 · MOS Single-Stage Amplifiers](chapters/10-06-mos-single-stage-amplifiers.md) | 12 | ✅ verified | [problems](problems/10-06-problems.md) · [solutions](solutions/10-06-solutions.md) · [lab](labs/10-06-lab/README.md) · [verify](verify/verify_10_06.py) |
 | [10-07 · BJT Single-Stage Amplifiers](chapters/10-07-bjt-single-stage-amplifiers.md) | 10 | ✅ verified | [problems](problems/10-07-problems.md) · [solutions](solutions/10-07-solutions.md) · [lab](labs/10-07-lab/README.md) · [verify](verify/verify_10_07.py) |
-| [10-08 · Current Sources and Current Mirrors](chapters/10-08-current-sources-and-mirrors.md) | 8 | ⬜ planned | — |
+| [10-08 · Current Sources and Current Mirrors](chapters/10-08-current-sources-and-mirrors.md) | 8 | ✅ verified | [problems](problems/10-08-problems.md) · [solutions](solutions/10-08-solutions.md) · [lab](labs/10-08-lab/README.md) · [verify](verify/verify_10_08.py) |
 | [10-09 · Real Op-Amps: Non-Idealities](chapters/10-09-real-op-amps-nonidealities.md) | 10 | ⬜ planned | — |
 | [10-10 · Op-Amp Application Circuits](chapters/10-10-op-amp-application-circuits.md) | 8 | ⬜ planned | — |
 

@@ -1,0 +1,41 @@
+* Lab 10-08 -- current mirrors with level-1 NMOS (KP = 4 mA/V^2 for W = L, VTO = 0.5 V). Level 1's saturation law
+* (KP/2)(W/L)V_ov^2 (1 + LAMBDA V_DS) is the chapter's, so the mirror results are exact, not approximate.
+* (1) Example 10-08.1: 10 kOhm from 3.3 V into a diode-connected M1 (LAMBDA = 0.1), copied by M2 whose drain is held
+*     at 2.0 V by a source that also carries a 1 V AC test signal: the DC current is I_out and the AC current gives R_out.
+* (2) Example 10-08.7: a 25.76 kOhm reference into a diode-connected device with LAMBDA = 0, built twice, on 3.3 V
+*     and on 3.4 V supplies.
+*
+* EXPECT iout key:../../chapters/10-08-current-sources-and-mirrors.md#Ex_10-08.1b scale=1e-3 rtol=2e-4
+* EXPECT rout key:../../chapters/10-08-current-sources-and-mirrors.md#Ex_10-08.1e scale=1e3 rtol=1e-3
+* EXPECT sens key:../../chapters/10-08-current-sources-and-mirrors.md#Ex_10-08.7e rtol=2e-3
+
+.options temp=26.85 tnom=26.85 reltol=1e-8 abstol=1e-15
+VDD vdd 0 DC 3.3
+RREF vdd g1 10k
+M1 g1 g1 0 0 n1 W=10u L=10u
+VOUT d2 0 DC 2.0 AC 1
+M2 d2 g1 0 0 n1 W=10u L=10u
+.model n1 NMOS(LEVEL=1 KP=4e-3 VTO=0.5 LAMBDA=0.1)
+
+VDD7 vdd7 0 DC 3.3
+RREF7 vdd7 g7 25.76k
+M7 g7 g7 0 0 n7 W=10u L=10u
+.model n7 NMOS(LEVEL=1 KP=4e-3 VTO=0.5 LAMBDA=0)
+VDD8 vdd8 0 DC 3.4
+RREF8 vdd8 g8 25.76k
+M8 g8 g8 0 0 n7 W=10u L=10u
+
+.control
+op
+let iout = -i(vout)
+let i33 = (3.3 - v(g7)) / 25.76k
+let i34 = (3.4 - v(g8)) / 25.76k
+let sens = (i34 / i33 - 1) * 100
+echo "iout = $&iout"
+echo "i33 = $&i33"
+echo "sens = $&sens"
+ac lin 1 1k 1k
+let rout = 1 / real(-i(vout))
+echo "rout = $&rout"
+.endc
+.end
