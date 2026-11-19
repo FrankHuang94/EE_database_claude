@@ -169,6 +169,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-161 | Crystal, band-structure and alloy parameters | Nov 2026 |
 | R-162 | Wafer orientation, strain and wafer size | Nov 2026 |
 | R-163 | Carrier statistics, dopants and dopant fluctuation | Nov 2026 |
+| R-164 | Carrier transport in silicon | Nov 2026 |
 
 ---
 
@@ -1670,3 +1671,15 @@ R&D % = R&D ÷ revenue.
 - **Hu, ch. 7, §7.7 and §7.8:** "Yet another example of random variation is the random dopant fluctuation phenomenon. The statistical variation of the number of dopant atoms and their location in small size MOSFET creates significant variations in the threshold voltage"; for ultra-thin-body MOSFETs, small depletion widths "can be obtained without heavy channel doping, carrier mobility is improved"; for multigate MOSFETs, "There is no need for heavy doping in the channel to reduce Wdep. This leads to low vertical field and less impurity scattering; as a result the mobility is higher" [Established].
 - **Derived here:** n_i = √(N_C N_V) e^(−E_g/2kT) = 9.39 × 10⁹ cm⁻³ from the handbook N_C, N_V and E_g = 1.12 eV (2.7% below Altermatt's 9.65 × 10⁹); hydrogenic donor 25.8 meV and 2.38 nm (m* = 0.26, ε_r = 11.7); course n_i(T) model rising 528-fold from 300 to 400 K; dopant counts in example transistor volumes.
 - **Sources:** M. E. Levinshtein, S. L. Rumyantsev and M. S. Shur (eds.), *Handbook Series on Semiconductor Parameters, Vol. 1* (World Scientific, 1996), library copy at [bdt.semi.ac.cn](https://bdt.semi.ac.cn/library/upload/files/2020/7/14133813301.pdf) (cite the book); [C. Hu, ch. 1–3](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch1-3.pdf); [C. Hu, ch. 7](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch7.pdf). Checked Nov 2026.
+
+## R-164 · Carrier transport in silicon
+
+*Read from the downloaded handbook copy (page images of §1.3 checked to confirm exponents) and Hu's chapter 2 on 19 Nov 2026 (Course 09 facts file F-0909, F-0910). Derived values are recomputed by `courses/09-semiconductor-devices/verify/verify_09_03.py`.*
+
+- **Mobility against doping at 300 K (Levinshtein & Rumyantsev, eqs. 1.3.1 and 1.3.4, after Baccarani and Ostoja 1975):** μ ≈ μ_min + (μ_max − μ_min)/[1 + (N/N_ref)^α]; electrons μ_min = 92, μ_max = 1360 cm²/V·s, α = 0.91, N_ref = 1.3 × 10¹⁷ cm⁻³ (10¹⁵ ≤ N_d ≤ 10²⁰ cm⁻³); holes μ_min = 48, μ_max = 450 cm²/V·s, α = 0.76, N_ref = 6.3 × 10¹⁶ cm⁻³ [Established as fits].
+- **Lattice mobility (eqs. 1.3.2 and 1.3.5, after Dorkel and Leturcq 1981):** electrons μ ≈ 1430 (300/T)^2.2 cm²/V·s for N_d ≤ 10¹⁵ cm⁻³ and 250–600 K; holes μ_L = 495 (300/T)^2.2 [Established].
+- **Velocity against field (eqs. 1.3.6, 1.3.8, 1.3.9, after Jacoboni et al. 1977):** v_d ≈ v_s (F/F_c)/[1 + (F/F_c)^β]^(1/β); electrons (F ∥ ⟨111⟩, N_d ≤ 10¹⁶ cm⁻³, T > 250 K) v_s = 1.53 × 10⁹ T^−0.87 cm/s, F_c = 1.01 T^1.55 V/cm, β = 2.57 × 10⁻² T^0.66; holes (F ∥ ⟨100⟩) v_s ≈ 1.62 × 10⁸ T^−0.52 cm/s, F_c = 1.24 T^1.68 V/cm, β = 0.46 T^0.17 [Established].
+- **Other silicon values (§1.1):** electron and hole thermal velocities 2.3 × 10⁵ and 1.65 × 10⁵ m/s; optical phonon energy 0.063 eV; diffusion coefficients ≤ 36 (electrons) and ≤ 12 cm²/s (holes); hole Hall factor about 0.75–0.9 at 300 K across 10¹⁴–10¹⁸ cm⁻³ (Fig. 1.3.9, Lin et al. 1981) [Established].
+- **Hu, ch. 2:** Table 2–1, lightly doped mobilities at room temperature: Si 1400/470, Ge 3900/1900, GaAs 8500/400, InAs 30 000/500 cm²/V·s (electrons/holes); fits μ_p = 420/[1 + ((N_a + N_d)/1.6 × 10¹⁷)^0.7] + 50 and μ_n = 1318/[1 + ((N_a + N_d)/10¹⁷)^0.85] + 92 (Eqs. 2.2.8–2.2.9, read from the page image); "In small devices, the electric field can easily reach 10⁵ V/cm … electron and hole velocities saturate at around 10⁷ cm/s"; "Mobility and even velocity saturation … are concepts that … become fuzzy when we deal with devices whose sizes are smaller than the mean free path"; "it is not easy to measure mobility accurately and that we should presume the existence of uncertainties in experimental data in general" [Established].
+- **Derived here:** the two fits agree within 6.8% for electrons over 10¹⁵–10¹⁹ cm⁻³ but differ by up to 55% for holes near 7 × 10¹⁷ cm⁻³ [Contested]; low-field mobility of the Jacoboni electron fit 1534 cm²/V·s at 300 K; D_n = 34.77 cm²/s at 10¹⁵ cm⁻³ by the Einstein relation.
+- **Sources:** M. E. Levinshtein, S. L. Rumyantsev and M. S. Shur (eds.), *Handbook Series on Semiconductor Parameters, Vol. 1* (World Scientific, 1996), library copy at [bdt.semi.ac.cn](https://bdt.semi.ac.cn/library/upload/files/2020/7/14133813301.pdf) (cite the book); [C. Hu, ch. 2](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch2-2.pdf). Checked Nov 2026.

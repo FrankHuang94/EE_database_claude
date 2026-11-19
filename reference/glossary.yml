@@ -3548,3 +3548,54 @@
 - term: Random dopant fluctuation
   definition: The variation of transistor properties, chiefly threshold voltage, caused by the random number and placement of dopant atoms in a small channel; the count is Poisson-distributed, so a mean of N atoms varies by about √N.
   chapter: "09-02"
+# ---- 09-03
+- term: Drift
+  definition: The net motion of carriers caused by an electric field, superimposed on their random thermal motion; the drift velocity is μ𝓔 at low fields, and drift current density is q(nμ_n + pμ_p)𝓔.
+  chapter: "09-03"
+  see_also: [Mobility, Diffusion]
+- term: Thermal velocity
+  definition: The root-mean-square speed of carriers from thermal energy, √(3kT/m*), about 2.3×10⁷ cm/s for electrons in silicon at 300 K; drift is a small bias on this random motion.
+  chapter: "09-03"
+- term: Matthiessen's rule
+  definition: Independent scattering mechanisms add their rates, so 1/μ = 1/μ_lattice + 1/μ_impurity + …; the lowest mobility dominates, like resistors in series.
+  chapter: "09-03"
+  see_also: [Mobility]
+- term: Four-point probe
+  definition: A sheet-resistance measurement with four collinear probes, driving current through the outer pair and measuring voltage across the inner pair so that contact resistance drops out; for a thin film R_s = (π/ln 2)(V/I) ≈ 4.532 V/I.
+  chapter: "09-03"
+  see_also: [Sheet resistance]
+- term: Velocity saturation
+  definition: The levelling-off of carrier drift velocity at high fields (above about 10⁴ V/cm in silicon) near 10⁷ cm/s, because hot carriers lose energy by emitting optical phonons; it limits the current of short transistors.
+  chapter: "09-03"
+  see_also: [Optical phonon, Ballistic transport]
+- term: Optical phonon
+  definition: A high-energy lattice vibration (63 meV in silicon) in which neighboring atoms move against each other; emission of optical phonons by hot carriers is the main cause of velocity saturation.
+  chapter: "09-03"
+- term: Ballistic transport
+  definition: Carrier motion across a region shorter than a few mean free paths, with few or no collisions, where mobility and velocity saturation lose their meaning; modern short-channel transistors are partly ballistic.
+  chapter: "09-03"
+- term: Diffusion
+  definition: The net flow of carriers from regions of high to low concentration caused by random thermal motion alone, with flux −D dn/dx (Fick's law); the carrier spread grows as √(Dt).
+  chapter: "09-03"
+  see_also: [Diffusion coefficient, Fick's law]
+- term: Diffusion coefficient
+  definition: The constant D linking diffusion flux to concentration gradient (cm²/s); for silicon at 300 K about 35 cm²/s for electrons and 12 cm²/s for holes in lightly doped material, related to mobility by D = (kT/q)μ.
+  chapter: "09-03"
+  see_also: [Einstein relation]
+- term: Fick's law
+  definition: The statement that a diffusion flux is proportional to, and directed down, the concentration gradient, F = −D dn/dx; it follows from a random walk.
+  chapter: "09-03"
+- term: Einstein relation
+  definition: D/μ = kT/q for non-degenerate carriers, derived from the requirement of zero current in equilibrium; 25.85 mV at 300 K.
+  chapter: "09-03"
+  see_also: [Diffusion coefficient, Mobility]
+- term: Built-in field
+  definition: The electric field present in equilibrium wherever doping varies, of just the size, (kT/q)(1/N)(dN/dx), needed for drift to cancel diffusion; graded doping uses it to speed minority carriers across bipolar bases.
+  chapter: "09-03"
+- term: Drift–diffusion equations
+  definition: The transport model J_n = qnμ_n𝓔 + qD_n dn/dx and J_p = qpμ_p𝓔 − qD_p dp/dx which, with Poisson's equation and the continuity equations, describes semiconductor devices and is solved by device simulators.
+  chapter: "09-03"
+- term: Hall mobility
+  definition: The mobility obtained from a Hall measurement, μ_H = |R_H|/ρ; it differs from the drift mobility by the Hall factor, which depends on the scattering mechanism.
+  chapter: "09-03"
+  see_also: [Hall effect]
