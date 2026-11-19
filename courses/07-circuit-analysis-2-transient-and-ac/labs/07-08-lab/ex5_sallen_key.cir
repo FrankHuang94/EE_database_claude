@@ -1,0 +1,59 @@
+* Example 07-08.5 and the guided exercise: unity-gain Sallen-Key Butterworth low-pass at 1 kHz.
+* R1 = R2 = 11.3k, C1 = 20n (input node A to output), C2 = 10n (node B to ground).
+* (1) ideal op-amp (a voltage-controlled source with gain 1e6 in a follower)
+* (2) C1 10% low (18n)
+* (3) and (4) the guided exercise: a single-pole op-amp macromodel, A0 = 1e5, with GBW = 100 kHz
+*     (pole at 1 Hz: 1k with 159.155 uF) and GBW = 10 kHz (pole at 0.1 Hz: 1k with 1.59155 mF)
+* The natural frequency is where the phase crosses -90 degrees; there |H| = Q (unity gain).
+*
+* EXPECT f0_1  key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.5c rtol=1e-4
+* EXPECT g1k_1 key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.5d rtol=1e-3
+* EXPECT q_2   key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.5e rtol=1e-3
+* EXPECT f0_2  key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.5f rtol=1e-4
+* EXPECT g1k_3 key:README.md#Lab_07-08.a rtol=2e-3
+* EXPECT g1k_4 key:README.md#Lab_07-08.b rtol=2e-3
+
+V1  in 0 AC 1
+* (1)
+R11 in a1 11.3k
+R21 a1 b1 11.3k
+C21 b1 0 10n
+C11 a1 o1 20n
+E1  o1 0 b1 o1 1e6
+* (2)
+R12 in a2 11.3k
+R22 a2 b2 11.3k
+C22 b2 0 10n
+C12 a2 o2 18n
+E2  o2 0 b2 o2 1e6
+* (3) GBW 100 kHz
+R13 in a3 11.3k
+R23 a3 b3 11.3k
+C23 b3 0 10n
+C13 a3 o3 20n
+E3  x3 0 b3 o3 1e5
+Rp3 x3 y3 1k
+Cp3 y3 0 159.155u
+Eb3 o3 0 y3 0 1
+* (4) GBW 10 kHz
+R14 in a4 11.3k
+R24 a4 b4 11.3k
+C24 b4 0 10n
+C14 a4 o4 20n
+E4  x4 0 b4 o4 1e5
+Rp4 x4 y4 1k
+Cp4 y4 0 1.59155m
+Eb4 o4 0 y4 0 1
+
+.control
+ac dec 20000 100 10k
+meas ac f0_1 when vp(o1)=-1.5707963 fall=1
+meas ac f0_2 when vp(o2)=-1.5707963 fall=1
+meas ac q_2 find vm(o2) when vp(o2)=-1.5707963 fall=1
+ac lin 1 1k 1k
+let g1k_1 = vdb(o1)
+let g1k_3 = vdb(o3)
+let g1k_4 = vdb(o4)
+print g1k_1 g1k_3 g1k_4
+.endc
+.end

@@ -1,0 +1,25 @@
+* Example 07-08.2: a loaded parallel tank at 10.7 MHz, driven by a 1 A AC current source, so the
+* node voltage equals the tank impedance. The coil is 1 uH with 0.8404 ohm in series (Q = 80).
+*
+* EXPECT z0    key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.2d rtol=1e-3
+* EXPECT bw    key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.2f scale=1e3 rtol=1e-3
+
+I1  0 x AC 1
+Rs  x 0 20k
+Rl  x 0 10k
+C1  x 0 221.21p
+Rc  x m 0.84038
+L1  m 0 1u
+
+.control
+ac lin 1 10.7meg 10.7meg
+let z0 = vm(x)
+print z0
+ac lin 100001 10.4meg 11meg
+meas ac zpk max vm(x)
+meas ac fa when vm(x)=2105.28 rise=1
+meas ac fb when vm(x)=2105.28 fall=1
+let bw = fb - fa
+print bw zpk
+.endc
+.end

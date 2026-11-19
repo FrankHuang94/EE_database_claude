@@ -33,7 +33,7 @@ Circuits with memory. Capacitors and inductors, first- and second-order transien
 | [07-05 · Sinusoidal Steady State, Phasors and Impedance](chapters/07-05-sinusoidal-steady-state-and-impedance.md) | 10 | ✅ verified | [problems](problems/07-05-problems.md) · [solutions](solutions/07-05-solutions.md) · [lab](labs/07-05-lab/README.md) · [verify](verify/verify_07_05.py) |
 | [07-06 · AC Power and Power Factor](chapters/07-06-ac-power-and-power-factor.md) | 8 | ✅ verified | [problems](problems/07-06-problems.md) · [solutions](solutions/07-06-solutions.md) · [lab](labs/07-06-lab/README.md) · [verify](verify/verify_07_06.py) |
 | [07-07 · Frequency Response and Bode Plots](chapters/07-07-frequency-response-and-bode-plots.md) | 10 | ✅ verified | [problems](problems/07-07-problems.md) · [solutions](solutions/07-07-solutions.md) · [lab](labs/07-07-lab/README.md) · [verify](verify/verify_07_07.py) |
-| [07-08 · Filters and Resonance](chapters/07-08-filters-and-resonance.md) | 10 | ⬜ planned | — |
+| [07-08 · Filters and Resonance](chapters/07-08-filters-and-resonance.md) | 10 | ✅ verified | [problems](problems/07-08-problems.md) · [solutions](solutions/07-08-solutions.md) · [lab](labs/07-08-lab/README.md) · [verify](verify/verify_07_08.py) |
 | [07-09 · Mutual Inductance and Transformers](chapters/07-09-mutual-inductance-and-transformers.md) | 8 | ⬜ planned | — |
 | [07-10 · Two-Port Networks](chapters/07-10-two-port-networks.md) | 7 | ⬜ planned | — |
 | [07-11 · Three-Phase Circuits](chapters/07-11-three-phase-circuits.md) | 5 | ⬜ planned | — |

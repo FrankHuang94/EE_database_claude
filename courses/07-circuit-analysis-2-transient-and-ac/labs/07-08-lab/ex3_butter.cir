@@ -1,0 +1,32 @@
+* Example 07-08.3: a second-order Butterworth low-pass for 50 ohm, scaled from L = C = sqrt(2).
+*
+* EXPECT g_dc   key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.3c rtol=1e-3
+* EXPECT g_10   key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.3d rtol=1e-3
+* EXPECT p_10   key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.3f rtol=1e-3
+* EXPECT g_30   key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.3g rtol=1e-3
+* EXPECT p_30   key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.3i rtol=1e-3
+* EXPECT g_100  key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.3j rtol=1e-3
+
+V1  in 0 AC 1
+Rs  in a 50
+L1  a o 1.125395u
+C1  o 0 450.158p
+Rl  o 0 50
+
+.control
+ac lin 1 1 1
+let g_dc = vdb(o)
+print g_dc
+ac lin 1 10meg 10meg
+let g_10 = vdb(o)
+let p_10 = 180/pi*vp(o)
+print g_10 p_10
+ac lin 1 30meg 30meg
+let g_30 = vdb(o)
+let p_30 = 180/pi*vp(o)
+print g_30 p_30
+ac lin 1 100meg 100meg
+let g_100 = vdb(o)
+print g_100
+.endc
+.end

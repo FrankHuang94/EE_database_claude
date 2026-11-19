@@ -136,6 +136,10 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-128 | Decibel and neper standards | Nov 2026 |
 | R-129 | Op-amp frequency-response specifications | Nov 2026 |
 | R-130 | Oscilloscope bandwidth and rise time | Nov 2026 |
+| R-131 | Original filter papers | Nov 2026 |
+| R-132 | Active-filter practice | Nov 2026 |
+| R-133 | Resonator Q by technology | Nov 2026 |
+| R-134 | RF filters and bands | Nov 2026 |
 
 ---
 
@@ -1299,3 +1303,46 @@ R&D % = R&D ÷ revenue.
 - **Tektronix, *4 Series B MSO Datasheet*, 48W-74016-7 (22 Apr 2025; distributor-hosted copy)** [Established as Tektronix's specification; **Contested** against the primer's k]: "Bandwidth (calculated rise time) 200 MHz (2.3 ns), 350 MHz (1.3 ns), 500 MHz (900 ps), 1 GHz (450 ps), 1.5 GHz (333 ps)". Implied bandwidth × rise time (our arithmetic): 0.46, 0.455, 0.45, 0.45, 0.4995.
 - **Derived (ours):** a single pole gives k = ln 9/(2π) = 0.350 and an amplitude error of 1.94% at one fifth of its bandwidth; a Gaussian response gives 0.340; an ideal brick-wall response gives 0.446.
 - **Sources:** [Tektronix primer](https://download.tek.com/document/03W_8605_6.pdf); [4 Series B datasheet (Transcat copy)](https://www.transcat.ca/media/pdf/tektronix-4-series-b-mso-datasheet-new.pdf). Checked Nov 2026.
+
+## R-131 · Original filter papers
+
+*Gathered by a research subagent (Course 07 facts file c0708, entries F-0795 to F-0798).*
+
+- **S. Butterworth, "On the Theory of Filter Amplifiers," *Experimental Wireless & The Wireless Engineer*, vol. VII, no. 85, pp. 536–541, October 1930** (Admiralty Research Laboratory; "MS. received by the Editor, May, 1930") [Established; read from a scan of the issue, formulas checked against the page image]: "An ideal electrical filter should not only completely reject the unwanted frequencies but should also have uniform sensitivity for the wanted frequencies"; "the aim is to obtain a filter factor F … of the form F = (1 + x^m)^−½ … where m increases with the number of elements employed"; one LC element tuned to the cutoff with L/C = ½R² gives F = (1 + x⁴)^−½. Sections were separated by valves.
+- **R. P. Sallen and E. L. Key, "A Practical Method of Designing RC Active Filters," *IRE Transactions on Circuit Theory*, vol. CT-2, no. 1, pp. 74–85, March 1955, doi:10.1109/TCT.1955.6500159** (MIT Lincoln Laboratory) [Established for the record via Crossref; the paper itself was not opened (ieeexplore.ieee.org is outside the build environment's network)].
+- **Sources:** [Crossref record](https://api.crossref.org/works/10.1109/TCT.1955.6500159); the Butterworth scan location is recorded in the session facts file. Checked Nov 2026.
+
+## R-132 · Active-filter practice
+
+*Gathered by a research subagent (Course 07 facts file c0708, entries F-0799 to F-0807); documents opened unless stated.*
+
+- **J. Karki, *Analysis of the Sallen-Key Architecture*, TI SLOA024B (rev. Sep 2002)** [Established]: well above cutoff "Vo/Vi ≈ Zo/R1", rising at 20 dB/dec as the amplifier's open-loop gain falls; "setting K=2.9 results in a nominal Q of 10. Worst case analysis with 1% resistors results in Q=16"; "Use NPO if at all possible. X7R is OK in a pinch. Avoid Z5U"; avoid capacitors below 100 pF.
+- **J. Karki, *Active Low-Pass Filter Design*, TI SLOA049D (rev. Feb 2023)** [Established]: "The MFB is generally preferred because the MFB has better sensitivity to component variations and better high-frequency behavior. The unity-gain Sallen-Key inherently has the best gain accuracy"; "Use C0G (NP0) dielectrics"; an output RC of 100 Ω and 47 nF "places a passive pole … at about 40 kHz" (**[Contested]**: the values give 33.9 kHz).
+- **T. Kugelstadt, "Active Filter Design Techniques," ch. 16 of *Op Amps For Everyone*, TI SLOD006B (Aug 2002; read from a third-party copy of the TI PDF, TI's links return 404)** [Industry estimate: rules of thumb]: "the open-loop gain (AOL) should be 100 times (40 dB above) the peak gain (Q) of a filter section to allow a maximum gain error of 1%"; "First-order filter: fT = 100·Gain·fc".
+- **B. C. Baker, *Designing an anti-aliasing filter for ADCs in the frequency domain*, TI SLYT626 (2Q 2015)** [Industry estimate for the rule; partly **Contested**]: "fGBW = 100 × Q × G × fC"; "An LSB error in dB equals 20 × log [(2N – err)/2N]"; "For a 12-bit ADC where err equals 1 and N equals 12, the gain error equals –2.12 mdB". Its statement that a +38 mdB rise is "fundamental" to a fourth-order Butterworth filter contradicts the ideal (monotonic) Butterworth response.
+- **P. Miller and R. Cesari, ch. 13 of *Op Amps For Everyone* (same copy)** [Established; **Contested** within the source on 1 versus ½ LSB]: "Sampling at the Nyquist rate places stringent requirements on the anti-aliasing filter — usually a steep transition 10th or higher order filter is needed"; out-of-band signals to "less than 1 LSB" and elsewhere "≤ ½ LSB".
+- **Sources:** [SLOA024B](https://www.ti.com/lit/an/sloa024b/sloa024b.pdf); [SLOA049](https://www.ti.com/lit/an/sloa049b/sloa049b.pdf); [SLYT626](https://www.ti.com/lit/pdf/slyt626); *Op Amps For Everyone* third-party copy (recorded in the facts file). Checked Nov 2026.
+
+## R-133 · Resonator Q by technology
+
+*Gathered by a research subagent (Course 07 facts file c0708, entries F-0808 to F-0819); documents opened unless stated.*
+
+- **J. R. Vig, *Quartz Crystal Resonators and Oscillators … A Tutorial*, U.S. Army CECOM SLCET-TR-88-1 (Rev. 8.5.2.0, Jan 2004)** [Established]: "Q max = 1/(2π fτ)"; "the maximum achievable Q times the frequency is a constant, e.g., 16 million for AT-cut resonators, when f is in MHz"; a quartz frequency standard at "f ~ 5 MHz, Q ~ 10⁶". (A 10⁴–10⁶ range for general-purpose crystals was seen only in an unattributed mirror and is not used.)
+- **RFM (Akoustis), RO3101A-20 433.92 MHz SAW resonator datasheet (rev. 06/15/2022)** [Established]: "Unloaded Q QU 9000"; "50 Ω Loaded Q QL 1458"; "Motional Resistance RM 19.4 Ω; Motional Inductance LM 63.8 µH; Motional Capacitance CM 2.11 fF".
+- **IEEE International Ultrasonics Symposium 2019 program digests** [Established; research results]: Murata (Nakagawa et al.), I.H.P. SAW "Qmax 3113 3504" with fractional bandwidths 4.0% and 4.1%; Qorvo (Inoue and Solal), layered SAW "very high Q of over 5,000 and high k2 of 8.8% at 1 GHz"; TI (Yen et al.), FBAR, SMR and advanced SAW summarized "With f-Q product 5×10¹² Hz".
+- **R. Aigner (TriQuint), "Tunable RF Filters: Pursuing the 'Holy Grail' of Acoustic Filter R&D," *Microwave Journal*, 16 Jun 2008** [Industry estimate; dated]: "Q-values above 2000 at 2GHz represent the state of the art for FBARs and SMR-BAWs".
+- **J. N. Burghartz, B. Rejaei, H. Schellevis, "Saddle Add-On Metallization for RF-IC Technology," *IEEE Trans. Electron Devices* 51(3):460–466, Mar 2004, doi:10.1109/TED.2004.823325** [Established]: "A record quality factor of ∼13 for a 10-nH inductor on a conventional 5-Ω-cm silicon substrate is demonstrated" (designed for maximum Q at 1 GHz). No current figure for modern on-chip inductors was opened.
+- **Würth Elektronik 744761127A (WE-KI 0603, 27 nH) specification, 2004-10-11 (distributor-hosted)** [Established]: "Q factor 250 MHz Q 40 min."; "Q factor 900 MHz Q 75 typ."; self-resonance "2800 MHz min.".
+- **Sources:** [RO3101A-20](https://rfmi.akoustis.com/wp-content/uploads/pdf-front/168796733576212751.pdf); [IUS 2019 Murata](https://ewh.ieee.org/conf/ius/2019/media/files/0107.pdf); [IUS 2019 Qorvo](https://ewh.ieee.org/conf/ius/2019/media/files/0333.pdf); [IUS 2019 TI](https://ewh.ieee.org/conf/ius/2019/media/files/1195.pdf); [Microwave Journal](https://www.microwavejournal.com/articles/12274-tunable-rf-filters-pursuing-the-holy-grail-of-acoustic-filter-r-d); [Würth spec (RS copy)](https://docs.rs-online.com/3c67/0900766b80f88b26.pdf). Checked Nov 2026.
+
+## R-134 · RF filters and bands
+
+*Gathered by research subagents (Course 07 facts files: c07 entries F-0722 to F-0725; c0708 entries F-0820 and F-0821).*
+
+- **Resonant Inc., Form 10-K for FY2021 (filed 14 Mar 2022), Item 1** [Established that the filing says this; cited third-party figures are Industry estimates]: "The iPhone 13, model A2481, supports coverage for 24 FDD-LTE and 8 TDD-LTE bands … Each band requires a filter, either as an individual filter, a duplexer or a multiplexer"; "filters, duplexers and multiplexers comprise more than half of the cost to the RF front-end, according to Mobile Experts"; "45.5 billion filters in 2019 and will grow to an estimated 72.0 billion filters by 2024" (Navian). No verified per-phone filter count was found.
+- **Broadcom Inc., Form 10-K for FY2025 (filed 18 Dec 2025)** [Established]: FBAR filter technology in front-end modules; "We use our internal fabrication facilities for products utilizing our innovative and proprietary processes, such as our FBAR filters".
+- **Skyworks Solutions, Form 8-K exhibits, 28 Oct 2025 and 5 Oct 2026** [Established]: "Skyworks and Qorvo to Combine to Create $22 Billion U.S.-Based Leader"; "revenue of $7.7 billion"; "Skyworks … today announced the successful completion of its combination with Qorvo" (5 Oct 2026).
+- **Yole Group, *RF Front-End Module for Mobile 2025*** [Industry estimate: search excerpt only, yolegroup.com not reachable]: "$15.4B in 2024, with 70% from modules and 30% from discrete components".
+- **ETSI TS 138 101-1 V19.7.0 (2026-10) (3GPP TS 38.101-1 Release 19), Table 5.2-1** [Established]: "n77 | 3300 MHz – 4200 MHz … TDD"; "n78 | 3300 MHz – 3800 MHz"; "n79 | 4400 MHz – 5000 MHz"; "In the USA this band is restricted to 3450 – 3550 MHz and 3700 – 3980 MHz".
+- **FCC 20-51 (adopted 23 Apr 2020) and 47 CFR § 15.403 (eCFR, current)** [Established for band edges; power rules have been amended since 2020 and were not re-checked]: "1200 megahertz of spectrum available for unlicensed use in the 6 gigahertz (GHz) band (5.925-7.125 GHz)".
+- **Sources:** [Resonant 10-K](https://www.sec.gov/Archives/edgar/data/1579910/000157991022000005/resn-20211231.htm); [Broadcom 10-K](https://www.sec.gov/Archives/edgar/data/1730168/000173016825000121/avgo-20251102.htm); [Skyworks 8-K, 2025](https://www.sec.gov/Archives/edgar/data/4127/000110465925102806/tm2529220d2_ex99-1.htm); [Skyworks 8-K, 2026](https://www.sec.gov/Archives/edgar/data/4127/000110465926113538/tm2626934d1_ex99-1.htm); [ETSI TS 138 101-1](https://www.etsi.org/deliver/etsi_ts/138100_138199/13810101/19.07.00_60/ts_13810101v190700p.pdf); [FCC 20-51](https://docs.fcc.gov/public/attachments/FCC-20-51A1.pdf); [47 CFR 15.403](https://www.ecfr.gov/current/title-47/part-15/section-15.403). Checked Nov 2026.

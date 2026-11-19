@@ -1,0 +1,27 @@
+* Example 07-08.1: series RLC resonance. The resistor is placed last, so v(r)/10 ohm is the current.
+* A 10 mV (peak) source; vm(b,r) is the capacitor's voltage magnitude.
+*
+* EXPECT f0    key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.1a scale=1e6 rtol=5e-4
+* EXPECT f1    key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.1e scale=1e6 rtol=1e-4
+* EXPECT f2    key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.1f scale=1e6 rtol=1e-4
+* EXPECT ipk   key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.1g scale=1e-3 rtol=1e-3
+* EXPECT vc0   key:../../chapters/07-08-filters-and-resonance.md#Ex_07-08.1h rtol=1e-3
+
+V1  in 0 AC 10m
+L1  in b 100u
+C1  b r 100p
+R1  r 0 10
+
+.control
+ac lin 160001 1.55meg 1.63meg
+meas ac vrpk max vm(r)
+meas ac f0 max_at vm(r)
+let ipk = vrpk/10
+print ipk
+meas ac f1 when vm(r)=0.0070710678 rise=1
+meas ac f2 when vm(r)=0.0070710678 fall=1
+ac lin 1 1.5915494meg 1.5915494meg
+let vc0 = vm(b,r)
+print vc0
+.endc
+.end

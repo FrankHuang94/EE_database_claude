@@ -91,3 +91,13 @@
 "Closed-loop bandwidth of an op-amp amplifier?","GBW divided by the noise gain \(1/\beta = 1 + R_f/R_g\), for both inverting and non-inverting; DC gain error ≈ \(1/(A_0\beta)\).",bsee::07 bsee::07-07
 "Phase margin and peaking (two-pole loop)?","PM = 180° + ∠T at |T| = 1. 65.5° → ζ = 0.707, no peak; 51.8° → ζ = 0.5, 1.25 dB peak, 16% overshoot; 0° → oscillation.",bsee::07 bsee::07-07
 "Oscilloscope bandwidth: what is lost at the rated frequency?","It is the −3 dB point: a single-pole scope shows 70.7% of a sine there (29% low). Use 5× the signal's highest frequency for < 2% error.",bsee::07 bsee::07-07
+"Series RLC resonance: ω0, Q, bandwidth?","\(\omega_0 = 1/\sqrt{LC}\); \(Q = \omega_0L/R = Z_0/R\) with \(Z_0 = \sqrt{L/C}\); bandwidth \(\omega_0/Q\) exactly, with \(\omega_1\omega_2 = \omega_0^2\).",bsee::07 bsee::07-08
+"Parallel RLC: Q?","\(Q = R/Z_0 = \omega_0RC\): large shunt R means low loss and high Q (the dual of the series case).",bsee::07 bsee::07-08
+"Voltage magnification at series resonance?","\(|V_L| = |V_C| = Q|V_{source}|\): a Q = 100 circuit puts 100 V across C from a 1 V source.",bsee::07 bsee::07-08
+"Q four ways?","Poles at \(\zeta = 1/(2Q)\); bandwidth \(\omega_0/Q\); \(2\pi\times\)stored/lost per cycle; envelope decays by e in about \(Q/\pi\) cycles.",bsee::07 bsee::07-08
+"Loaded vs unloaded Q?","Unloaded \(Q_u\): the resonator's own loss. Loaded \(Q_L\): with source and load in parallel; always lower, and a fraction \(Q_L/Q_u\) of the power heats the resonator.",bsee::07 bsee::07-08
+"Insertion loss of one resonator?","\(-20\lg(1 - Q_L/Q_u)\) dB: Q_L = 100 needs Q_u ≫ 100 (200 → 6 dB; 2000 → 0.45 dB). Why GHz phone filters are acoustic.",bsee::07 bsee::07-08
+"Butterworth response and order?","\(|H|^2 = 1/(1 + (\omega/\omega_c)^{2n})\), maximally flat, −3.01 dB at \(\omega_c\); \(n \ge \lg(10^{A_s/10} - 1)/(2\lg(\omega_s/\omega_c))\).",bsee::07 bsee::07-08
+"Butterworth section Q values?","\(Q_k = 1/(2\sin((2k-1)\pi/2n))\): n = 2: 0.707; 3: real + 1.0; 4: 0.541, 1.307; 5: real + 0.618, 1.618.",bsee::07 bsee::07-08
+"Sallen–Key low-pass ω0 and Q?","\(\omega_0 = 1/\sqrt{R_1R_2C_1C_2}\). Unity gain, equal R: \(Q = \tfrac12\sqrt{C_1/C_2}\). Equal components: \(Q = 1/(3 - K)\), sensitivity KQ.",bsee::07 bsee::07-08
+"Impedance and frequency scaling?","\(R' = k_zR\), \(L' = k_zL/k_f\), \(C' = C/(k_zk_f)\): same response shape, new impedance level and frequency.",bsee::07 bsee::07-08
