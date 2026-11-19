@@ -59,7 +59,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **From FPGA flow to ASIC flow.** Name four steps that an ASIC implementation flow needs and an FPGA flow does not, and explain for each why the FPGA does not need it.
 
-
 ### Problem 08-12.13 [B]
 
 **Writing the constraints.** A UP5K design has two clocks: a 12 MHz board clock on a pin, and the 48 MHz internal oscillator, which runs the main logic. A sensor chip, clocked by the 12 MHz board clock, drives a data input that changes up to 20 ns after each board-clock edge; the two clock domains exchange data only through a FIFO with synchronizers. For each item, say what constraint is needed and what goes wrong without it: (a) the 48 MHz clock; (b) the sensor input; (c) the paths between the 12 MHz and 48 MHz domains; (d) the data pins. (e) With the input delay of (b), how much of the 83.33 ns board-clock period is left for the input's path inside the FPGA, ignoring board wiring?

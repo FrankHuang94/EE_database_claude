@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 08-01 · Number Systems and Codes
 
 | | |

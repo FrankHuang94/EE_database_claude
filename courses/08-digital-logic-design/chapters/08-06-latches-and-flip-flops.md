@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 08-06 · Latches, Flip-Flops and Sequential Timing
 
 | | |
@@ -12,7 +12,7 @@
 **Learning objectives.** After this chapter you can:
 
 1. Explain how feedback creates memory, show why a pair of cross-coupled inverters has two stable states and one unstable one, and analyze SR latches built from NOR and NAND gates.
-2. Build a D latch and an edge-triggered master–slave D flip-flop, and contrast level-sensitive transparency with edge triggering.
+2. Build a D latch and an edge-triggered master–slave D flip-flop, contrast level-sensitive transparency with edge triggering, and use the characteristic and excitation tables of D, T, JK and SR flip-flops.
 3. Add enables and synchronous or asynchronous resets to registers, and describe each correctly in Verilog.
 4. Define setup time, hold time and the clock-to-Q delays, derive the setup (maximum-delay) and hold (minimum-delay) constraints for a register-to-register path, and compute the maximum clock frequency and the hold slack.
 5. State the rules of synchronous design and explain why they make large designs analyzable.
@@ -23,14 +23,14 @@
 
 Combinational logic computes; it does not remember. Every useful digital system, from a counter to a processor, also needs **state**: values that persist from one step of a computation to the next. This chapter builds memory from logic gates by adding feedback, refines it into the **edge-triggered flip-flop**, and derives the two timing inequalities that every synchronous chip must satisfy. Those inequalities, setup and hold, decide a chip's clock frequency and are checked billions of times by static timing tools before every tape-out ([08-10](08-10-timing-metastability-cdc.md), [19-10](../../19-digital-vlsi-design/chapters/19-10-synthesis-and-sta.md)).
 
-- **Flip-flops are everywhere.** Every register, pipeline stage, counter and state machine is a bank of D flip-flops; a modern processor core contains hundreds of thousands of them.
+- **Flip-flops are everywhere.** Every register, pipeline stage, counter and state machine is a bank of D flip-flops.
 - **The clock imposes discipline.** By letting state change only at clock edges, synchronous design turns a timing problem with billions of interacting paths into many independent register-to-register checks.
 - **Timing overhead is real.** Each clock cycle loses the flip-flop's clock-to-Q delay and setup time, overhead that grows in relative importance as logic between registers gets shallower ([08-09](08-09-arithmetic-circuits.md), pipelining in [14-06](../../14-computer-organization-and-architecture/chapters/14-06-pipelining-and-hazards.md)).
 - **Getting it wrong is silent.** A setup violation makes a chip fail at speed; a hold violation makes it fail at every speed, and cannot be fixed by slowing the clock.
 
 ## 2. Intuition first
 
-**A ball on a hill.** Picture a ball on a surface with two valleys separated by a ridge. In either valley the ball stays put; that is a stored 0 or 1. On the very top of the ridge it could balance in principle, but the slightest disturbance sends it into one valley or the other. Two cross-coupled inverters behave exactly this way: two stable states and one unstable balance point, which [08-10](08-10-timing-metastability-cdc.md) studies as **metastability**. *Where the analogy breaks:* the ball rolls back after a small push in a valley because of gravity; in the circuit, the restoring force comes from the gain of the inverters, and that gain also makes the ridge unstable.
+**A ball on a hill.** Picture a ball on a surface with two valleys separated by a ridge. In either valley the ball stays put; that is a stored 0 or 1. On the very top of the ridge it could balance in principle, but the slightest disturbance sends it into one valley or the other. Two cross-coupled inverters behave exactly this way: two stable states and one unstable balance point, which [08-10](08-10-timing-metastability-cdc.md) studies as **metastability**. *Where the analogy breaks:* the ball rolls back after a small push in a valley because of gravity. In the circuit, each inverter's output sits at a rail where its gain is low, so a small disturbance barely moves it and the state restores itself; near the middle the gain is high, and that high gain is what makes the ridge unstable.
 
 **A camera shutter.** A **latch** is like a window: while its clock is high it is transparent and the output follows the input; when the clock falls, it freezes the last value. A **flip-flop** is like a camera: it records the input at the instant of the rising edge and shows that photograph until the next edge, ignoring everything in between. Pipelines need cameras, not windows: with windows, a value could race through several stages during one clock pulse.
 
@@ -47,13 +47,13 @@ There is a third consistent point. If the inverter's output equals its input at 
 - At the two rail states, each inverter's output is pinned at a rail and its gain is near 0: the loop gain is far below 1, and these states are **stable**.
 - At $V_M$, each inverter is in its high-gain region (a CMOS inverter's gain there is typically 10 or more): the loop gain is far above 1, and the point is **unstable**. A circuit placed there drifts exponentially to one rail or the other, with a time constant set by the gain and the node capacitance ([08-10](08-10-timing-metastability-cdc.md)).
 
-For a CMOS inverter whose transistors are both in saturation at $V_M$ (the simple square-law model of [09-09](../../09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md)), equating the nMOS and pMOS currents, $\tfrac{\beta_n}{2}(V_M - V_{Tn})^2 = \tfrac{\beta_p}{2}(V_{DD} - V_M - |V_{Tp}|)^2$, and taking square roots gives
+For a CMOS inverter whose transistors are both in saturation at $V_M$ (the simple square-law model of [09-09](../../09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md)), equating the nMOS and pMOS currents, $\tfrac{k_n}{2}(V_M - V_{THn})^2 = \tfrac{k_p}{2}(V_{DD} - V_M - |V_{THp}|)^2$, and taking square roots gives
 
 $$
-V_M = \frac{V_{DD} - |V_{Tp}| + V_{Tn}\sqrt{\beta_n/\beta_p}}{1 + \sqrt{\beta_n/\beta_p}} ,
+V_M = \frac{V_{DD} - |V_{THp}| + V_{THn}\sqrt{k_n/k_p}}{1 + \sqrt{k_n/k_p}} ,
 $$
 
-where $\beta = \mu C_{ox} W/L$ is each transistor's gain factor, in A/V². The lab's ngspice inverter (nMOS 0.65 µm and pMOS 1.0 µm wide, both 0.15 µm long, as in the SKY130 cells of 08-02) has $\beta_n$ = 1.083 mA/V² and $\beta_p$ = 0.667 mA/V², so with $V_{DD}$ = 1.8 V and $V_{Tn} = |V_{Tp}|$ = 0.45 V, $V_M$ = **0.846** V. The simulator confirms it by connecting one inverter's output to its own input: the only consistent operating point is $V_M$.
+where $k = k'W/L$, with $k' = \mu C_{ox}$, is each transistor's gain factor in A/V² (many texts write it $\beta$; this course keeps $\beta$ for a bipolar transistor's current gain), and $V_{THn}$, $V_{THp}$ are the threshold voltages. The lab's ngspice inverter takes its geometry from the SKY130 cells of 08-02 (nMOS 0.65 µm and pMOS 1.0 µm wide, both 0.15 µm long) but uses simple, illustrative square-law parameters rather than SKY130's real device models: $k'_n$ = 250 µA/V², $k'_p$ = 100 µA/V² and $V_{THn} = |V_{THp}|$ = 0.45 V. Then $k_n = 250 \times 0.65/0.15$ = 1.083 mA/V² and $k_p = 100 \times 1.0/0.15$ = 0.667 mA/V², and with $V_{DD}$ = 1.8 V, $V_M$ = **0.846** V. The simulator confirms it by connecting one inverter's output to its own input: the only consistent operating point is $V_M$.
 
 ![Butterfly curve of two cross-coupled inverters](../../../assets/figures/08-06/butterfly.svg)
 
@@ -177,6 +177,30 @@ The payoff is enormous. Under these rules, correctness reduces to two local chec
 
 > **Going deeper — latches and time borrowing.** High-performance designs sometimes replace flip-flops with pairs of latches on opposite clock phases. Because a latch is transparent for half a cycle, a slow logic stage can "borrow" time from the next stage, as long as the total over two phases fits. This saves the flip-flop overhead and tolerates clock skew, at the cost of more complex timing analysis ([19-07](../../19-digital-vlsi-design/chapters/19-07-sequential-timing-and-clocking.md)).
 
+### 3.9 JK, T and clocked SR flip-flops
+
+Every flip-flop in a modern chip is a D flip-flop, but textbooks, older logic families and the FE exam also use three other kinds. Each is described by a **characteristic table** (the next state $Q^+$ for each input combination and present state $Q$), summarized by a **characteristic equation**:
+
+| Type | Inputs and behavior at the clock edge | Characteristic equation |
+|---|---|---|
+| D | $Q^+ = D$ | $Q^+ = D$ |
+| T (toggle) | $T = 0$ holds, $T = 1$ inverts | $Q^+ = T \oplus Q$ |
+| JK | 00 holds, 10 sets, 01 resets, 11 toggles | $Q^+ = J\overline{Q} + \overline{K}Q$ |
+| SR (clocked) | 00 holds, 10 sets, 01 resets, 11 not allowed | $Q^+ = S + \overline{R}Q$, with $SR = 0$ |
+
+The JK equation comes straight from its table: with $Q = 0$ the output becomes 1 only if $J = 1$ (set or toggle), and with $Q = 1$ it stays 1 only if $K = 0$ (hold or set). The JK flip-flop is the SR flip-flop with the forbidden input given a use: toggling.
+
+**Excitation tables** run the other way. For **design**, we know the transition each flip-flop must make ($Q \to Q^+$) and need the inputs that cause it:
+
+| $Q \to Q^+$ | D | T | J K | S R |
+|---|---|---|---|---|
+| 0 → 0 | 0 | 0 | 0 X | 0 X |
+| 0 → 1 | 1 | 1 | 1 X | 1 0 |
+| 1 → 0 | 0 | 1 | X 1 | 0 1 |
+| 1 → 1 | 1 | 0 | X 0 | X 0 |
+
+X is a don't care. For a 0 → 1 change, a JK flip-flop may either set ($JK$ = 10) or toggle (11), so $K$ is free. Those don't cares are why JK designs once needed less logic: they give the minimizer (08-03) room. In a standard-cell chip, a JK or T flip-flop is simply a D flip-flop with logic in front: $D = J\overline{Q} + \overline{K}Q$ or $D = T \oplus Q$. 08-08 §3.10 designs a counter with JK flip-flops through the excitation table.
+
 ## 4. Worked examples
 
 ### Example 08-06.1 · Driving an SR latch (tier A)
@@ -222,7 +246,7 @@ Both a positive-level D latch and a rising-edge D flip-flop start with $Q$ = 0. 
 
 (c) $(50 + 40)/390$ = **23.1**%: almost a quarter of every cycle is spent getting into and out of the flip-flops.
 
-**Sanity check.** If the logic were split into two pipeline stages of 150 ps each, each stage would need $50 + 150 + 40 = 240$ ps: the throughput rises by $390/240 = 1.6\times$, not $2\times$, because the overhead is paid twice. This is the reason pipelines have diminishing returns ([14-06](../../14-computer-organization-and-architecture/chapters/14-06-pipelining-and-hazards.md)).
+**Sanity check.** If the logic were split into two pipeline stages of 150 ps each, each stage would need $50 + 150 + 40$ = **240** ps: the throughput rises by $390/240$ = **1.6**×, not 2×, because the overhead is paid twice. This is the reason pipelines have diminishing returns ([14-06](../../14-computer-organization-and-architecture/chapters/14-06-pipelining-and-hazards.md)).
 
 ### Example 08-06.4 · A hold violation and its fix (tier B)
 
@@ -244,7 +268,7 @@ Both a positive-level D latch and a rising-edge D flip-flop start with $Q$ = 0. 
 
 (b) $5.2 + 1 + 3$ = 9.2 ns, $f_{\max}$ = **108.7** MHz.
 
-**Sanity check.** The same register built from on-chip standard cells has a clock-to-Q near 0.3 ns and a setup near 0.1 ns (§9): the board-level part is about twenty times slower, mostly because it drives a 50 pF board load through a package instead of a few femtofarads on chip.
+**Sanity check.** The same register built from on-chip standard cells has a clock-to-Q near 0.3 ns and a setup near 0.1 ns (§9): the board-level part is about twenty times slower: it is built in an older, slower process and drives a 50 pF board load through an output buffer and a package, instead of a few femtofarads on chip.
 
 ### Example 08-06.6 · Synchronous versus asynchronous reset (tier B)
 
@@ -269,6 +293,22 @@ Both a positive-level D latch and a rising-edge D flip-flop start with $Q$ = 0. 
 (c) $30 - 40$ = **−10** ps: a negative setup time. $D$ may still be changing 10 ps *after* the pin's edge and be captured correctly, because the master has not closed yet.
 
 **Sanity check.** Delaying the internal clock moves the whole capture window later: setup shrinks and hold grows by the same 15 ps, and their sum, the window's width (40 ps), is unchanged. Conversely, delaying the data inside the cell moves the window earlier, which is why library flip-flops such as the SKY130 one in §9 have *negative hold* times.
+
+### Example 08-06.8 · JK and T flip-flops (tier B)
+
+**Setup.** (a) A JK flip-flop starts with $Q$ = 0 and sees $(J, K)$ = 10, 11, 11, 00, 01, 11 at six successive edges. Give $Q$ after each edge and the number of output changes. (b) What input does a T flip-flop need at each edge to follow the sequence $Q$ = 0 → 1 → 1 → 0 → 0 → 1? (c) Build a T flip-flop from a D flip-flop and one gate. (d) A D flip-flop must behave as a JK flip-flop. What logic drives $D$?
+
+**Solution.**
+
+(a) Using $Q^+ = J\overline{Q} + \overline{K}Q$: 10 sets ($Q$ = 1), 11 toggles (0), 11 toggles (1), 00 holds (1), 01 resets (0), 11 toggles (1). $Q$ = 1, 0, 1, 1, 0, 1, with **5** changes, ending at **1**.
+
+(b) $T = Q \oplus Q^+$ for each step: 0 → 1 needs 1, 1 → 1 needs 0, 1 → 0 needs 1, 0 → 0 needs 0, 0 → 1 needs 1: $T$ = 1, 0, 1, 0, 1, with **3** ones.
+
+(c) An XOR gate: $D = T \oplus Q$, the characteristic equation itself.
+
+(d) $D = J\overline{Q} + \overline{K}Q$: two AND gates, one OR gate and inverters, or a 4:1 multiplexer on $(J, K)$ with data inputs $Q$, 0, 1 and $\overline{Q}$ (hold, reset, set, toggle).
+
+**Sanity check.** In (a) each 11 toggles and each 00 holds, as the table says; the T sequence in (b) has a 1 exactly where $Q$ changes, so the number of ones equals the number of changes in the requested sequence (3).
 
 ### Answer key
 
@@ -304,6 +344,11 @@ Both a positive-level D latch and a rising-edge D flip-flop start with $Q$ = 0. 
 | Th 08-06.c | switching threshold $V_M$ | 0.846 | V |
 | Th 08-06.d | transistors, NAND-based D latch | 18 | — |
 | Th 08-06.e | transistors, transmission-gate D latch | 10 | — |
+| Ex 08-06.8a | JK output changes | 5 | — |
+| Ex 08-06.8b | JK final output | 1 | — |
+| Ex 08-06.8c | ones in the T sequence | 3 | — |
+| Ex 08-06.3e | per-stage period, two-stage pipeline | 240 | ps |
+| Ex 08-06.3f | throughput gain, two stages | 1.6 | — |
 
 ## 5. Simulate it
 
@@ -320,7 +365,7 @@ The lab is in [labs/08-06-lab/](../labs/08-06-lab/README.md).
 
 **Verilog** (`latches.v`, `latches_tb.v`): an SR latch from cross-coupled NOR gates, a gated D latch, and a master–slave flip-flop built from two D latches, all at gate level; the testbench checks them against the behavioral `always @(posedge clk)` flip-flop on random stimulus and prints `TEST PASSED`.
 
-**Guided exercise (predict, then run).** In the notebook's two-inverter simulation, a disturbance of 1 mV from $V_M$ grows by a factor of about $e$ every time constant $\tau$. **Before running,** predict how many time constants it takes to reach a full logic level of 0.9 V. Then run it and compare with $\ln(0.9\ \text{V}/1\ \text{mV})$.
+**Guided exercise (predict, then run).** In the notebook's two-inverter simulation, a disturbance of 1 mV from $V_M$ grows by a factor of about $e$ every time constant $\tau$. **Before running,** predict how many time constants it takes for the difference between the two nodes to grow from 1 mV to 0.9 V. Then run it and compare with $\ln(0.9\ \text{V}/1\ \text{mV})$. (08-10 §3.4 derives the time constant, $\tau \approx C/g_m$.)
 
 ## 6. Engineering tradeoffs
 
@@ -341,8 +386,8 @@ The lab is in [labs/08-06-lab/](../labs/08-06-lab/README.md).
 | Setup constraint | $t_{pcq} + t_{pd} + t_{\text{setup}} \le T_c$ | §3.7 |
 | Hold constraint | $t_{ccq} + t_{cd} \ge t_{\text{hold}}$, independent of $T_c$ | §3.7 |
 | D latch transistor counts | 18 (NAND-based), 10 (transmission gates) | §3.3 |
-| SKY130 basic D flip-flop (dfxtp_1, typical corner, 1.8 V, 25 °C) | 24 transistors; 20.0 µm²; clock-to-Q about 0.3 ns into a few femtofarads; setup 0.05–0.10 ns; hold slightly negative | [R-154](../../../reference/research-log.md#r-154--flip-flop-timing-data) **[Established]** (library data) |
-| TI SN74LVC74A D flip-flop, 3.3 V, 50 pF | setup 3 ns, hold 1 ns, clock-to-Q 5.2 ns maximum | [R-154](../../../reference/research-log.md#r-154--flip-flop-timing-data) **[Established]** (datasheet, from search excerpts) |
+| SKY130 basic D flip-flop (dfxtp_1, typical corner, 1.8 V, 25 °C) | 24 transistors ([R-148](../../../reference/research-log.md#r-148--standard-cell-library-structure-sky130)); 20.0 µm²; clock-to-Q about 0.3 ns into a few femtofarads; setup 0.05–0.10 ns and hold slightly negative at the fastest slews (hold turns positive with slow clock edges) | [R-154](../../../reference/research-log.md#r-154--flip-flop-timing-data) **[Established]** (library data) |
+| TI SN74LVC74A D flip-flop, 3.3 V, 50 pF | setup 3 ns, hold 1 ns, clock-to-Q 5.2 ns maximum | [R-154](../../../reference/research-log.md#r-154--flip-flop-timing-data) **[Established]** (datasheet SCAS287W) |
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -355,6 +400,8 @@ The lab is in [labs/08-06-lab/](../labs/08-06-lab/README.md).
 | N 08-06.f | SKY130 dfxtp_1 area | 20.0 | µm² |
 | N 08-06.g | SKY130 nand2_1 area | 3.75 | µm² |
 | N 08-06.h | flip-flop area in NAND2 equivalents | 5.3 | — |
+| N 08-06.i | SKY130 setup, D rising, 1.5 ns clock transition | -0.045 | ns |
+| N 08-06.j | SKY130 hold, D rising, 1.5 ns clock transition | 0.058 | ns |
 
 ## 8. Common mistakes
 
@@ -372,11 +419,11 @@ The lab is in [labs/08-06-lab/](../labs/08-06-lab/README.md).
 ### State of the art (as of Nov 2026)
 
 - **A real standard-cell flip-flop** ([R-154](../../../reference/research-log.md#r-154--flip-flop-timing-data)) **[Established]** (read from the open-source library's Liberty timing data). SkyWater's SKY130 high-density library characterizes its basic D flip-flop, `sky130_fd_sc_hd__dfxtp_1`, at the typical corner (1.8 V, 25 °C):
-  - 24 transistors (08-02 §9) in **20.0** µm² of area, against **3.75** µm² for the NAND2 (`nand2_1`): one flip-flop occupies the area of **5.3** NAND2 gates, its size in gate equivalents (08-02 §3.9);
+  - 24 transistors (08-02 §9, [R-148](../../../reference/research-log.md#r-148--standard-cell-library-structure-sky130)) in **20.0** µm² of area, against **3.75** µm² for the NAND2 (`nand2_1`): one flip-flop occupies the area of **5.3** NAND2 gates, its size in gate equivalents (08-02 §3.9);
   - clock-to-Q of **0.307** ns (rising) and **0.297** ns (falling) with a 53 ps clock transition and a 3.4 fF load, growing with the load (tables run to 162 fF);
-  - setup of **0.051** ns for a rising $D$ and **0.103** ns for a falling $D$ at the fastest characterized transitions (10 ps), increasing with slower clock and data edges;
+  - setup of **0.051** ns for a rising $D$ and **0.103** ns for a falling $D$ at the fastest characterized transitions (10 ps). Setup grows with a slower *data* edge but shrinks with a slower *clock* edge, to **−0.045** ns for a rising $D$ with a 1.5 ns clock transition, while hold grows from negative to **+0.058** ns: a slow clock edge delays the internal clock, shifting the sampling window later, exactly the effect of Example 08-06.7;
   - hold of **−0.029** ns for a rising $D$ at the same transitions: negative, as Example 08-06.7 explains.
-- **Board-level flip-flops are an order of magnitude slower.** TI's SN74LVC74A dual D flip-flop (datasheet family SCAS287, current revision May 2024) specifies at 3.3 V ± 0.3 V a data setup of 3 ns, a hold of 1 ns, a minimum clock pulse width of 3.3 ns and a maximum clock-to-Q of 5.2 ns into 50 pF **[Established]** (datasheet values from search excerpts; open issue 32).
+- **Board-level flip-flops are an order of magnitude slower.** TI's SN74LVC74A dual D flip-flop (datasheet SCAS287W, revised December 2024) specifies at 3.3 V ± 0.3 V a data setup of 3 ns, a hold of 1 ns and a minimum clock pulse width of 3.3 ns, and lists a maximum propagation delay of 5.2 ns at 3.3 V **[Established]** (read from the datasheet).
 
 ### Why it matters commercially
 
@@ -476,7 +523,7 @@ Practice problems: [problems/08-06-problems.md](../problems/08-06-problems.md) �
 ## 11. Key terms
 
 [Bistable circuit](../../../reference/glossary.md#bistable-circuit) ·
-[SR latch](../../../reference/glossary.md#sr-latch) ·
+[SR latch](../../../reference/glossary.md#sr-latch) · [JK flip-flop](../../../reference/glossary.md#jk-flip-flop) · [T flip-flop](../../../reference/glossary.md#t-flip-flop) · [Excitation table](../../../reference/glossary.md#excitation-table) ·
 [D latch](../../../reference/glossary.md#d-latch) ·
 [D flip-flop](../../../reference/glossary.md#d-flip-flop) ·
 [Master–slave flip-flop](../../../reference/glossary.md#master-slave-flip-flop) ·

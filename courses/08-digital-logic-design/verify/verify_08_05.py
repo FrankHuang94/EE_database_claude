@@ -144,6 +144,8 @@ v.check("Ex 08-05.2b", as_signed(ashr(x8, 8, 1), 8))
 v.check("Ex 08-05.2c", x8 >> 1)
 v.check("Ex 08-05.2d", int(x8 < 0))                                   # unsigned compare: 251 < 0
 v.check("Ex 08-05.2e", int(as_signed(extend(x8, 8, 32, True), 32) < 0))  # both signed, 32 bits
+v.check("Ex 08-05.2f", extend(x8, 8, 16, True) >> 1)                  # sign-extend to the destination, then >>
+v.check("Ex 08-05.2g", extend(x8, 8, 32, True) >> 1)
 v.check("Ex 08-05.3a", int(f_and("x", "0")))
 v.check("Ex 08-05.3b", int(f_or("x", "1")))
 v.assert_true("Ex3 x & 1 is x and x | 0 is x", f_and("x", "1") == "x" and f_or("x", "0") == "x")
@@ -165,6 +167,7 @@ v.check("Ex 08-05.6a", M17)
 v.check("Ex 08-05.6b", coverage(M17, M17))
 v.check("Ex 08-05.6c", M17 * H(M17))
 v.check("Ex 08-05.6d", H(M17))
+v.check("Ex 08-05.6e", H(M17))
 v.assert_true("coupon-collector asymptote", abs(H(M17) - (math.log(M17) + 0.5772156649)) < 1e-4)
 
 
@@ -246,6 +249,13 @@ v.check("08-05.8a", r1["a"])
 v.check("08-05.8b", r1["b"])
 v.check("08-05.8c", r1["c"])
 v.check("08-05.8d", rb["c"])
+v.check("08-05.8e", rb["a"])
+v.check("08-05.8f", rb["b"])
+rb3 = run_block(rot, run_block(rot, rb, True), True)
+v.assert_true("P8 blocking edges alternate between 2, 3, 2 and 3, 2, 3",
+              (rb3["a"], rb3["b"], rb3["c"]) == (2, 3, 2) == (rb["a"], rb["b"], rb["c"]))
+v.check("08-05.8g", rb3["a"])
+v.check("08-05.8h", rb3["b"])
 period_ns = 2 * 5
 v.check("08-05.9a", 1e3 / period_ns)
 rises = [t for t in range(0, 1000) if t % period_ns == 5]
@@ -260,6 +270,7 @@ n99 = math.ceil(math.log(0.01) / math.log(1 - 1 / M11))
 v.assert_true("P11 the found N is the smallest", coverage(n99, M11) >= 0.99 > coverage(n99 - 1, M11))
 v.check("08-05.11c", n99)
 v.check("08-05.11d", M11 * math.log(100))
+v.check("08-05.11e", n99 / M11)
 v.check("08-05.12a", 1024 * H(1024))
 v.check("08-05.12b", H(1024))
 v.check("08-05.12c", 1024 * (H(1024) - H(512)))
@@ -290,4 +301,6 @@ v.check("Lab 08-05.c", mean)
 v.check("Lab 08-05.d", math.sqrt(var))
 v.check("Lab 08-05.e", 0.01 * mean / math.sqrt(var))
 
+v.check("08-05.16a", 2 ** (4 + 4 + 1))
+v.check("08-05.16b", max(a + b + c for a in range(16) for b in range(16) for c in (0, 1)))
 v.finish()

@@ -250,6 +250,8 @@ v.check("Ex 08-08.5f", 1e3 / tm)
 treg = max(tpcq + (4 + 2) * tg + tsu, tpcq + 3 * tg + tsu, tb_)
 v.check("Ex 08-08.5g", treg)
 v.check("Ex 08-08.5h", 1e3 / treg)
+v.check("Ex 08-08.5i", 80 + (4 + 2) * 35 + 40)
+v.assert_true("Ex5: with the input entering at the first level the path would be 470 ps", 80 + (4 + 6) * 35 + 40 == 470)
 
 phases = [25, 4, 1, 25, 4, 1]
 v.check("Ex 08-08.6a", sum(phases))
@@ -493,4 +495,66 @@ v.check("Lab 08-08.e", 100 * b12 / t12)
 v.check("Lab 08-08.f", sum([5, 2, 1, 5, 2, 1]))
 v.check("Lab 08-08.g", hits_m[0] - hits_e[0])
 
+# ---- Example 8 and Problems 16-17: simulate the flip-flops from their characteristic tables
+
+
+def jkq(q, j, k):
+    return {(0, 0): q, (0, 1): 0, (1, 0): 1, (1, 1): 1 - q}[(j, k)]
+
+
+def ex8_step(a, b, x):
+    return a ^ b ^ (1 - x), 1 - b, (a & b & x) | ((1 - a) & (1 - b) & (1 - x))
+
+
+st, ys, rows_y = (0, 0), [], 0
+for x in (1, 1, 1, 1, 0, 0):
+    a, b, y = ex8_step(*st, x)
+    ys.append(y)
+    st = (a, b)
+v.check("Ex 08-08.8a", 2 * st[0] + st[1])
+v.check("Ex 08-08.8b", sum(ys))
+v.check("Ex 08-08.8c", sum(ex8_step(a, b, x)[2] for a in (0, 1) for b in (0, 1) for x in (0, 1)))
+v.assert_true("Ex8 counts up for x = 1 and down for x = 0", all(
+    (2 * ex8_step(a, b, x)[0] + ex8_step(a, b, x)[1]) == ((2 * a + b + (1 if x else -1)) % 4)
+    for a in (0, 1) for b in (0, 1) for x in (0, 1)))
+
+
+def p16_step(a, b, x):
+    return jkq(a, b & x, 1 - x), jkq(b, x, a)
+
+
+st = (0, 0)
+for x in (1, 1, 1, 0, 1):
+    st = p16_step(*st, x)
+v.check("08-08.16a", 2 * st[0] + st[1])
+v.check("08-08.16b", sum(1 for a in (0, 1) for b in (0, 1) if p16_step(a, b, 0) == (0, 0)))
+v.assert_true("P16 next-state equations A+ = x(A + B), B+ = xB' + A'B", all(
+    p16_step(a, b, x) == (x & (a | b), (x & (1 - b)) | ((1 - a) & b)) for a in (0, 1) for b in (0, 1) for x in (0, 1)))
+cycle = {(0, 0): (0, 1), (0, 1): (1, 0), (1, 0): (0, 0)}
+t_design = lambda a, b: (a ^ (a | b), b ^ (1 - a))            # noqa: E731  T_A = A + B, T_B = A'
+jk_design = lambda a, b: (jkq(a, b, 1), jkq(b, 1 - a, 1))      # noqa: E731  J_A = B, K_A = 1, J_B = A', K_B = 1
+v.assert_true("P17 both designs count 00 -> 01 -> 10 -> 00", all(
+    t_design(*q) == q2 and jk_design(*q) == q2 for q, q2 in cycle.items()))
+
+
+def min_literals_2var(on, dc):
+    """Fewest literals of a sum of products in (A, B) covering `on`, using `dc` freely (exhaustive)."""
+    import itertools as it
+    cubes = [c for c in it.product((0, 1, None), repeat=2)]
+    cov = lambda c: {m for m in range(4) if all(v is None or v == (m >> (1 - i)) & 1 for i, v in enumerate(c))}  # noqa: E731
+    ok = [c for c in cubes if cov(c) <= set(on) | set(dc)]
+    best = None
+    for r in range(0, 4):
+        for combo in it.combinations(ok, r):
+            if set(on) <= set().union(*[cov(c) for c in combo]) if combo else not on:
+                lits = sum(v is not None for c in combo for v in c)
+                best = lits if best is None else min(best, lits)
+    return best
+
+
+ta_on = [2 * q[0] + q[1] for q, q2 in cycle.items() if q[0] != q2[0]]   # rows where A must toggle
+tb_on = [2 * q[0] + q[1] for q, q2 in cycle.items() if q[1] != q2[1]]
+v.check("08-08.17a", min_literals_2var(ta_on, [3]) + min_literals_2var(tb_on, [3]))
+v.check("08-08.17b", 2 * t_design(1, 1)[0] + t_design(1, 1)[1])
+v.check("08-08.17c", 2 * jk_design(1, 1)[0] + jk_design(1, 1)[1])
 v.finish()

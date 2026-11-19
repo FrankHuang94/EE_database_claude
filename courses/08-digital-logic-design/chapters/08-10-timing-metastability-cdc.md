@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 08-10 · Timing, Metastability and Clock-Domain Crossing
 
 | | |

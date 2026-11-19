@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 08-08 · Finite State Machines
 
 | | |
@@ -11,9 +11,9 @@
 
 **Learning objectives.** After this chapter you can:
 
-1. Model a synchronous circuit as a finite state machine (state register, next-state logic, output logic) and distinguish Moore and Mealy machines by when their outputs respond.
+1. Model a synchronous circuit as a finite state machine (state register, next-state logic, output logic), analyze a given clocked circuit into its state table, and distinguish Moore and Mealy machines by when their outputs respond.
 2. Turn a word specification into a complete, deterministic state diagram and state table, including the reset state and every input combination.
-3. Choose a state encoding (binary, Gray-ordered, one-hot) and derive the next-state and output equations, counting flip-flops, logic and illegal states.
+3. Choose a state encoding (binary, Gray-ordered, one-hot) and derive the next-state and output equations, counting flip-flops, logic and illegal states, with D flip-flops or, through excitation tables, with JK and T flip-flops.
 4. Minimize the number of states of a machine by partition refinement.
 5. Compute an FSM's maximum clock frequency, and the latency and timing effects of Mealy and registered outputs.
 6. Write FSMs in Verilog in the three-block style with safe defaults, and verify them against a reference model.
@@ -92,6 +92,8 @@ The two kinds differ only in what the outputs may depend on, but that difference
 - **Risk of combinational loops.** If the Mealy output of one machine feeds the input of another whose Mealy output feeds back to the first, the loop has no register in it: a combinational loop that can oscillate or latch.
 
 ![Timing diagram of the Moore and Mealy 101 detectors on the input 1, 1, 0, 1, 0, 1, 1, 0, 1. The Mealy output is high in cycles 3, 5 and 8, as soon as the completing input arrives; the Moore output is high in cycles 4, 6 and 9, after the state changes.](../../../assets/figures/08-08/moore-mealy-timing.svg)
+
+*Figure 1. Moore and Mealy 101 detectors on the same input: the Mealy output responds in the cycle the completing input arrives, the Moore output one cycle later.*
 
 **Converting between them.** The behaviors are interchangeable up to a one-cycle shift.
 
@@ -172,6 +174,8 @@ The **state assignment** (or **state encoding**) gives each state a binary code.
 
 ![Flip-flop area of the state register against the number of states in SKY130: one-hot grows linearly at 25.024 square micrometers per state, binary in steps of one flip-flop per doubling; a dashed line at 32 states marks where Yosys switches its automatic encoding from one-hot to binary.](../../../assets/figures/08-08/encoding-cost.svg)
 
+*Figure 2. State-register area against the number of states in SKY130: one-hot grows linearly, binary by one flip-flop per doubling.*
+
 **Binary encoding of the Moore 101 detector.** Assign S0 = 00, S1 = 01, S2 = 10, S3 = 11 (bits $q_1 q_0$). The state table, read off the diagram:
 
 | $q_1 q_0$ | state | $x = 0$: next | $x = 1$: next | $z$ |
@@ -229,7 +233,7 @@ Example 08-08.4 reduces a 7-state machine to 4 states this way. Two cautions:
 - **Fewer states is not always less logic.** Merging can make the next-state functions more complex; the encoding usually matters more than the last state saved.
 - **Incompletely specified machines are harder.** When some transitions or outputs are don't cares, "equivalence" is no longer transitive, and finding the minimal machine is a much harder problem (NP-hard in general); designers rarely need the exact minimum.
 
-> **Going deeper — the Myhill–Nerode view.** Think of a state as an equivalence class of input histories: two histories are equivalent if no future input can tell them apart by the outputs. The minimal machine has exactly one state per class, and it is unique up to renaming the states. Partition refinement finds these classes starting from an existing machine; the detector design of §3.3 found them directly by asking which suffixes of the history matter.
+> **Going deeper — the Myhill–Nerode view.** A state is a class of input histories that no future input can tell apart by the outputs. The minimal machine has one state per class and is unique up to renaming; partition refinement finds the classes, and §3.3 found them directly by asking which suffixes matter.
 
 ### 3.6 Timing of FSMs
 
@@ -247,7 +251,7 @@ $$
 T_c \ge t_{pcq} + t_{\text{in}} + t_{\text{Mealy}} + t_{\text{down}} + t_{\text{setup}}
 $$
 
-spans both blocks, and neither block's designer sees it alone. Registering the output splits it in two, at the cost of a cycle of latency.
+spans both blocks, and neither block's designer sees it alone. Registering the output splits it in two, at the cost of a cycle of latency. Inputs that arrive through logic also lengthen the path *into* the state register, for Moore and Mealy machines alike: $T_c \ge t_{pcq} + t_{\text{in}} + t_{\text{next-state, from the input}} + t_{\text{setup}}$, which registering the outputs does not shorten.
 
 **Asynchronous inputs.** An input that is not synchronized to the clock (a button, a signal from another clock domain) can change just before an edge. If it feeds several next-state bits, some flip-flops may see the old value and some the new one, so the machine can land in a state that neither input value leads to, or in an illegal code (in a one-hot machine: zero or two bits set). Each such input must pass through a synchronizer (two flip-flops in series) before it reaches the next-state logic, and the synchronized signal must be the only copy used. The reasons, and the probability that a synchronizer itself fails, are the subject of [08-10](08-10-timing-metastability-cdc.md).
 
@@ -317,7 +321,29 @@ The rules behind this style come from [08-05](08-05-verilog-and-testbenches.md):
 
 ### 3.9 Datapath and control
 
-Many designs are best split into a **controller** (a small FSM) and a **datapath** (registers, counters, adders), often called an FSMD. The FSM issues control signals (load this register, start that counter) and reads status signals back (counter finished, comparison true). The split keeps the state machine small: a traffic-light controller does not need a state for every second of a 25-second green light, only a "green" state and a timer that tells it when to leave (Example 08-08.6). The processor datapaths of [14-05](../../14-computer-organization-and-architecture/chapters/14-05-single-cycle-datapath.md) are the same idea at larger scale. An **algorithmic state machine (ASM) chart**, a flowchart with one box per state, is a common notation for FSMDs because it shows the register operations performed in each state next to the transitions.
+Many designs are best split into a **controller** (a small FSM) and a **datapath** (registers, counters, adders), often called an FSMD. The FSM issues control signals (load this register, start that counter) and reads status signals back (counter finished, comparison true). The split keeps the state machine small: a traffic-light controller does not need a state for every second of a 25-second green light, only a "green" state and a timer that tells it when to leave (Example 08-08.6). The processor datapaths of [14-05](../../14-computer-organization-and-architecture/chapters/14-05-single-cycle-datapath.md) are the same idea at larger scale. **Algorithmic state machine (ASM) charts**, flowcharts with one box per state, are a common notation for FSMDs.
+
+### 3.10 Analysis, and design with JK and T flip-flops
+
+**Analysis** runs the design process backward: given a clocked circuit, find what it does.
+
+1. Write the **flip-flop input equations** from the schematic: each D, J, K or T input as a function of the present state and the inputs.
+2. Substitute them into the flip-flops' characteristic equations (08-06 §3.9) to get the **next-state equations**: $Q^+ = D$, $Q^+ = T \oplus Q$ or $Q^+ = J\overline{Q} + \overline{K}Q$.
+3. Tabulate the next state and the outputs for every present state and input combination: the **state table**.
+4. Draw the state diagram from the table and describe the behavior in words.
+
+Take two D flip-flops $A$ and $B$, an input $x$ and an output $y$, with $D_A = A \oplus B \oplus \overline{x}$, $D_B = \overline{B}$ and $y = ABx + \overline{A}\,\overline{B}\,\overline{x}$. $B$ toggles every cycle. For $x = 1$, $A$ toggles exactly when $B = 1$, which is counting up (00, 01, 10, 11); for $x = 0$ it toggles when $B = 0$, counting down. The circuit is a **2-bit up/down counter** whose output marks the terminal count in the current direction (11 counting up, 00 counting down). Example 08-08.8 tabulates it.
+
+**Design with JK or T flip-flops** follows §3.4 up to the state table, then uses the **excitation table** (08-06 §3.9) instead of $D = Q^+$: for each flip-flop and each row, read off the inputs that produce the required transition, with their don't cares, and minimize each input function. For a 2-bit Gray-code counter (00 → 01 → 11 → 10 → 00), with $A$ the high bit:
+
+| $AB$ | $A^+B^+$ | $J_A$ $K_A$ | $J_B$ $K_B$ |
+|---|---|---|---|
+| 00 | 01 | 0 X | 1 X |
+| 01 | 11 | 1 X | X 0 |
+| 11 | 10 | X 0 | X 1 |
+| 10 | 00 | X 1 | 0 X |
+
+Minimizing with the don't cares gives $J_A = B$, $K_A = \overline{B}$, $J_B = \overline{A}$ and $K_B = A$: four single literals. With D flip-flops the same counter is $D_A = B$, $D_B = \overline{A}$, a 2-bit Johnson counter (08-07 §3.5). In a standard-cell chip the D version is the one built; JK and T design matters for exams, for older logic families, and for reading legacy schematics.
 
 ## 4. Worked examples
 
@@ -400,13 +426,13 @@ $P_3$: B → ({D, F}, {E, G}) and C → ({D, F}, {E, G}); D → ({D, F}, {A}) an
 
 ### Example 08-08.5 · Encoding and timing (tier B)
 
-**Setup.** Flip-flops have $t_{pcq}$ = 80 ps and $t_{\text{setup}}$ = 40 ps; each gate level costs 35 ps. The next-state logic of an FSM is 6 gate levels deep in binary encoding and 3 in one-hot. (a) Find the minimum clock period and maximum frequency for each. (b) The binary machine is Mealy. One of its inputs comes from a register through 4 gate levels, its Mealy output logic is 2 levels, and the output feeds 3 more levels before the next register. What period does this path need? (c) What period does the system need if the Mealy output is registered?
+**Setup.** Flip-flops have $t_{pcq}$ = 80 ps and $t_{\text{setup}}$ = 40 ps; each gate level costs 35 ps. The next-state logic of an FSM is 6 gate levels deep in binary encoding and 3 in one-hot. (a) Find the minimum clock period and maximum frequency for each. (b) The binary machine is Mealy. One of its inputs comes from a register through 4 gate levels and enters the next-state logic only at its last 2 levels; its Mealy output logic is 2 levels, and the output feeds 3 more levels before the next register. What period do the path from the input register into the state register, and the path through the Mealy output, need? (c) What period does the system need if the Mealy output is registered?
 
 **Solution.** (a) Binary: $80 + 6 \times 35 + 40$ = **330** ps, $f_{\max}$ = **3.03** GHz. One-hot: $80 + 3 \times 35 + 40$ = **225** ps, **4.44** GHz.
 
-(b) $80 + (4 + 2 + 3) \times 35 + 40$ = **435** ps, **2.30** GHz: the path through the Mealy output, not the state machine, limits the clock.
+(b) Input register to state register: $80 + (4 + 2) \times 35 + 40$ = **330** ps, no worse than the state loop. Through the Mealy output: $80 + (4 + 2 + 3) \times 35 + 40$ = **435** ps, **2.30** GHz: the path through the Mealy output, not the state machine, limits the clock. (Had the input entered the next-state logic at its first level, this path would be $80 + (4 + 6) \times 35 + 40$ = 470 ps, which registering the output cannot shorten.)
 
-(c) A register on the output splits the path into "input logic plus Mealy logic" ($80 + 6 \times 35 + 40$ = 330 ps) and "downstream logic" ($80 + 3 \times 35 + 40$ = 225 ps). The longest path in the system is then 330 ps (the state loop and the first half tie): **330** ps, **3.03** GHz, at the cost of one cycle of latency.
+(c) A register on the output splits the path into "input logic plus Mealy logic" ($80 + 6 \times 35 + 40$ = 330 ps) and "downstream logic" ($80 + 3 \times 35 + 40$ = 225 ps). The longest path in the system is then 330 ps (the state loop, the input-to-state path and the first half tie): **330** ps, **3.03** GHz, at the cost of one cycle of latency.
 
 **Sanity check.** A register can only shorten the longest combinational path, never lengthen it: 330 ps < 435 ps ✓.
 
@@ -416,7 +442,7 @@ $P_3$: B → ({D, F}, {E, G}) and C → ({D, F}, {E, G}); D → ({D, F}, {A}) an
 
 **Solution.** (a) $25 + 4 + 1 + 25 + 4 + 1$ = **60** s.
 
-(b) $32\,768 = 2^{15}$: a **15**-bit counter's top bit toggles at 1 Hz (08-07's divide-by-2 per stage).
+(b) $32\,768 = 2^{15}$: a **15**-bit counter divides by $2^{15}$ (08-07's divide-by-2 per stage). Its top bit is a 1 Hz square wave, toggling every 0.5 s; the controller's one-cycle 1 Hz tick comes from the counter's terminal count (all ones), which is true for one clock cycle per second.
 
 (c) The FSM has 6 states: $\lceil \log_2 6 \rceil$ = **3** flip-flops. The timer must hold up to $25 - 1 = 24$: $\lceil \log_2 25 \rceil$ = **5** flip-flops. Together **8**.
 
@@ -435,6 +461,25 @@ $P_3$: B → ({D, F}, {E, G}) and C → ({D, F}, {E, G}); D → ({D, F}, {A}) an
 (c) The only illegal 5-bit code is 31 = 11111. A single flip reaches it only from a code with four 1s (01111, 10111, 11011, 11101, 11110), one flip each: 5 of the $31 \times 5 = 155$ possible single flips, **3.23**%. In one-hot every single flip gives zero or two 1s: **100**% detectable.
 
 **Sanity check.** A flip-flop with reset is about $25.024/3.7536 \approx 6.7$ NAND2s, so the extra flip-flops dominate unless the decode logic of the binary machine is large. Speed (Example 08-08.5) and error detection are the usual reasons to pay.
+
+### Example 08-08.8 · Analyzing a clocked circuit (tier B)
+
+**Setup.** For the circuit of §3.10 ($D_A = A \oplus B \oplus \overline{x}$, $D_B = \overline{B}$, $y = ABx + \overline{A}\,\overline{B}\,\overline{x}$): (a) Write the state table. (b) Starting at $AB$ = 00, apply $x$ = 1, 1, 1, 1, 0, 0 and list the states and outputs. (c) How many of the 8 rows of the table give $y$ = 1?
+
+**Solution.** (a) $A^+ = A \oplus B \oplus \overline{x}$ and $B^+ = \overline{B}$:
+
+| $AB$ | $x = 0$: $A^+B^+$, $y$ | $x = 1$: $A^+B^+$, $y$ |
+|---|---|---|
+| 00 | 11, 1 | 01, 0 |
+| 01 | 00, 0 | 10, 0 |
+| 10 | 01, 0 | 11, 0 |
+| 11 | 10, 0 | 00, 1 |
+
+(b) With $x$ = 1 the counter goes up: 00 → 01 → 10 → 11 → 00, with $y$ = 0, 0, 0, 1 in those four cycles (the output is Mealy: it marks the cycle that wraps). Then with $x$ = 0 it goes down: 00 → 11 → 10, with $y$ = 1 in the first of those cycles (00 is the terminal count going down). States: 00, 01, 10, 11, 00, 11, ending at **10** (2), with **2** cycles of $y$ = 1.
+
+(c) **2** rows: 11 with $x$ = 1 and 00 with $x$ = 0.
+
+**Sanity check.** Each row's two next states are one count apart in opposite directions, as an up/down counter's must be, and $B$ alternates in every row.
 
 ### Answer key
 
@@ -476,6 +521,10 @@ $P_3$: B → ({D, F}, {E, G}) and C → ({D, F}, {E, G}); D → ({D, F}, {A}) an
 | Ex 08-08.5f | frequency through the Mealy path | 2.30 | GHz |
 | Ex 08-08.5g | period with the output registered | 330 | ps |
 | Ex 08-08.5h | frequency with the output registered | 3.03 | GHz |
+| Ex 08-08.5i | input register to state register | 330 | ps |
+| Ex 08-08.8a | final state after the sequence | 2 | — |
+| Ex 08-08.8b | cycles with y = 1 | 2 | — |
+| Ex 08-08.8c | table rows with y = 1 | 2 | — |
 | Ex 08-08.6a | cycle length | 60 | s |
 | Ex 08-08.6b | prescaler flip-flops | 15 | — |
 | Ex 08-08.6c | FSM flip-flops, binary | 3 | — |
@@ -553,13 +602,13 @@ The lab is in [labs/08-08-lab/](../labs/08-08-lab/README.md).
 
 - **Synthesis tools extract and re-encode FSMs** ([R-156](../../../reference/research-log.md#r-156--fsm-synthesis-and-protocol-state-machines)). The open-source Yosys `fsm` pass detects a state register when it is not a module output, is driven by a single flip-flop cell, has a next value chosen only from constants or its old value, and is only compared with constants. It then extracts, optimizes and re-encodes the machine: with automatic encoding it picks one-hot for fewer than 32 states and binary otherwise **[Established]** (read from the Yosys source code and documentation with `git`). AMD's Vivado offers the `FSM_ENCODING` attribute with values one_hot, sequential, johnson, gray, user_encoding, none and auto **[Established]** (from search excerpts of AMD's UG901 and UG912).
 - **Safe state machines are a tool feature.** Vivado's `FSM_SAFE_STATE` attribute adds recovery logic: `reset_state`, `power_on_state` and `default_state` detect a single bit flip with Hamming-distance-2 codes and send the machine to the named state, and `auto_safe_state` uses Hamming-distance-3 codes to correct a single flip **[Established]** (from search excerpts of UG901 and UG912; the value list has changed between Vivado versions).
-- **Protocol state machines are specified, not invented.** The PCIe Link Training and Status State Machine has eleven top-level states: Detect, Polling, Configuration, Recovery, L0, L0s, L1, L2, Hot Reset, Loopback and Disabled, each with sub-states, and controller IP from Intel, TI and others exposes the current LTSSM state in debug registers for bring-up **[Established]** (from search excerpts of a PCI Express textbook and vendor documentation; the PCI-SIG specification itself is members-only and was not read).
+- **Protocol state machines are specified, not invented.** The PCIe Link Training and Status State Machine has eleven top-level states: Detect, Polling, Configuration, Recovery, L0, L0s, L1, L2, Hot Reset, Loopback and Disabled, each with sub-states **[Established]** (from search excerpts of a PCI Express textbook and vendor documentation; the PCI-SIG specification itself is members-only and was not read).
 
 ### Why it matters commercially
 
-- **Control bugs are the expensive ones.** Datapaths are regular and heavily tested; corner-case bugs in silicon are often in control logic, where a rare sequence of events takes a state machine down an untested arrow. Transition coverage and formal property checking of controllers are where verification teams spend their effort ([19-13](../../19-digital-vlsi-design/chapters/19-13-verification-methods.md)).
-- **Interoperability lives in state machines.** Whether a PCIe or USB device trains and recovers its link with every host depends on its protocol FSMs matching the specification's, including timeouts and error paths. Compliance testing and plugfests exist for this reason.
-- **Functional safety.** Automotive parts must detect or tolerate upsets in their control state; safe FSM encodings, duplicated state machines and their diagnostic coverage are part of the evidence for a safety rating ([25-10](../../25-fabrication-packaging-test-and-reliability/chapters/25-10-qualification-and-functional-safety.md)).
+- **Control bugs are the expensive ones.** Corner-case bugs in silicon often sit in control logic, where a rare sequence of events takes a state machine down an untested arrow, so verification teams invest in transition coverage and formal checks of controllers ([19-13](../../19-digital-vlsi-design/chapters/19-13-verification-methods.md)).
+- **Interoperability lives in state machines.** Whether a PCIe or USB device works with every host depends on its protocol FSMs matching the specification's, timeouts and error paths included; compliance testing exists for this reason.
+- **Functional safety.** Automotive parts must detect or tolerate upsets in their control state; safe encodings and duplicated state machines are part of the evidence for a safety rating ([25-10](../../25-fabrication-packaging-test-and-reliability/chapters/25-10-qualification-and-functional-safety.md)).
 
 ### Marketing vs Reality
 
@@ -578,9 +627,6 @@ The lab is in [labs/08-08-lab/](../labs/08-08-lab/README.md).
 3. **"Which of your interface state machines come from a specification, and how do you test compliance?"**
    - *Strong:* the specification's state machines implemented and named as written, compliance suites, interoperability testing with many partners.
    - *Evasive:* "it works with our reference platform."
-4. **"How much of a typical bug escape is control rather than datapath?"**
-   - *Strong:* a measured breakdown from their bug database, and how it changed their verification plan.
-   - *Evasive:* no data.
 
 ## 10. Concept check
 

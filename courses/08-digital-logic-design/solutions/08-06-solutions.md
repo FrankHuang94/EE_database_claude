@@ -18,21 +18,21 @@ A NAND latch holds when both inputs are 1, sets when $\overline{S}$ = 0 and rese
 
 ### Solution 08-06.2
 
-Rising edges occur at $t$ = 1 and $t$ = 5.
+Rising edges occur at $t$ = 1 and $t$ = 5, and $D$ is 1 on both sides of each.
 
 | $t$ | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 |---|---|---|---|---|---|---|---|---|
 | CLK | 0 | 1 | 1 | 0 | 0 | 1 | 1 | 0 |
-| $D$ | 1 | 1 | 0 | 0 | 1 | 0 | 1 | 0 |
-| positive latch | 0 | 1 | 0 | 0 | 0 | 0 | 1 | 1 |
+| $D$ | 1 | 1 | 0 | 0 | 1 | 1 | 0 | 0 |
+| positive latch | 0 | 1 | 0 | 0 | 0 | 1 | 0 | 0 |
 | negative latch | 1 | 1 | 1 | 0 | 1 | 1 | 1 | 0 |
-| flip-flop | 0 | 1 | 1 | 1 | 1 | 0 | 0 | 0 |
+| flip-flop | 0 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
 
-- Positive latch: follows $D$ at $t$ = 1, 2, 5, 6 and holds otherwise: transitions at $t$ = 1, 2, 6: **3**, final **1**.
+- Positive latch: follows $D$ at $t$ = 1, 2, 5, 6 and holds otherwise: transitions at $t$ = 1, 2, 5, 6: **4**, final **0**.
 - Negative latch: follows $D$ at $t$ = 0, 3, 4, 7: transitions at $t$ = 0 (from the initial 0), 3, 4, 7: **4**, final **0**.
-- Flip-flop: captures 1 at $t$ = 1 and 0 at $t$ = 5: **2** transitions, final **0**.
+- Flip-flop: captures 1 at $t$ = 1 and 1 again at $t$ = 5: **1** transition, final **1**.
 
-The three elements disagree on the final value, from the same inputs: the difference between level-sensitive and edge-triggered storage is not a detail.
+The latches pass every change of $D$ during their transparent phase, while the flip-flop ignores everything between edges; from the same inputs the flip-flop ends at 1 and both latches at 0. The difference between level-sensitive and edge-triggered storage is not a detail.
 
 ### Solution 08-06.3
 
@@ -52,7 +52,7 @@ The three elements disagree on the final value, from the same inputs: the differ
 
 (a) Hold slack $= 40 + t_{cd} - 70$: **−20**, **+5** and **+20** ps. **1** path violates (the one with 10 ps).
 
-(b) It needs at least 20 ps more: $\lceil 20/12 \rceil$ = **2** buffers (24 ps, leaving +4 ps of slack).
+(b) It needs at least 20 ps more: $\lceil 20/12 \rceil$ = **2** buffers (24 ps, leaving **+4** ps of slack).
 
 ### Solution 08-06.6
 
@@ -86,7 +86,7 @@ The three elements disagree on the final value, from the same inputs: the differ
 
 ### Solution 08-06.10
 
-(a) With $\beta_n = \beta_p$, $\sqrt{\beta_n/\beta_p} = 1$: $V_M = (1.8 - 0.45 + 0.45)/2$ = **0.9** V, exactly half the supply, as symmetry demands.
+(a) With $k_n = k_p$, $\sqrt{k_n/k_p} = 1$: $V_M = (1.8 - 0.45 + 0.45)/2$ = **0.9** V, exactly half the supply, as symmetry demands.
 
 (b) $\sqrt{4} = 2$: $V_M = (1.8 - 0.45 + 0.9)/3$ = **0.75** V.
 
@@ -135,6 +135,26 @@ From 1 µV: $20 \times \ln(900\,000) = 20 \times 13.71$ = **274** ps. Each facto
 
 (c) Rule 2: every feedback loop must contain a register. A combinational loop either oscillates (odd inversions) or stores state (even inversions) with timing that no static analysis can check. With a flip-flop in the loop, the loop changes only at clock edges and its behavior is analyzed by the two constraints of §3.7.
 
+### Solution 08-06.16
+
+(a) From $Q^+ = J\overline{Q} + \overline{K}Q$ with $Q$ = 1, $Q^+ = \overline{K}$: it stays at 1 for $K$ = 0, whatever $J$ is (00 holds, 10 sets), and goes to 0 for $K$ = 1 (01 resets, 11 toggles).
+
+(b) Each $T$ = 1 toggles: 1, 0, 0, 1, 1, 1, 0, 1. Five ones, so **5** changes, and since 5 is odd the final $Q$ is **1**.
+
+(c) From the excitation table: 0 → 1 needs $(1, X)$; 1 → 1 needs $(X, 0)$; 1 → 0 needs $(X, 1)$; 0 → 0 needs $(0, X)$.
+
+(d) With $J = K = T$: $Q^+ = T\overline{Q} + \overline{T}Q = T \oplus Q$, the T flip-flop's characteristic equation.
+
+### Solution 08-06.17
+
+(a) **Rule 4** (clocks only from the clock network). The second counter's clock arrives late and from logic, so the two counters are not synchronous: the skew between them is a logic delay that timing analysis treats badly, and a glitch on the carry-out is a false clock edge.
+
+(b) **Rule 2** (a register in every loop). A combinational loop can oscillate or latch up depending on gate delays, and timing analysis cannot time it; this one is an accidental latch.
+
+(c) **Rule 5** (synchronize external signals). The button is asynchronous to the clock, so it can violate setup or hold at the state register and send state bits metastable or inconsistent ([08-10](../chapters/08-10-timing-metastability-cdc.md)). It also bounces.
+
+(d) **Rule 4** again. The AND gate delays the clock (skew) and passes any glitch on `enable` while `clk` is high as an extra edge. Use a register enable (a multiplexer in the data path) or a library clock-gating cell, which latches the enable so it cannot glitch the clock.
+
 ---
 
 ## Answer key
@@ -144,12 +164,12 @@ From 1 µV: $20 \times \ln(900\,000) = 20 \times 13.71$ = **274** ps. Each facto
 |---|---|---|---|
 | 08-06.1a | steps with $Q$ = 1 | 3 | — |
 | 08-06.1b | steps with both outputs 1 | 1 | — |
-| 08-06.2a | positive latch transitions | 3 | — |
-| 08-06.2b | positive latch final output | 1 | — |
+| 08-06.2a | positive latch transitions | 4 | — |
+| 08-06.2b | positive latch final output | 0 | — |
 | 08-06.2c | negative latch transitions | 4 | — |
 | 08-06.2d | negative latch final output | 0 | — |
-| 08-06.2e | flip-flop transitions | 2 | — |
-| 08-06.2f | flip-flop final output | 0 | — |
+| 08-06.2e | flip-flop transitions | 1 | — |
+| 08-06.2f | flip-flop final output | 1 | — |
 | 08-06.3a | setup slack | -5 | ps |
 | 08-06.3b | hold slack | 5 | ps |
 | 08-06.4a | minimum clock period | 780 | ps |
@@ -174,8 +194,8 @@ From 1 µV: $20 \times \ln(900\,000) = 20 \times 13.71$ = **274** ps. Each facto
 | 08-06.8d | recovery margin | 1.5 | ns |
 | 08-06.9a | minimum period | 11.7 | ns |
 | 08-06.9b | maximum frequency | 85.5 | MHz |
-| 08-06.10a | $V_M$ with $\beta_n = \beta_p$ | 0.9 | V |
-| 08-06.10b | $V_M$ with $\beta_n = 4\beta_p$ | 0.75 | V |
+| 08-06.10a | $V_M$ with $k_n = k_p$ | 0.9 | V |
+| 08-06.10b | $V_M$ with $k_n = 4k_p$ | 0.75 | V |
 | 08-06.11a | time from 1 mV to 0.9 V | 136 | ps |
 | 08-06.11b | time from 1 µV to 0.9 V | 274 | ps |
 | 08-06.11c | added time per factor of 1000 | 138 | ps |
@@ -190,3 +210,6 @@ From 1 µV: $20 \times \ln(900\,000) = 20 \times 13.71$ = **274** ps. Each facto
 | 08-06.14b | extra transistors in the SKY130 cell | 6 | — |
 | 08-06.15a | ring-oscillator period | 120 | ps |
 | 08-06.15b | ring-oscillator frequency | 8.33 | GHz |
+| 08-06.16a | T flip-flop output changes | 5 | — |
+| 08-06.16b | T flip-flop final output | 1 | — |
+| 08-06.5f | hold slack with two buffers | 4 | ps |

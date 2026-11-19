@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 08-05 · Introduction to Verilog/SystemVerilog and Testbenches
 
 | | |
@@ -126,7 +126,7 @@ Gates propagate X pessimistically but correctly: **0 AND anything is 0** and **1
 
 Two equality operators exist:
 
-- `==` and `!=` compare logically and return **X** if either side has an X or Z bit;
+- `==` and `!=` compare logically: they return 0 (or 1 for `!=`) if any pair of *known* bits differs, and **X** only when the X or Z bits make the result ambiguous, that is, when all the known bits agree (so `2'b1x == 2'b0x` is 0, but `2'b1x == 2'b11` is X);
 - `===` and `!==` compare all four values literally and always return 0 or 1.
 
 **X-optimism.** An `if (cond)` treats an X condition as false and takes the `else` branch, which can hide an unknown value instead of propagating it. Testbenches must therefore compare with `!==`: `if (y != expected)` is silently false when `y` is X, so a broken design passes.
@@ -164,7 +164,8 @@ Every right-hand side is read before any register changes, so each stage capture
 ![Active and non-blocking regions of one time step](../../../assets/figures/08-05/scheduler-regions.svg)
 
 *Figure 1. One simulation time step at a clock edge. All right-hand sides of the non-blocking assignments are evaluated in the active region; the updates are applied together in the NBA region.*
- Rewrite it with `=` and the first statement changes `q1` before the second reads it: after one clock edge, `q1`, `q2` and `q3` all equal `d`. The "shift register" collapses into one stage in simulation, while synthesis may build something else again. Similarly, `a <= b; b <= a;` swaps two registers, while `a = b; b = a;` copies `b` into both (Example 08-05.4).
+
+Rewrite it with `=` and the first statement changes `q1` before the second reads it: after one clock edge, `q1`, `q2` and `q3` all equal `d`. The "shift register" collapses into one stage. Synthesis honors the same sequential meaning within one block, so it too builds three registers all loaded from `d`: simulation and synthesis agree here, and the design is simply wrong. The dangerous mismatches come from blocking assignments that race *between* blocks (Example 08-05.7). Similarly, `a <= b; b <= a;` swaps two registers, while `a = b; b = a;` copies `b` into both (Example 08-05.4).
 
 **Races between blocks.** If two `always @(posedge clk)` blocks use blocking assignments, and one writes a variable the other reads, the result depends on which block the simulator happens to run first. Different simulators, or the same one after an innocent edit, give different answers. The standard coding rules prevent this:
 
@@ -207,7 +208,11 @@ $$
 E[N_{\text{all}}] = M\left(1 + \frac{1}{2} + \cdots + \frac{1}{M}\right) = M H_M \approx M(\ln M + 0.5772) ,
 $$
 
-where $H_M$ is the $M$-th harmonic number. *Derivation:* when $k$ distinct inputs have been seen, each new draw is new with probability $(M - k)/M$, so the expected wait for the next new one is $M/(M - k)$; summing over $k = 0, \ldots, M - 1$ gives $M \sum_{j=1}^{M} 1/j$. For a 17-bit input space ($M$ = 131 072), that is about 1.62 million random vectors, 12.4 times the 131 072 an exhaustive loop needs. ![Expected coverage of random testing](../../../assets/figures/08-05/random-coverage.svg)
+where $H_M$ is the $M$-th harmonic number. *Derivation:* when $k$ distinct inputs have been seen, each new draw is new with probability $(M - k)/M$, so the expected wait for the next new one is $M/(M - k)$; summing over $k = 0, \ldots, M - 1$ gives $M \sum_{j=1}^{M} 1/j$. For a 17-bit input space ($M$ = 131 072), that is about 1.62 million random vectors, 12.4 times the 131 072 an exhaustive loop needs.
+
+> **Math refresher — the harmonic numbers.** $H_M = 1 + \tfrac12 + \cdots + \tfrac1M$ grows like $\ln M$. Compare the sum with the area under $1/x$ (01-07): each term $1/j$ is the area of a unit-wide bar that lies above the curve on $[j, j + 1]$ and below it on $[j - 1, j]$, so $\ln(M + 1) < H_M < 1 + \ln M$. The gap $H_M - \ln M$ settles to a constant, **Euler's constant** $\gamma$ = 0.5772…, which gives $H_M \approx \ln M + 0.5772$, accurate to about $1/(2M)$.
+
+![Expected coverage of random testing](../../../assets/figures/08-05/random-coverage.svg)
 
 *Figure 2. Expected coverage of $N$ random vectors on a space of $M = 2^{16}$ inputs, $1 - (1 - 1/M)^N$. Coverage passes 63% at $N = M$ and then approaches 100% slowly; the dashed line on the right marks the coupon-collector mean $M H_M$.*
 
@@ -227,7 +232,7 @@ The open-source flow used in this course:
 **SystemVerilog additions** that matter from day one:
 
 - `logic`, a single variable type that replaces both `wire` and `reg` for most uses;
-- `always_comb`, `always_ff @(posedge clk)` and `always_latch`, which state the designer's intent so tools can check it (an `always_comb` that infers a latch is an error);
+- `always_comb`, `always_ff @(posedge clk)` and `always_latch`, which state the designer's intent so tools can check it (tools are expected to flag an `always_comb` that infers a latch: Yosys stops with an error, Verilator warns, and Icarus accepts it silently);
 - `enum` types for state machines ([08-08](08-08-finite-state-machines.md)), `struct`s and packed arrays;
 - **assertions** (`assert property (@(posedge clk) req |-> ##[1:3] ack);`), which check temporal properties during simulation and formal verification;
 - for verification engineers: classes, constrained randomization, functional coverage, and the UVM methodology built on them ([19-13](../../19-digital-vlsi-design/chapters/19-13-verification-methods.md)).
@@ -254,7 +259,7 @@ The open-source flow used in this course:
 
 ### Example 08-05.2 · Signed and unsigned (tier B)
 
-**Setup.** `reg signed [7:0] x = -8'sd5;` (a) What unsigned number does the bit pattern of `x` represent? (b) What is `x >>> 1` as a signed number? (c) What is `x >> 1`? (d) Is `x < 8'd0` true? (e) Is `x < 0` true?
+**Setup.** `reg signed [7:0] x = -8'sd5;` (a) What unsigned number does the bit pattern of `x` represent? (b) What is `x >>> 1` as a signed number? (c) What value does `x >> 1` give when assigned to an 8-bit `reg`? (d) Is `x < 8'd0` true? (e) Is `x < 0` true? (f) What does the same `x >> 1` give when assigned to a `reg signed [15:0]`, and to an `integer`?
 
 **Solution.** (a) −5 in 8 bits is $256 - 5$ = **251** = 1111 1011.
 
@@ -265,6 +270,8 @@ The open-source flow used in this course:
 (d) `8'd0` is unsigned, so the comparison is unsigned: $251 < 0$ is false, **0**.
 
 (e) The literal `0` is a signed 32-bit integer, so both operands are signed and `x` is sign-extended: $-5 < 0$ is true, **1**.
+
+(f) The destination's width is part of the expression's context (§3.4), so `x` is first extended to the destination width, with its sign because it is `signed`, and only then shifted with zeros: 1111 1111 1111 1011 >> 1 = 0111 1111 1111 1101 = **32765** in 16 bits, and **2147483645** in 32 bits. One expression, three answers, set by where the result goes.
 
 **Sanity check.** (d) and (e) differ only in how the zero is written. Mixing signed and unsigned operands is one of the most common sources of silent bugs in arithmetic RTL.
 
@@ -310,9 +317,9 @@ end
 
 **Solution.** (a) **1**: `sel` = 2'b11 has no branch.
 
-(b) For `sel` = 11, `y` must keep its previous value, so synthesis builds a **latch** enabled when `sel` ≠ 11, in front of a 3:1 multiplexer. Verilator's lint reports it.
+(b) For `sel` = 11, `y` must keep its previous value, so synthesis builds a **latch**, fed by a 3:1 multiplexer and enabled when `sel` ≠ 11. Verilator's lint reports it.
 
-(c) Add `default: y = 'x;` (telling synthesis the value does not matter, so it may share logic) or `default: y = a;` (a defined value). Or assign `y = a;` before the `case`, so every path assigns it. In SystemVerilog, writing `always_comb` turns the mistake into a reported error.
+(c) Add `default: y = 'x;` (telling synthesis the value does not matter, so it may share logic) or `default: y = a;` (a defined value). Or assign `y = a;` before the `case`, so every path assigns it. In SystemVerilog, writing `always_comb` asks the tools to flag the mistake (Yosys reports it as an error; Verilator warns).
 
 **Sanity check.** A combinational block is combinational only if its outputs are a function of its current inputs alone. A path that leaves `y` unassigned makes `y` depend on the past, which is the definition of memory.
 
@@ -328,7 +335,7 @@ end
 
 (d) $1.620 \times 10^6 / 131\,072$ = **12.4** times.
 
-**Sanity check.** $\ln M + 0.5772 = 11.784 + 0.577 = 12.361$ ✓, matching the exact harmonic sum. For a 64-bit adder ($M = 2^{129}$) neither approach is possible, which is why arithmetic units are verified by directed corner cases, random testing with measured coverage, and formal methods.
+**Sanity check.** $\ln M + 0.5772 = 11.784 + 0.577$ = **12.361** ✓, matching the exact harmonic sum. For a 64-bit adder ($M = 2^{129}$) neither approach is possible, which is why arithmetic units are verified by directed corner cases, random testing with measured coverage, and formal methods.
 
 ### Example 08-05.7 · A simulation–synthesis mismatch (tier C)
 
@@ -367,6 +374,8 @@ end
 | Ex 08-05.2c | `x >> 1` | 125 | — |
 | Ex 08-05.2d | `x < 8'd0` | 0 | — |
 | Ex 08-05.2e | `x < 0` | 1 | — |
+| Ex 08-05.2f | `x >> 1` into 16 signed bits | 32765 | — |
+| Ex 08-05.2g | `x >> 1` into an integer | 2147483645 | — |
 | Ex 08-05.3a | X AND 0 | 0 | — |
 | Ex 08-05.3b | X OR 1 | 1 | — |
 | Ex 08-05.3c | definite AND results of 16 | 8 | — |
@@ -383,6 +392,7 @@ end
 | Ex 08-05.6b | random coverage with $N = M$ | 0.632 | — |
 | Ex 08-05.6c | expected random vectors for full coverage | 1.620e6 | — |
 | Ex 08-05.6d | ratio to exhaustive | 12.4 | — |
+| Ex 08-05.6e | harmonic number H_M | 12.361 | — |
 | Ex 08-05.7a | mismatching steps | 2 | — |
 | Th 08-05.a | coverage $1 - 1/e$ | 63.2 | % |
 | Th 08-05.b | exhaustive vectors for 20 input bits | 1048576 | — |
@@ -400,7 +410,7 @@ The lab is in [labs/08-05-lab/](../labs/08-05-lab/README.md).
 
 **Verilog** (`semantics_tb.v`, `cmp8.v`, `cmp8_tb.v`):
 
-- `semantics_tb.v` evaluates every example of §4 in the simulator and checks each result against this chapter's answer key; it prints `TEST PASSED` only if Icarus agrees with the text.
+- `semantics_tb.v` evaluates the simulator-checkable examples of §4 (Examples 08-05.1 to 08-05.4 and 08-05.7; Examples 08-05.5 and 08-05.6 are about synthesis and test counts) and checks each result against this chapter's answer key; it prints `TEST PASSED` only if Icarus agrees with the text.
 - `cmp8.v` is an 8-bit comparator (equal, unsigned less-than and signed less-than, built from a subtractor as in 08-04 §3.7). `cmp8_tb.v` tests it three ways (directed corner cases, exhaustive over all 65 536 pairs, and a fixed-seed random run that reports its own coverage), and writes a VCD waveform file for GTKWave.
 
 **Guided exercise (predict, then run).** `cmp8_tb.v` also runs 65 536 random vectors on the comparator's 65 536-pair input space. **Before running,** predict how many distinct input pairs the random run will hit, and how many it will miss. Then run it and compare with $M\left(1 - (1 - 1/M)^{M}\right)$.
@@ -524,7 +534,7 @@ So that every right-hand side is evaluated with the values from before the clock
 
 <details><summary>Answer</summary>
 
-If the DUT output contains X or Z, `!=` returns X, which an `if` treats as false, so the error is silently missed. `!==` compares the four-valued bits literally and flags it.
+If the DUT output contains X or Z and its known bits match the expected value, `!=` returns X, which an `if` treats as false, so the error is silently missed. (If a known bit differs, `!=` still returns 1.) `!==` compares the four-valued bits literally and flags every difference.
 
 </details>
 

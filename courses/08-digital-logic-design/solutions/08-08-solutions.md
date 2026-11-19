@@ -43,6 +43,26 @@ The output is 1 in cycles **3**, **5** and **10**.
 | S2 | seen 11 | S3 | S2 | 0 |
 | S3 | seen 110 | S0 | S1 | 1 |
 
+The state diagram (each arrow labeled with the input that takes it):
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    S0: S0 / z = 0
+    S1: S1 / z = 0
+    S2: S2 / z = 0
+    S3: S3 / z = 1
+    [*] --> S0
+    S0 --> S0: 0
+    S0 --> S1: 1
+    S1 --> S0: 0
+    S1 --> S2: 1
+    S2 --> S2: 1
+    S2 --> S3: 0
+    S3 --> S0: 0
+    S3 --> S1: 1
+```
+
 Two arrows need thought. From S2 on 1, "...111" still ends in "11": stay in S2. From S3 on 1, "...1101" ends in "1": go to S1. From S1 on 0, "...10" has no useful suffix: S0.
 
 (b) The states in cycles 0 to 8 are S0, S1, S2, S2, S3, S1, S2, S3, S0: the output is 1 in cycles **4** and **7**, one cycle after the 0s that complete the pattern in cycles 3 and 6.
@@ -156,6 +176,49 @@ $P_3$: B → (A, D) and C → (A, E): D and E are in the same block, together. D
 
 (c) $50 \times 375.36$ = 18 768 µm² = **0.0188** mm². On a die of tens of mm² that is negligible, which is why tools default to one-hot for small machines; it matters for machines with hundreds of states, or for tiny always-on blocks where every gate leaks.
 
+### Solution 08-08.16
+
+(a) Substitute into $Q^+ = J\overline{Q} + \overline{K}Q$: $A^+ = Bx\overline{A} + xA = x(A + B)$ (using $A + \overline{A}B = A + B$), and $B^+ = x\overline{B} + \overline{A}B$.
+
+(b)
+
+| $AB$ | $x = 0$ | $x = 1$ |
+|---|---|---|
+| 00 | 00 | 01 |
+| 01 | 01 | 11 |
+| 10 | 00 | 11 |
+| 11 | 00 | 10 |
+
+(c) 00 → 01 → 11 → 10 → 00 → 01: the states after each edge are 01, 11, 10, 00 and **01** (1).
+
+(d) With $x$ = 0, $A^+ = 0$ and $B^+ = \overline{A}B$: 00, 10 and 11 go to 00 (**3** states), while 01 stays at 01.
+
+### Solution 08-08.17
+
+(a) The required transitions give $T = Q \oplus Q^+$ for each flip-flop:
+
+| $AB$ | $A^+B^+$ | $T_A$ | $T_B$ |
+|---|---|---|---|
+| 00 | 01 | 0 | 1 |
+| 01 | 10 | 1 | 1 |
+| 10 | 00 | 1 | 0 |
+| 11 | X | X | X |
+
+With the don't care, $T_A = A + B$ and $T_B = \overline{A}$: **3** literals.
+
+(b) From the JK excitation table: $J_A$ = 0, 1, X, X and $K_A$ = X, X, 1, X for rows 00, 01, 10, 11, so $J_A = B$, $K_A = 1$; $J_B$ = 1, X, 0, X and $K_B$ = X, 1, X, X, so $J_B = \overline{A}$, $K_B = 1$.
+
+(c) T design at 11: $T_A = 1$, $T_B = 0$, so $A$ toggles to 0 and $B$ stays 1: 11 → **01**, which is in the cycle. JK design at 11: $J_A = K_A = 1$ toggles $A$ to 0; $J_B = 0$, $K_B = 1$ resets $B$: 11 → **00**. Both designs are self-correcting: the unused state leads into the counting cycle in one step. The don't cares decided where it goes, so a design must always check them (08-08 §3.7).
+
+### Solution 08-08.18
+
+A reference solution is in [hdl/p08-08-18](hdl/p08-08-18/): `det110.v` and the self-checking `det110_tb.v`, which `tools/run_hdl.py` runs with the rest of the course's testbenches.
+
+- **States.** "" (S0), "1" (S1), "11" (S11) and "110" (S110, output 1). From S11 another 1 stays in S11, because 111 still ends in 11; from S110 a 1 goes to S1 (1101 ends in 1) and a 0 to S0.
+- **Style.** One clocked block for the state register with a synchronous reset, one combinational block with `next = S0` as a default and a `default` branch, and a continuous assignment for the Moore output.
+- **Checking.** The reference model shifts each input into a 3-bit history and expects `z` = 1 when the history is 110, one cycle after the last input. The testbench compares with `!==` every cycle over 2000 random bits and also checks that the pattern actually occurred (more than 100 detections), so a machine stuck at 0 cannot pass.
+- **Mutation.** Changing S110's transition on a 1 from S1 to S11 makes the testbench report dozens of mismatches: the model catches a wrong edge in the state diagram.
+
 ---
 
 ## Answer key
@@ -226,3 +289,8 @@ $P_3$: B → (A, D) and C → (A, E): D and E are in the same block, together. D
 | 08-08.15c | extra area | 375.36 | µm² |
 | 08-08.15d | in NAND2 equivalents | 100.0 | — |
 | 08-08.15e | extra area for 50 copies | 0.0188 | mm² |
+| 08-08.16a | final state after the sequence | 1 | — |
+| 08-08.16b | states sent to 00 by x = 0 | 3 | — |
+| 08-08.17a | literals, T design | 3 | — |
+| 08-08.17b | next state of 11, T design | 1 | — |
+| 08-08.17c | next state of 11, JK design | 0 | — |

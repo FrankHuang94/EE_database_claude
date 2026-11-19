@@ -88,6 +88,10 @@ end
 
 **Checking an assertion by hand.** The SystemVerilog assertion `assert property (@(posedge clk) req |-> ##[1:3] ack);` requires that whenever `req` is 1 at a clock edge, `ack` is 1 at some edge 1 to 3 cycles later. Over cycles 0 to 10, `req` is 1 at cycles 1, 4 and 7, and `ack` is 1 at cycles 3 and 8. (a) How many of the three requests pass, and how many fail? (b) Which one fails, and what bug might it reveal?
 
+### Problem 08-05.16 [B]
+
+**Writing a self-checking testbench.** A module `add4(a, b, cin, s, cout)` adds two 4-bit numbers and a carry-in. Write a testbench that applies every input combination, compares `{cout, s}` with `a + b + cin` using `!==`, counts the errors and prints `TEST PASSED` or `TEST FAILED`. (a) How many combinations does it apply? (b) Why must the expected value be computed into a 5-bit variable? (c) Build `add4` from four full adders, run your testbench, then break the carry logic of one full adder and confirm the testbench fails.
+
 ---
 
 ## Objective coverage
@@ -97,5 +101,5 @@ end
 | 1. Modules, assignments, synthesized hardware, latches | 6, 14 |
 | 2. Simulation semantics, blocking and non-blocking | 7, 8, 10, 13 |
 | 3. Widths, signedness, four-valued logic | 1, 2, 3, 4, 5 |
-| 4. Testbenches and coverage | 9, 11, 12, 15 |
+| 4. Testbenches and coverage | 9, 11, 12, 15, 16 |
 | 5. Tools and SystemVerilog | 9, 15 |

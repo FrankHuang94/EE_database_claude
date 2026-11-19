@@ -26,6 +26,9 @@ module semantics_tb;
 
     // ---------------- Example 08-05.2: signed and unsigned
     reg signed [7:0] x;
+    reg        [7:0] r8;
+    reg signed [15:0] r16;
+    integer          r32;
 
     // ---------------- Example 08-05.3: four-valued logic
     reg u, z0;
@@ -73,7 +76,9 @@ module semantics_tb;
         x = -8'sd5;
         expect_int($unsigned(x), 251, "2a x as unsigned");
         expect_int(x >>> 1, -3, "2b x>>>1");
-        expect_int($unsigned(x) >> 1, 125, "2c x>>1");
+        r8 = x >> 1;  expect_int(r8, 125, "2c x>>1 into 8 bits");
+        r16 = x >> 1; expect_int(r16, 32765, "2f x>>1 into signed 16 bits");
+        r32 = x >> 1; expect_int(r32, 2147483645, "2g x>>1 into integer");
         expect_bit(x < 8'd0, 1'b0, "2d x<8'd0");
         expect_bit(x < 0, 1'b1, "2e x<0");
 

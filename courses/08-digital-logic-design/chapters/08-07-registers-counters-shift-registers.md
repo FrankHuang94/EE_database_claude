@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 08-07 · Registers, Counters and Shift Registers
 
 | | |
@@ -108,6 +108,8 @@ The cost is timing. A change ripples through the stages one clock-to-Q delay at 
 
 ![Waveforms of a 4-bit ripple counter with 2 ns per stage. After the clock edge at 20 ns, Q0 falls at 22 ns, Q1 at 24 ns, Q2 at 26 ns and Q3 rises at 28 ns, so the count reads 6, 4 and 0 for 2 ns each on its way from 7 to 8.](../../../assets/figures/08-07/ripple-transients.svg)
 
+*Figure 1. A 4-bit ripple counter going from 7 to 8, with 2 ns per stage: the outputs pass through 6, 4 and 0 before settling.*
+
 ### 3.5 Ring and Johnson counters
 
 A **ring counter** is a shift register whose output feeds back to its input, initialized with a single 1: 1000 → 0100 → 0010 → 0001 → 1000. It has $n$ states for $n$ flip-flops, and its outputs are already **one-hot**: each state is decoded by reading one flip-flop, with no logic. The price is state efficiency: $n$ flip-flops for $n$ states, against $\lceil\log_2 n\rceil$ for a binary counter.
@@ -121,6 +123,8 @@ A **Johnson counter** (twisted-ring counter) feeds back the *complement* of the 
 An **LFSR** is a shift register whose input is the XOR of selected bits, the **taps**. In the common **Fibonacci** form, stages $Q_1 \ldots Q_n$ shift from $Q_1$ toward $Q_n$, and the new $Q_1$ is the XOR of the tapped stages. It is described by its **characteristic polynomial**, also called its feedback or tap polynomial: taps at stages $n$ and $k$ give $x^n + x^k + 1$. For example, $x^4 + x^3 + 1$ means $Q_1^{\text{next}} = Q_4 \oplus Q_3$. (If you write the state update as a matrix and compute $\det(x\mathbf{I} - \mathbf{A})$, you get the **reciprocal** polynomial $x^n + x^{n-k} + 1$, here $x^4 + x + 1$. A polynomial and its reciprocal are primitive together, so the two conventions describe the same behavior; datasheets and this chapter use the tap form.)
 
 ![A 4-bit Fibonacci LFSR: four D flip-flops Q1 to Q4 in a chain on a common clock, with Q3 and Q4 XORed and fed back to the input of Q1. Starting from 1000 it steps through all 15 nonzero states before repeating.](../../../assets/figures/08-07/lfsr.svg)
+
+*Figure 2. The 4-bit Fibonacci LFSR $x^4 + x^3 + 1$: $Q_1^{\text{next}} = Q_4 \oplus Q_3$.*
 
 **Why the state sequence is periodic, and how long it can be.** The next state is a *linear* function of the current state over GF(2), the two-element field where addition is XOR (08-01 §3.8): $\mathbf{s}_{k+1} = A\,\mathbf{s}_k$ for an $n \times n$ matrix $A$ of 0s and 1s. Three consequences follow:
 

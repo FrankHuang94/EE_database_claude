@@ -17,7 +17,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 08-06.2 [A]
 
-**Three storage elements, one waveform.** CLK = 0, 1, 1, 0, 0, 1, 1, 0 and $D$ = 1, 1, 0, 0, 1, 0, 1, 0 at $t$ = 0 to 7. A positive-level latch (transparent when CLK = 1), a negative-level latch (transparent when CLK = 0) and a rising-edge flip-flop all start with $Q$ = 0. For each, count the output transitions and give the final output.
+**Three storage elements, one waveform.** CLK = 0, 1, 1, 0, 0, 1, 1, 0 and $D$ = 1, 1, 0, 0, 1, 1, 0, 0 at $t$ = 0 to 7 ($D$ is steady around both rising edges). A positive-level latch (transparent when CLK = 1), a negative-level latch (transparent when CLK = 0) and a rising-edge flip-flop all start with $Q$ = 0. For each, count the output transitions and give the final output.
 
 ### Problem 08-06.3 [A]
 
@@ -49,7 +49,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 08-06.10 [B]
 
-**Switching thresholds.** Use the square-law expression for $V_M$ with $V_{DD}$ = 1.8 V and $V_{Tn} = |V_{Tp}|$ = 0.45 V. (a) Find $V_M$ for $\beta_n = \beta_p$. (b) Find $V_M$ for $\beta_n = 4\beta_p$. (c) Which way does a stronger nMOS move the threshold, and why?
+**Switching thresholds.** Use the square-law expression for $V_M$ with $V_{DD}$ = 1.8 V and $V_{THn} = |V_{THp}|$ = 0.45 V. (a) Find $V_M$ for $k_n = k_p$. (b) Find $V_M$ for $k_n = 4k_p$. (c) Which way does a stronger nMOS move the threshold, and why?
 
 ### Problem 08-06.11 [B]
 
@@ -71,6 +71,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Loops without registers.** (a) Three inverters, each with a delay of 20 ps, are connected in a ring. Show that the ring oscillates, and find its period and frequency. (b) What happens with a ring of two inverters? (c) Which rule of synchronous design forbids both, and why does a register in the loop fix it?
 
+### Problem 08-06.16 [B]
+
+**JK and T flip-flops.** (a) A JK flip-flop holds $Q$ = 1. Which input pairs $(J, K)$ leave it at 1 after the next edge, and which take it to 0? (b) A T flip-flop starts at $Q$ = 0 and receives $T$ = 1, 1, 0, 1, 0, 0, 1, 1 at eight edges. Give the final $Q$ and the number of output changes. (c) Using the excitation table, give the $(J, K)$ inputs, with don't cares, that make a JK flip-flop follow $Q$ = 0 → 1 → 1 → 0 → 0. (d) Show that a JK flip-flop with $J = K = T$ behaves as a T flip-flop.
+
+### Problem 08-06.17 [B]
+
+**Breaking the synchronous rules.** For each design, name the rule of §3.8 it breaks and what can go wrong: (a) a counter's carry-out drives the clock input of the next counter; (b) the output of an AND gate feeds back to one of its own inputs through an OR gate, with no register in the loop; (c) a push-button signal goes straight into a state machine's next-state logic; (d) a register's clock is `clk & enable`, to save power.
+
 ---
 
 ## Objective coverage
@@ -78,7 +86,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 08-06) | Problems |
 |---|---|
 | 1. Feedback, bistability, SR latches | 1, 10, 11, 15 |
-| 2. D latches and master–slave flip-flops | 2, 12, 14 |
+| 2. D latches, master–slave flip-flops, JK and T flip-flops | 2, 12, 14, 16 |
 | 3. Enables and resets | 7, 8 |
 | 4. Setup, hold, clock-to-Q; register-to-register constraints | 3, 4, 5, 6, 9, 13 |
-| 5. Synchronous design discipline | 6, 15 |
+| 5. Synchronous design discipline | 15, 17 |

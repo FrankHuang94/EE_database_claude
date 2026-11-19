@@ -39,14 +39,18 @@ module latches_tb;
             check(q_lat, expected_lat, "D latch");
         end
 
-        // ---- master-slave flip-flop against the behavioral one: data changes only while clk is low
+        // ---- master-slave flip-flop against the behavioral one. D changes while clk is low (for the next
+        // edge) and again in the middle of the high phase, well clear of both edges: an edge-triggered
+        // flip-flop must ignore the second change, which a latch would pass straight through.
         en = 0;
         for (i = 0; i < 200; i = i + 1) begin
             #2 d = $random(seed);
             #3 clk = 1;
             #2 check(q_ms, q_rtl, "master-slave vs RTL");
+            d = ~d;                                   // mid-high change: must not reach Q
+            #2 check(q_ms, q_rtl, "ignores D while clk high");
             ones = ones + q_ms;
-            #3 clk = 0;
+            #1 clk = 0;
         end
         if (ones == 0 || ones == 200) begin $display("FAIL: flip-flop never toggled"); errors = errors + 1; end
 
@@ -60,6 +64,14 @@ module latches_tb;
         #4 clk = 0; #2 rst = 0;                     // released while clk is low
         #3 clk = 1; #1 check(q_sr_rst, 1, "sync reg reloads"); check(q_ar_rst, 1, "async reg reloads");
         #4 clk = 0;
+
+        // ---- enable: clear both, then an edge with en = 0 must hold 0 and an edge with en = 1 loads 1
+        #1 rst = 1; #2 clk = 1; #2 clk = 0; #1 rst = 0; en2 = 0;
+        check(q_sr_rst, 0, "sync reg cleared"); check(q_ar_rst, 0, "async reg cleared");
+        #2 clk = 1; #1 check(q_sr_rst, 0, "sync reg holds, en = 0"); check(q_ar_rst, 0, "async reg holds, en = 0");
+        #2 clk = 0; en2 = 1;
+        #2 clk = 1; #1 check(q_sr_rst, 1, "sync reg loads, en = 1"); check(q_ar_rst, 1, "async reg loads, en = 1");
+        #2 clk = 0;
 
         if (errors == 0) $display("TEST PASSED");
         else $display("TEST FAILED (%0d errors)", errors);

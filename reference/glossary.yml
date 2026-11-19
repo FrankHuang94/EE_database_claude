@@ -3186,6 +3186,18 @@
 - term: Synchronous design
   definition: A discipline in which all state is held in flip-flops clocked by a common clock, every feedback loop contains a register and asynchronous inputs are synchronized, so correctness reduces to setup and hold checks on each register-to-register path.
   chapter: "08-06"
+- term: JK flip-flop
+  definition: A flip-flop whose inputs J and K hold (00), reset (01), set (10) or toggle (11) the output at the clock edge, Q⁺ = JQ̄ + K̄Q; in standard-cell chips it is a D flip-flop with logic in front.
+  chapter: "08-06"
+  see_also: [T flip-flop, Excitation table]
+- term: T flip-flop
+  definition: A toggle flip-flop, Q⁺ = T ⊕ Q, which inverts its output at each clock edge when T = 1 and holds it when T = 0; a JK flip-flop with J = K = T behaves the same way.
+  chapter: "08-06"
+  see_also: [JK flip-flop]
+- term: Excitation table
+  definition: For each present-to-next transition of a flip-flop (0→0, 0→1, 1→0, 1→1), the inputs that produce it, with don't cares; used to design sequential circuits with JK, T or SR flip-flops.
+  chapter: "08-06"
+  see_also: [JK flip-flop, State table]
 - term: Register
   definition: A group of flip-flops sharing a clock that stores a multi-bit word, usually with an enable that lets it hold its value instead of loading a new one.
   chapter: "08-07"

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 08-02 · Boolean Algebra and Logic Gates
 
 | | |

@@ -72,6 +72,12 @@ module counters_tb;
             @(negedge clk) check(q_bcd, 5, "BCD hold while disabled");
         end
         en = 1;
+        // tc must be gated by en: stop at 9 with en = 0 and check that tc stays low
+        while (q_bcd != 4'd9) @(negedge clk);
+        check(tc, 1, "tc at 9 while enabled");
+        en = 0; #1 check(tc, 0, "tc low at 9 while disabled");
+        @(negedge clk) check(q_bcd, 9, "BCD holds 9 while disabled");
+        en = 1;
 
         // ---- Johnson counter: two laps of its 8-state sequence
         reset_counters;

@@ -116,6 +116,16 @@ Each clock shifts the word left and puts the new bit in $Q_0$, so the first bit 
 
 (b) $36/60$ = **60**%: in this implementation the flexibility costs more than the storage. Real libraries use transmission-gate multiplexers or scan-style multiplexed flip-flops to cut this cost.
 
+### Solution 08-07.16
+
+A reference solution is in [hdl/p08-07-16](hdl/p08-07-16/): `updown.v` and `updown_tb.v`, run by `tools/run_hdl.py`.
+
+(a) From 0 the 4-bit counter counts 1, 2, …, 15 and wraps to 0 at the **16**th count.
+
+(b) $0 - 1$ wraps to $2^7 - 1$ = **127**.
+
+(c) The design is one clocked block with `if (rst) … else if (load) … else if (en) …`, which encodes the priority directly. The testbench's model applies the same rules in the same order; it also checks that the 4-bit counter actually wrapped at least once, so the test cannot pass on a counter that never reaches its edge cases. With load and enable swapped, cycles that assert both are counted instead of loaded, and the testbench reports well over a thousand mismatches.
+
 ---
 
 ## Answer key
@@ -170,3 +180,5 @@ Each clock shifts the word left and puts the new bit in $Q_0$, so the first bit 
 | 08-07.15a | transistors per bit | 60 | — |
 | 08-07.15b | transistors in total | 1920 | — |
 | 08-07.15c | multiplexer share | 60 | % |
+| 08-07.16a | up-counts to wrap, 4 bits | 16 | — |
+| 08-07.16b | 0 - 1 at 7 bits | 127 | — |

@@ -71,7 +71,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Pipelining a loop.** A multiply-accumulate loop has a 600 ps multiplier feeding a 300 ps adder whose output is registered and fed back to the adder; register overhead is 80 ps. (a) What is the clock frequency without pipelining? (b) Splitting the multiplier into two 300 ps stages, what is it? (c) Why can the adder–register loop not be pipelined the same way?
 
-
 ### Problem 08-10.16 [B]
 
 **Releasing a reset.** A 200 MHz domain (rising edges at 0, 5, 10, 15 ns, …) uses an active-low reset synchronizer: two flip-flops cleared asynchronously by the external `rst_n`, with the first flip-flop's input tied to 1 and the second's output driving the domain's reset. The external reset is asserted at $t$ = 1 ns and released at $t$ = 13 ns. (a) When does the domain's reset assert, and why does that not need a clock? (b) At which clock edge, and at what time, is the domain's reset released? (c) Without the synchronizer, the 13 ns release would reach different flip-flops of the domain through different wire delays, from 1.5 to 2.4 ns. With a recovery time (the setup time of a reset release) of 0.3 ns, which edge would each flip-flop leave reset on, and why is that a problem? (d) Why does each clock domain need its own synchronizer?

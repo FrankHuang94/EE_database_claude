@@ -82,15 +82,27 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **What one-hot costs across a chip.** A 20-state controller is built in SKY130 with flip-flops with reset (25.024 µm²; a NAND2 is 3.7536 µm²). (a) How many flip-flops does it use in binary and in one-hot encoding? (b) What is the extra flip-flop area of one-hot, in µm² and NAND2 equivalents? (c) A chip has 50 copies of this controller. What is the total extra area in mm²?
 
+### Problem 08-08.16 [B]
+
+**Analyzing a JK circuit.** A circuit has two JK flip-flops $A$ and $B$ and an input $x$, with $J_A = Bx$, $K_A = \overline{x}$, $J_B = x$ and $K_B = A$. (a) Derive the next-state equations for $A$ and $B$. (b) Write the state table. (c) Starting from $AB$ = 00, apply $x$ = 1, 1, 1, 0, 1 and list the states. (d) Which states does $x$ = 0 send to 00?
+
+### Problem 08-08.17 [B]
+
+**A mod-3 counter with T and JK flip-flops.** A counter cycles $AB$ = 00 → 01 → 10 → 00; the state 11 is unused. (a) Using T flip-flops and treating 11 as a don't care, find minimal equations for $T_A$ and $T_B$. (b) Repeat with JK flip-flops. (c) For each design, where does the unused state 11 go at the next edge? Is each design self-correcting?
+
+### Problem 08-08.18 [C]
+
+**Writing and verifying an FSM in Verilog.** Write a synthesizable Moore machine `det110` (inputs `clk`, `rst`, `x`; output `z`) that raises `z` in the cycle after the last three inputs were 1, 1, 0 (overlapping allowed), in the three-block style with a synchronous reset and a safe default. Then write a self-checking testbench that drives at least 2000 random input bits, compares `z` every cycle with a reference model (a shift register of the last three inputs, delayed one cycle), uses `!==`, and prints `TEST PASSED` or `TEST FAILED`. Check that a deliberately broken transition makes it fail.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 08-08) | Problems |
 |---|---|
-| 1. FSM model; Moore and Mealy | 1, 2, 3, 6, 13 |
+| 1. FSM model; analysis; Moore and Mealy | 1, 2, 3, 6, 13, 16 |
 | 2. State diagrams from specifications | 3, 4, 6, 11, 12 |
-| 3. State encoding and logic | 1, 5, 8, 10, 14, 15 |
+| 3. State encoding and logic (D, JK and T flip-flops) | 1, 5, 8, 10, 14, 15, 17 |
 | 4. State minimization | 7, 13 |
 | 5. FSM timing | 9, 12 |
-| 6. FSMs in Verilog and verification | 3, 4 (see the lab) |
+| 6. FSMs in Verilog and verification | 3, 4, 18 |

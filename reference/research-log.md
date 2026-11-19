@@ -1553,8 +1553,9 @@ R&D % = R&D ÷ revenue.
   - setup_rising: rise_constraint 0.0508281 ns and fall_constraint 0.1033184 ns at (0.01, 0.01) ns transitions, rising to 0.2434876 and 0.6206849 ns at (0.01, 1.5);
   - hold_rising: rise_constraint −0.0285176 ns and fall_constraint −0.0468281 ns at (0.01, 0.01);
   - CLK→Q (rising_edge) cell_rise 0.3070411 ns and cell_fall 0.2971512 ns at 0.0531329 ns clock transition and 0.00343455 pF load; the tables span 0.0005 to 0.162058 pF.
-- **TI SN74LVC74A** (SN54LVC74A/SN74LVC74A dual D flip-flop, datasheet SCAS287 family, current revision SCAS287V, May 2024): at VCC = 3.3 V ± 0.3 V, "tsu Setup time before CLK↑ Data ... 3" ns (3.4 ns at 2.7 V); "th Hold time, data after CLK↑ 1" ns; CLK pulse duration 3.3 ns minimum; tpd CLK→Q 5.2 ns maximum with CL = 50 pF [Established: datasheet values from search excerpts, possibly from an earlier revision; recheck against SCAS287V].
-- **Sources:** [sky130_fd_sc_hd repository](https://github.com/google/skywater-pdk-libs-sky130_fd_sc_hd); [TI SN74LVC74A datasheet](https://ti.com/document-viewer/SN74LVC74A/datasheet/GUID-125DB029-8491-4631-AC64-929339A4BB97); [SN74LVC74A, older copy](https://pccomponents.com/datasheets/TI-SN74LVC74A.PDF). Checked Nov 2026.
+- **TI SN74LVC74A** (SNx4LVC74A dual D flip-flop, datasheet SCAS287W, "JANUARY 1993 – REVISED DECEMBER 2024", read directly from ti.com on 19 Nov 2026): features list "Maximum tpd of 5.2ns at 3.3V"; timing requirements at VCC = 3.3 V ± 0.3 V: data setup before CLK↑ 3 ns, hold after CLK↑ 1 ns, CLK pulse duration 3.3 ns [Established].
+- **SKY130 setup and hold versus clock slew** (same Liberty file, rechecked 19 Nov 2026 after the Course 08 audit): with a 10 ps data transition, setup for a rising D is 0.0508, −0.0181 and −0.0454 ns at clock transitions of 0.01, 0.5 and 1.5 ns; hold for a rising D is −0.0285, +0.0356 and +0.0579 ns [Established].
+- **Sources:** [sky130_fd_sc_hd repository](https://github.com/google/skywater-pdk-libs-sky130_fd_sc_hd); [TI SN74LVC74A datasheet](https://ti.com/document-viewer/SN74LVC74A/datasheet/GUID-125DB029-8491-4631-AC64-929339A4BB97); [SN74LVC74A datasheet PDF](https://www.ti.com/lit/ds/symlink/sn74lvc74a.pdf); [SN74LVC74A, older copy](https://pccomponents.com/datasheets/TI-SN74LVC74A.PDF). Checked Nov 2026.
 
 ## R-155 · PRBS and LFSR references
 

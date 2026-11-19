@@ -463,4 +463,11 @@ for c in range(16):
 v.check("Lab 08-07.o", trans)
 v.check("Lab 08-07.p", worst)
 
+q16, n16 = 0, 0
+while True:
+    q16, n16 = (q16 + 1) % 16, n16 + 1
+    if q16 == 0:
+        break
+v.check("08-07.16a", n16)
+v.check("08-07.16b", (0 - 1) % 2 ** 7)
 v.finish()

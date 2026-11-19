@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 08-03 · Logic Minimization: K-Maps and Beyond
 
 | | |

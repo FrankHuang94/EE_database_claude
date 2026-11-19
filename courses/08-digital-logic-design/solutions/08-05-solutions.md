@@ -76,7 +76,7 @@ $a = 200$ and $b = 100$.
 
 (a) Non-blocking: all right-hand sides are read first (2, 3, 1), then assigned: $a, b, c$ = **2, 3, 1**. Each edge rotates the values one place, so after three edges they are back to **1, 2, 3**.
 
-(b) Blocking: `a = b` makes $a$ = 2; `b = c` makes $b$ = 3; `c = a` reads the *new* $a$: $c$ = 2. Result **2, 3, 2**; the 1 is lost.
+(b) Blocking: `a = b` makes $a$ = 2; `b = c` makes $b$ = 3; `c = a` reads the *new* $a$: $c$ = 2. Result **2, 3, 2**; the 1 is lost. A second edge gives $a$ = 3, $b$ = 2, $c$ = 3, and a third gives **2, 3, 2** again: the blocking version alternates between two patterns and never recovers the 1, where the non-blocking version returns to 1, 2, 3.
 
 ### Solution 08-05.9
 
@@ -105,7 +105,7 @@ The block re-runs only when `a` or `b` changes.
 
 (b) $1 - (1 - 1/2048)^{2048}$ ≈ **63.2**%.
 
-(c) We need $(1 - 1/M)^N \le 0.01$, so $N \ge \ln 0.01 / \ln(1 - 1/M) = 9429.1$: **9430** vectors, 4.6 times the exhaustive count, for only 99% expected coverage. (The approximation $N \approx M \ln 100 = 9431$ is close.)
+(c) We need $(1 - 1/M)^N \le 0.01$, so $N \ge \ln 0.01 / \ln(1 - 1/M) = 9429.1$: **9430** vectors, **4.6** times the exhaustive count, for only 99% expected coverage. (The approximation $N \approx M \ln 100 = 9431$ is close.)
 
 ### Solution 08-05.12
 
@@ -136,6 +136,16 @@ The last term alone, finding the final unseen input, has mean $M/1 = M$ draws: a
 (a) Request at cycle 1: `ack` must appear at cycle 2, 3 or 4; it is 1 at cycle 3: pass. Request at cycle 4: window 5 to 7; `ack` is not 1 at any of them: fail. Request at cycle 7: window 8 to 10; `ack` at cycle 8: pass. **2** pass, **1** fails.
 
 (b) The request at cycle 4 is never acknowledged within three cycles (the next acknowledge, at cycle 8, belongs to the request at cycle 7). In a real design this could be a lost request, an arbiter that starves one requester, or a protocol where acknowledges are matched to the wrong requests. Assertions catch such bugs at the cycle they occur, instead of many cycles later when a wrong result finally reaches an output.
+
+### Solution 08-05.16
+
+A reference solution is in [hdl/p08-05-16](hdl/p08-05-16/): `add4.v` (four full adders in a `generate` loop) and `add4_tb.v`, which `tools/run_hdl.py` runs with the course's other testbenches.
+
+(a) The inputs are 4 + 4 + 1 = 9 bits: $2^9$ = **512** combinations, few enough to test exhaustively (08-05 §3.8).
+
+(b) $a + b + c_{in}$ can reach $15 + 15 + 1 = 31$, which needs 5 bits. Assigned to a 4-bit variable, the carry would be lost by the context-sizing rule of §3.4, and the reference model itself would be wrong for 256 of the 512 cases.
+
+(c) The testbench loops `i` from 0 to 511, splits it into `{a, b, cin}`, waits 1 ns for the combinational logic to settle, and compares. Making one full adder's carry-out just `a & b` (dropping the propagate term) makes it report 280 failing combinations; a testbench that never fails on a broken design tests nothing.
 
 ---
 
@@ -178,6 +188,10 @@ The last term alone, finding the final unseen input, has mean $M/1 = M$ draws: a
 | 08-05.8b | $b$ after one non-blocking edge | 3 | — |
 | 08-05.8c | $c$ after one non-blocking edge | 1 | — |
 | 08-05.8d | $c$ after one blocking edge | 2 | — |
+| 08-05.8e | $a$ after one blocking edge | 2 | — |
+| 08-05.8f | $b$ after one blocking edge | 3 | — |
+| 08-05.8g | $a$ after three blocking edges | 2 | — |
+| 08-05.8h | $b$ after three blocking edges | 3 | — |
 | 08-05.9a | clock frequency | 100 | MHz |
 | 08-05.9b | rising edges in 1 µs | 100 | — |
 | 08-05.9c | 8-bit counter after 1000 edges | 232 | — |
@@ -186,6 +200,7 @@ The last term alone, finding the final unseen input, has mean $M/1 = M$ draws: a
 | 08-05.11b | coverage with 2048 random vectors | 63.2 | % |
 | 08-05.11c | random vectors for 99% expected coverage | 9430 | — |
 | 08-05.11d | the approximation $M \ln 100$ | 9431 | — |
+| 08-05.11e | random over exhaustive | 4.6 | — |
 | 08-05.12a | expected vectors to cover 1024 inputs | 7689 | — |
 | 08-05.12b | ratio to $M$ | 7.51 | — |
 | 08-05.12c | draws for the first half of the inputs | 709 | — |
@@ -195,3 +210,5 @@ The last term alone, finding the final unseen input, has mean $M/1 = M$ draws: a
 | 08-05.14b | gates for W = 32 | 160 | — |
 | 08-05.15a | requests that pass | 2 | — |
 | 08-05.15b | requests that fail | 1 | — |
+| 08-05.16a | input combinations of add4 | 512 | — |
+| 08-05.16b | largest sum | 31 | — |

@@ -126,6 +126,31 @@ v.check("Ex 08-06.3a", tmin(50, 300, 40))
 v.check("Ex 08-06.3b", 1e3 / tmin(50, 300, 40))
 v.check("Ex 08-06.3c", 400 - tmin(50, 300, 40))
 v.check("Ex 08-06.3d", 100 * (50 + 40) / tmin(50, 300, 40))
+v.check("Ex 08-06.3e", 50 + 300 / 2 + 40)                                # two equal stages of the 300 ps logic
+v.check("Ex 08-06.3f", (50 + 300 + 40) / (50 + 300 / 2 + 40))
+
+
+def jk_next(q, j, k):
+    """JK flip-flop from its characteristic table (not the equation): hold, reset, set, toggle."""
+    return {(0, 0): q, (0, 1): 0, (1, 0): 1, (1, 1): 1 - q}[(j, k)]
+
+
+v.assert_true("JK characteristic equation Q+ = JQ' + K'Q matches the table",
+              all(jk_next(q, j, k) == ((j & (1 - q)) | ((1 - k) & q)) for q in (0, 1) for j in (0, 1) for k in (0, 1)))
+v.assert_true("excitation table: each listed JK input pair produces its transition",
+              all(jk_next(q, j, k) == q2 for (q, q2), pairs in {(0, 0): [(0, 0), (0, 1)], (0, 1): [(1, 0), (1, 1)],
+                                                                (1, 0): [(0, 1), (1, 1)], (1, 1): [(0, 0), (1, 0)]}.items()
+                  for j, k in pairs))
+q, outs = 0, []
+for j, k in ((1, 0), (1, 1), (1, 1), (0, 0), (0, 1), (1, 1)):
+    q = jk_next(q, j, k)
+    outs.append(q)
+v.assert_true("Ex8 JK outputs 1, 0, 1, 1, 0, 1", outs == [1, 0, 1, 1, 0, 1])
+v.check("Ex 08-06.8a", sum(1 for a, b in zip([0] + outs, outs) if a != b))
+v.check("Ex 08-06.8b", outs[-1])
+seq = [0, 1, 1, 0, 0, 1]
+tin = [next(t for t in (0, 1) if (t ^ a) == b) for a, b in zip(seq, seq[1:])]  # T that makes each step happen
+v.check("Ex 08-06.8c", sum(tin))
 v.check("Ex 08-06.4a", hold_slack(30, 10, 60))
 nbuf = next(k for k in range(10) if hold_slack(30, 10 + 15 * k, 60) >= 0)
 v.check("Ex 08-06.4b", nbuf)
@@ -176,13 +201,20 @@ v.check("N 08-06.e", SKY["hold_rise"])
 v.check("N 08-06.f", SKY["area_ff"])
 v.check("N 08-06.g", SKY["area_nand2"])
 v.check("N 08-06.h", SKY["area_ff"] / SKY["area_nand2"])
+# rows of the vio_3_3_1 tables are the clock transition (0.01, 0.5, 1.5 ns); column 0 is a 10 ps data edge
+SU_RISE_BY_CLK = [0.0508281, -0.0181335, -0.0453958]
+HOLD_RISE_BY_CLK = [-0.0285176, 0.0355612, 0.0579408]
+v.assert_true("setup falls and hold rises as the clock edge slows",
+              SU_RISE_BY_CLK == sorted(SU_RISE_BY_CLK, reverse=True) and HOLD_RISE_BY_CLK == sorted(HOLD_RISE_BY_CLK))
+v.check("N 08-06.i", SU_RISE_BY_CLK[2])
+v.check("N 08-06.j", HOLD_RISE_BY_CLK[2])
 
 # ================================================================= solutions
 L = nand_latch([(0, 1), (1, 1), (1, 0), (1, 1), (0, 0)])
 v.check("08-06.1a", sum(1 for q, qb in L if q == 1))
 v.check("08-06.1b", sum(1 for q, qb in L if q == 1 and qb == 1))
 CLKp = [0, 1, 1, 0, 0, 1, 1, 0]
-Dp = [1, 1, 0, 0, 1, 0, 1, 0]
+Dp = [1, 1, 0, 0, 1, 1, 0, 0]
 pos, neg, ffp = run_latch(CLKp, Dp, True), run_latch(CLKp, Dp, False), run_master_slave(CLKp, Dp)
 v.check("08-06.2a", transitions(pos))
 v.check("08-06.2b", pos[-1])
@@ -203,6 +235,14 @@ for key, s in zip(("08-06.5a", "08-06.5b", "08-06.5c"), hs):
     v.check(key, s)
 v.check("08-06.5d", sum(1 for s in hs if s < 0))
 v.check("08-06.5e", next(k for k in range(10) if hold_slack(40, 10 + 12 * k, 70) >= 0))
+nbuf5 = next(k for k in range(10) if hold_slack(40, 10 + 12 * k, 70) >= 0)
+v.check("08-06.5f", hold_slack(40, 10 + 12 * nbuf5, 70))
+qt, tq = 0, []
+for t in (1, 1, 0, 1, 0, 0, 1, 1):
+    qt = qt ^ t
+    tq.append(qt)
+v.check("08-06.16a", sum(1 for a_, b_ in zip([0] + tq, tq) if a_ != b_))
+v.check("08-06.16b", tq[-1])
 v.check("08-06.6a", 1e6 / (1200 + 100))
 v.check("08-06.6b", 1e3 / (1200 / 4 + 100))
 v.check("08-06.6c", (1200 + 100) / (1200 / 4 + 100))

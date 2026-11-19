@@ -71,6 +71,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **The cost of a universal shift register.** A 32-bit universal shift register uses a 4:1 multiplexer per bit (36 transistors each, as NAND-NAND logic from Example 08-04.1) in front of a 24-transistor flip-flop. (a) How many transistors per bit, and in total? (b) What fraction of the total is the multiplexing?
 
+### Problem 08-07.16 [B]
+
+**A parameterized up/down counter in Verilog.** Write `updown #(parameter integer W = 4)` with inputs `clk`, `rst`, `en`, `load`, `up` and `d[W-1:0]` and output `q[W-1:0]`: synchronous reset has priority, then load, then counting up or down when enabled, wrapping modulo $2^W$. Write a self-checking testbench that instantiates it at $W$ = 4 and $W$ = 7, applies 3000 random cycles of the control inputs, and compares both counters each cycle with a behavioral model. (a) After how many up-counts does the 4-bit counter wrap from its reset value? (b) From $q$ = 0, what does one down-count give at $W$ = 7? (c) Swap the priority of load and enable in the design and confirm that the testbench catches it.
+
 ---
 
 ## Objective coverage
@@ -78,7 +82,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 08-07) | Problems |
 |---|---|
 | 1. Registers and shift registers | 1, 2, 15 |
-| 2. Synchronous, modulo-$N$ and ripple counters | 3, 4, 5, 6, 14 |
+| 2. Synchronous, modulo-$N$ and ripple counters | 3, 4, 5, 6, 14, 16 |
 | 3. Ring and Johnson counters | 7, 8 |
 | 4. LFSRs and PRBS | 9, 10, 11, 12, 13 |
 | 5. Counter timing and switching costs | 5, 6, 14 |

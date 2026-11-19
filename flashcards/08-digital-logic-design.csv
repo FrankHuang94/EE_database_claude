@@ -108,3 +108,7 @@
 "What does a placement-seed sweep buy?","A few percent of frequency from a different placement; never the factor of 3 that better architecture or hard blocks give.",bsee::08 bsee::08-12
 "Name steps an ASIC flow needs that an FPGA flow does not.","Floorplanning and power grid, clock-tree synthesis, detailed routing with design rules, parasitic extraction, DRC/LVS sign-off and mask data (GDSII).",bsee::08 bsee::08-12
 "Why register a design's inputs and outputs before measuring \(f_{\max}\)?","So the reported frequency reflects register-to-register paths in the core, not unconstrained pin-to-pin paths.",bsee::08 bsee::08-12
+"Characteristic equations of the T and JK flip-flops?","T: \(Q^+ = T \oplus Q\). JK: \(Q^+ = J\overline{Q} + \overline{K}Q\) (00 hold, 01 reset, 10 set, 11 toggle).",bsee::08 bsee::08-06
+"What is an excitation table, and what are the JK entries?","For each transition \(Q \to Q^+\), the inputs that cause it: 0→0: J=0, K=X; 0→1: J=1, K=X; 1→0: J=X, K=1; 1→1: J=X, K=0.",bsee::08 bsee::08-06
+"Steps to analyze a given clocked sequential circuit?","Write the flip-flop input equations; substitute into the characteristic equations to get next-state equations; tabulate next state and outputs for every state and input; draw the diagram and describe the behavior.",bsee::08 bsee::08-08
+"Why do JK designs often need less logic than D designs?","The JK excitation table has a don't care in every row, which gives the minimizer room; each J or K input is often a single literal.",bsee::08 bsee::08-08

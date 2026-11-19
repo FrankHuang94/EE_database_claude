@@ -18,7 +18,7 @@ Chapter sections 3.1 to 3.9 and Examples 08-05.1 to 08-05.7. You need Icarus Ver
 | File | What it does | Checks against |
 |---|---|---|
 | [08-05-verilog-semantics.ipynb](08-05-verilog-semantics.ipynb) | Python models of four-valued logic, assignment semantics and random coverage; runs the testbenches if Icarus is installed | Its own `assert`s and this handout's key |
-| [semantics_tb.v](semantics_tb.v) | Evaluates every example of chapter §4 in the simulator and checks the chapter's answers | Prints `TEST PASSED` |
+| [semantics_tb.v](semantics_tb.v) | Evaluates the simulator-checkable examples of chapter §4 (08-05.1 to 08-05.4 and 08-05.7) and checks the chapter's answers | Prints `TEST PASSED` |
 | [cmp8.v](cmp8.v) | An 8-bit comparator (equal, unsigned less-than, signed less-than) built from a subtractor | `cmp8_tb.v` |
 | [cmp8_tb.v](cmp8_tb.v) | Directed corner cases, an exhaustive sweep and a measured random run; writes `cmp8.vcd` | Prints `TEST PASSED` |
 
