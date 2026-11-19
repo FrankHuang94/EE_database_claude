@@ -33,7 +33,7 @@ The foundation of circuit theory: elements, Kirchhoff's laws, systematic nodal a
 | [06-05 · Mesh Analysis](chapters/06-05-mesh-analysis.md) | 8 | ✅ verified | [problems](problems/06-05-problems.md) · [solutions](solutions/06-05-solutions.md) · [lab](labs/06-05-lab/README.md) · [verify](verify/verify_06_05.py) |
 | [06-06 · Dependent Sources](chapters/06-06-dependent-sources.md) | 8 | ✅ verified | [problems](problems/06-06-problems.md) · [solutions](solutions/06-06-solutions.md) · [lab](labs/06-06-lab/README.md) · [verify](verify/verify_06_06.py) |
 | [06-07 · Linearity and Superposition](chapters/06-07-linearity-and-superposition.md) | 6 | ✅ verified | [problems](problems/06-07-problems.md) · [solutions](solutions/06-07-solutions.md) · [lab](labs/06-07-lab/README.md) · [verify](verify/verify_06_07.py) |
-| [06-08 · Thevenin and Norton Equivalents](chapters/06-08-thevenin-and-norton.md) | 10 | ⬜ planned | — |
+| [06-08 · Thevenin and Norton Equivalents](chapters/06-08-thevenin-and-norton.md) | 10 | ✅ verified | [problems](problems/06-08-problems.md) · [solutions](solutions/06-08-solutions.md) · [lab](labs/06-08-lab/README.md) · [verify](verify/verify_06_08.py) |
 | [06-09 · Maximum Power Transfer](chapters/06-09-maximum-power-transfer.md) | 4 | ⬜ planned | — |
 | [06-10 · The Ideal Op-Amp](chapters/06-10-ideal-op-amp.md) | 10 | ⬜ planned | — |
 | [06-11 · Practical DC Circuits and Measurement](chapters/06-11-practical-dc-circuits-and-measurement.md) | 4 | ⬜ planned | — |

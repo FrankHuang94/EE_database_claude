@@ -2544,3 +2544,25 @@
   definition: For a data converter, the deviation of each code step from the ideal 1 LSB, in LSBs; it is largest where many bits switch at once, such as the major carry.
   chapter: "06-07"
   see_also: [Superposition]
+
+# ---------------------------------------------------------------- 06-08
+- term: Thevenin equivalent
+  definition: A voltage source V_th (the open-circuit voltage) in series with R_th, equivalent at two terminals to any linear network; R_th is found with independent sources switched off and dependent sources kept.
+  chapter: "06-08"
+  see_also: [Norton equivalent, Thevenin resistance, Open-circuit voltage]
+- term: Norton equivalent
+  definition: A current source I_N (the short-circuit current) in parallel with R_th, equivalent at two terminals to any linear network; V_th = R_th I_N.
+  chapter: "06-08"
+  see_also: [Thevenin equivalent, Short-circuit current]
+- term: Output resistance
+  definition: The Thévenin resistance seen looking into a circuit's output terminals; it sets how much the output voltage sags under load (load regulation) and forms a divider with the next stage's input resistance.
+  chapter: "06-08"
+  see_also: [Thevenin equivalent, Loading effect]
+- term: Two-load method
+  definition: Finding a source's Thévenin equivalent from its terminal voltage with two known loads, using 1/v = 1/V_th + (R_th/V_th)(1/R_L); a meter's input resistance is part of each load.
+  chapter: "06-08"
+  see_also: [Thevenin equivalent]
+- term: Power over Ethernet (PoE)
+  definition: Delivering DC power over Ethernet cabling (IEEE 802.3af, at and bt) at up to 57 V; the device receives the source's class power minus the cable's I²R loss (90 W at the source gives 71.3 W at the device for Type 4).
+  chapter: "06-08"
+  see_also: [Thevenin equivalent]

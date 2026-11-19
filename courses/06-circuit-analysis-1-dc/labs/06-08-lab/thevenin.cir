@@ -1,0 +1,135 @@
+* Lab 06-08 -- Thevenin equivalents in ngspice: open-circuit voltages, short-circuit currents and
+* test-source resistances for the chapter's examples and several problems.
+* Short circuits are 0 V sources (their current is the short-circuit current); test sources are 1 A
+* (or 1 mA) current sources with every independent source set to zero.
+*
+* EXPECT ex1voc  key:../../chapters/06-08-thevenin-and-norton.md#Ex_06-08.1a rtol=1e-6
+* EXPECT ex1isc  key:../../chapters/06-08-thevenin-and-norton.md#Ex_06-08.1c scale=1e-3 rtol=1e-3
+* EXPECT ex1rth  key:../../chapters/06-08-thevenin-and-norton.md#Ex_06-08.1b scale=1e3 rtol=1e-6
+* EXPECT ex2voc  key:../../chapters/06-08-thevenin-and-norton.md#Ex_06-08.2a scale=1e-3 rtol=1e-3
+* EXPECT ex2rth  key:../../chapters/06-08-thevenin-and-norton.md#Ex_06-08.2b scale=1e3 rtol=1e-3
+* EXPECT ex3voc  key:../../chapters/06-08-thevenin-and-norton.md#Ex_06-08.3a rtol=1e-6
+* EXPECT ex3rth  key:../../chapters/06-08-thevenin-and-norton.md#Ex_06-08.3c scale=1e3 rtol=1e-3
+* EXPECT ex4vpd  key:../../chapters/06-08-thevenin-and-norton.md#Ex_06-08.4b rtol=1e-3
+* EXPECT p2voc   key:../../solutions/06-08-solutions.md#06-08.2a rtol=1e-6
+* EXPECT p4voc   key:../../solutions/06-08-solutions.md#06-08.4a scale=1e-3 rtol=1e-3
+* EXPECT p4rth   key:../../solutions/06-08-solutions.md#06-08.4b rtol=1e-3
+* EXPECT p5voc   key:../../solutions/06-08-solutions.md#06-08.5a rtol=1e-3
+* EXPECT p5rth   key:../../solutions/06-08-solutions.md#06-08.5b rtol=1e-3
+* EXPECT p10in   key:../../solutions/06-08-solutions.md#06-08.10b scale=1e-3 rtol=1e-3
+* EXPECT p10rn   key:../../solutions/06-06-solutions.md#06-06.8a scale=1e3 rtol=1e-6
+
+* ---- Example 06-08.1: 12 V, 6k over 3k, 1k in series to terminal a (three copies: open, short, test)
+V1o  s1o 0 DC 12
+R11o s1o m1o 6k
+R12o m1o 0 3k
+R13o m1o a1o 1k
+V1s  s1s 0 DC 12
+R11s s1s m1s 6k
+R12s m1s 0 3k
+R13s m1s a1s 1k
+V1sc a1s 0 0
+R11t 0 m1t 6k
+R12t m1t 0 3k
+R13t m1t a1t 1k
+I1t  0 a1t DC 1
+* ---- Example 06-08.2: bridge at 5 V, output between B and A (open) and with the source shorted (test)
+V2   t2 0 DC 5
+R21  t2 a2 1k
+R22  a2 0 1k
+R23  t2 b2 1k
+R24  b2 0 1.1k
+R21t 0 a2t 1k
+R22t a2t 0 1k
+R23t 0 b2t 1k
+R24t b2t 0 1.1k
+I2t  a2t b2t DC 1
+* ---- Example 06-08.3: VCVS -10*vx behind 2k, 1k from a 1 V source, 9k feedback (open and test)
+V3   s3 0 DC 1
+R3s  s3 x3 1k
+R3f  x3 o3 9k
+R3o  o3 e3 2k
+E3   e3 0 x3 0 -10
+R3st 0 x3t 1k
+R3ft x3t o3t 9k
+R3ot o3t e3t 2k
+E3t  e3t 0 x3t 0 -10
+I3t  0 o3t DC 1
+* ---- Example 06-08.4: PoE Type 4 port, 52 V behind 6.25 Ohm, drawing 1.7307692 A (90 W at 52 V)
+V4   s4 0 DC 52
+R4   s4 p4 6.25
+I4   p4 0 DC 1.7307692
+* ---- Problem 06-08.2: 12 V, 4 Ohm, 2 A into a, 6 Ohm removed
+V62  s62 0 DC 12
+R62  s62 a62 4
+I62  0 a62 DC 2
+* ---- Problem 06-08.4: quarter bridge, 2.5 V, active gauge 350.7 at the bottom left (open and test)
+V64  e64 0 DC 2.5
+R641 e64 l64 350
+R642 l64 0 350.7
+R643 e64 r64 350
+R644 r64 0 350
+R641t 0 l64t 350
+R642t l64t 0 350.7
+R643t 0 r64t 350
+R644t r64t 0 350
+I64t r64t l64t DC 1
+* ---- Problem 06-08.5: emitter follower, beta = 100, rpi = 2.5k, Rs = 1k, RE = 1k (open and test)
+V65  s65 0 DC 1
+R65s s65 b65 1k
+V65x b65 bx65 0
+R65p bx65 e65 2.5k
+F65  0 e65 V65x 100
+R65e e65 0 1k
+R65st 0 b65t 1k
+V65xt b65t bx65t 0
+R65pt bx65t e65t 2.5k
+F65t 0 e65t V65xt 100
+R65et e65t 0 1k
+I65t 0 e65t DC 1
+* ---- Problem 06-08.10 and 06-06.8: degenerated MOSFET; drain shorted (Norton current) and test current
+V610 g610 0 DC 1
+G610 d610 s610 g610 s610 2m
+R610o d610 s610 50k
+R610s s610 0 1k
+V610sc d610 0 0
+V610g g610t 0 DC 0
+G610t d610t s610t g610t s610t 2m
+R610ot d610t s610t 50k
+R610st s610t 0 1k
+I610t 0 d610t DC 1
+
+.control
+op
+let ex1voc = v(a1o)
+let ex1isc = i(V1sc)
+let ex1rth = v(a1t)
+let ex2voc = v(b2) - v(a2)
+let ex2rth = v(b2t) - v(a2t)
+let ex3voc = v(o3)
+let ex3rth = v(o3t)
+let ex4vpd = v(p4)
+let p2voc = v(a62)
+let p4voc = v(l64) - v(r64)
+let p4rth = v(l64t) - v(r64t)
+let p5voc = v(e65)
+let p5rth = v(e65t)
+let p10in = -i(V610sc)
+let p10rn = v(d610t)
+echo "ex1voc = $&ex1voc"
+echo "ex1isc = $&ex1isc"
+echo "ex1rth = $&ex1rth"
+echo "ex2voc = $&ex2voc"
+echo "ex2rth = $&ex2rth"
+echo "ex3voc = $&ex3voc"
+echo "ex3rth = $&ex3rth"
+echo "ex4vpd = $&ex4vpd"
+echo "p2voc = $&p2voc"
+echo "p4voc = $&p4voc"
+echo "p4rth = $&p4rth"
+echo "p5voc = $&p5voc"
+echo "p5rth = $&p5rth"
+echo "p10in = $&p10in"
+echo "p10rn = $&p10rn"
+.endc
+.end

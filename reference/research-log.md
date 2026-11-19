@@ -110,6 +110,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-102 | Strain gauges: gauge factor and bridge excitation | Nov 2026 |
 | R-103 | Modified nodal analysis and simulator capacity | Nov 2026 |
 | R-104 | Compact models and gm/ID design | Nov 2026 |
+| R-105 | Thevenin and Norton history and Power over Ethernet | Nov 2026 |
 
 ---
 
@@ -891,3 +892,20 @@ R&D % = R&D ÷ revenue.
 - **BSIM-CMG:** the CMC standard compact model for multi-gate (FinFET) transistors, developed by UC Berkeley's BSIM group. Si2 announced a 2019 release developed "in conjunction with 20 partners", with 25 enhancements and 13 bug fixes. The current version as of Nov 2026 was not confirmed [Industry estimate].
 - **gm/ID methodology:** P. G. A. Jespers and B. Murmann, *Systematic Design of Analog CMOS Circuits: Using Pre-Computed Lookup Tables*, Cambridge University Press, 2017 (ISBN 9781107192256). It sizes transistors with precomputed tables of $g_m/I_D$ and related small-signal parameters, organized by inversion level, using script-based flows in place of repeated simulation; MATLAB code accompanies it [Industry estimate].
 - **Sources:** [Si2 release on BSIM-CMG](https://si2.org/?p=10490); [Compact Model Coalition (Wikipedia, used only for the access policy)](https://en.wikipedia.org/wiki/Compact_Model_Coalition); [Cambridge University Press, chapter page](https://www.cambridge.org/core/books/systematic-design-of-analog-cmos-circuits/basic-sizing-using-the-gmid-methodology/185BE8CB4F04AD9FFC08CDE06D3EA8A9). Checked Nov 2026 (search excerpts).
+
+## R-105 · Thevenin and Norton history and Power over Ethernet
+
+- **Power over Ethernet (read in full):** Ethernet Alliance, *Overview of 802.3bt Power over Ethernet*, December 2019, based on the published IEEE Std 802.3bt-2018. It gives:
+  - Types and classes: PSE power 4, 7, 15.4, 30, 45, 60, 75 and 90 W for Classes 1–8, and PD power 3.84, 6.49, 13, 25.5, 40, 51, 62 and 71.3 W. 802.3af (2003) provided 13 W to devices and 802.3at raised this to 25.5 W.
+  - Type 3 supports up to 51 W at the PD and Type 4 up to 71.3 W; Type 4 is always 4-pair.
+  - Minimum PSE output voltage: Type 1 44 V, Type 2 50 V, Type 3 50 V, Type 4 52 V. The maximum for all PSEs is 57 V.
+  - Channel resistance: the worst-case pairset loop resistance R_Ch is 12.5 Ω, or 6.25 Ω with two pairsets in parallel (4-pair); Type 1 PDs must support 20 Ω, giving "a voltage as low as 37 V".
+  - Minimum PD input voltage table, Type 4 column: Class 8 43.0 V; Type 2/3 columns: Class 4 42.5 V, Class 6 42.5 V.
+  - [Established]
+- **Our consistency check:** a Thévenin model (minimum PSE voltage behind the worst-case loop resistance, delivering the class's PSE power) reproduces the PD powers of Types 1–4 and the PD voltages of Types 1–3. For Type 4 Class 8 it gives 41.18 V against the table's 43.0 V, a difference not resolved here (the standard presumably defines that minimum under conditions the simple model omits).
+- **Thévenin and Norton history:**
+  - D. H. Johnson, "Origins of the equivalent circuit concept: the voltage-source equivalent," *Proc. IEEE* 91(4):636–640, April 2003, DOI 10.1109/JPROC.2003.811716.
+  - D. H. Johnson, "Origins of the equivalent circuit concept: the current-source equivalent," *Proc. IEEE* 91(5):817–821, May 2003, DOI 10.1109/JPROC.2003.811795.
+  - Bibliographic data for both articles were confirmed on Crossref [Established].
+  - From search excerpts summarizing the articles: Helmholtz stated the voltage-source equivalent in 1853. Thévenin published it in 1883 (*Comptes Rendus* 97:159–161). Norton described the current-source form in a Bell Labs technical report dated 3 November 1926. H. F. Mayer of Siemens published it independently in 1926 [Industry estimate]: the articles' text was not read, and the original publications were not seen.
+- **Sources:** [Ethernet Alliance 802.3bt overview (PDF)](https://ethernetalliance.org/wp-content/uploads/2019/12/WP_EA_Overview8023bt_V2p1_FINAL.pdf); [Crossref: voltage-source article](https://api.crossref.org/works/10.1109/JPROC.2003.811716); [Crossref: current-source article](https://api.crossref.org/works/10.1109/JPROC.2003.811795). Checked Nov 2026.
