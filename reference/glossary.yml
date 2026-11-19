@@ -3836,3 +3836,63 @@
 - term: BiCMOS
   definition: A process that integrates bipolar (often SiGe heterojunction) transistors with CMOS on one chip, for RF, mmWave and precision analog functions alongside digital logic, at the cost of extra process steps.
   chapter: "09-07"
+# ---- 09-08
+- term: MOS capacitor
+  definition: A metal (or polysilicon) gate on a thin insulator on a semiconductor, whose surface can be driven into accumulation, depletion or inversion by the gate voltage; the control structure of every MOSFET.
+  chapter: "09-08"
+- term: Flat-band voltage
+  definition: The gate voltage at which the semiconductor's bands are flat up to the surface, V_fb = ψ_g − ψ_s − Q_ox/C_ox; about −1 V for an n⁺ poly gate on p-type silicon.
+  chapter: "09-08"
+- term: Surface potential
+  definition: The band bending φ_s at a semiconductor surface relative to the bulk, positive when the bands bend down; it is zero at flat band and reaches about 2φ_B at threshold in a MOS structure.
+  chapter: "09-08"
+- term: Accumulation
+  definition: The MOS bias regime in which majority carriers crowd to the surface (gate below flat band for p-type), so the capacitor behaves like a simple parallel-plate capacitor, C ≈ C_ox.
+  chapter: "09-08"
+- term: Surface depletion
+  definition: The MOS bias regime in which majority carriers are pushed from the surface, leaving ionized dopants to a depth W_dep that grows with gate voltage until threshold.
+  chapter: "09-08"
+- term: Inversion layer
+  definition: A thin layer of minority carriers at a semiconductor surface, induced when the surface potential exceeds about 2φ_B; it inverts the surface's conductivity type and forms a MOSFET's channel.
+  chapter: "09-08"
+- term: Threshold voltage
+  definition: The gate voltage at which a MOS surface becomes inverted, conventionally where the surface electron density equals the body doping, V_t = V_fb + 2φ_B + √(2qN_Aε_s 2φ_B)/C_ox; foundries define it by a drain current.
+  chapter: "09-08"
+- term: Enhancement-mode transistor
+  definition: A MOSFET with no channel at zero gate voltage, so it is off unless the gate is driven past a threshold of the right sign; standard logic transistors are enhancement mode.
+  chapter: "09-08"
+- term: Oxide capacitance
+  definition: The gate-dielectric capacitance per area, C_ox = ε_ox/T_ox, 345 nF/cm² for 10 nm of SiO₂; it sets how much channel charge each volt of gate overdrive induces.
+  chapter: "09-08"
+- term: C–V characteristics
+  definition: The small-signal capacitance of a MOS structure against gate voltage, C_ox in accumulation, falling through depletion, and either returning to C_ox (quasi-static, or in a transistor) or staying at C_min (high frequency) in inversion; used to extract oxide thickness, doping and oxide charge.
+  chapter: "09-08"
+  see_also: [C–V profiling]
+- term: Deep depletion
+  definition: The non-equilibrium state of a MOS capacitor swept into inversion faster than thermal generation can supply minority carriers, so the depletion region grows beyond its equilibrium maximum; CCD pixels collect photo-electrons in this state.
+  chapter: "09-08"
+- term: Oxide charge
+  definition: Charge in or at the edge of a gate dielectric (fixed charge, mobile ions such as sodium, trapped charge) that shifts the flat-band and threshold voltages by −Q_ox/C_ox; about 10¹⁰ cm⁻² at a high-quality Si–SiO₂ interface.
+  chapter: "09-08"
+- term: Interface traps
+  definition: Electronic states at the semiconductor–dielectric interface whose charge changes with surface potential; they stretch C–V curves, degrade subthreshold slope and add noise.
+  chapter: "09-08"
+- term: Poly-gate depletion
+  definition: The depletion of a thin layer of a polysilicon gate at its oxide interface in inversion, W_dpoly = ε_ox E_ox/(qN_poly), which adds W_dpoly/3 to the electrical oxide thickness; eliminated by metal gates.
+  chapter: "09-08"
+- term: Electrical oxide thickness
+  definition: The effective gate-dielectric thickness in inversion, T_oxe = T_ox + W_dpoly/3 + T_inv/3, including poly-gate depletion and the inversion-layer centroid; typically 6–10 Å more than the physical oxide.
+  chapter: "09-08"
+- term: Capacitive equivalent thickness
+  definition: The SiO₂-equivalent thickness of a whole gate stack in inversion (interfacial layer, high-k film, dipole layers and inversion layer), the quantity that sets drive current; the IRDS 2024 roadmap gives 1.0 nm for 2024–2025 and 0.9 nm from 2027.
+  chapter: "09-08"
+  see_also: [Equivalent oxide thickness (EOT)]
+- term: Metal gate
+  definition: A metallic gate electrode, replacing doped polysilicon in advanced CMOS since about 2007, which removes poly depletion and works with high-k dielectrics; NFETs and PFETs need different work-function metals.
+  chapter: "09-08"
+- term: Time-dependent dielectric breakdown
+  definition: The wear-out of a gate dielectric under prolonged field stress, which makes the breakdown field depend on stress time (about 15 MV/cm for 1 s on 10 nm SiO₂, lower for years); lifetimes are extrapolated from accelerated tests.
+  chapter: "09-08"
+- term: Charge-coupled device
+  definition: An image sensor made of a dense array of MOS capacitors held in deep depletion, which collect photo-generated electrons in proportion to light and shift the charge packets to an output amplifier by sequencing the gate voltages.
+  chapter: "09-08"
