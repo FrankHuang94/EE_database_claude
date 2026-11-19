@@ -1,0 +1,84 @@
+#separator:comma
+#html:true
+#columns:Front,Back,Tags
+#tags column:3
+Diode small-signal resistance at bias current I_D?,"\(r_d = nV_T/I_D\): about 26 Ω at 1 mA for \(n\) = 1. Set by the current, not the diode's size.",bsee::10 bsee::10-01
+"How much does a diode's forward voltage change per decade of current, and with temperature?","About 60 mV per decade (\(n\) = 1, \(V_T\ln 10\)); about −2 mV/K at fixed current.",bsee::10 bsee::10-01
+Assumed-state method for diode circuits?,"Guess each diode on or off, solve the linear circuit, then check: on diodes must carry forward current, off diodes must see less than the turn-on voltage. Repeat with a new guess if a check fails.",bsee::10 bsee::10-01
+Peak-rectifier ripple with a capacitor filter?,"\(V_r \approx V_p/(fRC)\) half-wave, \(V_p/(2fRC)\) full-wave, for small ripple; average output ≈ \(V_p - V_r/2\).",bsee::10 bsee::10-01
+Why is a rectifier diode's peak current much larger than the load current?,"It conducts only for a short angle \(\omega\Delta t \approx \sqrt{2V_r/V_p}\) near each peak, delivering a whole cycle's charge in that interval.",bsee::10 bsee::10-01
+How do you size a Zener regulator's series resistor?,"At the lowest input and highest load, it must still pass \(I_{L,max} + I_{Z,min}\): \(R \le (V_{in,min} - V_Z)/(I_{L,max} + I_{Z,min})\). Check Zener dissipation at the highest input and no load.",bsee::10 bsee::10-01
+Clamp vs limiter?,"A limiter (clipper) cuts the waveform above or below a level; a clamp shifts the whole waveform's DC level using a capacitor and diode, without changing its shape.",bsee::10 bsee::10-01
+Schottky vs PN diode tradeoff?,"Schottky: lower forward drop and no stored charge (fast), but much higher reverse leakage, especially hot.",bsee::10 bsee::10-01
+"NMOS square law in saturation, and the condition?",\(i_D = \tfrac12 k_n(v_{GS} - V_{TN})^2(1 + \lambda v_{DS})\) for \(v_{DS} \ge v_{GS} - V_{TN} = V_{ov}\).,bsee::10 bsee::10-02
+Why is fixed-\(V_{GS}\) bias a poor idea?,"The current depends on \((V_{GS} - V_{TN})^2\), and \(V_{TN}\) varies by tens of mV unit to unit and with temperature, so the current varies by tens of percent.",bsee::10 bsee::10-02
+How does source degeneration stabilize a MOSFET bias?,"A current increase raises \(V_S = I_DR_S\), lowering \(V_{GS}\): negative feedback that divides the sensitivity to \(V_{TN}\) by about \(1 + g_mR_S\).",bsee::10 bsee::10-02
+Why is a diode-connected MOSFET always saturated?,\(V_{DS} = V_{GS} > V_{GS} - V_{TN}\).,bsee::10 bsee::10-02
+Body effect?,A source above the body raises the threshold: \(V_{TN} = V_{TN0} + \gamma(\sqrt{2\phi_F + V_{SB}} - \sqrt{2\phi_F})\).,bsee::10 bsee::10-02
+MOSFET as a switch: what sets the on-resistance?,Deep triode: \(R_{on} \approx 1/[k_n(V_{GS} - V_{TN})]\); data sheets quote \(R_{DS(on)}\) at stated gate drive and temperature.,bsee::10 bsee::10-02
+BJT active-region relations?,"\(I_C = \beta I_B = \alpha I_E\), \(\alpha = \beta/(\beta + 1)\), \(V_{BE}\) ≈ 0.7 V, \(V_{CE} > V_{CE,sat}\) ≈ 0.2 V.",bsee::10 bsee::10-03
+"Four-resistor bias current, and when is it stable?",\(I_E = (V_{Th} - V_{BE})/[R_E + R_{Th}/(\beta + 1)]\); stable against β when \(R_E \gg R_{Th}/(\beta + 1)\).,bsee::10 bsee::10-03
+Why does base-current bias fail?,"\(I_C = \beta I_B\), and β varies 3:1 between parts and with temperature, so the operating point moves with it.",bsee::10 bsee::10-03
+Forced β in a saturated switch?,"Drive the base with \(I_B \ge I_C/\beta_{forced}\) with forced β of about 10, well below the minimum β, so the transistor stays saturated over all parts and temperatures.",bsee::10 bsee::10-03
+Thermal runaway condition?,"The loop gain \((\partial I_C/\partial T)V_{CE}R_\theta\) reaches 1: heating raises current, which raises heating. Emitter resistance breaks the loop.",bsee::10 bsee::10-03
+"MOSFET transconductance, three forms?",\(g_m = k_nV_{ov} = 2I_D/V_{ov} = \sqrt{2k_nI_D}\).,bsee::10 bsee::10-04
+BJT small-signal parameters?,"\(g_m = I_C/V_T\) (38.7 mS/mA), \(r_\pi = \beta/g_m\), \(r_e = \alpha/g_m\), \(r_o = V_A/I_C\); \(r_\pi = (\beta + 1)r_e\).",bsee::10 bsee::10-04
+Intrinsic gain of MOSFET and BJT?,\(g_mr_o\): \(2/(\lambda V_{ov})\) (tens for short channels) and \(V_A/V_T\) (about 2000 for 50 V).,bsee::10 bsee::10-04
+Transconductance efficiency \(g_m/I\)?,"BJT \(1/V_T\) ≈ 38.7 V⁻¹; MOSFET \(2/V_{ov}\) in strong inversion, approaching \(1/(nV_T)\) ≈ 30 V⁻¹ in weak inversion.",bsee::10 bsee::10-04
+Second-harmonic distortion of BJT and square-law MOSFET for input amplitude \(\hat v\)?,\(\hat v/4V_T\) (1% at about 1 mV) and \(\hat v/4V_{ov}\).,bsee::10 bsee::10-04
+Small-signal analysis procedure?,"Solve DC; compute parameters; DC sources to ground, capacitors short; replace the transistor by its model; solve the linear circuit; check the signal is small.",bsee::10 bsee::10-04
+When use the T model rather than hybrid-π?,"When there is resistance in the emitter or source, or the signal enters at the emitter/source: \(r_e\) (or \(1/g_m\)) then sits in series with it.",bsee::10 bsee::10-04
+Body transconductance?,"\(g_{mb} = \chi g_m\), \(\chi = \gamma/(2\sqrt{2\phi_F + V_{SB}})\), typically 0.1–0.3.",bsee::10 bsee::10-04
+Loaded gain of a voltage amplifier?,\(\frac{R_i}{R_i + R_{sig}}A_{vo}\frac{R_L}{R_L + R_o}\): two dividers around the open-circuit gain.,bsee::10 bsee::10-05
+Ideal input and output resistances of the four amplifier types?,"Voltage: ∞, 0. Current: 0, ∞. Transconductance: ∞, ∞. Transresistance: 0, 0.",bsee::10 bsee::10-05
+When is \(20\log A_v\) a power gain?,Only when the input and load resistances are equal; otherwise \(A_p(\text{dB}) = [A_v(\text{dB}) + A_i(\text{dB})]/2\).,bsee::10 bsee::10-05
+Bridging vs matching?,Voltage interfaces bridge (\(R_L \gg R_o\)) to pass the voltage; matching (\(R_L = R_o\)) maximizes power and is used for RF and transmission lines.,bsee::10 bsee::10-05
+How do you measure an output resistance?,Read the open-circuit voltage and the voltage with a known load: \(R_o = R_L(v_{oc}/v_L - 1)\); choose \(R_L\) near \(R_o\) for accuracy.,bsee::10 bsee::10-05
+Where does a buffer belong in a cascade?,"At the worst interface: where a high output resistance meets a low input resistance, or a high source resistance meets a low input.",bsee::10 bsee::10-05
+Class-A efficiency limit?,"25% with a resistive collector load, 50% with an inductor or transformer; it falls with the square of the signal amplitude.",bsee::10 bsee::10-05
+Coupling-capacitor low-frequency corner?,\(1/[2\pi C(R_{sig} + R_i)]\): the capacitor sees the resistances on both sides.,bsee::10 bsee::10-05
+What does \(y_{12} \ne 0\) do to an amplifier?,"Makes it bilateral: input admittance depends on the load, \(Y_{in} = y_{11} - y_{12}y_{21}/(y_{22} + Y_L)\) (the Miller effect in resistive form).",bsee::10 bsee::10-05
+Common-source gain and its voltage-budget form?,"\(-g_m(R_D \parallel r_o)\); without \(r_o\), \(|A_v| = 2V_{RD}/V_{ov}\): set by voltages, not current.",bsee::10 bsee::10-06
+Degenerated CS: gain and output resistance?,Gain \(\approx -R_D/(1/g_m + R_S)\); drain output resistance \(r_o + R_S + (g_m + g_{mb})r_oR_S \approx r_o(1 + g_mR_S)\).,bsee::10 bsee::10-06
+Common-gate input resistance and gain?,"\(R_{in} \approx 1/(g_m + g_{mb})\) (rises with the drain load); gain \(\approx (g_m + g_{mb})R_D\), non-inverting.",bsee::10 bsee::10-06
+Source-follower gain limit and output resistance?,Gain ≤ \(1/(1 + \chi)\) because of the body effect; \(R_{out} \approx 1/(g_m + g_{mb})\).,bsee::10 bsee::10-06
+Why does the body effect raise CG gain but lower follower gain?,"In CG the source is the input, so \(v_{bs}\) adds to the drive; in the follower the source is the output, so \(g_{mb}\) acts like a resistor \(1/g_{mb}\) to ground.",bsee::10 bsee::10-06
+Cascode gain?,About \((g_mr_o)^2\) with an ideal current-source load; output resistance about \(g_mr_o^2\).,bsee::10 bsee::10-06
+How does degeneration reduce distortion?,"At fixed input, HD₂ falls by \((1 + g_mR_S)^2\); at fixed output amplitude, by \(1 + g_mR_S\).",bsee::10 bsee::10-06
+CE gain as a voltage budget?,\(|A_v| = g_mR_C = V_{RC}/V_T\): about 40 per volt across \(R_C\).,bsee::10 bsee::10-07
+Reflection rules for a BJT?,Emitter resistance looks \((\beta + 1)\) times larger from the base; base resistance looks \((\beta + 1)\) times smaller from the emitter.,bsee::10 bsee::10-07
+Degenerated CE gain?,\(-\alpha R_C/(r_e + R_E) \approx -R_C/R_E\) for \(R_E \gg r_e\); input resistance \((\beta + 1)(r_e + R_E)\).,bsee::10 bsee::10-07
+Why can't emitter degeneration raise \(R_{out}\) without limit?,"Base current lets emitter current escape through \(r_\pi\); effective degeneration is \(R_E \parallel r_\pi\), so \(R_{out} \le (\beta + 1)r_o + r_\pi\).",bsee::10 bsee::10-07
+Emitter-follower output resistance?,\(R_E \parallel (r_\pi + R_{sig})/(\beta + 1) \approx r_e + R_{sig}/(\beta + 1)\).,bsee::10 bsee::10-07
+Current for a 50 Ω common-base input?,\(r_e = V_T/I_E\) = 50 Ω at about 0.52 mA: a third of what a MOS common gate needs at 0.2 V overdrive.,bsee::10 bsee::10-07
+MOS vs BJT in one line each?,"BJT: more \(g_m\) per ampere, more intrinsic gain, finite input resistance. MOSFET: no input current, more linear per volt, dense CMOS integration.",bsee::10 bsee::10-07
+Three numbers that specify a current source?,"Accuracy (ratio), output resistance and compliance voltage.",bsee::10 bsee::10-08
+Basic MOS mirror error?,\(\lambda(V_{DS2} - V_{GS})\) to first order; output resistance \(r_o\); compliance \(V_{ov}\).,bsee::10 bsee::10-08
+Bipolar mirror output?,\(I_{ref}(1 + V_{CE2}/V_A)/(1 + V_{CE1}/V_A + 2/\beta)\); a β helper cuts the 2/β term to \(2/[\beta(\beta + 1)]\).,bsee::10 bsee::10-08
+Cascode mirror: gain and cost?,Output resistance about \(g_mr_o^2\); compliance rises to \(V_{TN} + 2V_{ov}\) (or \(2V_{ov}\) with a low-voltage cascode).,bsee::10 bsee::10-08
+Wilson mirror?,"Bipolar mirror with feedback: base-current error \(2/(\beta^2 + 2\beta + 2)\), output resistance about \(\beta r_o/2\).",bsee::10 bsee::10-08
+Pelgrom's law?,\(\sigma(\Delta V_{TH}) = A_{VT}/\sqrt{WL}\) for closely spaced identical transistors.,bsee::10 bsee::10-08
+Mirror current mismatch from threshold mismatch?,\(\sigma(\Delta I/I) = (g_m/I_D)\sigma(\Delta V_{TH}) = (2/V_{ov})\sigma(\Delta V_{TH})\): mirrors want large overdrive.,bsee::10 bsee::10-08
+"Why distribute bias as currents, not voltages?",A current arrives intact across ground drops; a gate voltage error of 5 mV at \(V_{ov}\) = 0.2 V is a 5% current error.,bsee::10 bsee::10-08
+Supply sensitivity of a resistor-referenced bias?,"\(\partial I/\partial V_{DD} = 1/(R + 1/g_m)\), about \(1/(V_{DD} - V_{GS})\) per volt: several percent per 0.1 V.",bsee::10 bsee::10-08
+Closed-loop gain error from finite open-loop gain?,"About noise gain / \(A_0\), where noise gain = \(1 + R_2/R_1\) (for both inverting and non-inverting).",bsee::10 bsee::10-09
+Closed-loop bandwidth of a single-pole op-amp?,GBW / noise gain.,bsee::10 bsee::10-09
+How far below \(f_{-3dB}\) for 1% and 0.1% magnitude accuracy?,Below about 0.14 and 0.045 of \(f_{-3dB}\).,bsee::10 bsee::10-09
+When does a step slew?,"When its size exceeds \(\text{SR}\cdot\tau\), \(\tau = 1/(2\pi f_{-3dB})\); then the output ramps at SR before settling.",bsee::10 bsee::10-09
+Full-power bandwidth?,\(\text{SR}/(2\pi V_p)\): above it a full-amplitude sine becomes a triangle.,bsee::10 bsee::10-09
+CMRR and PSRR as input errors?,\(\Delta V_{CM}/\text{CMRR}\) and \(\Delta V_S/\text{PSRR}\); both fall with frequency.,bsee::10 bsee::10-09
+Why does CMRR matter in a non-inverting stage but hardly in an inverting one?,In the non-inverting stage the inputs follow the signal (common mode changes); in the inverting stage they stay at a fixed voltage.,bsee::10 bsee::10-09
+Input technology and bias current?,Bipolar: nanoamps; CMOS: picoamps at room temperature but junction leakage grows exponentially with temperature; zero-drift parts show switching currents.,bsee::10 bsee::10-09
+Zero-drift op-amp tradeoff?,"Microvolt offset and nanovolt-per-kelvin drift, but lower bandwidth, switching artifacts and higher current noise.",bsee::10 bsee::10-09
+Rail-to-rail input caveat?,Complementary input pairs hand over near one rail; offset and CMRR change in the crossover region.,bsee::10 bsee::10-09
+Typical vs maximum data-sheet columns?,"Typical is a characterization median, not guaranteed; design to the min/max at your conditions and temperature.",bsee::10 bsee::10-09
+Worst-case CMRR of a difference amplifier with resistor tolerance ε?,\((1 + K)/(4\varepsilon)\): 54 dB for \(K\) = 1 and 0.1% resistors.,bsee::10 bsee::10-10
+Why does a three-op-amp INA have higher CMRR than its difference stage?,Its first stage amplifies the differential signal by \(G_1\) but passes common mode with gain 1.,bsee::10 bsee::10-10
+Integrator with real op-amp: two problems?,"Finite \(A_0\) makes it lossy below \(1/(2\pi RCA_0)\); offset integrates and saturates it, so add a leak resistor or reset.",bsee::10 bsee::10-10
+Precision rectifier limit?,"Diode drop divided by loop gain at DC, but a dead time \(2V_D/\text{SR}\) at each zero crossing that grows in effect with frequency.",bsee::10 bsee::10-10
+Non-inverting Schmitt trigger hysteresis?,"\(V_{DD}R_1/R_2\), with \(V_{TH+} = V_{ref}(1 + R_1/R_2)\); make it exceed the noise's peak-to-peak value.",bsee::10 bsee::10-10
+Op-amp vs comparator for switching?,"Comparator: uncompensated, fast recovery, logic output (push-pull or open-drain). Op-amp: slew-limited and slow out of saturation.",bsee::10 bsee::10-10
+Open-drain output caveat?,"Needs a pull-up; rise time is \(RC\ln 9\) (10–90%), so speed trades against static current.",bsee::10 bsee::10-10
+Why does a TIA without \(C_F\) ring?,The input capacitance and \(R_F\) put a pole in the feedback factor; with the op-amp's pole the loop is second order with \(Q = \sqrt{\omega_tR_FC_{in}}\) ≫ 1.,bsee::10 bsee::10-10
+TIA bandwidth scaling?,\(f_0 = \sqrt{\text{GBW}/(2\pi R_FC_{in})}\): doubling GBW gives √2 more bandwidth.,bsee::10 bsee::10-10
+What \(C_F\) makes a TIA Butterworth?,The one that gives \(Q = 1/\sqrt2\) in \(R_F(C_{in} + C_F)s^2 + (1 + \omega_tR_FC_F)s + \omega_t\); approximately \(\sqrt{2(C_{in} + C_F)/(\omega_tR_F)}\).,bsee::10 bsee::10-10
