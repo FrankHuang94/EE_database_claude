@@ -2044,3 +2044,36 @@
 - term: Symbolic computation
   definition: Manipulating formulas exactly, with symbols rather than numbers (SymPy solves, simplifies, differentiates and integrates); used to derive or check hand results and to keep exact rationals such as 470000/53.
   chapter: "05-03"
+- term: Jupyter notebook
+  definition: A document (.ipynb, stored as JSON) of Markdown and code cells whose code runs in a separate kernel process; it saves outputs with the code, so a saved notebook shows results that may not match a fresh run.
+  chapter: "05-04"
+  see_also: [Hidden state]
+- term: Hidden state
+  definition: Values held in a notebook kernel's memory that the visible code, read top to bottom, does not explain (from deleted, edited or out-of-order cells); cured by restarting the kernel and running all cells.
+  chapter: "05-04"
+- term: Version control
+  definition: Recording every saved state of a project's files with author, date and reason, so changes can be compared, attributed and undone; git is the standard tool.
+  chapter: "05-04"
+  see_also: [Commit]
+- term: Commit
+  definition: In git, a permanent snapshot of the staged project plus its author, date, message and parent commit, named by a hash of its content; commits chain into the project's history.
+  chapter: "05-04"
+- term: Cryptographic hash
+  definition: A function (SHA-1, SHA-256) mapping any data to a fixed-length fingerprint such that any change to the input changes about half the output bits and collisions are infeasible to find; git names files and commits by such hashes.
+  chapter: "05-04"
+- term: Unit test
+  definition: A small automated check that runs one function or module on chosen inputs and asserts the result (a hand-worked case, a symmetry, a bound or an expected error); pytest is the standard Python runner.
+  chapter: "05-04"
+  see_also: [Regression test, Self-checking testbench]
+- term: Regression test
+  definition: A test kept permanently in a suite to make sure a fixed bug or a verified behavior does not silently return; in chip design, the nightly regression is the whole suite of such tests.
+  chapter: "05-04"
+- term: Assertion
+  definition: A statement (assert condition) that stops the program if a condition the code relies on is false; used for internal invariants and tests, not for validating input, because python -O removes assertions.
+  chapter: "05-04"
+- term: Continuous integration
+  definition: CI; automatically building and testing a project on a clean machine every time a change is pushed, so problems that depend on one person's setup are caught within minutes.
+  chapter: "05-04"
+- term: Reproducibility
+  definition: The property that someone else can regenerate a result from the recorded code, data and environment and get the same numbers; achieved by scripting every step, pinning versions, seeding randomness and fingerprinting data.
+  chapter: "05-04"
