@@ -1,0 +1,33 @@
+* Lab 08-06: the switching threshold V_M of a CMOS inverter, the metastable point of a cross-coupled pair.
+* Level-1 square-law models with lambda = 0, so the chapter's formula applies exactly. Widths as the
+* SKY130 cells of 08-02 (nMOS 0.65 um, pMOS 1.0 um, L = 0.15 um); VDD = 1.8 V.
+* (1) An inverter with its output tied to its input can only rest where V_out = V_in: that is V_M.
+* (2) A DC sweep of a second, open inverter gives the transfer curve and its gain at V_M.
+*
+* EXPECT vm  key:../../chapters/08-06-latches-and-flip-flops.md#Th_08-06.c rtol=1e-3
+* EXPECT vmo key:../../chapters/08-06-latches-and-flip-flops.md#Th_08-06.c rtol=2e-3
+
+.model nch nmos level=1 vto=0.45 kp=250u lambda=0
+.model pch pmos level=1 vto=-0.45 kp=100u lambda=0
+
+VDD vdd 0 DC 1.8
+* (1) self-biased inverter
+MP1 x x vdd vdd pch W=1u L=0.15u
+MN1 x x 0 0 nch W=0.65u L=0.15u
+* (2) open inverter for the transfer curve
+VIN in 0 DC 0.9
+MP2 out in vdd vdd pch W=1u L=0.15u
+MN2 out in 0 0 nch W=0.65u L=0.15u
+* a large resistor gives the open output a defined DC path in the steep region (lambda = 0)
+RL out mid 1G
+VMID mid 0 DC 0.9
+
+.control
+op
+let vm = v(x)
+print vm
+dc VIN 0 1.8 0.0005
+let d = v(out) - v(in)
+meas dc vmo find v(in) when d=0
+.endc
+.end

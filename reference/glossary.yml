@@ -3141,3 +3141,48 @@
 - term: Linting
   definition: Static checking of source code for suspicious constructs (width mismatches, inferred latches, unused signals, incomplete sensitivity lists) without simulating it; Verilator's --lint-only mode is a widely used HDL linter.
   chapter: "08-05"
+- term: Bistable circuit
+  definition: A circuit with two stable states and an unstable balance point between them, such as two cross-coupled inverters; the rail states are stable because the loop gain there is below 1, the midpoint unstable because it is above 1.
+  chapter: "08-06"
+  see_also: [SR latch]
+- term: SR latch
+  definition: A bistable built from two cross-coupled NOR (or NAND) gates with set and reset inputs; it holds when both are inactive, and both active at once is forbidden because it forces equal outputs and an unpredictable release.
+  chapter: "08-06"
+- term: D latch
+  definition: A level-sensitive storage element that is transparent (Q follows D) while its clock or enable is active and holds its value while it is inactive.
+  chapter: "08-06"
+  see_also: [D flip-flop]
+- term: D flip-flop
+  definition: An edge-triggered storage element whose output takes the value D had at the active clock edge and holds it until the next edge; the basic register cell of synchronous design.
+  chapter: "08-06"
+  see_also: [Master–slave flip-flop, Setup time, Hold time]
+- term: Master–slave flip-flop
+  definition: An edge-triggered flip-flop made of two latches on opposite clock phases; the master follows D while the clock is low and closes at the rising edge, as the slave opens and passes the captured value to Q.
+  chapter: "08-06"
+- term: Transmission gate
+  definition: An nMOS and a pMOS transistor in parallel, driven by complementary control signals, that pass a signal in either direction without a threshold drop when on; the basic switch of CMOS latches and multiplexers.
+  chapter: "08-06"
+- term: Setup time
+  definition: The minimum time a flip-flop's data input must be stable before the active clock edge; together with clock-to-Q and logic delay it sets the minimum clock period, t_pcq + t_pd + t_setup ≤ T_c.
+  chapter: "08-06"
+  see_also: [Hold time, Clock-to-Q delay]
+- term: Hold time
+  definition: The minimum time a flip-flop's data input must stay stable after the active clock edge; the hold constraint t_ccq + t_cd ≥ t_hold does not involve the clock period, so a violation cannot be fixed by slowing the clock.
+  chapter: "08-06"
+- term: Clock-to-Q delay
+  definition: The delay from a flip-flop's active clock edge to its output changing; t_pcq is the longest (used for setup checks) and t_ccq the shortest (used for hold checks).
+  chapter: "08-06"
+- term: Synchronous reset
+  definition: A reset that is sampled like data and takes effect at the next active clock edge; simple to time but requires a running clock.
+  chapter: "08-06"
+  see_also: [Asynchronous reset]
+- term: Asynchronous reset
+  definition: A reset that acts on a flip-flop immediately, without a clock; its release must meet a recovery time before the next clock edge, so it is usually asserted asynchronously and released through a reset synchronizer.
+  chapter: "08-06"
+  see_also: [Recovery time]
+- term: Recovery time
+  definition: The minimum time between the release of an asynchronous reset or set and the next active clock edge, the reset's analogue of setup time.
+  chapter: "08-06"
+- term: Synchronous design
+  definition: A discipline in which all state is held in flip-flops clocked by a common clock, every feedback loop contains a register and asynchronous inputs are synchronized, so correctness reduces to setup and hold checks on each register-to-register path.
+  chapter: "08-06"
