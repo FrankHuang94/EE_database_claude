@@ -122,6 +122,11 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-114 | Oscilloscope probe ground-lead ringing | Nov 2026 |
 | R-115 | GaN power-loop inductance, switching speed and output capacitance | Nov 2026 |
 | R-116 | PDN target impedance in vendor practice | Nov 2026 |
+| R-117 | LDO stability and output-capacitor ESR | Nov 2026 |
+| R-118 | Pole-zero analysis and s-domain models in ngspice | Nov 2026 |
+| R-119 | Loop-gain measurement by injection | Nov 2026 |
+| R-120 | Decompensated op-amps | Nov 2026 |
+| R-121 | Heaviside's operational calculus and network synthesis | Nov 2026 |
 
 ---
 
@@ -1144,3 +1149,52 @@ R&D % = R&D ÷ revenue.
 
 - **TI, "Sitara Processor Power Distribution Networks: Implementation and Analysis", SPRAC76H (Nov 2022, revised Oct 2025), §5 and Table 7-1** [Established]: "ZTARGET = (Voltage Rail × %Ripple)/(0.5 × IMax)" (the 0.5 assumes a step of half the maximum current); the impedance must stay below target from DC to F_MAX, beyond which "the dominance of the parasitic planar spreading inductance and package inductances" prevents further improvement; "Typical mid-frequency capacitors have capacitance in the range of 1 nF –100 nF, ESR in the range of 10-100 mΩ, and ESL in the range of 0.5 nH – 1 nH"; for the AM570x VDD_CORE rail, a 57 mΩ target up to 20 MHz with a decoupling-loop inductance of at most 2 nH. The regulator is modeled as a series R–L that turns inductive above about 0.5–1 MHz. No package-inductance value is given.
 - **Source:** [TI SPRAC76H](https://www.ti.com/document-viewer/lit/html/SPRAC76G/GUID-AF67D124-C8FB-4892-A7E1-D65C51297D92). Checked Nov 2026.
+
+## R-117 · LDO stability and output-capacitor ESR
+
+*Gathered by a research subagent (07-04 facts file, entries F-0751 to F-0758); every document below was opened.*
+
+- **J. Falin and J. Cummings, TI SLVA115A, "ESR, Stability, and the LDO Regulator" (May 2002, rev. Feb 2020)** [Established]: "there are three important poles in a PMOS or PNP pass element based LDO regulator" (dominant, load, pass device); using the output capacitor's ESR to create a zero is "typically the simplest and least expensive method"; the ESR must be high enough for a −20 dB/decade slope at crossover and low enough for the gain to fall below 0 dB before the pass-device pole; for TPS76050 with 2.2 µF, "the ESR must be between 0.1 Ω and 20 Ω"; "Typically, four rings or less indicate sufficient phase margin" [Industry estimate]. **Error in the note:** Equation 1 prints $f_{Z(ESR)}$ = 72.3 kHz for 0.1 Ω and 2.2 µF; the correct value is 723 kHz. Its Figure 2 also labels the ESR axis in µF.
+- **TI TPS760xx datasheet, SLVS144D (Jul 1998, rev. May 2001)** [Established]: "The minimum recommended capacitance value is 2.2 µF and the ESR … must be between 0.1 Ω and 20 Ω. Capacitor values of 2.5-µF or larger are acceptable, provided the ESR is less than 20 Ω."
+- **B. S. Lee, TI SLVA072, "Technical Review of Low Dropout Voltage Regulator Operation and Performance" (Aug 1999)** [Established]: the stable-ESR plot "is called tunnel of death. The curve shows that the ESR must be between 0.2 Ω and 9 Ω" (an unnamed typical LDO with 4.7 µF).
+- **TI AN-1482, SNVA167A, "LDO Regulator Stability Using Ceramic Output Capacitors" (May 2006, rev. Apr 2013)** [Established for the mechanism; Industry estimate for typical values]: "a typical 10 µF Tantalum capacitor might have an ESR in the range of about 0.5 Ω, giving a zero at a frequency of about 30 kHz"; "A 10 µF capacitor whose ESR is in the 5 mΩ range is providing a zero at a frequency above 3 MHz"; the ESR zero raised an illustrative loop's phase margin "from 11° up to about 68°"; electrolytic-stable LDOs about 0.1–10 Ω, ceramic-stable versions with an internal zero from 0 Ω up to about 0.5 Ω.
+- **T. Schiff, onsemi AND8037/D, "Stability in High Speed Linear LDO Regulators" (Oct 2000)** [Established]: older devices specified "a minimum ESR for the output capacitor … with no limitations on the maximum"; design guidelines come from keeping the poles in the left half-plane; "making the ESR larger or smaller tends to make the response more unstable" (for its LDO-controller example).
+- **Current parts** [Established]: TI TPS7A26 (SBVS290B, rev. Oct 2019) and TPS7A25 (SBVS372C, rev. Dec 2022): "Stable with 1-µF output capacitors", C_OUT 1 µF min, 2.2 µF nom, 100 µF max, "All capacitor values are assumed to derate to 50% of the nominal capacitor value"; TPS7A20 (SBVS338H, rev. Jul 2024): "Stable with 1µF minimum ceramic output capacitor", ESR 100 mΩ maximum, effective capacitance 0.47–200 µF; onsemi NCP114 (Rev. 31, Jan 2024): stable with 0.22 µF minimum effective capacitance, "no requirement for the minimum value of Equivalent Series Resistance … but the maximum value of ESR should be less than 2 Ω", tantalum not recommended.
+- **Sources:** [SLVA115A](https://www.ti.com/lit/an/slva115a/slva115a.pdf); [TPS760](https://www.ti.com/lit/ds/symlink/tps760.pdf); [SLVA072](https://www.ti.com/lit/an/slva072/slva072.pdf); [SNVA167A](https://www.ti.com/lit/an/snva167a/snva167a.pdf); [AND8037](https://www.onsemi.com/pub/Collateral/AND8037-D.PDF); [TPS7A26](https://www.ti.com/lit/ds/symlink/tps7a26.pdf); [TPS7A25](https://www.ti.com/lit/ds/symlink/tps7a25.pdf); [TPS7A20](https://www.ti.com/lit/ds/symlink/tps7a20.pdf); [NCP114](https://www.onsemi.com/download/data-sheet/pdf/ncp114-d.pdf). Checked Nov 2026.
+
+## R-118 · Pole-zero analysis and s-domain models in ngspice
+
+*Gathered by a research subagent (07-04 facts file, entries F-0759 to F-0762).*
+
+- **H. Vogt, G. Atkinson, D. Warning, P. Nenzi, *Ngspice User's Manual*, version 47 (11 Aug 2026)**, opened from the SourceForge release folder (the ngspice documentation page itself returned 403) [Established]:
+  - `.pz` (§1.2.4, §11.3.6): computes poles and/or zeros of a voltage-ratio (`vol`) or transimpedance (`cur`) transfer function; "The method used in the analysis is a sub-optimal numerical search. For large circuits it may take a considerable time or fail to find all poles and zeros. … for some circuits, the method becomes 'lost' and may find an excessive number of poles or zeros."
+  - `s_xfer` (§8.2.18): an XSPICE "s-domain transfer function" model for AC and transient analysis; the numerator degree may not exceed the denominator's; frequencies are in radians per second; it is the documented substitute for a LAPLACE-type source (§5.2.5).
+- **Version note:** this repository and its CI run ngspice-42; the lab's `.pz` netlist was checked on version 42 (roots printed in rad/s).
+- **Source:** [ngspice manuals](https://sourceforge.net/projects/ngspice/files/ng-spice-rework/). Checked Nov 2026.
+
+## R-119 · Loop-gain measurement by injection
+
+*Gathered by a research subagent (07-04 facts file, entries F-0763 to F-0766).*
+
+- **R. D. Middlebrook, "Measurement of loop gain in feedback systems," *International Journal of Electronics* 38(4):485–512, April 1975, DOI 10.1080/00207217508920421** [Established, from the abstract; full text not opened]: "In high loop-gain systems it is desirable that the loop-gain measurement be made without opening the loop"; the paper treats voltage- and current-injection techniques, measurement of unstable systems, and combinations of both.
+- **F. Hämmerle, OMICRON Lab Information Note "Loop Gain Measurement: The Voltage Injection Method …", V1.1 (2017)** [Established]: an injection resistor of "10 Ω is generally suitable for voltage regulators and DC/DC converters"; the measured $T_v = T(1 + Z_{out}/Z_{in}) + Z_{out}/Z_{in}$, valid when $\lvert Z_{in}\rvert \gg \lvert Z_{out}\rvert$ and $\lvert T\rvert \gg \lvert Z_{out}/Z_{in}\rvert$; the injection level should be small. OMICRON's DC/DC application note (V3.3, 2018) reads phase margin against 0° in its closed-loop setup and shows PM = 83.1°, GM = 9.2 dB; the Bode 100 R2 covers 1 Hz–50 MHz (technical data V1.6, 2026).
+- **TI AN-1889, SNVA364A, "How to Measure the Loop Transfer Function of Power Supplies" (Oct 2008, rev. Apr 2013)** [Established; the margin is a rule of thumb]: measurement with a signal generator and an oscilloscope; "A good value is a 20Ω resistor"; "a minimum phase margin of 45 to 50 degrees is necessary. More is better."
+- **Sources:** [Middlebrook (DOI)](https://doi.org/10.1080/00207217508920421); [OMICRON information note](https://www.omicron-lab.com/fileadmin/assets/Bode_100/InformationNotes/Bode_Info_LoopGain_V1_1.pdf); [TI SNVA364A](https://www.ti.com/lit/an/snva364a/snva364a.pdf). Checked Nov 2026.
+
+## R-120 · Decompensated op-amps
+
+*Gathered by a research subagent (07-04 facts file, entries F-0767 and F-0768).*
+
+- **TI OPA627/OPA637 datasheet, SBOS165C (Aug 2000, rev. Jan 2025)** [Established]: "The OPA627 is unity-gain stable. The OPA637 is stable in gains ≥ 5"; circuits with a feedback capacitor "must use the OPA627 for proper stability"; the OPA637's gain–bandwidth is 80 MHz at G = 10. The OPA627's gain–bandwidth differs by grade in the datasheet tables (16 MHz or 45 MHz) [Contested by grade; not used].
+- **TI OPA847 (SBOS251E, rev. Dec 2008) and OPA842 (SBOS267D, rev. Sep 2010)** [Established]: the OPA847 "is stable down to gains as low as +12V/V", with a 3.9 GHz typical gain–bandwidth product; the OPA842 is unity-gain stable with a 200 MHz gain–bandwidth product.
+- **Sources:** [OPA627/637](https://www.ti.com/lit/ds/symlink/opa627.pdf); [OPA847](https://www.ti.com/lit/ds/symlink/opa847.pdf); [OPA842](https://www.ti.com/lit/ds/symlink/opa842.pdf). Checked Nov 2026.
+
+## R-121 · Heaviside's operational calculus and network synthesis
+
+*Gathered by a research subagent (07-04 facts file, entries F-0769 to F-0774); network-synthesis references checked on Crossref.*
+
+- **Heaviside** (MacTutor history archive, St Andrews; ETHW, IEEE History Center) [Established for the story; dates as stated by MacTutor]: born 18 May 1850, died 3 February 1925 (ETHW gives other dates for both; [Contested]); "His operational calculus, developed between 1880 and 1887, caused much controversy"; he replaced $d/dx$ by a variable $p$; "the correctness of Heaviside's calculus was not proved until Bromwich's work"; a paper submitted to the Royal Society was rejected. His "On operators in physical mathematics", *Proc. R. Soc. Lond.* 52:504–529 (1893) and 54:105–143 (1894), known from metadata only.
+- **T. J. I'A. Bromwich, "Normal coordinates in dynamical systems," *Proc. London Math. Soc.* (2) 15:401–448** (received 22 April 1916; volume year 1917), DOI 10.1112/plms/s2-15.1.401, scan opened [Established]: solves dynamical problems "by means of complex integrals" and proves that Heaviside's "method of resistance-operators" is equivalent.
+- **J. R. Carson, "The Heaviside operational calculus," *Bell System Technical Journal* 1(2):43–55, Nov 1922** (abstract only) and ***Electric Circuit Theory and the Operational Calculus*, McGraw-Hill, 1926** (scan opened) [Established]: the operational formula is a shorthand for an integral equation "of the Laplace type".
+- **Network synthesis** (Crossref metadata) [Established]: O. Brune, "Synthesis of a finite two-terminal network whose driving-point impedance is a prescribed function of frequency," *Journal of Mathematics and Physics* 10:191–236 (1931), DOI 10.1002/sapm1931101191; R. Bott and R. J. Duffin, "Impedance synthesis without use of transformers," *Journal of Applied Physics* 20:816 (1949), DOI 10.1063/1.1698532.
+- **Sources:** [MacTutor](https://mathshistory.st-andrews.ac.uk/Biographies/Heaviside/); [ETHW](https://ethw.org/Oliver_Heaviside); [Bromwich (DOI)](https://doi.org/10.1112/plms/s2-15.1.401); [Carson 1922 (DOI)](https://doi.org/10.1002/j.1538-7305.1922.tb00388.x); [Brune (DOI)](https://doi.org/10.1002/sapm1931101191); [Bott and Duffin (DOI)](https://doi.org/10.1063/1.1698532). Checked Nov 2026.

@@ -1,0 +1,21 @@
+* Example 07-04.6 -- ngspice's pole-zero analysis of the Wien-bridge circuit at K = 2.9 (a VCVS of
+* gain 2.9 as the amplifier, R = 10 kohm, C = 10 nF). A zero-valued test source in series with the
+* amplifier output gives .pz an input; the poles do not depend on it.
+*
+* EXPECT ex6r  key:../../chapters/07-04-laplace-domain-circuit-analysis.md#Ex_07-04.6c rtol=2e-3
+* EXPECT ex6i  key:../../chapters/07-04-laplace-domain-circuit-analysis.md#Ex_07-04.6d rtol=1e-3
+
+E1   o 0 x 0 2.9
+V1   o t DC 0 AC 1
+R1   t s 10k
+C1   s x 10n
+R2   x 0 10k
+C2   x 0 10n
+
+.control
+pz t o x 0 vol pol
+let ex6r = real({pole(1)})
+let ex6i = abs(imag({pole(1)}))
+print ex6r ex6i
+.endc
+.end

@@ -177,6 +177,36 @@
 - term: Integrator (op-amp)
   definition: An op-amp circuit with a capacitor in the feedback path and a resistor at the input, giving v_out = −(1/RC)∫v_in dt; a resistor across the capacitor makes it a "leaky" integrator (a first-order low-pass).
   chapter: "07-02"
+- term: Initial-condition source
+  definition: In the s-domain model of a capacitor or inductor, the source that carries the stored energy into the analysis; L·i(0⁻) in series with sL (or i(0⁻)/s in parallel with 1/sL), and v(0⁻)/s in series with 1/sC (or C·v(0⁻) in parallel with sC). In time it is an impulse of flux linkage or charge.
+  chapter: "07-04"
+- term: Driving-point impedance
+  definition: The ratio V(s)/I(s) at a single port of a network, with input and output at the same pair of terminals; its poles and zeros are the network's natural frequencies with that port open and shorted.
+  chapter: "07-04"
+  see_also: [Transfer function]
+- term: Right-half-plane zero
+  definition: A transfer-function zero with positive real part, typically from two signal paths of opposite sign (such as a Miller capacitor feeding the input forward around an inverting stage); it makes a step response start in the wrong direction and costs phase in a feedback loop.
+  chapter: "07-04"
+  see_also: [Poles and zeros]
+- term: ESR zero
+  definition: The zero at s = −1/(R_ESR·C) created by a capacitor's equivalent series resistance; above f = 1/(2π·R_ESR·C) the capacitor looks resistive. Some older linear regulators relied on it for stability, which ties their stability to a window of ESR.
+  chapter: "07-04"
+- term: Zero-state response
+  definition: The part of a linear circuit's response caused by its inputs alone, with all initial conditions zero; in the s-domain H(s)X(s).
+  chapter: "07-04"
+  see_also: [Zero-input response]
+- term: Zero-input response
+  definition: The part of a linear circuit's response caused by its initial stored energy alone, with all inputs zero; it contains only the circuit's natural modes.
+  chapter: "07-04"
+- term: Stability (of a circuit)
+  definition: The property that every bounded input gives a bounded output; for a linear circuit, every pole of its transfer functions lies in the open left half-plane. Passive RLC circuits cannot be unstable; circuits with gain can.
+  chapter: "07-04"
+- term: Positive-real function
+  definition: A function Z(s) that is real for real s and has Re Z ≥ 0 whenever Re s ≥ 0; exactly the driving-point impedances realizable from passive R, L, C (and transformers), as shown by Brune (1931).
+  chapter: "07-04"
+- term: Wien-bridge oscillator
+  definition: An oscillator in which a series RC and a parallel RC divide an amplifier's output and feed it back; its poles are s² + (3 − K)ω₀s + ω₀² = 0, so it oscillates at ω₀ = 1/RC when the gain K reaches 3.
+  chapter: "07-04"
 - term: Second-order circuit
   definition: A circuit whose behavior is described by a second-order differential equation, typically one with two independent storage elements (a capacitor and an inductor, or two capacitors that cannot be combined); its natural response has two characteristic roots.
   chapter: "07-03"

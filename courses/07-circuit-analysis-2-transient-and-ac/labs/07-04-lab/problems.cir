@@ -1,0 +1,40 @@
+* Problems 07-04.4, 07-04.6 and 07-04.11 in ngspice.
+*
+* EXPECT p4v   key:../../solutions/07-04-solutions.md#07-04.4c rtol=1e-3
+* EXPECT p6pk  key:../../solutions/07-04-solutions.md#07-04.6e rtol=1e-3
+* EXPECT p6v   key:../../solutions/07-04-solutions.md#07-04.6g rtol=1e-3
+* EXPECT p6fin key:../../solutions/07-04-solutions.md#07-04.6d rtol=1e-3
+* EXPECT p11j  key:../../solutions/07-04-solutions.md#07-04.11d scale=1e-3 rtol=5e-3
+* EXPECT p11f  key:../../solutions/07-04-solutions.md#07-04.11e rtol=1e-3
+
+* P4: parallel RLC with iL(0-) = 10 mA (down through L) and v(0-) = 5 V; a 20 mA step into the node
+I4   0 t4 PWL(0 0 1n 20m)
+R4   t4 0 250
+L4   t4 0 50m IC=10m
+C4   t4 0 2u IC=5
+* P6: 10 V step, R1 10 ohm to node a, C 10 uF to ground, L 1 mH and R2 10 ohm to ground
+V6   in6 0 PWL(0 0 1n 10)
+R61  in6 a6 10
+C6   a6 0 10u
+L6   a6 b6 1m
+R62  b6 0 10
+* P11: transconductance stage with a Miller capacitance, 10 mV gate step (a 10 fs edge, so the
+* transconductance has no time to act during the rise)
+V11  g 0 PWL(0 0 10f 10m)
+G11  d 0 g 0 10m
+RD   d 0 5k
+CL   d 0 2p
+CGD  g d 0.5p
+
+.control
+tran 0.1u 4m 0 0.1u uic
+meas tran p4v find v(t4) at=1m
+meas tran p6pk max i(L6) from=0 to=1m
+meas tran p6v find i(L6) at=0.5m
+meas tran p6fin find i(L6) at=3.9m
+tran 2f 20p 0 2f uic
+meas tran p11j max v(d) from=0 to=20p
+tran 0.2p 400n 0 0.2p uic
+meas tran p11f find v(d) at=399n
+.endc
+.end

@@ -1,0 +1,39 @@
+* Examples 07-04.1, 07-04.2 and 07-04.3 in ngspice: transient checks of the s-domain answers.
+* The pole-zero analyses are in their own netlists (ex2_pz.cir, ex6_wien_pz.cir), because .pz
+* reports the poles of everything in a netlist.
+*
+* EXPECT ex1v    key:../../chapters/07-04-laplace-domain-circuit-analysis.md#Ex_07-04.1c rtol=1e-3
+* EXPECT ex2pk   0.54073 rtol=1e-3
+* EXPECT ex2t    key:../../chapters/07-04-laplace-domain-circuit-analysis.md#Ex_07-04.2e scale=1e-6 rtol=2e-3
+* EXPECT ex2fin  key:../../chapters/07-04-laplace-domain-circuit-analysis.md#Ex_07-04.2d rtol=1e-3
+* EXPECT ex3dc   key:../../chapters/07-04-laplace-domain-circuit-analysis.md#Ex_07-04.3d scale=11 rtol=1e-3
+
+* Example 1: the series loop after the switch, with both initial conditions
+V1   in1 0 DC 12
+R1   in1 a1 2
+L1   a1 c1 0.5m IC=2
+C1   c1 0 50u IC=8
+* Example 2: third-order LC low-pass, 1 V step (time domain)
+V2   in2 0 PWL(0 0 1p 1)
+R2   in2 n21 50
+C21  n21 0 3.18309886n
+L2   n21 n22 15.9154943u
+C22  n22 0 3.18309886n
+R22  n22 0 50
+* Example 3: the 07-03.8 circuit, 11 V step
+V4   in4 0 PWL(0 0 1n 11)
+R4   in4 a4 100
+C4   a4 0 1u
+L4   a4 b4 10m
+R42  b4 0 10
+.control
+tran 0.1u 1m 0 0.1u uic
+meas tran ex1v find v(c1) at=0.5m
+tran 1p 4u 0 1p uic
+meas tran ex2pk max v(n22) from=0 to=2u
+meas tran ex2t max_at v(n22) from=0 to=2u
+meas tran ex2fin find v(n22) at=4u
+tran 1u 5m 0 1u uic
+meas tran ex3dc find v(a4) at=4.9m
+.endc
+.end

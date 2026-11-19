@@ -1,0 +1,22 @@
+* Example 07-04.2 -- ngspice's pole-zero analysis (.pz, run as the pz command) of the third-order
+* LC low-pass filter. ngspice reports the poles in rad/s as (real, imaginary) pairs.
+*
+* EXPECT ex2pr  key:../../chapters/07-04-laplace-domain-circuit-analysis.md#Ex_07-04.2a scale=1e6 rtol=1e-3
+* EXPECT ex2cr  key:../../chapters/07-04-laplace-domain-circuit-analysis.md#Ex_07-04.2b scale=1e6 rtol=1e-3
+* EXPECT ex2ci  key:../../chapters/07-04-laplace-domain-circuit-analysis.md#Ex_07-04.2c scale=1e6 rtol=1e-3
+
+V1   in 0 DC 0 AC 1
+R1   in n1 50
+C1   n1 0 3.18309886n
+L1   n1 n2 15.9154943u
+C2   n2 0 3.18309886n
+R2   n2 0 50
+
+.control
+pz in 0 n2 0 vol pol
+let ex2pr = real({pole(1)})
+let ex2cr = real({pole(2)})
+let ex2ci = abs(imag({pole(2)}))
+print ex2pr ex2cr ex2ci
+.endc
+.end
