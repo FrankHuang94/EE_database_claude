@@ -1,0 +1,71 @@
+* Lab 06-09 -- maximum power transfer in ngspice. Each "load" is a swept voltage source (the load
+* voltage), so the load power p = v * i is a parabola in the sweep variable; vecmax finds its peak.
+*
+* EXPECT ex1pmax key:../../chapters/06-09-maximum-power-transfer.md#Ex_06-09.1a rtol=1e-6
+* EXPECT ex2p95  key:../../chapters/06-09-maximum-power-transfer.md#Ex_06-09.2d rtol=1e-6
+* EXPECT ex2pmax key:../../chapters/06-09-maximum-power-transfer.md#Ex_06-09.2a rtol=1e-6
+* EXPECT ex4pmax key:../../chapters/06-09-maximum-power-transfer.md#Ex_06-09.4a scale=1e-3 rtol=1e-6
+* EXPECT p1pmax  key:../../solutions/06-09-solutions.md#06-09.1a scale=1e-3 rtol=1e-6
+* EXPECT p5pmax  key:../../solutions/06-09-solutions.md#06-09.5a rtol=1e-6
+* EXPECT p12pmax key:../../solutions/06-09-solutions.md#06-09.12c rtol=1e-3
+
+* ---- Example 06-09.1: 10 V behind 8 Ohm, load voltage swept
+V1   s1 0 DC 10
+R1   s1 a1 8
+VL1  a1 0 DC 0
+* ---- Example 06-09.2: 12 V battery with 0.1 Ohm; a 1.9 Ohm load, and a swept load voltage
+V2   s2 0 DC 12
+R2   s2 a2 0.1
+RL2  a2 0 1.9
+V2b  s2b 0 DC 12
+R2b  s2b a2b 0.1
+VL2  a2b 0 DC 0
+* ---- Example 06-09.4: TEG, 0.5 V behind 2 Ohm
+V4   s4 0 DC 0.5
+R4   s4 a4 2
+VL4  a4 0 DC 0
+* ---- Problem 06-09.1: 6 V behind 300 Ohm
+V61  s61 0 DC 6
+R61  s61 a61 300
+VL61 a61 0 DC 0
+* ---- Problem 06-09.5: 48 V behind 0.25 Ohm
+V65  s65 0 DC 48
+R65  s65 a65 0.25
+VL65 a65 0 DC 0
+* ---- Problem 06-09.12: 12 V / 4 Ohm and 6 V / 3 Ohm in parallel
+V612a e612a 0 DC 12
+R612a e612a a612 4
+V612b e612b 0 DC 6
+R612b e612b a612 3
+VL612 a612 0 DC 0
+
+.control
+op
+let ex2p95 = v(a2)*v(a2)/1.9
+echo "ex2p95 = $&ex2p95"
+dc VL1 0 10 0.001
+let p = v(a1)*i(VL1)
+let ex1pmax = vecmax(p)
+echo "ex1pmax = $&ex1pmax"
+dc VL2 0 12 0.001
+let p = v(a2b)*i(VL2)
+let ex2pmax = vecmax(p)
+echo "ex2pmax = $&ex2pmax"
+dc VL4 0 0.5 0.0001
+let p = v(a4)*i(VL4)
+let ex4pmax = vecmax(p)
+echo "ex4pmax = $&ex4pmax"
+dc VL61 0 6 0.001
+let p = v(a61)*i(VL61)
+let p1pmax = vecmax(p)
+echo "p1pmax = $&p1pmax"
+dc VL65 0 48 0.001
+let p = v(a65)*i(VL65)
+let p5pmax = vecmax(p)
+echo "p5pmax = $&p5pmax"
+dc VL612 0 8.571428 0.0001
+let p = v(a612)*i(VL612)
+let p12pmax = vecmax(p)
+echo "p12pmax = $&p12pmax"
+.endc
+.end

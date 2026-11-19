@@ -2566,3 +2566,17 @@
   definition: Delivering DC power over Ethernet cabling (IEEE 802.3af, at and bt) at up to 57 V; the device receives the source's class power minus the cable's I²R loss (90 W at the source gives 71.3 W at the device for Type 4).
   chapter: "06-08"
   see_also: [Thevenin equivalent]
+
+# ---------------------------------------------------------------- 06-09
+- term: Matched load
+  definition: A load equal to the source's Thévenin resistance (for AC, its complex conjugate), which draws the maximum power, at half the open-circuit voltage and 50% efficiency; on a transmission line, a load equal to Z0, which reflects nothing.
+  chapter: "06-09"
+  see_also: [Maximum power transfer, Conjugate match]
+- term: Conjugate match
+  definition: The AC form of maximum power transfer, Z_L = Z_th*, in which the load's resistance equals the source's and its reactance cancels the source's.
+  chapter: "06-09"
+  see_also: [Matched load, Maximum power transfer]
+- term: Maximum power point tracking (MPPT)
+  definition: A converter control method that continually adjusts its input operating point (for example by perturb and observe) to extract the most power from a varying source such as a solar cell or thermoelectric generator.
+  chapter: "06-09"
+  see_also: [Maximum power transfer]

@@ -111,6 +111,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-103 | Modified nodal analysis and simulator capacity | Nov 2026 |
 | R-104 | Compact models and gm/ID design | Nov 2026 |
 | R-105 | Thevenin and Norton history and Power over Ethernet | Nov 2026 |
+| R-106 | The 50 ohm standard | Nov 2026 |
 
 ---
 
@@ -909,3 +910,21 @@ R&D % = R&D ÷ revenue.
   - Bibliographic data for both articles were confirmed on Crossref [Established].
   - From search excerpts summarizing the articles: Helmholtz stated the voltage-source equivalent in 1853. Thévenin published it in 1883 (*Comptes Rendus* 97:159–161). Norton described the current-source form in a Bell Labs technical report dated 3 November 1926. H. F. Mayer of Siemens published it independently in 1926 [Industry estimate]: the articles' text was not read, and the original publications were not seen.
 - **Sources:** [Ethernet Alliance 802.3bt overview (PDF)](https://ethernetalliance.org/wp-content/uploads/2019/12/WP_EA_Overview8023bt_V2p1_FINAL.pdf); [Crossref: voltage-source article](https://api.crossref.org/works/10.1109/JPROC.2003.811716); [Crossref: current-source article](https://api.crossref.org/works/10.1109/JPROC.2003.811795). Checked Nov 2026.
+
+## R-106 · The 50 ohm standard
+
+*Search excerpts only* for the history: the Microwaves101 page was not returned, and the trade articles below were read only as search-result summaries (PROGRESS open issue 21).
+
+- **Claims in trade and secondary sources:**
+  - For air-dielectric coax, "the geometry that provides the greatest peak-power capability corresponds to roughly 30 Ω, while the geometry that minimizes conductor loss corresponds to approximately 77 Ω".
+  - 50 Ω is presented as a compromise; one account gives it as "sqrt(77 x 30) = 48.5 ohms, rounds to 50 ohms".
+  - With solid polyethylene dielectric, the minimum-loss impedance "shifts to about 51 ohms".
+  - 75 Ω (video, cable TV) is said to favor low loss.
+  - The attribution of the choice to specific 1930s work was not verified [Industry estimate].
+- **Our derivation:**
+  - Minimizing $(1 + x)/\ln x$ with $x = b/a$ gives $\ln x = 1 + 1/x$, $x = 3.591$, $Z_0 = 60\ln x = 76.7$ Ω in air.
+  - Maximizing $\ln x/x^2$ gives $x = \sqrt e$, $Z_0 = 30.0$ Ω.
+  - The geometric mean of the optima is 47.97 Ω (48.06 Ω with 77 Ω), **not 48.5 Ω**: the trade source's arithmetic is wrong.
+  - Polyethylene ($\varepsilon_r$ = 2.25) gives 51.1 Ω for minimum loss, confirming the "about 51 ohms" claim.
+  - The physics is standard transmission-line theory (Pozar, *Microwave Engineering*) [Established].
+- **Sources:** [Hackaday, "What's Special About Fifty Ohms" (11 Jul 2016)](https://hackaday.com/2016/07/11/whats-special-about-fifty-ohms); [Altium, "Mysterious 50 Ohm Impedance"](https://resources.altium.com/p/mysterious-50-ohm-impedance-where-it-came-and-why-we-use-it). Checked Nov 2026 (search excerpts).
