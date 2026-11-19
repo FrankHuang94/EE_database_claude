@@ -9,3 +9,4 @@ One sheet per course: the equations you should be able to write from memory (or 
 | 02 · Complex Numbers, Differential Equations and Linear Algebra | [02-complex-numbers-des-and-linear-algebra.md](02-complex-numbers-des-and-linear-algebra.md) |
 | 03 · Probability, Statistics and Random Variables | [03-probability-statistics-and-random-variables.md](03-probability-statistics-and-random-variables.md) |
 | 04 · Physics for EE | [04-physics-for-ee.md](04-physics-for-ee.md) |
+| 05 · Programming for Engineers | [05-programming-for-engineers.md](05-programming-for-engineers.md) |

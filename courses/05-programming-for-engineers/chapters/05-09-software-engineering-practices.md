@@ -468,7 +468,7 @@ Now work the [problem set](../problems/05-09-problems.md).
 ## 12. Connections
 
 - **Builds on:** [05-04](05-04-reproducible-workflows.md) (version control, unit tests, CI), [05-05](05-05-c-fundamentals.md) (MISRA C, static analysis, undefined behavior), [05-07](05-07-bit-manipulation.md) (hardware abstraction) and [05-08](05-08-data-structures-and-algorithms.md) (the algorithms half of the FE Software Engineering area).
-- **Next:** the Course 05 exam (see the [course page](../README.md)) and the Term 1 checkpoint.
+- **Next:** the [Course 05 exam](../exam/README.md) and the Term 1 checkpoint.
 - **Used later:** [08-05](../../08-digital-logic-design/chapters/08-05-verilog-and-testbenches.md) and [19-13](../../19-digital-vlsi-design/chapters/19-13-verification-methods.md) apply testing and coverage to hardware; [18 · Embedded Systems](../../18-embedded-systems-and-microcontrollers/README.md) builds firmware with HALs and update mechanisms; [26-01](../../26-engineering-design-and-professional-practice/chapters/26-01-requirements-and-specifications.md) and [26-02](../../26-engineering-design-and-professional-practice/chapters/26-02-design-reviews-and-standards.md) treat requirements and reviews for whole products; [28-07](../../28-technical-diligence-and-leadership-fluency/chapters/28-07-evaluating-engineering-teams.md) evaluates engineering organizations.
 
 ## 13. Further study
