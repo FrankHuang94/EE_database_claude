@@ -1,0 +1,52 @@
+Recoding FSM `$fsm$\state$500' from module `\traffic' using `auto' encoding:
+  mapping auto encoding to `one-hot` for this FSM.
+
+Printing statistics.
+
+=== traffic ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       34 wires
+       64 wire bits
+       34 public wires
+       64 public wire bits
+        9 ports
+        9 port bits
+       40 submodules
+        3   SB_CARRY
+        6   SB_DFF
+        3   SB_DFFESR
+        2   SB_DFFESS
+       26   SB_LUT4
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+        - traffic
+
+        +----------Count including submodules.
+        | 
+       34 wires
+       64 wire bits
+       34 public wires
+       64 public wire bits
+        9 ports
+        9 port bits
+        - memories
+        - memory bits
+        - processes
+        - cells
+       40 submodules
+        3   SB_CARRY
+        6   SB_DFF
+        3   SB_DFFESR
+        2   SB_DFFESS
+       26   SB_LUT4
+
+2.51. Executing CHECK pass (checking for obvious problems).
+Checking module traffic...
+Found and reported 0 problems.
+
+2.52. Executing JSON backend.

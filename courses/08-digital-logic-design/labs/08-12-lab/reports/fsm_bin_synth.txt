@@ -1,0 +1,52 @@
+Recoding FSM `$fsm$\state$500' from module `\traffic' using `binary' encoding:
+  existing encoding is already a packed binary encoding.
+
+Printing statistics.
+
+=== traffic ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       35 wires
+       73 wire bits
+       35 public wires
+       73 public wire bits
+        9 ports
+        9 port bits
+       44 submodules
+        3   SB_CARRY
+        3   SB_DFFESR
+        2   SB_DFFESS
+        3   SB_DFFSR
+       33   SB_LUT4
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+        - traffic
+
+        +----------Count including submodules.
+        | 
+       35 wires
+       73 wire bits
+       35 public wires
+       73 public wire bits
+        9 ports
+        9 port bits
+        - memories
+        - memory bits
+        - processes
+        - cells
+       44 submodules
+        3   SB_CARRY
+        3   SB_DFFESR
+        2   SB_DFFESS
+        3   SB_DFFSR
+       33   SB_LUT4
+
+4.51. Executing CHECK pass (checking for obvious problems).
+Checking module traffic...
+Found and reported 0 problems.
+
+4.52. Executing JSON backend.

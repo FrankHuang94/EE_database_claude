@@ -3396,3 +3396,29 @@
   definition: The configuration data that sets every LUT, routing switch and mode bit of an FPGA; SRAM-based FPGAs load it at every power-up, usually from flash.
   chapter: "08-11"
   see_also: [Field-programmable gate array (FPGA)]
+- term: Placement
+  definition: The implementation step that assigns every primitive of a synthesized netlist to a physical site on the chip, keeping connected and timing-critical cells close; often randomized, so results depend on a seed.
+  chapter: "08-12"
+  see_also: [Routing]
+- term: Routing
+  definition: The implementation step that connects every net through the available wires and switches (an FPGA's programmable interconnect, or an ASIC's metal layers), resolving competition for wires.
+  chapter: "08-12"
+  see_also: [Placement, Routing congestion]
+- term: Routing congestion
+  definition: Demand by more nets than the wiring in a region can carry; routers resolve it by pushing nets onto longer paths, which adds delay, and a congested design can fail to route at all.
+  chapter: "08-12"
+  see_also: [Routing]
+- term: Timing closure
+  definition: The iterative process of changing RTL, constraints, tool options or placement until every timing path in a design meets its constraints with non-negative slack.
+  chapter: "08-12"
+  see_also: [Timing constraint, Slack]
+- term: Timing constraint
+  definition: A statement to the implementation tools of a design's timing requirements, such as clock periods, I/O delays, and false or multicycle paths; the tools check only what the constraints describe.
+  chapter: "08-12"
+  see_also: [Timing closure]
+- term: Carry chain
+  definition: Dedicated, hard-wired carry logic between neighboring FPGA logic cells that makes adders and counters much faster than the same logic built from lookup tables and general routing.
+  chapter: "08-12"
+- term: Utilization
+  definition: The fraction of a device's resources (logic cells, block RAMs, DSP blocks, I/O) that a design uses, as reported after synthesis or placement; high utilization makes routing harder.
+  chapter: "08-12"

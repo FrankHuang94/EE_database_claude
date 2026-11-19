@@ -1,0 +1,54 @@
+
+
+Printing statistics.
+
+=== bench_mul ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       18 wires
+      154 wire bits
+       18 public wires
+      154 public wire bits
+        3 ports
+        3 port bits
+        3 cells
+        2   $scopeinfo
+        1   SB_MAC16
+       79 submodules
+        1   SB_DFF
+       32   SB_DFFSR
+       32   SB_DFFSS
+       14   SB_LUT4
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+        3 bench_mul
+
+        +----------Count including submodules.
+        | 
+       18 wires
+      154 wire bits
+       18 public wires
+      154 public wire bits
+        3 ports
+        3 port bits
+        - memories
+        - memory bits
+        - processes
+        3 cells
+        2   $scopeinfo
+        1   SB_MAC16
+       79 submodules
+        1   SB_DFF
+       32   SB_DFFSR
+       32   SB_DFFSS
+       14   SB_LUT4
+
+2.60. Executing CHECK pass (checking for obvious problems).
+Checking module bench_mul...
+Found and reported 0 problems.
+
+2.61. Executing JSON backend.

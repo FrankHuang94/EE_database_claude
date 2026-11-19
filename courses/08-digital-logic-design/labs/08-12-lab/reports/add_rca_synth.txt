@@ -1,0 +1,52 @@
+
+
+Printing statistics.
+
+=== bench_add_rca ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      132 wires
+      359 wire bits
+      132 public wires
+      359 public wire bits
+        3 ports
+        3 port bits
+       34 cells
+       34   $scopeinfo
+      247 submodules
+       98   SB_DFF
+       32   SB_DFFSR
+       32   SB_DFFSS
+       85   SB_LUT4
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+       34 bench_add_rca
+
+        +----------Count including submodules.
+        | 
+      132 wires
+      359 wire bits
+      132 public wires
+      359 public wire bits
+        3 ports
+        3 port bits
+        - memories
+        - memory bits
+        - processes
+       34 cells
+       34   $scopeinfo
+      247 submodules
+       98   SB_DFF
+       32   SB_DFFSR
+       32   SB_DFFSS
+       85   SB_LUT4
+
+2.51. Executing CHECK pass (checking for obvious problems).
+Checking module bench_add_rca...
+Found and reported 0 problems.
+
+2.52. Executing JSON backend.
