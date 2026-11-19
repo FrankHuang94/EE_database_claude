@@ -1,0 +1,98 @@
+#separator:comma
+#html:true
+#columns:Front,Back,Tags
+#tags column:3
+"Silicon's crystal structure and lattice constant?","Diamond cubic, \(a\) = 5.431 Å, 8 atoms per cubic cell: 5.0 × 10²² atoms/cm³.",bsee::09 bsee::09-01
+"What is an effective mass?","The mass that makes a band electron respond to force like a free particle near a band edge: \(1/m^* = (1/\hbar^2)\,d^2E/dk^2\).",bsee::09 bsee::09-01
+"Silicon's electron valley masses and conductivity mass?","\(m_l\) = 0.98, \(m_t\) = 0.19 \(m_0\); \(1/m_c = \tfrac13(1/m_l + 2/m_t)\), so \(m_c\) ≈ 0.26 \(m_0\).",bsee::09 bsee::09-01
+"Direct versus indirect band gap?","Direct: band extrema at the same \(k\), so photons alone cause transitions (GaAs, GaN). Indirect: a phonon must supply momentum (Si, Ge), so emission is slow.",bsee::09 bsee::09-01
+"Photon cutoff wavelength of a semiconductor?","\(\lambda_c = 1.24/E_g\) (µm, eV): 1.11 µm for Si, 0.87 µm for GaAs.",bsee::09 bsee::09-01
+"Why are alloys like InGaAs or AlGaN useful?","Their composition tunes the band gap (and lattice constant) between those of the binaries, for heterojunctions, LEDs and lasers.",bsee::09 bsee::09-01
+"Electron and hole densities in a nondegenerate semiconductor?","\(n = N_Ce^{-(E_C-E_F)/kT}\), \(p = N_Ve^{-(E_F-E_V)/kT}\), and \(np = n_i^2\).",bsee::09 bsee::09-02
+"Course values of \(N_C\), \(N_V\), \(n_i\) for Si at 300 K?","3.2 × 10¹⁹, 1.8 × 10¹⁹ and 1.0 × 10¹⁰ cm⁻³.",bsee::09 bsee::09-02
+"Fermi level of n-type Si with \(N_D\) = 10¹⁶ cm⁻³?","\(E_F - E_i = kT\ln(N_D/n_i)\) = 0.357 eV above midgap.",bsee::09 bsee::09-02
+"What is compensation?","Both donors and acceptors present: the net doping \(|N_D - N_A|\) sets the carriers, but mobility is degraded by the total.",bsee::09 bsee::09-02
+"Why do the intrinsic carriers rise so steeply with temperature?","\(n_i \propto T^{3/2}e^{-E_g/2kT}\): the exponential dominates, about doubling every 8–11 K near room temperature in Si.",bsee::09 bsee::09-02
+"Dopant count in a small volume?","Poisson with mean \(NV\) and σ = \(\sqrt{NV}\): 100 dopants vary by about 10%.",bsee::09 bsee::09-02
+"Drift current density?","\(J = q(n\mu_n + p\mu_p)\mathcal E\); resistivity \(\rho = 1/q(n\mu_n + p\mu_p)\).",bsee::09 bsee::09-03
+"Einstein relation?","\(D = \mu kT/q\): 25.85 mV × µ at 300 K.",bsee::09 bsee::09-03
+"Why does mobility fall with doping?","Ionized-impurity scattering adds to lattice (phonon) scattering; Matthiessen: \(1/\mu = \sum 1/\mu_i\).",bsee::09 bsee::09-03
+"Velocity saturation in Si?","Hot carriers emit optical phonons, so drift velocity levels off near 10⁷ cm/s above about 10⁴–10⁵ V/cm.",bsee::09 bsee::09-03
+"Sheet resistance?","\(R_{sh} = \rho/t\) (Ω/□); a resistor of \(L/W\) squares has \(R = R_{sh}L/W\).",bsee::09 bsee::09-03
+"Diffusion length?","\(L = \sqrt{D\tau}\): how far minority carriers spread before recombining.",bsee::09 bsee::09-03
+"SRH lifetime?","\(\tau = 1/(\sigma v_{th}N_t)\) for minority carriers captured by mid-gap traps.",bsee::09 bsee::09-04
+"Which recombination wins in heavily doped Si?","Auger, \(\tau = 1/C n_0^2\), above about 10¹⁸ cm⁻³; SRH usually below.",bsee::09 bsee::09-04
+"Why are mid-gap traps the most effective?","Capture of both carriers is fastest when the trap level lies near the middle, so neither carrier is re-emitted quickly.",bsee::09 bsee::09-04
+"Low-level injection?","Excess carriers much smaller than the majority density: the majority density is unchanged and recombination is linear in the excess.",bsee::09 bsee::09-04
+"Quasi-Fermi levels?","Separate Fermi levels for electrons and holes out of equilibrium: \(np = n_i^2e^{(E_{Fn}-E_{Fp})/kT}\).",bsee::09 bsee::09-04
+"Minority-carrier diffusion equation?","\(\partial p'/\partial t = D_p\nabla^2p' - p'/\tau_p + G\); steady uniform generation gives \(p' = G\tau_p\).",bsee::09 bsee::09-04
+"Built-in potential of a step junction?","\(V_{bi} = V_T\ln(N_AN_D/n_i^2)\): 0.83 V for 10¹⁸/10¹⁶ cm⁻³.",bsee::09 bsee::09-05
+"Depletion width?","\(W = \sqrt{2\varepsilon_s(V_{bi}-V)(1/N_A + 1/N_D)/q}\), mostly on the lightly doped side.",bsee::09 bsee::09-05
+"Peak field of a step junction?","\(\mathcal E_{\max} = 2(V_{bi} - V)/W\) (triangular field).",bsee::09 bsee::09-05
+"Junction capacitance?","\(C_j = \varepsilon_sA/W \propto (V_{bi} - V)^{-1/2}\) for a step junction.",bsee::09 bsee::09-05
+"How does C–V reveal doping?","\(d(1/C^2)/dV = -2/(q\varepsilon_sA^2N)\): the slope gives the doping at the depletion edge.",bsee::09 bsee::09-05
+"Depletion approximation?","Assume the depletion region is fully emptied of carriers with abrupt edges; accurate to within a few Debye lengths.",bsee::09 bsee::09-05
+"Ideal diode equation?","\(I = I_0(e^{V/V_T} - 1)\), \(I_0 = qAn_i^2(D_p/N_DL_p + D_n/N_AL_n)\).",bsee::09 bsee::09-06
+"Law of the junction?","\(p_n(0) = p_{n0}e^{V/V_T}\): minority density at the depletion edge rises exponentially with forward bias.",bsee::09 bsee::09-06
+"Diode small-signal resistance?","\(r_d = V_T/I\): 25.9 Ω at 1 mA.",bsee::09 bsee::09-06
+"Diffusion capacitance of a long diode?","\(C_d = (\tau_p/2)g_d\), proportional to current; it dwarfs junction capacitance in forward bias.",bsee::09 bsee::09-06
+"Avalanche versus tunneling breakdown?","Avalanche: impact ionization, positive temperature coefficient, lighter doping. Tunneling: heavy doping, below a few volts, negative coefficient.",bsee::09 bsee::09-06
+"Hu's breakdown rule of thumb?","\(V_B \approx 15\text{ V}(10^{17}/N)^{0.6}\) for a one-sided Si junction.",bsee::09 bsee::09-06
+"Schottky versus PN diode?","Majority-carrier thermionic emission: much larger saturation current, lower forward drop, no minority storage (fast).",bsee::09 bsee::09-06
+"BJT collector current?","\(I_C = I_Se^{V_{BE}/V_T}\), \(I_S = qA_En_i^2D_n/G_B\), Gummel number \(G_B = \int N_B\,dx\).",bsee::09 bsee::09-07
+"Emitter-injection-limited gain?","\(\beta = D_nN_EW_E/(D_pN_BW_B)\), reduced by band-gap narrowing in a heavily doped emitter.",bsee::09 bsee::09-07
+"Early effect?","Base-width modulation by \(V_{CE}\): \(r_o = V_A/I_C\).",bsee::09 bsee::09-07
+"Base transit time?","\(\tau_B = W_B^2/2D_n\); a built-in drift field (graded base) shortens it.",bsee::09 bsee::09-07
+"BJT transconductance?","\(g_m = I_C/V_T\): 38.7 mS/mA, the highest per unit current of any device.",bsee::09 bsee::09-07
+"Kirk effect?","At high current density the collector charge is neutralized and the base pushes out into the collector, raising \(\tau_F\) and lowering \(f_T\).",bsee::09 bsee::09-07
+"Why SiGe HBTs?","Graded Ge narrows the base gap: more electron injection and a drift field, so higher β and \(f_T\) in a silicon process.",bsee::09 bsee::09-07
+"Oxide capacitance?","\(C_{ox} = \varepsilon_{ox}/T_{ox}\): 1.73 µF/cm² at 2 nm, 0.863 µF/cm² at 4 nm.",bsee::09 bsee::09-08
+"MOS threshold voltage?","\(V_t = V_{FB} + 2\phi_B + \sqrt{2qN_A\varepsilon_s(2\phi_B)}/C_{ox}\), \(\phi_B = V_T\ln(N_A/n_i)\).",bsee::09 bsee::09-08
+"Flat-band voltage, n⁺ poly gate on p-Si?","\(V_{FB} = -(E_C - E_F)_{\text{body}}/q\) (about −1 V), shifted by \(-Q_{ox}/C_{ox}\).",bsee::09 bsee::09-08
+"MOS C–V regions?","Accumulation (\(C_{ox}\)), depletion (falling), inversion: back to \(C_{ox}\) at low frequency, minimum at high frequency.",bsee::09 bsee::09-08
+"What is EOT?","Equivalent oxide thickness: \(T_{hk}\times 3.9/k\); high-k dielectrics give low EOT with a thicker physical film.",bsee::09 bsee::09-08
+"Why high-k and metal gates?","SiO₂ below about 1.2 nm leaked too much by tunneling; high-k cuts leakage at the same EOT, metal gates remove poly depletion.",bsee::09 bsee::09-08
+"Long-channel saturation current?","\(I_{Dsat} = (W/2mL)\mu C_{ox}V_{ov}^2\), \(V_{Dsat} = V_{ov}/m\).",bsee::09 bsee::09-09
+"Bulk-charge factor \(m\)?","\(m = 1 + C_{dep}/C_{ox} \approx 1 + 3T_{ox}/W_{d\max}\), about 1.1–1.3.",bsee::09 bsee::09-09
+"Body effect?","\(V_t = V_{t0} + \gamma(\sqrt{2\phi_B + V_{SB}} - \sqrt{2\phi_B})\), \(\gamma = \sqrt{2qN_A\varepsilon_s}/C_{ox}\).",bsee::09 bsee::09-09
+"MOSFET \(g_m/I_D\)?","\(2/V_{ov}\) in strong inversion, up to \(1/mV_T\) in weak inversion.",bsee::09 bsee::09-09
+"Subthreshold swing?","\(S = mV_T\ln 10\) ≥ 59.5 mV/decade at 300 K.",bsee::09 bsee::09-09
+"Off-current from threshold?","\(I_{off} = I_t\,10^{-V_t/S}\) with Hu's threshold current \(I_t\) = 100 nA × W/L.",bsee::09 bsee::09-09
+"Channel-length modulation?","The pinch-off point moves toward the source with \(V_{DS}\): \(I_D \propto (1 + \lambda V_{DS})\), \(r_o = 1/\lambda I_D\).",bsee::09 bsee::09-09
+"Velocity-saturated MOSFET current?","\(1/V_{Dsat} = m/V_{ov} + 1/\mathcal E_{sat}L\), \(I_{Dsat} = WC_{ox}v_{sat}(V_{ov} - mV_{Dsat})\): linear in overdrive.",bsee::09 bsee::09-10
+"Source-injection limit?","\(I_{Dsat} = WBv_{thx}C_{ox}V_{ov}\), \(v_{thx}\) ≈ 1.6 × 10⁷ cm/s, \(B\) ≈ 0.5 typical (Hu).",bsee::09 bsee::09-10
+"Hu's DIBL model?","\(V_t = V_{t,\text{long}} - (V_{DS} + 0.4)e^{-L/l_d}\), \(l_d \propto (T_{oxe}W_{dep}X_j)^{1/3}\).",bsee::09 bsee::09-10
+"Why does DIBL raise leakage so much?","Every \(S\) millivolts of threshold lost multiplies the off-current by ten.",bsee::09 bsee::09-10
+"What is GIDL?","Band-to-band tunneling in the drain under the gate edge when the drain-to-gate voltage bends the bands beyond the gap; not reduced by a higher threshold.",bsee::09 bsee::09-10
+"Random dopant σ(V_t)?","\((q/C_{ox})\sqrt{N_AW_{dep}/3WL}\): grows with doping and shrinking area; undoped thin bodies avoid it.",bsee::09 bsee::09-10
+"How much does series resistance cost?","\(I_{Dsat} = I_{Dsat0}/(1 + R_SI_{Dsat0}/V_{ov})\) in the saturated limit: tens of mV of IR drop cost ~10%.",bsee::09 bsee::09-10
+"CMOS inverter switching threshold?","\(V_M = (V_{tn}\sqrt r + V_{DD} - |V_{tp}|)/(1 + \sqrt r)\), \(r = k_n/k_p\); symmetric when \(W_p/W_n \approx \mu_n/\mu_p\).",bsee::09 bsee::09-11
+"Inverter delay?","\(\tau_d = (CV_{DD}/4)(1/I_{onN} + 1/I_{onP})\): speed is \(I_{on}\) per capacitance.",bsee::09 bsee::09-11
+"Ring oscillator period?","\(2N\tau_d\) for an odd number \(N\) of stages.",bsee::09 bsee::09-11
+"Dynamic power?","\(P = \alpha CV_{DD}^2f\); it does not depend on \(I_{on}\).",bsee::09 bsee::09-11
+"Moore 1965 and 1975?","Doubling of components per chip every year (1965), revised to every two years (1975).",bsee::09 bsee::09-11
+"Constant-field (Dennard) scaling by κ?","Dimensions and voltages /κ, doping ×κ: delay /κ, power per circuit /κ², power density constant.",bsee::09 bsee::09-11
+"Why did Dennard scaling end?","The subthreshold swing does not scale, so thresholds and supplies stalled; at constant voltage power density rises as κ² and frequency hit a wall around 2004.",bsee::09 bsee::09-11
+"What does a node name measure?","Nothing physical today: compare contacted poly pitch, metal pitch and cell height (IRDS GxxMyy labels).",bsee::09 bsee::09-11
+"Why multigate transistors?","A thin body gated from several sides has no buried leakage path: short scale length, low DIBL, near-ideal swing, no heavy doping.",bsee::09 bsee::09-12
+"Double-gate scale length?","\(\lambda^2 = (\varepsilon_s/2\varepsilon_{ox})t_{si}t_{ox} + t_{si}^2/8\); DIBL ∝ \(e^{-L/2\lambda}\).",bsee::09 bsee::09-12
+"FinFET channel width?","\(2H_{fin} + W_{fin}\) per fin, in whole fins (width quantization).",bsee::09 bsee::09-12
+"Nanosheet advantages?","Gate all around each sheet; width set by drawing the sheet; more drive per footprint by stacking.",bsee::09 bsee::09-12
+"What is CFET?","Complementary FET: NMOS stacked on PMOS in one footprint; IRDS projects it after GAA, from about 2031.",bsee::09 bsee::09-12
+"What does backside power delivery do?","Moves the power network to the wafer's back: thick rails cut IR drop and free front-side tracks; IR drop along a rail is IR/2 (one end) or IR/8 (both).",bsee::09 bsee::09-12
+"Baliga's unipolar limit?","\(R_{on,sp} = 4V_B^2/(\varepsilon\mu\mathcal E_c^3)\): the critical field cubed dominates.",bsee::09 bsee::09-13
+"Why SiC for high-voltage power?","Critical field about ten times silicon's: at 1200 V the ideal drift-layer resistance is roughly 1000× lower.",bsee::09 bsee::09-13
+"What forms the AlGaN/GaN 2DEG?","Spontaneous plus piezoelectric polarization jump at the interface: a positive bound charge of order 10¹³ cm⁻² attracts electrons without doping.",bsee::09 bsee::09-13
+"Modulation doping?","Donors in the wide-gap barrier, electrons in the undoped channel: no ionized-impurity scattering, so high mobility.",bsee::09 bsee::09-13
+"HBT advantage?","A wider-gap emitter blocks hole back-injection by \(e^{-\Delta E_g/kT}\): gain ×10 per 60 meV, allowing a heavily doped base.",bsee::09 bsee::09-13
+"Semi-insulating GaAs?","\(n_i\) = 2.1 × 10⁶ cm⁻³, about 5000 times below Si's, and intrinsic resistivity near 3 × 10⁸ Ω·cm: a low-loss substrate for microwave circuits.",bsee::09 bsee::09-13
+"Why do wafer sizes matter for SiC and GaN?","Dies per wafer grow slightly faster than area; 150→200 mm SiC and 300 mm GaN-on-Si cut cost per die once yields mature.",bsee::09 bsee::09-13
+"Photodiode responsivity?","\(\mathcal R = \eta\lambda(\text{µm})/1.24\) A/W: at most 1.25 A/W at 1.55 µm.",bsee::09 bsee::09-14
+"Shot noise?","\(\overline{i_n^2} = 2qIB\): Poisson arrivals of carriers.",bsee::09 bsee::09-14
+"APD versus SPAD?","APD: finite avalanche gain below breakdown. SPAD: biased above breakdown, one photon gives a digital pulse, then quench and dead time.",bsee::09 bsee::09-14
+"Time-of-flight depth resolution?","\(\Delta d = c\Delta t/2\): 15 cm per ns of timing uncertainty.",bsee::09 bsee::09-14
+"Image-sensor SNR limit?","\(\sqrt{N}\) electrons; maximum at full well; dynamic range = full well/read noise.",bsee::09 bsee::09-14
+"LED extraction limit?","Only a cone \(\theta_c = \arcsin(1/n)\) escapes each face, fraction \((1-\cos\theta_c)/2\) ≈ 2% for GaAs.",bsee::09 bsee::09-14
+"Laser threshold gain?","\(g_{th} = \alpha_i + (1/2L)\ln(1/R_1R_2)\); inversion needs \(E_{Fn} - E_{Fp} > E_g\).",bsee::09 bsee::09-14
+"Solar cell open-circuit voltage and fill factor?","\(V_{oc} = V_T\ln(I_{sc}/I_0 + 1)\); \(FF = P_{\max}/V_{oc}I_{sc}\), ~0.75 typical (Hu), 0.84 for the ideal-diode cell of Example 09-14.8.",bsee::09 bsee::09-14
+"Why does solar efficiency peak at an intermediate gap?","Small gap: more photons but low voltage and heat loss; large gap: high voltage but unabsorbed photons. Best single junctions near 1.2–1.9 eV (Hu).",bsee::09 bsee::09-14

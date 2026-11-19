@@ -11,3 +11,6 @@ One sheet per course: the equations you should be able to write from memory (or 
 | 04 · Physics for EE | [04-physics-for-ee.md](04-physics-for-ee.md) |
 | 05 · Programming for Engineers | [05-programming-for-engineers.md](05-programming-for-engineers.md) |
 | 06 · Circuit Analysis I (DC) | [06-circuit-analysis-1-dc.md](06-circuit-analysis-1-dc.md) |
+| 07 · Circuit Analysis II (Transient and AC) | [07-circuit-analysis-2-transient-and-ac.md](07-circuit-analysis-2-transient-and-ac.md) |
+| 08 · Digital Logic Design | [08-digital-logic-design.md](08-digital-logic-design.md) |
+| 09 · Semiconductor Devices | [09-semiconductor-devices.md](09-semiconductor-devices.md) |

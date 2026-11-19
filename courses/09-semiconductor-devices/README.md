@@ -43,10 +43,63 @@ The physics of the transistor, from crystals and energy bands through PN junctio
 | [09-13 · Compound and Wide-Bandgap Semiconductors](chapters/09-13-compound-and-wide-bandgap-semiconductors.md) | 6 | ✅ verified | [problems](problems/09-13-problems.md) · [solutions](solutions/09-13-solutions.md) · [lab](labs/09-13-lab/README.md) · [verify](verify/verify_09_13.py) |
 | [09-14 · Optoelectronic Devices](chapters/09-14-optoelectronic-devices.md) | 7 | ✅ verified | [problems](problems/09-14-problems.md) · [solutions](solutions/09-14-solutions.md) · [lab](labs/09-14-lab/README.md) · [verify](verify/verify_09_14.py) |
 
+**Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/09-semiconductor-devices.csv) · [Equation sheet](../../reference/equation-sheets/09-semiconductor-devices.md)
+
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 
 <!-- END GENERATED -->
 
 ## Course notes
 
-*(Hand-written notes for this course go below the generated block.)*
+**How to approach this course.** Course 09 opens Term 3 and is planned at about 115 hours: the chapters' own estimates add to 109, plus review and the exam. It is the course where the curriculum stops treating a transistor as a symbol with a model and asks why it behaves as it does. Everything later in the degree rests on it: the small-signal models of Electronics I and II, the switches of power electronics, the gates and memories of VLSI, and the scaling arguments behind every roadmap slide you will be shown.
+
+The fourteen chapters fall into four blocks:
+
+- **Materials and carriers (09-01 to 09-04).** Crystals, energy bands and effective mass; carrier statistics and doping; drift, diffusion and mobility; recombination, generation and the minority-carrier diffusion equation.
+- **Junction devices (09-05 to 09-07).** Junction electrostatics and capacitance; the diode, its breakdown and the Schottky contact; the bipolar transistor and the SiGe HBT.
+- **The MOSFET (09-08 to 09-10).** The MOS capacitor and the gate stack; the long-channel MOSFET, body effect and subthreshold swing; short-channel effects, velocity saturation and the leakage mechanisms.
+- **Scaling and beyond silicon (09-11 to 09-14).** CMOS and the Moore and Dennard story; FinFET, nanosheet, CFET and backside power; compound and wide-bandgap semiconductors (SiC, GaN, GaAs); and optoelectronic devices (photodiodes, SPADs, image sensors, LEDs, lasers and solar cells).
+
+Work at least the [A] and [B] problems of every chapter (198 problems in all). Every lab is a notebook that rebuilds the chapter's results from the equations, often by a second route (a boundary-value solve of the junction, a numerical channel integration, an event simulation of a ring oscillator or a SPAD). Five labs add ngspice netlists, so you can compare the device physics with the compact models a circuit designer actually uses.
+
+**What to master cold.** The equation sheet collects the relations; these are the ideas behind them:
+
+- why a band gap separates insulators, semiconductors and metals; effective mass; direct versus indirect gaps and the cutoff wavelength (09-01);
+- $np = n_i^2$, where the Fermi level sits for a given doping, and why $n_i$ is so sensitive to temperature and band gap (09-02);
+- drift, diffusion, the Einstein relation, mobility versus doping, and velocity saturation (09-03);
+- SRH and Auger lifetimes, low-level injection, quasi-Fermi levels and the diffusion length (09-04);
+- built-in potential, depletion width, peak field and the $C$–$V$ doping profile (09-05);
+- the law of the junction, the ideal diode equation and where each term comes from; avalanche versus tunneling breakdown; Schottky versus PN (09-06);
+- the Gummel number, emitter efficiency and base transport, the Early effect, $g_m = I_C/V_T$, and why SiGe helps (09-07);
+- flat band, threshold, oxide capacitance, EOT and the three regions of the $C$–$V$ curve (09-08);
+- the square law with the bulk-charge factor, body effect, $g_m/I_D$, the 60 mV/decade swing and off-current from threshold (09-09);
+- velocity-saturated drive, DIBL and its exponential effect on leakage, GIDL, random dopant fluctuation and series resistance (09-10);
+- the inverter's switching threshold and delay, ring oscillators, $\alpha CV^2f$, Dennard's scaling table and why it ended (09-11);
+- scale length and why multigate devices control short-channel effects; fin-width quantization; what CFET and backside power each buy (09-12);
+- Baliga's figure of merit and the critical field cubed, the polarization-induced 2DEG, modulation doping and the heterojunction emitter (09-13);
+- responsivity, shot noise and SNR, time-of-flight, the escape cone, the laser threshold, and the solar cell's $V_{oc}$, fill factor and gap tradeoff (09-14).
+
+The [equation sheet](../../reference/equation-sheets/09-semiconductor-devices.md) collects them.
+
+**Assessment.** The [course final exam](exam/README.md) has 15 questions and takes 240 minutes. It allows a calculator and the equation sheet, but not Python or a simulator. Aim for at least 70%. Questions 1 to 14 follow the chapters in order; Question 15 is a diligence question built around a power-transistor start-up's pitch, graded against a rubric. The course maps onto the FE Electrical and Computer exam's properties-of-electrical-materials area and the device half of its electronics area ([R-001](../../reference/research-log.md#r-001--ncees-fe-electrical-and-computer-specification)). The [flashcards](../../flashcards/09-semiconductor-devices.csv) (94 cards) are for spaced review alongside the chapters.
+
+**Why this course matters for diligence.** Device claims are where physics and marketing meet most directly. This course teaches you to ask:
+
+- what a "nanometer" node name actually measures (nothing physical today), and which pitches to compare instead;
+- whether a speed or power claim is at the same leakage, the same supply and the same temperature, since an $S$ of 60–80 mV/decade turns every threshold change into a factor in off-current;
+- whether a wide-bandgap power device's on-resistance is quoted per area, at temperature and at the rated voltage, and whether the comparison with silicon is at the same breakdown;
+- what a new transistor architecture (GAA, CFET, backside power) buys at the circuit level, and what it costs in process steps, variability and thermal paths;
+- whether a sensor's or solar cell's headline number is a cell, module or system figure, under which illumination, and at what yield.
+
+The Marketing vs Reality sections practice this on mobility and strain claims, wafer-size cost savings, high-temperature and cryogenic ratings, carrier lifetimes and record cell efficiencies, on-resistance and breakdown ratings, "ultra-low leakage" and "zero reverse recovery" diodes, transistor $f_T$ and gain, gate-oxide and threshold claims, drive-current and subthreshold-slope figures, steep-slope devices, node names and density, Moore's law, "first with GAA" and backside-power gains, SiC-versus-GaN claims, and SPAD, solar and LED efficiency figures.
+
+**Perishable content.** The physics is timeless. The dated facts are in the practitioner sections, logged as [R-161](../../reference/research-log.md#r-161--crystal-band-structure-and-alloy-parameters) to [R-175](../../reference/research-log.md#r-175--optoelectronic-device-references) in the research log. These are the most likely to move:
+
+- wafer sizes and strain engineering (R-162);
+- solar-cell efficiency records (R-165);
+- node roadmaps, IRDS projections and transistor counts (R-172);
+- GAA, CFET and backside-power schedules from the foundries and IRDS (R-173);
+- SiC and GaN wafer sizes, device ratings and market estimates (R-174);
+- image-sensor, SPAD and solar-module figures (R-175).
+
+Check those entries once a year.
