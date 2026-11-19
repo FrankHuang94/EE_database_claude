@@ -194,6 +194,29 @@
 - term: Conjugate matching
   definition: Choosing a load impedance equal to the complex conjugate of the source's Thévenin impedance, which maximizes average power to the load (P_max = V_Th,rms²/(4R_Th)) at 50% efficiency.
   chapter: "07-06"
+- term: Neper
+  definition: The natural-logarithm unit of a logarithmic ratio, ln(F2/F1) Np for amplitudes and ½ ln(P2/P1) Np for powers; 1 Np = 20/ln 10 = 8.686 dB. Bode wrote his gain–phase relations in nepers and radians.
+  chapter: "07-07"
+  see_also: [Decibel]
+- term: Bode plot
+  definition: A pair of plots of a frequency response, magnitude in dB and phase in degrees, against frequency on a logarithmic axis; each real pole or zero contributes a straight-line asymptote of ∓20 dB/decade from its corner, so responses can be sketched by adding factors.
+  chapter: "07-07"
+  see_also: [Corner frequency, Asymptote, Frequency response]
+- term: Group delay
+  definition: τg = −d∠H/dω, the delay of the envelope of a narrowband signal passing through a system; constant group delay means a pulse keeps its shape. For a single pole it equals the time constant at low frequency.
+  chapter: "07-07"
+- term: Minimum-phase system
+  definition: A stable system with no zeros in the right half-plane and no pure delay; its phase is fixed by its magnitude curve (Bode's gain–phase relation), so a steady slope of n × 20 dB/decade implies a phase near n × 90°.
+  chapter: "07-07"
+  see_also: [Right-half-plane zero, Bode plot]
+- term: Gain–bandwidth product (GBW)
+  definition: For a dominant-pole amplifier, the product of DC gain and bandwidth, A0·fa, equal to the unity-gain frequency; with feedback, closed-loop bandwidth ≈ GBW divided by the noise gain 1/β. Datasheets quote it as a typical value, sometimes at a stated gain.
+  chapter: "07-07"
+  see_also: [Loop gain]
+- term: Phase margin
+  definition: 180° plus the phase of the loop gain at the crossover frequency, where its magnitude is 1; the distance from oscillation. For a two-pole loop, 65.5° gives a maximally flat closed loop and about 52° a 1.25 dB peak with 16% overshoot.
+  chapter: "07-07"
+  see_also: [Loop gain, Bode plot]
 - term: Admittance
   definition: Y = 1/Z = G + jB (siemens), the ratio of current phasor to voltage phasor; admittances in parallel add. Its real part, the conductance G = R/(R² + X²), is not 1/R unless the reactance is zero.
   chapter: "07-05"

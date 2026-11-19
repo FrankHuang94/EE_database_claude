@@ -1,0 +1,39 @@
+* Example 07-07.2: the AC-coupled amplifier as an ngspice AC analysis.
+* With a 1 V AC source, vdb(out) is the gain in dB and 180/pi*vp(out) the phase in degrees.
+* The ideal gain-100 amplifier is a voltage-controlled voltage source, which isolates the two RC sections.
+*
+* EXPECT g_fl   key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.2f rtol=1e-3
+* EXPECT p_fl   key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.2g rtol=1e-3
+* EXPECT g_1k   key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.2h rtol=1e-3
+* EXPECT p_1k   key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.2i rtol=1e-3
+* EXPECT g_100k key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.2l rtol=1e-3
+* EXPECT p_100k key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.2m rtol=1e-3
+* EXPECT f_lo   key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.2o rtol=2e-3
+* EXPECT f_hi   key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.2p scale=1e3 rtol=2e-3
+
+V1  in 0 AC 1
+C1  in n1 100n
+R1  n1 0 100k
+E1  n2 0 n1 0 100
+R2  n2 out 1k
+C2  out 0 10n
+
+.control
+ac lin 1 15.915494 15.915494
+let g_fl = vdb(out)
+let p_fl = 180/pi*vp(out)
+print g_fl p_fl
+ac lin 1 1k 1k
+let g_1k = vdb(out)
+let p_1k = 180/pi*vp(out)
+print g_1k p_1k
+ac lin 1 100k 100k
+let g_100k = vdb(out)
+let p_100k = 180/pi*vp(out)
+print g_100k p_100k
+* the -3 dB points, 100/sqrt(2) = 70.7107, from a fine logarithmic sweep
+ac dec 4000 1 1meg
+meas ac f_lo when vm(out)=70.7107 rise=1
+meas ac f_hi when vm(out)=70.7107 fall=1
+.endc
+.end

@@ -80,3 +80,14 @@
 "True power factor with harmonics?","\(\text{PF} = \cos\phi_1 \cdot I_1/I_{rms} = \cos\phi_1/\sqrt{1 + \text{THD}^2}\): distortion lowers PF with no phase shift; capacitors cannot fix it, active PFC can.",bsee::07 bsee::07-06
 "Maximum average power transfer?","Conjugate match \(Z_L = Z_{Th}^*\): \(P_{max} = V_{Th,rms}^2/(4R_{Th})\), at 50% efficiency. Resistive-only load: \(R_L = |Z_{Th}|\).",bsee::07 bsee::07-06
 "80 PLUS power-factor floors (as of Nov 2026)?","115 V internal: PF ≥ 0.90 (Standard–Gold), ≥ 0.95 (Platinum–Ruby; Titanium/Ruby at 20% load). Redundant data-center Ruby: PF ≥ 0.96 from 20% load.",bsee::07 bsee::07-06
+"Voltage gain in dB versus power gain in dB?","\(20\lg(V_2/V_1)\) equals \(10\lg(P_2/P_1)\) only across equal resistances; otherwise \(G_P = A_{v,\text{dB}} + 10\lg(R_{in}/R_L)\).",bsee::07 bsee::07-07
+"dBm, dBV, dBu references?","dBm: 1 mW; dBV: 1 V RMS; dBu: 0.7746 V RMS (1 mW in 600 Ω). 1 V RMS in 50 Ω = 13.01 dBm.",bsee::07 bsee::07-07
+"Single real pole on a Bode plot?","Asymptotes 0 dB and −20 dB/decade meeting at \(\omega_p\); exact −3.01 dB and −45° at the corner, −0.97 dB an octave away; phase 0° to −90°, straight-line error ≤ 5.71°.",bsee::07 bsee::07-07
+"Complex pole pair on a Bode plot?","−40 dB/decade above \(\omega_0\); exact value at \(\omega_0\) is \(20\lg Q\) above the asymptotes; phase −90° at \(\omega_0\) for every ζ.",bsee::07 bsee::07-07
+"Right-half-plane zero: magnitude and phase?","Same +20 dB/decade magnitude as an LHP zero, but phase falls to −90°: gain like a zero, lag like a pole (non-minimum phase).",bsee::07 bsee::07-07
+"Bode's gain–phase rule?","For a minimum-phase system, a steady slope of \(n\times20\) dB/decade over about a decade either side implies a phase near \(n\times90°\).",bsee::07 bsee::07-07
+"Rise time and bandwidth?","Single pole: \(t_r = \tau\ln9\), \(t_r f_{3dB} = 0.350\). About 0.34 for Gaussian responses, 0.45 for brick-wall ones.",bsee::07 bsee::07-07
+"Bandwidth of n identical cascaded poles?","\(f_c\sqrt{2^{1/n} - 1}\): 0.644, 0.510, 0.435 × \(f_c\) for n = 2, 3, 4.",bsee::07 bsee::07-07
+"Closed-loop bandwidth of an op-amp amplifier?","GBW divided by the noise gain \(1/\beta = 1 + R_f/R_g\), for both inverting and non-inverting; DC gain error ≈ \(1/(A_0\beta)\).",bsee::07 bsee::07-07
+"Phase margin and peaking (two-pole loop)?","PM = 180° + ∠T at |T| = 1. 65.5° → ζ = 0.707, no peak; 51.8° → ζ = 0.5, 1.25 dB peak, 16% overshoot; 0° → oscillation.",bsee::07 bsee::07-07
+"Oscilloscope bandwidth: what is lost at the rated frequency?","It is the −3 dB point: a single-pole scope shows 70.7% of a sine there (29% low). Use 5× the signal's highest frequency for < 2% error.",bsee::07 bsee::07-07

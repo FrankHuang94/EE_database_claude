@@ -132,6 +132,10 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-124 | Bioimpedance in wearables | Nov 2026 |
 | R-125 | Battery impedance spectroscopy in BMS ICs | Nov 2026 |
 | R-126 | SPICE AC analysis | Nov 2026 |
+| R-127 | Bode's gain–phase work | Nov 2026 |
+| R-128 | Decibel and neper standards | Nov 2026 |
+| R-129 | Op-amp frequency-response specifications | Nov 2026 |
+| R-130 | Oscilloscope bandwidth and rise time | Nov 2026 |
 
 ---
 
@@ -1260,3 +1264,38 @@ R&D % = R&D ÷ revenue.
 - **H. Vogt, G. Atkinson, D. Warning, P. Nenzi, *Ngspice User's Manual*, version 47 (11 Aug 2026)** [Established]: §1.2.2, "AC analysis … represents the small signal, sinusoidal solution of the analog system"; "The program first computes the dc operating point of the circuit and determines linearized, small-signal models for all of the nonlinear devices"; "If the circuit has only one ac input, it is convenient to set that input to unity and zero phase, so that output variables have the same value as the transfer function". §11.3.1: ".ac dec nd fstart fstop / .ac oct no fstart fstop / .ac lin np fstart fstop"; "All L and C devices get their imaginary value that depends on the actual frequency step … The resulting node voltages (and branch currents) are complex vectors"; with more than one AC source "the result will be a superposition of all sources and difficult to interpret". Vector functions: "ph(vector) Phase of complex vector, in radians"; "db(vector) 20 log10(mag(vector))".
 - The repository's CI runs ngspice 42; a local check of an RC low-pass at its corner returned magnitude 0.7071, −3.0103 dB and −45°, consistent with the v47 description.
 - **Source:** [Ngspice manual v47](https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/47/ngspice-47-manual.pdf). Checked Nov 2026.
+
+## R-127 · Bode's gain–phase work
+
+*Gathered by a research subagent (Course 07 facts file, entries F-0786 and F-0787); documents opened.*
+
+- **H. W. Bode, "Relations Between Attenuation and Phase in Feedback Amplifier Design," *Bell System Technical Journal* 19(3):421–454, July 1940, doi:10.1002/j.1538-7305.1940.tb00839.x** [Established; metadata from Crossref, text from the Internet Archive's OCR of the scan, with OCR errors corrected in brackets]: "unless he can finally adjust the phase and attenuation characteristics around the feedback loop so the amplifier will not spontaneously burst into uncontrollable singing, none of these advantages can actually be realized"; "the price in terms of cutoff interval is roughly one octave for each ten db of feedback in the useful band. In practice, an additional allowance of an octave or so … must be made"; "in an amplifier with 30 db feedback, the frequency interval over which effective control of the loop transmission characteristics is necessary is at least four octaves, or sixteen times, broader than the useful band. If we raise the feedback to 60 db, the effective range must be more than a hundred times the useful range"; the phase-area theorem stated with attenuation in nepers and phase in radians; "an attenuation having a constant slope of 6[k] db per octave … is equal numerically to [kπ/2] radians"; the limiting phase "taken as 180° less some definite margin", the phase margin. Re-check the bracketed OCR corrections against the page images before quoting them in print.
+- **H. W. Bode, *Network Analysis and Feedback Amplifier Design*, D. Van Nostrand Company, 1945** (Bell Telephone Laboratories Series; xii + 551 pp.; LCCN 45009525; no DOI) [Established, from the eleventh printing's front matter and library records]: "First Published September 1945"; preface: "The bulk of the material was prepared in 1938 and 1939 and was given in course form to my colleagues there in the winters of 1939-40 and 1940-41"; signed "April 1945".
+- **Sources:** [Crossref record](https://api.crossref.org/works/10.1002/j.1538-7305.1940.tb00839.x); [Internet Archive, BSTJ 19(3)](https://archive.org/details/bstj19-3-421); [Internet Archive, the 1945 book (11th printing)](https://archive.org/details/dli.ernet.15701); [Open Library](https://openlibrary.org/works/OL7688069W). Checked Nov 2026.
+
+## R-128 · Decibel and neper standards
+
+*Gathered by a research subagent (Course 07 facts file, entries F-0788 to F-0790); documents opened unless stated.*
+
+- **A. Thompson, B. N. Taylor, *Guide for the Use of the International System of Units (SI)*, NIST SP 811, 2008 edition, §8.7** [Established]: "Level-of-a-field-quantity is defined by the relation LF = ln(F/F0) … Level-of-a-power-quantity is defined by the relation LP = (1/2) ln(P/P0) … (Note that if P/P0 = (F/F0)², then LP = LF.)"; "LF = 2 lg(F/F0) B = 20 lg(F/F0) dB"; "LP = lg(P/P0) B = 10 lg(P/P0) dB"; "1 B = (ln 10)/2 Np exactly ≈ 1.151 293 Np; 1 dB ≈ 0.115 129 3 Np"; "When reporting values of LF and LP, one must always give the reference level." Its line for a power-level difference, "ΔLP = … = ln(P1/P2)", omits the ½ that its own definition requires; not reproduced.
+- **BIPM, *The International System of Units (SI)*, 9th edition 2019, V4.01 (June 2026), Table 8 note (m)** [Established]: the neper, bel and decibel "are used to express values of specified logarithmic ratio quantities. When using these units, it is important that the quantity be specified, and that any reference value used be specified"; the neper is "usually applied to logarithmic amplitude ratios" and the decibel to "logarithmic power ratios". **NIST SP 330 (2019):** "accepted by the CIPM for use with the International System, but are not SI units".
+- **IEC 60027-3:2002, edition 3.0** [Established for edition and scope; preview and webstore only]: "logarithmic ratios which are defined by the logarithm of the ratio of two field quantities of the same kind or of two power quantities of the same kind"; the IEC Webstore page (read 19 Nov 2026) shows publication 2002-07-19 and stability date 2027 (search excerpts showed other dates **[Contested]**). ISO 80000's "root-power quantity" wording was seen only in search excerpts and is not quoted.
+- **Sources:** [NIST SP 811](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication811e2008.pdf); [SI Brochure](https://www.bipm.org/documents/20126/41483022/SI-Brochure-9-EN.pdf); [NIST SP 330](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.330-2019.pdf); [IEC Webstore](https://webstore.iec.ch/en/publication/94). Checked Nov 2026.
+
+## R-129 · Op-amp frequency-response specifications
+
+*Gathered by a research subagent (Course 07 facts file, entries F-0791 and F-0792); documents opened.*
+
+- **Texas Instruments, *TLV906xS 10MHz, RRIO, CMOS Operational Amplifiers*, SBOS839N (Mar 2017, revised Jul 2026)** [Established; all frequency-response values typical]: at VS = 5 V and G = +1, "GBP Gain bandwidth product … 10 MHz", "φm Phase margin … 55 °", "SR Slew rate … 6.5 V/µs"; "AOL Open-loop voltage gain" at VS = 5.5 V, RL = 10 kΩ: 104 dB minimum, 130 dB typical; "Figure 6-6. Open-Loop Gain and Phase vs Frequency" (CL = 10 pF), whose right axis is labeled "Phase Margin (deg)"; a separate figure plots phase margin against capacitive load.
+- **Texas Instruments, OPA1611/OPA1612, SBOS450C (revised Aug 2014)** [Established]: "GBW Gain-bandwidth product G = 100 80 MHz; G=1 40 MHz".
+- **Texas Instruments, OPAx192, SBOS620E (revised Nov 2015)** [Established]: "GBW Unity gain bandwidth 10 MHz".
+- **Sources:** [TLV9061](https://www.ti.com/lit/ds/symlink/tlv9061.pdf); [OPA1612](https://www.ti.com/lit/ds/symlink/opa1612.pdf); [OPA192](https://www.ti.com/lit/ds/symlink/opa192.pdf). Checked Nov 2026.
+
+## R-130 · Oscilloscope bandwidth and rise time
+
+*Gathered by a research subagent (Course 07 facts file, entries F-0793 and F-0794); documents opened.*
+
+- **Tektronix, *XYZs of Oscilloscopes* primer, 03W-8605-6 (2011)** [Established for the definition; Industry estimate for the rules]: "Oscilloscope bandwidth is specified as the frequency at which a sinusoidal input signal is attenuated to 70.7% of the signal's true amplitude, known as the –3 dB point"; "Oscilloscope Bandwidth ≥ Highest Frequency Component of Signal x5"; "less than ±2% error"; "Bandwidth = k / Rise Time … where k is a value between 0.35 and 0.45 … Oscilloscopes with a bandwidth of <1 GHz typically have a 0.35 value, while oscilloscopes with a bandwidth of > 1 GHz usually have a value between 0.40 and 0.45." (tek.com web pages returned 403; the PDF was opened.)
+- **Tektronix, *4 Series B MSO Datasheet*, 48W-74016-7 (22 Apr 2025; distributor-hosted copy)** [Established as Tektronix's specification; **Contested** against the primer's k]: "Bandwidth (calculated rise time) 200 MHz (2.3 ns), 350 MHz (1.3 ns), 500 MHz (900 ps), 1 GHz (450 ps), 1.5 GHz (333 ps)". Implied bandwidth × rise time (our arithmetic): 0.46, 0.455, 0.45, 0.45, 0.4995.
+- **Derived (ours):** a single pole gives k = ln 9/(2π) = 0.350 and an amplitude error of 1.94% at one fifth of its bandwidth; a Gaussian response gives 0.340; an ideal brick-wall response gives 0.446.
+- **Sources:** [Tektronix primer](https://download.tek.com/document/03W_8605_6.pdf); [4 Series B datasheet (Transcat copy)](https://www.transcat.ca/media/pdf/tektronix-4-series-b-mso-datasheet-new.pdf). Checked Nov 2026.

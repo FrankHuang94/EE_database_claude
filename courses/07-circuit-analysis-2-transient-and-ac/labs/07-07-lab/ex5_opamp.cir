@@ -1,0 +1,84 @@
+* Example 07-07.5 and the guided exercise: op-amp macromodels in feedback.
+* The -3 dB targets are each circuit's DC gain divided by sqrt(2) (99.9968, 99.9369 and 99.9968 for (a) to (c)).
+* Each op-amp is a gain A0 (a voltage-controlled source) driving an RC that sets the dominant pole,
+* buffered to the output. GBW = A0 * fa = 10 MHz in every model.
+*   typical: A0 = 130 dB = 3.16228e6, fa = 3.16228 Hz (R = 1k, C = 50.3292 uF)
+*   minimum: A0 = 104 dB = 1.58489e5, fa = 63.0957 Hz (R = 1k, C = 2.52242 uF)
+*
+* EXPECT bw_t    key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.5c scale=1e3 rtol=1e-3
+* EXPECT bw_m    key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.5e scale=1e3 rtol=1e-3
+* EXPECT bw_inv  key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.5g scale=1e3 rtol=1e-3
+* EXPECT bw_10   key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.5h scale=1e6 rtol=1e-3
+* EXPECT bw_cas  key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.5i scale=1e3 rtol=1e-3
+* EXPECT pm      key:README.md#Lab_07-07.a rtol=2e-3
+* EXPECT pk_buf  key:README.md#Lab_07-07.b rtol=3e-3
+* EXPECT fpk_buf key:README.md#Lab_07-07.c scale=1e6 rtol=2e-3
+
+V1  in 0 AC 1
+* (a) non-inverting +100, typical open-loop gain
+Ea  xa 0 in na 3.16228e6
+Rpa xa ya 1k
+Cpa ya 0 50.3292u
+Eba oa 0 ya 0 1
+Rfa oa na 99k
+Rga na 0 1k
+* (b) non-inverting +100, minimum open-loop gain, same GBW
+Eb  xb 0 in nb 1.58489e5
+Rpb xb yb 1k
+Cpb yb 0 2.52242u
+Ebb ob 0 yb 0 1
+Rfb ob nb 99k
+Rgb nb 0 1k
+* (c) inverting -100 (noise gain 101)
+Ec  xc 0 0 nc 3.16228e6
+Rpc xc yc 1k
+Cpc yc 0 50.3292u
+Ebc oc 0 yc 0 1
+Rgc in nc 1k
+Rfc nc oc 100k
+* (d) two +10 stages in cascade
+Ed1  xd1 0 in nd1 3.16228e6
+Rpd1 xd1 yd1 1k
+Cpd1 yd1 0 50.3292u
+Ebd1 od1 0 yd1 0 1
+Rfd1 od1 nd1 9k
+Rgd1 nd1 0 1k
+Ed2  xd2 0 od1 nd2 3.16228e6
+Rpd2 xd2 yd2 1k
+Cpd2 yd2 0 50.3292u
+Ebd2 od2 0 yd2 0 1
+Rfd2 od2 nd2 9k
+Rgd2 nd2 0 1k
+* (e) guided exercise: a second pole at 10 MHz (R = 1k, C = 15.9155 pF), unity-gain buffer
+Ee   xe 0 in oe 3.16228e6
+Rpe  xe ye 1k
+Cpe  ye 0 50.3292u
+Ebe  ze 0 ye 0 1
+Rq   ze we 1k
+Cq   we 0 15.9155p
+Eoe  oe 0 we 0 1
+* (f) the same op-amp open loop, to read the loop gain's crossover and phase
+Ef   xf 0 in 0 3.16228e6
+Rpf  xf yf 1k
+Cpf  yf 0 50.3292u
+Ebf  zf 0 yf 0 1
+Rqf  zf wf 1k
+Cqf  wf 0 15.9155p
+Eof  of 0 wf 0 1
+
+.control
+ac dec 4000 10 100meg
+meas ac bw_t when vm(oa)=70.7085 fall=1
+meas ac bw_m when vm(ob)=70.6662 fall=1
+meas ac bw_inv when vm(oc)=70.7085 fall=1
+meas ac bw_10 when vm(od1)=7.07107 fall=1
+meas ac bw_cas when vm(od2)=70.7107 fall=1
+meas ac pk_lin max vm(oe)
+meas ac fpk_buf max_at vm(oe)
+let pk_buf = 20*log10(pk_lin)
+print pk_buf
+meas ac ph_c find vp(of) when vm(of)=1
+let pm = 180 + 180/pi*ph_c
+print pm
+.endc
+.end

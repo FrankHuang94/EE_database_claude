@@ -1,0 +1,22 @@
+* Example 07-07.6: rise times of a single pole and of two cascaded poles (transient analysis).
+* Chain 1: the 200 MHz "oscilloscope" alone (tau2 = 1/(2 pi 200 MHz) = 0.795775 ns).
+* Chain 2: a 1 ns single-pole source edge (tau1 = 1 ns / ln 9 = 0.455120 ns), buffered, then the scope.
+*
+* EXPECT tr_scope key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.6b scale=1e-9 rtol=1e-3
+* EXPECT tr_sys   key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.6c scale=1e-9 rtol=1e-3
+
+V1  s 0 PULSE(0 1 0 1f 1f 100n 200n)
+R1  s a 1k
+C1  a 0 0.795775p
+R2  s b 1k
+C2  b 0 0.455120p
+E2  b2 0 b 0 1
+R3  b2 c 1k
+C3  c 0 0.795775p
+
+.control
+tran 1p 20n
+meas tran tr_scope trig v(a) val=0.1 rise=1 targ v(a) val=0.9 rise=1
+meas tran tr_sys trig v(c) val=0.1 rise=1 targ v(c) val=0.9 rise=1
+.endc
+.end

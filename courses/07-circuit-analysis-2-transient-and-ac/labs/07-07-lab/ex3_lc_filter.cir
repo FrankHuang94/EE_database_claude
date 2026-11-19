@@ -1,0 +1,52 @@
+* Example 07-07.3 and Problem 07-07.14: the LC supply filter of 07-03, swept in frequency.
+* Three copies share one source: a 10 ohm load (out1), a 100 ohm load (out2), and the 10 ohm load
+* with the damping branch Rd = sqrt(L/C) in series with Cd = 4C (out3).
+*
+* EXPECT pk1    key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.3g rtol=1e-3
+* EXPECT fpk1   key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.3h scale=1e3 rtol=1e-3
+* EXPECT g0f    key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.3e rtol=1e-3
+* EXPECT g100k  key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.3l rtol=1e-3
+* EXPECT g500k  key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.3k rtol=1e-3
+* EXPECT pk2    key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.3m rtol=1e-3
+* EXPECT fpk2   key:../../chapters/07-07-frequency-response-and-bode-plots.md#Ex_07-07.3n scale=1e3 rtol=1e-3
+* EXPECT g0d    key:../../solutions/07-07-solutions.md#07-07.14c rtol=1e-2
+* EXPECT pk3    key:../../solutions/07-07-solutions.md#07-07.14d rtol=3e-3
+* EXPECT fpk3   key:../../solutions/07-07-solutions.md#07-07.14e scale=1e3 rtol=1e-3
+
+V1   in 0 AC 1
+Rs1  in a1 30m
+L1   a1 out1 4.7u
+C1   out1 0 22u
+RL1  out1 0 10
+Rs2  in a2 30m
+L2   a2 out2 4.7u
+C2   out2 0 22u
+RL2  out2 0 100
+Rs3  in a3 30m
+L3   a3 out3 4.7u
+C3   out3 0 22u
+RL3  out3 0 10
+Rd3  out3 d3 0.462208
+Cd3  d3 0 88u
+
+.control
+ac lin 30001 14k 17k
+meas ac pk1 max vdb(out1)
+meas ac fpk1 max_at vdb(out1)
+meas ac pk2 max vdb(out2)
+meas ac fpk2 max_at vdb(out2)
+ac lin 30001 6k 12k
+meas ac pk3 max vdb(out3)
+meas ac fpk3 max_at vdb(out3)
+ac lin 1 15675.1 15675.1
+let g0f = vdb(out1)
+let g0d = vdb(out3)
+print g0f g0d
+ac lin 1 100k 100k
+let g100k = vdb(out1)
+print g100k
+ac lin 1 500k 500k
+let g500k = vdb(out1)
+print g500k
+.endc
+.end
