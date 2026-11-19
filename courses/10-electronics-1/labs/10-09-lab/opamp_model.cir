@@ -1,0 +1,62 @@
+* Lab 10-09 -- a single-pole op-amp macromodel: a transconductance G = 1 S into R_p || C_p (DC gain A_0 = R_p,
+* pole f_p = 1/(2 pi R_p C_p)), buffered by a unity-gain VCVS. Three instances:
+*   (A) OPA333 at its minimum gain, A_0 = 106 dB (R_p = 199526.2 Ohm), non-inverting gain 1000 (R1 = 1 kOhm,
+*       R2 = 999 kOhm): DC gain (Example 10-09.1).
+*   (B) TLV9062-like, A_0 = 130 dB, GBW = 10 MHz: non-inverting +10 and inverting -10 bandwidths (Example 10-09.2a).
+*   (C) OPA333-like, A_0 = 130 dB, GBW = 350 kHz, non-inverting +100: bandwidth and the magnitude at 1 kHz
+*       relative to DC (Example 10-09.2b).
+* The macromodel has no slew limit, offset or rails: it checks only the small-signal algebra of the chapter.
+*
+* EXPECT g1 key:../../chapters/10-09-real-op-amps-nonidealities.md#Ex_10-09.1b rtol=1e-4
+* EXPECT f10 key:../../chapters/10-09-real-op-amps-nonidealities.md#Ex_10-09.2a scale=1e6 rtol=1e-3
+* EXPECT fm10 key:../../chapters/10-09-real-op-amps-nonidealities.md#Ex_10-09.2b scale=1e6 rtol=1e-3
+* EXPECT f100 key:../../chapters/10-09-real-op-amps-nonidealities.md#Ex_10-09.2c scale=1e3 rtol=1e-3
+* EXPECT e1k key:../../chapters/10-09-real-op-amps-nonidealities.md#Ex_10-09.2d rtol=1e-3
+
+.subckt opamp inp inm out PARAMS: RP=1 CP=1
+G1 0 x inp inm 1
+RP1 x 0 {RP}
+CP1 x 0 {CP}
+E1 out 0 x 0 1
+.ends
+
+* (A) gain 1000 with A_0 = 106 dB, effectively DC
+VA ina 0 DC 0 AC 1
+XA ina fa oa opamp RP=199526.2315 CP=1e-30
+R1A fa 0 1k
+R2A oa fa 999k
+
+* (B) A_0 = 130 dB, GBW 10 MHz: C_p = A_0/(2 pi GBW R_p) = 1/(2 pi 10 MHz) for G = 1 S
+VB inb 0 DC 0 AC 1
+XB inb fb ob opamp RP=3162277.66 CP=1.5915494309e-8
+R1B fb 0 1k
+R2B ob fb 9k
+VBI inbi 0 DC 0 AC 1
+RIN inbi fbi 1k
+XBI 0 fbi obi opamp RP=3162277.66 CP=1.5915494309e-8
+RFB obi fbi 10k
+
+* (C) A_0 = 130 dB, GBW 350 kHz, gain 100
+VC inc 0 DC 0 AC 1
+XC inc fc oc opamp RP=3162277.66 CP=4.5472840883e-7
+R1C fc 0 1k
+R2C oc fc 99k
+
+.control
+ac dec 400 1 100Meg
+let g1 = vm(oa)[0]
+let nb = vm(ob) / vm(ob)[0]
+let nbi = vm(obi) / vm(obi)[0]
+let nc = vm(oc) / vm(oc)[0]
+meas ac f10 when nb=0.7071067811865476 fall=1
+meas ac fm10 when nbi=0.7071067811865476 fall=1
+meas ac f100 when nc=0.7071067811865476 fall=1
+echo "g1 = $&g1"
+echo "f10 = $&f10"
+echo "fm10 = $&fm10"
+echo "f100 = $&f100"
+ac lin 1 1k 1k
+let e1k = (vm(oc) / 99.99683775 - 1) * 100
+echo "e1k = $&e1k"
+.endc
+.end

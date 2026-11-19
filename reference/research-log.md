@@ -187,6 +187,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-179 | Class-D audio amplifier data sheet | Nov 2026 |
 | R-180 | Image-sensor pixel readout | Nov 2026 |
 | R-181 | Transistor matching | Nov 2026 |
+| R-182 | Op-amp data sheets | Nov 2026 |
 
 ---
 
@@ -1899,3 +1900,11 @@ R&D % = R&D ÷ revenue.
 *Bibliographic record confirmed on 19 Nov 2026 through the Crossref API (title, authors, journal, volume, issue, pages, date, DOI); the paper itself was not opened (IEEE Xplore refuses automated access). The area law is the paper's widely cited result and standard textbook material. Tagged [Established].*
 
 - **Pelgrom, Duinmaijer and Welbers, "Matching properties of MOS transistors,"** *IEEE J. Solid-State Circuits*, vol. 24, no. 5, pp. 1433–1439, Oct. 1989, doi:10.1109/JSSC.1989.572629: the standard deviation of the parameter difference between closely spaced, identically drawn transistors scales as 1/√(WL), σ(ΔV_TH) = A_VT/√(WL) [Established]. A 1988 ESSCIRC paper of the same title by Pelgrom and Duinmaijer also exists (doi:10.1109/ESSCIRC.1988.5468276). The A_VT value used in 10-08 (3.5 mV·µm) is illustrative, not a specific process's figure. Used in 10-08.
+
+## R-182 · Op-amp data sheets
+
+*Read on 19 Nov 2026 from the PDFs at the URLs below, as downloaded. Specifications are tagged [Established] as specifications of those parts.*
+
+- **TI TLV9061/TLV9062/TLV9064** (SBOS839N, March 2017, revised July 2026), §6.10 at 25 °C, R_L = 10 kΩ to V_S/2: V_OS ±0.3 mV typ, ±1.6 mV max (V_S = 5 V), ±2 mV max over −40 to 125 °C; drift ±0.53 µV/°C typ; PSRR ±7 typ, ±80 max µV/V; V_CM (V−) − 0.1 to (V+) + 0.1 V; CMRR 103 dB typ (80 min) for (V−) − 0.1 V < V_CM < (V+) − 1.4 V and 87 dB typ (57 min) over the full range at 5.5 V; I_B ±0.5 pA typ; e_n 10 nV/√Hz at 10 kHz and 16 at 1 kHz; A_OL 130 dB typ (104 min) at 5.5 V, 10 kΩ; GBW 10 MHz; phase margin 55°; SR 6.5 V/µs; output swing 20 mV max (10 kΩ) and 60 mV max (2 kΩ) from the rails; I_SC ±50 mA; features: supply 1.8–5.5 V, 538 µA quiescent current [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/tlv9062.pdf).
+- **TI OPA333/OPA2333** (SBOS351E, March 2006, revised December 2015), §6.6: V_OS 2 µV typ, 10 µV max; drift 0.02 typ, 0.05 µV/°C max; PSRR 1 typ, 5 µV/V max; I_B ±70 pA typ, ±200 pA max; CMRR 130 dB typ (106 min); A_OL 130 dB typ (106 min); GBW 350 kHz; SR 0.16 V/µs; output within 30 typ / 50 max mV of the rails at 10 kΩ; I_SC ±5 mA; I_Q 17 µA typ, 25 max; supply 1.8–5.5 V [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/opa333.pdf).
+- **TI OPA1611/OPA1612** (SBOS450C, July 2009, revised August 2014), §6.4: THD+N 0.000015% at 1 kHz; GBW 40 MHz (G = 1), 80 MHz (G = 100); SR 27 V/µs; full-power bandwidth 4 MHz for 1 Vpp, with the footnote formula SR/(2πV_P) (which gives 8.6 MHz for 1 Vpp; the table and footnote disagree, noted in 10-09); e_n 1.1 nV/√Hz typ at 1 kHz; V_OS ±100 µV typ, ±500 µV max; drift 1 typ, 4 µV/°C max; I_B ±60 nA typ, ±250 nA max; I_OS ±25 typ, ±175 nA max; V_CM (V−) + 2 to (V+) − 2 V; CMRR 120 typ, 110 dB min; A_OL 130 dB typ at 10 kΩ; output within 0.6 V of the rails at 2 kΩ; I_SC +55/−62 mA; I_Q 3.6 mA typ per channel; supply ±2.25 to ±18 V [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/opa1611.pdf).

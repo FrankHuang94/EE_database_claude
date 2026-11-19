@@ -4332,3 +4332,26 @@
 - term: Pelgrom's law
   definition: The empirical rule that the random threshold difference between two closely spaced, identically drawn MOSFETs has a standard deviation A_VT/√(WL), falling with the square root of gate area; A_VT is a process constant.
   chapter: "10-08"
+# ---------------------------------------------------------------- 10-09
+- term: Gain-bandwidth product
+  definition: For an op-amp with a single dominant pole, the constant product of open-loop gain and frequency above the pole, equal to the unity-gain frequency; a closed loop's bandwidth is the gain-bandwidth product divided by the noise gain.
+  chapter: "10-09"
+  see_also: [Noise gain]
+- term: Full-power bandwidth
+  definition: The highest frequency at which an amplifier can deliver a sine of a given peak amplitude V_p without slew-rate limiting, SR/(2πV_p).
+  chapter: "10-09"
+  see_also: [Slew rate]
+- term: Offset drift
+  definition: The change of an amplifier's input offset voltage with temperature, specified in µV/°C; unlike the room-temperature offset, it cannot be removed by a single calibration.
+  chapter: "10-09"
+  see_also: [Input offset voltage]
+- term: Power-supply rejection ratio (PSRR)
+  definition: The ratio of a change in supply voltage to the input-referred offset change it causes, in dB or µV/V; it falls with frequency, so supply ripple leaks through more at high frequency.
+  chapter: "10-09"
+- term: Rail-to-rail
+  definition: Describes an op-amp input whose common-mode range includes both supply rails (usually with complementary input pairs and a crossover region), or an output that swings to within millivolts of the rails at light load.
+  chapter: "10-09"
+- term: Zero-drift amplifier
+  definition: An op-amp that continuously measures and cancels its own offset (by autozeroing or chopping), achieving microvolt offset and near-zero drift at the cost of bandwidth, switching artifacts and higher current noise.
+  chapter: "10-09"
+  see_also: [Offset drift]
