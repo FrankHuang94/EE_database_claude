@@ -41,15 +41,15 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 06-07.8 [B]
 
-**An error budget.** A sensor channel with a 2.5 V full scale has four independent error contributions at its output: offset +10 mV, bias-current error −4 mV, resistor-tolerance error ±6 mV and reference error ±3 mV. (a) Find the worst-case and RSS totals, and express both as a percentage of full scale. (b) The offset is trimmed to 1 mV. Find the new RSS total. (c) When is RSS the right way to combine errors, and when is it not?
+**An error budget.** A sensor channel with a 2.5 V full scale has four error contributions at its output, each varying independently from unit to unit within the limits given: offset ±10 mV, bias-current error ±4 mV, resistor-tolerance error ±6 mV and reference error ±3 mV. (a) Find the worst-case and RSS totals, and express both as a percentage of full scale. (b) The offset is trimmed to within ±1 mV. Find the new RSS total. (c) When is RSS the right way to combine errors, and when is it not?
 
-### Problem 06-07.9 [C]
+### Problem 06-07.9 [B]
 
 **Adding noise.** Two noise sources at the input of an amplifier have spectral densities of 4 nV/√Hz and 3 nV/√Hz. (a) If they are independent, what is the total density? (b) What would it be if they were perfectly correlated and in phase, and if perfectly anticorrelated? (c) For independent sources, find the total RMS noise in a 10 kHz bandwidth (white noise: RMS = density × √bandwidth). (d) Why does this mean you should reduce the largest noise source first?
 
 ### Problem 06-07.10 [C]
 
-**A 4-bit DAC and its linearity.** A binary-weighted DAC has bit resistors of 1, 2, 4 and 8 kΩ (MSB to LSB), bit levels of 0 or 4 V, and an 8 kΩ load. (a) Find the LSB step and the full-scale output. (b) The MSB resistor is 0.5% high (1.005 kΩ). Find the outputs for codes 0111 and 1000, the DNL at that transition and the INL at code 1000 (the deviation from the ideal 2.000 V, in LSBs).
+**A 4-bit DAC and its linearity.** A binary-weighted DAC has bit resistors of 1, 2, 4 and 8 kΩ (MSB to LSB), bit levels of 0 or 4 V, and an 8 kΩ load. (a) Find the LSB step and the full-scale output. (b) The MSB resistor is 0.5% high (1.005 kΩ). Find the outputs for codes 0111 and 1000, the DNL at that transition (measured in ideal LSBs, the nominal step of part (a)) and the INL at code 1000 (the deviation from the ideal 2.000 V, in LSBs).
 
 ### Problem 06-07.11 [B]
 

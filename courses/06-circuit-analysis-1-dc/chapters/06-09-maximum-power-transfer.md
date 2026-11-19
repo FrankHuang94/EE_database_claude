@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 06-09 · Maximum Power Transfer
 
 | | |
@@ -279,9 +279,9 @@ Open [labs/06-09-lab/](../labs/06-09-lab/README.md): a notebook and an ngspice n
 2. **Equating maximum power with maximum efficiency.** For a source with a physical internal resistance, the efficiency at maximum power is 50%, rising toward 100% as $R_L/R_{th}$ grows while power falls.
 3. **Reading efficiency off a Thévenin equivalent.** The equivalent gives the load's power, not the power lost inside a general network; 50% and $4\eta(1 - \eta)$ need $R_{th}$ to be the physical loss element (§3.2).
 4. **Using the original circuit's resistance instead of $R_{th}$.** The match is to the Thévenin resistance at the load's terminals, with dependent sources included.
-4. **Ignoring real limits.** The small-signal maximum may demand more voltage swing, current or dissipation than a device can provide.
-5. **Assuming a nonlinear source peaks at $V_{oc}/2$.** That holds only for a linear (Thévenin) source; a solar cell's maximum-power point is elsewhere.
-6. **Calling every impedance match "maximum power transfer".** On transmission lines the main reason to match is to avoid reflections.
+5. **Ignoring real limits.** The small-signal maximum may demand more voltage swing, current or dissipation than a device can provide.
+6. **Assuming a nonlinear source peaks at $V_{oc}/2$.** That holds only for a linear (Thévenin) source; a solar cell's maximum-power point is elsewhere.
+7. **Calling every impedance match "maximum power transfer".** On transmission lines the main reason to match is to avoid reflections.
 
 ## 9. Practitioner lens
 

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 06-05 · Mesh Analysis
 
 | | |
@@ -121,7 +121,7 @@ Mesh analysis needs meshes, and meshes need a planar drawing. Some circuits cann
 
 **Loop analysis** generalizes the method to any circuit. Choose a spanning tree (06-03): $n - 1$ branches that connect every node without closing a loop. Each of the remaining $b - n + 1$ branches (the links) closes exactly one **fundamental loop** through the tree. Assign a loop current to each fundamental loop. Each link carries only its own loop current; each tree branch carries the sum of the loop currents that pass through it, with signs. KCL is again automatic, KVL around each fundamental loop gives the equations, and the matrix is again symmetric and positive definite. Meshes are simply a convenient choice of loops for planar drawings.
 
-**Duality.** Draw a node inside every mesh of a planar circuit and one more outside it (the dual's reference node). Every element shared by two meshes becomes an element between their dual nodes; every outer element connects its mesh's dual node to the reference. Replace each resistance $R$ by a conductance of the same number of siemens, each voltage source by a current source of the same number of amperes, and series by parallel. The dual circuit's nodal equations are then *numerically identical* to the original's mesh equations, so its node voltages equal the original's mesh currents (Example 06-05.4). The full dictionary:
+**Duality.** Draw a node inside every mesh of a planar circuit and one more outside it (the dual's reference node). Every element shared by two meshes becomes an element between their dual nodes; every outer element connects its mesh's dual node to the reference. Replace each resistance $R$ by a conductance of the same number of siemens, each voltage source by a current source of the same number of amperes, and series by parallel. Orientation follows the equations, with clockwise mesh currents: a voltage source that pushes mesh $k$'s current forward (it appears with a + sign in $v_k$) becomes a current source pushing current *into* dual node $k$, and one that opposes it becomes a source drawing current *out of* node $k$ (Example 06-05.4's 8 V source); a source shared by meshes $j$ and $k$, which aids one and opposes the other, becomes a current source between their dual nodes pointing into the node of the mesh it aids. In the other direction, a current source shared by meshes $a$ and $b$ that imposes $i_a - i_b = I_s$ becomes a voltage source with $v_a - v_b = I_s$: its + terminal at the dual node of the mesh whose current flows along the source's arrow. The dual circuit's nodal equations are then *numerically identical* to the original's mesh equations, so its node voltages equal the original's mesh currents (Example 06-05.4). The full dictionary:
 
 | Circuit | Dual |
 |---|---|
@@ -259,7 +259,7 @@ With a star ground, the sensor's return carries only its own 5.00 mA, so its gro
 
 **Units check.** Ω × A = V; mV/mV = LSB ✓.
 
-**Sanity check.** The off-diagonal entry is the motor branch (shared by both meshes), but the coupling that matters for the ADC comes from $R_g$, which only mesh 1 contains: $R_g$ carries $i_1$, which is almost all motor current. The general lesson is that any impedance carrying two circuits' return currents couples them, and the cure is to give the sensitive circuit a return path of its own ✓.
+**Sanity check.** The off-diagonal entry is the motor branch (shared by both meshes), but the coupling that matters for the ADC comes from $R_g$, which only mesh 1 contains: $R_g$ carries $i_1$, which is almost all motor current. A different drawing makes the coupling visible in the matrix itself. All three branches (motor, supply with $R_g$, sensor) join the same two nodes, so they can be drawn side by side with the supply in the *middle*: one mesh through the motor and supply branches, another through the supply and sensor branches. The shared element is then the supply branch, the off-diagonal entry is exactly $-R_g$, and the mesh equations say directly that the shared return couples the two loads; with $R_g = 0$ they decouple. The general lesson is that any impedance carrying two circuits' return currents couples them, and the cure is to give the sensitive circuit a return path of its own ✓.
 
 ### Answer key
 

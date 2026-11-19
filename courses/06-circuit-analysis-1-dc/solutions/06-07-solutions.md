@@ -92,7 +92,7 @@ Battery currents $(V_k - V_{bus})/R_k$: **13.11 A**, **7.590 A** and **3.192 A**
 
 ### Solution 06-07.11
 
-(a) $\beta = R_1/(R_1 + R_2) = 1/11$, so the gain is $A/(1 + A\beta) = 10^5/(1 + 9091) = $ **10.9988** (06-06).
+(a) $\beta = R_1/(R_1 + R_2) = 1/11$, so the gain is $A/(1 + A\beta) = 10^5/(1 + 9090.9) = $ **10.9988** (06-06).
 
 (b) The offset source sits in series with the signal at the + input, so both see the same gain. Signal alone: $10.9988\times50 = $ **549.94 mV**. Offset alone: $10.9988\times2 = $ **22.00 mV**. Total: **571.94 mV**.
 

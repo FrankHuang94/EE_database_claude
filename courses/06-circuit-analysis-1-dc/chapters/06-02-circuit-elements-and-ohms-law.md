@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 06-02 · Circuit Elements and Ohm's Law
 
 | | |

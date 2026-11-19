@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 06-04 · Nodal Analysis
 
 | | |

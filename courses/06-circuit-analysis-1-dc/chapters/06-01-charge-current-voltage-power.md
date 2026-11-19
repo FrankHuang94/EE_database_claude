@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 06-01 · Charge, Current, Voltage, Power and the Lumped Circuit Abstraction
 
 | | |

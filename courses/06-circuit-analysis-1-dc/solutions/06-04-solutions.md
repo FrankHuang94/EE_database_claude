@@ -213,7 +213,6 @@ $$
 
 (d) The 10 V source delivers $10\times3.317 = $ **33.17 W**, of which its series 2 Ω dissipates $3.317^2\times2 = $ **22.01 W**. The Norton source delivers $5\times3.366 = $ **16.83 W**, of which its shunt 2 Ω dissipates $3.366^2/2 = $ **5.664 W**. Both pass the same $33.17 - 22.01 = 16.83 - 5.66 = $ **11.16 W** to the external circuit (3 Ω: 3.776 W, 1 Ω: 4.819 W, 6 Ω: 0.228 W, and the sink absorbs $2\times1.171 = 2.341$ W). Equivalent sources agree at their terminals only; what happens inside them is not equivalent ([06-08](../chapters/06-08-thevenin-and-norton.md)).
 
-
 ### Solution 06-04.15
 
 (a) In kΩ, mA and V:

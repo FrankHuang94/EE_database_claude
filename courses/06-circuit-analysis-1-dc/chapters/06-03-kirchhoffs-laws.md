@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 06-03 · Kirchhoff's Laws, Series/Parallel and Dividers
 
 | | |

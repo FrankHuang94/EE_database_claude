@@ -96,7 +96,6 @@ The motor current develops $3\ \text{A}\times20\ \text{mΩ} = $ **60 mV** across
 
 Each 10 MΩ reading is taken with the meter connected across a different resistor, changing the circuit each time; the three readings never coexist. If all three meters were connected at once, the three loaded resistors would have equal voltages summing exactly to 9 V. KVL is never violated.
 
-
 ### Solution 06-11.13
 
 (a) The amplifier sees $2 + 2\times0.02 = $ **2.04 mΩ**, so the reading is **2%** high.

@@ -96,7 +96,6 @@ giving $V_{th} = 1/a = $ **5.000 V** and $R_{th} = b/a = $ **5.000 kΩ**.
 
 (c) $2.857\times4/(4 + 0.5714) = $ **2.5 V** ✓. Any load forms a divider with the 571 Ω output resistance and scales every code by the same factor: a gain error, harmless if constant but troublesome if the load varies (or is nonlinear), which is why DAC outputs are usually buffered.
 
-
 ### Solution 06-08.13
 
 (a) Open circuit: the divider gives **$V_{th}$ = 5 V**. With the source shorted, the output sees $2\parallel2 = $ **1 kΩ**. Norton: $I_N = 5/1 = $ **5 mA** in parallel with 1 kΩ.

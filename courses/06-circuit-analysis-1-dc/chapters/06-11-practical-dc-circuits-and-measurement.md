@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 06-11 · Practical DC Circuits and Measurement
 
 | | |

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 06-08 · Thévenin and Norton Equivalents
 
 | | |

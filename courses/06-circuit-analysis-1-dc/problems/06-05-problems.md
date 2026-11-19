@@ -49,7 +49,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 06-05.10 [B]
 
-**A bridge with a meter, by meshes.** Re-solve Problem 06-04.6 (5 V excitation; $R_1$ = 1 kΩ top to A, $R_2$ = 1 kΩ A to ground, $R_3$ = 1 kΩ top to B, $R_4$ = 1.1 kΩ B to ground, a 100 Ω galvanometer between A and B) with three mesh currents laid out as in Figure 3 of the chapter: mesh 1 through the source, $R_1$ and $R_2$; mesh 2 through $R_1$, $R_3$ and the galvanometer; mesh 3 through the galvanometer, $R_4$ and $R_2$. (a) Write $\mathbf{R}$ and $\mathbf{v}$. (b) Solve and find the galvanometer current and its direction. (c) Find the source current. (d) Which method needed fewer unknowns here?
+**A bridge with a meter, by meshes.** Re-solve Problem 06-04.6 (5 V excitation; $R_1$ = 1 kΩ top to A, $R_2$ = 1 kΩ A to ground, $R_3$ = 1 kΩ top to B, $R_4$ = 1.1 kΩ B to ground, a 100 Ω galvanometer between A and B) with three mesh currents laid out as in Figure 3 of the chapter: mesh 1 through the source, $R_1$ and $R_2$; mesh 2 through $R_1$, $R_3$ and the galvanometer; mesh 3 through the galvanometer, $R_4$ and $R_2$. (a) Write $\mathbf{R}$ and $\mathbf{v}$. (b) Solve and find the galvanometer current and its direction. (c) Find the source current. (d) Which method needed fewer unknowns here? (e) A simulator would solve this bridge by nodal analysis whichever count is smaller. Give two reasons.
 
 ### Problem 06-05.11 [B]
 
@@ -73,8 +73,8 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 | Learning objective (chapter 06-05) | Problems |
 |---|---|
-| 1. Mesh currents and KVL in mesh currents | 1, 2, 3 |
+| 1. Mesh currents and KVL in mesh currents | 1, 2, 3, 6 |
 | 2. The mesh matrix by inspection and its properties | 2, 8, 11 |
 | 3. Current sources: outer branches and supermeshes | 4, 5, 7, 9 |
 | 4. Counting unknowns and choosing nodal or mesh | 1, 7, 10, 11 |
-| 5. Planarity, loop analysis, duality, shared-impedance coupling | 6, 9, 12, 13, 14 |
+| 5. Planarity, loop analysis, duality, shared-impedance coupling | 9, 12, 13, 14 |

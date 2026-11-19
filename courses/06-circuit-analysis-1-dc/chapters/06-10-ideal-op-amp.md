@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 06-10 · The Ideal Op-Amp
 
 | | |

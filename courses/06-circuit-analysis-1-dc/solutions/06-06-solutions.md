@@ -147,7 +147,6 @@ with $r_o\parallel R_S = 50\parallel2 = $ **1.923 kΩ**.
 
 (c) An ideal current source's current does not depend on its voltage, which is what infinite output resistance means. With finite $r_o$, the error is the output voltage divided by $r_o$ relative to the nominal current, so stacking devices to raise $r_o$ (cascoding, Problem 06-06.8) is the standard cure.
 
-
 ### Solution 06-06.15
 
 (a) The dependent source joins two non-reference nodes, so nodes 1 and 2 form a supernode. Its KCL (current in through the 4 Ω, out through 3 Ω and 6 Ω) is $(12 - v_1)/4 = v_1/3 + v_2/6$. The constraint is $v_1 - v_2 = 2i_x$ with the controlling current written in node voltages, $i_x = (12 - v_1)/4$, so $v_2 = v_1 - (12 - v_1)/2 = 1.5v_1 - 6$. Substituting: $3 - 0.25v_1 = v_1/3 + 0.25v_1 - 1$, so $0.8333v_1 = 4$: **$v_1$ = 4.8 V**, **$v_2$ = 1.2 V**, **$i_x$ = 1.8 A** (and the source's voltage is $2\times1.8 = 3.6$ V).

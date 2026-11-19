@@ -88,7 +88,6 @@ so $v_{out}/v_{in} = -(R_2/R_1)/\bigl(1 + (1 + R_2/R_1)/A\bigr)$, as stated. As 
 
 (b) The LM358's 7 mV maximum offset is 140 times the budget: unusable without calibration. The OPA187's 10 µV fits, using **20%** of the budget and leaving room for resistor and gain errors.
 
-
 ### Solution 06-10.13
 
 (a) The divider gives $5\times20/(30 + 20) = $ **2.0 V** at the − input (no current enters it, rule 1).

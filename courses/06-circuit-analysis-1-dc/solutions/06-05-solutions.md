@@ -123,6 +123,8 @@ $$
 
 (d) Nodal needed 2 unknowns ($v_A$, $v_B$; the top node is fixed by the source); mesh needed 3. Nodal wins, as it did for the plain bridge (Example 06-05.2).
 
+(e) First, nodal analysis can be stamped directly from a netlist, element by element, because every element names its two nodes; mesh analysis needs a planar drawing (which may not exist) or a spanning tree to define its loops. Second, every kind of element, including nonlinear and dependent ones, fits the same modified nodal framework, so one formulation serves every circuit; the nodal matrix is also typically sparser (06-04, §3.5 and the practitioner section of this chapter).
+
 ### Solution 06-05.11
 
 (a) Mesh $k$ contains its series 1 kΩ and the shunts on either side; neighbors share one 2 kΩ shunt:

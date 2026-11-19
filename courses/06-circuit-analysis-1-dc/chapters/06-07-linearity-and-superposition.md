@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 06-07 · Linearity and Superposition
 
 | | |
@@ -49,7 +49,7 @@ A system with input $x$ and output $y = f(x)$ is **linear** if it has two proper
 - **Homogeneity (scaling):** $f(a\,x) = a\,f(x)$ for any number $a$;
 - **Additivity:** $f(x_1 + x_2) = f(x_1) + f(x_2)$.
 
-**Which elements are linear.** A resistor ($v = Ri$) is linear. So are the four dependent sources (06-06): their outputs are fixed multiples of their controls. Capacitors and inductors, whose laws are linear differential relations, are also linear (Course 07). Diodes and transistors are not: $i_D = I_S(e^{v/V_T} - 1)$ fails both tests. Independent sources are not elements that respond to anything; they are the **inputs**.
+**Which elements are linear.** A resistor ($v = Ri$) is linear. So are the four dependent sources (06-06): their outputs are fixed multiples of their controls. Capacitors and inductors, whose laws are linear differential relations, are also linear, provided their initial charge or current is counted as an input: an initial condition acts like an extra source (Course 07). Diodes and transistors are not: $i_D = I_S(e^{v/V_T} - 1)$ fails both tests. Independent sources are not elements that respond to anything; they are the **inputs**.
 
 **Theorem (superposition).** In a circuit made of linear elements and independent sources $s_1, \dots, s_m$, every node voltage and branch current is a weighted sum of the source values:
 
@@ -119,7 +119,7 @@ With a single source, homogeneity alone says every response is proportional to t
 
 **Converters.** A DAC's output is a superposition of bit contributions; its linearity errors (differential and integral nonlinearity) come from the bit weights being slightly wrong, and superposition is what lets you predict them (Example 06-07.5).
 
-> **Going deeper — linear time-invariant systems.** For circuits with capacitors and inductors, superposition holds for whole waveforms: the response to a sum of input signals is the sum of the responses. Combined with time invariance, it leads to the impulse response and convolution, and to describing a circuit completely by its transfer function (Course 11, [11-03](../../11-signals-and-systems/chapters/11-03-convolution.md)). Everything there rests on the theorem of §3.1.
+> **Going deeper — linear time-invariant systems.** For circuits with capacitors and inductors, superposition holds for whole waveforms: the response to a sum of input signals is the sum of the responses, provided the circuit starts from rest (zero initial charge and current) or the initial conditions are treated as additional sources. Combined with time invariance, it leads to the impulse response and convolution, and to describing a circuit completely by its transfer function (Course 11, [11-03](../../11-signals-and-systems/chapters/11-03-convolution.md)). Everything there rests on the theorem of §3.1.
 
 ## 4. Worked examples
 
@@ -187,7 +187,7 @@ With a single source, homogeneity alone says every response is proportional to t
 
 **Solution.** (a) With only bit $k$ at 4 V (the others at 0 V, which grounds their resistors), the output is a divider: $4\,G_k/G_{total}$, where $G_{total} = 1 + 0.5 + 0.25 + 0.25 = 2$ mS. The contributions are $4\times1/2 = 2$ V (MSB), 1 V and **0.5 V** (LSB). By superposition, the output for code $(b_2b_1b_0)$ is $2b_2 + b_1 + 0.5b_0$ volts $= 0.5\times\text{code}$: 0, 0.5, 1.0, …, 3.5 V, a perfect staircase with a 0.5 V step (1 LSB).
 
-(b) With $R_{MSB}$ = 1.01 kΩ, $G_{total} = 0.9901 + 1 = 1.9901$ mS. Code 011: $4\times0.75/1.9901 = $ **1.5075 V**. Code 100: $4\times0.9901/1.9901 = $ **1.9900 V**. The step is **0.4826 V** instead of 0.5 V: a differential nonlinearity of **−0.035 LSB** at the "major carry", where every bit changes.
+(b) With $R_{MSB}$ = 1.01 kΩ, $G_{total} = 0.9901 + 1 = 1.9901$ mS. Code 011: $4\times0.75/1.9901 = $ **1.5075 V**. Code 100: $4\times0.9901/1.9901 = $ **1.9900 V**. The step is **0.4826 V** instead of 0.5 V: a differential nonlinearity of **−0.035 LSB** at the "major carry", where every bit changes. (DNL here is measured against the *ideal* LSB, 0.5 V. Measured against the actual end-point LSB, the full-scale span divided by 7, which shifts slightly with the mismatch, the same step gives about −0.034 LSB, as in the lab. Converter datasheets state which definition they use.)
 
 **Units check.** V × mS/mS = V ✓.
 
@@ -279,7 +279,7 @@ Open [labs/06-07-lab/](../labs/06-07-lab/README.md): a notebook and an ngspice n
 
 ### State of the art (as of Nov 2026)
 
-- **Simulators exploit linearity.** SPICE's small-signal AC and noise analyses linearize the circuit at its DC operating point and then use superposition: an AC analysis solves one complex linear system per frequency, and a noise analysis computes each noise source's contribution to the output separately and adds the mean-square values, reporting each device's share (06-04, Course 07) **[Established]**.
+- **Simulators exploit linearity.** SPICE's small-signal AC and noise analyses linearize the circuit at its DC operating point and then use superposition: an AC analysis solves one complex linear system per frequency, and a noise analysis computes each noise source's contribution to the output separately and adds the mean-square values, reporting each device's share (06-04, Course 07; the ngspice user manual's chapters on AC and noise analysis) **[Established]**.
 - **Error budgets are standard engineering practice.** Precision-signal-chain design and component selection rest on summing error contributions by worst case or RSS, and on specifying which (03-04, 06-02) **[Established]**.
 
 ### Why it matters commercially
@@ -288,7 +288,7 @@ Every precision product (sensor interfaces, battery monitors, medical front ends
 
 ### Marketing vs Reality
 
-- **"Typical accuracy 0.01%."** *Reality:* "typical" usually means an RSS or median figure; the guaranteed (worst-case or maximum) number can be several times larger. Ask whether it is worst case over temperature and lifetime, or typical at 25 °C.
+- **"Typical accuracy 0.01%."** *Reality:* "typical" conventionally means a characterization mean or median, usually at 25 °C, not a guarantee; the guaranteed (maximum) number can be several times larger. Ask whether it is worst case over temperature and lifetime, or typical at 25 °C.
 - **"The amplifier is linear."** *Reality:* only up to a signal level; distortion grows as signals approach the supply rails or as transistor currents swing far from their bias. Ask for linearity (distortion) at the actual signal level.
 - **"Noise is 1 µV."** *Reality:* noise from independent sources adds as RSS, so a system's noise is dominated by its largest contributor; quoting one component's noise says little about the chain. Ask for the full noise budget.
 
@@ -388,3 +388,4 @@ Problem set: [06-07 problems](../problems/06-07-problems.md) · [solutions](../s
 
 1. Nilsson and Riedel, ch. 4; Alexander and Sadiku, ch. 4; Agarwal and Lang (2005), ch. 3.
 2. MIT OpenCourseWare 6.002 (Spring 2007), Lecture 3 materials (superposition).
+3. *Ngspice User's Manual* (ngspice project), the chapters on small-signal AC and noise analysis.
