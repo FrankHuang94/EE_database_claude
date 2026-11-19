@@ -2366,3 +2366,45 @@
 - term: Incremental resistance
   definition: The slope dv/di of a nonlinear element's i–v curve at an operating point, the resistance a small signal sees; for a diode it is about V_T/I.
   chapter: "06-02"
+
+# ---------------------------------------------------------------- 06-03
+- term: Spanning tree
+  definition: A set of n − 1 branches that connects all n nodes of a circuit without forming a loop; each remaining branch (a link) closes one independent loop, giving b − n + 1 independent KVL equations.
+  chapter: "06-03"
+- term: Mesh
+  definition: In a planar circuit, a loop that encloses no other branch (a window pane of the drawing); the meshes form a set of b − n + 1 independent loops.
+  chapter: "06-03"
+- term: Series connection
+  definition: Elements joined end to end with nothing else connected at the nodes between them, so they carry the same current; series resistances add.
+  chapter: "06-03"
+  see_also: [Voltage divider]
+- term: Parallel connection
+  definition: Elements connected between the same two nodes, so they share the same voltage; parallel conductances add (R1 ∥ R2 = R1R2/(R1 + R2)).
+  chapter: "06-03"
+  see_also: [Current divider]
+- term: Equivalent resistance
+  definition: The single resistance that has the same voltage–current relation at a pair of terminals as a network of resistors; it says nothing about the network's internal currents.
+  chapter: "06-03"
+- term: Voltage divider
+  definition: Series resistors sharing a voltage in proportion to their resistances, v_k = v R_k/ΣR; for two, v_out = v_in R2/(R1 + R2).
+  chapter: "06-03"
+  see_also: [Loading effect]
+- term: Current divider
+  definition: Parallel resistors sharing a current in proportion to their conductances; for two, i1 = i R2/(R1 + R2), so the smaller resistor takes the larger current.
+  chapter: "06-03"
+- term: Loading effect
+  definition: The drop in a source's or divider's output when a load draws current from it; the relative error is about R_source/R_load when the load is much larger.
+  chapter: "06-03"
+- term: Wheatstone bridge
+  definition: Two voltage dividers fed from one source with the output taken between their midpoints; balanced (zero output) when R1R4 = R2R3, and used to measure small resistance changes.
+  chapter: "06-03"
+  see_also: [Gauge factor]
+- term: Gauge factor
+  definition: The ratio of a strain gauge's fractional resistance change to the strain, GF = (ΔR/R)/ε; about 2 for metal-foil gauges.
+  chapter: "06-03"
+- term: Delta–wye transformation
+  definition: Replacing three resistors in a triangle (delta) by three meeting at a node (wye), or the reverse, with equal behaviour at the three terminals; R_a = R_ab R_ca/(R_ab + R_bc + R_ca).
+  chapter: "06-03"
+- term: R–2R ladder
+  definition: A resistor network of series R and shunt 2R sections in which each node sees R looking onward, so currents halve at every rung; the basis of many digital-to-analog converters.
+  chapter: "06-03"

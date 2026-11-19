@@ -107,6 +107,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-099 | Data-centre electricity use (IEA) | Nov 2026 |
 | R-100 | Low-power MCU currents, coin cells and CPU core-voltage ranges | Nov 2026 |
 | R-101 | Resistors: preferred values, film technologies, copper and shunts | Nov 2026 |
+| R-102 | Strain gauges: gauge factor and bridge excitation | Nov 2026 |
 
 ---
 
@@ -857,3 +858,12 @@ R&D % = R&D ÷ revenue.
 - **PCB copper:** TI SNVA054C: "1 oz is actually equivalent to 1.4 mils copper thickness (or 35 µm)"; TI SLUA236: "0.0014 inches ±0.0002 inches"; ADI *Basic Linear Design* ch. 12 uses 1.724 µΩ·cm and 0.036 mm (its text writes "Ω/cm" for Ω·cm and calls the 20 °C IACS value a 25 °C value). Derived here: $\rho/t$ ≈ 0.49 mΩ/□ at 20 °C, with ±7–15% spread from plating and etch [Industry estimate].
 - **Four-terminal shunt (Vishay WSK2512, doc 30108):** 0.5 mΩ to 0.2 Ω; "4-terminal design allows for 1 % tolerance down to 0.0005 Ω"; TCR ±350 ppm/°C (0.5–0.99 mΩ), ±250 (1–2.9 mΩ), ±75 (3–4.9 mΩ), ±35 ppm/°C (5 mΩ–0.2 Ω), element below 20 ppm/°C. The explanation that copper terminations dominate the TCR at low values is our inference, not the datasheet's [Industry estimate].
 - **Sources:** [IEC 60063:2015](https://webstore.iec.ch/en/publication/22011); [Vishay D/CRCW e3](https://www.vishay.com/docs/20035/dcrcwe3.pdf); [Vishay TNPW e3](https://www.vishay.com/docs/28758/tnpw_e3.pdf); [Panasonic ERJ chip resistors](https://industrial.panasonic.com/cdbs/www-data/pdf/RDA0000/AOA0000C301.pdf); [ROHM SMR003](https://www.rohm.com/products/resistors/class-leading-compact-size-chip-resistors/ultra-compact-chip-resistors/smr003rxf-product); [NBS Handbook 100](https://nvlpubs.nist.gov/nistpubs/Legacy/hb/nbshandbook100.pdf); [TI SNVA054](https://www.ti.com/lit/pdf/snva054); [ADI Basic Linear Design ch. 12](https://www.analog.com/media/en/training-seminars/design-handbooks/Basic-Linear-Design/Chapter12.pdf); [Vishay WSK2512](https://www.vishay.com/docs/30108/wsk2512.pdf). Checked Nov 2026 (search excerpts).
+
+## R-102 · Strain gauges: gauge factor and bridge excitation
+
+*Search excerpts only:* the HBM/HBK and Micro-Measurements pages could not be opened from the build environment, so the quotes below are the search tool's renderings; tags are capped accordingly (PROGRESS open issue 21).
+
+- **Gauge factor:** HBM/HBK technical notes: gauge factor "about 2.0 for constantan (Y-Series) and 2.2 for its Modco (M-Series) grids" (summary); "With a gauge factor of 2.0, a strain of 5784µm/m is measured, while with a gauge factor of 2.06, a strain of 5618µm/m is measured" [Industry estimate].
+- **Excitation:** HBM tech note 4206: 2.5 V is "a typical excitation voltage for a strain gauge quarter bridge"; HBK QuantumX MX1615B datasheet: "DC quarter-bridge excitation of 0.5; 1; 2.5; 5 (±5 %) volts"; an HBK note's heating example: "52 mW for 5 V RMS into a 120 Ω gauge" (half of the bridge voltage across each gauge: $2.5^2/120$ = 52 mW, our check); Micro-Measurements' reference guide cites 0.5 to 12 V DC [Industry estimate].
+- **Derived in the chapter:** ΔR/R = GF·ε, so 1000 µε with GF = 2 gives 0.2%, and a 2.5 V quarter bridge about 1.25 mV.
+- **Sources:** [HBM, strain gauge excitation voltage](https://www.hbm.com/en/4206/tips-and-tricks-strain-gauge-excitation-voltage/); [HBM, gauge factor deviation](https://www.hbm.com/en/7942/gauge-factor-deviation/); [HBK strain measurement glossary](https://www.hbkworld.com/en/knowledge/resource-center/articles/strain-measurement-glossary1); [Micro-Measurements reference guide](https://docs.micro-measurements.com/?id=8690). Checked Nov 2026 (search excerpts).

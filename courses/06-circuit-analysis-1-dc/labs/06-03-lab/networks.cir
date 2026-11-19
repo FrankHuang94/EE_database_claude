@@ -1,0 +1,95 @@
+* Lab 06-03 -- series-parallel networks, a loaded divider, a strain-gauge bridge and two
+* bridge networks that need a delta-wye conversion by hand, all solved by ngspice directly.
+*
+* EXPECT ex2i     key:../../chapters/06-03-kirchhoffs-laws.md#Ex_06-03.2b scale=-1 rtol=1e-6
+* EXPECT ex2v4    key:../../chapters/06-03-kirchhoffs-laws.md#Ex_06-03.2f rtol=1e-6
+* EXPECT ex3open  key:../../chapters/06-03-kirchhoffs-laws.md#Ex_06-03.3a rtol=1e-3
+* EXPECT ex3load  key:../../chapters/06-03-kirchhoffs-laws.md#Ex_06-03.3d rtol=1e-3
+* EXPECT ex4out   key:../../chapters/06-03-kirchhoffs-laws.md#Ex_06-03.4b scale=1e-3 rtol=1e-4
+* EXPECT ex5i     key:../../chapters/06-03-kirchhoffs-laws.md#Ex_06-03.5c scale=-1 rtol=1e-3
+* EXPECT ex5icd   key:../../chapters/06-03-kirchhoffs-laws.md#Ex_06-03.5f scale=1e-3 rtol=1e-3
+* EXPECT p6i      key:../../solutions/06-03-solutions.md#06-03.6b scale=-1 rtol=1e-6
+* EXPECT p12iin   key:../../solutions/06-03-solutions.md#06-03.12b scale=-1e-3 rtol=1e-6
+* EXPECT p12sum   key:../../solutions/06-03-solutions.md#06-03.12d scale=1e-3 rtol=1e-6
+* EXPECT p13icd   key:../../solutions/06-03-solutions.md#06-03.13b rtol=1e-6
+
+* ---- Example 06-03.2: 24 V; R1 = 4; R2 = 12 parallel with (R3 = 2 + R4 = 4)
+V2   a2 0 DC 24
+R21  a2 p2 4
+R22  p2 0 12
+R23  p2 m2 2
+R24  m2 0 4
+* ---- Example 06-03.3: 12.6 V battery, 100k over 33k, with and without a 1 MOhm ADC load
+V3   b3 0 DC 12.6
+R31  b3 o3 100k
+R32  o3 0 33k
+V3L  b3l 0 DC 12.6
+R31L b3l o3l 100k
+R32L o3l 0 33k
+RADC o3l 0 1MEG
+* ---- Example 06-03.4: quarter bridge, 2.5 V, 350 Ohm arms, active gauge 350.7 Ohm at the bottom left
+V4   e4 0 DC 2.5
+R41  e4 l4 350
+R42  l4 0 350.7
+R43  e4 r4 350
+R44  r4 0 350
+* ---- Example 06-03.5: 10 V between a and ground b
+V5   a5 0 DC 10
+R5ac a5 c5 10
+R5ad a5 d5 20
+R5cd c5 m5 30
+VM5  m5 d5 0
+R5cb c5 0 40
+R5db d5 0 50
+* ---- Problem 06-03.6: 12 V; R1 = 2; 6 parallel 3; R4 = 1
+V6   a6 0 DC 12
+R61  a6 p6 2
+R62  p6 q6 6
+R63  p6 q6 3
+R64  q6 0 1
+* ---- Problem 06-03.12: R-2R ladder, R = 10k, Vref = 5 V; legs of N1, N3, N4 summed into VSUM (0 V)
+V12  n1 0 DC 5
+RL1  n1 s1 20k
+RL2  n2 0  20k
+RL3  n3 s1 20k
+RL4  n4 s1 20k
+RT   n4 0  20k
+RS12 n1 n2 10k
+RS23 n2 n3 10k
+RS34 n3 n4 10k
+VSUM s1 0 DC 0
+* ---- Problem 06-03.13: driven with exactly 1 A
+I13  0 a13 DC 1
+R13a a13 c13 6
+R13b a13 d13 12
+R13c c13 m13 6
+VM13 m13 d13 0
+R13d c13 0 12
+R13e d13 0 6
+
+.control
+op
+let ex2i = i(V2)
+let ex2v4 = v(m2)
+let ex3open = v(o3)
+let ex3load = v(o3l)
+let ex4out = v(l4) - v(r4)
+let ex5i = i(V5)
+let ex5icd = i(VM5)
+let p6i = i(V6)
+let p12iin = i(V12)
+let p12sum = i(VSUM)
+let p13icd = i(VM13)
+echo "ex2i = $&ex2i"
+echo "ex2v4 = $&ex2v4"
+echo "ex3open = $&ex3open"
+echo "ex3load = $&ex3load"
+echo "ex4out = $&ex4out"
+echo "ex5i = $&ex5i"
+echo "ex5icd = $&ex5icd"
+echo "p6i = $&p6i"
+echo "p12iin = $&p12iin"
+echo "p12sum = $&p12sum"
+echo "p13icd = $&p13icd"
+.endc
+.end
