@@ -1,0 +1,147 @@
+* Lab 06-06 -- dependent sources in ngspice: G (VCCS), F (CCCS), H (CCVS) and E (VCVS) elements
+* for the chapter's examples and several problems. Zero-volt sources (V...s) sense controlling currents.
+*
+* EXPECT ex1v1   key:../../chapters/06-06-dependent-sources.md#Ex_06-06.1a rtol=1e-3
+* EXPECT ex1v2   key:../../chapters/06-06-dependent-sources.md#Ex_06-06.1b rtol=1e-3
+* EXPECT ex2gain key:../../chapters/06-06-dependent-sources.md#Ex_06-06.2a rtol=1e-3
+* EXPECT ex2vs   key:../../chapters/06-06-dependent-sources.md#Ex_06-06.2b rtol=1e-3
+* EXPECT ex3ib   key:../../chapters/06-06-dependent-sources.md#Ex_06-06.3b scale=1e-6 rtol=1e-3
+* EXPECT ex3vo   key:../../chapters/06-06-dependent-sources.md#Ex_06-06.3c scale=1e-3 rtol=1e-3
+* EXPECT ex4a    key:../../chapters/06-06-dependent-sources.md#Ex_06-06.4a scale=1e3 rtol=1e-6
+* EXPECT ex4b    key:../../chapters/06-06-dependent-sources.md#Ex_06-06.4b scale=1e3 rtol=1e-6
+* EXPECT ex5vo   key:../../chapters/06-06-dependent-sources.md#Ex_06-06.5a rtol=1e-5
+* EXPECT ex5vd   key:../../chapters/06-06-dependent-sources.md#Ex_06-06.5b scale=1e-6 rtol=1e-3
+* EXPECT p3v1    key:../../solutions/06-06-solutions.md#06-06.3b rtol=1e-3
+* EXPECT p3v2    key:../../solutions/06-06-solutions.md#06-06.3c rtol=1e-6
+* EXPECT p5i1    key:../../solutions/06-06-solutions.md#06-06.5b rtol=1e-6
+* EXPECT p5i2    key:../../solutions/06-06-solutions.md#06-06.5c rtol=1e-6
+* EXPECT p7gain  key:../../solutions/06-06-solutions.md#06-06.7g rtol=1e-3
+* EXPECT p11gain key:../../solutions/06-06-solutions.md#06-06.11a rtol=1e-5
+* EXPECT p12v3   key:../../solutions/06-06-solutions.md#06-06.12b rtol=1e-6
+* EXPECT p12j    key:../../solutions/06-06-solutions.md#06-06.12c scale=1e-3 rtol=1e-6
+* EXPECT p14vo   key:../../solutions/06-06-solutions.md#06-06.14a rtol=1e-6
+* EXPECT p14vo2  key:../../solutions/06-06-solutions.md#06-06.14d rtol=1e-3
+
+* ---- Example 06-06.1: 1 mA into node 1; 2k, 4k, 4k; VCCS 1 mS * v1 from node 2 to ground
+I1   0 n1 DC 1m
+R11  n1 0 2k
+R112 n1 n2 4k
+R12  n2 0 4k
+G1   n2 0 n1 0 1m
+* ---- Example 06-06.2: degenerated MOSFET, gm = 2 mS, ro = 50k, RD = 10k, RS = 1k, 1 V at the gate
+V2   g2 0 DC 1
+G2   d2 s2 g2 s2 2m
+RO2  d2 s2 50k
+RD2  d2 0 10k
+RS2  s2 0 1k
+* ---- Example 06-06.3: bipolar stage, beta = 100, rpi = 2.5k, RE = 100, RC = 4k, 10 mV with 1k source resistance
+V3   in3 0 DC 10m
+RS3  in3 b3 1k
+V3s  b3 bx3 0
+RP3  bx3 e3 2.5k
+F3   c3 e3 V3s 100
+RE3  e3 0 100
+RC3  c3 0 4k
+* ---- Example 06-06.4: test source into node 1, 100k to the output of a VCVS of gain -99 (a) or +2 (b)
+V4a  n4a 0 DC 1
+RF4a n4a o4a 100k
+E4a  o4a 0 n4a 0 -99
+V4b  n4b 0 DC 1
+RF4b n4b o4b 100k
+E4b  o4b 0 n4b 0 2
+* ---- Example 06-06.5: op-amp as a VCVS, A = 1e5, Rid = 1 MEG, Ro = 100; non-inverting gain 10, 2k load
+V5   p5 0 DC 1
+RID5 p5 n5 1MEG
+R15  n5 0 1k
+R25  n5 o5 9k
+RL5  o5 0 2k
+RO5  o5 x5 100
+E5   x5 0 p5 n5 1e5
+* ---- Problem 06-06.3: CCCS 4*ix into node 2, ix the current down through the 5k
+I63  0 a63 DC 2m
+R631 a63 s63 5k
+V63s s63 0 0
+R63m a63 b63 10k
+R632 b63 0 2k
+F63  0 b63 V63s 4
+* ---- Problem 06-06.5: CCVS 3*i1 (a rise going down its branch in mesh 2)
+V65  a65 0 DC 10
+V65s a65 a65x 0
+R651 a65x m65 2
+R652 m65 0 4
+R653 m65 c65 6
+H65  0 c65 V65s 3
+* ---- Problem 06-06.7 (c): beta = 120, rpi = 3102.24, RE = 200, RC = 5k, Rs = 2k, 1 V source
+V67  in67 0 DC 1
+RS67 in67 b67 2k
+V67s b67 bx67 0
+RP67 bx67 e67 3102.24
+F67  c67 e67 V67s 120
+RE67 e67 0 200
+RC67 c67 0 5k
+* ---- Problem 06-06.11: inverting amplifier, A = 1e4, R1 = 1k, R2 = 10k
+V611 i611 0 DC 1
+R611 i611 n611 1k
+R612 n611 o611 10k
+E611 o611 0 0 n611 1e4
+* ---- Problem 06-06.12: the netlist of the problem (nodes renamed)
+V612 p1 0 DC 1
+R6121 p1 p2 1k
+R6122 p2 0 1k
+G612 p3 0 p2 0 10m
+R6123 p3 0 2k
+* ---- Problem 06-06.14: current mirror as a CCCS of gain 1 with ro = 100k (a) and 1 MEG (b)
+I614 0 r614 DC 0.1m
+V614s r614 0 0
+F614 o614 0 V614s 1
+RO614 o614 0 100k
+RL614 vdd614 o614 20k
+VDD614 vdd614 0 DC 5
+F614b o614b 0 V614s 1
+RO614b o614b 0 1MEG
+RL614b vdd614 o614b 20k
+
+.control
+op
+let ex1v1 = v(n1)
+let ex1v2 = v(n2)
+let ex2gain = v(d2)
+let ex2vs = v(s2)
+let ex3ib = i(V3s)
+let ex3vo = v(c3)
+let ex4a = -1/i(V4a)
+let ex4b = -1/i(V4b)
+let ex5vo = v(o5)
+let ex5vd = v(p5) - v(n5)
+let p3v1 = v(a63)
+let p3v2 = v(b63)
+let p5i1 = i(V65s)
+let p5i2 = (v(m65) - v(c65))/6
+let p7gain = v(c67)
+let p11gain = v(o611)
+let p12v3 = v(p3)
+let p12j = i(V612)
+let p14vo = v(o614)
+let p14vo2 = v(o614b)
+echo "ex1v1 = $&ex1v1"
+echo "ex1v2 = $&ex1v2"
+echo "ex2gain = $&ex2gain"
+echo "ex2vs = $&ex2vs"
+echo "ex3ib = $&ex3ib"
+echo "ex3vo = $&ex3vo"
+echo "ex4a = $&ex4a"
+echo "ex4b = $&ex4b"
+echo "ex5vo = $&ex5vo"
+echo "ex5vd = $&ex5vd"
+echo "p3v1 = $&p3v1"
+echo "p3v2 = $&p3v2"
+echo "p5i1 = $&p5i1"
+echo "p5i2 = $&p5i2"
+echo "p7gain = $&p7gain"
+echo "p11gain = $&p11gain"
+echo "p12v3 = $&p12v3"
+echo "p12j = $&p12j"
+echo "p14vo = $&p14vo"
+echo "p14vo2 = $&p14vo2"
+.endc
+.end

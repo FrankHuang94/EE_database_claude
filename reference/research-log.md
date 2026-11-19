@@ -109,6 +109,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-101 | Resistors: preferred values, film technologies, copper and shunts | Nov 2026 |
 | R-102 | Strain gauges: gauge factor and bridge excitation | Nov 2026 |
 | R-103 | Modified nodal analysis and simulator capacity | Nov 2026 |
+| R-104 | Compact models and gm/ID design | Nov 2026 |
 
 ---
 
@@ -881,3 +882,12 @@ R&D % = R&D ÷ revenue.
   - [Crossref record for the MNA paper](https://api.crossref.org/works/10.1109/TCS.1975.1084079); the paper's text was read from [an author-uploaded copy](https://spinningnumbers.org/assets/MNA75.pdf).
   - Vendor claims: [Cadence Spectre X](https://www.cadence.com/en_US/home/tools/custom-ic-analog-rf-design/circuit-simulation/spectre-x-simulator.html), [Cadence blog, June 2019](https://community.cadence.com/cadence_blogs_8/b/cic/posts/tales-from-dac-the-new-spectre-simulator-is-here), [Synopsys blog on PrimeSim](https://www.synopsys.com/blogs/chip-design/primesim-continuum-ic-hyperconvergence.html), [Cadence blog on Spectre FX](https://community.cadence.com/cadence_blogs_8/b/breakfast-bytes/posts/spectrefx), [US 8,060,355](https://patents.google.com/patent/US8060355).
   - The vendor and patent pages returned bot-check pages to direct download, so those claims come from search excerpts (PROGRESS open issue 21). Checked Nov 2026.
+
+## R-104 · Compact models and gm/ID design
+
+*Search excerpts only:* si2.org returned a bot-check page and the Cambridge excerpt PDF failed its TLS handshake from the build environment, so the facts below are the search tool's renderings (PROGRESS open issue 21).
+
+- **Compact Model Coalition:** an industry working group run by Si2 that chooses, maintains and promotes standard semiconductor device models; it brings together university developers, simulator vendors, fabless companies, foundries and integrated device manufacturers. Its quality-assurance program aims to make simulations of the standard models uniform across vendors' simulators. CMC members get new standards immediately, and they are released to the public 18 months after the initial release [Industry estimate].
+- **BSIM-CMG:** the CMC standard compact model for multi-gate (FinFET) transistors, developed by UC Berkeley's BSIM group. Si2 announced a 2019 release developed "in conjunction with 20 partners", with 25 enhancements and 13 bug fixes. The current version as of Nov 2026 was not confirmed [Industry estimate].
+- **gm/ID methodology:** P. G. A. Jespers and B. Murmann, *Systematic Design of Analog CMOS Circuits: Using Pre-Computed Lookup Tables*, Cambridge University Press, 2017 (ISBN 9781107192256). It sizes transistors with precomputed tables of $g_m/I_D$ and related small-signal parameters, organized by inversion level, using script-based flows in place of repeated simulation; MATLAB code accompanies it [Industry estimate].
+- **Sources:** [Si2 release on BSIM-CMG](https://si2.org/?p=10490); [Compact Model Coalition (Wikipedia, used only for the access policy)](https://en.wikipedia.org/wiki/Compact_Model_Coalition); [Cambridge University Press, chapter page](https://www.cambridge.org/core/books/systematic-design-of-analog-cmos-circuits/basic-sizing-using-the-gmid-methodology/185BE8CB4F04AD9FFC08CDE06D3EA8A9). Checked Nov 2026 (search excerpts).

@@ -2468,3 +2468,41 @@
   definition: A grounding layout in which each circuit has its own return conductor to a single common point at the supply, so that no return impedance is shared between noisy and sensitive circuits.
   chapter: "06-05"
   see_also: [Common-impedance coupling]
+
+# ---------------------------------------------------------------- 06-06
+- term: Dependent source
+  definition: An ideal voltage or current source whose value is a fixed multiple of a voltage or current elsewhere in the circuit (VCVS, VCCS, CCVS, CCCS); it models gain in transistors and amplifiers and stays in place when independent sources are turned off.
+  chapter: "06-06"
+  see_also: [VCVS, VCCS, CCVS, CCCS, Small-signal model]
+- term: VCVS
+  definition: Voltage-controlled voltage source, v = μ v_x, with dimensionless voltage gain μ; SPICE element E. The first-order model of an op-amp.
+  chapter: "06-06"
+  see_also: [Dependent source]
+- term: VCCS
+  definition: Voltage-controlled current source, i = g v_x, with transconductance g in siemens; SPICE element G. The core of a MOSFET's small-signal model.
+  chapter: "06-06"
+  see_also: [Dependent source, Transconductance]
+- term: CCVS
+  definition: Current-controlled voltage source, v = r i_x, with transresistance r in ohms; SPICE element H, controlled by the current through a named voltage source.
+  chapter: "06-06"
+  see_also: [Dependent source]
+- term: CCCS
+  definition: Current-controlled current source, i = β i_x, with dimensionless current gain β; SPICE element F. The core of a bipolar transistor's small-signal model and of a current mirror.
+  chapter: "06-06"
+  see_also: [Dependent source]
+- term: Test source
+  definition: A voltage or current source applied at a port, with all independent sources turned off but dependent sources left in place, to find the resistance seen there as v_t/i_t.
+  chapter: "06-06"
+  see_also: [Dependent source]
+- term: Miller effect
+  definition: An impedance connected between the input and output of an inverting amplifier of gain −A looks (1 + A) times smaller (for a capacitance, larger) from the input, because the amplifier multiplies the voltage across it.
+  chapter: "06-06"
+  see_also: [Test source]
+- term: Negative resistance
+  definition: A port whose current flows out when a positive voltage is applied (v/i < 0), so it delivers power; it requires an active element such as a dependent source with positive feedback, and is the basis of oscillators.
+  chapter: "06-06"
+  see_also: [Dependent source]
+- term: Source degeneration
+  definition: A resistor R_S in a transistor's source (or R_E in a bipolar emitter) that feeds back a voltage opposing the input, cutting the gain to about −R_D/(R_S + 1/g_m) but making it set by resistors rather than by the device.
+  chapter: "06-06"
+  see_also: [Transconductance]
