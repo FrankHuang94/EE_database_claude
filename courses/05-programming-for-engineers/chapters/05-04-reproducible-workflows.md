@@ -30,7 +30,7 @@ The first three chapters of this course taught you to compute. This one teaches 
 
 **A notebook is a whiteboard with a memory you cannot see.** When you run a cell, its code goes to a separate program, the **kernel**, which keeps every variable in memory until it is restarted. The page shows cells in order from top to bottom, but the kernel remembers them in the order you *ran* them, including cells you have since edited or deleted. Most of the time the two orders agree. When they do not, the page shows results that its own code no longer produces. The cure is mechanical: restart the kernel and run every cell from the top before you believe or share anything.
 
-**Version control is a ledger, not an eraser.** An accountant never erases a booked entry; a mistake is corrected by a new, dated entry, and the full history stays auditable. Git works the same way: each **commit** is a dated, signed-off snapshot of the whole project with a note explaining why, and history only grows. *Where the analogy breaks:* a ledger records transactions (changes), while git records complete snapshots and computes the changes when you ask; and unlike a ledger, git lets you start parallel versions of the project (branches) and later combine them.
+**Version control is a ledger, not an eraser.** An accountant never erases a booked entry; a mistake is corrected by a new, dated entry, and the full history stays auditable. Git works the same way: each **commit** is a dated snapshot of the whole project with a note explaining why, and in normal use history only grows. *Where the analogy breaks:* a ledger records transactions (changes), while git records complete snapshots and computes the changes when you ask; git lets you start parallel versions of the project (branches) and later combine them; and git's entries are not notarized. The author name and date in a commit are whatever the committer's machine says (commits are unsigned unless you add a cryptographic signature), and a local history can be rewritten before it is shared, or even after, with a forced push. The protection comes from the hash chain (Section 3.2): once others hold a copy, any rewrite changes every later commit's identity and is plain to see.
 
 **Tests are reconciliation controls.** A reconciliation compares two independently produced totals; it catches every error that makes them disagree and none that it does not look at. A test compares what code produces with what it should produce, for chosen cases. Passing tests do not prove code correct (Edsger Dijkstra's famous point is that testing can show the presence of bugs, never their absence), but a good suite catches the errors that matter, every time, automatically.
 
@@ -207,7 +207,7 @@ Notice what these tests check: a **known case** worked by hand, a **symmetry** t
 **pytest** is the standard Python test runner. It finds files named `test_*.py` (or `*_test.py`), runs every function whose name starts with `test`, and reports which passed and which failed, with the values involved. Its main tools:
 
 - **Plain `assert`.** On failure pytest shows the values on both sides, so you rarely need custom messages.
-- **`pytest.approx(expected, rel=1e-6, abs=1e-12)`** for floating-point comparisons: `x == pytest.approx(y)` passes when $|x - y| \le \max(\text{rel}\cdot|y|,\ \text{abs})$. The values shown are pytest's defaults.
+- **`pytest.approx(expected, rel=1e-6, abs=1e-12)`** for floating-point comparisons: `x == pytest.approx(y)` passes when $|x - y| \le \max(\text{rel}\cdot|y|,\ \text{abs})$. The values shown are pytest's defaults, with an asymmetry worth knowing: passing `rel` alone keeps the default absolute floor of $10^{-12}$, while passing `abs` alone switches the relative test off entirely. State both when it matters (Problem 05-04.4).
 - **`pytest.raises(ValueError)`** as a `with` block asserts that the code inside raises that exception: the test of error handling.
 - **`@pytest.mark.parametrize`** runs one test function over a table of inputs, each reported as a separate test.
 - **Fixtures** such as `tmp_path` hand a test a fresh temporary folder, so tests never depend on or damage your real files.
@@ -248,7 +248,7 @@ for flags in ([], ["-O"]):
 ['-O'] 0 reached the end
 ```
 
-So never use `assert` to validate input that a user or another program supplies: under `-O` the check vanishes. In test files, by contrast, `assert` is exactly right, because tests are never run with `-O`.
+So never use `assert` to validate input that a user or another program supplies: under `-O` the check vanishes. In test files, by contrast, `assert` is exactly right: pytest rewrites the `assert` statements in test modules into ordinary checks (that is how it prints the compared values on failure), so they run even under `-O`. An `assert` inside the code being tested is not rewritten and still vanishes, and pytest warns about exactly that when run with `-O`.
 
 ### 3.5 Reproducible workflows
 
@@ -266,7 +266,7 @@ import numpy as np
 print("Python", platform.python_version(), "| NumPy", np.__version__)
 ```
 
-**Seed randomness.** Every simulation that draws random numbers takes a seed (`np.random.default_rng(seed)`, 05-02), recorded with its results.
+**Seed randomness.** Every simulation that draws random numbers takes a seed (`np.random.default_rng(seed)`, 05-02), recorded with its results. A seed reproduces a run exactly only together with the library version: NumPy keeps its old `RandomState` stream frozen, but does not promise that the newer `Generator` methods produce identical streams across releases (NEP 19, [R-087](../../../reference/research-log.md#r-087--python-releases-floating-point-and-developer-usage)). So the seed belongs next to the pinned versions, ideally in a **lock file** that records the exact version of every package (`pip freeze > requirements-lock.txt`), and tests should check statistical properties with tolerances rather than exact random draws.
 
 **Fingerprint the data.** Store raw data read-only and record a cryptographic hash of each data file with the results, so anyone can confirm they analyzed the same bytes:
 
@@ -288,7 +288,7 @@ One changed digit gives an unrelated fingerprint (Example 05-04.4 explains why).
 
 **Re-run from clean, automatically.** **Continuous integration (CI)** is a service that, on every push, starts a fresh machine, installs the recorded environment and runs every test. It catches "works on my machine" problems: a file you forgot to commit, a package you installed by hand, a notebook that only works with hidden state.
 
-**Exact versus tolerant reproducibility.** Pure-Python arithmetic on IEEE 754 doubles gives bit-identical results everywhere. Library routines may not: linear-algebra libraries (BLAS) choose different summation orders on different processors, so results can differ in the last few bits. Tests should therefore compare numbers with tolerances, while text outputs, hashes and counts can be compared exactly.
+**Exact versus tolerant reproducibility.** IEEE 754 requires the basic operations (+, −, ×, ÷ and square root) to be correctly rounded, so the same sequence of them gives bit-identical results on every conforming machine. Little else is guaranteed. `math.sin`, `math.exp` and their relatives come from the platform's math library, which may differ in the last bit between systems; even built-ins change, as when Python 3.12 made `sum()` of floats use a more accurate compensated algorithm, so the same sum can differ in its last digits between Python 3.11 and 3.12 ([R-087](../../../reference/research-log.md#r-087--python-releases-floating-point-and-developer-usage)). Library routines differ too: linear-algebra libraries (BLAS) choose different summation orders on different processors, so results can differ in the last few bits. Tests should therefore compare numbers with tolerances, while text outputs, hashes and counts can be compared exactly.
 
 ### 3.6 How this repository verifies itself
 
@@ -331,12 +331,12 @@ The real checker ([`tools/eeverify.py`](../../../tools/eeverify.py)) adds a hair
 
 ### Example 05-04.1 · A time constant that silently doubles
 
-**Setup.** A notebook has four cells: (1) `r = 1000`, (2) `c = 1e-6`, (3) `tau = r * c`, (4) `r = 2000`, which you added later to try a different resistor. Compare *Restart & Run All* with what happens if, after running all four once, you go back and re-run cell 3.
+**Setup.** A notebook has four cells: (1) `r = 1000`, (2) `c = 1e-6`, (3) `tau = r * c` followed by a line `tau`, so the cell displays its value, (4) `r = 2000`, which you added later to try a different resistor. Compare *Restart & Run All* with what happens if, after running all four once, you go back and re-run cell 3.
 
 **Solution.** A kernel is a namespace that persists between cells, so we can imitate one with a dictionary and `exec`:
 
 ```python
-cells = {1: "r = 1000", 2: "c = 1e-6", 3: "tau = r * c", 4: "r = 2000"}
+cells = {1: "r = 1000", 2: "c = 1e-6", 3: "tau = r * c\ntau", 4: "r = 2000"}
 
 def run(order):
     kernel = {}                           # a fresh kernel: empty memory
@@ -353,7 +353,7 @@ restart & run all: (2000, 0.001)
 then re-run cell 3: (2000, 0.002)
 ```
 
-Top to bottom, τ = **1.000 ms** (cell 4 runs after τ was computed, so it has no effect on τ). Re-running cell 3 afterwards gives τ = **2.000 ms**, while the page still shows `r = 1000` in cell 1 above it. A reader of the saved notebook sees $r$ = 1000 Ω, $C$ = 1 µF and τ = 2 ms, an impossible combination, and execution counts that run 1, 2, 5, 4.
+Top to bottom, τ = **1.000 ms** (cell 4 runs after τ was computed, so it has no effect on τ). Re-running cell 3 afterwards gives τ = **2.000 ms**, and cell 3's displayed output now reads 0.002, while the page still shows `r = 1000` in cell 1 above it. A reader of the saved notebook sees $r$ = 1000 Ω, $C$ = 1 µF and τ = 2 ms, an impossible combination, and execution counts that run 1, 2, 5, 4.
 
 **Units check.** 1000 Ω × 10⁻⁶ F = 10⁻³ s ✓ (an ohm times a farad is a second).
 
@@ -524,7 +524,7 @@ An accidental collision is not a practical concern. A *deliberate* one is a diff
 
 **Setup.** A Monte Carlo routine estimates the mean divider ratio $R_b/(R_t+R_b)$ for two nominally equal 10 kΩ resistors, each with a standard deviation of 1% (100 Ω), from $n$ = 10,000 random draws. (a) What should the mean be exactly? (b) What is the standard error of the estimate? (c) A test asserts that the estimate lies within 4 standard errors of the exact mean. What fraction of correct runs would it fail by chance, with a new random seed each time? (d) What is the chance that a suite of 1000 such tests fails somewhere?
 
-**Solution.** (a) **Symmetry.** $R_t$ and $R_b$ have the same distribution, so $E[R_b/(R_t+R_b)] = E[R_t/(R_t+R_b)]$, and the two ratios add to exactly 1. Each expectation is therefore exactly **0.5**, with no approximation.
+**Solution.** (a) **Symmetry.** $R_t$ and $R_b$ are independent and have the same distribution, so swapping them changes nothing about their joint distribution (they are *exchangeable*); hence $E[R_b/(R_t+R_b)] = E[R_t/(R_t+R_b)]$, and the two ratios add to exactly 1. Each expectation is therefore exactly **0.5**, with no approximation. (A mathematical footnote: a Gaussian model allows a negative resistance with absurdly small probability, so strictly the ratio's mean is not even defined; real resistors are bounded, tolerance-sorted parts, and the simulation never comes near that tail.)
 
 (b) **Spread of one draw, to first order** (03-03). With ratio $g = R_b/(R_t+R_b)$, the partial derivatives at $R_t = R_b = R$ are
 
@@ -542,7 +542,7 @@ The standard error of a mean of $n$ independent draws is $\sigma_g/\sqrt n$ = 0.
 
 (c) If the code is correct, the estimate is approximately normal about 0.5 (the central limit theorem, 03-04), so it falls outside ±4 standard errors with probability $2[1 - \Phi(4)]$ = **6.3×10⁻⁵**: about one run in 16,000.
 
-(d) With 1000 independent such tests, $P(\text{at least one false failure}) = 1 - (1 - 6.334\times10^{-5})^{1000}$ = **6.1%**. A suite that fails spuriously one push in sixteen teaches people to ignore failures, the worst outcome for a test suite. Two remedies: **fix the seed** (the test then gives the same answer every time, and a failure always means the code changed), and choose limits wide enough for the number of tests.
+(d) With 1000 independent such tests, $P(\text{at least one false failure}) = 1 - (1 - 6.334\times10^{-5})^{1000}$ = **6.1%**. A suite that fails spuriously one push in sixteen teaches people to ignore failures, the worst outcome for a test suite. Two remedies: **fix the seed** (the test then gives the same answer every time with the same library versions, and a failure means the code or an upgraded dependency changed), and choose limits wide enough for the number of tests.
 
 ```python
 import numpy as np
@@ -563,7 +563,7 @@ estimate 0.500029, off by +0.83 standard errors
 True True
 ```
 
-The seeded run is repeatable to the last bit, and its error is well inside the 4-standard-error limit. A wrong formula (say, the swapped resistor of Example 05-04.2) would still give 0.5 here, because swapping the resistors is exactly the symmetry used in (a). Statistical tests check distributions, not formulas; pair them with deterministic known-case tests.
+The seeded run is repeatable to the last bit on the same NumPy version, and its error is well inside the 4-standard-error limit. A wrong formula (say, the swapped resistor of Example 05-04.2) would still give 0.5 here, because swapping the resistors is exactly the symmetry used in (a). Statistical tests check distributions, not formulas; pair them with deterministic known-case tests.
 
 **Units check.** The ratio and its standard error are dimensionless (Ω/Ω) ✓.
 
@@ -620,7 +620,7 @@ Open [labs/05-04-lab/](../labs/05-04-lab/README.md) and run [05-04-workflows.ipy
 | `math.isclose` defaults | rel_tol $10^{-9}$, abs_tol 0 | fails for expected value 0 |
 | `pytest.approx` defaults | rel $10^{-6}$, abs $10^{-12}$ | |
 | `numpy.isclose` defaults | rtol $10^{-5}$, atol $10^{-8}$ | not symmetric in its arguments |
-| binary64 unit roundoff near 1 | $2^{-52} \approx 2.2\times10^{-16}$ | 05-01 |
+| binary64 machine epsilon (spacing just above 1) | $2^{-52} \approx 2.2\times10^{-16}$; unit roundoff $2^{-53}$ | 05-01 |
 | Git hash (SHA-1) | 160 bits, 40 hex digits; 7-digit short form | SHA-256: 256 bits, 64 hex digits |
 | Two-sided normal tail beyond 4σ | $6.3\times10^{-5}$ | about 1 in 16,000 |
 | Notebooks from GitHub that re-ran without error | 24% (2019 study) | [R-088](../../../reference/research-log.md#r-088--jupyter-notebook-reproducibility) |
@@ -644,7 +644,7 @@ Open [labs/05-04-lab/](../labs/05-04-lab/README.md) and run [05-04-workflows.ipy
 
 - **Notebook reproducibility is poor in the wild.** Pimentel and colleagues (MSR 2019) collected about 1.4 million notebooks from GitHub and re-executed 863,878 of them: only 24.11% ran without errors, and only about 4% reproduced the outputs saved in the file. The main causes were missing dependencies, hidden state and out-of-order execution, and data files that were not available. A 2021 journal follow-up notes that its shared execution environment may have underestimated the true rates ([R-088](../../../reference/research-log.md#r-088--jupyter-notebook-reproducibility)) **[Established]** for the measured rates (secondary summaries differ on whether the 4% is a share of all runs or of the error-free ones).
 - **Testing tools.** pytest is the de facto standard: 53% of respondents to the PSF–JetBrains Python Developers Survey 2024 used it, against 23% for the built-in `unittest`, while 36% reported using no testing framework at all. The current release on PyPI is pytest 9.2.0; version 9.0 (November 2025) added built-in subtests ([R-089](../../../reference/research-log.md#r-089--python-testing-tools-pytest-release-and-usage)) **[Industry estimate]** for the survey shares.
-- **Git is the standard.** 93.87% of Stack Overflow's 2022 survey respondents used git (96.65% of professional developers); later surveys stopped asking. Git has named objects by SHA-1 since its creation; after the first practical SHA-1 collision (SHAttered, Google and CWI, February 2017), Git 2.13 switched to a hardened SHA-1 that detects that attack, and SHA-256 repositories are available as an option (`git init --object-format=sha256`). Making SHA-256 the default is planned for Git 3.0, which had not been released as of Nov 2026, and major hosting services did not yet support SHA-256 repositories ([R-090](../../../reference/research-log.md#r-090--git-usage-and-hash-functions)) **[Established]** for the history; **[Industry estimate]** for the transition's timing.
+- **Git is the standard.** 93.87% of Stack Overflow's 2022 survey respondents used git (96.65% of professional developers); later surveys stopped asking. Git has named objects by SHA-1 since its creation; after the first practical SHA-1 collision (SHAttered, Google and CWI, February 2017), Git 2.13 switched to a hardened SHA-1 that detects that attack, and SHA-256 repositories are available as an option (`git init --object-format=sha256`). Making SHA-256 the default is planned for Git 3.0, which had not been released as of Nov 2026. Hosting support is the bottleneck: GitLab has offered SHA-256 repositories as an experimental option since August 2024, and SHA-1 and SHA-256 repositories cannot exchange history with each other ([R-090](../../../reference/research-log.md#r-090--git-usage-and-hash-functions)) **[Established]** for the history; **[Industry estimate]** for the transition's timing.
 
 ### Why it matters commercially
 

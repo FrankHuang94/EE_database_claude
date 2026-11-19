@@ -69,11 +69,12 @@ alpha = -math.expm1(-0.1)
 v.check("Ex 05-05.4a", alpha)
 v.check("Ex 05-05.4b", -math.expm1(-1.0))
 v.check("Ex 05-05.4c", math.ceil(math.log(0.01) / math.log1p(-alpha)))
-sq16 = 32767**2
+sq16 = max(s * s for s in (-(2**15), 2**15 - 1))                    # worst case over the int16 range
 v.check("Ex 05-05.5a", INT_MAX // sq16)
-v.check("Ex 05-05.5b", (2**63 - 1) / sq16)
-v.check("Ex 05-05.5c", (2**63 - 1) / sq16 / 48_000 / 3600)
-v.assert_true("two full-scale 16-bit squares fit in int32 and three do not", 2 * sq16 <= INT_MAX < 3 * sq16)
+v.check("Ex 05-05.5b", (2**63 - 1) // sq16)
+v.check("Ex 05-05.5c", (2**63 - 1) // sq16 / 48_000 / 3600)
+v.check("Ex 05-05.5d", next(b for b in range(2, 129) if 48_000 * sq16 <= 2 ** (b - 1) - 1))   # smallest signed width that holds the sum
+v.assert_true("one worst-case 16-bit square fits in int32 and two do not", sq16 <= INT_MAX < 2 * sq16)
 
 # ---------------------------------------------------------------- solutions
 v.check("05-05.2a", c_div(17, 5))
@@ -83,7 +84,7 @@ v.check("05-05.2d", c_mod(-17, 5))
 v.check("05-05.2e", 17 / 5.0)
 v.check("05-05.2f", c_div(-37, 10))                                  # truncation of -3.7 toward zero
 v.check("05-05.2g", c_div(1, 2) * 4.0)
-v.check("05-05.3a", Fraction(2**32, 1000 * 86400))
+v.check("05-05.3a", Fraction(2**32, 10**6 * 60))
 v.check("05-05.4b", wrap(300, 8, signed=False))
 v.check("05-05.4c", 200 + 100)                                       # promoted to int: no wrap
 v.check("05-05.5a", float(Fraction(700 * 5000, 1024)))
@@ -98,7 +99,7 @@ v.check("05-05.8a", float(Fraction(3 + 5 + 10, 3)))
 alpha9 = -math.expm1(-0.25)
 v.check("05-05.9a", alpha9)
 v.check("05-05.9b", math.ceil(math.log(1e-3) / math.log1p(-alpha9)))
-sq24 = (2**23 - 1) ** 2
+sq24 = max(s * s for s in (-(2**23), 2**23 - 1))
 v.check("05-05.10a", float(sq24))
 v.assert_true("one full-scale 24-bit square exceeds INT32_MAX", sq24 > INT_MAX)
 v.check("05-05.10b", (2**63 - 1) // sq24)

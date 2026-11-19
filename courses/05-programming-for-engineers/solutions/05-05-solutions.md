@@ -10,7 +10,7 @@ Problems: [05-05 problems](../problems/05-05-problems.md) · Chapter: [05-05](..
 
 1. **Preprocessor.** `#include "ema.h"` names a file it cannot find: the header is missing, misspelled, or its folder is not on the include path (`-I`).
 2. **Compiler.** A syntax error: usually a missing semicolon at the end of the *previous* statement, which the compiler notices only when it reaches `return`.
-3. **Linker.** `ema_alpha` was declared (so the call compiled) but no object file passed to the linker defines it: `ema.c` was left out of the build, or the definition's name differs, or it is `static`.
+3. **Linker.** `ema_alpha` was declared (so the call compiled) but no object file passed to the linker defines a function of that name: `ema.c` was left out of the build, or the definition's name is spelled differently, or it is `static`. (A `static` definition in an `ema.c` that includes its own header would already have been rejected by the compiler; and a definition with the right name but different parameter types would link silently, because C's linker matches names only.)
 4. **Run time** (reported by UBSan, the undefined-behavior sanitizer). The program computed `INT_MAX + 1` in `int`; without the sanitizer this would silently produce a wrong value.
 
 ### Solution 05-05.2
@@ -41,7 +41,7 @@ int main(void)
 
 (c) **`int16_t`**: −40.00 °C to +125.00 °C in hundredths is −4000 to 12,500, inside the 16-bit signed range −32,768 to 32,767. Storing scaled integers instead of floats is called fixed point (05-07).
 
-(d) **`uint64_t`**: a year is $3.15\times10^{10}$ ms, more than a 32-bit counter can hold. A `uint32_t` millisecond counter wraps after $2^{32}$ ms $= 4.295\times10^9$ ms $= 4.295\times10^6$ s, which is **49.71 days**: a device that is never restarted meets this within two months (Problem 05-05.11 shows how to make elapsed-time arithmetic survive the wrap).
+(d) **`uint64_t`**: a year is about $3.2\times10^{13}$ µs, far more than a 32-bit counter can hold. A `uint32_t` microsecond counter wraps after $2^{32}$ µs $= 4295$ s, which is **71.58 minutes**: a device meets this on its first afternoon. A `uint64_t` microsecond counter wraps after $2^{64}$ µs, more than half a million years. (Problem 05-05.11 shows how to make elapsed-time arithmetic survive a wrap, and does the same calculation for milliseconds.)
 
 ### Solution 05-05.4
 
@@ -197,7 +197,7 @@ The averages are **3.0**, **4.0** and **6.0**: $3$, $(3+5)/2$, $(3+5+10)/3$. The
 
 ### Solution 05-05.9
 
-$\alpha = 1 - e^{-T_s/\tau} = 1 - e^{-0.25}$ = **0.221199**. The error after $n$ samples is $e^{-0.25n}$; requiring $e^{-0.25n} \le 10^{-3}$ gives $n \ge \ln(1000)/0.25 = 27.63$, so **28 samples** (14 ms, 6.9 time constants).
+$\alpha = 1 - e^{-T_s/\tau} = 1 - e^{-0.25}$ = **0.221199**. The error after $n$ samples is $e^{-0.25n}$; requiring $e^{-0.25n} \le 10^{-3}$ gives $n \ge \ln(1000)/0.25 = 27.63$, so **28 samples** (14 ms, 7.0 time constants: $\ln 1000$ = 6.9 time constants, rounded up to a whole sample).
 
 ```c
 #include <math.h>
@@ -224,11 +224,11 @@ Settling to 0.1% takes $\ln 1000 \approx 6.9$ time constants for any first-order
 
 ### Solution 05-05.10
 
-(a) One full-scale square is $(2^{23} - 1)^2$ = 70,368,727,400,449 ≈ $7.04\times10^{13}$, about 33,000 times the `int32_t` maximum of $2^{31} - 1$: **no**, not even one fits.
+(a) The worst-case square comes from the most negative sample: $(-2^{23})^2 = 2^{46}$ = 70,368,744,177,664 ≈ $7.04\times10^{13}$, about 33,000 times the `int32_t` maximum of $2^{31} - 1$: **no**, not even one fits.
 
-(b) $\lfloor (2^{63} - 1)/(2^{23} - 1)^2 \rfloor$ = **131,072** squares (just over $2^{17}$, since $(2^{23})^2 = 2^{46}$).
+(b) $\lfloor (2^{63} - 1)/2^{46} \rfloor = 2^{17} - 1$ = **131,071** squares: $2^{17}$ of them would make exactly $2^{63}$, one more than the type holds.
 
-(c) $131{,}072/48{,}000$ = **2.731 s**. A 64-bit accumulator holds under three seconds of full-scale 24-bit audio energy, so a long-term power meter must scale samples down, accumulate in blocks, or use floating point.
+(c) $131{,}071/48{,}000$ = **2.731 s**. A 64-bit accumulator holds under three seconds of full-scale 24-bit audio energy, so a long-term power meter must scale samples down, accumulate in blocks, or use floating point.
 
 (d) Widen *before* multiplying, and check the budget:
 
@@ -238,10 +238,10 @@ Settling to 0.1% takes $\ln 1000 \approx 6.9$ time constants for any first-order
 
 int main(void)
 {
-    const int32_t full_scale = (1 << 23) - 1;
+    const int32_t worst = -(1 << 23);
     int64_t energy = 0;
-    for (int n = 0; n < 131072; n++) {
-        energy += (int64_t)full_scale * full_scale;   /* the product is computed in 64 bits */
+    for (int n = 0; n < 131071; n++) {
+        energy += (int64_t)worst * worst;             /* the product is computed in 64 bits */
     }
     printf("%lld %lld\n", (long long)energy, (long long)(INT64_MAX - energy));
     return 0;
@@ -249,10 +249,10 @@ int main(void)
 ```
 
 ```text
-9223369837831651328 2199023124479
+9223301668110598144 70368744177663
 ```
 
-After 131,072 full-scale samples the accumulator is within $2.2\times10^{12}$ of its limit, far less than one more full-scale square ($7.04\times10^{13}$). Without the cast, `full_scale * full_scale` would be computed in 32-bit `int` and overflow on the first sample.
+After 131,071 worst-case samples the headroom left is $2^{46} - 1$, exactly one short of another worst-case square. Without the cast, `worst * worst` would be computed in 32-bit `int` and overflow on the first sample.
 
 ### Solution 05-05.11
 
@@ -281,7 +281,7 @@ $704 - 4{,}294{,}967{,}000 \equiv 704 + (2^{32} - 4{,}294{,}967{,}000) = 704 + 2
 
 (c) With `int32_t`, the counter itself overflows past $2^{31} - 1$, which is undefined behavior, and even on hardware that wraps, the subtraction can overflow again. Signed types are the wrong tool for wrapping counters.
 
-(d) A signed 32-bit counter overflows after $2^{31}$ ticks; with 10 ms ticks that is $2^{31}\times 0.01$ s = 21,474,836 s = **248.55 days**. The FAA's 2015 airworthiness directive for Boeing 787 generator control units states that "a software counter internal to the GCUs ... will overflow after 248 days of continuous power", and required the electrical power to be cycled at least every 120 days ([R-093](../../../reference/research-log.md#r-093--software-failures-from-numeric-conversions-and-counters)). The directive does not state the counter's width or tick period; $2^{31} \times 10$ ms matching 248 days is an inference, consistent but unconfirmed **[Contested]**.
+(d) A signed 32-bit counter overflows after $2^{31}$ ticks; with 10 ms ticks that is $2^{31}\times 0.01$ s = 21,474,836 s = **248.55 days**. The FAA's 2015 airworthiness directive for Boeing 787 generator control units states that "a software counter internal to the GCUs ... will overflow after 248 days of continuous power", and required the electrical power to be cycled at least every 120 days ([R-093](../../../reference/research-log.md#r-093--software-failures-from-numeric-conversions-and-counters)). **[Established]** for the directive's wording. The directive does not state the counter's width or tick period: that $2^{31} \times 10$ ms gives 248 days is our inference, consistent with the directive but not confirmed by it.
 
 ### Solution 05-05.12
 
@@ -341,7 +341,7 @@ The results are **2,000,000,000**, **−2** (rounded toward zero, like `(a + b) 
 | 05-05.2e | 17 / 5.0 | 3.4 | — |
 | 05-05.2f | (int)−3.7 | −3 | — |
 | 05-05.2g | 1 / 2 * 4.0 | 0.0 | — |
-| 05-05.3a | wrap time of a uint32_t millisecond counter | 49.71 | days |
+| 05-05.3a | wrap time of a uint32_t microsecond counter | 71.58 | min |
 | 05-05.4b | 300 stored in uint8_t | 44 | — |
 | 05-05.4c | uint8_t 200 + 100 | 300 | — |
 | 05-05.5a | exact value | 3417.97 | mV |
@@ -355,8 +355,8 @@ The results are **2,000,000,000**, **−2** (rounded toward zero, like `(a + b) 
 | 05-05.8a | third running average | 6.0 | — |
 | 05-05.9a | α | 0.221199 | — |
 | 05-05.9b | samples to settle within 0.1% | 28 | — |
-| 05-05.10a | one full-scale 24-bit square | 7.04×10^13 | — |
-| 05-05.10b | full-scale squares in int64_t | 131072 | — |
+| 05-05.10a | one worst-case 24-bit square | 7.04×10^13 | — |
+| 05-05.10b | worst-case squares in int64_t | 131071 | — |
 | 05-05.10c | seconds at 48 kHz | 2.731 | s |
 | 05-05.11a | elapsed time across the wrap | 1000 | ms |
 | 05-05.11b | overflow time, signed 32-bit, 10 ms ticks | 248.55 | days |

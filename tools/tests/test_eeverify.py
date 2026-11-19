@@ -84,8 +84,11 @@ def test_run_c_blocks(tmp_path):
         "int main(void) { volatile int big = INT_MAX; printf(\"%d\\n\", big + 1); return 0; }\n```\n\n"
         "```text\nsigned integer overflow\n```\n\n"
         "```c\n// expect: error\nint main(void) { return undeclared; }\n```\n\n"
+        "```c\n// expect: warning -Wparentheses\nint f(int x) { return x & 1 == 0; }\n```\n\n"
+        "```c\n// expect: warning -Wsign-compare\nint g(int x) { return x & 1 == 0; }\n```\n\n"
         "```c\n#include <stdio.h>\nint main(void) { printf(\"7\\n\"); return 0; }\n```\n\n```text\n8\n```\n",
         encoding="utf-8")
     v = Verifier("t", {})
     run_c_blocks(v, md)
-    assert v.passes == 4 and len(v.failures) == 1      # the last block prints 7, not 8
+    # passes: file, linked block, sanitizer, error, named warning; failures: wrong warning named, 7 not 8
+    assert v.passes == 5 and len(v.failures) == 2

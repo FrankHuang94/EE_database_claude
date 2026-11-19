@@ -1,6 +1,6 @@
 /* adc_test.c - self-checking tests for adc.c. Prints TEST PASSED or TEST FAILED.
  * Build and run:  cc -std=c17 -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined \
- *                    adc_test.c adc.c -lm -o adc_test && ./adc_test                            */
+ *                    -fno-sanitize-recover=all adc_test.c adc.c -lm -o adc_test && ./adc_test   */
 #include <math.h>
 #include <stdio.h>
 #include "adc.h"
@@ -32,6 +32,9 @@ int main(void)
     CHECK(fabs(ema_alpha(1e-3, 10e-3) - 0.0951626) < 1e-6);
     CHECK(ema_settle_samples(1e-3, 10e-3, 0.01) == 47);
     CHECK(ema_settle_samples(0.5e-3, 2e-3, 1e-3) == 28);
+    /* Inputs that would never settle return -1 instead of hanging. */
+    CHECK(ema_settle_samples(1e-3, 10e-3, 1e-20) == -1);   /* tol below double's rounding near 1 */
+    CHECK(ema_settle_samples(1e-20, 1.0, 0.01) == -1);     /* alpha = 1 - exp(-1e-20) rounds to 0 */
 
     if (failures == 0) {
         printf("TEST PASSED\n");

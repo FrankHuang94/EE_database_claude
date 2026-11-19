@@ -42,7 +42,7 @@ NumPy (05-02) gives you arrays; three libraries built on it do most of the remai
 
 ## 3. Theory
 
-> **Notation for this chapter.** `np` is NumPy, `sp` is SymPy, `plt` is Matplotlib's `pyplot`, and SciPy functions are imported from their submodules (`from scipy.optimize import brentq`). Code blocks are run and their outputs checked, as in 05-01. Plots are drawn with the non-interactive `Agg` backend and saved to files, as a script or test would.
+> **Notation for this chapter.** `np` is NumPy, `sp` is SymPy, `plt` is Matplotlib's `pyplot`, and SciPy functions are imported from their submodules (`from scipy.optimize import brentq`). Code blocks are run in order, as one session, and their outputs checked, as in 05-01. Plots are drawn with the non-interactive `Agg` backend and saved to files, as a script or test would.
 
 ### 3.1 Root-finding and optimization (`scipy.optimize`)
 

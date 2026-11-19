@@ -3,7 +3,7 @@
 Chapter: [05-06](../chapters/05-06-c-pointers-and-memory.md) · Worked solutions: [05-06 solutions](../solutions/05-06-solutions.md)
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
-**Conventions:** C17 on a 64-bit system (8-byte pointers) with the usual alignment (each type aligned to its own size), compiled with `-Wall -Wextra -Wpedantic` and tested under `-fsanitize=address,undefined`. Trace each answer by hand first, then confirm it with a program.
+**Conventions:** C17 on a 64-bit system (8-byte pointers) with the usual alignment (each type aligned to its own size), compiled with `-Wall -Wextra -Wpedantic` and tested under `-fsanitize=address,undefined -fno-sanitize-recover=all`. Trace each answer by hand first, then confirm it with a program.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 
@@ -68,14 +68,18 @@ p = q;
 
 **A RAM budget.** A wearable's MCU has 16 KB of RAM. Fixed uses: three sample buffers of 512 `int16_t` each; a 4 KB main stack; three RTOS task stacks of 1 KB each. The rest stores log records, each a `uint8_t` id, a `uint32_t` value and a `uint16_t` flags. How many records fit with the fields in that order, and how many after reordering for minimum size?
 
+### Problem 05-06.13 [B]
+
+**A frame of samples and a table of reductions.** A sensor delivers frames of 3 rows of 4 `uint16_t` codes, stored as `uint16_t frame[3][4]`. (a) At what byte offset from the start of the array does `frame[2][1]` lie? (b) Define a type `reduce_fn` for pointers to functions that take a row (a `const uint16_t *` and its length) and return a `uint32_t`. Write `row_sum` and `row_max`, and a function `reduce_rows(size_t rows, uint16_t frame[][4], reduce_fn f, uint32_t *out)` that applies `f` to every row. Apply both reductions to the frame {{1, 2, 3, 4}, {10, 20, 30, 40}, {7, 0, 9, 5}}. (c) Why must the parameter be written `uint16_t frame[][4]` and not `uint16_t **frame`?
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 05-06) | Problems |
 |---|---|
-| 1. Addresses, pointers and output parameters | 1, 4, 6 |
-| 2. Arrays and pointer arithmetic | 2, 4, 9 |
+| 1. Addresses, pointers and output parameters | 1, 4, 6, 13 |
+| 2. Arrays and pointer arithmetic | 2, 4, 9, 13 |
 | 3. Strings and bounded functions | 3, 7 |
 | 4. Structs and layout | 5, 12 |
 | 5. Storage, allocation and memory bugs | 6, 8, 9, 10, 11 |

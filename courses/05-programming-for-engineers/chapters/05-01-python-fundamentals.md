@@ -370,7 +370,7 @@ Read it from the bottom up. The last line is the exception and its message: `flo
 
 ## 4. Worked examples
 
-Every example's code is run by the verify script, and its printed output must match the block shown.
+Every example's code is run by the verify script, and its printed output must match the block shown. The blocks of a chapter run in order as one session, like the cells of a notebook: a later block may use names defined in an earlier one, so run them in order if you type them in yourself.
 
 ### Example 05-01.1 · Arithmetic you can trust
 

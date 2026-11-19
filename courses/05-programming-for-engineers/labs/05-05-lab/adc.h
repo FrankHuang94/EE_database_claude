@@ -15,7 +15,9 @@ double ema_alpha(double t_s, double tau);
 double ema_step(double y, double x, double alpha);
 
 /* Number of samples for a unit step to come within tol of 1 (0 < tol < 1),
- * or -1 if the arguments are invalid. */
+ * or -1 if the arguments are invalid or the output does not get within tol
+ * in EMA_MAX_SAMPLES samples (a loop with no such limit could run forever). */
+#define EMA_MAX_SAMPLES 1000000
 int ema_settle_samples(double t_s, double tau, double tol);
 
 #endif /* ADC_H */

@@ -11,8 +11,8 @@
 
 **Learning objectives.** After this chapter you can:
 
-1. Explain memory as an array of addressed bytes, and use pointers (`&`, `*`, `NULL`, `const`) to pass data into and out of functions.
-2. Relate arrays and pointers (`a[i]` is `*(a + i)`), compute with pointer arithmetic, and pass arrays with their lengths.
+1. Explain memory as an array of addressed bytes, and use pointers (`&`, `*`, `NULL`, `const`, and pointers to functions) to pass data and behavior into and out of functions.
+2. Relate arrays and pointers (`a[i]` is `*(a + i)`), compute with pointer arithmetic, and pass one- and two-dimensional arrays with their lengths.
 3. Handle C strings safely: the terminating zero, buffer sizes, and bounded functions such as `snprintf`.
 4. Define structs, access them through pointers, and predict their size and layout including padding.
 5. Describe the stack, static storage and the heap; allocate and free memory correctly; and recognize, reproduce and detect the common memory bugs (overflow, use after free, double free, leak, dangling pointer).
@@ -111,6 +111,41 @@ lo = 3, hi = 9
 
 The same mechanism gives a function several results: **output parameters**. Firmware functions conventionally *return* a status code (0 for success, negative for an error) and deliver their data through pointer parameters, as Example 05-06.1 does.
 
+**Function pointers.** A function's machine code also has an address. `double (*f)(double)` declares `f` as a pointer to a function that takes a `double` and returns one; the parentheses matter, because `double *f(double)` would declare a function returning `double *`. A `typedef` makes such types readable, and calling `f(x)` calls whichever function `f` currently points to:
+
+```c
+#include <stdio.h>
+
+typedef double (*filter_fn)(double x);          /* pointer to a function: double in, double out */
+
+static double halve(double x) { return x / 2; }
+static double clip(double x) { return x > 1.0 ? 1.0 : x; }
+
+static void apply(double *data, size_t n, filter_fn f)
+{
+    for (size_t i = 0; i < n; i++) {
+        data[i] = f(data[i]);
+    }
+}
+
+int main(void)
+{
+    double v[3] = {0.4, 1.6, 3.0};
+    filter_fn chain[] = {halve, clip};          /* a table of functions, chosen at run time */
+    for (size_t k = 0; k < sizeof chain / sizeof chain[0]; k++) {
+        apply(v, 3, chain[k]);
+    }
+    printf("%.2f %.2f %.2f\n", v[0], v[1], v[2]);
+    return 0;
+}
+```
+
+```text
+0.20 0.80 1.00
+```
+
+`apply` does not know or care which processing it performs; the caller passes the behavior in. This is how C expresses **callbacks** (the library sort `qsort` takes a comparison function, 05-08), **driver tables** (a struct of function pointers, one implementation per chip, so the same application code runs on several microcontrollers), state machines, and the **interrupt vector table**, which on many microcontrollers is literally an array of function addresses at a fixed location in memory. A function pointer that is `NULL` or points at the wrong thing jumps into arbitrary code, which is why attackers prize the ability to overwrite one.
+
 ### 3.3 Arrays and pointer arithmetic
 
 `int a[8];` reserves 8 consecutive `int`s, indexed 0 to 7. In almost every expression the array's name **decays** into a pointer to its first element, and indexing is defined through pointer arithmetic:
@@ -123,6 +158,35 @@ $$
 
 **Arrays do not know their length.** When an array is passed to a function, only the pointer to its first element is passed. Inside the function, `sizeof` gives the size of the *pointer*, not of the array (Example 05-06.2), so every C function that takes an array must also take its length, conventionally as a `size_t` (the unsigned type of `sizeof`). The idiom for the number of elements of an array *in the scope where it is declared* is `sizeof a / sizeof a[0]`.
 
+**Two-dimensional arrays.** `int img[2][3]` is 2 rows of 3 elements stored row after row in one contiguous block of 6 (**row-major** order), so `img[r][c]` lies $r \times 3 + c$ elements from the start. To pass it to a function, the row length must be part of the parameter's type, `int img[][3]`, so the compiler can compute that offset; only the number of rows is passed separately:
+
+```c
+#include <stdio.h>
+
+static long sum_column(size_t rows, int img[][3], size_t c)
+{
+    long s = 0;
+    for (size_t r = 0; r < rows; r++) {
+        s += img[r][c];
+    }
+    return s;
+}
+
+int main(void)
+{
+    int img[2][3] = {{1, 2, 3}, {4, 5, 6}};
+    size_t offset = (size_t)((char *)&img[1][2] - (char *)img) / sizeof(int);
+    printf("img[1][2] = %d, %zu elements from the start; column 1 sums to %ld\n", img[1][2], offset, sum_column(2, img, 1));
+    return 0;
+}
+```
+
+```text
+img[1][2] = 6, 5 elements from the start; column 1 sums to 7
+```
+
+An array of pointers to separately allocated rows (`int *rows[2]`) is indexed with the same `rows[r][c]` syntax but is a different structure, a table of addresses; the two types are not interchangeable, and passing `img` where an `int **` is expected is a compile error. Row-major order also explains a performance rule: visiting an image row by row walks memory in order, which caches reward ([14-09](../../14-computer-organization-and-architecture/chapters/14-09-memory-hierarchy-and-caches.md)).
+
 **Bounds are not checked.** `a[8]` for an 8-element array compiles and runs; it reads or writes whatever lies after the array. This is undefined behavior and the classic **buffer overflow**. On the stack it can overwrite other variables or a function's return address; that is how many historical exploits took control of programs.
 
 ### 3.4 Strings
@@ -132,6 +196,8 @@ C has no string type. A **string** is an array of `char` terminated by a zero by
 - `strlen(s)` counts characters before the terminator (3 for `"ADC"`), so a buffer must hold `strlen + 1` bytes;
 - `strcpy(dst, src)` copies until the terminator **without knowing how big `dst` is**; if `src` is longer, it overflows `dst`;
 - `snprintf(dst, size, format, ...)` formats like `printf` into `dst`, writing at most `size` bytes including the terminator. It *always* terminates the string (for `size > 0`) and returns the length the full result *would* have had, so `return value >= size` means the output was truncated.
+
+**`strncpy` is not a safe `strcpy`.** Its name suggests a bounded copy, but `strncpy(dst, src, n)` always writes exactly `n` bytes: if `src` is shorter it pads the rest with zeros, and if `src` has `n` or more characters it writes **no terminator at all**, leaving `dst` an unterminated array that the next `strlen` or `printf` reads past. It was designed for fixed-width fields in old file formats. To copy a string into a buffer, use `snprintf(dst, sizeof dst, "%s", src)`, which always terminates, and check its return value for truncation.
 
 Prefer `snprintf` for building strings, and treat any copy into a fixed buffer as a place to check sizes. String literals are stored in read-only memory on most systems: `char *s = "abc"; s[0] = 'x';` is undefined behavior, while `char s[] = "abc";` makes a modifiable copy.
 
@@ -155,7 +221,7 @@ typedef struct {
 
 ### 3.6 Where data lives: stack, static storage and heap
 
-- **Automatic (stack) storage.** Local variables and function parameters live in the calling function's **stack frame**, created on entry and discarded on return. Allocation is essentially free (moving one register), but the stack is small: commonly 8 MB for a desktop thread and a few kilobytes on a microcontroller, where deep recursion or a large local array can overflow it silently. A pointer to a local variable becomes **dangling** the moment the function returns.
+- **Automatic (stack) storage.** A function's local variables and parameters live in that function's **stack frame**, created on entry and discarded on return. Allocation is essentially free (moving one register), but the stack is small: commonly 8 MB for a desktop thread and a few kilobytes on a microcontroller, where deep recursion or a large local array can overflow it silently. A pointer to a local variable becomes **dangling** the moment the function returns.
 - **Static storage.** Globals and `static` locals (05-05) exist for the whole program. Initialized ones live in the `.data` section, zero-initialized ones in `.bss`. Firmware puts most long-lived buffers here, because their size is known at build time and the linker can report total RAM use.
 - **Dynamic (heap) storage.** `malloc(n)` returns a pointer to `n` bytes that live until `free` is called, or `NULL` if no memory is available. Size can be decided at run time. The cost is bookkeeping: allocation takes time that varies, memory can **fragment** into unusable gaps, and every block must be freed exactly once.
 
@@ -170,9 +236,9 @@ The `<stdlib.h>` functions:
 | `realloc(p, n)` | resize a block to `n` bytes | **may move the block**: the old pointer becomes invalid |
 | `free(p)` | release a block | `free(NULL)` is allowed and does nothing |
 
-The rule that prevents most heap bugs is **ownership**: for every block, exactly one part of the program is responsible for freeing it, and after `free(p)` nothing uses `p` again (setting `p = NULL` makes accidental reuse fail loudly). The idiom for `malloc` sizes is `p = malloc(n * sizeof *p)`, which stays correct if `p`'s type changes.
+The rule that prevents most heap bugs is **ownership**: for every block, exactly one part of the program is responsible for freeing it, and after `free(p)` nothing uses `p` again. Setting `p = NULL` after freeing helps: a second `free(p)` becomes a harmless no-op, and a later dereference crashes at once on desktop systems instead of silently reading recycled memory (on microcontrollers, where address 0 may be ordinary readable memory, it gives no such guarantee). The idiom for `malloc` sizes is `p = malloc(n * sizeof *p)`, which stays correct if `p`'s type changes.
 
-**Why embedded systems avoid the heap.** Allocation time is unpredictable, fragmentation can make a long-running device fail after days, and a failed `malloc` deep in a control loop has no good recovery. Safety guidelines such as MISRA C therefore forbid the standard allocation functions; firmware allocates its memory statically, or from fixed-size pools, at start-up.
+**Why embedded systems avoid the heap.** Allocation time is unpredictable, fragmentation can make a long-running device fail after days, and a failed `malloc` deep in a control loop has no good recovery. Safety guidelines therefore forbid it: MISRA C's Directive 4.12 ("dynamic memory allocation shall not be used") and Rule 21.3, which bans the `<stdlib.h>` allocation functions, are both Required in the 2012 and 2023 editions ([R-092](../../../reference/research-log.md#r-092--c-language-standards-coding-standards-and-embedded-usage)). Firmware allocates its memory statically, or from fixed-size pools, at start-up.
 
 ### 3.8 The common memory bugs and how to catch them
 
@@ -207,7 +273,7 @@ int main(void)
 runtime error: index 4 out of bounds for type 'int [4]'
 ```
 
-UBSan's bounds check, which knows the array's declared size, stops the program first; with that check off, ASan reports the same write as a `stack-buffer-overflow`. Without either, this program usually prints 0 and exits normally, having overwritten whatever happened to follow the array. Other tools complete the picture: **Valgrind** (memory checking without recompiling, slower), static analyzers, **fuzzers** that generate unexpected inputs to drive code into its bugs, and, increasingly, hardware: Arm's Memory Tagging Extension and the CHERI capability architecture check pointer validity in the processor itself (Section 9).
+UBSan's bounds check, which knows the array's declared size, reports the write first (and stops the program, because this course builds with `-fno-sanitize-recover=all`; without that flag UBSan reports and continues, and ASan then stops it); with that check off, ASan reports the same write as a `stack-buffer-overflow`. Without either, this program usually prints 0 and exits normally, having overwritten whatever happened to follow the array. Other tools complete the picture: **Valgrind** (memory checking without recompiling, slower), static analyzers, **fuzzers** that generate unexpected inputs to drive code into its bugs, and, increasingly, hardware: Arm's Memory Tagging Extension and the CHERI capability architecture check pointer validity in the processor itself (Section 9).
 
 ## 4. Worked examples
 
@@ -356,7 +422,7 @@ int main(void)
 ERROR: AddressSanitizer: stack-buffer-overflow
 ```
 
-It writes all 15 bytes, five past the end of `small`, and ASan stops it. Without ASan the outcome depends on the system: Linux distributions that build with a stack protector abort when `main` returns ("stack smashing detected"); elsewhere the program may appear to work, having corrupted its stack, which is exactly the kind of bug attackers exploit by supplying a long string. (Had the copy been written directly in `main`, GCC on such systems would have refused to compile it: with `_FORTIFY_SOURCE` it can see both sizes. Compile-time checks, run-time hardening and sanitizers are complementary layers.)
+It writes all 15 bytes, five past the end of `small`, and ASan stops it. Without ASan the outcome depends on the system: Linux distributions that build with a stack protector abort when `main` returns ("stack smashing detected"); elsewhere the program may appear to work, having corrupted its stack, which is exactly the kind of bug attackers exploit by supplying a long string. (Had the copy been written directly in `main`, GCC would have warned at compile time, because there it can see both sizes (`-Wstringop-overflow` is on by default, and `_FORTIFY_SOURCE` adds its own check); this course's `-Werror` turns that warning into a refusal to compile. Compile-time checks, run-time hardening and sanitizers are complementary layers.)
 
 **Sanity check.** "T=23.5C" is 7 characters, " RH=41%" is 7 more: 14 ✓.
 
@@ -399,7 +465,7 @@ Both layouts hold 7 bytes of data. The loose order wastes 5 bytes per record, **
 
 **Setup.** A logger stores an unknown number of samples in a heap buffer that starts with capacity 4 and doubles whenever it is full. (a) How many reallocations occur while storing 1000 samples, and how many element copies do they cause in the worst case (every `realloc` moving the block)? (b) A caller saved a pointer to the first sample before the buffer grew. What is wrong with using it afterward?
 
-**Solution.** (a) Capacity runs 4, 8, 16, …, 1024: the buffer doubles when it holds 4, 8, …, 512 elements, which is **8 reallocations** ($4 \times 2^8 = 1024 \ge 1000$). If each moves the block, it copies the elements present: $4 + 8 + \cdots + 512 = 1020$ copies in total, about one per element stored. Doubling makes the *average* cost of an append constant (the copies form a geometric series bounded by the final size), while growing by a fixed step of 4 would copy $4 + 8 + \cdots + 996 = 4 \times (1 + 2 + \cdots + 249)$ = 124,500 elements, about $n^2/8$: the cost per append grows with the buffer's size.
+**Solution.** (a) Capacity runs 4, 8, 16, …, 1024: the buffer doubles when it holds 4, 8, …, 512 elements, which is **8 reallocations** ($4 \times 2^8 = 1024 \ge 1000$). If each moves the block, it copies the elements present: $4 + 8 + \cdots + 512 = 1020$ copies in total, about one per element stored. That is close to the best case for doubling; the worst comes just after a doubling, when 1025 elements have cost $4 + \cdots + 1024 = 2044$ copies. In general the total is less than twice the number of elements stored. Doubling makes the *average* cost of an append constant (the copies form a geometric series bounded by the final size), while growing by a fixed step of 4 would copy $4 + 8 + \cdots + 996 = 4 \times (1 + 2 + \cdots + 249)$ = 124,500 elements, about $n^2/8$: the cost per append grows with the buffer's size.
 
 ```c
 #include <stdio.h>
@@ -484,7 +550,7 @@ int main(void)
 ERROR: AddressSanitizer: heap-use-after-free
 ```
 
-ASan reports a **heap-use-after-free**: the read goes to the old block, which `realloc` released. (When the `realloc` and the later use are in the same function, GCC 12 and later warn at compile time with `-Wuse-after-free`, part of `-Wall`; across functions only run-time tools see it.) Without ASan the program would often print 42 anyway, because the freed memory has not yet been reused, so the bug survives testing and appears later, in the field. The fix is to keep indices, not pointers, into a buffer that can move, or to re-derive pointers after every operation that can grow it.
+ASan reports a **heap-use-after-free**: the read goes to the old block, which `realloc` released. (When the `realloc` and the later use are in the same function, GCC 12 and later warn at compile time with `-Wuse-after-free`, part of `-Wall`; across functions only run-time tools see it.) Without ASan, what happens depends on the allocator. With glibc, this program prints 42: nothing else has been allocated after the small block, so `realloc` grows it in place, the address does not change, and the bug is invisible. Allocate one more small block right after `data` and the same program prints garbage (a large number that changes from run to run), because `realloc` must now move the block and the allocator immediately reuses the old block's first bytes for its own bookkeeping. ASan's `realloc` always moves the block, precisely so that this bug shows up in testing rather than surviving into the field. The fix is to keep indices, not pointers, into a buffer that can move, or to re-derive pointers after every operation that can grow it.
 
 **Sanity check.** $\sum_{k=2}^{9} 2^k = 2^{10} - 4 = 1020$ ✓, and $1000 \le 1024$ ✓.
 
@@ -536,11 +602,11 @@ Open [labs/05-06-lab/](../labs/05-06-lab/README.md). Like 05-05's, this lab is C
 |---|---|---|
 | Pointer size | 8 bytes (64-bit), 4 bytes (32-bit MCU) | |
 | Typical stack size | about 8 MB per desktop thread (Linux default); KB on MCUs | configurable |
-| Struct padding rule | each field aligned to its size; total rounded to largest alignment | Example 05-06.4 |
-| Geometric (doubling) growth | ≤ 1 copy per element on average | Example 05-06.5 |
+| Struct padding rule | each field at a multiple of its alignment (its size, for basic types on common ABIs); total rounded up to the largest alignment | Example 05-06.4 |
+| Geometric (doubling) growth | fewer than 2 copies per element on average | Example 05-06.5 |
 | Memory-safety share of serious vulnerabilities | about 70% (Microsoft CVEs 2006–2018; Chromium high-severity bugs) | [R-094](../../../reference/research-log.md#r-094--memory-safety-vulnerability-data-and-policy) |
 | Android memory-safety share | 76% (2019) → under 20% (2025) | [R-095](../../../reference/research-log.md#r-095--rust-adoption-in-android-and-the-linux-kernel) |
-| ASan slowdown | roughly 2× | testing only |
+| ASan slowdown | typically about 2× (Clang documentation) | testing only |
 
 ## 8. Common mistakes
 
@@ -549,7 +615,7 @@ Open [labs/05-06-lab/](../labs/05-06-lab/README.md). Like 05-05's, this lab is C
 3. **Returning the address of a local variable.** It dangles as soon as the function returns.
 4. **Keeping pointers into a buffer that `realloc` may move,** and `p = realloc(p, n)`, which leaks on failure.
 5. **Not checking `malloc`'s result, and forgetting `free`, or freeing twice.** Assign one owner to every block; set pointers to `NULL` after freeing.
-6. **`strcpy`, `strcat` and `sprintf` into fixed buffers.** Use `snprintf` and check its return value.
+6. **`strcpy`, `strcat` and `sprintf` into fixed buffers, and `strncpy` as a supposed fix** (it can leave the result unterminated). Use `snprintf` and check its return value.
 7. **Copying a struct byte-for-byte to a file, network or register** and assuming the layout matches. Padding, alignment and byte order (05-07) differ between compilers and machines.
 8. **Testing without sanitizers.** Memory bugs often produce correct-looking output until the memory is reused.
 
@@ -557,7 +623,7 @@ Open [labs/05-06-lab/](../labs/05-06-lab/README.md). Like 05-05's, this lab is C
 
 ### State of the art (as of Nov 2026)
 
-- **Memory safety is the dominant source of serious vulnerabilities in C and C++ code.** Microsoft reported that about 70% of the vulnerabilities it assigned CVEs to each year (2006–2018) were memory-safety issues; the Chromium project reports about 70% of its high-severity security bugs are memory-safety problems, half of them use-after-free (912 bugs since 2015); Google's Project Zero counted 67% of 2021's zero-day vulnerabilities as memory-safety bugs. In December 2023, CISA, the NSA, the FBI and partner agencies of four other countries urged software makers to publish "memory safe roadmaps", and a February 2024 White House technical report made the same case, noting that hardware approaches such as memory tagging and CHERI capabilities are part of the answer ([R-094](../../../reference/research-log.md#r-094--memory-safety-vulnerability-data-and-policy)) **[Industry estimate]** for the vendor-reported shares, **[Established]** for the policy documents.
+- **Memory safety is the dominant source of serious vulnerabilities in C and C++ code.** Microsoft reported that about 70% of the vulnerabilities it assigned CVEs to each year (2006–2018) were memory-safety issues; the Chromium project reports about 70% of its high-severity security bugs are memory-safety problems, half of them use-after-free (from an analysis of 912 high- or critical-severity bugs since 2015); Google's Project Zero counted 67% of 2021's zero-day vulnerabilities as memory-safety bugs. In December 2023, CISA, the NSA, the FBI and partner agencies of four other countries urged software makers to publish "memory safe roadmaps", and a February 2024 White House technical report made the same case, noting that hardware approaches such as memory tagging and CHERI capabilities are part of the answer ([R-094](../../../reference/research-log.md#r-094--memory-safety-vulnerability-data-and-policy)) **[Industry estimate]** for the vendor-reported shares, **[Established]** for the policy documents.
 - **Rust is becoming part of the systems stack.** Linux 6.1 (December 2022) added initial Rust support, and in December 2025 the kernel's maintainers declared the Rust "experiment" over: Rust is a permanent part of the kernel (with architecture support limited by its LLVM-based compiler). Google reports that memory-safety bugs fell from 76% of Android's vulnerabilities in 2019 to under 20% in 2025 as new code moved to memory-safe languages, and estimates Rust code's memory-safety vulnerability density at about 1000× lower than its C and C++ ([R-095](../../../reference/research-log.md#r-095--rust-adoption-in-android-and-the-linux-kernel)) **[Established]** for the kernel status, **[Industry estimate]** for Google's figures.
 
 ### Why it matters commercially
@@ -605,11 +671,11 @@ For a semiconductor company this trend cuts three ways. **Hardware:** memory tag
 
    </details>
 
-4. How many bytes does the string `"RH=41%"` occupy, and why is `strcpy` dangerous where `snprintf` is not?
+4. How many bytes does the string `"RH=41%"` occupy, why is `strcpy` dangerous where `snprintf` is not, and why is `strncpy` not the fix?
 
    <details><summary>Answer</summary>
 
-   7 bytes: 6 characters and the terminating zero. `strcpy` copies until the source's terminator regardless of the destination's size; `snprintf` takes the destination size, never writes past it, always terminates, and returns the length it needed so truncation can be detected.
+   7 bytes: 6 characters and the terminating zero. `strcpy` copies until the source's terminator regardless of the destination's size; `snprintf` takes the destination size, never writes past it, always terminates, and returns the length it needed so truncation can be detected. `strncpy(dst, src, n)` stops at `n` bytes but writes no terminator when the source is that long, so the result may not be a string at all.
 
    </details>
 
@@ -617,7 +683,7 @@ For a semiconductor company this trend cuts three ways. **Hardware:** memory tag
 
    <details><summary>Answer</summary>
 
-   Each field must sit at an address that is a multiple of its size, and the struct's size is rounded up to a multiple of its largest alignment. In the first order, 3 padding bytes precede the `uint32_t` and 2 follow the `uint16_t`; in the second, only 1 byte of padding is needed at the end.
+   Each field must sit at an address that is a multiple of its alignment (for these basic types, its size), and the struct's size is rounded up to a multiple of its largest alignment. In the first order, 3 padding bytes precede the `uint32_t` and 2 follow the `uint16_t`; in the second, only 1 byte of padding is needed at the end.
 
    </details>
 
@@ -681,4 +747,4 @@ Now work the [problem set](../problems/05-06-problems.md).
 2. ISO/IEC 9899:2024 (C23) on pointer arithmetic, object lifetimes and the allocation functions. [R-092]
 3. Microsoft Security Response Center (2019); The Chromium Projects, "Memory safety"; CISA et al., "The Case for Memory Safe Roadmaps" (Dec 2023); White House ONCD, "Back to the Building Blocks" (Feb 2024). [R-094]
 4. Google Security Blog (Sep 2024; Nov 2025) on Android memory safety and Rust; KernelNewbies, Linux 6.1; LWN.net, "The (successful) end of the kernel Rust experiment" (Dec 2025). [R-095]
-5. MISRA C:2025 (dynamic memory allocation guidance). [R-092]
+5. MISRA C:2012 and C:2023, Directive 4.12 and Rule 21.3 (dynamic memory allocation), as summarized in tool vendors' rule documentation. [R-092]

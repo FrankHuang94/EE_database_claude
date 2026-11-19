@@ -50,7 +50,7 @@ flowchart LR
 
 ## 3. Theory
 
-> **Notation for this chapter.** `np` is the conventional name for NumPy (`import numpy as np`). An array's **shape** is its size along each axis, e.g. `(12, 12)`; its **dtype** is the element type. Code blocks are run by the verify script and their outputs checked, as in 05-01. Printed arrays use NumPy 2's formatting.
+> **Notation for this chapter.** `np` is the conventional name for NumPy (`import numpy as np`). An array's **shape** is its size along each axis, e.g. `(12, 12)`; its **dtype** is the element type. Code blocks are run in order, as one session, by the verify script and their outputs checked, as in 05-01. Printed arrays use NumPy 2's formatting.
 
 ### 3.1 Creating arrays
 

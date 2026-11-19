@@ -73,11 +73,11 @@ tau = 0.470 ms
 To build and run it in a terminal (Linux, macOS or WSL), with the warning and safety flags used throughout this course:
 
 ```bash
-cc -std=c17 -Wall -Wextra -Wpedantic -O1 -g -fsanitize=address,undefined -o rc rc.c
+cc -std=c17 -Wall -Wextra -Wpedantic -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -o rc rc.c
 ./rc
 ```
 
-`-std=c17` selects the language version; `-Wall -Wextra -Wpedantic` turn on warnings (add `-Werror` to make them errors); `-O1` optimizes lightly; `-g` keeps debugging information; `-fsanitize=...` adds run-time checks (Section 3.8). You can stop after each stage to see what it produces: `cc -E rc.c` prints the preprocessed text (thousands of lines, mostly from `stdio.h`); `cc -S rc.c` writes the assembly to `rc.s`; `cc -c rc.c` writes the object file `rc.o`.
+`-std=c17` selects the language version; `-Wall -Wextra -Wpedantic` turn on warnings (add `-Werror` to make them errors); `-O1` optimizes lightly; `-g` keeps debugging information; `-fsanitize=...` adds run-time checks (Section 3.8), and `-fno-sanitize-recover=all` makes the program stop at the first problem they find (by default the undefined-behavior checks report and carry on). You can stop after each stage to see what it produces: `cc -E rc.c` prints the preprocessed text (several hundred lines, almost all from `stdio.h`); `cc -S rc.c` writes the assembly to `rc.s`; `cc -c rc.c` writes the object file `rc.o`.
 
 **Translation units and the linker.** Each `.c` file, after preprocessing, is a **translation unit**, compiled separately into an object file. The compiler sees one unit at a time, so to call a function defined in another file it needs a **declaration** (also called a **prototype**): the function's name, return type and parameter types. The **definition**, with the body, exists in exactly one unit. Declarations go in a **header file** (`.h`) that every user includes; the linker then connects each call to the one definition. Section 3.6 builds such a program.
 
@@ -137,7 +137,7 @@ so they differ only for negative operands. Mixed integer and floating arithmetic
 
 **Unsigned arithmetic wraps; signed overflow is undefined.** Unsigned arithmetic is defined modulo $2^n$: for 32-bit `unsigned`, $0 - 1$ is 4,294,967,295. That is useful for counters and checksums. Signed overflow, such as `INT_MAX + 1`, is **undefined behavior**: the standard places no requirement on what happens (Section 3.8). C23's two's-complement rule fixed how signed values are *stored*, not what overflow does.
 
-**Integer promotion.** Arithmetic is never done in types narrower than `int`. Operands of type `char`, `short`, `int8_t`, `uint8_t`, `int16_t` and `uint16_t` are first converted to `int`. So with `uint8_t a = 200, b = 100`, the expression `a + b` is the `int` 300; only when you store it back into a `uint8_t` is it reduced modulo 256, to 44.
+**Integer promotion.** Arithmetic is never done in types narrower than `int`. Operands of type `char`, `short`, `int8_t`, `uint8_t`, `int16_t` and `uint16_t` are first converted to `int`, on any platform where `int` is wider than 16 bits. (On 8- and 16-bit microcontrollers, where `int` is 16 bits, a `uint16_t` does not fit in `int` and is promoted to `unsigned int` instead: the same source can compute differently on two chips.) So with `uint8_t a = 200, b = 100`, the expression `a + b` is the `int` 300; only when you store it back into a `uint8_t` is it reduced modulo 256, to 44.
 
 **The usual arithmetic conversions.** When an operator's operands have different types, both are converted to a common type: if either is floating, to floating; otherwise, roughly, to the larger type, and **if one operand is unsigned and the other signed of the same size, the signed one is converted to unsigned**. That last rule produces one of C's best-known bugs: `-1 < 1u` is *false*, because −1 becomes 4,294,967,295 (Example 05-05.3).
 
@@ -152,14 +152,14 @@ C's arithmetic (`+ - * / %`), comparison (`== != < <= > >=`) and logical (`&& ||
 - **Comparisons and logic produce `int`**, 1 for true and 0 for false. Any nonzero value counts as true in a condition. (C23 makes `bool`, `true` and `false` keywords; in C17 include `<stdbool.h>`.)
 - **`=` is assignment, `==` comparison.** `if (x = 0)` assigns 0 to `x` and is always false. With `-Wall`, compilers warn.
 - **Increment and decrement:** `i++` and `++i` add 1 (the value of the expression is the old or new value respectively). Never modify a variable twice in one expression (`i = i++ + 1` is undefined).
-- **Bitwise operators** `& | ^ ~ << >>` work on the bits of integers (05-07). Their **precedence is lower than comparison**, so `x & 1 == 0` means `x & (1 == 0)`, which is always 0. Parenthesize: `(x & 1) == 0`.
+- **Bitwise operators** `& | ^ ~ << >>` work on the bits of integers (05-07). Their precedence holds two traps. The binary `&`, `^` and `|` bind **less tightly than comparison**, so `x & 1 == 0` means `x & (1 == 0)`, which is always 0: write `(x & 1) == 0`. The shifts `<<` and `>>` bind more tightly than comparison but **less tightly than `+` and `-`**, so `1 << n - 1` means `1 << (n - 1)` and `x << 2 + 1` shifts by 3. (`~` is unary and binds tightly, like `-x`.) When bitwise and arithmetic operators mix, parenthesize.
 - **The conditional operator** `c ? a : b` is Python's `a if c else b`.
 - **Compound assignment** `x += 3` is `x = x + 3`, as in Python.
 
 Compilers catch the precedence trap when warnings are on:
 
 ```c
-// expect: warning
+// expect: warning -Wparentheses
 int is_even(int x)
 {
     return x & 1 == 0;                         /* intended (x & 1) == 0 */
@@ -176,7 +176,7 @@ C has the familiar structures, with braces instead of indentation (indentation i
 - `while (cond) { ... }` and `do { ... } while (cond);` (the body runs at least once)
 - `for (init; cond; step) { ... }`, e.g. `for (int i = 0; i < n; i++)`, which counts 0 to $n - 1$
 - `break` leaves a loop or `switch`; `continue` jumps to the next iteration
-- `switch (value) { case 1: ...; break; default: ...; }` selects by integer value. **Cases fall through** to the next one unless you write `break`, a classic source of bugs (newer compilers warn with `-Wimplicit-fallthrough`, enabled by `-Wextra`).
+- `switch (value) { case 1: ...; break; default: ...; }` selects by integer value. **Cases fall through** to the next one unless you write `break`, a classic source of bugs (GCC warns with `-Wimplicit-fallthrough`, which `-Wextra` enables; Clang has the same flag but `-Wextra` does not turn it on, so add it explicitly).
 
 C has no exceptions. Functions report failure through their return value (often 0 for success and a negative code for errors, or a special value), and callers must check it. The following program uses most of these structures to classify ADC readings:
 
@@ -272,7 +272,7 @@ int main(void)
 alpha = 0.095163, after 10 samples y = 0.632121
 ```
 
-`#include "ema.h"` (quotes) searches the project's folders first; `#include <stdio.h>` (angle brackets) searches the system's. The program is built from two translation units, `cc ... main.c ema.c -lm` (`-lm` links the math library on Linux). After 10 samples, one time constant, the output has reached $1 - e^{-1}$ = 63.2% of the step, exactly like the capacitor voltage in 07-02 (Example 05-05.4 derives why).
+`#include "ema.h"` (quotes) searches the directory of the file being compiled first, then the folders given with `-I`, then the system's; `#include <stdio.h>` (angle brackets) skips the first of those. Note that `ema.c` includes its own header. C's linker matches functions by **name only**, not by parameter types, so if a definition drifted from its declaration (`float` parameters in one, `double` in the other), the program would still link and every call would be undefined behavior. Including the header in the defining file makes the compiler compare the two and reject any mismatch. The program is built from two translation units, `cc ... main.c ema.c -lm` (`-lm` links the math library on Linux). After 10 samples, one time constant, the output has reached $1 - e^{-1}$ = 63.2% of the step, exactly like the capacitor voltage in 07-02 (Example 05-05.4 derives why).
 
 **`static` has two meanings.** On a function or a file-level variable, `static` means **internal linkage**: the name is private to its translation unit, invisible to the linker, which prevents clashes and documents intent. On a variable inside a function, `static` means the variable **persists** between calls (it is created once, initialized once, and lives for the whole program), which is how firmware keeps a filter's state or a call counter without global variables:
 
@@ -338,7 +338,7 @@ int main(void)
 full scale 4095
 ```
 
-If someone later sets `ADC_BITS` to 24, the build fails with the assertion's message instead of producing a firmware image that silently overflows.
+The limits encode an assumption made elsewhere in the code: codes are stored in `uint16_t`, so a converter wider than 16 bits would be silently truncated. If someone later sets `ADC_BITS` to 24, the build fails with the assertion's message instead of producing a firmware image that silently loses the top bits.
 
 ### 3.8 Undefined behavior and how to catch it
 
@@ -365,7 +365,7 @@ Common causes of UB, most of which this course meets again:
 **Defense in depth.** No single tool catches everything, so professionals layer them:
 
 1. **Warnings as errors** (`-Wall -Wextra -Wpedantic -Werror`): catch many mistakes at compile time, free.
-2. **Sanitizers** (`-fsanitize=undefined,address`): the compiler inserts run-time checks that report UB and memory errors with the file and line, at a cost of roughly 2× in speed and memory, so they are used in testing, not in shipped firmware.
+2. **Sanitizers** (`-fsanitize=undefined,address`, with `-fno-sanitize-recover=all` to stop at the first error): the compiler inserts run-time checks that report UB and memory errors with the file and line. They cost speed (Clang's documentation gives a typical 2× slowdown for AddressSanitizer) and memory (more for programs with many small allocations), so they are used in testing, not in shipped firmware.
 3. **Static analysis** tools examine code without running it.
 4. **Coding standards** such as MISRA C (automotive and safety-critical) and SEI CERT C restrict the language to safer subsets (Section 9).
 5. **Tests**, run under sanitizers, in CI (05-04).
@@ -390,9 +390,9 @@ int main(void)
 runtime error: signed integer overflow: 2147483647 + 1 cannot be represented in type 'int'
 ```
 
-Without the sanitizer, this program prints −2147483648 on typical hardware and exits normally: a wrong answer with no warning. With it, the run stops at the offending line.
+Without the sanitizer, this program prints −2147483648 on typical hardware and exits normally: a wrong answer with no warning. With it, the run reports the offending line and, because this course adds `-fno-sanitize-recover=all`, stops there; without that flag UBSan prints the report and lets the program continue.
 
-> **Going deeper — why C has undefined behavior at all.** C was standardized (1989) to run efficiently on machines with different integer representations and trap behaviors. Leaving overflow undefined let each compiler emit the single native add instruction, and later let optimizers assume loop counters never wrap, which enables vectorization. The price is that correctness depends on the programmer. Newer systems languages (Rust, for example) make overflow either checked or explicitly wrapping, and forbid most memory errors at compile time; 05-06 discusses why that matters for security.
+> **Going deeper — why C has undefined behavior at all.** C was standardized (1989) to run efficiently on machines with different integer representations and trap behaviors. Leaving overflow undefined let each compiler emit the single native add instruction, and later let optimizers assume loop counters never wrap, which enables vectorization. The price is that correctness depends on the programmer. Newer systems languages never make overflow undefined. Rust, for example, stops a debug build with an error on overflow, wraps by default in a release build, and offers `checked_add` and `wrapping_add` to state the intent explicitly; it also forbids most memory errors at compile time; 05-06 discusses why that matters for security.
 
 ## 4. Worked examples
 
@@ -493,7 +493,7 @@ int main(void)
 Casting the unsigned operand to `int` (safe here, because 10 fits) gives the intended answer, 1 (true). The compiler can warn about the original comparison:
 
 ```c
-// expect: warning
+// expect: warning -Wsign-compare
 int below_limit(int delta, unsigned limit)
 {
     return delta < limit;
@@ -518,7 +518,7 @@ Starting from $y_0 = 0$ ($e_0 = 1$), the error shrinks geometrically: $e_n = (1 
 
 (b) $\alpha = 1 - e^{-0.1}$ = **0.095163**; after 10 samples ($t$ = τ), $y_{10} = 1 - e^{-1}$ = **0.632121**, as the program in Section 3.6 printed.
 
-(c) Require $(1 - \alpha)^n \le 0.01$: $n \ge \ln(0.01)/\ln(1-\alpha) = 4.605/0.1 = 46.05$, so **47 samples** (47 ms, about 4.6 time constants).
+(c) Require $(1 - \alpha)^n \le 0.01$: $n \ge \ln(0.01)/\ln(1-\alpha) = 4.605/0.1 = 46.05$, so **47 samples** (47 ms, 4.7 time constants: the continuous-time answer, $\ln 100$ = 4.6 time constants, rounded up to a whole sample).
 
 ```c
 // with: ema.c
@@ -550,9 +550,9 @@ The simulation agrees with the formula.
 
 ### Example 05-05.5 · Sizing an accumulator for signal energy
 
-**Setup.** A 16-bit audio ADC produces signed samples up to ±32,767. Firmware sums the squares of the samples to estimate signal power. (a) How many full-scale squared samples fit in an `int32_t` accumulator? (b) In an `int64_t`? (c) Show what goes wrong with `int`.
+**Setup.** A 16-bit audio ADC produces two's-complement samples from −32,768 to +32,767. Firmware sums the squares of the samples to estimate signal power. (a) How many worst-case squared samples fit in an `int32_t` accumulator? (b) In an `int64_t`? (c) Show what goes wrong with `int`.
 
-**Solution.** (a) One full-scale square is $32{,}767^2$ = 1,073,676,289. The `int32_t` maximum is $2^{31} - 1$ = 2,147,483,647, so $\lfloor 2{,}147{,}483{,}647/1{,}073{,}676{,}289 \rfloor$ = **2** samples. (b) For `int64_t`, $(2^{63}-1)/1{,}073{,}676{,}289$ = **8.59×10⁹** samples: at 48,000 samples per second, about 49.7 hours of continuous full-scale signal. (c) The third full-scale square overflows `int`:
+**Solution.** (a) The largest square comes from the most negative sample: $(-32{,}768)^2 = 2^{30}$ = 1,073,741,824. The `int32_t` maximum is $2^{31} - 1$ = 2,147,483,647, so $\lfloor (2^{31} - 1)/2^{30} \rfloor$ = **1** sample: two worst-case squares make exactly $2^{31}$, one more than the type holds. (Had the samples been limited to ±32,767, two would fit, a reminder that two's-complement ranges are asymmetric and the worst case is the negative end.) (b) For `int64_t`, $\lfloor (2^{63}-1)/2^{30} \rfloor = 2^{33} - 1$ = **8.59×10⁹** samples: at 48,000 samples per second, about **49.7 hours** of continuous worst-case signal. (c) The second worst-case square overflows `int`:
 
 ```c
 // expect: sanitizer
@@ -561,10 +561,10 @@ The simulation agrees with the formula.
 
 int main(void)
 {
-    volatile int16_t s = 32767;
+    volatile int16_t s = -32768;
     int energy = 0;
-    for (int n = 0; n < 3; n++) {
-        energy += s * s;                       /* int arithmetic: overflows on the third pass */
+    for (int n = 0; n < 2; n++) {
+        energy += s * s;                       /* int arithmetic: overflows on the second pass */
     }
     printf("%d\n", energy);
     return 0;
@@ -575,11 +575,11 @@ int main(void)
 runtime error: signed integer overflow
 ```
 
-The fix is to accumulate in a wide type and convert *before* multiplying: `int64_t energy = 0; energy += (int64_t)s * s;`. Writing `energy += s * s` with an `int64_t` accumulator is not enough: `s * s` is still computed in `int` (each operand is promoted only to `int`), and only its result is widened. For 32,767² that product fits, barely; for a 32-bit sample it would not.
+The fix is to accumulate in a wide type and convert *before* multiplying: `int64_t energy = 0; energy += (int64_t)s * s;`. Writing `energy += s * s` with an `int64_t` accumulator is not enough: `s * s` is still computed in `int` (each operand is promoted only to `int`), and only its result is widened. For a 16-bit sample that product fits (it is at most $2^{30}$); for a 32-bit sample it would not.
 
 **Units check.** Squared counts accumulate in counts²; the bound is a dimensionless sample count ✓.
 
-**Sanity check.** $2^{31}/2^{30} = 2$ and $2^{63}/2^{30} = 2^{33} \approx 8.6\times10^9$, since $32{,}767^2 \approx 2^{30}$ ✓.
+**Sanity check.** $2^{63}/2^{30} = 2^{33} \approx 8.6\times10^9$, and $8.6\times10^9/(48{,}000 \times 3600) \approx 50$ h ✓. The `int32_t` answer, 1, is a reminder to design accumulators from the worst case, with margin: a power meter that integrates for one second at 48,000 samples per second needs $30 + \log_2 48{,}000 \approx 45.6$ bits of magnitude plus a sign bit, so **47** bits, and `int64_t` leaves about 17 bits of margin.
 
 ### Answer key
 
@@ -603,15 +603,16 @@ The fix is to accumulate in a wide type and convert *before* multiplying: `int64
 | Ex 05-05.4a | α | 0.095163 | — |
 | Ex 05-05.4b | output after 10 samples | 0.632121 | — |
 | Ex 05-05.4c | samples to settle within 1% | 47 | — |
-| Ex 05-05.5a | full-scale squares in int32_t | 2 | — |
-| Ex 05-05.5b | full-scale squares in int64_t | 8.59×10^9 | — |
-| Ex 05-05.5c | hours of 48 kS/s full-scale audio | 49.7 | h |
+| Ex 05-05.5a | worst-case squares in int32_t | 1 | — |
+| Ex 05-05.5b | worst-case squares in int64_t | 8.59×10^9 | — |
+| Ex 05-05.5c | hours of 48 kS/s worst-case audio | 49.7 | h |
+| Ex 05-05.5d | signed accumulator width for one second at 48 kS/s | 47 | bits |
 
 ## 5. Simulate it
 
 Open [labs/05-05-lab/](../labs/05-05-lab/README.md). There is no notebook this time: the lab is a small C module with a self-checking test, built and run by [`tools/run_c.py`](../../../tools/run_c.py) (or by hand with the commands in the handout). It contains:
 
-1. **The four stages, by hand:** run the preprocessor, compiler, assembler and linker one at a time on the lab's sources and inspect each output. *Predict first:* how many lines will `cc -E` produce for a 20-line file?
+1. **The four stages, by hand:** run the preprocessor, compiler, assembler and linker one at a time on the lab's sources and inspect each output. *Predict first:* how many lines will `cc -E` produce for a 50-line file?
 2. **A sensor module with tests:** ADC-to-millivolt conversion and the moving-average filter of Section 3.6, checked by `adc_test.c`. *Predict first:* which of the provided test cases fails if the rounding term is removed?
 3. **Warnings and sanitizers:** compile `ub_demo.c` with and without `-fsanitize=undefined` and compare.
 4. **A linker error on purpose:** remove a source file from the build and read the message.
@@ -625,7 +626,7 @@ Open [labs/05-05-lab/](../labs/05-05-lab/README.md). There is no notebook this t
 | `int` versus fixed-width `int32_t` | Fixed width: portable, explicit | Verbosity; promotion rules still apply | Coding standard |
 | Macros versus `static inline` functions | Macros: work with any type, compile-time tricks | Textual pitfalls, no type checking, hard to debug | Team convention (MISRA discourages function-like macros) |
 | Optimization level (`-O0` … `-O3`, `-Os`) | Higher: speed; `-Os`: size | Harder debugging; latent UB can appear when optimization changes | Build/release engineer |
-| Sanitizers and warnings-as-errors in CI | Bugs caught before shipping | Build time; sanitized runs about 2× slower | Engineering management |
+| Sanitizers and warnings-as-errors in CI | Bugs caught before shipping | Build time; sanitized runs typically about 2× slower and use more memory | Engineering management |
 
 ## 7. Numbers to know
 
@@ -638,7 +639,7 @@ Open [labs/05-05-lab/](../labs/05-05-lab/README.md). There is no notebook this t
 | `float` / `double` precision | about 7 / 16 significant digits | 05-02 |
 | C standard revisions | C89/C90, C99, C11, C17, C23 (published Oct 2024) | [R-092](../../../reference/research-log.md#r-092--c-language-standards-coding-standards-and-embedded-usage) |
 | C share among embedded/IoT developers (constrained devices) | 55% (C++ 36%), 2024 survey | [R-092](../../../reference/research-log.md#r-092--c-language-standards-coding-standards-and-embedded-usage) |
-| Sanitizer run-time overhead | roughly 2× | testing only |
+| AddressSanitizer slowdown | typically about 2× (Clang documentation); memory overhead varies | testing only |
 
 ## 8. Common mistakes
 
@@ -684,7 +685,7 @@ For an MCU or SoC vendor, the C software stack (drivers, hardware abstraction la
 
    <details><summary>Answer</summary>
 
-   The linker. The compiler accepted the call because a declaration (from `ema.h`) was visible, but no object file given to the linker contains the definition: usually `ema.c` was left out of the build command, or the definition's name or parameter types differ from the declaration, or it was declared `static` in its file.
+   The linker. The compiler accepted the call because a declaration (from `ema.h`) was visible, but no object file given to the linker defines a function of that name: usually `ema.c` was left out of the build command, or the definition's name is spelled differently, or the definition is `static` (private to its file). A mismatch in *parameter types* does not cause this error: C's linker matches names only, so a definition whose parameters differ from the declaration links silently and the calls are undefined behavior. The defense is for `ema.c` to include `ema.h`, so that the compiler compares declaration and definition (and also rejects a `static` definition that contradicts the header).
 
    </details>
 

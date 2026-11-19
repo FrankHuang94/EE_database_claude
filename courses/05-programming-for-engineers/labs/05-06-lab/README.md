@@ -17,7 +17,8 @@ Chapter sections 3.3 (arrays and pointer arithmetic), 3.4 (strings), 3.5 (struct
 1. **Run the tests.**
 
    ```bash
-   cc -std=c17 -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined samplelog_test.c samplelog.c -o samplelog_test
+   cc -std=c17 -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-sanitize-recover=all \
+      samplelog_test.c samplelog.c -o samplelog_test
    ./samplelog_test
    ```
 
@@ -66,7 +67,7 @@ Chapter sections 3.3 (arrays and pointer arithmetic), 3.4 (strings), 3.5 (struct
 1. Because 37 and 101 have no common factor, $37i \bmod 101$ runs through all residues 0 to 100 exactly once in every 101 consecutive values of $i$, and those residues minus 50 sum to $\sum_{r=0}^{100}(r - 50) = 0$. 1000 samples are 9 complete cycles (909 samples, summing to 0) plus the first 91 values of the next cycle, $i = 909, \dots, 999$, which are the same as $i = 0, \dots, 90$. Their sum is 10, so the mean is $10/1000 = 0.01$. The verify script recomputes this independently.
 2. The checks tested behavior (values, sizes, strings) but not resource ownership; only the leak checker, run automatically at exit, saw that memory was never returned. A passing test suite is evidence about what it checks, nothing more; that is why the course's C tests always run under sanitizers.
 3. They give no sign of failure. The overflow corrupted memory nobody happened to read afterward, and the leak only costs memory, which on a desktop test run is plentiful. In a long-running device the leak exhausts RAM after hours or days, and the overflow corrupts whatever the next code version places next to the array: failures that appear far from their cause.
-4. If `realloc` fails it returns `NULL` but leaves the old block allocated. Assigning directly would overwrite the log's only pointer to its data with `NULL`: the samples would be lost and the block leaked, and the next push would treat the log as empty-but-full. With a temporary, the function returns −1 and the log is unchanged, so the caller can still use or free it.
+4. If `realloc` fails it returns `NULL` but leaves the old block allocated. Assigning directly would overwrite the log's only pointer to its data with `NULL`: the samples would be lost and the block leaked. Worse, the log would not know it: `len` and `cap` still describe the lost block, so the next push that finds `len == cap` would call `realloc(NULL, ...)`, which acts like `malloc` and returns a fresh, uninitialized block, and the log would carry on reporting `len` samples of which all but the newest are garbage. With a temporary, the function returns −1 and the log is unchanged, so the caller can still use or free it.
 
 </details>
 

@@ -115,6 +115,10 @@ v.check("05-06.10d", c15)
 free_ram = 16 * 1024 - (3 * 512 * 2 + 4096 + 3 * 1024)
 v.check("05-06.12a", free_ram // loose)
 v.check("05-06.12b", free_ram // tight)
+frame13 = [[1, 2, 3, 4], [10, 20, 30, 40], [7, 0, 9, 5]]
+v.check("05-06.13a", (2 * len(frame13[0]) + 1) * struct.calcsize("=H"))         # row-major: two rows, then one element
+v.check("05-06.13b", sum(frame13[1]))
+v.check("05-06.13c", max(frame13[2]))
 
 # ---------------------------------------------------------------- lab
 lab_r, _, lab_cap = grow(8, 2, 1, 1000)

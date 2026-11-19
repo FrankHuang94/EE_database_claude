@@ -3,7 +3,7 @@
 Chapter: [05-04](../chapters/05-04-reproducible-workflows.md) · Worked solutions: [05-04 solutions](../solutions/05-04-solutions.md)
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
-**Conventions:** Python 3.10 or later with pytest and git installed. Where a problem runs git, use a fixed author name and date as in chapter Section 3.2 so that your hashes match the solutions. Give every probability to the stated precision.
+**Conventions:** Python 3.12 or later with pytest and git installed. Where a problem runs git, use a fixed author name and date as in chapter Section 3.2 so that your hashes match the solutions. Give every probability to the stated precision.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 

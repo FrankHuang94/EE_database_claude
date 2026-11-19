@@ -3,7 +3,7 @@
 Chapter: [05-05](../chapters/05-05-c-fundamentals.md) · Worked solutions: [05-05 solutions](../solutions/05-05-solutions.md)
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
-**Conventions:** C17 with 32-bit `int` (as on desktop systems and 32-bit microcontrollers), compiled with `-Wall -Wextra -Wpedantic` and, for testing, `-fsanitize=address,undefined`. Work each answer by hand first, then confirm it with a program.
+**Conventions:** C17 with 32-bit `int` (as on desktop systems and 32-bit microcontrollers), compiled with `-Wall -Wextra -Wpedantic` and, for testing, `-fsanitize=address,undefined -fno-sanitize-recover=all`. Work each answer by hand first, then confirm it with a program.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 
@@ -26,7 +26,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 05-05.3 [A]
 
-**Choosing types.** Choose a fixed-width type for each quantity and justify it: (a) a 12-bit ADC code; (b) a 32-bit peripheral register; (c) a temperature from −40 °C to +125 °C stored in hundredths of a degree; (d) milliseconds since power-on, for a device that must run for a year without restarting. For (d), after how many days does a `uint32_t` millisecond counter wrap?
+**Choosing types.** Choose a fixed-width type for each quantity and justify it: (a) a 12-bit ADC code; (b) a 32-bit peripheral register; (c) a temperature from −40 °C to +125 °C stored in hundredths of a degree; (d) microseconds since power-on, for a device that must run for a year without restarting. For (d), after how long does a `uint32_t` microsecond counter wrap?
 
 ### Problem 05-05.4 [B]
 
@@ -54,7 +54,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 05-05.10 [C]
 
-**A 24-bit audio accumulator.** A 24-bit audio ADC produces signed samples up to $2^{23} - 1$ = 8,388,607 in magnitude. (a) Does one full-scale square fit in an `int32_t`? (b) How many full-scale squares fit in an `int64_t`? (c) How many seconds of continuous full-scale audio at 48 kHz is that? (d) Write the accumulation so that no intermediate overflows.
+**A 24-bit audio accumulator.** A 24-bit audio ADC produces two's-complement samples from $-2^{23}$ = −8,388,608 to $2^{23} - 1$. (a) Does one worst-case square fit in an `int32_t`? (b) How many worst-case squares fit in an `int64_t`? (c) How many seconds of continuous worst-case audio at 48 kHz is that? (d) Write the accumulation so that no intermediate overflows.
 
 ### Problem 05-05.11 [C]
 

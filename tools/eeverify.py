@@ -33,8 +33,11 @@ sanitizer-instrumented flags of ``tools/run_c.py``. Directives on a block's firs
 ``// file: NAME`` saves the block as NAME for later blocks (and compiles it if it is a .c file);
 ``// with: a.c b.c`` links those saved files into a block that has ``main``;
 ``// expect: warning`` / ``// expect: error`` asserts that compiling (without -Werror) warns / fails;
+``// expect: warning -Wparentheses`` also requires that diagnostic by name, so that an unrelated
+warning cannot satisfy the check;
 ``// expect: sanitizer`` asserts that running reports a sanitizer error, and each line of the
-following ```text block must appear in that report; ``// fragment`` skips the block;
+following ```text block must appear in that report; ``// fragment`` skips the block (fragments are
+not compiled at all, so use them only for snippets that cannot stand alone, and keep them short);
 ``// EXTRA_CFLAGS: ...`` adds flags. A block without ``main`` is compiled with ``-c`` only.
 """
 from __future__ import annotations
@@ -391,14 +394,15 @@ def run_c_blocks(v: "Verifier", path: str | Path, label: str | None = None) -> N
                     v.assert_true(f"{where} ({d['file']}) compiles cleanly", r["ok"], r["log"][-800:])
                 continue
             extra = [work / f for f in d.get("with", "").split()]
-            expect = d.get("expect", "")
+            expect, *want_flags = d.get("expect", "").split() or [""]
             if expect == "error":
                 r = build_and_run_c(code, work, extra, werror=False, run=False)
                 v.assert_true(f"{where} fails to compile, as intended", not r["ok"])
             elif expect == "warning":
                 r = build_and_run_c(code, work, extra, werror=False, run=False)
-                v.assert_true(f"{where} compiles with a warning, as intended", r["ok"] and "warning:" in r["log"],
-                              r["log"][-800:])
+                named = all(f"[{flag}" in r["log"] for flag in want_flags)
+                v.assert_true(f"{where} compiles with the intended warning{' ' + ' '.join(want_flags) if want_flags else ''}",
+                              r["ok"] and "warning:" in r["log"] and named, r["log"][-800:])
             elif expect == "sanitizer":
                 r = build_and_run_c(code, work, extra)
                 got = r["log"]

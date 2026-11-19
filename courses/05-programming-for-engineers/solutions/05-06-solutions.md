@@ -147,7 +147,7 @@ t: size 8
 ### Solution 05-06.6
 
 ```c
-// expect: warning
+// expect: warning -Wreturn-local-addr
 #include <stdio.h>
 
 const char *make_label(int channel)
@@ -338,7 +338,7 @@ Doubling: **16** reallocations ($16 \times 2^{16} = 1{,}048{,}576$), **1,048,560
 (a) **Heap buffer overflow** (a read past the end of a `malloc`ed block, 4 bytes, so likely an `int`): an off-by-one loop bound or a wrong size in `malloc`; fix the bound or allocate `n * sizeof *p`. (b) **Use after free**: memory read or written after `free` (or after `realloc` moved it); fix the ownership so nothing keeps the pointer, set it to `NULL` after freeing. (c) **Double free**: two owners, or an error path that frees and then falls through to a second `free`; give the block one owner. (d) **Use after return**: a pointer to a local variable used after its function returned (ASan detects this when its stack-use-after-return checking is enabled); return data in caller-provided storage. (e) **Leak**: an allocation whose last pointer was lost; free it on every path, or avoid the heap.
 
 ```c
-// expect: warning
+// expect: warning -Wuse-after-free
 #include <stdlib.h>
 
 int main(void)
@@ -384,6 +384,70 @@ free for logs: 6144 bytes; loose 512 records, tight 768 records
 
 In a real budget the linker map file gives the exact static use, and stack depth is measured (for example by filling the stack with a pattern and checking how much was overwritten), because a stack overflow on an MCU without memory protection silently corrupts whatever lies below it.
 
+### Solution 05-06.13
+
+(a) Row-major order puts `frame[2][1]` after two full rows and one element: $(2 \times 4 + 1) = 9$ elements of 2 bytes, a byte offset of **18**.
+
+(b)
+
+```c
+#include <stdint.h>
+#include <stdio.h>
+
+typedef uint32_t (*reduce_fn)(const uint16_t *row, size_t n);
+
+static uint32_t row_sum(const uint16_t *row, size_t n)
+{
+    uint32_t s = 0;
+    for (size_t i = 0; i < n; i++) {
+        s += row[i];
+    }
+    return s;
+}
+
+static uint32_t row_max(const uint16_t *row, size_t n)
+{
+    uint32_t m = row[0];
+    for (size_t i = 1; i < n; i++) {
+        if (row[i] > m) {
+            m = row[i];
+        }
+    }
+    return m;
+}
+
+static void reduce_rows(size_t rows, uint16_t frame[][4], reduce_fn f, uint32_t *out)
+{
+    for (size_t r = 0; r < rows; r++) {
+        out[r] = f(frame[r], 4);                /* frame[r] is row r, an array of 4 that decays to a pointer */
+    }
+}
+
+int main(void)
+{
+    uint16_t frame[3][4] = {{1, 2, 3, 4}, {10, 20, 30, 40}, {7, 0, 9, 5}};
+    reduce_fn ops[] = {row_sum, row_max};
+    const char *names[] = {"sum", "max"};
+    for (size_t k = 0; k < 2; k++) {
+        uint32_t out[3];
+        reduce_rows(3, frame, ops[k], out);
+        printf("%s: %u %u %u\n", names[k], (unsigned)out[0], (unsigned)out[1], (unsigned)out[2]);
+    }
+    printf("offset of frame[2][1]: %zu bytes\n", (size_t)((char *)&frame[2][1] - (char *)frame));
+    return 0;
+}
+```
+
+```text
+sum: 10 100 21
+max: 4 40 9
+offset of frame[2][1]: 18 bytes
+```
+
+The row sums are **10, 100 and 21** and the row maxima **4, 40 and 9**. `reduce_rows` is written once; the operation is a parameter, so adding a third reduction (a mean, a peak-to-peak) needs a new small function and no change to the loop.
+
+(c) In an expression, `frame` decays to a pointer to its first *row*, of type `uint16_t (*)[4]`: one address, with the row length 4 built into the type so that `frame[r][c]` can be computed as $r \times 4 + c$ elements from the start. A `uint16_t **` is a pointer to a *pointer*: indexing it reads an address from memory and then follows it, which suits an array of separately allocated rows, not one contiguous block. The types are incompatible, so the compiler rejects the call; forcing it with a cast would make the function treat sample codes as addresses and crash.
+
 ---
 
 ## Answer key
@@ -416,3 +480,6 @@ In a real budget the linker map file gives the exact static use, and stack depth
 | 05-06.10d | copies, 1.5× | 2695954 | — |
 | 05-06.12a | records, original order | 512 | — |
 | 05-06.12b | records, reordered | 768 | — |
+| 05-06.13a | byte offset of `frame[2][1]` | 18 | bytes |
+| 05-06.13b | sum of row 1 | 100 | — |
+| 05-06.13c | maximum of row 2 | 9 | — |

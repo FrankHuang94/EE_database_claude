@@ -17,7 +17,8 @@ Chapter sections 3.1 (Big-O), 3.3 (ring buffers), 3.6 (hash tables), 3.7 (heaps)
 1. **Run the C tests.**
 
    ```bash
-   cc -std=c17 -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined ds_test.c ds.c -o ds_test
+   cc -std=c17 -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-sanitize-recover=all \
+      ds_test.c ds.c -o ds_test
    ./ds_test
    ```
 

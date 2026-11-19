@@ -18,7 +18,8 @@ Chapter sections 3.2 to 3.7 and Examples 05-07.2 to 05-07.4. The test runs in CI
 1. **Run the tests.**
 
    ```bash
-   cc -std=c17 -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined bits_test.c bits.c -lm -o bits_test
+   cc -std=c17 -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-sanitize-recover=all \
+      bits_test.c bits.c -lm -o bits_test
    ./bits_test
    ```
 

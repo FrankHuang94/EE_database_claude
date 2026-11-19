@@ -20,11 +20,12 @@ Work in this folder in a terminal. Write each prediction down before running the
 1. **Run the tests.**
 
    ```bash
-   cc -std=c17 -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined adc_test.c adc.c -lm -o adc_test
+   cc -std=c17 -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-sanitize-recover=all \
+      adc_test.c adc.c -lm -o adc_test
    ./adc_test
    ```
 
-2. **The four stages, one at a time.** *Predict:* `adc.c` is about 40 lines; how long is its preprocessed form?
+2. **The four stages, one at a time.** *Predict:* `adc.c` is about 50 lines; how long is its preprocessed form?
 
    ```bash
    cc -E adc.c | wc -l          # preprocessed text: headers pasted in
@@ -41,6 +42,7 @@ Work in this folder in a terminal. Write each prediction down before running the
    ```bash
    cc -std=c17 -O1 ub_demo.c -o ub_plain && ./ub_plain
    cc -std=c17 -O1 -fsanitize=undefined ub_demo.c -o ub_checked && ./ub_checked
+   cc -std=c17 -O1 -fsanitize=undefined -fno-sanitize-recover=all ub_demo.c -o ub_stop && ./ub_stop; echo "exit status $?"
    ```
 
 5. **A linker error on purpose.** Build without `adc.c`: `cc adc_test.c -lm -o broken`. Read the message and identify the stage.
@@ -50,10 +52,10 @@ Work in this folder in a terminal. Write each prediction down before running the
 
 | Step | Expected |
 |---|---|
-| 1 | `TEST PASSED` (10 checks) |
+| 1 | `TEST PASSED` (12 checks, including two inputs that would never settle) |
 | 2 | about 1,200 lines on 64-bit Linux with glibc (the exact count depends on the system's headers); `adc.s` and `adc.o` created; `nm` lists `T adc_to_mv`, `T ema_alpha`, `T ema_settle_samples`, `T ema_step`, `U exp` |
 | 3 | `FAIL: check on line 25` and `line 27` (the 1000-code and 700-code cases), then `TEST FAILED (2 failures)` |
-| 4 | without the sanitizer: `counter = -2147483648`, exit status 0; with it: `runtime error: signed integer overflow: 2147483647 + 1 cannot be represented in type 'int'` (the program then continues, because `-fno-sanitize-recover` was not given) |
+| 4 | without the sanitizer: `counter = -2147483648`, exit status 0; with it: `runtime error: signed integer overflow: 2147483647 + 1 cannot be represented in type 'int'` and the program continues, printing `counter = -2147483648`; with `-fno-sanitize-recover=all`, the same report and then the program stops with a nonzero exit status, as this course's builds do |
 | 5 | `undefined reference to 'adc_to_mv'` (and the other functions) from the linker (`ld`) |
 
 <!-- answer-key -->

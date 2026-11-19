@@ -35,6 +35,11 @@ int ema_settle_samples(double t_s, double tau, double tol)
     double y = 0.0;
     int n = 0;
     while (1.0 - y > tol) {
+        if (n == EMA_MAX_SAMPLES) {
+            /* Not settling: alpha rounds to 0 (t_s far below tau), or tol is below
+             * the rounding level of double, where y stops changing short of 1. */
+            return -1;
+        }
         y = ema_step(y, 1.0, alpha);
         n++;
     }

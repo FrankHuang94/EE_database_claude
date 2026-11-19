@@ -34,7 +34,7 @@ print(run(["A", "deleted", "C", "B"]), run(["A", "B", "C"]))
 2. **Assert:** sortedness after the loop is an invariant of the routine's own logic; if it fails, the routine has a bug.
 3. **Exception:** a missing file is an external condition, not a bug; Python already raises `FileNotFoundError`, and the caller should handle or report it.
 4. **Usually assert:** if the probability is computed by your own code from valid inputs, being outside [0, 1] means a bug. If it comes from outside (a file, a user), validate it and raise.
-5. **Assert:** in a test file, `assert` is the standard way to state the expected result; pytest reports the values when it fails, and tests are never run with `-O`.
+5. **Assert:** in a test file, `assert` is the standard way to state the expected result; pytest rewrites the asserts in test modules, so they report the compared values on failure and still run under `-O`.
 
 ### Solution 05-04.3
 
@@ -65,15 +65,16 @@ The file is **10 bytes** (nine visible characters and the newline), and the hand
 ```python
 import pytest
 
-print(2.9e-12 == pytest.approx(2.0e-12), 2.9e-12 == pytest.approx(2.0e-12, rel=1e-6, abs=0.0),
+print(2.9e-12 == pytest.approx(2.0e-12), 2.9e-12 == pytest.approx(2.0e-12, rel=1e-6),
+      2.9e-12 == pytest.approx(2.0e-12, rel=1e-6, abs=0.0),
       2.0000001e-12 == pytest.approx(2.0e-12, rel=1e-6, abs=0.0))
 ```
 
 ```text
-True False True
+True True False True
 ```
 
-With the default, 2.9 pA "equals" 2.0 pA; with `abs=0.0` the comparison is purely relative and correctly rejects it while still accepting a 5×10⁻⁸ relative difference. Defaults are tuned for quantities of order 1; picoamperes, femtofarads and gigahertz need tolerances chosen from their own scale.
+With the default, 2.9 pA "equals" 2.0 pA, and passing `rel=1e-6` alone does not help, because pytest keeps its default absolute floor of $10^{-12}$ whenever `abs` is not given (the reverse is not true: passing `abs` alone turns the relative test off). With `abs=0.0` the comparison is purely relative and correctly rejects it while still accepting a 5×10⁻⁸ relative difference. Defaults are tuned for quantities of order 1; picoamperes, femtofarads and gigahertz need tolerances chosen from their own scale.
 
 ### Solution 05-04.5
 
