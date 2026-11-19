@@ -64,7 +64,7 @@ The full map, with university equivalents, textbook alignment, objectives and ch
 | 1 | [02 · Complex Numbers, Differential Equations and Linear Algebra](courses/02-complex-numbers-des-and-linear-algebra/README.md) | 10 | 110 | 10/10 |
 | 1 | [03 · Probability, Statistics and Random Variables for EE](courses/03-probability-statistics-and-random-variables/README.md) | 6 | 43 | 6/6 |
 | 1 | [04 · Physics for EE](courses/04-physics-for-ee/README.md) | 11 | 106 | 11/11 |
-| 1 | [05 · Programming for Engineers](courses/05-programming-for-engineers/README.md) | 9 | 80 | 8/9 |
+| 1 | [05 · Programming for Engineers](courses/05-programming-for-engineers/README.md) | 9 | 80 | 9/9 |
 | 2 | [06 · Circuit Analysis I (DC)](courses/06-circuit-analysis-1-dc/README.md) | 11 | 86 | 0/11 |
 | 2 | [07 · Circuit Analysis II (Transient and AC)](courses/07-circuit-analysis-2-transient-and-ac/README.md) | 11 | 103 | 1/11 |
 | 2 | [08 · Digital Logic Design](courses/08-digital-logic-design/README.md) | 12 | 106 | 0/12 |

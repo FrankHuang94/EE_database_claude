@@ -102,6 +102,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-094 | Memory-safety vulnerability data and policy | Nov 2026 |
 | R-095 | Rust adoption in Android and the Linux kernel | Nov 2026 |
 | R-096 | Processor byte order: Arm Cortex-M and RISC-V | Nov 2026 |
+| R-097 | Safety-standard coverage requirements and the defect-cost curve | Nov 2026 |
 
 ---
 
@@ -797,3 +798,11 @@ R&D % = R&D ÷ revenue.
 - **RISC-V:** *The RISC-V Instruction Set Manual*, ratified release v20260120, unprivileged "Introduction": "RISC-V base ISAs have either little-endian or big-endian memory systems, with the privileged architecture further defining bi-endian operation. Instructions are stored in memory as a sequence of 16-bit little-endian parcels, regardless of memory system endianness"; commentary: little-endian was originally chosen "because little-endian systems are currently dominant commercially (all x86 systems; iOS, Android, and Windows for ARM)", with big- and bi-endian variants defined for networking and legacy code. Privileged spec: "Instruction fetches are always little-endian." [Established]
 - **x86:** little-endian (as the RISC-V commentary states; also standard architecture documentation) [Established].
 - **Sources:** [Arm DUI 0553A](https://documentation-service.arm.com/static/5f2ac4ab60a93e65927bbdbf); [ST PM0214 (course mirror)](https://se203.telecom-paris.fr/tp/docs/stm32l475xx_pm.pdf); [RISC-V unprivileged intro](https://docs.riscv.org/reference/isa/v20260120/unpriv/intro.html); [RISC-V machine-level ISA](https://docs.riscv.org/reference/isa/v20260120/priv/machine.html). Checked Nov 2026.
+
+## R-097 · Safety-standard coverage requirements and the defect-cost curve
+
+- **DO-178C (RTCA, 2011), avionics software:** structural coverage objectives scale with software level: MC/DC for Level A (with independence), decision coverage for Level B, statement coverage for Level C. Confirmed via tool-vendor summaries (Rapita Systems tables; LDRA, "MC/DC": DO-178C "requires MC/DC for the most critical software level (DAL A)"); the standard itself is paywalled and was not read [Established: consistent across sources].
+- **ISO 26262-6:2018, automotive software:** the table of structural coverage methods at the unit level rates MC/DC "highly recommended" (++) for ASIL D and "recommended" (+) for ASIL A–C, as reported by Rapita Systems and other vendor summaries; exact cell values should be checked in the standard [Established for the ASIL D rating; secondary sources].
+- **MC/DC tutorial:** Hayhurst, Veerhusen, Chilenski and Rierson, *A Practical Tutorial on Modified Condition/Decision Coverage*, NASA/TM-2001-210876 (2001) [Established].
+- **Defect-cost escalation curve:** the widely repeated claim that a defect costs 10× to 100× more to fix in each later phase traces to Boehm (1976) and later compilations; L. Bossavit, *The Leprechauns of Software Engineering* (Leanpub), and his TechWell article "What Does It Really Cost to Fix a Software Defect?" (Oct 2013) argue that the underlying evidence is thin, anecdotal and often mis-cited [Contested].
+- **Sources:** [Rapita, SIL vs DAL and coverage](https://www.rapitasystems.com/blog/whats-difference-between-sil-and-dal-how-does-it-affect-my-code-coverage); [LDRA, MC/DC](https://ldra.com/capabilities/mc-dc); [Bossavit, Leprechauns (Leanpub)](https://leanpub.com/leprechauns); [TechWell, Oct 2013](https://www.techwell.com/techwell-insights/2013/10/what-does-it-really-cost-fix-software-defect). Checked Nov 2026.

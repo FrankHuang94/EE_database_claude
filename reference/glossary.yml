@@ -2214,3 +2214,38 @@
 - term: Merge sort
   definition: Sorting by recursively sorting two halves and merging them in linear time; n log2 n comparisons in every case, stable, needs O(n) extra memory, and within lower-order terms of the comparison-sort lower bound log2(n!).
   chapter: "05-08"
+- term: Requirement
+  definition: A statement of what a system must do (functional) or how well (non-functional, e.g. power, latency, reliability); good requirements are specific, measurable, testable, unambiguous and free of design.
+  chapter: "05-09"
+  see_also: [Traceability]
+- term: Traceability
+  definition: Two-way links from each requirement to the design elements that implement it and the tests that verify it, exposing untested requirements and orphan code or tests; mandatory in safety standards.
+  chapter: "05-09"
+- term: V-model
+  definition: A development process in which each level of specification (requirements, architecture, module design) is paired with a matching level of verification (system, integration, unit tests); the backbone of automotive and avionics processes.
+  chapter: "05-09"
+- term: Agile development
+  definition: Iterative development in short cycles (sprints) that each deliver working software, with continuous customer feedback and adaptation to changing requirements (Agile Manifesto, 2001).
+  chapter: "05-09"
+- term: Coupling and cohesion
+  definition: Coupling is how much modules depend on each other; cohesion is how focused a module is on one purpose. Good designs have low coupling (narrow, stable interfaces) and high cohesion.
+  chapter: "05-09"
+- term: Cyclomatic complexity
+  definition: McCabe's count of linearly independent paths through a function, M = E − N + 2 for its control-flow graph, equal to the number of decision points plus one; also the number of basis-path tests.
+  chapter: "05-09"
+- term: Boundary-value analysis
+  definition: Black-box test design that places tests just below, at and just above each boundary of the input ranges, where off-by-one errors (< versus <=) live.
+  chapter: "05-09"
+- term: Code coverage
+  definition: The fraction of code exercised by tests, by statement, branch (decision) or MC/DC criteria; it shows what was not tested, not that what ran was checked.
+  chapter: "05-09"
+  see_also: [MC/DC]
+- term: MC/DC
+  definition: Modified condition/decision coverage; each condition in a decision is shown to independently change the outcome by a pair of tests differing only in that condition; needs at least N + 1 tests for N conditions; required for DO-178C Level A.
+  chapter: "05-09"
+- term: Code review
+  definition: Examination of every change by another engineer before it is merged, catching defects tests miss, spreading knowledge and enforcing standards; the software counterpart of segregation of duties.
+  chapter: "05-09"
+- term: Semantic versioning
+  definition: MAJOR.MINOR.PATCH version numbers where MAJOR signals incompatible changes, MINOR compatible new features and PATCH compatible fixes.
+  chapter: "05-09"
