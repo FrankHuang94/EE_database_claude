@@ -1,0 +1,25 @@
+* Problem 07-11.11: the instantaneous power of Example 07-11.1's balanced load, simulated in time.
+* Peak phase voltage 326.6 V (230.94 V RMS). After the start-up transient (L/R = 2.4 ms) the total
+* power v_a i_a + v_b i_b + v_c i_c should be constant at 12.8 kW; its minimum and maximum over the
+* last cycle are measured.
+*
+* EXPECT pmin key:../../solutions/07-11-solutions.md#07-11.11c scale=1e3 rtol=1e-3
+* EXPECT pmax key:../../solutions/07-11-solutions.md#07-11.11c scale=1e3 rtol=1e-3
+
+VA A 0 SIN(0 326.5986 50 0 0 90)
+VB B 0 SIN(0 326.5986 50 0 0 -30)
+VC C 0 SIN(0 326.5986 50 0 0 210)
+RA A xa 8
+LA xa N 19.098593m
+RB B xb 8
+LB xb N 19.098593m
+RC C xc 8
+LC xc N 19.098593m
+
+.control
+tran 10u 200m 0 10u
+let pt = (v(A)-v(N))*(-i(VA)) + (v(B)-v(N))*(-i(VB)) + (v(C)-v(N))*(-i(VC))
+meas tran pmin min pt from=180m to=200m
+meas tran pmax max pt from=180m to=200m
+.endc
+.end

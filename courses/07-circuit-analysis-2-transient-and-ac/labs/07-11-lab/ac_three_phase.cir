@@ -1,0 +1,65 @@
+* Examples 07-11.1, 07-11.4 and 07-11.6, and the guided exercise, as ngspice AC analyses at 50 Hz.
+* Sources are RMS phasors (AC magnitude 230.94 V at 0, -120 and +120 degrees). In ngspice i(V) is the
+* current entering the source's + node, so the current a source delivers into its line is -i(V).
+* (1) balanced Y load 8 + j6 ohm (6 ohm = 19.0986 mH at 50 Hz), floating star point N1
+* (2) unbalanced resistive loads 10, 20, 40 ohm with the neutral connected (star point at ground)
+* (3) the same loads with the neutral open (star point N3 floats): the guided exercise
+* Wattmeter readings use Re(V I*) = Re(V)Re(I) + Im(V)Im(I).
+*
+* EXPECT ia1   key:../../chapters/07-11-three-phase-circuits.md#Ex_07-11.1b rtol=1e-3
+* EXPECT pa1   key:../../chapters/07-11-three-phase-circuits.md#Ex_07-11.1c rtol=1e-3
+* EXPECT ptot  key:../../chapters/07-11-three-phase-circuits.md#Ex_07-11.1g scale=1e3 rtol=1e-3
+* EXPECT in2   key:../../chapters/07-11-three-phase-circuits.md#Ex_07-11.4a rtol=1e-3
+* EXPECT pn2   key:../../chapters/07-11-three-phase-circuits.md#Ex_07-11.4b rtol=1e-3
+* EXPECT w1    key:../../chapters/07-11-three-phase-circuits.md#Ex_07-11.6a rtol=1e-3
+* EXPECT w2    key:../../chapters/07-11-three-phase-circuits.md#Ex_07-11.6b rtol=1e-3
+* EXPECT va3   key:README.md#Lab_07-11.a rtol=1e-3
+* EXPECT vb3   key:README.md#Lab_07-11.b rtol=1e-3
+* EXPECT vc3   key:README.md#Lab_07-11.c rtol=1e-3
+* EXPECT vn3   key:README.md#Lab_07-11.d rtol=1e-3
+
+VA1 A1 0 AC 230.94011 0
+VB1 B1 0 AC 230.94011 -120
+VC1 C1 0 AC 230.94011 120
+RA1 A1 xa 8
+LA1 xa N1 19.098593m
+RB1 B1 xb 8
+LB1 xb N1 19.098593m
+RC1 C1 xc 8
+LC1 xc N1 19.098593m
+
+VA2 A2 0 AC 230 0
+VB2 B2 0 AC 230 -120
+VC2 C2 0 AC 230 120
+RA2 A2 0 10
+RB2 B2 0 20
+RC2 C2 0 40
+
+VA3 A3 0 AC 230 0
+VB3 B3 0 AC 230 -120
+VC3 C3 0 AC 230 120
+RA3 A3 N3 10
+RB3 B3 N3 20
+RC3 C3 N3 40
+
+.control
+ac lin 1 50 50
+let ia = -i(VA1)
+let ic = -i(VC1)
+let ia1 = mag(ia)
+let pa1 = 180/pi*ph(ia)
+let ptot = 3*mag(ia)^2*8
+let inn = -(i(VA2) + i(VB2) + i(VC2))
+let in2 = mag(inn)
+let pn2 = 180/pi*ph(inn)
+let vab = v(A1) - v(B1)
+let vcb = v(C1) - v(B1)
+let w1 = real(vab)*real(ia) + imag(vab)*imag(ia)
+let w2 = real(vcb)*real(ic) + imag(vcb)*imag(ic)
+let va3 = vm(A3,N3)
+let vb3 = vm(B3,N3)
+let vc3 = vm(C3,N3)
+let vn3 = vm(N3)
+print ia1 pa1 ptot in2 pn2 w1 w2 va3 vb3 vc3 vn3
+.endc
+.end

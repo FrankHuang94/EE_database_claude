@@ -36,7 +36,7 @@ Circuits with memory. Capacitors and inductors, first- and second-order transien
 | [07-08 · Filters and Resonance](chapters/07-08-filters-and-resonance.md) | 10 | ✅ verified | [problems](problems/07-08-problems.md) · [solutions](solutions/07-08-solutions.md) · [lab](labs/07-08-lab/README.md) · [verify](verify/verify_07_08.py) |
 | [07-09 · Mutual Inductance and Transformers](chapters/07-09-mutual-inductance-and-transformers.md) | 8 | ✅ verified | [problems](problems/07-09-problems.md) · [solutions](solutions/07-09-solutions.md) · [lab](labs/07-09-lab/README.md) · [verify](verify/verify_07_09.py) |
 | [07-10 · Two-Port Networks](chapters/07-10-two-port-networks.md) | 7 | ✅ verified | [problems](problems/07-10-problems.md) · [solutions](solutions/07-10-solutions.md) · [lab](labs/07-10-lab/README.md) · [verify](verify/verify_07_10.py) |
-| [07-11 · Three-Phase Circuits](chapters/07-11-three-phase-circuits.md) | 5 | ⬜ planned | — |
+| [07-11 · Three-Phase Circuits](chapters/07-11-three-phase-circuits.md) | 5 | ✅ verified | [problems](problems/07-11-problems.md) · [solutions](solutions/07-11-solutions.md) · [lab](labs/07-11-lab/README.md) · [verify](verify/verify_07_11.py) |
 
 **Course resources:** [Flashcards (Anki CSV)](../../flashcards/07-circuit-analysis-2-transient-and-ac.csv)
 

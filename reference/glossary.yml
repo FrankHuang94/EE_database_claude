@@ -292,6 +292,34 @@
   definition: −20 lg|S11| (or |Γ|), in positive dB, the ratio of incident to reflected power at a port; 20 dB means 1% of the power is reflected.
   chapter: "07-10"
   see_also: [S-parameters, Reflection coefficient]
+- term: Three-phase system
+  definition: AC power as three sinusoidal voltages of equal amplitude 120° apart; a balanced three-phase load draws constant instantaneous power, needs 75% of the copper of single phase for the same power and loss, and produces rotating fields for motors.
+  chapter: "07-11"
+- term: Phase sequence
+  definition: The order in which the three phase voltages reach their peaks; positive (abc) sequence has phase b lagging a by 120° and c lagging b by 120°. Reversing it reverses a three-phase motor.
+  chapter: "07-11"
+- term: Line and phase quantities
+  definition: Line voltages are between lines and line currents flow in them; phase quantities belong to each source or load element. In Y, V_L = √3 V_p (leading by 30°) and I_L = I_p; in Δ, V_L = V_p and I_L = √3 I_p.
+  chapter: "07-11"
+- term: Wye (Y) connection
+  definition: Three-phase sources or loads joined at a common star (neutral) point, each element between a line and the neutral; allows a four-wire system serving single-phase loads.
+  chapter: "07-11"
+- term: Delta connection
+  definition: Three-phase sources or loads connected end to end in a loop, each element between two lines; no neutral. A balanced Δ of Z_Δ is equivalent to a Y of Z_Δ/3.
+  chapter: "07-11"
+- term: Per-phase equivalent
+  definition: The single-phase circuit (one source phase voltage, one line impedance, one Y-equivalent load impedance) that represents a balanced three-phase system; the other phases follow by ∓120° shifts.
+  chapter: "07-11"
+- term: Neutral current
+  definition: The phasor sum of the three line currents in a four-wire system; zero for balanced loads without triplen harmonics, nonzero for unbalanced loads.
+  chapter: "07-11"
+- term: Triplen harmonics
+  definition: Harmonics of order 3, 6, 9, …; in a three-phase system they are in phase in all three lines, so they add in the neutral (three times the per-phase value) instead of cancelling.
+  chapter: "07-11"
+  see_also: [Neutral current, Total harmonic distortion (THD)]
+- term: Two-wattmeter method
+  definition: Measuring the total power of any three-wire system with two wattmeters whose current coils are in two lines and whose voltage coils return to the third; for a balanced load the readings also give Q = √3 (W2 − W1).
+  chapter: "07-11"
 - term: Admittance
   definition: Y = 1/Z = G + jB (siemens), the ratio of current phasor to voltage phasor; admittances in parallel add. Its real part, the conductance G = R/(R² + X²), is not 1/R unless the reactance is zero.
   chapter: "07-05"

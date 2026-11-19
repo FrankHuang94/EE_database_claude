@@ -117,3 +117,10 @@
 "S-parameters and why at RF?","Waves \(a, b = (V \pm Z_0I)/(2\sqrt{Z_0})\); S11 reflection, S21 transmission with ports terminated in \(Z_0\) (50 Ω). Good opens/shorts are impossible at GHz and can make devices oscillate.",bsee::07 bsee::07-10
 "Insertion loss, return loss, Γ?","IL = −20 lg|S21|; RL = −20 lg|S11|; one port \(\Gamma = (Z - Z_0)/(Z + Z_0)\). Lossless: \(|S_{11}|^2 + |S_{21}|^2 = 1\).",bsee::07 bsee::07-10
 "The Miller effect in two-port terms?","A feedback capacitance \(C_\mu\) (y12 ≠ 0) appears at the input as about \(C_\mu(1 + g_mR_L')\), e.g. 1 pF → 183 pF for a gain of 182.",bsee::07 bsee::07-10
+"Line and phase quantities in Y and Δ?","Y: \(V_L = \sqrt3V_p\) (leading 30°), \(I_L = I_p\). Δ: \(V_L = V_p\), \(I_L = \sqrt3I_p\) (lagging 30°). Balanced Δ ≡ Y of \(Z_\Delta/3\).",bsee::07 bsee::07-11
+"Three-phase power?","\(P = \sqrt3V_LI_L\cos\theta\) with θ the phase impedance angle; balanced instantaneous power is constant.",bsee::07 bsee::07-11
+"Per-phase equivalent?","Analyze one phase (phase voltage, line impedance, Y-equivalent load); shift results by ∓120° for the others. Valid for balanced systems.",bsee::07 bsee::07-11
+"Neutral current and triplens?","Balanced fundamentals cancel; unbalanced loads leave a remainder; triplen harmonics (3, 6, 9…) are in phase and add: neutral = 3 × per-phase third harmonic.",bsee::07 bsee::07-11
+"Two-wattmeter method?","Current coils in lines a and c, voltage coils to b: \(P = W_1 + W_2\) for any three-wire load; balanced: \(Q = \sqrt3(W_2 - W_1)\); one reading is zero at PF 0.5.",bsee::07 bsee::07-11
+"208 V vs 415 V data-center distribution?","Same power at about twice the voltage: half the current, a quarter of the copper loss; 415/240 V via autotransformer skips the 480-to-208 V PDU transformer (vendor claim ~2% efficiency).",bsee::07 bsee::07-11
+"Standard low-voltage systems?","IEC 60038: 230/400 V and 400/690 V; North America 120/208 V and 277/480 V (line-to-neutral/line-to-line, √3 apart).",bsee::07 bsee::07-11

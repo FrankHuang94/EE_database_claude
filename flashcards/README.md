@@ -21,4 +21,4 @@ Math is written as `\(...\)` (inline) and `\[...\]` (display), which Anki render
 | 04 · Physics for EE | [04-physics-for-ee.csv](04-physics-for-ee.csv) | 150 |
 | 05 · Programming for Engineers (05-01 to 05-09) | [05-programming-for-engineers.csv](05-programming-for-engineers.csv) | 128 |
 | 06 · Circuit Analysis I | [06-circuit-analysis-1-dc.csv](06-circuit-analysis-1-dc.csv) | 122 |
-| 07 · Circuit Analysis II (07-01 to 07-10 so far) | [07-circuit-analysis-2-transient-and-ac.csv](07-circuit-analysis-2-transient-and-ac.csv) | 115 |
+| 07 · Circuit Analysis II | [07-circuit-analysis-2-transient-and-ac.csv](07-circuit-analysis-2-transient-and-ac.csv) | 122 |
