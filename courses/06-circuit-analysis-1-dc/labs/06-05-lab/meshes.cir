@@ -1,0 +1,191 @@
+* Lab 06-05 -- the chapter's mesh-analysis circuits solved by ngspice (which uses nodal analysis):
+* two meshes with a battery on charge, the bridge, a supermesh, a shared ground return and a star
+* ground, a three-mesh supermesh, two batteries in parallel, a bridge with a meter, the nonplanar
+* K3,3 network and the resistor cube. Zero-volt sources (VM...) act as ammeters.
+*
+* EXPECT ex1i1    key:../../chapters/06-05-mesh-analysis.md#Ex_06-05.1b rtol=1e-6
+* EXPECT ex1i2    key:../../chapters/06-05-mesh-analysis.md#Ex_06-05.1c rtol=1e-6
+* EXPECT ex1vm    key:../../chapters/06-05-mesh-analysis.md#Ex_06-05.1k rtol=1e-6
+* EXPECT ex2i1    key:../../chapters/06-05-mesh-analysis.md#Ex_06-05.2b scale=-1 rtol=1e-3
+* EXPECT ex2icd   key:../../chapters/06-05-mesh-analysis.md#Ex_06-05.2e scale=1e-3 rtol=1e-3
+* EXPECT ex3i1    key:../../chapters/06-05-mesh-analysis.md#Ex_06-05.3a rtol=1e-6
+* EXPECT ex3i2    key:../../chapters/06-05-mesh-analysis.md#Ex_06-05.3b rtol=1e-6
+* EXPECT ex3vcs   key:../../chapters/06-05-mesh-analysis.md#Ex_06-05.3c rtol=1e-6
+* EXPECT ex5i1    key:../../chapters/06-05-mesh-analysis.md#Ex_06-05.5d scale=-1 rtol=1e-3
+* EXPECT ex5vg    key:../../chapters/06-05-mesh-analysis.md#Ex_06-05.5f scale=1e-3 rtol=1e-3
+* EXPECT ex5star  key:../../chapters/06-05-mesh-analysis.md#Ex_06-05.5i scale=1e-6 rtol=1e-3
+* EXPECT p5i2     key:../../solutions/06-05-solutions.md#06-05.5b rtol=1e-6
+* EXPECT p5i3     key:../../solutions/06-05-solutions.md#06-05.5c rtol=1e-6
+* EXPECT p5vcs    key:../../solutions/06-05-solutions.md#06-05.5d rtol=1e-6
+* EXPECT p6ia     key:../../solutions/06-05-solutions.md#06-05.6b scale=-1 rtol=1e-6
+* EXPECT p6chg    key:../../solutions/06-05-solutions.md#06-05.6d rtol=1e-6
+* EXPECT p6vl     key:../../solutions/06-05-solutions.md#06-05.6e rtol=1e-6
+* EXPECT p10ig    key:../../solutions/06-05-solutions.md#06-05.10e scale=1e-3 rtol=1e-3
+* EXPECT p10i     key:../../solutions/06-05-solutions.md#06-05.10b scale=-1e-3 rtol=1e-3
+* EXPECT p12i     key:../../solutions/06-05-solutions.md#06-05.12c scale=-1 rtol=1e-3
+* EXPECT p13opp   key:../../solutions/06-05-solutions.md#06-05.13c rtol=1e-3
+* EXPECT p13adj   key:../../solutions/06-05-solutions.md#06-05.13d rtol=1e-3
+* EXPECT p13face  key:../../solutions/06-05-solutions.md#06-05.13e rtol=1e-6
+
+* ---- Example 06-05.1: 20 V, R1 = 2, R2 = 4 (load), R3 = 4, 8 V battery (+ at top)
+V1a  a1 0 DC 20
+R1a  a1 m1 2
+R2a  m1 x1 4
+VM1  x1 0 0
+R3a  m1 c1 4
+V2a  c1 0 DC 8
+* ---- Example 06-05.2: the bridge, 10 V at a
+V2   a2 0 DC 10
+R2ac a2 c2 10
+R2ad a2 d2 20
+R2cd c2 m2 30
+VM2  m2 d2 0
+R2cb c2 0 40
+R2db d2 0 50
+* ---- Example 06-05.3: 36 V, R1 = 4, 3 A source pushing up into the top-middle node, R2 = 2, R3 = 6
+V3   a3 0 DC 36
+R31  a3 t3 4
+I3   0 t3 DC 3
+R32  t3 r3 2
+R33  r3 0 6
+* ---- Example 06-05.5: shared 10 mOhm return (node g5) versus a star ground for the sensor
+V5   s5 0 DC 5
+R5r1 s5 p5 0.020
+R5m  p5 g5 2.5
+R5r2 s5 q5 0.020
+R5s  q5 g5 1000
+R5g  g5 0 0.010
+V5b  s5b 0 DC 5
+R5b1 s5b p5b 0.020
+R5bm p5b g5m 2.5
+R5bg g5m 0 0.010
+R5b2 s5b q5b 0.020
+R5bs q5b g5s 1000
+R5bh g5s 0 0.010
+* ---- Problem 06-05.5: 20 V and 2 Ohm; 2 A source (up) into node t; 4 Ohm; 3 Ohm shared; 6 Ohm
+V55  a55 0 DC 20
+R551 a55 t55 2
+I55  0 t55 DC 2
+R552 t55 u55 4
+R553 u55 0 3
+R554 u55 0 6
+* ---- Problem 06-05.6: batteries A (12.6 V, 50 mOhm) and B (12.0 V, 80 mOhm) in parallel, 1.2 Ohm load
+V6a  ea 0 DC 12.6
+R6a  ea top6 0.05
+V6b  eb 0 DC 12.0
+R6b  eb mb6 0.08
+VM6  top6 mb6 0
+R6l  top6 0 1.2
+* ---- Problem 06-05.10: bridge with a 100 Ohm galvanometer (current measured from A to B)
+V10  t10 0 DC 5
+R101 t10 a10 1k
+R102 a10 0 1k
+R103 t10 b10 1k
+R104 b10 0 1.1k
+VM10 a10 g10 0
+RG10 g10 b10 100
+* ---- Problem 06-05.12: K3,3, all branches 1 Ohm; branch 1-4 is 10 V (+ toward node 1) in series with 1 Ohm
+V12  k1 x12 DC 10
+R12s x12 k4 1
+R12_15 k1 k5 1
+R12_16 k1 k6 1
+R12_24 k2 k4 1
+R12_25 k2 k5 1
+R12_26 k2 k6 1
+R12_34 k3 k4 1
+R12_35 k3 k5 1
+R12_36 k3 k6 1
+* ---- Problem 06-05.13: cubes of 1 Ohm resistors driven by 1 A between opposite, adjacent and face-diagonal corners
+R13o_01 co0 co1 1
+R13o_02 co0 co2 1
+R13o_04 co0 co4 1
+R13o_13 co1 co3 1
+R13o_15 co1 co5 1
+R13o_23 co2 co3 1
+R13o_26 co2 co6 1
+R13o_37 co3 co7 1
+R13o_45 co4 co5 1
+R13o_46 co4 co6 1
+R13o_57 co5 co7 1
+R13o_67 co6 co7 1
+I13o 0 co0 DC 1
+R13og co7 0 1e-9
+R13j_01 cj0 cj1 1
+R13j_02 cj0 cj2 1
+R13j_04 cj0 cj4 1
+R13j_13 cj1 cj3 1
+R13j_15 cj1 cj5 1
+R13j_23 cj2 cj3 1
+R13j_26 cj2 cj6 1
+R13j_37 cj3 cj7 1
+R13j_45 cj4 cj5 1
+R13j_46 cj4 cj6 1
+R13j_57 cj5 cj7 1
+R13j_67 cj6 cj7 1
+I13j 0 cj0 DC 1
+R13jg cj1 0 1e-9
+R13f_01 cf0 cf1 1
+R13f_02 cf0 cf2 1
+R13f_04 cf0 cf4 1
+R13f_13 cf1 cf3 1
+R13f_15 cf1 cf5 1
+R13f_23 cf2 cf3 1
+R13f_26 cf2 cf6 1
+R13f_37 cf3 cf7 1
+R13f_45 cf4 cf5 1
+R13f_46 cf4 cf6 1
+R13f_57 cf5 cf7 1
+R13f_67 cf6 cf7 1
+I13f 0 cf0 DC 1
+R13fg cf3 0 1e-9
+
+.control
+op
+let ex1i1 = -i(V1a)
+let ex1i2 = i(V2a)
+let ex1vm = v(m1)
+let ex2i1 = i(V2)
+let ex2icd = i(VM2)
+let ex3i1 = -i(V3)
+let ex3i2 = v(r3)/6
+let ex3vcs = v(t3)
+let ex5i1 = i(V5)
+let ex5vg = v(g5)
+let ex5star = v(g5s)
+let p5i2 = (v(t55) - v(u55))/4
+let p5i3 = v(u55)/6
+let p5vcs = v(t55)
+let p6ia = i(V6a)
+let p6chg = i(VM6)
+let p6vl = v(top6)
+let p10ig = i(VM10)
+let p10i = i(V10)
+let p12i = i(V12)
+let p13opp = v(co0) - v(co7)
+let p13adj = v(cj0) - v(cj1)
+let p13face = v(cf0) - v(cf3)
+echo "ex1i1 = $&ex1i1"
+echo "ex1i2 = $&ex1i2"
+echo "ex1vm = $&ex1vm"
+echo "ex2i1 = $&ex2i1"
+echo "ex2icd = $&ex2icd"
+echo "ex3i1 = $&ex3i1"
+echo "ex3i2 = $&ex3i2"
+echo "ex3vcs = $&ex3vcs"
+echo "ex5i1 = $&ex5i1"
+echo "ex5vg = $&ex5vg"
+echo "ex5star = $&ex5star"
+echo "p5i2 = $&p5i2"
+echo "p5i3 = $&p5i3"
+echo "p5vcs = $&p5vcs"
+echo "p6ia = $&p6ia"
+echo "p6chg = $&p6chg"
+echo "p6vl = $&p6vl"
+echo "p10ig = $&p10ig"
+echo "p10i = $&p10i"
+echo "p12i = $&p12i"
+echo "p13opp = $&p13opp"
+echo "p13adj = $&p13adj"
+echo "p13face = $&p13face"
+.endc
+.end

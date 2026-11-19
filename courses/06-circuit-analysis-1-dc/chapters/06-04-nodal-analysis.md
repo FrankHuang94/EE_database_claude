@@ -456,7 +456,7 @@ Problem set: [06-04 problems](../problems/06-04-problems.md) · [solutions](../s
 - Nilsson, J. W. and Riedel, S. A., *Electric Circuits*, chapter 4, "Techniques of Circuit Analysis" (node-voltage method, supernodes).
 - Agarwal, A. and Lang, J. H., *Foundations of Analog and Digital Electronic Circuits*, chapter 3, the node method.
 - Ho, C.-W., Ruehli, A. E. and Brennan, P. A., "The modified nodal approach to network analysis", *IEEE Transactions on Circuits and Systems* 22(6), 504–509 (1975): the original MNA paper, short and readable.
-- *Video:* MIT OpenCourseWare 6.002, *Circuits and Electronics* (Spring 2007, A. Agarwal), Lecture 3, "Superposition, Thévenin and Norton" (its first half develops the node method).
+- *Video:* MIT OpenCourseWare 6.002, *Circuits and Electronics* (Spring 2007, A. Agarwal), Lecture 3, "Superposition, Thévenin and Norton", which opens by working node-method examples (the method is introduced in Lecture 2) before moving on to superposition.
 
 ## 14. Sources
 

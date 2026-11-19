@@ -2434,3 +2434,37 @@
   definition: A class of transistor-level circuit simulators that partition the circuit and use simplified or tabulated device models to gain speed and capacity, at some loss of accuracy relative to SPICE.
   chapter: "06-04"
   see_also: [SPICE]
+
+# ---------------------------------------------------------------- 06-05
+- term: Mesh analysis
+  definition: Solving a planar circuit with circulating mesh currents as unknowns, writing KVL around each mesh so that KCL holds automatically; for resistors and voltage sources the result is R·i = v.
+  chapter: "06-05"
+  see_also: [Mesh current, Nodal analysis, Supermesh]
+- term: Mesh current
+  definition: A current assigned to circulate around one mesh of a planar circuit; an outer branch carries its mesh current and a shared branch the difference of two.
+  chapter: "06-05"
+  see_also: [Mesh, Mesh analysis]
+- term: Supermesh
+  definition: The loop around two meshes that share a current source, avoiding the source's branch; KVL around it does not involve the source's unknown voltage, and the source supplies the constraint i_a − i_b = ±I_s.
+  chapter: "06-05"
+  see_also: [Supernode, Mesh analysis]
+- term: Planar circuit
+  definition: A circuit that can be drawn on a plane with no crossing branches; only planar circuits have meshes. By Kuratowski's theorem a circuit is planar unless it contains a subdivision of K5 or K3,3.
+  chapter: "06-05"
+  see_also: [Mesh, Loop analysis]
+- term: Loop analysis
+  definition: The generalization of mesh analysis to any circuit; one loop current per link of a spanning tree (b − n + 1 fundamental loops), with KVL written around each loop.
+  chapter: "06-05"
+  see_also: [Spanning tree, Mesh analysis]
+- term: Dual circuit
+  definition: The circuit obtained from a planar one by turning meshes into nodes, resistances into equal-valued conductances, voltage sources into current sources and series into parallel; its node voltages equal the original's mesh currents.
+  chapter: "06-05"
+  see_also: [Mesh analysis, Nodal analysis]
+- term: Common-impedance coupling
+  definition: Interference between two circuits whose currents share a conductor; each circuit's current through the shared impedance produces a voltage in the other, as when a sensor and a motor share a ground return.
+  chapter: "06-05"
+  see_also: [Star ground, IR drop]
+- term: Star ground
+  definition: A grounding layout in which each circuit has its own return conductor to a single common point at the supply, so that no return impedance is shared between noisy and sensitive circuits.
+  chapter: "06-05"
+  see_also: [Common-impedance coupling]
