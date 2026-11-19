@@ -32,6 +32,7 @@ with $\tau = R_{Th}C$ or $L/R_{Th}$.
 | [p11_integrators.cir](p11_integrators.cir) | Ideal and leaky op-amp integrators (op-amp = VCVS, gain 10⁶) | Problem 07-02.11 |
 | [p12_square_wave.cir](p12_square_wave.cir) | Square-wave periodic steady state at τ = T/2 and τ = 5T | Problem 07-02.12 |
 | [p14_relay_flyback.cir](p14_relay_flyback.cir) | Relay release with resistor vs diode flyback | Problem 07-02.14 |
+| [p19_differentiator.cir](p19_differentiator.cir) | Practical differentiator driven by a step, a ramp and a fast noise edge | Problem 07-02.19 |
 
 Each netlist begins with `* EXPECT` lines naming the measurement and the published answer it must reproduce. Most point directly into an answer-key table, e.g. `key:../../chapters/07-02-....md#Ex_07-02.2e`. Run them all from the repository root:
 

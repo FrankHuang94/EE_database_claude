@@ -177,6 +177,9 @@
 - term: Integrator (op-amp)
   definition: An op-amp circuit with a capacitor in the feedback path and a resistor at the input, giving v_out = −(1/RC)∫v_in dt; a resistor across the capacitor makes it a "leaky" integrator (a first-order low-pass).
   chapter: "07-02"
+- term: Differentiator (op-amp)
+  definition: An op-amp circuit with a capacitor at the input and a resistor in the feedback path, giving v_out = −RC dv_in/dt; a resistor in series with the capacitor caps its gain for fast changes, turning a step's impulse into a finite exponential spike.
+  chapter: "07-02"
 - term: Sample-and-hold
   definition: A circuit that connects a capacitor to a signal through a switch (sample), then disconnects it to hold the voltage while it is converted; its settling and kT/C noise limit ADC accuracy.
   chapter: "07-02"

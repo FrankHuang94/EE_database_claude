@@ -7,7 +7,7 @@
 | **University equivalent** | The "first-order circuits" chapter of a sophomore Circuits course (Nilsson & Riedel, *Response of First-Order RL and RC Circuits*; Alexander & Sadiku, *First-Order Circuits*) and the first-order transient lectures of MIT 6.002 |
 | **Prerequisites** | [06-08 Thevenin and Norton Equivalents](../../06-circuit-analysis-1-dc/chapters/06-08-thevenin-and-norton.md), [07-01 Capacitors and Inductors](07-01-capacitors-and-inductors.md), [02-02 First-Order Linear ODEs](../../02-complex-numbers-des-and-linear-algebra/chapters/02-02-first-order-linear-odes.md), [02-01 Complex Numbers and Phasors](../../02-complex-numbers-des-and-linear-algebra/chapters/02-01-complex-numbers-euler-and-phasors.md). The facts used from each are restated in *Recap* and *Math refresher* boxes, so you can start here. |
 | **Estimated study hours** | 10 |
-| **Last verified** | 2026-11-12 |
+| **Last verified** | 2026-11-19 |
 
 **Learning objectives.** After this chapter you can:
 
@@ -16,7 +16,7 @@
 3. Apply the "initial–final–τ" solution to switched circuits, including sequential switching and periodic square-wave drive.
 4. Compute the energy stored and dissipated in transients, including the ½CV² charging loss, and connect it to CMOS dynamic power.
 5. Use τ to estimate delay, 10–90% rise time, settling time to a stated accuracy (including N-bit ADC settling) and bandwidth.
-6. Analyze first-order op-amp integrators and the response to a ramp input using the general (convolution-form) solution.
+6. Analyze first-order op-amp integrators and differentiators in time, and the response to a ramp input, using the general (convolution-form) solution.
 
 ## 1. Big picture
 
@@ -59,14 +59,17 @@ A mean-reverting interest-rate model (the Vasicek model, familiar from fixed inc
 > - **Element laws** (passive sign convention): $i_C = C\,\dfrac{dv_C}{dt}$ and $v_L = L\,\dfrac{di_L}{dt}$, with $C$ in farads (F = C/V = A·s/V) and $L$ in henries (H = V·s/A).
 > - **Stored energy:** $w_C = \tfrac{1}{2}Cv_C^2$ and $w_L = \tfrac{1}{2}Li_L^2$, in joules.
 > - **DC steady state:** when nothing is changing, $dv_C/dt = 0$ so $i_C = 0$, and **a capacitor acts as an open circuit**. Likewise $di_L/dt = 0$ so $v_L = 0$, and **an inductor acts as a short circuit**.
+> - **Continuity** ([07-01 §3.4](07-01-capacitors-and-inductors.md#34-continuity-and-what-happens-when-it-is-violated)): a jump of $\Delta V$ in zero time would need $i_C = C\,\Delta V/\Delta t \to \infty$, so in any circuit whose currents and voltages stay finite, capacitor voltage cannot jump; for the same reason inductor current cannot jump.
 
-**Continuity.** Capacitor voltage cannot jump: a jump of $\Delta V$ in zero time would need $i_C = C\,\Delta V/\Delta t \to \infty$. Equivalently, the stored energy $\tfrac{1}{2}Cv_C^2$ would change in zero time, which takes infinite power. For the same reason inductor current cannot jump. These two facts are the anchor of every transient problem:
+These two continuity facts are the anchor of every transient problem:
 
 $$
 v_C(t_0^+) = v_C(t_0^-), \qquad i_L(t_0^+) = i_L(t_0^-),
 $$
 
 where $t_0^-$ and $t_0^+$ denote the instants just before and just after a switching event at $t_0$. **Nothing else is guaranteed to be continuous.** Resistor currents, capacitor currents and inductor voltages can and do jump.
+
+The condition "currents and voltages stay finite" is not a formality. Every circuit in this chapter has a resistance in series with each capacitor's charging path and a path for each inductor's current, so it holds. 07-01 showed the two ways a circuit can break it: switching a capacitor directly onto a different voltage (an ideal-wire charge-sharing step, revisited in Problem 07-02.16 with a resistor in the path) and opening the only path of an inductor's current (§3.11).
 
 > **Math refresher — the first-order linear ODE** (developed fully in [02-02](../../02-complex-numbers-des-and-linear-algebra/chapters/02-02-first-order-linear-odes.md)).
 >
@@ -147,7 +150,15 @@ $$
 
 where $R_{Th}$ is the resistance seen from the storage element's terminals **with independent sources turned off** (voltage sources shorted, current sources opened).
 
-**Every other voltage and current follows the same exponential.** Once the capacitor is replaced by a known voltage $v_C(t)$, the rest of the circuit is a linear resistive circuit driven by $v_C(t)$ and the constant sources. By superposition, any branch variable $x(t)$ is $x(t) = a\,v_C(t) + b$ for some constants $a$ and $b$. An affine function of an exponential approach is itself an exponential approach with the **same τ**. So any variable $x$ in a first-order circuit, after a switching event at $t_0$, obeys the **master formula**:
+**Every other voltage and current follows the same exponential.** Once the capacitor is replaced by a known voltage $v_C(t)$, the rest of the circuit is a linear resistive circuit driven by $v_C(t)$ and the constant sources. By superposition, any branch variable $x(t)$ is $x(t) = a\,v_C(t) + b$ for some constants $a$ and $b$. An affine function of an exponential approach is itself an exponential approach with the **same τ**. So any variable $x$ in a first-order circuit, after a switching event at $t_0$, obeys the **master formula** below.
+
+Its conditions, all three needed:
+
+- the circuit is **linear** (resistors, linear dependent sources, one storage element);
+- the independent sources are **constant** after $t_0$ (for other inputs use §3.10);
+- there is **one** capacitor or inductor, or several that combine into one by the series and parallel rules of [07-01 §3.5](07-01-capacitors-and-inductors.md#35-series-and-parallel-combinations).
+
+Two capacitors that cannot be combined, such as one on each side of a resistor, make a second-order circuit (07-03).
 
 $$
 \boxed{\,x(t) = x(\infty) + \big[x(t_0^+) - x(\infty)\big]\,e^{-(t - t_0)/\tau}, \qquad t \ge t_0\,}
@@ -215,6 +226,8 @@ $$
 - **Energy dissipated in the resistor:** the difference, $\tfrac{1}{2}CV_S^2$. Check directly: with $i = (V_S/R)e^{-t/\tau}$, $\int_0^\infty i^2R\,dt = \frac{V_S^2}{R}\cdot\frac{\tau}{2} = \tfrac{1}{2}CV_S^2$. ✓
 
 **Exactly half the energy is lost, and the loss does not depend on R.** A smaller resistor gives a larger current for a shorter time, and the two effects cancel exactly. This is one of the most consequential facts in electronics.
+
+The first route, $W_S = V_SQ$ minus the stored $\tfrac12 CV_S^2$, never used Ohm's law. So the result holds for **any** dissipative path, linear or not, provided the source voltage is constant and the capacitor ends at $V_S$. That matters for the next paragraph, because a transistor is far from a linear resistor.
 
 **Why your phone gets warm: CMOS dynamic power.** A CMOS logic gate charges its load capacitance $C$ from the supply $V_{DD}$ through its pull-up transistor (a resistor, in this model), then discharges it to ground through its pull-down transistor:
 
@@ -292,7 +305,7 @@ After the transient dies out, the output is the input **delayed by exactly τ**,
 
 ### 3.11 Inductive kick
 
-Suppose an inductor carries current $I_0$ and the switch feeding it opens. The current cannot stop instantly, so it must flow *somewhere*. If the only path is the opening switch, $v_L = L\,di/dt$ grows as large as needed to force the current through: the switch contacts arc, or a transistor switch breaks down. This is why every relay coil, solenoid and motor driver has a deliberate **flyback path**.
+Suppose an inductor carries current $I_0$ and the switch feeding it opens. The current cannot stop instantly, so it must flow *somewhere*. If the only path is the opening switch, $v_L = L\,di/dt$ grows as large as needed to force the current through: the switch contacts arc, or a transistor switch breaks down. [Example 07-01.4](07-01-capacitors-and-inductors.md#example-07-014--interrupting-a-relay-coil-tier-b) sized that spike: about 5000 V for a 100 mH relay coil whose 50 mA is cut off in 1 µs. This is why every relay coil, solenoid and motor driver has a deliberate **flyback path**. This section follows what the current does over time once it has one.
 
 - **A resistor $R_f$ across the inductor.** The current continues through $R_f$ and decays with $\tau = L/R_f$. The inductor voltage jumps to $-I_0R_f$ (polarity reversed relative to normal operation). A larger $R_f$ empties the energy faster but produces a larger spike. Example 07-02.4 shows a 12 V circuit putting 72 V across its switch. A real coil also has winding resistance, so a resistor placed directly across it **draws current the whole time the load is on**, wasting power and loading the switch (Problem 07-02.14). The usual fix is a diode in series with the resistor, or a diode plus Zener: it conducts only at turn-off.
 - **A diode across the inductor** (the classic flyback or freewheeling diode). It clamps the voltage to about one diode drop, the gentlest option for the switch. But the energy now drains only through the coil's own resistance and the diode, so the current decays slowly, and a relay releases more slowly (Problem 07-02.14).
@@ -302,22 +315,46 @@ The energy that must go somewhere is $\tfrac{1}{2}LI_0^2$, independent of which 
 
 ### 3.12 First-order op-amp circuits
 
-With an ideal op-amp ([06-10](../../06-circuit-analysis-1-dc/chapters/06-10-ideal-op-amp.md)) in negative feedback, the inverting input is a **virtual ground**. Place a capacitor $C$ in the feedback path and a resistor $R$ at the input:
-
-- the input current is $v_{in}/R$;
-- it cannot enter the op-amp, so it flows into the capacitor: $C\,\dfrac{d(0 - v_{out})}{dt} = \dfrac{v_{in}}{R}$;
+[07-01 §3.6](07-01-capacitors-and-inductors.md#36-op-amp-differentiator-and-integrator) used the ideal op-amp's virtual ground ([06-10](../../06-circuit-analysis-1-dc/chapters/06-10-ideal-op-amp.md)) to derive the two calculus circuits. With $R$ at the input and $C$ in the feedback path, the input current $v_{in}/R$ can only charge $C$, so the **inverting integrator** obeys
 
 $$
 v_{out}(t) = v_{out}(0) - \frac{1}{RC}\int_0^t v_{in}\,d\lambda .
 $$
 
-This is the **inverting integrator**. With a constant input it ramps linearly and without limit until the op-amp hits its supply rail. Any small DC offset at the input is integrated too, so practical circuits add a resistor $R_f$ in parallel with $C$. The resulting **leaky integrator** is an ordinary first-order system: KCL at the virtual ground gives $\frac{v_{in}}{R} + \frac{v_{out}}{R_f} + C\frac{dv_{out}}{dt} = 0$, that is
+With $C$ at the input and $R$ in feedback, the **ideal differentiator** gives $v_{out} = -RC\,dv_{in}/dt$. Both laws hold only while the op-amp output stays inside its supply rails, since a saturated op-amp no longer holds a virtual ground. This section follows both circuits in time and shows why each needs one extra resistor.
+
+**The integrator, and why it leaks.** With a constant input the ideal integrator ramps linearly and without limit until the op-amp hits its supply rail. Any small DC offset at the input is integrated too (07-01 Problem 07-01.11 found a 1 mV offset reaching a 12 V rail in 20 minutes), so practical circuits add a resistor $R_f$ in parallel with $C$. The resulting **leaky integrator** is an ordinary first-order system: KCL at the virtual ground gives $\frac{v_{in}}{R} + \frac{v_{out}}{R_f} + C\frac{dv_{out}}{dt} = 0$, that is
 
 $$
 R_fC\,\frac{dv_{out}}{dt} + v_{out} = -\frac{R_f}{R}\,v_{in},
 $$
 
 a first-order low-pass with $\tau = R_fC$ and DC gain $-R_f/R$. For times much shorter than $\tau$ it integrates; for long times it settles at the DC gain. Problem 07-02.11 compares the two. Integrators are the core of sigma-delta ADCs ([20-08](../../20-analog-and-mixed-signal-ic-design/chapters/20-08-sigma-delta-converters.md)) and of PI controllers ([15-08](../../15-control-systems/chapters/15-08-pid-control.md)).
+
+**The differentiator, and why it needs a series resistor.** Drive the ideal differentiator with a step of height $V$. Its law gives $v_{out} = -RC\,dv_{in}/dt$, and the derivative of a step is infinite at the step: in theory an impulse, in practice an op-amp slammed into its rail and ringing (07-01 §3.6). A practical differentiator puts a resistor $R_s$ in series with the input capacitor, with $R_f$ in feedback. The input branch, $R_s$ in series with $C$, runs from $v_{in}$ to the virtual ground at 0 V, so it is exactly the RC circuit of §3.4, driven by $v_{in}$, with time constant
+
+$$
+\tau = R_sC .
+$$
+
+All of the branch current $i$ flows on through $R_f$ (none enters the op-amp), so $v_{out} = -R_f\,i$. Two inputs show what the series resistor buys.
+
+- **Step of height $V$, capacitor initially uncharged.** By the step response of §3.4, $i(t) = \dfrac{V}{R_s}e^{-t/\tau}$, so
+
+  $$
+  v_{out}(t) = -\frac{R_f}{R_s}\,V\,e^{-t/\tau} .
+  $$
+
+  The impulse becomes a finite spike of height $-(R_f/R_s)V$ that decays with $\tau = R_sC$. Its area, $\int_0^\infty v_{out}\,dt = -(R_f/R_s)V\tau = -R_fCV$, equals the area of the ideal differentiator's impulse, so for slow-moving inputs nothing has been lost.
+- **Ramp of slope $m$.** The capacitor voltage $v_C$ obeys $\tau\,dv_C/dt + v_C = v_{in}$, the ramp case of §3.10, so $v_C = m(t - \tau) + m\tau e^{-t/\tau}$ and
+
+  $$
+  i = C\frac{dv_C}{dt} = Cm\big(1 - e^{-t/\tau}\big), \qquad v_{out}(t) = -R_fCm\big(1 - e^{-t/\tau}\big).
+  $$
+
+  After a few $\tau$ the output equals the ideal differentiator's $-R_fC\,m$.
+
+So the practical circuit differentiates any input that changes slowly compared with $\tau = R_sC$, and caps the gain for fast changes at $R_f/R_s$ instead of letting it grow without bound. That cap is what tames noise; 07-07 states the same fact in frequency (the gain stops rising above $1/(2\pi R_sC)$). Problem 07-02.19 puts numbers on both responses.
 
 > **Going deeper — why it is always $e^{-t/\tau}$.** The exponential is the only function whose derivative is proportional to itself, so it is the natural mode of any system whose rate of change is proportional to its state. In the Laplace domain ([07-04](07-04-laplace-domain-circuit-analysis.md)) the RC low-pass becomes $H(s) = \frac{1}{1 + s\tau}$, with a single **pole** at $s = -1/\tau$. Its location on the negative real axis is the decay rate. Second-order circuits ([07-03](07-03-second-order-rlc-transients.md)) have two poles, which can be complex, and complex poles mean ringing.
 
@@ -490,7 +527,7 @@ The lab is in [labs/07-02-lab/](../labs/07-02-lab/README.md). It has two halves.
 5. Model inductive kick with a resistor and with a realistic (exponential) diode.
 6. Run an optional cell that calls ngspice and plots its waveforms, if ngspice is installed.
 
-**ngspice netlists:** six netlists cover the switched RC (Examples 2–3), the RL kick (Example 4), ADC settling (Example 5), op-amp integrators (Problem 11), square-wave steady state (Problem 12) and relay flyback (Problem 14). Each netlist states its expected results, linked to this chapter's answer keys, and `python tools/run_spice.py 07-02` checks them all.
+**ngspice netlists:** seven netlists cover the switched RC (Examples 2–3), the RL kick (Example 4), ADC settling (Example 5), op-amp integrators (Problem 11), square-wave steady state (Problem 12), relay flyback (Problem 14) and the practical differentiator (Problem 19). Each netlist states its expected results, linked to this chapter's answer keys, and `python tools/run_spice.py 07-02` checks them all.
 
 **Guided exercise (predict, then run).** In the notebook's Example 2 cell, change $R_2$ from 3 kΩ to 6 kΩ. **Before running,** predict the new $V_{Th}$, $R_{Th}$, τ and the time to reach 7 V. Hint: $V_{Th} = 12$ V, $R_{Th} = 3$ kΩ and τ = 6 ms, but recompute the 7 V crossing yourself. Then run and compare. In the energy cell, predict the dissipated energy for R = 10 Ω and R = 10 kΩ before running both.
 
@@ -658,6 +695,15 @@ The inductor generates whatever voltage is needed ($L\,di/dt$) to keep the curre
 
 </details>
 
+**Q8.** Why does a practical op-amp differentiator put a resistor $R_s$ in series with its input capacitor, and what does it do to the response to a step?
+
+<details>
+<summary>Answer</summary>
+
+An ideal differentiator's output is proportional to the input's slope, so a step (infinite slope) demands an impulse and fast noise is amplified without limit. With $R_s$ in series, the input branch becomes an RC circuit with $\tau = R_sC$: a step produces a finite spike of height $-(R_f/R_s)V$ that decays with τ, and its area still equals the ideal impulse's. Inputs that change slowly compared with τ are still differentiated exactly.
+
+</details>
+
 Now work the full problem set: [07-02 problems](../problems/07-02-problems.md) (worked solutions in [07-02 solutions](../solutions/07-02-solutions.md)).
 
 ## 11. Key terms
@@ -681,6 +727,7 @@ Now work the full problem set: [07-02 problems](../problems/07-02-problems.md) (
 [Integrating factor](../../../reference/glossary.md#integrating-factor) ·
 [Convolution](../../../reference/glossary.md#convolution) ·
 [Integrator (op-amp)](../../../reference/glossary.md#integrator-op-amp) ·
+[Differentiator (op-amp)](../../../reference/glossary.md#differentiator-op-amp) ·
 [Sample-and-hold](../../../reference/glossary.md#sample-and-hold) ·
 [Least significant bit (LSB)](../../../reference/glossary.md#least-significant-bit-lsb) ·
 [kT/C noise](../../../reference/glossary.md#ktc-noise) ·

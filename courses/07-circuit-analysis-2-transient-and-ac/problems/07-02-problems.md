@@ -127,7 +127,7 @@ A 12-bit SAR ADC with a 3.3 V full scale has a 10 pF sampling capacitor and a 10
 
 ### Problem 07-02.16 [C] (the two-capacitor puzzle)
 
-A 1 µF capacitor charged to 10 V is connected at $t = 0$ through a 1 kΩ resistor to an identical, uncharged 1 µF capacitor.
+A 1 µF capacitor charged to 10 V is connected at $t = 0$ through a 1 kΩ resistor to an identical, uncharged 1 µF capacitor. (Problem 07-01.6 found the final state of a similar circuit; this problem also follows the transient between the two states.)
 
 (a) Find the final voltage on each capacitor (hint: charge is conserved).
 (b) Find the time constant of the transient. (Hint: what single capacitance does the resistor see?)
@@ -152,6 +152,16 @@ A two-position switch has held a 1 µF capacitor connected through $R_a = 1$ kΩ
 (c) Find the current from the −10 V source into the capacitor at $t = 0^+$ (with sign), the time at which $v_C$ crosses zero, and $v_C(8\text{ ms})$.
 (d) Real two-position switches are either break-before-make or make-before-break. Which would you specify here, and does the brief overlap of a make-before-break switch harm anything?
 
+### Problem 07-02.19 [B] (practical differentiator)
+
+A practical op-amp differentiator has $C$ = 100 nF in series with $R_s$ = 1 kΩ at its input and $R_f$ = 10 kΩ in feedback (chapter §3.12). The op-amp is ideal with ±12 V rails, and the capacitor starts uncharged.
+
+(a) Find the input branch's time constant $\tau$ and the ideal-differentiator constant $R_fC$.
+(b) The input steps from 0 to 0.5 V at $t = 0$. Find $v_{out}(0^+)$, $v_{out}(0.2\text{ ms})$ and the area under $v_{out}(t)$. What would an ideal differentiator ($R_s = 0$) do with the same step?
+(c) The input is instead a ramp of slope 2 V/ms starting at $t = 0$. Find the output it settles to, its value at $t$ = 0.1 ms, and the time to come within 1% of the settled value.
+(d) What is the largest input step that does not drive the output into a rail?
+(e) A noise edge moves the input by 10 mV in 1 µs (a ramp of 10⁴ V/s lasting 1 µs). Find the output at the end of the edge for the ideal differentiator and for the practical one. What does the comparison show?
+
 ---
 
 ## Objective coverage
@@ -163,4 +173,4 @@ A two-position switch has held a 1 µF capacitor connected through $R_a = 1$ kΩ
 | 3. Initial–final–τ method; sequential switching; periodic drive; step-function notation | 6, 8, 12, 18 |
 | 4. Energy in transients; ½CV² loss; CMOS dynamic power | 4, 13, 14, 16 |
 | 5. Delay, rise time, settling, ADC settling, bandwidth | 2, 5, 9, 15 |
-| 6. Op-amp integrators; ramp response | 10, 11 |
+| 6. Op-amp integrators and differentiators; ramp response | 10, 11, 19 |

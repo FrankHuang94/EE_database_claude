@@ -343,6 +343,39 @@ unified = 5 + (15 * np.exp(-np.clip(tt18, 0, None) / tau18) - 15) * ustep(tt18)
 piecewise = np.where(tt18 > 0, -10 + 15 * np.exp(-np.clip(tt18, 0, None) / tau18), 5.0)
 v.assert_true("P18 unit-step expression equals the piecewise answer", np.allclose(unified, piecewise))
 
+# Problem 19: practical differentiator. Independent route: integrate the input branch's KVL
+# (Rs*C*dvC/dt + vC = vin) numerically and form vout = -Rf*C*dvC/dt.
+Rs19, C19, Rf19 = 1e3, 100e-9, 10e3
+tau19 = Rs19 * C19
+v.check("07-02.19a", tau19 * 1e3)
+v.check("07-02.19b", Rf19 * C19 * 1e3)
+
+
+def diff_out(vin, t_end, t_eval):
+    sol = ode(lambda t, y: [(vin(t) - y[0]) / tau19], t_end, 0.0)
+    vc = sol.sol(t_eval)[0]
+    return -Rf19 * (vin(t_eval) - vc) / Rs19      # vout = -Rf * i, i = (vin - vC)/Rs
+
+
+step = lambda t: 0.5 * np.ones_like(np.asarray(t, dtype=float))  # noqa: E731
+v.check("07-02.19c", diff_out(step, 1e-3, np.array([0.0]))[0])
+v.check("07-02.19d", diff_out(step, 1e-3, np.array([0.2e-3]))[0])
+area19, _ = quad(lambda t: diff_out(step, 2e-3, np.array([t]))[0], 0, 2e-3, limit=200)
+v.check("07-02.19e", area19 * 1e3, tol=5e-4)
+v.assert_true("P19 step-response area equals -Rf*C*V", abs(area19 - (-Rf19 * C19 * 0.5)) < 1e-6)
+ramp = lambda t: 2e3 * np.asarray(t, dtype=float)  # noqa: E731
+v.check("07-02.19f", diff_out(ramp, 5e-3, np.array([5e-3]))[0], tol=5e-3)
+v.check("07-02.19g", diff_out(ramp, 1e-3, np.array([0.1e-3]))[0])
+t_1pct = tau19 * ln(100)
+v.check("07-02.19h", t_1pct * 1e3)
+v.assert_true("P19 ramp output is within 1 % of settled at tau*ln(100)",
+              abs(diff_out(ramp, 1e-3, np.array([t_1pct]))[0] / (-2.0) - 0.99) < 1e-6)
+v.check("07-02.19i", 12 / (Rf19 / Rs19))
+m19 = 10e-3 / 1e-6
+v.check("07-02.19j", -Rf19 * C19 * m19)
+edge = lambda t: m19 * np.asarray(t, dtype=float)  # noqa: E731
+v.check("07-02.19k", diff_out(edge, 1e-6, np.array([1e-6]))[0] * 1e3)
+
 # =============================================================================== lab expected results
 tau_l = par(6e3, 6e3) * 2e-6
 VTh_l = 24 * 6 / 12

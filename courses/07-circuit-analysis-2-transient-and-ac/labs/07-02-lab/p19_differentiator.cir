@@ -1,0 +1,36 @@
+* Problem 07-02.19 -- practical op-amp differentiator, op-amp modeled as a VCVS with gain 1e6.
+* C = 100 nF in series with Rs = 1 kOhm at the input, Rf = 10 kOhm in feedback; capacitors start uncharged.
+* Three copies of the circuit see three inputs: a 0.5 V step (1 ns edge), a 2 V/ms ramp, and a 10 mV, 1 us noise edge.
+*
+* EXPECT pk_step key:../../solutions/07-02-solutions.md#07-02.19c rtol=1e-3
+* EXPECT v_step_200u key:../../solutions/07-02-solutions.md#07-02.19d rtol=2e-3
+* EXPECT v_ramp_100u key:../../solutions/07-02-solutions.md#07-02.19g rtol=2e-3
+* EXPECT v_ramp_1m key:../../solutions/07-02-solutions.md#07-02.19f rtol=1e-3
+* EXPECT v_edge key:../../solutions/07-02-solutions.md#07-02.19k scale=1e-3 rtol=2e-3
+
+* step input
+V1   in1 0 PWL(0 0 1n 0.5)
+RS1  in1 a1 1k
+C1   a1 n1 100n IC=0
+RF1  n1 o1 10k
+E1   o1 0 0 n1 1e6
+* ramp input, 2 V/ms
+V2   in2 0 PWL(0 0 1m 2)
+RS2  in2 a2 1k
+C2   a2 n2 100n IC=0
+RF2  n2 o2 10k
+E2   o2 0 0 n2 1e6
+* noise edge, 10 mV in 1 us, then flat
+V3   in3 0 PWL(0 0 1u 10m 1m 10m)
+RS3  in3 a3 1k
+C3   a3 n3 100n IC=0
+RF3  n3 o3 10k
+E3   o3 0 0 n3 1e6
+
+.tran 2n 1m 0 2n UIC
+.meas tran pk_step     MIN v(o1)
+.meas tran v_step_200u FIND v(o1) AT=200u
+.meas tran v_ramp_100u FIND v(o2) AT=100u
+.meas tran v_ramp_1m   FIND v(o2) AT=1m
+.meas tran v_edge      FIND v(o3) AT=1u
+.end

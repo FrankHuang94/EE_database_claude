@@ -209,6 +209,28 @@ $v_C(8\text{ ms}) = -10 + 15e^{-2} = -10 + 2.030 = -7.970$ V.
 
 (d) Either works electrically. A make-before-break switch briefly connects both sources through $R_a + R_b = 5$ kΩ, drawing $(5 - (-10))/5\text{ kΩ} = 3$ mA, which is harmless. If the overlap is much shorter than τ = 4 ms, it barely disturbs the capacitor. Break-before-make leaves the capacitor floating for an instant, which is also harmless because it simply holds its voltage. The choice matters when the sources could be shorted directly with no resistors in between: then break-before-make is mandatory.
 
+### Solution 07-02.19
+
+(a) $\tau = R_sC = (10^3)(10^{-7}) = 0.100$ ms and $R_fC = (10^4)(10^{-7}) = 1.00$ ms.
+
+(b) The input branch ($R_s$ and $C$ in series, ending at the virtual ground) is an RC circuit charging toward 0.5 V from 0, so $i(t) = (0.5/R_s)e^{-t/\tau}$, and all of it flows through $R_f$: $v_{out} = -R_fi = -\frac{R_f}{R_s}(0.5)e^{-t/\tau} = -5e^{-t/0.1\text{ ms}}$ V.
+At $0^+$: $v_{out} = -5.00$ V, inside the rails.† At 0.2 ms: $-5e^{-2} = -0.6767$ V.†
+Area: $\int_0^\infty v_{out}\,dt = -5\text{ V}\times0.1\text{ ms} = -0.500$ V·ms, which equals $-R_fC\times0.5\text{ V}$, the area of the ideal differentiator's impulse.
+An ideal differentiator would produce $-R_fC\,\delta(t)\times0.5$ V, an impulse; a real op-amp would slam into the −12 V rail, lose its virtual ground and recover slowly.
+
+(c) From the chapter's ramp result, $v_{out}(t) = -R_fCm\big(1 - e^{-t/\tau}\big)$ with $R_fCm = (1\text{ ms})(2\text{ V/ms}) = 2$ V.
+Settled value: $-2.00$ V,† exactly the ideal differentiator's $-R_fC\,m$.
+At $t = \tau = 0.1$ ms: $-2(1 - e^{-1}) = -1.264$ V.†
+Within 1%: $e^{-t/\tau} = 0.01$ gives $t = \tau\ln100 = 0.4605$ ms.
+
+(d) A step $V$ gives a peak of $-(R_f/R_s)V = -10V$. This stays inside the −12 V rail for $V \le 1.20$ V.
+
+(e) Ideal: $v_{out} = -R_fC\,m = -(10^{-3})(10^4) = -10.0$ V for the whole microsecond, a full-size output from a 10 mV glitch.
+Practical: during the edge the ramp result applies, $v_{out}(1\ \mu\text{s}) = -R_fCm\big(1 - e^{-1\,\mu\text{s}/100\,\mu\text{s}}\big) = -10(1 - e^{-0.01}) = -0.0995$ V $= -99.50$ mV.†
+The edge lasts only 1% of $\tau$, so the capacitor barely charges and the branch acts like the resistor $R_s$ alone: the output is about $-(R_f/R_s)\times10$ mV. The series resistor cut the response to this fast glitch by a factor of about 100, while leaving the response to the slow ramp of (c) exact. That is the whole purpose of $R_s$.
+
+**Units check.** Ω·F = s; V/s × s = V ✓.
+
 ---
 
 ## Answer key
@@ -311,3 +333,14 @@ $v_C(8\text{ ms}) = -10 + 15e^{-2} = -10 + 2.030 = -7.970$ V.
 | 07-02.18e | zero-crossing time | 1.622 | ms |
 | 07-02.18f | $v_C(8\text{ ms})$ | −7.970 | V |
 | 07-02.18g | make-before-break overlap current | 3 | mA |
+| 07-02.19a | τ | 0.100 | ms |
+| 07-02.19b | $R_fC$ | 1.00 | ms |
+| 07-02.19c | $v_{out}(0^+)$ for the 0.5 V step | −5.00 | V |
+| 07-02.19d | $v_{out}(0.2\text{ ms})$ for the step | −0.6767 | V |
+| 07-02.19e | area under $v_{out}$ for the step | −0.500 | V·ms |
+| 07-02.19f | settled output for the 2 V/ms ramp | −2.00 | V |
+| 07-02.19g | ramp output at 0.1 ms | −1.264 | V |
+| 07-02.19h | time to within 1 % | 0.4605 | ms |
+| 07-02.19i | largest step without saturation | 1.20 | V |
+| 07-02.19j | ideal differentiator, noise edge | −10.0 | V |
+| 07-02.19k | practical differentiator, noise edge | −99.50 | mV |
