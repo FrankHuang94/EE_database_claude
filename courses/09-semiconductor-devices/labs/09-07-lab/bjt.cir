@@ -1,0 +1,35 @@
+* Lab 09-07 -- the SPICE bipolar model against chapter 09-07.
+* Q1: forced-gain saturation of Example 09-07.4. I_S = 1.091e-18 A, BF = 100, BR = 2 and no other
+*     Gummel-Poon parameters, so the model is exactly the Ebers-Moll equations of section 3.7. A 0.1 mA
+*     base current and a 1 mA collector current (forced gain 10) are imposed by current sources.
+* Q2, Q3: output resistance (two identical transistors at V_CE = 2 V and 3 V). With VAF = 31.4 V (Example 09-07.3) the transport current is multiplied by
+*     (1 - V_BC/VAF). V_BE is set so that I_C = 1 mA at V_CB = 0; then I_C rises by 1 mA/VAF per volt of
+*     V_CE and r_o = VAF / 1 mA.
+* The temperature is set to 300 K so that V_T = 25.852 mV, as in the chapter.
+*
+* EXPECT vcesat key:../../chapters/09-07-bipolar-junction-transistor.md#Ex_09-07.4c scale=1e-3 rtol=2e-3
+* EXPECT vbesat key:../../chapters/09-07-bipolar-junction-transistor.md#Ex_09-07.4d rtol=2e-4
+* EXPECT ro     key:../../chapters/09-07-bipolar-junction-transistor.md#Ex_09-07.3h scale=1e3 rtol=2e-3
+
+.options temp=26.85 tnom=26.85 reltol=1e-7 abstol=1e-16 vntol=1e-10
+IB1  0 b1 DC 0.1m
+IC1  0 c1 DC 1m
+Q1   c1 b1 0 qsat
+VBE2 b2 0 DC 0.8906543
+VC2  c2 0 DC 2
+Q2   c2 b2 0 qea
+VC3  c3 0 DC 3
+Q3   c3 b2 0 qea
+.model qsat NPN(IS=1.091e-18 BF=100 BR=2)
+.model qea  NPN(IS=1.091e-18 BF=100 BR=2 VAF=31.4)
+
+.control
+op
+let vcesat = v(c1)
+let vbesat = v(b1)
+let ro = 1 / (i(VC2) - i(VC3))
+echo "vcesat = $&vcesat"
+echo "vbesat = $&vbesat"
+echo "ro = $&ro"
+.endc
+.end

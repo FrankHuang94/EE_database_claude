@@ -3779,3 +3779,60 @@
 - term: Specific contact resistivity
   definition: The resistance of a contact times its area, ρ_c in Ω·cm², which falls exponentially with √N and with barrier height; about 10⁻⁷ Ω·cm² for Hu's measured TiSi₂ contact, and much lower values are needed as contacts shrink.
   chapter: "09-06"
+# ---- 09-07
+- term: Bipolar junction transistor
+  definition: A transistor of two back-to-back PN junctions sharing a thin base, in which a forward-biased emitter injects minority carriers that diffuse across the base and are collected by a reverse-biased collector; I_C ≈ I_S e^(V_BE/V_T).
+  chapter: "09-07"
+  see_also: [Heterojunction bipolar transistor]
+- term: Forward-active mode
+  definition: The amplifying region of a bipolar transistor, with the base–emitter junction forward biased and the base–collector junction reverse biased, where the collector current is set by V_BE and nearly independent of V_CE.
+  chapter: "09-07"
+- term: Gummel number
+  definition: The base charge integral G_B = ∫(n_i²/n_iB²)(p/D_B) dx (s/cm⁴) that sets a bipolar transistor's saturation current, I_S = qA_E n_i²/G_B; for a uniform silicon base it is the base dopant count per area divided by D_B.
+  chapter: "09-07"
+- term: Gummel plot
+  definition: A semilog plot of collector and base current against V_BE; its 60 mV/decade slopes, intercepts and the spacing between the curves give I_S, the Gummel numbers and the current gain, and show gain fall-off at low and high current.
+  chapter: "09-07"
+- term: Current gain
+  definition: The common-emitter ratio β_F = I_C/I_B of a bipolar transistor, about 100 in typical devices; the common-base gain α_F = I_C/I_E = β_F/(1 + β_F) is just below 1.
+  chapter: "09-07"
+- term: Emitter injection efficiency
+  definition: The fraction γ of a bipolar transistor's emitter current carried by majority carriers injected into the base; set by the ratio of emitter to base Gummel numbers and limited by band-gap narrowing in the emitter.
+  chapter: "09-07"
+- term: Base transport factor
+  definition: The fraction α_T of carriers injected into the base that reach the collector without recombining, 1 − W_B²/2L_B²; essentially 1 in modern thin-base transistors.
+  chapter: "09-07"
+- term: Polysilicon emitter
+  definition: A bipolar emitter made of a thick heavily doped polysilicon layer over a shallow single-crystal emitter, which raises the effective emitter Gummel number and current gain and avoids defects from deep emitter implants.
+  chapter: "09-07"
+- term: Heterojunction bipolar transistor
+  definition: A bipolar transistor whose emitter and base are different semiconductors, such as a SiGe base on a silicon emitter; the narrower base gap raises n_iB² and the gain, which designers trade for heavier base doping and a graded drift field.
+  chapter: "09-07"
+- term: Early effect
+  definition: The rise of a bipolar transistor's collector current with V_CE because the widening base–collector depletion region thins the neutral base; it gives the device a finite output resistance.
+  chapter: "09-07"
+  see_also: [Early voltage]
+- term: Early voltage
+  definition: The voltage V_A at which extrapolated I_C–V_CE characteristics meet the voltage axis, equal to Q'_B/C'_jC for a uniform base; the output resistance is V_A/I_C and the intrinsic gain V_A/V_T, typically tens of volts.
+  chapter: "09-07"
+- term: Ebers–Moll model
+  definition: The superposition model of a bipolar transistor driven by both V_BE and V_BC, I_C = I_S(e^(V_BE/V_T) − 1) − I_S(1 + 1/β_R)(e^(V_BC/V_T) − 1), valid in all operating regions and the core of SPICE bipolar models.
+  chapter: "09-07"
+- term: Forward transit time
+  definition: The ratio τ_F = Q_F/I_C of stored excess charge to collector current in a forward-active bipolar transistor, the sum of emitter, base (W_B²/2D_B for a uniform base) and collector delays; it sets the diffusion capacitance and limits f_T.
+  chapter: "09-07"
+- term: Kirk effect
+  definition: Base push-out at high current density, when mobile electrons in the collector depletion region cancel its donor charge near J = qN_C v_sat; the effective base widens, the transit time rises and f_T and gain collapse.
+  chapter: "09-07"
+- term: Hybrid-π model
+  definition: The small-signal model of a bipolar transistor with transconductance g_m = I_C/V_T, input resistance r_π = β/g_m, input capacitance C_π = τ_F g_m + C_jE, output resistance r_o = V_A/I_C, feedback capacitance C_μ and series resistances.
+  chapter: "09-07"
+- term: Cutoff frequency
+  definition: The frequency f_T at which a transistor's short-circuit current gain falls to 1; for a bipolar transistor 1/(2π[τ_F + (C_jE + C_jC)V_T/I_C]), rising with current until the Kirk effect sets in.
+  chapter: "09-07"
+- term: Maximum oscillation frequency
+  definition: The frequency f_max at which a transistor's power gain falls to 1, about √(f_T/(8π r_b C_jC)) for a bipolar transistor, so base resistance and base–collector capacitance matter as much as transit time.
+  chapter: "09-07"
+- term: BiCMOS
+  definition: A process that integrates bipolar (often SiGe heterojunction) transistors with CMOS on one chip, for RF, mmWave and precision analog functions alongside digital logic, at the cost of extra process steps.
+  chapter: "09-07"
