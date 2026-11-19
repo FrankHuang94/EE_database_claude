@@ -3692,3 +3692,90 @@
 - term: Critical field
   definition: The peak electric field at which a junction breaks down by avalanche, about 3×10⁵ V/cm in silicon (rising slowly with doping); with it, breakdown voltage scales as εE_c²/(2qN) and drift-region resistance as V²/E_c³.
   chapter: "09-05"
+# ---- 09-06
+- term: Law of the junction
+  definition: The boundary condition that the minority-carrier density at each depletion edge equals its equilibrium value times e^(qV_A/kT), because the quasi-Fermi levels stay flat across the depletion region; the starting point of the diode equation.
+  chapter: "09-06"
+  see_also: [Quasi-Fermi level, Ideal diode equation]
+- term: Ideal diode equation
+  definition: The Shockley relation I = I_s(e^(qV_A/kT) − 1) derived from minority-carrier diffusion in the neutral regions, with I_s = Aqn_i²(D_p/(L_pN_D) + D_n/(L_nN_A)) for a long diode; the current rises tenfold per 59.5 mV at 300 K.
+  chapter: "09-06"
+  see_also: [Reverse saturation current, Law of the junction]
+- term: Reverse saturation current
+  definition: The constant I_s in the diode equation, the reverse current of an ideal diode, set by minority carriers generated within about a diffusion length of the junction; proportional to n_i² and so very small in silicon and steeply temperature dependent.
+  chapter: "09-06"
+- term: Short diode
+  definition: A diode whose neutral region is much shorter than a diffusion length, so the excess-carrier profile is a straight line, the diffusion length in I_s is replaced by the region width, and the stored charge is set by the transit time W²/2D rather than the lifetime.
+  chapter: "09-06"
+- term: Injection efficiency
+  definition: The fraction of a forward-biased junction's current carried by carriers injected into the lightly doped side; close to 1 for a strongly one-sided junction and the basis of a bipolar transistor's current gain.
+  chapter: "09-06"
+- term: Ideality factor
+  definition: The factor η in I ∝ e^(qV/ηkT) that summarizes a measured diode characteristic; 1 for diffusion current, 2 for depletion-region recombination or high-level injection, with values between where mechanisms mix.
+  chapter: "09-06"
+- term: High-level injection
+  definition: The regime in which injected minority carriers become comparable with the majority density, so quasi-neutrality raises the majority density too and the diode current rises only as e^(qV/2kT); in silicon it begins near 2V_T ln(N/n_i).
+  chapter: "09-06"
+  see_also: [Low-level injection]
+- term: Recombination current
+  definition: The extra forward current from electron–hole recombination inside the depletion region, about (qn_iW/2τ)(e^(qV/2kT) − 1), dominant at low forward bias in silicon; in reverse bias the same traps produce generation leakage.
+  chapter: "09-06"
+- term: PTAT voltage
+  definition: A voltage proportional to absolute temperature, such as the difference (kT/q) ln(I_1/I_2) between two diodes or transistors at different current densities; the basis of on-chip temperature sensors and bandgap references.
+  chapter: "09-06"
+- term: Diffusion capacitance
+  definition: The small-signal capacitance from minority charge stored in a forward-biased diode, proportional to bias current; τ_p g_d/2 for a long diode and W²g_d/(3D) for a short one, usually far larger than the junction capacitance in forward bias.
+  chapter: "09-06"
+  see_also: [Junction capacitance]
+- term: Charge-control model
+  definition: Describing a device by its stored charge Q, with i = dQ/dt + Q/τ for a diode; exact for the total charge but approximate for switching events that depend on the charge at the junction edge.
+  chapter: "09-06"
+- term: Reverse recovery
+  definition: The transient when a conducting PN diode is switched to reverse bias, in which stored minority charge first sustains a reverse current set by the circuit (the storage phase) and then decays; it limits switching speed and causes loss in power converters.
+  chapter: "09-06"
+  see_also: [Storage time]
+- term: Storage time
+  definition: The duration of the storage phase of reverse recovery, until the excess density at the junction edge reaches zero; exactly τ_p times the solution of erf√(t_s/τ_p) = I_F/(I_F + I_R) for a long diode, shorter than the charge-control estimate τ_p ln(1 + I_F/I_R).
+  chapter: "09-06"
+- term: Impact ionization
+  definition: The creation of an electron–hole pair by a carrier that has gained more than about the bandgap energy from a strong field; the multiplication process behind avalanche breakdown and avalanche photodiodes.
+  chapter: "09-06"
+- term: Ionization coefficient
+  definition: The number of electron–hole pairs a carrier creates per unit distance in a given field, α = α_0 e^(−E_0/E); in silicon about 6.6×10³ cm⁻¹ for electrons and 2.8×10³ cm⁻¹ for holes at 3×10⁵ V/cm.
+  chapter: "09-06"
+- term: Avalanche multiplication
+  definition: The growth of a reverse current by repeated impact ionization in a depletion region, measured by the multiplication factor M, where 1 − 1/M equals the ionization integral; M diverges at breakdown.
+  chapter: "09-06"
+- term: Avalanche breakdown
+  definition: Reverse breakdown in which the ionization integral reaches 1 and multiplication becomes self-sustaining; it dominates in silicon above a few volts, its voltage falls roughly as N^(−0.6) to N^(−0.75) and rises with temperature.
+  chapter: "09-06"
+  see_also: [Critical field, Tunneling breakdown]
+- term: Tunneling breakdown
+  definition: Reverse breakdown of a junction heavily doped on both sides, in which electrons tunnel from the valence band to the conduction band across a gap of E_g/qE; it occurs at fields near 10⁶ V/cm in silicon, at low voltages, and its voltage falls with temperature.
+  chapter: "09-06"
+- term: Zener diode
+  definition: A diode designed to operate in reverse breakdown at a specified voltage, by tunneling at low voltages and by avalanche at higher ones; the opposite temperature coefficients partly cancel near the crossover.
+  chapter: "09-06"
+- term: Schottky barrier
+  definition: The energy barrier φ_B that carriers in a metal face to enter a semiconductor's band at a metal–semiconductor junction; ideally ψ_M − χ but pinned near 0.7 V on n-type silicon by interface states, with φ_Bn + φ_Bp ≈ E_g.
+  chapter: "09-06"
+  see_also: [Fermi-level pinning]
+- term: Fermi-level pinning
+  definition: The weak dependence of Schottky barrier height on metal work function, caused by interface states that hold the Fermi level near a fixed energy in the gap; for silicon Hu fits φ_Bn ≈ 0.7 V + 0.2(ψ_M − 4.75 V).
+  chapter: "09-06"
+- term: Thermionic emission
+  definition: Current carried by carriers energetic enough to pass over a barrier, J = KT²e^(−qφ_B/kT)(e^(qV/kT) − 1) for a Schottky diode; it involves only majority carriers.
+  chapter: "09-06"
+  see_also: [Richardson constant]
+- term: Richardson constant
+  definition: The prefactor K = 4πqmk²/h³ of the thermionic-emission current, 120 A/(cm²·K²) for the free-electron mass and about 100 for silicon in Hu's usage.
+  chapter: "09-06"
+- term: Schottky diode
+  definition: A metal–semiconductor rectifier whose current is thermionic emission of majority carriers; it has a saturation current 10³–10⁸ times a PN diode's, a lower forward drop and almost no stored charge, at the cost of higher leakage.
+  chapter: "09-06"
+- term: Ohmic contact
+  definition: A metal–semiconductor contact with low resistance in both directions, made by doping the semiconductor so heavily that the barrier is only nanometers thick and carriers tunnel through it.
+  chapter: "09-06"
+- term: Specific contact resistivity
+  definition: The resistance of a contact times its area, ρ_c in Ω·cm², which falls exponentially with √N and with barrier height; about 10⁻⁷ Ω·cm² for Hu's measured TiSi₂ contact, and much lower values are needed as contacts shrink.
+  chapter: "09-06"

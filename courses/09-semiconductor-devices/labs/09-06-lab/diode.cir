@@ -1,0 +1,30 @@
+* Lab 09-06 -- the SPICE diode model against chapter 09-06.
+* D1: the P+N diode of Example 09-06.1 (IS = 4.973e-16 A, ideality 1) driven by 10 uA: forward voltage.
+* D2: the same diode with transit time TT = 1 us (= tau_p), switched from +20 uA to -20 uA.
+*     SPICE stores charge TT * I_D(V), so its stored charge obeys the charge-control equation and the
+*     junction voltage crosses zero when that charge is gone: t_s = TT ln(1 + I_F/I_R) (Example 09-06.6a),
+*     not the exact diffusion result 0.2275 TT. A 1 fF junction capacitance keeps the solver stable after
+*     the crossing without affecting the storage phase.
+* The temperature is set to 300 K so that V_T = 25.852 mV, as in the chapter.
+*
+* EXPECT vd1 key:../../chapters/09-06-pn-junction-iv-and-capacitance.md#Ex_09-06.1l rtol=2e-4
+* EXPECT ts  key:../../chapters/09-06-pn-junction-iv-and-capacitance.md#Ex_09-06.6b scale=1e-6 rtol=3e-3
+
+.options temp=26.85 tnom=26.85 reltol=1e-6 abstol=1e-14 vntol=1e-9
+I1  0 d1 DC 10u
+D1  d1 0 dmod
+I2  0 d2 PWL(0 20u 10n 20u 11n -20u)
+D2  d2 0 dslow
+.model dmod  D(IS=4.973e-16 N=1)
+.model dslow D(IS=4.973e-16 N=1 TT=1u CJO=1f)
+
+.control
+op
+let vd1 = v(d1)
+echo "vd1 = $&vd1"
+tran 1n 0.75u 0 1n
+meas tran tcross WHEN v(d2)=0 FALL=1
+let ts = tcross - 10.5n
+echo "ts = $&ts"
+.endc
+.end
