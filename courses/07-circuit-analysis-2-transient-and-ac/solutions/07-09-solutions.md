@@ -1,6 +1,6 @@
 # Solutions 07-09 · Mutual Inductance and Transformers
 
-Problems: [07-09 problems](../problems/07-09-problems.md) · Chapter: [07-09](../chapters/07-09-mutual-inductance-and-transformers.md). Every number below is recomputed by [verify_07_09.py](../verify/verify_07_09.py), mostly by integrating the coupled-coil differential equations or solving the mesh equations numerically; values marked † are also confirmed by ngspice in [labs/07-09-lab](../labs/07-09-lab/README.md).
+Problems: [07-09 problems](../problems/07-09-problems.md) · Chapter: [07-09](../chapters/07-09-mutual-inductance-and-transformers.md). Every number below is recomputed by [verify_07_09.py](../verify/verify_07_09.py), mostly by integrating the coupled-coil differential equations or solving the mesh equations numerically; the circuit results that ngspice also confirms are named in the `* EXPECT` lines of the netlists in [labs/07-09-lab](../labs/07-09-lab/README.md).
 
 ---
 

@@ -17,6 +17,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from scipy.optimize import brentq, fsolve
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2] / "tools"))
@@ -246,20 +247,53 @@ v.check("07-11.8a", np.sqrt(np.mean(iph[0] ** 2)))
 v.check("07-11.8b", np.sqrt(np.mean(sum(iph) ** 2)))
 i5 = sum(2 * math.sqrt(2) * np.cos(5 * (w * ts - k * 2 * pi / 3)) for k in range(3))
 v.check("07-11.8c", np.sqrt(np.mean(i5**2)), tol=1e-9)
-# P9
-P9, Q9 = -2e3 + 10e3, R3 * (10e3 + 2e3)
-v.check("07-11.9a", P9 / 1e3)
-v.check("07-11.9b", Q9 / 1e3)
-v.check("07-11.9c", P9 / math.hypot(P9, Q9))
-v.check("07-11.9d", math.degrees(math.atan2(Q9, P9)))
-v.check("07-11.9e", math.cos(math.radians(60)))
-v.assert_true("W1 zero at 60 deg", abs(math.cos(math.radians(30 + 60))) < 1e-12)
-# P10
-Qc10 = 300e3 * (math.tan(math.acos(0.75)) - math.tan(math.acos(0.95)))
-v.check("07-11.10a", Qc10 / 1e3)
-v.check("07-11.10b", Qc10 / 3 / (2 * pi * 60 * 480**2) * 1e6)
-v.check("07-11.10c", 300e3 / (R3 * 480 * 0.75))
-v.check("07-11.10d", 300e3 / (R3 * 480 * 0.95))
+# P9: find the balanced load whose two meters read -2 kW and 10 kW, then read P, Q and PF from the circuit
+
+
+def meters(Zmag, th, seq=1):
+    Z = Zmag * cmath.exp(1j * th)
+    Vp = 400 / R3
+    els = [("V", "A", "0", Vp), ("V", "B", "0", Vp * cmath.exp(-seq * 2j * pi / 3)),
+           ("V", "C", "0", Vp * cmath.exp(seq * 2j * pi / 3)), ("Z", "A", "N", Z), ("Z", "B", "N", Z),
+           ("Z", "C", "N", Z)]
+    V, I = mna(els)
+    Ia, Ic = -I[0], -I[2]
+    W1 = ((V["A"] - V["B"]) * Ia.conjugate()).real
+    W2 = ((V["C"] - V["B"]) * Ic.conjugate()).real
+    S = sum((V[n] - V["N"]) * (-I[k]).conjugate() for k, n in enumerate("ABC"))
+    return W1, W2, S
+
+
+zm9, th9 = fsolve(lambda x: [meters(x[0], x[1])[0] + 2e3, meters(x[0], x[1])[1] - 10e3], [10.0, 1.0], xtol=1e-12)
+_, _, S9 = meters(zm9, th9)
+v.check("07-11.9a", S9.real / 1e3)
+v.check("07-11.9b", S9.imag / 1e3)
+v.check("07-11.9c", S9.real / abs(S9))
+v.check("07-11.9d", math.degrees(th9))
+v.check("07-11.9e", math.cos(brentq(lambda th: meters(10.0, th)[0], 0.5, 1.5)))
+
+# P10: a balanced Y load drawing 300 kW at PF 0.75 from 480 V, 60 Hz; Delta capacitors sized by root-finding
+
+
+def plant(Cd):
+    Vp = 480 / R3
+    Zl = (3 * Vp ** 2 / 300e3) * 0.75 * cmath.exp(1j * math.acos(0.75))    # |Z| = 3 Vp^2 PF / P
+    Zc = 1 / (1j * 2 * pi * 60 * Cd) if Cd else 1e15
+    els = y_source(Vp, [("Z", "A", "N", Zl), ("Z", "B", "N", Zl), ("Z", "C", "N", Zl),
+                        ("Z", "A", "B", Zc), ("Z", "B", "C", Zc), ("Z", "C", "A", Zc)])
+    V, I = mna(els)
+    S = sum(V[n] * (-I[k]).conjugate() for k, n in enumerate("ABC"))
+    return S, abs(I[0])
+
+
+S0, I0 = plant(0.0)
+assert abs(S0.real - 300e3) < 1e-6 and abs(S0.real / abs(S0) - 0.75) < 1e-12
+Cd10 = brentq(lambda C: plant(C)[0].real / abs(plant(C)[0]) - 0.95, 1e-6, 1e-3, xtol=1e-15)
+S1, I1 = plant(Cd10)
+v.check("07-11.10a", (S0.imag - S1.imag) / 1e3)
+v.check("07-11.10b", Cd10 * 1e6)
+v.check("07-11.10c", I0)
+v.check("07-11.10d", I1)
 # P11: single-phase swing by sampling; three-phase constant shown above
 S11 = 12.8e3 / 0.8
 th = math.acos(0.8)
@@ -281,5 +315,53 @@ V7o, _ = mna(y_source(230.0, [("Z", "A", "N", 10.0), ("Z", "B", "N", 20.0), ("Z"
 for n, ident in (("A", "a"), ("B", "b"), ("C", "c")):
     v.check(f"Lab 07-11.{ident}", abs(V7o[n] - V7o["N"]))
 v.check("Lab 07-11.d", abs(V7o["N"]))
+
+# ---- Example 7 (audit addition): broken neutral, star point floating
+V7, I7 = mna(y_source(230.0, [("Z", "A", "N", 10.0), ("Z", "B", "N", 20.0), ("Z", "C", "N", 40.0)]))
+v.check("Ex 07-11.7a", abs(V7["N"]))
+v.check("Ex 07-11.7b", math.degrees(cmath.phase(V7["N"])))
+for k, (n, z) in enumerate((("A", 10.0), ("B", 20.0), ("C", 40.0))):
+    v.check(f"Ex 07-11.7{'cde'[k]}", abs(V7[n] - V7["N"]))
+    v.check(f"Ex 07-11.7{'fgh'[k]}", abs((V7[n] - V7["N"]) / z))
+# ---- P13 (audit addition): negative sequence
+Vp13 = 400 / R3
+V13, I13 = mna([("V", "A", "0", Vp13), ("V", "B", "0", Vp13 * cmath.exp(2j * pi / 3)),
+                ("V", "C", "0", Vp13 * cmath.exp(-2j * pi / 3)), ("Z", "A", "N", 8 + 6j), ("Z", "B", "N", 8 + 6j),
+                ("Z", "C", "N", 8 + 6j)])
+Vab13 = V13["A"] - V13["B"]
+v.check("07-11.13a", abs(Vab13))
+v.check("07-11.13b", math.degrees(cmath.phase(Vab13)))
+Ia13, Ic13 = -I13[0], -I13[2]
+v.check("07-11.13c", abs(Ia13))
+v.check("07-11.13d", math.degrees(cmath.phase(Ia13)))
+W1n = (Vab13 * Ia13.conjugate()).real
+W2n = ((V13["C"] - V13["B"]) * Ic13.conjugate()).real
+v.check("07-11.13e", W1n)
+v.check("07-11.13f", W2n)
+v.check("07-11.13g", (W1n + W2n) / 1e3)
+v.check("07-11.13h", R3 * (W2n - W1n))
+v.check("07-11.13i", sum(((V13[n] - V13["N"]) * (-I13[k]).conjugate()).imag for k, n in enumerate("ABC")))
+# ---- P14 (audit addition): unbalanced Delta load from a Delta source (two winding sources suffice;
+# node B is the reference), line currents from the load branches
+V14, _ = mna([("V", "A", "0", 400.0), ("V", "0", "C", 400 * cmath.exp(-2j * pi / 3)),
+              ("Z", "A", "0", 100.0), ("Z", "0", "C", 100j), ("Z", "C", "A", -100j)])
+Vb14 = 0.0
+Iab, Ibc, Ica = (V14["A"] - Vb14) / 100, (Vb14 - V14["C"]) / 100j, (V14["C"] - V14["A"]) / -100j
+d14 = lambda z: math.degrees(cmath.phase(z))  # noqa: E731
+v.check("07-11.14a", abs(Iab))
+v.check("07-11.14b", d14(Ibc))
+v.check("07-11.14c", d14(Ica))
+Ia14, Ib14, Ic14 = Iab - Ica, Ibc - Iab, Ica - Ibc
+v.check("07-11.14d", abs(Ia14))
+v.check("07-11.14e", d14(Ia14))
+v.check("07-11.14f", d14(Ib14))
+v.check("07-11.14g", abs(Ic14))
+v.check("07-11.14h", d14(Ic14))
+S14 = Iab * Iab.conjugate() * 100 + Ibc * Ibc.conjugate() * 100j + Ica * Ica.conjugate() * -100j
+v.check("07-11.14i", S14.real)
+v.check("07-11.14j", S14.imag, tol=0.5)
+cent = (V14["A"] + Vb14 + V14["C"]) / 3   # neutral of the equivalent balanced Y = centroid
+v.check("07-11.14k", abs(V14["A"] - cent))
+v.check("07-11.14l", d14(V14["A"] - cent))
 
 v.finish()

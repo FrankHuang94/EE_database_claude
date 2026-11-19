@@ -22,7 +22,7 @@
 
 When two coils share magnetic flux, a changing current in one induces a voltage in the other. That **mutual inductance** is how a transformer works: it changes voltage and current levels with almost no loss, isolates circuits electrically, and matches impedances. The power grid exists in its present form because transformers make high-voltage transmission practical (07-06 showed why higher voltage cuts line loss). Every mains-powered device converts voltage through a transformer, usually now a small high-frequency one inside a switching converter. Coupled coils also carry power and data without wires, in phone chargers, NFC payment cards and implanted medical devices. Unwanted mutual inductance appears as crosstalk between traces and wires.
 
-- **Grid and data centers:** distribution transformers step medium voltage down to building voltage; their losses are regulated (§9) and their efficiency curve is §3.9's subject.
+- **Grid and data centers:** distribution transformers step medium voltage down to building voltage; their losses are regulated (§9) and their efficiency curve is §3.8's subject.
 - **Power supplies:** a phone charger's flyback converter stores energy in a coupled inductor and steps 300 V down to 5–20 V ([22](../../22-power-electronics-and-energy-conversion/README.md)).
 - **Wireless power and NFC:** loosely coupled coils, tuned to resonance, transfer watts across millimeters to centimeters.
 - **Signal isolation and matching:** isolation transformers in Ethernet ports, baluns and RF matching transformers.
@@ -46,7 +46,7 @@ $$
 \lambda_1 = L_1i_1 + M_{12}i_2, \qquad \lambda_2 = M_{21}i_1 + L_2i_2 .
 $$
 
-$L_1$ and $L_2$ are the **self-inductances** and $M_{12}$, $M_{21}$ the **mutual inductances** (henries). Energy conservation (§3.3) requires $M_{12} = M_{21} = M$: the coupling is reciprocal. Differentiating:
+$L_1$ and $L_2$ are the **self-inductances** and $M_{12}$, $M_{21}$ the **mutual inductances** (henries). Energy conservation requires $M_{12} = M_{21} = M$, as §3.3 shows: the coupling is reciprocal. Differentiating:
 
 $$
 v_1 = L_1\frac{di_1}{dt} + M\frac{di_2}{dt}, \qquad v_2 = M\frac{di_1}{dt} + L_2\frac{di_2}{dt} .
@@ -87,7 +87,14 @@ $$
 p = L_1i_1\frac{di_1}{dt} + L_2i_2\frac{di_2}{dt} + M\Big(i_1\frac{di_2}{dt} + i_2\frac{di_1}{dt}\Big) = \frac{d}{dt}\Big(\tfrac12L_1i_1^2 + \tfrac12L_2i_2^2 + Mi_1i_2\Big).
 $$
 
-The last step uses $d(i_1i_2)/dt = i_1\,di_2/dt + i_2\,di_1/dt$, which works only because the same $M$ appears in both equations; this is why reciprocity is required. So the stored energy is
+The last step uses $d(i_1i_2)/dt = i_1\,di_2/dt + i_2\,di_1/dt$, which works only because the same $M$ appears in both equations.
+
+**Why $M_{12} = M_{21}$.** Bring the currents up from zero to $I_1$ and $I_2$ in two different orders, with the coils' own $M_{12}$ and $M_{21}$ unknown:
+
+- *Order A.* Raise $i_1$ to $I_1$ with $i_2 = 0$: the energy delivered is $\tfrac12L_1I_1^2$. Then raise $i_2$ to $I_2$ with $i_1$ held at $I_1$. Coil 2 takes $\tfrac12L_2I_2^2$, and coil 1, carrying the constant $I_1$, now sees $v_1 = M_{12}\,di_2/dt$ and takes $\int I_1M_{12}\,di_2 = M_{12}I_1I_2$.
+- *Order B.* Raise $i_2$ first, then $i_1$: the same steps give $\tfrac12L_1I_1^2 + \tfrac12L_2I_2^2 + M_{21}I_1I_2$.
+
+Both orders end in the same state (the same currents and the same fields), so they must store the same energy. Otherwise charging by one order and discharging by the other would create or destroy energy in a cycle. So $M_{12} = M_{21}$: reciprocity is a consequence of energy conservation, not an extra assumption. The stored energy is therefore
 
 $$
 w = \tfrac12L_1i_1^2 + \tfrac12L_2i_2^2 \pm Mi_1i_2 ,
@@ -119,9 +126,11 @@ $$
 Z_{in} = \frac{\mathbf{V}_s}{\mathbf{I}_1} - R_1 = j\omega L_1 + \frac{(\omega M)^2}{Z_{22}} .
 $$
 
-The secondary circuit appears in the primary as the **reflected impedance** $(\omega M)^2/Z_{22}$. Its real part is positive (the load absorbs power through the coupling), and its reactive part has the *opposite* sign to $Z_{22}$'s: an inductive secondary reflects as capacitive. A shorted secondary ($Z_L = 0$) reflects $\omega^2M^2/(j\omega L_2) = -j\omega M^2/L_2$, so the primary sees $j\omega L_1(1 - k^2)$: shorting one coil of a tightly coupled pair nearly shorts the other, which is how transformers are short-circuit tested (§3.8).
+The secondary circuit appears in the primary as the **reflected impedance** $(\omega M)^2/Z_{22}$. Its real part is positive (the load absorbs power through the coupling), and its reactive part has the *opposite* sign to $Z_{22}$'s: an inductive secondary reflects as capacitive. A shorted secondary ($Z_L = 0$) reflects $\omega^2M^2/(j\omega L_2) = -j\omega M^2/L_2$, so the primary sees $j\omega L_1(1 - k^2)$: shorting one coil of a tightly coupled pair nearly shorts the other, which is how transformers are short-circuit tested (§3.7).
 
-**The T-equivalent.** When the two coils share a common terminal (or can be redrawn so), the coupled pair with aiding dots is equivalent to three uncoupled inductors in a T: $L_1 - M$ and $L_2 - M$ in the series arms and $M$ in the shunt leg. Check: the voltage across coil 1 with both currents entering is $j\omega(L_1 - M)\mathbf{I}_1 + j\omega M(\mathbf{I}_1 + \mathbf{I}_2) = j\omega L_1\mathbf{I}_1 + j\omega M\mathbf{I}_2$ ✓. An arm may come out negative ($L_1 < M$); that is fine mathematically but means the T is a model, not something to build.
+**Coils in series.** Connect the two coils in series so that one current $i$ flows through both. If it enters both dotted terminals (fluxes aiding), KVL gives $v = v_1 + v_2 = (L_1 + M)\,di/dt + (M + L_2)\,di/dt$, so the pair is one inductance $L_1 + L_2 + 2M$. If it enters one dot and leaves the other (opposing), both mutual terms change sign, giving $L_1 + L_2 - 2M$. Measuring both gives the mutual inductance, $M = (L_{aid} - L_{opp})/4$, a standard bench method. For example, coils of 9 mH and 4 mH that measure 21 mH aiding and 5 mH opposing have $M = 16/4 = $ **4 mH** and $k = 4/\sqrt{36} = $ **0.6667**.
+
+**The T-equivalent.** When the two coils share a common terminal (or can be redrawn so), the coupled pair with aiding dots is equivalent to three uncoupled inductors in a T: $L_1 - M$ and $L_2 - M$ in the series arms and $M$ in the shunt leg. Check: the voltage across coil 1 with both currents entering is $j\omega(L_1 - M)\mathbf{I}_1 + j\omega M(\mathbf{I}_1 + \mathbf{I}_2) = j\omega L_1\mathbf{I}_1 + j\omega M\mathbf{I}_2$ ✓. With opposing dots, $M$ changes sign: the arms become $L_1 + M$ and $L_2 + M$, and the shunt leg $-M$. An arm may come out negative ($L_1 < M$, or the shunt leg with opposing dots); that is fine mathematically but means the T is a model, not something to build.
 
 ### 3.5 The ideal transformer
 
@@ -139,7 +148,7 @@ $$
 \frac{\mathbf{I}_2}{\mathbf{I}_1} = \frac{N_1}{N_2}, \qquad \mathbf{V}_1\mathbf{I}_1^* = \mathbf{V}_2\mathbf{I}_2^* .
 $$
 
-Complex power passes through unchanged (07-06): the ideal transformer neither stores nor dissipates energy. Unlike coupled coils, it works down to any frequency above DC in the model, but never at DC: a constant voltage would require a flux growing without bound.
+Complex power passes through unchanged (07-06): the ideal transformer neither stores nor dissipates energy. The ideal model has no low-frequency limit at all. A real transformer does: at DC, or at frequencies too low for its core, a constant voltage would require a flux growing without bound, and the core saturates (§3.9).
 
 **Impedance reflection.** A load $Z_L = \mathbf{V}_2/\mathbf{I}_2$ on the secondary appears at the primary as
 
@@ -165,7 +174,8 @@ The model puts an ideal transformer between these elements: series $R_1 + j\omeg
 ![Practical transformer equivalent circuit](../../../assets/figures/07-09/equivalent-circuit.svg)
 
 *Figure 1. The practical transformer: winding resistances and leakage inductances in series, the magnetizing inductance and core-loss resistance in shunt, and an ideal transformer.*
- For calculations it is convenient to **refer** everything to one side with the impedance rule of §3.5 ($R_2' = (N_1/N_2)^2R_2$ and so on) and lump the series elements into $R_{eq} = R_1 + R_2'$ and $X_{eq} = X_{\ell1} + X_{\ell2}'$.
+
+For calculations it is convenient to **refer** everything to one side with the impedance rule of §3.5 ($R_2' = (N_1/N_2)^2R_2$ and so on) and lump the series elements into $R_{eq} = R_1 + R_2'$ and $X_{eq} = X_{\ell1} + X_{\ell2}'$.
 
 > **Going deeper — leakage from the coupling coefficient.** For coupled coils with $L_1$, $L_2$ and $k$, choose the ideal ratio $N_1/N_2 = \sqrt{L_1/L_2}$. Then the coupled pair is exactly equivalent to a magnetizing inductance $kL_1$ across the primary, a leakage $(1 - k)L_1$ in series with it, and a leakage $(1 - k)L_2$ on the secondary (one of several equivalent splits). As $k \to 1$ the leakage vanishes; as $L_1 \to \infty$ the magnetizing current does. The ideal transformer is the double limit.
 
@@ -196,7 +206,7 @@ A transformer is most efficient at the load where its variable loss equals its f
 
 *Figure 2. Efficiency against load. The low-core-loss design peaks at a lighter load and is more efficient over most of the range.*
 
- Designers place $x^*$ where the transformer spends most of its time. A distribution transformer serving homes averages well below its rating, so it should have low core loss even at the cost of more copper loss. That is the physics behind the amorphous-core requirements of §9 (Example 07-09.5).
+Designers place $x^*$ where the transformer spends most of its time. A distribution transformer serving homes averages well below its rating, so it should have low core loss even at the cost of more copper loss. That is the physics behind the amorphous-core requirements of §9 (Example 07-09.5).
 
 **Voltage regulation.** Under load the series impedance drops voltage. The approximation of 07-05 §3.5 gives the drop referred to the primary as $\Delta V \approx I(R_{eq}\cos\theta + X_{eq}\sin\theta)$ for a load current lagging by θ, and the **regulation** is $\Delta V/V_{rated}$.
 
@@ -306,6 +316,8 @@ The amorphous design loses **26.0%** less energy despite its higher copper loss,
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
+| Th 07-09.a | mutual inductance from series tests | 4 | mH |
+| Th 07-09.b | coupling coefficient | 0.6667 | — |
 | Ex 07-09.1a | M | 10 | mH |
 | Ex 07-09.1b | $v_1$, aiding | 0.50 | V |
 | Ex 07-09.1c | $v_2$, aiding | −1.00 | V |
@@ -361,7 +373,7 @@ The lab is in [labs/07-09-lab](../labs/07-09-lab/README.md).
    - solves coupled-coil circuits for any $k$ and shows the reflected impedance;
    - sweeps a transformer's efficiency against load;
    - simulates a loosely coupled wireless link with and without resonant tuning.
-2. **ngspice netlists** confirm Examples 07-09.2 to 07-09.4 using ngspice's coupled-inductor element (`K`); `python tools/run_spice.py 07-09` checks them.
+2. **ngspice netlists** confirm Examples 07-09.2 and 07-09.3 and Problem 07-09.12 using ngspice's coupled-inductor element (`K`); `python tools/run_spice.py 07-09` checks them.
 
 **Guided exercise (predict, then run).** In the Example 07-09.2 netlist, change $k$ from 0.5 to 0.99. **Before running,** predict whether the load power rises or falls, and roughly how the input impedance changes. Hint: with tight coupling the pair behaves more like an ideal 1:2 transformer ($\sqrt{L_2/L_1}$ = 2), so the 100 Ω load reflects as about a quarter of itself, in parallel with the primary's own 62.8 Ω of reactance.
 
@@ -384,7 +396,7 @@ The lab is in [labs/07-09-lab](../labs/07-09-lab/README.md).
 | Ideal transformer | $V_2/V_1 = N_2/N_1$; $I_2/I_1 = N_1/N_2$; $Z_{in} = (N_1/N_2)^2Z_L$ | §3.5 |
 | Transformer equation | $V_{rms} = 4.443\,fNAB_m$ | §3.9 |
 | Maximum efficiency | where copper loss = core loss: $x^* = \sqrt{P_{core}/P_{cu}}$ | §3.8 |
-| US distribution-transformer efficiency, 50 kVA single-phase liquid-immersed (at 50% load) | 99.11% (from 2016); 99.15% (compliance from 23 Apr 2029) | [R-135](../../../reference/research-log.md#r-135--distribution-transformer-efficiency-standards) **[Established]** (under review, §9) |
+| US distribution-transformer efficiency, 50 kVA single-phase liquid-immersed, non-submersible (at 50% load) | 99.11% (from 2016); 99.15% (compliance from 23 Apr 2029) | [R-135](../../../reference/research-log.md#r-135--distribution-transformer-efficiency-standards) **[Established]** (under review, §9) |
 | Same, 167 kVA | 99.33% → 99.46% | [R-135](../../../reference/research-log.md#r-135--distribution-transformer-efficiency-standards) **[Established]** |
 | Same, low-voltage dry-type three-phase 75 kVA (at 35% load) | 98.60% → 98.88% | [R-135](../../../reference/research-log.md#r-135--distribution-transformer-efficiency-standards) **[Established]** |
 | Qi wireless charging | 5 W (v1.0, 2010); 15 W (v1.2, 2015); Magnetic Power Profile at 360 kHz (v2.0, 2023); 25 W (v2.2, 2025) | [R-136](../../../reference/research-log.md#r-136--qi-wireless-charging-versions) **[Established]** |
@@ -406,7 +418,7 @@ The lab is in [labs/07-09-lab](../labs/07-09-lab/README.md).
 
 - **Distribution-transformer losses are regulated** ([R-135](../../../reference/research-log.md#r-135--distribution-transformer-efficiency-standards)) **[Established]**.
   - The US Department of Energy's final rule of 22 Apr 2024 (89 FR 29834) raises the minimum efficiency of distribution transformers, with compliance required from 23 Apr 2029. Efficiency is specified at 50% load for liquid-immersed units and 35% for low-voltage dry-type units, the part-load points where they spend their lives (§3.8).
-  - A 50 kVA single-phase liquid-immersed unit goes from 99.11% to 99.15%. At 25 kW that cuts losses from **224.5 W** to **214.3 W**, **4.53%** less.
+  - A 50 kVA single-phase liquid-immersed (non-submersible) unit goes from 99.11% to 99.15%. At 25 kW that cuts losses from **224.5 W** to **214.3 W**, **4.53%** less.
   - A 167 kVA unit goes from 99.33% to 99.46%, a 19.5% cut in losses (Problem 07-09.10).
   - A 75 kVA three-phase dry-type unit goes from 98.60% to 98.88% at 35% load, cutting losses from **372.7 W** to **297.3 W** (**20.2%**).
   - Example 07-09.4's transformer was built to meet the 50 kVA level exactly.
@@ -553,7 +565,7 @@ Problem set: [07-09 problems](../problems/07-09-problems.md) · Solutions: [07-0
 - **Used later in:**
   - [22](../../22-power-electronics-and-energy-conversion/README.md): flyback and forward converters, magnetics design, power systems ([22-12](../../22-power-electronics-and-energy-conversion/chapters/22-12-power-systems-fundamentals.md)).
   - [13](../../13-electromagnetics/README.md): inductance and coupling from field theory; crosstalk.
-  - [07-11](07-11-three-phase-circuits.md): three-phase transformer connections.
+  - [07-11](07-11-three-phase-circuits.md): three-phase circuits, including the 30° shift of a Y–Δ transformer connection.
 
 ## 13. Further study
 

@@ -18,6 +18,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from scipy.optimize import fsolve
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2] / "tools"))
@@ -239,6 +240,7 @@ v.check("07-10.2e", z2[0, 1])
 v.check("07-10.2f", z2[1, 1])
 v.check("07-10.3a", np.linalg.det(np.array([[2, 10], [0.1, 1]])))
 v.check("07-10.3b", np.linalg.det(np.array([[1, 5], [0.2, 3]])))
+v.check("07-10.3c", np.linalg.det(np.array([[50, 0.5], [-0.5, 0.01]])))
 # P4: h of the T, measured
 V, I = mna(T1, 1.0, [("I", "0", "p1", 1.0), ("V", "p2", "0", 0.0)])
 v.check("07-10.4a", V["p1"].real)
@@ -246,15 +248,23 @@ v.check("07-10.4c", (-I[0]).real)
 V, I = mna(T1, 1.0, [("V", "p2", "0", 1.0)])
 v.check("07-10.4b", V["p1"].real)
 v.check("07-10.4d", (-I[0]).real)
-# P5: build a circuit realizing the h-parameters (h11 resistor + h12 VCVS at input; h21 CCCS via VCCS; h22)
+# P5: solve the defining h equations numerically under each port test (no conversion formulas used)
 h11_, h12_, h21_, h22_ = 2000.0, 2e-4, 150.0, 20e-6
-# implement V1 = h11 I1 + h12 V2 and I2 = h21 I1 + h22 V2 directly as an MNA model of y-parameters
-yH = np.array([[1 / h11_, -h12_ / h11_], [h21_ / h11_, (h11_ * h22_ - h12_ * h21_) / h11_]])
-Yn = [("Y", "p1", "0", yH[0, 0] + yH[0, 1]), ("Y", "p1", "p2", -yH[0, 1]), ("Y", "p2", "0", yH[1, 1] + yH[0, 1]),
-      ("G", "p2", "0", yH[1, 0] - yH[0, 1], ("p1", "0"))]
-yM = y_params(Yn, 1.0).real
-zM = z_params(Yn, 1.0).real
-v.check("07-10.5a", h11_ * h22_ - h12_ * h21_)
+
+
+def h_solve(cond, h12=h12_):
+    """Unknowns (V1, I1, V2, I2). Rows: V1 - h11 I1 - h12 V2 = 0; I2 - h21 I1 - h22 V2 = 0; plus two
+    test conditions given as (row coefficients, value) pairs."""
+    A = [[1, -h11_, -h12, 0], [0, -h21_, -h22_, 1]] + [c for c, _ in cond]
+    b = [0, 0] + [val for _, val in cond]
+    return np.linalg.solve(np.array(A, float), np.array(b, float))
+
+
+yM = np.array([[h_solve([([1, 0, 0, 0], 1.0), ([0, 0, 1, 0], 0.0)])[k] for k in (1, 3)],
+               [h_solve([([1, 0, 0, 0], 0.0), ([0, 0, 1, 0], 1.0)])[k] for k in (1, 3)]]).T
+zM = np.array([[h_solve([([0, 1, 0, 0], 1.0), ([0, 0, 0, 1], 0.0)])[k] for k in (0, 2)],
+               [h_solve([([0, 1, 0, 0], 0.0), ([0, 0, 0, 1], 1.0)])[k] for k in (0, 2)]]).T
+v.check("07-10.5a", np.linalg.det(np.array([[h11_, h12_], [h21_, h22_]])))
 v.check("07-10.5b", yM[0, 0] * 1e3)
 v.check("07-10.5c", yM[0, 1] * 1e6)
 v.check("07-10.5d", yM[1, 0] * 1e3)
@@ -263,10 +273,12 @@ v.check("07-10.5f", zM[0, 0])
 v.check("07-10.5g", zM[0, 1])
 v.check("07-10.5h", zM[1, 0] / 1e6)
 v.check("07-10.5i", zM[1, 1] / 1e3)
-V, I = mna(Yn, 1.0, [("V", "p1", "0", 1.0), ("R", "p2", "0", 1e4)])
-v.check("07-10.5j", V["p2"].real)
-v.check("07-10.5k", (1 / -I[0]).real)
-v.check("07-10.5l", h11_)
+# terminated in 10 k: V1 = 1 and V2 = -ZL I2
+x5 = h_solve([([1, 0, 0, 0], 1.0), ([0, 0, 1, 1e4], 0.0)])
+v.check("07-10.5j", x5[2])
+v.check("07-10.5k", 1 / x5[1])
+x5b = h_solve([([1, 0, 0, 0], 1.0), ([0, 0, 1, 1e4], 0.0)], h12=0.0)
+v.check("07-10.5l", 1 / x5b[1])
 # P6
 three = mna([("V", "p1", "0", 1.0), ("R", "p1", "a", R3), ("C", "a", "0", C3), ("R", "a", "b", R3), ("C", "b", "0", C3),
              ("R", "b", "c", R3), ("C", "c", "0", C3)], w3)[0]["c"]
@@ -403,5 +415,32 @@ v.assert_true("two matched 6 dB pads give 12 dB", abs(dB(Scas[1, 0]) + 12.0) < 1
 S10 = s_params([("C", "p1", "0", 1e-12), ("R", "p1", "p2", 1e-9)], 2 * pi * 10e9)
 v.check("Lab 07-10.a", abs(S10[1, 0]))
 v.check("Lab 07-10.b", abs(S10[0, 0]))
+
+# ---- Section 3.10 (audit addition): mismatch numbers and the 20-to-50 ohm L-section, by root-finding
+G20 = (20 - 50) / (20 + 50)
+v.check("Th 07-10.a", G20)
+v.check("Th 07-10.b", -20 * np.log10(abs(G20)))
+tl = np.linspace(0, 1, 100001)   # standing wave along one wavelength: |1 + G e^{-j 4 pi x}|
+env = np.abs(1 + G20 * np.exp(-4j * pi * tl))
+v.check("Th 07-10.c", env.max() / env.min())
+# delivered power from a 1 V-peak, 50 ohm source into 20 ohm, relative to the available power 1/(8*50)
+v.check("Th 07-10.d", 100 * (0.5 * abs(1 / (50 + 20)) ** 2 * 20) / (1 / (8 * 50)))
+v.check("Th 07-10.e", -10 * np.log10((0.5 * abs(1 / (50 + 20)) ** 2 * 20) / (1 / (8 * 50))))
+w9 = 2 * pi * 900e6
+
+
+def zin_l(X, Bs):
+    return 1 / (1j * Bs + 1 / (20 + 1j * X))
+
+
+Xs, Bs = fsolve(lambda q: [zin_l(q[0], q[1] / 1e3).real - 50, zin_l(q[0], q[1] / 1e3).imag], [20.0, 20.0])
+Bs /= 1e3
+v.check("Th 07-10.g", Xs)
+v.check("Th 07-10.f", Xs / 20)
+v.check("Th 07-10.i", 1 / Bs)
+v.check("Th 07-10.h", Xs / w9 * 1e9)
+v.check("Th 07-10.j", Bs / w9 * 1e12)
+v.check("PL 07-10.n", 1 / 0.1875)
+v.check("Th 07-10.k", zin_l(Xs, Bs).real)
 
 v.finish()

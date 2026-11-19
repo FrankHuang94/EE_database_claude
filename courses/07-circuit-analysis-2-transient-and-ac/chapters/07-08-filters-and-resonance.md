@@ -768,6 +768,7 @@ Problem set: [07-08 problems](../problems/07-08-problems.md) · Solutions: [07-0
 [Butterworth response](../../../reference/glossary.md#butterworth-response) ·
 [Biquad](../../../reference/glossary.md#biquad) ·
 [Sallen–Key filter](../../../reference/glossary.md#sallen-key-filter) ·
+[Multiple-feedback (MFB) filter](../../../reference/glossary.md#multiple-feedback-mfb-filter) ·
 [Notch filter](../../../reference/glossary.md#notch-filter) ·
 [Impedance and frequency scaling](../../../reference/glossary.md#impedance-and-frequency-scaling)
 

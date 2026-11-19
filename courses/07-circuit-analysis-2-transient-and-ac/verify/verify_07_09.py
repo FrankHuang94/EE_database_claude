@@ -190,7 +190,14 @@ v.check("07-09.2b", Mp2 / math.sqrt(20 * 30))
 v.assert_true("opposing series gives 30 mH", abs((20 + 30 - 2 * Mp2) - 30) < 1e-9)
 v.check("07-09.3a", 120 / 10)
 v.check("07-09.3b", 12 / 12)
-v.check("07-09.3c", 0.1)
+# near-ideal transformer: k = 1 - 1e-12, magnetizing reactance far above the reflected load
+L2i = 100.0
+L1i, Mi = 100 * L2i, (1 - 1e-12) * math.sqrt(100 * L2i * L2i)
+wi = 2 * pi * 60
+I1i, I2i = np.linalg.solve(np.array([[1j * wi * L1i, 1j * wi * Mi], [1j * wi * Mi, 1j * wi * L2i + 12]]),
+                           np.array([120.0, 0.0]))
+v.check("07-09.3c", abs(I1i))
+v.assert_true("P3 secondary current is 1 A", abs(abs(I2i) - 1.0) < 1e-6)
 v.check("07-09.3d", 120 / 0.1)
 # P4: minimize energy numerically over i2 (opposing fluxes)
 w4 = lambda i2: 0.5 * 1e-3 * 4 + 0.5 * 4e-3 * i2**2 - 1.5e-3 * 2 * i2  # noqa: E731
@@ -199,9 +206,15 @@ v.check("07-09.4a", r4.x)
 v.check("07-09.4b", r4.fun * 1e3)
 v.check("07-09.4c", 1.5 / math.sqrt(1 * 4))
 # P5: T-equivalent and shorted secondary by matrix solve (secondary voltage forced to zero)
-v.check("07-09.5a", (10e-3 - 10e-3) * 1e3, tol=0.5)
-v.check("07-09.5b", (40e-3 - 10e-3) * 1e3)
-v.check("07-09.5c", 10e-3 * 1e3)
+# T arms from open-circuit tests on the coupled pair (drive one coil, other open), at 1 kHz
+w5 = 2 * pi * 1e3
+Lm5 = np.array([[10e-3, 10e-3], [10e-3, 40e-3]])
+z11 = (1j * w5 * Lm5 @ np.array([1.0, 0.0]))[0] / 1.0          # V1/I1 with I2 = 0
+z21 = (1j * w5 * Lm5 @ np.array([1.0, 0.0]))[1] / 1.0          # V2/I1 with I2 = 0
+z22 = (1j * w5 * Lm5 @ np.array([0.0, 1.0]))[1] / 1.0          # V2/I2 with I1 = 0
+v.check("07-09.5a", ((z11 - z21) / (1j * w5)).real * 1e3, tol=0.5)
+v.check("07-09.5b", ((z22 - z21) / (1j * w5)).real * 1e3)
+v.check("07-09.5c", (z21 / (1j * w5)).real * 1e3)
 wq = 2 * pi * 1e3
 Zsh = np.array([[1j * wq * 10e-3, 1j * wq * 10e-3], [1j * wq * 10e-3, 1j * wq * 40e-3]])
 i_sh = np.linalg.solve(Zsh, [1.0, 0.0])
@@ -294,5 +307,17 @@ v.check("PL 07-09.j", 400e3 / 50e3)
 I1l, I2l = coupled_solve(10, 10, 10e-3, 40e-3, 0.99 * math.sqrt(10e-3 * 40e-3), 100, w2)
 v.check("Lab 07-09.a", 0.5 * abs(I2l) ** 2 * 100)
 v.check("Lab 07-09.b", (10 / I1l - 10).real)
+
+# Section 3.4 series-connection example: M from aiding and opposing measurements of a 9 mH / 4 mH pair
+def series_L(M, sign):
+    Lm = np.array([[9e-3, M], [M, 4e-3]])
+    d = np.array([1.0, sign])
+    return d @ Lm @ d
+
+
+Mser = brentq(lambda M: series_L(M, 1.0) - 21e-3, 0, 6e-3)
+v.assert_true("series example: opposing connection reads 5 mH", abs(series_L(Mser, -1.0) - 5e-3) < 1e-12)
+v.check("Th 07-09.a", Mser * 1e3)
+v.check("Th 07-09.b", Mser / math.sqrt(9e-3 * 4e-3))
 
 v.finish()

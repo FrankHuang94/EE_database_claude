@@ -1,0 +1,16 @@
+* Chapter 07-10 section 3.10: the low-pass L-section matching 20 ohm to 50 ohm at 900 MHz
+* (series 4.3316 nH next to the load, shunt 4.3316 pF across the 50 ohm side), driven by 1 V for Z_in.
+*
+* EXPECT zr key:../../chapters/07-10-two-port-networks.md#Th_07-10.k rtol=1e-4
+
+V1  a 0 AC 1
+Cm  a 0 4.3316489p
+Lm  a b 4.3316489n
+RL  b 0 20
+
+.control
+ac lin 1 900Meg 900Meg
+let zr = real(1/(-i(V1)))
+print zr
+.endc
+.end

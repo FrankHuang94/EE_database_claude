@@ -20,6 +20,7 @@ Chapter sections 3.1 to 3.7 and Examples 07-11.1 to 07-11.6. You need Python wit
 | [07-11-three-phase.ipynb](07-11-three-phase.ipynb) | The guided notebook (Parts 1 to 4) | Its own `assert`s |
 | [ac_three_phase.cir](ac_three_phase.cir) | AC analyses of a balanced Y load, an unbalanced four-wire load, the same load with the neutral open (the guided exercise), and the two wattmeter readings | Chapter answer key and this handout |
 | [tran_power.cir](tran_power.cir) | A transient simulation showing the balanced load's instantaneous power is constant | Solutions answer key |
+| [p13_p14.cir](p13_p14.cir) | Problems 07-11.13 (negative sequence, two wattmeters) and 07-11.14 (unbalanced Δ load from a Δ source) | Solution answer key |
 
 Run the netlists from the repository root:
 

@@ -1,12 +1,12 @@
 # Course 07 · Final Exam (Circuit Analysis II, Transient and AC)
 
-**Time limit:** 210 minutes.
+**Time limit:** 240 minutes.
 **Allowed:** a scientific calculator, and the [Course 07 equation sheet](../../../reference/equation-sheets/07-circuit-analysis-2-transient-and-ac.md) printed without its chapter links. No notes, no Python, no simulator.
 
 **Instructions.**
 
 - Answer all 15 questions and show every step.
-- Each [A] is worth 5 points, each [B] 8 and each [C] 12: 122 points in total. 85 or more (about 70%) is a strong pass.
+- Each [A] is worth 5 points, each [B] 8 (except Questions 5, 6 and 11, which are longer and carry 10) and each [C] 12: 128 points in total. 90 or more (about 70%) is a strong pass.
 - Within a question the lettered parts carry equal weight, unless the question says otherwise.
 - Questions 5, 13 and 14 ask for short derivations. Show the reasoning, not just the formula.
 - Give numerical answers to 4 significant figures unless told otherwise, with units and signs.
@@ -55,10 +55,9 @@ S has been open for a long time. It closes at $t = 0$ and opens again at $t$ = 4
 (a) Find $\omega_0$, $f_0$, α, ζ and $Q$.
 (b) Find the ringing frequency $\omega_d$ and $f_d$.
 (c) Find the overshoot, the peak capacitor voltage and the time at which it occurs.
-(d) Find the peak current and the time at which it occurs.
-(e) Find the series resistance that makes the circuit critically damped, and the resistance that limits the overshoot to 5%.
+(d) Find the series resistance that makes the circuit critically damped, and the resistance that limits the overshoot to 5%.
 
-**5 [B] · Laplace with initial conditions.** The circuit has these elements:
+**5 [B, 10 points] · Laplace with initial conditions.** The circuit has these elements:
 
 - $v_{in}$, node 1 (+) to node 0;
 - R1, node 1 to node 2, 1 kΩ;
@@ -73,7 +72,7 @@ The input has been 2 V for a long time and steps to 5 V at $t = 0$.
 (d) Find $v_3(t)$ by partial fractions.
 (e) Evaluate $v_3$ at 1 ms and at 2 ms. Check $v_3(0^+)$, $dv_3/dt(0^+)$ and $v_3(\infty)$ with the initial- and final-value theorems.
 
-**6 [B] · Phasors and the conjugate match.** The circuit has these elements:
+**6 [B, 10 points] · Phasors and the conjugate match.** The circuit has these elements:
 
 - $v_s = 10\cos(10^4t)$ V, node 1 (+) to node 0;
 - R1, node 1 to node 2, 20 Ω;
@@ -116,15 +115,14 @@ The input has been 2 V for a long time and steps to 5 V at $t = 0$.
 - the load fraction for maximum efficiency;
 - that maximum efficiency at power factor 0.8.
 
-**11 [B] · A two-port.** A T network has series arms $Z_a$ = 10 Ω (port 1 side) and $Z_b$ = 20 Ω (port 2 side), and a shunt arm $Z_c$ = 100 Ω.
+**11 [B, 10 points] · A two-port.** A T network has series arms $Z_a$ = 10 Ω (port 1 side) and $Z_b$ = 20 Ω (port 2 side), and a shunt arm $Z_c$ = 100 Ω.
 (a) Find its z-parameters from the open-circuit tests. Is it reciprocal? Is it symmetric?
 (b) Convert to ABCD parameters and check $AD - BC$.
 (c) With a 50 Ω load at port 2, find the input impedance and the voltage gain $\mathbf{V}_2/\mathbf{V}_1$.
 (d) In a 50 Ω system, find:
 
 - $S_{11}$, $S_{21}$ and $S_{22}$;
-- the insertion loss, and the return loss at port 1;
-- the fraction of the power incident at port 1 that the network absorbs.
+- the insertion loss, and the return loss at port 1.
 
 Why do $S_{11}$ and $S_{22}$ differ?
 
@@ -145,7 +143,7 @@ Why do $S_{11}$ and $S_{22}$ differ?
 - its $Q$ with the 1 Ω load;
 - the gain from the switch node to the output at $f_0$, in dB.
 
-(b) Find the DC output voltage. Find the amplitude of the 500 kHz fundamental at the output, with the ESR and without it. Which element sets the ripple, and why?
+(b) Find the DC output voltage. Find the amplitude of the 500 kHz fundamental at the output, with the ESR and without it. (A pulse train switching between 0 and $V$ with duty cycle $D$ has an $n$th harmonic of amplitude $(2V/n\pi)\sin(n\pi D)$.) Which element sets the ripple, and why?
 (c) The control loop is frozen, with the switch node held at its average, and the load current steps up by 2 A at $t = 0$. Ignoring the ESR, derive the output deviation $v(t)$, and find its peak and when the peak occurs. Compare the peak with the estimate $\Delta I\cdot Z_0$.
 (d) Find $Q$ and the gain at $f_0$ at a light load of 10 Ω. Explain what this does to the load-step ringing, and name two ways designers damp it.
 
@@ -154,7 +152,6 @@ Why do $S_{11}$ and $S_{22}$ differ?
 (b) Design a low-pass L-section: a series inductor next to the load, and a shunt capacitor across the 50 Ω side. Derive the design equations from the requirement $Z_{in}$ = 50 Ω, showing that $Q = \sqrt{R_{high}/R_{low} - 1}$. Find $L$ and $C$.
 (c) Confirm with ABCD matrices that $Z_{in}$ = 50 Ω at 2.4 GHz.
 (d) Find $\lvert\Gamma\rvert$ and the return loss at 2.2 GHz and at 2.6 GHz. Does the match meet a 10 dB return-loss requirement across 2.2–2.6 GHz?
-(e) Find the mismatch loss at 2.6 GHz with the match, and compare it with (a).
 
 **15 [B] · Diligence: four claims.** For each claim, say in two or three sentences what is wrong or missing, and give the one question you would ask.
 (a) "Our board carries 2,000 µF of decoupling capacitance, so the supply is clean up to 1 GHz."

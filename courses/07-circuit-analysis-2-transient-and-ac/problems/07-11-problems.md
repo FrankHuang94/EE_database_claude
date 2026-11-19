@@ -45,7 +45,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 07-11.9 [B]
 
-**Reading two wattmeters.** On a balanced three-wire load the two wattmeters read −2 kW and 10 kW. Find $P$, $Q$ and the power factor. At what power factor does one reading pass through zero?
+**Reading two wattmeters.** On a balanced three-wire load with positive sequence, wattmeter 1 (current coil in line a, voltage coil from a to b) reads −2 kW and wattmeter 2 (line c, voltage from c to b) reads 10 kW. Find $P$, $Q$ and the power factor. At what power factor does one reading pass through zero?
 
 ### Problem 07-11.10 [B]
 
@@ -59,15 +59,23 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Distribution voltage and cable loss.** A 17.3 kW rack (unity power factor) is fed through 30 m of three-phase cable whose conductors each have 2 mΩ/m. (a) Find the cable loss at 415 V and at 208 V. (b) Recompute the four rows of the vendor table discussed in §9 (three-phase 208 V at 30 A continuous, three-phase 208 V at 60 A full, three-phase 415 V at 30 A full, single-phase 208 V at 30 A full) and say which of the vendor's figures are wrong.
 
+### Problem 07-11.13 [B]
+
+**Negative sequence.** A balanced Y load of $8 + j6$ Ω per phase is connected to a 400 V supply whose sequence is negative (acb). Take $\mathbf{V}_{an}$ at 0°. (a) Find $\mathbf{V}_{ab}$ and $\mathbf{I}_a$. (b) Find the two wattmeter readings (current coils in lines a and c, voltage coils to b), their sum, and $\sqrt3(W_2 - W_1)$. (c) Compare with the load's actual $Q$ and with the readings for positive sequence. What goes wrong if the sequence is assumed rather than checked?
+
+### Problem 07-11.14 [B]
+
+**An unbalanced Δ load from a Δ source.** A Δ-connected generator supplies 400 V line voltages with positive sequence ($\mathbf{V}_{ab} = 400\angle0°$ V). The Δ load has $Z_{ab}$ = 100 Ω, $Z_{bc}$ = j100 Ω and $Z_{ca}$ = −j100 Ω. (a) Find the three phase currents and the three line currents. (b) Find the total real and reactive power. (c) Find the equivalent Y source voltage $\mathbf{V}_{an}$ that a per-phase model of this generator would use.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 07-11) | Problems |
 |---|---|
-| 1. Sources, sequence, line and phase quantities | 1, 2 |
+| 1. Sources, sequence, line and phase quantities | 1, 2, 13, 14 |
 | 2. Balanced Y and Δ loads; per-phase analysis | 3, 4, 5, 6 |
 | 3. Power, constant instantaneous power, PF correction | 4, 5, 10, 11 |
-| 4. Unbalanced loads, neutral current, triplens | 7, 8 |
-| 5. Two-wattmeter method | 9 |
+| 4. Unbalanced loads, neutral current, triplens | 7, 8, 14 |
+| 5. Two-wattmeter method | 9, 13 |
 | 6. Standard voltages and data-center practice | 1, 12 |

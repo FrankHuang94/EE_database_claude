@@ -128,7 +128,7 @@ The building blocks, each found from the definitions:
 |---|---|
 | Series impedance $Z$ | $\begin{bmatrix}1 & Z\\0 & 1\end{bmatrix}$ |
 | Shunt admittance $Y$ | $\begin{bmatrix}1 & 0\\Y & 1\end{bmatrix}$ |
-| Ideal transformer $N_1{:}N_2$, $n = N_1/N_2$ | $\begin{bmatrix}n & 0\\0 & 1/n\end{bmatrix}$ |
+| Ideal transformer $N_1{:}N_2$, $n = N_1/N_2$, both dots at the upper terminals | $\begin{bmatrix}n & 0\\0 & 1/n\end{bmatrix}$ (with one dot reversed, $n \to -n$) |
 
 For the series impedance: the same current flows through, $\mathbf{I}_1 = -\mathbf{I}_2$, so $C = 0$ and $D = 1$; and $\mathbf{V}_1 = \mathbf{V}_2 + Z(-\mathbf{I}_2)$, so $A = 1$ and $B = Z$. The ideal transformer's entries are 07-09's relations $\mathbf{V}_1 = n\mathbf{V}_2$ and $\mathbf{I}_1 = (1/n)(-\mathbf{I}_2)$. The open-circuit voltage gain of any two-port is $\mathbf{V}_2/\mathbf{V}_1\big|_{\mathbf{I}_2 = 0} = 1/A$.
 
@@ -156,10 +156,17 @@ The same method gives the other conversions. The ones used most:
 | h | $h_{11} = \Delta_z/z_{22}$, $h_{12} = z_{12}/z_{22}$, $h_{21} = -z_{21}/z_{22}$, $h_{22} = 1/z_{22}$ |
 | ABCD | $A = z_{11}/z_{21}$, $B = \Delta_z/z_{21}$, $C = 1/z_{21}$, $D = z_{22}/z_{21}$ |
 
+| From h | Formula |
+|---|---|
+| y | $y_{11} = 1/h_{11}$, $y_{12} = -h_{12}/h_{11}$, $y_{21} = h_{21}/h_{11}$, $y_{22} = \Delta_h/h_{11}$ |
+| z | $z_{11} = \Delta_h/h_{22}$, $z_{12} = h_{12}/h_{22}$, $z_{21} = -h_{21}/h_{22}$, $z_{22} = 1/h_{22}$ |
+
+with $\Delta_h = h_{11}h_{22} - h_{12}h_{21}$. To derive the y row, solve the first h equation for $\mathbf{I}_1 = (\mathbf{V}_1 - h_{12}\mathbf{V}_2)/h_{11}$ and substitute it into the second. For the z row, solve the second for $\mathbf{V}_2 = (\mathbf{I}_2 - h_{21}\mathbf{I}_1)/h_{22}$ and substitute it into the first.
+
 **When a set does not exist.** A set exists only if its defining tests make sense:
 
-- A **series impedance** has no z-parameters. With both ports open no current can flow, so the open-circuit voltages are not determined; algebraically, its z-matrix would be singular.
-- A **shunt admittance** has no y-parameters, for the dual reason.
+- A **series impedance** has no z-parameters. The z test forces currents with the other port open, but with both ports open no current can flow, so the port voltages are not determined (only their difference is). Algebraically, its y-matrix $\begin{bmatrix}1/Z & -1/Z\\-1/Z & 1/Z\end{bmatrix}$ has determinant zero, so $\mathbf{z} = \mathbf{y}^{-1}$ does not exist.
+- A **shunt admittance** has no y-parameters, for the dual reason: its port voltages are always equal, so one cannot be set while the other is held at zero, and its z-matrix $\begin{bmatrix}1/Y & 1/Y\\1/Y & 1/Y\end{bmatrix}$ is singular.
 - An **ideal transformer** has neither: with one port open, no current flows in either winding; with one port shorted, the other is shorted too. It does have h- and ABCD parameters.
 - A network with $z_{21} = 0$, one with no forward transmission at all, has no ABCD parameters.
 
@@ -173,7 +180,7 @@ $$
 
 The last follows from the conversion table: $AD - BC = (z_{11}z_{22} - \Delta_z)/z_{21}^2 = z_{12}/z_{21}$. Dependent sources (transistors, op-amps) generally break reciprocity: an amplifier passes signals forward far better than backward. Networks with magnetized ferrites (isolators, circulators) are also non-reciprocal. A reciprocal two-port is described by only three independent numbers.
 
-**Symmetry.** A network that looks the same from either port has $z_{11} = z_{22}$, or equivalently $A = D$. The T network of Example 07-10.1 is reciprocal but not symmetric.
+**Symmetry.** A network that looks the same from either port has $z_{11} = z_{22}$, or equivalently $y_{11} = y_{22}$, $A = D$, or $\Delta_h = 1$ (from the conversion table, $\Delta_h = z_{11}/z_{22}$). The T network of Example 07-10.1 is reciprocal but not symmetric.
 
 **Interconnections.** For two two-ports $N_a$ and $N_b$:
 
@@ -244,9 +251,32 @@ $$
 S_{11} = \frac{A + B/Z_0 - CZ_0 - D}{\Delta}, \quad S_{21} = \frac{2}{\Delta}, \quad S_{12} = \frac{2(AD - BC)}{\Delta}, \quad S_{22} = \frac{-A + B/Z_0 - CZ_0 + D}{\Delta} .
 $$
 
-Check with the series impedance ($A = D = 1$, $B = Z$, $C = 0$): $\Delta = 2 + Z/Z_0$ and $S_{21} = 2Z_0/(2Z_0 + Z)$ ✓. Vector network analyzers measure S-parameters directly, and circuit simulators exchange them as Touchstone files (§9).
+The first two follow from §3.8. With port 2 terminated in $Z_0$, $Z_{in} = (AZ_0 + B)/(CZ_0 + D)$, and $S_{11} = (Z_{in} - Z_0)/(Z_{in} + Z_0)$; multiplying through by $(CZ_0 + D)/Z_0$ gives the formula above. For $S_{21}$, drive port 1 from a source $2\mathbf{V}$ behind $Z_0$, which makes the incident wave $\mathbf{V}$. Then $\mathbf{V}_2 = \mathbf{V}_1Z_0/(AZ_0 + B)$ with $\mathbf{V}_1 = 2\mathbf{V}Z_{in}/(Z_{in} + Z_0)$, and $S_{21} = \mathbf{V}_2/\mathbf{V}$ simplifies to $2/\Delta$. $S_{22}$ and $S_{12}$ follow by viewing the network from port 2, which swaps $A$ and $D$ (and turns $AD - BC$ into the reverse transmission). Check with the series impedance ($A = D = 1$, $B = Z$, $C = 0$): $\Delta = 2 + Z/Z_0$ and $S_{21} = 2Z_0/(2Z_0 + Z)$ ✓. Vector network analyzers measure S-parameters directly, and circuit simulators exchange them as Touchstone files (§9).
 
 > **Going deeper — why waves.** At high frequency a "voltage at a port" depends on where along the connecting line you measure it, because the line is a significant fraction of a wavelength ([13-07](../../13-electromagnetics/chapters/13-07-transmission-lines-time-domain.md)). The waves $a$ and $b$ travel along a line of characteristic impedance $Z_0$ unchanged except for delay, so S-parameters measured at one reference plane can be moved to another by multiplying by phase factors ("de-embedding"). That is why they are the language of RF and high-speed digital design.
+
+### 3.10 Matching, mismatch loss and VSWR
+
+**Mismatch.** A load $Z_L$ on a source of resistance $Z_0$ (or on a $Z_0$ line) reflects a fraction $\Gamma = (Z_L - Z_0)/(Z_L + Z_0)$ of the incident wave. The incident power is the source's available power, and a fraction $\lvert\Gamma\rvert^2$ of it returns, so the load receives $1 - \lvert\Gamma\rvert^2$ of the available power. Three numbers describe the same fact:
+
+- **return loss** $= -20\lg\lvert\Gamma\rvert$ (§3.9);
+- **mismatch loss** $= -10\lg(1 - \lvert\Gamma\rvert^2)$, the dB shortfall in delivered power;
+- **voltage standing-wave ratio** $\text{VSWR} = (1 + \lvert\Gamma\rvert)/(1 - \lvert\Gamma\rvert)$. On a transmission line, incident and reflected waves add in phase at some points and in antiphase at others, so the voltage amplitude swings between $1 + \lvert\Gamma\rvert$ and $1 - \lvert\Gamma\rvert$ times the incident one; VSWR is their ratio ([13-07](../../13-electromagnetics/chapters/13-07-transmission-lines-time-domain.md)). For a resistive load, $\text{VSWR} = R_{high}/R_{low}$.
+
+A 20 Ω load on 50 Ω has $\Gamma$ = **−0.4286**, a return loss of **7.360 dB**, a VSWR of **2.5**, and receives **81.63%** of the available power: a mismatch loss of **0.8814 dB**.
+
+**The L-section match.** Two lossless reactances can transform any resistance $R_{low}$ to a larger $R_{high}$ at one frequency: a series reactance $X$ next to $R_{low}$, then a shunt susceptance $B$ across the $R_{high}$ side. Seen from the $R_{high}$ side,
+
+$$
+Y_{in} = jB + \frac{1}{R_{low} + jX} = jB + \frac{R_{low} - jX}{R_{low}^2 + X^2} .
+$$
+
+Setting $Y_{in} = 1/R_{high}$:
+
+- The real part requires $R_{low}/(R_{low}^2 + X^2) = 1/R_{high}$, so $X^2 = R_{low}(R_{high} - R_{low})$, that is $X = QR_{low}$ with $Q = \sqrt{R_{high}/R_{low} - 1}$.
+- The imaginary part requires $B = X/(R_{low}^2 + X^2) = X/(R_{low}R_{high}) = Q/R_{high}$, so the shunt reactance is $R_{high}/Q$.
+
+$Q$ is set by the impedance ratio alone. A larger ratio means a higher $Q$ and so a narrower match, because a resonant transformation is only exact at one frequency. Either sign works: a series inductor with a shunt capacitor makes a low-pass match, and a series capacitor with a shunt inductor a high-pass one. Matching 20 Ω to 50 Ω at 900 MHz needs $Q = \sqrt{1.5}$ = **1.225**. The series reactance is **24.49 Ω**, an inductor of **4.332 nH**, and the shunt reactance is **40.82 Ω**, a capacitor of **4.332 pF**, giving $Z_{in}$ = **50 Ω** at 900 MHz. Problem 07-10.7 checks such a design with ABCD matrices.
 
 ## 4. Worked examples
 
@@ -345,6 +375,17 @@ At $\omega RC = 1$ ($f$ = **1.592 kHz**), $\mathbf{T} = \begin{bmatrix}1 + j & R
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
+| Th 07-10.a | Γ, 20 Ω on 50 Ω | −0.4286 | — |
+| Th 07-10.b | its return loss | 7.360 | dB |
+| Th 07-10.c | its VSWR | 2.5 | — |
+| Th 07-10.d | fraction of available power delivered | 81.63 | % |
+| Th 07-10.e | mismatch loss | 0.8814 | dB |
+| Th 07-10.f | L-section Q, 20 Ω to 50 Ω | 1.225 | — |
+| Th 07-10.g | series reactance | 24.49 | Ω |
+| Th 07-10.h | series inductance at 900 MHz | 4.332 | nH |
+| Th 07-10.i | shunt reactance | 40.82 | Ω |
+| Th 07-10.j | shunt capacitance at 900 MHz | 4.332 | pF |
+| Th 07-10.k | input impedance of the match | 50 | Ω |
 | Ex 07-10.1a | $\Delta_z$ | 1100 | Ω² |
 | Ex 07-10.1b | $y_{11}$ | 0.04545 | S |
 | Ex 07-10.1c | $y_{12}$ | −0.02727 | S |
@@ -405,7 +446,7 @@ The lab is in [labs/07-10-lab](../labs/07-10-lab/README.md).
    - converts between all the sets;
    - cascades ABCD matrices to build a filter;
    - computes S-parameters and checks reciprocity and losslessness.
-2. **ngspice netlists** measure Example 07-10.1's parameters with open- and short-circuited ports, Example 07-10.3's loading, and Example 07-10.6's S-parameters in 50 Ω; `python tools/run_spice.py 07-10` checks them.
+2. **ngspice netlists** measure Example 07-10.1's y-parameters with short-circuited ports, Example 07-10.3's loading, and Example 07-10.6's S-parameters in 50 Ω; `python tools/run_spice.py 07-10` checks them.
 
 **Guided exercise (predict, then run).** In the S-parameter netlist, change the shunt capacitor's frequency from 1 GHz to 10 GHz. **Before running,** predict $\lvert S_{21}\rvert$ and $\lvert S_{11}\rvert$. Hint: $YZ_0$ becomes $j3.142$; use the formulas of Example 07-10.6.
 
@@ -491,10 +532,11 @@ The lab is in [labs/07-10-lab](../labs/07-10-lab/README.md).
 | PL 07-10.k | PCIe 6.0 budget sum | 32.0 | dB |
 | PL 07-10.l | PCB length for 15.5 dB | 15.5 | in |
 | PL 07-10.m | cable length for 15.5 dB | 83 | in |
+| PL 07-10.n | board-to-cable loss ratio per inch | 5.3 | — |
 
 ### Why it matters commercially
 
-- **Channel loss budgets create product categories.** When a link's channel exceeds its budget, designers add retimers, redrivers or active cables, or move from board traces to cables (5–10× lower loss per inch at 16 GHz, by the PCI-SIG figures above). Each step of the per-lane data rate halves the time per symbol and raises the Nyquist frequency, so loss budgets tighten and these products' markets grow.
+- **Channel loss budgets create product categories.** When a link's channel exceeds its budget, designers add retimers, redrivers or active cables, or move from board traces to cables (about **5.3×** lower loss per inch at 16 GHz, 1 against 0.1875 dB/in, by the PCI-SIG figures above). Each step of the per-lane data rate halves the time per symbol and raises the Nyquist frequency, so loss budgets tighten and these products' markets grow.
 - **S-parameters are the currency of interoperability.** Package, connector, cable and board vendors exchange Touchstone files ([R-139](../../../reference/research-log.md#r-139--s-parameter-definitions-and-passivity)), and compliance tests are defined on them.
 - **Test equipment tracks the standards.** Each new lane rate pushes analyzer bandwidth and dynamic range; a 200 Gb/s-per-lane design needs characterization well beyond 53 GHz.
 
@@ -536,7 +578,7 @@ $\mathbf{I}_1$ and $\mathbf{V}_2$. The base is driven by a current and the colle
 <details>
 <summary>Answer</summary>
 
-With both ports open no current can flow through it, so the open-circuit voltages are not determined by the currents; its z-matrix would be singular (§3.6).
+With both ports open no current can flow through it, so the open-circuit voltages are not determined by the currents; its y-matrix is singular, so $\mathbf{z} = \mathbf{y}^{-1}$ does not exist (§3.6).
 
 </details>
 
@@ -598,7 +640,10 @@ Problem set: [07-10 problems](../problems/07-10-problems.md) · Solutions: [07-1
 [S-parameters](../../../reference/glossary.md#s-parameters) ·
 [Reflection coefficient](../../../reference/glossary.md#reflection-coefficient) ·
 [Insertion loss](../../../reference/glossary.md#insertion-loss) ·
-[Return loss](../../../reference/glossary.md#return-loss)
+[Return loss](../../../reference/glossary.md#return-loss) ·
+[Mismatch loss](../../../reference/glossary.md#mismatch-loss) ·
+[Voltage standing-wave ratio (VSWR)](../../../reference/glossary.md#voltage-standing-wave-ratio-vswr) ·
+[L-section match](../../../reference/glossary.md#l-section-match)
 
 ## 12. Connections
 

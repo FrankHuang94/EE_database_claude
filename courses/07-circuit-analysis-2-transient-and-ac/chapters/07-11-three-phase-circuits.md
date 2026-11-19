@@ -29,11 +29,11 @@ Almost all electric power is generated, transmitted and distributed as **three-p
 
 ## 2. Intuition first
 
-**Three people pushing a merry-go-round.** One person pushing in pulses gives a jerky ride. Three people spaced evenly around the ride, each pushing in turn with a sinusoidal effort, give a smooth one: as one person's push fades, the next one's grows. Three-phase power is the same: each phase's power pulses at twice the line frequency, but the three pulses are spaced so that their sum is constant (§3.5). A generator driven by a steady turbine sees a steady load torque; a motor delivers smooth torque.
+**Three people pushing a merry-go-round.** One person pushing in pulses gives a jerky ride. Three people spaced evenly around the ride, each pushing in turn with a sinusoidal effort, give a smooth one: as one person's push fades, the next one's grows. Three-phase power is the same: each phase's power pulses at twice the line frequency, but the three pulses are spaced so that their sum is constant (§3.4). A generator driven by a steady turbine sees a steady load torque; a motor delivers smooth torque.
 
 **Why the currents cancel.** Three equal phasors 120° apart form a closed triangle: they sum to zero. So with a balanced load the three line currents also sum to zero, and the return (neutral) conductor carries nothing. Three wires can carry three circuits' worth of power with no return wire at all.
 
-**An analogy from finance.** A balanced three-phase system is like a portfolio of three assets whose returns are perfectly offsetting: each fluctuates, but the total is constant. *Where the analogy breaks:* the cancellation here is exact and engineered (120° by construction of the generator), not statistical; and unbalance or harmonics break it in specific, predictable ways (§3.6), such as triplen harmonics that *add* rather than cancel in the neutral.
+**An analogy from finance.** A balanced three-phase system is like a portfolio of three assets whose returns are perfectly offsetting: each fluctuates, but the total is constant. *Where the analogy breaks:* the cancellation here is exact and engineered (120° by construction of the generator), not statistical; and unbalance or harmonics break it in specific, predictable ways (§3.5), such as triplen harmonics that *add* rather than cancel in the neutral.
 
 ## 3. Theory
 
@@ -45,7 +45,7 @@ $$
 \mathbf{V}_{an} = V_p\angle0°, \qquad \mathbf{V}_{bn} = V_p\angle{-120°}, \qquad \mathbf{V}_{cn} = V_p\angle{+120°} .
 $$
 
-(Three-phase practice quotes RMS phasors, so this chapter does too.) Figure 1 shows the three phase voltages and the line voltages formed from them. Let $\alpha = 1\angle{-120°}$. Then the three are $V_p(1, \alpha, \alpha^2)$, and since $1 + \alpha + \alpha^2 = 0$ (three unit vectors 120° apart close a triangle; algebraically, the sum of the cube roots of unity),
+(Three-phase practice quotes RMS phasors, so this chapter does too. Every phasor in it is RMS, written without the $_{rms}$ subscript that the [notation file](../../../reference/notation.md) otherwise asks for.) Figure 1 shows the three phase voltages and the line voltages formed from them. Let $\alpha = 1\angle{-120°}$. Then the three are $V_p(1, \alpha, \alpha^2)$, and since $1 + \alpha + \alpha^2 = 0$ (three unit vectors 120° apart close a triangle; algebraically, the sum of the cube roots of unity),
 
 $$
 \mathbf{V}_{an} + \mathbf{V}_{bn} + \mathbf{V}_{cn} = 0 .
@@ -62,7 +62,8 @@ So **line-to-line voltage is $\sqrt3$ times the line-to-neutral voltage, leading
 ![Phase and line voltage phasors of a Y system](../../../assets/figures/07-11/y-phasors.svg)
 
 *Figure 1. Phase voltages (blue) 120° apart, and line voltages (orange), each $\sqrt3$ times longer and leading by 30°.*
- A 230 V phase voltage gives 398 V between lines, which is why European systems are labeled 230/400 V; 120 V gives 208 V (120/208 V), and 277 V gives 480 V (277/480 V).
+
+A 230 V phase voltage gives 398 V between lines, which is why European systems are labeled 230/400 V; 120 V gives 208 V (120/208 V), and 277 V gives 480 V (277/480 V).
 
 In a **Δ (delta)** connection the sources are connected end to end in a loop; each source sits between two lines, so the line voltage *is* the source voltage, and there is no neutral.
 
@@ -86,7 +87,7 @@ $$
 Z_Y = \frac{Z_\Delta}{3},
 $$
 
-the balanced case of the Y–Δ transformation of 06-03 (each Y arm is the product of two adjacent Δ impedances over their sum, $Z_\Delta^2/3Z_\Delta$). So a Δ load is converted to Y and analyzed per phase like any other (Example 07-11.2).
+the balanced case of the Y–Δ transformation of 06-03 (each Y arm is the product of the two adjacent Δ impedances over the sum of all three, $Z_\Delta^2/3Z_\Delta$). So a Δ load is converted to Y and analyzed per phase like any other (Example 07-11.2).
 
 ### 3.4 Three-phase power
 
@@ -121,23 +122,49 @@ constant in time (Figure 2). A single-phase load's power swings between $P(1 \pm
 
 ### 3.5 Unbalanced loads and the neutral
 
-Real four-wire loads are rarely balanced: a building's single-phase loads are spread over the three phases as evenly as practical. With the neutral connected, each phase still sees its own phase voltage, the line currents are computed one phase at a time, and the neutral carries their phasor sum, which is no longer zero (Example 07-11.4). If the neutral were broken, the load's star point would float to a voltage that rebalances the currents, and the phase voltages across lightly loaded phases would rise, which can damage equipment.
+Real four-wire loads are rarely balanced: a building's single-phase loads are spread over the three phases as evenly as practical. With the neutral connected, each phase still sees its own phase voltage, the line currents are computed one phase at a time, and the neutral carries their phasor sum, which is no longer zero (Example 07-11.4). **A floating star point.** If the neutral is broken, or a three-wire Y load is unbalanced, the load's star point N floats. Measure all voltages from the source neutral. KCL at N, $\sum_k(\mathbf{V}_k - \mathbf{V}_N)Y_k = 0$, gives **Millman's theorem**:
+
+$$
+\mathbf{V}_N = \frac{\mathbf{V}_aY_a + \mathbf{V}_bY_b + \mathbf{V}_cY_c}{Y_a + Y_b + Y_c} ,
+$$
+
+and each load sees $\mathbf{V}_k - \mathbf{V}_N$. The star point moves toward the most heavily loaded phase, the one with the largest admittance. The currents are forced to sum to zero but stay unequal, and the voltage across the lightly loaded phases rises, possibly far above their rating: a broken neutral can destroy equipment (Example 07-11.7).
+
+**Unbalanced Δ loads** are simpler, because each impedance sits directly across a line voltage: $\mathbf{I}_{ab} = \mathbf{V}_{ab}/Z_{ab}$, and so on. The line currents follow by KCL at each corner: $\mathbf{I}_a = \mathbf{I}_{ab} - \mathbf{I}_{ca}$, $\mathbf{I}_b = \mathbf{I}_{bc} - \mathbf{I}_{ab}$ and $\mathbf{I}_c = \mathbf{I}_{ca} - \mathbf{I}_{bc}$ (Problem 07-11.14).
 
 **Triplen harmonics.** Nonlinear loads such as switch-mode supplies draw harmonic currents (07-06). The third harmonic of phase $b$ is shifted by $3\times(-120°) = -360°$, the same as phase $a$'s; so are the third harmonics of phase $c$ and all harmonics of order $3k$ (the "triplens"). Instead of cancelling, they **add** in the neutral: with a third-harmonic current $I_3$ in each phase, the neutral carries $3I_3$. In buildings full of single-phase switch-mode loads, such as offices and data halls, the neutral can carry more current than any phase conductor, which is why their neutrals are oversized or why they use supplies with power-factor correction (07-06).
 
 ### 3.6 Measuring three-phase power
 
-Any three-wire system's power can be measured with **two wattmeters**: wattmeter 1 measures line $a$'s current and the voltage from $a$ to $b$... more precisely, the two current coils go in lines $a$ and $c$, and both voltage coils return to line $b$. Then $W_1 + W_2 = \operatorname{Re}(\mathbf{V}_{ab}\mathbf{I}_a^* + \mathbf{V}_{cb}\mathbf{I}_c^*)$, which equals the total power because $\mathbf{I}_b = -(\mathbf{I}_a + \mathbf{I}_c)$ (KCL, no neutral):
+Any three-wire system's power can be measured with **two wattmeters**. Their current coils go in lines $a$ and $c$, and both voltage coils return to line $b$, so wattmeter 1 reads $\operatorname{Re}(\mathbf{V}_{ab}\mathbf{I}_a^*)$ and wattmeter 2 reads $\operatorname{Re}(\mathbf{V}_{cb}\mathbf{I}_c^*)$. Then $W_1 + W_2 = \operatorname{Re}(\mathbf{V}_{ab}\mathbf{I}_a^* + \mathbf{V}_{cb}\mathbf{I}_c^*)$, which equals the total power because $\mathbf{I}_b = -(\mathbf{I}_a + \mathbf{I}_c)$ (KCL, no neutral):
 
 $$
 P_{total} = \operatorname{Re}(\mathbf{V}_{an}\mathbf{I}_a^* + \mathbf{V}_{bn}\mathbf{I}_b^* + \mathbf{V}_{cn}\mathbf{I}_c^*) = \operatorname{Re}\big((\mathbf{V}_{an} - \mathbf{V}_{bn})\mathbf{I}_a^* + (\mathbf{V}_{cn} - \mathbf{V}_{bn})\mathbf{I}_c^*\big) = W_1 + W_2 .
 $$
 
-This holds for balanced or unbalanced loads, Y or Δ. For a balanced load with impedance angle θ, $W_1 = V_LI_L\cos(30° + \theta)$ and $W_2 = V_LI_L\cos(30° - \theta)$, so the readings also give the reactive power, $Q = \sqrt3(W_2 - W_1)$. At power factor 0.5 one reading falls to zero; below it, that reading goes negative.
+This holds for balanced or unbalanced loads, Y or Δ.
+
+**A balanced load.** Take positive sequence and $\mathbf{V}_{an}$ at 0°, with impedance angle θ (the per-phase Y equivalent's, for a Δ load too). Then:
+
+- $\mathbf{V}_{ab} = V_L\angle30°$ and $\mathbf{I}_a = I_L\angle{-\theta}$, so $W_1 = V_LI_L\cos(30° + \theta)$;
+- $\mathbf{V}_{cb} = -\mathbf{V}_{bc} = V_L\angle90°$ and $\mathbf{I}_c = I_L\angle(120° - \theta)$, so $W_2 = V_LI_L\cos(90° - 120° + \theta) = V_LI_L\cos(30° - \theta)$.
+
+Their sum is $V_LI_L[\cos(30° + \theta) + \cos(30° - \theta)] = 2V_LI_L\cos30°\cos\theta = \sqrt3V_LI_L\cos\theta = P$ ✓. Their difference is $W_2 - W_1 = 2V_LI_L\sin30°\sin\theta = V_LI_L\sin\theta$, so the readings also give the reactive power, $Q = \sqrt3(W_2 - W_1)$. With negative sequence (§3.8) the two readings swap, and the same formula returns $-Q$: the sequence must be known before the sign of $Q$ can be trusted. At power factor 0.5 one reading falls to zero; below it, that reading goes negative.
 
 ### 3.7 Power-factor correction in three phases
 
 The total corrective reactive power is found as in 07-06, $Q_C = P(\tan\theta_1 - \tan\theta_2)$, and split equally over three capacitors. Connected in **Δ**, each sees the line voltage; in **Y**, the phase voltage, $\sqrt3$ times smaller. Since $Q = \omega CV^2$, a Y-connected capacitor needs **three times** the capacitance of a Δ-connected one for the same reactive power, at a lower voltage rating. Δ capacitors are smaller but must withstand the full line voltage (Example 07-11.6).
+
+### 3.8 Phase sequence, Δ-connected sources and transformer phase shifts
+
+**Phase sequence.** The order in which the phases reach their peaks is the **sequence**. Positive (abc) sequence, used throughout this chapter, has $\mathbf{V}_{bn}$ lagging $\mathbf{V}_{an}$ by 120°. In **negative (acb) sequence**, $\mathbf{V}_{bn} = V_p\angle{+120°}$ and $\mathbf{V}_{cn} = V_p\angle{-120°}$. Then $\mathbf{V}_{ab} = \sqrt3\mathbf{V}_{an}\angle{-30°}$: the line voltages *lag* the phase voltages by 30°. Swapping any two supply wires reverses the sequence. That reverses an induction motor's rotation and swaps the two wattmeter readings (§3.6). Installers check it with a phase-sequence meter before connecting motors.
+
+**Δ-connected sources.** A generator or transformer secondary may have its three windings connected in Δ, each directly between two lines. There is no neutral, and the winding voltages *are* the line voltages. For per-phase analysis, replace the Δ by the equivalent Y source with the same line voltages: in positive sequence, $\mathbf{V}_{an} = (\mathbf{V}_{ab}/\sqrt3)\angle{-30°}$, the inverse of §3.1's relation. Balanced Δ windings sum to zero around their loop, so no current circulates in them. Any imbalance between them drives a circulating current, limited only by the windings' small impedance.
+
+**The Y–Δ transformer's 30° shift.** In a three-phase transformer with a Δ primary and a Y secondary, each primary winding sits across a line voltage. The secondary winding on the same core leg produces a voltage in phase with it (07-09's ideal transformer) and, connected in Y, that voltage becomes a secondary *phase* voltage. So the secondary phase voltages line up with the primary *line* voltages, which are 30° away from the primary phase voltages: **a Δ–Y transformer shifts the voltages by 30°**, leading or lagging depending on how the windings are connected. Standard vector-group names encode the shift as a clock position in 30° steps (IEC 60076-1). Two practical consequences follow:
+
+- transformers can be paralleled only if their shifts match;
+- feeding two six-pulse rectifiers from a Y–Y and a Δ–Y transformer gives two sets of currents 30° apart, whose 5th and 7th harmonics cancel: the twelve-pulse rectifier of power electronics (Course 22).
 
 ## 4. Worked examples
 
@@ -157,7 +184,7 @@ The total corrective reactive power is found as in 07-06, $Q_C = P(\tan\theta_1 
 **Solution.** Each impedance now sees 400 V: $I_p = 400/10$ = **40.00 A**, and the line current is $I_L = \sqrt3\times40$ = **69.28 A**. Taking $\mathbf{V}_{an}$ at 0°, $\mathbf{V}_{AB}$ is at 30°, so the phase current $\mathbf{I}_{AB} = \mathbf{V}_{AB}/Z_\Delta$ is at $30° - 36.87° = -6.87°$, and the line current lags it by 30°, at −36.87°: in phase with Example 07-11.1's current, and **−66.87°** from $\mathbf{V}_{AB}$. Total power $3\times40^2\times8$ = **38.40 kW**, three times the Y connection's. The equivalent Y is $Z_\Delta/3 = 2.667 + j2$ Ω, which draws $230.9/3.333$ = 69.28 A ✓.
 
 **Units check.** A² × Ω = W ✓.
-**Sanity check.** Each Δ impedance sees $\sqrt3$ times the voltage of a Y impedance, so it draws $\sqrt3$ times the current and $3$ times the power. Reconnecting a motor's windings from Y to Δ is in fact how "star–delta" starters limit the starting current to a third.
+**Sanity check.** Each Δ impedance sees $\sqrt3$ times the voltage of a Y impedance, so it draws $\sqrt3$ times the current and $3$ times the power. This is why "star–delta" starters start a motor with its windings in Y, drawing a third of the Δ current, and switch them to Δ once the motor is up to speed.
 
 ### Example 07-11.3 · Line impedance and voltage drop (tier B)
 
@@ -211,9 +238,38 @@ The total corrective reactive power is found as in 07-06, $Q_C = P(\tan\theta_1 
 **Units check.** var/(rad/s × V²) = F ✓.
 **Sanity check.** The readings are unequal because the load is reactive; at unity power factor both would equal $P/2$.
 
+### Example 07-11.7 · A broken neutral (tier B)
+
+**Setup.** Example 07-11.4's resistive loads, 10 Ω on phase a, 20 Ω on phase b and 40 Ω on phase c, are fed from a 230/400 V positive-sequence supply, but the neutral wire breaks. Find the star-point voltage, each load's voltage and each line current, and compare with the intact neutral.
+
+**Solution.** The admittances are 0.1, 0.05 and 0.025 S, summing to 0.175 S. With $\mathbf{V}_{an}$ at 0°, Millman's theorem gives
+
+$$
+\mathbf{V}_N = \frac{230(0.1) + 230\angle{-120°}(0.05) + 230\angle{120°}(0.025)}{0.175} = 82.14 - j28.45\ \text{V} = \textbf{86.93 V ∠ −19.11°} .
+$$
+
+The load voltages are $\mathbf{V}_k - \mathbf{V}_N$:
+
+- phase a: **150.6 V** at 10.89°;
+- phase b: **260.8 V** at −139.11°;
+- phase c: **301.1 V** at 130.89°.
+
+The line currents are therefore **15.06 A**, **13.04 A** and **7.529 A**. With the neutral intact, every load had 230 V. Now the heavily loaded phase drops to 150.6 V, and the lightly loaded phase c rises to 301.1 V, 31% above its rating. Equipment on phase c can fail, which is why electricians treat a broken or high-resistance neutral as a hazard.
+
+**Units check.** V·S / S = V ✓.
+**Sanity check.** The three currents must sum to zero with no neutral: $\sum(\mathbf{V}_k - \mathbf{V}_N)Y_k = 0$ is exactly Millman's condition ✓. The lab's netlist (neutral open) reproduces all four voltages ✓.
+
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
+| Ex 07-11.7a | star-point displacement | 86.93 | V |
+| Ex 07-11.7b | its angle | −19.11 | ° |
+| Ex 07-11.7c | phase a load voltage | 150.6 | V |
+| Ex 07-11.7d | phase b load voltage | 260.8 | V |
+| Ex 07-11.7e | phase c load voltage | 301.1 | V |
+| Ex 07-11.7f | line current a | 15.06 | A |
+| Ex 07-11.7g | line current b | 13.04 | A |
+| Ex 07-11.7h | line current c | 7.529 | A |
 | Ex 07-11.1a | phase voltage | 230.9 | V |
 | Ex 07-11.1b | line current | 23.09 | A |
 | Ex 07-11.1c | its angle | −36.87 | ° |
@@ -261,7 +317,7 @@ The lab is in [labs/07-11-lab](../labs/07-11-lab/README.md).
    - shows the three phase powers summing to a constant;
    - computes neutral currents for unbalanced and harmonic loads;
    - simulates the two-wattmeter method.
-2. **ngspice netlists** simulate Examples 07-11.1 to 07-11.4 and 07-11.6 in the time domain and with `.ac`, measuring line currents, total power, the neutral current and the wattmeter readings; `python tools/run_spice.py 07-11` checks them.
+2. **ngspice netlists** simulate Examples 07-11.1, 07-11.4, 07-11.6 and 07-11.7 in the time domain and with `.ac`, measuring line currents, total power, the neutral current and the wattmeter readings; `python tools/run_spice.py 07-11` checks them.
 
 **Guided exercise (predict, then run).** In the unbalanced-load netlist, remove the neutral wire. **Before running,** predict which phase's load voltage rises above 230 V. Hint: the star point moves toward the most heavily loaded phase.
 
@@ -284,7 +340,7 @@ The lab is in [labs/07-11-lab](../labs/07-11-lab/README.md).
 | Three-phase power | $P = \sqrt3V_LI_L\cos\theta$ | §3.4 |
 | Copper for the same power and loss | 75% of single phase | §3.4 |
 | Triplen harmonics | add in the neutral: $3I_3$ | §3.5 |
-| Standard low-voltage systems | 230/400 V and 400/690 V (IEC 60038 Ed. 7.0, 2009); 120/208 V and 277/480 V in North America | [R-014](../../../reference/research-log.md#r-014--nominal-mains-voltages), [R-142](../../../reference/research-log.md#r-142--three-phase-distribution-voltages) **[Established]** |
+| Standard low-voltage systems | 230/400 V and 400/690 V (IEC 60038 Ed. 7.0, 2009; consolidated with Amendment 1 as Ed. 7.1, 2021); 120/208 V and 277/480 V in North America | [R-014](../../../reference/research-log.md#r-014--nominal-mains-voltages), [R-142](../../../reference/research-log.md#r-142--three-phase-distribution-voltages) **[Established]** |
 | North American data-center alternative | 240/415 V via an autotransformer instead of a 480–208 V PDU transformer | [R-142](../../../reference/research-log.md#r-142--three-phase-distribution-voltages) **[Industry estimate]** |
 
 <!-- answer-key -->
@@ -307,7 +363,7 @@ The lab is in [labs/07-11-lab](../labs/07-11-lab/README.md).
 
 ### State of the art (as of Nov 2026)
 
-- **Standard voltages** ([R-014](../../../reference/research-log.md#r-014--nominal-mains-voltages), [R-142](../../../reference/research-log.md#r-142--three-phase-distribution-voltages)) **[Established]**. IEC 60038 (edition 7.0, 2009) lists the standard low-voltage AC systems. That edition completed the transition to 230/400 V and 400/690 V and added 230 V (50 Hz) and 230/400 V (60 Hz). The pairs are $\sqrt3$ apart after rounding: 400/√3 = **230.9 V** and 690/√3 = **398.4 V**. North America uses 120/208 V and 277/480 V (480/√3 = **277.1 V**).
+- **Standard voltages** ([R-014](../../../reference/research-log.md#r-014--nominal-mains-voltages), [R-142](../../../reference/research-log.md#r-142--three-phase-distribution-voltages)) **[Established]**. IEC 60038 (edition 7.0, 2009) lists the standard low-voltage AC systems. Its Amendment 1 (2021, consolidated as edition 7.1) added a 30 kV value and replaced 1 050 kV with 1 100 kV in the high-voltage tables, leaving the low-voltage systems unchanged. Edition 7.0 completed the transition to 230/400 V and 400/690 V and added 230 V (50 Hz) and 230/400 V (60 Hz). The pairs are $\sqrt3$ apart after rounding: 400/√3 = **230.9 V** and 690/√3 = **398.4 V**. North America uses 120/208 V and 277/480 V (480/√3 = **277.1 V**).
 - **Data-center distribution in North America** ([R-142](../../../reference/research-log.md#r-142--three-phase-distribution-voltages)) **[Industry estimate]** (vendor white paper).
   - A 2022 Legrand/Server Technology white paper describes the usual path: 277/480 V to the building, stepped down by a power-distribution-unit (PDU) transformer to 208/120 V.
   - The alternative is 240/415 V, obtained with an autotransformer and no PDU transformer. The paper reports UPS makers' claim that eliminating the PDU transformer gains about 2% in efficiency, and a further 0.2–0.3% from running servers at 240 V rather than 208 V (one supply's figures: 92.8% at 208 V, 93.1% at 240 V).
@@ -333,7 +389,7 @@ The lab is in [labs/07-11-lab](../labs/07-11-lab/README.md).
 
 ### Marketing vs Reality
 
-- **A vendor table of rack power by voltage.** The Legrand/Server Technology paper's Table 2 lists three-phase 208 V at 30 A as 10.8 kW for both its full and its 80%-continuous rating. The continuous figure should be **8.6 kW**. It lists 208 V at 60 A as 17.3 kW in both columns, where the full rating is **21.6 kW** **[Contested]** (arithmetic errors in the source). Its 415 V and single-phase rows are correct. *Sanity check:* recompute every row with $\sqrt3V_LI_L$ and the 80% factor.
+- **A vendor table of rack power by voltage.** The Legrand/Server Technology paper's Table 2 lists three-phase 208 V at 30 A as 10.8 kW for both its full and its 80%-continuous rating. The continuous figure should be **8.6 kW**. It lists 208 V at 60 A as 17.3 kW in both columns, where the full rating is **21.6 kW** **[Established]** (our arithmetic; these are errors in the source's table). Its 415 V and single-phase rows checked out when the paper was first read; the course audit could not re-open the PDF to confirm the 415 V columns, so treat them as unconfirmed. *Sanity check:* recompute every row with $\sqrt3V_LI_L$ and the 80% factor.
 - **"2% more efficient at 415 V."** *Reality:* the gain comes from removing a transformer stage and from server supplies running at a better input voltage; it depends on the transformer's loading and the supplies' efficiency curves (07-09 §3.8). *Sanity check:* ask for measured loss at the facility's real load profile.
 - **"Balanced load."** *Reality:* single-phase loads drift out of balance as racks change, and nonlinear loads add triplen currents even when balanced. *Sanity check:* ask for measured neutral current and per-phase loading.
 
@@ -414,6 +470,7 @@ Problem set: [07-11 problems](../problems/07-11-problems.md) · Solutions: [07-1
 
 [Three-phase system](../../../reference/glossary.md#three-phase-system) ·
 [Phase sequence](../../../reference/glossary.md#phase-sequence) ·
+[Millman's theorem](../../../reference/glossary.md#millmans-theorem) ·
 [Line and phase quantities](../../../reference/glossary.md#line-and-phase-quantities) ·
 [Wye (Y) connection](../../../reference/glossary.md#wye-y-connection) ·
 [Delta (Δ) connection](../../../reference/glossary.md#delta-connection) ·
@@ -439,6 +496,6 @@ Problem set: [07-11 problems](../problems/07-11-problems.md) · Solutions: [07-1
 
 ## 14. Sources
 
-1. Research log [R-142](../../../reference/research-log.md#r-142--three-phase-distribution-voltages): IEC 60038:2009 (Ed. 7.0) preview; Legrand/Server Technology, *Power Efficiency Gains by Deploying 415 VAC Power Distribution in Data Centers* (2022); IEEE History Center, "Milestones: Sakuma Frequency Converter Station, 1965" (dedicated 13 Oct 2026).
+1. Research log [R-142](../../../reference/research-log.md#r-142--three-phase-distribution-voltages): IEC 60038:2009 (Ed. 7.0) preview and the IEC Webstore listing of the consolidated Ed. 7.1 (2021, read from search excerpts); Legrand/Server Technology, *Power Efficiency Gains by Deploying 415 VAC Power Distribution in Data Centers* (2022; distributed by trade sites as "…in North American Data Centers"); IEEE History Center, "Milestones: Sakuma Frequency Converter Station, 1965" (dedicated 13 Oct 2026).
 2. Research log [R-014](../../../reference/research-log.md#r-014--nominal-mains-voltages) and [R-006](../../../reference/research-log.md#r-006--power-grid-frequencies) (mains voltages and grid frequencies, Course 00).
 3. Textbook alignment as listed in §13. All text, examples and problems in this chapter are original.

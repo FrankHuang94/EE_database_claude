@@ -69,8 +69,8 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 | Learning objective (chapter 07-09) | Problems |
 |---|---|
-| 1. Coupled-coil equations and the dot convention | 1, 2 |
-| 2. Stored energy and k ≤ 1 | 2, 4 |
+| 1. Coupled-coil equations, the dot convention and series connections | 1, 2 |
+| 2. Stored energy and k ≤ 1 | 4 |
 | 3. Mesh analysis, reflected impedance, T-equivalent | 5, 6, 12 |
 | 4. Ideal transformer and matching | 3, 7 |
 | 5. Equivalent circuit, tests, efficiency, regulation | 8, 9, 11 |

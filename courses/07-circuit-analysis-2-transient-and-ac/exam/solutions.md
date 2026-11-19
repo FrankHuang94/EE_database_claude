@@ -94,13 +94,7 @@ whose derivative is $V(\omega_0^2/\omega_d)e^{-\alpha t}\sin\omega_dt$. The deri
 - The overshoot is $e^{-\pi/3}$ = **35.09%** (the same as $e^{-\pi\zeta/\sqrt{1 - \zeta^2}}$).
 - The peak voltage is $10\times1.3509 = $ **13.51 V**.
 
-(d) $i = C\,dv_C/dt = (V/\omega_dL)e^{-\alpha t}\sin\omega_dt$, because $C\omega_0^2 = 1/L$. Its derivative vanishes where $\tan\omega_dt = \omega_d/\alpha = 3$, at $t = \arctan(3)/\omega_d = 1.2490/30{,}000$ = **41.63 µs**. There:
-
-$$
-i = \frac{10}{30{,}000\times10^{-3}}\,e^{-0.4163}\times\frac{3}{\sqrt{10}} = 0.3333\times0.6595\times0.9487 = \textbf{0.2085 A} .
-$$
-
-(e) Critical damping needs $\zeta = 1$, that is, $R = 2\sqrt{L/C} = $ **63.25 Ω**.
+(d) Critical damping needs $\zeta = 1$, that is, $R = 2\sqrt{L/C} = $ **63.25 Ω**.
 
 For 5% overshoot, solve $e^{-\pi\zeta/\sqrt{1 - \zeta^2}} = 0.05$:
 
@@ -142,7 +136,7 @@ $$
 
 Expanding $2/s + 3H/s = (2\tau^2s^2 + 6\tau s + 2 + 3)/[s(\tau^2s^2 + 3\tau s + 1)]$ reproduces (b). The physical reading: the circuit starts in the steady state for a 2 V input, so the response is 2 V plus the zero-state response to a 3 V step.
 
-- The denominator is $\tau^2s^2 + 3\tau s + 1$. Comparing with $s^2 + 2\zeta\omega_0s + \omega_0^2$ gives $\omega_0 = 1/\tau$ and $2\zeta = 3$, so **ζ = 1.5**: overdamped. An RC ladder cannot ring (07-03 §3.7).
+- The denominator is $\tau^2s^2 + 3\tau s + 1$. Comparing with $s^2 + 2\zeta\omega_0s + \omega_0^2$ gives $\omega_0 = 1/\tau$ and $2\zeta = 3$, so **ζ = 1.5**: overdamped. An RC ladder cannot ring (07-03 §3.9).
 - The poles are $s = (-3 \pm \sqrt5)/(2\tau)$: **−382.0 s⁻¹** and **−2618 s⁻¹**.
 
 (d) Write $x = s\tau$, so the poles are $x_1 = -0.3820$ and $x_2 = -2.618$. Then
@@ -167,12 +161,12 @@ The coefficients are **−3.512** and **0.5125**.
 The theorem checks:
 
 - **Initial value.** $\lim_{s\to\infty}sV_3 = 2\tau^2s^2/(\tau^2s^2) \to$ **2 V**, matching the continuity of the capacitor voltages. The time function gives $5 - 3.5125 + 0.5125 = 2$ as well.
-- **Initial slope.** $\lim_{s\to\infty}s[sV_3 - v_3(0^+)] = \lim s\,(5 + 6\tau s - 2 - 6\tau s - 2)/(\tau^2s^2 + \ldots) \to$ **0**. Physically, C2 can only change through R2, and at $0^+$ both ends of R2 sit at 2 V.
+- **Initial slope.** $sV_3 - v_3(0^+) = \big[(5 + 6\tau s + 2\tau^2s^2) - 2(\tau^2s^2 + 3\tau s + 1)\big]/(\tau^2s^2 + 3\tau s + 1) = 3/(\tau^2s^2 + 3\tau s + 1)$, so $\lim_{s\to\infty}s[sV_3 - v_3(0^+)] = \lim 3s/(\tau^2s^2 + \ldots) \to$ **0**. Physically, C2 can only change through R2, and at $0^+$ both ends of R2 sit at 2 V.
 - **Final value.** $\lim_{s\to0}sV_3 = 5/1 = $ **5 V**.
 
 The zero initial slope is why the curve starts flat: two cascaded lags.
 
-**6.** *(07-05, 07-06, 07-08 §3.10)*
+**6.** *(07-05, 07-06)*
 
 (a) At $\omega = 10^4$ rad/s:
 
@@ -391,8 +385,6 @@ The losses:
 - insertion loss $-20\lg0.5814 = $ **4.711 dB**;
 - return loss $-20\lg0.01163 = $ **38.69 dB**.
 
-The fraction absorbed is $1 - \lvert S_{11}\rvert^2 - \lvert S_{21}\rvert^2 = $ **0.6618**: 66.18% of the incident power heats the resistors.
-
 $S_{11} \ne S_{22}$ because the network is not symmetric. From port 1 the 10 Ω arm plus the rest looks like 51.2 Ω, close to 50 Ω. From port 2 the 20 Ω arm makes it look like $(DZ_0 + B)/(CZ_0 + A) = 92/1.6 = 57.5$ Ω.
 
 **12.** *(07-11)*
@@ -478,7 +470,7 @@ of droop. The undamped estimate $\Delta I\cdot Z_0 = $ **0.4327 V** is 17% pessi
 
 Designers damp it in several ways:
 
-- an RC damper across the output capacitor, with $R \approx Z_0$ and a capacitor several times $C$ (07-03 §3.8);
+- an RC damper across the output capacitor, with $R \approx Z_0$ and a capacitor several times $C$ (07-03 §3.10);
 - capacitors with deliberate ESR (polymer or electrolytic) in parallel with the ceramics;
 - a closed loop with enough phase margin;
 - specifying a minimum load.
@@ -528,36 +520,35 @@ because the numerator is exactly 50 times the denominator.
 
 **Yes**, both band edges beat 10 dB comfortably. A $Q$ of 1.73 is low, so the match is broadband. A larger impedance ratio would raise $Q$ and narrow it, and two L-sections through an intermediate impedance lower each section's $Q$.
 
-(e) At 2.6 GHz the mismatch loss is $-10\lg(1 - 0.1291^2) = $ **0.0730 dB**, against 1.938 dB unmatched. The delivered power rises by the factor $(1 - 0.1291^2)/(1 - 0.36) = $ **1.536**, a 54% gain.
+**15.** *(07-01, 07-07, 07-08, 07-11)* **Rubric:** 2 points per claim, 1 for identifying the flaw and 1 for a question that would expose it. Each part lists the minimum acceptable flaw first; any one of the other points earns the flaw point too. A question earns its point if the answer to it would confirm or refute the claim with data.
 
-**15.** *(07-01, 07-07, 07-08, 07-11)* Rubric: 2 points per claim. Award 1 point for the flaw and 1 for a probing question.
+(a) **Minimum flaw:** capacitance alone does not set the impedance at 1 GHz; inductance does. Other acceptable points:
 
-(a) Capacitance alone does not make a supply clean at 1 GHz:
-
-- Every capacitor has ESL and becomes an inductor above its self-resonant frequency, typically 1–10 MHz for bulk parts.
-- Board-level capacitors cannot reach the die through package and via inductance at 1 GHz; that job falls to package and on-die capacitance.
+- Every capacitor has ESL and becomes an inductor above its self-resonant frequency, which for board capacitors lies far below 1 GHz (Example 07-01.5: 2.251 MHz for a 10 µF ceramic with 0.5 nH).
+- Board capacitors cannot reach the die through the package and via inductance at 1 GHz; that job falls to package and on-die capacitance.
 - Class II ceramics lose much of their capacitance under DC bias, so the nominal 2,000 µF overstates what the rail has.
 
 *Ask:* "What is the measured or simulated impedance profile of the power-delivery network from DC to 1 GHz, against your target impedance?"
 
-(b) $\sqrt3\times415\times30 = 21.56$ kW is the *apparent* power at 100% of the breaker rating and unity power factor:
+(b) **Minimum flaw:** $\sqrt3V_LI_L = \sqrt3\times415\times30 = $ **21.56 kVA** is the apparent power at 100% of the breaker rating; it equals 21.56 kW only at unity power factor. Other acceptable points:
 
-- Continuous loads are commonly limited to 80% of the rating, giving 17.25 kW (07-11 §9).
-- Real power is lower by the power factor.
-- Power-supply efficiency and redundancy (A/B feeds, each sized to carry the whole rack) cut usable IT load further.
+- Continuous loads are commonly limited to 80% of the rating, which gives **17.25 kVA** (07-11 §9).
+- Real power is lower than the apparent power by the power factor.
+- Power-supply efficiency and redundancy (A/B feeds, each sized to carry the whole rack) cut the usable IT load further.
 
 *Ask:* "What continuous derating, power factor and redundancy scheme does the 21.6 kW figure assume?"
 
-(c) At the −3 dB frequency the signal is already attenuated by 29% in amplitude and phase-shifted:
+(c) **Minimum flaw:** at the −3 dB frequency a single 1 MHz tone is already reduced to 70.7% of its amplitude (**29.3%** lost) and phase-shifted. A pure tone keeps its shape, so accept "attenuated and phase-shifted" as the flaw. The phase shift is 45° for a first-order filter and 90° for a second-order Butterworth. Other acceptable points:
 
-- by 45° for a first-order filter;
-- by 90° for a second-order Butterworth.
-
-The group delay also varies near the corner, distorting anything with bandwidth. A signal that must pass "undistorted" needs the passband edge well above it, with a flatness specification.
+- A real signal has bandwidth around 1 MHz, and its components near the corner are attenuated and delayed by different amounts, which does distort it (group-delay variation).
+- A signal that must pass unchanged needs the passband edge well above it, with a flatness specification.
 
 *Ask:* "What are the passband flatness and group-delay variation over the signal's actual band?"
 
-(d) GBW predicts the small-signal bandwidth of a single-pole amplifier. At unity gain the crossover sits closest to the higher poles, so the phase margin is smallest (Question 8). The buffer may peak, overshoot or oscillate, especially with a capacitive load. Large signals are limited by the slew rate, not the GBW.
+(d) **Minimum flaw:** at unity gain the loop's crossover sits closest to the op-amp's higher poles, so the phase margin is smallest there (Question 8). The buffer may peak, overshoot or oscillate, especially with a capacitive load. Other acceptable points:
+
+- The GBW predicts the bandwidth only for a single-pole amplifier.
+- Large signals are limited by the slew rate, not by the GBW.
 
 *Ask:* "What are the phase margin and step response at unity gain with our actual load capacitance, and what are the slew rate and full-power bandwidth?"
 
@@ -599,8 +590,6 @@ The group delay also varies near the corner, distorting anything with bandwidth.
 | X07.4h | overshoot | 35.09 | % |
 | X07.4i | peak capacitor voltage | 13.51 | V |
 | X07.4j | time of voltage peak | 104.7 | µs |
-| X07.4k | time of current peak | 41.63 | µs |
-| X07.4l | peak current | 0.2085 | A |
 | X07.4m | resistance for critical damping | 63.25 | Ω |
 | X07.4n | ζ for 5% overshoot | 0.6901 | — |
 | X07.4o | resistance for 5% overshoot | 43.65 | Ω |
@@ -698,7 +687,6 @@ The group delay also varies near the corner, distorting anything with bandwidth.
 | X07.11m | S22 | 0.06977 | — |
 | X07.11n | insertion loss | 4.711 | dB |
 | X07.11o | return loss | 38.69 | dB |
-| X07.11p | fraction absorbed | 0.6618 | — |
 | X07.11q | port-2 impedance | 57.5 | Ω |
 | X07.12a | phase current | 8 | A |
 | X07.12b | line current | 13.86 | A |
@@ -741,9 +729,10 @@ The group delay also varies near the corner, distorting anything with bandwidth.
 | X07.14i | return loss at 2.2 GHz | 18.49 | dB |
 | X07.14j | magnitude of Γ at 2.6 GHz | 0.1291 | — |
 | X07.14k | return loss at 2.6 GHz | 17.78 | dB |
-| X07.14l | mismatch loss at 2.6 GHz | 0.0730 | dB |
-| X07.14m | delivered-power ratio, matched/unmatched | 1.536 | — |
 | X07.14n | Re Z_in at 2.2 GHz | 42.47 | Ω |
 | X07.14o | Im Z_in at 2.2 GHz | 8.078 | Ω |
 | X07.14p | Re Z_in at 2.6 GHz | 53.33 | Ω |
 | X07.14q | Im Z_in at 2.6 GHz | −13.03 | Ω |
+| X07.15a | apparent power of a 30 A, 415 V feed | 21.56 | kVA |
+| X07.15b | 80% continuous rating | 17.25 | kVA |
+| X07.15c | amplitude lost at the −3 dB frequency | 29.3 | % |

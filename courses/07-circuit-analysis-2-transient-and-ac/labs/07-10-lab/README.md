@@ -21,6 +21,7 @@ Chapter sections 3.1 to 3.9 and Examples 07-10.1 to 07-10.6. You need Python wit
 | [ex1_params.cir](ex1_params.cir) | Example 07-10.1's y-parameters with shorted ports; Example 07-10.4's input impedance, gain and output impedance | Chapter answer key |
 | [ex3_loading.cir](ex3_loading.cir) | Unbuffered RC cascades of two and three sections (Example 07-10.3, Problem 07-10.6) | Chapter and solutions answer keys |
 | [ex6_sparams.cir](ex6_sparams.cir) | S-parameters in 50 Ω (Example 07-10.6, Problem 07-10.11) and the guided exercise | Answer keys and this handout |
+| [match_900mhz.cir](match_900mhz.cir) | The L-section of chapter §3.10 (20 Ω to 50 Ω at 900 MHz) | Chapter answer key |
 
 Run the netlists from the repository root:
 
@@ -40,7 +41,7 @@ python tools/run_spice.py 07-10
 | Part | Quantity | Expected |
 |---|---|---|
 | 1 | $z_{12}$, $y_{12}$ | 30 Ω and −0.02727 S; $\mathbf{y}\mathbf{z} = \mathbf{I}$ |
-| 2 | existence | series L: y and ABCD only (no z); shunt C: z and ABCD only (no y); ideal transformer: h and ABCD only |
+| 2 | existence | series L: y, h and ABCD (no z); shunt C: z, h and ABCD (no y); ideal transformer: h and ABCD only |
 | 3 | five sections | the gain keeps falling much faster than the buffered $0.7071^5$; the L-match's return loss peaks at 100 MHz |
 | 4 | 1 pF at 10 GHz | see the key; the capacitor now reflects most of the power |
 

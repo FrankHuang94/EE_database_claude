@@ -1,0 +1,47 @@
+* Problems 07-11.13 (negative-sequence supply, balanced Y load 8 + j6 ohm = 8 ohm + 19.0986 mH at 50 Hz,
+* two wattmeters) and 07-11.14 (a Delta generator, modeled by two of its windings with line b as the
+* reference, feeding an unbalanced Delta load: 100 ohm a-b, j100 ohm b-c = 318.31 mH, -j100 ohm c-a =
+* 31.831 uF). RMS phasors; i(V) is the current entering the source's + node.
+*
+* EXPECT w1n  key:../../solutions/07-11-solutions.md#07-11.13e rtol=2e-4
+* EXPECT w2n  key:../../solutions/07-11-solutions.md#07-11.13f rtol=2e-4
+* EXPECT ia14 key:../../solutions/07-11-solutions.md#07-11.14d rtol=2e-4
+* EXPECT ic14 key:../../solutions/07-11-solutions.md#07-11.14g rtol=2e-4
+
+* ---- P13
+VA  A 0 AC 230.94011 0
+VB  B 0 AC 230.94011 120
+VC  C 0 AC 230.94011 -120
+RA  A xa 8
+LA  xa N 19.098593m
+RB  B xb 8
+LB  xb N 19.098593m
+RC  C xc 8
+LC  xc N 19.098593m
+* ---- P14 (node b2 is ground)
+Vab2 a2 0 AC 400 0
+Vbc2 0 c2 AC 400 -120
+* zero-volt sources read each branch current in the direction a->b, b->c, c->a
+Vsab a2 sa DC 0
+Rab2 sa 0 100
+Vsbc 0 sb DC 0
+Lbc2 sb c2 318.30989m
+Vsca c2 sc DC 0
+Cca2 sc a2 31.830989u
+
+.control
+ac lin 1 50 50
+let ia = -i(VA)
+let ic = -i(VC)
+let vab = v(A) - v(B)
+let vcb = v(C) - v(B)
+let w1n = real(vab)*real(ia) + imag(vab)*imag(ia)
+let w2n = real(vcb)*real(ic) + imag(vcb)*imag(ic)
+let iab = i(Vsab)
+let ibc = i(Vsbc)
+let ica = i(Vsca)
+let ia14 = mag(iab - ica)
+let ic14 = mag(ica - ibc)
+print w1n w2n ia14 ic14
+.endc
+.end

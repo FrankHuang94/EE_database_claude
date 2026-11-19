@@ -3,7 +3,7 @@
 * current entering the source's + node, so the current a source delivers into its line is -i(V).
 * (1) balanced Y load 8 + j6 ohm (6 ohm = 19.0986 mH at 50 Hz), floating star point N1
 * (2) unbalanced resistive loads 10, 20, 40 ohm with the neutral connected (star point at ground)
-* (3) the same loads with the neutral open (star point N3 floats): the guided exercise
+* (3) the same loads with the neutral open (star point N3 floats): Example 07-11.7 and the guided exercise
 * Wattmeter readings use Re(V I*) = Re(V)Re(I) + Im(V)Im(I).
 *
 * EXPECT ia1   key:../../chapters/07-11-three-phase-circuits.md#Ex_07-11.1b rtol=1e-3
@@ -17,6 +17,10 @@
 * EXPECT vb3   key:README.md#Lab_07-11.b rtol=1e-3
 * EXPECT vc3   key:README.md#Lab_07-11.c rtol=1e-3
 * EXPECT vn3   key:README.md#Lab_07-11.d rtol=1e-3
+* EXPECT va3   key:../../chapters/07-11-three-phase-circuits.md#Ex_07-11.7c rtol=1e-3
+* EXPECT vb3   key:../../chapters/07-11-three-phase-circuits.md#Ex_07-11.7d rtol=1e-3
+* EXPECT vc3   key:../../chapters/07-11-three-phase-circuits.md#Ex_07-11.7e rtol=1e-3
+* EXPECT vn3   key:../../chapters/07-11-three-phase-circuits.md#Ex_07-11.7a rtol=1e-3
 
 VA1 A1 0 AC 230.94011 0
 VB1 B1 0 AC 230.94011 -120

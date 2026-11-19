@@ -6,8 +6,6 @@
 *
 * EXPECT q4i   key:solutions.md#X07.4i rtol=1e-4
 * EXPECT q4j   key:solutions.md#X07.4j scale=1e-6 rtol=1e-3
-* EXPECT q4l   key:solutions.md#X07.4l rtol=1e-3
-* EXPECT q4k   key:solutions.md#X07.4k scale=1e-6 rtol=2e-3
 * EXPECT q13k  key:solutions.md#X07.13k rtol=1e-3
 * EXPECT q13j  key:solutions.md#X07.13j scale=1e-6 rtol=2e-3
 

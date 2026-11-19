@@ -195,9 +195,6 @@ tp, vp = extremum(s4.sol, lambda x: x[0], 0, 3e-4)
 v.check("X07.4h", 100 * (vp - 10) / 10)
 v.check("X07.4i", vp)
 v.check("X07.4j", 1e6 * tp)
-ti, ip = extremum(s4.sol, lambda x: x[1], 0, 1e-4)
-v.check("X07.4k", 1e6 * ti)
-v.check("X07.4l", ip)
 v.check("X07.4m", brentq(lambda R: np.trace(rlc4(R)) ** 2 - 4 * np.linalg.det(rlc4(R)), 1, 200))
 
 
@@ -468,9 +465,6 @@ v.check("X07.11l", S21)
 v.check("X07.11m", S22)
 v.check("X07.11n", -20 * np.log10(abs(S21)))
 v.check("X07.11o", -20 * np.log10(abs(S11)))
-pin = (fw[0]["p1"] * -fw[1]["Vg"]).real  # power into port 1
-pout = fw[0]["p2"].real ** 2 / 50
-v.check("X07.11p", (pin - pout) / (1.0 ** 2 / 50))  # incident power = |a|^2/Z0 with a = 1 V
 v.check("X07.11q", (1 / -mna(T + [("V2", "V", "p2", "0", 1.0), ("R1", "R", "p1", "0", 50.0)], 0)[1]["V2"]).real)
 
 # ---- Q12 (07-11): full three-phase circuit, RMS phasors, delta load
@@ -583,8 +577,11 @@ for f, kg, kr, kre, kim in ((2.2e9, "X07.14h", "X07.14i", "X07.14n", "X07.14o"),
     v.check(kr, -20 * np.log10(g))
     v.check(kre, z.real)
     v.check(kim, z.imag)
-    if f == 2.6e9:
-        v.check("X07.14l", -10 * np.log10(1 - g ** 2))
-        v.check("X07.14m", (1 - g ** 2) / (1 - g0 ** 2))
+
+# ---- Q15: three-phase apparent power by summing the three phases' VA; -3 dB amplitude from a first-order H
+Sph = sum(abs((415 / math.sqrt(3)) * 30) for _ in range(3))
+v.check("X07.15a", Sph / 1e3)
+v.check("X07.15b", 0.8 * Sph / 1e3)
+v.check("X07.15c", 100 * (1 - abs(1 / (1 + 1j))))
 
 v.finish()

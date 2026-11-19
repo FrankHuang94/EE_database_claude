@@ -238,6 +238,10 @@
 - term: Impedance and frequency scaling
   definition: Turning a normalized filter prototype (1 Ω, 1 rad/s) into a design without changing its response shape; impedance scaling by k multiplies R and L by k and divides C by k, frequency scaling by k_f divides L and C by k_f.
   chapter: "07-08"
+- term: Multiple-feedback (MFB) filter
+  definition: An active filter section built around an op-amp as an inverting integrator, with feedback through both a resistor and a capacitor into a virtual ground; it inverts, has low sensitivity and avoids the Sallen–Key's high-frequency leakage.
+  chapter: "07-08"
+  see_also: [Sallen–Key filter]
 - term: Dot convention
   definition: Schematic marks on one terminal of each coupled coil; a current entering one coil's dot induces a voltage positive at the other coil's dot, so the mutual term is +M di/dt when both currents enter (or leave) their dots and −M di/dt otherwise.
   chapter: "07-09"
@@ -292,6 +296,18 @@
   definition: −20 lg|S11| (or |Γ|), in positive dB, the ratio of incident to reflected power at a port; 20 dB means 1% of the power is reflected.
   chapter: "07-10"
   see_also: [S-parameters, Reflection coefficient]
+- term: Mismatch loss
+  definition: −10 lg(1 − |Γ|²), the dB shortfall between the power a mismatched load receives and the source's available power.
+  chapter: "07-10"
+  see_also: [Return loss, Reflection coefficient]
+- term: Voltage standing-wave ratio (VSWR)
+  definition: (1 + |Γ|)/(1 − |Γ|), the ratio of the largest to the smallest voltage amplitude along a line feeding a mismatched load; for a resistive load it equals the ratio of the larger to the smaller resistance.
+  chapter: "07-10"
+  see_also: [Return loss, Mismatch loss]
+- term: L-section match
+  definition: A lossless two-element network (a series reactance next to the lower resistance and a shunt reactance across the higher) that transforms one resistance into another at one frequency; its Q is √(R_high/R_low − 1).
+  chapter: "07-10"
+  see_also: [Mismatch loss]
 - term: Three-phase system
   definition: AC power as three sinusoidal voltages of equal amplitude 120° apart; a balanced three-phase load draws constant instantaneous power, needs 75% of the copper of single phase for the same power and loss, and produces rotating fields for motors.
   chapter: "07-11"

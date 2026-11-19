@@ -1,6 +1,6 @@
 # Solutions 07-11 · Three-Phase Circuits
 
-Problems: [07-11 problems](../problems/07-11-problems.md) · Chapter: [07-11](../chapters/07-11-three-phase-circuits.md). Every number below is recomputed by [verify_07_11.py](../verify/verify_07_11.py), mostly by building the three-phase circuit from its three sources and solving it whole (not per phase), or by integrating sampled waveforms; values marked † are also confirmed by ngspice in [labs/07-11-lab](../labs/07-11-lab/README.md).
+Problems: [07-11 problems](../problems/07-11-problems.md) · Chapter: [07-11](../chapters/07-11-three-phase-circuits.md). Every number below is recomputed by [verify_07_11.py](../verify/verify_07_11.py), mostly by building the three-phase circuit from its three sources and solving it whole (not per phase), or by integrating sampled waveforms; the circuit results that ngspice also confirms are named in the `* EXPECT` lines of the netlists in [labs/07-11-lab](../labs/07-11-lab/README.md).
 
 ---
 
@@ -60,6 +60,39 @@ $Q_C = 300(\tan\theta_{0.75} - \tan\theta_{0.95}) = 300(0.8819 - 0.3287)$ = **16
 
 (b) Correct values: three-phase 208 V, 30 A, 80% continuous: $0.8\times\sqrt3\times208\times30$ = **8.65 kW** (the vendor lists 10.8 kW: wrong); three-phase 208 V, 60 A, full: **21.62 kW** (vendor 17.3 kW: wrong); three-phase 415 V, 30 A, full: **21.56 kW** (vendor 21.6 kW: correct); single-phase 208 V, 30 A, full: **6.24 kW** (vendor 6.2 kW: correct).
 
+### Solution 07-11.13
+
+(a) With negative sequence, $\mathbf{V}_{an} = 230.9\angle0°$ V and $\mathbf{V}_{bn} = 230.9\angle120°$ V, so $\mathbf{V}_{ab} = \mathbf{V}_{an} - \mathbf{V}_{bn} = $ **400 V ∠ −30°**: the line voltage now lags. The phase current is unchanged in form, $\mathbf{I}_a = 230.9/(10\angle36.87°) = $ **23.09 A ∠ −36.87°**.
+
+(b) The wattmeters:
+
+- $W_1 = \operatorname{Re}(\mathbf{V}_{ab}\mathbf{I}_a^*) = 400\times23.09\cos(-30° + 36.87°) = $ **9171 W**;
+- $\mathbf{V}_{cb} = \mathbf{V}_{cn} - \mathbf{V}_{bn} = 400\angle{-90°}$ V and $\mathbf{I}_c = 23.09\angle(-120° - 36.87°)$, so $W_2 = 400\times23.09\cos(-90° + 156.87°) = $ **3629 W**.
+
+Their sum is **12.80 kW**, the correct total power ($3\times23.09^2\times8$). But $\sqrt3(W_2 - W_1) = $ **−9600 var**.
+
+(c) The load is inductive: $Q = 3\times23.09^2\times6 = $ **+9600 var**. With positive sequence the readings are swapped ($W_1$ = 3629 W, $W_2$ = 9171 W) and the formula gives +9600 var correctly. Negative sequence exchanges the meters' roles, so a technician who assumes positive sequence reads an inductive load as capacitive. The real power, $W_1 + W_2$, is right either way; the reactive power and the sign of the power factor are not.
+
+### Solution 07-11.14
+
+(a) Each load impedance sits across its line voltage:
+
+- $\mathbf{I}_{ab} = 400\angle0°/100 = $ **4.000 A ∠ 0°**;
+- $\mathbf{I}_{bc} = 400\angle{-120°}/(j100) = $ **4.000 A ∠ 150°**;
+- $\mathbf{I}_{ca} = 400\angle120°/(-j100) = $ **4.000 A ∠ −150°**.
+
+KCL at each corner gives the line currents:
+
+- $\mathbf{I}_a = \mathbf{I}_{ab} - \mathbf{I}_{ca} = 4 - 4\angle{-150°} = $ **7.727 A ∠ 15°**;
+- $\mathbf{I}_b = \mathbf{I}_{bc} - \mathbf{I}_{ab} = $ **7.727 A ∠ 165°**;
+- $\mathbf{I}_c = \mathbf{I}_{ca} - \mathbf{I}_{bc} = $ **4.000 A ∠ −90°**.
+
+The phase currents are equal in size, but the line currents are not: unbalance shows up in the lines even when every branch draws the same current.
+
+(b) Only $Z_{ab}$ absorbs real power: $P = 4^2\times100 = $ **1600 W**. The inductor absorbs $+1600$ var and the capacitor $-1600$ var, so $Q$ = **0**. The total looks like a unity-power-factor load, yet the line currents are unequal: a single power-factor number cannot describe an unbalanced three-phase load.
+
+(c) From §3.8, $\mathbf{V}_{an} = (\mathbf{V}_{ab}/\sqrt3)\angle{-30°} = $ **230.9 V ∠ −30°**. A per-phase model of the Δ generator uses this Y source, which produces the same line voltages.
+
 ---
 
 ## Answer key
@@ -116,3 +149,24 @@ $Q_C = 300(\tan\theta_{0.75} - \tan\theta_{0.95}) = 300(0.8819 - 0.3287)$ = **16
 | 07-11.12d | 208 V, 60 A, full | 21.62 | kW |
 | 07-11.12e | 415 V, 30 A, full | 21.56 | kW |
 | 07-11.12f | single-phase 208 V, 30 A | 6.24 | kW |
+| 07-11.13a | $\lvert\mathbf{V}_{ab}\rvert$ | 400 | V |
+| 07-11.13b | angle of $\mathbf{V}_{ab}$ | −30 | ° |
+| 07-11.13c | $\lvert\mathbf{I}_a\rvert$ | 23.09 | A |
+| 07-11.13d | angle of $\mathbf{I}_a$ | −36.87 | ° |
+| 07-11.13e | $W_1$ | 9171 | W |
+| 07-11.13f | $W_2$ | 3629 | W |
+| 07-11.13g | $W_1 + W_2$ | 12.80 | kW |
+| 07-11.13h | $\sqrt3(W_2 - W_1)$ | −9600 | var |
+| 07-11.13i | actual Q | 9600 | var |
+| 07-11.14a | $\lvert\mathbf{I}_{ab}\rvert$ | 4.000 | A |
+| 07-11.14b | angle of $\mathbf{I}_{bc}$ | 150 | ° |
+| 07-11.14c | angle of $\mathbf{I}_{ca}$ | −150 | ° |
+| 07-11.14d | $\lvert\mathbf{I}_a\rvert$ | 7.727 | A |
+| 07-11.14e | angle of $\mathbf{I}_a$ | 15 | ° |
+| 07-11.14f | angle of $\mathbf{I}_b$ | 165 | ° |
+| 07-11.14g | $\lvert\mathbf{I}_c\rvert$ | 4.000 | A |
+| 07-11.14h | angle of $\mathbf{I}_c$ | −90 | ° |
+| 07-11.14i | real power | 1600 | W |
+| 07-11.14j | reactive power | 0 | var |
+| 07-11.14k | equivalent Y source magnitude | 230.9 | V |
+| 07-11.14l | its angle | −30 | ° |

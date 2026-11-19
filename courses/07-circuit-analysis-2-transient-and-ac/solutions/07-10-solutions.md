@@ -1,6 +1,6 @@
 # Solutions 07-10 · Two-Port Networks
 
-Problems: [07-10 problems](../problems/07-10-problems.md) · Chapter: [07-10](../chapters/07-10-two-port-networks.md). Every number below is recomputed by [verify_07_10.py](../verify/verify_07_10.py), which measures parameters by numerically applying the open- and short-circuit tests to nodal models of each circuit; values marked † are also confirmed by ngspice in [labs/07-10-lab](../labs/07-10-lab/README.md).
+Problems: [07-10 problems](../problems/07-10-problems.md) · Chapter: [07-10](../chapters/07-10-two-port-networks.md). Every number below is recomputed by [verify_07_10.py](../verify/verify_07_10.py), which measures parameters by numerically applying the open- and short-circuit tests to nodal models of each circuit; the circuit results that ngspice also confirms are named in the `* EXPECT` lines of the netlists in [labs/07-10-lab](../labs/07-10-lab/README.md).
 
 ---
 
@@ -10,7 +10,7 @@ Problems: [07-10 problems](../problems/07-10-problems.md) · Chapter: [07-10](..
 
 (a) Series 50 Ω: $\begin{bmatrix}1 & 50\ \Omega\\0 & 1\end{bmatrix}$. Shunt 0.01 S: $\begin{bmatrix}1 & 0\\0.01\ \text{S} & 1\end{bmatrix}$.
 
-(b) z-parameters need each port's voltage when currents are forced with the other port open. With both ports of a series resistor open, no current can flow, and $\mathbf{V}_1$ and $\mathbf{V}_2$ are not fixed by the currents (only their difference is). Dually, a shunt conductance with both ports shorted carries no current from either port's voltage, so y-parameters cannot be defined.
+(b) z-parameters need each port's voltage when currents are forced with the other port open. With both ports of a series resistor open, no current can flow, and $\mathbf{V}_1$ and $\mathbf{V}_2$ are not fixed by the currents (only their difference is). Dually, a shunt conductance makes $\mathbf{V}_1 = \mathbf{V}_2$ always, so the y test, which sets one port's voltage while shorting the other, is impossible: y-parameters cannot be defined. (Both elements do have h-parameters: the series resistor $\begin{bmatrix}50\ \Omega & 1\\-1 & 0\end{bmatrix}$ and the shunt conductance $\begin{bmatrix}0 & 1\\-1 & 0.01\ \text{S}\end{bmatrix}$.)
 
 (c) $\begin{bmatrix}1 & 50\\0 & 1\end{bmatrix}\begin{bmatrix}1 & 0\\0.01 & 1\end{bmatrix} = \begin{bmatrix}1.5 & 50\ \Omega\\0.01\ \text{S} & 1\end{bmatrix}$, with determinant $1.5 - 0.5$ = **1.000**: reciprocal, as passive networks must be.
 
@@ -22,9 +22,9 @@ $Y_a$ = 0.01 S, $Y_b$ = 0.005 S, $Y_c$ = 0.02 S. From §3.3: $y_{11}$ = **0.0300
 
 - (a) $z_{12} = z_{21}$ and $z_{11} = z_{22}$: **reciprocal and symmetric**.
 - (b) $y_{12} = y_{21}$, $y_{11} \ne y_{22}$: **reciprocal, not symmetric**.
-- (c) $h_{12} = -h_{21}$: **reciprocal**.
+- (c) $h_{12} = -h_{21}$: **reciprocal**. $\Delta_h = 50\times0.01 - 0.5\times(-0.5) = $ **0.75** $\ne 1$: **not symmetric**.
 - (d) $AD - BC = 2 - 1$ = **1**: reciprocal; $A \ne D$: not symmetric.
-- (e) $AD - BC = 3 - 1$ = **2**: **not reciprocal** (an active network).
+- (e) $AD - BC = 3 - 1$ = **2**: **not reciprocal** (an active network); $A \ne D$: not symmetric either.
 
 ### Solution 07-10.4
 
@@ -54,7 +54,18 @@ Each section at $\omega RC$ = 1: $\mathbf{T} = \begin{bmatrix}1 + j & R\\j/R & 1
 
 (a) Both T networks share the common (ground) terminal at both ports, so connecting inputs and outputs in parallel leaves each network's port currents equal and opposite: the port condition holds and the y-parameters add (§3.7).
 
-(b) Each T's y-matrix is the inverse of its z-matrix (§3.2), computed at each frequency; adding them gives the twin-T. With $f_0$ = **1.592 kHz**:
+(b) For a T with series arms $Z_a$, $Z_b$ and shunt $Z_c$, $\mathbf{z} = \begin{bmatrix}Z_a + Z_c & Z_c\\Z_c & Z_b + Z_c\end{bmatrix}$, so with $\Delta_z = Z_aZ_b + Z_aZ_c + Z_bZ_c$ the inverse gives $y_{21} = -Z_c/\Delta_z$ and $y_{22} = (Z_a + Z_c)/\Delta_z$. Write $x = sRC$:
+
+- T1 ($Z_a = Z_b = R$, $Z_c = 1/(2sC)$): $\Delta_z = R^2(1 + x)/x$, so $y_{21} = -\dfrac{1}{2R(1 + x)}$ and $y_{22} = \dfrac{1 + 2x}{2R(1 + x)}$.
+- T2 ($Z_a = Z_b = 1/(sC)$, $Z_c = R/2$): $\Delta_z = R^2(1 + x)/x^2$, so $y_{21} = -\dfrac{x^2}{2R(1 + x)}$ and $y_{22} = \dfrac{x(2 + x)}{2R(1 + x)}$.
+
+Adding:
+
+$$
+y_{21} = -\frac{1 + x^2}{2R(1 + x)}, \qquad y_{22} = \frac{1 + 4x + x^2}{2R(1 + x)}, \qquad H = -\frac{y_{21}}{y_{22}} = \frac{1 + (sRC)^2}{1 + 4sRC + (sRC)^2} = \frac{s^2 + \omega_0^2}{s^2 + 4\omega_0s + \omega_0^2} ,
+$$
+
+with $\omega_0 = 1/RC$. The numerator vanishes at $s = \pm j\omega_0$. At $s = j\omega_0/2$, $H = 0.75/(0.75 + j2)$. With $f_0$ = **1.592 kHz**:
 
 | Frequency | Gain $-y_{21}/y_{22}$ |
 |---|---|
@@ -112,6 +123,7 @@ $\Gamma = (-25 + j25)/(75 + j25)$ = **0.4472 ∠ 116.57°**. Return loss $-20\lg
 | 07-10.2f | $z_{22}$ | 85.71 | Ω |
 | 07-10.3a | determinant (d) | 1 | — |
 | 07-10.3b | determinant (e) | 2 | — |
+| 07-10.3c | $\Delta_h$ (c) | 0.75 | — |
 | 07-10.4a | $h_{11}$ | 22.00 | Ω |
 | 07-10.4b | $h_{12}$ | 0.6000 | — |
 | 07-10.4c | $h_{21}$ | −0.6000 | — |
