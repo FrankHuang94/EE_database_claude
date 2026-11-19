@@ -2249,3 +2249,54 @@
 - term: Semantic versioning
   definition: MAJOR.MINOR.PATCH version numbers where MAJOR signals incompatible changes, MINOR compatible new features and PATCH compatible fixes.
   chapter: "05-09"
+
+# ---------------------------------------------------------------- 06-01
+- term: Voltage
+  definition: The energy per unit charge gained in moving from one point to another (1 V = 1 J/C); it is always defined between two points, written v_AB = v_A − v_B.
+  chapter: "06-01"
+  see_also: [Reference node (ground), Passive sign convention]
+- term: Reference direction
+  definition: The arrow (for current) or the + and − marks (for voltage) chosen before solving a circuit; a negative result means the actual direction or polarity is opposite to the reference.
+  chapter: "06-01"
+- term: Reference node (ground)
+  definition: The node chosen as zero volts, relative to which every other node voltage is quoted; a bookkeeping choice that need not be connected to the earth.
+  chapter: "06-01"
+  see_also: [Voltage, Grounding]
+- term: Passive sign convention
+  definition: Referencing an element's current into the terminal marked +, so that p = vi is the power the element absorbs (negative means it delivers power); SPICE applies it to sources as well.
+  chapter: "06-01"
+  see_also: [Electric power]
+- term: Electric power
+  definition: The rate of energy transfer, p = dw/dt = vi, in watts (1 W = 1 J/s = 1 V·A).
+  chapter: "06-01"
+  see_also: [Passive sign convention, Average power]
+- term: Node
+  definition: A point where two or more circuit elements connect, together with the ideal wire joining them; in the lumped model it stores no charge.
+  chapter: "06-01"
+  see_also: [Branch, Loop]
+- term: Branch
+  definition: A single element, or a path through one element, connecting two nodes of a circuit.
+  chapter: "06-01"
+- term: Loop
+  definition: Any closed path through the branches of a circuit that visits no node more than once.
+  chapter: "06-01"
+- term: Kirchhoff's current law (KCL)
+  definition: The algebraic sum of the currents entering a node is zero at every instant; it follows from charge conservation and the lumped assumption that nodes store no charge.
+  chapter: "06-01"
+  see_also: [Kirchhoff's voltage law (KVL), Lumped-matter discipline]
+- term: Kirchhoff's voltage law (KVL)
+  definition: The algebraic sum of the voltages around any loop is zero at every instant; it follows from Faraday's law when no changing magnetic flux links the loop outside the elements.
+  chapter: "06-01"
+  see_also: [Kirchhoff's current law (KCL), Lumped-matter discipline]
+- term: Tellegen's theorem
+  definition: In any lumped circuit the branch voltage–current products, with the passive sign convention, sum to zero; it follows from KCL and KVL alone, so it holds for nonlinear circuits and even across two circuits sharing a graph.
+  chapter: "06-01"
+- term: Average power
+  definition: The energy delivered over an interval divided by its length, (1/T)∫p dt; for varying signals it is the average of v·i, not the product of the averages.
+  chapter: "06-01"
+- term: Duty cycle
+  definition: The fraction of time a block or signal is active; a block drawing current I for duty cycle D contributes D·I to the average current.
+  chapter: "06-01"
+- term: Efficiency
+  definition: The ratio of output power to input power, η = P_out/P_in, of a converter or distribution path; efficiencies of stages in series multiply.
+  chapter: "06-01"

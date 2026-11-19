@@ -1,0 +1,36 @@
+* Lab 06-01 Part 4 -- when Kirchhoff fails: one wire, four edge rates.
+* Each copy: a 1 V step with rise time tr, a 10 Ohm driver, a lossless 50 Ohm line with a 1 ns
+* one-way delay (about 14 cm of FR-4 stripline), and an open (1 MOhm) load. The far-end peak
+* shows how much the line overshoots; a lumped wire could never overshoot at all.
+* The notebook computes the same peaks independently from a bounce diagram.
+*
+* EXPECT vmax01 key:README.md#Lab_06-01.b rtol=1e-3
+* EXPECT vmax2  key:README.md#Lab_06-01.c rtol=1e-3
+* EXPECT vmax6  key:README.md#Lab_06-01.d rtol=1e-3
+* EXPECT vmax20 key:README.md#Lab_06-01.e rtol=1e-3
+
+V1  i1 0 PULSE(0 1 0 0.1n 0.1n 150n 300n)
+R1  i1 a1 10
+T1  a1 0 b1 0 Z0=50 TD=1n
+RL1 b1 0 1MEG
+V2  i2 0 PULSE(0 1 0 2n 2n 150n 300n)
+R2  i2 a2 10
+T2  a2 0 b2 0 Z0=50 TD=1n
+RL2 b2 0 1MEG
+V3  i3 0 PULSE(0 1 0 6n 6n 150n 300n)
+R3  i3 a3 10
+T3  a3 0 b3 0 Z0=50 TD=1n
+RL3 b3 0 1MEG
+V4  i4 0 PULSE(0 1 0 20n 20n 150n 300n)
+R4  i4 a4 10
+T4  a4 0 b4 0 Z0=50 TD=1n
+RL4 b4 0 1MEG
+
+.control
+tran 2p 140n 0 2p
+meas tran vmax01 MAX v(b1)
+meas tran vmax2  MAX v(b2)
+meas tran vmax6  MAX v(b3)
+meas tran vmax20 MAX v(b4)
+.endc
+.end

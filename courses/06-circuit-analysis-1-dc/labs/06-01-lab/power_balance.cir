@@ -1,0 +1,81 @@
+* Lab 06-01 -- signs, powers and Tellegen's theorem in ngspice.
+* Circuit 1 (Example 06-01.2): V1 = 12 V through R1 = 2 Ohm and V2 = 6 V through R2 = 3 Ohm feed node a;
+*   R3 = 6 Ohm from a to ground.
+* Circuit 2 (Problem 06-01.6): 9 V through 1 Ohm and 12 V through 2 Ohm feed node b; 4 Ohm load.
+* Circuit 3 (Problem 06-01.13, "circuit 2"): 6 V through 1 Ohm and 0 V through 1 Ohm feed node c; 1 Ohm load.
+* SPICE reports a voltage source's current as positive INTO its + terminal (the passive sign convention),
+* so a source that delivers power shows a negative current, and @V[p] is the power it ABSORBS.
+* The DC sweep varies V2 and finds where it stops absorbing and starts delivering (Lab 06-01.a).
+*
+* EXPECT va     key:../../chapters/06-01-charge-current-voltage-power.md#Ex_06-01.2a rtol=1e-6
+* EXPECT iv1    key:../../chapters/06-01-charge-current-voltage-power.md#Ex_06-01.2b scale=-1 rtol=1e-6
+* EXPECT iv2    key:../../chapters/06-01-charge-current-voltage-power.md#Ex_06-01.2c scale=-1 rtol=1e-3
+* EXPECT pv1    key:../../chapters/06-01-charge-current-voltage-power.md#Ex_06-01.2e rtol=1e-6
+* EXPECT pr1    key:../../chapters/06-01-charge-current-voltage-power.md#Ex_06-01.2f rtol=1e-6
+* EXPECT pv2    key:../../chapters/06-01-charge-current-voltage-power.md#Ex_06-01.2g rtol=1e-6
+* EXPECT pr2    key:../../chapters/06-01-charge-current-voltage-power.md#Ex_06-01.2h rtol=1e-3
+* EXPECT pr3    key:../../chapters/06-01-charge-current-voltage-power.md#Ex_06-01.2i rtol=1e-3
+* EXPECT ptotal 0 atol=1e-9
+* EXPECT vb     key:../../solutions/06-01-solutions.md#06-01.6a rtol=1e-3
+* EXPECT pva    key:../../solutions/06-01-solutions.md#06-01.6e rtol=1e-3
+* EXPECT pvb    key:../../solutions/06-01-solutions.md#06-01.6f rtol=1e-3
+* EXPECT prl    key:../../solutions/06-01-solutions.md#06-01.6i rtol=1e-3
+* EXPECT vc     key:../../solutions/06-01-solutions.md#06-01.13a rtol=1e-6
+* EXPECT ic1    key:../../solutions/06-01-solutions.md#06-01.13b scale=-1 rtol=1e-6
+* EXPECT vcross key:README.md#Lab_06-01.a rtol=1e-3
+
+* ---- circuit 1
+V1  s1 0  DC 12
+R1  s1 a  2
+V2  s2 0  DC 6
+R2  s2 a  3
+R3  a  0  6
+* ---- circuit 2
+VA  sa 0  DC 9
+RA  sa b  1
+VB  sb 0  DC 12
+RB  sb b  2
+RL  b  0  4
+* ---- circuit 3
+VC1 c1 0  DC 6
+RC1 c1 c  1
+VC2 c2 0  DC 0
+RC2 c2 c  1
+RC3 c  0  1
+
+.control
+op
+let va = v(a)
+let iv1 = i(V1)
+let iv2 = i(V2)
+let pv1 = @V1[p]
+let pr1 = @R1[p]
+let pv2 = @V2[p]
+let pr2 = @R2[p]
+let pr3 = @R3[p]
+let ptotal = pv1 + pr1 + pv2 + pr2 + pr3
+let vb = v(b)
+let pva = @VA[p]
+let pvb = @VB[p]
+let prl = @RL[p]
+let vc = v(c)
+let ic1 = i(VC1)
+echo "va = $&va"
+echo "iv1 = $&iv1"
+echo "iv2 = $&iv2"
+echo "pv1 = $&pv1"
+echo "pr1 = $&pr1"
+echo "pv2 = $&pv2"
+echo "pr2 = $&pr2"
+echo "pr3 = $&pr3"
+echo "ptotal = $&ptotal"
+echo "vb = $&vb"
+echo "pva = $&pva"
+echo "pvb = $&pvb"
+echo "prl = $&prl"
+echo "vc = $&vc"
+echo "ic1 = $&ic1"
+dc V2 0 12 0.01
+meas dc vcross WHEN i(V2)=0
+.endc
+.end

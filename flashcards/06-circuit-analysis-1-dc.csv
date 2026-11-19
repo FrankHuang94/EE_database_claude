@@ -1,0 +1,18 @@
+#separator:comma
+#html:true
+#columns:Front,Back,Tags
+#tags column:3
+"Define current and its unit; what does a negative current mean?","i = dq/dt, in amperes (1 A = 1 C/s ≈ 6.24×10^18 elementary charges per second). Negative means the flow is opposite to the chosen reference arrow.",bsee::06 bsee::06-01
+"Define voltage and its unit.","Energy per unit charge between two points, v_AB = v_A − v_B = dw/dq, in volts (1 V = 1 J/C). Always between two points; a node voltage is relative to the reference node.",bsee::06 bsee::06-01
+"State the three conditions of the lumped matter discipline.","(1) No changing magnetic flux links any loop outside the elements; (2) no net charge accumulates inside an element (or node); (3) signals change slowly compared with the time waves take to cross the circuit.",bsee::06 bsee::06-01
+"Which lumped condition gives KCL, and which gives KVL?","Nodes store no charge (condition 2) plus charge conservation give KCL. No changing flux outside elements (condition 1) plus Faraday's law make ∮E·dl = 0, giving KVL.",bsee::06 bsee::06-01
+"Passive sign convention: statement and consequence.","Reference the current INTO the + terminal; then p = vi is the power ABSORBED. Negative p means the element delivers power.",bsee::06 bsee::06-01
+"Why does SPICE report a negative current for a battery that is discharging?","SPICE uses the passive convention for sources too: current is positive into the + terminal. A delivering source pushes current out of its + terminal, so it reads negative, and its @V[p] is negative.",bsee::06 bsee::06-01
+"State Tellegen's theorem and why it holds.","Σ v_k i_k = 0 over all branches (passive convention). Write v_k as node-voltage differences (KVL) and regroup by node; each node's currents sum to zero (KCL). No element laws used, so it holds for any lumped circuit.",bsee::06 bsee::06-01
+"Lumped rule of thumb for digital edges, and the delay of FR-4 stripline?","Lumped if one-way delay t_d < t_r/6. FR-4 stripline (εr ≈ 4.6): about 7.15 ps/mm, so 1 ns edges allow about 23 mm.",bsee::06 bsee::06-01
+"Is mAh energy? Convert 225 mAh at 3.0 V.","No: mAh is charge (1 mAh = 3.6 C). Energy = charge × voltage: 0.225 Ah × 3.0 V = 0.675 Wh = 2430 J.",bsee::06 bsee::06-01
+"Average current of a duty-cycled device?","I_avg = Σ D_k I_k (duty cycle × current for each activity, plus the always-on sleep current). Battery life = capacity / I_avg. A huge current at a tiny duty cycle can be a small share.",bsee::06 bsee::06-01
+"Why is average power not V_avg × I_avg?","P_avg is the average of v(t)·i(t); it depends on when v and i are large together. Only at DC (or with one factor constant) does it equal the product of averages.",bsee::06 bsee::06-01
+"Distribution loss for power P at voltage V through resistance R?","I = P/V, so loss = P²R/V² and loss fraction = PR/V². Doubling V quarters the loss; for equal loss the copper area can shrink by the square of the voltage ratio.",bsee::06 bsee::06-01
+"Efficiency of a chain of converters?","η_total = η_1 × η_2 × … ; loss = P_out(1/η − 1). Example: 97% × 90% = 87.3%, so 1 kW out needs 1145.5 W in.",bsee::06 bsee::06-01
+"How much current does a 1 kW chip draw at 0.8 V, and what path resistance keeps the drop under 2%?","1250 A; 2% of 0.8 V = 16 mV, so R ≤ 16 mV / 1250 A = 12.8 µΩ. Hence regulators sit next to, under or inside the package.",bsee::06 bsee::06-01
