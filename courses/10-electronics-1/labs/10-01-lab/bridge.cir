@@ -1,0 +1,38 @@
+* Lab 10-01 -- the bridge supply of Example 10-01.5 (9 V rms, 60 Hz winding, 4700 uF, 0.5 A constant load),
+* checking the chapter's exact constant-drop solution, part (d). Each diode is a nearly ideal junction
+* (N = 0.02, so it drops about 15 mV at 8 A) in series with a 1.0 V source: the constant-drop model.
+* The capacitor starts near its steady-state level; six half-cycles are simulated and the last is measured.
+*
+* EXPECT ripple key:../../chapters/10-01-diodes-and-diode-circuits.md#Ex_10-01.5l rtol=1e-2
+* EXPECT vmin   key:../../chapters/10-01-diodes-and-diode-circuits.md#Ex_10-01.5m rtol=3e-3
+* EXPECT ipk    key:../../chapters/10-01-diodes-and-diode-circuits.md#Ex_10-01.5o rtol=1.5e-2
+
+.options reltol=1e-5 abstol=1e-9
+VS a b SIN(0 12.7279220614 60 0 0 90)
+RA a 0 1e9
+RB b 0 1e9
+D1 a x1 dsw
+V1 x1 out DC 1.0
+D2 b x2 dsw
+V2 x2 out DC 1.0
+D3 0 y3 dsw
+V3 y3 a DC 1.0
+D4 0 y4 dsw
+V4 y4 b DC 1.0
+C1 out 0 4700u IC=10.3
+IL out 0 DC 0.5
+.model dsw D(IS=1e-12 N=0.02)
+
+.control
+tran 1u 50m 0 1u uic
+meas tran vmax MAX v(out) from=41.6667m to=50m
+meas tran vmin MIN v(out) from=41.6667m to=50m
+meas tran i1 MAX i(V1) from=33.3333m to=50m
+meas tran i2 MAX i(V2) from=33.3333m to=50m
+let ripple = vmax - vmin
+let ipk = max(i1, i2)
+echo "ripple = $&ripple"
+echo "vmin = $&vmin"
+echo "ipk = $&ipk"
+.endc
+.end

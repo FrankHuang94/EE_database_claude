@@ -36,7 +36,7 @@ $r_d = nV_T/I_D$: **51.70** Ω for $n$ = 1 and **103.4** Ω for $n$ = 2. A 1 mV 
 
 (b) $V_T\ln10$ at 358.15 K = **71.06** mV per decade.
 
-(c) At 85 °C, 1 mA needs only 0.530 V, so 0.650 V is 120 mV more, worth $10^{120/71.06}$ = **48.8** times the current. A junction held at a fixed voltage carries a current that roughly doubles every 10 K; if that current heats it, the loop can run away. Bias junctions with a current, or with a resistor that limits the current, not with a stiff voltage.
+(c) At 85 °C, 1 mA needs only 0.530 V, so 0.650 V is 120 mV more, worth $10^{120/71.06}$ = **48.8** times the current. A junction held at a fixed voltage carries a current that roughly doubles every 10 to 11 K over this range (every 9 K near room temperature, where the rate is highest); if that current heats it, the loop can run away. Bias junctions with a current, or with a resistor that limits the current, not with a stiff voltage.
 
 ### Solution 10-01.5
 

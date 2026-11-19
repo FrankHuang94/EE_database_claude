@@ -1,0 +1,58 @@
+* Lab 10-01 -- Example 10-01.7: (a) two course diodes (IS = 1e-15 A, N = 1) back to back after 1 kOhm, at
+* 0.5 V, 2 V and 5 V of DC drive (three copies of the circuit), with the exponential model; (b, c) the clamp and
+* the doubler on a 5 V peak, 1 kHz sine with constant-drop diodes (a nearly ideal junction in series with 0.7 V),
+* 1 uF capacitors and no load, measured after 20 cycles.
+*
+* EXPECT vo05 key:../../chapters/10-01-diodes-and-diode-circuits.md#Ex_10-01.7a rtol=2e-4
+* EXPECT vo2  key:../../chapters/10-01-diodes-and-diode-circuits.md#Ex_10-01.7b rtol=2e-4
+* EXPECT vo5  key:../../chapters/10-01-diodes-and-diode-circuits.md#Ex_10-01.7c rtol=2e-4
+* EXPECT vcl  key:../../chapters/10-01-diodes-and-diode-circuits.md#Ex_10-01.7d rtol=1e-2
+* EXPECT vmax key:../../chapters/10-01-diodes-and-diode-circuits.md#Ex_10-01.7f rtol=1e-2
+* EXPECT vdbl key:../../chapters/10-01-diodes-and-diode-circuits.md#Ex_10-01.7g rtol=1e-2
+
+.options temp=26.85 tnom=26.85 reltol=1e-6
+.model dc D(IS=1e-15 N=1)
+.model dsw D(IS=1e-12 N=0.02)
+* (a) limiters
+VA1 a1 0 DC 0.5
+RA1 a1 o1 1k
+DA1 o1 0 dc
+DB1 0 o1 dc
+VA2 a2 0 DC 2
+RA2 a2 o2 1k
+DA2 o2 0 dc
+DB2 0 o2 dc
+VA3 a3 0 DC 5
+RA3 a3 o3 1k
+DA3 o3 0 dc
+DB3 0 o3 dc
+* (b, c) clamp then doubler: input -> C1 -> node x; clamp diode from ground to x (cathode at x);
+* doubler diode from x into C2
+VIN in 0 SIN(0 5 1k)
+RS in in2 1
+C1 in2 x 1u
+DCL 0 xc dsw
+VCL xc x DC 0.7
+DDB x xd dsw
+VDB xd out DC 0.7
+C2 out 0 1u
+
+.control
+op
+let vo05 = v(o1)
+let vo2 = v(o2)
+let vo5 = v(o3)
+echo "vo05 = $&vo05"
+echo "vo2 = $&vo2"
+echo "vo5 = $&vo5"
+tran 1u 20m 0 1u
+meas tran vmax MAX v(x) from=19m to=20m
+meas tran vin2 MAX v(in2) from=19m to=20m
+meas tran vxpk MAX v(x) from=19m to=20m
+meas tran vdbl MAX v(out) from=19m to=20m
+let vcl = vxpk - vin2
+echo "vcl = $&vcl"
+echo "vmax = $&vmax"
+echo "vdbl = $&vdbl"
+.endc
+.end

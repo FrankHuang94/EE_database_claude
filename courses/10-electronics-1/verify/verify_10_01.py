@@ -63,10 +63,46 @@ VD0 = v2 - rD * 1e-3
 v.check("T 10-01.c", rD)
 v.check("T 10-01.d", VD0)
 # 10% small-signal limit: amplitude where the quadratic term is 10% of the linear one
-v.check("T 10-01.e", brentq(lambda a: (a / VT) ** 2 / 2 / (a / VT) - 0.1, 1e-6, 0.1) * 1e3)
+# from the series of the exponential (sympy), not the chapter's formula: ratio of the x^2 and x terms = 0.1
+import sympy as _sp  # noqa: E402
+_x = _sp.symbols("x")
+_ser = _sp.series(_sp.exp(_x) - 1, _x, 0, 3).removeO()
+_ratio = _sp.simplify(_ser.coeff(_x, 2) * _x ** 2 / (_ser.coeff(_x, 1) * _x))
+v.check("T 10-01.e", float(_sp.solve(_sp.Eq(_ratio, _sp.Rational(1, 10)), _x)[0]) * VT * 1e3)
 v.check("T 10-01.f", 5.1 - 0.049 * 7)
 v.check("T 10-01.g", brentq(lambda dv: math.exp(dv / VT) - 2, 0, 0.1) * 1e3)
-v.check("T 10-01.h", 7 / 0.2)
+# TL431 programmed to 5.1 V with a divider: solve the small-signal circuit (an ideal error amplifier of gain 1/Z_KA
+# per volt at the reference node, R1 from cathode to REF, R2 from REF to anode) for the cathode impedance
+def tl431_z(vka, zka=0.2, vref=2.495, r2=10e3):
+    r1 = r2 * (vka / vref - 1)
+    # cathode current per volt of cathode: i = (v_ref_node - 0)/zka', with v_ref_node = v * r2/(r1 + r2); the device's
+    # own impedance at V_KA = V_ref is zka, i.e. di/dv_ref = 1/zka (divider current negligible)
+    di_dv = (r2 / (r1 + r2)) / zka + 1 / (r1 + r2)
+    return 1 / di_dv
+z431 = tl431_z(5.1)
+v.check("T 10-01.k", z431)
+v.check("T 10-01.h", 7 / z431)
+
+
+def newton_steps(v0, vdd=5.0, r=4300.0):
+    f = lambda x: diode_i(x) - (vdd - x) / r  # noqa: E731
+    root = brentq(f, 0.3, 0.9, xtol=1e-15)
+    x, k, first = v0, 0, None
+    while abs(x - root) >= 1e-6 and k < 1000:
+        h = 1e-7
+        x = x - f(x) / ((f(x + h) - f(x - h)) / (2 * h))   # numerical derivative, not the chapter's f'
+        k += 1
+        first = x if first is None else first
+    return k, first
+
+
+k03, f03 = newton_steps(0.3)
+k06, f06 = newton_steps(0.6)
+v.check("T 10-01.l", f03)
+v.check("T 10-01.m", k03)
+v.check("T 10-01.n", k06)
+v.check("T 10-01.q", f06)
+v.check("T 10-01.o", newton_steps(0.75)[0])
 
 # ------------------------------------------------------------------ Example 1
 V1, R1 = 5.0, 4.3e3
@@ -190,10 +226,12 @@ v.check("Ex 10-01.4o", (Vr4 / r4[0] - 1) * 100)
 r4b = rectifier(Vs4, 0.7, C4, R=500.0)
 v.check("T 10-01.i", r4b[0] / r4[0])
 v.check("T 10-01.j", r4b[3] / r4[3])
+v.check("T 10-01.p", r4[3] / (r4[1] / R4))                      # exact peak over mean load current
 
 # ------------------------------------------------------------------ Example 5 (bridge)
 Vs5 = 9 * math.sqrt(2)
-Vp5 = Vs5 - 1.4
+Vp5 = Vs5 - 2.0
+IS_R_LAB, N_R_LAB = 10e-9, 1.9                                   # the lab's course rectifier diode
 IL5, C5, f5 = 0.5, 4700e-6, 60.0
 v.check("Ex 10-01.5a", Vs5)
 v.check("Ex 10-01.5b", Vp5)
@@ -205,9 +243,11 @@ wdt5 = math.sqrt(2 * Vr5 / Vp5)
 v.check("Ex 10-01.5f", math.degrees(wdt5))
 v.check("Ex 10-01.5g", IL5 * (1 / (2 * f5)) / (wdt5 / (2 * math.pi * f5)))
 v.check("Ex 10-01.5h", IL5 * (1 + math.pi * math.sqrt(2 * Vp5 / Vr5)))
-v.check("Ex 10-01.5i", Vs5 - 0.7)
+v.check("Ex 10-01.5i", Vs5 - 1.0)
 v.check("Ex 10-01.5j", IL5 / 2)
-r5 = rectifier(Vs5, 1.4, C5, IL=IL5, full=True)
+r5 = rectifier(Vs5, 2.0, C5, IL=IL5, full=True)
+r5b = rectifier(Vs5, 1.4, C5, IL=IL5, full=True)
+v.check("Ex 10-01.5u", r5b[2] - r5[2])
 v.check("Ex 10-01.5k", r5[5])
 v.check("Ex 10-01.5l", r5[0])
 v.check("Ex 10-01.5m", r5[2])
@@ -215,6 +255,17 @@ v.check("Ex 10-01.5n", r5[4])
 v.check("Ex 10-01.5o", r5[3])
 v.check("Ex 10-01.5p", r5[6])
 v.check("Ex 10-01.5q", (Vr5 / r5[0] - 1) * 100)
+v.check("Ex 10-01.5r", N_R_LAB * VT * math.log(8.0 / IS_R_LAB + 1))
+# per-diode RMS: integrate i^2 over the exact conduction pulse (one pulse per diode per period)
+w5 = 2 * math.pi * f5
+th_off = math.radians(r5[5])
+th_on = th_off - math.radians(r5[4])
+pulse = lambda th: C5 * Vs5 * w5 * (-math.sin(th)) + IL5  # noqa: E731  (C dv/dt + I_L, source Vs cos)
+from scipy.integrate import quad as _quad  # noqa: E402
+v.check("Ex 10-01.5s", math.sqrt(_quad(lambda th: pulse(th) ** 2, th_on, th_off)[0] / w5 * f5))
+v.assert_true("pulse peak matches the exact peak current", abs(pulse(th_on) - r5[3]) < 0.02)
+hs = lambda tt: math.pi * max(math.sin(2 * math.pi * 60 * tt), 0.0)  # noqa: E731  half-sine, 1 A average
+v.check("Ex 10-01.5t", math.sqrt(_quad(lambda tt: hs(tt) ** 2, 0, 1 / 60, limit=200)[0] * 60))
 
 
 # ------------------------------------------------------------------ Example 6 (Zener)
@@ -240,13 +291,23 @@ v.check("Ex 10-01.6l", (zener_vo(9.0, 0.05, 56) - zener_vo(9.0, 0.0, 56)) * 1e3)
 vo = zener_vo(9.0, 0.025, 56)
 v.check("Ex 10-01.6m", vo)
 v.check("Ex 10-01.6n", vo * 0.025 / (9.0 * (9.0 - vo) / 56) * 100)
-v.check("Ex 10-01.6o", (zener_vo(9.0, 0.0, 56, VZ0=2.495, rz=0.2) - zener_vo(9.0, 0.05, 56, VZ0=2.495, rz=0.2)) * 1e3)
+step431 = (zener_vo(9.0, 0.0, 56, VZ0=5.1, rz=z431) - zener_vo(9.0, 0.05, 56, VZ0=5.1, rz=z431)) * 1e3
+v.check("Ex 10-01.6o", step431)
+v.check("Ex 10-01.6p", (zener_vo(9.0, 0.0, 56) - zener_vo(9.0, 0.05, 56)) * 1e3 / step431)
+v.check("Ex 10-01.6q", (9.0 - zener_vo(9.0, 0.0, 56, VZ0=5.1, rz=z431)) / 56 * 1e3)
 
 # ------------------------------------------------------------------ Example 7 (limiter, clamp, doubler)
 for k_, vin in (("a", 0.5), ("b", 2.0), ("c", 5.0)):
     v.check(f"Ex 10-01.7{k_}", brentq(lambda vo: 2 * IS * math.sinh(vo / VT) - (vin - vo) / 1e3, 0, vin, xtol=1e-14))
 # clamp and doubler with constant-drop diodes (stiff switch), simulated until settled
 fq, Vp7, Cc = 1e3, 5.0, 1e-6
+vo2 = brentq(lambda vo: 2 * IS * math.sinh(vo / VT) - (2.0 - vo) / 1e3, 0, 2.0, xtol=1e-14)
+vo5 = brentq(lambda vo: 2 * IS * math.sinh(vo / VT) - (5.0 - vo) / 1e3, 0, 5.0, xtol=1e-14)
+v.check("Ex 10-01.7h", (2.0 - vo2))
+v.check("Ex 10-01.7i", (5.0 - vo5))
+v.check("Ex 10-01.7j", (5.0 - vo5) / (2.0 - vo2))
+v.check("Ex 10-01.7k", (vo5 - vo2) * 1e3)
+v.assert_true("output rise equals V_T ln(current ratio)", abs((vo5 - vo2) - VT * math.log((5 - vo5) / (2 - vo2))) < 2e-4)
 
 
 def clamp_doubler(cycles=60, Ron=1.0):

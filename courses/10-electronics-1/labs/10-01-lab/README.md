@@ -16,6 +16,8 @@ The chapter derives four diode models (§3.1–3.3), the small-signal resistance
 - [diode_bias.cir](diode_bias.cir): ngspice operating point of Example 10-01.1.
 - [rectifier.cir](rectifier.cir): ngspice half-wave peak rectifier with an exponential "course rectifier diode" ($I_S$ = 10 nA, $n$ = 1.9; a teaching model, not a particular part).
 - [zener.cir](zener.cir): ngspice Zener regulator of Example 10-01.6 at 8 V and 10 V supply.
+- [bridge.cir](bridge.cir): ngspice bridge supply of Example 10-01.5 with constant-drop diodes (a nearly ideal junction in series with 1.0 V), against the chapter's exact solution.
+- [limiter.cir](limiter.cir): ngspice limiter (exponential diodes), clamp and doubler (constant-drop diodes) of Example 10-01.7.
 
 ## Procedure
 
@@ -29,7 +31,7 @@ The chapter derives four diode models (§3.1–3.3), the small-signal resistance
 
 | Part | Quantity | Expected |
 |---|---|---|
-| 1 | Newton steps | three to reach 4 digits from 0.7 V; overshoot from any start above the answer is avoided only by step limiting |
+| 1 | Newton steps | a few from starts just above the answer; starts below it overshoot to several volts and then need over a hundred steps, which is why simulators limit the step |
 | 2 | Exponential diode | lower ripple and a much lower peak current than the constant-drop model |
 | 2 | 500 Ω load | ripple about twice, peak current about $\sqrt2$ times the 1 kΩ values |
 | 3 | Dropout | the Zener current reaches zero at low supply and heavy load |

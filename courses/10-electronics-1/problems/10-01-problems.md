@@ -37,7 +37,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 10-01.7 [B]
 
-**A 12 V Zener regulator.** A 1N4742A Zener (12 V at 21 mA, $Z_{ZT}$ ≤ 9 Ω, $I_{ZM}$ = 76 mA, 1.3 W) regulates a 16–20 V supply for a 0–30 mA load, with $I_Z \ge$ 5 mA. Take $r_z$ = 9 Ω. (a) Find $V_{Z0}$ and $V_Z$ at 5 mA. (b) Find the largest $R$ and choose 110 Ω. (c) Find $V_O$ and $I_Z$ at 16 V and 30 mA. (d) Find the worst-case Zener current and power, and check them against the ratings. (e) Find the resistor's worst-case power.
+**A 12 V Zener regulator.** A 1N4742A Zener (12 V at 21 mA, $Z_{ZT}$ = 9 Ω typical, $I_{ZM}$ = 76 mA, 1.3 W) regulates a 16–20 V supply for a 0–30 mA load, with $I_Z \ge$ 5 mA. Take $r_z$ = 9 Ω. (a) Find $V_{Z0}$ and $V_Z$ at 5 mA. (b) Find the largest $R$ and choose 110 Ω. (c) Find $V_O$ and $I_Z$ at 16 V and 30 mA. (d) Find the worst-case Zener current and power, and check them against the ratings. (e) Find the resistor's worst-case power.
 
 ### Problem 10-01.8 [B]
 
@@ -51,7 +51,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Clamp and doubler.** A 3 V peak, 1 kHz sine drives a clamp (cathode at the output) followed by a peak rectifier. (a) With 0.7 V diodes, find the clamped output's range and the doubler's output. (b) Repeat the doubler with 0.3 V Schottky diodes, and compare the losses.
 
-### Problem 10-01.11 [C]
+### Problem 10-01.11 [B]
 
 **Exact and iterative solutions (numerical).** For Problem 10-01.1(b), evaluate the Lambert W formula of §3.2 and confirm the current. Then find the contraction factor $V_T/RI_D$ of the fixed-point iteration for Problem 10-01.1(a) and (b), and explain the difference.
 

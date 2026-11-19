@@ -71,7 +71,7 @@ $$
 
 **By fixed-point iteration.** Guess $v_D$, compute $i_D$ from the resistor, recompute $v_D = nV_T\ln(i_D/I_S + 1)$ from the diode, and repeat. This converges fast because the map is a strong contraction (02-10): a change $\delta v$ in the guess changes $i_D$ by $-\delta v/R$, which changes the new $v_D$ by $-(nV_T/RI_D)\,\delta v$. With $RI_D$ of volts and $nV_T$ of 26 mV, each step shrinks the error by a factor near 100.
 
-**By Newton's method.** Write $f(v) = I_S(e^{v/nV_T} - 1) - (V_{DD} - v)/R$ and iterate $v \leftarrow v - f(v)/f'(v)$ (02-10). Newton converges quadratically near the root, but a start on the steep side of the exponential overshoots, so circuit simulators limit the voltage step per iteration. (Iterating the other way, $v_D$ from the exponential and $i_D$ from the resistor, diverges: the slope of that map is $RI_D/nV_T$, far above 1.)
+**By Newton's method.** Write $f(v) = I_S(e^{v/nV_T} - 1) - (V_{DD} - v)/R$ and iterate $v \leftarrow v - f(v)/f'(v)$ (02-10). Newton converges quadratically near the root, but the direction of the start matters. Because $f$ is convex, a start *above* the root converges from above, monotonically, though slowly at first: high on the exponential each step descends by only about $nV_T$. A start *below* the root, on the flat side of the curve, overshoots far to the right, because the tangent there is nearly the resistor's line. For Example 10-01.1 (root 0.7142 V), a start at 0.3 V jumps to **5.0** V on the first step and then needs **170** steps in all to come within 1 µV; a start at 0.6 V jumps to 2.05 V and needs **56**; a start at 0.75 V needs only **5**. That is why circuit simulators limit how far the junction voltage may move per iteration (SPICE's `pnjlim`). (Iterating the other way, $v_D$ from the exponential and $i_D$ from the resistor, diverges: the slope of that map is $RI_D/nV_T$, far above 1.)
 
 > **Going deeper — an exact solution with the Lambert W function.** The Lambert W function is defined by $W(z)e^{W(z)} = z$. Let $I = i_D + I_S$, so $I = I_Se^{v_D/nV_T}$ and $v_D = V_{DD} + RI_S - RI$. Substituting, $I = I_Se^{(V_{DD} + RI_S - RI)/nV_T}$, so $(RI/nV_T)e^{RI/nV_T} = (RI_S/nV_T)e^{(V_{DD} + RI_S)/nV_T}$. Therefore
 >
@@ -179,7 +179,7 @@ $$
 V_Z = V_{Z0} + r_zI_Z ,
 $$
 
-with $r_z$ the **dynamic resistance**. A data sheet gives $V_Z$ at a test current $I_{ZT}$, the dynamic impedance $Z_{ZT}$ there, a larger $Z_{ZK}$ at the knee, and the maximum current $I_{ZM}$ set by power dissipation. For the 1N4733A, a 1.3 W, 5.1 V part: $V_Z$ = 5.1 V at 49 mA (±5%), $Z_{ZT}$ ≤ 7 Ω, $Z_{ZK}$ ≤ 550 Ω at 1 mA and $I_{ZM}$ = 178 mA [3]. Taking $r_z$ = 7 Ω, $V_{Z0} = 5.1 - 0.049 \times 7$ = **4.757** V.
+with $r_z$ the **dynamic resistance**. A data sheet gives $V_Z$ at a test current $I_{ZT}$, the dynamic impedance $Z_{ZT}$ there, a larger $Z_{ZK}$ at the knee, and the maximum current $I_{ZM}$ set by power dissipation. For the 1N4733A, a 1.3 W, 5.1 V part: $V_Z$ = 5.1 V at 49 mA (±5%), $Z_{ZT}$ = 7 Ω typical (the data sheet gives no maximum), $Z_{ZK}$ ≤ 550 Ω at 1 mA and $I_{ZM}$ = 178 mA [3]. Taking $r_z$ = 7 Ω, $V_{Z0} = 5.1 - 0.049 \times 7$ = **4.757** V.
 
 **Solving the regulator.** The resistor $R$ carries the Zener current plus the load current. Kirchhoff's current law at the output:
 
@@ -203,11 +203,11 @@ The load regulation is just the regulator's Thévenin output resistance (06-08):
 - *Lowest supply, highest load.* The Zener must still carry at least a chosen minimum $I_{Z,\min}$, comfortably above the knee: $R \le (V_{S,\min} - V_{Z0} - r_zI_{Z,\min})/(I_{Z,\min} + I_{L,\max})$.
 - *Highest supply, lowest load.* All the current $R$ passes goes through the Zener, which must stay below $I_{ZM}$ and its power rating; $R$ must also be rated for its own dissipation.
 
-**The cost.** A shunt regulator burns the difference between its input and output in $R$, and its Zener current flows even with no load. Efficiency is poor (Example 10-01.6 finds about 20%), so Zener regulators serve references and small loads. Larger loads use a linear regulator with a transistor in series (Course 12) or a switching converter (Course 22). A programmable shunt reference such as the TL431 replaces the Zener with an amplifier around an internal 2.495 V reference and has a typical dynamic impedance of 0.2 Ω, about 35 times lower than the 1N4733A's 7 Ω [4].
+**The cost.** A shunt regulator burns the difference between its input and output in $R$, and its Zener current flows even with no load. Efficiency is poor (Example 10-01.6 finds about 20%), so Zener regulators serve references and small loads. Larger loads use a linear regulator with a transistor in series (Course 12) or a switching converter (Course 22). A programmable shunt reference such as the TL431 replaces the Zener with an amplifier around an internal 2.495 V reference. Its dynamic impedance is 0.2 Ω typical when its cathode is tied to its reference input ($V_{KA} = V_{ref}$). Programmed to a higher voltage with a divider $R_1$ (cathode to reference input) and $R_2$ (reference input to anode), $V_{KA} = V_{ref}(1 + R_1/R_2)$ and the impedance rises to about $Z_{KA}(1 + R_1/R_2)$ [4]. At 5.1 V that is $0.2 \times 5.1/2.495$ = **0.409** Ω, still about **17** times lower than the 1N4733A's 7 Ω. (A worst-case design must also note that the data sheet only guarantees $\lvert Z_{KA}\rvert$ ≤ 0.5 Ω, and gives the Zener's 7 Ω only as typical.)
 
 ### 3.8 Wave shaping: limiters, clamps and doublers
 
-**Limiters (clippers).** A diode, or a diode in series with a reference voltage, across the output of a resistive divider holds the output below a level. Two back-to-back diodes from a signal line to ground limit it to about ±0.7 V: they protect sensitive inputs, and they are the shape of an ESD clamp (§9). Because the diode is exponential, the limiting is soft: well below 0.7 V the output follows the input; near 0.7 V it bends; above, it rises only $V_T\ln$ per factor of current (Figure 4a).
+**Limiters (clippers).** A diode, or a diode in series with a reference voltage, across the output of a resistive divider holds the output below a level. Two back-to-back diodes from a signal line to ground limit it to about ±0.7 V: they protect sensitive inputs, and they are the shape of an ESD clamp (§9). Because the diode is exponential, the limiting is soft: well below 0.7 V the output follows the input; near 0.7 V it bends; above, it rises only by $V_T\ln k$ for a $k$-fold increase in current (Figure 4a).
 
 **Clamps (DC restorers).** A series capacitor and a diode to ground shift a waveform's DC level. With the diode's cathode at the output, the diode conducts whenever the output tries to go below $-V_{D0}$, charging the capacitor to the input's negative peak minus the drop. In steady state the capacitor holds $V_p - V_{D0}$, so the output is the input shifted up: a sine of peak $V_p$ swings from $-V_{D0}$ to $2V_p - V_{D0}$. Television receivers once used clamps to restore the black level of a video signal; today they appear in level shifters and gate-drive circuits.
 
@@ -219,7 +219,7 @@ The load regulation is just the regulator's Thévenin output resistance (06-08):
 
 ### 3.9 Real diodes: speed, Schottky diodes and ratings
 
-A diode that has been conducting stores minority charge, and it keeps conducting in reverse until that charge is removed (09-06 §3.8): the **reverse-recovery time** $t_{rr}$. A small-signal switching diode such as the 1N4148 is specified at $t_{rr}$ ≤ 4 ns, with ≤ 4 pF of capacitance at zero bias [1]; a general-purpose rectifier such as the 1N4001 is slower and larger (15 pF typical) [2]. In a 60 Hz supply that does not matter; in a switching converter at hundreds of kilohertz it does, because every recovery dumps charge and wastes energy.
+A diode that has been conducting stores minority charge, and it keeps conducting in reverse until that charge is removed (09-06 §3.8): the **reverse-recovery time** $t_{rr}$. A small-signal switching diode such as the 1N4148 is specified at $t_{rr}$ ≤ 4 ns, with ≤ 4 pF of capacitance at zero bias [1]; a general-purpose rectifier such as the 1N4001 has more capacitance (15 pF typical) and no reverse-recovery specification at all, because it is designed for line frequencies [2]. In a 60 Hz supply that does not matter; in a switching converter at hundreds of kilohertz it does, because every recovery dumps charge and wastes energy.
 
 A **Schottky diode** (09-06 §3.10) is a metal–semiconductor junction with no minority storage and a lower forward drop: the 1N5817 drops at most 0.45 V at 1 A [5]. The price is leakage: at its rated reverse voltage, at most 1 mA at 25 °C, against at most 5 µA for the 1N4001 [2, 5]. Schottky diodes win where forward loss and speed matter more than leakage: low-voltage rectifiers, freewheeling paths, and the clamps of fast logic.
 
@@ -299,23 +299,23 @@ Every diode has an absolute-maximum list: repetitive peak reverse voltage, avera
 
 ### Example 10-01.5 · Designing a bridge supply (tier B)
 
-**Setup.** A bridge rectifier fed by a 9 V rms, 60 Hz winding must feed a downstream regulator drawing a constant 0.5 A, with no more than 1 V of ripple. Use 0.7 V per diode. (a) Find the secondary's peak, the peak output and the minimum capacitance; choose the next standard value, 4700 µF, and find the actual ripple and the minimum output voltage. (b) Find the conduction angle, the average diode current during conduction and the peak diode current. (c) Find the PIV and the average current per diode, and compare with a 1N4001 (50 V repetitive peak reverse voltage, 1 A average, 30 A surge) [2]. (d) Solve the circuit exactly for ideal constant-drop diodes and compare with (a) and (b).
+**Setup.** A bridge rectifier fed by a 9 V rms, 60 Hz winding must feed a downstream regulator drawing a constant 0.5 A, with no more than 1 V of ripple. Use 1.0 V per diode: at peaks of several amperes a 1 A silicon rectifier drops about 1 V, not 0.7 V (§8, mistake 1; the lab's rectifier model gives **1.01** V at 8 A). (a) Find the secondary's peak, the peak output and the minimum capacitance; choose the next standard value, 4700 µF, and find the actual ripple and the minimum output voltage. (b) Find the conduction angle, the average diode current during conduction and the peak diode current. (c) Find the PIV and the average and RMS current per diode, and compare with a 1N4001 (50 V repetitive peak reverse voltage, 1 A average for 60 Hz half-wave operation into a resistive load, 30 A non-repetitive surge for one 8.3 ms half-sine) [2]. (d) Solve the circuit exactly for ideal constant-drop diodes and compare with (a) and (b).
 
 **Solution.**
 
-(a) $V_s = 9\sqrt2$ = **12.73** V and $V_p$ = 12.73 − 1.4 = **11.33** V. $C \ge I_L/(2fV_r)$ = **4167** µF. With 4700 µF, $V_r$ = **0.887** V and the output never falls below **10.44** V.
+(a) $V_s = 9\sqrt2$ = **12.73** V and $V_p$ = 12.73 − 2.0 = **10.73** V. $C \ge I_L/(2fV_r)$ = **4167** µF. With 4700 µF, $V_r$ = **0.887** V and the output never falls below **9.84** V.
 
-(b) $\omega\Delta t = \sqrt{2V_r/V_p}$ = **22.67°**. During conduction the diodes average $I_L(T/2)/\Delta t$ = **3.97** A, and the peak is $I_L(1 + \pi\sqrt{2V_p/V_r})$ = **8.44** A.
+(b) $\omega\Delta t = \sqrt{2V_r/V_p}$ = **23.29°**. During conduction the diodes average $I_L(T/2)/\Delta t$ = **3.86** A, and the peak is $I_L(1 + \pi\sqrt{2V_p/V_r})$ = **8.23** A.
 
-(c) PIV ≈ $V_s - 0.7$ = **12.03** V; each diode carries half the load on average, **0.25** A. The 1N4001 has a fourfold voltage margin and a fourfold average-current margin, and the 8.44 A repetitive peak is well inside its 30 A one-cycle surge rating. The real stress is at switch-on, when the empty 4700 µF capacitor looks like a short and only the winding's resistance limits the inrush.
+(c) PIV ≈ $V_s - 1.0$ = **11.73** V; each diode carries half the load on average, **0.25** A. The 1N4001 has a fourfold voltage margin and a fourfold margin on its average-current rating, but the average is not what heats a diode in this circuit: its losses grow with the current's square, and the current comes in tall, narrow pulses. Integrating the square of the exact current pulses of (d), each diode carries **1.18** A RMS. The waveform behind the 1 A rating, a half-sine averaging 1 A, has an RMS value of $\pi/2$ = **1.57** A, so the real thermal margin is about 1.3×, not 4×. The 30 A rating is no help here: it is a non-repetitive surge rating for a single half-cycle, the right yardstick for the switch-on inrush (when the empty 4700 µF capacitor looks like a short and only the winding's resistance limits the current), not for steady repetitive peaks.
 
-(d) With a constant-current load the capacitor discharges linearly. Conduction ends **1.27°** after the source peak, when the source falls faster than the load alone would discharge the capacitor. Solving for the next crossing: peak-to-peak ripple **0.784** V, minimum output **10.54** V, conduction angle **21.48°**, peak diode current **8.29** A and average current during conduction **4.19** A. The approximation overstates the ripple by about 13%, because the capacitor actually discharges for a half-period *minus* the 12% spent charging; for design it errs on the safe side.
+(d) With a constant-current load the capacitor discharges linearly. Conduction ends **1.27°** after the source peak, when the source falls faster than the load alone would discharge the capacitor. Solving for the next crossing: peak-to-peak ripple **0.784** V, minimum output **9.94** V, conduction angle **21.48°**, peak diode current **8.29** A and average current during conduction **4.19** A. (With a constant-current load the ripple, angles and currents do not depend on the diode drop; only the output level does.) The approximation overstates the ripple by about 13%, because the capacitor actually discharges for a half-period *minus* the 12% spent charging; for design it errs on the safe side.
 
-**Sanity check.** The downstream regulator needs some headroom above its own output; 10.5 V at the ripple trough is ample for a 5 V regulator and would be marginal for a 9 V one.
+**Sanity check.** The downstream regulator needs some headroom above its own output; 9.9 V at the ripple trough is ample for a 5 V regulator and too little for a 9 V one. Had the example used 0.7 V per diode, the trough would have been 0.6 V higher, an optimistic error of exactly the kind §8 warns about.
 
 ### Example 10-01.6 · A Zener regulator, designed and checked (tier B)
 
-**Setup.** A 1N4733A (model $V_{Z0}$ = 4.757 V, $r_z$ = 7 Ω, §3.7) regulates a supply that varies from 8 to 10 V (9 V nominal) for a load of 0 to 50 mA. Keep $I_Z \ge$ 5 mA. (a) Find the largest $R$, and choose the next lower standard value, 56 Ω. (b) Check $V_O$ and $I_Z$ at 8 V and 50 mA. (c) Find the worst-case Zener current and power and the worst-case resistor power. (d) Find the line and load regulation. (e) At 9 V and 25 mA, find $V_O$ and the efficiency. (f) How much would $V_O$ move between no load and 50 mA with a TL431-class shunt reference of 0.2 Ω instead?
+**Setup.** A 1N4733A (model $V_{Z0}$ = 4.757 V, $r_z$ = 7 Ω, §3.7) regulates a supply that varies from 8 to 10 V (9 V nominal) for a load of 0 to 50 mA. Keep $I_Z \ge$ 5 mA. (a) Find the largest $R$, and choose the next lower standard value, 56 Ω. (b) Check $V_O$ and $I_Z$ at 8 V and 50 mA. (c) Find the worst-case Zener current and power and the worst-case resistor power. (d) Find the line and load regulation. (e) At 9 V and 25 mA, find $V_O$ and the efficiency. (f) How much would $V_O$ move between no load and 50 mA with a TL431 programmed to about 5.1 V instead (§3.7)?
 
 **Solution.**
 
@@ -329,9 +329,9 @@ Every diode has an absolute-maximum list: repetitive peak reverse voltage, avera
 
 (e) $V_O$ = **5.073** V. The load takes $5.073 \times 0.025$ = 0.127 W; the supply delivers $9 \times (9 - 5.073)/56$ = 0.631 W: efficiency **20.1**%.
 
-(f) $(56 \parallel 0.2) \times 50$ mA = **9.96** mV, about 31 times less than the Zener's 311 mV.
+(f) The programmed TL431's impedance is about 0.409 Ω, so the output moves $(56 \parallel 0.409) \times 50$ mA = **20.3** mV, about **15** times less than the Zener's 311 mV. (Its cathode current at 9 V and no load, $(9 - V_O)/56$ = **69.1** mA, is inside the 100 mA recommended maximum [4].)
 
-**Sanity check.** A Zener regulator's output is good to a few percent, its efficiency is poor and its no-load current is its full-load current: fine for a reference or a 50 mA rail, wrong for anything that matters to a battery.
+**Sanity check.** The constant $r_z$ = 7 Ω is optimistic at the 5 mA corner: toward the knee the impedance rises (the data sheet allows up to 550 Ω at 1 mA), so the real output at 8 V and full load sits somewhat below 4.806 V, and a careful design keeps $I_{Z,\min}$ well above the knee. A Zener regulator's output is good to a few percent, its efficiency is poor and its no-load current is its full-load current: fine for a reference or a 50 mA rail, wrong for anything that matters to a battery.
 
 ### Example 10-01.7 · Limiter, clamp and doubler (tier B)
 
@@ -345,7 +345,7 @@ Every diode has an absolute-maximum list: repetitive peak reverse voltage, avera
 
 (c) The peak rectifier captures $9.3 - 0.7$ = **8.6** V.
 
-**Sanity check.** In (a), ten times the input current (from 2 V to 5 V of drive) raised the output by only 31 mV, about $V_T\ln(4.3/1.3)$: the exponential at work.
+**Sanity check.** In (a), going from 2 V to 5 V of drive raises the diode current from **1.279** mA to **4.248** mA, **3.32** times, yet the output rises by only **31** mV, which is $V_T\ln 3.32$: the exponential at work.
 
 ### Answer key
 
@@ -359,7 +359,14 @@ Every diode has an absolute-maximum list: repetitive peak reverse voltage, avera
 | T 10-01.e | 10% small-signal limit | 5.17 | mV |
 | T 10-01.f | 1N4733A V_Z0 | 4.757 | V |
 | T 10-01.g | doubling voltage V_T ln 2 | 18 | mV |
-| T 10-01.h | TL431 r over 1N4733A r | 35 | — |
+| T 10-01.h | programmed TL431 impedance over 1N4733A r, inverted | 17 | — |
+| T 10-01.k | programmed TL431 impedance at 5.1 V | 0.409 | Ω |
+| T 10-01.l | Newton first iterate from 0.3 V | 5.0 | V |
+| T 10-01.m | Newton steps from 0.3 V to 1 µV | 170 | — |
+| T 10-01.n | Newton steps from 0.6 V | 56 | — |
+| T 10-01.o | Newton steps from 0.75 V | 5 | — |
+| T 10-01.q | Newton first iterate from 0.6 V | 2.05 | V |
+| T 10-01.p | peak over load current, Example 10-01.4 | 49 | — |
 | T 10-01.i | ripple ratio, 500 Ω to 1 kΩ | 1.93 | — |
 | T 10-01.j | peak-current ratio, 500 Ω to 1 kΩ | 1.39 | — |
 | Ex 10-01.1a | constant-drop current | 1.000 | mA |
@@ -408,22 +415,26 @@ Every diode has an absolute-maximum list: repetitive peak reverse voltage, avera
 | Ex 10-01.4n | average output, exact | 11.11 | V |
 | Ex 10-01.4o | ripple overstatement | 6.0 | % |
 | Ex 10-01.5a | secondary peak | 12.73 | V |
-| Ex 10-01.5b | peak output | 11.33 | V |
+| Ex 10-01.5b | peak output | 10.73 | V |
 | Ex 10-01.5c | minimum capacitance | 4167 | µF |
 | Ex 10-01.5d | ripple with 4700 µF | 0.887 | V |
-| Ex 10-01.5e | minimum output | 10.44 | V |
-| Ex 10-01.5f | conduction angle | 22.67 | ° |
-| Ex 10-01.5g | average diode current in conduction | 3.97 | A |
-| Ex 10-01.5h | peak diode current | 8.44 | A |
-| Ex 10-01.5i | PIV | 12.03 | V |
+| Ex 10-01.5e | minimum output | 9.84 | V |
+| Ex 10-01.5f | conduction angle | 23.29 | ° |
+| Ex 10-01.5g | average diode current in conduction | 3.86 | A |
+| Ex 10-01.5h | peak diode current | 8.23 | A |
+| Ex 10-01.5i | PIV | 11.73 | V |
 | Ex 10-01.5j | average current per diode | 0.25 | A |
 | Ex 10-01.5k | turn-off angle after the peak | 1.27 | ° |
 | Ex 10-01.5l | ripple, exact | 0.784 | V |
-| Ex 10-01.5m | minimum output, exact | 10.54 | V |
+| Ex 10-01.5m | minimum output, exact | 9.94 | V |
 | Ex 10-01.5n | conduction angle, exact | 21.48 | ° |
 | Ex 10-01.5o | peak diode current, exact | 8.29 | A |
 | Ex 10-01.5p | average diode current in conduction, exact | 4.19 | A |
 | Ex 10-01.5q | ripple overstatement | 13 | % |
+| Ex 10-01.5r | rectifier model drop at 8 A | 1.01 | V |
+| Ex 10-01.5s | RMS current per diode | 1.18 | A |
+| Ex 10-01.5t | RMS of a 1 A-average half-sine | 1.57 | A |
+| Ex 10-01.5u | trough rise with 0.7 V diodes | 0.6 | V |
 | Ex 10-01.6a | V_Z at 5 mA | 4.792 | V |
 | Ex 10-01.6b | largest R | 58.3 | Ω |
 | Ex 10-01.6c | V_O at 8 V, 50 mA | 4.806 | V |
@@ -438,7 +449,9 @@ Every diode has an absolute-maximum list: repetitive peak reverse voltage, avera
 | Ex 10-01.6l | output change over load range | -311 | mV |
 | Ex 10-01.6m | V_O at 9 V, 25 mA | 5.073 | V |
 | Ex 10-01.6n | efficiency | 20.1 | % |
-| Ex 10-01.6o | TL431-class load step | 9.96 | mV |
+| Ex 10-01.6o | programmed TL431 load step | 20.3 | mV |
+| Ex 10-01.6p | Zener step over TL431 step | 15 | — |
+| Ex 10-01.6q | TL431 cathode current at 9 V, no load | 69.1 | mA |
 | Ex 10-01.7a | limiter output at 0.5 V | 0.4998 | V |
 | Ex 10-01.7b | limiter output at 2 V | 0.7207 | V |
 | Ex 10-01.7c | limiter output at 5 V | 0.7517 | V |
@@ -446,6 +459,10 @@ Every diode has an absolute-maximum list: repetitive peak reverse voltage, avera
 | Ex 10-01.7e | clamp minimum | -0.7 | V |
 | Ex 10-01.7f | clamp maximum | 9.3 | V |
 | Ex 10-01.7g | doubler output | 8.6 | V |
+| Ex 10-01.7h | limiter diode current at 2 V | 1.279 | mA |
+| Ex 10-01.7i | limiter diode current at 5 V | 4.248 | mA |
+| Ex 10-01.7j | current ratio | 3.32 | — |
+| Ex 10-01.7k | output rise | 31 | mV |
 | P 10-01.a | 1N4148 reverse recovery | 4 | ns |
 | P 10-01.b | 1N4148 capacitance | 4 | pF |
 | P 10-01.c | 1N4001 typical capacitance | 15 | pF |
@@ -465,14 +482,14 @@ Every diode has an absolute-maximum list: repetitive peak reverse voltage, avera
 
 ## 5. Simulate it
 
-The lab, [labs/10-01-lab](../labs/10-01-lab/README.md), has a notebook and three ngspice netlists:
+The lab, [labs/10-01-lab](../labs/10-01-lab/README.md), has a notebook and five ngspice netlists:
 
 1. Solves the diode–resistor circuit by iteration, Newton's method and Lambert W, and maps how many Newton steps each starting guess needs.
 2. Simulates the half-wave peak rectifier with an exponential diode, against the constant-drop exact solution and the ripple formula.
 3. Sweeps the Zener regulator over supply and load, and compares a Zener with a 0.2 Ω shunt reference.
 4. Simulates the limiter, clamp and doubler, including how many cycles the clamp needs to settle.
 
-The netlists confirm Example 10-01.1's operating point (`diode_bias.cir`), the rectifier's ripple with a real diode model (`rectifier.cir`) and the Zener regulator's output at two supply voltages (`zener.cir`).
+The netlists confirm Example 10-01.1's operating point (`diode_bias.cir`), the rectifier's ripple with a real diode model (`rectifier.cir`), the Zener regulator's output at two supply voltages (`zener.cir`), the exact solution of Example 10-01.5's bridge supply (`bridge.cir`) and Example 10-01.7's limiter, clamp and doubler (`limiter.cir`). Data-sheet values quoted in this chapter were checked by hand against the cited PDFs; the verify script can only restate them.
 
 **Guided exercise (predict, then run).** **Before running Part 2**, predict: if the 1 kΩ load of Example 10-01.4 is replaced by 500 Ω, does the ripple double, and does the peak diode current double? Then run it. (The ripple nearly doubles, by **1.93**, as $I_L/fC$ says. The peak current rises only by about $\sqrt2$, **1.39** in the exact solution, because $i_{D,\max} \propto I_L/\sqrt{V_r}$ and $V_r \propto I_L$, so $i_{D,\max} \propto \sqrt{I_L}$.)
 
@@ -485,7 +502,7 @@ The netlists confirm Example 10-01.1's operating point (`diode_bias.cir`), the r
 | Schottky instead of PN diode | Lower forward drop and loss; no reverse recovery | Hundreds of times more leakage, rising with temperature; lower voltage ratings | Circuit designer |
 | MOSFET "ideal diode" | Millivolts of drop instead of hundreds | A controller IC, a MOSFET, gate drive and cost | System architect |
 | Smaller Zener series resistor | More load current at low line | More Zener dissipation at high line and light load; worse efficiency | Circuit designer |
-| Shunt reference (TL431-class) instead of Zener | ~35× lower dynamic impedance; adjustable voltage | Needs a minimum cathode current; an active device to stabilize | Circuit designer |
+| Shunt reference (TL431-class) instead of Zener | ~17× lower dynamic impedance at 5 V; adjustable voltage | Needs a minimum cathode current; an active device to stabilize | Circuit designer |
 | ESD diode capacitance | Lower capacitance protects faster signal lines | Smaller diodes clamp to higher voltages and absorb less energy | I/O designer |
 
 ## 7. Numbers to know
@@ -501,8 +518,8 @@ The netlists confirm Example 10-01.1's operating point (`diode_bias.cir`), the r
 | 1N4148 switching diode | $t_{rr}$ ≤ 4 ns, $C_D$ ≤ 4 pF, $V_F$ ≤ 1 V at 10 mA [1] | Vishay data sheet, rev. Nov 2024 |
 | 1N4001 rectifier | 1 A average, 30 A surge, $V_F$ ≤ 1.1 V at 1 A, $I_R$ ≤ 5 µA [2] | Vishay, rev. Apr 2020 |
 | 1N5817 Schottky | $V_F$ ≤ 0.45 V at 1 A, $I_R$ ≤ 1 mA at 20 V [5] | Vishay, rev. Jul 2020 |
-| 1N4733A Zener | 5.1 V ± 5% at 49 mA, $Z_{ZT}$ ≤ 7 Ω, 1.3 W [3] | Vishay, rev. Nov 2024 |
-| TL431 shunt reference | 2.495 V, 0.2 Ω typical [4] | TI, rev. May 2024 |
+| 1N4733A Zener | 5.1 V ± 5% at 49 mA, $Z_{ZT}$ = 7 Ω typical, 1.3 W [3] | Vishay, rev. Nov 2024 |
+| TL431 shunt reference | 2.495 V; 0.2 Ω typical at $V_{KA} = V_{ref}$, ≤ 0.5 Ω; × $(1 + R_1/R_2)$ when programmed higher [4] | TI, rev. May 2024 |
 
 ## 8. Common mistakes
 
@@ -511,7 +528,7 @@ The netlists confirm Example 10-01.1's operating point (`diode_bias.cir`), the r
 3. **Calling a diode "off" and then ignoring it.** "Off" in the constant-drop model can mean 0.4 V forward and nanoamperes of current, which matters for leakage budgets and for diode ORing (Example 10-01.2).
 4. **Using the small-signal model for large signals.** Above about 5 mV across a diode, the exponential's curvature distorts the signal.
 5. **Forgetting the PIV doubles in a half-wave peak rectifier.** The capacitor holds the cathode at $+V_p$ while the anode swings to $-V_s$.
-6. **Sizing rectifier diodes by the average current only.** The repetitive peak current is ten to twenty times the load current, and switch-on inrush is larger still.
+6. **Sizing rectifier diodes by the average current only.** The repetitive peak current is tens of times the load current (about **49** times in Example 10-01.4), the RMS current that heats the diode is several times its average (Example 10-01.5), and switch-on inrush is larger still.
 7. **Designing a Zener regulator at the nominal corner.** It must work at low line with full load and survive high line with no load.
 8. **Ignoring a Schottky diode's leakage at temperature.** A low forward drop buys orders of magnitude more reverse current, which grows steeply when hot.
 
@@ -521,21 +538,21 @@ The netlists confirm Example 10-01.1's operating point (`diode_bias.cir`), the r
 
 - **Ideal-diode controllers replace ORing and reverse-polarity diodes.** TI's LM74700-Q1, an automotive-qualified controller, drives an external N-channel MOSFET so that it behaves as a diode with its forward drop regulated at 20 mV, blocks reverse current within 0.75 µs, and survives −65 V; its data sheet recommends choosing the MOSFET's $R_{DS(on)}$ between 20 mV and 50 mV divided by the nominal current [6] **[Established]** (data-sheet specification).
 - **Synchronous rectification.** The same idea, a MOSFET switched in place of a diode, is standard in low-voltage switching converters, where a 0.4 V Schottky drop would cost several percent of efficiency (Course 22) **[Established]**.
-- **ESD protection is a diode problem.** A single-channel TVS diode such as TI's TPD1E10B06 is rated to IEC 61000-4-2 level 4 (±30 kV contact and air discharge), clamps to at most 10 V at 1 A, and adds 12 pF typical to the line, suiting data rates up to about 400 Mbps [7] **[Established]** (data-sheet specification). Faster interfaces need diodes of a picofarad or less (Course 24).
+- **ESD protection is a diode problem.** A single-channel TVS diode such as TI's TPD1E10B06 is rated for ±30 kV contact and air-gap discharge under IEC 61000-4-2, well beyond the ±8 kV contact and ±15 kV air of the standard's level 4, clamps to at most 10 V at 1 A, and adds 12 pF typical to the line, suiting data rates up to about 400 Mbps [7] **[Established]** (data-sheet specification). Faster interfaces need diodes of a picofarad or less (Course 24).
 - **Discrete diodes are mature commodities.** The 1N4148, 1N4001 and 1N5817 families, decades old, remain in current data sheets from several manufacturers [1, 2, 5] **[Established]**.
 
 ### Why it matters commercially
 
-- **Every watt lost in a diode is heat that must be removed and power that is paid for.** A 5 A ORing diode wastes 3.5 W; the MOSFET alternative wastes about 0.1 W (Example 10-01.2). In a server rack with dozens of such paths, and in cars where heat limits module size, that difference decides architectures.
+- **Every watt lost in a diode is heat that must be removed and power that is paid for.** A 5 A ORing diode wastes 3.5 W; the MOSFET alternative wastes about 0.1 W (Example 10-01.2). In a server rack with many such paths, and in cars where heat limits module size, that difference decides architectures.
 - **Protection is part of the bill of materials of every connector.** ESD and surge diodes sit on USB, audio and sensor lines of phones and wearables; their capacitance limits signal speed, and their clamping voltage decides whether the chip behind them survives.
-- **References and supervisors are a large analog category.** Shunt references (TL431-class) and voltage supervisors are among the highest-volume analog parts, built on the same junction physics as the Zener.
+- **References and supervisors are a standard analog product category** **[Industry estimate]**. Shunt references (TL431-class) and voltage supervisors appear in the feedback and monitoring paths of power supplies, built on the same junction physics as the Zener.
 
 ### Marketing vs Reality
 
 - **"20 mV forward drop."** *Reality:* an ideal-diode controller regulates 20 mV only while $I \times R_{DS(on)}$ is below that; at higher currents the drop is $IR_{DS(on)}$, which is why the data sheet ties the MOSFET choice to the nominal current [6]. *Sanity check:* ask for the drop and dissipation at full load and maximum temperature.
 - **"±30 kV ESD protection."** *Reality:* the rating says the diode survives a standard system-level test pulse; what protects the chip behind it is the clamping voltage the chip sees (10 V at 1 A for this part [7]) and the board's layout. *Sanity check:* ask for the clamping voltage at the test current and the chip's own absolute-maximum rating.
 - **"Low-loss Schottky rectifier."** *Reality:* the 1N5817's 0.45 V at 1 A comes with up to 1 mA of leakage at 20 V and 25 °C, two hundred times the 1N4001's limit [2, 5], and leakage rises steeply when hot. *Sanity check:* ask for leakage at the maximum junction temperature.
-- **"Precision Zener."** *Reality:* a standard Zener is specified to ±5%, its dynamic impedance at the knee is nearly a hundred times its value at the test current (550 Ω against 7 Ω for the 1N4733A [3]), and its voltage drifts with temperature. *Sanity check:* ask for the tolerance, the current at which it is specified, and the temperature coefficient.
+- **"Precision Zener."** *Reality:* a standard Zener is specified to ±5%, its dynamic impedance at the knee may be up to 550 Ω (guaranteed maximum) against 7 Ω typical at the test current, for which no maximum is given (1N4733A [3]), and its voltage drifts with temperature. *Sanity check:* ask for the tolerance, the current at which it is specified, and the temperature coefficient.
 
 ### Questions for engineering leaders
 
