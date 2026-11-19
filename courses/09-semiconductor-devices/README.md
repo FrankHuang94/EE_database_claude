@@ -28,7 +28,7 @@ The physics of the transistor, from crystals and energy bands through PN junctio
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [09-01 · Crystals, Energy Bands and the Semiconductor](chapters/09-01-crystals-and-energy-bands.md) | 8 | ⬜ planned | — |
+| [09-01 · Crystals, Energy Bands and the Semiconductor](chapters/09-01-crystals-and-energy-bands.md) | 8 | ✅ verified | [problems](problems/09-01-problems.md) · [solutions](solutions/09-01-solutions.md) · [lab](labs/09-01-lab/README.md) · [verify](verify/verify_09_01.py) |
 | [09-02 · Carriers, Doping and the Fermi Level](chapters/09-02-carriers-doping-fermi-level.md) | 9 | ⬜ planned | — |
 | [09-03 · Carrier Transport: Drift and Diffusion](chapters/09-03-drift-and-diffusion.md) | 8 | ⬜ planned | — |
 | [09-04 · Generation, Recombination and the Continuity Equation](chapters/09-04-generation-recombination-continuity.md) | 7 | ⬜ planned | — |

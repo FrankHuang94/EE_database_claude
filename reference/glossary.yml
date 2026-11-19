@@ -3434,3 +3434,59 @@
 - term: Utilization
   definition: The fraction of a device's resources (logic cells, block RAMs, DSP blocks, I/O) that a design uses, as reported after synthesis or placement; high utilization makes routing harder.
   chapter: "08-12"
+# ---- 09-01
+- term: Diamond structure
+  definition: The crystal structure of Si, Ge and diamond, a face-centered cubic lattice with a two-atom basis offset by (a/4)(1,1,1), giving 8 atoms per cubic cell and four tetrahedral bonds per atom.
+  chapter: "09-01"
+  see_also: [Crystal lattice, Zinc blende]
+- term: Zinc blende
+  definition: The diamond structure with its two basis sites occupied by different elements, as in GaAs and InP, so that each atom of one kind has four neighbors of the other.
+  chapter: "09-01"
+  see_also: [Diamond structure, Wurtzite]
+- term: Wurtzite
+  definition: A hexagonal crystal structure built from the same tetrahedral bonds as zinc blende but stacked differently, described by two lattice constants a and c; GaN, AlN and ZnO crystallize in it.
+  chapter: "09-01"
+- term: Miller indices
+  definition: Three integers (hkl) naming a crystal plane, found by taking the reciprocals of its axis intercepts in units of the lattice constant and clearing fractions; [hkl] names a direction, which in cubic crystals is normal to (hkl).
+  chapter: "09-01"
+- term: Brillouin zone
+  definition: The range of crystal wavevectors that describes every distinct Bloch state once, −π/d < k ≤ π/d in one dimension; band diagrams are plotted across it, and its boundaries are where Bragg reflection opens gaps.
+  chapter: "09-01"
+  see_also: [Bloch's theorem]
+- term: Kronig–Penney model
+  definition: An exactly solvable model of an electron in a one-dimensional periodic array of square barriers whose dispersion relation, cos kd = F(E), shows how allowed bands and forbidden gaps arise; energies with |F(E)| ≤ 1 are allowed.
+  chapter: "09-01"
+  see_also: [Bloch's theorem, Energy band]
+- term: Conductivity effective mass
+  definition: The effective mass that sets a carrier's acceleration, and hence mobility, averaged over equivalent valleys as a harmonic mean; for silicon electrons 1/m_c = (1/3)(1/m_l + 2/m_t), giving about 0.26 m0.
+  chapter: "09-01"
+  see_also: [Effective mass, Density-of-states effective mass]
+- term: Density-of-states effective mass
+  definition: The mass of a single spherical band that would hold as many states as the real, possibly anisotropic and multi-valley, band; for silicon electrons m_dn = 6^(2/3)(m_l m_t²)^(1/3), about 1.08 m0 at the band edge. It sets N_C and N_V.
+  chapter: "09-01"
+  see_also: [Conductivity effective mass]
+- term: Indirect band gap
+  definition: A band gap whose conduction-band minimum lies at a different crystal momentum from the valence-band maximum (Si, Ge, SiC), so radiative recombination needs a phonon and light emission is weak, although absorption above the gap remains strong.
+  chapter: "09-01"
+  see_also: [Direct band gap]
+- term: Vacuum level
+  definition: The energy of an electron at rest just outside a material, the reference from which electron affinity and work function are measured on a band diagram.
+  chapter: "09-01"
+- term: Electron affinity
+  definition: The energy χ = E_0 − E_C needed to lift an electron from the conduction-band edge to the vacuum level; 4.05 eV for silicon. Unlike the work function, it does not depend on doping.
+  chapter: "09-01"
+  see_also: [Work function, Vacuum level]
+- term: Vegard's law
+  definition: The rule that an alloy's lattice constant varies linearly with composition between those of its end members, a(x) = (1 − x)a_A + x a_B; band gaps usually deviate from linearity (bowing).
+  chapter: "09-01"
+- term: Lattice mismatch
+  definition: The fractional difference f = (a_layer − a_substrate)/a_substrate between the lattice constants of an epitaxial layer and its substrate; 4.2% for Ge on Si, 0.14% for AlAs on GaAs.
+  chapter: "09-01"
+  see_also: [Epitaxy]
+- term: Epitaxy
+  definition: Growth of a crystalline layer on a crystalline substrate so that the layer continues the substrate's lattice; a mismatched layer is strained until, beyond a critical thickness, misfit dislocations relax it.
+  chapter: "09-01"
+  see_also: [Lattice mismatch]
+- term: Strained silicon
+  definition: Silicon whose lattice is deliberately stretched or compressed, by a SiGe substrate or by local stressors, to reshape its bands and raise carrier mobility; introduced into production logic processes at the 90 nm generation.
+  chapter: "09-01"
