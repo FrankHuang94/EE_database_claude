@@ -115,6 +115,8 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-107 | Op-amp datasheets and analog revenue | Nov 2026 |
 | R-108 | Digital multimeter specifications | Nov 2026 |
 | R-109 | PCB copper, wire gauge and four-terminal shunts | Nov 2026 |
+| R-110 | MLCCs: DC bias, temperature codes, counts and market share | Nov 2026 |
+| R-111 | Electrolytic life, supercapacitors, inductor saturation and silicon capacitors | Nov 2026 |
 
 ---
 
@@ -1002,4 +1004,59 @@ R&D % = R&D ÷ revenue.
 - **Sources:**
   - [TI SNVA054C](https://www.ti.com/lit/pdf/snva054).
   - [Vishay WSK2512 datasheet](https://www.vishay.com/docs/30108/wsk2512.pdf).
+  - Checked Nov 2026.
+
+## R-110 · MLCCs: DC bias, temperature codes, counts and market share
+
+*Gathered by a research subagent (Course 07 facts file, entries F-0701 to F-0707), primary pages opened unless stated.* Extends R-079.
+
+- **DC-bias loss (Samsung Electro-Mechanics engineer, *Electronic Design*, 2 Jul 2020)** [Established]:
+  - "the effective capacitance of a 1-µF, 6.3-V-rated X5R MLCC can be reduced to 0.36 µF by applying 3 V dc (47% of the rated voltage)… a 64% reduction". Measured at 500 mV rms, 1 kHz.
+  - Aging under DC bias reduces capacitance further and is "not a spec that can typically be found in an MLCC datasheet".
+  - The case size is not stated, and the loss depends strongly on case size and dielectric thickness; it is one part's datum, not a rule.
+- **EIA temperature codes (Murata part-numbering guide, PDF created 24 Sep 2026)** [Established]:
+  - C0G 0 ± 30 ppm/°C (−55 to 125 °C); X5R ±15% (−55 to 85 °C); X7R ±15% (−55 to 125 °C); X8R ±15% (−55 to 150 °C); X6S ±22% (−55 to 105 °C); X7T +22/−33%; X7U +22/−56%.
+  - Code: first letter is the low-temperature limit, digit the high limit, last letter the maximum change. EIA-198 itself was not opened.
+- **EIA RS-198 classes (KEMET catalog, undated)** [Established]: Class I "not affected by voltage, frequency or time"; Class II within ±15% and "affected by temperature, voltage, frequency and time"; Class III, for example Z5U +22/−56% over +10 to +85 °C.
+- **Counts (Murata article, 23 Jun 2021)** [Industry estimate]: "as many as 3,000 to 5,000 MLCCs are utilized per vehicle"; "even the latest high-end [smartphone] model includes 1,000 MLCCs"; some Level 2+ BEVs use "more than 10,000".
+- **AI servers (DIGITIMES Asia, 12 Jun 2025, citing SK Securities)** [Industry estimate]: about eight times more MLCCs than traditional servers; "Some estimates suggest up to 25,000 MLCCs per AI server versus 2,000 in conventional units" (unattributed estimate).
+- **Market share** [Contested]:
+  - Murata's corporate page: "Murata's share of the MLCC market is 40%" (undated; basis not stated).
+  - DIGITIMES: Samsung Electro-Mechanics "captured 24% of the global market" in 1H 2024, second to Murata, but the same article also places it in a "10% to 20%" group.
+  - Search excerpts (not opened) cite Yageo's annual report at Murata "over 30%" in 2024.
+  - Range taught: Murata about 30–40%, Samsung Electro-Mechanics about 20–25%.
+- **Not verified:** the Maxim/ADI Tutorial 5527 example (4.7 µF, 6.3 V, 0603 X5R about 93% below nominal at 5 V) remains a search excerpt (analog.com unreachable) and is not used.
+- **Sources:**
+  - [Ma, *Electronic Design* (2020)](https://www.electronicdesign.com/technologies/analog/article/21135733/diagnosing-class-ii-mlcc-effective-capacitance-and-aging-under-dc-bias).
+  - [Murata part-numbering guide](https://pim.murata.com/asset/pim4/ceramicCapacitorSMD/SMD-EN_PDF_CERAMICCAPACITORSMD).
+  - [KEMET temperature characteristics](https://eecs.engineering.oregonstate.edu/education/inventory_datasheets/P54-1418679757.pdf).
+  - [Murata, Automotive MLCCs (2021)](https://article.murata.com/en-global/article/automotive-mlcc-1).
+  - [DIGITIMES Asia (2025)](https://www.digitimes.com/news/a20250612PD224.html).
+  - [Murata capacitor business page](https://corporate.murata.com/company/business/capacitor).
+  - Checked Nov 2026.
+
+## R-111 · Electrolytic life, supercapacitors, inductor saturation and silicon capacitors
+
+*Gathered by a research subagent (Course 07 facts file, entries F-0708 to F-0714), primary documents opened unless stated.* Extends R-082.
+
+- **Aluminum electrolytic life (Nippon Chemi-Con technical note, CAT. No. E1001A 2026)** [Established]:
+  - Life is limited mainly by "loss of electrolyte … through the rubber seal", following "the Arrhenius' Law"; "Lx = Lo·Bt^((To−Tx)/10)" with "BT … approximately 2 over an ambient temperature range from 60°C to 95°C", so "the lifetime is approximately halved for every 10°C rise".
+  - For parts rated 105 °C or higher, "the temperature acceleration factor (BT) needs to be modified".
+- **A low-impedance 105 °C series (Chemi-Con KYB sheet, 2026)** [Established]: "Endurance with ripple current: 8,000/10,000 hours at 105℃" (6.3–10 V / 16–100 V), end of life at a capacitance change of 30%/25% or D.F. at 200% of the initial value: life ends at a parametric limit.
+- **Supercapacitor (Maxwell K2 3.0 V/3000 F datasheet, document 3001423-EN.1, Apr 2016, distributor copy)** [Established]: 3.00 V, 3,000 F, ESR 0.27 mΩ, "Specific Energy, Emax 7.2 Wh/kg", "Stored Energy 3.75 Wh", 520 g. Check: ½ × 3000 × 3² = 13,500 J = 3.75 Wh.
+- **Inductor saturation current definitions:**
+  - Vishay IHLP-4040DZ-01 (document 34193, revision 02-Oct-2026): "DC current (A) that will cause L to drop approximately 20 %"; the 1.0 µH part: Isat 36.0 A, heat rating 17.5 A (ΔT ≈ 40 °C), DCR 3.70 mΩ typical [Established].
+  - Coilcraft XAL7070: 30% drop (R-082) [Established].
+  - Würth WE-XHMI 74439370330: "ISAT 1 |ΔL/L| < 10 % 6.8 A typ." and "ISAT 2 |ΔL/L| < 30 % 18.15 A typ." [Industry estimate] (search excerpt; we-online.com denied access).
+- **Silicon capacitors:**
+  - Murata release (Jul 2021): "silicon capacitors with a density of 1.3µF/mm²", ESL "few pH", profile "<40µm" [Industry estimate] (vendor claim, page read); Murata Hot Chips 2025 poster targets ">1 uF/mm2" integrated passives.
+  - TSMC, S. Y. Hou et al., "Integrated Deep Trench Capacitor in Si Interposer for CoWoS Heterogeneous Integration", IEDM 2019, doi 10.1109/IEDM19573.2019.8993498 (metadata confirmed via Crossref): "up to 340 nF/mm²" and "up to 68 µF per interposer die" [Industry estimate] (abstract read only as a search excerpt).
+- **Sources:**
+  - [Chemi-Con technical note](https://www.chemi-con.co.jp/products/relatedfiles/capacitor/catalog/al-technote-e.pdf).
+  - [Chemi-Con KYB series](https://www.chemi-con.co.jp/products/relatedfiles/capacitor/catalog/KYBLL-e.PDF).
+  - [Maxwell BCAP3000 datasheet (distributor copy)](https://www.boser-tech.com/pdf-9a/BCAP3000-P300-K04.pdf).
+  - [Vishay IHLP-4040DZ-01](https://www.vishay.com/docs/34193/ihlp-4040dz-01.pdf).
+  - [Würth WE-XHMI](https://www.we-online.com/en/components/products/WE-XHMI) (not opened).
+  - [Murata silicon capacitor release](https://www.murata.com/news/capacitor/siliconcapacitors/2021/0618).
+  - [Murata Hot Chips 2025 poster](https://hc2025.hotchips.org/assets/program/posters/HC2025.Murata.High%20Density%20Si-IPD.Jatlaoui.pdf).
   - Checked Nov 2026.

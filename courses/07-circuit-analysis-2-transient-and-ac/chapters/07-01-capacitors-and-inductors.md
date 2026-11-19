@@ -1,4 +1,4 @@
-<!-- status: draft -->
+<!-- status: verified -->
 # 07-01 · Capacitors and Inductors
 
 | | |
@@ -210,7 +210,7 @@ below which the part behaves as a capacitor and above which it behaves as an ind
 
 ### Example 07-01.5 · Decoupling a load step with real capacitors (tier C)
 
-**Setup.** A digital block's supply current steps by 1 A in 1 ns, and the regulator needs 10 ns to respond. The rail may droop by at most 50 mV from the charge drawn, and by at most 25 mV from inductive spikes. Ceramic capacitors of 10 µF nominal are available, each with 0.5 nH of ESL and 5 mΩ of ESR; at the working voltage, assume the datasheet shows 40% of the nominal capacitance remaining (DC-bias derating). (a) Find the capacitance needed for the charge, and compare it with one derated capacitor. (b) Find the spike from one capacitor's ESL, and how many capacitors in parallel are needed to meet the spike limit. (c) Find one capacitor's self-resonant frequency (using its nominal capacitance) and its impedance at 100 kHz and at 100 MHz.
+**Setup.** A digital block's supply current steps by 1 A in 1 ns, and the regulator needs 10 ns to respond. The rail may droop by at most 50 mV from the charge drawn, and by at most 25 mV from inductive spikes. Ceramic capacitors of 10 µF nominal are available, each with 0.5 nH of ESL and 5 mΩ of ESR; at the working voltage, assume the datasheet shows 40% of the nominal capacitance remaining (DC-bias derating; real parts can retain less, [R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)). (a) Find the capacitance needed for the charge, and compare it with one derated capacitor. (b) Find the spike from one capacitor's ESL, and how many capacitors in parallel are needed to meet the spike limit. (c) Find one capacitor's self-resonant frequency (using its nominal capacitance) and its impedance at 100 kHz and at 100 MHz.
 
 **Solution.** (a) $C \ge \Delta I\,\Delta t/\Delta v = 1\ \text{A}\times10\ \text{ns}/50\ \text{mV} = $ **0.2 µF**. One derated capacitor offers $0.4\times10 = $ **4 µF**, twenty times more: charge is not the problem.
 
@@ -295,7 +295,17 @@ Open [labs/07-01-lab/](../labs/07-01-lab/README.md): a notebook and an ngspice n
 
 ## 7. Numbers to know
 
-<!-- PRACTITIONER FACTS TO BE ADDED -->
+| Quantity | Value | Note |
+|---|---|---|
+| Rates | 1 mA into 1 µF: 1 V/ms; 1 V across 1 µH: 1 A/µs | $dv/dt = i/C$, $di/dt = v/L$ |
+| Energy | $\tfrac12Cv^2$, $\tfrac12Li^2$; 10 µF at 5 V: 125 µJ | zero average power in periodic steady state |
+| Ceramic temperature codes | C0G: 0 ± 30 ppm/°C; X5R: ±15% over −55 to 85 °C; X7R: ±15% over −55 to 125 °C | EIA codes as tabulated by Murata ([R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)); the codes say nothing about DC bias |
+| Class II DC-bias loss (one example) | 1 µF, 6.3 V X5R part: 0.36 µF at 3 V | manufacturer's example, case size not stated ([R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)) |
+| MLCCs per device | about 1,000 in a high-end smartphone; 3,000–5,000 per car (2021) | Murata ([R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)) |
+| Aluminum electrolytic life | roughly halves per 10 °C rise (60–95 °C); a low-impedance 105 °C series is rated 8,000–10,000 h at 105 °C | Nippon Chemi-Con ([R-111](../../../reference/research-log.md#r-111--electrolytic-life-supercapacitors-inductor-saturation-and-silicon-capacitors)) |
+| Supercapacitor cell | 3,000 F at 3.0 V stores 3.75 Wh, 7.2 Wh/kg | Maxwell K2 datasheet ([R-111](../../../reference/research-log.md#r-111--electrolytic-life-supercapacitors-inductor-saturation-and-silicon-capacitors)) |
+| Inductor saturation current | defined at a 20% (Vishay IHLP), 30% (Coilcraft) or 10% and 30% (Würth) drop in $L$ | read the footnote ([R-111](../../../reference/research-log.md#r-111--electrolytic-life-supercapacitors-inductor-saturation-and-silicon-capacitors), [R-082](../../../reference/research-log.md#r-082--inductive-power-transfer-power-inductors-and-integrated-magnetics)) |
+| Silicon capacitors for power delivery | about 1.3 µF/mm² (vendor claim) | Murata ([R-111](../../../reference/research-log.md#r-111--electrolytic-life-supercapacitors-inductor-saturation-and-silicon-capacitors)) |
 
 ## 8. Common mistakes
 
@@ -311,17 +321,20 @@ Open [labs/07-01-lab/](../labs/07-01-lab/README.md): a notebook and an ngspice n
 
 ### State of the art (as of Nov 2026)
 
-<!-- STATE OF THE ART TO BE ADDED -->
+- **Class II ceramics lose much of their capacitance under bias.** A Samsung Electro-Mechanics engineer's example: a 1 µF, 6.3 V X5R MLCC falls to 0.36 µF at 3 V DC, a 64% loss at under half its rated voltage, with further loss from aging under bias that datasheets typically do not specify ([R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)) **[Established]**. The EIA temperature code (X5R, X7R) describes only temperature drift.
+- **Capacitor counts are rising with electrification and AI.** Murata gave about 1,000 MLCCs for a high-end smartphone and 3,000–5,000 per car in 2021, with some driver-assisted electric vehicles above 10,000 ([R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)) **[Industry estimate]**; a trade report citing a broker puts AI servers at up to about 25,000 MLCCs against about 2,000 in conventional servers ([R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)) **[Industry estimate]**.
+- **Inductor ratings are not comparable across vendors.** Saturation current is defined at a 20% inductance drop by Vishay's IHLP series, at 30% by Coilcraft's XAL series, and at both 10% and 30% by one Würth series, whose two figures for the same part differ by a factor of about 2.7 ([R-111](../../../reference/research-log.md#r-111--electrolytic-life-supercapacitors-inductor-saturation-and-silicon-capacitors), [R-082](../../../reference/research-log.md#r-082--inductive-power-transfer-power-inductors-and-integrated-magnetics)) **[Established]** for Vishay and Coilcraft, **[Industry estimate]** for Würth (search excerpt).
+- **Capacitance is moving into the package.** Murata offers silicon capacitors at a claimed 1.3 µF/mm², under 40 µm thick, for mounting next to the die ([R-111](../../../reference/research-log.md#r-111--electrolytic-life-supercapacitors-inductor-saturation-and-silicon-capacitors)) **[Industry estimate]**; TSMC reported deep-trench capacitors in its CoWoS silicon interposer at up to 340 nF/mm² (IEDM 2019, read from a search excerpt) ([R-111](../../../reference/research-log.md#r-111--electrolytic-life-supercapacitors-inductor-saturation-and-silicon-capacitors)) **[Industry estimate]**.
 
 ### Why it matters commercially
 
-Passive components are low-priced and high-volume, but they gate production and performance. A phone, a server board or an electric vehicle cannot ship without every one of its capacitors and inductors, and the ceramic capacitors with the highest capacitance per volume come from a small number of suppliers, which made them a recurring supply-chain bottleneck. In power delivery for processors and AI accelerators, the decoupling network (board, package and on-die capacitance) and the regulator's inductors are part of the performance budget: the voltage margin lost to droop is frequency or power that cannot be used. For a buyer or investor, the questions are where the capacitance and inductance physically sit (board, package, die), whose parts and processes they depend on, and how much of the power and area budget they consume.
+Passive components are low-priced and high-volume, but they gate production and performance. A phone, a server board or an electric vehicle cannot ship without every one of its capacitors and inductors, and MLCC supply is concentrated: estimates put Murata at roughly 30–40% of the market and Samsung Electro-Mechanics at around 20–25%, depending on the source and on whether units or revenue are counted ([R-110](../../../reference/research-log.md#r-110--mlccs-dc-bias-temperature-codes-counts-and-market-share)) **[Contested]**. In power delivery for processors and AI accelerators, the decoupling network (board, package and on-die capacitance) and the regulator's inductors are part of the performance budget: the voltage margin lost to droop is frequency or power that cannot be used. For a buyer or investor, the questions are where the capacitance and inductance physically sit (board, package, die), whose parts and processes they depend on, and how much of the power and area budget they consume.
 
 ### Marketing vs Reality
 
-- **"10 µF in a tiny package."** *Reality:* that is the nominal value at zero bias and room temperature. At its working voltage a small class II ceramic can deliver a fraction of it; ask for the capacitance at the actual bias, temperature and age.
+- **"10 µF in a tiny package."** *Reality:* that is the nominal value at zero bias and room temperature. At its working voltage a small class II ceramic can deliver a fraction of it (one manufacturer's example loses 64% at under half its rated voltage); ask for the capacitance at the actual bias, temperature and age.
 - **"Low-ESR capacitor."** *Reality:* at the frequencies of fast load steps, ESL and the mounting inductance dominate. Ask for the impedance curve with the recommended footprint, not just the ESR.
-- **"Inductor rated 10 A."** *Reality:* is that the thermal (rms) current or the saturation current, and at what inductance drop? A part can be thermally fine at a current where its inductance has already collapsed.
+- **"Inductor rated 10 A."** *Reality:* is that the thermal (rms) current or the saturation current, and at what inductance drop (10%, 20% or 30%, depending on the vendor)? A part can be thermally fine at a current where its inductance has already fallen sharply.
 - **"Our regulator has a fast transient response."** *Reality:* the first nanoseconds of any load step are supplied by capacitance near the load, whatever the regulator does; ask what the droop is with the specified decoupling.
 
 ### Questions for engineering leaders
@@ -421,3 +434,5 @@ Problem set: [07-01 problems](../problems/07-01-problems.md) · [solutions](../s
 ## 14. Sources
 
 1. Nilsson and Riedel; Alexander and Sadiku, ch. 6; Agarwal and Lang, ch. 9.
+2. Murata part-numbering guide (temperature characteristics, Sep 2026) and "Automotive MLCCs" (Jun 2021); KEMET MLCC catalog (EIA RS-198 classes); H. T.-J. Ma, "Diagnosing Class II MLCC Effective Capacitance and Aging Under DC Bias", *Electronic Design* (Jul 2020); DIGITIMES Asia (Jun 2025). [R-110]
+3. Nippon Chemi-Con technical note and KYB series sheet (2026); Maxwell K2 3.0 V/3000 F datasheet; Vishay IHLP-4040DZ-01 datasheet (Oct 2026); Würth WE-XHMI (search excerpt); Murata silicon-capacitor release (2021); S. Y. Hou et al. (TSMC), IEDM 2019. [R-111], [R-082]
