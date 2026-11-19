@@ -117,7 +117,7 @@ print(f"{float(s):.2f} {float(a.sum()):.2f} {math.fsum(a.astype(np.float64)):.5f
 100958.34 100000.01 100000.00149 0.1000000015
 ```
 
-(a) The loop gives **100958.34**, almost 1% high: once the float32 total reaches tens of thousands, the gap between float32 values near it (about 0.004–0.008) is comparable to 0.1, so every addition rounds by a large fraction of the addend, and the roundings do not cancel. (b) `np.sum` adds pairwise and gives **100000.01**. (c) `math.fsum` gives the exact sum of the stored values, **100000.00149**, which differs from $10^5$ only because float32 stores 0.1 as 0.1000000015. Lesson: accumulate float32 data in float64 (`a.sum(dtype=np.float64)`) or with pairwise or compensated summation.
+(a) The loop gives **100958.34**, almost 1% high: once the float32 total reaches tens of thousands, the gap between float32 values near it is 0.004–0.008, so each addition of 0.1 is rounded by up to half a gap, 2–4% of the addend. Within one binade (a range between consecutive powers of two) the gap is fixed and 0.1 sits at the same position relative to it, so every rounding has the same sign: the errors add coherently instead of cancelling, and accumulate to about 1%. (b) `np.sum` adds pairwise and gives **100000.01**. (c) `math.fsum` gives the exact sum of the stored values, **100000.00149**, which differs from $10^5$ only because float32 stores 0.1 as 0.1000000015. Lesson: accumulate float32 data in float64 (`a.sum(dtype=np.float64)`) or with pairwise or compensated summation.
 
 ### Solution 05-02.8
 

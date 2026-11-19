@@ -291,6 +291,23 @@ print(best, f"{errors[best]:.4f}", f"{exact_rate:.3f}")
 
 (a) The rule is most accurate at **8%** (error 0.0065 years). (b) It is exact at **7.847%**. Below that the rule overestimates the doubling time, above it underestimates. (`min(errors, key=errors.get)` returns the key with the smallest value; the bisection reuses the function from Solution 05-01.11 with rates in percent.)
 
+### Solution 05-01.15
+
+(a) Read from the bottom: the exception was raised in **`mean`, line 2**, while dividing by `len(values)`. (b) `len(values)` was 0: one channel's list of samples was **empty** (here `"vbat": []`); `summarize` (line 6) called `mean` for it, called in turn from the top-level `print` on line 10. Nothing is wrong with the arithmetic; the data violated an assumption `mean` never checked. (c) Two fixes: make `mean` reject empty input with a clear message (`if not values: raise ValueError("mean of an empty list")`), or make `summarize` skip or mark channels without data (`None` for an empty channel). For a test-equipment logger the second is usually better: a channel that recorded nothing is a fact worth reporting (perhaps a disconnected probe), and crashing the whole summary would lose the other channels' results. Whichever is chosen, the empty case should be decided deliberately, not left to a `ZeroDivisionError`.
+
+### Solution 05-01.16
+
+(a) On Linux or macOS (on Windows, activate with `.venv\Scripts\activate`):
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install numpy
+python -m pip freeze > requirements-lock.txt
+```
+
+`pip freeze` writes every installed package with its exact version, for example `numpy==2.5.4`. (b) `numpy>=2.0` accepts any version from 2.0 on, so a fresh install gets the newest release; `numpy==2.5.4` installs exactly that version. (c) Minimum versions keep the course current (bug and security fixes, new Python versions) and avoid installation failures when old versions stop being built for new platforms. The risk is that a future NumPy changes printed results: a new release may change a random-number stream, a default or an output format, and an exact printed output in a chapter could then differ on the learner's machine (05-02, 05-04). The course manages the risk by running every published output in CI on every push, so a change in a dependency shows up as a failing check rather than as a silent discrepancy, and a lock file can always pin an exact environment when bit-for-bit reproduction matters.
+
 ---
 
 ## Answer key

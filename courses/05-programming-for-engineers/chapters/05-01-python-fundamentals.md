@@ -55,7 +55,7 @@ There are three ways to run the same code:
 - **A script** is a `.py` text file run from a terminal with `python analysis.py`. Scripts run top to bottom every time, which is why production code and this repository's verify scripts are scripts.
 - **The interactive interpreter** (type `python` with no file) evaluates one line at a time: good for quick checks.
 
-Python is an **interpreted** language: the `python` program reads your source, compiles it to an intermediate form (bytecode) and executes that, line by line, at run time. There is no separate build step as in C (05-05), which makes experimenting fast; the price is that many mistakes surface only when the offending line actually runs.
+Python is an **interpreted** language: the `python` program reads your source, compiles the whole file to an intermediate form (bytecode) and then executes it, statement by statement. A syntax error anywhere in the file is therefore reported before anything runs, but everything else (a misspelled variable, a wrong type, a missing file) surfaces only when the offending line actually runs. There is no separate build step as in C (05-05), which makes experimenting fast.
 
 **Virtual environments.** Projects depend on specific versions of libraries. A **virtual environment** is a private folder holding a Python interpreter and its own installed packages, so one project's upgrade cannot break another. The standard workflow, which [SETUP.md](../../../SETUP.md) follows for this repository, is:
 
@@ -71,7 +71,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-The first command creates the environment, the second activates it (on Windows, `.venv\Scripts\activate`), and the third installs the exact libraries the project lists. A `requirements.txt` file that records versions is what lets someone else reproduce your results a year later.
+The first command creates the environment, the second activates it (on Windows, `.venv\Scripts\activate`), and the third installs the libraries the project lists. A `requirements.txt` can state minimum versions (`numpy>=2.0`, as this repository's does) or exact ones (`numpy==2.5.4`, as `pip freeze` writes them); only exact versions let someone else reproduce your results bit for bit a year later, at the price of missing later fixes (05-04, Problem 05-01.16).
 
 ### 3.2 Values, types and names
 
@@ -119,7 +119,7 @@ Arithmetic follows the usual precedence (`**` first, then `*`, `/`, `//`, `%`, t
 - `%` is the **remainder** that goes with it, chosen so that `a == (a // b) * b + a % b` always holds; with a positive divisor it is never negative, which makes it the right tool for wrap-around indices (a ring buffer, 05-08).
 - `**` is exponentiation: `2 ** 10` is 1024, `2 ** 0.5` is √2.
 
-**Integers never overflow.** `2 ** 100` is computed exactly. This is unlike C (05-07), where a 32-bit integer silently wraps around, and it makes Python a safe place to check integer arithmetic.
+**Integers never overflow.** `2 ** 100` is computed exactly. This is unlike C (05-05), where overflowing a 32-bit signed `int` is undefined behavior and unsigned types wrap around modulo $2^{32}$, and it makes Python a safe place to check integer arithmetic.
 
 **Floats are approximations.** A `float` is an IEEE 754 binary64 number: a sign, an 11-bit exponent and a 52-bit fraction, giving 53 significant bits, about 15–17 decimal digits ([R-087](../../../reference/research-log.md#r-087--python-releases-floating-point-and-developer-usage)). Decimal fractions like 0.1 have no exact binary form (just as 1/3 has no exact decimal form), so `0.1` is stored as the nearest binary fraction, and arithmetic results are rounded to the nearest representable value. The gap between 1.0 and the next larger float is **machine epsilon**, $2^{-52} \approx 2.2\times10^{-16}$; near a number $x$ the gap is about $x$ times that (Figure 2).
 
@@ -127,11 +127,11 @@ Arithmetic follows the usual precedence (`**` first, then `*`, `/`, `//`, `%`, t
 
 The consequences, which Example 05-01.2 makes concrete:
 
-- **Never test floats with `==`.** Use `math.isclose(a, b)` (relative tolerance $10^{-9}$ by default) or compare `abs(a - b)` with a tolerance that means something physically.
+- **Never test floats with `==`.** Use `math.isclose(a, b)` (defaults: relative tolerance $10^{-9}$, absolute tolerance 0, so it never accepts a nonzero difference from 0.0; pass `abs_tol` for values near zero) or compare `abs(a - b)` with a tolerance that means something physically (05-04 compares the common tolerance functions).
 - **Rounding error accumulates** in long running sums (Figure 2, right), which is why libraries provide careful summation (`math.fsum`).
 - **Subtracting nearly equal numbers loses digits** (catastrophic cancellation, [02-10](../../02-complex-numbers-des-and-linear-algebra/chapters/02-10-numerical-methods.md)).
 
-![Left: on log-log axes, the spacing between adjacent float64 values grows in proportion to their magnitude, from about 10 to the minus 22 near one millionth to 2 at 2 to the 53, following x times 2 to the minus 52. Right: the error when adding 0.1 N times: the rounding error of the running sum rises roughly in proportion to N, reaching about one millionth at N equals a million, well above the separate representation error of 0.1, which grows as N times 5.6 times 10 to the minus 18.](../../../assets/figures/05-01/float-spacing.svg)
+![Left: on log-log axes, the spacing between adjacent float64 values grows in proportion to their magnitude, from about 10 to the minus 22 near one millionth to 2 at 2 to the 53, following x times 2 to the minus 52. Right: the error when adding 0.1 N times: the rounding error of the running sum rises roughly as N squared, because each rounding is proportional to the growing total, reaching about one millionth at N equals a million, well above the separate representation error of 0.1, which grows as N times 5.6 times 10 to the minus 18.](../../../assets/figures/05-01/float-spacing.svg)
 
 *Figure 2. Left: float64 spacing grows with magnitude, so relative precision (about 16 digits) is constant. Right: in a running sum the rounding of each addition, not the representation of 0.1, dominates the error.*
 
@@ -325,6 +325,47 @@ error: not a resistance: '4k7'
 
 Catch specific exceptions. A bare `except:` that swallows everything hides real bugs: the most dangerous code is code that fails silently and returns plausible numbers.
 
+**Reading a traceback.** When nothing catches an exception, Python prints the chain of calls that led to it. This four-function script (`bench.py`) computes currents from a table whose second resistor was typed in the "4k7" style:
+
+```python
+# not run
+def parse_ohms(text):
+    return float(text)
+
+
+def current_ma(volts, r_text):
+    return volts / parse_ohms(r_text) * 1e3
+
+
+def report(rows):
+    for volts, r_text in rows:
+        print(f"{current_ma(volts, r_text):.3f} mA")
+
+
+report([(5.0, "1000"), (3.3, "4k7")])
+```
+
+Running `python bench.py` with Python 3.13 prints (the full path of the file appears where `...` is shown here):
+
+```text
+5.000 mA
+Traceback (most recent call last):
+  File ".../bench.py", line 14, in <module>
+    report([(5.0, "1000"), (3.3, "4k7")])
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ".../bench.py", line 11, in report
+    print(f"{current_ma(volts, r_text):.3f} mA")
+             ~~~~~~~~~~^^^^^^^^^^^^^^^
+  File ".../bench.py", line 6, in current_ma
+    return volts / parse_ohms(r_text) * 1e3
+                   ~~~~~~~~~~^^^^^^^^
+  File ".../bench.py", line 2, in parse_ohms
+    return float(text)
+ValueError: could not convert string to float: '4k7'
+```
+
+Read it from the bottom up. The last line is the exception and its message: `float` cannot read `'4k7'`. The frame above it is where the exception was raised (line 2, inside `parse_ohms`), and each frame above that is the caller one level out, back to the top-level call on line 14. The `^` markers (Python 3.11 and later) point at the sub-expression being evaluated. The first row printed fine, so the data, not the formula, is at fault: the fix belongs either in the data or in a `parse_ohms` that understands the "4k7" notation, like the version above.
+
 > **Going deeper — what an exception really is.** Exceptions are objects of classes arranged in a hierarchy (`ValueError` and `ZeroDivisionError` both derive from `Exception`), and `except ValueError` also catches its subclasses. You can define your own, for example `class CalibrationError(Exception): pass`, so callers can catch exactly your failure mode. The mechanism unwinds the call stack until a matching `except` is found; if none is, the interpreter prints the traceback and exits.
 
 ## 4. Worked examples
@@ -375,9 +416,9 @@ print(Fraction(0.1))
 3602879701896397/36028797018963968
 ```
 
-The stored 0.1 is exactly $3602879701896397/2^{55}$, slightly more than 0.1. Each of 0.1, 0.2 and 0.3 is rounded to its nearest float, and the rounded sum of the first two lands one step (**5.551×10⁻¹⁷**, a quarter of machine epsilon at this scale) above the float nearest 0.3. Machine epsilon is **2.220×10⁻¹⁶**.
+The stored 0.1 is exactly $3602879701896397/2^{55}$, slightly more than 0.1. Each of 0.1, 0.2 and 0.3 is rounded to its nearest float, and the rounded sum of the first two lands one step (**5.551×10⁻¹⁷**, one unit in the last place for numbers between 0.25 and 0.5, which is $2^{-54} = \varepsilon/4$) above the float nearest 0.3. Machine epsilon is **2.220×10⁻¹⁶**.
 
-**Check.** The relative error, $5.55\times10^{-17}/0.3 \approx 2\times10^{-16}$, is at the level of machine epsilon, as expected for one rounding. *Engineering lesson:* compare with a tolerance. A resistor value computed two different ways may differ in the 16th digit; a test written as `==` will fail at random.
+**Check.** The relative difference, $5.55\times10^{-17}/0.3 = 1.85\times10^{-16}$, is of the order of machine epsilon; it slightly exceeds the $2^{-53} = 1.11\times10^{-16}$ bound for a *single* rounding because three roundings (of 0.1, of 0.2 and of their sum) combine. *Engineering lesson:* compare with a tolerance. A resistor value computed two different ways may differ in the 16th digit; a test written as `==` will fail at random.
 
 ### Example 05-01.3 · Complex arithmetic for an impedance
 
@@ -433,7 +474,7 @@ rejected: resistances must be positive
 
 The parallel combination is **56.90 Ω**, and the decade has **12** values.
 
-**Check.** The result is below the smallest resistor (100 Ω), as any parallel combination must be ✓. *Design note:* a negative resistance would have produced a plausible-looking wrong number; raising an error turns a silent bug into an obvious one. `round(x * 1000)` rather than `int(x * 1000)` matters: `int` truncates, and a float such as 4.7 × 1000 could land just below 4700.
+**Check.** The result is below the smallest resistor (100 Ω), as any parallel combination must be ✓. *Design note:* a negative resistance would have produced a plausible-looking wrong number; raising an error turns a silent bug into an obvious one. `round(x * 1000)` rather than `int(x * 1000)` matters: `int` truncates, and products such as `8.2 * 100` (819.9999999999999) or `0.29 * 100` (28.999999999999996) land just below the integer, so `int` gives 819 and 28.
 
 ### Example 05-01.5 · A loop that answers a business question
 
@@ -563,7 +604,7 @@ IRR = **8.8963%** after **34** halvings; NPV at 10% = **−21.04**.
 The lab ([labs/05-01-lab/](../labs/05-01-lab/README.md)) is a notebook in five parts, each with a *predict, then run* step:
 
 1. **Predict the output:** twenty short expressions (division, slicing, `is` against `==`, string methods). Write your answer for each before running.
-2. **Floats under the microscope:** add 0.1 a million times, compare with `math.fsum`, and find the smallest positive `x` for which `1.0 + x != 1.0`.
+2. **Floats under the microscope:** add 0.1 a million times, compare with `math.fsum`, and find the smallest power of two `x` for which `1.0 + x != 1.0`.
 3. **Aliasing:** build a 3 × 3 grid the wrong way (`[[0] * 3] * 3`) and the right way, and see why one change appears in every row.
 4. **A resistor color-code decoder:** write it as a function with input validation and test it with `assert` statements.
 5. **Timing:** compare a Python loop, the built-in `sum` and a comprehension on a million numbers with `time.perf_counter`, and predict the ranking.
@@ -586,10 +627,10 @@ The lab ([labs/05-01-lab/](../labs/05-01-lab/README.md)) is a notebook in five p
 | Current Python feature release, as of Nov 2026 | 3.15 (released 9 Oct 2026) | New release every October, supported 5 years ([R-087](../../../reference/research-log.md#r-087--python-releases-floating-point-and-developer-usage)) |
 | float64 precision | 53 significant bits ≈ 15–17 decimal digits | IEEE 754-2019 binary64 |
 | Machine epsilon | $2^{-52} \approx 2.22\times10^{-16}$ | Gap from 1.0 to the next float |
-| Largest float | ≈ 1.8×10³⁰⁸ | Beyond it: `inf` |
+| Largest float | ≈ 1.8×10³⁰⁸ | Beyond it, float arithmetic gives `inf`; `2.0 ** 1024` and `math.exp(1000)` raise `OverflowError` |
 | Integers that floats store exactly | up to $2^{53} \approx 9.0\times10^{15}$ | Above that, gaps exceed 1 |
-| Python's `int` | unlimited size | Contrast: C's `int32_t` wraps at about 2.1×10⁹ (05-07) |
-| Developers using Python (self-selected survey, 2026) | 58% of respondents | Stack Overflow ([R-087](../../../reference/research-log.md#r-087--python-releases-floating-point-and-developer-usage)) |
+| Python's `int` | unlimited size | Contrast: C's `int32_t` overflows (undefined behavior) above about 2.1×10⁹ (05-05) |
+| Developers using Python (self-selected survey, 2026) | 58% of those answering the language question | Stack Overflow ([R-087](../../../reference/research-log.md#r-087--python-releases-floating-point-and-developer-usage)) |
 
 ## 8. Common mistakes
 

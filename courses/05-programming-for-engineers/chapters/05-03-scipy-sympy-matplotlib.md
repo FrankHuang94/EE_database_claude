@@ -46,7 +46,7 @@ NumPy (05-02) gives you arrays; three libraries built on it do most of the remai
 
 ### 3.1 Root-finding and optimization (`scipy.optimize`)
 
-**Bracketing root-finders.** `brentq(f, a, b)` finds a root of $f$ between $a$ and $b$, provided $f(a)$ and $f(b)$ have opposite signs. It combines bisection's guarantee with faster interpolation steps (Brent's method) and is the default choice for one equation in one unknown. Give it a bracket you know contains exactly one root; check the result by substituting it back.
+**Bracketing root-finders.** `brentq(f, a, b)` finds a root of $f$ between $a$ and $b$, provided $f$ is **continuous** on $[a, b]$ (no jumps, no poles) and $f(a)$ and $f(b)$ have opposite signs. Under those two conditions a continuous function must cross zero somewhere in between (the intermediate value theorem, [01-02](../../01-calculus-for-engineers/chapters/01-02-limits-and-continuity.md)). It combines bisection's guarantee with faster interpolation steps (Brent's method) and is the default choice for one equation in one unknown. Give it a bracket you know contains exactly one root; check the result by substituting it back.
 
 ```python
 import math
@@ -63,9 +63,46 @@ print(f"{root:.10f} {f(root):.1e}")
 2.0945514815 3.6e-15
 ```
 
-**Scalar optimization.** `minimize_scalar(g, bounds=(a, b), method="bounded")` finds the minimum of $g$ on an interval; to maximize, minimize $-g$. For several variables, `scipy.optimize.minimize` takes a starting point and a method; multi-dimensional problems may have several local minima, so try several starting points.
+The continuity condition is not a technicality. The tangent function changes sign between 1 and 2 by jumping through infinity at $\pi/2$, and `brentq` cannot tell a jump from a crossing:
 
-**What can go wrong.** A root-finder without a valid bracket fails (good) or, for methods that need only a starting guess, may converge to a different root, wander off, or even stop at a point that is not a root at all (bad; the lab shows a case). Always ask whether the problem has one solution, where it roughly is (a quick plot helps), and whether the answer makes physical sense.
+```python
+pole = brentq(math.tan, 1, 2)
+print(f"{pole:.10f} {math.tan(pole):.1e}")
+```
+
+```text
+1.5707963268 7.6e+11
+```
+
+It "converges" to the pole, where the function is about $10^{12}$, not zero. Substituting back catches it at once.
+
+**Newton's method and the secant method.** Bracketing is safe but needs a bracket. The faster family starts from a single guess $x_k$ and uses the local slope. Near $x_k$ a smooth function is close to its tangent line, $f(x) \approx f(x_k) + f'(x_k)(x - x_k)$ (the first-order Taylor approximation of [01-08](../../01-calculus-for-engineers/chapters/01-08-sequences-series-and-taylor.md)). Setting the tangent line to zero and solving for $x$ gives the next guess:
+
+$$
+x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)} .
+$$
+
+Near a **simple root** (one where $f' \ne 0$), the error is roughly squared at every step, so the number of correct digits about doubles per iteration: **quadratic convergence**. The **secant method** replaces $f'(x_k)$ with the slope of the line through the last two points, $x_{k+1} = x_k - f(x_k)\,(x_k - x_{k-1})/[f(x_k) - f(x_{k-1})]$. It needs no derivative and is nearly as fast: the number of correct digits grows by a factor of about 1.6 (the golden ratio) per step. SciPy's `newton(f, x0)` uses the secant method, or Newton's method if you also pass `fprime=`.
+
+```python
+fp = lambda x: 3 * x ** 2 - 2                  # derivative of f
+x = 2.0
+for k in range(4):
+    x = x - f(x) / fp(x)
+    print(k + 1, f"{x:.15f}", f"{abs(x - root):.1e}")
+```
+
+```text
+1 2.100000000000000 5.4e-03
+2 2.094568121104185 1.7e-05
+3 2.094551481698199 1.6e-10
+4 2.094551481542327 4.4e-16
+```
+
+The errors go $5\times10^{-3}$, $2\times10^{-5}$, $2\times10^{-10}$: each is roughly the square of the one before. After four steps the two methods' answers differ only in the last of the 53 bits ($4.4\times10^{-16}$), the limit of double precision.
+
+**What can go wrong.** A bracketing method without a valid bracket refuses to start (good). Newton-type methods have no such guard. Where the slope is nearly zero, the tangent line points far away and the next guess can land anywhere; from a poor start they can converge to a different root, cycle forever, or (SciPy's `newton`, which stops when successive steps become tiny) stop at a point that is not a root at all (bad; the lab shows each of these). Start Newton close to the root (a quick plot, or a few bisection steps, puts you there), always ask whether the problem has one solution and where it roughly is, and always substitute the answer back.
+**Scalar optimization.** `minimize_scalar(g, bounds=(a, b), method="bounded")` finds the minimum of $g$ on an interval; to maximize, minimize $-g$. For several variables, `scipy.optimize.minimize` takes a starting point and a method; multi-dimensional problems may have several local minima, so try several starting points.
 
 ### 3.2 Fitting models to data (`curve_fit`)
 
@@ -78,9 +115,11 @@ Good fitting practice:
 - Look at the **residuals** (data minus model): random scatter means the model fits; a pattern means it does not.
 - Report uncertainties. "τ = 1.001 ms ± 0.007 ms" is a measurement; "τ = 1.0013174 ms" is false precision.
 
+> **Going deeper — where the standard errors come from.** Near the best fit, the model is close to linear in its parameters. Let $J$ be its **Jacobian**, the $n \times p$ table of derivatives of the model value at each of the $n$ data points with respect to each of the $p$ parameters. Linear least-squares theory then gives the parameters' covariance matrix as $\sigma^2(J^\mathsf{T}J)^{-1}$, where σ is the standard deviation of the noise on each point. By default (`absolute_sigma=False`) `curve_fit` does not know σ and estimates it from the residuals, $s^2 = \text{SSR}/(n - p)$, where SSR is the sum of squared residuals; dividing by $n - p$ rather than $n$ corrects for the $p$ parameters having been tuned to these very data (the same reasoning as the $n - 1$ in a sample variance, 03-05). If you know the noise level (a calibrated instrument), pass `sigma=` with `absolute_sigma=True` to use it instead, as Example 05-03.2 shows. Either way, the standard errors assume independent noise of constant size, a correct model and the linear approximation. Correlated noise or a wrong model makes them too small, which is why the residual check comes first.
+
 ### 3.3 Areas and changes (`scipy.integrate`)
 
-**Area under a curve.** Many engineering quantities are accumulations: the energy delivered by a varying power is the area under the power-versus-time curve; the charge delivered by a current is the area under the current curve. `quad(g, a, b)` computes the area under $g$ between $a$ and $b$ (its **integral**, which Course 01 develops) to near machine precision, and returns an error estimate as well. Check that the estimate is small.
+**Area under a curve.** Many engineering quantities are accumulations: the energy delivered by a varying power is the area under the power-versus-time curve; the charge delivered by a current is the area under the current curve. `quad(g, a, b)` computes the area under $g$ between $a$ and $b$ (its **integral**, which Course 01 develops) to a requested accuracy, and returns an error estimate as well. Compare the estimate with the result itself, not with 1: by default `quad` stops once its estimate is below an absolute tolerance of about $1.5\times10^{-8}$, which is generous when the answer is a few nanojoules (box below).
 
 **Change over time.** Many systems are described not by a formula for the quantity but by a rule for how fast it changes. A capacitor charging through a resistor from a source $V_s$ changes its voltage at the rate
 
@@ -88,9 +127,9 @@ $$
 \frac{dv}{dt} = \frac{V_s - v}{RC} ,
 $$
 
-fast when it is far from $V_s$, slowing as it approaches. `solve_ivp(rate, (t0, t1), [v0])` steps this rule forward from the initial value: an **initial-value problem**. Course 02 solves such equations exactly ($v = V_s(1 - e^{-t/RC})$ here) and explains why; here the point is that a computer can follow the rule numerically for systems with no exact solution, and that you should validate it on one that has one, as Example 05-02.5 does.
+fast when it is far from $V_s$, slowing as it approaches. `solve_ivp(rate, (t0, t1), [v0])` steps this rule forward from the initial value: an **initial-value problem**. Course 02 solves such equations exactly ($v = V_s(1 - e^{-t/RC})$ here) and explains why; here the point is that a computer can follow the rule numerically for systems with no exact solution, and that you should validate it on one that has one, as Example 05-03.4 does.
 
-> **Going deeper — tolerances.** `quad` and `solve_ivp` choose their internal step sizes adaptively to meet tolerances: `epsabs`/`epsrel` for `quad` and `atol`/`rtol` for `solve_ivp` (defaults about $10^{-3}$ relative for `solve_ivp`, which is coarse for engineering checks). Tighten them (`rtol=1e-9`) when you compare against exact results, and remember that a solver's answer is only as accurate as its tolerance and the model.
+> **Going deeper — tolerances.** `quad` and `solve_ivp` choose their internal step sizes adaptively to meet tolerances. `quad` stops when its error estimate is below the larger of `epsabs` and `epsrel` × |result|, both $1.49\times10^{-8}$ by default. For a result that is itself small in SI units (10 nJ, 2 µC), that absolute tolerance is not small by comparison, so pass `epsabs=0` (relative accuracy only) or rescale to natural units (ns, mA). `solve_ivp` uses `rtol` (default $10^{-3}$) and `atol` (default $10^{-6}$), which are coarse for engineering checks; tighten them (`rtol=1e-9`) when you compare against exact results. A solver's answer is only as accurate as its tolerance and the model.
 
 ### 3.4 Symbolic algebra (SymPy)
 
@@ -123,7 +162,7 @@ Use SymPy to check hand derivations and to rearrange messy formulas; do not use 
 
 ### 3.5 Interpolation and statistics
 
-**Interpolation** estimates values between tabulated points: a sensor calibration table, a datasheet curve, a lookup table in firmware. `np.interp(x, xp, fp)` interpolates linearly; `scipy.interpolate.CubicSpline` fits a smooth curve through the points. The choice of *variables* matters more than the method: a thermistor's resistance falls exponentially with temperature, so interpolating temperature against $\ln R$ is far more accurate than against $R$.
+**Interpolation** estimates values between tabulated points: a sensor calibration table, a datasheet curve, a lookup table in firmware. `np.interp(x, xp, fp)` interpolates linearly; `scipy.interpolate.CubicSpline` fits a smooth curve through the points. The choice of *variables* matters more than the method: a thermistor's resistance falls roughly exponentially with temperature, so interpolating temperature against $\ln R$ is far more accurate than against $R$. (In the Beta model used below, $R = R_0e^{B(1/T - 1/T_0)}$ with $T$ in kelvin, $\ln R$ is exactly a straight line in $1/T$, so interpolating $1/T$ against $\ln R$ would be exact for this model; temperature in °C against $\ln R$ is only nearly straight.)
 
 ```python
 from scipy.interpolate import CubicSpline
@@ -186,7 +225,7 @@ Conventions for engineering plots:
 
 ### Example 05-03.1 · A diode's operating point
 
-**Setup.** A 5 V source drives a diode through 1 kΩ. The diode obeys $I = I_s(e^{V/V_T} - 1)$ with $I_s = 10^{-14}$ A and $V_T$ = 25.85 mV; the resistor carries $(5 - V)/1000$. Find the diode voltage and current where the two agree.
+**Setup.** A 5 V source drives a diode through 1 kΩ. The diode obeys $I = I_s(e^{V/V_T} - 1)$ with $I_s = 10^{-14}$ A and $V_T$ = 25.852 mV (the thermal voltage at 300 K); the resistor carries $(5 - V)/1000$. Find the diode voltage and current where the two agree.
 
 **Solution.**
 
@@ -232,6 +271,20 @@ $V_s$ = **3.3023 ± 0.0056 V** and τ = **1.0013 ± 0.0065 ms**, both within one
 
 **Check.** If the residual RMS were much larger than the known noise, or the residuals curved systematically, the model would be wrong (a second time constant, a nonlinear capacitor). Report τ as 1.001 ± 0.007 ms: one or two digits of uncertainty set the digits worth quoting.
 
+**Where the ± came from.** By default `curve_fit` estimated the noise from these 26 residuals. Here the noise level is known (20 mV), so it can be supplied instead:
+
+```python
+_, cov_known = curve_fit(model, t, v, p0=(3.0, 0.5e-3), sigma=np.full(t.size, 0.02), absolute_sigma=True)
+s = np.sqrt(np.sum(resid ** 2) / (t.size - 2))
+print(f"s = {s * 1e3:.1f} mV; known noise: +/- {np.sqrt(cov_known[0, 0]):.4f} V, +/- {np.sqrt(cov_known[1, 1]) * 1e3:.4f} ms")
+```
+
+```text
+s = 15.8 mV; known noise: +/- 0.0071 V, +/- 0.0082 ms
+```
+
+This sample happens to scatter less than the true noise (estimated $s$ = **15.8 mV** against 20 mV), so the default standard errors are smaller by the ratio 15.8/20. With the noise level known, the honest uncertainties are **±0.0071 V** and **±0.0082 ms**: τ = 1.001 ± 0.008 ms. With only 26 points, $s$ itself is uncertain by roughly 15%, so either answer is reasonable; what matters is knowing which assumption produced it.
+
 ### Example 05-03.3 · Energy of a pulse as an area
 
 **Setup.** A 1 V half-sine pulse lasting 1 µs, $v(t) = \sin(\pi t/T)$, drives a 50 Ω load. The instantaneous power is $v^2/R$ and the energy is the area under the power curve. Compute it with `quad` and compare with the exact value $T/(2R)$.
@@ -240,7 +293,7 @@ $V_s$ = **3.3023 ± 0.0056 V** and τ = **1.0013 ± 0.0065 ms**, both within one
 
 ```python
 T, R_load = 1e-6, 50.0
-energy, est_err = quad(lambda t: math.sin(math.pi * t / T) ** 2 / R_load, 0, T)
+energy, est_err = quad(lambda t: math.sin(math.pi * t / T) ** 2 / R_load, 0, T, epsabs=0)
 print(f"{energy:.6e} J, exact {T / (2 * R_load):.6e} J, error estimate {est_err:.1e}")
 ```
 
@@ -250,7 +303,7 @@ print(f"{energy:.6e} J, exact {T / (2 * R_load):.6e} J, error estimate {est_err:
 
 The pulse delivers **1.000×10⁻⁸ J** (10 nJ), matching $T/(2R)$.
 
-**Check.** The average of $\sin^2$ over a half period is ½, so the average power is $\tfrac12\times1^2/50$ = 10 mW, and 10 mW for 1 µs is 10 nJ ✓. The error estimate is far below the value, as it should be.
+**Check.** The average of $\sin^2$ over a half period is ½, so the average power is $\tfrac12\times1^2/50$ = 10 mW, and 10 mW for 1 µs is 10 nJ ✓. The error estimate is far below the value, as it should be. Note `epsabs=0`: the answer, $10^{-8}$ J, is smaller than `quad`'s default absolute tolerance ($1.49\times10^{-8}$), so with the defaults `quad` would be entitled to stop at an answer that is wrong by 100%. It does not here, because the integrand is smooth, but in SI units small quantities need relative tolerances (or rescaling to ns and mW).
 
 ### Example 05-03.4 · Simulating a charging capacitor
 
@@ -332,6 +385,9 @@ $R_2 = R_1V_{\text{out}}/(V_{\text{in}} - V_{\text{out}})$, giving **1785.7, 434
 | Ex 05-03.2b | its standard error | 0.0056 | V |
 | Ex 05-03.2c | fitted time constant | 1.0013 | ms |
 | Ex 05-03.2d | its standard error | 0.0065 | ms |
+| Ex 05-03.2e | noise estimated from the residuals, s | 15.8 | mV |
+| Ex 05-03.2f | standard error of V_s with the known 20 mV noise | 0.0071 | V |
+| Ex 05-03.2g | standard error of τ with the known 20 mV noise | 0.0082 | ms |
 | Ex 05-03.3a | pulse energy | 1.000×10^-8 | J |
 | Ex 05-03.4a | voltage after one time constant | 3.1606 | V |
 | Ex 05-03.4b | fraction of the supply | 63.21 | % |
@@ -348,7 +404,7 @@ The lab ([labs/05-03-lab/](../labs/05-03-lab/README.md)) is a notebook in five p
 
 1. **Root-finders compared:** solve the diode equation with bisection (05-01), `brentq` and Newton's method from several starting points, counting function evaluations. *Predict first:* which needs fewest, and which can fail?
 2. **Fitting and residuals:** fit a single exponential to data that actually contain two time constants, and learn to spot the misfit in the residual plot.
-3. **Integration accuracy:** compute an area with a crude sum of rectangles, the trapezoid rule and `quad`, and watch the errors shrink.
+3. **Integration accuracy:** compute the area under $e^t$ with a crude sum of rectangles, the trapezoid rule and `quad`, and watch the errors shrink at different rates as the number of points grows.
 4. **SymPy as a checker:** verify a hand-derived formula (a Wheatstone bridge's balance condition) symbolically.
 5. **A publication-quality figure:** reproduce Figure 1 from data and save it as SVG.
 
@@ -390,7 +446,7 @@ The lab ([labs/05-03-lab/](../labs/05-03-lab/README.md)) is a notebook in five p
 ### State of the art (as of Nov 2026)
 
 - **The stack.** SciPy, SymPy and Matplotlib all build on NumPy, whose 2.0 release (June 2024) changed type-promotion rules and broke binary compatibility for compiled extensions; libraries had to release NumPy-2-compatible versions, a reminder that the scientific stack moves together ([R-087](../../../reference/research-log.md#r-087--python-releases-floating-point-and-developer-usage)) **[Established]**.
-- **Where these tools sit.** Commercial engineering suites (circuit simulators, MATLAB-style environments) and the open Python stack coexist: circuit simulation stays in SPICE-class tools (Course 06 uses ngspice), while data analysis, fitting and plotting increasingly happen in Python, which 58% of Stack Overflow's 2026 respondents reported using ([R-087](../../../reference/research-log.md#r-087--python-releases-floating-point-and-developer-usage)) **[Industry estimate]**.
+- **Where these tools sit.** Commercial engineering suites (circuit simulators, MATLAB-style environments) and the open Python stack coexist: circuit simulation stays in SPICE-class tools (Course 06 uses ngspice), while data analysis, fitting and plotting increasingly happen in Python, in which 58% of the Stack Overflow 2026 respondents who answered the language question reported extensive development work over the past year ([R-087](../../../reference/research-log.md#r-087--python-releases-floating-point-and-developer-usage)) **[Industry estimate]**.
 
 ### Why it matters commercially
 
@@ -415,7 +471,7 @@ Every characterization report, reliability qualification and benchmark chart in 
 
    <details><summary>Answer</summary>
 
-   A function and an interval where the function changes sign. It then guarantees to converge to a root inside that interval.
+   A function that is continuous on an interval, and an interval where it changes sign. It then guarantees to converge to a root inside that interval. Without continuity the guarantee is void: on $[1, 2]$, `brentq(math.tan, 1, 2)` converges to the pole at $\pi/2$, which is why you substitute the answer back.
 
    </details>
 
@@ -483,6 +539,7 @@ Problem set: [05-03 problems](../problems/05-03-problems.md) · [solutions](../s
 - VanderPlas, J., *Python Data Science Handbook*, 2nd ed., chapter 4, "Visualization with Matplotlib" (free online).
 - The SciPy User Guide, docs.scipy.org: "Optimization", "Integration" and "Interpolation" tutorials.
 - The SymPy Tutorial, docs.sympy.org: "Basic Operations", "Simplification" and "Solvers".
+- *Video:* MIT OpenCourseWare 6.0002, *Introduction to Computational Thinking and Data Science* (Fall 2016), Lecture 9, "Understanding Experimental Data" (fitting models to measurements and judging the fit), and Lecture 10 (continuing the topic).
 
 ## 14. Sources
 

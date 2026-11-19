@@ -73,7 +73,7 @@ print(rng.integers(0, 10, size=5), rng.random(2).round(4))
 
 - `np.array` converts a list; `np.arange(start, stop, step)` is the array version of `range` (stop excluded); `np.linspace(a, b, n)` gives `n` evenly spaced points *including* both ends, which is usually what you want for floats.
 - `np.zeros`, `np.ones` and `np.full` create arrays of a given shape.
-- **Random numbers** come from a `Generator` created with `np.random.default_rng(seed)`. Seeding makes a simulation reproducible: the same seed gives the same numbers on every machine, which is how this curriculum's labs produce checkable results.
+- **Random numbers** come from a `Generator` created with `np.random.default_rng(seed)`. Seeding makes a simulation reproducible: the same seed gives the same numbers on every machine *with the same NumPy version*, which is how this curriculum's labs produce checkable results. (NumPy does not promise that a seeded stream stays identical across versions, as better algorithms are adopted; that is one reason to record versions with results, 05-04.)
 
 ### 3.2 Types: dtypes and what they can hold
 
@@ -90,7 +90,13 @@ Every array has one **dtype**. The common ones:
 
 **Fixed-size integers wrap around.** Python's own `int` never overflows (05-01), but an array element has a fixed number of bits, so arithmetic beyond its range wraps modulo $2^n$, usually without an error: 200 + 100 in `uint8` is $300 - 256 = 44$. This is the behavior of C and of hardware (05-07), and it is the classic way image-processing code produces garbage. Convert to a wider type first (`a.astype(np.int16)`).
 
-**Type promotion.** When an operation mixes dtypes, NumPy picks the result's dtype from the operands' dtypes. Since NumPy 2.0 (rules known as NEP 50), a plain Python number is "weak": it adapts to the array's dtype rather than widening it. So `np.float32` data plus the Python float `0.1` stays `float32`, and `uint8` data plus the Python int `100` stays `uint8` (and can overflow). Before 2.0 the result could depend on the *values* involved, a source of surprises; the change also means old code can give different dtypes and precision after an upgrade ([R-087](../../../reference/research-log.md#r-087--python-releases-floating-point-and-developer-usage)).
+**Type promotion.** When an operation mixes dtypes, NumPy picks the result's dtype from the operands' dtypes. A plain Python number is "weak": it adapts to the array's dtype rather than widening it, so `float32` data plus the Python float `0.1` stays `float32`, and `uint8` data plus the Python int `100` stays `uint8` (and can overflow). NumPy 2.0 made this rule uniform (the rules known as NEP 50). Before 2.0 the result could depend on the *values* involved and on whether an operand was an array or a NumPy scalar, and three cases changed ([R-087](../../../reference/research-log.md#r-087--python-releases-floating-point-and-developer-usage)):
+
+- a NumPy *scalar* now keeps its precision: `np.float32(1.0) + 1e-8` is a `float32` (equal to 1.0) in NumPy 2, but was promoted to `float64` (1.00000001) in NumPy 1.x;
+- a Python integer that does not fit the array's type is an error: `uint8` data plus `300` raises `OverflowError` in NumPy 2, where NumPy 1.x quietly switched to `uint16`;
+- a `float64` NumPy scalar is no longer weak: `float32` data plus `np.float64(0.1)` gives `float64` in NumPy 2 but `float32` in NumPy 1.x.
+
+Old code can therefore give different dtypes, precision or errors after an upgrade.
 
 ### 3.3 Elementwise operations and aggregations
 
@@ -176,11 +182,11 @@ where $1.f_2$ is the binary number "1." followed by the 52 fraction bits. The im
 
 **Relative precision is constant.** Every number is rounded to the nearest representable value, so the relative error of one rounding is at most half of machine epsilon, $\varepsilon/2$: $2^{-53}\approx1.1\times10^{-16}$ for float64 and $2^{-24}\approx6\times10^{-8}$ for float32. A float32 cannot distinguish 16,777,216 from 16,777,217: integers are exact only up to $2^{24}$.
 
-**Special values.** Operations that overflow the largest float (about $1.8\times10^{308}$) give `inf`; $0/0$, $\infty - \infty$ and similar give `nan` ("not a number"). NumPy issues a warning rather than an error, and NaN *propagates*: any arithmetic with a NaN gives NaN, and every comparison with NaN, even `nan == nan`, is `False`. One missing reading stored as NaN turns a whole `mean` into NaN; `np.nanmean` and `np.isnan` exist for that reason. Values too small to represent normally become **subnormal** (losing precision gradually) and then 0 (**underflow**).
+**Special values.** Operations that overflow the largest float (about $1.8\times10^{308}$) give `inf`; $0/0$, $\infty - \infty$ and similar give `nan` ("not a number"). NumPy issues a warning rather than an error, and NaN *propagates*: arithmetic with a NaN almost always gives NaN (exceptions exist, such as `nan ** 0`, which is 1.0), and the ordered comparisons and `==` with NaN are `False`, even `nan == nan`, while `nan != nan` is `True`. Python's built-in `max(1, nan)` returns 1, silently dropping the NaN. One missing reading stored as NaN turns a whole `mean` into NaN; `np.nanmean` and `np.isnan` exist for that reason. Values too small to represent normally become **subnormal** (losing precision gradually) and then 0 (**underflow**).
 
 **Catastrophic cancellation.** Subtracting two nearly equal numbers cancels their leading digits, leaving the rounding errors as a large share of what remains. For example $1 - \cos x$ for small $x$: $\cos(10^{-8})$ rounds to exactly 1.0 in float64, so the subtraction gives 0, although the true value is $5\times10^{-17}$. The cure is algebra: rewrite the expression so it does not subtract nearly equal quantities. Here $1 - \cos x = 2\sin^2(x/2)$ exactly, and the right side is computed accurately for any $x$ (Example 05-02.6). Variance formulas, small differences of large measurements and quadratic-formula roots all have stable rewrites; Course 02's numerical-methods chapter ([02-10](../../02-complex-numbers-des-and-linear-algebra/chapters/02-10-numerical-methods.md)) collects them.
 
-**Summation.** `np.sum` adds in a tree (pairwise) rather than strictly left to right, so its rounding error grows roughly like $\log_2 n$ rather than $n$, which is why it is more accurate than a Python loop on long float32 arrays (the lab measures this). `math.fsum` is exact to the last bit but slow.
+**Summation.** Along an array's contiguous (fastest-varying) axis, `np.sum` adds in a tree (pairwise) rather than strictly left to right, so its rounding error grows roughly like $\log_2 n$ rather than $n$, which is why it is more accurate than a Python loop on long float32 arrays (the lab measures this). Along other axes it may add element by element: the column sums `np.full((1_000_000, 2), 0.1, np.float32).sum(axis=0)` come out as 100958.34, the same 1% error as a naive loop. When accuracy matters, accumulate in double precision (`a.sum(axis=0, dtype=np.float64)`). `math.fsum` is exact to the last bit but slow.
 
 > **Going deeper — why pairwise summation helps.** In a running sum, every addition adds a rounding error proportional to the *running total*, so $n$ additions accumulate up to about $n\varepsilon$ relative error. Pairwise summation adds numbers in pairs, then the pair sums in pairs, and so on: each original number passes through only $\log_2n$ additions, so the bound becomes about $\varepsilon\log_2n$. For $n = 10^6$ that is $20\varepsilon$ instead of $10^6\varepsilon$.
 
@@ -240,7 +246,7 @@ best: top 82000, bottom 47000, Vout 1.2023 V, error 0.194%
 
 ### Example 05-02.3 · Yield with a boolean mask
 
-**Setup.** A reference-voltage output is normally distributed with mean 1.000 V and standard deviation 20 mV. Simulate 10,000 parts with the seeded generator `default_rng(2026)`, count the parts outside 1.000 V ± 3%, and compare the fraction with the theoretical $2Q(1.5)$ of 03-02.
+**Setup.** A reference-voltage output is normally distributed with mean 1.000 V and standard deviation 20 mV. Simulate 10,000 parts with the seeded generator `default_rng(2026)`, count the parts outside 1.000 V ± 3%, and compare the fraction with the theoretical $2Q(1.5)$, where $Q(x) = P(Z > x)$ is the upper-tail probability of a standard normal variable $Z$ (03-02).
 
 **Solution.**
 
@@ -281,9 +287,9 @@ print(np.float32(1.0) + 1e-8 == np.float32(1.0), 1.0 + 1e-8 == 1.0)
 True False
 ```
 
-(a) In `uint8`, $300 - 256 =$ **44** and $350 - 256 =$ **94**, silently; widened first, the sums are 300 and 350. (b) `float32` stores **16,777,216**: $2^{24} + 1$ needs 25 significant bits. (c) In `float32`, $10^{-8}$ is below half the gap above 1.0 ($2^{-24}\approx6\times10^{-8}$), so the sum is still 1.0; `float64` keeps it.
+(a) In `uint8`, $300 - 256 =$ **44** and $350 - 256 =$ **94**, silently; widened first, the sums are 300 and 350. (b) `float32` stores **16,777,216**: $2^{24} + 1$ needs 25 significant bits. (c) In `float32`, $10^{-8}$ is below half the gap above 1.0 ($2^{-24}\approx6\times10^{-8}$), so the sum is still 1.0; `float64` keeps it. Part (c) depends on the NumPy version: NumPy 1.x promoted `np.float32(1.0) + 1e-8` to `float64`, and printed `False` on the first line of this output.
 
-**Check.** NEP 50 keeps `pixels + 100` in `uint8` because the Python `100` is "weak"; the result wraps. Brightening an image by adding a constant is the classic bug this causes: bright pixels turn dark.
+**Check.** `pixels + 100` stays in `uint8` because the Python `100` is "weak"; the result wraps (in every NumPy version). Brightening an image by adding a constant is the classic bug this causes: bright pixels turn dark.
 
 ### Example 05-02.5 · Views and copies in a signal chain
 
@@ -420,7 +426,7 @@ The lab ([labs/05-02-lab/](../labs/05-02-lab/README.md)) is a notebook in five p
 2. **Assuming a slice is a copy.** Modifying a slice modifies the original; use `.copy()`.
 3. **Using `and`/`or` with arrays.** Use `&`, `|` and `~`, with parentheses: `(v > 0.97) & (v < 1.03)`.
 4. **Integer overflow in small dtypes.** `uint8` and `int16` wrap silently; widen before arithmetic.
-5. **Comparing floats with `==`.** Use `np.isclose` / `np.allclose`.
+5. **Comparing floats with `==`.** Use `np.isclose` / `np.allclose`, and know their defaults (`rtol=1e-5`, `atol=1e-8`): `np.isclose(1e-9, 2e-9)` is `True`, so 1 nF and 2 nF expressed in farads compare "equal". Set `atol` from the scale of your quantity (05-04).
 6. **Letting NaN spread.** Check `np.isnan(x).any()` on loaded data; use `np.nan*` functions deliberately.
 7. **Shape mismatches.** Print `.shape` when broadcasting surprises you; add axes with `None`.
 8. **Unseeded randomness in tests.** A test that passes "most of the time" is a broken test; seed the generator.
@@ -480,7 +486,7 @@ Number formats are a hardware strategy. Halving the bits per number roughly halv
 
    <details><summary>Answer</summary>
 
-   `[44]`: the result stays `uint8` (the Python 100 adapts to the array's type under NumPy 2's rules) and 300 wraps modulo 256.
+   `[44]`: the result stays `uint8` (the Python 100 adapts to the array's type, as it always has for arrays) and 300 wraps modulo 256.
 
    </details>
 
@@ -488,7 +494,7 @@ Number formats are a hardware strategy. Halving the bits per number roughly halv
 
    <details><summary>Answer</summary>
 
-   IEEE 754 defines every comparison with NaN as false, so NaN is not equal even to itself. Use `np.isnan(x)`.
+   IEEE 754 makes NaN unordered: `<`, `>`, `<=`, `>=` and `==` with a NaN are false, so NaN is not equal even to itself (and `x != x` is true exactly when `x` is NaN). Use `np.isnan(x)`.
 
    </details>
 
@@ -526,6 +532,7 @@ Problem set: [05-02 problems](../problems/05-02-problems.md) · [solutions](../s
 - VanderPlas, J., *Python Data Science Handbook*, 2nd ed., O'Reilly (free online), chapter 2, "Introduction to NumPy".
 - The NumPy User Guide, numpy.org: "NumPy: the absolute basics for beginners" and "Broadcasting".
 - Goldberg, D., "What every computer scientist should know about floating-point arithmetic", *ACM Computing Surveys* 23(1), 1991, sections 1–2.
+- *Video:* VanderPlas, J., "Losing Your Loops: Fast Numerical Computing with NumPy", PyCon US 2015 (30 minutes; the recording is listed on pyvideo.org), a talk on replacing Python loops with whole-array operations.
 
 ## 14. Sources
 

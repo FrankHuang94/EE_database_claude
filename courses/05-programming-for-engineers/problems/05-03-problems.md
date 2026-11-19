@@ -21,7 +21,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 05-03.3 [B]
 
-**An LED-style operating point.** Repeat Example 05-03.1 with a 3.3 V source and a 330 Ω resistor. Find the diode voltage and current.
+**A lower-voltage operating point.** Repeat Example 05-03.1 with a 3.3 V source and a 330 Ω resistor. Find the diode voltage and current.
 
 ### Problem 05-03.4 [B]
 
@@ -29,7 +29,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 05-03.5 [B]
 
-**Charge as an area.** A current decays as $i(t) = 2e^{-t/1\,\text{ms}}$ mA. Use `quad` to find the total charge it delivers (from 0 to ∞) and the charge delivered in the first millisecond.
+**Charge as an area.** A current decays as $i(t) = 2e^{-t/1\,\text{ms}}$ mA. Use `quad` to find the total charge it delivers (from 0 to ∞) and the charge delivered in the first millisecond. Print `quad`'s error estimates too, with the default tolerances and with `epsabs=0`, and say which you would trust.
 
 ### Problem 05-03.6 [B]
 
@@ -49,7 +49,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 05-03.10 [C]
 
-**When the model is wrong.** Simulate 51 samples from 0 to 25 ms of $v = 5(1 - e^{-t/1\,\text{ms}}) + 0.5(1 - e^{-t/5\,\text{ms}})$ with 10 mV of noise (`default_rng(5)`). Fit a single exponential $V_s(1 - e^{-t/\tau})$. Report the fitted values and the RMS residual, and explain how the residuals reveal that the model is inadequate.
+**When the model is wrong.** Simulate 51 samples from 0 to 25 ms of $v = 5(1 - e^{-t/1\,\text{ms}}) + 0.5(1 - e^{-t/5\,\text{ms}})$ with 10 mV of noise (`default_rng(5)`). Fit a single exponential $V_s(1 - e^{-t/\tau})$. Report the fitted values and the RMS residual. Count the **runs** in the residuals (maximal stretches of the same sign) and compare with the number expected if the signs were random, $\mu = 1 + 2n_+n_-/n$ with standard deviation $\sqrt{(\mu - 1)(\mu - 2)/(n - 1)}$, where $n_+$ and $n_-$ count the positive and negative residuals and $n = n_+ + n_-$. Explain how the residuals reveal that the model is inadequate.
 
 ### Problem 05-03.11 [C]
 
@@ -58,6 +58,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 ### Problem 05-03.12 [C]
 
 **Several roots.** The polynomial $x^3 - 6x^2 + 11x - 6$ has three real roots. Find them exactly with SymPy and numerically with `brentq`, choosing three brackets. What would happen with the bracket $[0, 4]$?
+
+### Problem 05-03.13 [B]
+
+**A Bode plot for a report.** For the RC low-pass filter $H = 1/(1 + jf/f_c)$ with $f_c$ = 1 kHz, the magnitude in dB is $-10\log_{10}[1 + (f/f_c)^2]$ and the phase is $-\arctan(f/f_c)$. Make a two-panel figure (magnitude in dB above, phase in degrees below) over 10 Hz to 1 MHz, sharing the frequency axis, following the plotting conventions of §3.6, and save it as SVG. Then, from the plotted arrays (not the formulas), read off (a) the phase at $f_c$, (b) the magnitude at 10 kHz and at 100 kHz, and (c) the slope between those two frequencies in dB per decade. Finally, check your figure programmatically: confirm that the x-axis is logarithmic and that every axis has a label with a unit.
 
 ---
 
@@ -69,4 +73,4 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 2. Fitting with uncertainties | 4, 10 |
 | 3. Areas and initial-value problems | 5, 6 |
 | 4. Symbolic algebra | 7, 8, 12 |
-| 5. Plotting and reading curves | 9, 11 |
+| 5. Plotting and reading curves | 9, 11, 13 |

@@ -18,7 +18,7 @@ Chapter sections 3.2 to 3.9 and Examples 05-01.2 and 05-01.4; Problems 05-01.3 a
 
 1. Open the notebook, then **Kernel → Restart & Run All** once to confirm it runs; then clear outputs and work through it cell by cell.
 2. **Part 1:** write down your prediction for each of the twenty expressions before running the cell. Score yourself.
-3. **Part 2:** predict the error after a million additions of 0.1, and the smallest `x` with `1.0 + x != 1.0`.
+3. **Part 2:** predict the error after a million additions of 0.1, and the smallest power of two `x` with `1.0 + x != 1.0`.
 4. **Part 3:** predict how many ones each grid contains after one assignment.
 5. **Part 4:** predict what the decoder should do with an invalid color, then run the tests.
 6. **Part 5:** predict the ranking of the three timing methods.

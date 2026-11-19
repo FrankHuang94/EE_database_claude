@@ -73,16 +73,22 @@ $V_0$ = **5.032 ± 0.032 V** and τ = **1.998 ± 0.021 ms**, both within about o
 ### Solution 05-03.5
 
 ```python
-total, _ = quad(lambda t: 2e-3 * math.exp(-t / 1e-3), 0, np.inf)
-first_ms, _ = quad(lambda t: 2e-3 * math.exp(-t / 1e-3), 0, 1e-3)
-print(f"{total * 1e6:.4f} uC {first_ms * 1e6:.4f} uC {100 * first_ms / total:.2f}%")
+i_t = lambda t: 2e-3 * math.exp(-t / 1e-3)
+total, est_default = quad(i_t, 0, np.inf)
+total_rel, est_rel = quad(i_t, 0, np.inf, epsabs=0)
+first_ms, est_first = quad(i_t, 0, 1e-3, epsabs=0)
+print(f"{total_rel * 1e6:.4f} uC {first_ms * 1e6:.4f} uC {100 * first_ms / total_rel:.2f}%")
+print(f"estimates: default {est_default:.1e} C, epsabs=0 {est_rel:.1e} C, first ms {est_first:.1e} C")
 ```
 
 ```text
 2.0000 uC 1.2642 uC 63.21%
+estimates: default 1.6e-09 C, epsabs=0 3.3e-16 C, first ms 1.4e-20 C
 ```
 
 The total charge is **2.0000 µC** (peak current × time constant, 2 mA × 1 ms), and **1.2642 µC**, 63.21%, arrives in the first time constant. `quad` handles the infinite upper limit by a change of variables.
+
+The error estimates are the lesson. With the default tolerances, `quad` stopped as soon as its estimate fell below the absolute tolerance of $1.49\times10^{-8}$ C, which is 0.7% of the answer; its estimate, $1.6\times10^{-9}$ C, is 0.08% of 2 µC: adequate for four digits, but only by luck of how quickly it converged. With `epsabs=0` it works to a relative tolerance and reports $3\times10^{-16}$ C. Trust the `epsabs=0` result, or rescale the problem to mA and ms so that the answer is of order 1.
 
 ### Solution 05-03.6
 
@@ -148,15 +154,21 @@ model = lambda t, vs, tau: vs * (1 - np.exp(-t / tau))
 (vs, tau2), _ = curve_fit(model, t2, y2, p0=(5.0, 1e-3))
 resid = y2 - model(t2, vs, tau2)
 print(f"Vs = {vs:.3f} V, tau = {tau2 * 1e3:.3f} ms, rms residual {np.sqrt(np.mean(resid ** 2)) * 1e3:.1f} mV")
-print(np.sign(resid[[2, 10, 20, 40]]))
+signs = np.sign(resid)
+runs = 1 + int(np.sum(signs[1:] != signs[:-1]))
+n_pos, n_neg = int(np.sum(signs > 0)), int(np.sum(signs < 0))
+n = n_pos + n_neg
+mu = 1 + 2 * n_pos * n_neg / n
+sd = math.sqrt((mu - 1) * (mu - 2) / (n - 1))
+print(f"{runs} runs ({n_pos} positive, {n_neg} negative); random signs would give {mu:.1f} +/- {sd:.1f}")
 ```
 
 ```text
 Vs = 5.446 V, tau = 1.148 ms, rms residual 49.7 mV
-[ 1. -1. -1.  1.]
+6 runs (30 positive, 21 negative); random signs would give 25.7 +/- 3.4
 ```
 
-The fit gives $V_s$ = **5.446 V** and τ = **1.148 ms**, with an RMS residual of **49.7 mV**, five times the 10 mV noise. The residuals are not random: they have long runs of the same sign (the signs printed at four times show the pattern), the signature of a missing slow component. A two-exponential model would fit to the noise level.
+The fit gives $V_s$ = **5.446 V** and τ = **1.148 ms**, with an RMS residual of **49.7 mV**, five times the 10 mV noise. The residuals are not random. They fall into only **6** runs of the same sign, where 51 residuals with random signs would give **25.7 ± 3.4** runs (this comparison is the Wald–Wolfowitz runs test); 6 is almost six standard deviations too few. Long runs mean the residuals follow a smooth curve, the signature of a missing slow component. A two-exponential model would fit to the noise level (the lab does it).
 
 ### Solution 05-03.11
 
@@ -190,6 +202,57 @@ print([round(brentq(f12, a, b), 10) for a, b in ((0.5, 1.5), (1.5, 2.5), (2.5, 3
 
 The roots are exactly **1, 2 and 3** ($p = (x-1)(x-2)(x-3)$), and `brentq` finds each from its own bracket. On $[0, 4]$ the endpoints have opposite signs ($p(0) = -6$, $p(4) = 6$), so `brentq` would run, but it returns only *one* of the three roots, and which one depends on the algorithm's steps: a valid bracket guarantees a root, not a particular root. Plot first, then bracket each root separately.
 
+### Solution 05-03.13
+
+```python
+from pathlib import Path
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
+f = np.logspace(1, 6, 501)                      # 10 Hz to 1 MHz, 100 points per decade
+mag_db = -10 * np.log10(1 + (f / 1e3) ** 2)
+phase_deg = -np.degrees(np.arctan(f / 1e3))
+fig, (ax_m, ax_p) = plt.subplots(2, 1, sharex=True, figsize=(6, 5))
+ax_m.semilogx(f, mag_db)
+ax_m.set_ylabel("magnitude (dB)")
+ax_m.set_title("RC low-pass filter, $f_c$ = 1 kHz")
+ax_p.semilogx(f, phase_deg)
+ax_p.set_ylabel("phase (degrees)")
+ax_p.set_xlabel("frequency (Hz)")
+ax_p.set_yticks([0, -45, -90])
+for ax in (ax_m, ax_p):
+    ax.grid(True, which="both", alpha=0.3)
+    ax.axvline(1e3, ls="--", lw=1)              # mark the corner frequency
+fig.tight_layout()
+fig.savefig("rc-bode.svg")
+plt.close(fig)
+
+read = lambda y, f0: float(np.interp(np.log10(f0), np.log10(f), y))   # interpolate on the log axis
+m10k, m100k = read(mag_db, 1e4), read(mag_db, 1e5)
+print(f"phase at fc {read(phase_deg, 1e3):.2f} deg; {m10k:.2f} dB at 10 kHz, {m100k:.2f} dB at 100 kHz")
+print(f"slope {m100k - m10k:.2f} dB/decade")
+labels = [ax_m.get_ylabel(), ax_p.get_ylabel(), ax_p.get_xlabel()]
+print(ax_p.get_xscale(), all(s.endswith(")") for s in labels), Path("rc-bode.svg").stat().st_size > 0)
+```
+
+```text
+phase at fc -45.00 deg; -20.04 dB at 10 kHz, -40.00 dB at 100 kHz
+slope -19.96 dB/decade
+log True True
+```
+
+(a) The phase at $f_c$ is **−45.00°**. (b) The magnitude is **−20.04 dB** at 10 kHz and **−40.00 dB** at 100 kHz. (c) The slope is **−19.96 dB/decade**, approaching the asymptotic −20 dB/decade; it falls slightly short because at 10 kHz the response is still 0.04 dB above its asymptote. Exactly, $-10\log_{10}101 = -20.04$ dB, $-10\log_{10}10001 = -40.00$ dB and $\arctan 1 = 45°$ ✓.
+
+What makes the figure fit for a report:
+
+- a log frequency axis, because the behavior spans five decades, and magnitude in dB, so that the roll-off is a straight line;
+- both panels sharing one frequency axis, so a reader can line up the −3 dB point with the −45° point (the dashed line at $f_c$);
+- every axis labeled with quantity and unit; phase ticks at the meaningful values 0°, −45° and −90°; a title saying what was plotted;
+- saved as SVG from a script, so it can be regenerated when the filter changes.
+
+The programmatic check (log scale, labels ending in a unit, file written) is the kind of test 05-04 automates; reading numbers from the plotted arrays, interpolating on the log axis, is how you would read a measured curve that has no formula.
+
 ---
 
 ## Answer key
@@ -218,5 +281,12 @@ The roots are exactly **1, 2 and 3** ($p = (x-1)(x-2)(x-3)$), and `brentq` finds
 | 05-03.10a | fitted Vs (wrong model) | 5.446 | V |
 | 05-03.10b | fitted τ (wrong model) | 1.148 | ms |
 | 05-03.10c | RMS residual | 49.7 | mV |
+| 05-03.10d | runs of one sign in the residuals | 6 | — |
+| 05-03.10e | runs expected for random signs | 25.7 | — |
+| 05-03.10f | its standard deviation | 3.4 | — |
 | 05-03.11a | −20 dB crossing | 9949.9 | Hz |
 | 05-03.12a | number of real roots | 3 | — |
+| 05-03.13a | phase at the corner frequency | −45.00 | ° |
+| 05-03.13b | magnitude at 10 kHz | −20.04 | dB |
+| 05-03.13c | magnitude at 100 kHz | −40.00 | dB |
+| 05-03.13d | slope between 10 and 100 kHz | −19.96 | dB/decade |

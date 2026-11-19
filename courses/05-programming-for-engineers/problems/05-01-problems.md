@@ -51,15 +51,15 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Parsing component values.** Extend `parse_ohms` from §3.9 to accept the prefixes `m` (milli), `k`, `M` and `G`. Find the total resistance of `["4.7k", "220", "1M", "68"]` in series, and show that `"4.7K"` (capital K) is rejected with a clear message.
 
-### Problem 05-01.11 [C]
+### Problem 05-01.11 [B]
 
 **When does the capacitor reach 1.8 V?** A capacitor discharges as $v(t) = 3.3e^{-t/\tau}$ V with τ = 2 ms. Using the `bisect` function of Example 05-01.7, find the time at which $v$ falls to 1.8 V, searching $[0, 10\ \text{ms}]$ with a tolerance of $10^{-9}$ s. Report the time in ms, the number of halvings, and compare with the exact $\tau\ln(3.3/1.8)$.
 
-### Problem 05-01.12 [C]
+### Problem 05-01.12 [B]
 
 **A temperature log.** Write a CSV file with columns `hour` and `temp_c` for hours 0 to 23, where `temp_c = 20 + hour % 12`. Read it back with `csv.DictReader` and report the mean temperature, the maximum, and the number of hours above 28 °C.
 
-### Problem 05-01.13 [C]
+### Problem 05-01.13 [B]
 
 **Counting set bits.** Using `bin(x).count("1")`, find (a) the total number of 1 bits in all integers from 0 to 255, and (b) how many of those integers have exactly four 1 bits. Explain both answers by counting.
 
@@ -67,14 +67,38 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **How good is the rule of 72?** For whole-number growth rates from 1% to 20%, compare the exact doubling time $\ln2/\ln(1 + r)$ with $72/(100r)$. (a) At which whole-number rate is the rule most accurate? (b) Using bisection, find the rate (in percent) at which the rule is exact.
 
+### Problem 05-01.15 [A]
+
+**Reading a traceback.** Running `stats.py` with Python 3.13 printed the following (paths shortened to `...`):
+
+```text
+Traceback (most recent call last):
+  File ".../stats.py", line 10, in <module>
+    print(summarize(readings))
+          ~~~~~~~~~^^^^^^^^^^
+  File ".../stats.py", line 6, in summarize
+    return {name: mean(samples) for name, samples in channels.items()}
+                  ~~~~^^^^^^^^^
+  File ".../stats.py", line 2, in mean
+    return sum(values) / len(values)
+           ~~~~~~~~~~~~^~~~~~~~~~~~~
+ZeroDivisionError: division by zero
+```
+
+(a) In which function, and on which line, was the exception raised? (b) What must be true of the data for this to happen? (c) Propose two different fixes, and say which you prefer for a test-equipment logger.
+
+### Problem 05-01.16 [B]
+
+**A reproducible environment.** (a) Write the commands that create a virtual environment called `.venv`, install NumPy into it, and record the exact installed versions in `requirements-lock.txt`. (b) Explain the difference between `numpy>=2.0` and `numpy==2.5.4` in a requirements file. (c) This repository's `requirements.txt` uses minimum versions. What does that gain and what does it risk, given that several chapters publish exact printed outputs?
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 05-01) | Problems |
 |---|---|
-| 1. Running Python, environments | 7, 12 |
+| 1. Running Python, environments | 7, 12, 16 |
 | 2. Core types, division, floats, aliasing | 1, 2, 3, 5, 6, 8, 13 |
 | 3. Control flow, comprehensions, functions | 4, 6, 7, 8, 9, 11, 14 |
 | 4. Modules, files, exceptions | 4, 10, 12 |
-| 5. Predicting output and debugging | 1, 2, 3, 6, 7 |
+| 5. Predicting output and debugging | 1, 2, 3, 6, 7, 15 |

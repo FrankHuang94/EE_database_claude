@@ -55,7 +55,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A quadratic with a tiny root.** For $x^2 - 10^8x + 1 = 0$, compute the smaller root with the textbook formula $(-b - \sqrt{b^2 - 4ac})/2a$ and with the stable form $c/(a\,x_{\text{large}})$, where $x_{\text{large}}$ is the larger root. Which is right, and why?
 
-### Problem 05-02.12 [C]
+### Problem 05-02.12 [B]
 
 **Fitting a decay.** A capacitor voltage sampled at $t$ = 0, 1, …, 5 ms follows $v = 5e^{-t/\tau}$ with τ = 2 ms. Recover τ and the initial voltage with a straight-line fit to $\ln v$ against $t$.
 
