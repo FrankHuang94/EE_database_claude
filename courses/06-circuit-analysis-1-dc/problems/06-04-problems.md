@@ -15,7 +15,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Counting unknowns.** A circuit has 6 nodes (including the reference) and 9 branches. Two of the branches are voltage sources: one from node 1 to the reference, the other floating between nodes 3 and 4. (a) How many unknowns does basic nodal analysis start with? (b) How many unknowns would the branch-variable method of 06-03 have? (c) What is the size of the MNA matrix a simulator would build? (d) Solving by hand with a supernode, how many simultaneous equations remain, and which are they?
 
-### Problem 06-04.2 [A]
+### Problem 06-04.2 [B]
 
 **A matrix by inspection.** Three nodes: $R_a$ = 1 kΩ from node 1 to ground, $R_b$ = 2 kΩ between nodes 1 and 2, $R_c$ = 4 kΩ between nodes 2 and 3, $R_d$ = 5 kΩ from node 3 to ground and $R_e$ = 2.5 kΩ between nodes 1 and 3. A 3 mA source pushes current into node 1, and a 1 mA source draws current out of node 3. (a) Write $\mathbf{G}$ (in mS) and $\mathbf{i}$ (in mA) by inspection. (b) Check that $\mathbf{G}$ is symmetric and diagonally dominant, and say which rows are strictly dominant and why. (c) Solve for the node voltages (by computer or by elimination) and find the current in every resistor. (d) Check the power balance.
 
@@ -76,14 +76,22 @@ Then check KCL at node 2 and the power balance.
 
 **Source transformation inside nodal analysis.** A 10 V source with 2 Ω internal resistance feeds node 1. Node 1 has 3 Ω to ground and 1 Ω to node 2; node 2 has 6 Ω to ground, and a 2 A sink draws current out of node 2. (a) Replace the practical voltage source with its Norton equivalent and write the 2 × 2 nodal system. (b) Solve for $v_1$ and $v_2$. (c) Find the current the actual 10 V source delivers. Is it the Norton source's 5 A? (d) Compare the power delivered by the 10 V source with that delivered by the Norton current source, and explain why they differ although every external voltage and current is the same.
 
+### Problem 06-04.15 [B]
+
+**A current source in series with a resistor.** A 2 mA current source pushes current from ground through a 5 kΩ resistor into node 1. Node 1 has 2 kΩ to ground and 4 kΩ to node 2; node 2 has 4 kΩ to ground and a second 2 mA source pushing current into it from ground. (a) Write the two nodal equations, and explain why the 5 kΩ resistor does not appear in them. (b) Solve for $v_1$ and $v_2$. (c) Find the voltage across the first current source (its output terminal relative to ground), the power it delivers, and the power the 5 kΩ resistor dissipates.
+
+### Problem 06-04.16 [B]
+
+**A supernode in a larger circuit.** A 4 V source has its + terminal at node 1 and its − terminal at node 2. A 2 mA source pushes current from ground into node 1. Resistors: 2 kΩ from node 1 to ground, 4 kΩ from node 2 to ground, 1 kΩ from node 2 to node 3, 2 kΩ from node 3 to ground, 2 kΩ from node 3 to node 4 and 1 kΩ from node 4 to ground. A 1 mA source pushes current from ground into node 4. (a) Write the system as four equations in $v_1$ to $v_4$ (the source constraint, the supernode's KCL, and KCL at nodes 3 and 4). (b) Solve it. (c) Find the current through the 4 V source and the power it delivers.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 06-04) | Problems |
 |---|---|
-| 1. Node voltages and KCL in node voltages | 1, 3, 4 |
+| 1. Node voltages and KCL in node voltages | 1, 3, 4, 15 |
 | 2. The nodal matrix by inspection and its properties | 2, 8, 9, 11 |
-| 3. Grounded and floating voltage sources (supernodes) | 4, 5, 6, 14 |
+| 3. Grounded and floating voltage sources (supernodes) | 4, 5, 6, 14, 16 |
 | 4. Modified nodal analysis, stamps and sparse solvers | 1, 5, 7, 12, 13 |
-| 5. Solving by hand and numerically, with checks | 2, 3, 6, 10, 11, 14 |
+| 5. Solving by hand and numerically, with checks | 2, 3, 6, 10, 11, 14, 15, 16 |

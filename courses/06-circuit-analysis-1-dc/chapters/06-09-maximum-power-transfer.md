@@ -19,7 +19,7 @@
 
 ## 1. Big picture
 
-Given a source you cannot change, how should you choose the load to extract the most power? Thévenin's theorem reduces the source to $V_{th}$ and $R_{th}$, and a one-line optimization gives the answer: make the load equal to the source's resistance. That is the **maximum power transfer theorem**. It is one of the most quoted and most misapplied results in electrical engineering. At the maximum, exactly half the power is lost inside the source, so no power system ever runs there; yet in radio receivers, sensor front ends, transmission lines and energy harvesters, matching is exactly right.
+Given a source you cannot change, how should you choose the load to extract the most power? Thévenin's theorem reduces the source to $V_{th}$ and $R_{th}$, and a one-line optimization gives the answer: make the load equal to the source's resistance. That is the **maximum power transfer theorem**. It is one of the most quoted and most misapplied results in electrical engineering. When the source's Thévenin resistance is a physical resistance (a battery's internal resistance, a cable), exactly half the power is lost inside it at the maximum, so no power system runs there; yet in radio receivers, sensor front ends, transmission lines and energy harvesters, matching is exactly right.
 
 - **Signals and RF:** antennas, cables and amplifiers are matched (usually to 50 Ω) so that weak signals are transferred without waste and without reflections (Courses 13 and 21).
 - **Power delivery:** batteries, power supplies, PoE ports and the grid are designed with source resistances far below their loads, trading peak power for efficiency (Example 06-09.2).
@@ -69,16 +69,16 @@ $$
 
 ### 3.2 Efficiency
 
-The source's internal resistance carries the same current as the load, so the fraction of the source's power that reaches the load is
+When the source really is a voltage in series with a physical resistance (a battery's internal resistance, a cable, a thermoelectric generator), that resistance carries the same current as the load, so the fraction of the source's power that reaches the load is
 
 $$
 \eta = \frac{i^2R_L}{i^2(R_{th} + R_L)} = \frac{R_L}{R_{th} + R_L}.
 $$
 
-At the match, $\eta$ = **50%**. Eliminating $R_L$ between $p/p_{max} = 4R_LR_{th}/(R_{th} + R_L)^2$ and $\eta$ gives a compact tradeoff:
+At the match, $\eta$ = **50%**. Writing the normalized power as a product of two fractions gives a compact tradeoff:
 
 $$
-\frac{p}{p_{max}} = 4\eta(1 - \eta).
+\frac{p}{p_{max}} = \frac{4R_LR_{th}}{(R_{th} + R_L)^2} = 4\cdot\frac{R_L}{R_{th} + R_L}\cdot\frac{R_{th}}{R_{th} + R_L} = 4\eta(1 - \eta).
 $$
 
 | Efficiency $\eta$ | 50% | 80% | 90% | 95% | 99% |
@@ -86,6 +86,8 @@ $$
 | $p/p_{max}$ | 1.00 | 0.64 | 0.36 | 0.19 | 0.0396 |
 
 High efficiency means operating far from maximum power, with $R_L \gg R_{th}$.
+
+> **Caution — a Thévenin resistance is not necessarily a resistor.** The equivalent reproduces the load's voltage, current and power exactly, but not the power dissipated inside the original network (06-08). So the 50% and $4\eta(1 - \eta)$ hold only when $R_{th}$ is the physical loss element. Counterexample: a 10 V source behind 1 kΩ, with 1 kΩ from the output to ground, is equivalent to 5 V behind 500 Ω. A matched 500 Ω load receives 12.5 mW, but the 10 V source supplies 75 mW, so $\eta$ = 16.7%; and with no load the network still draws 50 mW from the source, so $\eta \to 0$ (not 100%) as $R_L \to \infty$. In the other direction, an amplifier whose low output resistance is created by feedback (06-06) dissipates nothing in that "resistance": its efficiency is set by its output transistors and supply, not by $R_{th}$.
 
 ### 3.3 When to match, and when not to
 
@@ -114,7 +116,9 @@ Hold the outer size $b$ fixed (it sets the cable's bulk and its highest usable f
 - **Minimum conductor loss.** At high frequency the current flows in a thin skin on each conductor, so the resistance per meter is proportional to $1/a + 1/b$. The power lost per meter relative to the power carried scales as resistance over impedance, $(1/a + 1/b)/\ln(b/a) = (1 + x)/(b\ln x)$. Minimizing $(1 + x)/\ln x$ gives $\ln x = 1 + 1/x$, solved numerically by $x = 3.591$: $Z_0$ = **76.7 Ω** in air.
 - **Maximum peak power.** The field is strongest at the inner conductor's surface, $E = V/(a\ln x)$, and the line fails when it reaches the dielectric's breakdown field. The power carried is $V^2/(2Z_0) \propto a^2\ln^2x/\ln x = b^2\ln x/x^2$, maximized at $x = \sqrt e = 1.649$: $Z_0$ = **30.0 Ω**.
 
-No single geometry achieves both. A 50 Ω air line has 10.3% more loss than the 77 Ω optimum and 85.6% of the 30 Ω line's peak-power capacity (Example 06-09.5): a reasonable compromise. With solid polyethylene ($\varepsilon_r$ = 2.25), the minimum-loss geometry has $Z_0 = 76.7/1.5 = 51.1$ Ω, so for the most common flexible cables 50 Ω is also close to the low-loss optimum. Video and cable-TV systems, which care most about loss and carry little power, standardized on 75 Ω instead, close to the air-line optimum ([R-106](../../../reference/research-log.md#r-106--the-50-ohm-standard)).
+No single geometry achieves both. A 50 Ω air line has 10.3% more loss than the 77 Ω optimum and 85.6% of the 30 Ω line's peak-power capacity (Example 06-09.5): a reasonable compromise. With solid polyethylene ($\varepsilon_r$ = 2.25), the minimum-loss geometry has $Z_0 = 76.7/1.5 = 51.1$ Ω, so for the most common flexible cables 50 Ω is also close to the low-loss optimum. Video and cable-TV systems, which care most about loss and carry little power, standardized on 75 Ω ([R-106](../../../reference/research-log.md#r-106--the-50-ohm-standard)). That is near the loss optimum only for air or low-permittivity (foam) dielectric: with foam of $\varepsilon_r$ = 1.4, a 75 Ω line has 1.5% more loss than the best geometry against 3.9% for 50 Ω, while with solid polyethylene the order reverses (50 Ω within 0.03%, 75 Ω 11.7% worse). Since the outer size is fixed, the extra loss is $f(x)/f(3.591) - 1$ with $f(x) = (1 + x)/\ln x$ and $x = e^{Z_0\sqrt{\varepsilon_r}/60\ \Omega}$.
+
+> **Going deeper — two imported results.** The loss argument uses two results derived later: a conductor's high-frequency resistance per meter, $R' = \frac{R_s}{2\pi}\bigl(\frac1a + \frac1b\bigr)$, where $R_s$ is the surface resistance set by the skin depth ([04-07](../../04-physics-for-ee/chapters/04-07-faraday-lenz-and-inductance.md); Course 13), and the attenuation of a low-loss line, $\alpha_c = R'/(2Z_0)$ ([13-08](../../13-electromagnetics/chapters/13-08-transmission-lines-sinusoidal-steady-state.md)). Their ratio is the $(1/a + 1/b)/\ln(b/a)$ minimized above. Dielectric loss is ignored.
 
 ## 4. Worked examples
 
@@ -144,7 +148,7 @@ No single geometry achieves both. A 50 Ω air line has 10.3% more loss than the 
 
 ### Example 06-09.3 · Matching an amplifier's output (tier B)
 
-**Setup.** The feedback amplifier of Example 06-08.3 has the Thévenin equivalent $V_{th}$ = −4 V (per volt of input) and $R_{th}$ = 909.1 Ω. What load extracts the most power, and how much is it per volt of input?
+**Setup.** The feedback amplifier of Example 06-08.3 has the Thévenin equivalent $V_{th}$ = −4 V (per volt of input) and $R_{th}$ = 909.1 Ω. What load extracts the most power, and how much is it for a 1 V input? (Power scales as the square of the input, so this is the power per V² of input.)
 
 **Solution.** $R_L = R_{th} = $ **909.1 Ω**, and $p_{max} = 4^2/(4\times909.1) = $ **4.4 mW** (in kΩ and V, $16/(4\times0.9091) = 4.4$ mW). The sign of $V_{th}$ does not matter: power depends on its square.
 
@@ -180,7 +184,7 @@ No single geometry achieves both. A 50 Ω air line has 10.3% more loss than the 
 
 **Units check.** $Z_0$ in ohms from $60\ \Omega\times$ a dimensionless logarithm ✓.
 
-**Sanity check.** 75 Ω (video) gives $f$ within 0.03% of the minimum but only 56% of the peak-power capacity: right for loss-sensitive, low-power use ✓.
+**Sanity check.** In air, 75 Ω (video) gives $f$ within 0.03% of the minimum but only 56% of the peak-power capacity: right for loss-sensitive, low-power use. With a solid polyethylene dielectric, part (c) shows that 50 Ω is the low-loss choice instead ✓.
 
 ### Answer key
 
@@ -192,6 +196,14 @@ No single geometry achieves both. A 50 Ω air line has 10.3% more loss than the 
 | T 06-09.c | p/p_max at 90% efficiency | 0.36 | — |
 | T 06-09.d | p/p_max at 95% efficiency | 0.19 | — |
 | T 06-09.e | p/p_max at 99% efficiency | 0.0396 | — |
+| T 06-09.f | counterexample: load power at the match | 12.5 | mW |
+| T 06-09.g | counterexample: power supplied | 75 | mW |
+| T 06-09.h | counterexample: efficiency at the match | 16.7 | % |
+| T 06-09.i | counterexample: power supplied with no load | 50 | mW |
+| T 06-09.j | extra loss, 75 Ω in foam (ε_r 1.4) | 1.5 | % |
+| T 06-09.k | extra loss, 50 Ω in foam (ε_r 1.4) | 3.9 | % |
+| T 06-09.l | extra loss, 50 Ω in polyethylene | 0.03 | % |
+| T 06-09.m | extra loss, 75 Ω in polyethylene | 11.7 | % |
 | Ex 06-09.1a | power, 8 Ω | 3.125 | W |
 | Ex 06-09.1b | power, 4 Ω | 2.778 | W |
 | Ex 06-09.1c | efficiency, 4 Ω | 33.3 | % |
@@ -205,7 +217,7 @@ No single geometry achieves both. A 50 Ω air line has 10.3% more loss than the 
 | Ex 06-09.2e | battery dissipation at 95% | 3.6 | W |
 | Ex 06-09.2f | current at 95% | 6 | A |
 | Ex 06-09.3a | matched load | 909.1 | Ω |
-| Ex 06-09.3b | maximum power per volt of input | 4.4 | mW |
+| Ex 06-09.3b | maximum power for a 1 V input (per V² of input) | 4.4 | mW |
 | Ex 06-09.4a | maximum power | 31.25 | mW |
 | Ex 06-09.4b | voltage at maximum power | 0.25 | V |
 | Ex 06-09.4c | current at maximum power | 125 | mA |
@@ -244,11 +256,11 @@ Open [labs/06-09-lab/](../labs/06-09-lab/README.md): a notebook and an ngspice n
 
 | Knob | Improves | Costs | Typical decision owner |
 |---|---|---|---|
-| Matching the load to a given source | Maximum power from the source; no reflections on lines | 50% of the power lost in the source | RF and sensor-interface designers |
+| Matching the load to a given source | Maximum power from the source; no reflections on lines | Half the source's power lost in its internal resistance (when that resistance is physical) | RF and sensor-interface designers |
 | Lowering the source resistance | Efficiency, voltage regulation | Larger conductors, lower-resistance devices, cost | Power-delivery designers |
 | Operating at high efficiency ($R_L \gg R_{th}$) | Less heat, longer battery life | Only a fraction of the source's maximum power | System architect |
 | MPPT in harvesters | Extracts the most from a weak, varying source | Converter complexity and its own quiescent power | Energy-harvesting IC designer |
-| 50 Ω versus 75 Ω cable | 50 Ω: balance of loss and power; 75 Ω: lower loss | 75 Ω: lower power capacity; non-standard in RF test gear | Standards bodies, system designers |
+| 50 Ω versus 75 Ω cable | 50 Ω: balance of loss and power; 75 Ω: lower loss in air or foam dielectric | 75 Ω: lower power capacity; non-standard in RF test gear | Standards bodies, system designers |
 
 ## 7. Numbers to know
 
@@ -264,8 +276,9 @@ Open [labs/06-09-lab/](../labs/06-09-lab/README.md): a notebook and an ngspice n
 ## 8. Common mistakes
 
 1. **Designing a power source to match its load.** The theorem chooses the load for a given source; if you choose the source, make its resistance small.
-2. **Equating maximum power with maximum efficiency.** At maximum power the efficiency is 50%; efficiency rises toward 100% as $R_L/R_{th}$ grows, while power falls.
-3. **Using the original circuit's resistance instead of $R_{th}$.** The match is to the Thévenin resistance at the load's terminals, with dependent sources included.
+2. **Equating maximum power with maximum efficiency.** For a source with a physical internal resistance, the efficiency at maximum power is 50%, rising toward 100% as $R_L/R_{th}$ grows while power falls.
+3. **Reading efficiency off a Thévenin equivalent.** The equivalent gives the load's power, not the power lost inside a general network; 50% and $4\eta(1 - \eta)$ need $R_{th}$ to be the physical loss element (§3.2).
+4. **Using the original circuit's resistance instead of $R_{th}$.** The match is to the Thévenin resistance at the load's terminals, with dependent sources included.
 4. **Ignoring real limits.** The small-signal maximum may demand more voltage swing, current or dissipation than a device can provide.
 5. **Assuming a nonlinear source peaks at $V_{oc}/2$.** That holds only for a linear (Thévenin) source; a solar cell's maximum-power point is elsewhere.
 6. **Calling every impedance match "maximum power transfer".** On transmission lines the main reason to match is to avoid reflections.
@@ -274,18 +287,18 @@ Open [labs/06-09-lab/](../labs/06-09-lab/README.md): a notebook and an ngspice n
 
 ### State of the art (as of Nov 2026)
 
-- **50 Ω is the universal RF and test-equipment impedance and 75 Ω the video and broadband-cable impedance;** the two optima behind them are physics and are derived in Example 06-09.5 **[Established]**. The popular history (a compromise attributed to work in the 1930s) appears in trade and secondary sources; we did not verify the attribution and treat it as folklore ([R-106](../../../reference/research-log.md#r-106--the-50-ohm-standard)) **[Industry estimate]**.
-- **Power delivery runs far from maximum power.** Power-over-Ethernet's highest class delivers 71.3 W of a theoretical 108 W at 79% cable efficiency ([R-105](../../../reference/research-log.md#r-105--thevenin-and-norton-history-and-power-over-ethernet), Example 06-08.4), and the shift of AI data-center racks toward 800 V DC distribution is motivated by cutting $I^2R$ loss ([R-098](../../../reference/research-log.md#r-098--usb-power-delivery-rack-power-distribution-and-ai-rack-power)) **[Industry estimate]**.
+- **50 Ω is the standard impedance of most RF systems and test equipment, and 75 Ω of video and broadband cable** (as reported in trade sources, [R-106](../../../reference/research-log.md#r-106--the-50-ohm-standard)) **[Industry estimate]**; the two optima behind them are physics, derived in Example 06-09.5 and in Pozar's *Microwave Engineering* **[Established]**. The popular history (a compromise attributed to work in the 1930s) appears in trade and secondary sources; we did not verify the attribution and treat it as folklore ([R-106](../../../reference/research-log.md#r-106--the-50-ohm-standard)) **[Industry estimate]**.
+- **Power delivery stays short of the match.** Even Power-over-Ethernet, whose cable loss is significant, operates its highest class at 71.3 W, 66% of the 108 W its cable model could deliver at the match, so that the cable dissipates 18.7 W rather than as much as the load (79% cable efficiency; [R-105](../../../reference/research-log.md#r-105--thevenin-and-norton-history-and-power-over-ethernet), Example 06-08.4) **[Established]**. The shift of AI data-center racks toward 800 V DC distribution is motivated by cutting $I^2R$ loss ([R-098](../../../reference/research-log.md#r-098--usb-power-delivery-rack-power-distribution-and-ai-rack-power)) **[Industry estimate]**.
 
 ### Why it matters commercially
 
-Two businesses sit on opposite sides of Figure 1. RF front ends, antennas, cables and test equipment live at the match, and their specifications (return loss, VSWR, impedance) describe how close they come. Power management, batteries and power delivery live far to the right, and their specifications (efficiency, output impedance, load regulation) describe how far from the match they stay. Energy harvesting, a growing piece of the IoT and wearables market, sits at the match by necessity, and its key competitive figure is how much of the source's available power a tracking converter actually delivers after its own quiescent consumption.
+Two businesses sit on opposite sides of Figure 1. RF front ends, antennas, cables and test equipment live at the match, and their specifications (return loss, VSWR, impedance) describe how close they come. Power management, batteries and power delivery live far to the right, and their specifications (efficiency, output impedance, load regulation) describe how far from the match they stay. Energy harvesting sits at the match by necessity, and its key competitive figure is how much of the source's available power a tracking converter actually delivers after its own quiescent consumption.
 
 ### Marketing vs Reality
 
-- **"Our harvester delivers the maximum power."** *Reality:* maximum power from a given source happens at 50% source efficiency (fine when the heat or light is free), but the converter's own consumption and tracking accuracy decide what reaches the battery. Ask for end-to-end efficiency at realistic input levels, especially at the low end.
+- **"Our harvester delivers the maximum power."** *Reality:* maximum power from a given source happens at 50% source efficiency for a source with a physical internal resistance, and well below the open-circuit voltage for any source (fine when the heat or light is free), but the converter's own consumption and tracking accuracy decide what reaches the battery. Ask for end-to-end efficiency at realistic input levels, especially at the low end.
 - **"Matched for maximum power."** *Reality:* in power systems, a design at the match would waste half its energy. In RF, "matched" usually means "no reflection", which is the useful property.
-- **"50 Ω is optimal."** *Reality:* it is a compromise between two optima; for a loss-critical, low-power link, 75 Ω cable is measurably better.
+- **"50 Ω is optimal."** *Reality:* it is a compromise between two optima; for a loss-critical, low-power link in air- or foam-dielectric cable, 75 Ω is measurably better, while with solid polyethylene 50 Ω is already near the loss optimum.
 
 ### Questions for engineering leaders
 
@@ -308,7 +321,7 @@ Two businesses sit on opposite sides of Figure 1. RF front ends, antennas, cable
 
    <details><summary>Answer</summary>
 
-   50%: the same current flows through $R_{th}$ and $R_L$, and they are equal, so they dissipate equal power.
+   50% when the source's Thévenin resistance is a physical series resistance: the same current flows through $R_{th}$ and $R_L$, and they are equal, so they dissipate equal power. For a general network the Thévenin model says nothing about the internal loss (06-08), so the efficiency at the match can be lower or higher (§3.2's caution).
 
    </details>
 

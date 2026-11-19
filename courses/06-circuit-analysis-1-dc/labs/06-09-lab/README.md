@@ -5,7 +5,7 @@
 ## Objective
 
 1. Find maximum power by sweeping a load in ngspice, and see how flat the maximum is.
-2. Confirm that the power–efficiency tradeoff $p/p_{max} = 4\eta(1 - \eta)$ holds for every linear source.
+2. Confirm that the power–efficiency tradeoff $p/p_{max} = 4\eta(1 - \eta)$ holds for every source that is a voltage behind a physical series resistance.
 3. Track the maximum-power point of a linear source and of a nonlinear (solar-cell) source with a perturb-and-observe algorithm.
 4. Reproduce the coax optima behind the 50 Ω and 75 Ω standards, and see how the dielectric moves them.
 
@@ -61,9 +61,9 @@ The netlist is run in CI by [`tools/run_spice.py`](../../../../tools/run_spice.p
 <details><summary>Answers to the discussion questions</summary>
 
 1. It must keep moving to detect which direction increases power; once at the top, every step goes down, so it reverses each time and dithers by about one step around the maximum. Smaller steps reduce the dither but slow the response to changing conditions: a classic tracking tradeoff.
-2. Both $p/p_{max}$ and $\eta$ depend only on the ratio $R_L/R_{th}$; eliminating that ratio leaves a relation between them alone. Scaling the source's voltage or resistance moves a point along the curve, never off it.
+2. For a voltage behind a physical series resistance, both $p/p_{max}$ and $\eta$ depend only on the ratio $R_L/R_{th}$; eliminating that ratio leaves a relation between them alone, so scaling the source's voltage or resistance moves a point along the curve, never off it. The curve does not apply to a general network, whose Thévenin model says nothing about its internal loss (chapter §3.2).
 3. A linear source's current falls in proportion to its voltage, so power peaks halfway. An illuminated diode supplies nearly its full photocurrent until its voltage approaches the junction's turn-on, then the current collapses within a few $nV_T$; the product peaks just before the collapse, at a large fraction of $V_{oc}$.
-4. For a transmitter, peak power capacity and ruggedness matter, and 50 Ω keeps 86% of the air line's maximum power capacity (more than 75 Ω's 56%). For cable TV, signals are weak and runs are long, so loss matters most: 75 Ω is within 0.03% of the air line's minimum loss.
+4. For a transmitter, peak power capacity and ruggedness matter, and 50 Ω keeps 86% of the air line's maximum power capacity (more than 75 Ω's 56%). For cable TV, signals are weak and runs are long, so loss matters most: 75 Ω is within 0.03% of the air line's minimum loss, and with the foam dielectrics such cables use it is still closer to the loss optimum than 50 Ω (1.5% against 3.9% extra loss at ε_r = 1.4). With solid polyethylene the advantage reverses.
 
 </details>
 

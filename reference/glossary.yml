@@ -523,7 +523,7 @@
   definition: For f continuous on [a, b] and differentiable inside, f'(c) = (f(b) − f(a))/(b − a) for some c in (a, b); hence a bound on |f'| bounds the change of f.
   chapter: "01-04"
 - term: Maximum power transfer
-  definition: A source of resistance R_s delivers the most power to a load R_L = R_s, namely V_s²/(4R_s), at only 50 % efficiency; used for weak signals (RF, sensors), never for power delivery.
+  definition: A source of resistance R_s delivers the most power to a load R_L = R_s, namely V_s²/(4R_s); when R_s is a physical series resistance the efficiency is then only 50 %. Used for weak signals (RF, sensors), never for power delivery.
   chapter: "01-04"
 - term: Linearization
   definition: Replacing a function near a point by its tangent line, L(x) = f(a) + f'(a)(x − a); the error grows as the square of the distance from a.
@@ -2569,7 +2569,7 @@
 
 # ---------------------------------------------------------------- 06-09
 - term: Matched load
-  definition: A load equal to the source's Thévenin resistance (for AC, its complex conjugate), which draws the maximum power, at half the open-circuit voltage and 50% efficiency; on a transmission line, a load equal to Z0, which reflects nothing.
+  definition: A load equal to the source's Thévenin resistance (for AC, its complex conjugate), which draws the maximum power, at half the open-circuit voltage (and at 50% efficiency when the source resistance is physical); on a transmission line, a load equal to Z0, which reflects nothing.
   chapter: "06-09"
   see_also: [Maximum power transfer, Conjugate match]
 - term: Conjugate match

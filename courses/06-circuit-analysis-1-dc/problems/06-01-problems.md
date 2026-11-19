@@ -81,14 +81,18 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Reading the simulator.** A battery is modeled in ngspice as `VBAT bp 0 DC 3.7`. (a) The operating point reports `i(vbat) = 1.5`. Is the battery charging or discharging, and at what power? (b) In another run, `@vbat[p] = -2.0`. What is happening, and what is the current? (c) Why does SPICE's convention make a normal, discharging battery show a negative current?
 
+### Problem 06-01.16 [B]
+
+**From the discipline to the laws, and a power chain.** (a) Three wires meet at a solder joint. Using the lumped matter discipline, argue step by step why the currents into the joint must sum to zero at every instant, and name the condition you used. (b) A 10 cm² loop of wiring sits in a uniform magnetic field, perpendicular to the loop, that rises at 2 T/s. By how much does the sum of the voltages around that loop differ from zero, and which condition of the discipline does the loop violate? (c) A 500 W processor is fed from a 48 V bus through a 48 V-to-12 V converter of 97% efficiency and then a 12 V-to-0.8 V regulator of 90% efficiency. Find the overall efficiency, the power drawn from the bus, and the loss in each stage.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 06-01) | Problems |
 |---|---|
-| 1. Quantities and units | 1, 2, 4 |
-| 2. Lumped matter discipline, KCL and KVL | 4, 10, 14 |
+| 1. Quantities and units | 1, 2, 4, 14 |
+| 2. Lumped matter discipline, KCL and KVL | 10, 16 |
 | 3. Reference directions and the passive sign convention | 3, 5, 6, 15 |
 | 4. Power balance (Tellegen) | 5, 6, 13 |
-| 5. Energy, average power, efficiency and distribution loss | 7, 8, 9, 11, 12 |
+| 5. Energy, average power, efficiency and distribution loss | 7, 8, 9, 11, 12, 16 |

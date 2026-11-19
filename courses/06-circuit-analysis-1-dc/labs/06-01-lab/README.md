@@ -28,7 +28,7 @@ Both netlists are run in CI by [`tools/run_spice.py`](../../../../tools/run_spic
 
 1. **Signs in SPICE (Part 1).** *Predict first:* in Example 06-01.2, what sign will ngspice give for `i(V1)` and for `@V1[p]`? For `@V2[p]`? Run `ngspice -b power_balance.cir` (or the notebook cell) and compare. Then add up the five powers.
 2. **A battery that becomes a load (Part 2).** *Predict first:* in Example 06-01.2's circuit, for what value of $V_2$ does the battery carry no current? (Hint: with $i_2 = 0$, node A is a divider of $V_1$ across $R_1$ and $R_3$.) The netlist sweeps $V_2$ from 0 to 12 V and reports the crossing; the notebook plots the battery's absorbed power across the sweep.
-3. **Energy budget (Part 3).** Rebuild Example 06-01.4's current profile at 1 ms resolution, integrate it numerically, and compare with the duty-cycle formula. *Predict first:* which halves battery life: doubling the sensing time, or transmitting every second instead of every 10 s?
+3. **Energy budget (Part 3).** Rebuild Example 06-01.4's current profile at 1 ms resolution, integrate it numerically, and compare with the duty-cycle formula. *Predict first:* which shortens battery life more: doubling the sensing time to 40 ms, or transmitting every second instead of every 10 s? And how much does halving the sensing time to 10 ms gain?
 4. **When Kirchhoff fails (Part 4).** *Predict first:* for which of the four edge rates (0.1, 2, 6 and 20 ns) does the far end overshoot the final 1 V by more than 10%? Run `tline_edges.cir`, then compare with the notebook's bounce-diagram calculation and plot.
 
 ## Expected results
@@ -37,7 +37,7 @@ Both netlists are run in CI by [`tools/run_spice.py`](../../../../tools/run_spic
 |---|---|---|
 | 1 | Example 06-01.2 in ngspice | `v(a)` = 8 V; `i(V1)` = −2 A; `i(V2)` = +0.667 A; `@V1[p]` = −24 W; `@V2[p]` = +4 W; resistors 8, 1.333 and 10.667 W; total 0 |
 | 2 | battery voltage at which it stops absorbing | 9 V: below it the battery is charged, above it the battery delivers power |
-| 3 | battery life for (sensing time, radio interval) | (20 ms, 10 s): 330.1 days; (10 ms, 10 s): 571.6 days; (20 ms, 1 s): 187.5 days |
+| 3 | battery life for (sensing time, radio interval) | (20 ms, 10 s): 330.1 days; (10 ms, 10 s): 571.6 days; (40 ms, 10 s): about 179 days; (20 ms, 1 s): 187.5 days. Doubling the sensing time costs slightly more than transmitting ten times as often |
 | 4 | far-end peak voltage for edges of 0.1, 2, 6 and 20 ns | 1.667, 1.667, 1.173 and 1.039 V: 66.7%, 66.7%, 17.3% and 3.9% overshoot |
 
 <!-- answer-key -->

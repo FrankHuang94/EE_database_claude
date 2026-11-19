@@ -21,7 +21,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 06-02.3 [A]
 
-**Allowed or not?** Say whether each connection of ideal elements has a solution, and why: (a) two 5 V voltage sources in parallel, + to +; (b) a 5 V and a 3.3 V source in parallel, + to +; (c) two 1 mA current sources in series, pointing the same way; (d) a 1 mA and a 2 mA current source in series, pointing the same way; (e) a 1 mA current source with nothing connected across it; (f) a 9 V voltage source with a wire across its terminals; (g) a 9 V voltage source in series with a 1 mA current source and a 1 kΩ resistor in a single loop.
+**Allowed or not?** Say whether each connection of ideal elements has a solution, and why: (a) two 5 V voltage sources in parallel, + to +; (b) a 5 V and a 3.3 V source in parallel, + to +; (c) two 1 mA current sources in series, pointing the same way; (d) a 1 mA and a 2 mA current source in series, pointing the same way; (e) a 1 mA current source with nothing connected across it; (f) a 9 V voltage source with a wire across its terminals; (g) a 9 V voltage source in series with a 1 mA current source and a 1 kΩ resistor in a single loop. (h) a 1 mA current source in series with an ideal switch, when the switch opens; (i) an ideal closed switch connected directly across a 9 V voltage source.
 
 ### Problem 06-02.4 [A]
 
@@ -53,7 +53,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 06-02.11 [C]
 
-**Sizing a current-sense shunt.** A battery-management circuit must measure up to 20 A. Its amplifier and converter accept up to 100 mV across the shunt. (a) What is the largest shunt resistance that keeps the signal within range? (b) What power does a 5 mΩ shunt dissipate at 20 A? (c) A 5 mΩ, ±1%, ±35 ppm/°C four-terminal shunt is calibrated at 25 °C and used up to 85 °C. Ignoring calibration, what is its worst-case resistance error? (d) A 0.5 mΩ, ±1%, ±350 ppm/°C shunt from the same family is considered instead. Find its signal at 20 A, its power and its worst-case error over the same range, and weigh the choice.
+**Sizing a current-sense shunt.** A battery-management circuit must measure up to 20 A. Its amplifier and converter accept up to 100 mV across the shunt. (a) What is the largest shunt resistance that keeps the signal within range? (b) What power does a 5 mΩ shunt dissipate at 20 A? (c) A 5 mΩ, ±1%, ±35 ppm/°C four-terminal shunt is specified at 25 °C, used uncalibrated, and operated up to 85 °C. What is its worst-case resistance error, tolerance and temperature together? (d) A 0.5 mΩ, ±1%, ±350 ppm/°C shunt from the same family is considered instead. Find its signal at 20 A, its power and its worst-case error over the same range, and weigh the choice.
 
 ### Problem 06-02.12 [C]
 
@@ -77,7 +77,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 | Learning objective (chapter 06-02) | Problems |
 |---|---|
-| 1. Element laws and i–v characteristics | 2, 3, 13, 15 |
+| 1. Element laws, i–v characteristics and switches | 2, 3, 13, 15 |
 | 2. Ohm's law and power | 1, 8, 15 |
 | 3. Resistance from geometry and temperature | 5, 6, 10 |
 | 4. Real sources and impossible connections | 3, 7, 12, 15 |

@@ -96,6 +96,30 @@ v.check("Ex 06-09.5k", (Z(a_loss) + Z(a_pow)) / 2)
 v.check("Ex 06-09.5l", (1 + 1 / a50) / np.log(1 / a50))
 v.check("Ex 06-09.5m", np.log(1 / a50) * a50 ** 2)
 v.check("Ex 06-09.5n", 100 * cap(np.exp(-75 / 60.0)) / cap(a_pow))
+# T 06-09.j-m: extra conductor loss at a given impedance in a given dielectric (fixed outer radius):
+# the inner radius follows from Z0 = (60/sqrt(er)) ln(b/a); loss per meter ∝ sqrt(er)(1/a + 1/b)/ln(b/a),
+# and the sqrt(er) factor is common to the cable and its optimum, so it cancels in the ratio.
+def extra_loss(Z0, er):
+    a = np.exp(-Z0 * np.sqrt(er) / 60.0)
+    return 100 * (loss(a) / loss(a_loss) - 1)
+
+
+v.check("T 06-09.j", extra_loss(75, 1.4))
+v.check("T 06-09.k", extra_loss(50, 1.4))
+v.check("T 06-09.l", extra_loss(50, 2.25))
+v.check("T 06-09.m", extra_loss(75, 2.25))
+# T 06-09.f-i: the counterexample, solved as a circuit (10 V, 1 kΩ series, 1 kΩ shunt; kΩ, mA, mW)
+def cx(RL):
+    g = 1 / 1.0 + 1 / 1.0 + (1 / RL if RL else 0.0)   # series 1 kΩ, shunt 1 kΩ, load
+    vout = (10 / 1.0) / g                      # nodal equation at the output node
+    return vout, 10 * (10 - vout) / 1.0        # output voltage, power from the 10 V source
+voc_cx = cx(None)[0]
+rth_cx = voc_cx / (10 / 1.0)                   # V_oc / I_sc
+vm, psrc = cx(rth_cx)
+v.check("T 06-09.f", vm ** 2 / rth_cx)
+v.check("T 06-09.g", psrc)
+v.check("T 06-09.h", 100 * (vm ** 2 / rth_cx) / psrc)
+v.check("T 06-09.i", cx(None)[1])
 v.assert_true("Ex 06-09.5 optimal ratios: ln x = 1 + 1/x and x = sqrt(e)",
               abs(np.log(1 / a_loss) - 1 - a_loss) < 1e-6 and abs(1 / a_pow - np.sqrt(np.e)) < 1e-6)
 

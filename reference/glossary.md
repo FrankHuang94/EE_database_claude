@@ -896,7 +896,7 @@
 
 <a id="markovs-inequality"></a>**Markov's inequality** — For a nonnegative random variable, P(X ≥ a) ≤ E[X]/a. *First defined in* [03-03](../courses/03-probability-statistics-and-random-variables/chapters/03-03-expectation-and-functions-of-rvs.md).
 
-<a id="matched-load"></a>**Matched load** — A load equal to the source's Thévenin resistance (for AC, its complex conjugate), which draws the maximum power, at half the open-circuit voltage and 50% efficiency; on a transmission line, a load equal to Z0, which reflects nothing. *First defined in* [06-09](../courses/06-circuit-analysis-1-dc/chapters/06-09-maximum-power-transfer.md). *See also:* [Maximum power transfer](#maximum-power-transfer), [Conjugate match](#conjugate-match).
+<a id="matched-load"></a>**Matched load** — A load equal to the source's Thévenin resistance (for AC, its complex conjugate), which draws the maximum power, at half the open-circuit voltage (and at 50% efficiency when the source resistance is physical); on a transmission line, a load equal to Z0, which reflects nothing. *First defined in* [06-09](../courses/06-circuit-analysis-1-dc/chapters/06-09-maximum-power-transfer.md). *See also:* [Maximum power transfer](#maximum-power-transfer), [Conjugate match](#conjugate-match).
 
 <a id="matrix"></a>**Matrix** — A rectangular m×n array of numbers; multiplying it by a vector is a linear map from n-component to m-component vectors. *First defined in* [02-06](../courses/02-complex-numbers-des-and-linear-algebra/chapters/02-06-vectors-matrices-and-linear-systems.md). *See also:* [Matrix multiplication](#matrix-multiplication).
 
@@ -908,7 +908,7 @@
 
 <a id="maximum-power-point-tracking-mppt"></a>**Maximum power point tracking (MPPT)** — A converter control method that continually adjusts its input operating point (for example by perturb and observe) to extract the most power from a varying source such as a solar cell or thermoelectric generator. *First defined in* [06-09](../courses/06-circuit-analysis-1-dc/chapters/06-09-maximum-power-transfer.md). *See also:* [Maximum power transfer](#maximum-power-transfer).
 
-<a id="maximum-power-transfer"></a>**Maximum power transfer** — A source of resistance R_s delivers the most power to a load R_L = R_s, namely V_s²/(4R_s), at only 50 % efficiency; used for weak signals (RF, sensors), never for power delivery. *First defined in* [01-04](../courses/01-calculus-for-engineers/chapters/01-04-applications-of-derivatives.md).
+<a id="maximum-power-transfer"></a>**Maximum power transfer** — A source of resistance R_s delivers the most power to a load R_L = R_s, namely V_s²/(4R_s); when R_s is a physical series resistance the efficiency is then only 50 %. Used for weak signals (RF, sensors), never for power delivery. *First defined in* [01-04](../courses/01-calculus-for-engineers/chapters/01-04-applications-of-derivatives.md).
 
 <a id="maxwells-equations"></a>**Maxwell's equations** — Gauss's law, Gauss's law for magnetism, Faraday's law and the Ampère–Maxwell law; with the Lorentz force they are all of classical electromagnetism and predict waves travelling at 1/√(µ₀ε₀) = c. *First defined in* [04-08](../courses/04-physics-for-ee/chapters/04-08-maxwell-preview.md).
 

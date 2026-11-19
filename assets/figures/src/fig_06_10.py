@@ -100,25 +100,28 @@ def sch_difference(d):
 
 
 def sch_inamp(d):
-    """Three-op-amp instrumentation amplifier."""
-    d += (a1 := elm.Opamp(leads=True).right().at((2.0, 3.0)).anchor("in2"))
-    d += (a2 := elm.Opamp(leads=True).right().flip().at((2.0, -3.0)).anchor("in2"))
+    """Three-op-amp instrumentation amplifier. The top input op-amp is flipped (+ above -) and the bottom
+    one is not (- above +), so the gain resistor joins the two inverting inputs between the op-amps and
+    no input wire crosses it."""
+    d += (a1 := elm.Opamp(leads=True).right().flip().at((2.0, 3.0)).anchor("in2"))
+    d += (a2 := elm.Opamp(leads=True).right().at((2.0, -3.0)).anchor("in2"))
     d += elm.Line().left().at(a1.in2).length(1.0)
-    d += elm.Dot(open=True).label("$v_-$", loc="left")
+    d += elm.Dot(open=True).label("$v_N$", loc="left")
     d += elm.Line().left().at(a2.in2).length(1.0)
-    d += elm.Dot(open=True).label("$v_+$", loc="left")
-    # feedback resistors and gain resistor between the two inverting inputs
+    d += elm.Dot(open=True).label("$v_P$", loc="left")
+    # gain resistor between the two inverting inputs, inside the gap between the op-amps
     d += elm.Line().left().at(a1.in1).length(0.4)
     d += (j1 := elm.Dot())
     d += elm.Line().left().at(a2.in1).length(0.4)
     d += (j2 := elm.Dot())
     d += elm.Resistor().at(j1.center).to(j2.center).label("$R_G$", loc="bottom")
-    d += elm.Line().up().at(j1.center).length(1.0)
-    d += elm.Resistor().right().tox(a1.out).label("$R$")
-    d += elm.Line().down().toy(a1.out)
-    d += elm.Line().down().at(j2.center).length(1.0)
-    d += elm.Resistor().right().tox(a2.out).label("$R$", loc="bottom")
-    d += elm.Line().up().toy(a2.out)
+    # feedback resistors, routed into the gap from each inverting input
+    d += elm.Line().down().at(a1.in1).length(0.9)
+    d += elm.Resistor().right().tox(a1.out).label("$R$", loc="bottom")
+    d += elm.Line().up().toy(a1.out)
+    d += elm.Line().up().at(a2.in1).length(0.9)
+    d += elm.Resistor().right().tox(a2.out).label("$R$")
+    d += elm.Line().down().toy(a2.out)
     # difference stage
     d += (a3 := elm.Opamp(leads=True).right().at((10.5, 0.0)).anchor("in1"))
     d += elm.Line().right().at(a1.out).length(0.8)
@@ -134,7 +137,7 @@ def sch_inamp(d):
     d += elm.Ground()
     d += elm.Line().right().at(a3.out).length(0.6)
     d += elm.Dot(open=True).label("$v_{out}$", loc="right")
-    d += elm.Label().at((7.5, -6.6)).label("$v_{out} = (1 + 2R/R_G)(R_2/R_1)(v_+ - v_-)$", fontsize=11)
+    d += elm.Label().at((7.0, -5.0)).label("$v_{out} = (1 + 2R/R_G)(R_2/R_1)(v_P - v_N)$", fontsize=11)
 
 
 if __name__ == "__main__":

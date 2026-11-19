@@ -72,11 +72,11 @@ $R_L$ = **33.49 Ω** and $p_{max} = 0.9665^2/(4\times0.03349) = $ **6.973 mW** p
 
 ### Solution 06-09.11
 
-(a) $8/8.05 = $ **99.38%** (0.62% lost in the amplifier's output resistance).
+(a) By voltage division, $8/8.05 = $ **99.38%** of the open-circuit voltage reaches the speaker. If the 0.05 Ω were a physical resistor, the same current would flow through it and the speaker, so the same 99.38% would be the fraction of power delivered (0.62% lost in it). In a feedback amplifier the 0.05 Ω is mostly created by feedback and dissipates nothing itself; the amplifier's efficiency is then set by its output transistors.
 
 (b) $8/0.05 = $ **160**.
 
-(c) A matched amplifier would waste as much power as it delivers, run hot, and lose control of the speaker: the low output resistance also damps the speaker cone's own motion (hence "damping factor"), which an 8 Ω output would not.
+(c) A matched amplifier would deliver only half its open-circuit voltage to the speaker, so it would need twice the voltage swing for the same speaker power; if its 8 Ω were a physical resistor it would also waste as much power as it delivers and run hot. And it would lose control of the speaker: the low output resistance also damps the speaker cone's own motion (hence "damping factor"), which an 8 Ω output would not.
 
 ### Solution 06-09.12
 
@@ -129,7 +129,7 @@ $R_L$ = **33.49 Ω** and $p_{max} = 0.9665^2/(4\times0.03349) = $ **6.973 mW** p
 | 06-09.10c | b/a at 50 Ω, PTFE | 3.345 | — |
 | 06-09.10d | loss relative to minimum | 1.002 | — |
 | 06-09.10e | power capacity relative to maximum | 0.587 | — |
-| 06-09.11a | fraction reaching the speaker | 99.38 | % |
+| 06-09.11a | fraction of the voltage (and, for a physical R_out, of the power) at the speaker | 99.38 | % |
 | 06-09.11b | damping factor | 160 | — |
 | 06-09.12a | equivalent voltage | 8.571 | V |
 | 06-09.12b | equivalent resistance | 1.714 | Ω |

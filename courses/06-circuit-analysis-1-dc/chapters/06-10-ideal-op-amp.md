@@ -125,15 +125,15 @@ so 1% resistors and $G$ = 100 give only about 2500 (68 dB). Example 06-10.3 show
 
 ### 3.5 The instrumentation amplifier
 
-The three-op-amp **instrumentation amplifier** (Figure 3) puts two non-inverting amplifiers in front of a difference amplifier. Each input sees an op-amp's + terminal (infinite input resistance, so it never loads a bridge). By rule 2, the gain resistor $R_G$ has exactly $v_+ - v_-$ across it; its current $(v_+ - v_-)/R_G$ flows through both resistors $R$, so the first stage's outputs differ by
+The three-op-amp **instrumentation amplifier** (Figure 3) puts two non-inverting amplifiers in front of a difference amplifier. Call the in-amp's two inputs $v_P$ and $v_N$ (not $v_+$ and $v_-$, which name each op-amp's own terminals). Each drives an op-amp's + terminal (infinite input resistance, so it never loads a bridge). By rule 2 applied to each input op-amp, its − terminal sits at its + terminal, so the gain resistor $R_G$, connected between the two − terminals, has exactly $v_P - v_N$ across it. By rule 1 its current $(v_P - v_N)/R_G$ cannot enter either op-amp, so it flows through both resistors $R$ as well, and the first stage's outputs differ by
 
 $$
-(v_+ - v_-)\Bigl(1 + \frac{2R}{R_G}\Bigr),
+(v_P - v_N)\Bigl(1 + \frac{2R}{R_G}\Bigr).
 $$
 
-while the common-mode voltage passes through the first stage with gain 1. The difference stage then rejects it. Because the first stage amplifies the difference but not the common mode, the overall CMRR is the difference stage's CMRR multiplied by the first-stage gain. One resistor, $R_G$, sets the gain, which is why integrated in-amps bring out just two pins for it.
+If both inputs carry the same voltage, $R_G$ has nothing across it, no current flows in it or in the resistors $R$, and each output simply equals its input: the common-mode voltage passes through the first stage with gain 1. The difference stage then rejects it. Because the first stage amplifies the difference but not the common mode, the overall CMRR is the difference stage's CMRR multiplied by the first-stage gain. One resistor, $R_G$, sets the gain, which is why integrated in-amps bring out just two pins for it.
 
-![The three-op-amp instrumentation amplifier: two input op-amps with feedback resistors R and a shared gain resistor R_G between their inverting inputs, followed by a difference amplifier with R1, R2, R3, R4](../../../assets/figures/06-10/instrumentation-amplifier.svg)
+![The three-op-amp instrumentation amplifier: inputs v_N and v_P drive the non-inverting inputs of two op-amps, each with a feedback resistor R, and a shared gain resistor R_G joins their inverting inputs; their outputs feed a difference amplifier with R1, R2, R3, R4](../../../assets/figures/06-10/instrumentation-amplifier.svg)
 
 *Figure 3. The three-op-amp instrumentation amplifier.*
 

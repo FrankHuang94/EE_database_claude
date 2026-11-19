@@ -385,4 +385,26 @@ g5c, _ = grid_solve(5, 0.010, 0.5, 0.80, corners5 + [(2, 2)])
 v.check("Lab 06-04.c", 1e3 * (0.80 - g5c.min()))
 v.check("Lab 06-04.d", 25 - 5)
 
+# ---- Problems 06-04.15 and 06-04.16 by full tableau solves (kΩ, mA, V)
+e15, c15, b15 = tableau([("I1", "I", "0", "x", 2.0), ("R5", "R", "x", "1", 5.0), ("Ra", "R", "1", "0", 2.0),
+                         ("Rb", "R", "1", "2", 4.0), ("Rc", "R", "2", "0", 4.0), ("I2", "I", "0", "2", 2.0)])
+v.check("06-04.15a", e15["1"])
+v.check("06-04.15b", e15["2"])
+v.check("06-04.15c", e15["x"])
+v.check("06-04.15d", -absorbed(c15, b15, "I1"))
+v.check("06-04.15e", absorbed(c15, b15, "R5"))
+e15b = tableau([("I1", "I", "0", "x", 2.0), ("R5", "R", "x", "1", 50.0), ("Ra", "R", "1", "0", 2.0),
+                ("Rb", "R", "1", "2", 4.0), ("Rc", "R", "2", "0", 4.0), ("I2", "I", "0", "2", 2.0)])[0]
+v.assert_true("06-04.15: the series resistor does not change the node voltages",
+              abs(e15b["1"] - e15["1"]) < 1e-12 and abs(e15b["2"] - e15["2"]) < 1e-12)
+e16, c16, b16 = tableau([("V", "V", "1", "2", 4.0), ("I1", "I", "0", "1", 2.0), ("R1", "R", "1", "0", 2.0),
+                         ("R2", "R", "2", "0", 4.0), ("R23", "R", "2", "3", 1.0), ("R3", "R", "3", "0", 2.0),
+                         ("R34", "R", "3", "4", 2.0), ("R4", "R", "4", "0", 1.0), ("I4", "I", "0", "4", 1.0)])
+v.check("06-04.16a", e16["1"])
+v.check("06-04.16b", e16["2"])
+v.check("06-04.16c", e16["3"])
+v.check("06-04.16d", e16["4"])
+v.check("06-04.16e", -c16["V"])              # tableau current flows 1 -> 2 through the source
+v.check("06-04.16f", -absorbed(c16, b16, "V"))
+
 sys.exit(v.finish())

@@ -106,6 +106,22 @@ against **0.6247 mV** at the reference temperature ($t = 0$): the temperature ef
 
 (c) Equal sources in parallel: the open-circuit voltage stays **6 V**, and the internal resistances are in parallel: **0.5 Ω**. (06-08 makes this a special case of combining Thevenin equivalents.)
 
+
+### Solution 06-03.15
+
+(a) KVL around a → b → d → a: the voltage from a to d equals the sum along the path, $v_{ad} = v_{ab} + v_{bd}$. X's reference has + at a, so $v_{ab} = v_X$; Y's has + at b, so $v_{bd} = v_Y = 4$ V; the source fixes $v_{ad} = 10$ V. Hence $v_X = 10 - 4 = $ **6 V**. Around c → b → d: $v_{cd} = v_{cb} + v_{bd} = v_Z + v_Y = -3 + 4$, and W's reference has + at c, so $v_W = $ **1 V**.
+
+(b) KCL at b, counting currents *into* b. X's reference runs from b to a, so the current into b through X is $-i_X = +2$ A (2 A actually flows from a to b). Y's reference runs from d to b, so it brings $i_Y = 0.5$ A into b. Z's runs from c to b, so it brings $i_Z$ into b. The sum is zero: $2 + 0.5 + i_Z = 0$, so $i_Z = $ **−2.5 A** (2.5 A actually flows from b to c). KCL at c: Z carries $-i_Z = 2.5$ A into c, and W carries $i_W$ out of c, so $i_W = $ **2.5 A**. KCL at a: X carries $i_X = -2$ A into a, so the source must push **2 A** out of its + terminal into a.
+
+(c) Passive convention: power absorbed = (voltage) × (current entering the + terminal).
+- X: + at a; its current enters at b and leaves at a, so the current entering the + terminal is $-i_X = 2$ A: $6\times2 = $ **12 W** absorbed.
+- Y: + at b; its current enters at d (the − terminal), so the current into + is $-0.5$ A: $4\times(-0.5) = $ **−2 W**, so Y delivers 2 W.
+- Z: + at c; its current enters at c: $(-3)\times(-2.5) = $ **7.5 W** absorbed.
+- W: + at c; its current enters at c: $1\times2.5 = $ **2.5 W** absorbed.
+- Source: 2 A leaves its + terminal, so it absorbs $10\times(-2) = $ **−20 W**: it delivers 20 W.
+
+Sum: $12 - 2 + 7.5 + 2.5 - 20 = 0$ ✓ (Tellegen). The sources of energy are the 10 V source and element Y.
+
 ---
 
 ## Answer key
@@ -165,3 +181,13 @@ against **0.6247 mV** at the reference temperature ($t = 0$): the temperature ef
 | 06-03.14a | battery voltage | 7.5 | V |
 | 06-03.14b | combined current source | 2.5 | mA |
 | 06-03.14c | combined internal resistance | 0.5 | Ω |
+| 06-03.15a | v_X | 6 | V |
+| 06-03.15b | v_W | 1 | V |
+| 06-03.15c | i_Z | −2.5 | A |
+| 06-03.15d | i_W | 2.5 | A |
+| 06-03.15e | current out of the source's + terminal | 2 | A |
+| 06-03.15f | power absorbed by X | 12 | W |
+| 06-03.15g | power absorbed by Y | −2 | W |
+| 06-03.15h | power absorbed by Z | 7.5 | W |
+| 06-03.15i | power absorbed by W | 2.5 | W |
+| 06-03.15j | power absorbed by the source | −20 | W |

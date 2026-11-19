@@ -216,4 +216,36 @@ v.check("Lab 06-03.c", rs * (1 / 1e-3 - 1) / 1e6)
 x = 2.0 * 5000e-6
 v.check("Lab 06-03.d", 100 * (2.5 * ((1 + x) / (2 + x) - 0.5) / (2.5 * x / 4) - 1))
 
+# ---- Problem 06-03.15: KCL and KVL from the incidence matrix, no element laws.
+# Each branch is (name, + node, - node); its current is referenced from + to - THROUGH the element
+# (passive convention), so problem references given the other way are negated on input.
+nodes = ["a", "b", "c"]                      # d is ground
+br = [("S", "a", "d"), ("X", "a", "b"), ("Y", "b", "d"), ("Z", "c", "b"), ("W", "c", "d")]
+A = np.zeros((3, 5))
+for k, (_, p, m) in enumerate(br):
+    if p != "d":
+        A[nodes.index(p), k] += 1.0          # current leaves node p into the element
+    if m != "d":
+        A[nodes.index(m), k] -= 1.0
+# unknown currents: S, Z, W (passive references); known: X (+ to -, i.e. a -> b) = -(-2) = 2, Y (b -> d) = -0.5
+known = {"X": 2.0, "Y": -0.5}
+unk = ["S", "Z", "W"]
+cols = {n: k for k, (n, _, _) in enumerate(br)}
+rhs = -sum(A[:, cols[n]] * val for n, val in known.items())
+sol = np.linalg.solve(A[:, [cols[n] for n in unk]], rhs)
+cur = dict(known, **dict(zip(unk, sol)))
+# voltages from node potentials (KVL): e_a = 10, e_b from Y, e_c from Z
+e = {"a": 10.0, "d": 0.0}
+e["b"] = e["d"] + 4.0
+e["c"] = e["b"] + (-3.0)
+vol = {n: e[p] - e[m] for n, p, m in br}
+v.check("06-03.15a", vol["X"])
+v.check("06-03.15b", vol["W"])
+v.check("06-03.15c", cur["Z"])                             # problem reference c -> b is Z's + -> - direction
+v.check("06-03.15d", cur["W"])
+v.check("06-03.15e", -cur["S"])                            # passive current enters + ; out of + is the negative
+for key, n in zip("fghij", ("X", "Y", "Z", "W", "S")):
+    v.check(f"06-03.15{key}", vol[n] * cur[n])
+v.assert_true("06-03.15: Tellegen", abs(sum(vol[n] * cur[n] for n in vol)) < 1e-12)
+
 sys.exit(v.finish())

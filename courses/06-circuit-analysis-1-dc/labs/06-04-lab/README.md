@@ -37,7 +37,7 @@ Both netlists are run in CI by [`tools/run_spice.py`](../../../../tools/run_spic
 | 1 | Example 06-04.3's MNA matrix | 5 × 5, 13 nonzeros and 12 zeros; symmetric, with a zero 2 × 2 block for the two voltage sources |
 | 2 | mini-SPICE versus ngspice | agreement to the six significant digits ngspice prints (for example $j_1$ = −3.33333 A) |
 | 3 | worst IR drop | 20.6 mV at the center with four corner bumps; 10.0 mV with a fifth bump at the center, now at the middles of the edges |
-| 4 | timing | dense time grows steeply (toward a factor of 8 per doubling of the unknowns); sparse time grows nearly in proportion to the unknowns; sparse wins by more than an order of magnitude at 50 × 50 (machine-dependent, not asserted) |
+| 4 | timing | dense time grows steeply (toward a factor of 8 per doubling of the unknowns); sparse time grows far more slowly (for a 2-D grid, about $n^{1.5}$ at best with a good ordering; at these sizes fixed overheads make it look almost linear); sparse wins by more than an order of magnitude at 50 × 50 (machine-dependent, not asserted) |
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |

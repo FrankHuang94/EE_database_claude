@@ -53,7 +53,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 06-09.11 [B]
 
-**An audio amplifier and its speaker.** An amplifier's output resistance is 0.05 Ω and it drives an 8 Ω speaker. (a) What fraction of the amplifier's output power reaches the speaker? (b) The "damping factor" is defined as $R_L/R_{out}$; find it. (c) Why would an 8 Ω output resistance (a "matched" amplifier) be a poor design?
+**An audio amplifier and its speaker.** An amplifier's output resistance is 0.05 Ω and it drives an 8 Ω speaker. (a) What fraction of the amplifier's open-circuit output voltage reaches the speaker? If the 0.05 Ω were a physical resistor in series with the output, what fraction of the power delivered would reach the speaker? (b) The "damping factor" is defined as $R_L/R_{out}$; find it. (c) Why would an 8 Ω output resistance (a "matched" amplifier) be a poor design?
 
 ### Problem 06-09.12 [C]
 

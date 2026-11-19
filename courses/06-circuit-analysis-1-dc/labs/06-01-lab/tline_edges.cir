@@ -1,7 +1,7 @@
 * Lab 06-01 Part 4 -- when Kirchhoff fails: one wire, four edge rates.
 * Each copy: a 1 V step with rise time tr, a 10 Ohm driver, a lossless 50 Ohm line with a 1 ns
 * one-way delay (about 14 cm of FR-4 stripline), and an open (1 MOhm) load. The far-end peak
-* shows how much the line overshoots; a lumped wire could never overshoot at all.
+* shows how much the line overshoots; an ideal wire (a single node) could never overshoot at all.
 * The notebook computes the same peaks independently from a bounce diagram.
 *
 * EXPECT vmax01 key:README.md#Lab_06-01.b rtol=1e-3

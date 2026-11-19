@@ -218,7 +218,7 @@ The 5 V source's current from KCL at node 2 alone: the resistors carry $(10 - 12
 
 **Units check.** V/Ω = A; V × A = W ✓.
 
-**Sanity check.** Both node voltages lie between 0 and 12 V, as they must when the only other source is a 5 V difference between them ✓.
+**Sanity check.** Both node voltages lie between 0 and 12 V. That is reassuring but not guaranteed: a floating source can lift a node above every grounded source (remove the 4 Ω and 6 Ω resistors and node 2 rises to 14 V), so the bounds rule of §3.6 applies only to single-source circuits. The checks that always apply are KCL at each node and the power balance above ✓.
 
 ### Example 06-04.4 · The same circuit as a simulator sees it (tier B)
 

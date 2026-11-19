@@ -99,7 +99,7 @@ The period is $T$ = 1 ms; the average voltage is $\overline v = 2.5$ V in every 
 
 (c) $p = 5$ W for half the period: $\overline p = $ **2.5 W** $= \overline v\,\overline i$.
 
-The average of a product depends on *when* the two factors are large together. Only when one factor is constant (case c, or DC) does $\overline{vi} = \overline v\,\overline i$. In AC circuits the timing is the phase between voltage and current, and this is the origin of the power factor (07-06).
+The average of a product depends on *when* the two factors are large together. Exactly, $\overline{vi} = \overline v\,\overline i + \operatorname{cov}(v, i)$, where the covariance over one period measures how much the two factors rise and fall together (03-04). The product of averages is right only when that covariance is zero: always when one factor is constant (case c, or DC), and otherwise only by coincidence (for example $v = 1 + \sin\omega t$, $i = 1 + \cos\omega t$, whose fluctuations are uncorrelated over a period). In AC circuits the timing is the phase between voltage and current, and this is the origin of the power factor (07-06).
 
 ### Solution 06-01.9
 
@@ -174,6 +174,14 @@ $$
 (b) A negative absorbed power means the battery **delivers 2.0 W**: it is discharging. The current is $i = p/v = -2.0/3.7 = $ **−0.541 A**, that is 0.541 A flowing out of its + terminal.
 
 (c) Because SPICE treats every element, sources included, with the passive convention, the current of a source that is delivering power flows out of its + terminal and is reported negative. The sign tells you the direction of energy flow, not that anything is wrong.
+
+### Solution 06-01.16
+
+(a) Draw a closed surface around the joint. The charge inside can change only by current crossing the surface: $dq_{\text{inside}}/dt = \sum i_{\text{in}}$. Condition 2 of the discipline (no net charge accumulates in a node or an element, because a node is an ideal conductor of negligible capacitance) says $dq_{\text{inside}}/dt = 0$. Hence $\sum i_{\text{in}} = 0$ at every instant: KCL.
+
+(b) Faraday's law gives $\oint\vec E\cdot d\vec l = -d\Phi_B/dt$, with $\Phi_B = BA$. The flux changes at $10\times10^{-4}\ \text{m}^2\times2\ \text{T/s} = $ **2 mV** (2 mWb/s), so the branch voltages around the loop sum to 2 mV in magnitude instead of zero. The loop violates condition 1 (no changing flux through closed paths outside the elements). Two millivolts is negligible for a power rail but not for a microvolt sensor, which is why sensitive inputs keep their loop areas small.
+
+(c) Efficiencies multiply: $0.97\times0.90 = $ **87.3%**. The regulator draws $500/0.90 = 555.6$ W; the converter draws $555.6/0.97 = $ **572.7 W** from the bus. Losses: converter $572.7 - 555.6 = $ **17.18 W**; regulator $555.6 - 500 = $ **55.56 W**, so the low-voltage stage, near the load, dominates the loss.
 
 ---
 
@@ -250,3 +258,8 @@ $$
 | 06-01.14d | power through the surface | 20.0 | W |
 | 06-01.15a | power absorbed while charging | 5.55 | W |
 | 06-01.15b | current while delivering 2 W | −0.541 | A |
+| 06-01.16a | EMF around the loop | 2 | mV |
+| 06-01.16b | overall efficiency | 87.3 | % |
+| 06-01.16c | power drawn from the bus | 572.7 | W |
+| 06-01.16d | converter loss | 17.18 | W |
+| 06-01.16e | regulator loss | 55.56 | W |

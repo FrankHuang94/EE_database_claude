@@ -4,7 +4,7 @@
 
 ## Objective
 
-1. Verify KCL at every node and KVL around every mesh from a simulator's results, and count the independent equations.
+1. Verify KCL at every node and KVL around every mesh from a solved circuit's node voltages (the notebook's own solver, cross-checked against ngspice), and count the independent equations.
 2. Measure how a load pulls down a divider, and find the load at which the error becomes acceptable.
 3. Compare the linearity and sensitivity of quarter-, half- and full-bridge strain-gauge circuits.
 4. Check the delta–wye formulas numerically on random networks.
@@ -24,7 +24,7 @@ The netlist is run in CI by [`tools/run_spice.py`](../../../../tools/run_spice.p
 
 ## Procedure
 
-1. **Kirchhoff by simulation (Part 1).** *Predict first:* Example 06-03.5 has 4 nodes and 6 branches (counting the source). How many independent KCL and KVL equations? Then let the notebook check KCL at each node and KVL around each mesh with the simulated values.
+1. **Kirchhoff by simulation (Part 1).** *Predict first:* Example 06-03.5 has 4 nodes and 6 branches (counting the source). How many independent KCL and KVL equations? Then let the notebook check KCL at each node and KVL around each mesh with the solved values, and compare its node voltages with ngspice's.
 2. **Loading a divider (Part 2).** *Predict first:* for Example 06-03.3's divider (source resistance 24.8 kΩ), what load keeps the error below 0.1%? The notebook sweeps the load from 10 kΩ to 100 MΩ.
 3. **Bridge linearity (Part 3).** *Predict first:* which of the quarter, half and full bridges is exactly linear in strain? The notebook sweeps ±5000 µε at 2.5 V excitation.
 4. **Delta–wye by numbers (Part 4).** Convert 1000 random deltas to wyes and back, and compare the terminal resistances.
@@ -51,14 +51,14 @@ The netlist is run in CI by [`tools/run_spice.py`](../../../../tools/run_spice.p
 1. The notebook checked KCL at all four nodes of Example 06-03.5 and found every residual tiny. Why does that not prove that four KCL equations are independent?
 2. In Part 2 the error falls as $1/R_L$ for large loads. Why does a 0.1% target need a load a thousand times the source resistance, rather than ten times?
 3. Why is the half bridge exactly linear only when its two gauges change by equal and opposite amounts?
-4. If delta–wye conversions always work, why do circuit simulators not use them?
+4. Delta–wye conversions reduce any planar resistor network. Why do circuit simulators not use them?
 
 <details><summary>Answers to the discussion questions</summary>
 
 1. All four equations are satisfied because the solution satisfies them, but one of them is implied by the other three: each branch current enters one node and leaves another, so the four equations sum identically to zero. Independence is about the equations, not about whether a particular solution satisfies them; with only three independent KCL equations plus three KVL equations there are exactly as many as needed to pair with the six element laws.
 2. The relative error is $R_s/(R_s + R_L)$. Setting it to $10^{-3}$ requires $R_L = 999R_s$: errors fall only in inverse proportion to the load, so each extra decimal place of accuracy costs a factor of ten in load resistance (or a buffer).
 3. With gauges $R(1 + x)$ and $R(1 - x)$ in the two arms of one divider, the divider's total stays $2R$, so its output $V(1 + x)/2$ is exactly linear in $x$. If the changes are not equal and opposite (for example, a gauge in tension paired with one at a different gauge factor), the denominator changes too and a small nonlinearity returns.
-4. They would need to recognize structure (which resistors form a delta, which are in series), which is fragile and does not extend to sources, dependent sources and nonlinear devices. Nodal analysis (06-04) writes one KCL equation per node directly from the netlist, for any element, and solves them as a matrix: it never needs to know whether anything is in series.
+4. They would need to recognize structure (which resistors form a delta, which are in series), which is fragile, fails for some non-planar networks, and does not extend to sources, dependent sources and nonlinear devices. Nodal analysis (06-04) writes one KCL equation per node directly from the netlist, for any element, and solves them as a matrix: it never needs to know whether anything is in series.
 
 </details>
 

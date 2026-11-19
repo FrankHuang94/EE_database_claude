@@ -67,13 +67,26 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Combining sources.** (a) How many 1.5 V cells in series give at least 7 V, and what voltage do they give? (b) Current sources of 2 mA, −0.5 mA and 1 mA (all referenced into the same node) are in parallel. What single source replaces them? (c) Two 6 V sources, each with 1 Ω internal resistance, are connected in parallel. What single practical source replaces them?
 
+### Problem 06-03.15 [B]
+
+**Signs without element laws.** A circuit has nodes a, b, c and ground d, and five elements of unknown type. A 10 V source has its + terminal at a and − at d. Element X joins a and b; element Y joins b and d; element Z joins b and c; element W joins c and d. Reference directions (a current "from p to q" flows through the element from terminal p to terminal q):
+
+| Element | Voltage reference (+ terminal) | Voltage | Current reference | Current |
+|---|---|---|---|---|
+| X | a | $v_X$ unknown | from b to a | −2 A |
+| Y | b | 4 V | from d to b | 0.5 A |
+| Z | c | −3 V | from c to b | $i_Z$ unknown |
+| W | c | $v_W$ unknown | from c to d | $i_W$ unknown |
+
+Using KCL and KVL only: (a) find $v_X$ and $v_W$; (b) find $i_Z$, $i_W$ and the current out of the source's + terminal; (c) find the power each of the five elements absorbs, say which deliver power, and check the total.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 06-03) | Problems |
 |---|---|
-| 1. KCL and KVL, independent equations | 1, 6 |
+| 1. KCL and KVL, independent equations | 1, 6, 15 |
 | 2. Series and parallel combination | 2, 6, 10, 12, 14 |
 | 3. Dividers and loading | 3, 4, 5 |
 | 4. The Wheatstone bridge | 7, 8, 11 |

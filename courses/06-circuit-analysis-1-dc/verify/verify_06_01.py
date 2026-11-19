@@ -259,4 +259,15 @@ for key, (sense, radio) in (("f", (0.010, 10.0)), ("g", (0.020, 1.0))):
     v.check(f"Lab 06-01.{key}", 0.225 / i_lab.mean() / 24)
 v.assert_true("e^-1 sanity for 06-01.2b", abs(2.5 / E_NUM - 0.9197) < 1e-4)
 
+# ---- Problem 06-01.16: Faraday EMF by differentiating the flux numerically; the power chain by stepping
+# backward through each stage from the load
+flux = lambda t: 10e-4 * (2.0 * t)                       # Wb, field B(t) = 2t T
+v.check("06-01.16a", 1e3 * (flux(1e-3) - flux(0.0)) / 1e-3)
+p_reg_in = 500.0 / 0.90
+p_bus = p_reg_in / 0.97
+v.check("06-01.16b", 100 * 500.0 / p_bus)
+v.check("06-01.16c", p_bus)
+v.check("06-01.16d", p_bus - p_reg_in)
+v.check("06-01.16e", p_reg_in - 500.0)
+
 sys.exit(v.finish())

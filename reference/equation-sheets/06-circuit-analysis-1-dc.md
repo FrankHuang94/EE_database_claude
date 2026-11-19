@@ -66,8 +66,8 @@ The relations to know cold from Course 06, each with its conditions and the chap
 | Worst case: add the magnitudes of sensitivity × tolerance; RSS: $\sqrt{\sum(\text{sens}\times\sigma)^2}$ | RSS of uniform limits is exceeded by a few percent of units | [06-07](../../courses/06-circuit-analysis-1-dc/chapters/06-07-linearity-and-superposition.md) |
 | Thévenin $V_{th} = v_{oc}$; Norton $I_N = i_{sc}$; $R_{th} = v_{oc}/i_{sc}$ | Or $R_{th}$ by test source (dependent sources) | [06-08](../../courses/06-circuit-analysis-1-dc/chapters/06-08-thevenin-and-norton.md) |
 | Two loads: $V_{th}$ and $R_{th}$ from two (load, voltage) pairs | Measuring an equivalent | [06-08](../../courses/06-circuit-analysis-1-dc/chapters/06-08-thevenin-and-norton.md) |
-| Max power: $R_L = R_{th}$, $P_{max} = V_{th}^2/(4R_{th})$, $\eta$ = 50% | Given source, choose the load | [06-09](../../courses/06-circuit-analysis-1-dc/chapters/06-09-maximum-power-transfer.md) |
-| $\eta = R_L/(R_L + R_{th})$; $p/p_{max} = 4\eta(1 - \eta)$ | Any linear source | [06-09](../../courses/06-circuit-analysis-1-dc/chapters/06-09-maximum-power-transfer.md) |
+| Max power: $R_L = R_{th}$, $P_{max} = V_{th}^2/(4R_{th})$ | Given source, choose the load | [06-09](../../courses/06-circuit-analysis-1-dc/chapters/06-09-maximum-power-transfer.md) |
+| $\eta = R_L/(R_L + R_{th})$ (50% at the match); $p/p_{max} = 4\eta(1 - \eta)$ | Only when $R_{th}$ is a physical series resistance; a general network's Thévenin model gives no internal loss | [06-09](../../courses/06-circuit-analysis-1-dc/chapters/06-09-maximum-power-transfer.md) |
 
 ## Op-amps
 
@@ -77,7 +77,7 @@ The relations to know cold from Course 06, each with its conditions and the chap
 | Inverting $-R_2/R_1$ ($R_{in} = R_1$); non-inverting $1 + R_2/R_1$ ($R_{in}$ ≈ ∞); follower 1 | Noise gain $1 + R_2/R_1$ in both | [06-10](../../courses/06-circuit-analysis-1-dc/chapters/06-10-ideal-op-amp.md) |
 | Summer $v_{out} = -R_f\sum v_k/R_k$; transimpedance $v_{out} = -R_fi_{in}$ | Virtual ground | [06-10](../../courses/06-circuit-analysis-1-dc/chapters/06-10-ideal-op-amp.md) |
 | Difference amp $G(v_2 - v_1)$ if $R_4/R_3 = R_2/R_1 = G$; $A_{cm} = (b - a)/(1 + b)$ with $a = R_2/R_1$, $b = R_4/R_3$ | CMRR $= G/\lvert A_{cm}\rvert$ ≈ $(1 + G)/(4t)$ worst case | [06-10](../../courses/06-circuit-analysis-1-dc/chapters/06-10-ideal-op-amp.md) |
-| In-amp $(1 + 2R/R_G)(R_2/R_1)(v_+ - v_-)$ | CMRR × first-stage gain | [06-10](../../courses/06-circuit-analysis-1-dc/chapters/06-10-ideal-op-amp.md) |
+| In-amp $(1 + 2R/R_G)(R_2/R_1)(v_P - v_N)$ (in-amp inputs $v_P$, $v_N$) | CMRR × first-stage gain | [06-10](../../courses/06-circuit-analysis-1-dc/chapters/06-10-ideal-op-amp.md) |
 | Output errors: $V_{OS}\times$ noise gain; $I_B$ at −: $I_BR_2$; $I_B$ at +: $I_BR_s\times$ noise gain | Signs: PNP inputs push current out; compensate with $R_1\parallel R_2$ → $I_{OS}R_2$ | [06-10](../../courses/06-circuit-analysis-1-dc/chapters/06-10-ideal-op-amp.md) |
 
 ## Measurement

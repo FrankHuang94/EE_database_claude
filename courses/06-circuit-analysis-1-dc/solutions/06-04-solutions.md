@@ -213,6 +213,37 @@ $$
 
 (d) The 10 V source delivers $10\times3.317 = $ **33.17 W**, of which its series 2 Ω dissipates $3.317^2\times2 = $ **22.01 W**. The Norton source delivers $5\times3.366 = $ **16.83 W**, of which its shunt 2 Ω dissipates $3.366^2/2 = $ **5.664 W**. Both pass the same $33.17 - 22.01 = 16.83 - 5.66 = $ **11.16 W** to the external circuit (3 Ω: 3.776 W, 1 Ω: 4.819 W, 6 Ω: 0.228 W, and the sink absorbs $2\times1.171 = 2.341$ W). Equivalent sources agree at their terminals only; what happens inside them is not equivalent ([06-08](../chapters/06-08-thevenin-and-norton.md)).
 
+
+### Solution 06-04.15
+
+(a) In kΩ, mA and V:
+
+$$
+\text{node 1: } 2 = \frac{v_1}{2} + \frac{v_1 - v_2}{4}, \qquad \text{node 2: } 2 = \frac{v_2}{4} + \frac{v_2 - v_1}{4}.
+$$
+
+The branch made of the current source and the 5 kΩ resistor delivers exactly 2 mA into node 1 whatever the resistor's value: a current source fixes its branch current, so anything in series with it changes only the voltage across the source, not the current. The resistor therefore never appears in a KCL equation.
+
+(b) Node 2 gives $v_1 = 2v_2 - 8$; substituting into node 1, $0.75(2v_2 - 8) - 0.25v_2 = 2$, so $1.25v_2 = 8$: **$v_2$ = 6.4 V** and **$v_1$ = 4.8 V**.
+
+(c) The source's output terminal sits $2\ \text{mA}\times5\ \text{kΩ} = 10$ V above node 1: **14.8 V**. The source delivers $14.8\times2 = $ **29.6 mW**, of which the 5 kΩ resistor dissipates $2^2\times5 = $ **20 mW**: the series resistor wastes power without changing any node voltage.
+
+### Solution 06-04.16
+
+(a) In kΩ, mA and V, with the supernode around nodes 1 and 2:
+
+$$
+\begin{bmatrix} 1 & -1 & 0 & 0\\ \tfrac12 & \tfrac14 + 1 & -1 & 0\\ 0 & -1 & 1 + \tfrac12 + \tfrac12 & -\tfrac12\\ 0 & 0 & -\tfrac12 & \tfrac12 + 1 \end{bmatrix}
+\begin{bmatrix} v_1\\ v_2\\ v_3\\ v_4 \end{bmatrix} =
+\begin{bmatrix} 4\\ 2\\ 0\\ 1 \end{bmatrix}.
+$$
+
+Row 1 is the constraint $v_1 - v_2 = 4$; row 2 is the supernode's KCL (2 mA in, leaving through 2 kΩ, 4 kΩ and 1 kΩ); rows 3 and 4 are KCL at nodes 3 and 4.
+
+(b) Substitute $v_1 = v_2 + 4$ into row 2: $1.75v_2 - v_3 = 0$, so $v_3 = 1.75v_2$. Row 4 gives $v_4 = (1 + 0.5v_3)/1.5$. Row 3 becomes $-v_2 + 2(1.75v_2) - 0.5v_4 = 0$, that is $2.5v_2 = 0.5v_4 = (1 + 0.875v_2)/3$, so $v_2(7.5 - 0.875) = 1$: **$v_2$ = 0.1509 V**, **$v_1$ = 4.151 V**, **$v_3$ = 0.2642 V**, **$v_4$ = 0.7547 V**.
+
+(c) KCL at node 1: 2 mA arrives from the source, and $v_1/2 = 2.075$ mA leaves through the 2 kΩ, so **0.07547 mA** flows from node 2 up through the 4 V source and out of its + terminal into node 1. The source delivers $4\times0.07547 = $ **0.3019 mW**.
+
 ---
 
 ## Answer key
@@ -328,3 +359,14 @@ $$
 | 06-04.14l | power in the 1 Ω | 4.819 | W |
 | 06-04.14m | power in the 6 Ω | 0.228 | W |
 | 06-04.14n | power absorbed by the sink | 2.341 | W |
+| 06-04.15a | v_1 | 4.8 | V |
+| 06-04.15b | v_2 | 6.4 | V |
+| 06-04.15c | current-source terminal voltage | 14.8 | V |
+| 06-04.15d | power delivered by the current source | 29.6 | mW |
+| 06-04.15e | power in the 5 kΩ | 20 | mW |
+| 06-04.16a | v_1 | 4.151 | V |
+| 06-04.16b | v_2 | 0.1509 | V |
+| 06-04.16c | v_3 | 0.2642 | V |
+| 06-04.16d | v_4 | 0.7547 | V |
+| 06-04.16e | current out of the 4 V source's + terminal | 0.07547 | mA |
+| 06-04.16f | power delivered by the 4 V source | 0.3019 | mW |

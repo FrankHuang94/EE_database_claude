@@ -113,7 +113,7 @@ $$
 
 **The algebraic sum of the currents entering a node is zero** at every instant. Equivalently, the currents entering equal the currents leaving. (04-05 derived the same law from the continuity equation; here it appears as a consequence of declaring that nodes store no charge.)
 
-**Kirchhoff's voltage law (KVL) from condition 1.** Take any loop through the circuit, passing through elements and wires. The voltage across each branch is the line integral of $-\vec E$ from its − to its + terminal. Adding the branch voltages around the loop, with a plus sign for each branch traversed from − to + and a minus sign for each traversed from + to −, gives the line integral of $-\vec E$ around the closed path. By condition 1 and Faraday's law that integral is zero:
+**Kirchhoff's voltage law (KVL) from condition 1.** Take any loop of branches through the circuit, and draw the closed path carefully: it follows the wires, and for each element it runs *outside* the element, through the space from one terminal to the other (never through the element's interior, such as an inductor's winding, where the flux does change). The whole closed path therefore lies outside the elements, which is exactly where condition 1 applies. The voltage across each branch is the line integral of $-\vec E$ along this outside path from its − to its + terminal; because the flux through any closed path outside the elements is constant, that integral does not depend on which outside path is chosen, so the branch voltage is well defined. Adding the branch voltages around the loop, with a plus sign for each branch traversed from − to + and a minus sign for each traversed from + to −, gives the line integral of $-\vec E$ around the closed path. By condition 1 and Faraday's law that integral is zero:
 
 $$
 \sum_{k \text{ around a loop}} \pm v_k \;=\; -\oint \vec E\cdot d\vec l \;=\; \frac{d\Phi_B}{dt} \;=\; 0 .
@@ -139,7 +139,7 @@ The reasoning behind the rule: a reflection from the far end returns after $2t_d
 
 ![Far-end voltage of a 1 ns transmission line driven through 10 Ω into an open load, for input edges of 0.1 ns, 6 ns and 20 ns](../../../assets/figures/06-01/lumped-vs-edge.svg)
 
-*Figure 2. The same wire, three edge rates. With a 0.1 ns edge the far end overshoots to 1.67 V and rings, which no lumped model of a wire can produce. With a 20 ns edge (20 times the delay) the overshoot is 3.9% and the wire is, for practical purposes, a node. The 6 ns edge, at the rule-of-thumb boundary, still overshoots by 17% with this badly matched 10 Ω driver: the rule is a guide to when reflections start to matter, not a guarantee that they are negligible.*
+*Figure 2. The same wire, three edge rates. With a 0.1 ns edge the far end overshoots to 1.67 V and rings, which the ideal-wire (single-node) model cannot produce; reproducing it with lumped elements takes a ladder of many small series inductors and shunt capacitors, which is a transmission-line model in disguise. With a 20 ns edge (20 times the delay) the overshoot is 3.9% and the wire is, for practical purposes, a node. The 6 ns edge, at the rule-of-thumb boundary, still overshoots by 17% with this badly matched 10 Ω driver: the rule is a guide to when reflections start to matter, not a guarantee that they are negligible.*
 
 ### 3.4 Reference directions and the passive sign convention
 
@@ -180,17 +180,17 @@ $$
 
 summed over all $b$ branches. It is called **Tellegen's theorem**, and it is stronger than it looks: it follows from KCL and KVL alone, without using any element law, so it holds for every lumped circuit, linear or not.
 
-**Proof.** Pick a reference node and let $e_n$ be the voltage of node $n$ relative to it (with $e = 0$ at the reference). Every branch $k$ runs from some node $a$ (its + terminal) to some node $b$ (its − terminal), so by KVL its voltage is the difference of node voltages, $v_k = e_a - e_b$. Its current $i_k$ enters at $a$ (passive convention) and so *leaves node $a$* into the element, then *enters node $b$*. Substitute:
+**Proof.** Pick a reference node and let $e_n$ be the voltage of node $n$ relative to it (with $e = 0$ at the reference). Every branch $k$ runs from some node $p(k)$ (its + terminal) to some node $m(k)$ (its − terminal), so by KVL its voltage is the difference of node voltages, $v_k = e_{p(k)} - e_{m(k)}$. Its current $i_k$ enters the element at $p(k)$ (passive convention) and so *leaves node $p(k)$* into the element, then *enters node $m(k)$*. Substitute:
 
 $$
-\sum_{k} v_k i_k \;=\; \sum_{k} (e_{a(k)} - e_{b(k)})\, i_k \;=\; \sum_{n} e_n \Big(\sum_{k \text{ leaving } n} i_k \;-\; \sum_{k \text{ entering } n} i_k\Big),
+\sum_{k} v_k i_k \;=\; \sum_{k} (e_{p(k)} - e_{m(k)})\, i_k \;=\; \sum_{n} e_n \Big(\sum_{k \text{ leaving } n} i_k \;-\; \sum_{k \text{ entering } n} i_k\Big),
 $$
 
 where the last step collects, for each node $n$, every term in which $e_n$ appears: with a plus sign for each branch current that leaves $n$ and a minus sign for each that enters it. By KCL the bracket is zero at every node. So the whole sum is zero. ∎
 
 **Use it as a check.** After solving a circuit, compute every element's absorbed power with the passive convention and add them up. A nonzero total means a sign error or an arithmetic slip somewhere. It costs a minute and catches most mistakes in this course (Example 06-01.2).
 
-> **Going deeper — a stranger and more useful form.** The proof never used the fact that the voltages and currents belong to the *same* circuit. If $v_k$ satisfy KVL in one circuit and $i'_k$ satisfy KCL in any other circuit with the same graph (same nodes and branches, any elements), then $\sum_k v_k i'_k = 0$ as well. This "different circuits" form underlies reciprocity theorems, the sensitivity analysis used by circuit optimizers, and the adjoint-network method that computes the sensitivity of one output to every element in a single extra simulation (Problem 06-01.13).
+> **Going deeper — a stranger and more useful form.** The proof never used the fact that the voltages and currents belong to the *same* circuit. If $v_k$ satisfy KVL in one circuit and $i'_k$ satisfy KCL in any other circuit with the same graph (same nodes and branches, any elements), then $\sum_k v_k i'_k = 0$ as well (Problem 06-01.13 checks it on two circuits). This "different circuits" form underlies reciprocity theorems, the sensitivity analysis used by circuit optimizers, and the adjoint-network method that computes the sensitivity of one output to every element in a single extra simulation.
 
 ### 3.6 Energy, average power and the units of a budget
 
@@ -300,7 +300,7 @@ The 12 V supply delivers 24 W. The battery *absorbs* 4 W: the stronger supply is
 
 **Units check.** V/Ω = A ✓; V × A = W ✓.
 
-**Sanity check.** $v_A$ = 8 V lies between the two source voltages, as it must for a node fed through resistors from both. Both resistor powers are positive, as resistors' must be. And in ngspice (lab Part 1), `i(V1)` reads −2 A and `@V1[p]` reads −24 W: SPICE's passive convention for sources, confirmed.
+**Sanity check.** $v_A$ = 8 V lies between 0 and 12 V, the lowest and highest potentials node A connects to through resistors, as it must: a node joined only by resistors to fixed potentials sits at their conductance-weighted average (Millman's theorem, $v_A = \sum G_kV_k/\sum G_k$, here $(6 + 2 + 0)/(0.5 + 0.333 + 0.167)$ = 8 V). It need not lie between the two *source* voltages: with a smaller $R_3$ it would fall below 6 V. Both resistor powers are positive, as resistors' must be. And in ngspice (lab Part 1), `i(V1)` reads −2 A and `@V1[p]` reads −24 W: SPICE's passive convention for sources, confirmed.
 
 ### Example 06-01.3 · Lumped or not? (tier B)
 
@@ -308,7 +308,7 @@ The 12 V supply delivers 24 W. The battery *absorbs* 4 W: the stronger supply is
 
 **Solution.** (a) Delay $t_d = 2\ \text{m}/(0.66\times 299\,792\,458\ \text{m/s}) = 10.1$ ns, against a period of 1 ms: the signal changes $10^5$ times more slowly than it crosses the cable. **Lumped**, overwhelmingly.
 
-(b) For a stripline the field is entirely in the dielectric, so $\varepsilon_{\text{eff}} = \varepsilon_r$ and the delay per unit length is $\sqrt{4.6}/c = 7.154$ ps/mm (the value tabulated in TI's layout guide, [R-083](../../../reference/research-log.md#r-083--board-dielectrics-propagation-5g-bands-and-rf-exposure)). So $t_d = 150 \times 7.154$ ps $= 1.073$ ns, and the rule $t_d < t_r/6$ requires $t_r > 6.44$ ns. With **0.5 ns edges the trace is not lumped**: it must be designed as a transmission line (controlled impedance, termination) or it will ring. With **10 ns edges it is lumped** (barely: $10 > 6.44$).
+(b) For a stripline the field is entirely in the dielectric, so $\varepsilon_{\text{eff}} = \varepsilon_r$ and the delay per unit length is $\sqrt{4.6}/c = 7.154$ ps/mm, matching the 715.3 ps per 100 mm tabulated in TI's layout guide ([R-083](../../../reference/research-log.md#r-083--board-dielectrics-propagation-5g-bands-and-rf-exposure)). So $t_d = 150 \times 7.154$ ps $= 1.073$ ns, and the rule $t_d < t_r/6$ requires $t_r > 6.44$ ns. With **0.5 ns edges the trace is not lumped**: it must be designed as a transmission line (controlled impedance, termination) or it will ring. With **10 ns edges it is lumped** (barely: $10 > 6.44$).
 
 (c) The wavelength at 60 Hz is $\lambda = c/f = 299\,792\,458/60 = 4997$ km, so the line is $400/4997 = 0.080\lambda$ long, under the $\lambda/10$ rule. But that is a phase shift of $0.080 \times 360° = 28.8°$ from end to end, which power engineers do not ignore: textbook power-systems practice treats lines up to about 80 km as short (a series impedance), up to about 250 km as medium (lumped π models), and longer lines with distributed (transmission-line) equations. **Lumped only approximately**; a 400 km line is modeled as distributed.
 
@@ -443,7 +443,7 @@ Open [labs/06-01-lab/](../labs/06-01-lab/README.md): a notebook and two ngspice 
 | Lumped rule for sinusoids | size $< \lambda/10$ | 60 Hz: $\lambda$ ≈ 5000 km |
 | Distribution loss scaling | $P_{\text{loss}}/P = PR/V^2$ | double $V$, quarter the loss |
 | AI accelerator power | about 1 kW per device | [R-026](../../../reference/research-log.md#r-026--ai-accelerator-power-ratings) |
-| AI rack power (72-GPU class) | about 120 to 140 kW (definitions differ) | [R-098](../../../reference/research-log.md#r-098--usb-power-delivery-rack-power-distribution-and-ai-rack-power) |
+| AI rack power (72-GPU class) | about 120 to 142 kW (definitions differ) | [R-098](../../../reference/research-log.md#r-098--usb-power-delivery-rack-power-distribution-and-ai-rack-power) |
 | Rack DC bus today; announced next step | 48 V class (≈ 50–54 V); 800 V DC from 2027 | [R-098](../../../reference/research-log.md#r-098--usb-power-delivery-rack-power-distribution-and-ai-rack-power) |
 | USB-C power ceiling | 240 W = 48 V × 5 A (100 W = 20 V × 5 A before 2021) | [R-098](../../../reference/research-log.md#r-098--usb-power-delivery-rack-power-distribution-and-ai-rack-power) |
 | Data centers' share of world electricity | ≈ 1.5% (2024), ≈ 3% projected for 2030 | [R-099](../../../reference/research-log.md#r-099--data-centre-electricity-use-iea) |
@@ -467,9 +467,9 @@ Open [labs/06-01-lab/](../labs/06-01-lab/README.md): a notebook and two ngspice 
 
 - **Power per rack.** NVIDIA's documentation describes a GB200 NVL72 rack (72 GPUs) as drawing about 120 kW; OEM specification sheets give 132 kW nominal and recommend provisioning the rack's busways for up to 192 kW peak; GB300 NVL72 documents give 132 to 142 kW ([R-098](../../../reference/research-log.md#r-098--usb-power-delivery-rack-power-distribution-and-ai-rack-power)) **[Contested]**: the figures differ because they measure different things (typical, nominal, provisioned peak), which is exactly the distinction to ask about. Individual accelerators are rated around 1 kW ([R-026](../../../reference/research-log.md#r-026--ai-accelerator-power-ratings)).
 - **Distribution voltage is rising.** The Open Compute Project's Open Rack V3 distributes a 48 V-class DC bus (about 50 to 54 V, depending on revision and option), fed by power shelves of 3 kW rectifier modules. In May 2025 NVIDIA announced an 800 V DC architecture for 1 MW racks from 2027, arguing that feeding a 1 MW rack at 54 V would take up to 200 kg of copper busbar, and in 2026 Google, Microsoft and NVIDIA were standardizing ±400 V and 800 V DC distribution through OCP ([R-098](../../../reference/research-log.md#r-098--usb-power-delivery-rack-power-distribution-and-ai-rack-power)) **[Industry estimate]**: vendor and consortium announcements, read from search excerpts. The argument is §3.7's square law: going from 54 V to 800 V cuts the current 14.8-fold and the $I^2R$ loss in the same conductor about 219-fold (Problem 06-01.12).
-- **USB-C power.** USB Power Delivery revision 3.1 (May 2021) raised the ceiling from 100 W (20 V at 5 A) to 240 W (48 V at 5 A) by adding fixed 28, 36 and 48 V levels at the same 5 A cable current ([R-098](../../../reference/research-log.md#r-098--usb-power-delivery-rack-power-distribution-and-ai-rack-power)) **[Established]** in substance (a published specification, read here from the USB-IF's announcement as quoted in search excerpts). Problem 06-01.11 shows why the voltage, not the current, went up.
+- **USB-C power.** USB Power Delivery revision 3.1 (May 2021) raised the ceiling from 100 W (20 V at 5 A) to 240 W (48 V at 5 A) by adding fixed 28, 36 and 48 V levels at the same 5 A cable current ([R-098](../../../reference/research-log.md#r-098--usb-power-delivery-rack-power-distribution-and-ai-rack-power)) **[Industry estimate]** (a published specification, but read here only from the USB-IF's announcement as quoted in search excerpts; the tag rises to [Established] once the specification page is read). Problem 06-01.11 shows why the voltage, not the current, went up.
 - **Data-center energy.** The International Energy Agency estimated data-center electricity use at about 415 TWh in 2024, about 1.5% of world consumption, and projected about 945 TWh by 2030; its April 2026 update reported growth of 17% in 2025, to about 485 TWh, and about 950 TWh by 2030 ([R-099](../../../reference/research-log.md#r-099--data-centre-electricity-use-iea)) **[Industry estimate]**: modeled estimates with wide uncertainty bands.
-- **The other end of the scale.** Current low-power microcontrollers advertise active currents of a few to tens of microamperes per megahertz and sleep currents from about a hundred nanoamperes to a few microamperes. ST's STM32U0 headline is 52 µA/MHz with 160 nA standby (RTC running), although its CoreMark table at 3.0 V shows 73 µA/MHz; Nordic's nRF54L15 is about 20 µA/MHz at 128 MHz with 0.8 µA in system-off at 3.0 V; Ambiq's Apollo4 Plus quotes 4 µA/MHz ([R-100](../../../reference/research-log.md#r-100--low-power-mcu-currents-coin-cells-and-cpu-core-voltage-ranges)) **[Industry estimate]**: vendor figures under differing conditions. A CR2032 coin cell is rated 225 mAh at a 0.2 mA drain (Panasonic) or 254 mAh to 2.0 V on a 15 kΩ load (Energizer): even a battery's rating depends on the load and the cut-off voltage.
+- **The other end of the scale.** Current low-power microcontrollers advertise active currents of a few to tens of microamperes per megahertz and sleep currents from about a hundred nanoamperes to a few microamperes. ST's STM32U0 headline is 52 µA/MHz with 160 nA standby (RTC running), although its CoreMark table at 3.0 V shows 73 µA/MHz; Nordic's nRF54L15 is about 20 µA/MHz at 128 MHz with 0.8 µA in system-off at 3.0 V; Ambiq's Apollo4 Plus quotes 4 µA/MHz ([R-100](../../../reference/research-log.md#r-100--low-power-mcu-currents-coin-cells-and-cpu-core-voltage-ranges)) **[Industry estimate]**: vendor figures under differing conditions. A CR2032 coin cell is rated 225 mAh at a 0.2 mA drain (Panasonic) or 254 mAh to 2.0 V on a 15 kΩ load (Energizer's industrial ECRN2032): even a battery's rating depends on the load and the cut-off voltage.
 
 ### Why it matters commercially
 
@@ -548,11 +548,11 @@ Power is now the binding constraint on computing, from the coin cell in a wearab
 
    </details>
 
-8. A block draws 10 mA for 1 ms every second and 1 µA otherwise. What is its average current?
+8. A block draws 10 mA for 1 ms every second, and a 1 µA leakage floor flows all the time. What is its average current?
 
    <details><summary>Answer</summary>
 
-   $10\ \text{mA}\times 0.001 + 1\ \mu\text{A} \approx 10\ \mu\text{A} + 1\ \mu\text{A} = 11\ \mu\text{A}$ (counting the sleep current during the active millisecond too, as Example 06-01.4 does).
+   $10\ \text{mA}\times 0.001 + 1\ \mu\text{A} = 10\ \mu\text{A} + 1\ \mu\text{A} = 11\ \mu\text{A}$, counting the floor during the active millisecond too, as Example 06-01.4 does. (If the 1 µA flowed only outside the active millisecond, the answer would be 10.999 µA: the same to the precision that matters.)
 
    </details>
 
