@@ -185,6 +185,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-177 | MOSFET and load-switch data sheets | Nov 2026 |
 | R-178 | Bipolar transistor data sheets | Nov 2026 |
 | R-179 | Class-D audio amplifier data sheet | Nov 2026 |
+| R-180 | Image-sensor pixel readout | Nov 2026 |
 
 ---
 
@@ -1885,3 +1886,9 @@ R&D % = R&D ÷ revenue.
 *Read on 19 Nov 2026 from the PDF at the URL below, as downloaded. Specifications are tagged [Established] as specifications of that part.*
 
 - **TI TPA3116D2/TPA3118D2/TPA3130D2** (SLOS708G, April 2012, revised December 2017): features list ">90% power efficiency", 2 × 50 W into a 4 Ω BTL load at 21 V (TPA3116D2), supply 4.5–26 V; §6.5 quiescent supply current 20 mA typ / 35 mA max at PVCC = 12 V and 32/50 mA at 24 V (no load or filter); §6.6 continuous output power 25 W at THD+N = 10%, PVCC = 14.4 V and 50 W at PVCC = 21 V (R_L = 4 Ω, 1 kHz), THD+N 0.1% at 25 W (21 V); §7.3.2 Table 1, gain 20/26/32/36 dB with input impedance 60/30/15/9 kΩ, set by a resistor divider on GAIN/SLV, input resistor tolerance ±20%; Table 2, recommended input coupling capacitors 1.5/3.3/5.6/10 µF giving 1.8/1.6/1.9/1.8 Hz high-pass corners, with the guidance that a 2 Hz corner (a tenth of 20 Hz) keeps the bass flat [Established]. Used in 10-05. [Data sheet](https://www.ti.com/lit/ds/symlink/tpa3116d2.pdf).
+
+## R-180 · Image-sensor pixel readout
+
+*Read on 19 Nov 2026. The primary paper could not be downloaded (IEEE Xplore refused automated access); the claim below was read in the Wikipedia article, which cites the paper for it. Tagged [Established] because the 4T pixel structure is standard textbook and review material.*
+
+- **4T active pixel:** a pinned photodiode, a floating diffusion and four transistors (transfer gate, reset gate, selection gate and a source-follower readout transistor); the source follower buffers the pixel voltage onto the column without removing the accumulated charge [Established]. Primary source: E. R. Fossum and D. B. Hondongwa, "A Review of the Pinned Photodiode for CCD and CMOS Image Sensors," *IEEE J. Electron Devices Society*, vol. 2, no. 3, pp. 33–43, 2014, doi:10.1109/JEDS.2014.2306412. Read via [Wikipedia, "Active-pixel sensor"](https://en.wikipedia.org/wiki/Active-pixel_sensor). Used in 10-06. See open issue 39.

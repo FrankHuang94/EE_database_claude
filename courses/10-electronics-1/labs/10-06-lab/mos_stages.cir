@@ -1,0 +1,102 @@
+* Lab 10-06 -- the four MOS stages of Examples 10-06.1 to 10-06.4 as level-1 circuits, read by AC analysis.
+* Every transistor runs at I_D = 0.5 mA with V_ov = 0.5 V, so g_m = 2 mS. Level 1 writes
+* I_D = (KP/2)(W/L)V_ov^2 (1 + LAMBDA V_DS), whose output resistance is (1 + LAMBDA V_DS)/(LAMBDA I_D). To give
+* exactly the chapter's r_o = 40 kOhm at each operating point, LAMBDA = 1/(r_o I_D - V_DS) and
+* KP = 4 mA/V^2 / (1 + LAMBDA V_DS), which keeps k_n(effective) = 4 mA/V^2 and g_m = 2 mS. GAMMA is chosen so that
+* chi = GAMMA/(2 sqrt(PHI + V_SB)) = 0.2 at each body-affected operating point (PHI = 0.7 V).
+*   (1) CS, source grounded, V_DS = 2.5 V: open-circuit gain and gain into a coupled 10 kOhm load.
+*   (2) CS with R_S = 500 Ohm, body tied to source, V_DS = 2.25 V: gain, and the drain output resistance measured
+*       with the drain held at its 2.5 V bias by a source carrying the AC test signal.
+*   (3) CG, lambda = 0, body at ground, V_S = 0.3 V: gain from a 50 Ohm source and the input resistance.
+*   (4) CD, R_S = 5 kOhm, body at ground, V_S = 2.5 V, V_DS = 2.5 V: gain, gain into a coupled 1 kOhm load, and
+*       the output resistance by a 1 A AC test current.
+*
+* EXPECT g1 key:../../chapters/10-06-mos-single-stage-amplifiers.md#Ex_10-06.1e rtol=2e-4
+* EXPECT g1l key:../../chapters/10-06-mos-single-stage-amplifiers.md#Ex_10-06.1f rtol=2e-4
+* EXPECT g2 key:../../chapters/10-06-mos-single-stage-amplifiers.md#Ex_10-06.2d rtol=2e-4
+* EXPECT r2 key:../../chapters/10-06-mos-single-stage-amplifiers.md#Ex_10-06.2c scale=1e3 rtol=2e-4
+* EXPECT g3 key:../../chapters/10-06-mos-single-stage-amplifiers.md#Ex_10-06.3d rtol=5e-4
+* EXPECT r3 key:../../chapters/10-06-mos-single-stage-amplifiers.md#Ex_10-06.3b rtol=2e-4
+* EXPECT g4 key:../../chapters/10-06-mos-single-stage-amplifiers.md#Ex_10-06.4b rtol=2e-4
+* EXPECT g4l key:../../chapters/10-06-mos-single-stage-amplifiers.md#Ex_10-06.4e rtol=2e-4
+* EXPECT r4 key:../../chapters/10-06-mos-single-stage-amplifiers.md#Ex_10-06.4d rtol=2e-3
+
+.options temp=26.85 tnom=26.85 reltol=1e-8 abstol=1e-15 vntol=1e-9
+VDD vdd 0 DC 5
+
+* (1) common source
+VG1 g1 0 DC 1.0 AC 1
+RD1 vdd d1 5k
+M1 d1 g1 0 0 n1 W=10u L=10u
+VG1L g1l 0 DC 1.0 AC 1
+RD1L vdd d1l 5k
+M1L d1l g1l 0 0 n1 W=10u L=10u
+C1L d1l o1l 1
+RL1 o1l 0 10k
+.model n1 NMOS(LEVEL=1 KP=3.5e-3 VTO=0.5 LAMBDA=0.05714285714285714)
+
+* (2) degenerated common source
+VG2 g2 0 DC 1.25 AC 1
+RD2 vdd d2 5k
+M2 d2 g2 s2 s2 n2 W=10u L=10u
+RS2 s2 0 500
+VG2R g2r 0 DC 1.25
+VX2 x2 0 DC 2.5 AC 1
+M2R x2 g2r s2r s2r n2 W=10u L=10u
+RS2R s2r 0 500
+.model n2 NMOS(LEVEL=1 KP=3.55e-3 VTO=0.5 LAMBDA=0.056338028169014086)
+
+* (3) common gate
+VB3 g3 0 DC 1.3653359893863697
+RD3 vdd d3 5k
+M3 d3 g3 s3 0 n3 W=10u L=10u
+IB3 s3 0 DC 0.5m
+VIN3 in3 0 DC 0 AC 1
+RSIG3 in3 a3 50
+C3 a3 s3 1
+.model n3 NMOS(LEVEL=1 KP=4e-3 VTO=0.5 LAMBDA=0 GAMMA=0.4 PHI=0.7)
+
+* (4) common drain
+VG4 g4 0 DC 4.181334818116169 AC 1
+M4 vdd g4 s4 0 n4 W=10u L=10u
+RS4 s4 0 5k
+VG4L g4l 0 DC 4.181334818116169 AC 1
+M4L vdd g4l s4l 0 n4 W=10u L=10u
+RS4L s4l 0 5k
+C4L s4l o4l 1
+RL4 o4l 0 1k
+VG4R g4r 0 DC 4.181334818116169
+M4R vdd g4r s4r 0 n4 W=10u L=10u
+RS4R s4r 0 5k
+IX4 0 s4r DC 0 AC 1
+.model n4 NMOS(LEVEL=1 KP=3.5e-3 VTO=0.5 LAMBDA=0.05714285714285714 GAMMA=0.7155417527999327 PHI=0.7)
+
+.control
+op
+let id1 = @m1[id]
+let id3 = @m3[id]
+let vs4 = v(s4)
+echo "id1 = $&id1"
+echo "id3 = $&id3"
+echo "vs4 = $&vs4"
+ac lin 1 1k 1k
+let g1 = real(v(d1))
+let g1l = real(v(o1l))
+let g2 = real(v(d2))
+let r2 = -1 / real(i(vx2))
+let g3 = real(v(d3))
+let r3 = real(v(s3)) / real((v(in3) - v(a3)) / 50)
+let g4 = real(v(s4))
+let g4l = real(v(o4l))
+let r4 = real(v(s4r))
+echo "g1 = $&g1"
+echo "g1l = $&g1l"
+echo "g2 = $&g2"
+echo "r2 = $&r2"
+echo "g3 = $&g3"
+echo "r3 = $&r3"
+echo "g4 = $&g4"
+echo "g4l = $&g4l"
+echo "r4 = $&r4"
+.endc
+.end

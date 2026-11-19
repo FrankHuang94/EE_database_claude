@@ -4278,3 +4278,21 @@
   definition: A switching amplifier whose output transistors are driven fully on or off at a frequency well above the signal, with the signal recovered by filtering; practical efficiencies exceed 90% at high output.
   chapter: "10-05"
   see_also: [Conversion efficiency]
+# ---------------------------------------------------------------- 10-06
+- term: Common-source amplifier
+  definition: The MOSFET gain stage with the input at the gate, the output at the drain and the source at signal ground (or through a degeneration resistor); its gain is −g_m(R_D ∥ r_o), and it inverts.
+  chapter: "10-06"
+- term: Common-gate amplifier
+  definition: The MOSFET stage with the gate at signal ground, the input at the source and the output at the drain; a non-inverting current buffer with input resistance about 1/(g_m + g_mb) and gain about (g_m + g_mb)R_D.
+  chapter: "10-06"
+- term: Source follower
+  definition: The common-drain MOSFET stage, with the input at the gate and the output at the source; a voltage buffer with gain g_mR_eq/(1 + g_mR_eq), below 1/(1 + χ) with the body effect, and output resistance about 1/(g_m + g_mb).
+  chapter: "10-06"
+  see_also: [Buffer amplifier, Body transconductance]
+- term: Active load
+  definition: A transistor current source used in place of a load resistor, giving a large small-signal resistance (its r_o) while consuming little DC headroom; a common-source stage with an active load approaches gain g_m(r_o1 ∥ r_o2).
+  chapter: "10-06"
+- term: Cascode
+  definition: A common-source transistor followed by a common-gate transistor in series; the upper device multiplies the output resistance by about g_mr_o, raising the gain toward (g_mr_o)² at the cost of one more overdrive of headroom.
+  chapter: "10-06"
+  see_also: [Intrinsic gain, Source degeneration]
