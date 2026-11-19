@@ -2149,3 +2149,31 @@
 - term: Memory safety
   definition: The guarantee that a program cannot access memory outside the objects it is entitled to (no overflows, use after free or invalid pointers); C and C++ lack it, Rust, Python and Java provide it, and hardware such as Arm MTE and CHERI can enforce parts of it.
   chapter: "05-06"
+- term: Sign extension
+  definition: Widening a two's-complement value by copying its sign bit into the new high bits (8-bit 0xFB, −5, becomes 16-bit 0xFFFB); needed by hand for odd-width fields such as 12-bit sensor readings, e.g. (x XOR 2^(k−1)) − 2^(k−1).
+  chapter: "05-07"
+- term: Bit mask
+  definition: A bit pattern with 1s at the positions of interest, used with AND to test or keep bits, OR to set them, AND-NOT to clear them and XOR to toggle them.
+  chapter: "05-07"
+- term: Bit field
+  definition: A group of adjacent bits inside a register or word that holds one value (a 3-bit mode at bits 6:4); extracted with shift-and-mask and written by clearing the field and OR-ing in the shifted value.
+  chapter: "05-07"
+- term: Memory-mapped I/O
+  definition: Accessing hardware peripheral registers at fixed memory addresses with ordinary loads and stores; in C, through volatile pointers to those addresses.
+  chapter: "05-07"
+- term: Volatile
+  definition: A C type qualifier telling the compiler that every read and write of an object has effects it cannot see (hardware registers, variables shared with interrupts), so none may be removed, merged or reordered; it does not make operations atomic.
+  chapter: "05-07"
+- term: Endianness
+  definition: The order of a multi-byte value's bytes in memory or on a wire; little-endian stores the least significant byte first (x86, most Arm MCUs), big-endian the most significant first (network byte order).
+  chapter: "05-07"
+- term: Fixed-point arithmetic
+  definition: Representing fractions as integers with an agreed scale 2^−f, so integer hardware does the arithmetic; additions are direct, products must be rescaled, and rounding, overflow and saturation are managed by the programmer.
+  chapter: "05-07"
+  see_also: [Q format, Saturation arithmetic]
+- term: Q format
+  definition: Notation Qm.f for fixed-point numbers with m integer and f fractional bits; Q15 is a 16-bit signed fraction in [−1, 1 − 2^−15] with resolution 3.05×10^−5.
+  chapter: "05-07"
+- term: Saturation arithmetic
+  definition: Arithmetic that clamps results to the largest or smallest representable value instead of wrapping around, so an overflowing signal clips rather than jumping to the opposite extreme.
+  chapter: "05-07"
