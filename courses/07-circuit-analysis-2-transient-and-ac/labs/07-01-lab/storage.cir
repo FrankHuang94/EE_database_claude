@@ -1,0 +1,118 @@
+* Lab 07-01 -- capacitors and inductors in ngspice: waveforms through the element laws, a
+* capacitor network, the inductive kick with and without a flyback diode, a real capacitor's
+* impedance, an op-amp integrator and differentiator, and DC steady state.
+*
+* EXPECT ex1a  key:../../chapters/07-01-capacitors-and-inductors.md#Ex_07-01.1a scale=-1e-3 rtol=1e-4
+* EXPECT ex1b  key:../../chapters/07-01-capacitors-and-inductors.md#Ex_07-01.1b scale=-1e-3 rtol=1e-4
+* EXPECT ex2a  key:../../chapters/07-01-capacitors-and-inductors.md#Ex_07-01.2a rtol=1e-4
+* EXPECT ex2b  key:../../chapters/07-01-capacitors-and-inductors.md#Ex_07-01.2b rtol=1e-3
+* EXPECT ex3c  key:../../chapters/07-01-capacitors-and-inductors.md#Ex_07-01.3c rtol=1e-3
+* EXPECT ex3d  key:../../chapters/07-01-capacitors-and-inductors.md#Ex_07-01.3d rtol=1e-3
+* EXPECT ex4a  key:../../chapters/07-01-capacitors-and-inductors.md#Ex_07-01.4a scale=-1 rtol=1e-3
+* EXPECT ex4c  key:../../chapters/07-01-capacitors-and-inductors.md#Ex_07-01.4c rtol=1e-2
+* EXPECT ex5e  key:../../chapters/07-01-capacitors-and-inductors.md#Ex_07-01.5e scale=1e6 rtol=2e-3
+* EXPECT ex5f  key:../../chapters/07-01-capacitors-and-inductors.md#Ex_07-01.5f rtol=5e-3
+* EXPECT ex5g  key:../../chapters/07-01-capacitors-and-inductors.md#Ex_07-01.5g rtol=5e-3
+* EXPECT ex6b  -10 rtol=1e-3
+* EXPECT ex6d  key:../../chapters/07-01-capacitors-and-inductors.md#Ex_07-01.6d scale=-1 rtol=1e-3
+* EXPECT p3a   key:../../solutions/07-01-solutions.md#07-01.3a rtol=1e-3
+* EXPECT p3b   key:../../solutions/07-01-solutions.md#07-01.3b rtol=1e-3
+* EXPECT p6a   key:../../solutions/07-01-solutions.md#07-01.6a rtol=1e-3
+* EXPECT p7c   key:../../solutions/07-01-solutions.md#07-01.7c rtol=1e-3
+* EXPECT p11a  key:../../solutions/07-01-solutions.md#07-01.11a rtol=1e-3
+* EXPECT p14a  key:../../solutions/07-01-solutions.md#07-01.14a scale=1e-3 rtol=1e-6
+* EXPECT p14b  key:../../solutions/07-01-solutions.md#07-01.14b rtol=1e-6
+
+* ---- Example 07-01.1: 10 uF driven by a piecewise-linear voltage
+V1   n1 0 PWL(0 0 1m 5 2m 5 2.5m 0 3m 0)
+C1   n1 0 10u
+* ---- Example 07-01.2: 4.7 uH driven by a piecewise-linear current (two cycles)
+I2   0 n2 PWL(0 1 2u 3 5u 1 7u 3 10u 1)
+L2   n2 0 4.7u
+* ---- Example 07-01.3: 4 uF in series with 2 uF || 6 uF, 12 V step through 1 ohm (1T bleeds give a DC path)
+V3   s3 0 PULSE(0 12 1u 1u 1u 1 2)
+R3   s3 a3 1
+C3a  a3 m3 4u
+C3b  m3 0 2u
+C3c  m3 0 6u
+R3b  m3 0 1T
+* ---- Example 07-01.4a: 100 mH whose 50 mA current is forced to zero in 1 us
+I4   0 n4 PWL(0 50m 10u 50m 11u 0)
+L4   n4 0 100m
+* ---- Example 07-01.4c: relay coil switched off by a transistor, with a flyback diode
+V4s  sup 0 DC 12
+L4c  sup c4 100m
+R4c  c4 d4 240
+S4   d4 0 g4 0 swmod
+V4g  g4 0 PWL(0 1 10u 1 11u 0)
+D4   d4 sup dmod
+.model swmod sw vt=0.5 vh=0 ron=0.01 roff=1e9
+.model dmod d
+* ---- Example 07-01.5: real capacitor (10 uF, ESR 5 mOhm, ESL 0.5 nH), driven by a 1 A AC current
+I5   0 z5 DC 0 AC 1
+R5   z5 e5 5m
+L5   e5 f5 0.5n
+C5   f5 0 10u
+* ---- Example 07-01.6: integrator (10k, 10 nF) with a 1 V step; differentiator with a 2 Vpp, 1 kHz triangle
+V6   i6 0 PWL(0 0 1n 1 3m 1)
+R6   i6 n6 10k
+C6   n6 o6 10n
+E6   o6 0 0 n6 1e6
+V6d  i6d 0 PWL(0 -1 0.5m 1 1m -1 1.5m 1 2m -1)
+C6d  i6d n6d 10n
+R6d  n6d o6d 10k
+E6d  o6d 0 0 n6d 1e6
+* ---- Problem 07-01.3: 100 uF from 2 V, 10 mA for 30 ms then -5 mA for 20 ms
+I13  0 n13 PWL(0 10m 30m 10m 30.001m -5m 50m -5m 50.001m 0)
+C13  n13 0 100u IC=2
+* ---- Problem 07-01.6: 4.7 uF at 12 V shares with 2.2 uF through 1 ohm (switch closes at 1 us)
+C16a a16 0 4.7u IC=12
+S16  a16 b16 g16 0 swmod
+V16g g16 0 PWL(0 0 1u 0 1.001u 1)
+R16  b16 c16 1
+C16b c16 0 2.2u IC=0
+* ---- Problem 07-01.7: buck inductor, +8.7 V for 0.55 us and -3.3 V for 1.45 us, two periods
+V17  n17 0 PWL(0 8.7 0.55u 8.7 0.5501u -3.3 2u -3.3 2.0001u 8.7 2.55u 8.7 2.5501u -3.3 4u -3.3)
+L17  n17 0 10u
+* ---- Problem 07-01.11: integrator 100k, 1 uF, 0.5 V for 2 s
+V111 i111 0 PWL(0 0 1u 0.5 2 0.5 2.000001 0)
+R111 i111 n111 100k
+C111 n111 o111 1u
+E111 o111 0 0 n111 1e6
+* ---- Problem 07-01.14: DC steady state, 12 V, 2k, then 1 uF and (10 mH + 4k) to ground (read at 59 ms, ~44 time constants)
+V114 s114 0 DC 12
+R114 s114 a114 2k
+C114 a114 0 1u
+L114 a114 b114 10m
+R114b b114 0 4k
+
+.control
+tran 2n 12u uic
+meas tran ex2a find v(n2) at=1u
+meas tran ex2b find v(n2) at=3.5u
+meas tran ex4a min v(n4) from=10u to=11u
+meas tran ex4c max v(d4) from=10u to=12u
+meas tran p7c pp i(L17) from=0 to=2u
+tran 1u 3.5m uic
+meas tran ex1a find i(V1) at=0.5m
+meas tran ex1b find i(V1) at=2.25m
+let va3m3 = v(a3) - v(m3)
+meas tran ex3c find va3m3 at=200u
+meas tran ex3d find v(m3) at=200u
+meas tran ex6b find v(o6) at=1.000001m
+meas tran ex6d find v(o6d) at=1.25m
+meas tran p6a find v(a16) at=200u
+tran 50u 60m uic
+meas tran p3a find v(n13) at=30m
+meas tran p3b find v(n13) at=55m
+let ip14 = -i(V114)
+meas tran p14a find ip14 at=59m
+meas tran p14b find v(a114) at=59m
+tran 1m 2.1 uic
+meas tran p11a find v(o111) at=2.05
+ac dec 200 10k 1G
+meas ac ex5e when vp(z5)=0 cross=1
+meas ac ex5f find vm(z5) at=100k
+meas ac ex5g find vm(z5) at=100meg
+.endc
+.end

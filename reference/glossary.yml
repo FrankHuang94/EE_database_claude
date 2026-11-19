@@ -86,6 +86,32 @@
   definition: EVM, the RMS distance between transmitted (or received) constellation points and their ideal positions, relative to the signal, often quoted in dB. It sets the highest usable QAM order.
   chapter: "02-01"
 
+# ---------------------------------------------------------------- 07-01
+- term: Equivalent series resistance (ESR)
+  definition: The resistance in series with a real capacitor's ideal capacitance (electrodes, terminations, dielectric loss); it dissipates ripple current as heat and sets the impedance at the self-resonant frequency.
+  chapter: "07-01"
+  see_also: [Equivalent series inductance (ESL), Self-resonant frequency]
+- term: Equivalent series inductance (ESL)
+  definition: The inductance in series with a real capacitor, set by its current loop through terminations and package; above the self-resonant frequency it dominates, so the part behaves as an inductor, and paralleling N parts divides it by N.
+  chapter: "07-01"
+  see_also: [Equivalent series resistance (ESR), Decoupling capacitor]
+- term: DC-bias derating
+  definition: The loss of capacitance of class II ceramic capacitors (X5R, X7R) under applied DC voltage, because their ferroelectric dielectric's permittivity falls with field; a part can deliver a fraction of its marked value at its working voltage.
+  chapter: "07-01"
+  see_also: [Multilayer ceramic capacitor (MLCC)]
+- term: Saturation current
+  definition: The current at which an inductor's core approaches saturation and its inductance has fallen by a stated percentage (set by the datasheet); beyond it the current rises much faster than v/L predicts.
+  chapter: "07-01"
+  see_also: [Saturation flux density]
+- term: Decoupling capacitor
+  definition: A capacitor placed close to a load to supply its fast current changes until the regulator responds, limiting the droop to ΔI·Δt/C and the spike to L·di/dt; its effectiveness at high frequency is limited by inductance more than by capacitance.
+  chapter: "07-01"
+  see_also: [Equivalent series inductance (ESL)]
+- term: Volt-second balance
+  definition: In a periodic steady state the average voltage across an inductor is zero (and the average current into a capacitor, charge balance), because its current (voltage) returns to the same value each period; the starting point for analyzing switching converters.
+  chapter: "07-01"
+  see_also: [Inductance]
+
 # ---------------------------------------------------------------- 07-02
 - term: Transient
   definition: The part of a circuit's response that dies out after a disturbance (such as a switching event), as the circuit moves from one steady state to another.
