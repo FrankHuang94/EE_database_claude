@@ -28,7 +28,7 @@ From number systems and Boolean algebra to finite state machines, timing and FPG
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
 | [08-01 · Number Systems and Codes](chapters/08-01-number-systems-and-codes.md) | 7 | ✅ verified | [problems](problems/08-01-problems.md) · [solutions](solutions/08-01-solutions.md) · [lab](labs/08-01-lab/README.md) · [verify](verify/verify_08_01.py) |
-| [08-02 · Boolean Algebra and Logic Gates](chapters/08-02-boolean-algebra-and-gates.md) | 8 | ⬜ planned | — |
+| [08-02 · Boolean Algebra and Logic Gates](chapters/08-02-boolean-algebra-and-gates.md) | 8 | ✅ verified | [problems](problems/08-02-problems.md) · [solutions](solutions/08-02-solutions.md) · [lab](labs/08-02-lab/README.md) · [verify](verify/verify_08_02.py) |
 | [08-03 · Logic Minimization: K-Maps and Beyond](chapters/08-03-logic-minimization.md) | 8 | ⬜ planned | — |
 | [08-04 · Combinational Building Blocks](chapters/08-04-combinational-building-blocks.md) | 10 | ⬜ planned | — |
 | [08-05 · Introduction to Verilog/SystemVerilog and Testbenches](chapters/08-05-verilog-and-testbenches.md) | 12 | ⬜ planned | — |

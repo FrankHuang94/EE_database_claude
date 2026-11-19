@@ -153,6 +153,8 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-145 | Ethernet CRC-32 | Nov 2026 |
 | R-146 | Unicode releases | Nov 2026 |
 | R-147 | Accelerator throughput specifications | Nov 2026 |
+| R-148 | Standard-cell library structure (SKY130) | Nov 2026 |
+| R-149 | Chip transistor counts | Nov 2026 |
 
 ---
 
@@ -1468,3 +1470,23 @@ R&D % = R&D ÷ revenue.
 - **NVIDIA HGX B200 (8 GPUs):** "FP4 Tensor Core 144 PFLOPS | 72 PFLOPS"; the footnote says the specification is shown as sparse | dense and dense is one-half of the sparse figure. The DGX B200 datasheet uses the same convention. Per GPU: 18 PFLOPS sparse, 9 dense, matching third-party per-GPU tables (Lenovo Press LP2226) [Established].
 - **Headline figures:** GTC 2024 coverage quoted "up to 20 petaFLOPS of FP4" for B200 [Contested: which configuration the headline refers to]. For later parts (HGX B300) a third-party analysis notes that dense FP4 is not simply half of sparse, so the ½ rule should not be assumed beyond B200.
 - **Sources:** [NVIDIA HGX platform](https://www.nvidia.com/en-in/data-center/hgx); [NVIDIA DGX B200](https://www.nvidia.com/en-gb/data-center/dgx-b200.md); [NVIDIA HGX B200 PCF summary](https://images.nvidia.com/aem-dam/Solutions/documents/HGX-B200-PCF-Summary.pdf); [Lenovo Press LP2226](https://lenovopress.lenovo.com/LP2226). Checked Nov 2026 (search excerpts).
+
+## R-148 · Standard-cell library structure (SKY130)
+
+*Read directly from the repositories with `git` on 19 Nov 2026 (the netlists were also read by the Course 08 research subagent, facts F-0815 to F-0818).*
+
+- **SkyWater SKY130 high-density library (sky130_fd_sc_hd)**, repository google/skywater-pdk-libs-sky130_fd_sc_hd at commit ac7fb61f06e6470b94e8afdf7c25268f62fbd7b1 (10 Nov 2020) [Established]:
+  - `inv_1`: "X0 VGND A Y VNB sky130_fd_pr__nfet_01v8 w=650000u l=150000u" and "X1 VPWR A Y VPB sky130_fd_pr__pfet_01v8_hvt w=1e+06u l=150000u": one nMOS and one high-threshold pMOS, 0.65 µm and 1.0 µm wide at 0.15 µm length (dimensions in µm under the PDK's scale convention).
+  - `nand2_1`: two parallel pMOS (w = 1.0 µm) from VPWR to Y, and two series nMOS (w = 0.65 µm) through the internal node `a_113_47#` to VGND: 4 transistors.
+  - `nor2_1`: two series pMOS (w = 1.0 µm) through `a_109_297#`, and two parallel nMOS (w = 0.65 µm): 4 transistors. The series pMOS are the same width as the NAND2's parallel pMOS.
+  - `nand2_2` has 8 device lines (two copies of the NAND2); the library has nand2 in drives _1, _2, _4, _8 and inv in _1, _2, _4, _6, _8, _12, _16; the D flip-flop `dfxtp_1` has 24 device lines.
+- **google/skywater-pdk README** (commit 7198cf6, 29 May 2023, the repository's latest): "Google and SkyWater are currently treating the current content as an **experimental preview** / **alpha release**." Maintained PDK packaging continues in the open_pdks project (RTimothyEdwards/open_pdks, tag 1.0.619, Nov 2026) [Established].
+- **Sources:** [sky130_fd_sc_hd repository](https://github.com/google/skywater-pdk-libs-sky130_fd_sc_hd); [google/skywater-pdk](https://github.com/google/skywater-pdk); [open_pdks](https://github.com/RTimothyEdwards/open_pdks). Checked Nov 2026.
+
+## R-149 · Chip transistor counts
+
+*Course 08 facts file entries F-0819 and F-0820, cross-checked by web search on 19 Nov 2026; search-result excerpts only (vendor sites unreachable from the build environment).*
+
+- **NVIDIA Blackwell B200** (GTC, 18 Mar 2024): "manufactured using a custom-built 4NP TSMC process with two-reticle limit GPU dies connected by 10 TB/second chip-to-chip link" (NVIDIA press release excerpt); 208 billion transistors in total, about 104 billion per die, per launch coverage (AnandTech, insideHPC, Data Center Knowledge) [Established: vendor-disclosed]. The 10 TB/s figure is the die-to-die link, not memory or NVLink bandwidth.
+- **Apple M4** (Apple Newsroom, 7 May 2024): 28 billion transistors, built on "second-generation 3-nanometer technology" [Established: vendor-disclosed].
+- **Sources:** [NVIDIA press release](https://investor.nvidia.com/news/press-release-details/2024/NVIDIA-Blackwell-Platform-Arrives-to-Power-a-New-Era-of-Computing/); [AnandTech on Blackwell](https://www.anandtech.com/show/21310); [insideHPC](https://insidehpc.com/2024/03/nvidia-launches-flagship-blackwell-gpu-at-gtc/); [Apple Newsroom, M4](https://www.apple.com/uk/newsroom/2024/05/apple-introduces-m4-chip/). Checked Nov 2026 (search excerpts).

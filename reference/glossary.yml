@@ -2955,3 +2955,63 @@
   definition: An error-detecting check formed as the remainder of the message polynomial divided by a generator polynomial over GF(2); a degree-r CRC catches every burst of length r or less, and Ethernet frames end in a 32-bit one.
   chapter: "08-01"
   see_also: [Hamming distance]
+- term: Boolean algebra
+  definition: The algebra of two values, 0 and 1, with AND, OR and NOT, defined by axioms such as Huntington's (identity, commutativity, both distributive laws, complement); it describes logic circuits exactly, and has no subtraction or division, so nothing may be cancelled.
+  chapter: "08-02"
+  see_also: [Duality principle, De Morgan's theorem]
+- term: Truth table
+  definition: A list of a function's output for every combination of its n inputs, 2^n rows; read as a binary number (row i's output as bit i) it is the integer that programs an FPGA lookup table.
+  chapter: "08-02"
+- term: Perfect induction
+  definition: Proving a Boolean identity by evaluating both sides on every row of the truth table; complete because each variable has only two values, but the 2^n rows make it impractical beyond a few dozen inputs.
+  chapter: "08-02"
+- term: Duality principle
+  definition: Swapping AND with OR and 0 with 1 throughout a Boolean identity gives another valid identity, because every axiom's dual is also an axiom.
+  chapter: "08-02"
+- term: De Morgan's theorem
+  definition: The complement of an OR is the AND of the complements, and the complement of an AND is the OR of the complements; to complement an expression, swap AND and OR and complement every literal.
+  chapter: "08-02"
+  see_also: [Bubble pushing]
+- term: Consensus theorem
+  definition: AB + A'C + BC = AB + A'C; the term BC is redundant because one of the other two is 1 whenever it is. Removing consensus terms simplifies logic; adding them back removes glitches (hazards).
+  chapter: "08-02"
+- term: Minterm
+  definition: A product containing every input variable exactly once, true or complemented, so that it is 1 in exactly one row of the truth table; m5 = AB'C for three inputs.
+  chapter: "08-02"
+  see_also: [Sum of products (SOP), Maxterm]
+- term: Maxterm
+  definition: A sum containing every input variable exactly once, so that it is 0 in exactly one row of the truth table; the complement of the minterm of the same row.
+  chapter: "08-02"
+  see_also: [Product of sums (POS), Minterm]
+- term: Sum of products (SOP)
+  definition: An OR of AND terms; the canonical SOP ORs the minterms of the rows where the function is 1, and it maps onto two-level AND-OR or NAND-NAND logic.
+  chapter: "08-02"
+- term: Product of sums (POS)
+  definition: An AND of OR terms; the canonical POS ANDs the maxterms of the rows where the function is 0, and it maps onto two-level OR-AND or NOR-NOR logic.
+  chapter: "08-02"
+- term: Shannon expansion
+  definition: F = A'·F(A=0) + A·F(A=1), splitting a function on one variable into two cofactors; it is the logic of a 2:1 multiplexer and the basis of decision diagrams and lookup tables.
+  chapter: "08-02"
+- term: Functional completeness
+  definition: The property of a set of gates that every Boolean function can be built from it; {AND, OR, NOT} is complete, and so are NAND alone and NOR alone, while AND and OR together are not (they cannot make NOT).
+  chapter: "08-02"
+- term: NAND gate
+  definition: A gate whose output is 0 only when all inputs are 1, the complement of AND; functionally complete on its own, and in static CMOS the cheapest multi-input gate (pMOS in parallel, nMOS in series).
+  chapter: "08-02"
+  see_also: [Functional completeness, Static CMOS]
+- term: Bubble pushing
+  definition: Redrawing a gate by De Morgan's theorem (an AND with an output bubble equals an OR with input bubbles) so that inversion bubbles meet in pairs and cancel, making a NAND or NOR circuit easy to read.
+  chapter: "08-02"
+- term: Static CMOS
+  definition: The standard logic style in which each gate has a pMOS pull-up network and a dual nMOS pull-down network, exactly one conducting for every input, so the output is always driven to a rail and no current flows once it settles.
+  chapter: "08-02"
+  see_also: [Pull-up and pull-down networks]
+- term: Pull-up and pull-down networks
+  definition: The pMOS switch network connecting a CMOS gate's output to the supply and the nMOS network connecting it to ground; series connections in one are parallel in the other, the circuit form of De Morgan's theorem.
+  chapter: "08-02"
+- term: AND-OR-INVERT (AOI) gate
+  definition: A single static CMOS compound gate computing the complement of a sum of products, such as AOI22 = NOT(AB + CD) with 8 transistors; its dual is the OR-AND-INVERT (OAI) gate.
+  chapter: "08-02"
+- term: Gate equivalent (GE)
+  definition: A unit of logic area equal to one two-input NAND gate in a named cell library; a block's gate count is its area divided by the NAND2 area.
+  chapter: "08-02"

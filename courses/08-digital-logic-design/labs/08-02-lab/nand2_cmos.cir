@@ -1,0 +1,51 @@
+* Lab 08-02: a static CMOS NAND2 at transistor level, evaluated at all four input combinations.
+* Simple level-1 MOSFET models (not a real process); widths follow the SKY130 inv/nand2 cells
+* (nMOS 0.65 um, pMOS 1.0 um, L = 0.15 um). VDD = 1.8 V. The output has no load, so each operating
+* point shows the settled state: the output at a rail, and the current drawn from VDD.
+*
+* EXPECT y00 key:README.md#Lab_08-02.a atol=1e-6
+* EXPECT y01 key:README.md#Lab_08-02.b atol=1e-6
+* EXPECT y10 key:README.md#Lab_08-02.c atol=1e-6
+* EXPECT y11 key:README.md#Lab_08-02.d atol=1e-6
+* EXPECT i00 key:README.md#Lab_08-02.e atol=1e-9
+* EXPECT i01 key:README.md#Lab_08-02.e atol=1e-9
+* EXPECT i10 key:README.md#Lab_08-02.e atol=1e-9
+* EXPECT i11 key:README.md#Lab_08-02.e atol=1e-9
+
+.model nch nmos level=1 vto=0.45 kp=250u lambda=0.05
+.model pch pmos level=1 vto=-0.45 kp=100u lambda=0.05
+
+VDD vdd 0 DC 1.8
+VA  a   0 DC 0
+VB  b   0 DC 0
+* pull-up: two pMOS in parallel (drain gate source bulk)
+MP1 y a vdd vdd pch W=1u L=0.15u
+MP2 y b vdd vdd pch W=1u L=0.15u
+* pull-down: two nMOS in series
+MN1 y   a mid 0 nch W=0.65u L=0.15u
+MN2 mid b 0   0 nch W=0.65u L=0.15u
+
+.control
+* each op creates a new plot, so every value is printed straight after its own analysis
+op
+let y00 = v(y)
+let i00 = abs(i(VDD))
+print y00 i00
+alter VB dc = 1.8
+op
+let y01 = v(y)
+let i01 = abs(i(VDD))
+print y01 i01
+alter VA dc = 1.8
+alter VB dc = 0
+op
+let y10 = v(y)
+let i10 = abs(i(VDD))
+print y10 i10
+alter VB dc = 1.8
+op
+let y11 = v(y)
+let i11 = abs(i(VDD))
+print y11 i11
+.endc
+.end
