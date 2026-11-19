@@ -31,7 +31,7 @@ Turning devices into circuits: diode circuits, transistor biasing, small-signal 
 | [10-02 · MOSFET DC Operation and Biasing](chapters/10-02-mosfet-dc-operation-and-biasing.md) | 10 | ✅ verified | [problems](problems/10-02-problems.md) · [solutions](solutions/10-02-solutions.md) · [lab](labs/10-02-lab/README.md) · [verify](verify/verify_10_02.py) |
 | [10-03 · BJT DC Operation and Biasing](chapters/10-03-bjt-dc-operation-and-biasing.md) | 9 | ✅ verified | [problems](problems/10-03-problems.md) · [solutions](solutions/10-03-solutions.md) · [lab](labs/10-03-lab/README.md) · [verify](verify/verify_10_03.py) |
 | [10-04 · Small-Signal Models](chapters/10-04-small-signal-models.md) | 10 | ✅ verified | [problems](problems/10-04-problems.md) · [solutions](solutions/10-04-solutions.md) · [lab](labs/10-04-lab/README.md) · [verify](verify/verify_10_04.py) |
-| [10-05 · Amplifier Fundamentals](chapters/10-05-amplifier-fundamentals.md) | 6 | ⬜ planned | — |
+| [10-05 · Amplifier Fundamentals](chapters/10-05-amplifier-fundamentals.md) | 6 | ✅ verified | [problems](problems/10-05-problems.md) · [solutions](solutions/10-05-solutions.md) · [lab](labs/10-05-lab/README.md) · [verify](verify/verify_10_05.py) |
 | [10-06 · MOS Single-Stage Amplifiers](chapters/10-06-mos-single-stage-amplifiers.md) | 12 | ⬜ planned | — |
 | [10-07 · BJT Single-Stage Amplifiers](chapters/10-07-bjt-single-stage-amplifiers.md) | 10 | ⬜ planned | — |
 | [10-08 · Current Sources and Current Mirrors](chapters/10-08-current-sources-and-mirrors.md) | 8 | ⬜ planned | — |

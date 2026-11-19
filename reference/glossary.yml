@@ -4238,3 +4238,43 @@
   definition: The ratio HD2 of a nonlinear device's output at twice the input frequency to its fundamental; v̂/(4V_T) for a bipolar transistor and v̂/(4V_ov) for a square-law MOSFET driven by a sine of amplitude v̂.
   chapter: "10-04"
   see_also: [Harmonic distortion]
+# ---------------------------------------------------------------- 10-05
+- term: Voltage amplifier
+  definition: An amplifier that senses an input voltage and delivers an output voltage, modeled by its open-circuit voltage gain A_vo, input resistance R_i and output resistance R_o; ideally R_i → ∞ and R_o → 0.
+  chapter: "10-05"
+  see_also: [Unilateral amplifier]
+- term: Current amplifier
+  definition: An amplifier that senses an input current and delivers an output current, modeled by its short-circuit current gain A_is with R_i and R_o; ideally R_i → 0 and R_o → ∞.
+  chapter: "10-05"
+- term: Transconductance amplifier
+  definition: An amplifier that senses a voltage and delivers a current, characterized by its short-circuit transconductance G_m (S); ideally both R_i and R_o are infinite.
+  chapter: "10-05"
+- term: Transresistance amplifier
+  definition: An amplifier that senses a current and delivers a voltage, characterized by its open-circuit transresistance R_m (Ω); ideally both R_i and R_o are zero.
+  chapter: "10-05"
+  see_also: [Transimpedance amplifier]
+- term: Input resistance
+  definition: The resistance seen looking into an amplifier's input terminals; with the source resistance it forms the input divider that sets how much of the source signal reaches the amplifier.
+  chapter: "10-05"
+  see_also: [Output resistance, Loading effect]
+- term: Unilateral amplifier
+  definition: An amplifier with no reverse transmission (y_12 = 0), so its input resistance does not depend on its load; a single stage without a feedback element is approximately unilateral.
+  chapter: "10-05"
+  see_also: [Two-port network]
+- term: Buffer amplifier
+  definition: A stage with a gain near 1 used to transform impedance, presenting a high input resistance to its source and a low output resistance to its load.
+  chapter: "10-05"
+- term: Midband gain
+  definition: An amplifier's gain in the frequency range where coupling and bypass capacitors act as short circuits and device capacitances as open circuits, between the low and high corner frequencies.
+  chapter: "10-05"
+- term: Conversion efficiency
+  definition: The fraction η = P_L/P_DC of the supply power that an amplifier delivers to its load as signal power.
+  chapter: "10-05"
+- term: Class-A amplifier
+  definition: An amplifier whose output transistor conducts for the whole signal cycle around a fixed bias current; with a resistive load its efficiency is at most 25% (50% with inductor or transformer coupling).
+  chapter: "10-05"
+  see_also: [Conversion efficiency]
+- term: Class-D amplifier
+  definition: A switching amplifier whose output transistors are driven fully on or off at a frequency well above the signal, with the signal recovered by filtering; practical efficiencies exceed 90% at high output.
+  chapter: "10-05"
+  see_also: [Conversion efficiency]

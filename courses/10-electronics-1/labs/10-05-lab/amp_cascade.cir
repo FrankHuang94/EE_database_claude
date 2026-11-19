@@ -1,0 +1,61 @@
+* Lab 10-05 -- amplifier cascades built from controlled sources (unilateral voltage-amplifier models).
+* (A) Example 10-05.2: A_vo = 200, R_i = 10 kOhm, R_o = 2 kOhm, from 5 kOhm into 3 kOhm.
+* (B) Example 10-05.5: two stages (R_i 10 kOhm, A_vo -50, R_o 5 kOhm) and a buffer (100 kOhm, 1, 50 Ohm)
+*     from 10 kOhm into 100 Ohm; (C) the same without the buffer.
+* (D) Example 10-05.7(c): the 330 nF coupling capacitor between the 100 kOhm sensor and the 10 MOhm buffer
+*     input; the -3 dB frequency is measured against the midband divider 10/10.1.
+*
+* EXPECT gain_a key:../../chapters/10-05-amplifier-fundamentals.md#Ex_10-05.2c rtol=1e-6
+* EXPECT gain_b key:../../chapters/10-05-amplifier-fundamentals.md#Ex_10-05.5a rtol=2e-4
+* EXPECT gain_c key:../../chapters/10-05-amplifier-fundamentals.md#Ex_10-05.5c rtol=5e-4
+* EXPECT fl key:../../chapters/10-05-amplifier-fundamentals.md#Ex_10-05.7h scale=1e-3 rtol=2e-4
+
+VA sa 0 DC 0 AC 1
+RSA sa a1 5k
+RIA a1 0 10k
+EA a2 0 a1 0 200
+ROA a2 oa 2k
+RLA oa 0 3k
+
+VB sb 0 DC 0 AC 1
+RSB sb b1 10k
+RIB1 b1 0 10k
+EB1 b2 0 b1 0 -50
+ROB1 b2 b3 5k
+RIB2 b3 0 10k
+EB2 b4 0 b3 0 -50
+ROB2 b4 b5 5k
+RIB3 b5 0 100k
+EB3 b6 0 b5 0 1
+ROB3 b6 ob 50
+RLB ob 0 100
+
+VC sc 0 DC 0 AC 1
+RSC sc c1 10k
+RIC1 c1 0 10k
+EC1 c2 0 c1 0 -50
+ROC1 c2 c3 5k
+RIC2 c3 0 10k
+EC2 c4 0 c3 0 -50
+ROC2 c4 oc 5k
+RLC oc 0 100
+
+VD sd 0 DC 0 AC 1
+RSD sd d1 100k
+CD d1 d2 330n
+RID d2 0 10Meg
+
+.control
+ac lin 1 1k 1k
+let gain_a = real(v(oa))
+let gain_b = real(v(ob))
+let gain_c = real(v(oc))
+echo "gain_a = $&gain_a"
+echo "gain_b = $&gain_b"
+echo "gain_c = $&gain_c"
+ac dec 2000 1m 10
+let target = 0.7071067811865476 * 10 / 10.1
+meas ac fl when vm(d2)=target rise=1
+echo "fl = $&fl"
+.endc
+.end

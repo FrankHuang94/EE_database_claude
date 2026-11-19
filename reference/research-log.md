@@ -184,6 +184,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-176 | Diode and protection-device data sheets | Nov 2026 |
 | R-177 | MOSFET and load-switch data sheets | Nov 2026 |
 | R-178 | Bipolar transistor data sheets | Nov 2026 |
+| R-179 | Class-D audio amplifier data sheet | Nov 2026 |
 
 ---
 
@@ -1878,3 +1879,9 @@ R&D % = R&D ÷ revenue.
 
 - **onsemi 2N3903/2N3904** (2N3903/D, Rev. 9, August 2021): V_CEO 40 V, V_CBO 60 V, V_EBO 6 V, I_C 200 mA continuous; P_D 625 mW at 25 °C, derate 5.0 mW/°C; R_θJA 200 °C/W; 2N3904 h_FE minimum 40 (0.1 mA), 70 (1 mA), 100–300 (10 mA), 60 (50 mA), 30 (100 mA), all at V_CE = 1 V; V_CE(sat) ≤ 0.2 V (10 mA, I_B 1 mA), ≤ 0.3 V (50 mA, 5 mA); V_BE(sat) 0.65–0.85 V (10/1 mA), ≤ 0.95 V (50/5 mA); f_T ≥ 300 MHz; small-signal parameters at I_C = 1 mA, V_CE = 10 V, f = 1 kHz: h_fe 100–400, h_ie 1.0–10 kΩ, h_re 0.5–8.0 × 10⁻⁴, h_oe 1.0–40 µmhos (µS) (used in 10-04) [Established]. [Data sheet](https://www.onsemi.com/pdf/datasheet/2n3903-d.pdf).
 - **onsemi 2N3906** (2N3906/D, Rev. 4, February 2010): h_FE minimum 60 (0.1 mA), 80 (1 mA), 100–300 (10 mA), 60 (50 mA), 30 (100 mA); V_CE(sat) ≤ 0.25 V (10/1 mA), ≤ 0.4 V (50/5 mA); V_BE(sat) 0.65–0.85 V (10/1 mA), ≤ 0.95 V (50/5 mA); f_T ≥ 250 MHz [Established]. [Data sheet](https://www.onsemi.com/pdf/datasheet/2n3906-d.pdf).
+
+## R-179 · Class-D audio amplifier data sheet
+
+*Read on 19 Nov 2026 from the PDF at the URL below, as downloaded. Specifications are tagged [Established] as specifications of that part.*
+
+- **TI TPA3116D2/TPA3118D2/TPA3130D2** (SLOS708G, April 2012, revised December 2017): features list ">90% power efficiency", 2 × 50 W into a 4 Ω BTL load at 21 V (TPA3116D2), supply 4.5–26 V; §6.5 quiescent supply current 20 mA typ / 35 mA max at PVCC = 12 V and 32/50 mA at 24 V (no load or filter); §6.6 continuous output power 25 W at THD+N = 10%, PVCC = 14.4 V and 50 W at PVCC = 21 V (R_L = 4 Ω, 1 kHz), THD+N 0.1% at 25 W (21 V); §7.3.2 Table 1, gain 20/26/32/36 dB with input impedance 60/30/15/9 kΩ, set by a resistor divider on GAIN/SLV, input resistor tolerance ±20%; Table 2, recommended input coupling capacitors 1.5/3.3/5.6/10 µF giving 1.8/1.6/1.9/1.8 Hz high-pass corners, with the guidance that a 2 Hz corner (a tenth of 20 Hz) keeps the bass flat [Established]. Used in 10-05. [Data sheet](https://www.ti.com/lit/ds/symlink/tpa3116d2.pdf).
