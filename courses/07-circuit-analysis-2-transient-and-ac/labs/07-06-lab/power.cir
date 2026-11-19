@@ -1,0 +1,38 @@
+* Examples 07-06.1 and 07-06.3 in the time domain: average power and RMS current measured over whole
+* cycles after the start-up transient, with no phasor formulas.
+*
+* EXPECT ex1p   key:../../chapters/07-06-ac-power-and-power-factor.md#Ex_07-06.1d rtol=1e-3
+* EXPECT ex1i   key:../../chapters/07-06-ac-power-and-power-factor.md#Ex_07-06.1c rtol=1e-3
+* EXPECT ex1pmn key:../../chapters/07-06-ac-power-and-power-factor.md#Ex_07-06.1i rtol=2e-3
+* EXPECT ex3i0  key:../../chapters/07-06-ac-power-and-power-factor.md#Ex_07-06.3c rtol=1e-3
+* EXPECT ex3i1  key:../../chapters/07-06-ac-power-and-power-factor.md#Ex_07-06.3f rtol=1e-3
+* EXPECT ex3p   14000 rtol=1e-3
+
+* Example 1: 120 V rms, 60 Hz across 10 ohm + 20 mH
+V1   a 0 SIN(0 169.7056 60)
+R1   a b 10
+L1   b 0 20m
+* Example 3: 230 V rms, 50 Hz; motor group as 2.9756 ohm + 8.3533 mH, heating 13.225 ohm;
+* the same loads again with the 253.78 uF correction capacitor
+V3   c 0 SIN(0 325.2691 50)
+RA3  c d 2.9756
+LA3  d 0 8.3533m
+RB3  c 0 13.225
+V4   e 0 SIN(0 325.2691 50)
+RA4  e g 2.9756
+LA4  g 0 8.3533m
+RB4  e 0 13.225
+CC4  e 0 253.78u
+
+.control
+tran 5u 0.5 0 5u
+let p1 = -v(a)*i(V1)
+meas tran ex1p avg p1 from=0.4 to=0.45
+meas tran ex1i rms i(V1) from=0.4 to=0.45
+meas tran ex1pmn min p1 from=0.4 to=0.45
+meas tran ex3i0 rms i(V3) from=0.4 to=0.5
+meas tran ex3i1 rms i(V4) from=0.4 to=0.5
+let p3 = -v(e)*i(V4)
+meas tran ex3p avg p3 from=0.4 to=0.5
+.endc
+.end
