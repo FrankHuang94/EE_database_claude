@@ -155,6 +155,8 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-147 | Accelerator throughput specifications | Nov 2026 |
 | R-148 | Standard-cell library structure (SKY130) | Nov 2026 |
 | R-149 | Chip transistor counts | Nov 2026 |
+| R-150 | Logic synthesis tools | Nov 2026 |
+| R-151 | EDA industry revenue and structure | Nov 2026 |
 
 ---
 
@@ -1490,3 +1492,22 @@ R&D % = R&D ÷ revenue.
 - **NVIDIA Blackwell B200** (GTC, 18 Mar 2024): "manufactured using a custom-built 4NP TSMC process with two-reticle limit GPU dies connected by 10 TB/second chip-to-chip link" (NVIDIA press release excerpt); 208 billion transistors in total, about 104 billion per die, per launch coverage (AnandTech, insideHPC, Data Center Knowledge) [Established: vendor-disclosed]. The 10 TB/s figure is the die-to-die link, not memory or NVLink bandwidth.
 - **Apple M4** (Apple Newsroom, 7 May 2024): 28 billion transistors, built on "second-generation 3-nanometer technology" [Established: vendor-disclosed].
 - **Sources:** [NVIDIA press release](https://investor.nvidia.com/news/press-release-details/2024/NVIDIA-Blackwell-Platform-Arrives-to-Power-a-New-Era-of-Computing/); [AnandTech on Blackwell](https://www.anandtech.com/show/21310); [insideHPC](https://insidehpc.com/2024/03/nvidia-launches-flagship-blackwell-gpu-at-gtc/); [Apple Newsroom, M4](https://www.apple.com/uk/newsroom/2024/05/apple-introduces-m4-chip/). Checked Nov 2026 (search excerpts).
+
+## R-150 · Logic synthesis tools
+
+*ABC and Yosys READMEs read directly with `git` on 19 Nov 2026; Espresso and the ABC paper from search excerpts (Course 08 facts file entries F-0821 to F-0823).*
+
+- **ABC** (berkeley-abc/abc, commit 4f928c6, 18 Nov 2026): "# ABC: System for Sequential Logic Synthesis and Formal Verification"; maintained by Alan Mishchenko at UC Berkeley. Citable paper: R. Brayton and A. Mishchenko, "ABC: An Academic Industrial-Strength Verification Tool," CAV 2010, LNCS 6174, pp. 24–40. Built on and-inverter graphs [Established].
+- **Yosys** (YosysHQ/yosys, commit d1338f8, 19 Nov 2026): RTL synthesis with "extensive Verilog-2005 support"; "Yosys is using sv-elab and slang libraries to provide comprehensive SystemVerilog support. It supports an (informally defined) synthesizable subset of SystemVerilog in version IEEE 1800-2017 or IEEE 1800-2023."; "Yosys is free software licensed under the ISC license"; the source tree includes `abc`, and cell-library mapping uses `abc -liberty mycells.lib` [Established].
+- **Espresso:** R. K. Brayton, G. D. Hachtel, C. T. McMullen and A. L. Sangiovanni-Vincentelli, *Logic Minimization Algorithms for VLSI Synthesis*, Kluwer Academic, 1984; the book's front matter: "work on logic synthesis started in 1979 at the IBM Watson Research Center and at University of California, Berkeley". Successor Espresso-MV: R. Rudell, UCB/ERL M86/65 (1986) [Established; search excerpts].
+- **Sources:** [berkeley-abc/abc](https://github.com/berkeley-abc/abc); [YosysHQ/yosys](https://github.com/YosysHQ/yosys); [ABC paper (Springer)](https://www.springerprofessional.de/doi/10.1007/978-3-642-14295-6_5); [Espresso book (Springer)](https://link.springer.com/book/9780898381641); [Rudell 1986](https://www2.eecs.berkeley.edu/Pubs/TechRpts/1986/734.html). Checked Nov 2026.
+
+## R-151 · EDA industry revenue and structure
+
+*Course 08 facts file entries F-0824 to F-0828; search-result excerpts only (company, SEC and SEMI pages unreachable from the build environment; open issue 32).*
+
+- **Synopsys** FY2025 results (10 Dec 2025): "Revenue for fiscal year 2025 was $7.054 billion, an increase of approximately 15% from $6.127 billion in fiscal year 2024"; Ansys contributed $756.6 M. Ansys acquisition completed 17 Jul 2025 (announced 16 Jan 2024); Synopsys claims an expanded "$31 billion total addressable market" [Established for revenue and dates; Industry estimate for the TAM].
+- **Cadence** FY2025 results (Feb 2026): revenue $5.297 B, up from $4.641 B; Q4 $1.440 B; backlog $7.8 B [Established].
+- **ESD Alliance** (SEMI), Electronic Design Market Data, Q2 2026 (Oct 2026): "Electronic System Design (ESD) industry revenue increased 12.2% to $5,710.8 million in the second quarter of 2026" (from $5,089.4 M); the category includes semiconductor IP [Industry estimate: aggregated survey].
+- **Market shares:** TrendForce (Jun 2025) for 2024: "Synopsys, Cadence, and Siemens hold 31%, 30%, and 13% market shares respectively"; Griffin Securities (DAC, Jul 2026): Big Three ≈ 90% of industry revenue; SemiAnalysis: over 85%, Siemens EDA estimated at $2.2–2.5 B (Siemens does not report it separately) [Contested: methods differ].
+- **Sources:** [Synopsys FY2025 results](https://news.synopsys.com/2025-12-10-Synopsys-Posts-Financial-Results-for-Fourth-Quarter-and-Fiscal-Year-2025); [Synopsys 8-K Ex. 99.1](https://www.sec.gov/Archives/edgar/data/883241/000119312525314200/d29055dex991.htm); [Synopsys–Ansys closing](https://news.synopsys.com/2025-07-17-Synopsys-Completes-Acquisition-of-ANSYS); [Cadence FY2025 (Business Wire)](https://www.businesswire.com/news/home/20260216202086/en); [SEMI ESD Alliance Q2 2026](https://www.semi.org/en/semi-press-release/electronic-system-design-industry-posts-$5.7-billion-in-revenue-in-q2-2026-esd-alliance-reports); [TrendForce](https://www.trendforce.com/news/2025/06/02/news-china-revenue-at-risk-as-u-s-curbs-slam-eda-giants-impact-on-synopsys-cadence-and-more/); [Griffin Securities DAC presentation](https://www.semi.org/sites/semi.org/files/2026-09/DAC%20presentation%20%28July%202026%29%207%20%281%29.pdf); [SemiAnalysis EDA primer](https://newsletter.semianalysis.com/p/eda-market-primer). Checked Nov 2026 (search excerpts).

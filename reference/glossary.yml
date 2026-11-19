@@ -3015,3 +3015,44 @@
 - term: Gate equivalent (GE)
   definition: A unit of logic area equal to one two-input NAND gate in a named cell library; a block's gate count is its area divided by the NAND2 area.
   chapter: "08-02"
+- term: Karnaugh map
+  definition: A truth table drawn as a grid whose rows and columns are labelled in Gray code, so that cells differing in one variable are adjacent (including across the edges); rectangles of 1, 2, 4, 8 or 16 cells are product terms.
+  chapter: "08-03"
+  see_also: [Prime implicant, Gray code]
+- term: Implicant
+  definition: A product term that is 1 only where the function is 1 (or don't care); geometrically, a subcube of the input cube lying inside the on-set.
+  chapter: "08-03"
+- term: Prime implicant
+  definition: An implicant that cannot be enlarged by removing a literal without covering a 0 of the function; some minimal sum of products always consists of prime implicants only.
+  chapter: "08-03"
+  see_also: [Essential prime implicant, Implicant]
+- term: Essential prime implicant
+  definition: A prime implicant that covers at least one minterm no other prime implicant covers, so every cover must include it.
+  chapter: "08-03"
+- term: Don't-care condition
+  definition: An input combination whose output does not matter (because it never occurs or is ignored), marked X; it may be treated as 1 or 0 to simplify logic, but the built circuit then has a definite, unrequested output there.
+  chapter: "08-03"
+- term: Quine–McCluskey method
+  definition: A tabular algorithm for two-level minimization that merges terms differing in one bit (grouped by their number of 1s) to find all prime implicants, then selects a cover from a prime implicant chart.
+  chapter: "08-03"
+  see_also: [Petrick's method, Prime implicant]
+- term: Petrick's method
+  definition: An exact way to choose a minimum cover from a prime implicant chart, by writing for each minterm the sum of the primes covering it, multiplying the sums out and picking the cheapest product.
+  chapter: "08-03"
+- term: Set-cover problem
+  definition: Choosing the fewest (or cheapest) sets from a collection so that their union covers every element; it is NP-hard, which is why exact logic minimization does not scale and tools use heuristics.
+  chapter: "08-03"
+- term: Espresso
+  definition: The heuristic two-level logic minimizer developed at IBM and UC Berkeley (Brayton, Hachtel, McMullen and Sangiovanni-Vincentelli, 1984), iterating expand, irredundant and reduce steps to find near-minimal multiple-output covers.
+  chapter: "08-03"
+- term: And-inverter graph (AIG)
+  definition: A logic network of two-input AND nodes with optional inversions on the edges, able to express any function; the internal representation of modern synthesis and verification engines such as ABC.
+  chapter: "08-03"
+  see_also: [Logic synthesis]
+- term: Technology mapping
+  definition: The synthesis step that covers an optimized logic network with the cells of a target library (or with FPGA lookup tables), choosing covers that minimize area subject to timing constraints.
+  chapter: "08-03"
+- term: Logic synthesis
+  definition: Automatic translation of a register-transfer-level description into an optimized netlist of library cells, by elaboration, technology-independent optimization, technology mapping and timing-driven refinement.
+  chapter: "08-03"
+  see_also: [Technology mapping, And-inverter graph (AIG)]
