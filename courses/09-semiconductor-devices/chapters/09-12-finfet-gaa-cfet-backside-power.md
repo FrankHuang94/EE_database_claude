@@ -101,7 +101,7 @@ $$
 u_{\min} \approx 2\sqrt{ab}\;e^{-L/2\lambda} .
 $$
 
-**Reading it.** $u_{\min}$ is how far the short channel's barrier sits below the long-channel barrier, measured in volts. Because the double-gate body follows the gate one-for-one in subthreshold, the threshold falls by the same amount: $\Delta V_t \approx u_{\min}$. At threshold, Hu's criterion puts the channel's conduction band about 0.2 eV above the source's [2], so $a \approx$ 0.2 V and $b \approx 0.2\text{ V} + V_{DS}$. Two results follow.
+**Reading it.** $u_{\min}$ is how far the short channel's barrier sits below the long-channel barrier, measured in volts. Because the double-gate body follows the gate one-for-one in subthreshold, the threshold falls by the same amount: $\Delta V_{TH} \approx u_{\min}$. At threshold, Hu's criterion puts the channel's conduction band about 0.2 eV above the source's [2], so $a \approx$ 0.2 V and $b \approx 0.2\text{ V} + V_{DS}$. Two results follow.
 
 - Roll-off and DIBL both scale as $e^{-L/2\lambda}$. This is the same exponential form as Hu's $e^{-L/l_d}$ (09-10), now with $l_d = 2\lambda$ expressed in the device dimensions.
 - $\lambda$ falls as the body thins ($\lambda^2 \propto t_{si}$ for thin oxides). To shrink $L$ at fixed DIBL, thin the body in proportion to $L^2$ at first, and ultimately in proportion to $L$ once the $t_{si}^2/8$ term dominates.
@@ -178,7 +178,7 @@ A body only one or a few atomic layers thick would push $\lambda$ down further t
 
 **Solution.**
 
-| Body | $L/\lambda$ | $\Delta V_t$ at 0.05 V | $\Delta V_t$ at 0.7 V | DIBL |
+| Body | $L/\lambda$ | $\Delta V_{TH}$ at 0.05 V | $\Delta V_{TH}$ at 0.7 V | DIBL |
 |---|---|---|---|---|
 | Double gate, 7 nm | **4.91** | **38.2** mV | **71.8** mV | **51.6** mV/V |
 | Double gate, 5 nm | **6.14** | **20.8** mV | **39.3** mV | **28.5** mV/V |
@@ -208,7 +208,7 @@ The approximation $2\sqrt{ab}e^{-L/2\lambda}$ gives **38.5** mV for the first en
 
 (a) $S = mV_T\ln 10$ = **59.5** and **77.4** mV/decade. The off-current ratio is $10^{0.25/0.0595 - 0.25/0.0774}$ = **9.3**.
 
-(b) The same off-current needs $V_t/S$ equal, so $V_t$ = 0.25 × 59.5/77.4 = **0.192** V, a gain of **57.7** mV of overdrive.
+(b) The same off-current needs $V_{TH}/S$ equal, so $V_{TH}$ = 0.25 × 59.5/77.4 = **0.192** V, a gain of **57.7** mV of overdrive.
 
 **Sanity check.** At a 0.7 V supply the overdrive rises from 0.45 V to **0.508** V, **12.8**% more, and in a velocity-saturated device (09-10) on-current rises roughly in proportion. The swing improvement alone is a strong argument for multigate structures.
 
@@ -227,7 +227,7 @@ At $L = 6\lambda$ the model gives DIBL = **30.4** mV/V. Hu's rule allows 6 and 8
 
 ### Example 09-12.6 · Backside power and IR drop (tier B)
 
-**Setup.** A front-side power rail is 20 nm wide, 40 nm thick and 10 µm long between taps at both ends. Take an effective resistivity of 5 µΩ·cm (an assumption, about three times bulk copper because of size effects, 04-05 §3.3). The cells along it draw 0.2 mA in total. (a) Find the rail resistance and the worst-case IR drop. (b) A backside rail of the same length is 200 nm × 200 nm with an effective resistivity of 3 µΩ·cm. Find its drop. (c) With $V_{DD}$ = 0.7 V, $V_t$ = 0.3 V and delay ∝ $V_{DD}/(V_{DD} - V_t)$ (09-11 Problem 4), how much slower are the gates at the end of the front-side rail?
+**Setup.** A front-side power rail is 20 nm wide, 40 nm thick and 10 µm long between taps at both ends. Take an effective resistivity of 5 µΩ·cm (an assumption, about three times bulk copper because of size effects, 04-05 §3.3). The cells along it draw 0.2 mA in total. (a) Find the rail resistance and the worst-case IR drop. (b) A backside rail of the same length is 200 nm × 200 nm with an effective resistivity of 3 µΩ·cm. Find its drop. (c) With $V_{DD}$ = 0.7 V, $V_{TH}$ = 0.3 V and delay ∝ $V_{DD}/(V_{DD} - V_{TH})$ (09-11 Problem 4), how much slower are the gates at the end of the front-side rail?
 
 **Solution.**
 
@@ -248,18 +248,18 @@ At $L = 6\lambda$ the model gives DIBL = **30.4** mV/V. Hu's rule allows 6 and 8
 | Ex 09-12.1b | λ, double gate 5 nm | 3.260 | nm |
 | Ex 09-12.1c | λ, single gate 7 nm | 6.745 | nm |
 | Ex 09-12.2a | L/λ, DG 7 nm | 4.91 | — |
-| Ex 09-12.2b | ΔV_t at 0.05 V, DG 7 nm | 38.2 | mV |
-| Ex 09-12.2c | ΔV_t at 0.7 V, DG 7 nm | 71.8 | mV |
+| Ex 09-12.2b | ΔV_TH at 0.05 V, DG 7 nm | 38.2 | mV |
+| Ex 09-12.2c | ΔV_TH at 0.7 V, DG 7 nm | 71.8 | mV |
 | Ex 09-12.2d | DIBL, DG 7 nm | 51.6 | mV/V |
 | Ex 09-12.2e | L/λ, DG 5 nm | 6.14 | — |
-| Ex 09-12.2f | ΔV_t at 0.05 V, DG 5 nm | 20.8 | mV |
-| Ex 09-12.2g | ΔV_t at 0.7 V, DG 5 nm | 39.3 | mV |
+| Ex 09-12.2f | ΔV_TH at 0.05 V, DG 5 nm | 20.8 | mV |
+| Ex 09-12.2g | ΔV_TH at 0.7 V, DG 5 nm | 39.3 | mV |
 | Ex 09-12.2h | DIBL, DG 5 nm | 28.5 | mV/V |
 | Ex 09-12.2i | L/λ, SG 7 nm | 2.96 | — |
-| Ex 09-12.2j | ΔV_t at 0.05 V, SG 7 nm | 96.4 | mV |
-| Ex 09-12.2k | ΔV_t at 0.7 V, SG 7 nm | 168.3 | mV |
+| Ex 09-12.2j | ΔV_TH at 0.05 V, SG 7 nm | 96.4 | mV |
+| Ex 09-12.2k | ΔV_TH at 0.7 V, SG 7 nm | 168.3 | mV |
 | Ex 09-12.2l | DIBL, SG 7 nm | 110.6 | mV/V |
-| Ex 09-12.2m | approximate ΔV_t, DG 7 nm, 0.05 V | 38.5 | mV |
+| Ex 09-12.2m | approximate ΔV_TH, DG 7 nm, 0.05 V | 38.5 | mV |
 | Ex 09-12.3a | W_eff per fin | 106 | nm |
 | Ex 09-12.3b | width per µm of footprint | 3.53 | µm |
 | Ex 09-12.3c | W_eff of the sheet stack | 216 | nm |

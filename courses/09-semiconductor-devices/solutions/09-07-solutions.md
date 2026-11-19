@@ -61,7 +61,7 @@ $L_B = \sqrt{D_B\tau_B}$ = **14.39** µm, so the transport limit is $\beta_T = 2
 - At $N_E$ = 10¹⁹: $D_E$ = 1.457 cm²/s, and $\beta_F = 6.807 \times 10^{19}/(1.457 \times 10^{18} \times e^{0.050/V_T})$ = **6.75**.
 - At $N_E$ = 10²⁰: $D_E$ = 1.279 cm²/s, and $\beta_F$ = **13.49**.
 
-(b) The gain rises by only **2.00**. Tenfold doping is offset by the extra narrowing, $e^{-(0.095 - 0.050)/V_T}$, a factor of 5.70, and slightly by the lower hole mobility, which helps a little. (The low absolute gains come from $W_E = W_B$; real emitters are thicker.)
+(b) The gain rises by only **2.00**. Tenfold doping alone would raise the gain tenfold, but the extra narrowing, $e^{-(0.095 - 0.050)/V_T}$, divides it by 5.70, and the lower hole mobility in the heavier emitter (smaller $D_E$) raises it by 1.139: $10/5.70 \times 1.139$ = 2.00. (The low absolute gains come from $W_E = W_B$; real emitters are thicker.)
 
 ### Solution 09-07.6
 
@@ -103,7 +103,7 @@ Lighter collector doping moves the depletion region out of the base, raising $V_
 
 The closer the forced gain gets to $\beta_F$, the less saturated the transistor and the higher $V_{CE}$.
 
-(b) With $x = e^{0.7/V_T}$ and $y = e^{0.6/V_T}$: $I_C$ = **55.07** µA and $I_B$ = **1.919** µA, so $I_C/I_B$ = **28.7**. The forward-active value would be **57.48** µA. At 0.1 V the transistor is already slightly saturated: collector injection removes **4.2**% of the current and multiplies the base current.
+(b) With $x = e^{0.7/V_T}$ and $y = e^{0.6/V_T}$: $I_C$ = **55.07** µA and $I_B$ = **1.919** µA, so $I_C/I_B$ = **28.7**. The forward-active value would be **57.48** µA. At 0.1 V the transistor is moderately saturated: collector injection removes **4.2**% of the collector current, the forced gain of 28.7 is far below $\beta_F$ = 80, and the base current is **2.67** times its forward-active value $57.48/80$ µA.
 
 ### Solution 09-07.10
 
@@ -115,7 +115,7 @@ The closer the forced gain gets to $\beta_F$, the less saturated the transistor 
 
 (a) $D_B = V_T\mu_n(10^{19})$ = 2.996 cm²/s and $\tau_B = (3\times10^{-6})^2/(2 \times 2.996)$ = **1.502** ps.
 
-(b) $\eta = 0.15/0.025852$ = **5.802**. The drift factor $[1 - (1 - e^{-\eta})/\eta]/\eta$ = **0.1427**, so $\tau_B$ = **0.429** ps. The field is 0.15 V/30 nm = **5.0 × 10⁴** V/cm.
+(b) $\xi = 0.15/0.025852$ = **5.802**. The drift factor $[1 - (1 - e^{-\xi})/\xi]/\xi$ = **0.1427**, so $\tau_B$ = **0.429** ps. The field is 0.15 V/30 nm = **5.0 × 10⁴** V/cm.
 
 (c) $\tau_C = 0.15\ \mu\text{m}/(2 \times 1.07\times10^7\text{ cm/s})$ = **0.701** ps.
 
@@ -228,6 +228,7 @@ The closer the forced gain gets to $\beta_F$, the less saturated the transistor 
 | 09-07.9e | I_B at 0.1 V | 1.919 | µA |
 | 09-07.9f | I_C/I_B at 0.1 V | 28.7 | — |
 | 09-07.9g | forward-active I_C | 57.48 | µA |
+| 09-07.9i | base current relative to forward-active | 2.67 | — |
 | 09-07.9h | current lost to collector injection | 4.2 | % |
 | 09-07.10a | knee voltage | 0.9524 | V |
 | 09-07.10b | ideal current at the knee | 10.9 | mA |
@@ -235,7 +236,7 @@ The closer the forced gain gets to $\beta_F$, the less saturated the transistor 
 | 09-07.10d | I_C at 1.0 V | 22.5 | mA |
 | 09-07.10e | ideal I_C at 1.0 V | 68.7 | mA |
 | 09-07.11a | uniform transit time | 1.502 | ps |
-| 09-07.11b | η | 5.802 | — |
+| 09-07.11b | ξ | 5.802 | — |
 | 09-07.11c | drift factor | 0.1427 | — |
 | 09-07.11d | graded transit time | 0.429 | ps |
 | 09-07.11e | built-in field | 5.0e4 | V/cm |

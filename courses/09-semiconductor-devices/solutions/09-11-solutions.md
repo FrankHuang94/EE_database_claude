@@ -35,7 +35,7 @@ $$
 
 ### Solution 09-11.4
 
-$f \propto (V_{DD} - V_t)/V_{DD}$, so $f(0.8) = 3 \times (0.5/0.8)/(0.7/1.0)$ = **2.68** GHz. Dynamic power scales as $V_{DD}^2f$: 10 × 0.64 × (2.68/3) = **5.71** W. The energy per cycle scales as $V_{DD}^2$: **0.64**.
+$f \propto (V_{DD} - V_{TH})/V_{DD}$, so $f(0.8) = 3 \times (0.5/0.8)/(0.7/1.0)$ = **2.68** GHz. Dynamic power scales as $V_{DD}^2f$: 10 × 0.64 × (2.68/3) = **5.71** W. The energy per cycle scales as $V_{DD}^2$: **0.64**.
 
 Giving up 11% of the frequency saves 43% of the power: the reason every modern processor uses dynamic voltage and frequency scaling.
 

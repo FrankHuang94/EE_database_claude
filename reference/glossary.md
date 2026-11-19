@@ -180,7 +180,7 @@
 
 <a id="bode-plot"></a>**Bode plot** — A pair of plots of a frequency response, magnitude in dB and phase in degrees, against frequency on a logarithmic axis; each real pole or zero contributes a straight-line asymptote of ∓20 dB/decade from its corner, so responses can be sketched by adding factors. *First defined in* [07-07](../courses/07-circuit-analysis-2-transient-and-ac/chapters/07-07-frequency-response-and-bode-plots.md). *See also:* [Corner frequency](#corner-frequency), [Asymptote](#asymptote), [Frequency response](#frequency-response).
 
-<a id="body-effect"></a>**Body effect** — The rise of a MOSFET's threshold with source-to-body reverse bias, V_t = V_t0 + γ(√(2φ_B + V_SB) − √(2φ_B)); the body acts as a weak second gate. *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
+<a id="body-effect"></a>**Body effect** — The rise of a MOSFET's threshold with source-to-body reverse bias, V_TH = V_TH0 + γ(√(2φ_B + V_SB) − √(2φ_B)); the body acts as a weak second gate. *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
 
 <a id="body-effect-parameter"></a>**Body-effect parameter** — The coefficient γ = √(2qN_Aε_s)/C_ox (V^1/2) that sets how strongly source-to-body bias shifts a MOSFET's threshold. *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
 
@@ -830,7 +830,7 @@
 
 <a id="fixed-point-arithmetic"></a>**Fixed-point arithmetic** — Representing fractions as integers with an agreed scale 2^−f, so integer hardware does the arithmetic; additions are direct, products must be rescaled, and rounding, overflow and saturation are managed by the programmer. *First defined in* [05-07](../courses/05-programming-for-engineers/chapters/05-07-bit-manipulation.md). *See also:* [Q format](#q-format), [Saturation arithmetic](#saturation-arithmetic).
 
-<a id="flat-band-voltage"></a>**Flat-band voltage** — The gate voltage at which the semiconductor's bands are flat up to the surface, V_fb = ψ_g − ψ_s − Q_ox/C_ox; about −1 V for an n⁺ poly gate on p-type silicon. *First defined in* [09-08](../courses/09-semiconductor-devices/chapters/09-08-mos-capacitor.md).
+<a id="flat-band-voltage"></a>**Flat-band voltage** — The gate voltage at which the semiconductor's bands are flat up to the surface, V_FB = ψ_g − ψ_s − Q_ox/C_ox; about −1 V for an n⁺ poly gate on p-type silicon. *First defined in* [09-08](../courses/09-semiconductor-devices/chapters/09-08-mos-capacitor.md).
 
 <a id="flicker-1-f-noise"></a>**Flicker (1/f) noise** — Noise whose power spectral density falls as 1/f, so every decade of frequency carries equal power; dominant at low frequencies in MOSFETs. *First defined in* [01-06](../courses/01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md).
 
@@ -1246,7 +1246,7 @@
 
 <a id="linear-independence"></a>**Linear independence** — Vectors are independent if the only combination of them equal to 0 has all weights zero; otherwise one of them is a combination of the others. *First defined in* [02-07](../courses/02-complex-numbers-des-and-linear-algebra/chapters/02-07-determinants-inverses-and-vector-spaces.md).
 
-<a id="linear-region"></a>**Linear region** — The MOSFET operating region with V_DS below V_Dsat, where I_D = (W/L)μC_ox(V_GS − V_t − mV_DS/2)V_DS and the device acts as a voltage-controlled resistor for small V_DS (also called the triode region). *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
+<a id="linear-region"></a>**Linear region** — The MOSFET operating region with V_DS below V_Dsat, where I_D = (W/L)μC_ox(V_GS − V_TH − mV_DS/2)V_DS and the device acts as a voltage-controlled resistor for small V_DS (also called the triode region). *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
 
 <a id="linear-feedback-shift-register-lfsr"></a>**Linear-feedback shift register (LFSR)** — A shift register whose input is the XOR of selected stages (the taps); with taps from a primitive polynomial it steps through all 2^n - 1 nonzero states before repeating. *First defined in* [08-07](../courses/08-digital-logic-design/chapters/08-07-registers-counters-shift-registers.md). *See also:* [Primitive polynomial](#primitive-polynomial), [Pseudo-random bit sequence (PRBS)](#pseudo-random-bit-sequence-prbs).
 
@@ -1344,7 +1344,7 @@
 
 <a id="matched-load"></a>**Matched load** — A load equal to the source's Thévenin resistance (for AC, its complex conjugate), which draws the maximum power, at half the open-circuit voltage (and at 50% efficiency when the source resistance is physical); on a transmission line, a load equal to Z0, which reflects nothing. *First defined in* [06-09](../courses/06-circuit-analysis-1-dc/chapters/06-09-maximum-power-transfer.md). *See also:* [Maximum power transfer](#maximum-power-transfer), [Conjugate match](#conjugate-match).
 
-<a id="matching-coefficient"></a>**Matching coefficient** — The constant A_Vt = σ(V_t)√(WL) (mV·µm) that describes how random threshold mismatch shrinks with device area; for random dopant fluctuation it follows from Poisson statistics of the depletion charge. *First defined in* [09-10](../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md).
+<a id="matching-coefficient"></a>**Matching coefficient** — The constant A_Vt = σ(V_TH)√(WL) (mV·µm) that describes how random threshold mismatch shrinks with device area; for random dopant fluctuation it follows from Poisson statistics of the depletion charge. *First defined in* [09-10](../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md).
 
 <a id="matrix"></a>**Matrix** — A rectangular m×n array of numbers; multiplying it by a vector is a linear map from n-component to m-component vectors. *First defined in* [02-06](../courses/02-complex-numbers-des-and-linear-algebra/chapters/02-06-vectors-matrices-and-linear-systems.md). *See also:* [Matrix multiplication](#matrix-multiplication).
 
@@ -1456,7 +1456,7 @@
 
 <a id="motional-emf"></a>**Motional EMF** — The EMF Bℓv across a conductor of length ℓ moving at speed v through a field B, the Lorentz force on its charges; the basis of generators. *First defined in* [04-07](../courses/04-physics-for-ee/chapters/04-07-faraday-lenz-and-inductance.md).
 
-<a id="multi-threshold-cmos"></a>**Multi-threshold CMOS** — The practice of offering several threshold-voltage flavors on one chip, using high-V_t devices everywhere and low-V_t devices only on speed-critical paths, to trade leakage against speed. *First defined in* [09-10](../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md).
+<a id="multi-threshold-cmos"></a>**Multi-threshold CMOS** — The practice of offering several threshold-voltage flavors on one chip, using high-V_TH devices everywhere and low-V_TH devices only on speed-critical paths, to trade leakage against speed. *First defined in* [09-10](../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md).
 
 <a id="multigate-transistor"></a>**Multigate transistor** — A MOSFET whose thin body is gated from two or more sides (double-gate, FinFET, gate-all-around), so no leakage path is far from a gate and the subthreshold swing approaches its ideal value. *First defined in* [09-12](../courses/09-semiconductor-devices/chapters/09-12-finfet-gaa-cfet-backside-power.md).
 
@@ -1544,7 +1544,7 @@
 
 ## O
 
-<a id="off-state-current"></a>**Off-state current** — The drain current I_off at V_GS = 0 and V_DS = V_DD, mainly subthreshold leakage, equal to the threshold-defining current times 10^(−V_t/S); it sets standby power. *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
+<a id="off-state-current"></a>**Off-state current** — The drain current I_off at V_GS = 0 and V_DS = V_DD, mainly subthreshold leakage, equal to the threshold-defining current times 10^(−V_TH/S); it sets standby power. *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
 
 <a id="ohms-law"></a>**Ohm's law** — Current proportional to voltage, V = IR, or locally J = σE; it holds for metals and doped semiconductors at moderate fields and fails at high fields, high frequencies, very short lengths and in junctions. *First defined in* [04-05](../courses/04-physics-for-ee/chapters/04-05-current-resistance-and-conduction.md).
 
@@ -1582,7 +1582,7 @@
 
 <a id="overdamped"></a>**Overdamped** — A second-order system with ζ > 1, whose two real negative roots give a sum of decaying exponentials with no overshoot; more damping makes it slower. *First defined in* [02-03](../courses/02-complex-numbers-des-and-linear-algebra/chapters/02-03-second-order-linear-odes.md).
 
-<a id="overdrive-voltage"></a>**Overdrive voltage** — The amount by which the gate-source voltage exceeds threshold, V_ov = V_GS − V_t; drive current, transconductance efficiency (2/V_ov) and V_Dsat all depend on it. *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
+<a id="overdrive-voltage"></a>**Overdrive voltage** — The amount by which the gate-source voltage exceeds threshold, V_ov = V_GS − V_TH; drive current, transconductance efficiency (2/V_ov) and V_Dsat all depend on it. *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
 
 <a id="overkill"></a>**Overkill** — Good parts wrongly rejected by a production test, the false positives of the test. *First defined in* [03-01](../courses/03-probability-statistics-and-random-variables/chapters/03-01-probability-in-ee-language.md).
 
@@ -1982,7 +1982,7 @@
 
 <a id="saturation-flux-density"></a>**Saturation flux density** — The flux density B_s at which a ferromagnetic core is fully magnetized; beyond it the core adds nothing and inductance collapses. About 0.49 T for N87 ferrite at 25 °C (0.39 T at 100 °C), 1.5–1.8 T for silicon steel. *First defined in* [04-06](../courses/04-physics-for-ee/chapters/04-06-magnetic-fields-and-forces.md).
 
-<a id="saturation-region"></a>**Saturation region** — The MOSFET operating region with V_DS above V_Dsat = (V_GS − V_t)/m, where the channel is pinched off at the drain and the current is nearly independent of V_DS; not the same as a bipolar transistor's saturation. *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
+<a id="saturation-region"></a>**Saturation region** — The MOSFET operating region with V_DS above V_Dsat = (V_GS − V_TH)/m, where the channel is pinched off at the drain and the current is nearly independent of V_DS; not the same as a bipolar transistor's saturation. *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
 
 <a id="scale-length"></a>**Scale length** — The length λ over which a disturbance of the channel potential decays along a thin-body transistor; for a double gate λ² = (ε_s/2ε_ox)t_si t_ox + t_si²/8, and roll-off and DIBL scale as e^(−L/2λ). *First defined in* [09-12](../courses/09-semiconductor-devices/chapters/09-12-finfet-gaa-cfet-backside-power.md). *See also:* [Characteristic length](#characteristic-length), [Drain-induced barrier lowering](#drain-induced-barrier-lowering).
 
@@ -2098,7 +2098,7 @@
 
 <a id="source-degeneration"></a>**Source degeneration** — A resistor R_S in a transistor's source (or R_E in a bipolar emitter) that feeds back a voltage opposing the input, cutting the gain to about −R_D/(R_S + 1/g_m) but making it set by resistors rather than by the device. *First defined in* [06-06](../courses/06-circuit-analysis-1-dc/chapters/06-06-dependent-sources.md). *See also:* [Transconductance](#transconductance).
 
-<a id="source-injection-velocity"></a>**Source injection velocity** — The x-directed thermal velocity v_thx (about 1.6 × 10⁷ cm/s for electrons in silicon MOSFETs) with which carriers enter the channel from the source; it sets the ceiling I_Dsat = W B v_thx C_ox (V_GS − V_t), where B is the fraction not scattered back. *First defined in* [09-10](../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md). *See also:* [Ballistic transport](#ballistic-transport), [Velocity saturation](#velocity-saturation).
+<a id="source-injection-velocity"></a>**Source injection velocity** — The x-directed thermal velocity v_thx (about 1.6 × 10⁷ cm/s for electrons in silicon MOSFETs) with which carriers enter the channel from the source; it sets the ceiling I_Dsat = W B v_thx C_ox (V_GS − V_TH), where B is the fraction not scattered back. *First defined in* [09-10](../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md). *See also:* [Ballistic transport](#ballistic-transport), [Velocity saturation](#velocity-saturation).
 
 <a id="source-transformation"></a>**Source transformation** — Replacing a voltage source V_s in series with R by a current source V_s/R in parallel with R, or the reverse; the two are equivalent at their terminals but not internally. *First defined in* [06-07](../courses/06-circuit-analysis-1-dc/chapters/06-07-linearity-and-superposition.md). *See also:* [Millman's theorem](#millmans-theorem).
 
@@ -2122,7 +2122,7 @@
 
 <a id="spontaneous-polarization"></a>**Spontaneous polarization** — The built-in electric polarization of an unstrained polar crystal such as wurtzite GaN or AlN along its c-axis; its change at a heterojunction leaves a fixed bound sheet charge. *First defined in* [09-13](../courses/09-semiconductor-devices/chapters/09-13-compound-and-wide-bandgap-semiconductors.md).
 
-<a id="square-law"></a>**Square law** — The long-channel saturation current I_Dsat = (W/2mL)μC_ox(V_GS − V_t)², with m = 1 in its simplest form; the first-order model of analog design and the basis of SPICE level 1. *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
+<a id="square-law"></a>**Square law** — The long-channel saturation current I_Dsat = (W/2mL)μC_ox(V_GS − V_TH)², with m = 1 in its simplest form; the first-order model of analog design and the basis of SPICE level 1. *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
 
 <a id="squeeze-theorem"></a>**Squeeze theorem** — If g(x) ≤ f(x) ≤ h(x) near a and g and h share the limit L, then f also tends to L. Used to prove sin θ/θ → 1. *First defined in* [01-02](../courses/01-calculus-for-engineers/chapters/01-02-limits-and-continuity.md).
 
@@ -2198,7 +2198,7 @@
 
 <a id="substitution-integration"></a>**Substitution (integration)** — Evaluating ∫ f(g(x)) g'(x) dx as ∫ f(u) du with u = g(x), the chain rule in reverse; for definite integrals the limits change to g(a) and g(b). *First defined in* [01-06](../courses/01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md).
 
-<a id="subthreshold-conduction"></a>**Subthreshold conduction** — MOSFET current below threshold, carried by diffusion in a weak inversion layer and rising exponentially with gate voltage, I_D ∝ e^((V_GS − V_t)/mV_T); it sets off-state leakage. *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
+<a id="subthreshold-conduction"></a>**Subthreshold conduction** — MOSFET current below threshold, carried by diffusion in a weak inversion layer and rising exponentially with gate voltage, I_D ∝ e^((V_GS − V_TH)/mV_T); it sets off-state leakage. *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
 
 <a id="subthreshold-swing"></a>**Subthreshold swing** — The gate-voltage change per decade of subthreshold current, S = mV_T ln 10, which cannot fall below 59.5 mV/decade at 300 K for a conventional transistor. *First defined in* [09-09](../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md).
 
@@ -2224,7 +2224,7 @@
 
 <a id="susceptance"></a>**Susceptance** — B, the imaginary part of an admittance (siemens); positive for a capacitor (ωC), negative for an inductor (−1/(ωL)). *First defined in* [07-05](../courses/07-circuit-analysis-2-transient-and-ac/chapters/07-05-sinusoidal-steady-state-and-impedance.md).
 
-<a id="switching-threshold"></a>**Switching threshold** — The input voltage V_M at which a CMOS inverter's output equals its input; for square-law devices V_M = (V_tn√r + V_DD − |V_tp|)/(1 + √r) with r = k_n/k_p. *First defined in* [09-11](../courses/09-semiconductor-devices/chapters/09-11-cmos-and-scaling.md).
+<a id="switching-threshold"></a>**Switching threshold** — The input voltage V_M at which a CMOS inverter's output equals its input; for square-law devices V_M = (V_TN√r + V_DD − |V_TP|)/(1 + √r) with r = k_n/k_p. *First defined in* [09-11](../courses/09-semiconductor-devices/chapters/09-11-cmos-and-scaling.md).
 
 <a id="symbolic-computation"></a>**Symbolic computation** — Manipulating formulas exactly, with symbols rather than numbers (SymPy solves, simplifies, differentiates and integrates); used to derive or check hand results and to keep exact rationals such as 470000/53. *First defined in* [05-03](../courses/05-programming-for-engineers/chapters/05-03-scipy-sympy-matplotlib.md).
 
@@ -2288,9 +2288,9 @@
 
 <a id="threshold-gain"></a>**Threshold gain** — The material gain at which a laser's round-trip gain equals its losses, g_th = α_i + (1/2L) ln(1/R₁R₂); above it the laser oscillates. *First defined in* [09-14](../courses/09-semiconductor-devices/chapters/09-14-optoelectronic-devices.md).
 
-<a id="threshold-roll-off"></a>**Threshold roll-off** — The fall of threshold voltage as channel length shrinks, because the source and drain help lower the channel barrier; in Hu's model ΔV_t = (V_DS + 0.4 V) e^(−L/l_d). *First defined in* [09-10](../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md).
+<a id="threshold-roll-off"></a>**Threshold roll-off** — The fall of threshold voltage as channel length shrinks, because the source and drain help lower the channel barrier; in Hu's model ΔV_TH = (V_DS + 0.4 V) e^(−L/l_d). *First defined in* [09-10](../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md).
 
-<a id="threshold-voltage"></a>**Threshold voltage** — The gate voltage at which a MOS surface becomes inverted, conventionally where the surface electron density equals the body doping, V_t = V_fb + 2φ_B + √(2qN_Aε_s 2φ_B)/C_ox; foundries define it by a drain current. *First defined in* [09-08](../courses/09-semiconductor-devices/chapters/09-08-mos-capacitor.md).
+<a id="threshold-voltage"></a>**Threshold voltage** — The gate voltage at which a MOS surface becomes inverted, conventionally where the surface electron density equals the body doping, V_TH = V_FB + 2φ_B + √(2qN_Aε_s 2φ_B)/C_ox; foundries define it by a drain current. *First defined in* [09-08](../courses/09-semiconductor-devices/chapters/09-08-mos-capacitor.md).
 
 <a id="time-constant"></a>**Time constant** — τ, the characteristic time of a first-order exponential response e^{−t/τ}; τ = R_Th·C for an RC circuit and τ = L/R_Th for an RL circuit. After one τ, 63.2 % of the change is complete. *First defined in* [07-02](../courses/07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md). *See also:* [Thevenin resistance](#thevenin-resistance), [Settling time](#settling-time).
 

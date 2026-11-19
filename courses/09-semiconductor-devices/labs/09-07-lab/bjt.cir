@@ -4,7 +4,8 @@
 *     base current and a 1 mA collector current (forced gain 10) are imposed by current sources.
 * Q2, Q3: output resistance (two identical transistors at V_CE = 2 V and 3 V). With VAF = 31.4 V (Example 09-07.3) the transport current is multiplied by
 *     (1 - V_BC/VAF). V_BE is set so that I_C = 1 mA at V_CB = 0; then I_C rises by 1 mA/VAF per volt of
-*     V_CE and r_o = VAF / 1 mA.
+*     V_CE and r_o = VAF / 1 mA. (This EXPECT demonstrates the model: r_o = VAF/I_C holds by construction,
+*     so it checks the netlist, not the Early-voltage physics, which Example 09-07.3 derives.)
 * The temperature is set to 300 K so that V_T = 25.852 mV, as in the chapter.
 *
 * EXPECT vcesat key:../../chapters/09-07-bipolar-junction-transistor.md#Ex_09-07.4c scale=1e-3 rtol=2e-3

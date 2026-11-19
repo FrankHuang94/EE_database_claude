@@ -13,7 +13,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 09-11.1 [A]
 
-**Switching threshold.** For the inverter of Example 09-11.1 ($V_{DD}$ = 1.0 V, $V_{tn} = |V_{tp}|$ = 0.3 V), find $V_M$ when $k_n/k_p$ = 4. What ratio $k_n/k_p$ places $V_M$ at 0.45 V?
+**Switching threshold.** For the inverter of Example 09-11.1 ($V_{DD}$ = 1.0 V, $V_{TN} = |V_{TP}|$ = 0.3 V), find $V_M$ when $k_n/k_p$ = 4. What ratio $k_n/k_p$ places $V_M$ at 0.45 V?
 
 ### Problem 09-11.2 [A]
 
@@ -25,11 +25,11 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 09-11.4 [B]
 
-**Voltage and frequency scaling.** A core draws 10 W of dynamic power at 1.0 V and 3 GHz. Its maximum frequency is proportional to $I_{on}/(CV_{DD})$ with $I_{on} \propto V_{DD} - V_t$ (velocity-saturated) and $V_t$ = 0.3 V. At 0.8 V, find the maximum frequency, the dynamic power at that frequency, and the ratio of energy per cycle to the 1.0 V value.
+**Voltage and frequency scaling.** A core draws 10 W of dynamic power at 1.0 V and 3 GHz. Its maximum frequency is proportional to $I_{on}/(CV_{DD})$ with $I_{on} \propto V_{DD} - V_{TH}$ (velocity-saturated) and $V_{TH}$ = 0.3 V. At 0.8 V, find the maximum frequency, the dynamic power at that frequency, and the ratio of energy per cycle to the 1.0 V value.
 
 ### Problem 09-11.5 [C]
 
-**The minimum-energy supply (numerical).** A block switches an effective 100 pF per cycle ($\alpha C$) and leaks a constant 0.1 A. Its clock runs at the maximum frequency, 2 GHz at 1.0 V, scaling with supply as in Problem 09-11.4 ($V_t$ = 0.3 V). The energy per cycle is $E(V) = \alpha CV^2 + VI_{leak}/f(V)$. Find $E$ at 1.0 V, the supply that minimizes $E$, the minimum energy, the clock frequency there, and the energy saving factor. (The current model is reasonable for $V_{DD} \gtrsim V_t$ + 0.1 V.)
+**The minimum-energy supply (numerical).** A block switches an effective 100 pF per cycle ($\alpha C$) and leaks a constant 0.1 A. Its clock runs at the maximum frequency, 2 GHz at 1.0 V, scaling with supply as in Problem 09-11.4 ($V_{TH}$ = 0.3 V). The energy per cycle is $E(V) = \alpha CV^2 + VI_{leak}/f(V)$. Find $E$ at 1.0 V, the supply that minimizes $E$, the minimum energy, the clock frequency there, and the energy saving factor. (The current model is reasonable for $V_{DD} \gtrsim V_{TH}$ + 0.1 V.)
 
 ### Problem 09-11.6 [A]
 
@@ -57,7 +57,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 09-11.12 [C]
 
-**Sizing with velocity saturation (numerical).** Use the short-channel model of 09-10 ($L$ = 50 nm, 2 nm EOT, $m$ = 1.2): NMOS $\mu_{ns}$ = 183 cm²/V·s and $v_{sat}$ = 8 × 10⁶ cm/s, PMOS $\mu_{ps}$ = 61 cm²/V·s and $v_{sat}$ = 6 × 10⁶ cm/s, $V_{tn} = |V_{tp}|$ = 0.25 V, $V_{DD}$ = 0.8 V. (a) Find the on-currents per micrometer and the $W_p/W_n$ that equalizes rise and fall delays. (b) Find the $W_p/W_n$ that places $V_M$ at $V_{DD}/2$ (both transistors saturated there). (c) Compare both with the mobility ratio.
+**Sizing with velocity saturation (numerical).** Use the short-channel model of 09-10 ($L$ = 50 nm, 2 nm EOT, $m$ = 1.2): NMOS $\mu_{ns}$ = 183 cm²/V·s and $v_{sat}$ = 8 × 10⁶ cm/s, PMOS $\mu_{ps}$ = 61 cm²/V·s and $v_{sat}$ = 6 × 10⁶ cm/s, $V_{TN} = |V_{TP}|$ = 0.25 V, $V_{DD}$ = 0.8 V. (a) Find the on-currents per micrometer and the $W_p/W_n$ that equalizes rise and fall delays. (b) Find the $W_p/W_n$ that places $V_M$ at $V_{DD}/2$ (both transistors saturated there). (c) Compare both with the mobility ratio.
 
 ---
 

@@ -88,7 +88,8 @@ v.check("Ex 09-09.2c", Isq * 1e3)
 v.check("Ex 09-09.2d", 100 * (Isq / Idsat - 1))
 v.check("Ex 09-09.2e", channel_current(0.3, qm, W, L, MU, COX) * 1e3)
 v.check("Ex 09-09.2f", Vdsat / L)
-v.check("Ex 09-09.2g", 2e7 / MU)
+v.check("Ex 09-09.2g", 1.6e7 / MU)
+v.check("Ex 09-09.2i", (1.6e7 / MU) / (Vdsat / L))
 v.check("Ex 09-09.2h", Idsat / 10 * 1e6)
 
 # ------------------------------------------------------------------ body effect
@@ -164,9 +165,21 @@ v.check("T 09-09.b", 1 / (m * VT))
 v.check("Ex 09-09.7b", VT0 / S)
 v.check("Ex 09-09.7c", 1e-7 * (W / L) * 10 ** (-VT0 / S) * 1e12)
 v.check("Ex 09-09.7d", (W / L) * MU * COX * (m - 1) * VT ** 2 * 1e6)
+# cross-check: integrate n(x) = (ni^2/NA) exp(phi(x)/VT) through the depletion profile phi = phis (1 - x/W)^2 at phis = 2 phi_B
+phis = 2 * pB
+Wdep = math.sqrt(2 * EPS * phis / (Q * NA))
+Qinv = Q * quad(lambda x: NI**2 / NA * math.exp(phis * (1 - x / Wdep) ** 2 / VT), 0, Wdep, epsabs=0, epsrel=1e-10, limit=400)[0]
+pref_num = (W / L) * MU * VT * Qinv
+v.assert_true("numerical weak-inversion charge reproduces the closed-form prefactor within 5%",
+              abs(pref_num / ((W / L) * MU * COX * (m - 1) * VT ** 2) - 1) < 0.05, f"{pref_num:.4e}")
 v.check("Ex 09-09.7e", 1e8 * 100e-9)
 v.check("Ex 09-09.7f", 10 ** (0.15 / S))
-for k_, val in (("P 09-09.a", 0.15), ("P 09-09.b", 0.84), ("P 09-09.c", 1e-5)):
+for k_, val in (("P 09-09.a", 0.15), ("P 09-09.b", 0.84), ("P 09-09.c", 1e-5), ("P 09-09.d", 10), ("P 09-09.e", 155.6),
+                ("P 09-09.f", 100), ("P 09-09.g", 288.4), ("P 09-09.h", 125), ("P 09-09.i", 60)):
+    v.check(k_, val)   # quoted IRDS/Hu values (R-170, R-171)
+v.check("P 09-09.j", 288.4 - 155.6)
+v.check("P 09-09.k", (288.4 - 155.6) / math.log10(10e-9 / 100e-12))
+for k_, val in ():
     v.check(k_, val)
 
 # ------------------------------------------------------------------ Solutions
@@ -200,7 +213,7 @@ v.check("09-09.6h", ((1.8 - 0.35) / (0.8 - 0.35)) ** 2)
 W7 = brentq(lambda w: isat_m(VOV, m, w, 0.5e-4)[0] - 1e-3, 1e-5, 1e-2)
 v.check("09-09.7a", W7 * 1e4)
 v.check("09-09.7b", (VOV / m) / 0.5e-4)
-v.check("09-09.7c", (2e7 / MU) / ((VOV / m) / 0.5e-4))
+v.check("09-09.7c", (1.6e7 / MU) / ((VOV / m) / 0.5e-4))
 dL8 = math.sqrt(2 * EPS * 0.5 / (Q * 5e17))
 v.check("09-09.8a", dL8 * 1e7)
 for Lx, k_ in ((0.5e-4, "09-09.8b"), (1e-4, "09-09.8c"), (2e-4, "09-09.8d")):

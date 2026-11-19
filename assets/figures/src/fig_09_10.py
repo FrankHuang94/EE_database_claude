@@ -2,7 +2,7 @@
 """Figures for chapter 09-10 (short-channel effects and leakage).
 
 Run from anywhere:  python assets/figures/src/fig_09_10.py
-Outputs to assets/figures/09-10/, for the chapter's example NMOS (2 nm EOT, m = 1.2, V_t = 0.35 V,
+Outputs to assets/figures/09-10/, for the chapter's example NMOS (2 nm EOT, m = 1.2, V_TH = 0.35 V,
 mu_ns = 183 cm^2/Vs, v_sat = 8e6 cm/s, W = 1 um):
 - velocity-saturation-iv.svg: output characteristics at L = 50 nm, long-channel model vs velocity saturation;
 - idsat-vs-length.svg: I_Dsat against L at 0.65 V overdrive, long-channel, velocity-saturation and
@@ -94,9 +94,9 @@ Lr = np.linspace(15e-7, 100e-7, 200)
 for i, vd in enumerate((0.05, 1.0)):
     axs[0].plot(Lr * 1e7, 0.35 - roll(Lr, vd), color=PALETTE[i], label=f"$V_{{DS}}$ = {vd} V")
 axs[0].axhline(0.35, color="k", lw=0.8, ls=":")
-axs[0].text(70, 0.355, "long-channel $V_t$", fontsize=8)
+axs[0].text(70, 0.355, "long-channel $V_{TH}$", fontsize=8)
 axs[0].set_xlabel("channel length L (nm)")
-axs[0].set_ylabel("$V_t$ (V)")
+axs[0].set_ylabel("$V_{TH}$ (V)")
 axs[0].set_title(r"(a) roll-off and DIBL, $l_d$ = 10 nm", fontsize=9)
 axs[0].legend(fontsize=8, loc="lower right")
 vg = np.linspace(0, 0.6, 200)

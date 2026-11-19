@@ -12,7 +12,7 @@
 
 ## Background
 
-Chapter sections 3.1–3.7 and Examples 09-11.1 to 09-11.7. The inverter of Parts 1 and 5: $V_{DD}$ = 1.0 V, $V_{tn} = |V_{tp}|$ = 0.3 V, $\mu_n/\mu_p$ = 2. Part 1 also uses the short-channel transistors of 09-10 Problem 4 and 09-11 Problem 12. Part 4 uses K. Rupp's *Microprocessor Trend Data* ([repository](https://github.com/karlrupp/microprocessor-trend-data)), licensed CC-BY 4.0 and copied unchanged into [data/](data/) with attribution headers. The dataset compiles published processor specifications; it is a convenient secondary source, not a primary one. You need Python with NumPy, SciPy and Matplotlib, and optionally ngspice (see [SETUP.md](../../../../SETUP.md)).
+Chapter sections 3.1–3.7 and Examples 09-11.1 to 09-11.7. The inverter of Parts 1 and 5: $V_{DD}$ = 1.0 V, $V_{TN} = |V_{TP}|$ = 0.3 V, $\mu_n/\mu_p$ = 2. Part 1 also uses the short-channel transistors of 09-10 Problem 4 and 09-11 Problem 12. Part 4 uses K. Rupp's *Microprocessor Trend Data* ([repository](https://github.com/karlrupp/microprocessor-trend-data)), licensed CC-BY 4.0 and copied unchanged into [data/](data/) with attribution headers. The dataset compiles published processor specifications; it is a convenient secondary source, not a primary one. You need Python with NumPy, SciPy and Matplotlib, and optionally ngspice (see [SETUP.md](../../../../SETUP.md)).
 
 ## Files
 
@@ -70,4 +70,4 @@ Chapter sections 3.1–3.7 and Examples 09-11.1 to 09-11.7. The inverter of Part
 
 ## Optional extension
 
-Add short-circuit current to the delay model of Part 2: give each transition an input ramp of finite slope, let both transistors conduct while the input lies between $V_{tn}$ and $V_{DD} - |V_{tp}|$, and integrate the current that flows from supply to ground. How does the short-circuit energy compare with $CV_{DD}^2$ as the input edge slows?
+Add short-circuit current to the delay model of Part 2: give each transition an input ramp of finite slope, let both transistors conduct while the input lies between $V_{TN}$ and $V_{DD} - |V_{TP}|$, and integrate the current that flows from supply to ground. How does the short-circuit energy compare with $CV_{DD}^2$ as the input edge slows?

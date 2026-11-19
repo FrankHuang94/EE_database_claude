@@ -47,26 +47,26 @@
 "Kirk effect?","At high current density the collector charge is neutralized and the base pushes out into the collector, raising \(\tau_F\) and lowering \(f_T\).",bsee::09 bsee::09-07
 "Why SiGe HBTs?","Graded Ge narrows the base gap: more electron injection and a drift field, so higher β and \(f_T\) in a silicon process.",bsee::09 bsee::09-07
 "Oxide capacitance?","\(C_{ox} = \varepsilon_{ox}/T_{ox}\): 1.73 µF/cm² at 2 nm, 0.863 µF/cm² at 4 nm.",bsee::09 bsee::09-08
-"MOS threshold voltage?","\(V_t = V_{FB} + 2\phi_B + \sqrt{2qN_A\varepsilon_s(2\phi_B)}/C_{ox}\), \(\phi_B = V_T\ln(N_A/n_i)\).",bsee::09 bsee::09-08
+"MOS threshold voltage?","\(V_{TH} = V_{FB} + 2\phi_B + \sqrt{2qN_A\varepsilon_s(2\phi_B)}/C_{ox}\), \(\phi_B = V_T\ln(N_A/n_i)\).",bsee::09 bsee::09-08
 "Flat-band voltage, n⁺ poly gate on p-Si?","\(V_{FB} = -(E_C - E_F)_{\text{body}}/q\) (about −1 V), shifted by \(-Q_{ox}/C_{ox}\).",bsee::09 bsee::09-08
 "MOS C–V regions?","Accumulation (\(C_{ox}\)), depletion (falling), inversion: back to \(C_{ox}\) at low frequency, minimum at high frequency.",bsee::09 bsee::09-08
 "What is EOT?","Equivalent oxide thickness: \(T_{hk}\times 3.9/k\); high-k dielectrics give low EOT with a thicker physical film.",bsee::09 bsee::09-08
 "Why high-k and metal gates?","SiO₂ below about 1.2 nm leaked too much by tunneling; high-k cuts leakage at the same EOT, metal gates remove poly depletion.",bsee::09 bsee::09-08
 "Long-channel saturation current?","\(I_{Dsat} = (W/2mL)\mu C_{ox}V_{ov}^2\), \(V_{Dsat} = V_{ov}/m\).",bsee::09 bsee::09-09
 "Bulk-charge factor \(m\)?","\(m = 1 + C_{dep}/C_{ox} \approx 1 + 3T_{ox}/W_{d\max}\), about 1.1–1.3.",bsee::09 bsee::09-09
-"Body effect?","\(V_t = V_{t0} + \gamma(\sqrt{2\phi_B + V_{SB}} - \sqrt{2\phi_B})\), \(\gamma = \sqrt{2qN_A\varepsilon_s}/C_{ox}\).",bsee::09 bsee::09-09
+"Body effect?","\(V_{TH} = V_{TH0} + \gamma(\sqrt{2\phi_B + V_{SB}} - \sqrt{2\phi_B})\), \(\gamma = \sqrt{2qN_A\varepsilon_s}/C_{ox}\).",bsee::09 bsee::09-09
 "MOSFET \(g_m/I_D\)?","\(2/V_{ov}\) in strong inversion, up to \(1/mV_T\) in weak inversion.",bsee::09 bsee::09-09
 "Subthreshold swing?","\(S = mV_T\ln 10\) ≥ 59.5 mV/decade at 300 K.",bsee::09 bsee::09-09
-"Off-current from threshold?","\(I_{off} = I_t\,10^{-V_t/S}\) with Hu's threshold current \(I_t\) = 100 nA × W/L.",bsee::09 bsee::09-09
+"Off-current from threshold?","\(I_{off} = I_t\,10^{-V_{TH}/S}\) with Hu's threshold current \(I_t\) = 100 nA × W/L.",bsee::09 bsee::09-09
 "Channel-length modulation?","The pinch-off point moves toward the source with \(V_{DS}\): \(I_D \propto (1 + \lambda V_{DS})\), \(r_o = 1/\lambda I_D\).",bsee::09 bsee::09-09
 "Velocity-saturated MOSFET current?","\(1/V_{Dsat} = m/V_{ov} + 1/\mathcal E_{sat}L\), \(I_{Dsat} = WC_{ox}v_{sat}(V_{ov} - mV_{Dsat})\): linear in overdrive.",bsee::09 bsee::09-10
 "Source-injection limit?","\(I_{Dsat} = WBv_{thx}C_{ox}V_{ov}\), \(v_{thx}\) ≈ 1.6 × 10⁷ cm/s, \(B\) ≈ 0.5 typical (Hu).",bsee::09 bsee::09-10
-"Hu's DIBL model?","\(V_t = V_{t,\text{long}} - (V_{DS} + 0.4)e^{-L/l_d}\), \(l_d \propto (T_{oxe}W_{dep}X_j)^{1/3}\).",bsee::09 bsee::09-10
+"Hu's DIBL model?","\(V_{TH} = V_{TH,\text{long}} - (V_{DS} + 0.4)e^{-L/l_d}\), \(l_d \propto (T_{oxe}W_{dep}X_j)^{1/3}\).",bsee::09 bsee::09-10
 "Why does DIBL raise leakage so much?","Every \(S\) millivolts of threshold lost multiplies the off-current by ten.",bsee::09 bsee::09-10
 "What is GIDL?","Band-to-band tunneling in the drain under the gate edge when the drain-to-gate voltage bends the bands beyond the gap; not reduced by a higher threshold.",bsee::09 bsee::09-10
-"Random dopant σ(V_t)?","\((q/C_{ox})\sqrt{N_AW_{dep}/3WL}\): grows with doping and shrinking area; undoped thin bodies avoid it.",bsee::09 bsee::09-10
+"Random dopant σ(V_TH)?","\((q/C_{ox})\sqrt{N_AW_{dep}/3WL}\): grows with doping and shrinking area; undoped thin bodies avoid it.",bsee::09 bsee::09-10
 "How much does series resistance cost?","\(I_{Dsat} = I_{Dsat0}/(1 + R_SI_{Dsat0}/V_{ov})\) in the saturated limit: tens of mV of IR drop cost ~10%.",bsee::09 bsee::09-10
-"CMOS inverter switching threshold?","\(V_M = (V_{tn}\sqrt r + V_{DD} - |V_{tp}|)/(1 + \sqrt r)\), \(r = k_n/k_p\); symmetric when \(W_p/W_n \approx \mu_n/\mu_p\).",bsee::09 bsee::09-11
+"CMOS inverter switching threshold?","\(V_M = (V_{TN}\sqrt r + V_{DD} - |V_{TP}|)/(1 + \sqrt r)\), \(r = k_n/k_p\); symmetric when \(W_p/W_n \approx \mu_n/\mu_p\).",bsee::09 bsee::09-11
 "Inverter delay?","\(\tau_d = (CV_{DD}/4)(1/I_{onN} + 1/I_{onP})\): speed is \(I_{on}\) per capacitance.",bsee::09 bsee::09-11
 "Ring oscillator period?","\(2N\tau_d\) for an odd number \(N\) of stages.",bsee::09 bsee::09-11
 "Dynamic power?","\(P = \alpha CV_{DD}^2f\); it does not depend on \(I_{on}\).",bsee::09 bsee::09-11

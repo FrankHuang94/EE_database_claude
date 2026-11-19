@@ -96,7 +96,7 @@ $E_1 = h^2/8m_lt_{si}^2$ with $m_l$ = 0.98 $m_0$:
 
 From 5 to 4 nm the subband rises by **8.63** meV. Since $E_1 \propto t_{si}^{-2}$, $|dE_1/dt_{si}| = 2E_1/t_{si}$: **6.14** meV/nm at 5 nm and **28.4** meV/nm at 3 nm.
 
-The threshold rises with the subband energy, so in a 3 nm body a ±0.3 nm thickness variation moves $V_t$ by roughly ±9 mV. Thin bodies trade random dopant fluctuation (09-10) for thickness fluctuation.
+The threshold rises with the subband energy, so in a 3 nm body a ±0.3 nm thickness variation moves $V_{TH}$ by roughly ±9 mV. Thin bodies trade random dopant fluctuation (09-10) for thickness fluctuation.
 
 ### Solution 09-12.12
 
@@ -152,7 +152,7 @@ Side-by-side: 18 + 30 + 40 + 30 + 18 = **136** nm. CFET devices: 18 + 30 + 18 = 
 | 09-12.11d | shift 5 to 4 nm | 8.63 | meV |
 | 09-12.11e | slope at 5 nm | 6.14 | meV/nm |
 | 09-12.11f | slope at 3 nm | 28.4 | meV/nm |
-| 09-12.11g | V_t change for 0.3 nm at 3 nm | 9 | mV |
+| 09-12.11g | V_TH change for 0.3 nm at 3 nm | 9 | mV |
 | 09-12.12a | side-by-side height | 136 | nm |
 | 09-12.12b | CFET device height | 66 | nm |
 | 09-12.12c | track-limited height | 72 | nm |

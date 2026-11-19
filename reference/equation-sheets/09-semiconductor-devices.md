@@ -57,22 +57,22 @@ Conventions and course values (silicon, 300 K unless stated):
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | $C_{ox} = \varepsilon_{ox}/T_{ox}$; $V_{FB} = \psi_g - \psi_s - Q_{ox}/C_{ox}$; n⁺ poly on p-Si: $V_{FB} = -(E_C - E_F)/q$ | $\psi$ are work functions | [09-08](../../courses/09-semiconductor-devices/chapters/09-08-mos-capacitor.md) |
-| $V_t = V_{FB} + 2\phi_B + \sqrt{2qN_A\varepsilon_s(2\phi_B)}/C_{ox}$; $W_{d\max} = \sqrt{2\varepsilon_s(2\phi_B)/qN_A}$ | p-type body, n-channel | [09-08](../../courses/09-semiconductor-devices/chapters/09-08-mos-capacitor.md) |
+| $V_{TH} = V_{FB} + 2\phi_B + \sqrt{2qN_A\varepsilon_s(2\phi_B)}/C_{ox}$; $W_{d\max} = \sqrt{2\varepsilon_s(2\phi_B)/qN_A}$ | p-type body, n-channel | [09-08](../../courses/09-semiconductor-devices/chapters/09-08-mos-capacitor.md) |
 | $C_{\min} = (1/C_{ox} + W_{d\max}/\varepsilon_s)^{-1}$; EOT $= T_{hk}\times 3.9/k$ | High-frequency C–V | [09-08](../../courses/09-semiconductor-devices/chapters/09-08-mos-capacitor.md) |
-| Body effect $V_t = V_{t0} + \gamma(\sqrt{2\phi_B + V_{SB}} - \sqrt{2\phi_B})$, $\gamma = \sqrt{2qN_A\varepsilon_s}/C_{ox}$ | | [09-09](../../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md) |
+| Body effect $V_{TH} = V_{TH0} + \gamma(\sqrt{2\phi_B + V_{SB}} - \sqrt{2\phi_B})$, $\gamma = \sqrt{2qN_A\varepsilon_s}/C_{ox}$ | | [09-09](../../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md) |
 | $I_D = \dfrac WL\mu C_{ox}\Big(V_{ov} - \dfrac m2V_{DS}\Big)V_{DS}$; $V_{Dsat} = V_{ov}/m$; $I_{Dsat} = \dfrac{W}{2mL}\mu C_{ox}V_{ov}^2$; $m = 1 + 3T_{ox}/W_{d\max}$ | Long channel | [09-09](../../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md) |
 | $g_m = 2I_D/V_{ov}$ (strong), $1/mV_T$ (weak); $f_T = g_m/2\pi C_{gs}$, $C_{gs} = \tfrac23WLC_{ox}$ | Saturation | [09-09](../../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md) |
-| $S = mV_T\ln 10 \ge$ 59.5 mV/decade; $I_{off} = I_t10^{-V_t/S}$, $I_t$ = 100 nA × W/L (Hu) | Subthreshold | [09-09](../../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md) |
+| $S = mV_T\ln 10 \ge$ 59.5 mV/decade; $I_{off} = I_t10^{-V_{TH}/S}$, $I_t$ = 100 nA × W/L (Hu) | Subthreshold | [09-09](../../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md) |
 | $1/V_{Dsat} = m/V_{ov} + 1/\mathcal E_{sat}L$, $\mathcal E_{sat} = 2v_{sat}/\mu$; $I_{Dsat} = WC_{ox}v_{sat}(V_{ov} - mV_{Dsat})$ | Velocity saturation | [09-10](../../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md) |
 | Injection limit $I_{Dsat} = WBv_{thx}C_{ox}V_{ov}$; series $R_S$: $I_{Dsat0}/(1 + R_SI_{Dsat0}/V_{ov})$ | Very short channels | [09-10](../../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md) |
-| Roll-off/DIBL: $\Delta V_t = (V_{DS} + 0.4)e^{-L/l_d}$, $l_d \propto (T_{oxe}W_{dep}X_j)^{1/3}$ | Hu's semi-quantitative model | [09-10](../../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md) |
-| Random dopants: $\sigma_{V_t} = (q/C_{ox})\sqrt{N_AW_{dep}/3WL}$ | Depth-weighted, uniform doping | [09-10](../../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md) |
+| Roll-off/DIBL: $\Delta V_{TH} = (V_{DS} + 0.4)e^{-L/l_d}$, $l_d \propto (T_{oxe}W_{dep}X_j)^{1/3}$ | Hu's semi-quantitative model | [09-10](../../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md) |
+| Random dopants: $\sigma_{V_{TH}} = (q/C_{ox})\sqrt{N_AW_{dep}/3WL}$ | Depth-weighted, uniform doping | [09-10](../../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md) |
 
 ## CMOS, scaling and advanced devices
 
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
-| $V_M = (V_{tn}\sqrt r + V_{DD} - \lvert V_{tp}\rvert)/(1 + \sqrt r)$, $r = k_n/k_p$ | Square-law inverter | [09-11](../../courses/09-semiconductor-devices/chapters/09-11-cmos-and-scaling.md) |
+| $V_M = (V_{TN}\sqrt r + V_{DD} - \lvert V_{TP}\rvert)/(1 + \sqrt r)$, $r = k_n/k_p$ | Square-law inverter | [09-11](../../courses/09-semiconductor-devices/chapters/09-11-cmos-and-scaling.md) |
 | $\tau_d = (CV_{DD}/4)(1/I_{onN} + 1/I_{onP})$; ring period $2N\tau_d$ | | [09-11](../../courses/09-semiconductor-devices/chapters/09-11-cmos-and-scaling.md) |
 | $P_{dyn} = \alpha CV_{DD}^2f$; $P_{static} = V_{DD}I_{off}$ | | [09-11](../../courses/09-semiconductor-devices/chapters/09-11-cmos-and-scaling.md) |
 | Constant-field scaling by κ: delay 1/κ, power per circuit 1/κ², density κ², power density 1; constant voltage: power density κ² (at $f \propto \kappa$) | | [09-11](../../courses/09-semiconductor-devices/chapters/09-11-cmos-and-scaling.md) |

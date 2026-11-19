@@ -205,6 +205,7 @@ cet = EOX / Ccet * 1e7
 v.check("Ex 09-08.7g", cet)
 v.check("Ex 09-08.7h", cet - 1.0)
 v.check("Ex 09-08.7i", 2.5 / eot)
+v.check("Ex 09-08.7j", eot + 0.3)
 for k_, val in (("P 09-08.a", 1.9), ("P 09-08.b", 0.9), ("P 09-08.c", 1.0), ("P 09-08.d", 0.9)):
     v.check(k_, val)
 

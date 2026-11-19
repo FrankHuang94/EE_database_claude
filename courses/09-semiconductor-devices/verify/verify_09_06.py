@@ -251,6 +251,13 @@ v.check("Ex 09-06.5k", Cd / Cj0)
 v.check("Ex 09-06.5l", Cd / Cj06)
 # corner: frequency where g_d = w C_d
 v.check("Ex 09-06.5i", g_num / (2 * math.pi * Cd) / 1e3)
+tau5 = 1e-6
+v.check("Ex 09-06.5n", 1 / (2 * math.pi * tau5) / 1e3)
+x1 = brentq(lambda x: np.sqrt(1 + 1j * x).real - 1.01, 1e-3, 2)
+v.check("Ex 09-06.5o", x1 / (2 * math.pi * tau5) / 1e3)
+Y2 = np.sqrt(1 + 2j)
+v.check("Ex 09-06.5p", (Y2.real - 1) * 100)
+v.check("Ex 09-06.5q", (1 - Y2.imag / 1.0) * 100)   # model C term is x/2 = 1 at x = 2
 flux_ws = diffusion_flux(Dp, TP, WN, n=20001, omega=w)
 Cds = g_num * (flux_ws.imag / diffusion_flux(Dp, TP, WN, n=20001)) / w
 v.check("Ex 09-06.5m", Cds * 1e12)

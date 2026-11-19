@@ -3841,7 +3841,7 @@
   definition: A metal (or polysilicon) gate on a thin insulator on a semiconductor, whose surface can be driven into accumulation, depletion or inversion by the gate voltage; the control structure of every MOSFET.
   chapter: "09-08"
 - term: Flat-band voltage
-  definition: The gate voltage at which the semiconductor's bands are flat up to the surface, V_fb = ψ_g − ψ_s − Q_ox/C_ox; about −1 V for an n⁺ poly gate on p-type silicon.
+  definition: The gate voltage at which the semiconductor's bands are flat up to the surface, V_FB = ψ_g − ψ_s − Q_ox/C_ox; about −1 V for an n⁺ poly gate on p-type silicon.
   chapter: "09-08"
 - term: Surface potential
   definition: The band bending φ_s at a semiconductor surface relative to the bulk, positive when the bands bend down; it is zero at flat band and reaches about 2φ_B at threshold in a MOS structure.
@@ -3856,7 +3856,7 @@
   definition: A thin layer of minority carriers at a semiconductor surface, induced when the surface potential exceeds about 2φ_B; it inverts the surface's conductivity type and forms a MOSFET's channel.
   chapter: "09-08"
 - term: Threshold voltage
-  definition: The gate voltage at which a MOS surface becomes inverted, conventionally where the surface electron density equals the body doping, V_t = V_fb + 2φ_B + √(2qN_Aε_s 2φ_B)/C_ox; foundries define it by a drain current.
+  definition: The gate voltage at which a MOS surface becomes inverted, conventionally where the surface electron density equals the body doping, V_TH = V_FB + 2φ_B + √(2qN_Aε_s 2φ_B)/C_ox; foundries define it by a drain current.
   chapter: "09-08"
 - term: Enhancement-mode transistor
   definition: A MOSFET with no channel at zero gate voltage, so it is off unless the gate is driven past a threshold of the right sign; standard logic transistors are enhancement mode.
@@ -3904,28 +3904,28 @@
   definition: The assumption that the potential along a MOSFET channel varies slowly compared with the vertical field, so each slice of channel behaves as a MOS capacitor biased by the local channel potential; it yields the long-channel I–V equations.
   chapter: "09-09"
 - term: Linear region
-  definition: The MOSFET operating region with V_DS below V_Dsat, where I_D = (W/L)μC_ox(V_GS − V_t − mV_DS/2)V_DS and the device acts as a voltage-controlled resistor for small V_DS (also called the triode region).
+  definition: The MOSFET operating region with V_DS below V_Dsat, where I_D = (W/L)μC_ox(V_GS − V_TH − mV_DS/2)V_DS and the device acts as a voltage-controlled resistor for small V_DS (also called the triode region).
   chapter: "09-09"
 - term: Saturation region
-  definition: The MOSFET operating region with V_DS above V_Dsat = (V_GS − V_t)/m, where the channel is pinched off at the drain and the current is nearly independent of V_DS; not the same as a bipolar transistor's saturation.
+  definition: The MOSFET operating region with V_DS above V_Dsat = (V_GS − V_TH)/m, where the channel is pinched off at the drain and the current is nearly independent of V_DS; not the same as a bipolar transistor's saturation.
   chapter: "09-09"
 - term: Pinch-off
   definition: The vanishing of a MOSFET's inversion charge at the drain end of the channel when V_DS reaches V_Dsat; beyond it, the extra drain voltage drops across a short depleted region that carriers cross at high field.
   chapter: "09-09"
 - term: Square law
-  definition: The long-channel saturation current I_Dsat = (W/2mL)μC_ox(V_GS − V_t)², with m = 1 in its simplest form; the first-order model of analog design and the basis of SPICE level 1.
+  definition: The long-channel saturation current I_Dsat = (W/2mL)μC_ox(V_GS − V_TH)², with m = 1 in its simplest form; the first-order model of analog design and the basis of SPICE level 1.
   chapter: "09-09"
 - term: Bulk-charge factor
   definition: The factor m = 1 + C_dep/C_ox = 1 + 3T_ox/W_dmax (typically about 1.2) by which raising the channel potential also deepens the depletion charge; it lowers V_Dsat and I_Dsat and sets the subthreshold swing m × 60 mV/decade.
   chapter: "09-09"
 - term: Body effect
-  definition: The rise of a MOSFET's threshold with source-to-body reverse bias, V_t = V_t0 + γ(√(2φ_B + V_SB) − √(2φ_B)); the body acts as a weak second gate.
+  definition: The rise of a MOSFET's threshold with source-to-body reverse bias, V_TH = V_TH0 + γ(√(2φ_B + V_SB) − √(2φ_B)); the body acts as a weak second gate.
   chapter: "09-09"
 - term: Body-effect parameter
   definition: The coefficient γ = √(2qN_Aε_s)/C_ox (V^1/2) that sets how strongly source-to-body bias shifts a MOSFET's threshold.
   chapter: "09-09"
 - term: Overdrive voltage
-  definition: The amount by which the gate-source voltage exceeds threshold, V_ov = V_GS − V_t; drive current, transconductance efficiency (2/V_ov) and V_Dsat all depend on it.
+  definition: The amount by which the gate-source voltage exceeds threshold, V_ov = V_GS − V_TH; drive current, transconductance efficiency (2/V_ov) and V_Dsat all depend on it.
   chapter: "09-09"
 - term: Surface mobility
   definition: The carrier mobility in a MOSFET inversion layer, several times below bulk mobility because of surface-roughness and phonon scattering, and falling as the vertical field rises.
@@ -3940,13 +3940,13 @@
   definition: The ratio g_m/I_D, the transconductance obtained per unit of bias current; 2/V_ov for a MOSFET in strong inversion, at most 1/(mV_T) in weak inversion, and 1/V_T for a bipolar transistor.
   chapter: "09-09"
 - term: Subthreshold conduction
-  definition: MOSFET current below threshold, carried by diffusion in a weak inversion layer and rising exponentially with gate voltage, I_D ∝ e^((V_GS − V_t)/mV_T); it sets off-state leakage.
+  definition: MOSFET current below threshold, carried by diffusion in a weak inversion layer and rising exponentially with gate voltage, I_D ∝ e^((V_GS − V_TH)/mV_T); it sets off-state leakage.
   chapter: "09-09"
 - term: Subthreshold swing
   definition: The gate-voltage change per decade of subthreshold current, S = mV_T ln 10, which cannot fall below 59.5 mV/decade at 300 K for a conventional transistor.
   chapter: "09-09"
 - term: Off-state current
-  definition: The drain current I_off at V_GS = 0 and V_DS = V_DD, mainly subthreshold leakage, equal to the threshold-defining current times 10^(−V_t/S); it sets standby power.
+  definition: The drain current I_off at V_GS = 0 and V_DS = V_DD, mainly subthreshold leakage, equal to the threshold-defining current times 10^(−V_TH/S); it sets standby power.
   chapter: "09-09"
 - term: Retrograde doping
   definition: A channel doping profile with a lightly doped surface layer over a heavily doped region, which fixes the depletion width, makes the body effect nearly linear and reduces impurity scattering in the channel.
@@ -3955,7 +3955,7 @@
   definition: Carrier velocities above the saturation velocity in channels so short that carriers cross before they can lose their energy to optical phonons; it relaxes the velocity-saturation limit in very short transistors.
   chapter: "09-10"
 - term: Source injection velocity
-  definition: The x-directed thermal velocity v_thx (about 1.6 × 10⁷ cm/s for electrons in silicon MOSFETs) with which carriers enter the channel from the source; it sets the ceiling I_Dsat = W B v_thx C_ox (V_GS − V_t), where B is the fraction not scattered back.
+  definition: The x-directed thermal velocity v_thx (about 1.6 × 10⁷ cm/s for electrons in silicon MOSFETs) with which carriers enter the channel from the source; it sets the ceiling I_Dsat = W B v_thx C_ox (V_GS − V_TH), where B is the fraction not scattered back.
   chapter: "09-10"
   see_also: [Ballistic transport, Velocity saturation]
 - term: Parasitic series resistance
@@ -3965,7 +3965,7 @@
   definition: The departures of a small MOSFET from long-channel behavior caused by velocity saturation and by the source and drain sharing control of the channel with the gate, chiefly threshold roll-off, DIBL, degraded swing and higher output conductance.
   chapter: "09-10"
 - term: Threshold roll-off
-  definition: The fall of threshold voltage as channel length shrinks, because the source and drain help lower the channel barrier; in Hu's model ΔV_t = (V_DS + 0.4 V) e^(−L/l_d).
+  definition: The fall of threshold voltage as channel length shrinks, because the source and drain help lower the channel barrier; in Hu's model ΔV_TH = (V_DS + 0.4 V) e^(−L/l_d).
   chapter: "09-10"
 - term: Drain-induced barrier lowering
   definition: The lowering of the source–channel barrier, and so of the threshold voltage, by the drain voltage in a short-channel MOSFET (DIBL), quoted in mV/V; it raises off-current exponentially.
@@ -3975,7 +3975,7 @@
   definition: The length l_d ∝ (T_oxe W_dep X_j)^(1/3) over which the drain's electrostatic influence on the channel barrier decays; acceptable DIBL requires a gate length several times l_d, so oxide, depletion depth and junction depth must shrink with L.
   chapter: "09-10"
 - term: Multi-threshold CMOS
-  definition: The practice of offering several threshold-voltage flavors on one chip, using high-V_t devices everywhere and low-V_t devices only on speed-critical paths, to trade leakage against speed.
+  definition: The practice of offering several threshold-voltage flavors on one chip, using high-V_TH devices everywhere and low-V_TH devices only on speed-critical paths, to trade leakage against speed.
   chapter: "09-10"
 - term: Steep-slope transistor
   definition: A proposed switch, such as a tunneling FET or negative-capacitance FET, designed to turn on more sharply than the 59.5 mV/decade Boltzmann limit at 300 K by changing how carriers are injected; not yet a mainstream logic technology.
@@ -3984,7 +3984,7 @@
   definition: Band-to-band tunneling current in the drain under the gate edge when the gate is low and the drain high (GIDL); it needs band bending beyond the gap and a surface field near 10⁶ V/cm, and grows steeply with drain-to-gate voltage and thinner oxides.
   chapter: "09-10"
 - term: Matching coefficient
-  definition: The constant A_Vt = σ(V_t)√(WL) (mV·µm) that describes how random threshold mismatch shrinks with device area; for random dopant fluctuation it follows from Poisson statistics of the depletion charge.
+  definition: The constant A_Vt = σ(V_TH)√(WL) (mV·µm) that describes how random threshold mismatch shrinks with device area; for random dopant fluctuation it follows from Poisson statistics of the depletion charge.
   chapter: "09-10"
 - term: CMOS
   definition: Complementary MOS, the logic family that pairs n-channel and p-channel MOSFETs so that in either steady state one device of each pair is off; it draws current mainly while switching.
@@ -3997,7 +3997,7 @@
   definition: The plot of a logic gate's static output voltage against its input voltage (VTC); its steep middle region and flat rails give noise margins and regeneration.
   chapter: "09-11"
 - term: Switching threshold
-  definition: The input voltage V_M at which a CMOS inverter's output equals its input; for square-law devices V_M = (V_tn√r + V_DD − |V_tp|)/(1 + √r) with r = k_n/k_p.
+  definition: The input voltage V_M at which a CMOS inverter's output equals its input; for square-law devices V_M = (V_TN√r + V_DD − |V_TP|)/(1 + √r) with r = k_n/k_p.
   chapter: "09-11"
 - term: Ring oscillator
   definition: An odd number of inverters connected in a loop, which oscillates with period 2Nτ_d; foundries use it to measure gate delay.

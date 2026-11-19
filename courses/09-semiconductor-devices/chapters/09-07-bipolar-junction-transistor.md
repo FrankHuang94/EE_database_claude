@@ -139,7 +139,7 @@ The emitter-injection term of $1/\beta_F$ rises by the same factor. Published na
 
 ### 3.5 Heterojunction bipolar transistors
 
-The gain formula contains $n_{iB}^2/n_{iE}^2$. Narrowing the *base* band gap raises $n_{iB}^2$ and the gain together. Silicon–germanium does this: Hu notes that $\text{Si}_{1-\eta}\text{Ge}_\eta$ with $\eta$ = 0.2 has a band gap about 0.1 eV smaller than silicon's [1], so
+The gain formula contains $n_{iB}^2/n_{iE}^2$. Narrowing the *base* band gap raises $n_{iB}^2$ and the gain together. Silicon–germanium does this: Hu notes that $\text{Si}_{1-y}\text{Ge}_y$ with Ge fraction $y$ = 0.2 has a band gap about 0.1 eV smaller than silicon's [1], so
 
 $$
 \frac{n_{iB}^2}{n_i^2} = e^{\Delta E_{gB}/kT} = e^{0.1/0.025852} = \mathbf{47.9} .
@@ -148,6 +148,8 @@ $$
 A transistor whose emitter and base are different semiconductors is a **heterojunction bipolar transistor (HBT)**. In practice, designers spend this gain on other parameters. They dope the base more heavily, which lowers base resistance (and so raises f_max, §3.9) and reduces base-width modulation (§3.6), while keeping a useful $\beta$. They also grade the germanium fraction, from about 0 at the emitter end to 0.2 at the collector end [1]. The conduction-band edge then slopes down across the base, a built-in **drift field** of $\Delta E_{gB}/(qW_B)$ that pushes electrons toward the collector and shortens the transit time (§3.8). III–V HBTs (InP emitter with InGaAs base, AlGaAs emitter with GaAs base) use the same principle [1].
 
 ### 3.6 Base-width modulation: the Early effect
+
+*Symbol note:* in this chapter $V_A$ is the **Early voltage**; in 09-06 the same letters meant the applied junction voltage. Junction voltages here are written $V_{BE}$ and $V_{BC}$.
 
 Raising $V_{CB}$ widens the base–collector depletion region, and part of the widening eats into the base, so the neutral base width $W_B$ shrinks. Since $I_C \propto 1/W_B$, the collector current rises with $V_{CE}$ even at fixed $V_{BE}$. Extrapolated backward, the output characteristics meet the voltage axis near a common point $-V_A$. The **Early voltage** $V_A$ defines the output resistance $r_o = V_A/I_C$ [1].
 
@@ -216,19 +218,19 @@ $$
 
 the same transit time as a short diode (09-06 §3.3). Hu's example: a 70 nm base with $D_B$ = 10 cm²/s gives **2.45** ps, which Hu rounds to 2.5 ps [1].
 
-**Drift-aided base.** A graded SiGe base adds a uniform field $\mathcal E = \Delta E_{gB}/(qW_B)$. In steady state the electron current is constant, $J = q\mu_nn\mathcal E + qD_B\,dn/dx$, with $n(W_B) = 0$. Writing $\eta = \Delta E_{gB}/kT$ for the field's strength in thermal units, the solution is
+**Drift-aided base.** A graded SiGe base adds a uniform field $\mathcal E = \Delta E_{gB}/(qW_B)$. Take $x$ from the emitter edge of the base toward the collector, and let $J$ and $\mathcal E$ be magnitudes, with the field pushing electrons toward the collector. In steady state the electron flux toward the collector is constant: drift down the field plus diffusion down the gradient, $J/q = \mu_nn\mathcal E - D_B\,dn/dx$, with $n(W_B) = 0$. Writing $\xi = \Delta E_{gB}/kT$ for the field's strength in thermal units, the solution is
 
 $$
-n(x) = \frac{JW_B}{qD_B\eta}\Big(1 - e^{-\eta(1 - x/W_B)}\Big) .
+n(x) = \frac{JW_B}{qD_B\xi}\Big(1 - e^{-\xi(1 - x/W_B)}\Big) .
 $$
 
-(Check: $D_B\,dn/dx = -(J/q)e^{-\eta(1 - x/W_B)}$, and $\mu_n\mathcal E = D_B\eta/W_B$ by the Einstein relation, so the drift and diffusion terms add to $J/q$.) Integrating for the charge and dividing by $J$:
+(Check: $\mu_n\mathcal E = D_B\xi/W_B$ by the Einstein relation, so the drift term is $\mu_nn\mathcal E = (J/q)(1 - e^{-\xi(1 - x/W_B)})$; and $-D_B\,dn/dx = +(J/q)e^{-\xi(1 - x/W_B)}$. They add to $J/q$ at every $x$.) Integrating for the charge and dividing by $J$:
 
 $$
-\tau_B = \frac{W_B^2}{D_B}\cdot\frac{1}{\eta}\Big[1 - \frac{1 - e^{-\eta}}{\eta}\Big] ,
+\tau_B = \frac{W_B^2}{D_B}\cdot\frac{1}{\xi}\Big[1 - \frac{1 - e^{-\xi}}{\xi}\Big] ,
 $$
 
-which tends to $W_B^2/2D_B$ as $\eta \to 0$ and to $W_B^2/(\eta D_B) = W_B/(\mu_n\mathcal E)$, pure drift, for large $\eta$. A 0.1 eV grading ($\eta$ = 3.87) cuts the base transit time by a factor of **2.59**. Hu reports drift transistors with base transit times "several times less than $W_B^2/2D_B$, as short as 1 ps" [1].
+which tends to $W_B^2/2D_B$ as $\xi \to 0$ and to $W_B^2/(\xi D_B) = W_B/(\mu_n\mathcal E)$, pure drift, for large $\xi$. A 0.1 eV grading ($\xi$ = 3.87) cuts the base transit time by a factor of **2.59**. Hu reports drift transistors with base transit times "several times less than $W_B^2/2D_B$, as short as 1 ps" [1].
 
 **Collector transit.** Electrons cross the base–collector depletion region of width $W_{dC}$ at roughly the saturation velocity $v_{\text{sat}}$ (09-03). The mobile charge in transit is $I_CW_{dC}/v_{\text{sat}}$, but only half of it appears as a change in the base's charge. (A charge at position $x$ in a region of width $W$ induces image charges on the two sides in the ratio $(W - x):x$, and averaging over a uniform distribution gives one half.) So the collector delay is
 
@@ -273,6 +275,14 @@ $$
 
 Low base resistance (a heavily doped base, which SiGe makes affordable, and narrow emitter stripes contacted from both sides) and low base–collector capacitance are therefore as important as transit time.
 
+> **Going deeper — where the $8\pi$ comes from.** Use the hybrid-π model with base resistance $r_b$ in series with the base and $C_{jC}$ from base to collector, at frequencies well above $f_T/\beta$, where $C_\pi$ shorts $r_\pi$. Three facts set the power gain. (1) The input is essentially $r_b$, so the input power is $|i_b|^2r_b$. (2) The current gain is $|i_c/i_b| \approx \omega_T/\omega$. (3) Seen from the collector, $C_{jC}$ feeds the output voltage back to the base node, where it is converted to current by $g_m$ through the divider $C_{jC}/(C_\pi + C_{jC})$; this acts as an output conductance $g_o \approx g_mC_{jC}/(C_\pi + C_{jC}) \approx \omega_TC_{jC}$. A conjugate-matched load then receives $|i_c|^2/4g_o$. The power gain is
+>
+> $$
+> G = \frac{|i_c|^2/4g_o}{|i_b|^2r_b} = \frac{(\omega_T/\omega)^2}{4\omega_TC_{jC}r_b} = \frac{\omega_T}{4\omega^2r_bC_{jC}} ,
+> $$
+>
+> falling 20 dB per decade. Setting $G = 1$ gives $\omega_{\max}^2 = \omega_T/(4r_bC_{jC})$, which with $\omega = 2\pi f$ is the formula above. This is an estimate (it ignores emitter resistance and the frequency dependence of $g_o$); its value is in showing which three parameters set $f_{\max}$.
+
 *Figure 4. Cutoff frequency against collector current for the worked-example transistor with a uniform and a graded SiGe base. $f_T$ rises as $g_m$ grows, levels off at $1/(2\pi\tau_F)$ and collapses above the Kirk-effect current; the collapse uses an illustrative base push-out of $W_{dC}(1 - J_K/J)$.*
 
 ![Cutoff frequency against collector current](../../../assets/figures/09-07/ft-vs-ic.svg)
@@ -297,7 +307,25 @@ $$
 t_{\text{on}} = \tau_F\beta_F\ln\frac{\beta_FI_B}{\beta_FI_B - I_{C,\text{sat}}} .
 $$
 
-Once saturated, the excess base drive keeps storing charge (both junctions now inject). At turn-off, that charge must be removed before the collector current can fall: a **storage delay** like the diode's. Overdriving the base speeds turn-on but lengthens the storage delay. Historically, logic families clamped the base–collector junction with a Schottky diode (09-06 §3.10) to keep transistors out of saturation.
+Once saturated, the excess base drive keeps storing charge (both junctions now inject). At turn-off, that charge must be removed before the collector current can fall: a **storage delay** like the diode's. Overdriving the base speeds turn-on but lengthens the storage delay at turn-off. Historically, logic families clamped the base–collector junction with a Schottky diode (09-06 §3.10) to keep transistors out of saturation.
+
+### 3.11 Two limits a designer meets: open-base breakdown and current crowding
+
+**Breakdown with the base open.** The collector–base junction alone breaks down at $BV_{CBO}$ by avalanche (09-06 §3.8). With the base *open* the transistor breaks down much earlier, because its own gain amplifies the avalanche. Let the junction multiply every carrier crossing it by $M$. With the base floating, $I_E = I_C$, and the collector current is the multiplied sum of the transported emitter current and the leakage: $I_C = M(\alpha_FI_C + I_{CBO})$, so
+
+$$
+I_C = \frac{MI_{CBO}}{1 - M\alpha_F} .
+$$
+
+The current runs away when $M\alpha_F = 1$, that is when $M = 1/\alpha_F \approx 1 + 1/\beta_F$: only a few percent of multiplication suffices, far below the infinite $M$ that defines $BV_{CBO}$. With the empirical form $M = 1/[1 - (V/BV_{CBO})^n]$ (Miller's fit, with $n$ between about 3 and 6 for silicon junctions; Sze and Ng, ch. 5), the condition $1 - (V/BV_{CBO})^n = 1 - \alpha_F = 1/(\beta_F + 1)$ gives
+
+$$
+BV_{CEO} = \frac{BV_{CBO}}{(\beta_F + 1)^{1/n}} \approx \frac{BV_{CBO}}{\beta_F^{1/n}} .
+$$
+
+For $\beta_F$ = 100 and $n$ = 4, $BV_{CEO}/BV_{CBO} = 101^{-1/4}$ = **0.315**, about a third. This is the rating on a transistor data sheet that matters in most circuits, and it is one more reason high-gain and high-voltage transistors pull against each other.
+
+**Emitter current crowding.** The base current flows sideways under the emitter to reach the base contact, and the base's sheet resistance makes the junction voltage fall along that path. Because collector current depends exponentially on $V_{BE}$, a drop of only $V_T$ (26 mV) cuts the local injection by $e$: the emitter's edges nearest the base contact carry most of the current and the center little. Wide emitters therefore waste area and suffer local high-injection effects at their edges. The cure is geometric: narrow emitter stripes, contacted by base on both sides, which also lowers $r_b$ for $f_{\max}$ (§3.9).
 
 ## 4. Worked examples
 
@@ -345,7 +373,7 @@ $$
 
 (e) $W_B^2/2L_B^2$ with $L_B^2 = D_B\tau_B = 32.26 \times 10^{-6}$ cm² gives $1/\beta_T$ = **6.20 × 10⁻⁴**, so the transport limit is $\beta$ = **1613**.
 
-**Sanity check.** Real silicon BJTs with 10²⁰ cm⁻³ emitters have gains around 100 (Hu's measured SiGe device shows about 90 [1]). The simple short-emitter model brackets this, and the large spread shows why the emitter Gummel number is measured. The SiGe trade in (d) is the standard one: a sixfold drop in base resistance for a still-healthy gain.
+**Sanity check.** Hu's measured SiGe device shows a gain of about 90 [1], which lies inside the range spanned by (b) to (d) for SiGe bases; the large spread between published narrowings shows why the emitter Gummel number is measured rather than computed. The SiGe trade in (d) is the standard one: a sixfold drop in base resistance for a still-healthy gain. (Part (d) ignores band-gap narrowing in the base itself, about 50 meV at 10¹⁹ cm⁻³ by Hu's table [1]; including it would raise $n_{iB}^2$ and the gain by $e^{0.050/0.025852}$ = **6.92**, more than recovering the loss, so the assumption makes (d) conservative.)
 
 ### Example 09-07.3 · The Early voltage (tier B)
 
@@ -389,7 +417,7 @@ $$
 
 (a) $\tau_B = W_B^2/2D_B = 10^{-10}/(2 \times 6.807)$ = **7.35** ps.
 
-(b) $\eta = 0.1/0.025852$ = **3.868**, and the bracket $[1 - (1 - e^{-\eta})/\eta]/\eta$ = **0.1931**. So $\tau_B = 0.1931\,W_B^2/D_B$ = **2.84** ps, **2.59** times faster. The field is 0.1 V/0.1 µm = **1.0 × 10⁴** V/cm.
+(b) $\xi = 0.1/0.025852$ = **3.868**, and the bracket $[1 - (1 - e^{-\xi})/\xi]/\xi$ = **0.1931**. So $\tau_B = 0.1931\,W_B^2/D_B$ = **2.84** ps, **2.59** times faster. The field is 0.1 V/0.1 µm = **1.0 × 10⁴** V/cm.
 
 (c) $v_{\text{sat}}$ = **1.07 × 10⁷** cm/s, so $\tau_C = 0.1844\ \mu\text{m}/(2v_{\text{sat}})$ = **0.861** ps.
 
@@ -460,6 +488,7 @@ $$
 | Ex 09-07.2o | 1/β_T, long base | 6.20e-4 | — |
 | Ex 09-07.2p | transport-limited β | 1613 | — |
 | Ex 09-07.2q | ratio of the two narrowing predictions | 13.6 | — |
+| Ex 09-07.2r | gain factor from 50 meV of base narrowing | 6.92 | — |
 | Ex 09-07.3a | V_bi base–collector | 0.8929 | V |
 | Ex 09-07.3b | depletion width at V_CB = 2 V | 0.2029 | µm |
 | Ex 09-07.3c | base side of the depletion width | 18.4 | nm |
@@ -477,7 +506,7 @@ $$
 | Ex 09-07.4e | V_BC in saturation | 0.8456 | V |
 | Ex 09-07.4f | argument of the logarithm | 7.222 | — |
 | Ex 09-07.5a | uniform-base transit time | 7.35 | ps |
-| Ex 09-07.5b | η for 0.1 eV grading | 3.868 | — |
+| Ex 09-07.5b | ξ for 0.1 eV grading | 3.868 | — |
 | Ex 09-07.5c | drift transit factor | 0.1931 | — |
 | Ex 09-07.5d | graded-base transit time | 2.84 | ps |
 | Ex 09-07.5e | speed-up from grading | 2.59 | — |
@@ -510,6 +539,7 @@ $$
 | T 09-07.e | intrinsic gain for V_A = 50 V | 1934 | — |
 | T 09-07.f | Hu's base transit time example | 2.45 | ps |
 | T 09-07.g | g_m at 1 mA | 38.7 | mS |
+| T 09-07.h | BV_CEO/BV_CBO for β_F = 100, n = 4 | 0.315 | — |
 
 *Every value is recomputed by [verify_09_07.py](../verify/verify_09_07.py) by an independent route: the collector current by solving the base's diffusion boundary-value problem numerically (finite differences, including recombination); gains from the numerically computed electron and hole currents; the Early voltage by numerically differentiating the collector current as the depletion edge moves; saturation by solving the Ebers–Moll equations with a root finder; transit times by integrating the numerically solved drift–diffusion profile; f_T from the hybrid-π current gain evaluated against frequency; and switching by integrating the charge-control equation.*
 
@@ -570,7 +600,7 @@ The lab, [labs/09-07-lab](../labs/09-07-lab/README.md), has a notebook and an ng
 ### State of the art (as of Nov 2026)
 
 - **SiGe HBT speed record.** IHP presented a "SiGe HBT with fT/fmax of 505 GHz/720 GHz" at IEDM 2016, concluding the EU DOTSEVEN project run with Infineon and twelve other partners [3] **[Established]**. No later SiGe record was found in this build's sources (open issue).
-- **Production and prototyping SiGe BiCMOS.** IHP's 0.13 µm processes, as listed by Europractice in February 2026: SG13S with "fT/fmax = 250/300 GHz"; SG13G2, described as "the fastest currently available SiGe HBT technology featuring peak fT/fmax values of 300 GHz/500 GHz"; and SG13G3Cu, "the highest performance HBT with up to 470GHz transit frequencies and up to 650 GHz maximum oscillation frequencies", offered for research and prototyping [4] **[Established]**. SG13G2 also has an open-source PDK [4].
+- **Production and prototyping SiGe BiCMOS.** IHP's 0.13 µm processes, as listed by Europractice in February 2026: SG13S with "fT/fmax = 250/300 GHz"; SG13G2, described as "the fastest currently available SiGe HBT technology featuring peak fT/fmax values of 300 GHz/500 GHz"; and SG13G3Cu, "the highest performance HBT with up to 470GHz transit frequencies and up to 650 GHz maximum oscillation frequencies", offered for research and prototyping [4]. The $f_T$/$f_{\max}$ figures are the published process values **[Established]**; "fastest currently available" is the provider's own description, not an independent ranking. SG13G2 also has an open-source PDK [4].
 - **Where BJTs win.** Hu: BJTs remain "preferred in some high-frequency and analog applications because of their high speed, low noise, and high output power advantages such as in some cell phone amplifier circuits", usually as a small number of BJTs integrated with CMOS (BiCMOS) [1] **[Established]**.
 - **Design data are measured.** Hu notes that small-signal parameters "are difficult to predict from theory with the accuracy required for commercial circuit design" and "are routinely determined through comprehensive measurement" [1] **[Established]**. The band-gap-narrowing disagreement in §3.4 shows why.
 
@@ -578,7 +608,7 @@ The lab, [labs/09-07-lab](../labs/09-07-lab/README.md), has a notebook and an ng
 
 - **RF and mmWave.** Radar, high-speed wireline and optical-link front ends need transistors with f_T and f_max several times the operating frequency; SiGe BiCMOS provides them on silicon wafers with CMOS logic alongside. **Deeper:** see companion repo *Datacenter Networking* for the optical and electrical link context.
 - **Precision analog.** Bandgap references and temperature sensors in nearly every SoC use bipolar (often parasitic) devices for their exact $V_T\ln$ behavior (09-06 §3.6; Course 20).
-- **Process economics.** BiCMOS adds mask steps and cost; the decision is whether bipolar performance (g_m per current, noise, f_max at relaxed lithography) is worth it against advanced-node CMOS, which also reaches hundreds of GHz.
+- **Process economics.** BiCMOS adds mask steps and cost; the decision is whether bipolar performance (g_m per current, noise, f_max at relaxed lithography) is worth the extra steps compared with an all-CMOS design at a more advanced node.
 
 ### Marketing vs Reality
 
@@ -673,7 +703,7 @@ It sets in when the mobile electron charge in the collector depletion region, $J
 
 <details><summary>Answer</summary>
 
-The base current must supply the stored charge $Q_F = I_C\tau_F$, but in steady state it only needs to replace charge lost at the rate $Q_F/(\tau_F\beta_F)$. A base current step therefore fills the "bucket" with time constant $\tau_F\beta_F$: $\beta_F$ times slower than the transit time, which is why overdriving the base speeds switching.
+The base current must supply the stored charge $Q_F = I_C\tau_F$, but in steady state it only needs to replace charge lost at the rate $Q_F/(\tau_F\beta_F)$. A base current step therefore fills the "bucket" with time constant $\tau_F\beta_F$: $\beta_F$ times slower than the transit time, which is why overdriving the base speeds turn-on (at the cost of a longer storage delay at turn-off, §3.10).
 
 </details>
 

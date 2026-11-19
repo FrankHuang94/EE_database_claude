@@ -106,21 +106,21 @@ A prefactor near one says Hu's simple form describes this technology well. At 25
 
 ### Solution 09-10.10
 
-Off-currents scale as $10^{-(V_t - 0.20)/S}$ and on-currents as $(0.7 - V_t)/0.5$:
+Off-currents scale as $10^{-(V_{TH} - 0.20)/S}$ and on-currents as $(0.7 - V_{TH})/0.5$:
 
-| Flavor | $V_t$ (V) | relative $I_{off}$ | relative $I_{on}$ |
+| Flavor | $V_{TH}$ (V) | relative $I_{off}$ | relative $I_{on}$ |
 |---|---|---|---|
 | Low | 0.20 | 1 | 1 |
 | Standard | 0.27 | **0.117** | **0.86** |
 | High | 0.34 | **0.0136** | **0.72** |
 
-Block leakage: 0.05 × 1 + 0.95 × 0.0136 = **0.0629** of the all-low-$V_t$ design, a sixteenfold saving, while the 5% of critical-path devices keep full speed.
+Block leakage: 0.05 × 1 + 0.95 × 0.0136 = **0.0629** of the all-low-$V_{TH}$ design, a sixteenfold saving, while the 5% of critical-path devices keep full speed.
 
 ### Solution 09-10.11
 
-(a) $V_{t,sat}$ = 0.30 − 0.060 × (0.75 − 0.05) = **0.258** V. DIBL raises the off-current by $10^{0.042/0.075}$ = **3.63**.
+(a) $V_{TH,sat}$ = 0.30 − 0.060 × (0.75 − 0.05) = **0.258** V. DIBL raises the off-current by $10^{0.042/0.075}$ = **3.63**.
 
-(b) $S$ = 75 × 358.15/300 = **89.5** mV/decade, and $V_{t,sat}$ = 0.258 − 0.8 × 10⁻³ × 58.15 = **0.2115** V.
+(b) $S$ = 75 × 358.15/300 = **89.5** mV/decade, and $V_{TH,sat}$ = 0.258 − 0.8 × 10⁻³ × 58.15 = **0.2115** V.
 
 (c) Relative to 300 K at $V_{DD}$: $10^{0.258/0.075 - 0.2115/0.0895}$ = **12.0**. Relative to the naive room-temperature linear-threshold estimate: $10^{0.30/0.075 - 0.2115/0.0895}$ = **43.5**.
 
@@ -148,12 +148,12 @@ Attack subthreshold leakage first, with threshold flavors and power gating, and 
 (a) $\phi_B = V_T\ln(N_A/n_i)$ = **0.4762** V. Then $W_{dep} = \sqrt{2\varepsilon_s(2\phi_B)/qN_A}$ = **35.1** nm and $\bar N = N_AWLW_{dep}$ = **56.2** dopants. With $C_{ox}$ = 2.302 µF/cm²,
 
 $$
-\sigma_{V_t} = \frac{q}{C_{ox}}\sqrt{\frac{N_AW_{dep}}{3WL}} = \mathbf{18.8}\text{ mV} .
+\sigma_{V_{TH}} = \frac{q}{C_{ox}}\sqrt{\frac{N_AW_{dep}}{3WL}} = \mathbf{18.8}\text{ mV} .
 $$
 
-(b) $A_{V_t}$ = 18.8 mV × 0.04 µm = **0.753** mV·µm.
+(b) $A_{V_{TH}}$ = 18.8 mV × 0.04 µm = **0.753** mV·µm.
 
-(c) $\sigma_{V_t}$ grows with doping (as roughly $N_A^{1/4}$, since $W_{dep}$ shrinks as $N_A^{-1/2}$). Root finding gives $N_A$ = **5.89 × 10¹⁸** cm⁻³, where $W_{dep}$ has shrunk to **15.1** nm and $\bar N$ = **143**.
+(c) $\sigma_{V_{TH}}$ grows with doping (as roughly $N_A^{1/4}$, since $W_{dep}$ shrinks as $N_A^{-1/2}$). Root finding gives $N_A$ = **5.89 × 10¹⁸** cm⁻³, where $W_{dep}$ has shrunk to **15.1** nm and $\bar N$ = **143**.
 
 The doping needed to suppress short-channel effects in a planar device of this size would bring 30 mV of random threshold spread with it.
 
@@ -234,7 +234,7 @@ $$
 | 09-10.11a | saturation threshold | 0.258 | V |
 | 09-10.11b | DIBL leakage factor | 3.63 | — |
 | 09-10.11c | S at 85 °C | 89.5 | mV/decade |
-| 09-10.11d | V_t,sat at 85 °C | 0.2115 | V |
+| 09-10.11d | V_TH,sat at 85 °C | 0.2115 | V |
 | 09-10.11e | hot vs room at V_DD | 12.0 | — |
 | 09-10.11f | hot vs naive estimate | 43.5 | — |
 | 09-10.12a | max V_DG, 1.5 nm | 1.345 | V |
@@ -250,7 +250,7 @@ $$
 | 09-10.14a | φ_B | 0.4762 | V |
 | 09-10.14b | W_dep | 35.1 | nm |
 | 09-10.14c | mean dopant count | 56.2 | — |
-| 09-10.14d | σ(V_t) | 18.8 | mV |
+| 09-10.14d | σ(V_TH) | 18.8 | mV |
 | 09-10.14e | A_Vt | 0.753 | mV·µm |
 | 09-10.14f | doping for 30 mV | 5.89e18 | cm⁻³ |
 | 09-10.14g | dopant count there | 143 | — |

@@ -3,7 +3,7 @@
 
 Run from anywhere:  python assets/figures/src/fig_09_11.py
 Outputs to assets/figures/09-11/:
-- cmos-inverter-vtc.svg: square-law inverter transfer curves at V_DD = 1.0 V, V_tn = |V_tp| = 0.3 V,
+- cmos-inverter-vtc.svg: square-law inverter transfer curves at V_DD = 1.0 V, V_TN = |V_TP| = 0.3 V,
   mu_n/mu_p = 2, for W_p = W_n and W_p = 2 W_n, with the V_out = V_in line;
 - scaling-power-density.svg: relative power density over five 0.7x nodes for constant-field scaling,
   constant voltage at fixed frequency and constant voltage with frequency rising as 1/delay;
@@ -57,7 +57,7 @@ for i, (r, lab) in enumerate(((2.0, "$W_p = W_n$ ($k_n/k_p$ = 2)"), (1.0, "$W_p 
 ax.plot([0, 1], [0, 1], color="k", ls=":", lw=0.8)
 ax.set_xlabel("$V_{in}$ (V)")
 ax.set_ylabel("$V_{out}$ (V)")
-ax.set_title("CMOS inverter, $V_{DD}$ = 1.0 V, $V_t$ = 0.3 V, $\\mu_n/\\mu_p$ = 2", fontsize=9)
+ax.set_title("CMOS inverter, $V_{DD}$ = 1.0 V, $V_{TH}$ = 0.3 V, $\\mu_n/\\mu_p$ = 2", fontsize=9)
 ax.legend(fontsize=8, loc="lower left")
 fig.tight_layout()
 save(fig, f"{OUT}/cmos-inverter-vtc.svg")

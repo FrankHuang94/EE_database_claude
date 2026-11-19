@@ -835,8 +835,8 @@ z
     </g>
    </g>
    <g id="text_17">
-    <!-- CMOS inverter, $V_{DD}$ = 1.0 V, $V_t$ = 0.3 V, $\mu_n/\mu_p$ = 2 -->
-    <g transform="translate(98.940543 15.91875) scale(0.09 -0.09)">
+    <!-- CMOS inverter, $V_{DD}$ = 1.0 V, $V_{TH}$ = 0.3 V, $\mu_n/\mu_p$ = 2 -->
+    <g transform="translate(95.880543 15.91875) scale(0.09 -0.09)">
      <defs>
       <path id="Inter-Regular-49" d="M 2447 -63 
 C 3400 -63 4163 519 4325 1466 
@@ -1023,6 +1023,32 @@ Q 3206 4147 2406 4147
 L 1613 4147 
 z
 " transform="scale(0.015625)"/>
+      <path id="DejaVuSans-Oblique-37" d="M 378 4666 
+L 4325 4666 
+L 4225 4134 
+L 2559 4134 
+L 1759 0 
+L 1125 0 
+L 1925 4134 
+L 275 4134 
+L 378 4666 
+z
+" transform="scale(0.015625)"/>
+      <path id="DejaVuSans-Oblique-2b" d="M 1081 4666 
+L 1716 4666 
+L 1344 2753 
+L 3634 2753 
+L 4006 4666 
+L 4641 4666 
+L 3731 0 
+L 3097 0 
+L 3531 2222 
+L 1241 2222 
+L 806 0 
+L 172 0 
+L 1081 4666 
+z
+" transform="scale(0.015625)"/>
       <path id="Inter-Regular-543" d="M 1984 -63 
 C 2897 -63 3572 503 3572 1266 
 C 3572 1853 3225 2284 2631 2381 
@@ -1145,26 +1171,27 @@ z
      <use xlink:href="#Inter-Regular-5df" transform="translate(1284.21875 0.859375)"/>
      <use xlink:href="#Inter-Regular-6eb" transform="translate(1313.027344 0.859375)"/>
      <use xlink:href="#DejaVuSans-Oblique-39" transform="translate(1341.152344 0.859375)"/>
-     <use xlink:href="#DejaVuSans-Oblique-57" transform="translate(1409.560547 -14.140576) scale(0.7)"/>
-     <use xlink:href="#Inter-Regular-6eb" transform="translate(1439.741211 0.859375)"/>
-     <use xlink:href="#Inter-Regular-5f2" transform="translate(1467.866211 0.859375)"/>
-     <use xlink:href="#Inter-Regular-6eb" transform="translate(1534.02832 0.859375)"/>
-     <use xlink:href="#Inter-Regular-53f" transform="translate(1562.15332 0.859375)"/>
-     <use xlink:href="#Inter-Regular-5e0" transform="translate(1625.239258 0.859375)"/>
-     <use xlink:href="#Inter-Regular-543" transform="translate(1654.047852 0.859375)"/>
-     <use xlink:href="#Inter-Regular-6eb" transform="translate(1715.81543 0.859375)"/>
-     <use xlink:href="#Inter-Regular-1c9" transform="translate(1743.94043 0.859375)"/>
-     <use xlink:href="#Inter-Regular-5df" transform="translate(1812.93457 0.859375)"/>
-     <use xlink:href="#Inter-Regular-6eb" transform="translate(1841.743164 0.859375)"/>
-     <use xlink:href="#DejaVuSans-Oblique-350" transform="translate(1869.868164 0.859375)"/>
-     <use xlink:href="#DejaVuSans-Oblique-51" transform="translate(1933.491211 -14.140576) scale(0.7)"/>
-     <use xlink:href="#DejaVuSans-12" transform="translate(1980.59082 0.859375)"/>
-     <use xlink:href="#DejaVuSans-Oblique-350" transform="translate(2014.282227 0.859375)"/>
-     <use xlink:href="#DejaVuSans-Oblique-53" transform="translate(2077.905273 -14.140576) scale(0.7)"/>
-     <use xlink:href="#Inter-Regular-6eb" transform="translate(2125.073242 0.859375)"/>
-     <use xlink:href="#Inter-Regular-5f2" transform="translate(2153.198242 0.859375)"/>
-     <use xlink:href="#Inter-Regular-6eb" transform="translate(2219.360352 0.859375)"/>
-     <use xlink:href="#Inter-Regular-541" transform="translate(2247.485352 0.859375)"/>
+     <use xlink:href="#DejaVuSans-Oblique-37" transform="translate(1409.560547 -14.140576) scale(0.7)"/>
+     <use xlink:href="#DejaVuSans-Oblique-2b" transform="translate(1452.319336 -14.140576) scale(0.7)"/>
+     <use xlink:href="#Inter-Regular-6eb" transform="translate(1507.69043 0.859375)"/>
+     <use xlink:href="#Inter-Regular-5f2" transform="translate(1535.81543 0.859375)"/>
+     <use xlink:href="#Inter-Regular-6eb" transform="translate(1601.977539 0.859375)"/>
+     <use xlink:href="#Inter-Regular-53f" transform="translate(1630.102539 0.859375)"/>
+     <use xlink:href="#Inter-Regular-5e0" transform="translate(1693.188477 0.859375)"/>
+     <use xlink:href="#Inter-Regular-543" transform="translate(1721.99707 0.859375)"/>
+     <use xlink:href="#Inter-Regular-6eb" transform="translate(1783.764648 0.859375)"/>
+     <use xlink:href="#Inter-Regular-1c9" transform="translate(1811.889648 0.859375)"/>
+     <use xlink:href="#Inter-Regular-5df" transform="translate(1880.883789 0.859375)"/>
+     <use xlink:href="#Inter-Regular-6eb" transform="translate(1909.692383 0.859375)"/>
+     <use xlink:href="#DejaVuSans-Oblique-350" transform="translate(1937.817383 0.859375)"/>
+     <use xlink:href="#DejaVuSans-Oblique-51" transform="translate(2001.44043 -14.140576) scale(0.7)"/>
+     <use xlink:href="#DejaVuSans-12" transform="translate(2048.540039 0.859375)"/>
+     <use xlink:href="#DejaVuSans-Oblique-350" transform="translate(2082.231445 0.859375)"/>
+     <use xlink:href="#DejaVuSans-Oblique-53" transform="translate(2145.854492 -14.140576) scale(0.7)"/>
+     <use xlink:href="#Inter-Regular-6eb" transform="translate(2193.022461 0.859375)"/>
+     <use xlink:href="#Inter-Regular-5f2" transform="translate(2221.147461 0.859375)"/>
+     <use xlink:href="#Inter-Regular-6eb" transform="translate(2287.30957 0.859375)"/>
+     <use xlink:href="#Inter-Regular-541" transform="translate(2315.43457 0.859375)"/>
     </g>
    </g>
    <g id="legend_1">

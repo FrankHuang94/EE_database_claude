@@ -15,7 +15,7 @@ Problems: [09-09 problems](../problems/09-09-problems.md) · Chapter: [09-09](..
 
 With $K = \mu_nC_{ox}W/L$ = 1.0 mA/V²:
 
-(a) $V_{GS} < V_t$: cutoff, $I_D$ ≈ 0 (only subthreshold leakage).
+(a) $V_{GS} < V_{TH}$: cutoff, $I_D$ ≈ 0 (only subthreshold leakage).
 
 (b) $V_{DS}$ = 0.2 V < $V_{ov}$ = 1.0 V: linear region, $I_D = K(V_{ov}V_{DS} - V_{DS}^2/2)$ = **0.180** mA.
 
@@ -57,7 +57,7 @@ The shift grows sublinearly, as the square root predicts.
 
 ### Solution 09-09.7
 
-$W = 2mLI_D/(\mu C_{ox}V_{ov}^2)$ = **7.16** µm. The average field at saturation is $(0.8/1.246)/0.5\text{ µm}$ = **1.28 × 10⁴** V/cm, a factor of **4.94** below $\mathcal E_{sat}$. That is marginal: velocity saturation already trims the current noticeably (09-10 quantifies this). At 0.5 µm and this overdrive, the device is entering the short-channel regime.
+$W = 2mLI_D/(\mu C_{ox}V_{ov}^2)$ = **7.16** µm. The average field at saturation is $(0.8/1.246)/0.5\text{ µm}$ = **1.28 × 10⁴** V/cm, a factor of **3.96** below $\mathcal E_{sat}$ = 5.08 × 10⁴ V/cm. That is marginal: velocity saturation already trims the current noticeably (09-10 quantifies this). At 0.5 µm and this overdrive, the device is entering the short-channel regime.
 
 ### Solution 09-09.8
 
@@ -96,14 +96,14 @@ The $1/L^2$ scaling is the long-channel promise. Velocity saturation (09-10) wea
 At 358.15 K:
 
 - $S = 1.3 \times (k \times 358.15/q) \times \ln10$ = **92.4** mV/decade;
-- $V_t = 0.3 - 0.058$ = **0.2419** V;
+- $V_{TH} = 0.3 - 0.058$ = **0.2419** V;
 - $I_{off} = 1\text{ µA} \times 10^{-0.2419/0.0924}$ = **2.41 × 10⁻⁹** A, against **1.33 × 10⁻¹⁰** A at 300 K.
 
 The ratio is **18.1**. Junction leakage (09-06), which this estimate omits, rises even faster with temperature. Leakage at the hot corner, not at room temperature, sets battery and thermal budgets.
 
 ### Solution 09-09.13
 
-$C_{gs} = \tfrac23WLC_{ox} + C_{ov}$ = 57.55 + 2 = **59.55** fF. The Miller effect multiplies the 2 fF gate–drain overlap by $1 - A_v$ = 11, adding **22.0** fF, so $C_{in}$ = **81.55** fF. Even a small $C_{gd}$ dominates the input once the gain is large (Course 12).
+$C_{gs} = \tfrac23WLC_{ox} + C_{ov}$ = 57.55 + 2 = **59.55** fF. The Miller effect multiplies the 2 fF gate–drain overlap by $1 - A_v$ = 11, adding **22.0** fF, so $C_{in}$ = **81.55** fF. (Why $1 - A_v$: when the gate moves by $v_g$, the drain moves by $A_vv_g$, so the voltage across $C_{gd}$ changes by $(1 - A_v)v_g$ and the gate must supply charge $C_{gd}(1 - A_v)v_g$, as if a capacitor $(1 - A_v)C_{gd}$ hung from the gate to ground.) Even a small $C_{gd}$ dominates the input once the gain is large (Course 12).
 
 ### Solution 09-09.14
 
@@ -158,7 +158,7 @@ Low overdrive buys gain and efficiency ($g_m/I_D$ = **10.0** V⁻¹) at the cost
 | 09-09.6h | current ratio, constant mobility | 10.38 | — |
 | 09-09.7a | width for 1 mA | 7.16 | µm |
 | 09-09.7b | average field | 1.28e4 | V/cm |
-| 09-09.7c | margin to E_sat | 4.94 | — |
+| 09-09.7c | margin to E_sat | 3.96 | — |
 | 09-09.8a | ΔL | 36.0 | nm |
 | 09-09.8b | fraction at 0.5 µm | 7.19 | % |
 | 09-09.8c | fraction at 1 µm | 3.60 | % |
@@ -173,10 +173,10 @@ Low overdrive buys gain and efficiency ($g_m/I_D$ = **10.0** V⁻¹) at the cost
 | 09-09.10c | f_T at 0.5 µm | 11.94 | GHz |
 | 09-09.11a | S, m = 1.1 | 65.5 | mV/decade |
 | 09-09.11b | S, m = 1.3 | 77.4 | mV/decade |
-| 09-09.11c | I_off at V_t 0.3 V | 1.33e-10 | A |
+| 09-09.11c | I_off at V_TH 0.3 V | 1.33e-10 | A |
 | 09-09.11d | leakage reduction for 0.45 V | 86.8 | — |
 | 09-09.12a | S at 85 °C | 92.4 | mV/decade |
-| 09-09.12b | V_t at 85 °C | 0.2419 | V |
+| 09-09.12b | V_TH at 85 °C | 0.2419 | V |
 | 09-09.12c | I_off at 85 °C | 2.41e-9 | A |
 | 09-09.12d | leakage ratio | 18.1 | — |
 | 09-09.13a | C_gs | 59.55 | fF |

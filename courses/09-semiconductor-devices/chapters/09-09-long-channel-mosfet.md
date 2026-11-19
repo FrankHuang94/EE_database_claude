@@ -41,17 +41,17 @@ Add an n⁺ source and drain to the MOS capacitor of 09-08, one on each side of 
 
 ## 3. Theory
 
-We analyze an n-channel MOSFET: p-type body with acceptor density $N_A$, n⁺ source and drain, gate dielectric with capacitance $C_{ox}$ per area (strictly the electrical $C_{oxe}$ of 09-08 §3.9), channel length $L$ and width $W$. Voltages are referenced to the source: $V_{GS}$, $V_{DS}$ and the source-to-body voltage $V_{SB}$. $V_t$ is the threshold at $V_{SB} = 0$ (09-08) and $V_{ov} = V_{GS} - V_t$ is the **overdrive**. $x$ runs from source ($x = 0$) to drain ($x = L$), and $V_c(x)$ is the channel potential relative to the source.
+We analyze an n-channel MOSFET: p-type body with acceptor density $N_A$, n⁺ source and drain, gate dielectric with capacitance $C_{ox}$ per area (strictly the electrical $C_{oxe}$ of 09-08 §3.9), channel length $L$ and width $W$. Voltages are referenced to the source: $V_{GS}$, $V_{DS}$ and the source-to-body voltage $V_{SB}$. $V_{TH}$ is the threshold at $V_{SB} = 0$ (09-08) and $V_{ov} = V_{GS} - V_{TH}$ is the **overdrive**. $x$ runs from source ($x = 0$) to drain ($x = L$), and $V_c(x)$ is the channel potential relative to the source.
 
 ### 3.1 The body effect
 
 Reverse-biasing the source–body junction by $V_{SB}$ separates the quasi-Fermi levels by $qV_{SB}$ (09-04), so the surface must bend by $2\phi_B + V_{SB}$ before electrons appear [1]. In the threshold formula of 09-08, $2\phi_B$ becomes $2\phi_B + V_{SB}$ in the depletion-charge term:
 
 $$
-V_t(V_{SB}) = V_t + \gamma\Big(\sqrt{2\phi_B + V_{SB}} - \sqrt{2\phi_B}\Big), \qquad \gamma = \frac{\sqrt{2qN_A\varepsilon_s}}{C_{ox}} ,
+V_{TH}(V_{SB}) = V_{TH} + \gamma\Big(\sqrt{2\phi_B + V_{SB}} - \sqrt{2\phi_B}\Big), \qquad \gamma = \frac{\sqrt{2qN_A\varepsilon_s}}{C_{ox}} ,
 $$
 
-where $\gamma$ is the **body-effect parameter**, in V^1/2 [1]. Linearizing about $V_{SB} = 0$ gives $V_t + \alpha V_{SB}$ with
+where $\gamma$ is the **body-effect parameter**, in V^1/2 [1]. Linearizing about $V_{SB} = 0$ gives $V_{TH} + \alpha V_{SB}$ with
 
 $$
 \alpha = \frac{\gamma}{2\sqrt{2\phi_B}} = \frac{\varepsilon_s/W_{d\max}}{C_{ox}} = \frac{C_{dep}}{C_{ox}} = \frac{3T_{ox}}{W_{d\max}} .
@@ -64,7 +64,7 @@ The body acts as a weak second gate, coupled to the channel through the depletio
 Along the channel, the potential $V_c(x)$ rises from 0 at the source to $V_{DS}$ at the drain. At each point the local gate-to-channel voltage is $V_{GS} - V_c$, and the local source-to-body bias is $V_{SB} + V_c$. If the channel potential varies slowly compared with the vertical field (the **gradual-channel approximation**, valid for long channels), each slice of channel behaves like a MOS capacitor with its own bias. Using the linearized body effect, the local inversion charge is [1]
 
 $$
-Q_{inv}(x) = -C_{ox}\big(V_{GS} - V_t - mV_c(x)\big), \qquad m = 1 + \frac{C_{dep}}{C_{ox}} = 1 + \frac{3T_{ox}}{W_{d\max}} .
+Q_{inv}(x) = -C_{ox}\big(V_{GS} - V_{TH} - mV_c(x)\big), \qquad m = 1 + \frac{C_{dep}}{C_{ox}} = 1 + \frac{3T_{ox}}{W_{d\max}} .
 $$
 
 The **bulk-charge factor** $m$ (typically about 1.2 [1]) captures that raising the channel potential reduces the inversion charge both through the oxide (the 1) and by deepening the depletion region (the $C_{dep}/C_{ox}$).
@@ -72,18 +72,18 @@ The **bulk-charge factor** $m$ (typically about 1.2 [1]) captures that raising t
 **The current.** Electrons drift along the channel, $v = \mu_n\,dV_c/dx$, so the current is the charge per length times velocity:
 
 $$
-I_D = -W\,Q_{inv}(x)\,\mu_n\frac{dV_c}{dx} = W\mu_nC_{ox}\big(V_{GS} - V_t - mV_c\big)\frac{dV_c}{dx} .
+I_D = -W\,Q_{inv}(x)\,\mu_n\frac{dV_c}{dx} = W\mu_nC_{ox}\big(V_{GS} - V_{TH} - mV_c\big)\frac{dV_c}{dx} .
 $$
 
 **Integrate along the channel.** The current is the same at every $x$ (no carriers are created or lost), so multiply by $dx$ and integrate from source to drain:
 
 $$
-\int_0^LI_D\,dx = W\mu_nC_{ox}\int_0^{V_{DS}}\big(V_{GS} - V_t - mV_c\big)\,dV_c
+\int_0^LI_D\,dx = W\mu_nC_{ox}\int_0^{V_{DS}}\big(V_{GS} - V_{TH} - mV_c\big)\,dV_c
 \quad\Longrightarrow\quad
-I_D = \frac{W}{L}\,\mu_nC_{ox}\Big(V_{GS} - V_t - \frac m2V_{DS}\Big)V_{DS} .
+I_D = \frac{W}{L}\,\mu_nC_{ox}\Big(V_{GS} - V_{TH} - \frac m2V_{DS}\Big)V_{DS} .
 $$
 
-This is the **linear-region** (triode) current. For small $V_{DS}$ the transistor is a resistor, $R_{on} = L/[W\mu_nC_{ox}(V_{GS} - V_t)]$.
+This is the **linear-region** (triode) current. For small $V_{DS}$ the transistor is a resistor, $R_{on} = L/[W\mu_nC_{ox}(V_{GS} - V_{TH})]$.
 
 **Units check.** $(W/L)\,\mu C\,V^2$: cm²/V·s × F/cm² × V² = F·V/s = C/s = A. ✓
 
@@ -92,11 +92,11 @@ This is the **linear-region** (triode) current. For small $V_{DS}$ the transisto
 The linear-region current is a downward parabola in $V_{DS}$. It peaks where $dI_D/dV_{DS} = 0$:
 
 $$
-V_{Dsat} = \frac{V_{GS} - V_t}{m}, \qquad
-I_{Dsat} = \frac{W}{2mL}\,\mu_nC_{ox}\big(V_{GS} - V_t\big)^2 .
+V_{Dsat} = \frac{V_{GS} - V_{TH}}{m}, \qquad
+I_{Dsat} = \frac{W}{2mL}\,\mu_nC_{ox}\big(V_{GS} - V_{TH}\big)^2 .
 $$
 
-At $V_{DS} = V_{Dsat}$ the inversion charge at the drain end, $-C_{ox}(V_{GS} - V_t - mV_{Dsat})$, is exactly zero: the channel is **pinched off** [1]. Beyond that, the extra drain voltage drops across a short, high-field, depleted region next to the drain. Electrons arriving at the pinch-off point are swept across it, just as minority carriers are swept across a reverse-biased junction (09-06). The channel itself, and so the current, stays as it was at $V_{Dsat}$. With $m = 1$ this is the familiar **square law**, $I_{Dsat} = (W/2L)\mu_nC_{ox}V_{ov}^2$, which overestimates the current by the factor $m$.
+At $V_{DS} = V_{Dsat}$ the inversion charge at the drain end, $-C_{ox}(V_{GS} - V_{TH} - mV_{Dsat})$, is exactly zero: the channel is **pinched off** [1]. Beyond that, the extra drain voltage drops across a short, high-field, depleted region next to the drain. Electrons arriving at the pinch-off point are swept across it, just as minority carriers are swept across a reverse-biased junction (09-06). The channel itself, and so the current, stays as it was at $V_{Dsat}$. With $m = 1$ this is the familiar **square law**, $I_{Dsat} = (W/2L)\mu_nC_{ox}V_{ov}^2$, which overestimates the current by the factor $m$.
 
 **When is a channel "long"?** The model assumes the electron velocity is proportional to the field. The average field in saturation is about $V_{Dsat}/L$. Velocity saturation (09-03) sets in near $\mathcal E_{sat} \approx 2v_{sat}/\mu_n$. When $V_{Dsat}/L$ is well below $\mathcal E_{sat}$, roughly for channels longer than a micrometer at volt-level overdrives, the square law holds; 09-10 handles shorter channels.
 
@@ -104,7 +104,7 @@ At $V_{DS} = V_{Dsat}$ the inversion charge at the drain end, $-C_{ox}(V_{GS} - 
 
 ### 3.4 Surface mobility
 
-The mobility in the channel is not the bulk mobility of 09-03. Carriers squeezed against the oxide by the vertical field scatter from interface roughness and from phonons, and the result depends mainly on the average vertical field in the inversion layer, the **effective field**. Hu shows that for n-channel devices with an n⁺ poly gate the effective field is approximately $(V_{GS} + V_t + 0.2\text{ V})/6T_{oxe}$, and that all silicon MOSFETs then follow one **universal mobility** curve, which he fits with [1]
+The mobility in the channel is not the bulk mobility of 09-03. Carriers squeezed against the oxide by the vertical field scatter from interface roughness and from phonons, and the result depends mainly on the average vertical field in the inversion layer, the **effective field**. Hu shows that for n-channel devices with an n⁺ poly gate the effective field is approximately $(V_{GS} + V_{TH} + 0.2\text{ V})/6T_{oxe}$, and that all silicon MOSFETs then follow one **universal mobility** curve, which he fits with [1]
 
 $$
 \mu_{ns} = \frac{540\text{ cm}^2/\text{V·s}}{1 + \big(\mathcal E_{\text{eff}}/0.9\text{ MV/cm}\big)^{1.85}} .
@@ -133,7 +133,13 @@ In saturation, linearizing $I_{Dsat}$ gives:
   The **transconductance efficiency** $g_m/I_D = 2/V_{ov}$ is 2.5 V⁻¹ at 0.8 V of overdrive, against $1/V_T$ = 38.7 V⁻¹ for a bipolar transistor (09-07). A MOSFET approaches bipolar-like efficiency only at small overdrive, in weak inversion (§3.7). Analog designers trade $g_m/I_D$ against speed and area with exactly this relation.
 
 - **Body transconductance** $g_{mb} = \partial I_D/\partial V_{BS} = (m - 1)g_m$: the body acts as a back gate.
-- **Gate capacitance.** In saturation, the channel charge is $-\tfrac23WLC_{ox}V_{ov}$ (integrating the linearly vanishing charge profile), so $C_{gs} = \tfrac23WLC_{ox}$ and $C_{gd} \approx 0$ apart from overlap.
+- **Gate capacitance.** In saturation the channel charge is $Q = \int_0^LWQ_{inv}\,dx$ with $Q_{inv} = -C_{ox}(V_{ov} - mV_c)$. The charge is linear in the channel potential $V_c$, not in $x$, so change variables using current continuity, $dx = W\mu C_{ox}(V_{ov} - mV_c)\,dV_c/I_D$, with $V_c$ running from 0 to $V_{ov}/m$:
+
+  $$
+  Q = -\frac{W^2\mu C_{ox}^2}{I_D}\int_0^{V_{ov}/m}(V_{ov} - mV_c)^2\,dV_c = -\frac{W^2\mu C_{ox}^2V_{ov}^3}{3mI_D} = -\frac23WLC_{ox}V_{ov} ,
+  $$
+
+  using $I_D = (W/2mL)\mu C_{ox}V_{ov}^2$ in the last step. (The charge falls as $\sqrt{1 - x/L}$ along the channel, which is why the factor is ⅔ rather than the ½ a linear fall would give; $m$ cancels.) So $C_{gs} = \tfrac23WLC_{ox}$ and $C_{gd} \approx 0$ apart from overlap.
 - **Cutoff frequency.** Current gain falls to unity at
   $$
   f_T = \frac{g_m}{2\pi C_{gs}} = \frac{3\mu_nV_{ov}}{4\pi mL^2} .
@@ -160,10 +166,16 @@ $$
 S = mV_T\ln10 = m \times 59.5\text{ mV}
 $$
 
-of gate voltage at 300 K, the **subthreshold swing** [3]. With $m \ge 1$, no MOSFET can turn on more steeply than 59.5 mV/decade at room temperature, the "Boltzmann limit" that 09-10 discusses. Carrying the constant through (integrating the diffusion current with the depletion charge's dependence on $\phi_s$) gives the standard result
+of gate voltage at 300 K, the **subthreshold swing** [3]. With $m \ge 1$, no MOSFET can turn on more steeply than 59.5 mV/decade at room temperature, the "Boltzmann limit" that 09-10 discusses. To carry the constant through, follow three steps.
+
+1. *Charge.* Near the surface the potential falls roughly linearly, $\phi(x) \approx \phi_s - \mathcal E_sx$, with $\mathcal E_s = \sqrt{2qN_A\phi_s/\varepsilon_s}$ the depletion field at the surface. The electron density $n = (n_i^2/N_A)e^{\phi/V_T}$ therefore decays over a thickness $V_T/\mathcal E_s$, so the inversion charge is $|Q_{inv}| = q(n_i^2/N_A)e^{\phi_s/V_T}\,V_T/\mathcal E_s = C_{dep}V_T(n_i/N_A)^2e^{\phi_s/V_T}$, where $C_{dep} = \sqrt{q\varepsilon_sN_A/2\phi_s} = \varepsilon_s/W_{dep}$.
+2. *Current.* In weak inversion the channel field is tiny and the current is diffusion, $I_D = W\mu V_T\,[Q_{inv}(0) - Q_{inv}(L)]/L$ (09-03 §3.8). The drain lowers the electron density at its end by $e^{-V_{DS}/V_T}$, so $I_D = (W/L)\mu V_T|Q_{inv}(0)|(1 - e^{-V_{DS}/V_T})$.
+3. *Gate voltage.* Near threshold $dV_{GS}/d\phi_s = m$, so $\phi_s = 2\phi_B + (V_{GS} - V_{TH})/m$. Since $(n_i/N_A)^2e^{2\phi_B/V_T} = 1$, step 1 becomes $|Q_{inv}| = C_{dep}V_Te^{(V_{GS} - V_{TH})/mV_T}$, and $C_{dep} = (m - 1)C_{ox}$.
+
+Combining the three gives the standard result
 
 $$
-I_D = \frac WL\,\mu_nC_{ox}(m - 1)V_T^2\,e^{(V_{GS} - V_t)/mV_T}\big(1 - e^{-V_{DS}/V_T}\big) ,
+I_D = \frac WL\,\mu_nC_{ox}(m - 1)V_T^2\,e^{(V_{GS} - V_{TH})/mV_T}\big(1 - e^{-V_{DS}/V_T}\big) ,
 $$
 
 which saturates once $V_{DS}$ exceeds a few $V_T$.
@@ -171,14 +183,14 @@ which saturates once $V_{DS}$ exceeds a few $V_T$.
 **Off-current and the practical threshold.** Industry defines threshold by a current: Hu's common definition is the $V_{GS}$ at which $I_D = 100\text{ nA} \times W/L$ (some companies use 200 nA) [3]. Below it,
 
 $$
-I_{off} = I_D(V_{GS} = 0) = 100\text{ nA}\cdot\frac WL\cdot10^{-V_t/S} .
+I_{off} = I_D(V_{GS} = 0) = 100\text{ nA}\cdot\frac WL\cdot10^{-V_{TH}/S} .
 $$
 
 Every 60–80 mV of threshold reduction buys speed (more overdrive) at the cost of ten times more leakage. This trade-off between on-current and off-current is the central constraint of CMOS scaling (09-11) [3].
 
 ## 4. Worked examples
 
-The transistor for all examples is an n-channel MOSFET with $W$ = 10 µm, $L$ = 1 µm, $T_{ox}$ = 4 nm (SiO₂-equivalent, $C_{ox}$ = 863.3 nF/cm²), body doping $N_A$ = 5 × 10¹⁷ cm⁻³, and a gate work function chosen so that $V_t$ = 0.4 V at $V_{SB}$ = 0. Bias: $V_{GS}$ = 1.2 V, 300 K, $n_i$ = 10¹⁰ cm⁻³.
+The transistor for all examples is an n-channel MOSFET with $W$ = 10 µm, $L$ = 1 µm, $T_{ox}$ = 4 nm (SiO₂-equivalent, $C_{ox}$ = 863.3 nF/cm²), body doping $N_A$ = 5 × 10¹⁷ cm⁻³, and a gate work function chosen so that $V_{TH}$ = 0.4 V at $V_{SB}$ = 0. Bias: $V_{GS}$ = 1.2 V, 300 K, $n_i$ = 10¹⁰ cm⁻³.
 
 ### Example 09-09.1 · Device parameters and on-resistance (tier A)
 
@@ -201,7 +213,7 @@ The transistor for all examples is an n-channel MOSFET with $W$ = 10 µm, $L$ = 
 
 ### Example 09-09.2 · Saturation and the long-channel check (tier A)
 
-**Setup.** (a) Find $V_{Dsat}$ and $I_{Dsat}$, and compare with the square law ($m$ = 1). (b) Find $I_D$ at $V_{DS}$ = 0.3 V. (c) Compare the average channel field at saturation with the velocity-saturation field $2v_{sat}/\mu_{ns}$ ($v_{sat}$ = 10⁷ cm/s).
+**Setup.** (a) Find $V_{Dsat}$ and $I_{Dsat}$, and compare with the square law ($m$ = 1). (b) Find $I_D$ at $V_{DS}$ = 0.3 V. (c) Compare the average channel field at saturation with the velocity-saturation field $2v_{sat}/\mu_{ns}$, using Hu's inversion-layer value $v_{sat}$ = 8 × 10⁶ cm/s (09-10).
 
 **Solution.**
 
@@ -209,7 +221,7 @@ The transistor for all examples is an n-channel MOSFET with $W$ = 10 µm, $L$ = 
 
 (b) $I_D = (W/L)\mu C_{ox}(0.8 - 1.246 \times 0.15)(0.3)$ = **0.500** mA.
 
-(c) The average field is $0.6418\text{ V}/1\text{ µm}$ = **6.42 × 10³** V/cm, against $\mathcal E_{sat}$ = **6.35 × 10⁴** V/cm, a factor of about 10 below. Velocity saturation is negligible, so the long-channel model applies.
+(c) The average field is $0.6418\text{ V}/1\text{ µm}$ = **6.42 × 10³** V/cm, against $\mathcal E_{sat}$ = **5.08 × 10⁴** V/cm, a factor of **7.91** below. Velocity saturation is negligible, so the long-channel model applies.
 
 **Sanity check.** About **69.8** µA per micrometer of width at 0.8 V overdrive for a 1 µm channel; short-channel devices deliver more per micrometer (09-10, 09-11).
 
@@ -217,15 +229,15 @@ The transistor for all examples is an n-channel MOSFET with $W$ = 10 µm, $L$ = 
 
 **Setup.** With $V_{SB}$ = 1 V, find the threshold voltage exactly and with the linearized body effect. Show that the linearization coefficient equals $m - 1$.
 
-**Solution.** $V_t(1\text{ V}) = 0.4 + 0.472(\sqrt{1.9166} - \sqrt{0.9166})$ = **0.602** V. The linear coefficient is $\alpha = \gamma/(2\sqrt{2\phi_B})$ = **0.2465**, identical to $m - 1$. The linearized estimate is 0.4 + 0.2465 = **0.646** V, which overestimates because the true dependence is a square root. A SPICE level-1 model, which uses the square law ($m$ = 1) with this body effect, would give $I_{Dsat} = (W/2L)\mu C_{ox}(1.2 - 0.602)^2$ = **0.487** mA at $V_{SB}$ = 1 V.
+**Solution.** $V_{TH}(1\text{ V}) = 0.4 + 0.472(\sqrt{1.9166} - \sqrt{0.9166})$ = **0.602** V. The linear coefficient is $\alpha = \gamma/(2\sqrt{2\phi_B})$ = **0.2465**, identical to $m - 1$. The linearized estimate is 0.4 + 0.2465 = **0.646** V, which overestimates because the true dependence is a square root. A SPICE level-1 model, which uses the square law ($m$ = 1) with this body effect, would give $I_{Dsat} = (W/2L)\mu C_{ox}(1.2 - 0.602)^2$ = **0.487** mA at $V_{SB}$ = 1 V.
 
 **Sanity check.** A volt of source-to-body bias raises the threshold by about 0.2 V. That is why stacked NMOS transistors, whose sources sit above ground, are slower.
 
 ### Example 09-09.4 · The exact bulk-charge model (tier C)
 
-**Setup.** Using the exact local charge $-C_{ox}[V_{GS} - V_{FB} - 2\phi_B - V_c - \gamma\sqrt{2\phi_B + V_c}]$, with $V_{FB}$ chosen to give $V_t$ = 0.4 V, find $V_{FB}$, the saturation voltage (where the charge vanishes) and the saturation current. Compare with Example 09-09.2.
+**Setup.** Using the exact local charge $-C_{ox}[V_{GS} - V_{FB} - 2\phi_B - V_c - \gamma\sqrt{2\phi_B + V_c}]$, with $V_{FB}$ chosen to give $V_{TH}$ = 0.4 V, find $V_{FB}$, the saturation voltage (where the charge vanishes) and the saturation current. Compare with Example 09-09.2.
 
-**Solution.** $V_{FB} = V_t - 2\phi_B - \gamma\sqrt{2\phi_B}$ = **−0.968** V. The charge vanishes at $V_c$ = **0.6594** V. Integrating the charge numerically from 0 to that point gives $I_{Dsat}$ = **0.7118** mA. The $m$-model's 0.698 mA is **1.89**% low.
+**Solution.** $V_{FB} = V_{TH} - 2\phi_B - \gamma\sqrt{2\phi_B}$ = **−0.968** V. The charge vanishes at $V_c$ = **0.6594** V. Integrating the charge numerically from 0 to that point gives $I_{Dsat}$ = **0.7118** mA. The $m$-model's 0.698 mA is **1.89**% low.
 
 **Sanity check.** The linearized model uses the bulk-charge slope at the source, where it is steepest. The true slope flattens as $V_c$ rises, so the exact model has slightly more charge near the drain.
 
@@ -253,7 +265,7 @@ The transistor for all examples is an n-channel MOSFET with $W$ = 10 µm, $L$ = 
 
 ### Example 09-09.7 · Subthreshold swing and leakage (tier B)
 
-**Setup.** (a) Find the subthreshold swing. (b) Using Hu's current-defined threshold (100 nA × $W/L$ at $V_t$), find $I_{off}$ at $V_{GS}$ = 0 and the number of decades below threshold. (c) Evaluate the physical prefactor $(W/L)\mu C_{ox}(m - 1)V_T^2$, the current at $V_{GS} = V_t$, and compare. (d) Hu's illustration: what standby current does 10⁸ transistors at 100 nA each draw?
+**Setup.** (a) Find the subthreshold swing. (b) Using Hu's current-defined threshold (100 nA × $W/L$ at $V_{TH}$), find $I_{off}$ at $V_{GS}$ = 0 and the number of decades below threshold. (c) Evaluate the physical prefactor $(W/L)\mu C_{ox}(m - 1)V_T^2$, the current at $V_{GS} = V_{TH}$, and compare. (d) Hu's illustration: what standby current does 10⁸ transistors at 100 nA each draw?
 
 **Solution.**
 
@@ -265,7 +277,7 @@ The transistor for all examples is an n-channel MOSFET with $W$ = 10 µm, $L$ = 
 
 (d) $10^8 \times 100\text{ nA}$ = **10** A [3].
 
-**Sanity check.** A low-leakage transistor with a 0.4 V threshold and 74 mV/decade has picoamps of leakage; cutting $V_t$ to 0.25 V would multiply that by **105**, which is the scaling dilemma of 09-11.
+**Sanity check.** A low-leakage transistor with a 0.4 V threshold and 74 mV/decade has picoamps of leakage; cutting $V_{TH}$ to 0.25 V would multiply that by **105**, which is the scaling dilemma of 09-11.
 
 ### Answer key
 
@@ -287,10 +299,11 @@ The transistor for all examples is an n-channel MOSFET with $W$ = 10 µm, $L$ = 
 | Ex 09-09.2d | square-law excess | 24.6 | % |
 | Ex 09-09.2e | I_D at 0.3 V | 0.500 | mA |
 | Ex 09-09.2f | average channel field | 6.42e3 | V/cm |
-| Ex 09-09.2g | velocity-saturation field | 6.35e4 | V/cm |
-| Ex 09-09.3a | V_t at V_SB = 1 V | 0.602 | V |
+| Ex 09-09.2g | velocity-saturation field | 5.08e4 | V/cm |
+| Ex 09-09.2i | margin to E_sat | 7.91 | — |
+| Ex 09-09.3a | V_TH at V_SB = 1 V | 0.602 | V |
 | Ex 09-09.3b | linear body-effect coefficient | 0.2465 | — |
-| Ex 09-09.3c | linearized V_t | 0.646 | V |
+| Ex 09-09.3c | linearized V_TH | 0.646 | V |
 | Ex 09-09.4a | V_FB | -0.968 | V |
 | Ex 09-09.4b | exact V_Dsat | 0.6594 | V |
 | Ex 09-09.4c | exact I_Dsat | 0.7118 | mA |
@@ -312,16 +325,16 @@ The transistor for all examples is an n-channel MOSFET with $W$ = 10 µm, $L$ = 
 | Ex 09-09.7a | subthreshold swing | 74.2 | mV/decade |
 | Ex 09-09.7b | decades below threshold | 5.39 | — |
 | Ex 09-09.7c | I_off | 4.06 | pA |
-| Ex 09-09.7d | physical prefactor at V_t | 0.448 | µA |
+| Ex 09-09.7d | physical prefactor at V_TH | 0.448 | µA |
 | Ex 09-09.7e | standby current, 1e8 × 100 nA | 10 | A |
 | T 09-09.a | Boltzmann limit of the swing | 59.5 | mV/decade |
 | T 09-09.b | weak-inversion g_m/I_D bound, m = 1.246 | 31.0 | V⁻¹ |
-| Ex 09-09.7f | leakage factor for V_t 0.25 V | 105 | — |
+| Ex 09-09.7f | leakage factor for V_TH 0.25 V | 105 | — |
 | Ex 09-09.2h | current per µm of width | 69.8 | µA/µm |
 | Ex 09-09.6i | BJT advantage in g_m/I | 15.5 | — |
 | Ex 09-09.3d | level-1 I_Dsat at V_SB = 1 V | 0.487 | mA |
 
-*Every value is recomputed by [verify_09_09.py](../verify/verify_09_09.py) by an independent route: the drain current by numerically integrating the local channel charge along the channel (solving $dV_c/dx$ for constant current); saturation by maximizing the computed current; the body effect from the exact threshold condition; mobility from Hu's fit; channel-length modulation and small-signal parameters by numerical differentiation; $C_{gs}$ by integrating the channel-charge profile; and the subthreshold current by integrating the diffusion current with the exact weak-inversion charge of 09-08.*
+*Every value is recomputed by [verify_09_09.py](../verify/verify_09_09.py) by an independent route: the drain current by numerically integrating the local channel charge along the channel (solving $dV_c/dx$ for constant current); saturation by maximizing the computed current; the body effect from the exact threshold condition; mobility from Hu's fit; channel-length modulation and small-signal parameters by numerical differentiation; $C_{gs}$ by integrating the channel-charge profile; and the subthreshold prefactor from the closed form, cross-checked against a numerical integration of the electron density through the depletion region (agreement within a few percent, the size of the linearizations in the derivation).*
 
 ## 5. Simulate it
 
@@ -340,7 +353,7 @@ The lab, [labs/09-09-lab](../labs/09-09-lab/README.md), has a notebook and an ng
 |---|---|---|---|
 | Shorter channel | Drive current (∝ 1/L), f_T (∝ 1/L²), density | Output resistance, short-channel effects (09-10), variability | Technology and circuit designers |
 | Larger W/L | Current, g_m | Area, gate capacitance (input load) | Circuit designers |
-| Larger overdrive (V_GS − V_t) | Current and speed | Lower g_m/I_D (efficiency), higher power, less headroom | Circuit designers |
+| Larger overdrive (V_GS − V_TH) | Current and speed | Lower g_m/I_D (efficiency), higher power, less headroom | Circuit designers |
 | Lower threshold | Overdrive at fixed supply, speed | Off-current rises tenfold per S (≈ 60–80 mV) | Technology and product |
 | Thinner oxide (higher C_ox) | Current, g_m, smaller m (steeper subthreshold) | Gate leakage, reliability (09-08) | Technology development |
 | Body doping profile (retrograde) | Threshold control, short-channel control, linear body effect | Mobility, junction capacitance, dopant fluctuation | Device designers |
@@ -376,7 +389,7 @@ The lab, [labs/09-09-lab](../labs/09-09-lab/README.md), has a notebook and an ng
 
 - **The long-channel model is the analog designer's model.** The gate–drain current relations of §3.3 and the $g_m/I_D$ view of §3.6 remain the first-order tools of analog design (Course 20). Production design uses compact models (such as BSIM) fitted to measured devices, whose core is the bulk-charge picture of §3.2 [1] **[Established]**.
 - **Universal mobility still anchors device engineering.** Hu's fit, after work published in 1996, shows all silicon NFETs on one curve once the effective field is accounted for [1] **[Established]**. Strain and orientation (09-01, 09-12) are the levers that move devices off it.
-- **Leakage is specified per micrometer.** Hu's compilation of roadmap targets lists high-performance off-currents of 0.15–0.84 µA/µm and low-standby-power off-currents near 10⁻⁵ µA/µm across the 90–22 nm nodes [2] **[Established]** as roadmap targets. The five-decade spread between device flavors on one process comes almost entirely from threshold voltage, through the subthreshold swing.
+- **Leakage is specified per micrometer.** Hu's compilation of roadmap targets lists high-performance off-currents of 0.15–0.84 µA/µm and low-standby-power off-currents near 10⁻⁵ µA/µm across the 90–22 nm nodes [2] **[Established]** as roadmap targets. The five-decade spread between device flavors on one process comes almost entirely from threshold voltage, through the subthreshold swing. Those are 2003–2013 targets; the current roadmap is tighter. The IRDS 2024 More Moore tables define high-performance devices at $I_{off}$ = 10 nA/µm, with a saturated threshold near 156 mV in 2024, and high-density devices at 100 pA/µm, with a threshold near 288 mV; they assume an average effective mobility of 125 cm²/V·s in 2024 falling to 60 cm²/V·s by 2031 [4] **[Industry estimate]** (roadmap targets, not measured products). The two thresholds differ by 133 mV for a hundredfold change in leakage, about 66 mV per decade, the subthreshold swing at work.
 
 ### Why it matters commercially
 
@@ -411,6 +424,14 @@ The lab, [labs/09-09-lab](../labs/09-09-lab/README.md), has a notebook and an ng
 | P 09-09.a | HP off-current, low end | 0.15 | µA/µm |
 | P 09-09.b | HP off-current, high end | 0.84 | µA/µm |
 | P 09-09.c | LSTP off-current | 1e-5 | µA/µm |
+| P 09-09.d | IRDS 2024 HP off-current | 10 | nA/µm |
+| P 09-09.e | IRDS 2024 HP saturated threshold | 156 | mV |
+| P 09-09.f | IRDS 2024 HD off-current | 100 | pA/µm |
+| P 09-09.g | IRDS 2024 HD saturated threshold | 288 | mV |
+| P 09-09.h | IRDS mobility 2024 | 125 | cm²/V·s |
+| P 09-09.i | IRDS mobility 2031 on | 60 | cm²/V·s |
+| P 09-09.j | HD minus HP threshold | 133 | mV |
+| P 09-09.k | implied mV per decade | 66 | mV/decade |
 
 ## 10. Concept check
 
@@ -418,7 +439,7 @@ The lab, [labs/09-09-lab](../labs/09-09-lab/README.md), has a notebook and an ng
 
 <details><summary>Answer</summary>
 
-As $V_{DS}$ rises, the channel potential near the drain rises, reducing the gate-to-channel voltage there and the inversion charge. At $V_{DS} = V_{Dsat} = (V_{GS} - V_t)/m$ the charge at the drain end reaches zero (pinch-off). Extra drain voltage drops across a short depleted region that electrons cross easily, while the channel up to the pinch-off point, and so the current, stays essentially the same.
+As $V_{DS}$ rises, the channel potential near the drain rises, reducing the gate-to-channel voltage there and the inversion charge. At $V_{DS} = V_{Dsat} = (V_{GS} - V_{TH})/m$ the charge at the drain end reaches zero (pinch-off). Extra drain voltage drops across a short depleted region that electrons cross easily, while the channel up to the pinch-off point, and so the current, stays essentially the same.
 
 </details>
 
@@ -486,3 +507,4 @@ Now work the [problem set](../problems/09-09-problems.md).
 1. C. Hu, *Modern Semiconductor Devices for Integrated Circuits* (Pearson, 2010), ch. 6: §6.1 the MOSFET, §6.3 surface mobility (Eqs. 6.3.6–6.3.8, Fig. 6–9, universal mobility, after a 1996 IEEE paper), §6.4 body effect and retrograde doping (Eqs. 6.4.6–6.4.8), §6.5–6.6 Q_inv, bulk-charge factor ("m is typically around 1.2"), Eqs. 6.6.4–6.6.6, §6.13 output conductance and intrinsic gain, §6.14 f_T. [Ch. 6](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch6-1.pdf). [R-170](../../../reference/research-log.md#r-170--long-channel-mosfet-references).
 2. C. Hu, ch. 7, Table 7–1: I_off for high-performance and low-standby-power devices from the 90 nm to the 22 nm node (compiled from the ITRS). [Ch. 7](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch7.pdf). [R-170](../../../reference/research-log.md#r-170--long-channel-mosfet-references).
 3. C. Hu, ch. 7, §7.2: subthreshold current, Eqs. 7.2.1–7.2.8 (swing, current-defined threshold of 100 nA × W/L, off-current), and the 10⁸-transistor standby example. [Ch. 7](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch7.pdf). [R-170](../../../reference/research-log.md#r-170--long-channel-mosfet-references).
+4. IEEE IRDS, 2024 Edition, More Moore tables, Table MM01 (rows: V_t,sat at I_off = 10 nA/µm HP and 100 pA/µm HD; average effective mobility; R_sd; injection velocity): [IRDS 2024 More Moore tables](https://irds.ieee.org/images/files/pdf/2024/2024IRDS_MM_Tables.xlsx). [R-171](../../../reference/research-log.md#r-171--short-channel-and-leakage-references).

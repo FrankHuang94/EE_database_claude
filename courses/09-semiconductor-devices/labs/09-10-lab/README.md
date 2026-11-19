@@ -12,7 +12,7 @@
 
 ## Background
 
-Chapter sections 3.1–3.7 and Examples 09-10.1 to 09-10.6. The transistor of Parts 1–2: 2 nm EOT ($C_{ox}$ = 1.727 µF/cm²), $m$ = 1.2, $V_t$ = 0.35 V, $\mu_{ns}$ = 183 cm²/V·s, $v_{sat}$ = 8 × 10⁶ cm/s, $V_{GS}$ = 1.0 V, $W$ = 1 µm. Below saturation the channel obeys $I_D(1 + \mathcal E/\mathcal E_{sat}) = W C_{ox}\mu_{ns}(V_{ov} - mV_c)\mathcal E$ with $\mathcal E = dV_c/dx$; integrating over the channel gives Hu's Eq. (6.9.3). Part 3 uses Hu's roll-off model with $l_d$ = 10 nm, Part 4 the swing $S = mV_T\ln 10$ scaled with temperature, and Part 5 the Poisson statistics of 09-02 and 03-02. You need Python with NumPy, SciPy and Matplotlib (see [SETUP.md](../../../../SETUP.md)).
+Chapter sections 3.1–3.7 and Examples 09-10.1 to 09-10.6. The transistor of Parts 1–2: 2 nm EOT ($C_{ox}$ = 1.727 µF/cm²), $m$ = 1.2, $V_{TH}$ = 0.35 V, $\mu_{ns}$ = 183 cm²/V·s, $v_{sat}$ = 8 × 10⁶ cm/s, $V_{GS}$ = 1.0 V, $W$ = 1 µm. Below saturation the channel obeys $I_D(1 + \mathcal E/\mathcal E_{sat}) = W C_{ox}\mu_{ns}(V_{ov} - mV_c)\mathcal E$ with $\mathcal E = dV_c/dx$; integrating over the channel gives Hu's Eq. (6.9.3). Part 3 uses Hu's roll-off model with $l_d$ = 10 nm, Part 4 the swing $S = mV_T\ln 10$ scaled with temperature, and Part 5 the Poisson statistics of 09-02 and 03-02. You need Python with NumPy, SciPy and Matplotlib (see [SETUP.md](../../../../SETUP.md)).
 
 ## Files
 
@@ -39,7 +39,7 @@ There is no ngspice file for this lab: SPICE's simple MOSFET levels do not model
 | 2 | Self-consistent $I_{Dsat}$ with 100 Ω·µm | 0.448 mA/µm (Example 09-10.2) |
 | 3 | Off-current factor from DIBL at $L$ = 30 nm | see the answer key |
 | 4 | Decades of on/off ratio below threshold | see the answer key |
-| 5 | Monte Carlo $\sigma_{V_t}$ | within 2% of 43.7 mV (Example 09-10.6) |
+| 5 | Monte Carlo $\sigma_{V_{TH}}$ | within 2% of 43.7 mV (Example 09-10.6) |
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |

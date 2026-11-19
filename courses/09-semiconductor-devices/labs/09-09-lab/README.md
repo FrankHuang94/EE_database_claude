@@ -11,7 +11,7 @@
 
 ## Background
 
-Chapter sections 3.1–3.7 and Examples 09-09.1 to 09-09.7. The transistor: $W$ = 10 µm, $L$ = 1 µm, $T_{ox}$ = 4 nm, $N_A$ = 5 × 10¹⁷ cm⁻³, $V_t$ = 0.4 V. The channel profile comes from current continuity: $I_D\,dx = W\mu C_{ox}q(V_c)\,dV_c$, integrated numerically. Part 3 uses an interpolation (the form used in the EKV compact model), $I_D = 2mK V_T^2\ln^2(1 + e^{V_{ov}/2mV_T})$ with $K = \mu C_{ox}W/L$. It reduces to the square law in strong inversion and to an exponential with swing $mV_T\ln10$ in weak inversion. SPICE's level-1 model is the square law with $m$ = 1, the body effect of §3.1 (parameters `GAMMA` and `PHI` = $2\phi_B$), and $\lambda$ for channel-length modulation. You need Python with NumPy, SciPy and Matplotlib, and optionally ngspice (see [SETUP.md](../../../../SETUP.md)).
+Chapter sections 3.1–3.7 and Examples 09-09.1 to 09-09.7. The transistor: $W$ = 10 µm, $L$ = 1 µm, $T_{ox}$ = 4 nm, $N_A$ = 5 × 10¹⁷ cm⁻³, $V_{TH}$ = 0.4 V. The channel profile comes from current continuity: $I_D\,dx = W\mu C_{ox}q(V_c)\,dV_c$, integrated numerically. Part 3 uses an interpolation (the form used in the EKV compact model), $I_D = 2mK V_T^2\ln^2(1 + e^{V_{ov}/2mV_T})$ with $K = \mu C_{ox}W/L$. It reduces to the square law in strong inversion and to an exponential with swing $mV_T\ln10$ in weak inversion. SPICE's level-1 model is the square law with $m$ = 1, the body effect of §3.1 (parameters `GAMMA` and `PHI` = $2\phi_B$), and $\lambda$ for channel-length modulation. You need Python with NumPy, SciPy and Matplotlib, and optionally ngspice (see [SETUP.md](../../../../SETUP.md)).
 
 ## Files
 

@@ -219,7 +219,7 @@ A diode biased at a DC point $(V_D, I_D)$ responds to a small voltage $v_d$ with
 
 **Conductance.** From the diode equation, $g_d = dI/dV_A = (I_D + I_s)/V_T \approx I_D/V_T$, or $I_D/\eta V_T$ for a non-ideal diode. The resistance $r_d = 1/g_d$ is **25.85** Ω at 1 mA and 300 K, the familiar result of [01-03](../../01-calculus-for-engineers/chapters/01-03-derivatives.md) and [10-01](../../10-electronics-1/chapters/10-01-diodes-and-diode-circuits.md).
 
-**Junction capacitance.** The depletion charge changes with voltage, giving $C_j = \varepsilon_sA/W$ (09-05 §3.9), dominant in reverse bias. In forward bias the depletion approximation weakens (09-05 §3.7), and circuit simulators cap $C_j$ beyond about half of $V_{bi}$.
+**Junction capacitance.** The depletion charge changes with voltage, giving $C_j = \varepsilon_sA/W$ (09-05 §3.9), dominant in reverse bias. In forward bias the depletion approximation weakens (09-05 §3.7), and the formula would blow up at $V_A = V_{bi}$; circuit simulators (SPICE) therefore use it only up to a fraction FC of $V_{bi}$ (0.5 by default) and extrapolate $C_j$ linearly beyond that, so it stays finite.
 
 **Diffusion capacitance.** In forward bias the stored minority charge $Q$ changes with voltage. The simplest estimate is quasi-static: the long diode stores $Q = I\tau_p$ (§3.2), so $dQ/dV_A = \tau_pg_d$. The exact small-signal analysis gives half of that. Write the excess as a DC part plus a small phasor, $\Delta p + \hat p\,e^{j\omega t}$. The phasor obeys $j\omega\hat p = D_p\hat p'' - \hat p/\tau_p$, so it decays as $e^{-x'\sqrt{1 + j\omega\tau_p}/L_p}$, and its current at the edge is $\sqrt{1 + j\omega\tau_p}$ times the low-frequency value. The admittance is therefore
 
@@ -240,7 +240,7 @@ Either way, $C_d$ is proportional to the bias current. At 10 µA, a long diode w
 
 ### 3.8 Charge storage and switching
 
-**The charge-control equation.** Integrating the continuity equation over the n region gives a single equation for the stored charge $Q(t)$ of a P⁺N diode:
+**The charge-control equation.** Start from the hole continuity equation in the neutral n region, $\partial\Delta p/\partial t = -(1/q)\,\partial J_p/\partial x - \Delta p/\tau_p$ (09-04). Multiply by $qA$ and integrate from the depletion edge $x_n$ into the bulk, where $J_p$ and $\Delta p$ vanish. With $Q = qA\int\Delta p\,dx$ the stored charge, this gives $dQ/dt = AJ_p(x_n) - Q/\tau_p$. In a P⁺N diode nearly all the current at $x_n$ is hole current, so $AJ_p(x_n) \approx i(t)$, and the stored charge obeys a single equation:
 
 $$
 i(t) = \frac{dQ}{dt} + \frac{Q}{\tau_p} .
@@ -268,11 +268,13 @@ $$
 \operatorname{erf}\sqrt{t_s/\tau_p} = \frac{I_F}{I_F + I_R} ,
 $$
 
-where $\operatorname{erf}x = (2/\sqrt\pi)\int_0^xe^{-u^2}du$ is the error function, the complement of the erfc met in [03-02](../../03-probability-statistics-and-random-variables/chapters/03-02-random-variables-and-distributions.md). For $I_R = I_F$, the exact $t_s$ = 0.2275$\tau_p$ against the charge-control $\tau_p\ln2$ = 0.693$\tau_p$. Charge control does not get the *charge* wrong: integrating the diffusion equation over the region gives the charge-control equation exactly, and Figure 3(a) shows the two charge curves coincide. It gets wrong the moment the junction voltage reverses, which depends on the edge density alone. The lab solves the diffusion equation numerically and confirms the exact result. Circuit simulators use the charge-control picture with a fitted transit-time parameter, so their storage times follow the logarithmic formula (the lab's ngspice netlist shows this).
+where $\operatorname{erf}x = (2/\sqrt\pi)\int_0^xe^{-u^2}du$ is the error function, the complement of the erfc met in [03-02](../../03-probability-statistics-and-random-variables/chapters/03-02-random-variables-and-distributions.md). For $I_R = I_F$, the exact $t_s$ = 0.2275$\tau_p$ against the charge-control $\tau_p\ln2$ = 0.693$\tau_p$. Charge control does not get the *charge* wrong: integrating the diffusion equation over the region gives the charge-control equation exactly, and Figure 3(a) shows the two charge curves coincide. It gets wrong the moment the junction voltage reverses, which depends on the edge density alone. The lab solves the diffusion equation numerically and confirms the exact result.
+
+> **Going deeper — Kingston's result in five steps.** (1) Before switching, the profile is $\Delta p_F = p_ee^{-x/L_p}$ with $p_e = I_FL_p/(qAD_p)$. (2) After switching, write $\Delta p = \Delta p_F - u(x, t)$. Because $\Delta p_F$ is a steady solution, $u$ obeys the same diffusion equation, $\partial u/\partial t = D_p\,\partial^2u/\partial x^2 - u/\tau_p$, with $u = 0$ at $t = 0$, and the current step from $+I_F$ to $-I_R$ sets its slope at the edge: $\partial u/\partial x|_0 = -(I_F + I_R)/(qAD_p)$. (3) Laplace-transform in time (07-04): $sU = D_pU'' - U/\tau_p$, so $U = U_0(s)e^{-kx}$ with $k = \sqrt{(s + 1/\tau_p)/D_p}$, and the slope condition gives $U_0 = (I_F + I_R)/(qA\sqrt{D_p}\,s\sqrt{s + 1/\tau_p})$. (4) The transform pair $1/(s\sqrt{s + a}) \leftrightarrow \operatorname{erf}(\sqrt{at})/\sqrt a$ gives $u(0, t) = (I_F + I_R)\,L_p/(qAD_p)\cdot\operatorname{erf}\sqrt{t/\tau_p}$. (5) The edge empties when $u(0, t_s) = p_e$, which is the formula above. Circuit simulators use the charge-control picture with a fitted transit-time parameter, so their storage times follow the logarithmic formula (the lab's ngspice netlist shows this).
 
 **Making diodes fast.** Every route shortens $\tau$ or removes the stored charge: lifetime killing with gold, platinum or irradiation (09-04), which cuts $t_s$ in proportion to $\tau_p$ at the cost of more leakage; short diodes, whose stored charge is set by the transit time; or no minority storage at all, the Schottky diode of §3.10.
 
-*Figure 3. Reverse recovery of a long P⁺N diode switched from $I_F$ to $-I_R = -I_F$, from the numerical solution of the diffusion equation. (a) The excess density at the junction edge falls to zero at $t_s$ = 0.2275$\tau_p$, when the junction voltage reverses, while the stored charge (which follows the charge-control curve exactly) lasts until 0.693$\tau_p$; the charge-control estimate overstates the storage time **3.05**-fold. (b) Profiles at successive times: the reverse current empties the region next to the junction first.*
+*Figure 3. Reverse recovery of a long P⁺N diode switched from $I_F$ to $-I_R = -I_F$, from the numerical solution of the diffusion equation. (a) The excess density at the junction edge falls to zero at $t_s$ = 0.2275$\tau_p$, when the junction voltage reverses, while the stored charge follows the charge-control curve exactly up to $t_s$. The charge-control model would empty the charge at 0.693$\tau_p$ only if $-I_R$ could be held that long, which the junction cannot do once its edge density reaches zero; as a storage-time estimate it is **3.05** times too long. (b) Profiles at successive times: the reverse current empties the region next to the junction first.*
 
 ![Reverse recovery of a PN diode](../../../assets/figures/09-06/reverse-recovery.svg)
 
@@ -475,7 +477,7 @@ a drop of **112** mV, or **−2.249** mV/K on average.
 
 (c) $C_j = \varepsilon_sA/W$: **3.047** pF at zero bias ($W$ = 0.340 µm) and **5.32** pF at 0.6 V. The diffusion capacitance is **63.5** and **36.4** times larger.
 
-(d) The approximation $\sqrt{1 + j\omega\tau_p} \approx 1 + j\omega\tau_p/2$ needs $\omega\tau_p \ll 1$. The corner where $r_d$ and $C_d$ have equal admittance is $f = 1/(2\pi r_dC_d) = 1/(\pi\tau_p)$ = **318.3** kHz, independent of current.
+(d) The approximation $\sqrt{1 + j\omega\tau_p} \approx 1 + j\omega\tau_p/2$ needs $\omega\tau_p \ll 1$, that is $f \ll 1/(2\pi\tau_p)$ = **159.2** kHz ($\tau_p$ = 1 µs). Quantitatively, the next term of the expansion makes the conductance too large by about $(\omega\tau_p)^2/8$: a 1% error in $G$ is reached at $\omega\tau_p$ = 0.286, or **45.6** kHz. Note that the corner where $r_d$ and $C_d$ have equal admittance, $f = 1/(2\pi r_dC_d) = 1/(\pi\tau_p)$ = **318.3** kHz (independent of current), lies *outside* the range of validity: there $\omega\tau_p$ = 2 and the exact admittance has **27.2**% more conductance and **21.4**% less capacitance than the model.
 
 (e) $C_d \approx g_dW_n^2/3D_p$ = **0.539** pF; the full solution, which includes the 0.2% of holes that recombine, gives **0.538** pF. Either way it is smaller than the junction capacitance.
 
@@ -589,7 +591,11 @@ a drop of **112** mV, or **−2.249** mV/K on average.
 | Ex 09-06.5f | C_j at zero bias | 3.047 | pF |
 | Ex 09-06.5g | W at zero bias | 0.340 | µm |
 | Ex 09-06.5h | C_j at 0.6 V | 5.32 | pF |
-| Ex 09-06.5i | corner frequency 1/(πτ_p) | 318.3 | kHz |
+| Ex 09-06.5i | r_d–C_d corner frequency 1/(πτ_p) | 318.3 | kHz |
+| Ex 09-06.5n | frequency where ωτ_p = 1 | 159.2 | kHz |
+| Ex 09-06.5o | frequency for a 1% conductance error | 45.6 | kHz |
+| Ex 09-06.5p | conductance excess at the corner | 27.2 | % |
+| Ex 09-06.5q | capacitance shortfall at the corner | 21.4 | % |
 | Ex 09-06.5j | short-diode diffusion capacitance | 0.539 | pF |
 | Ex 09-06.5k | C_d/C_j at zero bias | 63.5 | — |
 | Ex 09-06.5l | C_d/C_j at 0.6 V | 36.4 | — |

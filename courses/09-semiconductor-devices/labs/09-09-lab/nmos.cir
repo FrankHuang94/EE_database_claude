@@ -1,6 +1,6 @@
 * Lab 09-09 -- SPICE level-1 (Shichman-Hodges) NMOS with the chapter's parameters.
-* Level 1 is the square law with m = 1: I_Dsat = (KP/2)(W/L)(V_GS - V_t)^2 with the body effect
-* V_t = VTO + GAMMA (sqrt(PHI + V_SB) - sqrt(PHI)), PHI = 2 phi_B. KP = mu_ns C_ox = 315.108 cm^2/Vs x
+* Level 1 is the square law with m = 1: I_Dsat = (KP/2)(W/L)(V_GS - V_TH)^2 with the body effect
+* V_TH = VTO + GAMMA (sqrt(PHI + V_SB) - sqrt(PHI)), PHI = 2 phi_B. KP = mu_ns C_ox = 315.108 cm^2/Vs x
 * 863.283 nF/cm^2 = 2.72027e-4 A/V^2; GAMMA = 0.47192 V^0.5; PHI = 0.91658 V; LAMBDA = 0 (no CLM).
 * M1: V_GS = V_DS = 1.2 V, body at source. M2: same, body at -1 V (V_SB = 1 V).
 * The temperature is set to 300 K.

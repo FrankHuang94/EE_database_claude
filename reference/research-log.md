@@ -1785,6 +1785,7 @@ R&D % = R&D ÷ revenue.
 - **Not found:** typical DIBL values for current nodes (no DIBL row in IRDS 2024 MM01); a primary source for GIDL magnitudes. The chapter's GIDL treatment is a field estimate derived from 09-06 tunneling physics and Gauss's law, with no magnitudes claimed (open issue).
 - **Derived here:** velocity-saturated and long-channel currents, series-resistance losses, roll-off and DIBL values, I_on–I_off windows, GIDL fields and onset voltages, and the depth-weighted random-dopant σ(V_t) = (q/C_ox)√(N_A W_dep/3WL), derived in the chapter from the depletion approximation.
 - **Sources:** [C. Hu, ch. 6](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch6-1.pdf); [C. Hu, ch. 7](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch7.pdf); [IRDS 2024 More Moore tables](https://irds.ieee.org/images/files/pdf/2024/2024IRDS_MM_Tables.xlsx). Checked Nov 2026.
+- **IRDS 2024 More Moore, Table MM01 (read from the downloaded xlsx, Nov 2026), added at the Course 09 audit:** V_t,sat at I_off = 10 nA/µm (HP) 155.6 mV in 2024 (152–165 mV through 2039); V_t,sat at I_off = 100 pA/µm (HD) 288.4 mV in 2024 (257–288 mV); average effective mobility of N/P-MOS 125 cm²/V·s in 2024, 100 in 2025, 80 in 2027–2029, 60 from 2031; R_sd 271 Ω·µm in 2024 falling to 179.8 Ω·µm in 2039; injection velocity 9 × 10⁶ cm/s throughout. Roadmap targets [Industry estimate]. Same file as the swing and V_dd rows above.
 
 ## R-172 · CMOS and scaling references
 

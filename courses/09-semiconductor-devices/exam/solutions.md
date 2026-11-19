@@ -70,7 +70,7 @@ Each solution names the chapter to revisit if you lost points.
 
 (a) $C_{ox}$ = **863.3** nF/cm², $\phi_B$ = **0.458** V, and with $E_F - E_V = kT\ln(N_V/N_A)$ = 0.093 eV, $V_{FB}$ = −(1.12 − 0.093) = **−1.027** V.
 
-(b) $Q_{dep} = \sqrt{2qN_A\varepsilon_s(2\phi_B)}$, so $Q_{dep}/C_{ox}$ = **0.452** V and $V_t = V_{FB} + 2\phi_B + Q_{dep}/C_{ox}$ = **0.341** V.
+(b) $Q_{dep} = \sqrt{2qN_A\varepsilon_s(2\phi_B)}$, so $Q_{dep}/C_{ox}$ = **0.452** V and $V_{TH} = V_{FB} + 2\phi_B + Q_{dep}/C_{ox}$ = **0.341** V.
 
 (c) $W_{d\max} = \sqrt{2\varepsilon_s(2\phi_B)/qN_A}$ = **48.7** nm, and $C_{\min} = (1/C_{ox} + W_{d\max}/\varepsilon_s)^{-1}$ = **170.7** nF/cm², **0.198** of $C_{ox}$.
 
@@ -84,7 +84,7 @@ Each solution names the chapter to revisit if you lost points.
 
 (a) $\mathcal E_{sat}$ = **8.0 × 10⁴** V/cm and $\mathcal E_{sat}L$ = **0.400** V. $1/V_{Dsat} = 1.2/0.6 + 1/0.4$, so $V_{Dsat}$ = **0.222** V, and $I_{Dsat} = WC_{ox}v_{sat}(V_{ov} - mV_{Dsat})$ = **0.460** mA/µm.
 
-(b) $\Delta V_t = (0.75 + 0.4)e^{-30/8}$ = **27.0** mV, raising the off-current by $10^{27.0/75}$ = **2.29**.
+(b) $\Delta V_{TH} = (0.75 + 0.4)e^{-30/8}$ = **27.0** mV, raising the off-current by $10^{27.0/75}$ = **2.29**.
 
 **11.** *(09-11)*
 
@@ -195,7 +195,7 @@ The ratio is **1232**.
 | X09.8c | E_F − E_V | 0.093 | eV |
 | X09.8d | V_FB | -1.027 | V |
 | X09.8e | Q_dep/C_ox | 0.452 | V |
-| X09.8f | V_t | 0.341 | V |
+| X09.8f | V_TH | 0.341 | V |
 | X09.8g | W_dmax | 48.7 | nm |
 | X09.8h | C_min | 170.7 | nF/cm² |
 | X09.8i | C_min/C_ox | 0.198 | — |
@@ -217,8 +217,8 @@ The ratio is **1232**.
 | X09.11e | power-density factor | 2.04 | — |
 | X09.12a | λ | 3.67 | nm |
 | X09.12b | e^(−L/2λ) | 0.0382 | — |
-| X09.12c | ΔV_t at 0.05 V | 17.1 | mV |
-| X09.12d | ΔV_t at 0.7 V | 32.4 | mV |
+| X09.12c | ΔV_TH at 0.05 V | 17.1 | mV |
+| X09.12d | ΔV_TH at 0.7 V | 32.4 | mV |
 | X09.12e | DIBL | 23.6 | mV/V |
 | X09.12f | fin width | 99 | nm |
 | X09.12g | fins | 4 | — |

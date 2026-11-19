@@ -3,7 +3,7 @@
 
 Run from anywhere:  python assets/figures/src/fig_09_08.py
 Outputs SVGs to assets/figures/09-08/. The capacitor is the chapter's: p-type N_A = 1e17 cm^-3, 10 nm SiO2,
-n+ poly gate (V_fb = -0.9858 V), 300 K, exact Poisson-Boltzmann surface charge.
+n+ poly gate (V_FB = -0.9858 V), 300 K, exact Poisson-Boltzmann surface charge.
 - mos-surface-potential-charge.svg: (a) surface potential against gate voltage; (b) depletion (bulk) and
   inversion charge magnitudes against gate voltage, with the sheet-charge approximation;
 - mos-cv.svg: quasi-static, high-frequency and deep-depletion C-V curves.
@@ -61,8 +61,8 @@ ax1.plot(vgs, phis, color="k")
 ax1.axhline(2 * PB, color=PALETTE[1], ls=":", lw=1)
 ax1.axvline(VFB, color="0.6", ls="--", lw=0.8)
 ax1.axvline(VT0, color="0.6", ls="--", lw=0.8)
-ax1.text(VFB + 0.03, -0.2, "$V_{fb}$", fontsize=8)
-ax1.text(VT0 + 0.03, -0.2, "$V_t$", fontsize=8)
+ax1.text(VFB + 0.03, -0.2, "$V_{FB}$", fontsize=8)
+ax1.text(VT0 + 0.03, -0.2, "$V_{TH}$", fontsize=8)
 ax1.text(-2.4, 2 * PB + 0.03, r"$2\phi_B$", color=PALETTE[1], fontsize=8)
 ax1.text(-2.4, 0.15, "accumulation", fontsize=8)
 ax1.text(-0.85, 0.45, "depletion", fontsize=8)
@@ -75,7 +75,7 @@ m = phis > 3 * VT
 ax2.semilogy(vgs[m], qb[m] / Q, color=PALETTE[0], label="depletion (acceptor) charge")
 ax2.semilogy(vgs[m & (qinv > 0)], qinv[m & (qinv > 0)] / Q, color=PALETTE[2], label="inversion (electron) charge")
 vv = np.linspace(VT0 + 0.01, 2.5, 100)
-ax2.semilogy(vv, COX * (vv - VT0) / Q, color=PALETTE[2], ls="--", lw=1, label=r"sheet model $C_{ox}(V_g - V_t)$")
+ax2.semilogy(vv, COX * (vv - VT0) / Q, color=PALETTE[2], ls="--", lw=1, label=r"sheet model $C_{ox}(V_g - V_{TH})$")
 ax2.axvline(VT0, color="0.6", ls="--", lw=0.8)
 ax2.set_xlim(-1.0, 2.5)
 ax2.set_ylim(1e8, 1e13)

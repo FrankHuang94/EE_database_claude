@@ -70,7 +70,7 @@ p-type silicon with $N_A$ = 5 × 10¹⁷ cm⁻³ has a 4 nm SiO₂ gate oxide an
 (c) Find $W_{d\max}$ and the minimum high-frequency capacitance, absolute and as a fraction of $C_{ox}$.
 
 **9 [B] · The long-channel MOSFET.** (09-09)
-An NMOS with the gate stack of Question 8 has $W$ = 10 µm, $L$ = 1 µm, $\mu_{ns}$ = 300 cm²/V·s, $m$ = 1.25 and $V_t$ = 0.35 V.
+An NMOS with the gate stack of Question 8 has $W$ = 10 µm, $L$ = 1 µm, $\mu_{ns}$ = 300 cm²/V·s, $m$ = 1.25 and $V_{TH}$ = 0.35 V.
 (a) At $V_{GS}$ = 1.0 V, find $V_{Dsat}$, $I_{Dsat}$ and $g_m$ in saturation.
 (b) Find the subthreshold swing and the off-current at $V_{GS}$ = 0, taking the threshold-defining current as 100 nA × W/L.
 
@@ -80,7 +80,7 @@ A 50 nm NMOS has a 2 nm oxide, $m$ = 1.2, $\mu_{ns}$ = 200 cm²/V·s and $v_{sat
 (b) A 30 nm device of the same technology has $l_d$ = 8 nm. With Hu's model, find the threshold reduction at $V_{DS}$ = 0.75 V and the factor by which it raises the off-current at $S$ = 75 mV/decade.
 
 **11 [B] · CMOS and scaling.** (09-11)
-(a) A square-law inverter has $V_{DD}$ = 0.9 V, $V_{tn} = |V_{tp}|$ = 0.25 V and $k_n/k_p$ = 2.5. Find $V_M$.
+(a) A square-law inverter has $V_{DD}$ = 0.9 V, $V_{TN} = |V_{TP}|$ = 0.25 V and $k_n/k_p$ = 2.5. Find $V_M$.
 (b) Each stage drives 2 fF at 0.8 V with $I_{onN}$ = 120 µA and $I_{onP}$ = 90 µA. Find $\tau_d$ and the frequency of a 31-stage ring oscillator.
 (c) 10⁸ such gates switch with activity 0.15 at 2 GHz. Find the dynamic power.
 (d) By what factor does power density rise per 0.7× node if voltage stays constant and frequency rises as 1/delay?

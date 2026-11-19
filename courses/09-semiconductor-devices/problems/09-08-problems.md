@@ -13,7 +13,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 09-08.1 [A]
 
-**Flat-band voltages.** Find $V_{fb}$ (no oxide charge) for (a) an n⁺ poly gate on p-type silicon with $N_A$ = 10¹⁶ cm⁻³; (b) a p⁺ poly gate on n-type silicon with $N_D$ = 10¹⁷ cm⁻³; (c) a metal gate with work function 4.6 V on the body of (a), ignoring interface effects.
+**Flat-band voltages.** Find $V_{FB}$ (no oxide charge) for (a) an n⁺ poly gate on p-type silicon with $N_A$ = 10¹⁶ cm⁻³; (b) a p⁺ poly gate on n-type silicon with $N_D$ = 10¹⁷ cm⁻³; (c) a metal gate with work function 4.6 V on the body of (a), ignoring interface effects.
 
 ### Problem 09-08.2 [A]
 
@@ -25,19 +25,19 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 09-08.4 [B]
 
-**Depletion.** For the chapter's capacitor ($N_A$ = 10¹⁷ cm⁻³, 10 nm oxide, n⁺ gate, $V_{fb}$ = −0.9858 V), find the depletion width and surface potential at $V_g$ = −0.5 V and at +0.2 V.
+**Depletion.** For the chapter's capacitor ($N_A$ = 10¹⁷ cm⁻³, 10 nm oxide, n⁺ gate, $V_{FB}$ = −0.9858 V), find the depletion width and surface potential at $V_g$ = −0.5 V and at +0.2 V.
 
 ### Problem 09-08.5 [B]
 
-**Threshold against doping at a thin oxide.** For an n⁺ poly gate and a 3 nm oxide, find $V_{fb}$ and $V_t$ for $N_A$ = 10¹⁶, 10¹⁷ and 10¹⁸ cm⁻³. What does the result suggest about setting thresholds with an n⁺ gate at thin oxides?
+**Threshold against doping at a thin oxide.** For an n⁺ poly gate and a 3 nm oxide, find $V_{FB}$ and $V_{TH}$ for $N_A$ = 10¹⁶, 10¹⁷ and 10¹⁸ cm⁻³. What does the result suggest about setting thresholds with an n⁺ gate at thin oxides?
 
 ### Problem 09-08.6 [B]
 
-**Designing a threshold.** With an n⁺ poly gate and a 3 nm oxide, what body doping gives $V_t$ = 0.4 V?
+**Designing a threshold.** With an n⁺ poly gate and a 3 nm oxide, what body doping gives $V_{TH}$ = 0.4 V?
 
 ### Problem 09-08.7 [B]
 
-**A p-channel capacitor.** An n-type body with $N_D$ = 10¹⁷ cm⁻³ has a p⁺ poly gate and a 3 nm oxide. Find $\phi_B$, $V_{fb}$ and $V_t$.
+**A p-channel capacitor.** An n-type body with $N_D$ = 10¹⁷ cm⁻³ has a p⁺ poly gate and a 3 nm oxide. Find $\phi_B$, $V_{FB}$ and $V_{TH}$.
 
 ### Problem 09-08.8 [B]
 
@@ -45,11 +45,11 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 09-08.9 [B]
 
-**Exact inversion charge (numerical).** For the chapter's capacitor ($V_t$ = 0.3293 V), solve the exact model at $V_g = V_t$ + 0.5 V and $V_t$ + 1.5 V for $\phi_s$ and the inversion charge (total minus $\sqrt{2qN_A\varepsilon_s(\phi_s - V_T)}$), and compare with the sheet-charge value. What trend do you see?
+**Exact inversion charge (numerical).** For the chapter's capacitor ($V_{TH}$ = 0.3293 V), solve the exact model at $V_g = V_{TH}$ + 0.5 V and $V_{TH}$ + 1.5 V for $\phi_s$ and the inversion charge (total minus $\sqrt{2qN_A\varepsilon_s(\phi_s - V_T)}$), and compare with the sheet-charge value. What trend do you see?
 
 ### Problem 09-08.10 [B]
 
-**A C–V curve by hand.** A capacitor has a 5 nm oxide, $N_A$ = 5 × 10¹⁶ cm⁻³ and an n⁺ gate. Find (a) $C_{ox}$ and $V_{fb}$; (b) the Debye length and $C_{FB}$; (c) $W_{d\max}$ and the high-frequency $C_{\min}$; (d) the depletion width and capacitance at $V_g$ = 0; (e) the slope of $1/C^2$ against $V_g$ in depletion.
+**A C–V curve by hand.** A capacitor has a 5 nm oxide, $N_A$ = 5 × 10¹⁶ cm⁻³ and an n⁺ gate. Find (a) $C_{ox}$ and $V_{FB}$; (b) the Debye length and $C_{FB}$; (c) $W_{d\max}$ and the high-frequency $C_{\min}$; (d) the depletion width and capacitance at $V_g$ = 0; (e) the slope of $1/C^2$ against $V_g$ in depletion.
 
 ### Problem 09-08.11 [B]
 

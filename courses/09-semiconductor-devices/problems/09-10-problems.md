@@ -56,7 +56,7 @@ Using $V_{DS}/I_D = R_{ds} + (L_{drawn} - \Delta L)/(WC_{ox}\mu_{ns}V_{ov})$, fi
 
 ### Problem 09-10.10 [B]
 
-**A multi-threshold library.** A library offers low, standard and high thresholds of 0.20, 0.27 and 0.34 V, with $S$ = 75 mV/decade at $V_{DD}$ = 0.7 V. Taking the on-current proportional to $V_{DD} - V_t$ (velocity-saturated), find each flavor's off-current and on-current relative to the low-$V_t$ device. If 5% of a block's transistors use low $V_t$ and the rest high $V_t$, what is the block's leakage relative to an all-low-$V_t$ design?
+**A multi-threshold library.** A library offers low, standard and high thresholds of 0.20, 0.27 and 0.34 V, with $S$ = 75 mV/decade at $V_{DD}$ = 0.7 V. Taking the on-current proportional to $V_{DD} - V_{TH}$ (velocity-saturated), find each flavor's off-current and on-current relative to the low-$V_{TH}$ device. If 5% of a block's transistors use low $V_{TH}$ and the rest high $V_{TH}$, what is the block's leakage relative to an all-low-$V_{TH}$ design?
 
 ### Problem 09-10.11 [B]
 
@@ -72,7 +72,7 @@ Using $V_{DS}/I_D = R_{ds} + (L_{drawn} - \Delta L)/(WC_{ox}\mu_{ns}V_{ov})$, fi
 
 ### Problem 09-10.14 [C]
 
-**Doping and dopant fluctuation (numerical).** A planar NMOS has $W = L$ = 40 nm and a 1.5 nm oxide, with uniform doping and $W_{dep}$ set by the threshold condition ($\phi_s = 2\phi_B$). (a) At $N_A$ = 10¹⁸ cm⁻³, find $\phi_B$, $W_{dep}$, the mean dopant count and the depth-weighted $\sigma_{V_t}$. (b) Find the matching coefficient $A_{V_t} = \sigma_{V_t}\sqrt{WL}$ (mV·µm). (c) Find the doping at which $\sigma_{V_t}$ reaches 30 mV, and the mean dopant count there.
+**Doping and dopant fluctuation (numerical).** A planar NMOS has $W = L$ = 40 nm and a 1.5 nm oxide, with uniform doping and $W_{dep}$ set by the threshold condition ($\phi_s = 2\phi_B$). (a) At $N_A$ = 10¹⁸ cm⁻³, find $\phi_B$, $W_{dep}$, the mean dopant count and the depth-weighted $\sigma_{V_{TH}}$. (b) Find the matching coefficient $A_{V_{TH}} = \sigma_{V_{TH}}\sqrt{WL}$ (mV·µm). (c) Find the doping at which $\sigma_{V_{TH}}$ reaches 30 mV, and the mean dopant count there.
 
 ### Problem 09-10.15 [C]
 

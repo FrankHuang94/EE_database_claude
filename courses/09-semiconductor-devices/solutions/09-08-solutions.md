@@ -14,13 +14,13 @@ Problems: [09-08 problems](../problems/09-08-problems.md) · Chapter: [09-08](..
 
 ### Solution 09-08.1
 
-$V_{fb} = \psi_g - \psi_s$.
+$V_{FB} = \psi_g - \psi_s$.
 
-(a) $E_C - E_F = 1.12 - V_T\ln(1.8\times10^{19}/10^{16})$ = 0.9262 eV, so $V_{fb} = 4.05 - (4.05 + 0.9262)$ = **−0.9262** V.
+(a) $E_C - E_F = 1.12 - V_T\ln(1.8\times10^{19}/10^{16})$ = 0.9262 eV, so $V_{FB} = 4.05 - (4.05 + 0.9262)$ = **−0.9262** V.
 
-(b) For the n-body, $E_C - E_F = V_T\ln(3.2\times10^{19}/10^{17})$ = 0.1491 eV, so $\psi_s$ = 4.199 V and $V_{fb} = 5.17 - 4.199$ = **0.9709** V.
+(b) For the n-body, $E_C - E_F = V_T\ln(3.2\times10^{19}/10^{17})$ = 0.1491 eV, so $\psi_s$ = 4.199 V and $V_{FB} = 5.17 - 4.199$ = **0.9709** V.
 
-(c) $V_{fb} = 4.6 - 4.976$ = **−0.3762** V. A mid-gap metal gives a flat band between those of n⁺ and p⁺ poly.
+(c) $V_{FB} = 4.6 - 4.976$ = **−0.3762** V. A mid-gap metal gives a flat band between those of n⁺ and p⁺ poly.
 
 ### Solution 09-08.2
 
@@ -32,11 +32,11 @@ $V_{fb} = \psi_g - \psi_s$.
 
 ### Solution 09-08.3
 
-$C_{ox}$ = **690.6** nF/cm². $Q_{acc} = -C_{ox}(V_g - V_{fb})$ = +**1.036 × 10⁻⁶** C/cm², which is **6.47 × 10¹²** holes per cm².
+$C_{ox}$ = **690.6** nF/cm². $Q_{acc} = -C_{ox}(V_g - V_{FB})$ = +**1.036 × 10⁻⁶** C/cm², which is **6.47 × 10¹²** holes per cm².
 
 ### Solution 09-08.4
 
-Solve $V_g = V_{fb} + qN_AW^2/2\varepsilon_s + qN_AW/C_{ox}$:
+Solve $V_g = V_{FB} + qN_AW^2/2\varepsilon_s + qN_AW/C_{ox}$:
 
 - at −0.5 V, $W$ = **54.7** nm and $\phi_s$ = **0.232** V;
 - at +0.2 V, $W$ = **97.4** nm and $\phi_s$ = **0.734** V.
@@ -47,7 +47,7 @@ Both are below the threshold surface potential of 0.833 V.
 
 With $C_{ox}$ = 1151 nF/cm²:
 
-| $N_A$ (cm⁻³) | $V_{fb}$ (V) | $V_t$ (V) |
+| $N_A$ (cm⁻³) | $V_{FB}$ (V) | $V_{TH}$ (V) |
 |---|---|---|
 | 10¹⁶ | **−0.9262** | **−0.1696** |
 | 10¹⁷ | **−0.9858** | **−0.0079** |
@@ -57,14 +57,14 @@ At thin oxides the depletion-charge term shrinks ($C_{ox}$ is large), so an n⁺
 
 ### Solution 09-08.6
 
-Root finding on $V_t(N_A)$ = 0.4 V gives $N_A$ = **1.015 × 10¹⁸** cm⁻³.
+Root finding on $V_{TH}(N_A)$ = 0.4 V gives $N_A$ = **1.015 × 10¹⁸** cm⁻³.
 
 ### Solution 09-08.7
 
-$\phi_B = V_T\ln(10^{17}/10^{10})$ = **0.4167** V. $V_{fb}$ = **0.9709** V (Solution 09-08.1(b)). Then
+$\phi_B = V_T\ln(10^{17}/10^{10})$ = **0.4167** V. $V_{FB}$ = **0.9709** V (Solution 09-08.1(b)). Then
 
 $$
-V_t = 0.9709 - 0.8334 - \frac{\sqrt{2qN_D\varepsilon_s(0.8334)}}{1151\text{ nF/cm}^2} = \mathbf{-0.0070}\text{ V} ,
+V_{TH} = 0.9709 - 0.8334 - \frac{\sqrt{2qN_D\varepsilon_s(0.8334)}}{1151\text{ nF/cm}^2} = \mathbf{-0.0070}\text{ V} ,
 $$
 
 the mirror image of the n-channel case.
@@ -77,9 +77,9 @@ the mirror image of the n-channel case.
 
 ### Solution 09-08.9
 
-Root finding on $V_g = V_{fb} + \phi_s - Q_s/C_{ox}$ with the exact $Q_s$:
+Root finding on $V_g = V_{FB} + \phi_s - Q_s/C_{ox}$ with the exact $Q_s$:
 
-| $V_g - V_t$ | $\phi_s$ (V) | exact $Q_{inv}$ (C/cm²) | sheet $C_{ox}(V_g - V_t)$ | ratio |
+| $V_g - V_{TH}$ | $\phi_s$ (V) | exact $Q_{inv}$ (C/cm²) | sheet $C_{ox}(V_g - V_{TH})$ | ratio |
 |---|---|---|---|---|
 | 0.5 V | **0.9432** | **1.265 × 10⁻⁷** | **1.727 × 10⁻⁷** | **0.733** |
 | 1.5 V | **0.9899** | **4.514 × 10⁻⁷** | **5.180 × 10⁻⁷** | **0.871** |
@@ -88,7 +88,7 @@ The sheet model overestimates the inversion charge most near threshold. The defi
 
 ### Solution 09-08.10
 
-(a) $C_{ox}$ = **690.6** nF/cm² and $V_{fb}$ = **−0.9678** V.
+(a) $C_{ox}$ = **690.6** nF/cm² and $V_{FB}$ = **−0.9678** V.
 
 (b) $L_D$ = **18.28** nm, so $C_{FB} = (1/C_{ox} + L_D/\varepsilon_s)^{-1}$ = **311.2** nF/cm².
 
@@ -104,9 +104,9 @@ The sheet model overestimates the inversion charge most near threshold. The defi
 
 (b) Root finding on $C_{\min}/C_{ox}$ = 0.0760 gives $N_A$ = **3.00 × 10¹⁶** cm⁻³.
 
-(c) The ideal $V_{fb} = 4.05 - \psi_s$ = **−0.9546** V.
+(c) The ideal $V_{FB} = 4.05 - \psi_s$ = **−0.9546** V.
 
-(d) $\Delta V_{fb}$ = −1.05 + 0.9546 = **−0.0954** V, so $Q_{ox} = -C_{ox}\Delta V_{fb}$ = **6.59 × 10⁻⁸** C/cm², which is **4.11 × 10¹¹** positive charges per cm².
+(d) $\Delta V_{FB}$ = −1.05 + 0.9546 = **−0.0954** V, so $Q_{ox} = -C_{ox}\Delta V_{FB}$ = **6.59 × 10⁻⁸** C/cm², which is **4.11 × 10¹¹** positive charges per cm².
 
 ### Solution 09-08.12
 
@@ -153,9 +153,9 @@ The first is an underestimate of the time, because the depletion region shrinks 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
-| 09-08.1a | V_fb, n⁺ on p 1e16 | -0.9262 | V |
-| 09-08.1b | V_fb, p⁺ on n 1e17 | 0.9709 | V |
-| 09-08.1c | V_fb, 4.6 V metal on p 1e16 | -0.3762 | V |
+| 09-08.1a | V_FB, n⁺ on p 1e16 | -0.9262 | V |
+| 09-08.1b | V_FB, p⁺ on n 1e17 | 0.9709 | V |
+| 09-08.1c | V_FB, 4.6 V metal on p 1e16 | -0.3762 | V |
 | 09-08.1d | E_C − E_F, p 1e16 | 0.9262 | eV |
 | 09-08.1e | E_C − E_F, n 1e17 | 0.1491 | eV |
 | 09-08.1f | ψ_s, n 1e17 | 4.199 | V |
@@ -171,31 +171,31 @@ The first is an underestimate of the time, because the depletion region shrinks 
 | 09-08.4b | φ_s at −0.5 V | 0.232 | V |
 | 09-08.4c | W at +0.2 V | 97.4 | nm |
 | 09-08.4d | φ_s at +0.2 V | 0.734 | V |
-| 09-08.5a | V_fb, 1e16 | -0.9262 | V |
-| 09-08.5b | V_t, 1e16 | -0.1696 | V |
-| 09-08.5c | V_fb, 1e17 | -0.9858 | V |
-| 09-08.5d | V_t, 1e17 | -0.0079 | V |
-| 09-08.5e | V_fb, 1e18 | -1.0453 | V |
-| 09-08.5f | V_t, 1e18 | 0.3956 | V |
-| 09-08.6a | doping for V_t = 0.4 V | 1.015e18 | cm⁻³ |
+| 09-08.5a | V_FB, 1e16 | -0.9262 | V |
+| 09-08.5b | V_TH, 1e16 | -0.1696 | V |
+| 09-08.5c | V_FB, 1e17 | -0.9858 | V |
+| 09-08.5d | V_TH, 1e17 | -0.0079 | V |
+| 09-08.5e | V_FB, 1e18 | -1.0453 | V |
+| 09-08.5f | V_TH, 1e18 | 0.3956 | V |
+| 09-08.6a | doping for V_TH = 0.4 V | 1.015e18 | cm⁻³ |
 | 09-08.7a | φ_B, n 1e17 | 0.4167 | V |
-| 09-08.7b | V_fb | 0.9709 | V |
-| 09-08.7c | V_t | -0.0070 | V |
+| 09-08.7b | V_FB | 0.9709 | V |
+| 09-08.7c | V_TH | -0.0070 | V |
 | 09-08.8a | C_ox, 2 nm | 1.727 | µF/cm² |
 | 09-08.8b | Q_inv | 1.381e-6 | C/cm² |
 | 09-08.8c | n_s | 8.62e12 | cm⁻² |
 | 09-08.8d | sheet resistance | 2896 | Ω/□ |
 | 09-08.8e | 10-square channel resistance | 29.0 | kΩ |
-| 09-08.9a | φ_s at V_t + 0.5 V | 0.9432 | V |
-| 09-08.9b | exact Q_inv at V_t + 0.5 V | 1.265e-7 | C/cm² |
-| 09-08.9c | sheet Q_inv at V_t + 0.5 V | 1.727e-7 | C/cm² |
-| 09-08.9d | ratio at V_t + 0.5 V | 0.733 | — |
-| 09-08.9e | φ_s at V_t + 1.5 V | 0.9899 | V |
-| 09-08.9f | exact Q_inv at V_t + 1.5 V | 4.514e-7 | C/cm² |
-| 09-08.9g | sheet Q_inv at V_t + 1.5 V | 5.180e-7 | C/cm² |
-| 09-08.9h | ratio at V_t + 1.5 V | 0.871 | — |
+| 09-08.9a | φ_s at V_TH + 0.5 V | 0.9432 | V |
+| 09-08.9b | exact Q_inv at V_TH + 0.5 V | 1.265e-7 | C/cm² |
+| 09-08.9c | sheet Q_inv at V_TH + 0.5 V | 1.727e-7 | C/cm² |
+| 09-08.9d | ratio at V_TH + 0.5 V | 0.733 | — |
+| 09-08.9e | φ_s at V_TH + 1.5 V | 0.9899 | V |
+| 09-08.9f | exact Q_inv at V_TH + 1.5 V | 4.514e-7 | C/cm² |
+| 09-08.9g | sheet Q_inv at V_TH + 1.5 V | 5.180e-7 | C/cm² |
+| 09-08.9h | ratio at V_TH + 1.5 V | 0.871 | — |
 | 09-08.10a | C_ox, 5 nm | 690.6 | nF/cm² |
-| 09-08.10b | V_fb, 5e16 | -0.9678 | V |
+| 09-08.10b | V_FB, 5e16 | -0.9678 | V |
 | 09-08.10c | L_D | 18.28 | nm |
 | 09-08.10d | C_FB | 311.2 | nF/cm² |
 | 09-08.10e | W_dmax | 143.6 | nm |
@@ -206,8 +206,8 @@ The first is an underestimate of the time, because the depletion region shrinks 
 | 09-08.11a | T_ox | 5.00 | nm |
 | 09-08.11b | C_min/C_ox | 0.0760 | — |
 | 09-08.11c | N_A | 3.00e16 | cm⁻³ |
-| 09-08.11d | ideal V_fb | -0.9546 | V |
-| 09-08.11e | ΔV_fb | -0.0954 | V |
+| 09-08.11d | ideal V_FB | -0.9546 | V |
+| 09-08.11e | ΔV_FB | -0.0954 | V |
 | 09-08.11f | Q_ox | 6.59e-8 | C/cm² |
 | 09-08.11g | oxide charges per cm² | 4.11e11 | cm⁻² |
 | 09-08.12a | C_ox, 20 nm | 172.7 | nF/cm² |

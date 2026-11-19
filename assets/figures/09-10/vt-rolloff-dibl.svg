@@ -672,8 +672,8 @@ L 368.218608 31.092281
      </g>
     </g>
     <g id="text_14">
-     <!-- $V_t$ (V) -->
-     <g transform="translate(16.8875 136.409766) rotate(-90) scale(0.1 -0.1)">
+     <!-- $V_{TH}$ (V) -->
+     <g transform="translate(16.8875 139.809766) rotate(-90) scale(0.1 -0.1)">
       <defs>
        <path id="DejaVuSans-Oblique-39" d="M 1319 0 
 L 500 4666 
@@ -685,29 +685,30 @@ L 2053 0
 L 1319 0 
 z
 " transform="scale(0.015625)"/>
-       <path id="DejaVuSans-Oblique-57" d="M 2706 3500 
-L 2619 3053 
-L 1472 3053 
-L 1100 1153 
-Q 1081 1047 1072 975 
-Q 1063 903 1063 863 
-Q 1063 663 1183 572 
-Q 1303 481 1569 481 
-L 2150 481 
-L 2053 0 
-L 1503 0 
-Q 991 0 739 200 
-Q 488 400 488 806 
-Q 488 878 497 964 
-Q 506 1050 525 1153 
-L 897 3053 
-L 409 3053 
-L 500 3500 
-L 978 3500 
-L 1172 4494 
-L 1747 4494 
-L 1556 3500 
-L 2706 3500 
+       <path id="DejaVuSans-Oblique-37" d="M 378 4666 
+L 4325 4666 
+L 4225 4134 
+L 2559 4134 
+L 1759 0 
+L 1125 0 
+L 1925 4134 
+L 275 4134 
+L 378 4666 
+z
+" transform="scale(0.015625)"/>
+       <path id="DejaVuSans-Oblique-2b" d="M 1081 4666 
+L 1716 4666 
+L 1344 2753 
+L 3634 2753 
+L 4006 4666 
+L 4641 4666 
+L 3731 0 
+L 3097 0 
+L 3531 2222 
+L 1241 2222 
+L 806 0 
+L 172 0 
+L 1081 4666 
 z
 " transform="scale(0.015625)"/>
        <path id="Inter-Regular-1c9" d="M 1875 0 
@@ -724,11 +725,12 @@ z
 " transform="scale(0.015625)"/>
       </defs>
       <use xlink:href="#DejaVuSans-Oblique-39" transform="translate(0 0.796875)"/>
-      <use xlink:href="#DejaVuSans-Oblique-57" transform="translate(68.408203 -14.203076) scale(0.7)"/>
-      <use xlink:href="#Inter-Regular-6eb" transform="translate(98.588867 0.796875)"/>
-      <use xlink:href="#Inter-Regular-59f" transform="translate(126.713867 0.796875)"/>
-      <use xlink:href="#Inter-Regular-1c9" transform="translate(163.188477 0.796875)"/>
-      <use xlink:href="#Inter-Regular-5a0" transform="translate(232.182617 0.796875)"/>
+      <use xlink:href="#DejaVuSans-Oblique-37" transform="translate(68.408203 -14.203076) scale(0.7)"/>
+      <use xlink:href="#DejaVuSans-Oblique-2b" transform="translate(111.166992 -14.203076) scale(0.7)"/>
+      <use xlink:href="#Inter-Regular-6eb" transform="translate(166.538086 0.796875)"/>
+      <use xlink:href="#Inter-Regular-59f" transform="translate(194.663086 0.796875)"/>
+      <use xlink:href="#Inter-Regular-1c9" transform="translate(231.137695 0.796875)"/>
+      <use xlink:href="#Inter-Regular-5a0" transform="translate(300.131836 0.796875)"/>
      </g>
     </g>
    </g>
@@ -831,7 +833,7 @@ L 368.218608 224.000781
 " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_15">
-    <!-- long-channel $V_t$ -->
+    <!-- long-channel $V_{TH}$ -->
     <g transform="translate(252.25445 28.151606) scale(0.08 -0.08)">
      <defs>
       <path id="Inter-Regular-318" d="M 1916 -75 
@@ -869,7 +871,8 @@ z
      <use xlink:href="#Inter-Regular-2e2" transform="translate(599.462891 0.09375)"/>
      <use xlink:href="#Inter-Regular-6eb" transform="translate(623.681641 0.09375)"/>
      <use xlink:href="#DejaVuSans-Oblique-39" transform="translate(651.806641 0.09375)"/>
-     <use xlink:href="#DejaVuSans-Oblique-57" transform="translate(720.214844 -14.906201) scale(0.7)"/>
+     <use xlink:href="#DejaVuSans-Oblique-37" transform="translate(720.214844 -14.906201) scale(0.7)"/>
+     <use xlink:href="#DejaVuSans-Oblique-2b" transform="translate(762.973633 -14.906201) scale(0.7)"/>
     </g>
    </g>
    <g id="text_16">

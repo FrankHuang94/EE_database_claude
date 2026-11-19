@@ -37,7 +37,7 @@ Chapters 09-08 to 09-10 built one transistor. A chip uses billions of them, most
 
 **A finance analogy: compounding.** Moore's law is a compound-growth rate. A doubling every two years is 41% a year, and the same arithmetic as a high-growth company's revenue applies, including the warning that no exponential runs forever. *Where the analogy breaks:* in finance, a growth rate is an outcome. Moore's law was also a coordination device: the industry planned tools, materials and designs around it, so the forecast helped cause itself.
 
-*Figure 1. Static transfer curve of a CMOS inverter at $V_{DD}$ = 1.0 V with $V_{tn} = |V_{tp}|$ = 0.3 V and $\mu_n/\mu_p$ = 2 (square-law model, Example 09-11.1). With equal widths the switching point sits below $V_{DD}/2$; doubling the p-channel width centers it.*
+*Figure 1. Static transfer curve of a CMOS inverter at $V_{DD}$ = 1.0 V with $V_{TN} = |V_{TP}|$ = 0.3 V and $\mu_n/\mu_p$ = 2 (square-law model, Example 09-11.1). With equal widths the switching point sits below $V_{DD}/2$; doubling the p-channel width centers it.*
 
 ![CMOS inverter transfer curves](../../../assets/figures/09-11/cmos-inverter-vtc.svg)
 
@@ -49,22 +49,22 @@ An n-channel MOSFET (NMOS) connects the output to ground; a p-channel MOSFET (PM
 
 Three regions follow directly:
 
-- $V_{in} < V_{tn}$: the NMOS is off, so $V_{out} = V_{DD}$ exactly.
-- $V_{in} > V_{DD} - |V_{tp}|$: the PMOS is off, so $V_{out} = 0$.
+- $V_{in} < V_{TN}$: the NMOS is off, so $V_{out} = V_{DD}$ exactly.
+- $V_{in} > V_{DD} - |V_{TP}|$: the PMOS is off, so $V_{out} = 0$.
 - In between, both conduct, and the output swings steeply from high to low.
 
-Hu stresses the consequence: an input anywhere between 0 and $V_{tn}$ still produces a perfect $V_{DD}$ output, so a chain of gates cleans up noise instead of accumulating it. The inverter is **regenerative** [1].
+Hu stresses the consequence: an input anywhere between 0 and $V_{TN}$ still produces a perfect $V_{DD}$ output, so a chain of gates cleans up noise instead of accumulating it. The inverter is **regenerative** [1].
 
 **The switching threshold.** The switching threshold $V_M$ is the input at which $V_{out} = V_{in}$. There both transistors are saturated. With square-law devices ($m$ = 1) and $k_n = \mu_nC_{ox}W_n/L$, $k_p = \mu_pC_{ox}W_p/L$:
 
 $$
-\frac{k_n}{2}(V_M - V_{tn})^2 = \frac{k_p}{2}(V_{DD} - V_M - |V_{tp}|)^2 .
+\frac{k_n}{2}(V_M - V_{TN})^2 = \frac{k_p}{2}(V_{DD} - V_M - |V_{TP}|)^2 .
 $$
 
 Take square roots (both sides positive) and solve for $V_M$, with $r = k_n/k_p$:
 
 $$
-V_M = \frac{V_{tn}\sqrt r + V_{DD} - |V_{tp}|}{1 + \sqrt r} .
+V_M = \frac{V_{TN}\sqrt r + V_{DD} - |V_{TP}|}{1 + \sqrt r} .
 $$
 
 For $r$ = 1 and matched thresholds, $V_M = V_{DD}/2$. Holes are less mobile, so equal widths give $r = \mu_n/\mu_p > 1$ and pull $V_M$ below the midpoint. A symmetric curve needs $W_p/W_n \approx \mu_n/\mu_p$. Hu notes that the ratio "is usually around two" [1]. In short-channel devices velocity saturation narrows the NMOS–PMOS gap (09-10 Problem 4), so the required ratio is smaller than the mobility ratio.
@@ -116,7 +116,7 @@ The law is compound growth. With a doubling time $T_2$, the count grows as $N(t)
 
 ### 3.5 Constant-field (Dennard) scaling
 
-In 1974 Dennard and colleagues showed how to scale a MOSFET without changing its internal fields [5]. The rules follow from the device equations you already have. Scale every length by $1/\kappa$ ($\kappa > 1$): $L$, $W$, $T_{ox}$, junction depth and wiring. Scale every voltage ($V_{DD}$, $V_t$) by $1/\kappa$ too. Raise the doping by $\kappa$. Then:
+In 1974 Dennard and colleagues showed how to scale a MOSFET without changing its internal fields [5]. The rules follow from the device equations you already have. Scale every length by $1/\kappa$ ($\kappa > 1$): $L$, $W$, $T_{ox}$, junction depth and wiring. Scale every voltage ($V_{DD}$, $V_{TH}$) by $1/\kappa$ too. Raise the doping by $\kappa$. Then:
 
 - **Fields** ($V/L$, $V/T_{ox}$) are unchanged, so mobility, velocity saturation, oxide stress and breakdown are unchanged.
 - **Depletion widths** $\sqrt{2\varepsilon_sV/qN}$ scale as $\sqrt{(1/\kappa)/\kappa} = 1/\kappa$, in step with the geometry, so the device's electrostatics (the shape of the potential, 09-10 §3.4) are preserved.
@@ -147,7 +147,7 @@ Within those limits, this was the golden era: every node gave twice the transist
 
 ### 3.6 Why Dennard scaling ended
 
-The weak link is the threshold voltage. Constant-field scaling requires $V_t$ to fall by $1/\kappa$ with the supply. But the subthreshold swing does not scale: it is fixed by $kT/q$ at about 60 mV/decade or worse (09-09, 09-10). Every 60–90 mV of threshold removed multiplies the off-current by ten. So the threshold could not keep falling without leakage exploding. With $V_t$ stuck, the supply had to stay well above it to keep $I_{on}$ (09-10 §3.5), and $V_{DD}$ stalled around 1 V in the 2000s (Hu's Table 7–1 lists 1.2 V at 90 nm and 0.9 V at 22 nm for high-performance devices [2]). Hu recalls the break in the pattern: 2.5 V at 250 nm, 1.8 V at 180 nm and 1.3 V at 130 nm, but 1.2 V instead of 0.9 V at 90 nm, and still 0.9 V instead of 0.45 V at 45 nm [10] **[Established]**.
+The weak link is the threshold voltage. Constant-field scaling requires $V_{TH}$ to fall by $1/\kappa$ with the supply. But the subthreshold swing does not scale: it is fixed by $kT/q$ at about 60 mV/decade or worse (09-09, 09-10). Every 60–90 mV of threshold removed multiplies the off-current by ten. So the threshold could not keep falling without leakage exploding. With $V_{TH}$ stuck, the supply had to stay well above it to keep $I_{on}$ (09-10 §3.5), and $V_{DD}$ stalled around 1 V in the 2000s (Hu's Table 7–1 lists 1.2 V at 90 nm and 0.9 V at 22 nm for high-performance devices [2]). Hu recalls the break in the pattern: 2.5 V at 250 nm, 1.8 V at 180 nm and 1.3 V at 130 nm, but 1.2 V instead of 0.9 V at 90 nm, and still 0.9 V instead of 0.45 V at 45 nm [10] **[Established]**.
 
 With voltage roughly constant and dimensions still shrinking, the right-hand column of the table applies: power density rises by $\kappa^2$ per node if frequency keeps rising. The IRDS describes the outcome. Microprocessors "reached the power limits in 2004 and from then on multicore architecture with limited operational frequency (~5GHz) became the new norm" [6] **[Established]**. It cites Intel's Pentium 4 Prescott (2004) at about 115 W and power densities of around 100 W/cm² as the point where frequency scaling stopped [6] **[Established]**. The industry turned extra transistors into more cores instead of higher clocks [6].
 
@@ -169,7 +169,7 @@ A standard cell's area is roughly (number of gate pitches it spans) × CPP × ce
 
 ### Example 09-11.1 · Switching threshold and noise margins (tier B)
 
-**Setup.** A CMOS inverter at $V_{DD}$ = 1.0 V has $V_{tn} = |V_{tp}|$ = 0.3 V and square-law transistors of equal length with $\mu_n/\mu_p$ = 2. (a) Find $V_M$ with equal widths. (b) What $W_p/W_n$ centers $V_M$ at 0.5 V? (c) For the symmetric inverter, find $V_{IL}$, $V_{IH}$ and the noise margins.
+**Setup.** A CMOS inverter at $V_{DD}$ = 1.0 V has $V_{TN} = |V_{TP}|$ = 0.3 V and square-law transistors of equal length with $\mu_n/\mu_p$ = 2. (a) Find $V_M$ with equal widths. (b) What $W_p/W_n$ centers $V_M$ at 0.5 V? (c) For the symmetric inverter, find $V_{IL}$, $V_{IH}$ and the noise margins.
 
 **Solution.**
 
@@ -249,9 +249,9 @@ Constant voltage, frequency ∝ κ: power per circuit stays 1, so power density 
 
 ### Example 09-11.6 · Why the threshold could not follow (tier B)
 
-**Setup.** A technology has $V_t$ = 0.45 V and $S$ = 85 mV/decade. If the threshold scaled by 0.7 per node for three nodes at the same swing, what would it become, and by what factor would the off-current rise?
+**Setup.** A technology has $V_{TH}$ = 0.45 V and $S$ = 85 mV/decade. If the threshold scaled by 0.7 per node for three nodes at the same swing, what would it become, and by what factor would the off-current rise?
 
-**Solution.** $V_t$ = 0.45 × 0.7³ = **0.154** V. The off-current rises by $10^{(0.45 - 0.154)/0.085}$ = **3.0 × 10³**.
+**Solution.** $V_{TH}$ = 0.45 × 0.7³ = **0.154** V. The off-current rises by $10^{(0.45 - 0.154)/0.085}$ = **3.0 × 10³**.
 
 **Sanity check.** A three-thousandfold leakage increase in three nodes, on top of doubling the transistor count each node, would make static power dominate any chip. Thresholds therefore stalled, and supplies with them (§3.6).
 
@@ -312,7 +312,7 @@ Constant voltage, frequency ∝ κ: power per circuit stays 1, so power density 
 | Ex 09-11.5g | power density, constant V, four nodes | 17.3 | — |
 | Ex 09-11.5h | power density, constant V and f | 1.43 | — |
 | Ex 09-11.5i | 25 W/cm² after four constant-V nodes | 434 | W/cm² |
-| Ex 09-11.6a | scaled V_t | 0.154 | V |
+| Ex 09-11.6a | scaled V_TH | 0.154 | V |
 | Ex 09-11.6b | off-current factor | 3.0e3 | — |
 | Ex 09-11.7a | IRDS 3nm pitch product | 7680 | nm² |
 | Ex 09-11.7b | IRDS 2nm pitch product | 5760 | nm² |
@@ -347,11 +347,11 @@ The lab, [labs/09-11-lab](../labs/09-11-lab/README.md), has a notebook and an ng
 
 | Knob | Improves | Costs | Typical decision owner |
 |---|---|---|---|
-| Lower $V_{DD}$ | Dynamic power (∝ $V_{DD}^2$), energy per operation | Speed ($I_{on}$), noise margin, sensitivity to $V_t$ variation | Product architects, circuit designers |
+| Lower $V_{DD}$ | Dynamic power (∝ $V_{DD}^2$), energy per operation | Speed ($I_{on}$), noise margin, sensitivity to $V_{TH}$ variation | Product architects, circuit designers |
 | Higher clock frequency | Throughput per core | Power ∝ $f$ (and more if $V_{DD}$ must rise) | Product architects |
 | More cores or accelerators | Throughput per watt | Area, software effort, dark (idle) silicon | Architects, software |
 | Wider PMOS ($W_p/W_n$) | Symmetric transfer curve, equal rise and fall | Input capacitance, area | Standard-cell designers |
-| Lower $V_t$ flavor | $I_{on}$, speed | $I_{off}$ ×10 per $S$ (09-10) | Circuit designers, per path |
+| Lower $V_{TH}$ flavor | $I_{on}$, speed | $I_{off}$ ×10 per $S$ (09-10) | Circuit designers, per path |
 | Shorter cell height (fewer tracks) | Density | Routing congestion, drive strength | Technology and library teams |
 | New node | Density, energy per switch | Wafer cost, design cost, schedule risk | Executives, foundry |
 

@@ -117,12 +117,13 @@ LD = 10e-7
 rolloff = lambda L, vds, ld=LD: (vds + 0.4) * math.exp(-L / ld)
 for L, ids in ((50e-7, "abcde"), (30e-7, "fghij"), (20e-7, "klmno")):
     a, b = rolloff(L, 0.05), rolloff(L, 1.0)
-    dibl = -(np.gradient([-rolloff(L, x) for x in (0.05, 1.0)], [0.05, 1.0])[0])  # slope of V_t against V_DS
+    dibl = -(np.gradient([-rolloff(L, x) for x in (0.05, 1.0)], [0.05, 1.0])[0])  # slope of V_TH against V_DS
     v.check(f"Ex 09-10.3{ids[0]}", math.exp(-L / LD))
     v.check(f"Ex 09-10.3{ids[1]}", a * 1e3)
     v.check(f"Ex 09-10.3{ids[2]}", b * 1e3)
     v.check(f"Ex 09-10.3{ids[3]}", dibl * 1e3)
     v.check(f"Ex 09-10.3{ids[4]}", 10 ** (b / 0.080))
+    v.check(f"Ex 09-10.3{ {50: 'p', 30: 'q', 20: 'r'}[round(L * 1e7)] }", 10 ** ((b - a) / 0.080))
 
 # ------------------------------------------------------------------ Example 09-10.4
 for S, ids in ((0.060, "abc"), (0.070, "def"), (0.090, "ghi")):
@@ -167,6 +168,12 @@ v.check("Ex 09-10.6d", Q * NA6 * Wd6 / COX)
 v.check("Ex 09-10.6e", Q * math.sqrt(N6) / (COX * Wg6 * Lg6) * 1e3)
 s6 = sigma_weighted(NA6, Wd6, Wg6, Lg6, COX)
 v.check("Ex 09-10.6f", s6 * 1e3)
+pB6 = brentq(lambda p: NI * math.exp(p / VT) - NA6, 0, 1)
+Wmax6 = brentq(lambda W: Q * NA6 * W**2 / (2 * EPS) - 2 * pB6, 1e-8, 1e-4)   # depletion depth at phi_s = 2 phi_B
+v.check("Ex 09-10.6g", Wmax6 * 1e7)
+v.check("Ex 09-10.6h", brentq(lambda vsb: math.sqrt(2 * EPS * (2 * pB6 + vsb) / (Q * NA6)) - Wd6, 0, 5))
+# leakage ratio between 20 nm and 50 nm at 1 V
+v.check("Ex 09-10.3s", 10 ** ((rolloff(20e-7, 1.0) - rolloff(50e-7, 1.0)) / 0.080))
 rng = np.random.default_rng(20261119)
 counts = rng.poisson(N6, 40000)
 dv = np.array([Q * np.sum(1 - rng.uniform(0, 1, n)) / (COX * Wg6 * Lg6) for n in counts])
@@ -175,7 +182,8 @@ v.assert_true("Monte Carlo dopant spread within 1.5% of the depth-weighted formu
 
 # ------------------------------------------------------------------ Practitioner keys (IRDS 2024 MM01, quoted)
 for k_, val in (("P 09-10.a", 82), ("P 09-10.b", 70), ("P 09-10.c", 0.70), ("P 09-10.d", 0.60),
-                ("P 09-10.e", 16), ("P 09-10.f", 12)):
+                ("P 09-10.e", 16), ("P 09-10.f", 12), ("P 09-10.g", 271), ("P 09-10.h", 179.8),
+                ("P 09-10.i", 9e6), ("P 09-10.j", 0.5 * 1.6e7)):
     v.check(k_, val)
 
 # ------------------------------------------------------------------ Solutions

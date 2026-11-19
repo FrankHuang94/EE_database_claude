@@ -65,7 +65,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 09-06.14 [C]
 
-**Rectifier losses at temperature.** A 5 A rectifier conducts half the time and blocks 20 V the other half, at a junction temperature of 373.15 K. Compare (i) a Schottky diode, $\phi_{Bn}$ = 0.60 V, area 0.05 cm², $K$ = 100 A/(cm²·K²), and (ii) a PN diode of the same area with $J_s$ = 1 × 10⁻¹² A/cm² at 300 K, scaling as $n_i^2$. Ignore series resistance and treat the reverse current as $I_0$. (a) Find each one's $I_0$ and forward drop at 5 A. (b) Find the conduction loss, the leakage loss and the total for each. (c) For the Schottky diode, show that the total loss is minimized when $I_0 = V_T(\text{duty} \times I_F)/(\text{duty} \times V_R)$, find the optimum barrier height and the minimum loss, and comment on how flat the optimum is.
+**Rectifier losses at temperature.** A 5 A rectifier conducts half the time and blocks 20 V the other half, at a junction temperature of 373.15 K. Compare (i) a Schottky diode, $\phi_{Bn}$ = 0.60 V, area 0.05 cm², $K$ = 100 A/(cm²·K²), and (ii) a PN diode of the same area with $J_s$ = 1 × 10⁻¹² A/cm² at 300 K, scaling as $n_i^2$. Ignore series resistance and treat the reverse current as $I_0$. (a) Find each one's $I_0$ and forward drop at 5 A. (b) Find the conduction loss, the leakage loss and the total for each. (c) For the Schottky diode, show that the total loss is minimized when $I_0 = V_T(\text{duty} \times I_F)/[(1 - \text{duty}) \times V_R]$, find the optimum barrier height and the minimum loss, and comment on how flat the optimum is.
 
 ### Problem 09-06.15 [C]
 

@@ -3,7 +3,7 @@
 
 Run from anywhere:  python assets/figures/src/fig_09_09.py
 Outputs assets/figures/09-09/mosfet-channel-iv.svg for the chapter's transistor (W = 10 um, L = 1 um,
-4 nm oxide, N_A = 5e17 cm^-3, V_t = 0.4 V, m = 1.246, mu = 315.1 cm^2/Vs, V_GS = 1.2 V):
+4 nm oxide, N_A = 5e17 cm^-3, V_TH = 0.4 V, m = 1.246, mu = 315.1 cm^2/Vs, V_GS = 1.2 V):
 (a) channel potential along the channel and (b) inversion charge along the channel for several V_DS, from
 current continuity; (c) output characteristics for several V_GS (bulk-charge model) with the V_Dsat locus.
 """

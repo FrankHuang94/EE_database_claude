@@ -60,7 +60,7 @@ Hu draws the MOS system with the gate on the left, the oxide in the middle and t
 With no voltage applied, the gate's and body's Fermi levels must align. If the two work functions differ, the bands bend and the oxide carries a field even at zero bias. The gate voltage that cancels this, making the silicon bands flat right up to the surface, is the **flat-band voltage** [1]:
 
 $$
-V_{fb} = \psi_g - \psi_s - \frac{Q_{ox}}{C_{ox}} .
+V_{FB} = \psi_g - \psi_s - \frac{Q_{ox}}{C_{ox}} .
 $$
 
 For an n⁺ poly gate, $\psi_g = \chi_{\text{Si}}$ = 4.05 V (its Fermi level sits at the conduction-band edge), and for a p⁺ poly gate, $\psi_g = \chi_{\text{Si}} + E_g/q$. For the p-type body, $\psi_s = \chi_{\text{Si}} + (E_C - E_F)/q$ [1]. The last term accounts for a sheet of oxide charge $Q_{ox}$ at the oxide–silicon interface (§3.8). Positive oxide charge pulls the bands down, so a more negative gate voltage is needed to flatten them.
@@ -70,7 +70,7 @@ For an n⁺ poly gate, $\psi_g = \chi_{\text{Si}}$ = 4.05 V (its Fermi level sit
 At any gate voltage, the applied voltage divides between the oxide and the silicon:
 
 $$
-V_g = V_{fb} + \phi_s + V_{ox} .
+V_g = V_{FB} + \phi_s + V_{ox} .
 $$
 
 Gauss's law (04-03) relates the oxide voltage to the silicon's charge. The field in the oxide is $-Q_s/\varepsilon_{ox}$ (the gate holds $-Q_s$ when the oxide is charge-free), so
@@ -83,9 +83,9 @@ The minus sign appears because the voltage is taken at the gate but the charge i
 
 ### 3.3 Accumulation and depletion
 
-**Accumulation** ($V_g < V_{fb}$). The surface hole density $p_s = N_Ae^{-\phi_s/V_T}$ grows exponentially with the (negative) band bending, so a small $|\phi_s|$, a few $V_T$, supplies a large charge. To first order $\phi_s \approx 0$, and $Q_{acc} = -C_{ox}(V_g - V_{fb})$: a plain capacitor [1].
+**Accumulation** ($V_g < V_{FB}$). The surface hole density $p_s = N_Ae^{-\phi_s/V_T}$ grows exponentially with the (negative) band bending, so a small $|\phi_s|$, a few $V_T$, supplies a large charge. To first order $\phi_s \approx 0$, and $Q_{acc} = -C_{ox}(V_g - V_{FB})$: a plain capacitor [1].
 
-**Depletion** ($V_g > V_{fb}$, below threshold). The surface is emptied of holes to a depth $W_{dep}$. The depletion approximation of 09-05 gives
+**Depletion** ($V_g > V_{FB}$, below threshold). The surface is emptied of holes to a depth $W_{dep}$. The depletion approximation of 09-05 gives
 
 $$
 Q_s = -qN_AW_{dep}, \qquad \phi_s = \frac{qN_AW_{dep}^2}{2\varepsilon_s} ,
@@ -94,10 +94,10 @@ $$
 so the voltage balance becomes a quadratic in $W_{dep}$ [1]:
 
 $$
-V_g = V_{fb} + \frac{qN_AW_{dep}^2}{2\varepsilon_s} + \frac{qN_AW_{dep}}{C_{ox}} .
+V_g = V_{FB} + \frac{qN_AW_{dep}^2}{2\varepsilon_s} + \frac{qN_AW_{dep}}{C_{ox}} .
 $$
 
-Solving it, $W_{dep} = (\varepsilon_s/C_{ox})\big[\sqrt{1 + 2C_{ox}^2(V_g - V_{fb})/(q\varepsilon_sN_A)} - 1\big]$.
+Solving it, $W_{dep} = (\varepsilon_s/C_{ox})\big[\sqrt{1 + 2C_{ox}^2(V_g - V_{FB})/(q\varepsilon_sN_A)} - 1\big]$.
 
 ### 3.4 The threshold condition and threshold voltage
 
@@ -110,22 +110,22 @@ $$
 At that point the depletion width has reached its maximum, $W_{d\max} = \sqrt{2\varepsilon_s(2\phi_B)/qN_A}$, and the depletion charge is $-qN_AW_{d\max}$. Substituting into the voltage balance gives the **threshold voltage** [1]:
 
 $$
-V_t = V_{fb} + 2\phi_B + \frac{\sqrt{2qN_A\varepsilon_s\,(2\phi_B)}}{C_{ox}} .
+V_{TH} = V_{FB} + 2\phi_B + \frac{\sqrt{2qN_A\varepsilon_s\,(2\phi_B)}}{C_{ox}} .
 $$
 
 **Units check.** $\sqrt{qN\varepsilon\phi}$: √(C · cm⁻³ · F/cm · V) = √(C · C/cm⁴) = C/cm²; divided by F/cm² gives V. ✓
 
-**Choosing the gate.** Circuits need a small positive $V_t$ for n-channel devices (Hu suggests about 0.4 V), so that the transistor is off at $V_g = 0$ (an **enhancement-mode** device) [1]. A p-body paired with an n⁺ gate achieves this; a p⁺ gate would push $V_t$ above 1 V. An n-type body (for p-channel devices) is paired with a p⁺ gate, and its threshold, $V_t = V_{fb} - 2\phi_B - \sqrt{2qN_D\varepsilon_s(2\phi_B)}/C_{ox}$, is negative [1].
+**Choosing the gate.** Circuits need a small positive $V_{TH}$ for n-channel devices (Hu suggests about 0.4 V), so that the transistor is off at $V_g = 0$ (an **enhancement-mode** device) [1]. A p-body paired with an n⁺ gate achieves this; a p⁺ gate would push $V_{TH}$ above 1 V. An n-type body (for p-channel devices) is paired with a p⁺ gate, and its threshold, $V_{TH} = V_{FB} - 2\phi_B - \sqrt{2qN_D\varepsilon_s(2\phi_B)}/C_{ox}$, is negative [1].
 
 ### 3.5 Strong inversion
 
 Beyond threshold, a small further increase in $\phi_s$ brings in exponentially more electrons, so the surface potential is effectively pinned near $2\phi_B$, the depletion width stays at $W_{d\max}$, and every additional unit of gate charge is mirrored by electrons [1]:
 
 $$
-Q_{inv} = -C_{ox}(V_g - V_t) .
+Q_{inv} = -C_{ox}(V_g - V_{TH}) .
 $$
 
-Above threshold the MOS capacitor is again a simple capacitor, offset by $V_t$. This **sheet-charge approximation** is the basis of the long-channel MOSFET model (09-09). One practical question remains: where do the electrons come from? In a p-type body they are minority carriers, produced only by slow thermal generation, which can take a long time in high-quality silicon [1]. In a MOSFET, the n⁺ source and drain supply them instantly. That difference shapes the C–V curves (§3.7).
+Above threshold the MOS capacitor is again a simple capacitor, offset by $V_{TH}$. This **sheet-charge approximation** is the basis of the long-channel MOSFET model (09-09). One practical question remains: where do the electrons come from? In a p-type body they are minority carriers, produced only by slow thermal generation, which can take a long time in high-quality silicon [1]. In a MOSFET, the n⁺ source and drain supply them instantly. That difference shapes the C–V curves (§3.7).
 
 ### 3.6 The exact surface charge
 
@@ -167,10 +167,10 @@ $$
 the oxide capacitance in series with the **semiconductor capacitance**.
 
 - **Accumulation:** $C_s$ is huge (the hole sheet responds to tiny changes in $\phi_s$), so $C \to C_{ox}$.
-- **Flat band:** the semiconductor capacitance is $\varepsilon_s/L_D$, where $L_D = \sqrt{\varepsilon_sV_T/qN_A}$ is the Debye length (09-05). This follows from expanding $F^2 \approx (\phi_s/V_T)^2/2$ near zero. The flat-band capacitance $C_{FB}$ is a definite fraction of $C_{ox}$, which is how $V_{fb}$ is located on a measured curve.
+- **Flat band:** the semiconductor capacitance is $\varepsilon_s/L_D$, where $L_D = \sqrt{\varepsilon_sV_T/qN_A}$ is the Debye length (09-05). This follows from expanding $F^2 \approx (\phi_s/V_T)^2/2$ near zero. The flat-band capacitance $C_{FB}$ is a definite fraction of $C_{ox}$, which is how $V_{FB}$ is located on a measured curve.
 - **Depletion:** $C_s = \varepsilon_s/W_{dep}$. Combining this with §3.3 gives [1]
   $$
-  \frac{1}{C^2} = \frac{1}{C_{ox}^2} + \frac{2(V_g - V_{fb})}{q\varepsilon_sN_A} ,
+  \frac{1}{C^2} = \frac{1}{C_{ox}^2} + \frac{2(V_g - V_{FB})}{q\varepsilon_sN_A} ,
   $$
   so $1/C^2$ is linear in $V_g$ with a slope that gives $N_A$: the same profiling idea as for junctions (09-05 §3.9).
 
@@ -184,8 +184,8 @@ Hu's Example 5–1 sums up the rule: a MOS *transistor* shows the quasi-static c
 
 - the accumulation capacitance gives $C_{ox}$ and hence $T_{ox}$;
 - the minimum capacitance gives $N_A$ (by root finding, because $W_{d\max}$ depends on $N_A$);
-- the computed $C_{FB}$ locates $V_{fb}$;
-- comparing $V_{fb}$ with $\psi_g - \psi_s$ gives the oxide charge (Examples 09-08.4 and 09-08.5).
+- the computed $C_{FB}$ locates $V_{FB}$;
+- comparing $V_{FB}$ with $\psi_g - \psi_s$ gives the oxide charge (Examples 09-08.4 and 09-08.5).
 
 *Figure 2. C–V curves of the example capacitor, from the exact surface charge: quasi-static (low frequency, or any frequency in a transistor), high frequency (inversion charge frozen) and deep depletion (fast sweep, no inversion layer). The dashed line marks $C_{FB}$.*
 
@@ -233,7 +233,7 @@ Hu: HfO₂ has $k$ ≈ 24, so "a 6 nm thick HfO₂ film is equivalent to 1 nm th
 
 **Metal gates.** Poly-gate depletion and the reaction of polysilicon with high-k films led to metal gates. NFETs and PFETs need two different metals, with work functions near those of n⁺ and p⁺ polysilicon, to reach the right thresholds [1]. Intel introduced a hafnium-based high-k dielectric with metal gate electrodes at its 45 nm generation in 2007, after SiO₂ had scaled "from about 100 nm down to 1.2 nm" and stopped shrinking because of tunneling leakage [4] **[Established]**.
 
-**Capacitive equivalent thickness.** Roadmaps now quote the **CET**: the equivalent oxide thickness of the whole stack, including interfacial layer, high-k film, dipole layers and the inversion layer's capacitance, the quantity that sets drive current [3]. The IRDS 2024 More Moore tables list a CET of 1.0 nm for 2024–2025 and 0.9 nm from 2027 onward [3] **[Established]** as roadmap values.
+**Capacitive equivalent thickness.** Roadmaps now quote the **CET**: the equivalent oxide thickness of the whole stack, including interfacial layer, high-k film, dipole layers and the inversion layer's capacitance, the quantity that sets drive current [3]. The IRDS 2024 More Moore tables list a CET of 1.0 nm for 2024–2025 and 0.9 nm from 2027 onward [3] **[Industry estimate]** (roadmap values).
 
 **Oxide breakdown.** Hu notes that a 10 nm SiO₂ film breaks down at about 15 V in a 1-second test, a field of 15 MV/cm, but at lower fields if stressed for hours or months. This **time-dependent dielectric breakdown** means that products are qualified by extrapolating accelerated tests to a ten-year life [1].
 
@@ -243,7 +243,7 @@ Unless stated otherwise, the capacitor has a p-type body with $N_A$ = 10¹⁷ cm
 
 ### Example 09-08.1 · The flat-band voltage (tier A)
 
-**Setup.** (a) Find $C_{ox}$. (b) Find $E_C - E_F$ in the body and the flat-band voltage with an n⁺ poly gate and with a p⁺ poly gate. (c) How much does a positive interface charge of 5 × 10¹⁰ cm⁻² shift $V_{fb}$?
+**Setup.** (a) Find $C_{ox}$. (b) Find $E_C - E_F$ in the body and the flat-band voltage with an n⁺ poly gate and with a p⁺ poly gate. (c) How much does a positive interface charge of 5 × 10¹⁰ cm⁻² shift $V_{FB}$?
 
 **Solution.**
 
@@ -251,27 +251,27 @@ Unless stated otherwise, the capacitor has a p-type body with $N_A$ = 10¹⁷ cm
 
 (b) $E_F - E_V = kT\ln(N_V/N_A)$ = 0.134 eV, so $E_C - E_F = 1.12 - 0.134$ = **0.9858** eV and $\psi_s$ = 4.05 + 0.9858 V.
 
-- n⁺ gate ($\psi_g$ = 4.05 V): $V_{fb}$ = **−0.9858** V.
-- p⁺ gate ($\psi_g$ = 4.05 + 1.12 V): $V_{fb}$ = **+0.1342** V.
+- n⁺ gate ($\psi_g$ = 4.05 V): $V_{FB}$ = **−0.9858** V.
+- p⁺ gate ($\psi_g$ = 4.05 + 1.12 V): $V_{FB}$ = **+0.1342** V.
 
 (c) $-Q_{ox}/C_{ox} = -1.602\times10^{-19} \times 5\times10^{10}/3.453\times10^{-7}$ = **−23.2** mV.
 
-**Sanity check.** The n⁺ gate's Fermi level is near the conduction band and the p-body's near the valence band, so they differ by nearly a band gap; flat band needs about −1 V. Hu's similar example gives about −0.7 V for a more lightly doped body [1].
+**Sanity check.** The n⁺ gate's Fermi level is near the conduction band and the p-body's near the valence band, so they differ by nearly a band gap; flat band needs about −1 V. (Hu's schematic example quotes about −0.7 V [1]; the exact figure depends on the body doping, through $E_F - E_V$.)
 
 ### Example 09-08.2 · Depletion, threshold and inversion charge (tier A)
 
-**Setup.** (a) At $V_g$ = 0, find the depletion width and surface potential. (b) Find $\phi_B$, $W_{d\max}$, the depletion charge at threshold, the oxide voltage there, and $V_t$. (c) At $V_g$ = 2 V, find $Q_{inv}$ and the electron sheet density from the sheet-charge approximation.
+**Setup.** (a) At $V_g$ = 0, find the depletion width and surface potential. (b) Find $\phi_B$, $W_{d\max}$, the depletion charge at threshold, the oxide voltage there, and $V_{TH}$. (c) At $V_g$ = 2 V, find $Q_{inv}$ and the electron sheet density from the sheet-charge approximation.
 
 **Solution.**
 
-(a) Solving the quadratic of §3.3 with $V_g - V_{fb}$ = 0.9858 V gives $W_{dep}$ = **86.8** nm and $\phi_s$ = **0.583** V. The surface is depleted but below threshold.
+(a) Solving the quadratic of §3.3 with $V_g - V_{FB}$ = 0.9858 V gives $W_{dep}$ = **86.8** nm and $\phi_s$ = **0.583** V. The surface is depleted but below threshold.
 
 (b) The threshold quantities:
 
 - $\phi_B = 0.025852\ln10^7$ = **0.4167** V, so $2\phi_B$ = **0.8334** V.
 - $W_{d\max} = \sqrt{2\varepsilon_s \times 0.8334/(qN_A)}$ = **0.1038** µm, and $qN_AW_{d\max}$ = **1.663 × 10⁻⁷** C/cm².
 - $V_{ox} = 1.663\times10^{-7}/3.453\times10^{-7}$ = **0.4817** V.
-- $V_t = -0.9858 + 0.8334 + 0.4817$ = **0.3293** V.
+- $V_{TH} = -0.9858 + 0.8334 + 0.4817$ = **0.3293** V.
 
 (c) $Q_{inv} = -C_{ox}(2 - 0.3293)$ = **−5.769 × 10⁻⁷** C/cm², which is **3.60 × 10¹²** electrons per cm².
 
@@ -285,7 +285,7 @@ Unless stated otherwise, the capacitor has a p-type body with $N_A$ = 10¹⁷ cm
 
 (a) At $2\phi_B$ the exact charge is **1.663 × 10⁻⁷** C/cm², identical to the depletion approximation, as §3.6 showed.
 
-(b) Root finding on $V_g = V_{fb} + \phi_s - Q_s(\phi_s)/C_{ox}$ = 2 V gives $\phi_s$ = **0.9947** V, **161** mV above $2\phi_B$. Then:
+(b) Root finding on $V_g = V_{FB} + \phi_s - Q_s(\phi_s)/C_{ox}$ = 2 V gives $\phi_s$ = **0.9947** V, **161** mV above $2\phi_B$. Then:
 
 - $Q_s$ = **−6.875 × 10⁻⁷** C/cm²;
 - the bulk charge is **−1.793 × 10⁻⁷** C/cm²;
@@ -293,7 +293,7 @@ Unless stated otherwise, the capacitor has a p-type body with $N_A$ = 10¹⁷ cm
 
 The sheet-charge estimate is **13.5**% too high. Equivalently, the exact inversion charge is **11.9**% below it.
 
-**Sanity check.** The surface potential creeps up by about 0.1 V for every decade of electron density, uncovering a little more depletion charge; the sheet model ignores this. It also takes a few tenths of a volt above $V_t$ before the exact inversion charge grows linearly, which is why threshold is a convention rather than a sharp event.
+**Sanity check.** The surface potential creeps up by about 0.1 V for every decade of electron density, uncovering a little more depletion charge; the sheet model ignores this. It also takes a few tenths of a volt above $V_{TH}$ before the exact inversion charge grows linearly, which is why threshold is a convention rather than a sharp event.
 
 ### Example 09-08.4 · C–V curve and parameter extraction (tier B)
 
@@ -307,7 +307,7 @@ The sheet-charge estimate is **13.5**% too high. Equivalently, the exact inversi
 
 (c) $T_{ox} = \varepsilon_{ox}/C_{\max}$ = **10.00** nm. Root finding on $C_{\min}/C_{ox}$ as a function of $N_A$ (with $W_{d\max}$ recomputed for each trial doping) gives $N_A$ = **1.00 × 10¹⁷** cm⁻³.
 
-**Sanity check.** The extraction recovers the device. In practice, $C_{FB}$ computed from the extracted $N_A$ locates $V_{fb}$ on the measured curve, as the next example uses.
+**Sanity check.** The extraction recovers the device. In practice, $C_{FB}$ computed from the extracted $N_A$ locates $V_{FB}$ on the measured curve, as the next example uses.
 
 ### Example 09-08.5 · Measuring oxide charge (tier B)
 
@@ -315,7 +315,7 @@ The sheet-charge estimate is **13.5**% too high. Equivalently, the exact inversi
 
 **Solution.**
 
-(a) $\Delta V_{fb}$ = **−0.1142** V, so $Q_{ox} = -C_{ox}\Delta V_{fb}$ = **3.945 × 10⁻⁸** C/cm², which is **2.46 × 10¹¹** positive charges per cm².
+(a) $\Delta V_{FB}$ = **−0.1142** V, so $Q_{ox} = -C_{ox}\Delta V_{FB}$ = **3.945 × 10⁻⁸** C/cm², which is **2.46 × 10¹¹** positive charges per cm².
 
 (b) This is **24.6** times Hu's high-quality 10¹⁰ cm⁻² [1], against **6.78 × 10¹⁴** silicon atoms per cm². That is still only one charge per **2.75 × 10³** surface atoms, but enough to move the threshold by 0.11 V.
 
@@ -337,7 +337,7 @@ The sheet-charge estimate is **13.5**% too high. Equivalently, the exact inversi
 
 ### Example 09-08.7 · Leakage, EOT and CET (tier B)
 
-**Setup.** (a) Using Hu's 10³ A/cm² for 1.2 nm SiO₂, find the leakage of 1 mm² of such oxide, and with nitrogen added. (b) Find $C_{ox}$ at an EOT of 1 nm. (c) What HfO₂ thickness gives an EOT of 1 nm with Hu's $k$ = 24, and with the IRDS's 21.2? (d) A stack has 0.5 nm of SiO₂ interfacial layer and 2 nm of HfO₂ ($k$ = 21.2). Find its EOT, and its CET including $T_{inv}/3$ with $T_{inv}$ = 1.5 nm. Compare with the IRDS 2024 CET of 1.0 nm.
+**Setup.** (a) Using Hu's 10³ A/cm² for 1.2 nm SiO₂, find the leakage of 1 mm² of such oxide, and with nitrogen added. (b) Find $C_{ox}$ at an EOT of 1 nm. (c) What HfO₂ thickness gives an EOT of 1 nm with Hu's $k$ = 24, and with the IRDS's 21.2? (d) A stack has 0.5 nm of SiO₂ interfacial layer and 2 nm of HfO₂ ($k$ = 21.2). Find its EOT, and its CET including $T_{inv}/3$ with $T_{inv}$ = 1.5 nm (Hu's high-gate-voltage centroid). Compare with the IRDS 2024 CET of 1.0 nm.
 
 **Solution.**
 
@@ -347,7 +347,7 @@ The sheet-charge estimate is **13.5**% too high. Equivalently, the exact inversi
 
 (c) $t = \text{EOT} \times k/3.9$: **6.15** nm for $k$ = 24 and **5.44** nm for $k$ = 21.2.
 
-(d) EOT = 0.5 + 2 × 3.9/21.2 = **0.868** nm, and CET = 0.868 + 1.5/3 = **1.368** nm. That is 0.37 nm above the roadmap value. Meeting it requires thinner interfacial layers, higher-k films and a thinner inversion layer, which is why every term of the CET is a research topic.
+(d) EOT = 0.5 + 2 × 3.9/21.2 = **0.868** nm, and CET = 0.868 + 1.5/3 = **1.368** nm. That is 0.37 nm above the roadmap value. The gap depends on the inversion term: with $T_{inv}$ = 1.5 nm it adds 0.5 nm, while metal-gate stacks with thinner inversion layers (Problem 09-08.15 assumes $T_{inv}/3$ = 0.3 nm) would bring this stack to 1.17 nm, still above target. Meeting it requires thinner interfacial layers, higher-k films and a thinner inversion layer, which is why every term of the CET is a research topic.
 
 **Sanity check.** The 2.5 nm physical stack is **2.88** times as thick as its EOT, which is the point: a thicker tunneling barrier with the same capacitance.
 
@@ -358,8 +358,8 @@ The sheet-charge estimate is **13.5**% too high. Equivalently, the exact inversi
 |---|---|---|---|
 | Ex 09-08.1a | C_ox, 10 nm SiO₂ | 345.3 | nF/cm² |
 | Ex 09-08.1b | E_C − E_F, p-body 1e17 | 0.9858 | eV |
-| Ex 09-08.1c | V_fb, n⁺ gate | -0.9858 | V |
-| Ex 09-08.1d | V_fb, p⁺ gate | 0.1342 | V |
+| Ex 09-08.1c | V_FB, n⁺ gate | -0.9858 | V |
+| Ex 09-08.1d | V_FB, p⁺ gate | 0.1342 | V |
 | Ex 09-08.1e | shift from 5e10 cm⁻² | -23.2 | mV |
 | Ex 09-08.1f | E_F − E_V | 0.134 | eV |
 | Ex 09-08.2a | W_dep at V_g = 0 | 86.8 | nm |
@@ -369,7 +369,7 @@ The sheet-charge estimate is **13.5**% too high. Equivalently, the exact inversi
 | Ex 09-08.2e | W_dmax | 0.1038 | µm |
 | Ex 09-08.2f | depletion charge at threshold | 1.663e-7 | C/cm² |
 | Ex 09-08.2g | V_ox at threshold | 0.4817 | V |
-| Ex 09-08.2h | V_t | 0.3293 | V |
+| Ex 09-08.2h | V_TH | 0.3293 | V |
 | Ex 09-08.2i | Q_inv at 2 V | -5.769e-7 | C/cm² |
 | Ex 09-08.2j | electron sheet density at 2 V | 3.60e12 | cm⁻² |
 | Ex 09-08.3a | exact charge at 2φ_B | 1.663e-7 | C/cm² |
@@ -390,7 +390,7 @@ The sheet-charge estimate is **13.5**% too high. Equivalently, the exact inversi
 | Ex 09-08.4g | C_min/C_ox | 0.2242 | — |
 | Ex 09-08.4h | extracted T_ox | 10.00 | nm |
 | Ex 09-08.4i | extracted N_A | 1.00e17 | cm⁻³ |
-| Ex 09-08.5a | ΔV_fb | -0.1142 | V |
+| Ex 09-08.5a | ΔV_FB | -0.1142 | V |
 | Ex 09-08.5b | Q_ox | 3.945e-8 | C/cm² |
 | Ex 09-08.5c | oxide charges per cm² | 2.46e11 | cm⁻² |
 | Ex 09-08.5d | ratio to 1e10 | 24.6 | — |
@@ -412,6 +412,7 @@ The sheet-charge estimate is **13.5**% too high. Equivalently, the exact inversi
 | Ex 09-08.7g | stack CET | 1.368 | nm |
 | Ex 09-08.7h | CET above the 1.0 nm roadmap | 0.37 | nm |
 | Ex 09-08.7i | physical thickness over EOT | 2.88 | — |
+| Ex 09-08.7j | CET with T_inv/3 = 0.3 nm | 1.17 | nm |
 | T 09-08.a | ε_ox for SiO₂ | 3.453e-13 | F/cm |
 | T 09-08.b | strong-inversion limit of the rise per decade | 119 | mV |
 | T 09-08.c | rise per decade at V_g = 2 V | 95 | mV |
@@ -424,10 +425,10 @@ The lab, [labs/09-08-lab](../labs/09-08-lab/README.md), is a notebook that:
 
 1. Solves Poisson's equation in the silicon numerically for any surface potential and compares with the closed-form $Q_s(\phi_s)$.
 2. Computes the surface potential, depletion charge and inversion charge against gate voltage (Figure 1), and locates threshold by several definitions.
-3. Computes quasi-static, high-frequency and deep-depletion C–V curves (Figure 2), and extracts $T_{ox}$, $N_A$ and $V_{fb}$ from a synthetic noisy measurement.
+3. Computes quasi-static, high-frequency and deep-depletion C–V curves (Figure 2), and extracts $T_{ox}$, $N_A$ and $V_{FB}$ from a synthetic noisy measurement.
 4. Adds an interface charge and a poly-depletion layer and shows how each distorts the C–V curve.
 
-**Guided exercise (predict, then run).** **Before running Part 2**, predict: how many millivolts above $2\phi_B$ is the surface potential when the inversion charge equals the depletion charge? And is the gate voltage there larger or smaller than $V_t$ plus the depletion charge divided by $C_{ox}$? Then run it.
+**Guided exercise (predict, then run).** **Before running Part 2**, predict: how many millivolts above $2\phi_B$ is the surface potential when the inversion charge equals the depletion charge? And is the gate voltage there larger or smaller than $V_{TH}$ plus the depletion charge divided by $C_{ox}$? Then run it.
 
 ## 6. Engineering tradeoffs
 
@@ -465,14 +466,14 @@ The lab, [labs/09-08-lab](../labs/09-08-lab/README.md), is a notebook that:
 4. **Expecting a capacitor to show the transistor C–V.** An isolated MOS capacitor at normal measurement frequencies shows the high-frequency curve; a transistor shows the quasi-static curve at any frequency.
 5. **Ignoring $T_{inv}$ and poly depletion for thin oxides.** At 2 nm, they add about 40% to the electrical thickness.
 6. **Confusing EOT and CET.** EOT is the dielectric's equivalent thickness; CET (or $T_{oxe}$) adds the inversion-layer and gate-depletion terms that set drive current.
-7. **Forgetting that oxide charge shifts scale with $T_{ox}$.** The same charge moves $V_{fb}$ ten times more through a 10 nm oxide than through 1 nm.
+7. **Forgetting that oxide charge shifts scale with $T_{ox}$.** The same charge moves $V_{FB}$ ten times more through a 10 nm oxide than through 1 nm.
 
 ## 9. Practitioner lens
 
 ### State of the art (as of Nov 2026)
 
 - **The high-k/metal-gate transition is history, not news.** Intel's 45 nm process (2007) used "a hafnium-based oxide and metal gate electrodes", after SiO₂ had scaled from about 100 nm to 1.2 nm and stalled on tunneling leakage [4] **[Established]**. Hu's compilation of roadmap electrical EOTs runs from 1.9 nm (90 nm node, 2003) to 0.9 nm (22 nm node, 2013) for high-performance logic [2] **[Established]** as roadmap targets.
-- **Roadmap CET is nearly flat.** The IRDS 2024 More Moore tables give a CET of 1.0 nm for 2024–2025 and 0.9 nm from 2027 onward [3] **[Established]**. Gate capacitance per area has largely stopped scaling; gate control now improves through geometry (FinFET, gate-all-around; 09-12) rather than thinner dielectrics.
+- **Roadmap CET is nearly flat.** The IRDS 2024 More Moore tables give a CET of 1.0 nm for 2024–2025 and 0.9 nm from 2027 onward [3] **[Industry estimate]**. Gate capacitance per area has largely stopped scaling; gate control now improves through geometry (FinFET, gate-all-around; 09-12) rather than thinner dielectrics.
 - **The interface remains silicon's advantage.** About 10¹⁰ cm⁻² interface charge on a well-made Si–SiO₂ interface [1], preserved under high-k stacks by an interfacial SiO₂ layer, is a key reason that alternative channel materials (09-13) find gate stacks hard.
 
 ### Why it matters commercially
@@ -493,7 +494,7 @@ The lab, [labs/09-08-lab](../labs/09-08-lab/README.md), is a notebook that:
    - *Strong:* breaks down the stack term by term and names the next lever.
    - *Evasive:* quotes physical thickness only.
 2. **"How do you set NFET and PFET thresholds, and what is the threshold spread?"**
-   - *Strong:* describes work-function metals, dipole layers and doping, with measured σ(V_t) and its causes.
+   - *Strong:* describes work-function metals, dipole layers and doping, with measured σ(V_TH) and its causes.
    - *Evasive:* "Threshold is tuned by implant."
 3. **"What limits gate-dielectric reliability, and how is the lifetime extrapolated?"**
    - *Strong:* TDDB and bias-temperature instability models, with acceleration factors and margins.
@@ -516,7 +517,7 @@ The lab, [labs/09-08-lab](../labs/09-08-lab/README.md), is a notebook that:
 
 <details><summary>Answer</summary>
 
-The n⁺ gate's Fermi level is near its conduction band and the p-body's near its valence band, so with no bias the gate's Fermi level sits about a band gap higher, and the bands bend down at the silicon surface. Raising the gate's bands (a negative gate voltage) by that difference flattens them: $V_{fb} = \psi_g - \psi_s$ ≈ −1 V.
+The n⁺ gate's Fermi level is near its conduction band and the p-body's near its valence band, so *before contact* the gate's Fermi level lies about a band gap above the body's. Once connected with no bias, the system is in equilibrium and the Fermi levels align; the difference has to go somewhere, so the bands bend down at the silicon surface (and some appears across the oxide). Applying $V_{FB} = \psi_g - \psi_s$ ≈ −1 V to the gate restores flat bands.
 
 </details>
 
@@ -548,7 +549,7 @@ In the capacitor, electrons can only come from thermal generation, which is far 
 
 <details><summary>Answer</summary>
 
-There is net positive charge in the oxide or at the interface (fixed charge, mobile ions or charged interface traps), of density $-C_{ox}\Delta V_{fb}$. Repeating the measurement after bias–temperature stress distinguishes mobile ions, which move, from fixed charge, which does not.
+There is net positive charge in the oxide or at the interface (fixed charge, mobile ions or charged interface traps), of density $-C_{ox}\Delta V_{FB}$. Repeating the measurement after bias–temperature stress distinguishes mobile ions, which move, from fixed charge, which does not.
 
 </details>
 
@@ -589,7 +590,7 @@ Now work the [problem set](../problems/09-08-problems.md).
 
 ## 14. Sources
 
-1. C. Hu, *Modern Semiconductor Devices for Integrated Circuits* (Pearson, 2010): ch. 5 (§5.1 flat band and barriers, §5.4–5.5 threshold and inversion, typical $V_t$ ≈ 0.4 V, §5.6 C–V and Example 5–1, §5.7 oxide charge and interface quality, §5.8 poly depletion, §5.9 inversion-layer thickness and $T_{oxe}$, §5.10 CCD), §7.4 (1.2 nm SiO₂ leakage, nitrogen, HfO₂ $k$ ≈ 24 and EOT, interfacial layer, metal gates, SiO₂ breakdown and TDDB). [Ch. 5](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch5-1.pdf), [ch. 7](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch7.pdf). [R-169](../../../reference/research-log.md#r-169--mos-capacitor-and-gate-stack-references).
+1. C. Hu, *Modern Semiconductor Devices for Integrated Circuits* (Pearson, 2010): ch. 5 (§5.1 flat band and barriers, §5.4–5.5 threshold and inversion, typical $V_{TH}$ ≈ 0.4 V, §5.6 C–V and Example 5–1, §5.7 oxide charge and interface quality, §5.8 poly depletion, §5.9 inversion-layer thickness and $T_{oxe}$, §5.10 CCD), §7.4 (1.2 nm SiO₂ leakage, nitrogen, HfO₂ $k$ ≈ 24 and EOT, interfacial layer, metal gates, SiO₂ breakdown and TDDB). [Ch. 5](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch5-1.pdf), [ch. 7](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch7.pdf). [R-169](../../../reference/research-log.md#r-169--mos-capacitor-and-gate-stack-references).
 2. C. Hu, ch. 7, Table 7–1: EOTe for high-performance and low-standby-power devices from the 90 nm to the 22 nm node (compiled from the ITRS). [R-169](../../../reference/research-log.md#r-169--mos-capacitor-and-gate-stack-references).
 3. IEEE IRDS, 2024 Edition, More Moore tables (Table MM01, "Capacitive equivalent thickness (CET) (nm)", and its note [2] defining CET with $k$ = 21.2 for HfO₂): [IRDS 2024 More Moore tables](https://irds.ieee.org/images/files/pdf/2024/2024IRDS_MM_Tables.xlsx). [R-169](../../../reference/research-log.md#r-169--mos-capacitor-and-gate-stack-references).
 4. M. T. Bohr, R. S. Chau, T. Ghani and K. Mistry, "The High-k Solution", *IEEE Spectrum*, 1 Oct 2007: [spectrum.ieee.org](https://spectrum.ieee.org/the-highk-solution); and K. Mistry et al., IEDM 2007, pp. 247–250, DOI 10.1109/IEDM.2007.4418914 (metadata only). [R-169](../../../reference/research-log.md#r-169--mos-capacitor-and-gate-stack-references).
