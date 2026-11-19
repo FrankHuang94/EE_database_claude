@@ -132,6 +132,8 @@ e2, c2, _ = tableau(cs_stage(2.0, 50.0, 10.0, 1.0))
 v.check("Ex 06-06.2a", e2["d"])
 v.check("Ex 06-06.2b", e2["s"])
 v.check("Ex 06-06.2c", c2["Gm"])
+v.check("Ex 06-06.2h", -e2["d"] / 10.0)               # current from R_D into the drain
+v.check("Ex 06-06.2i", c2["Gm"] - (-e2["d"] / 10.0))
 v.check("Ex 06-06.2d", -2.0 * 10.0 / (1 + 2.0 * 1.0))
 e2n, _, _ = tableau(cs_stage(2.0, 50.0, 10.0, 1e-9))
 v.check("Ex 06-06.2e", e2n["d"])
@@ -185,6 +187,11 @@ v.check("Ex 06-06.5c", 1e6 * c5["Rid"])           # mA -> nA
 v.check("Ex 06-06.5d", 1e6 * (10 - e5["o"]) / 10)
 v.check("Ex 06-06.5e", 1e5 / (1 + 1e5 * 0.1))
 v.check("Ex 06-06.5f", 1e6 * (10 - 1e5 / (1 + 1e5 * 0.1)) / 10)
+Rp5 = 1 / (1 / 2.0 + 1 / (1.0 + 9.0))
+A_eff = 1e5 * Rp5 / (Rp5 + 0.1)
+v.check("Ex 06-06.5g", A_eff)
+v.check("Ex 06-06.5h", 1e6 / (A_eff * 0.1))
+v.assert_true("Ex 5: hand loading estimate within 1 ppm of the full solve", abs(1e6 / (A_eff * 0.1) - 1e6 * (10 - e5["o"]) / 10) < 1.0)
 
 # ================================================================ solutions
 v.check("06-06.1a", 1e3 * 0.04)
@@ -359,5 +366,21 @@ e_hi, _, _ = tableau(noninv(1e7))
 v.check("Lab 06-06.c", 100 * (10 - e_lo["o"]) / 10)
 v.check("Lab 06-06.d", 1e6 * (10 - e_hi["o"]) / 10)
 v.check("Lab 06-06.e", 1e5)
+
+# ---- Problems 06-06.15 and 06-06.16 by tableau solves with H and F elements (ohms, volts, amps)
+e15, c15, b15 = tableau([("V1", "V", "a", "0", 12.0), ("R4", "R", "a", "n1", 4.0), ("H", "H", "n1", "n2", ("R4", 2.0)),
+                         ("R3", "R", "n1", "0", 3.0), ("R6", "R", "n2", "0", 6.0)])
+v.check("06-06.15a", e15["n1"])
+v.check("06-06.15b", e15["n2"])
+v.check("06-06.15c", c15["R4"])
+v.check("06-06.15d", P(c15, b15, "H"))
+v.assert_true("06-06.15: Tellegen", abs(sum(P(c15, b15, k) for k in c15)) < 1e-9)
+e16, c16, b16 = tableau([("V1", "V", "n1", "0", 10.0), ("R2", "R", "n1", "n2", 2.0), ("R3", "R", "n2", "n3", 3.0),
+                         ("R4", "R", "n3", "0", 4.0), ("F", "F", "0", "n2", ("R4", 0.5))])
+v.check("06-06.16a", c16["R3"])
+v.check("06-06.16b", c16["R2"])
+v.check("06-06.16c", e16["n2"])
+v.check("06-06.16d", -P(c16, b16, "F"))
+v.assert_true("06-06.16: Tellegen", abs(sum(P(c16, b16, k) for k in c16)) < 1e-9)
 
 sys.exit(v.finish())

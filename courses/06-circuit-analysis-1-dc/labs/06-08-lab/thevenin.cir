@@ -16,8 +16,10 @@
 * EXPECT p4rth   key:../../solutions/06-08-solutions.md#06-08.4b rtol=1e-3
 * EXPECT p5voc   key:../../solutions/06-08-solutions.md#06-08.5a rtol=1e-3
 * EXPECT p5rth   key:../../solutions/06-08-solutions.md#06-08.5b rtol=1e-3
-* EXPECT p10in   key:../../solutions/06-08-solutions.md#06-08.10b scale=1e-3 rtol=1e-3
+* EXPECT p10in   key:../../solutions/06-08-solutions.md#06-08.10b scale=-1e-3 rtol=1e-3
 * EXPECT p10rn   key:../../solutions/06-06-solutions.md#06-06.8a scale=1e3 rtol=1e-6
+* EXPECT p13vo   key:../../solutions/06-08-solutions.md#06-08.13d rtol=1e-6
+* EXPECT p13int  key:../../solutions/06-08-solutions.md#06-08.13f scale=1e-3 rtol=1e-6
 
 * ---- Example 06-08.1: 12 V, 6k over 3k, 1k in series to terminal a (three copies: open, short, test)
 V1o  s1o 0 DC 12
@@ -99,6 +101,11 @@ R610ot d610t s610t 50k
 R610st s610t 0 1k
 I610t 0 d610t DC 1
 
+* ---- Problem 06-08.13: 10 V, 2k series, 2k shunt, 4k load; internal power of the original network
+V813 s813 0 DC 10
+R813s s813 o813 2k
+R813p o813 0 2k
+R813L o813 0 4k
 .control
 op
 let ex1voc = v(a1o)
@@ -131,5 +138,9 @@ echo "p5voc = $&p5voc"
 echo "p5rth = $&p5rth"
 echo "p10in = $&p10in"
 echo "p10rn = $&p10rn"
+let p13vo = v(o813)
+let p13int = -10*i(V813) - v(o813)*v(o813)/4k
+echo "p13vo = $&p13vo"
+echo "p13int = $&p13int"
 .endc
 .end

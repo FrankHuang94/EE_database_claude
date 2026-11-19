@@ -1202,6 +1202,15 @@ z
      <use xlink:href="#Inter-Regular-414" transform="translate(152.015625 0)"/>
     </g>
    </g>
+   <g id="text_22">
+    <!-- 75 Ω -->
+    <g transform="translate(209.734095 66.168) scale(0.08 -0.08)">
+     <use xlink:href="#Inter-Regular-548"/>
+     <use xlink:href="#Inter-Regular-545" transform="translate(55.625 0)"/>
+     <use xlink:href="#Inter-Regular-6eb" transform="translate(116.421875 0)"/>
+     <use xlink:href="#Inter-Regular-414" transform="translate(144.546875 0)"/>
+    </g>
+   </g>
    <g id="legend_1">
     <g id="line2d_39">
      <path d="M 216.118672 181.174625 
@@ -1209,7 +1218,7 @@ L 224.118672 181.174625
 L 232.118672 181.174625 
 " style="fill: none; stroke: #0072b2; stroke-width: 1.8; stroke-linecap: square"/>
     </g>
-    <g id="text_22">
+    <g id="text_23">
      <!-- conductor loss (relative to minimum) -->
      <g transform="translate(238.518672 183.974625) scale(0.08 -0.08)">
       <use xlink:href="#Inter-Regular-24b"/>
@@ -1256,7 +1265,7 @@ L 224.118672 194.854312
 L 232.118672 194.854312 
 " style="fill: none; stroke-dasharray: 6.66,2.88; stroke-dashoffset: 0; stroke: #d55e00; stroke-width: 1.8"/>
     </g>
-    <g id="text_23">
+    <g id="text_24">
      <!-- peak power capacity (relative to maximum) -->
      <g transform="translate(238.518672 197.654312) scale(0.08 -0.08)">
       <defs>

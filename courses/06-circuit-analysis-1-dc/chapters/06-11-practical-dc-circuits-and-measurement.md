@@ -21,7 +21,7 @@
 
 Every measurement is a circuit. A voltmeter connected across two nodes is a resistor added to the network; an ammeter inserted in a branch is a resistor added in series; the wires to both are resistors too. The ideal-instrument assumption of earlier chapters (infinite voltmeter resistance, zero ammeter resistance, zero-ohm wires) is a limit, and this chapter asks when the limit is good enough and what to do when it is not. The tools are the ones already built: Thévenin equivalents (06-08) to see what the instrument sees, superposition and worst-case analysis (06-07) to combine errors, and feedback (06-10) to cancel the drop in a wire. The payoff is practical judgment: reading a datasheet's accuracy line, laying out a current shunt, and knowing which digit of a reading to believe.
 
-- **Bench and field measurement:** a 10 MΩ handheld meter reads a 1 MΩ source 9% low; a "0.05%" meter is 0.38% uncertain at the bottom of its range (Examples 06-11.1 and 06-11.3).
+- **Bench and field measurement:** a 10 MΩ handheld meter reads the midpoint of a megohm divider 4.76% low; a "0.05%" meter is 0.38% uncertain low on its range (Examples 06-11.1 and 06-11.3).
 - **Current sensing in products:** battery gauges, motor drives, server power supplies and electric vehicles measure current through milliohm shunts, where a tenth of a milliohm of copper in the wrong place is a 10% error (Example 06-11.5).
 - **Power delivery:** a 12 V supply delivering 10 A through 1.5 m of cable loses 0.4 V before the load; remote sensing puts it back (Example 06-11.6), the same idea that regulates a processor's core voltage at the die.
 - **Production test and characterization:** four-wire (Kelvin) contacts measure milliohms reliably on testers and probe cards, where contact resistance alone exceeds the quantity measured.
@@ -200,7 +200,7 @@ Correction: $94.83\times(1 + 1.8/33) = $ **100.0 mA**.
 
 ### Example 06-11.3 · Reading an accuracy specification (tier B)
 
-**Setup.** A handheld meter's DC voltage accuracy is ±(0.05% + 1), the specification of the Fluke 87V ([R-108](../../../reference/research-log.md#r-108--digital-multimeter-specifications)). Find the uncertainty of (a) a 3.300 V reading on a range with 1 mV resolution; (b) a 0.300 V reading on the same range; (c) a 0.3000 V reading on a range with 0.1 mV resolution. (d) A power $P = VI$ is computed from reading (a) and a current measured to ±0.5%. Find the worst-case and RSS uncertainty of $P$.
+**Setup.** A handheld meter's DC voltage accuracy is ±(0.05% + 1), the headline specification of the Fluke 87V ([R-108](../../../reference/research-log.md#r-108--digital-multimeter-specifications)). Real meters often specify their most sensitive range differently, so read the per-range table; here, assume a meter with this specification on every range. Find the uncertainty of (a) a 3.300 V reading on a range with 1 mV resolution; (b) a 0.300 V reading on the same range; (c) a 0.3000 V reading on a range with 0.1 mV resolution. (d) A power $P = VI$ is computed from reading (a) and a current measured to ±0.5%. Find the worst-case and RSS uncertainty of $P$.
 
 **Solution.** One count is the resolution of the range in use.
 
@@ -357,7 +357,7 @@ Open [labs/06-11-lab/](../labs/06-11-lab/README.md): a notebook and an ngspice n
 
 ### Why it matters commercially
 
-Measurement accuracy is a product feature with a price. A battery's state-of-charge display, an electricity meter's revenue (accuracy classes in [R-028](../../../reference/research-log.md#r-028--electricity-meter-accuracy-classes-iec-62053-21)), a server power supply's telemetry and a motor drive's torque control all rest on a current measurement whose error budget is set by a shunt, its layout and an amplifier. In datacenters, the drop between a power supply and a processor's die is managed by remote sensing and by delivering power at higher voltage and lower current (Course 22, [22-10](../../22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md)). Test and measurement is itself a substantial industry, and test time and contact reliability (four-wire contacts on probe cards and sockets) are a real part of a chip's cost.
+Measurement accuracy is a product feature with a price. A battery's state-of-charge display, an electricity meter's revenue (accuracy classes in [R-028](../../../reference/research-log.md#r-028--electricity-meter-accuracy-classes-iec-62053-21)), a server power supply's telemetry and a motor drive's torque control all rest on a current measurement whose error budget is set by a shunt, its layout and an amplifier. In datacenters, the drop between a power supply and a processor's die is managed by remote sensing and by delivering power at higher voltage and lower current (Course 22, [22-10](../../22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md)). In chip production, test time and contact reliability (four-wire contacts on probe cards and sockets) are a real part of a chip's cost.
 
 ### Marketing vs Reality
 

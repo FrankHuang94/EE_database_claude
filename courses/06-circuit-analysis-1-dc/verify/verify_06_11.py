@@ -334,6 +334,26 @@ v.check("06-11.12d", e["b"] - e["c"])
 e_all = tableau(chain + [("M1", "R", "a", "b", 10e6), ("M2", "R", "b", "c", 10e6), ("M3", "R", "c", "0", 10e6)])[0]
 v.assert_true("12: three meters at once read 3 V each", abs(e_all["b"] - e_all["c"] - 3.0) < 1e-9)
 
+# ---- Problem 06-11.13: re-solve the shunt circuit at two temperatures (Ω, A)
+def shunt13(T, I=10.0):
+    rcu = 0.02e-3 * (1 + ALPHA_CU * (T - 25))
+    rsh = 2e-3 * (1 + 250e-6 * (T - 25))
+    e, _, _ = tableau([("I", "I", "0", "x", I), ("C1", "R", "x", "k1", rcu), ("S", "R", "k1", "k2", rsh),
+                       ("C2", "R", "k2", "0", rcu)])
+    return (e["k1"] - e["k2"]) / I, e["x"] / I
+
+
+k0, m0 = shunt13(25.0)
+k40, m40 = shunt13(65.0)
+v.check("06-11.13a", 1e3 * m0)
+v.check("06-11.13b", 100 * (m0 / 2e-3 - 1))
+v.check("06-11.13c", 1e6 * (m40 / m0 - 1) / 40)
+v.check("06-11.13d", 100 * (m40 / m0 - 1))
+v.check("06-11.13e", 100 * (k40 / k0 - 1))
+terms = np.array([0.5, 1.0, 0.3, 0.2])
+v.check("06-11.13f", max(abs(np.dot(terms, s)) for s in itertools.product((-1, 1), repeat=4)))
+v.check("06-11.13g", math.sqrt(np.sum(terms ** 2)))
+
 # ================================================================ lab
 v.check("Lab 06-11.a", brentq(lambda R: voltmeter(1.0, R, 10e6) - 0.99, 1.0, 1e7, xtol=1e-9) / 1e3)
 v.check("Lab 06-11.b", brentq(lambda R: voltmeter(1.0, R, 10e9) - 0.99, 1.0, 1e10, xtol=1e-6) / 1e6)

@@ -41,6 +41,7 @@
 (a) Find $v_x$ by superposition, giving each source's contribution.
 (b) Find the power in R2, and compare it with the sum of the powers each source alone would cause in R2.
 (c) If V1 is doubled, what is $v_x$?
+(d) Replace V1 and R1 by their Norton equivalent and find $v_x$ again by current division.
 
 **8 [B] · Thévenin with a dependent source.** Elements: V1, node 1 (+) to node 0, 12 V; R1, node 1 to node a, 6 kΩ; R2, node a to node 0, 3 kΩ; a current-controlled voltage source between nodes b (+) and a of value $2000\,i_x$ V, with $i_x$ the current in R2 from a to 0 in amperes; R3, node b to node out, 1 kΩ. The output port is node out and node 0.
 (a) Find the open-circuit voltage.
@@ -55,6 +56,7 @@
 **10 [A] · Op-amp configurations.** (a) An inverting amplifier has $R_1$ = 2.2 kΩ and $R_2$ = 33 kΩ. Find its gain and its output for a −0.2 V input.
 (b) Choose $R_2$ for a non-inverting gain of 16 with $R_1$ = 1 kΩ.
 (c) A summing amplifier with $R_f$ = 20 kΩ must give $v_{out} = -(v_1 + 2v_2)$. Choose the input resistors and find the output for $v_1$ = 0.5 V and $v_2$ = −1 V.
+(d) A sensor with a 1 V open-circuit output and 90 kΩ of internal resistance drives an input of 10 kΩ. Find the voltage at the input, and again with a voltage follower inserted between them.
 
 **11 [B] · Common-mode rejection.** A difference amplifier has $R_1 = R_3$ = 10 kΩ and $R_2 = R_4$ = 50 kΩ.
 (a) Find the output for $v_1$ = 2.500 V and $v_2$ = 2.520 V.
@@ -69,7 +71,7 @@
 
 **13 [B] · Measurement.** (a) A 10 MΩ voltmeter measures a node whose Thévenin equivalent is 3.3 V behind 220 kΩ. Find the reading, its error and the corrected value.
 (b) An ammeter with 2.5 Ω internal resistance measures the current of a 5 V source into 100 Ω. Find the reading, its error and the burden voltage.
-(c) A meter specified at ±(0.1% + 2 counts) reads 1.000 V on a range with 1 mV resolution. Find the uncertainty.
+(c) A meter specified at ±(0.1% + 2 counts) reads 2.500 V on a range with 1 mV resolution. Find the uncertainty in millivolts and as a percentage of the reading.
 
 **14 [C] · A strain-gauge front end.** A quarter bridge of four 350 Ω resistors, one of them a strain gauge with gauge factor 2, is excited by 5 V. Parts (a) and (b) carry 3 points each, (c) to (e) 2 points each.
 (a) Derive the bridge output $v_o$ for a gauge resistance $R(1 + x)$, and show that it is approximately $V_{ex}x/4$ for small $x$.

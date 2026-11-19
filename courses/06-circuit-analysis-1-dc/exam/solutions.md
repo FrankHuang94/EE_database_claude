@@ -56,6 +56,8 @@ The first row is the constraint $v_1 - v_2 = 6$; the second is KCL for the super
 
 (c) Linearity: V1's contribution doubles to 12 V, so $v_x$ = **15.6 V**.
 
+(d) *(06-07, source transformation)* 10 V behind 2 kΩ becomes $10/2 = $ **5 mA** in parallel with 2 kΩ. Together with I1, 8 mA flows into $2\parallel3 = 1.2$ kΩ: $v_x = 8\times1.2 = $ **9.6 V**, as in (a).
+
 **8.** *(06-08)* (a) With the port open, no current flows in R3 or the CCVS, so R1 and R2 form a divider: $v_a = 12\times3/9 = 4$ V, $i_x = 4/3$ mA, and $v_b = v_a + 2000\times(4/3\times10^{-3}) = 4 + 2.667$. The port voltage is **$V_{oc}$ = 6.667 V**.
 
 (b) Turn off the *independent* source (V1 → short) and drive the port with a test current $I_t$ into node out. It flows through R3 and the CCVS into node a, and then splits between R1 and R2, now in parallel to ground: $v_a = I_t(6\parallel3) = 2I_t$ (kΩ), $i_x = v_a/3 = \tfrac23I_t$, and $v_b = v_a + 2i_x = 2I_t + \tfrac43I_t$ (the CCVS's 2000 V/A is 2 kΩ in these units). Then $v_{out} = v_b + 1\times I_t = \tfrac{13}{3}I_t$, so **$R_{th}$ = 4.333 kΩ**. The dependent source must stay because it is controlled by a current that the test source itself creates; zeroing it would give the wrong answer, 3 kΩ.
@@ -74,6 +76,8 @@ The first row is the constraint $v_1 - v_2 = 6$; the second is KCL for the super
 
 (c) $R_1 = R_f/1 = $ **20 kΩ** and $R_2 = R_f/2 = $ **10 kΩ**; output $-(0.5 + 2\times(-1)) = $ **+1.5 V**.
 
+(d) Directly, the 10 kΩ input and the 90 kΩ source form a divider: $1\times10/100 = $ **0.1 V**. A follower draws no input current, so its input sits at the full 1 V and its output delivers **1 V** to the 10 kΩ from zero output resistance.
+
 **11.** *(06-10)* (a) $G = 5$: $5\times0.020 = $ **0.1 V**.
 
 (b) $v_+ = 2.5\times50.5/60.5 = 2.0868$ V and $v_{out} = 2.0868\times6 - 2.5\times5 = $ **20.66 mV**. The common-mode gain is $0.02066/2.5 = $ **0.008264**, and the CMRR is $5/0.008264 = $ **605**, or **55.6 dB**.
@@ -86,13 +90,13 @@ The first row is the constraint $v_1 - v_2 = 6$; the second is KCL for the super
 
 (c) Sum of magnitudes: **129.9 mV**. Signed: the bias terms give $4.9 - 25 = -20.1$ mV, and the worst case adds the offset in the same direction: **120.1 mV**.
 
-(d) $120.1/997.5 = $ **12.0%** of the signal. The offset dominates: use a precision (low-offset) op-amp. Then balance the resistances seen by the two inputs, for example by lowering the source resistance (buffering the sensor), so the bias terms cancel to the offset current.
+(d) $120.1/997.5 = $ **12.0%** of the signal. The offset dominates: use a precision (low-offset) op-amp. Then balance the resistances the two inputs see. The − input sees $R_1\parallel R_2 = 0.98$ kΩ against 5 kΩ at the + input; scaling $R_1$ and $R_2$ up about fivefold (5.1 kΩ and 249.9 kΩ keep the gain at 50) makes $R_1\parallel R_2 \approx 5$ kΩ, and the two bias terms then cancel except for the offset current times $R_2$. (Buffering the sensor would not help: with zero source resistance the + term vanishes but the − term, +4.9 mV, remains.)
 
 **13.** *(06-11)* (a) $3.3\times10/10.22 = $ **3.229 V**, **−2.15%**; corrected $3.229\times(1 + 0.22/10) = $ **3.300 V**.
 
 (b) $5/102.5 = $ **48.78 mA**, **−2.44%**; burden $48.78\ \text{mA}\times2.5\ \Omega = $ **122.0 mV**.
 
-(c) $0.001\times1.000 + 2\times0.001 = $ **±3 mV** (0.3%).
+(c) $0.001\times2.500 + 2\times0.001 = $ **±4.5 mV**, or **0.18%** of the reading.
 
 **14.** *(06-03, 06-10, 06-11)* (a) Take the bridge as two dividers across $V_{ex}$: the reference half gives $V_{ex}/2$ and the gauge half (gauge on the bottom) gives $V_{ex}R(1 + x)/(R + R(1 + x))$. Their difference is
 
@@ -159,6 +163,8 @@ $$
 | X06.7d | power in R2 | 30.72 | mW |
 | X06.7e | sum of separate powers | 16.32 | mW |
 | X06.7f | v_x with V1 doubled | 15.6 | V |
+| X06.7g | Norton current of V1 and R1 | 5 | mA |
+| X06.7h | v_x from the Norton form | 9.6 | V |
 | X06.8a | open-circuit voltage | 6.667 | V |
 | X06.8b | Thévenin resistance | 4.333 | kΩ |
 | X06.8c | short-circuit current | 1.538 | mA |
@@ -174,6 +180,8 @@ $$
 | X06.10d | R_1 of the summer | 20 | kΩ |
 | X06.10e | R_2 of the summer | 10 | kΩ |
 | X06.10f | summer output | 1.5 | V |
+| X06.10g | input voltage without a buffer | 0.1 | V |
+| X06.10h | input voltage with a follower | 1 | V |
 | X06.11a | output | 0.1 | V |
 | X06.11b | common-mode output | 20.66 | mV |
 | X06.11c | common-mode gain | 0.008264 | — |
@@ -195,7 +203,8 @@ $$
 | X06.13d | ammeter reading | 48.78 | mA |
 | X06.13e | ammeter error | −2.44 | % |
 | X06.13f | burden voltage | 122.0 | mV |
-| X06.13g | uncertainty | 3 | mV |
+| X06.13g | uncertainty | 4.5 | mV |
+| X06.13h | relative uncertainty | 0.18 | % |
 | X06.14a | exact bridge output | 1.2494 | mV |
 | X06.14b | approximate output | 1.25 | mV |
 | X06.14c | nonlinearity | −0.050 | % |

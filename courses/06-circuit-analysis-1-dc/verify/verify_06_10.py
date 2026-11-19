@@ -155,6 +155,11 @@ v.check("Ex 06-10.3d", 100 / acm3)
 v.check("Ex 06-10.3e", db(100 / acm3))
 v.check("Ex 06-10.3f", 101 / (4 * 0.01))
 v.check("Ex 06-10.3g", 100 * cm3 / out3)
+# the two candidate corners named in the text: (R2/R1 high, R4/R3 low) and its opposite
+hi = abs(diffamp(1.25, 1.25, 1.0 * 0.99, 100.0 * 1.01, 1.0 * 1.01, 100.0 * 0.99))
+lo = abs(diffamp(1.25, 1.25, 1.0 * 1.01, 100.0 * 0.99, 1.0 * 0.99, 100.0 * 1.01))
+v.assert_true("Ex 3: the worst corner is R2/R1 high, R4/R3 low", abs(hi - cm3) < 1e-12 and lo < hi)
+v.check("Ex 06-10.3h", 1e3 * lo)
 
 
 def noninv_errors(vs=0.0, vos=0.0, ibm=0.0, ibp=0.0, Rs=10.0, R1=1.0, R2=100.0):
@@ -322,6 +327,15 @@ v.assert_true("11: closed form", abs(g11 + 100 / (1 + 101 / 1e4)) < 1e-9)
 v.check("06-10.12a", 1e-3 * 50e-3 * 1e6)
 v.check("06-10.12b", 100 * 10e-6 / 50e-6)
 v.check("06-10.12c", 7e-3 / 50e-6)
+
+# ---- Problem 06-10.13: comparator, solved as a nonlinear circuit (tanh-limited op-amp, no feedback)
+thr = tableau([("V", "V", "s", "0", 5.0), ("Rt", "R", "s", "m", 30.0), ("Rb", "R", "m", "0", 20.0)])[0]["m"]
+v.check("06-10.13a", thr)
+comp = lambda vin: 12.0 * math.tanh(1e5 * (vin - thr) / 12.0)       # noqa: E731
+v.check("06-10.13b", comp(1.8))
+v.check("06-10.13c", comp(2.3))
+v.check("06-10.13d", 2.3 - thr)
+v.check("06-10.13e", 1e6 * brentq(lambda d: 1e5 * d - 12.0, 0.0, 1.0))
 
 # ================================================================ lab
 ga = tableau(inverting(1.0, 10.0, 47.0, A=1e3))[0]["o"]

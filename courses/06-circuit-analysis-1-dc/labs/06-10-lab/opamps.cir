@@ -15,6 +15,8 @@
 * EXPECT p4out   key:../../solutions/06-10-solutions.md#06-10.4b rtol=1e-3
 * EXPECT p9vm    key:../../solutions/06-10-solutions.md#06-10.9c rtol=1e-3
 * EXPECT p11gain key:../../solutions/06-10-solutions.md#06-10.11a rtol=1e-4
+* EXPECT p13lo   key:../../solutions/06-10-solutions.md#06-10.13b rtol=1e-6
+* EXPECT p13hi   key:../../solutions/06-10-solutions.md#06-10.13c rtol=1e-6
 
 * ---- Example 06-10.1: inverting, 10k and 47k, 0.5 V in
 V1   i1 0 DC 0.5
@@ -118,6 +120,14 @@ R6111 i611 n611 1k
 R6112 n611 o611 100k
 E611 o611 0 0 n611 1e4
 
+* ---- Problem 06-10.13: comparator (no feedback), threshold from a 30k/20k divider on 5 V
+V613s s613 0 DC 5
+R613t s613 m613 30k
+R613b m613 0 20k
+V613a a613 0 DC 1.8
+B613a o613a 0 V = 12*tanh(1e5*(v(a613) - v(m613))/12)
+V613b b613 0 DC 2.3
+B613b o613b 0 V = 12*tanh(1e5*(v(b613) - v(m613))/12)
 .control
 op
 let ex1out = v(o1)
@@ -148,5 +158,9 @@ echo "p3out = $&p3out"
 echo "p4out = $&p4out"
 echo "p9vm = $&p9vm"
 echo "p11gain = $&p11gain"
+let p13lo = v(o613a)
+let p13hi = v(o613b)
+echo "p13lo = $&p13lo"
+echo "p13hi = $&p13hi"
 .endc
 .end

@@ -21,6 +21,10 @@
 * EXPECT p12j    key:../../solutions/06-06-solutions.md#06-06.12c scale=1e-3 rtol=1e-6
 * EXPECT p14vo   key:../../solutions/06-06-solutions.md#06-06.14a rtol=1e-6
 * EXPECT p14vo2  key:../../solutions/06-06-solutions.md#06-06.14d rtol=1e-3
+* EXPECT p15v1   key:../../solutions/06-06-solutions.md#06-06.15a rtol=1e-6
+* EXPECT p15v2   key:../../solutions/06-06-solutions.md#06-06.15b rtol=1e-6
+* EXPECT p16i2   key:../../solutions/06-06-solutions.md#06-06.16a rtol=1e-6
+* EXPECT p16v    key:../../solutions/06-06-solutions.md#06-06.16c rtol=1e-6
 
 * ---- Example 06-06.1: 1 mA into node 1; 2k, 4k, 4k; VCCS 1 mS * v1 from node 2 to ground
 I1   0 n1 DC 1m
@@ -101,6 +105,20 @@ F614b o614b 0 V614s 1
 RO614b o614b 0 1MEG
 RL614b vdd614 o614b 20k
 
+* ---- Problem 06-06.15: dependent supernode (CCVS between two non-reference nodes)
+V615  a615 0 DC 12
+Vx615 a615 ax615 DC 0
+R615a ax615 n615 4
+H615  n615 m615 Vx615 2
+R615b n615 0 3
+R615c m615 0 6
+* ---- Problem 06-06.16: dependent supermesh (CCCS shared by two meshes)
+V616  n616 0 DC 10
+R616a n616 p616 2
+R616b p616 q616 3
+Vx616 q616 x616 DC 0
+R616c x616 0 4
+F616  0 p616 Vx616 0.5
 .control
 op
 let ex1v1 = v(n1)
@@ -143,5 +161,13 @@ echo "p12v3 = $&p12v3"
 echo "p12j = $&p12j"
 echo "p14vo = $&p14vo"
 echo "p14vo2 = $&p14vo2"
+let p15v1 = v(n615)
+let p15v2 = v(m615)
+let p16i2 = i(Vx616)
+let p16v = v(p616)
+echo "p15v1 = $&p15v1"
+echo "p15v2 = $&p15v2"
+echo "p16i2 = $&p16i2"
+echo "p16v = $&p16v"
 .endc
 .end

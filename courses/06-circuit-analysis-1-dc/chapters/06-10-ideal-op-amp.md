@@ -157,6 +157,12 @@ Three DC imperfections matter most, and by superposition (06-07) each contribute
 
 > **Going deeper — zero-drift op-amps.** Precision parts such as the OPA187 achieve microvolt offsets by **autozeroing** or **chopping**: they periodically measure and cancel their own offset, or modulate the signal above the offset's frequency and back. The cost is switching artifacts and higher current noise. How they work belongs to Course 20; here only their DC specifications matter.
 
+### 3.8 The comparator: an op-amp without feedback
+
+Remove the feedback and the op-amp becomes a **comparator**. Its output is $A(v_+ - v_-)$ clipped at the rails, so any input difference larger than $V_{sat}/A$ (120 µV for ±12 V outputs and $A = 10^5$) drives the output to $+V_{sat}$ if $v_+ > v_-$ and to $-V_{sat}$ otherwise. The circuit answers one question, "which input is higher?": it is a 1-bit analog-to-digital converter, the decision element inside every ADC ([20-05](../../20-analog-and-mixed-signal-ic-design/chapters/20-05-comparators-and-sample-and-hold.md)) and the heart of every threshold detector (battery low, over-temperature, zero crossing). Rule 1 still holds, but rule 2 does not: with no feedback, nothing pulls the inputs together, and they can sit volts apart (Problem 06-10.13). A threshold is usually set by a divider on one input.
+
+Two practical points. A slowly varying or noisy input near the threshold makes the output chatter between the rails; a little *positive* feedback gives two thresholds (hysteresis) and cures it, the Schmitt trigger of [10-10](../../10-electronics-1/chapters/10-10-op-amp-application-circuits.md). And dedicated comparator chips are designed to saturate and recover quickly and to drive logic directly, while a general-purpose op-amp used as a comparator can be slow to come out of saturation.
+
 ## 4. Worked examples
 
 ### Example 06-10.1 · An inverting amplifier (tier A)
@@ -185,7 +191,7 @@ Three DC imperfections matter most, and by superposition (06-07) each contribute
 
 **Solution.** (a) $100\times1.249\ \text{mV} = $ **124.9 mV**.
 
-(b) Apply 1.25 V to both inputs and search all 16 corner combinations of the four tolerances. The worst corner (the − path's ratio low and the + path's ratio high, or the reverse) gives **50.5 mV**, a common-mode gain of 0.0404 and a CMRR of $100/0.0404 = $ **2475** (**67.9 dB**). The approximation gives $101/0.04 = 2525$ (68.0 dB). The common-mode error is **40%** of the signal.
+(b) Apply 1.25 V to both inputs and search all 16 corner combinations of the four tolerances. The worst corner (the − path's ratio $R_2/R_1$ high and the + path's ratio $R_4/R_3$ low) gives **50.5 mV**; the opposite corner gives a slightly smaller 48.5 mV, because the denominator $1 + R_4/R_3$ is then larger. The worst corner's output is a common-mode gain of 0.0404 and a CMRR of $100/0.0404 = $ **2475** (**67.9 dB**). The approximation gives $101/0.04 = 2525$ (68.0 dB). The common-mode error is **40%** of the signal.
 
 (c) The amplifier's input resistance on the − side is only $R_1$ = 1 kΩ (and about 101 kΩ on the + side), unequal and comparable to the bridge's 350 Ω output resistance (Problem 06-08.4): it loads the bridge unequally, unbalancing it. Both problems point to the instrumentation amplifier.
 
@@ -247,6 +253,7 @@ Adding magnitudes is the safe bound when the signs are unknown. Here one sign is
 | Ex 06-10.3e | CMRR in dB | 67.9 | dB |
 | Ex 06-10.3f | approximate CMRR | 2525 | — |
 | Ex 06-10.3g | error as a fraction of the signal | 40 | % |
+| Ex 06-10.3h | common-mode output at the opposite corner | 48.5 | mV |
 | Ex 06-10.4a | signal output | 1.01 | V |
 | Ex 06-10.4b | LM358 offset term | 707 | mV |
 | Ex 06-10.4c | LM358 bias term at − | 25 | mV |
@@ -318,7 +325,7 @@ Open [labs/06-10-lab/](../labs/06-10-lab/README.md): a notebook and an ngspice n
 
 ### Why it matters commercially
 
-Analog parts sell for years or decades (the LM358 is almost fifty), carry high gross margins and depend on process know-how and broad catalogs more than on leading-edge lithography, which is why the analog leaders' economics look so different from digital chip companies'. For a buyer or investor, the questions are catalog breadth, design-in stickiness (once an op-amp is in a qualified automotive or industrial design, it is rarely replaced), manufacturing on owned, depreciated fabs, and pricing power in precision niches.
+Analog parts sell for years or decades (the LM358's datasheet dates from 1976, [R-107](../../../reference/research-log.md#r-107--op-amp-datasheets-and-analog-revenue)) and depend on process know-how and broad catalogs more than on leading-edge lithography, which is why the analog leaders' economics look so different from digital chip companies'. Gross margins are typically high for the analog leaders, though this chapter's sources do not quantify them **[Industry estimate]**. For a buyer or investor, the questions are catalog breadth, design-in stickiness (once an op-amp is in a qualified automotive or industrial design, it is rarely replaced), manufacturing on owned, depreciated fabs, and pricing power in precision niches.
 
 ### Marketing vs Reality
 

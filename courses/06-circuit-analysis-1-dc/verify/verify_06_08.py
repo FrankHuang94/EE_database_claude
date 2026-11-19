@@ -237,7 +237,7 @@ mos = [("Vg", "V", "g", "0", 1.0), ("Gm", "G", "d", "s", ("g", "s", 2.0)), ("ro"
        ("RS", "R", "s", "0", 1.0)]
 esc, csc, _ = tableau(mos + [("Vsc", "V", "d", "0", 0.0)])
 v.check("06-08.10a", esc["s"])
-v.check("06-08.10b", -csc["Vsc"])
+v.check("06-08.10b", csc["Vsc"])          # convention: out of the drain through the short
 VN, RN = equivalent(mos, "d", loads=(1.0, 10.0, 100.0))
 v.check("06-08.10c", par(RN, 10.0))
 v.check("06-08.10d", tableau(mos + [("RD", "R", "d", "0", 10.0)])[0]["d"])
@@ -276,5 +276,32 @@ v.check("Lab 06-08.d", brentq(lambda x: x * (52.0 - x) / 6.25 - 100.0, 26.0, 52.
 ex3b = [el if el[0] != "Rf" else ("Rf", "R", "x", "o", 99.0) for el in ex3]
 v.check("Lab 06-08.e", equivalent(ex3b, "o")[1])
 v.check("Lab 06-08.f", 52.0 ** 2 / (4 * 3.125))
+
+# ---- Problem 06-08.13 (kΩ, mA, V, mW): equivalents from loaded solves, then each circuit's internal power
+orig = [("V", "V", "s", "0", 10.0), ("Rs", "R", "s", "o", 2.0), ("Rp", "R", "o", "0", 2.0)]
+Vt13, Rt13 = equivalent(orig, "o")
+v.check("06-08.13a", Vt13)
+v.check("06-08.13b", Rt13)
+v.check("06-08.13c", Vt13 / Rt13)
+forms = {"orig": orig,
+         "thev": [("V", "V", "s", "0", Vt13), ("Rs", "R", "s", "o", Rt13)],
+         "nort": [("I", "I", "0", "o", Vt13 / Rt13), ("Rp", "R", "o", "0", Rt13)]}
+res13 = {}
+for name, net in forms.items():
+    e, cur, vol = tableau(net + [("RL", "R", "o", "0", 4.0)])
+    src = [k for k in cur if k in ("V", "I")][0]
+    p_src = -P(cur, vol, src)
+    p_int = sum(P(cur, vol, k) for k in cur if k not in (src, "RL"))
+    res13[name] = (e["o"], P(cur, vol, "RL"), p_src, p_int)
+v.assert_true("06-08.13: all three forms give the load the same voltage and power",
+              max(abs(r[0] - 4.0) + abs(r[1] - 4.0) for r in res13.values()) < 1e-9)
+v.check("06-08.13d", res13["orig"][0])
+v.check("06-08.13e", res13["orig"][1])
+v.check("06-08.13f", res13["orig"][3])
+v.check("06-08.13g", res13["thev"][3])
+v.check("06-08.13h", res13["nort"][3])
+v.check("06-08.13i", 100 * res13["orig"][1] / res13["orig"][2])
+v.check("06-08.13j", 100 * res13["thev"][1] / res13["thev"][2])
+v.check("06-08.13k", 100 * res13["nort"][1] / res13["nort"][2])
 
 sys.exit(v.finish())

@@ -52,10 +52,10 @@ def fig_coax():
     fig, ax = plt.subplots(figsize=(6.4, 3.6))
     ax.plot(z0, loss_n, color=B, label="conductor loss (relative to minimum)")
     ax.plot(z0, power_n, color=O, ls="--", label="peak power capacity (relative to maximum)")
-    for z, lab in ((30.0, "30 Ω\nmax power"), (76.7, "77 Ω\nmin loss"), (50.0, "50 Ω"), (75.0, "")):
+    for z, lab, y, ha in ((30.0, "30 Ω\nmax power", 1.9, "left"), (76.7, "77 Ω\nmin loss", 1.9, "left"),
+                          (50.0, "50 Ω", 1.9, "left"), (75.0, "75 Ω", 1.55, "right")):
         ax.axvline(z, color="0.6", lw=0.7, ls=":")
-        if lab:
-            ax.text(z + 1, 1.9, lab, fontsize=8)
+        ax.text(z + 1 if ha == "left" else z - 1, y, lab, fontsize=8, ha=ha)
     ax.set_xlim(10, 140)
     ax.set_ylim(0, 2.2)
     ax.set_xlabel("characteristic impedance $Z_0$ (Ω), air dielectric")

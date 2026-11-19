@@ -73,11 +73,11 @@ with $G_{21} \ne G_{12}$.
 
 *Figure 2. The circuit of Example 06-06.1. The VCCS draws $g\,v_1$ from node 2, controlled by the voltage of node 1.*
 
-**What the loss of symmetry means.** The power argument of 06-04 ($\mathbf{v}^\mathsf{T}\mathbf{G}\mathbf{v}$ = dissipated power $> 0$) no longer holds, because dependent sources can supply power. So $\mathbf{G}$ need not be positive definite, and for particular gain values it can be singular: the circuit then has no unique solution, which in a real circuit with capacitance shows up as instability or oscillation (Course 07 and the feedback and stability chapters of Courses 12 and 15).
+**What the loss of symmetry means.** The power argument of 06-04 ($\mathbf{v}^\mathsf{T}\mathbf{G}\mathbf{v}$ = dissipated power $> 0$) no longer holds, because dependent sources can supply power. So $\mathbf{G}$ need not be positive definite, and for particular gain values it can be singular: the circuit then has no unique solution, which in a real circuit shows up as instability: latch-up or runaway when a natural response grows without oscillating, or oscillation when energy storage (capacitance with inductance, or enough stages of delay) lets the growing response swing (Course 07 and the feedback and stability chapters of Courses 12 and 15).
 
 ### 3.3 Mesh analysis with dependent sources
 
-Mesh analysis takes dependent sources the same way: write KVL with each dependent voltage source as a rise of unknown value, express the controlling variable in mesh currents, substitute. A dependent *current* source on an outer branch fixes its mesh current as a multiple of the controlling variable; one shared by two meshes forms a supermesh whose constraint is $i_a - i_b = \beta\,i_x$ or $g\,v_x$. Example 06-06.3 uses this to show how a bipolar transistor's current gain multiplies an emitter resistance seen from its base.
+Mesh analysis takes dependent sources the same way: write KVL with each dependent voltage source as a rise of unknown value, express the controlling variable in mesh currents, substitute. A dependent *current* source on an outer branch fixes its mesh current as a multiple of the controlling variable; one shared by two meshes forms a supermesh whose constraint is $i_a - i_b = \beta\,i_x$ or $g\,v_x$. Example 06-06.3 uses the outer-branch case to show how a bipolar transistor's current gain multiplies an emitter resistance seen from its base; Problem 06-06.16 uses the shared case, and Problem 06-06.15 the nodal counterpart, a dependent voltage source between two non-reference nodes (a dependent supernode).
 
 ### 3.4 Resistance at a port: the test-source method
 
@@ -166,14 +166,16 @@ $$
 Collecting: $0.12v_d - 2.02v_s = -2$ and $-0.02v_d + 3.02v_s = 2$. From the second, $v_s = (2 + 0.02v_d)/3.02$; substituting and multiplying by 3.02, $0.3624v_d - 4.04 - 0.0404v_d = -6.04$, so $0.322\,v_d = -2$:
 
 $$
-\frac{v_d}{v_{in}} = \mathbf{-6.211}, \qquad v_s = \mathbf{0.6211}\,v_{in}, \qquad i_d = g_m(v_{in} - v_s) = \mathbf{0.7578\ mA\ per\ volt}.
+\frac{v_d}{v_{in}} = \mathbf{-6.211}, \qquad v_s = \mathbf{0.6211}\,v_{in}.
 $$
+
+The VCCS carries $g_m(v_{in} - v_s) = $ **0.7578 mA per volt**, but that is not the drain current. The drain current (by the definition of §3.5, the VCCS current plus the current in $r_o$) is $0.7578 + (v_d - v_s)/50 = 0.7578 + (-6.211 - 0.621)/50 = $ **0.6211 mA per volt**, equal to $-v_d/R_D$ and to $v_s/R_S$, as KCL requires: **0.1366 mA per volt** of the VCCS current circulates back through $r_o$.
 
 The approximation (ignoring $r_o$) gives $-2\times10/(1 + 2\times1) = $ **−6.667**; without degeneration the gain is $-g_m(R_D\parallel r_o) = -2\times8.333 = $ **−16.67**.
 
 **Units check.** mS × kΩ = dimensionless gain ✓.
 
-**Sanity check.** Degeneration trades gain for stability: $R_S$ feeds back part of the output current as a voltage that opposes $v_{gs}$, so the gain falls by about $1 + g_mR_S = 3$, and it now depends mainly on the ratio $R_D/R_S$ rather than on $g_m$, which varies with temperature and from part to part. The exact answer sits slightly below the approximation because $r_o$ shunts some current around $R_D$ ✓.
+**Sanity check.** Degeneration trades gain for predictability: $R_S$ feeds back part of the output current as a voltage that opposes $v_{gs}$, so the gain falls by about $1 + g_mR_S = 3$, and it now depends mainly on the ratio $R_D/R_S$ rather than on $g_m$, which varies with temperature and from part to part. The exact answer sits slightly below the approximation because $r_o$ shunts some current around $R_D$ ✓.
 
 ### Example 06-06.3 · A bipolar stage by mesh analysis: reflected resistance (tier B)
 
@@ -224,7 +226,13 @@ $$
 \end{aligned}
 $$
 
-The second row contains $+A/0.1 = 10^6$ in the $v_-$ column but the first row has only $-1/9$ in the $v_{out}$ column: strongly nonsymmetric. Solving (by computer; the lab does it) gives $v_{out}$ = **9.9989 V** and $v_s - v_- = $ **106.0 µV**, so the + input draws $106\ \text{µV}/1\ \text{MΩ} = $ **0.106 nA**. The gain error is **106 ppm**. The feedback formula with $\beta = 0.1$ gives $10^5/(1 + 10^4) = $ **9.9990**, an error of 100 ppm; the extra 6 ppm comes from $R_o$ driving the 2 kΩ load and the feedback network, which lowers the effective open-loop gain.
+The second row contains $+A/0.1 = 10^6$ in the $v_-$ column but the first row has only $-1/9$ in the $v_{out}$ column: strongly nonsymmetric. Solving (by computer; the lab does it) gives $v_{out}$ = **9.9989 V** and $v_s - v_- = $ **106.0 µV**, so the + input draws $106\ \text{µV}/1\ \text{MΩ} = $ **0.106 nA**. The gain error is **106 ppm**. The same answer follows by hand in two steps. *The feedback formula.* If the amplifier's input drew no current and its output were unloaded, the divider would give $v_- = \beta v_{out}$ with $\beta = R_1/(R_1 + R_2) = 0.1$, and the VCVS would give $v_{out} = A(v_s - \beta v_{out})$. Solving, $v_{out}(1 + A\beta) = Av_s$:
+
+$$
+\frac{v_{out}}{v_s} = \frac{A}{1 + A\beta} = \frac{1}{\beta}\cdot\frac{1}{1 + 1/(A\beta)},
+$$
+
+$10^5/(1 + 10^4) = $ **9.9990**, an error of about $1/(A\beta)$ = 100 ppm. *The loading.* $R_o$ drives $R_L$ in parallel with $R_1 + R_2$, that is $2\parallel10 = 1.667$ kΩ, so only the fraction $1.667/(1.667 + 0.1)$ of the VCVS voltage reaches the output: the effective open-loop gain is $A' = 10^5\times0.9434 = $ **94,340**, and $1/(A'\beta) = $ **106.0 ppm**, matching the computer result. ($R_{id}$, with only 106 µV across 1 MΩ, changes nothing visible.)
 
 **Units check.** V/kΩ = mA in every term ✓.
 
@@ -245,7 +253,9 @@ The second row contains $+A/0.1 = 10^6$ in the $v_-$ column but the first row ha
 | Ex 06-06.1h | G_21 | 0.75 | mS |
 | Ex 06-06.2a | gain v_d/v_in | −6.211 | — |
 | Ex 06-06.2b | v_s per volt of input | 0.6211 | — |
-| Ex 06-06.2c | drain current per volt | 0.7578 | mA |
+| Ex 06-06.2c | VCCS current per volt | 0.7578 | mA |
+| Ex 06-06.2h | drain current per volt | 0.6211 | mA |
+| Ex 06-06.2i | current returning through r_o per volt | 0.1366 | mA |
 | Ex 06-06.2d | approximate gain | −6.667 | — |
 | Ex 06-06.2e | gain without R_S | −16.67 | — |
 | Ex 06-06.2f | reduced coefficient | 0.322 | — |
@@ -265,6 +275,8 @@ The second row contains $+A/0.1 = 10^6$ in the $v_-$ column but the first row ha
 | Ex 06-06.5d | gain error | 106 | ppm |
 | Ex 06-06.5e | feedback-formula gain | 9.9990 | — |
 | Ex 06-06.5f | feedback-formula error | 100 | ppm |
+| Ex 06-06.5g | effective open-loop gain with loading | 94340 | — |
+| Ex 06-06.5h | 1/(A′β) | 106.0 | ppm |
 
 ## 5. Simulate it
 
@@ -311,8 +323,8 @@ Open [labs/06-06-lab/](../labs/06-06-lab/README.md): a notebook and an ngspice n
 ### State of the art (as of Nov 2026)
 
 - **Simulators linearize every device into dependent sources.** At each Newton iteration and at each frequency of an AC analysis, SPICE evaluates each transistor's compact model and stamps its conductances and transconductances, which are VCCS stamps (06-04 §3.5, §3.6 here) **[Established]**.
-- **The compact models are industry standards.** Foundries deliver transistor behavior to designers as compact models in their process design kits. For FinFET processes the standard is BSIM-CMG, developed at UC Berkeley and standardized through the Si2 Compact Model Coalition, a group of foundries, EDA vendors and chip companies; new CMC standards reach the public 18 months after members receive them ([R-104](../../../reference/research-log.md#r-104--compact-models-and-gmid-design)) **[Industry estimate]**: read from search excerpts and Si2's release notes, with the current version not confirmed.
-- **Design by $g_m/I_D$.** Much analog design now sizes transistors with precomputed tables of $g_m/I_D$ (transconductance per unit current) and related small-signal parameters, an approach set out in Jespers and Murmann's *Systematic Design of Analog CMOS Circuits* (Cambridge, 2017) ([R-104](../../../reference/research-log.md#r-104--compact-models-and-gmid-design)) **[Industry estimate]**. The quantity it optimizes is exactly the dependent source's gain per unit of bias power.
+- **The compact models are industry standards.** Foundries deliver transistor behavior to designers as compact models in their process design kits. For FinFET processes the standard is BSIM-CMG, developed at UC Berkeley and standardized through the Si2 Compact Model Coalition, a group of foundries, EDA vendors and chip companies; new CMC standards reach the public 18 months after members receive them ([R-104](../../../reference/research-log.md#r-104--compact-models-and-gmid-design)) **[Industry estimate]**: read from search excerpts only (Si2's pages returned a bot check), with the current version not confirmed.
+- **Design by $g_m/I_D$.** A systematic analog design method sizes transistors with precomputed tables of $g_m/I_D$ (transconductance per unit current) and related small-signal parameters, set out in Jespers and Murmann's *Systematic Design of Analog CMOS Circuits* (Cambridge, 2017) ([R-104](../../../reference/research-log.md#r-104--compact-models-and-gmid-design)) **[Industry estimate]**; how widely it is used in industry was not established from a source. The quantity it optimizes is exactly the dependent source's gain per unit of bias power.
 
 ### Why it matters commercially
 

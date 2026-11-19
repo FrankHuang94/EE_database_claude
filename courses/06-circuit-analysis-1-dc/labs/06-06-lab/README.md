@@ -57,7 +57,7 @@ The netlist is run in CI by [`tools/run_spice.py`](../../../../tools/run_spice.p
 <details><summary>Answers to the discussion questions</summary>
 
 1. MNA's unknowns are node voltages plus the currents of voltage sources (06-04). A controlling voltage is already a combination of unknowns, but an arbitrary branch current is not; inserting a 0 V source makes that current an MNA unknown that the F or H stamp can refer to.
-2. Its resistance depends on $1 - \mu$, the difference of two nearly equal numbers, so small changes in the gain (with temperature, supply or frequency) change the resistance enormously and can flip its sign. Connected to anything with a smaller positive resistance in parallel, the net resistance can approach zero conductance, the condition for oscillation or latch-up.
+2. Its resistance depends on $1 - \mu$, the difference of two nearly equal numbers, so small changes in the gain (with temperature, supply or frequency) change the resistance enormously and can flip its sign. In parallel with a positive resistance of nearly the same size, the net conductance approaches zero, the condition for latch-up (or, with a resonant tank, oscillation).
 3. Gain costs stages, power and bandwidth, and high-gain loops are hard to stabilize (Course 12). Beyond a point other errors dominate: resistor tolerances and drift, the op-amp's offset voltage and bias currents (06-10), and noise. Accuracy budgets balance all of them.
 4. For example, Example 06-06.1's VCCS delivering power indefinitely, or a gain-of-$10^5$ VCVS producing 100 kV from a 1 V input with the loop opened. A real amplifier is limited by its supply voltage and output current, so its small-signal model is valid only near its operating point.
 

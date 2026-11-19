@@ -6,7 +6,7 @@
 | **Course** | [06 · Circuit Analysis I (DC)](../README.md) |
 | **University equivalent** | Thévenin and Norton equivalents in a sophomore Circuits course (Nilsson & Riedel, *Techniques of Circuit Analysis*; Alexander & Sadiku, *Circuit Theorems*; MIT 6.002, Lecture 3) |
 | **Prerequisites** | [06-07](06-07-linearity-and-superposition.md) (superposition, source transformation), [06-06](06-06-dependent-sources.md) (the test-source method), [06-02](06-02-circuit-elements-and-ohms-law.md) (practical sources and load lines). Each fact used is restated where it is needed. |
-| **Estimated study hours** | 8 |
+| **Estimated study hours** | 10 |
 | **Last verified** | 2026-11-19 |
 
 **Learning objectives.** After this chapter you can:
@@ -15,7 +15,7 @@
 2. Find $V_{th}$, $I_N$ and $R_{th}$ by open-circuit and short-circuit tests, by switching off independent sources, and by a test source when dependent sources are present.
 3. Use equivalents to predict loading: the voltage a sensor, amplifier or power port delivers into a given load, and how much is lost on the way.
 4. Measure a real source's equivalent with two loads, correcting for the meter's own loading.
-5. State what an equivalent does not tell you: internal power and efficiency, and behavior with nonlinear loads.
+5. State what an equivalent does not tell you (internal power and efficiency), and why it fails for networks that are not linear, such as a battery whose equivalent drifts, while still working for any load.
 
 ## 1. Big picture
 
@@ -38,7 +38,7 @@ Stand at the two terminals of a black box and do the only two experiments you ca
 
 ### The business analogy, and where it breaks
 
-A company's financial statements condense thousands of transactions into a few summary numbers that are all an outside investor needs to value it. Likewise, a Thévenin equivalent condenses a circuit into the two numbers an outside load needs. *Where it breaks:* summaries hide internal details that sometimes matter. A Thévenin equivalent says nothing about the power dissipated *inside* the original network (a voltage source with a series resistor and a current source with a parallel resistor waste different amounts internally, Problem 06-04.14), and it fails for loads or networks that are not linear.
+A company's financial statements condense thousands of transactions into a few summary numbers that are all an outside investor needs to value it. Likewise, a Thévenin equivalent condenses a circuit into the two numbers an outside load needs. *Where it breaks:* summaries hide internal details that sometimes matter. A Thévenin equivalent says nothing about the power dissipated *inside* the original network (a voltage source with a series resistor and a current source with a parallel resistor waste different amounts internally, Problem 06-04.14), and it fails for networks that are not linear. The load, by contrast, can be anything, even a diode or a constant-power converter (§3.2, §3.4).
 
 ## 3. Theory
 
@@ -82,7 +82,7 @@ Three special cases are worth recognizing:
 
 - $R_{th} = 0$: an ideal voltage source; no Norton equivalent exists (infinite $I_N$).
 - $R_{th} \to \infty$: an ideal current source; no Thévenin equivalent exists.
-- $R_{th} < 0$: possible only with dependent sources (06-06, Example 06-06.4); such a port can deliver power to a positive load with no independent source inside.
+- $R_{th} < 0$: possible only with dependent sources (06-06, Example 06-06.4). Such a port delivers power to an external circuit that drives it (one containing a source), but with no independent source inside it has $V_{th} = 0$, so a passive resistor alone across it carries no current: $(R_L + R_{th})\,i = 0$ forces $i = 0$, except at the singular value $R_L = -R_{th}$, where a real circuit latches up or oscillates.
 
 ### 3.4 Using an equivalent: loading
 
@@ -145,7 +145,7 @@ The voltage-source equivalent is named after Léon Charles Thévenin, a French t
 
 **Units check.** V/mA = kΩ ✓.
 
-**Sanity check.** The feedback lowers the output resistance from 2 kΩ to 0.91 kΩ: when a load pulls the output down, $R_f$ carries part of that change back to the input, and the inverting amplifier pushes the output back up. Negative feedback lowering output resistance is a general rule (Course 12) ✓.
+**Sanity check.** The feedback lowers the output resistance from 2 kΩ to 0.91 kΩ: when a load pulls the output down, $R_f$ carries part of that change back to the input, and the inverting amplifier pushes the output back up. Without the amplifier's gain the output would see $R_o$ in parallel with $R_f + R_s$, $2\parallel10 = 1.667$ kΩ; the feedback lowers that to 0.91 kΩ. Feedback that senses the output *voltage* lowers output resistance; feedback that senses the output *current* raises it, as degeneration did in Problem 06-06.8 (Course 12) ✓.
 
 ### Example 06-08.4 · A Power-over-Ethernet port (tier B)
 
@@ -312,7 +312,7 @@ Interface specifications decide whether parts from different vendors work togeth
 
    <details><summary>Answer</summary>
 
-   When the network contains dependent sources (series–parallel reduction is then invalid), and in particular when it has no independent sources (so $v_{oc}$ and $i_{sc}$ are both zero).
+   Whenever $v_{oc}/i_{sc}$ cannot be used: when the network has no independent sources (so $v_{oc}$ and $i_{sc}$ are both zero), or when $i_{sc}$ is zero or infinite. With dependent sources *and* an independent source, $v_{oc}/i_{sc}$ still works (§3.3, Method 1); what fails is series–parallel reduction with the sources zeroed, so a test source is then the usual alternative.
 
    </details>
 
@@ -336,7 +336,7 @@ Interface specifications decide whether parts from different vendors work togeth
 
    <details><summary>Answer</summary>
 
-   It puts the two pairsets in parallel, halving the loop resistance from 12.5 Ω to 6.25 Ω, so the same current loses half the power in the cable (or twice the current can flow for the same loss).
+   It puts the two pairsets in parallel, halving the loop resistance from 12.5 Ω to 6.25 Ω, so the same current loses half the power in the cable, or $\sqrt2$ times the current can flow for the same total loss. Seen per pairset, each pairset can carry its old current at its old loss, so the total current doubles while the total loss doubles too, staying the same fraction.
 
    </details>
 

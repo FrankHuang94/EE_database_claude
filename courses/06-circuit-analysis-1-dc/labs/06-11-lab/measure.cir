@@ -22,6 +22,8 @@
 * EXPECT p8a   key:../../solutions/06-11-solutions.md#06-11.8a scale=1e-3 rtol=1e-6
 * EXPECT p9c   key:../../solutions/06-11-solutions.md#06-11.9c rtol=1e-3
 * EXPECT p12b  key:../../solutions/06-11-solutions.md#06-11.12b rtol=1e-5
+* EXPECT p13a  key:../../solutions/06-11-solutions.md#06-11.13a scale=1e-3 rtol=1e-5
+* EXPECT p13d  key:../../solutions/06-11-solutions.md#06-11.13d rtol=2e-3
 
 .options TNOM=25
 .temp 25
@@ -111,6 +113,11 @@ R122 b12 c12 1Meg
 R123 c12 0 1Meg
 R12m b12 c12 10Meg
 
+* ---- Problem 06-11.13: 2 mOhm shunt (250 ppm/C) with 0.02 mOhm of copper in each sense path, 10 A
+I13  0 y13 DC 10
+R13c1 y13 j13 0.02m tc1=3.93e-3
+R13s j13 h13 2m tc1=250e-6
+R13c2 h13 0 0.02m tc1=3.93e-3
 .control
 op
 let ex1b = v(m1)
@@ -156,5 +163,11 @@ let ex5f = (rmis[1]/rmis[0]-1)*100
 echo "ex5c = $&ex5c"
 echo "ex5e = $&ex5e"
 echo "ex5f = $&ex5f"
+dc temp 25 65 40
+let rm13 = v(y13)/10
+let p13a = rm13[0]
+let p13d = (rm13[1]/rm13[0]-1)*100
+echo "p13a = $&p13a"
+echo "p13d = $&p13d"
 .endc
 .end

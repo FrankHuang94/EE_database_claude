@@ -27,6 +27,9 @@
 * EXPECT q14a  key:solutions.md#X06.14a scale=1e-3 rtol=1e-4
 * EXPECT q14e  key:solutions.md#X06.14e rtol=1e-4
 * EXPECT q14h  key:solutions.md#X06.14h rtol=1e-4
+* EXPECT q7h   key:solutions.md#X06.7h rtol=1e-6
+* EXPECT q10g  key:solutions.md#X06.10g rtol=1e-6
+* EXPECT q10h  key:solutions.md#X06.10h rtol=1e-6
 
 * ---- Q3: 12 V into 8k/4k with a 4k load; 6 mA into 2k || 3k || 6k
 V3   a3 0 DC 12
@@ -145,6 +148,19 @@ R14b3 t14 r14b 350
 R14b4 r14b u14 350
 R14l2 u14 0 0.5
 
+* ---- Q7(d): Norton form of V1 and R1 (5 mA in parallel with 2k) with I1 and R2
+I7n  0 x7n DC 5m
+R7n  x7n 0 2k
+I7b  0 x7n DC 3m
+R7b  x7n 0 3k
+* ---- Q10(d): 1 V behind 90k into 10k, directly and through a follower
+V10s s10s 0 DC 1
+R10s s10s i10s 90k
+R10i i10s 0 10k
+V10t s10t 0 DC 1
+R10t s10t p10t 90k
+E10t o10t 0 p10t o10t 1e8
+R10u o10t 0 10k
 .control
 op
 let q3b = v(m3)
@@ -199,5 +215,11 @@ echo "q13d = $&q13d"
 echo "q14a = $&q14a"
 echo "q14e = $&q14e"
 echo "q14h = $&q14h"
+let q7h = v(x7n)
+let q10g = v(i10s)
+let q10h = v(o10t)
+echo "q7h = $&q7h"
+echo "q10g = $&q10g"
+echo "q10h = $&q10h"
 .endc
 .end

@@ -6,7 +6,7 @@
 | **Course** | [06 · Circuit Analysis I (DC)](../README.md) |
 | **University equivalent** | Maximum power transfer in a sophomore Circuits course (Nilsson & Riedel, *Techniques of Circuit Analysis*; Alexander & Sadiku, *Circuit Theorems*), with the matching-versus-efficiency discussion of an introductory power or RF course |
 | **Prerequisites** | [06-08](06-08-thevenin-and-norton.md) (Thévenin equivalents), [01-04](../../01-calculus-for-engineers/chapters/01-04-applications-of-derivatives.md) (optimization by derivatives; Example 01-04.1 first derived the result). Each fact used is restated where it is needed. |
-| **Estimated study hours** | 5 |
+| **Estimated study hours** | 4 |
 | **Last verified** | 2026-11-19 |
 
 **Learning objectives.** After this chapter you can:
@@ -34,7 +34,7 @@ Short the source ($R_L = 0$): plenty of current flows but the load has no voltag
 
 ![Load power, normalized to its maximum, and efficiency against R_L/R_th on a log axis; power peaks at 1 where efficiency is 50%; at R_L/R_th = 19 efficiency is 95% and power is 19% of the maximum](../../../assets/figures/06-09/power-and-efficiency.svg)
 
-*Figure 1. Power peaks at the matched load, where efficiency is only 50%. High efficiency needs loads much larger than the source resistance, at a fraction of the maximum power.*
+*Figure 1. For a source with a physical series resistance, power peaks at the matched load, where efficiency is only 50%. High efficiency needs loads much larger than the source resistance, at a fraction of the maximum power.*
 
 ### The business analogy, and where it breaks
 

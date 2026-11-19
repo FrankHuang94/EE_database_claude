@@ -30,7 +30,7 @@ $v_L = 5R_L/(50 + R_L)$ and the error is $50/(50 + R_L)$: 50 Ω → **2.5 V**, *
 
 (a) Open circuit: the input loop gives $i_b = v_s/(R_s + r_\pi + (\beta + 1)R_E)$ and the emitter voltage is $(\beta + 1)i_bR_E$, so the gain is $101\times1/(1 + 2.5 + 101) = $ **0.9665**.
 
-(b) Short the source and inject $i_t$ into the emitter. The emitter node sees $R_E$ to ground and, looking back into the transistor, the base loop: a voltage $v_e$ at the emitter drives $i_b = -v_e/(R_s + r_\pi)$, and the transistor's emitter current $(\beta + 1)i_b$ flows *out of* the emitter node. KCL: $i_t = v_e/R_E + (\beta + 1)v_e/(R_s + r_\pi)$, so
+(b) Short the source and inject $i_t$ into the emitter. The emitter node sees $R_E$ to ground and, looking back into the transistor, the base loop: a voltage $v_e$ at the emitter drives $i_b = -v_e/(R_s + r_\pi)$, and the transistor's emitter current $(\beta + 1)i_b$ flows *into* the emitter node from the transistor (negative here, since $i_b < 0$), so $-(\beta + 1)i_b$ leaves through the transistor. KCL: $i_t = v_e/R_E + (\beta + 1)v_e/(R_s + r_\pi)$, so
 
 $$
 R_{out} = R_E\parallel\frac{R_s + r_\pi}{\beta + 1} = 1000\parallel34.65\ \Omega = \mathbf{33.49\ \Omega}.
@@ -64,11 +64,11 @@ giving $V_{th} = 1/a = $ **5.000 V** and $R_{th} = b/a = $ **5.000 kΩ**.
 
 (a) Type 1: $I = 15.4/44 = $ **0.35 A**, PD voltage $44 - 0.35\times20 = $ **37.0 V**, PD power $15.4 - 0.35^2\times20 = $ **12.95 W**, efficiency **84.1%**. Type 2 Class 4: $I = 30/50 = $ **0.6 A**, **42.5 V**, **25.5 W**, efficiency **85.0%**. Both match the class figures (Example 06-08.4).
 
-(b) A constant-power load satisfies $v(50 - v)/6.25 = 25.5$, that is $v^2 - 50v + 159.4 = 0$; the upper root is $v = (50 + \sqrt{2500 - 637.5})/2 = $ **46.58 V**, so $I = 25.5/46.58 = $ **0.5475 A** and the source delivers $50\times0.5475 = $ **27.37 W** (cable loss 1.87 W). Shorter cable and four pairs leave plenty of margin.
+(b) A constant-power load satisfies $v(50 - v)/6.25 = 25.5$, that is $v^2 - 50v + 159.4 = 0$; the upper root is $v = (50 + \sqrt{2500 - 637.5})/2 = $ **46.58 V**, so $I = 25.5/46.58 = $ **0.5475 A** and the source delivers $50\times0.5475 = $ **27.37 W** (cable loss 1.87 W). Four-pair powering leaves plenty of margin.
 
 ### Solution 06-08.9
 
-(a) The load draws $i = P/v$, and the source gives $i = (V_{th} - v)/R_{th}$. Equating and multiplying by $vR_{th}$: $v^2 - V_{th}v + PR_{th} = 0$. With 12 V, 1 Ω and 20 W: $v = (12 \pm \sqrt{144 - 80})/2 = $ **10 V** or **2 V**. The normal operating point is 10 V (2 A, 4 W lost in the source). The 2 V solution (10 A, 100 W lost) is the "wrong side" of the curve: it is unstable for a regulated converter, which would draw more current as its input voltage falls.
+(a) The load draws $i = P/v$, and the source gives $i = (V_{th} - v)/R_{th}$. Equating and multiplying by $vR_{th}$: $v^2 - V_{th}v + PR_{th} = 0$. With 12 V, 1 Ω and 20 W: $v = (12 \pm \sqrt{144 - 80})/2 = $ **10 V** or **2 V**. The normal operating point is 10 V (2 A, 4 W lost in the source). The 2 V solution (10 A, 100 W lost) is the "wrong side" of the curve. To see which point is stable, let the voltage dip by δ: the source then supplies $\delta/R_{th}$ more current, while the load (drawing $P/v$) demands $P\delta/v^2$ more. The point recovers if the source's extra current wins, that is if $v^2/P > R_{th}$. At 10 V, $100/20 = 5\ \Omega > 1\ \Omega$: stable (a 1 V dip gives 1 A more from the source against 0.2 A more demanded). At 2 V, $4/20 = 0.2\ \Omega < 1\ \Omega$: a dip makes the load demand 5 A more per volt against 1 A supplied, so the voltage collapses.
 
 (b) Real solutions need $V_{th}^2 \ge 4PR_{th}$, so the largest power is $V_{th}^2/(4R_{th}) = $ **36 W**, at a load voltage of $V_{th}/2 = $ **6 V** (maximum power transfer, 06-09).
 
@@ -76,7 +76,7 @@ giving $V_{th} = 1/a = $ **5.000 V** and $R_{th} = b/a = $ **5.000 kΩ**.
 
 ### Solution 06-08.10
 
-(a) With the drain shorted to small-signal ground, KCL at the source node: $v_s/R_S + v_s/r_o = g_m(1 - v_s)$, so $v_s(1 + 0.02 + 2) = 2$ and $v_s = 0.6623$ V. The current entering the drain from the short is $g_m(1 - v_s) + (0 - v_s)/r_o = 0.6755 - 0.0132 = $ **0.6623 mA** per volt (equal to $v_s/R_S$, as it must be).
+(a) With the drain shorted to small-signal ground, KCL at the source node: $v_s/R_S + v_s/r_o = g_m(1 - v_s)$, so $v_s(1 + 0.02 + 2) = 2$ and $v_s = 0.6623$ V. The current entering the drain from the short is $g_m(1 - v_s) + (0 - v_s)/r_o = 0.6755 - 0.0132 = 0.6623$ mA per volt (equal to $v_s/R_S$, as it must be). With the problem set's convention ($I_N$ flows out of terminal a, the drain, through the short), $I_N = $ **−0.6623 mA** per volt.
 
 (b) The Norton source drives $R_N\parallel R_D = 151\parallel10 = 9.379$ kΩ. The current flows into the drain, out of the $R_D$ side, so $v_d = -0.6623\times9.379 = $ **−6.211 V** per volt: exactly Example 06-06.2's gain, now as "transconductance × total resistance at the output".
 
@@ -95,6 +95,18 @@ giving $V_{th} = 1/a = $ **5.000 V** and $R_{th} = b/a = $ **5.000 kΩ**.
 (b) Code 101: by Millman, $V_{th} = 4\times(1/1 + 1/4)/(1 + 0.5 + 0.25) = $ **2.857 V**.
 
 (c) $2.857\times4/(4 + 0.5714) = $ **2.5 V** ✓. Any load forms a divider with the 571 Ω output resistance and scales every code by the same factor: a gain error, harmless if constant but troublesome if the load varies (or is nonlinear), which is why DAC outputs are usually buffered.
+
+
+### Solution 06-08.13
+
+(a) Open circuit: the divider gives **$V_{th}$ = 5 V**. With the source shorted, the output sees $2\parallel2 = $ **1 kΩ**. Norton: $I_N = 5/1 = $ **5 mA** in parallel with 1 kΩ.
+
+(b) Either form: $v = 5\times4/(1 + 4) = $ **4 V**, $p = 4^2/4 = $ **4 mW**. That is what an equivalent guarantees.
+
+(c) *Original.* The load takes 1 mA and the 2 kΩ shunt $4/2 = 2$ mA, so the source supplies 3 mA, delivering $10\times3 = 30$ mW. Inside: $3^2\times2 + 2^2\times2 = 18 + 8 = $ **26 mW**; efficiency $4/30 = $ **13.3%**.
+*Thévenin.* Its 1 kΩ carries the load's 1 mA: **1 mW** inside, source power 5 mW, efficiency **80%**.
+*Norton.* Its 1 kΩ has 4 V across it: **16 mW** inside; the 5 mA source at 4 V delivers 20 mW; efficiency **20%**.
+Only the original network's figure is real. The equivalents agree with it, and with each other, at the terminals only; internally they are different circuits.
 
 ---
 
@@ -149,7 +161,7 @@ giving $V_{th} = 1/a = $ **5.000 V** and $R_{th} = b/a = $ **5.000 kΩ**.
 | 06-08.9c | maximum power | 36 | W |
 | 06-08.9d | voltage at maximum power | 6 | V |
 | 06-08.10a | v_s with the drain shorted | 0.6623 | V |
-| 06-08.10b | Norton current per volt | 0.6623 | mA |
+| 06-08.10b | Norton current per volt (out of the drain) | −0.6623 | mA |
 | 06-08.10c | R_N ∥ R_D | 9.379 | kΩ |
 | 06-08.10d | gain | −6.211 | — |
 | 06-08.11a | overall gain, 100 kΩ input | 8.264 | — |
@@ -157,3 +169,14 @@ giving $V_{th} = 1/a = $ **5.000 V** and $R_{th} = b/a = $ **5.000 kΩ**.
 | 06-08.12a | R_th | 0.5714 | kΩ |
 | 06-08.12b | V_th, code 101 | 2.857 | V |
 | 06-08.12c | output with R_L | 2.5 | V |
+| 06-08.13a | V_th | 5 | V |
+| 06-08.13b | R_th | 1 | kΩ |
+| 06-08.13c | I_N | 5 | mA |
+| 06-08.13d | load voltage | 4 | V |
+| 06-08.13e | load power | 4 | mW |
+| 06-08.13f | internal power, original | 26 | mW |
+| 06-08.13g | internal power, Thévenin form | 1 | mW |
+| 06-08.13h | internal power, Norton form | 16 | mW |
+| 06-08.13i | efficiency, original | 13.3 | % |
+| 06-08.13j | efficiency, Thévenin form | 80 | % |
+| 06-08.13k | efficiency, Norton form | 20 | % |

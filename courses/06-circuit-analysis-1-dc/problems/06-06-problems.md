@@ -77,6 +77,14 @@ R3 3 0 2k
 
 **How good is a current mirror?** A current mirror copies a 100 µA reference to its output: model it as a CCCS of gain 1, controlled by the reference current, in parallel with an output resistance $r_o$, both from the output node to ground. The output node is connected to a 5 V supply through $R_L$ = 20 kΩ. (a) For $r_o$ = 100 kΩ, find the output voltage, the output current and the copying error. (b) Repeat for $r_o$ = 1 MΩ. (c) What does this say about why output resistance is the key specification of a current source?
 
+### Problem 06-06.15 [B]
+
+**A dependent supernode.** A 12 V source (+ at node a) feeds node 1 through a 4 Ω resistor; call its current $i_x$, flowing from a to 1. A current-controlled voltage source sits between node 1 (+) and node 2 (−) with value $2\ \Omega\times i_x$. Node 1 has 3 Ω to ground and node 2 has 6 Ω to ground. (a) Write the supernode KCL and the constraint, and solve for $v_1$, $v_2$ and $i_x$. (b) Find the power absorbed by the dependent source and check the power balance. (c) Write the ngspice lines for the dependent source, using a zero-volt source to sense $i_x$.
+
+### Problem 06-06.16 [B]
+
+**A dependent supermesh.** Nodes: 1, 2, 3 along the top, 0 along the bottom. A 10 V source has + at node 1 and − at node 0; 2 Ω joins nodes 1 and 2; 3 Ω joins nodes 2 and 3; 4 Ω joins node 3 to node 0, and its current from 3 to 0 is $i_x$. A current-controlled current source pushes $0.5\,i_x$ from node 0 up into node 2. Draw it as two meshes with clockwise currents $i_1$ (left) and $i_2$ (right), sharing the dependent source. (a) Write the constraint and the supermesh KVL, and solve for $i_1$ and $i_2$. (b) Find the voltage across the dependent source and the power it delivers, and check the power balance. (c) Write the ngspice lines for the dependent source.
+
 ---
 
 ## Objective coverage
@@ -84,7 +92,7 @@ R3 3 0 2k
 | Learning objective (chapter 06-06) | Problems |
 |---|---|
 | 1. The four dependent sources and what they model | 1, 2, 14 |
-| 2. Nodal and mesh analysis; nonsymmetric matrices | 3, 4, 5, 12 |
+| 2. Nodal and mesh analysis; nonsymmetric matrices | 3, 4, 5, 12, 15, 16 |
 | 3. The test-source method; reflected and negative resistance | 8, 9, 10 |
 | 4. Transistor and op-amp models | 6, 7, 11, 13, 14 |
-| 5. SPICE elements and stamps | 12 |
+| 5. SPICE elements and stamps | 12, 15, 16 |

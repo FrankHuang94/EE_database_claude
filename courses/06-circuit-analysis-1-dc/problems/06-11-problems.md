@@ -55,9 +55,13 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Self-heating of a shunt.** A shunt in a 2512 four-terminal family (1.0 W at 70 °C; TCR ±250 ppm/°C for 1–2.9 mΩ, ±75 ppm/°C for 3–4.9 mΩ, ±35 ppm/°C for 5 mΩ–0.2 Ω) must measure 15 A. On this board the shunt's temperature rises 50 °C per watt. For a 2 mΩ part, find the dissipation, the temperature rise and the worst-case resistance change from self-heating. Can a 5 mΩ part be used? Evaluate a 3 mΩ part the same way and compare its signal with the 2 mΩ part's.
 
-### Problem 06-11.12 [C]
+### Problem 06-11.12 [B]
 
 **Readings that do not add up.** Three 1 MΩ resistors in series are connected across a 9 V source of negligible resistance. (a) What Thévenin resistance does a voltmeter see across any one resistor? (b) What does a 10 MΩ meter read across each, and what is the sum of the three readings? (c) What does a 10 GΩ meter read across each? Explain why the 10 MΩ readings do not sum to 9 V.
+
+### Problem 06-11.13 [C]
+
+**Copper in the sense path, and a current-measurement budget.** A 2 mΩ shunt (±0.5%, ±250 ppm/°C) measures 10 A. A layout error puts 0.02 mΩ of copper (α = 0.00393 /°C) inside the sense connection at each end. (a) Find the resistance the amplifier sees and the error at 25 °C. (b) Find the effective temperature coefficient of that resistance. (c) After a one-point calibration at 25 °C, the board heats by 40 °C. Find the worst-case drift with the misplaced taps and with correct Kelvin taps. (d) With Kelvin taps and no calibration, the budget is: shunt tolerance ±0.5%, shunt TCR over the 40 °C rise ±1.0%, amplifier gain ±0.3%, ADC ±0.2% of reading. Combine them by worst case and by RSS, and say which figure a datasheet guarantee may quote.
 
 ---
 
@@ -66,7 +70,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 06-11) | Problems |
 |---|---|
 | 1. Loading and burden | 1, 2, 4, 9, 12 |
-| 2. Accuracy specifications and combining errors | 3, 5, 9 |
-| 3. Four-terminal (Kelvin) measurement | 8, 11 |
+| 2. Accuracy specifications and combining errors | 3, 5, 9, 13 |
+| 3. Four-terminal (Kelvin) measurement | 8, 13 |
 | 4. Wire and trace resistance, remote sensing | 6, 7, 10 |
-| 5. Worst-case analysis of a measurement chain | 9, 11 |
+| 5. Worst-case analysis of a measurement chain | 9, 11, 13 |

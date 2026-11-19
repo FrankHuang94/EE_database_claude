@@ -33,7 +33,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 06-08.6 [B]
 
-**A battery's equivalent.** A lithium-ion cell reads 3.70 V with no load and 3.58 V while delivering 2 A. (a) Find its Thévenin resistance. (b) Predict its terminal voltage at 5 A, the power lost inside it and the power delivered. (c) Why is the "equivalent" of a battery only approximately constant?
+**A battery's equivalent.** A lithium-ion cell reads 3.70 V with no load and 3.58 V while delivering 2 A. (a) Find its Thévenin resistance. (b) Predict its terminal voltage at 5 A, the power lost inside it and the power delivered. (A battery's Thévenin resistance is a physical internal resistance, so here the internal loss *can* be read from the model; for a general network it cannot.) (c) Why is the "equivalent" of a battery only approximately constant?
 
 ### Problem 06-08.7 [B]
 
@@ -41,7 +41,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 06-08.8 [B]
 
-**PoE budgets.** (a) For 802.3af Type 1 (44 V minimum, 20 Ω worst-case loop, 15.4 W at the source) and 802.3at Type 2 Class 4 (50 V, 12.5 Ω, 30 W), find the current, the PD voltage and power, and the cable efficiency. (b) A Type 2 device that needs exactly 25.5 W is used on a 50 m cable (4-pair powering, 6.25 Ω) from a 50 V source. Find its voltage and current, and the power the source must deliver.
+**PoE budgets.** (a) For 802.3af Type 1 (44 V minimum, 20 Ω worst-case loop, 15.4 W at the source) and 802.3at Type 2 Class 4 (50 V, 12.5 Ω, 30 W), find the current, the PD voltage and power, and the cable efficiency. (b) A Type 2 device that needs exactly 25.5 W is used on a 100 m cable with 4-pair powering (6.25 Ω) from a 50 V source. Find its voltage and current, and the power the source must deliver.
 
 ### Problem 06-08.9 [C]
 
@@ -59,6 +59,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A DAC's output equivalent.** For the 3-bit DAC of Example 06-07.5 with $R_L$ removed: (a) find its Thévenin resistance (all bit lines are voltage sources, 0 V or 4 V); (b) find its Thévenin voltage for code 101; (c) reconnect $R_L$ = 4 kΩ and confirm the 2.5 V of Example 06-07.5. Why does a DAC's output resistance matter to whatever it drives?
 
+### Problem 06-08.13 [B]
+
+**What an equivalent hides.** A 10 V source in series with 2 kΩ feeds an output node that has 2 kΩ to ground. (a) Find its Thévenin and Norton equivalents at the output. (b) With a 4 kΩ load, find the load's voltage and power using each form. (c) Find the power dissipated inside the original network, inside the Thévenin form and inside the Norton form, and the efficiency (load power over source power) of each. Which, if any, tells you the real efficiency?
+
 ---
 
 ## Objective coverage
@@ -69,4 +73,4 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 2. Finding the equivalent by each method | 2, 4, 5, 10, 12 |
 | 3. Loading and interfaces | 3, 4, 8, 11, 12 |
 | 4. Measuring an equivalent | 6, 7 |
-| 5. Limits: internal power, nonlinear loads | 6, 9 |
+| 5. Limits: internal power, nonlinear networks, any load | 6, 9, 13 |

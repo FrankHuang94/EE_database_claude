@@ -40,7 +40,7 @@ with $G_{21} = -0.9 \ne G_{12} = -0.1$ mS: not symmetric. Determinant $0.18 - 0.
 
 (b) $\det\begin{bmatrix} 0.75 & -0.25 \\ g - 0.25 & 0.5\end{bmatrix} = 0.375 + 0.25(g - 0.25) = 0.3125 + 0.25g$, which vanishes at $g = $ **−1.25 mS**. A negative $g$ means the VCCS pushes current *into* node 2 when $v_1$ rises; that raises $v_2$, which through the 4 kΩ raises $v_1$ further: positive feedback.
 
-(c) At $g = -1$ mS the determinant is **0.0625 mS²** and $v_1 = 1/0.125 = $ **8 V**, $v_2 = 2.5\times8 = $ **20 V**: nine times Example 06-06.1's $v_1$ for the same 1 mA input. Near the singular gain the circuit amplifies its own disturbances enormously; at $g$ = −1.25 mS it would have no finite DC solution, and a real circuit there oscillates or latches up.
+(c) At $g = -1$ mS the determinant is **0.0625 mS²** and $v_1 = 1/0.125 = $ **8 V**, $v_2 = 2.5\times8 = $ **20 V**: nine times Example 06-06.1's $v_1$ for the same 1 mA input. Near the singular gain the circuit amplifies its own disturbances enormously; at $g$ = −1.25 mS it would have no finite DC solution. In a real circuit with only node capacitances this is a growing response that does not oscillate (a real pole at the origin): the circuit latches up or runs away.
 
 ### Solution 06-06.5
 
@@ -90,7 +90,7 @@ With the numbers: $1 + 50\times(1 + 2\times1) = $ **151 kΩ**, about three times
 
 (a) The node sees 10 kΩ in parallel with $-R_n$: conductance $1/10 - 1/R_n$ mS. For $R_n$ = 20 kΩ: $0.1 - 0.05 = 0.05$ mS, so $v = 1/0.05 = $ **20 V**. For 12.5 kΩ: $0.1 - 0.08 = 0.02$ mS, so $v = $ **50 V**.
 
-(b) As $R_n \to 10$ kΩ the net conductance, which is the 1 × 1 nodal matrix, goes to zero: the matrix becomes singular and the voltage grows without bound. Physically the negative resistance supplies exactly the power the 10 kΩ dissipates; any small disturbance persists or grows. With capacitance present, this is the condition for an oscillator ([12-09](../../12-electronics-2/chapters/12-09-oscillators.md)).
+(b) As $R_n \to 10$ kΩ the net conductance, which is the 1 × 1 nodal matrix, goes to zero: the matrix becomes singular and the voltage grows without bound. Physically the negative resistance supplies exactly the power the 10 kΩ dissipates; any small disturbance persists or grows. Combined with a resonant LC tank, a negative resistance that cancels the tank's loss is the condition for an oscillator ([12-09](../../12-electronics-2/chapters/12-09-oscillators.md)); with capacitance alone it latches instead.
 
 (c) KCL at the node with the VCCS pushing $g\,v$ in: $v/R - g\,v = I$, so the VCCS adds a conductance $-g$, a resistance $-1/g$. For $R_n$ = 20 kΩ, $g = $ **50 µS** (0.05 mS).
 
@@ -146,6 +146,41 @@ with $r_o\parallel R_S = 50\parallel2 = $ **1.923 kΩ**.
 (b) With $r_o$ = 1 MΩ: $5 - v_o = 2 + 0.02\,v_o$, so $v_o = $ **2.941 V**, the current is $0.1 + 0.002941 = $ **0.1029 mA**, and the error is **2.94%**.
 
 (c) An ideal current source's current does not depend on its voltage, which is what infinite output resistance means. With finite $r_o$, the error is the output voltage divided by $r_o$ relative to the nominal current, so stacking devices to raise $r_o$ (cascoding, Problem 06-06.8) is the standard cure.
+
+
+### Solution 06-06.15
+
+(a) The dependent source joins two non-reference nodes, so nodes 1 and 2 form a supernode. Its KCL (current in through the 4 Ω, out through 3 Ω and 6 Ω) is $(12 - v_1)/4 = v_1/3 + v_2/6$. The constraint is $v_1 - v_2 = 2i_x$ with the controlling current written in node voltages, $i_x = (12 - v_1)/4$, so $v_2 = v_1 - (12 - v_1)/2 = 1.5v_1 - 6$. Substituting: $3 - 0.25v_1 = v_1/3 + 0.25v_1 - 1$, so $0.8333v_1 = 4$: **$v_1$ = 4.8 V**, **$v_2$ = 1.2 V**, **$i_x$ = 1.8 A** (and the source's voltage is $2\times1.8 = 3.6$ V).
+
+(b) Node 2 connects only to the source and the 6 Ω, so the source's current, from node 1 to node 2 through it, is $1.2/6 = 0.2$ A, entering its + terminal: it absorbs $3.6\times0.2 = $ **0.72 W**. Balance: the 12 V source delivers $12\times1.8 = 21.6$ W; the resistors absorb $1.8^2\times4 + 4.8^2/3 + 1.2^2/6 = 12.96 + 7.68 + 0.24 = 20.88$ W; $20.88 + 0.72 = 21.6$ ✓.
+
+(c) Sense $i_x$ with a zero-volt source in series with the 4 Ω, then use an H element (CCVS) whose value is volts per ampere of the sensing source's current:
+
+```text
+V1   a  0  DC 12
+Vx   a  ax DC 0        ; senses i_x, flowing a -> ax
+R4   ax n1 4
+H1   n1 n2 Vx 2        ; v(n1) - v(n2) = 2 * i(Vx)
+R3   n1 0  3
+R6   n2 0  6
+```
+
+### Solution 06-06.16
+
+(a) The dependent source points up in the branch shared by both meshes: mesh 2's clockwise current flows up there and mesh 1's down, so $i_2 - i_1 = 0.5i_x$, with $i_x = i_2$ (the 4 Ω carries only mesh 2's current, downward). Hence $i_1 = 0.5i_2$. The supermesh KVL around the outside, avoiding the current source: $10 = 2i_1 + 3i_2 + 4i_2 = i_2 + 7i_2$, so **$i_2$ = 1.25 A** and **$i_1$ = 0.625 A**.
+
+(b) KVL around mesh 1 gives the source's voltage (node 2 relative to node 0): $10 - 2\times0.625 = $ **8.75 V**. Its current, $i_2 - i_1 = 0.625$ A, leaves its top (+) terminal, so it delivers $8.75\times0.625 = $ **5.469 W**. Balance: the 10 V source delivers 6.25 W; the resistors absorb $2(0.625)^2 + 3(1.25)^2 + 4(1.25)^2 = 0.781 + 4.688 + 6.25 = 11.72$ W $= 6.25 + 5.469$ ✓. The dependent source supplies most of the power: in a real circuit it is a transistor drawing that power from a hidden supply.
+
+(c) Sense $i_x$ with a zero-volt source in series with the 4 Ω, then use an F element (CCCS). Its current flows from its first node, through the source, to its second, so "from node 0 into node 2" is written `0 n2`:
+
+```text
+V1  n1 0  DC 10
+R2  n1 n2 2
+R3  n2 n3 3
+Vx  n3 x3 DC 0        ; senses i_x, flowing n3 -> x3
+R4  x3 0  4
+F1  0  n2 Vx 0.5      ; 0.5 * i(Vx) from node 0 through F1 into n2
+```
 
 ---
 
@@ -221,3 +256,11 @@ with $r_o\parallel R_S = 50\parallel2 = $ **1.923 kΩ**.
 | 06-06.14d | output voltage, r_o = 1 MΩ | 2.941 | V |
 | 06-06.14e | output current, r_o = 1 MΩ | 0.1029 | mA |
 | 06-06.14f | error, r_o = 1 MΩ | 2.94 | % |
+| 06-06.15a | v_1 | 4.8 | V |
+| 06-06.15b | v_2 | 1.2 | V |
+| 06-06.15c | i_x | 1.8 | A |
+| 06-06.15d | power absorbed by the dependent source | 0.72 | W |
+| 06-06.16a | i_2 | 1.25 | A |
+| 06-06.16b | i_1 | 0.625 | A |
+| 06-06.16c | voltage across the dependent source | 8.75 | V |
+| 06-06.16d | power delivered by the dependent source | 5.469 | W |

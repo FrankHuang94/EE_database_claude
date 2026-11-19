@@ -96,6 +96,17 @@ The motor current develops $3\ \text{A}\times20\ \text{mΩ} = $ **60 mV** across
 
 Each 10 MΩ reading is taken with the meter connected across a different resistor, changing the circuit each time; the three readings never coexist. If all three meters were connected at once, the three loaded resistors would have equal voltages summing exactly to 9 V. KVL is never violated.
 
+
+### Solution 06-11.13
+
+(a) The amplifier sees $2 + 2\times0.02 = $ **2.04 mΩ**, so the reading is **2%** high.
+
+(b) Each part's resistance changes at its own rate: $2\ \text{mΩ}\times250\ \text{ppm/°C} + 0.04\ \text{mΩ}\times3930\ \text{ppm/°C} = 0.5 + 0.1572 = 0.6572$ µΩ/°C. Divided by 2.04 mΩ, that is **322 ppm/°C**, almost a third more than the shunt alone.
+
+(c) Misplaced taps: $322\ \text{ppm/°C}\times40\ \text{°C} = $ **1.29%**. Kelvin taps: $250\times40\ \text{ppm} = $ **1.0%**. Calibration removed the 2% offset, but not the extra 0.29% of drift.
+
+(d) Worst case: $0.5 + 1.0 + 0.3 + 0.2 = $ **2.0%**. RSS: $\sqrt{0.5^2 + 1.0^2 + 0.3^2 + 0.2^2} = \sqrt{1.38} = $ **1.17%**. A guaranteed (maximum) specification must quote the worst case; the RSS figure describes a typical unit, and with uniform limits a few percent of units exceed it (06-07).
+
 ---
 
 ## Answer key
@@ -159,3 +170,10 @@ Each 10 MΩ reading is taken with the meter connected across a different resisto
 | 06-11.12b | reading with 10 MΩ | 2.8125 | V |
 | 06-11.12c | sum of three readings | 8.4375 | V |
 | 06-11.12d | reading with 10 GΩ | 2.9998 | V |
+| 06-11.13a | resistance seen by the amplifier | 2.04 | mΩ |
+| 06-11.13b | error at 25 °C | 2 | % |
+| 06-11.13c | effective temperature coefficient | 322 | ppm/°C |
+| 06-11.13d | drift over 40 °C, misplaced taps | 1.29 | % |
+| 06-11.13e | drift over 40 °C, Kelvin taps | 1.0 | % |
+| 06-11.13f | budget, worst case | 2.0 | % |
+| 06-11.13g | budget, RSS | 1.17 | % |

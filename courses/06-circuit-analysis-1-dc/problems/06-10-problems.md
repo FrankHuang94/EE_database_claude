@@ -59,13 +59,17 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Choosing an op-amp.** A 50 mV full-scale signal from a current-sense resistor must be amplified with a total DC error below 0.1% of full scale, referred to the input. (a) What is the error budget in microvolts? (b) Using maximum offsets at 25 °C, which of the LM358 (7 mV) and OPA187 (10 µV) fits, and what fraction of the budget does it use?
 
+### Problem 06-10.13 [A]
+
+**A threshold detector.** An op-amp with no feedback and outputs limited to ±12 V has a temperature sensor's output on its + input. Its − input is fed from a 5 V supply through a divider of 30 kΩ (top) and 20 kΩ (bottom). (a) Find the threshold voltage. (b) Find the output for sensor voltages of 1.8 V and 2.3 V. (c) At 2.3 V, how far apart are the two inputs, and why does the virtual short not apply? (d) With $A = 10^5$, what input difference is enough to drive the output to a rail?
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 06-10) | Problems |
 |---|---|
-| 1. The ideal rules and when they fail | 6, 9, 11 |
+| 1. The ideal rules and when they fail | 6, 9, 11, 13 |
 | 2. The standard configurations | 1, 2, 3, 5, 6 |
 | 3. Common-mode rejection and in-amps | 4, 10 |
 | 4. DC error budgets | 5, 7, 8, 11, 12 |

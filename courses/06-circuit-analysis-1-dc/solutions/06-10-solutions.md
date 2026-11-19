@@ -64,7 +64,21 @@ $v_{out} = -20\,(1/10 - 0.5/20 + 2/40) = -20\times0.125 = $ **−2.5 V** (each t
 
 ### Solution 06-10.11
 
-(a) With $v_+ = 0$ and $v_{out} = -Av_-$, KCL at the − input gives (as in Problem 06-06.11) $v_{out}/v_{in} = -(R_2/R_1)/(1 + (1 + R_2/R_1)/A) = -100/1.0101 = $ **−99.00**.
+(a) With $v_+ = 0$ the op-amp gives $v_{out} = A(0 - v_-)$, so $v_- = -v_{out}/A$: no longer exactly zero. No current enters the op-amp, so KCL at the − input is
+
+$$
+\frac{v_{in} - v_-}{R_1} = \frac{v_- - v_{out}}{R_2}.
+$$
+
+Multiply by $R_2$ and substitute $v_- = -v_{out}/A$:
+
+$$
+\frac{R_2}{R_1}\Bigl(v_{in} + \frac{v_{out}}{A}\Bigr) = -\frac{v_{out}}{A} - v_{out}
+\;\Rightarrow\;
+\frac{R_2}{R_1}v_{in} = -v_{out}\Bigl(1 + \frac{1 + R_2/R_1}{A}\Bigr),
+$$
+
+so $v_{out}/v_{in} = -(R_2/R_1)/\bigl(1 + (1 + R_2/R_1)/A\bigr)$, as stated. As $A \to \infty$ it tends to the ideal $-R_2/R_1$. Numerically, $-100/(1 + 101/10^4) = -100/1.0101 = $ **−99.00**.
 
 (b) **1.0%**, set by the noise gain $1 + R_2/R_1 = 101$ divided by $A$, not by the signal gain.
 
@@ -73,6 +87,17 @@ $v_{out} = -20\,(1/10 - 0.5/20 + 2/40) = -20\times0.125 = $ **−2.5 V** (each t
 (a) $0.1\%\times50\ \text{mV} = $ **50 µV**.
 
 (b) The LM358's 7 mV maximum offset is 140 times the budget: unusable without calibration. The OPA187's 10 µV fits, using **20%** of the budget and leaving room for resistor and gain errors.
+
+
+### Solution 06-10.13
+
+(a) The divider gives $5\times20/(30 + 20) = $ **2.0 V** at the − input (no current enters it, rule 1).
+
+(b) At 1.8 V the + input is below the threshold, so the output sits at **−12 V**; at 2.3 V it is above, so the output sits at **+12 V**.
+
+(c) The inputs are $2.3 - 2.0 = $ **0.3 V** apart. The virtual short is a consequence of negative feedback, which pulls the inputs together; with no feedback, nothing does, and the output simply saturates in the direction of the difference.
+
+(d) $12/10^5 = $ **120 µV**: a difference that small already saturates the output, which is why a comparator's output is effectively a logic level.
 
 ---
 
@@ -119,3 +144,8 @@ $v_{out} = -20\,(1/10 - 0.5/20 + 2/40) = -20\times0.125 = $ **−2.5 V** (each t
 | 06-10.12a | error budget | 50 | µV |
 | 06-10.12b | OPA187 share of the budget | 20 | % |
 | 06-10.12c | LM358 offset over budget | 140 | — |
+| 06-10.13a | threshold | 2.0 | V |
+| 06-10.13b | output at 1.8 V | −12 | V |
+| 06-10.13c | output at 2.3 V | 12 | V |
+| 06-10.13d | input difference at 2.3 V | 0.3 | V |
+| 06-10.13e | difference that saturates the output | 120 | µV |
