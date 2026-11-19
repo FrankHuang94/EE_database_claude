@@ -3986,3 +3986,43 @@
 - term: Matching coefficient
   definition: The constant A_Vt = σ(V_t)√(WL) (mV·µm) that describes how random threshold mismatch shrinks with device area; for random dopant fluctuation it follows from Poisson statistics of the depletion charge.
   chapter: "09-10"
+- term: CMOS
+  definition: Complementary MOS, the logic family that pairs n-channel and p-channel MOSFETs so that in either steady state one device of each pair is off; it draws current mainly while switching.
+  chapter: "09-11"
+- term: CMOS inverter
+  definition: A PMOS from the supply to the output and an NMOS from the output to ground, with gates tied to the input; the basic CMOS gate, regenerative and drawing only leakage in steady state.
+  chapter: "09-11"
+  see_also: [CMOS, Voltage transfer characteristic]
+- term: Voltage transfer characteristic
+  definition: The plot of a logic gate's static output voltage against its input voltage (VTC); its steep middle region and flat rails give noise margins and regeneration.
+  chapter: "09-11"
+- term: Switching threshold
+  definition: The input voltage V_M at which a CMOS inverter's output equals its input; for square-law devices V_M = (V_tn√r + V_DD − |V_tp|)/(1 + √r) with r = k_n/k_p.
+  chapter: "09-11"
+- term: Ring oscillator
+  definition: An odd number of inverters connected in a loop, which oscillates with period 2Nτ_d; foundries use it to measure gate delay.
+  chapter: "09-11"
+- term: Static power
+  definition: The power a circuit draws when it is not switching, V_DD times the total leakage current; it dominates idle and standby energy.
+  chapter: "09-11"
+- term: Moore's law
+  definition: Gordon Moore's observation that the number of components on the most cost-effective chip grows exponentially, doubling every year (1965) and, from his 1975 revision, about every two years.
+  chapter: "09-11"
+- term: Technology node
+  definition: A generation of a fabrication process, historically shrinking features by about 0.7× (halving area) every two to three years; modern node names are labels, not physical lengths.
+  chapter: "09-11"
+- term: Constant-field scaling
+  definition: Dennard's scaling rules (1974) in which dimensions and voltages shrink by 1/κ and doping rises by κ, so fields stay constant, delay falls by 1/κ and power density stays constant.
+  chapter: "09-11"
+- term: Power wall
+  definition: The limit on clock frequency set by power density and cooling once supply voltages stopped scaling; processors reached it around 2004 and turned to multicore designs.
+  chapter: "09-11"
+- term: Dark silicon
+  definition: The part of a power-limited chip that cannot switch at full speed at the same time as the rest, because running all of it would exceed the power or thermal budget.
+  chapter: "09-11"
+- term: Contacted poly pitch
+  definition: The center-to-center spacing of transistor gates including room for the contacts between them (CPP); with cell height, the main physical measure of logic density.
+  chapter: "09-11"
+- term: Cell height
+  definition: The height of a standard logic cell, set by the number of horizontal wiring tracks times the metal pitch; shorter cells raise logic density.
+  chapter: "09-11"

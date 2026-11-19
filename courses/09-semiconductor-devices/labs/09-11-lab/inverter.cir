@@ -1,0 +1,30 @@
+* Lab 09-11 -- CMOS inverter switching threshold with SPICE level-1 (square-law) transistors.
+* V_DD = 1.0 V, VTO = +0.3 V (NMOS) and -0.3 V (PMOS), KP_n = 2 KP_p (mu_n/mu_p = 2), LAMBDA = 0, no body
+* effect (bodies tied to sources). Inverter A has W_p = W_n (k_n/k_p = 2); inverter B has W_p = 2 W_n
+* (k_n/k_p = 1). The DC sweep finds V_M, the input at which V_out = V_in, for each.
+*
+* EXPECT vma key:../../chapters/09-11-cmos-and-scaling.md#Ex_09-11.1a rtol=1e-3
+* EXPECT vmb key:README.md#Lab_09-11.a rtol=1e-3
+
+.options temp=26.85 tnom=26.85 reltol=1e-7
+VDD vdd 0 DC 1.0
+VIN in 0 DC 0.5
+* inverter A: equal widths
+MPA outa in vdd vdd pch W=1u L=1u
+MNA outa in 0 0 nch W=1u L=1u
+* inverter B: PMOS twice as wide
+MPB outb in vdd vdd pch W=2u L=1u
+MNB outb in 0 0 nch W=1u L=1u
+.model nch NMOS(LEVEL=1 VTO=0.3 KP=200u GAMMA=0 LAMBDA=0)
+.model pch PMOS(LEVEL=1 VTO=-0.3 KP=100u GAMMA=0 LAMBDA=0)
+
+.control
+dc VIN 0.3 0.7 0.00002
+let da = v(outa) - v(in)
+let db = v(outb) - v(in)
+meas dc vma find v(in) when da=0
+meas dc vmb find v(in) when db=0
+echo "vma = $&vma"
+echo "vmb = $&vmb"
+.endc
+.end
