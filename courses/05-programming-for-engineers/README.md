@@ -33,7 +33,7 @@ Python for engineering computation and C for hardware-adjacent programming, plus
 | [05-05 · C Fundamentals](chapters/05-05-c-fundamentals.md) | 10 | ✅ verified | [problems](problems/05-05-problems.md) · [solutions](solutions/05-05-solutions.md) · [lab](labs/05-05-lab/README.md) · [verify](verify/verify_05_05.py) |
 | [05-06 · C Pointers, Arrays and Memory](chapters/05-06-c-pointers-and-memory.md) | 10 | ✅ verified | [problems](problems/05-06-problems.md) · [solutions](solutions/05-06-solutions.md) · [lab](labs/05-06-lab/README.md) · [verify](verify/verify_05_06.py) |
 | [05-07 · Bit Manipulation and Fixed-Width Integers](chapters/05-07-bit-manipulation.md) | 8 | ✅ verified | [problems](problems/05-07-problems.md) · [solutions](solutions/05-07-solutions.md) · [lab](labs/05-07-lab/README.md) · [verify](verify/verify_05_07.py) |
-| [05-08 · Data Structures and Algorithms You Will Need](chapters/05-08-data-structures-and-algorithms.md) | 12 | ⬜ planned | — |
+| [05-08 · Data Structures and Algorithms You Will Need](chapters/05-08-data-structures-and-algorithms.md) | 12 | ✅ verified | [problems](problems/05-08-problems.md) · [solutions](solutions/05-08-solutions.md) · [lab](labs/05-08-lab/README.md) · [verify](verify/verify_05_08.py) |
 | [05-09 · Software Engineering Practices](chapters/05-09-software-engineering-practices.md) | 6 | ⬜ planned | — |
 
 **Course resources:** [Flashcards (Anki CSV)](../../flashcards/05-programming-for-engineers.csv)

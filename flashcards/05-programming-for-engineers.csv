@@ -100,3 +100,17 @@
 "Bit tricks: power of two, x mod 2^k, clear lowest set bit?","(x & (x − 1)) == 0 for x > 0; x & (2^k − 1); x &= x − 1 (also the basis of a fast popcount).",bsee::05 bsee::05-07
 "Why did the Patriot clock drift 0.34 s in 100 h?","0.1 chopped to 23 fractional bits is 0.1(1 − 2^−20); time = ticks × that constant, so the error grows with uptime. Keep time as integer ticks.",bsee::05 bsee::05-07
 "How does the Internet (ones'-complement) checksum work?","Sum 16-bit words, fold carries back in, complement. A receiver's sum including the checksum is 0xFFFF. Byte-order independent; misses swapped words.",bsee::05 bsee::05-07
+"Define f(n) = O(g(n)).","There exist c > 0 and n0 with f(n) ≤ c·g(n) for all n ≥ n0: eventually f grows no faster than a constant multiple of g. Θ = tight bound, Ω = lower bound.",bsee::05 bsee::05-08
+"Costs at n = 10^6 and 10^9 ops/s: log n, n, n log n, n^2?","20 ns, 1 ms, 20 ms, 17 minutes. Growth rate dominates every constant factor for large n.",bsee::05 bsee::05-08
+"Worst-case vs average vs amortized cost?","Worst: bound over all inputs. Average: over an input distribution. Amortized: averaged over a worst-case sequence of operations (doubling array append: O(1) amortized).",bsee::05 bsee::05-08
+"Ring buffer with free-running counters: index, count, empty, full?","Slot = counter & (N − 1) (N a power of two); count = head − tail (unsigned, wrap-safe); empty: count 0; full: count N. Count drops.",bsee::05 bsee::05-08
+"When is a linked list better than an array?","Frequent insert/remove next to known nodes, or no copying allowed. Otherwise arrays win: contiguous, cache-friendly, no per-node pointer or allocation.",bsee::05 bsee::05-08
+"Stack vs queue, and an application of each?","Stack LIFO (calls, undo, bracket matching, DFS). Queue FIFO (buffers between producer and consumer, BFS). Both O(1) per operation.",bsee::05 bsee::05-08
+"Linear-probing probes at load α (successful, miss)?","½(1 + 1/(1 − α)) and ½(1 + 1/(1 − α)²): 2.5 and 8.5 at 0.75, 5.5 and 50.5 at 0.9. Resize (double) before α ≈ 0.75; never let it fill.",bsee::05 bsee::05-08
+"FNV-1a in one line?","h = 2166136261; for each byte: h = (h XOR byte) × 16777619 mod 2^32. Fast, well-mixing, not cryptographic.",bsee::05 bsee::05-08
+"Binary heap index arithmetic and costs?","0-based: children 2i+1, 2i+2; parent floor((i−1)/2). Insert and pop-min O(log n) by sift-up/down; min at index 0. Not sorted: only parent ≤ child.",bsee::05 bsee::05-08
+"BST vs hash table?","Hash: O(1) average lookup, no order. Balanced BST: O(log n), keeps order, supports range queries and next-larger. Unbalanced BST on sorted input degrades to a list.",bsee::05 bsee::05-08
+"Binary search comparisons on n sorted items?","At most floor(log2 n) + 1: 20 for 10^6, 30 for 10^9. Requires sorted data; use mid = lo + (hi − lo)/2.",bsee::05 bsee::05-08
+"Merge sort recurrence and solution?","T(n) = 2T(n/2) + n, T(1) = 0 → n log2 n (log2 n levels, n work each). Stable, O(n) extra memory; exact worst case n⌈log n⌉ − 2^⌈log n⌉ + 1.",bsee::05 bsee::05-08
+"Insertion sort cost and when it is good?","Work = inversions + ~n: n(n−1)/4 on random data (Θ(n²)), O(n) on nearly sorted data; fastest for tiny arrays, so libraries use it for short runs.",bsee::05 bsee::05-08
+"Comparison-sort lower bound, and how counting sort beats it?","Must distinguish n! orders with 2-way comparisons: ≥ log2(n!) ≈ n log2 n − 1.44n. Counting sort indexes counters by key: O(n + k) for keys in a range of k (e.g. 12-bit ADC codes).",bsee::05 bsee::05-08

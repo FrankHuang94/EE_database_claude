@@ -2177,3 +2177,40 @@
 - term: Saturation arithmetic
   definition: Arithmetic that clamps results to the largest or smallest representable value instead of wrapping around, so an overflowing signal clips rather than jumping to the opposite extreme.
   chapter: "05-07"
+- term: Big-O notation
+  definition: f(n) = O(g(n)) means f grows no faster than a constant multiple of g for large n; it keeps an algorithm's growth rate (constant, log n, n, n log n, n squared) and drops constant factors.
+  chapter: "05-08"
+- term: Amortized cost
+  definition: The average cost per operation over a worst-case sequence of operations, in which rare expensive steps are paid for by many cheap ones; a doubling array's append is O(1) amortized.
+  chapter: "05-08"
+- term: Ring buffer
+  definition: A fixed-size array used as a FIFO queue whose read and write positions wrap around; with free-running unsigned counters and a power-of-two size, the count is head − tail and the slot is counter AND (size − 1). Standard between interrupts and main loops.
+  chapter: "05-08"
+- term: Linked list
+  definition: A sequence of separately allocated nodes, each pointing to the next; O(1) insertion and removal next to a known node, O(n) search, and poor cache behavior compared with arrays.
+  chapter: "05-08"
+- term: Stack (data structure)
+  definition: A last-in-first-out collection with push and pop at one end, O(1) each; used for function calls, undo histories, expression evaluation and bracket matching.
+  chapter: "05-08"
+- term: Queue
+  definition: A first-in-first-out collection with enqueue at the back and dequeue at the front, O(1) each; implemented with a ring buffer or a linked list. A priority queue instead removes the smallest key first.
+  chapter: "05-08"
+- term: Hash table
+  definition: A key-value store that computes each key's array slot with a hash function, giving O(1) average lookup; collisions are resolved by chaining or open addressing, and the table resizes as its load factor grows.
+  chapter: "05-08"
+  see_also: [Load factor]
+- term: Load factor
+  definition: For a hash table, entries divided by slots (α = n/m); linear probing needs about ½(1 + 1/(1 − α)) probes per successful search and ½(1 + 1/(1 − α)²) per miss, so tables resize before α reaches about 0.75.
+  chapter: "05-08"
+- term: Binary search tree
+  definition: A tree whose nodes keep smaller keys in the left subtree and larger keys in the right, so search, insertion and deletion cost O(height); self-balancing variants (red-black, AVL, B-trees) keep the height O(log n).
+  chapter: "05-08"
+- term: Binary heap
+  definition: A complete binary tree stored in an array (children of i at 2i + 1 and 2i + 2) with every parent no larger than its children; supports a priority queue with O(log n) insertion and removal of the minimum.
+  chapter: "05-08"
+- term: Binary search
+  definition: Searching a sorted array by comparing with the middle element and discarding half each step; at most floor(log2 n) + 1 comparisons (20 for a million items).
+  chapter: "05-08"
+- term: Merge sort
+  definition: Sorting by recursively sorting two halves and merging them in linear time; n log2 n comparisons in every case, stable, needs O(n) extra memory, and within lower-order terms of the comparison-sort lower bound log2(n!).
+  chapter: "05-08"
