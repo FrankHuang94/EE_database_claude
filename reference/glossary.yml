@@ -3234,3 +3234,51 @@
   definition: A circuit that XORs data with a pseudo-random sequence so that long runs of identical bits become unlikely, giving a receiver transitions to recover the clock from; the descrambler applies the same sequence to restore the data.
   chapter: "08-07"
   see_also: [Pseudo-random bit sequence (PRBS)]
+- term: Finite state machine (FSM)
+  definition: A sequential circuit described by a finite set of states, a next-state function of the present state and inputs, an output function and a reset state; implemented as a state register with next-state and output logic.
+  chapter: "08-08"
+  see_also: [Moore machine, Mealy machine, State diagram]
+- term: Moore machine
+  definition: An FSM whose outputs depend only on the present state, so they change only after a clock edge and respond to an input one cycle later.
+  chapter: "08-08"
+  see_also: [Mealy machine]
+- term: Mealy machine
+  definition: An FSM whose outputs depend on the present state and the present inputs, so they respond within the same cycle but carry a combinational path from input to output.
+  chapter: "08-08"
+  see_also: [Moore machine]
+- term: State diagram
+  definition: A drawing of an FSM with states as circles and transitions as arrows labeled with the input condition (and, for a Mealy machine, the output).
+  chapter: "08-08"
+  see_also: [State table]
+- term: State table
+  definition: A table listing, for each present state and input value, the next state and the output of an FSM; the starting point for deriving its logic.
+  chapter: "08-08"
+  see_also: [State diagram, State assignment]
+- term: State assignment
+  definition: The choice of binary code for each state of an FSM (binary, Gray-ordered, one-hot, output-encoded), which sets the number of flip-flops and strongly affects the size and speed of the next-state logic.
+  chapter: "08-08"
+  see_also: [One-hot encoding]
+- term: One-hot encoding
+  definition: A state assignment with one flip-flop per state, exactly one of which is 1; it gives shallow next-state logic and detects any single bit flip, at the cost of N flip-flops and many illegal codes.
+  chapter: "08-08"
+  see_also: [State assignment, Illegal state]
+- term: Equivalent states
+  definition: Two states of an FSM that produce the same output sequence for every input sequence; they can be merged without changing the machine's behavior.
+  chapter: "08-08"
+  see_also: [Partition refinement]
+- term: Partition refinement
+  definition: The state-minimization algorithm that groups states by output and repeatedly splits groups whose members' next states fall in different groups, until nothing changes; the final groups are the equivalence classes.
+  chapter: "08-08"
+  see_also: [Equivalent states]
+- term: Illegal state
+  definition: A code of an FSM's state register that corresponds to no state of the design; reachable only through faults such as missing reset, timing violations or upsets, and handled by reset or recovery logic.
+  chapter: "08-08"
+  see_also: [Single-event upset (SEU), One-hot encoding]
+- term: Single-event upset (SEU)
+  definition: A bit flipped in a storage element by the charge from a particle strike, without permanent damage; a concern for state registers in automotive, aerospace and large-fleet systems.
+  chapter: "08-08"
+  see_also: [Illegal state]
+- term: Datapath and controller (FSMD)
+  definition: The split of a design into a small FSM that sequences operations and a datapath of registers, counters and arithmetic that performs them, linked by control and status signals.
+  chapter: "08-08"
+  see_also: [Finite state machine (FSM)]
