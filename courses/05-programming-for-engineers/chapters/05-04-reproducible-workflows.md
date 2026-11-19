@@ -394,24 +394,28 @@ A first implementation, typed in a hurry, has two faults: it uses the top resist
 Path("divider.py").write_text("def divider(vin, r_top, r_bottom):\n    return vin * r_top / (r_top + r_bottom)\n")
 
 def pytest_run(*files):
-    """Run `python -m pytest -qq --tb=no -rf --color=no <files>` (plain text, even in Jupyter); return its report."""
+    """Run `python -m pytest -qq --tb=no -rf --color=no <files>` (plain text, even in Jupyter).
+
+    Returns the progress line and the name of each failed test. (The full report adds each failure's
+    message, whose length depends on the terminal width and on whether pytest detects a CI server.)
+    """
     env = {**os.environ, "COLUMNS": "80",           # a fixed report width
            "PYTHONDONTWRITEBYTECODE": "1"}          # no cached bytecode, so edited files are always re-read
     result = subprocess.run([sys.executable, "-m", "pytest", "-qq", "--tb=no", "-rf", "--color=no", "-p", "no:cacheprovider", *files],
                             capture_output=True, text=True, env=env)
-    return result.stdout.rstrip()
+    lines = result.stdout.splitlines()
+    return "\n".join([lines[0]] + [line.split(" - ")[0] for line in lines if line.startswith("FAILED")])
 
 print(pytest_run("test_divider.py"))
 ```
 
 ```text
 .F...F                                                                   [100%]
-=========================== short test summary info ============================
-FAILED test_divider.py::test_known_case - assert 2.2448979591836733 == 1.0551...
-FAILED test_divider.py::test_rejects_negative_resistance - ZeroDivisionError:...
+FAILED test_divider.py::test_known_case
+FAILED test_divider.py::test_rejects_negative_resistance
 ```
 
-Each `.` is a passing test and each `F` a failure, in the order the tests appear in the file; the summary names each failure (`-rf` asks for it; `--tb=short` instead of `--tb=no` would also print each failure's traceback). Of the six tests (the parametrized one counts three times), **two fail**. The known case caught the swapped resistor: 2.2449 V where 1.0551 V was expected. The negative-resistance test caught the missing check, though not in the way intended: $-10\text{ k}\Omega + 10\text{ k}\Omega = 0$, so the function divided by zero instead of raising `ValueError`.
+Each `.` is a passing test and each `F` a failure, in the order the tests appear in the file, and the summary names each failure (`-rf` asks for it). Of the six tests (the parametrized one counts three times), **two fail**. Running with `--tb=short` instead of `--tb=no` prints each failure's details: for the known case, `assert 2.2448979591836733 == 1.0551 ± 5.0e-05`, so it caught the swapped resistor, 2.2449 V where 1.0551 V was expected. For the negative-resistance test it shows a `ZeroDivisionError`. The negative-resistance test caught the missing check, though not in the way intended: $-10\text{ k}\Omega + 10\text{ k}\Omega = 0$, so the function divided by zero instead of raising `ValueError`.
 
 The four tests that *passed* are as instructive. With equal resistors the swap is invisible, and a swapped divider still produces an output between 0 and $v_{in}$, so the three bound tests cannot see it either. One hand-worked number caught what four looser tests missed. Good suites combine both kinds: bounds and symmetries catch gross errors on any input, and known cases pin down the exact formula. The corrected implementation:
 
