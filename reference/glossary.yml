@@ -4026,3 +4026,34 @@
 - term: Cell height
   definition: The height of a standard logic cell, set by the number of horizontal wiring tracks times the metal pitch; shorter cells raise logic density.
   chapter: "09-11"
+- term: Ultra-thin-body transistor
+  definition: A MOSFET built in a silicon film only a few nanometers thick on an insulator (UTB SOI); the thin body replaces the depletion and junction depths in the characteristic length, so short channels need no heavy doping.
+  chapter: "09-12"
+- term: Silicon-on-insulator
+  definition: A wafer with a thin crystalline silicon layer on a buried oxide over a silicon substrate (SOI), made for example by hydrogen implantation, bonding and splitting; it removes junction capacitance and enables thin-body transistors.
+  chapter: "09-12"
+- term: Multigate transistor
+  definition: A MOSFET whose thin body is gated from two or more sides (double-gate, FinFET, gate-all-around), so no leakage path is far from a gate and the subthreshold swing approaches its ideal value.
+  chapter: "09-12"
+- term: Scale length
+  definition: The length λ over which a disturbance of the channel potential decays along a thin-body transistor; for a double gate λ² = (ε_s/2ε_ox)t_si t_ox + t_si²/8, and roll-off and DIBL scale as e^(−L/2λ).
+  chapter: "09-12"
+  see_also: [Characteristic length, Drain-induced barrier lowering]
+- term: FinFET
+  definition: A multigate MOSFET whose channel is a thin vertical silicon fin with the gate draped over its sidewalls and top; its width is 2H_fin + W_fin per fin and comes in whole fins.
+  chapter: "09-12"
+- term: Gate-all-around transistor
+  definition: A MOSFET whose gate completely surrounds each channel (GAA), as a nanowire or a stack of nanosheets, giving the strongest electrostatic control of the channel.
+  chapter: "09-12"
+- term: Nanosheet
+  definition: A thin, wide silicon channel layer, several of which are stacked and each wrapped by the gate in a gate-all-around transistor; its drawn width sets the device width continuously.
+  chapter: "09-12"
+- term: Width quantization
+  definition: The restriction of a FinFET's channel width to whole multiples of one fin's width, which forces device sizing ratios to be ratios of integers.
+  chapter: "09-12"
+- term: Complementary FET
+  definition: A stacked device (CFET) that places the n-channel transistor directly over the p-channel transistor in one footprint, shrinking CMOS cells; projected by the IRDS to follow gate-all-around devices from about 2031.
+  chapter: "09-12"
+- term: Two-dimensional channel material
+  definition: An atomically thin semiconductor, such as a transition-metal dichalcogenide, proposed as a transistor channel for its ultimate thinness; the IRDS judges it not yet mature for manufacturing.
+  chapter: "09-12"

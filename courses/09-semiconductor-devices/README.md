@@ -39,7 +39,7 @@ The physics of the transistor, from crystals and energy bands through PN junctio
 | [09-09 · The Long-Channel MOSFET](chapters/09-09-long-channel-mosfet.md) | 10 | ✅ verified | [problems](problems/09-09-problems.md) · [solutions](solutions/09-09-solutions.md) · [lab](labs/09-09-lab/README.md) · [verify](verify/verify_09_09.py) |
 | [09-10 · Short-Channel Effects and Leakage](chapters/09-10-short-channel-effects-and-leakage.md) | 8 | ✅ verified | [problems](problems/09-10-problems.md) · [solutions](solutions/09-10-solutions.md) · [lab](labs/09-10-lab/README.md) · [verify](verify/verify_09_10.py) |
 | [09-11 · CMOS and Scaling: Moore, Dennard and Beyond](chapters/09-11-cmos-and-scaling.md) | 6 | ✅ verified | [problems](problems/09-11-problems.md) · [solutions](solutions/09-11-solutions.md) · [lab](labs/09-11-lab/README.md) · [verify](verify/verify_09_11.py) |
-| [09-12 · Advanced Transistors: FinFET, GAA, CFET and Backside Power](chapters/09-12-finfet-gaa-cfet-backside-power.md) | 6 | ⬜ planned | — |
+| [09-12 · Advanced Transistors: FinFET, GAA, CFET and Backside Power](chapters/09-12-finfet-gaa-cfet-backside-power.md) | 6 | ✅ verified | [problems](problems/09-12-problems.md) · [solutions](solutions/09-12-solutions.md) · [lab](labs/09-12-lab/README.md) · [verify](verify/verify_09_12.py) |
 | [09-13 · Compound and Wide-Bandgap Semiconductors](chapters/09-13-compound-and-wide-bandgap-semiconductors.md) | 6 | ⬜ planned | — |
 | [09-14 · Optoelectronic Devices](chapters/09-14-optoelectronic-devices.md) | 7 | ⬜ planned | — |
 

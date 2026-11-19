@@ -147,7 +147,7 @@ Within those limits, this was the golden era: every node gave twice the transist
 
 ### 3.6 Why Dennard scaling ended
 
-The weak link is the threshold voltage. Constant-field scaling requires $V_t$ to fall by $1/\kappa$ with the supply. But the subthreshold swing does not scale: it is fixed by $kT/q$ at about 60 mV/decade or worse (09-09, 09-10). Every 60–90 mV of threshold removed multiplies the off-current by ten. So the threshold could not keep falling without leakage exploding. With $V_t$ stuck, the supply had to stay well above it to keep $I_{on}$ (09-10 §3.5), and $V_{DD}$ stalled around 1 V in the 2000s (Hu's Table 7–1 lists 1.2 V at 90 nm and 0.9 V at 22 nm for high-performance devices [2]).
+The weak link is the threshold voltage. Constant-field scaling requires $V_t$ to fall by $1/\kappa$ with the supply. But the subthreshold swing does not scale: it is fixed by $kT/q$ at about 60 mV/decade or worse (09-09, 09-10). Every 60–90 mV of threshold removed multiplies the off-current by ten. So the threshold could not keep falling without leakage exploding. With $V_t$ stuck, the supply had to stay well above it to keep $I_{on}$ (09-10 §3.5), and $V_{DD}$ stalled around 1 V in the 2000s (Hu's Table 7–1 lists 1.2 V at 90 nm and 0.9 V at 22 nm for high-performance devices [2]). Hu recalls the break in the pattern: 2.5 V at 250 nm, 1.8 V at 180 nm and 1.3 V at 130 nm, but 1.2 V instead of 0.9 V at 90 nm, and still 0.9 V instead of 0.45 V at 45 nm [10] **[Established]**.
 
 With voltage roughly constant and dimensions still shrinking, the right-hand column of the table applies: power density rises by $\kappa^2$ per node if frequency keeps rising. The IRDS describes the outcome. Microprocessors "reached the power limits in 2004 and from then on multicore architecture with limited operational frequency (~5GHz) became the new norm" [6] **[Established]**. It cites Intel's Pentium 4 Prescott (2004) at about 115 W and power densities of around 100 W/cm² as the point where frequency scaling stopped [6] **[Established]**. The industry turned extra transistors into more cores instead of higher clocks [6].
 
@@ -435,6 +435,11 @@ The lab, [labs/09-11-lab](../labs/09-11-lab/README.md), has a notebook and an ng
 | P 09-11.n | Moore 1975, geometry factor | 32 | — |
 | P 09-11.o | Moore 1975, geometry and die area | 640 | — |
 | P 09-11.p | Moore 1975, circuit and device factor | 100 | — |
+| P 09-11.q | Hu, supply at 250 nm | 2.5 | V |
+| P 09-11.r | Hu, supply at 180 nm | 1.8 | V |
+| P 09-11.s | Hu, supply at 130 nm | 1.3 | V |
+| P 09-11.t | Hu, supply at 45 nm | 0.9 | V |
+| P 09-11.u | trend value at 45 nm | 0.45 | V |
 
 ## 10. Concept check
 
@@ -516,3 +521,4 @@ Now work the [problem set](../problems/09-11-problems.md).
 7. IEEE IRDS, 2024 Edition, More Moore: [text](https://irds.ieee.org/images/files/pdf/2024/2024IRDS_MM.pdf) (§4.1, node naming) and [tables](https://irds.ieee.org/images/files/pdf/2024/2024IRDS_MM_Tables.xlsx) (Table MM01 ground rules and cell heights). [R-172](../../../reference/research-log.md#r-172--cmos-and-scaling-references).
 8. Intel, "Intel Foundry Details Process Milestones and Future Innovation at VLSI Symposium", 16 Jun 2026, [press release](https://www.intc.com/news-events/press-releases/detail/1772/intel-foundry-details-process-milestones-and-future); "Intel Unveils Panther Lake Architecture: First AI PC Platform Built on 18A", 9 Oct 2025, [press release](https://www.intc.com/news-events/press-releases/detail/1752/intel-unveils-panther-lake-architecture-first-ai-pc). [R-172](../../../reference/research-log.md#r-172--cmos-and-scaling-references).
 9. K. Rupp, *Microprocessor Trend Data* (CC-BY 4.0), frequency and typical-power series to 2021: [repository](https://github.com/karlrupp/microprocessor-trend-data). [R-172](../../../reference/research-log.md#r-172--cmos-and-scaling-references).
+10. R. Courtland, "The Origins of Intel's New Transistor, and Its Future" (Q&A with Chenming Hu), *IEEE Spectrum*, May 2011: [copy on the author's site](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Origins-of-Intel-New-Transistor-IEEE-Spectrum.pdf). [R-173](../../../reference/research-log.md#r-173--advanced-transistor-references).
