@@ -1,0 +1,159 @@
+* Lab 06-07 -- superposition in ngspice. Each circuit appears once with all sources and once per
+* source with the others switched off (voltage sources set to 0 V = short, current sources to 0 A = open).
+*
+* EXPECT ex1all  key:../../chapters/06-07-linearity-and-superposition.md#Ex_06-07.1c rtol=1e-6
+* EXPECT ex1v    key:../../chapters/06-07-linearity-and-superposition.md#Ex_06-07.1a rtol=1e-6
+* EXPECT ex1i    key:../../chapters/06-07-linearity-and-superposition.md#Ex_06-07.1b rtol=1e-6
+* EXPECT ex2all  key:../../chapters/06-07-linearity-and-superposition.md#Ex_06-07.2e rtol=1e-3
+* EXPECT ex2v    key:../../chapters/06-07-linearity-and-superposition.md#Ex_06-07.2a rtol=1e-3
+* EXPECT ex2i    key:../../chapters/06-07-linearity-and-superposition.md#Ex_06-07.2c rtol=1e-3
+* EXPECT ex3vl   key:../../chapters/06-07-linearity-and-superposition.md#Ex_06-07.3e rtol=1e-3
+* EXPECT ex4vout key:../../chapters/06-07-linearity-and-superposition.md#Ex_06-07.4c rtol=1e-3
+* EXPECT ex5c3   key:../../chapters/06-07-linearity-and-superposition.md#Ex_06-07.5d rtol=1e-4
+* EXPECT ex5c4   key:../../chapters/06-07-linearity-and-superposition.md#Ex_06-07.5e rtol=1e-4
+* EXPECT p4va    key:../../solutions/06-07-solutions.md#06-07.4d rtol=1e-6
+* EXPECT p5v1    key:../../solutions/06-07-solutions.md#06-07.5e rtol=1e-6
+* EXPECT p5v2    key:../../solutions/06-07-solutions.md#06-07.5f rtol=1e-6
+* EXPECT p7bus   key:../../solutions/06-07-solutions.md#06-07.7a rtol=1e-3
+* EXPECT p7bus0  key:../../solutions/06-07-solutions.md#06-07.7f rtol=1e-3
+* EXPECT p12all  key:../../solutions/06-07-solutions.md#06-07.12a rtol=1e-4
+* EXPECT p12v    key:../../solutions/06-07-solutions.md#06-07.12b rtol=1e-4
+* EXPECT p12i    key:../../solutions/06-07-solutions.md#06-07.12c rtol=1e-4
+
+.options TNOM=26.85
+.temp 26.85
+
+* ---- Example 06-07.1: all sources, 12 V alone, 2 A alone
+V1a  s1a 0 DC 12
+R1a  s1a a1a 4
+R2a  a1a 0 6
+I1a  0 a1a DC 2
+V1b  s1b 0 DC 12
+R1b  s1b a1b 4
+R2b  a1b 0 6
+I1b  0 a1b DC 0
+V1c  s1c 0 DC 0
+R1c  s1c a1c 4
+R2c  a1c 0 6
+I1c  0 a1c DC 2
+* ---- Example 06-07.2: 10 V through 2 Ohm (sensed), 2 A into a, branch 1 Ohm + CCVS 3*ix (+ toward a)
+.subckt ex2 a params: vs=0 is=0
+V2   s 0 DC {vs}
+V2x  s s2 0
+R21  s2 a 2
+I2   0 a DC {is}
+R23  a m 1
+H2   m 0 V2x 3
+.ends
+X2all a2all ex2 vs=10 is=2
+X2v   a2v   ex2 vs=10 is=0
+X2i   a2i   ex2 vs=0  is=2
+* ---- Example 06-07.3: 12 V / 4 Ohm and 6 V / 3 Ohm in parallel across 2 Ohm
+V3a  e3a 0 DC 12
+R3a  e3a l3 4
+V3b  e3b 0 DC 6
+R3b  e3b l3 3
+R3l  l3 0 2
+* ---- Example 06-07.4: ladder of 1k series and 1k shunt, three sections, 10 V in
+V4   i4 0 DC 10
+R4s1 i4 n41 1k
+R4h1 n41 0 1k
+R4s2 n41 n42 1k
+R4h2 n42 0 1k
+R4s3 n42 n43 1k
+R4h3 n43 0 1k
+* ---- Example 06-07.5: 3-bit DAC with the MSB resistor 1% high, codes 011 and 100
+V5b2a b2a 0 DC 0
+V5b1a b1a 0 DC 4
+V5b0a b0a 0 DC 4
+R5ma b2a o5a 1.01k
+R51a b1a o5a 2k
+R50a b0a o5a 4k
+R5la o5a 0 4k
+V5b2b b2b 0 DC 4
+V5b1b b1b 0 DC 0
+V5b0b b0b 0 DC 0
+R5mb b2b o5b 1.01k
+R51b b1b o5b 2k
+R50b b0b o5b 4k
+R5lb o5b 0 4k
+* ---- Problem 06-07.4: 6 V via 3 Ohm, 6 Ohm to ground, 1 A in, 0.5 A out
+V64  s64 0 DC 6
+R641 s64 a64 3
+R642 a64 0 6
+I641 0 a64 DC 1
+I642 a64 0 DC 0.5
+* ---- Problem 06-07.5: 6 V via 2k, 2k between nodes, 4k, 1 mA into node 2, VCCS 0.25 mS*v1 out of node 2
+V65  s65 0 DC 6
+R651 s65 n651 2k
+R652 n651 n652 2k
+R653 n652 0 4k
+I65  0 n652 DC 1m
+G65  n652 0 n651 0 0.25m
+* ---- Problem 06-07.7: three batteries in parallel, with a 0.5 Ohm load and without
+V67a e67a 0 DC 12.6
+R67a e67a bus67 0.05
+V67b e67b 0 DC 12.4
+R67b e67b bus67 0.06
+V67c e67c 0 DC 12.2
+R67c e67c bus67 0.08
+R67l bus67 0 0.5
+V68a e68a 0 DC 12.6
+R68a e68a bus68 0.05
+V68b e68b 0 DC 12.4
+R68b e68b bus68 0.06
+V68c e68c 0 DC 12.2
+R68c e68c bus68 0.08
+* ---- Problem 06-07.12: diode with 5 V / 1k and 1 mA; all, 5 V alone, 1 mA alone
+.model D612 D(IS=1e-14 N=1)
+V612a s612a 0 DC 5
+R612a s612a d612a 1k
+I612a 0 d612a DC 1m
+D612a d612a 0 D612
+V612b s612b 0 DC 5
+R612b s612b d612b 1k
+D612b d612b 0 D612
+R612c d612c 0 1k
+I612c 0 d612c DC 1m
+D612c d612c 0 D612
+
+.control
+op
+let ex1all = v(a1a)
+let ex1v = v(a1b)
+let ex1i = v(a1c)
+let ex2all = v(a2all)
+let ex2v = v(a2v)
+let ex2i = v(a2i)
+let ex3vl = v(l3)
+let ex4vout = v(n43)
+let ex5c3 = v(o5a)
+let ex5c4 = v(o5b)
+let p4va = v(a64)
+let p5v1 = v(n651)
+let p5v2 = v(n652)
+let p7bus = v(bus67)
+let p7bus0 = v(bus68)
+let p12all = v(d612a)
+let p12v = v(d612b)
+let p12i = v(d612c)
+echo "ex1all = $&ex1all"
+echo "ex1v = $&ex1v"
+echo "ex1i = $&ex1i"
+echo "ex2all = $&ex2all"
+echo "ex2v = $&ex2v"
+echo "ex2i = $&ex2i"
+echo "ex3vl = $&ex3vl"
+echo "ex4vout = $&ex4vout"
+echo "ex5c3 = $&ex5c3"
+echo "ex5c4 = $&ex5c4"
+echo "p4va = $&p4va"
+echo "p5v1 = $&p5v1"
+echo "p5v2 = $&p5v2"
+echo "p7bus = $&p7bus"
+echo "p7bus0 = $&p7bus0"
+echo "p12all = $&p12all"
+echo "p12v = $&p12v"
+echo "p12i = $&p12i"
+.endc
+.end

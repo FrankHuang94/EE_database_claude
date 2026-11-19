@@ -41,7 +41,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 06-06.8 [B]
 
-**Output resistance by a test source.** A MOSFET with $g_m$ = 2 mS and $r_o$ = 50 kΩ has $R_S$ = 1 kΩ from source to ground, and its gate is held at small-signal ground. Apply a test current $i_t$ into the drain and show that the resistance looking into the drain is $R_{out} = R_S + r_o(1 + g_mR_S)$. Evaluate it and compare with $r_o$. (This boost is the principle of the cascode, Course 11.)
+**Output resistance by a test source.** A MOSFET with $g_m$ = 2 mS and $r_o$ = 50 kΩ has $R_S$ = 1 kΩ from source to ground, and its gate is held at small-signal ground. Apply a test current $i_t$ into the drain and show that the resistance looking into the drain is $R_{out} = R_S + r_o(1 + g_mR_S)$. Evaluate it and compare with $r_o$. (This boost is the principle of the cascode, Course 12.)
 
 ### Problem 06-06.9 [B]
 

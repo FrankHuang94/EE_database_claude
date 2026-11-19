@@ -90,7 +90,7 @@ With the numbers: $1 + 50\times(1 + 2\times1) = $ **151 kΩ**, about three times
 
 (a) The node sees 10 kΩ in parallel with $-R_n$: conductance $1/10 - 1/R_n$ mS. For $R_n$ = 20 kΩ: $0.1 - 0.05 = 0.05$ mS, so $v = 1/0.05 = $ **20 V**. For 12.5 kΩ: $0.1 - 0.08 = 0.02$ mS, so $v = $ **50 V**.
 
-(b) As $R_n \to 10$ kΩ the net conductance, which is the 1 × 1 nodal matrix, goes to zero: the matrix becomes singular and the voltage grows without bound. Physically the negative resistance supplies exactly the power the 10 kΩ dissipates; any small disturbance persists or grows. With capacitance present, this is the condition for an oscillator (Course 07).
+(b) As $R_n \to 10$ kΩ the net conductance, which is the 1 × 1 nodal matrix, goes to zero: the matrix becomes singular and the voltage grows without bound. Physically the negative resistance supplies exactly the power the 10 kΩ dissipates; any small disturbance persists or grows. With capacitance present, this is the condition for an oscillator ([12-09](../../12-electronics-2/chapters/12-09-oscillators.md)).
 
 (c) KCL at the node with the VCCS pushing $g\,v$ in: $v/R - g\,v = I$, so the VCCS adds a conductance $-g$, a resistance $-1/g$. For $R_n$ = 20 kΩ, $g = $ **50 µS** (0.05 mS).
 

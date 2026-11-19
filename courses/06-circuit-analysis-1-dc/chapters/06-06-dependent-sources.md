@@ -73,7 +73,7 @@ with $G_{21} \ne G_{12}$.
 
 *Figure 2. The circuit of Example 06-06.1. The VCCS draws $g\,v_1$ from node 2, controlled by the voltage of node 1.*
 
-**What the loss of symmetry means.** The power argument of 06-04 ($\mathbf{v}^\mathsf{T}\mathbf{G}\mathbf{v}$ = dissipated power $> 0$) no longer holds, because dependent sources can supply power. So $\mathbf{G}$ need not be positive definite, and for particular gain values it can be singular: the circuit then has no unique solution, which in a real circuit with capacitance shows up as instability or oscillation (Course 07 and the feedback chapters of Courses 11 and 13).
+**What the loss of symmetry means.** The power argument of 06-04 ($\mathbf{v}^\mathsf{T}\mathbf{G}\mathbf{v}$ = dissipated power $> 0$) no longer holds, because dependent sources can supply power. So $\mathbf{G}$ need not be positive definite, and for particular gain values it can be singular: the circuit then has no unique solution, which in a real circuit with capacitance shows up as instability or oscillation (Course 07 and the feedback and stability chapters of Courses 12 and 15).
 
 ### 3.3 Mesh analysis with dependent sources
 
@@ -90,7 +90,7 @@ With dependent sources present, the resistance seen at a pair of terminals canno
 Two results that surprise people follow directly, and both are used constantly in electronics:
 
 - **Reflected resistance.** An emitter resistor $R_E$ seen from a bipolar transistor's base looks $(\beta + 1)$ times larger, because the base current $i_b$ produces an emitter current $(\beta + 1)\,i_b$ through it (Example 06-06.3).
-- **The Miller effect and negative resistance.** A resistor $R_f$ connected from the input to the output of an amplifier with voltage gain $-A$ looks like $R_f/(1 + A)$ from the input: the amplifier multiplies the voltage across $R_f$ by $(1 + A)$. If the gain is positive and greater than 1, the same formula gives a **negative resistance**: applying a voltage makes current flow *out* of the port (Example 06-06.4). Negative resistance is how oscillators make up for losses (Course 07).
+- **The Miller effect and negative resistance.** A resistor $R_f$ connected from the input to the output of an amplifier with voltage gain $-A$ looks like $R_f/(1 + A)$ from the input: the amplifier multiplies the voltage across $R_f$ by $(1 + A)$. If the gain is positive and greater than 1, the same formula gives a **negative resistance**: applying a voltage makes current flow *out* of the port (Example 06-06.4). Negative resistance is how oscillators make up for losses ([12-09](../../12-electronics-2/chapters/12-09-oscillators.md)).
 
 ### 3.5 Transistors and op-amps as dependent sources
 
@@ -280,7 +280,7 @@ Open [labs/06-06-lab/](../labs/06-06-lab/README.md): a notebook and an ngspice n
 | Knob | Improves | Costs | Typical decision owner |
 |---|---|---|---|
 | Source or emitter degeneration ($R_S$, $R_E$) | Gain set by a resistor ratio, less sensitivity to $g_m$ or $\beta$, more linearity, higher input resistance | Lower gain (by about $1 + g_mR_S$), more voltage headroom used | Analog designer |
-| Higher open-loop gain $A$ | Smaller closed-loop error ($\approx 1/(A\beta)$) | More stages, power, harder frequency compensation (Course 11) | Amplifier architect |
+| Higher open-loop gain $A$ | Smaller closed-loop error ($\approx 1/(A\beta)$) | More stages, power, harder frequency compensation (Course 12) | Amplifier architect |
 | Larger $g_m$ (more bias current) | More gain and speed | Power; at fixed current, larger devices and capacitance | Analog designer (the $g_m/I_D$ tradeoff) |
 | Using the Miller effect | Large effective resistance or capacitance from a small component | Depends on the amplifier's gain, which varies | Analog designer |
 | Dependent-source (small-signal) models in hand analysis | Insight, closed-form gains | Valid only near the operating point; no limits, no supplies | Everyone, with a simulator check |
@@ -320,7 +320,7 @@ Every analog and mixed-signal product (power management, data converters, RF fro
 
 ### Marketing vs Reality
 
-- **"Our amplifier has 140 dB of gain."** *Reality:* that is open-loop gain at DC. What the system sees is the closed-loop gain, set by resistors, and its error, about $1/(A\beta)$ at DC but rising as the loop gain falls with frequency (Course 11). Ask for the error at the signal frequency.
+- **"Our amplifier has 140 dB of gain."** *Reality:* that is open-loop gain at DC. What the system sees is the closed-loop gain, set by resistors, and its error, about $1/(A\beta)$ at DC but rising as the loop gain falls with frequency (Course 12). Ask for the error at the signal frequency.
 - **"Negative-resistance" or "infinite-impedance" circuits.** *Reality:* these come from dependent sources with gain near a critical value (Example 06-06.4) and are only as good as the gain's accuracy and the bandwidth over which it holds. They also tend to oscillate.
 - **"The model says it works."** *Reality:* a small-signal analysis says nothing about whether the circuit is biased correctly, saturates, or survives its supply's range. Ask what DC operating-point and large-signal checks were run.
 
@@ -409,7 +409,7 @@ Problem set: [06-06 problems](../problems/06-06-problems.md) · [solutions](../s
 
 - **Previous:** [06-04](06-04-nodal-analysis.md) and [06-05](06-05-mesh-analysis.md) (the two methods, now with nonsymmetric matrices); [01-09](../../01-calculus-for-engineers/chapters/01-09-multivariable-calculus-1.md) (small-signal parameters as partial derivatives).
 - **Next:** [06-07 Linearity and Superposition](06-07-linearity-and-superposition.md), where dependent sources stay on while independent sources are switched off one at a time; [06-08](06-08-thevenin-and-norton.md), Thévenin equivalents by the test-source method; [06-10](06-10-ideal-op-amp.md), the op-amp with $A \to \infty$.
-- **Used later:** small-signal models of diodes, MOSFETs and BJTs (Course 10), multistage amplifiers and feedback (Course 11), the Miller effect on capacitance and frequency response (Courses 07 and 11).
+- **Used later:** small-signal models of diodes, MOSFETs and BJTs (Course 10), multistage amplifiers, cascodes and feedback (Course 12), the Miller effect on capacitance and frequency response (Courses 07 and 12).
 
 ## 13. Further study
 

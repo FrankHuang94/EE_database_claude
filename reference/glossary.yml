@@ -2506,3 +2506,41 @@
   definition: A resistor R_S in a transistor's source (or R_E in a bipolar emitter) that feeds back a voltage opposing the input, cutting the gain to about −R_D/(R_S + 1/g_m) but making it set by resistors rather than by the device.
   chapter: "06-06"
   see_also: [Transconductance]
+
+# ---------------------------------------------------------------- 06-07
+- term: Linearity
+  definition: The property of a system whose response obeys homogeneity and additivity; circuits of resistors, dependent sources, capacitors and inductors are linear, diodes and transistors (beyond small signals) are not.
+  chapter: "06-07"
+  see_also: [Homogeneity, Superposition]
+- term: Homogeneity
+  definition: Scaling property of a linear system, f(a x) = a f(x); in a circuit with one source, every response is proportional to the source.
+  chapter: "06-07"
+  see_also: [Linearity, Unit-output method]
+- term: Superposition
+  definition: In a linear circuit, any response to several independent sources equals the sum of the responses to each source acting alone, with the others switched off (voltage sources shorted, current sources opened) and dependent sources left in place. It does not apply to power.
+  chapter: "06-07"
+  see_also: [Linearity, Dependent source]
+- term: Source transformation
+  definition: Replacing a voltage source V_s in series with R by a current source V_s/R in parallel with R, or the reverse; the two are equivalent at their terminals but not internally.
+  chapter: "06-07"
+  see_also: [Millman's theorem]
+- term: Millman's theorem
+  definition: Practical voltage sources V_k with series resistances R_k in parallel are equivalent to one source of voltage Σ(V_k/R_k)/Σ(1/R_k) with resistance (Σ 1/R_k)^−1.
+  chapter: "06-07"
+  see_also: [Source transformation]
+- term: Unit-output method
+  definition: For a single-source circuit, assume an output of 1 (volt or ampere), work backwards to the source value this requires, then scale by homogeneity; well suited to ladders.
+  chapter: "06-07"
+  see_also: [Homogeneity]
+- term: Error budget
+  definition: A table of every error source's contribution to a system's output (each source times its gain to the output), combined by worst case or by root-sum-square.
+  chapter: "06-07"
+  see_also: [Root-sum-square (RSS), Worst-case analysis]
+- term: Root-sum-square (RSS)
+  definition: Combining independent random contributions as the square root of the sum of their squares, because their variances add; it gives a total at a stated confidence level only if each input is given at that same level.
+  chapter: "06-07"
+  see_also: [Error budget, Worst-case analysis]
+- term: Differential nonlinearity (DNL)
+  definition: For a data converter, the deviation of each code step from the ideal 1 LSB, in LSBs; it is largest where many bits switch at once, such as the major carry.
+  chapter: "06-07"
+  see_also: [Superposition]
