@@ -176,6 +176,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-168 | Bipolar transistor references | Nov 2026 |
 | R-169 | MOS capacitor and gate-stack references | Nov 2026 |
 | R-170 | Long-channel MOSFET references | Nov 2026 |
+| R-171 | Short-channel and leakage references | Nov 2026 |
 
 ---
 
@@ -1763,3 +1764,20 @@ R&D % = R&D ÷ revenue.
 - **Hu, Table 7–1:** I_off for HP devices 0.15, 0.34, 0.61, 0.84, 0.37 µA/µm and LSTP 1E-5 to 3E-5 µA/µm across the 90 to 22 nm nodes (from the ITRS) [Established as roadmap targets].
 - **Derived here:** device parameters, linear and saturation currents (m-model and exact bulk-charge), body effect, channel-length modulation estimate, small-signal parameters and f_T, subthreshold swing and off-current for the chapter's 10 µm/1 µm transistor; the g_m/I_D interpolation in the lab uses the EKV-model form (named, not quoted).
 - **Sources:** [C. Hu, ch. 6](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch6-1.pdf); [C. Hu, ch. 7](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch7.pdf). Checked Nov 2026.
+
+## R-171 · Short-channel and leakage references
+
+*Hu's chapters 6 and 7 (downloaded earlier in the session) re-read on 19 Nov 2026; the IRDS 2024 More Moore table values from the Course 09 facts file (F-0923, primary read of the workbook earlier in the session). Derived values are recomputed by `courses/09-semiconductor-devices/verify/verify_09_10.py`.*
+
+- **Hu, §6.8:** velocity saturation from optical-phonon emission, v = µ_nsℰ/(1 + ℰ/ℰ_sat) (Eq. 6.8.1); velocity overshoot "when the channel length is sufficiently small, electrons may pass through the channel in too short a time for all the energetic carriers to lose energy by emitting optical phonons" [Established].
+- **Hu, §6.9:** I_ds reduced by the factor 1 + V_ds/ℰ_satL (Eqs. 6.9.3–6.9.4); the piecewise model with ℰ_sat = 2v_sat/µ_ns (Eq. 6.9.8); 1/V_dsat = m/(V_gs − V_t) + 1/ℰ_satL (Eq. 6.9.10); "vsat is 8 × 10⁶ cm/s for electrons and 6 × 10⁶ cm/s for holes"; the long-channel criterion ℰ_satL ≫ V_gs − V_t, with a 0.2 µm channel short at 2 V overdrive and the long-channel equations usable "even if L is 0.05 µm" at 0.1 V; the very-short-channel limits (Eqs. 6.9.13–6.9.14); Fig. 6–23 (0.15 µm linear vs 2 µm square-law); "IP is about half of IN. The holes' mobility is three times smaller and their saturation velocity is 30% smaller than that of the electrons" [Established].
+- **Hu, §6.10:** I_dsat = I_dsat0/(1 + R_sI_dsat0/(V_gs − V_t)) (Eq. 6.10.1); the impact of parasitic resistance "is expected to rise in the future"; shallow extensions under the spacer as a contributor [Established].
+- **Hu, §6.11:** R_ds and ∆L extraction from V_ds/I_ds against L_drawn at two gate overdrives (Eqs. 6.11.1–6.11.4, Fig. 6–26) [Established].
+- **Hu, §6.12:** source injection limit I_dsat = WBv_thxC_oxe(V_gs − V_t) (Eq. 6.12.1); "vthx is about 1.6 × 10⁷ cm/s for electrons and 1 × 10⁷ cm/s for holes"; Monte Carlo "arrived at 0.5 as a typical value of B"; B "is expected to increase somewhat with decreasing L" [Established].
+- **Hu, ch. 7, §7.3:** V_t roll-off; the dam analogy; the two-capacitor model V_t = V_t-long − (V_ds + 0.4 V)·C_d/C_oxe with 0.4 V from the two 0.2 V built-in potentials (Eqs. 7.3.1–7.3.2); V_t = V_t-long − (V_ds + 0.4 V)·e^(−L/l_d), l_d ∝ (T_oxe W_dep X_j)^(1/3) (Eqs. 7.3.3–7.3.4) as "a semi-quantitative model"; "The acceptable minimum L is several times of ld"; T_ox, W_dep and X_j must all be reduced [Established].
+- **Hu, §7.7:** Fig. 7–12, log I_off against I_on for many transistors on an axis from 0.9 to 1.5 mA/µm; two or three or more V_t options, multiple V_dd, well bias; gate-edge roughness and random dopant fluctuation as random variation (the latter quoted in R-163) [Established].
+- **Hu, §7.8:** ultra-thin-body and multigate MOSFETs; "the thin Si thickness should take the places of Wdep and Xj in Eq. (7.3.4)", so short-channel control comes from the body thickness rather than heavy doping [Established].
+- **IRDS 2024 More Moore tables, Table MM01:** subthreshold slope HP 82, 72, 70 mV/dec (2024, 2025, 2027 on) and HD 75, 67, 67 falling to 65; V_dd 0.70, 0.65, 0.60 V; physical gate length HP 16, 14, 12 nm, falling to 10 nm by 2033 [Industry estimate, roadmap targets].
+- **Not found:** typical DIBL values for current nodes (no DIBL row in IRDS 2024 MM01); a primary source for GIDL magnitudes. The chapter's GIDL treatment is a field estimate derived from 09-06 tunneling physics and Gauss's law, with no magnitudes claimed (open issue).
+- **Derived here:** velocity-saturated and long-channel currents, series-resistance losses, roll-off and DIBL values, I_on–I_off windows, GIDL fields and onset voltages, and the depth-weighted random-dopant σ(V_t) = (q/C_ox)√(N_A W_dep/3WL), derived in the chapter from the depletion approximation.
+- **Sources:** [C. Hu, ch. 6](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch6-1.pdf); [C. Hu, ch. 7](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch7.pdf); [IRDS 2024 More Moore tables](https://irds.ieee.org/images/files/pdf/2024/2024IRDS_MM_Tables.xlsx). Checked Nov 2026.
