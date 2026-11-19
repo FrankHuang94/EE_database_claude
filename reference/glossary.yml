@@ -3599,3 +3599,56 @@
   definition: The mobility obtained from a Hall measurement, μ_H = |R_H|/ρ; it differs from the drift mobility by the Hall factor, which depends on the scattering mechanism.
   chapter: "09-03"
   see_also: [Hall effect]
+# ---- 09-04
+- term: Generation
+  definition: The creation of electron–hole pairs, thermally (balanced by recombination in equilibrium) or by light or high fields; net generation occurs where np < n_i², as in a reverse-biased depletion region.
+  chapter: "09-04"
+  see_also: [Recombination]
+- term: Recombination
+  definition: The annihilation of an electron–hole pair, by emitting a photon (radiative), through a trap level (Shockley–Read–Hall) or by giving the energy to a third carrier (Auger); net recombination occurs where np > n_i².
+  chapter: "09-04"
+  see_also: [Generation, Minority-carrier lifetime]
+- term: Minority-carrier lifetime
+  definition: The average time an excess minority carrier survives before recombining; under low-level injection the net recombination rate is Δp/τ. In silicon it ranges from milliseconds in pure, lightly doped material to nanoseconds in heavily doped or contaminated regions.
+  chapter: "09-04"
+- term: Low-level injection
+  definition: The condition that excess carrier densities are much smaller than the majority density, so the majority density is essentially unchanged and recombination is linear in the excess, U = Δp/τ.
+  chapter: "09-04"
+- term: Radiative recombination
+  definition: Band-to-band recombination that emits a photon, at rate B(np − n_i²); weak in indirect-gap silicon (B = 1.1×10⁻¹⁴ cm³/s) and strong in direct-gap GaAs (7×10⁻¹⁰ cm³/s), where it powers LEDs and lasers.
+  chapter: "09-04"
+- term: Auger recombination
+  definition: Recombination in which the released energy goes to a third carrier, at rate (C_n n + C_p p)(np − n_i²); it dominates at high doping, limiting the lifetime of heavily doped regions and the efficiency of silicon solar cells.
+  chapter: "09-04"
+- term: Shockley–Read–Hall recombination
+  definition: Two-step recombination through a trap level in the gap, at net rate (np − n_i²)/[τ_p0(n + n_1) + τ_n0(p + p_1)]; the dominant mechanism in moderately doped silicon, most effective for traps near mid-gap.
+  chapter: "09-04"
+  see_also: [Trap, Capture cross section]
+- term: Trap
+  definition: A localized electron state in the band gap, from an impurity or crystal defect, that captures and emits carriers; deep (near mid-gap) traps act as recombination and generation centers.
+  chapter: "09-04"
+- term: Capture cross section
+  definition: The effective target area σ (cm²) a trap presents to a passing carrier; the capture time is 1/(σ v_th N_t). Gold in silicon captures holes with σ_p ≈ 9×10⁻¹⁵ cm².
+  chapter: "09-04"
+- term: Quasi-Fermi level
+  definition: A separate Fermi level for electrons (E_Fn) or holes (E_Fp) when a semiconductor is out of equilibrium but each carrier population is in equilibrium with itself; np = n_i² e^((E_Fn − E_Fp)/kT), and each current flows down its own quasi-Fermi-level gradient.
+  chapter: "09-04"
+- term: Minority-carrier diffusion equation
+  definition: The continuity equation for minority carriers in a quasi-neutral region under low-level injection, ∂Δp/∂t = D_p ∂²Δp/∂x² − Δp/τ_p + G_L; it yields the currents of diodes, bipolar transistors and photodiodes.
+  chapter: "09-04"
+  see_also: [Continuity equation, Diffusion length]
+- term: Diffusion length
+  definition: The average distance a minority carrier diffuses before recombining, L = √(Dτ); regions much shorter than L transport carriers with little recombination, those much longer absorb them.
+  chapter: "09-04"
+- term: Surface recombination velocity
+  definition: The parameter S (cm/s) that sets recombination at a surface through the boundary condition D dΔp/dx = SΔp; 10² to about 10⁵ cm/s for bare silicon surfaces, below 1 cm/s at a well-passivated oxide interface.
+  chapter: "09-04"
+- term: Photoconductive decay
+  definition: A lifetime measurement that excites carriers with a light pulse and records the exponential decay of the excess conductivity; it reports an effective lifetime that includes surface recombination.
+  chapter: "09-04"
+- term: Lifetime killing
+  definition: The deliberate shortening of minority-carrier lifetime, by deep-level impurities such as gold or platinum or by irradiation, to speed the turn-off of power diodes and IGBTs at the cost of higher leakage.
+  chapter: "09-04"
+- term: Dark current
+  definition: The current an image-sensor pixel or photodiode collects with no light, mainly thermal generation through traps in depleted regions and at interfaces; it scales roughly with n_i and so grows rapidly with temperature.
+  chapter: "09-04"
