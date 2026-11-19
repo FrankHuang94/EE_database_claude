@@ -6,7 +6,7 @@
 **Instructions.**
 
 - Answer all 15 questions and show every step.
-- Each [A] is worth 5 points, each [B] 8 (except Question 9, which is longer and carries 10) and each [C] 12: 125 points in total. 88 or more (about 70%) is a strong pass.
+- Each [A] is worth 5 points, each [B] 8 (except Question 9, which is longer and carries 10) and each [C] 12: 131 points in total. 92 or more (about 70%) is a strong pass.
 - Within a question the lettered parts carry equal weight, unless the question says otherwise.
 - Questions 8 and 14 ask for a design with its reasoning. Show the steps, not just the result.
 - Give numerical answers to 4 significant figures unless told otherwise, with units.
@@ -25,13 +25,13 @@
 
 ---
 
-**1 [A] · Numbers and codes.**
+**1 [B] · Numbers and codes.**
 (a) Write B6₁₆ in binary, and give its value as an unsigned number and as an 8-bit two's-complement number.
 (b) Add the 8-bit numbers 5A₁₆ and 3C₁₆. Give the 8-bit result in hexadecimal and as a signed value, and say whether the addition overflowed and how the hardware detects it.
 (c) Represent −0.40625 in Q1.7. Give the bit pattern, its hexadecimal value, the format's resolution and its range.
 (d) A Hamming(7,4) code word is received as 1100010 (bit positions 1 to 7 from the left, check bits at positions 1, 2 and 4, data bits $d_1$ to $d_4$ at positions 3, 5, 6 and 7). Compute the syndrome, correct the word and give the data bits.
 
-**2 [A] · Boolean algebra and gates.**
+**2 [B] · Boolean algebra and gates.**
 (a) Simplify $F = AB + \overline{A}C + BC$ and $G = (A + B)(A + C)$, naming the theorem you use for each.
 (b) Use De Morgan's theorem to write the complement of $A + \overline{B}C$ as a product of sums.
 (c) Implement $H = AB + CD$ in three ways and count the transistors of each: with two-input AND gates and an OR gate; with two-input NAND gates only; and with a single AND-OR-INVERT (AOI22) gate followed by an inverter.
@@ -108,7 +108,7 @@ A rising edge occurs at a sample where CLK goes from 0 to 1, and the flip-flop c
 
 **7 [A] · Counters and LFSRs.**
 (a) List the states of a 4-bit Johnson counter starting from 0000. How many states does it use, and how many are unused?
-(b) A 4-bit Fibonacci LFSR with polynomial $x^4 + x^3 + 1$ has stages $Q_1$ to $Q_4$, shifting from $Q_1$ toward $Q_4$, with $Q_1^{\text{next}} = Q_4 \oplus Q_3$ and output $Q_4$. Starting from $Q_1Q_2Q_3Q_4$ = 1000, list the states until the sequence repeats. Give the period, the first 15 output bits, and the number of ones among them.
+(b) A 4-bit Fibonacci LFSR with polynomial $x^4 + x^3 + 1$ has stages $Q_1$ to $Q_4$, shifting from $Q_1$ toward $Q_4$, with $Q_1^{\text{next}} = Q_4 \oplus Q_3$ and output $Q_4$. Starting from $Q_1Q_2Q_3Q_4$ = 1000, list the states until the sequence repeats. Give the period, the first 15 output bits (the first being $Q_4$ of the starting state 1000), and the number of ones among them.
 (c) With 8 flip-flops, how many states do a binary counter, a ring counter, a Johnson counter and a maximal-length LFSR have?
 (d) A 4-bit ripple counter (each stage clocked by the previous stage's output) counts from 0111 to 1000. List the values its outputs pass through, and say why a decoder watching for 0000 could misfire.
 
@@ -118,7 +118,7 @@ A rising edge occurs at a sample where CLK goes from 0 to 1, and the flip-flop c
 (c) The input for cycles 0 to 11 is 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1. In which cycles is the Mealy output 1, and in which the Moore output? Explain the difference.
 (d) Write synthesizable Verilog for the Mealy machine in the three-block style. How many flip-flops do the Moore and Mealy machines need with binary encoding and with one-hot encoding?
 
-**9 [B, 10 points] · Arithmetic circuits.** Use the unit-delay model of 08-09 for adders: two-input gates 1 unit, a prefix operator 2 units on its generate output, carry-in folded into bit 0's generate.
+**9 [B, 10 points] · Arithmetic circuits.** Part (a) carries 4 points, (b) 1.5, (c) 2, (d) 1 and (e) 1.5. Use the unit-delay model of 08-09 for adders: two-input gates 1 unit, a prefix operator 2 units on its generate output, carry-in folded into bit 0's generate.
 (a) For 64-bit adders, give the ripple-carry delay, and the number of prefix operators and levels of Kogge–Stone, Sklansky and Brent–Kung networks. An arrival-time simulation gives slowest sum bits at 14, 16 and 24 units respectively: find each speed-up over ripple carry. Which would you choose for a low-power microcontroller's address adder, and which for a server core's critical ALU, and why?
 (b) For a 16 × 16 unsigned Dadda multiplier, give the number of full adders, half adders and the width of the final adder.
 (c) Multiply 0.75 by −0.5 in Q1.15. Give both operands and the product as integers, the product's format, and the Q1.15 result as an integer. Which single product of two Q1.15 numbers cannot be represented in Q1.15, and what should the hardware do with it?
@@ -143,10 +143,10 @@ A rising edge occurs at a sample where CLK goes from 0 to 1, and the flip-flop c
 (c) A placement-seed sweep typically improves this kind of path by a few percent. Would a 3% gain be enough? Instead, the path is pipelined into two stages with equal logic and routing, each paying the clock-to-Q and setup overhead. Find the new frequency and slack.
 (d) The report was produced with the tool's default 12 MHz constraint, and every path "passed". Explain why that says nothing about operation at 48 MHz, and what to change.
 
-**13 [C] · A multiply-accumulate unit for always-on audio.** A keyword-spotting network in a wearable computes dot products of 8-bit signed weights and 8-bit signed activations, 256 terms per dot product. One inference needs 2.5 million multiply-accumulates (MACs), and the device runs 10 inferences per second. Use the 45 nm energy estimates of 08-09: an 8-bit multiply costs 0.2 pJ, a 32-bit add 0.1 pJ (take this for the accumulator add), a 64-bit read from a 32 KB SRAM 20 pJ, and a 64-bit DRAM access 1.3 nJ (the low end of the range).
+**13 [C] · A multiply-accumulate unit for always-on audio.** A keyword-spotting network in a wearable computes dot products of 8-bit signed weights and 8-bit signed activations, 256 terms per dot product. It has 25 000 weights, each used 100 times per inference (a convolutional network reuses its filters across the input), so one inference needs 2.5 million multiply-accumulates (MACs). The device runs 10 inferences per second. Use the 45 nm energy estimates of 08-09: an 8-bit multiply costs 0.2 pJ, a 32-bit add 0.1 pJ (take this for the accumulator add), a 64-bit read from a 32 KB SRAM 20 pJ, and a 64-bit DRAM access 1.3 nJ (the low end of the range).
 (a) How wide must the product and the accumulator be? Find the largest positive and most negative possible dot products, and show that one fewer accumulator bit would not do.
 (b) Find the arithmetic energy per MAC, per inference, and the average arithmetic power.
-(c) Each weight is used once per inference and read from the 32 KB SRAM, eight weights per 64-bit read (activations stay in registers). Find the weight-fetch energy per inference, its power, and the ratio to the arithmetic. Repeat for weights read from DRAM. What does this say about where the energy goes?
+(c) Activations stay in registers. Compare three ways of supplying the weights, eight weights per 64-bit read: (i) every use reads its weight from the 32 KB SRAM (which the 25 000 weights fit); (ii) each weight is read from the SRAM once per inference into a register and reused for all 100 uses; (iii) as in (i), but from DRAM. For each, find the weight-fetch energy per inference and its ratio to the arithmetic; for (i) and (iii) also the power. What does this say about where the energy goes?
 (d) In the MAC, the multiplier takes 1.1 ns, the accumulator adder 0.6 ns, and the register overhead ($t_{pcq} + t_{\text{setup}}$) is 0.1 ns. Find the maximum clock frequency without pipelining and with a register between the multiplier and the adder. With one MAC unit, what clock frequency does the application need? Should the unit be pipelined? What should the designer do with the spare timing margin instead?
 
 **14 [C] · Designing a clock-domain crossing.** A sensor front end writes 16-bit samples at 100 MHz, one per cycle, in bursts of 256 samples. A processor in an unrelated 75 MHz domain reads one sample per cycle whenever the FIFO between them is not empty. The FIFO uses Gray-coded pointers passed through synchronizers. Each part carries 3 points.

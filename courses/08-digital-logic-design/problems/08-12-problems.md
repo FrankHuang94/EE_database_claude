@@ -25,15 +25,15 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 08-12.4 [B]
 
-**A LUT multiplier's critical path.** The LUT multiplier harness's critical path is clock-to-Q 1.39 ns, logic 14.35 ns, routing 21.75 ns and setup 0.82 ns. (a) What is the total, and the maximum frequency? (b) What fractions are routing and logic?
+**A LUT multiplier's critical path.** The LUT multiplier harness's critical path is clock-to-Q 1.390 ns, logic 14.352 ns, routing 21.752 ns and setup 0.824 ns. (a) What is the total, and the maximum frequency? (b) What fractions are routing and logic?
 
 ### Problem 08-12.5 [B]
 
-**If routing were cheaper.** Suppose a better router halved the routing delay on the gate-level adder's critical path (36.98 ns of 57.34 ns). (a) What would the period and maximum frequency become? (b) Would it then match the carry-chain adder's 52.09 MHz?
+**If routing were cheaper.** Suppose a better router halved the routing delay on the gate-level adder's critical path (36.981 ns of 57.337 ns). (a) What would the period and maximum frequency become? (b) Would it then match the carry-chain adder's 52.09 MHz?
 
 ### Problem 08-12.6 [B]
 
-**Pipelining the LUT multiplier.** Split the LUT multiplier's 38.32 ns critical path into two stages with equal logic and routing, each paying the register overhead of clock-to-Q plus setup (2.21 ns). What period and frequency result, and would it meet 48 MHz?
+**Pipelining the LUT multiplier.** Split the LUT multiplier's 38.32 ns critical path into two stages with equal logic and routing, each paying the register overhead of clock-to-Q plus setup (2.214 ns). What period and frequency result, and would it meet 48 MHz?
 
 ### Problem 08-12.7 [B]
 
@@ -59,6 +59,11 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **From FPGA flow to ASIC flow.** Name four steps that an ASIC implementation flow needs and an FPGA flow does not, and explain for each why the FPGA does not need it.
 
+
+### Problem 08-12.13 [B]
+
+**Writing the constraints.** A UP5K design has two clocks: a 12 MHz board clock on a pin, and the 48 MHz internal oscillator, which runs the main logic. A sensor chip, clocked by the 12 MHz board clock, drives a data input that changes up to 20 ns after each board-clock edge; the two clock domains exchange data only through a FIFO with synchronizers. For each item, say what constraint is needed and what goes wrong without it: (a) the 48 MHz clock; (b) the sensor input; (c) the paths between the 12 MHz and 48 MHz domains; (d) the data pins. (e) With the input delay of (b), how much of the 83.33 ns board-clock period is left for the input's path inside the FPGA, ignoring board wiring?
+
 ---
 
 ## Objective coverage
@@ -66,7 +71,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 08-12) | Problems |
 |---|---|
 | 1. Steps of the flow | 1, 9, 11 |
-| 2. Constraints | 3, 7 |
+| 2. Constraints | 3, 7, 13 |
 | 3. Reading reports and critical paths | 2, 3, 4, 5, 8 |
 | 4. Coding style and hard blocks | 5, 6, 10 |
 | 5. Open-source, vendor and ASIC flows | 12 |

@@ -50,8 +50,8 @@ endmodule
 
 // ---- Test harnesses for place and route: a 32 + 32-bit adder needs 98 pins, more than a UP5K
 // package has. Each harness feeds its core from an internal 64-bit LFSR (taps 64, 63, 61, 60) and
-// XORs the core's output down to one pin, so the core cannot be optimized away. Every harness has the
-// same overhead, so differences between harnesses are differences between cores.
+// XORs the core's output down to one pin, so the core cannot be optimized away. Overheads are alike, so
+// rows mostly compare cores; the fast DSP multiplier's critical path runs through this XOR tree itself.
 module lfsr64 (input wire clk, input wire rst, output reg [63:0] q);
     always @(posedge clk)
         if (rst) q <= 64'h0123_4567_89AB_CDEF;

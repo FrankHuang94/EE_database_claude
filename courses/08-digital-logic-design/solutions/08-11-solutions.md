@@ -46,7 +46,7 @@ Problems: [08-11 problems](../problems/08-11-problems.md) · Chapter: [08-11](..
 
 ### Solution 08-11.6
 
-(a) $2^{8-4+1} - 1$ = **31** four-input LUTs; $2^{8-6+1} - 1$ = **7** six-input LUTs.
+(a) With 4-input LUTs, which can only act as 2:1 multiplexers, the recursion gives $2^{8-4+1} - 1$ = **31** LUTs. A 6-input LUT is a 4:1 multiplexer (2 selects and 4 data inputs), so expand on two variables at once: four 6-input cofactors, one LUT each, and one multiplexer LUT, **5** six-input LUTs. (The plain 2:1 recursion would give $2^{8-6+1} - 1 = 7$.) Both numbers are what the construction guarantees, upper bounds for an arbitrary function.
 
 (b) Two LUTs compute the parity of 4 inputs each and a third XORs their outputs: **3** LUTs. Structure matters far more than the input count.
 
@@ -62,7 +62,7 @@ $8192 \times 50\ \text{ns} = 409.6$ µs of refresh every 64 ms: **0.64**% of the
 
 ### Solution 08-11.9
 
-(a) $320 \times 240$ = 76 800 bits, $76\,800/4096 = 18.75$: **19** block RAMs, **63.3**% of the 30.
+(a) $320 \times 240$ = 76 800 bits, $76\,800/4096 = 18.75$: **19** block RAMs, **63.3**% of the 30. Packing matters: the iCE40's block RAMs come in 256 × 16, 512 × 8, 1024 × 4 and 2048 × 2 configurations, none one bit wide ([R-159](../../../reference/research-log.md#r-159--fpga-devices-and-the-fpga-industry)), so storing one pixel per word would use 2048 pixels per block and need **38** blocks, more than the device has.
 
 (b) 128 KB = $128 \times 1024 \times 8$ = 1 048 576 bits = 1 Mbit: all **4** single-port RAMs.
 
@@ -123,8 +123,8 @@ $3840/8$ = **480** times the DSP blocks, against about 774 times the LUTs. The l
 | 08-11.5d | levels | 3 | — |
 | 08-11.5e | 6-LUTs, 32-input AND | 7 | — |
 | 08-11.5f | levels | 2 | — |
-| 08-11.6a | worst-case 4-LUTs, 8 inputs | 31 | — |
-| 08-11.6b | worst-case 6-LUTs, 8 inputs | 7 | — |
+| 08-11.6a | 4-LUTs that suffice, 8 inputs | 31 | — |
+| 08-11.6b | 6-LUTs that suffice, 8 inputs | 5 | — |
 | 08-11.6c | 4-LUTs for 8-input parity | 3 | — |
 | 08-11.7a | PLA crosspoints, small function | 99 | — |
 | 08-11.7b | ROM bits, small function | 48 | bit |
@@ -134,6 +134,7 @@ $3840/8$ = **480** times the DSP blocks, against about 774 times the LUTs. The l
 | 08-11.9a | block RAMs for the display buffer | 19 | — |
 | 08-11.9b | share of block RAMs | 63.3 | % |
 | 08-11.9c | single-port RAMs for 128 KB | 4 | — |
+| 08-11.9d | block RAMs without packing (2048 × 2 mode) | 38 | — |
 | 08-11.10a | multiplies per second | 1024000 | — |
 | 08-11.10b | DSP utilization | 8.53 | % |
 | 08-11.10c | taps per DSP block | 750 | — |

@@ -33,7 +33,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 08-11.6 [B]
 
-**Worst case and best case.** (a) By Shannon expansion, how many 4-input LUTs does an arbitrary 8-input function need in the worst case? How many 6-input LUTs? (b) How many 4-input LUTs does 8-input parity need, built as a tree?
+**Worst case and best case.** (a) By Shannon expansion, how many 4-input LUTs are enough for an arbitrary 8-input function? How many 6-input LUTs, if each 6-input LUT may serve as a 4:1 multiplexer? (b) How many 4-input LUTs does 8-input parity need, built as a tree?
 
 ### Problem 08-11.7 [B]
 
@@ -45,7 +45,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 08-11.9 [B]
 
-**Buffers in a small FPGA.** On an iCE40 UP5K (30 block RAMs of 4 kbit, 4 single-port RAMs of 256 kbit): (a) How many block RAMs does a 320 × 240 one-bit display buffer need, and what fraction of them is that? (b) How many single-port RAMs hold a 128 KB (kilobyte) frame buffer?
+**Buffers in a small FPGA.** On an iCE40 UP5K (30 block RAMs of 4 kbit, 4 single-port RAMs of 256 kbit): (a) How many block RAMs does a 320 × 240 one-bit display buffer need, with the pixels packed into the RAM's words so that every bit of each block is used, and what fraction of them is that? (b) How many single-port RAMs hold a 128 KB (kilobyte) frame buffer?
 
 ### Problem 08-11.10 [B]
 

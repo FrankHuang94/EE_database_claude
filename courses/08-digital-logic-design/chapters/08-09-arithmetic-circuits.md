@@ -37,6 +37,20 @@ Arithmetic is where digital design meets physical limits most directly. An adder
 
 **Multiplication as many additions.** Multiplying two $n$-bit numbers by hand writes $n$ shifted copies of one number (each copy kept or zeroed by a bit of the other) and adds them. The hardware question is how to add $n$ numbers fast: not one after another, but in a tree that reduces three numbers to two at each level without waiting for carries.
 
+```mermaid
+flowchart BT
+    g0["(G,P) bit 0"] --> a10["span 1:0"]
+    g1["(G,P) bit 1"] --> a10
+    g2["(G,P) bit 2"] --> a32["span 3:2"]
+    g3["(G,P) bit 3"] --> a32
+    a10 --> a30["span 3:0 → carry out of bit 3"]
+    a32 --> a30
+    a10 --> a20["span 2:0 → carry into bit 3"]
+    g2 --> a20
+```
+
+*Figure 1. Prefix combining for 4 bits: adjacent spans merge in parallel, so the carry out of bit 3 is ready after two levels of the $\circ$ operator instead of a chain of four.*
+
 ## 3. Theory
 
 ### 3.1 Generate, propagate and the prefix operator
@@ -108,7 +122,7 @@ It has the minimum number of levels and every operator output feeds only one oth
 
 **Sklansky** (divide and conquer). Compute prefixes of each half recursively, then combine the low half's total with every position of the high half. It also has $\log_2 n$ levels but only $(n/2)\log_2 n$ operators; the price is fan-out: at the last level, one signal drives $n/2$ operators, which slows it down in real wiring.
 
-**Brent–Kung** (1982). An up-sweep computes group generates of spans 2, 4, 8, ... at positions $2^{\ell} - 1, \ldots$ (a binary tree, $n - 1$ operators), and a down-sweep fills in the remaining prefixes ($n - 1 - \log_2 n$ operators). Total $2n - 2 - \log_2 n$ operators in $2\log_2 n - 1$ levels, with fan-out 1 and short, regular wiring: nearly twice the levels of Kogge–Stone for less than a third of its operators at 32 bits.
+**Brent–Kung** (1982). An up-sweep computes group generates of spans 2, 4, 8, ... at positions $2^{\ell} - 1, \ldots$ (a binary tree, $n - 1$ operators), and a down-sweep fills in the remaining prefixes ($n - 1 - \log_2 n$ operators). Total $2n - 2 - \log_2 n$ operators in $2\log_2 n - 1$ levels, with fan-out 1 and short, regular wiring: nearly twice the levels of Kogge–Stone for less than half its operators at 32 bits (57 against 129).
 
 ![Delay of ripple-carry, Brent–Kung, Sklansky and Kogge–Stone adders against width, in unit gate delays, from the arrival-time simulation of each network: ripple grows linearly to 128 units at 64 bits, while the prefix adders grow logarithmically, Kogge–Stone reaching 14 units.](../../../assets/figures/08-09/adder-delay.svg)
 
@@ -121,7 +135,7 @@ For 16-bit adders, simulating each network with the unit-delay model of §3.1 gi
 | Sklansky | 32 | 4 | 8 | 12 |
 | Kogge–Stone | 49 | 4 | 1 | 10 |
 
-The delays are a little below $1 + 2(\text{levels}) + 1$ in some networks because inputs from short spans arrive early; the lab computes every arrival time. The fan-out column matters in silicon more than in this model, which charges nothing for fan-out or wire length. Real designs often use hybrids (for example, sparse trees that compute every fourth carry and finish with short ripple or select stages), chosen by the synthesis tool to meet the timing constraint.
+Ripple carry, Brent–Kung and Kogge–Stone come out at exactly $2L + 2$ units for $L$ levels: $G$ and $P$ are ready at 1, each level adds 2, and the sum XOR adds 1. Sklansky is 2 units slower than that because bit 0's folded generate is ready only at 3 and lies on its deepest chain: $G_0 \to G_{1:0} \to G_{3:0} \to G_{7:0} \to G_{14:0} \to S_{15}$, at times 3, 5, 7, 9, 11 and 12. In Kogge–Stone the slowest sum bit's chain picks up $G_0$ only after it has caught up with the others, so the late start is absorbed. The lab computes every arrival time. The fan-out column matters in silicon more than in this model, which charges nothing for fan-out or wire length. Real designs often use hybrids (for example, sparse trees that compute every fourth carry and finish with short ripple or select stages), chosen by the synthesis tool to meet the timing constraint.
 
 > **Going deeper — the design space.** Kogge–Stone, Sklansky and Brent–Kung are corners of a three-way tradeoff among levels, fan-out and wiring tracks; later work by Knowles and D. Harris's "taxonomy of parallel prefix networks" described whole families of networks in between ([R-157](../../../reference/research-log.md#r-157--arithmetic-energy-and-dsp-blocks)). No prefix network can have fewer than $\lceil \log_2 n \rceil$ levels, because each output depends on all $n$ inputs and every operator has two inputs; in Harris's taxonomy, the networks that reach this minimum differ in how they trade fan-out against wiring.
 
@@ -157,13 +171,13 @@ $$
 n^2 - (4n - 3) = n^2 - 4n + 3
 $$
 
-full adders, plus $n - 1$ half adders (counted by the lab's construction), and a final adder of $2n - 2$ bits. For $8 \times 8$: 35 full adders, 7 half adders and a 14-bit final adder (Example 08-09.5).
+full adders. Half adders remove no bits, so this argument cannot count them: Dadda's rule places one only where a column exceeds its target height by exactly one bit, and running the rule (as the lab and the verify script do, for every $n$ from 3 to 64) gives exactly $n - 1$ of them. The final adder covers columns 1 to $2n - 2$: $2n - 2$ bits. For $8 \times 8$: 35 full adders, 7 half adders and a 14-bit final adder (Example 08-09.5).
 
 **Signed multiplication.** Two's-complement operands make the top row negative (its weight is $-2^{n-1}$). Hardware handles this either by sign-extending the partial products, or more cheaply by the Baugh–Wooley rearrangement, which inverts a few bits and adds constants so that every partial-product bit is again added with positive weight. Booth recoding (next section) handles signs naturally.
 
 ### 3.6 Radix-4 Booth recoding
 
-Fewer partial products means a shallower tree. **Radix-4 Booth recoding** rewrites a two's-complement multiplier $B$ in base 4 with digits from $\{-2, -1, 0, 1, 2\}$, so that an $n$-bit multiplier ($n$ even) gives only $n/2$ partial products, each of which is $0$, $\pm A$ or $\pm 2A$ (a shift and possibly an inversion, all cheap).
+Fewer partial products means a shallower tree. **Radix-4 Booth recoding** rewrites a two's-complement multiplier $B$ in base 4 with digits from $\{-2, -1, 0, 1, 2\}$, so that an $n$-bit multiplier ($n$ even) gives only $n/2$ partial products, each of which is $0$, $\pm A$ or $\pm 2A$. Selecting $2A$ is a one-bit shift; a negative digit inverts the row and needs a 1 added at its least significant position, which designs inject as an extra bit in the partial-product array, plus a few constant bits to handle each row's sign extension.
 
 **The recoding.** With $b_{-1} = 0$, digit $k$ ($k = 0, 1, \ldots, n/2 - 1$) is computed from the overlapping triplet $(b_{2k+1}, b_{2k}, b_{2k-1})$:
 
@@ -217,6 +231,8 @@ Arithmetic energy scales with width in a way that explains the industry's move t
 ![Bar chart of energy per operation at 45 nm and 0.9 V on a logarithmic scale, from 0.03 pJ for an 8-bit integer add to 3.1 pJ for a 32-bit integer multiply and 3.7 pJ for a 32-bit floating-point multiply.](../../../assets/figures/08-09/energy.svg)
 
 Going from 8 to 32 bits multiplies the integer-multiply energy by 15.5, close to the $n^2$ prediction of 16, and the add energy by 3.3, close to the linear prediction of 4. The same estimates put a 64-bit read from a 32 KB cache at 20 pJ and a DRAM access at 1.3 to 2.6 nJ: moving operands costs far more than computing with them, the theme of [14-14](../../14-computer-organization-and-architecture/chapters/14-14-ai-accelerators.md).
+
+**Why voltage matters as much as width.** Each operation charges and discharges the capacitance of the wires and gates it switches. Charging a capacitance $C$ to the supply $V$ draws $CV$ of charge from the supply, an energy $CV^2$, of which half is stored and later dumped to ground (07-02's ½CV² charging loss). So the energy per operation scales as $\alpha C V^2$, with $\alpha$ the fraction of nodes that switch: lowering the supply from 0.9 V to 0.6 V cuts it by more than half, at the price of slower gates ([19-06](../../19-digital-vlsi-design/chapters/19-06-power-and-low-power-design.md) treats this fully). Designs with time to spare therefore run at the lowest voltage that still meets timing.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -277,7 +293,7 @@ Going from 8 to 32 bits multiplies the integer-multiply energy by 15.5, close to
 
 (d) $16 + 2 \times 16$ = **48** full adders (against 32) and **17** multiplexers (16 sum bits and the carry-out).
 
-**Sanity check.** The selection waits only for the low half; the high halves work in parallel. Half the extra hardware buys almost half the delay.
+**Sanity check.** The selection waits only for the low half; the high halves work in parallel. Half again as many full adders cut the delay from 64 to 35 units, by 45%.
 
 ### Example 08-09.5 · An 8 × 8 Dadda multiplier (tier B)
 
@@ -308,17 +324,17 @@ Going from 8 to 32 bits multiplies the integer-multiply energy by 15.5, close to
 
 Check: $-2 - 1 \times 4 + 0 \times 16 + 2 \times 64$ = **122** ✓. The product is the sum of the four partial products $d_k \cdot 45 \cdot 4^k$: $-90 - 180 + 0 + 5760$ = **5490** $= 45 \times 122$ ✓. Only **3** of the 4 partial products are nonzero, against 8 rows (5 of them nonzero, one per 1 bit of $B$) without recoding.
 
-**Sanity check.** The run 1111 in bits 3 to 6 became "−1 at bit 2's position, +2 at the top": a run of 1s costs two nonzero digits regardless of its length.
+**Sanity check.** Any run of 1s from bit $i$ to bit $j$ equals $2^{j+1} - 2^i$. Here $122 = 0111\,1010_2$ has an isolated 1 at bit 1, which is $4 - 2$, and the run in bits 3 to 6, which is $128 - 8$. So $122 = -2 + (4 - 8) + 128 = -2 - 4 + 128$, and the radix-4 digits collect exactly these terms: $-2$ at weight 1, $-1$ at weight 4, $+2$ at weight 64. A run costs two nonzero terms regardless of its length, which is where recoding saves partial products.
 
 ### Example 08-09.7 · Sizing a fixed-point MAC (tier C)
 
-**Setup.** A 64-tap FIR filter uses Q1.15 samples and coefficients. (a) What format and width is each product? (b) How wide must the accumulator be to never overflow? (c) An FPGA's DSP slice has a 48-bit accumulator. How many guard bits does it leave for these products, and how many worst-case products can it add? (d) Compute $0.75 \times (-0.5)$ in Q1.15 integer arithmetic, including the conversion back to Q1.15 with round-to-nearest. (e) What SQNR does a full-scale sine have in Q1.15?
+**Setup.** A 64-tap FIR filter uses Q1.15 samples and coefficients. (a) What format and width is each product? (b) How wide must the accumulator be to never overflow? (c) An FPGA's DSP slice has a 48-bit accumulator. How many guard bits does it leave for these products, how many worst-case products does the guard-bit rule guarantee it can add, and what is the exact limit? (d) Compute $0.75 \times (-0.5)$ in Q1.15 integer arithmetic, including the conversion back to Q1.15 with round-to-nearest. (e) What SQNR does a full-scale sine have in Q1.15?
 
 **Solution.** (a) Q2.30, **32** bits.
 
 (b) $32 + \lceil \log_2 64 \rceil$ = **38** bits.
 
-(c) $48 - 32$ = **16** guard bits: $2^{16}$ = **65536** worst-case products.
+(c) $48 - 32$ = **16** guard bits: the rule guarantees $2^{16}$ = **65536** products. The exact limit is higher, because the largest Q1.15 product is $(-32\,768)^2 = 2^{30}$ (only for $(-1) \times (-1)$), so the accumulator's maximum $2^{47} - 1$ holds $\lfloor (2^{47} - 1)/2^{30} \rfloor$ = **131071** such products before overflowing. The rule is conservative by a factor of 2 here because it budgets for a full 32-bit product magnitude, $2^{31}$.
 
 (d) $0.75 \to 24576$, $-0.5 \to -16384$. Product: $24576 \times (-16384) = -402\,653\,184$ in Q2.30. Add $2^{14}$ and shift right by 15: $(-402\,653\,184 + 16\,384)/32\,768 = -12\,287.5$, and the arithmetic shift rounds toward $-\infty$, giving **−12288**, which is $-12288/32768$ = **−0.375** exactly ✓.
 
@@ -378,7 +394,8 @@ Check: $-2 - 1 \times 4 + 0 \times 16 + 2 \times 64$ = **122** ✓. The product 
 | Ex 08-09.7a | product width | 32 | bit |
 | Ex 08-09.7b | accumulator width | 38 | bit |
 | Ex 08-09.7c | guard bits in a 48-bit accumulator | 16 | bit |
-| Ex 08-09.7d | worst-case products | 65536 | — |
+| Ex 08-09.7d | worst-case products, guard-bit rule | 65536 | — |
+| Ex 08-09.7h | worst-case products, exact limit | 131071 | — |
 | Ex 08-09.7e | Q1.15 result integer | -12288 | — |
 | Ex 08-09.7f | result value | -0.375 | — |
 | Ex 08-09.7g | SQNR | 98.1 | dB |
@@ -423,7 +440,7 @@ The lab is in [labs/08-09-lab/](../labs/08-09-lab/README.md).
 | Barrel shifter | $n\log_2 n$ 2:1 multiplexers | §3.7 |
 | SQNR | $6.02b + 1.76$ dB for a full-scale sine | §3.8 |
 | Energy per operation, 45 nm | 8-bit add 0.03 pJ, 32-bit add 0.1 pJ; 8-bit multiply 0.2 pJ, 32-bit multiply 3.1 pJ; FP32 add 0.9 pJ, multiply 3.7 pJ | [R-157](../../../reference/research-log.md#r-157--arithmetic-energy-and-dsp-blocks) **[Established]** (Horowitz, ISSCC 2014; read from the paper's figure) |
-| FPGA DSP slice (AMD UltraScale+) | 27 × 18 multiplier, 48-bit accumulator | [R-157](../../../reference/research-log.md#r-157--arithmetic-energy-and-dsp-blocks) **[Established]** |
+| FPGA DSP slice (AMD UltraScale+, DSP48E2) | 27 × 18 multiplier, 48-bit accumulator (as of Nov 2026) | [R-157](../../../reference/research-log.md#r-157--arithmetic-energy-and-dsp-blocks) **[Established]** |
 
 ## 8. Common mistakes
 
@@ -440,7 +457,7 @@ The lab is in [labs/08-09-lab/](../labs/08-09-lab/README.md).
 
 ### State of the art (as of Nov 2026)
 
-- **Prefix adders are 50-year-old ideas, still current.** Kogge and Stone's "recursive doubling" paper (IEEE Transactions on Computers, 1973) and Brent and Kung's regular-layout adder (same journal, 1982) define the corners of the design space that synthesis libraries still draw on **[Established]** ([R-157](../../../reference/research-log.md#r-157--arithmetic-energy-and-dsp-blocks); bibliographic details from search excerpts).
+- **Prefix adders are 50-year-old ideas, still current.** Kogge and Stone's "recursive doubling" paper (IEEE Transactions on Computers, 1973) and Brent and Kung's regular-layout adder (same journal, 1982) define corners of the prefix-adder design space that textbooks and later network families still build on **[Established]** ([R-157](../../../reference/research-log.md#r-157--arithmetic-energy-and-dsp-blocks); bibliographic details from search excerpts).
 - **FPGAs harden the MAC.** AMD's UltraScale and UltraScale+ DSP48E2 slice contains a 27 × 18 signed multiplier, a 27-bit pre-adder and a 48-bit accumulator ("48-bit Multi-Functional Arithmetic Block"); the Versal DSP58 widens the multiplier to 27 × 24 **[Established]** ([R-157](../../../reference/research-log.md#r-157--arithmetic-energy-and-dsp-blocks), search excerpts of AMD documentation).
 - **AI hardware chases narrow formats.** NVIDIA's HGX B200 specification lists FP4 tensor throughput of 144 PFLOPS sparse and 72 PFLOPS dense for eight GPUs; per GPU that is 9 PFLOPS dense FP4 **[Established]**, while launch coverage quoted "up to 20 petaFLOPS of FP4" for B200 **[Contested]** as to configuration ([R-147](../../../reference/research-log.md#r-147--accelerator-throughput-specifications)). The formats themselves (MX and NVFP4, block-scaled 4- to 8-bit numbers) are the subject of 08-01 ([R-143](../../../reference/research-log.md#r-143--block-scaled-ai-number-formats)).
 

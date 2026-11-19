@@ -126,7 +126,6 @@ def barrel_muxes(n):
 
 
 v.check("Th 08-09.f", barrel_muxes(32))
-v.check("Th 08-09.g", 32 + math.ceil(math.log2(64)))
 
 # ================================================================= chapter, examples
 A1, B1 = 0b10110110, 0b01011101
@@ -308,10 +307,41 @@ v.check("Ex 08-09.6b", sum(d * 45 * 4 ** k for k, d in enumerate(d122)))
 v.check("Ex 08-09.6c", sum(d != 0 for d in d122))
 v.check("Ex 08-09.6d", bin(122).count("1"))
 
-v.check("Ex 08-09.7a", 16 + 16)
-v.check("Ex 08-09.7b", 32 + math.ceil(math.log2(64)))
-v.check("Ex 08-09.7c", 48 - 32)
-v.check("Ex 08-09.7d", 2 ** (48 - 32))
+
+
+def signed_width(lo, hi):
+    """Fewest two's-complement bits holding every integer in [lo, hi]."""
+    return next(w for w in range(1, 200) if -2 ** (w - 1) <= lo and hi <= 2 ** (w - 1) - 1)
+
+
+def product_extremes(a, b):
+    """Most negative and most positive products of an a-bit and a b-bit signed number (the extremes occur at
+    the corners of the operand ranges, checked by brute force below for small widths)."""
+    corners = [x * y for x in (-2 ** (a - 1), 2 ** (a - 1) - 1) for y in (-2 ** (b - 1), 2 ** (b - 1) - 1)]
+    return min(corners), max(corners)
+
+
+v.assert_true("product extremes are at the corners (brute force, widths 2 to 6)", all(
+    product_extremes(a, b) == (min(x * y for x in range(-2 ** (a - 1), 2 ** (a - 1)) for y in range(-2 ** (b - 1), 2 ** (b - 1))),
+                               max(x * y for x in range(-2 ** (a - 1), 2 ** (a - 1)) for y in range(-2 ** (b - 1), 2 ** (b - 1))))
+    for a in range(2, 7) for b in range(2, 7)))
+
+
+def exact_limit(a, b, acc):
+    """Largest N with N worst-case (largest positive) products still inside a signed acc-bit accumulator."""
+    lo, hi = product_extremes(a, b)
+    n = (2 ** (acc - 1) - 1) // hi
+    assert n * hi <= 2 ** (acc - 1) - 1 < (n + 1) * hi and n * lo >= -2 ** (acc - 1)
+    return n
+
+
+w16 = signed_width(*product_extremes(16, 16))
+v.check("Ex 08-09.7a", w16)
+v.check("Ex 08-09.7b", signed_width(*(64 * x for x in product_extremes(16, 16))))
+v.check("Ex 08-09.7c", 48 - w16)
+v.check("Ex 08-09.7d", 2 ** (48 - w16))
+v.check("Ex 08-09.7h", exact_limit(16, 16, 48))
+v.check("Th 08-09.g", signed_width(*(64 * x for x in product_extremes(16, 16))))
 q = (24576 * -16384 + 2 ** 14) >> 15
 v.check("Ex 08-09.7e", q)
 v.check("Ex 08-09.7f", q / 2 ** 15)
@@ -378,9 +408,8 @@ v.check("08-09.10b", 2 ** -12)
 code = round(math.e * 4096)
 v.check("08-09.10c", code)
 v.check("08-09.10d", code / 4096 - math.e)
-v.check("08-09.11a", 12 + 16)
-v.assert_true("(-2^11)(-2^15) needs 28 signed bits", (-2 ** 11) * (-2 ** 15) == 2 ** 26 and 2 ** 26 > 2 ** 26 - 1)
-v.check("08-09.11b", 28 + math.ceil(math.log2(256)))
+v.check("08-09.11a", signed_width(*product_extremes(12, 16)))
+v.check("08-09.11b", signed_width(*(256 * x for x in product_extremes(12, 16))))
 v.check("08-09.12a", 10 * math.log10(1.5 * 2 ** 24))
 v.check("08-09.12b", next(b for b in range(1, 40) if 10 * math.log10(1.5 * 2 ** (2 * b)) >= 90))
 v.check("08-09.12c", 10 * math.log10(1.5 * 2 ** 48))
@@ -392,12 +421,16 @@ v.check("08-09.13a", trunc_err.mean())
 v.check("08-09.13b", round_err.mean())
 v.check("08-09.13c", 1000 * trunc_err.mean())
 v.check("08-09.13d", 1000 * round_err.mean())
-v.check("08-09.14a", 27 + 18)
-v.check("08-09.14b", 48 - 45)
-v.check("08-09.14c", 2 ** 3)
-v.check("08-09.14d", 18 + 18)
-v.check("08-09.14e", 48 - 36)
-v.check("08-09.14f", 2 ** 12)
+w2718 = signed_width(*product_extremes(27, 18))
+w1818 = signed_width(*product_extremes(18, 18))
+v.check("08-09.14a", w2718)
+v.check("08-09.14b", 48 - w2718)
+v.check("08-09.14c", 2 ** (48 - w2718))
+v.check("08-09.14d", w1818)
+v.check("08-09.14e", 48 - w1818)
+v.check("08-09.14f", 2 ** (48 - w1818))
+v.check("08-09.14g", exact_limit(27, 18, 48))
+v.check("08-09.14h", exact_limit(18, 18, 48))
 mac8 = E["mul8"] + E["add32"]
 mac32 = E["fmul32"] + E["fadd32"]
 v.check("08-09.15a", mac8)

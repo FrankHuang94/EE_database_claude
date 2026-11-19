@@ -22,19 +22,19 @@ At 48 MHz the period is 20.83 ns. Binary FSM: period $1000/54.20$ = **18.45** ns
 
 ### Solution 08-12.4
 
-(a) $1.39 + 14.35 + 21.75 + 0.82$ = **38.32** ns, so $f_{\max} = 1000/38.32$ = **26.10** MHz, as reported.
+(a) $1.390 + 14.352 + 21.752 + 0.824 = 38.318$, so **38.32** ns, and $f_{\max} = 1000/38.318$ = **26.10** MHz, as reported.
 
-(b) Routing $21.75/38.32$ = **56.8**%; logic $14.35/38.32$ = **37.5**%.
+(b) Routing $21.752/38.318$ = **56.8**%; logic $14.352/38.318$ = **37.5**%.
 
 ### Solution 08-12.5
 
-(a) $57.34 - 36.98/2$ = **38.85** ns: **25.74** MHz.
+(a) $57.337 - 36.981/2$ = **38.85** ns: **25.74** MHz.
 
 (b) No: still about half the carry-chain adder's 52.09 MHz. Even with cheaper routing, 20 LUTs of carry logic in series cost more than a dedicated chain; the gain from using the right hardware is structural, not just a matter of wire delay.
 
 ### Solution 08-12.6
 
-Each stage carries half of the $38.32 - 2.21 = 36.11$ ns of logic and routing, plus the overhead: $36.11/2 + 2.21$ = **20.27** ns, **49.3** MHz. It would just meet 48 MHz (20.83 ns), with half a nanosecond of slack, at the cost of one extra cycle of latency and the register bits. (In practice the two halves are rarely exactly equal, so the real result would be a little worse.)
+Each stage carries half of the $38.318 - 2.214 = 36.104$ ns of logic and routing, plus the overhead: $36.104/2 + 2.214$ = **20.27** ns, **49.3** MHz. It would just meet 48 MHz (20.83 ns), with half a nanosecond of slack, at the cost of one extra cycle of latency and the register bits. (In practice the two halves are rarely exactly equal, so the real result would be a little worse.)
 
 ### Solution 08-12.7
 
@@ -76,6 +76,18 @@ Any four of:
 
 All of these are the price of the ASIC's advantages in speed, power, area and unit cost (08-11 §3.5).
 
+### Solution 08-12.13
+
+(a) A **clock definition** with a period of 20.83 ns for the oscillator's clock. Without it the 48 MHz logic is checked against the wrong period, or not at all, and the report's "PASS" means nothing (Example 08-12.2).
+
+(b) An **input delay** of 20 ns relative to the 12 MHz board clock, so that timing analysis knows the data arrives late in the period. Without it, the tool assumes the input arrives at the clock edge and may let the internal path use time that does not exist.
+
+(c) The two clocks are declared **asynchronous** (a clock group or false paths between them). Their crossings are handled by the FIFO's synchronizers, not by timing, and without the exception the tool would try to time paths between unrelated clocks, report meaningless violations and possibly distort the placement to fix them.
+
+(d) **Pin assignments** in the PCF file, with the I/O standard of each pin. Without them the tool picks pins itself, which will not match the board.
+
+(e) $83.33 - 20$ = **63.33** ns, minus the input flip-flop's setup time: the data must reach the first register within that time after the board-clock edge.
+
 ---
 
 ## Answer key
@@ -112,3 +124,5 @@ All of these are the price of the ASIC's advantages in speed, power, area and un
 | 08-12.10c | ratio | 5.15 | — |
 | 08-12.11a | load time at 12 MHz | 69.4 | ms |
 | 08-12.11b | load time at 48 MHz | 17.3 | ms |
+| 08-12.13a | 48 MHz period | 20.83 | ns |
+| 08-12.13b | time left for the internal input path | 63.33 | ns |

@@ -85,7 +85,7 @@
 "Why is ""useful skew"" not free?","Delaying a flip-flop's clock gives the path into it more time but takes the same amount from the path out of it.",bsee::08 bsee::08-10
 "How does cycle-to-cycle jitter enter the timing checks?","It shortens a period, so it is subtracted from the setup budget; it does not affect the hold check, which compares the same edge.",bsee::08 bsee::08-10
 "Synchronizer MTBF formula?","\(\text{MTBF} = e^{S/\tau}/(T_W F_C F_D)\), with resolution time \(S = T_c - t_{pcq} - t_{\text{setup}}\) for two flip-flops.",bsee::08 bsee::08-10
-"Why does a third synchronizer stage help so much?","It adds another full \(S\) of resolution time, multiplying the MTBF by \(e^{S/\tau}\), often 10²⁰ or more.",bsee::08 bsee::08-10
+"Why does a third synchronizer stage help so much?","It adds another full \(S\) of resolution time, multiplying the MTBF by \(e^{S/\tau}\): about 10²⁰ when \(S/\tau\) = 46 (a 1 GHz clock with \(\tau\) = 20 ps), but only about 3 × 10¹² when \(S/\tau\) = 28.8 (1.25 GHz with \(\tau\) = 25 ps). Fast clocks and slow flip-flops shrink the margin.",bsee::08 bsee::08-10
 "Why must logic never sit between the two synchronizer flip-flops?","Its delay comes straight out of the resolution time \(S\), and the MTBF falls exponentially.",bsee::08 bsee::08-10
 "How do multi-bit values cross clock domains safely?","Gray-coded counters, a request/acknowledge handshake, or an asynchronous FIFO; never by synchronizing each bit independently.",bsee::08 bsee::08-10
 "Why do asynchronous-FIFO pointers have one more bit than the address?","The extra wrap bit distinguishes full (same address, different wrap bit) from empty (identical pointers).",bsee::08 bsee::08-10
@@ -95,7 +95,7 @@
 "SRAM cell and DRAM cell, in one line each?","SRAM: 6 transistors (cross-coupled inverters plus two access transistors), fast and static. DRAM: 1 transistor + 1 capacitor, dense but leaks, so it needs refresh.",bsee::08 bsee::08-11
 "Why are memory arrays organized roughly square?","A single column of words would need a huge decoder and very long data wires; folding into rows and columns keeps decoders and wires short.",bsee::08 bsee::08-11
 "Address split for a square 64 K × 16 SRAM?","1 Mbit as 1024 × 1024: 10 row bits and 6 column bits (64 words per row).",bsee::08 bsee::08-11
-"Why do multi-ported register files get expensive?","Each port adds wordlines and bitlines to every cell (area roughly \((R + W)^2\)) and each read port needs a \(w(R - 1)\)-mux tree.",bsee::08 bsee::08-11
+"Why do multi-ported register files get expensive?","Each port adds wordlines and bitlines to every cell (area roughly \((R + W)^2\) for \(R\) read and \(W\) write ports), and each read port needs a tree of \(w(N - 1)\) two-input multiplexers for \(N\) registers of \(w\) bits.",bsee::08 bsee::08-11
 "ROM size for an \(n\)-input, \(m\)-output function?","\(2^n m\) bits: practical for small \(n\), hopeless for an 8 × 8 multiplier (1 Mbit).",bsee::08 bsee::08-11
 "Functions a \(k\)-input LUT can implement?","All \(2^{2^k}\): 65 536 for a 4-LUT; it is a \(2^k\)-bit memory addressed by the inputs.",bsee::08 bsee::08-11
 "What are an FPGA's main resources?","LUT-plus-flip-flop logic cells, carry chains, block RAMs, DSP (multiply-accumulate) blocks, I/O and a configurable routing network.",bsee::08 bsee::08-11

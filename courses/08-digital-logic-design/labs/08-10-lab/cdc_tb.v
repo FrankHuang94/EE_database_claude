@@ -1,7 +1,8 @@
 // Lab 08-10 testbench: an asynchronous FIFO between unrelated 100 MHz and ~137 MHz clocks with
 // random stalls on both sides (every word must arrive once, in order); fill and drain tests of the
-// full and empty flags; a toggle pulse synchronizer from a 400 MHz to a 100 MHz domain (every
-// pulse must produce exactly one destination pulse); and a reset synchronizer. Icarus does not
+// full and empty flags; a toggle pulse synchronizer from a 400 MHz to an about 98 MHz domain (every
+// pulse must produce exactly one destination pulse); a reset synchronizer; and a plain two-flip-flop
+// synchronizer (a level change must appear exactly two destination edges later). Icarus does not
 // model metastability, so these are functional checks of the crossing logic. Prints TEST PASSED.
 `timescale 1ns / 1ps
 module cdc_tb;
@@ -14,7 +15,8 @@ module cdc_tb;
     reg        wrst = 1, rrst = 1, winc = 0, rinc = 0, srst = 1, drst = 1, spulse = 0, arst = 0;
     reg  [7:0] wdata = 0;
     wire [7:0] rdata;
-    wire       wfull, rempty, dpulse, rst_sync;
+    wire       wfull, rempty, dpulse, rst_sync, s2q;
+    reg        slevel = 0;
     integer    errors = 0, seed = 810, written = 0, readn = 0, n_spulse = 0, n_dpulse = 0, i;
     integer    write_target = 0, read_enable = 0, fill_count = 0, drain_count = 0;
     reg [7:0]  want_data = 0;
@@ -23,6 +25,7 @@ module cdc_tb;
                                        .rclk(rclk), .rrst(rrst), .rinc(rinc), .rdata(rdata), .rempty(rempty));
     pulse_sync u_ps (.sclk(sclk), .srst(srst), .spulse(spulse), .dclk(dclk), .drst(drst), .dpulse(dpulse));
     reset_sync u_rs (.clk(dclk), .arst(arst), .rst(rst_sync));
+    sync2      u_s2 (.clk(dclk), .rst(drst), .d(slevel), .q(s2q));
 
     // ---- writer: offers a word when enabled; a word is accepted at a clock edge with winc & ~wfull
     always @(posedge wclk) begin
@@ -81,7 +84,7 @@ module cdc_tb;
         check(readn, 16 + 3000, "words read");
         $display("FIFO: %0d words written and read in order", readn);
 
-        // ---- 4. pulses: 200 single-cycle pulses at 400 MHz, spaced 30 to 60 ns apart
+        // ---- 4. pulses: 200 single-cycle pulses at 400 MHz, spaced 30 to 61 ns apart
         for (i = 0; i < 200; i = i + 1) begin
             @(negedge sclk) spulse = 1'b1;
             @(negedge sclk) spulse = 1'b0;
@@ -98,6 +101,14 @@ module cdc_tb;
         #20 arst = 1'b0;                          // released between edges
         @(posedge dclk); #0.1 check(rst_sync, 1, "still in reset after one edge");
         @(posedge dclk); #0.1 check(rst_sync, 0, "released at the second edge");
+
+        // ---- 6. two-flip-flop synchronizer: a level change between edges appears after exactly two edges
+        for (i = 0; i < 20; i = i + 1) begin
+            @(posedge dclk); #(0.5 + ($random(seed) & 7) * 0.5);    // change at a random point between edges
+            slevel = ~slevel;
+            @(posedge dclk); #0.1 check(s2q, !slevel, "sync2 unchanged after one edge");
+            @(posedge dclk); #0.1 check(s2q, slevel, "sync2 follows after two edges");
+        end
 
         if (errors == 0) $display("TEST PASSED");
         else             $display("TEST FAILED: %0d errors", errors);

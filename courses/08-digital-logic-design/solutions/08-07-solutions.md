@@ -44,7 +44,7 @@ Each clock shifts the word left and puts the new bit in $Q_0$, so the first bit 
 
 (b) In the worst case the change ripples through all ten stages: $10 \times 0.5$ = **5** ns.
 
-(c) A clock divider's output is used only as a slower clock (its edges are delayed, but consistently), so a fixed lag is harmless; nothing samples the intermediate stages. A counter whose value is read needs all bits valid at the same time, and during the 5 ns ripple its outputs pass through transient states.
+(c) A clock divider's output is used only as a slower clock (its edges are delayed, but consistently), so a fixed lag is harmless to logic clocked only by the divided clock, and nothing samples the intermediate stages. If that logic exchanges data with the source clock domain, the lag becomes clock skew between the two domains and must be included in their timing (08-10). A counter whose value is read needs all bits valid at the same time, and during the 5 ns ripple its outputs pass through transient states.
 
 ### Solution 08-07.7
 

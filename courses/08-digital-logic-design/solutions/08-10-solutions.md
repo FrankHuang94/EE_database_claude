@@ -70,7 +70,7 @@ $e^{S/\tau} = \text{MTBF} \times T_W F_C F_D = 10^4 \times 3.156 \times 10^7\ \t
 
 (a) 011 → 100 changes **3** bits: $2^3$ = **8** possible values.
 
-(b) The true value is 3 or 4; the sample can be 0 or 7: an error of up to **4**.
+(b) The true value is 3 or 4; the sample can be 0 or 7, which is 4 away from 4 and from 3 respectively: an error of up to **4** (3 if measured from the nearer correct value).
 
 (c) Gray 010 → 110 changes one bit: **2** values.
 
@@ -115,6 +115,16 @@ $e^{S/\tau} = \text{MTBF} \times T_W F_C F_D = 10^4 \times 3.156 \times 10^7\ \t
 (b) Splitting the multiplier means a register between its two halves and another between the multiplier and the adder. The register-to-register paths are then the first half ($300 + 80$ ps), the second half ($300 + 80$ ps) and the adder loop ($300 + 80$ ps): 380 ps each, **2.63** GHz.
 
 (c) The adder's output feeds its own input through the accumulator register: a register placed inside that loop would add a cycle of delay to the feedback, so the loop would add each product to the sum from two cycles ago, a different computation. Loops are pipelined only by changing the algorithm (for example, keeping two interleaved partial sums and adding them at the end), which is how fast floating-point accumulators work.
+
+### Solution 08-10.16
+
+(a) At **1** ns, immediately: the external reset drives the flip-flops' asynchronous clear, which acts without a clock edge, so the domain enters reset even if its clock is stopped.
+
+(b) After the release at 13 ns, the first clock edge at 15 ns loads the tied-high 1 into the first flip-flop, while the second still holds 0. The next edge, at 20 ns, moves the 1 into the second flip-flop: the domain's reset is released at the **2**nd edge after the release, at $t$ = **20** ns, synchronously with the clock.
+
+(c) The release reaches the flip-flops between $13 + 1.5 = 14.5$ ns and $13 + 2.4 = 15.4$ ns. A flip-flop whose reset is released at least 0.3 ns before the 15 ns edge (by 14.7 ns, so wire delays up to 1.7 ns) leaves reset at the 15 ns edge; the others, whose release arrives at 14.7 ns or later, violate recovery at that edge and may leave reset at 15 ns, at 20 ns, or go metastable. The domain's state machines would start with some bits a cycle ahead of others, in states the design never intended.
+
+(d) Release must be synchronous to the clock that the reset's flip-flops use. A synchronizer clocked by one domain releases its reset on that domain's edges, which mean nothing to an unrelated clock, so every domain needs its own.
 
 ---
 
@@ -169,3 +179,7 @@ $e^{S/\tau} = \text{MTBF} \times T_W F_C F_D = 10^4 \times 3.156 \times 10^7\ \t
 | 08-10.14b | failures at 900 ps | 1e-13 | — |
 | 08-10.15a | unpipelined frequency | 1.02 | GHz |
 | 08-10.15b | pipelined frequency | 2.63 | GHz |
+| 08-10.16a | reset assertion time | 1 | ns |
+| 08-10.16b | edges until release | 2 | — |
+| 08-10.16c | release time | 20 | ns |
+| 08-10.16d | latest wire delay that releases at the 15 ns edge | 1.7 | ns |

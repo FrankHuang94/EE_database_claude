@@ -53,8 +53,16 @@ for a in range(64 * 1024):
     seen.add((row, col))
 v.assert_true("address split covers every word exactly once", len(seen) == 64 * 1024 and max(r for r, _ in seen) == 1023)
 
-v.check("Ex 08-11.2a", 2 ** 8 * 8)
-v.check("Ex 08-11.2b", 2 ** 16 * 16)
+
+
+def rom_bits(n_in, f):
+    """Size of a ROM tabulating f over every n_in-bit address: entries times the width of the largest output."""
+    table = [f(a) for a in range(2 ** n_in)]
+    return len(table) * max(table).bit_length()
+
+
+v.check("Ex 08-11.2a", rom_bits(8, lambda a: (a >> 4) * (a & 15)))
+v.check("Ex 08-11.2b", rom_bits(16, lambda a: (a >> 8) * (a & 255)))
 
 
 def dadda_counts(n):
@@ -95,28 +103,47 @@ v.check("Ex 08-11.4b", 2.0 ** 2 ** 6)
 
 
 def and_tree(n, k):
-    """Build an AND tree of k-input LUTs; return (LUT count, levels) after checking it on sample inputs."""
-    luts, levels, width = 0, 0, n
-    while width > 1:
-        groups = math.ceil(width / k)
-        luts += groups
-        levels += 1
-        width = groups
-    return luts, levels
+    """Fewest k-LUTs (and, among those, fewest levels) that AND n inputs, found by searching tree shapes.
+
+    A tree is described level by level: a LUT may take primary inputs and outputs of LUTs on lower levels.
+    best(m) is the cheapest way to reduce m signals to one, trying every number j of LUTs on the current
+    level and every number of signals they absorb (the others pass up unchanged); the result is checked against the counting bound
+    ceil((n - 1)/(k - 1)) and evaluated on random inputs below.
+    """
+    import functools
+
+    @functools.lru_cache(None)
+    def best(m):
+        if m == 1:
+            return (0, 0)
+        if m <= k:
+            return (1, 1)
+        options = []
+        for j in range(1, m):                  # j LUTs on this level absorb `used` signals; the rest pass up
+            for used in range(j + 1, min(m, j * k) + 1):
+                luts, lev = best(m - used + j)
+                options.append((luts + j, lev + 1))
+        return min(options)
+    return best(n)
 
 
 def and_tree_eval(n, k, x):
+    """Evaluate the greedy-packed tree that meets the bound: fill LUTs to k inputs, carrying leftovers up."""
     vals = [(x >> i) & 1 for i in range(n)]
+    count = 0
     while len(vals) > 1:
-        vals = [int(all(vals[i:i + k])) for i in range(0, len(vals), k)]
-    return vals[0]
+        take = vals[:k]
+        vals = vals[k:] + [int(all(take))]
+        count += 1
+    return vals[0], count
 
 
 for n, k in ((8, 4), (16, 4), (16, 6), (32, 4), (32, 6)):
     rng = random.Random(n * 10 + k)
     samples = [rng.getrandbits(n) for _ in range(2000)] + [2 ** n - 1, 2 ** n - 2]
-    assert all(and_tree_eval(n, k, x) == int(x == 2 ** n - 1) for x in samples)
-v.assert_true("AND trees of LUTs compute the AND", True)
+    assert all(and_tree_eval(n, k, x)[0] == int(x == 2 ** n - 1) for x in samples)
+    assert and_tree_eval(n, k, 0)[1] == math.ceil((n - 1) / (k - 1)) == and_tree(n, k)[0]
+v.assert_true("AND trees of LUTs compute the AND and meet the counting bound ceil((n-1)/(k-1))", True)
 l16, lv16 = and_tree(16, 4)
 v.check("Ex 08-11.4c", l16)
 v.check("Ex 08-11.4d", lv16)
@@ -203,24 +230,57 @@ v.check("08-11.1d", o1["cols"])
 v.check("08-11.1e", o1["per_row"])
 v.check("08-11.1f", o1["row_bits"])
 v.check("08-11.1g", o1["col_bits"])
-v.check("08-11.2a", 2 ** 4 * 7)
-v.check("08-11.2b", 2 ** 8 * 8)
+SEG = [0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71]
+v.check("08-11.2a", rom_bits(4, lambda a: SEG[a]))
+v.check("08-11.2b", rom_bits(8, lambda b: b ^ (b >> 1)))
 v.assert_true("Gray code g = b xor (b >> 1) uses one XOR per bit except the top",
               all((b ^ (b >> 1)) >> 7 == b >> 7 for b in range(256)))
-v.check("08-11.2c", 8 - 1)
+gray_xors = sum(1 for i in range(8) if any(((b ^ (b >> 1)) >> i & 1) != (b >> i & 1) for b in range(256)))
+v.check("08-11.2c", gray_xors)                 # output bits that differ from their input bit need an XOR
 v.check("08-11.3a", 2 ** 2 ** 2)
 v.check("08-11.3b", 2 ** 2 ** 5)
 v.check("08-11.4a", 16 * 64)
 v.check("08-11.4b", read_muxes(3, 16, 64))
-v.check("08-11.4c", 2 * 16)
+v.check("08-11.4c", 2 * len({r for r in range(16)}))    # two write ports, each decoding one of 16 registers
 v.check("08-11.4d", (5 / 3) ** 2)
 for (n, k), (ka, kb) in (((8, 4), ("08-11.5a", "08-11.5b")), ((32, 4), ("08-11.5c", "08-11.5d")),
                          ((32, 6), ("08-11.5e", "08-11.5f"))):
     luts, levels = and_tree(n, k)
     v.check(ka, luts)
     v.check(kb, levels)
-v.check("08-11.6a", 2 ** (8 - 4 + 1) - 1)
-v.check("08-11.6b", 2 ** (8 - 6 + 1) - 1)
+
+
+def shannon_wide(tt, n, k):
+    """Shannon network whose multiplexer LUTs select among 2^m cofactors, with m + 2^m <= k."""
+    m_max = max(m for m in range(1, k) if m + 2 ** m <= k)
+    count = [0]
+
+    def build(t, nv):
+        count[0] += 1
+        if nv <= k:
+            return ("lut", t)
+        m = min(m_max, nv - k)                  # split on m variables (never below k inputs per cofactor)
+        size = len(t) // 2 ** m
+        return ("mux", nv - m, m, [build(t[i * size:(i + 1) * size], nv - m) for i in range(2 ** m)])
+
+    root = build(tuple(tt), n)
+
+    def ev(node, x):
+        if node[0] == "lut":
+            return node[1][x % len(node[1])]
+        _, low, m, kids = node
+        return ev(kids[(x >> low) & (2 ** m - 1)], x)
+
+    return count[0], (lambda x: ev(root, x))
+
+
+tt8 = tuple(rng.getrandbits(1) for _ in range(256))
+c84, f84 = shannon_wide(tt8, 8, 4)
+c86, f86 = shannon_wide(tt8, 8, 6)
+v.assert_true("8-input Shannon networks (2:1 muxes in 4-LUTs, 4:1 muxes in 6-LUTs) are correct on all inputs",
+              all(f84(x) == tt8[x] and f86(x) == tt8[x] for x in range(256)))
+v.check("08-11.6a", c84)
+v.check("08-11.6b", c86)
 
 
 def parity_tree_luts(n, k):
@@ -241,6 +301,8 @@ disp = 320 * 240
 v.check("08-11.9a", math.ceil(disp / 4096))
 v.check("08-11.9b", 100 * math.ceil(disp / 4096) / 30)
 v.check("08-11.9c", math.ceil(128 * 1024 * 8 / (256 * 1024)))
+EBR_MODES = {(256, 16), (512, 8), (1024, 4), (2048, 2)}    # iCE40 UltraPlus data sheet (R-159)
+v.check("08-11.9d", math.ceil(disp / max(depth for depth, width in EBR_MODES)))
 v.check("08-11.10a", 64 * 16000)
 v.check("08-11.10b", 100 * 64 * 16000 / 12e6)
 v.check("08-11.10c", 12e6 / 16000)

@@ -113,9 +113,9 @@ so the mean error is $2^{14}/(2^{15} \cdot 2^{15}) = 2^{-16}$ = **1.53e-5** LSB:
 
 ### Solution 08-09.14
 
-(a) $27 + 18$ = **45** bits, leaving $48 - 45$ = **3** guard bits: $2^3$ = **8** worst-case products.
+(a) $27 + 18$ = **45** bits, leaving $48 - 45$ = **3** guard bits: the rule guarantees $2^3$ = **8** products. The largest product is $(-2^{26})(-2^{17}) = 2^{43}$, so the exact limit is $\lfloor (2^{47} - 1)/2^{43} \rfloor$ = **15**.
 
-(b) $18 + 18$ = **36** bits, **12** guard bits: $2^{12}$ = **4096** products.
+(b) $18 + 18$ = **36** bits, **12** guard bits: the rule guarantees $2^{12}$ = **4096** products. The largest product is $2^{34}$, so the exact limit is $\lfloor (2^{47} - 1)/2^{34} \rfloor$ = **8191**. The guard-bit rule budgets for a product magnitude of $2^{a+b-1}$, twice the real maximum $2^{a+b-2}$, so it is always conservative by about a factor of 2.
 
 The first case shows why full-width 27 × 18 products are usually scaled or accumulated over short sums, and why DSP slices cascade their accumulators.
 
@@ -191,6 +191,8 @@ The first case shows why full-width 27 × 18 products are usually scaled or accu
 | 08-09.14d | 18 × 18 product width | 36 | bit |
 | 08-09.14e | guard bits | 12 | bit |
 | 08-09.14f | worst-case products | 4096 | — |
+| 08-09.14g | exact limit, 27 × 18 | 15 | — |
+| 08-09.14h | exact limit, 18 × 18 | 8191 | — |
 | 08-09.15a | INT8 MAC energy | 0.3 | pJ |
 | 08-09.15b | FP32 MAC energy | 4.6 | pJ |
 | 08-09.15c | energy ratio | 15.3 | — |

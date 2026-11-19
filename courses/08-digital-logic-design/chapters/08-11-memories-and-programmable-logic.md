@@ -23,7 +23,7 @@
 
 Two ideas from earlier chapters meet here. A **memory** is a very large register file with a decoder to choose a row: the same decoders and multiplexers of 08-04, scaled up to billions of bits. And any truth table can be *stored* instead of built from gates: a memory addressed by a function's inputs, holding its outputs, *is* that function. Lookup tables built on this idea, wired together by programmable switches, are the **field-programmable gate array (FPGA)**: hardware that can be rewired after manufacture.
 
-- **Memory is most of the silicon.** Caches, register files and on-chip buffers take a large fraction of the area of processors and accelerators ([19-08](../../19-digital-vlsi-design/chapters/19-08-sram-design.md), [23-01](../../23-memory-and-storage-technology/chapters/23-01-memory-hierarchy-and-memory-wall.md)).
+- **Memory takes much of the silicon.** Caches, register files and on-chip buffers take a large fraction of the area of processors and accelerators ([19-08](../../19-digital-vlsi-design/chapters/19-08-sram-design.md), [23-01](../../23-memory-and-storage-technology/chapters/23-01-memory-hierarchy-and-memory-wall.md)).
 - **Register files set processor width.** How many instructions a core can issue per cycle is limited by how many read and write ports its register file can afford ([14-08](../../14-computer-organization-and-architecture/chapters/14-08-out-of-order-and-superscalar.md)).
 - **FPGAs prototype every chip and ship in many products.** ASIC teams emulate designs on FPGAs before tape-out; network equipment, test instruments, automotive and aerospace systems ship FPGAs in volume; low-power FPGAs handle sensor glue in wearables.
 - **The FPGA business is a corporate-development story.** Xilinx is part of AMD, and Altera, bought by Intel in 2015, became independent again in 2025 under majority private-equity ownership (§9).
@@ -35,6 +35,18 @@ Two ideas from earlier chapters meet here. A **memory** is a very large register
 **A lookup table is a cheat sheet.** Instead of computing $f(x)$, write every answer down in advance and look it up. For a function of $k$ bits, the cheat sheet has $2^k$ lines, so it is excellent for small $k$ and hopeless for large $k$: a 4-input function needs 16 entries, a 32-input function four billion.
 
 **An FPGA is a city of identical blocks with a programmable road network.** Each block (a small lookup table plus a flip-flop) can be any small function; the roads (routing switches) connect any block to any other. *Where the analogy breaks:* in a real city, roads are cheap compared with buildings. In an FPGA, the programmable routing is most of the silicon and most of the delay, which is why the same logic runs several times slower and costs far more area on an FPGA than in a custom chip.
+
+```mermaid
+flowchart LR
+    A["address"] --> R["row decoder<br/>(high bits)"]
+    R --> W["one wordline<br/>selects a row"]
+    W --> M["cell array<br/>rows × columns"]
+    A --> CM["column multiplexer<br/>(low bits)"]
+    M --> CM
+    CM --> D["data word"]
+```
+
+*Figure 1. A memory as a filing cabinet: the high address bits pick the drawer (a row), the low bits pick the folder (a word within the row).*
 
 ## 3. Theory
 
@@ -79,7 +91,7 @@ Two behaviors must be specified: what a read returns when the same register is w
 
 ### 3.4 Logic in memories: ROMs, PLAs and lookup tables
 
-**A ROM is a truth table.** A ROM with $n$ address bits and $m$ data bits implements *any* $n$-input, $m$-output function: write each output row at its address. Its size, $2^n m$ bits, is independent of how complicated the function is, and exponential in $n$. A 4 × 4-bit multiplier as a ROM needs $2^8 \times 8 = 2048$ bits; an 8 × 8 multiplier needs $2^{16} \times 16$ = 1 Mbit, against 64 AND gates and about 50 adders for the Dadda multiplier of 08-09.
+**A ROM is a truth table.** A ROM with $n$ address bits and $m$ data bits implements *any* $n$-input, $m$-output function: write each output row at its address. Its size, $2^n m$ bits, is independent of how complicated the function is, and exponential in $n$. A 4 × 4-bit multiplier as a ROM needs $2^8 \times 8 = 2048$ bits; an 8 × 8 multiplier needs $2^{16} \times 16$ = 1 Mbit, against 64 AND gates, 35 full adders, 7 half adders and a 14-bit final adder for the Dadda multiplier of 08-09.
 
 **A PLA stores a sum of products.** A **programmable logic array** has a programmable AND plane, which forms $p$ product terms from the $n$ inputs and their complements, and a programmable OR plane, which sums any of those products into each of the $m$ outputs. Its size is set by the number of products rather than by $2^n$:
 
@@ -95,13 +107,21 @@ $$
 f(x_1, \ldots, x_n) = \overline{x_n}\, f(x_1, \ldots, x_{n-1}, 0) + x_n\, f(x_1, \ldots, x_{n-1}, 1),
 $$
 
-which builds an $n$-input function from two $(n - 1)$-input functions and a multiplexer. If the multiplexer takes one LUT, the number of $k$-LUTs needed obeys $L(n) = 2L(n - 1) + 1$ with $L(k) = 1$, so
+which builds an $n$-input function from two $(n - 1)$-input functions and a multiplexer. If the multiplexer takes one LUT, the number of $k$-LUTs this construction uses obeys $L(n) = 2L(n - 1) + 1$ with $L(k) = 1$, so
 
 $$
-L(n) = 2^{\,n-k+1} - 1
+L(n) \le 2^{\,n-k+1} - 1 ,
 $$
 
-in the worst case: doubling with every extra input. Structured functions need far fewer: an AND of 16 inputs needs only 5 four-input LUTs (four ANDs of 4, then an AND of their outputs). Technology mapping, the synthesis step that covers a netlist with LUTs, searches for such efficient covers ([08-12](08-12-fpga-implementation-flow.md)).
+doubling with every extra input. It is an **upper bound** for an arbitrary function, not a proven minimum: it shows what always suffices, and proving that no smaller network exists for the hardest function is much harder. It can also be improved when a LUT can act as a wider multiplexer. A $2^m$:1 multiplexer needs $m + 2^m$ inputs, so a 4-input LUT is at most a 2:1 multiplexer, but a 6-input LUT is a 4:1 multiplexer ($2 + 4 = 6$). Expanding on two variables at once, an arbitrary 8-input function takes four 6-input cofactor LUTs and one 4:1 multiplexer LUT: **5** six-input LUTs, against 7 from the 2:1 recursion.
+
+Structured functions need far fewer. Every $k$-LUT in a tree that ANDs $n$ inputs takes in at most $k$ signals and puts out one, reducing the number of signals by at most $k - 1$; going from $n$ signals to one therefore needs at least
+
+$$
+\left\lceil \frac{n - 1}{k - 1} \right\rceil
+$$
+
+LUTs, and a tree that fills every LUT achieves it. An AND of 16 inputs needs 5 four-input LUTs (four ANDs of 4, then an AND of their outputs), and only 3 six-input LUTs (two ANDs of 6, then one LUT combining their outputs with the last 4 inputs). Technology mapping, the synthesis step that covers a netlist with LUTs, searches for such efficient covers ([08-12](08-12-fpga-implementation-flow.md)).
 
 ### 3.5 FPGA architecture
 
@@ -169,9 +189,9 @@ the same fixed-versus-variable-cost analysis used for any make-or-buy decision (
 
 **Solution.** (a) $2^{2^4}$ = **65 536**; $2^{2^6} = 2^{64} \approx$ **1.8 × 10¹⁹**.
 
-(b) Four LUTs each AND 4 inputs, and a fifth ANDs their 4 outputs: **5** LUTs in **2** levels. With 6-input LUTs: three LUTs take 6, 6 and 4 inputs and a fourth combines them: **4** LUTs in 2 levels.
+(b) Four LUTs each AND 4 inputs, and a fifth ANDs their 4 outputs: **5** LUTs in **2** levels, meeting the bound $\lceil 15/3 \rceil = 5$. With 6-input LUTs: two LUTs each AND 6 inputs, and a third ANDs their 2 outputs with the remaining 4 inputs: **3** LUTs in 2 levels, meeting $\lceil 15/5 \rceil = 3$. (Grouping the inputs as 6, 6 and 4 and adding a fourth LUT to combine them wastes a LUT.)
 
-(c) $L(6) = 2^{6-4+1} - 1$ = **7** LUTs: two 5-input functions of 3 LUTs each, plus one LUT as the multiplexer.
+(c) $L(6) \le 2^{6-4+1} - 1$ = **7** LUTs: two 5-input functions of 3 LUTs each, plus one LUT as the multiplexer. This many always suffices; it is an upper bound from the construction.
 
 **Sanity check.** $L(5) = 3$: two 4-input LUTs for the cofactors and one 3-input multiplexer ✓; and $L(6) = 2 \times 3 + 1 = 7$ ✓.
 
@@ -189,11 +209,11 @@ the same fixed-versus-variable-cost analysis used for any make-or-buy decision (
 
 ### Example 08-11.6 · Fitting a design into a small FPGA (tier B)
 
-**Setup.** A Lattice iCE40 UltraPlus UP5K has 5280 logic cells, 30 block RAMs of 4 kbit (120 kbit), 4 single-port RAMs of 256 kbit (1 Mbit), and 8 DSP blocks ([R-159](../../../reference/research-log.md#r-159--fpga-devices-and-the-fpga-industry)). A wearable audio feature needs (a) a 4096-sample buffer of 16-bit samples and (b) an 8-tap FIR filter, one multiply per tap per sample. How much block RAM does the buffer take, and what fraction of the DSP blocks does the filter take?
+**Setup.** A Lattice iCE40 UltraPlus UP5K has 5280 logic cells, 30 block RAMs of 4 kbit (120 kbit), 4 single-port RAMs of 256 kbit (1 Mbit), and 8 DSP blocks ([R-159](../../../reference/research-log.md#r-159--fpga-devices-and-the-fpga-industry)). A wearable audio feature needs (a) a 4096-sample buffer of 16-bit samples and (b) an 8-tap FIR filter built fully in parallel, one DSP block per tap. How much block RAM does the buffer take, and what fraction of the DSP blocks does the parallel filter take?
 
 **Solution.** (a) $4096 \times 16$ = **65 536** bits = 64 kbit = **16** of the 4 kbit blocks, **53**% of the block RAM (or a quarter of one 256 kbit single-port RAM).
 
-(b) One DSP block per tap: **8**, all of them, **100**%. If the sample rate allows, one DSP block can be time-shared across all 8 taps (8 multiplies per sample at 8 times the sample rate), freeing 7.
+(b) One DSP block per tap: **8**, all of them, **100**%. That is the cost of the fully parallel architecture. If the sample rate allows, one DSP block can instead be time-shared across all 8 taps (8 multiplies per sample at 8 times the sample rate), freeing 7.
 
 **Sanity check.** At 48 kHz, 8 multiplies per sample is 384 000 per second, trivial for one DSP block clocked at even a few MHz: time-sharing is the natural design.
 
@@ -232,7 +252,7 @@ the same fixed-versus-variable-cost analysis used for any make-or-buy decision (
 | Ex 08-11.4b | functions of a 6-input LUT | 1.8e19 | — |
 | Ex 08-11.4c | 4-LUTs for a 16-input AND | 5 | — |
 | Ex 08-11.4d | levels | 2 | — |
-| Ex 08-11.4e | 6-LUTs for a 16-input AND | 4 | — |
+| Ex 08-11.4e | 6-LUTs for a 16-input AND | 3 | — |
 | Ex 08-11.4f | worst-case 4-LUTs, 6-input function | 7 | — |
 | Ex 08-11.5a | ROM bits | 16 | bit |
 | Ex 08-11.5b | PLA products | 7 | — |
@@ -283,7 +303,8 @@ The lab is in [labs/08-11-lab/](../labs/08-11-lab/README.md).
 | ROM size for an $n$-input, $m$-output function | $2^n m$ bits | §3.4 |
 | PLA size | $2np + pm$ crosspoints | §3.4 |
 | Functions of a $k$-LUT | $2^{2^k}$: 65 536 for $k$ = 4 | §3.4 |
-| Worst-case $k$-LUTs for $n$ inputs (Shannon) | $2^{n-k+1} - 1$ | §3.4 |
+| $k$-LUTs that suffice for any $n$-input function (Shannon, 2:1 multiplexers) | at most $2^{n-k+1} - 1$; fewer with 6-LUTs used as 4:1 multiplexers | §3.4 |
+| $k$-LUTs for an $n$-input AND (minimum) | $\lceil (n - 1)/(k - 1) \rceil$ | §3.4 |
 | Lattice iCE40 UltraPlus UP5K | 5280 logic cells (4-input LUT + flip-flop), 120 kbit block RAM in 30 blocks, 1 Mbit single-port RAM, 8 DSP blocks (16 × 16 multiply, 32-bit accumulator), 40 nm low-power CMOS | [R-159](../../../reference/research-log.md#r-159--fpga-devices-and-the-fpga-industry) **[Established]** (read from the data sheet) |
 | AMD Virtex UltraScale+ VU19P | about 8.9 million system logic cells, 4.09 million LUTs, 3840 DSP slices, 224 Mb on-chip memory | [R-159](../../../reference/research-log.md#r-159--fpga-devices-and-the-fpga-industry) **[Established]** |
 | FPGA break-even against ASIC | $N/(f - a)$ units | §3.5 |
@@ -376,11 +397,11 @@ When the function has many inputs but few product terms (and products are shared
 
 </details>
 
-**Q6.** How many 4-input LUTs does an arbitrary 6-input function need in the worst case, and why?
+**Q6.** How many 4-input LUTs always suffice for an arbitrary 6-input function, and why?
 
 <details><summary>Answer</summary>
 
-Seven: by Shannon expansion, a 6-input function is a multiplexer (one LUT) between two 5-input functions, each of which is a multiplexer between two 4-input functions (three LUTs each): $2 \times 3 + 1 = 7$.
+Seven: by Shannon expansion, a 6-input function is a multiplexer (one LUT) between two 5-input functions, each of which is a multiplexer between two 4-input functions (three LUTs each): $2 \times 3 + 1 = 7$. That is an upper bound from the construction; a cleverer network might do better for a particular function.
 
 </details>
 

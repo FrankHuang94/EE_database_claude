@@ -112,13 +112,13 @@ The cost is timing. A change ripples through the stages one clock-to-Q delay at 
 
 A **ring counter** is a shift register whose output feeds back to its input, initialized with a single 1: 1000 → 0100 → 0010 → 0001 → 1000. It has $n$ states for $n$ flip-flops, and its outputs are already **one-hot**: each state is decoded by reading one flip-flop, with no logic. The price is state efficiency: $n$ flip-flops for $n$ states, against $\lceil\log_2 n\rceil$ for a binary counter.
 
-A **Johnson counter** (twisted-ring counter) feeds back the *complement* of the last stage: 0000 → 1000 → 1100 → 1110 → 1111 → 0111 → 0011 → 0001 → 0000. It has $2n$ states for $n$ flip-flops. Consecutive states differ in exactly one bit (like a Gray code), and each state is decoded by a single two-input AND of two adjacent bits, glitch-free.
+A **Johnson counter** (twisted-ring counter) feeds back the *complement* of the last stage: 0000 → 1000 → 1100 → 1110 → 1111 → 0111 → 0011 → 0001 → 0000. It has $2n$ states for $n$ flip-flops. Consecutive states differ in exactly one bit (like a Gray code), and each state is decoded by a single two-input AND of two bits adjacent around the twisted ring (for 0000 and 1111 the pair is the two end bits, which the feedback joins), glitch-free.
 
 **Unused states.** An $n$-bit ring counter uses $n$ of $2^n$ states and a Johnson counter $2n$. If noise, a radiation upset or a bad power-up puts either counter into an unused state, it may cycle among unused states forever (a ring counter loaded with 1100 circulates two 1s). Robust designs add a reset, or self-correcting feedback that steers every unused state back into the main cycle.
 
 ### 3.6 Linear-feedback shift registers
 
-An **LFSR** is a shift register whose input is the XOR of selected bits, the **taps**. In the common **Fibonacci** form, stages $Q_1 \ldots Q_n$ shift from $Q_1$ toward $Q_n$, and the new $Q_1$ is the XOR of the tapped stages. It is described by its **characteristic polynomial**: taps at stages $n$ and $k$ give $x^n + x^k + 1$. For example, $x^4 + x^3 + 1$ means $Q_1^{\text{next}} = Q_4 \oplus Q_3$.
+An **LFSR** is a shift register whose input is the XOR of selected bits, the **taps**. In the common **Fibonacci** form, stages $Q_1 \ldots Q_n$ shift from $Q_1$ toward $Q_n$, and the new $Q_1$ is the XOR of the tapped stages. It is described by its **characteristic polynomial**, also called its feedback or tap polynomial: taps at stages $n$ and $k$ give $x^n + x^k + 1$. For example, $x^4 + x^3 + 1$ means $Q_1^{\text{next}} = Q_4 \oplus Q_3$. (If you write the state update as a matrix and compute $\det(x\mathbf{I} - \mathbf{A})$, you get the **reciprocal** polynomial $x^n + x^{n-k} + 1$, here $x^4 + x + 1$. A polynomial and its reciprocal are primitive together, so the two conventions describe the same behavior; datasheets and this chapter use the tap form.)
 
 ![A 4-bit Fibonacci LFSR: four D flip-flops Q1 to Q4 in a chain on a common clock, with Q3 and Q4 XORed and fed back to the input of Q1. Starting from 1000 it steps through all 15 nonzero states before repeating.](../../../assets/figures/08-07/lfsr.svg)
 
@@ -142,7 +142,9 @@ An LFSR that reaches this **maximal length** cycles through every nonzero state 
 - **Scramblers.** XORing data with an m-sequence breaks up long runs of identical bits so that receivers can recover the clock; descrambling with the same sequence restores the data.
 - **Built-in self-test.** LFSRs generate pseudo-random test vectors for logic, and a related structure (a multiple-input signature register) compresses the responses ([19-12](../../19-digital-vlsi-design/chapters/19-12-design-for-test.md)).
 - **CRCs.** The CRC division of 08-01 is an LFSR with the message fed in: the same polynomial arithmetic.
-- **Compact counters.** An LFSR counter needs only one XOR gate for any length, against a carry chain for a binary counter; FPGA designers have long used them when the count sequence does not need to be binary.
+- **Compact counters.** An LFSR counter needs one XOR gate for lengths that have a primitive trinomial (such as 7, 15, 23 and 31 bits) and three for lengths that have none (such as 8, 16 and 32; Swan's theorem rules out irreducible trinomials when $n$ is a multiple of 8), and never a carry chain. FPGA designers have long used them when the count sequence does not need to be binary.
+
+> **Going deeper — why an LFSR is no secret.** Each output bit of an $n$-stage LFSR is a fixed XOR of the $n$ bits before it, with the unknown taps as coefficients. Given $2n$ consecutive output bits, the last $n$ of them give $n$ linear equations over GF(2) in the $n$ unknown taps, which Gaussian elimination solves (02-06, with XOR for addition); after that every future bit is known. The Berlekamp–Massey algorithm (J. L. Massey, 1969) finds the shortest LFSR that generates a given sequence efficiently. So 64 observed bits expose a 32-stage LFSR completely, which is why LFSRs are used for testing and scrambling but never, alone, for keys or secrets.
 
 > **Going deeper — Galois LFSRs.** An equivalent form puts XOR gates *between* stages, each tapped stage XORing in the output bit as the data shifts past. It has the same period and an equivalent sequence, with only one XOR delay in any path instead of a tree of them: the form used in high-speed CRC and PRBS hardware.
 
@@ -244,7 +246,7 @@ where $t_{\text{chain}}$ is the delay to compute $T_{n-1}$. For a ripple counter
 
 (c) $2^{30}$ = **1 073 741 824** ones.
 
-(d) $(2^7 - 1)/106.25 \times 10^9$ s = **1.195** ns: PRBS7 repeats about 17 million times while PRBS31 completes one period.
+(d) $(2^7 - 1)/106.25 \times 10^9$ s = **1.195** ns: PRBS7 repeats $(2^{31} - 1)/(2^7 - 1)$ = **1.691 × 10⁷** times (about 17 million) while PRBS31 completes one period.
 
 **Sanity check.** A long pattern like PRBS31 exercises the receiver with long runs (up to 31 identical bits) and nearly every bit pattern of practical length, while PRBS7 is short enough that a scope can capture complete periods. Test plans use both for that reason.
 
@@ -282,6 +284,7 @@ where $t_{\text{chain}}$ is the delay to compute $T_{n-1}$. For a ripple counter
 | Ex 08-07.7b | PRBS31 period at 106.25 Gb/s | 20.2 | ms |
 | Ex 08-07.7c | ones per PRBS31 period | 1073741824 | — |
 | Ex 08-07.7d | PRBS7 period at 106.25 Gb/s | 1.195 | ns |
+| Ex 08-07.7e | PRBS7 periods per PRBS31 period | 1.691e7 | — |
 
 ## 5. Simulate it
 
@@ -306,7 +309,7 @@ The lab is in [labs/08-07-lab/](../labs/08-07-lab/README.md).
 | Ripple counters (clock dividers) | Minimal logic, low power at low output rates | Accumulated delay, transient states, asynchronous outputs | Clock and low-power designers |
 | Ring and Johnson counters | Fastest possible sequencing, glitch-free decoding | $n$ or $2n$ states for $n$ flip-flops; unused-state recovery | Designer of sequencers and clock generators |
 | Gray-code counters | One bit changes per count: half the toggles, safe asynchronous sampling | Conversion logic to and from binary | CDC and low-power designers |
-| LFSR counters and PRBS | One XOR gate for any length; pseudo-random patterns | Non-binary order; lock-up state; predictable sequence | Test and link designers |
+| LFSR counters and PRBS | One XOR gate (three for lengths without a primitive trinomial), no carry chain; pseudo-random patterns | Non-binary order; lock-up state; predictable sequence | Test and link designers |
 | Wider serializers | Fewer, faster pins | Higher bit rate, harder clocking and equalization | SerDes architect |
 
 ## 7. Numbers to know
@@ -342,7 +345,7 @@ The lab is in [labs/08-07-lab/](../labs/08-07-lab/README.md).
 
 ### State of the art (as of Nov 2026)
 
-- **Standard PRBS patterns** ([R-155](../../../reference/research-log.md#r-155--prbs-and-lfsr-references)). Link test equipment and transceiver test modes use the ITU-T O.150 and O.151 polynomials: PRBS7 ($x^7 + x^6 + 1$), PRBS15 ($x^{15} + x^{14} + 1$), PRBS23 ($x^{23} + x^{18} + 1$) and PRBS31 ($x^{31} + x^{28} + 1$), as listed in Intel's and AMD's transceiver documentation **[Established]** (the attributions come from search excerpts; that each polynomial is primitive, so the sequences are maximal length, is proved by this chapter's verify script). IEEE 802.3 defines a PRBS31 test pattern for 10GBASE-R (clause 49.2.8), the bit-inverse of the O.150 sequence, and later clauses carry it into the 200G-per-lane generation as PRBS31Q, its PAM4 form **[Established]** (from search excerpts of 802.3 task-force material).
+- **Standard PRBS patterns** ([R-155](../../../reference/research-log.md#r-155--prbs-and-lfsr-references)). Link test equipment and transceiver test modes use PRBS7 ($x^7 + x^6 + 1$), PRBS15 ($x^{15} + x^{14} + 1$), PRBS23 ($x^{23} + x^{18} + 1$) and PRBS31 ($x^{31} + x^{28} + 1$), as listed in Intel's and AMD's transceiver documentation **[Established]**. The longer three are among the sequences ITU-T O.150 specifies; PRBS7 is a widespread equipment and standards convention whose O.150 attribution in vendor documents could not be confirmed **[Contested]** (the attributions come from search excerpts; that each polynomial is primitive, so the sequences are maximal length, is proved by this chapter's verify script). IEEE 802.3 defines a PRBS31 test pattern for 10GBASE-R (clause 49.2.8), the bit-inverse of the O.150 sequence, and later clauses carry it into the 200G-per-lane generation as PRBS31Q, its PAM4 form **[Established]** (from search excerpts of 802.3 task-force material).
 - **LFSR tap tables.** Xilinx application note XAPP052 (Peter Alfke, 1996) tabulated maximum-length taps for LFSRs of 3 to 168 bits, based on unpublished 1970 work by Wayne Stahnke at Fairchild, and it is still the table FPGA designers reach for **[Established]** (from search excerpts of university-hosted copies).
 
 <!-- answer-key -->

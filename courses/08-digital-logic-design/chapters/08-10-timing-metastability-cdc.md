@@ -36,6 +36,17 @@ Chapter 08-06 derived the two inequalities every flip-flop-to-flip-flop path mus
 
 **Insurance arithmetic.** You cannot make a failure impossible, but you can price it. Each sampling of an asynchronous input is like an insurance policy with a tiny probability of a claim; with hundreds of millions of samples per second, even tiny probabilities add up, so the probability per sample must be made extraordinarily small. A financial analyst would recognize the shape: an expected loss rate equal to event frequency times probability, with the probability falling *exponentially* with the time allowed. *Where the analogy breaks:* insurance risks are usually independent and diversifiable; synchronizer failures in a deployed fleet simply add up, and one failure can corrupt a system without any visible symptom.
 
+```mermaid
+flowchart LR
+    A["asynchronous input"] --> F1["flip-flop 1<br/>(may go metastable)"]
+    F1 -- "a full clock period<br/>to resolve: S" --> F2["flip-flop 2"]
+    F2 --> L["domain logic<br/>(sees a clean level)"]
+    C["destination clock"] -.-> F1
+    C -.-> F2
+```
+
+*Figure 1. A two-flip-flop synchronizer: the first flip-flop may hang near the ridge, and the second samples it only after a full period of resolution time $S$, during which the ball almost always rolls off.*
+
 ## 3. Theory
 
 ### 3.1 Static timing analysis
@@ -95,13 +106,21 @@ while split into $k$ equal stages it runs at $T_c = t_{\text{logic}}/k + t_{\tex
 
 Everything above assumes the data meets setup and hold. A signal from another clock domain, or from the outside world, cannot promise that: its transitions are unrelated to our clock edge, and sooner or later one lands inside the setup-hold window.
 
-**What happens then.** In 08-06 we linearized a cross-coupled inverter pair around its balance point and found that a small voltage difference $\Delta V$ between its nodes grows exponentially:
+**What happens then.** 08-06 §3.1 showed that a cross-coupled inverter pair has an unstable balance point $V_M$, where each inverter's gain is large. Near it, describe each inverter by its small-signal behavior: a change $v$ at its input drives a current $-g_mv$ into its output node, where $g_m$ (in siemens) is its **transconductance**, and its output conductance $g_o$ drains a current $g_o v_{out}$ back. Each node has capacitance $C$ (in farads). Let $v_1$ and $v_2$ be the deviations of the two nodes from $V_M$. Each node is the output of one inverter and the input of the other, so Kirchhoff's current law at each node gives
 
 $$
-\Delta V(t) = \Delta V_0\, e^{t/\tau}, \qquad \tau = \frac{C}{g_m},
+C\frac{dv_1}{dt} = -g_m v_2 - g_o v_1, \qquad C\frac{dv_2}{dt} = -g_m v_1 - g_o v_2 .
 $$
 
-where $C$ is the node capacitance and $g_m$ the transconductance of the inverters at the balance point. A flip-flop whose input changed near the clock edge starts with a small $\Delta V_0$ and reaches a valid logic level, $\Delta V_r$, after the **resolution time**
+Subtracting, the difference $\Delta V = v_1 - v_2$ obeys
+
+$$
+C\frac{d\Delta V}{dt} = (g_m - g_o)\,\Delta V
+\quad\Longrightarrow\quad
+\Delta V(t) = \Delta V_0\, e^{t/\tau}, \qquad \tau = \frac{C}{g_m - g_o} \approx \frac{C}{g_m} ,
+$$
+
+a first-order linear ODE (02-02) whose solution *grows* because the coefficient is positive: each node pushes the other away from balance. Units: F/S = (C/V)/(A/V) = C/A = s ✓. The approximation holds because a gain stage has $g_m \gg g_o$. A strong, fast inverter (large $g_m$) driving a small capacitance resolves quickly; a weak one at low voltage, slowly. A flip-flop whose input changed near the clock edge starts with a small $\Delta V_0$ and reaches a valid logic level, $\Delta V_r$, after the **resolution time**
 
 $$
 t_r = \tau \ln\frac{\Delta V_r}{\Delta V_0} .
@@ -171,7 +190,7 @@ Streams of data, such as samples from an ADC clock domain or packets between a n
 - Each pointer is converted to Gray code and passed to the other domain through a synchronizer. Because only one bit changes per increment, the synchronized value is always a real (if slightly old) pointer value.
 - Pointers have one more bit than the address. **Empty** (read domain): the read pointer equals the synchronized write pointer. **Full** (write domain): the pointers differ only in their top bit, meaning the writer is exactly one lap ahead; in Gray code this is "the top two bits inverted, the rest equal".
 
-The flags are **conservative**: a synchronized pointer is a few cycles old, so the reader may think the FIFO is empty when a word has just arrived, and the writer may think it is full when a word has just been read, but never the reverse. Late flags cost a little throughput, never data. Gray-coded pointers need a power-of-2 depth, because the Gray sequence wraps with a single-bit change only when its length is a power of 2.
+The flags are **conservative**: a synchronized pointer is a few cycles old, so the reader may think the FIFO is empty when a word has just arrived, and the writer may think it is full when a word has just been read, but never the reverse. Late flags cost a little throughput, never data. This simple scheme needs a power-of-2 depth: each pointer is a binary counter converted to Gray code, which wraps with a single-bit change only when the counter wraps at a power of 2, and the "top two bits inverted" full test assumes it. (Cyclic Gray codes exist for any even length, but they need different pointer logic.)
 
 **Sizing.** A FIFO must absorb the difference between the write and read rates over the longest burst. If the writer sends a burst of $B$ words at rate $f_w$ and the reader removes words at rate $f_r < f_w$ throughout, the burst lasts $B/f_w$, the reader removes $f_r B/f_w$ in that time, and the FIFO must hold the rest:
 
@@ -183,7 +202,7 @@ plus a few words for the pointer synchronizer latency, rounded up to a power of 
 
 ### 3.8 Reset synchronizers
 
-Chapter 08-06 recommended asynchronous assertion with synchronous release. The release is a CDC problem: the reset input is asynchronous to the clock, and if it is released close to an edge, some flip-flops may leave reset in one cycle and some in the next, or go metastable. A **reset synchronizer** is two flip-flops whose asynchronous reset is the external reset and whose data input is tied to 1: reset reaches the whole domain immediately, but its release travels through the two flip-flops and reaches the domain's flip-flops synchronously, one or two cycles later. Each clock domain needs its own.
+Chapter 08-06 recommended asynchronous assertion with synchronous release. The release is a CDC problem: the reset input is asynchronous to the clock, and if it is released close to an edge, some flip-flops may leave reset in one cycle and some in the next, or go metastable. A **reset synchronizer** is two flip-flops whose asynchronous reset input is driven by the external reset. For an active-low domain reset (`rst_n`), the flip-flops are cleared to 0 by the external reset and their data input is tied to 1; the lab's active-high version is the mirror image, set to 1 with its data input tied to 0. Either way, reset reaches the whole domain immediately, but its release travels through the two flip-flops and reaches the domain's flip-flops synchronously, two clock edges later. Each clock domain needs its own.
 
 ### 3.9 Verifying timing and crossings
 
@@ -239,7 +258,7 @@ Chapter 08-06 recommended asynchronous assertion with synchronous release. The r
 
 (c) $S = 2 \times 920 = 1840$ ps, $S/\tau = 92$: MTBF ≈ **7.1 × 10²⁵** years.
 
-**Sanity check.** Removing 400 ps of logic from $S$ (20 time constants) changed the MTBF by $e^{20} \approx 5 \times 10^8$: hours become centuries.
+**Sanity check.** Removing 400 ps of logic from $S$ (20 time constants) changed the MTBF by $e^{20} \approx 5 \times 10^8$: from hours to hundreds of thousands of years.
 
 ### Example 08-10.5 · Low voltage doubles τ (tier B)
 
@@ -253,11 +272,11 @@ Chapter 08-06 recommended asynchronous assertion with synchronous release. The r
 
 ### Example 08-10.6 · Why multi-bit values need Gray code (tier B)
 
-**Setup.** A 4-bit counter in one domain is sampled by another, bit by bit through separate synchronizers, exactly while it changes from 7 to 8. (a) With binary coding, how many different values can the destination see? (b) What is the largest error? (c) With Gray coding (7 = 0100, 8 = 1100), how many values can it see?
+**Setup.** A 4-bit counter in one domain is sampled by another, bit by bit through separate synchronizers, exactly while it changes from 7 to 8. (a) With binary coding, how many different values can the destination see? (b) What is the largest error, measured from the farther of the two values (7 and 8) that would be correct at some instant? (c) With Gray coding (7 = 0100, 8 = 1100), how many values can it see?
 
 **Solution.** (a) 0111 → 1000 changes all **4** bits, and each may be seen old or new: $2^4$ = **16** values, any number from 0 to 15.
 
-(b) The true value is 7 or 8; the destination may read 0 or 15: an error of up to **8**.
+(b) The true value is 7 or 8; the destination may read 0 or 15. Reading 0 is 8 away from 8 and reading 15 is 8 away from 7: an error of up to **8**. (Measured from the nearer correct value, it is 7.)
 
 (c) Only one bit changes: **2** values, 7 or 8, both correct at some instant.
 
@@ -348,6 +367,7 @@ The lab is in [labs/08-10-lab/](../labs/08-10-lab/README.md).
 | Synchronizer MTBF | $e^{S/\tau}/(T_W F_C F_D)$ | §3.5; standard form ([R-158](../../../reference/research-log.md#r-158--metastability-and-synchronizers)) |
 | MTBF per extra $\tau$ of waiting | ×2.72; per $2.3\,\tau$, ×10 | §3.5 |
 | Two-flip-flop resolution time | $S = T_c - t_{pcq} - t_{\text{setup}}$ | §3.5 |
+| Metastability time constant $\tau$ | Strongly process- and corner-dependent: one measured 65 nm low-power flip-flop ranged from under about 100 ps to several hundred ps (§9). The examples' 20–40 ps are illustrative | [R-158](../../../reference/research-log.md#r-158--metastability-and-synchronizers) **[Established]** for the measurement |
 | Typical synchronizer depth | 2 common, 3 for more margin (Intel Quartus guidance); AMD XPM CDC macros allow 2 to 10 stages, default 4 | [R-158](../../../reference/research-log.md#r-158--metastability-and-synchronizers) **[Established]** |
 | Asynchronous FIFO depth | $B(1 - f_r/f_w)$ plus a few words, rounded up to $2^k$ | §3.7 |
 | Pipelined latency | $t_{\text{logic}} + k\,t_{\text{reg}}$ | §3.3 |

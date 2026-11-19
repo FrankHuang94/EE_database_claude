@@ -297,7 +297,7 @@ A bad idea on both counts: skew lent to one path is taken from the next.
 
 (b) The critical path totals $1.39 + 8.62 + 13.47 + 0.82$ = **24.30** ns, so $f_{\max}$ = $1000/24.30$ = **41.15** MHz. At 48 MHz the period is 20.83 ns, so the slack is **−3.467** ns: the design **fails**. Routing is $13.47/24.30$ = **55.43**% of the path.
 
-(c) A 3% gain reaches about **42.39** MHz, still short of 48 MHz. Seed sweeps close gaps of a few percent, not 15%. Pipelined, each stage carries half of the $8.62 + 13.47 = 22.09$ ns, plus the $1.39 + 0.82 = 2.21$ ns overhead: $11.045 + 2.21 = 13.255$ ns, giving **75.44** MHz and a slack of **+7.578** ns at 48 MHz. The cost is one cycle of latency and the pipeline registers.
+(c) A 3% gain reaches about **42.39** MHz, still short of 48 MHz. Seed sweeps close gaps of a few percent, not the **16.6**% needed here ($48/41.15 - 1$). Pipelined, each stage carries half of the $8.62 + 13.47 = 22.09$ ns, plus the $1.39 + 0.82 = 2.21$ ns overhead: $11.045 + 2.21 = 13.255$ ns, giving **75.44** MHz and a slack of **+7.578** ns at 48 MHz. The cost is one cycle of latency and the pipeline registers.
 
 (d) Static timing analysis reports slack *against the constraint it is given*. At 12 MHz (83.3 ns) a 24.3 ns path passes easily, but that says nothing about 48 MHz. Constrain the clock at its real frequency (48 MHz, with margin for the internal oscillator's tolerance) and re-run place and route. The placer and router also optimize toward the constraint, so a correct constraint changes the result, not just the report.
 
@@ -313,12 +313,13 @@ A signed $k$-bit accumulator holds $-2^{k-1}$ to $2^{k-1} - 1$. With **24** bits
 
 (b) $0.2 + 0.1$ = **0.3** pJ per MAC. Per inference $2.5 \times 10^6 \times 0.3$ pJ = **0.75** µJ, and at 10 inferences per second, **7.5** µW.
 
-(c) Weight fetches:
+(c) Weight fetches, eight weights per 64-bit read:
 
-- **SRAM:** one 20 pJ read delivers eight weights, so **2.5** pJ per weight. Per inference that is $2.5 \times 10^6 \times 2.5$ pJ = **6.25** µJ, or **62.5** µW. That is **8.333** times the arithmetic.
-- **DRAM:** 1300/8 = **162.5** pJ per weight, so **406.3** µJ per inference and **4.063** mW, **541.7** times the arithmetic.
+- **(i) SRAM, every use:** one 20 pJ read delivers eight weights, so **2.5** pJ per weight use. Per inference that is $2.5 \times 10^6 \times 2.5$ pJ = **6.25** µJ, or **62.5** µW: **8.333** times the arithmetic.
+- **(ii) SRAM once, then reuse:** only $25\,000/8 = 3125$ reads per inference, $3125 \times 20$ pJ = **0.0625** µJ, **0.08333** times the arithmetic. Reuse cut the fetch energy a hundredfold, to a twelfth of the arithmetic.
+- **(iii) DRAM, every use:** 1300/8 = **162.5** pJ per weight use, so **406.3** µJ per inference and **4.063** mW, **541.7** times the arithmetic.
 
-The arithmetic is the cheap part. The energy goes into moving data, so always-on accelerators keep the weights in small local SRAM, reuse every fetched operand as many times as possible and avoid DRAM entirely. These are 45 nm figures and smaller nodes lower all of them, but the ratio between arithmetic and data movement has persisted (08-09 §9).
+The arithmetic is the cheap part unless data movement is organized. The energy goes into moving data, so always-on accelerators keep the weights in small local SRAM, reuse every fetched operand as many times as possible and avoid DRAM entirely. These are 45 nm figures and smaller nodes lower all of them, but the ratio between arithmetic and data movement has persisted (08-09 §9).
 
 (d) Clock frequency:
 
@@ -326,7 +327,7 @@ The arithmetic is the cheap part. The energy goes into moving data, so always-on
 - With a register after the multiplier, the longer stage sets the period: $1.1 + 0.1 = 1.2$ ns, **833.3** MHz.
 - The application needs only $2.5 \times 10^6 \times 10$ = $2.5 \times 10^7$ MACs per second: **25** MHz with one unit.
 
-The clock period, 40 ns, is 22 times the unpipelined delay, so **pipelining would add registers, energy and latency for nothing**. Spend the margin on **lower supply voltage** instead: dynamic energy per operation scales roughly with $V^2$ ([19-06](../../19-digital-vlsi-design/chapters/19-06-power-and-low-power-design.md)), and slower gates at low voltage still fit easily in 40 ns. Clock-gate the unit between inferences, too. Throughput requirements, not maximum frequency, should set the design.
+The clock period, 40 ns, is 22 times the unpipelined delay, so **pipelining would add registers, energy and latency for nothing**. Spend the margin on **lower supply voltage** instead: dynamic energy per operation scales roughly with $V^2$ (08-09 §3.9), and slower gates at low voltage still fit easily in 40 ns. Clock-gate the unit between inferences, too. Throughput requirements, not maximum frequency, should set the design.
 
 **14.** *(08-01, 08-07, 08-10)*
 
@@ -339,7 +340,7 @@ If the receiving clock samples a binary pointer mid-change, each synchronizer re
 - The burst lasts $256 \times 10$ ns = **2.56** µs.
 - The reader starts after 3 read cycles (40 ns) and reads for 2.52 µs: $2.52\ \mu\text{s} \times 75$ MHz = **189** samples.
 - Peak occupancy, at the end of the burst, is $256 - 189$ = **67** samples.
-- A depth of **128** is the next power of two. Gray-coded pointers wrap cleanly only when the depth is a power of two: the code sequence must close on itself with a one-bit change.
+- A depth of **128** is the next power of two. The standard pointer scheme needs one: each pointer is a binary counter converted to Gray code, which wraps with a single-bit change only when the counter wraps at a power of two, and the full test assumes it (08-10 §3.7).
 - Sustained operation needs the reader to drain each burst before the next fills the FIFO. On average, 256 samples at 75 MHz take **3.413** µs, the shortest sustainable interval between burst starts.
 
 (c) 128 entries need 7 address bits, and each pointer carries **8** bits. The extra wrap bit distinguishes full (same address, different wrap bit) from empty (identical pointers). Each 8-bit pointer crosses through 8 two-stage synchronizers, so two crossings use $2 \times 8 \times 2$ = **32** flip-flops.
@@ -369,7 +370,7 @@ If the receiving clock samples a binary pointer mid-change, each synchronizer re
 
 *Ask:* "What were the worst setup and hold slacks at each sign-off corner, with what clock uncertainty and derates, and how many paths were excluded by exceptions?"
 
-(c) **Minimum flaw:** a synchronizer only makes failure *unlikely*. The MTBF grows exponentially with resolution time but is never infinite (08-10 §3.3). Other acceptable points:
+(c) **Minimum flaw:** a synchronizer only makes failure *unlikely*. The MTBF grows exponentially with resolution time but is never infinite (08-10 §3.5). Other acceptable points:
 
 - The MTBF depends on $\tau$ at the worst operating corner, on the clock and data rates, and on the number of crossings in the chip and the fleet; these multiply into a field failure rate (Question 14d).
 - Multi-bit values must not be synchronized bit by bit, except Gray-coded counters. They need a handshake or a FIFO, or the bits reconverge inconsistently.
@@ -400,6 +401,7 @@ If the receiving clock samples a binary pointer mid-change, each synchronizer re
 | X08.1i | Hamming syndrome | 5 | — |
 | X08.1j | corrected code word, as an integer | 102 | — |
 | X08.1k | data bits, as an integer | 6 | — |
+| X08.1l | overflow flag V for 5A + 3C | 1 | — |
 | X08.2a | transistors, AND-OR | 18 | — |
 | X08.2b | transistors, NAND-NAND | 12 | — |
 | X08.2c | transistors, AOI22 + inverter | 10 | — |
@@ -420,6 +422,10 @@ If the receiving clock samples a binary pointer mid-change, each synchronizer re
 | X08.4d | 16-bit ripple, carry out | 33 | units |
 | X08.4e | slowest sum bit at 20 ps per unit | 640 | ps |
 | X08.4f | carry out at 20 ps per unit | 660 | ps |
+| X08.4g | 0101 - 0111, carry out | 0 | — |
+| X08.4h | 0101 - 0111, overflow flag | 0 | — |
+| X08.4i | 0110 - 1101, carry out | 0 | — |
+| X08.4j | 0110 - 1101, overflow flag | 1 | — |
 | X08.5a | c | 5 | — |
 | X08.5b | p | 21 | — |
 | X08.5c | q | 156 | — |
@@ -430,6 +436,12 @@ If the receiving clock samples a binary pointer mid-change, each synchronizer re
 | X08.5h | exhaustive run time | 8590 | s |
 | X08.5i | exhaustive run time | 2.386 | h |
 | X08.5j | exhaustive run time, 32-bit adder | 1.169e6 | years |
+| X08.5k | x after one edge | 0 | — |
+| X08.5l | y after one edge | 1 | — |
+| X08.5m | u after one edge | 0 | — |
+| X08.5n | v after one edge | 0 | — |
+| X08.5o | x after two edges | 1 | — |
+| X08.5p | y after two edges | 0 | — |
 | X08.6a | latch output changes | 5 | — |
 | X08.6b | flip-flop output changes | 2 | — |
 | X08.6c | minimum period | 740 | ps |
@@ -455,6 +467,11 @@ If the receiving clock samples a binary pointer mid-change, each synchronizer re
 | X08.8c | Mealy equation literals | 8 | — |
 | X08.8d | Mealy detections (cycles 3, 6, 11) | 3 | — |
 | X08.8e | first Moore detection cycle | 4 | — |
+| X08.8j | second Moore detection cycle | 7 | — |
+| X08.8k | third Moore detection cycle | 12 | — |
+| X08.8l | Mealy detection cycles, first | 3 | — |
+| X08.8m | Mealy detection cycles, second | 6 | — |
+| X08.8n | Mealy detection cycles, third | 11 | — |
 | X08.8f | Moore flip-flops, binary | 3 | — |
 | X08.8g | Moore flip-flops, one-hot | 5 | — |
 | X08.8h | Mealy flip-flops, binary | 2 | — |
@@ -514,6 +531,7 @@ If the receiving clock samples a binary pointer mid-change, each synchronizer re
 | X08.12i | frequency after a 3% gain | 42.39 | MHz |
 | X08.12j | pipelined frequency | 75.44 | MHz |
 | X08.12k | pipelined slack at 48 MHz | 7.578 | ns |
+| X08.12l | frequency gap to 48 MHz | 16.6 | % |
 | X08.13a | product width | 16 | bits |
 | X08.13b | largest dot product | 4194304 | — |
 | X08.13c | most negative dot product | -4161536 | — |
@@ -532,6 +550,8 @@ If the receiving clock samples a binary pointer mid-change, each synchronizer re
 | X08.13p | unpipelined frequency | 555.6 | MHz |
 | X08.13q | pipelined frequency | 833.3 | MHz |
 | X08.13r | required clock with one MAC | 25 | MHz |
+| X08.13s | SRAM energy per inference with reuse | 0.0625 | µJ |
+| X08.13t | with reuse, over arithmetic | 0.08333 | — |
 | X08.14a | binary bits changing, 7 to 8 | 4 | — |
 | X08.14b | Gray bits changing, 7 to 8 | 1 | — |
 | X08.14c | Gray code of 7, as an integer | 4 | — |

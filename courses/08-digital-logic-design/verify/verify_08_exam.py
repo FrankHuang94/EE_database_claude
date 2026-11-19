@@ -55,6 +55,7 @@ v.check("X08.1b", signed(int("B6", 16), 8))
 s, cy = ripple_add(0x5A, 0x3C, 0, 8)
 v.check("X08.1c", s)
 v.check("X08.1d", signed(s, 8))
+v.check("X08.1l", cy[8] ^ cy[7])
 v.assert_true("5A + 3C overflows: V = C8 xor C7 = 1, with C8 = 0 and C7 = 1",
               cy[8] ^ cy[7] == 1 and cy[8] == 0 and cy[7] == 1 and s == 0x96)
 q = Fraction(-40625, 100000) * 2 ** 7
@@ -168,9 +169,11 @@ G = {1, 2, 6, 7}
 mux_data = {0: lambda c: c, 1: lambda c: 1 - c, 2: lambda c: 0, 3: lambda c: 1}
 v.assert_true("4:1 mux with data C, C', 0, 1 implements G; decoder outputs 1, 2, 6, 7 too",
               all(mux_data[2 * a + b](c) == (4 * a + 2 * b + c in G) for a, b, c in rows3))
-for key, a, b in (("X08.4a", 0b0101, 0b0111), ("X08.4b", 0b0110, 0b1101)):
+for key, kc, kv, a, b in (("X08.4a", "X08.4g", "X08.4h", 0b0101, 0b0111), ("X08.4b", "X08.4i", "X08.4j", 0b0110, 0b1101)):
     r, cy = ripple_add(a, (~b) & 0xF, 1, 4)
     v.check(key, signed(r, 4))
+    v.check(kc, cy[4])
+    v.check(kv, cy[4] ^ cy[3])
     want_v = not (-8 <= signed(a, 4) - signed(b, 4) <= 7)
     v.assert_true(f"{key}: V = C4 xor C3 flags overflow exactly when the true difference is out of range",
                   (cy[4] ^ cy[3]) == want_v and cy[4] == 0)
@@ -205,11 +208,17 @@ v.check("X08.5d", signed(s5 & 0xFF, 8))
 v.check("X08.5e", signed(((s5 & 0xF) + a5) & 0xFF, 8))        # unsigned context: s zero-extended
 v.check("X08.5f", signed((s5 & 0xFF) >> 1 | 0x80, 8))         # arithmetic shift of the sign-extended s
 x_, y_, u_, w_ = 1, 0, 1, 0
+after = []
 for _ in range(2):
     x_, y_ = y_, x_                                            # nonblocking: both sides read first
     u_ = w_
     w_ = u_                                                    # blocking: in order
-v.assert_true("after two edges x, y = 1, 0 and u, v = 0, 0", (x_, y_, u_, w_) == (1, 0, 0, 0))
+    after.append((x_, y_, u_, w_))
+for key, val in zip(("X08.5k", "X08.5l", "X08.5m", "X08.5n"), after[0]):
+    v.check(key, val)
+v.check("X08.5o", after[1][0])
+v.check("X08.5p", after[1][1])
+v.assert_true("after two edges u, v stay 0, 0", after[1][2:] == (0, 0))
 combos = 2 ** (16 + 16 + 1)
 v.check("X08.5g", combos)
 v.check("X08.5h", combos / 1e6)
@@ -265,9 +274,19 @@ v.check("X08.7d", int("".join(map(str, out[:15])), 2))
 v.check("X08.7e", sum(out))
 
 
-v.check("X08.7f", 2 ** 8)
-v.check("X08.7g", 8)
-v.check("X08.7h", 2 * 8)
+
+
+def cycle_len(state, step):
+    seen = set()
+    while state not in seen:
+        seen.add(state)
+        state = step(state)
+    return len(seen)
+
+
+v.check("X08.7f", cycle_len(0, lambda q: (q + 1) & 0xFF))                                   # binary counter
+v.check("X08.7g", cycle_len(1, lambda q: ((q << 1) | (q >> 7)) & 0xFF))                    # ring counter
+v.check("X08.7h", cycle_len(0, lambda q: ((q >> 1) | ((1 - (q & 1)) << 7)) & 0xFF))         # Johnson counter
 s_, k8 = 1, 0
 while True:                                         # Fibonacci form of x^8 + x^6 + x^5 + x^4 + 1
     bit = ((s_ >> 7) ^ (s_ >> 5) ^ (s_ >> 4) ^ (s_ >> 3)) & 1
@@ -356,6 +375,10 @@ v.assert_true("Mealy detects in cycles 3, 6, 11 and Moore in 4, 7, 12",
               mealy_hits == [3, 6, 11] and moore_hits == [4, 7, 12])
 v.check("X08.8d", len(mealy_hits))
 v.check("X08.8e", moore_hits[0])
+v.check("X08.8j", moore_hits[1])
+v.check("X08.8k", moore_hits[2])
+for key, t in zip(("X08.8l", "X08.8m", "X08.8n"), mealy_hits):
+    v.check(key, t)
 v.check("X08.8f", math.ceil(math.log2(n_moore)))
 v.check("X08.8g", n_moore)
 v.check("X08.8h", math.ceil(math.log2(n_mealy)))
@@ -555,6 +578,7 @@ v.assert_true("a 3% gain does not reach 48 MHz", 1.03 * 1000 / tot < 48)
 t_pipe = (seg["logic"] + seg["route"]) / 2 + seg["cq"] + seg["setup"]
 v.check("X08.12j", 1000 / t_pipe)
 v.check("X08.12k", 1000 / 48 - t_pipe)
+v.check("X08.12l", 100 * (48 / (1000 / tot) - 1))
 
 # ================================================================= Q13 MAC unit
 prods = [x * y for x in range(-128, 128) for y in range(-128, 128)]
@@ -583,6 +607,12 @@ v.check("X08.13o", (E_DRAM / 8) / e_mac)
 v.check("X08.13p", 1000 / (1.1 + 0.6 + 0.1))
 v.check("X08.13q", 1000 / (max(1.1, 0.6) + 0.1))
 v.check("X08.13r", macs * rate / 1e6)
+WEIGHTS, USES = 25_000, 100
+v.assert_true("25 000 weights used 100 times give the 2.5 million MACs, and fit in 32 KB",
+              WEIGHTS * USES == macs and WEIGHTS <= 32 * 1024)
+e_reuse = math.ceil(WEIGHTS / 8) * E_SRAM                      # pJ per inference
+v.check("X08.13s", e_reuse * 1e-12 * 1e6)
+v.check("X08.13t", e_reuse / (macs * e_mac))
 
 # ================================================================= Q14 clock-domain crossing
 gray = lambda b: b ^ (b >> 1)  # noqa: E731

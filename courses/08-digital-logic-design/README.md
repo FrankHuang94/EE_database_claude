@@ -80,7 +80,7 @@ The [equation sheet](../../reference/equation-sheets/08-digital-logic-design.md)
 
 **Why this course matters for diligence.** Many headline digital specifications hide an assumption that this course teaches you to ask about:
 
-- a TOPS figure is a count of multipliers times a clock, at some operand width and sparsity, and says nothing about the memory traffic that dominates energy;
+- a TOPS figure is a count of multiply-accumulate units, times 2 operations each, times a clock, at some operand width and sparsity, and says nothing about the memory traffic that dominates energy;
 - "timing closed at 2 GHz" holds only at a corner, with a constraint and a margin;
 - a metastability "fix" is a failure rate, not an impossibility;
 - an FPGA prototype's frequency says little about an ASIC's, and the reverse.

@@ -31,6 +31,20 @@ module mem_tb;
     sevenseg_rom   u_rom (.hex(hex), .seg(seg));
     lut6_from_lut4 #(.T(T)) u_lut (.x(x), .f(f));
 
+    localparam [6:0] SA = 7'd1, SB = 7'd2, SC = 7'd4, SD = 7'd8, SE = 7'd16, SF = 7'd32, SG = 7'd64;
+    function [6:0] segs_of(input integer d);
+        case (d)
+            0: segs_of = SA | SB | SC | SD | SE | SF;        1: segs_of = SB | SC;
+            2: segs_of = SA | SB | SD | SE | SG;             3: segs_of = SA | SB | SC | SD | SG;
+            4: segs_of = SB | SC | SF | SG;                  5: segs_of = SA | SC | SD | SF | SG;
+            6: segs_of = SA | SC | SD | SE | SF | SG;        7: segs_of = SA | SB | SC;
+            8: segs_of = SA | SB | SC | SD | SE | SF | SG;   9: segs_of = SA | SB | SC | SD | SF | SG;
+            10: segs_of = SA | SB | SC | SE | SF | SG;       11: segs_of = SC | SD | SE | SF | SG;   // b
+            12: segs_of = SA | SD | SE | SF;                 13: segs_of = SB | SC | SD | SE | SG;   // d
+            14: segs_of = SA | SD | SE | SF | SG;            default: segs_of = SA | SE | SF | SG;
+        endcase
+    endfunction
+
     task fail(input [8*28-1:0] what);
         begin
             errors = errors + 1;
@@ -85,8 +99,11 @@ module mem_tb;
             hex = i; #1;
             if ($countones(seg) != counts[i]) fail("segment count");
         end
-        hex = 4'h8; #1 if (seg !== 7'h7F) fail("digit 8 lights everything");
-        hex = 4'h1; #1 if (seg !== 7'b0000110) fail("digit 1 is segments b, c");
+        // every digit against the segments it should light (a = bit 0 ... g = bit 6), written by name
+        for (i = 0; i < 16; i = i + 1) begin
+            hex = i; #1;
+            if (seg !== segs_of(i)) fail("7-segment pattern");
+        end
 
         // ---- LUT network: all 64 inputs against the truth table it was configured with
         for (k = 0; k < 64; k = k + 1) begin

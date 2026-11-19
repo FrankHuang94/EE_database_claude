@@ -32,6 +32,21 @@ Chapters 08-01 to 08-11 designed logic on paper and in simulation. This chapter 
 
 **Translating, seating and wiring a wedding.** Synthesis translates the guest list (the RTL) into the venue's vocabulary: tables of exactly four seats (4-input LUTs), the head table (DSP blocks), the buffet line (carry chains). Placement seats every guest at a table, trying to put people who talk to each other near each other. Routing runs the waiters' paths between tables through a fixed set of aisles; if too many paths need the same aisle, someone takes a longer way round. Timing analysis checks that every course reaches every table before the next one starts. *Where the analogy breaks:* the "aisles" of an FPGA are most of the venue, and the time spent walking them, the routing delay, usually exceeds the time spent at the tables (the logic delay), as Example 08-12.3 shows.
 
+```mermaid
+flowchart LR
+    RTL["Verilog (RTL)"] --> S["synthesis<br/>→ LUTs, flip-flops,<br/>carry chains, DSP, RAM"]
+    S --> P["placement"]
+    P --> R["routing"]
+    R --> T["timing analysis"]
+    T --> B["bitstream"]
+    K["constraints<br/>(clocks, pins, I/O, exceptions)"] -.-> S
+    K -.-> P
+    K -.-> R
+    K -.-> T
+```
+
+*Figure 1. The flow, with the constraints that steer every step: translating the guests (synthesis), seating them (placement), wiring the room (routing) and checking the timetable (timing analysis).*
+
 ## 3. Theory
 
 ### 3.1 The flow at a glance
@@ -89,7 +104,7 @@ Finally the placed and routed design is converted into the configuration bits of
 
 ### 3.7 How coding style changes the result
 
-The lab synthesizes four comparisons through the full flow on a UP5K. Each design registers its inputs and outputs; the adders and multiplier sit inside the same test harness (an internal 64-bit LFSR feeding the operands and an XOR of the outputs driving one pin), so differences between rows are differences between the cores.
+The lab synthesizes four comparisons through the full flow on a UP5K. Each design registers its inputs and outputs; the adders and multiplier sit inside the same style of test harness (an internal 64-bit LFSR feeding the operands and an XOR of the outputs driving one pin), so differences between rows mostly reflect the cores. The exception is the DSP multiplier: it is fast enough that the harness's XOR reduction, not the multiplier, sets its critical path (Example 08-12.5).
 
 | Design | Logic cells | DSP blocks | Maximum frequency |
 |---|---|---|---|
@@ -100,12 +115,12 @@ The lab synthesizes four comparisons through the full flow on a UP5K. Each desig
 | Traffic-light FSM (08-08), automatic (one-hot) encoding | 29 | 0 | 79.23 MHz |
 | Traffic-light FSM, forced binary encoding | 37 | 0 | 54.20 MHz |
 
-![Bar charts of logic cells and maximum frequency for the six implementations: the carry-chain adder is three times faster than the gate-level ripple adder, the DSP multiplier uses a tenth of the logic cells and runs nearly four times faster than the LUT multiplier, and the one-hot FSM is both smaller and faster than the binary one.](../../../assets/figures/08-12/coding-style.svg)
+![Bar charts of logic cells and maximum frequency for the six implementations: the carry-chain adder is three times faster than the gate-level ripple adder, the DSP multiplier uses a tenth of the logic cells and runs at least nearly four times faster than the LUT multiplier (its measurement is limited by the test harness), and the one-hot FSM is both smaller and faster than the binary one.](../../../assets/figures/08-12/coding-style.svg)
 
 Three lessons, all measurable:
 
 - **Write arithmetic as arithmetic.** `a + b` lets the tool use the carry chain; the same adder written as gates hides the structure, so the carries become general logic routed through the fabric: three times slower (Example 08-12.4).
-- **Use the hard blocks.** The multiplier in a DSP block takes a tenth of the logic cells and runs about four times faster (Example 08-12.5).
+- **Use the hard blocks.** The multiplier in a DSP block takes a tenth of the logic cells and runs at least 3.9 times faster; the true margin is larger, because the harness around it limits the measurement (Example 08-12.5).
 - **Let encodings be chosen deliberately.** Yosys re-encoded the six-state controller as one-hot (it does so for machines of fewer than 32 states); forcing binary made it larger *and* slower here, because the binary next-state logic needs more 4-input LUTs in series (Example 08-12.6).
 
 ### 3.8 Timing closure
@@ -155,11 +170,11 @@ All measured values come from the lab's reports (Yosys 0.71, nextpnr-ice40 0.11.
 
 ### Example 08-12.3 · Where the time goes on a critical path (tier B)
 
-**Setup.** nextpnr's report breaks the ripple adder harness's critical path into clock-to-Q 1.39 ns, logic 18.14 ns, routing 36.98 ns and setup 0.82 ns, over 20 LUTs and 21 routing hops (synthesis packed the carry logic of neighboring full adders into shared 4-input LUTs, so the path from bit 3 to bit 30 crosses 20 LUTs rather than one per bit). (a) What is the total, and does it match the reported maximum frequency? (b) What fraction is routing? (c) What are the average delays per LUT and per routing hop?
+**Setup.** nextpnr's report breaks the ripple adder harness's critical path into clock-to-Q 1.390 ns, logic 18.142 ns, routing 36.981 ns and setup 0.824 ns, over 20 LUTs and 21 routing hops (synthesis packed the carry logic of neighboring full adders into shared 4-input LUTs, so the path from bit 3 to bit 30 crosses 20 LUTs rather than one per bit). (a) What is the total, and does it match the reported maximum frequency? (b) What fraction is routing? (c) What are the average delays per LUT and per routing hop?
 
-**Solution.** (a) $1.39 + 18.14 + 36.98 + 0.82$ = **57.34** ns, which is $1000/17.44$ MHz ✓.
+**Solution.** (a) $1.390 + 18.142 + 36.981 + 0.824 = 57.337$, so **57.34** ns, which is $1000/17.44$ MHz ✓.
 
-(b) $36.98/57.34$ = **64.5**%.
+(b) $36.981/57.337$ = **64.5**%.
 
 (c) Logic $18.14/20$ = **0.907** ns per LUT; routing $36.98/21$ = **1.76** ns per hop. Each hop between cells costs about twice as much as the LUT it feeds.
 
@@ -181,11 +196,11 @@ All measured values come from the lab's reports (Yosys 0.71, nextpnr-ice40 0.11.
 
 **Solution.** (a) $765 - 79$ = **686** cells, **13.0**% of the device.
 
-(b) $100.88/26.10$ = **3.87**.
+(b) $100.88/26.10$ = **3.87**. This understates the DSP block's advantage. Synthesis absorbed the multiplier's input and output registers into the DSP block, and the reported critical path starts at the DSP block's own output register and runs through two LUTs of the harness's XOR reduction to the output flip-flop. The multiplier itself never appears on the path, so the true ratio for the multipliers alone is at least 3.87.
 
 (c) **8** with DSP blocks (one each); $\lfloor 5280/765 \rfloor$ = **6** harnesses' worth of LUT multipliers at most, before routing limits.
 
-**Sanity check.** With the DSP block, routing is 6.47 ns of the 9.91 ns critical path: the fabric around the hard block, not the multiply, now sets the frequency.
+**Sanity check.** With the DSP block, routing is 6.47 ns of the 9.91 ns critical path: the fabric around the hard block, here the harness's own XOR tree, now sets the frequency. Pipelining that XOR reduction would raise the measured figure.
 
 ### Example 08-12.6 · FSM encoding, measured (tier B)
 
@@ -286,7 +301,7 @@ The lab is in [labs/08-12-lab/](../labs/08-12-lab/README.md).
 | Flow steps | synthesis → placement → routing → timing analysis → bitstream | §3.1 |
 | Routing share of an FPGA critical path | about two thirds in the lab's gate-level adder | Example 08-12.3 (measured) |
 | Carry chain versus gate-level adder, iCE40 | about 3× faster | Example 08-12.4 (measured) |
-| DSP versus LUT 16 × 16 multiplier, iCE40 | about 1/10 the logic cells, about 4× faster | Example 08-12.5 (measured) |
+| DSP versus LUT 16 × 16 multiplier, iCE40 | about 1/10 the logic cells, at least 3.9× faster (harness-limited) | Example 08-12.5 (measured) |
 | iCE40 UP5K bitstream | 104 090 bytes, independent of design size | Example 08-12.7 (measured) |
 | iCE40 UltraPlus configuration time | maximum 140 ms (default frequency), 50 ms (medium) | [R-160](../../../reference/research-log.md#r-160--open-source-fpga-and-asic-flows) **[Established]** (data sheet) |
 | Open-source tool versions used here | Yosys 0.71 (tag dated 12 Nov 2026), nextpnr 0.11.1 | [R-160](../../../reference/research-log.md#r-160--open-source-fpga-and-asic-flows) **[Established]** |

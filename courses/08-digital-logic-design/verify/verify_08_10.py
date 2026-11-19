@@ -227,4 +227,23 @@ v.check("Lab 08-10.h", imp_gray)
 v.check("Lab 08-10.i", 16 + 3000)
 v.check("Lab 08-10.j", 200)
 
+# ---- Problem 16: reset synchronizer, simulated edge by edge
+period, t_assert, t_release, recovery = 5.0, 1.0, 13.0, 0.3
+ff, out_release = [0, 0], None
+for edge in range(1, 10):
+    t = edge * period
+    if t_assert <= t < t_release:
+        ff = [0, 0]                                     # held in reset (asynchronous clear)
+        continue
+    if t < t_assert:
+        continue
+    ff = [1, ff[0]]                                     # shift the tied-high 1 along
+    if ff[1] == 1 and out_release is None:
+        out_release = (edge, t)
+edges_after = sum(1 for e in range(1, out_release[0] + 1) if e * period > t_release)
+v.check("08-10.16a", t_assert)
+v.check("08-10.16b", edges_after)
+v.check("08-10.16c", out_release[1])
+first_edge = math.ceil(t_release / period) * period
+v.check("08-10.16d", first_edge - recovery - t_release)
 v.finish()

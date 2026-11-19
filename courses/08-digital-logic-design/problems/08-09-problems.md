@@ -65,7 +65,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 08-09.14 [C]
 
-**Guard bits in an FPGA DSP slice.** A DSP slice has a 27 × 18 signed multiplier and a 48-bit accumulator. (a) How wide is a full 27 × 18 product, how many guard bits remain, and how many worst-case products can be accumulated without overflow? (b) Repeat for 18 × 18 products.
+**Guard bits in an FPGA DSP slice.** A DSP slice has a 27 × 18 signed multiplier and a 48-bit accumulator. (a) How wide is a full 27 × 18 product, how many guard bits remain, and how many worst-case products does the guard-bit rule guarantee can be accumulated without overflow? What is the exact limit, given the largest possible product? (b) Repeat for 18 × 18 products.
 
 ### Problem 08-09.15 [C]
 
