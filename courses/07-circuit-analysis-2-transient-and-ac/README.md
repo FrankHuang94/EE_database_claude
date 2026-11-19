@@ -30,8 +30,8 @@ Circuits with memory. Capacitors and inductors, first- and second-order transien
 | [07-02 · First-Order RC and RL Transients](chapters/07-02-first-order-rc-rl-transients.md) | 10 | ✅ verified | [problems](problems/07-02-problems.md) · [solutions](solutions/07-02-solutions.md) · [lab](labs/07-02-lab/README.md) · [verify](verify/verify_07_02.py) |
 | [07-03 · Second-Order RLC Transients](chapters/07-03-second-order-rlc-transients.md) | 10 | ✅ verified | [problems](problems/07-03-problems.md) · [solutions](solutions/07-03-solutions.md) · [lab](labs/07-03-lab/README.md) · [verify](verify/verify_07_03.py) |
 | [07-04 · Laplace-Domain Circuit Analysis](chapters/07-04-laplace-domain-circuit-analysis.md) | 12 | ✅ verified | [problems](problems/07-04-problems.md) · [solutions](solutions/07-04-solutions.md) · [lab](labs/07-04-lab/README.md) · [verify](verify/verify_07_04.py) |
-| [07-05 · Sinusoidal Steady State, Phasors and Impedance](chapters/07-05-sinusoidal-steady-state-and-impedance.md) | 10 | ⬜ planned | — |
-| [07-06 · AC Power and Power Factor](chapters/07-06-ac-power-and-power-factor.md) | 8 | ⬜ planned | — |
+| [07-05 · Sinusoidal Steady State, Phasors and Impedance](chapters/07-05-sinusoidal-steady-state-and-impedance.md) | 10 | ✅ verified | [problems](problems/07-05-problems.md) · [solutions](solutions/07-05-solutions.md) · [lab](labs/07-05-lab/README.md) · [verify](verify/verify_07_05.py) |
+| [07-06 · AC Power and Power Factor](chapters/07-06-ac-power-and-power-factor.md) | 8 | ✅ verified | [problems](problems/07-06-problems.md) · [solutions](solutions/07-06-solutions.md) · [lab](labs/07-06-lab/README.md) · [verify](verify/verify_07_06.py) |
 | [07-07 · Frequency Response and Bode Plots](chapters/07-07-frequency-response-and-bode-plots.md) | 10 | ⬜ planned | — |
 | [07-08 · Filters and Resonance](chapters/07-08-filters-and-resonance.md) | 10 | ⬜ planned | — |
 | [07-09 · Mutual Inductance and Transformers](chapters/07-09-mutual-inductance-and-transformers.md) | 8 | ⬜ planned | — |

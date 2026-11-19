@@ -177,6 +177,51 @@
 - term: Integrator (op-amp)
   definition: An op-amp circuit with a capacitor in the feedback path and a resistor at the input, giving v_out = −(1/RC)∫v_in dt; a resistor across the capacitor makes it a "leaky" integrator (a first-order low-pass).
   chapter: "07-02"
+- term: Average (real) power
+  definition: P = (V_m I_m/2) cos θ = V_rms I_rms cos θ (watts), the time average of p = vi for sinusoids; only resistance absorbs it, and it is the real part of complex power.
+  chapter: "07-06"
+- term: Complex power
+  definition: S = V_rms I_rms* = ½ V I* = P + jQ (VA), whose real part is average power, imaginary part reactive power and magnitude apparent power; complex powers of all elements of a circuit sum to zero.
+  chapter: "07-06"
+  see_also: [Reactive power, Apparent power]
+- term: Reactive power
+  definition: Q = V_rms I_rms sin θ (var), the amplitude of the energy exchanged back and forth between source and reactive elements at twice the line frequency; positive for inductive loads, negative for capacitive.
+  chapter: "07-06"
+- term: Power-factor correction
+  definition: Raising a load's power factor, by parallel capacitors that supply the lagging reactive current locally (C = P(tan θ₁ − tan θ₂)/(ωV_rms²)), or, for distorted currents, by an active converter stage that draws sinusoidal current.
+  chapter: "07-06"
+  see_also: [Power factor]
+- term: Conjugate matching
+  definition: Choosing a load impedance equal to the complex conjugate of the source's Thévenin impedance, which maximizes average power to the load (P_max = V_Th,rms²/(4R_Th)) at 50% efficiency.
+  chapter: "07-06"
+- term: Admittance
+  definition: Y = 1/Z = G + jB (siemens), the ratio of current phasor to voltage phasor; admittances in parallel add. Its real part, the conductance G = R/(R² + X²), is not 1/R unless the reactance is zero.
+  chapter: "07-05"
+  see_also: [Impedance, Susceptance]
+- term: Susceptance
+  definition: B, the imaginary part of an admittance (siemens); positive for a capacitor (ωC), negative for an inductor (−1/(ωL)).
+  chapter: "07-05"
+- term: Dissipation factor
+  definition: D = tan δ = R/|X| = 1/Q, the ratio of a component's loss to its reactance at a stated frequency; for a capacitor with series resistance, D = ωC·ESR. Capacitor datasheets quote it at a test frequency such as 120 Hz or 1 kHz.
+  chapter: "07-05"
+- term: Series–parallel equivalent
+  definition: The pair of two-element models (R_s + jX_s in series, or R_p ∥ jX_p) that have the same impedance at one frequency; R_p = R_s(1 + Q²) and X_p = X_s(1 + 1/Q²). LCR meters report capacitance and inductance in either model, and the two differ by the factor 1 + D².
+  chapter: "07-05"
+- term: Phasor diagram
+  definition: A drawing of a circuit's voltage and current phasors as arrows in the complex plane; KVL makes the voltage arrows around a loop close into a polygon.
+  chapter: "07-05"
+- term: AC bridge
+  definition: A four-arm bridge driven by a sinusoid whose detector nulls when Z₁Z₄ = Z₂Z₃; being one complex equation, balance gives two real conditions, such as an unknown inductance and its resistance (Maxwell bridge).
+  chapter: "07-05"
+- term: All-pass filter
+  definition: A circuit with |H(jω)| = 1 at all frequencies but a frequency-dependent phase, such as (1 − jωRC)/(1 + jωRC) with phase −2 arctan(ωRC); it changes a waveform's shape without changing its amplitude spectrum.
+  chapter: "07-05"
+- term: AC analysis (SPICE)
+  definition: A simulator analysis that linearizes the circuit at its DC operating point and solves its complex nodal equations at each frequency of a sweep, giving phasors; it ignores nonlinearity, clipping and transients.
+  chapter: "07-05"
+- term: LCR meter
+  definition: An instrument that measures a component's complex impedance at a chosen test frequency and level and reports it through a two-element series or parallel model (Cs–Rs, Cp–Rp, Ls–Rs, Lp–Rp, D, Q).
+  chapter: "07-05"
 - term: Initial-condition source
   definition: In the s-domain model of a capacitor or inductor, the source that carries the stored energy into the analysis; L·i(0⁻) in series with sL (or i(0⁻)/s in parallel with 1/sL), and v(0⁻)/s in series with 1/sC (or C·v(0⁻) in parallel with sC). In time it is an impulse of flux linkage or charge.
   chapter: "07-04"

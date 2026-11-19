@@ -1,0 +1,40 @@
+* Example 07-05.3 (10 kHz Thevenin network with a 1 k load), Example 07-05.6 (op-amp all-pass at 3 kHz)
+* and Problem 07-05.13 (tissue model at 50 kHz) as ngspice AC analyses at their own frequencies.
+*
+* EXPECT ex3m   key:../../chapters/07-05-sinusoidal-steady-state-and-impedance.md#Ex_07-05.3e rtol=1e-3
+* EXPECT ex3p   key:../../chapters/07-05-sinusoidal-steady-state-and-impedance.md#Ex_07-05.3f rtol=1e-3
+* EXPECT ex6p   key:../../chapters/07-05-sinusoidal-steady-state-and-impedance.md#Ex_07-05.6b rtol=1e-3
+* EXPECT p13m   key:../../solutions/07-05-solutions.md#07-05.13b rtol=1e-3
+
+* Example 3
+V3   s3 0 AC 10 0
+R31  s3 a3 1k
+C3   a3 0 10n
+R32  a3 o3 500
+RL3  o3 0 1k
+* Example 6: equal resistors around an op-amp (VCVS, gain 1e6), RC low-pass to the + input
+V6   i6 0 AC 1 0
+R61  i6 m6 10k
+R62  m6 o6 10k
+R6   i6 p6 10k
+C6   p6 0 15.9154943n
+E6   o6 0 p6 m6 1e6
+* Problem 13: tissue model driven by a 1 A test current; the node voltage is Z
+I13  0 t13 AC 1 0
+RE13 t13 0 500
+RI13 t13 c13 300
+CM13 c13 0 5n
+
+.control
+ac lin 1 10k 10k
+let ex3m = vm(o3)
+let ex3p = 180/pi*vp(o3)
+print ex3m ex3p
+ac lin 1 3k 3k
+let ex6p = 180/pi*vp(o6)
+print ex6p
+ac lin 1 50k 50k
+let p13m = vm(t13)
+print p13m
+.endc
+.end

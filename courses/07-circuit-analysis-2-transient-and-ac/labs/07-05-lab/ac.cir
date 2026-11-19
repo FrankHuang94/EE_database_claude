@@ -1,0 +1,42 @@
+* Example 07-05.2 (1 kHz) and Problem 07-05.5 (50 Hz) as ngspice AC analyses.
+* An .ac analysis solves the circuit's complex nodal equations at each frequency: vm() is the phasor's
+* magnitude (peak, as the sources are given in peak values) and vp() its angle in radians.
+*
+* EXPECT ex2m1  key:../../chapters/07-05-sinusoidal-steady-state-and-impedance.md#Ex_07-05.2a rtol=1e-3
+* EXPECT ex2p1  key:../../chapters/07-05-sinusoidal-steady-state-and-impedance.md#Ex_07-05.2b rtol=1e-3
+* EXPECT ex2m2  key:../../chapters/07-05-sinusoidal-steady-state-and-impedance.md#Ex_07-05.2c rtol=1e-3
+* EXPECT ex2p2  key:../../chapters/07-05-sinusoidal-steady-state-and-impedance.md#Ex_07-05.2d rtol=1e-3
+* EXPECT p5m    key:../../solutions/07-05-solutions.md#07-05.5e rtol=1e-3
+* EXPECT p5p    key:../../solutions/07-05-solutions.md#07-05.5f rtol=1e-3
+
+* Example 2 (1 kHz): 10 V source through 1 k to node 1, 100 nF to ground, 100 mH to node 2, 2 k to ground,
+* and 10 mA at -90 degrees injected into node 2
+V2   s2 0 AC 10 0
+R21  s2 n1 1k
+C2   n1 0 100n
+L2   n1 n2 100m
+R22  n2 0 2k
+I2   0 n2 AC 10m -90
+* Problem 5 (50 Hz): V1 = 100 V, R1 = 10, L = 0.1 H to node x; C = 100 uF from x to ground (through a
+* 0 V source that measures its current); R2 = 20 to node y; V2 = 50 V at 30 degrees, + at y
+V51  a5 0 AC 100 0
+R51  a5 b5 10
+L5   b5 x5 0.1
+VC5  x5 xc5 DC 0
+C5   xc5 0 100u
+R52  x5 y5 20
+V52  y5 0 AC 50 30
+
+.control
+ac lin 1 1k 1k
+let ex2m1 = vm(n1)
+let ex2p1 = 180/pi*vp(n1)
+let ex2m2 = vm(n2)
+let ex2p2 = 180/pi*vp(n2)
+print ex2m1 ex2p1 ex2m2 ex2p2
+ac lin 1 50 50
+let p5m = mag(i(VC5))
+let p5p = 180/pi*ph(i(VC5))
+print p5m p5p
+.endc
+.end
