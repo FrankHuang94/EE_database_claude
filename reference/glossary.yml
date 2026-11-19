@@ -3282,3 +3282,45 @@
   definition: The split of a design into a small FSM that sequences operations and a datapath of registers, counters and arithmetic that performs them, linked by control and status signals.
   chapter: "08-08"
   see_also: [Finite state machine (FSM)]
+- term: Carry-lookahead adder
+  definition: An adder that computes carries directly from the bits' generate and propagate signals in two-level logic, usually in hierarchical groups of about 4 bits, instead of rippling them bit by bit.
+  chapter: "08-09"
+  see_also: [Generate and propagate, Parallel-prefix adder]
+- term: Parallel-prefix adder
+  definition: An adder that computes every carry as a prefix of (generate, propagate) pairs combined by an associative operator in a tree, giving a delay that grows with log2 n; Kogge–Stone, Sklansky and Brent–Kung are classic networks.
+  chapter: "08-09"
+  see_also: [Kogge–Stone adder, Brent–Kung adder]
+- term: Kogge–Stone adder
+  definition: A parallel-prefix adder with the minimum log2 n levels and fan-out 1, at the cost of about n log2 n operators and many long wires.
+  chapter: "08-09"
+  see_also: [Parallel-prefix adder, Brent–Kung adder]
+- term: Brent–Kung adder
+  definition: A parallel-prefix adder with an up-sweep tree and a down-sweep, using about 2n operators and regular wiring at the cost of 2 log2 n - 1 levels.
+  chapter: "08-09"
+  see_also: [Parallel-prefix adder, Kogge–Stone adder]
+- term: Carry-select adder
+  definition: An adder that computes upper sum bits for both possible carry-ins in parallel and selects the right result with multiplexers once the real carry arrives, trading duplicated hardware for delay.
+  chapter: "08-09"
+- term: Partial product
+  definition: One shifted row of a multiplication, the multiplicand ANDed with a single bit (or Booth digit) of the multiplier; a multiplier's job is to add all its partial products.
+  chapter: "08-09"
+  see_also: [Dadda tree, Booth recoding]
+- term: Carry-save adder
+  definition: A row of independent full adders that reduces three numbers to two (a sum word and a carry word) in one full-adder delay, with no carry propagation; the building block of multiplier trees.
+  chapter: "08-09"
+  see_also: [Dadda tree]
+- term: Dadda tree
+  definition: A multiplier reduction tree that brings the partial-product columns down to target heights 2, 3, 4, 6, 9, 13, ... using as few adders as possible, needing n^2 - 4n + 3 full adders for an n by n multiplier.
+  chapter: "08-09"
+  see_also: [Carry-save adder, Partial product]
+- term: Booth recoding
+  definition: Rewriting a two's-complement multiplier in signed digits (radix 4 uses -2 to +2) from overlapping bit triplets, which halves the number of partial products.
+  chapter: "08-09"
+  see_also: [Partial product]
+- term: Barrel shifter
+  definition: A shifter that shifts by any amount in one pass, built from log2 n stages of 2-to-1 multiplexers, stage k shifting by 2^k.
+  chapter: "08-09"
+- term: Multiply-accumulate (MAC)
+  definition: The operation acc = acc + a·b, the inner loop of filters, matrix products and neural networks; its multiplier and accumulator widths set much of a DSP or AI chip's area and energy.
+  chapter: "08-09"
+  see_also: [Q format]
