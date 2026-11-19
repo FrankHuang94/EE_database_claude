@@ -4140,3 +4140,56 @@
 - term: Fill factor
   definition: The ratio of a solar cell's maximum output power to the product V_oc I_sc, measuring how square its I–V curve is; about 0.75 is typical, and higher for an ideal cell.
   chapter: "09-14"
+# ---------------------------------------------------------------- 10-01
+- term: Load line
+  definition: The straight line i = (V_Th − v)/R_Th that a linear network imposes on the device it drives; the operating point is where it crosses the device's characteristic.
+  chapter: "10-01"
+- term: Constant-drop diode model
+  definition: A diode model that is an open circuit when off and a fixed voltage source (typically 0.7 V for silicon) when on; adequate when the circuit's voltages are several times the drop.
+  chapter: "10-01"
+- term: Piecewise-linear diode model
+  definition: A diode model that is open when off and a voltage V_D0 in series with a resistance r_D when on, fitted to the exponential curve near the expected current.
+  chapter: "10-01"
+- term: Assumed-state method
+  definition: Analyzing a circuit with diodes by guessing which conduct, replacing each with its on or off model, solving the linear circuit, and checking every guess for consistency.
+  chapter: "10-01"
+- term: Small-signal resistance
+  definition: The inverse slope of a diode's exponential characteristic at its bias point, r_d = nV_T/I_D (25.9 Ω at 1 mA for n = 1), valid for signals much smaller than 2nV_T.
+  chapter: "10-01"
+  see_also: [Small-signal model]
+- term: Rectifier
+  definition: A circuit that converts alternating voltage to a voltage of one polarity, using diodes (or transistors switched as diodes) to pass one or both half-cycles.
+  chapter: "10-01"
+- term: Bridge rectifier
+  definition: Four diodes arranged so that either polarity of a single winding drives the load the same way; current flows through two diodes in series, and each blocks about the winding's peak voltage.
+  chapter: "10-01"
+- term: Peak rectifier
+  definition: A rectifier followed by a reservoir capacitor that charges to the peak of the waveform and supplies the load between peaks.
+  chapter: "10-01"
+- term: Ripple voltage
+  definition: The peak-to-peak variation of a rectifier's smoothed output, about I_L/fC for a half-wave and I_L/2fC for a full-wave peak rectifier.
+  chapter: "10-01"
+- term: Conduction angle
+  definition: The fraction of each cycle, expressed as an angle, during which a rectifier diode conducts; about the square root of 2V_r/V_p radians in a peak rectifier.
+  chapter: "10-01"
+- term: Peak inverse voltage
+  definition: The largest reverse voltage a diode must block in a circuit, which sets its voltage rating; about twice the peak input in a half-wave peak rectifier or a center-tapped full-wave rectifier.
+  chapter: "10-01"
+- term: Line regulation
+  definition: The change in a regulator's output per unit change in its input voltage; r_z/(R + r_z) for a Zener shunt regulator.
+  chapter: "10-01"
+- term: Load regulation
+  definition: The change in a regulator's output per unit change in load current, equal to minus its output resistance; −(R ∥ r_z) for a Zener shunt regulator.
+  chapter: "10-01"
+- term: Limiter
+  definition: A circuit, also called a clipper, that holds its output below (or above) a set level, typically with diodes from the signal to a reference; the limiting is soft because the diode is exponential.
+  chapter: "10-01"
+- term: Clamp circuit
+  definition: A series capacitor and a diode that shift a waveform's DC level so that one of its extremes sits at a fixed voltage; also called a DC restorer.
+  chapter: "10-01"
+- term: Voltage doubler
+  definition: A clamp followed by a peak rectifier, giving a DC output near twice the input's peak minus two diode drops; cascading stages multiplies further.
+  chapter: "10-01"
+- term: Ideal-diode controller
+  definition: An integrated circuit that drives a MOSFET so that it conducts like a diode with a forward drop of tens of millivolts and blocks reverse current, replacing ORing and reverse-polarity diodes.
+  chapter: "10-01"

@@ -1,0 +1,30 @@
+* Lab 10-01 -- the half-wave peak rectifier of Example 10-01.4 (12 V peak, 60 Hz, 470 uF, 1 kOhm) with a
+* real, exponential diode instead of the constant-drop model. The "course rectifier diode" (IS = 10 nA,
+* N = 1.9) is a teaching model, not a particular part: it drops about 0.68 V at 10 mA and 0.87 V at 0.5 A,
+* roughly like a 1 A silicon rectifier (the 1N4001 data sheet allows up to 1.1 V at 1 A).
+* The capacitor starts near its steady-state peak; four cycles are simulated and the last is measured.
+*
+* EXPECT ripple key:README.md#Lab_10-01.a rtol=5e-3
+* EXPECT vavg   key:README.md#Lab_10-01.b rtol=1e-3
+* EXPECT ipk    key:README.md#Lab_10-01.c scale=1e-3 rtol=1e-2
+
+.options temp=26.85 tnom=26.85 reltol=1e-5
+VS in 0 SIN(0 12 60 0 0 90)
+D1 in out drect
+C1 out 0 470u IC=11.15
+R1 out 0 1k
+.model drect D(IS=10n N=1.9)
+
+.control
+tran 2u 66.6667m 0 2u uic
+meas tran vmax MAX v(out) from=50m to=66.6667m
+meas tran vmin MIN v(out) from=50m to=66.6667m
+meas tran vavg AVG v(out) from=50m to=66.6667m
+meas tran ineg MIN i(VS) from=50m to=66.6667m
+let ripple = vmax - vmin
+let ipk = -ineg
+echo "ripple = $&ripple"
+echo "vavg = $&vavg"
+echo "ipk = $&ipk"
+.endc
+.end

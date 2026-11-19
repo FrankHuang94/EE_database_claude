@@ -1,0 +1,21 @@
+* Lab 10-01 -- operating point of Example 10-01.1: the course diode (IS = 1e-15 A, N = 1) in series with
+* 4.3 kOhm across 5 V. SPICE solves the exponential exactly (Newton iterations with step limiting), so its
+* answer is the "exact" one of the example. The temperature is 300 K so that V_T = 25.852 mV.
+*
+* EXPECT vd key:../../chapters/10-01-diodes-and-diode-circuits.md#Ex_10-01.1b rtol=2e-4
+* EXPECT id key:../../chapters/10-01-diodes-and-diode-circuits.md#Ex_10-01.1c scale=1e-3 rtol=2e-4
+
+.options temp=26.85 tnom=26.85 reltol=1e-7
+VDD vdd 0 DC 5
+R1 vdd a 4.3k
+D1 a 0 dcourse
+.model dcourse D(IS=1e-15 N=1)
+
+.control
+op
+let vd = v(a)
+let id = (5 - v(a)) / 4300
+echo "vd = $&vd"
+echo "id = $&id"
+.endc
+.end

@@ -69,7 +69,7 @@ The full map, with university equivalents, textbook alignment, objectives and ch
 | 2 | [07 · Circuit Analysis II (Transient and AC)](courses/07-circuit-analysis-2-transient-and-ac/README.md) | 11 | 103 | 11/11 |
 | 2 | [08 · Digital Logic Design](courses/08-digital-logic-design/README.md) | 12 | 107 | 12/12 |
 | 3 | [09 · Semiconductor Devices](courses/09-semiconductor-devices/README.md) | 14 | 116 | 14/14 |
-| 3 | [10 · Electronics I (Microelectronic Circuits)](courses/10-electronics-1/README.md) | 10 | 99 | 0/10 |
+| 3 | [10 · Electronics I (Microelectronic Circuits)](courses/10-electronics-1/README.md) | 10 | 99 | 1/10 |
 | 3 | [11 · Signals and Systems](courses/11-signals-and-systems/README.md) | 11 | 106 | 0/11 |
 | 4 | [12 · Electronics II](courses/12-electronics-2/README.md) | 10 | 104 | 0/10 |
 | 4 | [13 · Electromagnetics](courses/13-electromagnetics/README.md) | 11 | 106 | 0/11 |

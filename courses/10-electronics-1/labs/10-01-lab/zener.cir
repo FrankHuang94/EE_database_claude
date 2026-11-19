@@ -1,0 +1,24 @@
+* Lab 10-01 -- the Zener shunt regulator of Example 10-01.6: 56 Ohm from the supply, a 1N4733A modeled as
+* breakdown at BV = 4.757 V (the example's V_Z0) with RS = 7 Ohm (its r_z), and a 50 mA load. A small
+* breakdown emission coefficient (NBV) makes the knee sharp, so the model is close to the example's
+* piecewise-linear Zener; the remaining difference (about 1-2 mV) is the knee's curvature.
+*
+* EXPECT vo8  key:../../chapters/10-01-diodes-and-diode-circuits.md#Ex_10-01.6c rtol=1e-3
+* EXPECT vo10 key:README.md#Lab_10-01.f rtol=1e-3
+
+.options temp=26.85 tnom=26.85
+VS in 0 DC 8
+R1 in out 56
+DZ 0 out dz
+IL out 0 DC 50m
+RB out 0 1Meg
+.model dz D(IS=1e-14 BV=4.757 IBV=1m NBV=0.02 RS=7)
+
+.control
+op
+echo "vo8 = $&v(out)"
+alter VS dc=10
+op
+echo "vo10 = $&v(out)"
+.endc
+.end

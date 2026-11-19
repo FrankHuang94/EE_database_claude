@@ -181,6 +181,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-173 | Advanced transistor references | Nov 2026 |
 | R-174 | Compound and wide-bandgap references | Nov 2026 |
 | R-175 | Optoelectronic device references | Nov 2026 |
+| R-176 | Diode and protection-device data sheets | Nov 2026 |
 
 ---
 
@@ -1847,3 +1848,16 @@ R&D % = R&D ÷ revenue.
 - **Sources:** [C. Hu, ch. 4](https://www.chu.berkeley.edu/wp-content/uploads/2020/01/Chenming-Hu_ch4-1.pdf); [Sony IMX611](https://www.sony-semicon.com/en/news/2023/2023030601.html); [Sony IMX479](https://www.sony-semicon.com/en/news/2025/2025061001.html); [Sony–TSMC JV](https://www.sony-semicon.com/en/news/2026/2026081101.html); [Apple, 18 Mar 2020](https://www.apple.com/newsroom/2020/03/apple-unveils-new-ipad-pro-with-lidar-scanner-and-trackpad-support-in-ipados/); [Fraunhofer ISE Photovoltaics Report](https://www.ise.fraunhofer.de/content/dam/ise/de/documents/publications/studies/Photovoltaics-Report.pdf); [LONGi](https://www.longi.com/en/news/isfh-hibc-crystalline-silicon-cell-efficiency/); [U.S. DOE 2022](https://www.energy.gov/sites/default/files/2022-02/2022-ssl-rd-opportunities.pdf). Checked Nov 2026.
 
 - **Added at the Course 09 audit (Nov 2026):** Sony IMX479 release (10 Jun 2025, same file as above): "a high, 37% photon detection efficiency for the 940 nm wavelength" and the specification table "Photon detection efficiency 37% (940 nm)" [Industry estimate, vendor specification]. R. J. McIntyre, "Multiplication noise in uniform avalanche diodes," IEEE Trans. Electron Devices ED-13 (1966) 164–168: excess noise factor F = kM + (1 − k)(2 − 1/M), cited for the standard formula; paper not read for this build.
+
+## R-176 · Diode and protection-device data sheets
+
+*All read on 19 Nov 2026 from the PDFs at the URLs below, as downloaded. Data-sheet specifications are tagged [Established] as specifications of those parts; they are not claims about competing parts.*
+
+- **Vishay 1N4148** (document 81857, rev. 1.6, 7 Nov 2024): V_RRM 100 V, V_R 75 V, I_F 300 mA, I_F(AV) 150 mA, I_FSM 2 A (1 µs), P_tot 500 mW, R_thJA 350 K/W; V_F ≤ 1 V at 10 mA; I_R ≤ 25 nA at 20 V, ≤ 5 µA at 75 V; C_D ≤ 4 pF (0 V, 1 MHz); t_rr ≤ 4 ns (I_F 10 mA, V_R 6 V, to 0.1 I_R, R_L 100 Ω) [Established]. [Data sheet](https://www.vishay.com/docs/81857/1n4148.pdf).
+- **Vishay 1N4001–1N4007** (document 88503, rev. 29 Apr 2020): V_RRM 50 V (1N4001) to 1000 V; I_F(AV) 1.0 A; I_FSM 30 A (8.3 ms half sine); V_F ≤ 1.1 V at 1.0 A; I_R ≤ 5 µA at rated voltage and 25 °C, 50 µA at 125 °C; C_J 15 pF typical (4 V, 1 MHz) [Established]. [Data sheet](https://www.vishay.com/docs/88503/1n4001.pdf).
+- **Vishay 1N5817–1N5819** (document 88525, rev. 1 Jul 2020): V_RRM 20/30/40 V; I_F(AV) 1 A; V_F ≤ 0.450/0.550/0.600 V at 1.0 A; I_R ≤ 1.0 mA at rated voltage and 25 °C; C_J 125 pF typical (1N5817) [Established]. [Data sheet](https://www.vishay.com/docs/88525/1n5817.pdf).
+- **Vishay 1N4728A–1N4761A Zener** (document 85816, rev. 2.7, 7 Nov 2024): P_tot 1300 mW; ±5% tolerance; 1N4733A 5.1 V at I_ZT1 49 mA, Z_ZT ≤ 7 Ω, Z_ZK ≤ 550 Ω at 1 mA, I_ZM 178 mA; 1N4742A 12 V at 21 mA, Z_ZT ≤ 9 Ω, I_ZM 76 mA [Established]. [Data sheet](https://www.vishay.com/docs/85816/1n4728a.pdf).
+- **TI TL431/TL432** (SLVS543S, revised May 2024): V_ref 2440/2495/2550 mV (min/typ/max, I_KA 10 mA); dynamic impedance Z_KA 0.2 Ω typical, 0.5 Ω maximum; minimum cathode current 0.4 mA typical, 1 mA maximum; "excellent replacements for Zener diodes" [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/tl431.pdf).
+- **TI LM74700-Q1** (SNOSD17G, revised Dec 2020): ideal-diode controller driving an external N-channel MOSFET; regulates the anode-to-cathode drop at 20 mV; 3.2–65 V input; −65 V reverse rating; reverse-current blocking in < 0.75 µs; AEC-Q100; guideline "(20 mV / I_Load(Nominal)) ≤ R_DS(ON) ≤ (50 mV / I_Load(Nominal))" [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/lm74700-q1.pdf).
+- **TI TPD1E10B06** (SLLSEB1G, revised Aug 2024): IEC 61000-4-2 level 4, ±30 kV contact and air-gap; IEC 61000-4-5 surge 6 A (8/20 µs); I/O capacitance 12 pF typical; R_DYN 0.4 Ω typical; breakdown ±6 V minimum; leakage ≤ 100 nA; clamp ≤ 10 V at I_PP = 1 A; "data rates up to 400Mbps" [Established]. [Data sheet](https://www.ti.com/lit/ds/symlink/tpd1e10b06.pdf).
+- **Course teaching models (not data):** the "course diode" (I_S = 10⁻¹⁵ A, n = 1) and the lab's "course rectifier diode" (I_S = 10 nA, n = 1.9) are illustrative models chosen to give realistic forward drops; they do not describe a particular part.
