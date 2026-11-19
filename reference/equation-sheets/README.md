@@ -10,3 +10,4 @@ One sheet per course: the equations you should be able to write from memory (or 
 | 03 · Probability, Statistics and Random Variables | [03-probability-statistics-and-random-variables.md](03-probability-statistics-and-random-variables.md) |
 | 04 · Physics for EE | [04-physics-for-ee.md](04-physics-for-ee.md) |
 | 05 · Programming for Engineers | [05-programming-for-engineers.md](05-programming-for-engineers.md) |
+| 06 · Circuit Analysis I (DC) | [06-circuit-analysis-1-dc.md](06-circuit-analysis-1-dc.md) |

@@ -1,0 +1,203 @@
+* Course 06 final exam -- every circuit answer confirmed in ngspice. Op-amps are E sources of gain 1e8
+* (Q12 uses the stated finite gain); meters are resistors; the CCCS and CCVS use zero-volt sensing sources.
+*
+* EXPECT q3b   key:solutions.md#X06.3b rtol=1e-6
+* EXPECT q3d   key:solutions.md#X06.3d scale=1e-3 rtol=1e-6
+* EXPECT q4a   key:solutions.md#X06.4a rtol=1e-4
+* EXPECT q4b   key:solutions.md#X06.4b rtol=1e-4
+* EXPECT q4c   key:solutions.md#X06.4c rtol=1e-4
+* EXPECT q4d   key:solutions.md#X06.4d scale=1e-3 rtol=1e-4
+* EXPECT q5a   key:solutions.md#X06.5a rtol=1e-3
+* EXPECT q5c   key:solutions.md#X06.5c rtol=1e-3
+* EXPECT q5d   key:solutions.md#X06.5d rtol=1e-4
+* EXPECT q5f   key:solutions.md#X06.5f rtol=1e-4
+* EXPECT q6b   key:solutions.md#X06.6b rtol=2e-4
+* EXPECT q6a   key:solutions.md#X06.6a scale=1e3 rtol=1e-5
+* EXPECT q7c   key:solutions.md#X06.7c rtol=1e-6
+* EXPECT q8a   key:solutions.md#X06.8a rtol=1e-4
+* EXPECT q8b   key:solutions.md#X06.8b scale=1e3 rtol=1e-4
+* EXPECT q10b  key:solutions.md#X06.10b rtol=1e-6
+* EXPECT q10f  key:solutions.md#X06.10f rtol=1e-6
+* EXPECT q11b  key:solutions.md#X06.11b scale=1e-3 rtol=1e-4
+* EXPECT q12c  key:solutions.md#X06.12c rtol=1e-4
+* EXPECT q12f  key:solutions.md#X06.12f scale=1e-3 rtol=2e-3
+* EXPECT q12h  key:solutions.md#X06.12h scale=1e-3 rtol=2e-3
+* EXPECT q13a  key:solutions.md#X06.13a rtol=1e-4
+* EXPECT q13d  key:solutions.md#X06.13d scale=1e-3 rtol=1e-4
+* EXPECT q14a  key:solutions.md#X06.14a scale=1e-3 rtol=1e-4
+* EXPECT q14e  key:solutions.md#X06.14e rtol=1e-4
+* EXPECT q14h  key:solutions.md#X06.14h rtol=1e-4
+
+* ---- Q3: 12 V into 8k/4k with a 4k load; 6 mA into 2k || 3k || 6k
+V3   a3 0 DC 12
+R31  a3 m3 8k
+R32  m3 0 4k
+R3L  m3 0 4k
+I3   0 p3 DC 6m
+V3s  p3 q3 DC 0
+R3a  q3 0 2k
+R3b  p3 0 3k
+R3c  p3 0 6k
+* ---- Q4: supernode
+I41  0 n41 DC 3m
+R41  n41 0 2k
+V41  n41 n42 DC 6
+R42  n42 0 4k
+R43  n42 n43 2k
+R44  n43 0 1k
+I42  0 n43 DC 1m
+* ---- Q5: supermesh (mesh currents read through zero-volt sources)
+V51  n51 0 DC 12
+R51  n51 x51 2
+Vm1  x51 n52 DC 0
+R54  n52 0 4
+R52  n52 y52 3
+Vm2  y52 n53 DC 0
+I51  0 n53 DC 1
+Vm3  n53 z53 DC 0
+R53  z53 0 6
+* ---- Q6: CCCS amplifier, vs = 1 V
+V6   s6 0 DC 1
+R6s  s6 b6 1k
+Vib  b6 bb6 DC 0
+R6pi bb6 e6 2.5k
+F6   c6 e6 Vib 100
+R6C  c6 0 4k
+R6E  e6 0 200
+* ---- Q7
+V7   n71 0 DC 10
+R71  n71 x7 2k
+I7   0 x7 DC 3m
+R72  x7 0 3k
+* ---- Q8: CCVS (2000 ohm transresistance), open circuit and test current
+V8   n81 0 DC 12
+R81  n81 a8 6k
+R82  a8 r8 3k
+Vix  r8 0 DC 0
+H8   b8 a8 Vix 2000
+R83  b8 o8 1k
+V8t  n81t 0 DC 0
+R81t n81t a8t 6k
+R82t a8t r8t 3k
+Vixt r8t 0 DC 0
+H8t  b8t a8t Vixt 2000
+R83t b8t o8t 1k
+I8t  0 o8t DC 1m
+* ---- Q10: inverting (2.2k, 33k) at -0.2 V; summer (20k, 10k, Rf 20k) at 0.5 V and -1 V
+V10  i10 0 DC -0.2
+R101 i10 n10 2.2k
+R102 n10 o10 33k
+E10  o10 0 0 n10 1e8
+V10a a10 0 DC 0.5
+V10b b10 0 DC -1
+R10a a10 s10 20k
+R10b b10 s10 10k
+R10f s10 f10 20k
+E10s f10 0 0 s10 1e8
+* ---- Q11: difference amp with R4 = 50.5k, both inputs 2.5 V
+V11  c11 0 DC 2.5
+R111 c11 n11 10k
+R112 n11 o11 50k
+R113 c11 p11 10k
+R114 p11 0 50.5k
+E11  o11 0 p11 n11 1e8
+* ---- Q12: non-inverting gain 50 with A = 2e4 and 20 mV (signal only); then the error sources alone
+V12  s12 0 DC 20m
+R12s s12 p12 5k
+R121 n12 0 1k
+R122 n12 o12 49k
+E12  o12 0 p12 n12 2e4
+* error terms with an ideal op-amp: the + input's 100 nA bias current alone; then both bias currents with a -2 mV offset (worst case)
+V12b s12b 0 DC 0
+R12sb s12b p12b 5k
+I12p p12b 0 DC 100n
+R121b n12b 0 1k
+R122b n12b o12b 49k
+E12b o12b 0 p12b n12b 1e8
+V12c s12c 0 DC 0
+R12sc s12c p12c 5k
+I12pc p12c 0 DC 100n
+Vos12 qc12 p12c DC -2m
+R121c n12c 0 1k
+R122c n12c o12c 49k
+I12mc n12c 0 DC 100n
+E12c o12c 0 qc12 n12c 1e8
+* ---- Q13: 3.3 V behind 220k with 10 Meg meter; 5 V, 2.5 ohm ammeter, 100 ohm
+V13  a13 0 DC 3.3
+R13  a13 m13 220k
+R13m m13 0 10Meg
+V13b a13b 0 DC 5
+R13A a13b b13 2.5
+Vm13 b13 c13 DC 0
+R13L c13 0 100
+* ---- Q14: quarter bridge (gauge 350.35 on the bottom right), in-amp gain 2001; and lead resistance
+V14  ex14 0 DC 5
+R141 ex14 l14 350
+R142 l14 0 350
+R143 ex14 r14 350
+R144 r14 0 350.35
+E14a o14 0 r14 l14 2001
+V14b ex14b 0 DC 5
+R14l1 ex14b t14 0.5
+R14b1 t14 l14b 350
+R14b2 l14b u14 350
+R14b3 t14 r14b 350
+R14b4 r14b u14 350
+R14l2 u14 0 0.5
+
+.control
+op
+let q3b = v(m3)
+let q3d = i(V3s)
+let q4a = v(n41)
+let q4b = v(n42)
+let q4c = v(n43)
+let q4d = -v(n41,n42)*i(V41)
+let q5a = i(Vm1)
+let q5c = i(Vm3)
+let q5d = v(n52)
+let q5f = v(n53)*1
+let q6b = v(c6)
+let q6a = v(b6)/i(Vib)
+let q7c = v(x7)
+let q8a = v(o8)
+let q8b = v(o8t)/1m
+let q10b = v(o10)
+let q10f = v(f10)
+let q11b = v(o11)
+let q12c = v(o12)
+let q12f = v(o12b)
+let q12h = -v(o12c)
+let q13a = v(m13)
+let q13d = i(Vm13)
+let q14a = v(r14)-v(l14)
+let q14e = v(o14)
+let q14h = v(t14)-v(u14)
+echo "q3b = $&q3b"
+echo "q3d = $&q3d"
+echo "q4a = $&q4a"
+echo "q4b = $&q4b"
+echo "q4c = $&q4c"
+echo "q4d = $&q4d"
+echo "q5a = $&q5a"
+echo "q5c = $&q5c"
+echo "q5d = $&q5d"
+echo "q5f = $&q5f"
+echo "q6b = $&q6b"
+echo "q6a = $&q6a"
+echo "q7c = $&q7c"
+echo "q8a = $&q8a"
+echo "q8b = $&q8b"
+echo "q10b = $&q10b"
+echo "q10f = $&q10f"
+echo "q11b = $&q11b"
+echo "q12c = $&q12c"
+echo "q12f = $&q12f"
+echo "q12h = $&q12h"
+echo "q13a = $&q13a"
+echo "q13d = $&q13d"
+echo "q14a = $&q14a"
+echo "q14e = $&q14e"
+echo "q14h = $&q14h"
+.endc
+.end
