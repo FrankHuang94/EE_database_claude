@@ -4091,3 +4091,52 @@
 - term: Piezoelectric polarization
   definition: Electric polarization created by mechanical strain in a piezoelectric crystal; in AlGaN grown on GaN it adds to the spontaneous polarization and increases the 2DEG density.
   chapter: "09-13"
+- term: Absorption coefficient
+  definition: The rate α at which light intensity decays with depth in a material, I ∝ e^(−αx); 1/α is the penetration depth, and direct-gap materials have large α just above the gap.
+  chapter: "09-14"
+- term: Quantum efficiency
+  definition: The number of electrons collected per incident photon (or, for an emitter, photons out per injected electron), combining reflection, absorption and collection or extraction losses.
+  chapter: "09-14"
+- term: Avalanche photodiode
+  definition: A photodiode biased near breakdown so that photogenerated carriers are multiplied by impact ionization (APD), giving gain at the cost of extra noise.
+  chapter: "09-14"
+- term: Single-photon avalanche diode
+  definition: A junction biased above breakdown so that one photogenerated carrier triggers a self-sustaining avalanche (SPAD, Geiger mode), giving a digital pulse per detected photon, followed by quenching and a dead time.
+  chapter: "09-14"
+  see_also: [Avalanche photodiode, Photon detection efficiency]
+- term: Photon detection efficiency
+  definition: The probability that a photon arriving at a single-photon detector produces a counted avalanche (PDE), including absorption, triggering probability and fill factor.
+  chapter: "09-14"
+- term: Direct time-of-flight
+  definition: Ranging by timing the round trip of a light pulse to a target, d = ct/2 (dToF); timing jitter Δt sets the depth resolution cΔt/2.
+  chapter: "09-14"
+- term: CMOS image sensor
+  definition: An array of pixels, each with a photodiode and transistors, that integrates photocharge and reads it out through a source follower; the dominant camera sensor.
+  chapter: "09-14"
+- term: Full-well capacity
+  definition: The largest number of electrons a pixel can hold before saturating; it caps the maximum signal-to-noise ratio at its square root.
+  chapter: "09-14"
+- term: Conversion gain
+  definition: The voltage change per collected electron at a pixel's sense node, q/C_FD, typically tens to hundreds of microvolts per electron.
+  chapter: "09-14"
+- term: Extraction efficiency
+  definition: The fraction of photons generated inside an LED that escape the chip; limited by total internal reflection at the high-index surface and raised by shaping and texturing.
+  chapter: "09-14"
+- term: Wall-plug efficiency
+  definition: Optical output power divided by electrical input power for a light source, the product of internal quantum efficiency, extraction efficiency and hν/qV.
+  chapter: "09-14"
+- term: Luminous efficacy
+  definition: Light output in lumens (power weighted by the eye's sensitivity) per watt; 683 lm/W at 555 nm, and about 414 lm/W at most for white light with good color rendering.
+  chapter: "09-14"
+- term: Population inversion
+  definition: A state in which more electrons occupy the upper energy states than the lower ones, so stimulated emission outweighs absorption and light is amplified; in a diode it needs E_Fn − E_Fp > E_g.
+  chapter: "09-14"
+- term: Threshold gain
+  definition: The material gain at which a laser's round-trip gain equals its losses, g_th = α_i + (1/2L) ln(1/R₁R₂); above it the laser oscillates.
+  chapter: "09-14"
+- term: VCSEL
+  definition: A vertical-cavity surface-emitting laser, whose cavity is formed by distributed Bragg reflector stacks above and below the active layer so that it emits from the wafer surface.
+  chapter: "09-14"
+- term: Fill factor
+  definition: The ratio of a solar cell's maximum output power to the product V_oc I_sc, measuring how square its I–V curve is; about 0.75 is typical, and higher for an ideal cell.
+  chapter: "09-14"

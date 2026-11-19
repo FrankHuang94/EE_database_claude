@@ -1,0 +1,24 @@
+* Lab 09-14 -- an ideal 1 cm^2 solar cell: photocurrent source in parallel with a diode.
+* J_sc = 40 mA/cm^2 and J_0 = 1e-13 A/cm^2 at 300 K (Example 09-14.8). Cell A is open-circuited (V_oc);
+* cell B drives the maximum-power load R = V_mp/I_mp = 15.844 ohm (Lab 09-14.c), so its voltage is V_mp.
+* The diode has IS = 1e-13 A, N = 1 and no series resistance; the temperature is 300 K.
+*
+* EXPECT voc key:../../chapters/09-14-optoelectronic-devices.md#Ex_09-14.8a rtol=2e-4
+* EXPECT vmp key:../../chapters/09-14-optoelectronic-devices.md#Ex_09-14.8b rtol=2e-4
+
+.options temp=26.85 tnom=26.85 reltol=1e-9 abstol=1e-15 vntol=1e-9
+IA 0 a DC 40m
+DA a 0 dcell
+IB 0 b DC 40m
+DB b 0 dcell
+RL b 0 15.844
+.model dcell D(IS=1e-13 N=1 RS=0)
+
+.control
+op
+let voc = v(a)
+let vmp = v(b)
+echo "voc = $&voc"
+echo "vmp = $&vmp"
+.endc
+.end

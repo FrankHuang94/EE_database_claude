@@ -41,7 +41,7 @@ The physics of the transistor, from crystals and energy bands through PN junctio
 | [09-11 · CMOS and Scaling: Moore, Dennard and Beyond](chapters/09-11-cmos-and-scaling.md) | 6 | ✅ verified | [problems](problems/09-11-problems.md) · [solutions](solutions/09-11-solutions.md) · [lab](labs/09-11-lab/README.md) · [verify](verify/verify_09_11.py) |
 | [09-12 · Advanced Transistors: FinFET, GAA, CFET and Backside Power](chapters/09-12-finfet-gaa-cfet-backside-power.md) | 6 | ✅ verified | [problems](problems/09-12-problems.md) · [solutions](solutions/09-12-solutions.md) · [lab](labs/09-12-lab/README.md) · [verify](verify/verify_09_12.py) |
 | [09-13 · Compound and Wide-Bandgap Semiconductors](chapters/09-13-compound-and-wide-bandgap-semiconductors.md) | 6 | ✅ verified | [problems](problems/09-13-problems.md) · [solutions](solutions/09-13-solutions.md) · [lab](labs/09-13-lab/README.md) · [verify](verify/verify_09_13.py) |
-| [09-14 · Optoelectronic Devices](chapters/09-14-optoelectronic-devices.md) | 7 | ⬜ planned | — |
+| [09-14 · Optoelectronic Devices](chapters/09-14-optoelectronic-devices.md) | 7 | ✅ verified | [problems](problems/09-14-problems.md) · [solutions](solutions/09-14-solutions.md) · [lab](labs/09-14-lab/README.md) · [verify](verify/verify_09_14.py) |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 
