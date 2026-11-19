@@ -1,0 +1,160 @@
+* Lab 06-11 -- instruments as the resistors they are: voltmeter loading, ammeter burden, two-wire
+* versus four-wire resistance, a milliohm shunt with and without Kelvin taps over temperature, and
+* remote sensing of a supply through cable resistance.
+*
+* EXPECT ex1b  key:../../chapters/06-11-practical-dc-circuits-and-measurement.md#Ex_06-11.1b rtol=1e-4
+* EXPECT ex1d  key:../../chapters/06-11-practical-dc-circuits-and-measurement.md#Ex_06-11.1d rtol=2e-6
+* EXPECT ex2b  key:../../chapters/06-11-practical-dc-circuits-and-measurement.md#Ex_06-11.2b scale=1e-3 rtol=1e-4
+* EXPECT ex2e  key:../../chapters/06-11-practical-dc-circuits-and-measurement.md#Ex_06-11.2e scale=1e-3 rtol=1e-4
+* EXPECT ex4a  key:../../chapters/06-11-practical-dc-circuits-and-measurement.md#Ex_06-11.4a rtol=1e-5
+* EXPECT ex4c  key:../../chapters/06-11-practical-dc-circuits-and-measurement.md#Ex_06-11.4c rtol=1e-5
+* EXPECT ex4d  key:../../chapters/06-11-practical-dc-circuits-and-measurement.md#Ex_06-11.4d scale=1e-3 rtol=1e-5
+* EXPECT ex5c  key:../../chapters/06-11-practical-dc-circuits-and-measurement.md#Ex_06-11.5c scale=1e-3 rtol=1e-5
+* EXPECT ex5e  key:../../chapters/06-11-practical-dc-circuits-and-measurement.md#Ex_06-11.5e rtol=1e-4
+* EXPECT ex5f  key:../../chapters/06-11-practical-dc-circuits-and-measurement.md#Ex_06-11.5f rtol=2e-3
+* EXPECT ex6d  key:../../chapters/06-11-practical-dc-circuits-and-measurement.md#Ex_06-11.6d rtol=5e-5
+* EXPECT ex6f  key:../../chapters/06-11-practical-dc-circuits-and-measurement.md#Ex_06-11.6f rtol=5e-5
+* EXPECT ex6s  12 rtol=2e-5
+* EXPECT p1a   key:../../solutions/06-11-solutions.md#06-11.1a rtol=1e-4
+* EXPECT p2a   key:../../solutions/06-11-solutions.md#06-11.2a scale=1e-3 rtol=1e-4
+* EXPECT p4m1  4.5 rtol=2e-4
+* EXPECT p4m2  4.0 rtol=2e-4
+* EXPECT p8a   key:../../solutions/06-11-solutions.md#06-11.8a scale=1e-3 rtol=1e-6
+* EXPECT p9c   key:../../solutions/06-11-solutions.md#06-11.9c rtol=1e-3
+* EXPECT p12b  key:../../solutions/06-11-solutions.md#06-11.12b rtol=1e-5
+
+.options TNOM=25
+.temp 25
+
+* ---- Example 06-11.1: 10 V into two 1 Meg resistors; meter 10 Meg, then 10 G
+V1   a1 0 DC 10
+R1a  a1 m1 1Meg
+R1b  m1 0 1Meg
+R1m  m1 0 10Meg
+V1g  a1g 0 DC 10
+R1ga a1g m1g 1Meg
+R1gb m1g 0 1Meg
+R1gm m1g 0 10G
+* ---- Example 06-11.2: 3.3 V, 33 ohm load; ammeter 1.8 ohm (mA input), then 0.05 ohm (A input)
+V2   a2 0 DC 3.3
+R2A  a2 b2 1.8
+Vm2  b2 c2 DC 0
+R2L  c2 0 33
+V2x  a2x 0 DC 3.3
+R2Ax a2x b2x 0.05
+Vm2x b2x c2x DC 0
+R2Lx c2x 0 33
+* ---- Example 06-11.4: 1 ohm, 0.08 ohm per lead/contact; two-wire and four-wire at 10 mA
+I4t  0 tp DC 10m
+R4t1 tp t1 0.08
+R4t  t1 t2 1
+R4t2 t2 0 0.08
+I4f  0 fp DC 10m
+R4f1 fp d1 0.08
+R4   d1 d2 1
+R4f2 d2 0 0.08
+R4s1 d1 s1 0.08
+R4s2 d2 s2 0.08
+R4m  s1 s2 10Meg
+* ---- Example 06-11.5: 1 mOhm shunt (250 ppm/C) with 0.05 mOhm of copper (3930 ppm/C) each side, 20 A
+I5   0 x1 DC 20
+R5c1 x1 k1 0.05m tc1=3.93e-3
+R5   k1 k2 1m tc1=250e-6
+R5c2 k2 0 0.05m tc1=3.93e-3
+* ---- Example 06-11.6: 12 V supply, 10 A load, 1.5 m of 16 AWG each way (19.7613 mOhm per leg)
+* without sensing: fixed 12 V at the supply terminals
+V6   so 0 DC 12
+R6p  so lp 19.7613m
+I6   lp lr DC 10
+R6n  lr 0 19.7613m
+* with remote sensing: error amplifier drives the output until the load's terminals sit at 12 V
+V6r  vr 0 DC 12
+E6d  sd 0 ls lrs 1
+E6   sos 0 vr sd 1e6
+R6ps sos lps 19.7613m
+I6s  lps lrr DC 10
+R6ns lrr 0 19.7613m
+R6sp lps ls 0.5
+R6sn lrr lrs 0.5
+R6sl ls lrs 100k
+* (the 100k sense-input resistance draws 120 uA through the 1 ohm of sense wires: the load sits 0.12 mV high)
+* ---- Problem 06-11.1: 10 V behind 100k, 10 Meg meter
+Vp1  ap1 0 DC 10
+Rp1  ap1 mp1 100k
+Rp1m mp1 0 10Meg
+* ---- Problem 06-11.2: 1.5 V, 15 ohm load, 2 ohm ammeter
+Vp2  ap2 0 DC 1.5
+Rp2A ap2 bp2 2
+Vmp2 bp2 cp2 DC 0
+Rp2L cp2 0 15
+* ---- Problem 06-11.4: the solved sensor (5.143 V behind 1.429 Meg) read by 10 Meg, then 10 Meg || 10 Meg
+Vp4  ap4 0 DC 5.143
+Rp4  ap4 mp4 1.429Meg
+Rp4m mp4 0 10Meg
+Vp4b ap4b 0 DC 5.143
+Rp4b ap4b mp4b 1.429Meg
+Rp4c mp4b 0 10Meg
+Rp4d mp4b 0 10Meg
+* ---- Problem 06-11.8: 10 mOhm shunt, two-wire with 0.1 ohm of leads, 1 A
+Ip8  0 tp8 DC 1
+Rp8l tp8 t8 0.1
+Rp8  t8 0 10m
+* ---- Problem 06-11.9: 48 V into 140k/10k with a 1 Meg ADC input
+Vp9  ap9 0 DC 48
+Rp91 ap9 mp9 140k
+Rp92 mp9 0 10k
+Rp9a mp9 0 1Meg
+* ---- Problem 06-11.12: 9 V across three 1 Meg; 10 Meg meter across the middle one
+Vp12 a12 0 DC 9
+R121 a12 b12 1Meg
+R122 b12 c12 1Meg
+R123 c12 0 1Meg
+R12m b12 c12 10Meg
+
+.control
+op
+let ex1b = v(m1)
+let ex1d = v(m1g)
+let ex2b = i(Vm2)
+let ex2e = i(Vm2x)
+let ex4a = v(tp)/10m
+let ex4c = (v(s1)-v(s2))/10m
+let ex4d = v(s1)-v(s2)
+let ex6d = v(lp)-v(lr)
+let ex6f = v(sos)
+let ex6s = v(lps)-v(lrr)
+let p1a = v(mp1)
+let p2a = i(Vmp2)
+let p4m1 = v(mp4)
+let p4m2 = v(mp4b)
+let p8a = v(tp8)/1
+let p9c = v(mp9)
+let p12b = v(b12)-v(c12)
+echo "ex1b = $&ex1b"
+echo "ex1d = $&ex1d"
+echo "ex2b = $&ex2b"
+echo "ex2e = $&ex2e"
+echo "ex4a = $&ex4a"
+echo "ex4c = $&ex4c"
+echo "ex4d = $&ex4d"
+echo "ex6d = $&ex6d"
+echo "ex6f = $&ex6f"
+echo "ex6s = $&ex6s"
+echo "p1a = $&p1a"
+echo "p2a = $&p2a"
+echo "p4m1 = $&p4m1"
+echo "p4m2 = $&p4m2"
+echo "p8a = $&p8a"
+echo "p9c = $&p9c"
+echo "p12b = $&p12b"
+dc temp 25 75 50
+let rkel = (v(k1)-v(k2))/20
+let rmis = v(x1)/20
+let ex5c = rmis[0]
+let ex5e = (rkel[1]/rkel[0]-1)*100
+let ex5f = (rmis[1]/rmis[0]-1)*100
+echo "ex5c = $&ex5c"
+echo "ex5e = $&ex5e"
+echo "ex5f = $&ex5f"
+.endc
+.end

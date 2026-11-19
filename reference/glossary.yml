@@ -2622,3 +2622,29 @@
   definition: I_OS, the difference between an op-amp's two input bias currents; it is the error that remains when the two inputs see equal resistances (a compensation resistor R1∥R2 at the + input).
   chapter: "06-10"
   see_also: [Input bias current]
+
+# ---------------------------------------------------------------- 06-11
+- term: Burden voltage
+  definition: The voltage an ammeter drops across its internal resistance (shunt, fuse, leads) while measuring; it reduces the circuit's current by about R_A/R_th, the ammeter's counterpart of a voltmeter's loading error.
+  chapter: "06-11"
+  see_also: [Loading effect, Current-sense shunt]
+- term: Meter accuracy specification
+  definition: A bound on a reading's error, stated as ±(% of reading + counts) or ±(% of reading + % of range) for given conditions (temperature band, time since calibration); the fixed term dominates low on a range.
+  chapter: "06-11"
+  see_also: [Resolution (measurement), Worst-case analysis]
+- term: Resolution (measurement)
+  definition: The smallest change an instrument can display or report (one count of the least significant digit); it says nothing about accuracy, which the specification bounds separately.
+  chapter: "06-11"
+  see_also: [Meter accuracy specification]
+- term: Four-terminal (Kelvin) measurement
+  definition: Measuring a resistance or current with one pair of leads that forces the current and a separate pair, attached at the element itself, that senses the voltage while carrying almost no current, so lead, contact and copper resistances drop out.
+  chapter: "06-11"
+  see_also: [Current-sense shunt, Remote sensing]
+- term: Current-sense shunt
+  definition: A low-value resistor (milliohms) whose voltage, i R_sh, measures current; its value trades signal against I²R loss, and four-terminal parts with Kelvin layout keep copper's 0.39%/°C out of the measurement.
+  chapter: "06-11"
+  see_also: [Four-terminal (Kelvin) measurement, Burden voltage]
+- term: Remote sensing
+  definition: Connecting a supply's feedback (sense) inputs to the load's terminals with separate wires so that it regulates the voltage at the load, raising its own output by the drop in the current-carrying wires.
+  chapter: "06-11"
+  see_also: [Four-terminal (Kelvin) measurement, Negative feedback]

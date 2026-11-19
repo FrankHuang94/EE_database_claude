@@ -113,6 +113,8 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-105 | Thevenin and Norton history and Power over Ethernet | Nov 2026 |
 | R-106 | The 50 ohm standard | Nov 2026 |
 | R-107 | Op-amp datasheets and analog revenue | Nov 2026 |
+| R-108 | Digital multimeter specifications | Nov 2026 |
+| R-109 | PCB copper, wire gauge and four-terminal shunts | Nov 2026 |
 
 ---
 
@@ -955,4 +957,49 @@ R&D % = R&D ÷ revenue.
   - [TI 2025 Form 10-K](https://www.sec.gov/Archives/edgar/data/97476/000009747626000059/txn-20251231.htm).
   - [ADI Q4 FY2025 earnings release](https://www.sec.gov/Archives/edgar/data/6281/000000628125000151/adiq425exhibit991.htm).
   - [ADI FY2025 Form 10-K](https://www.sec.gov/Archives/edgar/data/6281/000000628125000153/adi-20251101.htm).
+  - Checked Nov 2026.
+
+## R-108 · Digital multimeter specifications
+
+*Mixed access:* Fluke's 87V product page and the original Fluke 87 users manual were read in full; Keysight's 34465A documents could not be opened from the build environment, so its figures are from search excerpts only.
+
+- **Fluke 87V (product page, specifications table, read Nov 2026)** [Established]:
+  - "Voltage DC ... Accuracy ±(0.05% + 1)"; maximum resolution 10 µV; maximum voltage 1000 V.
+  - The page does not state the 87V's DC input impedance.
+- **Fluke 87 True RMS Multimeter Users Manual (PN 834192, August 1988, rev. 8, 4/97)** [Established] for the original 87, not the 87V:
+  - "Each of the five ac/dc voltage ranges presents an input impedance of approximately 10 MΩ in parallel with less than 100 pF."
+  - Loading: "In most cases, the error is negligible (0.1% or less) if the measurement circuit source impedance is 10 kilohms or less."
+  - A power-on option changes the 400 mV range's input impedance "from 10 megohms to greater than 4000 megohms".
+  - Accuracy is specified "at 18°C to 28°C, with relative humidity up to 90%, for a period of one year after calibration"; DC volts on the 4 V to 400 V ranges ±(0.1% + 1).
+- **Keysight 34465A (search excerpts of the product fact sheet 5991-2110 and a Keysight Knowledge Center article)** [Industry estimate]:
+  - One-year DC voltage accuracy "30 ppm" (with 75, 35 and 16 ppm for the 34460A, 34461A and 34470A).
+  - The 100 mV to 10 V ranges "can be set to either 10 MΩ or 10 GΩ", while the 100 V and 1000 V ranges "remain at a 10 MΩ input impedance".
+  - The per-range specification (% of reading + % of range) was not verified and is not used.
+- **Sources:**
+  - [Fluke 87V product page](https://www.fluke.com/en-us/product/electrical-testing/digital-multimeters/fluke-87v).
+  - [Fluke 87 users manual](https://assets.fluke.com/manuals/87______umeng0800.pdf).
+  - [Keysight Truevolt fact sheet 5991-2110](https://www.keysight.com/dk/en/assets/7018-03882/product-fact-sheets/5991-2110.pdf) (not opened).
+  - [Keysight input-impedance article](https://docs.keysight.com/kkbopen/understanding-input-impedance-in-dc-voltage-measurements-with-the-keysight-34465a-truevolt-dmm-971445005.html) (not opened).
+  - Checked Nov 2026.
+
+## R-109 · PCB copper, wire gauge and four-terminal shunts
+
+*Primary documents read in full* (TI application report and Vishay datasheet), Nov 2026. The AWG definition is standard; ASTM B258 itself was not opened.
+
+- **TI AN-1229, *SIMPLE SWITCHER PCB Layout Guidelines* (SNVA054C, June 2002, revised April 2013)** [Established]:
+  - "1 oz is actually equivalent to 1.4 mils copper thickness (or 35 µm)."
+  - "A 0.5 cm wide Cu trace of thickness 1.4 mil has a resistance of 1 milliohm per cm length (at 20 ºC)."
+  - Our check: 2 squares per centimeter × 0.485 mΩ/□ (IACS copper, 1.4 mil = 35.56 µm) = 0.97 mΩ, consistent with the rounded 1 mΩ.
+- **Vishay Dale WSK2512, *Power Metal Strip Resistors, Low Value, Surface-Mount, 4-Terminal* (document 30108, revision 11 Dec 2023)** [Established]:
+  - 1.0 W at 70 °C.
+  - Resistance ranges by tolerance: ±0.1% for 0.01–0.2 Ω, ±0.5% for 0.001–0.2 Ω, ±1% for 0.0005–0.2 Ω.
+  - Temperature coefficient "± 350 for 0.5 mΩ to 0.99 mΩ, ± 250 for 0.001 Ω to 0.0029 Ω, ± 75 for 0.003 Ω to 0.0049 Ω, ± 35 for 0.005 Ω to 0.2 Ω" ppm/°C.
+  - Operating range −65 to +170 °C; element alloy (nickel-chrome or manganese-copper) "low TCR (< 20 ppm/°C)"; inductance 0.5 nH to 5 nH.
+  - This supersedes R-101's search-excerpt reading of the same datasheet. The copper-termination explanation of the TCR banding remains our inference.
+- **American Wire Gauge** [Established]:
+  - Diameter $d_n$ = 0.005 in × 92^((36 − n)/39), defined by 36 AWG = 0.005 in and 0000 AWG = 0.46 in with 39 geometric steps between them (ASTM B258; not opened).
+  - Our computation: 16 AWG = 1.291 mm (13.17 mΩ/m) and 14 AWG = 1.628 mm (8.285 mΩ/m) with IACS copper at 20 °C.
+- **Sources:**
+  - [TI SNVA054C](https://www.ti.com/lit/pdf/snva054).
+  - [Vishay WSK2512 datasheet](https://www.vishay.com/docs/30108/wsk2512.pdf).
   - Checked Nov 2026.
