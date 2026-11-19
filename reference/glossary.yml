@@ -2300,3 +2300,69 @@
 - term: Efficiency
   definition: The ratio of output power to input power, η = P_out/P_in, of a converter or distribution path; efficiencies of stages in series multiply.
   chapter: "06-01"
+
+# ---------------------------------------------------------------- 06-02
+- term: Element law
+  definition: The relation between an element's terminal voltage and current (its constitutive relation), such as v = Ri; with KCL and KVL it determines every voltage and current in a circuit.
+  chapter: "06-02"
+  see_also: [i–v characteristic]
+- term: i–v characteristic
+  definition: The plot of all (voltage, current) pairs an element permits; a resistor's is a line through the origin, an ideal voltage source's a vertical line, an ideal current source's a horizontal line.
+  chapter: "06-02"
+- term: Linear element
+  definition: An element whose i–v characteristic is a straight line through the origin (v = Ri); sources, whose lines miss the origin, and diodes are not linear in this sense.
+  chapter: "06-02"
+- term: Passive element
+  definition: An element that can never deliver net energy to the rest of a circuit, such as a resistor; sources, which can, are active.
+  chapter: "06-02"
+- term: Resistance
+  definition: The ratio of voltage to current for a resistor, R = v/i, in ohms (V/A); for a uniform conductor R = ρL/A.
+  chapter: "06-02"
+  see_also: [Conductance, Ohm's law]
+- term: Conductance
+  definition: The reciprocal of resistance, G = 1/R = i/v, in siemens (A/V); convenient for parallel elements and nodal analysis.
+  chapter: "06-02"
+  see_also: [Resistance]
+- term: Short circuit
+  definition: An element or connection with zero voltage across it whatever its current (R = 0); an ideal wire or a closed ideal switch.
+  chapter: "06-02"
+  see_also: [Open circuit]
+- term: Open circuit
+  definition: A break with zero current whatever the voltage across it (R = ∞); an unconnected terminal or an open ideal switch.
+  chapter: "06-02"
+  see_also: [Short circuit]
+- term: Ideal voltage source
+  definition: An element that maintains a specified voltage between its terminals regardless of the current through it; a 0 V source is a short circuit.
+  chapter: "06-02"
+  see_also: [Ideal current source, Internal resistance]
+- term: Ideal current source
+  definition: An element that maintains a specified current regardless of the voltage across it; a 0 A source is an open circuit.
+  chapter: "06-02"
+  see_also: [Ideal voltage source]
+- term: Internal resistance
+  definition: The series resistance in the model of a real source (an ideal source in series with R_int), which makes the terminal voltage fall as v = V_oc − i R_int under load.
+  chapter: "06-02"
+  see_also: [Open-circuit voltage, Short-circuit current]
+- term: Open-circuit voltage
+  definition: The terminal voltage of a source or network with no load connected (zero current), V_oc.
+  chapter: "06-02"
+- term: Short-circuit current
+  definition: The current a source or network would deliver into a short circuit, I_sc = V_oc/R_int for a linear model; a model parameter, not a safe operating point.
+  chapter: "06-02"
+- term: E-series (preferred values)
+  definition: The IEC 60063 series of standard component values with n values per decade spaced by about 10^(1/n), such as E12, E24 and E96, chosen so neighbouring values' tolerance bands roughly touch.
+  chapter: "06-02"
+  see_also: [Tolerance]
+- term: Tolerance
+  definition: For a component, the maximum allowed deviation of its value from nominal when made, such as ±5% (950 to 1050 Ω for 1 kΩ); temperature drift and ageing come on top.
+  chapter: "06-02"
+  see_also: [Worst-case analysis]
+- term: Worst-case analysis
+  definition: Evaluating a design at the combination of component tolerances and operating conditions that pushes each output furthest from nominal, to show it works in every case.
+  chapter: "06-02"
+- term: Power rating
+  definition: The power a component can dissipate continuously at a stated ambient temperature, derated above it; designers usually run parts well below it.
+  chapter: "06-02"
+- term: Incremental resistance
+  definition: The slope dv/di of a nonlinear element's i–v curve at an operating point, the resistance a small signal sees; for a diode it is about V_T/I.
+  chapter: "06-02"

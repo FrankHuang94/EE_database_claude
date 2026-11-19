@@ -1,0 +1,63 @@
+* Lab 06-02 Part 3 -- cells in parallel. Each cell is an ideal source with a series internal
+* resistance. VM* are 0 V sources that measure each cell's current (positive into their + node,
+* which is wired so that a positive reading means current flowing OUT of the cell's + terminal).
+*
+* EXPECT icirc key:../../chapters/06-02-circuit-elements-and-ohms-law.md#Ex_06-02.5a rtol=1e-6
+* EXPECT vt    key:../../chapters/06-02-circuit-elements-and-ohms-law.md#Ex_06-02.5b rtol=1e-6
+* EXPECT vtl   key:../../chapters/06-02-circuit-elements-and-ohms-law.md#Ex_06-02.5f rtol=1e-3
+* EXPECT ial   key:../../chapters/06-02-circuit-elements-and-ohms-law.md#Ex_06-02.5g rtol=1e-3
+* EXPECT ibl   key:../../chapters/06-02-circuit-elements-and-ohms-law.md#Ex_06-02.5h rtol=1e-3
+* EXPECT v3    key:../../solutions/06-02-solutions.md#06-02.12a rtol=1e-6
+* EXPECT iweak key:../../solutions/06-02-solutions.md#06-02.12c scale=-1 rtol=1e-3
+* EXPECT i01   key:README.md#Lab_06-02.a rtol=1e-6
+
+* ---- Example 06-02.5 without load: 4.20 V and 3.60 V cells, 50 mOhm each
+VA  a 0 DC 4.2
+RA  a ma 0.05
+VMA ma t 0
+VB  b 0 DC 3.6
+RB  b mb 0.05
+VMB mb t 0
+* ---- the same with a 1 Ohm load
+VA2  a2 0 DC 4.2
+RA2  a2 ma2 0.05
+VMA2 ma2 tl 0
+VB2  b2 0 DC 3.6
+RB2  b2 mb2 0.05
+VMB2 mb2 tl 0
+RL   tl 0 1
+* ---- Problem 06-02.12: 4.0, 4.0 and 3.7 V, 60 mOhm each
+V31  c1 0 DC 4.0
+R31  c1 t3 0.06
+V32  c2 0 DC 4.0
+R32  c2 t3 0.06
+V33  c3 0 DC 3.7
+R33  c3 m3 0.06
+VM3  m3 t3 0
+* ---- Lab Part 3: two cells differing by 0.1 V
+VC1 e1 0 DC 4.0
+RC1 e1 me 0.05
+VMC me te 0
+VC2 e2 0 DC 3.9
+RC2 e2 te 0.05
+
+.control
+op
+let icirc = i(VMA)
+let vt = v(t)
+let vtl = v(tl)
+let ial = i(VMA2)
+let ibl = i(VMB2)
+let v3 = v(t3)
+let iweak = i(VM3)
+let i01 = i(VMC)
+echo "icirc = $&icirc"
+echo "vt = $&vt"
+echo "vtl = $&vtl"
+echo "ial = $&ial"
+echo "ibl = $&ibl"
+echo "v3 = $&v3"
+echo "iweak = $&iweak"
+echo "i01 = $&i01"
+.endc
+.end

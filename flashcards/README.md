@@ -20,5 +20,5 @@ Math is written as `\(...\)` (inline) and `\[...\]` (display), which Anki render
 | 03 · Probability, Statistics and Random Variables | [03-probability-statistics-and-random-variables.csv](03-probability-statistics-and-random-variables.csv) | 134 |
 | 04 · Physics for EE | [04-physics-for-ee.csv](04-physics-for-ee.csv) | 150 |
 | 05 · Programming for Engineers (05-01 to 05-09) | [05-programming-for-engineers.csv](05-programming-for-engineers.csv) | 128 |
-| 06 · Circuit Analysis I (06-01 so far) | [06-circuit-analysis-1-dc.csv](06-circuit-analysis-1-dc.csv) | 14 |
+| 06 · Circuit Analysis I (06-01 to 06-02 so far) | [06-circuit-analysis-1-dc.csv](06-circuit-analysis-1-dc.csv) | 28 |
 | 07 · Circuit Analysis II (07-02 so far) | [07-circuit-analysis-2-transient-and-ac.csv](07-circuit-analysis-2-transient-and-ac.csv) | 26 |

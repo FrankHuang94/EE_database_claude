@@ -1,0 +1,69 @@
+* Lab 06-02 -- element laws in ngspice: a diode's static and incremental resistance, a battery's
+* internal resistance, and a supply's terminal line.
+* The simulation runs at 300 K (TEMP = TNOM = 26.85 C) so that the diode's thermal voltage
+* kT/q is 25.852 mV, the value used in the chapter.
+*
+* EXPECT vd1   key:../../solutions/06-02-solutions.md#06-02.13a rtol=1e-4
+* EXPECT vd10  key:../../solutions/06-02-solutions.md#06-02.13d rtol=1e-4
+* EXPECT rd1   key:../../solutions/06-02-solutions.md#06-02.13c rtol=2e-3
+* EXPECT pload key:../../chapters/06-02-circuit-elements-and-ohms-law.md#Ex_06-02.3c rtol=1e-3
+* EXPECT pint  key:../../chapters/06-02-circuit-elements-and-ohms-law.md#Ex_06-02.3d rtol=2e-3
+* EXPECT v2a   key:../../chapters/06-02-circuit-elements-and-ohms-law.md#Ex_06-02.3f rtol=1e-4
+* EXPECT v8a   key:../../solutions/06-02-solutions.md#06-02.7d rtol=1e-4
+* EXPECT rint  key:README.md#Lab_06-02.e rtol=1e-4
+
+.options TNOM=26.85
+.temp 26.85
+.model dmod D(IS=1e-14 N=1)
+
+* ---- diode driven by current sources: 1 mA, and 0.9995 / 1.0005 mA for a centred slope, then 10 mA
+I1  0 d1 DC 1m
+D1  d1 0 dmod
+I2  0 d2 DC 1.0005m
+D2  d2 0 dmod
+I4  0 d4 DC 0.9995m
+D4  d4 0 dmod
+I3  0 d3 DC 10m
+D3  d3 0 dmod
+
+* ---- Example 06-02.3: 3.90 V cell with 0.40 Ohm, a 10 Ohm load; and the same cell delivering 2 A
+VB1  b1 0 DC 3.9
+RB1  b1 t1 0.4
+RL1  t1 0 10
+VB2  b2 0 DC 3.9
+RB2  b2 t2 0.4
+IL2  t2 0 DC 2
+
+* ---- Problem 06-02.7: 12.0 V supply with 0.20 Ohm delivering 8 A
+VS   s 0 DC 12
+RS   s ts 0.2
+IL3  ts 0 DC 8
+
+* ---- the cell again, with a variable load current for the terminal-line sweep
+VB4  b4 0 DC 3.9
+RB4  b4 t4 0.4
+IL4  t4 0 DC 0
+
+.control
+op
+let vd1 = v(d1)
+let vd10 = v(d3)
+let rd1 = (v(d2) - v(d4)) / 1u
+let pload = @RL1[p]
+let pint = @RB1[p]
+let v2a = v(t2)
+let v8a = v(ts)
+echo "vd1 = $&vd1"
+echo "vd10 = $&vd10"
+echo "rd1 = $&rd1"
+echo "pload = $&pload"
+echo "pint = $&pint"
+echo "v2a = $&v2a"
+echo "v8a = $&v8a"
+dc IL4 0 5 0.01
+meas dc vt0 FIND v(t4) AT=0
+meas dc vt4 FIND v(t4) AT=4
+let rint = (vt0 - vt4) / 4
+echo "rint = $&rint"
+.endc
+.end

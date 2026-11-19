@@ -27,7 +27,7 @@ The foundation of circuit theory: elements, Kirchhoff's laws, systematic nodal a
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
 | [06-01 · Charge, Current, Voltage, Power and the Lumped Circuit Abstraction](chapters/06-01-charge-current-voltage-power.md) | 6 | ✅ verified | [problems](problems/06-01-problems.md) · [solutions](solutions/06-01-solutions.md) · [lab](labs/06-01-lab/README.md) · [verify](verify/verify_06_01.py) |
-| [06-02 · Circuit Elements and Ohm's Law](chapters/06-02-circuit-elements-and-ohms-law.md) | 6 | ⬜ planned | — |
+| [06-02 · Circuit Elements and Ohm's Law](chapters/06-02-circuit-elements-and-ohms-law.md) | 6 | ✅ verified | [problems](problems/06-02-problems.md) · [solutions](solutions/06-02-solutions.md) · [lab](labs/06-02-lab/README.md) · [verify](verify/verify_06_02.py) |
 | [06-03 · Kirchhoff's Laws, Series/Parallel and Dividers](chapters/06-03-kirchhoffs-laws.md) | 8 | ⬜ planned | — |
 | [06-04 · Nodal Analysis](chapters/06-04-nodal-analysis.md) | 10 | ⬜ planned | — |
 | [06-05 · Mesh Analysis](chapters/06-05-mesh-analysis.md) | 8 | ⬜ planned | — |
