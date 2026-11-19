@@ -3490,3 +3490,61 @@
 - term: Strained silicon
   definition: Silicon whose lattice is deliberately stretched or compressed, by a SiGe substrate or by local stressors, to reshape its bands and raise carrier mobility; introduced into production logic processes at the 90 nm generation.
   chapter: "09-01"
+# ---- 09-02
+- term: Effective density of states
+  definition: The number of states per volume, N_C (or N_V), that a band would have if all its states sat at the band edge, chosen so that n = N_C e^(−(E_C − E_F)/kT); N_C = 2(2π m_dn kT/h²)^(3/2), about 3.2×10¹⁹ cm⁻³ in silicon at 300 K.
+  chapter: "09-02"
+  see_also: [Density of states, Density-of-states effective mass]
+- term: Fermi level
+  definition: The energy E_F at which a state would be occupied with probability one half; in equilibrium it is constant throughout a system, and its position relative to the band edges sets the electron and hole concentrations.
+  chapter: "09-02"
+  see_also: [Fermi–Dirac distribution, Intrinsic Fermi level]
+- term: Boltzmann approximation
+  definition: Replacing the Fermi–Dirac occupation by e^(−(E − E_F)/kT), valid to within 5% for states more than 3kT above E_F; it gives n = N_C e^(−(E_C − E_F)/kT) for non-degenerate semiconductors.
+  chapter: "09-02"
+  see_also: [Degenerate semiconductor]
+- term: Degenerate semiconductor
+  definition: A semiconductor so heavily doped that its Fermi level lies within a few kT of a band edge or inside a band, so that Boltzmann statistics fail and the Fermi–Dirac integral is needed; silicon becomes degenerate above roughly 10¹⁸–10¹⁹ cm⁻³.
+  chapter: "09-02"
+  see_also: [Fermi–Dirac integral, Band-gap narrowing]
+- term: Fermi–Dirac integral
+  definition: The function F_1/2(η) = (2/√π)∫₀^∞ √x dx/(1 + e^(x − η)) that gives the carrier density of a parabolic band with any Fermi level, n = N_C F_1/2((E_F − E_C)/kT); it reduces to e^η when η ≪ −1.
+  chapter: "09-02"
+- term: Intrinsic Fermi level
+  definition: The Fermi level E_i of an undoped semiconductor, where n = p = n_i; it lies near mid-gap, offset by (kT/2)ln(N_V/N_C), and serves as the reference in n = n_i e^((E_F − E_i)/kT).
+  chapter: "09-02"
+  see_also: [Intrinsic carrier concentration]
+- term: Law of mass action
+  definition: In equilibrium, np = n_i², independent of doping, because thermal generation of electron–hole pairs balances their recombination, which is proportional to np; it fails under illumination or current.
+  chapter: "09-02"
+- term: Donor
+  definition: An impurity with one more valence electron than the atom it replaces (P, As or Sb in silicon), whose extra electron is bound by only tens of meV and is freed into the conduction band at room temperature, making the material n-type.
+  chapter: "09-02"
+  see_also: [Acceptor, Ionization energy]
+- term: Acceptor
+  definition: An impurity with one fewer valence electron than the atom it replaces (B, Al, Ga or In in silicon), which captures an electron from the valence band, leaving a mobile hole and making the material p-type.
+  chapter: "09-02"
+  see_also: [Donor]
+- term: Ionization energy
+  definition: For a dopant, the energy needed to free its bound carrier into the band, E_C − E_D for donors and E_A − E_V for acceptors; 45 meV for phosphorus and boron in silicon, about twice the hydrogen-model estimate of 26 meV.
+  chapter: "09-02"
+- term: Majority carrier
+  definition: The more numerous carrier type in a doped region, electrons in n-type and holes in p-type material; its density is approximately the net doping.
+  chapter: "09-02"
+  see_also: [Minority carrier]
+- term: Minority carrier
+  definition: The less numerous carrier type in a doped region, with density n_i² divided by the majority density in equilibrium; minority carriers govern junction leakage, diffusion currents and bipolar transistor action.
+  chapter: "09-02"
+  see_also: [Majority carrier, Law of mass action]
+- term: Compensation
+  definition: The presence of both donors and acceptors in one region, where the carrier densities depend on the net doping |N_D − N_A| while all the ions still scatter carriers; used to form regions of one type inside another.
+  chapter: "09-02"
+- term: Freeze-out
+  definition: The recapture of carriers by their dopants at low temperature, when kT becomes small compared with the ionization energy; lightly doped silicon begins to lose carriers this way below about 100 K.
+  chapter: "09-02"
+- term: Band-gap narrowing
+  definition: The reduction of a semiconductor's band gap at high doping, tens of meV near 10¹⁹ cm⁻³ in silicon, which raises the effective n_i² of the region exponentially and affects bipolar emitters and solar cells.
+  chapter: "09-02"
+- term: Random dopant fluctuation
+  definition: The variation of transistor properties, chiefly threshold voltage, caused by the random number and placement of dopant atoms in a small channel; the count is Poisson-distributed, so a mean of N atoms varies by about √N.
+  chapter: "09-02"
