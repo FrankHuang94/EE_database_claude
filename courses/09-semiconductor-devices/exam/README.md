@@ -68,9 +68,10 @@ p-type silicon with $N_A$ = 5 × 10¹⁷ cm⁻³ has a 4 nm SiO₂ gate oxide an
 (a) Find $C_{ox}$, $\phi_B$ and $V_{FB}$.
 (b) Find the depletion-charge term $Q_{dep}/C_{ox}$ at threshold and the threshold voltage.
 (c) Find $W_{d\max}$ and the minimum high-frequency capacitance, absolute and as a fraction of $C_{ox}$.
+(d) *Sketch and label.* (i) The energy-band diagram across gate, oxide and silicon at threshold: mark $E_C$, $E_V$, $E_i$ and $E_F$ in the silicon, the surface band bending and the voltage across the oxide, with their values. (ii) The low- and high-frequency $C$–$V$ curves: label accumulation, depletion and inversion, $C_{ox}$, $C_{\min}$, $V_{FB}$ and $V_{TH}$.
 
 **9 [B] · The long-channel MOSFET.** (09-09)
-An NMOS with the gate stack of Question 8 has $W$ = 10 µm, $L$ = 1 µm, $\mu_{ns}$ = 300 cm²/V·s, $m$ = 1.25 and $V_{TH}$ = 0.35 V.
+An NMOS with the gate stack of Question 8 has $W$ = 10 µm, $L$ = 1 µm, $\mu_{ns}$ = 300 cm²/V·s, $m$ = 1.25 and a threshold adjusted (by implant) to $V_{TH}$ = 0.35 V, slightly above the 0.341 V of Question 8.
 (a) At $V_{GS}$ = 1.0 V, find $V_{Dsat}$, $I_{Dsat}$ and $g_m$ in saturation.
 (b) Find the subthreshold swing and the off-current at $V_{GS}$ = 0, taking the threshold-defining current as 100 nA × W/L.
 
@@ -95,15 +96,17 @@ A 50 nm NMOS has a 2 nm oxide, $m$ = 1.2, $\mu_{ns}$ = 200 cm²/V·s and $v_{sat
 (a) Design a 1700 V triangular-field drift layer with a fixed critical field: silicon with $\mathcal E_c$ = 2.0 × 10⁵ V/cm, $\varepsilon_r$ = 11.7 and $\mu_n$ = 1350 cm²/V·s; 4H-SiC with 2.5 × 10⁶ V/cm, 9.96 and 1000 cm²/V·s. Find each doping, thickness and specific on-resistance, and the ratio.
 (b) A heterojunction emitter adds a 0.15 eV hole barrier. By what factor can the gain rise?
 (c) Find the sheet resistance of a 2DEG with 9 × 10¹² cm⁻² electrons at 1800 cm²/V·s.
+(d) *Derive* the three expressions you used in (a), for $N_D$, $W$ and $R_{on,sp}$, from Poisson's equation for a uniformly doped layer whose field falls linearly from $\mathcal E_c$ to zero, and show that $R_{on,sp} \propto 1/\mathcal E_c^3$ at fixed $V_B$.
 
 **14 [B] · Optoelectronics.** (09-14)
 (a) Find the responsivity at 905 nm for $\eta$ = 0.6.
 (b) Find the round-trip time to a target 150 m away.
 (c) A pixel has a full well of 10,000 electrons and 3 electrons of read noise. Find its dynamic range in dB.
 (d) A solar cell has $J_{sc}$ = 38 mA/cm² and $J_0$ = 2 × 10⁻¹³ A/cm² under 100 mW/cm². Find $V_{oc}$. The maximum-power voltage satisfies $V = V_{oc} - V_T\ln(1 + V/V_T)$; starting from $V_{oc} - 3V_T$, iterate twice. Then find $J_{mp}$, the fill factor and the efficiency.
+(e) *Derive* the two formulas used in (d): $V_{oc}$ from $J = J_{sc} - J_0(e^{V/V_T} - 1)$, and the maximum-power condition from $d(JV)/dV = 0$.
 
 **15 [C] · Diligence.** A start-up pitches its 1200 V power transistor: "built on a 3-nanometer-class process, it has ten times lower on-resistance than the best SiC MOSFETs, and our matching LiDAR SPAD has industry-best detection efficiency."
-(a) If the tenfold advantage came entirely from the drift layer at equal $\varepsilon\mu$, what critical-field ratio would it require? Is that plausible for any known material? (3 points)
+(a) If the tenfold advantage came entirely from the drift layer at equal $\varepsilon\mu$, what critical-field ratio would it require? Taking SiC's critical field at 1200 V as 2.84 MV/cm (the course's ionization-integral value, 09-13), what field would the claim need, and is that plausible for SiC or GaN? (3 points)
 (b) Explain why "3-nanometer-class" says nothing useful about a 1200 V transistor. (3 points)
 (c) List three specific measurements or data you would request to test the on-resistance claim, and why. (3 points)
 (d) What must accompany a detection-efficiency claim for it to be comparable? (3 points)

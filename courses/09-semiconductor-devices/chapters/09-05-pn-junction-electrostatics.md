@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 09-05 · PN Junction Electrostatics
 
 | | |

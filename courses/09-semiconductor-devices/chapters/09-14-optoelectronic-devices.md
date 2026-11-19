@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 09-14 · Optoelectronic Devices
 
 | | |
@@ -71,11 +71,13 @@ $$
 \text{SNR} = \frac{I_{ph}}{\sqrt{2q(I_{ph} + I_d)B}} .
 $$
 
-Real receivers add the thermal noise of the amplifier, often the dominant term (Course 17, Course 24).
+Here SNR is a ratio of rms currents, an amplitude ratio, so in decibels it is $20\log_{10}\text{SNR}$. Optical-link texts (Course 24) often quote the power ratio, its square; $10\log_{10}$ of that gives the same decibels. Real receivers add the thermal noise of the amplifier, often the dominant term (Course 17, Course 24).
+
+**Bandwidth.** A photodiode responds no faster than its carriers cross the depletion region. Carriers generated at one edge cross the width $W$ at the saturation velocity in $t_{tr} = W/v_{sat}$, so a short light pulse produces a rectangular current pulse of that length. Its Fourier transform has magnitude $|\sin(\pi ft_{tr})/(\pi ft_{tr})|$, which falls to $1/\sqrt2$ at $ft_{tr}$ = **0.443**, so $f_{3\text{dB}} \approx 0.443\,v_{sat}/W$. A thicker depletion region absorbs more light but responds more slowly, and its capacitance with the load resistance sets a second, RC limit (Problem 09-14.4).
 
 ### 3.3 Avalanche photodiodes and single-photon detectors
 
-**Avalanche photodiodes.** If the photodiode is reverse-biased near breakdown, photogenerated carriers are multiplied by impact ionization as they cross the depletion region: an **avalanche photodiode** (APD) [1]. The multiplication factor $M$ is the one computed in 09-06. Gain lifts small signals above amplifier noise, at the cost of extra noise from the randomness of the multiplication.
+**Avalanche photodiodes.** If the photodiode is reverse-biased near breakdown, photogenerated carriers are multiplied by impact ionization as they cross the depletion region: an **avalanche photodiode** (APD) [1]. The multiplication factor $M$ is the one computed in 09-06. Gain lifts small signals above amplifier noise, at the cost of extra noise from the randomness of the multiplication. Each carrier's gain fluctuates, so the shot noise grows as $M^2F$ rather than $M^2$: $\overline{i_n^2} = 2qI_{ph}M^2FB$, where $F \ge 1$ is the **excess noise factor**. McIntyre's analysis gives $F = kM + (1 - k)(2 - 1/M)$ when electrons start the avalanche, with $k$ the ratio of the hole to the electron ionization coefficient [8]. For $M$ = 10, $k$ = 0.1 gives $F$ = **2.71**, while $k$ = 1 gives $F = M$ = 10: low-noise APDs need a material in which one carrier ionizes far more readily than the other, as electrons do in silicon (09-06's coefficients).
 
 **Single-photon avalanche diodes.** Bias the junction *above* breakdown and a single carrier can trigger a self-sustaining avalanche, a macroscopic current pulse from one photon. This **single-photon avalanche diode** (SPAD), operated in "Geiger mode", must then be quenched (the bias lowered below breakdown) and recharged before it can detect again; this recovery time is its **dead time**. The probability that an incident photon triggers a detectable avalanche is the **photon detection efficiency** (PDE). If $\bar n$ photons arrive on average in a time window, the number detected is Poisson with mean PDE × $\bar n$, so the probability of at least one detection is
 
@@ -102,7 +104,7 @@ Smaller pixels hold less charge, so their SNR and dynamic range fall. Lowering r
 An LED is a forward-biased junction in a direct-gap material. Injected electrons and holes recombine radiatively, emitting photons with $h\nu \approx E_g$, so the emission wavelength is $\lambda \approx 1.24/E_g$ [1]. Its efficiency is a product of factors:
 
 - **Internal quantum efficiency** (IQE): the fraction of recombinations that emit a photon. Radiative recombination is fast in direct-gap materials (nanoseconds) and slow in indirect ones (milliseconds), where trap-assisted recombination wins [1]. Quantum wells raise the carrier densities where recombination happens [1].
-- **Extraction efficiency**: the fraction of photons that escape the chip. Semiconductors have high refractive indices $n$, so light hitting the surface beyond the critical angle $\theta_c = \arcsin(1/n)$ is totally internally reflected. Only a cone of half-angle $\theta_c$ escapes each face, a solid-angle fraction $(1 - \cos\theta_c)/2$, and even inside the cone the Fresnel reflection $[(n-1)/(n+1)]^2$ at normal incidence returns part of it. Shaped chips, textured surfaces, reflectors and lenses raise extraction [1].
+- **Extraction efficiency**: the fraction of photons that escape the chip. Semiconductors have high refractive indices $n$, so light hitting the surface beyond the critical angle $\theta_c = \arcsin(1/n)$ is totally internally reflected. Only a cone of half-angle $\theta_c$ escapes each face. For light emitted equally in all directions, the fraction inside the cone is its solid angle over the full sphere, $\int_0^{\theta_c}2\pi\sin\theta\,d\theta/4\pi = (1 - \cos\theta_c)/2$, and even inside the cone the Fresnel reflection $[(n-1)/(n+1)]^2$ at normal incidence returns part of it. Shaped chips, textured surfaces, reflectors and lenses raise extraction [1].
 - **Electrical efficiency**: the photon energy $h\nu$ against the energy $qV$ each injected electron costs.
 
 The **wall-plug efficiency** (optical power out per electrical power in) is the product of IQE, extraction and $h\nu/qV$.
@@ -119,7 +121,13 @@ $$
 g_{th} = \alpha_i + \frac{1}{2L}\ln\frac{1}{R_1R_2} .
 $$
 
-Above threshold the extra injected carriers become photons, and output power rises linearly with current.
+Above threshold the gain is clamped at $g_{th}$, so the carrier density stops rising and every extra injected electron produces stimulated photons. Of those, the fraction that leaves through the mirrors rather than being absorbed inside is the mirror loss over the total loss, $\alpha_m/(\alpha_m + \alpha_i)$ with $\alpha_m = (1/2L)\ln(1/R_1R_2)$. With an internal efficiency $\eta_i$ for converting injected electrons to photons, the output power is
+
+$$
+P = \eta_d\,\frac{h\nu}{q}\,(I - I_{th}), \qquad \eta_d = \eta_i\frac{\alpha_m}{\alpha_m + \alpha_i} ,
+$$
+
+a straight line above threshold, whose slope $\eta_dh\nu/q$ (in W/A) is the **slope efficiency**.
 
 **VCSELs.** A vertical-cavity surface-emitting laser (VCSEL) uses stacks of alternating layers, distributed Bragg reflectors (DBRs), as mirrors, and emits from the wafer surface [1]. Because they can be built and tested by the thousands on a wafer [1], VCSELs suit applications that need many inexpensive lasers.
 
@@ -215,7 +223,7 @@ a transcendental equation solved numerically. The **fill factor** $FF = V_{mp}I_
 
 ### Example 09-14.6 · LED extraction and efficiency (tier B)
 
-**Setup.** (a) For GaAs, estimate the refractive index from the handbook's high-frequency dielectric constant (10.89) as $n = \sqrt{\varepsilon_\infty}$. Find the critical angle, the escape-cone fraction for one face, the normal-incidence Fresnel transmission, and their product as a crude extraction estimate for a flat chip. (b) A blue LED emits at 450 nm, with an IQE of 0.9 and a shaped-chip extraction of 0.8, at 3.0 V. Find its wall-plug efficiency. (c) What fraction of the photon energy survives conversion from 450 nm to 555 nm?
+**Setup.** (a) For GaAs, estimate the refractive index from the handbook's high-frequency dielectric constant (10.89) as $n = \sqrt{\varepsilon_\infty}$. (This is a lower bound: the index rises toward the band edge, where the LED emits, so the true escape cone is a little smaller and the estimate a little optimistic.) Find the critical angle, the escape-cone fraction for one face, the normal-incidence Fresnel transmission, and their product as a crude extraction estimate for a flat chip. (b) A blue LED emits at 450 nm, with an IQE of 0.9 and a shaped-chip extraction of 0.8, at 3.0 V. Find its wall-plug efficiency. (c) What fraction of the photon energy survives conversion from 450 nm to 555 nm?
 
 **Solution.**
 
@@ -298,6 +306,8 @@ a transcendental equation solved numerically. The **fill factor** $FF = V_{mp}I_
 | Ex 09-14.8g | V_oc − V_mp | 83 | mV |
 | T 09-14.a | luminous efficacy at 555 nm | 683 | lm/W |
 | T 09-14.b | Hu typical fill factor | 0.75 | — |
+| T 09-14.c | transit-time bandwidth factor | 0.443 | — |
+| T 09-14.d | excess noise factor, M = 10, k = 0.1 | 2.71 | — |
 
 *Every value is recomputed by [verify_09_14.py](../verify/verify_09_14.py) by an independent route: photon energies from CODATA constants; absorption thickness by root finding on the absorbed fraction; shot noise by simulating Poisson photoelectron counts and measuring their spread (seeded), cross-checked against the formula; time of flight from the speed of light; detection probability by summing the Poisson series; the escape cone by integrating over solid angle; the laser threshold by finding where the round-trip gain reaches one; and the solar-cell maximum-power point by solving $dP/dV = 0$ with root finding.*
 
@@ -372,7 +382,7 @@ The lab, [labs/09-14-lab](../labs/09-14-lab/README.md), has a notebook and an ng
 
 ### Marketing vs Reality
 
-- **"Highest PDE in the industry."** *Reality:* PDE depends on wavelength, bias and fill factor. *Sanity check:* ask at which wavelength and excess bias, and whether it includes fill factor.
+- **"Highest PDE in the industry."** *Reality:* PDE depends on wavelength, bias and fill factor, and records are overtaken. Sony called the IMX611's 28% (2023) the highest in the industry; its own IMX479 (2025) quotes 37% at 940 nm [3] **[Industry estimate]** (vendor specifications), for a different product, market and date. *Sanity check:* ask at which wavelength and excess bias, and whether it includes fill factor.
 - **"Record solar efficiency."** *Reality:* records are for small laboratory cells under standard conditions; modules and field performance are lower (26.0% for the best laboratory silicon module, against 28.1% for cells [5]). *Sanity check:* ask for cell or module, area, and who verified it.
 - **"200 lm/W LEDs."** *Reality:* package efficacy at low current and 25 °C exceeds luminaire efficacy at operating temperature. *Sanity check:* ask for luminaire efficacy at operating current and temperature.
 
@@ -415,6 +425,8 @@ The lab, [labs/09-14-lab](../labs/09-14-lab/README.md), has a notebook and an ng
 | P 09-14.s | TSMC JV contribution | 282 | ¥ billion |
 | P 09-14.t | IMX611 effective pixels | 23000 | — |
 | P 09-14.u | PC-LED package efficacy a decade earlier | 85 | lm/W |
+| P 09-14.v | IMX479 PDE | 37 | % |
+| P 09-14.w | IMX479 wavelength | 940 | nm |
 
 ## 10. Concept check
 
@@ -493,3 +505,4 @@ Now work the [problem set](../problems/09-14-problems.md).
 5. Fraunhofer ISE, *Photovoltaics Report*, updated 14 Jul 2026, p. 7 (citing the Solar Cell Efficiency Tables, version 68), [report](https://www.ise.fraunhofer.de/content/dam/ise/de/documents/publications/studies/Photovoltaics-Report.pdf). [R-175](../../../reference/research-log.md#r-175--optoelectronic-device-references).
 6. U.S. Department of Energy, *2022 Solid-State Lighting R&D Opportunities*, Feb 2022, [report](https://www.energy.gov/sites/default/files/2022-02/2022-ssl-rd-opportunities.pdf). [R-175](../../../reference/research-log.md#r-175--optoelectronic-device-references).
 7. LONGi, "ISFH-verified HIBC crystalline silicon cell efficiency" (Sep 2026), [news](https://www.longi.com/en/news/isfh-hibc-crystalline-silicon-cell-efficiency/). [R-175](../../../reference/research-log.md#r-175--optoelectronic-device-references).
+8. R. J. McIntyre, "Multiplication noise in uniform avalanche diodes," *IEEE Transactions on Electron Devices* ED-13 (1966) 164–168 (excess noise factor; cited for the formula, not read for this build).

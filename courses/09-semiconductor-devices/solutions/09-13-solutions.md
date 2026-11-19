@@ -26,7 +26,7 @@ From 300 K to 400 K the gap shrinks by **45.8** meV.
 
 ### Solution 09-13.3
 
-$N_D = \varepsilon_s\mathcal E_c^2/2qV_B$ = **5.21 × 10¹⁵** cm⁻³ and $W = 2V_B/\mathcal E_c$ = **26.4** µm, so $R_{on,sp} = W/q\mu N_D$ = **3.16** mΩ·cm². Baliga's formula $4V_B^2/\varepsilon_s\mu\mathcal E_c^3$ gives the same **3.16** mΩ·cm², as it must, since it is the same algebra.
+$N_D = \varepsilon_s\mathcal E_c^2/2qV_B$ = **5.21 × 10¹⁵** cm⁻³ and $W = 2V_B/\mathcal E_c$ = **26.4** µm, so $R_{on,sp} = W/q\mu N_D$ = **3.16** mΩ·cm². Baliga's formula $4V_B^2/\varepsilon_s\mu\mathcal E_c^3$ gives the same **3.16** mΩ·cm², as it must, since it is the same algebra: a consistency check, not an independent one. The independent test is Problem 09-13.4, where the critical field comes from the ionization integral instead of being assumed.
 
 ### Solution 09-13.4
 
@@ -68,11 +68,11 @@ Both ratios exceed the area ratio of 2.25, and the larger die gains more, becaus
 
 ### Solution 09-13.11
 
-$C_b = \varepsilon/d$ = 9 × 8.854 × 10⁻¹⁴/(20 × 10⁻⁷) = **3.98 × 10⁻⁷** F/cm², so $\Delta n_s/\Delta V = C_b/q$ = **2.49 × 10¹²** cm⁻² per volt. Emptying 1.39 × 10¹³ cm⁻² takes about **5.59** V, so the threshold is near −5.6 V: the device is normally on, and must be held at a negative gate voltage to turn it off.
+$C_b = \varepsilon/d$ = 9 × 8.854 × 10⁻¹⁴/(20 × 10⁻⁷) = **3.98 × 10⁻⁷** F/cm², so $\Delta n_s/\Delta V = C_b/q$ = **2.49 × 10¹²** cm⁻² per volt. Emptying 1.39 × 10¹³ cm⁻² takes about **5.59** V, so the threshold is near −5.6 V: the device is normally on, and must be held at a negative gate voltage to turn it off. Two caveats make this an estimate. The full polarization charge is an upper limit on the 2DEG density, since part of it is compensated at the AlGaN surface (§3.4), which would make the threshold less negative. And the gate's Schottky barrier and the conduction-band offset $\Delta E_c$ shift the threshold positive by roughly their difference; a real design includes both.
 
 ### Solution 09-13.12
 
-Cost per die scales as wafer cost over dies per wafer: (1.4/1168)/(1.0/640) = **0.768**, a 23% saving at equal yield. With yields of 70% and 85%: (1.4/(1168 × 0.70))/(1.0/(640 × 0.85)) = **0.932**: most of the saving disappears. The break-even 200 mm yield is 1.4 × 640 × 0.85/1168 = **65.2**%. Wafer-size transitions pay only once yields mature, which is why they take years.
+Cost per die scales as wafer cost over dies per wafer: (1.4/1168)/(1.0/640) = **0.767**, a 23% saving at equal yield. With yields of 70% and 85%: (1.4/(1168 × 0.70))/(1.0/(640 × 0.85)) = **0.932**: most of the saving disappears. The break-even 200 mm yield is 1.4 × 640 × 0.85/1168 = **65.2**%. Wafer-size transitions pay only once yields mature, which is why they take years.
 
 ---
 
@@ -116,6 +116,6 @@ Cost per die scales as wafer cost over dies per wafer: (1.4/1168)/(1.0/640) = **
 | 09-13.11a | barrier capacitance | 3.98e-7 | F/cm² |
 | 09-13.11b | density change per volt | 2.49e12 | cm⁻² |
 | 09-13.11c | voltage to empty the channel | 5.59 | V |
-| 09-13.12a | cost-per-die ratio, equal yield | 0.768 | — |
+| 09-13.12a | cost-per-die ratio, equal yield | 0.767 | — |
 | 09-13.12b | cost per good die ratio | 0.932 | — |
 | 09-13.12c | break-even yield | 65.2 | % |

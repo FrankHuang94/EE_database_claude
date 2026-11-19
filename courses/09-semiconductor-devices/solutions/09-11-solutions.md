@@ -71,7 +71,11 @@ Trading 20% of the clock for a 14% lower supply lets nearly the whole chip run.
 
 ### Solution 09-11.10
 
-Cell height: 120 nm × 20/22 = 109.1 nm, so CPP × cell height = 46 × 109.1 = **5,018** nm². The density gain is 5,760/5,018 = **1.15** over "2nm" and 7,680/5,018 = **1.53** over "3nm".
+(a) Cell height: 120 nm × 20/22 = 109.1 nm, so CPP × cell height = 46 × 109.1 = **5,018** nm². The density gain is 5,760/5,018 = **1.15** over "2nm" and 7,680/5,018 = **1.53** over "3nm".
+
+(b) With the table's 80 nm cell, CPP × cell height = 46 × 80 = **3,680** nm², a gain of 5,760/3,680 = **1.57** over "2nm". The table's NAND2 densities give 42.77/27.33 = **1.56**: the pitch product with the *listed* cell height matches the roadmap's own density, while the fixed-track assumption of (a) misses most of the gain. The difference is the track count, which falls from 5 to 4 between the two steps: the design-technology co-optimization (DTCO) lesson of Problem 09-12.9.
+
+(c) The pitch products give 7,680/5,760 = **1.33**, the NAND2 densities 27.33/19.29 = **1.42**. A pitch product is a first cut; cell architecture adds the rest.
 
 ### Solution 09-11.11
 
@@ -129,6 +133,11 @@ Even a modest threshold cut at constant area multiplies leakage power several-fo
 | 09-11.10b | pitch product | 5018 | nm² |
 | 09-11.10c | gain over 2nm | 1.15 | — |
 | 09-11.10d | gain over 3nm | 1.53 | — |
+| 09-11.10e | pitch product with 80 nm cell | 3680 | nm² |
+| 09-11.10f | gain over 2nm, 80 nm cell | 1.57 | — |
+| 09-11.10g | IRDS NAND2 ratio, A10 eq to 2nm | 1.56 | — |
+| 09-11.10h | pitch-product ratio, 3nm to 2nm | 1.33 | — |
+| 09-11.10i | IRDS NAND2 ratio, 3nm to 2nm | 1.42 | — |
 | 09-11.11a | off-current factor | 2.37 | — |
 | 09-11.11b | leakage power factor | 4.51 | — |
 | 09-11.12a | I_onN | 0.389 | mA/µm |

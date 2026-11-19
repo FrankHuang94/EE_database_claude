@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 09-13 · Compound and Wide-Bandgap Semiconductors
 
 | | |
@@ -32,7 +32,7 @@ Silicon wins wherever density and cost matter, which is most of electronics. Two
 
 **A wider gap is a taller wall.** Carriers are generated thermally across the gap at a rate ∝ $e^{-E_g/2kT}$ (09-02), so a wider gap means fewer stray carriers at a given temperature, and so less leakage and a higher operating temperature. A wider gap also means an electron must gain more energy before it can create an electron–hole pair by impact ionization (09-06), so the material holds a much higher field before it avalanches.
 
-**Holding voltage is about the field, not the thickness.** A junction holds voltage by spreading a field across a depletion layer: $V \approx \tfrac12\mathcal E_{\max}W$. If the material tolerates ten times the field, the layer can be ten times thinner *and* ten times more heavily doped for the same voltage. Its resistance falls by roughly a hundred times from geometry and doping, and by more once the field-dependence of breakdown is included.
+**Holding voltage is about the field, not the thickness.** A junction holds voltage by spreading a field across a depletion layer: $V \approx \tfrac12\mathcal E_{\max}W$. If the material tolerates ten times the field, the layer can be ten times thinner, and, since the doping that sets the field slope must then rise as $\mathcal E_c^2$, a hundred times more heavily doped for the same voltage. Its resistance, thickness divided by doping, falls about a thousandfold: $R \propto 1/\mathcal E_c^3$ (§3.3).
 
 **A finance analogy: specialist and generalist.** Silicon is the diversified conglomerate: cheapest per unit, enormous scale, good at almost everything. Compound semiconductors are specialist firms that win specific markets on superior performance, at higher unit cost and on thinner supply chains. *Where the analogy breaks:* physical constants, not management, set the specialists' advantages, so the market boundaries move only when costs change, not when silicon "tries harder".
 
@@ -58,7 +58,7 @@ Sources: Si, GaAs and InP from the Levinshtein–Rumyantsev handbook [1]; GaN fr
 Three groupings emerge:
 
 - **III–V compounds for speed** (GaAs, InP): light electrons and high mobility, direct gaps for optics (09-14), moderate breakdown.
-- **Wide-bandgap materials for power** (SiC, GaN): gaps near 3.3 eV and critical fields about ten times silicon's. GaN adds a high-mobility electron gas at heterointerfaces (§3.4).
+- **Wide-bandgap materials for power** (SiC, GaN): gaps above 3 eV. SiC's critical field is about ten times silicon's (§3.2); GaN's is reported to be at least comparable, but this course has not confirmed a value from a primary source (R-174). GaN adds a high-mobility electron gas at heterointerfaces (§3.4).
 - **Silicon** as the reference: cheapest, largest wafers, best oxide (09-08), and adequate for everything below a few hundred volts and a few tens of gigahertz.
 
 ### 3.2 Intrinsic carriers and temperature
@@ -69,7 +69,7 @@ $$
 \frac{n_{i,2}}{n_{i,1}} \approx e^{-(E_{g2} - E_{g1})/2kT} .
 $$
 
-For 4H-SiC against Si at 300 K this is $e^{-(3.26 - 1.12)/(2 \times 0.025852)} \approx 10^{-18}$. Junction leakage from thermal generation, proportional to $n_i$ (09-06), is negligible in SiC, and a SiC device can run at temperatures where silicon would be swamped by intrinsic carriers. The handbook gives GaAs an $n_i$ of 2.1 × 10⁶ cm⁻³ and an intrinsic resistivity of 3.3 × 10⁸ Ω·cm, against 1 × 10¹⁰ cm⁻³ and 3.2 × 10⁵ Ω·cm for silicon [1]. That is why undoped (**semi-insulating**) GaAs makes a low-loss substrate for microwave circuits, where a silicon substrate would conduct and absorb signal.
+For 4H-SiC against Si at 300 K this is $e^{-(3.26 - 1.12)/(2 \times 0.025852)} \approx 10^{-18}$. Junction leakage from thermal generation, proportional to $n_i$ (09-06), is negligible in SiC, and a SiC device can run at temperatures where silicon would be swamped by intrinsic carriers. The handbook gives GaAs an $n_i$ of 2.1 × 10⁶ cm⁻³ and an intrinsic resistivity of 3.3 × 10⁸ Ω·cm, against 1 × 10¹⁰ cm⁻³ and 3.2 × 10⁵ Ω·cm for silicon [1]. The small $n_i$ is necessary but not sufficient: even the purest GaAs contains residual impurities far above 2 × 10⁶ cm⁻³. Practical **semi-insulating** GaAs is compensated with deep levels (the native EL2 defect, or chromium doping) that pin the Fermi level near mid-gap, and the wide gap is what lets that pinning give resistivities approaching the intrinsic value. Such substrates make low-loss bases for microwave circuits. Silicon RF circuits reach for the same goal differently, with high-resistivity silicon or silicon-on-insulator substrates.
 
 ### 3.3 Breakdown and Baliga's limit
 
@@ -107,19 +107,19 @@ A **heterojunction** joins two semiconductors with different band gaps, such as 
 
 **Modulation doping.** In a uniformly doped semiconductor, the electrons share space with the ionized donors they came from, and scatter off them; mobility falls as doping rises (09-03). If the donors are placed in the wide-gap barrier layer and the electrons fall across the heterojunction into an undoped narrow-gap layer, the electrons are spatially separated from their donors. They form a thin sheet, a **two-dimensional electron gas** (2DEG), confined in a triangular quantum well at the interface (04-10) and moving with high mobility. A **high-electron-mobility transistor** (HEMT) uses a gate on the barrier to modulate the 2DEG density, exactly as a MOSFET gate modulates its inversion layer (09-09). The barrier acts as the gate dielectric, and $n_s \approx C_b(V_{GS} - V_{th})/q$ with $C_b$ the barrier capacitance per area.
 
-**Polarization in GaN.** Wurtzite GaN and AlN are polar crystals: even unstrained, they carry a **spontaneous polarization** $P_{sp}$ along the c-axis. A thin AlGaN layer grown on GaN is stretched to GaN's lattice constant, and this strain adds a **piezoelectric polarization** $P_{pz}$. Where the total polarization changes abruptly, at the AlGaN/GaN interface, a fixed bound sheet charge appears. From $\rho_{\text{bound}} = -\nabla\cdot\mathbf P$, with $z$ pointing from the GaN into the AlGaN, it equals the jump $\sigma = P_{\text{GaN}} - P_{\text{AlGaN}}$. For gallium-face growth it is positive, and it attracts a 2DEG with no doping at all. For an AlGaN layer of composition $x$, coherently strained to GaN, the in-plane strain is $\epsilon = (a_{\text{GaN}} - a_{\text{AlGaN}})/a_{\text{AlGaN}}$, and the piezoelectric polarization along c is
+**Polarization in GaN.** Wurtzite GaN and AlN are polar crystals: even unstrained, they carry a **spontaneous polarization** $P_{sp}$ along the c-axis. A thin AlGaN layer grown on GaN is stretched to GaN's lattice constant, and this strain adds a **piezoelectric polarization** $P_{pz}$. Where the total polarization changes abruptly, at the AlGaN/GaN interface, a fixed bound sheet charge appears. A non-uniform polarization leaves uncompensated bound charge, $\rho_{\text{bound}} = -\nabla\cdot\mathbf P$ (04-04). With $z$ pointing from the GaN into the AlGaN, integrate across the thin interface: $\sigma = -\int(dP_z/dz)\,dz = -(P_{\text{AlGaN}} - P_{\text{GaN}})$, the jump $\sigma = P_{\text{GaN}} - P_{\text{AlGaN}}$. For gallium-face growth it is positive, and it attracts a 2DEG with no doping at all. For an AlGaN layer of composition $x$, coherently strained to GaN, the in-plane strain is $\epsilon = (a_{\text{GaN}} - a_{\text{AlGaN}})/a_{\text{AlGaN}}$, and the piezoelectric polarization along c is
 
 $$
 P_{pz} = 2\epsilon\Big(e_{31} - e_{33}\frac{c_{13}}{c_{33}}\Big),
 $$
 
-where $e_{31}$, $e_{33}$ are piezoelectric coefficients and $c_{13}$, $c_{33}$ elastic constants. (The bracket comes from the strain along c that accompanies an in-plane strain, $\epsilon_{zz} = -2c_{13}\epsilon/c_{33}$.) Vurgaftman et al. tabulate all of these for GaN and AlN (Table X: lattice constants 3.189 and 3.112 Å; $e_{31}$ −0.35 and −0.50 C/m²; $e_{33}$ 1.27 and 1.79 C/m²; $c_{13}$ 106 and 108 GPa; $c_{33}$ 398 and 373 GPa; $P_{sp}$ −0.029 and −0.081 C/m²) [2] **[Established]** as recommended values; they flag $P_{sp}$ as uncertain, with calculations differing by more than a factor of two [2] **[Contested]**. Interpolating linearly in $x$, Example 09-13.4 finds a polarization sheet charge near 1.4 × 10¹³ cm⁻² for $x$ = 0.25. This is the upper limit of the 2DEG density: part of the charge is compensated at the AlGaN surface, so the measured density depends on barrier thickness and surface treatment.
+where $e_{31}$, $e_{33}$ are piezoelectric coefficients and $c_{13}$, $c_{33}$ elastic constants. (Where the bracket comes from: the layer is strained in-plane, $\epsilon_{xx} = \epsilon_{yy} = \epsilon$, but free to relax along c, so the stress along c vanishes, $\sigma_{zz} = c_{13}(\epsilon_{xx} + \epsilon_{yy}) + c_{33}\epsilon_{zz} = 0$, giving $\epsilon_{zz} = -2c_{13}\epsilon/c_{33}$. The piezoelectric polarization along c is $P_{pz} = e_{31}(\epsilon_{xx} + \epsilon_{yy}) + e_{33}\epsilon_{zz} = 2e_{31}\epsilon - 2e_{33}c_{13}\epsilon/c_{33}$, the formula above.) Vurgaftman et al. tabulate all of these for GaN and AlN (Table X: lattice constants 3.189 and 3.112 Å; $e_{31}$ −0.35 and −0.50 C/m²; $e_{33}$ 1.27 and 1.79 C/m²; $c_{13}$ 106 and 108 GPa; $c_{33}$ 398 and 373 GPa; $P_{sp}$ −0.029 and −0.081 C/m²) [2] **[Established]** as recommended values; they flag $P_{sp}$ as uncertain, with calculations differing by more than a factor of two [2] **[Contested]**, and warn that interpolating it linearly in composition may fail for AlGaN, because of bowing or ordering [2]. Interpolating linearly in $x$, Example 09-13.4 finds a polarization sheet charge near 1.4 × 10¹³ cm⁻² for $x$ = 0.25. This is the upper limit of the 2DEG density: part of the charge is compensated at the AlGaN surface, so the measured density depends on barrier thickness and surface treatment.
 
-The result is a transistor with a high-density, high-mobility channel in a material with a critical field far above silicon's. GaN HEMTs are used both as RF power amplifiers and as fast power switches. Because the 2DEG exists without a gate voltage, a basic GaN HEMT is **normally on** (depletion mode); power applications need extra structures to make it normally off.
+The result is a transistor with a high-density, high-mobility channel in a wide-gap material that tolerates far higher fields than silicon (GaN's critical field is reported to be comparable to SiC's or higher; not confirmed from a primary source here, R-174). GaN HEMTs are used both as RF power amplifiers and as fast power switches. Because the 2DEG exists without a gate voltage, a basic GaN HEMT is **normally on** (depletion mode); power applications need extra structures to make it normally off.
 
 ### 3.5 Heterojunction bipolar transistors
 
-In 09-07 the base current of a bipolar transistor came partly from holes injected back into the emitter. The emitter efficiency was improved by doping the emitter much more heavily than the base. In a **heterojunction bipolar transistor** (HBT), the emitter has a wider gap than the base. The holes that would be injected into the emitter must climb an extra barrier of about $\Delta E_g$ (more precisely, $\Delta E_v$), so back-injection falls by about $e^{-\Delta E_g/kT}$:
+In 09-07 the base current of a bipolar transistor came partly from holes injected back into the emitter. The emitter efficiency was improved by doping the emitter much more heavily than the base. In a **heterojunction bipolar transistor** (HBT), the emitter has a wider gap than the base. The holes that would be injected into the emitter must climb an extra barrier. In a **graded** emitter–base junction, where the composition changes smoothly, the whole gap difference counts and back-injection falls by $e^{-\Delta E_g/kT}$, the $n_i^2$ ratio of 09-07. In an **abrupt** junction, a conduction-band spike of height $\Delta E_c$ also impedes the electrons going the other way, and the net advantage falls toward $e^{\Delta E_v/kT}$. For the graded case:
 
 $$
 \beta_{\max} \propto \frac{N_E}{N_B}\,e^{\Delta E_g/kT} .
@@ -203,7 +203,7 @@ The ideal on-resistance ratio is **1386**.
 
 (b) $\mu_n$(2 × 10¹⁸) = **189** cm²/V·s, so $R_{sh}$ = **3297** Ω/□, **7.9** times higher.
 
-**Sanity check.** Same electrons, same layer thickness: the entire difference is scattering by ionized donors, which modulation doping removes from the channel.
+**Sanity check.** The comparison is illustrative rather than like for like: the 2DEG is a few nanometers thick, not 50 nm, and its 1500 cm²/V·s exceeds even silicon's lattice-limited electron mobility, so the materials differ as well as the doping. The lesson stands: putting the electrons where the donors are not removes ionized-impurity scattering, the term that drags doped-silicon mobility down to 189 cm²/V·s.
 
 ### Example 09-13.6 · HBT gain (tier A)
 
@@ -291,11 +291,12 @@ The die ratio is **1.82**, against an area ratio of **1.78**; 300 mm against 200
 The lab, [labs/09-13-lab](../labs/09-13-lab/README.md), is a notebook that:
 
 1. Computes breakdown voltage against doping for Si and 4H-SiC from the ionization integral, and Baliga's on-resistance limit against blocking voltage (Figure 2).
-2. Computes the AlGaN/GaN polarization charge against aluminum content.
-3. Compares 2DEG and doped-layer sheet resistance against electron density.
-4. Counts whole dies on 150, 200 and 300 mm wafers for a range of die sizes.
+2. Designs the 600 V and 3300 V drift layers and compares the on-resistance limits (the guided exercise below).
+3. Computes the AlGaN/GaN polarization charge against aluminum content.
+4. Compares 2DEG and doped-layer sheet resistance against electron density.
+5. Counts whole dies on 150, 200 and 300 mm wafers for a range of die sizes.
 
-**Guided exercise (predict, then run).** **Before running Part 1**, predict: at 600 V and at 3300 V, does SiC's on-resistance advantage over silicon grow, shrink or stay the same? Then compute both.
+**Guided exercise (predict, then run).** **Before running Part 2**, predict: at 600 V and at 3300 V, does SiC's on-resistance advantage over silicon grow, shrink or stay the same? Then compute both.
 
 *Figure 2. (a) Breakdown voltage of a one-sided junction against doping of the lightly doped side, for silicon and 4H-SiC, from the ionization integral. (b) Ideal specific on-resistance of the drift layer against breakdown voltage (Baliga's limit with the computed critical fields).*
 
@@ -337,7 +338,7 @@ The lab, [labs/09-13-lab](../labs/09-13-lab/README.md), is a notebook that:
 
 ### State of the art (as of Nov 2026)
 
-- **200 mm SiC.** Wolfspeed opened its Mohawk Valley 200 mm SiC fab in April 2022, calling it the world's largest (a company claim, **[Contested]**) [6]. It announced the commercial launch of 200 mm SiC bare wafers and epitaxy in September 2025, "after initially offering 200mm SiC to select customers" [6] **[Established]**. Infineon said in February 2025 that it would release its first products based on 200 mm SiC to customers in the first quarter of 2025, with its Kulim, Malaysia conversion "fully on track" [5] **[Established]**.
+- **200 mm SiC.** Wolfspeed opened its Mohawk Valley 200 mm SiC fab in April 2022, calling it the world's largest (a company claim, **[Contested]**) [6]. It announced the commercial launch of 200 mm SiC bare wafers and epitaxy in September 2025, "after initially offering 200mm SiC to select customers" [6] **[Established]**. Infineon said in February 2025 that it would release its first products based on 200 mm SiC to customers in the first quarter of 2025, with its Kulim, Malaysia conversion "fully on track" [5] (a forward-looking statement; its delivery was not separately confirmed for this build) **[Industry estimate]**. Wolfspeed's newsroom lists, in October 2026, an expanded and extended long-term SiC wafer supply agreement with Infineon that includes 200 mm, and a conditional 30-year, $1.5 billion loan commitment from the U.S. Department of War for its wide-bandgap supply chain [6] **[Established]** (as announced; terms not examined here).
 - **A restructured supplier.** Wolfspeed filed a prepackaged Chapter 11 reorganization on 30 June 2025 and emerged on 29 September 2025, cutting its debt by about 70% and its annual cash interest by about 60% [6] **[Established]**.
 - **GaN on 300 mm.** Infineon announced in September 2024 "the world's first 300 mm power gallium nitride (GaN) wafer technology", produced in an existing high-volume 300 mm silicon fab, for AI-system power supplies, solar inverters, chargers and motor control [5] **[Established]** (the "world's first" is a company claim). Infineon estimates the GaN market will reach "several billion US-Dollars by the end of the decade" [5] **[Industry estimate]**.
 - **Market penetration in vehicles** (SiC's share of EV traction inverters) is widely reported by analysts but was not confirmed from a primary source for this build (open issue).
@@ -351,7 +352,7 @@ The lab, [labs/09-13-lab](../labs/09-13-lab/README.md), is a notebook that:
 ### Marketing vs Reality
 
 - **"SiC is 10× better than silicon."** *Reality:* the ideal drift-layer advantage is about a thousandfold at 1200 V (Example 09-13.3), but device totals are set by channel and package resistance, and cost per ampere matters more than resistance per area. *Sanity check:* ask for $R_{DS(on)}$ × area at temperature, and cost per ampere at the system level.
-- **"GaN replaces SiC."** *Reality:* GaN-on-Si excels at lower voltages and high frequency; SiC leads at high voltage and current. They overlap in the 650 V class. *Sanity check:* ask for the voltage class, switching frequency and thermal design.
+- **"GaN replaces SiC."** *Reality:* the two are positioned differently: GaN-on-Si is offered mainly at lower voltages, where its fast switching pays, and SiC at higher voltages and currents, with the two competing in the 650 V class **[Industry estimate]** (common industry positioning, not confirmed from a primary source for this build). *Sanity check:* ask for the voltage class, switching frequency and thermal design.
 - **"World's first / largest."** *Reality:* such claims depend on the definition (first announced, first sampled, first in volume). *Sanity check:* ask for the milestone and volumes.
 
 ### Questions for engineering leaders
@@ -376,6 +377,8 @@ The lab, [labs/09-13-lab](../labs/09-13-lab/README.md), is a notebook that:
 | P 09-13.b | Wolfspeed cash-interest reduction | 60 | % |
 | P 09-13.c | Wolfspeed 200 mm fab opening year | 2022 | — |
 | P 09-13.d | Infineon 300 mm GaN announcement year | 2024 | — |
+| P 09-13.e | Wolfspeed loan commitment | 1.5 | $ billion |
+| P 09-13.f | loan term | 30 | years |
 
 ## 10. Concept check
 
@@ -453,4 +456,4 @@ Now work the [problem set](../problems/09-13-problems.md).
 3. J. Burin, P. Gaggl, S. Waid, A. Gsponer and T. Bergauer, "TCAD Parameters for 4H-SiC: A Review", arXiv:2410.06798v8 (22 Dec 2025): band gap (§VI), permittivity, impact ionization (Table XIII), mobility (§X): [arXiv PDF](https://arxiv.org/pdf/2410.06798). [R-174](../../../reference/research-log.md#r-174--compound-and-wide-bandgap-references).
 4. B. J. Baliga's figure of merit and unipolar limit are derived in §3.3; see Baliga's textbook (Further study) for the original treatment.
 5. Infineon press releases: "300 mm GaN" (11 Sep 2024), [release](https://www.infineon.com/regional/austria/press-release/2024/gan300); "200 mm silicon carbide" (13 Feb 2025), [release](https://www.infineon.com/regional/austria/press-release/2025/200-mm-silicon-carbide). [R-174](../../../reference/research-log.md#r-174--compound-and-wide-bandgap-references).
-6. Wolfspeed press releases: Mohawk Valley fab opening (25 Apr 2022), [release](https://www.wolfspeed.com/company/news-events/news/wolfspeed-opens-the-worlds-largest-200mm-silicon-carbide-fab-enabling-highly-anticipated-device-production/); restructuring support agreement (22 Jun 2025), Chapter 11 filing (30 Jun 2025), plan confirmation (8 Sep 2025) and emergence (29 Sep 2025), [emergence release](https://www.wolfspeed.com/company/news-events/news/wolfspeed-successfully-completes-financial-restructuring-emerges-as-financially-stronger-company-well-positioned-in-silicon-carbide-market/); 200 mm materials launch (10 Sep 2025), [release](https://www.wolfspeed.com/company/news-events/news/wolfspeed-announces-the-commercial-launch-of-200mm-silicon-carbide-materials-portfolio-unlocking-the-industrys-ability-to-manufacture-at-scale/). [R-174](../../../reference/research-log.md#r-174--compound-and-wide-bandgap-references).
+6. Wolfspeed press releases: Mohawk Valley fab opening (25 Apr 2022), [release](https://www.wolfspeed.com/company/news-events/news/wolfspeed-opens-the-worlds-largest-200mm-silicon-carbide-fab-enabling-highly-anticipated-device-production/); restructuring support agreement (22 Jun 2025), Chapter 11 filing (30 Jun 2025), plan confirmation (8 Sep 2025) and emergence (29 Sep 2025), [emergence release](https://www.wolfspeed.com/company/news-events/news/wolfspeed-successfully-completes-financial-restructuring-emerges-as-financially-stronger-company-well-positioned-in-silicon-carbide-market/); 200 mm materials launch (10 Sep 2025), [release](https://www.wolfspeed.com/company/news-events/news/wolfspeed-announces-the-commercial-launch-of-200mm-silicon-carbide-materials-portfolio-unlocking-the-industrys-ability-to-manufacture-at-scale/). Newsroom listing, read Nov 2026, for the October 2026 headlines (Infineon supply agreement extended to 200 mm, 15 Oct 2026; conditional $1.5 billion loan commitment, 7 Oct 2026): [newsroom](https://www.wolfspeed.com/company/news-events/news/). [R-174](../../../reference/research-log.md#r-174--compound-and-wide-bandgap-references).

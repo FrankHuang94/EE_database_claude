@@ -49,7 +49,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 09-11.10 [B]
 
-**Projecting a pitch product.** The IRDS 2024 roadmap's "A10 eq" step is G46M20 (chapter §9). Assume its cell height scales from the "2nm" step's 120 nm in proportion to the M0 pitch (fixed track count). Estimate its CPP × cell height and its density gain over "2nm" and over "3nm".
+**Projecting a pitch product.** The IRDS 2024 roadmap's "A10 eq" step is G46M20 (IRDS 2024 More Moore table MM01, R-172). (a) Assume its cell height scales from the "2nm" step's 120 nm in proportion to the M0 pitch (fixed track count). Estimate its CPP × cell height and its density gain over "2nm" and over "3nm" (the '"3nm" Enhanced' step). (b) The IRDS table itself lists an 80 nm high-density cell for A10 eq. Repeat the estimate, and compare with the table's NAND2-equivalent densities of 27.33 and 42.77 Mgates/mm² for "2nm" and A10 eq. (c) For the "3nm" to "2nm" step, compare the pitch-product ratio with the table's NAND2 ratio (19.29 to 27.33 Mgates/mm²).
 
 ### Problem 09-11.11 [B]
 

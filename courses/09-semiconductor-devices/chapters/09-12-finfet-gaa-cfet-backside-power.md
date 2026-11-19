@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 09-12 · Advanced Transistors: FinFET, GAA, CFET and Backside Power
 
 | | |
@@ -95,16 +95,18 @@ $$
 u(x) = \frac{a\sinh\big((L - x)/\lambda\big) + b\sinh(x/\lambda)}{\sinh(L/\lambda)} .
 $$
 
-Write it as $Pe^{x/\lambda} + Qe^{-x/\lambda}$ with $P = (b - ae^{-L/\lambda})/2\sinh(L/\lambda)$ and $Q = (ae^{L/\lambda} - b)/2\sinh(L/\lambda)$. The barrier is where $u$ is smallest, and the minimum of $Pe^{s} + Qe^{-s}$ is $2\sqrt{PQ}$. For $L \gg \lambda$,
+(Check: each term satisfies $u'' = u/\lambda^2$, because the second derivative of $\sinh$ is $\sinh$; at $x = 0$ the first term gives $a\sinh(L/\lambda)/\sinh(L/\lambda) = a$ and the second vanishes, and at $x = L$ the roles swap, giving $b$.) Write it as $Pe^{x/\lambda} + Qe^{-x/\lambda}$ with $P = (b - ae^{-L/\lambda})/2\sinh(L/\lambda)$ and $Q = (ae^{L/\lambda} - b)/2\sinh(L/\lambda)$. The barrier is where $u$ is smallest. With $s = x/\lambda$, set the derivative of $f(s) = Pe^{s} + Qe^{-s}$ to zero: $Pe^s = Qe^{-s}$, so $e^{2s} = Q/P$, and there $f = P\sqrt{Q/P} + Q\sqrt{P/Q} = 2\sqrt{PQ}$. For $L \gg \lambda$, $2\sinh(L/\lambda) \approx e^{L/\lambda}$, so $P \approx be^{-L/\lambda}$ and $Q \approx a$, giving
 
 $$
 u_{\min} \approx 2\sqrt{ab}\;e^{-L/2\lambda} .
 $$
 
+> **Math refresher — hyperbolic functions.** $\sinh s = (e^s - e^{-s})/2$ and $\cosh s = (e^s + e^{-s})/2$. Their derivatives are $\sinh' = \cosh$ and $\cosh' = \sinh$, so both satisfy $y'' = y$: they are the solutions of the second-order ODE $y'' = y/\lambda^2$ (02-03) that suit boundary conditions at two ends, just as $\sin$ and $\cos$ solve $y'' = -y$. For large $s$, $\sinh s \approx \cosh s \approx e^s/2$.
+
 **Reading it.** $u_{\min}$ is how far the short channel's barrier sits below the long-channel barrier, measured in volts. Because the double-gate body follows the gate one-for-one in subthreshold, the threshold falls by the same amount: $\Delta V_{TH} \approx u_{\min}$. At threshold, Hu's criterion puts the channel's conduction band about 0.2 eV above the source's [2], so $a \approx$ 0.2 V and $b \approx 0.2\text{ V} + V_{DS}$. Two results follow.
 
 - Roll-off and DIBL both scale as $e^{-L/2\lambda}$. This is the same exponential form as Hu's $e^{-L/l_d}$ (09-10), now with $l_d = 2\lambda$ expressed in the device dimensions.
-- $\lambda$ falls as the body thins ($\lambda^2 \propto t_{si}$ for thin oxides). To shrink $L$ at fixed DIBL, thin the body in proportion to $L^2$ at first, and ultimately in proportion to $L$ once the $t_{si}^2/8$ term dominates.
+- $\lambda$ falls as the body thins, and which term of $\lambda^2$ dominates depends on body against oxide. The two terms are equal when $t_{si} = 4(\varepsilon_s/\varepsilon_{ox})t_{ox} \approx 12t_{ox}$. For bodies much thicker than that, the $t_{si}^2/8$ term wins and $\lambda \to t_{si}/\sqrt8$, so holding $L/\lambda$ fixed needs $t_{si} \propto L$. For bodies much thinner, the first term wins, $\lambda^2 \propto t_{si}t_{ox}$, and at fixed oxide $t_{si} \propto L^2$. Scaling moves devices from the first regime toward the second: in Example 09-12.5, shrinking $L$ from 16 to 12 nm (0.75×) needs the body to go from 3.88 to 2.42 nm (0.62×), between the two rules. Once $t_{si} \propto L^2$, the body thins faster than the channel shortens, which is why the oxide (EOT) must keep scaling too.
 
 **Other geometries.** The same method, applied to a thin body with one gate and an insulating back (Problem 09-12.3), gives $\lambda^2 = (\varepsilon_s/\varepsilon_{ox})t_{si}t_{ox} + t_{si}^2/2$, which is larger: a second gate halves the first term and quarters the second. A nanosheet much wider than it is thick behaves like a double-gate body of its thickness; its side gates add a little further control. These are first-order models. Lab Part 2 solves the full two-dimensional problem: for the bodies of Example 09-12.2 the parabolic model's barrier lowering agrees with it within a few percent.
 
@@ -214,7 +216,7 @@ The approximation $2\sqrt{ab}e^{-L/2\lambda}$ gives **38.5** mV for the first en
 
 ### Example 09-12.5 · How thin must the body be? (tier B)
 
-**Setup.** With a 0.9 nm oxide (the IRDS 2024 CET target from 2027, 09-08), find the double-gate body thickness that gives $L/\lambda$ = 6 for $L$ = 12 nm and 16 nm. Then find the DIBL at $L = 6\lambda$, and compare the thicknesses with Hu's rule $T_{si} < L/2$.
+**Setup.** With a 0.9 nm oxide (the IRDS 2024 CET target from 2027, 09-08; strictly, a subthreshold electrostatic model wants the EOT, which excludes the inversion-layer term, so using the CET makes the oxide slightly thick and the answer slightly conservative), find the double-gate body thickness that gives $L/\lambda$ = 6 for $L$ = 12 nm and 16 nm. Then find the DIBL at $L = 6\lambda$, and compare the thicknesses with Hu's rule $T_{si} < L/2$.
 
 **Solution.** Solve $\lambda(t_{si}) = L/6$:
 
@@ -347,7 +349,7 @@ The lab, [labs/09-12-lab](../labs/09-12-lab/README.md), is a notebook that:
 ### State of the art (as of Nov 2026)
 
 - **FinFET history.** Intel announced its 22 nm tri-gate transistors in May 2011, which Hu describes as a variation of the FinFET his Berkeley group published in 1999 after a 1996 DARPA call [3] **[Established]**.
-- **GAA in production.** Samsung announced on 30 June 2022 that it had "started initial production of its 3-nanometer (nm) process node applying Gate-All-Around (GAA) transistor architecture" (MBCFET, nanosheet) [5] **[Established]**. Against its 5 nm process, Samsung claimed 45% lower power, 23% higher performance and 16% smaller area [5] **[Industry estimate]** (vendor claim).
+- **GAA in production.** Samsung announced on 30 June 2022 that it had "started initial production of its 3-nanometer (nm) process node applying Gate-All-Around (GAA) transistor architecture" (MBCFET, nanosheet) [5] **[Established]**. Against its 5 nm process, Samsung claimed power consumption reduced "by up to 45%", 23% higher performance and 16% smaller area [5] **[Industry estimate]** (vendor claim).
 - **GAA plus backside power in production.** Intel's 18A combines RibbonFET (GAA) and PowerVia (backside power). Intel reported in its fourth-quarter 2025 results (22 Jan 2026) that "Intel 18A ramped to high-volume manufacturing in Arizona and Oregon" [6] **[Established]**. In June 2026 it said 18A-P had entered risk production, claiming 9% more performance at the same power or 18% less power at the same performance than 18A [6] **[Industry estimate]**.
 - **CFET demonstrations.** At the VLSI Symposium in June 2026, Intel "demonstrated monolithic CFET inverters with vertically stacked NMOS and PMOS devices at a 45nm gate pitch" [6] **[Established]** (a research demonstration, not a product).
 - **Roadmap.** The IRDS 2024 plans GAA until 2031, then CFET, with 3D VLSI after 2035, and expects SoC area to improve "less than 25%, node-to-node on average" from 2024 to 2039 [4] **[Industry estimate]**. TSMC's N2 and A16 timing and pitches could not be confirmed from a primary source for this build (open issue).
@@ -361,7 +363,7 @@ The lab, [labs/09-12-lab](../labs/09-12-lab/README.md), is a notebook that:
 ### Marketing vs Reality
 
 - **"First with GAA."** *Reality:* "first" claims differ by definition (announcement, risk production, high-volume production, a product on shelves). *Sanity check:* ask which milestone, which product and what yield.
-- **"Backside power gives X% frequency."** *Reality:* the gain depends on how much IR-drop margin the design carried before (Example 09-12.6). *Sanity check:* ask for the voltage droop before and after, and on which design.
+- **"Backside power gives X% frequency."** *Reality:* the gain depends on how much IR-drop margin the design carried before (Example 09-12.6). Intel's own June 2026 figures show the shape of an honest claim: against a comparable front-side technology, an 11% routed-area reduction and a tenfold reduction in dynamic voltage droop, "enabling up to 6% frequency uplift or greater than 15% dynamic power reduction" [6] **[Industry estimate]** (vendor claim): a droop number, then a frequency *or* power benefit, not both at once. *Sanity check:* ask for the voltage droop before and after, and on which design.
 - **"CFET will double density."** *Reality:* stacking removes the n–p spacing, but wiring tracks and contacts limit how far the cell can shrink (Problem 09-12.12). The IRDS expects modest node-to-node SoC area gains [4]. *Sanity check:* ask for cell height in tracks and metal pitch, not device footprint.
 
 ### Questions for engineering leaders
@@ -395,6 +397,10 @@ The lab, [labs/09-12-lab](../labs/09-12-lab/README.md), is a notebook that:
 | P 09-12.k | IRDS end year for GAA | 2031 | — |
 | P 09-12.l | IRDS SoC area gain bound per node | 25 | % |
 | P 09-12.m | DARPA target (beyond) | 25 | nm |
+| P 09-12.n | Intel routed-area reduction | 11 | % |
+| P 09-12.o | Intel droop reduction factor | 10 | — |
+| P 09-12.p | Intel frequency uplift, up to | 6 | % |
+| P 09-12.q | Intel dynamic power reduction, more than | 15 | % |
 
 ## 10. Concept check
 

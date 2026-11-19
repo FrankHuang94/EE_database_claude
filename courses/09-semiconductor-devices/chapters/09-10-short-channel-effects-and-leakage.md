@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 09-10 · Short-Channel Effects and Leakage
 
 | | |

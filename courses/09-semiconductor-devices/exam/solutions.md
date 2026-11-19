@@ -34,7 +34,7 @@ Each solution names the chapter to revisit if you lost points.
 
 (a) $\tau_p = 1/(\sigma v_{th}N_t)$ = 1/(10⁻¹⁵ × 1.65 × 10⁷ × 10¹³) = **6.06** µs.
 
-(b) $\Delta p = G\tau_p$ = **6.06 × 10¹⁴** cm⁻³, which is **0.061** of $n_0$: low-level injection holds.
+(b) $\Delta p = G\tau_p$ = **6.06 × 10¹⁴** cm⁻³, which is **0.0606** of $n_0$: low-level injection holds.
 
 (c) $E_{Fn} - E_{Fp} = kT\ln[(n_0 + \Delta n)(p_0 + \Delta p)/n_i^2]$ = **0.643** eV.
 
@@ -64,7 +64,7 @@ Each solution names the chapter to revisit if you lost points.
 
 (b) With $D_p(10^{19})$ in the emitter, $\beta$ = **1422**. Real devices are far lower because band-gap narrowing in the heavily doped emitter raises its $n_i^2$ (09-07).
 
-(c) $\tau_B = W_B^2/2D_n$ = **2.41** ps, $f_T$ = **66** GHz from base transit alone, and $g_m = I_C/V_T$ = **7.38** mS.
+(c) $\tau_B = W_B^2/2D_n$ = **2.41** ps, $f_T$ = **65.9** GHz from base transit alone, and $g_m = I_C/V_T$ = **7.38** mS.
 
 **8.** *(09-08)*
 
@@ -74,9 +74,11 @@ Each solution names the chapter to revisit if you lost points.
 
 (c) $W_{d\max} = \sqrt{2\varepsilon_s(2\phi_B)/qN_A}$ = **48.7** nm, and $C_{\min} = (1/C_{ox} + W_{d\max}/\varepsilon_s)^{-1}$ = **170.7** nF/cm², **0.198** of $C_{ox}$.
 
+(d) *Rubric.* (i) At threshold the silicon bands bend down toward the surface by $\phi_s = 2\phi_B$ = **0.917** V, so at the surface $E_i$ lies as far below $E_F$ as it lies above it in the bulk ($\phi_B$ = 0.458 V each way); the oxide carries $V_{ox} = Q_{dep}/C_{ox}$ = 0.452 V, drawn as a sloped (linear) band in the oxide; the gate's $E_F$ sits $qV_{TH}$ = 0.341 eV below the body's $E_F$ for a positive gate voltage. (ii) The low-frequency curve starts at $C_{ox}$ in accumulation (left of $V_{FB}$ = −1.027 V), dips through depletion, and returns to $C_{ox}$ in inversion above $V_{TH}$ = 0.341 V; the high-frequency curve follows it down but stays at $C_{\min}$ = 0.198 $C_{ox}$ beyond $V_{TH}$, because the inversion charge cannot follow the signal. *Full marks:* correct band bending direction and labels, the oxide drop, the flat band and threshold positions, and the distinction between the two $C$–$V$ curves.
+
 **9.** *(09-09)*
 
-(a) $V_{Dsat} = V_{ov}/m$ = **0.52** V, $I_{Dsat} = (W/2mL)\mu_{ns}C_{ox}V_{ov}^2$ = **0.438** mA and $g_m = 2I_{Dsat}/V_{ov}$ = **1.35** mS.
+(a) $V_{Dsat} = V_{ov}/m$ = **0.520** V, $I_{Dsat} = (W/2mL)\mu_{ns}C_{ox}V_{ov}^2$ = **0.438** mA and $g_m = 2I_{Dsat}/V_{ov}$ = **1.35** mS.
 
 (b) $S = mV_T\ln 10$ = **74.4** mV/decade and $I_{off}$ = 1 µA × $10^{-0.35/0.0744}$ = **1.98 × 10⁻¹¹** A.
 
@@ -121,6 +123,8 @@ The ratio is **1232**.
 
 (c) $R_{sh} = 1/(qn_s\mu)$ = **385** Ω/□.
 
+(d) With uniform doping $N_D$ the field falls linearly, $d\mathcal E/dx = -qN_D/\varepsilon$ (Poisson's equation), from $\mathcal E_c$ at the junction to zero at the far edge, a distance $W = \varepsilon\mathcal E_c/qN_D$ away. The blocked voltage is the triangle's area, $V_B = \tfrac12\mathcal E_cW$, so $W = 2V_B/\mathcal E_c$ and $N_D = \varepsilon\mathcal E_c/qW = \varepsilon\mathcal E_c^2/2qV_B$. The layer's resistance per area is $R_{on,sp} = W/(q\mu N_D) = (2V_B/\mathcal E_c)\cdot 2V_B/(\mu\varepsilon\mathcal E_c^2) = 4V_B^2/(\varepsilon\mu\mathcal E_c^3)$: thickness falls as $1/\mathcal E_c$ and doping rises as $\mathcal E_c^2$, giving the cube. *Full marks:* the field slope from Poisson, the triangle area, and the algebra to the cube law.
+
 **14.** *(09-14)*
 
 (a) $\mathcal R = 0.6 \times 0.905/1.2398$ = **0.438** A/W.
@@ -131,9 +135,11 @@ The ratio is **1232**.
 
 (d) $V_{oc} = V_T\ln(J_{sc}/J_0 + 1)$ = **0.6714** V. The iteration gives 0.5893 V and then $V_{mp}$ = **0.5894** V. Then $J_{mp}$ = **36.40** mA/cm², $FF$ = **0.841** and the efficiency is **21.5**%.
 
+(e) Open circuit means $J = 0$: $J_0(e^{V_{oc}/V_T} - 1) = J_{sc}$, so $V_{oc} = V_T\ln(J_{sc}/J_0 + 1)$. The output power per area is $P = VJ = V[J_{sc} - J_0(e^{V/V_T} - 1)]$. Setting $dP/dV = J_{sc} + J_0 - J_0e^{V/V_T}(1 + V/V_T) = 0$ gives $e^{V/V_T}(1 + V/V_T) = (J_{sc} + J_0)/J_0 = e^{V_{oc}/V_T}$. Taking logarithms, $V/V_T + \ln(1 + V/V_T) = V_{oc}/V_T$, which is $V = V_{oc} - V_T\ln(1 + V/V_T)$. *Full marks:* both steps, with the logarithm taken correctly.
+
 **15.** *(09-09 to 09-13; rubric)*
 
-(a) (3 points) $R_{on,sp} \propto 1/\mathcal E_c^3$ at equal $\varepsilon\mu$, so a tenfold reduction needs $10^{1/3}$ = **2.15** times the critical field. SiC's computed critical field at 1200 V is about 2.84 MV/cm (09-13), so this would need about **6.1** MV/cm. No material in this course comes close, so the claim more likely mixes total and drift resistance, different voltage classes, temperatures or chip areas. *Full marks:* the cube law, the ratio and a plausible alternative explanation.
+(a) (3 points) $R_{on,sp} \propto 1/\mathcal E_c^3$ at equal $\varepsilon\mu$, so a tenfold reduction needs $10^{1/3}$ = **2.15** times the critical field. With SiC's 2.84 MV/cm (09-13), the claim needs about **6.12** MV/cm. That is far beyond SiC, and GaN's field is reported to be at best comparable to SiC's (09-13), so the claim more likely mixes total and drift resistance, different voltage classes, temperatures or chip areas. A strong answer also notes the premise: ultra-wide-gap materials (gallium oxide, diamond, aluminum nitride) are reported to have higher critical fields, but with lower mobility or immature processing, so \"equal $\varepsilon\mu$\" is itself the weak assumption (not sourced in this course). *Full marks:* the cube law, the ratio, the implied field, and a plausible alternative explanation or the $\mathcal E_c$–$\mu$ trade-off.
 
 (b) (3 points) Node names describe logic transistors: gate pitch, metal pitch and cell height (09-11). A 1200 V device is set by its drift layer, tens of micrometers thick (09-13), so lithographic pitch is irrelevant to its blocking voltage and on-resistance. At best the phrase refers to an integrated controller. *Full marks:* separating logic density from power-device physics.
 
@@ -170,7 +176,7 @@ The ratio is **1232**.
 | X09.3g | L_p, 1 µs | 30.9 | µm |
 | X09.4a | SRH lifetime | 6.06 | µs |
 | X09.4b | excess holes | 6.06e14 | cm⁻³ |
-| X09.4c | ratio to n₀ | 0.061 | — |
+| X09.4c | ratio to n₀ | 0.0606 | — |
 | X09.4d | quasi-Fermi split | 0.643 | eV |
 | X09.4e | diffusion length | 76.2 | µm |
 | X09.5a | V_bi | 0.833 | V |
@@ -188,7 +194,7 @@ The ratio is **1232**.
 | X09.7c | I_C at 0.7 V | 0.191 | mA |
 | X09.7d | β | 1422 | — |
 | X09.7e | base transit time | 2.41 | ps |
-| X09.7f | f_T, base transit | 66 | GHz |
+| X09.7f | f_T, base transit | 65.9 | GHz |
 | X09.7g | g_m | 7.38 | mS |
 | X09.8a | C_ox | 863.3 | nF/cm² |
 | X09.8b | φ_B | 0.458 | V |
@@ -199,7 +205,8 @@ The ratio is **1232**.
 | X09.8g | W_dmax | 48.7 | nm |
 | X09.8h | C_min | 170.7 | nF/cm² |
 | X09.8i | C_min/C_ox | 0.198 | — |
-| X09.9a | V_Dsat | 0.52 | V |
+| X09.8j | surface band bending at threshold | 0.917 | V |
+| X09.9a | V_Dsat | 0.520 | V |
 | X09.9b | I_Dsat | 0.438 | mA |
 | X09.9c | g_m | 1.35 | mS |
 | X09.9d | swing | 74.4 | mV/decade |
@@ -243,4 +250,4 @@ The ratio is **1232**.
 | X09.14h | fill factor | 0.841 | — |
 | X09.14i | efficiency | 21.5 | % |
 | X09.15a | critical-field ratio | 2.15 | — |
-| X09.15b | implied critical field | 6.1 | MV/cm |
+| X09.15b | implied critical field | 6.12 | MV/cm |

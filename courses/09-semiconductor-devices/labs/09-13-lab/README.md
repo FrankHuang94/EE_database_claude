@@ -55,7 +55,7 @@ Chapter sections 3.1–3.6 and Examples 09-13.1 to 09-13.7. Silicon ionization u
 
 <details><summary>Answers to the discussion questions</summary>
 
-1. The on-resistance ratio rises from **1242** at 600 V to **1586** at 3300 V because both critical fields fall as doping falls, and silicon's falls faster in proportion. At 3300 V SiC still holds **2.56 × 10⁶** V/cm. Since $R_{on,sp} \propto 1/\mathcal E_c^3$, the gap widens.
+1. The on-resistance ratio rises from **1242** at 600 V to **1585** at 3300 V because both critical fields fall as doping falls, and silicon's falls faster in proportion. At 3300 V SiC still holds **2.56 × 10⁶** V/cm. Since $R_{on,sp} \propto 1/\mathcal E_c^3$, the gap widens.
 2. The spontaneous part is linear in $x$ by assumption, but the piezoelectric part is a product of the strain (which grows with $x$) and interpolated coefficients (which also vary with $x$), so the total bends upward slightly: **1.99 × 10¹³** cm⁻² at $x$ = 0.35 against 1.39 × 10¹³ at 0.25.
 3. The formula subtracts one die per die diagonal of circumference, a smooth average. The actual count depends on how the grid aligns with the edge, which matters more for large dies; the best grid offset usually beats the formula slightly for small dies.
 4. The SiC ionization coefficients (fits differ noticeably), the SiC mobility (doping- and direction-dependent) and GaN's spontaneous polarization (calculations differ by more than a factor of two) are the least certain. They change the numbers by tens of percent, not the conclusions: the on-resistance advantage stays in the hundreds to thousands, and the 2DEG density stays near 10¹³ cm⁻².

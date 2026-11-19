@@ -181,7 +181,7 @@ v.assert_true("edge-loss formula within 3% of a direct count (150 mm, 25 mm²)",
               abs(counted(150, 25) / d150 - 1) < 0.03, f"{counted(150, 25)} vs {d150:.0f}")
 
 # practitioner facts (quoted; see R-174)
-for k_, val in (("P 09-13.a", 70), ("P 09-13.b", 60), ("P 09-13.c", 2022), ("P 09-13.d", 2024)):
+for k_, val in (("P 09-13.a", 70), ("P 09-13.b", 60), ("P 09-13.c", 2022), ("P 09-13.d", 2024), ("P 09-13.e", 1.5), ("P 09-13.f", 30)):
     v.check(k_, val)
 
 # ------------------------------------------------------------------ solutions
@@ -222,9 +222,9 @@ Cb = 9 * E0 / 20e-7
 v.check("09-13.11a", Cb)
 v.check("09-13.11b", Cb / Q)
 v.check("09-13.11c", 1.39e13 * Q / Cb)
-v.check("09-13.12a", (1.4 / d200) / (1.0 / d150))
-v.check("09-13.12b", (1.4 / (d200 * 0.70)) / (1.0 / (d150 * 0.85)))
-v.check("09-13.12c", 100 * brentq(lambda y: (1.4 / (d200 * y)) - (1.0 / (d150 * 0.85)), 0.1, 1))
+v.check("09-13.12a", (1.4 / round(d200)) / (1.0 / round(d150)))   # from the published counts
+v.check("09-13.12b", (1.4 / (round(d200) * 0.70)) / (1.0 / (round(d150) * 0.85)))
+v.check("09-13.12c", 100 * brentq(lambda y: (1.4 / (round(d200) * y)) - (1.0 / (round(d150) * 0.85)), 0.1, 1))
 
 # ------------------------------------------------------------------ lab
 s6 = design(600, (EPS_SI, an_si, ap_si, 1.2e5, 5e5), 5e13, 2e15)

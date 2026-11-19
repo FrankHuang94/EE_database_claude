@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 09-11 · CMOS and Scaling: Moore, Dennard and Beyond
 
 | | |
@@ -88,7 +88,7 @@ $$
 T = N(t_{pHL} + t_{pLH}) = 2N\tau_d .
 $$
 
-Measuring $T$ for a long ring gives $\tau_d$ with an ordinary frequency counter, the standard way to measure gate delay [1]. (An even ring has a stable state and does not oscillate [1].)
+Measuring $T$ for a long ring gives $\tau_d$ with an ordinary frequency counter, the standard way to measure gate delay [1]. (Hu's text says the period equals "τd times the number of gates"; with $\tau_d$ defined, as here and in his Eq. 6.7.1, as the *average* of the rising and falling delays, the factor of 2 above is right, because each node rises and falls once per period.) (An even ring has a stable state and does not oscillate [1].)
 
 ### 3.3 Power and energy
 
@@ -181,7 +181,7 @@ $$
 
 (b) $V_M = V_{DD}/2$ needs $r$ = 1, so $W_p/W_n = \mu_n/\mu_p$ = **2.0**.
 
-(c) Solving the transfer curve numerically and locating the points of slope −1 gives $V_{IL}$ = **0.450** V and $V_{IH}$ = **0.550** V. So $NM_L = 0.450 - 0$ = **0.450** V and $NM_H = 1.0 - 0.550$ = **0.450** V.
+(c) The unity-gain points can be found in closed form. At $V_{IL}$ the NMOS has just turned on and is saturated, while the PMOS is still linear; with $k_n = k_p$, equate $\tfrac12(V_{in} - V_{TN})^2 = (V_{DD} - V_{in} - |V_{TP}|)(V_{DD} - V_{out}) - \tfrac12(V_{DD} - V_{out})^2$, differentiate both sides with respect to $V_{in}$, and set $dV_{out}/dV_{in} = -1$. For the symmetric inverter ($V_{TN} = |V_{TP}| = V_{TH}$) the two equations give $V_{IL} = (3V_{DD} + 2V_{TH})/8$, and by symmetry $V_{IH} = (5V_{DD} - 2V_{TH})/8$. With $V_{DD}$ = 1.0 V and $V_{TH}$ = 0.3 V: $V_{IL}$ = **0.450** V and $V_{IH}$ = **0.550** V, which the numerical solution of the transfer curve confirms. So $NM_L = 0.450 - 0$ = **0.450** V and $NM_H = 1.0 - 0.550$ = **0.450** V.
 
 **Sanity check.** The symmetric inverter has equal margins of 45% of the supply, and a narrow transition region of 0.1 V between $V_{IL}$ and $V_{IH}$. The ngspice netlist in the lab confirms (a) and (b).
 
@@ -339,7 +339,7 @@ The lab, [labs/09-11-lab](../labs/09-11-lab/README.md), has a notebook and an ng
 
 ![Power density under different scaling rules](../../../assets/figures/09-11/scaling-power-density.svg)
 
-*Figure 3. Microprocessor clock frequency and typical power, 1971–2021, from K. Rupp's microprocessor trend data (CC-BY 4.0) [9]. Clock frequency stops rising in the mid-2000s, the end of Dennard-era frequency scaling, while the typical power of the parts in the dataset keeps climbing more slowly as transistors went into more cores (lab Part 4).*
+*Figure 3. Microprocessor clock frequency and typical power, 1971–2021, from K. Rupp's microprocessor trend data (CC-BY 4.0) [9]. Clock frequency stops rising in the mid-2000s, the end of Dennard-era frequency scaling, while the typical power of the parts in the dataset keeps climbing more slowly (lab Part 4). The power trend partly reflects which parts the dataset happens to include: its 2015–2021 set has only 16 parts, from 28 W mobile chips to 500 W servers, so power per core or per area is the fairer comparison.*
 
 ![Microprocessor clock frequency and power trend](../../../assets/figures/09-11/cpu-clock-power-trend.svg)
 
@@ -377,7 +377,7 @@ The lab, [labs/09-11-lab](../labs/09-11-lab/README.md), has a notebook and an ng
 2. **Quoting Moore's law as "every 18 months."** Moore said every year (1965) and every two years (1975); and it concerns components on the most cost-effective chip, not performance.
 3. **Thinking faster transistors cost dynamic power.** $P_{dyn} = \alpha CV_{DD}^2f$ does not contain $I_{on}$; power rises when designers spend the speed on frequency, or raise $V_{DD}$.
 4. **Forgetting the factor 2 in a ring oscillator.** The period is $2N\tau_d$, because each node must both rise and fall.
-5. **Assuming Dennard scaling ended because transistors stopped shrinking.** It ended because voltages stopped scaling: thresholds are pinned by the subthreshold swing.
+5. **Assuming Dennard scaling ended because transistors stopped shrinking.** It ended because voltages stopped scaling: thresholds are pinned by the subthreshold swing. A second limit arrived at the same time: gate oxide stopped thinning near 1.2 nm of SiO₂ because tunneling leakage (09-08), so the gate's control over the channel could no longer keep pace with the dimensions either.
 6. **Sizing PMOS by the mobility ratio in short channels.** Velocity saturation narrows the NMOS–PMOS current gap, so the required width ratio is smaller.
 
 ## 9. Practitioner lens

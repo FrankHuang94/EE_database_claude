@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 09-04 · Generation, Recombination and the Continuity Equation
 
 | | |

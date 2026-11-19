@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 09-01 · Crystals, Energy Bands and the Semiconductor
 
 | | |

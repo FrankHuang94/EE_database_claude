@@ -39,7 +39,7 @@
 "Avalanche versus tunneling breakdown?","Avalanche: impact ionization, positive temperature coefficient, lighter doping. Tunneling: heavy doping, below a few volts, negative coefficient.",bsee::09 bsee::09-06
 "Hu's breakdown rule of thumb?","\(V_B \approx 15\text{ V}(10^{17}/N)^{0.6}\) for a one-sided Si junction.",bsee::09 bsee::09-06
 "Schottky versus PN diode?","Majority-carrier thermionic emission: much larger saturation current, lower forward drop, no minority storage (fast).",bsee::09 bsee::09-06
-"BJT collector current?","\(I_C = I_Se^{V_{BE}/V_T}\), \(I_S = qA_En_i^2D_n/G_B\), Gummel number \(G_B = \int N_B\,dx\).",bsee::09 bsee::09-07
+"BJT collector current?","\(I_C = I_Se^{V_{BE}/V_T}\), \(I_S = qA_En_i^2/G_B\), with the Gummel number \(G_B = N_BW_B/D_B\) (s/cm⁴) for a uniform base: the base dopant count per area over \(D_B\).",bsee::09 bsee::09-07
 "Emitter-injection-limited gain?","\(\beta = D_nN_EW_E/(D_pN_BW_B)\), reduced by band-gap narrowing in a heavily doped emitter.",bsee::09 bsee::09-07
 "Early effect?","Base-width modulation by \(V_{CE}\): \(r_o = V_A/I_C\).",bsee::09 bsee::09-07
 "Base transit time?","\(\tau_B = W_B^2/2D_n\); a built-in drift field (graded base) shortens it.",bsee::09 bsee::09-07
@@ -85,7 +85,7 @@
 "What forms the AlGaN/GaN 2DEG?","Spontaneous plus piezoelectric polarization jump at the interface: a positive bound charge of order 10¹³ cm⁻² attracts electrons without doping.",bsee::09 bsee::09-13
 "Modulation doping?","Donors in the wide-gap barrier, electrons in the undoped channel: no ionized-impurity scattering, so high mobility.",bsee::09 bsee::09-13
 "HBT advantage?","A wider-gap emitter blocks hole back-injection by \(e^{-\Delta E_g/kT}\): gain ×10 per 60 meV, allowing a heavily doped base.",bsee::09 bsee::09-13
-"Semi-insulating GaAs?","\(n_i\) = 2.1 × 10⁶ cm⁻³, about 5000 times below Si's, and intrinsic resistivity near 3 × 10⁸ Ω·cm: a low-loss substrate for microwave circuits.",bsee::09 bsee::09-13
+"Semi-insulating GaAs?","The small \(n_i\) (2.1 × 10⁶ cm⁻³) is not enough on its own: deep levels (native EL2 or chromium) compensate residual impurities and pin \(E_F\) near mid-gap, giving resistivity near the intrinsic 3 × 10⁸ Ω·cm. A low-loss substrate for microwave circuits.",bsee::09 bsee::09-13
 "Why do wafer sizes matter for SiC and GaN?","Dies per wafer grow slightly faster than area; 150→200 mm SiC and 300 mm GaN-on-Si cut cost per die once yields mature.",bsee::09 bsee::09-13
 "Photodiode responsivity?","\(\mathcal R = \eta\lambda(\text{µm})/1.24\) A/W: at most 1.25 A/W at 1.55 µm.",bsee::09 bsee::09-14
 "Shot noise?","\(\overline{i_n^2} = 2qIB\): Poisson arrivals of carriers.",bsee::09 bsee::09-14

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 09-07 · The Bipolar Junction Transistor
 
 | | |

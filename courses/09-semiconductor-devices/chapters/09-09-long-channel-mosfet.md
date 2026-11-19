@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 09-09 · The Long-Channel MOSFET
 
 | | |

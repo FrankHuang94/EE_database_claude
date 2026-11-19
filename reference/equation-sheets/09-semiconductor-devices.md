@@ -27,7 +27,7 @@ Conventions and course values (silicon, 300 K unless stated):
 |---|---|---|
 | $J = q(n\mu_n + p\mu_p)\mathcal E + q(D_n\nabla n - D_p\nabla p)$; $\rho = 1/q(n\mu_n + p\mu_p)$; $R_{sh} = \rho/t$ | Drift plus diffusion | [09-03](../../courses/09-semiconductor-devices/chapters/09-03-drift-and-diffusion.md) |
 | Einstein relation $D = \mu V_T$ | Nondegenerate, equilibrium-like | [09-03](../../courses/09-semiconductor-devices/chapters/09-03-drift-and-diffusion.md) |
-| $v = \mu\mathcal E/(1 + \mathcal E/\mathcal E_{sat})$; $v_{sat}$ ≈ 10⁷ cm/s (bulk), 8 × 10⁶ cm/s (electrons, inversion layer) | High-field limit | [09-03](../../courses/09-semiconductor-devices/chapters/09-03-drift-and-diffusion.md), [09-10](../../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md) |
+| Bulk (09-03): $v = v_s(\mathcal E/\mathcal E_c)/[1 + (\mathcal E/\mathcal E_c)^\beta]^{1/\beta}$, $v_s$ ≈ 1.07 × 10⁷ cm/s (electrons). Channel (Hu, 09-10): $v = \mu\mathcal E/(1 + \mathcal E/\mathcal E_{sat})$ for $\mathcal E \le \mathcal E_{sat} = 2v_{sat}/\mu$, $v = v_{sat}$ above; $v_{sat}$ = 8 × 10⁶ cm/s (electrons) | High-field limit; the two are different fits | [09-03](../../courses/09-semiconductor-devices/chapters/09-03-drift-and-diffusion.md), [09-10](../../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md) |
 | SRH: $\tau = 1/(\sigma v_{th}N_t)$; radiative $\tau = 1/Bn_0$; Auger $\tau = 1/C_nn_0^2$; rates add, $1/\tau = \sum 1/\tau_i$ | Low-level injection, minority carriers | [09-04](../../courses/09-semiconductor-devices/chapters/09-04-generation-recombination-continuity.md) |
 | Continuity: $\partial p'/\partial t = D_p\nabla^2p' - p'/\tau_p + G$; $L_p = \sqrt{D_p\tau_p}$ | Uniform generation: $p' = G\tau_p$ | [09-04](../../courses/09-semiconductor-devices/chapters/09-04-generation-recombination-continuity.md) |
 | Quasi-Fermi levels: $np = n_i^2e^{(E_{Fn} - E_{Fp})/kT}$ | Out of equilibrium | [09-04](../../courses/09-semiconductor-devices/chapters/09-04-generation-recombination-continuity.md) |
@@ -40,15 +40,15 @@ Conventions and course values (silicon, 300 K unless stated):
 | $W = \sqrt{\dfrac{2\varepsilon_s(V_{bi} - V)}{q}\Big(\dfrac1{N_A} + \dfrac1{N_D}\Big)}$; $N_Ax_p = N_Dx_n$; $\mathcal E_{\max} = 2(V_{bi} - V)/W$; $C_j = \varepsilon_s/W$ per area | Depletion approximation | [09-05](../../courses/09-semiconductor-devices/chapters/09-05-pn-junction-electrostatics.md) |
 | Law of the junction $p_n(0) = p_{n0}e^{V/V_T}$ | Low-level injection | [09-06](../../courses/09-semiconductor-devices/chapters/09-06-pn-junction-iv-and-capacitance.md) |
 | $I = I_0(e^{V/V_T} - 1)$, $I_0 = qAn_i^2\Big(\dfrac{D_p}{N_DL_p} + \dfrac{D_n}{N_AL_n}\Big)$; short side: $L \to W$ | Ideal diode | [09-06](../../courses/09-semiconductor-devices/chapters/09-06-pn-junction-iv-and-capacitance.md) |
-| $g_d = I/V_T$; $C_d = (\tau_p/2)g_d$ (long), $(2/3)\tau_tg_d$ (short) | Small signal | [09-06](../../courses/09-semiconductor-devices/chapters/09-06-pn-junction-iv-and-capacitance.md) |
+| $g_d = I/V_T$; $C_d = (\tau_p/2)g_d$ (long), $(2/3)\tau_tg_d$ (short, transit time $\tau_t = W_n^2/2D_p$) | Small signal; long-diode form needs $\omega\tau_p \ll 1$ | [09-06](../../courses/09-semiconductor-devices/chapters/09-06-pn-junction-iv-and-capacitance.md) |
 | Avalanche when $\int_0^W\alpha_ne^{-\int_0^x(\alpha_n - \alpha_p)dx'}dx = 1$; Hu's rule $V_B \approx 15\text{ V}(10^{17}/N)^{0.6}$ | One-sided junction; tunneling dominates below a few volts | [09-06](../../courses/09-semiconductor-devices/chapters/09-06-pn-junction-iv-and-capacitance.md) |
-| Schottky: $J = A^*T^2e^{-\phi_B/V_T}(e^{V/V_T} - 1)$ | Thermionic emission | [09-06](../../courses/09-semiconductor-devices/chapters/09-06-pn-junction-iv-and-capacitance.md) |
+| Schottky: $J = A^*T^2e^{-\phi_{Bn}/V_T}(e^{V/V_T} - 1)$, $\phi_{Bn}$ the barrier height (not the $\phi_B$ above) | Thermionic emission | [09-06](../../courses/09-semiconductor-devices/chapters/09-06-pn-junction-iv-and-capacitance.md) |
 
 ## Bipolar transistors
 
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
-| $I_C = I_Se^{V_{BE}/V_T}$, $I_S = qA_En_i^2D_n/G_B$, Gummel number $G_B = \int N_B\,dx$ | Short base, low-level injection | [09-07](../../courses/09-semiconductor-devices/chapters/09-07-bipolar-junction-transistor.md) |
+| $I_C = I_Se^{V_{BE}/V_T}$, $I_S = qA_En_i^2/G_B$, Gummel number $G_B = \int (n_i^2/n_{iB}^2)\,N_B/D_B\,dx$ (s/cm⁴), $= N_BW_B/D_B$ for a uniform base | Short base, low-level injection | [09-07](../../courses/09-semiconductor-devices/chapters/09-07-bipolar-junction-transistor.md) |
 | $\beta = (D_nN_EW_E)/(D_pN_BW_B)$ (emitter-injection limit); HBT: $\times e^{\Delta E_g/kT}$ | Band-gap narrowing lowers it in heavily doped emitters | [09-07](../../courses/09-semiconductor-devices/chapters/09-07-bipolar-junction-transistor.md), [09-13](../../courses/09-semiconductor-devices/chapters/09-13-compound-and-wide-bandgap-semiconductors.md) |
 | $\tau_B = W_B^2/2D_n$; $f_T = 1/2\pi\tau_F$; $g_m = I_C/V_T$; $r_o = V_A/I_C$ | $\tau_F$ includes base, emitter and collector delays | [09-07](../../courses/09-semiconductor-devices/chapters/09-07-bipolar-junction-transistor.md) |
 
@@ -61,7 +61,7 @@ Conventions and course values (silicon, 300 K unless stated):
 | $C_{\min} = (1/C_{ox} + W_{d\max}/\varepsilon_s)^{-1}$; EOT $= T_{hk}\times 3.9/k$ | High-frequency C–V | [09-08](../../courses/09-semiconductor-devices/chapters/09-08-mos-capacitor.md) |
 | Body effect $V_{TH} = V_{TH0} + \gamma(\sqrt{2\phi_B + V_{SB}} - \sqrt{2\phi_B})$, $\gamma = \sqrt{2qN_A\varepsilon_s}/C_{ox}$ | | [09-09](../../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md) |
 | $I_D = \dfrac WL\mu C_{ox}\Big(V_{ov} - \dfrac m2V_{DS}\Big)V_{DS}$; $V_{Dsat} = V_{ov}/m$; $I_{Dsat} = \dfrac{W}{2mL}\mu C_{ox}V_{ov}^2$; $m = 1 + 3T_{ox}/W_{d\max}$ | Long channel | [09-09](../../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md) |
-| $g_m = 2I_D/V_{ov}$ (strong), $1/mV_T$ (weak); $f_T = g_m/2\pi C_{gs}$, $C_{gs} = \tfrac23WLC_{ox}$ | Saturation | [09-09](../../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md) |
+| $g_m = 2I_D/V_{ov}$ (strong), $I_D/mV_T$ (weak), so $g_m/I_D = 2/V_{ov}$ up to $1/mV_T$; $f_T = g_m/2\pi C_{gs}$, $C_{gs} = \tfrac23WLC_{ox}$ | Saturation | [09-09](../../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md) |
 | $S = mV_T\ln 10 \ge$ 59.5 mV/decade; $I_{off} = I_t10^{-V_{TH}/S}$, $I_t$ = 100 nA × W/L (Hu) | Subthreshold | [09-09](../../courses/09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md) |
 | $1/V_{Dsat} = m/V_{ov} + 1/\mathcal E_{sat}L$, $\mathcal E_{sat} = 2v_{sat}/\mu$; $I_{Dsat} = WC_{ox}v_{sat}(V_{ov} - mV_{Dsat})$ | Velocity saturation | [09-10](../../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md) |
 | Injection limit $I_{Dsat} = WBv_{thx}C_{ox}V_{ov}$; series $R_S$: $I_{Dsat0}/(1 + R_SI_{Dsat0}/V_{ov})$ | Very short channels | [09-10](../../courses/09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md) |
@@ -84,7 +84,7 @@ Conventions and course values (silicon, 300 K unless stated):
 
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
-| Triangular drift layer: $N_D = \varepsilon\mathcal E_c^2/2qV_B$, $W = 2V_B/\mathcal E_c$, $R_{on,sp} = 4V_B^2/\varepsilon\mu\mathcal E_c^3$ | Baliga's unipolar limit | [09-13](../../courses/09-semiconductor-devices/chapters/09-13-compound-and-wide-bandgap-semiconductors.md) |
+| Triangular drift layer: $N_D = \varepsilon\mathcal E_c^2/2qV_B$, $W = 2V_B/\mathcal E_c$, $R_{on,sp} = 4V_B^2/\varepsilon\mu\mathcal E_c^3$ | Baliga's unipolar limit; approximate, since $\mathcal E_c$ itself depends on doping (09-06, 09-13) | [09-13](../../courses/09-semiconductor-devices/chapters/09-13-compound-and-wide-bandgap-semiconductors.md) |
 | Polarization sheet charge $\sigma = P_{\text{GaN}} - P_{\text{AlGaN}}$, $P_{pz} = 2\epsilon(e_{31} - e_{33}c_{13}/c_{33})$ | Coherently strained AlGaN on Ga-face GaN | [09-13](../../courses/09-semiconductor-devices/chapters/09-13-compound-and-wide-bandgap-semiconductors.md) |
 | $R_{sh} = 1/qn_s\mu$ | 2DEG or any sheet | [09-13](../../courses/09-semiconductor-devices/chapters/09-13-compound-and-wide-bandgap-semiconductors.md) |
 | $\mathcal R = \eta\lambda(\text{µm})/1.24$ A/W; shot noise $\overline{i_n^2} = 2qIB$ | Photodiodes | [09-14](../../courses/09-semiconductor-devices/chapters/09-14-optoelectronic-devices.md) |

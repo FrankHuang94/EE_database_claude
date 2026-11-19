@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 09-06 · PN Junction I–V, Capacitance and Breakdown
 
 | | |
