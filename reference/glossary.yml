@@ -4221,3 +4221,20 @@
   definition: A resistor in series with a bipolar transistor's emitter, which provides negative feedback that stabilizes the bias against β, V_BE and temperature, at the cost of headroom and gain.
   chapter: "10-03"
   see_also: [Source degeneration]
+# ---------------------------------------------------------------- 10-04
+- term: T model
+  definition: A small-signal transistor model with the emitter (or source) resistance r_e = α/g_m (1/g_m for a MOSFET) in the emitter lead and a controlled source αi_e from collector to the internal base; equivalent to the hybrid-π model and convenient when the emitter has series resistance.
+  chapter: "10-04"
+  see_also: [Hybrid-π model]
+- term: Body transconductance
+  definition: g_mb = ∂i_D/∂v_BS, the MOSFET's response to its body voltage through the body effect; g_mb = χg_m with χ = γ/(2√(2φ_F + V_SB)), typically 0.1–0.3.
+  chapter: "10-04"
+  see_also: [Body effect]
+- term: Weak inversion
+  definition: MOSFET operation with the gate below or near threshold, where the drain current is exponential in V_GS and g_m/I_D approaches its limit 1/(nV_T); moderate inversion lies between it and strong inversion.
+  chapter: "10-04"
+  see_also: [Subthreshold conduction, Transconductance efficiency]
+- term: Second-harmonic distortion
+  definition: The ratio HD2 of a nonlinear device's output at twice the input frequency to its fundamental; v̂/(4V_T) for a bipolar transistor and v̂/(4V_ov) for a square-law MOSFET driven by a sine of amplitude v̂.
+  chapter: "10-04"
+  see_also: [Harmonic distortion]

@@ -1,0 +1,47 @@
+* Lab 10-04 -- small-signal gains by AC analysis.
+* (1) Example 10-04.1: a common-emitter stage at I_C = 1 mA (Gummel-Poon NPN, IS = 1e-15 A, BF = 100,
+*     no Early effect), R_C = 5 kOhm. The base is driven by a voltage source at V_BE = V_T ln(1 mA/IS)
+*     = 0.714317 V plus a 1 V AC signal, so the AC collector voltage is the gain and the AC base current
+*     gives r_pi = beta/g_m.
+* (2) Example 10-04.6: the MOSFET of Example 10-02.3 (level 1, k_n = KP W/L = 4 mA/V^2, V_TN = 0.5 V,
+*     lambda = 0, body tied to source) with R_D = 2 kOhm, once with the source grounded at
+*     V_GS = 1.151388 V and once with R_S = 1 kOhm unbypassed and V_G = 2.0 V (the same 0.8486 mA).
+* The temperature is 300 K so that V_T = 25.852 mV.
+*
+* EXPECT gce key:../../chapters/10-04-small-signal-models.md#Ex_10-04.1f rtol=1e-3
+* EXPECT rpi key:../../chapters/10-04-small-signal-models.md#Ex_10-04.1b scale=1e3 rtol=1e-3
+* EXPECT gcs key:../../chapters/10-04-small-signal-models.md#Ex_10-04.6b rtol=2e-3
+* EXPECT gcsdeg key:../../chapters/10-04-small-signal-models.md#Ex_10-04.6c rtol=1e-3
+
+.options temp=26.85 tnom=26.85 reltol=1e-7
+VCC vcc 0 DC 10
+VIN b 0 DC 0.7143172 AC 1
+RC vcc c 5k
+Q1 c b 0 qnpn
+.model qnpn NPN(IS=1e-15 BF=100)
+
+VDD vdd 0 DC 5
+VG1 g1 0 DC 1.151388 AC 1
+RD1 vdd d1 2k
+M1 d1 g1 0 0 nmos1 W=10u L=10u
+VG2 g2 0 DC 2.0 AC 1
+RD2 vdd d2 2k
+M2 d2 g2 s2 s2 nmos1 W=10u L=10u
+RS2 s2 0 1k
+.model nmos1 NMOS(LEVEL=1 KP=4e-3 VTO=0.5 LAMBDA=0)
+
+.control
+op
+let icq = (10 - v(c)) / 5k
+echo "icq = $&icq"
+ac lin 1 1k 1k
+let gce = real(v(c))
+let rpi = -1 / real(i(vin))
+let gcs = real(v(d1))
+let gcsdeg = real(v(d2))
+echo "gce = $&gce"
+echo "rpi = $&rpi"
+echo "gcs = $&gcs"
+echo "gcsdeg = $&gcsdeg"
+.endc
+.end
