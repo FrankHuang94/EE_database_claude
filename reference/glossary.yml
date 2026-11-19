@@ -2077,3 +2077,38 @@
 - term: Reproducibility
   definition: The property that someone else can regenerate a result from the recorded code, data and environment and get the same numbers; achieved by scripting every step, pinning versions, seeding randomness and fingerprinting data.
   chapter: "05-04"
+- term: Compiler
+  definition: A program that translates source code (C, for example) into machine instructions ahead of time, checking types and syntax; its output is assembly or object code for one processor architecture.
+  chapter: "05-05"
+  see_also: [Linker, Preprocessor, Interpreter]
+- term: Linker
+  definition: The build stage that combines object files and libraries into one executable, connecting each use of a function or variable to its single definition; a missing definition gives an "undefined reference" error.
+  chapter: "05-05"
+- term: Preprocessor
+  definition: The first stage of a C build, which rewrites source text according to lines starting with # (#include, #define, #if) before compilation; it substitutes text and knows nothing about C types.
+  chapter: "05-05"
+- term: Translation unit
+  definition: One C source file after preprocessing (with its included headers pasted in), compiled on its own into an object file.
+  chapter: "05-05"
+- term: Function prototype
+  definition: A C declaration giving a function's name, return type and parameter types without its body, so that other translation units can call it; usually placed in a header file.
+  chapter: "05-05"
+- term: Header file
+  definition: A C file (.h) of declarations (prototypes, types, macros) that a module offers, included by its users; wrapped in an include guard so its contents are processed once per translation unit.
+  chapter: "05-05"
+- term: Integer promotion
+  definition: C's rule that integer types narrower than int (char, short, int8_t, uint8_t, int16_t, uint16_t) are converted to int before arithmetic, so uint8_t 200 + 100 is the int 300.
+  chapter: "05-05"
+- term: Undefined behavior
+  definition: In C, an operation (signed overflow, reading an uninitialized variable, out-of-bounds access, oversized shift) on which the standard imposes no requirements; compilers may assume it never happens, so results can be silently wrong.
+  chapter: "05-05"
+  see_also: [Sanitizer]
+- term: Sanitizer
+  definition: Compiler-inserted run-time checks (UndefinedBehaviorSanitizer, AddressSanitizer) that report undefined behavior and memory errors with the source line; used in testing, at roughly 2x run-time cost.
+  chapter: "05-05"
+- term: MISRA C
+  definition: A widely used set of C coding guidelines for safety-critical embedded software, originating in the automotive industry; the current edition is MISRA C 2025, which targets C11/C18.
+  chapter: "05-05"
+- term: Two's complement
+  definition: The standard binary representation of signed integers, in which an n-bit pattern with top bit set represents its unsigned value minus 2^n; range −2^(n−1) to 2^(n−1) − 1. Mandatory in C23.
+  chapter: "05-05"

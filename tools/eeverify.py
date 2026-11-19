@@ -27,6 +27,15 @@ For programming chapters, ``run_python_blocks(v, path)`` executes every fenced
 records one assertion per block. A ```python block immediately followed by a
 ```text block must print exactly that text. A block whose first line is
 ``# not run`` is skipped (use it for deliberately broken or interactive code).
+
+``run_c_blocks(v, path)`` does the same for fenced ```c blocks, compiling each with the strict,
+sanitizer-instrumented flags of ``tools/run_c.py``. Directives on a block's first lines:
+``// file: NAME`` saves the block as NAME for later blocks (and compiles it if it is a .c file);
+``// with: a.c b.c`` links those saved files into a block that has ``main``;
+``// expect: warning`` / ``// expect: error`` asserts that compiling (without -Werror) warns / fails;
+``// expect: sanitizer`` asserts that running reports a sanitizer error, and each line of the
+following ```text block must appear in that report; ``// fragment`` skips the block;
+``// EXTRA_CFLAGS: ...`` adds flags. A block without ``main`` is compiled with ``-c`` only.
 """
 from __future__ import annotations
 
@@ -36,6 +45,8 @@ import io
 import math
 import os
 import re
+import shutil
+import subprocess
 import sys
 import tempfile
 import traceback
@@ -303,3 +314,105 @@ def run_python_blocks(v: "Verifier", path: str | Path, label: str | None = None)
         finally:
             os.chdir(old_cwd)
     return ns
+
+
+# --------------------------------------------------------------------------- C code blocks
+C_FLAGS = ["-std=c17", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-O1", "-g",
+           "-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-fno-sanitize-recover=all"]
+C_SANITIZER_MARKERS = ("ERROR: AddressSanitizer", "runtime error:", "ERROR: LeakSanitizer")
+
+
+def _c_directives(code: str) -> dict:
+    """Read `// key: value` directives from the leading comment lines of a C block."""
+    found = {}
+    for line in code.splitlines():
+        m = re.match(r"\s*//\s*(file|with|expect|EXTRA_CFLAGS|fragment)\b:?\s*(.*)$", line)
+        if not m:
+            break
+        found[m.group(1)] = m.group(2).strip()
+    return found
+
+
+def build_and_run_c(code: str, workdir: Path, extra_sources=(), flags=None, werror=True, run=True,
+                    timeout: int = 60) -> dict:
+    """Compile one C block (plus saved sources) in workdir; optionally run it. Returns a result dict."""
+    cc = os.environ.get("CC") or shutil.which("cc") or shutil.which("gcc") or shutil.which("clang")
+    if not cc:
+        return {"ok": False, "stage": "compile", "log": "no C compiler found"}
+    d = _c_directives(code)
+    base = [f for f in C_FLAGS if werror or f != "-Werror"] + (flags or []) + d.get("EXTRA_CFLAGS", "").split()
+    src = workdir / "block_main.c"
+    src.write_text(code, encoding="utf-8")
+    has_main = re.search(r"\bint\s+main\s*\(", code) is not None
+    if not has_main or not run:
+        c = subprocess.run([cc, *base, "-c", "-o", str(workdir / "block.o"), str(src)],
+                           capture_output=True, text=True, cwd=workdir)
+        return {"ok": c.returncode == 0, "stage": "compile", "log": c.stderr, "stdout": ""}
+    exe = workdir / "block.out"
+    c = subprocess.run([cc, *base, "-o", str(exe), str(src), *map(str, extra_sources), "-lm"],
+                       capture_output=True, text=True, cwd=workdir)
+    if c.returncode != 0:
+        return {"ok": False, "stage": "compile", "log": c.stderr, "stdout": ""}
+    env = dict(os.environ, ASAN_OPTIONS=("detect_leaks=1:" if sys.platform.startswith("linux") else "")
+               + "abort_on_error=0", UBSAN_OPTIONS="print_stacktrace=0")
+    try:
+        r = subprocess.run([str(exe)], capture_output=True, text=True, cwd=workdir, timeout=timeout, env=env)
+    except subprocess.TimeoutExpired:
+        return {"ok": False, "stage": "run", "log": "timeout", "stdout": ""}
+    log = r.stdout + r.stderr
+    clean = r.returncode == 0 and not any(m in log for m in C_SANITIZER_MARKERS)
+    return {"ok": clean, "stage": "run", "log": log, "stdout": r.stdout, "returncode": r.returncode,
+            "compile_log": c.stderr}
+
+
+def run_c_blocks(v: "Verifier", path: str | Path, label: str | None = None) -> None:
+    """Compile and run every ```c block of a Markdown file; check outputs shown in ```text blocks."""
+    path = Path(path)
+    text = path.read_text(encoding="utf-8")
+    blocks = markdown_code_blocks(path)
+    name = label or path.stem
+    with tempfile.TemporaryDirectory() as tmp:
+        work = Path(tmp)
+        for i, (lang, code, start, end) in enumerate(blocks):
+            if lang != "c":
+                continue
+            d = _c_directives(code)
+            line = text.count("\n", 0, start) + 1
+            where = f"{name} C block at line {line}"
+            if "fragment" in d:
+                continue
+            expected = None
+            if i + 1 < len(blocks) and blocks[i + 1][0] == "text" and not text[end:blocks[i + 1][2]].strip():
+                expected = blocks[i + 1][1]
+            if "file" in d:
+                (work / d["file"]).write_text(code, encoding="utf-8")
+                if d["file"].endswith(".c"):
+                    r = build_and_run_c(code, work, run=False)
+                    v.assert_true(f"{where} ({d['file']}) compiles cleanly", r["ok"], r["log"][-800:])
+                continue
+            extra = [work / f for f in d.get("with", "").split()]
+            expect = d.get("expect", "")
+            if expect == "error":
+                r = build_and_run_c(code, work, extra, werror=False, run=False)
+                v.assert_true(f"{where} fails to compile, as intended", not r["ok"])
+            elif expect == "warning":
+                r = build_and_run_c(code, work, extra, werror=False, run=False)
+                v.assert_true(f"{where} compiles with a warning, as intended", r["ok"] and "warning:" in r["log"],
+                              r["log"][-800:])
+            elif expect == "sanitizer":
+                r = build_and_run_c(code, work, extra)
+                got = r["log"]
+                hit = r.get("stage") == "run" and any(m in got for m in C_SANITIZER_MARKERS)
+                if expected is not None:
+                    hit = hit and all(l.strip() in got for l in expected.strip().splitlines() if l.strip())
+                v.assert_true(f"{where} is caught by a sanitizer, as intended", hit, got[-800:])
+            else:
+                r = build_and_run_c(code, work, extra)
+                if not r["ok"]:
+                    v.assert_true(f"{where} compiles and runs cleanly", False, r["log"][-800:])
+                elif expected is None:
+                    v.assert_true(f"{where} compiles and runs cleanly", True)
+                else:
+                    got = "\n".join(l.rstrip() for l in r["stdout"].rstrip().splitlines())
+                    want = "\n".join(l.rstrip() for l in expected.rstrip().splitlines())
+                    v.assert_true(f"{where} prints its shown output", got == want, f"expected {want!r}, got {got!r}")

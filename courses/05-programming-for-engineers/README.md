@@ -30,7 +30,7 @@ Python for engineering computation and C for hardware-adjacent programming, plus
 | [05-02 · NumPy, Vectorization and Numerical Computing](chapters/05-02-numpy-and-vectorization.md) | 8 | ✅ verified | [problems](problems/05-02-problems.md) · [solutions](solutions/05-02-solutions.md) · [lab](labs/05-02-lab/README.md) · [verify](verify/verify_05_02.py) |
 | [05-03 · SciPy, SymPy and Matplotlib](chapters/05-03-scipy-sympy-matplotlib.md) | 8 | ✅ verified | [problems](problems/05-03-problems.md) · [solutions](solutions/05-03-solutions.md) · [lab](labs/05-03-lab/README.md) · [verify](verify/verify_05_03.py) |
 | [05-04 · Jupyter, Testing and Reproducible Workflows](chapters/05-04-reproducible-workflows.md) | 6 | ✅ verified | [problems](problems/05-04-problems.md) · [solutions](solutions/05-04-solutions.md) · [lab](labs/05-04-lab/README.md) · [verify](verify/verify_05_04.py) |
-| [05-05 · C Fundamentals](chapters/05-05-c-fundamentals.md) | 10 | ⬜ planned | — |
+| [05-05 · C Fundamentals](chapters/05-05-c-fundamentals.md) | 10 | ✅ verified | [problems](problems/05-05-problems.md) · [solutions](solutions/05-05-solutions.md) · [lab](labs/05-05-lab/README.md) · [verify](verify/verify_05_05.py) |
 | [05-06 · C Pointers, Arrays and Memory](chapters/05-06-c-pointers-and-memory.md) | 10 | ⬜ planned | — |
 | [05-07 · Bit Manipulation and Fixed-Width Integers](chapters/05-07-bit-manipulation.md) | 8 | ⬜ planned | — |
 | [05-08 · Data Structures and Algorithms You Will Need](chapters/05-08-data-structures-and-algorithms.md) | 12 | ⬜ planned | — |

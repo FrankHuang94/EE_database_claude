@@ -1,5 +1,6 @@
 """Unit tests for the answer-key parser and tolerance logic in tools/eeverify.py."""
 import math
+import shutil
 import sys
 from pathlib import Path
 
@@ -69,3 +70,22 @@ def test_run_python_blocks(tmp_path):
     ns = run_python_blocks(v, md)
     assert ns["x"] == 5
     assert v.passes == 1 and len(v.failures) == 1      # first block matches; third prints 10, not 11
+
+
+@pytest.mark.skipif(not (shutil.which("cc") or shutil.which("gcc") or shutil.which("clang")), reason="no C compiler")
+def test_run_c_blocks(tmp_path):
+    from eeverify import run_c_blocks
+    md = tmp_path / "doc.md"
+    md.write_text(
+        "```c\n// file: twice.c\nint twice(int x) { return 2 * x; }\n```\n\n"
+        "```c\n// with: twice.c\n#include <stdio.h>\nint twice(int x);\nint main(void) { printf(\"%d\\n\", twice(21)); return 0; }\n```\n\n"
+        "```text\n42\n```\n\n"
+        "```c\n// expect: sanitizer\n#include <limits.h>\n#include <stdio.h>\n"
+        "int main(void) { volatile int big = INT_MAX; printf(\"%d\\n\", big + 1); return 0; }\n```\n\n"
+        "```text\nsigned integer overflow\n```\n\n"
+        "```c\n// expect: error\nint main(void) { return undeclared; }\n```\n\n"
+        "```c\n#include <stdio.h>\nint main(void) { printf(\"7\\n\"); return 0; }\n```\n\n```text\n8\n```\n",
+        encoding="utf-8")
+    v = Verifier("t", {})
+    run_c_blocks(v, md)
+    assert v.passes == 4 and len(v.failures) == 1      # the last block prints 7, not 8
