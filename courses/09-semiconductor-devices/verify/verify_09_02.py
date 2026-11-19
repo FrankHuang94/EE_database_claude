@@ -144,7 +144,7 @@ v.check("Ex 09-02.2f", ni_ge)
 v.check("Ex 09-02.2g", ni_gaas)
 v.check("Ex 09-02.2h", (EFg - 1.42 / 2) * 1e3)
 v.check("Ex 09-02.2i", 1 / (Q * NI0 * (1400 + 450)))
-v.check("Ex 09-02.2j", round(ni_ge / ni_si, -3))
+v.check("Ex 09-02.2j", round(ni_ge / ni_si, -2))
 v.check("Ex 09-02.2k", round(ni_si / ni_gaas, -2))
 v.check("Ex 09-02.2l", math.exp(0.1 / (2 * KT)))
 
@@ -350,7 +350,7 @@ v.check("09-02.9h", pIn / 1e16 * 100)
 
 kT600 = K * 600
 v.check("09-02.10b", kT600 * 1e3)
-EF600, _ = intrinsic_level(NC0 * 8, NV0 * 8, eg_T(600), T=600)   # (600/300)^1.5 = 2.83; ratio is what matters
+EF600, _ = intrinsic_level(NC0 * 2 ** 1.5, NV0 * 2 ** 1.5, eg_T(600), T=600)   # N_C, N_V scale as (600/300)^1.5
 v.check("09-02.10a", (kT600 / 2) * math.log(NV0 / NC0) * 1e3)
 v.assert_true(abs((EF600 - eg_T(600) / 2) - (kT600 / 2) * math.log(NV0 / NC0)) < 2e-3,
               "intrinsic level from n = p matches the logarithmic formula at 600 K")

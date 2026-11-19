@@ -102,11 +102,11 @@ $\rho(N) = 1/(qN\mu(N))$ falls monotonically with $N$, so bisection finds the un
 
 ### Solution 09-03.14
 
-(a) $n = IB/(qt|V_H|) = 10^{-3} \times 0.5/(1.602\times10^{-19} \times 5\times10^{-4} \times 6.24\times10^{-3})$ m⁻³ = **1.00 × 10¹⁵** cm⁻³, and $|R_H| = |V_H|t/(IB)$ = **6240** cm³/C (equivalently $1/(qn)$).
+(a) $n_H = IB/(qt|V_H|) = 10^{-3} \times 0.5/(1.602\times10^{-19} \times 5\times10^{-4} \times 7.05\times10^{-3})$ m⁻³ = **8.85 × 10¹⁴** cm⁻³, and $|R_H| = |V_H|t/(IB)$ = **7050** cm³/C (equivalently $1/(qn_H)$).
 
-(b) $\mu_H = |R_H|/\rho = 6240/4.7$ = **1328** cm²/V·s.
+(b) $\mu_H = |R_H|/\rho = 7050/4.64$ = **1519** cm²/V·s.
 
-(c) The course model gives **1345** cm²/V·s at 10¹⁵ cm⁻³, so the implied Hall factor is $1328/1345$ = **0.987**, within the range expected; quoting the Hall mobility as the drift mobility here would be off by about 1%.
+(c) The course model gives **1345** cm²/V·s at the known doping, 10¹⁵ cm⁻³, so the Hall factor is $1519/1345$ = **1.13**, inside the 1.1–1.15 range the handbook shows for lightly doped n-type silicon at 300 K (§3.9). Check: $r_Hn_H = 1.13 \times 8.85\times10^{14}$ = **1.00 × 10¹⁵** cm⁻³, the doping. Two lessons: the Hall density understates the electron density by 13%, and quoting the Hall mobility as the drift mobility would overstate it by 13%. Knowing the doping independently is what breaks the circle; with only the Hall data, you would have to assume $r_H$.
 
 ### Solution 09-03.15
 
@@ -172,11 +172,12 @@ $\rho(N) = 1/(qN\mu(N))$ falls monotonically with $N$, so bisection finds the un
 | 09-03.12c | mobility at zero TCR | 579.7 | cm²/V·s |
 | 09-03.12d | doping for zero TCR | 2.18e17 | cm⁻³ |
 | 09-03.13a | D from kinetic theory | 34.77 | cm²/s |
-| 09-03.14a | electron density from Hall | 1.00e15 | cm⁻³ |
-| 09-03.14b | Hall coefficient magnitude | 6240 | cm³/C |
-| 09-03.14c | Hall mobility | 1328 | cm²/V·s |
+| 09-03.14a | Hall density | 8.85e14 | cm⁻³ |
+| 09-03.14b | Hall coefficient magnitude | 7050 | cm³/C |
+| 09-03.14c | Hall mobility | 1519 | cm²/V·s |
 | 09-03.14d | drift mobility from the model | 1345 | cm²/V·s |
-| 09-03.14e | Hall factor | 0.987 | — |
+| 09-03.14e | Hall factor | 1.13 | — |
+| 09-03.14f | Hall factor times Hall density | 1.00e15 | cm⁻³ |
 | 09-03.15a | field for electrons | 5.41e3 | V/cm |
 | 09-03.15b | voltage for electrons | 2.71 | V |
 | 09-03.15c | field for holes | 2.03e4 | V/cm |

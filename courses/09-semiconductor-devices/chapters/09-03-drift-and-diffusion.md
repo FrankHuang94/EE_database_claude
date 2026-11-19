@@ -42,7 +42,7 @@ Every current in a semiconductor device is carried by one of two motions. **Drif
 
 ## 3. Theory
 
-> **Notation and course values.** $\mathcal E$ is the electric field (V/cm); $\mu_n$, $\mu_p$ mobilities (cm²/V·s); $v_d$ drift velocity; $\tau$ mean time between collisions (the momentum relaxation time); $\lambda$ mean free path; $D_n$, $D_p$ diffusion coefficients (cm²/s); $J$ current density (A/cm²); $\rho$ resistivity (Ω·cm), $\sigma = 1/\rho$; $R_s$ sheet resistance (Ω per square). Silicon values at 300 K from 09-02: $n_i$ = 1.0 × 10¹⁰ cm⁻³, $kT/q$ = 25.85 mV. Mobility models in §3.3 are measured fits from the semiconductor-parameter handbook [1] and Hu [2].
+> **Notation and course values.** $\mathcal E$ is the electric field (V/cm); $\mu_n$, $\mu_p$ mobilities (cm²/V·s); $v_d$ drift velocity; $\tau$ mean time between collisions (the momentum relaxation time); $\lambda$ mean free path; $D_n$, $D_p$ diffusion coefficients (cm²/s); $J$ current density (A/cm²); $\rho$ resistivity (Ω·cm), $\sigma = 1/\rho$; $R_s$ sheet resistance (Ω per square). Silicon values at 300 K from 09-02: $n_i$ = 1.0 × 10¹⁰ cm⁻³, and the **thermal voltage** $V_T \equiv kT/q$ = 25.85 mV (written $kT/q$ in this course's device chapters until 09-06, where $V_T$ takes over, as in [notation](../../../reference/notation.md)). *Notation deviation:* device physics writes the scalar field as $\mathcal E$ to keep $E$ free for energy; it is the same quantity as the field magnitude $E$ of Course 04. Mobility models in §3.3 are measured fits from the semiconductor-parameter handbook [1] and Hu [2].
 
 ### 3.1 Thermal motion and scattering
 
@@ -144,7 +144,7 @@ $$
 v_d = v_s\,\frac{\mathcal E/\mathcal E_c}{\left[1 + (\mathcal E/\mathcal E_c)^\beta\right]^{1/\beta}}, \qquad v_s = 1.53\times10^9\,T^{-0.87}\ \text{cm/s}, \quad \mathcal E_c = 1.01\,T^{1.55}\ \text{V/cm}, \quad \beta = 2.57\times10^{-2}\,T^{0.66} ,
 $$
 
-with $T$ in kelvin and the field along ⟨111⟩. At 300 K: $v_s$ = 1.07 × 10⁷ cm/s, $\mathcal E_c$ = 6.98 × 10³ V/cm and $\beta$ = 1.11. For holes, $v_s = 1.62\times10^8\,T^{-0.52}$ cm/s, $\mathcal E_c = 1.24\,T^{1.68}$ V/cm and $\beta = 0.46\,T^{0.17}$ [1]: 8.3 × 10⁶ cm/s, 1.80 × 10⁴ V/cm and 1.21 at 300 K. Two limits check the form: at low field $v_d \to (v_s/\mathcal E_c)\mathcal E$, a mobility of 1534 cm²/V·s (the value for the purest silicon, measured by time of flight), and at high field $v_d \to v_s$.
+with $T$ in kelvin and the field along ⟨111⟩. At 300 K: $v_s$ = 1.07 × 10⁷ cm/s, $\mathcal E_c$ = 6.98 × 10³ V/cm and $\beta$ = 1.11. For holes (field along ⟨100⟩), $v_s = 1.62\times10^8\,T^{-0.52}$ cm/s, $\mathcal E_c = 1.24\,T^{1.68}$ V/cm and $\beta = 0.46\,T^{0.17}$ [1]: 8.3 × 10⁶ cm/s, 1.80 × 10⁴ V/cm and 1.21 at 300 K. Two limits check the form: at low field $v_d \to (v_s/\mathcal E_c)\mathcal E$, a mobility of 1534 cm²/V·s (the value for the purest silicon, measured by time of flight), and at high field $v_d \to v_s$. Different sources give different pure-silicon electron mobilities: 1360 cm²/V·s is the low-doping limit of the doping fit (§3.3), 1430 the lattice-mobility fit, 1534 the time-of-flight value here, and 1400 the round number of Hu's table (used in 09-01). They are different fits to different measurements (conductivity, Hall, time of flight), and their ±6% spread is the honest uncertainty of a "pure silicon mobility".
 
 *Figure 3. Electron and hole drift velocity in silicon at 300 K against field, from the fits above, with the low-field (constant-mobility) lines for comparison.*
 
@@ -211,7 +211,7 @@ An exponential profile $N_D \propto e^{-x/L}$ gives a uniform field $(kT/q)/L$, 
 
 ### 3.9 Measuring carriers: the Hall effect revisited
 
-The Hall effect (04-06) gives the carrier *type* (from the sign of the Hall voltage) and density, $n = 1/(q|R_H|)$, with the **Hall coefficient** $R_H = V_Ht/(IB)$. Combined with a resistivity measurement it gives the **Hall mobility** $\mu_H = |R_H|/\rho$. Hall and drift mobilities differ by a **Hall factor** that depends on the scattering mechanism (about 0.75–0.9 for holes in silicon at 300 K in the handbook's data [1]), so careful work states which mobility is meant. Hall measurement on test structures, together with four-point-probe sheet resistance, is how fabs check that implanted doses produce the intended carrier densities.
+The Hall effect (04-06) gives the carrier *type* (from the sign of the Hall voltage) and density, $n = 1/(q|R_H|)$, with the **Hall coefficient** $R_H = V_Ht/(IB)$. Combined with a resistivity measurement it gives the **Hall mobility** $\mu_H = |R_H|/\rho$. Hall and drift mobilities differ by a **Hall factor** $r_H$ that depends on the scattering mechanism: $R_H = r_H/(qn)$, so the Hall density is $n_H = n/r_H$ and $\mu_H = r_H\mu$. In silicon at 300 K the handbook's data give $r_H$ above 1 for electrons (about 1.1–1.15 in lightly doped n-type) and below 1 for holes (about 0.75–0.9) [1], so careful work states which mobility is meant. Hall measurement on test structures, together with four-point-probe sheet resistance, is how fabs check that implanted doses produce the intended carrier densities.
 
 ## 4. Worked examples
 
@@ -273,7 +273,7 @@ For $N_A$ = 10¹⁶ cm⁻³: $\mu_p = 48 + 402/[1 + (10^{16}/6.3\times10^{16})^{
 
 (b) $1/\mu_I = 1/801.3 - 1/1430$, so $\mu_I$ = **1823** cm²/V·s at 300 K. At 400 K, $\mu_I = 1823 \times (4/3)^{1.5}$ = 2806 cm²/V·s and $\mu = 1/(1/759.4 + 1/2806)$ = **597.7** cm²/V·s: the resistance rises by only **1.341**.
 
-**Sanity check.** Doped silicon has a smaller temperature coefficient than lightly doped silicon because impurity scattering, which weakens with temperature, partly offsets phonon scattering. At high enough doping the two cancel, which is why heavily doped polysilicon and diffused resistors can be made with small temperature coefficients.
+**Sanity check.** Doped silicon has a smaller temperature coefficient than lightly doped silicon because impurity scattering, which weakens with temperature, partly offsets phonon scattering. At high enough doping the two cancel, which is why diffused single-crystal resistors can be made with small temperature coefficients. (Polysilicon resistors also reach small coefficients, but for a different reason: conduction across grain boundaries, whose barriers are crossed more easily at higher temperature, offsets the phonon term.)
 
 ### Example 09-03.5 · Velocity saturation (tier B)
 

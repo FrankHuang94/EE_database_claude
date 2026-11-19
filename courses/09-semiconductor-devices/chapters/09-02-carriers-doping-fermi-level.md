@@ -290,7 +290,7 @@ This gives $n_i$ = 5.3 × 10¹² cm⁻³ at 400 K, 528 times the 300 K value; a 
 
 (d) $\rho = 1/[1.602\times10^{-19} \times 10^{10} \times (1400 + 450)]$ = **3.37 × 10⁵** Ω·cm.
 
-**Sanity check.** Germanium's smaller gap gives it about **2000** times silicon's $n_i$, and GaAs's larger gap about a **4400**th: each 0.1 eV of gap is a factor $e^{0.1/0.0517} \approx 7$ in $n_i$. That is why germanium transistors leaked badly when warm and why GaAs makes semi-insulating substrates.
+**Sanity check.** Germanium's smaller gap gives it about **2400** times silicon's $n_i$, and GaAs's larger gap about a **4400**th: each 0.1 eV of gap is a factor $e^{0.1/0.0517} \approx 7$ in $n_i$. That is why germanium transistors leaked badly when warm and why GaAs makes semi-insulating substrates.
 
 ### Example 09-02.3 · How strongly a donor holds its electron (tier B)
 
@@ -300,7 +300,7 @@ This gives $n_i$ = 5.3 × 10¹² cm⁻³ at 400 K, 528 times the 300 K value; a 
 
 (a) Donor: $E_C - E_D = 13.606 \times 0.26/11.7^2$ = **25.8** meV and $a_D = 0.05292 \times 11.7/0.26$ = **2.381** nm. Acceptor: $13.606 \times 0.39/136.89$ = **38.8** meV, radius **1.588** nm.
 
-(b) $2.381/0.5431$ = **4.38** lattice constants. The sphere of radius $a_D$ has volume 5.66 × 10⁻²⁰ cm³ and holds $5.65\times10^{-20} \times 4.994\times10^{22}$ ≈ **2820** atoms.
+(b) $2.381/0.5431$ = **4.38** lattice constants. The sphere of radius $a_D$ has volume 5.656 × 10⁻²⁰ cm³ and holds $5.656\times10^{-20} \times 4.994\times10^{22}$ ≈ **2820** atoms.
 
 (c) Orbits touch when the spacing $N_D^{-1/3}$ equals $2a_D$ = 4.763 nm: $N_D = (4.763\times10^{-7}\ \text{cm})^{-3}$ = **9.3 × 10¹⁸** cm⁻³.
 
@@ -397,7 +397,7 @@ $$
 | Ex 09-02.2g | GaAs n_i | 2.14e6 | cm⁻³ |
 | Ex 09-02.2h | GaAs E_i shift from mid-gap | 34.9 | meV |
 | Ex 09-02.2i | intrinsic Si resistivity | 3.37e5 | Ω·cm |
-| Ex 09-02.2j | Ge to Si n_i ratio | 2000 | — |
+| Ex 09-02.2j | Ge to Si n_i ratio | 2400 | — |
 | Ex 09-02.2k | Si to GaAs n_i ratio | 4400 | — |
 | Ex 09-02.2l | n_i factor per 0.1 eV of gap | 7 | — |
 | Ex 09-02.3a | hydrogenic donor ionization energy | 25.8 | meV |

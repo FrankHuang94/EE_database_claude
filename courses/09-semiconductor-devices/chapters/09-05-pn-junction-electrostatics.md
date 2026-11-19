@@ -100,7 +100,7 @@ $$
 V_{bi} = \tfrac12|\mathcal E_{\max}|\,W .
 $$
 
-Integrating once more shows the potential is two parabolic arcs, with the drop on each side in proportion to its depletion depth: $V_n/V_p = N_Ax_n^2/(N_Dx_p^2)\cdot(N_D/N_A) = x_n/x_p = N_A/N_D$.
+Integrating once more shows the potential is two parabolic arcs, with the drop on each side in proportion to its depletion depth: $V_n = qN_Dx_n^2/2\varepsilon_s$ and $V_p = qN_Ax_p^2/2\varepsilon_s$, so $V_n/V_p = N_Dx_n^2/(N_Ax_p^2) = x_n/x_p = N_A/N_D$, using $N_Ax_p = N_Dx_n$.
 
 **Width.** Combining $V_{bi} = \tfrac12|\mathcal E_{\max}|W$, $|\mathcal E_{\max}| = qN_Dx_n/\varepsilon_s$ and $x_n = WN_A/(N_A + N_D)$:
 
@@ -146,7 +146,15 @@ $$
 L_D = \sqrt{\frac{\varepsilon_skT}{q^2N}} .
 $$
 
-It follows from linearizing Poisson's equation with Boltzmann carriers (a small potential $\phi$ changes the majority density by $N q\phi/kT$, giving $d^2\phi/dx^2 = \phi/L_D^2$). At 10¹⁶ cm⁻³, $L_D$ = 40.9 nm, about an eighth of the 0.33 µm depletion width of Example 09-05.2. The depletion approximation is accurate when $W$ spans several Debye lengths, which is the case except very near flat-band (strong forward bias). A careful treatment shows that the transition tails reduce the effective potential across the fully depleted part by about $2kT/q$; solving the full nonlinear Poisson equation numerically (lab) shows that the depletion-approximation width differs from any reasonable definition of the real, soft-edged width by a few percent at zero and reverse bias (Example 09-05.5).
+It follows from linearizing Poisson's equation with Boltzmann carriers (a small potential $\phi$ changes the majority density by $N q\phi/kT$, giving $d^2\phi/dx^2 = \phi/L_D^2$). At 10¹⁶ cm⁻³, $L_D$ = 40.9 nm, about an eighth of the 0.33 µm depletion width of Example 09-05.2. The depletion approximation is accurate when $W$ spans several Debye lengths, which is the case except very near flat-band (strong forward bias). The transition tails reduce the effective potential across the fully depleted part by about $2kT/q$ (derived in the box below); solving the full nonlinear Poisson equation numerically (lab) shows that the depletion-approximation width differs from any reasonable definition of the real, soft-edged width by a few percent at zero and reverse bias (Example 09-05.5).
+
+> **Going deeper — where the $2kT/q$ comes from.** Take the n side and let $\psi \ge 0$ be the band bending, the potential drop measured from the neutral bulk. With Boltzmann electrons $n = N_De^{-q\psi/kT}$ and holes negligible, Poisson's equation is $d^2\psi/dx^2 = (qN_D/\varepsilon_s)(1 - e^{-q\psi/kT})$. Multiply both sides by $d\psi/dx$ and integrate from the bulk, where $\psi$ and its slope vanish:
+>
+> $$
+> \frac12\left(\frac{d\psi}{dx}\right)^2 = \frac{qN_D}{\varepsilon_s}\left[\psi - \frac{kT}{q}\left(1 - e^{-q\psi/kT}\right)\right] .
+> $$
+>
+> The depletion approximation drops the electrons and gets $\tfrac12\mathcal E^2 = (qN_D/\varepsilon_s)\psi$. Once $\psi$ is several $kT/q$, the exponential has died away, so the exact field at band bending $\psi$ equals the depletion-approximation field at $\psi - kT/q$: the electron tail screens one $kT/q$ of the potential. The p side's hole tail screens another, so the fully depleted part sees $V_{bi} - V_A - 2kT/q$, and $W = \sqrt{2\varepsilon_s(V_{bi} - V_A - 2kT/q)(1/N_A + 1/N_D)/q}$ (Sze and Ng, ch. 2, treat the same correction).
 
 ### 3.8 Linearly graded junctions
 
@@ -226,7 +234,7 @@ A plot of $1/C^2$ against $V_A$ is a straight line whose slope gives the doping 
 
 (c) Solving $\sqrt{2qN_DN_A(V_{bi} + V_R)/[\varepsilon_s(N_A + N_D)]}$ = 3 × 10⁵ V/cm gives $V_R$ = **57.3** V.
 
-**Sanity check.** The n side carries 99.95% of the depletion width, so the one-sided formula is essentially exact. A rating near 57 V, from $\varepsilon_s\mathcal E_{\text{crit}}^2/2qN_D$ = 58.2 V minus $V_{bi}$, is typical of junctions with mid-10¹⁵ cm⁻³ doping; the critical field itself depends on doping, which 09-06 refines.
+**Sanity check.** The n side carries 99.95% of the depletion width, so the one-sided formula is essentially exact. The 57 V rating, from $\varepsilon_s\mathcal E_{\text{crit}}^2/2qN_D$ = 58.2 V minus $V_{bi}$, is only the constant-field estimate. Real junctions at 5 × 10¹⁵ cm⁻³ break down nearer 90–100 V (the handbook's breakdown curve after Sze [1], and the impact-ionization calculation of 09-06), because the critical field at this doping is closer to 4 × 10⁵ V/cm. The handbook's 3 × 10⁵ V/cm is a round figure for lightly doped silicon, conservative here; 09-06 replaces it with the ionization integral.
 
 ### Example 09-05.5 · How sharp are the edges? (tier B)
 
@@ -448,7 +456,7 @@ The metal–semiconductor contacts at each end have their own built-in potential
 
 <details><summary>Answer</summary>
 
-When the potential across the junction is only a few $kT/q$, so the depletion region is only a few Debye lengths wide and the soft edges, where carriers partly remain, make up much of it. That happens in strong forward bias, near flat band, and in very lightly doped material with large Debye lengths.
+When the potential across the junction is only a few $kT/q$, so the depletion region is only a few Debye lengths wide and the soft edges, where carriers partly remain, make up much of it. That happens in strong forward bias, near flat band. Light doping alone does not cause it: for a one-sided junction $W/L_D = \sqrt{2q(V_{bi} - V_A)/kT}$, independent of doping, so the approximation is equally good at all doping levels for a given voltage (Solution 09-05.8).
 
 </details>
 

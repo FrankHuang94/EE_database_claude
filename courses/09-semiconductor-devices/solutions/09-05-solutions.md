@@ -111,7 +111,7 @@ $V_{bi}$ = **0.8334** V, $W$ = **1.0381** µm (one-sided), and the corrected wid
 
 ### Solution 09-05.15
 
-$\varepsilon_s = 12.9\varepsilon_0$, $V_{bi}$ = 1.271 V, so $W = \sqrt{2\varepsilon_sV_{bi}(2/10^{17})/q}$ = **0.1904** µm and $|\mathcal E_{\max}| = 2V_{bi}/W$ = **1.335 × 10⁵** V/cm. Silicon with the same doping has $V_{bi}$ = **0.8334** V and $W$ = **0.1468** µm: GaAs's larger built-in potential (and slightly larger permittivity) widens the region and nearly doubles the zero-bias field.
+$\varepsilon_s = 12.9\varepsilon_0$, $V_{bi}$ = 1.271 V, so $W = \sqrt{2\varepsilon_sV_{bi}(2/10^{17})/q}$ = **0.1904** µm and $|\mathcal E_{\max}| = 2V_{bi}/W$ = **1.335 × 10⁵** V/cm. Silicon with the same doping has $V_{bi}$ = **0.8334** V and $W$ = **0.1468** µm: silicon's zero-bias peak field is $2 \times 0.8334/0.1468\times10^{-4}$ = **1.135 × 10⁵** V/cm. GaAs's larger built-in potential widens the region (its larger permittivity widens it slightly more) and raises the zero-bias field by a factor of only **1.18**: the field grows as $\sqrt{V_{bi}/\varepsilon_s}$, not in proportion to $V_{bi}$.
 
 ---
 
@@ -193,3 +193,5 @@ $\varepsilon_s = 12.9\varepsilon_0$, $V_{bi}$ = 1.271 V, so $W = \sqrt{2\varepsi
 | 09-05.15b | GaAs peak field | 1.335e5 | V/cm |
 | 09-05.15c | Si V_bi at 1e17/1e17 | 0.8334 | V |
 | 09-05.15d | Si W at 1e17/1e17 | 0.1468 | µm |
+| 09-05.15e | Si peak field at 1e17/1e17 | 1.135e5 | V/cm |
+| 09-05.15f | GaAs to Si peak-field ratio | 1.18 | — |

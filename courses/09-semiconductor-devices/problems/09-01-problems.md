@@ -17,7 +17,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 09-01.2 [A]
 
-**Naming planes.** Give the Miller indices of the planes that cut the axes at (a) $a$, $a$, $a$; (b) $a/2$, ∞, $a$; (c) $-a$, $a$, ∞; (d) $3a$, $2a$, $6a$. (e) Find the spacing of the plane family in (d) for silicon.
+**Naming planes.** Give the Miller indices of the planes that cut the axes at (a) $a$, $a$, $a$; (b) $a/2$, ∞, $a$; (c) $-a$, $a$, ∞; (d) $3a$, $2a$, $6a$. (e) Find the lattice-plane spacing $d_{hkl}$ of the family in (d) for silicon (the cubic lattice-plane spacing of §3.2, not the atomic-layer spacing).
 
 ### Problem 09-01.3 [A]
 

@@ -13,7 +13,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 09-03.1 [A]
 
-**Holes on the move.** For p-type silicon with $N_A$ = 10¹⁶ cm⁻³, find (a) the hole mobility, (b) the mean free time, (c) the drift velocity at 500 V/cm, and (d) the mean free path, using the thermal velocity $\sqrt{3kT/m^*}$.
+**Holes on the move.** For p-type silicon with $N_A$ = 10¹⁶ cm⁻³, find (a) the hole mobility, (b) the mean free time, (c) the drift velocity at 500 V/cm, and (d) the mean free path, using the thermal velocity $\sqrt{3kT/m^*}$ and the hole conductivity mass $m^*$ = 0.39 $m_0$.
 
 ### Problem 09-03.2 [A]
 
@@ -65,7 +65,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 09-03.14 [C]
 
-**A Hall measurement.** An n-type silicon bar 0.5 mm thick carries 1.0 mA in a 0.5 T field and shows a Hall voltage of magnitude 6.24 mV; its resistivity is 4.7 Ω·cm. (a) Find the electron density and the Hall coefficient (in cm³/C). (b) Find the Hall mobility. (c) Compare with the course model's drift mobility at that doping and find the implied Hall factor.
+**A Hall measurement.** An n-type silicon bar 0.5 mm thick, doped with 1.0 × 10¹⁵ cm⁻³ phosphorus (from the growth record, fully ionized), carries 1.0 mA in a 0.5 T field and shows a Hall voltage of magnitude 7.05 mV; its resistivity is 4.64 Ω·cm. (a) Find the Hall density $n_H = IB/(qt|V_H|)$ and the Hall coefficient (in cm³/C). (b) Find the Hall mobility. (c) Compare with the course model's drift mobility at the known doping, find the Hall factor $r_H = \mu_H/\mu$, and check that $r_Hn_H$ recovers the doping.
 
 ### Problem 09-03.15 [C]
 

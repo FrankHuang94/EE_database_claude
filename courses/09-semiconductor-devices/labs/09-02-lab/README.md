@@ -21,7 +21,7 @@ Chapter sections 3.1–3.8 and Examples 09-02.1 to 09-02.7. The solver finds the
 
 ## Procedure
 
-1. **Boltzmann versus Fermi–Dirac (Part 1).** *Predict first:* at what $\eta = (E_F - E_C)/kT$ does the Boltzmann value of $n$ overstate the true value by 5%? Then compute the ratio $\mathcal F_{1/2}(\eta)/e^\eta$ over $-6 \le \eta \le 4$.
+1. **Boltzmann versus Fermi–Dirac (Part 1).** *Predict first:* at what $\eta = (E_F - E_C)/kT$ does the true (Fermi–Dirac) value of $n$ fall 5% below the Boltzmann value? Then compute the ratio $\mathcal F_{1/2}(\eta)/e^\eta$ over $-6 \le \eta \le 4$.
 2. **The neutrality solver (Part 2, the chapter's guided exercise).** *Predict first:* is 10¹⁷ cm⁻³ phosphorus fully ionized at 300 K, and at what temperature is half of it frozen out? Then reproduce Examples 09-02.5 and 09-02.7 and answer your prediction.
 3. **The two classic plots (Part 3).** *Predict first:* sketch $n(T)$ for 10¹⁵ cm⁻³ phosphorus from 25 K to 700 K, marking where $n_i = N_D$. Then compute it.
 4. **Counting dopants (Part 4).** *Predict first:* the probability that a 7 nm × 40 nm × 20 nm fin doped at 10¹⁷ cm⁻³ contains no dopant at all. Then sample.
@@ -39,7 +39,7 @@ Chapter sections 3.1–3.8 and Examples 09-02.1 to 09-02.7. The solver finds the
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
-| Lab 09-02.a | η at which Boltzmann overstates n by 5% | -1.877 | — |
+| Lab 09-02.a | η at which the true n is 5% below the Boltzmann value | -1.877 | — |
 | Lab 09-02.b | doping at that point (300 K) | 4.65e18 | cm⁻³ |
 | Lab 09-02.c | ionized fraction of 1e17 P at 300 K | 96.7 | % |
 | Lab 09-02.d | half-freeze-out temperature of 1e17 P (Fermi–Dirac) | 119.2 | K |

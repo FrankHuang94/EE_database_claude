@@ -24,7 +24,7 @@
 So far carriers have been in equilibrium: thermal generation of electron–hole pairs exactly balanced by their recombination, with $np = n_i^2$. Devices work by disturbing that balance. A forward-biased diode injects extra minority carriers; light in a photodiode or solar cell creates extra pairs; a reverse-biased junction sweeps carriers away, leaving too few. Each time, **recombination** and **generation** act to restore equilibrium, at rates set by the material's purity and structure, and the **continuity equation** keeps the books: carriers that flow in, minus those that flow out, plus those generated, minus those recombined. This chapter supplies the last piece of the semiconductor equations; with drift–diffusion (09-03) and Poisson's equation, it is the complete model that every later device chapter solves.
 
 - **Lifetime is a quality metric.** In silicon, recombination happens mostly at defects and impurities, so the minority-carrier lifetime measures crystal purity: milliseconds in the best material, nanoseconds in heavily doped or contaminated regions.
-- **Diffusion length sets device scale.** Minority carriers diffuse a distance $L = \sqrt{D\tau}$ before recombining; a bipolar transistor's base must be much thinner than $L$, and a solar cell must collect carriers generated much deeper than $L$ would allow without passivated surfaces.
+- **Diffusion length sets device scale.** Minority carriers diffuse a distance $L = \sqrt{D\tau}$ before recombining; a bipolar transistor's base must be much thinner than $L$, and a solar cell needs $L$ longer than the depth at which light is absorbed, plus passivated surfaces so that carriers generated near them are not lost.
 - **Generation is leakage.** Defects in a depleted region generate pairs that flow as reverse-bias leakage and as image-sensor dark current, both proportional to $n_i$ and so strongly temperature-dependent.
 - **Sometimes short lifetime is the goal.** Fast-switching power diodes are deliberately doped with gold or platinum, or irradiated, to kill lifetime so stored charge disappears quickly.
 
@@ -107,7 +107,13 @@ $$
 c_nnN_t(1 - f_t) - c_nn_1N_tf_t = c_ppN_tf_t - c_pp_1N_t(1 - f_t) .
 $$
 
-Solving for $f_t$ gives $f_t = (c_nn + c_pp_1)/[c_n(n + n_1) + c_p(p + p_1)]$, and substituting back:
+Solving for $f_t$ gives $f_t = (c_nn + c_pp_1)/[c_n(n + n_1) + c_p(p + p_1)]$. Substituting back into the electron capture rate, the key step is
+
+$$
+n(1 - f_t) - n_1f_t = \frac{n\,[c_n(n + n_1) + c_p(p + p_1)] - (n + n_1)(c_nn + c_pp_1)}{c_n(n + n_1) + c_p(p + p_1)} = \frac{c_p(np - n_1p_1)}{c_n(n + n_1) + c_p(p + p_1)} ,
+$$
+
+where the $c_nn^2$ and $c_nnn_1$ terms cancel in the numerator. Multiplying by $c_nN_t$, using $n_1p_1 = n_i^2$ and dividing top and bottom by $c_nc_pN_t$:
 
 $$
 U_{\text{SRH}} = \frac{np - n_i^2}{\tau_{p0}(n + n_1) + \tau_{n0}(p + p_1)}, \qquad \tau_{n0} = \frac{1}{\sigma_nv_{th,n}N_t}, \quad \tau_{p0} = \frac{1}{\sigma_pv_{th,p}N_t} .
@@ -119,7 +125,7 @@ This is the **Shockley–Read–Hall (SRH)** rate, the most important recombinat
 
 - **Low-level injection.** In n-type material with a trap not too close to a band edge ($n_0 \gg n_1, p_1$ and $n_0 \gg p$), $U \approx n_0\Delta p/(\tau_{p0}n_0) = \Delta p/\tau_{p0}$: the minority-carrier lifetime is the time for a *hole* to find a trap, $\tau_{p0}$. In p-type material it is $\tau_{n0}$. Capture of the minority carrier is the bottleneck, because majority carriers fill or empty the traps almost instantly.
 - **Mid-gap traps are the most effective.** For given cross sections, $n_1 + p_1$ in the denominator is smallest when $E_t \approx E_i$; a trap near a band edge mostly re-emits what it captures instead of completing the recombination (Example 09-04.3).
-- **Lifetime falls as $1/N_t$.** Each trap adds capture opportunities, which is why parts-per-trillion contamination by fast-diffusing metals matters, and why gold and platinum (whose levels sit near mid-gap [1]) are used deliberately to kill lifetime.
+- **Lifetime falls as $1/N_t$.** Each trap adds capture opportunities, which is why parts-per-trillion contamination by fast-diffusing metals matters, and why gold and platinum are used deliberately to kill lifetime. Their levels are deep but not all near mid-gap: the handbook lists gold's acceptor at $E_C$ − 0.55 eV (close to mid-gap) and donor at $E_V$ + 0.35 eV, and platinum's levels at $E_V$ + 0.32, $E_V$ + 0.36 and $E_C$ − 0.25 eV [1].
 
 ### 3.5 Generation in depleted regions
 
@@ -189,6 +195,16 @@ the **diffusion length**: the average distance a minority carrier diffuses befor
 
 **Surface recombination.** Surfaces carry dangling bonds that act as traps per unit area. Their effect is a boundary condition: the diffusion flux into the surface equals the recombination there, $D_p\,d\Delta p/dx = S\Delta p$ at the surface (with $x$ pointing into the bulk), where the **surface recombination velocity** $S$ (cm/s) plays the role of a speed at which carriers are swallowed. For silicon it ranges from 10² up to (6–8) × 10⁴ cm/s depending on surface treatment, and can be as small as 0.5 cm/s at a good Si–SiO₂ interface [1]. Passivating surfaces is as important as bulk lifetime for solar cells and image sensors.
 
+**The effective lifetime of a wafer.** A lifetime tester excites a uniform excess in a wafer of thickness $W$ with both surfaces at velocity $S$, and measures how fast it decays. Two limits cover most cases.
+
+- *Weak surface recombination* ($SW/2D \ll 1$). Diffusion is fast enough to keep the excess nearly uniform across the wafer. Per unit area, the bulk loses $W\Delta p/\tau_b$ per second and the two surfaces lose $2S\Delta p$. The total, divided by the stored $W\Delta p$, is the decay rate:
+
+$$
+\frac{1}{\tau_{\text{eff}}} = \frac{1}{\tau_b} + \frac{2S}{W} .
+$$
+
+- *Strong surface recombination* ($S \to \infty$). The surfaces hold $\Delta p = 0$, and the slowest-decaying profile is the half-sine $\Delta p \propto \sin(\pi x/W)$. Substituting into the diffusion equation, $D\,d^2\Delta p/dx^2 = -D(\pi/W)^2\Delta p$, so diffusion to the surfaces adds a rate $D\pi^2/W^2$: $1/\tau_{\text{eff}} = 1/\tau_b + D\pi^2/W^2$. No passivation, however poor, can make the measured lifetime shorter than this floor allows.
+
 *Figure 2. Excess-hole profiles: exponential decay into a long region (diffusion length $L_p$), the near-linear profile of a short region ending at a contact, and the exponential decay in time after a light pulse.*
 
 ![Minority-carrier profiles](../../../assets/figures/09-04/minority-profiles.svg)
@@ -215,7 +231,7 @@ the **diffusion length**: the average distance a minority carrier diffuses befor
 
 ### Example 09-04.2 · Gold in silicon (tier B)
 
-**Setup.** Silicon is doped with $N_t$ = 10¹⁵ cm⁻³ gold, and the acceptor level at $E_C$ − 0.55 eV, with $\sigma_n$ = 8 × 10⁻¹⁷ cm² and $\sigma_p$ = 9.0 × 10⁻¹⁵ cm² [1], dominates recombination. (a) Find $\tau_{n0}$ and $\tau_{p0}$. (b) Where is the level relative to $E_i$ (use $E_C - E_i = kT\ln(N_C/n_i)$ with the course values), and what are $n_1$ and $p_1$? (c) Find the low-injection lifetime in n-type and in p-type silicon doped at 10¹⁶ cm⁻³ from the full SRH formula.
+**Setup.** Silicon is doped with $N_t$ = 10¹⁵ cm⁻³ gold. Gold has two levels [1]: an acceptor at $E_C$ − 0.55 eV ($\sigma_n$ = 8 × 10⁻¹⁷ cm², $\sigma_p$ = 9.0 × 10⁻¹⁵ cm²), which controls recombination in n-type silicon, and a donor at $E_V$ + 0.35 eV ($\sigma_n$ = 10⁻¹⁵ cm², $\sigma_p$ = 3.5 × 10⁻¹⁵ cm²), which controls it in p-type silicon, where the Fermi level puts gold in the donor's charge states. (a) Find $\tau_{n0}$ and $\tau_{p0}$ for the acceptor level. (b) Where is the acceptor level relative to $E_i$ (use $E_C - E_i = kT\ln(N_C/n_i)$ with the course values), and what are $n_1$ and $p_1$? (c) Find the low-injection lifetime in n-type silicon doped at 10¹⁶ cm⁻³ from the full SRH formula with the acceptor level. (d) Repeat for p-type silicon doped at 10¹⁶ cm⁻³ with the donor level.
 
 **Solution.**
 
@@ -223,9 +239,11 @@ the **diffusion length**: the average distance a minority carrier diffuses befor
 
 (b) $E_C - E_i$ = **0.5658** eV, so $E_t - E_i = 0.5658 - 0.55$ = **15.8** meV: essentially mid-gap. $n_1 = n_ie^{0.0158/0.02585}$ = **1.84 × 10¹⁰** cm⁻³ and $p_1 = n_i^2/n_1$ = **5.43 × 10⁹** cm⁻³.
 
-(c) With a small excess (10¹⁰ cm⁻³) in the SRH formula: n-type, $\tau$ = **6.73** ns $= \tau_{p0}$; p-type, $\tau$ = **543** ns $= \tau_{n0}$.
+(c) With a small excess (10¹⁰ cm⁻³) in the SRH formula: $\tau$ = **6.73** ns $= \tau_{p0}$, the hole capture time.
 
-**Sanity check.** Gold captures holes about **81** times more readily than electrons ($\tau_{n0}/\tau_{p0}$), so it kills minority-hole lifetime in n-type silicon far more than minority-electron lifetime in p-type. This is why fast-recovery power diodes, whose stored charge sits in a lightly doped n-type region, are gold- or platinum-doped: nanosecond lifetimes let them switch off quickly, at the cost of more leakage (§3.5).
+(d) For the donor level, $\tau_{n0} = 1/(10^{-15} \times 2.3\times10^7 \times 10^{15})$ = **43.5** ns. The level sits $E_i - E_V - 0.35$ eV below $E_i$, with $E_i - E_V = kT\ln(N_V/n_i)$ = 0.5509 eV, so $p_1 = n_ie^{0.2009/0.02585}$ = **2.37 × 10¹³** cm⁻³, still far below $p_0$ = 10¹⁶ cm⁻³. The full SRH formula gives $\tau$ = **43.6** ns, essentially $\tau_{n0}$. (Using the acceptor level here would give 543 ns, an error of more than ten times.)
+
+**Sanity check.** Gold shortens minority-hole lifetime in n-type silicon about **6.47** times more than minority-electron lifetime in p-type (43.6/6.73), not the 81 times that the acceptor level's ratio $\tau_{n0}/\tau_{p0}$ alone would suggest: which level matters depends on where the Fermi level puts the gold. Fast-recovery power diodes store their charge in a lightly doped n-type region, so gold or platinum doping gives them nanosecond lifetimes and fast turn-off, at the cost of more leakage (§3.5). The two metals trade differently. Platinum's levels sit farther from mid-gap, so by Example 09-04.3 each trap generates far less leakage in a depletion region; yet under the high injection of a conducting diode, where $n$ and $p$ dwarf $n_1$ and $p_1$, the SRH formula shows trap position barely matters, so platinum still recombines the stored charge. That is the reason power-device designers weigh platinum against gold.
 
 ### Example 09-04.3 · Why mid-gap traps generate (tier B)
 
@@ -235,7 +253,7 @@ the **diffusion length**: the average distance a minority carrier diffuses befor
 
 At mid-gap: $G = 10^{10}/(2\times10^{-6})$ = **5.0 × 10¹⁵** cm⁻³ s⁻¹. At 0.1 eV the rate falls by $\cosh(3.868)$ = **23.9**; at 0.3 eV by $\cosh(11.60)$ = **5.48 × 10⁴**.
 
-**Sanity check.** A trap 0.3 eV from mid-gap is nearly useless for generation: it can exchange carriers easily with only one band. Leakage and dark current come from the deep, near-mid-gap levels, which is why metallic contamination (Au, Fe, Ni, Pt with levels near mid-gap [1]) is policed so strictly in fabs.
+**Sanity check.** A trap 0.3 eV from mid-gap is nearly useless for generation: it can exchange carriers easily with only one band. Leakage and dark current come from levels near mid-gap, such as gold's acceptor at $E_C$ − 0.55 eV. Other common metals have levels 0.17–0.33 eV from mid-gap (iron at $E_V$ + 0.39 eV, nickel at $E_C$ − 0.35 and $E_V$ + 0.23 eV, platinum at $E_C$ − 0.25 eV [1]); they generate far less per trap but still recombine carriers and shorten lifetime, so fabs police all metallic contamination strictly.
 
 ### Example 09-04.4 · Quasi-Fermi levels under light (tier B)
 
@@ -312,7 +330,11 @@ At mid-gap: $G = 10^{10}/(2\times10^{-6})$ = **5.0 × 10¹⁵** cm⁻³ s⁻¹. 
 | Ex 09-04.2e | n_1 | 1.84e10 | cm⁻³ |
 | Ex 09-04.2f | p_1 | 5.43e9 | cm⁻³ |
 | Ex 09-04.2g | lifetime, n-type 1e16 | 6.73 | ns |
-| Ex 09-04.2h | lifetime, p-type 1e16 | 543 | ns |
+| Ex 09-04.2h | lifetime, p-type 1e16 (donor level) | 43.6 | ns |
+| Ex 09-04.2i | τ_n0 for the gold donor level | 43.5 | ns |
+| Ex 09-04.2j | p_1 for the gold donor level | 2.37e13 | cm⁻³ |
+| Ex 09-04.2k | p-type to n-type lifetime ratio | 6.47 | — |
+| Ex 09-04.2l | E_i − E_V | 0.5509 | eV |
 | Ex 09-04.3a | generation at mid-gap | 5.0e15 | cm⁻³ s⁻¹ |
 | Ex 09-04.3b | reduction at 0.1 eV | 23.9 | — |
 | Ex 09-04.3c | reduction at 0.3 eV | 5.48e4 | — |
@@ -401,8 +423,8 @@ The lab, [labs/09-04-lab](../labs/09-04-lab/README.md), is a notebook that compu
 
 ### State of the art (as of Nov 2026)
 
-- **Solar cells are recombination engineering.** The record laboratory efficiency for monocrystalline silicon cells is 28.1%, as tabulated in the Solar Cell Efficiency Tables (version 68, May 2026) and reported by Fraunhofer ISE [3] **[Established]**. In September 2026 LONGi announced a back-contact cell at 28.29%, verified by ISFH, and described it as 96.2% of the theoretical limit [4], which implies a limit of about **29.4**% **[Contested]** until independently tabulated. What separates practical cells from that limit is recombination: in the bulk, at contacts and above all at surfaces, which is why record cells depend on passivated surfaces and millisecond lifetimes. **Deeper:** solar cells return in 09-14.
-- **Lifetime is killed on purpose in power electronics.** Fast-recovery diodes and many IGBTs are doped with deep-level metals or irradiated, to shorten lifetime so stored charge clears quickly; the handbook lists gold and platinum levels near mid-gap and the defect levels that radiation creates [1] **[Established]**.
+- **Solar cells are recombination engineering.** The record laboratory efficiency for monocrystalline silicon cells is 28.1%, as tabulated in the Solar Cell Efficiency Tables (version 68, May 2026) and reported by Fraunhofer ISE [3] **[Established]**. In September 2026 LONGi announced a back-contact cell at 28.29%, verified by ISFH, and described it as 96.2% of the theoretical limit [4], which implies a limit of about **29.4**%, consistent with published theoretical limits for single-junction silicon **[Established]**; the 28.29% cell itself remains **[Contested]** until it appears in the efficiency tables. What separates practical cells from that limit is recombination: in the bulk, at contacts and above all at surfaces, which is why record cells depend on passivated surfaces and millisecond lifetimes. **Deeper:** solar cells return in 09-14.
+- **Lifetime is killed on purpose in power electronics.** Fast-recovery diodes and many IGBTs are doped with deep-level metals or irradiated, to shorten lifetime so stored charge clears quickly; the handbook lists the gold and platinum levels these rely on and the defect levels that radiation creates [1] **[Established]**.
 - **Dark current is generation.** Image sensors for phones, cars and XR headsets fight dark current, which is generation through traps in depleted regions and at interfaces (§3.5). It scales with $n_i$, doubling about every 9 K near room temperature (Problem 09-02.11), so automotive sensors running hot are especially sensitive to it.
 
 ### Why it matters commercially

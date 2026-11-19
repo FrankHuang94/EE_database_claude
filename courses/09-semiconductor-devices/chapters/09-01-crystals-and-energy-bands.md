@@ -100,6 +100,8 @@ $$
 
 (The distance from the origin to the plane $\mathbf{n}\cdot\mathbf{r} = c$ is $c/|\mathbf{n}|$, with $\mathbf{n} = (h, k, l)$ and $c = a$.)
 
+This $d_{hkl}$ is the spacing of the planes of the simple-cubic lattice built on the conventional cube, the convention used for Miller indices and in this chapter's examples. It is not always the spacing between layers of atoms, because the diamond structure has atoms between those planes: silicon's atoms form (100) layers $a/4$ = 1.358 Å apart and (110) layers $a/(2\sqrt2)$ = 1.920 Å apart, while $d_{100}$ = 5.431 Å and $d_{110}$ = 3.840 Å. Count atomic layers (in oxidation or epitaxy) with the layer spacing, not with $d_{hkl}$.
+
 **Angles.** Since directions are normals, the angle $\theta$ between planes $(h_1k_1l_1)$ and $(h_2k_2l_2)$ follows from the dot product (02-06):
 
 $$
@@ -114,13 +116,13 @@ $$
 \sigma_{100} = \frac{2}{a^2} = 6.78\times10^{14}\ \text{cm}^{-2} .
 $$
 
-A (110) plane through the cube cuts a rectangle of $a \times \sqrt2a$ containing 4 atoms, $\sigma_{110} = 4/(\sqrt2a^2)$ = 9.59 × 10¹⁴ cm⁻². A (111) plane cuts an equilateral triangle of side $\sqrt2a$ (area $\sqrt3a^2/2$) containing 2 atoms, so $\sigma_{111} = 4/(\sqrt3a^2)$ = 7.83 × 10¹⁴ cm⁻². In the diamond structure the {111} planes come in closely spaced pairs (each atom bonds once to the neighboring plane of its pair and three times within it), which is why silicon cleaves along {111}: breaking between pairs cuts only one bond per atom.
+A (110) plane through the cube cuts a rectangle of $a \times \sqrt2a$ containing 4 atoms, $\sigma_{110} = 4/(\sqrt2a^2)$ = 9.59 × 10¹⁴ cm⁻². A (111) plane cuts an equilateral triangle of side $\sqrt2a$ (area $\sqrt3a^2/2$) containing 2 atoms, so $\sigma_{111} = 4/(\sqrt3a^2)$ = 7.83 × 10¹⁴ cm⁻². In the diamond structure the {111} atomic planes come in closely spaced pairs: each atom has three bonds to the other plane of its pair and one bond to the adjacent pair (none within its own plane). That is why silicon cleaves along {111}: separating two pairs breaks only one bond per surface atom.
 
 **Why orientation matters for devices.** Silicon integrated circuits are built on (100) wafers, chosen for uniformity and for the electronic quality of the oxide–silicon interface, with a notch or flat cut along a {110} plane so that every pattern can be aligned to the crystal [1]. Orientation also sets carrier mobility, because the band structure (§3.5) is anisotropic: for current along ⟨110⟩, electrons are most mobile on a (100) surface and holes on a (110) surface [2]. A transistor's channel runs along the surface, so the surface plane and the channel direction are design choices with a measurable payoff (§9).
 
 ### 3.3 Electrons in a periodic potential: Bloch's theorem
 
-An electron in a crystal sees a potential energy $V(x)$ that repeats with the lattice period $d$: $V(x + d) = V(x)$. (We work in one dimension; three dimensions add bookkeeping, not new ideas.) Shifting by one period leaves the Schrödinger equation unchanged, so if $\psi(x)$ is a solution with energy $E$, so is $\psi(x + d)$. For a non-degenerate state the two can differ only by a constant factor, $\psi(x + d) = \lambda\psi(x)$; normalizability over a long crystal requires $|\lambda| = 1$, so $\lambda = e^{jkd}$ for some real $k$. This is **Bloch's theorem**:
+An electron in a crystal sees a potential energy $V(x)$ that repeats with the lattice period $d$: $V(x + d) = V(x)$. (We work in one dimension; three dimensions add bookkeeping, not new ideas.) Shifting by one period leaves the Schrödinger equation unchanged, so if $\psi(x)$ is a solution with energy $E$, so is $\psi(x + d)$. At a given $E$ the equation has two independent solutions, and the shift maps them into combinations of each other: it acts as a 2 × 2 matrix (the Math refresher below). Choose the solutions to be its eigenvectors; each then satisfies $\psi(x + d) = \lambda\psi(x)$ with $\lambda$ an eigenvalue. A state that stays bounded over a long crystal requires $|\lambda| = 1$, so $\lambda = e^{jkd}$ for some real $k$. This is **Bloch's theorem**:
 
 $$
 \psi_k(x + d) = e^{jkd}\,\psi_k(x), \qquad\text{equivalently}\qquad \psi_k(x) = e^{jkx}u_k(x)\ \text{with}\ u_k(x + d) = u_k(x) .
@@ -145,7 +147,7 @@ $$
 
 **Step 2 — matching conditions.** $\psi$ and $d\psi/dx$ are continuous at each well–barrier boundary (04-10). At the boundaries of one cell, that gives two equations; Bloch's theorem relates $\psi$ and $\psi'$ at the far side of the next barrier to their values one period earlier, giving two more. Four linear homogeneous equations in $A, B, C, D$ have a nonzero solution only if their determinant vanishes.
 
-**Step 3 — the dispersion relation.** Working the determinant out takes a page of algebra; the lab notebook and the verify script sidestep it by multiplying the 2 × 2 transfer matrices of the well and the barrier numerically, which gives the same curve. The result is the **Kronig–Penney relation**:
+**Step 3 — the dispersion relation.** Working the determinant out for finite barriers takes a page of algebra (the lab notebook and the verify script check it by multiplying the 2 × 2 transfer matrices of the well and the barrier numerically, which gives the same curve). The result is the **Kronig–Penney relation**:
 
 $$
 \cos kd = \cos\alpha w\,\cosh\beta b + \frac{\beta^2 - \alpha^2}{2\alpha\beta}\,\sin\alpha w\,\sinh\beta b \equiv F(E) .
@@ -171,13 +173,30 @@ $$
 
 where the dimensionless **barrier strength** $P$ measures how strongly the barriers reflect. Allowed energies are $E = E_d x^2$, with $E_d = \hbar^2/(2md^2)$.
 
+**Deriving the delta-comb relation directly.** This limit, the one every example and problem uses, takes only a few lines with transfer matrices. Describe the wavefunction at any point by the pair $(\psi, \psi')$.
+
+- *Free flight.* Between barriers $\psi'' = -\alpha^2\psi$, whose solution over a distance $d$ is $\psi(x + d) = \psi\cos\alpha d + (\psi'/\alpha)\sin\alpha d$, and $\psi'(x + d) = -\alpha\psi\sin\alpha d + \psi'\cos\alpha d$. As a matrix acting on $(\psi, \psi')$:
+
+$$
+M_f = \begin{pmatrix}\cos x & \sin x/\alpha \\ -\alpha\sin x & \cos x\end{pmatrix}, \qquad x = \alpha d .
+$$
+
+- *Crossing a barrier.* A delta barrier of strength $V_0b$ leaves $\psi$ continuous, and integrating $-(\hbar^2/2m)\psi'' + V_0b\,\delta(x)\psi = E\psi$ across it gives a jump $\Delta\psi' = (2mV_0b/\hbar^2)\psi = (2P/d)\psi$. As a matrix, $K = \begin{pmatrix}1 & 0 \\ 2P/d & 1\end{pmatrix}$.
+- *One period* is $M = KM_f$. Both matrices have determinant 1, so $M$ does too, and its eigenvalues are $\lambda$ and $1/\lambda$. Bloch's theorem says a Bloch state is an eigenvector with $\lambda = e^{jkd}$, so $\lambda + 1/\lambda = 2\cos kd$ equals the trace of $M$:
+
+$$
+2\cos kd = \operatorname{tr}(KM_f) = \cos x + \frac{2P}{d}\frac{\sin x}{\alpha} + \cos x \quad\Longrightarrow\quad \cos kd = \cos x + P\,\frac{\sin x}{x} .
+$$
+
+The same argument with the finite-barrier matrix in place of $K$ gives the general relation above; that algebra is the page this section skips.
+
 As $P$ grows the bands narrow and the gaps widen. As $P \to \infty$ each band collapses to the energy levels of an isolated well, $x = n\pi$: the tight-binding picture of 04-11 §3.3, where bands are broadened atomic levels. The Kronig–Penney model interpolates between the nearly-free-electron and tight-binding pictures with one parameter.
 
 *Figure 2. The Kronig–Penney function $F(E)$ for the delta-function comb with $P$ = 3 (left); allowed bands are where $|F| \le 1$. Right: the resulting $E$–$k$ diagram in the first Brillouin zone, with the free-electron parabola for comparison.*
 
 ![Kronig–Penney function and E–k diagram](../../../assets/figures/09-01/kronig-penney.svg)
 
-**Step 5 — effective mass at a band bottom.** Near a band bottom where $F(E_b) = 1$ and $k = 0$, expand both sides to first order in small quantities (01-08):
+**Step 5 — effective mass at a band bottom.** Near a band bottom where $F(E_b) = 1$ and $k = 0$, expand both sides to lowest nonvanishing order in small quantities (01-08), second order in $kd$ and first order in $x - x_b$:
 
 $$
 \cos kd \approx 1 - \frac{(kd)^2}{2}, \qquad F \approx 1 + F'(x_b)\,(x - x_b), \qquad E - E_b \approx 2E_dx_b\,(x - x_b) .
@@ -265,7 +284,7 @@ $$
 E_g(T) = E_g(0) - \frac{\alpha_V T^2}{T + \beta_V} ,
 $$
 
-with material parameters $E_g(0)$, $\alpha_V$ and $\beta_V$. For silicon the handbook fit is $E_g(0)$ = 1.17 eV, $\alpha_V$ = 4.73 × 10⁻⁴ eV/K and $\beta_V$ = 636 K; for GaAs it is 1.519 eV, 5.405 × 10⁻⁴ eV/K and 204 K [3, 4]. For silicon these give 1.1245 eV at 300 K. Differentiating, $dE_g/dT = -\alpha_VT(T + 2\beta_V)/(T + \beta_V)^2 \approx -0.25$ meV/K near room temperature. The shift is small, but it enters the exponential of $n_i$ (09-02), and a silicon diode's forward voltage at constant current falls by about 2 mV/K largely because of it (09-06), a property that bandgap voltage references exploit ([20-03](../../20-analog-and-mixed-signal-ic-design/chapters/20-03-bandgap-references.md)).
+with material parameters $E_g(0)$, $\alpha_V$ and $\beta_V$. For silicon the handbook fit is $E_g(0)$ = 1.17 eV, $\alpha_V$ = 4.73 × 10⁻⁴ eV/K and $\beta_V$ = 636 K; for GaAs it is 1.519 eV, 5.405 × 10⁻⁴ eV/K and 204 K [3, 4]. For silicon these give 1.1245 eV at 300 K. Differentiating, $dE_g/dT = -\alpha_VT(T + 2\beta_V)/(T + \beta_V)^2 \approx -0.25$ meV/K near room temperature. The shift is small, but it enters the exponential of $n_i$ (09-02). A silicon diode's forward voltage at constant current falls by about 2 mV/K (09-06); most of that comes from the activation factor $e^{-E_g/kT}$ at fixed gap and the $T^3$ prefactor of $n_i^2$, and the gap's own shift adds only about an eighth. Its main effect is on the extrapolation: projected linearly back to 0 K from room temperature, the gap is about 1.20 eV, the voltage that bandgap references are built around ([20-03](../../20-analog-and-mixed-signal-ic-design/chapters/20-03-bandgap-references.md)).
 
 **Composition.** Semiconductors with the same crystal structure mix into **alloys**, written by the fraction of each component: Al$_x$Ga$_{1-x}$As replaces a fraction $x$ of the Ga atoms with Al.
 
@@ -305,19 +324,19 @@ Two alloys show what the bowing term does, and how settled it is.
 
 ### Example 09-01.2 · Miller indices, spacings and angles (tier A)
 
-**Setup.** (a) A plane cuts the axes at $x = 2a$, $y = 3a$ and is parallel to $z$. Find its Miller indices. (b) Find the spacing of (100), (110), (111) and (210) planes in silicon. (c) Find the angle between (100) and (111), and between (100) and (110). (d) Which of these directions lies in the (001) plane: [110], [111], [1̄10]?
+**Setup.** (a) A plane cuts the axes at $x = 2a$, $y = 3a$ and is parallel to $z$. Find its Miller indices. (b) Find the lattice-plane spacing $d_{hkl}$ of the (100), (110), (111) and (210) families in silicon. (c) Find the angle between (100) and (111), and between (100) and (110). (d) Which of these directions lies in the (001) plane: [110], [111], [1̄10]?
 
 **Solution.**
 
 (a) Intercepts 2, 3, ∞ → reciprocals ½, ⅓, 0 → multiply by 6: **(320)**.
 
-(b) $d = a/\sqrt{h^2 + k^2 + l^2}$: (100) **5.431** Å, (110) **3.840** Å, (111) **3.136** Å, (210) **2.429** Å.
+(b) Lattice-plane spacing $d = a/\sqrt{h^2 + k^2 + l^2}$: (100) **5.431** Å, (110) **3.840** Å, (111) **3.136** Å, (210) **2.429** Å.
 
 (c) $\cos\theta = 1/\sqrt3$ → **54.74°**; $\cos\theta = 1/\sqrt2$ → **45.00°**.
 
 (d) A direction lies in a plane when it is perpendicular to the plane's normal, [001]: the dot product must vanish. [110]·[001] = 0 and [1̄10]·[001] = 0, so **[110] and [1̄10]** lie in the (001) plane; [111] does not. Transistors on (001) wafers are usually laid out with channels along ⟨110⟩.
 
-**Sanity check.** Higher-index planes are more closely spaced and less densely populated; the (111) spacing $a/\sqrt3$ is the distance between the double layers described in §3.2.
+**Sanity check.** Higher-index lattice planes are more closely spaced, since $d$ falls as $\sqrt{h^2 + k^2 + l^2}$ grows. Atomic density on a plane does not follow so simple a rule: in silicon $\sigma_{110} > \sigma_{111} > \sigma_{100}$ (§3.2). The (111) spacing $a/\sqrt3$ is the distance between the double layers described in §3.2.
 
 ### Example 09-01.3 · Bands of a delta-function comb (tier B)
 
@@ -361,7 +380,7 @@ Two alloys show what the bowing term does, and how settled it is.
 
 (b) The potential drops by $\mathcal E L = 2\times10^4\ \text{V/cm} \times 10^{-4}$ cm = 2 V along $+x$, so electron energies *rise* by **2.00** eV along $+x$: the bands slope up in the direction of the field. Electrons roll down the slope, toward $-x$, against the field, as their negative charge requires.
 
-(c) With no scattering it converts the full 2.00 eV drop into kinetic energy: **2.00** eV, well above the 1.12 eV gap, enough to create electron–hole pairs by impact ionization. In real silicon, electrons scatter every **0.21** ps or so (the mean free time $\tau = \mu m_c/q$ with $\mu$ = 1400 cm²/V·s and $m_c$ = 0.26 $m_0$, 09-03), which keeps most carriers near thermal energies at such fields; only in very high fields or very short devices do carriers get this hot.
+(c) With no scattering it converts the full 2.00 eV drop into kinetic energy: **2.00** eV, well above the 1.12 eV gap, enough to create electron–hole pairs by impact ionization. In real silicon, electrons scatter every **0.21** ps or so (the mean free time $\tau = \mu m_c/q$ with $\mu$ = 1400 cm²/V·s and $m_c$ = 0.26 $m_0$, 09-03), so at such fields carriers stay far below the 2 eV ballistic value, though they are noticeably heated (by the velocity fit of 09-03 they move at about three-quarters of the saturation velocity). Only in very high fields or very short devices do carriers get anywhere near this hot.
 
 **Sanity check.** The p-type work function is larger, because its Fermi level is lower; joining the two materials, electrons flow from the n side (lower Φ) to the p side until the Fermi levels align, which is how the built-in potential of a PN junction arises (09-05).
 
@@ -508,7 +527,7 @@ The lab, [labs/09-01-lab](../labs/09-01-lab/README.md), is a notebook that build
 1. **Counting atoms in the diamond cell as 4.** The FCC lattice has 4 points per cube, but diamond has a 2-atom basis: 8 atoms.
 2. **Forgetting to clear fractions in Miller indices, or inverting the order of steps.** Take reciprocals of the intercepts *first*, then clear fractions. A plane through $x = 2a$, $y = 3a$ is (320), not (230).
 3. **Assuming $[hkl] \perp (hkl)$ in every crystal.** It holds for cubic crystals only; hexagonal GaN and SiC need their own four-index notation.
-4. **Using one effective mass for everything.** Mobility uses the conductivity mass (harmonic average over valleys); carrier counting uses the density-of-states mass (geometric average times the number of valleys). For silicon electrons they differ by a factor of four.
+4. **Using one effective mass for everything.** Mobility uses the conductivity mass (harmonic average over valleys); carrier counting uses the density-of-states mass (the geometric mean of the three masses, times the number of valleys to the power 2/3). For silicon electrons they differ by a factor of four.
 5. **Reading band diagrams backward.** Bands are drawn in electron energy, so a higher potential means *lower* bands. Electrons roll down, holes float up, and the electric field points in the direction in which the bands rise.
 6. **Treating an indirect gap as "no absorption".** Indirect-gap silicon absorbs light well above its gap (it makes excellent photodiodes and solar cells); it is *emission* that the indirect gap suppresses.
 7. **Adding band gaps linearly for alloys.** Lattice constants follow Vegard's law closely; band gaps usually bow, and some alloys switch from direct to indirect partway across the composition range.
@@ -598,7 +617,7 @@ The bands shrink to single energies $E = E_d(n\pi)^2$, the levels of isolated we
 
 <details><summary>Answer</summary>
 
-Its gap is indirect: an electron at the conduction-band minimum and a hole at the valence-band maximum differ in crystal momentum, and a photon carries almost none, so recombination needs a phonon too and is slow; other recombination paths win. Absorption of photons well above the gap can be vertical (direct) transitions elsewhere in $k$, so silicon absorbs visible and near-infrared light strongly.
+Its gap is indirect: an electron at the conduction-band minimum and a hole at the valence-band maximum differ in crystal momentum, and a photon carries almost none, so recombination needs a phonon too and is slow; other recombination paths win. Absorption needs a phonon too: across the visible and near-infrared, silicon's absorption is still indirect, because its vertical (direct) transitions lie at ultraviolet energies (the handbook gives 4.2 eV at the zone center [3]). So silicon absorbs more weakly than GaAs, and a detector needs micrometers to tens of micrometers of absorber (09-14). But absorption has no faster process to compete with: a thick enough layer absorbs nearly every photon above the gap, and the carriers it creates are collected before they recombine. Emission fails because slow radiative recombination loses to SRH recombination at defects (09-04).
 
 </details>
 

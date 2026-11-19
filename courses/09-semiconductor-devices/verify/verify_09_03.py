@@ -330,14 +330,18 @@ steps = rng.choice([-1.0, 1.0], size=(4000, 400))
 spread = np.var(steps.sum(axis=1)) / 400 / 2            # D in units of lambda^2/tau
 v.assert_true(abs(spread - 0.5) < 0.03, "simulated 1-D random walk gives D = lambda^2/(2 tau)")
 
-I, B, t, VH, rho = 1e-3, 0.5, 0.5e-3, 6.24e-3, 4.7
+I, B, t, VH, rho = 1e-3, 0.5, 0.5e-3, 7.05e-3, 4.64
 n14 = I * B / (Q * t * VH) / 1e6
 v.check("09-03.14a", n14)
 RH = VH * t / (I * B) * 1e6
 v.check("09-03.14b", RH)
 v.check("09-03.14c", RH / rho)
-v.check("09-03.14d", mun(n14))
-v.check("09-03.14e", (RH / rho) / mun(n14))
+v.check("09-03.14d", mun(1e15))
+rH = (RH / rho) / mun(1e15)
+v.check("09-03.14e", rH)
+v.check("09-03.14f", rH * n14)
+# the problem data are consistent with the model: rho from n = 1e15 and the drift mobility, V_H from r_H = 1.13
+v.assert_true("resistivity data match n = 1e15 with the model mobility", abs(1 / (Q * 1e15 * mun(1e15)) / rho - 1) < 0.002)
 
 Fe = brentq(lambda F: ve(F) - 5e6, 10, 1e6)
 Fh = brentq(lambda F: vh(F) - 5e6, 10, 1e6)

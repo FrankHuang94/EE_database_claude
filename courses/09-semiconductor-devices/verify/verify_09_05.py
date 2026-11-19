@@ -55,6 +55,8 @@ def depletion(NA, ND, VA=0.0, eps=EPS, ni=NI, n=4001):
         return xn, xp, E1, E2, V1, V2
     W = brentq(lambda W: sides(W)[5][-1] - (Vb - VA), 1e-9, 1e-1, xtol=1e-16)
     xn, xp, E1, E2, V1, V2 = sides(W)
+    # the split x_n = W N_A/(N_A + N_D) is checked, not assumed: the integrated field must return to zero at x_n
+    assert abs(E2[-1]) < 1e-9 * abs(E1[-1]), "charge neutrality violated"
     return dict(W=W, xn=xn, xp=xp, Emax=abs(E1[-1]), Vp=V1[-1], Vn=V2[-1] - V1[-1], Vbi=Vb,
                 x2=np.linspace(0, xn, n), V2=V2, x1=np.linspace(-xp, 0, n), E1=E1)
 
@@ -283,6 +285,8 @@ v.check("09-05.15a", dg["W"] * 1e4)
 v.check("09-05.15b", dg["Emax"])
 v.check("09-05.15c", vbi(1e17, 1e17))
 v.check("09-05.15d", depletion(1e17, 1e17)["W"] * 1e4)
+v.check("09-05.15e", depletion(1e17, 1e17)["Emax"])
+v.check("09-05.15f", dg["Emax"] / depletion(1e17, 1e17)["Emax"])
 
 # ================================================================= lab
 x10, x90 = np.interp([0.1e16, 0.9e16], nn[right], x[right])

@@ -140,7 +140,14 @@ v.check("Ex 09-04.2d", EtEi * 1e3)
 v.check("Ex 09-04.2e", NI * math.exp(EtEi / KT))
 v.check("Ex 09-04.2f", NI * math.exp(-EtEi / KT))
 v.check("Ex 09-04.2g", srh_tau(1e16, 1e4, Nt, 8e-17, 9.0e-15, EtEi, d=1e10) * 1e9)
-v.check("Ex 09-04.2h", srh_tau(1e4, 1e16, Nt, 8e-17, 9.0e-15, EtEi, d=1e10) * 1e9)
+EiEv = KT * math.log(1.8e19 / NI)
+EtEi_d = 0.35 - EiEv                       # gold donor at E_V + 0.35 eV
+v.check("Ex 09-04.2h", srh_tau(1e4, 1e16, Nt, 1e-15, 3.5e-15, EtEi_d, d=1e10) * 1e9)
+v.check("Ex 09-04.2i", 1 / (1e-15 * VN * Nt) * 1e9)
+v.check("Ex 09-04.2j", NI * math.exp(-EtEi_d / KT))
+v.check("Ex 09-04.2k", srh_tau(1e4, 1e16, Nt, 1e-15, 3.5e-15, EtEi_d, d=1e10)
+        / srh_tau(1e16, 1e4, Nt, 8e-17, 9.0e-15, EtEi, d=1e10))
+v.check("Ex 09-04.2l", EiEv)
 v.check("T 09-04.e", tn0 / tp0)
 
 # Example 3: generation from the SRH rate with n, p << n_i
