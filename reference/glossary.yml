@@ -2408,3 +2408,29 @@
 - term: R–2R ladder
   definition: A resistor network of series R and shunt 2R sections in which each node sees R looking onward, so currents halve at every rung; the basis of many digital-to-analog converters.
   chapter: "06-03"
+
+# ---------------------------------------------------------------- 06-04
+- term: Nodal analysis
+  definition: Solving a circuit with the voltages of its non-reference nodes as unknowns, writing KCL at each node so that KVL holds automatically; for resistors and current sources the result is G·v = i.
+  chapter: "06-04"
+  see_also: [Conductance matrix, Modified nodal analysis, Supernode]
+- term: Node voltage
+  definition: The voltage of a node relative to the reference node; every branch voltage is the difference of its two node voltages, so node voltages satisfy KVL by construction.
+  chapter: "06-04"
+  see_also: [Reference node (ground), Nodal analysis]
+- term: Supernode
+  definition: A closed surface around a floating voltage source and its two nodes; KCL holds for the surface as a whole (the source's unknown current cancels), and the source supplies the constraint v_a − v_b = V_s.
+  chapter: "06-04"
+  see_also: [Nodal analysis]
+- term: Diagonally dominant matrix
+  definition: A matrix in which each diagonal entry is at least the sum of the magnitudes of the other entries in its row; a nodal conductance matrix is, with strict inequality at nodes that have conductance to ground.
+  chapter: "06-04"
+  see_also: [Conductance matrix, Positive definite matrix]
+- term: IR drop
+  definition: The voltage lost along a power-distribution network by current flowing through its resistance, so circuits far from the supply connections see less than the nominal supply voltage.
+  chapter: "06-04"
+  see_also: [Electromigration]
+- term: FastSPICE
+  definition: A class of transistor-level circuit simulators that partition the circuit and use simplified or tabulated device models to gain speed and capacity, at some loss of accuracy relative to SPICE.
+  chapter: "06-04"
+  see_also: [SPICE]

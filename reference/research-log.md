@@ -108,6 +108,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-100 | Low-power MCU currents, coin cells and CPU core-voltage ranges | Nov 2026 |
 | R-101 | Resistors: preferred values, film technologies, copper and shunts | Nov 2026 |
 | R-102 | Strain gauges: gauge factor and bridge excitation | Nov 2026 |
+| R-103 | Modified nodal analysis and simulator capacity | Nov 2026 |
 
 ---
 
@@ -867,3 +868,16 @@ R&D % = R&D ÷ revenue.
 - **Excitation:** HBM tech note 4206: 2.5 V is "a typical excitation voltage for a strain gauge quarter bridge"; HBK QuantumX MX1615B datasheet: "DC quarter-bridge excitation of 0.5; 1; 2.5; 5 (±5 %) volts"; an HBK note's heating example: "52 mW for 5 V RMS into a 120 Ω gauge" (half of the bridge voltage across each gauge: $2.5^2/120$ = 52 mW, our check); Micro-Measurements' reference guide cites 0.5 to 12 V DC [Industry estimate].
 - **Derived in the chapter:** ΔR/R = GF·ε, so 1000 µε with GF = 2 gives 0.2%, and a 2.5 V quarter bridge about 1.25 mV.
 - **Sources:** [HBM, strain gauge excitation voltage](https://www.hbm.com/en/4206/tips-and-tricks-strain-gauge-excitation-voltage/); [HBM, gauge factor deviation](https://www.hbm.com/en/7942/gauge-factor-deviation/); [HBK strain measurement glossary](https://www.hbkworld.com/en/knowledge/resource-center/articles/strain-measurement-glossary1); [Micro-Measurements reference guide](https://docs.micro-measurements.com/?id=8690). Checked Nov 2026 (search excerpts).
+
+## R-103 · Modified nodal analysis and simulator capacity
+
+- **The MNA paper:** C.-W. Ho, A. E. Ruehli and P. A. Brennan, "The modified nodal approach to network analysis," *IEEE Transactions on Circuits and Systems*, vol. CAS-22, no. 6, pp. 504–509, June 1975, DOI 10.1109/TCS.1975.1084079 (bibliographic data confirmed on Crossref). The authors were at the IBM Thomas J. Watson Research Center, Yorktown Heights. The abstract says the nodal method cannot process "voltage sources and current-dependent circuit elements in a simple and efficient manner", and that MNA "retains the simplicity and other advantages of nodal analysis while removing its limitations". Numerical comparisons with the tableau method favor MNA "in terms of the dimension, number of nonzeros, and fill-ins". Table I gives "element rubber stamps", the origin of the term *stamp* [Established].
+- **Commercial simulator capacity (vendor claims):**
+  - Cadence describes Spectre X (introduced June 2019) as delivering "up to 10X simulation performance gains for large, post-layout designs" and solving "5X larger designs" than its previous simulators, for "designs with millions of transistors and billions of parasitics".
+  - Synopsys says PrimeSim FastSPICE is "proven capable of handling billions of elements in a 3D stacked memory design".
+  - No vendor publishes an element-count specification, and no independent benchmark was found [Contested].
+- **FastSPICE trade-off:** a Cadence blog on Spectre FX describes FastSPICE as a SPICE-type simulator that makes different trade-offs to produce results much faster, with accuracy as a user-set dial. Patents on FastSPICE partitioning (for example US 8,060,355) describe simplified device models and circuit partitioning, and warn that improper partitioning or oversimplification costs accuracy. An academic study (Bizzarri, Brambilla and Storti Gajani, 2018) reports partitioning that preserves accuracy, but for DC operating points only [Industry estimate].
+- **Sources:**
+  - [Crossref record for the MNA paper](https://api.crossref.org/works/10.1109/TCS.1975.1084079); the paper's text was read from [an author-uploaded copy](https://spinningnumbers.org/assets/MNA75.pdf).
+  - Vendor claims: [Cadence Spectre X](https://www.cadence.com/en_US/home/tools/custom-ic-analog-rf-design/circuit-simulation/spectre-x-simulator.html), [Cadence blog, June 2019](https://community.cadence.com/cadence_blogs_8/b/cic/posts/tales-from-dac-the-new-spectre-simulator-is-here), [Synopsys blog on PrimeSim](https://www.synopsys.com/blogs/chip-design/primesim-continuum-ic-hyperconvergence.html), [Cadence blog on Spectre FX](https://community.cadence.com/cadence_blogs_8/b/breakfast-bytes/posts/spectrefx), [US 8,060,355](https://patents.google.com/patent/US8060355).
+  - The vendor and patent pages returned bot-check pages to direct download, so those claims come from search excerpts (PROGRESS open issue 21). Checked Nov 2026.

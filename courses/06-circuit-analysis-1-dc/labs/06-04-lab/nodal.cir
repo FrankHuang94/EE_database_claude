@@ -1,0 +1,107 @@
+* Lab 06-04 -- the chapter's nodal and MNA examples, a bridge with a meter, a netlist
+* assembled by hand, and a diode solved by Newton's method, all solved by ngspice.
+* ngspice builds exactly the modified nodal system of section 3.5 from these lines.
+*
+* EXPECT ex1v1   key:../../chapters/06-04-nodal-analysis.md#Ex_06-04.1a rtol=1e-6
+* EXPECT ex1v2   key:../../chapters/06-04-nodal-analysis.md#Ex_06-04.1b rtol=1e-6
+* EXPECT ex2vc   key:../../chapters/06-04-nodal-analysis.md#Ex_06-04.2c rtol=1e-4
+* EXPECT ex2vd   key:../../chapters/06-04-nodal-analysis.md#Ex_06-04.2d rtol=1e-4
+* EXPECT ex2icd  key:../../chapters/06-04-nodal-analysis.md#Ex_06-04.2e scale=1e-3 rtol=1e-3
+* EXPECT ex2i    key:../../chapters/06-04-nodal-analysis.md#Ex_06-04.2f scale=-1 rtol=1e-3
+* EXPECT ex3v2   key:../../chapters/06-04-nodal-analysis.md#Ex_06-04.3a rtol=1e-6
+* EXPECT ex3v3   key:../../chapters/06-04-nodal-analysis.md#Ex_06-04.3b rtol=1e-6
+* EXPECT ex4j1   key:../../chapters/06-04-nodal-analysis.md#Ex_06-04.4a rtol=1e-3
+* EXPECT ex4j2   key:../../chapters/06-04-nodal-analysis.md#Ex_06-04.4b rtol=1e-6
+* EXPECT p6va    key:../../solutions/06-04-solutions.md#06-04.6a rtol=1e-4
+* EXPECT p6vb    key:../../solutions/06-04-solutions.md#06-04.6b rtol=1e-4
+* EXPECT p6ig    key:../../solutions/06-04-solutions.md#06-04.6c scale=1e-3 rtol=1e-3
+* EXPECT p6i     key:../../solutions/06-04-solutions.md#06-04.6f scale=-1e-3 rtol=1e-3
+* EXPECT p7v2    key:../../solutions/06-04-solutions.md#06-04.7a rtol=1e-6
+* EXPECT p7j     key:../../solutions/06-04-solutions.md#06-04.7b rtol=1e-6
+* EXPECT p13vd   key:../../solutions/06-04-solutions.md#06-04.13e rtol=1e-4
+* EXPECT p13id   key:../../solutions/06-04-solutions.md#06-04.13f scale=-1e-3 rtol=1e-3
+
+* Diode at exactly 300 K (V_T = 25.852 mV): nominal and circuit temperature 26.85 C
+.options TNOM=26.85
+.temp 26.85
+
+* ---- Example 06-04.1: 4 A into node 1, 1 A into node 2 (SPICE: current flows n+ -> source -> n-)
+I1a  0 n1a DC 4
+I1b  0 n2a DC 1
+R1a  n1a 0 2
+R2a  n1a n2a 2
+R3a  n2a 0 4
+* ---- Example 06-04.2: the bridge network of Example 06-03.5, 10 V at node a
+V2   a2 0 DC 10
+R2ac a2 c2 10
+R2ad a2 d2 20
+R2cd c2 m2 30
+VM2  m2 d2 0
+R2cb c2 0 40
+R2db d2 0 50
+* ---- Examples 06-04.3 and 06-04.4: 12 V grounded, 5 V floating (+ at node 2, - at node 3)
+V12  n1c 0 DC 12
+V5   n2c n3c DC 5
+R12c n1c n2c 2
+R13c n1c n3c 3
+R2c  n2c 0 4
+R3c  n3c 0 6
+* ---- Problem 06-04.6: bridge at 5 V with a 100 Ohm galvanometer from B to A
+V6   t6 0 DC 5
+R61  t6 a6 1k
+R62  a6 0 1k
+R63  t6 b6 1k
+R64  b6 0 1.1k
+VM6  b6 g6 0
+RG6  g6 a6 100
+* ---- Problem 06-04.7: the netlist of the problem, renamed to keep node names unique
+V1p  n17 0 DC 10
+R1p  n17 n27 2
+R2p  n27 0 8
+I1p  0 n27 DC 1
+* ---- Problem 06-04.13: 5 V, 1 kOhm, diode with IS = 1e-14 A and N = 1
+V13  s13 0 DC 5
+R13  s13 d13 1k
+D13  d13 0 DTEST
+.model DTEST D(IS=1e-14 N=1)
+
+.control
+op
+let ex1v1 = v(n1a)
+let ex1v2 = v(n2a)
+let ex2vc = v(c2)
+let ex2vd = v(d2)
+let ex2icd = i(VM2)
+let ex2i = i(V2)
+let ex3v2 = v(n2c)
+let ex3v3 = v(n3c)
+let ex4j1 = i(V12)
+let ex4j2 = i(V5)
+let p6va = v(a6)
+let p6vb = v(b6)
+let p6ig = i(VM6)
+let p6i = i(V6)
+let p7v2 = v(n27)
+let p7j = i(V1p)
+let p13vd = v(d13)
+let p13id = i(V13)
+echo "ex1v1 = $&ex1v1"
+echo "ex1v2 = $&ex1v2"
+echo "ex2vc = $&ex2vc"
+echo "ex2vd = $&ex2vd"
+echo "ex2icd = $&ex2icd"
+echo "ex2i = $&ex2i"
+echo "ex3v2 = $&ex3v2"
+echo "ex3v3 = $&ex3v3"
+echo "ex4j1 = $&ex4j1"
+echo "ex4j2 = $&ex4j2"
+echo "p6va = $&p6va"
+echo "p6vb = $&p6vb"
+echo "p6ig = $&p6ig"
+echo "p6i = $&p6i"
+echo "p7v2 = $&p7v2"
+echo "p7j = $&p7j"
+echo "p13vd = $&p13vd"
+echo "p13id = $&p13id"
+.endc
+.end

@@ -1,0 +1,171 @@
+* Lab 06-04 -- static IR drop in small power grids (Example 06-04.5 and Problem 06-04.10).
+* Each grid is a mesh of equal resistors; every node draws a constant current (a current
+* source from the node to ground) and supply bumps are ideal voltage sources.
+*
+* EXPECT ex5vmin  key:../../chapters/06-04-nodal-analysis.md#Ex_06-04.5c rtol=1e-4
+* EXPECT ex5drop  key:../../chapters/06-04-nodal-analysis.md#Ex_06-04.5d scale=1e-3 rtol=2e-3
+* EXPECT ex5ibump key:../../chapters/06-04-nodal-analysis.md#Ex_06-04.5e rtol=1e-6
+* EXPECT p10a     key:../../solutions/06-04-solutions.md#06-04.10c scale=1e-3 rtol=1e-6
+* EXPECT p10b     key:../../solutions/06-04-solutions.md#06-04.10d scale=1e-3 rtol=1e-6
+* EXPECT p10c     key:../../solutions/06-04-solutions.md#06-04.10e scale=1e-3 rtol=1e-6
+
+* ---- g5: 5 x 5 nodes, 10 mOhm per edge, 0.5 A per node, bumps at [(0, 0), (0, 4), (4, 0), (4, 4)]
+Rg5h00 g5_00 g5_01 0.01
+Rg5v00 g5_00 g5_10 0.01
+Rg5h01 g5_01 g5_02 0.01
+Rg5v01 g5_01 g5_11 0.01
+Rg5h02 g5_02 g5_03 0.01
+Rg5v02 g5_02 g5_12 0.01
+Rg5h03 g5_03 g5_04 0.01
+Rg5v03 g5_03 g5_13 0.01
+Rg5v04 g5_04 g5_14 0.01
+Rg5h10 g5_10 g5_11 0.01
+Rg5v10 g5_10 g5_20 0.01
+Rg5h11 g5_11 g5_12 0.01
+Rg5v11 g5_11 g5_21 0.01
+Rg5h12 g5_12 g5_13 0.01
+Rg5v12 g5_12 g5_22 0.01
+Rg5h13 g5_13 g5_14 0.01
+Rg5v13 g5_13 g5_23 0.01
+Rg5v14 g5_14 g5_24 0.01
+Rg5h20 g5_20 g5_21 0.01
+Rg5v20 g5_20 g5_30 0.01
+Rg5h21 g5_21 g5_22 0.01
+Rg5v21 g5_21 g5_31 0.01
+Rg5h22 g5_22 g5_23 0.01
+Rg5v22 g5_22 g5_32 0.01
+Rg5h23 g5_23 g5_24 0.01
+Rg5v23 g5_23 g5_33 0.01
+Rg5v24 g5_24 g5_34 0.01
+Rg5h30 g5_30 g5_31 0.01
+Rg5v30 g5_30 g5_40 0.01
+Rg5h31 g5_31 g5_32 0.01
+Rg5v31 g5_31 g5_41 0.01
+Rg5h32 g5_32 g5_33 0.01
+Rg5v32 g5_32 g5_42 0.01
+Rg5h33 g5_33 g5_34 0.01
+Rg5v33 g5_33 g5_43 0.01
+Rg5v34 g5_34 g5_44 0.01
+Rg5h40 g5_40 g5_41 0.01
+Rg5h41 g5_41 g5_42 0.01
+Rg5h42 g5_42 g5_43 0.01
+Rg5h43 g5_43 g5_44 0.01
+Ig500 g5_00 0 DC 0.5
+Ig501 g5_01 0 DC 0.5
+Ig502 g5_02 0 DC 0.5
+Ig503 g5_03 0 DC 0.5
+Ig504 g5_04 0 DC 0.5
+Ig510 g5_10 0 DC 0.5
+Ig511 g5_11 0 DC 0.5
+Ig512 g5_12 0 DC 0.5
+Ig513 g5_13 0 DC 0.5
+Ig514 g5_14 0 DC 0.5
+Ig520 g5_20 0 DC 0.5
+Ig521 g5_21 0 DC 0.5
+Ig522 g5_22 0 DC 0.5
+Ig523 g5_23 0 DC 0.5
+Ig524 g5_24 0 DC 0.5
+Ig530 g5_30 0 DC 0.5
+Ig531 g5_31 0 DC 0.5
+Ig532 g5_32 0 DC 0.5
+Ig533 g5_33 0 DC 0.5
+Ig534 g5_34 0 DC 0.5
+Ig540 g5_40 0 DC 0.5
+Ig541 g5_41 0 DC 0.5
+Ig542 g5_42 0 DC 0.5
+Ig543 g5_43 0 DC 0.5
+Ig544 g5_44 0 DC 0.5
+Vg5b0 g5_00 0 DC 0.8
+Vg5b1 g5_04 0 DC 0.8
+Vg5b2 g5_40 0 DC 0.8
+Vg5b3 g5_44 0 DC 0.8
+* ---- gc: 3 x 3 nodes, 20 mOhm per edge, 1 A per node, bumps at [(1, 1)]
+Rgch00 gc_00 gc_01 0.02
+Rgcv00 gc_00 gc_10 0.02
+Rgch01 gc_01 gc_02 0.02
+Rgcv01 gc_01 gc_11 0.02
+Rgcv02 gc_02 gc_12 0.02
+Rgch10 gc_10 gc_11 0.02
+Rgcv10 gc_10 gc_20 0.02
+Rgch11 gc_11 gc_12 0.02
+Rgcv11 gc_11 gc_21 0.02
+Rgcv12 gc_12 gc_22 0.02
+Rgch20 gc_20 gc_21 0.02
+Rgch21 gc_21 gc_22 0.02
+Igc00 gc_00 0 DC 1
+Igc01 gc_01 0 DC 1
+Igc02 gc_02 0 DC 1
+Igc10 gc_10 0 DC 1
+Igc11 gc_11 0 DC 1
+Igc12 gc_12 0 DC 1
+Igc20 gc_20 0 DC 1
+Igc21 gc_21 0 DC 1
+Igc22 gc_22 0 DC 1
+Vgcb0 gc_11 0 DC 0.75
+* ---- gk: 3 x 3 nodes, 20 mOhm per edge, 1 A per node, bumps at [(0, 0)]
+Rgkh00 gk_00 gk_01 0.02
+Rgkv00 gk_00 gk_10 0.02
+Rgkh01 gk_01 gk_02 0.02
+Rgkv01 gk_01 gk_11 0.02
+Rgkv02 gk_02 gk_12 0.02
+Rgkh10 gk_10 gk_11 0.02
+Rgkv10 gk_10 gk_20 0.02
+Rgkh11 gk_11 gk_12 0.02
+Rgkv11 gk_11 gk_21 0.02
+Rgkv12 gk_12 gk_22 0.02
+Rgkh20 gk_20 gk_21 0.02
+Rgkh21 gk_21 gk_22 0.02
+Igk00 gk_00 0 DC 1
+Igk01 gk_01 0 DC 1
+Igk02 gk_02 0 DC 1
+Igk10 gk_10 0 DC 1
+Igk11 gk_11 0 DC 1
+Igk12 gk_12 0 DC 1
+Igk20 gk_20 0 DC 1
+Igk21 gk_21 0 DC 1
+Igk22 gk_22 0 DC 1
+Vgkb0 gk_00 0 DC 0.75
+* ---- gf: 3 x 3 nodes, 20 mOhm per edge, 1 A per node, bumps at [(0, 0), (0, 2), (2, 0), (2, 2)]
+Rgfh00 gf_00 gf_01 0.02
+Rgfv00 gf_00 gf_10 0.02
+Rgfh01 gf_01 gf_02 0.02
+Rgfv01 gf_01 gf_11 0.02
+Rgfv02 gf_02 gf_12 0.02
+Rgfh10 gf_10 gf_11 0.02
+Rgfv10 gf_10 gf_20 0.02
+Rgfh11 gf_11 gf_12 0.02
+Rgfv11 gf_11 gf_21 0.02
+Rgfv12 gf_12 gf_22 0.02
+Rgfh20 gf_20 gf_21 0.02
+Rgfh21 gf_21 gf_22 0.02
+Igf00 gf_00 0 DC 1
+Igf01 gf_01 0 DC 1
+Igf02 gf_02 0 DC 1
+Igf10 gf_10 0 DC 1
+Igf11 gf_11 0 DC 1
+Igf12 gf_12 0 DC 1
+Igf20 gf_20 0 DC 1
+Igf21 gf_21 0 DC 1
+Igf22 gf_22 0 DC 1
+Vgfb0 gf_00 0 DC 0.75
+Vgfb1 gf_02 0 DC 0.75
+Vgfb2 gf_20 0 DC 0.75
+Vgfb3 gf_22 0 DC 0.75
+
+.control
+op
+let ex5vmin = v(g5_22)
+let ex5drop = 0.8 - v(g5_22)
+* current delivered by the bumps into the grid, excluding the corner nodes' own 0.5 A loads
+let ex5ibump = -(i(Vg5b0) + i(Vg5b1) + i(Vg5b2) + i(Vg5b3)) - 4*0.5
+let p10a = 0.75 - v(gc_00)
+let p10b = 0.75 - v(gk_22)
+let p10c = 0.75 - v(gf_11)
+echo "ex5vmin = $&ex5vmin"
+echo "ex5drop = $&ex5drop"
+echo "ex5ibump = $&ex5ibump"
+echo "p10a = $&p10a"
+echo "p10b = $&p10b"
+echo "p10c = $&p10c"
+.endc
+.end
