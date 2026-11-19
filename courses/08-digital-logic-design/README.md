@@ -36,7 +36,7 @@ From number systems and Boolean algebra to finite state machines, timing and FPG
 | [08-07 · Registers, Counters and Shift Registers](chapters/08-07-registers-counters-shift-registers.md) | 7 | ✅ verified | [problems](problems/08-07-problems.md) · [solutions](solutions/08-07-solutions.md) · [lab](labs/08-07-lab/README.md) · [verify](verify/verify_08_07.py) |
 | [08-08 · Finite State Machines](chapters/08-08-finite-state-machines.md) | 12 | ✅ verified | [problems](problems/08-08-problems.md) · [solutions](solutions/08-08-solutions.md) · [lab](labs/08-08-lab/README.md) · [verify](verify/verify_08_08.py) |
 | [08-09 · Arithmetic Circuits](chapters/08-09-arithmetic-circuits.md) | 8 | ✅ verified | [problems](problems/08-09-problems.md) · [solutions](solutions/08-09-solutions.md) · [lab](labs/08-09-lab/README.md) · [verify](verify/verify_08_09.py) |
-| [08-10 · Timing, Metastability and Clock-Domain Crossing](chapters/08-10-timing-metastability-cdc.md) | 10 | ⬜ planned | — |
+| [08-10 · Timing, Metastability and Clock-Domain Crossing](chapters/08-10-timing-metastability-cdc.md) | 10 | ✅ verified | [problems](problems/08-10-problems.md) · [solutions](solutions/08-10-solutions.md) · [lab](labs/08-10-lab/README.md) · [verify](verify/verify_08_10.py) |
 | [08-11 · Memories and Programmable Logic](chapters/08-11-memories-and-programmable-logic.md) | 5 | ⬜ planned | — |
 | [08-12 · FPGA Implementation Flow](chapters/08-12-fpga-implementation-flow.md) | 5 | ⬜ planned | — |
 

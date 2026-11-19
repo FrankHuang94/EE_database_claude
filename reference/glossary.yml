@@ -3324,3 +3324,37 @@
   definition: The operation acc = acc + a·b, the inner loop of filters, matrix products and neural networks; its multiplier and accumulator widths set much of a DSP or AI chip's area and energy.
   chapter: "08-09"
   see_also: [Q format]
+- term: Static timing analysis (STA)
+  definition: Checking every timing path of a synchronous design against setup and hold constraints by propagating worst-case and best-case arrival times through the circuit graph, without simulating input vectors.
+  chapter: "08-10"
+  see_also: [Critical path, Slack]
+- term: Slack
+  definition: The margin by which a timing path meets its constraint, the required time minus the arrival time; negative slack is a violation.
+  chapter: "08-10"
+  see_also: [Static timing analysis (STA)]
+- term: Clock skew
+  definition: The difference between the arrival times of a clock edge at two flip-flops; skew that delays the capturing clock helps setup and hurts hold by the same amount.
+  chapter: "08-10"
+  see_also: [Jitter]
+- term: Pipelining
+  definition: Inserting registers to split long combinational paths into stages, raising the clock rate and throughput at the cost of latency and register overhead.
+  chapter: "08-10"
+- term: Metastability
+  definition: The state of a bistable element left near its balance point by an input that changed within its setup-hold window; it resolves to 0 or 1 after a random time whose tail falls exponentially with time constant tau.
+  chapter: "08-10"
+  see_also: [Synchronizer]
+- term: Synchronizer
+  definition: A chain of flip-flops (usually two or three) with nothing between them that samples an asynchronous signal and gives any metastability a clock period per stage to resolve; its reliability is quantified by MTBF = e^(S/tau)/(T_W F_C F_D).
+  chapter: "08-10"
+  see_also: [Metastability, Mean time between failures (MTBF)]
+- term: Clock-domain crossing (CDC)
+  definition: Any signal passing between logic clocked by unrelated clocks; it needs a synchronizer for single bits and Gray coding, a handshake or an asynchronous FIFO for multi-bit values.
+  chapter: "08-10"
+  see_also: [Synchronizer, Asynchronous FIFO]
+- term: Asynchronous FIFO
+  definition: A dual-port memory written in one clock domain and read in another, whose Gray-coded read and write pointers cross the domains through synchronizers and produce conservative full and empty flags.
+  chapter: "08-10"
+  see_also: [Clock-domain crossing (CDC)]
+- term: Reset synchronizer
+  definition: Two flip-flops that assert a domain's reset asynchronously but release it on the domain's clock edge, so every flip-flop in the domain leaves reset in the same cycle.
+  chapter: "08-10"
