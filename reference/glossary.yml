@@ -4373,3 +4373,57 @@
 - term: Open-drain output
   definition: An output stage that can only pull its pin low; a pull-up resistor supplies the high level, which allows wired-OR connections and level shifting at the cost of a resistor-capacitor rise time and static current when low.
   chapter: "10-10"
+- term: Continuous-time signal
+  definition: A signal x(t) defined at every real instant t, such as the voltage on a wire; the domain of analog front ends and of the Laplace and continuous-time Fourier transforms.
+  chapter: "11-01"
+  see_also: [Discrete-time signal]
+- term: Discrete-time signal
+  definition: A sequence x[n] defined only at integer indices n, often the samples x(nT_s) of a continuous-time signal; it is undefined, not zero, between samples.
+  chapter: "11-01"
+  see_also: [Continuous-time signal, Sampling rate]
+- term: Digital signal
+  definition: A signal that is discrete in time and takes values from a finite set, such as ADC output codes; quantization makes it digital, sampling only makes it discrete-time, and it need not be binary.
+  chapter: "11-01"
+  see_also: [Quantization noise, PAM4]
+- term: Sampling rate
+  definition: The number of samples taken per second, f_s = 1/T_s, in samples per second (SPS) or hertz; it sets the highest frequency a sampled signal can represent unambiguously, f_s/2.
+  chapter: "11-01"
+- term: Energy signal
+  definition: A signal with finite, nonzero energy E = ∫|x|² dt (or Σ|x[n]|²), and hence zero average power; transients and pulses are energy signals.
+  chapter: "11-01"
+  see_also: [Power signal]
+- term: Power signal
+  definition: A signal with finite, nonzero average power P = lim (1/2T)∫|x|² dt over [−T, T], and hence infinite energy; periodic signals are power signals, with P equal to the average over one period.
+  chapter: "11-01"
+  see_also: [Energy signal, RMS value]
+- term: Fundamental period
+  definition: The smallest positive shift that leaves a periodic signal unchanged; a sum of continuous-time periodic signals is periodic only if their periods have a rational ratio, and a discrete-time sinusoid only if ω/2π is rational.
+  chapter: "11-01"
+- term: Even and odd signals
+  definition: An even signal satisfies x(−t) = x(t) and an odd one x(−t) = −x(t); every signal splits uniquely into x_e = (x(t) + x(−t))/2 and x_o = (x(t) − x(−t))/2, whose energies add.
+  chapter: "11-01"
+- term: Time scaling
+  definition: Replacing x(t) by x(at); a > 1 compresses the signal and divides its energy by a, 0 < a < 1 stretches it. Combined with a shift, x(at − b) is x(at) delayed by b/a, not by b.
+  chapter: "11-01"
+- term: Decimation
+  definition: Keeping every M-th sample of a sequence, y[n] = x[Mn]; it discards samples, so unlike continuous-time compression it can lose information, and its effect on energy depends on which samples are kept.
+  chapter: "11-01"
+  see_also: [Zero-insertion interpolation]
+- term: Zero-insertion interpolation
+  definition: Upsampling by L by placing L − 1 zeros between samples, y[n] = x[n/L] for n a multiple of L and 0 otherwise; it loses nothing and keeps the energy, and a filter later fills in the zeros.
+  chapter: "11-01"
+  see_also: [Decimation]
+- term: Sifting property
+  definition: ∫ f(t) δ(t − t₀) dt = f(t₀) when t₀ lies inside the integration range (and 0 otherwise); in discrete time, Σ f[n] δ[n − n₀] = f[n₀]. It is the defining action of the impulse.
+  chapter: "11-01"
+  see_also: [Unit impulse]
+- term: Unit sample
+  definition: δ[n], equal to 1 at n = 0 and 0 elsewhere; the discrete-time impulse, an ordinary sequence with δ[n] = u[n] − u[n − 1], from which every sequence is built as x[n] = Σ x[k] δ[n − k].
+  chapter: "11-01"
+  see_also: [Unit impulse]
+- term: Discrete-time frequency
+  definition: The frequency ω of a sequence e^{jωn} or cos(ωn), in rad/sample; it is defined only modulo 2π, so ω and ω + 2π give the same sequence and the fastest oscillation is at ω = π. Sampling a tone of f hertz at f_s gives ω = 2πf/f_s.
+  chapter: "11-01"
+- term: PAM4
+  definition: Four-level pulse-amplitude modulation, carrying two bits per symbol; it doubles a link's bit rate at the same symbol rate and Nyquist frequency as two-level signaling, at the cost of eyes a third as tall for the same swing (PCIe 6.0).
+  chapter: "11-01"
