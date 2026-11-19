@@ -101,3 +101,11 @@
 "Butterworth section Q values?","\(Q_k = 1/(2\sin((2k-1)\pi/2n))\): n = 2: 0.707; 3: real + 1.0; 4: 0.541, 1.307; 5: real + 0.618, 1.618.",bsee::07 bsee::07-08
 "Sallen–Key low-pass ω0 and Q?","\(\omega_0 = 1/\sqrt{R_1R_2C_1C_2}\). Unity gain, equal R: \(Q = \tfrac12\sqrt{C_1/C_2}\). Equal components: \(Q = 1/(3 - K)\), sensitivity KQ.",bsee::07 bsee::07-08
 "Impedance and frequency scaling?","\(R' = k_zR\), \(L' = k_zL/k_f\), \(C' = C/(k_zk_f)\): same response shape, new impedance level and frequency.",bsee::07 bsee::07-08
+"Coupled-coil equations and the dot rule?","\(v_1 = L_1\,di_1/dt \pm M\,di_2/dt\): + if both currents enter (or both leave) their dots, − otherwise. Phasors: \(j\omega M\).",bsee::07 bsee::07-09
+"Why is k ≤ 1?","Stored energy \(\tfrac12L_1i_1^2 + \tfrac12L_2i_2^2 \pm Mi_1i_2\) must be ≥ 0 for all currents; minimizing over \(i_2\) gives \(M^2 \le L_1L_2\).",bsee::07 bsee::07-09
+"Reflected impedance of coupled coils?","\((\omega M)^2/Z_{22}\): positive resistance, reactance of opposite sign to the secondary's. Shorted secondary: primary sees \(j\omega L_1(1 - k^2)\).",bsee::07 bsee::07-09
+"Ideal transformer relations?","\(V_2/V_1 = N_2/N_1\), \(I_2/I_1 = N_1/N_2\), complex power unchanged, \(Z_{in} = (N_1/N_2)^2Z_L\); no DC.",bsee::07 bsee::07-09
+"Transformer open- and short-circuit tests?","Open circuit (rated V): core loss → \(R_c\), \(X_m\). Short circuit (rated I, a few % of V): copper loss → \(R_{eq}\), \(X_{eq}\).",bsee::07 bsee::07-09
+"Load for maximum transformer efficiency?","Where copper loss = core loss: \(x^* = \sqrt{P_{core}/P_{cu}}\). Lightly loaded distribution transformers need low core loss (amorphous).",bsee::07 bsee::07-09
+"Transformer equation?","\(V_{rms} = 4.443\,fNAB_m\): for fixed V and \(B_m\), \(NA \propto 1/f\), so high-frequency magnetics are small.",bsee::07 bsee::07-09
+"US distribution-transformer standard (as of Nov 2026)?","DOE 2024 rule, compliance 23 Apr 2029; e.g. 50 kVA 99.11% → 99.15% at 50% load (−4.5% losses); under review since a Jun 2026 RFI.",bsee::07 bsee::07-09

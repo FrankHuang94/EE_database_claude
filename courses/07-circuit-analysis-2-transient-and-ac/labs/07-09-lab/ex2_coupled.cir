@@ -1,0 +1,42 @@
+* Example 07-09.2 and the guided exercise: a source driving coupled coils (ngspice K element).
+* In SPICE the dot of each inductor is its first node: here nodes a and b. The secondary current
+* leaves the dot at b and flows into RL, as in the chapter's mesh equations.
+* Circuit 1: k = 0.5 (the example). Circuit 2: k = 0.99 (the guided exercise).
+*
+* EXPECT i1m  key:../../chapters/07-09-mutual-inductance-and-transformers.md#Ex_07-09.2d rtol=1e-3
+* EXPECT i1p  key:../../chapters/07-09-mutual-inductance-and-transformers.md#Ex_07-09.2e rtol=1e-3
+* EXPECT i2m  key:../../chapters/07-09-mutual-inductance-and-transformers.md#Ex_07-09.2f rtol=1e-3
+* EXPECT i2p  key:../../chapters/07-09-mutual-inductance-and-transformers.md#Ex_07-09.2g rtol=1e-3
+* EXPECT pl   key:../../chapters/07-09-mutual-inductance-and-transformers.md#Ex_07-09.2i rtol=1e-3
+* EXPECT pl99 key:README.md#Lab_07-09.a rtol=1e-3
+* EXPECT rin99 key:README.md#Lab_07-09.b rtol=1e-3
+
+V1  in 0 AC 10
+R1  in x 10
+Vs1 x a DC 0
+L1  a 0 10m
+L2  b 0 40m
+K1  L1 L2 0.5
+RL  b 0 100
+
+V2  in2 0 AC 10
+R2  in2 x2 10
+Vs2 x2 a2 DC 0
+L3  a2 0 10m
+L4  b2 0 40m
+K2  L3 L4 0.99
+RL2 b2 0 100
+
+.control
+ac lin 1 1k 1k
+let i1m = mag(i(Vs1))
+let i1p = 180/pi*ph(i(Vs1))
+let i2m = vm(b)/100
+let i2p = 180/pi*vp(b)
+let pl = vm(b)^2/(2*100)
+let pl99 = vm(b2)^2/(2*100)
+let zin99 = v(a2)/i(Vs2)
+let rin99 = real(zin99)
+print i1m i1p i2m i2p pl pl99 rin99
+.endc
+.end

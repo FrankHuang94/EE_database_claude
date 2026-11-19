@@ -140,6 +140,9 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-132 | Active-filter practice | Nov 2026 |
 | R-133 | Resonator Q by technology | Nov 2026 |
 | R-134 | RF filters and bands | Nov 2026 |
+| R-135 | Distribution-transformer efficiency standards | Nov 2026 |
+| R-136 | Qi wireless-charging versions | Nov 2026 |
+| R-137 | High-frequency charger transformers | Nov 2026 |
 
 ---
 
@@ -1346,3 +1349,26 @@ R&D % = R&D ÷ revenue.
 - **ETSI TS 138 101-1 V19.7.0 (2026-10) (3GPP TS 38.101-1 Release 19), Table 5.2-1** [Established]: "n77 | 3300 MHz – 4200 MHz … TDD"; "n78 | 3300 MHz – 3800 MHz"; "n79 | 4400 MHz – 5000 MHz"; "In the USA this band is restricted to 3450 – 3550 MHz and 3700 – 3980 MHz".
 - **FCC 20-51 (adopted 23 Apr 2020) and 47 CFR § 15.403 (eCFR, current)** [Established for band edges; power rules have been amended since 2020 and were not re-checked]: "1200 megahertz of spectrum available for unlicensed use in the 6 gigahertz (GHz) band (5.925-7.125 GHz)".
 - **Sources:** [Resonant 10-K](https://www.sec.gov/Archives/edgar/data/1579910/000157991022000005/resn-20211231.htm); [Broadcom 10-K](https://www.sec.gov/Archives/edgar/data/1730168/000173016825000121/avgo-20251102.htm); [Skyworks 8-K, 2025](https://www.sec.gov/Archives/edgar/data/4127/000110465925102806/tm2529220d2_ex99-1.htm); [Skyworks 8-K, 2026](https://www.sec.gov/Archives/edgar/data/4127/000110465926113538/tm2626934d1_ex99-1.htm); [ETSI TS 138 101-1](https://www.etsi.org/deliver/etsi_ts/138100_138199/13810101/19.07.00_60/ts_13810101v190700p.pdf); [FCC 20-51](https://docs.fcc.gov/public/attachments/FCC-20-51A1.pdf); [47 CFR 15.403](https://www.ecfr.gov/current/title-47/part-15/section-15.403). Checked Nov 2026.
+
+## R-135 · Distribution-transformer efficiency standards
+
+*Gathered by a research subagent (Course 07 facts file, entries F-0726 to F-0728); documents opened.*
+
+- **US DOE, "Energy Conservation Program: Energy Conservation Standards for Distribution Transformers," final rule, 89 FR 29834, 22 Apr 2024 (FR Doc. 2024-07480), amending 10 CFR 431.196** [Established]: "Compliance with the amended standards … is required on and after April 23, 2029"; "All efficiency values are at 50 percent of nameplate-rated load" (liquid-immersed) and "at 35 percent of nameplate-rated load" (low-voltage dry-type). Values read from the regulatory tables (2016 level → 2029 level): liquid-immersed single-phase 25 kVA 98.95% → 99.00%, 50 kVA 99.11% → 99.15%, 167 kVA 99.33% → 99.46%; low-voltage dry-type three-phase 75 kVA 98.60% → 98.88%. Single-phase units above 100 kVA (EC1A) and three-phase units of 15 to under 500 kVA (EC2A) were set at a level "expected to predominantly be met via use of amorphous cores"; "DOE estimates that approximately 48,000 metric tons of amorphous will be used … approximately equal to the current stated amorphous capacity (of approximately 45,000 metric tons)". The rule records industry concerns about inrush current and brittleness.
+- **US DOE, request for information, 91 FR 35903, 15 Jun 2026 (FR Doc. 2026-11971)** [Established; perishable]: "A Presidential determination issued on April 20, 2026, found that grid infrastructure supply chains, including distribution transformers and electrical core steel, are essential to national defense … DOE is initiating an information and data gathering effort". No later DOE rule changing the standard appeared in the Federal Register through 19 Nov 2026.
+- **Sources:** [89 FR 29834 (PDF)](https://www.govinfo.gov/content/pkg/FR-2024-04-22/pdf/2024-07480.pdf); [91 FR 35903](https://www.federalregister.gov/documents/2026/06/15/2026-11971). Checked Nov 2026.
+
+## R-136 · Qi wireless-charging versions
+
+*Gathered by a research subagent (Course 07 facts file, entry F-0729); extends R-082.*
+
+- **Wireless Power Consortium, "History of the Qi Specifications" (Knowledge Base, read 19 Nov 2026)** [Established; **Contested** on which version is current]: "Version 1.0 (July 2010) Qi power transmitter delivering 5 watt"; "Version 1.2 (October 2015) … up to 15 watt"; "Version 2.0 (April 2023) Introduction of the Magnetic Power Profile (MPP) … 360 kHz operating frequency"; "Version 2.1 (September 2024)"; "Version 2.2 (April 2025) Support for up to 25 watt power transfer"; "Version 2.3 (December 2025) System gain change reporting for a power transmitter". The same page states "The current version of the Qi specification is version number 2.2.1".
+- **Source:** [WPC Qi history](https://www.wirelesspowerconsortium.com/knowledge-base/qi-specification/history-of-the-qi-specifications/). Checked Nov 2026.
+
+## R-137 · High-frequency charger transformers
+
+*Gathered by a research subagent (Course 07 facts file, entries F-0730 and F-0731); documents opened.*
+
+- **GaN Systems (now Infineon), *65W, 18.5W/in³ GaN-based QR Adaptor Reference Design*, GS-EVB-CHG-65WQR-GS1 manual (abridged, Rev 202007)** [Industry estimate: vendor claims]: silicon QR flyback is limited to a maximum frequency "around 100KHz"; "The maximum frequency at full load is approximately 180KHz at 264V input"; "the transform turns ratio is 7.5 and output voltage is 20V"; "Peak Efficiency >93.6%".
+- **OPPO 50W Mini (2020)** [**Contested** between two vendor texts]: Navitas launch text reprinted by *Semiconductor Today* (24 Jul 2020): "a traditional 50kHz 'wire-wound' transformer with over 20mm height can be replaced with a new high-speed 800kHz, 8mm planar transformer"; Navitas technical article: "High-speed operation (~400 kHz) is possible due to the 'soft-switching' topology".
+- **Sources:** [GaN Systems/Infineon manual](https://www.infineon.com/assets/row/public/documents/24/44/infineon-gs-evb-adp-65wqr-gs1-usermanual-en.pdf); [Semiconductor Today](https://semiconductor-today.com/news_items/2020/jul/navitas-240720.shtml); [Navitas article (archive)](https://archive.navitassemi.com/?p=37714). Checked Nov 2026.

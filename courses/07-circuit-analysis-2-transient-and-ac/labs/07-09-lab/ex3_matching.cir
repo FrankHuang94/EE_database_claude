@@ -1,0 +1,25 @@
+* Example 07-09.3: an ideal 5:1 transformer matching a 200 ohm source to an 8 ohm speaker.
+* The ideal transformer is two controlled sources: E sets V2 = V1/5, F draws I1 = I2/5 from the primary.
+* The source is 10 V RMS (14.142 V peak), so the load power is |V|^2/(2R) with peak phasors.
+*
+* EXPECT pdir key:../../chapters/07-09-mutual-inductance-and-transformers.md#Ex_07-09.3a scale=1e-3 rtol=1e-3
+* EXPECT pmat key:../../chapters/07-09-mutual-inductance-and-transformers.md#Ex_07-09.3c scale=1e-3 rtol=1e-3
+
+V1  s1 0 AC 14.1421356
+Rs1 s1 d 200
+Rl1 d 0 8
+
+V2  s2 0 AC 14.1421356
+Rs2 s2 p 200
+E1  q 0 p 0 0.2
+Vm  q sec DC 0
+Rl2 sec 0 8
+F1  p 0 Vm 0.2
+
+.control
+ac lin 1 1k 1k
+let pdir = vm(d)^2/(2*8)
+let pmat = vm(sec)^2/(2*8)
+print pdir pmat
+.endc
+.end

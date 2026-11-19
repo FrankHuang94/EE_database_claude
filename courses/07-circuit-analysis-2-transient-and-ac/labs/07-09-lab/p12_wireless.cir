@@ -1,0 +1,53 @@
+* Problem 07-09.12: a resonant wireless-power link at 360 kHz. A 1 A (peak) AC current source drives
+* each primary coil (24 uH with 0.2 ohm); each secondary (24 uH with 0.2 ohm) feeds 5 ohm, through the
+* tuning capacitor 8.1437 nF except in the last copy. Efficiency = load power / power into the primary.
+*
+* EXPECT eta25  key:../../solutions/07-09-solutions.md#07-09.12c rtol=2e-3
+* EXPECT eta10  key:../../solutions/07-09-solutions.md#07-09.12e rtol=2e-3
+* EXPECT eta03  key:../../solutions/07-09-solutions.md#07-09.12g rtol=2e-3
+* EXPECT etaun  key:../../solutions/07-09-solutions.md#07-09.12j rtol=2e-3
+
+I1  0 p1 AC 1
+R11 p1 m1 0.2
+L11 m1 0 24u
+L12 s1 0 24u
+K1  L11 L12 0.25
+R12 s1 c1 0.2
+C12 c1 o1 8.143742n
+RL1 o1 0 5
+
+I2  0 p2 AC 1
+R21 p2 m2 0.2
+L21 m2 0 24u
+L22 s2 0 24u
+K2  L21 L22 0.1
+R22 s2 c2 0.2
+C22 c2 o2 8.143742n
+RL2 o2 0 5
+
+I3  0 p3 AC 1
+R31 p3 m3 0.2
+L31 m3 0 24u
+L32 s3 0 24u
+K3  L31 L32 0.03
+R32 s3 c3 0.2
+C32 c3 o3 8.143742n
+RL3 o3 0 5
+
+I4  0 p4 AC 1
+R41 p4 m4 0.2
+L41 m4 0 24u
+L42 s4 0 24u
+K4  L41 L42 0.25
+R42 s4 o4 0.2
+RL4 o4 0 5
+
+.control
+ac lin 1 360k 360k
+let eta25 = 100*(vm(o1)^2/10)/(0.5*real(v(p1)))
+let eta10 = 100*(vm(o2)^2/10)/(0.5*real(v(p2)))
+let eta03 = 100*(vm(o3)^2/10)/(0.5*real(v(p3)))
+let etaun = 100*(vm(o4)^2/10)/(0.5*real(v(p4)))
+print eta25 eta10 eta03 etaun
+.endc
+.end
