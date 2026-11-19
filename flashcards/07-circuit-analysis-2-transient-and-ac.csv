@@ -109,3 +109,11 @@
 "Load for maximum transformer efficiency?","Where copper loss = core loss: \(x^* = \sqrt{P_{core}/P_{cu}}\). Lightly loaded distribution transformers need low core loss (amorphous).",bsee::07 bsee::07-09
 "Transformer equation?","\(V_{rms} = 4.443\,fNAB_m\): for fixed V and \(B_m\), \(NA \propto 1/f\), so high-frequency magnetics are small.",bsee::07 bsee::07-09
 "US distribution-transformer standard (as of Nov 2026)?","DOE 2024 rule, compliance 23 Apr 2029; e.g. 50 kVA 99.11% → 99.15% at 50% load (−4.5% losses); under review since a Jun 2026 RFI.",bsee::07 bsee::07-09
+"z-, y-, h-parameter tests?","z: drive a current, other port open. y: drive a voltage, other port shorted. h: h11, h21 with output shorted; h12, h22 with input open.",bsee::07 bsee::07-10
+"ABCD (transmission) parameters and why?","\(V_1 = AV_2 + B(-I_2)\), \(I_1 = CV_2 + D(-I_2)\): output pair of one stage = input pair of the next, so cascades multiply. Series Z: [[1,Z],[0,1]]; shunt Y: [[1,0],[Y,1]].",bsee::07 bsee::07-10
+"Reciprocity in each parameter set?","\(z_{12} = z_{21}\), \(y_{12} = y_{21}\), \(h_{12} = -h_{21}\), \(AD - BC = 1\), \(S_{12} = S_{21}\). Passive RLC and transformers are reciprocal; amplifiers are not.",bsee::07 bsee::07-10
+"Terminated two-port in ABCD?","\(Z_{in} = (AZ_L + B)/(CZ_L + D)\), \(V_2/V_1 = Z_L/(AZ_L + B)\), \(Z_{out} = (DZ_s + B)/(CZ_s + A)\).",bsee::07 bsee::07-10
+"Which interconnections add which parameters?","Series–series: z add. Parallel–parallel: y add. Series–parallel: h add. Cascade: ABCD multiply. Addition needs the port condition to survive the connection.",bsee::07 bsee::07-10
+"S-parameters and why at RF?","Waves \(a, b = (V \pm Z_0I)/(2\sqrt{Z_0})\); S11 reflection, S21 transmission with ports terminated in \(Z_0\) (50 Ω). Good opens/shorts are impossible at GHz and can make devices oscillate.",bsee::07 bsee::07-10
+"Insertion loss, return loss, Γ?","IL = −20 lg|S21|; RL = −20 lg|S11|; one port \(\Gamma = (Z - Z_0)/(Z + Z_0)\). Lossless: \(|S_{11}|^2 + |S_{21}|^2 = 1\).",bsee::07 bsee::07-10
+"The Miller effect in two-port terms?","A feedback capacitance \(C_\mu\) (y12 ≠ 0) appears at the input as about \(C_\mu(1 + g_mR_L')\), e.g. 1 pF → 183 pF for a gain of 182.",bsee::07 bsee::07-10

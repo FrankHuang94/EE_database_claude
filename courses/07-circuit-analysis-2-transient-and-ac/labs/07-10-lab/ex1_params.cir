@@ -1,0 +1,48 @@
+* Examples 07-10.1 and 07-10.4: measuring the T network's y-parameters with shorted ports, and the
+* terminated network. In ngspice, i(V) is the current flowing into the + node of the source and through
+* it, so the current flowing into the network at that node is -i(V).
+* Circuit 1: 1 V at port 1, port 2 shorted.  Circuit 2: 1 V at port 2, port 1 shorted.
+* Circuit 3: 1 V at port 1, 100 ohm load.   Circuit 4: 1 V at port 2, 50 ohm at port 1 (output impedance).
+*
+* EXPECT y11  key:../../chapters/07-10-two-port-networks.md#Ex_07-10.1b rtol=1e-3
+* EXPECT y21  key:../../chapters/07-10-two-port-networks.md#Ex_07-10.1c rtol=1e-3
+* EXPECT y22  key:../../chapters/07-10-two-port-networks.md#Ex_07-10.1d rtol=1e-3
+* EXPECT zin  key:../../chapters/07-10-two-port-networks.md#Ex_07-10.4a rtol=1e-3
+* EXPECT av   key:../../chapters/07-10-two-port-networks.md#Ex_07-10.4b rtol=1e-3
+* EXPECT zout key:../../chapters/07-10-two-port-networks.md#Ex_07-10.4g rtol=1e-3
+
+V1  p1 0 AC 1
+Ra1 p1 m1 10
+Rb1 m1 p2 20
+Rc1 m1 0 30
+V2  p2 0 DC 0
+
+V3  q1 0 DC 0
+Ra2 q1 m2 10
+Rb2 m2 q2 20
+Rc2 m2 0 30
+V4  q2 0 AC 1
+
+V5  r1 0 AC 1
+Ra3 r1 m3 10
+Rb3 m3 r2 20
+Rc3 m3 0 30
+RL3 r2 0 100
+
+Rs4 s1 0 50
+Ra4 s1 m4 10
+Rb4 m4 s2 20
+Rc4 m4 0 30
+V6  s2 0 AC 1
+
+.control
+ac lin 1 1k 1k
+let y11 = real(-i(V1))
+let y21 = real(-i(V2))
+let y22 = real(-i(V4))
+let zin = real(1/(-i(V5)))
+let av = real(v(r2))
+let zout = real(1/(-i(V6)))
+print y11 y21 y22 zin av zout
+.endc
+.end

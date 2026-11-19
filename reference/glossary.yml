@@ -265,6 +265,33 @@
 - term: Voltage regulation
   definition: The fractional change in a transformer's (or supply's) output voltage from no load to full load, about I(R_eq cos θ + X_eq sin θ)/V_rated for a lagging load.
   chapter: "07-09"
+- term: Two-port network
+  definition: A linear network with two terminal pairs (ports), each carrying equal and opposite currents, described by a 2 × 2 matrix relating its port voltages and currents at each frequency (z, y, h, ABCD or S parameters).
+  chapter: "07-10"
+- term: z-parameters
+  definition: Open-circuit impedance parameters, V = z I; z11 and z22 are input and output impedances with the other port open, z12 and z21 transfer impedances. A reciprocal network has z12 = z21 and a T equivalent.
+  chapter: "07-10"
+  see_also: [Two-port network]
+- term: y-parameters
+  definition: Short-circuit admittance parameters, I = y V, the inverse of the z matrix; natural for transistors (y21 ≈ gm) and for parallel connections, where they add.
+  chapter: "07-10"
+  see_also: [Two-port network]
+- term: h-parameters
+  definition: Hybrid parameters with I1 and V2 as inputs; h11 input impedance (output shorted), h12 reverse voltage ratio, h21 forward current gain (β for a bipolar transistor, hfe), h22 output admittance (input open).
+  chapter: "07-10"
+  see_also: [Two-port network]
+- term: ABCD parameters
+  definition: Transmission parameters, V1 = A V2 − B I2 and I1 = C V2 − D I2, chosen so that cascaded two-ports multiply; a series impedance is [[1, Z], [0, 1]], a shunt admittance [[1, 0], [Y, 1]], and AD − BC = 1 for a reciprocal network.
+  chapter: "07-10"
+  see_also: [Two-port network]
+- term: S-parameters
+  definition: Scattering parameters relating reflected to incident waves at ports terminated in a reference impedance (usually 50 Ω); S11 is the input reflection coefficient and S21 the forward transmission. Reciprocal networks have S12 = S21; lossless ones conserve power.
+  chapter: "07-10"
+  see_also: [Reflection coefficient, Insertion loss, Return loss]
+- term: Return loss
+  definition: −20 lg|S11| (or |Γ|), in positive dB, the ratio of incident to reflected power at a port; 20 dB means 1% of the power is reflected.
+  chapter: "07-10"
+  see_also: [S-parameters, Reflection coefficient]
 - term: Admittance
   definition: Y = 1/Z = G + jB (siemens), the ratio of current phasor to voltage phasor; admittances in parallel add. Its real part, the conductance G = R/(R² + X²), is not 1/R unless the reactance is zero.
   chapter: "07-05"

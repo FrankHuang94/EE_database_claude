@@ -1,0 +1,30 @@
+* Example 07-10.3 and Problem 07-10.6: unbuffered RC sections in cascade at f = 1/(2 pi R C).
+*
+* EXPECT g2m key:../../chapters/07-10-two-port-networks.md#Ex_07-10.3c rtol=1e-3
+* EXPECT g2p key:../../chapters/07-10-two-port-networks.md#Ex_07-10.3e rtol=1e-3
+* EXPECT g3m key:../../solutions/07-10-solutions.md#07-10.6a rtol=1e-3
+* EXPECT g3p key:../../solutions/07-10-solutions.md#07-10.6c rtol=1e-3
+
+V1  in 0 AC 1
+R1  in a 1k
+C1  a 0 100n
+R2  a b 1k
+C2  b 0 100n
+
+V2  in2 0 AC 1
+R3  in2 c 1k
+C3  c 0 100n
+R4  c d 1k
+C4  d 0 100n
+R5  d e 1k
+C5  e 0 100n
+
+.control
+ac lin 1 1591.5494 1591.5494
+let g2m = vm(b)
+let g2p = 180/pi*vp(b)
+let g3m = vm(e)
+let g3p = 180/pi*vp(e)
+print g2m g2p g3m g3p
+.endc
+.end

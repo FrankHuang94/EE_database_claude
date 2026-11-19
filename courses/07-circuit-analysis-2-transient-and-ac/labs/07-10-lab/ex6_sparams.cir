@@ -1,0 +1,49 @@
+* Example 07-10.6, Problem 07-10.11 and the guided exercise: S-parameters in a 50 ohm system.
+* Each port 1 is driven by 2 V behind 50 ohm, so the incident voltage is 1 V: then S11 = V(port 1) - 1
+* and S21 = V(port 2), with port 2 terminated in 50 ohm.
+*
+* EXPECT s11a  key:../../chapters/07-10-two-port-networks.md#Ex_07-10.6a rtol=1e-3
+* EXPECT s21a  key:../../chapters/07-10-two-port-networks.md#Ex_07-10.6b rtol=1e-3
+* EXPECT s21b  key:../../chapters/07-10-two-port-networks.md#Ex_07-10.6f rtol=1e-3
+* EXPECT s21bp key:../../chapters/07-10-two-port-networks.md#Ex_07-10.6g rtol=1e-3
+* EXPECT s11b  key:../../chapters/07-10-two-port-networks.md#Ex_07-10.6i rtol=1e-3
+* EXPECT s21c  key:../../solutions/07-10-solutions.md#07-10.11m rtol=1e-3
+* EXPECT s11c  key:../../solutions/07-10-solutions.md#07-10.11k rtol=1e-3
+* EXPECT s21g  key:README.md#Lab_07-10.a rtol=1e-3
+* EXPECT s11g  key:README.md#Lab_07-10.b rtol=1e-3
+
+* (a) 25 ohm series
+Va  sa 0 AC 2
+Rsa sa a1 50
+Ra  a1 a2 25
+RLa a2 0 50
+* (b) 1 pF shunt (evaluated at 1 GHz)
+Vb  sb 0 AC 2
+Rsb sb b1 50
+Cb  b1 0 1p
+RLb b1 0 50
+* (c) 10 ohm series then 1 pF shunt (evaluated at 5 GHz)
+Vc  sc 0 AC 2
+Rsc sc c1 50
+Rc  c1 c2 10
+Cc  c2 0 1p
+RLc c2 0 50
+
+.control
+ac lin 1 1g 1g
+let s11a = vm(a1) - 1
+let s21a = vm(a2)
+let s21b = vm(b1)
+let s21bp = 180/pi*vp(b1)
+let s11b = mag(v(b1) - 1)
+print s11a s21a s21b s21bp s11b
+ac lin 1 5g 5g
+let s21c = vm(c2)
+let s11c = mag(v(c1) - 1)
+print s21c s11c
+ac lin 1 10g 10g
+let s21g = vm(b1)
+let s11g = mag(v(b1) - 1)
+print s21g s11g
+.endc
+.end
