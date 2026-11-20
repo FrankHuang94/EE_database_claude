@@ -42,7 +42,7 @@ Every boundary between materials reflects part of a wave and transmits the rest.
 
 ### 3.1 Normal incidence
 
-Let the incident wave be $\tilde E^i = E_0e^{-jk_1z}\hat{x}$ with $\tilde H^i = (E_0/\eta_1)e^{-jk_1z}\hat{y}$. The reflected wave travels in $-z$, so its $\vec{H}$ flips relative to $\vec{E}$: $\tilde E^r = \Gamma E_0e^{+jk_1z}\hat{x}$ and $\tilde H^r = -(\Gamma E_0/\eta_1)e^{+jk_1z}\hat{y}$. The transmitted wave is $\tilde E^t = \tau E_0e^{-jk_2z}\hat{x}$, $\tilde H^t = (\tau E_0/\eta_2)e^{-jk_2z}\hat{y}$. Both fields are tangential, so both are continuous at $z$ = 0:
+Let the incident wave be $\tilde{\vec{E}}^i = E_0e^{-jk_1z}\hat{x}$ with $\tilde{\vec{H}}^i = (E_0/\eta_1)e^{-jk_1z}\hat{y}$. The reflected wave travels in $-z$, so its $\vec{H}$ flips relative to $\vec{E}$: $\tilde{\vec{E}}^r = \Gamma E_0e^{+jk_1z}\hat{x}$ and $\tilde{\vec{H}}^r = -(\Gamma E_0/\eta_1)e^{+jk_1z}\hat{y}$. The transmitted wave is $\tilde{\vec{E}}^t = \tau E_0e^{-jk_2z}\hat{x}$, $\tilde{\vec{H}}^t = (\tau E_0/\eta_2)e^{-jk_2z}\hat{y}$. Both fields are tangential, so both are continuous at $z$ = 0:
 
 $$
 1 + \Gamma = \tau, \qquad \frac{1 - \Gamma}{\eta_1} = \frac{\tau}{\eta_2} .
@@ -62,19 +62,33 @@ $$
 R = \lvert\Gamma\rvert^2, \qquad T = \frac{\eta_1}{\eta_2}\lvert\tau\rvert^2 = 1 - \lvert\Gamma\rvert^2 \quad\text{(lossless media)}.
 $$
 
+If medium 2 is lossy, its impedance $\eta_2$ is complex and the transmitted power density is $\tfrac12\operatorname{Re}\{\tilde E^t\tilde H^{t*}\} = \tfrac12\lvert\tau E_0\rvert^2\operatorname{Re}\{1/\eta_2^*\}$, so in general $T = \lvert\tau\rvert^2\eta_1\operatorname{Re}\{1/\eta_2^*\}$ (with medium 1 lossless), which reduces to the formula above for real $\eta_2$. Here $R$ and $T$ are power fractions; §3.7 uses $R$ and $A$ differently, for the reflection and absorption losses in decibels (Schelkunoff's notation).
+
 Note that τ can exceed 1 (going into a higher-impedance medium) without violating energy conservation; it is the power fraction that is bounded.
 
 **Standing waves.** In medium 1 the total field is $E_0(e^{-jk_1z} + \Gamma e^{jk_1z})$. Its magnitude oscillates between $E_0(1 + \lvert\Gamma\rvert)$ and $E_0(1 - \lvert\Gamma\rvert)$, maxima and minima a quarter wavelength apart, and the **standing-wave ratio** is
 
 $$
-S = \frac{1 + \lvert\Gamma\rvert}{1 - \lvert\Gamma\rvert} .
+\text{SWR} = \frac{1 + \lvert\Gamma\rvert}{1 - \lvert\Gamma\rvert} .
 $$
 
 For a perfect conductor, Γ = −1: the field in front of it is $-2jE_0\sin(k_1z)\hat{x}$, a pure standing wave with zeros at the surface and every half wavelength in front of it, maxima of $2E_0$ midway, and no net power flow. The magnetic field has its maxima of $2E_0/\eta_1$ at the conductor, where it equals the surface current.
 
 ### 3.2 Layers: matching and windows
 
-With a layer between two media, waves bounce back and forth inside it. Rather than summing the bounces, use the transmission-line analogy (13-08 develops it in full): a layer of impedance $\eta_2$ and thickness $d$ with a medium $\eta_3$ behind it presents, at its front face, an input impedance
+With a layer between two media, waves bounce back and forth inside it. Rather than summing the bounces, track the ratio of $E$ to $H$, the **wave impedance**, which is continuous across each boundary because both tangential fields are. Put the layer (impedance $\eta_2$, wavenumber $k_2$) between $z = 0$ and $z = d$, with medium 3 behind it. Inside the layer there is a forward and a backward wave:
+
+$$
+\tilde E_x = A\big[e^{-jk_2(z - d)} + \Gamma_3e^{jk_2(z - d)}\big], \qquad \tilde H_y = \frac{A}{\eta_2}\big[e^{-jk_2(z - d)} - \Gamma_3e^{jk_2(z - d)}\big] .
+$$
+
+At the back face only a transmitted wave leaves, so $\tilde E_x/\tilde H_y = \eta_3$ there; at $z = d$ this gives $\eta_2(1 + \Gamma_3)/(1 - \Gamma_3) = \eta_3$, so $\Gamma_3 = (\eta_3 - \eta_2)/(\eta_3 + \eta_2)$, the normal-incidence formula again. At the front face, $z = 0$,
+
+$$
+\eta_{in} = \frac{\tilde E_x}{\tilde H_y}\Big|_{z=0} = \eta_2\frac{e^{jk_2d} + \Gamma_3e^{-jk_2d}}{e^{jk_2d} - \Gamma_3e^{-jk_2d}} = \eta_2\,\frac{\eta_3\cos(k_2d) + j\eta_2\sin(k_2d)}{\eta_2\cos(k_2d) + j\eta_3\sin(k_2d)} ,
+$$
+
+where the last step substitutes $\Gamma_3$, multiplies through by $\eta_3 + \eta_2$ and uses $e^{\pm jx} = \cos x \pm j\sin x$. Dividing top and bottom by $\cos(k_2d)$ gives the form 13-08 will use for transmission lines,
 
 $$
 \eta_{in} = \eta_2\,\frac{\eta_3 + j\eta_2\tan(k_2d)}{\eta_2 + j\eta_3\tan(k_2d)} ,
@@ -82,7 +96,7 @@ $$
 
 and the reflection seen from medium 1 is $(\eta_{in} - \eta_1)/(\eta_{in} + \eta_1)$. Two thicknesses are special.
 
-- **Quarter-wave layer** ($k_2d = \pi/2$, so $d = \lambda_2/4$): $\eta_{in} = \eta_2^2/\eta_3$. Choosing $\eta_2 = \sqrt{\eta_1\eta_3}$ makes $\eta_{in} = \eta_1$ and the reflection vanishes at the design wavelength. For optics this means $n_2 = \sqrt{n_1n_3}$: an antireflection coating. With a real material whose index is not exactly the geometric mean, the reflection is reduced, not eliminated (Example 13-06.3).
+- **Quarter-wave layer** ($k_2d = \pi/2$, so $d = \lambda_2/4$): with $\cos(k_2d) = 0$ and $\sin(k_2d) = 1$ in the cosine form, $\eta_{in} = \eta_2^2/\eta_3$. Choosing $\eta_2 = \sqrt{\eta_1\eta_3}$ makes $\eta_{in} = \eta_1$ and the reflection vanishes at the design wavelength. For optics this means $n_2 = \sqrt{n_1n_3}$: an antireflection coating. With a real material whose index is not exactly the geometric mean, the reflection is reduced, not eliminated (Example 13-06.3).
 - **Half-wave layer** ($d = \lambda_2/2$): $\eta_{in} = \eta_3$, as if the layer were absent. A radome of half-wave thickness is transparent at its design frequency whatever its permittivity, though the transparency narrows with frequency (Problem 13-06.7).
 
 ### 3.3 Oblique incidence: Snell's law
@@ -108,7 +122,33 @@ The reflection now depends on the polarization. Any incident wave splits into tw
 - **TE** (perpendicular, or *s*): $\vec{E}$ perpendicular to the plane of incidence, so it is entirely tangential to the boundary.
 - **TM** (parallel, or *p*): $\vec{H}$ perpendicular to the plane of incidence, $\vec{E}$ in it.
 
-Matching the tangential fields, with the tangential parts of $\vec{E}$ or $\vec{H}$ now carrying factors of $\cos\theta$, gives
+Put the boundary at $z = 0$ with the plane of incidence the $xz$-plane; every field varies as $e^{-jk_1(x\sin\theta_i \pm z\cos\theta_i)}$ in medium 1 and $e^{-jk_2(x\sin\theta_t + z\cos\theta_t)}$ in medium 2, and at $z = 0$ the common factor $e^{-jk_1x\sin\theta_i}$ (equal to medium 2's by Snell's law) cancels.
+
+**TE.** $\tilde{\vec{E}}$ is along $\hat{y}$ for all three waves, with amplitudes $E_0$, $\Gamma_\perp E_0$ and $\tau_\perp E_0$. Each $\tilde{\vec{H}} = \hat{k}\times\tilde{\vec{E}}/\eta$; with $\hat{k}_i = (\sin\theta_i, 0, \cos\theta_i)$, $\hat{k}_r = (\sin\theta_i, 0, -\cos\theta_i)$ and $\hat{k}_t = (\sin\theta_t, 0, \cos\theta_t)$, the tangential ($x$) components of $\tilde{\vec{H}}$ are $-E_0\cos\theta_i/\eta_1$, $+\Gamma_\perp E_0\cos\theta_i/\eta_1$ and $-\tau_\perp E_0\cos\theta_t/\eta_2$. Continuity of $E_y$ and $H_x$:
+
+$$
+1 + \Gamma_\perp = \tau_\perp, \qquad \frac{(1 - \Gamma_\perp)\cos\theta_i}{\eta_1} = \frac{\tau_\perp\cos\theta_t}{\eta_2} .
+$$
+
+These are the normal-incidence equations with $\eta_1/\cos\theta_i$ and $\eta_2/\cos\theta_t$ in place of $\eta_1$ and $\eta_2$, so the solution is the normal-incidence formula with those substitutions.
+
+**TM.** Now $\tilde{\vec{H}}$ is along $\pm\hat{y}$ and $\tilde{\vec{E}}$ lies in the plane of incidence. The reference directions (the arrows that define a positive Γ∥ and τ∥, following Ulaby) are
+
+$$
+\begin{aligned}
+\tilde{\vec{E}}^i &= E_0(\hat{x}\cos\theta_i - \hat{z}\sin\theta_i), & \tilde{\vec{H}}^i &= (E_0/\eta_1)\,\hat{y},\\
+\tilde{\vec{E}}^r &= \Gamma_\parallel E_0(\hat{x}\cos\theta_i + \hat{z}\sin\theta_i), & \tilde{\vec{H}}^r &= -(\Gamma_\parallel E_0/\eta_1)\,\hat{y},\\
+\tilde{\vec{E}}^t &= \tau_\parallel E_0(\hat{x}\cos\theta_t - \hat{z}\sin\theta_t), & \tilde{\vec{H}}^t &= (\tau_\parallel E_0/\eta_2)\,\hat{y},
+\end{aligned}
+$$
+
+each with $\tilde{\vec{E}}\times\tilde{\vec{H}}$ along its own direction of travel (check: $(\hat{x}\cos\theta_i - \hat{z}\sin\theta_i)\times\hat{y} = \hat{k}_i$). Continuity of $E_x$ and $H_y$:
+
+$$
+(1 + \Gamma_\parallel)\cos\theta_i = \tau_\parallel\cos\theta_t, \qquad \frac{1 - \Gamma_\parallel}{\eta_1} = \frac{\tau_\parallel}{\eta_2} .
+$$
+
+Eliminating $\tau_\parallel = (\eta_2/\eta_1)(1 - \Gamma_\parallel)$ gives $\eta_1\cos\theta_i(1 + \Gamma_\parallel) = \eta_2\cos\theta_t(1 - \Gamma_\parallel)$. Solving the TE and TM pairs:
 
 $$
 \Gamma_\perp = \frac{\eta_2\cos\theta_i - \eta_1\cos\theta_t}{\eta_2\cos\theta_i + \eta_1\cos\theta_t}, \qquad
@@ -133,19 +173,25 @@ $$
 k_{2z} = -j\alpha, \qquad \alpha = k_0\sqrt{n_1^2\sin^2\theta_i - n_2^2} ,
 $$
 
-so the field decays as $e^{-\alpha z}$ away from the boundary: an **evanescent wave**. It carries no average power across the boundary, and $\lvert\Gamma\rvert$ = 1 for both polarizations: **total internal reflection**. The evanescent field reaches a fraction of a wavelength into the second medium (Problem 13-06.12), which is how a nearby surface can "frustrate" the reflection and couple light out, the basis of fibre couplers and of the cladding's role in a fibre.
+so the field decays as $e^{-\alpha z}$ away from the boundary: an **evanescent wave**. In the Fresnel formulas $\cos\theta_t = k_{2z}/k_2 = -jb$ with $b = \alpha/k_2$ real and positive (the sign that makes the field decay rather than grow). Then, for TE,
+
+$$
+\Gamma_\perp = \frac{\eta_2\cos\theta_i + j\eta_1b}{\eta_2\cos\theta_i - j\eta_1b} ,
+$$
+
+a complex number divided by its own conjugate, so $\lvert\Gamma_\perp\rvert = 1$ exactly; the same holds for $\Gamma_\parallel$. The reflection is total, with only a polarization-dependent phase shift (the basis of the Fresnel rhomb, which turns linear into circular polarization). The evanescent wave carries no average power across the boundary: **total internal reflection**. The evanescent field reaches a fraction of a wavelength into the second medium (Problem 13-06.12), which is how a nearby surface can "frustrate" the reflection and couple light out, the basis of fibre couplers and of the cladding's role in a fibre.
 
 **Optical fibre.** A fibre's core ($n_1$) is surrounded by cladding of slightly lower index ($n_2$). Rays striking the core–cladding boundary beyond $\theta_c$ are trapped. Tracing back through the fibre's end face, a ray from air is trapped if its angle to the axis is less than $\arcsin(\text{NA})$, where the **numerical aperture** is $\text{NA} = \sqrt{n_1^2 - n_2^2}$ (Example 13-06.4). Single-mode fibres have cores so small that ray optics fails and the mode must be treated as a field (13-10).
 
 ### 3.6 The Brewster angle
 
-For TM polarization between nonmagnetic dielectrics, $\Gamma_\parallel$ = 0 when $\eta_2\cos\theta_t = \eta_1\cos\theta_i$. Combined with Snell's law this gives
+For TM polarization between nonmagnetic dielectrics, $\Gamma_\parallel$ = 0 when $\eta_2\cos\theta_t = \eta_1\cos\theta_i$, that is (with $\eta = \eta_0/n$) $n_1\cos\theta_t = n_2\cos\theta_i$. Square it, write $\cos^2\theta_t = 1 - \sin^2\theta_t = 1 - (n_1^2/n_2^2)\sin^2\theta_i$ by Snell's law, and solve for $s = \sin^2\theta_i$: $n_1^2 - (n_1^4/n_2^2)s = n_2^2(1 - s)$, so $s(n_2^4 - n_1^4)/n_2^2 = n_2^2 - n_1^2$ and $\sin^2\theta_i = n_2^2/(n_1^2 + n_2^2)$. Then $\cos^2\theta_i = n_1^2/(n_1^2 + n_2^2)$, and the ratio gives
 
 $$
 \tan\theta_B = \frac{n_2}{n_1} ,
 $$
 
-the **Brewster angle**, at which the reflected and transmitted directions are perpendicular. TE waves always reflect somewhat, so light reflected near $\theta_B$ is mostly TE polarized: glare off water and roads is horizontally polarized, which polarizing sunglasses block. Laser tubes use windows tilted at $\theta_B$ so that the TM-polarized beam passes with no reflection loss.
+the **Brewster angle**, at which the reflected and transmitted directions are perpendicular. For TE the same steps with $n_1\cos\theta_i = n_2\cos\theta_t$ lead to $n_1 = n_2$: between different nonmagnetic dielectrics there is no TE Brewster angle, so TE waves always reflect somewhat, so light reflected near $\theta_B$ is mostly TE polarized: glare off water and roads is horizontally polarized, which polarizing sunglasses block. Laser tubes use windows tilted at $\theta_B$ so that the TM-polarized beam passes with no reflection loss.
 
 ![Two panels of reflected power fraction against angle of incidence. Air into glass: TE reflectance rises steadily from 4% to 100% at grazing incidence, while TM falls to zero at the Brewster angle of 56.3 degrees before rising. Glass into air: TM falls to zero at 33.7 degrees, and both polarizations jump to total reflection at the critical angle of 41.8 degrees](../../../assets/figures/13-06/fresnel.svg)
 
@@ -167,7 +213,7 @@ valid when $t$ is several skin depths (thinner sheets need a correction for the 
 
 **Setup.** A plane wave in air meets glass ($\varepsilon_r$ = 2.25) at normal incidence. Find $\eta_2$, Γ, τ, the reflected and transmitted power fractions, and the standing-wave ratio in the air.
 
-**Solution.** $\eta_2 = \eta_0/1.5$ = **251.2** Ω. $\Gamma = (251.2 - 376.7)/(251.2 + 376.7)$ = **−0.2** and τ = 1 + Γ = **0.8**. Reflected power: $\lvert\Gamma\rvert^2$ = **4**%. Transmitted: $(\eta_1/\eta_2)\tau^2 = 1.5 \times 0.64$ = **96**%. $S = 1.2/0.8$ = **1.5**.
+**Solution.** $\eta_2 = \eta_0/1.5$ = **251.2** Ω. $\Gamma = (251.2 - 376.7)/(251.2 + 376.7)$ = **−0.2** and τ = 1 + Γ = **0.8**. Reflected power: $\lvert\Gamma\rvert^2$ = **4**%. Transmitted: $(\eta_1/\eta_2)\tau^2 = 1.5 \times 0.64$ = **96**%. SWR = 1.2/0.8 = **1.5**.
 
 **Sanity check.** 4% reflection per surface is the familiar figure for uncoated glass: a window has two surfaces and loses about twice that. In terms of index, $\Gamma = (n_1 - n_2)/(n_1 + n_2) = (1 - 1.5)/2.5$, the optics form.
 
@@ -254,7 +300,7 @@ So TE reflects **9.201**% of its power and TM **0.8466**%. TM reflection vanishe
 | Ex 13-06.6c | conductor impedance magnitude | 11.67 | mΩ |
 | Ex 13-06.6d | reflection loss | 78.14 | dB |
 | Ex 13-06.6e | shielding effectiveness | 223.6 | dB |
-| Prac 13-06.a | coax loss at 1 GHz over fibre loss, per unit length | 976 | — |
+| Prac 13-06.a | coax loss at 1 GHz over fibre loss, per unit length | 1067 | — |
 | Sim 13-06.a | simulated transmitted step (1 V incident) | 0.8 | V |
 | Sim 13-06.b | simulated reflected step | −0.2 | V |
 
@@ -306,15 +352,15 @@ The netlist [interface_line.cir](../labs/13-06-lab/interface_line.cir) models Ex
 
 ### State of the art (as of Nov 2026)
 
-- **Fibre loss is three orders of magnitude below coax.** ITU-T G.652.D specifies cabled single-mode fibre with attenuation of at most 0.30 dB/km at 1530–1565 nm and 0.40 dB/km from 1310 to 1625 nm, with a 125 µm cladding [1] **[Established]**. The 1 GHz coax of Problem 13-05.13 loses 0.29 dB per *metre*, **976** times more per unit length (our arithmetic). Total internal reflection, with an evanescent tail confined to the cladding, is why light can be guided so efficiently.
+- **Fibre loss is three orders of magnitude below coax.** ITU-T G.652.D specifies cabled single-mode fibre with attenuation of at most 0.30 dB/km at 1530–1565 nm and 0.40 dB/km from 1310 to 1625 nm, with a 125 µm cladding [1] **[Established]**. The 1 GHz coax of Problem 13-05.13 loses 0.32 dB per *metre* (conductor and dielectric together), **1067** times more per unit length (our arithmetic). Total internal reflection, with an evanescent tail confined to the cladding, is why light can be guided so efficiently.
 - **Matching layers are everywhere.** Antireflection coatings on camera lenses and solar cells, matching layers on ultrasound and radar sensors, and radomes over antennas are all §3.2's quarter- and half-wave layers **[Established]** (textbook practice).
 - **Enclosure shielding is limited by openings.** Solid metal provides far more attenuation than any requirement; EMC design focuses on seams, apertures and cable entries **[Established]** (standard EMC practice).
 
 ### Why it matters commercially
 
-- **Optical interconnect** in datacenters and long-haul networks rests on total internal reflection in glass; its low loss is why links longer than a few metres at the highest data rates are optical (Course 24).
-- **Automotive radar and 5G millimetre-wave** antennas sit behind bumpers, radomes and glass; reflections from these covers cost range and create blind spots, so cover thickness and material are tuned like §3.2's windows.
-- **EMC compliance** is a launch gate for every electronic product; shielding cost is driven by apertures, gaskets and cable treatment, not sheet metal.
+- **Optical interconnect** in datacenters and long-haul networks rests on total internal reflection in glass; its low loss is why links longer than a few metres at the highest data rates are optical **[Established]** (Course 24).
+- **Automotive radar and 5G millimetre-wave** antennas sit behind bumpers, radomes and glass; reflections from these covers cost range and create blind spots, so cover thickness and material are tuned like §3.2's windows **[Established]**.
+- **EMC compliance** is a launch gate for every electronic product; shielding cost is driven by apertures, gaskets and cable treatment, not sheet metal **[Industry estimate]**.
 
 > **Deeper:** see companion repo *Datacenter Networking* for optical links in datacenters.
 

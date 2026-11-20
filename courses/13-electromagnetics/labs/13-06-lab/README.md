@@ -30,7 +30,7 @@ Normal incidence (§3.1), layers (§3.2), Snell and Fresnel (§3.3–3.4), total
 | 1 | Standing waves | Minima at the boundary for all four (Γ < 0); S of 1.5, 2, 9 and infinity |
 | 2 | Angles | Brewster 56.31° (air to glass) and 33.69° (glass to air); critical 41.81° |
 | 3 | Coating, radome | Coated reflectance near 1.4% at 550 nm, rising toward the band edges; radome below 1% only near 10 GHz |
-| 4 | Shielding | Exact and A + R agree when the foil is several skin depths thick; differ by about 1 dB when it is thinner |
+| 4 | Shielding | Exact and A + R agree when the foil is several skin depths thick; they differ by up to about 1 dB at 1–10 MHz, and A + R overstates the shielding by about 8 dB at 100 kHz, where the foil is thinner than a skin depth |
 | ngspice | Steps | 0.8 V transmitted, −0.2 V reflected |
 
 <!-- answer-key -->
@@ -52,7 +52,7 @@ Normal incidence (§3.1), layers (§3.2), Snell and Fresnel (§3.3–3.4), total
 
 1. Both are problems of a wave in which one field (E or V) divided by the other (H or I) is fixed by the medium (η or $Z_0$), meeting a boundary where both must be continuous. The same two equations give $\Gamma = (Z_2 - Z_1)/(Z_2 + Z_1)$ in each case; Maxwell's equations for a TEM line reduce to the telegrapher's equations, which have the same form as those for a plane wave (13-07).
 2. Transparency relies on the reflections from the two faces cancelling, which needs the round trip through the slab to be exactly one wavelength; off the design frequency the cancellation is incomplete, and with a large impedance step (here 2:1) the residual grows quickly. Lower-permittivity materials (a smaller step), or sandwich structures with several layers, broaden the band.
-3. The estimate counts one pass through the metal and treats the reflections at the two faces separately. When the foil is thin, the wave reflected from the back face returns to the front with little attenuation and interferes with the forward wave; this multiple-reflection term can raise or lower the transmission by about a decibel, as Part 4 shows.
+3. The estimate counts one pass through the metal and treats the reflections at the two faces separately. When the foil is thin, the wave reflected from the back face returns to the front with little attenuation and interferes with the forward wave; this multiple-reflection term reduces the shielding, slightly at a few skin depths and by several decibels when the foil is thinner than a skin depth, as Part 4 shows. In the thin-sheet limit ($t \ll \delta$) the exact value tends to $20\log_{10}(1 + \eta_0\sigma t/2)$, independent of frequency, while the A + R estimate keeps rising as the frequency falls.
 
 ## Optional hardware extension
 

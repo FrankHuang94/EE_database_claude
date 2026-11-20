@@ -84,6 +84,38 @@ The flux through each turn is $BA\cos\omega t$ with $\omega = 2\pi \times 60$ ra
 
 (b) $1/\sqrt{\mu_0\varepsilon_0}$ = **2.998 × 10⁸** m/s and $\sqrt{\mu_0/\varepsilon_0}$ = **376.7** Ω. With the rounded $\varepsilon_0$ = 8.854 × 10⁻¹² F/m these come out the same to four figures.
 
+### Solution 13-04.15
+
+(a) $\nabla\cdot\vec{E} = \partial E_y/\partial y = 0$, since $E_y$ does not depend on $y$: Gauss's law holds with no charge. On the walls $E_y$ is tangential, and $\sin(0) = \sin(\pi) = 0$ makes it vanish there, as a perfect conductor requires.
+
+(b) Faraday's law, $\nabla\times\vec{E} = -\mu_0\,\partial\vec{H}/\partial t$, with only $E_y(x, z, t)$:
+
+$$
+\nabla\times\vec{E} = -\frac{\partial E_y}{\partial z}\hat{x} + \frac{\partial E_y}{\partial x}\hat{z} = -\beta E_0\sin\frac{\pi x}{a}\sin(\omega t - \beta z)\,\hat{x} + \frac{\pi}{a}E_0\cos\frac{\pi x}{a}\cos(\omega t - \beta z)\,\hat{z} .
+$$
+
+Integrating $-(1/\mu_0)$ times this over time (dropping static constants):
+
+$$
+H_x = -\frac{\beta E_0}{\omega\mu_0}\sin\frac{\pi x}{a}\cos(\omega t - \beta z), \qquad H_z = -\frac{\pi E_0}{a\omega\mu_0}\cos\frac{\pi x}{a}\sin(\omega t - \beta z) .
+$$
+
+(c) Ampère's law with no current, $\nabla\times\vec{H} = \varepsilon_0\,\partial\vec{E}/\partial t$, has a $y$-component only: $(\nabla\times\vec{H})_y = \partial H_x/\partial z - \partial H_z/\partial x$. Differentiating,
+
+$$
+\frac{\partial H_x}{\partial z} - \frac{\partial H_z}{\partial x} = -\frac{E_0}{\omega\mu_0}\Big[\beta^2 + \Big(\frac{\pi}{a}\Big)^2\Big]\sin\frac{\pi x}{a}\sin(\omega t - \beta z),
+$$
+
+while $\varepsilon_0\,\partial E_y/\partial t = -\omega\varepsilon_0E_0\sin(\pi x/a)\sin(\omega t - \beta z)$. They agree for all $x$, $z$ and $t$ only if $\beta^2 + (\pi/a)^2 = \omega^2\mu_0\varepsilon_0$:
+
+$$
+\beta = \sqrt{\Big(\frac{\omega}{c}\Big)^2 - \Big(\frac{\pi}{a}\Big)^2} = \sqrt{209.58^2 - 137.43^2} = \mathbf{158.2}\ \text{rad/m} .
+$$
+
+The proposed field is allowed, but only with this β: it is the TE₁₀ mode of a WR-90 waveguide (13-10), and below the frequency where $\omega/c = \pi/a$ (6.557 GHz) β would be imaginary and the field could not propagate.
+
+(d) $\lvert H_x\rvert = \beta E_0/(\omega\mu_0)$ = **4.008** A/m and $\lvert H_z\rvert = \pi E_0/(a\omega\mu_0)$ = **3.481** A/m. The magnetic field has a component along the direction of travel, so this is not a TEM wave: the ratio $E_y/H_x = \omega\mu_0/\beta$ is 499.0 Ω, not $\eta_0$.
+
 ---
 
 ## Answer key
@@ -131,3 +163,7 @@ The flux through each turn is $BA\cos\omega t$ with $\omega = 2\pi \times 60$ ra
 | 13-04.13c | guide wavelength at 10 GHz | 3.971 | cm |
 | 13-04.14a | wave speed | 2.998 × 10⁸ | m/s |
 | 13-04.14b | impedance of free space | 376.7 | Ω |
+| 13-04.15a | phase constant | 158.2 | rad/m |
+| 13-04.15b | H_x amplitude | 4.008 | A/m |
+| 13-04.15c | H_z amplitude | 3.481 | A/m |
+| 13-04.15d | E_y/H_x ratio | 499.0 | Ω |

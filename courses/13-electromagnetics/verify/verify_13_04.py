@@ -18,7 +18,7 @@ from pathlib import Path
 
 import numpy as np
 import sympy as sp
-from scipy.integrate import quad
+from scipy.integrate import quad, solve_ivp
 from scipy.optimize import brentq
 
 HERE = Path(__file__).resolve().parent
@@ -99,6 +99,8 @@ Id = displacement_current(eps2, 1e-4, 1e-4, 1.0, 2 * math.pi * 1e9)
 v.check("Ex 13-04.2b", Id / 1e-4)
 v.check("Ex 13-04.2c", Id)
 v.check("Ex 13-04.2d", abs(1j * 2 * math.pi * 1e9 * Q_per_V * 1.0))
+v.assert_true("Ex 13-04.2: field displacement current equals the circuit current wCV",
+              abs(abs(Id) / abs(1j * 2 * math.pi * 1e9 * Q_per_V) - 1) < 1e-6)
 
 # ---------------------------------------------------------------- Example 3
 ratio = lambda sig, er, f: sig / (2 * math.pi * f * er * e0)  # noqa: E731
@@ -108,12 +110,13 @@ v.check("Ex 13-04.3c", ratio(4, 81, 1e10))
 fx = brentq(lambda f: ratio(4, 81, f) - 1, 1e6, 1e11, xtol=1e-3)
 v.check("Ex 13-04.3d", fx / 1e6)
 # relaxation: integrate d rho/dt = -(sigma/eps) rho numerically and read the 1/e time
-for sig, er, key, scale in ((sig_cu, 1, "e", 1.0), (4.0, 81, "f", 1e9)):
+for sig, er, key, scale, T0 in ((sig_cu, 1, "e", 1.0, 1e-19), (4.0, 81, "f", 1e9, 1e-9)):
     k = sig / (er * e0)
-    tt = np.linspace(0, 3 / k, 300001)
-    rho = np.exp(-k * tt)  # exact solution of the linear ODE; check the ODE residual numerically
-    v.assert_true(f"relaxation ODE residual ({key})", np.max(np.abs(np.gradient(rho, tt) + k * rho)) < 1e-4 * k)
-    v.check(f"Ex 13-04.3{key}", tt[np.argmin(np.abs(rho - math.exp(-1)))] * scale)
+    # time in units of T0 so that the solver and root finder work with numbers of order one
+    sol_r = solve_ivp(lambda u, rr: -k * T0 * rr, (0, 5 / (k * T0)), [1.0], dense_output=True,
+                      rtol=1e-12, atol=1e-15)
+    u_e = brentq(lambda u: sol_r.sol(u)[0] - math.exp(-1), 1e-6 / (k * T0), 5 / (k * T0), xtol=1e-14)
+    v.check(f"Ex 13-04.3{key}", u_e * T0 * scale)
 v.assert_true("crossover = 1/(2 pi tau)", abs(fx * 2 * math.pi * 81 * e0 / 4 - 1) < 1e-9)
 
 # ---------------------------------------------------------------- Example 4 (sympy)
@@ -147,7 +150,15 @@ v.check("Ex 13-04.5c", E5 * 1e3)
 v.check("Ex 13-04.5d", H5)
 S5 = np.linalg.norm(np.cross([0, 0, E5], [0, H5, 0]))  # E along z, H along phi (at the +x point)
 v.check("Ex 13-04.5e", S5)
-P5 = quad(lambda phi: S5 * a5 * L5, 0, 2 * math.pi)[0]
+# Poynting flux into the wire: integrate -(E x H) . rho_hat over the surface with the vectors at each point
+def s_in(phi):
+    rho_hat = np.array([math.cos(phi), math.sin(phi), 0.0])
+    phi_hat = np.array([-math.sin(phi), math.cos(phi), 0.0])
+    return -np.dot(np.cross(np.array([0, 0, E5]), H5 * phi_hat), rho_hat) * a5 * L5
+
+
+P5 = quad(s_in, 0, 2 * math.pi)[0]
+v.assert_true("Ex 13-04.5: Poynting inflow equals the Joule loss I^2 R", abs(P5 / (I5**2 * R5) - 1) < 1e-12)
 v.check("Ex 13-04.5f", P5)
 
 # ---------------------------------------------------------------- Example 6
@@ -220,7 +231,12 @@ E10, H10 = 1.0 / 1e-4, 10 / 0.02
 v.check("13-04.10a", E10 / 1e3)
 v.check("13-04.10b", H10)
 v.check("13-04.10c", E10 * H10)
-v.check("13-04.10d", quad(lambda s: E10 * H10 * 0.02, 0, 1e-4)[0])
+# power flow: integrate (E x H) . z_hat over the gap cross-section with E along -y (supply to ground) and H along x
+gy_ = np.linspace(0, 1e-4, 201)
+Svec = np.cross(np.array([0, -E10, 0]), np.array([H10, 0, 0]))
+P10 = float(np.sum(np.full(len(gy_) - 1, Svec[2]) * np.diff(gy_))) * 0.02   # S_z summed over the gap, times the width
+v.check("13-04.10d", P10)
+v.assert_true("13-04.10: Poynting power equals V I", abs(P10 / (1.0 * 10) - 1) < 1e-12)
 
 sig11 = 2 * math.pi * 1e8 * 4.3 * e0 * 0.02
 v.check("13-04.11a", sig11 * 1e3)
@@ -297,5 +313,28 @@ if lab.exists():
         v.check(f"Lab 13-04.{key}", vp_formula)
     v.check("Lab 13-04.c", dispersion_phase_velocity(20, 1.0))
     v.assert_true("magic time step is exact in FDTD", abs(fdtd_phase_velocity(20, 1.0) - 1) < 2e-4)
+
+# 15: proposed TE10-like field. Faraday gives H; Ampere then fixes beta. Problem conventions: c = 2.998e8, mu0 = 4 pi e-7.
+xs, zs15, ts15, bt = sp.symbols("x_s z_s t_s beta_s", positive=True)
+a15, f15, E15 = 22.86e-3, 1e10, 2e3
+mu_c = 4e-7 * sp.pi
+eps_c = 1 / (mu_c * sp.Float(2.998e8) ** 2)
+w15 = 2 * sp.pi * f15
+Ey15 = E15 * sp.sin(sp.pi * xs / a15) * sp.cos(w15 * ts15 - bt * zs15)
+v.assert_true("13-04.15 Gauss: div E = 0", sp.diff(Ey15, sp.Symbol("y")) == 0)
+v.assert_true("13-04.15 E vanishes on both walls",
+              Ey15.subs(xs, 0) == 0 and abs(float(sp.sin(sp.pi * xs / a15).subs(xs, a15))) < 1e-12)
+Hx15 = sp.integrate(sp.diff(Ey15, zs15) / mu_c, ts15)        # -(1/mu)(curl E)_x with (curl E)_x = -dEy/dz
+Hz15 = sp.integrate(-sp.diff(Ey15, xs) / mu_c, ts15)         # (curl E)_z = dEy/dx
+amp_res = sp.diff(Hx15, zs15) - sp.diff(Hz15, xs) - eps_c * sp.diff(Ey15, ts15)
+coef = sp.simplify(amp_res / (sp.sin(sp.pi * xs / a15) * sp.sin(w15 * ts15 - bt * zs15)))
+b15 = max(float(r) for r in sp.solve(coef, bt) if r.is_real and r > 0)
+v.check("13-04.15a", b15)
+fHx = sp.lambdify((xs, zs15, ts15), Hx15.subs(bt, b15), "numpy")
+fHz = sp.lambdify((xs, zs15, ts15), Hz15.subs(bt, b15), "numpy")
+tgrid = np.linspace(0, 1 / f15, 2001)
+v.check("13-04.15b", float(np.max(np.abs(fHx(a15 / 2, 0.0, tgrid)))))
+v.check("13-04.15c", float(np.max(np.abs(fHz(0.0, 0.0, tgrid)))))
+v.check("13-04.15d", E15 / float(np.max(np.abs(fHx(a15 / 2, 0.0, tgrid)))))
 
 sys.exit(v.finish())

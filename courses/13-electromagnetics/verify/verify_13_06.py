@@ -170,7 +170,15 @@ v.check("Ex 13-06.6e", A6 + R6)
 v.assert_true("A + R within 0.1 dB of the exact slab", abs(SE_exact - (A6 + R6)) < 0.1, f"{SE_exact} vs {A6 + R6}")
 
 # ---------------------------------------------------------------- practitioner and simulation
-v.check("Prac 13-06.a", 0.2928305834 / 0.30e-3)  # Problem 13-05.13's coax total (dB/m) over 0.30 dB/km
+# Problem 13-05.13's coax (a = 0.5 mm, b = 1.75 mm, polyethylene eps_r 2.25, tan d 0.0002, copper) at 1 GHz:
+# total attenuation from the exact propagation constant of its RLGC model, over the fibre's 0.30 dB/km
+w_c = 2 * math.pi * 1e9
+Rs_c = math.sqrt(w_c * mu0 / (2 * 5.8e7))
+Rp_c = Rs_c / (2 * math.pi) * (1 / 0.5e-3 + 1 / 1.75e-3)
+Lp_c = mu0 / (2 * math.pi) * math.log(3.5)
+Cp_c = 2 * math.pi * 2.25 * e0 / math.log(3.5)
+g_c = cmath.sqrt((Rp_c + 1j * w_c * Lp_c) * (w_c * Cp_c * 0.0002 + 1j * w_c * Cp_c))
+v.check("Prac 13-06.a", 20 * math.log10(math.e) * g_c.real / 0.30e-3)
 Gs, ts = interface(376.7, 251.13)
 v.check("Sim 13-06.a", ts.real)
 v.check("Sim 13-06.b", Gs.real)
@@ -278,5 +286,31 @@ if lab.exists():
     lo = brentq(lambda f: abs(stack_reflection(f, [dielectric(4, f, d7)])[0]) ** 2 - 0.01, 8e9, 1e10, xtol=1)
     hi = brentq(lambda f: abs(stack_reflection(f, [dielectric(4, f, d7)])[0]) ** 2 - 0.01, 1e10, 1.2e10, xtol=1)
     v.check("Lab 13-06.c", (hi - lo) / 1e10 * 100)
+
+# 15: oblique TM at 30 degrees, by solving the two boundary conditions as a linear system with the field vectors
+n1_, n2_, thi = 1.0, 1.5, math.radians(30)
+tht = math.asin(n1_ * math.sin(thi) / n2_)
+e1_, e2_ = 376.7 / n1_, 376.7 / n2_
+Ei = np.array([math.cos(thi), 0, -math.sin(thi)])
+Er_dir = np.array([math.cos(thi), 0, math.sin(thi)])
+Et_dir = np.array([math.cos(tht), 0, -math.sin(tht)])
+# unknowns (Gamma, tau): tangential E_x and H_y continuous at z = 0
+Amat = np.array([[Er_dir[0], -Et_dir[0]], [-1 / e1_, -1 / e2_]])
+rhs = np.array([-Ei[0], -1 / e1_])
+G15, t15 = np.linalg.solve(Amat, rhs)
+v.check("13-06.15a", math.degrees(tht))
+v.check("13-06.15b", G15)
+v.check("13-06.15c", t15)
+# power: z-component of the time-average Poynting vector of each wave
+Sz = lambda Evec, amp, eta, hsign: 0.5 * np.cross(amp * Evec, np.array([0, hsign * amp / eta, 0]))[2]  # noqa: E731
+Si, Sr, St = Sz(Ei, 1.0, e1_, 1), Sz(Er_dir, G15, e1_, -1), Sz(Et_dir, t15, e2_, 1)
+v.check("13-06.15d", -100 * Sr / Si)
+v.check("13-06.15e", 100 * St / Si)
+v.assert_true("13-06.15 power balance", abs((-Sr + St) / Si - 1) < 1e-12)
+# TE at the same angle: E along y, tangential H_x continuous
+Ate = np.array([[1, -1], [math.cos(thi) / e1_, math.cos(tht) / e2_]])
+G15te, _ = np.linalg.solve(Ate, np.array([-1, math.cos(thi) / e1_]))
+v.check("13-06.15f", G15te)
+v.check("13-06.15g", 100 * G15te**2)
 
 sys.exit(v.finish())

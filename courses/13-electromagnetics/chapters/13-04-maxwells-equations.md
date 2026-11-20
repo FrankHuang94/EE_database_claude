@@ -131,7 +131,7 @@ $$
 \rho_v(t) = \rho_v(0)\,e^{-t/\tau_r}, \qquad \tau_r = \frac{\varepsilon}{\sigma} .
 $$
 
-The **relaxation time** $\tau_r$ is about 1.5 × 10⁻¹⁹ s for copper (using $\varepsilon \approx \varepsilon_0$, an idealization at such short times): charge inside a good conductor vanishes immediately, which is why it lives only on surfaces. The ratio $\sigma/\omega\varepsilon$ is simply $1/(\omega\tau_r)$: a material conducts at frequencies well below $1/(2\pi\tau_r)$ and insulates well above it.
+The **relaxation time** $\tau_r$ is about 1.5 × 10⁻¹⁹ s for copper (using $\varepsilon \approx \varepsilon_0$): charge inside a good conductor vanishes immediately, which is why it lives only on surfaces. The number itself is an idealization: a constant σ fails above about 10¹³ Hz, and in a real metal a charge disturbance relaxes on the scale of the electrons' collision time, about 10⁻¹⁴ s (Griffiths §9.4). The conclusion, that free charge sits on the surface, is unaffected. The ratio $\sigma/\omega\varepsilon$ is simply $1/(\omega\tau_r)$: a material conducts at frequencies well below $1/(2\pi\tau_r)$ and insulates well above it.
 
 **Lossy dielectrics.** Practical insulators are slightly lossy. Writing the total current as $(\sigma + j\omega\varepsilon)\tilde{\vec{E}} = j\omega(\varepsilon - j\sigma/\omega)\tilde{\vec{E}}$ defines a **complex permittivity**,
 
@@ -195,7 +195,7 @@ is the power crossing a surface. Two worked cases make the picture concrete.
 - **A wire carrying DC.** At the surface of a resistive wire, $\vec{E}$ points along the wire (it drives the current) and $\vec{H}$ circles it. Their cross product points radially *into* the wire, and its flux over the surface equals exactly $I^2R$ (Example 13-04.5). The energy that heats a wire enters through its surface from the surrounding fields.
 - **A coaxial cable.** Between the conductors $\vec{E}$ is radial and $\vec{H}$ circles; $\vec{S}$ points along the cable, and its integral over the dielectric annulus is $VI$ (Example 13-04.6). The power travels in the dielectric. The conductors guide it and, being imperfect, take a small inward flow that becomes their loss.
 
-**Time-harmonic fields.** For phasors, the time average of a product of two sinusoids is $\tfrac12\text{Re}\{\cdot\}$ of one phasor times the other's conjugate (07-06's $P = \tfrac12\text{Re}\{\mathbf{V}\mathbf{I}^*\}$). So the **time-average Poynting vector** is
+**Time-harmonic fields.** Write each field as $\vec{E}(t) = \operatorname{Re}\{\tilde{\vec{E}}e^{j\omega t}\} = \tfrac12(\tilde{\vec{E}}e^{j\omega t} + \tilde{\vec{E}}^*e^{-j\omega t})$, and $\vec{H}(t)$ likewise. Their cross product has four terms: $\tfrac14\tilde{\vec{E}}\times\tilde{\vec{H}}e^{j2\omega t}$ and its conjugate, which oscillate at $2\omega$ and average to zero over a period, and $\tfrac14(\tilde{\vec{E}}\times\tilde{\vec{H}}^* + \tilde{\vec{E}}^*\times\tilde{\vec{H}})$, a constant equal to $\tfrac12\operatorname{Re}\{\tilde{\vec{E}}\times\tilde{\vec{H}}^*\}$ because the two terms are conjugates. This is the field version of 07-06's $P = \tfrac12\text{Re}\{\mathbf{V}\mathbf{I}^*\}$. So the **time-average Poynting vector** is
 
 $$
 \vec{S}_{av} = \frac12\,\text{Re}\{\tilde{\vec{E}}\times\tilde{\vec{H}}^*\} .
@@ -203,7 +203,7 @@ $$
 
 ### 3.7 When is circuit theory enough?
 
-Circuit theory is Maxwell's equations with two simplifications: the displacement current is neglected except inside capacitors, and changing magnetic flux is neglected except inside inductors. Both are accurate when the circuit is small compared with a wavelength, $\lambda = v/f$, so that fields everywhere in it change in step. A common rule of thumb treats an interconnect as lumped when it is shorter than about a tenth of a wavelength (or, for digital edges, when its delay is short compared with the rise time, 13-07). In FR-4-like board material ($\varepsilon_r \approx 4$, so $v = c/2$), a wavelength at 1 GHz is 15 cm, so a 1.5 cm trace is the limit; at 10 GHz it is 1.5 mm (Problem 13-04.9). Inside a chip, distances are millimetres and on-chip wires are usually lumped (but resistive) up to tens of gigahertz; on a board, almost every high-speed trace is a transmission line.
+Circuit theory is Maxwell's equations with two simplifications: the displacement current is neglected except inside capacitors, and changing magnetic flux is neglected except inside inductors. Both are accurate when the circuit is small compared with a wavelength, $\lambda = v/f$, so that fields everywhere in it change in step. A common rule of thumb treats an interconnect as lumped when it is shorter than about a tenth of a wavelength (or, for digital edges, when its delay is short compared with the rise time, 13-07). In FR-4-like board material ($\varepsilon_r \approx 4$, so $v = c/2$), a wavelength at 1 GHz is 15 cm, so a 1.5 cm trace is the limit; at 10 GHz it is 1.5 mm (Problem 13-04.9). Inside a chip, distances are millimetres, and most on-chip wires are so resistive that they behave as distributed RC lines (quasi-static and diffusive) rather than as transmission lines: long ones are distributed, but their delay grows with the square of length, not linearly. Only the widest global and clock wires show inductive, wave-like behaviour at tens of gigahertz. On a board, almost every high-speed trace is a transmission line.
 
 ## 4. Worked examples
 
@@ -309,7 +309,7 @@ The power inside radius $\rho$ is a fraction $\ln(\rho/a)/\ln(b/a)$, so half flo
 | Ex 13-04.6d | power from the Poynting flux | 2 | W |
 | Ex 13-04.6e | radius enclosing half the power | 0.9354 | mm |
 | Prac 13-04.a | plane-wave E (rms) at 10 W/m² | 61.38 | V/m |
-| Prac 13-04.b | ratio of the FCC E and H limits, 30–300 MHz | 376.7 | Ω |
+| Prac 13-04.b | ratio of the FCC E and H limits, 30–300 MHz | 377 | Ω |
 | Prac 13-04.c | distance to 10 W/m² from 1 W EIRP | 8.92 | cm |
 | Sim 13-04.a | simulated capacitor current amplitude | 0.2225 | A |
 
@@ -362,13 +362,13 @@ The netlist [displacement.cir](../labs/13-04-lab/displacement.cir) drives Exampl
 
 ### State of the art (as of Nov 2026)
 
-- **Exposure limits are Poynting-vector limits.** The US Federal Communications Commission's maximum permissible exposure for the general population is a power density of 1.0 mW/cm² (10 W/m²) from 1,500 MHz to 100 GHz, averaged over 30 minutes, falling to 0.2 mW/cm² from 30 to 300 MHz, where it is also stated as 27.5 V/m and 0.073 A/m [1] **[Established]**. The ratio of those two field limits is **376.7** Ω, the impedance of free space: the limits assume a plane wave. A 10 W/m² plane wave has an rms electric field of $\sqrt{10\eta_0}$ = **61.38** V/m (our arithmetic).
-- **Phones are certified by absorbed power, not power density.** For devices used within 20 cm of the body, the FCC limit is a peak spatial-average specific absorption rate (SAR) of 1.6 W/kg averaged over any 1 g of tissue [1]; ICNIRP's 2020 guidelines, used in many other countries, set 2 W/kg averaged over 10 g for the head and torso [2] **[Established]**. SAR is $\sigma\lvert E_{rms}\rvert^2/\rho_m$ in tissue (with $\rho_m$ the tissue's mass density), so it is a Joule-heating term of the Poynting theorem measured inside a phantom head.
-- **How close is close?** A source radiating 1 W equally in all directions gives $S = P/(4\pi r^2)$, which falls to 10 W/m² at **8.92** cm (our arithmetic, far-field formula): beyond a hand's width, a 1 W emitter is below the high-frequency limit even in its strongest direction, which is why exposure from handsets is assessed as SAR in the near field instead.
+- **Exposure limits are Poynting-vector limits.** The US Federal Communications Commission's maximum permissible exposure for the general population is a power density of 1.0 mW/cm² (10 W/m²) from 1,500 MHz to 100 GHz, averaged over 30 minutes, falling to 0.2 mW/cm² from 30 to 300 MHz, where it is also stated as 27.5 V/m and 0.073 A/m [1] **[Established]**. The ratio of those two field limits is about **377** Ω (27.5/0.073, with the current limit given to two figures), the impedance of free space: the limits assume a plane wave. A 10 W/m² plane wave has an rms electric field of $\sqrt{10\eta_0}$ = **61.38** V/m (our arithmetic).
+- **Phones are certified by absorbed power, not power density.** For handsets, the FCC limit is a peak spatial-average specific absorption rate (SAR) of 1.6 W/kg averaged over any 1 g of tissue [1]; ICNIRP's 2020 guidelines, used in many other countries, set 2 W/kg averaged over 10 g for the head and torso [2] **[Established]**. SAR is $\sigma\lvert E_{rms}\rvert^2/\rho_m$ in tissue (with $\rho_m$ the tissue's mass density), so it is a Joule-heating term of the Poynting theorem measured inside a phantom head.
+- **How close is close?** A source with 1 W EIRP gives $S = \text{EIRP}/(4\pi r^2)$ in its strongest direction, which falls to 10 W/m² at **8.92** cm (our arithmetic, far-field formula): beyond a hand's width, a 1 W EIRP emitter is below the high-frequency limit even in its main beam, which is why exposure from handsets is assessed as SAR in the near field instead.
 
 ### Why it matters commercially
 
-- **Compliance gates product launches.** Every phone, wearable and Wi-Fi device must pass SAR or power-density testing in each market, and antenna placement is often constrained more by SAR than by efficiency.
+- **Compliance gates product launches.** Every phone, wearable and Wi-Fi device must pass SAR or power-density testing in each market **[Established]**, and antenna placement is often constrained more by SAR than by efficiency.
 - **Board materials are chosen by loss tangent.** High-speed boards for AI servers and networking use low-$D_f$ laminates because dielectric loss grows with frequency (13-02's §9, 13-08).
 - **Power integrity is field engineering.** Power flows between a board's supply and ground planes in the dielectric (Problem 13-04.10); thin, high-permittivity plane pairs lower the impedance of that path.
 

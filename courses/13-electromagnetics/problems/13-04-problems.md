@@ -67,13 +67,17 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Light from circuits.** (a) Derive the Helmholtz equation for $\tilde{\vec{H}}$ in a source-free, lossless, uniform region. (b) From $\mu_0$ and $\varepsilon_0$ alone, compute the speed of an electromagnetic wave and the ratio $\sqrt{\mu_0/\varepsilon_0}$.
 
+### Problem 13-04.15 [C]
+
+**Is this field allowed?** Between perfectly conducting walls at $x = 0$ and $x = a$ (air, no free charge or current inside), a proposed field is $\vec{E} = E_0\sin(\pi x/a)\cos(\omega t - \beta z)\,\hat{y}$ with $E_0$ = 2 kV/m, $a$ = 22.86 mm and $f$ = 10 GHz. (a) Show that it satisfies Gauss's law and the boundary condition on the walls. (b) Find $\vec{H}$ from Faraday's law. (c) Substitute into Ampère's law and find the β for which the field is a solution of Maxwell's equations; evaluate it. (d) Find the amplitudes of $H_x$ and $H_z$.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 13-04) | Problems |
 |---|---|
-| 1. Maxwell's equations in integral and differential form | 1, 5, 12, 14 |
+| 1. Maxwell's equations in integral and differential form | 1, 5, 12, 14, 15 |
 | 2. The displacement current | 2, 7 |
 | 3. Conductors, dielectrics and relaxation | 3, 6, 11 |
 | 4. Phasor form | 4, 13, 14 |

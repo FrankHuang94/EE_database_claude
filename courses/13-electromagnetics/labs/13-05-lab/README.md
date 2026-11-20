@@ -38,7 +38,7 @@ Uniform plane waves (§3.1), polarization (§3.2), lossy media (§3.3) and the s
 |---|---|---|---|
 | Lab 13-05.a | exact R_ac/R_dc of a 1 mm copper wire at 1 MHz | 4.045 | — |
 | Lab 13-05.b | frequency at which its resistance doubles | 208.0 | kHz |
-| Lab 13-05.c | frequency at which the good-conductor α for seawater is 10% high | 170.2 | MHz |
+| Lab 13-05.c | frequency at which the good-conductor α for seawater is 10% high (α_gc/α = 1.10) | 170.2 | MHz |
 
 *These are recomputed by [verify_13_05.py](../../verify/verify_13_05.py) with the exact Bessel-function impedance and the exact propagation constant, solved by root finding.*
 

@@ -96,7 +96,13 @@ $$
 \gamma = \alpha + j\beta = \sqrt{j\omega\mu(\sigma + j\omega\varepsilon)}, \qquad \eta_c = \sqrt{\frac{j\omega\mu}{\sigma + j\omega\varepsilon}} .
 $$
 
-The forward wave is $\tilde E_x = E_0e^{-\alpha z}e^{-j\beta z}$: its amplitude decays as $e^{-\alpha z}$ while its phase advances at β per metre. The intrinsic impedance is now complex, so $\vec{H}$ lags $\vec{E}$. Squaring and separating real and imaginary parts of $\gamma^2 = -\omega^2\mu\varepsilon + j\omega\mu\sigma$ gives $\alpha^2 - \beta^2 = -\omega^2\mu\varepsilon$ and $2\alpha\beta = \omega\mu\sigma$, whose solution is
+The forward wave is $\tilde E_x = E_0e^{-\alpha z}e^{-j\beta z}$: its amplitude decays as $e^{-\alpha z}$ while its phase advances at β per metre. The intrinsic impedance is now complex, so $\vec{H}$ lags $\vec{E}$. Squaring and separating real and imaginary parts of $\gamma^2 = -\omega^2\mu\varepsilon + j\omega\mu\sigma$ gives $\alpha^2 - \beta^2 = -\omega^2\mu\varepsilon$ and $2\alpha\beta = \omega\mu\sigma$. To solve them, write $p = \omega^2\mu\varepsilon$ and $q = \omega\mu\sigma$, and substitute $\beta = q/(2\alpha)$ into the first: $\alpha^2 - q^2/(4\alpha^2) = -p$, or, multiplying by $\alpha^2$, a quadratic in $\alpha^2$:
+
+$$
+(\alpha^2)^2 + p\,\alpha^2 - \frac{q^2}{4} = 0 \quad\Rightarrow\quad \alpha^2 = \frac{-p + \sqrt{p^2 + q^2}}{2} .
+$$
+
+The other root, with $-\sqrt{p^2 + q^2}$, is negative and would make α imaginary, so it is rejected (α is real by definition). Then $\beta^2 = \alpha^2 + p = (p + \sqrt{p^2 + q^2})/2$. Since $q/p = \sigma/\omega\varepsilon$, factoring out $p$ gives
 
 $$
 \begin{aligned}
@@ -263,6 +269,11 @@ which is the speed at which energy and information travel. In a good conductor, 
 | Prac 13-05.c | RG-58 fitted conductor loss at 1 GHz | 12.72 | dB/100 ft |
 | Prac 13-05.d | RG-58 fitted dielectric loss at 1 GHz | 8.78 | dB/100 ft |
 | Prac 13-05.e | copper skin depth at 20 kHz | 0.4673 | mm |
+| Prac 13-05.f | 370HR over MT40 dielectric attenuation at 10 GHz | 8.6 | — |
+| Prac 13-05.g | 370HR dielectric loss at 10 GHz | 0.45 | dB/cm |
+| Prac 13-05.h | 12 AWG R_ac/R_dc at 20 kHz | 1.35 | — |
+| Prac 13-05.i | 12 AWG R_ac/R_dc at 10 kHz | 1.11 | — |
+| Prac 13-05.j | 16 AWG R_ac/R_dc at 20 kHz | 1.07 | — |
 | Sim 13-05.a | simulated surface resistance at 1 GHz | 8.250 | mΩ |
 | Sim 13-05.b | simulated surface reactance at 1 GHz | 8.250 | mΩ |
 
@@ -285,7 +296,7 @@ The netlist [skin_ladder.cir](../labs/13-05-lab/skin_ladder.cir) models one squa
 
 | Knob | Improves | Costs | Typical decision owner |
 |---|---|---|---|
-| Lower-$\tan\delta$ laminate | Dielectric loss ∝ $f\sqrt{\varepsilon_r}\tan\delta$, reach at high data rates | Material cost (several times FR-4), processing | SI engineer, PCB designer |
+| Lower-$\tan\delta$ laminate | Dielectric loss ∝ $f\sqrt{\varepsilon_r}\tan\delta$, reach at high data rates | Material cost (higher than FR-4), processing | SI engineer, PCB designer |
 | Smoother copper foil | Conductor loss at tens of GHz (roughness adds to $R_s$) | Adhesion, cost | PCB fabricator, SI engineer |
 | Wider traces or larger coax | Lower conductor loss ($R_s$ over a larger perimeter) | Density, thickness, impedance constraints | SI engineer, mechanical designer |
 | Litz wire, flat or hollow conductors | Lower AC resistance in magnetics and busbars | Cost, fill factor | Power-electronics designer |
@@ -300,7 +311,7 @@ The netlist [skin_ladder.cir](../labs/13-05-lab/skin_ladder.cir) models one squa
 | Copper skin depth | 8.5 mm at 60 Hz; 66 µm at 1 MHz; 2.1 µm at 1 GHz | $\propto 1/\sqrt f$ |
 | Copper surface resistance | 8.25 mΩ at 1 GHz | $\propto\sqrt f$ |
 | 1 neper | 8.686 dB | Field falls by $e$ |
-| Dielectric loss, FR-4-like at 10 GHz | about 0.36 dB/cm | $\propto f$ at constant $\tan\delta$ |
+| Dielectric loss, FR-4-like at 10 GHz | about 0.36 dB/cm (tan δ = 0.02) to **0.45** dB/cm (370HR data sheet) | $\propto f$ at constant $\tan\delta$ |
 | Linear antenna on a circular wave | −3 dB | Any orientation |
 
 ## 8. Common mistakes
@@ -316,18 +327,18 @@ The netlist [skin_ladder.cir](../labs/13-05-lab/skin_ladder.cir) models one squa
 ### State of the art (as of Nov 2026)
 
 - **Coax loss splits into conductor and dielectric parts.** Belden's RG-58 data sheet gives 4.9 dB/100 ft at 100 MHz and 21.5 dB/100 ft at 1 GHz [3] **[Established]**. Fitting $a\sqrt f + bf$ to those two points (our arithmetic, a two-point fit, not a manufacturer split) attributes **4.02** dB of the 100 MHz loss to the conductors and **0.88** dB to the dielectric, and **12.72** and **8.78** dB at 1 GHz: conductor loss dominates at low frequency, and dielectric loss catches up as frequency rises.
-- **Laminate choice is a loss-tangent decision.** Commercial low-loss laminates quote $D_f$ near 0.003 at 10 GHz, against about 0.02 for standard FR-4-class material [2] **[Established]** (vendor data at stated test conditions). Example 13-05.5 turns that into a factor of about 7 in dielectric attenuation.
-- **Copper's conductivity is a standard.** The International Annealed Copper Standard defines 100% conductivity as 1.7241 µΩ·cm at 20 °C (58 MS/m) [1] **[Established]**; thin films and rough foils perform worse, and high-speed design uses roughness models that raise the effective $R_s$ by tens of per cent at tens of gigahertz **[Industry estimate]**.
+- **Laminate choice is a loss-tangent decision.** At 10 GHz a commercial low-loss laminate quotes $D_k$ 3.45 and $D_f$ 0.0031, against $D_k$ 3.92 and $D_f$ 0.0250 for a standard high-Tg FR-4-class laminate [2] **[Established]** (vendor data at stated test conditions). With those data-sheet values the dielectric attenuation differs by a factor of **8.6** (our arithmetic); Example 13-05.5's rounder, illustrative values give about 7.
+- **Copper's conductivity is a standard.** The International Annealed Copper Standard defines 100% conductivity as 1.7241 µΩ·cm at 20 °C (58 MS/m) [1] **[Established]** as a standard definition (R-101 records it from secondary excerpts of the NBS handbook); thin films and rough foils perform worse, and high-speed design uses foil-roughness models that raise the effective $R_s$ substantially once the skin depth falls to the scale of the roughness, at gigahertz frequencies **[Industry estimate]** (not quantified here).
 
 ### Why it matters commercially
 
 - **Reach of electrical links.** Every copper link (PCIe, Ethernet over backplanes, die-to-die) has a loss budget in dB at its Nyquist frequency; skin and dielectric loss set how far a signal can go before a retimer or optics is needed (Course 24).
-- **Material and cable costs.** Low-loss laminates and low-loss cable assemblies cost several times more than standard ones; knowing whether conductor or dielectric loss dominates tells you which to pay for.
+- **Material and cable costs.** Low-loss laminates and low-loss cable assemblies cost more than standard ones **[Industry estimate]** (no price data are logged here); knowing whether conductor or dielectric loss dominates tells you which to pay for.
 - **Wireless coverage.** Building materials and the human body are lossy dielectrics at radio frequencies; penetration loss rises with frequency, one reason millimetre-wave cells are small.
 
 ### Marketing vs Reality
 
-- **"High-purity copper audio cable for better sound."** *Reality:* at 20 kHz copper's skin depth is **0.4673** mm (our arithmetic), larger than the radius of typical speaker-cable strands, so the skin effect is negligible across the audio band and resistance per length is what matters. *Sanity check:* compare the cable's resistance per metre, not its purity grade.
+- **"High-purity copper audio cable for better sound."** *Reality:* at 20 kHz copper's skin depth is **0.4673** mm (our arithmetic). Ordinary stranded cable has bare strands that touch, so it behaves like a solid conductor of the whole bundle's radius (only insulated, transposed Litz strands act separately). For a 12 AWG conductor (radius 1.03 mm) the exact Bessel-function resistance is **1.35** times the DC value at 20 kHz and **1.11** times at 10 kHz; for 16 AWG it is **1.07** times at 20 kHz (our arithmetic). Those are modest rises at the very top of the audio band, and copper purity changes conductivity by a fraction of a per cent. What matters is resistance per metre against the 8 Ω load. *Sanity check:* compare the cable's resistance per metre, not its purity grade.
 - **"Ultra-low-loss laminate."** *Reality:* $D_f$ depends on frequency, temperature and resin content, and conductor loss (foil roughness) may dominate. *Sanity check:* ask for insertion loss in dB per inch at your Nyquist frequency on a test coupon with your copper foil.
 
 ### Questions for engineering leaders

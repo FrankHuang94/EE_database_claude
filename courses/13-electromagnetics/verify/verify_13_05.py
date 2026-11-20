@@ -19,6 +19,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import sympy as sp
 import scipy.sparse as sps
 import scipy.sparse.linalg as spla
 from scipy.optimize import brentq
@@ -209,6 +210,13 @@ v.check("Prac 13-05.b", ab[1] * 100)
 v.check("Prac 13-05.c", ab[0] * math.sqrt(1000))
 v.check("Prac 13-05.d", ab[1] * 1000)
 v.check("Prac 13-05.e", skin_depth_fd(2e4, SIG_CU) * 1e3)
+# laminate data-sheet values (R-193): exact complex gamma of each dielectric, ratio of attenuation constants
+alpha_d = lambda f, er, tand: (2 * math.pi * f * cmath.sqrt(mu0 * er * e0 * (1 - 1j * tand)) * 1j).real  # noqa: E731
+v.check("Prac 13-05.f", alpha_d(1e10, 3.92, 0.0250) / alpha_d(1e10, 3.45, 0.0031))
+v.check("Prac 13-05.g", alpha_d(1e10, 3.92, 0.0250) * NP_DB / 100)
+for key, awg_d, f in (("h", 2.053e-3, 2e4), ("i", 2.053e-3, 1e4), ("j", 1.291e-3, 2e4)):
+    aw_ = awg_d / 2
+    v.check(f"Prac 13-05.{key}", wire_Z_bessel(f, aw_, SIG_CU).real * SIG_CU * math.pi * aw_**2)
 Zs = gamma_eta(1e9, SIG_CU)[1]
 v.check("Sim 13-05.a", Zs.real * 1e3)
 v.check("Sim 13-05.b", Zs.imag * 1e3)
@@ -275,7 +283,13 @@ v.check("13-05.11a", loss11 / abs(Ht11) ** 2 * 1.0**2 * 1e3)
 w12 = 2 * math.pi * 1e9
 E12 = math.sqrt(2 * eta0 * 10)
 tt = np.linspace(0, 2 * math.pi / w12, 4000, endpoint=False)
-u12 = np.mean(0.5 * e0 * (E12 * np.cos(w12 * tt)) ** 2 + 0.5 * mu0 * (E12 / eta0 * np.cos(w12 * tt)) ** 2)
+# H from Faraday's law (dH/dt = -(1/mu0) dE/dz) rather than assuming H = E/eta0, then average the energy density
+zs_, ts_ = sp.symbols("z_s t_s", real=True)
+k12 = w12 / c0
+Ex12 = E12 * sp.cos(w12 * ts_ - k12 * zs_)
+Hy12 = sp.integrate(-sp.diff(Ex12, zs_) / mu0, ts_)
+fH12 = sp.lambdify(ts_, Hy12.subs(zs_, 0), "numpy")
+u12 = np.mean(0.5 * e0 * (E12 * np.cos(w12 * tt)) ** 2 + 0.5 * mu0 * fH12(tt) ** 2)
 v.check("13-05.12a", u12)
 v.assert_true("u v = S", abs(u12 * c0 / 10 - 1) < 1e-9)
 

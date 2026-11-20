@@ -52,7 +52,7 @@ $\text{NA} = \sqrt{1.47^2 - 1.46^2}$ = **0.1712**, acceptance half-angle $\arcsi
 
 ### Solution 13-06.9
 
-$\eta_c = \sqrt{j\omega\mu_0/(\sigma + j\omega\varepsilon)}$ = **0.09935 + j0.09935** Ω (a good conductor, so the real and imaginary parts are equal to four figures). $\Gamma = (\eta_c - \eta_0)/(\eta_c + \eta_0)$ = **−0.9995** (to four figures, with a tiny imaginary part). The transmitted power is $1 - \lvert\Gamma\rvert^2$ = **0.1054**%, and the estimate $4\,\text{Re}\{\eta_c\}/\eta_0$ gives **0.1055**%. Almost everything reflects, and the little that enters is then attenuated by the skin depth of 2.5 m (13-05).
+$\eta_c = \sqrt{j\omega\mu_0/(\sigma + j\omega\varepsilon)}$ = **0.09935 + j0.09935** Ω (a good conductor, so the real and imaginary parts are equal to four figures). $\Gamma = (\eta_c - \eta_0)/(\eta_c + \eta_0)$ = **−0.9995** (to four figures, with a tiny imaginary part). The transmitted power is $1 - \lvert\Gamma\rvert^2$ = **0.1054**%. For real $\eta_0$ this is exactly $(\lvert\eta_c + \eta_0\rvert^2 - \lvert\eta_c - \eta_0\rvert^2)/\lvert\eta_c + \eta_0\rvert^2 = 4\eta_0\text{Re}\{\eta_c\}/\lvert\eta_c + \eta_0\rvert^2$, and with $\lvert\eta_c\rvert \ll \eta_0$ the denominator is nearly $\eta_0^2$, giving the estimate $4\,\text{Re}\{\eta_c\}/\eta_0$ = **0.1055**%. Almost everything reflects, and the little that enters is then attenuated by the skin depth of 2.5 m (13-05).
 
 ### Solution 13-06.10
 
@@ -75,6 +75,26 @@ $\tau_\perp = 1 + \Gamma_\perp = 1 - 0.3033$ = **0.6967**. $T = (\eta_0\cos 28.1
 ### Solution 13-06.14
 
 With Γ = −1/3: the maximum is $1 + 1/3$ = **1.333** V/m and the minimum $1 - 1/3$ = **0.6667** V/m. Γ is negative, so the minimum is at the boundary itself (the incident and reflected fields subtract there), and the nearest maximum is λ/4 = **7.495** mm in front of it.
+
+### Solution 13-06.15
+
+(a) With the boundary at $z = 0$ and the fields of §3.4 (incident $\tilde{\vec{E}}^i = E_0(\hat{x}\cos\theta_i - \hat{z}\sin\theta_i)$, $\tilde{\vec{H}}^i = (E_0/\eta_1)\hat{y}$; reflected $\Gamma_\parallel E_0(\hat{x}\cos\theta_i + \hat{z}\sin\theta_i)$ and $-(\Gamma_\parallel E_0/\eta_1)\hat{y}$; transmitted $\tau_\parallel E_0(\hat{x}\cos\theta_t - \hat{z}\sin\theta_t)$ and $(\tau_\parallel E_0/\eta_2)\hat{y}$), the tangential components are $E_x$ and $H_y$. Continuity of each at $z = 0$ gives
+
+$$
+(1 + \Gamma_\parallel)\cos\theta_i = \tau_\parallel\cos\theta_t, \qquad \frac{1 - \Gamma_\parallel}{\eta_1} = \frac{\tau_\parallel}{\eta_2} .
+$$
+
+The second gives $\tau_\parallel = (\eta_2/\eta_1)(1 - \Gamma_\parallel)$; substituting into the first, $\eta_1\cos\theta_i(1 + \Gamma_\parallel) = \eta_2\cos\theta_t(1 - \Gamma_\parallel)$, so
+
+$$
+\Gamma_\parallel = \frac{\eta_2\cos\theta_t - \eta_1\cos\theta_i}{\eta_2\cos\theta_t + \eta_1\cos\theta_i}, \qquad \tau_\parallel = (1 + \Gamma_\parallel)\frac{\cos\theta_i}{\cos\theta_t} .
+$$
+
+(b) Snell: $\sin\theta_t = \sin30^\circ/1.5$, so $\theta_t$ = **19.47**°. With $\eta_2 = \eta_1/1.5$, $\cos\theta_i$ = 0.8660 and $\cos\theta_t$ = 0.9428: $\Gamma_\parallel$ = **−0.1589**, $\tau_\parallel$ = **0.7726**, and the reflected power is $\Gamma_\parallel^2$ = **2.525**%.
+
+(c) $T = 0.7726^2 \times 1.5 \times 0.9428/0.8660$ = **97.475**%, and $R + T$ = 2.525% + 97.475% = 100%: the extra factor accounts for the transmitted beam's different cross-section ($\cos\theta_t/\cos\theta_i$) and impedance. Note $\lvert\tau_\parallel\rvert^2$ alone (59.7%) is not the power fraction.
+
+(d) $\Gamma_\perp = (\eta_2\cos\theta_i - \eta_1\cos\theta_t)/(\eta_2\cos\theta_i + \eta_1\cos\theta_t)$ = **−0.2404**, a reflectance of **5.78**%, more than twice the TM value: at 30° the TM reflection is already heading toward its zero at the Brewster angle (56.31°).
 
 ---
 
@@ -125,3 +145,10 @@ With Γ = −1/3: the maximum is $1 + 1/3$ = **1.333** V/m and the minimum $1 - 
 | 13-06.14a | maximum field | 1.333 | V/m |
 | 13-06.14b | minimum field | 0.6667 | V/m |
 | 13-06.14c | distance to the nearest maximum | 7.495 | mm |
+| 13-06.15a | transmission angle | 19.47 | ° |
+| 13-06.15b | TM reflection coefficient | −0.1589 | — |
+| 13-06.15c | TM transmission coefficient | 0.7726 | — |
+| 13-06.15d | TM reflected power | 2.525 | % |
+| 13-06.15e | TM transmitted power | 97.475 | % |
+| 13-06.15f | TE reflection coefficient | −0.2404 | — |
+| 13-06.15g | TE reflected power | 5.78 | % |

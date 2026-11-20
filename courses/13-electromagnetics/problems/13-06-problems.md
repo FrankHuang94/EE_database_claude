@@ -67,6 +67,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Reading a standing wave.** A 10 GHz plane wave of 1 V/m peak in air strikes the dielectric of Problem 13-06.1 at normal incidence. Find the largest and smallest total field amplitudes in the air, where the smallest occurs, and the distance from there to the nearest maximum.
 
+### Problem 13-06.15 [C]
+
+**Oblique TM, from the boundary conditions.** A TM (parallel-polarized) wave in air strikes glass ($n$ = 1.5) at 30°. (a) Starting from the incident, reflected and transmitted fields with the reference directions of §3.4, derive $\Gamma_\parallel$ and $\tau_\parallel$. (b) Evaluate the transmission angle, $\Gamma_\parallel$, $\tau_\parallel$ and the reflected power percentage. (c) Find the transmitted power fraction $T = \lvert\tau_\parallel\rvert^2(\eta_1\cos\theta_t)/(\eta_2\cos\theta_i)$ and show that $R + T = 1$. (d) Compare with the TE reflectance at the same angle.
+
 ---
 
 ## Objective coverage
@@ -75,6 +79,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Normal incidence, power and standing waves | 1, 2, 3, 9, 14 |
 | 2. Quarter-wave and half-wave layers | 6, 7, 11 |
-| 3. Snell's law and the Fresnel coefficients | 4, 5, 13 |
+| 3. Snell's law and the Fresnel coefficients | 4, 5, 13, 15 |
 | 4. Critical angle, evanescent waves, Brewster angle | 4, 5, 8, 12 |
 | 5. Shielding effectiveness | 10 |

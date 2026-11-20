@@ -33,7 +33,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 13-05.6 [B]
 
-**How good is "good"?** Show that the ratio of the exact attenuation constant to the good-conductor value $\sqrt{\pi f\mu\sigma}$ depends only on $x = \sigma/\omega\varepsilon$. Find the $x$ at which the good-conductor value is 1% too high, and the frequency below which seawater (σ = 4 S/m, $\varepsilon_r$ = 81) meets that standard.
+**How good is "good"?** Show that the ratio of the exact attenuation constant to the good-conductor value $\sqrt{\pi f\mu\sigma}$ depends only on $x = \sigma/\omega\varepsilon$. Find the $x$ at which the exact attenuation constant is 1% below the good-conductor value (their ratio is 0.99), and the frequency below which seawater (σ = 4 S/m, $\varepsilon_r$ = 81) meets that standard.
 
 ### Problem 13-05.7 [B]
 

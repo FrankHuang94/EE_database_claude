@@ -2044,7 +2044,7 @@ R&D % = R&D ÷ revenue.
 *Read on 20 Nov 2026 from the ITU-T recommendation's published PDF; values tagged [Established] as a standard.*
 
 - **Recommendation ITU-T G.652 (08/2024)**, "Characteristics of a single-mode optical fibre and cable", Table 2 (ITU-T G.652.D attributes). Fibre attributes: mode field diameter at 1310 nm, "Range of nominal values 8.6-9.2 μm", tolerance 0.4 μm; cladding diameter "Nominal 125.0 μm"; cable cut-off wavelength "Maximum 1260 nm"; chromatic dispersion at 1550 nm between 13.3 and 18.6 ps/(nm × km). Cable attributes: attenuation coefficient "Maximum from 1310 nm to 1625 nm 0.40 dB/km" and "Maximum at 1530-1565 nm 0.30 dB/km"; Note 1 says these values "should not be applied to short cables such as jumper cables, indoor cables and drop cables". [ITU-T G.652](https://www.itu.int/rec/T-REC-G.652-202408-I/en)
-- **Derived here (13-06):** the ratio of a 1 GHz coax's loss (0.29 dB/m, Problem 13-05.13) to the fibre's 0.30 dB/km.
+- **Derived here (13-06):** the ratio of a 1 GHz coax's total loss (0.32 dB/m, conductor and dielectric, Problem 13-05.13) to the fibre's 0.30 dB/km: about 1067.
 
 ## R-198 · Interface impedances: USB 2.0 cable and PCIe board traces
 
