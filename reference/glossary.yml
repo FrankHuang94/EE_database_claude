@@ -4561,3 +4561,38 @@
 - term: Spread-spectrum clocking
   definition: "Varying a clock's frequency slightly over time so that each harmonic is smeared over a band, lowering the peak that narrow-band emissions measurements report; the total harmonic energy is unchanged."
   chapter: "11-05"
+
+# ---------------------------------------------------------------- 11-06
+- term: Fourier transform
+  definition: "X(jω) = ∫ x(t) e^{−jωt} dt, with inverse x(t) = (1/2π)∫ X(jω) e^{jωt} dω: the spectrum of an aperiodic signal, obtained as the limit of the Fourier series as the period grows; X(f) = X(j2πf) in hertz."
+  chapter: "11-06"
+  see_also: [Fourier series, Convolution theorem]
+- term: Spectrum
+  definition: "A signal's content as a function of frequency: lines at the harmonics for a periodic signal (Fourier series), a continuous function for an aperiodic one (Fourier transform)."
+  chapter: "11-06"
+- term: Duality (Fourier)
+  definition: "The symmetry of the Fourier pair: if x(t) ↔ X(jω), then X(jt) ↔ 2π x(−ω); so a pulse transforms to a sinc and a sinc to a pulse."
+  chapter: "11-06"
+- term: Convolution theorem
+  definition: "Convolution in time is multiplication in frequency, x * h ↔ X(jω)H(jω), and multiplication in time is convolution in frequency (divided by 2π); the frequency response of an LTI system is the transform of its impulse response."
+  chapter: "11-06"
+- term: Distortionless transmission
+  definition: "Passing a signal with only a gain and a delay, y = Kx(t − t₀), which requires a constant magnitude response and a phase that is linear in frequency (constant group delay)."
+  chapter: "11-06"
+  see_also: [Group delay]
+- term: Ideal low-pass filter
+  definition: "A filter passing |ω| < W unchanged and removing all else; its impulse response sin(Wt)/(πt) is noncausal and not absolutely integrable, and its step response overshoots to 1.0895 (Gibbs)."
+  chapter: "11-06"
+- term: Energy spectral density
+  definition: "|X(f)|², the energy per hertz of a finite-energy signal; by Parseval its integral over all frequency is the signal's energy."
+  chapter: "11-06"
+  see_also: [Parseval's relation]
+- term: Bandwidth
+  definition: "The frequency extent of a spectrum or a frequency response; it must be defined (−3 dB, null-to-null, fractional-energy such as 99%, or Nyquist frequency of a symbol stream), since the definitions can differ by large factors for one signal."
+  chapter: "11-06"
+- term: Time-bandwidth product
+  definition: "The product of a signal's duration and bandwidth, independent of time scaling and fixed by its shape; for RMS widths σ_t σ_ω ≥ 1/2, with equality only for the Gaussian (the uncertainty principle)."
+  chapter: "11-06"
+- term: Nyquist frequency
+  definition: "Half the symbol (or sample) rate: the highest frequency in a symbol pattern alternating every symbol, the reference frequency at which link channels are specified, and the limit of unambiguous frequency for sampled signals."
+  chapter: "11-06"

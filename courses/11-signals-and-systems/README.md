@@ -31,7 +31,7 @@ The mathematics of signals and linear time-invariant systems in continuous and d
 | [11-03 · Convolution](chapters/11-03-convolution.md) | 10 | ✅ verified | [problems](problems/11-03-problems.md) · [solutions](solutions/11-03-solutions.md) · [lab](labs/11-03-lab/README.md) · [verify](verify/verify_11_03.py) |
 | [11-04 · LTI Systems and Differential/Difference Equations](chapters/11-04-lti-systems-and-differential-equations.md) | 8 | ✅ verified | [problems](problems/11-04-problems.md) · [solutions](solutions/11-04-solutions.md) · [lab](labs/11-04-lab/README.md) · [verify](verify/verify_11_04.py) |
 | [11-05 · Fourier Series](chapters/11-05-fourier-series.md) | 10 | ✅ verified | [problems](problems/11-05-problems.md) · [solutions](solutions/11-05-solutions.md) · [lab](labs/11-05-lab/README.md) · [verify](verify/verify_11_05.py) |
-| [11-06 · The Continuous-Time Fourier Transform](chapters/11-06-continuous-time-fourier-transform.md) | 12 | ⬜ planned | — |
+| [11-06 · The Continuous-Time Fourier Transform](chapters/11-06-continuous-time-fourier-transform.md) | 12 | ✅ verified | [problems](problems/11-06-problems.md) · [solutions](solutions/11-06-solutions.md) · [lab](labs/11-06-lab/README.md) · [verify](verify/verify_11_06.py) |
 | [11-07 · The Discrete-Time Fourier Transform](chapters/11-07-discrete-time-fourier-transform.md) | 8 | ⬜ planned | — |
 | [11-08 · The Laplace Transform and System Functions](chapters/11-08-laplace-transform-and-system-functions.md) | 10 | ⬜ planned | — |
 | [11-09 · The z-Transform](chapters/11-09-z-transform.md) | 10 | ⬜ planned | — |
