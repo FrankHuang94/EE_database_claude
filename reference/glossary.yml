@@ -6228,3 +6228,44 @@
   chapter: "16-02"
   see_also: [Feed-forward equalizer (FFE), Decision-feedback equalizer (DFE)]
 
+# ---------------------------------------------------------------- 16-03
+- term: DFT bin
+  definition: One of the N frequencies 2πk/N (k f_s/N in hertz) at which the DFT samples the DTFT; bins above N/2 are negative frequencies, and the bin spacing f_s/N is the reciprocal of the record length.
+  chapter: "16-03"
+  see_also: [Discrete Fourier transform (DFT)]
+- term: Circular shift
+  definition: Shifting a length-N sequence modulo N, x[((n − m))_N], so samples pushed past the end reappear at the start; the DFT turns it into multiplication by W_N^{km}.
+  chapter: "16-03"
+  see_also: [Circular convolution]
+- term: Circular convolution
+  definition: The N-point convolution of two sequences with indices taken modulo N, whose DFT is the product of the DFTs; it equals linear convolution when both are zero-padded to N ≥ L + M − 1.
+  chapter: "16-03"
+  see_also: [Circular shift, Overlap-add, Overlap-save]
+- term: Time aliasing
+  definition: The folding of a sequence onto itself every N samples, x̃[n] = Σ x[n + rN], when its DTFT is sampled at only N frequencies; absent when the sequence is no longer than N.
+  chapter: "16-03"
+  see_also: [Aliasing (sampling)]
+- term: Spectral leakage
+  definition: The spreading of an off-bin tone's energy across all DFT bins, because a sinusoid that does not complete a whole number of cycles in the record is not orthogonal to any DFT basis vector; controlled with windows.
+  chapter: "16-03"
+  see_also: [Scalloping loss]
+- term: Scalloping loss
+  definition: The drop in the largest DFT bin when a tone falls between bins; for a rectangular window it reaches 2/π (−3.92 dB) halfway between bins.
+  chapter: "16-03"
+  see_also: [Spectral leakage]
+- term: Overlap-add
+  definition: Block convolution that splits the input into blocks of L samples, convolves each with the filter by N-point DFTs (N ≥ L + M − 1), and adds the overlapping M − 1 samples of consecutive block outputs.
+  chapter: "16-03"
+  see_also: [Overlap-save, Circular convolution]
+- term: Overlap-save
+  definition: Block convolution that takes overlapping input blocks of N samples, computes each block's N-point circular convolution with the filter, and keeps only the last N − M + 1 outputs, discarding those corrupted by wrap-around.
+  chapter: "16-03"
+  see_also: [Overlap-add, Circular convolution]
+- term: OFDM
+  definition: "Orthogonal frequency-division multiplexing: data symbols are placed on DFT bins (subcarriers), converted to a time signal by an inverse DFT, and recovered by a DFT; with a cyclic prefix, each subcarrier sees the channel as one complex gain."
+  chapter: "16-03"
+  see_also: [Cyclic prefix, Discrete Fourier transform (DFT)]
+- term: Cyclic prefix
+  definition: A copy of the last G samples of each OFDM symbol placed in front of it, so that a channel with up to G + 1 taps convolves the symbol circularly; it removes inter-symbol and inter-carrier interference at an overhead of G/(N + G).
+  chapter: "16-03"
+  see_also: [OFDM, Circular convolution]
