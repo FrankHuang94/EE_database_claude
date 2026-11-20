@@ -1,0 +1,91 @@
+#separator:comma
+#html:true
+#columns:Front,Back,Tags
+#tags column:3
+When is a DT complex exponential e^{jωn} periodic?,Only when ω/2π is a rational number p/q (in lowest terms); its period is then q samples. CT exponentials are always periodic.,bsee::11 bsee::11-01
+Why are DT frequencies ω and ω + 2π the same signal?,Because n is an integer: \(e^{j(\omega+2\pi)n} = e^{j\omega n}e^{j2\pi n} = e^{j\omega n}\). Only −π to π is distinct; π (f_s/2) is the fastest DT oscillation.,bsee::11 bsee::11-01
+Average power of A cos(ω₀t + φ) and of a sum of sinusoids at different frequencies?,"\(A^2/2\) each; powers of different frequencies add, because the cross terms average to zero (orthogonality).",bsee::11 bsee::11-01
+δ(at) in terms of δ(t)?,\(\delta(t)/\lvert a\rvert\): compressing time by a scales the impulse's area by 1/|a|.,bsee::11 bsee::11-01
+Sifting property?,\(\int x(t)\delta(t - t_0)dt = x(t_0)\); also \(x(t)\delta(t - t_0) = x(t_0)\delta(t - t_0)\).,bsee::11 bsee::11-01
+Energy signal vs power signal?,"Energy signal: finite total energy (zero average power), e.g. a pulse. Power signal: finite nonzero average power (infinite energy), e.g. a sinusoid.",bsee::11 bsee::11-01
+Time scaling x(at) with a > 1 does what to a signal and its energy?,Compresses it in time by a; its energy divides by a.,bsee::11 bsee::11-01
+Decimation by M in DT?,"Keep every Mth sample, y[n] = x[Mn]; it compresses time and can alias unless the signal is first low-pass filtered to π/M.",bsee::11 bsee::11-01
+Linearity test for a system?,Additivity (sum in → sum out) and homogeneity (scaled in → scaled out). Zero in must give zero out.,bsee::11 bsee::11-02
+"Time-invariance test, and the classic trap?",Delay the input by t₀ and compare with the output delayed by t₀. Trap: substituting t − t₀ into explicit t's (y = t·x(t) is time-varying).,bsee::11 bsee::11-02
+Is y[n] = x[2n] time-invariant?,No: a decimator is periodically time-varying; shifting the input by one sample does not shift the output.,bsee::11 bsee::11-02
+Tightest bound for y[n] = a y[n−1] + x[n] with |x| ≤ B?,"\(B/(1 - \lvert a\rvert)\) for |a| < 1, reached by the input that matches the sign of h at every lag.",bsee::11 bsee::11-02
+HD3 and IM3 of a cubic nonlinearity grow how with input amplitude?,"HD3 and IM3 grow as the cube of amplitude: 3 dB per dB of input (30 dB per decade), so their ratio to the fundamental rises 2 dB per dB.",bsee::11 bsee::11-02
+Why does a causal linear system need initial rest?,So that zero input before t₀ gives zero output before t₀; with stored energy the response is not a linear function of the input alone (incrementally linear).,bsee::11 bsee::11-02
+Inverse of an echo y[n] = x[n] + b x[n−1] for |b| > 1?,The causal inverse 1/(1 + b z⁻¹) is unstable; a stable inverse exists only noncausally (anticausal impulse response).,bsee::11 bsee::11-02
+Convolution sum and integral?,"\(y[n] = \sum_kx[k]h[n - k]\); \(y(t) = \int x(\tau)h(t - \tau)d\tau\). Flip h, slide, multiply, sum.",bsee::11 bsee::11-03
+Length of the convolution of sequences of lengths L₁ and L₂?,\(L_1 + L_2 - 1\); supports add.,bsee::11 bsee::11-03
+Area (DC gain) property of convolution?,The area (sum) of x*h is the product of the areas of x and h.,bsee::11 bsee::11-03
+BIBO stability in terms of h?,Stable iff \(\sum\lvert h[n]\rvert < \infty\) (or \(\int\lvert h\rvert < \infty\)); the worst-case gain equals that sum.,bsee::11 bsee::11-03
+Why is the ideal low-pass filter not BIBO-stable?,"Its impulse response sin(Wt)/(πt) decays as 1/t, so ∫|h| diverges; a bounded input matched to its sign gives an unbounded output.",bsee::11 bsee::11-03
+Convolution vs cross-correlation?,Correlation does not flip: \(r[n] = \sum x[k]h[k + n]\). CNN 'convolution' layers compute correlations; a matched filter is correlation with the template.,bsee::11 bsee::11-03
+MACs per output of an N-tap FIR?,N multiply–accumulates per output sample.,bsee::11 bsee::11-03
+ADS1292R sinc³ filter as convolution?,Three cascaded boxcars of N samples (N = 256 at 500 SPS); the step response settles in 3N − 2 modulator samples (3 output periods).,bsee::11 bsee::11-03
+Impulse response of a causal difference equation from its characteristic roots?,\(h[n] = \sum_kA_kr_k^n\) for distinct roots; stable iff all |r_k| < 1.,bsee::11 bsee::11-04
+Resonator with poles re^{±jθ}: difference equation and h[n]?,"\(y[n] = 2r\cos\theta\,y[n-1] - r^2y[n-2] + x[n]\); \(h[n] = r^n\sin((n + 1)\theta)/\sin\theta\).",bsee::11 bsee::11-04
+Jump conditions for the RLC impulse response (capacitor output)?,The capacitor voltage stays continuous; its derivative (current/C) jumps by ω₀² at t = 0.,bsee::11 bsee::11-04
+Direct form I vs direct form II?,"DF-I: separate delay lines for input and output (2N delays). DF-II: one shared delay line (N delays), obtained by swapping the FIR and recursive halves.",bsee::11 bsee::11-04
+Why are IIR filters built as biquad cascades?,Roots of high-order polynomials are very sensitive to coefficient rounding; second-order sections keep each pole pair controlled by its own two coefficients.,bsee::11 bsee::11-04
+CMSIS-DSP biquad sign convention?,"y = b0x + b1x[n−1] + b2x[n−2] + a1y[n−1] + a2y[n−2]: its a1, a2 are the negatives of the a's in 1 + a1z⁻¹ + a2z⁻². Wrong signs can make a stable design unstable.",bsee::11 bsee::11-04
+Why are complex exponentials eigenfunctions of LTI systems?,Convolving e^{st} with h gives \(H(s)e^{st}\): the output is the same exponential scaled by \(H(s) = \int h(\tau)e^{-s\tau}d\tau\).,bsee::11 bsee::11-04
+Fourier series coefficient formula?,"\(c_k = \frac{1}{T}\int_T x(t)e^{-jk\omega_0t}dt\), \(\omega_0 = 2\pi/T\); \(c_{-k} = c_k^*\) for real x.",bsee::11 bsee::11-05
+Harmonics of a ±1 square wave (50% duty)?,"Odd only, amplitudes \(4/(\pi k)\): 1.273, 0.424, 0.255, … Fundamental holds 8/π² ≈ 81% of the power; THD ≈ 48.3%.",bsee::11 bsee::11-05
+Gibbs phenomenon?,"Partial Fourier sums overshoot a jump by about 9% of the jump (peak 1.179 for ±1), and the overshoot does not shrink as more terms are added; it only narrows.",bsee::11 bsee::11-05
+Smoothness and harmonic decay?,A jump in x gives 1/k decay; a jump in the slope gives 1/k²; each extra continuous derivative adds a power of k.,bsee::11 bsee::11-05
+Parseval for Fourier series?,\(P = \sum\lvert c_k\rvert^2\): power is the sum of the harmonics' powers; RMS values add in quadrature.,bsee::11 bsee::11-05
+Half-wave symmetry implies what?,x(t + T/2) = −x(t) ⇒ only odd harmonics.,bsee::11 bsee::11-05
+Why does a class-D amplifier offer 'AM avoidance' frequency settings?,Its switching harmonics (multiples of f_sw) can land in the AM band; choosing f_sw so that two harmonics straddle the tuned station keeps them out of the receiver's channel.,bsee::11 bsee::11-05
+Fourier transform of e^{−at}u(t)?,\(1/(a + j\omega)\) for a > 0; half power at ω = a.,bsee::11 bsee::11-06
+Transform of a rectangular pulse of width τ?,"\(\tau\,\operatorname{sinc}(f\tau)\): first nulls at ±1/τ; narrower pulse → wider spectrum.",bsee::11 bsee::11-06
+Modulation property?,\(x(t)\cos(2\pi f_ct) \leftrightarrow \tfrac12[X(f - f_c) + X(f + f_c)]\).,bsee::11 bsee::11-06
+Convolution theorem?,Convolution in time ↔ multiplication in frequency; multiplication in time ↔ convolution in frequency (÷2π in ω).,bsee::11 bsee::11-06
+Distortionless transmission requires?,Constant magnitude and phase linear in frequency (constant group delay) across the signal's band: y = K x(t − t₀).,bsee::11 bsee::11-06
+Rise time vs bandwidth rule?,"\(t_r \approx 0.35/f_{3dB}\) (10–90%): exactly 0.350 for a single pole, about 0.34 for a Gaussian response.",bsee::11 bsee::11-06
+Uncertainty principle (time–bandwidth)?,"\(\sigma_t\sigma_\omega \ge 1/2\) for RMS widths, with equality only for the Gaussian: short pulses need wide bandwidth.",bsee::11 bsee::11-06
+Energy below the −3 dB frequency of a single pole?,Exactly half: \((2/\pi)\arctan 1 = 0.5\).,bsee::11 bsee::11-06
+Why is every DTFT periodic with period 2π?,Because \(e^{-j(\omega+2\pi)n} = e^{-j\omega n}\) for integer n.,bsee::11 bsee::11-07
+DTFT of an L-sample boxcar?,"\(e^{-j\omega(L-1)/2}\sin(L\omega/2)/\sin(\omega/2)\): the Dirichlet kernel, nulls at 2πk/L, main lobe 4π/L wide.",bsee::11 bsee::11-07
+Group delay of a symmetric N-tap FIR?,(N − 1)/2 samples at every frequency: exactly linear phase.,bsee::11 bsee::11-07
+Effect of truncating an ideal low-pass to more taps?,"The transition narrows ∝ 1/N, but the Gibbs ripple tends to about 9% rather than shrinking; a tapered window (Hamming) lowers the ripple at the cost of a wider transition.",bsee::11 bsee::11-07
+Frequency resolution of a record of duration T?,About 1/T Hz with a rectangular window (about 2/T with Hamming); zero-padding interpolates but does not improve resolution.,bsee::11 bsee::11-07
+What does the DFT compute?,"N equally spaced samples of the DTFT of an N-sample record, \(X[k] = X(e^{j2\pi k/N})\), via the FFT in N log N operations.",bsee::11 bsee::11-07
+Multiplying taps by (−1)ⁿ does what?,Shifts the response by π: turns a low-pass filter into a high-pass one with the same transition sharpness.,bsee::11 bsee::11-07
+Bilateral Laplace transform and its ROC?,"\(X(s) = \int x(t)e^{-st}dt\), the Fourier transform of x(t)e^{−σt}; the ROC is the vertical strip of σ where it converges absolutely.",bsee::11 bsee::11-08
+"Same X(s) = 1/(s + a), two signals?",\(e^{-at}u(t)\) for σ > −a and \(-e^{-at}u(-t)\) for σ < −a: the ROC decides.,bsee::11 bsee::11-08
+"ROC of a right-sided, a left-sided and a two-sided signal?",Right half-plane (right of the rightmost pole); left half-plane (left of the leftmost pole); a strip between two poles.,bsee::11 bsee::11-08
+Stability and causality from the ROC?,Stable iff the ROC contains the jω axis; causal ⇒ right half-plane. Causal and stable rational ⇔ all poles have Re < 0.,bsee::11 bsee::11-08
+Closed-loop system function of negative feedback?,"\(H = G/(1 + GK)\); its poles are the roots of 1 + GK = 0, not the poles of G.",bsee::11 bsee::11-08
+Reading a second-order pole pair −α ± jω_d?,Radius ω₀ = √(α² + ω_d²); ζ = α/ω₀ = cos θ; Q = 1/(2ζ); decay e^{−αt}; ringing at ω_d; −3 dB bandwidth ≈ 2α.,bsee::11 bsee::11-08
+Geometric evaluation of |H(jω)|?,|K| × product of distances from jω to the zeros ÷ product of distances to the poles; phase = zero angles − pole angles.,bsee::11 bsee::11-08
+Consequences of a right-half-plane zero?,Step response starts the wrong way; extra phase lag (non-minimum phase); no stable causal inverse; limits feedback bandwidth.,bsee::11 bsee::11-08
+A SerDes CTLE in pole–zero terms?,"A zero below two poles: lowering g_DC slides the zero down and lowers the low-frequency gain; the high-frequency gain stays set by the poles (802.3ck reference: f_z = f_p1 = 21.25 GHz, f_p2 = 53.125 GHz).",bsee::11 bsee::11-08
+z-transform of aⁿu[n]?,\(1/(1 - az^{-1})\) for |z| > |a|; \(-a^nu[-n-1]\) has the same formula for |z| < |a|.,bsee::11 bsee::11-09
+Shape of a z-transform's ROC?,"A ring centered on the origin, bounded by poles; right-sided → outside the outermost pole; the DTFT exists iff the unit circle is inside.",bsee::11 bsee::11-09
+Causal and stable in the z-plane?,All poles strictly inside the unit circle; FIR filters (all poles at z = 0) are always stable.,bsee::11 bsee::11-09
+Biquad stability triangle?,For 1 + a1z⁻¹ + a2z⁻²: |a2| < 1 and |a1| < 1 + a2. Complex poles above the parabola a1² = 4a2.,bsee::11 bsee::11-09
+Pole at radius r near the unit circle: bandwidth and ringing?,−3 dB bandwidth ≈ 2(1 − r) rad/sample; time constant ≈ 1/(1 − r) samples. Narrow and slow are the same fact.,bsee::11 bsee::11-09
+Why does an IIR notch beat a 3-tap FIR notch?,"Poles just inside the circle next to the zeros cancel the zeros' effect away from ω₀, so the gain is ≈ 1 except within ~2(1 − r) of the notch.",bsee::11 bsee::11-09
+Bilinear transform and its warping?,"\(s = \frac{2}{T}\frac{1 - z^{-1}}{1 + z^{-1}}\); maps jω onto the unit circle once (no aliasing, stability kept) with \(\Omega = \frac{2}{T}\tan\frac{\omega}{2}\).",bsee::11 bsee::11-09
+Impulse invariance maps poles how?,"s → z = e^{sT}: radius e^{−αT}, angle ω_dT. Preserves the impulse response's shape; aliases the frequency response.",bsee::11 bsee::11-09
+Why are low-frequency high-Q poles hard in fixed point?,"Near z = 1, a1 = −2r cos θ changes only quadratically with θ, so the realizable pole grid is sparse there (15 fractional bits: no high-Q pole below ~42 Hz at 48 kHz).",bsee::11 bsee::11-09
+Spectrum of an ideally sampled signal?,\(X_s(f) = f_s\sum_kX(f - kf_s)\): copies at every multiple of f_s.,bsee::11 bsee::11-10
+Sampling theorem?,"A signal band-limited to f_M is determined by samples at f_s > 2f_M (strict), and recovered by ideal low-pass (sinc) interpolation.",bsee::11 bsee::11-10
+Where does a tone at f₀ appear after sampling at f_s?,At |f₀ − k f_s| ≤ f_s/2 for the nearest integer k; its phase flips if it came from a reversed zone.,bsee::11 bsee::11-10
+What sets the anti-aliasing filter requirement?,"Its attenuation at f_s − f_B, the first frequency that folds onto the band edge. Oversampling moves that frequency far up and relaxes the filter.",bsee::11 bsee::11-10
+Zero-order hold's effect on a DAC output?,"Weights the spectrum by sinc(f/f_s): −3.92 dB droop at f_s/2, images at k f_s ± f only partly attenuated, and a half-sample delay.",bsee::11 bsee::11-10
+Ideal ADC SNR and oversampling gain?,6.02N + 1.76 dB for a full-scale sine; oversampling by OSR and filtering adds 10 log10(OSR) dB (half a bit per doubling) without noise shaping.,bsee::11 bsee::11-10
+Aperture-jitter-limited SNR?,"\(-20\log_{10}(2\pi f_0\sigma_t)\): set by the input frequency, not the sample rate (100 fs at 70 MHz ≈ 87 dB).",bsee::11 bsee::11-10
+Band-pass sampling condition?,\(2f_H/n \le f_s \le 2f_L/(n - 1)\) for integer n up to f_H/B; even n gives a spectrally inverted band.,bsee::11 bsee::11-10
+Why is a decimation filter blind near multiples of its input rate?,"It is a DT filter at f_MOD, so its response repeats every f_MOD; interference near k·f_MOD aliases into the band, and only the analog filter can stop it (ADS1292R).",bsee::11 bsee::11-10
+Bandwidth of DSB-SC AM?,2W: the message spectrum appears as upper and lower sidebands around f_c.,bsee::11 bsee::11-11
+Coherent demodulation with a phase error φ?,Output scales by cos φ (lost at 90°); a frequency error makes the output beat.,bsee::11 bsee::11-11
+AM power efficiency?,\(m^2P_x/(1 + m^2P_x)\): at most 1/3 for a tone at m = 1; the carrier carries no information.,bsee::11 bsee::11-11
+Envelope detector time-constant limits?,"\(1/f_c \ll RC \le \sqrt{1 - m^2}/(m\omega_m)\); above the upper limit, diagonal clipping.",bsee::11 bsee::11-11
+Image frequency in a superheterodyne receiver?,"\(f_{RF} + 2f_{IF}\) for a high-side LO; it must be filtered before the mixer, because after mixing it is inseparable.",bsee::11 bsee::11-11
+Butterworth vs Chebyshev vs elliptic vs Bessel?,"Elliptic: lowest order for a magnitude spec (zeros on jω axis), most delay variation. Chebyshev: equiripple passband. Butterworth: maximally flat. Bessel: flattest delay, gentle roll-off.",bsee::11 bsee::11-11
+Shannon capacity?,"\(C = B\log_2(1 + \text{SNR})\): linear in bandwidth, logarithmic in SNR (≈ 1 bit/s/Hz per 3 dB at high SNR).",bsee::11 bsee::11-11
+Why do phones need many filters?,"Each supported band needs its own filter; filters, duplexers and multiplexers are an estimated majority of RF front-end cost (Resonant 10-K citing Mobile Experts).",bsee::11 bsee::11-11
