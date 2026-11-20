@@ -113,7 +113,9 @@ a1 = brentq(lambda a: a / (4 * VT) - 0.01, 1e-6, 1e-2)       # first-order formu
 v.check("T 10-04.l", a1 * 1e3)
 v.check("T 10-04.m", brentq(lambda a: a / (2 * VT) - 0.1, 1e-6, 1e-1) * 1e3)   # quadratic/linear = 10%
 n = 1.3
-v.check("T 10-04.n", ddx(lambda x: math.log(math.exp(x / (n * VT))), 0.1, 1e-4))
+# weak inversion: the EKV interpolation's g_m/I_D deep below threshold approaches 1/(n V_T) (an independent route
+# from the exponential's own derivative; the chapter quotes the limit)
+v.check("T 10-04.n", ddx(lambda q: math.log(math.log1p(math.exp(q / (2 * n * VT))) ** 2), -0.6, 1e-6))
 cross = brentq(lambda x: 2 / x - 1 / (n * VT), 1e-3, 1)
 v.check("T 10-04.o", cross * 1e3)
 v.check("T 10-04.p", mos_params(4e-3, 0.5 * 4e-3 * 0.2 ** 2)[0] / (0.5 * 4e-3 * 0.2 ** 2))
@@ -180,7 +182,7 @@ v.assert_true("hybrid-pi and T gains agree", abs(x[1] + alpha4 * ie * RC) < 1e-9
 v.assert_true("approximation is 0.9% high", abs((gm4 * RC / (1 + gm4 * RE)) / abs(x[1]) - 1.009) < 5e-4)
 
 # ------------------------------------------------------------------ Example 5: body transconductance
-gamma, phi2, vsb = 0.4, 0.7, 1.0
+gamma, phi2, vsb = 0.4, 0.7, 0.849                 # V_SB: the source voltage of Example 10-02.3, body at ground
 vtn0 = 0.5
 
 
@@ -352,5 +354,10 @@ v.check("Lab 10-04.j", ekv_gmid(0.2))
 v.check("Lab 10-04.k", ekv_gmid(-0.2))
 v.assert_true("EKV at threshold is about 72% of the weak-inversion limit", abs(ekv_gmid(0.0) * n * VT - 0.7213) < 5e-4)
 v.assert_true("EKV lies below the square law at 0.2 V", ekv_gmid(0.2) < 2 / 0.2)
+gx = ekv_gmid(2 * n * VT)
+v.check("T 10-04.r", gx)
+v.check("T 10-04.s", gx * n * VT * 100)
+v.check("T 10-04.t", gx * VT * 100)
+v.check("T 10-04.u", brentq(lambda q: ekv_gmid(q) * n * VT - 0.9, -0.5, 0.1, xtol=1e-12) * 1e3)
 
 v.finish()

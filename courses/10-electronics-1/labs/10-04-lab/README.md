@@ -13,6 +13,7 @@ Linearization and the parameters (§3.1–3.3), the two models (§3.4), the dist
 ## Files
 
 - [10-04-small-signal.ipynb](10-04-small-signal.ipynb): the notebook (Parts 1–4).
+- [ce_bodyeffect.cir](ce_bodyeffect.cir): ngspice AC gain and input resistance of Example 10-04.4 and the body-effect factor of Example 10-04.5.
 - [ce_cs_ac.cir](ce_cs_ac.cir): ngspice AC analysis of the stages of Examples 10-04.1 and 10-04.6.
 
 ## Procedure

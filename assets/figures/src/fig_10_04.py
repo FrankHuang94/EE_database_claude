@@ -6,7 +6,8 @@ Outputs SVGs to assets/figures/10-04/:
 - linearization.svg: the BJT's exponential I_C(V_BE) around 1 mA with its tangent (the small-signal model),
   and the relative error of the tangent against signal amplitude;
 - gm-over-id.svg: transconductance efficiency g_m/I_D against overdrive for a MOSFET (strong-inversion
-  square law 2/V_ov and the weak-inversion limit 1/(n V_T), n = 1.3), with the bipolar value 1/V_T.
+  square law 2/V_ov, the weak-inversion limit 1/(n V_T), n = 1.3, and the smooth EKV interpolation of the lab),
+  with the bipolar value 1/V_T.
 """
 from __future__ import annotations
 
@@ -56,10 +57,19 @@ def fig_linear():
     save(fig, f"{OUT}/linearization.svg")
 
 
+def ekv_gmid(vov, n=1.3):
+    """g_m/I_D of the EKV interpolation I_D ~ ln(1 + exp(V_ov/2nV_T))^2, by numerical differentiation."""
+    h = 1e-6
+    f = lambda x: np.log(np.log1p(np.exp(x / (2 * n * VT))) ** 2)  # noqa: E731
+    return (f(vov + h) - f(vov - h)) / (2 * h)
+
+
 def fig_gmid():
     vov = np.linspace(0.02, 0.6, 300)
     n = 1.3
     fig, ax = plt.subplots(figsize=(6.0, 3.6))
+    ve = np.linspace(-0.2, 0.6, 400)
+    ax.plot(ve * 1e3, ekv_gmid(ve, n), color="k", lw=1.6, label="MOSFET, EKV interpolation (smooth)")
     ax.plot(vov * 1e3, 2 / vov, color=PALETTE[0], label="MOSFET, strong inversion: $2/V_{ov}$")
     ax.axhline(1 / (n * VT), color=PALETTE[1], ls="--", label="MOSFET, weak-inversion limit: $1/nV_T$ ($n$ = 1.3)")
     ax.axhline(1 / VT, color=PALETTE[2], ls="-.", label="BJT: $1/V_T$")

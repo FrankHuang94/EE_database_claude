@@ -102,10 +102,10 @@ $$
 ($r_\pi$ uses $i_B = i_C/\beta$ with β constant; strictly the small-signal β, $h_{fe}$, can differ from the DC $h_{FE}$, and data sheets list both [1].) Three facts stand out.
 
 - **$g_m$ depends only on current.** Every bipolar transistor at 1 mA has $g_m$ = 38.7 mS, whatever its size or β.
-- **$g_m/I_C = 1/V_T$** = 38.7 V⁻¹, the largest transconductance efficiency of any device at room temperature (§3.7).
+- **$g_m/I_C = 1/V_T$** = 38.7 V⁻¹, the largest transconductance efficiency of any Boltzmann-limited device at room temperature, that is, any device whose current is carried over an energy barrier by thermally distributed carriers (§3.7).
 - **Intrinsic gain $g_mr_o = V_A/V_T$**, also independent of current: 1934 for $V_A$ = 50 V.
 
-The 2N3904 data sheet lists the small-signal input impedance $h_{ie}$ ($= r_\pi$) between 1 and 10 kΩ and the output admittance $h_{oe}$ ($= 1/r_o$) between 1 and 40 µS at 1 mA [1]: consistent with $r_\pi = \beta V_T/I_C$ = 2.6–10 kΩ for β from 100 to 400, and implying Early voltages from 25 V to 1 kV.
+The 2N3904 data sheet lists the small-signal input impedance $h_{ie}$ between 1 and 10 kΩ and the output admittance $h_{oe}$ between 1 and 40 µS at 1 mA [1]. $h_{ie}$ is $r_\pi$ plus the base's own ohmic resistance $r_x$, so it should exceed $r_\pi = \beta V_T/I_C$ = 2.6–**10.3** kΩ for β from 100 to 400; the tables agree only roughly (the 10.3 kΩ already exceeds the 10 kΩ maximum), because the h-parameter limits and the β limits are separate guarantees, not one consistent model. $h_{oe}$ is a still looser bound: read as $1/r_o$, it would imply Early voltages from 25 V to an unphysical 1 kV. Small-signal design therefore uses these tables for orientation and relies on feedback (10-05, Course 12) rather than on the exact values.
 
 ### 3.4 The hybrid-π and T models
 
@@ -138,6 +138,8 @@ The 2N3904 data sheet lists the small-signal input impedance $h_{ie}$ ($= r_\pi$
 **T model.** The same device drawn with the emitter (source) resistance $r_e$ in the emitter lead and a controlled source $\alpha i_e$ (equal to $g_mv_\pi$) from the collector to the base node. For the MOSFET, $r_e$ becomes $1/g_m$, and the gate connects to the top of that resistor without drawing current: the gate voltage sets $v_{gs}$ across $1/g_m$, the resulting current $g_mv_{gs}$ flows out of the source, and the same current enters the drain.
 
 **Why they are equivalent.** In the T model, the emitter current $i_e = v_\pi/r_e$ and the collector current is $\alpha i_e = (\alpha/r_e)v_\pi = g_mv_\pi$; the base current is $i_e - \alpha i_e = (1 - \alpha)v_\pi/r_e = v_\pi/(\beta r_e/\alpha)$, so the base sees $r_\pi = (\beta + 1)r_e$. Both models give the same terminal currents for the same terminal voltages. Use whichever makes the circuit easier: the hybrid-π when the emitter (source) is grounded, the T model when there is resistance in the emitter (source) lead or the input is at the emitter (Example 10-04.4).
+
+**$r_o$ and complementary devices.** In both models $r_o$ (when included) connects collector to emitter, or drain to source, in parallel with the controlled source; in the T model it therefore bridges from the collector (drain) node to the emitter (source) terminal, *below* $r_e$ (or $1/g_m$), not across the controlled source alone. A PNP or PMOS transistor has exactly the same small-signal models, with the same positive $g_m$, $r_\pi$, $r_e$ and $r_o$: the bias currents and voltages reverse direction, but an increase in $v_{eb}$ (or $v_{sg}$) increases the current flowing out of the collector (drain) just as an increase in $v_{be}$ increases the NPN's collector current. Small-signal circuits are drawn and solved identically for both polarities.
 
 **Resistance reflection.** Two rules follow and recur throughout Course 10.
 
@@ -180,7 +182,7 @@ $$
 
 The MOSFET's "$V_T$" is its overdrive: at $V_{ov}$ = 0.2 V it tolerates about eight times the BJT's signal for the same distortion (Example 10-04.3). This is the flip side of §3.7: the device with the higher $g_m/I$ is the less linear one. Negative feedback (degeneration; Course 12) trades gain for linearity in both.
 
-*Figure 2. Transconductance efficiency against overdrive: the square law's $2/V_{ov}$, the weak-inversion limit $1/nV_T$ (n = 1.3) and the bipolar $1/V_T$. The MOSFET curves cross near $V_{ov} = 2nV_T$; real devices move smoothly between the two.*
+*Figure 2. Transconductance efficiency against overdrive: the square law's $2/V_{ov}$, the weak-inversion limit $1/nV_T$ (n = 1.3), the bipolar $1/V_T$, and the smooth EKV interpolation (black) that a real device follows between the two asymptotes. Where the asymptotes cross, near $V_{ov} = 2nV_T$, the real efficiency is well below both.*
 
 ![gm over ID](../../../assets/figures/10-04/gm-over-id.svg)
 
@@ -192,7 +194,7 @@ In power-limited design the question is not "what $g_m$?" but "what $g_m$ per am
 - **MOSFET in strong inversion:** $g_m/I_D = 2/V_{ov}$, which rises as the overdrive falls.
 - **MOSFET in weak inversion** (subthreshold, 09-09): the current is exponential, $I_D \propto e^{V_{GS}/nV_T}$, so $g_m/I_D = 1/nV_T$, with $n$ ≈ 1.2–1.5, about 30 V⁻¹ for $n$ = 1.3.
 
-The square-law formula would grow without limit as $V_{ov} \to 0$; it is replaced by the weak-inversion limit near $V_{ov} \approx 2nV_T$, where the two expressions meet (about 67 mV for $n$ = 1.3). Biasing near that point, in **moderate inversion**, is the standard compromise of low-power analog design: nearly bipolar efficiency, at the cost of larger devices (and so more capacitance and less speed). The **$g_m/I_D$ methodology** sizes transistors from a chosen $g_m/I_D$ and measured curves rather than from the square law.
+The square-law formula would grow without limit as $V_{ov} \to 0$; it is replaced by the weak-inversion limit near $V_{ov} \approx 2nV_T$, where the two expressions meet (about 67 mV for $n$ = 1.3). The meeting point marks **moderate inversion**, where neither asymptote is accurate: a smooth interpolation (the EKV model, lab Part 3, and the black curve of Figure 2) gives only **16.6** V⁻¹ there, **56**% of the weak-inversion limit and **43**% of the bipolar value. Reaching 90% of $1/nV_T$ takes an overdrive of about **−96** mV, well into weak inversion. Moderate inversion is still the standard compromise of low-power analog design: much better efficiency than strong inversion, without the very large devices (and so the capacitance and lost speed) that deep weak inversion needs. The **$g_m/I_D$ methodology** sizes transistors from a chosen $g_m/I_D$ and measured curves rather than from the square law.
 
 ## 4. Worked examples
 
@@ -212,7 +214,7 @@ The square-law formula would grow without limit as $V_{ov} \to 0$; it is replace
 
 ### Example 10-04.2 · MOSFET parameters, and the comparison (tier A)
 
-**Setup.** Take the MOSFET of Example 10-02.3 ($k_n$ = 4 mA/V², $I_D$ = 0.849 mA, $V_{ov}$ = 0.651 V) with λ = 0.05 V⁻¹. (a) Find $g_m$ two ways. (b) Find $r_o$ and the intrinsic gain. (c) Compare its $g_m/I_D$ with a BJT's.
+**Setup.** Take the MOSFET of Example 10-02.3 ($k_n$ = 4 mA/V², $I_D$ = 0.849 mA, $V_{ov}$ = 0.651 V) with λ = 0.05 V⁻¹. (a) Find $g_m$ two ways. (b) Find $r_o$ and the intrinsic gain. (As usual in hand analysis, the DC point is the λ = 0 solution of Example 10-02.3; λ is used only for $r_o$, a few-percent approximation.) (c) Compare its $g_m/I_D$ with a BJT's.
 
 **Solution.**
 
@@ -252,15 +254,15 @@ The square-law formula would grow without limit as $V_{ov} \to 0$; it is replace
 
 ### Example 10-04.5 · Body transconductance (tier B)
 
-**Setup.** For the MOSFET of Example 10-04.2 with $\gamma$ = 0.4 V$^{1/2}$, $2\phi_F$ = 0.7 V and $V_{SB}$ = 1.0 V, find χ and $g_{mb}$.
+**Setup.** The MOSFET of Example 10-04.2 has its source at 0.849 V (Example 10-02.3). If its body were at ground, with $\gamma$ = 0.4 V$^{1/2}$ and $2\phi_F$ = 0.7 V, what would χ and $g_{mb}$ be? (Keep the bias point unchanged, so this isolates the small-signal effect.)
 
-**Solution.** $\chi = 0.4/(2\sqrt{1.7})$ = **0.1534** and $g_{mb} = \chi g_m$ = **0.400** mS.
+**Solution.** $V_{SB}$ = 0.849 V, so $\chi = 0.4/(2\sqrt{0.7 + 0.849})$ = **0.1607** and $g_{mb} = \chi g_m$ = **0.419** mS.
 
-**Sanity check.** About 15% of $g_m$: small, but in a source follower it reduces the gain below one by about that fraction (10-06).
+**Sanity check.** About 16% of $g_m$: small, but in a source follower it reduces the gain below one by about that fraction (10-06).
 
 ### Example 10-04.6 · A common-source stage, start to finish (tier B)
 
-**Setup.** Example 10-02.3's circuit ($R_D$ = 2 kΩ, $R_S$ = 1 kΩ) with λ = 0.05 V⁻¹. (a) With $R_S$ bypassed by a large capacitor, find the gain with and without $r_o$. (b) With $R_S$ unbypassed (and $r_o$ ignored), find the gain.
+**Setup.** Example 10-02.3's circuit ($R_D$ = 2 kΩ, $R_S$ = 1 kΩ) with λ = 0.05 V⁻¹ (bias from the λ = 0 solution, as in Example 10-04.2). (a) With $R_S$ bypassed by a large capacitor, find the gain with and without $r_o$. (b) With $R_S$ unbypassed (and $r_o$ ignored), find the gain.
 
 **Solution.**
 
@@ -299,7 +301,7 @@ The square-law formula would grow without limit as $V_{ov} \to 0$; it is replace
 | T 10-04.f | implied V_A, low | 25 | V |
 | T 10-04.g | implied V_A, high | 1000 | V |
 | T 10-04.h | r_pi range, β = 100 | 2.6 | kΩ |
-| T 10-04.i | r_pi range, β = 400 | 10 | kΩ |
+| T 10-04.i | r_pi range, β = 400 | 10.3 | kΩ |
 | T 10-04.j | 2N3904 h_fe, min | 100 | — |
 | T 10-04.k | 2N3904 h_fe, max | 400 | — |
 | T 10-04.l | BJT amplitude for 1% HD2 | 1.03 | mV |
@@ -308,6 +310,10 @@ The square-law formula would grow without limit as $V_{ov} \to 0$; it is replace
 | T 10-04.o | crossover overdrive, n = 1.3 | 67 | mV |
 | T 10-04.p | strong-inversion g_m/I_D at 0.2 V | 10 | 1/V |
 | T 10-04.q | intrinsic gain, V_A = 50 V | 1934 | — |
+| T 10-04.r | EKV g_m/I_D at V_ov = 2nV_T | 16.6 | 1/V |
+| T 10-04.s | as a share of 1/nV_T | 56 | % |
+| T 10-04.t | as a share of 1/V_T | 43 | % |
+| T 10-04.u | overdrive for 90% of 1/nV_T | -96 | mV |
 | Ex 10-04.1a | g_m | 38.68 | mS |
 | Ex 10-04.1b | r_pi | 2.585 | kΩ |
 | Ex 10-04.1c | r_e | 25.60 | Ω |
@@ -333,8 +339,8 @@ The square-law formula would grow without limit as $V_{ov} \to 0$; it is replace
 | Ex 10-04.4d | r_e | 25.60 | Ω |
 | Ex 10-04.4e | gain, T model | -21.94 | — |
 | Ex 10-04.4f | approximate gain | -22.14 | — |
-| Ex 10-04.5a | χ | 0.1534 | — |
-| Ex 10-04.5b | g_mb | 0.400 | mS |
+| Ex 10-04.5a | χ | 0.1607 | — |
+| Ex 10-04.5b | g_mb | 0.419 | mS |
 | Ex 10-04.6a | gain, bypassed, with r_o | -4.80 | — |
 | Ex 10-04.6b | gain, bypassed, without r_o | -5.21 | — |
 | Ex 10-04.6c | gain, unbypassed | -1.445 | — |
@@ -344,18 +350,18 @@ The square-law formula would grow without limit as $V_{ov} \to 0$; it is replace
 | Ex 10-04.7d | crossover overdrive | 67.2 | mV |
 | Ex 10-04.7e | weak-inversion g_m/I_D | 29.76 | 1/V |
 
-*Every value is recomputed by [verify_10_04.py](../verify/verify_10_04.py) by an independent route: each parameter as a numerical partial derivative of the large-signal law at the operating point; gains by solving the small-signal circuit's nodal equations (both models, separately); distortion by sampling the exact large-signal law over a cycle and taking an FFT. The lab's ngspice netlist confirms Examples 10-04.1 ($r_\pi$ and the gain) and 10-04.6 (both common-source gains without $r_o$) by AC analysis.*
+*Every value is recomputed by [verify_10_04.py](../verify/verify_10_04.py) by an independent route: each parameter as a numerical partial derivative of the large-signal law at the operating point; gains by solving the small-signal circuit's nodal equations (both models, separately); distortion by sampling the exact large-signal law over a cycle and taking an FFT. Data-sheet h-parameter ranges are quoted (R-178). The lab's ngspice netlists confirm Examples 10-04.1 ($r_\pi$ and the gain) and 10-04.6 (both common-source gains without $r_o$), Example 10-04.4's degenerated gain and input resistance, and Example 10-04.5's χ from the simulator's own $g_{mb}/g_m$.*
 
 ## 5. Simulate it
 
-The lab, [labs/10-04-lab](../labs/10-04-lab/README.md), has a notebook and an ngspice netlist:
+The lab, [labs/10-04-lab](../labs/10-04-lab/README.md), has a notebook and two ngspice netlists:
 
 1. Measures $\text{HD}_2$ and $\text{HD}_3$ by FFT for a BJT and a MOSFET against amplitude and compares with §3.6.
 2. Drives a common-emitter stage with growing sine inputs and overlays the large-signal output on the small-signal prediction.
 3. Plots $g_m/I_D$ for a model MOSFET from weak to strong inversion and compares with the asymptotes of Figure 2.
 4. Checks the hybrid-π and T models against each other on random circuits.
 
-The netlist (`ce_cs_ac.cir`) runs an AC analysis of the stages of Examples 10-04.1 and 10-04.6 and reads their gains and the BJT's $r_\pi$.
+The netlist `ce_cs_ac.cir` runs an AC analysis of the stages of Examples 10-04.1 and 10-04.6 and reads their gains and the BJT's $r_\pi$; `ce_bodyeffect.cir` confirms Example 10-04.4 (gain and input resistance with an unbypassed $R_E$) and Example 10-04.5 (χ).
 
 **Guided exercise (predict, then run).** **Before running Part 2**, predict: at what input amplitude does the common-emitter output of Example 10-04.1 (gain 193) visibly flatten on one side, and which side? Then run it. (The positive input half-cycle raises the current exponentially, so the output's *negative* swing stretches and the positive swing compresses; at a 5 mV peak the nonlinear part is already about 10%.)
 
@@ -397,8 +403,8 @@ The netlist (`ce_cs_ac.cir`) runs an AC analysis of the stages of Examples 10-04
 ### State of the art (as of Nov 2026)
 
 - **Discrete data sheets still give h-parameters.** The 2N3904 lists $h_{ie}$, $h_{fe}$, $h_{re}$ and $h_{oe}$ ranges at 1 mA [1]: wide ranges, which is why designs rely on feedback rather than on exact small-signal values **[Established]**.
-- **$g_m/I_D$ design is standard in integrated analog.** Designers size CMOS transistors from simulated or measured $g_m/I_D$ curves rather than the square law, because short-channel devices depart from it (09-10) **[Established]** (standard practice in analog IC design texts; Course 20 develops it).
-- **Low-power analog runs near threshold.** Biasing in weak or moderate inversion to approach the bipolar $g_m/I$ limit is common in ultra-low-power sensor interfaces and wearables (§3.7) **[Established]** as a design principle; specific products' bias points are proprietary.
+- **$g_m/I_D$ design is standard in integrated analog.** Designers size CMOS transistors from simulated or measured $g_m/I_D$ curves rather than the square law, because short-channel devices depart from it (09-10) **[Established]** (the methodology of [2]; Course 20 develops it).
+- **Low-power analog runs near threshold.** Biasing in weak or moderate inversion to approach the bipolar $g_m/I$ limit is common in ultra-low-power sensor interfaces and wearables (§3.7; [2] treats the trade-off quantitatively) **[Industry estimate]** as a description of practice; specific products' bias points are proprietary.
 
 ### Why it matters commercially
 
@@ -488,7 +494,9 @@ Near threshold the inversion charge and current become exponential in $V_{GS}$ (
 - A. S. Sedra and K. C. Smith, *Microelectronic Circuits*, ch. 7 (small-signal operation and models; the hybrid-π and T models).
 - B. Razavi, *Fundamentals of Microelectronics*, ch. 5 and 7 (bipolar and MOS small-signal models).
 - P. G. A. Jespers and B. Murmann, *Systematic Design of Analog CMOS Circuits Using Pre-Computed Lookup Tables* (Cambridge University Press, 2017): the $g_m/I_D$ methodology.
+- MIT OpenCourseWare, 6.002 *Circuits and Electronics* (Spring 2007, A. Agarwal), video lectures on small-signal models and the incremental analysis of amplifiers.
 
 ## 14. Sources
 
 1. onsemi, *2N3903, 2N3904 General Purpose Transistors NPN Silicon*, Rev. 9, August 2021, small-signal characteristics ($h_{ie}$, $h_{fe}$, $h_{re}$, $h_{oe}$ at 1 mA): [data sheet](https://www.onsemi.com/pdf/datasheet/2n3903-d.pdf). [R-178](../../../reference/research-log.md#r-178--bipolar-transistor-data-sheets).
+2. P. G. A. Jespers and B. Murmann, *Systematic Design of Analog CMOS Circuits Using Pre-Computed Lookup Tables*, Cambridge University Press, 2017: the $g_m/I_D$ design methodology (textbook; not a perishable source).

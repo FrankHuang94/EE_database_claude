@@ -1,0 +1,37 @@
+* Lab 10-04 -- two more small-signal results:
+*   Example 10-04.4: a common-emitter stage with 200 Ohm of unbypassed emitter resistance and R_C = 5 kOhm,
+*     beta = 100 at I_C = 1 mA (Gummel-Poon NPN, no Early effect; IS chosen for V_BE = 0.700 V at 1 mA, so the
+*     base sits at 0.7 + 1.01 mA x 200 Ohm). AC analysis gives the gain from base to collector and the input
+*     resistance at the base;
+*   Example 10-04.5: the body-effect factor chi = g_mb/g_m of a level-1 NMOS (GAMMA = 0.4 V^0.5, PHI = 0.7 V)
+*     with its source held at 0.849 V and its body at ground, read from the simulator's own small-signal values.
+*
+* EXPECT av   key:../../chapters/10-04-small-signal-models.md#Ex_10-04.4c rtol=1e-3
+* EXPECT rin  key:../../chapters/10-04-small-signal-models.md#Ex_10-04.4a scale=1e3 rtol=1e-3
+* EXPECT chi  key:../../chapters/10-04-small-signal-models.md#Ex_10-04.5a rtol=1e-3
+
+.options temp=26.85 tnom=26.85 reltol=1e-7
+VCC vcc 0 DC 15
+VB b 0 DC 0.902 AC 1
+RC vcc c 5k
+Q1 c b e qn
+RE e 0 200
+.model qn NPN(IS=1.73987e-15 BF=100)
+
+VDD dd 0 DC 5
+VG g 0 DC 2.163171
+VS s 0 DC 0.849
+M1 dd g s 0 nb W=10u L=1u
+.model nb NMOS(LEVEL=1 KP=400u VTO=0.5 GAMMA=0.4 PHI=0.7 LAMBDA=0)
+
+.control
+op
+let chi = @m1[gmbs] / @m1[gm]
+echo "chi = $&chi"
+ac lin 1 1k 1k
+let av = real(v(c))
+let rin = real(1 / (-i(VB)))
+echo "av = $&av"
+echo "rin = $&rin"
+.endc
+.end
