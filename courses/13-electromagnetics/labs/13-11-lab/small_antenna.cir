@@ -1,0 +1,27 @@
+* Lab 13-11 -- a small antenna, matched, still wastes most of its power (Example 13-11.1).
+* A lambda/50 antenna at 100 MHz has R_rad = 0.31561 ohm; its conductors and matching add R_loss = 1 ohm.
+* (Its large capacitive reactance is assumed already tuned out, so the antenna is modelled as R_rad + R_loss.)
+* A low-pass L-network matches 1.31561 ohm to the 50 ohm source: Q = sqrt(50/1.31561 - 1) = 6.0832,
+* series L = Q * 1.31561 / w = 12.737 nH and shunt C = Q / (50 w) = 193.63 pF at 100 MHz.
+* With a perfect match the antenna accepts all the available power Vs^2/(8 Rs), but only
+* R_rad/(R_rad + R_loss) = 24.0% of it is radiated.
+*
+* EXPECT frac key:../../chapters/13-11-radiation-and-antennas.md#Sim_13-11.a scale=0.01 rtol=2e-3
+
+VS src 0 DC 0 AC 1
+RS src port 50
+CM port 0 193.63p
+LM port n1 12.737n
+RLOSS n1 n2 1
+VMEAS n2 n3 DC 0
+RRAD n3 0 0.31561
+
+.control
+ac lin 1 1e8 1e8
+let prad = 0.5 * mag(i(vmeas))^2 * 0.31561
+let pavail = 1 / (8 * 50)
+let frac = prad / pavail
+print frac
+quit
+.endc
+.end

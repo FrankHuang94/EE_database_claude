@@ -5230,3 +5230,51 @@
   definition: The diameter of the (approximately Gaussian) light spot of a single-mode fibre's guided mode, larger than the core; about 9 µm at 1310 nm for standard single-mode fibre, and it sets splice and connector losses.
   chapter: "13-10"
   see_also: [V-number]
+- term: Antenna
+  definition: A structure that converts guided electromagnetic energy into radiated waves and back; by reciprocity its pattern, gain and impedance are the same for transmitting and receiving.
+  chapter: "13-11"
+  see_also: [Radiation pattern, Antenna gain]
+- term: Hertzian dipole
+  definition: An infinitesimal current element I·ℓ (ℓ ≪ λ), the building block of radiation; its far field varies as sin θ, it has directivity 1.5 (1.76 dBi) and radiation resistance (2π/3)η(ℓ/λ)².
+  chapter: "13-11"
+  see_also: [Radiation resistance]
+- term: Radiation resistance
+  definition: The resistance that, carrying the antenna's terminal current, would dissipate the power it radiates, R_rad = 2P_rad/|I₀|²; about 73 Ω for a half-wave dipole and well under 1 Ω for electrically small antennas.
+  chapter: "13-11"
+  see_also: [Hertzian dipole, Radiation efficiency]
+- term: Radiation pattern
+  definition: The angular distribution of an antenna's radiated power (or field) in the far field, usually normalized to its maximum and characterized by its half-power beamwidth, nulls and sidelobes.
+  chapter: "13-11"
+  see_also: [Directivity]
+- term: Directivity
+  definition: The ratio of an antenna's maximum radiation intensity to the average over all directions, D = 4πU_max/P_rad; 1.5 for a Hertzian dipole, 1.64 (2.15 dBi) for a half-wave dipole.
+  chapter: "13-11"
+  see_also: [Antenna gain, Radiation pattern]
+- term: Radiation efficiency
+  definition: The fraction of the power accepted by an antenna that it radiates, R_rad/(R_rad + R_loss); small antennas have low radiation resistance and hence often low efficiency.
+  chapter: "13-11"
+  see_also: [Radiation resistance, Antenna gain]
+- term: Antenna gain
+  definition: Directivity times radiation efficiency, G = e_r·D, usually quoted in dBi (relative to an isotropic radiator); EIRP = P_t·G_t.
+  chapter: "13-11"
+  see_also: [Directivity, Effective aperture]
+- term: Effective aperture
+  definition: The area A_e = Gλ²/(4π) from which a receiving antenna collects power, P_r = S·A_e; for a fixed gain it shrinks as λ², for a fixed physical area the gain grows as 1/λ².
+  chapter: "13-11"
+  see_also: [Antenna gain, Friis transmission equation]
+- term: Friis transmission equation
+  definition: P_r/P_t = G_t·G_r·(λ/4πR)² for antennas in each other's far field in free space; the free-space path loss is 20 log₁₀(4πR/λ) dB.
+  chapter: "13-11"
+  see_also: [Effective aperture, EIRP]
+- term: EIRP
+  definition: (Effective isotropic radiated power.) The transmitter power times the antenna gain in a given direction, P_t·G_t, the power an isotropic antenna would need to produce the same peak power density; regulators set limits in EIRP.
+  chapter: "13-11"
+  see_also: [Antenna gain]
+- term: Array factor
+  definition: The pattern of an array of identical isotropic elements, set by their spacing and relative phases; the array's pattern is the element pattern times the array factor, and a progressive phase steers the beam.
+  chapter: "13-11"
+  see_also: [Phased array]
+- term: Far field
+  definition: The region far enough from an antenna (r ≫ λ and r > 2D²/λ for an antenna of size D) that the fields fall as 1/r, are transverse to the radial direction, and have a pattern independent of distance.
+  chapter: "13-11"
+  see_also: [Radiation pattern]

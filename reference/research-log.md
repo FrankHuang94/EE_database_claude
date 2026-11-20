@@ -205,6 +205,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-197 | ITU-T G.652 single-mode fibre attributes | Nov 2026 |
 | R-198 | Interface impedances: USB 2.0 cable and PCIe board traces | Nov 2026 |
 | R-199 | WR-90 rectangular waveguide dimensions and band | Nov 2026 |
+| R-200 | FCC 6 GHz unlicensed (U-NII) EIRP limits | Nov 2026 |
 
 ---
 
@@ -2061,3 +2062,12 @@ R&D % = R&D ÷ revenue.
 - **Copper Mountain Technologies, "Waveguide Frequency Chart"** (dated 1/26/23): "X band WR-90 8.20 12.40 0.9000 0.4000 22.8600 10.1600" (recommended band in GHz; inside dimensions in inches and millimetres). [Copper Mountain (PDF)](https://coppermountaintech.com/wp-content/uploads/2023/02/What-is-a-Waveguide.pdf)
 - **Microwave Techniques, "Rigid Waveguide Technical Data"** (Dec 2023): "WR90 R100 6.557" (EIA designation, IEC designation, TE10 cutoff frequency in GHz). [Microwave Techniques (PDF)](https://catalog.microwavetechniques.com/Asset/Rigid-Waveguide-Technical-Data.pdf)
 - **Derived here (13-10):** the cutoffs from $f_c = (c/2)\sqrt{(m/a)^2 + (n/b)^2}$ (TE10 6.557, TE20 13.11, TE01 14.75 GHz), and the observation that the recommended band runs from about 1.25 times the TE10 cutoff to about 0.95 times the TE20 cutoff.
+
+## R-200 · FCC 6 GHz unlicensed (U-NII) EIRP limits
+
+*Read on 20 Nov 2026 from the eCFR text of 47 CFR § 15.407; tagged [Established] as regulation in force on that date.*
+
+- **47 CFR § 15.407(a)(4):** "For a standard power access point and fixed client device operating in the 5.925-6.425 GHz and 6.525-6.875 GHz bands, the maximum power spectral density must not exceed 23 dBm e.i.r.p in any 1-megahertz band. In addition, the maximum e.i.r.p. over the frequency band of operation must not exceed 36 dBm."
+- **47 CFR § 15.407(a)(5):** "For an indoor access point operating in the 5.925-7.125 GHz band, the maximum power spectral density must not exceed 5 dBm e.i.r.p. in any 1-megahertz band. In addition, the maximum e.i.r.p. over the frequency band of operation must not exceed 30 dBm." [eCFR § 15.407](https://www.ecfr.gov/current/title-47/chapter-I/subchapter-A/part-15/subpart-E/section-15.407)
+- **Context:** the 6 GHz band was opened to unlicensed use by FCC Report and Order 20-51 (adopted 23 Apr 2020; published in the Federal Register 26 May 2020). [Federal Register 2020-11236](https://www.govinfo.gov/content/pkg/FR-2020-05-26/pdf/2020-11236.pdf)
+- **Derived here (13-11):** the PSD-limited EIRP for channel widths of 20, 80, 160 and 320 MHz (5 dBm/MHz + 10 log₁₀ of the width in MHz, capped at 30 dBm).

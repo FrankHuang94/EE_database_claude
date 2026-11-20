@@ -37,7 +37,7 @@ Maxwell's equations and their engineering consequences: waves, reflection, trans
 | [13-08 · Transmission Lines: Sinusoidal Steady State](chapters/13-08-transmission-lines-sinusoidal-steady-state.md) | 10 | ✅ verified | [problems](problems/13-08-problems.md) · [solutions](solutions/13-08-solutions.md) · [lab](labs/13-08-lab/README.md) · [verify](verify/verify_13_08.py) |
 | [13-09 · The Smith Chart and Impedance Matching](chapters/13-09-smith-chart-and-matching.md) | 10 | ✅ verified | [problems](problems/13-09-problems.md) · [solutions](solutions/13-09-solutions.md) · [lab](labs/13-09-lab/README.md) · [verify](verify/verify_13_09.py) |
 | [13-10 · Waveguides and Resonators](chapters/13-10-waveguides-and-resonators.md) | 6 | ✅ verified | [problems](problems/13-10-problems.md) · [solutions](solutions/13-10-solutions.md) · [lab](labs/13-10-lab/README.md) · [verify](verify/verify_13_10.py) |
-| [13-11 · Radiation and Antenna Fundamentals](chapters/13-11-radiation-and-antennas.md) | 8 | ⬜ planned | — |
+| [13-11 · Radiation and Antenna Fundamentals](chapters/13-11-radiation-and-antennas.md) | 8 | ✅ verified | [problems](problems/13-11-problems.md) · [solutions](solutions/13-11-solutions.md) · [lab](labs/13-11-lab/README.md) · [verify](verify/verify_13_11.py) |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 

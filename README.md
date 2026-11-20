@@ -72,7 +72,7 @@ The full map, with university equivalents, textbook alignment, objectives and ch
 | 3 | [10 · Electronics I (Microelectronic Circuits)](courses/10-electronics-1/README.md) | 10 | 99 | 10/10 |
 | 3 | [11 · Signals and Systems](courses/11-signals-and-systems/README.md) | 11 | 106 | 11/11 |
 | 4 | [12 · Electronics II](courses/12-electronics-2/README.md) | 10 | 104 | 10/10 |
-| 4 | [13 · Electromagnetics](courses/13-electromagnetics/README.md) | 11 | 106 | 10/11 |
+| 4 | [13 · Electromagnetics](courses/13-electromagnetics/README.md) | 11 | 106 | 11/11 |
 | 4 | [14 · Computer Organization and Architecture](courses/14-computer-organization-and-architecture/README.md) | 15 | 122 | 0/15 |
 | 5 | [15 · Control Systems](courses/15-control-systems/README.md) | 12 | 89 | 0/12 |
 | 5 | [16 · Digital Signal Processing](courses/16-digital-signal-processing/README.md) | 11 | 83 | 0/11 |
