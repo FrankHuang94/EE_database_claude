@@ -1,0 +1,19 @@
+* Term 4 checkpoint, question 30 -- bounce diagram on an open-ended line.
+* A 3 V step with 25 ohm source resistance drives a 50 ohm line (one-way delay 1 ns) open at the far end.
+* v+ = 2 V; Gamma_S = -1/3, Gamma_L = +1. The far end reads 4 V from T to 3T, 2.667 V from 3T to 5T,
+* then 3.111 V, converging to 3 V.
+*
+* EXPECT v4 key:solutions.md#T4.30 rtol=2e-3
+
+VS src 0 PWL(0 0 5p 3 20n 3)
+RS src in 25
+T1 in 0 out 0 Z0=50 TD=1n
+RIN out 0 1e9
+
+.control
+tran 1p 6n
+meas tran v4 avg v(out) from=3.3n to=4.7n
+print v4
+quit
+.endc
+.end
