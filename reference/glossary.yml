@@ -4906,3 +4906,27 @@
   definition: Driving a load between two amplifier outputs in antiphase instead of from one output to ground, which doubles the voltage swing and quadruples the power from a single supply; the usual arrangement in class D audio amplifiers.
   chapter: "12-07"
   see_also: [Class-D amplifier]
+- term: Two-stage op-amp
+  definition: The standard CMOS operational amplifier, a differential pair with a current-mirror load followed by a common-source second stage, Miller-compensated by a capacitor across the second stage; gain g_m1R_1·g_m6R_2 and gain-bandwidth product g_m1/(2πC_c).
+  chapter: "12-08"
+  see_also: [Miller compensation, Slew rate, Folded cascode]
+- term: Folded cascode
+  definition: A single-stage op-amp in which the input pair's signal currents are folded into common-gate cascode devices of the opposite type, giving cascode output resistance with more headroom than a telescopic cascode; its load capacitance sets the dominant pole, so GBW = g_m1/(2πC_L).
+  chapter: "12-08"
+  see_also: [Two-stage op-amp, Telescopic cascode amplifier]
+- term: Fully differential amplifier
+  definition: An amplifier with differential inputs and differential outputs, which doubles the output swing, rejects common-mode noise and even-order distortion, and needs common-mode feedback to set its output common-mode level.
+  chapter: "12-08"
+  see_also: [Common-mode feedback]
+- term: Common-mode feedback
+  definition: A loop in a fully differential amplifier that senses the average of the two outputs, compares it with a reference and adjusts a bias current, dividing the common-mode error (current mismatch times output resistance) by 1 + g_m,cm·R_out.
+  chapter: "12-08"
+  see_also: [Fully differential amplifier]
+- term: Rail-to-rail input
+  definition: An input stage whose common-mode range reaches both supply rails, usually by placing NMOS and PMOS differential pairs in parallel so one pair works near each rail; its transconductance, offset and CMRR change where the pairs hand over.
+  chapter: "12-08"
+  see_also: [Constant-gm input stage, Input common-mode range]
+- term: Constant-gm input stage
+  definition: A complementary rail-to-rail input stage whose bias control keeps the total transconductance constant across the common-mode range, for square-law devices by giving each pair a quarter of its current where both conduct.
+  chapter: "12-08"
+  see_also: [Rail-to-rail input]

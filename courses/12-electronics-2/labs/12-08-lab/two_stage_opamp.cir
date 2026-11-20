@@ -1,0 +1,28 @@
+* Lab 12-08 -- Example 12-08.1's two-stage CMOS op-amp as a small-signal circuit, in ngspice.
+* Stage 1: g_m1 = 100 uA/V into R1 = 500 kohm (r_o2 || r_o4) and C1 = 0.2 pF.
+* Stage 2: g_m6 = 1 mA/V into R2 = 50 kohm (r_o6 || r_o7) and CL = 5 pF; Miller capacitor Cc = 1.1 pF.
+* The open-loop gain v(2)/v(in) is the loop gain of a unity-gain follower: its low-frequency value is the
+* DC gain, its 0 dB crossing the crossover, and 180 degrees plus its phase there the phase margin.
+*
+* EXPECT a0 key:../../chapters/12-08-op-amp-internals.md#Ex_12-08.1g rtol=1e-4
+* EXPECT fu key:../../chapters/12-08-op-amp-internals.md#Ex_12-08.1n scale=1e6 rtol=5e-4
+* EXPECT pm key:../../chapters/12-08-op-amp-internals.md#Ex_12-08.1m rtol=5e-4
+
+VIN in 0 DC 0 AC 1
+G1 1 0 in 0 100u
+R1 1 0 500k
+C1 1 0 0.2p
+G6 2 0 1 0 1m
+R2 2 0 50k
+CL 2 0 5p
+CC 1 2 1.1p
+
+.control
+ac dec 400 0.1 10G
+meas ac a0 find vm(2) at=0.1
+meas ac fu when vdb(2)=0
+meas ac ph find vp(2) at=fu
+let pm = 180 + ph * 180 / pi
+print a0 fu pm
+.endc
+.end
