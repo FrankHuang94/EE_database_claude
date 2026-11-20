@@ -58,7 +58,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 16-11.12 [C]
 
-**Fixed-point CORDIC accuracy.** *(lab)* For the lab's 14-iteration, Q2.14 CORDIC, find the worst error (in LSB) over its 64 test angles. Explain why it exceeds the residual-angle error of about 2 LSB, and suggest two fixes.
+**Fixed-point CORDIC accuracy.** *(lab)* For the lab's 14-iteration, Q2.14 CORDIC, find the worst error (in LSB) over all 65,536 input codes. Explain why it exceeds the residual-angle error of about 2 LSB, and quantify the effect of rounding the shifts, of guard bits in $x$ and $y$, and of extra angle bits.
 
 ---
 

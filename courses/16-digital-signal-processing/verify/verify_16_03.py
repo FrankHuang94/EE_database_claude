@@ -271,4 +271,9 @@ v.check("Txt 16-03.j", 144 * kappa * 2**-4 * Tc * 1e6)
 v.assert_true("R-236: 802.11a 0.8 us guard interval is 16 samples at 20 MHz and 312.5 kHz spacing is 20 MHz/64",
               abs(0.8e-6 * 20e6 - 16) < 1e-9 and abs(20e6 / 64 - 312.5e3) < 1e-9)
 
+v.check("Txt 16-03.k", 2048 / 30.72e6 * 1e6)
+v.check("Txt 16-03.l", 160 / 30.72e6 * 1e6)
+v.check("Txt 16-03.m", 144 / 30.72e6 * 1e6)
+v.assert_true("LTE prefix is 5.9-6.5x Wi-Fi's 0.8 us", 5.8 < 144 / 30.72e6 / 0.8e-6 < 6.0 and 6.4 < 160 / 30.72e6 / 0.8e-6 < 6.6)
+
 sys.exit(v.finish())

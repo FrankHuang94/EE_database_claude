@@ -31,7 +31,7 @@ Read §3 of the chapter. `dft.py` computes the DFT as an explicit matrix product
 | 2 | Zero padding | the samples fill in the same DTFT curve; tones 0.5 bins apart stay merged in one peak at any padding |
 | 3 | Wrap-around | nonzero error for $N < 16$, zero (to rounding) for $N \ge 16 = 12 + 5 - 1$ |
 | 4 | Block filtering | both methods match `numpy.convolve` to about $10^{-12}$; cost minimum near $N$ = 1024 |
-| 5 | Cyclic prefix | rms error vector 33.9% with no prefix, 3.46% with 3 samples, and zero (to rounding) from 4 samples, overhead 5.88%; wrong decisions (233 and 41 of 25,600) only for prefixes of 0 and 1, because QPSK tolerates small interference that would still eat into the noise margin |
+| 5 | Cyclic prefix | rms error vector 33.9% with no prefix, 3.46% with 3 samples, and zero (to rounding) from 4 samples, overhead 5.88%; wrong decisions (233 and 41 of 12,800 QPSK symbols) only for prefixes of 0 and 1, because QPSK tolerates small interference that would still eat into the noise margin |
 
 ### Lab answer key
 
@@ -55,7 +55,7 @@ Read §3 of the chapter. `dft.py` computes the DFT as an explicit matrix product
 
 ### Answers
 
-1. Padding evaluates the same DTFT at more frequencies, so the curve between the original bins is drawn instead of being implied. The DTFT's main-lobe width is set by the 64 real samples (about two original bins wide), so two tones closer than that make one combined lobe, however finely it is sampled.
+1. Padding evaluates the same DTFT at more frequencies, so the curve between the original bins is drawn instead of being implied. The DTFT's main lobe is set by the 64 real samples: about two original bins wide null to null, so two tones closer than about one original bin merge into one combined lobe, however finely it is sampled.
 2. The linear convolution has $L + M - 1$ samples. With $N$ points, samples $N, N + 1, \dots$ have nowhere to go and are added onto indices $0, 1, \dots$ (the convolution is taken modulo $N$), so the first $L + M - 1 - N$ outputs are corrupted by the tail.
 3. It needs no output additions and no extra output buffer: every block's kept samples are final. The discarded $M - 1$ outputs cost computation that is already part of the FFT, and the input simply overlaps, which suits streaming memory.
 4. Without enough prefix, the receiver's window contains the tail of the previous symbol (inter-symbol interference) and is missing the channel's response to the start of its own symbol, so the convolution is not circular. The subcarriers then leak into each other (inter-carrier interference), and a one-tap equalizer per subcarrier cannot undo it, even with no noise. With 2 or 3 samples of prefix only the last channel taps (0.2 and 0.1) leak, so the distortion is a few percent: QPSK decisions, whose margin is about 70% of the symbol magnitude, survive, but the same interference would cost noise margin and break a dense constellation such as 1024-QAM, whose points are only a few percent apart.

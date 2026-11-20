@@ -24,7 +24,17 @@ Read §3 of the chapter. `dtsys.py` writes every operation out sample by sample,
 3. **Remove mains hum (Part 3).** Build a 10 Hz "biosignal" with 50 Hz hum and noise at $f_s$ = 1 kHz, filter it with 20- and 100-point moving averages, and measure what is left of the 10 Hz component and of the hum.
 4. **EMA against moving average (Part 4).** Filter a noisy step with an EMA ($\alpha$ = 1/16) and a 31-point moving average. Measure the residual noise after settling and the settling sample. *Predict first:* which filter is quieter, and which settles first?
 5. **Break a running sum (Part 5).** Reproduce Example 16-01.4 in wraparound and saturating arithmetic. Then run a float32 recursive moving sum for $10^6$ samples and plot its error against the exact window sum.
-6. **Build it in hardware (Part 6).** Run `movsum4_tb.v` and read the number of wraps the testbench exercised. Then change the design to saturate instead of wrap and run it again.
+6. **Build it in hardware (Part 6).** Run `movsum4_tb.v` and read the number of wraps the testbench exercised. Then change the design to saturate instead of wrap and run it again. One way: compute each sum one bit wider and clamp it back to $W$ bits, replacing the two arithmetic lines with
+
+   ```verilog
+   localparam signed [W:0] MAXV = (1 <<< (W-1)) - 1, MINV = -(1 <<< (W-1));
+   wire signed [W:0]   wide1 = s + x;                                       // no wrap in W+1 bits
+   wire signed [W-1:0] mid   = (wide1 > MAXV) ? MAXV : (wide1 < MINV) ? MINV : wide1[W-1:0];
+   wire signed [W:0]   wide2 = mid - d4;
+   wire signed [W-1:0] nxt   = (wide2 > MAXV) ? MAXV : (wide2 < MINV) ? MINV : wide2[W-1:0];
+   ```
+
+   and registering `s <= nxt;`.
 
 ## Expected results
 
@@ -45,7 +55,7 @@ Read §3 of the chapter. `dtsys.py` writes every operation out sample by sample,
 |---|---|---|---|
 | Lab 16-01.a | MACs for 1000 samples and 64 taps | 64000 | — |
 | Lab 16-01.b | 10 Hz amplitude after the 20-point average | 0.936 | — |
-| Lab 16-01.c | residual noise standard deviation per unit input σ | 0.180 | — |
+| Lab 16-01.c | residual noise standard deviation per unit input σ, theory for both filters ($\sqrt{1/31}$; simulations scatter by about 1%) | 0.180 | — |
 | Lab 16-01.d | apparent frequency of a 1.2 kHz tone at 1 kHz | 200 | Hz |
 
 ## Discussion

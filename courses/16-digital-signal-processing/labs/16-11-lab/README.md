@@ -20,7 +20,7 @@ Read §3 of the chapter. `hwarch.py` computes MAC widths and hardware budgets, i
 
 1. **Budgets (Part 1).** Tabulate DSP blocks for 32- to 256-tap symmetric filters at 25 to 200 MS/s on 400 and 600 MHz blocks.
 2. **Look-ahead (Part 2).** Run the first-order recursion and its look-ahead-by-2 and by-4 forms on random inputs and compare.
-3. **CSD (Part 3).** Decompose the coefficients of a small half-band filter into CSD and count adders against plain binary.
+3. **CSD (Part 3).** Decompose a set of 8-bit coefficients, most with runs of ones, into CSD and count adders against plain binary.
 4. **CORDIC convergence (Part 4).** Plot the worst cos/sin error over many angles against the iteration count, in floating and fixed point. *Predict first:* the iterations needed for $10^{-4}$.
 5. **Hardware (Part 5).** Check `vectors.hex` against the model, run the testbench, and measure the fixed-point worst error.
 
@@ -32,7 +32,7 @@ Read §3 of the chapter. `hwarch.py` computes MAC widths and hardware budgets, i
 | 2 | Look-ahead | identical outputs to about 1e-12 |
 | 3 | CSD | fewer adders than binary for coefficients with runs of ones |
 | 4 | Convergence | floating-point worst error falls by about half per iteration, below 1e-4 at 15 iterations |
-| 5 | Hardware | TEST PASSED; worst fixed-point error 6.86 LSB over the test angles |
+| 5 | Hardware | TEST PASSED; worst fixed-point error 10.54 LSB over the test angles, which include the worst of all 65,536 codes |
 
 ### Lab answer key
 
@@ -52,7 +52,7 @@ Read §3 of the chapter. `hwarch.py` computes MAC widths and hardware budgets, i
 
 1. It is an exact algebraic rewrite of the same recursion: each output is still a weighted sum of all past inputs with weights $a^k$. What changes is the dependency structure: each output now depends on the output $M$ samples earlier, so the loop has $M$ registers and $M$ sample periods to complete.
 2. CSD reduces nonzero digits only where binary has runs of consecutive ones ($0.111_2 = 1 - 0.001_2$); coefficients whose binary digits already alternate gain nothing.
-3. Each of the 14 arithmetic right shifts floors its result, adding a biased error of up to one LSB that accumulates through the iterations; guard bits or rounding remove most of it.
+3. Each of the 13 nonzero arithmetic right shifts per coordinate floors its result, adding a biased error of up to one LSB that accumulates; and the 16-bit angle path (one angle LSB is 1.57 output LSB, with rounded $\arctan$ entries) steers to a slightly wrong angle. Guard bits are needed in both the $x$/$y$ datapath and the angle path (Solution 16-11.12).
 
 ## Optional hardware
 

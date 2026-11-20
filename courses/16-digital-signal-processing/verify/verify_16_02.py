@@ -148,7 +148,7 @@ for K, key in ((5, "b"), (10, "c"), (20, "d")):
     v.check(f"Ex 16-02.5{key}", abs(tot[0]))
 Kmin = next(K for K in range(1, 100) if 0.8**K < 0.01)
 v.check("Ex 16-02.5e", Kmin)
-v.check("Ex 16-02.5f", Kmin)
+v.check("Ex 16-02.5f", int(np.argmax(np.abs(np.convolve([0.8, 1.0], pz.anticausal_inverse(0.8, 1.0, Kmin))))) - int(np.argmax([0.8, 1.0])))
 v.assert_true("Ex 5: K = 1 gives the channel itself (residual 0.8)", abs(abs(np.convolve([0.8, 1.0], pz.anticausal_inverse(0.8, 1.0, 1))[0]) - 0.8) < 1e-12)
 tot_m = np.convolve([1.0, 0.8], [(-0.8) ** k for k in range(Kmin)])
 v.assert_true("Ex 5d: the minimum-phase mirror leaves the residual after the main tap", abs(tot_m[0] - 1) < 1e-12 and abs(abs(tot_m[Kmin]) - 0.8**Kmin) < 1e-12)
@@ -266,7 +266,9 @@ v.check("16-02.10d", ph - (-0.5 * 45))
 # ---------------------------------------------------------------------------------------- Problem 11
 v.assert_true("P11: zero at -1/0.6 outside the circle", abs(np.roots([0.6, 1.0])[0]) > 1)
 v.check("16-02.11a", abs(np.convolve([0.6, 1.0], pz.anticausal_inverse(0.6, 1.0, 10))[0]))
-v.check("16-02.11b", next(K for K in range(1, 100) if 0.6**K < 0.01))
+K11 = next(K for K in range(1, 100) if 0.6**K < 0.01)
+v.check("16-02.11b", K11)
+v.check("16-02.11c", int(np.argmax(np.abs(np.convolve([0.6, 1.0], pz.anticausal_inverse(0.6, 1.0, K11))))) - 1)
 tot11 = np.convolve([1.0, 0.6], [(-0.6) ** k for k in range(10)])
 v.assert_true("P11c: mirror channel, residual 0.6^10 after the main tap, no delay", abs(tot11[0] - 1) < 1e-12 and abs(abs(tot11[10]) - 0.6**10) < 1e-12)
 
@@ -307,5 +309,10 @@ rx = np.convolve(sym, [0.8, 1.0])[:Ns] + 0.3 * nz
 for K, key in ((5, "i"), (10, "j"), (21, "k")):
     y = np.convolve(rx, pz.anticausal_inverse(0.8, 1.0, K))[:Ns]
     v.check(f"Lab 16-02.{key}", 100 * np.mean(np.sign(y[K:]) != sym[:Ns - K]))
+
+# Figure 1 caption and §9: the 20-point moving average at 1 kHz is 3 dB down near 22 Hz
+from scipy.optimize import brentq as _brentq  # noqa: E402
+_ma = lambda f: abs(np.sum(np.exp(-2j * np.pi * f / 1000 * np.arange(20)))) / 20 - 2 ** -0.5  # noqa: E731
+v.assert_true("20-point moving average -3 dB near 22 Hz", abs(_brentq(_ma, 1, 40) - 22.1) < 0.5)
 
 sys.exit(v.finish())

@@ -33,7 +33,7 @@ Course 11 built the DTFT and the z-transform as mathematics. This chapter turns 
 
 **The z-plane as a rubber sheet.** Picture $\lvert H(z)\rvert$ as a sheet stretched over the z-plane, pinned to the floor at every zero and pushed up to infinity by a tent pole at every pole. The frequency response is what you see walking once around the unit circle, from $\omega = 0$ at $z = 1$, through $\omega = \pi/2$ at $z = j$, to $\omega = \pi$ at $z = -1$. Walk past a zero on the circle and the sheet touches the floor: a null. Walk past a pole just inside the circle and you climb its tent: a peak, sharper the closer the pole sits to the path. A pole and a zero close together cancel each other's effect everywhere except right next to them.
 
-**Analogy: a bond's duration.** A finance reader knows two bonds can have the same total cash flows but different timing; duration measures *when* the money arrives. Group delay plays that role for a filter: it measures how late each frequency's energy arrives. Minimum-phase systems are the "front-loaded" bonds: of all systems with the same magnitude response (the same total "cash" at each frequency), they deliver their energy earliest. **Where the analogy breaks:** a bond's cash flows are positive, while a filter's impulse response can change sign; and group delay can even be negative at some frequencies, which has no counterpart in a bond's duration.
+**Analogy: a bond's duration.** A finance reader knows two bonds can have the same total cash flows but different timing; duration measures *when* the money arrives. Group delay plays that role for a filter: it measures how late each frequency's energy arrives. Minimum-phase systems are the "front-loaded" bonds: of all systems with the same magnitude response (the same total "cash" at each frequency), they deliver their energy earliest. **Where the analogy breaks:** a bond's cash flows are positive, while a filter's impulse response can change sign; and group delay can even be negative at some frequencies, which has no counterpart in a plain bond's Macaulay duration.
 
 ## 3. Theory
 
@@ -109,7 +109,7 @@ Far from $\omega_0$ each zero–pole pair is a near-cancelling dipole and the ga
 
 ![Two panels. Left: the z-plane near z = 1, showing the unit circle, two zeros on it at angles plus and minus 0.1 pi, and the poles of two notches at the same angles: at radius 0.98 just inside the zeros, and at radius 0.9 farther in. Right: gain in dB from 0 to 150 Hz at fs = 1 kHz. Both notches are flat near 0 dB except for a sharp null at 50 Hz; the r = 0.98 notch is about 6 Hz wide at -3 dB and the r = 0.9 notch about 28 Hz wide. The 20-point moving average of chapter 16-01, dotted, also nulls 50 Hz but droops steadily from 0 Hz, is near -13 dB between 50 and 100 Hz, and nulls 100 Hz as well.](../../../assets/figures/16-02/notch.svg)
 
-*Figure 1. Two 50 Hz notches at $f_s$ = 1 kHz (Example 16-02.2). The zeros sit on the circle; the pole radius sets the width. The moving average of 16-01 removes the hum too, but at the cost of the whole band above a few hertz.*
+*Figure 1. Two 50 Hz notches at $f_s$ = 1 kHz (Example 16-02.2). The zeros sit on the circle; the pole radius sets the width. The 20-point moving average of 16-01 removes the hum too, but it is already 3 dB down at 22 Hz and attenuates everything above.*
 
 **DC blocker.** A zero at $z = 1$ and a pole just inside it, $H(z) = (1 - z^{-1})/(1 - az^{-1})$, removes DC and passes everything above a corner near $(1 - a)$ rad/sample. Audio and sensor chains use it to strip ADC offsets.
 
@@ -150,11 +150,11 @@ $$
 \lvert e^{j\omega} - z_0\rvert = \lvert z_0\rvert\,\bigl\lvert e^{j\omega} - 1/z_0^*\bigr\rvert .
 $$
 
-*Proof:* $\lvert e^{j\omega} - z_0\rvert = \lvert e^{-j\omega}\rvert\,\lvert e^{j\omega} - z_0\rvert = \lvert 1 - z_0e^{-j\omega}\rvert = \lvert 1 - z_0^*e^{j\omega}\rvert$ (a number and its conjugate have the same magnitude), and $\lvert 1 - z_0^*e^{j\omega}\rvert = \lvert z_0^*\rvert\,\lvert 1/z_0^* - e^{j\omega}\rvert$. So moving a zero from $z_0$ to its **reflection** $1/z_0^*$ across the unit circle changes the magnitude response only by the constant factor $\lvert z_0\rvert$. A system with $M$ zeros off the circle has $2^M$ relatives with the same magnitude shape, one for each choice of inside or outside.
+*Proof:* $\lvert e^{j\omega} - z_0\rvert = \lvert e^{-j\omega}\rvert\,\lvert e^{j\omega} - z_0\rvert = \lvert 1 - z_0e^{-j\omega}\rvert = \lvert 1 - z_0^*e^{j\omega}\rvert$ (a number and its conjugate have the same magnitude), and $\lvert 1 - z_0^*e^{j\omega}\rvert = \lvert z_0^*\rvert\,\lvert 1/z_0^* - e^{j\omega}\rvert$. So moving a zero from $z_0$ to its **reflection** $1/z_0^*$ across the unit circle changes the magnitude response only by the constant factor $\lvert z_0\rvert$. A system with $M$ zeros off the circle has $2^M$ relatives with the same magnitude shape, one for each choice of inside or outside; if the coefficients must stay real, a conjugate pair must be reflected together, so $R$ real zeros and $C$ conjugate pairs give $2^{R + C}$ real-coefficient relatives.
 
 A causal stable system is **minimum phase** if all its zeros (as well as its poles) lie inside the unit circle. Among all causal stable systems with the same magnitude response it has three properties:
 
-1. **Least group delay.** By §3.4, moving a zero from outside to inside replaces a positive group-delay contribution by a negative one at every frequency; the difference is the group delay of an all-pass section (§3.6), which is positive. So the minimum-phase member has the smallest total group delay (and the smallest phase lag) at every frequency.
+1. **Least group delay.** Reflecting a zero from $1/z_0^*$ (outside) to $z_0$ (inside) lowers its group-delay contribution at every frequency by exactly the group delay of a first-order all-pass section (§3.6), which is positive everywhere. (The inside zero's own contribution is negative only near its angle: a zero at 0.5 contributes −1 sample at DC but +1/3 at π, Example 16-02.4.) So the minimum-phase member has the smallest total group delay (and the smallest phase lag) at every frequency.
 2. **Fastest energy.** Its partial energy $E(n) = \sum_{k=0}^{n}\lvert h[k]\rvert^2$ is the largest of the family for every $n$: its energy arrives first (Example 16-02.4).
 3. **A causal, stable inverse.** $1/H(z)$ has its poles at the zeros of $H$. If those are all inside the circle, the inverse is causal and stable. A zero outside the circle becomes an unstable pole of the causal inverse (§3.7).
 
@@ -217,11 +217,11 @@ An **equalizer** undoes a channel: a cable, a circuit-board trace, a room's acou
 - Width: $2(1 - r) = 0.04$ rad/sample, or $0.04 \times 1000/2\pi$ = 6.37 Hz by the rule; solving $\lvert H\rvert = 1/\sqrt2$ on both sides of the notch gives **6.38** Hz.
 - Gain at 10 Hz: **0.9995** (the 20-point average gave 0.936). Gain at 60 Hz: **0.956**: a notch for 50 Hz does nothing useful at 60 Hz.
 - Time constant: $-1/\ln 0.98$ = **49.5** samples = **49.5** ms. The notch needs a few time constants to reach full depth after the hum appears or changes frequency.
-- With $r$ = 0.9: width **28.3** Hz, time constant **9.49** ms: five times faster, five times wider.
+- With $r$ = 0.9: width **28.3** Hz, time constant **9.49** ms: about 5 times faster (5.2×) and 4.4 times wider.
 
 **Units check.** $\Delta f = \Delta\omega\,f_s/2\pi$: (rad/sample)(samples/s)/(rad/cycle) = Hz.
 
-**Sanity check.** Width × time constant: $0.0401 \times 49.5 = 1.99 \approx 2$, the §3.3 rule.
+**Sanity check.** Width × time constant: $0.04012 \times 49.50 = 1.986 \approx 2$, the §3.3 rule.
 
 ### Example 16-02.3 · A resonator's peak and Q (tier B)
 
@@ -261,13 +261,13 @@ $$
 
 a main tap of 1 delayed by $K$ plus one leftover tap of size $0.8^K$ at time 0. Residual ISI: $0.8^5$ = **0.328**, $0.8^{10}$ = **0.107**, $0.8^{20}$ = **0.0115**.
 
-(c) $0.8^K < 0.01$ needs $K > \ln 0.01/\ln 0.8 = 20.6$, so $K$ = **21** taps, and the equalizer adds **21** symbols of latency.
+(c) $0.8^K < 0.01$ needs $K > \ln 0.01/\ln 0.8 = 20.6$, so $K$ = **21** taps. The equalized main tap arrives at delay $K$ = 21, against delay 1 for the channel's own main cursor, so the equalizer adds $K - 1$ = **20** symbols of latency: one per precursor tap beyond the first.
 
 (d) The mirror channel $1 + 0.8z^{-1}$ is minimum phase. Its inverse $1/(1 + 0.8z^{-1})$ is a causal, stable recursion with no added latency; a truncated FIR version $\sum_{k=0}^{K-1}(-0.8)^kz^{-k}$ leaves the same residual $0.8^K$, but *after* the main tap and without delaying it. The magnitude responses of the two channels are identical; only the phase, the location of the zero, decides whether the equalizer must wait for the future.
 
 **Units check.** Taps and residuals are dimensionless; latency in symbol periods.
 
-**Sanity check.** For $K$ = 1, the equalizer is the single tap 1 (since $1/c_1 = 1$), and the output is the channel itself delayed: residual 0.8, matching $0.8^1$.
+**Sanity check.** For $K$ = 1, the equalizer is the single tap 1 (since $1/c_1 = 1$), and the output is the channel itself: residual 0.8, matching $0.8^1$, and no added latency ($K - 1 = 0$).
 
 ### Answer key
 
@@ -313,7 +313,7 @@ a main tap of 1 delayed by $K$ plus one leftover tap of size $0.8^K$ at time 0. 
 | Ex 16-02.5c | residual ISI, K = 10 | 0.107 | — |
 | Ex 16-02.5d | residual ISI, K = 20 | 0.0115 | — |
 | Ex 16-02.5e | taps for residual below 1% | 21 | — |
-| Ex 16-02.5f | added latency | 21 | symbols |
+| Ex 16-02.5f | added latency | 20 | symbols |
 | Txt 16-02.a | Q2 notch width | 25.5 | Hz |
 | Txt 16-02.b | Q2 time constant | 99.5 | samples |
 | Txt 16-02.c | Q2 time constant | 12.4 | ms |
@@ -342,7 +342,7 @@ The lab, [labs/16-02-lab](../labs/16-02-lab/README.md), provides `pz.py`: freque
 | Linear phase (symmetric FIR) | Constant group delay; no phase distortion | Delay of half the length; many more taps than an IIR filter | Algorithm architect |
 | Minimum phase | Least delay for a given magnitude; causal stable inverse | Phase distortion (frequency-dependent delay) | Audio or control engineer |
 | All-pass group-delay equalizer | Flat group delay with the IIR magnitude kept | Added average delay; extra sections | DSP architect |
-| Equalizer precursor taps $K$ | Cancel precursor ISI from non-minimum-phase channels | $K$ taps of hardware and $K$ symbols of latency | SerDes architect |
+| Equalizer precursor taps $K$ | Cancel precursor ISI from non-minimum-phase channels | $K$ taps of hardware and $K - 1$ symbols of added latency | SerDes architect |
 | Inverting a channel near a null | Flat overall response | Noise enhancement near the null; prefer DFE or accept the null | Link or system architect |
 
 ## 7. Numbers to know
@@ -354,7 +354,7 @@ The lab, [labs/16-02-lab](../labs/16-02-lab/README.md), provides `pz.py`: freque
 | Group delay of a pole at its own angle | $\rho/(1 - \rho)$ samples | §3.4 |
 | First-order all-pass $(z^{-1} - a)/(1 - az^{-1})$ | Delay $(1 + a)/(1 - a)$ at DC, $(1 - a)/(1 + a)$ at $\pi$ | §3.6 |
 | Symmetric FIR of length $N$ | Group delay $(N - 1)/2$ samples | §3.4 |
-| Delayed FIR inverse of a precursor $\rho$ | Residual $\rho^K$ after $K$ taps and $K$ symbols of delay | §3.7, Example 16-02.5 |
+| Delayed FIR inverse of a precursor $\rho$ | Residual $\rho^K$ after $K$ taps and $K - 1$ symbols of added delay | §3.7, Example 16-02.5 |
 
 ## 8. Common mistakes
 
@@ -373,7 +373,7 @@ The lab, [labs/16-02-lab](../labs/16-02-lab/README.md), provides `pz.py`: freque
 
 - **Link equalizers are FIR filters with precursor taps.** ADC-based receivers for 200 Gb/s-class links equalize the digitized signal with a feed-forward equalizer (FFE) of up to about 30 taps in Intel's published 224 Gb/s design, with an optional decision-feedback equalizer (R-235, from the paper's abstract) **[Established]**. Channel pulse responses are generally not minimum phase, so some FFE taps act on samples after the one being decided: the precursor taps of §3.7, paid for in latency **[Established; textbook]**.
 - **Audio equalization offers both phases.** Professional audio tools commonly offer "linear-phase" and "minimum-phase" (or "zero-latency") equalizer modes: linear phase preserves waveshape but adds latency and pre-ringing before transients; minimum phase has the least latency but phase distortion. The choice is the §3.4–3.5 tradeoff made audible **[Established; textbook]**.
-- **Notches in sensing.** Biopotential and industrial sensor front ends use second-order IIR notches at the mains frequency, often switchable between 50 and 60 Hz, because a notch costs a few multiplies per sample against the dozens of taps a moving average or FIR filter needs (Example 16-02.2) **[Established; textbook]**.
+- **Notches in sensing.** Biopotential and industrial sensor front ends use second-order IIR notches at the mains frequency, often switchable between 50 and 60 Hz, because a notch costs five multiplies per sample and leaves the passband nearly flat, while a hum-nulling moving average, even computed recursively at two additions per sample (16-01), attenuates everything above about 20 Hz (Example 16-02.2) **[Established; textbook]**.
 
 ### Why it matters commercially
 
@@ -384,7 +384,7 @@ Phase and delay are where DSP products differentiate quietly. A SerDes vendor's 
 - **"Linear phase means better sound."** Linear phase removes phase distortion but adds latency and pre-ringing (a faint echo *before* a transient), which some listeners find worse. Whether phase distortion of a minimum-phase equalizer is audible depends on how much and where. Ask for blind listening data, not adjectives.
 - **"Zero-latency filtering."** A causal filter with any frequency selectivity has some group delay; "zero latency" usually means minimum phase with a small delay at the frequencies that matter.
 - **"Our equalizer recovers any channel."** Equalizers cannot restore frequencies a channel has nulled, and inverting deep losses enhances noise. Ask what the noise enhancement is and where decision-feedback takes over.
-- **"Infinite notch depth."** A notch's null is exact only at one frequency in infinite precision. Real hum drifts, and coefficient quantization moves the zeros: quote the depth over the specified mains-frequency range in the actual word length.
+- **"Infinite notch depth."** A notch's null is exact only at one frequency. Real hum drifts, and coefficient quantization shifts the null's frequency (with $b_0 = b_2$ the zeros stay exactly on the circle, but at a slightly different angle): quote the depth over the specified mains-frequency range in the actual word length.
 
 ### Questions for engineering leaders
 
@@ -466,4 +466,4 @@ Practice: [Problems 16-02](../problems/16-02-problems.md) · [Solutions](../solu
 
 1. A. V. Oppenheim and R. W. Schafer, *Discrete-Time Signal Processing*, 3rd ed., Pearson, 2010, ch. 5 (§5.6 for the minimum-energy-delay property).
 2. R. G. Lyons, *Understanding Digital Signal Processing*, 3rd ed., Prentice Hall, 2011.
-3. A. Khairi et al., "A 1.41-pJ/b 224-Gb/s PAM4 6-bit ADC-Based SerDes Receiver ...", IEEE JSSC, Jan 2023 (journal version of ISSCC 2022), abstract. Research log [R-235].
+3. Y. Segal, A. Laufer, A. Khairi et al., ISSCC 2022, doi:10.1109/ISSCC42614.2022.9731794, and its journal version, A. Khairi et al., "A 1.41-pJ/b 224-Gb/s PAM4 6-bit ADC-Based SerDes Receiver ...", IEEE JSSC, Jan 2023, doi:10.1109/JSSC.2022.3211475; abstracts. Research log [R-235].

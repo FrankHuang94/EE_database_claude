@@ -1,8 +1,10 @@
 // Unrolled CORDIC in rotation mode (Lab 16-11): computes cos and sin of a binary angle with shifts and adds only.
 //   x[i+1] = x[i] - d (y[i] >>> i),  y[i+1] = y[i] + d (x[i] >>> i),  z[i+1] = z[i] - d atan(2^-i),  d = sign(z[i])
-// theta is a 16-bit binary angle (2^15 = pi), valid for |theta| <= 2^14 (pi/2); x and y are Q2.14 and start from
-// x0 = round(2^14 / K_14) = 9949, which pre-divides the CORDIC gain K_14 = 1.64676. Bit-exact with
-// hwarch.cordic_fixed (arithmetic shifts floor, as Python's >> does).
+// theta is a 16-bit binary angle (2^15 = pi) covering the whole circle. A quadrant stage maps |theta| > pi/2 into
+// [-pi/2, pi/2] by subtracting or adding pi and negates both outputs (cos(t - pi) = -cos t), because the iterations
+// converge only within +-99.88 degrees. x and y are Q2.14 and start from x0 = round(2^14 / K_14) = 9949, which
+// pre-divides the CORDIC gain K_14 = 1.64676. Bit-exact with hwarch.cordic_fixed (arithmetic shifts floor, as
+// Python's >> does).
 `default_nettype none
 module cordic #(
     parameter integer N = 14
@@ -36,7 +38,12 @@ module cordic #(
     wire signed [16:0] zs [0:N];
     assign xs[0] = 16'sd9949;
     assign ys[0] = 16'sd0;
-    assign zs[0] = {theta[15], theta};
+    // quadrant stage: theta > pi/2 -> theta - pi, theta < -pi/2 -> theta + pi, outputs negated
+    wire signed [16:0] th17 = {theta[15], theta};
+    wire hi = th17 > 17'sd16384;
+    wire lo = th17 < -17'sd16384;
+    wire flip = hi | lo;
+    assign zs[0] = hi ? th17 - 17'sd32768 : (lo ? th17 + 17'sd32768 : th17);
     genvar i;
     generate
         for (i = 0; i < N; i = i + 1) begin : stage
@@ -46,8 +53,8 @@ module cordic #(
             assign zs[i + 1] = pos ? zs[i] - atan_c(i) : zs[i] + atan_c(i);
         end
     endgenerate
-    assign cos_out = xs[N];
-    assign sin_out = ys[N];
+    assign cos_out = flip ? -xs[N] : xs[N];
+    assign sin_out = flip ? -ys[N] : ys[N];
     assign z_out = zs[N];
 endmodule
 `default_nettype wire

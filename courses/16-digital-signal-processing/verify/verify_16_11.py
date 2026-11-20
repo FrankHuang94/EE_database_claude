@@ -159,14 +159,33 @@ v.check("Ex 16-11.5g", x0)
 atans = [round(math.atan(2.0**-i) / math.pi * 2**15) for i in range(14)]
 
 
-def fixed(theta_code):
-    xx, yy, zz = x0, 0, theta_code
-    for i in range(14):
+def fixed(theta_code, n=14, gx=0, ga=0, rnd=False):
+    """Independent fixed-point CORDIC with a quadrant stage; gx guard bits on x, y; ga extra angle bits."""
+    th, flip = int(theta_code), False
+    if th > 2**14:
+        th, flip = th - 2**15, True
+    elif th < -(2**14):
+        th, flip = th + 2**15, True
+    at = [round(math.atan(2.0**-i) / math.pi * 2 ** (15 + ga)) for i in range(n)]
+    xx, yy, zz = round(2 ** (14 + gx) / gain(n)), 0, th << ga
+    sh = (lambda v_, i: (v_ + (1 << (i - 1))) >> i if (rnd and i > 0) else v_ >> i)
+    for i in range(n):
         if zz >= 0:
-            xx, yy, zz = xx - (yy >> i), yy + (xx >> i), zz - atans[i]
+            xx, yy, zz = xx - sh(yy, i), yy + sh(xx, i), zz - at[i]
         else:
-            xx, yy, zz = xx + (yy >> i), yy - (xx >> i), zz + atans[i]
-    return xx, yy
+            xx, yy, zz = xx + sh(yy, i), yy - sh(xx, i), zz + at[i]
+    if gx:
+        xx, yy = (xx + (1 << (gx - 1))) >> gx, (yy + (1 << (gx - 1))) >> gx
+    return (-xx, -yy) if flip else (xx, yy)
+
+
+def worst_fixed(codes, **kw):
+    w = 0.0
+    for t in codes:
+        xx, yy = fixed(t, **kw)
+        a = t / 2**15 * math.pi
+        w = max(w, abs(xx - math.cos(a) * 2**14), abs(yy - math.sin(a) * 2**14))
+    return w
 
 
 fx, fy = fixed(round(30 / 180 * 2**15))
@@ -178,9 +197,33 @@ for t in mv.angles:
     xx, yy = fixed(t)
     a = t / 2**15 * math.pi
     errs += [abs(xx - math.cos(a) * 2**14), abs(yy - math.sin(a) * 2**14)]
+ALL = range(-(2**15), 2**15)
+w_all = worst_fixed(ALL)
 v.check("Ex 16-11.5j", max(errs))
-v.check("16-11.12a", max(errs))
+v.assert_true("the test angles contain the exhaustive worst case", abs(max(errs) - w_all) < 1e-9)
+v.check("16-11.12a", w_all)
+v.check("16-11.12b", worst_fixed(ALL, rnd=True))
+v.check("16-11.12c", worst_fixed(ALL, gx=3))
+v.check("16-11.12d", worst_fixed(ALL, gx=3, ga=3))
+v.check("16-11.12e", worst_fixed(ALL, gx=3, ga=3, n=16))
+v.check("Ex 16-11.5l", math.pi / 2**15 * 2**14)
+
+
+def angle_path_only(t):
+    zz, ang = int(t), 0.0
+    for i in range(14):
+        d = 1 if zz >= 0 else -1
+        zz -= d * atans[i]
+        ang += d * math.atan(2.0**-i)
+    a = t / 2**15 * math.pi
+    return max(abs(math.cos(ang) - math.cos(a)), abs(math.sin(ang) - math.sin(a))) * 2**14
+
+
+v.check("Ex 16-11.5k", max(angle_path_only(t) for t in range(-(2**14), 2**14 + 1)))
+v.assert_true("quadrant stage: 120, 150, 180 degrees are right", all(
+    abs(fixed(c)[0] / 2**14 - math.cos(c / 2**15 * math.pi)) < 1e-3 and abs(fixed(c)[1] / 2**14 - math.sin(c / 2**15 * math.pi)) < 1e-3
+    for c in (21845, 27307, -32768, 32767)))
 v.assert_true("vectors.hex is the current model output", (LAB / "vectors.hex").read_text().split() == mv.build())
-v.assert_true("test angles include both ends of the convergence range and zero", {-16384, 16384, 0} <= set(mv.angles))
+v.assert_true("test angles include both ends of the convergence range, zero, both quadrant boundaries and -pi", {-16384, 16384, 0, 16385, -16385, -32768} <= set(mv.angles))
 
 sys.exit(v.finish())

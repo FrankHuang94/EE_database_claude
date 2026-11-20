@@ -52,7 +52,22 @@ With registers after the multipliers and after each adder level, the longest sta
 
 ### Solution 16-11.12
 
-The worst error over the 64 angles is **6.86** LSB. The residual angle after 14 iterations contributes about 2 LSB; the rest comes from the 14 arithmetic right shifts, each of which floors (truncates toward $-\infty$) and so adds a biased error of up to one LSB, accumulating through the iterations. Fixes: carry two or three guard bits in $x$ and $y$ and round once at the output; or round the shifted values instead of flooring.
+The worst error over all 65,536 codes is **10.54** LSB, at code 155 (one of the lab's 64 test vectors). The residual angle after 14 iterations contributes about 2 LSB. Two finite-precision effects supply the rest:
+
+- **Truncated shifts.** Each of the 13 nonzero arithmetic right shifts per coordinate floors (truncates toward $-\infty$), adding a biased error of up to one LSB that accumulates.
+- **The angle path.** The 16-bit angle's LSB is $\pi/2^{15}$ rad = 1.57 output LSB, and every $\arctan2^{-i}$ entry is rounded to it, so the rotation decisions steer to a slightly wrong angle. With exact $x$, $y$ arithmetic the angle path alone costs up to 5.60 LSB.
+
+Worst error over all inputs as each fix is added (the lab's model, modified):
+
+| Design | Worst error (LSB) |
+|---|---|
+| As built | **10.54** |
+| Rounded shifts | **6.56** |
+| 3 guard bits in $x$, $y$ (rounded once at the output) | **5.73** |
+| 3 guard bits and 3 extra angle bits | **3.32** |
+| The same with 16 iterations | **1.97** |
+
+Guard bits in the datapath alone leave the angle path's error; both paths need extra bits, and then the iteration count sets the floor.
 
 ---
 
@@ -90,4 +105,8 @@ The worst error over the 64 angles is **6.86** LSB. The residual angle after 14 
 | 16-11.11a | critical path | 2.0 | ns |
 | 16-11.11b | clock | 500 | MHz |
 | 16-11.11c | latency | 7 | cycles |
-| 16-11.12a | worst error | 6.86 | LSB |
+| 16-11.12a | worst error, as built | 10.54 | LSB |
+| 16-11.12b | worst error, rounded shifts | 6.56 | LSB |
+| 16-11.12c | worst error, 3 guard bits | 5.73 | LSB |
+| 16-11.12d | worst error, 3 guard and 3 angle bits | 3.32 | LSB |
+| 16-11.12e | worst error, the same with 16 iterations | 1.97 | LSB |

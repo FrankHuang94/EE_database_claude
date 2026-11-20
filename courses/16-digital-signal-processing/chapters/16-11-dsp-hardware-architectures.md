@@ -119,7 +119,7 @@ z_{i+1} &= z_i - d_i\arctan2^{-i}, \qquad d_i = \operatorname{sign}(z_i).
 \end{aligned}
 $$
 
-The postponed factors multiply to a constant, the **CORDIC gain** $K_n = \prod_{i=0}^{n-1}\sqrt{1 + 2^{-2i}}$, which converges quickly to **1.64676**; starting from $x_0 = 1/K_n$ cancels it. The angles $\arctan2^{-i}$ sum to **99.88°**, the convergence range (larger angles are first reduced by symmetry). After $n$ iterations the residual angle is at most about $\arctan2^{-(n-1)} \approx 2^{1-n}$: one bit of accuracy per iteration.
+The postponed factors multiply to a constant, the **CORDIC gain** $K_n = \prod_{i=0}^{n-1}\sqrt{1 + 2^{-2i}}$, which converges quickly to **1.64676**; starting from $x_0 = 1/K_n$ cancels it. The angles $\arctan2^{-i}$ sum to **99.88°**, the convergence range. Larger angles are first reduced by symmetry: the lab's design subtracts or adds π when $\lvert\theta\rvert > \pi/2$ and negates both outputs. After $n$ iterations the residual angle is at most about $\arctan2^{-(n-1)} \approx 2^{1-n}$: one bit of accuracy per iteration.
 
 - **Rotation mode** ($d_i = \operatorname{sign}(z_i)$, start $z_0 = \theta$, $(x_0, y_0) = (1/K, 0)$) returns $(\cos\theta, \sin\theta)$: the heart of numerically controlled oscillators and digital mixers (16-09's DDCs).
 - **Vectoring mode** ($d_i = -\operatorname{sign}(y_i)$, driving $y$ to zero) returns the magnitude $K\sqrt{x^2 + y^2}$ in $x$ and the angle $\arctan(y/x)$ in $z$: polar conversion, phase detectors and the magnitude of complex samples.
@@ -176,11 +176,11 @@ The postponed factors multiply to a constant, the **CORDIC gain** $K_n = \prod_{
 
 **Setup.** Compute $\cos30°$ and $\sin30°$ with a 12-iteration floating-point CORDIC, then with the lab's 14-iteration fixed-point design (16-bit binary angle, Q2.14 outputs). Give the gain and the errors.
 
-**Solution.** $K_{12}$ = **1.64676** (it changes by less than $10^{-5}$ after 10 iterations). Starting from $(1/K, 0)$ and $z_0 = \pi/6$, the first steps rotate by +45°, −26.57°, +14.04°, −7.13°, …, driving $z$ toward zero. After 12 iterations: $\cos$ = **0.865911**, error **−1.141** × 10⁻⁴, and $\sin$ = **0.500198**, error **+1.976** × 10⁻⁴: errors of order $2^{-12}$, one bit per iteration. In fixed point (angle code $30/180 \times 2^{15}$ = **5461**, $x_0 = \text{round}(2^{14}/K_{14})$ = **9949**), the outputs are **14191** and **8191**, that is 0.866150 and 0.499939, errors of $+1.24 \times 10^{-4}$ and $-6.1 \times 10^{-5}$. Over the 64 test angles of the lab the worst error is **6.86** LSB of $2^{-14}$, larger than one LSB because the right shifts truncate (floor) and their errors accumulate over 14 iterations.
+**Solution.** $K_{12}$ = **1.64676** (it changes by less than $10^{-5}$ after 10 iterations). Starting from $(1/K, 0)$ and $z_0 = \pi/6$, the first steps rotate by +45°, −26.57°, +14.04°, −7.13°, …, driving $z$ toward zero. After 12 iterations: $\cos$ = **0.865911**, error **−1.141** × 10⁻⁴, and $\sin$ = **0.500198**, error **+1.976** × 10⁻⁴: errors of order $2^{-12}$, one bit per iteration. In fixed point (angle code $30/180 \times 2^{15}$ = **5461**, $x_0 = \text{round}(2^{14}/K_{14})$ = **9949**), the outputs are **14191** and **8191**, that is 0.866150 and 0.499939, errors of $+1.24 \times 10^{-4}$ and $-6.1 \times 10^{-5}$. Over the lab's 64 test angles, which include the worst code of an exhaustive sweep of all 65,536 inputs (code 155), the worst error is **10.54** LSB of $2^{-14}$. Two finite-precision effects add to the residual angle: the 13 nonzero right shifts per coordinate truncate (floor), and their biased errors accumulate; and the 16-bit angle path is coarse, since its LSB $\pi/2^{15}$ is **1.57** output LSB and each $\arctan$ table entry is rounded to it. With exact $x$ and $y$ arithmetic, the angle path's decisions alone cost up to **5.60** LSB.
 
 **Units check.** Q2.14: one LSB is $2^{-14} = 6.1 \times 10^{-5}$.
 
-**Sanity check.** 14 iterations give a residual angle below $\arctan2^{-13} \approx 1.2 \times 10^{-4}$ rad, about 2 LSB in the output; the rest of the error is the accumulated truncation, which rounding the shifts or adding guard bits would remove.
+**Sanity check.** 14 iterations give a residual angle below $\arctan2^{-13} \approx 1.2 \times 10^{-4}$ rad, about 2 LSB in the output. The rest of the error comes from the truncated shifts and the angle path, so both need guard bits: Solution 16-11.12 quantifies the fixes.
 
 ### Answer key
 
@@ -214,7 +214,9 @@ The postponed factors multiply to a constant, the **CORDIC gain** $K_n = \prod_{
 | Ex 16-11.5g | x0 | 9949 | — |
 | Ex 16-11.5h | fixed-point cos code | 14191 | — |
 | Ex 16-11.5i | fixed-point sin code | 8191 | — |
-| Ex 16-11.5j | worst error over the test angles | 6.86 | LSB |
+| Ex 16-11.5j | worst error over the test angles (and all inputs) | 10.54 | LSB |
+| Ex 16-11.5k | worst error from the angle path alone | 5.60 | LSB |
+| Ex 16-11.5l | one angle LSB in output LSB | 1.57 | — |
 | Txt 16-11.a | CORDIC convergence range | 99.88 | ° |
 | Txt 16-11.b | folded 16-tap FIR rate on one 400 MHz MAC | 25 | MS/s |
 | Txt 16-11.c | unfolding factor, 10 GS/s at 625 MHz | 16 | — |

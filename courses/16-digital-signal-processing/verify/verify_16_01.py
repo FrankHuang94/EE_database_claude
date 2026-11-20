@@ -131,7 +131,7 @@ v.check("Ex 16-01.3e", 1 / float(np.sum(h3**2)))
 ma31 = ds.step(np.full(31, 1 / 31), [1], 60)
 v.check("Ex 16-01.3f", int(np.argmax(np.abs(ma31 - 1) < 1e-12)))
 v.assert_true("Ex 3: the 31-point average is not yet settled at n = 29", abs(ma31[29] - 1) > 0.01)
-v.check("Ex 16-01.3g", 71 / tau)
+v.check("Ex 16-01.3g", n1 / tau)
 v.assert_true("Ex 3: e^-3 is about 5% and e^-5 about 0.7%",
               abs(math.exp(-3) - 0.05) < 0.0003 and abs(math.exp(-5) - 0.007) < 0.0005)
 
@@ -151,8 +151,25 @@ with np.errstate(over="ignore"):
         hist.append((int(mid), int(acc)))
 v.assert_true("Ex 4: numpy int8 reproduces the trace", hist[4] == (int(mid_wrap[4]), int(s_wrap[4])))
 v.assert_true("Ex 4: the accumulator holds 25, 55, 87, 120 before n = 4", [h[1] for h in hist[:4]] == [25, 55, 87, 120])
-sat = min(127, 120 + 30) - 25
+
+
+def run4(x, mode, upset_at=None):
+    """Recursive 4-sample moving sum on an 8-bit accumulator, simulated step by step (wrap or saturate)."""
+    fix = (lambda v_: ((v_ + 128) % 256) - 128) if mode == "wrap" else (lambda v_: max(-128, min(127, v_)))
+    acc, out = 0, []
+    for k, xn in enumerate(x):
+        acc = fix(fix(acc + xn) - (x[k - 4] if k >= 4 else 0))
+        if k == upset_at:
+            acc = fix(acc + 1)
+        out.append(acc)
+    return out
+
+
+sat = run4(x4, "sat")[4]
 v.check("Ex 16-01.4c", sat)
+v.check("Ex 16-01.4e", run4(x4, "wrap", upset_at=2)[4])
+v.check("Ex 16-01.4f", run4(x4, "sat", upset_at=2)[4])
+v.assert_true("Ex 4: the saturating upset is absorbed at n = 4", run4(x4, "sat", 2)[4] == run4(x4, "sat")[4])
 v.check("Ex 16-01.4d", sum(x4[1:5]) - sat)
 
 # ---------------------------------------------------------------------------------------- Example 5
@@ -321,7 +338,8 @@ maxprod = (2**11) * (2**15)            # (-2048) * (-32768)
 need = 64 * maxprod
 width = next(b for b in range(8, 80) if -(2 ** (b - 1)) <= -need and need <= 2 ** (b - 1) - 1)
 v.check("16-01.12a", width)
-v.check("16-01.12b", 48 - width)
+v.check("16-01.12b", 48 - (12 + 16))
+v.check("16-01.12f", 48 - width)
 need_sum = 64 * 2**11                   # 64 x (-2048) is the most negative sum
 width_sum = next(b for b in range(4, 40) if -(2 ** (b - 1)) <= -need_sum and 64 * (2**11 - 1) <= 2 ** (b - 1) - 1)
 v.check("16-01.12c", width_sum)

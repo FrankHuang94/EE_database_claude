@@ -27,7 +27,7 @@ Digital signal processing (DSP) replaces resistors, capacitors and op-amps with 
 - **Audio and voice.** Every phone, earbud and smart speaker runs equalizers, echo cancellers and noise suppressors on dedicated DSP cores at 16 to 48 kHz sample rates.
 - **Sensors in wearables and IoT.** Heart-rate (PPG), ECG and motion sensors are filtered digitally on low-power microcontrollers; moving averages and exponential averagers like those in this chapter are the workhorses.
 - **Radar and automotive.** FMCW radar front ends sample their beat signals and hand them to FFT engines (16-04) and filters; a car's sensor fusion is DSP from end to end.
-- **Wireline and optical links.** Receivers at 100 Gb/s per lane and above digitize the incoming waveform with a fast ADC and equalize it with DSP: an FIR filter running at tens of billions of samples per second.
+- **Wireline and optical links.** Many receivers at 100 Gb/s per lane and above digitize the incoming waveform with a fast ADC and equalize it with DSP: an FIR filter running at tens of billions of samples per second.
 - **AI accelerators.** A convolution layer and an FIR filter are the same multiply-accumulate (MAC) loop; the hardware that serves one serves the other (16-11, 14-14).
 
 ## 2. Intuition first
@@ -230,10 +230,10 @@ Three facts follow. The gain is 1 at DC. It is exactly zero at $\omega = 2\pi m/
 
 Three elements build every filter: an **adder**, a **multiplier by a constant**, and a **unit delay** $z^{-1}$ (a register clocked once per sample). The difference equation of §3.4 drawn directly, with separate delay lines for $x$ and $y$, is **direct form I**; it needs $M + N$ delays. Swapping the order of the two halves (allowed for LTI systems) lets them share one delay line, **direct form II**, with $\max(M, N)$ delays (11-04 §3.4; 16-08 covers the numerically better forms). The cost of a filter is counted in four currencies:
 
-- **Arithmetic.** About $M + N + 1$ MACs per output sample, so a filter running at $f_s$ on $C$ channels needs $(M + N + 1)\,f_s\,C$ MACs per second. Recursive filters reach a long memory with few MACs; FIR filters need one MAC per tap.
+- **Arithmetic.** About $M + N + 1$ MACs per output sample (with $M$ and $N$ the feedforward and feedback orders of §3.4), so a filter running at $f_s$ on $C$ channels needs $(M + N + 1)\,f_s\,C$ MACs per second. Recursive filters reach a long memory with few MACs; FIR filters need one MAC per tap.
 - **Memory.** One word per delay and per coefficient. Moving the words, not multiplying them, usually dominates energy (§7).
-- **Latency.** Three sources add: the filter's own delay (for a linear-phase FIR, $(N - 1)/2$ samples), **block processing** (a processor that handles $L$ samples at a time waits for a block to fill and emits it a block later, about $2L$ samples with double buffering), and the computation itself.
-- **Word length.** A sum of $N$ products of $B_x$-bit samples and $B_h$-bit coefficients needs up to $B_x + B_h + \lceil\log_2 N\rceil$ bits to be exact. Narrower accumulators overflow or round; 16-10 quantifies the noise this adds.
+- **Latency.** Three sources add: the filter's own delay (an $L_h$-tap linear-phase FIR delays $(L_h - 1)/2$ samples), **block processing** (a processor that handles $L$ samples at a time waits for a block to fill and emits it a block later, about $2L$ samples with double buffering), and the computation itself.
+- **Word length.** A sum of $K$ products of $B_x$-bit samples and $B_h$-bit coefficients needs up to $B_x + B_h + \lceil\log_2 K\rceil$ bits to be exact. The bits an accumulator has beyond the product width $B_x + B_h$ are its **guard bits**; $\lceil\log_2 K\rceil$ of them are needed. Narrower accumulators overflow or round; 16-10 quantifies the noise this adds.
 
 A system is **real-time** when it finishes each sample (or block) before the next arrives, on average and in the worst case. The budget is simple: cycles available per sample are $f_{clk}/f_s$; cycles needed are the MAC count divided by the MACs per cycle, plus overhead (Example 16-01.5).
 
@@ -299,7 +299,7 @@ The 31-point moving average reaches its final value *exactly* at $n$ = **30** an
 
 (b) With saturation, the intermediate clamps at 127, and $127 - 25$ = **102**: wrong by **23**, and wrong forever after, since the error is now stored in the accumulator.
 
-(c) The upset adds 1 to $s[2]$, and the recursion carries it unchanged: every later output is one too large, in either arithmetic. The input–output map is FIR, but the structure holds an undamped mode at $z = 1$. Robust designs reset or recompute the sum periodically, or use a direct (non-recursive) sum whose error leaves after $N$ samples.
+(c) The upset makes $s[2]$ = 88 instead of 87. In wraparound arithmetic the recursion carries it unchanged, because modular arithmetic still respects addition: $s[4]$ = **126**, and every later output is one too large. In saturating arithmetic the upset happens to vanish at $n = 4$: $121 + 30$ clamps at 127 just as $120 + 30$ did, so $s[4]$ = **102** with or without it, already 23 wrong. Saturation errors depend on the data. In both cases the input–output map is FIR, but the structure holds an undamped mode at $z = 1$: an error that enters the accumulator stays until something (a clamp, a reset) changes it. Robust designs reset or recompute the sum periodically, or use a direct (non-recursive) sum whose error leaves after $N$ samples.
 
 **Units check.** Counts (integer codes) throughout.
 
@@ -356,6 +356,8 @@ The 31-point moving average reaches its final value *exactly* at $n$ = **30** an
 | Ex 16-01.4b | wrapped result s[4] | 125 | — |
 | Ex 16-01.4c | saturated result s[4] | 102 | — |
 | Ex 16-01.4d | saturation error | 23 | — |
+| Ex 16-01.4e | s[4] with the upset, wraparound | 126 | — |
+| Ex 16-01.4f | s[4] with the upset, saturating | 102 | — |
 | Ex 16-01.5a | MAC rate | 29.376 | M/s |
 | Ex 16-01.5b | core load | 7.34 | % |
 | Ex 16-01.5c | cycles available per sample per channel | 2083 | — |
@@ -431,7 +433,7 @@ The 45 nm energies are a decade-old reference point; newer processes lower every
 ### State of the art (as of Nov 2026)
 
 - **DSP is a feature of every processor class.** Microcontroller cores add DSP instructions and short vectors. Arm's Helium extension (the M-Profile Vector Extension of Armv8.1-M, announced in February 2019) gives Cortex-M cores 128-bit vector registers; the Cortex-M55 executes them 64 bits per cycle, which Arm documents as two 32-bit, four 16-bit or eight 8-bit MACs per cycle. Helium cores so far are the Cortex-M55 (2020), M85 (2022), M52 (2023, a single-beat option at half that rate) and M42 (announced 10 Nov 2026) (R-233) **[Established]**. FPGAs embed hundreds to thousands of hardened multiply-accumulate slices; AMD's UltraScale+ DSP48E2, for example, pairs a 27 × 18 multiplier with a 48-bit accumulator, so that long sums do not overflow (R-157) **[Established]**.
-- **High-speed links became DSP problems.** IEEE P802.3dj (200 Gb/s per lane Ethernet) signals PAM4 at 106.25 GBd on electrical lanes and targets channels with up to 40 dB of loss at 53.125 GHz, the Nyquist frequency of that symbol rate (R-141, R-234) **[Established]**. As of Nov 2026 it had passed IEEE SA ballot and was on the 8–9 Dec 2026 RevCom and Standards Board agendas, not yet an approved standard (R-234). Published receivers for this class digitize the line and equalize it in DSP: Intel's 224 Gb/s receiver (ISSCC 2022, 5 nm) uses a 6-bit, 64-way time-interleaved ADC and an FFE of up to 30 taps with an optional DFE, and Marvell's 212 Gb/s transceiver (ISSCC 2024) samples at 106 GS/s and follows the ADC with an FFE, a reflection canceller and optional DFE and sequence detection (R-235, from the papers' abstracts) **[Established]**. At one sample per symbol, a 30-tap FFE at 106.25 GBd is **3.19** × 10¹² MACs per second per lane, which is why these filters are hardwired, massively parallel datapaths rather than code.
+- **High-speed links became DSP problems.** IEEE P802.3dj (200 Gb/s per lane Ethernet) signals PAM4 at 106.25 GBd on electrical lanes and targets channels with up to 40 dB of loss at 53.125 GHz, the Nyquist frequency of that symbol rate (R-141, R-234) **[Established]**. As of Nov 2026 it had passed IEEE SA ballot and was on the 8 Dec 2026 RevCom agenda, ahead of the 9 Dec Standards Board meeting, not yet an approved standard (R-234). Published receivers for this class digitize the line and equalize it in DSP: Intel's 224 Gb/s receiver (ISSCC 2022, 5 nm) uses a 6-bit, 64-way time-interleaved ADC and an FFE of up to 30 taps with an optional DFE, and Marvell's 212 Gb/s transceiver (ISSCC 2024) samples at 106 GS/s and follows the ADC with an FFE, a reflection canceller and optional DFE and sequence detection (R-235, from the papers' abstracts) **[Established]**. At one sample per symbol, a 30-tap FFE at 106.25 GBd is **3.19** × 10¹² MACs per second per lane, which is why these filters are hardwired, massively parallel datapaths rather than code.
 - **The MAC is the unit of account.** DSP cores, AI accelerators and FPGA vendors quote throughput in MACs (or operations, two per MAC) per second; the energy per MAC, including its data movement, is the figure that decides battery life in wearables and power density in datacenter links.
 
 ### Why it matters commercially
@@ -529,6 +531,6 @@ Practice: [Problems 16-01](../problems/16-01-problems.md) · [Solutions](../solu
 3. IEEE P802.3dj (200 Gb/s per lane Ethernet) objectives, 14 Mar 2024. Research log [R-141].
 4. Arm, Armv8.1-M and Helium announcement (14 Feb 2019), Cortex-M55/M85/M52/M42 announcements and product pages, and the white paper "Blending DSP and ML features into a low-power general-purpose processor" (2020). Research log [R-233].
 5. IEEE P802.3dj task-force key motions (May 2023), baseline proposal (Jan 2024), November 2026 task-force report and the 8 Dec 2026 RevCom agenda. Research log [R-234].
-6. A. Khairi et al., "A 1.41-pJ/b 224-Gb/s PAM4 6-bit ADC-Based SerDes Receiver ...", IEEE JSSC, Jan 2023, pp. 8–18 (journal version of the ISSCC 2022 paper, doi:10.1109/ISSCC42614.2022.9731794); J.-Q. Wang et al., "A 2.69pJ/b 212Gb/s DSP-Based PAM-4 Transceiver for Optical Direct-Detect Application in 5nm FinFET", ISSCC 2024, paper 7.1. Abstracts only. Research log [R-235].
+6. Y. Segal, A. Laufer, A. Khairi et al., "A 1.41pJ/b 224Gb/s PAM-4 SerDes Receiver with 31dB Loss Compensation", ISSCC 2022, pp. 114–116, doi:10.1109/ISSCC42614.2022.9731794; and its journal version, A. Khairi et al., "A 1.41-pJ/b 224-Gb/s PAM4 6-bit ADC-Based SerDes Receiver ...", IEEE JSSC, Jan 2023, pp. 8–18, doi:10.1109/JSSC.2022.3211475; J.-Q. Wang et al., "A 2.69pJ/b 212Gb/s DSP-Based PAM-4 Transceiver for Optical Direct-Detect Application in 5nm FinFET", ISSCC 2024, paper 7.1. Abstracts only. Research log [R-235].
 7. A. V. Oppenheim and R. W. Schafer, *Discrete-Time Signal Processing*, 3rd ed., Pearson, 2010, ch. 2.
 8. R. G. Lyons, *Understanding Digital Signal Processing*, 3rd ed., Prentice Hall, 2011.

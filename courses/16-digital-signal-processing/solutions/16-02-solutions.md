@@ -71,7 +71,7 @@ DC delay $(1 + a)/(1 - a) = 0.5$ gives $1 + a = 0.5 - 0.5a$, so $a$ = **−1/3**
 
 (a) $C(z) = 0.6 + z^{-1} = 0.6(1 + z^{-1}/0.6)$: zero at $-1/0.6 = -1.667$, outside the circle: **not** minimum phase.
 
-(b) By Example 16-02.5's algebra the residual after $K$ taps is $0.6^K$. $0.6^9 = 0.0101$ is just above 1% and $0.6^{10}$ = **0.0060** is below it: $K$ = **10** taps, **10** symbols of latency.
+(b) By Example 16-02.5's algebra the residual after $K$ taps is $0.6^K$. $0.6^9 = 0.0101$ is just above 1% and $0.6^{10}$ = **0.0060** is below it: $K$ = **10** taps. The equalized main tap arrives at delay 10, against 1 for the channel's main cursor: **9** symbols of added latency.
 
 (c) The mirror channel $1 + 0.6z^{-1}$ is minimum phase; the truncated causal inverse $\sum_{k=0}^{K-1}(-0.6)^kz^{-k}$ convolved with it gives $1 - (-0.6)^Kz^{-K}$: the same residual $0.6^K$ after the main tap, so the same **10** taps, but **0** symbols of added latency.
 
@@ -135,6 +135,7 @@ The minus sign is a constant phase of 180°, with no effect on group delay.
 | 16-02.10d | phase error at π/4 | −0.90 | ° |
 | 16-02.11a | residual with 10 taps | 0.0060 | — |
 | 16-02.11b | taps for residual below 1% | 10 | — |
+| 16-02.11c | added latency | 9 | symbols |
 | 16-02.12a | all-pass delay at DC | 2 | samples |
 | 16-02.12b | all-pass delay at π | 0.5 | samples |
 | 16-02.12c | minimum-phase delay at DC | 0.5 | samples |

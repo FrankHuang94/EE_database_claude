@@ -22,7 +22,7 @@
 
 ## 1. Big picture
 
-The DTFT of 16-02 is a continuous function of frequency: beautiful for analysis, impossible to store in a computer. The **discrete Fourier transform** (DFT) keeps only $N$ samples of it, and in return gets an exact, invertible map between $N$ numbers in time and $N$ numbers in frequency that a processor can compute, especially with the fast algorithm of 16-04. Almost every spectrum you will ever see on an instrument, and a large share of all filtering in modern communication chips, goes through a DFT. The price is a set of subtleties: the DFT treats every signal as if it repeated forever, so shifts and convolutions "wrap around", and a spectrum sampled too coarsely aliases in time. This chapter makes those effects precise and turns them into tools.
+The DTFT of 16-02 is a continuous function of frequency: beautiful for analysis, impossible to store in a computer. The **discrete Fourier transform** (DFT) keeps only $N$ samples of it, and in return gets an exact, invertible map between $N$ numbers in time and $N$ numbers in frequency that a processor can compute, especially with the fast algorithm of 16-04. Almost every spectrum you will ever see on an instrument, and the demodulation of every OFDM radio signal (Wi-Fi, LTE, 5G), goes through a DFT. The price is a set of subtleties: the DFT treats every signal as if it repeated forever, so shifts and convolutions "wrap around", and a spectrum sampled too coarsely aliases in time. This chapter makes those effects precise and turns them into tools.
 
 - **Spectrum analysis.** Oscilloscopes, spectrum analyzers and ADC test benches compute DFTs of captured records (16-05).
 - **Fast filtering.** Long FIR filters (room reverberation, channel emulation, matched filters in radar) run as products of DFTs in blocks, faster than direct convolution.
@@ -31,7 +31,7 @@ The DTFT of 16-02 is a continuous function of frequency: beautiful for analysis,
 
 ## 2. Intuition first
 
-**A set of tuning forks that fit the window.** Take a record of $N$ samples. The DFT asks: how much of each sinusoid that completes exactly $k$ whole cycles in the window is present, for $k = 0, 1, \dots, N - 1$? Those $N$ sinusoids are mutually orthogonal over the window (like perpendicular axes), so the answer for each is found by a single correlation, and together they rebuild the record exactly. A tone that also completes a whole number of cycles in the window lands in one bin. A tone that does not falls between the forks and is shared among several bins: **leakage**, the subject of 16-05.
+**A set of tuning forks that fit the window.** Take a record of $N$ samples. The DFT asks: how much of each sinusoid that completes exactly $k$ whole cycles in the window is present, for $k = 0, 1, \dots, N - 1$? Strictly, the forks are the $N$ complex exponentials $e^{j2\pi kn/N}$, which are mutually orthogonal over the window (like perpendicular axes), so the answer for each is found by a single correlation, and together they rebuild the record exactly. A real cosine with $k$ cycles is the sum of bins $k$ and $N - k$. A tone that also completes a whole number of cycles in the window lands in one bin. A tone that does not falls between the forks and is shared among several bins: **leakage**, the subject of 16-05.
 
 **Everything wraps around.** Because the forks are periodic with period $N$, the DFT cannot tell the window from an infinite repetition of it. Push a signal past the right edge and it reappears on the left: a **circular shift**. Convolve two windows and the tail of the result wraps onto the start: **circular convolution**. Pad the window with enough zeros and there is nothing to wrap, so circular convolution becomes ordinary convolution.
 
@@ -164,7 +164,7 @@ $$
 C(N, M) = \frac{4\left[N\log_2N + N\right]}{N - M + 1}\ \text{real multiplies},
 $$
 
-against $M$ for direct convolution. Large $N$ amortizes the overhead but each FFT grows; the best $N$ is typically a few times $M$ (Example 16-03.5). The price is **latency**: a block of $L$ samples must arrive before any of its outputs can be computed.
+against $M$ for direct convolution. Large $N$ amortizes the overhead but each FFT grows; the best $N$ is roughly 5 to 10 times $M$ in this model (Example 16-03.5). The price is **latency**: a block of $L$ samples must arrive before any of its outputs can be computed.
 
 ### 3.8 The cyclic prefix: making a channel circular
 
@@ -197,7 +197,7 @@ Conjugate symmetry: $X[3] = X^*[1]$, as it must be for real $x$. Parseval: $\sum
 
 (b) $3000/46.875$ = **64** exactly: the tone completes 64 cycles in the record. All its energy is in bins 64 and $1024 - 64 = 960$, each of magnitude $AN/2$ = **512**; every other bin is zero to rounding.
 
-(c) $1000/46.875$ = **21.33**: between bins 21 and 22, nearer 21. The largest bin, 21, has magnitude 422.2, which is **0.825** of the on-bin value, or **−1.68** dB (the "scalloping loss"); bin 22 holds 0.416 of it, and the rest is spread thinly across the spectrum. A spectrum analyzer that reported the biggest bin as the tone's amplitude would read 1.7 dB low, which is why analyzers use windows with flatter peaks (16-05).
+(c) $1000/46.875$ = **21.33**: between bins 21 and 22, nearer 21. The largest bin, 21, has magnitude 422.2, which is **0.825** of the on-bin value, or **−1.68** dB (the "scalloping loss"); bin 22 holds 0.416 of the on-bin value, and the rest is spread thinly across the spectrum. A spectrum analyzer that reported the biggest bin as the tone's amplitude would read 1.7 dB low, which is why analyzers use windows with flatter peaks (16-05).
 
 **Units check.** Hz/(Hz per bin) = bins.
 
@@ -288,6 +288,9 @@ The best size is $N$ = **1024**, about **2.07** times fewer multiplies than dire
 | Txt 16-03.h | 802.11a/g prefix overhead | 20 | % |
 | Txt 16-03.i | LTE normal-prefix overhead per slot | 6.67 | % |
 | Txt 16-03.j | NR normal prefix at 240 kHz spacing | 0.293 | µs |
+| Txt 16-03.k | LTE useful symbol | 66.7 | µs |
+| Txt 16-03.l | LTE first prefix | 5.21 | µs |
+| Txt 16-03.m | LTE other prefixes | 4.69 | µs |
 
 ## 5. Simulate it
 
@@ -309,7 +312,7 @@ The lab, [labs/16-03-lab](../labs/16-03-lab/README.md), provides `dft.py`: the D
 | Zero padding | Smoother, better-located peaks | Computation; no new resolution | Algorithm engineer |
 | FFT size in block convolution | Fewer multiplies per output, up to an optimum | Block latency ($L$ samples); memory for buffers | DSP architect |
 | Overlap-add versus overlap-save | OLA: no discarded work; OLS: no output additions, simpler streaming | OLA needs the overlap additions; OLS computes outputs it throws away | Firmware or hardware designer |
-| OFDM cyclic prefix length $G$ | Tolerates channels with delay spread up to $G + 1$ samples | Overhead $G/(N + G)$ of throughput and energy | Standards body, system architect |
+| OFDM cyclic prefix length $G$ | Tolerates channels of up to $G + 1$ taps (delay spread up to $G$ samples) | Overhead $G/(N + G)$ of throughput and energy | Standards body, system architect |
 | Number of OFDM subcarriers $N$ | Lower overhead for a fixed prefix; flatter per-subcarrier channel | Longer symbols: more latency, more sensitivity to frequency offset and Doppler | Standards body |
 
 ## 7. Numbers to know
@@ -321,7 +324,7 @@ The lab, [labs/16-03-lab](../labs/16-03-lab/README.md), provides `dft.py`: the D
 | Worst-case scalloping (rectangular window, tone halfway between bins) | −3.92 dB ($2/\pi$) for long records | 16-05 preview; Example 16-03.2 shows −1.68 dB at a third of a bin; Problem 16-03.8 |
 | Circular = linear convolution | $N \ge L + M - 1$ | §3.5 |
 | Direct DFT against FFT | $N^2$ against about $(N/2)\log_2N$ complex multiplies | §3.1, 16-04 |
-| FFT convolution crossover (simple model) | 44 taps; best FFT size a few times the filter length | Example 16-03.5 |
+| FFT convolution crossover (simple model) | 44 taps; best FFT size roughly 5–10 times the filter length | Example 16-03.5 |
 
 ## 8. Common mistakes
 
@@ -339,7 +342,7 @@ The lab, [labs/16-03-lab](../labs/16-03-lab/README.md), provides `dft.py`: the D
 
 - **OFDM is the dominant physical layer for wireless and wireline broadband.** Wi-Fi, LTE and 5G NR, DSL and DOCSIS cable all use DFT-based multicarrier modulation with a cyclic prefix, because it turns equalization of a long channel into one complex multiply per subcarrier **[Established; textbook]**. The numbers show the design tradeoff of §3.8 (R-236) **[Established]**:
   - *802.11a/g Wi-Fi* uses a 64-point FFT at 20 MHz: 312.5 kHz subcarrier spacing, 48 data and 4 pilot subcarriers, a 3.2 µs useful symbol and a 0.8 µs (16-sample) guard interval, for a 4.0 µs symbol and **20**% prefix overhead. 802.11n added an optional 0.4 µs short guard interval for short indoor channels.
-  - *LTE* uses 15 kHz subcarriers (a 2048-point FFT at 30.72 MHz): a 66.7 µs useful symbol and normal cyclic prefixes of 160 and 144 samples (5.2 and 4.7 µs), an overhead of **6.67**% of each 0.5 ms slot. The prefix tolerates about six times the delay spread of Wi-Fi's, because outdoor cells have far longer echoes.
+  - *LTE* uses 15 kHz subcarriers (a 2048-point FFT at 30.72 MHz): a **66.7** µs useful symbol and normal cyclic prefixes of 160 and 144 samples (**5.21** and **4.69** µs), an overhead of **6.67**% of each 0.5 ms slot. The prefix tolerates about six times (5.9 to 6.5 times) the delay spread of Wi-Fi's, because outdoor cells have far longer echoes.
   - *5G NR* scales the LTE numerology by $2^\mu$: subcarrier spacings of 15 × $2^\mu$ kHz for $\mu$ = 0 to 6 (15 to 960 kHz), with the normal prefix shrinking as $2^{-\mu}$, so the same 144-sample prefix lasts **0.293** µs at 240 kHz spacing. Wider spacing buys shorter symbols, lower latency and robustness to phase noise and Doppler at high carrier frequencies, at the price of tolerating less delay spread; an extended prefix is defined only at 60 kHz.
 - **Spectrum analysis is DFT-based.** Modern signal and spectrum analyzers digitize an IF or baseband signal and compute FFTs of windowed records; real-time analyzers overlap and process records continuously so that short events are not missed between captures **[Established; textbook]**.
 - **Long filters run in the frequency domain.** Convolution reverbs, acoustic echo cancellers and channel emulators with thousands of taps use partitioned overlap-save (the filter itself split into blocks to keep latency low) **[Established; textbook]**.

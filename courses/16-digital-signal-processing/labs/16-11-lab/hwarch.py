@@ -101,12 +101,23 @@ def atan_table(n):
 
 
 def cordic_fixed(theta_code, n=14):
+    """Bit-exact model of cordic.v for any 16-bit binary angle (2^15 = pi).
+
+    A quadrant stage first maps |theta| > pi/2 into [-pi/2, pi/2] by subtracting or adding pi (2^15) and remembers to
+    negate both outputs, since cos(theta -/+ pi) = -cos(theta) and likewise for sin. Returns (x, y, z) after n
+    iterations, with z the residual angle code of the reduced angle.
+    """
+    z = int(theta_code)
+    flip = False
+    if z > 2 ** (ANGLE_BITS - 2):
+        z, flip = z - 2 ** (ANGLE_BITS - 1), True
+    elif z < -(2 ** (ANGLE_BITS - 2)):
+        z, flip = z + 2 ** (ANGLE_BITS - 1), True
     x = int(round(2**FRAC / cordic_gain(n)))
     y = 0
-    z = int(theta_code)
     for i, at in enumerate(atan_table(n)):
         if z >= 0:
             x, y, z = x - (y >> i), y + (x >> i), z - at
         else:
             x, y, z = x + (y >> i), y - (x >> i), z + at
-    return x, y, z
+    return (-x, -y, z) if flip else (x, y, z)

@@ -58,7 +58,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 16-01.12 [C]
 
-**Accumulator width and wraparound.** (a) A 64-tap FIR filter takes 12-bit signed samples and 16-bit signed coefficients. How many bits must its accumulator have so that no sum can overflow? How many guard bits does a 48-bit accumulator leave? (b) A recursive moving sum of 64 such 12-bit samples uses wraparound arithmetic. What accumulator width does it need? (c) Trace a 2-sample recursive moving sum on a 4-bit signed accumulator (range −8 to 7) for the input 3, 4, 2, forming $s[n-1] + x[n]$ first. Show the wrapped intermediate and confirm the final $s[2]$.
+**Accumulator width and wraparound.** (a) A 64-tap FIR filter takes 12-bit signed samples and 16-bit signed coefficients. How many bits must its accumulator have so that no sum can overflow? How many guard bits (accumulator width minus product width, §3.7) does a 48-bit accumulator have, and how many of them are spare? (b) A recursive moving sum of 64 such 12-bit samples uses wraparound arithmetic. What accumulator width does it need? (c) Trace a 2-sample recursive moving sum on a 4-bit signed accumulator (range −8 to 7) for the input 3, 4, 2, forming $s[n-1] + x[n]$ first. Show the wrapped intermediate and confirm the final $s[2]$.
 
 ### Problem 16-01.13 [C]
 

@@ -122,7 +122,7 @@ The outputs hold from $n = 2$ on, once the filter's memory is full of the sinuso
 
 ### Solution 16-01.12
 
-(a) A product of a 12-bit and a 16-bit signed number needs $12 + 16 = 28$ bits; adding 64 of them can grow the sum by a factor of 64, which needs $\log_2 64 = 6$ more bits: **34** bits. A 48-bit accumulator leaves **14** guard bits.
+(a) A product of a 12-bit and a 16-bit signed number needs $12 + 16 = 28$ bits; adding 64 of them can grow the sum by a factor of 64, which needs $\log_2 64 = 6$ more bits: **34** bits. A 48-bit accumulator has $48 - 28$ = **20** guard bits, of which 6 are needed: **14** spare.
 
 (b) The true moving sum of 64 twelve-bit samples fits in $12 + 6$ = **18** bits, and with wraparound arithmetic the accumulator only needs to hold the final result, so 18 bits suffice even though intermediate values wrap.
 
@@ -211,7 +211,8 @@ $$
 | 16-01.11c | gain at π/3 | 0.75 | — |
 | 16-01.11d | gain at π | 0 | — |
 | 16-01.12a | exact accumulator width | 34 | bits |
-| 16-01.12b | guard bits in 48 | 14 | bits |
+| 16-01.12b | guard bits in 48 | 20 | bits |
+| 16-01.12f | spare guard bits | 14 | bits |
 | 16-01.12c | wraparound running-sum width | 18 | bits |
 | 16-01.12d | wrapped intermediate | −7 | — |
 | 16-01.12e | s[2] | 6 | — |
