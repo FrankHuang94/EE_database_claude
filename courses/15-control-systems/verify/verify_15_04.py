@@ -321,4 +321,45 @@ pk, tp, _ = peak_of(position(20.0), [0, 0, 0], 5.0, 1)
 v.check("Lab 15-04.b", pk)
 v.check("Lab 15-04.c", tp)
 
+# ---------------------------------------------------------------------------------------- section 3.5 (non-unity feedback)
+ss_, hh = sp.symbols("s h")
+Gs, Hs = sp.Function("G")(ss_), sp.Function("H")(ss_)
+Le = hh * Gs / (1 + Gs * (Hs - hh))
+v.assert_true("3.5: E = (R/h)/(1 + L_e) identity", sp.simplify((1 / hh - Gs / (1 + Gs * Hs)) - (1 / hh) / (1 + Le)) == 0)
+# Problem 15-04.7 numbers: L_e = 5/(s + 1), step error 1/6 of the desired output
+v.assert_true("3.5: P7 case gives 16.7%", round(100 / (1 + 5), 1) == 16.7)
+# sensor lag example: G = 4/[s(s+2)], H = 0.5/(1 + 0.05 s); K_v of L_e = 0.5*2/(1 - 0.05)
+Le_ex = 0.5 * (4 / (ss_ * (ss_ + 2))) / (1 + (4 / (ss_ * (ss_ + 2))) * (0.5 / (1 + 0.05 * ss_) - 0.5))
+Kv_e = float(sp.limit(ss_ * Le_ex, ss_, 0))
+v.assert_true("3.5: K_v of L_e = 1.053", round(Kv_e, 3) == 1.053)
+# simulate: y for a unit ramp r through T = G/(1 + GH); error r/h - y at large t
+num_cl = np.polymul([4], [0.05, 1])
+den_cl = np.polyadd(np.polymul([1, 2, 0], [0.05, 1]), [2])
+tt = np.linspace(0, 60, 60001)
+_, ycl, _ = signal.lsim((num_cl, den_cl), U=tt, T=tt)
+e_end = 2 * tt[-1] - ycl[-1]
+v.assert_true("3.5: simulated ramp error 1.90 = (1/h)/K_v,e", abs(e_end - 2 / Kv_e) < 1e-4 and round(e_end, 2) == 1.90)
+
+# ---------------------------------------------------------------------------------------- audit additions
+# Ex 6: split of the 1 kHz magnitude error into the DC in-phase part and the quadrature part
+A0b, wa = 1e4, 2 * math.pi * 10
+L1k = A0b / (1 + 1j * 2 * math.pi * 1e3 / wa)
+err_total = 100 * (abs(L1k / (1 + L1k)) - 1)
+v.assert_true("Ex 6: DC part 0.010%, quadrature part 0.005%, total 0.015%",
+              round(100 / (1 + A0b), 3) == 0.010 and round(100 / (2 * abs(L1k) ** 2), 3) == 0.005 and round(-err_total, 3) == 0.015)
+# Solution 15-04.10(c): the slowest closed-loop decay rate peaks near K_r = 3e5 and has fallen to 13.7 at 1e6
+w60 = 2 * math.pi * 60
+slow = lambda kr: min(-np.roots([1, 110, w60**2 + kr, 110 * w60**2]).real)  # noqa: E731
+krs = np.logspace(4, 7, 3001)
+kbest = krs[int(np.argmax([slow(k) for k in krs]))]
+v.assert_true("P10c: fastest convergence near K_r = 3e5", 2e5 < kbest < 4e5)
+v.assert_true("P10c: real pole at -13.7 for K_r = 1e6", round(-min(np.roots([1, 110, w60**2 + 1e6, 110 * w60**2]).real, key=abs), 1) == -13.7
+              or abs(slow(1e6) - 13.7) < 0.05)
+# Lab Part 4: the type-3 PLL variant is stable and its chirp error decays to zero
+den3 = [1, 1e11 * 5e-6, 1e11 * (1 + 5e4 * 5e-6), 1e11 * 5e4]
+v.assert_true("Lab Part 4: type-3 variant stable", np.all(np.roots(den3).real < 0))
+t3 = np.linspace(0, 4e-4, 400001)
+_, e3, _ = signal.lsim(([1, 0, 0, 0], den3), 2 * math.pi * 1e10 * t3**2 / 2, t3)
+v.assert_true("Lab Part 4: type-3 chirp error decays to zero", abs(e3[-1]) < 1e-6)
+
 sys.exit(v.finish())

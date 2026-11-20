@@ -2,7 +2,7 @@
 * Plant P(s) = 1/(s(0.1 s + 1)): a lag (0.1 F || 1 ohm driven by a 1 S transconductor) followed by an
 * integrator (1 F driven by a 1 S transconductor). Node voltages are signals. Reference r = 0; a 0.5 V step
 * disturbance d enters at the plant input at t = 0.
-* Loop 1: proportional controller u = 10 (r - y).          Expected steady output -d/K = -0.05.
+* Loop 1: proportional controller u = 10 (r - y).          Expected steady output d/C(0) = 0.5/10 = +0.05.
 * Loop 2: PI controller u = 10 (r - y) + 20 * integral(r - y). Expected steady output 0.
 *
 * EXPECT yp key:../../chapters/15-04-feedback-and-steady-state-error.md#Ex_15-04.4a rtol=1e-3

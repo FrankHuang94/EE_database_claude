@@ -28,7 +28,7 @@ Read §3 of the chapter. `rlocus.locus` computes the closed-loop roots over a gr
 | Part | Quantity | Expected |
 |---|---|---|
 | 1 | Rules | every breakpoint, asymptote and departure angle matches the numerical locus |
-| 2 | Moving the zero | the centroid $(-6 + z)/2$ moves right as $z$ grows; stable at every gain for $z < 6$, only below $K = 48/(z - 6)$ for $z > 6$ |
+| 2 | Moving the zero | the centroid $(-6 + z)/2$ moves right as $z$ grows; stable at every gain for $z \le 6$, only below $K = 48/(z - 6)$ for $z > 6$ |
 | 3 | PLL | $\zeta$ = 0.761 at the design gain; real poles between 1.287 × 10¹¹ and 1.368 × 10¹¹ s⁻² |
 | 4 | PD servo | 6.70% overshoot, 0.932 s settling, in ngspice and in Python |
 

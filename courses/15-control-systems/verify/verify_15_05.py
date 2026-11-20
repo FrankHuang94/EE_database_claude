@@ -66,7 +66,9 @@ Kmax3 = sp.solve(sp.Eq(cub[1] * cub[2] - cub[0] * cub[3], 0), K)[0]
 v.check("Ex 15-05.3a", float(Kmax3))
 v.check("Ex 15-05.3b", float(np.max(jw_roots([1, 3, 3, 9]).imag)))
 v.check("Ex 15-05.3c", float(Kmax3) ** (1 / 3))
-v.check("Ex 15-05.3d", math.sqrt(3) * 1.0)
+# ring of three identical stages with pole at w0 = 2 pi x 1 GHz: crossing frequency of (s/w0 + 1)^3 + 8, in GHz
+w0r = 2 * math.pi * 1e9
+v.check("Ex 15-05.3d", float(np.max(np.roots([1 / w0r**3, 3 / w0r**2, 3 / w0r, 9]).imag)) / (2 * math.pi) / 1e9)
 v.assert_true("Ex 3: numerical crossing of (x+1)^3 + K at K = 8",
               abs(crossing_gain(lambda k: [1, 3, 3, 1 + k], 1, 20) - 8) < 1e-8)
 
@@ -164,7 +166,12 @@ sh8 = sp.Poly(sp.expand((z - 1) ** 3 + 6 * (z - 1) ** 2 + 8 * (z - 1) + K), z).a
 v.check("15-05.8a", float(sh8[2]))
 bk = np.roots([3, 12, 8])
 bk = float(bk[np.argmax(bk)])
-v.check("15-05.8b", bk)
+sig = sp.symbols("sigma", positive=True)
+zcoef = sp.Poly(sp.expand((z - sig) ** 3 + 6 * (z - sig) ** 2 + 8 * (z - sig) + K), z).all_coeffs()[2]
+v.assert_true("P8b: shifted z-coefficient is 3 sigma^2 - 12 sigma + 8 (independent of K)", sp.simplify(zcoef - (3 * sig**2 - 12 * sig + 8)) == 0)
+sig_max = min(float(r) for r in sp.solve(sp.Eq(zcoef, 0), sig))
+v.assert_true("P8b: Routh bound equals the breakaway", abs(sig_max + bk) < 1e-12)
+v.check("15-05.8b", sig_max)
 v.check("15-05.8c", -bk * (bk + 2) * (bk + 4))
 # the best guaranteed decay rate over K, found by brute force
 Kgrid = np.linspace(0.5, 47, 46501)
@@ -230,7 +237,13 @@ v.assert_true("P14: y(t) = (sin 2t - 2t cos 2t)/8",
                   for tt in (0.5, 3.0, 10.0)))
 sol14 = solve_ivp(lambda t, xv: [xv[1], math.sin(2 * t) - 4 * xv[0]], (0, 10), [0, 0], rtol=1e-12, atol=1e-14)
 v.check("15-05.14a", sol14.y[0, -1])
-v.check("15-05.14b", 2 * 10 / 8)
+# envelope: amplitude of the growing term found from the simulated peaks near t = 10 s (local maxima of |y| grow as t/4)
+tt14 = np.linspace(9.0, 11.0, 200001)
+yy14 = np.abs(solve_ivp(lambda t, xv: [xv[1], math.sin(2 * t) - 4 * xv[0]], (0, 11), [0, 0], dense_output=True,
+                        rtol=1e-12, atol=1e-14).sol(tt14)[0])
+pk_i = [i for i in range(1, len(tt14) - 1) if yy14[i] > yy14[i - 1] and yy14[i] >= yy14[i + 1]]
+slope = np.polyfit(tt14[pk_i], yy14[pk_i], 1)
+v.check("15-05.14b", float(np.polyval(slope, 10.0)))
 
 # ---------------------------------------------------------------------------------------- Lab (ring oscillator)
 Rr, Cc, gm, Vs = 1e3, 1e-9, 2.2e-3, 0.1
@@ -253,5 +266,35 @@ pl = lin[np.argmax(lin.imag)]
 v.check("Lab 15-05.b", pl.real)
 v.check("Lab 15-05.c", pl.imag / (2 * math.pi) / 1e3)
 v.check("Lab 15-05.d", math.sqrt(3) * w0 / (2 * math.pi) / 1e3)
+
+# ---------------------------------------------------------------------------------------- Lab optional hardware
+# Three hard-switching inverters, each driving an RC (RC = 1): an inverter's output is the rail opposite to its
+# input's side of mid-rail. Event-driven exact solution: between switching events every node relaxes exponentially.
+def hard_ring_period():
+    vn = np.array([0.0, 0.6, 0.2])
+    t_now, crossings = 0.0, []
+    for _ in range(400):
+        outs = np.array([1.0 if vn[(i - 1) % 3] < 0.5 else 0.0 for i in range(3)])
+        # time for each node to reach 0.5 while heading to its target, if it is heading across mid-rail
+        dts = []
+        for i in range(3):
+            if (vn[i] - 0.5) * (outs[i] - 0.5) < 0:
+                dts.append(math.log((outs[i] - vn[i]) / (outs[i] - 0.5)))
+            else:
+                dts.append(math.inf)
+        k = int(np.argmin(dts))
+        dt = dts[k]
+        vn = outs + (vn - outs) * math.exp(-dt)
+        vn[k] = 0.5 + (1e-12 if outs[k] > 0.5 else -1e-12)
+        t_now += dt
+        if k == 0 and outs[0] > 0.5:
+            crossings.append(t_now)
+    return float(np.mean(np.diff(crossings[-20:])))
+
+
+Th = hard_ring_period()
+v.assert_true("Lab hardware note: hard-switching ring oscillates near 1/(2.9 RC), stage delay about 0.48 RC",
+              round(Th, 1) == 2.9 and round(Th / 6, 2) == 0.48 and abs(1 / Th - math.sqrt(3) / (2 * math.pi)) > 0.06)
+v.assert_true("Lab hardware note: small-signal value is 1/(3.6 RC)", round(2 * math.pi / math.sqrt(3), 1) == 3.6)
 
 sys.exit(v.finish())

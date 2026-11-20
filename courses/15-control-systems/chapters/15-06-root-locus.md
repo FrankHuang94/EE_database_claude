@@ -90,7 +90,13 @@ $$
 \theta_{dep} = 180° - \sum_{p_j \ne p}\angle(p - p_j) + \sum_i\angle(p - z_i) ,
 $$
 
-and arrives at a complex zero at the analogous angle with the roles of poles and zeros swapped.
+and arrives at a complex zero at the analogous angle with the roles of poles and zeros swapped. At a pole of multiplicity $q$ (for example a double pole at the origin), the $q$ branches leave at
+
+$$
+\theta_{dep} = \frac{(2k + 1)180° - \sum_{p_j \ne p}\angle(p - p_j) + \sum_i\angle(p - z_i)}{q}, \qquad k = 0, 1, \ldots, q - 1 ,
+$$
+
+because near $p$ the factor $(s - p)^q$ contributes $q$ times the angle of $s - p$. A double pole with no net angle from the rest of the map leaves at ±90° (Example 15-06.5).
 
 **Rule 7 · Constant sum.** If $n - m \ge 2$, the sum of the closed-loop poles equals the sum of the open-loop poles for every $K$ (the coefficient of $s^{n-1}$ does not involve $K$). When some poles move right, others must move left.
 
@@ -102,8 +108,8 @@ Draw the ray of the desired damping ratio, at angle $\arccos\zeta$ from the nega
 
 ### 3.4 What added zeros and poles do
 
-- **A zero pulls the locus toward itself and to the left.** It reduces the number of asymptotes by one and shifts the centroid by $-z/(n - m)$ toward the zero's side. With $n - m = 2$ the asymptotes are vertical lines through the centroid; if the centroid lies in the left half-plane, no gain can destabilize the loop (Example 15-06.3). A zero placed too far left can push the centroid into the right half-plane, and then large gains do destabilize it (lab Part 2). This is the root-locus explanation of why derivative (PD) and lead compensation stabilize and speed up loops (15-08, 15-09).
-- **A pole pushes the locus to the right.** It adds an asymptote and moves the centroid right; a third pole bends the branches into the right half-plane (Example 15-06.2 against 15-06.1). Every parasitic pole is a potential instability.
+- **A zero pulls the locus toward itself and to the left.** It reduces the number of asymptotes by one, so the asymptotes open out (from ±60° for three to vertical for two), and the new centroid is $(\sum p - \sum z - z_{new})/(n - m - 1)$. Two effects compete: for a left-half-plane zero ($z_{new} < 0$) its own term $-z_{new}/(n - m - 1)$ is positive and pulls the centroid right, while dividing the (usually negative) $\sum p - \sum z$ by a smaller number pulls it left. In Example 15-06.3 the net move is left, from −2 to −2.5. With $n - m = 2$ the asymptotes are vertical lines through the centroid, so a centroid in the left half-plane guarantees stability at large gains. It does not by itself guarantee stability at every gain: Problem 15-05.4's loop $K(s + 1)/[s(s - 1)(s + 6)]$ has its centroid at −2 yet is unstable for $0 < K < 7.5$, because its plant has a right-half-plane pole. For a stable three-pole plant with one zero, Routh's cubic test reduces to $K(a_2 - b_0) > a_0 - a_2a_1$ (plant denominator $s^3 + a_2s^2 + a_1s + a_0$, zero factor $s + b_0$), which holds for every $K > 0$ exactly when the centroid $(b_0 - a_2)/2$ is in the left half-plane; that is the case of Example 15-06.3. A zero placed too far left pushes the centroid into the right half-plane, and then large gains destabilize the loop (lab Part 2). This is the root-locus explanation of why derivative (PD) and lead compensation stabilize and speed up loops (15-08, 15-09).
+- **A pole pushes the locus to the right.** It adds an asymptote, so the asymptotes close in toward the imaginary axis (from vertical for two to ±60° for three), and ±60° lines eventually cross into the right half-plane whatever the centroid. The centroid itself can move either way: adding a pole at −10 to $s(s + 4)$ moves it from −2 to −4.67, yet the loop now goes unstable at high gain (Problem 15-06.7). A third pole bends the branches into the right half-plane (Example 15-06.2 against 15-06.1). Every parasitic pole is a potential instability.
 - **A pole–zero pair close together (a dipole) barely moves the locus** except near itself, but it changes the low-frequency gain. A lag compensator places such a pair near the origin to raise $K_v$ without disturbing the dominant poles (15-09).
 
 ![Three root-locus plots. Left: K/[s(s+2)(s+4)]. Poles at 0, -2 and -4. The branches from 0 and -2 meet near -0.85 and curve up and down into the right half-plane, crossing the imaginary axis near plus and minus j2.8; the branch from -4 runs left along the real axis. A dashed damping-ratio line at 60 degrees from the negative real axis meets the upper branch at -0.67 + j1.15. Middle: the same loop with a zero at -1. The pole at 0 moves to the zero; the poles at -2 and -4 meet near -2.9 and rise and fall almost vertically near Re s = -2.5, never reaching the right half-plane; the damping line meets them at -2.57 + j4.45. Right: K(s+8)/[s(s+4)]. The poles at 0 and -4 meet at -2.34, travel around a circle centered at the zero -8 of radius 5.66, and rejoin the real axis at -13.7; the 45-degree damping line just touches the circle at -4 + j4.](../../../assets/figures/15-06/loci.svg)
@@ -118,11 +124,11 @@ $$
 \rho = \sqrt{\lvert z - p_1\rvert\,\lvert z - p_2\rvert} .
 $$
 
-For a complex pair the two distances are equal, so the circle passes through both poles (Example 15-06.4). The proof substitutes $s = z + \rho e^{j\phi}$ into the angle condition and shows it holds for every $\phi$ on this circle (Problem 15-06.9). The circle makes design by hand easy: the best achievable damping is where a ray from the origin is tangent to it (Example 15-06.6).
+For a complex pair the two distances are equal, so the circle passes through both poles (Example 15-06.4). The proof substitutes $s = z + \rho e^{j\phi}$ into the angle condition and shows it holds for every $\phi$ on this circle (Problem 15-06.9). The circle makes design by hand easy: the least damping on the circle, a floor that holds for every gain, is at the point where a ray from the origin is tangent to it (Example 15-06.6).
 
 ### 3.6 Negative gain and other parameters
 
-The method works for any parameter that enters the characteristic polynomial linearly. Rewrite the polynomial as $D(s) + \alpha N(s)$ and draw the locus in $\alpha$. For a negative gain (positive feedback) the angle condition becomes $0°$ instead of $180°$, and the real-axis rule flips to an even count. Problem 15-06.12 draws a locus in a loop-filter time constant.
+The method works for any parameter that enters the characteristic polynomial linearly. Rewrite the polynomial as $D(s) + \alpha N(s)$ and draw the locus in $\alpha$. For a negative gain (positive feedback) the angle condition becomes $0°$ instead of $180°$, the real-axis rule flips to an even count, and the asymptote angles become $k \cdot 360°/(n - m)$. Problem 15-06.12 draws a locus in a loop-filter time constant.
 
 ## 4. Worked examples
 
@@ -258,7 +264,7 @@ Simulating: overshoot **6.70**% (above 4.3% because of the closed-loop zero at �
 The lab, [labs/15-06-lab](../labs/15-06-lab/README.md), provides `rlocus.py`: a numerical locus with continuous branch tracking, and each sketching rule computed exactly (asymptotes, real-axis segments, breakpoints, departure angles, gain at a point, points on a constant-damping ray). You:
 
 1. **Overlay the rules on the numerical locus** for Examples 15-06.1 to 15-06.4 and check each rule's prediction.
-2. **Move a zero** along the real axis for Example 15-06.3's loop and watch the asymptotes, the centroid and the best achievable damping change.
+2. **Move a zero** along the real axis for Example 15-06.3's loop and watch the centroid and the largest stable gain change.
 3. **Sweep the PLL's charge-pump current** (Example 15-06.5) and plot $\zeta$ of the dominant pair against $K$.
 4. **Build the PD servo** of Example 15-06.6 in ngspice (`pd_servo.cir`) and compare its overshoot and settling time with the design.
 
@@ -305,7 +311,7 @@ These are established practice; no perishable figures are quoted.
 
 ### Why it matters commercially
 
-- **Product variation moves poles.** A charge-pump current that varies ±30% over process and temperature moves a PLL along its root locus; the design must have acceptable damping over the whole stretch (Example 15-06.5).
+- **Product variation moves poles.** A charge-pump current that varies by tens of percent over process and temperature (±30% is an illustrative design budget, not a sourced figure) moves a PLL along its root locus; the design must have acceptable damping over the whole stretch (Example 15-06.5).
 - **"More gain" has a ceiling.** The locus shows where gain stops helping (a fixed real part) or starts hurting (branches toward the axis), which is often the argument for a better controller or a faster part.
 - **Compensation is a product feature.** Customers who can add a zero (feedforward capacitors in regulators, for instance) can trade stability for speed; data sheets that show how are more valuable.
 
@@ -364,7 +370,7 @@ Above $K$ = 4 the poles move vertically along $\mathrm{Re}\,s = -2$; settling ti
 
 <details><summary>Answer</summary>
 
-It removes one asymptote and pulls the branches toward itself. With $n - m$ = 2 the asymptotes are vertical lines through the centroid; when the centroid is in the left half-plane, as in Example 15-06.3, the branches never reach the right half-plane at any gain.
+It removes one asymptote and pulls the branches toward itself. With $n - m$ = 2 the asymptotes are vertical lines through the centroid, so a left-half-plane centroid keeps the loop stable at large gains. Intermediate gains still need checking (Routh): with a stable plant, as in Example 15-06.3, the branches never reach the right half-plane at any gain, but Problem 15-05.4's unstable plant has a left-half-plane centroid and is still unstable at low gain.
 
 </details>
 

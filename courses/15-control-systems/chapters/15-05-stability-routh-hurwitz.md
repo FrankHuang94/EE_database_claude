@@ -34,6 +34,23 @@ Every result so far assumed the loop was stable. Feedback that is too strong, or
 
 **An analogy: a price-adjustment loop.** Suppose a market maker adjusts a quoted price in proportion to the order imbalance, but sees the imbalance with a delay. Small adjustments converge on the clearing price. Large ones overshoot, the imbalance flips sign, and the price oscillates with growing swings, a cobweb. The analogy breaks down because markets are nonlinear and adaptive. A linear loop's instability is exact and predictable: once a pole crosses into the right half-plane, every disturbance grows exponentially until a nonlinearity stops it.
 
+The s-plane sorts modes by what they do over time:
+
+```text
+              Im s
+               ^
+   decaying    |    growing
+  oscillation  |  oscillation
+       x       |       x          x  pole: mode e^{st}
+               |
+ --x-----------+-----------x--->  Re s
+  fast decay   |   exponential growth
+               |
+       x       |       x
+   (stable:    |  (unstable:
+    left half) |   right half)
+```
+
 **Why delay and extra poles matter.** Each pole adds phase lag at high frequency. A one-pole loop can never lag more than 90°, and a two-pole loop never quite reaches 180°, so negative feedback with any positive gain stays stable. A third pole can push the lag past 180°, and then a large enough gain makes the "negative" feedback arrive in phase with the error: it reinforces instead of correcting.
 
 ## 3. Theory
@@ -54,7 +71,7 @@ For a proper rational transfer function, $h(t)$ is a sum of terms $t^ke^{p_it}$,
 
 A loop is **internally stable** if every transfer function inside it, from every input to every signal, is stable: $T$, $S$, $PS$ and $CS$ (15-02 §3.2, Problem 15-02.11). A pole–zero cancellation can make $T$ look stable while $PS$ is not; checking the characteristic polynomial $1 + L = 0$ formed *without* cancellation catches this.
 
-For a state-space model, the poles are the eigenvalues of $A$ (15-02), so stability means every eigenvalue of $A$ has a negative real part (02-08, 02-09).
+For a state-space model, the poles are the eigenvalues of $\mathbf{A}$ (15-02), so stability means every eigenvalue of $\mathbf{A}$ has a negative real part (02-08, 02-09).
 
 ### 3.2 A quick necessary condition
 
@@ -95,7 +112,7 @@ $$
 
 This one inequality covers most loop problems with three poles.
 
-> **Going deeper — why counting sign changes counts roots.** The array is a sequence of polynomial divisions, each row encoding the even or odd part of a polynomial of one lower degree. Routh's theorem follows from a continuity argument: as the coefficients vary, a root can cross the imaginary axis only when some first-column entry passes through zero, and each crossing changes the sign-change count by exactly one. Starting from a polynomial whose roots are all in the left half-plane (no sign changes) and deforming it proves the count. A rigorous proof uses Cauchy indices or Sturm sequences (Gantmacher, *The Theory of Matrices*, vol. 2, ch. 15); it is beyond BSEE, and the lab checks the criterion against computed roots instead.
+> **Going deeper — why counting sign changes counts roots.** The array is a sequence of polynomial divisions, each row encoding the even or odd part of a polynomial of one lower degree. Routh's theorem follows from a continuity argument: as the coefficients vary, a root can cross the imaginary axis only when some first-column entry passes through zero, and each crossing changes the sign-change count by the number of roots that cross: one for a real root passing through the origin, two for a complex pair crossing the imaginary axis (Example 15-05.1 shows one negative entry producing two sign changes). Starting from a polynomial whose roots are all in the left half-plane (no sign changes) and deforming it proves the count. A rigorous proof uses Cauchy indices or Sturm sequences (Gantmacher, *The Theory of Matrices*, vol. 2, ch. 15); it is beyond BSEE, and the lab checks the criterion against computed roots instead.
 
 ### 3.4 The two special cases
 

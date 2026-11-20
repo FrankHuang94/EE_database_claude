@@ -78,7 +78,7 @@ $$
 
 Its roots are −91.7 and **−9.14** ± j412.7 s⁻¹, all in the left half-plane. Simulating, the hum's amplitude in the cycle starting at 0.5 s is **0.0088** (0.88%), and it keeps decaying with time constant 1/9.14 = 109 ms.
 
-**(c)** $S = 1/(1 + L)$ now has zeros at $\pm j\omega_0$, because $L$ has poles there: the loop contains a model of the 60 Hz generator, so the steady response to a 60 Hz disturbance is exactly zero. The convergence rate is set by the slow pole pair; a larger $K_r$ converges faster but changes the loop's dynamics more.
+**(c)** $S = 1/(1 + L)$ now has zeros at $\pm j\omega_0$, because $L$ has poles there: the loop contains a model of the 60 Hz generator, so the steady response to a 60 Hz disturbance is exactly zero. The convergence rate is set by the slow pole pair. A larger $K_r$ converges faster only up to a point (about $K_r = 3 \times 10^5$ here): beyond it the real pole moves toward the origin and becomes the slow mode (at $K_r = 10^6$ it is at −13.7 s⁻¹), and the loop's dynamics change more.
 
 ### Solution 15-04.11
 
@@ -86,7 +86,7 @@ A frequency step is a phase ramp, and the loop is type 2, so the steady phase er
 
 ### Solution 15-04.12
 
-The characteristic polynomial is $0.025s^2 + (1 + 50K_p)s + 50K_i = 0.025s^2 + 11s + 50K_i$. A root at −50 requires $0.025 \times 2500 - 550 + 50K_i = 0$, so $K_i$ = **9.75** V/rad. The roots' sum is $-11/0.025 = -440$, so the other is **−390** s⁻¹. $K_v = 50K_i$ = **487.5** s⁻¹. Simulating a 0.01 N·m load step: the peak dip is **1.90** rad/s at **6.04** ms (against 2.13 rad/s at 9.10 ms with $K_i$ = 2), and the recovery time constant drops from 108 ms to 20 ms.
+The characteristic polynomial is $0.025s^2 + (1 + 50K_P)s + 50K_I = 0.025s^2 + 11s + 50K_I$. A root at −50 requires $0.025 \times 2500 - 550 + 50K_I = 0$, so $K_I$ = **9.75** V/rad. The roots' sum is $-11/0.025 = -440$, so the other is **−390** s⁻¹. $K_v = 50K_i$ = **487.5** s⁻¹. Simulating a 0.01 N·m load step: the peak dip is **1.90** rad/s at **6.04** ms (against 2.13 rad/s at 9.10 ms with $K_i$ = 2), and the recovery time constant drops from 108 ms to 20 ms.
 
 ### Solution 15-04.13
 

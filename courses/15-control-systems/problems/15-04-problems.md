@@ -58,7 +58,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 15-04.12 [C]
 
-**Faster recovery from a load step.** In Example 15-04.3's PI speed loop, keep $K_p$ = 0.2 V·s/rad and choose $K_i$ so that the slow closed-loop pole is at −50 s⁻¹. Find $K_i$, the other pole, the new $K_v$, and the peak speed dip under a 0.01 N·m load step and its time.
+**Faster recovery from a load step.** In Example 15-04.3's PI speed loop, keep $K_P$ = 0.2 V·s/rad and choose $K_I$ so that the slow closed-loop pole is at −50 s⁻¹. Find $K_I$, the other pole, the new $K_v$, and the peak speed dip under a 0.01 N·m load step and its time.
 
 ### Problem 15-04.13 [B]
 

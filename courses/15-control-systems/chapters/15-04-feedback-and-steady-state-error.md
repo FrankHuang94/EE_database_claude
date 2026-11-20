@@ -139,13 +139,21 @@ $$
 y_{ss} = \lim_{s\to 0}\frac{P(s)}{1 + C(s)P(s)}\,d .
 $$
 
-Suppose the plant contains an integrator, $P \to \infty$ at DC, but the controller does not. Then $P/(1 + CP) \to 1/C(0)$: the error is $d/C(0)$, not zero, even though the loop is type 1. Suppose instead that the controller contains the integrator, $C \to \infty$. Then $P/(1 + CP) \to 0$. **To reject a constant disturbance, an integrator must sit between the error and the point where the disturbance enters.** A plant integrator downstream of the disturbance simply integrates it. A motor position loop with proportional control therefore holds its target exactly when unloaded, but sags under a constant load torque by $d/K$ (Example 15-04.4).
+Suppose the plant contains an integrator, $P \to \infty$ at DC, but the controller does not. Then $P/(1 + CP) \to 1/C(0)$: the error is $d/C(0)$, not zero, even though the loop is type 1. Suppose instead that the controller contains the integrator, $C \to \infty$. Then $P/(1 + CP) \to 0$. **To reject a constant disturbance, an integrator must sit between the error and the point where the disturbance enters.** A plant integrator downstream of the disturbance simply integrates it. A motor position loop with proportional control therefore holds its target exactly when unloaded, but sags under a constant load torque by $d/C(0)$, the disturbance divided by the controller's gain (Example 15-04.4).
 
 > **Going deeper — the internal model principle.** Why does an integrator remove errors to a constant? Because $1/s$ is the transform of a constant: a loop with $1/s$ in it can generate a constant output from zero error. Generalizing, a loop rejects or tracks a class of signals with zero steady error if and only if the loop contains a model of their generator (Francis and Wonham, 1976): $1/s^2$ for ramps, $1/(s^2 + \omega_0^2)$ for sinusoids of frequency $\omega_0$. Power converters that must cancel a 50 or 60 Hz ripple use resonant controllers built on this principle, and a PLL's two integrators are the model of a phase ramp, that is, a constant frequency.
 
 ### 3.5 Non-unity feedback
 
-If the sensor is $H(s)$ with DC gain $H(0) \ne 1$, the output tracks $r/H(0)$, not $r$. Define the error as the desired output minus the actual output, $e = r/H(0) - y$, and either reduce the loop to an equivalent unity loop or apply the final-value theorem to $E$ directly. Problem 15-04.9 works an example.
+If the sensor is $H(s)$ with DC gain $h = H(0) \ne 1$, the loop drives the *measured* output $hy$ toward $r$, so the output tracks $r/h$, not $r$. Define the error as the desired output minus the actual output, $e = r/h - y$. With $Y = GR/(1 + GH)$,
+
+$$
+E = \frac{R}{h} - \frac{GR}{1 + GH} = \frac{R}{h}\cdot\frac{1 + GH - hG}{1 + GH} = \frac{R/h}{1 + L_e}, \qquad L_e(s) = \frac{hG(s)}{1 + G(s)\,[H(s) - h]} ,
+$$
+
+as you can check by substituting $L_e$ back. So the non-unity loop behaves like a unity loop with reference $r/h$ and loop gain $L_e$, and **the system type and error constants must be read from $L_e$**. For a sensor that is a pure gain, $H = h$, the bracket vanishes and $L_e = hG = GH$. Problem 15-04.7 works this case: $G = 10/(s + 1)$ and $h$ = 0.5 give $L_e = 5/(s + 1)$, type 0 with $K_p$ = 5, so the output settles $1/(1 + 5)$ = 16.7% short of the desired $r/h$.
+
+A sensor with dynamics changes the constants. Take $G = 4/[s(s + 2)]$ (type 1, $\lim sG$ = 2) and a sensor lag $H = 0.5/(1 + 0.05s)$. Then $G(H - h) = -hG\,0.05s/(1 + 0.05s) \to -0.5 \times 0.05 \times 2 = -0.05$ at DC, so $K_v$ of $L_e$ is $0.5 \times 2/(1 - 0.05)$ = 1.053, not the 1 that $GH$ suggests: the measured output lags the true output, so the true output runs slightly ahead of where the loop thinks it is. A unit ramp $r$ (desired output $2t$) leaves a steady error of $(1/h)/K_v = 2/1.053$ = 1.90.
 
 ### 3.6 The costs of high loop gain
 
@@ -188,15 +196,15 @@ One pole at the origin makes the loop **type 1**: $K_p = \infty$, $K_v = \lim sL
 
 ### Example 15-04.3 · Holding a motor's speed under load (tier B)
 
-**Setup.** The motor of Problem 15-02.8 ($K$ = 0.02 V·s/rad, $R$ = 1 Ω, $\tau_m$ = 25 ms) obeys $\Omega = \dfrac{V - (R/K)T_L}{K(\tau_ms + 1)}$, so a load torque $T_L$ acts as an input disturbance of $-(R/K)T_L$ = −50 V per N·m. A PI controller sets $V = K_pE + K_i\int E\,dt$ with $K_p$ = 0.2 V·s/rad and $K_i$ = 2 V/rad. Find the closed-loop poles, the response to a 0.01 N·m load step, and the error when the speed reference ramps at 100 rad/s².
+**Setup.** The motor of Problem 15-02.8 ($K_m$ = 0.02 V·s/rad, $R$ = 1 Ω, $\tau_m$ = 25 ms) obeys $\Omega = \dfrac{V - (R/K_m)T_L}{K_m(\tau_ms + 1)}$, so a load torque $T_L$ acts as an input disturbance of $-(R/K_m)T_L$ = −50 V per N·m. A PI controller sets $V = K_PE + K_I\int E\,dt$ with $K_P$ = 0.2 V·s/rad and $K_I$ = 2 V/rad. (Capital subscripts mark the controller's proportional and integral gains, to keep them apart from the position error constant $K_p$ of §3.3; the motor constant is written $K_m$.) Find the closed-loop poles, the response to a 0.01 N·m load step, and the error when the speed reference ramps at 100 rad/s².
 
-**Solution.** $C = (K_ps + K_i)/s$ and $P = 50/(0.025s + 1)$, so the characteristic equation $s(0.025s + 1) + 50(K_ps + K_i) = 0$ is $0.025s^2 + 11s + 100 = 0$, with roots **−9.29** and **−430.7** s⁻¹.
+**Solution.** $C = (K_Ps + K_I)/s$ and $P = 50/(0.025s + 1)$, so the characteristic equation $s(0.025s + 1) + 50(K_Ps + K_I) = 0$ is $0.025s^2 + 11s + 100 = 0$, with roots **−9.29** and **−430.7** s⁻¹.
 
 The load enters as an input disturbance $d_i = -50T_L$ volts, so the speed change is $PS\,d_i$, and at DC $P/(1 + CP) \to 0$ because $C \to \infty$. Simulating: the speed dips by at most **2.13** rad/s, at **9.10** ms, then returns to the reference with the slow pole's time constant, $1/9.29$ s = **108** ms. The steady droop is **0**, against 2.27 rad/s with proportional control alone (Problem 15-02.8).
 
-The loop is type 1 with $K_v = \lim sCP = 50K_i$ = **100** s⁻¹, so a reference ramp of 100 rad/s² leaves a speed lag of 100/100 = **1** rad/s.
+The loop is type 1 with $K_v = \lim sCP = 50K_I$ = **100** s⁻¹, so a reference ramp of 100 rad/s² leaves a speed lag of 100/100 = **1** rad/s.
 
-**Units check.** $K_i$ in V/rad times 50 (rad/s)/V gives $K_v$ in 1/s; (rad/s²)/(1/s) = rad/s.
+**Units check.** $K_I$ in V/rad times 50 (rad/s)/V gives $K_v$ in 1/s; (rad/s²)/(1/s) = rad/s.
 
 **Sanity check.** The integral action does nothing in the first few milliseconds, so the peak dip (2.13 rad/s) is close to the proportional loop's steady droop. Integral action does not prevent the initial dip; it removes the lasting error.
 
@@ -243,7 +251,7 @@ $$
 - At 1 kHz: $L = 10^4/(1 + j100)$, so $\lvert L\rvert$ = **100.0** and $\lvert S\rvert$ = **0.0100**. But the magnitude of $T\beta$ is off by only **−0.0150**%, while its phase is **−0.573**°.
 - At 10 kHz: $\lvert L\rvert$ = **10.00**, $\lvert S\rvert$ = **0.0995**, magnitude error **−0.506**%, phase **−5.71**°.
 
-The loop gain is almost purely imaginary here ($L \approx -j100$), so $1 + L$ has nearly the magnitude of $L$ itself, and the 1% "error" $\lvert S\rvert$ appears mainly as phase shift.
+The loop gain is almost purely imaginary here ($L \approx -j100$), so $1 + L$ has nearly the magnitude of $L$ itself, and the 1% "error" $\lvert S\rvert$ appears mainly as phase shift. The small magnitude error has two parts: about 0.010% from the finite DC loop gain, $1/(1 + A_0\beta)$, an in-phase error present at every frequency; and about 0.005% from the quadrature term, $1/(2\lvert L\rvert^2)$. At 10 kHz the quadrature part dominates (0.5%).
 
 **Units check.** All ratios; the phase in degrees.
 
@@ -326,7 +334,7 @@ The lab, [labs/15-04-lab](../labs/15-04-lab/README.md), provides `steady.py`: `s
 | Parabola error, type 2 | $1/K_a$ | §3.3 |
 | Input-disturbance offset with proportional control and a plant integrator | $d/C(0)$ | §3.4 |
 | PLL phase error during a frequency sweep $\alpha$ (type 2) | $\alpha/\omega_n^2$ | Example 15-04.5 |
-| Op-amp closed-loop error at loop gain $\lvert L\rvert$ with $L$ near −90° | about $1/\lvert L\rvert$ as a complex error, mostly phase; the magnitude error is of order $1/\lvert L\rvert^2$ | Example 15-04.6 |
+| Op-amp closed-loop error at loop gain $\lvert L\rvert$ with $L$ near −90° | about $1/\lvert L\rvert$ as a complex error, mostly phase; the quadrature part of the magnitude error is about $1/(2\lvert L\rvert^2)$, plus the in-phase DC error $1/(1 + A_0\beta)$ | Example 15-04.6 |
 
 ## 8. Common mistakes
 
@@ -400,7 +408,7 @@ The number of poles of $L(s)$ at the origin. Type 0 has infinite ramp error, typ
 
 <details><summary>Answer</summary>
 
-A constant load needs a constant drive. The plant's integrator sits after the disturbance and integrates it; the controller produces a constant drive only from a constant error, $d/K$. An integrator in the controller removes the error.
+A constant load needs a constant drive. The plant's integrator sits after the disturbance and integrates it; the controller produces a constant drive only from a constant error, $d/C(0)$. An integrator in the controller removes the error.
 
 </details>
 
@@ -416,7 +424,7 @@ The loop needs a model of the disturbance's generator, poles at $\pm j2\pi \cdot
 
 <details><summary>Answer</summary>
 
-$T\beta = 1 - S$ with $S \approx 1/L \approx j/\lvert L\rvert$, a small term in quadrature with 1. It rotates $T\beta$ by about $1/\lvert L\rvert$ radians but changes its magnitude only by a second-order amount, of order $1/\lvert L\rvert^2$ (0.015% against $\lvert S\rvert$ = 1% in Example 15-04.6).
+$T\beta = 1 - S$ with $S \approx 1/L \approx j/\lvert L\rvert$, a small term in quadrature with 1. It rotates $T\beta$ by about $1/\lvert L\rvert$ radians but changes its magnitude only by a second-order amount, about $1/(2\lvert L\rvert^2)$. In Example 15-04.6 that is 0.005% at 1 kHz; with the 0.010% in-phase error from the finite DC loop gain, the total is 0.015%, against $\lvert S\rvert$ = 1%.
 
 </details>
 
@@ -424,7 +432,7 @@ $T\beta = 1 - S$ with $S \approx 1/L \approx j/\lvert L\rvert$, a small term in 
 
 <details><summary>Answer</summary>
 
-When $sE(s)$ has poles in the right half-plane or on the imaginary axis (other than a simple one at the origin), that is, when the closed loop is unstable or oscillating. The theorem then returns a number for an error that never settles.
+The theorem is valid only when every pole of $sE(s)$ lies in the open left half-plane ($E$ itself may have one simple pole at the origin, which the factor $s$ cancels). It gives a wrong answer when $sE(s)$ has poles in the right half-plane or on the imaginary axis, that is, when the closed loop is unstable or oscillating. The theorem then returns a number for an error that never settles.
 
 </details>
 

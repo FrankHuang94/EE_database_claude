@@ -20,8 +20,8 @@ Read §3 of the chapter. `steady.py` computes the type and the error constants f
 
 1. **Error table (Part 1).** For the three loops of Problem 15-04.2 and Example 15-04.2, print type, $K_p$, $K_v$, $K_a$ and predicted errors, then simulate step, ramp and parabola errors. *Predict first:* which entries are infinite?
 2. **Where the integrator sits (Part 2).** Simulate Example 15-04.4's loop with a step disturbance at the plant input, with proportional and with PI control, and run `disturbance.cir`. *Predict first:* the steady offset in each case.
-3. **Speed under load (Part 3).** Simulate Example 15-04.3's motor with a 0.01 N·m load step for $K_i$ = 0 (proportional only), 2 and 9.75 V/rad.
-4. **Chirps and hum (Part 4).** Drive Example 15-04.5's PLL with a frequency step and a frequency ramp, and Problem 15-04.10's loop with a 60 Hz output disturbance, with and without the resonant term.
+3. **Speed under load (Part 3).** Simulate Example 15-04.3's motor with a 0.01 N·m load step for $K_I$ = 0 (proportional only), 2 and 9.75 V/rad.
+4. **Chirps and hum (Part 4).** Drive Example 15-04.5's PLL with a frequency step and a frequency ramp, then a type-3 variant with one more integrator (and a zero at −5 × 10⁴ s⁻¹ to keep it stable), and Problem 15-04.10's loop with a 60 Hz output disturbance, with and without the resonant term.
 
 ## Expected results
 
@@ -30,7 +30,7 @@ Read §3 of the chapter. `steady.py` computes the type and the error constants f
 | 1 | Simulated errors | equal to the table's predictions; ∞ entries grow without bound |
 | 2 | Position offset under a 0.5 V input disturbance | 0.0500 rad (proportional) and 0 (PI); peaks 0.0582 rad and 0.0505 rad |
 | 3 | Speed after a 0.01 N·m load step | steady droop 2.27 rad/s, then 0 with PI; peak dips 2.13 and 1.90 rad/s |
-| 4 | PLL and hum | zero steady phase error to a frequency step, 0.628 rad during the chirp; hum removed by the resonant term |
+| 4 | PLL and hum | zero steady phase error to a frequency step, 0.628 rad during the chirp; the type-3 variant's chirp error decays to zero (internal model of a parabola); hum removed by the resonant term |
 
 ### Lab answer key
 

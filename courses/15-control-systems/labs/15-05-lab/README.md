@@ -60,4 +60,4 @@ Read §3 of the chapter. `routh.py` builds the array row by row as in §3.3, sub
 
 ## Optional hardware
 
-Build the three-stage ring with a 74HC04 hex inverter (three of its gates) and observe the oscillation on an oscilloscope; then add an RC network at each stage's output and watch the frequency fall toward $\sqrt3/(2\pi RC)$ as the RC delay dominates the gate delay.
+Build the three-stage ring with a 74HC04 hex inverter (three of its gates) and observe the oscillation on an oscilloscope; then add an RC network at each stage's output and watch the frequency fall as the RC delay comes to dominate the gate delay. Expect about $1/(2.9RC)$, not the small-signal $\sqrt3/(2\pi RC) \approx 1/(3.6RC)$: the gates switch hard, so each stage's delay is the time its RC node takes to cross mid-rail from where it was left half a period earlier (about $0.48RC$), rather than the phase shift of a soft-limiting linear stage.

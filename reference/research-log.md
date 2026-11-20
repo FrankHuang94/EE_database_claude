@@ -2355,6 +2355,7 @@ R&D % = R&D ÷ revenue.
 - Front page: "Fast settling time: OPA627: 550ns to 0.01%; OPA637: 450ns to 0.01%". Packages: SOIC-8 (D) and TO-99 (LMC).
 - Section 5.6, OPA627BU and OPA627AU (SOIC): gain-bandwidth 45 MHz typical (gain = 1 V/V, C_L = 30 pF); slew rate 150 V/µs typical (10 V step, gain = −1 V/V); settling time (10 V step, gain = −1 V/V, C_L = 30 pF) 120 ns to 0.01% and 110 ns to 0.1%, typical.
 - Section 5.7, OPA627AM, BM and SM (TO-99): gain-bandwidth 16 MHz typical; slew rate 55 V/µs typical (40 V/µs minimum); settling time (10 V step, gain = −1 V/V) 550 ns to 0.01% and 450 ns to 0.1%, typical.
+- Front page and description (re-read 20 Nov 2026 for the Course 15 audit): "OPA637: Stable in gain ≥ 5"; "The OPA627 is unity-gain stable. The OPA637 is stable in gains ≥ 5."
 
 ## R-231 · Linux power-allocator thermal governor (PID form and defaults)
 

@@ -62,7 +62,7 @@ $$
 
 With $\lvert w\rvert^2 = 24$, $24/w = \bar w$, so this equals $w + \bar w - 10 = 2\rho\cos\phi - 10$, which is real. It is negative because $2\rho\cos\phi \le 2\sqrt{24}$ = 9.80 < 10. So every point of the circle of radius $\sqrt{24}$ = **4.899** about −6 is on the locus.
 
-**(b)** The ray from the origin tangent to the circle makes angle $\theta$ with $\sin\theta = 4.899/6$, so $\zeta_{min} = \cos\theta$ = **0.577**. The tangent point is at distance $6\cos\theta$ = 4.899 from the origin: $s_0 = -2 + j2.828$. The gain there is $\lvert s_0\rvert\,\lvert s_0 + 2\rvert/\lvert s_0 + 6\rvert$ = **2**.
+**(b)** The ray from the origin tangent to the circle makes angle $\theta$ with $\sin\theta = 4.899/6$, so $\zeta_{min} = \cos\theta$ = **0.577**. The tangent point is at distance $6\cos\theta = \sqrt{36 - 24}$ = **3.464** from the origin: $s_0 = -2 + j2.828$. The gain there is $\lvert s_0\rvert\,\lvert s_0 + 2\rvert/\lvert s_0 + 6\rvert$ = **2**.
 
 ### Solution 15-06.10
 
@@ -76,7 +76,7 @@ $$
 10^4\beta < \frac{c_2c_1}{c_3} - 1 \;\Rightarrow\; \beta < \mathbf{0.111} ,
 $$
 
-so the closed-loop gain $1/\beta$ must be at least **8.99**. At the boundary $\omega = \sqrt{c_1/c_3}$ = **3.18 × 10⁶** rad/s. Such an amplifier is sold as "decompensated": it trades unity-gain stability for more bandwidth, and is specified as stable only above a minimum gain, as the OPA637 is at gains of 5 or more (R-230).
+so the closed-loop gain $1/\beta$ must be at least **8.99**. At the boundary $\omega = \sqrt{c_1/c_3}$ = **3.18 × 10⁶** rad/s. Such an amplifier is sold as "decompensated": it trades unity-gain stability for more bandwidth, and is specified as stable only above a minimum gain: the OPA637's datasheet states "stable in gain ≥ 5" (TI SBOS165C, as of Nov 2026) **[Established]** [R-230]. A datasheet's minimum gain is chosen to leave adequate phase margin, whereas the 8.99 found here is the bare boundary of oscillation for this illustrative model, so the two numbers are not directly comparable.
 
 ### Solution 15-06.12
 
@@ -84,7 +84,7 @@ $\tau_ps^3 + s^2 + K + \tau_z(Ks)$: $D(s) = \tau_ps^3 + s^2 + K$ and $N(s) = Ks$
 
 ### Solution 15-06.13
 
-At a complex zero $z_k$, the arrival angle is $\theta_{arr} = 180° + \sum_j\angle(z_k - p_j) - \sum_{i \ne k}\angle(z_k - z_i)$. From $z_k = -1 + j2$: to the pole at 0, $\angle(-1 + j2)$ = 116.57°; to the pole at −4, $\angle(3 + j2)$ = 33.69°; to the other zero, 90°. So $\theta_{arr} = 180 + 116.57 + 33.69 - 90 = 240.26°$, that is **−119.7**°: the branch arrives from below and to the right of the zero.
+At a complex zero $z_k$, the arrival angle is $\theta_{arr} = 180° + \sum_j\angle(z_k - p_j) - \sum_{i \ne k}\angle(z_k - z_i)$. From $z_k = -1 + j2$: to the pole at 0, $\angle(-1 + j2)$ = 116.57°; to the pole at −4, $\angle(3 + j2)$ = 33.69°; to the other zero, 90°. So $\theta_{arr} = 180 + 116.57 + 33.69 - 90 = 240.26°$, that is **−119.7**°: the branch arrives from below and to the left of the zero (an angle of 240° points down and left), travelling up and to the right as $K$ grows.
 
 ### Solution 15-06.14
 
@@ -119,6 +119,7 @@ The locus is the vertical line $\mathrm{Re}\,s = -2$ above $K$ = 1. For $\zeta$ 
 | 15-06.8b | K | 15 | 1/s³ |
 | 15-06.9a | circle radius | 4.899 | 1/s |
 | 15-06.9b | smallest ζ | 0.577 | — |
+| 15-06.9d | distance of the tangent point from the origin | 3.464 | 1/s |
 | 15-06.9c | K at the tangent point | 2 | 1/s |
 | 15-06.10a | instability threshold abs K | 2 | 1/s² |
 | 15-06.11a | largest β | 0.111 | — |

@@ -93,7 +93,7 @@ The first column is $+, +, +, -, +$: **2** right-half-plane roots. (They are $0.
 
 **(a)** Substitute $s = z - 1$: $(z - 1)^3 + 6(z - 1)^2 + 8(z - 1) + K = z^3 + 3z^2 - z + (K - 3)$. The $z$ coefficient is **−1** for every $K$, so the necessary condition fails: no gain puts all poles left of −1.
 
-**(b)** The poles at 0 and −2 move toward each other as $K$ rises, meet at the root of $d[s(s + 2)(s + 4)]/ds = 3s^2 + 12s + 8 = 0$ nearest the origin, $s$ = **−0.845**, and then leave the real axis moving right (15-06). The best guaranteed decay rate is therefore $\sigma$ = 0.845 s⁻¹, at $K = 0.845 \times 1.155 \times 3.155$ = **3.08**. Proportional gain alone cannot make this loop settle faster than about $4/0.845$ = 4.7 s.
+**(b)** Repeat (a) with a general shift $s = z - \sigma$. The $z$ coefficient of the shifted polynomial is the derivative of $p(s) = s^3 + 6s^2 + 8s + K$ evaluated at $-\sigma$, namely $3\sigma^2 - 12\sigma + 8$, and it does not depend on $K$. The necessary condition needs it positive, so $\sigma < 2 - 2/\sqrt3$ = **0.845** s⁻¹ (the other root, 3.15, is excluded because the $z^2$ coefficient $6 - 3\sigma$ must also be positive). No gain can put every pole left of −0.845. The bound is reached at the gain that puts a double pole there: $K = -p_0(-0.845)$ with $p_0(s) = s(s + 2)(s + 4)$, that is $0.845 \times 1.155 \times 3.155$ = **3.08**. (In root-locus language, 15-06, −0.845 is the breakaway point where the poles from 0 and −2 meet before leaving the real axis.) Proportional gain alone cannot make this loop settle faster than about $4/0.845$ = 4.7 s.
 
 ### Solution 15-05.9
 
@@ -165,7 +165,7 @@ With $U = 2/(s^2 + 4)$, $Y = 2/(s^2 + 4)^2$. Using the transform pair $\mathcal{
 | 15-05.7b | minimum stage gain | 1.236 | — |
 | 15-05.7c | oscillation frequency | 727 | MHz |
 | 15-05.8a | z coefficient after the shift | −1 | 1/s |
-| 15-05.8b | best decay rate (breakaway) | −0.845 | 1/s |
+| 15-05.8b | best guaranteed decay rate σ | 0.845 | 1/s |
 | 15-05.8c | K at the breakaway | 3.08 | 1/s³ |
 | 15-05.9a | largest stable L0 | 167 | — |
 | 15-05.9b | boundary frequency | 161.5 | kHz |

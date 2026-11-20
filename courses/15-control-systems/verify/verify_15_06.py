@@ -16,7 +16,7 @@ from pathlib import Path
 
 import numpy as np
 import sympy as sp
-from scipy.optimize import brentq
+from scipy.optimize import brentq, minimize_scalar
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -133,8 +133,25 @@ v.assert_true("Ex 5: real meeting points need tau_z/tau_p > 9",
 v.check("Ex 15-06.6a", step_specs([8], [1, 4, 8], 10)["settle"])
 N6, D6 = [1, 8], [1, 4, 0]
 v.check("Ex 15-06.6b", math.sqrt(8 * 4))
-s6 = complex(-4, 4)
+def min_zeta(N, D, k_lo, k_hi):
+    """Brute-force search over K for the complex pair's smallest damping; returns (zeta, K, root)."""
+    def z_of(k):
+        r = roots_at(N, D, k)
+        c = r[np.argmax(r.imag)]
+        return -c.real / abs(c) if c.imag > 1e-9 else 1.0
+    ks = np.linspace(k_lo, k_hi, 4001)
+    zs = [z_of(k) for k in ks]
+    i = int(np.argmin(zs))
+    res = minimize_scalar(z_of, bounds=(ks[max(i - 1, 0)], ks[min(i + 1, len(ks) - 1)]), method="bounded",
+                          options={"xatol": 1e-12})
+    r = roots_at(N, D, res.x)
+    return res.fun, res.x, r[np.argmax(r.imag)]
+
+
+z6, k6min, s6 = min_zeta([1, 8], [1, 4, 0], 0.5, 60)
+v.assert_true("Ex 6: brute-force minimum damping is 0.707 at K = 4", abs(z6 - 1 / math.sqrt(2)) < 1e-6 and abs(k6min - 4) < 1e-4)
 v.check("Ex 15-06.6c", s6.real)
+s6 = complex(round(s6.real, 6), round(s6.imag, 6))
 K6 = rl.gain_at(N6, D6, s6)
 v.check("Ex 15-06.6d", K6)
 v.assert_true("Ex 6: double root of zeta(K) at K = 4 (tangency)",
@@ -209,10 +226,11 @@ rho = math.sqrt(24)
 v.check("15-06.9a", rho)
 v.assert_true("P9: angle condition holds around the circle",
               all(rl.on_locus(N9, D9, -6 + rho * complex(math.cos(ph), math.sin(ph))) for ph in np.linspace(0.3, 2.8, 12)))
-th = math.asin(rho / 6)
-v.check("15-06.9b", math.cos(th))
-s9 = 6 * math.cos(th) * complex(-math.cos(th), math.sin(th))
-v.check("15-06.9c", rl.gain_at(N9, D9, s9))
+z9, k9, s9 = min_zeta(N9, D9, 0.3, 40)
+v.check("15-06.9b", z9)
+v.assert_true("P9: tangent-ray construction agrees", abs(z9 - math.cos(math.asin(rho / 6))) < 1e-6)
+v.check("15-06.9d", abs(s9))
+v.check("15-06.9c", k9)
 
 # ---------------------------------------------------------------------------------------- Problem 10
 Kneg = brentq(lambda k: np.max(np.roots([1, 3, 2 - k]).real), 0.1, 5)
@@ -243,6 +261,7 @@ rr = roots_at(N13, D13, 1e7)
 c = rr[np.argmin(abs(rr - zk))]
 v.assert_true("P13: numerical arrival direction (a high-gain root sits at angle arr from the zero)",
               abs(math.degrees(np.angle(c - zk)) - arr) < 0.01)
+v.assert_true("P13: the branch arrives from below and to the left", (c - zk).real < 0 and (c - zk).imag < 0)
 
 # ---------------------------------------------------------------------------------------- Problem 14
 s14 = complex(-2, 2 * math.tan(math.radians(60)))
@@ -251,7 +270,11 @@ v.check("15-06.14a", K14)
 v.check("15-06.14b", 1 / (1 + K14 / 3))
 
 # ---------------------------------------------------------------------------------------- Lab
-v.check("Lab 15-06.a", (-6 + 8) / 2)
+ang8, cen8 = rl.asymptotes([1, 8], [1, 6, 8, 0])
+v.assert_true("Lab a: lab asymptotes() agrees with (sum p - sum z)/(n - m)", abs(cen8 - (-6 + 8) / 2) < 1e-12 and ang8 == [90.0, 270.0])
+# independent: the high-gain complex roots of s^3 + 6s^2 + (8 + K)s + 8K approach Re s = centroid
+rK = np.roots([1, 6, 8 + 1e8, 8e8])
+v.check("Lab 15-06.a", float(np.mean([c.real for c in rK if abs(c.imag) > 1])))
 Kc, wc = crossing([1, 8], [1, 6, 8, 0], 5, 100)
 v.check("Lab 15-06.b", Kc)
 v.check("Lab 15-06.c", wc)
