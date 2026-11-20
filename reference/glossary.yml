@@ -4596,3 +4596,35 @@
 - term: Nyquist frequency
   definition: "Half the symbol (or sample) rate: the highest frequency in a symbol pattern alternating every symbol, the reference frequency at which link channels are specified, and the limit of unambiguous frequency for sampled signals."
   chapter: "11-06"
+# ---------------------------------------------------------------- 11-07
+- term: Discrete-time Fourier transform (DTFT)
+  definition: "X(e^{jω}) = Σ x[n] e^{−jωn}, with inverse x[n] = (1/2π)∫ over one period of X(e^{jω}) e^{jωn} dω: the spectrum of a sequence, a continuous function of ω that is periodic with period 2π."
+  chapter: "11-07"
+  see_also: [Fourier transform, Discrete-time frequency]
+- term: Dirichlet kernel
+  definition: "The DTFT of a length-N rectangular sequence, e^{−jω(N−1)/2} sin(Nω/2)/sin(ω/2): a main lobe of null-to-null width 4π/N with sidelobes about 13 dB down; it is what truncation convolves every spectrum with."
+  chapter: "11-07"
+  see_also: [Window function]
+- term: Linear phase
+  definition: "A frequency response whose phase is −ωτ (plus a constant or sign flips at zeros), so every frequency is delayed by the same τ; a real FIR filter with symmetric or antisymmetric taps has it exactly, with τ = (N − 1)/2 samples."
+  chapter: "11-07"
+  see_also: [Group delay, Distortionless transmission]
+- term: Window function
+  definition: "A taper w[n] multiplying a sequence before it is truncated or transformed (rectangular, Hamming, Hann, Kaiser, ...); tapering lowers the sidelobes of the spectrum at the price of a wider main lobe."
+  chapter: "11-07"
+  see_also: [Dirichlet kernel, Frequency resolution]
+- term: Transition band
+  definition: "The frequency range between a filter's passband and stopband; in a windowed FIR design its width shrinks in proportion to 1/N, while the ripple is set by the window's shape."
+  chapter: "11-07"
+- term: Frequency resolution
+  definition: "The smallest separation at which two spectral components appear as distinct peaks; for a record of duration T it is about 1/T hertz with a rectangular window, and roughly twice that with a Hamming window."
+  chapter: "11-07"
+  see_also: [Window function, Zero-padding]
+- term: Discrete Fourier transform (DFT)
+  definition: "X[k] = Σ_{n=0}^{N−1} x[n] e^{−j2πkn/N}: N equally spaced samples of the DTFT of a length-N sequence, computed in N log N operations by the FFT."
+  chapter: "11-07"
+  see_also: [Discrete-time Fourier transform (DTFT), Zero-padding]
+- term: Zero-padding
+  definition: "Appending zeros to a sequence before a DFT, which samples the same DTFT more finely; it interpolates the spectrum but does not improve frequency resolution, which only a longer record does."
+  chapter: "11-07"
+  see_also: [Frequency resolution]
