@@ -225,6 +225,8 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-217 | AMBA AXI Issue L and CXL 4.0 | Nov 2026 |
 | R-218 | RISC-V RVWMO, Ztso and atomics | Nov 2026 |
 | R-219 | x86-TSO (Sewell et al., CACM 2010) | Nov 2026 |
+| R-220 | NVIDIA H100 (Hopper) specifications | Nov 2026 |
+| R-221 | NVIDIA Blackwell systems (GB200 NVL72, DGX B200) | Nov 2026 |
 
 ---
 
@@ -2248,3 +2250,19 @@ R&D % = R&D ÷ revenue.
 - P. Sewell, S. Sarkar, S. Owens, F. Zappa Nardelli and M. O. Myreen, "x86-TSO: A Rigorous and Usable Programmer's Model for x86 Multiprocessors", *Communications of the ACM* 53(7), July 2010. [Author version (PDF)](https://www.cl.cam.ac.uk/~pes20/weakmemory/cacm.pdf)
 - **SB:** for x86, with x and y initially 0, "if two processors respectively write 1 to x and y and then read from y and x …, it is possible for both to read 0 in the same execution … this result cannot arise from any interleaving"; "Allowed Final State: Proc 0:EAX=0 ∧ Proc 1:EBX=0"; explained "as a visible consequence of store buffering".
 - **The model:** shared memory, "a global lock to indicate when a particular hardware thread has exclusive access to memory, and one store buffer per hardware thread"; "The store buffers are FIFO and a reading thread must read its most recent buffered write, if there is one, to that address; otherwise reads are satisfied from shared memory"; "An MFENCE instruction flushes the store buffer of that thread"; a LOCK'd instruction takes the global lock and flushes the buffer at its end.
+
+## R-220 · NVIDIA H100 (Hopper) specifications
+
+*Read on 20 Nov 2026 by this session's fact-finding pass (quotes recorded verbatim at the time): the product page and the Hopper blog are primary; the architecture whitepaper (V1.02) was read only as a third-party mirror and carries preliminary figures, so its performance numbers are not used. Tagged [Established] as vendor specifications.*
+
+- **Product page, H100 SXM** ("Product Specifications"): FP64 34 TFLOPS; FP64 Tensor 67; FP32 67; TF32 Tensor 989*; BF16 and FP16 Tensor 1,979*; FP8 Tensor 3,958*; INT8 3,958 TOPS*; "GPU Memory 80GB"; "GPU Memory Bandwidth 3.35TB/s"; "Max Thermal Design Power (TDP) Up to 700W (configurable)"; NVLink 900 GB/s; PCIe Gen5 128 GB/s; footnote "* With sparsity". [NVIDIA H100](https://www.nvidia.com/en-us/data-center/h100/)
+- **Hopper blog** (NVIDIA Technical Blog, "NVIDIA Hopper Architecture In-Depth", 22 Mar 2022): H100 SXM5 has "8 GPCs, 66 TPCs, 2 SMs/TPC, 132 SMs per GPU; 128 FP32 CUDA Cores per SM, 16896 FP32 CUDA Cores per GPU; 4 fourth-generation Tensor Cores per SM, 528 per GPU; 80 GB HBM3, 5 HBM3 stacks, 10 512-bit memory controllers; 50 MB L2 cache"; each SM has 256 KB of combined L1 cache and shared memory; GH100 is built on TSMC 4N with 80 billion transistors on 814 mm²; "The Sparsity feature exploits fine-grained structured sparsity in deep learning networks, doubling the performance of standard Tensor Core operations." [Hopper In-Depth](https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/)
+- **Derived (not stated by NVIDIA):** dense BF16/FP16 Tensor ≈ 989.5 TFLOPS (half the sparse figure); the FP32 rate implies a boost clock of about 67 × 10¹² / (16,896 × 2) ≈ 1.98 GHz. NVIDIA's product page states no clock.
+
+## R-221 · NVIDIA Blackwell systems (GB200 NVL72, DGX B200)
+
+*Read on 20 Nov 2026 by this session's fact-finding pass from NVIDIA's product pages (primary); tagged [Established] as vendor specifications. No standalone per-GPU B200 power figure was found on these pages.*
+
+- **GB200 NVL72** (specifications table): a GB200 superchip (1 Grace CPU, 2 Blackwell GPUs) lists NVFP4 Tensor 40 PFLOPS sparse / 20 dense, FP8/FP6 20 PFLOPS and FP16/BF16 10 PFLOPS (sparse; "Dense is one-half sparse spec shown"), and HBM3E "372 GB, 16 TB/s"; the 72-GPU rack has 13.4 TB of HBM3E at 576 TB/s. [GB200 NVL72](https://www.nvidia.com/en-us/data-center/gb200-nvl72/)
+- **DGX B200** (8 Blackwell GPUs): 1,440 GB of HBM3e at 64 TB/s in total; FP4 Tensor 144 PFLOPS sparse / 72 dense; maximum system power about 14.3 kW. [DGX B200](https://www.nvidia.com/en-us/data-center/dgx-b200/)
+- **Derived per GPU:** from the rack, 13.4 TB / 72 ≈ 186 GB and 576 / 72 = 8 TB/s; from DGX B200, 1,440 / 8 = 180 GB and 64 / 8 = 8 TB/s. The two capacity figures differ (186 against 180 GB), presumably by product configuration; the bandwidth agrees.

@@ -40,7 +40,7 @@ How processors and accelerators are built and why they perform the way they do: 
 | [14-10 · Virtual Memory, TLBs and the OS Interface](chapters/14-10-virtual-memory.md) | 7 | ✅ verified | [problems](problems/14-10-problems.md) · [solutions](solutions/14-10-solutions.md) · [lab](labs/14-10-lab/README.md) · [verify](verify/verify_14_10.py) |
 | [14-11 · I/O, Buses and Interconnect](chapters/14-11-io-buses-and-interconnect.md) | 5 | ✅ verified | [problems](problems/14-11-problems.md) · [solutions](solutions/14-11-solutions.md) · [lab](labs/14-11-lab/README.md) · [verify](verify/verify_14_11.py) |
 | [14-12 · Multicore, Coherence and Memory Consistency](chapters/14-12-multicore-coherence-consistency.md) | 8 | ✅ verified | [problems](problems/14-12-problems.md) · [solutions](solutions/14-12-solutions.md) · [lab](labs/14-12-lab/README.md) · [verify](verify/verify_14_12.py) |
-| [14-13 · GPUs and SIMT](chapters/14-13-gpus-and-simt.md) | 7 | ⬜ planned | — |
+| [14-13 · GPUs and SIMT](chapters/14-13-gpus-and-simt.md) | 7 | ✅ verified | [problems](problems/14-13-problems.md) · [solutions](solutions/14-13-solutions.md) · [lab](labs/14-13-lab/README.md) · [verify](verify/verify_14_13.py) |
 | [14-14 · AI Accelerators: Systolic Arrays, Dataflow and Low Precision](chapters/14-14-ai-accelerators.md) | 9 | ⬜ planned | — |
 | [14-15 · The Roofline Model, Benchmarks and How They Are Gamed](chapters/14-15-roofline-and-benchmarks.md) | 4 | ⬜ planned | — |
 
