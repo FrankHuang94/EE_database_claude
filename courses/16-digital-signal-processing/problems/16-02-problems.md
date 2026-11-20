@@ -60,6 +60,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Decomposing a system.** Write $H(z) = (1 - 3z^{-1})/(1 - 0.5z^{-1})$ as $H_{min}(z)\,H_{ap}(z)$. Give the group delay of $H$, $H_{min}$ and $H_{ap}$ at DC and at $\pi$, and confirm that they add.
 
+### Problem 16-02.13 [B]
+
+**Group delay of a notch.** Take the 50 Hz notch of Example 16-02.2 with $r$ = 0.98: zeros at $e^{\pm j0.1\pi}$, poles at $0.98e^{\pm j0.1\pi}$. (a) Show that a zero on the unit circle contributes exactly 1/2 sample of group delay at every frequency except its own angle. (b) Find the pole pair's group delay at $\omega_0 = 0.1\pi$, and compare it with the single-pole rule $\rho/(1 - \rho)$. (c) Find the notch's total group delay at DC and at 0.3 rad/sample. (d) Why is the delay large only near $\omega_0$?
+
 ---
 
 ## Objective coverage
@@ -68,7 +72,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Frequency response from poles and zeros | 1, 2, 3 |
 | 2. Notches, resonators and DC blockers | 1, 4, 5, 6 |
-| 3. Group delay and linear phase | 7, 8, 9 |
+| 3. Group delay and linear phase | 7, 8, 9, 13 |
 | 4. Minimum phase and the min/all-pass decomposition | 9, 12 |
 | 5. First-order all-pass design | 10, 12 |
 | 6. Inverse systems and equalizers | 3, 11 |

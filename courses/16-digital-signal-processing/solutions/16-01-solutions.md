@@ -136,6 +136,8 @@ The outputs hold from $n = 2$ on, once the filter's memory is full of the sinuso
 
 (c) With 64-sample blocks the buffering adds **8.0** ms, for a total of **11.97** ms: over budget. Larger blocks improve processor efficiency but cost latency directly.
 
+(d) Processor: $7.104 \times 10^6$ cycles/s × 70 pJ = **0.497** mW. Dedicated datapath: $4.736 \times 10^6$ MACs/s × 3.2 pJ = **15.2** µW, **32.8** times less. Almost all of the processor's energy is instruction overhead (fetch, decode, register file), not arithmetic, which is why always-on audio paths in earbuds move to small dedicated DSPs or hardwired filters (16-11). Both figures ignore memory, which would add to each.
+
 ### Solution 16-01.14
 
 (a) With $x = \delta$: $h[0] = 1$; $h[1] = 2 \cdot 1 - 2 = 0$; $h[2] = 2 \cdot 0 - 1 + 1 = 0$; and from then on every term is zero. So $h[n] = \delta[n]$: the filter is the identity, $y[n] = x[n]$, and BIBO stable.
@@ -223,4 +225,7 @@ $$
 | 16-01.13e | total latency, 32-sample blocks | 7.97 | ms |
 | 16-01.13f | block latency, 64-sample blocks | 8.0 | ms |
 | 16-01.13g | total latency, 64-sample blocks | 11.97 | ms |
+| 16-01.13h | processor power | 0.497 | mW |
+| 16-01.13i | datapath power | 15.2 | µW |
+| 16-01.13j | ratio | 32.8 | — |
 | 16-01.14a | error 1000 samples later, in units of ε | 1001 | — |

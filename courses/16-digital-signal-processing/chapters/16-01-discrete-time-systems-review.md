@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 16-01 · Discrete-Time Signals and Systems Review
 
 | | |
@@ -281,7 +281,7 @@ A system is **real-time** when it finishes each sample (or block) before the nex
 
 **Solution.** $\tau_s = -1/\ln(15/16)$ = **15.49** samples (the approximation $1/\alpha - 1/2$ gives 15.5), or **15.5** ms at 1 kHz.
 
-The step response is $s[n] = 1 - (15/16)^{n+1}$, so the error is $(15/16)^{n+1}$. It falls to 1% when $n + 1 \ge \ln 0.01/\ln(15/16) = 71.36$, so the first sample within 1% is $n$ = **71**.
+The step response is $s[n] = 1 - (15/16)^{n+1}$, so the error is $(15/16)^{n+1}$. It falls to 1% when $n + 1 \ge \ln 0.01/\ln(15/16)$ = **71.36**, so the first sample within 1% is $n$ = **71**.
 
 The noise-variance gain is $\alpha/(2 - \alpha)$ = **1/31** = 0.03226, the same as a moving average of $N_{eq} = (2 - \alpha)/\alpha$ = **31** samples.
 
@@ -352,6 +352,7 @@ The 31-point moving average reaches its final value *exactly* at $n$ = **30** an
 | Ex 16-01.3e | equivalent moving-average length | 31 | samples |
 | Ex 16-01.3f | settling sample of the 31-point average | 30 | — |
 | Ex 16-01.3g | 71 samples in time constants | 4.58 | — |
+| Ex 16-01.3h | 1% settling bound on n + 1 | 71.36 | — |
 | Ex 16-01.4a | wrapped intermediate at n = 4 | −106 | — |
 | Ex 16-01.4b | wrapped result s[4] | 125 | — |
 | Ex 16-01.4c | saturated result s[4] | 102 | — |

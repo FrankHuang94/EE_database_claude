@@ -99,7 +99,7 @@ v.check("Ex 16-05.4e", 10 * math.log10(P[M4] / np.mean(np.delete(P[1:N4 // 2], [
 
 # ---------------------------------------------------------------------------------------- Example 5
 fs, N5 = 100e6, 16384
-M5 = sp.coherent_bin(10e6, fs, N5)
+M5 = sp.coherent_bin(10e6, fs, N5, prime=True)
 v.check("Ex 16-05.5a", M5)
 v.assert_true("Ex 5: M odd and relatively prime to N", M5 % 2 == 1 and math.gcd(M5, N5) == 1)
 v.check("Ex 16-05.5b", M5 * fs / N5 / 1e6)
@@ -219,5 +219,33 @@ v.check("Lab 16-05.c", sp.adc_metrics_window(yn, "hann", M5 + 0.3)["sinad"])
 bh = sp.adc_metrics_window(yn, "bh4", M5 + 0.3)["sinad"]
 v.check("Lab 16-05.d", bh)
 v.assert_true("Lab: Blackman-Harris recovers the coherent SINAD within 0.05 dB", abs(bh - m5["sinad"]) < 0.05)
+
+# Lab README answers 3 and 4: where the leakage goes
+_kk = np.arange(-20000, 20001)
+_p = np.sinc(_kk - 0.3) ** 2
+_inb = np.sinc(0.3) ** 2
+_leak = _p.sum() - _inb
+v.check("Lab 16-05.f", 100 * _inb)
+v.check("Lab 16-05.g", 100 * _p[(np.abs(_kk) <= 20) & (_kk != 0)].sum() / _leak)
+v.check("Lab 16-05.h", _leak / _inb)
+v.assert_true("naive SINAD equals -10 log10(leak/in-bin)", abs(-10 * math.log10(_leak / _inb) - 4.47) < 0.005)
+_Nh = 16384
+_nh = np.arange(_Nh)
+_wh = 0.5 - 0.5 * np.cos(2 * np.pi * _nh / _Nh)
+_ks = np.arange(-400, 401)
+_P = np.array([abs(np.sum(_wh * np.exp(-2j * np.pi * (kk - 0.3) * _nh / _Nh))) ** 2 for kk in _ks])
+v.check("Lab 16-05.i", 100 * _P[(np.abs(_ks) > 4) & (np.abs(_ks) <= 20)].sum() / _P[np.abs(_ks) > 4].sum())
+
+# Problem 13: Hann on-bin leakage
+_N13 = 64
+_w13 = sp.window("hann", _N13)
+_X13 = np.abs(np.fft.fft(_w13 * np.exp(2j * np.pi * 5 * np.arange(_N13) / _N13)))
+v.check("16-05.13a", int(np.sum(_X13 > 1e-9 * _X13.max())))
+v.check("16-05.13b", 20 * math.log10(_X13[6] / _X13[5]))
+_om = np.linspace(-0.5, 0.5, 101)
+_WR = lambda om: np.array([np.sum(np.exp(-1j * o * np.arange(_N13))) for o in np.atleast_1d(om)])  # noqa: E731
+_Wh = np.array([np.sum(_w13 * np.exp(-1j * o * np.arange(_N13))) for o in _om])
+v.assert_true("Hann DTFT = three shifted Dirichlet kernels",
+              np.allclose(_Wh, 0.5 * _WR(_om) - 0.25 * _WR(_om - 2 * np.pi / _N13) - 0.25 * _WR(_om + 2 * np.pi / _N13)))
 
 sys.exit(v.finish())

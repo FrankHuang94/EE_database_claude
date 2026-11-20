@@ -57,7 +57,7 @@ Read §3 of the chapter. `firdesign.py` builds everything from definitions: the 
 ### Answers
 
 1. The overshoot is the first maximum of the running integral of the window's spectrum, $\tfrac12 + \text{Si}(\pi)/\pi$ for the rectangular window, and the shape of that spectrum does not depend on $M$; only its width does, scaling as $1/M$. So the ripple pattern compresses toward the cutoff without changing height (§3.3).
-2. The stopband error of a window design is set by the window's sidelobe structure, which is a property of its shape ($\beta$). $M$ scales the frequency axis, narrowing the transition; it does not change the sidelobe heights (§3.4, §3.5).
+2. Once $M$ is long enough for the transition band to fit between the edges, the stopband error of a window design is set by the window's sidelobe structure, a property of its shape ($\beta$): $M$ then only scales the frequency axis, narrowing the transition without changing the sidelobe heights (§3.4, §3.5). Below that length the transition spills past the stopband edge and the attenuation there falls quickly (1.4 dB for one tap fewer in Example 16-06.3).
 3. No. 60 dB is the *worst* attenuation anywhere above 5 kHz; an equiripple stopband touches −60 dB only at its ripple peaks, and 6 kHz happens to fall near a null between peaks. A tone at an unlucky frequency would see 60.36 dB.
 4. The filter is linear phase: every frequency in the burst's band is delayed by exactly 68 samples, and the passband gain is flat to within ±0.05 dB, so the output is the input shifted by 68 samples and scaled by a passband gain within 0.05 dB of 1.
 

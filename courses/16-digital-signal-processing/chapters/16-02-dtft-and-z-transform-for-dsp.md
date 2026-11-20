@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 16-02 · DTFT and z-Transform for DSP
 
 | | |
@@ -128,6 +128,8 @@ A narrowband signal centred at $\omega$ (a short burst of a tone) emerges with i
 $$
 \tau_{zero}(\omega) = -\frac{d\phi_c}{d\omega} = \frac{\rho^2 - \rho\cos(\omega - \theta)}{1 - 2\rho\cos(\omega - \theta) + \rho^2} .
 $$
+
+> **Math refresher — phase from a logarithm.** For a complex number $w$, $\ln w = \ln\lvert w\rvert + j\arg w$, so the phase's derivative is the imaginary part of the logarithm's derivative. Here $\frac{d}{d\omega}\ln(1 - ce^{-j\omega}) = ju$ with $u = ce^{-j\omega}/(1 - ce^{-j\omega})$, and $\operatorname{Im}(ju) = \operatorname{Re}(u)$ because $j(a + jb) = -b + ja$. Phase itself is defined only modulo $2\pi$ (and jumps by $\pi$ where an amplitude response changes sign); numerical tools **unwrap** it, removing the $2\pi$ jumps, before differentiating, so the group delay is unaffected.
 
 A pole contributes the same expression with the opposite sign, because it sits in the denominator. Group delays of cascaded factors add, as their phases do. Two cases to remember:
 
@@ -372,8 +374,8 @@ The lab, [labs/16-02-lab](../labs/16-02-lab/README.md), provides `pz.py`: freque
 ### State of the art (as of Nov 2026)
 
 - **Link equalizers are FIR filters with precursor taps.** ADC-based receivers for 200 Gb/s-class links equalize the digitized signal with a feed-forward equalizer (FFE) of up to about 30 taps in Intel's published 224 Gb/s design, with an optional decision-feedback equalizer (R-235, from the paper's abstract) **[Established]**. Channel pulse responses are generally not minimum phase, so some FFE taps act on samples after the one being decided: the precursor taps of §3.7, paid for in latency **[Established; textbook]**.
-- **Audio equalization offers both phases.** Professional audio tools commonly offer "linear-phase" and "minimum-phase" (or "zero-latency") equalizer modes: linear phase preserves waveshape but adds latency and pre-ringing before transients; minimum phase has the least latency but phase distortion. The choice is the §3.4–3.5 tradeoff made audible **[Established; textbook]**.
-- **Notches in sensing.** Biopotential and industrial sensor front ends use second-order IIR notches at the mains frequency, often switchable between 50 and 60 Hz, because a notch costs five multiplies per sample and leaves the passband nearly flat, while a hum-nulling moving average, even computed recursively at two additions per sample (16-01), attenuates everything above about 20 Hz (Example 16-02.2) **[Established; textbook]**.
+- **Audio equalization offers both phases.** Professional audio tools commonly offer "linear-phase" and "minimum-phase" (or "zero-latency") equalizer modes: linear phase preserves waveshape but adds latency and pre-ringing before transients; minimum phase has the least latency but phase distortion. FabFilter's Pro-Q, for example, documents a "Zero Latency" mode and linear-phase modes whose latency runs from about 70 ms to 1.5 s at 44.1 kHz and warns that they "can also introduce 'pre-ring'" (R-256). The choice is the §3.4–3.5 tradeoff made audible **[Established]**.
+- **Notches in sensing.** Biopotential and industrial sensor front ends reject the mains frequency, often selectably at 50 or 60 Hz (TI's ADS1220 sensor ADC, for example, lets the user "select line frequency rejections of 50Hz or 60Hz or ... simultaneously reject 50Hz and 60Hz", R-256; that part does it with its decimation filter). Where a separate filter is needed, a second-order IIR notch is the usual choice: it costs five multiplies per sample and leaves the passband nearly flat, while a hum-nulling moving average, even computed recursively at two additions per sample (16-01), attenuates everything above about 20 Hz (Example 16-02.2) **[Established]**.
 
 ### Why it matters commercially
 

@@ -41,6 +41,10 @@ Read §3 of the chapter. `spectral.py` builds the windows of §3.2 from their co
 |---|---|---|---|
 | Lab 16-05.a | floor depth, ideal 12-bit, 65,536 points | 119.2 | dB |
 | Lab 16-05.b | non-coherent SINAD, naive rectangular analysis | 4.47 | dB |
+| Lab 16-05.f | rectangular, 0.3 bin off: energy in the peak bin | 74 | % |
+| Lab 16-05.g | share of the leakage within 20 bins | 97.5 | % |
+| Lab 16-05.h | leakage over in-bin power | 0.357 | — |
+| Lab 16-05.i | Hann: share of out-of-guard leakage within 20 bins | 99.95 | % |
 | Lab 16-05.c | non-coherent SINAD, Hann | 49.8 | dB |
 | Lab 16-05.d | non-coherent SINAD, Blackman–Harris | 67.82 | dB |
 
@@ -55,8 +59,8 @@ Read §3 of the chapter. `spectral.py` builds the windows of §3.2 from their co
 
 1. The total noise power is fixed by the converter; a longer record spreads it over more bins, so each bin holds less, while the tone stays in one bin. SNR integrates all the bins, so it does not change.
 2. A periodogram bin is an exponential random variable whose scatter equals its mean whatever the record length; a longer record only makes more such bins. Averaging independent estimates of the same bin reduces the scatter as $1/\sqrt K$.
-3. With the tone 0.3 bin off-centre, the rectangular window's leakage spreads most of the tone's energy far outside bin 1637; the naive analysis counts all of that as noise, so the "noise" is almost as large as the signal.
-4. The analysis treats everything outside the guard bands as noise. Hann's leakage falls only at 18 dB per octave, so at the hundreds of bins that make up the noise region it still adds noise-like power above the converter's floor. Blackman–Harris's sidelobes are below −92 dB and keep falling, under the 12-bit floor everywhere, so only the converter's own noise remains.
+3. With the tone 0.3 bin off-centre, the rectangular window keeps only $\operatorname{sinc}^2(0.3)$ = 74% of the tone's energy in its peak bin; the other 26% leaks, almost all of it (97.5%) into the 20 bins on either side. The naive analysis takes only the peak bin as the fundamental and counts that near-in leakage as noise: 0.357 of the in-bin power, a SINAD of only 4.47 dB (Lab 16-05.b).
+4. The analysis treats everything outside the guard bands as noise. Hann's leakage just outside the ±4-bin guard band is still well above the converter's floor (99.95% of the leakage outside the guard lies within 20 bins of the tone), so the near-in sidelobes count as noise. Blackman–Harris's sidelobes are below −92 dB, under the 12-bit floor everywhere, so only the converter's own noise remains.
 
 ## Optional hardware
 

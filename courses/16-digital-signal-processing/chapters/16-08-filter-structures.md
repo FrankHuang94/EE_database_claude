@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 16-08 · Filter Structures and Implementation
 
 | | |

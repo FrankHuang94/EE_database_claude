@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 16-03 · The DFT and Its Properties
 
 | | |
@@ -117,6 +117,9 @@ With $((m))_N$ denoting $m$ modulo $N$:
 | Conjugate symmetry (real $x$) | $x[n]$ real | $X[((-k))_N] = X^*[k]$ |
 | Circular time reversal | $x[((-n))_N]$ | $X[((-k))_N]$ |
 | Circular convolution | $y_c[n] = \sum_m h[m]x[((n - m))_N]$ | $X[k]H[k]$ |
+| Multiplication | $x[n]y[n]$ | $\frac1N\sum_lX[l]Y[((k - l))_N]$ (circular convolution of the spectra) |
+| Duality | $X[n]$ (the DFT used as a signal) | $Nx[((-k))_N]$ |
+| Real and even / real and odd $x$ | $x[n] = x[((-n))_N]$ / $x[n] = -x[((-n))_N]$ | $X$ real and even / $X$ imaginary and odd |
 | Parseval | $\sum\lvert x\rvert^2$ | $\frac1N\sum\lvert X\rvert^2$ |
 
 *Proof of the shift property.* $\sum_n x[((n - m))_N]W_N^{kn}$: substitute $p = ((n - m))_N$, so $n \equiv p + m$ and $W_N^{kn} = W_N^{k(p + m)}$ because $W_N^{kN} = 1$. The sum becomes $W_N^{km}\sum_p x[p]W_N^{kp}$. The shift is circular because the DFT only knows the window: a sample pushed past $N - 1$ comes back at 0.
@@ -156,7 +159,7 @@ Padding a length-$L$ record with zeros to length $N > L$ leaves its DTFT unchang
 A streaming input is too long for one DFT, so it is cut into blocks.
 
 - **Overlap-add.** Split $x$ into blocks of $L$ samples. Convolve each block with $h$ (length $M$) by $N$-point DFTs with $N \ge L + M - 1$, so each block's linear convolution is exact; each result is $L + M - 1$ long, so consecutive results overlap by $M - 1$ samples, and are **added** there.
-- **Overlap-save.** Take overlapping input blocks of $N$ samples, each starting $L = N - M + 1$ samples after the previous one. The $N$-point circular convolution of a block with $h$ is correct except for its first $M - 1$ outputs, which are corrupted by wrap-around; **discard** them and keep the last $L$.
+- **Overlap-save.** Take overlapping input blocks of $N$ samples, each starting $L = N - M + 1$ samples after the previous one. The $N$-point circular convolution of a block with $h$ is correct except for its first $M - 1$ outputs, which are corrupted by wrap-around; **discard** them and keep the last $L$. The very first block is preceded by $M - 1$ zeros, standing for the input before time 0, so that its kept outputs start at $n = 0$ (Problem 16-03.14 does it by hand).
 
 Both produce exactly the linear convolution. Per block they need one forward DFT of the input, one product with the precomputed $H[k]$, and one inverse DFT, and they deliver $L = N - M + 1$ new outputs. With the radix-2 FFT's $(N/2)\log_2N$ complex multiplies per transform (16-04) and four real multiplies per complex one, the cost per output sample is
 
@@ -165,6 +168,8 @@ C(N, M) = \frac{4\left[N\log_2N + N\right]}{N - M + 1}\ \text{real multiplies},
 $$
 
 against $M$ for direct convolution. Large $N$ amortizes the overhead but each FFT grows; the best $N$ is roughly 5 to 10 times $M$ in this model (Example 16-03.5). The price is **latency**: a block of $L$ samples must arrive before any of its outputs can be computed.
+
+> **Going deeper — the DCT.** The discrete cosine transform (type II), $C[k] = \sum_n x[n]\cos\big(\pi k(n + \tfrac12)/N\big)$, is the DFT of the record extended *symmetrically* to length $2N$. A symmetric extension has no jump at the wrap-around, so its coefficients fall off much faster than the DFT's for smooth signals: most of the energy lands in a few low-order coefficients. That energy compaction, not spectral analysis, is why JPEG and video codecs use the DCT, and why audio codecs use its overlapped variant, the MDCT. It is computed with an FFT of the same length.
 
 ### 3.8 The cyclic prefix: making a channel circular
 
@@ -344,8 +349,8 @@ The lab, [labs/16-03-lab](../labs/16-03-lab/README.md), provides `dft.py`: the D
   - *802.11a/g Wi-Fi* uses a 64-point FFT at 20 MHz: 312.5 kHz subcarrier spacing, 48 data and 4 pilot subcarriers, a 3.2 µs useful symbol and a 0.8 µs (16-sample) guard interval, for a 4.0 µs symbol and **20**% prefix overhead. 802.11n added an optional 0.4 µs short guard interval for short indoor channels.
   - *LTE* uses 15 kHz subcarriers (a 2048-point FFT at 30.72 MHz): a **66.7** µs useful symbol and normal cyclic prefixes of 160 and 144 samples (**5.21** and **4.69** µs), an overhead of **6.67**% of each 0.5 ms slot. The prefix tolerates about six times (5.9 to 6.5 times) the delay spread of Wi-Fi's, because outdoor cells have far longer echoes.
   - *5G NR* scales the LTE numerology by $2^\mu$: subcarrier spacings of 15 × $2^\mu$ kHz for $\mu$ = 0 to 6 (15 to 960 kHz), with the normal prefix shrinking as $2^{-\mu}$, so the same 144-sample prefix lasts **0.293** µs at 240 kHz spacing. Wider spacing buys shorter symbols, lower latency and robustness to phase noise and Doppler at high carrier frequencies, at the price of tolerating less delay spread; an extended prefix is defined only at 60 kHz.
-- **Spectrum analysis is DFT-based.** Modern signal and spectrum analyzers digitize an IF or baseband signal and compute FFTs of windowed records; real-time analyzers overlap and process records continuously so that short events are not missed between captures **[Established; textbook]**.
-- **Long filters run in the frequency domain.** Convolution reverbs, acoustic echo cancellers and channel emulators with thousands of taps use partitioned overlap-save (the filter itself split into blocks to keep latency low) **[Established; textbook]**.
+- **Spectrum analysis is DFT-based.** Modern signal and spectrum analyzers digitize an IF or baseband signal and compute FFTs of windowed records; real-time analyzers overlap and process records continuously so that short events are not missed between captures: Rohde & Schwarz describes its real-time analyzers as overlapping successive FFTs by more than 50%, so "they have no blind time" (R-256) **[Established]**.
+- **Long filters run in the frequency domain.** Convolution reverbs, acoustic echo cancellers and channel emulators with thousands of taps use partitioned overlap-save (the filter itself split into blocks to keep latency low; Gardner, *J. Audio Eng. Soc.*, 1995, R-256) **[Established]**.
 
 ### Why it matters commercially
 

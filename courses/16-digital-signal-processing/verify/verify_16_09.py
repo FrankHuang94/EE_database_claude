@@ -127,10 +127,15 @@ for F, key in ((384e3, "Ex 16-09.4d"), (192e3, "Ex 16-09.4e"), (96e3, "Ex 16-09.
     v.check(key, nh)
     stages.append(hh)
     rate += ((c + 1) // 2) * F / 2
+    _kf = {384e3: ("Ex 16-09.4k", "Ex 16-09.4n"), 192e3: ("Ex 16-09.4l", "Ex 16-09.4o"), 96e3: ("Ex 16-09.4m", "Ex 16-09.4p")}[F]
+    v.check(_kf[0], (c + 1) // 2)
+    v.check(_kf[1], ((c + 1) // 2) * F / 2)
 v.check("Ex 16-09.4g", rate / 1e6)
 v.check("Ex 16-09.4h", single_rate / rate)
 v.check("Ex 16-09.4i", 1e6 * (n1 - 1) / 2 / 384e3)
 v.check("Ex 16-09.4j", 1e6 * sum((len(s) - 1) / 2 / F for s, F in zip(stages, (384e3, 192e3, 96e3))))
+v.check("Ex 16-09.4q", math.ceil(n1 / 2))
+v.check("Ex 16-09.4r", 100 * (sum((len(s) - 1) / 2 / F for s, F in zip(stages, (384e3, 192e3, 96e3))) / ((n1 - 1) / 2 / 384e3) - 1))
 f = np.linspace(0, 192e3, 200001)
 w = 2 * PI * f / 384e3
 H = np.ones_like(w, dtype=complex)

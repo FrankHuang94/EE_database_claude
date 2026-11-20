@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 16-06 · FIR Filter Design
 
 | | |
@@ -88,9 +88,9 @@ $$
 H(e^{j\omega}) = e^{-j\omega M/2}A(\omega), \qquad A(\omega) = h[M/2] + 2\sum_{k=1}^{M/2} h[M/2 - k]\cos(\omega k).
 $$
 
-$A(\omega)$ is **real**: it is the **amplitude response**, which can be negative (then the magnitude is $\lvert A\rvert$ and the phase jumps by $\pi$). The phase is $-\omega M/2$ wherever $A > 0$, so the **group delay** $\tau = -d\phi/d\omega$ is exactly **$M/2$ samples at every frequency** (16-02 §3.3). The filter is a pure delay of $M/2$ samples followed by a zero-phase gain $A(\omega)$.
+$A(\omega)$ is **real**: it is the **amplitude response**, which can be negative (then the magnitude is $\lvert A\rvert$ and the phase jumps by $\pi$). The phase is $-\omega M/2$ wherever $A > 0$, so the **group delay** $\tau = -d\phi/d\omega$ is exactly **$M/2$ samples at every frequency** (16-02 §3.4). The filter is a pure delay of $M/2$ samples followed by a zero-phase gain $A(\omega)$.
 
-**The other three types.** Repeating the pairing for the other combinations of length parity and symmetry gives:
+**The other three types.** Repeating the pairing for the other combinations of length parity and symmetry gives the table below. For example, with odd $M$ (type II) there is no middle tap: pairing $h[n]$ with $h[M - n]$ gives terms $h[n](e^{-j\omega n} + e^{-j\omega(M - n)}) = 2h[n]e^{-j\omega M/2}\cos\big(\omega(M/2 - n)\big)$, and $M/2 - n$ runs over the half-integers $\tfrac12, \tfrac32, \dots$; with antisymmetric taps the pair gives $2jh[n]e^{-j\omega M/2}\sin\big(\omega(M/2 - n)\big)$, hence the factor $j$ and the sines:
 
 | Type | Taps | $M$ | $H(e^{j\omega})$ | $A(\omega)$ | Forced zeros | Suitable for |
 |---|---|---|---|---|---|---|
@@ -147,7 +147,7 @@ $$
 h[n] = w[n]\,\frac{\sin\big(\omega_c(n - M/2)\big)}{\pi(n - M/2)}.
 $$
 
-Symmetric $w$ keeps the filter type I or II. The convolution picture of §3.3 still holds with the window's spectrum $W(\theta)$ in place of the Dirichlet kernel, so the derivation carries over line for line: near the cutoff, $A(\omega_c - x) \approx \tfrac12 + \frac{1}{2\pi}\int_0^x W(u)\,du$. Two consequences shape the whole method:
+Symmetric $w$ keeps the filter type I or II. The convolution picture of §3.3 still holds with the window's spectrum $W(\theta)$ in place of the Dirichlet kernel, so the derivation carries over line for line: near the cutoff, $A(\omega_c - x) \approx \tfrac12 + \frac{1}{2\pi}\int_0^x W(u)\,du$. Three consequences shape the whole method:
 
 - **The ripple is set by the window's shape, not its length.** The worst error is the largest swing of the running integral of $W$ past its final value, which is fixed by the window's sidelobe structure. Lower sidelobes (16-05 §3.2) mean smaller ripple.
 - **The transition width is set by the main lobe,** which narrows as $1/M$: the running integral climbs from 0 to 1 over roughly one main-lobe width.
@@ -190,7 +190,7 @@ The order formula corresponds to a transition factor $D = (A - 8)/(2.285 \times 
 
 > **Going deeper — why the Kaiser window is nearly optimal.** Among all sequences of a given length, the one whose DTFT puts the largest fraction of its energy inside a band $\lvert\omega\rvert \le \omega_0$ is a discrete prolate spheroidal sequence (Slepian). Kaiser showed that the $I_0$ formula approximates it closely while being easy to compute. Concentrating energy in the main lobe is exactly what minimizes the sidelobe area that becomes filter ripple.
 
-**Check, then adjust the right knob.** The formulas are estimates. When a check fails, ask *which* requirement failed. Attenuation at fixed $\beta$ hardly changes with $M$ (it is a window-shape property, §3.4), so a stopband shortfall is fixed by raising $\beta$ (design for a slightly larger $A$), not by adding taps; a transition shortfall is fixed by raising $M$. Problem 16-06.6 shows a design where adding taps at the original $\beta$ needs 19 extra taps, against 3 when the formulas are simply re-run with 1 dB of margin.
+**Check, then adjust the right knob.** The formulas are estimates. When a check fails, ask *which* requirement failed. Once $M$ reaches the formula's value, the attenuation at fixed $\beta$ saturates at a level set by the window's shape (§3.4) and hardly changes with more taps, so a stopband shortfall is fixed by raising $\beta$ (design for a slightly larger $A$), not by adding taps. Below that length the transition band spills past $\omega_s$ and the attenuation falls fast (1.4 dB for one tap fewer in Example 16-06.3); a transition shortfall is fixed by raising $M$. Problem 16-06.6 shows a design where adding taps at the original $\beta$ needs 19 extra taps, against 3 when the formulas are simply re-run with 1 dB of margin.
 
 ### 3.6 Frequency sampling
 
@@ -270,7 +270,7 @@ so a type I filter needs $M/2 + 1$ multiplications and a type II filter $(M + 1)
 - **Halving the transition band doubles the taps.** Every 20 dB of extra attenuation adds a fixed increment.
 - **At a fixed transition width in hertz, cost grows as $f_s^2$.** $\Delta\omega = 2\pi\Delta f/f_s$, so the tap count grows with $f_s$, and the multiplications per second grow with $f_s$ again. A narrow filter should run at the lowest sample rate that carries the signal: decimate first, then filter sharply (16-09, Problem 16-06.11).
 
-> **Going deeper — minimum-phase FIR filters.** Reflecting every zero of a linear-phase filter that lies outside the unit circle to its reciprocal position inside (16-02 §3.6) leaves the magnitude unchanged (up to a constant) and concentrates the impulse response's energy at its start: the delay drops from $M/2$ to a few samples, at the cost of a nonlinear phase. Practical methods design a linear-phase prototype with the squared magnitude response and factor it. Audio converters offer such filters as "low-latency" options (§9).
+> **Going deeper — minimum-phase FIR filters.** Reflecting every zero of a linear-phase filter that lies outside the unit circle to its reciprocal position inside (16-02 §3.5) leaves the magnitude unchanged (up to a constant) and concentrates the impulse response's energy at its start: the delay drops from $M/2$ to a few samples, at the cost of a nonlinear phase. Practical methods design a linear-phase prototype with the squared magnitude response and factor it. Audio converters offer such filters as "low-latency" options (§9).
 
 ## 4. Worked examples
 
@@ -342,7 +342,7 @@ An equiripple design of the same 33 taps with the same band edges and equal weig
 
 *Estimates:* $\delta_p\delta_s = 5.756 \times 10^{-6}$ and $-10\log_{10}(\delta_p\delta_s)$ = **52.40**. Kaiser's formula gives $M \approx (52.40 - 13)/(2.324 \times 0.1309)$ = **129.5**, so $M$ = 130. Bellanger's gives $N \approx \frac23\log_{10}\big(1/(5.756 \times 10^{-5})\big) \times 48$ = **135.7** taps.
 
-*Search:* designing at successive lengths and checking each against the mask, 136 taps miss the stopband by a hair (attenuation **59.99** dB) and **137** taps ($M$ = 136) is the shortest that meets both bands: passband ripple **0.0958** dB peak to peak, attenuation **60.36** dB (Figure 3). Kaiser's formula underestimated the order by **6.5** (5%); Bellanger's length was one tap short.
+*Search:* designing at successive lengths and checking each against the mask, the optimal 136-tap filter lands exactly on the mask: its passband error is 0.005756, equal to $\delta_p$ to four digits, and its attenuation is **59.99** dB with SciPy's grid density of 64 but **60.00** dB at densities 128 and 256, so it passes or fails by about 0.01 dB depending on the solver's frequency grid. **137** taps ($M$ = 136) is the shortest length with any margin: passband ripple **0.0958** dB peak to peak, attenuation **60.36** dB (Figure 3). Kaiser's formula underestimated the order needed for a margin by **6.5** (5%); Bellanger's 135.7 taps is essentially the 136-tap filter on the mask.
 
 *Optimality check:* $L = M/2 = 68$, so the theorem requires $L + 2 = 70$ alternations. The weighted error has exactly **70** extrema of equal height with alternating signs (**13** in the passband, **57** in the stopband, counting the band edges).
 
@@ -417,7 +417,8 @@ The equiripple filter is **21.7**% shorter, because it spends its passband toler
 | Ex 16-06.4e | equiripple error, 33 taps | 0.0115 | — |
 | Ex 16-06.5a | Kaiser order estimate for equiripple | 129.5 | — |
 | Ex 16-06.5b | Bellanger length estimate | 135.7 | taps |
-| Ex 16-06.5c | attenuation with 136 taps | 59.99 | dB |
+| Ex 16-06.5c | attenuation with 136 taps, grid density 64 | 59.99 | dB |
+| Ex 16-06.5s | attenuation with 136 taps, grid density 128 | 60.00 | dB |
 | Ex 16-06.5d | shortest length meeting the specification | 137 | taps |
 | Ex 16-06.5e | passband ripple | 0.0958 | dB |
 | Ex 16-06.5f | attenuation | 60.36 | dB |
@@ -499,7 +500,7 @@ The lab, [labs/16-06-lab](../labs/16-06-lab/README.md), provides `firdesign.py`:
 - **Placing the window design's cutoff at the passband edge.** The gain at $\omega_c$ is 0.5; put $\omega_c$ midway between $\omega_p$ and $\omega_s$.
 - **Designing a window filter for the passband ripple when the stopband is tighter** (or the reverse). The window method's ripples are equal: design for the smaller $\delta$.
 - **Trusting an order estimate without checking.** Kaiser's and Bellanger's formulas are curve fits; check the design against the mask and adjust.
-- **Fixing a stopband shortfall by adding taps at the same $\beta$.** Raise $\beta$; taps buy transition width.
+- **Fixing a stopband shortfall by adding taps at the same $\beta$.** Raise $\beta$; taps buy transition width (they help the stopband only while the transition band still spills past $\omega_s$).
 - **Mixing up order and length.** Order $M$, length $M + 1$, delay $M/2$; off-by-one errors here change the filter type.
 - **Forgetting that the delay of a linear-phase filter grows with its sharpness,** and discovering it in a control loop or an audio monitoring path.
 - **Quoting "N taps" without the sample rate.** The cost is taps times rate, and the same specification at a higher rate needs more taps as well.

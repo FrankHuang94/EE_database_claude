@@ -315,4 +315,13 @@ from scipy.optimize import brentq as _brentq  # noqa: E402
 _ma = lambda f: abs(np.sum(np.exp(-2j * np.pi * f / 1000 * np.arange(20)))) / 20 - 2 ** -0.5  # noqa: E731
 v.assert_true("20-point moving average -3 dB near 22 Hz", abs(_brentq(_ma, 1, 40) - 22.1) < 0.5)
 
+# Problem 13: group delay of the r = 0.98 notch, by scipy on the transfer function
+from scipy import signal as _sig  # noqa: E402
+_w0 = 0.1 * np.pi
+_b13, _a13 = [1, -2 * np.cos(_w0), 1], [1, -2 * 0.98 * np.cos(_w0), 0.98**2]
+v.check("16-02.13a", _sig.group_delay((_b13, [1.0]), w=[0.05])[1][0])
+v.check("16-02.13b", _sig.group_delay(([1.0], _a13), w=[_w0])[1][0])
+v.check("16-02.13c", _sig.group_delay((_b13, _a13), w=[1e-7])[1][0])
+v.check("16-02.13d", _sig.group_delay((_b13, _a13), w=[0.3])[1][0])
+
 sys.exit(v.finish())

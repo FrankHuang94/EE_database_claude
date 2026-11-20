@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 16-05 · Spectral Analysis and Windowing
 
 | | |
@@ -47,18 +47,18 @@ $$
 \text{DTFT}\{xw\}(e^{j\omega}) = \frac1{2\pi}\int_{-\pi}^{\pi}X(e^{j\theta})\,W(e^{j(\omega - \theta)})\,d\theta .
 $$
 
-A tone $Ae^{j\omega_0n}$ has $X$ concentrated at $\omega_0$, so the windowed spectrum is $A\,W(e^{j(\omega - \omega_0)})$: a copy of the window's spectrum centred on the tone. Every property of the measurement is a property of $W$. For the rectangular window, $W(e^{j\omega})$ is the moving-average response of 16-01 §3.6 scaled by $N$: a main lobe of null-to-null width $4\pi/N$ (two bins) and sidelobes that start at −13.3 dB and fall only 6 dB per octave. The DFT samples this pattern at the bins (16-03 §3.2). If the tone sits exactly on a bin, every other sample lands on a null and no leakage appears; otherwise the sidelobes appear in every bin.
+A tone $Ae^{j\omega_0n}$ has $X$ concentrated at $\omega_0$, so the windowed spectrum is $A\,W(e^{j(\omega - \omega_0)})$: a copy of the window's spectrum centred on the tone. Every property of the measurement is a property of $W$. For the rectangular window, $W(e^{j\omega})$ is the moving-average response of 16-01 §3.6 scaled by $N$: a main lobe of null-to-null width $4\pi/N$ (two bins) and sidelobes that start at −13.3 dB and fall only 6 dB per octave. The DFT samples this pattern at the bins (16-03 §3.2). If the tone sits exactly on a bin, all the other samples land on nulls and no leakage appears; otherwise the sidelobes appear in every bin.
 
 ### 3.2 Windows and their figures of merit
 
-Practical windows are sums of cosines, $w[n] = \sum_k(-1)^ka_k\cos(2\pi kn/N)$, which taper to near zero at the ends: Hann ($a = 0.5, 0.5$), Hamming ($0.54, 0.46$), Blackman ($0.42, 0.5, 0.08$), the 4-term Blackman–Harris and flat-top windows. For spectral analysis they are used in the periodic ("DFT-even") form, which is a symmetric window of length $N + 1$ with its last sample dropped [1]. Four numbers describe each window:
+Practical windows are sums of cosines, $w[n] = \sum_k(-1)^ka_k\cos(2\pi kn/N)$, which taper to near zero at the ends: Hann ($a = 0.5, 0.5$), Hamming ($0.54, 0.46$), Blackman ($0.42, 0.5, 0.08$), the 4-term Blackman–Harris ($0.35875, 0.48829, 0.14128, 0.01168$) and the flat-top ($0.21557895, 0.41663158, 0.277263158, 0.083578947, 0.006947368$, SciPy's coefficients, from D'Antona and Ferrero), the 4-term Blackman–Harris and flat-top windows. For spectral analysis they are used in the periodic ("DFT-even") form, which is a symmetric window of length $N + 1$ with its last sample dropped [1]. Four numbers describe each window:
 
 - **Coherent gain** $\text{CG} = \frac1N\sum w[n]$. A tone of amplitude $A$ exactly on a bin gives $\lvert X\rvert = AN\cdot\text{CG}/2$, so amplitude readings are divided by $N\cdot\text{CG}/2$.
 - **Equivalent noise bandwidth** $\text{ENBW} = N\sum w^2/(\sum w)^2$ bins. White noise of variance $\sigma^2$ gives $E\lvert X[k]\rvert^2 = \sigma^2\sum w^2$ in every bin (because the noise samples are independent, the variances add, 03-04), while a tone's peak power scales as $(\sum w)^2$. Relative to the tone, each bin collects the noise in a bandwidth of ENBW bins, which is ENBW times the bin spacing in hertz. The rectangular window has the minimum, 1 bin; tapering raises it.
 - **Scalloping loss** is the drop in the peak bin when the tone falls halfway between bins: $\lvert W(e^{j\pi/N})\rvert/\lvert W(1)\rvert$.
 - **Highest sidelobe** and its **falloff rate** set how far below a strong tone a weak one can be seen.
 
-Computed from these definitions for $N = 4096$ (the verify script recomputes them; Harris's paper [1] tabulates the same figures of merit for these and many other windows):
+Computed from these definitions for $N = 4096$ (the verify script recomputes them; Harris's paper [1] tabulates the same figures of merit for most of these and many other windows, though not for this flat-top variant):
 
 | Window | CG | ENBW (bins) | Scalloping loss (dB) | Highest sidelobe (dB) |
 |---|---|---|---|---|
@@ -93,11 +93,13 @@ so in decibels the floor sits $\text{SNR} + 10\log_{10}\bigl(N/(2\,\text{ENBW})\
 
 **The periodogram.** The estimate $\hat P[k] = \lvert X[k]\rvert^2/\sum w^2$ of the noise power per bin is unbiased (for white noise) but noisy: each bin is the squared magnitude of a complex Gaussian, an exponential random variable whose standard deviation equals its mean, **however long the record is**. A longer record gives more bins, not steadier ones. **Welch's method** cuts the record into $K$ segments (often overlapping by half), windows each, and averages their periodograms. For independent segments the standard deviation of each bin falls as $1/\sqrt K$ (03-05), at the price of $K$ times coarser resolution. Averaging is how analyzers show smooth noise floors.
 
+> **Going deeper — the periodogram's bias and distribution, and the spectrogram.** For a WSS process with PSD $S(\omega)$, the expected windowed periodogram is not $S$ itself but $S$ smoothed by the window's spectral shape: $\mathbb{E}\hat P(\omega) = \frac{1}{2\pi\sum w^2}\int S(\theta)\lvert W(e^{j(\omega - \theta)})\rvert^2d\theta$ (the derivation is the Wiener–Khinchin argument of 17-01 §3.4 with a window). For white noise the smoothing changes nothing, hence the unbiased floor above; for a PSD with steep slopes, sidelobes leak power from strong regions into weak ones, which is the same leakage as for tones. Each bin of one Gaussian record is $\frac12S\chi^2_2$, an exponential variable, except at DC and $N/2$, where $X[k]$ is real for real data and the bin is $S\chi^2_1$, with a standard deviation $\sqrt2$ times its mean. Sliding a window along a long record and taking a DFT at each position gives the **short-time Fourier transform**; its magnitude squared plotted against time and frequency is the **spectrogram**, the standard display of chirps, hopping radios and speech. Its window length trades time resolution against frequency resolution exactly as §3.3 trades resolution against record length.
+
 ### 3.5 Testing an ADC with an FFT
 
 An ADC is driven with a pure, nearly full-scale sine wave, a record of $N$ output codes is captured, and its spectrum is decomposed into the fundamental, its harmonics, and everything else.
 
-**Coherent sampling.** Choose the input frequency so the record holds an integer number $M$ of cycles: $f_{in} = Mf_s/N$. The tone then falls exactly on bin $M$, every other bin of its leakage pattern lands on a null, and the rectangular window (ENBW 1, no lost energy) can be used. $M$ is chosen odd and relatively prime to $N$ (for $N$ a power of 2, any odd $M$), so that the $N$ samples land at $N$ distinct phases of the sine and exercise many different codes, instead of repeating a short pattern. The harmonics of an on-bin tone are also on bins (aliased into $0..N/2$ if needed), which makes their powers easy to collect.
+**Coherent sampling.** Choose the input frequency so the record holds an integer number $M$ of cycles: $f_{in} = Mf_s/N$. The tone then falls exactly on bin $M$, all the other bins of its leakage pattern land on nulls, and the rectangular window (ENBW 1, no lost energy) can be used. $M$ is chosen odd and relatively prime to $N$ (for $N$ a power of 2, any odd $M$), so that the $N$ samples land at $N$ distinct phases of the sine and exercise many different codes, instead of repeating a short pattern. The harmonics of an on-bin tone are also on bins (aliased into $0..N/2$ if needed), which makes their powers easy to collect.
 
 **The figures of merit**, all in dB relative to the fundamental's power:
 
@@ -107,7 +109,7 @@ An ADC is driven with a pure, nearly full-scale sine wave, a record of $N$ outpu
 - **SFDR** (spurious-free dynamic range): fundamental over the largest other spectral component, harmonic or not.
 - **ENOB** (effective number of bits): the resolution of an ideal converter with the same SINAD.
 
-**Where 6.02N + 1.76 comes from.** An ideal $B$-bit quantizer with step $q$ adds error that is close to uniform on $\pm q/2$, with variance $q^2/12$ (03-03). A full-scale sine spans $2^Bq$ peak to peak, so its amplitude is $2^{B-1}q$ and its power $2^{2B}q^2/8$. Their ratio is
+**Where 6.02B + 1.76 comes from.** An ideal $B$-bit quantizer with step $q$ adds error that is close to uniform on $\pm q/2$, with variance $q^2/12$ (03-03). A full-scale sine spans $2^Bq$ peak to peak, so its amplitude is $2^{B-1}q$ and its power $2^{2B}q^2/8$. Their ratio is
 
 $$
 \text{SNR}_{ideal} = 10\log_{10}\frac{2^{2B}q^2/8}{q^2/12} = 10\log_{10}\left(1.5\cdot2^{2B}\right) = 6.02B + 1.76\ \text{dB} ,
@@ -121,7 +123,7 @@ and inverting it defines $\text{ENOB} = (\text{SINAD} - 1.76)/6.02$. Two caveats
 
 **Setup.** A 4096-point FFT at $f_s$ = 1 MHz with a Hann window. Find the bin spacing, the equivalent noise bandwidth in hertz, and how much more white noise each bin collects than with a rectangular window.
 
-**Solution.** Bin spacing $f_s/N = 10^6/4096$ = **244.1** Hz. ENBW = 1.5 bins, so each bin measures noise in **366.2** Hz. Relative to the rectangular window (ENBW 1 bin) the per-bin noise rises by $10\log_{10}1.5$ = **1.76** dB.
+**Solution.** Bin spacing $f_s/N = 10^6/4096$ = **244.1** Hz. ENBW = 1.5 bins, so each bin measures noise in **366.2** Hz. Relative to the tone, in an amplitude-calibrated spectrum, the per-bin noise rises by $10\log_{10}1.5$ = **1.76** dB compared with the rectangular window (ENBW 1 bin).
 
 **Units check.** Bins × Hz per bin = Hz.
 
@@ -129,7 +131,7 @@ and inverting it defines $\text{ENOB} = (\text{SINAD} - 1.76)/6.02$. Two caveats
 
 ### Example 16-05.2 · Reading an amplitude off a spectrum (tier B)
 
-**Setup.** A 1024-point FFT of a unit-amplitude cosine. (a) With a Hann window and the tone exactly on a bin, what is the peak $\lvert X\rvert$, and how is it converted back to amplitude? (b) With the tone halfway between bins, what amplitude error does each window of §3.2 make?
+**Setup.** A 1024-point FFT of a unit-amplitude cosine. (a) With a Hann window and the tone exactly on a bin, what is the peak $\lvert X\rvert$, and how is it converted back to amplitude? (b) With the tone halfway between bins, what amplitude error do the rectangular, Hann, Blackman–Harris and flat-top windows make?
 
 **Solution.** (a) $\lvert X\rvert = AN\cdot\text{CG}/2 = 1 \times 1024 \times 0.5/2$ = **256**, so amplitude = $\lvert X\rvert/(N\cdot\text{CG}/2) = \lvert X\rvert/256$.
 
@@ -175,7 +177,7 @@ The rectangular window's sidelobes, falling only as $1/(\pi\cdot\text{bins})$, b
 
 **Setup.** A 12-bit ADC sampling at 100 MS/s is tested with $N$ = 16,384 samples near 10 MHz at −1 dBFS. (a) Choose a coherent input frequency. (b) Its output is simulated as the 12-bit quantized value of the input after a small 2nd- and 3rd-order nonlinearity (designed for −90 and −80 dBc) and Gaussian thermal noise of standard deviation $2 \times 10^{-4}$ (full scale is ±1, so this is **0.41** LSB). From the FFT compute SNR, SINAD, THD, SFDR and ENOB. (c) Check SINAD with a time-domain sine fit, and give ENOB referred to full scale.
 
-**Solution.** (a) $10\text{ MHz} \times 16{,}384/100\text{ MHz} = 1638.4$ cycles; the nearest odd integer relatively prime to 16,384 is $M$ = **1637**, so $f_{in} = 1637 \times 100\text{ MHz}/16{,}384$ = **9.99146** MHz.
+**Solution.** (a) $10\text{ MHz} \times 16{,}384/100\text{ MHz} = 1638.4$ cycles; the nearest odd integer is 1639 ($= 11 \times 149$, relatively prime to 16,384 like every odd number), but we take the nearest prime, $M$ = **1637**, the stricter choice some test notes recommend (R-237); either is coherent, so $f_{in} = 1637 \times 100\text{ MHz}/16{,}384$ = **9.99146** MHz.
 
 (b) From the rectangular-window FFT, with harmonics 2 to 5 collected at their (aliased) bins 3274, 4911, 6548 and 8185:
 
@@ -189,11 +191,11 @@ The rectangular window's sidelobes, falling only as $1/(\pi\cdot\text{bins})$, b
 
 The SNR matches the expected $20\log_{10}\bigl[(A/\sqrt2)/\sqrt{\sigma_t^2 + q^2/12}\bigr]$ = **68.22** dB for thermal noise $\sigma_t$ and quantization step $q$; the THD is set by the 3rd harmonic near −80 dBc.
 
-(c) A least-squares fit of $a\cos + b\sin + c$ at the known frequency leaves a residual whose rms, compared with the fitted amplitude's rms, gives SINAD = **67.85** dB, the same as the FFT: everything that is not the fitted sine is noise and distortion, counted in the time domain. Referred to full scale, $\text{ENOB}_{FS} = (67.85 + 1 - 1.76)/6.02$ = **11.15** bits; the **0.17**-bit difference is purely the −1 dBFS test level. A data sheet would report the full-scale-referred 11.15 bits, the convention of IEEE 1241 and of manufacturers' tables (R-237).
+(c) A least-squares fit of $a\cos + b\sin + c$ at the known frequency leaves a residual whose rms, compared with the fitted amplitude's rms, gives SINAD = **67.85** dB, the same as the FFT: everything that is not the fitted sine is noise and distortion, counted in the time domain. Referred to full scale, $\text{ENOB}_{FS} = (67.854 + 1 - 1.76)/6.02$ = **11.15** bits; the **0.17**-bit difference is purely the −1 dBFS test level. A data sheet would report the full-scale-referred 11.15 bits, the convention of IEEE 1241 and of manufacturers' tables (R-237).
 
 ![Spectrum of the simulated ADC test in dBFS from 0 to 50 MHz: a fundamental at about -1 dBFS near 10 MHz, a second harmonic near -91 dBFS at 20 MHz, a third harmonic near -81 dBFS at 30 MHz, the 4th and 5th harmonics lost in the noise near 40 and 50 MHz, a small DC component near -84 dBFS from the second-order nonlinearity, and a noise floor between about -100 and -130 dBFS.](../../../assets/figures/16-05/adc-spectrum.svg)
 
-*Figure 2. The coherent ADC test of Example 16-05.5. The floor sits about 110 dB below the fundamental, yet the SNR is 68 dB: processing gain, not converter quality.*
+*Figure 2. The coherent ADC test of Example 16-05.5. The floor sits about 107 dB below the fundamental, yet the SNR is 68 dB: processing gain, not converter quality.*
 
 **Units check.** dB and bits.
 
@@ -324,7 +326,7 @@ The lab, [labs/16-05-lab](../labs/16-05-lab/README.md), provides `spectral.py`: 
 ### State of the art (as of Nov 2026)
 
 - **Converter data sheets are FFT measurements.** Every ADC data sheet's dynamic table (SNR, SFDR, SINAD, ENOB, often at several input frequencies and levels) comes from coherent FFT tests of the kind in Example 16-05.5, under the terminology and test methods of IEEE Std 1241 (current edition 1241-2023, published October 2023) **[Established]**. Manufacturers' notes prescribe exactly this chapter's recipe: bin-centred (coherent) inputs with a prime or odd number of cycles, no window for coherent captures and Blackman–Harris for non-coherent ones (TI SLVAG04, 2025; Renesas AN9675) (R-237) **[Established]**.
-- **What a data sheet line means.** TI's ADC12DJ5200RF (12-bit, 5.2 GS/s per channel) lists, at a 347 MHz input of −1 dBFS sampled at 5.12 GS/s, SNR 55.6 dBFS, SINAD 54.5 dBFS, ENOB 8.8 bits and SFDR 65 dBFS, with SNR "excluding DC, HD2 to HD9, fS / 2, fS / 2 – fIN" (R-237) **[Established]**. The ENOB follows from the full-scale-referred SINAD, $(54.5 - 1.76)/6.02$ = **8.76** bits, and the 12-bit converter delivers under 9 effective bits at gigahertz inputs: sample-clock jitter and front-end distortion, not the quantizer, set the limit.
+- **What a data sheet line means.** TI's ADC12DJ5200RF (12-bit, 5.2 GS/s per channel) lists, at a 347 MHz input of −1 dBFS sampled at 5.12 GS/s, SNR 55.6 dBFS, SINAD 54.5 dBFS, ENOB 8.8 bits and SFDR 65 dBFS, with SNR "excluding DC, HD2 to HD9, fS / 2, fS / 2 – fIN" (R-237) **[Established]**. The ENOB follows from the full-scale-referred SINAD, $(54.5 - 1.76)/6.02$ = **8.76** bits, and the 12-bit converter delivers under 9 effective bits. Neither jitter nor distortion explains that at 347 MHz: the data sheet's SINAD at −12 dBFS is the same 56.1 dBFS at 347, 997 and 2397 MHz, its aperture jitter (50 to 60 fs rms) would limit the SNR only near 78 dB at 347 MHz, and SNR and SINAD differ by only 1.1 dB. The limit is the converter's own input-independent noise (front-end, sampler and comparator noise; its noise spectral density is −152.0 dBFS/Hz in the 1.0 Vpp full-scale setting), not the 12-bit quantizer. Jitter and distortion take over only at multi-gigahertz inputs: SINAD at −1 dBFS falls to 46.2 dBFS at 8 GHz (R-237) **[Established]**.
 - **Spectrum analyzers expose the window as "RBW".** Swept and FFT-based analyzers specify a resolution bandwidth and, for noise, normalize to 1 Hz using the filter's or window's noise bandwidth: the ENBW of §3.2 under another name **[Established; textbook]**.
 - **Radar and sonar use windows on every axis.** Range, Doppler and angle FFTs are windowed (Taylor and Chebyshev windows are common, designed for a target sidelobe level) so that strong reflectors do not mask weak ones **[Established; textbook]**.
 
@@ -354,7 +356,7 @@ Converter performance is sold in decibels and bits, and those numbers are only a
 
 <details><summary>Answer</summary>
 
-The window's spectrum is centred on the tone, and the DFT samples it at the bins; when the tone is on a bin, every other bin falls on a null of the rectangular window's spectrum (the moving-average nulls of 16-01).
+The window's spectrum is centred on the tone, and the DFT samples it at the bins; when the tone is on a bin, all the other bins fall on nulls of the rectangular window's spectrum (the moving-average nulls of 16-01).
 
 </details>
 
@@ -378,7 +380,7 @@ ENBW = $N\sum w^2/(\sum w)^2$, which is 1 only when all weights are equal (by th
 
 <details><summary>Answer</summary>
 
-$6.02 \times 16 + 1.76 = 98.1$ dB SNR plus $10\log_{10}(32{,}768) = 45.2$ dB processing gain: 143.2 dB.
+$6.02 \times 16 + 1.76 = 98.09$ dB SNR plus $10\log_{10}(32{,}768) = 45.15$ dB processing gain: 143.2 dB.
 
 </details>
 

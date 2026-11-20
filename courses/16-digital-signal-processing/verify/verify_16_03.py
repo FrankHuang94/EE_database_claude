@@ -276,4 +276,31 @@ v.check("Txt 16-03.l", 160 / 30.72e6 * 1e6)
 v.check("Txt 16-03.m", 144 / 30.72e6 * 1e6)
 v.assert_true("LTE prefix is 5.9-6.5x Wi-Fi's 0.8 us", 5.8 < 144 / 30.72e6 / 0.8e-6 < 6.0 and 6.4 < 160 / 30.72e6 / 0.8e-6 < 6.6)
 
+# Problems 13 and 14
+_n = np.arange(16)
+_x13 = np.cos(2 * np.pi * 4 * _n / 16) + np.cos(2 * np.pi * 5 * _n / 16)
+_X13 = np.abs(np.fft.fft(_x13))
+v.check("16-03.13a", _X13[4])
+v.assert_true("P13: other bins zero", np.max(np.delete(_X13, [4, 5, 11, 12])) < 1e-9)
+for P_, key in ((64, "16-03.13b"), (256, "16-03.13c")):
+    v.check(key, 5 * P_ // 16 - 4 * P_ // 16 - 1)
+_Xp = np.abs(np.fft.fft(_x13, 256))
+_dip = _Xp[64:81].min()
+v.check("16-03.13d", _dip)
+v.check("16-03.13e", 20 * math.log10(_dip / _X13[4]))
+_x2 = np.cos(2 * np.pi * 4 * _n / 16) + np.cos(2 * np.pi * 4.5 * _n / 16)
+_Xq = np.abs(np.fft.fft(_x2, 1 << 14))
+_kk = np.arange(1 << 14) * 16 / (1 << 14)
+_sel = (_kk > 3) & (_kk < 6)
+v.check("16-03.13f", _kk[_sel][np.argmax(_Xq[_sel])])
+_xx, _hh, _N, _L = [1, 2, 3, 4, 5, 6], [1, 1], 4, 3
+v.check("16-03.14a", _N - len(_hh) + 1)
+_buf = [0] + _xx + [0] * 4
+_out = []
+for _st in range(0, len(_xx) + 1, _L):
+    _blk = _buf[_st:_st + _N]
+    _yc = np.real(np.fft.ifft(np.fft.fft(_blk) * np.fft.fft(_hh, _N)))
+    _out += list(np.round(_yc[1:], 9))
+v.assert_true("P14: overlap-save equals direct convolution", np.allclose(_out[:7], np.convolve(_xx, _hh)))
+
 sys.exit(v.finish())

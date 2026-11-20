@@ -10,7 +10,7 @@ Problems: [16-05 problems](../problems/16-05-problems.md) · Chapter: [16-05](..
 
 (a) **Flat-top**: scalloping below 0.01 dB, so an off-bin tone reads correctly. (b) **Blackman–Harris**: sidelobes below −92 dB; for a tone halfway between bins, Hann's leakage 15 bins away is **−79.9** dB, as large as the spur. (c) **Rectangular**: in a coherent test there is no leakage to suppress, and its main lobe is the narrowest. (d) **Hann**: a good compromise between resolution, leakage and noise.
 
-Blackman with $N$ = 2048 at 48 kHz: bin spacing $48{,}000/2048$ = **23.44** Hz, noise bandwidth $1.727 \times 23.44$ = **40.47** Hz.
+Blackman with $N$ = 2048 at 48 kHz: bin spacing $48{,}000/2048$ = **23.44** Hz, noise bandwidth $1.7268 \times 23.4375$ = **40.47** Hz.
 
 ### Solution 16-05.2
 
@@ -30,7 +30,7 @@ SNR = floor depth − processing gain = $120 - 10\log_{10}(32{,}768) = 120 - 45.
 
 ### Solution 16-05.6
 
-Rectangular: separation must exceed 1.21 bins, so $f_s/N \le 150/1.21$, $N \ge 1.21 \times 48{,}000/150$ = **386.1**, so 387 samples (8.1 ms); the smallest power of 2 is **512**. Hann: $N \ge 2.00 \times 48{,}000/150$ = **640** samples (13.3 ms); power of 2: **1024**.
+Rectangular: separation must exceed 1.21 bins, so $f_s/N \le 150/1.21$, $N \ge 1.207 \times 48{,}000/150$ = **386.1** (with the exact 1.2067-bin width), so 387 samples (8.1 ms); the smallest power of 2 is **512**. Hann: $N \ge 2.00 \times 48{,}000/150$ = **640** samples (13.3 ms); power of 2: **1024**.
 
 ### Solution 16-05.7
 
@@ -55,6 +55,16 @@ Evaluating the windows' DTFTs at 20.5 bins from the tone, relative to their valu
 ### Solution 16-05.12
 
 Floor depth = SNR + $10\log_{10}(N/(2\,\text{ENBW}))$: rectangular $80 + 36.1$ = **116.1** dB, Blackman–Harris $80 + 33.1$ = **113.1** dB. With the rectangular window, though, the carrier's leakage at 20 bins (−32 dB) dwarfs both the floor and the −100 dBc spur: invisible. With Blackman–Harris the leakage (−138 dB) is far below the floor, and the spur stands **13.1** dB above the floor: visible.
+
+### Solution 16-05.13
+
+Write $\cos(2\pi n/N) = \frac12(e^{j2\pi n/N} + e^{-j2\pi n/N})$, so $w[n] = \frac12 - \frac14e^{j2\pi n/N} - \frac14e^{-j2\pi n/N}$ for $n = 0, \dots, N - 1$. Multiplying by $e^{\pm j2\pi n/N}$ shifts a DTFT by $\pm2\pi/N$ (the modulation property, 11-07), and the DTFT of the constant 1 over $N$ samples is $W_R(\omega)$. Therefore
+
+$$
+W(e^{j\omega}) = \tfrac12W_R(\omega) - \tfrac14W_R(\omega - 2\pi/N) - \tfrac14W_R(\omega + 2\pi/N) .
+$$
+
+At the bins, $\omega = 2\pi k/N$, $W_R$ equals $N$ at $k = 0$ and 0 at every other bin. So an on-bin tone reaches only its own bin (weight $\frac12N$) and the two adjacent bins (weight $\frac14N$ each, with the opposite sign): **3** bins in all, the adjacent ones at $20\log_{10}(1/4)/(1/2)$ = **−6.02** dB relative to the peak. The three shifted kernels also cancel each other's sidelobes far from the tone, which is why Hann's sidelobes fall at 18 dB per octave instead of the rectangular window's 6.
 
 ---
 
@@ -94,3 +104,5 @@ Floor depth = SNR + $10\log_{10}(N/(2\,\text{ENBW}))$: rectangular $80 + 36.1$ =
 | 16-05.12a | rectangular floor depth | 116.1 | dB |
 | 16-05.12b | Blackman–Harris floor depth | 113.1 | dB |
 | 16-05.12c | spur above the Blackman–Harris floor | 13.1 | dB |
+| 16-05.13a | bins reached by an on-bin tone | 3 | — |
+| 16-05.13b | adjacent-bin level | −6.02 | dB |

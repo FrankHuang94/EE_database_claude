@@ -132,6 +132,7 @@ ma31 = ds.step(np.full(31, 1 / 31), [1], 60)
 v.check("Ex 16-01.3f", int(np.argmax(np.abs(ma31 - 1) < 1e-12)))
 v.assert_true("Ex 3: the 31-point average is not yet settled at n = 29", abs(ma31[29] - 1) > 0.01)
 v.check("Ex 16-01.3g", n1 / tau)
+v.check("Ex 16-01.3h", math.log(0.01) / math.log(15 / 16))
 v.assert_true("Ex 3: e^-3 is about 5% and e^-5 about 0.7%",
               abs(math.exp(-3) - 0.05) < 0.0003 and abs(math.exp(-5) - 0.007) < 0.0005)
 
@@ -363,6 +364,9 @@ v.check("16-01.13d", 2 * 32 / 16_000 * 1e3)
 v.check("16-01.13e", fir13 + 2 * 32 / 16_000 * 1e3)
 v.check("16-01.13f", 2 * 64 / 16_000 * 1e3)
 v.check("16-01.13g", fir13 + 2 * 64 / 16_000 * 1e3)
+v.check("16-01.13h", r13 * 1.5 * 70e-12 * 1e3)
+v.check("16-01.13i", r13 * 3.2e-12 * 1e6)
+v.check("16-01.13j", (r13 * 1.5 * 70e-12) / (r13 * 3.2e-12))
 v.assert_true("P13: 32-sample blocks meet 10 ms, 64-sample blocks do not",
               fir13 + 4.0 < 10 < fir13 + 8.0)
 

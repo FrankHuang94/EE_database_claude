@@ -62,7 +62,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 16-01.13 [C]
 
-**An earbud's real-time budget.** An earbud runs, on each of two microphones at 16 kHz, a 128-tap linear-phase FIR beamforming filter and 4 biquads of 5 MACs each. Its MCU runs at 48 MHz and averages 1.5 cycles per MAC (loads included). (a) Find the MAC rate and the processor load. (b) The product needs end-to-end processing latency below 10 ms. Find the latency of the FIR filter and of double-buffered 32-sample blocks, and decide whether the design meets the target. (c) Would 64-sample blocks meet it?
+**An earbud's real-time budget.** An earbud runs, on each of two microphones at 16 kHz, a 128-tap linear-phase FIR beamforming filter and 4 biquads of 5 MACs each. Its MCU runs at 48 MHz and averages 1.5 cycles per MAC (loads included). (a) Find the MAC rate and the processor load. (b) The product needs end-to-end processing latency below 10 ms. Find the latency of the FIR filter and of double-buffered 32-sample blocks, and decide whether the design meets the target. (c) Would 64-sample blocks meet it? (d) Using the 45 nm figures of §7, estimate the power of the processor running these MACs at about 70 pJ per cycle (instruction overhead dominating), and of a dedicated 32-bit datapath at 3.2 pJ per MAC (3.1 pJ multiply plus 0.1 pJ add). What does the ratio say about where the energy goes?
 
 ### Problem 16-01.14 [C]
 

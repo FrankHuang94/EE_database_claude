@@ -49,7 +49,7 @@ Conventions:
 | $\log_2N$ stages, $\frac N2\log_2N$ butterflies (complex multiplies), $N\log_2N$ complex adds; saving $2N/\log_2N$ over $N^2$ |  | [16-04](../../courses/16-digital-signal-processing/chapters/16-04-the-fft.md) |
 | Non-trivial twiddle multiplications: $\frac N2\log_2N - \frac{3N}2 + 2$; radix-4: $\frac{3N}8\log_2N$ | Excluding $W^0$, $-j$ | [16-04](../../courses/16-digital-signal-processing/chapters/16-04-the-fft.md) |
 | R2SDF pipeline: $\log_2N$ butterflies, $\log_2N - 2$ general multipliers, $N - 1$ delay words, one sample per clock | Streaming | [16-04](../../courses/16-digital-signal-processing/chapters/16-04-the-fft.md) |
-| Word growth up to $\log_2N$ bits ($1 + \sqrt2$ per stage in one component); scaling by 1/2 per stage gives $X/N$ | Fixed point | [16-04](../../courses/16-digital-signal-processing/chapters/16-04-the-fft.md) |
+| Word growth up to $\log_2N$ bits for real data, $\log_2N + 1$ for complex ($1 + \sqrt2$ per stage in one component); scaling by 1/2 per stage gives $X/N$ and costs about 3 dB of SNR per doubling of $N$ | Fixed point | [16-04](../../courses/16-digital-signal-processing/chapters/16-04-the-fft.md) |
 
 ## Spectral analysis and ADC testing
 
@@ -84,14 +84,14 @@ Conventions:
 | Chebyshev I: $N \ge \operatorname{arccosh}\sqrt D/\operatorname{arccosh}(\Omega_s/\Omega_p)$; poles $\Omega_p(-\sinh a\sin u_k + j\cosh a\cos u_k)$, $u_k = (2k - 1)\pi/(2N)$, $a = \frac1N\operatorname{arcsinh}(1/\varepsilon)$ | Equiripple passband | [16-07](../../courses/16-digital-signal-processing/chapters/16-07-iir-filter-design.md) |
 | Elliptic: $N \ge K(k)K'(k_1)/(K(k_1)K'(k))$, $k = \Omega_p/\Omega_s$, $k_1 = 1/\sqrt D$; round up | Equiripple both bands | [16-07](../../courses/16-digital-signal-processing/chapters/16-07-iir-filter-design.md) |
 | Bilinear: $s = 2f_s(1 - z^{-1})/(1 + z^{-1})$; $\Omega = 2f_s\tan(\omega/2)$; prewarp every band edge | No aliasing, warped axis | [16-07](../../courses/16-digital-signal-processing/chapters/16-07-iir-filter-design.md) |
-| Impulse invariance $h[n] = Th_a(nT)$: pole $s_k \to e^{s_kT}$; $1/(s + a) \to T/(1 - e^{-aT}z^{-1})$ | Aliases; low-pass only | [16-07](../../courses/16-digital-signal-processing/chapters/16-07-iir-filter-design.md) |
+| Impulse invariance $h[n] = Th_a(nT)$: pole $s_k \to e^{s_kT}$; $1/(s + a) \to T/(1 - e^{-aT}z^{-1})$; if $h_a$ jumps at $t = 0$, halve $h[0]$ or the response gains $Th_a(0^+)/2$ | Aliases; low-pass only | [16-07](../../courses/16-digital-signal-processing/chapters/16-07-iir-filter-design.md) |
 | Biquad cost: 5 multiplications; 3 with zeros on the circle and $b_0 = b_2 = 1$ | Cascade of SOS | [16-07](../../courses/16-digital-signal-processing/chapters/16-07-iir-filter-design.md) |
 
 ## Filter structures
 
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
-| DF I: $2N$ delays; DF II: $N$ delays (internal state $x/A$); both $2N + 1$ multipliers for order $N$ |  | [16-08](../../courses/16-digital-signal-processing/chapters/16-08-filter-structures.md) |
+| DF I: $2N$ delays; DF II: $N$ delays (internal state $x/A$); both $2N + 1$ multipliers for order $N$; a cascade of $N/2$ biquads: $5N/2$ multipliers |  | [16-08](../../courses/16-digital-signal-processing/chapters/16-08-filter-structures.md) |
 | Transposed FIR: critical path one multiplier + one adder at any length; direct form: one multiplier + (taps − 1) adders as a chain, or $\lceil\log_2(\text{taps})\rceil$ adder levels as a tree |  | [16-08](../../courses/16-digital-signal-processing/chapters/16-08-filter-structures.md) |
 | Pole sensitivity $\partial p_i/\partial a_k = -p_i^{N-k}/\prod_{j\ne i}(p_i - p_j)$; biquad angle sensitivity $1/(2\rho\sin\theta)$ | Clustered poles are fragile | [16-08](../../courses/16-digital-signal-processing/chapters/16-08-filter-structures.md) |
 | Lattice step-down: $k_N = a_N$, $a^{(N-1)}_i = (a_i - k_Na_{N-i})/(1 - k_N^2)$; biquad: $k_2 = a_2$, $k_1 = a_1/(1 + a_2)$; stable iff all $\lvert k_m\rvert < 1$ |  | [16-08](../../courses/16-digital-signal-processing/chapters/16-08-filter-structures.md) |

@@ -14,7 +14,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 16-05.1 [A]
 
-**Which window?** Choose a window (rectangular, Hann, Blackman–Harris or flat-top) for each task, with a one-line reason: (a) measuring the amplitude of a tone of unknown frequency to 0.1 dB; (b) finding a −80 dBc spur 15 bins from a strong carrier; (c) resolving two equal tones 1.5 bins apart in a coherent test; (d) a general-purpose look at an unknown signal. Then give the noise bandwidth of one bin for a Blackman window with $N$ = 2048 at 48 kHz.
+**Which window?** Choose a window (rectangular, Hann, Blackman–Harris or flat-top) for each task, with a one-line reason: (a) measuring the amplitude of a tone of unknown frequency to 0.1 dB; (b) finding a −80 dBc spur 15 bins from a strong carrier; (c) resolving two equal tones 1.5 bins apart; (d) a general-purpose look at an unknown signal. Then give the noise bandwidth of one bin for a Blackman window with $N$ = 2048 at 48 kHz.
 
 ### Problem 16-05.2 [A]
 
@@ -60,13 +60,17 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Designing the measurement.** A −100 dBc spur sits 20 bins from a carrier in a system with 80 dB SNR, measured with an 8192-point FFT of a non-coherent record. With each of the rectangular and Blackman–Harris windows, how deep is the noise floor below the carrier, and can the spur be seen? (Use Problem 16-05.11 for leakage.)
 
+### Problem 16-05.13 [B]
+
+**The Hann window's spectrum, derived.** Write the periodic Hann window $w[n] = \frac12 - \frac12\cos(2\pi n/N)$ as a sum of three complex exponentials, and show that its DTFT is $\frac12W_R(\omega) - \frac14W_R(\omega - 2\pi/N) - \frac14W_R(\omega + 2\pi/N)$, where $W_R$ is the rectangular window's DTFT. Use it to find which DFT bins an on-bin tone reaches, and their level relative to the peak bin (in dB).
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 16-05) | Problems |
 |---|---|
-| 1. Leakage and window spectra | 1, 11 |
+| 1. Leakage and window spectra | 1, 11, 13 |
 | 2. Figures of merit and corrections | 2, 4 |
 | 3. Choosing window and record length | 1, 6, 12 |
 | 4. Processing gain and the noise floor | 3, 5, 12 |

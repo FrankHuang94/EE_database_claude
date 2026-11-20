@@ -24,7 +24,7 @@ The gains are $\lvert\sum h[n]\rvert$ at $\omega = 0$ and $\lvert\sum (-1)^n h[n
 
 (b) $\delta_p = (10^{0.0005} - 1)/(10^{0.0005} + 1)$ = **0.0005756**; $\delta_s = 10^{-4}$. The window method must meet $\delta = 10^{-4}$: $A$ = **80** dB.
 
-In both cases the passband tolerance is about six times looser than the stopband's, and the window design will waste it.
+The passband tolerance is looser than the stopband's in both cases, about three times in (a) and six times in (b), and the window design will waste it.
 
 ### Solution 16-06.3
 

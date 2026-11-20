@@ -58,7 +58,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 16-06.12 [C]
 
-**Half-band filters.** A low-pass filter with $\omega_c = \pi/2$ is designed by the window method with a symmetric window whose middle value is 1. (a) Show that every tap at an even, nonzero offset from the middle is zero. (b) Show that $A(\omega) + A(\pi - \omega) = 1$ for all $\omega$, and hence $A(\pi/2) = 1/2$. (c) For $M$ = 46, how many taps are nonzero, and how many general multipliers does a folded implementation need, compared with a general 47-tap symmetric filter?
+**Half-band filters.** A low-pass filter with $\omega_c = \pi/2$ is designed by the window method with a symmetric window whose middle value is 1 and which has no zero samples (a Hamming or Kaiser window, for example; a symmetric Hann window's end samples are zero). (a) Show that every tap at an even, nonzero offset from the middle is zero. (b) Show that $A(\omega) + A(\pi - \omega) = 1$ for all $\omega$, and hence $A(\pi/2) = 1/2$. (c) For $M$ = 46, how many taps are nonzero, and how many general multipliers does a folded implementation need, compared with a general 47-tap symmetric filter?
 
 ---
 

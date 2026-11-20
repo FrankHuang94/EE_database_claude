@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 16-10 · Quantization and Fixed-Point Effects
 
 | | |
@@ -97,15 +97,15 @@ $$
 $\sum g^2$ is the **noise gain** of that path. Contributions from independent rounding points add. Three consequences:
 
 - **FIR filters with full-precision accumulation and one final rounding** add exactly $\Delta^2/12$ at the output: the noise gain from the rounding point to the output is 1.
-- **IIR filters** feed the rounding error of each section through its poles. In Direct Form I with one rounding at the output, the error reaches the output through $1/A(z)$; for the sharpest elliptic section of 16-07, $\sum g^2$ = **66.05** (18.2 dB), so that section's own rounding costs 18 dB of SNR (16-08 Problem 16-08.12).
-- **Word-length budgets** follow: to keep the filter's noise below the input's, carry $\tfrac12\log_2(\text{noise gain})$ extra bits inside the loop (here **3.02**, so 3 bits recover all but 0.1 dB), or use error feedback (a technique that filters the rounding error before re-adding it, shaping its spectrum away from the passband).
+- **IIR filters** feed the rounding error of each section through its poles. In Direct Form I with one rounding at the output, the error reaches the output through $1/A(z)$; for the sharpest elliptic section of 16-07, $\sum g^2$ = **66.05** (**18.2** dB), so that section's own rounding costs 18 dB of SNR (16-08 Problem 16-08.12).
+- **Word-length budgets** follow: to keep the filter's noise below the input's, carry $\tfrac12\log_2(\text{noise gain})$ extra bits inside the loop (here **3.02**, so 3 bits recover all but **0.14** dB), or use error feedback (a technique that filters the rounding error before re-adding it, shaping its spectrum away from the passband).
 
 ### 3.5 Coefficient quantization
 
-**FIR filters.** Rounding each of $N$ coefficients to step $\Delta_c$ adds an error filter $\Delta h[n]$, so the response error is $\Delta H(e^{j\omega}) = \sum_n\Delta h[n]e^{-j\omega n}$. Two estimates bracket it:
+**FIR filters.** Rounding each of $L$ coefficients (here $L$ counts taps, not bits) to step $\Delta_c$ adds an error filter $\Delta h[n]$, so the response error is $\Delta H(e^{j\omega}) = \sum_n\Delta h[n]e^{-j\omega n}$. Two estimates bracket it:
 
-- worst case: $\lvert\Delta H\rvert \le \sum\lvert\Delta h\rvert \le N\Delta_c/2$;
-- statistical: with independent uniform errors, $\Delta H$ has rms $\sqrt{N}\,\Delta_c/\sqrt{12}$ on average over frequency. For a linear-phase filter the errors come in equal symmetric pairs, so the rms is up to $\sqrt2$ (3 dB) higher near $\omega = 0$ and $\pi$ and lower in between.
+- worst case: $\lvert\Delta H\rvert \le \sum\lvert\Delta h\rvert \le L\Delta_c/2$;
+- statistical: with independent uniform errors, $\Delta H$ has rms $\sqrt{L}\,\Delta_c/\sqrt{12}$ on average over frequency. For a linear-phase filter the errors come in equal symmetric pairs, so the rms is up to $\sqrt2$ (3 dB) higher near $\omega = 0$ and $\pi$ and lower in between.
 
 The rms estimate is optimistic for the *peak* over thousands of frequencies, and any error adds to the design's own ripple. A filter designed with no margin cannot survive much quantization: the 137-tap equiripple filter of 16-06 (60.36 dB designed) needs **18** fractional bits to stay above 60 dB, while a 149-tap redesign with 6 dB of stopband margin keeps 60 dB with **14** (Example 16-10.4). Design margin is cheaper than coefficient bits. Linear phase survives quantization: rounding a symmetric filter gives a symmetric filter.
 
@@ -258,6 +258,9 @@ The original design first meets both specifications at $F$ = **18**. The statist
 | Txt 16-10.k | binary16 relative error bound | 0.049 | % |
 | Txt 16-10.l | binary16 maximum | 65504 | — |
 | Txt 16-10.m | MXFP4 bits per element | 4.25 | bits |
+| Txt 16-10.n | noise gain of the sharpest elliptic section | 18.2 | dB |
+| Txt 16-10.o | noise left after 3 extra bits | 0.14 | dB |
+| Txt 16-10.p | 24-bit SQNR | 146 | dB |
 
 ## 5. Simulate it
 
@@ -322,7 +325,7 @@ Word length is one of the largest levers on silicon area and power in signal pro
 
 ### Marketing vs Reality
 
-- **"24-bit audio"** usually means a 24-bit data format, not 24 bits of SNR (146 dB). Ask for the measured dynamic range.
+- **"24-bit audio"** usually means a 24-bit data format, not 24 bits of SNR (**146** dB, $6.02 \times 24 + 1.76$). Ask for the measured dynamic range.
 - **"16-bit ADC"** quoted next to a modulated signal's SNR: subtract the crest-factor and clipping penalty (11 to 13 dB for Gaussian-like signals: 11.3 dB at 12 bits and 12.7 dB at 16 bits in Example 16-10.2) before comparing.
 - **"Bit-exact with the floating-point model"** is impossible; ask what tolerance was verified, with which test vectors, including full-scale and silent inputs.
 - **"Same accuracy at half the bits"** claims for low-precision formats depend on scaling (per tensor, per channel, per block) and on calibration data; ask how scales are chosen and what the error is on the customer's workload.

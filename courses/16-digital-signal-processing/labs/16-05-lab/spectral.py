@@ -11,7 +11,7 @@ Functions
 - highest_sidelobe_db(w)          largest sidelobe relative to the main-lobe peak, in dB
 - periodogram(x, w=None)          |X[k]|^2 / sum(w^2) for k = 0..N-1 (a power-spectral estimate per bin)
 - welch(x, N, overlap=0.5, name)  averaged windowed periodograms of segments of length N
-- coherent_bin(f_target, fs, N)   the odd bin M nearest f_target*N/fs that is relatively prime to N
+- coherent_bin(f_target, fs, N, prime=False)   the odd bin M nearest f_target*N/fs, relatively prime to N (optionally prime)
 - adc_metrics(x, M, nharm=5)      SNR, SINAD, THD, SFDR (dB) and ENOB from a coherently sampled record whose tone
                                   sits exactly in bin M (rectangular window, DC excluded, harmonics aliased)
 - sine_fit3(x, f_over_fs)         least-squares fit of A cos + B sin + C at a known frequency; returns the residual rms
@@ -88,13 +88,19 @@ def welch(x, N, overlap=0.5, name="hann"):
     return np.mean([periodogram(s, w) for s in segs], axis=0), len(segs)
 
 
-def coherent_bin(f_target, fs, N):
-    m0 = int(round(f_target * N / fs))
-    for d in range(0, N):
-        for m in (m0 - d, m0 + d):
-            if 0 < m < N // 2 and m % 2 == 1 and math.gcd(m, N) == 1:
-                return m
-    raise ValueError("no coherent bin found")
+def _is_prime(m):
+    return m > 1 and all(m % p for p in range(2, int(math.isqrt(m)) + 1))
+
+
+def coherent_bin(f_target, fs, N, prime=False):
+    """The bin M nearest f_target*N/fs that is odd and relatively prime to N (ties go to the smaller M).
+
+    With prime=True, M must also be prime, the stricter choice some test notes recommend (R-237)."""
+    target = f_target * N / fs
+    cands = [m for m in range(1, N // 2) if m % 2 == 1 and math.gcd(m, N) == 1 and (not prime or _is_prime(m))]
+    if not cands:
+        raise ValueError("no coherent bin found")
+    return min(cands, key=lambda m: (abs(m - target), m))
 
 
 def adc_metrics(x, M, nharm=5):

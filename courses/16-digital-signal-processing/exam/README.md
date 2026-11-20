@@ -84,7 +84,7 @@ A 192 kHz stream is decimated by 4 to 48 kHz.
 
 **10 [B] · A designed filter in fixed point.** (16-07, 16-08, 16-10)
 (a) By the bilinear transform with prewarping, design the second-order Butterworth low-pass filter $H_a(s) = \Omega_c^2/(s^2 + \sqrt2\,\Omega_cs + \Omega_c^2)$ with its −3 dB point at 1 kHz for $f_s$ = 8 kHz. Give $b_0, b_1, b_2, a_1, a_2$ for $H(z) = (b_0 + b_1z^{-1} + b_2z^{-2})/(1 + a_1z^{-1} + a_2z^{-2})$.
-(b) In Direct Form I the output is rounded once per sample to 16 bits. That rounding noise passes through $1/A(z)$; for $1/(1 + a_1z^{-1} + a_2z^{-2})$ the noise gain is $(1 + a_2)/\big((1 - a_2)[(1 + a_2)^2 - a_1^2]\big)$. Find the noise gain (ratio and dB) and the output rounding noise in LSB rms.
+(b) In Direct Form I the output is rounded once per sample to 16 bits. That rounding noise passes through $1/A(z)$; for $1/(1 + a_1z^{-1} + a_2z^{-2})$ the noise gain is $(1 + a_2)/\big((1 - a_2)\,[(1 + a_2)^2 - a_1^2]\big)$. Find the noise gain (ratio and dB) and the output rounding noise in LSB rms.
 (c) Find the dead band of the first-order section $y[n] = Q(0.9y[n - 1])$ with rounding.
 (d) Why must recursive filters saturate rather than wrap around on overflow?
 

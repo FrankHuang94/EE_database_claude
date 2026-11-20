@@ -207,7 +207,7 @@
   definition: τg = −d∠H/dω, the delay of the envelope of a narrowband signal passing through a system; constant group delay means a pulse keeps its shape. For a single pole it equals the time constant at low frequency.
   chapter: "07-07"
 - term: Minimum-phase system
-  definition: A stable system with no zeros in the right half-plane and no pure delay; its phase is fixed by its magnitude curve (Bode's gain–phase relation), so a steady slope of n × 20 dB/decade implies a phase near n × 90°.
+  definition: "A stable system with no zeros in the right half-plane and no pure delay; its phase is fixed by its magnitude curve (Bode's gain–phase relation), so a steady slope of n × 20 dB/decade implies a phase near n × 90°. In discrete time (16-02): a causal, stable system with all poles and zeros inside the unit circle; among systems with the same magnitude response it has the least group delay, the fastest energy build-up and a causal, stable inverse."
   chapter: "07-07"
   see_also: [Right-half-plane zero, Bode plot]
 - term: Gain–bandwidth product (GBW)
@@ -234,7 +234,7 @@
   chapter: "07-08"
   see_also: [Biquad]
 - term: Notch filter
-  definition: A band-stop filter whose response falls to zero at one frequency, from numerator zeros on the imaginary axis (s² + ω0²); used to remove a single interfering tone such as mains hum.
+  definition: "A band-stop filter whose response falls to zero at one frequency, from numerator zeros on the imaginary axis (s² + ω0²); used to remove a single interfering tone such as mains hum. In discrete time (16-02): zeros on the unit circle at e^(±jω0) with poles just inside at re^(±jω0), whose radius sets the notch width, about 2(1 − r) rad/sample."
   chapter: "07-08"
 - term: Impedance and frequency scaling
   definition: Turning a normalized filter prototype (1 Ω, 1 rad/s) into a design without changing its response shape; impedance scaling by k multiplies R and L by k and divides C by k, frequency scaling by k_f divides L and C by k_f.
@@ -357,7 +357,7 @@
   definition: A four-arm bridge driven by a sinusoid whose detector nulls when Z₁Z₄ = Z₂Z₃; being one complex equation, balance gives two real conditions, such as an unknown inductance and its resistance (Maxwell bridge).
   chapter: "07-05"
 - term: All-pass filter
-  definition: A circuit with |H(jω)| = 1 at all frequencies but a frequency-dependent phase, such as (1 − jωRC)/(1 + jωRC) with phase −2 arctan(ωRC); it changes a waveform's shape without changing its amplitude spectrum.
+  definition: "A circuit with |H(jω)| = 1 at all frequencies but a frequency-dependent phase, such as (1 − jωRC)/(1 + jωRC) with phase −2 arctan(ωRC); it changes a waveform's shape without changing its amplitude spectrum. In discrete time (16-02): |H(e^(jω))| = 1, built from poles at p and zeros at 1/p*, for example (z⁻¹ − a)/(1 − az⁻¹), whose group delay is positive at every frequency."
   chapter: "07-05"
 - term: AC analysis (SPICE)
   definition: A simulator analysis that linearizes the circuit at its DC operating point and solves its complex nodal equations at each frequency of a sweep, giving phasors; it ignores nonlinearity, clipping and transients.
@@ -5997,7 +5997,7 @@
   chapter: "15-05"
   see_also: [BIBO stability]
 - term: Internal stability
-  definition: Stability of every transfer function inside a feedback loop (reference to output, disturbance to output, reference to control effort); it rules out unstable modes hidden by pole–zero cancellation.
+  definition: "Stability of every transfer function inside a feedback loop (reference to output, disturbance to output, reference to control effort); it rules out unstable modes hidden by pole–zero cancellation. For a discrete-time filter structure (16-01, 16-08): every internal state stays bounded, not only the input–output map, so an FIR map realized with an undamped recursive mode (a recursive moving sum) is not internally stable."
   chapter: "15-05"
   see_also: [Pole–zero cancellation]
 - term: Routh array

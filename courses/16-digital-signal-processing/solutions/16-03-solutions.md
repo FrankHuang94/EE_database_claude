@@ -78,6 +78,22 @@ These are exactly the numbers of 802.11a/g Wi-Fi: a 64-point FFT at 20 MHz with 
 
 (b) A 9-tap channel needs 8 samples: overhead $8/72$ = **11.1**% with 64 subcarriers and $8/264$ = **3.03**% with 256. More subcarriers amortize the prefix, at the cost of longer symbols, which are more sensitive to frequency offset and to channels that change during the symbol.
 
+### Solution 16-03.13
+
+(a) Both tones are on bins: $\lvert X[4]\rvert = \lvert X[5]\rvert = AN/2$ = **8**, and every other bin is zero. The 16-point DFT shows two clean lines, but it says nothing about what lies between them.
+
+(b) Padding to 64 points puts **3** spectral samples between the tones (at 4.25, 4.5 and 4.75 cycles); padding to 256 puts **15**. Both show the same dip, a minimum of **2.01** at 4.5 cycles, which is **−12.0** dB below the peaks: exactly the DTFT's value there. Zero padding only samples the 16-sample record's DTFT more finely (§3.6); it cannot change it.
+
+(c) No. Two tones 0.5 cycle per record apart are closer than the record's resolution (about one bin, $f_s/N$): the 16-sample record's DTFT has a single merged lobe, peaking at about **4.25** cycles, and finer sampling of that lobe never splits it. Only a longer record narrows the main lobes.
+
+### Solution 16-03.14
+
+(a) $N$ = 4 and $M$ = 2, so each block keeps $L = N - M + 1$ = **3** outputs and the hop is 3. The first block is $(0, 1, 2, 3)$: one leading zero ($M - 1$) for the input before $n = 0$.
+
+(b) Block 1, $(0, 1, 2, 3) \circledast (1, 1, 0, 0)$: the circular convolution is $(0 + 3, 1 + 0, 2 + 1, 3 + 2) = (3, 1, 3, 5)$. The first sample, 3, is the wrapped one ($x[3] + x[0]$); discard it and keep **(1, 3, 5)**. Block 2 starts 3 samples later, $(3, 4, 5, 6)$: circular convolution $(3 + 6, 4 + 3, 5 + 4, 6 + 5) = (9, 7, 9, 11)$; keep **(7, 9, 11)**. A third block $(6, 0, 0, 0)$ gives $(6, 6, 0, 0)$ and keeps $(6, 0, 0)$, the tail.
+
+(c) Direct convolution: $(1, 1 + 2, 2 + 3, 3 + 4, 4 + 5, 5 + 6, 6) = (1, 3, 5, 7, 9, 11, 6)$, the same.
+
 ---
 
 ## Answer key
@@ -129,3 +145,10 @@ These are exactly the numbers of 802.11a/g Wi-Fi: a 64-point FFT at 20 MHz with 
 | 16-03.12c | overhead, 64 points | 20 | % |
 | 16-03.12d | overhead, 9 taps, 64 points | 11.1 | % |
 | 16-03.12e | overhead, 9 taps, 256 points | 3.03 | % |
+| 16-03.13a | on-bin magnitude | 8 | — |
+| 16-03.13b | samples between tones, 64 points | 3 | — |
+| 16-03.13c | samples between tones, 256 points | 15 | — |
+| 16-03.13d | dip minimum | 2.01 | — |
+| 16-03.13e | dip below the peaks | −12.0 | dB |
+| 16-03.13f | merged-lobe peak, 4 and 4.5 cycles | 4.25 | cycles |
+| 16-03.14a | outputs kept per block | 3 | — |

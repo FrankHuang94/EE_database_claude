@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 16-09 · Multirate DSP: Decimation, Interpolation and Polyphase
 
 | | |
@@ -226,6 +226,14 @@ Against the device's linear-phase wideband FIR filter at the same 400 kSPS, whos
 | Ex 16-09.4h | saving | 2.77 | — |
 | Ex 16-09.4i | single-stage delay | 251.3 | µs |
 | Ex 16-09.4j | multistage delay | 351.6 | µs |
+| Ex 16-09.4k | stage 1 folded multipliers | 3 | — |
+| Ex 16-09.4l | stage 2 folded multipliers | 4 | — |
+| Ex 16-09.4m | stage 3 folded multipliers | 15 | — |
+| Ex 16-09.4n | stage 1 multiplications per second | 576000 | /s |
+| Ex 16-09.4o | stage 2 multiplications per second | 384000 | /s |
+| Ex 16-09.4p | stage 3 multiplications per second | 720000 | /s |
+| Ex 16-09.4q | single-stage folded multipliers | 97 | — |
+| Ex 16-09.4r | extra delay of the multistage design | 40 | % |
 | Ex 16-09.5a | −3 dB frequency | 91.05 | kHz |
 | Ex 16-09.5b | droop at 20 kHz | −0.143 | dB |
 | Ex 16-09.5c | attenuation at 380 kHz | 102.4 | dB |

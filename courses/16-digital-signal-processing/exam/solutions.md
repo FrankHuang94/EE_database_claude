@@ -121,7 +121,7 @@ $$
 
 So $b_0 = b_2$ = **0.09763**, $b_1$ = **0.19526**, $a_1$ = **−0.94281**, $a_2$ = **0.33333** (Example 16-07.3). Check: $\sum b/\sum a = 0.39052/0.39052 = 1$ at DC, and the zeros at $z = -1$ give a null at Nyquist.
 
-(b) Noise gain $(1 + a_2)/\big((1 - a_2)[(1 + a_2)^2 - a_1^2]\big) = 1.33333/(0.66667 \times 0.88889)$ = **2.25**, or **3.52** dB. The rounding error has variance $\Delta^2/12$ (one LSB is $\Delta$), so the output noise is $\sqrt{2.25/12}$ = **0.433** LSB rms. A gentle low-pass section amplifies its own rounding noise only slightly; a sharp one (poles near the circle) can amplify it by tens of dB (16-08 Problem 12, 66 times).
+(b) Noise gain $(1 + a_2)/\big((1 - a_2)\,[(1 + a_2)^2 - a_1^2]\big) = 1.33333/(0.66667 \times 0.88889)$ = **2.25**, or **3.52** dB. The rounding error has variance $\Delta^2/12$ (one LSB is $\Delta$), so the output noise is $\sqrt{2.25/12}$ = **0.433** LSB rms. A gentle low-pass section amplifies its own rounding noise only slightly; a sharp one (poles near the circle) can amplify it by tens of dB (16-08 Problem 12, 66 times).
 
 (c) A value $k$ (in LSB) is a fixed point when rounding $0.9k$ returns $k$, which requires $\lvert 0.1k\rvert \le 1/2$: $\lvert k\rvert \le 1/(2(1 - 0.9))$ = **5** LSB. Starting from 20 LSB, the output decays to 5 and stays there ($0.9 \times 5 = 4.5$ rounds back to 5).
 
@@ -141,7 +141,7 @@ So $b_0 = b_2$ = **0.09763**, $b_1$ = **0.19526**, $a_1$ = **−0.94281**, $a_2$
 
 (a) Elliptic: the first section has five non-trivial coefficients ($b_0 = b_2$ carry the gain, $b_1$, $a_1$, $a_2$) and the second three ($b_1$, $a_1$, $a_2$): **8** multiplications per output. FIR: 15 taps fold into 7 pairs plus the centre tap: **8** multiplications per output. They tie. (The 15-tap design has **0.731** dB peak-to-peak ripple and **42.7** dB attenuation; 14 taps gives **1.02** dB of ripple, just outside the mask.)
 
-(b) The FIR delays every frequency by $(15 - 1)/2$ = **7** samples (0.875 ms). The elliptic filter is faster at low frequencies (2.69 samples at DC) but its delay doubles to 14.96 samples near the band edge, so a waveform with energy across the passband is smeared by about **12.3** samples of delay spread. The FIR has none.
+(b) The FIR delays every frequency by $(15 - 1)/2$ = **7** samples (**0.875** ms). The elliptic filter is faster at low frequencies (2.69 samples at DC) but its delay doubles to 14.96 samples near the band edge, so a waveform with energy across the passband is smeared by about **12.3** samples of delay spread. The FIR has none.
 
 (c) The FIR's order scales as $1/\Delta\omega$ and with $\log(1/\delta_p\delta_s)$; the elliptic order grows only logarithmically with sharpness. Here the transition is $\pi/4$ rad/sample, 6 times wider than the audio example's 0.1309, and the tolerances are looser (1 dB and 40 dB against 0.1 dB and 60 dB). The equiripple estimate falls from **129.5** for the audio specification to **10.63** here, while the elliptic order only halves (8 to 4). Wide transitions relative to $f_s$ remove the IIR filter's advantage.
 
@@ -292,6 +292,7 @@ A strong answer computes the three inconsistencies first (energy per MAC, bits f
 | X16.12a | elliptic multiplications | 8 | — |
 | X16.12b | FIR multiplications | 8 | — |
 | X16.12c | FIR delay | 7 | samples |
+| X16.12k | FIR delay | 0.875 | ms |
 | X16.12d | equiripple estimate, audio specification | 129.5 | — |
 | X16.12e | equiripple estimate, this specification | 10.63 | — |
 | X16.12f | elliptic attenuation at 2 kHz | 42.3 | dB |

@@ -89,6 +89,16 @@ The minus sign is a constant phase of 180°, with no effect on group delay.
 - $H_{min}$: zero at 1/3 contributes $-\tfrac{1/3}{2/3} = -0.5$ at DC and $+\tfrac{1/3}{4/3} = 0.25$ at $\pi$; pole at 0.5 contributes $+1$ at DC and $-\tfrac{0.5}{1.5} = -0.333$ at $\pi$. Totals: **0.5** at DC and **−0.0833** at $\pi$.
 - $H$: **2.5** at DC and **0.4167** at $\pi$, equal to the sums $0.5 + 2$ and $-0.0833 + 0.5$.
 
+### Solution 16-02.13
+
+(a) With $\rho = 1$, §3.4's formula gives $\tau = (1 - \cos x)/(2 - 2\cos x) = 1/2$ for every $x = \omega - \theta \ne 0$ (at $x = 0$ the factor vanishes and its phase jumps by $\pi$). The two zeros therefore add exactly **1** sample everywhere except at $\pm\omega_0$.
+
+(b) Each pole contributes $-(\rho^2 - \rho\cos(\omega - \theta))/(1 - 2\rho\cos(\omega - \theta) + \rho^2)$. At $\omega = \omega_0$ the pole at $+\omega_0$ gives $\rho/(1 - \rho) = 49$ and its conjugate, $2\omega_0$ away, gives $-0.45$: the pair gives **48.55** samples, close to the single-pole rule's 49.
+
+(c) At DC the poles give $-0.589$ and the zeros $+1$: total **0.411** samples. At 0.3 rad/sample, just below $\omega_0 = 0.314$, the total is **33.25** samples.
+
+(d) The poles' contribution is a sharp peak of width about $2(1 - r)$ around $\omega_0$ (§3.3) and small elsewhere; the zeros add a constant. A notch therefore delays only the frequencies it removes, plus a little; far from the notch, the signal passes with less than one sample of delay. Signals near the notch, such as a drifting hum, see a large and rapidly changing delay.
+
 ---
 
 ## Answer key
@@ -142,3 +152,7 @@ The minus sign is a constant phase of 180°, with no effect on group delay.
 | 16-02.12d | minimum-phase delay at π | −0.0833 | samples |
 | 16-02.12e | total delay at DC | 2.5 | samples |
 | 16-02.12f | total delay at π | 0.4167 | samples |
+| 16-02.13a | zero-pair delay off the notch | 1 | samples |
+| 16-02.13b | pole-pair delay at the notch | 48.55 | samples |
+| 16-02.13c | total delay at DC | 0.411 | samples |
+| 16-02.13d | total delay at 0.3 rad/sample | 33.25 | samples |

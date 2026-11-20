@@ -60,6 +60,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Sizing a cyclic prefix.** An OFDM link samples at 20 MHz and uses a 64-point DFT. (a) Its channel's impulse response spans 17 samples. What is the shortest cyclic prefix, what delay spread is that in microseconds, and what fraction of airtime does it cost? (b) For a 9-tap channel, compare the prefix overhead with a 64-point and a 256-point DFT.
 
+### Problem 16-03.13 [B]
+
+**Zero padding and resolution.** *(lab)* A 16-sample record holds two equal unit-amplitude cosines at 4.0 and 5.0 cycles per record. (a) What does its 16-point DFT show at bins 4 and 5? (b) Zero-pad the record to 64 and to 256 points. How many samples of the spectrum now lie between the two tones, and does the dip between them get deeper than it is in the DTFT? (c) Move the second tone to 4.5 cycles per record. Can any amount of zero padding separate the two tones, and why?
+
+### Problem 16-03.14 [B]
+
+**Overlap-save by hand.** Filter $x = (1, 2, 3, 4, 5, 6)$ with $h = (1, 1)$ ($M = 2$) using 4-point circular convolutions with overlap-save. (a) Give the block length $N$, the hop $L$ and the first input block, including the leading zero. (b) Compute each block's circular convolution and the samples kept. (c) Check the result against direct convolution.
+
 ---
 
 ## Objective coverage
@@ -69,6 +77,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Compute DFTs; orthogonality; Parseval | 1, 7, 11 |
 | 2. Bins as DTFT samples; time aliasing | 2, 6, 8 |
 | 3. Properties and the circular convolution theorem | 3, 4, 11 |
-| 4. Linear via circular convolution; zero padding | 4, 5 |
-| 5. Overlap-add and overlap-save; cost | 9, 10 |
+| 4. Linear via circular convolution; zero padding | 4, 5, 13 |
+| 5. Overlap-add and overlap-save; cost | 9, 10, 14 |
 | 6. Cyclic prefix | 12 |
