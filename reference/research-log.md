@@ -2645,3 +2645,44 @@ R&D % = R&D ÷ revenue.
 - **Infineon BGA9H1MN9** (data sheet Rev. 2.0, 2021-05-06), 1.4–2.7 GHz LNA with gain steps: at 2100 MHz, state G0 gain 20.2 dB typ., NF 0.6 dB typ. (1.2 max), IIP3 −6 dBm typ., IP1dB −16 dBm typ.; lowest-gain state G6 gain −2.7 dB, NF 2.7 dB typ., IIP3 +23 dBm typ.; state G5 gain −1.2 dB, NF 10.4 dB typ.; supply current 5.8 mA typ. in G0. [Established]
 - **Infineon BGA524N6** (data sheet Rev. 3.5, 2021-08-31), GNSS LNA: insertion power gain 19.6 dB typ., NF 0.55 dB typ. (1.0 max) with a 50 Ω source; the product page marks it "not for new design". [Established]
 - **Skyworks SKY55951-11** (data sheet 205521I, 2 Mar 2026), GNSS L1 + L5 LNA front-end module with post filter: at 1575 MHz small-signal gain 17 dB typ., NF 1.4 dB typ. (2.2 max). [Established]
+
+## R-263 · US FM broadcast rules (47 CFR Part 73)
+
+*Read on 20 Nov 2026 by a research subagent from the eCFR point-in-time XML (as of 18 Nov 2026) and re-checked against the saved text.*
+
+- **§ 73.310(a):** "frequency deviation of ±75kHz is defined as 100% modulation"; an FM broadcast channel is "A band of frequencies 200 kHz wide", from 88.1 MHz "in successive steps of 200 kHz to and including 107.9 MHz". **§ 73.201:** the band "between 88 MHz and 108 MHz ... is divided into 100 channels of 200 kHz each". [Established] [eCFR Part 73](https://www.ecfr.gov/current/title-47/chapter-I/subchapter-C/part-73)
+- **§ 73.317:** (b) emissions 120–240 kHz from the carrier "must be attenuated at least 25 dB below the level of the unmodulated carrier"; (e) "Preemphasis shall not be greater than the impedance-frequency characteristics of a series inductance resistance network having a time constant of 75 microseconds" (a ceiling, not a fixed value). [Established]
+- **§ 73.322 (stereo):** "The pilot subcarrier at 19 kHz ±2 Hz, must frequency modulate the main carrier between the limits of 8 and 10 percent"; the stereophonic subcarrier is the second harmonic (38 kHz); "Double sideband, suppressed-carrier, amplitude modulation of the stereophonic subcarrier at 38 kHz must be used", suppressed "to a level less than 1% modulation"; its modulating signal is L − R; the subcarrier's baseband range is 23 kHz to 53 kHz. [Established]
+
+## R-264 · ITU-R BS.450-4, FM sound broadcasting at VHF
+
+*Read on 20 Nov 2026 by a research subagent from the ITU PDF (pdftotext dropped the ± and µ symbols, restored here).*
+
+- **Rec. ITU-R BS.450-4 (10/2019), in force:** maximum frequency deviation ±75 kHz or ±50 kHz; NOTE 1: "In the West European countries and the United States of America, the maximum deviation is ±75 kHz. In the ex-USSR and in some other European countries, it is 50 kHz"; NOTE 2: "In Europe, the pre-emphasis is 50 µs. In the United States of America, it is 75 µs"; the pilot-tone stereo system "has become the de facto worldwide standard", with M = (A + B)/2, S = (A − B)/2, a 38 kHz ±4 Hz subcarrier and a 19 kHz pilot at 8–10%. [Established] [BS.450-4](https://www.itu.int/dms_pubrec/itu-r/rec/bs/R-REC-BS.450-4-201910-I!!PDF-E.pdf)
+
+## R-265 · AM broadcast channel spacing
+
+*Read on 20 Nov 2026 by a research subagent. The Region 2 plan's own text (Rio de Janeiro, 1981) was not read; the US rule was.*
+
+- **47 CFR § 73.14:** the AM band extends "from 535 to 1705 kHz"; "The 117 carrier frequencies assigned to AM broadcast stations begin at 540 kHz and progress in 10 kHz steps to 1700 kHz". [Established]
+- **CEPT ECC Report 117 (Feb 2008)**, on the GE75 agreement for ITU Regions 1 and 3: "The GE75 Plan is based on analogue double-sideband transmissions. All channel spacings are 9 kHz". The ITU's WRS-16 seminar document 21 describes the same agreement. [Established] [ECC Report 117](https://docdb.cept.org/download/2733)
+
+## R-266 · Aviation VHF voice: AM and 8.33 kHz channel spacing
+
+*Read on 20 Nov 2026 by a research subagent from EUR-Lex (original text; the consolidated version with later amendments returned "document does not exist" and was not read) and the eCFR.*
+
+- **Commission Implementing Regulation (EU) No 1079/2012 (16 Nov 2012):** lays down requirements "for the coordinated introduction of air-ground voice communications based on 8,33 kHz channel spacing" for radios in "the 117,975-137 MHz band"; "from 17 November 2013 all radios placed on the market, are 8,33 kHz channel spacing capable"; the emergency frequency 121,5 MHz and 123,1 MHz remain 25 kHz channels. [Established] [EUR-Lex 32012R1079](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32012R1079)
+- **47 CFR § 87.137:** lists emission designators 6K00A3E and 5K6A3E (double-sideband AM telephony, the latter for 8.33 kHz channels); note 17: in 117.975–137 MHz "the Commission will not authorize any 8.33 kHz channel spaced transmissions ... within the U.S. National Airspace System, except, on an optional basis" for certain stations; note 11: for single-sideband emissions "the assigned frequency must be 1400 Hz above the carrier frequency". [Established]
+
+## R-267 · HF single-sideband voice
+
+*Read on 20 Nov 2026 by a research subagent from the ITU PDF and the eCFR.*
+
+- **Rec. ITU-R M.1173-1 (03/2012):** "Coast and ship stations shall use only the upper sideband." [Established] [M.1173-1](https://www.itu.int/rec/R-REC-M.1173/en)
+- **47 CFR § 80.207(c):** single-sideband carriers "For suppressed carrier transmitters at a power level at least 40 dB below peak envelope power". [Established]
+
+## R-268 · AM/FM broadcast receiver IC sensitivity (Skyworks Si473x)
+
+*Read on 20 Nov 2026 by a research subagent from the manufacturer's data sheet (PDF).*
+
+- **Skyworks Si4730/31/34/35-D60, Rev. 1.2 (10 Nov 2021):** FM sensitivity 2.2 µV EMF typ., 3.5 µV EMF max., at (S+N)/N = 26 dB, with FMOD = 1 kHz, 22.5 kHz deviation, 75 µs de-emphasis, mono, audio band 300 Hz–15 kHz A-weighted; de-emphasis selectable 75 µs or 50 µs; AM sensitivity 25 µV EMF typ., 35 max., at 26 dB with 1 kHz at 30% modulation and a 2 kHz channel filter. [Established]

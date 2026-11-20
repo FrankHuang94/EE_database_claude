@@ -4724,9 +4724,9 @@
   chapter: "11-11"
   see_also: [Coherent demodulation]
 - term: Modulation index
-  definition: "In conventional AM, the depth m of the envelope variation A[1 + m x(t)] with |x| ≤ 1; m ≤ 1 keeps the envelope equal to the message, and the sideband share of power is m²P_x/(1 + m²P_x)."
+  definition: "In conventional AM, the depth m of the envelope variation A[1 + m x(t)] with |x| ≤ 1; m ≤ 1 keeps the envelope equal to the message, and the sideband share of power is m²P_x/(1 + m²P_x). In tone FM, β = Δf/f_m, the peak phase swing in radians (17-03)."
   chapter: "11-11"
-  see_also: [Amplitude modulation (AM)]
+  see_also: [Amplitude modulation (AM), Frequency modulation]
 - term: Envelope detector
   definition: "A diode charging a capacitor that discharges through a resistor, which tracks the peaks of an AM signal; its time constant must be much longer than the carrier period but at most √(1 − m²)/(mω_m) to avoid diagonal clipping."
   chapter: "11-11"
@@ -6573,3 +6573,47 @@
   definition: The 3GPP minimum input level at which a receiver must reach 95% of maximum throughput on a reference channel, derived from −174 dBm/Hz, the occupied bandwidth, an assumed noise figure, SNR, implementation margin and diversity gain.
   chapter: "17-02"
   see_also: [Receiver sensitivity]
+- term: Single-sideband modulation
+  definition: Amplitude modulation that transmits only one sideband, (A/2)·[m cos(ωct) ∓ m̂ sin(ωct)], halving the bandwidth to W with the same output SNR as DSB for the same received power; it needs coherent detection but tolerates small frequency errors as a pitch shift.
+  chapter: "17-03"
+  see_also: [Hilbert transform, DSB-SC modulation]
+- term: Hilbert transform
+  definition: The filter −j·sgn(f), which shifts positive frequencies by −90° and negative ones by +90° without changing magnitudes; cos becomes sin and sin becomes −cos.
+  chapter: "17-03"
+  see_also: [Analytic signal, Single-sideband modulation]
+- term: Analytic signal
+  definition: m(t) + j·m̂(t), a complex signal with no negative-frequency content; shifting it to a carrier and taking the real part gives single-sideband modulation.
+  chapter: "17-03"
+  see_also: [Hilbert transform]
+- term: Vestigial sideband
+  definition: Modulation that keeps one sideband and a shaped remnant of the other, so that messages with energy down to DC can be filtered without an infinitely sharp edge at the carrier; the analog-television standard.
+  chapter: "17-03"
+  see_also: [Single-sideband modulation]
+- term: Instantaneous frequency
+  definition: The rate of change of a signal's angle divided by 2π, fi = (1/2π)·dθ/dt; for FM it is fc + kf·m(t).
+  chapter: "17-03"
+  see_also: [Frequency modulation]
+- term: Frequency modulation
+  definition: Angle modulation in which the instantaneous frequency follows the message, fi = fc + kf·m(t); constant envelope, Bessel-function sidebands, bandwidth about 2(Δf + W) by Carson's rule, and an output SNR of 3D²·(Pm/max m²)·γ above threshold.
+  chapter: "17-03"
+  see_also: [Phase modulation, Carson's rule, FM threshold, Instantaneous frequency]
+- term: Phase modulation
+  definition: Angle modulation in which the phase follows the message, φ = kp·m(t); PM of a message is FM of its derivative, and its demodulated noise is flat rather than parabolic.
+  chapter: "17-03"
+  see_also: [Frequency modulation]
+- term: Carson's rule
+  definition: The FM bandwidth estimate B ≈ 2(Δf + W) = 2(D + 1)W, which holds about 98–99% of the power; 180 kHz for broadcast FM (75 kHz deviation, 15 kHz audio).
+  chapter: "17-03"
+  see_also: [Frequency modulation, Modulation index]
+- term: FM threshold
+  definition: The carrier-to-noise ratio in the IF bandwidth, roughly 10 dB, below which noise occasionally encircles the carrier phasor, producing 2π phase jumps (clicks) and a rapid collapse of the output SNR.
+  chapter: "17-03"
+  see_also: [Frequency modulation]
+- term: Pre-emphasis
+  definition: A high-frequency boost 1 + j2πfτ applied to audio before FM, undone after detection, which removes much of FM's parabolic noise (about 13 dB for τ = 75 µs over 15 kHz); 75 µs in the US, 50 µs in Europe.
+  chapter: "17-03"
+  see_also: [Frequency modulation]
+- term: Figure of merit (modulation)
+  definition: The ratio of a scheme's output SNR to the baseband reference γ = S_R/(N0·W) at the same received power; 1 for DSB-SC and SSB, about 1/3 for full-modulation tone AM, 1.5β² for tone FM above threshold.
+  chapter: "17-03"
+  see_also: [Frequency modulation, Single-sideband modulation]
