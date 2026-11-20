@@ -204,6 +204,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-196 | RF exposure limits (FCC and ICNIRP) | Nov 2026 |
 | R-197 | ITU-T G.652 single-mode fibre attributes | Nov 2026 |
 | R-198 | Interface impedances: USB 2.0 cable and PCIe board traces | Nov 2026 |
+| R-199 | WR-90 rectangular waveguide dimensions and band | Nov 2026 |
 
 ---
 
@@ -2052,3 +2053,11 @@ R&D % = R&D ÷ revenue.
 - **Texas Instruments SLAAE45** (Sep 2021), Table 2-1 (trace impedance): "PCIe® Gen 1 and 2: 100 Ω ±5% differential; 50 Ω ±5% single ended" and "PCIe® Gen 3 and 4: 85 Ω ±5% differential; 42.5 Ω ±5% single ended". [TI SLAAE45](https://www.ti.com/lit/pdf/slaae45)
 - **Texas Instruments DS320PR810 data sheet** (SNLS668, Aug 2022), layout guidelines: "Use 85 Ω impedance traces when interfacing with PCIe CEM connectors." [TI DS320PR810](https://www.ti.com/lit/ds/symlink/ds320pr810.pdf)
 - **Not verified:** the PCI-SIG Card Electromechanical specification's own wording on 85 Ω (members only).
+
+## R-199 · WR-90 rectangular waveguide dimensions and band
+
+*Read on 20 Nov 2026 from manufacturers' published waveguide tables; tagged [Established] (EIA WR / IEC R designations are long-standing standards; the tables below restate them).*
+
+- **Copper Mountain Technologies, "Waveguide Frequency Chart"** (dated 1/26/23): "X band WR-90 8.20 12.40 0.9000 0.4000 22.8600 10.1600" (recommended band in GHz; inside dimensions in inches and millimetres). [Copper Mountain (PDF)](https://coppermountaintech.com/wp-content/uploads/2023/02/What-is-a-Waveguide.pdf)
+- **Microwave Techniques, "Rigid Waveguide Technical Data"** (Dec 2023): "WR90 R100 6.557" (EIA designation, IEC designation, TE10 cutoff frequency in GHz). [Microwave Techniques (PDF)](https://catalog.microwavetechniques.com/Asset/Rigid-Waveguide-Technical-Data.pdf)
+- **Derived here (13-10):** the cutoffs from $f_c = (c/2)\sqrt{(m/a)^2 + (n/b)^2}$ (TE10 6.557, TE20 13.11, TE01 14.75 GHz), and the observation that the recommended band runs from about 1.25 times the TE10 cutoff to about 0.95 times the TE20 cutoff.

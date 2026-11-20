@@ -5202,3 +5202,31 @@
   definition: The bound on matching a reactive load with any lossless network; for a parallel RC load, the integral of ln(1/|Γ|) over angular frequency cannot exceed π/(RC), so a better match is possible only over a narrower band.
   chapter: "13-09"
   see_also: [Impedance matching]
+- term: Waveguide
+  definition: A structure that guides electromagnetic waves, especially a hollow metal pipe, which supports only TE and TM modes above their cutoff frequencies (no TEM mode, since it has a single conductor); dielectric waveguides such as optical fibre guide by total internal reflection.
+  chapter: "13-10"
+  see_also: [Cutoff frequency, Optical fiber]
+- term: Waveguide mode
+  definition: A field pattern that propagates along a guide unchanged except for phase and attenuation; TE (transverse electric) modes have no axial E, TM modes no axial H, labelled by integers (TE₁₀, TM₁₁) counting half-wave variations across the guide.
+  chapter: "13-10"
+  see_also: [Waveguide]
+- term: Dominant mode
+  definition: The mode with the lowest cutoff frequency in a waveguide, TE₁₀ in a rectangular guide (f_c = c/2a); operating between its cutoff and the next mode's keeps the guide single-mode.
+  chapter: "13-10"
+  see_also: [Waveguide mode]
+- term: Guide wavelength
+  definition: The wavelength of a mode along a waveguide, λ_g = 2π/β = λ/√(1 − (f_c/f)²), longer than the free-space wavelength and growing without limit as the frequency approaches cutoff.
+  chapter: "13-10"
+  see_also: [Waveguide mode]
+- term: Cavity resonator
+  definition: A closed conducting box (or dielectric body) that stores electromagnetic energy in standing-wave modes at discrete resonant frequencies, with quality factors of thousands from wall loss; the microwave counterpart of an LC tank.
+  chapter: "13-10"
+  see_also: [Quality factor]
+- term: V-number
+  definition: The normalized frequency of a step-index fibre, V = (2πa/λ)·NA; the fibre is single-mode when V < 2.405, the first zero of the Bessel function J₀.
+  chapter: "13-10"
+  see_also: [Numerical aperture, Mode field diameter]
+- term: Mode field diameter
+  definition: The diameter of the (approximately Gaussian) light spot of a single-mode fibre's guided mode, larger than the core; about 9 µm at 1310 nm for standard single-mode fibre, and it sets splice and connector losses.
+  chapter: "13-10"
+  see_also: [V-number]
