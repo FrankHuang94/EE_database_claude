@@ -200,6 +200,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-192 | Crystal, MEMS and TCXO data sheets; crystal-oscillator application notes | Nov 2026 |
 | R-193 | PCB laminate dielectric constants and loss tangents | Nov 2026 |
 | R-194 | RG-58 coaxial cable data sheets | Nov 2026 |
+| R-195 | Bond-wire inductance rule of thumb | Nov 2026 |
 
 ---
 
@@ -2018,3 +2019,9 @@ R&D % = R&D ÷ revenue.
 
 - **Belden 8262** (RG-58 C/U type, Mil-Spec construction, commercial; Rev 0.530, 2025-09-07): nominal impedance 50 Ω; nominal velocity of propagation 66%; nominal capacitance 30.8 pF/ft (101 pF/m); nominal attenuation 4.9 dB/100 ft at 100 MHz (16.08 dB/100 m) and 21.5 dB/100 ft at 1000 MHz (70.54 dB/100 m). [Data sheet copy](https://docs.rs-online.com/334f/A700000014606838.pdf)
 - **Belden 8259** (RG-58 A/U type; Rev 0.531, 2025-02-03): 50 Ω, 66%, 5.4 dB/100 ft at 100 MHz and 22.8 dB/100 ft at 1000 MHz. [Data sheet copy](https://docs.rs-online.com/e040/A700000013640140.pdf)
+
+## R-195 · Bond-wire inductance rule of thumb
+
+*Read on 20 Nov 2026 from a third-party archive of the manufacturer's manual (the original is no longer distributed by the manufacturer). Tagged [Established] as a long-standing instrument-maker's rule of thumb, not a specification.*
+
+- **Hewlett-Packard / Agilent 54753A and 54754A TDR plug-in User's Guide** (publication 54753-97015, 3rd edition, May 2000), "TDR Fundamentals" chapter: "A wire bond in free space would have an inductance of about 1.26 nH/mm", "typical wire bonds on hybrids is about 1 nH/mm", with the example of 3 nH for a 3 mm bond. [Archived manual](https://xdevs.com/doc/HP_Agilent_Keysight/HP%2054753A%20USER.pdf)

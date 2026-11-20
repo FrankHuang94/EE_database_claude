@@ -5038,3 +5038,31 @@
   definition: The charge per metre on a long two-conductor structure divided by the voltage between the conductors, C' in F/m, such as 2 pi epsilon/ln(b/a) for a coaxial line; with the inductance per length it sets a transmission line's impedance and delay.
   chapter: "13-02"
   see_also: [Characteristic impedance]
+- term: Magnetic vector potential
+  definition: The field A whose curl is the magnetic flux density, B = ∇ × A; it points along the currents that produce it, obeys ∇²A = −µJ in the Coulomb gauge, and its circulation around a loop is the flux through the loop.
+  chapter: "13-03"
+  see_also: [Biot–Savart law, Magnetic flux]
+- term: Magnetization
+  definition: The magnetic dipole moment per unit volume of a material, M (A/m), produced by electron spins and orbits; H = B/µ₀ − M, and in a linear material M = χ_m H, so that B = µ_r µ₀ H.
+  chapter: "13-03"
+  see_also: [Relative permeability, Ferromagnetism]
+- term: Partial inductance
+  definition: The share of a closed loop's inductance assigned to one segment of it, so that the loop inductance is the signed sum of the segments' partial self- and mutual inductances; the only meaningful inductance of an isolated wire such as a bond wire, about 1 nH/mm.
+  chapter: "13-03"
+  see_also: [Inductance, Mutual inductance]
+- term: Internal inductance
+  definition: The part of a conductor's inductance due to magnetic energy stored inside the conductor itself; µ₀/8π = 50 nH/m for a round nonmagnetic wire with uniform current, whatever its radius, and vanishing at high frequency as the skin effect pushes the current to the surface.
+  chapter: "13-03"
+  see_also: [Inductance]
+- term: Nagaoka coefficient
+  definition: The factor K ≤ 1 by which a finite solenoid's inductance falls below the long-solenoid formula µ₀N²A/ℓ, because the field spreads out near the ends; about 0.92 for a coil five diameters long and 0.82 for one two diameters long.
+  chapter: "13-03"
+  see_also: [Solenoid, Inductance]
+- term: Magnetic circuit
+  definition: A path of high-permeability material that guides magnetic flux, analysed like a resistive circuit with magnetomotive force as the source, flux as the current and reluctance as the resistance; an air gap usually dominates its reluctance.
+  chapter: "13-03"
+  see_also: [Reluctance, Magnetomotive force]
+- term: Magnetomotive force
+  definition: The ampere-turns NI that drive flux around a magnetic circuit, the analogue of voltage; equal to the line integral of H around the circuit, and to flux times total reluctance.
+  chapter: "13-03"
+  see_also: [Magnetic circuit, Reluctance]

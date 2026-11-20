@@ -1,0 +1,23 @@
+* Lab 13-03 -- ground bounce: a current ramp through a bond wire's inductance.
+* A 2 nH inductor (a 2 mm bond wire, Example 13-03.5) connects the chip's ground node to the board ground.
+* An ideal current source ramps the return current from 0 to 40 mA in 400 ps (from 100 ps to 500 ps),
+* holds it, and the voltage across the inductor is v = L di/dt: a flat 0.2 V during the ramp and zero
+* before and after, since an inductor responds only to change. The area under the pulse is the change in
+* flux linkage, L * delta-I = 80 pV.s, whatever the ramp's speed.
+*
+* EXPECT vramp key:../../chapters/13-03-magnetostatics-and-inductance.md#Sim_13-03.a rtol=1e-3
+* EXPECT varea key:README.md#Lab_13-03.g scale=1e-12 rtol=1e-3
+* EXPECT vafter 0 atol=1e-9
+
+IRET 0 chipgnd PWL(0 0 100p 0 500p 40m 3n 40m)
+LBOND chipgnd 0 2n
+
+.control
+tran 1p 3n
+meas tran vramp avg v(chipgnd) from=200p to=400p
+meas tran vafter avg v(chipgnd) from=1n to=3n
+meas tran varea integ v(chipgnd) from=0 to=3n
+print vramp vafter varea
+quit
+.endc
+.end
