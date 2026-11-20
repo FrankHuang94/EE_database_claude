@@ -30,7 +30,7 @@ Discrete-time signal processing for engineers who will build or buy DSP hardware
 | [16-02 · DTFT and z-Transform for DSP](chapters/16-02-dtft-and-z-transform-for-dsp.md) | 6 | ✅ verified | [problems](problems/16-02-problems.md) · [solutions](solutions/16-02-solutions.md) · [lab](labs/16-02-lab/README.md) · [verify](verify/verify_16_02.py) |
 | [16-03 · The DFT and Its Properties](chapters/16-03-the-dft.md) | 8 | ✅ verified | [problems](problems/16-03-problems.md) · [solutions](solutions/16-03-solutions.md) · [lab](labs/16-03-lab/README.md) · [verify](verify/verify_16_03.py) |
 | [16-04 · The FFT Algorithm](chapters/16-04-the-fft.md) | 7 | ✅ verified | [problems](problems/16-04-problems.md) · [solutions](solutions/16-04-solutions.md) · [lab](labs/16-04-lab/README.md) · [verify](verify/verify_16_04.py) |
-| [16-05 · Spectral Analysis and Windowing](chapters/16-05-spectral-analysis-and-windowing.md) | 7 | ⬜ planned | — |
+| [16-05 · Spectral Analysis and Windowing](chapters/16-05-spectral-analysis-and-windowing.md) | 7 | ✅ verified | [problems](problems/16-05-problems.md) · [solutions](solutions/16-05-solutions.md) · [lab](labs/16-05-lab/README.md) · [verify](verify/verify_16_05.py) |
 | [16-06 · FIR Filter Design](chapters/16-06-fir-filter-design.md) | 9 | ⬜ planned | — |
 | [16-07 · IIR Filter Design](chapters/16-07-iir-filter-design.md) | 8 | ⬜ planned | — |
 | [16-08 · Filter Structures and Implementation](chapters/16-08-filter-structures.md) | 6 | ⬜ planned | — |

@@ -6307,3 +6307,33 @@
   definition: A streaming FFT architecture with one butterfly per stage and delay lines between stages, taking one sample per clock; the radix-2 single-path delay-feedback (R2SDF) form uses log₂N butterflies, log₂N − 2 general multipliers and N − 1 words of delay.
   chapter: "16-04"
   see_also: [Fast Fourier transform (FFT)]
+
+# ---------------------------------------------------------------- 16-05
+- term: Coherent gain
+  definition: The mean of a window's weights, Σw/N; a tone of amplitude A on a bin produces a DFT peak of A·N·CG/2, so amplitude readings are divided by N·CG/2.
+  chapter: "16-05"
+  see_also: [Window function]
+- term: Processing gain
+  definition: The amount by which an FFT lowers the per-bin noise floor relative to a tone, 10 log10(N/(2·ENBW)) dB; it makes the floor depth much larger than the SNR, which it does not change.
+  chapter: "16-05"
+  see_also: [Equivalent noise bandwidth (ENBW)]
+- term: Periodogram
+  definition: The squared magnitude of a (windowed) DFT, normalized as a power estimate per bin; for noise its bins scatter as much as their mean regardless of record length.
+  chapter: "16-05"
+  see_also: [Welch's method]
+- term: Welch's method
+  definition: Estimating a power spectrum by averaging the periodograms of K windowed, often overlapping, segments, which cuts the scatter of each bin by about √K at the cost of K times coarser resolution.
+  chapter: "16-05"
+  see_also: [Periodogram]
+- term: Coherent sampling
+  definition: Choosing a test frequency f_in = M·f_s/N with M an integer (odd and relatively prime to N) so the record holds whole cycles, every tone and harmonic lands on a bin, and no window is needed.
+  chapter: "16-05"
+  see_also: [Spectral leakage]
+- term: SINAD
+  definition: "Signal-to-noise-and-distortion ratio: the power of the fundamental over everything else except DC, in dB; ENOB = (SINAD − 1.76)/6.02 for a full-scale test."
+  chapter: "16-05"
+  see_also: [Effective number of bits (ENOB), Spurious-free dynamic range (SFDR)]
+- term: Spurious-free dynamic range (SFDR)
+  definition: The ratio of the fundamental to the largest other spectral component (harmonic or not), in dB.
+  chapter: "16-05"
+  see_also: [SINAD]
