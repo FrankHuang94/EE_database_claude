@@ -17,7 +17,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 10-08.2 [A]
 
-**Headroom on 1.2 V.** NMOS and PMOS transistors have $V_{ov}$ = 0.25 V and $|V_{TH}|$ = 0.45 V. (a) Find the compliance of a basic mirror, a simple cascode mirror and a low-voltage cascode mirror. (b) A stage's output node is loaded by a basic NMOS mirror below and a basic PMOS mirror above. How much output swing is left on a 1.2 V supply? (c) What if the NMOS mirror is a simple cascode?
+**Headroom on 1.2 V.** NMOS and PMOS transistors have $V_{ov}$ = 0.25 V and $V_{TN} = |V_{TP}|$ = 0.45 V. (a) Find the compliance of a basic mirror, a simple cascode mirror and a low-voltage cascode mirror. (b) A stage's output node is loaded by a basic NMOS mirror below and a basic PMOS mirror above. How much output swing is left on a 1.2 V supply? (c) What if the NMOS mirror is a simple cascode?
 
 ### Problem 10-08.3 [A]
 
@@ -59,6 +59,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Supply sensitivity.** A resistor-referenced bias on a 1.8 V supply has $V_{GS}$ ≈ 0.7 V. Estimate the reference's sensitivity to supply in %/V, and its change for a 5% (90 mV) supply variation.
 
+### Problem 10-08.13 [C]
+
+**The bipolar cascode mirror.** A bipolar cascode mirror stacks diode-connected Q3 on Q1 and output Q4 on Q2, with Q4's base on Q3's; all four run at 1 mA with β = 100 and $V_A$ = 50 V. (a) Solve the small-signal circuit for the output resistance (by hand with the test-source method, or with a nodal solver). (b) Compare it with $\beta r_o/2$ and with the bipolar ceiling $(\beta + 1)r_o$. (c) Explain, by following a test current, why half of any change in output current returns through Q4's base. (d) Compare with a MOS cascode having the same $g_m$ (38.68 mS) and $r_o$ (50 kΩ).
+
+### Problem 10-08.14 [B]
+
+**A Widlar source for 25 µA.** From a 1 mA reference (base currents neglected): (a) find $R_E$ for $I_{out}$ = 25 µA; (b) choose the nearest E24 value; (c) find the resulting $I_{out}$ by solving $V_T\ln(I_{ref}/I_{out}) = I_{out}R_E$; (d) find $g_mR_E$ and the output resistance $r_o(1 + g_mR_E)$ with $V_A$ = 50 V (neglect $r_\pi$).
+
 ---
 
 ## Objective coverage
@@ -67,6 +75,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Current, output resistance, compliance | 2, 5 |
 | 2. Basic MOS and bipolar mirror errors | 1, 3, 4, 7 |
-| 3. Degeneration, cascode, Wilson | 5, 6, 10 |
+| 3. Degeneration, cascode, Wilson, Widlar | 5, 6, 10, 13, 14 |
 | 4. Mismatch and area | 8, 9 |
 | 5. Bias distribution and supply sensitivity | 11, 12 |

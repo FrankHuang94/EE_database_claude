@@ -56,6 +56,10 @@ The three trade against each other, and the rest of the chapter is about how.
 
 ### 3.2 The basic MOS mirror
 
+![Mirror schematics](../../../assets/figures/10-08/mirror-schematics.svg)
+
+*Figure 3. The current sources of this chapter: (a) the basic MOS mirror, (b) the cascode MOS mirror, (c) the bipolar Wilson mirror and (d) the Widlar current source. In each, a reference current flows into a diode-connected device (gate or base tied to drain or collector), which sets the control voltage that the output device shares.*
+
 M1 is diode-connected and carries $I_{ref}$; M2 shares its $V_{GS}$ (10-02 §3.5). With both saturated,
 
 $$
@@ -109,13 +113,33 @@ the cascode result of 10-06 Example 10-06.7. The output resistance rises by a fa
 
 ![Mirror characteristics](../../../assets/figures/10-08/mirror-characteristics.svg)
 
-**The Wilson mirror (bipolar).** Q3 (output) sits on top of Q2; Q1 and Q2 form a mirror whose output (Q1's collector) drives Q3's base, and Q2 is diode-connected through Q3's emitter current. The feedback loop forces Q3's emitter current to match the reference. Two results follow from a careful count of base currents and from a test-source analysis (Problem 10-08.10 works the count):
+**The Wilson mirror (bipolar).** Q3 (output) sits on top of Q2; Q1 and Q2 form a mirror whose output (Q1's collector) drives Q3's base, and Q2 is diode-connected through Q3's emitter current. The feedback loop forces Q3's emitter current to match the reference. A careful count of base currents (Problem 10-08.10 works it) gives
 
 $$
-\frac{I_{out}}{I_{ref}} = 1 - \frac{2}{\beta^2 + 2\beta + 2}, \qquad R_{out} \approx \frac{\beta r_o}{2} .
+\frac{I_{out}}{I_{ref}} = 1 - \frac{2}{\beta^2 + 2\beta + 2} ,
 $$
 
-The β error falls from about $2/\beta$ to $2/\beta^2$, and the output resistance approaches the bipolar ceiling of 10-07 §3.2.
+so the β error falls from about $2/\beta$ to $2/\beta^2$.
+
+*Output resistance, by a test source.* Hold the reference current constant (an AC open circuit at Q1's collector) and push a small current $i_x$ into Q3's collector. Q3's emitter current $i_{e3}$ flows into the diode-connected Q2, and Q1 copies Q2's current, so Q1's collector current rises by about $i_{e3}$ (neglecting base currents). Because the reference current is fixed, that extra current can only come out of Q3's base: $i_{b3} = -i_{e3}$. KCL at Q3, $i_x = i_{c3} = i_{e3} - i_{b3}$, then gives $i_{e3} = i_x/2$: half the test current returns through the base. Q3's controlled source carries $\beta i_{b3} = -\beta i_x/2$, so the current through $r_{o3}$ is $i_x - (-\beta i_x/2) \approx \beta i_x/2$, while the emitter node, held by the diode, barely moves. Hence
+
+$$
+R_{out} \approx \frac{\beta r_o}{2} ,
+$$
+
+half of the bipolar ceiling $(\beta + 1)r_o$ of 10-07 §3.2, because half of the test current escapes through the feedback path. Solving the full small-signal circuit (Example 10-08.5) gives a value about 1.5% below this estimate.
+
+*The Early error, and the improved Wilson.* Q2 sits at $V_{CE} = V_{BE}$ but Q1's collector is two junction drops up ($V_{CE1} = 2V_{BE}$), so Q1 carries about $V_{BE}/V_A$ more current than Q2 for the same base voltage, a ratio error of about **1.4**% at $V_A$ = 50 V that the β correction does nothing about. The **improved (four-transistor) Wilson** adds a diode-connected Q4 in series with Q2's collector, so Q1 and Q2 both sit at $2V_{BE}$ and the Early terms cancel. The same topologies work with MOSFETs: the MOS Wilson has no base current, so its output resistance is not capped by β and approaches $g_mr_o^2/2$, and its improved version equalizes the two drain voltages in the same way.
+
+**The bipolar cascode mirror.** Stacking a diode on each side, as in the MOS cascode, gives about the same result as the Wilson, $R_{out} \approx \beta r_o/2$, and for the same reason: the cascode transistor's base current is supplied from the reference side, so half of any change in output current returns through the base path rather than through the lower transistor (Problem 10-08.13 checks it numerically). In bipolar circuits both topologies reach about half the β ceiling; only MOS cascodes keep climbing.
+
+**The Widlar current source.** To make a small current from a large reference without a huge resistor, put a resistor $R_E$ in the output transistor's emitter only. The two base–emitter voltages then differ by $I_{out}R_E$ (base currents neglected):
+
+$$
+V_{BE1} - V_{BE2} = V_T\ln\frac{I_{ref}}{I_{out}} = I_{out}R_E .
+$$
+
+Given $I_{ref}$ and the desired $I_{out}$, this gives $R_E$ directly; given $R_E$, it is a transcendental equation for $I_{out}$, solved by iteration or a root finder. Copying 1 mA down to 10 µA needs $R_E = V_T\ln(100)/10\ \mu\text{A}$ = **11.91** kΩ (Example 10-08.8), whereas a basic mirror would need a reference resistor near a megohm. The emitter resistor also degenerates the output: $R_{out} \approx r_o[1 + g_m(R_E \parallel r_\pi)]$, about **5.4** times $r_o$ here.
 
 ### 3.5 Mismatch
 
@@ -139,6 +163,18 @@ Two design rules follow, and they are the opposite of an amplifier's:
 
 - **Mirrors want large overdrive.** A large $V_{ov}$ (low $g_m/I_D$) makes the current less sensitive to threshold error. An input pair wants the reverse, high $g_m/I_D$, to minimize its offset voltage (12-01).
 - **Matching costs area quadratically.** Halving the mismatch needs four times the area, and with it capacitance and slower bias nodes (Figure 2).
+
+> **Math refresher — independent errors add in variance.** If two random errors are independent, the variance of their sum is the sum of their variances (03-04): $\sigma^2(X + Y) = \sigma^2(X) + \sigma^2(Y)$. Standard deviations therefore combine as the square root of the sum of squares, so the larger error dominates quickly: an error half the size of another adds only about 12% to the total.
+
+**The current-factor term.** The threshold is not the only parameter that varies: the current factor $\beta_n = \mu_nC_{ox}W/L$ (written $\beta_n$ here to avoid confusion with the bipolar β) also differs between neighbors, with $\sigma(\Delta\beta_n/\beta_n) = A_\beta/\sqrt{WL}$ [1]. The two errors are independent, so their variances add:
+
+$$
+\sigma^2\!\left(\frac{\Delta I}{I}\right) = \left(\frac{2}{V_{ov}}\right)^2\frac{A_{VT}^2}{WL} + \frac{A_\beta^2}{WL} .
+$$
+
+The threshold term falls as $V_{ov}$ rises; the current-factor term does not. Raising the overdrive therefore helps only until the two are comparable, at $V_{ov} \approx 2A_{VT}/A_\beta$: with the illustrative $A_{VT}$ = 3.5 mV·µm and $A_\beta$ = 1%·µm, about **0.7** V, beyond which the β term sets a floor. The examples in this chapter neglect it except where stated; at 10 µm² it adds about 8% to the variance at $V_{ov}$ = 0.2 V but a third at 0.4 V (Example 10-08.6).
+
+**Layout.** Pelgrom's law covers random variation between closely spaced devices. Systematic gradients across the die (oxide thickness, doping, temperature, stress) add an error that grows with separation; designers cancel their linear part with **common-centroid** layouts, splitting each transistor into fingers arranged symmetrically (for example ABBA) so that both devices share the same center of gravity, and add dummy devices at the ends so every finger sees the same surroundings. Course 20 treats matched layout in detail.
 
 For bipolar mirrors the analogous result is $\sigma(\Delta I/I) = \sigma(\Delta V_{BE})/V_T$, where $\Delta V_{BE}$ is the difference in base–emitter voltage needed for equal currents (set by the mismatch of the saturation currents); mismatch of β adds a separate term through the base currents.
 
@@ -214,7 +250,7 @@ A chip's bias network has three layers:
 
 **Setup.** A bipolar Wilson mirror has β = 100 and $V_A$ = 50 V at 1 mA. Find its ratio error and output resistance, and compare with the basic mirror's base-current error.
 
-**Solution.** Error $2/(\beta^2 + 2\beta + 2)$ = **0.0196**%; $R_{out} \approx \beta r_o/2$ = **2.5** MΩ; the basic mirror's is $2/\beta$ = **2.0**%.
+**Solution.** Error $2/(\beta^2 + 2\beta + 2)$ = **0.0196**%; $R_{out} \approx \beta r_o/2$ = **2.5** MΩ, and solving the three-transistor small-signal circuit exactly gives **2.462** MΩ; the basic mirror's base-current error is $2/\beta$ = **2.0**%. Separately, the Early error from Q1's higher collector voltage is about $V_{BE}/V_A$ = **1.4**%, which only the improved Wilson removes.
 
 **Sanity check.** A hundredfold reduction in the β error and a fiftyfold increase in output resistance, for one transistor and one $V_{BE}$ of compliance.
 
@@ -230,7 +266,7 @@ A chip's bias network has three layers:
 
 (c) $0.2/25.852$ = **0.774**%.
 
-**Sanity check.** Doubling the overdrive halved the mismatch at no area cost, but costs headroom (compliance $V_{ov}$ doubles) and, in a cascode, twice that.
+**Sanity check.** Doubling the overdrive halved the threshold part of the mismatch at no area cost, but it costs headroom (compliance $V_{ov}$ doubles, and in a cascode twice that), and it cannot reduce the current-factor term, which with the illustrative $A_\beta$ = 1%·µm is already **0.316**% at 10 µm²: the total at 0.4 V is **0.637**%, not 0.553%.
 
 ### Example 10-08.7 · A bias network (tier C)
 
@@ -245,6 +281,24 @@ A chip's bias network has three layers:
 (c) Exactly (re-solving with 3.4 V): **+3.72**%. The approximation gives **+3.88**%; the difference is the diode's own small rise in $V_{GS}$, $\partial I/\partial V_{DD} = 1/(R + 1/g_m)$.
 
 **Sanity check.** A supply that moves 3% moves every bias current on the chip by 3.7%: tolerable for logic-level comparators, not for a precision amplifier's bias. That is the case for supply-independent references (Course 20).
+
+### Example 10-08.8 · A Widlar current source (tier B)
+
+**Setup.** A 1 mA reference flows into a diode-connected Q1 (β = 100, $V_A$ = 50 V); Q2 has $R_E$ in its emitter. (a) Find $R_E$ for $I_{out}$ = 10 µA. (b) With the standard 12 kΩ, find $I_{out}$ by solving $V_T\ln(I_{ref}/I_{out}) = I_{out}R_E$. (c) Find the output resistance, exactly from the small-signal circuit and from $r_o[1 + g_m(R_E \parallel r_\pi)]$, with $R_E$ = 11.91 kΩ. (d) What reference resistance would a basic 1:1 mirror need from a 5 V supply for 10 µA?
+
+**Solution.**
+
+(a) $R_E = V_T\ln(100)/10\ \mu\text{A} = 25.852\text{ mV} \times 4.605/10\ \mu\text{A}$ = **11.91** kΩ.
+
+(b) Iterating $I_{out} = V_T\ln(I_{ref}/I_{out})/R_E$ from 10 µA converges in a few steps to **9.94** µA: the logarithm makes the current insensitive to $R_E$ (a **0.80**% change in $R_E$ moved it **0.65**%).
+
+(c) At 10 µA, $g_m$ = 0.3868 mS, $r_\pi$ = 258.5 kΩ, $r_o$ = 5 MΩ, and $g_m(R_E \parallel r_\pi)$ = **4.40**, so the estimate is **27.0** MΩ; the exact small-signal solution (Q1's diode impedance at the base included) gives **27.02** MΩ, **5.4** times $r_o$.
+
+(d) $(5 - 0.7)/10\ \mu\text{A}$ = **430** kΩ, a resistor costing far more die area than 11.9 kΩ.
+
+**Units check.** $V_T\ln(\cdot)$ is in volts, divided by amperes gives ohms; $g_m(R_E \parallel r_\pi)$ is dimensionless.
+
+**Sanity check.** The Widlar source trades a 100:1 current ratio for a resistor of about 12 kΩ, and gets degeneration for free. Its weakness is that the ratio depends on $V_T$, and so on temperature, which bias designers exploit deliberately in PTAT references (Course 20).
 
 ### Answer key
 
@@ -280,31 +334,48 @@ A chip's bias network has three layers:
 | Ex 10-08.5a | Wilson error | 0.0196 | % |
 | Ex 10-08.5b | Wilson R_out | 2.5 | MΩ |
 | Ex 10-08.5c | basic base-current error | 2.0 | % |
+| Ex 10-08.5d | Wilson R_out, exact small-signal | 2.462 | MΩ |
+| Ex 10-08.5e | Wilson Early error | 1.4 | % |
 | Ex 10-08.6a | σ(ΔV_TH), 10 µm² | 1.107 | mV |
 | Ex 10-08.6b | σ(ΔI/I) at 0.2 V | 1.107 | % |
 | Ex 10-08.6c | σ(ΔI/I) at 0.4 V | 0.553 | % |
 | Ex 10-08.6d | σ(ΔV_TH) needed | 0.1 | mV |
 | Ex 10-08.6e | area for 0.1% | 1225 | µm² |
 | Ex 10-08.6f | bipolar σ(ΔI/I) | 0.774 | % |
+| Ex 10-08.6g | current-factor term at 10 µm² | 0.316 | % |
+| Ex 10-08.6h | total at 0.4 V with that term | 0.637 | % |
+| T 10-08.b | overdrive where the two mismatch terms are equal | 0.7 | V |
+| T 10-08.c | Widlar R_E for 1 mA to 10 µA | 11.91 | kΩ |
+| T 10-08.d | Widlar R_out over r_o | 5.4 | — |
+| T 10-08.e | Wilson Early error at V_A = 50 V | 1.4 | % |
 | Ex 10-08.7a | V_GS | 0.7236 | V |
 | Ex 10-08.7b | R | 25.76 | kΩ |
 | Ex 10-08.7c | branch current | 750 | µA |
 | Ex 10-08.7d | bias power | 2.805 | mW |
 | Ex 10-08.7e | exact supply sensitivity | 3.72 | % |
 | Ex 10-08.7f | approximate supply sensitivity | 3.88 | % |
+| Ex 10-08.8a | R_E | 11.91 | kΩ |
+| Ex 10-08.8b | I_out with 12 kΩ | 9.94 | µA |
+| Ex 10-08.8c | g_m (R_E ∥ r_pi) | 4.40 | — |
+| Ex 10-08.8d | R_out estimate | 27.0 | MΩ |
+| Ex 10-08.8e | R_out exact | 27.02 | MΩ |
+| Ex 10-08.8f | R_out over r_o | 5.4 | — |
+| Ex 10-08.8g | basic-mirror reference resistor | 430 | kΩ |
+| Ex 10-08.8h | change in R_E | 0.80 | % |
+| Ex 10-08.8i | change in I_out | 0.65 | % |
 
-*Every value is recomputed by [verify_10_08.py](../verify/verify_10_08.py): MOS mirror currents from the large-signal square law and bipolar mirror currents from Kirchhoff's laws with matched transistors sharing $V_{BE}$ (including the β helper's and Wilson's base-current bookkeeping), output resistances by test-source simulation of the small-signal circuits, and mismatch by Monte Carlo sampling of threshold differences as well as by the formula. The lab's ngspice netlist confirms Examples 10-08.1 and 10-08.7 with level-1 transistors, whose saturation law is the chapter's.*
+*Every value is recomputed by [verify_10_08.py](../verify/verify_10_08.py): MOS mirror currents from the large-signal square law and bipolar mirror currents from Kirchhoff's laws with matched transistors sharing $V_{BE}$ (including the β helper's and Wilson's base-current bookkeeping), output resistances by test-source simulation of the small-signal circuits, and mismatch by Monte Carlo sampling of threshold differences as well as by the formula. Some values are restatements of the stated formulas rather than independent routes: Examples 10-08.2(g), 10-08.5(b, c) and 10-08.6(a–d), and Problems 10-08.2, 10-08.4(d), 10-08.9, 10-08.11 and 10-08.12. The lab's ngspice netlists confirm Examples 10-08.1 and 10-08.7 (`mirrors.cir`), and the degenerated and cascode MOS mirrors, the basic and β-helper bipolar mirrors, the Wilson mirror's output resistance and the Widlar current (`mirrors_more.cir`), with level-1 MOSFETs (whose saturation law is the chapter's) and Gummel–Poon transistors whose Early and β parameters are set to the examples' values at their operating points.*
 
 ## 5. Simulate it
 
-The lab, [labs/10-08-lab](../labs/10-08-lab/README.md), has a notebook and an ngspice netlist:
+The lab, [labs/10-08-lab](../labs/10-08-lab/README.md), has a notebook and two ngspice netlists:
 
 1. Sweeps the output voltage of basic, degenerated and cascode MOS mirrors with the large-signal model and extracts compliance and output resistance (Figure 1).
 2. Runs a Monte Carlo of threshold mismatch for mirrors of different areas and overdrives and compares the spread with §3.5.
 3. Counts base currents in the basic, β-helper and Wilson bipolar mirrors over β from 20 to 500.
 4. Sweeps the supply of Example 10-08.7's bias network.
 
-The netlist (`mirrors.cir`) runs Example 10-08.1's basic mirror (output current and output resistance) and Example 10-08.7's reference on two supplies.
+The netlist `mirrors.cir` runs Example 10-08.1's basic mirror (output current and output resistance) and Example 10-08.7's reference on two supplies; `mirrors_more.cir` runs Examples 10-08.2 to 10-08.5 and 10-08.8.
 
 **Guided exercise (predict, then run).** **Before running Part 2**, predict: in a Monte Carlo of 10,000 mirror pairs with $WL$ = 10 µm² at $V_{ov}$ = 0.2 V, what fraction of pairs will have a current ratio error larger than 2%? Then run it. (About 7%: 2% is 1.8σ for σ = 1.107%, and a normal variable exceeds 1.8σ in magnitude about 7% of the time, 03-02.)
 
@@ -344,15 +415,15 @@ The netlist (`mirrors.cir`) runs Example 10-08.1's basic mirror (output current 
 
 ### State of the art (as of Nov 2026)
 
-- **Area scaling of mismatch is the design rule of analog layout.** The $1/\sqrt{WL}$ law for closely spaced devices is the basis of transistor sizing for matching and of foundry mismatch models [1] **[Established]**; foundries characterize $A_{VT}$ for each process in their design kits.
+- **Area scaling of mismatch is the design rule of analog layout.** The $1/\sqrt{WL}$ law for closely spaced devices is the basis of transistor sizing for matching [1] **[Established]**; that foundries characterize mismatch coefficients for each process in their design kits is standard practice **[Industry estimate]** (design kits are not public).
 - **Cascode and gain-boosted current sources are standard in CMOS.** Low-supply processes push designers toward low-voltage cascodes and calibration because stacked devices consume headroom (Course 20) **[Established]** (textbook practice [2]).
 - **Bias generation is a block of its own.** Production chips derive bias currents from bandgap or β-multiplier references, not from a resistor across the supply, because of the supply sensitivity shown in Example 10-08.7 **[Established]**.
 
 ### Why it matters commercially
 
-- **Matching area is silicon cost.** Analog blocks do not shrink like logic partly because matching needs area; a mirror sized for 0.1% at $V_{ov}$ = 0.2 V needs over 1000 µm² per device in the example process, while a logic gate at an advanced node is a fraction of a square micron.
-- **Calibration trades area for logic.** Modern data converters and transceivers often use small, mismatched devices plus digital calibration, which shifts cost from analog area to digital gates and test time.
-- **Bias accuracy is a spec on the data sheet.** Quiescent current, offset and their spreads trace back to mirrors and references.
+- **Matching area is silicon cost** **[Industry estimate]**. Analog blocks do not shrink like logic partly because matching needs area: a mirror sized for 0.1% at $V_{ov}$ = 0.2 V needs over 1000 µm² per device with the example's illustrative $A_{VT}$, orders of magnitude more than a logic gate at an advanced node.
+- **Calibration trades area for logic** **[Industry estimate]**. Modern data converters and transceivers often use small, mismatched devices plus digital calibration, which shifts cost from analog area to digital gates and test time.
+- **Bias accuracy is a spec on the data sheet** **[Established]**. Quiescent current, offset and their spreads trace back to mirrors and references.
 
 ### Marketing vs Reality
 
@@ -436,6 +507,7 @@ The reference now supplies only the helper's base current, which is the sum of t
 - A. S. Sedra and K. C. Smith, *Microelectronic Circuits*, ch. 8 (current sources, mirrors, cascode and Wilson mirrors).
 - B. Razavi, *Design of Analog CMOS Integrated Circuits*, ch. 5 (current mirrors, cascodes and low-voltage cascodes).
 - M. J. M. Pelgrom, A. C. J. Duinmaijer and A. P. G. Welbers, "Matching properties of MOS transistors" [1].
+- MIT OpenCourseWare, 6.012 *Microelectronic Devices and Circuits* (Fall 2009), lecture notes on current sources and mirrors.
 
 ## 14. Sources
 

@@ -8,12 +8,13 @@ Measure the output characteristics of basic and cascode mirrors with the full sq
 
 ## Background
 
-Mirror errors and output resistance (§3.2–3.4), mismatch and Pelgrom's area law (§3.5) and bias distribution (§3.6). Part 1 uses the large-signal model, including triode operation and channel-length modulation, so its output resistance differs somewhat from the small-signal estimate $2r_o + g_mr_o^2$ with $r_o = 1/(\lambda I)$.
+Mirror errors and output resistance (§3.2–3.4), mismatch and Pelgrom's area law (§3.5) and bias distribution (§3.6). Part 1 uses the large-signal model, including triode operation and channel-length modulation. Its cascode output resistance (about 3044 kΩ) is **27**% above the small-signal estimate $2r_o + g_mr_o^2$ = 2395 kΩ with $r_o = 1/(\lambda I)$. The difference is in the definitions, not an error: in the large-signal law $I_D = \tfrac12k_nV_{ov}^2(1 + \lambda V_{DS})$ the output resistance is $(1 + \lambda V_{DS})/(\lambda I_D) = 1/(\lambda\cdot\tfrac12k_nV_{ov}^2)$, which for these devices is **8.4**% above $1/(\lambda I)$, and each transistor's $g_m$ and $r_o$ belong to its own drain voltage; since $R_{out} \propto g_mr_o^2$, these small differences compound. The 2395 kΩ estimate, which `mirrors_more.cir` confirms with every device at $V_{DS} = V_{GS}$, is the right number at the bias point the chapter assumes; the 27% shows how much a cascode's output resistance depends on where it is measured.
 
 ## Files
 
 - [10-08-mirrors.ipynb](10-08-mirrors.ipynb): the notebook (Parts 1–4).
 - [mirrors.cir](mirrors.cir): ngspice checks of Examples 10-08.1 and 10-08.7.
+- [mirrors_more.cir](mirrors_more.cir): ngspice degenerated and cascode MOS mirrors, basic and β-helper bipolar mirrors, the Wilson mirror's output resistance and the Widlar current (Examples 10-08.2 to 10-08.5 and 10-08.8).
 
 ## Procedure
 
@@ -43,6 +44,8 @@ Mirror errors and output resistance (§3.2–3.4), mismatch and Pelgrom's area l
 | Lab 10-08.f | β-helper error at β = 20 | -0.474 | % |
 | Lab 10-08.g | Wilson error at β = 20 | -0.452 | % |
 | Lab 10-08.h | supply sensitivity at 3.3 V | 37.20 | %/V |
+| Lab 10-08.i | large-signal over small-signal cascode R_out | 27 | % |
+| Lab 10-08.j | r_o of the large-signal law over 1/(λI) | 8.4 | % |
 
 ## Discussion questions
 

@@ -12,7 +12,7 @@ Problems: [10-08 problems](../problems/10-08-problems.md) · Chapter: [10-08](..
 
 ### Solution 10-08.2
 
-(a) Basic: $V_{ov}$ = **0.25** V. Simple cascode: $V_{TH} + 2V_{ov}$ = **0.95** V. Low-voltage cascode: $2V_{ov}$ = **0.5** V.
+(a) Basic: $V_{ov}$ = **0.25** V. Simple cascode: $V_{TN} + 2V_{ov}$ = **0.95** V. Low-voltage cascode: $2V_{ov}$ = **0.5** V.
 
 (b) $1.2 - 0.25 - 0.25$ = **0.7** V of swing.
 
@@ -34,7 +34,7 @@ The reference supplies $I_{C1}$ plus the base currents of Q1 ($I_{C1}/\beta$) an
 
 (a) $r_o + R_S + g_mr_oR_S = 10^6$: $R_S = 900\text{ kΩ}/(100 + 1)$ = **8.911** kΩ, costing $100\ \mu\text{A} \times 8.911\text{ kΩ}$ = **0.891** V of compliance.
 
-(b) About $g_mr_o^2$ = **10** MΩ, ten times more, for about $V_{TH} + V_{ov}$ of extra compliance.
+(b) About $g_mr_o^2$ = **10** MΩ, ten times more, for about $V_{TN} + V_{ov}$ of extra compliance.
 
 ### Solution 10-08.6
 
@@ -76,11 +76,31 @@ so $I_{out}/I_{ref} = (\beta^2 + 2\beta)/(\beta^2 + 2\beta + 2) = 1 - 2/(\beta^2
 
 (a) $9 \times 20$ µA = **180** µA, **0.216** mW.
 
-(b) The block's effective $V_{GS}$ falls by 5 mV, and $\Delta I/I = (2/V_{ov})\Delta V$ = **5.0**%. A current, by contrast, arrives intact at any ground potential: the block's own diode-connected transistor regenerates the right $V_{GS}$ locally.
+(b) The block's effective $V_{GS}$ falls by 5 mV, and $\Delta I/I = (2/V_{ov})\Delta V$ = **−5.0**%: the current falls. A current, by contrast, arrives intact at any ground potential: the block's own diode-connected transistor regenerates the right $V_{GS}$ locally.
 
 ### Solution 10-08.12
 
 $1/(V_{DD} - V_{GS}) = 1/1.1$ V = **90.9**%/V, so 90 mV moves the reference by about **8.18**%. (The diode's own $V_{GS}$ rise makes the exact value slightly smaller, as in Example 10-08.7.) A resistor reference on a low supply is very supply-sensitive.
+
+### Solution 10-08.13
+
+(a) With $g_m$ = 38.68 mS, $r_\pi$ = 2.585 kΩ and $r_o$ = 50 kΩ for all four transistors, the nodal solution gives $R_{out}$ = **2.511** MΩ.
+
+(b) $\beta r_o/2$ = 2.5 MΩ, so the ratio is **1.004**; against the ceiling $(\beta + 1)r_o$ = 5.05 MΩ it is **0.497**: the bipolar cascode mirror, like the Wilson, reaches half the ceiling.
+
+(c) Push $i_x$ into Q4's collector. Most of it flows through $r_{o4}$ into node m, where Q2, whose base is held by the diode Q1, behaves as a current source and refuses it; so node m rises and Q4's base–emitter voltage falls. Q4's base node n3 is fed by the fixed reference current through Q3; the only way for Q4's emitter current to change is for its base current to change, and the extra current that Q4's emitter must deliver into m is supplied from the base side. Following the same bookkeeping as the Wilson (§3.4), the emitter current change splits equally between the collector path and the base path, so the controlled source sees $\beta i_x/2$ and $R_{out} \approx \beta r_o/2$.
+
+(d) The MOS cascode, $2r_o + g_mr_o^2$, gives **96.80** MΩ, **38.5** times more, because a MOSFET has no base current: nothing returns through the gate, so the full $g_mr_o$ multiplication survives.
+
+### Solution 10-08.14
+
+(a) $R_E = V_T\ln(1\text{ mA}/25\ \mu\text{A})/25\ \mu\text{A} = 25.852\text{ mV} \times 3.689/25\ \mu\text{A}$ = **3.815** kΩ.
+
+(b) The nearest E24 value is **3.9** kΩ.
+
+(c) Solving $V_T\ln(1\text{ mA}/I_{out}) = I_{out} \times 3.9\text{ kΩ}$ (by iteration from 25 µA) gives **24.57** µA, **1.7**% low.
+
+(d) $g_mR_E = I_{out}R_E/V_T = \ln(I_{ref}/I_{out})$ = **3.706**, and $R_{out} \approx (50/24.57\ \mu\text{A})(1 + 3.706)$ = **9.578** MΩ.
 
 ---
 
@@ -121,6 +141,17 @@ $1/(V_{DD} - V_{GS}) = 1/1.1$ V = **90.9**%/V, so 90 mV moves the reference by a
 | 10-08.10a | Wilson error at β = 50 | 0.0769 | % |
 | 10-08.11a | total bias current | 180 | µA |
 | 10-08.11b | bias power | 0.216 | mW |
-| 10-08.11c | current change from 5 mV | 5.0 | % |
+| 10-08.11c | current change from 5 mV | -5.0 | % |
 | 10-08.12a | supply sensitivity | 90.9 | %/V |
 | 10-08.12b | change for 90 mV | 8.18 | % |
+| 10-08.13a | bipolar cascode R_out | 2.511 | MΩ |
+| 10-08.13b | ratio to β r_o/2 | 1.004 | — |
+| 10-08.13c | ratio to (β + 1) r_o | 0.497 | — |
+| 10-08.13d | MOS cascode R_out | 96.80 | MΩ |
+| 10-08.13e | MOS over bipolar cascode | 38.5 | — |
+| 10-08.14a | R_E for 25 µA | 3.815 | kΩ |
+| 10-08.14b | E24 value | 3.9 | kΩ |
+| 10-08.14c | I_out with 3.9 kΩ | 24.57 | µA |
+| 10-08.14d | g_m R_E | 3.706 | — |
+| 10-08.14e | R_out | 9.578 | MΩ |
+| 10-08.14f | shortfall from 25 µA | 1.7 | % |

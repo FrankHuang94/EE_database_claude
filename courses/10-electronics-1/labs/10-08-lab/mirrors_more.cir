@@ -1,0 +1,90 @@
+* Lab 10-08 -- more mirrors:
+* (3) Example 10-08.3, the degenerated MOS mirror (R_S = 1 kOhm in both sources), and (4) Example 10-08.4, the cascode
+*     mirror, with level-1 NMOS (bodies tied to sources). The chapter's g_m = sqrt(2 k_n I) and r_o = 1/(lambda I) at
+*     I = 0.2463 mA, k_n = 4 mA/V^2, lambda = 0.1 V^-1 are reproduced exactly at every device's V_DS = V_GS = 0.850927 V
+*     by LAMBDA = 1/(r_o I - V_DS) and KP = k_n/(1 + LAMBDA V_DS); each output is held at the voltage that gives the
+*     output device the same V_DS as its diode partner, and carries the AC test signal.
+* (2) Example 10-08.2: basic and beta-helper bipolar mirrors with beta = 100 and an Early voltage. SPICE's Gummel-Poon
+*     model scales I_C by (1 + V_CB/VAF), the chapter by (1 + V_CE/V_A); with VAF = 50 V the two differ by about 0.1%.
+* (5) Example 10-08.5: the Wilson mirror's output resistance. Each transistor gets its own model so that, at its own
+*     V_CB (0.712 V, 0 V and 3.574 V from the operating point), r_o = 50 kOhm at 1 mA and beta = 100:
+*     VAF = 50 - V_CB, BF = 100 VAF/50, IS = 1e-15 VAF/50 (disclosed modeling choices). Q1 and Q2 carry about 0.99 mA,
+*     not 1 mA, which the 1% tolerance covers.
+* (8) Example 10-08.8: the Widlar source with 12 kOhm and base currents negligible (BF = 1e6), 1 mA reference.
+*
+* EXPECT r3   key:../../chapters/10-08-current-sources-and-mirrors.md#Ex_10-08.3c scale=1e3 rtol=1e-3
+* EXPECT r4   key:../../chapters/10-08-current-sources-and-mirrors.md#Ex_10-08.4a scale=1e3 rtol=1e-3
+* EXPECT ib   key:../../chapters/10-08-current-sources-and-mirrors.md#Ex_10-08.2a scale=1e-3 rtol=2e-3
+* EXPECT ih   key:../../chapters/10-08-current-sources-and-mirrors.md#Ex_10-08.2c scale=1e-3 rtol=3e-3
+* EXPECT rw   key:../../chapters/10-08-current-sources-and-mirrors.md#Ex_10-08.5d scale=1e6 rtol=1e-2
+* EXPECT iw   key:../../chapters/10-08-current-sources-and-mirrors.md#Ex_10-08.8b scale=1e-6 rtol=1e-3
+
+.options temp=26.85 tnom=26.85 reltol=1e-9 abstol=1e-16 vntol=1e-10
+.model nm NMOS(LEVEL=1 KP=3.6596290628370678e-3 VTO=0.5 LAMBDA=0.1093006949971882)
+VDD vdd 0 DC 5
+
+* (3) degenerated mirror
+I3 vdd g3 DC 0.2463m
+M3A g3 g3 s3a s3a nm W=10u L=10u
+R3A s3a 0 1k
+M3B d3 g3 s3b s3b nm W=10u L=10u
+R3B s3b 0 1k
+VD3 d3 0 DC 1.0972273429 AC 1
+
+* (4) cascode mirror: M4A (bottom diode), M4C (top diode), M4B (bottom output), M4D (top output)
+I4 vdd t4 DC 0.2463m
+M4C t4 t4 b4 b4 nm W=10u L=10u
+M4A b4 b4 0 0 nm W=10u L=10u
+M4B m4 b4 0 0 nm W=10u L=10u
+M4D d4 t4 m4 m4 nm W=10u L=10u
+VD4 d4 0 DC 1.7018546858 AC 1
+
+* (2) bipolar mirrors, I_ref = 1 mA, output collector at 5 V
+.model qe NPN(IS=1e-15 BF=100 VAF=50)
+I2A vdd c2a DC 1m
+Q2A c2a c2a 0 qe
+Q2B o2a c2a 0 qe
+VO2A o2a 0 DC 5
+I2B vdd c2b DC 1m
+Q2H vdd c2b x2b qe
+Q2C c2b x2b 0 qe
+Q2D o2b x2b 0 qe
+VO2B o2b 0 DC 5
+
+* (5) Wilson: Q5A (c = a5, b = x5), Q5B diode at x5, Q5C output (c = o5, b = a5, e = x5)
+.model qwa NPN(IS=0.9857592e-15 BF=98.57592 VAF=49.28796)
+.model qwb NPN(IS=1e-15 BF=100 VAF=50)
+.model qwc NPN(IS=0.9285142e-15 BF=92.85142 VAF=46.42571)
+I5 vdd a5 DC 1m
+Q5A a5 x5 0 qwa
+Q5B x5 x5 0 qwb
+Q5C o5 a5 x5 qwc
+VO5 o5 0 DC 5 AC 1
+
+* (8) Widlar
+.model qwd NPN(IS=1e-15 BF=1e6)
+I8 vdd b8 DC 1m
+Q8A b8 b8 0 qwd
+Q8B o8 b8 e8 qwd
+R8 e8 0 12k
+VO8 o8 0 DC 3
+
+.control
+op
+let ib = -i(VO2A)
+let ih = -i(VO2B)
+let iw = -i(VO8)
+let vb5 = v(a5)
+echo "ib = $&ib"
+echo "ih = $&ih"
+echo "iw = $&iw"
+echo "vb5 = $&vb5"
+ac lin 1 1k 1k
+let r3 = 1 / real(-i(VD3))
+let r4 = 1 / real(-i(VD4))
+let rw = 1 / real(-i(VO5))
+echo "r3 = $&r3"
+echo "r4 = $&r4"
+echo "rw = $&rw"
+.endc
+.end

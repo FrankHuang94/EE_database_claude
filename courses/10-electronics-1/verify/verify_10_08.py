@@ -194,6 +194,79 @@ v.check("Ex 10-08.5a", (1 - wilson(1e-3, 100) / 1e-3) * 100)
 v.check("Ex 10-08.5b", 100 * 50e3 / 2 / 1e6)
 v.check("Ex 10-08.5c", 2 / 100 * 100)                   # first-order base-current error 2/beta
 
+
+def bjt_ss(c, cc, b, e, gm_, rpi_, ro_):
+    c.G(cc, e, b, e, gm_)
+    c.R(b, e, rpi_)
+    c.R(cc, e, ro_)
+
+
+gmb_, rpib_, rob_ = 1e-3 / VT, 100 / (1e-3 / VT), 50e3
+# Wilson: Q1 (c = a, b = x), Q2 diode (x), Q3 (c = out, b = a, e = x); reference current is an AC open circuit
+cw = MNA()
+bjt_ss(cw, "a", "x", "0", gmb_, rpib_, rob_)
+bjt_ss(cw, "x", "x", "0", gmb_, rpib_, rob_)
+bjt_ss(cw, "out", "a", "x", gmb_, rpib_, rob_)
+cw.V("out", "0", 1.0)
+rw = 1 / -cw.solve()["_i"][0]
+v.check("Ex 10-08.5d", rw / 1e6)
+v.assert_true("Wilson R_out is within 2% of beta r_o / 2", abs(rw / (100 * rob_ / 2) - 1) < 0.02)
+v.check("Ex 10-08.5e", 0.7 / 50 * 100)
+v.check("T 10-08.e", 0.7 / 50 * 100)
+# bipolar cascode mirror (Problem 10-08.13): Q1 diode (n1), Q3 diode on top (n3 -> n1), Q2 (m, base n1), Q4 (out, base n3, e m)
+cc_ = MNA()
+bjt_ss(cc_, "n1", "n1", "0", gmb_, rpib_, rob_)
+bjt_ss(cc_, "n3", "n3", "n1", gmb_, rpib_, rob_)
+bjt_ss(cc_, "m", "n1", "0", gmb_, rpib_, rob_)
+bjt_ss(cc_, "out", "n3", "m", gmb_, rpib_, rob_)
+cc_.V("out", "0", 1.0)
+rcas_b = 1 / -cc_.solve()["_i"][0]
+v.check("10-08.13a", rcas_b / 1e6)
+v.check("10-08.13b", rcas_b / (100 * rob_ / 2))
+v.check("10-08.13c", rcas_b / (101 * rob_))
+# MOS cascode for contrast, same g_m and r_o (no body effect)
+cm_ = MNA()
+mos_ss(cm_, "m", "0", "0", gmb_, rob_)
+mos_ss(cm_, "out", "0", "m", gmb_, rob_)
+cm_.V("out", "0", 1.0)
+rmos_c = 1 / -cm_.solve()["_i"][0]
+v.check("10-08.13d", rmos_c / 1e6)
+v.check("10-08.13e", rmos_c / rcas_b)
+
+# ------------------------------------------------------------------ Example 8: Widlar source
+re_w = brentq(lambda r: VT * math.log(1e-3 / 10e-6) - 10e-6 * r, 1, 1e6)
+v.check("Ex 10-08.8a", re_w / 1e3)
+v.check("T 10-08.c", re_w / 1e3)
+iw = brentq(lambda i: VT * math.log(1e-3 / i) - i * 12e3, 1e-7, 1e-4, xtol=1e-16)
+v.check("Ex 10-08.8b", iw * 1e6)
+v.check("Ex 10-08.8h", (12e3 / re_w - 1) * 100)
+v.check("Ex 10-08.8i", (1 - iw / 10e-6) * 100)
+gmw, rpiw, row = 10e-6 / VT, 100 / (10e-6 / VT), 50 / 10e-6
+v.check("Ex 10-08.8c", gmw * (re_w * rpiw / (re_w + rpiw)))
+v.check("Ex 10-08.8d", row * (1 + gmw * (re_w * rpiw / (re_w + rpiw))) / 1e6)
+cwd = MNA()
+bjt_ss(cwd, "b", "b", "0", 1e-3 / VT, 100 / (1e-3 / VT), 50e3)      # Q1 diode at 1 mA
+bjt_ss(cwd, "out", "b", "e", gmw, rpiw, row)
+cwd.R("e", "0", re_w)
+cwd.V("out", "0", 1.0)
+rwd = 1 / -cwd.solve()["_i"][0]
+v.check("Ex 10-08.8e", rwd / 1e6)
+v.check("Ex 10-08.8f", rwd / row)
+v.check("T 10-08.d", rwd / row)
+v.check("Ex 10-08.8g", (5 - 0.7) / 10e-6 / 1e3)
+# Problem 10-08.14: Widlar for 1 mA -> 25 uA, and the current with the nearest E24 resistor
+re14 = VT * math.log(1e-3 / 25e-6) / 25e-6
+v.check("10-08.14a", re14 / 1e3)
+e24 = [1.0, 1.1, 1.2, 1.3, 1.5, 1.6, 1.8, 2.0, 2.2, 2.4, 2.7, 3.0, 3.3, 3.6, 3.9, 4.3, 4.7, 5.1, 5.6, 6.2, 6.8, 7.5, 8.2, 9.1]
+pick14 = min((m * 1e3 for m in e24), key=lambda r: abs(r - re14))
+v.check("10-08.14b", pick14 / 1e3)
+i14 = brentq(lambda i: VT * math.log(1e-3 / i) - i * pick14, 1e-7, 1e-3, xtol=1e-16)
+v.check("10-08.14c", i14 * 1e6)
+gm14 = i14 / VT
+v.check("10-08.14d", gm14 * pick14)
+v.check("10-08.14e", (50 / i14) * (1 + gm14 * pick14) / 1e6)
+v.check("10-08.14f", (1 - i14 / 25e-6) * 100)
+
 # ------------------------------------------------------------------ Example 6: mismatch
 AVT = 3.5   # mV um, illustrative
 s10 = AVT / math.sqrt(10)
@@ -208,6 +281,16 @@ need = 0.001 / (2 / 0.2) * 1e3
 v.check("Ex 10-08.6d", need)
 v.check("Ex 10-08.6e", brentq(lambda a: AVT / math.sqrt(a) - need, 1, 1e6))
 v.check("Ex 10-08.6f", 0.2e-3 / VT * 100)
+ABETA = 1.0   # % um, illustrative current-factor coefficient
+# Monte Carlo with independent threshold and current-factor errors, square law at V_ov = 0.4 V
+dvt = rng.normal(0, s10 * 1e-3, 400000)
+dbeta = rng.normal(0, ABETA / math.sqrt(10) / 100, 400000)
+ratio = (1 + dbeta) * ((0.4 - dvt) / 0.4) ** 2
+v.check("Ex 10-08.6g", ABETA / math.sqrt(10))
+v.check("Ex 10-08.6h", math.sqrt(((2 / 0.4) * s10 * 1e-3 * 100) ** 2 + (ABETA / math.sqrt(10)) ** 2))
+v.assert_true("Monte Carlo agrees with the variance sum within 1.5%",
+              abs(ratio.std() * 100 / math.sqrt(((2 / 0.4) * s10 * 1e-3 * 100) ** 2 + (ABETA / math.sqrt(10)) ** 2) - 1) < 0.015)
+v.check("T 10-08.b", brentq(lambda vov: (2 / vov) * AVT * 1e-3 * 100 - ABETA, 0.05, 5))
 
 # ------------------------------------------------------------------ Example 7
 v7 = brentq(lambda x: 0.5 * K * (x - VTN) ** 2 - 100e-6, 0.5, 3)
@@ -289,7 +372,7 @@ v.check("10-08.11a", 9 * 20)
 v.check("10-08.11b", 9 * 20e-6 * 1.2 * 1e3)
 vg11 = VTN + 0.2
 dlnI = (math.log(ids(vg11 + 1e-6, 1.0, 0.0)) - math.log(ids(vg11 - 1e-6, 1.0, 0.0))) / 2e-6
-v.check("10-08.11c", dlnI * 5e-3 * 100)                                # first order in the 5 mV shift
+v.check("10-08.11c", -dlnI * 5e-3 * 100)                               # first order; the current falls
 v.check("10-08.12a", 1 / (1.8 - 0.7) * 100)
 v.check("10-08.12b", 0.09 / (1.8 - 0.7) * 100)
 
@@ -312,5 +395,13 @@ v.check("Lab 10-08.e", (mirror_basic(1e-3, 20, 0.0, va=1e15) / 1e-3 - 1) * 100)
 v.check("Lab 10-08.f", (mirror_helper(1e-3, 20, 0.0, va=1e15) / 1e-3 - 1) * 100)
 v.check("Lab 10-08.g", (wilson(1e-3, 20) / 1e-3 - 1) * 100)
 v.check("Lab 10-08.h", (iref7(3.3001) - iref7(3.2999)) / 2e-4 / iref7(3.3) * 100)
+
+# lab background: the large-signal cascode against the small-signal estimate, and r_o of the level-1 law
+LAM = 0.1
+vgs_ref = brentq(lambda x: ids(x, x, LAM) - 0.2463e-3, 0.5, 2.0, xtol=1e-15)
+v.check("Lab 10-08.j", (1 + LAM * vgs_ref - 1) * 100)
+_ro_ss = 1 / (LAM * 0.2463e-3)
+_gm_ss = math.sqrt(2 * K * 0.2463e-3)
+v.check("Lab 10-08.i", (3044e3 / (2 * _ro_ss + _gm_ss * _ro_ss ** 2) - 1) * 100)
 
 v.finish()
