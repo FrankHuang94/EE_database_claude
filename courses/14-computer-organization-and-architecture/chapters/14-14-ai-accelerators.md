@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 14-14 · AI Accelerators: Systolic Arrays, Dataflow and Low Precision
 
 | | |
@@ -39,6 +39,17 @@ Google's TPU, NVIDIA's tensor cores, and the neural engines in phones and PCs ar
 
 **A kitchen that keeps ingredients on the counter.** A cook preparing hundreds of identical dishes keeps the common ingredients within reach (on-chip SRAM) and fetches from the storeroom (DRAM) only rarely. Which ingredient stays on the counter, the weights, the partial results or the inputs, is the **dataflow** choice.
 
+**A picture of the skew.** In a 2 × 2 output-stationary array computing $C = AB$ with $K$ = 2, row $i$ of $A$ enters from the left delayed by $i$ cycles and column $j$ of $B$ enters from the top delayed by $j$ cycles. So $a_{ik}$ and $b_{kj}$ meet in PE $(i, j)$ at cycle $i + j + k$:
+
+```text
+cycle 0:  PE(0,0) a00*b00
+cycle 1:  PE(0,0) a01*b10   PE(0,1) a00*b01   PE(1,0) a10*b00
+cycle 2:                    PE(0,1) a01*b11   PE(1,0) a11*b10   PE(1,1) a10*b01
+cycle 3:                                                        PE(1,1) a11*b11
+```
+
+The wavefront of work sweeps diagonally through the grid. The last product lands at cycle $K + M + N - 3$ = 3, so the product takes $T$ = 4 cycles, the formula derived in §3.2.
+
 **Where the analogies break.** A real array must be filled and drained, which costs cycles every time the matrices change. And the "ingredients" are numbers whose precision can be traded for speed, which a cook cannot do with flour.
 
 ## 3. Theory
@@ -67,13 +78,13 @@ $$
 T = K + M + N - 2 \text{ cycles}.
 $$
 
-The array performs at most $P^2$ MACs per cycle, so its **utilization** is $MKN / (P^2 T)$. The $M + N - 2$ cycles of **fill and drain** are overhead. They are negligible when $K$ is large, and dominant when it is small (Example 14-14.2).
+The array performs at most $P^2$ MACs per cycle, so its **utilization** is $MKN / (P^2 T)$. The $M + N - 2$ cycles of **fill and drain** are overhead. They are negligible when $K$ is large, and dominant when it is small (Example 14-14.2). $T$ counts until the last product is accumulated; reading the $MN$ results out of an output-stationary array takes extra cycles, which a real design overlaps with the next tile.
 
 Each operand fetched at the edge is used by up to $P$ PEs: $a_{ik}$ by the whole row, $b_{kj}$ by the whole column. That is the reuse that makes the array efficient. Only nearest-neighbour wires are needed, so the array scales without long global wires.
 
 ### 3.3 Tiling large matrices
 
-Real matrices are far larger than the array. They are cut into **tiles**: each $P \times P$ block of $C$ is computed by streaming the matching row strip of $A$ and column strip of $B$ through the array. A product of $M \times K$ and $K \times N$ matrices on a $P \times P$ array needs $\lceil M/P \rceil \lceil N/P \rceil$ output tiles. Done one after another, each costs $K + 2(P-1)$ cycles. Real designs overlap one tile's drain with the next tile's fill (double buffering), which brings utilization close to 100% for large $K$.
+Real matrices are far larger than the array. They are cut into **tiles**: each $P \times P$ block of $C$ is computed by streaming the matching row strip of $A$ and column strip of $B$ through the array. A product of $M \times K$ and $K \times N$ matrices on a $P \times P$ array needs $\lceil M/P \rceil \lceil N/P \rceil$ output tiles. Done one after another, each costs $K + 2(P-1)$ cycles. Real designs overlap one tile's drain with the next tile's fill (double buffering). That matters most when $K$ is small, where fill and drain would otherwise dominate (Problem 14-14.4); with overlap, utilization approaches 100%.
 
 ### 3.4 Dataflows
 
@@ -85,7 +96,7 @@ What stays in place inside the array defines the **dataflow** [3]:
 | Weight-stationary | weights $W$ | inputs in, partial sums out | weights reused across many inputs (large batch) |
 | Input-stationary | inputs | weights in, partial sums out | inputs reused across many filters |
 
-A weight-stationary array, for example, loads a tile of weights into the PEs once and streams a whole batch of activations past them. Every choice aims at the same goal, to fetch each value from the expensive level of memory as few times as possible and reuse it from cheap registers and SRAM.
+A weight-stationary array, for example, loads a tile of weights into the PEs once and streams a whole batch of activations past them. Google's first TPU worked this way: its 256 × 256 matrix unit "stores the weight matrix tile while streaming the other input and the pre-activation partial sums", holding a second 64 KiB weight tile for double buffering "to hide the 256 cycles it takes to shift a tile in" [4, R-226] **[Established]**. Its timing therefore differs from the output-stationary $T = K + M + N - 2$ of §3.2: weight loading is overlapped with the previous tile, the inputs stream through for as many rows as the batch has, and the partial sums flow out of the far edge. Every choice aims at the same goal, to fetch each value from the expensive level of memory as few times as possible and reuse it from cheap registers and SRAM.
 
 **Energy per MAC with movement.** If each MAC must fetch its operands from a level that costs $E_\text{fetch}$ per byte, and each fetched byte is reused $R$ times, the data-movement energy per MAC is $2E_\text{fetch}/R$ for two 1-byte operands. It falls below the MAC's own energy only when
 
@@ -103,7 +114,7 @@ $$
 s = \frac{\max |x|}{2^{b-1} - 1}, \qquad q = \operatorname{round}(x / s), \qquad \hat{x} = s\,q.
 $$
 
-The rounding error is at most $s/2$. For signals that use the full range, the **signal-to-quantization-noise ratio** follows the familiar $6.02b + 1.76$ dB rule for a full-scale sinusoid (11-10), about 6 dB per bit (Example 14-14.5). Practical schemes refine this:
+The rounding error is at most $s/2$. For signals that use the full range, the **signal-to-quantization-noise ratio** follows the familiar $6.02b + 1.76$ dB rule for a full-scale sinusoid (11-10), about 6 dB per bit (Example 14-14.5). Symmetric quantization uses only $2^b - 1$ levels, so its step is $\max\lvert x\rvert/(2^{b-1} - 1)$ and its uniform-noise ideal is slightly lower: $6.02b + 1.76 + 20\log_{10}(1 - 2^{1-b})$ dB, which matters at 4 bits (24.7 dB, not 25.8). Practical schemes refine this:
 
 - per-channel or per-block scales;
 - block formats such as OCP MX, which share an exponent per block of values (14-04);
@@ -113,7 +124,7 @@ The arithmetic rewards fewer bits sharply. A multiplier's area grows roughly wit
 
 ### 3.6 Sparsity
 
-Many weights can be pruned to zero. Unstructured sparsity is hard for hardware to exploit, because the zeros are scattered. **Structured sparsity** (such as 2 zeros in every 4 weights) lets a matrix unit skip zeros predictably, for up to 2× throughput: NVIDIA's tensor cores support 2:4 (14-13), and TPU7x pairs its TensorCores with separate SparseCores [2, R-222]. Headline throughput figures that assume sparsity apply only to models pruned that way (14-13).
+Many weights can be pruned to zero. Unstructured sparsity is hard for hardware to exploit, because the zeros are scattered. **Structured sparsity** (such as 2 zeros in every 4 weights) lets a matrix unit skip zeros predictably, for up to 2× throughput: NVIDIA's tensor cores support 2:4 (14-13). Headline throughput figures that assume sparsity apply only to models pruned that way (14-13). TPUs since v4 also carry **SparseCores**, a different kind of "sparse": dataflow processors for the irregular lookups of embedding tables, which the TPU v4 paper says "accelerate models that rely on embeddings by 5x-7x yet use only 5% of die area and power" [2, R-222]. TPU7x keeps them, two per chiplet [R-222].
 
 ### 3.7 SRAM against HBM, and the memory wall
 
@@ -169,7 +180,7 @@ The Python simulator and the Verilog array both reach the correct product in exa
 
 **Units check.** Tiles × cycles per tile.
 
-**Sanity check.** The per-tile overhead, 254 of 1278 cycles, is the same fraction as in Example 14-14.2's K = 1000 case.
+**Sanity check.** The per-tile overhead, 254 of 1278 cycles (**19.9**%), is nearly the same fraction as in Example 14-14.2's K = 1000 case (254 of 1254, **20.3**%).
 
 ### Example 14-14.4 · How much reuse? (tier B)
 
@@ -190,12 +201,12 @@ The Python simulator and the Verilog array both reach the correct product in exa
 
 **Solution.**
 
-- **8 bits:** $\max|x| = 1$, so $s = 1/127$ = **0.00787**. The largest error is **0.00369**, within $s/2$. The SQNR, signal power over error power, is **48.7** dB against **49.9** dB from the formula.
-- **4 bits:** $s = 1/7$ = **0.143**, the largest error **0.0667**, and the SQNR **25.2** dB against 25.8.
+- **8 bits:** $\max|x| = 1$, so $s = 1/127$ = **0.00787**. The largest error is **0.00369**, within $s/2$. The SQNR, signal power over error power, is **48.7** dB against **49.9** dB from the formula, or **49.86** dB with the symmetric correction of §3.5.
+- **4 bits:** $s = 1/7$ = **0.143**, the largest error **0.0667**, and the SQNR **25.2** dB against 25.8, or **24.68** dB with the correction: the restricted range, not noise, explains most of the gap from 25.8.
 
 **Units check.** dB = 10 log₁₀ of a power ratio.
 
-**Sanity check.** Four bits fewer cost about 24 dB, 6 dB per bit. The formula assumes the error is uniform and independent of the signal; with only 64 samples of a periodic signal that is roughly, not exactly, true.
+**Sanity check.** Four bits fewer cost about 24 dB, 6 dB per bit. The formula assumes the error is uniform and independent of the signal. With exactly 64 samples of one period, the error is a fixed pattern instead, so the measured SQNR scatters by about a decibel around the ideal: here it sits below it at 8 bits and above it at 4 (and at 6 bits, 39.2 dB against 37.6, Lab Part 4). Many samples of a sinusoid whose frequency is not a submultiple of the sampling rate would match the formula closely.
 
 ### Example 14-14.6 · Is decoding memory-bound? (tier C)
 
@@ -210,7 +221,7 @@ The Python simulator and the Verilog array both reach the correct product in exa
 - TPU v4: $1.2 \times 10^{12} / 1.4 \times 10^{10}$ = **85.7** tokens/s, using $1.2$ TFLOPS, **0.44**% of peak;
 - TPU7x: **527** tokens/s.
 
-(c) With a batch of $B$ sequences, each weight read serves $B$ tokens, so the intensity is $B$ FLOP/byte. The chip becomes compute-bound at $B \approx$ **230**.
+(c) With a batch of $B$ sequences, each weight read serves $B$ tokens, so the intensity is $B$ FLOP/byte. Counting weight traffic only, the chip becomes compute-bound at $B \approx$ **230**. The KV cache, which grows with batch and context and is read once per token per sequence, adds traffic that pushes the real crossover higher (14-15).
 
 **Units check.** (B/s)/(B/token) = tokens/s.
 
@@ -232,6 +243,8 @@ The Python simulator and the Verilog array both reach the correct product in exa
 | Ex 14-14.3a | cycles, tiled | 81792 | — |
 | Ex 14-14.3b | ideal cycles | 65536 | — |
 | Ex 14-14.3c | utilization | 80.1 | % |
+| Ex 14-14.3d | per-tile overhead share | 19.9 | % |
+| Ex 14-14.3e | overhead share, Example 2's K = 1000 | 20.3 | % |
 | Ex 14-14.4a | operand energy from SRAM | 5 | pJ |
 | Ex 14-14.4b | reuse needed, SRAM | 22 | — |
 | Ex 14-14.4c | operand energy from DRAM | 325 | pJ |
@@ -243,6 +256,10 @@ The Python simulator and the Verilog array both reach the correct product in exa
 | Ex 14-14.5e | INT4 scale | 0.143 | — |
 | Ex 14-14.5f | INT4 largest error | 0.0667 | — |
 | Ex 14-14.5g | INT4 SQNR | 25.2 | dB |
+| Ex 14-14.5h | corrected 8-bit ideal | 49.86 | dB |
+| Ex 14-14.5i | corrected 4-bit ideal | 24.68 | dB |
+| Txt 14-14.a | corrected 4-bit ideal, rounded | 24.7 | dB |
+| Txt 14-14.b | cycles, 2 × 2 array with K = 2 | 4 | — |
 | Ex 14-14.6a | arithmetic intensity | 1 | FLOP/B |
 | Ex 14-14.6b | TPU v4 ridge | 229 | FLOP/B |
 | Ex 14-14.6c | TPU7x ridge | 313 | FLOP/B |
@@ -300,13 +317,13 @@ The lab, [labs/14-14-lab](../labs/14-14-lab/README.md), provides the Python syst
 ### State of the art (as of Nov 2026)
 
 - **TPU generations.** TPU v4 (deployed 2020) reached 275 TFLOPS with 1.2 TB/s of HBM2 [2, R-222]. Google's TPU7x (Ironwood) lists 2307 TFLOPS BF16, 4614 FP8 and 192 GiB of HBM at 7380 GB/s per chip, in pods of up to 9216 chips [2, R-222] **[Established]** (vendor specifications).
-- **GPUs with tensor cores** remain the most widely used AI accelerators (14-13), with FP4 support on Blackwell (R-221) **[Established]**.
-- **Formats keep narrowing**: FP8 is in production, and FP4 and block-scaled MX formats (14-04) are spreading **[Established]**.
+- **GPUs with tensor cores** are the general-purpose AI accelerator (14-13); Blackwell adds FP4 support **[Established]** (R-221). How their share compares with TPUs and other ASICs is not sourced here.
+- **Formats keep narrowing**: FP8 tensor support shipped on H100 (R-220), FP4 on Blackwell (R-221), and the OCP MX formats were revised in Oct 2026 (14-04, R-143) **[Established]**.
 
 ### Why it matters commercially
 
 - **Custom silicon economics.** Hyperscalers build accelerators to cut cost per training and inference operation, but only workloads matching the design reach high utilization. The software stack (compilers, kernels) is the long pole.
-- **Memory is the bill of materials.** HBM capacity and bandwidth increasingly decide which chip serves large models, and its supply decides how many can be built (Course 23).
+- **Memory decides a lot.** For batch-limited decoding, HBM bandwidth and capacity set the token rate and the largest model a chip can serve (§3.7 and 14-15); how much HBM supply limits accelerator volumes is an **[Industry estimate]** question for Course 23.
 
 ### Marketing vs Reality
 
@@ -399,5 +416,6 @@ Now work the [problem set](../problems/14-14-problems.md).
 1. M. Horowitz, "Computing's Energy Problem (and What We Can Do About It)," ISSCC 2014. [R-208](../../../reference/research-log.md#r-208--energy-per-operation-at-45-nm-horowitz-isscc-2014)
 2. N. P. Jouppi et al., "TPU v4," ISCA 2023 (arXiv 2304.01433), and Google Cloud's TPU documentation (v5p, v6e, TPU7x). [R-222](../../../reference/research-log.md#r-222--google-tpu-v4-and-later-tpus)
 3. Sze, Chen, Yang and Emer, *Efficient Processing of Deep Neural Networks* (the dataflow taxonomy; textbook).
+4. N. P. Jouppi et al., "In-Datacenter Performance Analysis of a Tensor Processing Unit," ISCA 2017 (arXiv 1704.04760). [R-226](../../../reference/research-log.md#r-226--googles-first-tpu-jouppi-et-al-isca-2017)
 
 Systolic arrays, dataflows, quantization and the roofline are textbook material (Further study). Every number in the examples is recomputed by the verify script, from the cycle-accurate simulator, the Verilog testbench and the logged specifications.

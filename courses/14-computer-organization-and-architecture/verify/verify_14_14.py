@@ -87,6 +87,10 @@ v.check("14-14.10c", k90)
 v.check("Ex 14-14.3a", systolic.tiled_cycles(1024, 1024, 1024, 128))
 v.check("Ex 14-14.3b", 1024**3 // 128**2)
 v.check("Ex 14-14.3c", 100 * 1024**3 / 128**2 / systolic.tiled_cycles(1024, 1024, 1024, 128))
+per_tile = systolic.tiled_cycles(1024, 1024, 1024, 128) // 64
+v.check("Ex 14-14.3d", 100 * (per_tile - 1024) / per_tile)
+T2 = 1000 + 128 + 128 - 2
+v.check("Ex 14-14.3e", 100 * (T2 - 1000) / T2)
 t4 = systolic.tiled_cycles(2048, 512, 2048, 128)
 ideal4 = 2048 * 512 * 2048 // 128**2
 v.check("14-14.4a", t4)
@@ -102,8 +106,8 @@ v.check("Ex 14-14.4c", 2 * E_DRAM_B)
 v.check("Ex 14-14.4d", math.ceil(2 * E_DRAM_B / E_MAC))
 for idc, B in (("a", 1), ("b", 16), ("c", 256)):
     v.check(f"14-14.5{idc}", E_DRAM_B / B + E_SRAM_B / 128)
-v.assert_true("solution 5: 707x the MAC at B = 1, 2.8x at B = 256", round((E_DRAM_B + E_SRAM_B / 128) / E_MAC) == 707
-              and round((E_DRAM_B / 256 + E_SRAM_B / 128) / E_MAC, 1) == 2.8)
+v.check("14-14.5d", (E_DRAM_B + E_SRAM_B / 128) / E_MAC)
+v.check("14-14.5e", (E_DRAM_B / 256 + E_SRAM_B / 128) / E_MAC)
 
 # Example 5 and Problems 6, 7
 xs = [math.sin(2 * math.pi * k / 64) for k in range(64)]
@@ -126,6 +130,19 @@ v.check("Ex 14-14.5e", s4)
 v.check("Ex 14-14.5f", e4)
 v.check("Ex 14-14.5g", n4)
 v.assert_true("4-bit formula 25.8 dB", round(6.02 * 4 + 1.76, 1) == 25.8)
+
+
+def sym_ideal(bits):
+    """Uniform-noise SQNR of symmetric quantization of a full-scale sine: power 1/2 over step^2/12."""
+    step = 1 / (2 ** (bits - 1) - 1)
+    return 10 * math.log10(0.5 / (step ** 2 / 12))
+
+
+v.check("Ex 14-14.5h", sym_ideal(8))
+v.check("Ex 14-14.5i", sym_ideal(4))
+v.check("Txt 14-14.a", sym_ideal(4))
+v.assert_true("closed form 6.02b + 1.76 + 20 log10(1 - 2^(1-b)) agrees within 0.01 dB",
+              all(abs(sym_ideal(b) - (6.0206 * b + 1.7609 + 20 * math.log10(1 - 2 ** (1 - b)))) < 0.01 for b in (4, 6, 8)))
 x6 = [0.5, -1.2, 0.031, 2.54, -2.54, 1.0]
 q6, s6, d6 = systolic.quantize(x6)
 v.assert_true("Problem 6 integers", q6 == [25, -60, 2, 127, -127, 50])
@@ -158,10 +175,32 @@ v.assert_true("ranking by ridge: v5p < v4 < H100 < TPU7x", sorted(ridges, key=ri
 v.check("14-14.12a", ridges["TPU v5p"])
 v.check("14-14.12b", ridges["H100"])
 v.check("14-14.12c", IWBW / 1e9)
+v.check("14-14.12d", ridges["TPU v4"])
+v.check("14-14.12e", ridges["TPU7x"])
 
 # Lab
 v.check("Lab 14-14.a", sim(3, 5, 2, 4)[0])
 v.check("Lab 14-14.b", sim(8, 100, 8, 8)[0])
 v.check("Lab 14-14.c", sqnr(xs, 6)[2])
+v.check("Lab 14-14.d", sym_ideal(8))
+v.check("Lab 14-14.e", sym_ideal(6))
+v.check("Lab 14-14.f", sym_ideal(4))
+
+# §2 picture: the 2 x 2 skew, checked MAC by MAC against the simulator with symbolic operands
+import sympy as sp  # noqa: E402
+
+a = [[sp.Symbol(f"a{i}{k}") for k in range(2)] for i in range(2)]
+b = [[sp.Symbol(f"b{k}{j}") for j in range(2)] for k in range(2)]
+tr2: list = []
+_, T22, _ = systolic.run(a, b, 2, trace=tr2)
+v.check("Txt 14-14.b", T22)
+block = (ROOT / "chapters" / "14-14-ai-accelerators.md").read_text(encoding="utf-8").split("**A picture of the skew.**")[1].split("```text")[1].split("```")[0]
+pub = set()
+for line in block.strip().splitlines():
+    cyc = int(re.match(r"cycle (\d+):", line).group(1))
+    for i_, j_, x, y in re.findall(r"PE\((\d),(\d)\) (a\d\d)\*(b\d\d)", line):
+        pub.add((cyc, int(i_), int(j_), x, y))
+v.assert_true("the §2 skew diagram matches the simulator's MAC schedule exactly",
+              pub == {(c, i, j, str(x), str(y)) for c, i, j, x, y in tr2})
 
 sys.exit(v.finish())

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 14-10 · Virtual Memory, TLBs and the OS Interface
 
 | | |

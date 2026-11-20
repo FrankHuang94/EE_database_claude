@@ -51,6 +51,16 @@ Removing sparsity, then going from FP4 to FP8 and from FP8 to BF16, halves the r
 
 A delivers **0.714** inferences per joule and B **1.0**. B is 1.4 times more efficient, although A has 1.67 times the throughput. In A's 700 W budget, $700/300$ = **2.33** B's would deliver **700** inferences/s, 40% more than A. In power-limited data centres, per-watt numbers often decide.
 
+### Solution 14-15.11
+
+(a) The Closed division requires a model equivalent to the reference, with only calibration for quantization allowed, while the Open division allows any model, pre- and post-processing and retraining [R-224]. An Open result may come from a smaller, retrained or differently quantized model, so it measures a different task. The rules require the qualified name "MLPerf Open" for exactly this reason.
+
+(b) The server figure, **250** samples/s. The server scenario sends queries at random (Poisson) times and counts only throughput that meets the latency bound; offline hands the system all queries at once, so it can batch freely. The gap, 400 against 250, is the price of meeting the latency target.
+
+(c) $0.65 \times 3000 + 0.35 \times 2000$ = 1950 + 700 = **2650**. With Floating Point at 2400 the composite is 1950 + 840 = 2790, a rise of 140/2650 = **5.28**%: a 20% gain in one subsection is diluted by its 35% weight.
+
+(d) The geometric mean scales by the fourth root of the factor: $2^{1/4}$ = 1.189, a rise of **18.9**%. A geometric mean dampens any single workload, which is one reason suites use it.
+
 ---
 
 ## Answer key
@@ -80,7 +90,11 @@ A delivers **0.714** inferences per joule and B **1.0**. B is 1.4 times more eff
 | 14-15.9a | X dense BF16-equivalent | 500 | TFLOPS |
 | 14-15.9b | headline ratio | 4.04 | — |
 | 14-15.9c | equivalent ratio | 0.505 | — |
-| 14-15.10a | A, inferences per joule | 0.714 | — |
-| 14-15.10b | B, inferences per joule | 1.0 | — |
+| 14-15.10a | A, inferences per joule | 0.714 | /J |
+| 14-15.10b | B, inferences per joule | 1.0 | /J |
 | 14-15.10c | B's per A's power | 2.33 | — |
 | 14-15.10d | throughput of those B's | 700 | /s |
+| 14-15.11a | server-scenario throughput | 250 | /s |
+| 14-15.11b | Geekbench composite | 2650 | — |
+| 14-15.11c | composite change from +20% FP | 5.28 | % |
+| 14-15.11d | subsection rise from one doubled workload | 18.9 | % |

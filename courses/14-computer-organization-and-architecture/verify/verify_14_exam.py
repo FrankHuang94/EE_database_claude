@@ -191,5 +191,8 @@ v.check("X14.14c", dense * 1e12 / 2e12)
 v.check("X14.14d", 2e12 / (70e9 * 2))
 v.check("X14.14e", 2e12 / (70e9 * 0.5))
 v.check("X14.14f", 500 / (2e12 / (70e9 * 0.5)))
+v.check("X14.14g", math.ceil(500 / (2e12 / (70e9 * 0.5))))
+v.check("X14.14h", 4000 / 989.5)
+v.check("X14.14i", 4000 / 3958)
 
 sys.exit(v.finish())

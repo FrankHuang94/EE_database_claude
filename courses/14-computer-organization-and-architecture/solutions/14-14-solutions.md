@@ -21,7 +21,7 @@ $32 + 8 + 8 - 2$ = **46** cycles. Utilization is $8 \times 32 \times 8 / (64 \ti
 
 The product does $2n^3$ FLOP on $3n^2$ values of 2 bytes: $2n^3 / 6n^2$ = $n/3$ FLOP/byte.
 
-- For $n = 512$ that is **170.7** FLOP/byte, below the 229 ridge, so it is memory-bound if each matrix crosses the HBM interface once.
+- For $n = 512$ that is **170.7** FLOP/byte, below the 229.2 ridge, so it is memory-bound if each matrix crosses the HBM interface once.
 - The product becomes compute-bound from $n/3 \ge 229.2$, that is $n \ge$ **688**.
 
 (Larger on-chip buffers do not change the minimum traffic, only how close a kernel gets to it.)
@@ -38,9 +38,9 @@ The energy per MAC is $162.5/B$ pJ for the weight from DRAM plus $2.5/128 = 0.01
 
 | $B$ | Energy per MAC |
 |---|---|
-| 1 | **162.52** pJ, 707 times the MAC |
+| 1 | **162.52** pJ, **707** times the MAC |
 | 16 | **10.18** pJ |
-| 256 | **0.654** pJ, still 2.8 times the MAC |
+| 256 | **0.654** pJ, still **2.8** times the MAC |
 
 Batching attacks the dominant term. Only reuse in the thousands brings DRAM traffic down to the MAC's own energy, which is why weights are kept on chip whenever the model allows.
 
@@ -80,9 +80,9 @@ The pod sustains $9216 \times 2307 \times 10^{12} \times 0.4 = 8.50 \times 10^{1
 | Chip | Ridge point (FLOP/byte) |
 |---|---|
 | TPU v5p | **166.0** |
-| TPU v4 | 229.2 |
+| TPU v4 | **229.2** |
 | H100 (dense BF16) | **295.4** |
-| TPU7x | 312.6 |
+| TPU7x | **312.6** |
 
 For batch-1 decoding, which is bandwidth-bound, what matters is bandwidth itself, not the ridge point. TPU7x's **7380** GB/s gives the most tokens per second per chip. A low ridge point (v5p) means less compute sits idle at small batch, which matters for cost per token rather than for speed.
 
@@ -106,6 +106,8 @@ For batch-1 decoding, which is bandwidth-bound, what matters is bandwidth itself
 | 14-14.5a | energy per MAC, B = 1 | 162.52 | pJ |
 | 14-14.5b | energy per MAC, B = 16 | 10.18 | pJ |
 | 14-14.5c | energy per MAC, B = 256 | 0.654 | pJ |
+| 14-14.5d | B = 1 against the MAC | 707 | — |
+| 14-14.5e | B = 256 against the MAC | 2.8 | — |
 | 14-14.6a | scale | 0.02 | — |
 | 14-14.6b | largest error | 0.009 | — |
 | 14-14.7a | SQNR, 6 bits | 37.88 | dB |
@@ -124,3 +126,5 @@ For batch-1 decoding, which is bandwidth-bound, what matters is bandwidth itself
 | 14-14.12a | ridge, TPU v5p | 166.0 | FLOP/B |
 | 14-14.12b | ridge, H100 | 295.4 | FLOP/B |
 | 14-14.12c | bandwidth, TPU7x | 7380 | GB/s |
+| 14-14.12d | ridge, TPU v4 | 229.2 | FLOP/B |
+| 14-14.12e | ridge, TPU7x | 312.6 | FLOP/B |

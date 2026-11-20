@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 14-05 · Single-Cycle Datapath and Control
 
 | | |

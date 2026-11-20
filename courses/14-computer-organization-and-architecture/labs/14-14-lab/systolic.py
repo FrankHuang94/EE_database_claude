@@ -12,7 +12,8 @@ from __future__ import annotations
 import math
 
 
-def run(A, B, P: int):
+def run(A, B, P: int, trace: list | None = None):
+    """Simulate an output-stationary P x P array; with `trace`, append (cycle, i, j, a, b) for every MAC."""
     M, K, N = len(A), len(A[0]), len(B[0])
     assert len(B) == K and M <= P and N <= P
     a_reg = [[None] * P for _ in range(P)]      # operand held by each PE this cycle
@@ -39,6 +40,8 @@ def run(A, B, P: int):
             for j in range(N):
                 if a_reg[i][j] is not None and b_reg[i][j] is not None:
                     acc[i][j] += a_reg[i][j] * b_reg[i][j]
+                    if trace is not None:
+                        trace.append((cycle, i, j, a_reg[i][j], b_reg[i][j]))
                     macs += 1
                     last = cycle
         cycle += 1

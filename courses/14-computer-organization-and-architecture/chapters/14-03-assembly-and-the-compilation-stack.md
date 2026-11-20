@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 14-03 · Assembly and the Compilation Stack
 
 | | |

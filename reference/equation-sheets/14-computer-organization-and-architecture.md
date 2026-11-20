@@ -22,6 +22,7 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | R/I/S/B/U/J formats: opcode [6:0], rd [11:7], funct3 [14:12], rs1 [19:15], rs2 [24:20]; immediate sign in bit 31 | RV32I | [14-02](../../courses/14-computer-organization-and-architecture/chapters/14-02-isa-risc-v-arm-x86.md) |
+| Opcodes: OP (R-type ALU) 0x33, OP-IMM 0x13, LOAD 0x03, STORE 0x23, BRANCH 0x63, JAL 0x6F, JALR 0x67, LUI 0x37, AUIPC 0x17. funct7 in [31:25] (ADD 0000000, SUB 0100000); I-type imm[11:0] in [31:20]; funct3 000 for ADD/ADDI, BEQ, SB; 010 for LW and SW | RV32I | [14-02](../../courses/14-computer-organization-and-architecture/chapters/14-02-isa-risc-v-arm-x86.md) |
 | Branches reach ±4 KiB (13-bit even offset); jal ±1 MiB; constants: `lui` upper 20 bits + `addi` lower 12 (add 1 to the upper part if bit 11 is set) |  | [14-02](../../courses/14-computer-organization-and-architecture/chapters/14-02-isa-risc-v-arm-x86.md) |
 | Callee-saved: s0–s11, sp; caller-saved: t0–t6, a0–a7, ra; sp 16-byte aligned | RISC-V psABI | [14-03](../../courses/14-computer-organization-and-architecture/chapters/14-03-assembly-and-the-compilation-stack.md) |
 | $n$-bit two's complement: $-2^{n-1} \ldots 2^{n-1}-1$; overflow when operands of one sign give a result of the other | | [14-04](../../courses/14-computer-organization-and-architecture/chapters/14-04-computer-arithmetic-and-number-formats.md) |
@@ -36,7 +37,7 @@ Conventions:
 | Pipeline clock = slowest stage + register overhead; ideal speedup → number of stages | Balanced stages, no hazards | [14-06](../../courses/14-computer-organization-and-architecture/chapters/14-06-pipelining-and-hazards.md) |
 | Five-stage cycles $= N + 4 + S + 2T$ | $S$ load-use stalls, $T$ taken branches resolved in EX | [14-06](../../courses/14-computer-organization-and-architecture/chapters/14-06-pipelining-and-hazards.md) |
 | CPI = base + (branch fraction) × (misprediction rate) × penalty; added CPI = MPKI/1000 × penalty | | [14-07](../../courses/14-computer-organization-and-architecture/chapters/14-07-branch-prediction-and-speculation.md) |
-| 2-bit counter: predict taken in states 2–3; one anomaly flips no prediction | | [14-07](../../courses/14-computer-organization-and-architecture/chapters/14-07-branch-prediction-and-speculation.md) |
+| 2-bit counter: predict taken in states 2–3; from a strong state (0 or 3), one anomaly flips no prediction | | [14-07](../../courses/14-computer-organization-and-architecture/chapters/14-07-branch-prediction-and-speculation.md) |
 
 ## Out-of-order execution
 
@@ -65,7 +66,7 @@ Conventions:
 | Sv32: VPN[1] = bits 31–22, VPN[0] = 21–12, offset 11–0; 2 levels of 1024 4-byte PTEs; 4 MiB megapages | | [14-10](../../courses/14-computer-organization-and-architecture/chapters/14-10-virtual-memory.md) |
 | TLB reach = entries × page size; translation overhead = $m_\text{TLB}$ × walk cost | | [14-10](../../courses/14-computer-organization-and-architecture/chapters/14-10-virtual-memory.md) |
 | VIPT without aliasing: cache size / associativity ≤ page size | | [14-10](../../courses/14-computer-organization-and-architecture/chapters/14-10-virtual-memory.md) |
-| Cause codes: 8 ecall from U; 12/13/15 instruction/load/store page fault; interrupt bit set for 5/7 S/M timer, 9/11 S/M external; vectored pc = BASE + 4 × cause | RISC-V privileged | [14-10](../../courses/14-computer-organization-and-architecture/chapters/14-10-virtual-memory.md) |
+| Cause codes: 8 ecall from U; 12/13/15 instruction/load/store page fault; interrupt bit set for 5/7 S/M timer, 9/11 S/M external; vectored pc = BASE + 4 × cause for interrupts (exceptions go to BASE) | RISC-V privileged | [14-10](../../courses/14-computer-organization-and-architecture/chapters/14-10-virtual-memory.md) |
 
 ## I/O, multicore and consistency
 
@@ -76,16 +77,17 @@ Conventions:
 | Mesh $k \times k$: average hops $2(k^2-1)/(3k)$; bisection $k$ links per direction | Uniform traffic | [14-11](../../courses/14-computer-organization-and-architecture/chapters/14-11-io-buses-and-interconnect.md) |
 | MESI: read miss BusRd (E if alone, else S); write in S BusUpgr; write miss BusRdX; E → M silently | | [14-12](../../courses/14-computer-organization-and-architecture/chapters/14-12-multicore-coherence-consistency.md) |
 | Full-map directory overhead ≈ $N/(8B)$ of data | $N$ cores, $B$-byte blocks | [14-12](../../courses/14-computer-organization-and-architecture/chapters/14-12-multicore-coherence-consistency.md) |
-| SB litmus test: SC 3 outcomes, TSO 4 (adds 0, 0); a fence between store and load restores SC | | [14-12](../../courses/14-computer-organization-and-architecture/chapters/14-12-multicore-coherence-consistency.md) |
+| Store buffering (SB) litmus test: TSO's store buffers allow an outcome that SC forbids; fences between each store and the following load restore SC | | [14-12](../../courses/14-computer-organization-and-architecture/chapters/14-12-multicore-coherence-consistency.md) |
 
 ## GPUs, accelerators and the roofline
 
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | SIMD efficiency = useful lane-slots / (32 × issue slots); divergent branches cost the sum of paths | 32-thread warps | [14-13](../../courses/14-computer-organization-and-architecture/chapters/14-13-gpus-and-simt.md) |
-| Sectors per warp = min(32, 4 × stride) for 4-byte elements; bank-conflict degree = gcd(stride, 32) | 32-byte sectors, 32 banks | [14-13](../../courses/14-computer-organization-and-architecture/chapters/14-13-gpus-and-simt.md) |
-| Warps to hide latency $\ge 1 + L/k$ | $k$ instructions between waits | [14-13](../../courses/14-computer-organization-and-architecture/chapters/14-13-gpus-and-simt.md) |
+| Sectors per warp = min(32, 4 × stride) for 4-byte elements; bank-conflict degree = gcd(stride, 32) | 32-byte sectors from a 128-byte-aligned base (a misaligned stride-1 warp touches 5); 32 banks | [14-13](../../courses/14-computer-organization-and-architecture/chapters/14-13-gpus-and-simt.md) |
+| Warps to hide latency $\ge 1 + L/k$ | $k$ instructions between waits |
+| Occupancy: resident blocks = min(⌊registers per SM / (registers per thread × threads per block)⌋, ⌊max warps / warps per block⌋, block slots, ⌊shared memory per SM / per block⌋); occupancy = resident warps / max warps | Register allocation granularity ignored | [14-13](../../courses/14-computer-organization-and-architecture/chapters/14-13-gpus-and-simt.md) |
 | Systolic latency $T = K + M + N - 2$; utilization $MKN/(P^2 T)$ | Output-stationary $P \times P$ array | [14-14](../../courses/14-computer-organization-and-architecture/chapters/14-14-ai-accelerators.md) |
-| Reuse needed so movement ≤ MAC energy: $R \ge 2E_\text{fetch}/E_\text{MAC}$ | Two 1-byte operands | [14-14](../../courses/14-computer-organization-and-architecture/chapters/14-14-ai-accelerators.md) |
+| Reuse needed so movement ≤ MAC energy: $R \ge 2E_\text{fetch}/E_\text{MAC}$ | Two 1-byte operands; $E_\text{fetch}$ per byte | [14-14](../../courses/14-computer-organization-and-architecture/chapters/14-14-ai-accelerators.md) |
 | Roofline: attainable = min(peak, bandwidth × intensity); ridge = peak / bandwidth | Intensity in FLOP per byte of memory traffic | [14-15](../../courses/14-computer-organization-and-architecture/chapters/14-15-roofline-and-benchmarks.md) |
 | SPEC ratio = reference time / measured time (× copies); score = geometric mean; harmonic mean for rates over equal work | | [14-15](../../courses/14-computer-organization-and-architecture/chapters/14-15-roofline-and-benchmarks.md) |

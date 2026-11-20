@@ -151,4 +151,9 @@ v.assert_true("lab Part 4: 256-thread blocks, no shared memory: registers limit 
               and simt.occupancy(33, 256, 0)[0] < 64 <= simt.occupancy(32, 256, 0)[0])
 v.check("Lab 14-13.d", simt.sectors([0x10000 + 4 * 3 * t for t in range(32)]))
 
+# §2 picture: an 8-lane warp, if (tid < 6) two instructions else one
+sl8, use8 = simt.run_warp([("if", lambda i: i < 6, [("op", 2)], [("op", 1)])], lanes=8)
+v.check("Txt 14-13.a", 100 * use8 / (8 * sl8))
+v.assert_true("the picture has 3 issue slots and 14 useful lane-slots", (sl8, use8) == (3, 14))
+
 sys.exit(v.finish())

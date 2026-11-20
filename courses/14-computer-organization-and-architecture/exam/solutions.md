@@ -112,7 +112,7 @@ The critical path is I1 → I2 → I4: $3 + 1 + 3$ = **7** cycles. I3 can run in
 
 That is **5** transactions and **3** invalidations.
 
-(b) SC allows **3** outcomes and TSO **4**: TSO adds r1 = r2 = 0.
+(b) TSO allows r1 = r2 = 0, which SC forbids (SC allows **3** outcomes and TSO **4**). Each core's store waits in its own store buffer while its following load, to the other address, reads memory and finds the initial 0. Both loads can complete before either store drains, so both read 0. Under SC some store would be first in the single global order, so at least one load would see a 1. A fence (MFENCE on x86, `fence w,r` on RISC-V) between each core's store and load forces the store to drain first and removes the outcome; one fence in only one thread is not enough.
 
 (c) $32 \times 16 \times (128/130) / 8$ = **63.02** GB/s per direction.
 
@@ -140,7 +140,7 @@ The local rate is L2's misses over L2's accesses; the global rate, $m_1 m_{2,\te
 
 ### Solution 14
 
-(a) Removing the sparsity and going from FP4 to FP8 to BF16 divides by $2^3$: **500** TFLOPS dense BF16-equivalent, which is **0.505** times H100's 989.5. The "10×" compares a sparse FP4 figure with something else, perhaps H100's FP32.
+(a) Removing the sparsity and going from FP4 to FP8 to BF16 divides by $2^3$: **500** TFLOPS dense BF16-equivalent, which is **0.505** times H100's 989.5 (dense BF16, half the sparse figure on the product page). The "10×" does not survive any like-for-like comparison. The start-up's own sparse FP4 4,000 is **4.0** times H100's dense BF16, and only **1.0** times H100's own sparse FP8 headline of 3,958. The claim compares figures at different precisions and sparsity, which is the real diligence point.
 
 (b) $500 \times 10^{12} / 2 \times 10^{12}$ = **250** FLOP/byte.
 
@@ -149,9 +149,9 @@ The local rate is L2's misses over L2's accesses; the global rate, $m_1 m_{2,\te
 - BF16 (140 GB): $2 \times 10^{12}/1.4 \times 10^{11}$ = **14.3** tokens/s;
 - FP4 (35 GB): **57.1** tokens/s.
 
-500 tokens/s per chip therefore implies batching at least $500/57.1$ = **8.75**, so 9 sequences decoding concurrently. The figure is an aggregate throughput, not the speed one user sees, and it assumes the model is accurate at FP4.
+500 tokens/s per chip therefore implies batching at least $500/57.1$ = **8.75**, so **9** sequences decoding concurrently. The figure is an aggregate throughput, not the speed one user sees, and it assumes the model is accurate at FP4.
 
-(d) Rubric. Award 1 point per question with a strong answer, up to 4.
+(d) Rubric. Award 0.75 points per question with a strong answer, up to 3.
 
 1. **"What is your dense throughput at BF16 or FP8 on our models?"** *Strong:* measured numbers at stated precision and utilization. *Evasive:* the sparse FP4 peak.
 2. **"What accuracy do you lose at FP4 with 2:4 sparsity?"** *Strong:* benchmark accuracy against BF16, with the calibration method. *Evasive:* "negligible".
@@ -236,3 +236,6 @@ Other good questions: MLPerf Closed results; compiler maturity on new models; su
 | X14.14d | tokens/s, BF16 weights | 14.3 | — |
 | X14.14e | tokens/s, FP4 weights | 57.1 | — |
 | X14.14f | implied batch | 8.75 | — |
+| X14.14g | batch size, whole sequences | 9 | — |
+| X14.14h | sparse FP4 against H100 dense BF16 | 4.0 | — |
+| X14.14i | sparse FP4 against H100 sparse FP8 | 1.0 | — |

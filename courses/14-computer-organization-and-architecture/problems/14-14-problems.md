@@ -26,7 +26,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 14-14.3 [A]
 
-**Intensity of a square product.** For an $n \times n$ by $n \times n$ product in BF16 (2 bytes per value), with each matrix moved once, what is the arithmetic intensity? Is $n = 512$ compute-bound on TPU v4 (ridge about 229 FLOP/byte)? From what $n$ on is it?
+**Intensity of a square product.** For an $n \times n$ by $n \times n$ product in BF16 (2 bytes per value), with each matrix moved once, what is the arithmetic intensity? Is $n = 512$ compute-bound on TPU v4 (ridge 229.2 FLOP/byte)? From what $n$ on is it?
 
 ### Problem 14-14.4 [B]
 

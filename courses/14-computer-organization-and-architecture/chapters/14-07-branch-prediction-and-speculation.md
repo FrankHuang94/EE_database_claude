@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 14-07 · Branch Prediction and Speculation
 
 | | |

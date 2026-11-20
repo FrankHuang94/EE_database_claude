@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 14-12 · Multicore, Coherence and Memory Consistency
 
 | | |

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 14-09 · Memory Hierarchy and Caches
 
 | | |

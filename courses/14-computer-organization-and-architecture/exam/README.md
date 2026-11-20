@@ -6,7 +6,7 @@
 **Instructions.**
 
 - Answer all 14 questions and show every step.
-- Question 1 [A] is worth 8 points (2 per part), each [B] 8, and Questions 13 and 14 [C] 12 each (4 per part): 120 points in total. 84 or more (70%) is a strong pass.
+- Question 1 [A] is worth 8 points (2 per part), each [B] 8, and Questions 13 and 14 [C] 12 each (Question 13: 4 per part; Question 14: 3 per part): 120 points in total. 84 or more (70%) is a strong pass.
 - Within a question the lettered parts carry equal weight.
 - Give numerical answers to 3–4 significant figures, with units.
 - Question 13 asks for derivations; Question 14 is a diligence question, partly graded against the rubric in the solutions.
@@ -75,7 +75,7 @@ For `I1: lw t0, 0(a0)`, `I2: add t1, t0, a1`, `I3: sub t0, a2, a3`, `I4: mul t2,
 
 **11 [B] · Coherence, consistency and I/O.** (14-11, 14-12)
 (a) Under MESI, three cores perform: P0 reads X, P1 reads X, P0 writes X, P2 reads X, P1 writes X. Count the bus transactions and invalidations.
-(b) How many outcomes of the store-buffering litmus test does sequential consistency allow, and how many does TSO allow?
+(b) In the store-buffering litmus test, which outcome does TSO allow that sequential consistency forbids? Explain the mechanism, and say where one fence would remove it.
 (c) Find the per-direction bandwidth of a PCIe 5.0 x16 link (32 GT/s, 128b/130b).
 
 **12 [B] · GPUs.** (14-13)

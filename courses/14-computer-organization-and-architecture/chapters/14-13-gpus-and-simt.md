@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 14-13 · GPUs and SIMT
 
 | | |
@@ -21,9 +21,9 @@
 
 ## 1. Big picture
 
-A CPU core spends most of its transistors on making *one* thread fast: branch prediction, out-of-order windows, large caches (14-07 to 14-09). A **GPU** spends them on arithmetic units and on *many* threads. It runs tens of thousands of threads at once, switches between them every cycle to hide memory latency, and executes groups of threads in lockstep so that one instruction fetch and decode serves 32 arithmetic lanes. The result is an order of magnitude more arithmetic throughput and memory bandwidth than a CPU of similar power, for programs with enough parallel work: graphics, scientific simulation and, above all, the matrix multiplications of AI.
+A CPU core spends most of its transistors on making *one* thread fast: branch prediction, out-of-order windows, large caches (14-07 to 14-09). A **GPU** spends them on arithmetic units and on *many* threads. It runs tens of thousands of threads at once, switches between them every cycle to hide memory latency, and executes groups of threads in lockstep so that one instruction fetch and decode serves 32 arithmetic lanes. The result is far more arithmetic throughput and memory bandwidth than a CPU of similar power, most of all for matrix work on tensor cores (§3.6), for programs with enough parallel work: graphics, scientific simulation and, above all, the matrix multiplications of AI.
 
-- **GPUs dominate AI training and much of inference.** NVIDIA's H100 has 132 streaming multiprocessors, 16,896 FP32 lanes, 528 tensor cores and 80 GB of HBM3 at 3.35 TB/s [1, R-220].
+- **GPUs dominate AI training and much of inference.** NVIDIA's H100 SXM (the PCIe card has fewer SMs and less bandwidth) has 132 streaming multiprocessors, 16,896 FP32 lanes, 528 tensor cores and 80 GB of HBM3 at 3.35 TB/s [1, R-220].
 - **Throughput comes from hiding latency, not avoiding it.** A GPU tolerates hundreds of cycles of memory latency by having other warps ready to run.
 - **The programming model leaks.** Divergent branches, uncoalesced accesses and bank conflicts can cost factors of 2 to 32, and the programmer controls them.
 
@@ -33,7 +33,19 @@ A CPU core spends most of its transistors on making *one* thread fast: branch pr
 
 **A busy restaurant kitchen with many tables.** A waiter (the scheduler) does not stand at one table waiting for the kitchen. They serve whichever table is ready, so the kitchen's 20-minute cooking time (memory latency) is hidden as long as there are enough tables (warps) in progress. That is latency hiding by **occupancy**.
 
-**Where the analogies break.** A GPU's "rowers" are threads with their own registers and their own program counters in principle. The hardware groups them into warps dynamically, and recent GPUs can even schedule diverged paths independently. And memory is not a kitchen: the order in which 32 threads ask for data decides whether one transaction or 32 are needed.
+**A picture of divergence.** An 8-lane warp (real warps have 32) runs `if (tid < 6) A; else B;` with A two instructions long and B one. Each row is one issue slot; `#` is an active lane and `.` an idle one:
+
+```text
+                 lanes 0 1 2 3 4 5 6 7
+issue 1  (A)           # # # # # # . .     active mask 11111100
+issue 2  (A)           # # # # # # . .
+issue 3  (B)           . . . . . . # #     active mask 00000011
+issue 4  (rejoin)      # # # # # # # #     all lanes again
+```
+
+Three issue slots serve the branch, and only 6 + 6 + 2 = 14 of their 24 lane-slots do useful work: 58% SIMD efficiency (§3.3 computes it in general).
+
+**Where the analogies break.** A GPU's "rowers" are threads with their own registers. The hardware groups them into warps of 32 consecutive threads, fixed when a block is launched (§3.2). Recent NVIDIA GPUs also give each thread its own program counter, so the diverged paths of a warp can be interleaved rather than run strictly one after the other. And memory is not a kitchen: the order in which 32 threads ask for data decides whether one transaction or 32 are needed.
 
 ## 3. Theory
 
@@ -77,7 +89,7 @@ The remedies are to make conditions uniform within a warp (sort or bin the work)
 
 **Coalescing.** A warp's 32 loads are serviced together. The memory system moves data in **sectors** of 32 bytes (and cache lines of 128 bytes), so the cost of an access is the number of distinct sectors the 32 addresses touch:
 
-- consecutive 4-byte elements (stride 1) touch 4 sectors: one 128-byte line, 100% of the bytes used;
+- consecutive 4-byte elements (stride 1) touch 4 sectors: one 128-byte line, 100% of the bytes used, if the base is 128-byte aligned (otherwise 5 sectors);
 - a stride of 2 elements touches 8 sectors, 50% used;
 - a stride of 8 or more elements touches 32 sectors, one per thread, 12.5% used.
 
@@ -109,7 +121,7 @@ warps to choose from (Little's law again). Kernels with long memory latencies an
 
 Matrix multiplication dominates AI. **Tensor cores** are units that perform a small matrix multiply-accumulate (a tile product such as $D = AB + C$) per instruction, in low-precision formats: FP16, BF16, FP8 and, on newer parts, FP4 (14-04). The gain is large because each operand fetched from a register feeds many multiplications.
 
-On H100, the dense BF16 tensor rate is about 989.5 TFLOPS, against 67 TFLOPS for ordinary FP32 lanes [1, R-220].
+On H100, the dense BF16 tensor rate is about 989.5 TFLOPS, derived as half of NVIDIA's sparse figure of 1,979, against 67 TFLOPS for ordinary FP32 lanes [1, R-220].
 
 Vendors often quote tensor throughput **with sparsity**. NVIDIA's "fine-grained structured sparsity" lets the hardware skip zeros in matrices pruned to a 2:4 pattern, "doubling the performance of standard Tensor Core operations" [1, R-220]. Dense workloads see half the headline figure. H100's product page footnotes its tensor numbers "With sparsity", and the Blackwell pages note that "Dense is one-half sparse spec shown" [2, R-221].
 
@@ -173,7 +185,7 @@ The verify script cross-checks each against closed forms: SIMD efficiencies from
 
 **Units check.** Sectors × 32 bytes = bytes fetched.
 
-**Sanity check.** Reading a column of a row-major matrix is the stride-32 case. Transposing through shared memory, reading rows and writing columns there, turns it into coalesced accesses (Problem 14-13.6).
+**Sanity check.** Reading a column of a row-major matrix with 32 columns is the stride-32 case; any row length of 8 or more elements gives one sector per thread. Transposing through shared memory, reading rows and writing columns there, turns it into coalesced accesses (Problem 14-13.6).
 
 ### Example 14-13.4 · Shared-memory bank conflicts (tier B)
 
@@ -253,6 +265,7 @@ Padding a 32-word row to 33 words turns a column read from 32 passes into 1.
 | Ex 14-13.6d | vector-add attainable | 0.279 | TFLOPS |
 | Ex 14-13.6e | fraction of FP32 peak | 0.42 | % |
 | Ex 14-13.6f | BF16 dense ridge point | 295 | FLOP/B |
+| Txt 14-13.a | SIMD efficiency of the 8-lane picture | 58 | % |
 
 ## 5. Simulate it
 
@@ -296,7 +309,7 @@ The lab, [labs/14-13-lab](../labs/14-13-lab/README.md), provides `simt.py`. In t
 - **Uncoalesced access.** Strided or array-of-structures layouts can waste up to 7/8 of memory bandwidth.
 - **Chasing occupancy blindly.** Occupancy hides latency, but beyond what is needed it only adds register pressure; ILP is an alternative.
 - **Expecting peak FLOPS from simple kernels.** Element-wise operations are memory-bound by a factor of tens to hundreds.
-- **Assuming CPU-style coherence.** Blocks cannot see each other's writes without explicit atomics and fences.
+- **Assuming CPU-style coherence.** Blocks cannot see each other's writes without explicit atomics and fences. (Hopper's thread-block clusters are a deliberate, limited exception: the blocks of a cluster can load, store and perform atomics on each other's shared memory, "distributed shared memory" [1, R-220].)
 
 ## 9. Practitioner lens
 
@@ -304,11 +317,11 @@ The lab, [labs/14-13-lab](../labs/14-13-lab/README.md), provides `simt.py`. In t
 
 - **Hopper (H100).** 132 SMs, 80 GB HBM3 at 3.35 TB/s, up to 700 W; 1,979 TFLOPS BF16 tensor with sparsity, half that dense [1, R-220] **[Established]**.
 - **Blackwell.** NVIDIA's GB200 NVL72 rack joins 72 Blackwell GPUs with 13.4 TB of HBM3E at 576 TB/s, about 8 TB/s per GPU, and quotes tensor rates in FP4 [2, R-221] **[Established]** (vendor specifications).
-- **Low precision keeps falling.** Each generation adds a narrower tensor format: FP8 on Hopper, FP4 on Blackwell [1, 2, R-220, R-221] **[Established]**.
+- **Low precision keeps falling.** The two latest generations each added a narrower tensor format: Hopper added FP8, Blackwell FP4 [1, 2, R-220, R-221] **[Established]**.
 
 ### Why it matters commercially
 
-- **AI compute is GPU-shaped.** Data-centre capital spending on AI is largely spending on GPUs, HBM and the networks between them. The figures that decide value are delivered tokens or FLOPs per dollar and per watt, not peak TFLOPS.
+- **AI compute is GPU-shaped.** Accelerators, their HBM and the networks between them are the core of AI data-centre hardware (qualitative; no spending shares are claimed here). The figures that decide value are delivered tokens or FLOPs per dollar and per watt, not peak TFLOPS.
 - **The software moat.** Kernel libraries tuned for coalescing, occupancy and tensor cores are as much a part of a GPU's value as its silicon.
 
 ### Marketing vs Reality

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 14-02 · Instruction Set Architecture: RISC-V, Arm and x86
 
 | | |

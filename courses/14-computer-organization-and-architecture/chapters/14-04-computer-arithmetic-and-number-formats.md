@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 14-04 · Computer Arithmetic and Number Formats
 
 | | |

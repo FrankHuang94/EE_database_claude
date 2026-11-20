@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 14-08 · Out-of-Order and Superscalar Execution
 
 | | |

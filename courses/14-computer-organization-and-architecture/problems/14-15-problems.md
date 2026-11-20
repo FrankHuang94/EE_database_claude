@@ -52,6 +52,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **The missing denominator.** Accelerator A serves 500 inferences/s at 700 W, and B serves 300/s at 300 W. Compare their throughput and their inferences per joule. How many B's at equal power would match A's power budget, and what throughput would they give?
 
+### Problem 14-15.11 [B]
+
+**Reading benchmark rules.** (a) A start-up compares its MLPerf Open inference result with a competitor's MLPerf Closed result for the same model. Why is that comparison invalid? (b) A chip's MLPerf result shows 400 samples/s offline and 250 samples/s in the server scenario. Which figure answers "how many users can we serve within our latency target?", and why are the two different? (c) Geekbench 6 combines its Integer and Floating Point subsection scores by a weighted arithmetic mean with weights 65% and 35%. A phone scores 3000 on Integer and 2000 on Floating Point. Find its composite score, and the percentage change in the composite if only the Floating Point score rises by 20%. (d) Each subsection score is the geometric mean of its workloads' scores. If one of four workloads in a subsection doubles its score, by what percentage does the subsection score rise?
+
 ---
 
 ## Objective coverage
@@ -61,5 +65,5 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Drawing rooflines and placing kernels | 1, 2 |
 | 2. Compute- or memory-bound, and what helps | 2, 3, 4 |
 | 3. SPEC ratios and means | 5, 6, 7 |
-| 4. SPEC, MLPerf and Geekbench rules | 5, 8 |
+| 4. SPEC, MLPerf and Geekbench rules | 5, 8, 11 |
 | 5. Gamed results and the questions that expose them | 8, 9, 10 |

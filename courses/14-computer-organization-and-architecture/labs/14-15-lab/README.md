@@ -17,6 +17,7 @@ Python with matplotlib.
 ## Files
 
 - [roofline.py](roofline.py): machine figures (H100 FP32 and dense BF16, TPU v4, TPU7x; from R-220 and R-222), kernel FLOP and byte counts, `attainable`, `ridge`, `gemm_intensity`, `amean`, `gmean`, `hmean` and `spec_ratio`.
+- [14-15-roofline-lab.ipynb](14-15-roofline-lab.ipynb): the notebook (Parts 1–3).
 - The chapter's figure is produced by `assets/figures/src/fig_14_15.py` from the same module.
 
 ## Procedure

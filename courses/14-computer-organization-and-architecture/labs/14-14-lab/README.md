@@ -35,7 +35,7 @@ Icarus Verilog (`iverilog`, `vvp`), with GTKWave optional; Python.
 | 1 | Verilog | TEST PASSED; all products correct after 10 cycles (K = 4) and 22 (K = 16) |
 | 2 | Latency | $T = K + M + N - 2$ exactly: 8 cycles for (3, 5, 2); 114 for an 8 × 100 by 100 × 8 product on 8 × 8 |
 | 3 | Tiling | 80.1% for 1024³ on 128 × 128; 66.8% for K = 512 |
-| 4 | Quantization | about 6 dB per bit: 48.7, 39.2 and 25.2 dB at 8, 6 and 4 bits for the sinusoid |
+| 4 | Quantization | about 6 dB per bit: 48.7, 39.2 and 25.2 dB at 8, 6 and 4 bits for the sinusoid, scattered about a decibel around the symmetric ideal (49.9, 37.6 and 24.7 dB) because 64 samples of one period give a fixed error pattern, not noise |
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -43,6 +43,9 @@ Icarus Verilog (`iverilog`, `vvp`), with GTKWave optional; Python.
 | Lab 14-14.a | cycles, (M, K, N) = (3, 5, 2) | 8 | — |
 | Lab 14-14.b | cycles, 8 × 100 × 8 on 8 × 8 | 114 | — |
 | Lab 14-14.c | SQNR, 6 bits | 39.2 | dB |
+| Lab 14-14.d | symmetric ideal, 8 bits | 49.9 | dB |
+| Lab 14-14.e | symmetric ideal, 6 bits | 37.6 | dB |
+| Lab 14-14.f | symmetric ideal, 4 bits | 24.7 | dB |
 
 *These are recomputed by [verify_14_14.py](../../verify/verify_14_14.py), which also runs the Verilog testbench when Icarus Verilog is installed.*
 

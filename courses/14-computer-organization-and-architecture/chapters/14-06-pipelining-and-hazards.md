@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 14-06 · Pipelining and Hazards
 
 | | |

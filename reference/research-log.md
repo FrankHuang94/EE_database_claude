@@ -231,6 +231,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-223 | SPEC CPU 2017 and SPEC CPU 2026 | Nov 2026 |
 | R-224 | MLPerf divisions and scenarios | Nov 2026 |
 | R-225 | Geekbench 6 scoring and Geekbench 7 | Nov 2026 |
+| R-226 | Google's first TPU (Jouppi et al., ISCA 2017): weight-stationary matrix unit | Nov 2026 |
 
 ---
 
@@ -2264,6 +2265,7 @@ R&D % = R&D ÷ revenue.
 
 - **Product page, H100 SXM** ("Product Specifications"): FP64 34 TFLOPS; FP64 Tensor 67; FP32 67; TF32 Tensor 989*; BF16 and FP16 Tensor 1,979*; FP8 Tensor 3,958*; INT8 3,958 TOPS*; "GPU Memory 80GB"; "GPU Memory Bandwidth 3.35TB/s"; "Max Thermal Design Power (TDP) Up to 700W (configurable)"; NVLink 900 GB/s; PCIe Gen5 128 GB/s; footnote "* With sparsity". [NVIDIA H100](https://www.nvidia.com/en-us/data-center/h100/)
 - **Hopper blog** (NVIDIA Technical Blog, "NVIDIA Hopper Architecture In-Depth", 22 Mar 2022): H100 SXM5 has "8 GPCs, 66 TPCs, 2 SMs/TPC, 132 SMs per GPU; 128 FP32 CUDA Cores per SM, 16896 FP32 CUDA Cores per GPU; 4 fourth-generation Tensor Cores per SM, 528 per GPU; 80 GB HBM3, 5 HBM3 stacks, 10 512-bit memory controllers; 50 MB L2 cache"; each SM has 256 KB of combined L1 cache and shared memory; GH100 is built on TSMC 4N with 80 billion transistors on 814 mm²; "The Sparsity feature exploits fine-grained structured sparsity in deep learning networks, doubling the performance of standard Tensor Core operations." [Hopper In-Depth](https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/)
+- **Thread-block clusters (Hopper blog, read 20 Nov 2026 for the Course 14 audit):** "Clusters enable multiple thread blocks running concurrently across multiple SMs to synchronize and collaboratively fetch and exchange data." "With clusters, it is possible for all the threads to directly access other SM's shared memory with load, store, and atomic operations. This feature is called distributed shared memory (DSMEM)."
 - **Derived (not stated by NVIDIA):** dense BF16/FP16 Tensor ≈ 989.5 TFLOPS (half the sparse figure); the FP32 rate implies a boost clock of about 67 × 10¹² / (16,896 × 2) ≈ 1.98 GHz. NVIDIA's product page states no clock.
 
 ## R-221 · NVIDIA Blackwell systems (GB200 NVL72, DGX B200)
@@ -2279,6 +2281,7 @@ R&D % = R&D ÷ revenue.
 *Read on 20 Nov 2026 by this session's fact-finding pass: the TPU v4 paper from the authors' arXiv version (primary, author copy) and Google Cloud's TPU documentation (primary). Tagged [Established] for the paper's figures and Google's published specifications.*
 
 - **TPU v4** (N. P. Jouppi et al., "TPU v4: An Optically Reconfigurable Supercomputer for Machine Learning with Hardware Support for Embeddings", ISCA 2023, doi:10.1145/3579371.3589350; [arXiv 2304.01433](https://arxiv.org/abs/2304.01433)): "Each TC contains four 128x128 Matrix Multiply Units (MXUs) and a Vector Processing Unit (VPU) with 128 lanes (16 ALUs per lane) and a 16 MiB Vector Memory (VMEM)"; 2 TensorCores per chip; Table 4: "Peak TFLOPS 275 (bf16 or int8) | 123 (bf16)" for v4 against v3, "HBM2 capacity, BW 32 GiB, 1200 GB/s | 32 GiB, 900 GB/s"; clock 1050 MHz; 7 nm, under 600 mm², 22 billion transistors; 6 ICI links at 50 GB/s; systems of up to 4096 chips; first deployed 2020.
+- **SparseCores (TPU v4 abstract, arXiv 2304.01433, read 20 Nov 2026 for the Course 14 audit):** "Each TPU v4 includes SparseCores, dataflow processors that accelerate models that rely on embeddings by 5x-7x yet use only 5% of die area and power."
 - **Derived:** 2 × 4 × 128 × 128 MACs × 2 FLOP × 1.05 GHz = 275.25 TFLOPS, matching the paper's 275.
 - **Later generations** (Google Cloud TPU documentation, per chip): v5p 459 TFLOPS BF16, 95 GiB HBM at 2765 GB/s, pods of 8960 chips; v6e (Trillium) 918 TFLOPS BF16, 32 GiB at 1638 GB/s, pods of 256; TPU7x (Ironwood) 2307 TFLOPS BF16 and 4614 FP8, 192 GiB HBM at 7380 GB/s, two TensorCores (built as two chiplets, each with one TensorCore, two SparseCores and 96 GiB HBM), pods of 9216 chips. [v6e](https://cloud.google.com/tpu/docs/v6e) · [TPU7x](https://cloud.google.com/tpu/docs/tpu7x)
 - **Caution (not used):** the v6e page's statement of two 256 × 256 MXUs per TensorCore would imply a clock near 3.5 GHz at 918 TFLOPS, which is implausible; Google states no v6e clock there. No derivation in this curriculum uses that MXU count.
@@ -2303,3 +2306,12 @@ R&D % = R&D ÷ revenue.
 
 - **Geekbench 6** ("Geekbench 6 Benchmark Internals", May 2024): "Geekbench 6 scores are calibrated against a baseline score of 2,500 (which is the score of a Dell Precision 3460 with a Core i7-12700 processor)"; the composite is "computed using a weighted arithmetic mean of the subsection scores. The subsection scores are computed using the geometric mean of the scores of the workloads contained in that subsection", with weights Integer 65% and Floating Point 35%; multi-core uses a "shared task" model ("each thread processes part of a larger shared task"), where Geekbench 5 ran separate tasks per thread. [Internals (PDF)](https://www.geekbench.com/doc/geekbench6-benchmark-internals.pdf)
 - **Geekbench 7** (Primate Labs blog, 23 Jul 2026): "a major update that includes new media workloads, a smarter multi-core benchmark, and a refreshed GPU benchmark". [Announcement](https://www.primatelabs.com/blog/2026/07/geekbench-7/)
+
+## R-226 · Google's first TPU (Jouppi et al., ISCA 2017)
+
+*Read on 20 Nov 2026 for the Course 14 audit from the authors' arXiv version (primary, author copy); tagged [Established].*
+
+- N. P. Jouppi et al., "In-Datacenter Performance Analysis of a Tensor Processing Unit", ISCA 2017; [arXiv 1704.04760](https://arxiv.org/abs/1704.04760).
+- **Matrix unit:** "The matrix unit holds one 64 KiB tile of weights plus one for double-buffering (to hide the 256 cycles it takes to shift a tile in)." "Figure 4 shows that data flows in from the left, and the weights are loaded from the top." "The weights are preloaded, and take effect with the advancing wave alongside the first data of a new block."
+- **Dataflow, compared with other work:** "the TPU stores the weight matrix tile while streaming the other input and the pre-activation partial sums" (that is, weight-stationary).
+- **Sparsity:** "This unit is designed for dense matrices. Sparse architectural support was omitted for time-to-deploy reasons."

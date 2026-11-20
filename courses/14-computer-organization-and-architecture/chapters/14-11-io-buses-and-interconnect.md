@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 14-11 · I/O, Buses and Interconnect
 
 | | |

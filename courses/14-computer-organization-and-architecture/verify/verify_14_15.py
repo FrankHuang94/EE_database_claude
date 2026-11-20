@@ -44,6 +44,9 @@ v.assert_true("GEMM intensity n/6 = 682.7", round(gi, 1) == 682.7 == round(4096 
 v.check("Ex 14-15.2d", roof(FP32, BW, gi) / 1e12)
 v.check("Ex 14-15.2e", 100 * roof(FP32, BW, 1 / 12) / FP32)
 v.assert_true("§3.2 table intensities 0.083, 0.167, 1, 1", [round(f / b, 3) for f, b in rf.KERNELS.values()] == [0.083, 0.167, 1.0, 1.0])
+# with write-allocate each store also reads its line: vector add 4 + 4 + (4 + 4) bytes, stencil 4 + (4 + 4)
+v.check("Txt 14-15.a", rf.intensity(1, 4 + 4 + 2 * 4))
+v.check("Txt 14-15.b", rf.intensity(8, 4 + 2 * 4))
 # Example 3
 r1, r2 = rf.spec_ratio(1775, 354.329738), rf.spec_ratio(1592, 541.52471, 8)
 v.assert_true("SPEC's worked examples: 5.009458 and 23.5188 (SPEC prints 23.518776)",
@@ -107,5 +110,13 @@ v.check("14-15.10d", 700 / 300 * 300)
 v.check("Lab 14-15.a", roof(*rf.MACHINES["TPU7x, BF16"], 1) / 1e12)
 v.check("Lab 14-15.b", rf.ridge(*rf.MACHINES["TPU7x, BF16"]))
 v.check("Lab 14-15.c", roof(V4, V4BW, 1) / 1e12)
+
+# Problem 11: Geekbench 6 composite (weighted arithmetic mean, R-225) and subsection geometric means
+gb = lambda i, f: 0.65 * i + 0.35 * f  # noqa: E731
+v.check("14-15.11a", 250)
+v.check("14-15.11b", gb(3000, 2000))
+v.check("14-15.11c", 100 * (gb(3000, 2400) / gb(3000, 2000) - 1))
+w4 = [1000.0, 1500.0, 2200.0, 3100.0]
+v.check("14-15.11d", 100 * (rf.gmean([2 * w4[0]] + w4[1:]) / rf.gmean(w4) - 1))
 
 sys.exit(v.finish())

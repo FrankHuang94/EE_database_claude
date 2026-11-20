@@ -1,10 +1,10 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 14-15 · The Roofline Model, Benchmarks and How They Are Gamed
 
 | | |
 |---|---|
 | **Course** | [14 · Computer Organization and Architecture](../README.md) |
-| **University equivalent** | The performance-evaluation material of a computer architecture course: the roofline model, benchmark suites (SPEC, MLPerf), summarizing results with means, and the pitfalls of benchmarking (Hennessy & Patterson, *Computer Architecture: A Quantitative Approach*, ch. 1 and 4.10; Williams, Waterman & Patterson, "Roofline", CACM 2009) |
+| **University equivalent** | The performance-evaluation material of a computer architecture course: the roofline model, benchmark suites (SPEC, MLPerf), summarizing results with means, and the pitfalls of benchmarking (Hennessy & Patterson, *Computer Architecture: A Quantitative Approach*, ch. 1 and ch. 4; Williams, Waterman & Patterson, "Roofline", CACM 2009) |
 | **Prerequisites** | [14-14 AI Accelerators](14-14-ai-accelerators.md), [14-13 GPUs and SIMT](14-13-gpus-and-simt.md), [14-01 Performance, Power and the Iron Law](14-01-performance-power-iron-law.md) |
 | **Estimated study hours** | 4 |
 | **Last verified** | 2026-11-20 |
@@ -50,7 +50,7 @@ On log–log axes this is a sloped line (bandwidth-bound) meeting a flat roof (c
 - kernels with $I < I^*$ are **memory-bound**: the cure is to raise intensity (tiling, fusion, lower-precision data) or to buy bandwidth;
 - kernels with $I > I^*$ are **compute-bound**: the cure is better use of the arithmetic units (vectorization, tensor cores, lower-precision arithmetic).
 
-Real rooflines have several ceilings below the peak: no FMA, no SIMD or tensor cores, cache bandwidths for data that fits on chip. A measured point below all applicable ceilings means the code is losing performance to something else, such as latency, divergence or synchronization (14-13).
+Real rooflines add two kinds of ceiling. **In-core** ceilings sit below the peak: code that uses no FMA, no SIMD or no tensor cores tops out lower. **Memory** ceilings change the slope: a hierarchical roofline gives each cache level its own bandwidth line, and those lines lie *above* the DRAM slope, so a kernel whose data fits in cache can exceed the DRAM roof. A measured point below all applicable ceilings means the code is losing performance to something else, such as latency, divergence or synchronization (14-13).
 
 ### 3.2 Placing kernels
 
@@ -63,6 +63,8 @@ The intensity of a kernel counts the FLOP per byte of *main-memory* traffic:
 | 7-point stencil (each point read once) | 8 | 8 | 1 |
 | LLM decoding, BF16 weights (14-14) | 2 | 2 | 1 |
 | Square matrix product, $n = 4096$, each matrix moved once | $2n^3$ | $12n^2$ | 682.7 |
+
+The byte counts assume stores write memory without first reading their line (no write-allocate, as with streaming stores). With write-allocate, every store also reads its line: the vector add then moves 16 bytes per element (**0.0625** FLOP/byte) and the stencil 12 (**0.667**). The stencil's 8 FLOP assume two coefficients, one for the centre and one shared by the six neighbours (2 multiplies, 6 adds), and its 8 bytes assume the cache supplies every neighbour after its first read.
 
 On an H100 (67 TFLOPS FP32, 3.35 TB/s; ridge 20 FLOP/byte [1, R-220]), everything but the matrix product is memory-bound. The vector add reaches 0.28 TFLOPS, under half a percent of peak (Example 14-15.2). This is the roofline's main lesson: for most code, bandwidth, not FLOPS, is the number that matters.
 
@@ -79,13 +81,13 @@ A **benchmark** is a fixed workload with rules about how it may be run and repor
 - **SPECspeed** suites time one copy of each benchmark; **SPECrate** suites measure the throughput of many concurrent copies.
 - Each benchmark's **ratio** is the reference machine's time divided by the measured time (times the copies, for SPECrate). The suite's score is the **geometric mean** of the ratios.
 - **Base** results, mandatory, use the same compiler flags for every benchmark in a language. **Peak** results, optional, allow per-benchmark flags and feedback-directed optimization.
-- SPEC CPU 2026, released in May 2026 with 52 benchmarks, has replaced SPEC CPU 2017, which SPEC retired on 17 November 2026. Most published comparisons still quote CPU 2017.
+- SPEC CPU 2026, released in May 2026 with 52 benchmarks, has replaced SPEC CPU 2017, which SPEC retired on 17 November 2026. When reading a result, check which suite it comes from: scores from the two suites are not comparable.
 
 **MLPerf** (MLCommons) measures machine-learning training and inference [3, R-224]:
 
 - The **Closed** division requires the reference model and processing (inference allows calibration for quantization, but no retraining), so it compares systems.
 - The **Open** division allows any model or method, and its results must be called "MLPerf Open".
-- Inference **scenarios** differ in what they measure: single stream (90th-percentile latency), multistream (99th-percentile latency), server (throughput under a latency bound, with random arrivals) and offline (pure throughput).
+- Inference **scenarios** differ in what they measure: single stream (90th-percentile latency), multistream (99th-percentile latency), server or interactive (throughput under a latency bound, with random Poisson arrivals; the rules list the two together) and offline (pure throughput) [3, R-224].
 
 **Geekbench** is a widely quoted consumer CPU benchmark [4, R-225]:
 
@@ -238,10 +240,12 @@ Only the matrix product is compute-bound; the vector add uses **0.42**% of peak.
 | Ex 14-15.6b | throughput, batch 32 | 400 | /s |
 | Ex 14-15.6c | throughput gain | 8 | — |
 | Ex 14-15.6d | latency increase | 4 | — |
+| Txt 14-15.a | vector add with write-allocate | 0.0625 | FLOP/B |
+| Txt 14-15.b | stencil with write-allocate | 0.667 | FLOP/B |
 
 ## 5. Simulate it
 
-The lab, [labs/14-15-lab](../labs/14-15-lab/README.md), provides `roofline.py`. You:
+The lab, [labs/14-15-lab](../labs/14-15-lab/README.md), provides `roofline.py`. In the notebook you:
 
 1. **Draw rooflines** for H100 (FP32 and BF16), TPU v4 and TPU7x, and place the course's kernels on them.
 2. **Find each kernel's bottleneck** and the intensity it would need to reach each roof.
@@ -368,7 +372,7 @@ Now work the [problem set](../problems/14-15-problems.md).
 ## 13. Further study
 
 - S. Williams, A. Waterman and D. Patterson, "Roofline: An Insightful Visual Performance Model for Multicore Architectures," *Communications of the ACM* 52(4), 2009.
-- J. L. Hennessy and D. A. Patterson, *Computer Architecture: A Quantitative Approach*, ch. 1 (measuring and summarizing performance) and §4.10 (the roofline for GPUs).
+- J. L. Hennessy and D. A. Patterson, *Computer Architecture: A Quantitative Approach*, ch. 1 (measuring and summarizing performance) and ch. 4 (the roofline model, applied to SIMD and GPU architectures).
 - P. J. Fleming and J. J. Wallace, "How Not to Lie with Statistics: The Correct Way to Summarize Benchmark Results," *Communications of the ACM* 29(3), 1986.
 - SPEC CPU and MLPerf documentation (Sources).
 
