@@ -26,7 +26,7 @@ Discrete-time signal processing for engineers who will build or buy DSP hardware
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [16-01 · Discrete-Time Signals and Systems Review](chapters/16-01-discrete-time-systems-review.md) | 5 | ⬜ planned | — |
+| [16-01 · Discrete-Time Signals and Systems Review](chapters/16-01-discrete-time-systems-review.md) | 5 | ✅ verified | [problems](problems/16-01-problems.md) · [solutions](solutions/16-01-solutions.md) · [lab](labs/16-01-lab/README.md) · [verify](verify/verify_16_01.py) |
 | [16-02 · DTFT and z-Transform for DSP](chapters/16-02-dtft-and-z-transform-for-dsp.md) | 6 | ⬜ planned | — |
 | [16-03 · The DFT and Its Properties](chapters/16-03-the-dft.md) | 8 | ⬜ planned | — |
 | [16-04 · The FFT Algorithm](chapters/16-04-the-fft.md) | 7 | ⬜ planned | — |

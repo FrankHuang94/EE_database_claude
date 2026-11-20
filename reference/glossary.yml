@@ -6185,3 +6185,25 @@
 - term: Bandwidth separation
   definition: Designing nested (cascade) loops so each outer loop is several times (typically 5 to 10) slower than the loop inside it, which lets the outer loop treat the inner one as an ideal actuator.
   chapter: "15-12"
+
+# ---------------------------------------------------------------- 16-01
+- term: Moving-average filter
+  definition: The FIR filter y[n] = (1/N)(x[n] + ... + x[n − N + 1]); linear phase with delay (N − 1)/2 samples, white-noise variance gain 1/N, and nulls at multiples of f_s/N, which makes it a cheap filter for a tone and all its harmonics.
+  chapter: "16-01"
+  see_also: [FIR filter, Recursive moving sum]
+- term: Exponential moving average (EMA)
+  definition: The first-order recursion y[n] = y[n − 1] + α(x[n] − y[n − 1]), with impulse response α(1 − α)^n, DC gain 1, a time constant of about 1/α − 1/2 samples and the white-noise reduction of a moving average of length (2 − α)/α; with α a power of 2 it needs one stored value, a shift and two additions per sample.
+  chapter: "16-01"
+  see_also: [IIR filter, Moving-average filter]
+- term: Recursive moving sum
+  definition: Computing the sum of the last N samples as s[n] = s[n − 1] + x[n] − x[n − N], two additions per sample at any N; its input–output map is FIR, but it hides an accumulator with a pole at z = 1, so it is exact only in integer (wraparound) arithmetic and never forgets a stored error.
+  chapter: "16-01"
+  see_also: [Internal stability, Wraparound, Moving-average filter]
+- term: Block processing
+  definition: Processing samples in groups of L rather than one at a time, which lowers per-sample overhead on a processor but adds about 2L samples of latency with double buffering (one block filling while the previous one is processed and emitted).
+  chapter: "16-01"
+- term: Real-time constraint
+  definition: The requirement that a DSP system finish each sample or block before the next arrives, on average and in the worst case; budgeted as cycles available per sample (f_clk/f_s) against cycles needed (operations per sample divided by operations per cycle, plus overhead).
+  chapter: "16-01"
+  see_also: [Multiply-accumulate (MAC)]
+

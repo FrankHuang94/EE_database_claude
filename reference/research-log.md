@@ -238,6 +238,9 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-230 | OPA627 settling-time specifications (TI SBOS165C) | Nov 2026 |
 | R-231 | Linux power-allocator thermal governor (PID form and defaults) | Nov 2026 |
 | R-232 | ACPI 6.5/6.6 passive-cooling equations | Nov 2026 |
+| R-233 | Arm Helium (MVE): cores, MAC rates and uplift claims | Nov 2026 |
+| R-234 | IEEE P802.3dj: status and electrical signaling | Nov 2026 |
+| R-235 | ADC- and DSP-based 200 Gb/s-class SerDes receivers | Nov 2026 |
 
 ---
 
@@ -2377,3 +2380,33 @@ R&D % = R&D ÷ revenue.
 - §11.4.22 (_TSP): the sampling period is returned "in tenths of seconds"; "The granularity of the sampling period is 0.1 seconds." §11.4.17 (_TFP) gives an optional fast sampling period in milliseconds.
 - Re-read 20 Nov 2026 for the Course 15 audit: version 6.6 (uefi.org/specs/ACPI/6.6/11_Thermal_Management.html) carries the same Equations #1 and #2 in §11.1.5.1 and the same `_TSP` text in §11.4.22. §11.4.17 `_TFP`: "The granularity of the sampling period is 1 milliseconds"; "If both _TFP and _TSP are present in a Thermal Zone, _TFP overrides _TSP." [ACPI 6.6, chapter 11](https://uefi.org/specs/ACPI/6.6/11_Thermal_Management.html)
 - Perishable: check for a newer ACPI version before citing section numbers.
+
+## R-233 · Arm Helium (MVE): cores, MAC rates and uplift claims
+
+*Read on 20 Nov 2026 from Arm's newsroom, product pages, developer blogs and a March 2020 Arm white paper (primary, vendor); gathered by a research subagent; quotations as it recorded them. Tagged [Established] for architecture facts and dates; uplift figures are vendor claims.*
+
+- **Architecture:** Helium is the M-Profile Vector Extension (MVE) of Armv8.1-M, announced 14 Feb 2019: "Arm Helium technology is a new M-Profile Vector Extension bringing enhanced compute capabilities to the Armv8.1-M architecture." The same release promises "up to 15x performance uplift for machine learning and up to 5x uplift to signal processing tasks" for future Cortex-M processors. [Armv8.1-M announcement](https://newsroom.arm.com/blog/next-generation-armv8-1-m-architecture)
+- **Vector registers:** "In Helium, the vector size is 128-bit"; "Helium only has 8 vector registers", reusing the floating-point registers. [Arm white paper, Mar 2020 (PDF)](https://www.arm.com/-/media/files/pdf/white-paper/blending-dsp-and-ml-features-into-a-low-power-general-purpose-processor.pdf)
+- **Cortex-M55 (announced 10 Feb 2020):** dual-beat implementation, 64 bits of compute per cycle; "two 32x32 MACs per cycle", four 16-bit and eight 8-bit MACs per cycle (developer blog and white paper). Claim: "up to a 15x uplift in ML performance and a 5x uplift in DSP performance ... compared to previous Cortex-M generations". [M55 announcement](https://newsroom.arm.com/news/new-ai-technology-from-arm-delivers-unprecedented-on-device-intelligence-for-iot)
+- **Cortex-M85 (26 Apr 2022):** dual-beat Helium; "A 30% scalar performance uplift compared to the Cortex-M7". [M85 announcement](https://newsroom.arm.com/news/arm-expands-total-solutions-for-iot-portfolio-to-continue-delivering-transformative-innovation-to-ecosystem)
+- **Cortex-M52 (22 Nov 2023):** "Optional single-beat Helium, supporting up to 1 x 32-bit MACs/cycle, 2 x 16-bit MACs/cycle, 4 x 8-bit MACs/cycle"; claim "up to 2.7x performance uplift for digital signal processing compared to previous Cortex-M generations". [M52 product page](https://www.arm.com/products/silicon-ip-cpu/cortex-m/cortex-m52), [M52 announcement](https://newsroom.arm.com/news/arm-cortex-m52)
+- **Cortex-M42 (10 Nov 2026):** Armv8.1-M with Helium; "up to 3x the vector compute capability and 2x the vector power efficiency of Cortex-M33". Beat count and MACs per cycle not found. [M42 announcement](https://newsroom.arm.com/news/arm-cortex-m42-accelerate-edge-ai-innovation)
+- **[Contested] baselines:** none of the pages read names the core or benchmark behind "15x/5x" or "2.7x" ("previous Cortex-M generations"). Treat them as vendor best cases.
+- Perishable: Arm's own Helium technology page still listed only M55 and M85 when read.
+
+## R-234 · IEEE P802.3dj: status and electrical signaling
+
+*Read on 20 Nov 2026 from IEEE 802.3 task-force documents and IEEE SA governance agendas (primary; fetched with curl through the build proxy by a research subagent). Tagged [Established]; the final draft text (members only) was not read.*
+
+- **Status:** the third SA recirculation ballot on Draft 3.3 (25 Sep – 10 Oct 2026) returned 133 approve (97%) with 8 comments, "All out of scope" ([Nov 2026 task-force report](https://www.ieee802.org/3/minutes/nov26/1126_3dj_open_report.pdf)). The 8 Dec 2026 RevCom agenda lists "P802.3dj/Draft 3.3 IEEE Draft Standard for Ethernet Amendment 13", and the SASB meets 9 Dec 2026 ([RevCom agenda](https://standards.ieee.org/wp-content/uploads/import/governance/revcom/revcom-agenda.pdf); rolling URL). Not yet an approved standard as of 20 Nov 2026. The PAR (approved 3 Dec 2022) was recommended for extension to 31 Dec 2027 on 21 Sep 2026.
+- **Electrical signaling:** key motion (May 2023): "Adopt differential PAM4 signaling as the basis for all of the 200 Gbps/lane passive copper cable and backplane PMDs and adopt RS(544,514,10) as the only FEC" ([key motions](https://www.ieee802.org/3/dj/projdoc/KeyMotions_3dj_240516.pdf)). Baseline proposal (Jan 2024): "Nominal signaling rate 106.25 GBd, PAM4 modulation" for chip-to-chip; "106.25 GBd ± 50 ppm" for 800GBASE-KR4 and 1.6TBASE-KR8 ([baseline](https://www.ieee802.org/3/dj/public/24_01/ran_3dj_01a_2401.pdf)).
+- **Arithmetic (ours):** 106.25 GBd × 2 bit = 212.5 Gb/s = 200 × (257/256) × (544/514); its Nyquist frequency is the 53.125 GHz of the loss objectives (R-141). Optical inner-FEC lanes run at 113.4375 GBd (Table 174-6, per a Draft 3.1 comment); do not confuse the two.
+- Perishable: re-check approval after the 9 Dec 2026 SASB meeting.
+
+## R-235 · ADC- and DSP-based 200 Gb/s-class SerDes receivers
+
+*Read on 20 Nov 2026 from abstracts and bibliographic records (Semantic Scholar, OpenAlex, Crossref metadata; IEEE Xplore itself was not reachable), so details are as the authors' abstracts state them; full papers not read. Tagged [Established] for what the abstracts say.*
+
+- **Intel, ISSCC 2022:** Y. Segal, A. Laufer, A. Khairi et al., "A 1.41pJ/b 224Gb/s PAM-4 SerDes Receiver with 31dB Loss Compensation", ISSCC 2022, pp. 114–116, doi:10.1109/ISSCC42614.2022.9731794: "a power-efficient 224Gb/s-PAM-4 ADC-based receiver in a 5nm CMOS process". Journal version: A. Khairi et al., IEEE JSSC, Jan 2023, pp. 8–18, doi:10.1109/JSSC.2022.3211475, title "...224-Gb/s PAM4 6-bit ADC-Based SerDes Receiver...": "a 64-way time-interleaved ADC, digital equalization consisting of an up to 30 tap feed-forward equalizer (FFE), optional decision-feedback equalizer (DFE)". ADC sample rate not stated in the abstract.
+- **Marvell, ISSCC 2024:** J.-Q. Wang et al., "7.1 A 2.69pJ/b 212Gb/s DSP-Based PAM-4 Transceiver for Optical Direct-Detect Application in 5nm FinFET", ISSCC 2024, pp. 123–125, doi:10.1109/ISSCC49657.2024.10454275: receiver "ADC based ... running at 106GS/s"; "the sampled ADC signal is equalized by an FFE and a reflection canceller, and depending on channel conditions, a DFE and maximum likelihood sequence detector (MLSD) can be enabled". ADC bits and tap counts not in the abstract.
+- Further reading (abstracts give no converter details): Ciena, VLSI 2026, "A 1.39pJ/bit 224Gb/s PAM-4 Long-Reach SerDes Receiver in 3nm FinFET" (doi:10.1109/VLSITechnologyandCir65830.2026.11577560, listed as open access).
