@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 12-10 · Noise in Circuits
 
 | | |

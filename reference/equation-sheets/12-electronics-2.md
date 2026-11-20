@@ -14,9 +14,9 @@ Conventions:
 |---|---|---|
 | $A_{dm} = g_mR_D$ (differential out), $g_mR_D/2$ single-ended; $A_{cm} = g_mR_D/(1 + 2g_mR_{SS}) \approx R_D/(2R_{SS})$ | Half circuits; $R_{SS}$ the tail's resistance | [12-01](../../courses/12-electronics-2/chapters/12-01-differential-pairs.md) |
 | MOS pair fully switches at $\lvert v_{id}\rvert = \sqrt{2I_{SS}/k}$; BJT pair $\Delta i = I_{EE}\tanh(v_{id}/2V_T)$ | Large signal | [12-01](../../courses/12-electronics-2/chapters/12-01-differential-pairs.md) |
-| Offset $\sigma_{V_{OS}} = A_{VT}/\sqrt{WL}$ (Pelgrom) | Mismatch scales with area | [12-01](../../courses/12-electronics-2/chapters/12-01-differential-pairs.md) |
+| Threshold mismatch $\sigma(\Delta V_{TH}) = A_{VT}/\sqrt{WL}$ (Pelgrom); $V_{OS}$ adds the $(V_{ov}/2)$-weighted load and $k$ terms | Mismatch scales with area | [12-01](../../courses/12-electronics-2/chapters/12-01-differential-pairs.md) |
 | Five-transistor OTA: $A = g_{m1}(r_{o2} \parallel r_{o4})$ | Mirror load | [12-02](../../courses/12-electronics-2/chapters/12-02-active-loads-cascodes-multistage.md) |
-| Cascode $R_{out} = r_{o1} + r_{o2} + g_{m2}r_{o2}r_{o1}$; open-circuit gain $g_{m1}r_{o1}(1 + g_{m2}r_{o2})$ | Telescopic: both sides cascoded | [12-02](../../courses/12-electronics-2/chapters/12-02-active-loads-cascodes-multistage.md) |
+| Cascode $R_{out} = r_{o1} + r_{o2} + g_{m2}r_{o2}r_{o1}$; open-circuit gain $g_{m1}r_{o1}(1 + g_{m2}r_{o2})$ | Telescopic: gain $G_m(R_n \parallel R_p)$ with both sides cascoded | [12-02](../../courses/12-electronics-2/chapters/12-02-active-loads-cascodes-multistage.md) |
 
 ## Frequency response
 
@@ -38,9 +38,9 @@ Conventions:
 | Series ×$(1 + T)$, shunt ÷$(1 + T)$ (input mixing, output sampling) | Four topologies | [12-05](../../courses/12-electronics-2/chapters/12-05-feedback-topologies.md) |
 | $A_f = A_\infty T/(1 + T) + A_{\mathrm{dir}}/(1 + T)$; $Z = Z^{(0)}(1 + T_{sc})/(1 + T_{oc})$ | Return ratio; Blackman | [12-05](../../courses/12-electronics-2/chapters/12-05-feedback-topologies.md) |
 | PM $= 180^\circ + \angle T(j\omega_c)$; GM $= -20\log\lvert T(j\omega_{180})\rvert$ | Bode criterion | [12-06](../../courses/12-electronics-2/chapters/12-06-stability-and-compensation.md) |
-| Two-pole loop: $Q = \sqrt{f_u/f_2}$; 60° at $f_2 = 1.5f_u$ (8.8% overshoot); 45° ≈ 23% | $f_u = T_0f_1$ | [12-06](../../courses/12-electronics-2/chapters/12-06-stability-and-compensation.md) |
-| Miller: GBW $= g_{m1}/(2\pi C_c)$, $p_2 \approx g_{m2}/C_L$, zero $g_{m2}/C_c$; $g_{m2} \approx 10g_{m1}$, $C_c \approx 0.22C_L$ → about 60° | Two-stage | [12-06](../../courses/12-electronics-2/chapters/12-06-stability-and-compensation.md) |
-| Nulling resistor: $z = 1/[C_c(1/g_{m2} - R_z)]$; $R_z = 1/g_{m2}$ removes it; $(1 + C_L/C_c)/g_{m2}$ cancels $p_2$ | New pole $\approx 1/(R_zC_1)$ | [12-06](../../courses/12-electronics-2/chapters/12-06-stability-and-compensation.md) |
+| Two-pole loop: $Q = \sqrt{f_u/f_2}$, $\zeta = 1/(2Q)$; crossover $x = f_c/f_u$ from $x^2(1 + x^2/r^2) = 1$, $r = f_2/f_u$; PM $= 90^\circ - \arctan(x/r)$; overshoot $e^{-\pi\zeta/\sqrt{1 - \zeta^2}}$; 60° at $r$ = 1.5 (8.8%), 45° ≈ 23%, no overshoot from 76.35° ($r$ = 4) | $f_u = T_0f_1$ | [12-06](../../courses/12-electronics-2/chapters/12-06-stability-and-compensation.md) |
+| Miller: GBW $= g_{m1}/(2\pi C_c)$ (Hz), $p_2 \approx g_{m2}/C_L$ and zero $g_{m2}/C_c$ (rad/s); $g_{m2} \approx 10g_{m1}$, $C_c \approx 0.22C_L$ → about 60° | Two-stage | [12-06](../../courses/12-electronics-2/chapters/12-06-stability-and-compensation.md) |
+| Nulling resistor: $z = 1/[C_c(1/g_{m2} - R_z)]$ (rad/s); $R_z = 1/g_{m2}$ removes it; $(1 + C_L/C_c)/g_{m2}$ cancels $p_2$ | New pole $\approx 1/(R_zC_1)$ | [12-06](../../courses/12-electronics-2/chapters/12-06-stability-and-compensation.md) |
 
 ## Output stages and op-amps
 
@@ -58,7 +58,7 @@ Conventions:
 
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
-| Barkhausen $L(j\omega_0) = 1$; Wien $\omega_0 = 1/RC$, gain 3; RC ladder $\omega_0 = \sqrt6/RC$, gain 29 | Positive feedback | [12-09](../../courses/12-electronics-2/chapters/12-09-oscillators.md) |
+| Barkhausen $L(j\omega_0) = 1$; Wien $\omega_0 = 1/RC$, gain 3; three-section ladder of series $R$, shunt $C$: $\omega_0 = \sqrt6/RC$, gain 29 | Positive feedback | [12-09](../../courses/12-electronics-2/chapters/12-09-oscillators.md) |
 | Colpitts $\omega_0^2 = (C_1 + C_2)/(LC_1C_2)$, $g_mR \ge C_2/C_1$; cross-coupled $-2/g_m$, start if $g_m > 2/R_p$ | LC | [12-09](../../courses/12-electronics-2/chapters/12-09-oscillators.md) |
 | Crystal $f_p = f_s\sqrt{1 + C_m/C_0}$; with $C_L$: $f_s\sqrt{1 + C_m/(C_0 + C_L)}$ | Pulling | [12-09](../../courses/12-electronics-2/chapters/12-09-oscillators.md) |
 | Ring $f = 1/(2Nt_{pd})$; linear model $\omega_0 = \tan(\pi/N)/\tau$, gain $1/\cos(\pi/N)$ | Odd $N$ | [12-09](../../courses/12-electronics-2/chapters/12-09-oscillators.md) |

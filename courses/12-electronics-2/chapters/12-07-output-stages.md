@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 12-07 · Output Stages and Power Amplifiers
 
 | | |

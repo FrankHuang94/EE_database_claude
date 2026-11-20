@@ -8,17 +8,17 @@
 "Large-signal current split of a bipolar pair?","Δi = I<sub>EE</sub> tanh(v<sub>id</sub>/2V<sub>T</sub>): linear only for a few tens of mV.",12-01
 "What limits a differential pair's input common-mode range?","Below: the tail needs its saturation voltage under V<sub>GS</sub>. Above: the input devices must stay saturated against their drain voltages.",12-01
 "Pelgrom's law?","σ(ΔV<sub>TH</sub>) = A<sub>VT</sub>/√(WL): mismatch falls with the square root of area.",12-01
-"Why is CML fast?","It steers a constant tail current between two loads with small swings, so it never fully switches transistors off and draws constant supply current.",12-01
+"Why is CML fast?","It fully steers a constant tail current from one side to the other, but with a small swing (small R<sub>D</sub>) so no device enters triode; the nodes move little and the supply current stays constant.",12-01
 "Gain of a five-transistor OTA?","g<sub>m1</sub>(r<sub>o2</sub> ∥ r<sub>o4</sub>), about 1/(λV<sub>ov</sub>) per stage with equal output resistances.",12-02
 "Output resistance of a cascode?","r<sub>o1</sub> + r<sub>o2</sub> + g<sub>m2</sub>r<sub>o2</sub>r<sub>o1</sub> ≈ g<sub>m2</sub>r<sub>o2</sub>r<sub>o1</sub>.",12-02
 "Open-circuit gain of a cascode stage?","g<sub>m1</sub>r<sub>o1</sub>(1 + g<sub>m2</sub>r<sub>o2</sub>), not g<sub>m</sub>R<sub>out</sub>.",12-02
-"Cost of a telescopic cascode?","Output swing: about V<sub>DD</sub> minus five overdrive-plus-threshold allowances; limited input common-mode range.",12-02
+"Cost of a telescopic cascode?","Output swing: V<sub>DD</sub> minus about five stacked overdrives; and the input common mode is tied to the cascode bias, so it is awkward as a unity-gain buffer.",12-02
 "What is systematic offset in a two-stage op-amp?","An output offset from mis-sized current densities between the mirror and the second stage; fixed by sizing, not trimming.",12-02
 "Why do multistage amplifiers need DC level shifting?","Each stage's output level must bias the next stage correctly; followers, level shifters or complementary stages provide it.",12-02
 "Transition frequency f<sub>T</sub>?","g<sub>m</sub>/[2π(C<sub>gs</sub> + C<sub>gd</sub>)]: where short-circuit current gain falls to 1.",12-03
 "Miller theorem for a capacitor across an inverting gain −A?","Input side C(1 + A); output side C(1 + 1/A).",12-03
 "Where is a common-source stage's zero, and why is it a problem?","At +g<sub>m</sub>/C<sub>gd</sub>, right half-plane: it adds phase lag like a pole while raising the gain.",12-03
-"Dominant-pole estimate of the −3 dB frequency?","1/(2πb<sub>1</sub>), with b<sub>1</sub> the first denominator coefficient; conservative when poles are close.",12-03
+"Dominant-pole estimate of the −3 dB frequency?","1/(2πb<sub>1</sub>), with b<sub>1</sub> the first denominator coefficient; conservative (a lower bound) when every pole is real, optimistic possible with complex poles.",12-03
 "Why does a cascode help bandwidth?","It holds the input device's drain near small-signal ground, so its C<sub>gd</sub> is not Miller-multiplied.",12-03
 "Gain–bandwidth of a single-pole stage?","g<sub>m</sub>/(2πC), independent of the load resistance.",12-03
 "Open-circuit time constants?","b<sub>1</sub> = Σ R<sub>i0</sub>C<sub>i</sub>, each R<sub>i0</sub> seen by one capacitor with the others open; exact for b<sub>1</sub>.",12-04
@@ -34,10 +34,10 @@
 "Series mixing does what to input impedance?","Multiplies it by 1 + T. Shunt mixing divides it.",12-05
 "Shunt sampling does what to output impedance?","Divides it by 1 + T. Series sampling multiplies it.",12-05
 "Name the four feedback topologies and amplifier types.","Series–shunt: voltage; shunt–series: current; series–series: transconductance; shunt–shunt: transresistance.",12-05
-"Return ratio?","T = −(value the controlling variable calls for)/(injected source value), with the controlled source replaced by an independent one.",12-05
+"Return ratio?","T = −(value the controlling variable calls for)/(injected source value), with the controlled source replaced by an independent one and the independent inputs zeroed.",12-05
 "Asymptotic-gain formula?","A<sub>f</sub> = A<sub>∞</sub>T/(1 + T) + A<sub>0</sub>/(1 + T); A<sub>∞</sub> with the controlling variable forced to 0, A<sub>0</sub> with the source zeroed.",12-05
 "Blackman's impedance formula?","Z = Z<sup>(0)</sup>(1 + T<sub>sc</sub>)/(1 + T<sub>oc</sub>), return ratios with the port shorted and open.",12-05
-"Why can a two-pole loop never oscillate?","Its phase reaches −180° only at infinite frequency, where its gain is zero.",12-06
+"Why can a two-pole loop never oscillate?","With two left-half-plane poles and no zero or delay, its phase reaches −180° only at infinite frequency, where its gain is zero.",12-06
 "Phase margin?","180° plus the loop-gain phase where |T| = 1.",12-06
 "Gain margin?","−20 log |T| where the loop phase is −180°.",12-06
 "Phase-crossover frequency of three real poles?","ω<sub>180</sub>² = ω<sub>1</sub>ω<sub>2</sub> + ω<sub>1</sub>ω<sub>3</sub> + ω<sub>2</sub>ω<sub>3</sub>.",12-06
@@ -69,13 +69,13 @@
 "What compensates a folded cascode?","Its load capacitance: GBW = g<sub>m1</sub>/(2πC<sub>L</sub>); a larger load improves phase margin.",12-08
 "Why is a folded cascode's transconductance slightly below g<sub>m1</sub>?","The input current divides at the folding node between its resistance and the cascode's ≈1/g<sub>m</sub> input.",12-08
 "Why does a fully differential amplifier need CMFB?","The differential loop does not set the output average, which drifts by ΔI·R<sub>out</sub> (often volts).",12-08
-"Rail-to-rail input g<sub>m</sub> seam?","Where NMOS and PMOS pairs both conduct, g<sub>m</sub> doubles; constant-g<sub>m</sub> control quarters each pair's current there.",12-08
+"Rail-to-rail input g<sub>m</sub> seam?","Where NMOS and PMOS pairs both conduct, g<sub>m</sub> doubles; constant-g<sub>m</sub> control quarters each pair's current there (a square-law, strong-inversion trick).",12-08
 "Rail-to-rail output stage?","Common-source devices to each rail, swinging to within V<sub>ov</sub> of the rails at light load.",12-08
 "Barkhausen criterion?","Loop gain exactly 1 with zero phase at ω<sub>0</sub> (positive feedback); start above 1, limit back to 1.",12-09
-"Wien bridge frequency and gain?","ω<sub>0</sub> = 1/RC, β = 1/3, gain 3.",12-09
+"Wien bridge frequency and gain?","With equal R and C in both arms: ω<sub>0</sub> = 1/RC, β = 1/3, gain 3.",12-09
 "Three-section RC phase-shift oscillator?","ω<sub>0</sub> = √6/RC (series R, shunt C ladder), inverting gain 29.",12-09
 "Colpitts startup condition?","g<sub>m</sub>R ≥ C<sub>2</sub>/C<sub>1</sub>, at ω<sub>0</sub>² = (C<sub>1</sub> + C<sub>2</sub>)/(LC<sub>1</sub>C<sub>2</sub>).",12-09
-"Cross-coupled pair impedance?","−2/g<sub>m</sub> differentially; oscillates if g<sub>m</sub> > 2/R<sub>p</sub>, R<sub>p</sub> = Qω<sub>0</sub>L.",12-09
+"Cross-coupled pair impedance?","−2/g<sub>m</sub> differentially; oscillates if g<sub>m</sub> > 2/R<sub>p</sub>, with R<sub>p</sub> = Qω<sub>0</sub>L the differential tank's parallel resistance (L differential).",12-09
 "Crystal series and parallel resonance?","f<sub>s</sub> = 1/(2π√(L<sub>m</sub>C<sub>m</sub>)); f<sub>p</sub> = f<sub>s</sub>√(1 + C<sub>m</sub>/C<sub>0</sub>).",12-09
 "Crystal frequency with load capacitance C<sub>L</sub>?","f<sub>s</sub>√(1 + C<sub>m</sub>/(C<sub>0</sub> + C<sub>L</sub>)); pulls by ppm.",12-09
 "Typical crystal Q?","10⁴ to 10⁶.",12-09

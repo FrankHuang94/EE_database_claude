@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 12-02 · Active Loads, Cascodes and Multistage Amplifiers
 
 | | |

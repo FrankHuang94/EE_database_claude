@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 12-05 · Feedback: Theory and the Four Topologies
 
 | | |

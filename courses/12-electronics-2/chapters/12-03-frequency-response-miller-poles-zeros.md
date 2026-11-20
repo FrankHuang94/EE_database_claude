@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 12-03 · Frequency Response: Device Capacitances, Miller Effect, Poles and Zeros
 
 | | |

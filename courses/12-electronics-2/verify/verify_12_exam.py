@@ -89,6 +89,9 @@ def i_split(vid):
 
 
 v.check("X12.1f", brentq(lambda x: i_split(x) - Iss * (1 - 1e-12), 0.1, 2.0, xtol=1e-12))
+# (d) offset: the differential input that equalizes the two drain voltages with R_D2 = 1.02 R_D1 (large-signal pair)
+vos = brentq(lambda x: i_split(x) * RD - (Iss - i_split(x)) * 1.02 * RD, -0.1, 0.1, xtol=1e-15)
+v.check("X12.1i", abs(vos) * 1e3)
 
 # ============================================================ 2 active loads and cascodes
 gm2, ro = 1e-3, 100e3
@@ -105,7 +108,18 @@ v.check("X12.2b", Rside / 1e6)
 both = side + [("G", "o", "m2", "0", "m2", gm2), ("R", "o", "m2", ro), ("R", "m2", "0", ro)]
 Rtot = r_out(both, "o", ["o", "m", "m2"])
 v.check("X12.2c", Rtot / 1e6)
-v.check("X12.2d", gm2 * Rtot)
+half = [("G", "x", "0", "in", "0", gm2), ("R", "x", "0", ro), ("G", "0", "x", "0", "x", gm2), ("R", "0", "x", ro)]
+vx2 = nodal(["x"], half, {"in": 1.0})["x"]
+Gm2 = abs((gm2 * (0 - vx2) + (0 - vx2) / ro).real)   # current into the shorted output through the cascode device
+v.check("X12.2f", Gm2 * 1e3)
+v.check("X12.2d", Gm2 * Rtot)
+v.check("X12.2g", gm2 * Rtot)
+# full five-transistor OTA small-signal solution (ideal tail), output open
+ota = [("G", "m", "t", "g1", "t", gm2), ("R", "m", "t", ro), ("G", "o", "t", "g2", "t", gm2), ("R", "o", "t", ro),
+       ("G", "0", "m", "0", "m", gm2), ("R", "m", "0", ro), ("G", "0", "o", "0", "m", gm2), ("R", "o", "0", ro),
+       ("R", "t", "0", 1e15)]
+so = nodal(["m", "o", "t"], ota, {"g1": 0.5, "g2": -0.5})
+v.check("X12.2e", abs(so["o"].real))
 
 # ============================================================ 3 and 4: common-source stage
 g3, RS, RL, Cgs, Cgd, CL = 2e-3, 10e3, 5e3, 100e-15, 20e-15, 100e-15
@@ -139,6 +153,30 @@ v.check("X12.4a", Rgd / 1e3)
 v.check("X12.4b", b1 * 1e9)
 v.check("X12.4c", 1 / (TP * b1) / 1e6)
 v.check("X12.4d", 100 * Rgd * Cgd / b1)
+lamq = np.sort(np.abs(np.linalg.eigvals(np.linalg.solve(np.array([[Cgs + Cgd, -Cgd], [-Cgd, CL + Cgd]]),
+                                                           np.array([[1 / RS, 0], [g3, 1 / RL]]))).real)) / TP
+v.check("X12.3k", lamq[0] / 1e6)
+v.check("X12.3l", lamq[1] / 1e6)
+v.check("X12.3m", lamq[1] / lamq[0])
+v.check("X12.3h", 100 * (1 / (TP * RS * (Cgs + Cgd * (1 + A0))) / f3 - 1))
+v.check("X12.3i", seen("d", "0") * (CL + Cgd) * 1e9)
+v.check("X12.3j", 100 * (1 - 1 / (TP * b1) / f3))
+# (4b) cascode: OCTC with test sources in the cascoded resistive circuit
+resc = [("R", "vs", "g", RS), ("G", "x", "0", "g", "0", g3), ("G", "d", "x", "0", "x", 2e-3), ("R", "d", "0", RL)]
+
+
+def seen_c(a, b_):
+    sol = nodal(["g", "x", "d"], resc + [("R", "x", "0", 1e15), ("I", b_, a, 1.0)], {"vs": 0.0})
+    va = sol[a] if a in sol else 0.0
+    vb = sol[b_] if b_ in sol else 0.0
+    return float((va - vb).real)
+
+
+Rgd_c = seen_c("g", "x")
+b1c = seen_c("g", "0") * Cgs + Rgd_c * Cgd + seen_c("x", "0") * 120e-15 + seen_c("d", "0") * (CL + 20e-15)
+v.check("X12.4e", Rgd_c / 1e3)
+v.check("X12.4f", b1c * 1e9)
+v.check("X12.4g", 1 / (TP * b1c) / 1e6)
 
 # ============================================================ 5 feedback
 A5, b5 = 2000.0, 0.05
@@ -147,6 +185,14 @@ v.check("X12.5a", A5 * b5)
 v.check("X12.5b", Af)
 v.check("X12.5c", 10e3 * (1 + A5 * b5) / 1e6)
 v.check("X12.5d", 1e3 / (1 + A5 * b5))
+# (5c) the loaded divider, solved: amplifier as a Norton source A/R_o in parallel with R_o
+el5 = [("R", "p", "n", 10e3), ("R", "n", "0", 1e3), ("R", "n", "o", 19e3), ("G", "0", "o", "p", "n", A5 / 1e3),
+       ("R", "o", "0", 1e3)]
+vn_t = nodal(["n", "o"], [e for e in el5 if e[0] != "G"] + [("I", "0", "o", 1.0)], {"p": 0.0})["n"].real
+v.check("X12.5f", (A5 / 1e3) * vn_t)                     # returned source value per unit injected current
+v.check("X12.5g", nodal(["n", "o"], el5, {"p": 1.0})["o"].real)
+v.check("X12.5h", nodal(["p", "n", "o"], el5 + [("I", "0", "p", 1.0)], {})["p"].real / 1e6)
+v.check("X12.5i", nodal(["n", "o"], el5 + [("I", "0", "o", 1.0)], {"p": 0.0})["o"].real)
 Hcl = lambda f: abs((A5 / (1 + 1j * f / 50e3)) / (1 + b5 * A5 / (1 + 1j * f / 50e3)))  # noqa: E731
 v.check("X12.5e", brentq(lambda f: Hcl(f) - Hcl(0) / math.sqrt(2), 1e3, 1e9) / 1e6)
 
@@ -176,6 +222,16 @@ v.check("X12.7c", g2 / (TP * CL7) / 1e6)
 v.check("X12.7d", g2 / (TP * Cc) / 1e6)
 v.check("X12.7e", brentq(lambda r: Cc * (1 / g2 - r), 1, 1e4))   # 1/s_z = C_c (1/g_m2 - R_z) vanishes
 v.check("X12.7f", brentq(lambda r: 1 / (Cc * (r - 1 / g2)) - g2 / CL7, 260, 1e5))
+el7 = [("G", "n1", "0", "in", "0", g1), ("R", "n1", "0", 400e3), ("C", "n1", "0", 0.1e-12), ("G", "n2", "0", "n1", "0", g2),
+       ("R", "n2", "0", 100e3), ("C", "n2", "0", CL7), ("C", "n1", "n2", Cc)]
+A7 = lambda f: nodal(["n1", "n2"], el7, {"in": 1.0}, f)["n2"]  # noqa: E731
+fc7 = brentq(lambda f: abs(A7(f)) - 1, 1e6, 1e10, xtol=1e-3)
+ph7 = float(np.degrees(np.unwrap(np.angle([A7(f) for f in np.geomspace(1, fc7, 4000)])))[-1])
+v.check("X12.7g", fc7 / 1e6)
+v.check("X12.7h", 180 + ph7)
+lam7 = np.sort(np.abs(np.linalg.eigvals(np.linalg.solve(np.array([[0.1e-12 + Cc, -Cc], [-Cc, CL7 + Cc]]),
+                                                           np.array([[1 / 400e3, 0], [g2, 1 / 100e3]]))).real)) / TP
+v.check("X12.7i", lam7[1] / 1e6)
 
 # ============================================================ 8 class B
 SIN = np.sin(TP * (np.arange(65536) + 0.5) / 65536)
@@ -196,6 +252,7 @@ v.check("X12.8d", w.x)
 v.check("X12.8e", -w.fun)
 v.check("X12.8f", -w.fun / 2)
 v.check("X12.8g", brentq(lambda th: 50 + (-w.fun / 2) * (3 + th) - 125, 0, 1e3))
+v.check("X12.8h", brentq(lambda th: 50 + (-w.fun) * th + (-w.fun / 2) * 3 - 125, 0, 1e3))   # shared sink
 
 # ============================================================ 9 slew
 Iss9, Vov, Cc9, I7, CL9 = 40e-6, 0.2, 2e-12, 150e-6, 8e-12
@@ -247,5 +304,53 @@ v.check("X12.14b", en14 * 1e9)
 v.check("X12.14c", (en14 / 0.5e-9) ** 2)
 v.check("X12.14d", brentq(lambda i: math.sqrt(2 * 1.602176634e-19 * i / (i / VT) ** 2) - 0.5e-9, 1e-6, 1, xtol=1e-15)
         * 1e3)
+
+# ============================================================ 10(c) crystal pulling: the series-resonance of the motional branch with C0 + CL
+Lm10 = brentq(lambda L: (TP * 20e6) ** 2 * L * 10e-15 - 1, 1e-6, 10.0, xtol=1e-18)
+
+
+def xtal_ppm(CLx):
+    z = lambda f: (1j * TP * f * Lm10 + 1 / (1j * TP * f * 10e-15)) + 1 / (1j * TP * f * (3e-12 + CLx))  # noqa: E731
+    return (brentq(lambda f: z(f).imag, 20e6, 20.1e6, xtol=1e-6) / 20e6 - 1) * 1e6
+
+
+v.check("X12.10d", xtal_ppm(8e-12))
+v.check("X12.10e", xtal_ppm(10e-12))
+v.check("X12.10f", xtal_ppm(8e-12) - xtal_ppm(10e-12))
+
+# ============================================================ 14(a) the pair sharing 1 uA
+gp = brentq(lambda g: g * VT - 0.5e-6, 1e-9, 1e-3, xtol=1e-18)
+enp = math.sqrt(2 * 1.602176634e-19 * 0.5e-6 / gp ** 2)
+v.check("X12.14e", gp * 1e6)
+v.check("X12.14f", enp * 1e9)
+v.check("X12.14g", math.sqrt(2) * enp * 1e9)
+v.check("X12.14h", (math.sqrt(2) * enp / 0.5e-9) ** 2)
+
+# ============================================================ 6: the two-pole model against the exact closed loop
+pcl = np.roots(np.polymul([1 / (TP * 10e3), 1], [1 / (TP * 8e6), 1]) + np.array([0, 0, 500]))
+Qx = abs(pcl[0]) / abs(2 * pcl[0].real)
+_, yx = signal.step(signal.lti([500], np.polymul([1 / (TP * 10e3), 1], [1 / (TP * 8e6), 1]) + np.array([0, 0, 500])),
+                    T=np.linspace(0, 2e-6, 200001))
+osx = 100 * (float(np.max(yx)) / (500 / 501) - 1)
+v.assert_true(f"exact closed loop (Q {Qx:.4f}, overshoot {osx:.2f}%) within 0.1% and 0.05 points of the two-pole model",
+              abs(Qx / Q6 - 1) < 1e-3 and abs(osx - 100 * (float(np.max(y)) - 1)) < 0.05)
+
+# ============================================================ 13: the derivations, symbolically
+import sympy as sp  # noqa: E402
+a_, b_s, c_, d_, P_ = sp.symbols("a b c d P")
+Tsym = -d_ * P_
+Ainf = a_ - b_s * c_ / d_
+v.assert_true("13(a): asymptotic-gain identity", sp.simplify((Ainf * Tsym + a_) / (1 + Tsym) - (a_ + b_s * P_ * c_ / (1 - d_ * P_))) == 0)
+Vcc, Vop, R_ = sp.symbols("V_CC V_op R_L", positive=True)
+PD = 2 * Vcc * Vop / (sp.pi * R_) - Vop ** 2 / (2 * R_)
+v.assert_true("13(b): dissipation peaks at 2 V_CC/pi", sp.simplify(sp.solve(sp.diff(PD, Vop), Vop)[0] - 2 * Vcc / sp.pi) == 0)
+v.assert_true("13(b): efficiency pi/4 at full swing", sp.simplify((Vop ** 2 / (2 * R_)) / (2 * Vcc * Vop / (sp.pi * R_)) - sp.pi / 4 * Vop / Vcc) == 0)
+s_, R1s, R2s, C1s, C2s, Ccs, gs = sp.symbols("s R_1 R_2 C_1 C_2 C_c g_m2", positive=True)
+Msym = sp.Matrix([[1 / R1s + s_ * (C1s + Ccs), -s_ * Ccs], [gs - s_ * Ccs, 1 / R2s + s_ * (C2s + Ccs)]])
+Dsym = sp.expand(Msym.det() * R1s * R2s)
+v.assert_true("13(c): b1 of the two-stage amplifier",
+              sp.simplify(Dsym.coeff(s_, 1) - (R1s * (C1s + Ccs * (1 + gs * R2s)) + R2s * (Ccs + C2s))) == 0)
+v.assert_true("13(c): b2 of the two-stage amplifier",
+              sp.simplify(Dsym.coeff(s_, 2) - R1s * R2s * (C1s * C2s + Ccs * (C1s + C2s))) == 0)
 
 sys.exit(v.finish())

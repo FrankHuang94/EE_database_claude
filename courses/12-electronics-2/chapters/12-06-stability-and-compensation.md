@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 12-06 · Stability and Frequency Compensation
 
 | | |
