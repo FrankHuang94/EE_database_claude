@@ -168,6 +168,8 @@ v.check("Ex 10-07.2c", par(RB, rin_b) / 1e3)
 x2b = ce_discrete(None, None, re_unbyp=100.0, drive_base=True)
 v.check("Ex 10-07.2d", x2b["c"])
 v.check("Ex 10-07.2e", ce_discrete(1e3, 10e3, re_unbyp=100.0)["c"])
+v.check("Ex 10-07.2f", xb["c"] / x2b["c"])
+v.check("Ex 10-07.2g", x1["c"] / ce_discrete(1e3, 10e3, re_unbyp=100.0)["c"])
 
 # ------------------------------------------------------------------ Example 3: collector output resistance by test source
 gm3, rpi3, ro3 = hp(1e-3, 100, 50)
@@ -189,6 +191,16 @@ def rout_c(re, rsig=0.0, gm_=gm3, rpi_=rpi3, ro_=ro3):
 
 for key, re in (("Ex 10-07.3a", 0.0), ("Ex 10-07.3b", 1e3), ("Ex 10-07.3c", 10e3), ("Ex 10-07.3d", 1e12)):
     v.check(key, rout_c(re) / 1e3)
+v.check("Ex 10-07.3e", rout_c(1e3) / rout_c(0.0))
+
+# ------------------------------------------------------------------ CB input resistance with r_o (test source, MNA)
+cbr = MNA()
+cbr.V("x", "0", 1.0)                                     # test voltage at the emitter, base grounded
+bjt(cbr, None, "c", "0", "x", gm3, rpi3, ro3)
+cbr.R("c", "0", 5e3)
+rin_cb_ro = 1 / -cbr.solve()["_i"][0]
+v.check("T 10-07.p", rin_cb_ro)
+v.check("T 10-07.q", (rin_cb_ro / ((100 / 101) / gm3) - 1) * 100)
 
 # ------------------------------------------------------------------ Example 4: common base
 
@@ -286,10 +298,16 @@ def degen_gain(beta, re1):
 
 
 re1_exact = brentq(lambda r: degen_gain(100, r)[0] + 10, 1, 5e3)
-v.check("Ex 10-07.7a", round(re1_exact / 10) * 10)
-v.assert_true("the exact R_E1 is just under 440 ohm", 439 < re1_exact < 440)
-g100, rin100 = degen_gain(100, 440.0)
-g300, rin300 = degen_gain(300, 440.0)
+E96 = [100, 102, 105, 107, 110, 113, 115, 118, 121, 124, 127, 130, 133, 137, 140, 143, 147, 150, 154, 158, 162, 165,
+       169, 174, 178, 182, 187, 191, 196, 200, 205, 210, 215, 221, 226, 232, 237, 243, 249, 255, 261, 267, 274, 280,
+       287, 294, 301, 309, 316, 324, 332, 340, 348, 357, 365, 374, 383, 392, 402, 412, 422, 432, 442, 453, 464, 475,
+       487, 499, 511, 523, 536, 549, 562, 576, 590, 604, 619, 634, 649, 665, 681, 698, 715, 732, 750, 768, 787, 806,
+       825, 845, 866, 887, 909, 931, 953, 976]
+re1_e96 = min(E96, key=lambda r: abs(r - re1_exact))
+v.check("Ex 10-07.7l", re1_exact)
+v.check("Ex 10-07.7a", re1_e96)
+g100, rin100 = degen_gain(100, float(re1_e96))
+g300, rin300 = degen_gain(300, float(re1_e96))
 v.check("Ex 10-07.7b", g100)
 v.check("Ex 10-07.7c", g300)
 v.check("Ex 10-07.7d", (g300 / g100 - 1) * 100)
@@ -415,5 +433,111 @@ ceil = rout_c(1e15)
 v.check("Lab 10-07.e", brentq(lambda r: rout_c(r) - 0.9 * ceil, 1, 1e8) / 1e3)
 v.check("Lab 10-07.f", (1e-3 * 101 / 100) * par(5e3, 1e3))
 v.check("Lab 10-07.g", hp(1e-3, 100)[0] / (2 * 1e-3 / 0.2))
+# Part 3: the base amplitude at which the follower's emitter swing reaches 99% of I_E (R_E || R_L), exponential model
+IE0, rpar = 1.0101010101e-3, par(5e3, 1e3)
+
+
+def emitter_min(vb_amp, n=721):
+    th = np.linspace(0, 2 * np.pi, n)
+    return min(brentq(lambda uu: IE0 * math.exp((vb_amp * math.sin(t_) - uu) / VT) - IE0 - uu / rpar,
+                      -IE0 * rpar - 1e-9, abs(vb_amp) + 1.0, xtol=1e-15) for t_ in th)
+
+
+v.check("Lab 10-07.h", brentq(lambda a_: emitter_min(a_) + 0.99 * IE0 * rpar, 0.1, 2.0, xtol=1e-6))
+# Part 4: EKV g_m/I_D of a fixed-size MOSFET, by differentiating the EKV current numerically
+n_e, kn_e = 1.3, 25e-3
+ispec_e = 2 * n_e * kn_e * VT ** 2
+def ekv_id(vov):
+    return ispec_e * math.log1p(math.exp(vov / (2 * n_e * VT))) ** 2
+for key, I in (("Lab 10-07.i", 1e-5), ("Lab 10-07.j", 5e-4), ("Lab 10-07.k", 1e-2)):
+    vq = brentq(lambda x: ekv_id(x) - I, -1.0, 2.0, xtol=1e-14)
+    gmid = (math.log(ekv_id(vq + 1e-6)) - math.log(ekv_id(vq - 1e-6))) / 2e-6
+    v.check(key, (1 / VT) / gmid)
+
+
+# ------------------------------------------------------------------ Example 8: bypass capacitor (complex nodal solve)
+gm8, rpi8, _ = hp(IC1, 100)
+re8 = (100 / 101) / gm8
+v.check("Ex 10-07.8a", re8)
+v.check("Ex 10-07.8b", par(1e3, RB) / 101)
+# resistance seen by C_E: test source at the emitter with the signal source zeroed (MNA)
+cth = MNA(); cth.V("e", "0", 1.0); cth.R("s", "0", 1e3); cth.R("s", "b", 1e-9); cth.R("b", "0", RB)
+bjt(cth, None, "c", "b", "e", gm8, rpi8); cth.R("c", "0", par(4.7e3, 10e3)); cth.R("e", "0", 1e3)
+rth8 = 1 / -cth.solve()["_i"][0]
+v.check("Ex 10-07.8c", rth8)
+v.check("Ex 10-07.8d", 1 / (2 * math.pi * 20 * rth8) * 1e6)
+v.check("Ex 10-07.8e", 1 / (2 * math.pi * 330e-6 * rth8))
+v.check("Ex 10-07.8f", 1 / (2 * math.pi * 330e-6 * 1e3))
+
+
+def ce_gain_f(f, ce=330e-6):
+    """Complex gain v_c/v_s of Example 10-07.1's stage with R_E = 1 kOhm || C_E, coupling capacitors shorted."""
+    w = 2 * math.pi * f
+    ye = 1 / 1e3 + 1j * w * ce
+    # unknowns v_b, v_e, v_c; source 1 V through 1 kOhm into the base node
+    Y = np.array([[1 / 1e3 + 1 / RB + 1 / rpi8, -1 / rpi8, 0],
+                  [-1 / rpi8 - gm8, 1 / rpi8 + gm8 + ye, 0],
+                  [gm8, -gm8, 1 / 4.7e3 + 1 / 10e3]], dtype=complex)
+    b = np.array([1 / 1e3, 0, 0], dtype=complex)
+    vb, ve, vc = np.linalg.solve(Y, b)
+    return vc
+
+
+amid = abs(ce_gain_f(1e6))
+v.assert_true("midband gain equals Example 10-07.1's overall gain", abs(amid - abs(x1["c"])) < 1e-3)
+v.check("Ex 10-07.8g", brentq(lambda f: abs(ce_gain_f(f)) - amid / math.sqrt(2), 1.0, 1e3, xtol=1e-9))
+rcoup = 1e3 + par(RB, rpi8)
+v.check("Ex 10-07.8h", 1 / (2 * math.pi * 20 * rcoup) * 1e6)
+v.check("Ex 10-07.8i", 1 / (2 * math.pi * 10e-6 * rcoup))
+v.check("Ex 10-07.8j", rcoup / rth8)
+v.check("Ex 10-07.8k", (1 / (2 * math.pi * 330e-6 * rth8)) / (1 / (2 * math.pi * 330e-6 * 1e3)))
+
+
+# ------------------------------------------------------------------ Problem 13: partial bypass (test source, MNA)
+cth2 = MNA(); cth2.V("x", "0", 1.0); cth2.R("x", "0", 900.0); cth2.R("x", "e", 100.0)
+cth2.R("s", "0", 1e3); cth2.R("s", "b", 1e-9); cth2.R("b", "0", RB)
+bjt(cth2, None, "c", "b", "e", gm8, rpi8); cth2.R("c", "0", par(4.7e3, 10e3))
+rth13 = 1 / -cth2.solve()["_i"][0]
+v.check("10-07.13a", rth13)
+c13 = 1 / (2 * math.pi * 20 * rth13)
+v.check("10-07.13b", c13 * 1e6)
+e6 = [10e-6, 15e-6, 22e-6, 33e-6, 47e-6, 68e-6, 100e-6, 150e-6]
+pick = min(c for c in e6 if 1 / (2 * math.pi * c * rth13) <= 20)
+v.check("10-07.13c", pick * 1e6)
+v.check("10-07.13d", 1 / (2 * math.pi * pick * rth13))
+v.check("10-07.13e", rth13 / rth8)
+v.check("10-07.13f", 1 / (2 * math.pi * 68e-6 * rth13))
+
+# ------------------------------------------------------------------ Problem 14: full discrete design (KVL solve, then MNA)
+A14 = np.array([[1 / 56e3 + 1 / 12e3, 0.0, 1.0], [0.0, 1 / 1.2e3, -151.0], [1.0, -1.0, 0.0]])
+z14 = np.array([9 / 56e3, 0.0, 0.7])
+vb14, ve14, ib14 = np.linalg.solve(A14, z14)
+v.check("10-07.14a", 9 * 12 / 68)
+v.check("10-07.14b", par(56e3, 12e3) / 1e3)
+v.check("10-07.14c", ve14 / 1.2e3 * 1e3)
+ic14 = 150 * ib14
+v.check("10-07.14d", ic14 * 1e3)
+v.check("10-07.14e", 9 - ic14 * 3.3e3)
+v.check("10-07.14f", ve14)
+v.check("10-07.14g", 9 - ic14 * 3.3e3 - ve14)
+gm14, rpi14, ro14 = hp(ic14, 150, 100)
+v.check("10-07.14h", gm14 * 1e3)
+v.check("10-07.14i", rpi14 / 1e3)
+v.check("10-07.14j", ro14 / 1e3)
+c14 = MNA(); c14.V("s", "0", 1.0); c14.R("s", "b", 600.0); c14.R("b", "0", par(56e3, 12e3))
+bjt(c14, None, "c", "b", "0", gm14, rpi14, ro14); c14.R("c", "0", 3.3e3); c14.R("c", "0", 10e3)
+x14 = c14.solve()
+v.check("10-07.14k", par(par(56e3, 12e3), rpi14) / 1e3)
+v.check("10-07.14l", x14["c"] / x14["b"])
+v.check("10-07.14m", x14["b"])
+v.check("10-07.14n", x14["c"])
+v.check("10-07.14o", (1 - x14["b"]) * 100)
+
+# ------------------------------------------------------------------ Problem 15: CB input resistance with r_o (MNA)
+for key, rc in (("10-07.15a", 1e-6), ("10-07.15b", 5e3), ("10-07.15c", 50e3)):
+    c15 = MNA(); c15.V("x", "0", 1.0); bjt(c15, None, "c", "0", "x", gm3, rpi3, ro3); c15.R("c", "0", rc)
+    v.check(key, 1 / -c15.solve()["_i"][0])
+c15 = MNA(); c15.V("x", "0", 1.0); bjt(c15, None, "c", "0", "x", gm3, rpi3, ro3); c15.R("c", "0", 1e15)
+v.check("10-07.15d", 1 / -c15.solve()["_i"][0] / 1e3)
 
 v.finish()

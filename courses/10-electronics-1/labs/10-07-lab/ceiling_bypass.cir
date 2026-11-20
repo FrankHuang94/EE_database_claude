@@ -1,0 +1,69 @@
+* Lab 10-07 -- two more bipolar results:
+* (1) Example 10-07.3, the beta ceiling on the collector output resistance at I_C = 1 mA, beta = 100, V_A = 50 V,
+*     base grounded for signals, for R_E = 1 kOhm, 10 kOhm and an ideal current source (R_E -> infinity).
+*     SPICE's Gummel-Poon Early effect scales I_C by about (1 + V_CB/VAF), so r_o = (VAF + V_CB)/I_C and beta =
+*     BF (1 + V_CB/VAF). Every copy holds V_CB = 3.29 V, so VAF = 50 - 3.29 = 46.71 V gives r_o = 50 kOhm and
+*     BF = 100/(1 + 3.29/46.71) gives beta = 100; IS puts V_BE at 0.700 V at 1 mA (all disclosed modeling choices).
+*     The collector is held at its bias by a voltage source that carries the AC test signal.
+* (2) Example 10-07.8, the bypass capacitor: Example 10-07.1's amplifier (bias network of Example 10-03.3, as in
+*     bjt_stages.cir) with R_E = 1 kOhm bypassed by 330 uF, driven from 1 kOhm into a coupled 10 kOhm load, with
+*     1 F coupling capacitors (shorts at these frequencies); the -3 dB frequency is read from an AC sweep.
+*
+* EXPECT r1  key:../../chapters/10-07-bjt-single-stage-amplifiers.md#Ex_10-07.3b scale=1e3 rtol=2e-3
+* EXPECT r10 key:../../chapters/10-07-bjt-single-stage-amplifiers.md#Ex_10-07.3c scale=1e3 rtol=2e-3
+* EXPECT rin key:../../chapters/10-07-bjt-single-stage-amplifiers.md#Ex_10-07.3d scale=1e3 rtol=2e-3
+* EXPECT f3  key:../../chapters/10-07-bjt-single-stage-amplifiers.md#Ex_10-07.8g rtol=5e-3
+
+.options temp=26.85 tnom=26.85 reltol=1e-8 abstol=1e-15
+.model qa NPN(IS=1.625407e-15 BF=93.4204 VAF=46.71)
+* R_E = 1 kOhm: base at 0.7 + 1.0101 mA x 1 kOhm, collector held 3.29 V above the base
+VB1 b1 0 DC 1.7101
+Q1 c1 b1 e1 qa
+RE1 e1 0 1k
+VC1 c1 0 DC 5.0001 AC 1
+* R_E = 10 kOhm
+VB2 b2 0 DC 10.801
+Q2 c2 b2 e2 qa
+RE2 e2 0 10k
+VC2 c2 0 DC 14.091 AC 1
+* ideal current source in the emitter
+VB3 b3 0 DC 0
+Q3 c3 b3 e3 qa
+IE3 e3 0 DC 1.010101m
+VC3 c3 0 DC 3.29 AC 1
+
+* (2) the bypassed amplifier
+VCC vcc 0 DC 12
+R1 vcc b 47k
+R2 b 0 10k
+RC vcc c 4.7k
+RE e 0 1k
+CE e 0 330u
+Q4 c b e qb
+.model qb NPN(IS=2.23805e-15 BF=100)
+VS s 0 DC 0 AC 1
+RS s s2 1k
+CI s2 b 1
+CO c o 1
+RL o 0 10k
+
+.control
+op
+let ic1 = @q1[ic]
+let ic3 = @q3[ic]
+echo "ic1 = $&ic1"
+echo "ic3 = $&ic3"
+ac lin 1 1k 1k
+let r1 = 1 / real(-i(VC1))
+let r10 = 1 / real(-i(VC2))
+let rin = 1 / real(-i(VC3))
+echo "r1 = $&r1"
+echo "r10 = $&r10"
+echo "rin = $&rin"
+ac dec 400 1 100k
+meas ac gmid MAX vdb(o) from=5k to=100k
+let target = gmid - 3.0103
+meas ac f3 WHEN vdb(o)=target CROSS=1
+echo "f3 = $&f3"
+.endc
+.end

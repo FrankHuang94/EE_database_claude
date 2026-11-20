@@ -54,9 +54,17 @@ $(r_\pi + R_{sig})/(\beta + 1) = (2.585 + 100)\text{ kΩ}/101$ = **1016** Ω, fo
 
 ### Solution 10-07.9
 
-The derivation is §3.2's: with $v_e = i_xR_E'$, the base–emitter voltage is the fraction $r_\pi/(r_\pi + R_{sig})$ of $-v_e$, and the collector KCL gives the formula.
+*Derivation.* Zero the signal source, so the base connects to ground through $R_{sig}$. Drive the collector with a test voltage $v_x$; the test current $i_x$ flows into the collector and out of the emitter. At the emitter it divides between $R_E$ and the path through $r_\pi$ and $R_{sig}$ to ground, two resistances in parallel, so $v_e = i_xR_{E\pi}$ with $R_{E\pi} = R_E \parallel (r_\pi + R_{sig})$. The voltage across $r_\pi$ is the share of $v_e$ that falls across it in the $r_\pi$–$R_{sig}$ path, with the base side negative: $v_\pi = v_b - v_e = -v_e\,r_\pi/(r_\pi + R_{sig})$. KCL at the collector: $i_x$ = (controlled source) + (current in $r_o$) = $g_mv_\pi + (v_x - v_e)/r_o$. Substituting both,
 
-$R_{sig}$ = 0: $R_E'$ = 1 ∥ 2.585 = 721.1 Ω and $R_{out}$ = **1445** kΩ. $R_{sig}$ = 10 kΩ: $R_E'$ = 1 ∥ 12.585 = 926.4 Ω, the factor $r_\pi/(r_\pi + R_{sig})$ = 0.2054, and $R_{out}$ = **419.0** kΩ.
+$$
+i_x = -g_m\frac{r_\pi}{r_\pi + R_{sig}}R_{E\pi}\,i_x + \frac{v_x - R_{E\pi}i_x}{r_o}
+\quad\Longrightarrow\quad
+v_x = i_x\left\{r_o\left[1 + g_mR_{E\pi}\frac{r_\pi}{r_\pi + R_{sig}}\right] + R_{E\pi}\right\} ,
+$$
+
+which is the formula, written with $R_{E\pi}$ (the problem's $R_E'$).
+
+$R_{sig}$ = 0: $R_{E\pi}$ = 1 ∥ 2.585 = 721.1 Ω and $R_{out}$ = **1445** kΩ. $R_{sig}$ = 10 kΩ: $R_{E\pi}$ = 1 ∥ 12.585 = 926.4 Ω, the factor $r_\pi/(r_\pi + R_{sig})$ = 0.2054, and $R_{out}$ = **419.0** kΩ.
 
 A resistance in the base lets the base voltage move with the emitter, so less of the emitter's movement appears across $r_\pi$ as feedback. Bipolar cascodes and current sources therefore ground their bases through low resistances.
 
@@ -78,7 +86,31 @@ Bypassed: at β = 100, $R_{in}$ = 50 ∥ 2.585 = **2.458** kΩ and the gain $\fr
 
 (a) $\frac{2.585}{52.585} \times (-193.4)$ = **−9.508**.
 
-(b) The follower's load is the CE stage's $r_\pi$ = 2.585 kΩ. Its $r_\pi$ at 0.1 mA is 25.85 kΩ, so $R_{in} = 25.85 + 101 \times 2.585$ = **287.0** kΩ. Its gain from base to emitter is $101 \times 2.585/287.0$ = **0.9099**; the input factor is $287.0/337.0$ = **0.8516**; the overall gain is $0.8516 \times 0.9099 \times (-193.4)$ = **−149.9**, sixteen times better for 0.1 mA. Putting a follower in front is the standard way to raise a bipolar stage's input resistance.
+(b) The follower's load is the CE stage's $r_\pi$ = 2.585 kΩ. Its $r_\pi$ at 0.1 mA is $100 \times 25.852\text{ mV}/0.1\text{ mA}$ = 25.852 kΩ, so $R_{in} = 25.852 + 101 \times 2.5852 = 25.852 + 261.11$ = **287.0** kΩ (carry the fourth digit of $r_\pi$: rounding it to 2.585 kΩ first would give 286.9). Its gain from base to emitter is $261.11/286.96$ = **0.9099**; the input factor is $287.0/337.0$ = **0.8516**; the overall gain is $0.8516 \times 0.9099 \times (-193.4)$ = **−149.9**, sixteen times better for 0.1 mA. Putting a follower in front is the standard way to raise a bipolar stage's input resistance.
+
+### Solution 10-07.13
+
+$C_E$ now sits across the 900 Ω part, and looking from its terminals the emitter path is $R_{E1} + r_e + (R_{sig} \parallel R_B)/(\beta + 1) = 100 + 19.90 + 8.83$ = 128.73 Ω, so $R_{th} = 900 \parallel 128.73$ = **112.6** Ω. For 20 Hz, $C_E = 1/(2\pi \times 20 \times 112.6)$ = **70.7** µF; 68 µF would put the corner at **20.8** Hz, above the target, so choose **100** µF, giving $f_L$ = **14.13** Hz. Against Example 10-07.8's 285 µF, the 100 Ω of unbypassed degeneration cut the required capacitance by a factor of **4.03**, in proportion to the rise in $R_{th}$.
+
+### Solution 10-07.14
+
+(a) $V_{Th} = 9 \times 12/68$ = **1.588** V and $R_{Th} = 56 \parallel 12$ = **9.882** kΩ. Base-loop KVL: $V_{Th} = I_ER_{Th}/(\beta + 1) + 0.7 + I_ER_E$, so $I_E = 0.888/(1200 + 65.4)$ = **0.7019** mA and $I_C = \alpha I_E$ = **0.6973** mA. $V_C = 9 - 0.6973 \times 3.3$ = **6.699** V, $V_E = 0.7019 \times 1.2$ = **0.842** V and $V_{CE}$ = **5.857** V: active, with margin both ways.
+
+(b) $g_m = I_C/V_T$ = **26.97** mS, $r_\pi = \beta/g_m$ = **5.561** kΩ and $r_o = V_A/I_C$ = **143.4** kΩ.
+
+(c) $R_{in} = R_{Th} \parallel r_\pi$ = **3.559** kΩ. The collector sees $R_C \parallel R_L \parallel r_o = 3.3 \parallel 10 \parallel 143.4$ = 2.439 kΩ, so the gain from the base is **−65.78**; the input factor $3.559/4.159$ = **0.8557**; the overall gain **−56.29**. The bias network costs some input resistance (9.882 kΩ in parallel with $r_\pi$), and the 600 Ω source costs **14.4**% of the gain.
+
+### Solution 10-07.15
+
+(a) Ground the base and drive the emitter with $v_x$, so $v_\pi = -v_x$. KCL at the collector (controlled source $g_mv_\pi$ from collector to emitter, $r_o$ from collector to emitter, $R_C$ to AC ground): $-g_mv_x + (v_c - v_x)/r_o + v_c/R_C = 0$, so $v_c = v_x(1 + g_mr_o)R_C/(R_C + r_o)$. KCL at the emitter: $i_x = v_x/r_\pi + g_mv_x - (v_c - v_x)/r_o$. Substituting, $v_c - v_x = v_xr_o(g_mR_C - 1)/(R_C + r_o)$, and the $g_m$ terms combine to $(1 + g_mr_o)/(R_C + r_o)$:
+
+$$
+\frac{1}{R_{in}} = \frac{1}{r_\pi} + \frac{1 + g_mr_o}{R_C + r_o} .
+$$
+
+(b) $g_m$ = 38.68 mS, $r_\pi$ = 2.585 kΩ, $r_o$ = 50 kΩ, $g_mr_o$ = 1934. $R_C$ = 0: **25.58** Ω, a hair below $r_e$ because $r_o$ now also shunts the input; $R_C$ = 5 kΩ: **28.11** Ω; $R_C$ = 50 kΩ: **50.66** Ω, nearly double. (Without $r_o$, $r_e$ = 25.60 Ω for every load.)
+
+(c) As $R_C \to \infty$ the second term vanishes and $R_{in} \to r_\pi$ = **2.585** kΩ, about a hundred times $r_e$. Physically, the current the input pushes into the emitter must leave through the collector; if the collector node cannot absorb it (an ideal current source refuses any change in current), the only remaining path is through $r_\pi$ into the base. A CB stage is a low-impedance input only while its collector sees a load well below $g_mr_o\,r_e$, as cascodes and current-mode circuits ensure.
 
 ---
 
@@ -137,3 +169,28 @@ Bypassed: at β = 100, $R_{in}$ = 50 ∥ 2.585 = **2.458** kΩ and the gain $\fr
 | 10-07.12c | follower gain | 0.9099 | — |
 | 10-07.12d | input factor | 0.8516 | — |
 | 10-07.12e | overall gain with follower | -149.9 | — |
+| 10-07.13a | R_th | 112.6 | Ω |
+| 10-07.13b | C_E for 20 Hz | 70.7 | µF |
+| 10-07.13c | E6 value chosen | 100 | µF |
+| 10-07.13d | corner with 100 µF | 14.13 | Hz |
+| 10-07.13e | capacitance reduction against Example 10-07.8 | 4.03 | — |
+| 10-07.13f | corner with 68 µF | 20.8 | Hz |
+| 10-07.14a | V_Th | 1.588 | V |
+| 10-07.14b | R_Th | 9.882 | kΩ |
+| 10-07.14c | I_E | 0.7019 | mA |
+| 10-07.14d | I_C | 0.6973 | mA |
+| 10-07.14e | V_C | 6.699 | V |
+| 10-07.14f | V_E | 0.842 | V |
+| 10-07.14g | V_CE | 5.857 | V |
+| 10-07.14h | g_m | 26.97 | mS |
+| 10-07.14i | r_pi | 5.561 | kΩ |
+| 10-07.14j | r_o | 143.4 | kΩ |
+| 10-07.14k | R_in | 3.559 | kΩ |
+| 10-07.14l | gain from the base | -65.78 | — |
+| 10-07.14m | input factor | 0.8557 | — |
+| 10-07.14n | overall gain | -56.29 | — |
+| 10-07.14o | loss to the source | 14.4 | % |
+| 10-07.15a | R_in, R_C = 0 | 25.58 | Ω |
+| 10-07.15b | R_in, R_C = 5 kΩ | 28.11 | Ω |
+| 10-07.15c | R_in, R_C = 50 kΩ | 50.66 | Ω |
+| 10-07.15d | R_in, current-source load | 2.585 | kΩ |

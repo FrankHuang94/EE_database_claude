@@ -84,16 +84,16 @@ $$
 
 As in 10-06, the gain is "resistance at the collector over resistance in the emitter," and for $R_E \gg r_e$ it depends on resistors, not on $g_m$ or the bias current. It still depends weakly on β through α, a fraction of a percent (Example 10-07.7).
 
-**Output resistance and its ceiling.** Ground the source (leaving its resistance $R_{sig}$ in series with the base), drive the collector with $v_x$ and let $i_x$ flow into the collector. The emitter current $i_x$ splits between $R_E$ and the path back through $r_\pi$ and $R_{sig}$ to ground, so the emitter voltage is $v_e = i_xR_E'$ with $R_E' = R_E \parallel (r_\pi + R_{sig})$. The voltage across $r_\pi$ is the part of $-v_e$ that falls on it, $v_\pi = -v_er_\pi/(r_\pi + R_{sig})$. The collector current is
+**Output resistance and its ceiling.** Ground the source (leaving its resistance $R_{sig}$ in series with the base), drive the collector with $v_x$ and let $i_x$ flow into the collector. The emitter current $i_x$ splits between $R_E$ and the path back through $r_\pi$ and $R_{sig}$ to ground, so the emitter voltage is $v_e = i_xR_{E\pi}$ with $R_{E\pi} = R_E \parallel (r_\pi + R_{sig})$ (the subscript π is a reminder that the path through $r_\pi$ is included; §3.4's $R_E'$ is a different combination). The voltage across $r_\pi$ is the part of $-v_e$ that falls on it, $v_\pi = -v_er_\pi/(r_\pi + R_{sig})$. The collector current is
 
 $$
-i_x = g_mv_\pi + \frac{v_x - v_e}{r_o} = -g_m\frac{r_\pi}{r_\pi + R_{sig}}i_xR_E' + \frac{v_x - i_xR_E'}{r_o} ,
+i_x = g_mv_\pi + \frac{v_x - v_e}{r_o} = -g_m\frac{r_\pi}{r_\pi + R_{sig}}i_xR_{E\pi} + \frac{v_x - i_xR_{E\pi}}{r_o} ,
 $$
 
 and solving for $v_x/i_x$:
 
 $$
-R_{out,C} = r_o\left[1 + g_mR_E'\frac{r_\pi}{r_\pi + R_{sig}}\right] + R_E' .
+R_{out,C} = r_o\left[1 + g_mR_{E\pi}\frac{r_\pi}{r_\pi + R_{sig}}\right] + R_{E\pi} .
 $$
 
 With $R_{sig}$ = 0 this is $r_o[1 + g_m(R_E \parallel r_\pi)] + R_E \parallel r_\pi$, the MOSFET result of 10-06 §3.3 with $R_S$ replaced by $R_E \parallel r_\pi$. The difference is decisive: however large $R_E$ becomes, $R_E \parallel r_\pi$ cannot exceed $r_\pi$, so
@@ -108,6 +108,8 @@ $$
 
 ![Output resistance with degeneration](../../../assets/figures/10-07/rout-degeneration.svg)
 
+> **Math refresher — a ratio that is not quite 1.** Several results in this chapter differ from a simple value by a factor like $\alpha = \beta/(\beta + 1)$ or $r_\pi/(r_\pi + R_{sig})$. For β = 100, $\alpha$ = 0.990: a 1% effect. A useful habit is to compute such a factor once, decide whether its departure from 1 matters for the question, and only then carry it, as Example 10-07.7 does when it asks how much β moves the gain.
+
 ### 3.3 Common base
 
 Base at signal ground, input at the emitter, output at the collector with $R_C$. With $r_o$ ignored:
@@ -117,11 +119,27 @@ Base at signal ground, input at the emitter, output at the collector with $R_C$.
 - **Current gain:** α, just under one: a current buffer.
 - **Output resistance:** $R_C$ in parallel with the degenerated $R_{out,C}$ of §3.2 with $R_E$ replaced by $R_{sig}$, which with $r_o$ is large.
 
-Like the MOS common gate, the CB stage suits current-mode inputs and wideband 50 Ω matching; unlike it, it needs only about 0.52 mA for $r_e$ = 50 Ω, a third of the MOSFET's current at $V_{ov}$ = 0.2 V (Example 10-07.4). With $r_o$ included the input resistance depends on the load, as for the CG stage (10-06 §3.4).
+Like the MOS common gate, the CB stage suits current-mode inputs and wideband 50 Ω matching; unlike it, it needs only about 0.52 mA for $r_e$ = 50 Ω, a third of the MOSFET's current at $V_{ov}$ = 0.2 V (Example 10-07.4).
+
+**Input resistance with $r_o$.** Ground the base, drive the emitter with a test voltage $v_x$ and keep the collector load $R_C$. Then $v_\pi = -v_x$. KCL at the collector, where the controlled source $g_mv_\pi$ flows from collector to emitter: $-g_mv_x + (v_c - v_x)/r_o + v_c/R_C = 0$, so
+
+$$
+v_c = v_x\,\frac{(1 + g_mr_o)R_C}{R_C + r_o} .
+$$
+
+KCL at the emitter, with $i_x$ the test current flowing in: $i_x = v_x/r_\pi + g_mv_x - (v_c - v_x)/r_o$. Substituting $v_c$ and simplifying,
+
+$$
+\frac{i_x}{v_x} = \frac{1}{r_\pi} + \frac{1 + g_mr_o}{R_C + r_o}
+\quad\Longrightarrow\quad
+R_{in} = r_\pi \parallel \frac{R_C + r_o}{1 + g_mr_o} .
+$$
+
+Units check: both terms are resistances. With $r_o \to \infty$ the second term tends to $1/g_m$, and $r_\pi \parallel 1/g_m = \alpha/g_m = r_e$, as before. With $r_o$ = 50 kΩ, $R_C$ = 5 kΩ and $I_C$ = 1 mA, $R_{in}$ = **28.11** Ω instead of 25.60 Ω, **9.8**% higher: the input depends on the load, as for the CG stage (10-06 §3.4). With an ideal current-source load ($R_C \to \infty$) the second term grows without bound and $R_{in} \to r_\pi$, a hundred times $r_e$: a CB stage with a high-impedance load is no longer a low-impedance input.
 
 ### 3.4 Common collector: the emitter follower
 
-Collector at signal ground, input at the base through the source resistance $R_{sig}$ (including any $R_B$), output at the emitter with $R_E' = R_E \parallel R_L$ (and $\parallel r_o$, usually negligible).
+Collector at signal ground, input at the base through the source resistance $R_{sig}$ (if a bias divider $R_B$ shunts the base, first replace the source and $R_B$ by their Thévenin equivalent: $R_{sig} \parallel R_B$ behind a source scaled by $R_B/(R_{sig} + R_B)$), output at the emitter with $R_E' = R_E \parallel R_L$ (and $\parallel r_o$, usually negligible).
 
 **Gain.** The base current $i_b$ flows through $R_{sig}$ and $r_\pi$, and $(\beta + 1)i_b$ through $R_E'$:
 
@@ -149,7 +167,7 @@ The same stages, two devices. At equal bias current:
 
 | Property | BJT | MOSFET (strong inversion) | Consequence |
 |---|---|---|---|
-| $g_m/I$ | $1/V_T$ = 38.7 V⁻¹ | $2/V_{ov}$ (10 V⁻¹ at 0.2 V) | BJT: more $g_m$ per ampere, lower noise per ampere |
+| $g_m/I$ | $1/V_T$ = 38.7 V⁻¹ | $2/V_{ov}$ (10 V⁻¹ at 0.2 V); at most $1/nV_T$ ≈ 30 V⁻¹ in weak inversion | BJT: more $g_m$ per ampere, by about 4× against strong inversion but only $n$ ≈ 1.2–1.5× against weak inversion |
 | CE/CS gain, resistor load | $V_{RC}/V_T$ | $2V_{RD}/V_{ov}$ | BJT: more gain per volt of headroom |
 | Intrinsic gain | $V_A/V_T$: about 1000–4000 | $2/(\lambda V_{ov})$: tens to a few hundred | BJT: fewer stages for high gain |
 | Input resistance | $r_\pi = \beta/g_m$, finite | infinite at DC | MOS: no input current, ideal for sampling and storage |
@@ -159,6 +177,30 @@ The same stages, two devices. At equal bias current:
 | Integration | larger devices, specialty process | dense, mainstream CMOS | MOS dominates digital and mixed-signal SoCs |
 
 There is no winner, only jobs. The BJT wins where transconductance per ampere, low noise and intrinsic gain matter and where its base current is tolerable: RF front ends, precision op-amp inputs, bandgap references (Course 20). The MOSFET wins where input current must be zero (sample-and-hold, switched capacitors, CMOS image sensors), where density matters, and wherever the rest of the chip is CMOS. **BiCMOS** processes integrate both, at extra process cost.
+
+### 3.6 The bypass capacitor and the low-frequency corner
+
+A bypass capacitor $C_E$ across $R_E$ removes the degeneration at signal frequencies while leaving $R_E$ in place for bias stability (10-03). It is a short only above some frequency, and sizing it is a standard design step.
+
+**The resistance the capacitor sees.** Set the signal source to zero and look into the emitter node from the capacitor's terminals. Two paths are in parallel: $R_E$ itself, and the transistor's emitter, which looks like $r_e$ plus the base-side resistance divided by $\beta + 1$ (§3.3's reflection rule, with $R_{sig} \parallel R_B$ in the base):
+
+$$
+R_{th} = R_E \parallel \left(r_e + \frac{R_{sig} \parallel R_B}{\beta + 1}\right) .
+$$
+
+The second path is tens of ohms, so $R_{th}$ is tens of ohms too: the emitter is a low-impedance node.
+
+**The corner.** With the coupling capacitors treated as shorts, the stage's gain rises from its degenerated low-frequency value to its bypassed midband value through a pole at
+
+$$
+f_L \approx \frac{1}{2\pi C_ER_{th}} ,
+$$
+
+and a zero at $1/(2\pi C_ER_E)$, far below it because $R_E \gg R_{th}$. The pole is the stage's −3 dB corner when the zero lies well below it.
+
+> **Going deeper — the exact low-frequency response.** With $C_E$ in place, the gain is $A(s) = A_{mid}\,(1 + sC_ER_E)/(1 + sC_ER_{th})$ to a good approximation, a zero–pole pair. Below the zero the stage is fully degenerated; between zero and pole the gain rises at 20 dB/decade; above the pole it is flat at the midband value. With coupling capacitors added, each contributes another pole–zero pair, and the exact −3 dB frequency follows from the full polynomial (Course 12, the short-circuit time-constant method).
+
+**Why the bypass capacitor dominates.** Each capacitor in the stage sets a corner $1/(2\pi CR)$ with the resistance it sees. A coupling capacitor sees kilohms ($R_{sig} + R_{in}$, or $R_C + R_L$); the bypass capacitor sees tens of ohms. For the same corner it therefore needs a capacitance one or two orders of magnitude larger, so designers usually let $C_E$ set $f_L$ and choose the coupling capacitors to place their corners several times lower (the dominant-capacitor method; Course 12 treats the full low-frequency response). Leaving part of $R_E$ unbypassed raises $R_{th}$ and shrinks the bypass capacitor in proportion (Problem 10-07.13).
 
 ## 4. Worked examples
 
@@ -174,6 +216,8 @@ There is no winner, only jobs. The BJT wins where transconductance per ampere, l
 
 (c) Input factor $1.616/2.616$ = **0.618**; gain from base $-g_m(4.7 \parallel 10)$ = **−159.1**; overall **−98.27**.
 
+**Units check.** $g_m = I_C/V_T$ is A/V = S; $g_mR_C$ is dimensionless, so the gains are in V/V.
+
 **Sanity check.** The bias network ($R_B$ = 8.2 kΩ) and $r_\pi$ together load a 1 kΩ source by 38%. The gain is large but β-dependent through $r_\pi$, and the stage is very nonlinear (a 1% HD₂ input is only 1 mV).
 
 ### Example 10-07.2 · Partial bypass (tier B)
@@ -182,7 +226,9 @@ There is no winner, only jobs. The BJT wins where transconductance per ampere, l
 
 **Solution.** $r_e = \alpha/g_m$ = **19.90** Ω. $R_{in,base} = r_\pi + 101 \times 100$ = **12.11** kΩ, and with $R_B$, $R_{in}$ = **4.91** kΩ. Gain from the base: $-\alpha \times 4.7\text{ kΩ}/(119.9\ \Omega)$ = **−38.81**. Overall: $\frac{4.91}{5.91} \times (-\alpha)\frac{4.7 \parallel 10}{0.1199}$ = **−21.93**.
 
-**Sanity check.** 100 Ω of degeneration cut the gain from the base by a factor of 6 (from 234 to 39) but tripled the stage's input resistance, so the overall gain fell only by 4.5 (from 98 to 22). The gain is now set mostly by $R_C/R_{E1}$, and at a given output amplitude the distortion falls by about $1 + g_mR_{E1}$ ≈ 6.
+**Units check.** $r_e$ and $R_{E1}$ are both in ohms, so $\alpha R_C/(r_e + R_{E1})$ is dimensionless.
+
+**Sanity check.** 100 Ω of degeneration cut the gain from the base by a factor of **6.03** (from 234 to 39) but tripled the stage's input resistance, so the overall gain fell only by a factor of **4.48** (from 98 to 22). The gain is now set mostly by $R_C/R_{E1}$, and at a given output amplitude the distortion falls by about $1 + g_mR_{E1}$ ≈ 6.
 
 ### Example 10-07.3 · The β ceiling on output resistance (tier B)
 
@@ -190,7 +236,9 @@ There is no winner, only jobs. The BJT wins where transconductance per ampere, l
 
 **Solution.** $g_m$ = 38.68 mS, $r_\pi$ = 2.585 kΩ, $r_o$ = 50 kΩ. With $R_{out} = r_o[1 + g_m(R_E \parallel r_\pi)] + R_E \parallel r_\pi$: **50** kΩ, **1445** kΩ, **4025** kΩ, and the ceiling **5053** kΩ.
 
-**Sanity check.** The first kilohm multiplies $r_o$ by 29; the next nine add less than a factor of 3, and nothing gets past about $(\beta + 1)r_o$ = 5.05 MΩ. A MOSFET with the same $g_m$ would keep climbing.
+**Units check.** $g_m(R_E \parallel r_\pi)$ is dimensionless, so $r_o[1 + g_m(R_E \parallel r_\pi)]$ is in ohms.
+
+**Sanity check.** The first kilohm multiplies $r_o$ by **28.9**; the next nine add less than a factor of 3, and nothing gets past about $(\beta + 1)r_o$ = 5.05 MΩ. A MOSFET with the same $g_m$ would keep climbing.
 
 ### Example 10-07.4 · Common base, and matching to 50 Ω (tier B)
 
@@ -204,6 +252,8 @@ There is no winner, only jobs. The BJT wins where transconductance per ampere, l
 
 (c) $r_e = V_T/I_E$ = 50 Ω gives $I_E$ = **0.5170** mA and $I_C = \alpha I_E$ = **0.5119** mA.
 
+**Units check.** $r_e = \alpha/g_m$ is 1/S, ohms; the gain $g_mR_C$ is dimensionless; the currents are in amperes.
+
 **Sanity check.** A MOS common gate needed 1.667 mA for 50 Ω at $V_{ov}$ = 0.2 V (Example 10-06.3), with its body effect helping: the BJT does it with a third of the current.
 
 ### Example 10-07.5 · Emitter follower (tier B)
@@ -211,6 +261,8 @@ There is no winner, only jobs. The BJT wins where transconductance per ampere, l
 **Setup.** An emitter follower at $I_C$ = 1 mA (β = 100) has $R_E$ = 5 kΩ and drives a 1 kΩ load through a coupling capacitor; the source resistance (including bias) is 10 kΩ; ignore $r_o$. Find $R_E'$, $R_{in}$, the input factor, the gain from base to emitter, the overall gain and the output resistance.
 
 **Solution.** $R_E'$ = 5 ∥ 1 = **833.3** Ω. $R_{in} = r_\pi + 101R_E'$ = 2.585 + 84.17 = **86.75** kΩ. Input factor $86.75/96.75$ = **0.8966**. From the base: $101R_E'/R_{in}$ = **0.9702**. Overall: **0.8699**. Output: $(r_\pi + R_{sig})/101$ = **124.6** Ω, in parallel with 5 kΩ: **121.6** Ω.
+
+**Units check.** $(\beta + 1)R_E'$ is in ohms, and the gain is a ratio of resistances, dimensionless.
 
 **Sanity check.** The follower turned a 10 kΩ source into a 122 Ω source, and a 1 kΩ load into 87 kΩ: two factors of about β, in opposite directions.
 
@@ -228,21 +280,41 @@ There is no winner, only jobs. The BJT wins where transconductance per ampere, l
 
 (d) BJT: **1.034** mV. MOSFET: **8.0** mV.
 
+**Units check.** $g_m/I$ is in 1/V; $V_A/V_T$ and $2/(\lambda V_{ov})$ are dimensionless; the HD₂ amplitudes are in volts.
+
 **Sanity check.** The BJT's advantages in (a) and (c) and its disadvantages in (b) and (d) are the same fact: its current responds to $V_T$, a small fixed voltage, while the MOSFET responds to $V_{ov}$, a designable and larger one.
 
 ### Example 10-07.7 · Designing gain that ignores β (tier C)
 
-**Setup.** A CE stage at $I_C$ = 1 mA with $R_C$ = 4.7 kΩ must have a gain of −10 at β = 100, using an unbypassed $R_{E1}$ ($r_o$ ignored). (a) Find $R_{E1}$ and round it to a standard value of 440 Ω. (b) With 440 Ω, find the gain at β = 100 and β = 300, and the change. (c) Find the input resistance at the base for both βs, and compare with the bypassed stage ($R_{in} = r_\pi$).
+**Setup.** A CE stage at $I_C$ = 1 mA with $R_C$ = 4.7 kΩ must have a gain of −10 at β = 100, using an unbypassed $R_{E1}$ ($r_o$ ignored). (a) Find $R_{E1}$ and choose the nearest E96 (1%) value. (b) With that value, find the gain at β = 100 and β = 300, and the change. (c) Find the input resistance at the base for both βs, and compare with the bypassed stage ($R_{in} = r_\pi$).
 
 **Solution.**
 
-(a) $\alpha R_C/(r_e + R_{E1})$ = 10 gives $R_{E1} = \alpha R_C/10 - r_e$ = **465.3** Ω − 25.60 Ω, just under 440 Ω; use **440** Ω.
+(a) $\alpha R_C/(r_e + R_{E1})$ = 10 gives $R_{E1} = \alpha R_C/10 - r_e$ = **465.3** Ω − 25.60 Ω = **439.8** Ω. The nearest E96 value is **442** Ω (E24 offers only 430 or 470 Ω).
 
-(b) β = 100: $-0.9901 \times 4700/(25.60 + 440)$ = **−9.995**. β = 300: $\alpha$ = **0.99668** and $r_e$ = **25.77** Ω, so **−10.06**, a change of **+0.63**%.
+(b) β = 100: $-0.9901 \times 4700/(25.60 + 442)$ = **−9.952**. β = 300: $\alpha$ = **0.99668** and $r_e$ = **25.77** Ω, so **−10.01**, a change of **+0.63**%.
 
-(c) $(\beta + 1)(r_e + R_{E1})$: **47.03** kΩ and **140.2** kΩ. Bypassed: $r_\pi$ = **2.585** and **7.756** kΩ.
+(c) $(\beta + 1)(r_e + R_{E1})$: **47.23** kΩ and **140.8** kΩ. Bypassed: $r_\pi$ = **2.585** and **7.756** kΩ.
+
+**Units check.** $\alpha R_C/(r_e + R_{E1})$ is ohms over ohms; $(\beta + 1)(r_e + R_{E1})$ is in ohms.
 
 **Sanity check.** The gain moves 0.6% across a 3:1 spread of β, because it depends on β only through α. The input resistance still triples; if the source resistance matters, the overall gain will vary more than the stage gain, which is why precision designs drive degenerated stages from low-resistance sources or use feedback around several stages (Course 12).
+
+### Example 10-07.8 · Sizing the bypass capacitor (tier B)
+
+**Setup.** For Example 10-07.1's amplifier ($I_C$ = 1.2863 mA, β = 100, $R_E$ = 1 kΩ, $R_B$ = 8.246 kΩ, $R_{sig}$ = 1 kΩ), with the coupling capacitors treated as shorts: (a) find the resistance the bypass capacitor sees; (b) find $C_E$ for $f_L$ = 20 Hz, choose the next larger standard value (E6 series: 220, 330, 470 µF), and find the resulting corner and the zero; (c) compare with the capacitance a 10 µF coupling capacitor would need to place its own corner at the same frequency, given the 2.616 kΩ it sees at the input.
+
+**Solution.**
+
+(a) $r_e = \alpha/g_m$ = **19.90** Ω and $(R_{sig} \parallel R_B)/(\beta + 1) = 891.8/101$ = **8.83** Ω, so $R_{th} = 1\text{ kΩ} \parallel 28.73$ Ω = **27.93** Ω.
+
+(b) $C_E = 1/(2\pi \times 20 \times 27.93)$ = **285** µF; choose 330 µF. Then $f_L = 1/(2\pi \times 330\ \mu\text{F} \times 27.93\ \Omega)$ = **17.27** Hz and the zero sits at $1/(2\pi \times 330\ \mu\text{F} \times 1\text{ kΩ})$ = **0.482** Hz. Solving the full small-signal circuit with $C_E$ in place, the gain is 3 dB below midband at **17.26** Hz, confirming the one-pole estimate (the zero, **36** times lower, barely matters).
+
+(c) A coupling capacitor that sees $R_{sig} + R_{in}$ = 2.616 kΩ needs only $1/(2\pi \times 20 \times 2616)$ = **3.04** µF for a 20 Hz corner; a 10 µF part puts its corner at **6.08** Hz, safely below. The bypass capacitor needs about **94** times more capacitance than the input coupling capacitor for the same corner, because it sees about 94 times less resistance.
+
+**Units check.** $1/(2\pi fR)$ is 1/(s⁻¹ Ω) = s/Ω = F.
+
+**Sanity check.** Hundreds of microfarads for an audio-band corner is why discrete amplifiers carry large electrolytic bypass capacitors, and why integrated amplifiers avoid emitter bypassing altogether (differential pairs and DC coupling, 12-01).
 
 ### Answer key
 
@@ -269,10 +341,13 @@ There is no winner, only jobs. The BJT wins where transconductance per ampere, l
 | Ex 10-07.2c | R_in of the stage | 4.91 | kΩ |
 | Ex 10-07.2d | gain from the base | -38.81 | — |
 | Ex 10-07.2e | overall gain | -21.93 | — |
+| Ex 10-07.2f | gain-from-base reduction | 6.03 | — |
+| Ex 10-07.2g | overall-gain reduction | 4.48 | — |
 | Ex 10-07.3a | R_out, R_E = 0 | 50 | kΩ |
 | Ex 10-07.3b | R_out, R_E = 1 kΩ | 1445 | kΩ |
 | Ex 10-07.3c | R_out, R_E = 10 kΩ | 4025 | kΩ |
 | Ex 10-07.3d | R_out ceiling | 5053 | kΩ |
+| Ex 10-07.3e | R_out / r_o at R_E = 1 kΩ | 28.9 | — |
 | Ex 10-07.4a | R_in | 25.60 | Ω |
 | Ex 10-07.4b | gain from the emitter | 193.4 | — |
 | Ex 10-07.4c | input factor | 0.3386 | — |
@@ -297,30 +372,44 @@ There is no winner, only jobs. The BJT wins where transconductance per ampere, l
 | Ex 10-07.6h | MOSFET intrinsic gain | 100 | — |
 | Ex 10-07.6i | BJT 1% HD2 amplitude | 1.034 | mV |
 | Ex 10-07.6j | MOSFET 1% HD2 amplitude | 8.0 | mV |
-| Ex 10-07.7a | R_E1 | 440 | Ω |
-| Ex 10-07.7b | gain at β = 100 | -9.995 | — |
-| Ex 10-07.7c | gain at β = 300 | -10.06 | — |
+| Ex 10-07.7a | R_E1 chosen (E96) | 442 | Ω |
+| Ex 10-07.7l | R_E1 required | 439.8 | Ω |
+| Ex 10-07.7b | gain at β = 100 | -9.952 | — |
+| Ex 10-07.7c | gain at β = 300 | -10.01 | — |
 | Ex 10-07.7d | change | 0.63 | % |
-| Ex 10-07.7e | R_in at β = 100 | 47.03 | kΩ |
-| Ex 10-07.7f | R_in at β = 300 | 140.2 | kΩ |
+| Ex 10-07.7e | R_in at β = 100 | 47.23 | kΩ |
+| Ex 10-07.7f | R_in at β = 300 | 140.8 | kΩ |
 | Ex 10-07.7g | r_pi at β = 100 | 2.585 | kΩ |
 | Ex 10-07.7h | r_pi at β = 300 | 7.756 | kΩ |
 | Ex 10-07.7i | α R_C / 10 | 465.3 | Ω |
 | Ex 10-07.7j | α at β = 300 | 0.99668 | — |
 | Ex 10-07.7k | r_e at β = 300 | 25.77 | Ω |
+| T 10-07.p | CB R_in with r_o, Example 10-07.4 values | 28.11 | Ω |
+| T 10-07.q | increase over r_e | 9.8 | % |
+| Ex 10-07.8a | r_e | 19.90 | Ω |
+| Ex 10-07.8b | base-side term | 8.83 | Ω |
+| Ex 10-07.8c | R_th | 27.93 | Ω |
+| Ex 10-07.8d | C_E for 20 Hz | 285 | µF |
+| Ex 10-07.8e | f_L with 330 µF | 17.27 | Hz |
+| Ex 10-07.8f | zero | 0.482 | Hz |
+| Ex 10-07.8g | exact −3 dB frequency | 17.26 | Hz |
+| Ex 10-07.8h | coupling capacitor for 20 Hz | 3.04 | µF |
+| Ex 10-07.8i | corner with 10 µF | 6.08 | Hz |
+| Ex 10-07.8j | capacitance ratio | 94 | — |
+| Ex 10-07.8k | pole over zero | 36 | — |
 
-*Every value is recomputed by [verify_10_07.py](../verify/verify_10_07.py): the bias of Example 10-07.1 from Kirchhoff's equations, and every gain and resistance from a modified-nodal-analysis solution of the hybrid-π circuit with explicit test sources, independent of the closed forms. The lab's ngspice netlist confirms Examples 10-07.1, 10-07.2, 10-07.4 and 10-07.5 with Gummel–Poon transistors.*
+*Every value is recomputed by [verify_10_07.py](../verify/verify_10_07.py): the bias of Example 10-07.1 from Kirchhoff's equations, and every gain and resistance from a modified-nodal-analysis solution of the hybrid-π circuit with explicit test sources, independent of the closed forms. Some values are closer to the formulas than that: the swing limits of Problem 10-07.10, Problem 10-07.8(c, f), Example 10-07.1(f) and the lab's follower limit are short closed forms restated by the script, and the transistor parameters come from numerically differentiating the exponential, which can only recover $g_m = I_C/V_T$. The netlists confirm Examples 10-07.1, 10-07.2, 10-07.4 and 10-07.5 by AC analysis, and the β ceiling of Example 10-07.3 and the bypass corner of Example 10-07.8 (`ceiling_bypass.cir`).*
 
 ## 5. Simulate it
 
-The lab, [labs/10-07-lab](../labs/10-07-lab/README.md), has a notebook and an ngspice netlist:
+The lab, [labs/10-07-lab](../labs/10-07-lab/README.md), has a notebook and two ngspice netlists:
 
 1. Builds the CE, CB and CC stages as hybrid-π matrices and sweeps β from 50 to 400 to see what moves (input resistance, overall gain) and what does not (degenerated stage gain).
 2. Reproduces Figure 2 by test-source simulation and finds the degeneration at which the BJT's output resistance reaches 90% of its ceiling.
 3. Drives the emitter follower with a large sine into a resistive load and finds where the negative swing clips.
 4. Repeats Example 10-07.6's comparison over current, from 10 µA to 10 mA.
 
-The netlist (`bjt_stages.cir`) runs the discrete CE amplifier (bypassed and partly bypassed), the CB stage and the emitter follower of the examples.
+The netlist `bjt_stages.cir` runs the discrete CE amplifier (bypassed and partly bypassed), the CB stage and the emitter follower of the examples; `ceiling_bypass.cir` measures the collector output resistance against $R_E$ up to the β ceiling (Example 10-07.3) and the −3 dB corner set by the bypass capacitor (Example 10-07.8).
 
 **Guided exercise (predict, then run).** **Before running Part 1**, predict: when β goes from 100 to 300 in Example 10-07.1's bypassed amplifier (with the bias current held fixed), does the overall gain from the 1 kΩ source rise or fall, and by roughly how much? Then run it. (It rises: $r_\pi$ triples to 6.03 kΩ, $R_{in}$ rises from 1.62 to 3.48 kΩ, and the input factor from 0.62 to 0.78, about +26%; the gain from the base is unchanged.)
 
@@ -366,8 +455,8 @@ The netlist (`bjt_stages.cir`) runs the discrete CE amplifier (bypassed and part
 
 ### Why it matters commercially
 
-- **Specialty processes are a strategic niche.** RF front ends, optical-link drivers and precision analog often use SiGe BiCMOS rather than leading-edge CMOS; their foundries and design teams are distinct businesses with different economics from digital logic.
-- **Transconductance per ampere is battery life and noise.** For a given noise or bandwidth target, a bipolar input stage often needs several times less current than a MOS one (Example 10-07.6), which matters in sensor front ends and receivers.
+- **Specialty processes are a strategic niche** **[Industry estimate]**. RF front ends, optical-link drivers and precision analog often use SiGe BiCMOS rather than leading-edge CMOS; their foundries and design teams are distinct businesses with different economics from digital logic.
+- **Transconductance per ampere is battery life and noise.** For a given noise or bandwidth target, a bipolar input stage needs several times less current than a MOS one in strong inversion (Example 10-07.6, about 4× at $V_{ov}$ = 0.2 V), but only $n$ ≈ 1.2–1.5 times less than a MOSFET in weak inversion (10-04 §3.7; lab Part 4) **[Established]** (device physics). The advantage is largest where speed forces the MOSFET into strong inversion, which is why it matters most in fast receivers and less in slow sensor front ends.
 - **Input current is a system specification.** Bipolar-input amplifiers draw bias current through the source resistance, creating offsets; CMOS inputs do not. For high-impedance sensors (pH probes, photodiodes, piezo elements), that alone decides the technology (10-09).
 
 ### Marketing vs Reality

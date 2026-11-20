@@ -59,15 +59,27 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A follower in front of a CE stage.** A 50 kΩ source drives a CE stage at 1 mA (β = 100, $R_C$ = 5 kΩ, bypassed). (a) Find the overall gain. (b) Insert an emitter follower at 0.1 mA (β = 100, biased by an ideal current source) between the source and the CE base. Find its input resistance, its gain, the input factor and the overall gain.
 
+### Problem 10-07.13 [B]
+
+**Bypassing only part of $R_E$.** In Example 10-07.2's stage (Example 10-07.1's bias, $R_{E1}$ = 100 Ω unbypassed and 900 Ω bypassed by $C_E$, $R_{sig}$ = 1 kΩ, $R_B$ = 8.246 kΩ), find the resistance $C_E$ sees, the capacitance for a 20 Hz corner, the next larger E6 value (47, 68, 100 µF) and its corner. Compare with Example 10-07.8.
+
+### Problem 10-07.14 [B]
+
+**A discrete amplifier from scratch.** An NPN (β = 150, $V_A$ = 100 V) runs from $V_{CC}$ = 9 V with $R_1$ = 56 kΩ (to $V_{CC}$), $R_2$ = 12 kΩ (to ground), $R_E$ = 1.2 kΩ fully bypassed and $R_C$ = 3.3 kΩ. A 600 Ω source drives the base through a coupling capacitor and a 10 kΩ load is coupled to the collector. (a) Find the Thévenin equivalent of the bias network, $I_E$, $I_C$, $V_C$, $V_E$ and $V_{CE}$, and confirm the active region. (b) Find $g_m$, $r_\pi$ and $r_o$. (c) Find $R_{in}$, the gain from the base (with $r_o$) and the overall gain.
+
+### Problem 10-07.15 [C]
+
+**Common base with $r_o$.** (a) Derive the input resistance of a common-base stage with $r_o$ and a collector load $R_C$, $R_{in} = r_\pi \parallel (R_C + r_o)/(1 + g_mr_o)$. (b) Evaluate it at $I_C$ = 1 mA, β = 100, $V_A$ = 50 V for $R_C$ = 0, 5 kΩ and 50 kΩ. (c) Show what happens with an ideal current-source load, and explain why a common-base stage whose collector drives a high-impedance node is no longer a low-impedance input.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 10-07) | Problems |
 |---|---|
-| 1. Gain, $R_{in}$, $R_{out}$ of CE, CB, CC | 2, 3, 6, 7 |
+| 1. Gain, $R_{in}$, $R_{out}$ of CE, CB, CC | 2, 3, 6, 7, 15 |
 | 2. Reflection rules | 1, 3, 7, 12 |
 | 3. Degenerated output resistance and its ceiling | 5, 9 |
-| 4. Discrete CE design with bias and loading | 4, 11 |
+| 4. Discrete CE design with bias, bypass capacitor and loading | 4, 11, 13, 14 |
 | 5. MOS against BJT | 2, 8 |
 | Swing and multistage use | 10, 12 |
