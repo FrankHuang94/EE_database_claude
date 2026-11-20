@@ -4649,3 +4649,31 @@
   definition: "An analog filter in a high-speed receiver that boosts high frequencies relative to low ones with a zero placed below its poles, to undo the channel's frequency-dependent loss; its boost comes mostly from lowering the low-frequency gain."
   chapter: "11-08"
   see_also: [Poles and zeros]
+# ---------------------------------------------------------------- 11-09
+- term: z-transform
+  definition: "X(z) = Σ x[n] z^{−n}, the DT counterpart of the Laplace transform: the DTFT of x[n]r^{−n} for z = re^{jω}; meaningful only with its region of convergence, an annulus centered on the origin."
+  chapter: "11-09"
+  see_also: [Region of convergence (ROC), Discrete-time Fourier transform (DTFT)]
+- term: z-plane
+  definition: "The complex plane of the variable z = re^{jω}: each point is the geometric sequence zⁿ, decaying inside the unit circle, growing outside, with the angle as DT frequency."
+  chapter: "11-09"
+  see_also: [Unit circle, s-plane]
+- term: Unit circle
+  definition: "|z| = 1 in the z-plane, where z = e^{jω} and the system function becomes the frequency response; DC is z = 1, f_s/4 is z = j and half the sample rate is z = −1. A causal system is stable exactly when all its poles lie inside it."
+  chapter: "11-09"
+- term: Stability triangle
+  definition: "The region |a₂| < 1, |a₁| < 1 + a₂ of the coefficient plane in which a second-order denominator 1 + a₁z^{−1} + a₂z^{−2} has both poles inside the unit circle; poles are complex above the parabola a₁² = 4a₂."
+  chapter: "11-09"
+  see_also: [Biquad]
+- term: Bilinear transform
+  definition: "The s-to-z map s = (2/T)(1 − z^{−1})/(1 + z^{−1}), from the trapezoidal rule: it maps the left half-plane into the unit disk and the whole jω axis onto the unit circle once, so stability is kept and there is no aliasing, at the cost of frequency warping."
+  chapter: "11-09"
+  see_also: [Frequency warping, Impulse invariance]
+- term: Frequency warping
+  definition: "The nonlinear frequency map of the bilinear transform, Ω = (2/T) tan(ω/2): nearly linear well below the sample rate, compressing the whole analog axis into ω < π; corrected at one chosen frequency by prewarping."
+  chapter: "11-09"
+  see_also: [Bilinear transform]
+- term: Impulse invariance
+  definition: "Converting a CT system to DT by sampling its impulse response, h[n] = T h(nT), which maps each pole s to z = e^{sT}; it preserves the impulse response's shape but aliases the frequency response."
+  chapter: "11-09"
+  see_also: [Bilinear transform]
