@@ -478,7 +478,7 @@ Every diode has an absolute-maximum list: repetitive peak reverse voltage, avera
 | P 10-01.m | TPD1E10B06 clamp at 1 A | 10 | V |
 | P 10-01.n | TPD1E10B06 leakage | 100 | nA |
 
-*Every value is recomputed by [verify_10_01.py](../verify/verify_10_01.py) by an independent route: diode circuits by root finding on the full exponential (and the Lambert W function as a cross-check); the iterations replayed step by step; rectifiers by integrating the circuit's differential equation through many cycles with an ideal constant-drop diode until it reaches steady state, against the closed-form approximations; the Zener regulator by solving the nodal equation numerically at each corner; limiter outputs by root finding. Datasheet values are quoted (R-176).*
+*Every value is recomputed by [verify_10_01.py](../verify/verify_10_01.py) by an independent route: diode circuits by root finding on the full exponential (and the Lambert W function as a cross-check); the iterations replayed step by step; rectifiers by integrating the circuit's differential equation through many cycles with an ideal constant-drop diode until it reaches steady state, against the closed-form approximations; the Zener regulator by solving the nodal equation numerically at each corner; limiter outputs by root finding. Datasheet values are quoted (R-176). A few values that are one arithmetic step from other keyed values (for example the Zener and resistor powers of Example 10-01.6) are restated rather than recomputed independently.*
 
 ## 5. Simulate it
 

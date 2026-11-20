@@ -350,7 +350,7 @@ The square-law formula would grow without limit as $V_{ov} \to 0$; it is replace
 | Ex 10-04.7d | crossover overdrive | 67.2 | mV |
 | Ex 10-04.7e | weak-inversion g_m/I_D | 29.76 | 1/V |
 
-*Every value is recomputed by [verify_10_04.py](../verify/verify_10_04.py) by an independent route: each parameter as a numerical partial derivative of the large-signal law at the operating point; gains by solving the small-signal circuit's nodal equations (both models, separately); distortion by sampling the exact large-signal law over a cycle and taking an FFT. Data-sheet h-parameter ranges are quoted (R-178). The lab's ngspice netlists confirm Examples 10-04.1 ($r_\pi$ and the gain) and 10-04.6 (both common-source gains without $r_o$), Example 10-04.4's degenerated gain and input resistance, and Example 10-04.5's χ from the simulator's own $g_{mb}/g_m$.*
+*Every value is recomputed by [verify_10_04.py](../verify/verify_10_04.py) by an independent route: each parameter as a numerical partial derivative of the large-signal law at the operating point; gains by solving the small-signal circuit's nodal equations (both models, separately); distortion by sampling the exact large-signal law over a cycle and taking an FFT. Data-sheet h-parameter ranges are quoted (R-178). The lab's ngspice netlists confirm Examples 10-04.1 ($r_\pi$ and the gain) and 10-04.6 (both common-source gains without $r_o$), Example 10-04.4's degenerated gain and input resistance, and Example 10-04.5's χ from the simulator's own $g_{mb}/g_m$. A few values that are one arithmetic step from other keyed values (Example 10-04.7(c), Problem 10-04.9(d), 10-04.10(a, b) and 10-04.11(a)) are restated rather than recomputed independently.*
 
 ## 5. Simulate it
 
