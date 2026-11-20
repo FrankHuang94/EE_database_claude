@@ -1,0 +1,29 @@
+* Lab 12-07 -- a class B complementary emitter-follower output stage, in ngspice.
+* +/-15 V supplies, 8 ohm load, 10 V-peak 1 kHz sine driving both bases from an ideal source.
+* Both transistors use the same simple Gummel-Poon model (IS = 1e-13 A, BF = 100, all else default),
+* so the stage shows the crossover dead band of about +/-0.6 V and the V_BE drop at the peaks.
+* Measured over one period: load power, power from the two supplies, and efficiency.
+*
+* EXPECT pl key:README.md#Lab_12-07.a rtol=2e-3
+* EXPECT ps key:README.md#Lab_12-07.b rtol=2e-3
+* EXPECT eta key:README.md#Lab_12-07.c rtol=2e-3
+
+VCC vcc 0 DC 15
+VEE vee 0 DC -15
+VIN in 0 SIN(0 10 1k)
+QN vcc in out NPNM
+QP vee in out PNPM
+RL out 0 8
+.model NPNM NPN(IS=1e-13 BF=100)
+.model PNPM PNP(IS=1e-13 BF=100)
+
+.control
+tran 0.2u 1m 0 0.2u
+let pload = v(out) * v(out) / 8
+let psup = -15 * i(vcc) + 15 * i(vee)
+meas tran pl avg pload from=0 to=1m
+meas tran ps avg psup from=0 to=1m
+let eta = 100 * pl / ps
+print pl ps eta
+.endc
+.end

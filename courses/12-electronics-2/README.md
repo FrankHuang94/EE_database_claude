@@ -33,7 +33,7 @@ Real amplifiers: differential pairs, cascodes and multistage amplifiers, high-fr
 | [12-04 · High-Frequency Analysis Methods](chapters/12-04-high-frequency-analysis-methods.md) | 8 | ✅ verified | [problems](problems/12-04-problems.md) · [solutions](solutions/12-04-solutions.md) · [lab](labs/12-04-lab/README.md) · [verify](verify/verify_12_04.py) |
 | [12-05 · Feedback: Theory and the Four Topologies](chapters/12-05-feedback-topologies.md) | 12 | ✅ verified | [problems](problems/12-05-problems.md) · [solutions](solutions/12-05-solutions.md) · [lab](labs/12-05-lab/README.md) · [verify](verify/verify_12_05.py) |
 | [12-06 · Stability and Frequency Compensation](chapters/12-06-stability-and-compensation.md) | 10 | ✅ verified | [problems](problems/12-06-problems.md) · [solutions](solutions/12-06-solutions.md) · [lab](labs/12-06-lab/README.md) · [verify](verify/verify_12_06.py) |
-| [12-07 · Output Stages and Power Amplifiers](chapters/12-07-output-stages.md) | 8 | ⬜ planned | — |
+| [12-07 · Output Stages and Power Amplifiers](chapters/12-07-output-stages.md) | 8 | ✅ verified | [problems](problems/12-07-problems.md) · [solutions](solutions/12-07-solutions.md) · [lab](labs/12-07-lab/README.md) · [verify](verify/verify_12_07.py) |
 | [12-08 · Op-Amp Internals](chapters/12-08-op-amp-internals.md) | 10 | ⬜ planned | — |
 | [12-09 · Oscillators](chapters/12-09-oscillators.md) | 8 | ⬜ planned | — |
 | [12-10 · Noise in Circuits](chapters/12-10-noise-in-circuits.md) | 10 | ⬜ planned | — |

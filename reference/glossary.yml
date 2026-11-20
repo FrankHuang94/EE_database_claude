@@ -4886,3 +4886,23 @@
   definition: Said of an op-amp whose compensation keeps it stable with 100% feedback (a buffer), the case of largest loop gain; a decompensated op-amp trades this for a higher gain-bandwidth product and a minimum stable closed-loop gain.
   chapter: "12-06"
   see_also: [Dominant-pole compensation, Phase margin]
+- term: Class-B amplifier
+  definition: A push-pull output stage in which each of two complementary transistors conducts for half of each cycle, with no idle current; efficiency (π/4)·V_op/V_CC, at most 78.5%, but with crossover distortion near zero output.
+  chapter: "12-07"
+  see_also: [Class-AB amplifier, Crossover distortion, Class-A amplifier]
+- term: Class-AB amplifier
+  definition: A push-pull output stage biased so both transistors conduct a small quiescent current at idle, removing the crossover dead band at the cost of some idle power; the two currents obey i_N·i_P = I_Q² in a bipolar stage.
+  chapter: "12-07"
+  see_also: [Class-B amplifier, VBE multiplier]
+- term: Crossover distortion
+  definition: Distortion of a class B stage near zero output, where neither transistor conducts until its base–emitter voltage reaches about 0.6 V; it is worst for small signals and is removed by class AB bias.
+  chapter: "12-07"
+  see_also: [Class-B amplifier, Class-AB amplifier]
+- term: VBE multiplier
+  definition: A transistor with a resistor divider across its collector–base and base–emitter junctions that produces V_BE(1 + R1/R2); used to bias class AB output stages, and mounted on their heat sink so the bias falls as they heat.
+  chapter: "12-07"
+  see_also: [Class-AB amplifier, Thermal runaway]
+- term: Bridge-tied load
+  definition: Driving a load between two amplifier outputs in antiphase instead of from one output to ground, which doubles the voltage swing and quadruples the power from a single supply; the usual arrangement in class D audio amplifiers.
+  chapter: "12-07"
+  see_also: [Class-D amplifier]

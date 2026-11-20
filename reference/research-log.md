@@ -189,6 +189,14 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-181 | Transistor matching | Nov 2026 |
 | R-182 | Op-amp data sheets | Nov 2026 |
 | R-183 | Instrumentation amplifier and comparator data sheets | Nov 2026 |
+| R-184 | Signal acquisition data sheets | Nov 2026 |
+| R-185 | System-property specifications in data sheets | Nov 2026 |
+| R-186 | Convolution in practice | Nov 2026 |
+| R-187 | IIR filter implementations | Nov 2026 |
+| R-188 | Switching harmonics in a class-D amplifier | Nov 2026 |
+| R-189 | SerDes reference equalizer | Nov 2026 |
+| R-190 | Sampling and anti-aliasing in converter data sheets | Nov 2026 |
+| R-191 | High-power class-D audio amplifier data sheet | Nov 2026 |
 
 ---
 
@@ -1972,3 +1980,9 @@ R&D % = R&D ÷ revenue.
 
 - **TI ADS1291/ADS1292/ADS1292R** (SBAS502C, revised April 2020): §8.3.4 (PGA): "The PGA output is filtered by an RC filter before it goes to the ADC. The filter is formed by an internal resistor RS = 2 kΩ and an external capacitor CFILTER (4.7 nF, typical). This filter acts as an anti-aliasing filter with the –3-dB bandwidth of 8.4 kHz. The internal RS resistor is accurate to 15% so actual bandwidth will vary"; "A larger value CFILTER capacitor can be used for increased attenuation at higher frequencies for anti-aliasing purposes … The tradeoff is that a larger capacitor value gives degraded THD performance." §8.3.4.3: a "second-order modulator"; "the sampling clock has a typical value of 128 kHz"; the on-chip decimation filters "also provide antialias filtering". §8.3.5: "The sinc filter has notches (or zeroes) that occur at the output data rate and multiples thereof"; "the … passband repeats itself at every fMOD. The input R-C anti-aliasing filters in the system should be chosen such that any interference in frequencies around multiples of fMOD are attenuated sufficiently" [Established]. Figure 22 ("PGA Implementation") draws RS = 2 kΩ in each PGA output leg with CFILTER (4.7 nF) across PGA1P and PGA1N, and the electrical-characteristics footnote reads "CFILTER is the capacitor accross the PGA outputs"; so 8.4 kHz ≈ 1/(2π · 4 kΩ · 4.7 nF) = 8.47 kHz (re-read 20 Nov 2026 after the Course 11 audit). The §8.3.5 warning about interference around multiples of fMOD refers to "the input R-C anti-aliasing filters in the system", not to this PGA-output RC. Used in 11-10. [Data sheet](https://www.ti.com/lit/ds/symlink/ads1292r.pdf).
 - **TI TLV320AIC3204** (SLOS602E, revised September 2019): §9.3.3: "a stereo audio ADC, which uses a delta-sigma modulator with a programmable oversampling ratio, followed by a digital decimation filter. The ADC supports sampling rates from 8kHz to 192kHz"; Table 2 lists AOSR values 128 or 64 for decimation filter A, 64 for B and 32 for C; the ADC performance tables are specified at fs = 48 kHz with AOSR = 128 [Established]. Used in 11-10. [Data sheet](https://www.ti.com/lit/ds/symlink/tlv320aic3204.pdf).
+
+## R-191 · High-power class-D audio amplifier data sheet
+
+*Read on 20 Nov 2026 from the PDF at the URL below, as downloaded (10 pages: features, specifications and typical characteristics). Specifications are tagged [Established] as specifications of that part.*
+
+- **TI TPA3255** (SLASEA8A, February 2016, revised October 2016), "315-W Stereo, 600-W Mono PurePath Ultra-HD Analog-Input": features list 315 W stereo into 4 Ω BTL and 600 W mono into 2 Ω PBTL at 10% THD+N; 260 W stereo into 4 Ω at 1% THD+N; "90% Efficient Class-D Operation (4 Ω)"; supply 18–53.5 V; 0.006% THD+N at 1 W into 4 Ω; description: "power stage idle losses below 2.5W", "85 mΩ MOSFETs". §7.5: PWM frame rate 430/450/470 kHz (nominal, min/typ/max), 475/500/525 kHz (AM1), 575/600/625 kHz (AM2); output MOSFET R_DS(on) 85 mΩ typ, 100 mΩ max (low and high side, T_J = 25 °C, GVDD = 12 V). §7.6 (BTL, PVDD = 51 V, R_L = 4 Ω, f_S = 450 kHz, output filter 10 µH / 1 µF, T_C = 75 °C): P_O per channel 315 W at 10% THD+N and 255 W at 1% THD+N (the electrical table's 255 W differs from the front page's 260 W); THD+N 0.006% at 1 W; P_idle 2.5 W with four channels switching [Established]. Used in 12-07. [Data sheet](https://www.ti.com/lit/ds/symlink/tpa3255.pdf).
