@@ -331,6 +331,7 @@ The netlist [switched_cap.cir](../labs/14-01-lab/switched_cap.cir) charges and d
 | Power against frequency with DVFS | roughly $f^3$ near the top of the range | §3.5 |
 | Subthreshold swing limit | about 60 mV/decade at 300 K | 09-10 |
 | End of clock-rate scaling | about 2004, clocks around 5 GHz | IRDS [1] |
+| Energy per operation, 45 nm at 0.9 V | 32-bit add 0.1 pJ; 32-bit FP multiply 3.7 pJ; 64-bit read from a 32 KB cache 20 pJ; DRAM access 1.3–2.6 nJ; about 70 pJ of overhead per instruction on a simple core | Horowitz, ISSCC 2014 [2]: one DRAM access costs as much energy as more than 10,000 32-bit additions, which is why data movement, not arithmetic, dominates energy |
 
 ## 8. Common mistakes
 
@@ -463,5 +464,7 @@ Now work the [problem set](../problems/14-01-problems.md).
 ## 14. Sources
 
 1. IEEE IRDS, 2024 Edition, Executive Summary, pp. 64–66 (power limits in 2004, frequency limit): [IRDS 2024 Executive Summary](https://irds.ieee.org/images/files/pdf/2024/2024IRDS_ES.pdf). [R-172](../../../reference/research-log.md#r-172--cmos-and-scaling-references).
+
+2. M. Horowitz, "Computing's energy problem (and what we can do about it)", ISSCC 2014 Digest of Technical Papers, pp. 10–14, Figure 1.1.9 (read from a mirror of the digest pages). [R-208](../../../reference/research-log.md#r-208--energy-per-operation-at-45-nm-horowitz-isscc-2014).
 
 The theory (iron law, Amdahl's and Gustafson's laws, means, CMOS power and its scaling) is textbook material (Further study).

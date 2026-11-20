@@ -70,14 +70,18 @@ sudo apt-get update
 ```
 
 ```bash
-sudo apt-get install -y build-essential ngspice iverilog verilator gtkwave yosys
+sudo apt-get install -y build-essential ngspice iverilog verilator gtkwave yosys llvm
 ```
+
+The `llvm` package provides `llvm-mc`, the assembler that Course 14 uses to encode RISC-V, Arm and x86 instructions.
 
 ### macOS (Homebrew)
 
 ```bash
-brew install ngspice icarus-verilog verilator yosys
+brew install ngspice icarus-verilog verilator yosys llvm
 ```
+
+Homebrew installs LLVM without putting it on your `PATH`; Course 14's scripts also look in Homebrew's `llvm/bin` directory, so no further step is needed for them.
 
 The C compiler comes with Apple's command-line tools (`xcode-select --install`); its Clang supports the sanitizers `make c` uses, except leak detection, which runs only on Linux.
 

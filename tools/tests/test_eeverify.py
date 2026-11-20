@@ -17,6 +17,9 @@ from eeverify import Verifier, load_answer_key, parse_value  # noqa: E402
     ("6.32 × 10⁻³", 6.32e-3, 0.005e-3),
     ("6.32×10^-3", 6.32e-3, 0.005e-3),
     ("16", 16.0, 0.5),
+    ("0x007302B3", 0x007302B3, 0.5),
+    ("0xdeadc", 0xDEADC, 0.5),
+    ("0x1000", 4096.0, 0.5),
 ])
 def test_parse_real(raw, value, halfulp):
     p = parse_value(raw)

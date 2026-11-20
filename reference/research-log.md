@@ -206,6 +206,14 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-198 | Interface impedances: USB 2.0 cable and PCIe board traces | Nov 2026 |
 | R-199 | WR-90 rectangular waveguide dimensions and band | Nov 2026 |
 | R-200 | FCC 6 GHz unlicensed (U-NII) EIRP limits | Nov 2026 |
+| R-201 | RISC-V unprivileged ISA manual (20260120): RV32I, C extension, endianness | Nov 2026 |
+| R-202 | RISC-V RVA23 profile | Nov 2026 |
+| R-203 | RISC-V licensing and trademark model | Nov 2026 |
+| R-204 | Arm licensing models and FY2026 revenue split (Form 20-F) | Nov 2026 |
+| R-205 | AMD–Intel 2009 patent cross-licence | Nov 2026 |
+| R-206 | x86 Ecosystem Advisory Group | Nov 2026 |
+| R-207 | x86 maximum instruction length (Intel SDM) | Nov 2026 |
+| R-208 | Energy per operation at 45 nm (Horowitz, ISSCC 2014) | Nov 2026 |
 
 ---
 
@@ -2071,3 +2079,67 @@ R&D % = R&D ÷ revenue.
 - **47 CFR § 15.407(a)(5):** "For an indoor access point operating in the 5.925-7.125 GHz band, the maximum power spectral density must not exceed 5 dBm e.i.r.p. in any 1-megahertz band. In addition, the maximum e.i.r.p. over the frequency band of operation must not exceed 30 dBm." [eCFR § 15.407](https://www.ecfr.gov/current/title-47/chapter-I/subchapter-A/part-15/subpart-E/section-15.407)
 - **Context:** the 6 GHz band was opened to unlicensed use by FCC Report and Order 20-51 (adopted 23 Apr 2020; published in the Federal Register 26 May 2020). [Federal Register 2020-11236](https://www.govinfo.gov/content/pkg/FR-2020-05-26/pdf/2020-11236.pdf)
 - **Derived here (13-11):** the PSD-limited EIRP for channel widths of 20, 80, 160 and 320 MHz (5 dBm/MHz + 10 log₁₀ of the width in MHz, capped at 30 dBm).
+
+## R-201 · RISC-V unprivileged ISA manual, version 20260120
+
+*Read on 20 Nov 2026 from RISC-V International's ratified specifications library (primary); tagged [Established].*
+
+- **Versions:** the manual set is versioned by date; 20260120 is current (earlier: 20250508, 20240411). The unprivileged preface lists "RV32I 2.1 Ratified … RV64I 2.1 Ratified"; the privileged volume lists Machine ISA 1.13 and Supervisor ISA 1.13. [Unprivileged preface](https://docs.riscv.org/reference/isa/v20260120/unpriv/colophon.html) · [Privileged preface](https://docs.riscv.org/reference/isa/v20260120/priv/priv-preface.html)
+- **RV32I chapter:** "RV32I contains 40 unique instructions"; "The RISC-V ISA keeps the source (rs1 and rs2) and destination (rd) registers at the same position in all formats to simplify decoding"; "the sign bit for all immediates is always in bit 31 of the instruction to speed sign-extension circuitry"; "The conditional branch range is ±4 KiB"; "Jumps can therefore target a ±1 MiB range"; "NOP is encoded as ADDI x0, x0, 0"; ADDI with rd = x0 (other than the NOP) is listed among the HINT encodings. [RV32I chapter](https://docs.riscv.org/reference/isa/v20260120/unpriv/rv32.html)
+- **Endianness (Introduction):** "RISC-V base ISAs have either little-endian or big-endian memory systems, with the privileged architecture further defining bi-endian operation. Instructions are stored in memory as a sequence of 16-bit little-endian parcels, regardless of memory system endianness." [Introduction](https://docs.riscv.org/reference/isa/v20260120/unpriv/intro.html)
+- **C extension:** "Typically, 50%-60% of the RISC-V instructions in a program can be replaced with RVC instructions, resulting in a 25%-30% code-size reduction." [C extension](https://docs.riscv.org/reference/isa/v20260120/unpriv/c-st-ext.html)
+- **Derived here (14-02):** every encoding, range and code size in the chapter is reproduced with LLVM 18's `llvm-mc` in verify_14_02.py.
+
+## R-202 · RISC-V RVA23 profile
+
+*Read on 20 Nov 2026 (primary); tagged [Established].*
+
+- **Profile document:** "Version 1.0, 2024-10-17: This document is in Ratified state." "The following mandatory extensions are new in RVA23U64: • V Vector extension. V was optional in RVA22U64." "RVA23S64 is based on privileged architecture version 1.13." The augmented hypervisor extension (Sha, containing H) is mandatory in RVA23S64. [RVA23 Profiles (PDF)](https://docs.riscv.org/reference/rva23/_attachments/rva23-profile.pdf)
+- **Press release (21 Oct 2024):** "Vector and Hypervisor extensions are key mandatory components of the RVA23 Profile…"; Google is quoted that RVA23 "is now the baseline requirement for the Android RISC-V Application Binary Interface (ABI)." [RISC-V International](https://riscv.org/blog/risc-v-announces-ratification-of-the-rva23-profile-standard/)
+- **Date note:** the PDF is dated 17 Oct 2024 and the announcement 21 Oct 2024; cite as "ratified Oct 2024".
+
+## R-203 · RISC-V licensing and trademark model
+
+*Read on 20 Nov 2026 from RISC-V International's FAQ and About pages (primary); tagged [Established].*
+
+- "The RISC-V ISA is free and open with a permissive license for use by anyone in all types of implementations. Designers are free to develop proprietary or open source implementations…"; "There is no fee to use the RISC-V ISA. … To create an implementation from the RISC-V ISA, it is necessary to procure or leverage additional IP outside of RISC-V which may carry a fee."; on publishing a core's source: "No, the source code can be completely closed."; "the use of the RISC-V trademark requires a license which is granted to members of RISC-V International for use with compliant implementations." [FAQ](https://riscv.org/about/faq/)
+- "RISC-V was founded in 2015 as the RISC-V Foundation and is incorporated today as RISC-V International Association in Switzerland." [About](https://riscv.org/about/)
+- **Not obtained:** a current member count.
+
+## R-204 · Arm licensing models and FY2026 revenue (Form 20-F)
+
+*Read on 20 Nov 2026 from Arm Holdings plc's Form 20-F for the fiscal year ended 31 Mar 2026, filed with the SEC 26 May 2026 (primary); tagged [Established].*
+
+- **Models:** "our customers can choose from several licensing models … These include CSS, Arm Total Access, Arm Flexible Access, TLAs and Architecture Licenses. Regardless of the license model a customer uses, we receive a per-unit royalty fee on substantially every chip shipped." "Under an ALA, the licensee is allowed to develop their own highly customized CPU designs that is compliant with the Arm instruction set architecture ('ISA') for a fixed architecture license fee." "Under a TLA, we license a single CPU design or other technology design to a customer in return for a fixed license fee." "Royalties are generally either set as a percentage of the licensee's average selling price per chip or as a fixed amount per chip. The royalty rates per chip typically reduce over time as the total volume of chips incorporating our products shipped increases…"
+- **Revenue (US$ M):** FY2026 total 4,920 (FY2025 4,007); license and other 2,307 (1,839); royalty 2,613 (2,168). *Derived:* royalty ≈ 53% of FY2026 revenue. License and other revenue from related parties: 1,009 (418).
+- **Litigation:** the filing describes the Arm v. Qualcomm/Nuvia architecture-licence dispute, including a 30 Sep 2025 judgment for Qualcomm and Arm's pending appeal (status as of the filing date).
+- [Form 20-F (SEC EDGAR)](https://www.sec.gov/Archives/edgar/data/1973239/000197323926000097/arm-20260331.htm)
+
+## R-205 · AMD–Intel patent cross-licence (2009)
+
+*Read on 20 Nov 2026 from AMD's SEC filings (primary); tagged [Established]. The agreement itself (partly redacted exhibit) was not read.*
+
+- **Form 8-K (report dated 11 Nov 2009):** "The Settlement Agreement provides that Intel will pay $1.25 billion to the Company within 30 days of execution…"; the parties granted each other "non-exclusive, royalty-free licenses" to patents first filed before the fifth anniversary (the "Capture Period"); "The Cross License Agreement and the Capture Period will automatically terminate if a party undergoes a Change of Control … and both parties' licenses will terminate." [Form 8-K](https://www.sec.gov/Archives/edgar/data/2488/000119312509236705/d8k.htm)
+- **Form 10-K for FY2025 (filed 4 Feb 2026):** still lists the agreement (Exhibit 10.10); risk factor: "Our ability to innovate beyond the x86 instruction set controlled by Intel depends partially on Microsoft…" [Form 10-K](https://www.sec.gov/Archives/edgar/data/2488/000000248826000018/amd-20251227.htm)
+
+## R-206 · x86 Ecosystem Advisory Group
+
+*Read on 20 Nov 2026 (primary); tagged [Established].*
+
+- **Formation (15 Oct 2024):** Intel and AMD formed the group with founding members Broadcom, Dell, Google, Hewlett Packard Enterprise, HP Inc., Lenovo, Meta, Microsoft, Oracle and Red Hat, plus Linus Torvalds and Tim Sweeney, aiming at "a more unified set of instructions and architectural interfaces". [Intel/AMD press release](https://www.intc.com/news-events/press-releases/detail/1715/intel-and-amd-form-x86-ecosystem-advisory-group-to)
+- **First anniversary (13 Oct 2025):** AMD reported FRED "finalized as a standard feature", AVX10 "established as the next-generation vector and general-purpose instruction set extension", the ChkTag memory-tagging specification introduced, and the ACE matrix extensions "accepted and implemented across the stack". [AMD blog](https://www.amd.com/en/blogs/2025/amd-and-intel-celebrate-first-anniversary-of-x86-ecosys.html)
+
+## R-207 · x86 maximum instruction length
+
+*Read on 20 Nov 2026 from Intel's Software Developer's Manual, Vol. 2, order no. 325383-093US (Sep 2026), §2.3.11 (primary); tagged [Established].*
+
+- "The Intel AVX instructions described in this document (including VEX and ignoring other prefixes) do not exceed 11 bytes in length, but may increase in the future. The maximum length of an Intel 64 and IA-32 instruction remains 15 bytes." [Intel SDM Vol. 2 (PDF)](https://cdrdv2.intel.com/v1/dl/getContent/671110)
+
+## R-208 · Energy per operation at 45 nm (Horowitz, ISSCC 2014)
+
+*Read on 20 Nov 2026 from a third-party mirror of the published digest pages (secondary copy; the IEEE footer and page numbers match the digest), not from IEEE Xplore; tagged [Established] as the field's standard reference table, with the caveat below.*
+
+- **Figure 1.1.9, "Rough energy costs for various operations in 45nm 0.9V":** integer add 8-bit 0.03 pJ, 32-bit 0.1 pJ; integer multiply 8-bit 0.2 pJ, 32-bit 3.1 pJ; FP add 16-bit 0.4 pJ, 32-bit 0.9 pJ; FP multiply 16-bit 1.1 pJ, 32-bit 3.7 pJ; 64-bit cache read 8 KB 10 pJ, 32 KB 20 pJ, 1 MB 100 pJ; DRAM 1.3–2.6 nJ.
+- **Text:** "the programmable nature of a processor has high energy overhead, 70pJ/instruction, vs. a few pJ for an operation"; "energy cost of a DRAM access (1 to 2nJ) is a couple of orders-of-magnitude higher than the cost of an internal cache access or functional operation (10pJ)".
+- **Caveat:** the paper's table (1.3–2.6 nJ) and text (1 to 2 nJ) disagree on DRAM; quote the one used and attribute it.
+- M. Horowitz, "1.1 Computing's energy problem (and what we can do about it)", ISSCC 2014 Digest of Technical Papers, pp. 10–14, doi:10.1109/ISSCC.2014.6757323. Copy read: [mirror (PDF)](https://gwern.net/doc/cs/hardware/2014-horowitz-2.pdf)

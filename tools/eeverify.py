@@ -83,6 +83,9 @@ def _clean(s: str) -> str:
 
 def _parse_real(s: str) -> Num:
     s = _clean(s).replace(" ", "")
+    h = re.fullmatch(r"([-+]?)0x([0-9A-Fa-f]+)", s)
+    if h:  # a hexadecimal integer (bit patterns, addresses) is exact: tolerance half a unit
+        return Num(float(int(h.group(1) + h.group(2), 16)), 0.5)
     s = s.replace("\\times", "×").replace("x10", "×10")
     exp = 0
     m = re.fullmatch(r"([-+]?[\d.]+)(?:[eE]([-+]?\d+)|×10\^?([-+]?\d+|[⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺]+))?", s)

@@ -28,4 +28,4 @@ Every number published in a chapter's worked examples, a solutions file or an ex
 | 07-02.5b | current at t = 0⁺ | 3.00 | mA |
 ```
 
-The course's verify script recomputes each value independently and calls `v.check("Ex 07-02.1a", tau_ms)`. The check passes only if the published value is the correctly rounded computed value; the precision is inferred from the digits shown. Values may be real (`2.20`, `6.32e-3`), rectangular complex (`3 + j4`) or polar (`5∠53.13°`).
+The course's verify script recomputes each value independently and calls `v.check("Ex 07-02.1a", tau_ms)`. The check passes only if the published value is the correctly rounded computed value; the precision is inferred from the digits shown. Values may be real (`2.20`, `6.32e-3`), hexadecimal integers (`0x007302B3`, checked exactly), rectangular complex (`3 + j4`) or polar (`5∠53.13°`).

@@ -262,4 +262,7 @@ v.check("Lab 14-01.d", np.mean(R2 / TBl) / np.mean(R2 / TAl))
 v.check("Lab 14-01.e", gm(R1 / TBl) / gm(R1 / TAl))
 v.assert_true("geometric-mean ratio identical for both references", abs(gm(R1 / TBl) / gm(R1 / TAl) - gm(R2 / TBl) / gm(R2 / TAl)) < 1e-12)
 
+# Numbers to know: Horowitz's 45 nm table (R-208): one DRAM access (1.3-2.6 nJ) against a 32-bit add (0.1 pJ)
+v.assert_true("a DRAM access costs more than 10,000 32-bit adds", min(1.3e-9, 2.6e-9) / 0.1e-12 > 1e4)
+
 sys.exit(v.finish())
