@@ -1,0 +1,96 @@
+* Lab 12-02 -- the five-transistor OTA and the cascode of Examples 12-02.2 and 12-02.3 in ngspice.
+* Small-signal copies: each transistor is its small-signal model, a VCCS g_m*v_gs from drain to source
+* (G element) with r_o in parallel; g_m = 1 mA/V, r_o = 100 kohm; the OTA's tail is 50 kohm.
+* Large-signal copy: the same OTA with level-1 MOSFETs (k = 5 mA/V^2, so that 100 uA flows at about
+* 0.2 V of overdrive, lambda = 0.1), ideal 200 uA tail; with matched halves its output must settle at
+* exactly the diode node's voltage.
+*
+* EXPECT adf key:../../chapters/12-02-active-loads-cascodes-multistage.md#Ex_12-02.2k rtol=1e-4
+* EXPECT acmf key:../../chapters/12-02-active-loads-cascodes-multistage.md#Ex_12-02.2l rtol=1e-4
+* EXPECT rcas key:../../chapters/12-02-active-loads-cascodes-multistage.md#Ex_12-02.3a scale=1e6 rtol=1e-4
+* EXPECT aoc key:../../chapters/12-02-active-loads-cascodes-multistage.md#Ex_12-02.3b rtol=1e-4
+* EXPECT acl key:../../chapters/12-02-active-loads-cascodes-multistage.md#Ex_12-02.3e rtol=1e-4
+* EXPECT asl key:../../chapters/12-02-active-loads-cascodes-multistage.md#Ex_12-02.3g rtol=1e-4
+* EXPECT sym 0 atol=1e-6
+
+* ---- OTA, differential drive (v_id = 1)
+VD1 gd1 0 DC 0 AC 0.5
+VD2 gd2 0 DC 0 AC 0.5 180
+G1D ad sd gd1 sd 1m
+R1D ad sd 100k
+G2D od sd gd2 sd 1m
+R2D od sd 100k
+G3D ad 0 ad 0 1m
+R3D ad 0 100k
+G4D od 0 ad 0 1m
+R4D od 0 100k
+RSD sd 0 50k
+
+* ---- OTA, common-mode drive (v_ic = 1)
+VC gc 0 DC 0 AC 1
+G1C ac sc gc sc 1m
+R1C ac sc 100k
+G2C oc sc gc sc 1m
+R2C oc sc 100k
+G3C ac 0 ac 0 1m
+R3C ac 0 100k
+G4C oc 0 ac 0 1m
+R4C oc 0 100k
+RSC sc 0 50k
+
+* ---- cascode output resistance: 1 A test current into the output, input grounded
+G1R xr 0 0 0 1m
+R1R xr 0 100k
+G2R orr xr 0 xr 1m
+R2R orr xr 100k
+IT 0 orr DC 0 AC 1
+
+* ---- cascode open-circuit gain (ideal current-source load)
+VIA ia 0 DC 0 AC 1
+G1A xa 0 ia 0 1m
+R1A xa 0 100k
+G2A oa xa 0 xa 1m
+R2A oa xa 100k
+
+* ---- cascode with a cascode load (PMOS cascode: M3 on top of M4, gates at AC ground)
+VIB ib 0 DC 0 AC 1
+G1B xb 0 ib 0 1m
+R1B xb 0 100k
+G2B ob xb 0 xb 1m
+R2B ob xb 100k
+G3B ob yb 0 yb 1m
+R3B ob yb 100k
+R4B yb 0 100k
+
+* ---- cascode with a simple 100 kohm current-source load
+VIC ic 0 DC 0 AC 1
+G1S xs 0 ic 0 1m
+R1S xs 0 100k
+G2S os xs 0 xs 1m
+R2S os xs 100k
+RLS os 0 100k
+
+* ---- large-signal OTA
+.model NM nmos level=1 vto=0.5 kp=5m lambda=0.1 gamma=0
+.model PM pmos level=1 vto=-0.5 kp=5m lambda=0.1 gamma=0
+VDD vdd 0 DC 1.8
+VIN vin 0 DC 1.2
+M1 na vin ns ns NM W=1u L=1u
+M2 nout vin ns ns NM W=1u L=1u
+M3 na na vdd vdd PM W=1u L=1u
+M4 nout na vdd vdd PM W=1u L=1u
+ITAIL ns 0 DC 200u
+
+.control
+op
+let sym = v(nout) - v(na)
+print sym v(nout)
+ac lin 3 100 1k
+meas ac adf find vm(od) at=1k
+meas ac acmf find vm(oc) at=1k
+meas ac rcas find vm(orr) at=1k
+meas ac aoc find vr(oa) at=1k
+meas ac acl find vm(ob) at=1k
+meas ac asl find vm(os) at=1k
+.endc
+.end

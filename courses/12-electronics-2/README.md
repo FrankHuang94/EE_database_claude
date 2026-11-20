@@ -28,7 +28,7 @@ Real amplifiers: differential pairs, cascodes and multistage amplifiers, high-fr
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
 | [12-01 · Differential Pairs](chapters/12-01-differential-pairs.md) | 10 | ✅ verified | [problems](problems/12-01-problems.md) · [solutions](solutions/12-01-solutions.md) · [lab](labs/12-01-lab/README.md) · [verify](verify/verify_12_01.py) |
-| [12-02 · Active Loads, Cascodes and Multistage Amplifiers](chapters/12-02-active-loads-cascodes-multistage.md) | 10 | ⬜ planned | — |
+| [12-02 · Active Loads, Cascodes and Multistage Amplifiers](chapters/12-02-active-loads-cascodes-multistage.md) | 10 | ✅ verified | [problems](problems/12-02-problems.md) · [solutions](solutions/12-02-solutions.md) · [lab](labs/12-02-lab/README.md) · [verify](verify/verify_12_02.py) |
 | [12-03 · Frequency Response: Device Capacitances, Miller Effect, Poles and Zeros](chapters/12-03-frequency-response-miller-poles-zeros.md) | 12 | ⬜ planned | — |
 | [12-04 · High-Frequency Analysis Methods](chapters/12-04-high-frequency-analysis-methods.md) | 8 | ⬜ planned | — |
 | [12-05 · Feedback: Theory and the Four Topologies](chapters/12-05-feedback-topologies.md) | 12 | ⬜ planned | — |

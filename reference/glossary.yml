@@ -4787,3 +4787,28 @@
   definition: The current source feeding a differential pair's shared emitter or source node; its value sets the pair's total current and its output resistance sets the single-ended common-mode rejection.
   chapter: "12-01"
   see_also: [Differential pair, Common-mode gain]
+# ---------------------------------------------------------------- 12-02
+- term: Current-mirror load
+  definition: A current mirror used as the load of a differential pair, which copies one side's signal current to the other so that both halves' currents reach a single-ended output, doubling its transconductance to g_m.
+  chapter: "12-02"
+  see_also: [Active load, Five-transistor OTA, Differential pair]
+- term: Five-transistor OTA
+  definition: The simplest operational transconductance amplifier, a differential pair with a current-mirror load and a tail source; gain g_m(r_o2 ∥ r_o4), small common-mode gain about 1/(2g_m3R_SS), and the first stage of the classic two-stage op-amp.
+  chapter: "12-02"
+  see_also: [Current-mirror load, Common-mode rejection ratio (CMRR)]
+- term: Telescopic cascode amplifier
+  definition: A differential pair with cascode transistors stacked on its drains and cascode current-source loads, giving gain near (g_mr_o)²/2 in one stage at the cost of output swing, about V_DD minus five overdrives per side.
+  chapter: "12-02"
+  see_also: [Cascode, Multistage amplifier]
+- term: Multistage amplifier
+  definition: A cascade of gain stages whose gains multiply, reduced by loading where one stage's output resistance meets the next stage's input resistance; offsets of later stages refer to the input divided by the gain before them.
+  chapter: "12-02"
+  see_also: [Telescopic cascode amplifier, Systematic offset]
+- term: Systematic offset
+  definition: An offset that results from the design rather than from random mismatch, such as unequal drain voltages or a second stage whose current does not match its width ratio; it is the same on every chip and is removed by design, not by device area.
+  chapter: "12-02"
+  see_also: [Input offset voltage, Multistage amplifier]
+- term: DC level shifting
+  definition: Moving a signal's DC level between directly coupled stages, by alternating NMOS and PMOS stages, by a source or emitter follower (a shift of V_GS or V_BE), or by a fixed drop across diodes or resistors carrying a set current.
+  chapter: "12-02"
+  see_also: [Multistage amplifier, Level shifter]
