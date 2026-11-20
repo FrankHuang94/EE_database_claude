@@ -127,11 +127,17 @@ def _cmul_q15(br, bi, wr, wi):
 
 
 SAT_EVENTS = [0]     # incremented whenever a butterfly output saturates (for the lab and the test vectors)
+SAT_POS = [0]        # ... at +32767
+SAT_NEG = [0]        # ... at -32768
 
 
 def _sat_count(v):
     if v > 32767 or v < -32768:
         SAT_EVENTS[0] += 1
+        if v > 32767:
+            SAT_POS[0] += 1
+        else:
+            SAT_NEG[0] += 1
     return _sat16(v)
 
 
@@ -141,6 +147,34 @@ def _bfly(ar, ai, br, bi, k):
     # sum and difference in 19 bits, scale by 1/2 (arithmetic shift: floor), saturate to 16 bits; saturation is
     # needed because a component can grow by 1 + sqrt(2) in one stage, more than the factor of 2 the shift removes
     return _sat_count((ar + tr) >> 1), _sat_count((ai + ti) >> 1), _sat_count((ar - tr) >> 1), _sat_count((ai - ti) >> 1)
+
+
+def fft_fixed(x, bits=16):
+    """Radix-2 DIT FFT in bits-bit fixed point with 1/2 scaling per stage (no saturation), returning X/N as floats.
+
+    Same arithmetic as fft8_fixed for any power-of-two N: Q1.(bits-1) twiddles rounded (1.0 clamped to the largest
+    code), each twiddle product rounded (add half an LSB, floor-shift), each butterfly output floor-shifted by one.
+    Inputs must keep every component inside the representable range (no saturation is modelled)."""
+    x = np.asarray(x, dtype=complex)
+    N = len(x)
+    m = int(round(math.log2(N)))
+    S = 2 ** (bits - 1)
+    order = [bit_reverse(i, m) for i in range(N)]
+    ar = np.round(x.real * S).astype(np.int64)[order]
+    ai = np.round(x.imag * S).astype(np.int64)[order]
+    for s in range(1, m + 1):
+        size, half = 2**s, 2 ** (s - 1)
+        k = np.arange(half)
+        wr = np.minimum(np.round(np.cos(2 * np.pi * k / size) * S).astype(np.int64), S - 1)
+        wi = np.round(-np.sin(2 * np.pi * k / size) * S).astype(np.int64)
+        ar, ai = ar.reshape(-1, size), ai.reshape(-1, size)
+        br, bi = ar[:, half:], ai[:, half:]
+        tr = (br * wr - bi * wi + S // 2) // S
+        ti = (br * wi + bi * wr + S // 2) // S
+        nr = np.concatenate([(ar[:, :half] + tr) >> 1, (ar[:, :half] - tr) >> 1], axis=1)
+        ni = np.concatenate([(ai[:, :half] + ti) >> 1, (ai[:, :half] - ti) >> 1], axis=1)
+        ar, ai = nr.reshape(-1), ni.reshape(-1)
+    return (ar + 1j * ai) / S
 
 
 def fft8_fixed(xr, xi):

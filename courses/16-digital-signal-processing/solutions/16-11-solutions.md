@@ -16,11 +16,11 @@ Folded: 64 multiplications per output × 100 MS/s = $6.4 \times 10^9$ per second
 
 ### Solution 16-11.3
 
-$0.875 = 1 - 2^{-3}$: **1** subtractor (binary $0.111_2$ needs 2 adders). $0.9375 = 1 - 2^{-4}$: **1** subtractor (binary $0.1111_2$ needs 3). CSD replaces each run of ones by one addition and one subtraction.
+$0.875 = 1 - 2^{-3}$: **1** subtractor (binary $0.111_2$ needs 2 adders). $0.9375 = 1 - 2^{-4}$: **1** subtractor (binary $0.1111_2$ needs 3). CSD replaces each run of ones by two signed digits, $+2^{k}$ and $-2^{j}$, so the run costs one subtractor.
 
 ### Solution 16-11.4
 
-Two loops. Through $y[n - 1]$: multiplier and two adders ($2.0 + 0.5 + 0.5 = 3.0$ ns) with one register: 3.0 ns. Through $y[n - 2]$: also a multiplier and two adders, with two registers: 1.5 ns. The iteration bound is the larger, **3.0** ns, so at most **333** MHz.
+Two loops. Through $y[n - 1]$: multiplier and two adders ($2.0 + 0.5 + 0.5 = 3.0$ ns) with one register: 3.0 ns. Through $y[n - 2]$: also a multiplier and two adders, with two registers: 1.5 ns. The iteration bound is the larger, **3.0** ns, so at most **333** MHz. The order of the additions matters: adding $x[n]$ to the $a_2y[n - 2]$ product first takes one adder out of the $y[n - 1]$ loop (multiplier and one adder, 2.5 ns, one register), while the $y[n - 2]$ loop keeps both adders over two registers (1.5 ns). The bound drops to **2.5** ns, **400** MHz, with the same arithmetic.
 
 ### Solution 16-11.5
 
@@ -40,7 +40,7 @@ Vectoring drives $y$ to zero: magnitude **5.0000** (after dividing by $K_{16}$) 
 
 ### Solution 16-11.9
 
-Per MAC: 8-bit $0.2 + 0.03$ = **0.23** pJ; 32-bit integer $3.1 + 0.1$ = **3.2** pJ; 32-bit floating point $3.7 + 0.9$ = **4.6** pJ. At $10^9$ MACs per second: 0.23 mW, 3.2 mW and 4.6 mW. A 64-bit DRAM access (1.3–2.6 nJ) costs as much as **406 to 812** 32-bit integer MACs.
+Per MAC: 8-bit, an 8-bit multiply into a 32-bit accumulator, $0.2 + 0.1$ = **0.30** pJ (an 8-bit add, 0.03 pJ, would be too narrow to accumulate: §3.1); 32-bit integer $3.1 + 0.1$ = **3.2** pJ; 32-bit floating point $3.7 + 0.9$ = **4.6** pJ. At $10^9$ MACs per second: **0.30**, **3.2** and **4.6** mW. A 64-bit DRAM access (1.3–2.6 nJ) costs as much as **406 to 813** 32-bit integer MACs (2600/3.2 = 812.5).
 
 ### Solution 16-11.10
 
@@ -85,6 +85,8 @@ Guard bits in the datapath alone leave the angle path's error; both paths need e
 | 16-11.3b | adders for 0.9375 | 1 | — |
 | 16-11.4a | iteration bound | 3.0 | ns |
 | 16-11.4b | maximum rate | 333 | MHz |
+| 16-11.4c | iteration bound, x added first | 2.5 | ns |
+| 16-11.4d | maximum rate, x added first | 400 | MHz |
 | 16-11.5a | iteration bound | 0.625 | ns |
 | 16-11.5b | rate | 1.6 | GHz |
 | 16-11.6a | rate with one MAC | 25 | MS/s |
@@ -94,11 +96,14 @@ Guard bits in the datapath alone leave the angle path's error; both paths need e
 | 16-11.7c | iterations | 12 | — |
 | 16-11.8a | magnitude | 5.0000 | — |
 | 16-11.8b | angle | 53.13 | ° |
-| 16-11.9a | 8-bit MAC energy | 0.23 | pJ |
+| 16-11.9a | 8-bit MAC energy | 0.30 | pJ |
 | 16-11.9b | 32-bit integer MAC energy | 3.2 | pJ |
 | 16-11.9c | 32-bit float MAC energy | 4.6 | pJ |
 | 16-11.9d | MACs per DRAM access, low | 406 | — |
-| 16-11.9e | MACs per DRAM access, high | 812 | — |
+| 16-11.9e | MACs per DRAM access, high | 813 | — |
+| 16-11.9f | 8-bit MAC power at 1 GMAC/s | 0.30 | mW |
+| 16-11.9g | 32-bit integer MAC power | 3.2 | mW |
+| 16-11.9h | 32-bit float MAC power | 4.6 | mW |
 | 16-11.10a | MAC rate | 3.07 | M/s |
 | 16-11.10b | M55 load | 0.768 | % |
 | 16-11.10c | M52 load | 1.54 | % |

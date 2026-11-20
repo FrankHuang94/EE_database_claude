@@ -14,7 +14,7 @@ Problems: [16-10 problems](../problems/16-10-problems.md) · Chapter: [16-10](..
 
 ### Solution 16-10.2
 
-10 bits: $6.02 \times 10 + 1.76$ = **61.96** dB; 14 bits: **86.04** dB. For 100 dB: $N \ge (100 - 1.76)/6.02$ = **16.32**, so **17** bits.
+10 bits: $10\log_{10}(1.5 \times 4^{10})$ = **61.97** dB; 14 bits: **86.05** dB. (The rounded rule $6.02N + 1.76$ gives 61.96 and 86.04, off in the last digit.) For 100 dB: $N \ge (100 - 1.76)/6.02$ = **16.32**, so **17** bits.
 
 ### Solution 16-10.3
 
@@ -26,7 +26,7 @@ One product: Q2.30 (32 bits; two sign bits, because $(-1)\times(-1) = +1$ needs 
 
 ### Solution 16-10.5
 
-Granular only: $10\log_{10}(3 \times 2^{32}/16)$ = **89.06** dB. Including clipping: the clipping noise is the same fraction of the signal power as at 12 bits ($2[(1 + 16)Q(4) - 4\phi(4)] = 6.4 \times 10^{-6}$ of $\sigma^2$), so the SQNR is **52.1** dB, barely better than the 51.9 dB at 12 bits. Once clipping dominates, extra bits are wasted: back off instead (the 16-bit optimum is $L \approx 5.9$, 85.4 dB).
+Granular only: $10\log_{10}(3 \times 2^{32}/16)$ = **89.06** dB. Including clipping: the clipping noise is the same fraction of the signal power as at 12 bits ($2[(1 + 16)Q(4) - 4\phi(4)]$ = **6.18 × 10⁻⁶** of $\sigma^2$), so the SQNR is **52.1** dB, barely better than the 51.9 dB at 12 bits. Once clipping dominates, extra bits are wasted: back off instead (the 16-bit optimum is $L \approx 5.9$, 85.4 dB).
 
 ### Solution 16-10.6
 
@@ -38,7 +38,7 @@ $g[n] = a^n$, so $\sum_{n\ge0}a^{2n} = 1/(1 - a^2)$. For $a = 0.9$: $1/0.19$ = *
 
 ### Solution 16-10.8
 
-rms: $\sqrt{101} \times 2^{-12}/\sqrt{12}$ = $7.08 \times 10^{-4}$, **−63.0** dB. Worst case: $101 \times 2^{-13}$ = 0.0123, **−38.2** dB. The truth for the peak error usually lies a few dB above the rms estimate and far below the bound.
+rms: $\sqrt{101} \times 2^{-12}/\sqrt{12}$ = **7.08 × 10⁻⁴**, **−63.0** dB. Worst case: $101 \times 2^{-13}$ = **0.0123**, **−38.2** dB. The truth for the peak error usually lies a few dB above the rms estimate and far below the bound.
 
 ### Solution 16-10.9
 
@@ -78,14 +78,15 @@ The errors sit within each format's bound $2^{-p}$ (6.25%, 12.5%, 0.39%, 0.049%)
 | 16-10.1c | integer bits | 6 | bits |
 | 16-10.1d | fractional bits | 10 | bits |
 | 16-10.1e | total bits | 16 | bits |
-| 16-10.2a | 10-bit SQNR | 61.96 | dB |
-| 16-10.2b | 14-bit SQNR | 86.04 | dB |
+| 16-10.2a | 10-bit SQNR | 61.97 | dB |
+| 16-10.2b | 14-bit SQNR | 86.05 | dB |
 | 16-10.2c | bits for 100 dB, real | 16.32 | — |
 | 16-10.2d | bits for 100 dB | 17 | bits |
 | 16-10.3a | accumulated truncation error | −0.01526 | — |
 | 16-10.4a | rounding variance | 7.76e-11 | — |
 | 16-10.5a | granular SQNR at 16 bits | 89.06 | dB |
 | 16-10.5b | SQNR with clipping at 16 bits | 52.1 | dB |
+| 16-10.5c | clipping-noise fraction at L = 4 | 6.18e-6 | — |
 | 16-10.6a | noise gain, a = 0.9 | 5.26 | — |
 | 16-10.6b | noise gain, a = 0.9 | 7.2 | dB |
 | 16-10.6c | noise gain, a = 0.99 | 50.25 | — |
@@ -95,6 +96,8 @@ The errors sit within each format's bound $2^{-p}$ (6.25%, 12.5%, 0.39%, 0.049%)
 | 16-10.7a | noise increase | 18.06 | dB |
 | 16-10.8a | rms estimate | −63.0 | dB |
 | 16-10.8b | worst-case bound | −38.2 | dB |
+| 16-10.8c | rms estimate | 7.08e-4 | — |
+| 16-10.8d | worst-case bound | 0.0123 | — |
 | 16-10.9a | dead band, a = 0.95 | 10 | LSB |
 | 16-10.9b | dead band, a = 0.99 | 50 | LSB |
 | 16-10.10a | L1 norm | 13.67 | — |
@@ -110,3 +113,7 @@ The errors sit within each format's bound $2^{-p}$ (6.25%, 12.5%, 0.39%, 0.049%)
 | 16-10.12c | binary16 relative error | 0.016 | % |
 | 16-10.12d | E4M3 for 1000 | 448 | — |
 | 16-10.12e | E5M2 for 1000 | 1024 | — |
+| 16-10.12f | E4M3 and E5M2 value for 0.3 | 0.3125 | — |
+| 16-10.12g | bfloat16 value for 0.3 | 0.30078125 | — |
+| 16-10.12h | binary16 value for 0.3 | 0.300049 | — |
+| 16-10.12i | E5M2 relative error for 1000 | 2.4 | % |

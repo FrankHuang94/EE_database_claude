@@ -33,7 +33,7 @@ A direct $N$-point DFT costs $N^2$ complex multiply-adds: a million for $N = 102
 
 **Divide and conquer.** A DFT of eight samples asks for eight correlations of eight samples each. But the even-indexed samples $x[0], x[2], x[4], x[6]$ are themselves a signal sampled at half the rate, and so are the odd ones. Their two four-point DFTs together contain everything needed: the full spectrum is the even part's spectrum plus the odd part's spectrum, the latter rotated by a phase that accounts for its one-sample offset. Each four-point DFT splits again into two-point DFTs, which are just a sum and a difference. Three levels of halving turn **64** multiplications into **12** butterflies.
 
-**Analogy: a tournament bracket.** Sixteen players can be ranked by playing every pair (120 matches), or by a bracket that halves the field each round (15 matches). The FFT is a bracket for correlations: each round combines results already computed instead of starting over. **Where the analogy breaks:** a bracket discards losers and loses information, while the FFT keeps every partial result. Each butterfly produces two outputs from two inputs, so nothing is lost and the transform stays exactly invertible.
+**Analogy: a tournament bracket.** Sixteen players can find a winner by playing every pair (120 matches), or by a bracket that halves the field each round (15 matches). The FFT is a bracket for correlations: each round combines results already computed instead of starting over. **Where the analogy breaks:** a bracket discards losers and loses information, while the FFT keeps every partial result. Each butterfly produces two outputs from two inputs, so nothing is lost and the transform stays exactly invertible.
 
 ```text
   x[0] ──●───────●──────────●──── X[0]       one butterfly (decimation in time):
@@ -110,31 +110,35 @@ because $W_N^{(2k+1)N/2} = -1$. So the decimation-in-frequency (DIF) butterfly f
 Not every twiddle needs a multiplier: $W^0 = 1$ needs none, and $W_N^{N/4} = -j$ only swaps the real and imaginary parts and flips a sign. In decimation in time, stage $s$ ($s = 1, \dots, \log_2N$) combines $2^{s-1}$-point DFTs with the twiddles $W_{2^s}^j$, $j = 0, \dots, 2^{s-1} - 1$, each used $N/2^s$ times. Stage 1 uses only $W^0$; stage 2 uses $W^0$ and $-j$; for $s \ge 3$, two of the $2^{s-1}$ twiddles are trivial. The number of non-trivial complex multiplications is therefore
 
 $$
-\sum_{s=3}^{\log_2N}\left(2^{s-1} - 2\right)\frac N{2^s} = \frac N2(\log_2N - 2) - N\left(\frac12 - \frac2N\right) = \frac N2\log_2N - \frac{3N}2 + 2 \quad (N \ge 4) .
+\sum_{s=3}^{\log_2N}\left(2^{s-1} - 2\right)\frac N{2^s} = \frac N2(\log_2N - 2) - N\left(\frac12 - \frac2N\right) = \frac N2\log_2N - \frac{3N}2 + 2 \quad (N \ge 2) .
 $$
 
 For $N = 1024$: 3,586 of the 5,120 butterflies need a real complex multiplier. (Twiddles such as $W_8 = (1 - j)/\sqrt2$ can be done with two real multiplications instead of four; production code exploits such special cases further.)
 
 ### 3.6 Radix-4, split radix and real inputs
 
-- **Radix-4.** Splitting into four interleaved subsequences gives a 4-point butterfly whose internal twiddles are $\pm1$ and $\pm j$ (free) and three external twiddle multiplications. There are $N/4$ butterflies per stage and $\log_4N = \frac12\log_2N$ stages, so at most $3\cdot\frac N4\cdot\frac12\log_2N = \frac{3N}8\log_2N$ complex multiplications: **75**% of radix-2. Hardware likes radix-4 (and radix-$2^2$, which keeps radix-2 butterflies but radix-4's twiddle pattern) for this saving.
+- **Radix-4.** Splitting into four interleaved subsequences $x[4r + p]$, $p = 0, \dots, 3$, with $(N/4)$-point DFTs $F_p[k]$, gives $X[k + qN/4] = \sum_{p=0}^{3}(-j)^{pq}\,W_N^{pk}F_p[k]$ for $q = 0, \dots, 3$: a 4-point butterfly whose internal twiddles $(-j)^{pq}$ are $\pm1$ and $\pm j$ (free) and three external twiddle multiplications $W_N^{pk}$, $p = 1, 2, 3$. There are $N/4$ butterflies per stage and $\log_4N = \frac12\log_2N$ stages, so at most $3\cdot\frac N4\cdot\frac12\log_2N = \frac{3N}8\log_2N$ complex multiplications: **75**% of radix-2. Hardware likes radix-4 (and radix-$2^2$, which keeps radix-2 butterflies but radix-4's twiddle pattern) for this saving.
 - **Split radix** combines a radix-2 split of the even outputs with a radix-4 split of the odd ones and has the lowest known operation count among the classical algorithms (Oppenheim & Schafer §9.5) [2].
-- **Real inputs.** A real sequence has a conjugate-symmetric DFT, so half the outputs are redundant. Two real sequences $a$ and $b$ can share one complex FFT: with $z = a + jb$, $A[k] = (Z[k] + Z^*[N - k])/2$ and $B[k] = (Z[k] - Z^*[N - k])/(2j)$. Alternatively, one $N$-point real FFT is computed as an $(N/2)$-point complex FFT of $x[2r] + jx[2r + 1]$ plus $N/2$ extra twiddle multiplications: about $\frac N4\log_2\frac N2 + \frac N2$ complex multiplications, **55**% of the complex FFT for $N = 1024$.
+- **Real inputs.** A real sequence has a conjugate-symmetric DFT, so half the outputs are redundant. Two real sequences $a$ and $b$ can share one complex FFT: with $z = a + jb$, $A[k] = (Z[k] + Z^*[N - k])/2$ and $B[k] = (Z[k] - Z^*[N - k])/(2j)$. Alternatively, one $N$-point real FFT is computed from the $(N/2)$-point complex FFT $Z$ of $z[r] = x[2r] + jx[2r + 1]$: the even- and odd-sample DFTs are $E[k] = (Z[k] + Z^*[N/2 - k])/2$ and $O[k] = (Z[k] - Z^*[N/2 - k])/(2j)$ (indices modulo $N/2$), and then $X[k] = E[k] + W_N^kO[k]$ for $k = 0, \dots, N/2 - 1$, with $X[N/2] = E[0] - O[0]$ and the rest by conjugate symmetry. That is $N/2$ extra twiddle multiplications: about $\frac N4\log_2\frac N2 + \frac N2$ complex multiplications, **55**% of the complex FFT for $N = 1024$.
 - **Inverse FFT.** $x[n] = \frac1N\left(\sum_kX^*[k]W_N^{kn}\right)^*$: conjugate the input, run the forward FFT, conjugate the output, divide by $N$. One FFT engine serves both directions.
+
+> **Going deeper — single bins, and lengths that are not powers of two.** When only a few bins are needed, the **Goertzel algorithm** computes one bin with a second-order recursion: $s[n] = x[n] + 2\cos\omega_k\,s[n - 1] - s[n - 2]$ over the $N$ samples (one real multiplication per sample for real input), then $X[k] = e^{j\omega_k}s[N - 1] - s[N - 2]$ with $\omega_k = 2\pi k/N$. It beats an FFT when fewer than about $\log_2N$ bins are wanted, which is why telephone tone (DTMF) detectors use it. For other lengths, **mixed-radix** FFTs factor $N$ into small primes, the **prime-factor** algorithm uses the Chinese remainder theorem to avoid twiddles between coprime factors, and **Bluestein's chirp-z** method rewrites any $N$-point DFT as a convolution, computed with power-of-two FFTs (Oppenheim & Schafer, ch. 9 [2]). The verify script checks the Goertzel formula against the FFT.
 
 ### 3.7 FFT hardware
 
 The butterfly maps directly onto silicon: one complex multiplier (four real multipliers and two adders) and two complex adders. Architectures differ in how many butterflies they instantiate and how data reaches them:
 
 - **Memory-based (in-place).** One or a few butterfly units read operands from a RAM, compute and write back, stage by stage. An $N$-point transform needs $\frac N2\log_2N$ butterfly operations, so with $B$ butterfly units at clock $f_{clk}$ the transform takes $\frac{N\log_2N}{2Bf_{clk}}$. Small area; throughput limited by the butterflies and the RAM ports. Continuous streaming needs a second buffer (ping-pong) so one record can be captured while the previous one is transformed.
-- **Pipelined (streaming).** One butterfly per stage, $\log_2N$ stages in a row, one sample in and one out per clock. In the classic **radix-2 single-path delay feedback** (R2SDF) pipeline, stage $s$ of a DIF transform holds $N/2^s$ samples in a delay line so that each input meets its partner from half a block earlier; the delays total $N/2 + N/4 + \dots + 1 = N - 1$ words. Each butterfly is busy half the time (it computes during one half of the block and passes data during the other). By §3.5's twiddle pattern, the last two stages need only trivial twiddles, so a general complex multiplier is needed between the other $\log_2N - 2$ stages. Throughput is one sample per clock at any $N$; latency is about one block.
+- **Pipelined (streaming).** One butterfly per stage, $\log_2N$ stages in a row, one sample in and one out per clock. In the classic **radix-2 single-path delay feedback** (R2SDF) pipeline, stage $s$ of a DIF transform holds $N/2^s$ samples in a delay line so that each input meets its partner from half a block earlier; the delays total $N/2 + N/4 + \dots + 1 = N - 1$ words. Each butterfly is busy half the time (it computes during one half of the block and passes data during the other). By §3.5's twiddle pattern, the last two stages need only trivial twiddles, so a general complex multiplier is needed between the other $\log_2N - 2$ stages. Throughput is one sample per clock at any $N$; latency is about one block. A DIF pipeline delivers its outputs in bit-reversed order, so natural order costs an $N$-word reorder buffer and about one more block of latency (about $2N - 1$ words in total).
 - **Parallel (multi-path).** For sample rates above the clock rate (radar, optical links), several pipelines run side by side, or the whole flow graph is laid out in hardware, as in this chapter's lab: Figure 2 drawn literally, one butterfly per node.
 
 The design choice trades area against throughput and latency, in the four currencies of 16-01 (Example 16-04.4).
 
 ### 3.8 Word growth and scaling in fixed point
 
-Each radix-2 stage can double a magnitude: $\lvert a \pm Wb\rvert \le \lvert a\rvert + \lvert b\rvert$. Over $\log_2N$ stages the worst case is a factor of $N$, which is attained by a full-scale DC input ($X[0] = \sum x[n]$). An unscaled fixed-point FFT therefore needs $\log_2N$ extra integer bits; a 1024-point transform of 16-bit data needs 26-bit words to be safe. The common alternative is to **scale by 1/2 at every stage**, keeping 16-bit words and producing $X[k]/N$. That loses dynamic range for small signals (each scaling discards a bit, adding rounding noise; 16-10 quantifies it), and **it does not fully prevent overflow**: the real or imaginary *component* of $a + Wb$ can grow by $1 + \sqrt2 \approx 2.41$ in one stage. If $a$ is real and $b$ has equal real and imaginary parts, the twiddle can rotate all of $b$'s magnitude, $\sqrt2$ times its component size, onto the real axis (Example 16-04.5). Production FFTs therefore add a guard bit, saturate, or use **block floating point**: scale a stage by 1/2 only when the data actually grow, and keep a shared exponent.
+Each radix-2 stage can double a magnitude: $\lvert a \pm Wb\rvert \le \lvert a\rvert + \lvert b\rvert$. Over $\log_2N$ stages the worst case is a factor of $N$, which is attained by a full-scale DC input ($X[0] = \sum x[n]$). An unscaled fixed-point FFT of real data therefore needs $\log_2N$ extra integer bits; a 1024-point transform of 16-bit real data needs 26-bit words to be safe. Complex data grow slightly more: with full-scale real and imaginary parts, one output component can reach $\max_k\sum_n(\lvert\cos\phi_{kn}\rvert + \lvert\sin\phi_{kn}\rvert) \approx (4/\pi)N = 1.27N$, so one more bit is needed (27-bit words for 16-bit complex data at $N$ = 1024). The common alternative is to **scale by 1/2 at every stage**, keeping 16-bit words and producing $X[k]/N$. That loses dynamic range for small signals (each scaling discards a bit, adding rounding noise; the block below quantifies it), and **it does not fully prevent overflow**: the real or imaginary *component* of $a + Wb$ can grow by $1 + \sqrt2 \approx 2.41$ in one stage. If $a$ is real and $b$ has equal real and imaginary parts, the twiddle can rotate all of $b$'s magnitude, $\sqrt2$ times its component size, onto the real axis (Example 16-04.5). Production FFTs therefore add a guard bit, saturate, or use **block floating point**: scale a stage by 1/2 only when the data actually grow, and keep a shared exponent.
+
+> **Going deeper — what scaling costs in noise.** With scaling by 1/2 at every stage, rounding noise injected in an early stage is halved again by every later stage, while the signal is scaled by $1/N$ overall. The finite-register-length analysis in Oppenheim & Schafer (ch. 9) concludes that the output noise-to-signal ratio grows in proportion to $N$: each doubling of $N$, one more stage, costs about 3 dB, half a bit. The lab's `fft_fixed` confirms it. For 16-bit words and random complex inputs with components uniform in ±0.5, the output SNR is **64.6** dB at $N$ = 64 and **52.1** dB at $N$ = 1024, falling **3.08** dB per doubling (40 records per size). Block floating point recovers most of this loss by scaling only the stages whose data actually grow.
 
 ## 4. Worked examples
 
@@ -198,11 +202,11 @@ Total **10** non-trivial multiplications out of 32 butterflies.
 
 **Solution.** A new block arrives every $1024/(100 \times 10^6)$ = **10.24** µs, and each block needs $\frac{1024}2 \times 10$ = 5,120 butterflies.
 
-(a) Memory-based: 5,120 butterflies in 10.24 µs require **500** million butterflies per second: exactly one unit at 500 MHz, with no margin for pipeline bubbles or memory conflicts. A real design uses **2** units (or a radix-4 unit). Memory: the in-place buffer plus a second buffer to capture the next block, $2 \times 1024$ = **2048** complex words. Latency: one block to fill the buffer plus the transform time, about two blocks.
+(a) Memory-based: 5,120 butterflies in 10.24 µs require **500** million butterflies per second: exactly one unit at 500 MHz, with no margin for pipeline bubbles or memory conflicts. A real design uses **2** units (or a radix-4 unit). Memory: the in-place buffer plus a second buffer to capture the next block, $2 \times 1024$ = **2048** complex words. Latency: one block to fill the buffer plus the transform time, which with 2 units is half a block: about **1.5** blocks (10.24 + 5.12 µs).
 
-(b) R2SDF at 100 MHz, one sample per clock: **10** butterfly units (one per stage, each 50% busy), $\log_2N - 2$ = **8** general complex multipliers, and **1023** words of delay memory. Latency is about one block (1023 samples) plus pipeline registers, roughly half that of (a).
+(b) R2SDF at 100 MHz, one sample per clock: **10** butterfly units (one per stage, each 50% busy), $\log_2N - 2$ = **8** general complex multipliers, and **1023** words of delay memory. Latency is about one block (1023 samples) plus pipeline registers, but the outputs emerge in bit-reversed order: putting them in natural order adds an $N$-word buffer and about one more block, for about 2047 words and two blocks in total.
 
-The pipeline uses more butterflies but runs **5** times slower, needs no address generation, and has half the memory and latency; the memory-based engine is smaller when the throughput demand is lower. That is the usual choice: pipelines for continuous streams, memory-based engines for bursts.
+The pipeline uses more butterflies but runs **5** times slower and needs no address generation; once its outputs are reordered, its memory and latency are similar to the memory-based engine's, so the choice turns on clock rate and control complexity. The memory-based engine is smaller when the throughput demand is lower. That is the usual choice: pipelines for continuous streams, memory-based engines for bursts.
 
 **Units check.** Butterflies per second against clock rate; memory in complex words.
 
@@ -212,7 +216,7 @@ The pipeline uses more butterflies but runs **5** times slower, needs no address
 
 **Setup.** In the lab's 8-point Q1.15 FFT, a stage-3 butterfly with twiddle $W_8^1 = (23170 - j23170)/2^{15}$ receives $a = 32767 + j0$ and $b = 32767 + j32767$ (full-scale codes). Compute $Wb$, the scaled outputs $(a \pm Wb)/2$, and explain the result.
 
-**Solution.** $W_8^1b = \frac{(23170 - j23170)(32767 + j32767)}{2^{15}}$. The product's real part is $23170 \times 32767 \times 2$ = **1,518,422,780**, and its imaginary part is 0. After rounding by $2^{15}$, $Wb$ = **46339** + $j0$: the twiddle has rotated $b$, whose magnitude is $\sqrt2 \times 32767$, onto the real axis. Then $(a + Wb)/2 = (32767 + 46339)/2$ = **39553**, which exceeds the 16-bit maximum of 32,767: it overflows, and the hardware saturates it to 32,767. The other output is $(a - Wb)/2$ = **−6786**, in range. The component grew by $1 + \sqrt2$ = **2.414**, more than the factor 2 that the halving removes. In this example, as in most real signals, such inputs are rare, but a saturating or block-floating-point FFT must be designed for them, and the lab's test vectors include one.
+**Solution.** $W_8^1b = \frac{(23170 - j23170)(32767 + j32767)}{2^{15}}$. The product's real part is $23170 \times 32767 \times 2$ = **1,518,422,780**, and its imaginary part is 0. After rounding by $2^{15}$, $Wb$ = **46339** + $j0$: the twiddle has rotated $b$, whose magnitude is $\sqrt2 \times 32767$, onto the real axis. Then $(a + Wb)/2 = (32767 + 46339)/2$ = **39553**, which exceeds the 16-bit maximum of 32,767: it overflows, and the hardware saturates it to 32,767. The other output is $(a - Wb)/2$ = **−6786**, in range. The component grew by $1 + \sqrt2$ = **2.414**, more than the factor 2 that the halving removes. Inputs that line up like this are rare in real signals, but a saturating or block-floating-point FFT must be designed for them. The lab's test vectors include this one, constructed to reach exactly these butterfly inputs, and a second that saturates negatively.
 
 **Units check.** Integer codes; $W$ in Q1.15.
 
@@ -240,6 +244,7 @@ The pipeline uses more butterflies but runs **5** times slower, needs no address
 | Ex 16-04.4c | butterfly units, memory-based | 2 | — |
 | Ex 16-04.4d | ping-pong memory | 2048 | words |
 | Ex 16-04.4e | pipeline butterfly units | 10 | — |
+| Ex 16-04.4i | memory-based latency | 1.5 | blocks |
 | Ex 16-04.4f | pipeline general multipliers | 8 | — |
 | Ex 16-04.4g | pipeline delay memory | 1023 | words |
 | Ex 16-04.5a | Wb | 46339 | — |
@@ -261,6 +266,11 @@ The pipeline uses more butterflies but runs **5** times slower, needs no address
 | Txt 16-04.f | Q2 butterflies | 80 | — |
 | Txt 16-04.g | Q2 bit-reversed position of 3 | 24 | — |
 | Txt 16-04.h | Q6 word length | 24 | bits |
+| Txt 16-04.i | scaled 16-bit FFT SNR, N = 64 | 64.6 | dB |
+| Txt 16-04.j | scaled 16-bit FFT SNR, N = 1024 | 52.1 | dB |
+| Txt 16-04.k | SNR loss per doubling of N | 3.08 | dB |
+| Txt 16-04.l | worst complex component growth over N | 1.27 | — |
+| Txt 16-04.m | words for 16-bit complex data, N = 1024 | 27 | bits |
 
 ## 5. Simulate it
 
@@ -269,7 +279,7 @@ The lab, [labs/16-04-lab](../labs/16-04-lab/README.md), provides `fft.py` (recur
 1. **Check the algorithms** against `numpy.fft` for $N$ up to 4096, and count butterflies and non-trivial multiplications.
 2. **Time direct DFT against FFT** in Python for growing $N$ and fit the $N^2$ and $N\log N$ trends.
 3. **Exploit real inputs**: two real FFTs with one complex FFT, and the inverse with a forward FFT.
-4. **Run the hardware FFT**: simulate `fft8_tb.v`, which compares all 16 output words of 65 test vectors with the Python model bit for bit, and inspect the saturation case of Example 16-04.5.
+4. **Run the hardware FFT**: simulate `fft8_tb.v`, which compares all 16 output words of 67 test vectors with the Python model bit for bit, including a constructed vector that reproduces the positive saturation of Example 16-04.5 and a searched one that saturates negatively.
 5. **Measure fixed-point error**: compare the Q1.15 FFT's outputs with the exact DFT/8 for random inputs and see the error stay within a few LSBs.
 
 **Guided exercise (predict, then run).** **Before Part 2,** predict the speed-up of the FFT over the direct DFT at $N$ = 1024 in Python. (Far below 205: interpreted loops add overhead per butterfly, while the direct DFT runs as one matrix product in compiled code. Asymptotically the FFT still wins; with `numpy.fft`, which is compiled, it wins by orders of magnitude.)
@@ -294,7 +304,8 @@ The lab, [labs/16-04-lab](../labs/16-04-lab/README.md), provides `fft.py` (recur
 | Non-trivial twiddles, radix-2 | $\frac N2\log_2N - \frac{3N}2 + 2$ (3,586 for $N$ = 1024) | §3.5 |
 | Radix-4 | $\frac{3N}8\log_2N$ complex multiplications (75% of radix-2) | §3.6 |
 | R2SDF pipeline | $\log_2N$ butterflies, $\log_2N - 2$ general multipliers, $N - 1$ delay words, one sample per clock | §3.7 |
-| Word growth | up to $\log_2N$ bits; up to $1 + \sqrt2$ per stage in a component | §3.8 |
+| Word growth | up to $\log_2N$ bits for real data, $\log_2N + 1$ for complex; up to $1 + \sqrt2$ per stage in a component | §3.8 |
+| Scaled fixed-point FFT noise | about 3 dB of SNR lost per doubling of $N$ (half a bit per stage) | §3.8 |
 | Origin | Cooley and Tukey, 1965 [1] | Established |
 
 ## 8. Common mistakes
@@ -311,13 +322,13 @@ The lab, [labs/16-04-lab](../labs/16-04-lab/README.md), provides `fft.py` (recur
 
 ### State of the art (as of Nov 2026)
 
-- **FFTs are hardened blocks.** FPGA vendors ship parameterized FFT IP (radix-2 and radix-4, burst and pipelined streaming architectures, block floating point), and modem and radar SoCs embed dedicated FFT accelerators beside their DSP cores **[Established; vendor documentation and textbooks]**.
+- **FFTs are hardened blocks.** FPGA vendors ship parameterized FFT IP cores (AMD's LogiCORE FFT and Altera's FFT IP, for example) with radix-2 and radix-4, burst and pipelined streaming architectures and block floating point, and modem and radar SoCs embed dedicated FFT accelerators beside their DSP cores **[Established; long-standing vendor practice, not tied to a current product's specifications]**.
 - **The OFDM numerology sets the FFT.** Wi-Fi 802.11a/g transforms 64 points every 4 µs; LTE uses a 2048-point FFT at 30.72 MHz for a 20 MHz carrier, and 5G NR scales that numerology by powers of two (R-236) **[Established]**. A 5G NR baseband for wide carriers and many antennas therefore runs many FFTs of a few thousand points continuously, one reason baseband power scales with bandwidth and antenna count.
-- **Software FFTs are tuned per processor.** Libraries such as FFTW choose among algorithm variants at run time for the cache and vector units of the target machine; on DSP cores, vendor libraries hand-schedule radix-4 butterflies onto SIMD MACs **[Established]**.
+- **Software FFTs are tuned per processor.** Libraries such as FFTW choose among algorithm variants at run time for the cache and vector units of the target machine (its "planner", Frigo and Johnson [5]); on DSP cores, vendor libraries hand-schedule radix-4 butterflies onto SIMD MACs **[Established]**.
 
 ### Why it matters commercially
 
-The FFT is the most widely licensed and most re-implemented DSP kernel, so FFT efficiency (points per second per watt, per mm²) is a direct competitive metric for modem, radar and instrument chips. An architecture that hits the throughput with fewer multipliers or less memory, or that avoids overflow without wasting bits, saves area on every chip shipped. When diligence covers a baseband or radar-processing company, the FFT engine's architecture (streaming versus memory-based, radix, word length, scaling) is a concrete place to test whether the claimed efficiency is real.
+The FFT is among the most widely implemented DSP kernels **[Industry estimate]**, so FFT efficiency (points per second per watt, per mm²) is a direct competitive metric for modem, radar and instrument chips. An architecture that hits the throughput with fewer multipliers or less memory, or that avoids overflow without wasting bits, saves area on every chip shipped. When diligence covers a baseband or radar-processing company, the FFT engine's architecture (streaming versus memory-based, radix, word length, scaling) is a concrete place to test whether the claimed efficiency is real.
 
 ### Marketing vs Reality
 
@@ -394,7 +405,7 @@ Practice: [Problems 16-04](../problems/16-04-problems.md) · [Solutions](../solu
 
 - **Builds on:** [16-03 The DFT](16-03-the-dft.md), [08-09 Arithmetic Circuits](../../08-digital-logic-design/chapters/08-09-arithmetic-circuits.md) (adders and multipliers), [14-04 Computer Arithmetic](../../14-computer-organization-and-architecture/chapters/14-04-computer-arithmetic-and-number-formats.md) (fixed point, saturation).
 - **Next:** [16-05 Spectral Analysis and Windowing](16-05-spectral-analysis-and-windowing.md) puts the FFT to work on real measurements.
-- **Used later:** fast convolution and filter banks in [16-09](16-09-multirate-dsp.md); fixed-point FFT noise in [16-10](16-10-quantization-and-fixed-point.md); FFT accelerators in [16-11](16-11-dsp-hardware-architectures.md); OFDM in Course 17.
+- **Used later:** fast convolution and filter banks in [16-09](16-09-multirate-dsp.md); the quantization-noise models behind §3.8's scaling result in [16-10](16-10-quantization-and-fixed-point.md); FFT accelerators in [16-11](16-11-dsp-hardware-architectures.md); OFDM in Course 17.
 
 ## 13. Further study
 
@@ -409,3 +420,4 @@ Practice: [Problems 16-04](../problems/16-04-problems.md) · [Solutions](../solu
 2. A. V. Oppenheim and R. W. Schafer, *Discrete-Time Signal Processing*, 3rd ed., Pearson, 2010, ch. 9.
 3. R. G. Lyons, *Understanding Digital Signal Processing*, 3rd ed., Prentice Hall, 2011, ch. 4.
 4. OFDM numerology (802.11a/g, LTE, NR). Research log [R-236].
+5. M. Frigo and S. G. Johnson, "The Design and Implementation of FFTW3", *Proceedings of the IEEE* 93(2), 216–231, 2005.

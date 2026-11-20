@@ -82,7 +82,7 @@ $$
 y[n] = a\big(ay[n - 2] + x[n - 1]\big) + x[n] = a^2y[n - 2] + ax[n - 1] + x[n] .
 $$
 
-The same filter now has a loop with *two* registers (through $y[n - 2]$), so $T_\infty$ halves; the loop can be pipelined into two stages and clocked twice as fast. The price is the feed-forward term $ax[n - 1]$ (one more multiplier and adder, outside the loop), and, for general filters, possible extra poles and zeros that cancel exactly (and must keep doing so in fixed point). Look-ahead by $M$ gives $y[n] = a^My[n - M] + \sum_{k=0}^{M-1}a^kx[n - k]$ and an $M$-fold faster loop.
+The same filter now has a loop with *two* registers (through $y[n - 2]$), so $T_\infty$ halves; the loop can be pipelined into two stages and clocked twice as fast. The price is the feed-forward term $ax[n - 1]$ (one more multiplier and adder, outside the loop), and a hidden pole–zero pair: even here $H(z) = (1 + az^{-1})/(1 - a^2z^{-2})$, which adds a pole and a zero at $z = -a$ that cancel only if $a^2$ and $a$ are quantized consistently. In fixed point, round $a$ first and compute $a^2$ from the rounded value, or the cancellation (and the identical output) is lost. Look-ahead by $M$ gives $y[n] = a^My[n - M] + \sum_{k=0}^{M-1}a^kx[n - k]$ and an $M$-fold faster loop.
 
 ### 3.5 DSP processors: what makes them fast
 
@@ -144,9 +144,9 @@ The postponed factors multiply to a constant, the **CORDIC gain** $K_n = \prod_{
 
 ### Example 16-11.2 · FPGA versus ASIC for one filter (tier B)
 
-**Setup.** A 64-tap symmetric FIR filter runs at 50 MS/s. (a) On an FPGA whose DSP blocks run at 400 MHz, how many blocks does it need with and without symmetry folding? (b) In an ASIC clocked at the sample rate, how many multipliers?
+**Setup.** A 64-tap symmetric FIR filter runs at 50 MS/s. (a) On an FPGA whose DSP blocks run at 400 MHz, how many blocks does it need with and without symmetry folding (pre-adders)? (b) In an ASIC clocked at the sample rate, how many multipliers?
 
-**Solution.** (a) Folded: 32 multiplications per output, $R_{\text{MAC}} = 32 \times 50 \times 10^6$ = **1.6** × 10⁹ per second; each block does $4 \times 10^8$, so **4** blocks, each time-multiplexed over 8 coefficients. Unfolded: 64 multiplications, **8** blocks. (b) Clocked at 50 MHz, one multiplication per multiplier per sample: **32** multipliers (with pre-adders), fully parallel, each with a fixed coefficient that can be a CSD shift-and-add network.
+**Solution.** (a) Folded: 32 multiplications per output, $R_{\text{MAC}} = 32 \times 50 \times 10^6$ = **1.6** × 10⁹ per second; each block does $4 \times 10^8$, so **4** blocks, each time-multiplexed over 8 coefficients. Without symmetry folding: 64 multiplications, **8** blocks. (b) Clocked at 50 MHz, one multiplication per multiplier per sample: **32** multipliers (with pre-adders), fully parallel, each with a fixed coefficient that can be a CSD shift-and-add network.
 
 **Units check.** Blocks = MAC rate / (operations per block per second).
 
@@ -156,7 +156,7 @@ The postponed factors multiply to a constant, the **CORDIC gain** $K_n = \prod_{
 
 **Setup.** A first-order IIR filter $y[n] = 0.9y[n - 1] + x[n]$ uses a multiplier of 2.0 ns and an adder of 0.5 ns. Find its iteration bound and maximum sample rate; then apply look-ahead by 2 and by 4.
 
-**Solution.** One loop, multiplier plus adder, one register: $T_\infty$ = **2.5** ns, **400** MHz at most, whatever pipelining is attempted. Look-ahead by 2: $y[n] = 0.81y[n - 2] + 0.9x[n - 1] + x[n]$; the loop now has two registers, $T_\infty = 2.5/2$ = **1.25** ns, **800** MHz once the loop is pipelined into two stages. Look-ahead by 4: $y[n] = 0.6561y[n - 4] + x[n] + 0.9x[n - 1] + 0.81x[n - 2] + 0.729x[n - 3]$, $T_\infty$ = **0.625** ns, **1.6** GHz. The cost is the growing feed-forward part (3 more multipliers and adders for $M = 4$). The lab confirms that the rewritten recursions produce exactly the same outputs.
+**Solution.** One loop, multiplier plus adder, one register: $T_\infty$ = **2.5** ns, **400** MHz at most, whatever pipelining is attempted. Look-ahead by 2: $y[n] = 0.81y[n - 2] + 0.9x[n - 1] + x[n]$; the loop now has two registers, $T_\infty = 2.5/2$ = **1.25** ns, **800** MHz once the loop is pipelined into two stages. Look-ahead by 4: $y[n] = 0.6561y[n - 4] + x[n] + 0.9x[n - 1] + 0.81x[n - 2] + 0.729x[n - 3]$, $T_\infty$ = **0.625** ns, **1.6** GHz. The cost is the growing feed-forward part (3 more multipliers and adders for $M = 4$). In floating point the lab finds the rewritten recursions agree with the original to about $10^{-12}$ (rounding, not identity); in fixed point the agreement depends on quantizing $a^2$, $a^4$ consistently with $a$ (§3.4).
 
 **Units check.** Iteration bound in ns per sample; rate = 1/bound.
 
@@ -192,7 +192,7 @@ The postponed factors multiply to a constant, the **CORDIC gain** $K_n = \prod_{
 | Ex 16-11.1b | accumulator width | 40 | bits |
 | Ex 16-11.2a | MAC rate, folded | 1.6 | G/s |
 | Ex 16-11.2b | DSP blocks, folded | 4 | — |
-| Ex 16-11.2c | DSP blocks, unfolded | 8 | — |
+| Ex 16-11.2c | DSP blocks, no symmetry folding | 8 | — |
 | Ex 16-11.2d | ASIC multipliers | 32 | — |
 | Ex 16-11.3a | iteration bound | 2.5 | ns |
 | Ex 16-11.3b | maximum rate | 400 | MHz |
@@ -217,6 +217,10 @@ The postponed factors multiply to a constant, the **CORDIC gain** $K_n = \prod_{
 | Ex 16-11.5j | worst error over the test angles (and all inputs) | 10.54 | LSB |
 | Ex 16-11.5k | worst error from the angle path alone | 5.60 | LSB |
 | Ex 16-11.5l | one angle LSB in output LSB | 1.57 | — |
+| Ex 16-11.5m | fixed-point cos 30° | 0.866150 | — |
+| Ex 16-11.5n | fixed-point sin 30° | 0.499939 | — |
+| Ex 16-11.5o | fixed-point cos error | 1.24e-4 | — |
+| Ex 16-11.5p | fixed-point sin error | −6.1e-5 | — |
 | Txt 16-11.a | CORDIC convergence range | 99.88 | ° |
 | Txt 16-11.b | folded 16-tap FIR rate on one 400 MHz MAC | 25 | MS/s |
 | Txt 16-11.c | unfolding factor, 10 GS/s at 625 MHz | 16 | — |
@@ -273,8 +277,8 @@ The lab, [labs/16-11-lab](../labs/16-11-lab/README.md), provides `hwarch.py` (MA
 
 ### State of the art (as of Nov 2026)
 
-- **Microcontrollers carry SIMD DSP.** Arm's Helium (M-Profile Vector Extension) uses 128-bit vectors; the Cortex-M55's dual-beat implementation performs "two 32x32 MACs per cycle", four 16-bit or eight 8-bit, and the single-beat option of the Cortex-M52 "up to 1 x 32-bit MACs/cycle, 2 x 16-bit MACs/cycle, 4 x 8-bit MACs/cycle" (R-233) **[Established]**. A 64-tap filter at 48 kHz (3.07 million MACs per second) occupies under 1% of a 100 MHz M55's MAC capacity at 16 bits (Problem 16-11.10), before overheads; Arm's own uplift claims ("up to 5x" DSP for the M55, "up to 2.7x" for the M52) are vendor figures **[Industry estimate]**.
-- **DSP cores are VLIW machines with wide SIMD.** TI's C7x DSP is "a full-feature with 512-bit vector width CPU core" with a 64-bit scalar side and a 512-bit vector side, descended from the "C6x VLIW DSP" line; its vector side performs 128 16 × 16-bit MACs per cycle, four times the C66x, and its attached matrix-multiply accelerator performs "4096 multiplications and the equivalent of 4096 summations per clock cycle" for 8-bit operands (TI SPRUIP0, 2021, R-252) **[Established]**. In the TDA4VM processor at 1.0 GHz, TI quotes "80 GFLOPS, 256 GOPS" for the C7x and "up to 8 TOPS (8b)" for the accelerator; counting a MAC as two operations, $128 \times 2 \times 1\text{ GHz}$ = **256** GOPS and $4096 \times 2 \times 1\text{ GHz}$ = **8.19** TOPS reproduce both figures (R-252). Audio cores follow the same pattern at lower power: Cadence's HiFi 5 was announced (2018) as a "five very long instruction word (VLIW)-slot architecture" supporting "eight 32x32-bit or 16 16x16-bit MACs per cycle" (R-255, read from a trade-press reprint of the press release because Cadence's sites refused automated access) **[Established, secondary copy]**.
+- **Microcontrollers carry SIMD DSP.** Arm's Helium (M-Profile Vector Extension) uses 128-bit vectors; the Cortex-M55's dual-beat implementation performs "two 32x32 MACs per cycle", four 16-bit or eight 8-bit, and the single-beat option of the Cortex-M52 "up to 1 x 32-bit MACs/cycle, 2 x 16-bit MACs/cycle, 4 x 8-bit MACs/cycle" (R-233) **[Established]**. A 64-tap filter at 48 kHz (3.07 million MACs per second) occupies under 1% of a 100 MHz M55's MAC capacity at 16 bits (Problem 16-11.10), before overheads; Arm's own uplift claims ("up to 5x" DSP for the M55, "up to 2.7x" for the M52) are vendor figures, not independently reproduced **[Contested]**.
+- **DSP cores are VLIW machines with wide SIMD.** TI's C7x DSP is "a full-feature with 512-bit vector width CPU core" with a 64-bit scalar side and a 512-bit vector side, descended from the "C6x VLIW DSP" line; its vector side performs 128 16 × 16-bit MACs per cycle, four times the C66x, and its attached matrix-multiply accelerator performs "4096 multiplications and the equivalent of 4096 summations per clock cycle" for 8-bit operands (TI SPRUIP0, 2021, R-252) **[Established]**. In the TDA4VM processor at 1.0 GHz, TI quotes "80 GFLOPS, 256 GOPS" for the C7x and "up to 8 TOPS (8b)" for the accelerator; counting a MAC as two operations, $128 \times 2 \times 1\text{ GHz}$ = **256** GOPS and $4096 \times 2 \times 1\text{ GHz}$ = **8.19** TOPS reproduce both figures (R-252). That reconstruction is our inference, not TI's statement: the same rule gives $32 \times 2 \times 1$ GHz = 64 GFLOPS for 32 floating-point MACs per cycle, not TI's 80, so TI's counting convention is not fully known **[Industry estimate for the derivation]**. Audio cores follow the same pattern at lower power: Cadence's HiFi 5 was announced (2018) as a "five very long instruction word (VLIW)-slot architecture" supporting "eight 32x32-bit or 16 16x16-bit MACs per cycle" (R-255, read from a trade-press reprint of the press release because Cadence's sites refused automated access) **[Established, secondary copy]**.
 - **AI engines are DSP cores too.** AMD's Versal AI Engine is described as "single-instruction multiple-data (SIMD) and very-long instruction word (VLIW)", issuing "up to seven operations … in parallel using one VLIW word", with 32 MACs per cycle for 16 × 16-bit real operands, 128 for 8 × 8-bit and 8 for single-precision floating point, at a 1 GHz target for its −1L speed grade (AM009 v1.4, 2026, R-254) **[Established]**. The fourfold step from 16-bit to 8-bit MACs on the same datapath is §3.6's quadratic width cost, exploited.
 - **FPGA DSP blocks are the folding and pipelining of §3.2–§3.3 in silicon.** AMD's DSP48E2 (27 × 18 multiplier, 27-bit pre-adder, 48-bit accumulator path) and DSP58 (27 × 24), and Altera's Agilex 7 blocks (two 18 × 19 or one 27 × 27 multiplier with pre-adders and systolic FIR modes) are designed to be cascaded into pipelined, transposed or systolic filters (R-239) **[Established]**.
 - **Energy per operation sets the architecture.** Horowitz's 45 nm table (R-208) remains the standard reference for why accelerators exist: an instruction costs about 70 pJ, a 32-bit add 0.1 pJ. Newer nodes lower every number, but the ratios (instruction overhead and data movement dominating arithmetic) persist **[Established; ratios are textbook consensus]**.

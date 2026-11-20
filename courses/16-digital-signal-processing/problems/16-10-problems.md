@@ -71,4 +71,5 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 3. Loading and clipping | 5 |
 | 4. Noise through filters | 6, 7 |
 | 5. Coefficient quantization | 8 |
-| 6. Overflow, limit cycles, scaling, dither | 9, 10, 11, 12 |
+| 6. Overflow, limit cycles, scaling, dither | 9, 10, 11 |
+| 2 (extension). Floating-point formats: relative error and range | 12 |

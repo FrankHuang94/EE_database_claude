@@ -32,7 +32,7 @@ Read §3 of the chapter. `fft.py` holds a recursive FFT, in-place decimation-in-
 | 1 | Counts | butterflies $\frac N2\log_2N$; non-trivial multiplications $\frac N2\log_2N - \frac{3N}2 + 2$ (10 for $N$ = 16, 3,586 for $N$ = 1024) |
 | 2 | Timing | direct grows about as $N^2$, both FFTs as $N\log N$; the Python FFT is much slower than `numpy.fft` at every size |
 | 3 | Real and inverse | both match `numpy.fft` to rounding |
-| 4 | Hardware | `TEST PASSED (66 vectors, bit-exact)`; one full-scale vector saturates a butterfly |
+| 4 | Hardware | `TEST PASSED (67 vectors, bit-exact)`; two full-scale vectors saturate a butterfly, one negatively and one positively (Example 16-04.5) |
 | 5 | Fixed-point error | at most 2.03 LSB over 2000 half-scale vectors |
 
 ### Lab answer key
@@ -42,8 +42,8 @@ Read §3 of the chapter. `fft.py` holds a recursive FFT, in-place decimation-in-
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
 | Lab 16-04.a | largest fixed-point error, half-scale inputs | 2.03 | LSB |
-| Lab 16-04.b | test vectors | 66 | — |
-| Lab 16-04.c | vectors that drive a saturation | 1 | — |
+| Lab 16-04.b | test vectors | 67 | — |
+| Lab 16-04.c | vectors that drive a saturation | 2 | — |
 
 ## Discussion
 
@@ -56,7 +56,7 @@ Read §3 of the chapter. `fft.py` holds a recursive FFT, in-place decimation-in-
 
 1. The direct DFT is a single matrix product executed in compiled, vectorized code, while the Python FFT runs one interpreted loop iteration per butterfly. Interpreter overhead, not arithmetic, dominates until $N$ is large; this is why algorithm comparisons must be made in the same implementation technology.
 2. Fixed-point hardware rounds and truncates at specific points, so its outputs differ from the exact FFT by a few LSBs. A comparison against `numpy.fft` would need a tolerance, which could hide real bugs (a wrong rounding constant changes outputs by one LSB). A bit-exact model makes any difference a failure.
-3. The overflow needs a particular combination at one butterfly's inputs in the last stage (a large real $a$ and a $b$ with equal real and imaginary parts at a rotating twiddle). Those values are produced by the earlier stages, so a designer must work backwards through the flow graph or search; most inputs, even full-scale ones, never produce it.
+3. The overflow needs a particular combination at one butterfly's inputs in the last stage: a large $a$ and a $b$ whose rotation by the twiddle lines its magnitude up with $a$ (Example 16-04.5's $a = 32767$, $b = 32767 + j32767$ at $W_8^1$). Those values are produced by the earlier stages, so a designer must work backwards through the flow graph, as the constructed vector does, or search, as the seeded vector does (it saturates negatively: $a = -32767$, $b = -16383 + j32767$ at $W_8^3$). Most inputs, even full-scale ones, never produce it, and a testbench must include both signs, or a clamp error on one side goes unnoticed.
 4. Each butterfly rounds the twiddle product and truncates when it halves the sum, and the twiddles themselves are rounded to 15 bits ($W^0 = 1$ becomes 32767/32768). Three stages of such errors accumulate, and the halvings truncate rather than round, which biases them; together they give errors of one to two LSBs.
 
 ## Optional hardware

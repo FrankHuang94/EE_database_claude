@@ -51,7 +51,7 @@ A 60 Hz notch for a 1 kHz sensor stream has zeros at $e^{\pm j\theta}$ and poles
 An ADC samples at 100 MS/s; the test uses $N$ = 8192 points.
 (a) Choose the coherent bin nearest 10 MHz that is relatively prime to $N$, and give the exact input frequency.
 (b) A test at −1 dBFS gives SINAD = 70.0 dB. Give the ENOB as measured and referred to full scale.
-(c) Find the processing gain (in dB) of an 8192-point FFT with a Hann window (ENBW 1.5 bins).
+(c) Find the processing gain (in dB) of an 8192-point FFT, and how far the noise floor rises from it with a Hann window (ENBW 1.5 bins).
 (d) If the converter's SNR is 72 dB, how far below the tone does the Hann-windowed noise floor sit?
 
 **6 [B] · FIR design.** (16-06)
@@ -82,15 +82,15 @@ A 192 kHz stream is decimated by 4 to 48 kHz.
 (c) A three-stage CIC decimates by 8 elsewhere in the chain. Give its DC gain and register growth.
 (d) Why are the CIC's integrators allowed to overflow?
 
-**10 [B] · Quantization.** (16-10)
-(a) Give the full-scale-sine SQNR of a 14-bit quantizer.
-(b) Find the noise gain of $1/(1 - 0.95z^{-1})$, as a ratio and in dB.
-(c) Find the dead band of $y[n] = Q(0.9y[n - 1])$ with rounding.
+**10 [B] · A designed filter in fixed point.** (16-07, 16-08, 16-10)
+(a) By the bilinear transform with prewarping, design the second-order Butterworth low-pass filter $H_a(s) = \Omega_c^2/(s^2 + \sqrt2\,\Omega_cs + \Omega_c^2)$ with its −3 dB point at 1 kHz for $f_s$ = 8 kHz. Give $b_0, b_1, b_2, a_1, a_2$ for $H(z) = (b_0 + b_1z^{-1} + b_2z^{-2})/(1 + a_1z^{-1} + a_2z^{-2})$.
+(b) In Direct Form I the output is rounded once per sample to 16 bits. That rounding noise passes through $1/A(z)$; for $1/(1 + a_1z^{-1} + a_2z^{-2})$ the noise gain is $(1 + a_2)/\big((1 - a_2)[(1 + a_2)^2 - a_1^2]\big)$. Find the noise gain (ratio and dB) and the output rounding noise in LSB rms.
+(c) Find the dead band of the first-order section $y[n] = Q(0.9y[n - 1])$ with rounding.
 (d) Why must recursive filters saturate rather than wrap around on overflow?
 
 **11 [B] · Hardware.** (16-11)
 (a) Size the product and accumulator of an 18 × 18-bit MAC summing 512 terms.
-(b) A 256-tap symmetric FIR filter runs at 200 MS/s on DSP blocks clocked at 600 MHz. How many blocks are needed with folding?
+(b) A 256-tap symmetric FIR filter runs at 200 MS/s on DSP blocks clocked at 600 MHz. How many blocks are needed with symmetry folding (pre-adders)?
 (c) A first-order recursion uses a 1.5 ns multiplier and a 0.5 ns adder. Give its iteration bound, and the bound after look-ahead by 2.
 (d) How many CORDIC iterations bring the residual angle below $2^{-10}$ rad?
 

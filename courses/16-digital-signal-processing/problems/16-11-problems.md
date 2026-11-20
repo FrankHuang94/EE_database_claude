@@ -26,7 +26,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 16-11.4 [B]
 
-**Iteration bound of a biquad.** A direct-form all-pole biquad $y[n] = x[n] - a_1y[n - 1] - a_2y[n - 2]$ is built with two multipliers and two adders in series in each feedback path. Identify its loops, their computation times and register counts, and its iteration bound and maximum sample rate.
+**Iteration bound of a biquad.** A direct-form all-pole biquad $y[n] = x[n] - a_1y[n - 1] - a_2y[n - 2]$ is built with one multiplier in each feedback path, and both adders lie inside each loop (the products are added together, then added to $x[n]$). Identify its loops, their computation times and register counts, and its iteration bound and maximum sample rate.
 
 ### Problem 16-11.5 [B]
 
@@ -46,7 +46,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 16-11.9 [B]
 
-**Energy per MAC.** Using the 45 nm figures, compare the energy of an 8-bit integer MAC, a 32-bit integer MAC and a 32-bit floating-point MAC (multiply plus add), and their power at $10^9$ MACs per second. How many 32-bit integer MACs cost as much as one 64-bit DRAM access?
+**Energy per MAC.** Using the 45 nm figures, compare the energy of an 8-bit integer MAC (an 8-bit multiply into a 32-bit accumulator), a 32-bit integer MAC and a 32-bit floating-point MAC (multiply plus add), and their power at $10^9$ MACs per second. How many 32-bit integer MACs cost as much as one 64-bit DRAM access?
 
 ### Problem 16-11.10 [C]
 

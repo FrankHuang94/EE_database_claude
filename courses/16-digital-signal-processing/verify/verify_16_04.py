@@ -168,11 +168,11 @@ t10 = 4096 / 250e6
 v.check("16-04.10b", t10 * 1e6)
 v.check("16-04.10c", bf4096 / (t10 * 1e9))
 v.check("16-04.10d", math.ceil(bf4096 / (t10 * 1e9)))
-v.check("16-04.11a", 10)
+v.check("16-04.11a", int(math.log2(1024)))
 v.check("16-04.11b", general)
 v.check("16-04.11c", sum(1024 >> i for i in range(1, 11)))
 v.check("16-04.11d", sum(1024 >> i for i in range(1, 11)) * 32 / 8)
-v.check("16-04.11e", 50)
+v.check("16-04.11e", 100 * (1024 // 2) / 1024)  # each stage does N/2 butterflies in N clocks
 # a DC full-scale input attains the bound N * max|x|
 v.check("16-04.12a", 12 + int(round(math.log2(abs(np.fft.fft(np.full(4096, -2048.0))[0]) / 2048))))
 n12 = np.arange(4096)
@@ -204,12 +204,29 @@ def s16(h):
     return x - 65536 if x >= 32768 else x
 
 
-sat_cases = 0
+sat_cases = pos_cases = neg_cases = 0
 for t in range(len(committed) // 32):
     w = [s16(h) for h in committed[32 * t:32 * t + 32]]
-    before = fft.SAT_EVENTS[0]
+    before, bp, bn = fft.SAT_EVENTS[0], fft.SAT_POS[0], fft.SAT_NEG[0]
     fft.fft8_fixed(w[:8], w[8:16])
     sat_cases += fft.SAT_EVENTS[0] > before
+    pos_cases += fft.SAT_POS[0] > bp
+    neg_cases += fft.SAT_NEG[0] > bn
+v.assert_true("Lab: the vectors saturate in both directions", pos_cases >= 1 and neg_cases >= 1, f"{pos_cases} {neg_cases}")
+# the constructed vector reproduces Example 16-04.5: raw output 39553 clamped to 32767, other output -6786
+xr5 = [32767, 32767, 0, -32768, -32768, -32768, 0, 32767]
+xi5 = [0, 32767, 32767, 32767, 0, -32768, -32768, -32768]
+_seen = []
+_orig = fft._bfly
+def _spy(ar, ai, br, bi, k):  # noqa: E302
+    out = _orig(ar, ai, br, bi, k)
+    _seen.append((ar, ai, br, bi, k))
+    return out
+fft._bfly = _spy
+fft.fft8_fixed(xr5, xi5)
+fft._bfly = _orig
+v.assert_true("Lab: the constructed vector feeds a = 32767, b = 32767 + j32767 to a W8^1 butterfly",
+              (32767, 0, 32767, 32767, 1) in _seen)
 v.assert_true("Lab: the saturating vector's output differs from DFT/8 by far more than rounding",
               any(np.max(np.abs(np.array([s16(h) for h in committed[32 * t + 16:32 * t + 24]])
                                 + 1j * np.array([s16(h) for h in committed[32 * t + 24:32 * t + 32]])
@@ -217,5 +234,61 @@ v.assert_true("Lab: the saturating vector's output differs from DFT/8 by far mor
                                              + 1j * np.array([s16(h) for h in committed[32 * t + 8:32 * t + 16]])) / 8)) > 100
                   for t in range(len(committed) // 32)))
 v.check("Lab 16-04.c", sat_cases)
+
+# §3.8: scaled fixed-point FFT noise (lab fft_fixed), cross-checked against the 8-point bit-exact model
+_r = np.random.default_rng(4)
+for _ in range(20):
+    x8r = list(map(int, _r.integers(-12000, 12001, 8)))
+    x8i = list(map(int, _r.integers(-12000, 12001, 8)))
+    Yr, Yi = fft.fft8_fixed(x8r, x8i)
+    Yg = fft.fft_fixed((np.array(x8r) + 1j * np.array(x8i)) / 32768)
+    assert np.array_equal(np.round(Yg.real * 32768), Yr) and np.array_equal(np.round(Yg.imag * 32768), Yi)
+v.assert_true("fft_fixed equals the bit-exact 8-point model", True)
+snr = {}
+for Nn in (64, 256, 1024, 4096):
+    err = sig = 0.0
+    for _ in range(40):
+        xx = _r.uniform(-0.5, 0.5, Nn) + 1j * _r.uniform(-0.5, 0.5, Nn)
+        XX = np.fft.fft(xx) / Nn
+        YY = fft.fft_fixed(xx, 16)
+        err += np.sum(np.abs(YY - XX) ** 2)
+        sig += np.sum(np.abs(XX) ** 2)
+    snr[Nn] = 10 * math.log10(sig / err)
+v.check("Txt 16-04.i", snr[64])
+v.check("Txt 16-04.j", snr[1024])
+v.check("Txt 16-04.k", -np.polyfit(np.log2(sorted(snr)), [snr[n] for n in sorted(snr)], 1)[0])
+grow = max(np.sum(np.abs(np.cos(2 * np.pi * k * np.arange(1024) / 1024)) + np.abs(np.sin(2 * np.pi * k * np.arange(1024) / 1024)))
+           for k in range(1, 512)) / 1024
+v.check("Txt 16-04.l", grow)
+v.check("Txt 16-04.m", 16 + math.ceil(math.log2(grow * 1024)))
+
+# §3.6 identities: radix-4 butterfly, real-input packing, Goertzel
+_x = _r.standard_normal(64) + 1j * _r.standard_normal(64)
+_F = [np.fft.fft(_x[p::4]) for p in range(4)]
+_X = np.fft.fft(_x)
+_W = np.exp(-2j * np.pi / 64)
+v.assert_true("radix-4 butterfly identity", all(np.allclose(_X[k + q * 16], sum((-1j) ** (p * q) * _W ** (p * k) * _F[p][k] for p in range(4)))
+                                               for k in range(16) for q in range(4)))
+_xr = _r.standard_normal(64)
+_Z = np.fft.fft(_xr[0::2] + 1j * _xr[1::2])
+_Zc = np.conj(_Z[(-np.arange(32)) % 32])
+_E, _O = (_Z + _Zc) / 2, (_Z - _Zc) / 2j
+_Xr = np.fft.fft(_xr)
+v.assert_true("real-input packing identity", np.allclose(_Xr[:32], _E + _W ** np.arange(32) * _O) and np.isclose(_Xr[32], _E[0] - _O[0]))
+_k = 5
+_s1 = _s2 = 0.0
+for _v in _xr:
+    _s1, _s2 = _v + 2 * np.cos(2 * np.pi * _k / 64) * _s1 - _s2, _s1
+v.assert_true("Goertzel bin", np.isclose(np.exp(2j * np.pi * _k / 64) * _s1 - _s2, _Xr[_k]))
+
+# Problem 13
+_wb = fft._cmul_q15(26000, 26000, *fft.TW8[1])
+v.check("16-04.13a", _wb[0])
+v.assert_true("P13 imaginary part of the rotated product is 0", _wb[1] == 0)
+_o = fft._bfly(20000, 0, 26000, 26000, 1)
+v.check("16-04.13b", _o[0])
+v.check("16-04.13c", _o[2])
+v.check("16-04.13d", max(a_ for a_ in range(0, 32768) if (a_ + _wb[0]) >> 1 <= 32767))
+v.check("Ex 16-04.4i", (1024 / 100e6 + 5120 / (2 * 500e6)) / (1024 / 100e6))
 
 sys.exit(v.finish())

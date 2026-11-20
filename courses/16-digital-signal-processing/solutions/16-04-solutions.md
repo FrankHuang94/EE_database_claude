@@ -56,7 +56,7 @@ Conjugate: $X^* = (10, -2 - 2j, -2, -2 + 2j)$. Forward 4-point FFT (with $W_4 = 
 
 ### Solution 16-04.10
 
-Butterflies per transform: $\frac{4096}2 \times 12$ = **24,576**. A new block arrives every $4096/250 \times 10^6$ = **16.384** µs, which is 16,384 cycles at 1 GHz. Required: $24{,}576/16{,}384$ = **1.5** butterflies per cycle, so **2** units (with 25% margin), plus a ping-pong buffer.
+Butterflies per transform: $\frac{4096}2 \times 12$ = **24,576**. A new block arrives every $4096/250 \times 10^6$ = **16.384** µs, which is 16,384 cycles at 1 GHz. Required: $24{,}576/16{,}384$ = **1.5** butterflies per cycle, so **2** units (75% utilization, 33% headroom), plus a ping-pong buffer.
 
 ### Solution 16-04.11
 
@@ -66,7 +66,17 @@ $\log_21024$ = **10** butterfly units, $10 - 2$ = **8** general complex multipli
 
 (a) The magnitude can grow by at most $N = 2^{12}$ (a full-scale DC input at bin 0), so $12 + 12$ = **24** bits.
 
-(b) An on-bin cosine of amplitude $A$ gives $\lvert X\rvert = AN/2$; with 1/2 per stage the output is $X/N$, so $A/2$ = **1023.5** (1023 or 1024 after rounding), which needs 10 magnitude bits plus the sign: **11** of the 12 bits. The scaling costs one bit of headroom for this signal and adds rounding noise at every stage (16-10).
+(b) An on-bin cosine of amplitude $A$ gives $\lvert X\rvert = AN/2$; with 1/2 per stage the output is $X/N$, so $A/2$ = **1023.5** (1023 or 1024 after rounding), half of full scale (−6.02 dB): **11** of the 12 bits are used, one bit of headroom lost. (Strictly, 1024 needs 11 magnitude bits; it is the halving relative to the 2047 full scale that matters.) The scaling also adds rounding noise at every stage (16-04 §3.8).
+
+### Solution 16-04.13
+
+(a) $W_8^1b = (23170 - j23170)(26000 + j26000)/2^{15}$: the real part is $2 \times 23170 \times 26000/32768 = 36768.8$, rounded to **36769**, and the imaginary part is $0$. The twiddle rotates all of $b$'s magnitude, $\sqrt2 \times 26000$, onto the real axis.
+
+(b) $(a + Wb)/2 = (20000 + 36769) \gg 1$ = **28384** and $(a - Wb)/2 = (20000 - 36769) \gg 1$ = **−8385** (the shift floors $-8384.5$); both imaginary outputs are 0. Both fit in 16 bits.
+
+(c) The sum output overflows when $(a + 36769) \gg 1 > 32767$, that is $a + 36769 > 65535$: the largest safe real $a$ is **28766**.
+
+(d) Halving compensates a growth of 2 per stage, but one component can grow by up to $1 + \sqrt2$ = 2.41 in a stage when the twiddle lines up $b$'s magnitude with $a$ (16-04 §3.8, Example 16-04.5). A full-scale $a$ with this $b$ overflows despite the halving: a guard bit, saturation or block floating point is needed.
 
 ---
 
@@ -110,3 +120,7 @@ $\log_21024$ = **10** butterfly units, $10 - 2$ = **8** general complex multipli
 | 16-04.12a | word length without scaling | 24 | bits |
 | 16-04.12b | scaled on-bin output | 1023.5 | — |
 | 16-04.12c | bits used | 11 | bits |
+| 16-04.13a | rotated product, real part | 36769 | — |
+| 16-04.13b | sum output | 28384 | — |
+| 16-04.13c | difference output | −8385 | — |
+| 16-04.13d | largest safe real a | 28766 | — |

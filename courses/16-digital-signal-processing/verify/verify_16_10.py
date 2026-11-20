@@ -93,6 +93,8 @@ for B, kl, ks in ((12, "Ex 16-10.2f", "Ex 16-10.2g"), (16, "Ex 16-10.2h", "Ex 16
     v.check(ks, -r.fun)
 v.check("16-10.5a", 10 * math.log10(3 * 4**16 / 16))
 v.check("16-10.5b", sqnr_tot(4, 16))
+from scipy.stats import norm as _norm  # noqa: E402
+v.check("16-10.5c", 2 * ((1 + 16) * _norm.sf(4) - 4 * _norm.pdf(4)))
 
 # ---------------------------------------------------------------------------------------- Example 3
 N, k0 = 4096, 67
@@ -169,6 +171,8 @@ v.check("Ex 16-10.4j", min(F for F in range(10, 24) if meets(rnd(hm, F))))
 v.check("Ex 16-10.4k", atten(rnd(hm, 14)))
 v.check("16-10.8a", 20 * math.log10(math.sqrt(101) * 2.0**-12 / math.sqrt(12)))
 v.check("16-10.8b", 20 * math.log10(101 * 2.0**-13))
+v.check("16-10.8c", math.sqrt(101) * 2.0**-12 / math.sqrt(12))
+v.check("16-10.8d", 101 * 2.0**-13)
 
 # ---------------------------------------------------------------------------------------- Example 5 and Problem 9
 
@@ -212,8 +216,8 @@ v.check("16-10.1b", 2.0**-31)
 v.check("16-10.1c", next(I for I in range(1, 20) if 2 ** (I - 1) > 20))
 v.check("16-10.1d", next(F for F in range(1, 30) if 2.0**-F <= 0.001))
 v.check("16-10.1e", 6 + 10)
-v.check("16-10.2a", 6.02 * 10 + 1.76)
-v.check("16-10.2b", 6.02 * 14 + 1.76)
+v.check("16-10.2a", 10 * math.log10(1.5 * 4**10))
+v.check("16-10.2b", 10 * math.log10(1.5 * 4**14))
 v.check("16-10.2c", (100 - 1.76) / 6.02)
 v.check("16-10.2d", math.ceil((100 - 1.76) / 6.02))
 rng = np.random.default_rng(3)
@@ -274,6 +278,11 @@ v.check("16-10.12b", 100 * (nearest(BF16, 0.3) - 0.3) / 0.3)
 v.check("16-10.12c", 100 * (float(np.float16(0.3)) - 0.3) / 0.3)
 v.check("16-10.12d", min(nearest(E4M3, 1000), 448))
 v.check("16-10.12e", nearest(E5M2, 1000))
+v.check("16-10.12f", nearest(E4M3, 0.3))
+v.assert_true("E5M2 rounds 0.3 to the same 0.3125", nearest(E5M2, 0.3) == nearest(E4M3, 0.3))
+v.check("16-10.12g", nearest(BF16, 0.3))
+v.check("16-10.12h", float(np.float16(0.3)))
+v.check("16-10.12i", 100 * (nearest(E5M2, 1000) - 1000) / 1000)
 v.assert_true("E5M2 rounds 0.3 like E4M3, to 0.3125", nearest(E5M2, 0.3) == 0.3125 == nearest(E4M3, 0.3))
 
 # ---------------------------------------------------------------------------------------- Lab: 6 dB per bit

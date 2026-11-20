@@ -58,6 +58,8 @@ v.check("16-11.5a", (Tm + Ta) / 4)
 v.check("16-11.5b", 1 / ((Tm + Ta) / 4))
 v.check("16-11.4a", max((Tm + 2 * Ta) / 1, (Tm + 2 * Ta) / 2))
 v.check("16-11.4b", 1000 / (Tm + 2 * Ta))
+v.check("16-11.4c", hw.iteration_bound([(2.0 + 0.5, 1), (2.0 + 0.5 + 0.5, 2)]))
+v.check("16-11.4d", 1000 / hw.iteration_bound([(2.0 + 0.5, 1), (2.0 + 0.5 + 0.5, 2)]))
 rng = np.random.default_rng(16)
 x = rng.standard_normal(1000)
 ref = signal.lfilter([1], [1, -0.9], x)
@@ -91,7 +93,10 @@ for val, key in ((0.875, "16-11.3a"), (0.9375, "16-11.3b")):
 # ---------------------------------------------------------------------------------------- energy
 E = {"mul8": 0.2, "add8": 0.03, "mul32": 3.1, "add32": 0.1, "fmul32": 3.7, "fadd32": 0.9, "instr": 70.0}   # pJ, R-208
 v.check("Txt 16-11.d", E["mul32"] / E["mul8"])
-v.check("16-11.9a", E["mul8"] + E["add8"])
+v.check("16-11.9a", E["mul8"] + E["add32"])  # 8-bit multiply into a 32-bit accumulator
+v.check("16-11.9f", (E["mul8"] + E["add32"]) * 1e9 * 1e-12 * 1e3)
+v.check("16-11.9g", (E["mul32"] + E["add32"]) * 1e9 * 1e-12 * 1e3)
+v.check("16-11.9h", (E["fmul32"] + E["fadd32"]) * 1e9 * 1e-12 * 1e3)
 v.check("16-11.9b", E["mul32"] + E["add32"])
 v.check("16-11.9c", E["fmul32"] + E["fadd32"])
 v.check("16-11.9d", 1300 / (E["mul32"] + E["add32"]))
@@ -191,6 +196,10 @@ def worst_fixed(codes, **kw):
 fx, fy = fixed(round(30 / 180 * 2**15))
 v.check("Ex 16-11.5h", fx)
 v.check("Ex 16-11.5i", fy)
+v.check("Ex 16-11.5m", fx / 2**14)
+v.check("Ex 16-11.5n", fy / 2**14)
+v.check("Ex 16-11.5o", fx / 2**14 - math.cos(math.pi / 6))
+v.check("Ex 16-11.5p", fy / 2**14 - 0.5)
 v.assert_true("lab fixed-point model agrees on every test angle", all(fixed(t) == hw.cordic_fixed(t, 14)[:2] for t in mv.angles))
 errs = []
 for t in mv.angles:

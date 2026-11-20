@@ -80,7 +80,7 @@ $$
 \text{SQNR}_{\text{granular}} = \frac{1/L^2}{\Delta^2/12} = \frac{3 \times 2^{2N}}{L^2}, \qquad 10\log_{10}(\cdot) = 6.02N + 4.77 - 20\log_{10}L .
 $$
 
-At $L = 4$ this is $6.02N - 7.27$ dB. But clipping adds noise too: every sample beyond full scale contributes $(\lvert x\rvert - 1)^2$. For a Gaussian, the clipping noise power is $2\sigma^2\big[(1 + L^2)Q(L) - L\,\phi(L)\big]$, where $\phi$ is the standard normal density and $Q$ its tail probability (03-02). Granular noise falls as $L$ falls (bigger signal); clipping noise rises steeply. The total has an optimum (Example 16-10.2): about $L = 5$ at 12 bits and $L = 6$ at 16 bits, because finer quantization makes clipping relatively more costly. Loading is why OFDM transmitters, wideband ADCs and AI activations are all scaled with explicit "headroom" or calibration.
+At $L = 4$ this is $6.02N - 7.27$ dB. But clipping adds noise too: every sample beyond full scale contributes $(\lvert x\rvert - 1)^2$. For a Gaussian, the clipping noise power is $2\sigma^2\big[(1 + L^2)Q(L) - L\,\phi(L)\big]$, where $\phi$ is the standard normal density and $Q(\cdot)$ here its tail probability (03-02), not the quantizer. Granular noise *relative to the signal* falls as $L$ falls (the granular noise stays at $\Delta^2/12$ while the signal grows); clipping noise rises steeply. The total has an optimum (Example 16-10.2): about $L = 5$ at 12 bits and $L = 6$ at 16 bits, because finer quantization makes clipping relatively more costly. Loading is why OFDM transmitters, wideband ADCs and AI activations are all scaled with explicit "headroom" or calibration.
 
 ![SQNR against loading factor](../../../assets/figures/16-10/loading.svg)
 
@@ -105,7 +105,7 @@ $\sum g^2$ is the **noise gain** of that path. Contributions from independent ro
 **FIR filters.** Rounding each of $N$ coefficients to step $\Delta_c$ adds an error filter $\Delta h[n]$, so the response error is $\Delta H(e^{j\omega}) = \sum_n\Delta h[n]e^{-j\omega n}$. Two estimates bracket it:
 
 - worst case: $\lvert\Delta H\rvert \le \sum\lvert\Delta h\rvert \le N\Delta_c/2$;
-- statistical: with independent uniform errors, $\Delta H$ has rms $\sqrt{N}\,\Delta_c/\sqrt{12}$ at each frequency.
+- statistical: with independent uniform errors, $\Delta H$ has rms $\sqrt{N}\,\Delta_c/\sqrt{12}$ on average over frequency. For a linear-phase filter the errors come in equal symmetric pairs, so the rms is up to $\sqrt2$ (3 dB) higher near $\omega = 0$ and $\pi$ and lower in between.
 
 The rms estimate is optimistic for the *peak* over thousands of frequencies, and any error adds to the design's own ripple. A filter designed with no margin cannot survive much quantization: the 137-tap equiripple filter of 16-06 (60.36 dB designed) needs **18** fractional bits to stay above 60 dB, while a 149-tap redesign with 6 dB of stopband margin keeps 60 dB with **14** (Example 16-10.4). Design margin is cheaper than coefficient bits. Linear phase survives quantization: rounding a symmetric filter gives a symmetric filter.
 
@@ -125,7 +125,7 @@ $$
 
 ### 3.7 Limit cycles
 
-**Granular (zero-input) limit cycles.** Take $y[n] = Q(ay[n - 1])$ with rounding, in units of the LSB, and no input. A value $k$ stays fixed if rounding $ak$ returns $k$, which happens when $\lvert ak - k\rvert \le 1/2$, that is
+**Granular (zero-input) limit cycles.** Take $y[n] = Q(ay[n - 1])$ with rounding, in units of the LSB, and no input. A value $k$ stays fixed if rounding $ak$ returns $k$, which happens when $\lvert ak - k\rvert \le 1/2$; for $a < 0$ the output instead alternates, $Q(ak) = -k$, which needs $\lvert ak + k\rvert = \lvert k\rvert(1 - \lvert a\rvert) \le 1/2$. Both cases give
 
 $$
 \lvert k\rvert \le \frac{1}{2(1 - \lvert a\rvert)} ,
@@ -169,11 +169,11 @@ Optimizing $L$: the total SQNR peaks at $L$ = **5.0**, with **62.7** dB. At 16 b
 
 **Setup.** A sine of amplitude 1.5 LSB is quantized by rounding (4096-sample coherent record). Measure the harmonics and the error variance, then repeat with ±1 LSB TPDF dither added before rounding.
 
-**Solution.** Undithered, the error repeats with the signal: the third harmonic is at **−14.6** dB relative to the fundamental, the fifth at −31.3 dB and the seventh at −19.2 dB (even harmonics vanish by symmetry), and the error variance is **0.108** LSB² instead of the model's $1/12 = 0.0833$. With TPDF dither the harmonics are gone (every harmonic bin sits in the noise floor, below −37 dB), and the error variance is **0.254** LSB², close to the predicted $1/4$: about 4.8 dB more noise, but noise rather than distortion.
+**Solution.** Undithered, the error repeats with the signal: the third harmonic is at **−14.6** dB relative to the fundamental, the fifth at −31.3 dB and the seventh at −19.2 dB (even harmonics vanish by symmetry), and the error variance is **0.108** LSB² instead of the model's $1/12 = 0.0833$. With TPDF dither the harmonics are gone (every harmonic bin sits in the noise floor, about −40 dBc per bin on average; the exact level of any one bin varies by a few dB with the noise realization), and the error variance is **0.254** LSB², close to the predicted $1/4$: about 4.8 dB more noise, but noise rather than distortion.
 
 **Units check.** Error variance in LSB²; harmonic levels in dB relative to the fundamental (dBc).
 
-**Sanity check.** A 1.5 LSB sine visits only the levels −2 to 2: the quantized waveform is a coarse staircase that repeats every period, so its error must be periodic, hence harmonic.
+**Sanity check.** A 1.5 LSB sine visits only the three levels −1, 0 and +1 (±1.5 would round to ±2 only at an exact peak, which the samples miss): the quantized waveform is a coarse staircase that repeats every period, so its error must be periodic, hence harmonic.
 
 ### Example 16-10.4 · How many coefficient bits? (tier C)
 
@@ -197,7 +197,7 @@ The original design first meets both specifications at $F$ = **18**. The statist
 
 **Solution.** (a) With rounding, $a = 0.9$ decays 20, 18, 16, 14, 13, 12, … and sticks at **5** LSB: $0.9 \times 5 = 4.5$ rounds back to 5. The dead-band bound is $1/(2 \times 0.1) = 5$. With $a = -0.9$ the output settles into an alternation ±**4**. With magnitude truncation both decay to **0**.
 
-(b) With wrap-around, the section never recovers: its output keeps swinging up to **31,039** LSB of 32,768, a full-scale oscillation with no input. With saturation, the response decays into a granular limit cycle of at most **3** LSB (its steady state; at 200 samples a transient of 9 LSB is still visible, a reminder to measure limit cycles only after the decay).
+(b) With wrap-around, the section never recovers: its output keeps swinging up to **31,039** LSB of 32,768, a full-scale oscillation with no input. With saturation, the response decays into a granular limit cycle of at most **3** LSB (its steady state; over samples 150 to 199 a transient of up to 9 LSB is still visible, a reminder to measure limit cycles only after the decay).
 
 **Units check.** LSB units throughout (Q1.15 has 32,768 LSB per unit).
 
@@ -312,8 +312,8 @@ The lab, [labs/16-10-lab](../labs/16-10-lab/README.md), provides `quant.py`: qua
 
 - **Fixed-point DSP libraries document their word lengths.** Arm's CMSIS-DSP Q31 biquads accumulate in 64 bits with "only a single guard bit" and require inputs scaled into [−0.25, 0.25), while the Q15 versions accumulate in a 34.30 format with "no risk of internal overflow" (R-241) **[Established]**: the guard-bit and scaling arithmetic of §3.1 and §3.6, made explicit.
 - **Audio converters compute their filters in wide fixed point.** TI's TLV320ADC5140 biquads use 32-bit 1.31 coefficients and 32-bit fixed-point arithmetic (R-240) **[Established]**, leaving ample headroom below a 24-bit audio sample.
-- **AI accelerators use floating point with three or four significand bits.** The Open Compute Project's 8-bit floating-point specification (OFP8, revision 1.0 of June 2023, revision 1.1 of January 2026; contributors AMD, Arm, Google, Intel, Meta and NVIDIA, joined by AWS in 1.1) defines E4M3 (exponent bias 7, maximum 448, no infinities, a single NaN pattern per sign) and E5M2 (bias 15, maximum 57,344, IEEE-style infinities and NaNs), with round-to-nearest-even conversion and a saturating mode (R-248) **[Established]**. The maxima follow from the bit patterns: E4M3's largest normal is $1.110_2 \times 2^8 = 1.75 \times 256$ = **448**, E5M2's is $1.11_2 \times 2^{15}$ = **57,344**. Floating point's rounding error is *relative*: with $p$ significand bits (including the implicit one) the error is at most $2^{-p}$ of the value, **6.25**% for E4M3 ($p = 4$), **12.5**% for E5M2, **0.39**% for bfloat16 ($p = 8$; 1 sign, 8 exponent and 7 stored mantissa bits, with float32's exponent range, R-251) and **0.049**% for IEEE binary16 ($p = 11$, maximum **65,504**; IEEE 754-2019 is the active edition and a revision project was approved in 2024, R-250) **[Established]**.
-- **Block scaling is §3.3's loading, applied every 32 values.** The OCP Microscaling (MX) specification (v1.0, September 2023; v1.1, October 2026) stores blocks of $k = 32$ elements that share one 8-bit power-of-two scale (E8M0, renamed UE8M0 in v1.1), with element formats MXFP8 (E5M2 or E4M3), MXFP6 (E3M2 or E2M3), MXFP4 (E2M1) and MXINT8; "the scale factor X is shared across all k elements" (R-249) **[Established]**. A block costs $w + kd$ bits, so MXFP4 averages $(8 + 32 \times 4)/32$ = **4.25** bits per element. The shared scale is block floating point (16-04): it re-loads each block to its own peak, so a block of small values is not quantized against the largest value in the tensor.
+- **AI accelerators use floating point with three or four significand bits.** The Open Compute Project's 8-bit floating-point specification (OFP8, revision 1.0 of June 2023, revision 1.1 of January 2026; contributors AMD, Arm, Google, Intel, Meta and NVIDIA, joined by AWS in 1.1) defines E4M3 (exponent bias 7, maximum 448, no infinities, a single NaN pattern per sign) and E5M2 (bias 15, maximum 57,344, IEEE-style infinities and NaNs), with round-to-nearest-even conversion and a saturating mode (R-248) **[Established]**. The maxima follow from the bit patterns: E4M3's largest normal is $1.110_2 \times 2^8 = 1.75 \times 256$ = **448**, E5M2's is $1.11_2 \times 2^{15}$ = **57,344**. Floating point's rounding error is *relative*: for normal (non-subnormal) values, with $p$ significand bits (including the implicit one) the error is at most $2^{-p}$ of the value, **6.25**% for E4M3 ($p = 4$), **12.5**% for E5M2, **0.39**% for bfloat16 ($p = 8$; 1 sign, 8 exponent and 7 stored mantissa bits, with float32's exponent range, R-251) and **0.049**% for IEEE binary16 ($p = 11$, maximum **65,504**; IEEE 754-2019 is the active edition and a revision project was approved in 2024, R-250) **[Established]**.
+- **Block scaling is §3.3's loading, applied every 32 values.** The OCP Microscaling (MX) specification (v1.0, September 2023; a v1.1 document dated October 2026, whose approval status was not confirmed, R-249) stores blocks of $k = 32$ elements that share one 8-bit power-of-two scale (E8M0, renamed UE8M0 in v1.1), with element formats MXFP8 (E5M2 or E4M3), MXFP6 (E3M2 or E2M3), MXFP4 (E2M1) and MXINT8; "the scale factor X is shared across all k elements" (R-249) **[Established]**. A block costs $w + kd$ bits, so MXFP4 averages $(8 + 32 \times 4)/32$ = **4.25** bits per element. The shared scale is block floating point (16-04): it re-loads each block to its own peak, so a block of small values is not quantized against the largest value in the tensor.
 - **Deeper:** see companion repo *LLM Inference Engineering* for how these formats are calibrated and what accuracy they keep on real models.
 
 ### Why it matters commercially
@@ -323,7 +323,7 @@ Word length is one of the largest levers on silicon area and power in signal pro
 ### Marketing vs Reality
 
 - **"24-bit audio"** usually means a 24-bit data format, not 24 bits of SNR (146 dB). Ask for the measured dynamic range.
-- **"16-bit ADC"** quoted next to a modulated signal's SNR: subtract the crest-factor and clipping penalty (11 dB for Gaussian-like signals at 12 bits in Example 16-10.2) before comparing.
+- **"16-bit ADC"** quoted next to a modulated signal's SNR: subtract the crest-factor and clipping penalty (11 to 13 dB for Gaussian-like signals: 11.3 dB at 12 bits and 12.7 dB at 16 bits in Example 16-10.2) before comparing.
 - **"Bit-exact with the floating-point model"** is impossible; ask what tolerance was verified, with which test vectors, including full-scale and silent inputs.
 - **"Same accuracy at half the bits"** claims for low-precision formats depend on scaling (per tensor, per channel, per block) and on calibration data; ask how scales are chosen and what the error is on the customer's workload.
 

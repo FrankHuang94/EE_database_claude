@@ -60,6 +60,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Word length.** A 4096-point FFT processes 12-bit signed real ADC samples. (a) How many bits must the internal words have to rule out overflow without scaling? (b) With 1/2 scaling at every stage, what output magnitude does a full-scale on-bin cosine (amplitude 2047) produce, and how many bits of the 12-bit output range does it use?
 
+### Problem 16-04.13 [B]
+
+**The overflow that halving misses.** *(lab)* A butterfly of the lab's 8-point Q1.15 FFT (twiddle $W_8^1 = 23170 - j23170$, products rounded by $2^{15}$, outputs halved by an arithmetic shift) receives $b = 26000 + j26000$. (a) Compute $W_8^1b$. (b) For $a = 20000$ (real), compute both outputs before saturation. (c) Find the largest real $a$ for which the sum output stays within 16 bits. (d) Explain why halving every stage does not prevent this overflow.
+
 ---
 
 ## Objective coverage
@@ -71,4 +75,4 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 3. Operation counts, radix-4, real inputs | 1, 6, 7, 8 |
 | 4. FFTs by hand; inverse via forward | 4, 5, 9 |
 | 5. FFT hardware sizing | 10, 11 |
-| 6. Word growth and scaling | 12 |
+| 6. Word growth and scaling | 12, 13 |

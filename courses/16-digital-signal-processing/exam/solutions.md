@@ -113,13 +113,19 @@ Check: $X[0] = \sum x = 2$, and $X[3] = X[1]^*$ as it must for real input.
 
 ### Solution 10
 
-(a) $6.02 \times 14 + 1.76$ = **86.04** dB (from the exact constants, $10\log_{10}(1.5 \times 4^{14})$ = **86.05** dB).
+(a) Prewarp: $K = \tan(\pi f_c/f_s) = \tan(\pi/8)$ = **0.41421**. Substituting $s = \Omega_c(1 - z^{-1})/(K(1 + z^{-1}))$ and clearing fractions gives, with $d = 1 + \sqrt2K + K^2 = 1.75736$:
 
-(b) $h[n] = 0.95^n$, so $\sum h^2 = 1/(1 - 0.95^2) = 1/0.0975$ = **10.26**, or **10.11** dB. Rounding noise injected at the input of this section is amplified about tenfold in power.
+$$
+b_0 = b_2 = \frac{K^2}{d},\quad b_1 = 2b_0,\quad a_1 = \frac{2(K^2 - 1)}{d},\quad a_2 = \frac{1 - \sqrt2K + K^2}{d} .
+$$
+
+So $b_0 = b_2$ = **0.09763**, $b_1$ = **0.19526**, $a_1$ = **−0.94281**, $a_2$ = **0.33333** (Example 16-07.3). Check: $\sum b/\sum a = 0.39052/0.39052 = 1$ at DC, and the zeros at $z = -1$ give a null at Nyquist.
+
+(b) Noise gain $(1 + a_2)/\big((1 - a_2)[(1 + a_2)^2 - a_1^2]\big) = 1.33333/(0.66667 \times 0.88889)$ = **2.25**, or **3.52** dB. The rounding error has variance $\Delta^2/12$ (one LSB is $\Delta$), so the output noise is $\sqrt{2.25/12}$ = **0.433** LSB rms. A gentle low-pass section amplifies its own rounding noise only slightly; a sharp one (poles near the circle) can amplify it by tens of dB (16-08 Problem 12, 66 times).
 
 (c) A value $k$ (in LSB) is a fixed point when rounding $0.9k$ returns $k$, which requires $\lvert 0.1k\rvert \le 1/2$: $\lvert k\rvert \le 1/(2(1 - 0.9))$ = **5** LSB. Starting from 20 LSB, the output decays to 5 and stays there ($0.9 \times 5 = 4.5$ rounds back to 5).
 
-(d) With wrap-around, an overflow turns a large positive value into a large negative one; the feedback treats the wrapped value as a real state and can sustain a full-scale oscillation with no input (an overflow limit cycle), even though the filter is stable in exact arithmetic. Saturation keeps the error in the same direction as the true value, so it acts like a temporary loss of gain and the response recovers. (CIC integrators are the exception, because the combs undo the wrap exactly; recursive filters have no such cancellation.)
+(d) With wrap-around, an overflow turns a large positive value into a large negative one; the feedback treats the wrapped value as a real state and can sustain a full-scale oscillation with no input (an overflow limit cycle), even though the filter is stable in exact arithmetic. Saturation keeps the output on the same side as the true value, clipped toward it instead of jumping to the opposite extreme, so it acts like a temporary loss of gain and the response recovers. (CIC integrators are the exception, because the combs undo the wrap exactly; recursive filters have no such cancellation.)
 
 ### Solution 11
 
@@ -135,7 +141,7 @@ Check: $X[0] = \sum x = 2$, and $X[3] = X[1]^*$ as it must for real input.
 
 (a) Elliptic: the first section has five non-trivial coefficients ($b_0 = b_2$ carry the gain, $b_1$, $a_1$, $a_2$) and the second three ($b_1$, $a_1$, $a_2$): **8** multiplications per output. FIR: 15 taps fold into 7 pairs plus the centre tap: **8** multiplications per output. They tie. (The 15-tap design has **0.731** dB peak-to-peak ripple and **42.7** dB attenuation; 14 taps gives **1.02** dB of ripple, just outside the mask.)
 
-(b) The FIR delays every frequency by $(15 - 1)/2$ = **7** samples (0.875 ms). The elliptic filter is faster at low frequencies (2.69 samples at DC) but its delay doubles to 14.96 samples near the band edge, so a waveform with energy across the passband is smeared by **12.28** samples of delay spread. The FIR has none.
+(b) The FIR delays every frequency by $(15 - 1)/2$ = **7** samples (0.875 ms). The elliptic filter is faster at low frequencies (2.69 samples at DC) but its delay doubles to 14.96 samples near the band edge, so a waveform with energy across the passband is smeared by about **12.3** samples of delay spread. The FIR has none.
 
 (c) The FIR's order scales as $1/\Delta\omega$ and with $\log(1/\delta_p\delta_s)$; the elliptic order grows only logarithmically with sharpness. Here the transition is $\pi/4$ rad/sample, 6 times wider than the audio example's 0.1309, and the tolerances are looser (1 dB and 40 dB against 0.1 dB and 60 dB). The equiripple estimate falls from **129.5** for the audio specification to **10.63** here, while the elliptic order only halves (8 to 4). Wide transitions relative to $f_s$ remove the IIR filter's advantage.
 
@@ -268,10 +274,14 @@ A strong answer computes the three inconsistencies first (energy per MAC, bits f
 | X16.9d | polyphase multiplication rate | 3.072 | M/s |
 | X16.9e | CIC DC gain | 512 | — |
 | X16.9f | CIC register growth | 9 | bits |
-| X16.10a | 14-bit SQNR, rounded constants | 86.04 | dB |
-| X16.10b | 14-bit SQNR, exact | 86.05 | dB |
-| X16.10c | noise gain | 10.26 | — |
-| X16.10d | noise gain | 10.11 | dB |
+| X16.10a | prewarp constant K | 0.41421 | — |
+| X16.10b | b0 = b2 | 0.09763 | — |
+| X16.10c | b1 | 0.19526 | — |
+| X16.10d | a1 | −0.94281 | — |
+| X16.10f | a2 | 0.33333 | — |
+| X16.10g | noise gain | 2.25 | — |
+| X16.10h | noise gain | 3.52 | dB |
+| X16.10i | output rounding noise | 0.433 | LSB |
 | X16.10e | dead band | 5 | LSB |
 | X16.11a | product width | 36 | bits |
 | X16.11b | accumulator width | 45 | bits |
@@ -288,7 +298,7 @@ A strong answer computes the three inconsistencies first (energy per MAC, bits f
 | X16.12g | 15-tap FIR ripple | 0.731 | dB |
 | X16.12h | 15-tap FIR attenuation | 42.7 | dB |
 | X16.12i | 14-tap FIR ripple | 1.02 | dB |
-| X16.12j | elliptic delay spread | 12.28 | samples |
+| X16.12j | elliptic delay spread | 12.3 | samples |
 | X16.14a | MAC rate | 6.144 | M/s |
 | X16.14b | energy per MAC | 0.651 | pJ |
 | X16.14c | ratio to 3.2 pJ | 4.9 | — |

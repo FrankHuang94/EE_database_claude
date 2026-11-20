@@ -4,7 +4,8 @@
 vectors.hex holds, for each test, 32 four-digit hex words: xr[0..7], xi[0..7], then the expected Xr[0..7], Xi[0..7],
 all as 16-bit two's complement. Tests: an impulse, full-scale DC, the alternating sequence, an on-bin complex tone,
 a full-scale alternating input, a full-scale input found by a seeded search that drives a butterfly into
-saturation, and 60 seeded random vectors.
+negative saturation, a constructed input that reproduces Example 16-04.5 (a = 32767, b = 32767 + j32767 at a
+W8^1 butterfly) and saturates positively, and 60 seeded random vectors.
 Run from this directory:  python make_vectors.py
 """
 from __future__ import annotations
@@ -33,6 +34,8 @@ while True:
     if fft.SAT_EVENTS[0] > before:
         tests.append((xr, xi))
         break
+# Example 16-04.5's positive saturation, constructed: the last-stage butterfly sees a = 32767 + j0, b = 32767 + j32767
+tests.append(([32767, 32767, 0, -32768, -32768, -32768, 0, 32767], [0, 32767, 32767, 32767, 0, -32768, -32768, -32768]))
 for _ in range(60):
     tests.append((list(map(int, rng.integers(-30000, 30001, 8))), list(map(int, rng.integers(-30000, 30001, 8)))))
 

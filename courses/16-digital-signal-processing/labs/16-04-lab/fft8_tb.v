@@ -3,7 +3,7 @@
 `timescale 1ns/1ps
 `default_nettype none
 module fft8_tb;
-    localparam integer NTEST = 66;
+    localparam integer NTEST = 67;
     reg  [15:0] mem [0:NTEST*32-1];
     reg  [16*8-1:0] xr_flat, xi_flat;
     wire [16*8-1:0] yr_flat, yi_flat;
