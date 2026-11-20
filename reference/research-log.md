@@ -216,6 +216,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-208 | Energy per operation at 45 nm (Horowitz, ISSCC 2014) | Nov 2026 |
 | R-209 | RISC-V ELF psABI: calling convention, relocations and relaxation | Nov 2026 |
 | R-210 | Number formats: IEEE 754-2019, bfloat16 and OCP MX (primary re-check) | Nov 2026 |
+| R-211 | Sail formal specification of the RISC-V ISA | Nov 2026 |
 
 ---
 
@@ -2165,3 +2166,9 @@ R&D % = R&D ÷ revenue.
 - **OCP MX v1.0 (Sep 2023), read directly:** contributors AMD, Arm, Intel, Meta, Microsoft, NVIDIA and Qualcomm; MXFP8 (E5M2/E4M3), MXFP6 (E3M2/E2M3), MXFP4 (E2M1) and MXINT8, each with k = 32 and an E8M0 scale; "each block of k elements can be encoded in (w + kd) bits"; E8M0 has no Inf and a single NaN; E2M1 has bias 1, maximum ±6.0, no Inf or NaN. §6.1–6.2: the dot product's "internal precision … and order of operations is implementation-defined". §6.3 conversion: "Set X to be the largest power-of-two less than or equal to max(|Vi|), divided by the largest power-of-two representable in the element data type"; elements are quantized with roundTiesToEven, and normal numbers beyond the element maximum are clamped. MXINT8 elements carry an implicit scale (one sign bit, one integer bit, six fractional bits). [OCP MX v1.0 (PDF)](https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf)
 - **RISC-V M and F chapters (manual 20260120):** division by zero returns an all-ones quotient and the dividend as remainder; signed overflow returns the dividend and remainder 0; rounding modes RNE, RTZ, RDN, RUP, RMM; canonical NaN 0x7fc00000; tininess detected after rounding (see R-201 for the manual).
 - **Derived here (14-04):** the p² multiplier-area model (bfloat16 about half of FP16 and a ninth of FP32), consistent with Google's statements; all arithmetic results are machine-checked in verify_14_04.py.
+
+## R-211 · Sail formal specification of the RISC-V ISA
+
+*Read on 20 Nov 2026 from the repository README (primary); tagged [Established].*
+
+- "This repository contains a formal specification of the RISC-V architecture, written in Sail. It has been adopted by RISC-V International." "The model specifies assembly language formats of the instructions, the corresponding encoders and decoders, and the instruction semantics." Given a Sail specification, the tooling can "generate executable emulators" among other uses. [riscv/sail-riscv README](https://github.com/riscv/sail-riscv/blob/master/README.md)

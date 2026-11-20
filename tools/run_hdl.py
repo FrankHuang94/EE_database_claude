@@ -3,7 +3,7 @@
 
 Convention: a testbench file is named `*_tb.v` or `*_tb.sv`. It is compiled with
 every non-testbench `.v`/`.sv` file in the same directory using Icarus Verilog
-(`iverilog -g2012`), then run with `vvp`. It passes if the output contains
+(`iverilog -g2012`, with the testbench's directory on the include path), then run with `vvp` in that directory. It passes if the output contains
 `TEST PASSED` and contains neither `TEST FAILED` nor `ERROR`.
 
 Design (non-testbench) files are also linted with `verilator --lint-only -Wall`
@@ -35,7 +35,7 @@ def main() -> int:
         rel = tb.relative_to(ROOT)
         with tempfile.TemporaryDirectory() as tmp:
             exe = Path(tmp) / "sim.vvp"
-            c = subprocess.run(["iverilog", "-g2012", "-o", str(exe), str(tb), *map(str, designs)],
+            c = subprocess.run(["iverilog", "-g2012", "-I", str(d), "-o", str(exe), str(tb), *map(str, designs)],
                                capture_output=True, text=True)
             if c.returncode != 0:
                 failed += 1

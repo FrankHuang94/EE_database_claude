@@ -5427,3 +5427,36 @@
 - term: Requantization
   definition: Converting a wide integer accumulator result back to a narrow format by multiplying by the combined scale factors (usually a fixed-point multiply and shift) and rounding.
   chapter: "14-04"
+# ---------------------------------------------------------------- 14-05
+- term: Datapath
+  definition: The part of a processor that holds and transforms data — program counter, memories, register file, ALU, adders and multiplexers — steered by the control unit.
+  chapter: "14-05"
+  see_also: [Control unit]
+- term: Control unit
+  definition: The combinational (or sequential) logic that decodes each instruction and sets the datapath's multiplexer selects and write enables; in RISC-V, a main decoder on the opcode plus an ALU decoder.
+  chapter: "14-05"
+  see_also: [Main decoder, Datapath]
+- term: Program counter (PC)
+  definition: The register holding the address of the instruction being executed; it advances by 4 or is loaded with a branch or jump target each instruction.
+  chapter: "14-05"
+- term: Harvard architecture
+  definition: An organization with separate instruction and data memories (or caches), so that an instruction can be fetched in the same cycle as a data access.
+  chapter: "14-05"
+- term: Immediate generator
+  definition: The datapath block that reassembles an instruction's scattered immediate bits for its format and sign-extends them to 32 bits.
+  chapter: "14-05"
+- term: Main decoder
+  definition: The part of the control unit that maps the 7-bit opcode to the datapath's control signals (register write, multiplexer selects, memory write, branch, jump).
+  chapter: "14-05"
+  see_also: [Control unit]
+- term: Single-cycle processor
+  definition: A processor that completes every instruction in one clock cycle (CPI = 1), so its clock period is set by the slowest instruction, typically a load.
+  chapter: "14-05"
+  see_also: [Multi-cycle processor]
+- term: Multi-cycle processor
+  definition: A processor that breaks each instruction into short steps of one clock cycle each, letting instructions take different numbers of cycles and reusing one ALU and memory across steps.
+  chapter: "14-05"
+  see_also: [Single-cycle processor]
+- term: Reference model
+  definition: An executable model of the ISA that runs one instruction at a time, used to check a processor design by comparing their results instruction by instruction.
+  chapter: "14-05"

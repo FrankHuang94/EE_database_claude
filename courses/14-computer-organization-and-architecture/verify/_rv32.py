@@ -120,8 +120,9 @@ class Sim:
         for i in range(n):
             self.mem[(a + i) & M32] = val >> 8 * i & 0xFF
 
-    def run(self, limit: int = 10**7, trace: list | None = None) -> int:
-        """Execute until EBREAK/ECALL. If `trace` is a list, append (pc, sp) after every instruction."""
+    def run(self, limit: int = 10**7, trace: list | None = None, wtrace: list | None = None) -> int:
+        """Execute until EBREAK/ECALL. If `trace` is a list, append (pc, sp) after every instruction; if
+        `wtrace` is a list, append (pc, rd, value) for every register write (rd != 0)."""
         x = self.x
         s = lambda u: sx(u, 32)  # noqa: E731
         while True:
@@ -183,6 +184,8 @@ class Sim:
                 self.calls[nxt & M32] = self.calls.get(nxt & M32, 0) + 1
             if res is not None and rd:
                 x[rd] = res & M32
+                if wtrace is not None:
+                    wtrace.append((pc, rd, x[rd]))
             self.pc = nxt & M32
             self.count += 1
             if trace is not None:

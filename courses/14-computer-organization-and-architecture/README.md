@@ -32,7 +32,7 @@ How processors and accelerators are built and why they perform the way they do: 
 | [14-02 · Instruction Set Architecture: RISC-V, Arm and x86](chapters/14-02-isa-risc-v-arm-x86.md) | 10 | ✅ verified | [problems](problems/14-02-problems.md) · [solutions](solutions/14-02-solutions.md) · [lab](labs/14-02-lab/README.md) · [verify](verify/verify_14_02.py) |
 | [14-03 · Assembly and the Compilation Stack](chapters/14-03-assembly-and-the-compilation-stack.md) | 8 | ✅ verified | [problems](problems/14-03-problems.md) · [solutions](solutions/14-03-solutions.md) · [lab](labs/14-03-lab/README.md) · [verify](verify/verify_14_03.py) |
 | [14-04 · Computer Arithmetic and Number Formats](chapters/14-04-computer-arithmetic-and-number-formats.md) | 7 | ✅ verified | [problems](problems/14-04-problems.md) · [solutions](solutions/14-04-solutions.md) · [lab](labs/14-04-lab/README.md) · [verify](verify/verify_14_04.py) |
-| [14-05 · Single-Cycle Datapath and Control](chapters/14-05-single-cycle-datapath.md) | 8 | ⬜ planned | — |
+| [14-05 · Single-Cycle Datapath and Control](chapters/14-05-single-cycle-datapath.md) | 8 | ✅ verified | [problems](problems/14-05-problems.md) · [solutions](solutions/14-05-solutions.md) · [lab](labs/14-05-lab/README.md) · [verify](verify/verify_14_05.py) |
 | [14-06 · Pipelining and Hazards](chapters/14-06-pipelining-and-hazards.md) | 10 | ⬜ planned | — |
 | [14-07 · Branch Prediction and Speculation](chapters/14-07-branch-prediction-and-speculation.md) | 7 | ⬜ planned | — |
 | [14-08 · Out-of-Order and Superscalar Execution](chapters/14-08-out-of-order-and-superscalar.md) | 9 | ⬜ planned | — |
