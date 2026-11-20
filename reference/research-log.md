@@ -232,6 +232,8 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-224 | MLPerf divisions and scenarios | Nov 2026 |
 | R-225 | Geekbench 6 scoring and Geekbench 7 | Nov 2026 |
 | R-226 | Google's first TPU (Jouppi et al., ISCA 2017): weight-stationary matrix unit | Nov 2026 |
+| R-227 | Semiconductor and IC package thermal metrics (TI SPRA953D) | Nov 2026 |
+| R-228 | Silicon thermal properties | Nov 2026 |
 
 ---
 
@@ -2315,3 +2317,21 @@ R&D % = R&D ÷ revenue.
 - **Matrix unit:** "The matrix unit holds one 64 KiB tile of weights plus one for double-buffering (to hide the 256 cycles it takes to shift a tile in)." "Figure 4 shows that data flows in from the left, and the weights are loaded from the top." "The weights are preloaded, and take effect with the advancing wave alongside the first data of a new block."
 - **Dataflow, compared with other work:** "the TPU stores the weight matrix tile while streaming the other input and the pre-activation partial sums" (that is, weight-stationary).
 - **Sparsity:** "This unit is designed for dense matrices. Sparse architectural support was omitted for time-to-deploy reasons."
+
+## R-227 · Semiconductor and IC package thermal metrics (TI SPRA953D)
+
+*Read on 20 Nov 2026 from the PDF on ti.com (primary); tagged [Established].*
+
+- D. Edwards and H. Nguyen, "Semiconductor and IC Package Thermal Metrics," Texas Instruments application note SPRA953D, December 2003, revised March 2024. [PDF](https://www.ti.com/lit/an/spra953d/spra953d.pdf)
+- "In light of the fact that RθJA is not a characteristic of the package by itself but of the package, PCB, and other environmental factors, it is best used as a comparison of package thermal performance between different companies."
+- Measurement conditions are those of the EIA/JESD51 series (JESD51-1, -2, -5, -6, -7, -9 are cited).
+- "In an attempt to provide the user community with a thermal metric to estimate in-use junction temperatures from measured case temperatures, a new thermal metric, ΨJT, has been adopted by the industry (JESD51-2). The metric is defined by the Greek character psi (Ψ) rather than theta (θ) because ΨJT is not a true thermal resistance." "ΨJT should not be used when application of a heat sink is intended."
+
+## R-228 · Silicon thermal properties
+
+*Read on 20 Nov 2026 through web-search excerpts of the pages below; the Ioffe pages could not be fetched directly from this environment, so the values are secondary copies. They are long-established material constants and agree across sources; tagged [Established].*
+
+- Ioffe Institute, *New Semiconductor Materials: Characteristics and Properties*, Si thermal properties: specific heat 0.7 J g⁻¹ °C⁻¹, thermal conductivity 1.3 W cm⁻¹ °C⁻¹, thermal diffusivity 0.8 cm²/s at 300 K. [Si thermal](https://www.ioffe.ru/SVA/NSM/Semicond/Si/thermal.html)
+- Ioffe Si mechanical properties: density 2.329 g/cm³. [Si mechanical](https://www.ioffe.ru/SVA/NSM/Semicond/Si/mechanic.html)
+- V. Palankovski, doctoral thesis, TU Wien, material parameters: κ₃₀₀ = 148 W/(m·K) for Si. [Thesis section](https://www.iue.tuwien.ac.at/phd/palankovski/node34.html)
+- The spread (130 against 148 W/(m·K)) reflects sample purity and measurement method; the chapter quotes the range.

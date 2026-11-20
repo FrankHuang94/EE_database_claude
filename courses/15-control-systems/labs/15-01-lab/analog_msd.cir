@@ -1,0 +1,24 @@
+* Lab 15-01 -- the force-voltage analogue of Example 15-01.1's mass-spring-damper.
+* m = 0.5 kg -> L = 0.5 H; b = 4 N.s/m -> R = 4 ohm; k = 200 N/m -> C = 1/k = 5 mF; a 10 N step -> a 10 V step.
+* Displacement is the capacitor's charge, x = C v(b) (so the keyed metres are volts x 200 here), and velocity is the
+* current, so the peak displacement comes when the current falls through zero: it settles at 0.05 m and peaks at 0.0763 m at t = 0.160 s.
+*
+* EXPECT xpk key:../../chapters/15-01-modeling-dynamic-systems.md#Ex_15-01.1g scale=200 rtol=2e-3
+* EXPECT tpk key:../../chapters/15-01-modeling-dynamic-systems.md#Ex_15-01.1h rtol=5e-3
+* EXPECT xfin key:../../chapters/15-01-modeling-dynamic-systems.md#Ex_15-01.1c scale=200 rtol=2e-3
+
+VF f 0 PWL(0 0 1u 10 10 10)
+VM f m 0
+L1 m a 0.5
+R1 a b 4
+C1 b 0 5m
+
+.control
+tran 0.1m 3
+meas tran xpk max v(b)
+meas tran tpk when i(VM)=0 fall=1
+meas tran xfin avg v(b) from=2.5 to=3
+print xpk tpk xfin
+quit
+.endc
+.end

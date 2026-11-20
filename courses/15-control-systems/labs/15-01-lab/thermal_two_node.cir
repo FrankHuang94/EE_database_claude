@@ -1,0 +1,27 @@
+* Lab 15-01 -- Example 15-01.3's processor thermal network as a circuit (thermal-electrical analogy).
+* Temperature -> voltage (V = deg C), heat flow -> current (A = W), thermal resistance -> resistance (ohm = K/W),
+* thermal capacitance -> capacitance (F = J/K). Ambient is a 30 V source; 100 W steps on at t = 0.
+* Junction: C_J = 5 J/K, R_JC = 0.15 K/W to the case; heat sink: C_H = 300 J/K, R_CA = 0.35 K/W to ambient.
+*
+* EXPECT tj1 key:../../chapters/15-01-modeling-dynamic-systems.md#Ex_15-01.3e rtol=2e-3
+* EXPECT tj5 key:../../chapters/15-01-modeling-dynamic-systems.md#Ex_15-01.3f rtol=2e-3
+* EXPECT tj60 key:../../chapters/15-01-modeling-dynamic-systems.md#Ex_15-01.3g rtol=2e-3
+* EXPECT tj300 key:../../chapters/15-01-modeling-dynamic-systems.md#Ex_15-01.3h rtol=2e-3
+
+VA amb 0 30
+IP 0 j PWL(0 0 1u 100 2000 100)
+CJ j amb 5 IC=0
+RJC j c 0.15
+CH c amb 300 IC=0
+RCA c amb 0.35
+
+.control
+tran 5m 300 uic
+meas tran tj1 find v(j) at=1
+meas tran tj5 find v(j) at=5
+meas tran tj60 find v(j) at=60
+meas tran tj300 find v(j) at=299.999
+print tj1 tj5 tj60 tj300
+quit
+.endc
+.end

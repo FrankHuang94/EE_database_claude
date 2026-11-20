@@ -5888,3 +5888,31 @@
   definition: MLCommons' machine-learning training and inference benchmarks, with a Closed division (reference models, comparable systems) and an Open division, and inference scenarios from single-stream latency to offline throughput.
   chapter: "14-15"
   see_also: [Benchmark]
+
+# ---------------------------------------------------------------- 15-01
+- term: Plant
+  definition: In control engineering, the system being controlled (a motor, a heater, a converter, a chip's thermal path), described by a model of how its outputs respond to its inputs.
+  chapter: "15-01"
+  see_also: [State-space model]
+- term: Force–current analogy
+  definition: The mapping of a mechanical system onto a circuit with force ↔ current and velocity ↔ voltage (mass ↔ C to ground, damping ↔ conductance, stiffness ↔ 1/L); elements sharing a velocity become parallel elements, so the circuit keeps the mechanism's topology.
+  chapter: "15-01"
+  see_also: [Force–voltage analogy]
+- term: Torque constant
+  definition: The ratio K_t of a DC motor's torque to its current (N·m/A); by energy conservation it equals the back-EMF constant K_e (V·s/rad) in SI units.
+  chapter: "15-01"
+  see_also: [Back-EMF]
+- term: Mechanical time constant
+  definition: The time constant RJ/(RB + K²) of a DC motor's speed response when its inductance is neglected; the back-EMF term K²/R usually dominates the damping.
+  chapter: "15-01"
+- term: Model reduction
+  definition: Simplifying a model by dropping states whose dynamics are much faster (or much less important) than those of interest, such as a motor's electrical time constant beside its mechanical one.
+  chapter: "15-01"
+- term: Thermal capacitance
+  definition: The heat a body stores per kelvin of temperature rise, C_th = mc (J/K); the thermal analogue of a capacitor to ground.
+  chapter: "15-01"
+  see_also: [Thermal resistance]
+- term: Junction temperature
+  definition: The temperature of a chip's active devices (T_J), the quantity reliability and performance limits are set on; it exceeds the case and ambient temperatures by the heat flow times the thermal resistances in between.
+  chapter: "15-01"
+

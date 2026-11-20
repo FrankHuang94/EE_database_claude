@@ -27,7 +27,7 @@ Feedback control from modeling to design: transfer functions, time response, roo
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [15-01 · Modeling Dynamic Systems](chapters/15-01-modeling-dynamic-systems.md) | 8 | ⬜ planned | — |
+| [15-01 · Modeling Dynamic Systems](chapters/15-01-modeling-dynamic-systems.md) | 8 | ✅ verified | [problems](problems/15-01-problems.md) · [solutions](solutions/15-01-solutions.md) · [lab](labs/15-01-lab/README.md) · [verify](verify/verify_15_01.py) |
 | [15-02 · Transfer Functions and Block Diagrams](chapters/15-02-transfer-functions-and-block-diagrams.md) | 7 | ⬜ planned | — |
 | [15-03 · Time Response and Specifications](chapters/15-03-time-response.md) | 7 | ⬜ planned | — |
 | [15-04 · Feedback Properties and Steady-State Error](chapters/15-04-feedback-and-steady-state-error.md) | 7 | ⬜ planned | — |
