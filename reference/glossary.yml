@@ -4812,3 +4812,16 @@
   definition: Moving a signal's DC level between directly coupled stages, by alternating NMOS and PMOS stages, by a source or emitter follower (a shift of V_GS or V_BE), or by a fixed drop across diodes or resistors carrying a set current.
   chapter: "12-02"
   see_also: [Multistage amplifier, Level shifter]
+# ---------------------------------------------------------------- 12-03
+- term: Miller theorem
+  definition: An impedance Z bridging two nodes whose voltages satisfy V_2 = AV_1 can be replaced by Z/(1 − A) from node 1 to ground and Z/(1 − 1/A) from node 2 to ground; for a capacitor across an inverting gain −A_v it gives the input capacitance C(1 + A_v).
+  chapter: "12-03"
+  see_also: [Miller effect]
+- term: Overlap capacitance
+  definition: The capacitance between a MOSFET's gate and the source or drain diffusion it slightly overlaps, proportional to the device width; it is essentially all of C_gd in saturation, the capacitance the Miller effect multiplies.
+  chapter: "12-03"
+  see_also: [Miller effect, Junction capacitance]
+- term: Dominant-pole approximation
+  definition: For a transfer function whose denominator is 1 + b_1s + b_2s² + …, with one pole far below the others, the low pole is about 1/b_1 and the next about b_1/b_2; it errs low when the poles are less than about a decade apart.
+  chapter: "12-03"
+  see_also: [Gain-bandwidth product, Miller effect]

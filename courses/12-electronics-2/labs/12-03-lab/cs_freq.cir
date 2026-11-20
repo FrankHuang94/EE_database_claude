@@ -1,0 +1,30 @@
+* Lab 12-03 -- Example 12-03.2's common-source stage, small-signal, in ngspice.
+* g_m = 1 mA/V (a VCCS), C_gs = 72.6667 fF, C_gd = 6 fF, R_S = 10 kohm, R_L = 20 kohm, C_L = 100 fF.
+* AC sweep for the -3 dB frequency; pole-zero analysis for the two poles and the right-half-plane zero
+* (ngspice reports them in rad/s; the lets convert to hertz).
+*
+* EXPECT f3 key:../../chapters/12-03-frequency-response-miller-poles-zeros.md#Ex_12-03.2k scale=1e6 rtol=2e-4
+* EXPECT fp1 key:../../chapters/12-03-frequency-response-miller-poles-zeros.md#Ex_12-03.2h scale=1e6 rtol=2e-4
+* EXPECT fp2 key:../../chapters/12-03-frequency-response-miller-poles-zeros.md#Ex_12-03.2i scale=1e6 rtol=2e-4
+* EXPECT fz key:../../chapters/12-03-frequency-response-miller-poles-zeros.md#Ex_12-03.2j scale=1e9 rtol=2e-4
+
+VS vs 0 DC 0 AC 1
+RS vs g 10k
+CGS g 0 72.66667f
+CGD g o 6f
+GM o 0 g 0 1m
+RL o 0 20k
+CL o 0 100f
+
+.control
+ac dec 2000 1meg 10g
+meas ac f3 when vm(o)=14.1421356 fall=1
+pz vs 0 o 0 vol pol
+let fp1 = min(abs(real(pole(1))), abs(real(pole(2)))) / (2*pi)
+let fp2 = max(abs(real(pole(1))), abs(real(pole(2)))) / (2*pi)
+print fp1 fp2
+pz vs 0 o 0 vol zer
+let fz = abs(real(zero(1))) / (2*pi)
+print fz
+.endc
+.end
