@@ -1,0 +1,37 @@
+* Lab 15-12 -- loop gain of Example 15-12.6's LDO with a 10 uF output capacitor of 0.3 ohm ESR.
+* Behavioural model, every stage a unilateral transconductor, so the loop is broken exactly at the
+* error amplifier's input: an AC source drives the input fbin and the loop gain is L = v(fb)/v(fbin).
+*   error amplifier: 1 S into 1 kohm || 15.9155 nF   (A0 = 1000, pole at 10 kHz)
+*   gate node:       1 S into 1 ohm  || 159.155 nF   (gain 1, pole at 1 MHz)
+*   pass device:     gm = 0.5 A/V into RL = 10 ohm || (Resr = 0.3 ohm + CL = 10 uF)
+*   divider:         beta = 0.5
+* The physical loop closes with negative feedback, so PM = 180 deg + phase of L at |L| = 1.
+*
+* EXPECT fc key:../../chapters/15-12-control-applications-pll-regulators-thermal.md#Ex_15-12.6f scale=1e3 rtol=2e-3
+* EXPECT pm key:../../chapters/15-12-control-applications-pll-regulators-thermal.md#Ex_15-12.6g rtol=2e-3
+
+VIN fbin 0 DC 0 AC 1
+GA 0 na fbin 0 1
+RA na 0 1k
+CA na 0 15.91549n
+GG 0 ng na 0 1
+RG ng 0 1
+CG ng 0 159.1549n
+GP 0 out ng 0 0.5
+RL out 0 10
+RESR out nc 0.3
+CL nc 0 10u
+EB fb 0 out 0 0.5
+
+.control
+ac dec 1000 10 100meg
+let L = v(fb)/v(fbin)
+let Ldb = db(L)
+let Lph = 180/pi*cph(L)
+meas ac fc WHEN Ldb=0
+meas ac ph FIND Lph WHEN Ldb=0
+let pm = 180 + ph
+print pm
+quit
+.endc
+.end

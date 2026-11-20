@@ -1,0 +1,33 @@
+* Lab 15-12 -- phase-domain model of Example 15-12.2's charge-pump PLL, closed loop.
+* Node voltages stand for excess phases (1 V = 1 rad). The reference phase is an AC source of 1 V.
+*   charge pump: transconductance Icp/(2 pi) = 100 uA/(2 pi) = 1.59155e-5 A/rad from (ref - div) into vc
+*   loop filter: R = 13.5384 kohm in series with C = 219.367 pF, C2 = 16.9681 pF across both
+*   VCO: current Kv * v(vc) (Kv = 2 pi x 100 MHz/V = 6.28319e8) into a 1 F capacitor integrates to phase
+*   divider: v(div) = v(out)/N with N = 100
+* The 1e15 ohm resistors only give the integrating nodes a DC path; their poles lie below 0.01 rad/s.
+* T = v(div)/v(ref) is the closed-loop transfer from reference phase to divided output phase.
+*
+* EXPECT pk key:../../chapters/15-12-control-applications-pll-regulators-thermal.md#Ex_15-12.3d rtol=3e-3
+* EXPECT fpk key:../../chapters/15-12-control-applications-pll-regulators-thermal.md#Ex_15-12.3e scale=1e3 rtol=4e-3
+* EXPECT f3 key:../../chapters/15-12-control-applications-pll-regulators-thermal.md#Ex_15-12.3f scale=1e3 rtol=2e-3
+
+VREF ref 0 DC 0 AC 1
+GCP 0 vc ref div 1.59155e-5
+R1 vc nz 13538.38
+C1 nz 0 219.3668p
+C2 vc 0 16.96808p
+RLV vc 0 1e15
+GVCO 0 out vc 0 6.283185e8
+CINT out 0 1
+RLO out 0 1e15
+EDIV div 0 out 0 0.01
+
+.control
+ac dec 2000 1k 100meg
+let Tdb = db(v(div)/v(ref))
+meas ac pk MAX Tdb
+meas ac fpk MAX_AT Tdb
+meas ac f3 WHEN Tdb=-3.0103
+quit
+.endc
+.end

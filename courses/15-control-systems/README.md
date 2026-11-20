@@ -38,7 +38,7 @@ Feedback control from modeling to design: transfer functions, time response, roo
 | [15-09 · Lead and Lag Compensation](chapters/15-09-lead-lag-compensation.md) | 7 | ✅ verified | [problems](problems/15-09-problems.md) · [solutions](solutions/15-09-solutions.md) · [lab](labs/15-09-lab/README.md) · [verify](verify/verify_15_09.py) |
 | [15-10 · State-Space Introduction](chapters/15-10-state-space-introduction.md) | 8 | ✅ verified | [problems](problems/15-10-problems.md) · [solutions](solutions/15-10-solutions.md) · [lab](labs/15-10-lab/README.md) · [verify](verify/verify_15_10.py) |
 | [15-11 · Digital Control](chapters/15-11-digital-control.md) | 5 | ✅ verified | [problems](problems/15-11-problems.md) · [solutions](solutions/15-11-solutions.md) · [lab](labs/15-11-lab/README.md) · [verify](verify/verify_15_11.py) |
-| [15-12 · Applications: PLLs, Voltage Regulators and Thermal Management](chapters/15-12-control-applications-pll-regulators-thermal.md) | 6 | ⬜ planned | — |
+| [15-12 · Applications: PLLs, Voltage Regulators and Thermal Management](chapters/15-12-control-applications-pll-regulators-thermal.md) | 6 | ✅ verified | [problems](problems/15-12-problems.md) · [solutions](solutions/15-12-solutions.md) · [lab](labs/15-12-lab/README.md) · [verify](verify/verify_15_12.py) |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 

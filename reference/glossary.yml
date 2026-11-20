@@ -6156,3 +6156,32 @@
   definition: A discrete PI controller written as an update of its output, u_k = u_{k−1} + b₀e_k + b₁e_{k−1}; clamping u_k at the actuator limit stops integral accumulation without a separate integrator state, and it switches bumplessly from manual to automatic.
   chapter: "15-11"
   see_also: [Integrator windup]
+
+# ---------------------------------------------------------------- 15-12
+- term: Phase-locked loop (PLL)
+  definition: A feedback loop that locks an oscillator's phase to a reference, usually multiplying its frequency by a divider ratio N; in the linear phase-domain model the VCO is an integrator of phase, and with a charge pump and an RC loop filter the loop is type 2.
+  chapter: "15-12"
+  see_also: [Voltage-controlled oscillator, Charge pump (PLL), Jitter transfer]
+- term: Charge pump (PLL)
+  definition: The circuit after a PLL's phase–frequency detector that sources or sinks a current I_cp for the time between reference and divided edges; averaged over a reference period it delivers I_cp·Δθ/(2π), a gain of I_cp/(2π) A/rad into the loop filter.
+  chapter: "15-12"
+  see_also: [Phase-locked loop (PLL)]
+- term: Jitter transfer
+  definition: The closed-loop transfer T = L/(1 + L) of a PLL or clock-recovery loop from input (reference) jitter to output jitter; low-pass, with peaking near the loop bandwidth that shrinks as phase margin grows and adds in decibels along a chain of identical stages.
+  chapter: "15-12"
+  see_also: [Phase-locked loop (PLL), Jitter]
+- term: Phase noise
+  definition: An oscillator's single-sideband noise power in a 1 Hz band at an offset from the carrier, relative to the carrier, in dBc/Hz; integrating 2 × 10^(L/10) over an offset band gives the mean-square phase, and dividing the rms phase by 2πf gives rms jitter.
+  chapter: "15-12"
+  see_also: [Jitter]
+- term: Load line (voltage regulator)
+  definition: A deliberately finite DC loop gain in a processor voltage regulator (adaptive voltage positioning), so the output behaves as a small resistance R_LL = ΔV/ΔI; it removes overshoot on load release and lets each transient use the whole tolerance band.
+  chapter: "15-12"
+  see_also: [Target impedance]
+- term: Thermal throttling
+  definition: Limiting a chip's power, usually through DVFS, to keep its junction temperature below a limit; the controller (typically a clamped PI) holds the temperature at the limit while the permitted power decays from a burst level to the sustained level with the heat sink's time constant.
+  chapter: "15-12"
+  see_also: [Dynamic voltage and frequency scaling (DVFS), Thermal resistance]
+- term: Bandwidth separation
+  definition: Designing nested (cascade) loops so each outer loop is several times (typically 5 to 10) slower than the loop inside it, which lets the outer loop treat the inner one as an ideal actuator.
+  chapter: "15-12"

@@ -236,6 +236,8 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-228 | Silicon thermal properties | Nov 2026 |
 | R-229 | Python Control Systems Library release | Nov 2026 |
 | R-230 | OPA627 settling-time specifications (TI SBOS165C) | Nov 2026 |
+| R-231 | Linux power-allocator thermal governor (PID form and defaults) | Nov 2026 |
+| R-232 | ACPI 6.5 passive-cooling equations | Nov 2026 |
 
 ---
 
@@ -2353,3 +2355,23 @@ R&D % = R&D ÷ revenue.
 - Front page: "Fast settling time: OPA627: 550ns to 0.01%; OPA637: 450ns to 0.01%". Packages: SOIC-8 (D) and TO-99 (LMC).
 - Section 5.6, OPA627BU and OPA627AU (SOIC): gain-bandwidth 45 MHz typical (gain = 1 V/V, C_L = 30 pF); slew rate 150 V/µs typical (10 V step, gain = −1 V/V); settling time (10 V step, gain = −1 V/V, C_L = 30 pF) 120 ns to 0.01% and 110 ns to 0.1%, typical.
 - Section 5.7, OPA627AM, BM and SM (TO-99): gain-bandwidth 16 MHz typical; slew rate 55 V/µs typical (40 V/µs minimum); settling time (10 V step, gain = −1 V/V) 550 ns to 0.01% and 450 ns to 0.1%, typical.
+
+## R-231 · Linux power-allocator thermal governor (PID form and defaults)
+
+*Read on 20 Nov 2026 from the kernel source tree, `Documentation/driver-api/thermal/power_allocator.rst` on the master branch of the Linux repository on GitHub (primary); tagged [Established].*
+
+- "The power allocator governor implements a Proportional-Integral-Derivative controller (PID controller) with temperature as the control input and power as the controlled output: P_max = k_p * e + k_i * err_integral + k_d * diff_err + sustainable_power", with e = desired_temperature − current_temperature. [power_allocator.rst](https://github.com/torvalds/linux/blob/master/Documentation/driver-api/thermal/power_allocator.rst)
+- Two proportional constants: `k_po` during temperature overshoot (above the desired temperature) and `k_pu` during undershoot. Defaults: k_pu = 2 × sustainable_power/(desired_temperature − switch_on_temp); k_po = sustainable_power/(desired_temperature − switch_on_temp).
+- "Typically `k_i` is set low (1 or 2) and `integral_cutoff` is 0"; for `k_d`, "It's recommended to leave it as the default: 0."
+- "For reference, the sustainable power of a 4" phone is typically 2000mW, while on a 10" tablet is around 4500mW (may vary depending on screen size)."
+- Perishable: kernel documentation changes between releases; recheck the current file before quoting defaults.
+
+## R-232 · ACPI 6.5 passive-cooling equations
+
+*Read on 20 Nov 2026 from the UEFI Forum's HTML edition of the specification (primary); tagged [Established].*
+
+- UEFI Forum, *Advanced Configuration and Power Interface (ACPI) Specification*, version 6.5, chapter 11 (Thermal Management). [Chapter 11](https://uefi.org/specs/ACPI/6.5/11_Thermal_Management.html)
+- §11.1.5.1 (Processor Clock Throttling), Equation #1: ΔP [%] = _TC1 × (T_n − T_(n−1)) + _TC2 × (T_n − T_t), where T_n is the current temperature and T_t the target (_PSV); "The two coefficients _TC1 and _TC2 and the sampling period _TSP are hardware-dependent constants the OEM must supply to OSPM."
+- Equation #2: P_n = P_(n−1) + HW[−ΔP], with Minimum % ≤ P_n ≤ 100%; values outside the range are truncated; Minimum% is the _MTL limit (or 0%); HW maps to the next available frequency setting.
+- §11.4.22 (_TSP): the sampling period is returned "in tenths of seconds"; "The granularity of the sampling period is 0.1 seconds." §11.4.17 (_TFP) gives an optional fast sampling period in milliseconds.
+- Perishable: check for a newer ACPI version before citing section numbers.
