@@ -1,0 +1,37 @@
+* Lab 13-09 -- two matching networks checked in ngspice.
+* Circuit A (Example 13-09.4): a 10 ohm load, a series 1.32629 nH inductor, and a shunt 2.65258 pF capacitor at
+*   the 50 ohm port. At 2.4 GHz the port should see 50 + j0 ohm.
+* Circuit B (Example 13-09.5): a 25 - j50 ohm load (25 ohm with a series capacitor of 1/(2 pi 1e9 50) F) on a
+*   50 ohm line; 0.0631303 wavelength (63.1303 ps at 1 GHz) from the load, a shorted 50 ohm stub of 0.0897543
+*   wavelength (89.7543 ps). The input should see 50 ohm.
+* Each port is driven by a 1 A AC current source, so its voltage phasor is its impedance.
+*
+* EXPECT zar key:../../chapters/13-09-smith-chart-and-matching.md#Sim_13-09.a rtol=1e-4
+* EXPECT zbr key:../../chapters/13-09-smith-chart-and-matching.md#Sim_13-09.b rtol=1e-4
+
+IA 0 pa DC 0 AC 1
+CA pa 0 2.65258p
+LA pa la 1.32629n
+RA la 0 10
+
+IB 0 pb DC 0 AC 1
+TSTUB pb 0 sb 0 Z0=50 TD=89.7543p
+RSHORT sb 0 1e-9
+TLINE pb 0 lb 0 Z0=50 TD=63.1303p
+RLB lb lc 25
+CLB lc 0 3.18310p
+
+.control
+ac lin 1 1e9 1e9
+let zbr = real(v(pb))
+let zbi = imag(v(pb))
+ac lin 1 2.4e9 2.4e9
+let zar = real(v(pa))
+let zai = imag(v(pa))
+print zar zai
+print ac1.zbr ac1.zbi
+let zbr = ac1.zbr
+print zbr
+quit
+.endc
+.end

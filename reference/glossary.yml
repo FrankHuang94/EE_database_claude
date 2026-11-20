@@ -5178,3 +5178,27 @@
   definition: A transmission line satisfying Heaviside's condition R′/L′ = G′/C′, for which the attenuation and velocity are independent of frequency and Z₀ is real, so pulses arrive attenuated but undistorted.
   chapter: "13-08"
   see_also: [Propagation constant, Telegrapher's equations]
+- term: Smith chart
+  definition: The unit disc of the reflection coefficient Γ with circles of constant normalized resistance and reactance drawn on it, so that impedance transformations along lines and by series or shunt elements become rotations and moves along circles.
+  chapter: "13-09"
+  see_also: [Reflection coefficient, Normalized impedance]
+- term: Normalized impedance
+  definition: z = Z/Z₀, an impedance divided by the reference (characteristic) impedance; Γ = (z − 1)/(z + 1), and admittance is normalized as y = Y·Z₀.
+  chapter: "13-09"
+  see_also: [Smith chart]
+- term: Impedance matching
+  definition: Inserting a lossless network between a source and a load so that each sees the impedance that transfers maximum power (or minimizes reflection, or noise); exact at one frequency with two elements, over a band with more.
+  chapter: "13-09"
+  see_also: [L-network, Bode–Fano limit]
+- term: L-network
+  definition: A two-element matching network with one series and one shunt reactance; matching R_high to R_low needs Q = √(R_high/R_low − 1), X = Q·R_low and B = Q/R_high, with low-pass and high-pass forms.
+  chapter: "13-09"
+  see_also: [Impedance matching, Quality factor]
+- term: Single-stub matching
+  definition: Matching with a length of line that brings the load's admittance onto the unit-conductance circle, followed by a shunt stub that cancels the remaining susceptance; there are two solutions per half wavelength.
+  chapter: "13-09"
+  see_also: [Stub, Smith chart]
+- term: Bode–Fano limit
+  definition: The bound on matching a reactive load with any lossless network; for a parallel RC load, the integral of ln(1/|Γ|) over angular frequency cannot exceed π/(RC), so a better match is possible only over a narrower band.
+  chapter: "13-09"
+  see_also: [Impedance matching]
