@@ -5,7 +5,7 @@
 |---|---|
 | **Course** | [14 · Computer Organization and Architecture](../README.md) |
 | **University equivalent** | The control-hazard and dynamic branch prediction sections of computer organization and graduate architecture courses: static prediction, branch history tables and 2-bit counters, correlating (global-history) predictors, branch target buffers, return-address stacks, speculative execution and its security consequences (Patterson & Hennessy, *Computer Organization and Design*, RISC-V Edition, §4.9; Hennessy & Patterson, *Computer Architecture: A Quantitative Approach*, §3.3) |
-| **Prerequisites** | [14-06 Pipelining and Hazards](14-06-pipelining-and-hazards.md), [03-01 Probability in EE Language](../../03-probability-and-statistics/chapters/03-01-probability-in-ee-language.md) |
+| **Prerequisites** | [14-06 Pipelining and Hazards](14-06-pipelining-and-hazards.md), [03-01 Probability in EE Language](../../03-probability-statistics-and-random-variables/chapters/03-01-probability-in-ee-language.md) |
 | **Estimated study hours** | 7 |
 | **Last verified** | 2026-11-20 |
 
@@ -375,7 +375,7 @@ Now work the [problem set](../problems/14-07-problems.md).
 
 ## 12. Connections
 
-- **Builds on:** control hazards and the cycle model ([14-06](14-06-pipelining-and-hazards.md)); calls and returns ([14-03](14-03-assembly-and-the-compilation-stack.md)); probability ([03-01](../../03-probability-and-statistics/chapters/03-01-probability-in-ee-language.md)).
+- **Builds on:** control hazards and the cycle model ([14-06](14-06-pipelining-and-hazards.md)); calls and returns ([14-03](14-03-assembly-and-the-compilation-stack.md)); probability ([03-01](../../03-probability-statistics-and-random-variables/chapters/03-01-probability-in-ee-language.md)).
 - **Next:** [14-08 Out-of-Order and Superscalar Execution](14-08-out-of-order-and-superscalar.md), which speculates far beyond one branch.
 - **Used later:** caches as the side channel ([14-09](14-09-memory-hierarchy-and-caches.md)); privilege and isolation ([14-10](14-10-virtual-memory.md)); GPUs, which avoid prediction by switching threads ([14-13](14-13-gpus-and-simt.md)).
 
