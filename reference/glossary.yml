@@ -6134,3 +6134,25 @@
   definition: With state feedback acting on observer estimates, the closed-loop eigenvalues are those of A − BK together with those of A − LC, so the controller and the observer can be designed independently.
   chapter: "15-10"
   see_also: [Pole placement, State observer]
+
+# ---------------------------------------------------------------- 15-11
+- term: ZOH equivalent
+  definition: The discrete transfer function G(z) = (1 − z⁻¹) Z{P(s)/s} of a continuous plant driven through a zero-order hold and sampled; it is exact at the sample instants because the held input lets the state be advanced exactly, x_{k+1} = e^{AT}x_k + Γu_k.
+  chapter: "15-11"
+  see_also: [Zero-order hold]
+- term: Tustin transformation
+  definition: The control engineer's name for the bilinear transform used to discretize a controller, s ← (2/T)(z − 1)/(z + 1); it keeps stable controllers stable and preserves gain and phase values but warps the frequencies at which they occur.
+  chapter: "15-11"
+  see_also: [Bilinear transform, Frequency prewarping]
+- term: Frequency prewarping
+  definition: Replacing 2/T in the Tustin substitution by ω_p/tan(ω_pT/2), so the discrete controller matches the continuous one exactly at the chosen frequency ω_p (usually crossover or a notch frequency) despite frequency warping.
+  chapter: "15-11"
+  see_also: [Tustin transformation, Frequency warping]
+- term: Jury stability test
+  definition: An algebraic test, the discrete counterpart of Routh–Hurwitz, for whether all roots of a polynomial in z lie inside the unit circle; for z² + a₁z + a₀ it reduces to |a₀| < 1 and 1 ± a₁ + a₀ > 0.
+  chapter: "15-11"
+  see_also: [Stability triangle]
+- term: Velocity-form PI
+  definition: A discrete PI controller written as an update of its output, u_k = u_{k−1} + b₀e_k + b₁e_{k−1}; clamping u_k at the actuator limit stops integral accumulation without a separate integrator state, and it switches bumplessly from manual to automatic.
+  chapter: "15-11"
+  see_also: [Integrator windup]

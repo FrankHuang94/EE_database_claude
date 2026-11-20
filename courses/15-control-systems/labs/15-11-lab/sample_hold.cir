@@ -1,0 +1,33 @@
+* Lab 15-11 -- a sampled-data loop: proportional control K = 1 of the servo 1/(s(s + 1)) through a
+* sample-and-hold with period T = 0.5 s (Example 15-11.5's plant). The error r - y is sampled by a switch that
+* closes for 1 ms at the start of each period onto a 1 uF hold capacitor (1 ohm on-resistance: 1 us tracking).
+* The held value drives the plant until the next sample (zero-order hold). The 1 ms sampling window delays each
+* sample by 0.2% of T, so the result matches the ideal ZOH simulation to a few parts per thousand.
+*
+* EXPECT os key:../../chapters/15-11-digital-control.md#Ex_15-11.5e rtol=1e-2
+* EXPECT tpk key:../../chapters/15-11-digital-control.md#Ex_15-11.5f rtol=5e-3
+
+VR r 0 PWL(0 0 1u 1)
+VCLK clk 0 PULSE(0 1 0 1u 1u 1m 0.5)
+BE e 0 V=v(r)-v(y)
+S1 e h clk 0 swmod
+CH h 0 1u IC=0
+RH h 0 1e12
+.model swmod sw vt=0.5 vh=0.1 ron=1 roff=1e12
+BU u 0 V=1.0*v(h)
+GV 0 v u 0 1
+RV v 0 1
+CV v 0 1 IC=0
+GY 0 y v 0 1
+CY y 0 1 IC=0
+RY y 0 1e12
+
+.control
+tran 0.2m 20 uic
+meas tran ypk max v(y) from=0 to=10
+meas tran tpk when v(v)=0 fall=1 td=0.2
+let os = 100*(ypk - 1)
+print os tpk
+quit
+.endc
+.end
