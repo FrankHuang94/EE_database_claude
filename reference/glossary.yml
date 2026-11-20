@@ -5166,3 +5166,15 @@
   definition: (TDR.) Measuring a line's impedance profile by launching a fast step and recording the reflections at the input; the round-trip time locates each discontinuity, the reflection's height gives its impedance, and a dip's or bump's area gives a shunt capacitance or series inductance.
   chapter: "13-07"
   see_also: [Reflection coefficient]
+- term: Input impedance
+  definition: The impedance seen looking into a transmission line of length ℓ terminated in Z_L, Z₀(Z_L + jZ₀ tan βℓ)/(Z₀ + jZ_L tan βℓ) for a lossless line; it repeats every half wavelength and inverts (Z₀²/Z_L) at a quarter wavelength.
+  chapter: "13-08"
+  see_also: [Characteristic impedance, Quarter-wave transformer]
+- term: Stub
+  definition: A short- or open-circuited length of transmission line used as a reactance, jZ₀ tan βℓ or −jZ₀ cot βℓ; short stubs act as inductors or capacitors at microwave frequencies where lumped parts misbehave.
+  chapter: "13-08"
+  see_also: [Input impedance]
+- term: Distortionless line
+  definition: A transmission line satisfying Heaviside's condition R′/L′ = G′/C′, for which the attenuation and velocity are independent of frequency and Z₀ is real, so pulses arrive attenuated but undistorted.
+  chapter: "13-08"
+  see_also: [Propagation constant, Telegrapher's equations]

@@ -1,0 +1,28 @@
+* Lab 13-08 -- input impedance of line sections at 1 GHz (Examples 13-08.2 and 13-08.5).
+* Circuit A: a lossless 50 ohm line, one eighth of a wavelength long at 1 GHz (TD = 125 ps), loaded by 100 ohm.
+*   Expected Zin = 50 (100 + j50)/(50 + j100) = 40 - j30 ohm.
+* Circuit B: a quarter-wave 70.71 ohm section (TD = 250 ps at 1 GHz) loaded by 100 ohm. Expected Zin = 50 ohm.
+* A 1 A AC current source drives each input, so the input voltage phasor equals the input impedance.
+*
+* EXPECT zar key:../../chapters/13-08-transmission-lines-sinusoidal-steady-state.md#Sim_13-08.a rtol=1e-4
+* EXPECT zai key:../../chapters/13-08-transmission-lines-sinusoidal-steady-state.md#Sim_13-08.b rtol=1e-4
+* EXPECT zbr key:../../chapters/13-08-transmission-lines-sinusoidal-steady-state.md#Sim_13-08.c rtol=1e-4
+
+IA 0 ina DC 0 AC 1
+TA ina 0 outa 0 Z0=50 TD=125p
+RA outa 0 100
+
+IB 0 inb DC 0 AC 1
+TB inb 0 outb 0 Z0=70.7106781 TD=250p
+RB outb 0 100
+
+.control
+ac lin 1 1e9 1e9
+let zar = real(v(ina))
+let zai = imag(v(ina))
+let zbr = real(v(inb))
+let zbi = imag(v(inb))
+print zar zai zbr zbi
+quit
+.endc
+.end
