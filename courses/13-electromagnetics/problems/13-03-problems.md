@@ -67,14 +67,18 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **The force on a gap.** (a) For a magnetic circuit holding a fixed flux $\Phi$, write the stored energy in terms of the reluctance, and use virtual work on the gap length to show that the faces of a gap of area $A$ attract with force $B^2A/(2\mu_0)$. (b) Find the force across the gap of Example 13-03.4 at 1 A, and the force if the same gap carried 0.3 T.
 
+### Problem 13-03.15 [C]
+
+**What a bar magnet is made of.** A rod of radius 5 mm and length 50 cm is uniformly magnetized along its axis with $M$ = 8 × 10⁵ A/m (a strong permanent magnet) and carries no free current. (a) Find the bound volume and surface currents. (b) Treating it as a long solenoid, estimate $B$ and $H$ inside. (c) Summing the fields of the bound current's rings along the rod, find $B$ on the axis at the centre and at the centre of one end face. Why is the end value half? (d) Find $H$ at the centre. Why does it point against $\vec{M}$?
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 13-03) | Problems |
 |---|---|
-| 1. Ampère's law and the Biot–Savart law | 1, 3, 5 |
+| 1. Ampère's law and the Biot–Savart law | 1, 3, 5, 15 |
 | 2. The vector potential and flux | 4, 13 |
-| 3. Boundary conditions on $\vec{B}$ and $\vec{H}$ | 2 |
+| 3. Boundary conditions on $\vec{B}$ and $\vec{H}$ | 2, 15 |
 | 4. Inductance of practical structures | 3, 6, 8, 9, 10, 11, 13 |
 | 5. Magnetic circuits and air gaps | 7, 12, 14 |

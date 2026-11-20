@@ -30,11 +30,11 @@ With $b \to \infty$, $C = 4\pi\varepsilon_0a$ = **1.113** pF. Bringing the outer
 
 ### Solution 13-02.5
 
-At voltage $V_0$ the peak field is at the inner conductor, $E(a) = V_0/[a\ln(b/a)]$. Holding $E(a)$ at the breakdown field, $V_0 = E_{bd}\,a\ln(b/a)$, which is maximized where $d/da[a\ln(b/a)] = \ln(b/a) - 1 = 0$: $a = b/e$ = **1.839** mm. Then $V_0 = E_{bd}\,a$ = 3 MV/m × 1.839 mm = **5.518** kV. A thinner inner conductor concentrates the field; a fatter one leaves too little gap. (The same trade, with a different criterion, sets the familiar 50 Ω and 75 Ω cable impedances, 13-07.)
+At voltage $V_0$ the peak field is at the inner conductor, $E(a) = V_0/[a\ln(b/a)]$. Holding $E(a)$ at the breakdown field, $V_0 = E_{bd}\,a\ln(b/a)$, which is maximized where $d/da[a\ln(b/a)] = \ln(b/a) - 1 = 0$: $a = b/e$ = **1.839** mm. Then $V_0 = E_{bd}\,a$ = 3 MV/m × 1.839 mm = **5.518** kV. A thinner inner conductor concentrates the field; a fatter one leaves too little gap. (The same kind of trade, with loss or power handling as the criterion, sets the familiar 50 Ω and 75 Ω cable impedances, 13-09. With $b/a = e$ the impedance of an air line is $60\ln e$ = 60 Ω.)
 
 ### Solution 13-02.6
 
-Put $x$ = 0 at the junction and $x = W$ at the far edge. In the depletion region $\rho_v = -qN_A$, so $d^2V/dx^2 = qN_A/\varepsilon$. With $E(W) = 0$, $E(x) = -(qN_A/\varepsilon)(W - x)$, whose magnitude peaks at the junction: $qN_AW/\varepsilon = 1.602 \times 10^{-19} \times 10^{22} \times 0.3 \times 10^{-6}/(11.7\varepsilon_0)$ = **4.640** MV/m. Integrating once more, the voltage across the region is the area under the triangular field, $qN_AW^2/(2\varepsilon)$ = **0.6960** V. (09-05 uses the same calculation for both sides of a junction.)
+Put $x$ = 0 at the junction and $x = W$ at the far edge. In the depletion region $\rho_v = -qN_A$, so $d^2V/dx^2 = qN_A/\varepsilon$. Gauss's law in one dimension is $dE/dx = \rho_v/\varepsilon = -qN_A/\varepsilon$, and with $E(W) = 0$ this integrates to $E(x) = +(qN_A/\varepsilon)(W - x)$: positive, pointing from the n side toward the p side, and largest at the junction: $qN_AW/\varepsilon = 1.602 \times 10^{-19} \times 10^{22} \times 0.3 \times 10^{-6}/(11.7\varepsilon_0)$ = **4.640** MV/m. Integrating once more, the voltage across the region is the area under the triangular field, $qN_AW^2/(2\varepsilon)$ = **0.6960** V. (09-05 uses the same calculation for both sides of a junction.)
 
 ### Solution 13-02.7
 
@@ -46,7 +46,7 @@ With the image $-\rho_\ell$ at depth $h$, the field at the plane at horizontal d
 
 ### Solution 13-02.9
 
-$C' = \pi\varepsilon_0/\cosh^{-1}(D/2a) = \pi\varepsilon_0/\cosh^{-1}6$ = **11.23** pF/m. The thin-wire form, $\pi\varepsilon_0/\ln(D/a) = \pi\varepsilon_0/\ln 12$, gives **11.19** pF/m, 0.3% low: at $D/2a$ = 6 the line charges sit only slightly off the wire axes.
+$C' = \pi\varepsilon_0/\cosh^{-1}(D/2a) = \pi\varepsilon_0/\cosh^{-1}6$ = **11.23** pF/m. The thin-wire form, $\pi\varepsilon_0/\ln(D/a) = \pi\varepsilon_0/\ln 12$, gives **11.19** pF/m, **0.28**% low: at $D/2a$ = 6 the line charges sit only slightly off the wire axes.
 
 ### Solution 13-02.10
 
@@ -78,6 +78,40 @@ at 100 V, and $C' = 2W'_e/V_0^2$ = **99.92** pF/m, the value of Example 13-02.2.
 
 The thin-wire error is $1 - \cosh^{-1}(h/a)/\ln(2h/a)$: **5.0**% at $h/a$ = 2, **0.44**% at 5, **0.084**% at 10 and **0.017**% at 20. It reaches 1% at $h/a$ = **3.61** (by root finding), so the thin-wire formula is good to 1% once the axis is about 3.6 radii above the plane.
 
+### Solution 13-02.15
+
+(a) Outside the sphere there is no charge, so $\nabla^2V = 0$, and the problem is symmetric about the $z$-axis, so $V$ is a sum of the separated solutions $r^nP_n(\cos\theta)$ and $r^{-(n+1)}P_n(\cos\theta)$. Far away, $V \to -E_0z = -E_0r\cos\theta$, which contains only $n = 1$; the boundary condition on the sphere must hold for every θ, so no other $n$ can enter either. Try
+
+$$
+V = \Big(Ar + \frac{B}{r^2}\Big)\cos\theta .
+$$
+
+The far field fixes $A = -E_0$; $V(a, \theta) = 0$ for all θ gives $-E_0a + B/a^2 = 0$, so $B = E_0a^3$:
+
+$$
+V = -E_0\cos\theta\,\Big(r - \frac{a^3}{r^2}\Big) .
+$$
+
+It satisfies Laplace's equation and every boundary condition, so by uniqueness it is the answer.
+
+(b) The field at the surface is radial: $E_r = -\partial V/\partial r = E_0\cos\theta\,(1 + 2a^3/r^3)$, which is $3E_0\cos\theta$ at $r = a$. The surface charge is $\rho_s = \varepsilon_0E_r(a) = 3\varepsilon_0E_0\cos\theta$, largest at the poles: $3\varepsilon_0E_0$ = **26.56** µC/m², where the field is $3E_0$ = **3** MV/m. A rounded conductor triples the applied field at its tip; a sharper one does worse, which is why high-voltage hardware has large radii and why air breaks down first at points.
+
+(c) $Q = \int\rho_s\,dA = 3\varepsilon_0E_0a^2\int_0^{2\pi}\!\!\int_0^\pi\cos\theta\sin\theta\,d\theta\,d\phi = 0$, because the integral of $\cos\theta\sin\theta$ over $0$ to π vanishes: the charge is only redistributed. The second term of $V$, $E_0a^3\cos\theta/r^2$, has the form of a dipole's potential $p\cos\theta/(4\pi\varepsilon_0r^2)$, so $p = 4\pi\varepsilon_0a^3E_0$ = **1.113 × 10⁻¹³** C·m.
+
+### Solution 13-02.16
+
+(a) By symmetry the field is radial, and Gauss's law around a cylinder of radius ρ gives $D = Q'/(2\pi\rho)$ in both layers: $D$ is normal to the interface, so it is continuous there. The field is $E = D/\varepsilon$, and integrating from the inner to the outer conductor,
+
+$$
+V = \frac{Q'}{2\pi\varepsilon_0}\Big[\frac{\ln(c/a)}{\varepsilon_{r1}} + \frac{\ln(b/c)}{\varepsilon_{r2}}\Big] ,
+$$
+
+the two layers acting as capacitors in series. With $a$ = 0.5, $c$ = 1 and $b$ = 2 mm, $C' = Q'/V$ = **107.0** pF/m.
+
+(b) $Q' = C'V$ = 107.0 nC/m at 1 kV, so $E = Q'/(2\pi\varepsilon_0\varepsilon_r\rho)$: **0.9618** MV/m at the inner conductor; **0.4809** MV/m just inside the interface (ε_r = 4) and **0.9618** MV/m just outside it (ε_r = 2), since $D$ is continuous and ε halves; and **0.4809** MV/m at the outer conductor.
+
+(c) Insulated throughout with $\varepsilon_r$ = 2, the cable would have its largest field at the inner conductor, $V/[a\ln(b/a)]$ = **1.443** MV/m. Grading puts the high-permittivity layer where $D$ is largest, so the field there is smaller; the field profile is flattened and the peak falls by a third for the same voltage and size. High-voltage cables and bushings grade their insulation (by permittivity, or with conducting foils) for exactly this reason: breakdown is set by the peak field, not the average.
+
 ---
 
 ## Answer key
@@ -106,6 +140,7 @@ The thin-wire error is $1 - \cosh^{-1}(h/a)/\ln(2h/a)$: **5.0**% at $h/a$ = 2, *
 | 13-02.8c | force per metre | 0.8988 | µN/m |
 | 13-02.9a | exact capacitance | 11.23 | pF/m |
 | 13-02.9b | thin-wire capacitance | 11.19 | pF/m |
+| 13-02.9c | thin-wire shortfall | 0.28 | % |
 | 13-02.10a | force component along each axis | −14.5 | µN |
 | 13-02.10b | net force | 20.54 | µN |
 | 13-02.12a | top-row nodes | 0.375 | V |
@@ -119,3 +154,12 @@ The thin-wire error is $1 - \cosh^{-1}(h/a)/\ln(2h/a)$: **5.0**% at $h/a$ = 2, *
 | 13-02.14c | error at h/a = 10 | 0.084 | % |
 | 13-02.14d | error at h/a = 20 | 0.017 | % |
 | 13-02.14e | h/a for 1% error | 3.61 | — |
+| 13-02.15a | largest surface charge | 26.56 | µC/m² |
+| 13-02.15b | largest surface field | 3 | MV/m |
+| 13-02.15c | induced dipole moment | 1.113 × 10⁻¹³ | C·m |
+| 13-02.16a | graded coax capacitance | 107.0 | pF/m |
+| 13-02.16b | field at inner conductor | 0.9618 | MV/m |
+| 13-02.16c | field inside interface | 0.4809 | MV/m |
+| 13-02.16d | field outside interface | 0.9618 | MV/m |
+| 13-02.16e | field at outer conductor | 0.4809 | MV/m |
+| 13-02.16f | ungraded peak field | 1.443 | MV/m |

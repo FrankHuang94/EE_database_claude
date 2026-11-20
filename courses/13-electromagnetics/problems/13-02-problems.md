@@ -67,14 +67,22 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **When the thin-wire formula fails.** For a wire of radius $a$ with its axis at height $h$ over a ground plane, find the thin-wire formula's error at $h/a$ = 2, 5, 10 and 20, and the height ratio below which the error exceeds 1%.
 
+### Problem 13-02.15 [C]
+
+**A sphere in a uniform field.** A grounded conducting sphere of radius $a$ = 1 mm sits in a field that is uniform, $E_0\hat{z}$ with $E_0$ = 1 MV/m, far from it. (a) Using separation of variables in spherical coordinates (solutions $r^nP_n(\cos\theta)$ and $r^{-(n+1)}P_n(\cos\theta)$, with $P_1 = \cos\theta$), find the potential outside the sphere. (b) Find the surface charge density, its largest value, and the largest field at the surface. (c) Show that the total induced charge is zero, and find the induced dipole moment.
+
+### Problem 13-02.16 [C]
+
+**Graded insulation.** A coaxial cable has an inner conductor of radius 0.5 mm and an outer conductor of radius 2 mm. The insulation is two layers: $\varepsilon_r$ = 4 from 0.5 to 1 mm and $\varepsilon_r$ = 2 from 1 to 2 mm. (a) Find the capacitance per metre. (b) At 1 kV, find the field at the inner conductor, on each side of the interface, and at the outer conductor. (c) Compare the largest field with that of a cable insulated throughout with $\varepsilon_r$ = 2, and explain why high-voltage cables grade their insulation this way.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 13-02) | Problems |
 |---|---|
-| 1. Boundary conditions at conductors and dielectric interfaces | 1, 2, 3 |
+| 1. Boundary conditions at conductors and dielectric interfaces | 1, 2, 3, 15, 16 |
 | 2. Poisson and Laplace in one dimension; uniqueness | 4, 5, 6, 11, 13 |
-| 3. Separation of variables | 7, 12 |
+| 3. Separation of variables | 7, 12, 15 |
 | 4. The method of images | 8, 9, 10, 11, 14 |
-| 5. Capacitance of real structures and numerical solution | 3, 4, 9, 12, 13, 14 |
+| 5. Capacitance of real structures and numerical solution | 3, 4, 9, 12, 13, 14, 16 |

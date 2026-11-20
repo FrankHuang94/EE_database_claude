@@ -38,7 +38,7 @@ Every current loop stores energy in a magnetic field, and the circuit sees that 
 
 ![The magnetic flux density inside and around a coaxial cable carrying 1 A: rising linearly inside the inner conductor to 0.4 mT at its surface, falling as one over the radius in the dielectric, dropping to zero across the outer conductor, and zero outside](../../../assets/figures/13-03/coax-field.svg)
 
-*Figure 1. The flux density of a coaxial cable carrying 1 A on its inner conductor (radius 0.5 mm) and returning it on its outer conductor (1.75 to 2.0 mm), from Ampère's law. Inside the inner conductor the enclosed current grows as $\rho^2$, so $B \propto \rho$; between the conductors $B \propto 1/\rho$; across the outer conductor the enclosed current falls to zero, and outside the cable there is no field at all, which is why coaxial cable neither radiates nor picks up external fields at low frequency.*
+*Figure 1. The flux density of a coaxial cable carrying 1 A on its inner conductor (radius 0.5 mm) and returning it on its outer conductor (1.75 to 2.0 mm), from Ampère's law. Inside the inner conductor the enclosed current grows as $\rho^2$, so $B \propto \rho$; between the conductors $B \propto 1/\rho$; across the outer conductor the enclosed current falls to zero, and outside the cable there is no field at all. That is why coaxial cable neither radiates nor picks up external magnetic fields, provided the whole return current flows on the outer conductor: at the lowest frequencies (below a few kilohertz for typical cables) part of it may take other ground paths, and the cancellation is incomplete.*
 
 ## 3. Theory
 
@@ -76,7 +76,7 @@ $$
 \nabla^2\vec{A} = -\mu\vec{J} .
 $$
 
-Each Cartesian component obeys Poisson's equation with $\mu J$ in place of $\rho_v/\varepsilon$, so 13-02's solution carries over directly:
+Each Cartesian component obeys Poisson's equation with $\mu J$ in place of $\rho_v/\varepsilon$. For the potential, the free-space solution is the superposition of point-charge potentials (04-04), $V = (1/4\pi\varepsilon)\int\rho_v/R\,dv'$ with $R = \lvert\vec{r} - \vec{r}\,'\rvert$; applying $\nabla^2$ under the integral and using $\nabla^2(1/R) = -4\pi\delta^3(\vec{r} - \vec{r}\,')$ (13-01) confirms that it gives $\nabla^2V = -\rho_v/\varepsilon$. The same steps, component by component, give
 
 $$
 \vec{A}(\vec{r}) = \frac{\mu}{4\pi}\int\frac{\vec{J}(\vec{r}\,')}{\lvert\vec{r} - \vec{r}\,'\rvert}\,dv' .
@@ -86,7 +86,13 @@ $\vec{A}$ points along the current that produces it. Its practical use is flux: 
 
 ### 3.3 Magnetic materials
 
-Atomic currents (electron spins and orbits) give matter a **magnetization** $\vec{M}$, the magnetic moment per volume. Its effect is captured by defining $\vec{H} = \vec{B}/\mu_0 - \vec{M}$, which keeps $\nabla\times\vec{H} = \vec{J}$ with only the *free* current on the right. In a linear material $\vec{M} = \chi_m\vec{H}$, so $\vec{B} = \mu_0(1 + \chi_m)\vec{H} = \mu_r\mu_0\vec{H}$.
+Atomic currents (electron spins and orbits) give matter a **magnetization** $\vec{M}$, the magnetic moment per volume. A magnetized body acts like a set of **bound currents**: $\vec{J}_b = \nabla\times\vec{M}$ in its volume and $\vec{K}_b = \vec{M}\times\hat{n}$ on its surface. (Picture uniform $\vec{M}$ as an array of tiny current loops: neighbouring loops' currents cancel inside, leaving only a current around the surface; where $\vec{M}$ varies they no longer cancel, which is the curl.) Ampère's law in vacuum form counts every current, free and bound:
+
+$$
+\nabla\times\frac{\vec{B}}{\mu_0} = \vec{J} + \vec{J}_b = \vec{J} + \nabla\times\vec{M} \quad\Rightarrow\quad \nabla\times\Big(\frac{\vec{B}}{\mu_0} - \vec{M}\Big) = \vec{J} .
+$$
+
+Defining $\vec{H} = \vec{B}/\mu_0 - \vec{M}$ therefore keeps $\nabla\times\vec{H} = \vec{J}$ with only the *free* current on the right, which is the current we control and measure. In a linear material $\vec{M} = \chi_m\vec{H}$, so $\vec{B} = \mu_0(1 + \chi_m)\vec{H} = \mu_r\mu_0\vec{H}$.
 
 - **Diamagnetic and paramagnetic materials** (copper, aluminium, most dielectrics) have $\lvert\chi_m\rvert$ around 10⁻⁵ or less: $\mu_r \approx 1$ for all engineering purposes.
 - **Ferromagnetic and ferrimagnetic materials** (iron, nickel and their alloys; ferrites) have $\mu_r$ in the hundreds to tens of thousands, but only up to **saturation**, where all the domains align and the incremental permeability falls toward $\mu_0$. Their $B$–$H$ curves also show **hysteresis**, whose area is energy lost per cycle (core loss, Course 22).
@@ -113,7 +119,7 @@ $$
 
 The **mutual inductance** between circuits 1 and 2 is $M_{21} = \Lambda_{21}/I_1$, the flux linking circuit 2 per ampere in circuit 1; reciprocity gives $M_{12} = M_{21}$, and the **coupling coefficient** $k = M/\sqrt{L_1L_2}$ is at most 1.
 
-**Energy.** Building the current against the induced voltage stores $W_m = \tfrac12LI^2$, and that energy sits in the field:
+**Energy.** Raising the current from 0 to $I$ against the induced voltage $d\Lambda/dt$ takes work $\int i\,d\Lambda = \int_0^ILi\,di = \tfrac12LI^2$. To see where that energy sits, write a small change of flux linkage through the vector potential, $\delta\Lambda = \oint\delta\vec{A}\cdot d\vec\ell$, so for a current spread through a volume $I\,\delta\Lambda \to \int\vec{J}\cdot\delta\vec{A}\,dv = \int(\nabla\times\vec{H})\cdot\delta\vec{A}\,dv$. The identity $\nabla\cdot(\delta\vec{A}\times\vec{H}) = \vec{H}\cdot(\nabla\times\delta\vec{A}) - \delta\vec{A}\cdot(\nabla\times\vec{H})$ and the divergence theorem turn this into $\int\vec{H}\cdot\delta\vec{B}\,dv$ plus a surface integral that vanishes far away (the fields fall off fast enough). In a linear material $\vec{H}\cdot\delta\vec{B} = \delta(\tfrac12\vec{B}\cdot\vec{H})$, so summing the small steps gives the energy as a field integral:
 
 $$
 W_m = \frac12\int\vec{B}\cdot\vec{H}\,dv \quad\Rightarrow\quad L = \frac{2W_m}{I^2} .
@@ -204,7 +210,7 @@ This is Ohm's law for flux: reluctances add in series and combine as conductance
 
 **Setup.** A gold bond wire of 25 µm diameter runs from a die to its package. Find its partial self-inductance (high-frequency form) for lengths of 1, 2 and 3 mm, and the inductance per millimetre. Then find the voltage across 1 nH when its current ramps by 20 mA in 200 ps.
 
-**Solution.** With $a$ = 12.5 µm, $L = (\mu_0\ell/2\pi)\,[\ln(2\ell/a) - 1]$: **0.8150** nH at 1 mm, **1.907** nH at 2 mm and **3.104** nH at 3 mm, or **0.8150**, **0.9537** and **1.035** nH/mm. The voltage is $L\,di/dt = 1\ \text{nH} \times 20\ \text{mA}/200\ \text{ps}$ = **0.1** V.
+**Solution.** With $a$ = 12.5 µm, $L = (\mu_0\ell/2\pi)\,[\ln(2\ell/a) - 1]$: **0.8150** nH at 1 mm, **1.907** nH at 2 mm and **3.104** nH at 3 mm, or **0.8150**, **0.9537** and **1.035** nH/mm. (The Neumann integral without the thin-wire approximation is higher by **0.31**% at 1 mm and **0.08**% at 3 mm: the formula drops terms of order $a/\ell$.) The voltage is $L\,di/dt = 1\ \text{nH} \times 20\ \text{mA}/200\ \text{ps}$ = **0.1** V.
 
 **Units check.** H/m × m = H; H × A/s = V.
 
@@ -255,6 +261,8 @@ This is Ohm's law for flux: reluctances add in series and combine as conductance
 | Ex 13-03.5d | per mm, 2 mm wire | 0.9537 | nH/mm |
 | Ex 13-03.5e | per mm, 3 mm wire | 1.035 | nH/mm |
 | Ex 13-03.5f | L di/dt | 0.1 | V |
+| Ex 13-03.5g | Neumann excess at 1 mm | 0.31 | % |
+| Ex 13-03.5h | Neumann excess at 3 mm | 0.08 | % |
 | Ex 13-03.6a | wire-over-plane inductance | 598.6 | nH/m |
 | Ex 13-03.6b | wire-over-plane impedance | 179.5 | Ω |
 | Ex 13-03.6c | two-wire inductance | 991.2 | nH/m |
@@ -310,13 +318,13 @@ The netlist [ground_bounce.cir](../labs/13-03-lab/ground_bounce.cir) drives a 40
 ### State of the art (as of Nov 2026)
 
 - **"About 1 nH per millimetre."** Instrument-maker guidance for time-domain reflectometry gives about 1.26 nH/mm for a wire bond in free space and about 1 nH/mm for typical bonds on hybrids, with 3 nH for a 3 mm bond [1] **[Established]** (rule of thumb). Example 13-03.5's partial-inductance formula gives 3.104 nH for a 3 mm, 25 µm wire, consistent with that figure, and shows why it is only a rule: the per-millimetre value grows with length.
-- **Cable impedance from geometry.** RG-58 is specified at 50 Ω with 66% velocity of propagation and 101 pF/m [2] **[Established]**. Since $Z_0 = \sqrt{L'/C'}$ and $v = 1/\sqrt{L'C'}$, the implied inductance is $Z_0/v$ = **252.7** nH/m (our arithmetic), close to Example 13-03.2's 250.6 nH/m for a geometry chosen to give 50 Ω.
+- **Cable impedance from geometry.** Belden's RG-58-type cable 8262 is specified at 50 Ω with 66% velocity of propagation and 101 pF/m [2] **[Established]**. Since $Z_0 = \sqrt{L'/C'}$ and $v = 1/\sqrt{L'C'}$, the implied inductance is $Z_0/v$ = **252.7** nH/m (our arithmetic), close to Example 13-03.2's 250.6 nH/m for a geometry chosen to give 50 Ω.
 - **Inductance extraction uses partial inductances.** Package and board tools compute loop inductance from partial self- and mutual inductances, or from magnetostatic field solutions, the same quantities as §3.5 **[Established]** (textbook practice; Course 24).
 
 ### Why it matters commercially
 
-- **Power delivery is an inductance problem.** A modern processor's supply current changes by large amounts in nanoseconds; package and board inductance, not resistance, sets the droop, so packaging choices (bond wires against flip-chip bumps, number of supply pins) are inductance decisions.
-- **Power magnetics are a large share of a converter's size and cost.** The gap, core material and winding set a power inductor's current rating and loss (Course 22).
+- **Power delivery is an inductance problem.** A modern processor's supply current changes by large amounts in nanoseconds; package and board inductance, not resistance, sets the fast part of the droop, so packaging choices (bond wires against flip-chip bumps, number of supply pins) are inductance decisions **[Established]**.
+- **Power magnetics are a large share of a converter's size and cost** **[Industry estimate]**. The gap, core material and winding set a power inductor's current rating and loss (Course 22).
 - **Signal integrity budgets inductance.** Return-path discontinuities add loop inductance that shows up as crosstalk and reflections.
 
 ### Marketing vs Reality
@@ -343,7 +351,7 @@ Because $\nabla\cdot\vec{B} = 0$ everywhere, and a field with zero divergence is
 
 </details>
 
-**Q2.** Why does coaxial cable have no external magnetic field at low frequency?
+**Q2.** Why does a coaxial cable whose outer conductor carries the whole return current have no external magnetic field?
 
 <details><summary>Answer</summary>
 

@@ -35,16 +35,26 @@ PHI = sp.atan2(y, x)
 THETA = sp.acos(z / R)
 
 
+_u1, _u2, _u3 = sp.symbols("u1 u2 u3", real=True)
+_POS = {"cyl": (sp.Matrix([_u1 * sp.cos(_u2), _u1 * sp.sin(_u2), _u3]), ("rho", "phi", "z")),
+        "sph": (sp.Matrix([_u1 * sp.sin(_u2) * sp.cos(_u3), _u1 * sp.sin(_u2) * sp.sin(_u3), _u1 * sp.cos(_u2)]),
+                ("r", "theta", "phi"))}
+_UNIT = {}
+for _kind, (_pos, _names) in _POS.items():
+    _vecs = []
+    for _u in (_u1, _u2, _u3):
+        _d = _pos.diff(_u)                                  # tangent vector: derivative of position
+        _vecs.append(_d / sp.sqrt(_d.dot(_d)))               # normalized by the scale factor
+    _UNIT[_kind] = (sp.lambdify((_u1, _u2, _u3), _vecs, "numpy"), _names)
+
+
 def unit(kind, X, Y, Z):
-    """Unit vectors at a Cartesian point, from their definitions as derivatives of position."""
+    """Unit vectors at a Cartesian point, from their definitions as normalized derivatives of position."""
     rho, r = math.hypot(X, Y), math.sqrt(X * X + Y * Y + Z * Z)
     ph, th = math.atan2(Y, X), math.acos(Z / r)
-    if kind == "cyl":
-        return {"rho": np.array([math.cos(ph), math.sin(ph), 0]), "phi": np.array([-math.sin(ph), math.cos(ph), 0]),
-                "z": np.array([0, 0, 1.0])}
-    return {"r": np.array([math.sin(th) * math.cos(ph), math.sin(th) * math.sin(ph), math.cos(th)]),
-            "theta": np.array([math.cos(th) * math.cos(ph), math.cos(th) * math.sin(ph), -math.sin(th)]),
-            "phi": np.array([-math.sin(ph), math.cos(ph), 0])}
+    f, names = _UNIT["cyl" if kind == "cyl" else "sph"]
+    args = (rho, ph, Z) if kind == "cyl" else (r, th, ph)
+    return {nm: np.array(vec, dtype=float).reshape(3) for nm, vec in zip(names, f(*args))}
 
 
 def cart_vec(comps):

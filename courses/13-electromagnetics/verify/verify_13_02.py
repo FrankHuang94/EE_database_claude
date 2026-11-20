@@ -20,7 +20,7 @@ import numpy as np
 import scipy.sparse as sps
 import scipy.sparse.linalg as spla
 import sympy as sp
-from scipy.integrate import quad
+from scipy.integrate import quad, solve_ivp
 from scipy.optimize import brentq, minimize_scalar
 
 HERE = Path(__file__).resolve().parent
@@ -36,6 +36,7 @@ if lab.exists():
 v = Verifier.from_files("13-02", *files)
 e0 = 8.8541878128e-12
 q = 1.602176634e-19
+TP = 2 * math.pi
 k = 1 / (4 * math.pi * e0)
 
 
@@ -229,6 +230,7 @@ v.assert_true("MoM error at h/a = 2 matches the exact-formula error",
 # ============================================================ practitioner and simulation
 v.check("Prac 13-02.a", 1 / 0.66 ** 2)
 v.check("Prac 13-02.b", 100 * (3.66 / 3.48 - 1))
+v.check("Prac 13-02.c", 100 * (1 - 3.48 / 3.66))
 
 
 def grid(n=5, top=1.0):
@@ -271,9 +273,13 @@ v.check("13-02.5a", o5.x * 1e3)
 v.check("13-02.5b", -o5.fun / 1e3)
 # 6: Poisson in the depletion region, integrated numerically
 eps_si, NA, W = 11.7 * e0, 1e22, 0.3e-6
-Ex = lambda xx: -(q * NA / eps_si) * (W - xx)  # noqa: E731   (dE/dx = rho/eps = -qN/eps, E(W) = 0)
-v.check("13-02.6a", abs(Ex(0.0)) / 1e6)
-v.check("13-02.6b", abs(quad(Ex, 0, W)[0]))
+# integrate Poisson's equation from the field-free edge x = W back to the junction: state (V, E),
+# dV/dx = -E, dE/dx = rho/eps = -qN/eps, with V(W) = E(W) = 0
+pois = solve_ivp(lambda xx, st: [-st[1], -q * NA / eps_si], (W, 0.0), [0.0, 0.0], rtol=1e-12, atol=1e-18)
+E0_6, V0_6 = pois.y[1, -1], pois.y[0, -1]
+v.assert_true("13-02.6 field at the junction is positive (n to p)", E0_6 > 0)
+v.check("13-02.6a", E0_6 / 1e6)
+v.check("13-02.6b", V0_6)
 # 7: 2:1 trough (a = 2, b = 1), FD with a grid of spacing 1/200
 V7 = 10 * laplace_fd(399, 199)
 v.check("13-02.7a", trough_series(1, 0.5, 2, 1, 10, 1))
@@ -293,6 +299,7 @@ v.check("13-02.8c", lam ** 2 / (2 * math.pi * e0 * 2 * h8) * 1e6)
 C9 = mom_two_wire(0.5e-3, 6e-3)
 v.check("13-02.9a", C9 * 1e12)
 v.check("13-02.9b", math.pi * e0 / math.log(6e-3 / 0.5e-3) * 1e12)
+v.check("13-02.9c", 100 * (1 - math.pi * e0 / math.log(6e-3 / 0.5e-3) / C9))
 # 10: corner images; check the planes are equipotentials, then sum the forces
 d10, Q10 = 1e-2, 1e-9
 charges = [(-Q10, np.array([-d10, d10])), (-Q10, np.array([d10, -d10])), (Q10, np.array([-d10, -d10]))]
@@ -359,5 +366,48 @@ if lab.exists():
                   abs(strip_cap(1.0, cells_per_h=40) / c1 - 1) < 0.01)
     v.assert_true("fringing factor falls toward 1 as the strip widens",
                   strip_cap(0.5) / (e0 * 0.5) > c1 / e0 > strip_cap(5.0) / (e0 * 5.0) > 1)
+
+# 15: sphere in a uniform field. Check Laplace's equation and the boundary conditions symbolically (uniqueness
+# then makes it the answer), and get the charge and dipole moment by numerical surface integrals.
+rs_, ts_ = sp.symbols("r_s t_s", positive=True)
+E15, a15 = sp.Integer(10**6), sp.Rational(1, 1000)
+V15 = -E15 * sp.cos(ts_) * (rs_ - a15**3 / rs_**2)
+lap15 = sp.diff(rs_**2 * sp.diff(V15, rs_), rs_) / rs_**2 + sp.diff(sp.sin(ts_) * sp.diff(V15, ts_), ts_) / (rs_**2 * sp.sin(ts_))
+v.assert_true("13-02.15 potential satisfies Laplace", sp.simplify(lap15) == 0)
+v.assert_true("13-02.15 sphere is at zero volts", sp.simplify(V15.subs(rs_, a15)) == 0)
+v.assert_true("13-02.15 uniform field far away",
+              abs(float((V15 / (-E15 * rs_ * sp.cos(ts_))).subs({rs_: 1e3, ts_: 0.3})) - 1) < 1e-12)
+sig15 = sp.lambdify(ts_, -e0 * sp.diff(V15, rs_).subs(rs_, a15), "numpy")   # rho_s = eps0 E_r = -eps0 dV/dr
+th_grid = np.linspace(0, math.pi, 20001)
+v.check("13-02.15a", float(np.max(sig15(th_grid))) * 1e6)
+v.check("13-02.15b", float(np.max(sig15(th_grid))) / e0 / 1e6)
+a15f = float(a15)
+Qtot = quad(lambda t: sig15(t) * TP * a15f**2 * math.sin(t), 0, math.pi)[0]
+v.assert_true("13-02.15 net induced charge is zero", abs(Qtot) < 1e-25)
+v.check("13-02.15c", quad(lambda t: sig15(t) * a15f * math.cos(t) * TP * a15f**2 * math.sin(t), 0, math.pi)[0])
+# 16: graded coax by a finite-volume solve of d/drho(eps rho dV/drho) = 0 with the interface on a node
+a16, c16, b16 = 0.5e-3, 1e-3, 2e-3
+M16 = 30000
+rg = np.linspace(a16, b16, M16 + 1)
+hg = rg[1] - rg[0]
+rmid = 0.5 * (rg[:-1] + rg[1:])
+epm = np.where(rmid < c16, 4.0, 2.0) * e0
+gcond = epm * rmid / hg                                   # "conductance" of each radial cell, per radian
+Ms16 = sps.diags([np.r_[1.0, -(gcond[:-1] + gcond[1:]), 1.0], np.r_[gcond[:-1], 0.0], np.r_[0.0, gcond[1:]]],
+                 [0, -1, 1], format="csc")
+rhs16 = np.zeros(M16 + 1)
+rhs16[0] = 1000.0
+V16 = spla.spsolve(Ms16, rhs16)
+Ecell = -np.diff(V16) / hg
+Qp16 = TP * epm[0] * rmid[0] * Ecell[0]                 # flux of D per metre through the first cell face
+v.check("13-02.16a", Qp16 / 1000.0 * 1e12)
+Efield = lambda rr, er_: Qp16 / (TP * er_ * e0 * rr) / 1e6  # noqa: E731  Gauss's law with the solved charge
+v.check("13-02.16b", Efield(a16, 4.0))
+v.check("13-02.16c", Efield(c16, 4.0))
+v.check("13-02.16d", Efield(c16, 2.0))
+v.check("13-02.16e", Efield(b16, 2.0))
+v.assert_true("13-02.16 solved cell fields match Gauss at the interface",
+              abs(Ecell[M16 // 3 - 1] / 1e6 / Efield(rmid[M16 // 3 - 1], 4.0) - 1) < 1e-6)
+v.check("13-02.16f", 1000.0 / (a16 * math.log(b16 / a16)) / 1e6)
 
 sys.exit(v.finish())

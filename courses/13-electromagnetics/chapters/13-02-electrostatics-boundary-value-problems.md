@@ -30,7 +30,7 @@
 
 ## 2. Intuition first
 
-**A stretched membrane.** In a region with no charge, the potential obeys Laplace's equation, which has a striking property: the potential at any point equals the average of the potential on any small circle (or sphere) around it (§3.6). A rubber sheet stretched over a wire frame does the same: with no weights on it, its height at each point is the average of the heights around it, so it has no bumps or dips inside; its shape is fixed entirely by the frame. The frame is the boundary: conductors at fixed voltages. Charge inside the region is a weight pushing the sheet (Poisson's equation).
+**A stretched membrane.** In a region with no charge, the potential obeys Laplace's equation, which has a striking property: the potential at any point equals the average of the potential on any circle (or sphere) around it that lies inside the charge-free region (§3.7 uses its discrete form). A rubber sheet stretched over a wire frame does the same: with no weights on it, its height at each point is the average of the heights around it, so it has no bumps or dips inside; its shape is fixed entirely by the frame. The frame is the boundary: conductors at fixed voltages. Charge inside the region is a weight pushing the sheet (Poisson's equation).
 
 **Mirrors.** A grounded conducting plane forces the potential on it to zero. A charge $+Q$ at height $h$ together with a fictitious charge $-Q$ at depth $h$ below the plane also gives zero potential everywhere on the plane. Since the solution is unique, the real field above the plane *is* the field of the charge and its mirror image. The plane's electrons arrange themselves to produce exactly the image's field.
 
@@ -55,7 +55,7 @@ $$
 The first says $\vec{E}$ is conservative: its line integral around any closed path is zero (Stokes), so $\vec{E} = -\nabla V$ for a single-valued potential $V$ (the curl of a gradient is zero, 13-01). The second is Gauss's law in point form; by the divergence theorem, $\oint\vec{D}\cdot d\vec{S} = Q_{enc}$. The energy stored in the field is
 
 $$
-W_e = \frac12\int_V\vec{D}\cdot\vec{E}\,dv = \frac12\int_V\varepsilon\lvert\vec{E}\rvert^2\,dv ,
+W_e = \frac12\int_v\vec{D}\cdot\vec{E}\,dv = \frac12\int_v\varepsilon\lvert\vec{E}\rvert^2\,dv ,
 $$
 
 which for a capacitor at voltage $V_0$ equals $\tfrac12CV_0^2$, giving the **energy method** for capacitance: $C = 2W_e/V_0^2$.
@@ -125,7 +125,7 @@ Why can we guess a solution (an image, a series, a symmetric field) and trust it
 *Proof.* Suppose $V_1$ and $V_2$ both satisfy $\nabla^2V = -\rho_v/\varepsilon$ in a region and take the same values on its boundary. Their difference $W = V_1 - V_2$ satisfies $\nabla^2W = 0$ inside and $W = 0$ on the boundary. Apply the divergence theorem to $W\nabla W$, using $\nabla\cdot(W\nabla W) = \lvert\nabla W\rvert^2 + W\nabla^2W$:
 
 $$
-\int_V\lvert\nabla W\rvert^2\,dv = \oint_SW\,\nabla W\cdot d\vec{S} - \int_VW\nabla^2W\,dv = 0 - 0 .
+\int_v\lvert\nabla W\rvert^2\,dv = \oint_SW\,\nabla W\cdot d\vec{S} - \int_vW\nabla^2W\,dv = 0 - 0 .
 $$
 
 An integral of a non-negative quantity that equals zero forces $\nabla W = 0$ everywhere, so $W$ is constant, and since it is zero on the boundary, $W = 0$. ∎
@@ -197,7 +197,7 @@ A two-wire line of centre spacing $D$ is the same geometry with the plane remove
 
 A layered dielectric in a parallel-plate gap is the basis of the **equivalent oxide thickness** of a transistor gate stack: a layer of permittivity $\varepsilon_i$ and thickness $d_i$ counts as $d_i\varepsilon_{ox}/\varepsilon_i$ of SiO₂ (Problem 13-02.3).
 
-**What has no closed form.** A microstrip (a strip over a ground plane with a dielectric between) has fields partly in air and partly in the substrate and fringing at the strip edges. Its capacitance comes from numerical solution, or from curve fits to numerical solutions such as those used in 13-08.
+**What has no closed form.** A microstrip (a strip over a ground plane with a dielectric between) has fields partly in air and partly in the substrate and fringing at the strip edges. Its capacitance comes from numerical solution, or from curve fits to numerical solutions; 13-07 introduces its effective permittivity, and Course 24 uses the design formulas.
 
 **Finite differences: Laplace as averaging.** Expand $V$ about a grid point $(x, y)$ with spacing $h$ in a Taylor series (01-08):
 
@@ -233,7 +233,7 @@ Where $\nabla^2V = 0$, each potential is the average of its four neighbours to w
 
 **Units check.** F/m from (F/m)/(dimensionless); V/(m × 1) = V/m.
 
-**Sanity check.** The field falls as $1/\rho$, so it is $b/a$ = 3.5 times stronger at the inner conductor: insulation breaks down there first. The value is close to the 101 pF/m specified for RG-58 cable (§9).
+**Sanity check.** The field falls as $1/\rho$, so it is $b/a$ = 3.5 times stronger at the inner conductor: insulation breaks down there first. The value is close to the 101 pF/m Belden specifies for its 8262, an RG-58-type cable (§9).
 
 ### Example 13-02.3 · Poisson's equation in a charged slab (tier B)
 
@@ -308,6 +308,7 @@ Where $\nabla^2V = 0$, each potential is the average of its four neighbours to w
 | Ex 13-02.6f | thin-wire error, h = 1 mm | 5.0 | % |
 | Prac 13-02.a | relative permittivity implied by a 66% velocity factor | 2.296 | — |
 | Prac 13-02.b | capacitance change from Dk 3.48 to 3.66 | 5.2 | % |
+| Prac 13-02.c | stripline capacitance shortfall using 3.48 for 3.66 | 4.9 | % |
 | Sim 13-02.a | resistor-grid centre voltage | 0.25 | V |
 
 *Every value is recomputed by [verify_13_02.py](../verify/verify_13_02.py): boundary conditions by solving the interface equations, the coaxial and slab potentials by symbolic integration of Laplace's and Poisson's equations, the trough by an independent finite-difference solution as well as the series, the induced charge by numerical integration of the image field, and the wire's capacitance by a method-of-moments solution with surface charge patches. The resistor-grid analogue is confirmed in ngspice.*
@@ -343,7 +344,7 @@ The netlist [resistor_grid.cir](../labs/13-02-lab/resistor_grid.cir) builds a 5 
 | $\varepsilon_0$ | 8.854 pF/m | Measured (since the 2019 SI revision) to about ten significant figures |
 | SiO₂ relative permittivity | 3.9 | The reference for equivalent oxide thickness |
 | Air breakdown | ≈ 3 MV/m | Centimetre gaps at sea level; lower for long gaps, higher for tiny ones |
-| Coaxial cable, 50 Ω class | ≈ 100 pF/m | RG-58 specifies 101 pF/m [2] |
+| Coaxial cable, 50 Ω class | ≈ 100 pF/m | Belden 8262 (RG-58 type) specifies 101 pF/m [2] |
 | FR-4 class laminate Dk | ≈ 4 (falls with frequency) | 370HR: 4.17 at 1 GHz, 3.92 at 10 GHz [1] |
 | Laplace's equation | Each point the average of its neighbours | No interior maxima or minima |
 
@@ -354,20 +355,20 @@ The netlist [resistor_grid.cir](../labs/13-02-lab/resistor_grid.cir) builds a 5 
 - **Putting image charges in the region of interest.** An image must lie outside the region where the solution is wanted, or it changes the charge there.
 - **Using the thin-wire formula close to a plane.** $\ln(2h/a)$ underestimates the capacitance by 5% at $h/a$ = 2 and more below.
 - **Truncating a Fourier series near the boundary that is being expanded.** Near the top of the trough the series converges slowly and overshoots at the corners.
-- **Assuming fringing is negligible.** For a strip whose width is comparable to its height above ground, fringing adds tens of percent (lab, Part 2).
+- **Assuming fringing is negligible.** For a strip whose width is comparable to its height above ground, fringing roughly triples the capacitance (lab, Part 2), and it still adds tens of percent at $w/h$ = 10.
 
 ## 9. Practitioner lens
 
 ### State of the art (as of Nov 2026)
 
 - **Laminate permittivity is a specification with conditions.** Isola's 370HR, an FR-4-class laminate, specifies Dk 4.17 at 1 GHz falling to 3.92 at 10 GHz, and its value depends on glass style and resin content [1] **[Established]** (data sheet). Low-loss laminates hold Dk nearly flat with frequency: Isola's I-Tera MT40 specifies 3.45 at 2, 5 and 10 GHz [1] **[Established]**. Since capacitance per length is proportional to the effective permittivity, every one of these numbers moves a trace's capacitance, and with it its impedance and delay (13-07, 13-08).
-- **Two numbers for one laminate.** Rogers specifies RO4350B with a "process" Dk of 3.48 ± 0.05 from a clamped-stripline test and a "design" Dk of 3.66 recommended for circuit design [1] **[Established]**. Using 3.48 where 3.66 applies underestimates capacitance by **5.2**% (our arithmetic).
-- **Cable capacitance from velocity.** Belden specifies its RG-58 type 8262 at 50 Ω, 66% velocity of propagation and 101 pF/m [2] **[Established]**. A 66% velocity factor implies an effective $\varepsilon_r = 1/0.66^2$ = **2.296** (13-07 derives $v = c/\sqrt{\varepsilon_r}$), consistent with a solid polyethylene dielectric (our inference) **[Industry estimate]**.
+- **Two numbers for one laminate.** Rogers specifies RO4350B with a "process" Dk of 3.48 ± 0.05 from a clamped-stripline test and a "design" Dk of 3.66 recommended for circuit design [1] **[Established]**. For a stripline, where all the field is in the laminate, using 3.48 where 3.66 applies gives a capacitance **4.9**% too low (3.66 is **5.2**% above 3.48; our arithmetic); for a microstrip the error follows the smaller change in effective permittivity.
+- **Cable capacitance from velocity.** Belden specifies its RG-58 type 8262 at 50 Ω, 66% velocity of propagation and 101 pF/m [2] **[Established]**. A 66% velocity factor implies an effective $\varepsilon_r = 1/0.66^2$ = **2.296** (13-07 derives $v = c/\sqrt{\varepsilon_r}$), consistent with a solid polyethylene dielectric (our inference from the published velocity, not a vendor statement).
 - **Extraction runs on Laplace solvers.** IC parasitic extraction and package and board signal-integrity tools compute capacitance matrices by solving Laplace's equation with finite-difference, finite-element or boundary-element methods, or with pattern libraries precomputed by them **[Established]** (textbook practice; Course 24 covers the tools).
 
 ### Why it matters commercially
 
-- **Capacitance is power.** Switching power is $CV^2f$; interconnect capacitance is a large share of it in modern chips, which is why low-permittivity dielectrics and wire spacing are process and design levers.
+- **Capacitance is power.** Switching power is $CV^2f$; interconnect capacitance is a large share of it in modern chips **[Industry estimate]**, which is why low-permittivity dielectrics and wire spacing are process and design levers.
 - **Laminate choice is a cost lever.** Low-loss laminates cost more than FR-4 class material; a board team that knows which signals need the better Dk and Df can mix materials in one stack-up.
 - **Breakdown and reliability margins are field margins.** Field crowding at edges and corners, not average fields, sets where dielectrics fail.
 

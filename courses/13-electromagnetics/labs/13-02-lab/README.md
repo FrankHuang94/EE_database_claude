@@ -17,7 +17,7 @@ Boundary conditions (§3.2), Laplace and Poisson (§3.3), uniqueness (§3.4), se
 
 ## Procedure
 
-1. **Finite differences (Part 1).** Solve the square trough on grids of spacing $a/10$ to $a/160$ and plot the error at $(a/2, 3a/4)$ against the spacing on log axes. *Predict first:* what slope will the error line have?
+1. **Finite differences (Part 1).** Solve the square trough on grids of spacing $a/8$ to $a/128$ and plot the error at $(a/2, 3a/4)$ against the spacing on log axes. *Predict first:* what slope will the error line have?
 2. **A strip over a ground plane (Part 2).** Compute the capacitance per length of a zero-thickness strip of width $w$ at height $h$ over a ground plane in air, for $w/h$ from 0.5 to 10, from the stored energy, and divide by the parallel-plate value $\varepsilon_0w/h$.
 3. **Images (Part 3).** Map the potential of a charge above a plane with its image, and integrate the induced surface charge over growing discs.
 4. **Refraction (Part 4).** Plot field lines crossing an interface for several permittivity ratios.

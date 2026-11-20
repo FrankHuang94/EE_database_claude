@@ -17,9 +17,9 @@ Coordinate systems and scale factors (§3.1), the operators (§3.2–3.5), the i
 ## Procedure
 
 1. **Unit vectors (Part 1).** Plot $\hat\rho$ and $\hat\phi$ at eight points on a circle.
-2. **Operators (Part 2).** Implement the general orthogonal-coordinate formulas once and apply them to $r^n\hat r$, $r\sin\theta\,\hat\phi$, $1/r$, $\ln\rho$ and the dipole potential.
-3. **Theorems (Part 3).** Compute both sides of the divergence theorem on spheres of radius 1 and 2, and the flux of a curl through a disc and a cone over the same circle.
-4. **Delta function (Part 4, the chapter's guided exercise).** *Predict first:* the flux of $\hat r/r^2$ through spheres of radius 0.01 and 100. Then run it.
+2. **Operators (Part 2).** Implement the general orthogonal-coordinate formulas once and apply them to $r^n\hat r$, $r\sin\theta\,\hat\phi$, $1/r$, $\ln\rho$ and the dipole potential; then build fields in Cartesian form, differentiate there, project onto the spherical unit vectors and confirm that the differences are zero.
+3. **Theorems (Part 3).** Compute both sides of the divergence theorem on spheres of radius 1 and 2 and on a cube, and the flux of the curl of $(\rho + z)\hat\phi$ through a flat disc and through a cone over the same circle (different integrands, the same circulation).
+4. **Delta function (Part 4, the chapter's guided exercise).** *Predict first:* the flux of $\hat r/r^2$ through spheres of radius 0.01 and 100. Then run it, and integrate the field's divergence on a grid over a cube while leaving out a shrinking ball around the origin: the integral stays near zero while the flux out of the cube stays 4π.
 
 ## Expected results
 

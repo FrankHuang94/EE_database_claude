@@ -52,7 +52,7 @@ The long-solenoid formula scales as $1/\ell$: from 78.96 µH at 5 cm it is **197
 
 (b) $L = N^2/\mathcal{R} = \mu_0N^2A/(g + \ell_c/\mu_r)$, so $g + \ell_c/\mu_r = \mu_0N^2A/L$ = 0.3632 mm. The core contributes $\ell_c/\mu_r$ = 0.05/2000 = 0.025 mm of "equivalent air", so the gap is **0.3382** mm.
 
-(c) $B = LI/(NA) = 100 \times 10^{-6} \times 5/(17 \times 10^{-4})$ = **0.2941** T, under the limit because 17 exceeds 16.67. The energy is $\tfrac12LI^2$ = **1.25** mJ. Core and gap carry the same flux, so they store energy in proportion to their reluctances: the gap's share is $g/(g + \ell_c/\mu_r)$ = **93.12**%. Without the gap, 17 turns on this core would give 14.5 mH, and the core would saturate at a few tens of milliamperes.
+(c) $B = LI/(NA) = 100 \times 10^{-6} \times 5/(17 \times 10^{-4})$ = **0.2941** T, under the limit because 17 exceeds 16.67. The energy is $\tfrac12LI^2$ = **1.25** mJ. Core and gap carry the same flux, so they store energy in proportion to their reluctances: the gap's share is $g/(g + \ell_c/\mu_r)$ = **93.12**%. Without the gap, 17 turns on this core would give $\mu_r\mu_0N^2A/\ell_c$ = **1.453** mH, and the core would reach 0.3 T at only $B_{max}\ell_c/(\mu_r\mu_0N)$ = **0.3511** A, a fourteenth of the 5 A it must carry.
 
 ### Solution 13-03.8
 
@@ -124,7 +124,7 @@ $$
 L = 4L_p - 4M_p = 4(8.617 - 0.9343) = \mathbf{30.73}\ \text{nH}.
 $$
 
-The textbook formula gives **30.65** nH, within 0.3%: it uses the same physics with a thin-wire approximation. A 1 cm loop of thin wire has about 31 nH; shrinking the loop area is the strongest way to reduce it.
+The textbook formula gives **30.65** nH, **0.26**% lower: it uses the same physics with a thin-wire approximation. A 1 cm loop of thin wire has about 31 nH; shrinking the loop area is the strongest way to reduce it.
 
 ### Solution 13-03.14
 
@@ -136,7 +136,23 @@ $$
 
 with the minus sign meaning the force acts to close the gap. The faces attract with a pressure $B^2/(2\mu_0)$, equal to the energy density in the gap.
 
-(b) At 1 A, $B$ = 0.1197 T: $F = 0.1197^2 \times 10^{-4}/(2\mu_0)$ = **0.5699** N. At 0.3 T: **3.581** N. Relays and solenoid actuators use exactly this force; in a power inductor it makes the core halves vibrate at the switching frequency, which is the source of audible "coil whine" when that frequency falls in the audio band.
+(b) At 1 A, $B$ = 0.11968 T: $F = 0.11968^2 \times 10^{-4}/(2\mu_0)$ = **0.5699** N. At 0.3 T: **3.581** N. Relays and solenoid actuators use exactly this force; in a power inductor it makes the core halves vibrate at the switching frequency, which is the source of audible "coil whine" when that frequency falls in the audio band.
+
+### Solution 13-03.15
+
+(a) $\vec{M} = M\hat{z}$ is uniform, so $\vec{J}_b = \nabla\times\vec{M} = 0$ inside. On the curved side the outward normal is $\hat\rho$, so $\vec{K}_b = \vec{M}\times\hat{n} = M\hat{z}\times\hat\rho = M\hat\phi$: a surface current of **8 × 10⁵** A/m circling the rod. On the end faces $\hat{n} = \pm\hat{z}$ is parallel to $\vec{M}$, so $\vec{K}_b = 0$ there. The magnet is magnetically identical to a solenoid with $nI$ = 8 × 10⁵ A/m, such as 1000 turns per metre carrying 800 A.
+
+(b) A long solenoid has $B = \mu_0nI$ inside, so $B \approx \mu_0M$ = **1.005** T, and $H = B/\mu_0 - M \approx 0$.
+
+(c) A ring of radius $a$ and current $dI$ at axial distance $s$ gives $dB_z = \mu_0a^2\,dI/[2(a^2 + s^2)^{3/2}]$ on the axis (the loop result of the chapter, off centre). With $dI = K_b\,dz$, summing rings over the rod's length $L$ gives, at the centre,
+
+$$
+B = \frac{\mu_0Ma^2}{2}\int_{-L/2}^{L/2}\frac{dz}{(a^2 + z^2)^{3/2}} = \mu_0M\frac{L/2}{\sqrt{(L/2)^2 + a^2}} ,
+$$
+
+which is **1.005** T (0.02% below $\mu_0M$). At the end face the rings lie on one side only, from 0 to $L$: $B = (\mu_0M/2)\,L/\sqrt{L^2 + a^2}$ = **0.5026** T. Each half of a long solenoid contributes half of the central field, and at the end only one half is present.
+
+(d) At the centre $H = B/\mu_0 - M = M[(L/2)/\sqrt{(L/2)^2 + a^2} - 1]$ = **−160** A/m. $H$ is small but negative: it points against $\vec{M}$. Because $\nabla\cdot\vec{B} = 0$ and $\vec{B} = \mu_0(\vec{H} + \vec{M})$, $\nabla\cdot\vec{H} = -\nabla\cdot\vec{M}$, so the ends of the magnet act as sources of $\vec{H}$ ("magnetic poles") whose field inside opposes the magnetization. This **demagnetizing field** is small for a long thin rod and large for a short fat one, which is why permanent magnets are specified by their resistance to demagnetization (coercivity) and why short magnets need high-coercivity materials.
 
 ---
 
@@ -172,6 +188,8 @@ with the minus sign meaning the force acts to close the gap. The faces attract w
 | 13-03.7c | peak flux density | 0.2941 | T |
 | 13-03.7d | stored energy | 1.25 | mJ |
 | 13-03.7e | gap's share of the energy | 93.12 | % |
+| 13-03.7f | ungapped inductance | 1.453 | mH |
+| 13-03.7g | ungapped saturation current | 0.3511 | A |
 | 13-03.8a | mutual inductance | 4.394 | nH |
 | 13-03.8b | induced voltage | 4.394 | V |
 | 13-03.9a | internal inductance of the wire | 50.00 | nH/m |
@@ -198,5 +216,11 @@ with the minus sign meaning the force acts to close the gap. The faces attract w
 | 13-03.13b | opposite-side partial mutual | 0.9343 | nH |
 | 13-03.13c | loop inductance | 30.73 | nH |
 | 13-03.13d | textbook formula | 30.65 | nH |
+| 13-03.13e | formula below partial-inductance sum | 0.26 | % |
 | 13-03.14a | force at 1 A | 0.5699 | N |
 | 13-03.14b | force at 0.3 T | 3.581 | N |
+| 13-03.15a | bound surface current | 8 × 10⁵ | A/m |
+| 13-03.15b | long-rod estimate of B | 1.005 | T |
+| 13-03.15c | B at the centre | 1.005 | T |
+| 13-03.15d | B at the end face | 0.5026 | T |
+| 13-03.15e | H at the centre | −160 | A/m |

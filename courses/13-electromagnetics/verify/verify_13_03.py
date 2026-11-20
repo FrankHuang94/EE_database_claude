@@ -226,12 +226,16 @@ def bond_formula(ell):
 for ell, key in ((1e-3, "a"), (2e-3, "b"), (3e-3, "c")):
     Lf = bond_formula(ell)
     Ln = neumann_parallel(ell, aw)  # filament on the axis against a filament on the surface: GMD of a tube
+    # the published values are the closed form itself (the example evaluates it); the Neumann integral is
+    # the independent route, and its small, keyed excess (Ex 13-03.5g/h) shows the size of the dropped a/l terms
     v.assert_true(f"bond {ell * 1e3:.0f} mm formula within 0.5% of Neumann integral", abs(Lf / Ln - 1) < 5e-3,
                   f"{Lf} vs {Ln}")
     v.check(f"Ex 13-03.5{key}", Lf * N_)
 v.check("Ex 13-03.5d", bond_formula(2e-3) * N_ / 2)
 v.check("Ex 13-03.5e", bond_formula(3e-3) * N_ / 3)
 v.check("Ex 13-03.5f", 1e-9 * 20e-3 / 200e-12)
+v.check("Ex 13-03.5g", 100 * (neumann_parallel(1e-3, aw) / bond_formula(1e-3) - 1))
+v.check("Ex 13-03.5h", 100 * (neumann_parallel(3e-3, aw) / bond_formula(3e-3) - 1))
 
 # ---------------------------------------------------------------- Example 6
 Lwp, Cwp = wire_over_plane(0.5e-3, 5e-3)
@@ -312,6 +316,8 @@ W7 = 0.5 * L7 * I7**2
 v.check("13-03.7d", W7 * 1e3)
 Wgap7 = B7**2 / (2 * mu0) * g7 * A7
 v.check("13-03.7e", Wgap7 / W7 * 100)
+v.check("13-03.7f", gapped_core(N7, 1.0, mur7, lc7, A7, 0.0)[1] * 1e3)
+v.check("13-03.7g", brentq(lambda i: gapped_core(N7, i, mur7, lc7, A7, 0.0)[0] - Bm7, 1e-4, 10, xtol=1e-14))
 
 # 8: flux of the wire's field through the loop by a double integral
 M8, _ = dblquad(lambda z, r: mu0 / (2 * math.pi * r), 0.005, 0.015, 0, 0.02)
@@ -370,6 +376,7 @@ v.check("13-03.13a", Lp13 * N_)
 v.check("13-03.13b", Mp13 * N_)
 v.check("13-03.13c", (4 * Lp13 - 4 * Mp13) * N_)
 v.check("13-03.13d", 2 * mu0 * s13 / math.pi * (math.log(s13 / a13) - 0.774) * N_)
+v.check("13-03.13e", 100 * (1 - 2 * mu0 * s13 / math.pi * (math.log(s13 / a13) - 0.774) / (4 * Lp13 - 4 * Mp13)))
 
 # 14: virtual work at fixed flux, numerically
 Phi14 = 100 * 1.0 / (Rc4 + Rg4)
@@ -409,5 +416,16 @@ if lab.exists():
     i_t = np.interp(t, [0, 100e-12, 500e-12, 3e-9], [0, 0, 40e-3, 40e-3])
     v_t = 2e-9 * np.gradient(i_t, t)
     v.check("Lab 13-03.g", np.sum((v_t[1:] + v_t[:-1]) / 2 * np.diff(t)) * 1e12)
+
+# 15: bar magnet as a sheet of bound current K = M (phi direction); sum ring fields along the axis numerically
+M15, a15, L15 = 8e5, 5e-3, 0.5
+ring = lambda zz, s0: mu0 * M15 * a15**2 / (2 * (a15**2 + (zz - s0) ** 2) ** 1.5)  # noqa: E731
+v.check("13-03.15a", M15 * 1.0)                            # |M x n| with M along z and n along rho
+v.check("13-03.15b", mu0 * M15)
+Bc15 = quad(ring, -L15 / 2, L15 / 2, args=(0.0,), points=[0.0], limit=200, epsabs=0, epsrel=1e-13)[0]
+Be15 = quad(ring, -L15 / 2, L15 / 2, args=(L15 / 2,), points=[L15 / 2], limit=200, epsabs=0, epsrel=1e-13)[0]
+v.check("13-03.15c", Bc15)
+v.check("13-03.15d", Be15)
+v.check("13-03.15e", Bc15 / mu0 - M15)
 
 sys.exit(v.finish())

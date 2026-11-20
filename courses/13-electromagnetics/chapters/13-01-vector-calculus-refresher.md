@@ -125,7 +125,13 @@ $$
 (\nabla\times\vec{A})\cdot\hat{n} = \lim_{\Delta S \to 0}\frac{1}{\Delta S}\oint_C\vec{A}\cdot d\vec{l} .
 $$
 
-The same box argument, applied to a small rectangular loop, gives a determinant form in which each component carries its scale factor:
+**Deriving one component.** Take the $z$-component in cylindrical coordinates. The loop lies in a plane of constant $z$ and runs counter-clockwise seen from $+z$ (so its normal is $+\hat{z}$ by the right-hand rule): out along $\hat\rho$ from $(\rho, \phi)$ to $(\rho + \Delta\rho, \phi)$, round along $\hat\phi$ to $\phi + \Delta\phi$, back in along $-\hat\rho$, and back round along $-\hat\phi$. The two radial sides have length $\Delta\rho$; the arcs have lengths $(\rho + \Delta\rho)\Delta\phi$ and $\rho\Delta\phi$. Adding the four contributions $\vec{A}\cdot d\vec{l}$ in pairs:
+
+$$
+\oint\vec{A}\cdot d\vec{l} \approx \big[(\rho A_\phi)_{\rho + \Delta\rho} - (\rho A_\phi)_\rho\big]\Delta\phi - \big[(A_\rho)_{\phi + \Delta\phi} - (A_\rho)_\phi\big]\Delta\rho \approx \Big[\frac{\partial(\rho A_\phi)}{\partial\rho} - \frac{\partial A_\rho}{\partial\phi}\Big]\Delta\rho\,\Delta\phi .
+$$
+
+The loop's area is $\Delta S = \rho\,\Delta\rho\,\Delta\phi$, so dividing and letting the loop shrink gives $(\nabla\times\vec{A})_z = (1/\rho)\big[\partial(\rho A_\phi)/\partial\rho - \partial A_\rho/\partial\phi\big]$. The factor ρ inside the first derivative comes from the arcs' lengths; the $1/\rho$ outside comes from the area. Repeating this for every component in general coordinates gives a determinant form in which each component carries its scale factor:
 
 $$
 \nabla\times\vec{A} = \frac{1}{h_1h_2h_3}\begin{vmatrix} h_1\hat{u}_1 & h_2\hat{u}_2 & h_3\hat{u}_3\\ \partial/\partial u_1 & \partial/\partial u_2 & \partial/\partial u_3\\ h_1A_1 & h_2A_2 & h_3A_3\end{vmatrix} .
@@ -191,11 +197,11 @@ The same cancellation argument applies to small loops tiling the surface. Any su
 | $\nabla\cdot(V\vec{A}) = V\nabla\cdot\vec{A} + \vec{A}\cdot\nabla V$ | Product rule; used for energy |
 | $\nabla\cdot(\vec{A}\times\vec{B}) = \vec{B}\cdot(\nabla\times\vec{A}) - \vec{A}\cdot(\nabla\times\vec{B})$ | Gives Poynting's theorem (13-04) |
 
-*Proof of the first two.* In Cartesian coordinates, each component of $\nabla\times\nabla V$ is a difference of mixed partial derivatives such as $\partial^2V/\partial y\partial z - \partial^2V/\partial z\partial y$, which vanish when the derivatives are continuous. Likewise $\nabla\cdot(\nabla\times\vec{A})$ is a sum of three such pairs. Since the results are vectors and scalars, they hold in every coordinate system. The integral view is just as quick: by Stokes, the circulation of $\nabla V$ around any loop is $V$'s change around the loop, zero; by the divergence theorem, the flux of $\nabla\times\vec{A}$ through a closed surface is the circulation around a boundary that has shrunk to nothing.
+*Proof of the first two.* In Cartesian coordinates, each component of $\nabla\times\nabla V$ is a difference of mixed partial derivatives such as $\partial^2V/\partial y\partial z - \partial^2V/\partial z\partial y$, which vanish when the derivatives are continuous. Likewise $\nabla\cdot(\nabla\times\vec{A})$ is a sum of three such pairs. Since the results are vectors and scalars, they hold in every coordinate system. The integral view is just as quick: by Stokes, the circulation of $\nabla V$ around any loop is $V$'s change around the loop, zero; for $\nabla\cdot(\nabla\times\vec{A})$, the divergence theorem turns its volume integral into the flux of $\nabla\times\vec{A}$ through the closed surface; cut that surface into two caps along any loop, apply Stokes's theorem to each, and the two circulations around the shared loop cancel (it is traversed in opposite directions), so the flux is zero for every volume.
 
 > **Going deeper — the Helmholtz theorem.** A vector field that is smooth and decays fast enough at infinity is determined uniquely by its divergence and its curl. It can be written as $\vec{F} = -\nabla\Phi + \nabla\times\vec{A}$, with $\Phi$ built from the divergence (the "sources") and $\vec{A}$ from the curl (the "vortices"). This is why Maxwell's equations specify both the divergence and the curl of each field: together, with boundary conditions, they pin the fields down. The proof uses the Green's function $1/(4\pi\lvert\vec{r} - \vec{r}'\rvert)$ of the Laplacian; Griffiths gives it in an appendix.
 
-> **Math refresher — the delta function in three dimensions.** The flux of $\hat{r}/r^2$ through any sphere centred on the origin is $4\pi$, yet its divergence is zero everywhere except $r = 0$. The divergence theorem then requires $\nabla\cdot(\hat{r}/r^2) = 4\pi\delta^3(\vec{r})$, a spike at the origin with unit volume integral times $4\pi$. Equivalently $\nabla^2(1/r) = -4\pi\delta^3(\vec{r})$. This is how a point charge appears in Gauss's law in differential form.
+> **Math refresher — the delta function in three dimensions.** The flux of $\hat{r}/r^2$ through any sphere centred on the origin is $4\pi$, yet its divergence is zero everywhere except $r = 0$. The divergence theorem then requires $\nabla\cdot(\hat{r}/r^2) = 4\pi\delta^3(\vec{r})$, a spike at the origin whose volume integral is $4\pi$. Equivalently $\nabla^2(1/r) = -4\pi\delta^3(\vec{r})$. This is how a point charge appears in Gauss's law in differential form.
 
 ## 4. Worked examples
 
@@ -335,7 +341,7 @@ The lab, [labs/13-01-lab](../labs/13-01-lab/README.md), is a notebook:
 
 ### Why it matters commercially
 
-- **Signal and power integrity** in high-speed boards and packages rest on fields solved in these coordinates; their accuracy decides whether a 100+ Gb/s link closes.
+- **Signal and power integrity** in high-speed boards and packages rest on fields solved in these coordinates; at 100 Gb/s and above, the accuracy of those field solutions is part of the link's margin **[Industry estimate]**.
 - **Solver output is only as good as the setup.** Engineers who understand flux and circulation catch mesh, port and boundary mistakes that produce plausible but wrong S-parameters.
 
 ### Marketing vs Reality
