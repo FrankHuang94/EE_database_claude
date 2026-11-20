@@ -6437,3 +6437,15 @@
   definition: "Changing a signal's sample rate by a rational L/M (upsample, filter, downsample, computed in polyphase form) or, between unsynchronized clocks, by an asynchronous converter that tracks the rate ratio and interpolates at fractional positions."
   chapter: "16-09"
   see_also: [Interpolation (upsampling), Decimation]
+- term: SQNR
+  definition: "Signal-to-quantization-noise ratio: signal power over the power of the rounding error; 6.02N + 1.76 dB for a full-scale sine on an N-bit quantizer, less for signals with higher crest factor once they are backed off to avoid clipping."
+  chapter: "16-10"
+  see_also: [Quantization noise, Crest factor]
+- term: Noise gain (digital filter)
+  definition: "The factor Σ g[n]² by which a white rounding error's variance grows on its way to the output through a path with impulse response g; sharp IIR sections can have noise gains of tens (18 dB)."
+  chapter: "16-10"
+  see_also: [Quantization noise, Limit cycle]
+- term: Overflow limit cycle
+  definition: A large, self-sustained oscillation in a recursive fixed-point filter caused by two's-complement wrap-around on overflow; saturation arithmetic or scaling that rules out overflow prevents it.
+  chapter: "16-10"
+  see_also: [Limit cycle, Saturation arithmetic]

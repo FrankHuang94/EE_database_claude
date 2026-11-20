@@ -253,6 +253,10 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-245 | AMD RFSoC RF Data Converter (PG269) decimation and interpolation | Nov 2026 |
 | R-246 | TI ADC12DJ5200RF digital down-converter | Nov 2026 |
 | R-247 | TI SRC4392 asynchronous sample-rate converter | Nov 2026 |
+| R-248 | OCP 8-bit floating point (OFP8): E4M3 and E5M2 | Nov 2026 |
+| R-249 | OCP Microscaling (MX) formats | Nov 2026 |
+| R-250 | IEEE 754-2019 status and binary16 parameters | Nov 2026 |
+| R-251 | bfloat16 definitions | Nov 2026 |
 
 ---
 
@@ -2521,3 +2525,29 @@ R&D % = R&D ÷ revenue.
 
 - **TI SRC4392**, data sheet SBFS029D (revised December 2012): input or output sampling rate 4 to 216 kHz; "Input-to-Output Sampling Ratio 1:16 … 16:1"; "Dynamic Range with –60dB Input (A-Weighted): 144dB typical"; "THD+N with Full-Scale Input: –140dB typical". Interpolation filter: passband 0.4535 × fSIN, ripple ±0.007 dB, stopband 0.5465 × fSIN, attenuation −144 dB; decimation filter: passband 0.4535 × fSOUT, ripple ±0.008 dB, attenuation −143 dB. Group delay "102.53125/fSIN" with 64 samples pre-buffered down to "46.53125/fSIN" with 8; the decimation filter adds "36.46875/fSOUT". Block diagram: interpolation filter → re-sampler → decimation filter with a rate estimator ("two digital servo loops"). [Established] [SRC4392 data sheet](https://www.ti.com/lit/ds/symlink/src4392.pdf)
 - Perishable: an old but active part; check the current revision before citing.
+
+## R-248 · OCP 8-bit floating point (OFP8): E4M3 and E5M2
+
+*Read on 20 Nov 2026 by a research subagent (PDFs from opencompute.org); the two maximum-value sentences were re-read by the main author from the converted text.*
+
+- **OCP 8-bit Floating Point Specification (OFP8)**, Revision 1.0 approved 20 June 2023 (corrected 1 December 2023: "Corrects the biases for E4M3 and E5M2 in Section 4.2"), contributors "AMD, Arm, Google, Intel, Meta, and NVIDIA"; Revision 1.1 dated 29 January 2026 ("Adjusts the conversion description in Section 5.2 and adds Appendix A"), adding AWS as a contributor. Tables 1 and 2 (unchanged in 1.1): E4M3 bias 7, emax 8, maximum normal S.1111.110 = ±448, minimum subnormal ±2⁻⁹, no infinities, NaN S.1111.111; E5M2 bias 15, maximum ±57,344, infinities S.11111.00, NaN S.11111.{01,10,11}. "max_E4M3: The maximum magnitude of a number in the E4M3 format. It has the value 448." "The E4M3 format does not represent infinities and uses only two bit patterns for NaN … in order to increase emax to 8." Conversion: round to nearest, ties to even; saturating and non-saturating modes. [Established] [OFP8 rev 1.1](https://www.opencompute.org/documents/ocp-8-bit-floating-point-specification-ofp8-revision-1-1-final-pdf/)
+
+## R-249 · OCP Microscaling (MX) formats
+
+*Read on 20 Nov 2026 by a research subagent; the shared-scale sentence was re-read by the main author from the converted v1.0 text.*
+
+- **OCP Microscaling Formats (MX) Specification v1.0**, September 2023 (version table 9/7/2023), contributors "AMD, Arm, Intel, Meta, Microsoft, NVIDIA, Qualcomm". Table 1: block size k = 32 with an 8-bit E8M0 scale for every format; elements MXFP8 (E5M2 or E4M3, 8 bits), MXFP6 (E3M2 or E2M3, 6 bits), MXFP4 (E2M1, 4 bits), MXINT8 (8 bits). §5.1: "The scale factor X is shared across all k elements. The data types of the elements and scale are chosen independently"; "each block of k elements can be encoded in (w + kd) bits." §5.4.1: "E8M0 is an unsigned representation of a conventional biased Float32 exponent." [Established] [MX v1.0](https://opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf)
+- **v1.1** (dated 9 October 2026, retitled "OCP MicroXcaling (MX) Specification", Google added as a contributor) renames E8M0 to UE8M0 and rewrites the scale-selection algorithm (§6.3); Table 1 is otherwise unchanged. Its approval status was not found on an OCP page. [Established for the document's content] [MX v1.1](https://www.opencompute.org/wp-content/uploads/2026/10/OCP_MicroXcaling_Spec_v1.1.0.pdf)
+
+## R-250 · IEEE 754-2019 status and binary16 parameters
+
+*Read on 20 Nov 2026 by a research subagent. The standard's text is paywalled and was not opened; an unauthorized copy found by search was deliberately not used.*
+
+- IEEE SA: IEEE 754-2019 "Status: Active Standard" (approved 2019-06-13, published 2019-07-22, superseding 754-2008); revision project P754 "Status: Active PAR; PAR Approval 2024-06-06; Superseding 754-2019". [Established] [IEEE 754-2019](https://standards.ieee.org/ieee/754/6210/), [P754](https://standards.ieee.org/ieee/754/11684/)
+- binary16 parameters (secondary): the ISO C working draft N3220, Annex H, Table H.1, gives precision p = 11 bits for binary16, with C-model emax 16 and a footnote that the C model's exponent is one more than the ISO/IEC 60559 model's, so IEEE emax = 15; NumPy's float16 agrees (maximum 65,504). [Established] [N3220](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3220.pdf)
+
+## R-251 · bfloat16 definitions
+
+*Read on 20 Nov 2026 by a research subagent.*
+
+- Google Cloud blog, "BFloat16: The secret to high performance on Cloud TPUs" (23 August 2019): bfloat16 is "comprised of one sign bit, eight exponent bits, and seven mantissa bits"; "the dynamic range of bfloat16 is identical to that of FP32." OCP OFP8 §4.1: "bfloat16: a binary format with 1 sign bit, 8 exponent bits, 7 mantissa bits, and an exponent bias of 127." Intel, "BFLOAT16 – Hardware Numerics Definition" (Rev 1.0, Nov 2018): "a short version of FP32, skipping the least significant 16 bits of mantissa." [Established] [Google Cloud blog](https://cloud.google.com/blog/products/ai-machine-learning/bfloat16-the-secret-to-high-performance-on-cloud-tpus)
