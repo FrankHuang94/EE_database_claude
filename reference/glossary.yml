@@ -5964,3 +5964,29 @@
   definition: A pole and a zero very close together; nearly invisible in the frequency response, it leaves a slow settling tail of amplitude about (z − p)/z decaying with the time constant 1/p, which dominates precision settling.
   chapter: "15-03"
   see_also: [Settling time]
+
+# ---------------------------------------------------------------- 15-04
+- term: Disturbance rejection
+  definition: A feedback loop's ability to keep an unwanted input (a load, a supply change, an ambient change) from reaching the output; an output disturbance is multiplied by S = 1/(1 + L), so rejection is good only where the loop gain is large.
+  chapter: "15-04"
+  see_also: [Sensitivity function]
+- term: System type
+  definition: The number N of integrators (poles at s = 0) in a loop gain L(s); type 0 leaves a finite error to a step, type 1 to a ramp, type 2 to a parabola.
+  chapter: "15-04"
+  see_also: [Static error constants]
+- term: Static error constants
+  definition: K_p = lim L(s), K_v = lim sL(s) and K_a = lim s²L(s) as s → 0; a stable unity-feedback loop's steady errors to a unit step, ramp and parabola are 1/(1 + K_p), 1/K_v and 1/K_a.
+  chapter: "15-04"
+  see_also: [System type, Steady-state error]
+- term: Steady-state error
+  definition: The error r − y that remains after the transient of a stable loop has died out, found with the final-value theorem as lim sE(s); it depends on the input class, the system type and where disturbances enter.
+  chapter: "15-04"
+  see_also: [Final-value theorem]
+- term: Integral action
+  definition: A controller term proportional to the time integral of the error, K_i ∫e dt (K_i/s); it can hold a constant output with zero error, so it removes steady errors to steps of reference and of disturbances entering downstream of it.
+  chapter: "15-04"
+  see_also: [System type]
+- term: Internal model principle
+  definition: A loop tracks or rejects a class of signals with zero steady error only if its loop gain contains a model of their generator, 1/s for constants, 1/s² for ramps, 1/(s² + ω₀²) for sinusoids of frequency ω₀.
+  chapter: "15-04"
+  see_also: [Integral action]

@@ -1,0 +1,43 @@
+* Lab 15-04 -- Example 15-04.4: where the integrator sits decides whether a disturbance leaves an error.
+* Plant P(s) = 1/(s(0.1 s + 1)): a lag (0.1 F || 1 ohm driven by a 1 S transconductor) followed by an
+* integrator (1 F driven by a 1 S transconductor). Node voltages are signals. Reference r = 0; a 0.5 V step
+* disturbance d enters at the plant input at t = 0.
+* Loop 1: proportional controller u = 10 (r - y).          Expected steady output -d/K = -0.05.
+* Loop 2: PI controller u = 10 (r - y) + 20 * integral(r - y). Expected steady output 0.
+*
+* EXPECT yp key:../../chapters/15-04-feedback-and-steady-state-error.md#Ex_15-04.4a rtol=1e-3
+* EXPECT ypi 0 atol=1e-4
+
+VR r 0 0
+VD d 0 PWL(0 0 1m 0.5)
+
+* loop 1 (proportional)
+BU1 u1 0 V=10*(v(r)-v(y1)) + v(d)
+GA1 0 a1 u1 0 1
+RA1 a1 0 1
+CA1 a1 0 0.1 IC=0
+GY1 0 y1 a1 0 1
+CY1 y1 0 1 IC=0
+
+* loop 2 (proportional-integral)
+GZ2 0 z2 r y2 1
+CZ2 z2 0 1 IC=0
+RZ2 z2 0 1e12
+BU2 u2 0 V=10*(v(r)-v(y2)) + 20*v(z2) + v(d)
+GA2 0 a2 u2 0 1
+RA2 a2 0 1
+CA2 a2 0 0.1 IC=0
+GY2 0 y2 a2 0 1
+CY2 y2 0 1 IC=0
+RY y1 0 1e12
+RY2 y2 0 1e12
+
+.control
+tran 1m 20 uic
+meas tran yp find v(y1) at=19.99
+meas tran ypi find v(y2) at=19.99
+meas tran ypi_min min v(y2) from=0 to=5
+print yp ypi ypi_min
+quit
+.endc
+.end
