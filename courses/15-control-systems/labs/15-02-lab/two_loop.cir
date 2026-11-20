@@ -1,0 +1,31 @@
+* Lab 15-02 -- Example 15-02.3's two-loop system built from ideal transconductors and capacitors.
+* Signals are node voltages. Controller G1 = 10/(s+1): a 10 S transconductor driven by the error r - y
+* charges 1 F in parallel with 1 ohm at node c. Plant G2 = 1/s: a 1 S transconductor driven by v(c)
+* charges 1 F at node y. Inner velocity feedback H2 = 2: a 2 S transconductor draws 2*v(y) out of node y.
+* Outer loop: the controller's transconductor senses r - y (unity feedback). Expected T = 10/(s^2+3s+12).
+* A 1 V step at r (1 ms rise). d = v(c) - 2 v(y) is proportional to dy/dt; its first fall through zero is the peak.
+*
+* EXPECT yfin key:../../chapters/15-02-transfer-functions-and-block-diagrams.md#Ex_15-02.3c rtol=1e-3
+* EXPECT tpk key:../../chapters/15-02-transfer-functions-and-block-diagrams.md#Ex_15-02.3e rtol=2e-3
+* EXPECT os key:../../chapters/15-02-transfer-functions-and-block-diagrams.md#Ex_15-02.3d rtol=3e-3
+
+VR r 0 PWL(0 0 1m 1)
+GC 0 c r y 10
+RC c 0 1
+CC c 0 1 IC=0
+GP 0 y c 0 1
+GH y 0 y 0 2
+CY y 0 1 IC=0
+BD d 0 V=v(c)-2*v(y)
+RD d 0 1
+
+.control
+tran 1m 20 uic
+meas tran yfin find v(y) at=19.999
+meas tran ypk max v(y) from=0 to=5
+meas tran tpk when v(d)=0 fall=1
+let os = 100*(ypk/yfin - 1)
+print yfin ypk tpk os
+quit
+.endc
+.end

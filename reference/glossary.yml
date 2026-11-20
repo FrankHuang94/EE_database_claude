@@ -5916,3 +5916,33 @@
   definition: The temperature of a chip's active devices (T_J), the quantity reliability and performance limits are set on; it exceeds the case and ambient temperatures by the heat flow times the thermal resistances in between.
   chapter: "15-01"
 
+
+# ---------------------------------------------------------------- 15-02
+- term: Relative degree
+  definition: The number of poles minus the number of zeros of a transfer function, n − m; the gain falls as 1/ωⁿ⁻ᵐ at high frequency, and physical systems have relative degree of at least 1.
+  chapter: "15-02"
+  see_also: [Transfer function, Poles and zeros]
+- term: Block diagram
+  definition: A drawing of a system as blocks (transfer functions) joined by signal arrows, summing junctions and pickoff points; series blocks multiply, parallel blocks add, and a feedback loop reduces to G/(1 + GH).
+  chapter: "15-02"
+  see_also: [Signal-flow graph, Loop gain]
+- term: Sensitivity function
+  definition: S(s) = 1/(1 + L(s)), the transfer function from reference to error in a unity-feedback loop; it scales how much of a disturbance reaches the output and how strongly plant variations affect the closed loop. Small |S| means good tracking and rejection.
+  chapter: "15-02"
+  see_also: [Complementary sensitivity, Desensitivity factor]
+- term: Complementary sensitivity
+  definition: T(s) = L(s)/(1 + L(s)), the closed-loop transfer function from reference to output (and, with a minus sign, from sensor noise to output); S + T = 1 at every frequency, so a loop cannot make both small at once.
+  chapter: "15-02"
+  see_also: [Sensitivity function]
+- term: Signal-flow graph
+  definition: A graph whose nodes are signals and whose directed branches carry gains; each node equals the sum of its incoming branch gains times their source nodes. It is the input form for Mason's gain formula.
+  chapter: "15-02"
+  see_also: [Mason's gain formula, Block diagram]
+- term: Mason's gain formula
+  definition: T = Σ PₖΔₖ / Δ, the transfer function of a signal-flow graph, where Pₖ are the forward-path gains, Δ = 1 − Σ loops + Σ products of non-touching pairs − Σ non-touching triples + …, and Δₖ is Δ computed from the loops that do not touch path k.
+  chapter: "15-02"
+  see_also: [Signal-flow graph]
+- term: Pole–zero cancellation
+  definition: A zero that coincides with a pole, removing that mode from one transfer function; the mode still exists inside the system, so cancelling an unstable pole leaves a hidden instability that disturbances or initial conditions excite.
+  chapter: "15-02"
+  see_also: [Poles and zeros]

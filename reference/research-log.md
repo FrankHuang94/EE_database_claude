@@ -234,6 +234,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-226 | Google's first TPU (Jouppi et al., ISCA 2017): weight-stationary matrix unit | Nov 2026 |
 | R-227 | Semiconductor and IC package thermal metrics (TI SPRA953D) | Nov 2026 |
 | R-228 | Silicon thermal properties | Nov 2026 |
+| R-229 | Python Control Systems Library release | Nov 2026 |
 
 ---
 
@@ -2335,3 +2336,10 @@ R&D % = R&D ÷ revenue.
 - Ioffe Si mechanical properties: density 2.329 g/cm³. [Si mechanical](https://www.ioffe.ru/SVA/NSM/Semicond/Si/mechanic.html)
 - V. Palankovski, doctoral thesis, TU Wien, material parameters: κ₃₀₀ = 148 W/(m·K) for Si. [Thesis section](https://www.iue.tuwien.ac.at/phd/palankovski/node34.html)
 - The spread (130 against 148 W/(m·K)) reflects sample purity and measurement method; the chapter quotes the range.
+
+## R-229 · Python Control Systems Library release
+
+*Read on 20 Nov 2026 from the PyPI JSON API for the package `control` (primary); tagged [Established].*
+
+- Latest release 0.10.2, uploaded to PyPI on 5 Jul 2025 (earlier: 0.10.1 on 17 Aug 2024, 0.10.0 on 31 Mar 2024); package summary "Python Control Systems Library". [PyPI](https://pypi.org/project/control/)
+- Perishable: check PyPI for a newer release before relying on the version number.
