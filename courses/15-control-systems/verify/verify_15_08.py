@@ -16,7 +16,7 @@ from pathlib import Path
 
 import numpy as np
 from scipy import signal
-from scipy.optimize import brentq
+from scipy.optimize import brentq, minimize_scalar
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -99,7 +99,8 @@ for (kp_, ti_, td_), keys in ((zn, "hjlnp"), (tl, "ikmoq")):
     # cross-check the filtered-PID loop against scipy's step response of the same transfer function
     Ln, Ld = n, np.polymul(d, P3[1])
     _, ys = signal.step((Ln, np.polyadd(Ld, Ln)), T=np.linspace(0, 60, 60001))
-    v.assert_true(f"Ex 3: RK4 matches scipy (Kp = {kp_:.3g})", abs(ys.max() - 1 - (step_specs(Ln, np.polyadd(Ld, Ln), 60)["peak"] - 1)) < 1e-6)
+    t_rk, y_rk, _, _ = pid.simulate(P3, kp_, kp_ / ti_, kp_ * td_, N=10, t_end=60, dt=1e-3)
+    v.assert_true(f"Ex 3: RK4 simulator matches scipy's step response (Kp = {kp_:.3g})", abs(y_rk.max() - ys.max()) < 1e-5)
 
 # ---------------------------------------------------------------------------------------- Example 4
 P1 = ([K], [tau, 1])
@@ -132,6 +133,20 @@ v.check("Ex 15-08.4j", 100 * s1["overshoot"])
 v.check("Ex 15-08.4n", 4 * s1["peak"])
 v.check("Ex 15-08.4o", s1["tpeak"])
 v.check("Ex 15-08.4p", s1["settle"])
+# Back-calculation derivation: with Tt = Ti the integral term Ki*z = u_raw - Kp*e parks at the 10 W limit.
+for mode, keys in (("back", ("q", "r")), ("none", ("s",))):
+    t, y, u, ur = pid.simulate(P1, Kp1, Ki1, umin=-10, umax=10, aw=mode, r=lambda t: 4.0, t_end=80, dt=1e-3)
+    integ = ur - Kp1 * (4.0 - y)
+    k_leave = int(np.flatnonzero(ur >= 10)[-1])
+    if mode == "back":
+        v.check(f"Ex 15-08.4{keys[0]}", integ[k_leave])
+        v.check(f"Ex 15-08.4{keys[1]}", t[k_leave])
+        v.assert_true("3.7: while saturated, u_raw tracks u_lim + Ki*Tt*e within 0.3 W after 10 s",
+                      np.all(np.abs(ur[(t > 10) & (ur > 10)] - (10 + Kp1 * (4.0 - y[(t > 10) & (ur > 10)]))) < 0.3))
+        v.assert_true("3.7: back-calculation leaves saturation within 0.01 K of the setpoint",
+                      abs(4.0 - y[k_leave]) < 0.01)
+    else:
+        v.check(f"Ex 15-08.4{keys[0]}", integ.max())
 
 # ---------------------------------------------------------------------------------------- Example 5
 kp_, ti_, td_ = zn
@@ -261,7 +276,36 @@ m = margins(np.polymul([wc11 * taut / Kt, wc11 / Kt], [Kt]), np.polymul([1, 0], 
 v.assert_true("P11: 60 deg margin with the 0.3 s delay", abs(m["pm"] - 60) < 1e-9)
 
 # ---------------------------------------------------------------------------------------- Problem 12
-v.check("15-08.12a", 4 / (math.pi * 0.159))
+# relay feedback on 1/(s+1)^3, simulated exactly between switchings (u constant = +-1)
+from scipy.linalg import expm as _expm  # noqa: E402
+A12 = np.array([[-1.0, 1, 0], [0, -1, 1], [0, 0, -1]])
+M12 = np.zeros((4, 4))
+M12[:3, :3] = A12
+M12[:3, 3] = [0, 0, 1.0]
+x12, u12, t12, sw12, pk12 = np.array([0.01, 0, 0]), -1.0, 0.0, [], []
+for _ in range(50):
+    f12 = lambda tt: (_expm(M12 * tt) @ np.append(x12, u12))[0]  # noqa: E731
+    tg = np.linspace(1e-6, 10, 20001)
+    yg = np.array([f12(tt) for tt in tg])
+    k = int(np.flatnonzero(np.sign(yg) != np.sign(yg[0]))[0])
+    t1 = brentq(f12, tg[k - 1], tg[k], xtol=1e-14)
+    km = int(np.argmax(np.abs(yg[:k])))
+    pk12.append(abs(f12(minimize_scalar(lambda tt: -abs(f12(tt)), bounds=(tg[max(km - 1, 0)], tg[km + 1]), method="bounded",
+                                         options={"xatol": 1e-12}).x)))
+    x12 = (_expm(M12 * t1) @ np.append(x12, u12))[:3]
+    t12 += t1
+    sw12.append(t12)
+    u12 = -u12
+a12 = float(np.mean(pk12[-10:]))
+P12 = 2 * float(np.mean(np.diff(sw12[-10:])))
+v.check("15-08.12c", a12)
+v.check("15-08.12d", P12)
+v.check("15-08.12a", 4 / (math.pi * round(a12, 3)))
+v.check("15-08.12e", 2 * math.pi / math.sqrt(3))
+v.assert_true("P12: DF prediction for a pure sinusoid is a = (4/pi)|P(j sqrt3)| = 0.159",
+              round(4 / math.pi * abs(1 / (1 + 1j * math.sqrt(3)) ** 3), 3) == 0.159)
+v.assert_true("P12: estimate 2.4% low, period 1.4% high", round(100 * (1 - 4 / (math.pi * a12) / 8), 1) == 2.4
+              and round(100 * (P12 / (2 * math.pi / math.sqrt(3)) - 1), 1) == 1.4)
 v.check("15-08.12b", brentq(lambda k: np.max(np.roots([1, 3, 3, 1 + k]).real), 1, 20, xtol=1e-12))
 
 # ---------------------------------------------------------------------------------------- Lab
@@ -269,6 +313,14 @@ sat = {}
 for mode in ("none", "back", "clamp"):
     t, y, u, _ = pid.simulate(P1, Kp1, Ki1, umin=-10, umax=10, aw=mode, r=lambda t: 4.0, t_end=80, dt=1e-3)
     sat[mode] = t[np.flatnonzero(u >= 10 - 1e-12)[-1]]
+    if mode == "clamp":
+        sat_sim_clamp = t[np.flatnonzero(u >= 10 - 1e-3)[-1]]
+# clamping: the sliding mode along u_raw = 10 W ends when d(u_raw)/dt = 13 - 3.6 y < 0, i.e. y = 13/3.6,
+# reached under u = 10 W (y = 5(1 - e^{-t/10})) at t = -10 ln(1 - y/5)
+y_end = 13 / 3.6
+sat["clamp"] = -10 * math.log(1 - y_end / 5)
+v.assert_true("Lab c: the simulation's saturated interval (tolerance 1e-3) ends within 0.1 s of the analytic 12.8 s",
+              abs(sat_sim_clamp - sat["clamp"]) < 0.1)
 v.check("Lab 15-08.a", sat["none"])
 v.check("Lab 15-08.b", sat["back"])
 v.check("Lab 15-08.c", sat["clamp"])

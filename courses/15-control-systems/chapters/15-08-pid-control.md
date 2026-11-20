@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 15-08 · PID Control
 
 | | |
@@ -82,7 +82,7 @@ Any $\omega_n$ and $\zeta$ can be placed, but the closed loop from reference to 
 
 For a plant with two real poles, $P = K/[(\tau_1s + 1)(\tau_2s + 1)]$, the **series form** $C = K_c(\tau_1s + 1)(\tau_2s + 1)/s$ (a PID with $T_i = \tau_1 + \tau_2$, $T_d = \tau_1\tau_2/(\tau_1 + \tau_2)$ and $K_p = K_c(\tau_1 + \tau_2)$) cancels both plant poles. The loop gain becomes $KK_c/s$ and the closed loop a clean first-order lag with time constant $1/(KK_c)$.
 
-The catch is the one 15-02 warned about. The cancelled poles are still in the plant, and a disturbance that enters at the plant input sees them: it decays with the plant's slow time constant, not the loop's (Example 15-08.2). Cancellation is acceptable for well-damped, stable plant poles and fast disturbance requirements that are modest. It is never acceptable for unstable poles.
+The catch is the one 15-02 warned about. The cancelled poles are still in the plant, and a disturbance that enters at the plant input sees them: it decays with the plant's slow time constant, not the loop's (Example 15-08.2). Cancellation is acceptable when the cancelled poles are stable and well damped and a slow disturbance tail is tolerable. It is never acceptable for unstable poles: their mode would still grow inside the loop, unseen by the controller.
 
 ### 3.5 Design by loop shaping
 
@@ -98,9 +98,11 @@ Example 15-08.6 designs a thermal limiter this way.
 
 When no model is available, a quick experiment can set the gains.
 
-- **Ziegler–Nichols (ultimate gain, 1942).** Raise a proportional gain until the loop oscillates steadily, and record the **ultimate gain** $K_u$ and **period** $P_u$ (Routh's boundary gain and $2\pi/\omega_{osc}$, 15-05). Then $K_p = 0.6K_u$, $T_i = P_u/2$, $T_d = P_u/8$. The rule targets fast disturbance rejection, and typically gives a phase margin near 30° and 40–50% overshoot to setpoint steps: aggressive.
+- **Ziegler–Nichols (ultimate gain, 1942).** Raise a proportional gain until the loop oscillates steadily, and record the **ultimate gain** $K_u$ and **period** $P_u$ (Routh's boundary gain and $2\pi/\omega_{osc}$, 15-05). Then $K_p = 0.6K_u$, $T_i = P_u/2$, $T_d = P_u/8$. The rule targets fast disturbance rejection, and typically gives a phase margin of about 25° to 30° and 40% to 60% overshoot to setpoint steps: aggressive (Problem 15-08.6 gives 24.3° and 61.7%).
 - **Tyreus–Luyben.** $K_p = K_u/2.2$, $T_i = 2.2P_u$, $T_d = P_u/6.3$: more conservative, with more margin and slower disturbance recovery.
 - **SIMC (Skogestad, 2003).** For a first-order-plus-delay model $Ke^{-\theta s}/(\tau s + 1)$ and a chosen closed-loop time constant $\tau_c$ (the default is $\tau_c = \theta$): $K_p = \dfrac{\tau}{K(\tau_c + \theta)}$, $T_i = \min[\tau, 4(\tau_c + \theta)]$. One tuning knob, $\tau_c$, trades speed against robustness.
+
+- **Relay auto-tuning (Åström–Hägglund).** Driving the loop to the edge of instability is risky, so commercial auto-tuners replace the controller briefly by a relay that switches the actuator between $+d$ and $-d$ as the error changes sign. The loop settles into a limit cycle at (nearly) the phase-crossover frequency. The **describing function** explains why: the relay's output is a square wave of amplitude $d$, whose fundamental (Fourier series, 11-05) has amplitude $4d/\pi$. If the plant filters the harmonics so that the output is nearly sinusoidal with amplitude $a$, the relay acts like a gain $N(a) = 4d/(\pi a)$, and a steady oscillation needs $N(a)P(j\omega) = -1$: the frequency where the plant's phase is −180°, at which the relay's equivalent gain equals the ultimate gain. So $K_u \approx 4d/(\pi a)$ and $P_u \approx$ the measured period. The approximation errs by a few percent because the output is not a pure sinusoid (Problem 15-08.12).
 
 Tuning rules are starting points; the margins (15-07) and a simulated or measured step should confirm them.
 
@@ -112,6 +114,20 @@ Two standard fixes:
 
 - **Clamping (conditional integration).** Stop integrating while the actuator is saturated *and* the error has the sign that would drive it deeper into saturation.
 - **Back-calculation.** Feed the difference between the saturated and unsaturated controller output back into the integrator, $\dot z = e + (u - u_{raw})/(K_iT_t)$, so that the integrator tracks the actuator's limit with time constant $T_t$. A common choice is $T_t$ between $T_d$ and $T_i$ ($T_t = T_i$ for a PI).
+
+Why it works, for a PI with $u_{raw} = K_pe + K_iz$: differentiate and substitute the integrator law,
+
+$$
+\dot u_{raw} = K_p\dot e + K_i\dot z = K_p\dot e + K_ie + \frac{u - u_{raw}}{T_t}
+$$
+
+While the actuator sits at its limit, $u = u_{lim}$. If the error changes slowly compared with $T_t$ ($\dot e \approx 0$), this is a first-order lag,
+
+$$
+T_t\,\dot u_{raw} + u_{raw} = u_{lim} + K_iT_t\,e
+$$
+
+so within a few $T_t$ the raw output settles just past the limit, by $K_iT_te$, instead of growing without bound. With $T_t = T_i = K_p/K_i$, $K_iT_te = K_pe$, so the integral term itself, $K_iz = u_{raw} - K_pe$, settles at $u_{lim}$. The controller then leaves saturation as soon as the error changes sign, with an integral that is at most the gap between $u_{lim}$ and the steady-state demand away from where it belongs. In Example 15-08.4 the integral term is **9.97** W when the actuator leaves saturation at **16.1** s (the steady state needs 8 W); without anti-windup it has wound up to **119.5** W. A $T_t$ much shorter than $T_d$ would let noise reset the integrator; one much longer than $T_i$ lets it wind up again.
 
 Both leave the linear behaviour unchanged when nothing saturates.
 
@@ -130,6 +146,34 @@ A setpoint step makes $de/dt$ an impulse: a **derivative kick** that slams the a
 $$
 u = K_p(br - y) + K_i\int(r - y)\,dt + D\ \text{acting on}\ (cr - y) .
 $$
+
+```mermaid
+flowchart LR
+    R((r)) --> WB["× b"]
+    R --> WC["× c"]
+    R --> SI(("Σ"))
+    Y((y)) -- "−" --> SP(("Σ"))
+    Y -- "−" --> SI
+    Y -- "−" --> SD(("Σ"))
+    WB --> SP
+    WC --> SD
+    SP --> KP["K_p"]
+    SI -- "e = r − y" --> SA(("Σ"))
+    SA --> KI["K_i / s"]
+    SD --> D["K_d s / (1 + s T_d / N)"]
+    KP --> SU(("Σ"))
+    KI --> SU
+    D --> SU
+    SU -- "u_raw" --> SAT["actuator limit"]
+    SAT -- "u" --> PL["plant P(s)"]
+    PL --> Y
+    SAT -- "u" --> SB(("Σ"))
+    SU -- "− u_raw" --> SB
+    SB --> TT["1 / (K_i T_t)"]
+    TT -- "back-calculation" --> SA
+```
+
+*A practical PID: setpoint weights $b$ and $c$ on the proportional and derivative paths, the integral on the true error, a filtered derivative, the actuator limit, and back-calculation anti-windup (§3.7), which feeds $(u - u_{raw})/(K_iT_t)$ into the integrator's input. Clamping would instead switch the integrator's input off while the actuator is saturated and the error would drive it deeper.*
 
 With $c = 0$ (derivative on the measurement only) there is no kick; with $b < 1$ the proportional response to setpoint steps is softened, which reduces overshoot. The integral still acts on the true error, so steady-state accuracy is unchanged, and because the feedback path ($-y$) is untouched, the response to disturbances is identical. This is a simple **two-degree-of-freedom** controller: one set of gains for disturbances, adjustable weights for setpoints.
 
@@ -155,7 +199,7 @@ With $c = 0$ (derivative on the measurement only) there is no kick; with $b < 1$
 
 **Units check.** Times in seconds.
 
-**Sanity check.** The disturbance must pass through the plant to be seen, and the cancelled pole is part of the plant. Only a controller that leaves the loop's own poles faster than −1 removes the slow tail (Problem 15-08.9).
+**Sanity check.** The disturbance must pass through the plant to be seen, and the cancelled pole is part of the plant. Only a design that does not cancel the slow pole removes the tail: feedback must move it, so that every closed-loop pole, including the one the disturbance sees, is faster than −1 (Problem 15-08.9 places all three at −5).
 
 ### Example 15-08.3 · Ziegler–Nichols against Tyreus–Luyben (tier B)
 
@@ -194,6 +238,8 @@ Ziegler–Nichols rejects disturbances almost five times better (by integrated e
 | 2% settling time | **51.0** s | **18.9** s | **15.9** s | **10.1** s |
 
 Without anti-windup the actuator stays at +10 W for 44.8 s: the wound-up integral holds it there long after the temperature passes 4 K, driving it toward the 5 K that 10 W can sustain. Both cures remove most of the overshoot and settle three times faster. They even beat the unsaturated linear loop's overshoot, because they stop the integral from accumulating during the long rise. The lab confirms the first two cases in ngspice (`windup.cir`).
+
+![Two panels for Example 15-08.4, 0 to 60 s. Left: temperature rise against time. With no actuator limit (dotted) the temperature overshoots to about 4.5 K at 5 s and settles at 4 K by about 10 s. With the 10 W limit, all three saturated cases rise together along the same slow curve to 4 K at about 15 s; without anti-windup the temperature keeps rising to 4.94 K at 45 s before falling back to 4 K; back-calculation peaks just above 4 K at 18 s; clamping barely overshoots. Right: actuator power and the integral term. Without anti-windup the power stays at 10 W until 45 s, dips to about 5 W and recovers to the 8 W steady state, while its integral term (dashed) climbs off the top of the plot past 40 W and only returns at about 50 s. With back-calculation the integral term (dashed) rises smoothly to just under 10 W and the power leaves 10 W at 16 s; with clamping it leaves the limit a little earlier. Both settle at the 8 W the 4 K step needs.](../../../assets/figures/15-08/windup.svg)
 
 **Units check.** Temperatures in K; power in W; $K_iT_t$ in W/K.
 
@@ -276,6 +322,9 @@ In every case the peak response to a unit input disturbance is **0.189**, becaus
 | Ex 15-08.4n | peak, no saturation | 4.51 | K |
 | Ex 15-08.4o | time of peak, no saturation | 4.76 | s |
 | Ex 15-08.4p | settling, no saturation | 10.1 | s |
+| Ex 15-08.4q | integral term when leaving saturation, back-calculation | 9.97 | W |
+| Ex 15-08.4r | time of leaving saturation, back-calculation | 16.1 | s |
+| Ex 15-08.4s | largest integral term, no anti-windup | 119.5 | W |
 | Ex 15-08.5a | kick, b = c = 1 | 52.8 | — |
 | Ex 15-08.5b | overshoot, b = c = 1 | 42.7 | % |
 | Ex 15-08.5c | initial output, c = 0 | 4.8 | — |

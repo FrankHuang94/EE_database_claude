@@ -24,7 +24,7 @@ for lab in ("15-09-lab", "15-07-lab", "15-03-lab"):
     sys.path.insert(0, str(ROOT / "labs" / lab))
 from eeverify import Verifier  # noqa: E402
 import compensate as cp  # noqa: E402
-from freqdomain import freq_resp, margins  # noqa: E402
+from freqdomain import _unwrapped_phase, freq_resp, margins  # noqa: E402
 from specs import step_specs  # noqa: E402
 
 CH = ROOT / "chapters" / "15-09-lead-lag-compensation.md"
@@ -107,6 +107,11 @@ r4 = np.roots(cl4)
 v.check("Ex 15-09.4d", float(r4[np.argmin(abs(r4.imag))].real))
 v.check("Ex 15-09.4e", 100 * step_specs(num4, cl4, 10)["overshoot"])
 v.check("Ex 15-09.4f", K4 * 2 / (-pc))
+# Attribution: the dominant pair with the closed-loop zero at -2 alone (DC gain 1), then with the third pole.
+wn4 = abs(sd)
+v.check("Ex 15-09.4g", 100 * step_specs([wn4**2 / 2, wn4**2], [1, 4, wn4**2], 20)["overshoot"])
+v.assert_true("Ex 4: the third pole reduces the overshoot below the pair-with-zero value",
+              step_specs(num4, cl4, 10)["overshoot"] < step_specs([wn4**2 / 2, wn4**2], [1, 4, wn4**2], 20)["overshoot"])
 
 # ---------------------------------------------------------------------------------------- Example 5
 zl = d["wm"] / 10
@@ -144,6 +149,27 @@ for kz, keys in ((1.0, "cde"), (0.5, "hfg")):
     v.check(f"Ex 15-09.6{keys[1]}", m["pm"])
     v.check(f"Ex 15-09.6{keys[2]}", m["gm_db"])
     res6[kz] = wI
+# Op-amp realization of the f0/2 design (section 3.6): R1 chosen, the rest from the corner frequencies.
+wz6, R1o = 0.5 * w0, 10e3
+v.check("Ex 15-09.6p", wz6 / (2 * math.pi) / 1e3)
+C12 = 1 / (R1o * res6[0.5])
+ratio6 = wp6 / wz6
+C2o = C12 / ratio6
+C1o = C12 - C2o
+R2o = 1 / (wz6 * C1o)
+R3o = R1o / (ratio6 - 1)
+C3o = 1 / (wp6 * R3o)
+for key, val in (("i", C12 * 1e9), ("j", C2o * 1e12), ("k", C1o * 1e9), ("l", R2o / 1e3), ("m", ratio6),
+                 ("n", R3o), ("o", C3o * 1e9)):
+    v.check(f"Ex 15-09.6{key}", val)
+wq = np.logspace(2, 7, 2001)
+sq = 1j * wq
+Zf = 1 / (1 / (R2o + 1 / (sq * C1o)) + sq * C2o)
+Zin = 1 / (1 / R1o + 1 / (R3o + 1 / (sq * C3o)))
+Hc = -Zf / Zin
+Ht = res6[0.5] * (1 + sq / wz6) ** 2 / (sq * (1 + sq / wp6) ** 2)
+v.assert_true("Ex 6: the op-amp network equals minus the Type III transfer function at every frequency",
+              np.max(np.abs(Hc + Ht) / np.abs(Ht)) < 1e-9)
 w = np.logspace(2, 8, 400001)
 Lw = np.abs(freq_resp(*type3(0.5 * w0, res6[0.5]), w))
 crossings = int(np.sum((Lw[:-1] - 1) * (Lw[1:] - 1) < 0))
@@ -168,8 +194,10 @@ wpk = 10 ** minimize_scalar(lambda lw: -np.angle(H(10**lw)), bounds=(1, 5), meth
 v.assert_true("P3: the network's phase peaks at 1000 rad/s", abs(wpk - 1000) < 1e-3)
 
 # ---------------------------------------------------------------------------------------- Problem 4
-G4 = ([40.0], [1.0, 2.0, 0.0])
-v.check("15-09.4a", 40)
+# Kv = lim s*K*P(s) = K/2 must equal 20; solve for K from the plant's limit rather than restating it.
+Kp4 = 20.0 / (1.0 / np.polyval([1.0, 2.0], 0.0))
+v.check("15-09.4a", Kp4)
+G4 = ([Kp4], [1.0, 2.0, 0.0])
 m = margins(*G4)
 v.check("15-09.4b", m["wc"])
 v.check("15-09.4c", m["pm"])
@@ -261,5 +289,80 @@ r = minimize_scalar(lambda lw: -np.angle(Hn(10**lw)), bounds=(3, 6), method="bou
 v.check("Lab 15-09.a", math.degrees(-r.fun))
 v.check("Lab 15-09.b", 10**r.x / (2 * math.pi) / 1e3)
 v.check("Lab 15-09.c", crossings)
+
+# Part 3: move the lead zero; the pole follows from the angle condition at s_d = -2 + j2*sqrt(3) on 1/[s(s+1)].
+sd3 = complex(-2, 2 * math.sqrt(3))
+need3 = -180 + math.degrees(np.angle(sd3)) + math.degrees(np.angle(sd3 + 1))
+for zc, kp, kk, kt, ka in ((-1.5, "d", "f", "h", "j"), (-3.0, "e", "g", "i", "k")):
+    zang = math.degrees(np.angle(sd3 - zc))
+    pc = sd3.real - sd3.imag / math.tan(math.radians(zang - need3))
+    K3 = abs(sd3) * abs(sd3 + 1) * abs(sd3 - pc) / abs(sd3 - zc)
+    cl3 = np.polyadd(np.polymul([1, 1, 0], [1, -pc]), np.polymul([K3], [1, -zc]))
+    v.assert_true(f"Lab Part 3: s_d is a closed-loop root for zero {zc}", abs(np.polyval(cl3, sd3)) < 1e-9)
+    r3 = np.roots(cl3)
+    v.check(f"Lab 15-09.{ka}", zang)
+    v.check(f"Lab 15-09.{kp}", pc)
+    v.check(f"Lab 15-09.{kk}", K3 * zc / pc)
+    v.check(f"Lab 15-09.{kt}", float(r3[np.argmin(abs(r3.imag))].real))
+
+# Part 4: Type III sweep with crossover held at 60 kHz.
+w4 = np.logspace(2, 8, 600001)
+
+
+def type3_at(kz):
+    wI = brentq(lambda x: abs(freq_resp(*type3(kz * w0, x), wc6)) - 1, 1, 1e9, xtol=1e-9)
+    n, dd = type3(kz * w0, wI)
+    H = freq_resp(n, dd, w4)
+    mag, ph = np.abs(H), np.degrees(np.unwrap(np.angle(H)))
+    one = int(np.sum((mag[:-1] - 1) * (mag[1:] - 1) < 0)) == 1
+    lf = 20 * math.log10(abs(freq_resp(n, dd, 2 * math.pi * 1e3)))
+    return margins(n, dd, w_lo=1e2, w_hi=1e8), one, ph[mag > 1].min(), lf
+
+
+sweep = {kz: type3_at(kz) for kz in (0.3, 0.5, 1.0, 1.5)}
+v.assert_true("Lab Part 4: one 0 dB crossing for zeros at 0.3, 0.5, 1 and 1.5 f0", all(r[1] for r in sweep.values()))
+v.assert_true("Lab Part 4: the sweep reproduces Example 15-09.6 at f0 and f0/2",
+              abs(sweep[1.0][0]["pm"] - margins(*type3(w0, res6[1.0]), w_lo=1e2, w_hi=1e8)["pm"]) < 1e-6
+              and abs(sweep[0.5][0]["pm"] - margins(*type3(0.5 * w0, res6[0.5]), w_lo=1e2, w_hi=1e8)["pm"]) < 1e-6)
+v.assert_true("Lab Part 4: phase stays above -180 deg while |L| > 1 for zeros at 0.3, 0.5 and 1 f0",
+              all(sweep[k][2] > -180 for k in (0.3, 0.5, 1.0)))
+v.assert_true("Lab Part 4: the phase dips below -180 deg while |L| > 1 for zeros at 1.5 f0", sweep[1.5][2] < -180)
+v.assert_true("Lab Part 4: PM falls monotonically as the zeros rise",
+              sweep[0.3][0]["pm"] > sweep[0.5][0]["pm"] > sweep[1.0][0]["pm"] > sweep[1.5][0]["pm"])
+v.check("Lab 15-09.l", sweep[1.5][0]["pm"])
+v.check("Lab 15-09.m", sweep[0.3][0]["pm"])
+v.check("Lab 15-09.n", sweep[1.0][3])
+v.check("Lab 15-09.o", sweep[0.3][3])
+v.check("Lab 15-09.q", sweep[1.0][3] - sweep[0.3][3])
+# Conditional stability at 1.5 f0: the two -180 deg crossings below wc, then closed-loop roots against gain reduction.
+wI15 = brentq(lambda x: abs(freq_resp(*type3(1.5 * w0, x), wc6)) - 1, 1, 1e9, xtol=1e-9)
+n15, d15 = type3(1.5 * w0, wI15)
+wf = np.logspace(4, 6, 200001)
+phf = _unwrapped_phase(n15, d15, wf, 0.0)
+jj = np.flatnonzero((phf[:-1] + math.pi) * (phf[1:] + math.pi) < 0)
+v.assert_true("Lab Part 4: at least two -180 deg crossings between 10^4 and 10^6 rad/s", len(jj) >= 2)
+w180s = [brentq(lambda x: float(_unwrapped_phase(n15, d15, np.array([x]), 0.0)[0]) + math.pi, wf[i], wf[i + 1], xtol=1e-9)
+          for i in jj[:2]]
+v.assert_true("Lab Part 4: both crossings lie below the 60 kHz crossover", all(x < wc6 for x in w180s))
+v.check("Lab 15-09.t", w180s[0] / (2 * math.pi) / 1e3)
+v.check("Lab 15-09.u", w180s[1] / (2 * math.pi) / 1e3)
+gdb = [20 * math.log10(abs(freq_resp(n15, d15, x))) for x in w180s]
+
+
+def max_re(db):
+    return float(np.roots(np.polyadd(d15, 10 ** (-db / 20) * n15)).real.max())
+
+
+v.assert_true("Lab Part 4: the loop as designed is stable", max_re(0.0) < 0)
+lo_db = brentq(max_re, 10, 20, xtol=1e-10)
+hi_db = brentq(max_re, 25, 35, xtol=1e-10)
+v.assert_true("Lab Part 4: unstable inside the interval, stable outside it",
+              max_re(0.5 * (lo_db + hi_db)) > 0 and max_re(lo_db - 1) < 0 and max_re(hi_db + 1) < 0)
+v.assert_true("Lab Part 4: the interval ends are the loop gains at the -180 deg crossings",
+              abs(lo_db - gdb[1]) < 1e-6 and abs(hi_db - gdb[0]) < 1e-6)
+v.check("Lab 15-09.r", lo_db)
+v.check("Lab 15-09.s", hi_db)
+kstar = brentq(lambda k: type3_at(k)[2] + 180, 1.3, 1.45, xtol=1e-6)
+v.check("Lab 15-09.p", kstar)
 
 sys.exit(v.finish())

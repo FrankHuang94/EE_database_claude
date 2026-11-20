@@ -61,7 +61,7 @@ $\omega_c = (\pi/6)/0.3$ = **1.745** rad/s, $K_p = \omega_c \times 2/0.5$ = **6.
 
 ### Solution 15-08.12
 
-$K_u \approx 4/(\pi \times 0.159)$ = **8.01**, against the exact **8** from Routh (15-05). The describing-function estimate is close because the plant's three poles filter the relay's square wave into a nearly sinusoidal output. The period (3.63 s) also matches $P_u = 2\pi/\sqrt3$.
+$K_u \approx 4/(\pi \times 0.163)$ = **7.81**, against the exact **8** from Routh (15-05), 2.4% low; the period estimate, 3.68 s, is 1.4% above the exact $P_u = 2\pi/\sqrt3$ = **3.628** s. The estimate is close because the plant's three poles filter the relay's square wave into a nearly sinusoidal output; the residual harmonics make it slightly off, which is why auto-tuners treat it as a starting point. (Had the output been a pure sinusoid at the phase crossover, the describing function would give exactly $a = (4/\pi)\lvert P(j\sqrt3)\rvert = 0.159$, period 3.628 s and $K_u$ = 8.)
 
 ---
 
@@ -117,5 +117,8 @@ $K_u \approx 4/(\pi \times 0.159)$ = **8.01**, against the exact **8** from Rout
 | 15-08.11a | crossover | 1.745 | rad/s |
 | 15-08.11b | Kp | 6.98 | W/K |
 | 15-08.11c | Ki | 3.49 | W/(K·s) |
-| 15-08.12a | estimated ultimate gain | 8.01 | — |
+| 15-08.12a | estimated ultimate gain | 7.81 | — |
 | 15-08.12b | exact ultimate gain | 8 | — |
+| 15-08.12c | relay amplitude (simulated) | 0.163 | — |
+| 15-08.12d | relay period (simulated) | 3.68 | s |
+| 15-08.12e | exact ultimate period | 3.628 | s |

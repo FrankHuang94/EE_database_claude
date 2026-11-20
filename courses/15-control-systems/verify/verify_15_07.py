@@ -51,6 +51,15 @@ v.check("Txt 15-07.d", os_pct(z60))
 A0, p1 = 1e5, 2 * math.pi * 100
 for f2, key in ((40e6, "e"), (10e6, "f")):
     v.check(f"Txt 15-07.{key}", fd.margins([A0], np.polymul([1 / p1, 1], [1 / (2 * math.pi * f2), 1]))["pm"])
+GBW = A0 * p1 / (2 * math.pi)
+for ratio, key in ((2, "g"), (4, "h"), (1, "i")):
+    est = 90 - math.degrees(math.atan(GBW / (ratio * GBW)))
+    exact = fd.margins([A0], np.polymul([1 / p1, 1], [1 / (2 * math.pi * ratio * GBW), 1]))["pm"]
+    v.check(f"Txt 15-07.{key}", est)
+    v.assert_true(f"3.8: the GBW estimate is pessimistic for f2 = {ratio} GBW", est < exact)
+    mx = fd.margins([A0], np.polymul([1 / p1, 1], [1 / (2 * math.pi * ratio * GBW), 1]))
+    rule = 90 - math.degrees(math.atan(mx["wc"] / (2 * math.pi * ratio * GBW)))
+    v.assert_true(f"3.8: 90 - atan(fc/f2) with the true fc is within 0.01 deg for f2 = {ratio} GBW", abs(rule - exact) < 0.01)
 
 # ---------------------------------------------------------------------------------------- Example 1
 m = fd.margins([100], [1, 10, 0])
@@ -101,6 +110,20 @@ den5 = np.polymul([1, 0], np.polymul([1, -1], [1, 6]))
 w5 = brentq(lambda w: np.imag(fd.freq_resp([1, 1], den5, w)), 0.5, 3, xtol=1e-14)
 v.check("Ex 15-07.5a", w5)
 v.assert_true("Ex 5: crossing at -K/7.5", abs(fd.freq_resp([1, 1], den5, w5).real + 1 / 7.5) < 1e-12)
+v.assert_true("Ex 5: the crossing is at w = sqrt(3/2)", abs(w5 - math.sqrt(1.5)) < 1e-12)
+wt = np.logspace(-3, 3, 20001)
+closed = (-(wt**4 + 11 * wt**2) + 1j * wt * (6 - 4 * wt**2)) / (wt**2 * (25 * wt**2 + (wt**2 + 6) ** 2))
+v.assert_true("Ex 5: the closed-form L(jw) matches the direct evaluation",
+              np.max(np.abs(closed - fd.freq_resp([1, 1], den5, wt)) / np.abs(closed)) < 1e-12)
+v.assert_true("Ex 5: Re L < 0 at every frequency", np.all(closed.real < 0))
+v.assert_true("Ex 5: Re L -> -11K/36 as w -> 0", abs(fd.freq_resp([1, 1], den5, 1e-7).real + 11 / 36) < 1e-6)
+v.assert_true("Ex 5: Im L > 0 below the crossing and < 0 above it",
+              np.all(closed.imag[wt < w5 * 0.999] > 0) and np.all(closed.imag[wt > w5 * 1.001] < 0))
+# Crossing-count rule N = up - down (left of -1): both branches cross downward at -K/7.5, the indentation arc upward.
+for K, N_expect in ((10, -1), (5, 1)):
+    left = K / 7.5 > 1
+    v.assert_true(f"Ex 5: crossing rule gives N = {N_expect} at K = {K}",
+                  (1 - 2 * left) == N_expect and fd.nyquist_encirclements([1, 1], den5, K=K) == N_expect)
 for K, key in ((10, "b"), (5, "c")):
     Z = fd.closed_loop_rhp([K, K], den5)
     v.check(f"Ex 15-07.5{key}", Z)

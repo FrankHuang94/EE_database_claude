@@ -58,7 +58,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 15-08.12 [A]
 
-**Relay auto-tuning.** A relay of amplitude $d$ = 1 in place of the controller makes $1/(s + 1)^3$ oscillate with amplitude $a$ = 0.159 and period 3.63 s. Using the describing-function estimate $K_u \approx 4d/(\pi a)$, estimate $K_u$, and compare with the exact value from Routh.
+**Relay auto-tuning.** A relay of amplitude $d$ = 1 in place of the controller makes $1/(s + 1)^3$ settle into a limit cycle; a simulation (or a measurement) shows output amplitude $a$ = 0.163 and period 3.68 s. Using the describing-function estimate $K_u \approx 4d/(\pi a)$ (§3.6), estimate $K_u$ and $P_u$, and compare with the exact values from Routh.
 
 ---
 

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 15-07 · Frequency-Domain Design: Bode, Nyquist and Margins
 
 | | |
@@ -136,7 +136,7 @@ The area of sensitivity reduction ($\ln\lvert S\rvert < 0$) is balanced by an eq
 
 ### 3.8 Chip loops in the frequency domain
 
-- **Op-amps.** With feedback factor $\beta$, the loop gain is $\beta A(s)$. A two-pole amplifier with dominant pole $p_1$ and second pole $p_2$ crosses over near $\beta\cdot\text{GBW}$, with phase margin about $90° - \arctan(\beta\,\text{GBW}/p_2)$. Unity gain ($\beta$ = 1) is the hardest case, which is why amplifiers are specified "unity-gain stable" or, if decompensated, stable above a minimum gain (Problem 15-06.11).
+- **Op-amps.** With feedback factor $\beta$, the loop gain is $\beta A(s)$. A two-pole amplifier with dominant pole $p_1$ and second pole $p_2$ crosses over at a frequency $f_c$ a little below $\beta\cdot\text{GBW}$, with phase margin $90° - \arctan(f_c/f_2)$, all in hertz (the first pole, far below crossover, contributes its full 90°). Using the estimate $f_c \approx \beta\cdot\text{GBW}$ in the arctangent is slightly pessimistic, because the second pole pulls the true crossover down: at unity gain it gives 63.4°, 76.0° and 45.0° for $f_2$ = 2, 4 and 1 × GBW, against exact margins of 65.5°, 76.3° and 51.8°. Unity gain ($\beta$ = 1) is the hardest case, which is why amplifiers are specified "unity-gain stable" or, if decompensated, stable above a minimum gain (Problem 15-06.11).
 - **PLLs.** For the third-order loop $K(1 + s\tau_z)/[s^2(1 + s\tau_p)]$, the phase is $-180° + \arctan(\omega\tau_z) - \arctan(\omega\tau_p)$, so the phase margin peaks at $\omega = 1/\sqrt{\tau_z\tau_p}$, with value $\arctan[(b - 1)/(2\sqrt b)]$ for $b = \tau_z/\tau_p$. Placing crossover there maximizes the margin (Problem 15-07.11).
 - **Regulators.** An LDO's two low-frequency poles leave little phase at crossover (15-02, 15-05); compensation places a dominant pole or uses the output capacitor's ESR zero to restore it (15-12).
 
@@ -194,10 +194,44 @@ The rule is within 5° up to $\zeta$ = 0.7.
 
 **Setup.** 15-05's loop $L = K(s + 1)/[s(s - 1)(s + 6)]$ has one open-loop pole in the right half-plane. Use the Nyquist criterion to decide stability at $K$ = 10 and $K$ = 5, and interpret the margins at $K$ = 10.
 
-**Solution.** $P$ = 1, so stability needs one counterclockwise encirclement of −1 ($N$ = −1). The plot crosses the negative real axis where the imaginary part of $L(j\omega)$ vanishes, at $\omega$ = **1.225** rad/s, where $L = -K/7.5$.
+**Solution.** $P$ = 1, so stability needs one counterclockwise encirclement of −1 ($N$ = −1). First find where the plot goes. With $s = j\omega$ the denominator is $j\omega(j\omega - 1)(j\omega + 6) = -5\omega^2 - j\omega(\omega^2 + 6)$. Multiplying the numerator and denominator by its conjugate,
 
-- $K$ = 10: the crossing is at −1.333, to the left of −1. Tracing the full contour (including the indentation around the pole at the origin) gives one counterclockwise encirclement: $N = -1$, $Z = N + P$ = **0**, stable.
-- $K$ = 5: the crossing is at −0.667, to the right of −1, and the encirclement reverses: $N = +1$, $Z$ = **2**, two unstable poles.
+$$
+L(j\omega) = K\,\frac{-(\omega^4 + 11\omega^2) + j\omega(6 - 4\omega^2)}{\omega^2\left[25\omega^2 + (\omega^2 + 6)^2\right]}
+$$
+
+so $\mathrm{Re}\,L = -K(\omega^2 + 11)/[25\omega^2 + (\omega^2 + 6)^2]$ is negative at every frequency, and $\mathrm{Im}\,L = K(6 - 4\omega^2)/\{\omega[25\omega^2 + (\omega^2 + 6)^2]\}$ changes sign only at $\omega^2 = 3/2$.
+
+- **$\omega \to 0^+$:** $\mathrm{Re}\,L \to -11K/36$ and $\mathrm{Im}\,L \to +\infty$ (the integrator): the plot starts at the top of the plane, left of −1.
+- **The crossing:** at $\omega = \sqrt{3/2}$ = **1.225** rad/s, $L = -K(25/2)/(75/2 + 225/4) = -K/7.5$. Below this frequency $\mathrm{Im}\,L > 0$; above it, $\mathrm{Im}\,L < 0$.
+- **$\omega \to \infty$:** $L \approx -K/\omega^2$, so the plot reaches the origin from the left (relative degree 2).
+- **Negative frequencies** give the mirror image in the real axis, traversed from the origin back to $-j\infty$.
+- **The indentation** $s = \varepsilon e^{j\theta}$, $\theta$ from −90° to +90°, around the pole at the origin: there $L \approx K/[s(-1)(6)] = -(K/6\varepsilon)e^{-j\theta}$, an arc of infinite radius from $-j\infty$ through $-\infty$ to $+j\infty$, clockwise.
+
+The curve therefore has two parts (sketch below, not to scale): a small lobe between $-K/7.5$ and the origin, traversed counterclockwise (out along the lower arc, back along the upper), and a large region to the left of $-K/7.5$, closed by the indentation arc and traversed clockwise. To count encirclements without drawing, use the crossings of the real axis to the left of −1: a clockwise loop around −1 crosses there going upward, so $N$ = (upward crossings) − (downward crossings). Both branches cross at $-K/7.5$ going downward (from $\mathrm{Im}\,L > 0$ to $< 0$), and the indentation arc crosses at $-\infty$ going upward.
+
+```text
+                      Im L
+  ω → 0+               ^
+     |                 |
+     v                 |
+      \     .---<---.  |      upper arc: ω < 0 (mirror image), traversed leftward
+       \   /         \ |
+  ------*------x------\o------> Re L
+       /   \         / |
+      /     '--->---'  |      lower arc: ω > 0, traversed rightward
+     v                 |
+     |                 |
+  ω → 0−               |
+
+  * = −K/7.5, crossed by both branches    x = −1 (here K = 10)    o = origin (ω → ±∞)
+  The indentation closes the curve far to the left: −j∞ → −∞ → +j∞, clockwise.
+```
+
+- $K$ = 10: the crossing is at −1.333, to the left of −1, so all three crossings count: $N = 1 - 2 = -1$. The point −1 sits inside the counterclockwise lobe, $Z = N + P$ = **0**, stable.
+- $K$ = 5: the crossing is at −0.667, to the right of −1, so only the arc counts: $N = +1$. The point −1 now sits in the clockwise region, and $Z$ = **2**: two unstable poles.
+
+Stability needs $K/7.5 > 1$, the condition that puts −1 inside the lobe.
 
 At $K$ = 10, the "gain margin" is the factor by which the gain may *fall*: 1/1.333 = **0.75** (−2.50 dB), matching Routh's lower limit $K$ > 7.5. The phase margin at $\omega_c$ = 1.61 rad/s is only **11.3**°. Both margins are small: an open-loop unstable plant is hard to stabilize robustly. Bode's integral confirms the cost: numerically, $\int_0^\infty\ln\lvert S\rvert\,d\omega$ = **3.142** = $\pi \times 1$, the open-loop pole's real part times π.
 
@@ -211,11 +245,11 @@ At $K$ = 10, the "gain margin" is the factor by which the gain may *fall*: 1/1.3
 
 **Solution.** With $\beta$ = 1, solving $\lvert A(j\omega)\rvert = 1$ gives $f_c$ = **9.10** MHz, a little below the 10 MHz GBW because the second pole has begun to cut the gain. The phase is $-\arctan(f_c/f_1) - \arctan(f_c/f_2) = -89.99° - 24.47°$, so PM = **65.5**°. Indeed the closed loop's damping is $\zeta = (p_1 + p_2)/[2\sqrt{(1 + A_0)p_1p_2}]$ = 0.707, and its step overshoot is **4.32**%. With $\beta$ = 0.5, crossover falls to **4.86** MHz and PM rises to **76.3**°.
 
-**Measuring it.** Insert a small AC voltage source in series in the feedback path, between the amplifier output (node $x$) and the inverting input (node $y$). The loop stays closed and biased; the source injects a test signal. Since $v_x = -A v_y$, the loop gain is $T = -v_x/v_y$. The lab runs this in ngspice (`opamp_loop.cir`): an AC sweep of $-v(x)/v(y)$ gives 9.10 MHz and 65.5°, matching the calculation. This is Middlebrook's injection method (15-02 §9); it is accurate when the injection point has a low-impedance source on one side and a high-impedance load on the other, as here.
+**Measuring it.** Insert a small AC voltage source in series in the feedback path, between the amplifier output (node $x$) and the inverting input (node $y$). The loop stays closed and biased; the source injects a test signal. Since $v_x = -A v_y$, the loop gain is $L = -v_x/v_y$ (for the buffer, $L = \beta A$ with $\beta$ = 1). The lab runs this in ngspice (`opamp_loop.cir`): an AC sweep of $-v(x)/v(y)$ gives 9.10 MHz and 65.5°, matching the calculation. This is Middlebrook's injection method (15-02 §9); it is accurate when the injection point has a low-impedance source on one side and a high-impedance load on the other, as here.
 
 **Units check.** Frequencies in Hz (divide rad/s by 2π).
 
-**Sanity check.** The rule PM ≈ 90° − arctan($f_c/f_2$) = 90° − 24.5° = 65.5° holds here because the first pole is far below crossover.
+**Sanity check.** The rule PM = 90° − arctan($f_c/f_2$) = 90° − 24.5° = 65.5° holds here because the first pole is far below crossover and contributes its full 90°. With the quick estimate $f_c \approx$ GBW = 10 MHz in the arctangent it gives **63.4**°, a slightly pessimistic answer, because the second pole pulls the true crossover down to 9.10 MHz.
 
 ### Answer key
 
@@ -229,6 +263,9 @@ At $K$ = 10, the "gain margin" is the factor by which the gain may *fall*: 1/1.3
 | Txt 15-07.d | overshoot for 60° | 9 | % |
 | Txt 15-07.e | op-amp PM with f2 = 4 GBW | 76.3 | ° |
 | Txt 15-07.f | op-amp PM with f2 = GBW | 51.8 | ° |
+| Txt 15-07.g | estimated PM with fc ≈ GBW, f2 = 2 GBW | 63.4 | ° |
+| Txt 15-07.h | estimated PM with fc ≈ GBW, f2 = 4 GBW | 76.0 | ° |
+| Txt 15-07.i | estimated PM with fc ≈ GBW, f2 = GBW | 45.0 | ° |
 | Ex 15-07.1a | crossover | 7.86 | rad/s |
 | Ex 15-07.1b | phase margin | 51.8 | ° |
 | Ex 15-07.1c | closed-loop ζ | 0.5 | — |
@@ -294,7 +331,7 @@ The lab, [labs/15-07-lab](../labs/15-07-lab/README.md), provides `freqdomain.py`
 | Common design targets | PM 45°–70°, GM ≥ 6–10 dB, $M_s$ ≤ 1.3–2 | §3.7 and practice |
 | Delay margin | PM (rad) / $\omega_c$ | §3.2 |
 | Phase of a delay | $-\omega T$: −57.3° per radian of $\omega T$ | §3.5 |
-| Two-pole op-amp at unity gain | PM ≈ 90° − arctan(GBW/$f_2$): 65.5° for $f_2$ = 2 GBW, 76.3° for $f_2$ = 4 GBW, 51.8° for $f_2$ = GBW | Example 15-07.6, lab |
+| Two-pole op-amp at unity gain | PM = 90° − arctan($f_c/f_2$) with the true crossover $f_c$: 65.5° for $f_2$ = 2 GBW, 76.3° for $f_2$ = 4 GBW, 51.8° for $f_2$ = GBW (with $f_c \approx$ GBW: 63.4°, 76.0°, 45.0°) | Example 15-07.6, §3.8, lab |
 | Third-order PLL, best margin | $\arctan[(b - 1)/(2\sqrt b)]$ at $\omega_c = 1/\sqrt{\tau_z\tau_p}$, $b = \tau_z/\tau_p$ | §3.8 |
 | Bode's integral | 0 for stable open loops; $\pi\sum\mathrm{Re}\,p_k$ otherwise | §3.7 |
 
@@ -378,7 +415,7 @@ About 52° (exactly 51.8° for the standard loop). It lets a designer read expec
 
 <details><summary>Answer</summary>
 
-For a loop with relative degree at least 2 and a stable open loop, the integral of ln|S| over frequency is zero: reducing sensitivity in one band necessarily increases it in another. With unstable open-loop poles the net area is positive.
+For a stable closed loop whose loop gain has relative degree at least 2 and no open-loop right-half-plane poles, the integral of ln|S| over frequency is zero: reducing sensitivity in one band necessarily increases it in another. With unstable open-loop poles the net area is positive.
 
 </details>
 

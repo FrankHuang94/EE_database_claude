@@ -58,4 +58,4 @@ Read §3 of the chapter. `freqdomain.margins` finds crossovers by root finding o
 
 ## Optional hardware
 
-With a network analyzer (or a function generator and a two-channel oscilloscope) and a 10 Ω injection resistor in the feedback path of an op-amp buffer driving a capacitive load, measure $v_x/v_y$ across frequency and compare the phase margin with and without a 100 Ω isolation resistor at the output.
+With a network analyzer (or a function generator and a two-channel oscilloscope) and a 10 Ω injection resistor in the feedback path of an op-amp buffer driving a capacitive load, measure the loop gain $L = -v_x/v_y$ across frequency (the analyzer's ratio $v_x/v_y$ with 180° added to its phase) and compare the phase margin with and without a 100 Ω isolation resistor at the output.

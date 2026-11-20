@@ -8,7 +8,7 @@ Design, tune and harden PID controllers. You will place poles and watch the cont
 
 ## Background
 
-Read §3 of the chapter. `pid.simulate` integrates the plant, the integrator and the derivative filter with a fixed-step fourth-order Runge–Kutta method. A fixed step is used because saturation and clamping switch the dynamics abruptly, which makes variable-step solvers crawl; the verify script checks that halving the step changes the results by less than one part in a million.
+Read §3 of the chapter. `pid.simulate` integrates the plant, the integrator and the derivative filter with a fixed-step fourth-order Runge–Kutta method. A fixed step is used because saturation and clamping switch the dynamics abruptly, which makes variable-step solvers crawl; the verify script checks that halving the step changes the results by less than one part in a million for the smooth modes, and by less than 10⁻⁴ K for clamping, whose switching makes the error first order in the step.
 
 ## Files
 
@@ -40,7 +40,7 @@ Read §3 of the chapter. `pid.simulate` integrates the plant, the integrator and
 |---|---|---|---|
 | Lab 15-08.a | time saturated, no anti-windup | 44.8 | s |
 | Lab 15-08.b | time saturated, back-calculation | 16.1 | s |
-| Lab 15-08.c | time saturated, clamping | 10.7 | s |
+| Lab 15-08.c | time saturated, clamping | 12.8 | s |
 | Lab 15-08.d | overshoot with b = 0 (Example 15-08.1 poles) | 1.52 | % |
 
 ## Discussion
@@ -53,7 +53,7 @@ Read §3 of the chapter. `pid.simulate` integrates the plant, the integrator and
 ### Answers
 
 1. With $b$ = 0 the reference enters only through the integral, so the reference-to-output transfer function is $KK_i/(\tau s^2 + (1 + KK_p)s + KK_i)$: the same poles with no zero, which is exactly the standard second-order system with $\zeta$ = 0.8 (1.52% overshoot). The disturbance response is unchanged.
-2. Clamping stops integrating the moment saturation begins (while the error would deepen it), so the integral never grows beyond its value at that moment. Back-calculation lets the integrator move, pulled toward the limit with time constant $T_t$, so a little excess accumulates and the actuator stays saturated longer.
+2. Clamping stops integrating the moment saturation begins (while the error would deepen it), so the integral never grows beyond its value at that moment. Back-calculation lets the integrator move, pulled toward the limit with time constant $T_t$, so a little excess accumulates and the actuator stays saturated longer. One subtlety: with clamping, the unclamped output first falls below 10 W at 10.7 s, which restarts the integrator, which pushes the output back to the limit. The controller then slides along $u = 10$ W, chattering in the simulation, until $d u_{raw}/dt = 13 - 3.6y$ turns negative at $y$ = 3.611 K, which happens at $t = -10\ln(1 - 3.611/5)$ = 12.8 s. A threshold-based count of saturated samples is therefore sensitive to its tolerance during the slide; the analytic 12.8 s is the meaningful number.
 3. Both solve the same equations accurately; the saturation is a static nonlinearity, and away from the switching instants the dynamics are smooth. Both methods resolve the long, slow transient to many digits.
 4. When the plant is close to first order (one dominant lag), the derivative adds little phase where it is needed, and a PI controller with a lower crossover meets the specification. Derivative action earns its noise cost with plants that have two or more significant lags, or when a fast response is needed near the stability limit.
 

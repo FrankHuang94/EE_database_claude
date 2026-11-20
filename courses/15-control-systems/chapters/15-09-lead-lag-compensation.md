@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 15-09 · Lead and Lag Compensation
 
 | | |
@@ -60,7 +60,9 @@ $$
 
 has DC gain 1 and high-frequency gain $p/z = 1/\beta$, with $\beta = z/p > 1$. Equivalently, multiply by $\beta$ to keep the high-frequency gain at 1 and raise the DC gain by $\beta$. Its phase is negative, between the pole and the zero. Placed a decade below crossover, it costs only about $\arctan(0.1) - \arctan(0.1/\beta) \approx 5°$ of phase there.
 
-A lag compensator with $p \to 0$ becomes a PI controller; a lead with $T \to 0$ becomes a PD. The lead and lag are their **filtered** versions: finite high-frequency gain for the lead, finite DC gain for the lag.
+The lag scaled by $\beta$, $(s + z)/(s + p)$, becomes the PI controller $1 + z/s$ as $p \to 0$ with the zero held fixed. The lead becomes the PD $1 + \alpha Ts$ as $T \to 0$ only if the zero is held fixed too, that is $\alpha T$ constant and $\alpha \to \infty$; letting $T \to 0$ with $\alpha$ fixed would just send both corners to infinity and leave $C = 1$. The lead and lag are thus the **filtered** versions of PD and PI: finite high-frequency gain for the lead, finite DC gain for the lag.
+
+![Bode plots on a normalized frequency axis from 0.001 to 100. The lead (1 + 10Ts)/(1 + Ts) has 0 dB gain at low frequency, rises through 10 dB at x = 1/sqrt(10) and levels off at 20 dB; its phase rises from 0 to a 54.9 degree peak at x = 1/sqrt(10) and returns to 0. The lag (1 + s/z)/(1 + s/p) with z/p = 10 has 0 dB gain at low frequency and falls to -20 dB above x = 10; its phase dips to -54.9 degrees at x = sqrt(10), between its pole at x = 1 and its zero at x = 10.](../../../assets/figures/15-09/lead-lag-bode.svg)
 
 ### 3.3 Lead design on the Bode plot
 
@@ -93,12 +95,34 @@ Choose a lead zero (often directly below $s_d$ or near the plant's second pole),
 ### 3.6 Realization
 
 - **Passive lead.** $R_1$ in parallel with $C_1$ in series, $R_2$ to ground: $H = \dfrac{R_2}{R_1 + R_2}\cdot\dfrac{1 + sR_1C_1}{1 + s(R_1\parallel R_2)C_1}$, with $\alpha = (R_1 + R_2)/R_2$. It attenuates by $1/\alpha$ at DC, which a following gain stage must make up.
-- **Active compensators.** An inverting op-amp with RC networks in its input and feedback arms realizes lead, lag, PI and PID, and the **Type II** (integrator, one zero, one pole) and **Type III** (integrator, two zeros, two poles) compensators of switching regulators (Example 15-09.6).
+
+![Passive lead network: v_in connects through R1 = 9 kilohm, shunted by C1 = 10 nF, to the output node v_out, which has R2 = 1 kilohm to ground. Caption text: zero at 1/(R1 C1) = 1.77 kHz, pole at 1/((R1 parallel R2) C1) = 17.7 kHz, alpha = (R1 + R2)/R2 = 10.](../../../assets/figures/15-09/lead-network.svg)
+
+- **Active compensators.** An inverting op-amp with impedance $Z_{in}$ from the sensed voltage to the inverting input and $Z_f$ from there to the output has $H = -Z_f/Z_{in}$ (06-10), so RC networks in the two arms realize lead, lag, PI and PID. The minus sign is not a problem: in a regulator the reference drives the non-inverting input, and the inversion is the loop's negative feedback.
+
+**Type II** (integrator, one zero, one pole): $Z_{in} = R_1$, and $Z_f$ is $R_2$ in series with $C_1$, the pair shunted by a small $C_2$. With $Z_f = (R_2 + 1/sC_1)\parallel(1/sC_2)$,
+
+$$
+H_{II}(s) = -\frac{1 + sR_2C_1}{sR_1(C_1 + C_2)\left(1 + sR_2\dfrac{C_1C_2}{C_1 + C_2}\right)}
+$$
+
+This is an integrator with $\omega_I = 1/[R_1(C_1 + C_2)]$, a zero at $1/(R_2C_1)$ and a pole at $(C_1 + C_2)/(R_2C_1C_2) \approx 1/(R_2C_2)$.
+
+**Type III** (integrator, two zeros, two poles): keep $Z_f$ and put $R_3$ in series with $C_3$ across $R_1$. Then $Z_{in} = R_1 \parallel (R_3 + 1/sC_3) = R_1(1 + sR_3C_3)/[1 + s(R_1 + R_3)C_3]$ and
+
+$$
+H_{III}(s) = -\frac{(1 + sR_2C_1)\left[1 + s(R_1 + R_3)C_3\right]}{sR_1(C_1 + C_2)\left(1 + sR_2\dfrac{C_1C_2}{C_1 + C_2}\right)(1 + sR_3C_3)}
+$$
+
+This adds a second zero at $1/[(R_1 + R_3)C_3]$ and a second pole at $1/(R_3C_3)$. Each zero–pole pair is set by a capacitor ratio ($C_1/C_2$) or a resistor ratio ($R_1/R_3$), and $R_1$, usually fixed by the output divider, sets the scale (Example 15-09.6 designs one).
+
+![Op-amp Type III compensator with Example 15-09.6's values. The sensed output voltage drives the inverting input through R1 = 10 kilohm, with a series R3 = 272 ohm and C3 = 1.95 nF branch in parallel with R1. From the inverting input to the op-amp output, a series R2 = 3.68 kilohm and C1 = 5.43 nF branch is shunted by C2 = 148 pF. The non-inverting input is tied to V_ref, and the output v_c drives the PWM modulator with gain 1/V_M.](../../../assets/figures/15-09/type3.svg)
+
 - **Digital.** A microcontroller implements the same transfer functions as difference equations (15-11).
 
 ### 3.7 Compensating an LC double pole
 
-A buck converter's control-to-output response is a second-order LC filter, $V_{in}/(LCs^2 + (L/R)s + 1)$, with a resonance at $\omega_0 = 1/\sqrt{LC}$ and quality factor $Q = R\sqrt{C/L}$. Above $\omega_0$ its phase approaches −180°, so a simple integrator controller would cross over with no margin. A **Type III** compensator, $\omega_I(1 + s/\omega_z)^2/[s(1 + s/\omega_p)^2]$, puts two zeros near $\omega_0$ to add up to 180° of lead, and two poles above crossover to restore attenuation of switching noise. Crossover is typically placed at a tenth or less of the switching frequency (22-07).
+A buck converter's response from duty cycle to output is a second-order LC filter, $V_{in}/(LCs^2 + (L/R)s + 1)$. The compensator's output drives a PWM modulator, which compares it with a ramp of amplitude $V_M$ and so converts volts to duty cycle with gain $1/V_M$; the plant the compensator sees is $(V_{in}/V_M)/(LCs^2 + (L/R)s + 1)$. This chapter takes $V_M$ = 1 V, so the two coincide numerically. The filter has a resonance at $\omega_0 = 1/\sqrt{LC}$ and quality factor $Q = R\sqrt{C/L}$. Above $\omega_0$ its phase approaches −180°, so a simple integrator controller would cross over with no margin. A **Type III** compensator, $\omega_I(1 + s/\omega_z)^2/[s(1 + s/\omega_p)^2]$, puts two zeros near $\omega_0$ to add up to 180° of lead, and two poles above crossover to restore attenuation of switching noise. Crossover is typically placed at a tenth or less of the switching frequency (22-07).
 
 ## 4. Worked examples
 
@@ -148,7 +172,7 @@ $$
 C(s) = 20.8\,\frac{s + 2}{s + 5.6} .
 $$
 
-The closed-loop poles are $-2 \pm j3.46$ and **−2.6**; the step response overshoots by **27.4**% (more than the 16.3% of $\zeta$ = 0.5, because of the zero at −2 and the extra pole at −2.6). The velocity constant is $K_v = 20.8 \times 2/5.6$ = **7.43** s⁻¹.
+The closed-loop poles are $-2 \pm j3.46$ and **−2.6**; the step response overshoots by **27.4**%, more than the 16.3% of $\zeta$ = 0.5. The closed-loop zero at −2 causes the excess: the dominant pair with that zero alone would overshoot **69.9**%. The third pole at −2.6, close to the zero, takes most of it back, but not all. The velocity constant is $K_v = 20.8 \times 2/5.6$ = **7.43** s⁻¹.
 
 **Units check.** $K$ has units of 1/s² (as $L$ must be dimensionless with two plant poles).
 
@@ -166,7 +190,7 @@ The closed-loop poles are $-2 \pm j3.46$ and **−2.6**; the step response overs
 
 ### Example 15-09.6 · A Type III compensator for a buck converter (tier C)
 
-**Setup.** A buck converter's control-to-output response is $V_{in}/(LCs^2 + (L/R)s + 1)$ with $V_{in}$ = 5 V, $L$ = 1 µH, $C$ = 100 µF and $R$ = 1 Ω (illustrative values, with ideal components). Use a Type III compensator $\omega_I(1 + s/\omega_z)^2/[s(1 + s/\omega_p)^2]$ with poles at 300 kHz and crossover at 60 kHz. Compare zeros at $f_0$ with zeros at $f_0/2$.
+**Setup.** A buck converter's control-to-output response is $(V_{in}/V_M)/(LCs^2 + (L/R)s + 1)$ with $V_{in}$ = 5 V, a 1 V PWM ramp ($V_M$ = 1 V), $L$ = 1 µH, $C$ = 100 µF and $R$ = 1 Ω (illustrative values, with ideal components). Use a Type III compensator $\omega_I(1 + s/\omega_z)^2/[s(1 + s/\omega_p)^2]$ with poles at 300 kHz and crossover at 60 kHz. Compare zeros at $f_0$ with zeros at $f_0/2$.
 
 **Solution.** $f_0 = 1/(2\pi\sqrt{LC})$ = **15.9** kHz and $Q = R\sqrt{C/L}$ = **10**: a sharp resonance. The phase at 60 kHz is a sum of terms: the integrator gives −90°, the plant about −178°, the two poles $-2\arctan(60/300) = -22.6°$, and the two zeros $+2\arctan(60/f_z)$.
 
@@ -174,6 +198,15 @@ The closed-loop poles are $-2 \pm j3.46$ and **−2.6**; the step response overs
 - Zeros at $f_0/2$ (+164.9°): $\omega_I$ = **1.79 × 10⁴** s⁻¹ and PM = **53.9**°, GM = **19.5** dB.
 
 Placing the zeros below the resonance buys about 15° of margin, because the zeros' full lead is available by the time the plant's phase has fallen to −180°.
+
+**Realizing it with an op-amp.** Use §3.6's Type III network for the $f_0/2$ design: both zeros at 7.96 kHz, both poles at 300 kHz, $\omega_I = 1.79 \times 10^4$ s⁻¹. Choose $R_1$ = 10 kΩ. Then
+
+- $C_1 + C_2 = 1/(R_1\omega_I)$ = **5.58** nF;
+- the first pole-to-zero ratio is $(C_1 + C_2)/C_2 = 300/7.96$, so $C_2$ = **148** pF and $C_1$ = **5.43** nF;
+- $R_2 = 1/(\omega_zC_1)$ = **3.68** kΩ;
+- the second ratio is $(R_1 + R_3)/R_3 = 300/7.96$, so $R_3 = R_1/(37.7 - 1)$ = **272** Ω, and $C_3 = 1/(\omega_pR_3)$ = **1.95** nF.
+
+The verify script rebuilds $-Z_f/Z_{in}$ from these components and confirms that it equals the Type III transfer function at every frequency. In practice the values are rounded to standard parts and the op-amp's own gain-bandwidth must sit well above the 300 kHz poles.
 
 **Units check.** $\omega_I$ in 1/s; $L$ dimensionless.
 
@@ -217,6 +250,7 @@ Placing the zeros below the resonance buys about 15° of margin, because the zer
 | Ex 15-09.4d | third closed-loop pole | −2.6 | 1/s |
 | Ex 15-09.4e | overshoot | 27.4 | % |
 | Ex 15-09.4f | Kv | 7.43 | 1/s |
+| Ex 15-09.4g | overshoot, dominant pair with the zero only | 69.9 | % |
 | Ex 15-09.5a | lag zero | 0.442 | rad/s |
 | Ex 15-09.5b | lag pole | 0.0885 | rad/s |
 | Ex 15-09.5c | Kv | 50 | 1/s |
@@ -231,6 +265,14 @@ Placing the zeros below the resonance buys about 15° of margin, because the zer
 | Ex 15-09.6f | phase margin, zeros at f0/2 | 53.9 | ° |
 | Ex 15-09.6g | gain margin, zeros at f0/2 | 19.5 | dB |
 | Ex 15-09.6h | ωI, zeros at f0/2 | 1.79e4 | 1/s |
+| Ex 15-09.6i | C1 + C2 | 5.58 | nF |
+| Ex 15-09.6j | C2 | 148 | pF |
+| Ex 15-09.6k | C1 | 5.43 | nF |
+| Ex 15-09.6l | R2 | 3.68 | kΩ |
+| Ex 15-09.6m | pole-to-zero ratio | 37.7 | — |
+| Ex 15-09.6n | R3 | 272 | Ω |
+| Ex 15-09.6o | C3 | 1.95 | nF |
+| Ex 15-09.6p | zero frequency, f0/2 design | 7.96 | kHz |
 
 ## 5. Simulate it
 
@@ -239,7 +281,7 @@ The lab, [labs/15-09-lab](../labs/15-09-lab/README.md), provides `compensate.py`
 1. **Measure a lead network** in ngspice (`lead_network.cir`): its maximum phase and the frequency where it occurs.
 2. **Design lead and lag** for Example 15-09.2's specification and overlay their Bode plots and step responses.
 3. **Design by root locus** (Example 15-09.4) and watch the closed-loop pole near the compensator zero.
-4. **Compensate a buck converter** (Example 15-09.6): sweep the Type III zero location and plot the phase margin.
+4. **Compensate a buck converter** (Example 15-09.6): sweep the Type III zero location and plot the phase margin, the low-frequency loop gain and the lowest phase reached while $\lvert L\rvert > 1$. Zeros below $f_0$ buy margin at the cost of low-frequency gain; zeros well above $f_0$ make the loop conditionally stable.
 
 **Guided exercise (predict, then run).** **Before Part 2,** predict which compensated loop rises faster and which settles faster. (The lead does both: higher crossover; the lag's slow doublet dominates its settling.)
 

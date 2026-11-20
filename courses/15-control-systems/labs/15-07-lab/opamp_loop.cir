@@ -3,7 +3,7 @@
 *   stage 1: 1 S transconductor into 100 kohm || 15.915 nF (gain 1e5, pole at 100 Hz), inverting input
 *   stage 2: 1 S transconductor into 1 ohm || 7.9577 nF (gain 1, pole at 20 MHz)
 * The buffer feeds the output x back to the inverting input y through an AC injection source VINJ (x -> y).
-* With v_y = v_x + v_inj and v_x = -A v_y, the loop gain is T = -v(x)/v(y) = A(j w).
+* With v_y = v_x + v_inj and v_x = -A v_y, the loop gain is L = -v(x)/v(y) = A(j w) (beta = 1).
 *
 * EXPECT fc key:../../chapters/15-07-frequency-domain-design.md#Ex_15-07.6a scale=1e6 rtol=2e-3
 * EXPECT pm key:../../chapters/15-07-frequency-domain-design.md#Ex_15-07.6b rtol=2e-3
@@ -18,11 +18,11 @@ VINJ y x DC 0 AC 1
 
 .control
 ac dec 400 1k 1g
-let T = -v(x)/v(y)
-let Tdb = db(T)
-let Tph = 180/pi*cph(T)
-meas ac fc when Tdb=0
-meas ac ph find Tph when Tdb=0
+let lg = -v(x)/v(y)
+let lgdb = db(lg)
+let lgph = 180/pi*cph(lg)
+meas ac fc when lgdb=0
+meas ac ph find lgph when lgdb=0
 let pm = 180 + ph
 print pm
 quit
