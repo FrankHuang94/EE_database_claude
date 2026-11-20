@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 10-02 · MOSFET DC Operation and Biasing
 
 | | |

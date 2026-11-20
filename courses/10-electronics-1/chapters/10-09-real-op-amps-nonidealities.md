@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 10-09 · Real Op-Amps: Non-Idealities
 
 | | |
@@ -67,6 +67,8 @@ $$
 
 with a very low pole $f_p$ (a few hertz). Well above $f_p$, $|A| \approx A_0f_p/f$: the product of gain and frequency is constant, the **gain–bandwidth product** GBW = $A_0f_p$. It is also the **unity-gain frequency**, where $|A|$ = 1.
 
+A circuit with exactly this behavior is a transconductance $G_m$ driving a resistor $R_p$ in parallel with a capacitor $C_p$, followed by a unity-gain buffer (Figure 3a). At DC the current $G_mv_d$ flows through $R_p$, so $A_0 = G_mR_p$ (siemens times ohms: dimensionless). The node's time constant sets $f_p = 1/(2\pi R_pC_p)$, so GBW = $A_0f_p = G_m/(2\pi C_p)$, in siemens per farad, which is per second. The lab's ngspice netlists use this macromodel (the slew netlist with the current limit of §3.3 and $R_p$ omitted, since the slew is over long before $R_p$ matters). Real op-amps realize it with an input transconductance stage and a compensation capacitor (12-08).
+
 **Closed-loop bandwidth.** Substituting $A(s)$ into $A/(1 + A\beta)$:
 
 $$
@@ -113,10 +115,14 @@ Above $f_{FP}$ a full-amplitude sine turns into a triangle wave, whatever the sm
 
 ### 3.4 DC errors: offset, drift and bias currents
 
-06-10 §3.7 introduced the **input offset voltage** $V_{OS}$, amplified by the noise gain, and the **input bias currents** $I_B$, which develop voltages across the resistances seen by each input; a resistor equal to $R_1 \parallel R_2$ in the + input cancels the bias-current errors to within the **offset current** $I_{OS}$. Two refinements matter in practice:
+06-10 §3.7 introduced the **input offset voltage** $V_{OS}$, amplified by the noise gain, and the **input bias currents** $I_B$ (Figure 3b), which develop voltages across the resistances seen by each input; a resistor equal to $R_1 \parallel R_2$ in the + input cancels the bias-current errors to within the **offset current** $I_{OS}$. Two refinements matter in practice:
 
 - **Drift.** $V_{OS}$ changes with temperature, specified as $dV_{OS}/dT$ in µV/°C. Over the extended (automotive-grade) range of −40 to 125 °C (the industrial range is usually −40 to 85 °C), a drift of a few µV/°C adds hundreds of microvolts: often more than the 25 °C offset itself. Offset at 25 °C can be calibrated out; drift is harder to remove.
 - **Input technology sets $I_B$.** Bipolar inputs draw nanoamperes (OPA1611: ±60 nA typ, ±250 nA max [3]); CMOS inputs draw picoamperes at room temperature (TLV9062: ±0.5 pA typ [1]), but that current is mostly junction leakage in the input protection, which grows exponentially with temperature (09-06), and zero-drift CMOS parts show larger, switching-related currents (OPA333: ±70 pA typ, ±200 pA max [2]).
+
+![Op-amp models](../../../assets/figures/10-09/models.svg)
+
+*Figure 3. Two models of a real op-amp. (a) The single-pole macromodel of §3.2 and the lab netlists: a transconductance into $R_p \parallel C_p$, then a unity buffer. A limit $I$ on the source current gives the slew rate $I/C_p$ of §3.3. (b) The DC error model: an ideal op-amp with the offset voltage in series with one input (either polarity occurs) and a bias-current source at each input. The bias current $I_B$ is the average of the two, and the offset current $I_{OS}$ is their difference.*
 
 **Zero-drift amplifiers** (06-10's Going deeper) correct their own offset continuously, giving microvolt offsets and nanovolt-per-kelvin drift (OPA333: 10 µV max, 0.05 µV/°C max [2]) at the cost of bandwidth, switching artifacts and higher current noise.
 

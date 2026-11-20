@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 10-01 · Diodes and Diode Circuits
 
 | | |

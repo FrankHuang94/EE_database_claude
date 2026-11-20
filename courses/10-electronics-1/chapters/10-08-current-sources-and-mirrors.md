@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 10-08 · Current Sources and Current Mirrors
 
 | | |

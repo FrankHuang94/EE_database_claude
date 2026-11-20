@@ -6,7 +6,9 @@ Outputs SVGs to assets/figures/10-09/:
 - gbw.svg: a single-pole open-loop gain (A_0 = 130 dB, GBW = 10 MHz, the TLV9062's typical figures) with the
   closed-loop responses for noise gains of 1, 10 and 100, showing bandwidth = GBW / noise gain;
 - slew.svg: step response of a unity-gain follower with a 10 MHz single pole and a 6.5 V/us slew-rate limit,
-  for a 50 mV step (linear, exponential) and a 2 V step (slew-limited ramp, then exponential).
+  for a 50 mV step (linear, exponential) and a 2 V step (slew-limited ramp, then exponential);
+- models.svg: schematics (schemdraw) of (a) the single-pole macromodel used in the lab's netlist and
+  (b) the DC error model (offset voltage in series with the + input, bias currents at both inputs).
 """
 from __future__ import annotations
 
@@ -15,6 +17,8 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+import schemdraw
+import schemdraw.elements as elm
 from scipy.integrate import solve_ivp
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -75,6 +79,61 @@ def fig_slew():
     save(fig, f"{OUT}/slew.svg")
 
 
+def fig_models():
+    """(a) Single-pole macromodel: G_m v_d into R_p || C_p, unity buffer. (b) DC error model."""
+    schemdraw.config(fontsize=11, bgcolor="white")
+    d = schemdraw.Drawing(show=False)
+
+    def title(x, y, text):
+        d.add(elm.Label().at((x, y)).label(text, fontsize=12))
+
+    # (a) macromodel
+    title(4.0, 4.2, "(a) single-pole macromodel")
+    d.add(elm.Dot(open=True).at((0, 2.5)).label("$v_+$", loc="left"))
+    d.add(elm.Dot(open=True).at((0, 0)).label("$v_-$", loc="left"))
+    d.add(elm.Label().at((0.25, 1.25)).label("$v_d$", fontsize=12))
+    d.add(elm.Label().at((0.25, 2.1)).label("+", fontsize=12))
+    d.add(elm.Label().at((0.25, 0.4)).label("−", fontsize=12))
+    d.add(elm.SourceControlledI().at((2.5, 0)).up().length(2.5).label("$G_mv_d$"))
+    d.add(elm.Line().right().length(1.5))
+    nx = d.add(elm.Dot().label("$x$", loc="top"))
+    d.add(elm.Resistor().down().length(2.5).label("$R_p$", loc="bottom"))
+    d.add(elm.Line().at(nx.center).right().length(1.5))
+    d.add(elm.Capacitor().down().length(2.5).label("$C_p$", loc="bottom"))
+    d.add(elm.Line().at((2.5, 0)).right().length(5.5))
+    d.add(elm.Ground().at((4.0, 0)))
+    d.add(elm.SourceControlledV().at((8.0, 0)).up().length(2.5).label("$1\\cdot v_x$", loc="bottom"))
+    d.add(elm.Line().right().length(1.0))
+    d.add(elm.Dot(open=True).label("$v_o$", loc="right"))
+    d.add(elm.Label().at((4.75, -1.6)).label(
+        "$A_0 = G_mR_p,\\ f_p = 1/(2\\pi R_pC_p),\\ \\mathrm{GBW} = G_m/(2\\pi C_p)$", fontsize=11))
+    d.add(elm.Label().at((4.75, -2.3)).label(
+        "a current limit $I$ on the source gives SR $= I/C_p$", fontsize=11))
+
+    # (b) DC error model
+    x, y = 16.5, 1.3
+    title(x - 1.5, 4.2, "(b) DC error model")
+    op = d.add(elm.Opamp(leads=True).right().at((x, y)).label("ideal", loc="center", ofst=(0.3, 0)))
+    d.add(elm.SourceV().at(op.in2).left().length(1.6).label("$V_{OS}$", loc="top"))
+    npl = d.add(elm.Dot())
+    d.add(elm.Line().left().length(0.9))
+    d.add(elm.Dot(open=True).label("+", loc="left"))
+    d.add(elm.SourceI().at(npl.center).down().length(1.8).label("$I_{B+}$", loc="bottom"))
+    d.add(elm.Ground())
+    d.add(elm.Line().at(op.in1).left().length(5.0))
+    nmi = d.add(elm.Dot())
+    d.add(elm.Line().left().length(0.8))
+    d.add(elm.Dot(open=True).label("−", loc="left"))
+    d.add(elm.SourceI().at(nmi.center).down().length(op.in1[1] - op.in2[1] + 1.8).label("$I_{B-}$"))
+    d.add(elm.Ground())
+    d.add(elm.Line().at(op.out).right().length(0.8))
+    d.add(elm.Dot(open=True).label("$v_o$", loc="right"))
+    d.add(elm.Label().at((x - 1.5, -2.3)).label(
+        "$I_B = (I_{B+} + I_{B-})/2,\\ I_{OS} = I_{B+} - I_{B-}$", fontsize=11))
+    d.save(str(ROOT / OUT / "models.svg"))
+
+
 if __name__ == "__main__":
     fig_gbw()
     fig_slew()
+    fig_models()

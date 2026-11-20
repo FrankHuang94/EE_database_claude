@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 10-07 · BJT Single-Stage Amplifiers
 
 | | |

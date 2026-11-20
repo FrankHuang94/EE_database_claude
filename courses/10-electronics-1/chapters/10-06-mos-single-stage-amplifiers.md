@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 10-06 · MOS Single-Stage Amplifiers
 
 | | |

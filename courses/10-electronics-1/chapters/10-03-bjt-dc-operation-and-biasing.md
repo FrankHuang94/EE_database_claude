@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 10-03 · BJT DC Operation and Biasing
 
 | | |

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 10-10 · Op-Amp Application Circuits
 
 | | |
