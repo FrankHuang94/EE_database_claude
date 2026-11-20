@@ -2931,7 +2931,7 @@
   definition: Storing each decimal digit in its own 4-bit group (97 is 1001 0111); it wastes 6 of 16 patterns per digit, and binary addition of BCD digits needs a +6 correction when a digit sum exceeds 9.
   chapter: "08-01"
 - term: Gray code
-  definition: An ordering of the 2^n bit patterns in which consecutive values differ in exactly one bit; the reflected binary Gray code is G = B XOR (B >> 1), used for encoders and for pointers that cross clock domains.
+  definition: An ordering of the 2^n bit patterns in which consecutive values differ in exactly one bit; the reflected binary Gray code is G = B XOR (B >> 1), used for encoders, for pointers that cross clock domains, and to label PAM and QAM levels so that a symbol error to a neighbour costs one bit (17-04).
   chapter: "08-01"
 - term: UTF-8
   definition: The variable-length encoding of Unicode code points in 1 to 4 bytes, identical to ASCII for U+0000 to U+007F; continuation bytes start with 10, so a receiver can find character boundaries from any point in a stream.
@@ -6617,3 +6617,63 @@
   definition: The ratio of a scheme's output SNR to the baseband reference γ = S_R/(N0·W) at the same received power; 1 for DSB-SC and SSB, about 1/3 for full-modulation tone AM, 1.5β² for tone FM above threshold.
   chapter: "17-03"
   see_also: [Frequency modulation, Single-sideband modulation]
+- term: Pulse-amplitude modulation
+  definition: Sending a sequence of levels a_k as amplitudes of a repeated pulse, x(t) = Σ a_k p(t − kT); M levels carry log2 M bits per symbol, and equally spaced levels ±1, ±3, … have mean energy (M² − 1)/3.
+  chapter: "17-04"
+  see_also: [PAM4, Symbol rate, Gray code]
+- term: Symbol rate
+  definition: Symbols sent per second, 1/T, in baud; the bit rate is the symbol rate times log2 M, and the Nyquist frequency is half the symbol rate.
+  chapter: "17-04"
+  see_also: [Pulse-amplitude modulation, Nyquist frequency]
+- term: Line code
+  definition: The mapping of bits to transmitted levels and pulses, chosen for DC balance, enough transitions for clock recovery and limited bandwidth; examples are NRZ, AMI, Manchester and block codes such as 8b/10b, 64b/66b and 128b/130b.
+  chapter: "17-04"
+  see_also: [Manchester code, Baseline wander, Scrambler]
+- term: Manchester code
+  definition: A line code that sends each bit as a mid-bit transition (high-then-low or low-then-high); DC-free with a transition every bit, at the cost of twice the bandwidth (first spectral null at 2/T).
+  chapter: "17-04"
+  see_also: [Line code]
+- term: Baseline wander
+  definition: The drift of a received signal's average level when a long run of one symbol passes through an AC-coupled channel that cannot carry DC; DC-balanced line codes prevent it.
+  chapter: "17-04"
+  see_also: [Line code]
+- term: Intersymbol interference
+  definition: The contribution of other symbols' pulses to the sample taken for a given symbol, caused by a band-limited or dispersive channel; the sum Σ a_(n−k) h_k over k ≠ 0 of the sampled pulse response.
+  chapter: "17-04"
+  see_also: [Cursor (pulse response), Nyquist criterion for zero ISI, Eye diagram]
+- term: Cursor (pulse response)
+  definition: A sample h_k of a link's overall pulse response at a symbol instant; h_0 is the main cursor, k > 0 are postcursors (left by earlier symbols) and k < 0 precursors.
+  chapter: "17-04"
+  see_also: [Intersymbol interference, Peak distortion]
+- term: Peak distortion
+  definition: The worst-case intersymbol interference, Σ|h_k| over k ≠ 0 for binary symbols; the worst-case eye opening is h_0 minus it, and a negative value means some pattern is decided wrongly even without noise.
+  chapter: "17-04"
+  see_also: [Cursor (pulse response), Eye diagram]
+- term: Nyquist criterion for zero ISI
+  definition: A pulse has zero intersymbol interference at symbol period T exactly when its spectrum, folded at multiples of 1/T, sums to the constant T; it requires a bandwidth of at least 1/(2T), met with odd-symmetric roll-off about 1/(2T).
+  chapter: "17-04"
+  see_also: [Raised-cosine pulse, Intersymbol interference]
+- term: Raised-cosine pulse
+  definition: The Nyquist pulse sinc(t/T)·cos(παt/T)/(1 − (2αt/T)²), with a half-cosine spectral roll-off of width α/T and bandwidth (1 + α)/(2T); its tails decay as 1/t³, so timing errors cause bounded ISI.
+  chapter: "17-04"
+  see_also: [Root-raised cosine, Roll-off factor, Nyquist criterion for zero ISI]
+- term: Root-raised cosine
+  definition: The filter whose spectrum is the square root of a raised cosine; used at both transmitter and receiver so that the receive filter is matched and the cascade has zero ISI. Neither filter alone is free of ISI.
+  chapter: "17-04"
+  see_also: [Raised-cosine pulse]
+- term: Roll-off factor
+  definition: α, the excess bandwidth of a raised-cosine spectrum relative to the Nyquist minimum 1/(2T); 0.22 for 3GPP UTRA, typically 0.1–0.5.
+  chapter: "17-04"
+  see_also: [Raised-cosine pulse]
+- term: Eye diagram
+  definition: The received waveform cut into one- or two-symbol segments and overlaid; its height at the sampling instant is the amplitude margin, its width the timing margin, and the spread of its crossings the data-dependent jitter.
+  chapter: "17-04"
+  see_also: [Statistical eye, Intersymbol interference]
+- term: Statistical eye
+  definition: An eye or bit-error estimate computed from a pulse response by enumerating (or convolving the distributions of) all interfering symbol patterns together with noise, rather than from a finite simulated record.
+  chapter: "17-04"
+  see_also: [Eye diagram]
+- term: Zero-forcing equalizer
+  definition: A feed-forward FIR equalizer whose taps force the combined pulse response to zero at the lags it spans, removing that ISI at the price of noise enhancement by the sum of the squared taps.
+  chapter: "17-04"
+  see_also: [Decision-feedback equalizer (DFE), Intersymbol interference]

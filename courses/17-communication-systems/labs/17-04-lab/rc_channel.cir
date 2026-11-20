@@ -1,0 +1,20 @@
+* Lab 17-04 -- cursors of a one-pole channel (Example 17-04.3).
+* A single 40 ps NRZ bit (25 Gb/s) drives R = 50 ohm, C = 0.63662 pF (tau = 31.83 ps, f3dB = 5 GHz).
+* The output sampled at the end of the bit is the main cursor h0 = 1 - r; one bit later it is the
+* first postcursor h1 = (1 - r) r, with r = exp(-T/tau) = 0.2846.
+*
+* EXPECT h0 key:../../chapters/17-04-baseband-digital-transmission.md#Ex_17-04.3c rtol=2e-3
+* EXPECT h1 key:../../chapters/17-04-baseband-digital-transmission.md#Ex_17-04.3d rtol=2e-3
+
+V1 in 0 PULSE(0 1 0 0.01p 0.01p 40p 1)
+R1 in out 50
+C1 out 0 0.63662p
+
+.control
+tran 0.02p 200p
+meas tran h0 FIND v(out) AT=40.01p
+meas tran h1 FIND v(out) AT=80.01p
+echo "h0 = $&h0"
+echo "h1 = $&h1"
+.endc
+.end

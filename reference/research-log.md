@@ -2686,3 +2686,38 @@ R&D % = R&D ÷ revenue.
 *Read on 20 Nov 2026 by a research subagent from the manufacturer's data sheet (PDF).*
 
 - **Skyworks Si4730/31/34/35-D60, Rev. 1.2 (10 Nov 2021):** FM sensitivity 2.2 µV EMF typ., 3.5 µV EMF max., at (S+N)/N = 26 dB, with FMOD = 1 kHz, 22.5 kHz deviation, 75 µs de-emphasis, mono, audio band 300 Hz–15 kHz A-weighted; de-emphasis selectable 75 µs or 50 µs; AM sensitivity 25 µV EMF typ., 35 max., at 26 dB with 1 kHz at 30% modulation and a 2 kHz channel filter. [Established]
+
+## R-269 · IEEE 802.3ck (100 Gb/s per lane electrical)
+
+*Read on 20 Nov 2026 by a research subagent from the IEEE 802.3 public task-force pages; the standard's clause text is paywalled and was not read.*
+
+- **Task force page** (last updated 8 Dec 2022): "The work of the IEEE P802.3ck 100 Gb/s, 200 Gb/s, and 400 Gb/s Electrical Interfaces Task Force completed with the approval of IEEE Std 802.3ck-2022 by the IEEE-SA Standards Boards on 21 September 2022." [Established] [802.3ck](https://www.ieee802.org/3/ck/index.html)
+- **Objectives** (Mar 2018): "Define a single-lane 100 Gb/s PHY for operation over electrical backplanes supporting an insertion loss ≤ 28 dB at 26.56 GHz"; twin-axial copper cables "with lengths up to at least 2 m". Our inference (not a quote): 26.56 GHz is the Nyquist frequency of 53.125 GBd signalling. [Established] [objectives](https://www.ieee802.org/3/ck/P802_3ck_Objectives_2018mar.pdf)
+
+## R-270 · IEEE P802.3dj (200 Gb/s per lane) objectives and status
+
+*Read on 20 Nov 2026 by a research subagent from the IEEE 802.3 public pages and the working-group chair's reflector notices. No final IEEE-SA Standards Board approval notice was found.*
+
+- **Objectives** (adopted 14 Mar 2024): one-lane backplane "supporting a die-to-die insertion loss <= 40 dB at 53.125 GHz"; twin-axial cable "with a reach of up to at least 1.0 meter"; "Support a BER of better than or equal to 10^-13 at the MAC/PLS service interface". [Established] [objectives](https://www.ieee802.org/3/dj/projdoc/objectives_P802d3dj_240314.pdf)
+- **Status:** the task-force page and the 802.3 home page list P802.3dj as an active project; the fourth working-group recirculation ballot "closed successfully on 12 February 2026 ... 99% Approval Rate"; the "initial Standards Association ballot ... closed successfully on 26th March 2026 ... 77% Approval Rate (>= 75% required)" (802.3 chair's notices). [Established] [notice](https://grouper.ieee.org/groups/802/3/email_dialog/msg01813.html)
+
+## R-271 · OIF Common Electrical I/O (CEI-112G, CEI-224G)
+
+*Read on 20 Nov 2026 by a research subagent from the OIF's public PDF and current-work page.*
+
+- **OIF-CEI-05.3** (17 Jul 2025): clauses 24–27 define CEI-112G-XSR-PAM4, -VSR-PAM4, -MR-PAM4 and -LR-PAM4; XSR "nominal baud rates of 36 Gsym/s and 58 Gsym/s"; MR and LR "Support serial baud rates (fb) within the range from 36.0 Gsym/s to 58.0 Gsym/s". [Established] [CEI-05.3](https://www.oiforum.com/wp-content/uploads/OIF-CEI-05.3.pdf)
+- **CEI-224G** XSR, VSR, MR, LR and Linear were listed as current projects (Nov 2026); LR's "reach objective shall be at least 1000 mm with up to two connectors". The 224G symbol rate was not verified. [Established] [current work](https://www.oiforum.com/technical-work/current-work/)
+
+## R-272 · USB4 Version 2.0 (80 Gb/s, PAM3)
+
+*Read on 20 Nov 2026 by a research subagent from the USB-IF press release PDF.*
+
+- **USB-IF, 18 Oct 2022:** "Up to 80Gbps operation, utilizing a new physical layer architecture based on PAM3 signal encoding, over existing 40Gbps USB Type-C passive cables and newly defined 80Gbps USB Type-C active cables." (A Business Wire copy carries 17 Oct 2022, US time.) The symbol rate was not verified from USB-IF. [Established] [USB-IF release](https://www.usb.org/sites/default/files/2022-10/USB-IF%20USB%2080Gbps%20Announcement_FINAL.pdf)
+
+## R-273 · PCI Express 6.0, 7.0 and 8.0 signalling
+
+*Read on 20 Nov 2026 by a research subagent from secondary reproductions: pcisig.com returned a challenge page to automated access and businesswire.com was blocked, so neither was read directly. Treat as secondary.*
+
+- **PCIe 7.0 release** (PCI-SIG press release, 11 Jun 2025, reprinted by Signal Integrity Journal): "official release of the PCI Express® (PCIe®) 7.0 specification, reaching 128.0 GT/s, to members"; "Utilizes PAM4 (Pulse Amplitude Modulation with 4 levels) signaling and Flit-based encoding". [Established, secondary]
+- **PCIe 8.0 announcement** (PCI-SIG press release, 5 Aug 2025, reprinted by Silicon UK): 256.0 GT/s, "planned for release to members by 2028". [Established, secondary]
+- **PCIe 6.0/7.0 PHY** (D. Das Sharma, SNIA SDC slides): "PAM4 Signaling at 64.0 and 128.0 GT/s ... 3 eyes ... Helps channel loss (same Nyquist as 32.0 GT/s) ... Gray Coding ... Precoding"; flit "256B ... 236B TLP, 6B DLP, 8B CRC, 6B FEC"; "Light-weight FEC, strong CRC". [Established, secondary] [slides](https://www.snia.org/sites/default/files/2025-05/SNIA-SDC23-DasSharma-PCIe-7.0-Specification-Bandwidth.pdf)

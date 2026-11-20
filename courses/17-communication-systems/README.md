@@ -31,7 +31,7 @@ How information moves over noisy channels: random processes and noise, analog an
 | [17-01 · Random Processes and Power Spectral Density](chapters/17-01-random-processes-and-psd.md) | 9 | ✅ verified | [problems](problems/17-01-problems.md) · [solutions](solutions/17-01-solutions.md) · [lab](labs/17-01-lab/README.md) · [verify](verify/verify_17_01.py) |
 | [17-02 · Noise and SNR in Communication Systems](chapters/17-02-noise-and-snr.md) | 6 | ✅ verified | [problems](problems/17-02-problems.md) · [solutions](solutions/17-02-solutions.md) · [lab](labs/17-02-lab/README.md) · [verify](verify/verify_17_02.py) |
 | [17-03 · Analog Modulation (Brief)](chapters/17-03-analog-modulation.md) | 5 | ✅ verified | [problems](problems/17-03-problems.md) · [solutions](solutions/17-03-solutions.md) · [lab](labs/17-03-lab/README.md) · [verify](verify/verify_17_03.py) |
-| [17-04 · Baseband Digital Transmission](chapters/17-04-baseband-digital-transmission.md) | 8 | ⬜ planned | — |
+| [17-04 · Baseband Digital Transmission](chapters/17-04-baseband-digital-transmission.md) | 8 | ✅ verified | [problems](problems/17-04-problems.md) · [solutions](solutions/17-04-solutions.md) · [lab](labs/17-04-lab/README.md) · [verify](verify/verify_17_04.py) |
 | [17-05 · Matched Filters and Optimal Detection](chapters/17-05-matched-filters-and-detection.md) | 8 | ⬜ planned | — |
 | [17-06 · Bandpass Digital Modulation and BER](chapters/17-06-bandpass-digital-modulation.md) | 10 | ⬜ planned | — |
 | [17-07 · Information Theory and Shannon Capacity](chapters/17-07-information-theory-and-shannon.md) | 8 | ⬜ planned | — |
