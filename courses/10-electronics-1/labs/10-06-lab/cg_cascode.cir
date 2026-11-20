@@ -1,0 +1,60 @@
+* Lab 10-06 -- two results that need r_o, with level-1 transistors set as in mos_stages.cir (I_D = 0.5 mA,
+* V_ov = 0.5 V, g_m = 2 mS; LAMBDA = 1/(r_o I_D - V_DS) and KP = 4 mA/V^2 / (1 + LAMBDA V_DS), so r_o = 40 kOhm
+* exactly at each operating point):
+*   Example 10-06.3(b): the common-gate stage with r_o, body at ground (GAMMA = 0.4 V^0.5 gives chi = 0.2 at
+*     V_SB = 0.3 V), R_D = 5 kOhm from 5 V, so V_DS = 2.2 V: input resistance and gain from the source node;
+*   Example 10-06.7(b, c): a cascode (bodies tied to sources, no body effect), lower drain at 1.0 V, output held
+*     at 3.0 V by a source that carries the AC test signal: output resistance, short-circuit transconductance and
+*     hence the gain with an ideal current-source load, -G_m R_out.
+*
+* EXPECT r3o key:../../chapters/10-06-mos-single-stage-amplifiers.md#Ex_10-06.3e rtol=2e-4
+* EXPECT g3o key:../../chapters/10-06-mos-single-stage-amplifiers.md#Ex_10-06.3f rtol=5e-4
+* EXPECT rcas key:../../chapters/10-06-mos-single-stage-amplifiers.md#Ex_10-06.7d scale=1e3 rtol=2e-4
+* EXPECT acas key:../../chapters/10-06-mos-single-stage-amplifiers.md#Ex_10-06.7f rtol=2e-4
+
+.options temp=26.85 tnom=26.85 reltol=1e-8 abstol=1e-15 vntol=1e-9
+VDD vdd 0 DC 5
+
+* (3b) common gate with r_o: the source is driven by an AC current around a 0.5 mA DC bias
+VB3 g3 0 DC 1.3653359893863697
+RD3 vdd d3 5k
+M3 d3 g3 s3 0 n3o W=10u L=10u
+IB3 s3 0 DC 0.5m AC 1
+.model n3o NMOS(LEVEL=1 KP=3.56e-3 VTO=0.5 LAMBDA=0.056179775280898875 GAMMA=0.4 PHI=0.7)
+
+* (7) cascode, output resistance: AC test voltage on the output
+VGA ga 0 DC 1.0
+VGB gb 0 DC 2.0
+M7A x7 ga 0 0 nlo W=10u L=10u
+M7B o7 gb x7 x7 nhi W=10u L=10u
+VO7 o7 0 DC 3.0 AC 1
+* (7) cascode, short-circuit transconductance: AC on the lower gate, output held
+VGC gc 0 DC 1.0 AC 1
+VGD gd 0 DC 2.0
+M7C y7 gc 0 0 nlo W=10u L=10u
+M7D p7 gd y7 y7 nhi W=10u L=10u
+VP7 p7 0 DC 3.0
+.model nlo NMOS(LEVEL=1 KP=3.8e-3 VTO=0.5 LAMBDA=0.05263157894736842)
+.model nhi NMOS(LEVEL=1 KP=3.6e-3 VTO=0.5 LAMBDA=0.05555555555555555)
+
+.control
+op
+let id3 = @m3[id]
+let id7 = @m7a[id]
+let vx7 = v(x7)
+echo "id3 = $&id3"
+echo "id7 = $&id7"
+echo "vx7 = $&vx7"
+ac lin 1 1k 1k
+* the AC current source pushes 1 A from node s3 to ground, i.e. -1 A into the source node
+let r3o = -real(v(s3))
+let g3o = real(v(d3)) / real(v(s3))
+let rcas = 1 / real(-i(VO7))
+let gmcas = -real(i(VP7))
+let acas = -gmcas * rcas
+echo "r3o = $&r3o"
+echo "g3o = $&g3o"
+echo "rcas = $&rcas"
+echo "acas = $&acas"
+.endc
+.end

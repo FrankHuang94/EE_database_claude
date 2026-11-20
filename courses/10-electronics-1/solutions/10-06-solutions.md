@@ -74,11 +74,33 @@ $$
 
 ### Solution 10-06.12
 
-(a) $R_{eq} = (1/g_{mb}) \parallel 50 = 250 \parallel 50$ = **41.67** Ω; $A_f = 20 \times 0.04167/(1 + 20 \times 0.04167)$ = **0.4545**; $R_{out} = 1/(g_m + g_{mb})$ = **41.67** Ω.
+(a) $R_{eq} = (1/g_{mb}) \parallel 50 = 250 \parallel 50$ = **41.67** Ω; the follower gain $A_f = g_mR_{eq}/(1 + g_mR_{eq}) = 20 \times 0.04167/(1 + 20 \times 0.04167)$ = **0.4545**; $R_{out} = 1/(g_m + g_{mb})$ = **41.67** Ω.
 
 (b) $-10 \times 0.4545$ = **−4.545**.
 
 (c) $10/0.4545$ = **22.0**. A 50 Ω load is heavy even for a 20 mS follower: its output resistance is comparable to the load. Driving 50 Ω efficiently needs more current or a different output stage (12-07).
+
+### Solution 10-06.13
+
+(a) $V_G = 5 \times 100/400$ = **1.25** V. With $I_D = \tfrac12k_nV_{ov}^2$ and $V_G = V_{GS} + I_DR_S$, writing $V_{GS} = 0.5 + V_{ov}$: $1.25 = 0.5 + V_{ov} + 1\text{ kΩ} \times 1\text{ mA/V}^2 \times V_{ov}^2$, i.e. $V_{ov}^2 + V_{ov} - 0.75 = 0$, so $V_{ov}$ = **0.5** V (the other root is negative) and $I_D$ = **0.25** mA. Then $V_S$ = 0.25 V, $V_D = 5 - 0.25 \times 5$ = 3.75 V and $V_{DS}$ = **3.5** V, well above $V_{ov}$: saturated.
+
+(b) $g_m = 2I_D/V_{ov}$ = **1.0** mS; $r_o = 1/(0.02 \times 0.25\text{ mA})$ = **200** kΩ.
+
+(c) $R_{in} = R_1 \parallel R_2$ = **75** kΩ. The drain sees $R_D \parallel R_L \parallel r_o = 5 \parallel 10 \parallel 200$ = 3.279 kΩ, so the gain from the gate is **−3.279**, and with the input divider $75/85$ the overall gain is **−2.893**. The bias step fixes $g_m$; every small-signal number follows from it, which is why a bias error carries straight into the gain.
+
+### Solution 10-06.14
+
+(a) M1's drain current $g_{m1}v_{in}$ flows down through M2. M2's gate and drain are at the supply (AC ground), so its small-signal current is $-(g_{m2} + g_{mb2})v_o = -g_{m2}(1 + \chi)v_o$ flowing *up* from the output. Equating, $g_{m1}v_{in} = -g_{m2}(1 + \chi)v_o$:
+
+$$
+A_v = -\frac{g_{m1}}{g_{m2}(1 + \chi)} = -\frac{1}{1 + \chi}\sqrt{\frac{k_{n1}}{k_{n2}}} ,
+$$
+
+since both carry the same current and $g_m = \sqrt{2k_nI_D}$. The diode-connected load looks like a resistance $1/[g_{m2}(1 + \chi)]$.
+
+(b) $g_{m1}$ = **2.0** mS and $g_{m2}$ = **1.0** mS, so $A_v = -2/1.2$ = **−1.667**. Overdrives: $V_{ov1} = \sqrt{2I_D/k_{n1}}$ = **0.5** V and $V_{ov2}$ = **1.0** V.
+
+(c) $\sqrt{k_{n1}/k_{n2}} = 5 \times 1.2 = 6$, so $k_{n1}/k_{n2}$ = **36**: $k_{n2}$ = 0.111 mA/V² and $V_{ov2} = \sqrt{2 \times 0.5/0.111}$ = **3.0** V. The gain is set by a size ratio, so it is insensitive to bias current and tracks process, which is the attraction; but each factor in gain costs its square in size ratio and multiplies M2's overdrive, which eats the headroom. A diode-connected load suits gains of a few at most.
 
 ---
 
@@ -103,7 +125,7 @@ $$
 | 10-06.5b | R_out without body effect | 302 | kΩ |
 | 10-06.6a | R_in | 833.3 | Ω |
 | 10-06.6b | fraction entering | 0.9992 | — |
-| 10-06.6c | output per µA | 19.98 | mV |
+| 10-06.6c | output per µA | 19.98 | mV/µA |
 | 10-06.6d | direct resistance | 19.61 | kΩ |
 | 10-06.7a | active-load gain | -22.22 | — |
 | 10-06.7b | resistor-load gain | -8.333 | — |
@@ -124,3 +146,19 @@ $$
 | 10-06.12c | follower R_out | 41.67 | Ω |
 | 10-06.12d | overall gain | -4.545 | — |
 | 10-06.12e | CS gain needed | 22.0 | — |
+| 10-06.13a | V_G | 1.25 | V |
+| 10-06.13b | V_ov | 0.5 | V |
+| 10-06.13c | I_D | 0.25 | mA |
+| 10-06.13d | V_DS | 3.5 | V |
+| 10-06.13e | g_m | 1.0 | mS |
+| 10-06.13f | r_o | 200 | kΩ |
+| 10-06.13g | R_in | 75 | kΩ |
+| 10-06.13h | gain from the gate | -3.279 | — |
+| 10-06.13i | overall gain | -2.893 | — |
+| 10-06.14a | g_m1 | 2.0 | mS |
+| 10-06.14b | g_m2 | 1.0 | mS |
+| 10-06.14c | gain | -1.667 | — |
+| 10-06.14d | V_ov1 | 0.5 | V |
+| 10-06.14e | V_ov2 | 1.0 | V |
+| 10-06.14f | size ratio for gain −5 | 36 | — |
+| 10-06.14g | V_ov2 for gain −5 | 3.0 | V |

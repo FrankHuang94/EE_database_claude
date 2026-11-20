@@ -59,14 +59,22 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Driving a 50 Ω cable.** A CS stage ($A_{vo}$ = −10, $R_{out}$ = 2.5 kΩ) must drive a 50 Ω cable termination through a source follower with $g_m$ = 20 mS and χ = 0.2, biased by an ideal current source ($r_o$ ignored). (a) Find the follower's $R_{eq}$, gain into 50 Ω and output resistance. (b) Find the overall gain. (c) What CS gain magnitude would give an overall gain of −10?
 
+### Problem 10-06.13 [B]
+
+**From bias to gain.** An NMOS ($k_n$ = 2 mA/V², $V_{TN}$ = 0.5 V, λ = 0.02 V⁻¹, body tied to source) runs from $V_{DD}$ = 5 V with a gate divider $R_1$ = 300 kΩ (to $V_{DD}$) and $R_2$ = 100 kΩ (to ground), $R_S$ = 1 kΩ bypassed by a large capacitor, and $R_D$ = 5 kΩ. A 10 kΩ load is coupled to the drain, and the source driving the gate has $R_{sig}$ = 10 kΩ. (a) Find $I_D$, $V_{ov}$ and $V_{DS}$ (use λ = 0 for the bias), and confirm saturation. (b) Find $g_m$ and $r_o$. (c) Find $R_{in}$, the gain from the gate and the overall gain.
+
+### Problem 10-06.14 [C]
+
+**A diode-connected load.** A common-source transistor M1 ($k_{n1}$) drives a diode-connected NMOS M2 ($k_{n2}$, gate tied to drain, drain to $V_{DD}$), whose source is the output; both carry 0.5 mA, M2's body is at ground with χ = 0.2, and $r_o$ is ignored. (a) Derive the small-signal gain in terms of $g_{m1}$, $g_{m2}$ and χ, and then in terms of $k_{n1}/k_{n2}$. (b) Evaluate it for $k_{n1}$ = 4 mA/V² and $k_{n2}$ = 1 mA/V², and find both overdrives. (c) What size ratio gives a gain of −5, and what overdrive does M2 then need at 0.5 mA if $k_{n1}$ stays 4 mA/V²? What does this say about the load's headroom cost?
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 10-06) | Problems |
 |---|---|
-| 1. Identify configurations and their roles | 1, 6, 12 |
-| 2. Gain, $R_{in}$, $R_{out}$ with $r_o$ and body effect | 2, 3, 5, 6, 8 |
+| 1. Identify configurations and their roles | 1, 6, 12, 14 |
+| 2. Gain, $R_{in}$, $R_{out}$ with $r_o$ and body effect | 2, 3, 5, 6, 8, 13, 14 |
 | 3. Degeneration: $G_m$, $R_{out}$ and linearity | 4, 5, 9, 10 |
-| 4. Gain, headroom and intrinsic limits | 2, 7, 11 |
+| 4. Gain, headroom and intrinsic limits | 2, 7, 11, 13, 14 |
 | 5. Combining stages | 6, 12 |

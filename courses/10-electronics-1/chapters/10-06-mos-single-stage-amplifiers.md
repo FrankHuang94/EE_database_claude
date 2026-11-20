@@ -25,7 +25,7 @@ A MOSFET has three terminals; an amplifier needs an input, an output and a commo
 
 - **Common source (CS)** is the gain stage: input at the gate, output at the drain.
 - **Common gate (CG)** is the current buffer: input at the source, low input resistance, used in cascodes and wideband 50 Ω inputs.
-- **Common drain (CD)**, the **source follower**, is the voltage buffer: high input resistance, low output resistance, gain just under one; every CMOS image sensor pixel contains one.
+- **Common drain (CD)**, the **source follower**, is the voltage buffer: high input resistance, low output resistance, gain just under one; the standard four-transistor CMOS image-sensor pixel contains one (in small-pixel designs several photodiodes share it) [2].
 - **Degeneration and output resistance** are the bridge to Course 12: the $r_o(1 + g_mR_S)$ boost derived here is the principle behind cascodes and high-gain op-amps.
 
 ## 2. Intuition first
@@ -74,7 +74,7 @@ $$
 
 where $V_{RD}$ is the DC voltage across $R_D$. The gain depends only on two voltages: the drop across the load and the overdrive. With $V_{RD}$ = 2.5 V and $V_{ov}$ = 0.5 V the gain is 10 at any current (Example 10-06.1). To raise the gain you must either spend more supply voltage across $R_D$ (less output swing, a larger supply) or lower the overdrive (lower speed and linearity, 10-04 §3.6). This is why low-voltage CMOS cannot get gain from resistors: at a 0.9 V supply there is no room for a large $V_{RD}$.
 
-**The intrinsic limit.** As $R_D \to \infty$ the gain approaches $g_mr_o$, the intrinsic gain (Figure 2a). Replacing $R_D$ with a current source (a PMOS transistor, the **active load** of 12-02) achieves that: $A_v = -g_m(r_{on} \parallel r_{op})$, about $g_mr_o/2$ for equal output resistances, without spending headroom on a resistor.
+**The intrinsic limit.** As $R_D \to \infty$ the gain approaches $g_mr_o$, the intrinsic gain (Figure 2a). Replacing $R_D$ with a current source (a PMOS transistor, the **active load** of 12-02) approaches that limit: $A_v = -g_m(r_{on} \parallel r_{op})$, about $g_mr_o/2$ for equal output resistances, without spending headroom on a resistor.
 
 ### 3.3 Common source with degeneration
 
@@ -86,6 +86,8 @@ $$
 i = g_m(v_{in} - iR_S) - g_{mb}iR_S - \frac{iR_S}{r_o} \quad\Rightarrow\quad G_m = \frac{i}{v_{in}} = \frac{g_m}{1 + (g_m + g_{mb})R_S + R_S/r_o} \approx \frac{g_m}{1 + g_mR_S} .
 $$
 
+> **Math refresher — a resistance found with a test source.** To find the resistance looking into a node of a circuit that contains controlled sources, set the independent sources to zero, leave the controlled sources in place, apply a test voltage $v_x$ at the node, solve for the current $i_x$ it delivers, and take $R = v_x/i_x$ (06-08). Series and parallel rules alone fail here, because the controlled source's current depends on voltages elsewhere in the circuit.
+
 **Output resistance.** Ground the gate, drive the drain with $v_x$ and call the drain current $i_x$. Then $v_s = i_xR_S$, and
 
 $$
@@ -94,7 +96,7 @@ i_x = g_m(0 - v_s) + g_{mb}(0 - v_s) + \frac{v_x - v_s}{r_o}
 R_{out,D} = \frac{v_x}{i_x} = r_o + R_S + (g_m + g_{mb})r_oR_S .
 $$
 
-Check the units: every term is a resistance, since $g_mr_o$ is dimensionless. Without the body effect and for $g_mR_S \gg 1$, $R_{out,D} \approx r_o(1 + g_mR_S)$. **Degeneration multiplies the output resistance by about $1 + g_mR_S$**, the same factor by which it divides the transconductance. Physically: when the drain voltage rises, the extra current through $r_o$ raises $v_s$, which lowers $v_{gs}$ and pushes the current back down. The transistor fights to hold its current constant.
+Check the units: every term is a resistance, since $g_mr_o$ is dimensionless. Without the body effect and for $g_mr_o \gg 1$, $R_{out,D} \approx r_o(1 + g_mR_S)$, and if also $g_mR_S \gg 1$, $R_{out,D} \approx g_mr_oR_S$. **Degeneration multiplies the output resistance by about $1 + g_mR_S$**, the same factor by which it divides the transconductance. Physically: when the drain voltage rises, the extra current through $r_o$ raises $v_s$, which lowers $v_{gs}$ and pushes the current back down. The transistor fights to hold its current constant.
 
 **Voltage gain.** The stage is still unilateral (no current flows into the gate), so with $R_D$ at the drain:
 
@@ -105,6 +107,8 @@ $$
 The last form says the gain is the ratio of the resistance at the drain to the resistance "in the source," $1/g_m + R_S$. For $g_mR_S \gg 1$ it becomes $-R_D/R_S$: set by resistors, insensitive to $g_m$, and therefore to threshold, temperature and signal amplitude. That insensitivity is also linearity. The same $1 + g_mR_S$ that divides the gain divides the distortion of the square law, which is why degenerated stages handle larger signals (Problem 10-06.9).
 
 **The cascode preview.** If the "resistor" in the source is itself the output resistance $r_o$ of another transistor, the output resistance becomes about $g_mr_o \cdot r_o$, and the gain with an ideal current-source load reaches about $(g_mr_o)^2$ (Example 10-06.7). This is the **cascode**, the workhorse of 12-02 and Course 20.
+
+> **Going deeper — the cascode as degeneration by a transistor.** Replace $R_S$ by a second transistor's output resistance $r_{o1}$ and the formula above gives $R_{out} = r_{o2} + r_{o1} + g_{m2}r_{o2}r_{o1} \approx g_mr_o^2$ (Example 10-06.7): the upper transistor holds the lower one's drain nearly still, so almost no signal current flows through $r_{o1}$ however the output moves. The same shielding keeps the output swing off the lower transistor's gate–drain capacitance, which is why a cascode also reduces the Miller effect (12-03). The price is one more $V_{ov}$ plus a margin of headroom per stacked device.
 
 ### 3.4 Common gate
 
@@ -162,7 +166,7 @@ $$
 A_{v,max} = \frac{g_m}{g_m + g_{mb}} = \frac{1}{1 + \chi} ,
 $$
 
-0.83 for χ = 0.2 (Figure 2b). Putting the transistor in its own well with the body tied to the source removes this loss, at the cost of area and the well's capacitance.
+0.83 for χ = 0.2 (Figure 2b). Putting the transistor in its own well with the body tied to the source removes this loss. For a PMOS follower that is routine, since each PMOS can sit in its own n-well in a standard process; an NMOS follower needs a triple-well (deep n-well) process to isolate its p-well. Either way the cost is area and the well's capacitance.
 
 **Output resistance.** Ground the input and drive the output with $v_x$: the current is $(g_m + g_{mb} + 1/r_o + 1/R_S)v_x$, so
 
@@ -176,7 +180,7 @@ A few hundred ohms for $g_m$ of a few mS: much lower than a CS stage's output re
 
 **Swing and level shift.** The output sits one $V_{GS}$ below the input: a DC level shift that is sometimes useful (to bias the next stage) and always a cost in headroom. The output cannot rise above $V_{DD} - V_{GS}$ for an NMOS follower, and with the body effect $V_{GS}$ itself grows as the output rises (10-02 §3.1).
 
-*Figure 2. (a) Common-source gain against $R_D$ for $g_m$ = 2 mS: without $r_o$ the gain grows without limit; with $r_o$ = 40 kΩ it saturates at the intrinsic gain 80. (b) Source-follower gain against $R_S$: the ideal approaches 1; with body effect (χ = 0.2) and $r_o$ it approaches 0.83.*
+*Figure 2. (a) Common-source gain against $R_D$ for $g_m$ = 2 mS: without $r_o$ the gain grows without limit; with $r_o$ = 40 kΩ it saturates at the intrinsic gain 80. (b) Source-follower gain against $R_S$: the ideal approaches 1; with body effect alone (χ = 0.2) the limit is $1/(1 + \chi)$ = 0.833; with $r_o$ = 40 kΩ as well, the plotted curve approaches $1/(1 + \chi + 1/g_mr_o)$ = **0.825**.*
 
 ![Gain limits](../../../assets/figures/10-06/gain-limits.svg)
 
@@ -210,6 +214,8 @@ Unless stated otherwise, the transistor has $k_n$ = 4 mA/V², $V_{TN}$ = 0.5 V a
 
 (d) $g_mR_D$ = **10**, and $V_{RD}$ = 2.5 V gives $2 \times 2.5/0.5$ = **10**: the same number, by the voltage-budget identity.
 
+**Units check.** $g_m$ in mS times a resistance in kΩ is dimensionless, so the gains are in V/V; $r_o = 1/(\lambda I_D)$ is V/A, ohms.
+
 **Sanity check.** The drain sits at 2.5 V, above $V_{ov}$ = 0.5 V, so the transistor is saturated with 2 V of room for the output to fall.
 
 ### Example 10-06.2 · Degeneration (tier B)
@@ -223,6 +229,8 @@ Unless stated otherwise, the transistor has $k_n$ = 4 mA/V², $V_{TN}$ = 0.5 V a
 (b) $40 + 0.5 + 2 \times 40 \times 0.5$ = **80.5** kΩ: degeneration with $g_mR_S$ = 1 roughly doubles the output resistance.
 
 (c) $-0.9938 \times (5 \parallel 80.5)$ = **−4.678**; the approximation gives $-5/(0.5 + 0.5)$ = **−5.0**.
+
+**Units check.** $g_mR_S$ is dimensionless, so $G_m = g_m/(1 + g_mR_S)$ keeps the units of $g_m$ (siemens), and every term of $R_{out}$ is in ohms.
 
 **Sanity check.** Half the gain of Example 10-06.1, as $1 + g_mR_S$ = 2 predicts; the 6% difference is $r_o$, which now matters less because the output resistance has grown.
 
@@ -238,6 +246,8 @@ Unless stated otherwise, the transistor has $k_n$ = 4 mA/V², $V_{TN}$ = 0.5 V a
 
 (c) $g_m(1 + \chi)$ = 20 mS gives $g_m$ = **16.67** mS, and $I_D = g_mV_{ov}/2$ = **1.667** mA.
 
+**Units check.** $1/(g_m + g_{mb})$ is 1/S, ohms; the gain $(g_m + g_{mb})R_D$ is dimensionless.
+
 **Sanity check.** The input resistance (417 Ω) is far from 50 Ω at 0.5 mA: matching costs current. And $r_o$ raised $R_{in}$ by 11%, because the drain load is not small against $r_o$: a CG stage's input depends on its load.
 
 ### Example 10-06.4 · Source follower (tier B)
@@ -252,6 +262,8 @@ Unless stated otherwise, the transistor has $k_n$ = 4 mA/V², $V_{TN}$ = 0.5 V a
 
 (c) $R_{eq}$ falls to $1.6 \parallel 1$ kΩ = 615.4 Ω, and $A_v$ = **0.5517**.
 
+**Units check.** $g_mR_S$ and χ are dimensionless, so the gain is in V/V; $1/(g_m + g_{mb})$ is in ohms.
+
 **Sanity check.** The follower's 381 Ω output resistance into 1 kΩ is a divider of about 0.72, and 0.7619 × 0.72 ≈ 0.55. The Thévenin view (open-circuit gain 0.7619, output resistance 381 Ω) and the direct solution agree.
 
 ### Example 10-06.5 · Gain, headroom and current (tier B)
@@ -263,6 +275,8 @@ Unless stated otherwise, the transistor has $k_n$ = 4 mA/V², $V_{TN}$ = 0.5 V a
 (a) $2 \times 0.9/0.2$ = **9.0**, so $A_v$ = **−9.0**.
 
 (b) $g_m = 2 \times 100\ \mu\text{A}/0.2\text{ V}$ = **1.0** mS; $r_o = 1/(0.2 \times 100\ \mu\text{A})$ = **50** kΩ; $R_D$ = 0.9 V/100 µA = 9 kΩ; $g_mr_o$ = **50**; $A_v = -1 \times (9 \parallel 50)$ = **−7.627**.
+
+**Units check.** $V_{RD}/V_{ov}$ is volts over volts, so $\lvert A_v\rvert = 2V_{RD}/V_{ov}$ is a pure number.
 
 **Sanity check.** At 1.8 V, a resistively loaded stage gives single-digit gain; at a tenth of the current with ten times $R_D$, the gain would be the same 9 (the budget identity). Gain in low-voltage CMOS comes from active loads and cascodes, not resistors.
 
@@ -276,7 +290,9 @@ Unless stated otherwise, the transistor has $k_n$ = 4 mA/V², $V_{TN}$ = 0.5 V a
 
 (b) $g_m = \sqrt{2 \times 4 \times 1}$ = **2.828** mS; $r_o$ = **20** kΩ; $1/R_{eq} = 1/20 + 0.5657 + 1$ mS, so $R_{eq}$ = **618.9** Ω; $A_{CD}$ = **0.6364**. The follower's gate draws no current, so the CS stage keeps its open-circuit gain −8.889, and the overall gain is **−5.657**.
 
-(c) **3.465** times (10.8 dB).
+(c) **3.465** times (**10.8** dB).
+
+**Units check.** each stage factor is in V/V, and the follower's $R_{eq}$ is a parallel combination of resistances, in ohms.
 
 **Sanity check.** The follower loses 36% of the signal itself, yet the cascade wins, because the CS stage's 4.4 kΩ output resistance into 1 kΩ lost 82%: the buffer rule of 10-05 §3.4.
 
@@ -292,6 +308,8 @@ Unless stated otherwise, the transistor has $k_n$ = 4 mA/V², $V_{TN}$ = 0.5 V a
 
 (c) Single stage: $-g_mr_o$ = **−80**. Cascode: the lower transistor's drain current $g_mv_{in}$ must flow through the upper transistor into the open output, so the lower drain voltage is $-g_mr_ov_{in}$, and the upper transistor multiplies it by $1 + g_mr_o$: $A_v = -g_mr_o(1 + g_mr_o)$ = **−6480**.
 
+**Units check.** $g_mr_oR_S$ is (S)(Ω)(Ω) = Ω, so each term of $R_{out}$ is in ohms, and the gains $g_mr_o$ are pure numbers.
+
 **Sanity check.** About $(g_mr_o)^2$: a cascode squares the intrinsic gain, at the cost of one more $V_{ov}$ of headroom. This is why advanced-node amplifiers, whose $g_mr_o$ is small, stack devices (12-02, Course 20).
 
 ### Answer key
@@ -300,6 +318,7 @@ Unless stated otherwise, the transistor has $k_n$ = 4 mA/V², $V_{TN}$ = 0.5 V a
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
 | T 10-06.a | follower gain limit at χ = 0.2 | 0.83 | — |
+| T 10-06.b | follower limit with r_o = 40 kΩ (Figure 2b) | 0.825 | — |
 | Ex 10-06.1a | V_ov | 0.5 | V |
 | Ex 10-06.1b | g_m | 2.0 | mS |
 | Ex 10-06.1c | r_o | 40 | kΩ |
@@ -338,6 +357,7 @@ Unless stated otherwise, the transistor has $k_n$ = 4 mA/V², $V_{TN}$ = 0.5 V a
 | Ex 10-06.6e | follower gain | 0.6364 | — |
 | Ex 10-06.6f | overall gain | -5.657 | — |
 | Ex 10-06.6g | improvement | 3.465 | — |
+| Ex 10-06.6h | improvement | 10.8 | dB |
 | Ex 10-06.7a | R_out, R_S = 0 | 40 | kΩ |
 | Ex 10-06.7b | R_out, R_S = 1 kΩ | 121 | kΩ |
 | Ex 10-06.7c | R_out, R_S = 10 kΩ | 850 | kΩ |
@@ -345,18 +365,18 @@ Unless stated otherwise, the transistor has $k_n$ = 4 mA/V², $V_{TN}$ = 0.5 V a
 | Ex 10-06.7e | single-stage intrinsic gain | -80 | — |
 | Ex 10-06.7f | cascode gain | -6480 | — |
 
-*Every value is recomputed by [verify_10_06.py](../verify/verify_10_06.py), which builds each stage's small-signal circuit as a nodal (or modified nodal) matrix with the transistor's controlled sources, solves it with numpy, and finds output resistances by an explicit test source, independent of the closed forms. The lab's ngspice netlist confirms Examples 10-06.1 to 10-06.4 with level-1 MOSFETs whose $k_n$, λ and γ are chosen so that $g_m$, $r_o$ and χ match the examples at their operating points.*
+*Every value is recomputed by [verify_10_06.py](../verify/verify_10_06.py), which builds each stage's small-signal circuit as a nodal (or modified nodal) matrix with the transistor's controlled sources, solves it with numpy, and finds output resistances by an explicit test source, independent of the closed forms. Some checks are closer to the formulas than that: the second-harmonic values of Problem 10-06.9 come from a perturbation formula, the follower's $R_{eq}$ in Examples 10-06.4 and 10-06.6 and Problem 10-06.12 is backed out of the gain expression, and Examples 10-06.1(d, h) and 10-06.3(h) are short closed forms. The lab's ngspice netlists confirm Examples 10-06.1 to 10-06.4 (including the common-gate stage with $r_o$) and the cascode of Example 10-06.7 with level-1 MOSFETs whose $k_n$, λ and γ are chosen so that $g_m$, $r_o$ and χ match the examples at their operating points.*
 
 ## 5. Simulate it
 
-The lab, [labs/10-06-lab](../labs/10-06-lab/README.md), has a notebook and an ngspice netlist:
+The lab, [labs/10-06-lab](../labs/10-06-lab/README.md), has a notebook and two ngspice netlists:
 
 1. Builds each configuration as a nodal matrix and sweeps $R_D$, $R_S$ and $R_L$ to reproduce Figure 2 and the summary table.
 2. Drives a CS stage with and without degeneration at growing amplitudes and measures second-harmonic distortion, to see degeneration trade gain for linearity.
 3. Explores the gain–headroom identity: gain against $V_{ov}$ at fixed $V_{RD}$, and against current at fixed $V_{ov}$.
 4. Measures the CG input resistance as the drain load grows from 0 to a current source.
 
-The netlist (`mos_stages.cir`) runs the CS, degenerated CS, CG and CD stages of Examples 10-06.1 to 10-06.4 as level-1 MOSFET circuits and reads gains and resistances from AC analyses.
+The netlist `mos_stages.cir` runs the CS, degenerated CS, CG and CD stages of Examples 10-06.1 to 10-06.4 as level-1 MOSFET circuits and reads gains and resistances from AC analyses; `cg_cascode.cir` adds the common-gate stage with $r_o$ (Example 10-06.3(b)) and the cascode's output resistance and gain (Example 10-06.7).
 
 **Guided exercise (predict, then run).** **Before running Part 2**, predict: at a 50 mV input amplitude, roughly what second-harmonic distortion does the CS stage of Example 10-06.1 produce, and by what factor does $R_S$ = 500 Ω reduce it? Then run it. (Without degeneration, $\hat v/4V_{ov}$ = 2.5%; with $g_mR_S$ = 1, the gate–source voltage swings about half as much and the distortion falls by roughly $(1 + g_mR_S)^2$ = 4, to about 0.6%.)
 
@@ -398,13 +418,13 @@ The netlist (`mos_stages.cir`) runs the CS, degenerated CS, CG and CD stages of 
 ### State of the art (as of Nov 2026)
 
 - **Every CMOS image-sensor pixel contains a source follower.** The standard 4T active pixel consists of a pinned photodiode, a floating diffusion and four transistors: transfer gate, reset, row select and a source-follower readout transistor that buffers the floating-diffusion voltage onto the column line [1, 2] **[Established]**. Its gain below one (§3.5) and its noise are first-order terms in a sensor's conversion gain and read noise.
-- **Common-gate inputs set wideband impedance.** Wideband low-noise amplifiers use a CG input stage because $1/(g_m + g_{mb})$ can be set to 50 Ω over a broad band without inductors [4] **[Established]** (textbook practice).
+- **Common-gate inputs set wideband impedance.** Wideband low-noise amplifiers use a CG input stage because $1/(g_m + g_{mb})$ can be set to 50 Ω over a broad band without a narrowband input resonance [4] **[Established]** (textbook practice; practical designs still often use a source inductor for bias and to tune out the input capacitance).
 - **Cascodes and gain boosting compensate for falling intrinsic gain.** As channel length shrinks, $g_mr_o$ falls (09-10), so advanced-node amplifiers stack devices or use gain-boosting loops rather than relying on single stages [3] **[Established]**.
 
 ### Why it matters commercially
 
-- **Imaging is a single-stage problem at scale.** A 12-megapixel sensor has twelve million pixels, each with its own source follower; the follower's gain, noise and swing are multiplied across the array and set a large part of the sensor's performance.
-- **Headroom is the scarce resource of advanced nodes.** The identity $|A_v| = 2V_{RD}/V_{ov}$ explains why analog blocks resist voltage scaling: less supply means less gain per stage, more stages, and more design effort and area. That is part of why mixed-signal chips often keep analog on older nodes or in separate chiplets.
+- **Imaging is a single-stage problem at scale.** A 12-megapixel sensor has millions of pixel source followers (one per pixel in the standard 4T design, fewer where pixels share readout [2]); the follower's gain, noise and swing, replicated across the array, set a large part of the sensor's performance **[Established]**.
+- **Headroom is the scarce resource of advanced nodes.** The identity $|A_v| = 2V_{RD}/V_{ov}$ explains why analog blocks resist voltage scaling: less supply means less gain per stage, more stages, and more design effort and area. That is part of why mixed-signal chips often keep analog on older nodes or in separate chiplets **[Industry estimate]**.
 - **Configurations map to IP blocks.** LNAs, buffers, sample-and-hold drivers and pixel arrays are each built around one configuration; knowing which one a block uses tells you its likely limits.
 
 ### Marketing vs Reality
@@ -493,6 +513,6 @@ $g_mr_o$ for the single stage, and about $(g_mr_o)^2$ for the cascode (Example 1
 ## 14. Sources
 
 1. E. R. Fossum and D. B. Hondongwa, "A Review of the Pinned Photodiode for CCD and CMOS Image Sensors," *IEEE Journal of the Electron Devices Society*, vol. 2, no. 3, pp. 33–43, 2014, doi:10.1109/JEDS.2014.2306412. [R-180](../../../reference/research-log.md#r-180--image-sensor-pixel-readout).
-2. Wikipedia, "Active-pixel sensor" (read 19 Nov 2026), section on the 4T pixel, which cites [1]: [article](https://en.wikipedia.org/wiki/Active-pixel_sensor). [R-180](../../../reference/research-log.md#r-180--image-sensor-pixel-readout).
+2. Wikipedia, "Active-pixel sensor" (read 19 Nov 2026), section on the pixel architectures, which describes the four-transistor pixel and shared-readout variants (two-, four- and eight-way sharing); it cites [1] for the pinned photodiode and a separate conference paper for the 4T description: [article](https://en.wikipedia.org/wiki/Active-pixel_sensor). [R-180](../../../reference/research-log.md#r-180--image-sensor-pixel-readout).
 3. B. Razavi, *Design of Analog CMOS Integrated Circuits*, 2nd ed., McGraw-Hill, 2017, ch. 3 (single-stage amplifiers and cascodes) and ch. 9 (gain boosting).
 4. B. Razavi, *RF Microelectronics*, 2nd ed., Prentice Hall, 2011, ch. 5 (low-noise amplifiers, including common-gate input stages).

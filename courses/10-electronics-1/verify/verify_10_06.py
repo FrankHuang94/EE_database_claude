@@ -93,6 +93,14 @@ def par(*r):
 
 # ------------------------------------------------------------------ theory
 v.check("T 10-06.a", 1 / (1 + 0.2))
+# Figure 2b's limit with r_o = 40 kOhm and chi = 0.2: follower gain as R_S -> infinity, by MNA
+mf = MNA()
+mf.V("g", "0", 1.0)
+mf.G("0", "s", "g", "s", 2e-3)
+mf.G("0", "s", "0", "s", 0.2 * 2e-3)
+mf.R("s", "0", 40e3)
+mf.R("s", "0", 1e12)
+v.check("T 10-06.b", mf.solve()["s"])
 
 # ------------------------------------------------------------------ Example 1
 kn, I0, lam = 4e-3, 0.5e-3, 0.05
@@ -249,6 +257,7 @@ c.mos("vdd", "d", "s", "0", gm6, chi * gm6, ro6); c.R("s", "0", 1e3)
 chain = c.solve()["s"]
 v.check("Ex 10-06.6f", chain)
 v.check("Ex 10-06.6g", chain / cs(5e3, rl=1e3))
+v.check("Ex 10-06.6h", 20 * math.log10(abs(chain / cs(5e3, rl=1e3))))
 
 # ------------------------------------------------------------------ Example 7
 for key, rs in (("Ex 10-06.7a", 0.0), ("Ex 10-06.7b", 1e3), ("Ex 10-06.7c", 10e3)):
@@ -364,5 +373,50 @@ v.check("Lab 10-06.c", hd(0.10, 0.0)[0])
 v.check("Lab 10-06.d", hd(0.10, 500.0)[1])
 v.check("Lab 10-06.e", -cs(2.5 / 0.5e-3, gm_=2 * 0.5e-3 / 0.2, ro_=math.inf))
 v.check("Lab 10-06.f", brentq(lambda r: cg(r, None, ro_=ro)[1] - 1e3, 1, 1e6) / 1e3)
+
+
+# ------------------------------------------------------------------ Problem 13: bias, then small signal (MNA)
+vg13 = 5 * 100e3 / 400e3
+v.check("10-06.13a", vg13)
+vgs13 = brentq(lambda x: x + 1e3 * 0.5 * 2e-3 * (x - 0.5) ** 2 - vg13, 0.5, vg13)
+id13 = 0.5 * 2e-3 * (vgs13 - 0.5) ** 2
+v.check("10-06.13b", vgs13 - 0.5)
+v.check("10-06.13c", id13 * 1e3)
+v.check("10-06.13d", (5 - id13 * 5e3) - id13 * 1e3)
+gm13 = (0.5 * 2e-3 * (vgs13 + 1e-7 - 0.5) ** 2 - 0.5 * 2e-3 * (vgs13 - 1e-7 - 0.5) ** 2) / 2e-7
+ro13 = 1 / (0.02 * id13)
+v.check("10-06.13e", gm13 * 1e3)
+v.check("10-06.13f", ro13 / 1e3)
+v.check("10-06.13g", (300e3 * 100e3 / 400e3) / 1e3)
+# small-signal circuit: source R_sig into the gate divider, CS with r_o, drain to R_D and coupled R_L
+m = MNA()
+m.V("s", "0", 1.0)
+m.R("s", "g", 10e3)
+m.R("g", "0", 300e3)
+m.R("g", "0", 100e3)
+m.G("d", "0", "g", "0", gm13)
+m.R("d", "0", ro13)
+m.R("d", "0", 5e3)
+m.R("d", "0", 10e3)
+sol = m.solve()
+v.check("10-06.13h", sol["d"] / sol["g"])
+v.check("10-06.13i", sol["d"] / sol["s"])
+
+# ------------------------------------------------------------------ Problem 14: diode-connected load (MNA)
+gm1_14, gm2_14 = math.sqrt(2 * 4e-3 * 0.5e-3), math.sqrt(2 * 1e-3 * 0.5e-3)
+v.check("10-06.14a", gm1_14 * 1e3)
+v.check("10-06.14b", gm2_14 * 1e3)
+m = MNA()
+m.V("g", "0", 1.0)
+m.G("o", "0", "g", "0", gm1_14)                 # M1: current g_m1 v_g from the output node to ground
+m.G("0", "o", "0", "o", gm2_14)                 # M2: gate and drain at AC ground, source at the output
+m.G("0", "o", "0", "o", 0.2 * gm2_14)           # M2 body transconductance (body at ground)
+sol = m.solve()
+v.check("10-06.14c", sol["o"])
+v.check("10-06.14d", math.sqrt(2 * 0.5e-3 / 4e-3))
+v.check("10-06.14e", math.sqrt(2 * 0.5e-3 / 1e-3))
+ratio = brentq(lambda r: math.sqrt(r) / 1.2 - 5, 1, 1000)
+v.check("10-06.14f", ratio)
+v.check("10-06.14g", math.sqrt(2 * 0.5e-3 / (4e-3 / ratio)))
 
 v.finish()

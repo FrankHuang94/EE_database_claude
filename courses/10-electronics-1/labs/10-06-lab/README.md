@@ -14,6 +14,7 @@ The configurations and their formulas (§3.2–3.6), the degeneration distortion
 
 - [10-06-mos-stages.ipynb](10-06-mos-stages.ipynb): the notebook (Parts 1–4).
 - [mos_stages.cir](mos_stages.cir): ngspice AC analyses of the stages of Examples 10-06.1 to 10-06.4. The netlist's header explains how level-1 parameters are chosen to reproduce the chapter's $g_m$, $r_o$ and χ exactly.
+- [cg_cascode.cir](cg_cascode.cir): ngspice common-gate stage with $r_o$ (Example 10-06.3b) and the cascode of Example 10-06.7 (output resistance and gain with an ideal current-source load).
 
 ## Procedure
 
