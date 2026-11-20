@@ -144,6 +144,11 @@ def gq(f, ZL=100.0, Z1=Z1, f0=2.4e9):
 lo = brentq(lambda f: gq(f) - 0.1, 1.2e9, 2.4e9, xtol=1e3)
 hi = brentq(lambda f: gq(f) - 0.1, 2.4e9, 3.6e9, xtol=1e3)
 v.check("Ex 13-08.5c", (hi - lo) / 2.4e9 * 100)
+# the closed-form TEM bandwidth of a quarter-wave transformer must agree with the sweep
+def qwt_bw(Z0_, RL_, Gm):
+    cm = Gm / math.sqrt(1 - Gm**2) * 2 * math.sqrt(Z0_ * RL_) / abs(RL_ - Z0_)
+    return 2 - 4 * math.acos(cm) / math.pi
+v.assert_true("Ex 13-08.5 closed-form bandwidth equals the sweep", abs(qwt_bw(50, 100, 0.1) - (hi - lo) / 2.4e9) < 1e-6)
 
 # ---------------------------------------------------------------- Example 6 (lossy line, 3 dB, short)
 alpha = 3 / NP_DB  # nepers over the whole length 1 m
@@ -263,5 +268,21 @@ if lab.exists():
     _, V, I = march(0, 2 * 50 * a5 + 1j * w1 * 50 / c0, 1j * w1 / (50 * c0), 5.0)
     Z05 = cmath.sqrt((2 * 50 * a5 + 1j * w1 * 50 / c0) / (1j * w1 / (50 * c0)))
     v.check("Lab 13-08.b", -20 * math.log10(abs(gamma(V[-1] / I[-1], Z05))))
+
+# 15: a lossy open stub, marched from the open end (a very large load) with a distortionless RLGC model
+Z15, v15, f15, ell15 = 50.0, 2e8, 1e8, 2.5
+a15 = 0.5 / (20 * math.log10(math.e))                 # Np/m
+w15 = 2 * math.pi * f15
+Lp15, Cp15 = Z15 / v15, 1 / (Z15 * v15)
+Rp15, Gp15 = a15 * Z15, a15 / Z15                     # R'/L' = G'/C' keeps Z0 real and alpha = R'/Z0
+_, V15, I15 = march(1e9, Rp15 + 1j * w15 * Lp15, Gp15 + 1j * w15 * Cp15, ell15)
+Zin15 = V15[-1] / I15[-1]
+v.check("13-08.15a", a15 * ell15)
+v.check("13-08.15b", Zin15.real)
+v.assert_true("13-08.15 input impedance is real", abs(Zin15.imag) < 1e-6)
+g15 = abs((Zin15 - Z15) / (Zin15 + Z15))
+v.check("13-08.15c", g15)
+v.assert_true("13-08.15 |Gamma_in| = exp(-2 alpha l)", abs(g15 - math.exp(-2 * a15 * ell15)) < 1e-6)
+v.check("13-08.15d", -20 * math.log10(g15))
 
 sys.exit(v.finish())

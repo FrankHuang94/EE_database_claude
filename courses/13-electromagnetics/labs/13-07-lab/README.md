@@ -15,6 +15,8 @@ The telegrapher's equations (§3.1), launching and reflections (§3.2–3.3), bo
 - [13-07-transmission-lines.ipynb](13-07-transmission-lines.ipynb): the notebook (Parts 1–4).
 - [ringing.cir](ringing.cir): Example 13-07.3, a 10 Ω driver on an open 50 Ω line.
 - [tdr_via.cir](tdr_via.cir): Example 13-07.5, a TDR step on a matched line with a 2 pF via.
+- [overshoot.cir](overshoot.cir): Lab 13-07.b, the overshoot when the delay is a sixth of the rise time.
+- [terminations.cir](terminations.cir): Examples 13-07.2 and 13-07.4 and Problem 13-07.15 (voltages and currents on terminated lines).
 
 Run either with `ngspice -b <file>`, or `python tools/run_spice.py 13-07` from the repository root.
 
@@ -30,7 +32,7 @@ Run either with `ngspice -b <file>`, or `python tools/run_spice.py 13-07` from t
 
 | Part | Quantity | Expected |
 |---|---|---|
-| 1 | Profiles | A 0.833 V front moving at one line-length per nanosecond, doubling at the open end, then a −0.556 V correction travelling back |
+| 1 | Profiles | A 0.833 V front moving at one line-length per nanosecond; at the open end it reflects as a +0.833 V wave travelling back, doubling the voltage behind it to 1.667 V; at 2 ns the source launches a −0.556 V correction forward |
 | 2 | Bounce diagram | The sum and the simulation coincide; the first case rings, the second creeps |
 | 3 | Overshoot | Small for delays below about a tenth of the rise time, 67% once the delay reaches half of it |
 | 4 | TDR | Dip area −25 ps (1 pF); a flat shelf of ρ = −0.0526 (45 Ω) |
@@ -40,10 +42,10 @@ Run either with `ngspice -b <file>`, or `python tools/run_spice.py 13-07` from t
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
 | Lab 13-07.a | overshoot with delay = rise time / 10 | 9.1 | % |
-| Lab 13-07.b | overshoot with delay = rise time / 6 | 17.2 | % |
+| Lab 13-07.b | overshoot with delay = rise time / 6 | 17.3 | % |
 | Lab 13-07.c | overshoot with delay = rise time | 66.7 | % |
 
-*These are recomputed by [verify_13_07.py](../../verify/verify_13_07.py) with its own telegrapher's-equation solver (10 Ω source, open end, 100 ps linear edge).*
+*These are recomputed by [verify_13_07.py](../../verify/verify_13_07.py) as exact sums of delayed ramps (10 Ω source, open end, 100 ps linear edge), cross-checked against its own telegrapher's-equation solver; [overshoot.cir](overshoot.cir) confirms Lab 13-07.b in ngspice. The notebook's finite-difference solver quantizes the delay to its grid and smooths the edge slightly, so it may print 17.2%.*
 
 ## Discussion questions
 

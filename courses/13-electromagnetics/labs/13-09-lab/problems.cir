@@ -1,0 +1,36 @@
+* Lab 13-09 -- the L-networks of Problems 13-09.6 and 13-09.7, checked for a 50 ohm port.
+* P6 (100 MHz): 200 ohm load with a shunt 183.776 nH inductor across it and a series 18.3776 pF capacitor
+*   on the 50 ohm side.
+* P7 (2.4 GHz): a 10 + j5 ohm load (10 ohm + 0.331573 nH), a series 0.994718 nH inductor and a shunt
+*   2.65258 pF capacitor at the port.
+* Each port is driven by a 1 A AC current source, so its voltage phasor is its impedance.
+*
+* EXPECT r6 50 rtol=1e-4
+* EXPECT r7 50 rtol=1e-4
+* EXPECT ax6 0 atol=1e-3
+* EXPECT ax7 0 atol=1e-3
+
+I6 0 p6 DC 0 AC 1
+C6 p6 n6 18.3776p
+L6 n6 0 183.776n
+R6 n6 0 200
+
+I7 0 p7 DC 0 AC 1
+C7 p7 0 2.65258p
+L7a p7 n7 0.994718n
+L7b n7 m7 0.331573n
+R7 m7 0 10
+
+.control
+ac lin 1 1e8 1e8
+let r6 = real(v(p6))
+let ax6 = imag(v(p6))
+ac lin 1 2.4e9 2.4e9
+let r7 = real(v(p7))
+let ax7 = imag(v(p7))
+let r6 = ac1.r6
+let ax6 = ac1.ax6
+print r6 ax6 r7 ax7
+quit
+.endc
+.end

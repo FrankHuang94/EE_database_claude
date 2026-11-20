@@ -1,0 +1,62 @@
+* Lab 13-08 -- input impedances of Problems 13-08.2, 13-08.4 and 13-08.13 and the stubs of Example 13-08.3,
+* each port driven by a 1 A AC current source so that its voltage phasor is its impedance (1 GHz).
+* P2:  50 ohm, lambda/4 (250 ps), load 25 + j25 (25 ohm + 3.97887 nH)       -> 50 - j50
+* P4:  50 ohm, 0.3 lambda (300 ps), load 30 - j40 (30 ohm + 3.97887 pF)     -> 56.63 + j61.08
+* P13: 50 ohm, lambda/2 (500 ps) and lambda/4 (250 ps), load 20 + j30 (20 ohm + 4.77465 nH)
+* E3:  50 ohm air line: shorted 2 cm (66.7111 ps) and open 5 cm (166.778 ps) stubs
+*
+* EXPECT r2 key:../../solutions/13-08-solutions.md#13-08.2a rtol=1e-3
+* EXPECT x2 key:../../solutions/13-08-solutions.md#13-08.2b rtol=1e-3
+* EXPECT r4 key:../../solutions/13-08-solutions.md#13-08.4a rtol=1e-3
+* EXPECT x4 key:../../solutions/13-08-solutions.md#13-08.4b rtol=1e-3
+* EXPECT r13h key:../../solutions/13-08-solutions.md#13-08.13a rtol=1e-3
+* EXPECT x13h key:../../solutions/13-08-solutions.md#13-08.13b rtol=1e-3
+* EXPECT r13q key:../../solutions/13-08-solutions.md#13-08.13c rtol=1e-3
+* EXPECT x13q key:../../solutions/13-08-solutions.md#13-08.13d rtol=1e-3
+* EXPECT xsc key:../../chapters/13-08-transmission-lines-sinusoidal-steady-state.md#Ex_13-08.3a rtol=1e-3
+* EXPECT xoc key:../../chapters/13-08-transmission-lines-sinusoidal-steady-state.md#Ex_13-08.3c rtol=1e-3
+
+I2 0 p2 DC 0 AC 1
+T2 p2 0 l2 0 Z0=50 TD=250p
+R2 l2 m2 25
+L2 m2 0 3.97887n
+
+I4 0 p4 DC 0 AC 1
+T4 p4 0 l4 0 Z0=50 TD=300p
+R4 l4 m4 30
+C4 m4 0 3.97887p
+
+I13 0 p13 DC 0 AC 1
+T13 p13 0 l13 0 Z0=50 TD=500p
+R13 l13 m13 20
+L13 m13 0 4.77465n
+
+I13q 0 p13q DC 0 AC 1
+T13q p13q 0 l13q 0 Z0=50 TD=250p
+R13q l13q m13q 20
+L13q m13q 0 4.77465n
+
+ISC 0 psc DC 0 AC 1
+TSC psc 0 ssc 0 Z0=50 TD=66.7111p
+RSC ssc 0 1e-9
+
+IOC 0 poc DC 0 AC 1
+TOC poc 0 soc 0 Z0=50 TD=166.778p
+ROC soc 0 1e12
+
+.control
+ac lin 1 1e9 1e9
+let r2 = real(v(p2))
+let x2 = imag(v(p2))
+let r4 = real(v(p4))
+let x4 = imag(v(p4))
+let r13h = real(v(p13))
+let x13h = imag(v(p13))
+let r13q = real(v(p13q))
+let x13q = imag(v(p13q))
+let xsc = imag(v(psc))
+let xoc = imag(v(poc))
+print r2 x2 r4 x4 r13h x13h r13q x13q xsc xoc
+quit
+.endc
+.end

@@ -1,0 +1,54 @@
+* Lab 13-07 -- three lines in one deck, all with a 1 ns, 50 ohm line and a fast 1 V step.
+* Ex 2: 50 ohm source, 100 ohm load: launched 0.5 V (measured mid-line before the reflection), load 0.6667 V.
+* Ex 4: 10 ohm driver plus a 40 ohm series resistor into an open receiver: 0.5 V on the line side of the
+*   resistor between 0 and 2 ns, 1 V at the receiver.
+* Problem 13-07.15: 10 ohm source, 200 ohm load; source current (1 V minus the line-end voltage, over 10 ohm) and load current.
+*
+* EXPECT va2 key:../../chapters/13-07-transmission-lines-time-domain.md#Ex_13-07.2b rtol=2e-3
+* EXPECT vl2 key:../../chapters/13-07-transmission-lines-time-domain.md#Ex_13-07.2c rtol=2e-3
+* EXPECT vs4 key:../../chapters/13-07-transmission-lines-time-domain.md#Ex_13-07.4d rtol=2e-3
+* EXPECT vr4 key:../../chapters/13-07-transmission-lines-time-domain.md#Ex_13-07.4c rtol=2e-3
+* EXPECT is1 key:../../solutions/13-07-solutions.md#13-07.15c scale=1e-3 rtol=2e-3
+* EXPECT is2 key:../../solutions/13-07-solutions.md#13-07.15d atol=1e-6
+* EXPECT is3 key:../../solutions/13-07-solutions.md#13-07.15f scale=1e-3 rtol=2e-3
+* EXPECT il1 key:../../solutions/13-07-solutions.md#13-07.15b scale=1e-3 rtol=2e-3
+* EXPECT il3 key:../../solutions/13-07-solutions.md#13-07.15e scale=1e-3 rtol=2e-3
+
+V2 s2 0 PWL(0 0 5p 1 40n 1)
+RS2 s2 i2 50
+T2a i2 0 m2 0 Z0=50 TD=0.5n
+T2b m2 0 o2 0 Z0=50 TD=0.5n
+RL2 o2 0 100
+
+V4 s4 0 PWL(0 0 5p 1 40n 1)
+RD4 s4 d4 10
+RT4 d4 i4 40
+T4 i4 0 o4 0 Z0=50 TD=1n
+RIN4 o4 0 1e9
+
+V15 s15 0 PWL(0 0 5p 1 40n 1)
+RS15 s15 i15 10
+T15 i15 0 o15 0 Z0=50 TD=1n
+RL15 o15 0 200
+
+.control
+tran 1p 6n
+meas tran vm2 avg v(m2) from=0.6n to=0.9n
+meas tran vl2 avg v(o2) from=1.5n to=1.9n
+meas tran vs4 avg v(i4) from=0.5n to=1.5n
+meas tran vr4 avg v(o4) from=1.5n to=2.5n
+meas tran vi1 avg v(i15) from=0.5n to=1.5n
+meas tran vi2 avg v(i15) from=2.5n to=3.5n
+meas tran vi3 avg v(i15) from=4.5n to=5.5n
+meas tran dl1 avg v(o15) from=1.5n to=2.5n
+meas tran dl3 avg v(o15) from=3.5n to=4.5n
+let va2 = vl2 / vm2 - 1
+let is1 = (1 - vi1) / 10
+let is2 = (1 - vi2) / 10
+let is3 = (1 - vi3) / 10
+let il1 = dl1 / 200
+let il3 = dl3 / 200
+print va2 vl2 vs4 vr4 is1 is2 is3 il1 il3
+quit
+.endc
+.end

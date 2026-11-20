@@ -56,7 +56,16 @@ $$
 
 and solutions $\mathbf{V}(z) = V_0^+e^{-\gamma z} + V_0^-e^{\gamma z}$, $\mathbf{I}(z) = (V_0^+e^{-\gamma z} - V_0^-e^{\gamma z})/Z_0$. Compare 13-05's plane waves: $R' + j\omega L'$ plays the role of $j\omega\mu$, and $G' + j\omega C'$ that of $\sigma + j\omega\varepsilon$.
 
-**Low-loss lines.** When $R' \ll \omega L'$ and $G' \ll \omega C'$, expanding the square roots to first order gives
+**Low-loss lines.** When $R' \ll \omega L'$ and $G' \ll \omega C'$, factor the lossless parts out of each square root:
+
+$$
+\gamma = j\omega\sqrt{L'C'}\,\Big(1 + \frac{R'}{j\omega L'}\Big)^{1/2}\Big(1 + \frac{G'}{j\omega C'}\Big)^{1/2}, \qquad
+Z_0 = \sqrt{\frac{L'}{C'}}\,\Big(1 + \frac{R'}{j\omega L'}\Big)^{1/2}\Big(1 + \frac{G'}{j\omega C'}\Big)^{-1/2} .
+$$
+
+> **Math refresher — the binomial approximation.** For any small number $x$, real or complex, $(1 + x)^n \approx 1 + nx$, with an error of order $x^2$. So $(1 + x)^{1/2} \approx 1 + x/2$ and $(1 + x)^{-1/2} \approx 1 - x/2$.
+
+Expanding each factor, $\gamma \approx j\omega\sqrt{L'C'}\,[1 + R'/(2j\omega L') + G'/(2j\omega C')] = j\omega\sqrt{L'C'} + \tfrac12R'\sqrt{C'/L'} + \tfrac12G'\sqrt{L'/C'}$, and $Z_0 \approx \sqrt{L'/C'}\,[1 + (R'/L' - G'/C')/(2j\omega)]$, whose correction is small and imaginary. To first order, then,
 
 $$
 \beta \approx \omega\sqrt{L'C'}, \qquad Z_0 \approx \sqrt{\frac{L'}{C'}}, \qquad
@@ -73,7 +82,17 @@ $$
 \Gamma(d) = \Gamma_Le^{-2\gamma d} .
 $$
 
-On a lossless line ($\gamma = j\beta$) the magnitude stays constant and the phase rotates clockwise by $2\beta d$: a full turn every half wavelength. With loss, it also shrinks by $e^{-2\alpha d}$. The impedance at any point follows from $Z = Z_0(1 + \Gamma)/(1 - \Gamma)$, which simplifies to the **input impedance** of a line of length ℓ terminated in $Z_L$:
+On a lossless line ($\gamma = j\beta$) the magnitude stays constant and the phase rotates clockwise by $2\beta d$: a full turn every half wavelength. With loss, it also shrinks by $e^{-2\alpha d}$. The impedance at any point follows from $Z = Z_0(1 + \Gamma)/(1 - \Gamma)$. At a distance ℓ from the load, multiply top and bottom by $e^{\gamma\ell}$:
+
+$$
+Z_{in} = Z_0\,\frac{e^{\gamma\ell} + \Gamma_Le^{-\gamma\ell}}{e^{\gamma\ell} - \Gamma_Le^{-\gamma\ell}} .
+$$
+
+Substitute $\Gamma_L = (Z_L - Z_0)/(Z_L + Z_0)$ and multiply top and bottom by $Z_L + Z_0$. The numerator becomes $Z_L(e^{\gamma\ell} + e^{-\gamma\ell}) + Z_0(e^{\gamma\ell} - e^{-\gamma\ell}) = 2(Z_L\cosh\gamma\ell + Z_0\sinh\gamma\ell)$ and the denominator $2(Z_0\cosh\gamma\ell + Z_L\sinh\gamma\ell)$.
+
+> **Math refresher — hyperbolic functions of a complex argument.** $\cosh x = (e^x + e^{-x})/2$, $\sinh x = (e^x - e^{-x})/2$ and $\tanh x = \sinh x/\cosh x$, for any complex $x$. For a purely imaginary argument, Euler's formula gives $\cosh(j\theta) = \cos\theta$, $\sinh(j\theta) = j\sin\theta$ and so $\tanh(j\theta) = j\tan\theta$: a lossless line's hyperbolic functions become ordinary trigonometric ones.
+
+Dividing by $\cosh\gamma\ell$ gives the **input impedance** of a line of length ℓ terminated in $Z_L$:
 
 $$
 Z_{in} = Z_0\,\frac{Z_L + Z_0\tanh(\gamma\ell)}{Z_0 + Z_L\tanh(\gamma\ell)}
@@ -84,7 +103,7 @@ $$
 Special lengths of lossless line:
 
 - **λ/2:** $\tan\beta\ell$ = 0, so $Z_{in} = Z_L$; a half-wave line is transparent (at that frequency).
-- **λ/4:** $\tan\beta\ell \to \infty$, so $Z_{in} = Z_0^2/Z_L$; a quarter-wave line inverts the impedance (an open becomes a short).
+- **λ/4:** $\cos\beta\ell$ = 0 and $\sin\beta\ell$ = 1 in the undivided form $Z_0(Z_L\cos\beta\ell + jZ_0\sin\beta\ell)/(Z_0\cos\beta\ell + jZ_L\sin\beta\ell)$, so $Z_{in} = Z_0^2/Z_L$; a quarter-wave line inverts the impedance (an open becomes a short).
 - **Matched load** ($Z_L = Z_0$): $Z_{in} = Z_0$ for any length.
 
 ### 3.3 Stubs: reactances from line
@@ -95,7 +114,7 @@ $$
 Z_{sc} = jZ_0\tan\beta\ell, \qquad Z_{oc} = -jZ_0\cot\beta\ell .
 $$
 
-A short shorted stub (ℓ < λ/4) is an inductor; a short open stub is a capacitor. Their equivalent values depend on frequency differently from lumped parts ($\tan$ against $\omega$), but near the design frequency they behave the same. At microwave frequencies stubs are easier to make precise than lumped inductors and capacitors, whose parasitics dominate (Example 13-08.3).
+A short shorted stub (ℓ < λ/4) is an inductor; a short open stub is a capacitor. Their equivalent values depend on frequency differently from lumped parts ($\tan$ against $\omega$), but near the design frequency they behave the same. At microwave frequencies stubs are easier to make precise than lumped inductors and capacitors, whose parasitics (series resistance, self-resonance) dominate there.
 
 ### 3.4 Standing waves, VSWR and power
 
@@ -133,7 +152,19 @@ $$
 Z_1 = \sqrt{Z_0R_L}
 $$
 
-matches the load at the design frequency. Away from it the section is no longer a quarter wave, and a reflection appears. The bandwidth over which $\lvert\Gamma\rvert$ stays below a limit depends on the impedance ratio: small steps match over wide bands, large steps over narrow ones. Several quarter-wave sections in cascade, with gradually stepped impedances, widen the band (binomial and Chebyshev transformers, Course 21). This is the same structure as 13-06's antireflection coating.
+matches the load at the design frequency. Away from it the section is no longer a quarter wave, and a reflection appears. The bandwidth over which $\lvert\Gamma\rvert$ stays below a limit depends on the impedance ratio, and for a TEM section it has a closed form. With electrical length θ (π/2 at $f_0$) and $t = \tan\theta$, the input impedance formula gives $\Gamma = (R_L - Z_0)/[R_L + Z_0 + j2t\sqrt{Z_0R_L}]$, so
+
+$$
+\lvert\Gamma\rvert = \Big[1 + \frac{4Z_0R_L}{(R_L - Z_0)^2\cos^2\theta}\Big]^{-1/2} .
+$$
+
+Setting $\lvert\Gamma\rvert = \Gamma_m$ gives the band edge $\cos\theta_m = [\Gamma_m/\sqrt{1 - \Gamma_m^2}]\,2\sqrt{Z_0R_L}/\lvert R_L - Z_0\rvert$; the band runs from $\theta_m$ to $\pi - \theta_m$, and since θ is proportional to frequency,
+
+$$
+\frac{\Delta f}{f_0} = 2 - \frac{4\theta_m}{\pi} .
+$$
+
+It reproduces Example 13-08.5's swept result exactly. Small steps match over wide bands, large steps over narrow ones. Several quarter-wave sections in cascade, with gradually stepped impedances, widen the band (binomial and Chebyshev transformers, Course 21). This is the same structure as 13-06's antireflection coating.
 
 ### 3.6 Lossy lines and what loss hides
 
@@ -145,15 +176,17 @@ $$
 \frac{R'}{L'} = \frac{G'}{C'} ,
 $$
 
-then $\gamma = \sqrt{R'G'} + j\omega\sqrt{L'C'}$ exactly: α is independent of frequency, the velocity is constant, and $Z_0 = \sqrt{L'/C'}$ is real. Early telephone lines were loaded with series inductors ("loading coils") to approach this condition; modern links instead equalize the channel electronically (Course 24).
+then, writing $k = R'/L' = G'/C'$, $\gamma = \sqrt{L'(k + j\omega)\,C'(k + j\omega)} = \sqrt{L'C'}\,(k + j\omega)$, that is $\gamma = \sqrt{R'G'} + j\omega\sqrt{L'C'}$ exactly, and $Z_0 = \sqrt{L'(k + j\omega)/[C'(k + j\omega)]} = \sqrt{L'/C'}$: α is independent of frequency, the velocity is constant, and $Z_0 = \sqrt{L'/C'}$ is real. Early telephone lines were loaded with series inductors ("loading coils") to approach this condition; modern links instead equalize the channel electronically (Course 24).
 
 ## 4. Worked examples
 
 ### Example 13-08.1 · A real coax at 1 GHz (tier A)
 
-**Setup.** The coaxial line of 13-02 to 13-05 has $L'$ = 250.6 nH/m, $C'$ = 99.92 pF/m, $R'$ = 3.376 Ω/m at 1 GHz (Problem 13-05.13) and a polyethylene dielectric with $\tan\delta$ = 0.0002. Find $G'$, then γ and $Z_0$ exactly, and compare α with the low-loss formula.
+**Setup.** The coaxial line of 13-02 to 13-05 has $L'$ = 250.55 nH/m, $C'$ = 99.916 pF/m, $R'$ = 3.3765 Ω/m at 1 GHz (Problem 13-05.13; inputs to five figures, since α and $Z_0$ are quoted to four) and a polyethylene dielectric with $\tan\delta$ = 0.0002. Find $G'$, then γ and $Z_0$ exactly, and compare α with the low-loss formula.
 
 **Solution.** $G' = \omega C'\tan\delta$ = **1.256 × 10⁻⁴** S/m. The exact square roots give α = **0.03686** Np/m (**0.3201** dB/m), β = **31.44** rad/m (a wavelength of **19.99** cm) and $Z_0$ = **50.08 − j0.04869** Ω. The low-loss formula $R'/(2Z_0) + G'Z_0/2$ gives the same α to four figures.
+
+**Units check.** $G' = \omega C'\tan\delta$ is (1/s)(F/m) = S/m; $\gamma = \sqrt{(\Omega/\text{m})(\text{S/m})}$ = 1/m; $Z_0 = \sqrt{(\Omega/\text{m})/(\text{S/m})}$ = Ω.
 
 **Sanity check.** $Z_0$ is almost exactly the lossless value: its imaginary part is a thousandth of its real part, of order $(R'/\omega L' - G'/\omega C')/2$. Loss matters for attenuation long before it matters for impedance.
 
@@ -169,6 +202,8 @@ $$
 
 At λ/4, $Z_{in} = 50^2/100$ = **25** Ω. At λ/2, $Z_{in} = Z_L$ = **100** Ω.
 
+**Units check.** $\tan\beta\ell$ is dimensionless (βℓ is in radians), so $Z_{in}$ carries the ohms of $Z_0$ and $Z_L$.
+
 **Sanity check.** All three have the same $\lvert\Gamma\rvert$ = 1/3, as they must on a lossless line: $(40 - j30 - 50)/(40 - j30 + 50)$ has magnitude $\sqrt{100 + 900}/\sqrt{8100 + 900}$ = 1/3.
 
 ### Example 13-08.3 · Stubs as an inductor and a capacitor (tier B)
@@ -176,6 +211,8 @@ At λ/4, $Z_{in} = 50^2/100$ = **25** Ω. At λ/2, $Z_{in} = Z_L$ = **100** Ω.
 **Setup.** At 1 GHz, on a 50 Ω air line (λ = 29.98 cm), find the reactance and equivalent inductance of a 2 cm shorted stub, and the reactance and equivalent capacitance of a 5 cm open stub.
 
 **Solution.** Shorted: βℓ = 2π × 2/29.98 = 0.4192 rad, so $X = 50\tan 0.4192$ = **22.28** Ω, equivalent to $X/\omega$ = **3.546** nH. Open: βℓ = 1.048 rad, so $X = -50\cot 1.048$ = **−28.82** Ω, equivalent to $1/(\omega\lvert X\rvert)$ = **5.523** pF.
+
+**Units check.** $X/\omega$ is Ω·s = H and $1/(\omega X)$ is s/Ω = F; βℓ = (rad/m)(m) is dimensionless.
 
 **Sanity check.** For short stubs, $\tan\beta\ell \approx \beta\ell$ gives $L \approx L'\ell = Z_0\ell/c$ = **3.336** nH; the exact value is **6.3**% higher because βℓ = 0.42 rad is not small enough for the approximation. An open stub approaches $C'\ell$ in the same way.
 
@@ -185,6 +222,8 @@ At λ/4, $Z_{in} = 50^2/100$ = **25** Ω. At λ/2, $Z_{in} = Z_L$ = **100** Ω.
 
 **Solution.** Γ = 25/125 = **0.2**, VSWR = 1.2/0.8 = **1.5**, return loss $-20\log 0.2$ = **13.98** dB, mismatch loss $-10\log 0.96$ = **0.1773** dB. Delivered power: $10^2/(2 \times 50) \times 0.96$ = **0.96** W. The voltage swings between 10 × 1.2 = **12** V (at the load, where Γ is real and positive) and 10 × 0.8 = **8** V, λ/4 toward the source.
 
+**Units check.** Power $\lvert V^+\rvert^2(1 - \lvert\Gamma\rvert^2)/(2Z_0)$ is V²/Ω = W; VSWR and return loss are ratios.
+
 **Sanity check.** A 75 Ω load on a 50 Ω system (connecting video cable to RF gear, say) reflects only 4% of the power: mismatches of this size cost little power but can matter for ripple and filter response.
 
 ### Example 13-08.5 · A quarter-wave transformer and its bandwidth (tier B)
@@ -193,6 +232,8 @@ At λ/4, $Z_{in} = 50^2/100$ = **25** Ω. At λ/2, $Z_{in} = Z_L$ = **100** Ω.
 
 **Solution.** $Z_1 = \sqrt{50 \times 100}$ = **70.71** Ω. The wavelength in the coax is $(2c/3)/f$, so a quarter is **2.082** cm. Away from 2.4 GHz the section's electrical length is $90° \times f/f_0$; computing $Z_{in}$ and Γ against frequency and solving for $\lvert\Gamma\rvert$ = 0.1 gives a bandwidth of **36.70**% of the centre frequency.
 
+**Units check.** $\sqrt{Z_0R_L}$ is $\sqrt{\Omega^2}$ = Ω; length $v/(4f)$ is (m/s)/(1/s) = m.
+
 **Sanity check.** At the band edges the section is about 74° or 106° long, far from a quarter wave, yet the reflection is still only 0.1: a 2:1 impedance step is mild. A 10:1 step would have a much narrower band for the same limit.
 
 ### Example 13-08.6 · A lossy cable hides a short circuit (tier C)
@@ -200,6 +241,8 @@ At λ/4, $Z_{in} = 50^2/100$ = **25** Ω. At λ/2, $Z_{in} = Z_L$ = **100** Ω.
 **Setup.** A cable with 3 dB of one-way loss is terminated in a short circuit. What return loss and VSWR does an instrument at the other end measure?
 
 **Solution.** The reflected wave suffers the loss twice: $\lvert\Gamma_{in}\rvert = 10^{-6/20}$ = **0.5012**, a return loss of **6** dB and a VSWR of **3.010**, although the load reflects everything.
+
+**Units check.** Decibels add: two passes of 3 dB give 6 dB, a power ratio, so the return loss is in dB and the VSWR is a pure number.
 
 **Sanity check.** Each decibel of cable loss improves the apparent return loss by two. A mismatch measured through a long cable must be corrected for the cable, or measured at the device.
 
@@ -296,12 +339,12 @@ The netlist [line_impedance.cir](../labs/13-08-lab/line_impedance.cir) drives a 
 ### State of the art (as of Nov 2026)
 
 - **Cable loss figures.** Belden specifies RG-58 (8262) at 21.5 dB per 100 ft at 1 GHz [1] **[Established]**: **0.7054** dB/m, so 10 m loses **7.054** dB (our arithmetic). An antenna with a VSWR of 2 (return loss 9.54 dB) at the end of that cable shows an apparent return loss of **23.65** dB at the radio: a "great match" that is really a lossy cable.
-- **Impedance is specified as return loss.** Interface and component specifications typically state return-loss masks against frequency rather than impedance tolerances, because return loss is what a network analyzer measures directly **[Established]** (industry practice).
-- **Distributed matching is routine on chips and boards.** Millimetre-wave transceivers use on-chip transmission-line stubs and quarter-wave transformers because lumped elements are too lossy or self-resonant there **[Established]** (textbook practice; Course 21).
+- **Impedance is specified as return loss.** Interface and component specifications typically state return-loss masks against frequency rather than impedance tolerances, because return loss is what a network analyzer measures directly **[Industry estimate]** (common practice; no specification is cited here).
+- **Distributed matching is routine on chips and boards.** Millimetre-wave transceivers use on-chip transmission-line stubs and quarter-wave transformers because lumped elements are too lossy or self-resonant there **[Industry estimate]** (standard design practice in RF texts; Course 21).
 
 ### Why it matters commercially
 
-- **Power amplifier efficiency and battery life.** A mismatched antenna reflects power back into the PA; phones use tunable matching networks to keep the match as hands and heads detune the antenna.
+- **Power amplifier efficiency and battery life.** A mismatched antenna reflects power back into the PA; phones use tunable matching networks to keep the match as hands and heads detune the antenna **[Industry estimate]** (common in current handsets; no product data are logged here).
 - **Link budgets.** Every decibel of cable or board loss and every decibel of mismatch loss comes out of the margin that determines range or data rate.
 - **Test economics.** VNA measurements and their calibration standards (short, open, load, through) are built on the input-impedance relations of this chapter.
 

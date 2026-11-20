@@ -14,6 +14,7 @@ See standing waves form for different loads, watch Γ and $Z_{in}$ trace circles
 
 - [13-08-lines-steady-state.ipynb](13-08-lines-steady-state.ipynb): the notebook (Parts 1–4).
 - [line_impedance.cir](line_impedance.cir): a λ/8 50 Ω line with a 100 Ω load, and a 70.71 Ω quarter-wave transformer with a 100 Ω load, driven by 1 A at 1 GHz. Run with `ngspice -b line_impedance.cir`, or `python tools/run_spice.py 13-08` from the repository root.
+- [problems.cir](problems.cir): input impedances of Problems 13-08.2, 13-08.4 and 13-08.13 and the stubs of Example 13-08.3.
 
 ## Procedure
 

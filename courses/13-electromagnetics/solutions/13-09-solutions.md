@@ -28,7 +28,7 @@ $\Gamma_L = (50 + j100)/(150 + j100)$, magnitude 0.6202 at 29.74°. The impedanc
 
 ### Solution 13-09.6
 
-$Q = \sqrt{200/50 - 1}$ = **1.732**. The shunt element goes across the higher resistance (the 200 Ω load) and the series element on the 50 Ω side. Shunt susceptance $Q/200$ = 8.660 mS, here an inductor: $1/(\omega B)$ = **183.8** nH. Series reactance $Q \times 50$ = 86.60 Ω, a capacitor: $1/(\omega X)$ = **18.38** pF. Check: 200 ∥ (j173.2) = 50 + j86.60 Ω, and the series −j86.60 cancels the reactance.
+$Q = \sqrt{200/50 - 1}$ = **1.732**. The shunt element goes across the higher resistance (the 200 Ω load) and the series element on the 50 Ω side. Shunt susceptance $Q/200$ = 8.660 mS, here an inductor: $1/(\omega B)$ = **183.8** nH. Series reactance $Q \times 50$ = 86.60 Ω, a capacitor: $1/(\omega X)$ = **18.38** pF. Check: the inductor's reactance is $1/B$ = **115.5** Ω, and 200 ∥ (j115.5) = 50 + j86.60 Ω; the series −j86.60 cancels the reactance.
 
 ### Solution 13-09.7
 
@@ -62,6 +62,16 @@ The peak field is at the inner conductor, $E(a) = V/[a\ln x]$, so the largest vo
 
 $B = \omega C$ = 0.04 S, normalized $b = BZ_0$ = 2. An open stub gives $j\tan\beta\ell$, so $\tan\beta\ell$ = 2, βℓ = 1.107 rad, ℓ = **0.1762**λ. At 2.4 GHz λ = 12.49 cm, so ℓ = **2.201** cm.
 
+### Solution 13-09.15
+
+A quarter-wave transformer matches only a real impedance, so first move along the line to where the impedance is real. On the chart the load sits on the VSWR = 4.266 circle (Problem 13-09.5), which crosses the real axis at $r$ = 4.266 (a voltage maximum) and $r$ = 1/4.266 (a voltage minimum).
+
+(a) The first real point toward the generator is the voltage maximum at 0.04131λ (Problem 13-09.5), where $R = Z_0\,\text{VSWR}$ = 213.3 Ω. The transformer needs $Z_1 = \sqrt{50 \times 213.3}$ = **103.3** Ω.
+
+(b) A quarter-wavelength further on, at **0.2913**λ, the impedance is $Z_0/\text{VSWR}$ = 11.72 Ω, and $Z_1 = \sqrt{50 \times 11.72}$ = **24.21** Ω.
+
+(c) Both transformers face the same 4.27:1 step, but the line between the load and the transformer also transforms the load, and its effect changes with frequency in proportion to its length. Sweeping frequency (load fixed, all lengths scaling with $f$), the design at the maximum holds $\lvert\Gamma\rvert$ < 0.1 over **11.41**% of the centre frequency, the one at the minimum over only **4.08**%: the shorter path wins by almost three times. The catch is practical: on a typical laminate a 103 Ω line is a very narrow trace (hard to etch precisely, and lossy), while a 24 Ω line is wide and easy. A designer would usually take the 103 Ω option if the process can make it, or use a stub match instead (Problem 13-09.8's method), which needs no unusual impedance.
+
 ---
 
 ## Answer key
@@ -88,6 +98,7 @@ $B = \omega C$ = 0.04 S, normalized $b = BZ_0$ = 2. An open stub gives $j\tan\be
 | 13-09.6a | network Q | 1.732 | — |
 | 13-09.6b | shunt inductance | 183.8 | nH |
 | 13-09.6c | series capacitance | 18.38 | pF |
+| 13-09.6d | shunt inductor reactance | 115.5 | Ω |
 | 13-09.7a | added series inductance | 0.9947 | nH |
 | 13-09.7b | shunt capacitance | 2.653 | pF |
 | 13-09.8a | first position | 0.1520 | λ |
@@ -107,3 +118,8 @@ $B = \omega C$ = 0.04 S, normalized $b = BZ_0$ = 2. An open stub gives $j\tan\be
 | 13-09.13c | geometric mean | 47.94 | Ω |
 | 13-09.14a | stub length | 0.1762 | λ |
 | 13-09.14b | stub length | 2.201 | cm |
+| 13-09.15a | transformer impedance at the maximum | 103.3 | Ω |
+| 13-09.15b | distance to the first minimum | 0.2913 | λ |
+| 13-09.15c | transformer impedance at the minimum | 24.21 | Ω |
+| 13-09.15d | bandwidth, transformer at the maximum | 11.41 | % |
+| 13-09.15e | bandwidth, transformer at the minimum | 4.08 | % |

@@ -67,6 +67,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Standing waves on a 25 Ω load.** A 1 GHz wave of 1 V peak travels on a 50 Ω air line toward a 25 Ω load. Find where the voltage minimum and the nearest maximum are, their values, and the peak current at the load.
 
+### Problem 13-08.15 [C]
+
+**A lossy open stub.** A 2.5 m length of 50 Ω cable (phase velocity 2 × 10⁸ m/s) with 0.5 dB/m of loss at 100 MHz is left open at the far end. (a) Find $\gamma\ell$, and the input impedance from $Z_{in} = Z_0\coth(\gamma\ell)$. (b) Find $\lvert\Gamma\rvert$ at the input and show that it equals $e^{-2\alpha\ell}$. (c) What return loss would an instrument measure, and what would a lossless line of the same length show? (Treat $Z_0$ as real.)
+
 ---
 
 ## Objective coverage
@@ -74,7 +78,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 13-08) | Problems |
 |---|---|
 | 1. γ and Z₀, exact and low-loss | 1, 11 |
-| 2. Γ along the line and input impedance | 2, 4, 7, 13 |
+| 2. Γ along the line and input impedance | 2, 4, 7, 13, 15 |
 | 3. Standing waves, VSWR, return and mismatch loss, power | 3, 7, 8, 14 |
 | 4. Stubs and quarter-wave transformers | 5, 6, 10 |
-| 5. Loss masking and the distortionless line | 9, 12 |
+| 5. Loss masking and the distortionless line | 9, 12, 15 |

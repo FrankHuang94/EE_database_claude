@@ -50,7 +50,21 @@ The delay is 6.671 ps/mm. One sixth of 100 ps is 16.67 ps, so the critical lengt
 
 ### Solution 13-07.10
 
-A series inductance $L$ in a matched line sees $2Z_0$ (the line on each side in series) and, for an ideal step, reflects $\rho(t) = e^{-t/\tau}$ with $\tau = L/(2Z_0)$; its area is τ, so $L = 2Z_0\int\rho\,dt$ = 2 × 50 × 10 ps = **1** nH. A shunt capacitance sees $Z_0/2$ and reflects $-e^{-t/\tau}$ with $\tau = Z_0C/2$, so $C = -2\int\rho\,dt/Z_0$ = 2 × 25 ps/50 = **1** pF. A finite edge only spreads these shapes: the areas, and hence the values, are unchanged (the reflection is a linear response, and the area is its response to a step at infinite time).
+**Series inductance.** At the inductor the incoming line acts as a Thévenin source $2v^+$ behind $Z_0$ (chapter §3.5), and the continuing matched line is a resistor $Z_0$, so the loop is $2v^+$ driving $Z_0 + sL + Z_0$. The voltage across the inductor plus the continuing line, as seen at the junction, is the "load" voltage $v = v^+ + v^-$; in the Laplace domain the load impedance is $Z = sL + Z_0$, and
+
+$$
+\Gamma(s) = \frac{Z - Z_0}{Z + Z_0} = \frac{sL}{2Z_0 + sL} = \frac{s\tau}{1 + s\tau}, \qquad \tau = \frac{L}{2Z_0} .
+$$
+
+For an ideal step ($V^+ = v^+/s$), $V^- = v^+\tau/(1 + s\tau)$, so $\rho(t) = v^-/v^+ = e^{-t/\tau}$: a positive spike of area τ. More generally the area of the reflection is $\int v^-dt = V^-(0) = \lim_{s\to0}\Gamma(s)V^+(s)$; any step of height $v^+$, however slow its edge, has $V^+(s) \to v^+/s$ as $s \to 0$, so the normalized area is $\lim_{s\to0}\Gamma(s)/s = \tau$. Hence $L = 2Z_0\int\rho\,dt$ = 2 × 50 Ω × 10 ps = **1** nH.
+
+**Shunt capacitance.** Now the load at the junction is $C$ in parallel with the continuing line: $Z = Z_0/(1 + sZ_0C)$, and
+
+$$
+\Gamma(s) = \frac{Z_0/(1 + sZ_0C) - Z_0}{Z_0/(1 + sZ_0C) + Z_0} = -\frac{sZ_0C}{2 + sZ_0C} = -\frac{s\tau}{1 + s\tau}, \qquad \tau = \frac{Z_0C}{2} .
+$$
+
+An ideal step gives $\rho(t) = -e^{-t/\tau}$, and by the same limit the area is $-\tau$ for any edge. So $C = -2\int\rho\,dt/Z_0$ = 2 × 25 ps/50 Ω = **1** pF. The derivation shows why the method is robust: the area depends only on $\Gamma(s)$ near $s = 0$, which the element sets, not on the instrument's rise time, which only spreads the shape.
 
 ### Solution 13-07.11
 
@@ -67,6 +81,14 @@ The pattern repeats every $4T_D$ (two round trips, since each reflection from th
 ### Solution 13-07.14
 
 At the junction the second line acts as a 75 Ω load: $\Gamma = (75 - 50)/125$ = 0.2 and $\tau = 1 + \Gamma$ = **1.2**. The wave reaching the matched load is 1.2 × 0.5 = **0.6** V, and **0.1** V reflects back to the (matched) source, where it is absorbed. Steady state: 0.6 V everywhere, the divider $1 \times 75/(50 + 75)$.
+
+### Solution 13-07.15
+
+(a) A wave's current is its voltage divided by $\pm Z_0$: $i^+ = v^+/Z_0$ and $i^- = -v^-/Z_0$. With $v^- = \Gamma v^+$, $i^- = -\Gamma i^+$, so currents reflect with $-\Gamma$: an open end ($\Gamma$ = +1) sends back a current that cancels the incident one, as it must. Here $v^+ = 1 \times 50/60$ = 0.8333 V and $i^+$ = **16.67** mA; $\Gamma_L$ = 150/250 = 0.6 and $\Gamma_S$ = −40/60 = −2/3, so the current coefficients are −0.6 at the load and +2/3 at the source.
+
+(b) At the load after 1 ns, $i_L = (1 - \Gamma_L)i^+$ = **6.667** mA (check: $v_L$ = 1.6 × 0.8333 = 1.333 V, and 1.333/200 = 6.667 mA). The reflected wave is $v^-$ = 0.5 V. At the source the current is $i^+$ = **16.67** mA until 2 ns, when the 0.5 V wave arrives and re-reflects as −0.3333 V: the source-end voltage becomes 0.8333 + 0.5 − 0.3333 = 1.000 V, equal to the source voltage, so the source current is $(1 - 1.000)/10$ = **0** mA from 2 to 4 ns. The −0.3333 V wave reaches the load at 3 ns: $v_L$ = 1.333 + 1.6 × (−0.3333) = 0.8 V and $i_L$ = **4** mA. At 4 ns its reflection (−0.2 V) reaches the source, which re-reflects +0.1333 V; the source-end voltage drops to 0.9333 V and the source current is $(1 - 0.9333)/10$ = **6.667** mA.
+
+(c) Finally the line is a wire: $I = 1/(10 + 200)$ = **4.762** mA. The source current is zero from 2 to 4 ns because the charge stored on the line by the first trip holds the source end at exactly the source voltage; the line, not the source, is then supplying the load (a line is a distributed capacitor charged by the first wave).
 
 ---
 
@@ -122,3 +144,10 @@ At the junction the second line acts as a 75 Ω load: $\Gamma = (75 - 50)/125$ =
 | 13-07.14a | junction transmission coefficient | 1.2 | — |
 | 13-07.14b | voltage at the load | 0.6 | V |
 | 13-07.14c | reflected wave | 0.1 | V |
+| 13-07.15a | launched current | 16.67 | mA |
+| 13-07.15b | load current after 1 ns | 6.667 | mA |
+| 13-07.15c | source current, 0 to 2 ns | 16.67 | mA |
+| 13-07.15d | source current, 2 to 4 ns | 0 | mA |
+| 13-07.15e | load current after 3 ns | 4 | mA |
+| 13-07.15f | source current after 4 ns | 6.667 | mA |
+| 13-07.15g | final current | 4.762 | mA |

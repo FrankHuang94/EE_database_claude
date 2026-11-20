@@ -4,7 +4,7 @@ Chapter: [13-09 The Smith Chart and Impedance Matching](../../chapters/13-09-smi
 
 ## Objective
 
-Build a Smith chart from its definition and use it to move along lines, design L-network and single-stub matches, and see how adding sections widens a match until it meets the Bode–Fano limit. Then confirm two matches in ngspice.
+Build a Smith chart from its definition and use it to move along lines, design L-network and single-stub matches, see how adding sections widens the match of a resistive load, and evaluate the Bode–Fano limit that caps any match of a reactive load. Then confirm two matches in ngspice.
 
 ## Background
 
@@ -14,6 +14,7 @@ The chart's construction (§3.1), reading and moving (§3.2), L-networks (§3.3)
 
 - [13-09-smith-matching.ipynb](13-09-smith-matching.ipynb): the notebook (Parts 1–4).
 - [match.cir](match.cir): Example 13-09.4's L-network at 2.4 GHz and Example 13-09.5's stub match at 1 GHz, each driven by 1 A AC. Run with `ngspice -b match.cir`, or `python tools/run_spice.py 13-09` from the repository root.
+- [problems.cir](problems.cir): the L-networks of Problems 13-09.6 and 13-09.7, each checked for a 50 Ω port.
 
 ## Procedure
 
@@ -30,7 +31,7 @@ The chart's construction (§3.1), reading and moving (§3.2), L-networks (§3.3)
 | 1 | λ/4 moves | Each load lands on $Z_0^2/Z_L$: 20 − j10, 20 + j40 and 200 Ω |
 | 2 | L-networks | Q = 2 for both forms; about 11% bandwidth for |Γ| < 0.1 |
 | 3 | Stubs | d = 0.06313λ with a 0.08975λ stub, or d = 0.2067λ with 0.4102λ |
-| 4 | Sections | About 11%, 19% and 62% bandwidth for one, two and three sections; Bode–Fano bounds of 8.7, 5.8, 4.3 and 2.9 GHz at 10, 15, 20 and 30 dB |
+| 4 | Sections | About 11%, 19% and 62% bandwidth for one, two and three sections (the three-section response has extra near-zeros of reflection, at about 3.37 and 5.71 GHz, that stretch its band); Bode–Fano bounds of 8.7, 5.8, 4.3 and 2.9 GHz at 10, 15, 20 and 30 dB |
 | ngspice | Input impedances | 50 Ω for both |
 
 <!-- answer-key -->

@@ -47,7 +47,7 @@ $$
 r = \frac{1 - \Gamma_r^2 - \Gamma_i^2}{(1 - \Gamma_r)^2 + \Gamma_i^2}, \qquad x = \frac{2\Gamma_i}{(1 - \Gamma_r)^2 + \Gamma_i^2} .
 $$
 
-Rearranging each into the equation of a circle:
+Rearranging each into the equation of a circle takes one completed square. For $r$: multiply out, $r(1 - \Gamma_r)^2 + r\Gamma_i^2 = 1 - \Gamma_r^2 - \Gamma_i^2$, collect terms, $(1 + r)(\Gamma_r^2 + \Gamma_i^2) - 2r\Gamma_r = 1 - r$, and divide by $1 + r$; adding $[r/(1 + r)]^2$ to both sides completes the square in $\Gamma_r$, and the right side becomes $(1 - r)/(1 + r) + r^2/(1 + r)^2 = 1/(1 + r)^2$. For $x$: $x[(1 - \Gamma_r)^2 + \Gamma_i^2] = 2\Gamma_i$, so $(\Gamma_r - 1)^2 + \Gamma_i^2 - (2/x)\Gamma_i = 0$, and adding $1/x^2$ completes the square in $\Gamma_i$. The results:
 
 $$
 \Big(\Gamma_r - \frac{r}{1 + r}\Big)^2 + \Gamma_i^2 = \Big(\frac{1}{1 + r}\Big)^2, \qquad
@@ -59,6 +59,8 @@ So the points of constant $r$ lie on circles centred at $(r/(1 + r), 0)$ of radi
 ![The Smith chart drawn from its definition: circles of constant normalized resistance (0, 0.2, 0.5, 1, 2, 5) tangent at the right edge, and arcs of constant normalized reactance (±0.2, ±0.5, ±1, ±2, ±5) all passing through the right edge, inside the unit circle; marked points show the load 2 + j1 and its position after λ/8 of line, 1 − j1](../../../assets/figures/13-09/smith.svg)
 
 *Figure 1. A Smith chart built from the two circle families, with Example 13-09.2's load $z$ = 2 + j1 and its image after moving λ/8 toward the generator, $z$ = 1 − j1. Both lie on the same |Γ| circle (dashed).*
+
+> **Going deeper — the chart is a Möbius map.** $\Gamma = (z - 1)/(z + 1)$ is a bilinear (Möbius) transformation of the complex plane. Such maps send circles and straight lines to circles and straight lines, which is why the vertical lines of constant $r$ and the horizontal lines of constant $x$ in the $z$-plane become the chart's two families of circles, and why the right half of the $z$-plane (passive loads, $r \ge 0$) lands exactly inside the unit circle. A lossless two-port is also a Möbius map of Γ, so any lossless matching network carries the chart's circles into circles: the geometric reason every lossless match can be designed as a sequence of rotations and moves along circles.
 
 ### 3.2 Reading and moving
 
@@ -80,7 +82,14 @@ Here $Q$ is the ratio of reactance to resistance in each branch, and it sets the
 
 ### 3.4 Single-stub matching
 
-A shunt stub match uses a length $d$ of line followed by a shunt stub. Choose $d$ so that the admittance seen at that point has unit conductance, $y(d) = 1 + jb$: on the chart, rotate the load's admittance clockwise until it meets the $g$ = 1 circle. Then add a shunt stub of susceptance $-jb$ to cancel the remainder. A shorted stub of length ℓ has $y_{stub} = -j\cot\beta\ell$, so it needs $\cot\beta\ell = b$; an open stub has $y_{stub} = j\tan\beta\ell$. The $g$ = 1 circle is crossed twice per half wavelength, so there are always two solutions; the one with the shorter $d$ and stub is usually preferred for bandwidth. Analytically, write $t = \tan\beta d$ and require $\text{Re}\{y(d)\}$ = 1; this is a quadratic in $t$ (Pozar gives the closed form), but on the chart it is a rotation and an intersection.
+A shunt stub match uses a length $d$ of line followed by a shunt stub. Choose $d$ so that the admittance seen at that point has unit conductance, $y(d) = 1 + jb$: on the chart, rotate the load's admittance clockwise until it meets the $g$ = 1 circle. Then add a shunt stub of susceptance $-jb$ to cancel the remainder. A shorted stub of length ℓ has $y_{stub} = -j\cot\beta\ell$, so it needs $\cot\beta\ell = b$; an open stub has $y_{stub} = j\tan\beta\ell$. The $g$ = 1 circle is crossed twice per half wavelength, so there are always two solutions; the one with the shorter $d$ and stub is usually preferred for bandwidth. Analytically, write $Z_L = R_L + jX_L$ and $t = \tan\beta d$. The input-impedance formula gives the conductance at distance $d$ as $G = R_L(1 + t^2)/[R_L^2 + (X_L + Z_0t)^2]$, and setting $G = 1/Z_0$ gives a quadratic in $t$:
+
+$$
+Z_0(R_L - Z_0)\,t^2 - 2X_LZ_0\,t + (R_LZ_0 - R_L^2 - X_L^2) = 0 \quad\Rightarrow\quad
+t = \frac{X_L \pm \sqrt{R_L\big[(Z_0 - R_L)^2 + X_L^2\big]/Z_0}}{R_L - Z_0}
+$$
+
+(for $R_L = Z_0$ the single root is $t = -X_L/2Z_0$). Each root gives $d = (\lambda/2\pi)\arctan t$, adding λ/2 if the arctangent is negative. On the chart the same answer is a rotation and an intersection.
 
 ### 3.5 Bandwidth, Q and the Bode–Fano limit
 
@@ -118,6 +127,8 @@ In practice designers use a combined **ZY chart**, with the admittance grid over
 
 **Solution.** $z$ = 2 + j1 and $\Gamma = (1 + j1)/(3 + j1)$ = **0.4 + j0.2**: magnitude **0.4472**, angle **26.57**°. VSWR = (1 + 0.4472)/(1 − 0.4472) = **2.618**.
 
+**Units check.** Γ = (z − 1)/(z + 1) uses the normalized $z = Z/Z_0$, a pure number, so Γ and the VSWR are dimensionless.
+
 **Sanity check.** The point lies on the $r$ = 2 circle (centre (2/3, 0), radius 1/3) and the $x$ = 1 circle (centre (1, 1), radius 1): $(0.4 - 0.6667)^2 + 0.2^2 = 0.1111 = (1/3)^2$, and $(0.4 - 1)^2 + (0.2 - 1)^2 = 1$.
 
 ### Example 13-09.2 · Moving λ/8 toward the generator (tier A)
@@ -125,6 +136,8 @@ In practice designers use a combined **ZY chart**, with the admittance grid over
 **Setup.** Move the load of Example 13-09.1 by λ/8 toward the generator. Find the new Γ and $Z_{in}$, and check with the formula of 13-08.
 
 **Solution.** λ/8 is a rotation of $2\beta d$ = 90° clockwise: Γ becomes **0.4472** at **−63.43**°, and $z = (1 + \Gamma)/(1 - \Gamma)$ = **1 − j1**, so $Z_{in}$ = **50 − j50** Ω. The 13-08 formula gives $50(100 + j50 + j50)/(50 + j(100 + j50))$ = 50 − j50 Ω, the same.
+
+**Units check.** The rotation angle $2\beta d$ = 2(2π/λ)(λ/8) = π/2 rad is dimensionless; $Z_{in}$ = $Z_0z$ carries ohms.
 
 **Sanity check.** The point stayed on the |Γ| = 0.4472 circle and landed on the $r$ = 1 circle: one shunt or series element away from a match.
 
@@ -134,6 +147,8 @@ In practice designers use a combined **ZY chart**, with the admittance grid over
 
 **Solution.** −Γ = −0.4 − j0.2, and $y = (1 + (-\Gamma))/(1 - (-\Gamma))$ = **0.4 − j0.2**. Directly, $1/(2 + j1) = (2 - j1)/5$ = 0.4 − j0.2.
 
+**Units check.** Admittance normalized to $Y_0 = 1/Z_0$ is dimensionless, as is $z$.
+
 **Sanity check.** An inductive impedance has a capacitive-signed (negative) susceptance, as it must: the 180° rotation carries the upper half to the lower half.
 
 ### Example 13-09.4 · An L-network for a power amplifier (tier B)
@@ -142,13 +157,17 @@ In practice designers use a combined **ZY chart**, with the admittance grid over
 
 **Solution.** $Q = \sqrt{50/10 - 1}$ = **2**. The series reactance is $QR_{low}$ = 20 Ω, an inductor of $20/\omega$ = **1.326** nH; the shunt susceptance is $Q/R_{high}$ = 0.04 S, a capacitor of $0.04/\omega$ = **2.653** pF. Sweeping frequency and computing the input impedance of the network with its 10 Ω load gives $\lvert\Gamma\rvert$ < 0.1 over **11.25**% of the centre frequency.
 
-**Sanity check.** At 2.4 GHz the network shows exactly 50 Ω: $10 + j20$ in parallel with $-j25$ gives $(10 + j20)(-j25)/(10 - j5) = 50$ Ω. The 11% bandwidth is consistent with $2/Q$ = 1 being an order-of-magnitude estimate of the half-power band, much wider than the |Γ| < 0.1 band.
+**Units check.** $X/\omega$ is Ω·s = H and $B/\omega$ is S·s = F; Q is a ratio of resistances under a square root, so it is dimensionless.
+
+**Sanity check.** At 2.4 GHz the network shows exactly 50 Ω: $10 + j20$ in parallel with $-j25$ gives $(10 + j20)(-j25)/(10 - j5) = 50$ Ω. For a single L-section the |Γ| < Γₘ band is close to $2\Gamma_m/(Q\sqrt{1 - \Gamma_m^2})$ = 10.05%, which the exact 11.25% confirms (the estimate is good for Q ≥ 2).
 
 ### Example 13-09.5 · A single-stub match (tier B)
 
 **Setup.** Match $Z_L$ = 25 − j50 Ω to a 50 Ω air line at 1 GHz with a shorted shunt stub. Find both solutions: the distance from the load to the stub and the stub length, in wavelengths and centimetres.
 
-**Solution.** The load's normalized admittance is $1/(0.5 - j1)$ = 0.4 + j0.8. Rotating toward the generator until $g$ = 1 (solving $\text{Re}\{y(d)\}$ = 1 numerically): the first crossing is at $d$ = **0.06313**λ (**1.893** cm) where $y$ = 1 + j1.581; the stub must add −j1.581, so $\cot\beta\ell$ = 1.581 and ℓ = **0.08975**λ (**2.691** cm). The second crossing is at $d$ = **0.2067**λ (**6.196** cm) where $y$ = 1 − j1.581, needing ℓ = **0.4102**λ (**12.30** cm).
+**Solution.** The load's normalized admittance is $1/(0.5 - j1)$ = 0.4 + j0.8. Rotating toward the generator until $g$ = 1 (by the quadratic of §3.4, with $R_L$ = 25 Ω and $X_L$ = −50 Ω, or numerically): the first crossing is at $d$ = **0.06313**λ (**1.893** cm) where $y$ = 1 + j1.581; the stub must add −j1.581, so $\cot\beta\ell$ = 1.581 and ℓ = **0.08975**λ (**2.691** cm). The second crossing is at $d$ = **0.2067**λ (**6.196** cm) where $y$ = 1 − j1.581, needing ℓ = **0.4102**λ (**12.30** cm).
+
+**Units check.** Distances in wavelengths times λ = c/f (m) give metres; $\cot\beta\ell$ is dimensionless.
 
 **Sanity check.** The two susceptances are equal and opposite, as they must be: the two crossings of the $g$ = 1 circle are mirror images about the real axis. The first solution is shorter on both counts and has the wider bandwidth.
 
@@ -157,6 +176,8 @@ In practice designers use a combined **ZY chart**, with the admittance grid over
 **Setup.** A load is 50 Ω in parallel with 1 pF (a rough model of a broadband detector or a transistor input). Using the Bode–Fano limit, find the widest band over which any lossless network could hold the return loss at 20 dB, and at 10 dB.
 
 **Solution.** π/(RC) = π/(50 Ω × 1 pF). For a 20 dB return loss, $\Gamma_m$ = 0.1 and $\Delta f \le 1/(2RC\ln 10)$ = **4.343** GHz. For 10 dB, $\Gamma_m$ = 0.3162 and $\Delta f \le$ **8.686** GHz, exactly twice as wide.
+
+**Units check.** $\pi/(RC)$ is 1/(Ω·F) = 1/s, an angular bandwidth; dividing by 2π gives hertz.
 
 **Sanity check.** $\ln(1/\Gamma_m)$ halves from 2.303 to 1.151, so the bandwidth doubles: matching quality and bandwidth trade one for one in the logarithm of the reflection. The bound is reached only with an infinite number of elements; real networks fall short.
 
@@ -194,6 +215,7 @@ In practice designers use a combined **ZY chart**, with the admittance grid over
 | Prac 13-09.a | air-coax impedance for minimum loss | 76.65 | Ω |
 | Prac 13-09.b | air-coax impedance for maximum power | 29.98 | Ω |
 | Prac 13-09.c | their geometric mean | 47.94 | Ω |
+| Prac 13-09.d | minimum-loss impedance with ε_r = 2.25 | 51.10 | Ω |
 | Sim 13-09.a | simulated L-network input resistance | 50 | Ω |
 | Sim 13-09.b | simulated stub-match input resistance | 50 | Ω |
 
@@ -206,7 +228,7 @@ The lab, [labs/13-09-lab](../labs/13-09-lab/README.md), has a notebook and an ng
 1. Draws a Smith chart from the two circle families and plots points, |Γ| circles and line moves.
 2. Designs both L-network solutions for any pair of resistances and plots each design's path on the chart and its |Γ| against frequency.
 3. Finds both single-stub solutions for any load by intersecting the rotated admittance with the $g$ = 1 circle.
-4. Compares a one-section and a two-section L-match against the Bode–Fano limit for a parallel RC load.
+4. Compares one-, two- and three-section L-matches of a 10 Ω load to 50 Ω over frequency, and tabulates the Bode–Fano bound for a 50 Ω ∥ 1 pF load at several return losses.
 
 The netlist [match.cir](../labs/13-09-lab/match.cir) builds Example 13-09.4's L-network and Example 13-09.5's stub match and prints their input impedances.
 
@@ -245,9 +267,9 @@ The netlist [match.cir](../labs/13-09-lab/match.cir) builds Example 13-09.4's L-
 
 ### State of the art (as of Nov 2026)
 
-- **Why 50 Ω?** For air-filled coax, the conductor loss $\alpha_c \propto (1/a + 1/b)/\ln(b/a)$ is lowest at $b/a$ = 3.591, an impedance of **76.65** Ω, and the power that can be carried before air breaks down is highest at $b/a = \sqrt e$, an impedance of **29.98** Ω (our arithmetic, Problems 13-09.12 and 13-09.13). Their geometric mean is **47.94** Ω; 50 Ω is widely explained as a compromise of this kind, and 75 Ω (near minimum loss) is used where power is low and loss matters, as in video and cable TV **[Established]** (textbook derivation; the history is often retold but rarely documented precisely).
-- **The chart lives on in instruments.** Vector network analyzers and RF simulators display $S_{11}$ on Smith charts; matching networks for phones, Wi-Fi and radar front ends are designed and tuned on them **[Established]** (standard practice).
-- **Tunable matching.** Phones use antenna tuners (switched capacitor banks and inductors) to re-match antennas detuned by hands and heads, moving the operating point back toward the chart's centre **[Established]** (industry practice).
+- **Why 50 Ω?** For air-filled coax, the conductor loss $\alpha_c \propto (1/a + 1/b)/\ln(b/a)$ is lowest at $b/a$ = 3.591, an impedance of **76.65** Ω in air (for a solid-polyethylene filling, $\varepsilon_r$ = 2.25, the same geometry gives **51.10** Ω, so 75 Ω cable is a minimum-loss choice only for air or low-permittivity foam dielectrics), and the power that can be carried before air breaks down is highest at $b/a = \sqrt e$, an impedance of **29.98** Ω (our arithmetic, Problems 13-09.12 and 13-09.13). Their geometric mean is **47.94** Ω; 50 Ω is widely explained as a compromise of this kind, and 75 Ω (near minimum loss) is used where power is low and loss matters, as in video and cable TV **[Established]** (textbook derivation; the history is often retold but rarely documented precisely).
+- **The chart lives on in instruments.** Vector network analyzers and RF simulators display $S_{11}$ on Smith charts; matching networks for phones, Wi-Fi and radar front ends are designed and tuned on them **[Industry estimate]** (standard practice; no source is logged here).
+- **Tunable matching.** Phones use antenna tuners (switched capacitor banks and inductors) to re-match antennas detuned by hands and heads, moving the operating point back toward the chart's centre **[Industry estimate]** (common in current handsets; no product data are logged here).
 
 ### Why it matters commercially
 
@@ -339,4 +361,4 @@ Next: the [13-09 problem set](../problems/13-09-problems.md).
 
 ## 14. Sources
 
-The theory (Smith chart, L-network and stub matching, the Bode–Fano limit) is textbook material (Further study); the coax optima in §9 are derived here. No perishable facts are cited.
+The theory (Smith chart, L-network and stub matching, the Bode–Fano limit) is textbook material (Further study); the coax optima in §9 are derived here. The practitioner statements about instruments and tunable matching are tagged as industry estimates; no perishable figures are cited.

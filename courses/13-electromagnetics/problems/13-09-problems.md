@@ -67,6 +67,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A stub for a capacitor.** Realize the 2.653 pF shunt capacitor of Example 13-09.4 at 2.4 GHz as an open stub on a 50 Ω air line. Find its length in wavelengths and centimetres.
 
+### Problem 13-09.15 [B]
+
+**A quarter-wave match for a complex load.** Complete a match of the 100 + j100 Ω load of Problem 13-09.5 to 50 Ω with a quarter-wave transformer. (a) Insert the transformer at the first voltage maximum: find its impedance. (b) Instead insert it at the first voltage minimum: find that distance and the transformer's impedance. (c) Which would you build on a printed circuit board, and why? (Use the chart, or the VSWR.)
+
 ---
 
 ## Objective coverage
@@ -74,7 +78,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 13-09) | Problems |
 |---|---|
 | 1. Chart construction | 2 |
-| 2. Reading the chart and moving along lines | 1, 3, 4, 5, 11 |
+| 2. Reading the chart and moving along lines | 1, 3, 4, 5, 11, 15 |
 | 3. L-network matching | 6, 7, 9 |
 | 4. Single-stub matching | 8, 14 |
 | 5. Bandwidth and Bode–Fano | 9, 10 |

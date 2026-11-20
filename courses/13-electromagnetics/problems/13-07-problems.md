@@ -67,6 +67,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Two lines in series.** A matched source launches 0.5 V onto a 50 Ω line, which joins a 75 Ω line terminated in 75 Ω. Find the transmission coefficient at the junction, the voltage reaching the load, and the reflected wave returning to the source.
 
+### Problem 13-07.15 [C]
+
+**Follow the current.** A 1 V step source with 10 Ω internal resistance drives a 50 Ω line of 1 ns delay terminated in 200 Ω. (a) Show that a current wave reflects with coefficient $-\Gamma$, and find the launched current. (b) Find the load current just after 1 ns and 3 ns, and the source current between 0 and 2 ns, between 2 and 4 ns, and just after 4 ns. (c) Find the final current. Why is the source current zero for a while?
+
 ---
 
 ## Objective coverage
@@ -74,8 +78,8 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 13-07) | Problems |
 |---|---|
 | 1. Telegrapher's equations, Z₀ and velocity | 1, 11 |
-| 2. Launching and reflecting | 2, 3, 14 |
-| 3. Bounce diagrams | 4, 12, 13 |
+| 2. Launching and reflecting | 2, 3, 14, 15 |
+| 3. Bounce diagrams | 4, 12, 13, 15 |
 | 4. Reactive terminations | 7, 10 |
 | 5. Terminations and critical length | 5, 6, 9 |
 | 6. TDR | 8, 10 |

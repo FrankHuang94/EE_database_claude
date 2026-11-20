@@ -11,7 +11,7 @@
 
 **Learning objectives.** After this chapter you can:
 
-1. Derive the telegrapher's equations from the distributed $L'$–$C'$ model and solve them for travelling waves, with $Z_0 = \sqrt{L'/C'}$ and $v = 1/\sqrt{L'C'}$.
+1. Derive the telegrapher's equations from the distributed $L'$–$C'$ model and solve them for travelling waves, with $Z_0 = \sqrt{L'/C'}$ and $v_p = 1/\sqrt{L'C'}$.
 2. Compute the wave launched by a source and the reflections at resistive loads and sources.
 3. Draw a bounce diagram and compute the voltage at any point and time, including the final steady state.
 4. Predict the response of capacitive and inductive terminations and discontinuities.
@@ -72,12 +72,14 @@ $$
 \frac{\partial^2v}{\partial z^2} = L'C'\frac{\partial^2v}{\partial t^2} ,
 $$
 
-whose general solution (d'Alembert) is any pair of shapes travelling in opposite directions at speed $v = 1/\sqrt{L'C'}$:
+whose general solution (d'Alembert) is any pair of shapes travelling in opposite directions at speed $v_p = 1/\sqrt{L'C'}$ (written $v_p$, the phase velocity, to keep it apart from the voltage $v$):
 
 $$
-v(z, t) = v^+\!\left(t - \frac{z}{v}\right) + v^-\!\left(t + \frac{z}{v}\right), \qquad
-i(z, t) = \frac{1}{Z_0}\left[v^+\!\left(t - \frac{z}{v}\right) - v^-\!\left(t + \frac{z}{v}\right)\right],
+v(z, t) = v^+\!\left(t - \frac{z}{v_p}\right) + v^-\!\left(t + \frac{z}{v_p}\right), \qquad
+i(z, t) = \frac{1}{Z_0}\left[v^+\!\left(t - \frac{z}{v_p}\right) - v^-\!\left(t + \frac{z}{v_p}\right)\right],
 $$
+
+> **Math refresher — why any shape travels.** Substitute $v = f(t - z/v_p)$ for an arbitrary function $f$. By the chain rule $\partial^2v/\partial z^2 = f''/v_p^2$ and $\partial^2v/\partial t^2 = f''$, so the wave equation holds whenever $1/v_p^2 = L'C'$, whatever $f$ is. The same works for $f(t + z/v_p)$. Nothing in a lossless line prefers a sinusoid or a step: every shape keeps its form and moves at $v_p$, which is why a digital edge arrives intact.
 
 with the **characteristic impedance**
 
@@ -85,9 +87,9 @@ $$
 Z_0 = \sqrt{\frac{L'}{C'}} .
 $$
 
-The current relation follows from substituting the forward wave into the first equation: $\partial v^+/\partial z = -(1/v)v^{+\prime}$ must equal $-L'\partial i^+/\partial t$, so $i^+ = v^+/(L'v) = v^+/Z_0$. The backward wave carries current in the $-z$ direction, hence its minus sign.
+The current relation follows from substituting the forward wave into the first equation: $\partial v^+/\partial z = -(1/v_p)v^{+\prime}$ must equal $-L'\partial i^+/\partial t$, so $i^+ = v^+/(L'v_p) = v^+/Z_0$. The backward wave carries current in the $-z$ direction, hence its minus sign.
 
-For a TEM line in a homogeneous dielectric, $L'C' = \mu\varepsilon$ (13-03), so $v = c/\sqrt{\varepsilon_r}$: 6.671 ps/mm of delay for $\varepsilon_r$ = 4. A microstrip, with field partly in air, uses an **effective permittivity** between 1 and $\varepsilon_r$ found from a field solver or design formulas (Course 24).
+For a TEM line in a homogeneous dielectric, $L'C' = \mu\varepsilon$ (13-03), so $v_p = c/\sqrt{\varepsilon_r}$: 6.671 ps/mm of delay for $\varepsilon_r$ = 4. A microstrip, with field partly in air, uses an **effective permittivity** between 1 and $\varepsilon_r$ found from a field solver or design formulas (Course 24).
 
 ### 3.2 Launching a wave
 
@@ -127,6 +129,23 @@ When $\Gamma_S\Gamma_L$ is negative, the voltage alternates above and below the 
 
 With a capacitor or inductor at the end, the reflection changes with time, and its shape identifies the element.
 
+**The incident-wave equivalent circuit.** At the end of a line, $v = v^+ + v^-$ and $i = (v^+ - v^-)/Z_0$. Eliminating $v^-$ gives $v = 2v^+ - Z_0i$: whatever is connected there sees a Thévenin source of $2v^+(t)$ behind a resistance $Z_0$, until a reflection returns from the far end. Every termination below follows from that circuit.
+
+- *Capacitor $C_L$ at the end.* $C_L\,dv_L/dt = i = (2v^+ - v_L)/Z_0$. For a step $v^+$, $v_L = 2v^+(1 - e^{-t/\tau})$ with $\tau = Z_0C_L$, and the reflected wave $v^- = v_L - v^+ = v^+(1 - 2e^{-t/\tau})$ goes from $-v^+$ to $+v^+$.
+- *Inductor at the end.* The same source drives $L$: $i = (2v^+/Z_0)(1 - e^{-t/\tau})$ with $\tau = L/Z_0$, so $v_L = L\,di/dt = 2v^+e^{-t/\tau}$.
+- *Shunt $C$ in the middle of a matched line.* The continuing line looks like $Z_0$, so $C$ sees $2v^+$ behind $Z_0$, loaded by $Z_0$: a Thévenin source of $v^+$ behind $Z_0/2$. Hence $v_C = v^+(1 - e^{-t/\tau})$ with $\tau = Z_0C/2$, and $v^- = v_C - v^+ = -v^+e^{-t/\tau}$.
+- *Series $L$ in the middle.* The inductor sees $2v^+$ behind $Z_0$ in series with the continuing line's $Z_0$, so $\tau = L/(2Z_0)$ and the reflection is $+v^+e^{-t/\tau}$.
+
+**Why the area survives a slow edge.** In the Laplace domain the shunt capacitor loads the line with $Z_0 \parallel 1/(sC) = Z_0/(1 + sZ_0C)$, so
+
+$$
+\Gamma(s) = \frac{Z_0/(1 + sZ_0C) - Z_0}{Z_0/(1 + sZ_0C) + Z_0} = -\frac{s\tau}{1 + s\tau}, \qquad \tau = \frac{Z_0C}{2} .
+$$
+
+The reflected wave is $V^-(s) = \Gamma(s)V^+(s)$, and the area of any signal that dies away is its transform at $s = 0$, $\int_0^\infty f\,dt = F(0)$. An incident step of height $v^+$ with *any* rising edge has $V^+(s) \approx v^+/s$ as $s \to 0$, so $\int v^-dt = \lim_{s\to0}\Gamma(s)v^+/s = -\tau v^+$, whatever the edge looks like. The same steps for the series inductor, $\Gamma(s) = s\tau/(1 + s\tau)$ with $\tau = L/(2Z_0)$, give $+\tau v^+$.
+
+In summary:
+
 - **A capacitive load** $C_L$ (for example a receiver's input) starts as a short ($\Gamma$ = −1) and ends as an open ($\Gamma$ = +1). The load voltage rises as $2v^+(1 - e^{-t/\tau})$ with $\tau = Z_0C_L$: the line's impedance charges the capacitor. A large input capacitance therefore slows the edge seen by the receiver.
 - **An inductive load** starts open and ends short: $v_L = 2v^+e^{-t/\tau}$ with $\tau = L/Z_0$.
 - **A shunt capacitance in the middle** of a matched line (a via, a pad, a connector) sees $Z_0$ on each side in parallel, $Z_0/2$, so it charges with $\tau = Z_0C/2$ and reflects a negative dip, $-v^+e^{-t/\tau}$ for an ideal step.
@@ -141,16 +160,16 @@ Two standard ways to stop reflections, each matching one end:
 - **Series (source) termination.** Add a resistor at the driver so that $R_s = Z_0$. The launched wave is $V_s/2$; it doubles at the open receiver to the full $V_s$ and the reflection is absorbed at the source. The receiver sees one clean edge; points along the line see a half-height step for a while, so receivers must sit at the end. It costs no DC power. Typical for point-to-point CMOS nets.
 - **Parallel (end) termination.** Put $R_L = Z_0$ at the receiver. No reflection, any point on the line sees the full edge at once, but a DC current flows whenever the line is high: $V^2/Z_0$, 0.22 W for 3.3 V into 50 Ω (Problem 13-07.6). Variations (Thevenin splits, AC termination with a series capacitor, termination to a mid-supply rail) trade power against complexity. Differential links (USB, PCIe, Ethernet) terminate in their differential impedance at the receiver, usually on the chip.
 
-**When is a trace a transmission line?** Reflections matter when they last long enough to be seen on the edge. A common guideline treats a net as a transmission line when its one-way delay exceeds about one sixth of the signal's rise time **[Industry estimate]** (rules from one quarter to one tenth are also used): at a 100 ps rise time on FR-4-like board, about 2.5 mm (Problem 13-07.9). By this rule almost every net in a modern high-speed design is a transmission line.
+**When is a trace a transmission line?** Reflections matter when they last long enough to be seen on the edge. A common guideline treats a net as a transmission line when its one-way delay exceeds about one sixth of the signal's rise time **[Industry estimate]** (rules from one quarter to one tenth are also used; the right threshold depends on the driver's impedance and the noise budget, and a low-impedance driver already overshoots 17% at a sixth, as the lab shows; Johnson and Graham, ch. 4, discuss the trade): at a 100 ps rise time on FR-4-like board, about 2.5 mm (Problem 13-07.9). By this rule almost every net in a modern high-speed design is a transmission line.
 
 ### 3.7 Time-domain reflectometry
 
 A **TDR** launches a fast step into a line through a matched source and records the voltage at the input. Each impedance change along the line sends back a reflection, arriving after the round-trip time $2z/v$. Reading the trace:
 
-- **Position:** $z = v\,t_{rt}/2$, half the round-trip time times the velocity.
+- **Position:** $z = v_p\,t_{rt}/2$, half the round-trip time times the velocity.
 - **Impedance:** a reflection coefficient ρ means a new impedance $Z = Z_0(1 + \rho)/(1 - \rho)$.
 - **Lumped parasitics:** a dip is a shunt capacitance, a bump a series inductance, with values from the areas of §3.5.
-- **Resolution:** two features closer than about half the rise time (in round-trip time) blur together; a faster TDR resolves finer structure.
+- **Resolution:** two features whose reflections arrive less than about one rise time apart (in round-trip time, so half a rise time apart in one-way delay, a distance of about $v_pt_r/2$) blur together; a faster TDR resolves finer structure.
 
 TDR is also the basis of impedance coupons on production boards, and of cable fault locators for telecommunications and power lines.
 
@@ -158,9 +177,9 @@ TDR is also the basis of impedance coupons on production boards, and of cable fa
 
 ### Example 13-07.1 · From L' and C' to Z₀ and delay (tier A)
 
-**Setup.** The coaxial line of 13-02 and 13-03 has $L'$ = 250.6 nH/m and $C'$ = 99.92 pF/m. Find $Z_0$, the velocity and the delay per metre. Then find the delay per millimetre of a stripline in a dielectric with $\varepsilon_r$ = 4.
+**Setup.** The coaxial line of 13-02 and 13-03 has $L'$ = 250.55 nH/m and $C'$ = 99.916 pF/m (to five figures). Find $Z_0$, the velocity and the delay per metre. Then find the delay per millimetre of a stripline in a dielectric with $\varepsilon_r$ = 4.
 
-**Solution.** $Z_0 = \sqrt{L'/C'}$ = **50.08** Ω; $v = 1/\sqrt{L'C'}$ = **1.999 × 10⁸** m/s, two thirds of $c$; the delay is **5.003** ns/m. The stripline's delay is $\sqrt{\varepsilon_r}/c$ = **6.671** ps/mm.
+**Solution.** $Z_0 = \sqrt{L'/C'}$ = **50.08** Ω; $v_p = 1/\sqrt{L'C'}$ = **1.999 × 10⁸** m/s, two thirds of $c$; the delay is **5.003** ns/m. The stripline's delay is $\sqrt{\varepsilon_r}/c$ = **6.671** ps/mm.
 
 **Units check.** $\sqrt{(\text{H/m})/(\text{F/m})} = \sqrt{\text{H/F}}$ = Ω; $1/\sqrt{(\text{H/m})(\text{F/m})}$ = m/s.
 
@@ -171,6 +190,8 @@ TDR is also the basis of impedance coupons on production boards, and of cable fa
 **Setup.** A 1 V step source with 50 Ω internal resistance drives a 50 Ω line ending in 100 Ω. Find the launched wave, $\Gamma_L$ and the load voltage after the wave arrives.
 
 **Solution.** $v^+ = 1 \times 50/100$ = **0.5** V. $\Gamma_L = (100 - 50)/150$ = **0.3333**. The load voltage is $v^+(1 + \Gamma_L)$ = **0.6667** V. The reflection returns to the matched source and is absorbed ($\Gamma_S$ = 0), so the load stays at 0.6667 V, which is the DC divider $1 \times 100/150$.
+
+**Units check.** Volts times an impedance ratio is volts, and Γ is a ratio of impedances, so it has no unit.
 
 **Sanity check.** With either end matched, the steady state arrives after one trip (load matched) or after one round trip (source matched); there is no ringing.
 
@@ -186,6 +207,8 @@ TDR is also the basis of impedance coupons on production boards, and of cable fa
 
 The first arrival overshoots the final 1 V by **66.67**%. The pattern repeats every $4T_D$, a ringing frequency of **250** MHz, decaying by $\lvert\Gamma_S\rvert$ each half-cycle.
 
+**Units check.** A frequency of $1/(4T_D)$ has units of 1/s = Hz; every voltage is a dimensionless coefficient times $v^+$, in volts.
+
 **Sanity check.** The series converges to $2v^+/(1 - \Gamma_S)$ = 1 V, the DC value. A 67% overshoot on a 1 V logic signal can exceed the receiver's absolute maximum rating and couple noise to neighbours, which is why such nets get series terminations.
 
 ### Example 13-07.4 · Fixing it with series termination (tier B)
@@ -193,6 +216,8 @@ The first arrival overshoots the final 1 V by **66.67**%. The pattern repeats ev
 **Setup.** Add a series resistor to the driver of Example 13-07.3 to match the line. Find its value, the launched wave, the receiver voltage and the voltage just after the resistor between 0 and 2 ns.
 
 **Solution.** $R_s$ must total 50 Ω, so the resistor is **40** Ω. $v^+ = 1 \times 50/100$ = **0.5** V. At the open receiver it doubles to **1** V at 1 ns and stays there: the reflection returns to a matched source and is absorbed. At the source side of the line the voltage is a half-level **0.5** V from 0 to 2 ns, then 1 V once the reflection arrives.
+
+**Units check.** $R_s$ is an impedance in ohms and each voltage is a fraction of the 1 V source.
 
 **Sanity check.** Series termination trades the half-level plateau along the line (harmless if all receivers are at the end) for a clean edge at the receiver and no DC power.
 
@@ -202,13 +227,17 @@ The first arrival overshoots the final 1 V by **66.67**%. The pattern repeats ev
 
 **Solution.** The capacitance sees two 50 Ω lines in parallel: τ = (25 Ω)(2 pF) = **50** ps. For an ideal step the reflection starts at ρ = **−1** (the capacitor is momentarily a short) and decays as $e^{-t/\tau}$, so the area is $\int\rho\,dt = -\tau$ = **−50** ps. From a measured trace, $C = -2\int\rho\,dt/Z_0$ = 2 × 50 ps/50 Ω = **2** pF, whatever the TDR's rise time.
 
+**Units check.** $\tau = Z_0C/2$ is Ω × F = (V/A)(A·s/V) = s, and the area of the dimensionless ρ over time is in seconds, so $C = -2\int\rho\,dt/Z_0$ is s/Ω = F.
+
 **Sanity check.** A real TDR edge of, say, 35 ps is not much faster than 50 ps, so the dip will be shallower than −1 and wider; the area method avoids having to model the edge.
 
 ### Example 13-07.6 · Locating an impedance step (tier C)
 
 **Setup.** A TDR on a 50 Ω stripline ($\varepsilon_r$ = 4) shows a flat reflection of ρ = −0.05263 beginning 1.2 ns after the launch and ending 1.8 ns after it, then returning to zero. Find the impedance of that section, where it starts, and its length.
 
-**Solution.** $Z = 50(1 - 0.05263)/(1 + 0.05263)$ = **45.00** Ω: a section 10% low, perhaps a wider trace or thinner dielectric. With $v = c/2$ = 1.499 × 10⁸ m/s, it starts at $v \times 1.2\ \text{ns}/2$ = **8.994** cm and lasts 0.6 ns of round-trip time, a length of **4.497** cm.
+**Solution.** $Z = 50(1 - 0.05263)/(1 + 0.05263)$ = **45.00** Ω: a section 10% low, perhaps a wider trace or thinner dielectric. With $v_p = c/2$ = 1.499 × 10⁸ m/s, it starts at $v_p \times 1.2\ \text{ns}/2$ = **8.994** cm and lasts 0.6 ns of round-trip time, a length of **4.497** cm.
+
+**Units check.** Position $v_pt/2$ is (m/s)(s) = m; the impedance $Z_0(1 + \rho)/(1 - \rho)$ inherits ohms from $Z_0$.
 
 **Sanity check.** The reflection at the far end of the section ($45 \to 50$ Ω) is +0.05263 and cancels the first, which is why the trace returns to zero instead of stepping down for good. (Second-order effects, such as the part of the wave re-reflected inside the section, of order $\rho^2$, are too small to see.)
 
@@ -260,7 +289,7 @@ The lab, [labs/13-07-lab](../labs/13-07-lab/README.md), has a notebook and two n
 1. Solves the telegrapher's equations by finite differences and animates (as snapshots) a step travelling, reflecting and re-reflecting.
 2. Draws the bounce diagram for any source and load and overlays the computed receiver voltage.
 3. Varies a line's delay against a fixed rise time and plots the overshoot, to see where the "one sixth of the rise time" guideline comes from.
-4. Simulates a TDR trace of a line with a capacitive via, an inductive neck and an impedance step, then extracts each from the trace.
+4. Simulates a TDR trace of a line with a capacitive via and an impedance step, then extracts each from the trace.
 
 The netlists [ringing.cir](../labs/13-07-lab/ringing.cir) and [tdr_via.cir](../labs/13-07-lab/tdr_via.cir) simulate Examples 13-07.3 and 13-07.5.
 
@@ -292,7 +321,7 @@ The netlists [ringing.cir](../labs/13-07-lab/ringing.cir) and [tdr_via.cir](../l
 - **Using the load impedance to compute the launched wave.** For the first $2T_D$ the source sees only $Z_0$.
 - **Forgetting the source reflection.** With an unmatched source, every reflection from the load bounces back again.
 - **Expecting a series-terminated line to look clean everywhere.** Only the far end sees one clean step.
-- **Reading TDR time as one-way delay.** TDR shows round-trip time; distance is $v\,t/2$.
+- **Reading TDR time as one-way delay.** TDR shows round-trip time; distance is $v_p\,t/2$.
 - **Judging a capacitive dip by its depth.** Depth depends on the TDR's rise time; the area gives the capacitance.
 
 ## 9. Practitioner lens
@@ -300,13 +329,13 @@ The netlists [ringing.cir](../labs/13-07-lab/ringing.cir) and [tdr_via.cir](../l
 ### State of the art (as of Nov 2026)
 
 - **Interfaces specify impedance.** The USB 2.0 specification requires high-speed cables with a differential characteristic impedance of 90 Ω ±15% (76.5 to 103.5 Ω) [1] **[Established]**. For PCIe Gen 3 and Gen 4, Texas Instruments' layout guidance specifies board traces of 85 Ω ±5% differential (Gen 1 and 2: 100 Ω) and recommends 85 Ω traces at PCIe card-edge connectors [2] **[Established]** as vendor guidance; PCI-SIG's own text (members only) was not read.
-- **Board delay.** A TI layout guide lists 715.3 ps per 100 mm for a stripline in $\varepsilon_r$ = 4.6 material [3] **[Established]**, against $\sqrt{\varepsilon_r}/c$ = **7.154** ps/mm (our arithmetic; TI's figure uses a rounded speed of light).
-- **TDR rules of thumb.** Instrument makers teach about 1 nH/mm for wire bonds and use the reflection area to extract L and C, as in §3.5 [4] **[Established]**.
+- **Board delay.** A TI layout guide lists 715.3 ps per 100 mm for a stripline in $\varepsilon_r$ = 4.6 material [3] **[Established]**, against $\sqrt{\varepsilon_r}/c$ = **7.154** ps/mm (our arithmetic; TI's table truncates $v_p/c$ to 0.466 and uses $c$ = 300 mm/ns, giving 139.8 mm/ns and 715.3 ps per 100 mm).
+- **TDR rules of thumb.** An instrument maker's TDR application guide gives about 1 nH/mm for wire bonds [4] **[Established]**; the area method of §3.5 for extracting L and C is textbook physics.
 
 ### Why it matters commercially
 
-- **Every high-speed product pays for impedance control.** Controlled-impedance fabrication, test coupons and TDR verification add cost to every server, switch and phone board.
-- **Termination is power.** On-die terminations on wide memory and SerDes interfaces burn a significant share of I/O power; termination schemes (center-tapped, pseudo-open-drain, low-swing) are chosen partly to save it (Course 24).
+- **Every high-speed product pays for impedance control.** Controlled-impedance fabrication, test coupons and TDR verification add cost to every server, switch and phone board **[Established]**.
+- **Termination is power.** On-die terminations on wide memory and SerDes interfaces burn a significant share of I/O power **[Industry estimate]** (not quantified here); termination schemes (center-tapped, pseudo-open-drain, low-swing) are chosen partly to save it (Course 24).
 - **Failure analysis.** TDR locates opens, shorts and impedance faults in boards, packages and cables without cutting them.
 
 ### Marketing vs Reality

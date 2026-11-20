@@ -1,0 +1,20 @@
+* Lab 13-07 -- overshoot at an open receiver when the line delay is a sixth of the rise time.
+* A 1 V source with a 100 ps linear edge and 10 ohm output resistance drives a 50 ohm line of
+* delay 100/6 ps into an open end. Gamma_S = -2/3 and Gamma_L = +1, so the receiver sees a sum of
+* delayed ramps; the exact sum peaks at 1.1728 V, a 17.3% overshoot.
+*
+* EXPECT ov key:README.md#Lab_13-07.b rtol=3e-3
+
+VS src 0 PWL(0 0 100p 1 20n 1)
+RS src in 10
+T1 in 0 out 0 Z0=50 TD=16.6667p
+RIN out 0 1e9
+
+.control
+tran 0.05p 3n
+meas tran vmax max v(out)
+let ov = (vmax - 1) * 100
+print ov
+quit
+.endc
+.end

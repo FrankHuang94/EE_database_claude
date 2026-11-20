@@ -75,6 +75,14 @@ $G' = R'C'/L' = 0.5 \times 100 \times 10^{-12}/(250 \times 10^{-9})$ = **2 × 10
 
 $\Gamma_L = (25 - 50)/75 = -1/3$, real and negative, so the voltage minimum is **at the load**, $1 - 1/3$ = **0.6667** V, and the nearest maximum, **1.333** V, is λ/4 = **7.495** cm toward the source. The current is largest where the voltage is smallest: at the load, $\lvert I\rvert = (1/50)(1 + 1/3)$ = **26.67** mA (equal to 0.6667 V / 25 Ω, as it must be).
 
+### Solution 13-08.15
+
+(a) λ = (2 × 10⁸)/(10⁸) = 2 m, so βℓ = 2π × 2.5/2 = 2.5π rad, and αℓ = 2.5 m × 0.5 dB/m = 1.25 dB, or 1.25/8.686 = **0.1439** Np. For an open end ($Z_L \to \infty$), $Z_{in} = Z_0\coth(\gamma\ell)$. With $\gamma\ell = \alpha\ell + j(2\pi + \pi/2)$, and $\coth(x + j\pi/2) = \tanh x$ (because $\cosh(x + j\pi/2) = j\sinh x$ and $\sinh(x + j\pi/2) = j\cosh x$, and the extra $2\pi$ changes nothing), $Z_{in} = Z_0\tanh(\alpha\ell)$ = 50 tanh(0.1439) = **7.146** Ω.
+
+(b) $\Gamma_{in} = (7.146 - 50)/(7.146 + 50)$, of magnitude **0.7499**, and $e^{-2\alpha\ell} = e^{-0.2878}$ = 0.7499: the open's $\lvert\Gamma\rvert$ = 1 shrinks by $e^{-\alpha\ell}$ on the way out and again on the way back.
+
+(c) Return loss $-20\log_{10}0.7499$ = **2.500** dB, twice the one-way 1.25 dB. A lossless line of this length (an odd number of quarter waves) would turn the open into a perfect short, 0 Ω with 0 dB return loss; the loss turns it into a 7 Ω resistor that absorbs power. Measured through a lossy cable, even a total reflection looks partly matched (Example 13-08.6).
+
 ---
 
 ## Answer key
@@ -128,3 +136,7 @@ $\Gamma_L = (25 - 50)/75 = -1/3$, real and negative, so the voltage minimum is *
 | 13-08.14b | maximum voltage | 1.333 | V |
 | 13-08.14c | distance to the maximum | 7.495 | cm |
 | 13-08.14d | current at the load | 26.67 | mA |
+| 13-08.15a | attenuation along the stub | 0.1439 | Np |
+| 13-08.15b | input impedance | 7.146 | Ω |
+| 13-08.15c | input reflection magnitude | 0.7499 | — |
+| 13-08.15d | return loss | 2.500 | dB |

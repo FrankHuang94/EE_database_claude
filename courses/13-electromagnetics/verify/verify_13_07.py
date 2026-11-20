@@ -15,6 +15,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from scipy.integrate import quad, solve_ivp
 from scipy.optimize import brentq
 
 HERE = Path(__file__).resolve().parent
@@ -163,10 +164,16 @@ t, o = simulate([50, 50], [1e-9, 1e-9], 2.0, 50, 50, 5e-9, shunt_C=(0, 2e-12), r
 refl = o["in"] - 1.0
 mask = (t > 1.5e-9) & (t < 4.5e-9)
 area5 = np.sum(refl[mask]) * (t[1] - t[0])
-v.check("Ex 13-07.5a", 25 * 2e-12 * 1e12)
-t_ideal, o_ideal = simulate([50, 50], [1e-9, 1e-9], 2.0, 50, 50, 3e-9, shunt_C=(0, 2e-12), probes=("in",),
-                            cells_per_ns=2000)
-v.check("Ex 13-07.5b", round(min(o_ideal["in"][(t_ideal > 1.9e-9)] - 1.0), 2))
+# ideal step on the via: the capacitor sees 2v+ behind Z0, loaded by the continuing Z0 (incident-wave equivalent);
+# integrate C dv/dt = (2v+ - v)/Z0 - v/Z0 and read the reflection rho = (v_C - v+)/v+
+vp5, Z5, C5 = 1.0, 50.0, 2e-12
+via = solve_ivp(lambda tt, vv: [((2 * vp5 - vv[0]) / Z5 - vv[0] / Z5) / C5], (0, 1e-9), [0.0], dense_output=True,
+                rtol=1e-12, atol=1e-15)
+rho5 = lambda tt: (via.sol(tt)[0] - vp5) / vp5  # noqa: E731
+v.check("Ex 13-07.5a", brentq(lambda tt: rho5(tt) + math.exp(-1), 1e-14, 1e-9, xtol=1e-18) * 1e12)
+v.check("Ex 13-07.5b", rho5(0.0))
+v.assert_true("Ex 13-07.5 ideal-step area equals -Z0 C / 2",
+              abs(quad(rho5, 0, 1e-9, points=[1e-11, 5e-11, 2e-10], limit=200)[0] / -50e-12 - 1) < 1e-6)
 v.check("Ex 13-07.5c", area5 * 1e12)
 v.check("Ex 13-07.5d", -2 * area5 / 50 * 1e12)
 v.check("Sim 13-07.d", area5 * 1e12)
@@ -261,10 +268,45 @@ v.check("13-07.14c", at(t, o["in"], 2.5e-9) - 0.5)
 # ---------------------------------------------------------------- Lab
 if lab.exists():
     # overshoot at the open end of a line driven through 10 ohm with a 100 ps linear edge, for delay = tr/6 and tr
+    # exact: the open end sees a sum of delayed ramps, (1 + G_L) v+ (G_S G_L)^n r(t - (2n + 1) TD); the sum is
+    # piecewise linear, so its maximum sits at a breakpoint (an arrival time or an arrival plus the rise time)
+    tr_, GS_, GL_, vp_ = 100e-12, (10 - 50) / (10 + 50), 1.0, 50 / 60
+    ramp = lambda tt: np.clip(tt / tr_, 0.0, 1.0)  # noqa: E731
     for ratio, key in ((1 / 10, "a"), (1 / 6, "b"), (1.0, "c")):
-        TD = 100e-12 * ratio
+        TD = tr_ * ratio
+        nmax = 400
+        arrivals = (2 * np.arange(nmax) + 1) * TD
+        bps = np.concatenate([arrivals, arrivals + tr_])
+        vout = lambda tt: sum((1 + GL_) * vp_ * (GS_ * GL_) ** n * ramp(tt - arrivals[n]) for n in range(nmax))  # noqa: E731
+        peak = max(vout(tb) for tb in bps[bps < 60 * max(TD, tr_)])
+        v.check(f"Lab 13-07.{key}", (peak - 1.0) * 100)
+        # the lumped-node FDTD solver agrees to within its delay quantization and edge smoothing
         t, o = simulate([50], [TD], 1.0, 10, None, 20 * max(TD, 100e-12) + 2e-9, rise=100e-12, probes=("out",),
                         cells_per_ns=20000)
-        v.check(f"Lab 13-07.{key}", (o["out"].max() - 1.0) * 100)
+        v.assert_true(f"Lab 13-07.{key} FDTD within 0.1 percentage points", abs((o["out"].max() - peak) * 100) < 0.1)
+
+# 15: currents on a 50 ohm line (1 ns), 10 ohm source, 200 ohm load, by a forward/backward wave recursion
+Z15, RS15, RL15, n15 = 50.0, 10.0, 200.0, 100          # n15 samples per one-way delay
+fwd = np.zeros(n15)
+bwd = np.zeros(n15)
+i_src, i_load = [], []
+for k in range(60 * n15):
+    b_in = bwd[-1]                                    # backward wave arriving at the source
+    a_out = (1.0 * Z15 + b_in * (RS15 - Z15)) / (RS15 + Z15)
+    i_src.append((a_out - b_in) / Z15)
+    a_L = fwd[-1]
+    r_L = a_L * (RL15 - Z15) / (RL15 + Z15)
+    i_load.append((a_L - r_L) / Z15)
+    fwd = np.r_[a_out, fwd[:-1]]
+    bwd = np.r_[r_L, bwd[:-1]]
+i_src, i_load = np.array(i_src) * 1e3, np.array(i_load) * 1e3
+v.check("13-07.15a", i_src[0])
+v.check("13-07.15b", i_load[n15 + 1])
+v.check("13-07.15c", i_src[n15])
+v.check("13-07.15d", i_src[3 * n15])
+v.check("13-07.15e", i_load[3 * n15 + 1])
+v.check("13-07.15f", i_src[4 * n15 + 1])
+v.check("13-07.15g", i_load[-1])
+v.assert_true("13-07.15 load and source currents converge together", abs(i_src[-1] - i_load[-1]) < 1e-3)
 
 sys.exit(v.finish())

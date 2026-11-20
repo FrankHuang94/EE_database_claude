@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from scipy.integrate import solve_ivp
+from scipy.integrate import quad, solve_ivp
 from scipy.optimize import brentq, minimize_scalar
 
 HERE = Path(__file__).resolve().parent
@@ -161,6 +161,22 @@ for d, l in ((d1, l1), (d2, l2)):
 for Gm, key in ((0.1, "a"), (10 ** (-10 / 20), "b")):
     dw = brentq(lambda dw: dw * math.log(1 / Gm) - math.pi / (50 * 1e-12), 1, 1e13)
     v.check(f"Ex 13-09.6{key}", dw / (2 * math.pi) / 1e9)
+# independent check of the bound itself: build real lossless matches for 50 ohm || 1 pF and integrate ln(1/|G|)
+RB, CB = 50.0, 1e-12
+def zload_rc(w_):
+    return RB / (1 + 1j * w_ * RB * CB)
+def refl_series_L(w_, Lm):                     # series inductor in front of the RC load
+    z = 1j * w_ * Lm + zload_rc(w_)
+    return abs((z - 50) / (z + 50))
+def refl_ladder(w_, Lm, Cm):                   # series L, then shunt C, in front of the RC load
+    z = 1 / (1 / (1j * w_ * Lm + zload_rc(w_)) + 1j * w_ * Cm)
+    return abs((z - 50) / (z + 50))
+bound = math.pi / (RB * CB)
+for Lm in (0.5e-9, 1.25e-9, 2.5e-9):
+    I_bf = quad(lambda w_: math.log(1 / refl_series_L(w_, Lm)), 0, 2e12, limit=400)[0]
+    v.assert_true(f"Bode-Fano holds for a series {Lm * 1e9:.2f} nH match", I_bf <= bound * (1 + 1e-6))
+I_lad = quad(lambda w_: math.log(1 / refl_ladder(w_, 2.5e-9, 0.5e-12)), 0, 2e12, limit=400)[0]
+v.assert_true("Bode-Fano holds for an L-C ladder match", I_lad <= bound * (1 + 1e-6))
 
 # ---------------------------------------------------------------- practitioner (coax optima)
 xl = minimize_scalar(lambda x: (1 + x) / math.log(x), bounds=(1.5, 8), method="bounded", options={"xatol": 1e-12}).x
@@ -168,6 +184,7 @@ xp = minimize_scalar(lambda x: -math.log(x) / x**2, bounds=(1.01, 5), method="bo
 Zl, Zp = eta0 / (2 * math.pi) * math.log(xl), eta0 / (2 * math.pi) * math.log(xp)
 v.check("Prac 13-09.a", Zl)
 v.check("Prac 13-09.b", Zp)
+v.check("Prac 13-09.d", eta0 / (2 * math.pi * 1.5) * math.log(xl))
 v.check("Prac 13-09.c", math.sqrt(Zl * Zp))
 v.check("Sim 13-09.a", lnet_zin(f4, 1.32629e-9, 2.65258e-12).real)
 yst = Z0 / march_zin(ZL5, Z0, 0.0631303) + Z0 / march_zin(1e-12, Z0, 0.0897543)
@@ -207,6 +224,7 @@ C6 = 1 / (w6 * X6)
 v.check("13-09.6a", X6 / 50)
 v.check("13-09.6b", L6 * 1e9)
 v.check("13-09.6c", C6 * 1e12)
+v.check("13-09.6d", w6 * L6)
 v.assert_true("high-pass L matches", abs(1 / (1 / 200 + 1 / (1j * w6 * L6)) - 1j / (w6 * C6) - 50) < 1e-9)
 Ladd = brentq(lambda L: (1 / (10 + 5j + 1j * w4 * L)).real - 1 / 50, 1e-13, 1e-8, xtol=1e-20)
 C7 = -(1 / (10 + 5j + 1j * w4 * Ladd)).imag / w4
@@ -283,5 +301,21 @@ if lab.exists():
     # Bode-Fano bound for 50 ohm in parallel with 1 pF at 15 dB return loss
     Gm = 10 ** (-15 / 20)
     v.check("Lab 13-09.b", brentq(lambda dw: dw * math.log(1 / Gm) - math.pi / (50 * 1e-12), 1, 1e13) / (2 * math.pi) / 1e9)
+
+# 15: quarter-wave match of 100 + j100 ohm: find the real-impedance points by marching, then sweep frequency
+ZL15 = 100 + 100j
+dmax15 = brentq(lambda d: march_zin(ZL15, Z0, d).imag, 0.01, 0.1, xtol=1e-14)
+dmin15 = brentq(lambda d: march_zin(ZL15, Z0, d).imag, 0.2, 0.35, xtol=1e-14)
+Rmax15, Rmin15 = march_zin(ZL15, Z0, dmax15).real, march_zin(ZL15, Z0, dmin15).real
+v.check("13-09.15a", math.sqrt(Z0 * Rmax15))
+v.check("13-09.15b", dmin15)
+v.check("13-09.15c", math.sqrt(Z0 * Rmin15))
+def qw_gamma(fr, d, R):
+    z = march_zin(ZL15, Z0, d * fr)                   # line length scales with frequency
+    return abs(gam(march_zin(z, math.sqrt(Z0 * R), 0.25 * fr)))
+for key, d, R in (("d", dmax15, Rmax15), ("e", dmin15, Rmin15)):
+    lo_ = brentq(lambda fr: qw_gamma(fr, d, R) - 0.1, 0.5, 1 - 1e-6, xtol=1e-12)
+    hi_ = brentq(lambda fr: qw_gamma(fr, d, R) - 0.1, 1 + 1e-6, 1.5, xtol=1e-12)
+    v.check(f"13-09.15{key}", (hi_ - lo_) * 100)
 
 sys.exit(v.finish())
