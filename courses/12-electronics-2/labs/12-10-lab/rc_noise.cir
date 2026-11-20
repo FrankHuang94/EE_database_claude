@@ -1,0 +1,22 @@
+* Lab 12-10 -- noise analysis of an RC low-pass (R = 10 kohm, C = 1 pF) in ngspice, at its default 27 C.
+* The output noise is the resistor's thermal noise filtered by the RC. Its density at low frequency is
+* sqrt(4kTR); integrated over all frequencies it is sqrt(kT/C), independent of R. The analysis runs from
+* 1 Hz to 1 THz (the corner is 15.9 MHz), so the truncated tail is negligible.
+*
+* EXPECT ktc key:README.md#Lab_12-10.a scale=1e-6 rtol=2e-4
+* EXPECT vlow key:README.md#Lab_12-10.b scale=1e-9 rtol=5e-4
+
+VIN in 0 DC 0 AC 1
+R1 in out 10k
+C1 out 0 1p
+
+.control
+noise v(out) VIN dec 50 1 1e12
+setplot noise2
+let ktc = onoise_total
+print ktc
+setplot noise1
+let vlow = onoise_spectrum[0]
+print vlow
+.endc
+.end

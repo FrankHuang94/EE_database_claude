@@ -36,7 +36,7 @@ Real amplifiers: differential pairs, cascodes and multistage amplifiers, high-fr
 | [12-07 · Output Stages and Power Amplifiers](chapters/12-07-output-stages.md) | 8 | ✅ verified | [problems](problems/12-07-problems.md) · [solutions](solutions/12-07-solutions.md) · [lab](labs/12-07-lab/README.md) · [verify](verify/verify_12_07.py) |
 | [12-08 · Op-Amp Internals](chapters/12-08-op-amp-internals.md) | 10 | ✅ verified | [problems](problems/12-08-problems.md) · [solutions](solutions/12-08-solutions.md) · [lab](labs/12-08-lab/README.md) · [verify](verify/verify_12_08.py) |
 | [12-09 · Oscillators](chapters/12-09-oscillators.md) | 8 | ✅ verified | [problems](problems/12-09-problems.md) · [solutions](solutions/12-09-solutions.md) · [lab](labs/12-09-lab/README.md) · [verify](verify/verify_12_09.py) |
-| [12-10 · Noise in Circuits](chapters/12-10-noise-in-circuits.md) | 10 | ⬜ planned | — |
+| [12-10 · Noise in Circuits](chapters/12-10-noise-in-circuits.md) | 10 | ✅ verified | [problems](problems/12-10-problems.md) · [solutions](solutions/12-10-solutions.md) · [lab](labs/12-10-lab/README.md) · [verify](verify/verify_12_10.py) |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 

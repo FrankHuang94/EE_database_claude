@@ -4950,3 +4950,15 @@
   definition: An oscillator whose frequency is tuned by a control voltage, typically through a varactor in an LC tank or the bias of a ring oscillator's stages; the controlled element of a phase-locked loop.
   chapter: "12-09"
   see_also: [Ring oscillator, Negative resistance]
+- term: Flicker noise
+  definition: Noise whose power spectral density rises as 1/f toward low frequency, from carriers trapped and released at interfaces; strong in MOSFETs, it contributes equal power in every decade and is characterized by its corner frequency with the white floor.
+  chapter: "12-10"
+  see_also: [Thermal noise, Input-referred noise]
+- term: Input-referred noise
+  definition: An amplifier's output noise divided by its gain, expressed as an equivalent noise source at the input so it can be compared directly with the signal; in a chain, each later stage's contribution is divided by the gain ahead of it.
+  chapter: "12-10"
+  see_also: [Equivalent noise resistance, Noise figure]
+- term: Equivalent noise resistance
+  definition: The resistance whose thermal noise 4kTR equals a device's or amplifier's input-referred noise power density; γ/g_m for a MOSFET and 1/(2g_m) for a bipolar transistor.
+  chapter: "12-10"
+  see_also: [Input-referred noise, Thermal noise]
