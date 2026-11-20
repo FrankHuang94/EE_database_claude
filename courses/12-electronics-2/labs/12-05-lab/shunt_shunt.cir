@@ -1,0 +1,32 @@
+* Lab 12-05 -- Example 12-05.4's shunt-shunt common-source stage as a small-signal circuit, in ngspice.
+* g_m = 4 mA/V (VCCS), R_D = 10 kohm, R_F = 50 kohm, R_S = 10 kohm, r_o neglected.
+* Copy 1 is driven by a 1 A signal current into the gate node (the circuit is linear, so the drain voltage
+* in volts is the transresistance in ohms and the gate voltage is the input resistance). Copy 2 has the input
+* source zeroed (open) and a 1 A test current into the drain, so its drain voltage is the output resistance.
+*
+* EXPECT rt key:../../chapters/12-05-feedback-topologies.md#Ex_12-05.4e scale=1e3 rtol=2e-4
+* EXPECT rin key:../../chapters/12-05-feedback-topologies.md#Ex_12-05.4h scale=1e3 rtol=5e-4
+* EXPECT rout key:../../chapters/12-05-feedback-topologies.md#Ex_12-05.4i scale=1e3 rtol=5e-4
+
+* copy 1: transresistance and input resistance
+IS 0 g1 DC 1
+RS1 g1 0 10k
+RF1 g1 d1 50k
+G1 d1 0 g1 0 4m
+RD1 d1 0 10k
+
+* copy 2: output resistance
+RS2 g2 0 10k
+RF2 g2 d2 50k
+G2 d2 0 g2 0 4m
+RD2 d2 0 10k
+IT 0 d2 DC 1
+
+.control
+op
+let rt = v(d1)
+let rin = v(g1)
+let rout = v(d2)
+print rt rin rout
+.endc
+.end

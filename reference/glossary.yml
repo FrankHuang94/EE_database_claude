@@ -4842,3 +4842,23 @@
   definition: "The separation of a two-stage amplifier's two poles by a capacitor bridging the inverting second stage: Miller multiplication pushes the lower pole down to about 1/(g_m2R_1R_2C_c), and the capacitor's shorting of the second stage at high frequency pushes the upper pole up to about g_m2/(C_1 + C_2)."
   chapter: "12-04"
   see_also: [Miller effect, Right-half-plane zero]
+- term: Desensitivity factor
+  definition: The factor 1 + T by which negative feedback divides the fractional sensitivity of the closed-loop gain to the forward gain, dA_f/A_f = (dA/A)/(1 + T); the feedback network's own errors are not divided.
+  chapter: "12-05"
+  see_also: [Loop gain, Negative feedback]
+- term: Feedback topology
+  definition: The way a feedback amplifier mixes the fed-back signal at its input (series, as a voltage, or shunt, as a current) and samples its output (shunt, the voltage, or series, the current); series connections raise an impedance by 1 + T and shunt connections lower it.
+  chapter: "12-05"
+  see_also: [Return ratio]
+- term: Return ratio
+  definition: The loop gain measured at one controlled source, without splitting the circuit into A and β, by replacing the source with an independent one of value s_c and finding the value P·x_r its controlling variable would call for, T = −P·x_r/s_c.
+  chapter: "12-05"
+  see_also: [Asymptotic-gain formula, Loop gain]
+- term: Asymptotic-gain formula
+  definition: The exact closed-loop gain of a circuit with one controlled source, A_f = A∞·T/(1 + T) + A0/(1 + T), where A∞ is the gain with the controlling variable forced to zero, A0 the gain with the source set to zero, and T the return ratio.
+  chapter: "12-05"
+  see_also: [Return ratio]
+- term: Blackman's impedance formula
+  definition: The impedance at any port of a feedback circuit, Z = Z0(1 + T_sc)/(1 + T_oc), with Z0 the impedance when the controlled source is zero and T_sc, T_oc the return ratios with the port shorted and open.
+  chapter: "12-05"
+  see_also: [Return ratio, Feedback topology]
