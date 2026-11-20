@@ -36,7 +36,7 @@ Discrete-time signal processing for engineers who will build or buy DSP hardware
 | [16-08 · Filter Structures and Implementation](chapters/16-08-filter-structures.md) | 6 | ✅ verified | [problems](problems/16-08-problems.md) · [solutions](solutions/16-08-solutions.md) · [lab](labs/16-08-lab/README.md) · [verify](verify/verify_16_08.py) |
 | [16-09 · Multirate DSP: Decimation, Interpolation and Polyphase](chapters/16-09-multirate-dsp.md) | 8 | ✅ verified | [problems](problems/16-09-problems.md) · [solutions](solutions/16-09-solutions.md) · [lab](labs/16-09-lab/README.md) · [verify](verify/verify_16_09.py) |
 | [16-10 · Quantization and Fixed-Point Effects](chapters/16-10-quantization-and-fixed-point.md) | 7 | ✅ verified | [problems](problems/16-10-problems.md) · [solutions](solutions/16-10-solutions.md) · [lab](labs/16-10-lab/README.md) · [verify](verify/verify_16_10.py) |
-| [16-11 · DSP Hardware Architectures](chapters/16-11-dsp-hardware-architectures.md) | 7 | ⬜ planned | — |
+| [16-11 · DSP Hardware Architectures](chapters/16-11-dsp-hardware-architectures.md) | 7 | ✅ verified | [problems](problems/16-11-problems.md) · [solutions](solutions/16-11-solutions.md) · [lab](labs/16-11-lab/README.md) · [verify](verify/verify_16_11.py) |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 

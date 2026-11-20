@@ -6449,3 +6449,39 @@
   definition: A large, self-sustained oscillation in a recursive fixed-point filter caused by two's-complement wrap-around on overflow; saturation arithmetic or scaling that rules out overflow prevents it.
   chapter: "16-10"
   see_also: [Limit cycle, Saturation arithmetic]
+- term: Retiming
+  definition: Moving registers across combinational logic (from all inputs of a node to all its outputs, or back) without changing a circuit's input–output behaviour, to shorten its critical path; the transposed FIR filter is the direct form retimed.
+  chapter: "16-11"
+  see_also: [Pipelining, Critical path]
+- term: Iteration bound
+  definition: "The fastest a recursive datapath can process samples, max over its loops of (computation time in the loop / registers in the loop); pipelining cannot beat it, only algebraic transformations such as look-ahead."
+  chapter: "16-11"
+  see_also: [Look-ahead transformation, Pipelining]
+- term: Look-ahead transformation
+  definition: "Rewriting a recursion by substituting it into itself, e.g. y[n] = a²y[n − 2] + a x[n − 1] + x[n], so the feedback loop contains more registers and can be pipelined; it costs extra feed-forward arithmetic."
+  chapter: "16-11"
+  see_also: [Iteration bound]
+- term: Folding (hardware)
+  definition: Time-multiplexing one arithmetic unit over several operations of an algorithm, trading clock rate for area; a MAC clocked at 400 MHz folded over 16 taps serves a 25 MS/s filter.
+  chapter: "16-11"
+  see_also: [Multiply-accumulate (MAC)]
+- term: SIMD
+  definition: Single instruction, multiple data; one instruction operates on several values packed in a wide register (for example eight 16-bit lanes of a 128-bit vector), multiplying the MACs per instruction.
+  chapter: "16-11"
+  see_also: [VLIW]
+- term: VLIW
+  definition: Very long instruction word; an architecture that issues several independent operations per cycle in one wide instruction scheduled by the compiler, the classic organization of DSP cores.
+  chapter: "16-11"
+  see_also: [SIMD]
+- term: Circular buffer
+  definition: A delay line implemented by a pointer that wraps around a fixed memory block (modulo addressing), so that a filter's history never has to be shifted; DSP processors provide the wrap in hardware.
+  chapter: "16-11"
+  see_also: [FIR filter]
+- term: Canonical signed digit (CSD)
+  definition: "A representation of a constant with digits −1, 0, +1 and no two adjacent nonzero digits, which minimizes nonzero digits and so the adders of a shift-and-add multiplier: 0.875 = 1 − 2^(−3) needs one subtractor."
+  chapter: "16-11"
+  see_also: [Multiply-accumulate (MAC)]
+- term: CORDIC
+  definition: "Coordinate rotation digital computer: an iteration of shifts, adds and a small arctangent table that rotates a vector by ±arctan 2^(−i) per step, computing sin, cos, magnitude and angle with about one bit per iteration; gain 1.64676, range ±99.88°."
+  chapter: "16-11"
+  see_also: [Multiply-accumulate (MAC)]

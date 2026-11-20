@@ -257,6 +257,10 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-249 | OCP Microscaling (MX) formats | Nov 2026 |
 | R-250 | IEEE 754-2019 status and binary16 parameters | Nov 2026 |
 | R-251 | bfloat16 definitions | Nov 2026 |
+| R-252 | TI C7x DSP and matrix-multiply accelerator | Nov 2026 |
+| R-253 | CORDIC: Volder (1959) and Walther (1971) records | Nov 2026 |
+| R-254 | AMD Versal AI Engine (AM009) | Nov 2026 |
+| R-255 | Cadence Tensilica HiFi 5 (press release, secondary copy) | Nov 2026 |
 
 ---
 
@@ -2551,3 +2555,30 @@ R&D % = R&D ÷ revenue.
 *Read on 20 Nov 2026 by a research subagent.*
 
 - Google Cloud blog, "BFloat16: The secret to high performance on Cloud TPUs" (23 August 2019): bfloat16 is "comprised of one sign bit, eight exponent bits, and seven mantissa bits"; "the dynamic range of bfloat16 is identical to that of FP32." OCP OFP8 §4.1: "bfloat16: a binary format with 1 sign bit, 8 exponent bits, 7 mantissa bits, and an exponent bias of 127." Intel, "BFLOAT16 – Hardware Numerics Definition" (Rev 1.0, Nov 2018): "a short version of FP32, skipping the least significant 16 bits of mantissa." [Established] [Google Cloud blog](https://cloud.google.com/blog/products/ai-machine-learning/bfloat16-the-secret-to-high-performance-on-cloud-tpus)
+
+## R-252 · TI C7x DSP and matrix-multiply accelerator
+
+*Read on 20 Nov 2026 by a research subagent (curl through the build proxy); the 512-bit and 4096-multiplication sentences and the TDA4VM feature line were re-read by the main author from the converted text.*
+
+- **TI SPRUIP0**, "C71x DSP CPU, Instruction Set, and Matrix Multiply Accelerator" (May 2021): "The first implementation of the C7x platform is a full-feature with 512-bit vector width CPU core"; "Dual data path with one 64-bit scalar side (Side A) and one 512-bit vector side (Side B)"; "traditional C6x VLIW DSP operating mode"; Table 3-1 (C7x vector side against C66x): fixed-point 16 × 16 MACs per cycle 32 → 128, 32 × 32 8 → 32, single-precision floating-point MACs 8 → 32, vector size 128 → 512 bits. MMA: "For 8-bit operands, there are 64 elements in row vector A and 4096 elements in square matrix B, resulting in a requirement for 4096 multiplications and the equivalent of 4096 summations per clock cycle" (1024 for 16-bit, 256 for 32-bit operands). [Established] [SPRUIP0](https://www.ti.com/lit/pdf/spruip0)
+- **TI TDA4VM** data sheet SPRSP36L (revised June 2026): "C7x floating point, vector DSP, up to 1.0GHz, 80 GFLOPS, 256 GOPS"; "Deep-learning matrix multiply accelerator (MMA), up to 8 TOPS (8b) at 1.0GHz". Derived (ours): 128 × 2 × 1 GHz = 256 GOPS and 4096 × 2 × 1 GHz = 8.19 TOPS, consistent with both. TI's C7000 optimization guide (v4.1, 2024) calls the core "Very-Long-Instruction-Word (VLIW)". Smaller parts (AM62A7, TDA4AEN-Q1) use a 256-bit vector C7x at "up to 40 GFLOPS". [Established] [TDA4VM data sheet](https://www.ti.com/lit/ds/symlink/tda4vm.pdf)
+
+## R-253 · CORDIC: Volder (1959) and Walther (1971) records
+
+*Read on 20 Nov 2026 by a research subagent from Crossref metadata (cross-checked in OpenAlex); ACM DL and dblp refused automated access and were not worked around.*
+
+- J. E. Volder, "The CORDIC Trigonometric Computing Technique", *IRE Transactions on Electronic Computers* EC-8(3), 330–334, September 1959, DOI 10.1109/TEC.1959.5222693. [Established] [Crossref](https://api.crossref.org/works/10.1109/tec.1959.5222693)
+- J. S. Walther, "A unified algorithm for elementary functions", *Proceedings of the May 18–20, 1971 Spring Joint Computer Conference*, DOI 10.1145/1478786.1478840; start page 379 (the end page was not available in the metadata). [Established] [Crossref](https://api.crossref.org/works/10.1145/1478786.1478840)
+
+## R-254 · AMD Versal AI Engine (AM009)
+
+*Read on 20 Nov 2026 by a research subagent through the docs.amd.com content API.*
+
+- **AMD AM009**, "Versal Adaptive SoC AI Engine Architecture Manual", version 1.4 (18 Feb 2026): "a highly-optimized processor featuring single-instruction multiple-data (SIMD) and very-long instruction word (VLIW) processor that supports both fixed-point and floating-point precision"; "Up to seven operations can be issued in parallel using one VLIW word"; Table 1 MACs per cycle: 8 × 8 real 128, 16 × 8 real 64, 16 × 16 real 32, 16 × 16 complex 8, 32 × 32 real 8, single-precision floating point 8; "The performance target of the AI Engine array for the –1L speed grade devices is 1 GHz with VCCINT at 0.70V." [Established] [AM009](https://docs.amd.com/r/en-US/am009-versal-ai-engine/Functional-Overview)
+
+## R-255 · Cadence Tensilica HiFi 5 (press release, secondary copy)
+
+*Read on 20 Nov 2026 by a research subagent. Cadence's own sites and Business Wire refused automated access (HTTP 403) and were not worked around; the press release was read as a verbatim reprint on Design & Reuse. Treat as a secondary copy.*
+
+- Cadence press release, 31 October 2018, "Cadence Introduces the Tensilica HiFi 5 DSP": "Five very long instruction word (VLIW)-slot architecture capable of issuing two 128-bit loads per cycle"; "Support for eight 32x32-bit or 16 16x16-bit MACs per cycle"; "Optional eight single-precision floating-point MACs per cycle". [Established, secondary copy] [Design & Reuse reprint](https://www.design-reuse.com/news/5755-cadence-introduces-the-tensilica-hifi-5-dsp-the-first-dsp-optimized-for-ai-speech-and-audio-processing/)
+- HiFi 5s (2023) figures seen only in search snippets: not verified, not used.
