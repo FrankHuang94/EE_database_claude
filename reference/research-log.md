@@ -2721,3 +2721,9 @@ R&D % = R&D ÷ revenue.
 - **PCIe 7.0 release** (PCI-SIG press release, 11 Jun 2025, reprinted by Signal Integrity Journal): "official release of the PCI Express® (PCIe®) 7.0 specification, reaching 128.0 GT/s, to members"; "Utilizes PAM4 (Pulse Amplitude Modulation with 4 levels) signaling and Flit-based encoding". [Established, secondary]
 - **PCIe 8.0 announcement** (PCI-SIG press release, 5 Aug 2025, reprinted by Silicon UK): 256.0 GT/s, "planned for release to members by 2028". [Established, secondary]
 - **PCIe 6.0/7.0 PHY** (D. Das Sharma, SNIA SDC slides): "PAM4 Signaling at 64.0 and 128.0 GT/s ... 3 eyes ... Helps channel loss (same Nyquist as 32.0 GT/s) ... Gray Coding ... Precoding"; flit "256B ... 236B TLP, 6B DLP, 8B CRC, 6B FEC"; "Light-weight FEC, strong CRC". [Established, secondary] [slides](https://www.snia.org/sites/default/files/2025-05/SNIA-SDC23-DasSharma-PCIe-7.0-Specification-Bandwidth.pdf)
+
+## R-274 · LoRa demodulator SNR and sensitivity (Semtech SX1276)
+
+*Read on 20 Nov 2026 by a research subagent from the Semtech SX1276/77/78/79 data sheet, Rev. 5 (August 2016), via a copy hosted by SparkFun; the newer Semtech downloads require a JavaScript portal and were not retrieved.*
+
+- **Table 13, "Range of Spreading Factors":** LoRa demodulator SNR from −5 dB at SF6 to −20 dB at SF12 (4096 chips per symbol), in steps of 2.5 dB (−7.5 dB at SF7). **Table 10:** sensitivity RFS_L125_HF (125 kHz, highest LNA gain) −118 dBm at SF6 to −136 dBm at SF12. **Table 12:** at 125 kHz, effective bit rate 9380 b/s at SF6 and 293 b/s at SF12 (coding rate 4/5). The measurement criterion (PER or BER) for the sensitivity is not stated in the table. [Established]

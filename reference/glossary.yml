@@ -1478,9 +1478,9 @@
   definition: The set of all possible outcomes of a random experiment, such as every possible error pattern in a block of bits; events are subsets of it.
   chapter: "03-01"
 - term: Union bound
-  definition: "The inequality P(A1 ∪ … ∪ An) ≤ P(A1) + … + P(An), valid for any events: the probability that anything goes wrong is at most the sum of the individual probabilities; tight for rare, nearly disjoint events."
+  definition: "The inequality P(A1 ∪ … ∪ An) ≤ P(A1) + … + P(An), valid for any events: the probability that anything goes wrong is at most the sum of the individual probabilities; tight for rare, nearly disjoint events. In detection, a symbol's error probability is at most the sum of Q(d/√(2N0)) over the other points (17-05)."
   chapter: "03-01"
-  see_also: [Inclusion–exclusion principle]
+  see_also: [Inclusion–exclusion principle, Q-function]
 - term: Inclusion–exclusion principle
   definition: P(A ∪ B) = P(A) + P(B) − P(A ∩ B), which corrects the double counting of outcomes in both events.
   chapter: "03-01"
@@ -4498,9 +4498,9 @@
   chapter: "11-03"
   see_also: [Matched filter]
 - term: Matched filter
-  definition: A filter whose impulse response is a known pattern reversed in time; its output is the correlation of the input with the pattern and peaks where the pattern occurs, adding the pattern's samples coherently against noise.
+  definition: A filter whose impulse response is a known pattern reversed in time; its output is the correlation of the input with the pattern and peaks where the pattern occurs, adding the pattern's samples coherently against noise. In white noise it maximizes the sampled SNR, to 2E/N0 whatever the pulse shape (17-05).
   chapter: "11-03"
-  see_also: [Cross-correlation]
+  see_also: [Cross-correlation, Correlation receiver]
 
 # ---------------------------------------------------------------- 11-04
 - term: Difference equation
@@ -6677,3 +6677,55 @@
   definition: A feed-forward FIR equalizer whose taps force the combined pulse response to zero at the lags it spans, removing that ISI at the price of noise enhancement by the sum of the squared taps.
   chapter: "17-04"
   see_also: [Decision-feedback equalizer (DFE), Intersymbol interference]
+- term: Correlation receiver
+  definition: A detector that multiplies the received signal by each candidate waveform (or basis function) and integrates over the symbol; equivalent to sampling the matched filter's output at the symbol's end.
+  chapter: "17-05"
+  see_also: [Matched filter, Integrate-and-dump]
+- term: Integrate-and-dump
+  definition: The matched filter for a rectangular pulse, an integrator reset at the start of each symbol and sampled at its end; a timing error δ (fraction of a symbol) costs (1 − δ)² of the SNR.
+  chapter: "17-05"
+  see_also: [Correlation receiver]
+- term: Cauchy–Schwarz inequality
+  definition: "|⟨u, v⟩| ≤ ‖u‖·‖v‖, with equality only when u and v are proportional; it proves that the matched filter maximizes SNR and that correlation coefficients lie between −1 and +1."
+  chapter: "17-05"
+  see_also: [Matched filter]
+- term: Signal space
+  definition: The representation of a set of waveforms as vectors in an orthonormal basis, in which energies are squared lengths, distances set error probabilities, and white noise has independent components of variance N0/2 in every direction.
+  chapter: "17-05"
+  see_also: [Gram–Schmidt procedure, Sufficient statistic]
+- term: Gram–Schmidt procedure
+  definition: Building an orthonormal basis from a set of vectors or waveforms by subtracting from each its projections onto the basis found so far and normalizing what remains; signals already in the span add no dimension.
+  chapter: "17-05"
+  see_also: [Signal space]
+- term: Sufficient statistic
+  definition: A function of the observation that preserves all the information it holds about the hypothesis; in AWGN the correlator outputs onto the signal space's basis are sufficient, and the noise outside that space is irrelevant.
+  chapter: "17-05"
+  see_also: [Signal space]
+- term: Maximum-likelihood detection
+  definition: Choosing the hypothesis that makes the observation most probable; in AWGN with equal priors, choosing the nearest constellation point.
+  chapter: "17-05"
+  see_also: [MAP detection, Decision region]
+- term: MAP detection
+  definition: Choosing the hypothesis with the largest posterior probability, which minimizes the error probability; in AWGN it minimizes |r − s_i|² − N0·ln P_i, shifting boundaries away from likely points.
+  chapter: "17-05"
+  see_also: [Maximum-likelihood detection]
+- term: Decision region
+  definition: The set of received points mapped to one symbol; for ML detection in AWGN, the Voronoi cell of the constellation point, bounded by perpendicular bisectors to its neighbours.
+  chapter: "17-05"
+  see_also: [Maximum-likelihood detection]
+- term: Antipodal signalling
+  definition: Binary signalling with s₂ = −s₁ (BPSK, polar NRZ); the largest distance for the energy, 2√Eb, giving Pb = Q(√(2Eb/N0)), 3 dB better than orthogonal or on-off signalling.
+  chapter: "17-05"
+  see_also: [Orthogonal signalling, Q-function]
+- term: Orthogonal signalling
+  definition: Signalling with mutually orthogonal waveforms of equal energy (FSK, pulse-position); binary orthogonal needs 3 dB more than antipodal, but large M-ary sets approach the Shannon limit at the cost of bandwidth growing as M/log2 M.
+  chapter: "17-05"
+  see_also: [Antipodal signalling]
+- term: Pulse compression
+  definition: Transmitting a long, wideband pulse (often a linear chirp) and matched filtering it on reception, so that detection depends on the long pulse's energy while range resolution is that of a short pulse, about c/(2B); the compression ratio is the time–bandwidth product.
+  chapter: "17-05"
+  see_also: [Matched filter]
+- term: Implementation loss
+  definition: The extra Eb/N0 a real receiver needs over the theoretical value for its modulation and code at the target error rate, from filter mismatch, timing and phase errors, quantization and nonlinearity.
+  chapter: "17-05"
+  see_also: [Implementation margin]
