@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 15-03 · Time Response and Specifications
 
 | | |

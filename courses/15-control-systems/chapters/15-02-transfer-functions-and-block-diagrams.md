@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 15-02 · Transfer Functions and Block Diagrams
 
 | | |

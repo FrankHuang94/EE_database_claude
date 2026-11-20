@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 15-05 · Stability and the Routh–Hurwitz Criterion
 
 | | |

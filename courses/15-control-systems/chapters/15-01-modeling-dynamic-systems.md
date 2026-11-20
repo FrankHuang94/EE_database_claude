@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 15-01 · Modeling Dynamic Systems
 
 | | |

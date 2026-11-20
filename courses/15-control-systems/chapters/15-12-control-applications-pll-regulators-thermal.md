@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 15-12 · Applications: PLLs, Voltage Regulators and Thermal Management
 
 | | |
