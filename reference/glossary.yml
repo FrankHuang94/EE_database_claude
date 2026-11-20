@@ -5460,3 +5460,42 @@
 - term: Reference model
   definition: An executable model of the ISA that runs one instruction at a time, used to check a processor design by comparing their results instruction by instruction.
   chapter: "14-05"
+# ---------------------------------------------------------------- 14-06
+- term: Pipeline register
+  definition: The register between two pipeline stages that holds an instruction's data and control signals from one clock edge to the next; its clock-to-Q and setup time are the pipeline's per-stage overhead.
+  chapter: "14-06"
+  see_also: [Pipelining]
+- term: Pipeline hazard
+  definition: A situation in which the next instruction cannot execute in the following cycle without giving a wrong result — a data, control or structural hazard — resolved by forwarding, stalling or flushing (distinct from a logic hazard, a glitch).
+  chapter: "14-06"
+  see_also: [Data hazard, Control hazard, Structural hazard]
+- term: Data hazard
+  definition: A pipeline hazard in which an instruction needs a result that an earlier instruction has not yet written back (a read-after-write dependence).
+  chapter: "14-06"
+  see_also: [Forwarding (bypassing), Load-use hazard]
+- term: Forwarding (bypassing)
+  definition: Routing a result from a later pipeline register (EX/MEM or MEM/WB) directly to the inputs of an instruction that needs it, instead of waiting for it to be written to the register file.
+  chapter: "14-06"
+- term: Load-use hazard
+  definition: A data hazard in which an instruction uses the result of the load just before it; the data arrives too late even for forwarding, so the pipeline stalls one cycle unless the compiler schedules an independent instruction in between.
+  chapter: "14-06"
+- term: Stall
+  definition: Holding an instruction (and those behind it) in its pipeline stage for a cycle while a bubble moves ahead, to wait out a hazard.
+  chapter: "14-06"
+  see_also: [Bubble]
+- term: Bubble
+  definition: An empty slot (a no-op) inserted into a pipeline stage by a stall or a flush; it moves through the pipeline doing nothing.
+  chapter: "14-06"
+- term: Control hazard
+  definition: A pipeline hazard caused by a branch or jump whose outcome or target is not known when the next instructions must be fetched.
+  chapter: "14-06"
+  see_also: [Flush, Branch penalty]
+- term: Flush
+  definition: Discarding instructions fetched down a wrong path (after a taken branch, under predict-not-taken) by turning them into bubbles before they change any state.
+  chapter: "14-06"
+- term: Branch penalty
+  definition: The cycles lost each time a branch or jump redirects fetch away from the predicted path; two cycles in the five-stage pipeline that resolves branches in EX.
+  chapter: "14-06"
+- term: Structural hazard
+  definition: A pipeline hazard in which two instructions need the same hardware resource (a memory port, a register-file port, an unpipelined unit) in the same cycle.
+  chapter: "14-06"

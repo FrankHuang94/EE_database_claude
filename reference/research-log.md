@@ -217,6 +217,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-209 | RISC-V ELF psABI: calling convention, relocations and relaxation | Nov 2026 |
 | R-210 | Number formats: IEEE 754-2019, bfloat16 and OCP MX (primary re-check) | Nov 2026 |
 | R-211 | Sail formal specification of the RISC-V ISA | Nov 2026 |
+| R-212 | AMD Zen 5 core (Hot Chips 2024) | Nov 2026 |
 
 ---
 
@@ -2172,3 +2173,10 @@ R&D % = R&D ÷ revenue.
 *Read on 20 Nov 2026 from the repository README (primary); tagged [Established].*
 
 - "This repository contains a formal specification of the RISC-V architecture, written in Sail. It has been adopted by RISC-V International." "The model specifies assembly language formats of the instructions, the corresponding encoders and decoders, and the instruction semantics." Given a Sail specification, the tooling can "generate executable emulators" among other uses. [riscv/sail-riscv README](https://github.com/riscv/sail-riscv/blob/master/README.md)
+
+## R-212 · AMD Zen 5 core (Hot Chips 2024)
+
+*Read on 20 Nov 2026 from AMD's slides on hotchips.org (primary vendor disclosure); tagged [Established] as the vendor's own figures.*
+
+- B. Cohen and M. Subramony (with M. Clark), AMD, "Next Generation 'Zen 5' Core", Hot Chips 2024 (HC36), Aug 2024: "8-wide dispatch, rename, retire"; "ROB/retire queue 448/224 1T/2T entries"; "D-Cache: 48KB, 12-way; 4 mem ops/cycle"; "L2-Cache: 1MB, 16-way"; "6 integer ALU". Also listed: L1I 32 KB 8-way with 2 × 32 B fetch per cycle; op cache of 6K instructions, 2 × 6-wide; decode 2 pipes × 4-wide; 240 integer physical registers (64-bit) and 384 vector registers (512-bit); 4 AGUs; L1 BTB 16K entries; return stack 52 entries; full 512-bit AVX-512 datapath; 32 MB L3 per 8-core complex; "up to" +16% IPC over Zen 4 (AMD endnote). [Hot Chips 2024 slides (PDF)](https://www.hc2024.hotchips.org/assets/program/conference/day2/24_HC2024.AMD.Cohen.Subramony.final.pdf)
+- **Not verified:** a single published pipeline depth for Zen 5.
