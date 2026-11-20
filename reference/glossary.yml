@@ -6409,3 +6409,31 @@
   definition: "The parameter k_m of stage m of a lattice, defined by A_m(z) = A_(m−1)(z) + k_m z^(−m) A_(m−1)(1/z); the step-down recursion recovers the k_m from a polynomial, and all |k_m| < 1 if and only if all its roots lie inside the unit circle."
   chapter: "16-08"
   see_also: [Lattice filter]
+- term: Interpolation (upsampling)
+  definition: Raising a sample rate by an integer L by inserting L − 1 zeros between samples and low-pass filtering with cutoff π/L and gain L, which removes the spectral images the zeros create.
+  chapter: "16-09"
+  see_also: [Anti-imaging filter, Decimation]
+- term: Anti-imaging filter
+  definition: The low-pass filter after an upsampler (or a DAC) that removes the copies of the baseband spectrum at multiples of the original sample rate.
+  chapter: "16-09"
+  see_also: [Interpolation (upsampling)]
+- term: Noble identities
+  definition: "The rules that a filter H(z^M) before a downsampler by M equals the downsampler followed by H(z), and that an upsampler by L followed by H(z^L) equals H(z) followed by the upsampler; they let filters run at the lower rate."
+  chapter: "16-09"
+  see_also: [Polyphase decomposition]
+- term: Polyphase decomposition
+  definition: "Writing H(z) = Σ z^(−k) E_k(z^M) with E_k[n] = h[nM + k]; it turns a decimator or interpolator into M short filters running at the low rate, cutting the arithmetic by M without changing the output."
+  chapter: "16-09"
+  see_also: [Noble identities, Decimation]
+- term: Half-band filter
+  definition: A linear-phase low-pass filter with band edges symmetric about a quarter of the sample rate and equal ripples, whose every other tap is zero except the middle one (1/2); the standard factor-of-two decimation and interpolation stage.
+  chapter: "16-09"
+  see_also: [Polyphase decomposition]
+- term: CIC filter
+  definition: "A cascaded integrator–comb filter: N integrators at the high rate and N combs at the low rate realize (moving sum of R)^N with no multipliers; its nulls fall on the bands that alias to DC, and its registers need B_in + N log2 R bits with wrap-around arithmetic."
+  chapter: "16-09"
+  see_also: [Decimation, Half-band filter]
+- term: Sample-rate conversion
+  definition: "Changing a signal's sample rate by a rational L/M (upsample, filter, downsample, computed in polyphase form) or, between unsynchronized clocks, by an asynchronous converter that tracks the rate ratio and interpolates at fractional positions."
+  chapter: "16-09"
+  see_also: [Interpolation (upsampling), Decimation]

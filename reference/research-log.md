@@ -248,6 +248,11 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-240 | Audio ADC biquads and decimation-filter latency options (TI TLV320ADC5140, SBAA378B) | Nov 2026 |
 | R-241 | Arm CMSIS-DSP biquad cascade functions and conventions | Nov 2026 |
 | R-242 | W3C Audio EQ Cookbook and Web Audio BiquadFilterNode; SciPy's second-order-sections recommendation | Nov 2026 |
+| R-243 | ADS127L11 sinc (CIC) filter characteristics | Nov 2026 |
+| R-244 | Hogenauer's CIC paper: bibliographic record | Nov 2026 |
+| R-245 | AMD RFSoC RF Data Converter (PG269) decimation and interpolation | Nov 2026 |
+| R-246 | TI ADC12DJ5200RF digital down-converter | Nov 2026 |
+| R-247 | TI SRC4392 asynchronous sample-rate converter | Nov 2026 |
 
 ---
 
@@ -2484,3 +2489,35 @@ R&D % = R&D ÷ revenue.
 - **W3C Web Audio API**: Recommendation, 17 June 2021; version 1.1 a Working Draft dated 22 September 2026. `BiquadFilterType`: "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"; §1.13.5: "The formulas in this section describe the filters that a conforming implementation MUST implement… They are inspired by formulas found in the Audio EQ Cookbook." Lowpass and highpass treat Q in decibels (α = sin ω0/(2·10^(Q/20))). [Established] [Web Audio API](https://www.w3.org/TR/webaudio/)
 - **SciPy v1.18.0** (`iirdesign`, `iirfilter`): "In general the second-order sections ('sos') form is recommended because inferring the coefficients for the numerator/denominator form ('ba') suffers from numerical instabilities. For reasons of backward compatibility the default form is the numerator/denominator form ('ba')"; `ellip`: "the DC gain is unity for odd-order filters, or -rp dB for even-order filters". [Established] [SciPy iirdesign](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.iirdesign.html)
 - Perishable: specification status and software defaults change.
+
+## R-243 · ADS127L11 sinc (CIC) filter characteristics
+
+*Read on 20 Nov 2026 by the main author from the converted text of the data sheet downloaded for R-238.*
+
+- **TI ADS127L11**, data sheet SBAS946C (revised September 2022), §8.3.5.2: "The low-latency filter is a cascaded-integrator-comb (CIC) topology that minimizes the delay (latency)… The CIC filter is otherwise known as a sinc filter because of the characteristic sinx/x (sinc) frequency response"; choices "sinc4, sinc4 + sinc1, sinc3, and sinc3 + sinc1"; Equation 17 gives the response with stage-1 OSR A, stage-2 OSR B, order n of 3 or 4 and fMOD = fCLK/2 = 12.8 MHz in high-speed mode. Table 8-5 (sinc4, high-speed mode, fCLK = 25.6 MHz): OSR 32: 400 kSPS, −3 dB frequency 91.0 kHz, latency 10.63 µs; OSR 64: 200 kSPS, 45.5 kHz, 20.63 µs; OSR 128: 100 kSPS, 22.75 kHz, 40.63 µs. The sinc filter is described as "suitable for fast acquisition of dc signals". [Established] [ADS127L11 data sheet](https://www.ti.com/lit/ds/symlink/ads127l11.pdf)
+
+## R-244 · Hogenauer's CIC paper: bibliographic record
+
+*Read on 20 Nov 2026 by a research subagent. IEEE Xplore returned an empty bot-protection response and was not worked around; the record is IEEE's own metadata as deposited with Crossref, and the abstract sentence comes from a secondary index (OpenAlex), not checked against Xplore.*
+
+- E. B. Hogenauer, "An economical class of digital filters for decimation and interpolation", *IEEE Transactions on Acoustics, Speech, and Signal Processing* 29(2), 155–162, April 1981, DOI 10.1109/TASSP.1981.1163535 (Crossref). Abstract (secondary): "They require no multipliers and use limited storage making them an economical alternative to conventional implementations for certain applications"; "A digital filter in this class consists of cascaded ideal integrator stages operating at a high sampling rate and an equal number of comb stages operating at a low sampling rate." [Established] [Crossref record](https://api.crossref.org/works/10.1109/TASSP.1981.1163535)
+
+## R-245 · AMD RFSoC RF Data Converter (PG269) decimation and interpolation
+
+*Read on 20 Nov 2026 by a research subagent through the docs.amd.com content API (the HTML pages render only with JavaScript). The "half-band filters" sentence was re-read by the main author from the saved topic.*
+
+- **AMD PG269**, "Zynq UltraScale+ RFSoC RF Data Converter v2.6 Gen 1/2/3/DFE LogiCORE IP Product Guide", version 2.6, 29 May 2025. RF-ADC features: "Decimation filters / Gen 1/Gen 2: 1x (bypass filter), 2x, 4x, 8x / Gen 3/DFE: 1x (bypass filter), 2x, 3x, 4x, 5x, 6x, 8x, 10x, 12x, 16x, 20x, 24x, 40x / 80% of Nyquist bandwidth, 89 dB stop-band attenuation"; "48-bit Numeric Controlled Oscillator (NCO) per RF-ADC". RF-DAC: interpolation with the same Gen 3/DFE factors, "80% pass band, 89 dB stop band attenuation". Gen 1/2 decimation: "three FIR filters: FIR2, FIR1, and FIR0 … successive decimation by a factor of two per stage", tables "FIR2—80% Pass-Band, 59-tap", "FIR1—40% Pass-Band, 23-Tap", "FIR0—20% Pass-Band, 15-Tap"; "These are all half-band filters, so only the center tap value and the first half are listed." [Established] [PG269](https://docs.amd.com/r/en-US/pg269-rf-data-converter)
+- Perishable: device generations and IP versions change.
+
+## R-246 · TI ADC12DJ5200RF digital down-converter
+
+*Read on 20 Nov 2026 by a research subagent; Table 7-12 was re-read by the main author from the converted text.*
+
+- **TI ADC12DJ5200RF**, data sheet SLVSEN9H (revised August 2026): "4x, 8x, 16x and 32x complex decimation"; "Four independent 32-Bit NCOs per DDC"; Table 7-12: for decimate-by-4, 8, 16 and 32 the maximum alias-protected signal bandwidth is 0.8 × ƒ(DEVCLK)/N, stop-band attenuation "> 90 dB", pass-band ripple "< ±0.001 dB"; §7.3.8.3: the decimation filters are "implemented as linear phase finite impulse response (FIR) filters". **Inconsistency:** the same section says "programmable overall decimation of 4 or 8", against 4/8/16/32 in Table 7-12 and the register description. NCO: ƒ(NCO) = FREQAx × 2^−32 × ƒ(DEVCLK). [Established] [ADC12DJ5200RF data sheet](https://www.ti.com/lit/ds/symlink/adc12dj5200rf.pdf)
+
+## R-247 · TI SRC4392 asynchronous sample-rate converter
+
+*Read on 20 Nov 2026 by a research subagent; the ratio and dynamic-range lines were re-read by the main author from the converted text.*
+
+- **TI SRC4392**, data sheet SBFS029D (revised December 2012): input or output sampling rate 4 to 216 kHz; "Input-to-Output Sampling Ratio 1:16 … 16:1"; "Dynamic Range with –60dB Input (A-Weighted): 144dB typical"; "THD+N with Full-Scale Input: –140dB typical". Interpolation filter: passband 0.4535 × fSIN, ripple ±0.007 dB, stopband 0.5465 × fSIN, attenuation −144 dB; decimation filter: passband 0.4535 × fSOUT, ripple ±0.008 dB, attenuation −143 dB. Group delay "102.53125/fSIN" with 64 samples pre-buffered down to "46.53125/fSIN" with 8; the decimation filter adds "36.46875/fSOUT". Block diagram: interpolation filter → re-sampler → decimation filter with a rate estimator ("two digital servo loops"). [Established] [SRC4392 data sheet](https://www.ti.com/lit/ds/symlink/src4392.pdf)
+- Perishable: an old but active part; check the current revision before citing.
