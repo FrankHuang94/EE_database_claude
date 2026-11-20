@@ -5142,3 +5142,27 @@
   definition: The reduction, in dB, of a field by a barrier; for a solid conducting sheet roughly the absorption loss 8.686 t/δ plus the reflection loss 20 log₁₀(η₀/4|η_c|). Real enclosures are usually limited by seams and apertures instead.
   chapter: "13-06"
   see_also: [Skin depth]
+- term: Telegrapher's equations
+  definition: The pair ∂v/∂z = −L′∂i/∂t − R′i and ∂i/∂z = −C′∂v/∂t − G′v for voltage and current on a transmission line, from the distributed model; for a TEM line they are Faraday's and Ampère–Maxwell's laws integrated across the cross-section.
+  chapter: "13-07"
+  see_also: [Characteristic impedance, Transmission line]
+- term: Bounce diagram
+  definition: (Lattice diagram.) A plot of position against time that tracks each wave launched on a transmission line and its reflections at both ends; the voltage at a point is the sum of all the waves that have passed it.
+  chapter: "13-07"
+  see_also: [Reflection coefficient]
+- term: Series termination
+  definition: A resistor at a driver that brings its output resistance up to the line's Z₀, so that the reflection from an open receiver is absorbed at the source; the receiver sees one clean edge and no DC power is spent.
+  chapter: "13-07"
+  see_also: [Parallel termination]
+- term: Parallel termination
+  definition: A resistor equal to Z₀ at the receiver end of a line (to ground, a supply or a mid-rail), which absorbs the incident wave so nothing reflects, at the cost of DC current whenever the line is driven away from the termination voltage.
+  chapter: "13-07"
+  see_also: [Series termination]
+- term: Critical length
+  definition: The interconnect length beyond which reflections matter and a net must be treated as a transmission line; a common guideline sets it where the one-way delay reaches about one sixth of the signal's rise time (about 2.5 mm on FR-4-like board at 100 ps).
+  chapter: "13-07"
+  see_also: [Rise time]
+- term: Time-domain reflectometry
+  definition: (TDR.) Measuring a line's impedance profile by launching a fast step and recording the reflections at the input; the round-trip time locates each discontinuity, the reflection's height gives its impedance, and a dip's or bump's area gives a shunt capacitance or series inductance.
+  chapter: "13-07"
+  see_also: [Reflection coefficient]

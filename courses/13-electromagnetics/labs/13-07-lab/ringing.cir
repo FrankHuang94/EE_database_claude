@@ -1,0 +1,23 @@
+* Lab 13-07 -- ringing on an unterminated line (Example 13-07.3).
+* A 1 V step driver with 10 ohm output resistance drives a 50 ohm, 1 ns line into an open receiver.
+* v+ = 50/60 = 0.8333 V; Gamma_S = -2/3, Gamma_L = +1. The receiver voltage steps to 1.667 V at 1 ns,
+* 0.5556 V at 3 ns, 1.296 V at 5 ns, ... converging to 1 V and ringing at 1/(4 TD) = 250 MHz.
+*
+* EXPECT v15 key:../../chapters/13-07-transmission-lines-time-domain.md#Sim_13-07.a rtol=1e-3
+* EXPECT v35 key:../../chapters/13-07-transmission-lines-time-domain.md#Sim_13-07.b rtol=1e-3
+* EXPECT v55 key:../../chapters/13-07-transmission-lines-time-domain.md#Sim_13-07.c rtol=1e-3
+
+VS src 0 PWL(0 0 5p 1 20n 1)
+RS src in 10
+T1 in 0 out 0 Z0=50 TD=1n
+RIN out 0 1e9
+
+.control
+tran 1p 8n
+meas tran v15 avg v(out) from=1.3n to=1.7n
+meas tran v35 avg v(out) from=3.3n to=3.7n
+meas tran v55 avg v(out) from=5.3n to=5.7n
+print v15 v35 v55
+quit
+.endc
+.end

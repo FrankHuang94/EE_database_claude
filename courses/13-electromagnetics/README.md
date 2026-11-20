@@ -33,7 +33,7 @@ Maxwell's equations and their engineering consequences: waves, reflection, trans
 | [13-04 · Maxwell's Equations and Time-Varying Fields](chapters/13-04-maxwells-equations.md) | 10 | ✅ verified | [problems](problems/13-04-problems.md) · [solutions](solutions/13-04-solutions.md) · [lab](labs/13-04-lab/README.md) · [verify](verify/verify_13_04.py) |
 | [13-05 · Plane Waves in Lossless and Lossy Media](chapters/13-05-plane-waves.md) | 10 | ✅ verified | [problems](problems/13-05-problems.md) · [solutions](solutions/13-05-solutions.md) · [lab](labs/13-05-lab/README.md) · [verify](verify/verify_13_05.py) |
 | [13-06 · Reflection and Transmission of Waves](chapters/13-06-reflection-and-transmission.md) | 8 | ✅ verified | [problems](problems/13-06-problems.md) · [solutions](solutions/13-06-solutions.md) · [lab](labs/13-06-lab/README.md) · [verify](verify/verify_13_06.py) |
-| [13-07 · Transmission Lines: Time Domain](chapters/13-07-transmission-lines-time-domain.md) | 10 | ⬜ planned | — |
+| [13-07 · Transmission Lines: Time Domain](chapters/13-07-transmission-lines-time-domain.md) | 10 | ✅ verified | [problems](problems/13-07-problems.md) · [solutions](solutions/13-07-solutions.md) · [lab](labs/13-07-lab/README.md) · [verify](verify/verify_13_07.py) |
 | [13-08 · Transmission Lines: Sinusoidal Steady State](chapters/13-08-transmission-lines-sinusoidal-steady-state.md) | 10 | ⬜ planned | — |
 | [13-09 · The Smith Chart and Impedance Matching](chapters/13-09-smith-chart-and-matching.md) | 10 | ⬜ planned | — |
 | [13-10 · Waveguides and Resonators](chapters/13-10-waveguides-and-resonators.md) | 6 | ⬜ planned | — |

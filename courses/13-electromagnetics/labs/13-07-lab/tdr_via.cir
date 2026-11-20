@@ -1,0 +1,22 @@
+* Lab 13-07 -- TDR of a 2 pF via on a matched 50 ohm line (Example 13-07.5).
+* A 2 V step behind 50 ohm launches a 1 V incident wave. One nanosecond down the line, a 2 pF shunt capacitance
+* sits between two 50 ohm sections; the far end is matched. The reflection returns to the input from 2 ns on.
+* Normalized by the 1 V incident wave, its area is -Z0*C/2 = -50 ps, whatever the 20 ps edge does to its shape.
+*
+* EXPECT area key:../../chapters/13-07-transmission-lines-time-domain.md#Sim_13-07.d scale=1e-12 rtol=5e-3
+
+VS src 0 PWL(0 0 20p 2 20n 2)
+RS src in 50
+T1 in 0 via 0 Z0=50 TD=1n
+CVIA via 0 2p
+T2 via 0 out 0 Z0=50 TD=1n
+RL out 0 50
+
+.control
+tran 0.5p 6n
+let refl = v(in) - 1
+meas tran area integ refl from=1.5n to=4.5n
+print area
+quit
+.endc
+.end

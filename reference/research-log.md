@@ -203,6 +203,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-195 | Bond-wire inductance rule of thumb | Nov 2026 |
 | R-196 | RF exposure limits (FCC and ICNIRP) | Nov 2026 |
 | R-197 | ITU-T G.652 single-mode fibre attributes | Nov 2026 |
+| R-198 | Interface impedances: USB 2.0 cable and PCIe board traces | Nov 2026 |
 
 ---
 
@@ -2042,3 +2043,12 @@ R&D % = R&D ÷ revenue.
 
 - **Recommendation ITU-T G.652 (08/2024)**, "Characteristics of a single-mode optical fibre and cable", Table 2 (ITU-T G.652.D attributes). Fibre attributes: mode field diameter at 1310 nm, "Range of nominal values 8.6-9.2 μm", tolerance 0.4 μm; cladding diameter "Nominal 125.0 μm"; cable cut-off wavelength "Maximum 1260 nm"; chromatic dispersion at 1550 nm between 13.3 and 18.6 ps/(nm × km). Cable attributes: attenuation coefficient "Maximum from 1310 nm to 1625 nm 0.40 dB/km" and "Maximum at 1530-1565 nm 0.30 dB/km"; Note 1 says these values "should not be applied to short cables such as jumper cables, indoor cables and drop cables". [ITU-T G.652](https://www.itu.int/rec/T-REC-G.652-202408-I/en)
 - **Derived here (13-06):** the ratio of a 1 GHz coax's loss (0.29 dB/m, Problem 13-05.13) to the fibre's 0.30 dB/km.
+
+## R-198 · Interface impedances: USB 2.0 cable and PCIe board traces
+
+*Read on 20 Nov 2026. The USB specification was read from the USB Implementers Forum's published document set; the PCIe values come from Texas Instruments application documents, because the PCI-SIG specifications are available to members only and were not read. Tagged [Established] for USB 2.0; the PCIe board-routing values are [Established] as vendor design guidance, not as the PCI-SIG text.*
+
+- **USB 2.0 Specification** (revision 2.0, 27 Apr 2000), §7.1 and the cable electrical table: high-speed signalling uses a cable with "a differential characteristic impedance (Z0) of 90 Ω ±15%, a common mode impedance (ZCM) of 30 Ω ±30%"; the table lists "Differential Cable Impedance ZO (90 Ω ±15%); 76.5 103.5 Ω". [USB document library](https://www.usb.org/document-library/usb-20-specification)
+- **Texas Instruments SLAAE45** (Sep 2021), Table 2-1 (trace impedance): "PCIe® Gen 1 and 2: 100 Ω ±5% differential; 50 Ω ±5% single ended" and "PCIe® Gen 3 and 4: 85 Ω ±5% differential; 42.5 Ω ±5% single ended". [TI SLAAE45](https://www.ti.com/lit/pdf/slaae45)
+- **Texas Instruments DS320PR810 data sheet** (SNLS668, Aug 2022), layout guidelines: "Use 85 Ω impedance traces when interfacing with PCIe CEM connectors." [TI DS320PR810](https://www.ti.com/lit/ds/symlink/ds320pr810.pdf)
+- **Not verified:** the PCI-SIG Card Electromechanical specification's own wording on 85 Ω (members only).
