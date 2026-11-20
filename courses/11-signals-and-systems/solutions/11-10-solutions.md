@@ -62,7 +62,7 @@ Setting $-20\log_{10}(2\pi f_0\sigma_t) = 70$: $\sigma_t = 10^{-3.5}/(2\pi f_0)$
 
 ### Solution 11-10.13
 
-Before: $6.02 \times 12 + 1.76$ = **74.0** dB. Oversampling by 64 keeps $1/64$ of the quantization noise in band: $+10\log_{10}64$ = **18.06** dB, giving **92.06** dB. The equivalent resolution is $(92.06 - 1.76)/6.02$ = **15.0** bits: 3 bits gained by a 64-fold rate increase, half a bit per doubling. Noise shaping (20-08) does much better.
+Before: $10\log_{10}(1.5 \times 2^{24})$ = **74.01** dB (the rule of thumb $6.02 \times 12 + 1.76$ rounds this to 74.0). Oversampling by 64 keeps $1/64$ of the quantization noise in band: $+10\log_{10}64$ = **18.06** dB, giving **92.07** dB (adding the rounded constants would give 92.06). The equivalent resolution is $(92.07 - 1.76)/6.02$ = **15.0** bits: 3 bits gained by a 64-fold rate increase, half a bit per doubling. Noise shaping (20-08) does much better.
 
 ### Solution 11-10.14
 
@@ -123,9 +123,9 @@ A single pole gives $10\log_{10}[1 + (f/f_c)^2] \ge 40$ dB at $f$ = 127.95 kHz w
 | 11-10.11g | n = 40 window width | 3.59 | kHz |
 | 11-10.12a | jitter at 100 MHz | 503 | fs |
 | 11-10.12b | jitter at 1 GHz | 50.3 | fs |
-| 11-10.13a | SNR, 12 bits | 74.0 | dB |
+| 11-10.13a | SNR, 12 bits | 74.01 | dB |
 | 11-10.13b | oversampling gain | 18.06 | dB |
-| 11-10.13c | SNR after | 92.06 | dB |
+| 11-10.13c | SNR after | 92.07 | dB |
 | 11-10.13d | equivalent bits | 15.0 | — |
 | 11-10.14a | corner frequency | 1.280 | kHz |
 | 11-10.14b | capacitor | 31.1 | nF |

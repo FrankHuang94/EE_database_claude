@@ -20,7 +20,7 @@ The envelope is $A(1 + m\cos\omega_mt)$, so its maximum is $A(1 + m)$ = 1.5 V an
 
 ### Solution 11-11.4
 
-$f_{LO} = 98.1 + 10.7$ = **108.8** MHz; $f_{image} = 98.1 + 2 \times 10.7$ = **119.5** MHz, 21.4 MHz above the station: a front-end filter must attenuate signals that far up, which is far easier than separating stations 21.4 MHz apart only after mixing.
+$f_{LO} = 98.1 + 10.7$ = **108.8** MHz; $f_{image} = 98.1 + 2 \times 10.7$ = **119.5** MHz, 21.4 MHz above the station: a front-end filter must attenuate signals that far up. It has to act *before* the mixer: after mixing, the station and its image both sit at 10.7 MHz and no filter can separate them. A 21.4 MHz offset is wide enough for a modest front-end filter.
 
 ### Solution 11-11.5
 
@@ -44,7 +44,13 @@ Spacing $3.1 + 0.9$ = **4** kHz; twelve channels need **48** kHz. The guard band
 
 ### Solution 11-11.10
 
-Butterworth **11**, Chebyshev type I **7**, elliptic **5**. The transition ratio of 2 is gentler than Example 11-11.4's 1.5, so the Butterworth penalty is smaller, but the ranking is the same.
+With the formulas of §3.6: $D = (10^6 - 1)/(10^{0.1} - 1)$ = **3.862** × 10⁶, $\log_{10}D$ = 6.587, and the transition ratio is 2.
+
+- Butterworth: $n \ge 6.587/(2\log_{10}2) = 6.587/0.6021$ = **10.94**, so order **11**.
+- Chebyshev type I: $\sqrt D$ = 1965, $\operatorname{arccosh}(1965)$ = 8.277 and $\operatorname{arccosh}2$ = 1.317, so $n \ge$ **6.28**, order **7**.
+- Elliptic: the elliptic-integral formula (or `scipy.signal.ellipord`) gives **4.46**, order **5**.
+
+The transition ratio of 2 is gentler than Example 11-11.4's 1.5, so the Butterworth penalty is smaller, but the ranking is the same.
 
 ### Solution 11-11.11
 
@@ -52,7 +58,7 @@ $1\,\text{Gb/s}/80\,\text{MHz} = 12.5$ bit/s/Hz, so $\text{SNR} \ge 2^{12.5} - 1
 
 ### Solution 11-11.12
 
-The image is at $f_0 + 2f_{IF}$. Solving $10\log_{10}[1 + Q^2(f/f_0 - f_0/f)^2] = 40$ dB for $f > f_0$ gives the image frequency $f$ = **2166** kHz, so $f_{IF} = (2166 - 600)/2$ = **783** kHz. A 455 kHz IF would give less rejection with this front end: either a sharper (two-stage) front end or a higher IF is needed.
+The image is at $f_0 + 2f_{IF}$. Solving $10\log_{10}[1 + Q^2(f/f_0 - f_0/f)^2] = 40$ dB for $f > f_0$ gives the image frequency $f$ = **2166** kHz, so $f_{IF} = (2166 - 600)/2$ = **783** kHz. A 455 kHz IF would give less rejection with this front end: either a sharper (two-stage) front end or a higher IF is needed. One caution: 783 kHz lies inside the 540–1700 kHz AM band itself, so a strong station on or near the IF could leak straight into the IF amplifier; that is one reason the standard IF, 455 kHz, sits below the band, and why a real design would pick a higher IF above the band or shield and filter the IF stage.
 
 ---
 
@@ -86,6 +92,10 @@ The image is at $f_0 + 2f_{IF}$. Solving $10\log_{10}[1 + Q^2(f/f_0 - f_0/f)^2] 
 | 11-11.10a | Butterworth order | 11 | — |
 | 11-11.10b | Chebyshev I order | 7 | — |
 | 11-11.10c | elliptic order | 5 | — |
+| 11-11.10d | discrimination D | 3.862 × 10⁶ | — |
+| 11-11.10e | Butterworth bound | 10.94 | — |
+| 11-11.10f | Chebyshev bound | 6.28 | — |
+| 11-11.10g | elliptic bound | 4.46 | — |
 | 11-11.11a | required SNR | 5792 | — |
 | 11-11.11b | required SNR | 37.6 | dB |
 | 11-11.12a | image frequency | 2166 | kHz |

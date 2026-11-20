@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 11-09 · The z-Transform
 
 | | |
@@ -131,6 +131,8 @@ Each follows from the test $\sum\lvert x[n]\rvert r^{-n} < \infty$.
 4. **A right-sided sequence has an ROC outside a circle**, $\lvert z\rvert > r_{max}$, the radius of the outermost pole for rational $X$. If the sequence is also zero for $n < 0$ (causal), the ROC includes $z = \infty$.
 5. **A left-sided sequence has an ROC inside a circle**, $\lvert z\rvert < r_{min}$, the innermost pole.
 6. **A two-sided sequence has a ring ROC** between two poles, or none.
+
+   *Why 4–6 hold.* Suppose $x$ is right-sided, zero for $n < N_1$, and the test sum converges at some radius $r_0$. For $r > r_0$, each term with $n \ge 0$ is multiplied by $(r_0/r)^n \le 1$, so it can only shrink, and the finitely many terms with $N_1 \le n < 0$ are finite for any $r > 0$ (and absent if $x$ is causal, which is why $z = \infty$ is then included). So convergence at $r_0$ implies convergence at every larger radius: the ROC is the outside of a circle, bounded by the outermost pole. For a left-sided sequence the same argument runs the other way ($n \le 0$ terms shrink as $r$ decreases), giving the inside of a circle. A two-sided sequence is the sum of one of each, so its ROC is the overlap of an outside and an inside, a ring, or empty if the circles do not overlap.
 7. **The DTFT and the unit circle.** If the ROC contains the unit circle, the sequence is absolutely summable and its DTFT is $X(e^{j\omega}) = X(z)\rvert_{z = e^{j\omega}}$. That is why 11-07 wrote the DTFT as $X(e^{j\omega})$.
 
 For a rational $X(z)$ with poles at $N$ distinct radii, there are $N + 1$ possible rings, and so up to $N + 1$ sequences with the same algebraic $X(z)$ (Example 11-09.2, Figure 2).
@@ -146,6 +148,8 @@ For a rational $X(z)$ with poles at $N$ distinct radii, there are $N + 1$ possib
 $$
 X(z) = \sum_k\frac{A_k}{1 - p_kz^{-1}}, \qquad A_k = \left[(1 - p_kz^{-1})X(z)\right]_{z = p_k} .
 $$
+
+**Repeated poles.** A pole of multiplicity 2 at $p$ needs a second term, $B/(1 - pz^{-1})^2$. Its causal inverse follows from the sequence $na^nu[n] \leftrightarrow az^{-1}/(1 - az^{-1})^2$ (the table's row, from the differentiation property of §3.5): since $\frac{1}{(1 - az^{-1})^2} = \frac{az^{-1}}{(1 - az^{-1})^2} + \frac{1}{1 - az^{-1}}$ (put both over the common denominator: $az^{-1} + 1 - az^{-1} = 1$), its inverse is $na^nu[n] + a^nu[n] = (n + 1)a^nu[n]$. Higher multiplicities add terms with $(1 - pz^{-1})^{-3}$ and so on, whose inverses carry $n^2$ and higher powers.
 
 The ROC chooses each term's side, exactly as in 11-08: if the ROC lies **outside** $\lvert p_k\rvert$, the term is $A_kp_k^nu[n]$; if it lies **inside**, the term is $-A_kp_k^nu[-n - 1]$. *Poles inside the ROC's inner circle make the future; poles outside its outer circle make the past.*
 
@@ -298,7 +302,7 @@ In positive powers, $X(z) = z(2z - 0.75)/[(z - 0.5)(z - 0.25)]$: poles at 0.5 an
 
 (c) $H(1) = 1/(1 - 1.2728 + 0.81)$ = **1.861** (carry $a_1$ to five digits: 1.273 would give 1.862): geometrically, $1/\lvert1 - p\rvert^2$, the inverse squared distance from $z = 1$ to the poles.
 
-(d) At $e^{j\pi/4}$ the near pole is at distance $1 - r = 0.1$, the far pole at $\lvert e^{j\pi/4} - 0.9e^{-j\pi/4}\rvert$ = **1.345**. So the peak is about $1/(0.1 \times 1.345)$ = **7.433**, within 0.2% of the exact 7.443 (the true peak sits slightly off π/4 because the far pole's distance also varies). The bandwidth estimate $2(1 - r)$ = **0.2** rad/sample is 7% below the exact 0.2140: at $r$ = 0.9 the pole is not very close to the circle.
+(d) At $e^{j\pi/4}$ the near pole is at distance $1 - r = 0.1$, the far pole at $\lvert e^{j\pi/4} - 0.9e^{-j\pi/4}\rvert$ = **1.345**. So the peak is about $1/(0.1 \times 1.345)$ = **7.433**, within **0.14**% of the exact 7.443 (the true peak sits slightly off π/4 because the far pole's distance also varies). The bandwidth estimate $2(1 - r)$ = **0.2** rad/sample is **6.5**% below the exact 0.2140: at $r$ = 0.9 the pole is not very close to the circle.
 
 **Sanity check.** $H(z)$ in positive powers is $z^2/[(z - p)(z - p^*)]$; the double zero at the origin is at distance 1 from every point on the circle, so it does not affect the magnitude.
 
@@ -336,19 +340,19 @@ In positive powers, $X(z) = z(2z - 0.75)/[(z - 0.5)(z - 0.25)]$: poles at 0.5 an
 
 ### Example 11-09.6 · A SerDes equalizer, digitized (tier C)
 
-**Setup.** The IEEE 802.3ck COM tool applies its reference CTLE (11-08, Example 6) to sampled pulse responses by converting it to a digital filter with the bilinear transform, using $2/T = 2f_bM$, where $M$ is the number of samples per unit interval; its backplane configuration uses $M$ = 32 [2]. For $g_{DC}$ = −12 dB (zero at 5.338 GHz, poles at 21.25 and 53.125 GHz, $f_b$ = 53.125 GBd): (a) find $T$ and the digital poles and zero for $M$ = 32; (b) find the DT frequency of the Nyquist frequency $f_b/2$, the analog frequency the bilinear transform maps there, and the digital filter's gain at that point compared with the analog −2.946 dB; (c) repeat (a) and (b) for $M$ = 2.
+**Setup.** The IEEE 802.3ck COM tool applies its reference CTLE (11-08, Example 6) to sampled pulse responses by converting it to a digital filter with the bilinear transform, using $2/T = 2f_bM$, where $M$ is the number of samples per unit interval; its backplane configuration uses $M$ = 32 [2] (task-force tool version 3.70 and a draft 3.1 configuration; the values in the published standard were not checked). For $g_{DC}$ = −12 dB (zero at 5.338 GHz, poles at 21.25 and 53.125 GHz, $f_b$ = 53.125 GBd): (a) find $T$ and the digital poles and zero for $M$ = 32; (b) find the DT frequency of the Nyquist frequency $f_b/2$, the analog frequency the bilinear transform maps there, and the digital filter's gain at that point compared with the analog −2.946 dB; (c) repeat (a) and (b) for $M$ = 2.
 
 **Solution.** (a) $T = 1/(32 \times 53.125\ \text{GHz})$ = **0.5882** ps. Each real pole or zero at $s = -2\pi f$ maps to $z = (1 + sT/2)/(1 - sT/2)$: the poles go to **0.9244** (21.25 GHz) and **0.8212** (53.125 GHz), and the zero to **0.9805**. The analog filter has one more pole than zeros, so the digital filter also gets a zero at $z = -1$, which the COM code includes explicitly [2].
 
-(b) $f_b/2$ is at $\omega = 2\pi(f_b/2)T = \pi/M$ = **0.09817** rad/sample. The bilinear transform maps this ω to the analog frequency $\frac{1}{\pi T}\tan(\omega/2)$ = **26.58** GHz, only 0.08% above 26.5625 GHz. The digital filter there has the analog response at 26.58 GHz, **−2.945** dB: warping costs 0.001 dB.
+(b) $f_b/2$ is at $\omega = 2\pi(f_b/2)T = \pi/M$ = **0.09817** rad/sample. The bilinear transform maps this ω to the analog frequency $\frac{1}{\pi T}\tan(\omega/2)$ = **26.58** GHz, only **0.080**% above 26.5625 GHz. The digital filter there has the analog response at 26.58 GHz, **−2.945** dB: warping costs **0.0011** dB.
 
-(c) With $M$ = 2, $T$ = **9.412** ps, the poles map to **0.2283** and **−0.2220** and the zero to **0.7274**. Nyquist is now at ω = π/2, which the bilinear transform takes to $\frac{1}{\pi T}\tan(\pi/4)$ = **33.82** GHz, 27% too high, and the digital gain there is **−2.816** dB, 0.13 dB off. With only two samples per UI the CTLE's second pole sits at $f_b = f_s/2$, the very edge of what the digital filter can represent, and the whole band of interest is warped. Prewarping can make the response exact at one chosen frequency, such as Nyquist, but not across the band; the remedy is more samples per UI, which is why the configuration uses 32.
+(c) With $M$ = 2, $T$ = **9.412** ps, the poles map to **0.2283** and **−0.2220** and the zero to **0.7274**. Nyquist is now at ω = π/2, which the bilinear transform takes to $\frac{1}{\pi T}\tan(\pi/4)$ = **33.82** GHz, **27.3**% too high, and the digital gain there is **−2.816** dB, **0.130** dB off. With only two samples per UI the CTLE's second pole sits at $f_b = f_s/2$, the very edge of what the digital filter can represent, and the whole band of interest is warped. Prewarping can make the response exact at one chosen frequency, such as Nyquist, but not across the band; the remedy is more samples per UI, which is why the configuration uses 32.
 
 **Sanity check.** Both versions keep the DC gain at exactly −12 dB, because $s = 0$ maps to $z = 1$. Heavy oversampling ($M$ = 32) makes $\Omega T \ll 1$ across the band of interest, where the bilinear transform is almost exactly the identity map $\omega = \Omega T$.
 
 ![The analog CTLE response compared with its bilinear-transformed digital versions at 32 and 2 samples per UI](../../../assets/figures/11-09/bilinear.svg)
 
-*Figure 6. The reference CTLE at $g_{DC}$ = −12 dB (Example 11-09.6): analog, and digitized by the bilinear transform at $M$ = 32 and $M$ = 2 samples per UI, each plotted against the analog frequency $\omega/(2\pi T)$. At $M$ = 32 the curves coincide up to Nyquist; at $M$ = 2 warping compresses the response toward $f_b$.*
+*Figure 6. The reference CTLE at $g_{DC}$ = −12 dB (Example 11-09.6): analog, and digitized by the bilinear transform at $M$ = 32 and $M$ = 2 samples per UI, each plotted against the nominal frequency $f = \omega/(2\pi T)$ (the frequency a sample-rate conversion would assign, not the warped analog frequency of Example 11-09.6(b)). At $M$ = 32 the curves coincide up to Nyquist; at $M$ = 2 warping compresses the response toward $f_b$.*
 
 ### Example 11-09.7 · A difference equation with an initial condition (tier B)
 
@@ -403,6 +407,8 @@ The zero-input part is $2(0.5)^n$. The zero-state part has residues $1/(1 - 0.5)
 | Ex 11-09.3g | far-pole distance at π/4 | 1.345 | — |
 | Ex 11-09.3h | estimated peak | 7.433 | — |
 | Ex 11-09.3i | estimated bandwidth | 0.2 | rad/sample |
+| Ex 11-09.3j | peak estimate's error | 0.14 | % |
+| Ex 11-09.3k | bandwidth estimate's shortfall | 6.5 | % |
 | Ex 11-09.4a | ω₀ | 0.24 | π rad/sample |
 | Ex 11-09.4b | cos ω₀ | 0.7290 | — |
 | Ex 11-09.4c | a₁ | −1.4288 | — |
@@ -436,6 +442,10 @@ The zero-input part is $2(0.5)^n$. The zero-state part has residues $1/(1 - 0.5)
 | Ex 11-09.6l | analog frequency mapped to π/2, M = 2 | 33.82 | GHz |
 | Ex 11-09.6m | digital gain there, M = 2 | −2.816 | dB |
 | Ex 11-09.6n | analog Nyquist gain | −2.946 | dB |
+| Ex 11-09.6o | frequency warping at Nyquist, M = 32 | 0.080 | % |
+| Ex 11-09.6p | gain error at Nyquist, M = 32 | 0.0011 | dB |
+| Ex 11-09.6q | frequency warping at Nyquist, M = 2 | 27.3 | % |
+| Ex 11-09.6r | gain error at Nyquist, M = 2 | 0.130 | dB |
 | Ex 11-09.7a | y[0] | 3 | — |
 | Ex 11-09.7b | y[1] | 2.5 | — |
 | Ex 11-09.7c | y[5] | 2.03125 | — |
@@ -491,9 +501,9 @@ The lab, [labs/11-09-lab](../labs/11-09-lab/README.md), is a notebook in four pa
 
 ### State of the art (as of Nov 2026)
 
-- **Embedded DSP runs biquad cascades.** Arm's CMSIS-DSP library implements IIR filters as cascades of second-order sections in direct form I (5 coefficients, 4 states per stage) or transposed direct form II, in floating point and fixed point, and warns that its feedback coefficients carry the opposite sign from many design tools [1] **[Established]**. Every section's poles must sit inside the stability triangle after coefficient quantization.
+- **Embedded DSP runs biquad cascades.** Arm's CMSIS-DSP library implements IIR filters as cascades of second-order sections in direct form I (5 coefficients, 4 states per stage; Q15, Q31 and floating point) or transposed direct form II (floating point only, with half the state memory), and warns that its feedback coefficients carry the opposite sign from some design tools [1] **[Established]**. The documentation gives the reason for the split: direct form I "is numerically more robust for fixed-point data types" [1] (its states are the filter's own inputs and outputs, which stay within range; 11-04). Every section's poles must sit inside the stability triangle after coefficient quantization.
 - **Sigma–delta converters decimate with pole–zero cancellation.** The ADS1292R's digital filter is a third-order sinc filter, $\lvert(1 - z^{-N})/(1 - z^{-1})\rvert^3$, at the modulator rate, with the decimation ratio $N$ set by the data rate [3] **[Established]**; at its default 500 SPS from a 128 kHz modulator, $N$ = **256**. In z-domain terms each stage is a boxcar whose pole at $z = 1$ is cancelled by a zero. Hardware commonly implements such filters as integrators at the high rate followed by differencers at the low rate; the integrators' pole on the unit circle would let their registers grow without bound, but in wraparound (two's-complement) arithmetic the final differences are still exact as long as the registers are wide enough to hold the final output range.
-- **Link simulators digitize analog models.** The IEEE 802.3ck COM code applies its CTLE to sampled pulse responses as a bilinear-transformed digital filter at 32 samples per UI, with the extra zero at $z = -1$ written out [2] **[Established]** (Example 11-09.6).
+- **Link simulators digitize analog models.** The IEEE 802.3ck COM code applies its CTLE to sampled pulse responses as a bilinear-transformed digital filter at 32 samples per UI, with the extra zero at $z = -1$ written out [2] **[Established]** for that tool (version 3.70, draft 3.1 configuration; the published standard's values were not checked) (Example 11-09.6).
 
 ### Why it matters commercially
 

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 11-07 · The Discrete-Time Fourier Transform
 
 | | |

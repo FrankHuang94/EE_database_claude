@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 11-02 · Systems and Their Properties
 
 | | |

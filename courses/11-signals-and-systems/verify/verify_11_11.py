@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from scipy import signal
+from scipy import signal, special
 from scipy.optimize import brentq
 
 HERE = Path(__file__).resolve().parent
@@ -185,11 +185,47 @@ v.check("Ex 11-11.4f", delay_spread(signal.ellip(n_e, 0.5, 50, wn_e, analog=True
 v.check("Ex 11-11.4g", 20 * math.log10(1.5))
 v.check("Ex 11-11.4h", 50 / (20 * math.log10(1.5)))
 
+
+def order_bounds(Ap, As, r):
+    """Closed-form minimum orders (before rounding up) for Butterworth, Chebyshev I, elliptic."""
+    D = (10 ** (As / 10) - 1) / (10 ** (Ap / 10) - 1)
+    k, k1 = 1 / r, 1 / math.sqrt(D)
+    K = special.ellipk                       # scipy's ellipk takes the parameter m = k^2
+    ne_ = K(k ** 2) * K(1 - k1 ** 2) / (K(k1 ** 2) * K(1 - k ** 2))
+    return D, math.log10(D) / (2 * math.log10(r)), math.acosh(math.sqrt(D)) / math.acosh(r), ne_
+
+
+D4, b4, c4, e4 = order_bounds(0.5, 50, 1.5)
+v.check("Ex 11-11.4i", D4)
+v.check("Ex 11-11.4j", b4)
+v.check("Ex 11-11.4k", c4)
+v.check("Ex 11-11.4l", e4)
+v.assert_true("closed-form bounds round up to the searched orders",
+              (math.ceil(b4), math.ceil(c4), math.ceil(e4)) == (nb, nc, ne))
+
+
+def bessel_scaled(n):
+    """n-th order Bessel low-pass scaled for exactly 0.5 dB of loss at 1 kHz; returns a loss(f) function."""
+    def loss_at(f, wc):
+        z, p, k = signal.bessel(n, wc, analog=True, output="zpk", norm="mag")
+        return -db(abs(signal.freqs_zpk(z, p, k, worN=[2 * math.pi * f])[1][0]))
+    wc = brentq(lambda c: loss_at(1e3, c) - 0.5, 2 * math.pi * 1e3, 2 * math.pi * 1e5, xtol=1e-6)
+    return lambda f: loss_at(f, wc)
+
+
+L10 = bessel_scaled(10)
+v.check("Ex 11-11.4m", L10(1.5e3))
+v.check("Ex 11-11.4n", brentq(lambda f: L10(f) - 50, 1.5e3, 1e5, xtol=1e-6) / 1e3)
+v.check("Ex 11-11.4o", 0.5 * 1.5 ** 2)
+v.assert_true("no Bessel order from 5 to 25 reaches even 2 dB at 1.5 kHz",
+              all(bessel_scaled(n)(1.5e3) < 2 for n in (5, 10, 15, 20, 25)))
+
 # ============================================================ Example 5
 for snr, key in ((30, "5a"), (25, "5b"), (10, "5c"), (0, "5d")):
     v.check(f"Ex 11-11.{key}", capacity(20e6, snr) / 1e6)
 v.check("Ex 11-11.5e", (capacity(20e6, 30) - capacity(20e6, 25)) / 20e6)
 v.check("Ex 11-11.5f", (capacity(20e6, 30) - capacity(20e6, 25)) / 1e6)
+v.check("Ex 11-11.5g", 100 * (capacity(20e6, 30) - capacity(20e6, 25)) / capacity(20e6, 30))
 
 # ============================================================ solutions
 lo1, hi1 = band_edges(50, 10e3, 1e6, fs=8e6, T=0.02)
@@ -230,6 +266,14 @@ v.check("11-11.9a", 3.1 + 0.9)
 v.check("11-11.9b", 12 * (3.1 + 0.9))
 for kind, key in (("butter", "10a"), ("cheby1", "10b"), ("ellip", "10c")):
     v.check(f"11-11.{key}", order(kind, 10e3, 20e3, 1, 60)[0])
+D10, b10, c10, e10 = order_bounds(1, 60, 2)
+v.check("11-11.10d", D10)
+v.check("11-11.10e", b10)
+v.check("11-11.10f", c10)
+v.check("11-11.10g", e10)
+v.assert_true("Problem 10 bounds round up to the searched orders",
+              (math.ceil(b10), math.ceil(c10), math.ceil(e10))
+              == tuple(order(kd, 10e3, 20e3, 1, 60)[0] for kd in ("butter", "cheby1", "ellip")))
 v.check("11-11.11a", brentq(lambda s: 80e6 * math.log2(1 + s) - 1e9, 1, 1e6))
 v.check("11-11.11b", 10 * math.log10(2 ** 12.5 - 1))
 fi = brentq(lambda fr: 10 * math.log10(1 + (30 * (fr / 600e3 - 600e3 / fr)) ** 2) - 40, 601e3, 1.2e7)

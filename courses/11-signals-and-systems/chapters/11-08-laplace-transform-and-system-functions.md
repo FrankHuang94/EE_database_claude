@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 11-08 · The Laplace Transform and System Functions
 
 | | |
@@ -218,7 +218,7 @@ and now we can say when: for $s$ in the ROC of $H$, where the integral converges
 **Both together.** A causal rational system has its ROC to the right of its rightmost pole; that half-plane contains the imaginary axis only if every pole is strictly to its left. So
 
 $$
-\text{causal and stable rational system} \iff \text{all poles in the open left half-plane, } \operatorname{Re}\{p_k\} < 0 .
+\text{causal and stable proper rational system} \iff \text{all poles in the open left half-plane, } \operatorname{Re}\{p_k\} < 0 .
 $$
 
 (The system function must also be proper: $H(s) = s$, a differentiator, has no finite poles but is not BIBO-stable, since a bounded input with a jump gives an impulse.) A system with a pole in the right half-plane can be causal or stable, but not both: it is either a causal system whose response grows, or a stable system that responds before its input arrives (Example 11-08.2).

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 11-10 · Sampling, Aliasing and Reconstruction
 
 | | |
@@ -83,11 +83,11 @@ The DTFT of the samples is the CT spectrum, scaled by $f_s$, with frequency $f$ 
 
 ### 3.2 The sampling theorem
 
-If $X(f) = 0$ for $\lvert f\rvert \ge f_M$ (the signal is **band-limited** to $f_M$) and $f_s > 2f_M$, the copies in $X_s(f)$ do not overlap: the copy at $kf_s$ occupies $(kf_s - f_M, kf_s + f_M)$, and its neighbor starts at $(k + 1)f_s - f_M > kf_s + f_M$ exactly when $f_s > 2f_M$. Then an ideal low-pass filter with gain $T$ and cutoff anywhere between $f_M$ and $f_s - f_M$ (usually $f_s/2$) removes every copy except the original, and returns $x(t)$ exactly.
+If $X(f) = 0$ for $\lvert f\rvert > f_M$ (the signal is **band-limited** to $f_M$) and $f_s > 2f_M$, the copies in $X_s(f)$ do not overlap: the copy at $kf_s$ occupies $[kf_s - f_M, kf_s + f_M]$, and its neighbor starts at $(k + 1)f_s - f_M > kf_s + f_M$ exactly when $f_s > 2f_M$. Then an ideal low-pass filter with gain $T$ and cutoff anywhere between $f_M$ and $f_s - f_M$ (usually $f_s/2$) removes every copy except the original, and returns $x(t)$ exactly.
 
 > **The sampling theorem.** A signal band-limited to $f_M$ is uniquely determined by its samples taken at a rate $f_s > 2f_M$, and it can be rebuilt from them by ideal low-pass filtering.
 
-The strict inequality matters. A sinusoid at exactly $f_s/2$ is sampled at the same phase twice per cycle: $\sin(\pi f_st)$ sampled at $t = nT$ gives $\sin(\pi n) = 0$ for every $n$, and its samples vanish entirely.
+The strict inequality matters, because the definition allows content exactly at $f_M$ (a sinusoid's spectral lines, for example). A sinusoid at exactly $f_s/2$ is sampled at the same phase twice per cycle: $\sin(\pi f_st)$ sampled at $t = nT$ gives $\sin(\pi n) = 0$ for every $n$, and its samples vanish entirely.
 
 The minimum rate $2f_M$ is the signal's **Nyquist rate**. Real designs sample faster, because no real signal is perfectly band-limited and no real filter is ideal: the gap between $f_M$ and $f_s - f_M$ is the **transition band** the anti-aliasing filter needs (§3.4).
 
@@ -183,7 +183,7 @@ It depends on the input frequency, not on the sample rate: high-frequency signal
 
 ### 3.8 Band-pass sampling
 
-A signal that occupies only a band $f_L < \lvert f\rvert < f_H$, of width $B = f_H - f_L$, does not need $f_s > 2f_H$. Sampling makes copies of both the positive band and its negative-frequency mirror; they must not overlap. Placing the band entirely within one **Nyquist zone**, the interval $[(n - 1)f_s/2,\ nf_s/2]$ for some integer $n \ge 1$, guarantees this, because then the band and every copy of its mirror fall in different zones. The conditions $(n - 1)f_s/2 \le f_L$ and $f_H \le nf_s/2$ give
+A signal that occupies only a band $f_L < \lvert f\rvert < f_H$, of width $B = f_H - f_L$, does not need $f_s > 2f_H$. Sampling makes copies of both the positive band and its negative-frequency mirror; they must not overlap. Placing the band entirely within one **Nyquist zone**, the interval $[(n - 1)f_s/2,\ nf_s/2]$ for some integer $n \ge 1$, guarantees this, because then the band and every copy of its mirror fall in different zones. The conditions $(n - 1)f_s/2 \le f_L$ and $f_H \le nf_s/2$ give the window below. It is nonempty only if $2f_H/n \le 2f_L/(n - 1)$, that is $(n - 1)f_H \le nf_L$, or $n(f_H - f_L) \le f_H$: $n \le f_H/B$, the upper limit on $n$.
 
 $$
 \frac{2f_H}{n} \le f_s \le \frac{2f_L}{n - 1}, \qquad 1 \le n \le \left\lfloor\frac{f_H}{B}\right\rfloor .
@@ -201,7 +201,7 @@ The highest allowed $n$ gives the lowest usable rate, which can approach $2B$, t
 
 **Setup.** A codec samples at 48 kHz with no anti-aliasing filter. Find the apparent frequencies of tones at 30 kHz, 50 kHz and 96.5 kHz, and the apparent phase of $\cos(2\pi \cdot 30\,\text{kHz}\,t + 60°)$.
 
-**Solution.** 30 kHz: $\lvert 30 - 48\rvert$ = **18** kHz (folded from the second half of the first zone, so the phase flips). 50 kHz: $50 - 48$ = **2** kHz. 96.5 kHz: $96.5 - 2 \times 48$ = **0.5** kHz. For the 30 kHz cosine, $30 - 48 = -18 < 0$, so it appears as $\cos(2\pi \cdot 18\,\text{kHz}\,nT - 60°)$: phase **−60**°.
+**Solution.** 30 kHz: $\lvert 30 - 48\rvert$ = **18** kHz (30 kHz lies in the second Nyquist zone, 24–48 kHz, which folds back reversed, so the phase flips). 50 kHz: $50 - 48$ = **2** kHz. 96.5 kHz: $96.5 - 2 \times 48$ = **0.5** kHz. For the 30 kHz cosine, $30 - 48 = -18 < 0$, so it appears as $\cos(2\pi \cdot 18\,\text{kHz}\,nT - 60°)$: phase **−60**°.
 
 **Sanity check.** At 48 kHz, 30 kHz completes 0.625 cycles per sample, which is the same as −0.375 cycles, i.e. 18 kHz running backward: the backward rotation is the phase flip.
 
@@ -215,11 +215,11 @@ The highest allowed $n$ gives the lowest usable rate, which can approach $2B$, t
 
 ### Example 11-10.3 · How steep must the filter be? (tier B)
 
-**Setup.** Audio from 0 to 20 kHz must be protected by 90 dB against anything that could alias into it. Use a Butterworth anti-aliasing filter with $f_c$ = 20 kHz. (a) Find the minimum order when sampling at 48 kHz. (b) Repeat for an oversampled converter running its modulator at $128 \times 48$ kHz (the oversampling ratio used in the TLV320AIC3204's performance specifications [2]) and find the attenuation a first- and a second-order filter give at the first alias frequency.
+**Setup.** Audio from 0 to 20 kHz must be protected by 90 dB against anything that could alias into it. Use a Butterworth anti-aliasing filter with $f_c$ = 20 kHz. (a) Find the minimum order when sampling at 48 kHz. (b) Repeat for an oversampled converter running its modulator at $128 \times 48$ kHz (the oversampling ratio at which the TLV320AIC3204's ADC performance is specified [2]; R-185) and find the attenuation a first- and a second-order filter give at the first alias frequency.
 
 **Solution.** (a) The first alias frequency is $48 - 20$ = 28 kHz, a ratio of 1.4 to $f_c$. From §3.4, $n \ge \ln(10^9 - 1)/(2\ln1.4) = 20.72/0.673$ = **30.8**, so **31**st order: impractical.
 
-(b) The modulator rate is $f_s$ = **6.144** MHz, so the first alias frequency is 6.124 MHz, a ratio of 306.2. Now $n \ge 20.72/(2\ln306.2)$ = **1.81**: a second-order filter is enough. First order gives $10\log_{10}(1 + 306.2^2)$ = **49.7** dB and second order **99.4** dB at that frequency. The 90 dB protection between 20 and 24 kHz must then come from the digital decimation filter, where it costs taps, not precision analog parts.
+(b) The modulator rate is $f_s$ = **6.144** MHz, so the first alias frequency is **6.124** MHz, a ratio of **306.2**. Now $n \ge 20.72/(2\ln306.2)$ = **1.81**: a second-order filter is enough. First order gives $10\log_{10}(1 + 306.2^2)$ = **49.7** dB and second order **99.4** dB at that frequency. The rest of the 90 dB protection must then come from the digital decimation filter. Before the rate drops to 48 kHz it must attenuate everything from 28 kHz up (whatever would then fold onto 0–20 kHz), or from 24 kHz up for a clean band, with 20–28 kHz as its transition band; in DSP that costs taps, not precision analog parts.
 
 **Sanity check.** Each extra order adds $20\log_{10}(\text{ratio})$ dB: about 2.9 dB per order at a ratio of 1.4, but 49.7 dB per order at a ratio of 306.
 
@@ -245,7 +245,7 @@ The highest allowed $n$ gives the lowest usable rate, which can approach $2B$, t
 
 **Sanity check.** Sampling cos(2π·450t) at 500 SPS gives cos(1.8πn) = cos(0.2πn), literally the same sequence as a 50 Hz input; no DT system can treat them differently.
 
-### Example 11-10.6 · Sampling a 20 MHz band at 70 MHz (tier C)
+### Example 11-10.6 · Sampling a 20 MHz band centred at 70 MHz (tier C)
 
 **Setup.** A receiver's IF occupies 60–80 MHz. (a) List the allowed sample-rate windows for band-pass sampling. (b) Choose $f_s$ = 56 MHz: which Nyquist zone holds the band, where does it land, and is it inverted? (c) With 100 fs RMS clock jitter, find the jitter-limited SNR at 70 MHz and at 80 MHz.
 
@@ -259,13 +259,13 @@ The highest allowed $n$ gives the lowest usable rate, which can approach $2B$, t
 
 ### Example 11-10.7 · The ADS1292R's two anti-aliasing filters (tier C)
 
-**Setup.** The ADS1292R samples with a modulator at $f_{MOD}$ = 128 kHz, decimates with a sinc³ filter ($N$ = 256) to $f_{DR}$ = 500 SPS, and relies on an RC filter whose −3 dB bandwidth is 8.4 kHz (an internal 2 kΩ and an external 4.7 nF) to handle what the sinc filter cannot [1]. (a) Show that 8.4 kHz is consistent with the parts if the filter is differential, with 2 kΩ in each leg. (b) Interference at 450 Hz would alias to 50 Hz at the output: find the sinc³ attenuation. (c) Interference at $f_{MOD} - 50$ Hz = 127.95 kHz would also alias to 50 Hz: find the sinc³ and RC attenuations and their total.
+**Setup.** The ADS1292R samples with a modulator at $f_{MOD}$ = 128 kHz, decimates with a sinc³ filter ($N$ = 256) to $f_{DR}$ = 500 SPS, and filters the PGA output before the modulator with an RC filter whose −3 dB bandwidth is 8.4 kHz (an internal 2 kΩ and an external 4.7 nF) [1]. (a) The data sheet's PGA diagram draws 2 kΩ in each output leg and the capacitor across the two outputs: show that 8.4 kHz is consistent with that. (b) Interference at 450 Hz would alias to 50 Hz at the output: find the sinc³ attenuation. (c) Interference at $f_{MOD} - 50$ Hz = 127.95 kHz would also alias to 50 Hz: find the sinc³ and RC attenuations and their total.
 
-**Solution.** (a) A differential RC with $R_S$ = 2 kΩ in each leg and $C$ across the pair has time constant $2R_SC$: $1/(2\pi \times 4\,\text{k}\Omega \times 4.7\,\text{nF})$ = **8.47** kHz, consistent with the stated 8.4 kHz (and with the 15% tolerance on $R_S$ [1]). This is an inference from the stated values, not a circuit given in the data sheet.
+**Solution.** (a) A differential RC with $R_S$ = 2 kΩ in each leg and $C$ across the pair has time constant $2R_SC$: $1/(2\pi \times 4\,\text{k}\Omega \times 4.7\,\text{nF})$ = **8.47** kHz, consistent with the stated 8.4 kHz (and with the 15% tolerance on $R_S$ [1]). The data sheet's Figure 22 (PGA implementation) draws exactly this circuit, and its specification table defines $C_{FILTER}$ as "the capacitor accross the PGA outputs" [1].
 
 (b) The sinc³ response is $\left\lvert\sin(\pi f/f_{DR})/(N\sin(\pi f/f_{MOD}))\right\rvert^3$. At 450 Hz: **1.306** × 10⁻³, or **−57.7** dB.
 
-(c) At 127.95 kHz the sinc³ response has *repeated*: $\sin(\pi f/f_{MOD})$ is small again near $f = f_{MOD}$, and the filter attenuates by only **0.43** dB. The RC gives $10\log_{10}[1 + (127.95/8.4)^2]$ = **23.7** dB. Total: **24.1** dB. An interferer near 128 kHz, from a switching regulator or a radio, reaches the 50 Hz output only 24 dB down, which is why the data sheet says the RC filter must be chosen to attenuate interference near multiples of $f_{MOD}$ [1].
+(c) At 127.95 kHz the sinc³ response has *repeated*: $\sin(\pi f/f_{MOD})$ is small again near $f = f_{MOD}$, and the filter attenuates by only **0.43** dB. The RC gives $10\log_{10}[1 + (127.95/8.4)^2]$ = **23.7** dB. Total: **24.1** dB. An interferer near 128 kHz, from a switching regulator or a radio, reaches the 50 Hz output only 24 dB down, which is why the data sheet asks that "the input R-C anti-aliasing filters in the system" be chosen to attenuate interference around multiples of $f_{MOD}$ [1]. The on-chip PGA-output RC is one filter in that chain; the external filter at the electrode inputs is the place to add attenuation.
 
 **Sanity check.** A decimation filter is periodic in the *modulator's* sample rate (it is a DT filter running at $f_{MOD}$), so it cannot protect against anything near $kf_{MOD}$; only an analog filter before the modulator can.
 
@@ -289,6 +289,7 @@ The highest allowed $n$ gives the lowest usable rate, which can approach $2B$, t
 | T 11-10.i | alias of 7 kHz at 10 kHz | 3 | kHz |
 | T 11-10.j | 127.95 kHz interferer's advantage over 450 Hz | 33.6 | dB |
 | T 11-10.k | Nyquist at 53.125 GBd | 26.56 | GHz |
+| T 11-10.l | CD sample rate over a 20 kHz band | 2.2 | — |
 | Ex 11-10.1a | alias of 30 kHz | 18 | kHz |
 | Ex 11-10.1b | alias of 50 kHz | 2 | kHz |
 | Ex 11-10.1c | alias of 96.5 kHz | 0.5 | kHz |
@@ -307,6 +308,7 @@ The highest allowed $n$ gives the lowest usable rate, which can approach $2B$, t
 | Ex 11-10.3h | ln(10⁹ − 1) | 20.72 | — |
 | Ex 11-10.3i | 2 ln 1.4 | 0.673 | — |
 | Ex 11-10.3j | ratio of first alias to cutoff, oversampled | 306.2 | — |
+| Ex 11-10.3k | first alias frequency, oversampled | 6.124 | MHz |
 | Ex 11-10.4a | droop at 20 kHz | 0.7379 | — |
 | Ex 11-10.4b | droop at 20 kHz | −2.64 | dB |
 | Ex 11-10.4c | image weight at 28 kHz | 0.5271 | — |
@@ -384,7 +386,7 @@ The lab, [labs/11-10-lab](../labs/11-10-lab/README.md), is a notebook in four pa
 
 ### State of the art (as of Nov 2026)
 
-- **Biopotential front ends combine two anti-aliasing filters.** The ADS1292R samples with a second-order ΔΣ modulator at a typical 128 kHz and decimates with a sinc³ filter whose nulls fall at the output data rate and its multiples; the data sheet notes that its passband "repeats itself at every fMOD" and that the input RC filter, an internal 2 kΩ with an external 4.7 nF giving a −3 dB bandwidth of 8.4 kHz, must attenuate interference near multiples of $f_{MOD}$; the internal resistor is accurate to 15%, and a larger capacitor improves anti-aliasing at the cost of THD [1] **[Established]** (data sheet).
+- **Biopotential front ends combine two anti-aliasing filters.** The ADS1292R samples with a second-order ΔΣ modulator at a typical 128 kHz and decimates with a sinc³ filter whose nulls fall at the output data rate and its multiples; the data sheet notes that its passband "repeats itself at every fMOD" and that the system's input R-C anti-aliasing filters should be chosen to attenuate interference around multiples of $f_{MOD}$. On chip, the PGA output is filtered by an internal 2 kΩ in each leg with an external 4.7 nF across the outputs, a −3 dB bandwidth of 8.4 kHz; the internal resistor is accurate to 15%, and a larger capacitor improves anti-aliasing at the cost of THD [1] **[Established]** (data sheet).
 - **Audio codecs oversample.** The TLV320AIC3204's ADC uses a delta-sigma modulator with a programmable oversampling ratio followed by a digital decimation filter, supports sampling rates from 8 kHz to 192 kHz, and its processing blocks with decimation filter A use an oversampling ratio of 128 or 64 [2] **[Established]**. At 48 kHz and a ratio of 128, the modulator runs at **6.144** MHz (Example 11-10.3).
 - **Links that sample once per symbol fold everything above Nyquist.** A receiver that samples a 53.125 GBd lane once per symbol has a Nyquist frequency of 26.56 GHz, the frequency at which 11-08's reference CTLE is evaluated; by §3.3, signal and noise above it fold into the band, so the noise a receiver admits above Nyquist matters as much as the noise below it **[Established]** (a consequence of the sampling theorem; specific receiver architectures are outside this chapter).
 
@@ -398,9 +400,9 @@ The lab, [labs/11-10-lab](../labs/11-10-lab/README.md), is a notebook in four pa
 
 ### Marketing vs Reality
 
-- **"24-bit ADC."** *Reality:* the bits describe the output word; noise, jitter and aliasing set the usable resolution (effective number of bits, $(\text{SNR} - 1.76)/6.02$). *Sanity check:* ask for SNR or ENOB at the relevant input frequency and bandwidth.
+- **"24-bit ADC."** *Reality:* the bits describe the output word; noise, jitter and aliasing set the usable resolution (effective number of bits, $(\text{SINAD} - 1.76)/6.02$, where SINAD is the ratio of signal to noise plus distortion). *Sanity check:* ask for SNR or ENOB at the relevant input frequency and bandwidth.
 - **"No anti-aliasing filter needed."** *Reality:* oversampling converters relax the analog filter but cannot reject interference near multiples of the modulator rate; something analog must. *Sanity check:* ask for the alias rejection near $f_{MOD}$.
-- **"Samples at 2× the bandwidth."** *Reality:* this ignores transition bands and folding noise; practical rates are 2.2–2.5× or more with sharp filters, or far higher with oversampling. *Sanity check:* ask for the anti-aliasing filter's attenuation at $f_s - f_B$.
+- **"Samples at 2× the bandwidth."** *Reality:* this ignores transition bands and folding noise; practical rates are noticeably above 2× with sharp analog filters (CD audio's 44.1 kHz for a 20 kHz band is **2.2**×; Problem 11-10.8 shows how little room that leaves), or far higher with oversampling. *Sanity check:* ask for the anti-aliasing filter's attenuation at $f_s - f_B$.
 
 ### Questions for engineering leaders
 

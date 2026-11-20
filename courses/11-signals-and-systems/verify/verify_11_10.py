@@ -84,6 +84,7 @@ v.check("T 11-10.g", np.sinc(0.25))
 v.check("T 11-10.h", db(np.sinc(0.25)))
 v.check("T 11-10.i", apparent(7e3, 10e3) / 1e3)
 v.check("T 11-10.k", 53.125 / 2)
+v.check("T 11-10.l", 44.1 / 20)
 # quantizer simulation for 6.02N + 1.76 at N = 12
 N12 = 12
 tq = np.arange(2 ** 20)
@@ -102,14 +103,19 @@ n = np.arange(480)
 v.check("Ex 11-10.1d", fit_phase(np.cos(2 * np.pi * 30e3 * n / 48e3 + math.radians(60)), 18e3, 48e3))
 
 # ============================================================ Example 2: noise folding
-def folded_ratio(B, fs, grid=200000):
-    """Integrate a flat PSD on [0, B] folded into [0, fs/2], relative to the PSD's own share of [0, fs/2]."""
+def folded_psd(B, fs, nbins=240, grid=2_400_000):
+    """Fold a unit, flat PSD on [0, B] into [0, fs/2] frequency by frequency, and return the folded
+    PSD (relative to the original) in nbins bins: where the noise lands, not only how much."""
     f = (np.arange(grid) + 0.5) * (B / grid)
-    fa = np.abs(((f + fs / 2) % fs) - fs / 2)
-    return np.sum(fa <= fs / 2) * (B / grid) / (fs / 2)
+    fa = np.abs(((f + fs / 2) % fs) - fs / 2)                 # alias of each frequency
+    hist, _ = np.histogram(fa, bins=nbins, range=(0, fs / 2), weights=np.full(grid, B / grid))
+    return hist / (fs / 2 / nbins)
 
 
-ratio = folded_ratio(1e6, 48e3)
+dens2 = folded_psd(1e6, 48e3)
+v.assert_true("folded PSD is 41 or 42 times the original in every bin (41.67 half-zones fold in)",
+              np.all((np.abs(dens2 - 41) < 0.02) | (np.abs(dens2 - 42) < 0.02)))
+ratio = dens2.mean()
 v.check("Ex 11-10.2a", ratio)
 v.check("Ex 11-10.2b", 10 * math.log10(ratio))
 v.check("Ex 11-10.2c", 20e-9 * math.sqrt(24e3) * 1e6)
@@ -130,6 +136,7 @@ v.check("Ex 11-10.3g", 20 * math.log10(1.4))
 v.check("Ex 11-10.3h", math.log(1e9 - 1))
 v.check("Ex 11-10.3i", 2 * math.log(1.4))
 v.check("Ex 11-10.3j", (fmod - 20e3) / 20e3)
+v.check("Ex 11-10.3k", (fmod - 20e3) / 1e6)
 
 # ============================================================ Example 4: zero-order hold
 (a20, a28, a68), _, _ = zoh_levels(20e3, 48e3, [20e3, 28e3, 68e3])
@@ -184,7 +191,8 @@ v.check("Ex 11-10.6a", lo3 / 1e6)
 v.check("Ex 11-10.6b", hi3 / 1e6)
 v.assert_true("40 MHz is allowed and 39.9 / 40.1 MHz are not",
               not overlaps(40e6) and overlaps(39.9e6) and overlaps(40.1e6))
-v.check("Ex 11-10.6c", 40)
+v.check("Ex 11-10.6c", 2 * fH / 4 / 1e6)
+v.assert_true("n = 4 window collapses to one rate", abs(2 * fH / 4 - 2 * fL / 3) < 1)
 img = sorted([((f % 56e6) if (f % 56e6) <= 28e6 else 56e6 - (f % 56e6)) for f in (fL, fH)])
 v.check("Ex 11-10.6d", img[0] / 1e6)
 v.check("Ex 11-10.6e", img[1] / 1e6)
@@ -258,7 +266,7 @@ v.check("11-10.6f", 2 * math.log(350 / 150))
 v.check("11-10.6g", 3850 / 150)
 v.check("11-10.7a", 20e-9 * math.sqrt(1e6) * 1e6)
 v.check("11-10.7b", 20e-9 * math.sqrt(5e4) * 1e6)
-v.check("11-10.7c", 10 * math.log10(folded_ratio(1e6, 100e3)))
+v.check("11-10.7c", 10 * math.log10(folded_psd(1e6, 100e3).mean()))
 (g20, g241), _, _ = zoh_levels(20e3, 44.1e3, [20e3, 24.1e3], over=256, periods=2)
 v.check("11-10.8a", g20)
 v.check("11-10.8b", db(g20))
@@ -280,7 +288,8 @@ v.check("11-10.10a", xr[0])
 v.check("11-10.10b", xr[1])
 fL2, fH2 = 10.6e6, 10.8e6
 v.assert_true("n = 54 allows only 0.4 MHz", not overlaps(0.4e6, fL2, fH2, K=80) and overlaps(0.4001e6, fL2, fH2, K=80))
-v.check("11-10.11a", 0.4)
+v.check("11-10.11a", 2 * fH2 / 54 / 1e6)
+v.assert_true("n = 54 window has zero width", abs(2 * fH2 / 54 - 2 * fL2 / 53) < 1e-3)
 
 
 def window2(lo_g, hi_g):
@@ -300,10 +309,11 @@ v.check("11-10.11g", (h40 - l40) / 1e3)
 # solve in femtoseconds: brentq's absolute xtol (2e-12) would swamp a root of order 1e-13 s
 v.check("11-10.12a", brentq(lambda s_fs: -db(2 * math.pi * 100e6 * s_fs * 1e-15) - 70, 1, 1e5))
 v.check("11-10.12b", brentq(lambda s_fs: -db(2 * math.pi * 1e9 * s_fs * 1e-15) - 70, 1, 1e5))
-v.check("11-10.13a", 6.02 * 12 + 1.76)
+snr12 = 10 * math.log10(1.5 * 2 ** 24)                     # exact full-scale-sine SNR, 12 bits
+v.check("11-10.13a", snr12)
 v.check("11-10.13b", 10 * math.log10(64))
-v.check("11-10.13c", 6.02 * 12 + 1.76 + 10 * math.log10(64))
-v.check("11-10.13d", (6.02 * 12 + 10 * math.log10(64)) / 6.02)
+v.check("11-10.13c", 10 * math.log10(1.5 * 2 ** 24 * 64))
+v.check("11-10.13d", (10 * math.log10(1.5 * 2 ** 24 * 64) - 10 * math.log10(1.5)) / (20 * math.log10(2)))
 fc14 = brentq(lambda fc: 10 * math.log10(1 + (127.95e3 / fc) ** 2) - 40, 100, 1e5)
 v.check("11-10.14a", fc14 / 1e3)
 v.check("11-10.14b", 1 / (2 * math.pi * 4e3 * fc14) * 1e9)
@@ -321,7 +331,10 @@ W = np.fft.rfft(w)
 fr = np.fft.rfftfreq(Nn, 1 / fsim)
 wb = np.fft.irfft(W * (fr <= 1e6), Nn)
 wf = np.fft.irfft(W * (fr <= 24e3), Nn)
-v.check("Lab 11-10.d", 10 * math.log10(np.var(wb[::M]) / np.var(wf[::M])), rtol=5e-3)
+lab_d = 10 * math.log10(np.var(wb[::M]) / np.var(wf[::M]))
+v.check("Lab 11-10.d", lab_d, rtol=5e-3)
+v.assert_true("time-domain noise simulation agrees with the folded-PSD ratio within 0.1 dB",
+              abs(lab_d - 10 * math.log10(ratio)) < 0.1)
 v.check("Lab 11-10.e", chain(450))
 v.check("Lab 11-10.f", chain(127.95e3))
 

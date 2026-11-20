@@ -63,13 +63,13 @@ $\theta = 2\pi \times 1000/16\,000$ = **0.3927** rad/sample. The bandwidth in ra
 
 ### Solution 11-09.11
 
-(a) $T = 10^{-4}$ s, and $h[n] = Te^{-1000nT} = T(e^{-0.1})^n$, so $H(z) = T/(1 - e^{-0.1}z^{-1})$: the pole is $e^{-0.1}$ = **0.9048** (from $z = e^{sT}$). The DC gain is $T/(1 - 0.9048)$ = **1.051** × 10⁻³, against the analog $1/1000$: **5.1**% high, because impulse invariance aliases the response's tail back onto DC.
+(a) $T = 10^{-4}$ s, and $h[n] = Te^{-1000nT} = T(e^{-0.1})^n$, so $H(z) = T/(1 - e^{-0.1}z^{-1})$: the pole is $e^{-0.1}$ = **0.9048** (from $z = e^{sT}$). The DC gain is $T/(1 - 0.9048)$ = **1.051** × 10⁻³, against the analog $1/1000$: **5.1**% high. Almost all of that comes from the jump at $t = 0$: impulse invariance takes the full value $h(0^+) = 1$ at $n = 0$, whereas the sum that equals the aliased analog spectrum, $\sum_kH(j2\pi k/T)$, uses the jump's midpoint, $\tfrac12$. That half-sample, $T/2 = 0.5 \times 10^{-4}$, is **5.0**% of the DC gain; the genuine aliasing of the spectrum's tail adds only $(T/2)\coth(0.05)/10^{-3} - 1$ = **0.083**%. Halving $h[0]$, a standard correction for a response that jumps, removes the 5%.
 
 (b) $z = (1 + sT/2)/(1 - sT/2)$ with $sT/2 = -0.05$: the pole is $0.95/1.05$ = **0.9048** as well (to four digits). DC maps to $z = 1$, so the DC gain is exactly 1/1000. The corner maps to $\omega = 2\arctan(1000T/2)$ = **0.09992** rad/sample, against $\Omega T = 0.1$: warping is negligible because the corner is far below the sample rate.
 
 ### Solution 11-09.12
 
-The width in rad/sample is $2\pi \times 1/500 = 0.01257$, so $1 - r = 0.006283$ and $r$ = **0.9937**. The exact −3 dB width is **1.003** Hz. The transient's time constant is $-1/\ln r$ = **158.7** samples, **0.3173** s, and decaying to 1% takes $\ln 0.01/\ln r$ = **731** samples, **1.461** s. The cost of a narrow notch is time: it takes over a second to adapt when the hum's amplitude or phase changes, and an ECG front end must decide whether that settling is acceptable.
+The width in rad/sample is $2\pi \times 1/500 = 0.01257$, so $1 - r = 0.006283$ and $r$ = **0.9937**. The exact −3 dB width is **1.003** Hz. The transient's time constant is $-1/\ln r$ = **158.7** samples, **0.3173** s, and decaying to 1% takes $\ln 0.01/\ln r$ = **730.6** samples (so **731** whole samples), **1.461** s. The cost of a narrow notch is time: it takes over a second to adapt when the hum's amplitude or phase changes, and an ECG front end must decide whether that settling is acceptable.
 
 ### Solution 11-09.13
 
@@ -142,6 +142,8 @@ With $q = 2^{-8}$, the largest $a_2$ below 1 is $1 - q$, so $r = \sqrt{1 - q}$ =
 | 11-09.11c | DC gain error | 5.1 | % |
 | 11-09.11d | bilinear pole | 0.9048 | — |
 | 11-09.11e | mapped corner | 0.09992 | rad/sample |
+| 11-09.11f | error from the jump at t = 0 | 5.0 | % |
+| 11-09.11g | error from spectral aliasing | 0.083 | % |
 | 11-09.12a | r | 0.9937 | — |
 | 11-09.12b | exact width | 1.003 | Hz |
 | 11-09.12c | time constant | 158.7 | samples |
@@ -150,6 +152,7 @@ With $q = 2^{-8}$, the largest $a_2$ below 1 is $1 - q$, so $r = \sqrt{1 - q}$ =
 | 11-09.12f | time to 1% | 1.461 | s |
 | 11-09.12g | width in rad/sample | 0.01257 | rad/sample |
 | 11-09.12h | 1 − r | 0.006283 | — |
+| 11-09.12i | samples to 1%, unrounded | 730.6 | — |
 | 11-09.13a | r | 0.99804 | — |
 | 11-09.13b | largest a₁ magnitude | 1.9922 | — |
 | 11-09.13c | smallest angle | 0.06254 | rad/sample |

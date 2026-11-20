@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 11-04 · LTI Systems and Differential/Difference Equations
 
 | | |

@@ -13,10 +13,10 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_11_exa
 
 ## 2 · System properties
 
-(i) Linear; **time-varying** (a delayed input gives $t\,x(t - t_0)$, not $(t - t_0)x(t - t_0)$); causal and memoryless; **unstable** (a bounded input $x = 1$ gives the unbounded $y = t$).
+(a) (i) Linear; **time-varying** (a delayed input gives $t\,x(t - t_0)$, not $(t - t_0)x(t - t_0)$); causal and memoryless; **unstable** (a bounded input $x = 1$ gives the unbounded $y = t$).
 (ii) Linear; **time-varying** (a decimator: shifting the input by one sample does not shift the output); **noncausal** ($y[1]$ needs $x[2]$); stable.
 (iii) Linear and time-invariant at rest; causal; stable, since its impulse response $0.5^nu[n]$ is absolutely summable.
-(d) $\lvert y\rvert \le B\sum_n0.5^n = 2B$: the bound is **2** times $B$, reached by $x = B$ for all time.
+(b) $\lvert y\rvert \le B\sum_n0.5^n = 2B$: the bound is **2** times $B$, approached by $x = B$ applied for a long time (the output $2B(1 - 0.5^{n+1})$ tends to $2B$).
 
 ## 3 · Convolution
 
@@ -35,11 +35,11 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_11_exa
 (b) Its power is 1 V²; the fundamental's is $(4/\pi)^2/2 = 8/\pi^2$ = **0.8106** of it.
 (c) THD $= \sqrt{(1 - 8/\pi^2)/(8/\pi^2)} = \sqrt{\pi^2/8 - 1}$ = **48.34**%.
 
-## 6 · A decaying exponential's spectrum
+## 6 · Transforms by properties
 
-(a) $X(f) = 1/(1000 + j2\pi f)$, so $\lvert X\rvert^2$ halves at $2\pi f = 1000$: **159.2** Hz.
-(b) $\int_0^\infty e^{-2000t}dt = 1/2000$ V²·s, which across 1 Ω is **0.5** mJ.
-(c) By Parseval, the fraction below $f_c$ is $\frac{2}{\pi}\arctan(1)$ = **0.5**: exactly half the energy lies below the −3 dB frequency of a single pole.
+(a) Write $y(t) = x(2(t - 1))$ with $x(t) = e^{-t}u(t)$. Scaling by 2: $x(2t) \leftrightarrow \tfrac12X(j\omega/2) = \tfrac12\cdot\frac{1}{1 + j\omega/2} = \frac{1}{2 + j\omega}$. Delaying by 1 s multiplies by $e^{-j\omega}$: $Y(j\omega) = e^{-j\omega}/(2 + j\omega)$. The delay changes only the phase, so $\lvert Y(j2)\rvert = 1/\lvert2 + j2\rvert = 1/\sqrt8$ = **0.3536**.
+(b) Frequency differentiation, $t\,x(t) \leftrightarrow j\,dX/d\omega$: $j\frac{d}{d\omega}(1 + j\omega)^{-1} = j \cdot (-j)(1 + j\omega)^{-2} = 1/(1 + j\omega)^2$.
+(c) In time: $\int_0^\infty t^2e^{-2t}dt = 2!/2^3$ = **0.25** (V²·s if $z$ is in volts). By Parseval: $\frac{1}{2\pi}\int_{-\infty}^{\infty}\frac{d\omega}{(1 + \omega^2)^2}$, and the integral is **1.571** ($\pi/2$, by $\omega = \tan\theta$: $\int\cos^2\theta\,d\theta$ over $(-\pi/2, \pi/2)$), giving $(\pi/2)/(2\pi)$ = **0.25**. The two agree.
 
 ## 7 · A four-point average
 
@@ -59,17 +59,18 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_11_exa
 (b) $e^{-\pi\zeta/\sqrt{1 - \zeta^2}}$ = **12.31**%.
 (c) $\zeta = 2/\sqrt K = 0.7071$ gives $K$ = **8**.
 
-## 10 · A digital notch
+## 10 · One formula, three sequences
 
-(a) $\omega_0 = \pi/3$ is $f_s/6$ = **166.7** Hz. $a_1 = -2(0.95)\cos(\pi/3)$ = **−0.95** and $a_2 = 0.95^2$ = **0.9025**.
-(b) The numerator $1 - z^{-1} + z^{-2}$ is 1 at DC and the denominator is $1 - 0.95 + 0.9025 = 0.9525$, so $K$ = **0.9525**.
-(c) Width ≈ $2(1 - r)$ = 0.1 rad/sample, or $0.1 \times 1000/(2\pi)$ = **15.92** Hz. Margin $1 + 0.9025 - 0.95$ = **0.9525** > 0 and $\lvert a_2\rvert < 1$: stable.
+(a) $X(z) = \frac{A}{1 - 0.8z^{-1}} + \frac{B}{1 + 1.25z^{-1}}$ with $A = \frac{1}{1 + 1.25/0.8} = \frac{1}{2.5625}$ = **0.3902** (exactly 16/41) and $B = \frac{1}{1 - 0.8/(-1.25)} = \frac{1}{1.64}$ = **0.6098** (25/41). Check: $A + B = 1 = X(\infty)$.
+(b) Poles at radii 0.8 and 1.25 give three ROCs. $\lvert z\rvert > 1.25$: causal, growing as $1.25^n$, not summable. $0.8 < \lvert z\rvert < 1.25$: two-sided, and the only one whose ROC contains the unit circle, so the only absolutely summable one. $\lvert z\rvert < 0.8$: anticausal, growing as $0.8^n$ for $n \to -\infty$, not summable.
+(c) In the ring, the pole at 0.8 is inside the ROC's inner circle (right-sided term) and the pole at −1.25 outside its outer circle (left-sided term): $x[n] = A(0.8)^nu[n] - B(-1.25)^nu[-n - 1]$. So $x[0] = A$ = **0.3902**, $x[2] = 0.3902 \times 0.64$ = **0.2498**, and $x[-1] = -B(-1.25)^{-1} = 0.6098 \times 0.8$ = **0.4878**.
 
-## 11 · Sampling audio
+## 11 · A sampled-data chain
 
-(a) $\lvert 30 - 44.1\rvert$ = **14.1** kHz, inside the audio band.
-(b) First alias frequency $44.1 - 20 = 24.1$ kHz, a ratio of 1.205. $n \ge \ln(10^6 - 1)/(2\ln1.205)$ = **37.04**, so **38**th order: impractical, which is why audio converters oversample.
-(c) $-20\log_{10}(2\pi \times 20\,\text{kHz} \times 1\,\text{ns})$ = **78.0** dB.
+(a) $\omega = 2\pi \times 1/8 = \pi/4$, and $H(e^{j\omega}) = \tfrac12(1 + e^{-j\omega}) = e^{-j\omega/2}\cos(\omega/2)$, so the gain is $\cos(\pi/8)$ = **0.9239**.
+(b) The droop is $\operatorname{sinc}(f/f_s) = \operatorname{sinc}(1/8) = \sin(\pi/8)/(\pi/8)$ = **0.9745**. The 1 kHz output amplitude is $0.9239 \times 0.9745$ = **0.9003** V.
+(c) The hold output contains copies of the DT spectrum at $kf_s \pm 1$ kHz; the first image is at $8 - 1$ = **7** kHz, carrying the same DT amplitude, weighted by $\operatorname{sinc}(7/8)$. Relative to the tone: $\operatorname{sinc}(7/8)/\operatorname{sinc}(1/8) = \frac{\sin(7\pi/8)/(7\pi/8)}{\sin(\pi/8)/(\pi/8)} = \frac17$, since $\sin(7\pi/8) = \sin(\pi/8)$: **−16.90** dB. A smoothing filter is needed.
+(d) $9 - 8$ = **1** kHz: a 9 kHz input produces exactly the same samples as the 1 kHz tone, so it comes out at 1 kHz with the same gain, and no DT filter can separate the two. Only an analog filter before the sampler can.
 
 ## 12 · An AM link
 
@@ -80,14 +81,14 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_11_exa
 ## 13 · Derivations (rubric)
 
 (a) *4 points.* The impulse train is periodic with period $T$; its Fourier coefficients are $\frac1T\int_{-T/2}^{T/2}\delta(t)e^{-j2\pi kf_st}dt = f_s$ (1 point), so $\sum_n\delta(t - nT) = f_s\sum_ke^{j2\pi kf_st}$ (1 point). Multiplying $x(t)$ by $e^{j2\pi kf_st}$ shifts its spectrum to $X(f - kf_s)$ (1 point); summing gives the result (1 point).
-(b) *4 points.* BIBO stability ⇔ $\int\lvert h\rvert dt < \infty$ ⇔ σ = 0 lies in the ROC (1 point, the definition of the ROC as the region of absolute convergence). Causal ⇒ $h$ right-sided ⇒ ROC is a right half-plane, which for rational $H$ starts at the rightmost pole (1 point). That half-plane contains σ = 0 exactly when the rightmost pole has negative real part (1 point); conversely, if all poles are in the open left half-plane, every term $A_ke^{p_kt}u(t)$ is absolutely integrable (1 point).
+(b) *4 points.* BIBO stability ⇔ $\int\lvert h\rvert dt < \infty$ ⇔ σ = 0 lies in the ROC (1 point, the ROC as the region of absolute convergence). Causal ⇒ $h$ right-sided ⇒ ROC is a right half-plane, which for rational $H$ starts at the rightmost pole (1 point). That half-plane contains σ = 0 exactly when the rightmost pole has negative real part (1 point). Conversely, for a *proper* $H$, partial fractions give $h(t) = D\delta(t) + \sum_kA_kt^{m}e^{p_kt}u(t)$, with a constant $D$ (zero for strictly proper $H$) and powers $t^m$ for repeated poles; with every Re $p_k < 0$ each term is absolutely integrable, since $t^me^{-\alpha t}$ is integrable for α > 0 (1 point). "Proper" is needed because an improper $H$ contains derivatives: $H(s) = s$ has no poles at all, yet the bounded input $\sin(t^2)$ produces the unbounded output $2t\cos(t^2)$.
 (c) *4 points.* Complex pair: $\lvert p\rvert^2 = a_2$, so inside ⇔ $a_2 < 1$, and $P(\pm1) > 0$ automatically (1 point). Real pair: $P(1) = (1 - p_1)(1 - p_2)$, $P(-1) = (1 + p_1)(1 + p_2)$ (1 point); both inside ⇒ both positive and $\lvert p_1p_2\rvert < 1$; conversely a root at or beyond ±1 with $P(\pm1) > 0$ forces the other beyond too, contradicting $\lvert a_2\rvert < 1$ (1 point). $P(\pm1) > 0$ is $1 \pm a_1 + a_2 > 0$, i.e. $\lvert a_1\rvert < 1 + a_2$ (1 point).
 
 ## 14 · Diligence (rubric)
 
 (a) *4 points.* 0.1 Hz at 250 SPS is $2\pi \times 0.1/250 = 0.002513$ rad/sample, so $1 - r = 0.001257$ and $r$ = **0.99874** (2 points). The transient decays as $r^n$, time constant $-1/\ln r$ = **795** samples, **3.18** s (2 points): every change in the hum's amplitude or phase (a cable moving, a person walking past equipment) leaves a 60 Hz residue for several seconds.
-(b) *4 points.* 180 Hz appears at $\lvert 180 - 250\rvert$ = **70** Hz and 300 Hz at $300 - 250$ = **50** Hz (2 points). Neither is at 60 Hz, so the notch leaves both, now inside the ECG band, where no digital filter can separate them from the signal (2 points): the claim "removes all mains interference" fails without an analog anti-aliasing filter (and the 300 Hz alias at 50 Hz would also defeat a 50 Hz notch elsewhere).
-(c) *4 points.* A causal IIR notch has nonzero group delay that rises sharply near the notch; "zero latency" is impossible, and the narrow notch also distorts low-frequency ECG content near 60 Hz through its phase (2 points). Questions: what analog filtering precedes the ADC and what is its attenuation at $f_s - f_B$; what is the notch's settling time after a hum transient and how was it validated; what group delay and phase distortion does the signal chain add, against the relevant ECG standards (2 points for good questions).
+(b) *4 points.* 180 Hz appears at $\lvert 180 - 250\rvert$ = **70** Hz and 300 Hz at $300 - 250$ = **50** Hz (2 points). Neither is at 60 Hz, so the notch leaves both, now inside the ECG band, where no digital filter can separate them from the signal (2 points). The claim "removes all mains interference" fails without an analog anti-aliasing filter. Even with one, the 120 Hz second harmonic (below the 125 Hz Nyquist frequency) passes straight through a 60 Hz notch: "all mains interference" needs notches at the harmonics too.
+(c) *4 points.* Away from 60 Hz the notch's group delay is close to zero, so "zero latency" is nearly true for most of the band; the claim hides two real costs (2 points). Near 60 Hz the group delay spikes, to the order of the transient time constant of (a), about 795 samples, so ECG components close to 60 Hz (the sharp QRS complex has some) are delayed and phase-shifted relative to the rest. And after any change in the hum, the notch needs several seconds, set by $1/(1 - r)$, to settle, during which mains interference leaks through. Questions: what analog filtering precedes the ADC and what is its attenuation at $f_s - f_B$; what is the notch's settling time after a hum transient and how was it validated; what group delay and phase distortion does the signal chain add, against the relevant ECG standards (2 points for good questions).
 
 ---
 
@@ -109,9 +110,10 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_11_exa
 | X11.5a | third-harmonic amplitude | 0.4244 | V |
 | X11.5b | fundamental's power fraction | 0.8106 | — |
 | X11.5c | THD | 48.34 | % |
-| X11.6a | half-power frequency | 159.2 | Hz |
-| X11.6b | energy across 1 Ω | 0.5 | mJ |
-| X11.6c | energy fraction below it | 0.5 | — |
+| X11.6a | magnitude of Y at 2 rad/s | 0.3536 | — |
+| X11.6b | energy of z, in time | 0.25 | — |
+| X11.6c | integral of 1/(1 + ω²)² | 1.571 | — |
+| X11.6d | energy of z, by Parseval | 0.25 | — |
 | X11.7a | gain at π/4 | 0.6533 | — |
 | X11.7b | first null | 0.5 | π rad/sample |
 | X11.7c | group delay | 1.5 | samples |
@@ -122,16 +124,17 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_11_exa
 | X11.9b | ζ | 0.5547 | — |
 | X11.9c | overshoot | 12.31 | % |
 | X11.9d | K for ζ = 0.7071 | 8 | — |
-| X11.10a | notch frequency | 166.7 | Hz |
-| X11.10b | a₁ | −0.95 | — |
-| X11.10c | a₂ | 0.9025 | — |
-| X11.10d | normalizing gain | 0.9525 | — |
-| X11.10e | notch width estimate | 15.92 | Hz |
-| X11.10f | stability margin | 0.9525 | — |
-| X11.11a | alias of 30 kHz | 14.1 | kHz |
-| X11.11b | order bound | 37.04 | — |
-| X11.11c | order | 38 | — |
-| X11.11d | jitter-limited SNR | 78.0 | dB |
+| X11.10a | residue A | 0.3902 | — |
+| X11.10b | residue B | 0.6098 | — |
+| X11.10c | x[0] | 0.3902 | — |
+| X11.10d | x[2] | 0.2498 | — |
+| X11.10e | x[−1] | 0.4878 | — |
+| X11.11a | DT filter gain | 0.9239 | — |
+| X11.11b | hold droop at 1 kHz | 0.9745 | — |
+| X11.11c | 1 kHz output amplitude | 0.9003 | V |
+| X11.11d | first image frequency | 7 | kHz |
+| X11.11e | image relative to the tone | −16.90 | dB |
+| X11.11f | output frequency of a 9 kHz input | 1 | kHz |
 | X11.12a | sideband power fraction | 15.25 | % |
 | X11.12b | maximum RC | 70.74 | µs |
 | X11.12c | image frequency | 121.4 | MHz |

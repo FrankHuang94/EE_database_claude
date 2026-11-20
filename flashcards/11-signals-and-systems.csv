@@ -14,7 +14,7 @@ Linearity test for a system?,Additivity (sum in → sum out) and homogeneity (sc
 "Time-invariance test, and the classic trap?",Delay the input by t₀ and compare with the output delayed by t₀. Trap: substituting t − t₀ into explicit t's (y = t·x(t) is time-varying).,bsee::11 bsee::11-02
 Is y[n] = x[2n] time-invariant?,No: a decimator is periodically time-varying; shifting the input by one sample does not shift the output.,bsee::11 bsee::11-02
 Tightest bound for y[n] = a y[n−1] + x[n] with |x| ≤ B?,"\(B/(1 - \lvert a\rvert)\) for |a| < 1, reached by the input that matches the sign of h at every lag.",bsee::11 bsee::11-02
-HD3 and IM3 of a cubic nonlinearity grow how with input amplitude?,"HD3 and IM3 grow as the cube of amplitude: 3 dB per dB of input (30 dB per decade), so their ratio to the fundamental rises 2 dB per dB.",bsee::11 bsee::11-02
+HD3 and IM3 of a cubic nonlinearity grow how with input amplitude?,"HD3 and IM3 grow as the cube of amplitude: 3 dB per dB of input (60 dB per decade), so their ratio to the fundamental rises 2 dB per dB (40 dB per decade).",bsee::11 bsee::11-02
 Why does a causal linear system need initial rest?,So that zero input before t₀ gives zero output before t₀; with stored energy the response is not a linear function of the input alone (incrementally linear).,bsee::11 bsee::11-02
 Inverse of an echo y[n] = x[n] + b x[n−1] for |b| > 1?,The causal inverse 1/(1 + b z⁻¹) is unstable; a stable inverse exists only noncausally (anticausal impulse response).,bsee::11 bsee::11-02
 Convolution sum and integral?,"\(y[n] = \sum_kx[k]h[n - k]\); \(y(t) = \int x(\tau)h(t - \tau)d\tau\). Flip h, slide, multiply, sum.",bsee::11 bsee::11-03
@@ -44,7 +44,7 @@ Transform of a rectangular pulse of width τ?,"\(\tau\,\operatorname{sinc}(f\tau
 Modulation property?,\(x(t)\cos(2\pi f_ct) \leftrightarrow \tfrac12[X(f - f_c) + X(f + f_c)]\).,bsee::11 bsee::11-06
 Convolution theorem?,Convolution in time ↔ multiplication in frequency; multiplication in time ↔ convolution in frequency (÷2π in ω).,bsee::11 bsee::11-06
 Distortionless transmission requires?,Constant magnitude and phase linear in frequency (constant group delay) across the signal's band: y = K x(t − t₀).,bsee::11 bsee::11-06
-Rise time vs bandwidth rule?,"\(t_r \approx 0.35/f_{3dB}\) (10–90%): exactly 0.350 for a single pole, about 0.34 for a Gaussian response.",bsee::11 bsee::11-06
+Rise time vs bandwidth rule?,"\(t_r \approx 0.35/f_{3dB}\) (10–90%): \(\ln 9/2\pi \approx 0.350\) for a single pole, about 0.34 for a Gaussian response.",bsee::11 bsee::11-06
 Uncertainty principle (time–bandwidth)?,"\(\sigma_t\sigma_\omega \ge 1/2\) for RMS widths, with equality only for the Gaussian: short pulses need wide bandwidth.",bsee::11 bsee::11-06
 Energy below the −3 dB frequency of a single pole?,Exactly half: \((2/\pi)\arctan 1 = 0.5\).,bsee::11 bsee::11-06
 Why is every DTFT periodic with period 2π?,Because \(e^{-j(\omega+2\pi)n} = e^{-j\omega n}\) for integer n.,bsee::11 bsee::11-07
@@ -57,7 +57,7 @@ Multiplying taps by (−1)ⁿ does what?,Shifts the response by π: turns a low-
 Bilateral Laplace transform and its ROC?,"\(X(s) = \int x(t)e^{-st}dt\), the Fourier transform of x(t)e^{−σt}; the ROC is the vertical strip of σ where it converges absolutely.",bsee::11 bsee::11-08
 "Same X(s) = 1/(s + a), two signals?",\(e^{-at}u(t)\) for σ > −a and \(-e^{-at}u(-t)\) for σ < −a: the ROC decides.,bsee::11 bsee::11-08
 "ROC of a right-sided, a left-sided and a two-sided signal?",Right half-plane (right of the rightmost pole); left half-plane (left of the leftmost pole); a strip between two poles.,bsee::11 bsee::11-08
-Stability and causality from the ROC?,Stable iff the ROC contains the jω axis; causal ⇒ right half-plane. Causal and stable rational ⇔ all poles have Re < 0.,bsee::11 bsee::11-08
+Stability and causality from the ROC?,Stable iff the ROC contains the jω axis; causal ⇒ right half-plane. Causal and stable proper rational H ⇔ all poles have Re < 0 (improper H(s) = s is never stable).,bsee::11 bsee::11-08
 Closed-loop system function of negative feedback?,"\(H = G/(1 + GK)\); its poles are the roots of 1 + GK = 0, not the poles of G.",bsee::11 bsee::11-08
 Reading a second-order pole pair −α ± jω_d?,Radius ω₀ = √(α² + ω_d²); ζ = α/ω₀ = cos θ; Q = 1/(2ζ); decay e^{−αt}; ringing at ω_d; −3 dB bandwidth ≈ 2α.,bsee::11 bsee::11-08
 Geometric evaluation of |H(jω)|?,|K| × product of distances from jω to the zeros ÷ product of distances to the poles; phase = zero angles − pole angles.,bsee::11 bsee::11-08
@@ -86,6 +86,6 @@ Coherent demodulation with a phase error φ?,Output scales by cos φ (lost at 90
 AM power efficiency?,\(m^2P_x/(1 + m^2P_x)\): at most 1/3 for a tone at m = 1; the carrier carries no information.,bsee::11 bsee::11-11
 Envelope detector time-constant limits?,"\(1/f_c \ll RC \le \sqrt{1 - m^2}/(m\omega_m)\); above the upper limit, diagonal clipping.",bsee::11 bsee::11-11
 Image frequency in a superheterodyne receiver?,"\(f_{RF} + 2f_{IF}\) for a high-side LO; it must be filtered before the mixer, because after mixing it is inseparable.",bsee::11 bsee::11-11
-Butterworth vs Chebyshev vs elliptic vs Bessel?,"Elliptic: lowest order for a magnitude spec (zeros on jω axis), most delay variation. Chebyshev: equiripple passband. Butterworth: maximally flat. Bessel: flattest delay, gentle roll-off.",bsee::11 bsee::11-11
+Butterworth vs Chebyshev vs elliptic vs Bessel?,"Elliptic: lowest order for a magnitude spec (zeros on jω axis), most delay variation at equal order. Chebyshev: equiripple passband. Butterworth: maximally flat. Bessel: flattest delay, gentle roll-off.",bsee::11 bsee::11-11
 Shannon capacity?,"\(C = B\log_2(1 + \text{SNR})\): linear in bandwidth, logarithmic in SNR (≈ 1 bit/s/Hz per 3 dB at high SNR).",bsee::11 bsee::11-11
 Why do phones need many filters?,"Each supported band needs its own filter; filters, duplexers and multiplexers are an estimated majority of RF front-end cost (Resonant 10-K citing Mobile Experts).",bsee::11 bsee::11-11

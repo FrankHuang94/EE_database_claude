@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 11-01 · Signals: Classification and Operations
 
 | | |

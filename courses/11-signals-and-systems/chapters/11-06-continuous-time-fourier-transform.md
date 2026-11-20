@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 11-06 · The Continuous-Time Fourier Transform
 
 | | |

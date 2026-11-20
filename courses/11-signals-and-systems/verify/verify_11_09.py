@@ -95,7 +95,8 @@ mag99 = lambda w: abs(1 / np.polyval(a99[::-1], np.exp(-1j * w)))
 pk99 = minimize_scalar(lambda w: -mag99(w), bounds=(0.25, 0.38), method="bounded", options={"xatol": 1e-12}).x
 lo99 = brentq(lambda w: mag99(w) - mag99(pk99) / math.sqrt(2), 0.2, pk99)
 hi99 = brentq(lambda w: mag99(w) - mag99(pk99) / math.sqrt(2), pk99, 0.45)
-v.check("T 11-09.h", (hi99 - lo99) * 10e3 / (2 * math.pi), rtol=0.03)   # the 2(1 - r) estimate, within 3%
+v.check("T 11-09.h", 2 * (1 - 0.99) * 10e3 / (2 * math.pi))              # the 2(1 - r) estimate, as published
+v.assert_true("the estimate is within 1% of the exact -3 dB width", abs((hi99 - lo99) / (2 * (1 - 0.99)) - 1) < 0.01)
 v.check("T 11-09.i", 1 / (1 - 0.99))
 v.assert_true("exact time constant -1/ln(0.99) is within 1% of 100", abs(-1 / math.log(0.99) - 100) < 1)
 v.check("T 11-09.j", 1 / (1 - 0.99) / 10e3 * 1e3)
@@ -150,9 +151,13 @@ v.check("Ex 11-09.3f", hR.sum() + impulse(np.array([1.0]), aR, 400)[10:].sum())
 v.check("Ex 11-09.3g", abs(np.exp(1j * th) - r * np.exp(-1j * th)))
 v.check("Ex 11-09.3h", 1 / ((1 - r) * abs(np.exp(1j * th) - r * np.exp(-1j * th))))
 v.check("Ex 11-09.3i", 2 * (1 - r))
-v.assert_true("exact peak 7.443 is within 0.2% of the estimate",
-              abs(-minimize_scalar(lambda w: -abs(1 / np.polyval(aR[::-1], np.exp(-1j * w))), bounds=(0.6, 0.9),
-                                   method="bounded").fun / 7.433 - 1) < 0.002)
+HR = lambda w: abs(1 / np.polyval(aR[::-1], np.exp(-1j * w)))
+pk3 = minimize_scalar(lambda w: -HR(w), bounds=(0.6, 0.9), method="bounded", options={"xatol": 1e-12})
+peak3 = -pk3.fun
+v.check("Ex 11-09.3j", 100 * (peak3 / (1 / ((1 - r) * abs(np.exp(1j * th) - r * np.exp(-1j * th)))) - 1))
+lo3 = brentq(lambda w: HR(w) - peak3 / math.sqrt(2), 0.3, pk3.x, xtol=1e-12)
+hi3 = brentq(lambda w: HR(w) - peak3 / math.sqrt(2), pk3.x, 1.4, xtol=1e-12)
+v.check("Ex 11-09.3k", 100 * (1 - 2 * (1 - r) / (hi3 - lo3)))
 
 # ============================================================ Example 4: IIR notch
 rr = 0.98
@@ -215,6 +220,7 @@ def digitize(M):
     return fs, zd, pd, kd
 
 
+warp_info = {}
 for M, keys in ((32, ("6a", "6b", "6c", "6d", "6e", "6f", "6g")), (2, ("6h", "6i", "6j", "6k", None, "6l", "6m"))):
     fs, zd, pd, kd = digitize(M)
     T = 1 / fs
@@ -233,8 +239,14 @@ for M, keys in ((32, ("6a", "6b", "6c", "6d", "6e", "6f", "6g")), (2, ("6h", "6i
     v.check(f"Ex 11-09.{keys[5]}", fwarp / 1e9)
     _, hd = signal.freqz_zpk(zd, pd, kd, worN=[wN])
     v.check(f"Ex 11-09.{keys[6]}", db(abs(hd[0])))
+    warp_info[M] = (fwarp, db(abs(hd[0])))
     v.assert_true(f"M = {M}: DC gain preserved", abs(abs(signal.freqz_zpk(zd, pd, kd, worN=[0.0])[1][0]) - G12) < 1e-9)
 v.check("Ex 11-09.6n", db(abs(ctle(fb / 2))))
+gN = db(abs(ctle(fb / 2)))
+v.check("Ex 11-09.6o", 100 * (warp_info[32][0] / (fb / 2) - 1))
+v.check("Ex 11-09.6p", abs(warp_info[32][1] - gN))
+v.check("Ex 11-09.6q", 100 * (warp_info[2][0] / (fb / 2) - 1))
+v.check("Ex 11-09.6r", abs(warp_info[2][1] - gN))
 
 # ============================================================ Example 7
 y = []
@@ -328,6 +340,12 @@ h11 = T11 * np.exp(-1000 * T11 * np.arange(2000))
 v.check("11-09.11a", h11[1] / h11[0])
 v.check("11-09.11b", h11.sum() / 1e-3)
 v.check("11-09.11c", 100 * (h11.sum() / 1e-3 - 1))
+# Poisson sum of the analog response's spectrum, sum_k H(j 2 pi k / T): the aliased DC gain
+ks = np.arange(1, 2_000_001)
+alias11 = 1 / 1000 + 2 * np.sum(1000 / ((2 * np.pi * ks / T11) ** 2 + 1000 ** 2))
+v.assert_true("alias sum matches (T/2) coth(aT/2)", abs(alias11 - T11 / 2 / math.tanh(0.05)) < 1e-12)
+v.check("11-09.11f", 100 * (h11.sum() - alias11) / 1e-3)
+v.check("11-09.11g", 100 * (alias11 / 1e-3 - 1))
 zb, pb, kb = signal.bilinear_zpk([], [-1000.0], 1.0, 1 / T11)
 v.check("11-09.11d", pb[0].real)
 v.assert_true("bilinear DC gain is exactly 1/1000",
@@ -348,7 +366,8 @@ v.check("11-09.12b", (hi12 - lo12) * fsE / (2 * math.pi))
 v.check("11-09.12c", -1 / math.log(r12))
 v.check("11-09.12d", -1 / math.log(r12) / fsE)
 v.check("11-09.12e", n1(r12))
-v.check("11-09.12f", n1(r12) / fsE, rtol=1e-3)
+v.check("11-09.12f", math.log(0.01) / math.log(r12) / fsE)
+v.check("11-09.12i", math.log(0.01) / math.log(r12))
 v.check("11-09.12g", bw12)
 v.check("11-09.12h", 1 - r12)
 r13, a13, th13 = thmin(8)

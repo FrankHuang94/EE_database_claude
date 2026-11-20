@@ -1,10 +1,10 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 11-11 · Modulation and Filtering Applications
 
 | | |
 |---|---|
 | **Course** | [11 · Signals and Systems](../README.md) |
-| **University equivalent** | The communication-systems chapter of a junior Signals and Systems course: amplitude modulation (DSB-SC and conventional AM), coherent and envelope demodulation, frequency shifting and the superheterodyne receiver, frequency-division multiplexing, ideal versus practical filters, and an introduction to communication links (Oppenheim & Willsky, *Signals and Systems*, ch. 8 and §6.4; Lathi, *Linear Systems and Signals*, ch. 7; MIT 6.003) |
+| **University equivalent** | The communication-systems chapter of a junior Signals and Systems course: amplitude modulation (DSB-SC and conventional AM), coherent and envelope demodulation, frequency shifting and the superheterodyne receiver, frequency-division multiplexing, ideal versus practical filters, and an introduction to communication links (Oppenheim & Willsky, *Signals and Systems*, §§8.1–8.3 and §6.4; Lathi, *Linear Systems and Signals*, ch. 7; MIT 6.003). Single-sideband, pulse-amplitude and frequency modulation, the rest of that chapter, are in [17-03](../../17-communication-systems/chapters/17-03-analog-modulation.md) |
 | **Prerequisites** | [11-06 The Continuous-Time Fourier Transform](11-06-continuous-time-fourier-transform.md) (modulation property, ideal filters), [11-08 The Laplace Transform and System Functions](11-08-laplace-transform-and-system-functions.md) (Butterworth poles, group delay), [11-10 Sampling, Aliasing and Reconstruction](11-10-sampling-aliasing-reconstruction.md) (frequency shifting by sampling) |
 | **Estimated study hours** | 7 |
 | **Last verified** | 2026-11-20 |
@@ -75,7 +75,7 @@ $$
 
 Because $1 + mx(t) \ge 0$, the envelope of $s$ is exactly $A[1 + mx(t)]$, and an **envelope detector**, a diode charging a capacitor that discharges through a resistor, recovers it. The spectrum is the DSB-SC spectrum plus carrier lines of weight $A/2$ at $\pm f_c$.
 
-**Power efficiency.** The carrier carries no information. With message power $P_x$, the transmitted power is $\frac{A^2}{2}(1 + m^2P_x)$, of which the sidebands carry the fraction
+**Power efficiency.** The carrier carries no information. Let the message have power $P_x = \overline{x^2}$ and zero mean, $\overline{x} = 0$, and let it vary slowly compared with the carrier ($f_c \gg W$). Then $s^2 = A^2(1 + mx)^2\cos^2(2\pi f_ct) = \tfrac12A^2(1 + mx)^2[1 + \cos(4\pi f_ct)]$, and the double-frequency term averages to zero against the slowly varying envelope. Expanding $(1 + mx)^2 = 1 + 2mx + m^2x^2$ and averaging, the cross term vanishes because $\overline{x} = 0$, so the transmitted power is $\frac{A^2}{2}(1 + m^2P_x)$: the carrier's $A^2/2$ plus the sidebands' $A^2m^2P_x/2$. The sidebands carry the fraction
 
 $$
 \eta = \frac{m^2P_x}{1 + m^2P_x} .
@@ -135,6 +135,20 @@ The ideal brick-wall filter of 11-06 is noncausal and cannot be built; every pra
 
 *Why the ranking:* Chebyshev filters spread the allowed passband error evenly instead of concentrating flatness at DC, which buys roll-off; elliptic filters also put zeros on the $j\omega$ axis just beyond the passband (notches, 11-08 §3.7), which pulls the response down fastest. Both move poles closer to the axis, which is what makes their group delay peak. A Bessel filter, designed for constant delay, preserves pulse shape (11-06's distortionless transmission) at the cost of selectivity. Example 11-11.4 puts numbers on the trade.
 
+**Minimum order.** A specification gives a passband edge $\omega_p$ with at most $A_p$ dB of loss and a stopband edge $\omega_s$ with at least $A_s$ dB. Define the **discrimination** $D = (10^{A_s/10} - 1)/(10^{A_p/10} - 1)$, the ratio of the two allowed values of "$1/\lvert H\rvert^2 - 1$". For Butterworth, $1/\lvert H\rvert^2 - 1 = (\omega/\omega_c)^{2n}$; writing this at both edges and dividing eliminates $\omega_c$:
+
+$$
+\left(\frac{\omega_s}{\omega_p}\right)^{2n} \ge D \quad\Longrightarrow\quad n \ge \frac{\log_{10}D}{2\log_{10}(\omega_s/\omega_p)} .
+$$
+
+For Chebyshev type I, $1/\lvert H\rvert^2 - 1 = \varepsilon^2T_n^2(\omega/\omega_p)$, where $T_n(x) = \cosh(n\operatorname{arccosh}x)$ for $x > 1$ is the Chebyshev polynomial and $\varepsilon^2 = 10^{A_p/10} - 1$ sets the ripple. At the stopband edge the condition is $T_n(\omega_s/\omega_p) \ge \sqrt D$, so
+
+$$
+n \ge \frac{\operatorname{arccosh}\sqrt D}{\operatorname{arccosh}(\omega_s/\omega_p)} .
+$$
+
+Because $\operatorname{arccosh}x$ grows like $\ln 2x$ while $\log_{10}$ of a ratio near 1 is tiny, the Chebyshev order grows far more slowly for a sharp transition. The elliptic order has a closed form in complete elliptic integrals $K$, $n \ge K(k)K(\sqrt{1 - k_1^2})/[K(k_1)K(\sqrt{1 - k^2})]$ with $k = \omega_p/\omega_s$ and $k_1 = 1/\sqrt D$; in practice it is evaluated numerically (`scipy.signal.ellipord`). Each bound is rounded up to the next integer.
+
 ### 3.7 A communication link in one equation
 
 A link sends symbols through a channel of bandwidth $B$ that adds noise. Its quality is the **signal-to-noise ratio** at the receiver, SNR. Shannon showed in 1948 that no scheme can communicate reliably faster than the **channel capacity**
@@ -175,7 +189,7 @@ for a channel with additive white Gaussian noise, and that rates below $C$ are a
 
 **Setup.** An anti-aliasing filter must pass 0–1 kHz with at most 0.5 dB of loss and attenuate by at least 50 dB from 1.5 kHz. Find the minimum order for Butterworth, Chebyshev type I and elliptic designs, and compare the spread of group delay (maximum minus minimum) across the passband.
 
-**Solution.** Using the standard order formulas (as in `scipy.signal.buttord`, `cheb1ord` and `ellipord` for analog prototypes): Butterworth needs order **17**, Chebyshev type I **8**, and elliptic only **5**. Their passband group delays (1 Hz to 1 kHz) spread by **1.55** ms, **3.33** ms and **1.76** ms respectively. The elliptic filter meets the magnitude specification with less than a third of the Butterworth's poles; the Chebyshev's delay varies most. If waveform shape mattered more than selectivity, a Bessel filter of much higher order (or a relaxed specification) would be needed.
+**Solution.** The discrimination is $D = (10^5 - 1)/(10^{0.05} - 1)$ = **8.195** × 10⁵ and the transition ratio is 1.5. Butterworth: $n \ge \log_{10}D/(2\log_{10}1.5) = 5.914/0.3522$ = **16.79**, so order **17**. Chebyshev type I: $\sqrt D$ = 905.3 and $n \ge \operatorname{arccosh}(905.3)/\operatorname{arccosh}(1.5) = 7.501/0.9624$ = **7.79**, so **8**. Elliptic: the elliptic-integral formula gives **4.96**, so only **5** (the same as `scipy.signal.buttord`, `cheb1ord` and `ellipord` for analog prototypes). Their passband group delays (1 Hz to 1 kHz) spread by **1.55** ms, **3.33** ms and **1.76** ms respectively. The elliptic filter meets the magnitude specification with less than a third of the Butterworth's poles; the Chebyshev's delay varies most. If waveform shape mattered too, no Bessel filter would do, at any order. Scaled for 0.5 dB of loss at 1 kHz, a tenth-order Bessel filter loses only **1.13** dB at 1.5 kHz and reaches 50 dB only at **8.96** kHz, and higher orders do no better: as the order grows the Bessel response approaches a Gaussian, whose loss in decibels grows only as the square of frequency, $0.5 \times 1.5^2$ = **1.125** dB at 1.5 kHz. The options are a far more relaxed specification, or a sharp (elliptic) filter followed by an all-pass delay equalizer, or oversampling and a linear-phase digital filter (11-07, 11-10).
 
 ![Magnitude and group delay of Butterworth, Chebyshev, elliptic and Bessel low-pass filters designed for one specification](../../../assets/figures/11-11/families.svg)
 
@@ -187,7 +201,7 @@ for a channel with additive white Gaussian noise, and that rates below $C$ are a
 
 **Setup.** A Wi-Fi-like channel is 20 MHz wide. Find the Shannon capacity at SNR = 30 dB, 25 dB, 10 dB and 0 dB.
 
-**Solution.** $C = 20\,\text{MHz}\times\log_2(1 + 10^{\text{SNR}/10})$: **199.3** Mb/s at 30 dB, **166.2** Mb/s at 25 dB, **69.2** Mb/s at 10 dB and **20** Mb/s at 0 dB. Dropping 5 dB from 30 dB costs 17% of capacity; at low SNR capacity is roughly proportional to SNR.
+**Solution.** $C = 20\,\text{MHz}\times\log_2(1 + 10^{\text{SNR}/10})$: **199.3** Mb/s at 30 dB, **166.2** Mb/s at 25 dB, **69.2** Mb/s at 10 dB and **20** Mb/s at 0 dB. Dropping 5 dB from 30 dB costs **16.6**% of capacity; at low SNR capacity is roughly proportional to SNR.
 
 **Sanity check.** At high SNR each 3 dB adds about 1 bit/s/Hz, 20 Mb/s here: 30 dB to 25 dB is 5 dB, about **1.66** bit/s/Hz, **33** Mb/s, matching $199.3 - 166.2$.
 
@@ -224,12 +238,20 @@ for a channel with additive white Gaussian noise, and that rates below $C$ are a
 | Ex 11-11.4f | elliptic delay spread | 1.76 | ms |
 | Ex 11-11.4g | Butterworth dB per order at 1.5 | 3.5 | dB |
 | Ex 11-11.4h | rough order estimate | 14 | — |
+| Ex 11-11.4i | discrimination D | 8.195 × 10⁵ | — |
+| Ex 11-11.4j | Butterworth order bound | 16.79 | — |
+| Ex 11-11.4k | Chebyshev order bound | 7.79 | — |
+| Ex 11-11.4l | elliptic order bound | 4.96 | — |
+| Ex 11-11.4m | Bessel (10th order) loss at 1.5 kHz | 1.13 | dB |
+| Ex 11-11.4n | Bessel (10th order) 50 dB frequency | 8.96 | kHz |
+| Ex 11-11.4o | Gaussian-limit loss at 1.5 kHz | 1.125 | dB |
 | Ex 11-11.5a | capacity at 30 dB | 199.3 | Mb/s |
 | Ex 11-11.5b | capacity at 25 dB | 166.2 | Mb/s |
 | Ex 11-11.5c | capacity at 10 dB | 69.2 | Mb/s |
 | Ex 11-11.5d | capacity at 0 dB | 20 | Mb/s |
 | Ex 11-11.5e | spectral efficiency lost from 30 to 25 dB | 1.66 | bit/s/Hz |
 | Ex 11-11.5f | capacity lost from 30 to 25 dB | 33 | Mb/s |
+| Ex 11-11.5g | fraction of capacity lost, 30 to 25 dB | 16.6 | % |
 
 *Every value is recomputed by [verify_11_11.py](../verify/verify_11_11.py): spectra by FFTs of modulated signals, demodulator outputs by simulating multiplication and low-pass filtering, the envelope detector's clipping limit by simulating a diode–RC detector, the image filter by evaluating the RLC response, filter orders by searching designs from `scipy.signal`, group delays by differentiating computed phase, and capacities from the formula. Sourced facts ([R-134](../../../reference/research-log.md#r-134--rf-filters-and-bands), [R-188](../../../reference/research-log.md#r-188--switching-harmonics-in-a-class-d-amplifier)) are quoted.*
 
@@ -278,15 +300,15 @@ The lab, [labs/11-11-lab](../labs/11-11-lab/README.md), is a notebook in four pa
 
 ### State of the art (as of Nov 2026)
 
-- **Phones need a filter per band.** A 2022 annual report by the filter company Resonant states that the iPhone 13 (model A2481) supports 24 FDD-LTE and 8 TDD-LTE bands, that "each band requires a filter", and, citing the analyst firm Mobile Experts, that filters, duplexers and multiplexers are more than half the cost of the RF front end [2] **[Established]** that the filing says this; the cost share is an **[Industry estimate]**. Broadcom makes FBAR acoustic filters in its own fabs [2] **[Established]**.
-- **New spectrum keeps arriving.** The US opened 1200 MHz of unlicensed spectrum at 5.925–7.125 GHz in 2020, and 3GPP's NR bands n77, n78 and n79 cover 3.3–5.0 GHz [2] **[Established]**; every new band adds filter and image-rejection requirements to front ends.
-- **Mixed-signal products must stay out of the AM band.** The TPA3116D2 class-D amplifier's data sheet tabulates switching frequencies for each part of the US AM band (540–1700 kHz) so that its harmonics straddle the tuned station rather than landing on it [1] **[Established]** (11-05).
+- **Phones need a filter per band.** The filter company Resonant's annual report for fiscal 2021 (Form 10-K, filed March 2022) states that the iPhone 13 (model A2481) supports 24 FDD-LTE and 8 TDD-LTE bands, that "each band requires a filter", and, citing the analyst firm Mobile Experts, that filters, duplexers and multiplexers are more than half the cost of the RF front end [2] **[Established]** that the filing says this; the cost share is an **[Industry estimate]**. Broadcom makes FBAR acoustic filters in its own fabs [2] **[Established]**.
+- **New spectrum keeps arriving.** The US opened 1200 MHz of unlicensed spectrum at 5.925–7.125 GHz in 2020, and 3GPP's NR bands n77, n78 and n79 cover 3.3–4.2 GHz and 4.4–5.0 GHz [2] **[Established]**; every new band adds filter and image-rejection requirements to front ends.
+- **Mixed-signal products must stay out of the AM band.** The TPA3116D2 class-D amplifier's data sheet tabulates switching frequencies for each part of the US AM band (540–1700 kHz) so that no switching harmonic lands inside the slice of the band being received [1] **[Established]** (11-05).
 
 > **Deeper:** see companion repo *Datacenter Networking* for how the same modulation and equalization ideas appear in PAM4 SerDes and coherent optics.
 
 ### Why it matters commercially
 
-- **RF front ends are a large, consolidating market.** The filter count per phone, set by the number of bands, drives acoustic-filter demand; the 2026 Skyworks–Qorvo combination (R-134) is one response to that scale.
+- **RF front ends are a large, consolidating market.** The filter count per phone, set by the number of bands, drives acoustic-filter demand; Skyworks completed its combination with Qorvo on 5 Oct 2026 [2] **[Established]**, one response to that scale.
 - **Spectrum is expensive; SNR is cheaper.** Operators pay for bandwidth, so modem designers chase every decibel of SNR and every fraction of the gap to capacity.
 - **Coexistence is a design constraint.** Switching converters, clocks and high-speed links inside a product radiate harmonics that land in someone's band; avoiding them is cheaper at architecture time than at certification.
 

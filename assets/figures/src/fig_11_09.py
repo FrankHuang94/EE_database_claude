@@ -186,7 +186,7 @@ def fig_bilinear():
         ax.plot(w * fs / (2 * math.pi) / 1e9, 20 * np.log10(np.abs(hd)), color=c, ls="--", label=f"bilinear, M = {M}")
     ax.axvline(26.5625, ls=":", color="0.5", lw=1)
     ax.set_ylim(-16, 1)
-    ax.set_xlabel("frequency (GHz)")
+    ax.set_xlabel("nominal frequency f = ω fs / 2π (GHz)")
     ax.set_ylabel("|H| (dB)")
     ax.legend(fontsize=8, loc="lower right")
     ax.set_title("bilinear transform: exact with oversampling, warped at 2 samples per UI", fontsize=9)
