@@ -1,0 +1,28 @@
+* Lab 15-05 -- a three-stage ring oscillator built from inverting transconductance stages.
+* Each stage: an inverting transconductor i = -gm*Vs*tanh(v_in/Vs) (small-signal gain -gm, gm = 2.2 mS,
+* saturating at +-0.22 mA) driving R = 1 kohm || C = 1 nF to ground. Small-signal stage gain A = gm*R = 2.2,
+* pole w0 = 1/(RC) = 1e6 rad/s. Three inversions make the loop negative feedback with loop gain A^3 = 10.6,
+* above the Routh limit of 8, so the circuit is unstable: a 1 mV kick grows until the tanh limits the gain.
+* The steady oscillation sits near sqrt(3)/(2 pi R C) = 275.7 kHz, the Routh boundary frequency.
+*
+* EXPECT fosc key:README.md#Lab_15-05.a scale=1e3 rtol=3e-3
+
+B1 0 n1 I=-2.2m*0.1*tanh(v(n3)/0.1)
+R1 n1 0 1k
+C1 n1 0 1n IC=1m
+B2 0 n2 I=-2.2m*0.1*tanh(v(n1)/0.1)
+R2 n2 0 1k
+C2 n2 0 1n IC=0
+B3 0 n3 I=-2.2m*0.1*tanh(v(n2)/0.1)
+R3 n3 0 1k
+C3 n3 0 1n IC=0
+
+.control
+tran 5n 200u uic
+meas tran ta when v(n1)=0 rise=40
+meas tran tb when v(n1)=0 rise=50
+let fosc = 10/(tb - ta)
+print fosc
+quit
+.endc
+.end

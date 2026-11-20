@@ -5990,3 +5990,25 @@
   definition: A loop tracks or rejects a class of signals with zero steady error only if its loop gain contains a model of their generator, 1/s for constants, 1/s² for ramps, 1/(s² + ω₀²) for sinusoids of frequency ω₀.
   chapter: "15-04"
   see_also: [Integral action]
+
+# ---------------------------------------------------------------- 15-05
+- term: Marginal stability
+  definition: The case of simple poles on the imaginary axis and none in the right half-plane; the free response neither grows nor decays, but the system is not BIBO stable, because a bounded input at the pole frequency produces a growing output.
+  chapter: "15-05"
+  see_also: [BIBO stability]
+- term: Internal stability
+  definition: Stability of every transfer function inside a feedback loop (reference to output, disturbance to output, reference to control effort); it rules out unstable modes hidden by pole–zero cancellation.
+  chapter: "15-05"
+  see_also: [Pole–zero cancellation]
+- term: Routh array
+  definition: A table built from a polynomial's coefficients, two rows of alternate coefficients followed by rows of cross-multiplied differences; the number of sign changes in its first column equals the number of right-half-plane roots.
+  chapter: "15-05"
+  see_also: [Routh–Hurwitz criterion]
+- term: Routh–Hurwitz criterion
+  definition: A polynomial has all roots in the open left half-plane if and only if every entry in the first column of its Routh array is positive; for a cubic this reduces to positive coefficients with a₂a₁ > a₃a₀.
+  chapter: "15-05"
+  see_also: [Routh array, Characteristic polynomial]
+- term: Auxiliary polynomial
+  definition: In a Routh array with a row of zeros, the even or odd polynomial formed from the row above; it divides the original polynomial, and its roots (symmetric about the origin, often an imaginary-axis pair) give the oscillation frequency at a stability boundary.
+  chapter: "15-05"
+  see_also: [Routh array]
