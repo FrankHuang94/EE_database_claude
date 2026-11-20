@@ -1,0 +1,33 @@
+* Lab 14-01 -- the energy cost of switching a capacitor (CV^2 per cycle, half of it lost in the resistor).
+* A 0-to-1 V square wave at 100 MHz (a CMOS driver whose pull-up connects to the 1 V supply and pull-down to
+* ground) charges and discharges 1 pF through a resistor. The source delivers C V^2 = 1 pJ per cycle, an average
+* of C V^2 f = 100 uW, and the resistor dissipates C V^2 / 2 = 0.5 pJ during each charge, whatever its value
+* A slow edge would deliver less than CV^2 (adiabatic charging), so the edge (0.1 ps) is kept far faster than RC.
+* (run twice: 100 ohm and 300 ohm; both time constants are far shorter than the 5 ns half-period, so each
+* charge is complete).
+*
+* EXPECT pavg key:../../chapters/14-01-performance-power-iron-law.md#Sim_14-01.a scale=1e-6 rtol=3e-3
+* EXPECT ech key:../../chapters/14-01-performance-power-iron-law.md#Sim_14-01.b scale=1e-12 rtol=3e-3
+* EXPECT pavg2 key:../../chapters/14-01-performance-power-iron-law.md#Sim_14-01.a scale=1e-6 rtol=3e-3
+* EXPECT ech2 key:../../chapters/14-01-performance-power-iron-law.md#Sim_14-01.b scale=1e-12 rtol=3e-3
+
+V1 src 0 PULSE(0 1 0 0.1p 0.1p 4.9999n 10n)
+R1 src out 100
+C1 out 0 1p
+
+.control
+tran 0.1p 52n
+let psrc = -v(src) * v1#branch
+let pres = (v(src) - v(out)) * (v(src) - v(out)) / 100
+meas tran pavg avg psrc from=10n to=50n
+meas tran ech integ pres from=10n to=15n
+alter r1 300
+tran 0.1p 52n
+let psrc2 = -v(src) * v1#branch
+let pres2 = (v(src) - v(out)) * (v(src) - v(out)) / 300
+meas tran pavg2 avg psrc2 from=10n to=50n
+meas tran ech2 integ pres2 from=10n to=15n
+print pavg ech pavg2 ech2
+quit
+.endc
+.end

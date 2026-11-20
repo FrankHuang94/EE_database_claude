@@ -5278,3 +5278,37 @@
   definition: The region far enough from an antenna (r ≫ λ and r > 2D²/λ for an antenna of size D) that the fields fall as 1/r, are transverse to the radial direction, and have a pattern independent of distance.
   chapter: "13-11"
   see_also: [Radiation pattern]
+
+# ---------------------------------------------------------------- 14-01
+- term: Iron law of performance
+  definition: Execution time equals instruction count times average cycles per instruction times clock period, T = IC × CPI / f; each factor is owned by a different part of the design (compiler and ISA, microarchitecture, circuits and process).
+  chapter: "14-01"
+  see_also: [CPI]
+- term: CPI
+  definition: (Cycles per instruction.) The average number of clock cycles per executed instruction, the frequency-weighted average of each instruction class's cycles; its reciprocal is IPC.
+  chapter: "14-01"
+  see_also: [IPC]
+- term: IPC
+  definition: (Instructions per cycle.) The reciprocal of CPI; the measure quoted for processors that complete more than one instruction per cycle.
+  chapter: "14-01"
+- term: Speedup
+  definition: The ratio of old to new execution time for the same work; "30% faster" means a speedup of 1.3, so the new time is 77% of the old.
+  chapter: "14-01"
+- term: Gustafson's law
+  definition: The scaled speedup σ + N(1 − σ) obtained when the problem grows with the number of processors N and σ is the serial fraction of the parallel run; it grows linearly with N, unlike Amdahl's fixed-problem speedup.
+  chapter: "14-01"
+  see_also: [Amdahl's law]
+- term: Geometric mean
+  definition: The nth root of the product of n numbers; used to summarize benchmark speed ratios because the ratio of two machines' geometric means does not depend on the reference machine.
+  chapter: "14-01"
+- term: Race to idle
+  definition: Running a task at full speed and then power-gating the hardware, instead of running it slowly; it uses less energy when leakage or the power of the rest of the system is large.
+  chapter: "14-01"
+  see_also: [Dynamic voltage and frequency scaling (DVFS)]
+- term: Energy-delay product
+  definition: Energy per task times execution time (EDP), or times its square (ED²P); ED²P is roughly unchanged by voltage scaling, so it compares architectures independently of their operating points.
+  chapter: "14-01"
+- term: Throughput
+  definition: The amount of work completed per unit time (tasks per second, operations per second), as distinct from latency, the time one task takes.
+  chapter: "14-01"
+  see_also: [Latency]
