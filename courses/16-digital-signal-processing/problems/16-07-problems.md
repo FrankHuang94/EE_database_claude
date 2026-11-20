@@ -60,6 +60,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **One polynomial or four biquads?** *(lab)* Expand the order-8 elliptic filter of Example 16-07.5 into a single denominator polynomial. (a) What is its largest coefficient, and how many integer bits (plus sign) does a fixed-point format need to hold it? (b) Round the polynomial's coefficients to 16, 14, 12 and 10 fractional bits; for each, find the largest pole radius. (c) Repeat with each biquad's coefficients rounded separately, down to 8 fractional bits. (d) Explain the difference.
 
+### Problem 16-07.13 [B]
+
+**A band-pass design by transformation.** A band-pass filter at $f_s$ = 48 kHz must pass 1 to 2 kHz within 1 dB and attenuate by at least 40 dB below 500 Hz and above 4 kHz. (a) Prewarp the four edges. (b) Find the band-pass transformation's centre $\Omega_0$ and bandwidth $B$, and the digital centre frequency. (c) Map both stopband edges to the low-pass prototype and decide which governs. (d) Find the Butterworth prototype order, the band-pass filter's order and its number of biquads.
+
 ---
 
 ## Objective coverage
@@ -69,6 +73,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Analog prototypes, orders and poles | 3, 5, 6, 10 |
 | 2. Bilinear transform, stability, warping | 1, 2, 4, 10 |
 | 3. Impulse invariance and aliasing | 7 |
-| 4. Complete IIR designs | 4, 9, 10 |
+| 4. Complete IIR designs | 4, 9, 10, 13 |
 | 5. Group delay | 8, 11 |
 | 6. FIR versus IIR | 9, 11, 12 |

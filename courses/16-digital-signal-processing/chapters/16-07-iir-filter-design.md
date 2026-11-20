@@ -69,7 +69,7 @@ For $N = 2$: $s = \Omega_c e^{\pm j3\pi/4}$, the familiar $\zeta = 0.707$ pair (
 
 ### 3.2 Chebyshev and elliptic prototypes
 
-**Chebyshev type I** trades the flat passband for an equal ripple, which buys a much steeper transition (11-11 §3.4):
+**Chebyshev type I** trades the flat passband for an equal ripple, which buys a much steeper transition (11-11 §3.6):
 
 $$
 \lvert H(j\Omega)\rvert^2 = \frac{1}{1 + \varepsilon^2T_N^2(\Omega/\Omega_p)}, \qquad \varepsilon^2 = 10^{A_p/10} - 1,
@@ -91,7 +91,7 @@ $$
 
 The poles lie on an ellipse with semi-axes $\Omega_p\sinh a$ (real) and $\Omega_p\cosh a$ (imaginary): the Butterworth circle squashed toward the $j\Omega$ axis. Poles closer to the axis are what make the response sharper and the group delay peakier. The DC gain is 1 for odd $N$ and $1/\sqrt{1 + \varepsilon^2}$ (the bottom of the ripple) for even $N$.
 
-**Chebyshev type II** (inverse Chebyshev) puts the ripple in the stopband and keeps the passband monotonic; it has the same order formula and adds zeros on the $j\Omega$ axis. **Elliptic (Cauer)** filters ripple in both bands and place zeros on the axis just beyond the passband; they meet any magnitude specification with the lowest order of all, given by the elliptic-integral formula of 11-11 §3.4,
+**Chebyshev type II** (inverse Chebyshev) puts the ripple in the stopband and keeps the passband monotonic; it has the same order formula and adds zeros on the $j\Omega$ axis. **Elliptic (Cauer)** filters ripple in both bands and place zeros on the axis just beyond the passband; they meet any magnitude specification with the lowest order of all, given by the elliptic-integral formula of 11-11 §3.6,
 
 $$
 N \ge \frac{K(k)\,K\big(\sqrt{1 - k_1^2}\big)}{K(k_1)\,K\big(\sqrt{1 - k^2}\big)}, \qquad k = \frac{\Omega_p}{\Omega_s},\quad k_1 = \frac{1}{\sqrt D},
@@ -109,7 +109,7 @@ $$
 H(e^{j\omega}) = \sum_{m=-\infty}^{\infty} H_a\!\left(j\,\frac{\omega + 2\pi m}{T}\right),
 $$
 
-so whatever response the analog filter has above $f_s/2$ folds back into the digital band. For a sharply band-limited low-pass or band-pass prototype the error is small; for a high-pass or band-stop prototype, whose response never falls, the method fails outright. Example 16-07.2 measures the damage for a gentle first-order filter. Impulse invariance survives where matching the *time-domain* shape matters (modelling an analog system's step response) and is otherwise displaced by the bilinear transform.
+so whatever response the analog filter has above $f_s/2$ folds back into the digital band. **A second flaw hides at $t = 0$.** The sum above is the spectrum of the samples only when $h_a$ is continuous at $t = 0$. Many prototypes jump there: any filter with one more pole than zeros, such as a first-order low-pass, has $h_a(0^+) \ne 0$ but $h_a(0^-) = 0$. Poisson summation then assigns the sample at $n = 0$ the midpoint value $T h_a(0^+)/2$, so the usual $h[0] = T h_a(0^+)$ adds a constant $T h_a(0^+)/2$ to the response at every frequency. Halving the first sample removes it (Jackson's correction [6]), leaving only the aliasing. For a sharply band-limited low-pass or band-pass prototype the error is small; for a high-pass or band-stop prototype, whose response never falls, the method fails outright. Example 16-07.2 measures the damage for a gentle first-order filter. Impulse invariance survives where matching the *time-domain* shape matters (modelling an analog system's step response) and is otherwise displaced by the bilinear transform.
 
 ### 3.4 The bilinear transform
 
@@ -157,6 +157,14 @@ design the analog filter for $(\Omega_p, \Omega_s)$, and transform. The band edg
 
 The lab implements exactly these three lines and checks them against SciPy's `butter`, `cheby1` and `ellip`.
 
+> **Going deeper — high-pass, band-pass and band-stop designs.** Every family above is designed as a normalized low-pass prototype ($\Omega_p = 1$) and then moved by a **frequency transformation** of the analog variable, before the bilinear transform. Prewarp every band edge first. Then:
+>
+> - low-pass to high-pass: $s \to \Omega_p/s$, which swaps DC and infinity;
+> - low-pass to band-pass: $s \to (s^2 + \Omega_0^2)/(Bs)$, with centre $\Omega_0 = \sqrt{\Omega_{p1}\Omega_{p2}}$ (geometric, not arithmetic) and bandwidth $B = \Omega_{p2} - \Omega_{p1}$;
+> - low-pass to band-stop: $s \to Bs/(s^2 + \Omega_0^2)$.
+>
+> The band-pass map sends each prototype frequency $\Omega'$ to two frequencies whose product is $\Omega_0^2$, so a stopband edge $\Omega_s$ corresponds to the prototype frequency $\lvert\Omega_s^2 - \Omega_0^2\rvert/(B\Omega_s)$, and the stricter (smaller) of the two stopband edges sets the order. Each prototype pole becomes two, so a band-pass or band-stop filter has twice the prototype's order (Problem 16-07.13). The same idea in the $z$-domain, Constantinides' all-pass substitutions $z^{-1} \to (z^{-1} - \alpha)/(1 - \alpha z^{-1})$ and their band-pass relatives, moves a digital low-pass filter's edges without returning to $s$. SciPy's `iirdesign` and `buttord` apply these transformations internally.
+
 ### 3.5 The design procedure
 
 1. **Specify** $\omega_p$, $\omega_s$, $A_p$, $A_s$.
@@ -169,7 +177,7 @@ The lab implements exactly these three lines and checks them against SciPy's `bu
 
 ### 3.6 Group delay of IIR filters
 
-By 16-02 §3.3, a pole at $z = \rho e^{j\theta}$ contributes $-\dfrac{\rho^2 - \rho\cos(\omega - \theta)}{1 - 2\rho\cos(\omega - \theta) + \rho^2}$ samples of delay (zeros contribute the same expression with the opposite sign). At $\omega = \theta$ this is $\rho/(1 - \rho)$: a pole at radius 0.95 delays its own frequency by 19 samples, and one at 0.99 by 99. Sharp IIR filters need poles close to the circle near the band edge, so **their group delay peaks at the band edge**, and the sharper the filter, the higher the peak. The delay is small at DC, where the poles are far away, and large at the edge: different frequencies arrive at different times, which is phase distortion.
+By 16-02 §3.4, a pole at $z = \rho e^{j\theta}$ contributes $-\dfrac{\rho^2 - \rho\cos(\omega - \theta)}{1 - 2\rho\cos(\omega - \theta) + \rho^2}$ samples of delay (zeros contribute the same expression with the opposite sign). At $\omega = \theta$ this is $\rho/(1 - \rho)$: a pole at radius 0.95 delays its own frequency by 19 samples, and one at 0.99 by 99. Sharp IIR filters need poles close to the circle near the band edge, so **their group delay peaks at or just beyond the band edge**, and the sharper the filter, the higher the peak. For elliptic and Chebyshev designs the delay is small at DC, where the poles are far away, and large at the edge (a high-order Butterworth filter, with many poles, has a large delay even at DC: 43 samples for the order-38 design of Example 16-07.4): different frequencies arrive at different times, which is phase distortion.
 
 Three remedies exist. Accept it (most audio equalization, where the ear tolerates modest phase shifts); **equalize** it with an all-pass cascade (16-02 §3.6) that adds delay where the filter has little, at the cost of more sections and a total delay no smaller than the original peak (Problem 16-07.11); or, offline only, filter **forward and backward** (`filtfilt`), which squares the magnitude and cancels the phase exactly, at the price of being non-causal.
 
@@ -184,7 +192,7 @@ Three remedies exist. Accept it (most audio equalization, where the ear tolerate
 | Coefficient sensitivity | Low: errors move zeros a little | High near the circle; direct forms can go unstable (Problem 16-07.12) |
 | Delay | Constant $M/2$ samples | Small at DC, large at the band edge |
 | Limit cycles and overflow | None (no feedback) | Possible; need scaling and care (16-10) |
-| Multirate | Polyphase structures skip unneeded outputs (16-09) | Feedback forces computing every sample |
+| Multirate | Polyphase structures skip unneeded outputs (16-09) | A general direct-form IIR must compute every sample; special polyphase IIR structures (all-pass half-band filters) avoid this |
 | Adaptive filtering | Natural (error surface is quadratic) | Awkward (can go unstable while adapting) |
 
 The rule of thumb that follows: **IIR when magnitude is all that matters and multiplications or latency are scarce; FIR when phase, robustness, multirate structure or adaptivity matter.** Many products use both, as the audio converters in §9 do.
@@ -213,7 +221,7 @@ In reverse, $f_d = \frac{f_s}{\pi}\arctan\frac{\pi f_a}{f_s}$: an unwarped analo
 
 **Solution.** $\Omega_cT = 2\pi \times 1000/8000 = \pi/4$.
 
-(a) $h_a(t) = \Omega_ce^{-\Omega_ct}$, so $h[n] = \Omega_cT\,e^{-\Omega_cTn}$ and $H(z) = \dfrac{\Omega_cT}{1 - e^{-\Omega_cT}z^{-1}}$: $b_0$ = 0.7854, pole **0.4559**. The DC gain is $0.7854/(1 - 0.4559)$ = **1.444**, not 1: $\sum_n T h_a(nT)$ is a left-endpoint Riemann sum of $\int h_a\,dt = 1$ and overestimates it for a falling response. Normalized to DC, the −3 dB point is at **1056** Hz and the gain at Nyquist is **0.374**, whereas the analog filter's gain at 4 kHz is $1/\sqrt{1 + 16}$ = **0.243**: aliased high-frequency response has leaked in.
+(a) $h_a(t) = \Omega_ce^{-\Omega_ct}$, so $h[n] = \Omega_cT\,e^{-\Omega_cTn}$ and $H(z) = \dfrac{\Omega_cT}{1 - e^{-\Omega_cT}z^{-1}}$: $b_0$ = 0.7854, pole **0.4559**. The DC gain is $0.7854/(1 - 0.4559)$ = **1.444**, not 1. Normalized to DC, the −3 dB point is at **1056** Hz and the gain at Nyquist is **0.374**, whereas the analog filter's gain at 4 kHz is $1/\sqrt{1 + 16}$ = **0.243**. Two effects of §3.3 are at work. The impulse response jumps at $t = 0$, so $h[0] = \Omega_cT$ counts the jump fully and adds the constant $\Omega_cT/2$ = **0.393** at every frequency ($\sum_nTh_a(nT)$ is a left-endpoint Riemann sum, which overestimates $\int h_a\,dt = 1$). The aliased sum alone, which is what halving $h[0]$ would leave, gives a DC gain of $(\pi/8)\coth(\pi/8)$ = **1.051** and a Nyquist gain of $(\pi/8)\tanh(\pi/8)$ = **0.147**, a ratio of 0.140, *below* the analog 0.243. So most of the excess at Nyquist is the endpoint term, not aliasing.
 
 (b) Substituting $s = 2f_s(1 - z^{-1})/(1 + z^{-1})$ with $\Omega_c/(2f_s) = \pi/8 = 0.3927$:
 
@@ -227,7 +235,7 @@ DC gain exactly 1; zero at $z = -1$, so the gain at Nyquist is **0**. The −3 d
 
 **Units check.** $\Omega_cT$ and $K$ are dimensionless; frequencies in hertz.
 
-**Sanity check.** The bilinear designs have a zero at Nyquist because the analog response vanishes at infinity, which the bilinear map sends to Nyquist; the impulse-invariant design cannot have one, since its response is a sum of aliased copies that never vanish.
+**Sanity check.** The bilinear designs have a zero at Nyquist because the analog response vanishes at infinity, which the bilinear map sends to Nyquist; the impulse-invariant design cannot have one, since its response is a sum of aliased copies (plus the endpoint constant) that never vanishes.
 
 ### Example 16-07.3 · A second-order Butterworth biquad by hand (tier B)
 
@@ -257,8 +265,8 @@ These have closed forms here: $a_1 = -2\sqrt2/3$, $a_2 = 1/3$, $b_0 = (2 - \sqrt
 
 **Solution.** Prewarped edges (Example 16-07.1): 4.094 and 5.186 kHz, ratio **1.2669**. Discrimination $D = (10^{6} - 1)/(10^{0.01} - 1)$ = **4.293** × 10⁷.
 
-- Butterworth: $N \ge \log_{10}D/(2\log_{10}1.2669) = 7.633/0.2054$ = **37.15**, so **38**.
-- Chebyshev I: $\sqrt D = 6552$; $N \ge \operatorname{arccosh}6552/\operatorname{arccosh}1.2669 = 9.481/0.7154$ = **13.26**, so **14**.
+- Butterworth: $N \ge \log_{10}D/(2\log_{10}1.2669) = 7.633/0.2055$ = **37.15**, so **38**.
+- Chebyshev I: $\sqrt D = 6552$; $N \ge \operatorname{arccosh}6552/\operatorname{arccosh}1.2669 = 9.481/0.7152$ = **13.26**, so **14**.
 - Elliptic: the elliptic-integral formula gives **7.26**, so **8**.
 
 With unwarped edges (ratio 1.25) the bounds are **39.38**, **13.68** and **7.38**: the bilinear map's compression makes the digital transition effectively *wider* in the analog domain, which slightly lowers the order. (Unprewarped designs would also put the edges in the wrong place.)
@@ -273,15 +281,15 @@ With unwarped edges (ratio 1.25) the bounds are **39.38**, **13.68** and **7.38*
 
 **Solution.** *Design.* The analog elliptic prototype (0.1 dB ripple, 60 dB stopband, order 8), scaled to the prewarped 4.094 kHz edge and mapped by the bilinear transform, gives four biquads. The checked response has passband ripple **0.100** dB and stopband attenuation **60.00** dB, reached already at **4678** Hz (the integer order over-delivers on transition width). Its zeros lie on the unit circle at **4.72**, **5.16**, **6.71** and **13.54** kHz; its poles hug the circle near the band edge, the outermost at radius **0.9850**.
 
-*Multiplications.* Written as biquads with the zeros' unit coefficients ($b_0 = b_2 = 1$ in three sections, so their $b_0$ and $b_2$ cost nothing), the cascade needs **14** multiplications per output: **672,000** per second at 48 kHz, against 69 per output (3.312 million per second) for the folded FIR filter: **4.9** times fewer.
+*Multiplications.* Written as biquads with the zeros' unit coefficients ($b_0 = b_2 = 1$ in three sections, so their $b_0$ and $b_2$ cost nothing), the cascade needs **14** multiplications per output as SciPy factors it (13 if the overall gain is pulled out so that every section has $b_0 = b_2 = 1$): **672,000** per second at 48 kHz, against 69 per output (**3.312** million per second) for the folded FIR filter: **4.9** times fewer.
 
 *Delay and phase.* The group delay is **7.99** samples at DC (0.17 ms) and rises to **69.51** samples at the 4 kHz edge (Figure 2): a spread of **61.5** samples across the passband. The FIR filter delays everything by 68 samples. The IIR filter is faster for low frequencies and as slow at the edge, and it distorts waveforms that span the band.
 
-*Robustness.* Multiplied out into one denominator polynomial, the coefficients range up to **37.19** in magnitude and the poles become exquisitely sensitive: rounding that polynomial to 12 fractional bits pushes a pole outside the unit circle (Problem 16-07.12), whereas the four biquads stay stable even at 8 fractional bits.
+*Robustness.* Multiplied out into one denominator polynomial, the coefficients range up to **37.19** in magnitude and the poles become exquisitely sensitive: rounding that polynomial to 13 fractional bits or fewer pushes a pole outside the unit circle (radius 1.032 at 13 bits, 1.030 at 12; Problem 16-07.12), and even at 14 to 17 bits the largest pole radius wanders between 0.978 and 0.994 instead of staying at 0.985, whereas the four biquads stay stable even at 8 fractional bits.
 
 **Units check.** Multiplications per second = per output × $f_s$: $14 \times 48{,}000 = 672{,}000$ s⁻¹.
 
-**Sanity check.** A pole at radius 0.985 contributes about $\rho/(1 - \rho) = 66$ samples of delay at its own frequency, which accounts for most of the 69-sample peak: the pole nearest the band edge sets the delay there.
+**Sanity check.** The outermost pole, at radius 0.985 and 4.068 kHz, contributes about $\rho/(1 - \rho) = 66$ samples of delay at its own frequency, just beyond the passband edge, where the total group delay peaks at about **84** samples. At the 4 kHz edge its pair contributes about 48 of the 69.5 samples: the pole nearest the band edge sets the delay there.
 
 ![Four filters for one specification: magnitude and group delay](../../../assets/figures/16-07/iir-vs-fir.svg)
 
@@ -302,6 +310,9 @@ With unwarped edges (ratio 1.25) the bounds are **39.38**, **13.68** and **7.38*
 | Ex 16-07.2c | impulse-invariant −3 dB frequency | 1056 | Hz |
 | Ex 16-07.2d | impulse-invariant Nyquist gain over DC | 0.374 | — |
 | Ex 16-07.2e | analog gain at 4 kHz | 0.243 | — |
+| Ex 16-07.2o | endpoint term | 0.393 | — |
+| Ex 16-07.2p | aliased-sum DC gain | 1.051 | — |
+| Ex 16-07.2q | aliased-sum Nyquist gain | 0.147 | — |
 | Ex 16-07.2f | bilinear −3 dB frequency, no prewarp | 952.9 | Hz |
 | Ex 16-07.2i | bilinear −3 dB angle, no prewarp | 0.7484 | rad |
 | Ex 16-07.2j | cutoff error, no prewarp | 4.7 | % |
@@ -342,6 +353,8 @@ With unwarped edges (ratio 1.25) the bounds are **39.38**, **13.68** and **7.38*
 | Ex 16-07.5n | passband delay spread | 61.5 | samples |
 | Ex 16-07.5o | largest direct-form coefficient | 37.19 | — |
 | Ex 16-07.5p | delay of the outermost pole at its angle | 66 | samples |
+| Ex 16-07.5q | FIR multiplication rate | 3.312 | M/s |
+| Ex 16-07.5r | elliptic delay at DC | 0.17 | ms |
 | Txt 16-07.a | delay of a pole at radius 0.95 | 19 | samples |
 | Txt 16-07.b | delay of a pole at radius 0.99 | 99 | samples |
 | Txt 16-07.c | warping error at 4 kHz | 2.3 | % |
@@ -353,6 +366,7 @@ With unwarped edges (ratio 1.25) the bounds are **39.38**, **13.68** and **7.38*
 | Txt 16-07.i | K at 16 kHz | 0.1989 | — |
 | Txt 16-07.j | warping of K at 16 kHz | 1.3 | % |
 | Txt 16-07.k | warping of K at 8 kHz | 5.5 | % |
+| Txt 16-07.l | largest pole radius, one polynomial at 13 bits | 1.032 | — |
 | Ex 16-07.3h | sum of b (and of a) | 0.39052 | — |
 | Ex 16-07.3i | pole real part | 0.47140 | — |
 | Ex 16-07.3j | pole imaginary part | 0.33333 | — |
@@ -368,7 +382,7 @@ The lab, [labs/16-07-lab](../labs/16-07-lab/README.md), provides `iirdesign.py`:
 4. **Design the running example three ways** (Examples 16-07.4–5), check each against the mask, and plot magnitude and group delay against the FIR filter of 16-06.
 5. **Break a direct form** (Problem 16-07.12): quantize the elliptic filter's coefficients as one polynomial and as biquads, and watch the poles.
 
-**Guided exercise (predict, then run).** **Before Part 5,** predict which survives coarser coefficient rounding: the order-8 elliptic filter as one polynomial or as four biquads. (The biquads. Rounded to 12 fractional bits, the single polynomial's largest pole moves to radius 1.030, outside the circle: the filter is unstable. The biquads keep every pole inside even at 8 fractional bits, because each section's two poles depend only on its own two coefficients.)
+**Guided exercise (predict, then run).** **Before Part 5,** predict which survives coarser coefficient rounding: the order-8 elliptic filter as one polynomial or as four biquads. (The biquads. Rounded to 13 fractional bits or fewer, the single polynomial's largest pole moves outside the circle (radius 1.032 at 13 bits, 1.030 at 12): the filter is unstable. The biquads keep every pole inside even at 8 fractional bits, because each section's two poles depend only on its own two coefficients.)
 
 ## 6. Engineering tradeoffs
 
@@ -376,7 +390,7 @@ The lab, [labs/16-07-lab](../labs/16-07-lab/README.md), provides `iirdesign.py`:
 |---|---|---|---|
 | Filter family (Butterworth → Chebyshev → elliptic) | Lower order for the same magnitude spec | Passband/stopband ripple; more group-delay variation; poles nearer the circle | DSP designer |
 | Order $N$ | Sharper transition, deeper stopband | Multiplications, more poles near the circle, more delay at the edge | DSP designer |
-| IIR instead of FIR | Several times fewer multiplications for sharp specifications (4.9 here); low delay at DC | Nonlinear phase; stability and quantization care; no polyphase savings | System architect |
+| IIR instead of FIR | Several times fewer multiplications for sharp specifications (4.9 here); low delay at DC for elliptic and Chebyshev designs | Nonlinear phase; stability and quantization care; polyphase savings only with special structures | System architect |
 | Prewarping | Band edges exactly where specified | None (always do it for frequency-selective designs) | DSP designer |
 | Second-order sections | Robust to coefficient quantization; scalable per section | Slightly more arithmetic than one polynomial; pairing and ordering decisions (16-08) | DSP or firmware engineer |
 | All-pass phase equalizer | Flatter group delay | More sections; total delay at least the original peak | System architect |
@@ -406,9 +420,9 @@ The lab, [labs/16-07-lab](../labs/16-07-lab/README.md), provides `iirdesign.py`:
 
 ### State of the art (as of Nov 2026)
 
-- **Audio converters carry programmable biquads next to selectable decimation filters.** TI's TLV320ADC5140 quad audio ADC (data sheet SBAS892A, Oct 2019) "supports up to 12 programmable digital biquad filters" (one to three per channel depending on how many channels are active), each with transfer function $H(z) = (N_0 + 2N_1z^{-1} + N_2z^{-2})/(2^{31} - 2D_1z^{-1} - D_2z^{-2})$ and 32-bit coefficients in 1.31 format (application note SBAA378B, 2023), computed "in 32-bit fixed point arithmetic" (R-240) **[Established]**. The factors of 2 on $N_1$ and $D_1$ exist because a low-pass biquad's $b_1$ approaches 2 and any section's $a_1 = -2\rho\cos\theta$ ranges over ±2, outside a 1.31 format's [−1, 1). Its decimation filters at 48 kHz offer the latency trade of 16-06 and this chapter side by side: linear phase with a group delay of $17.1/f_S$ (**356** µs), low latency at $7.7/f_S$ (**160** µs) with group-delay deviation ±0.027 samples, and ultra-low latency at $4.1/f_S$ (**85** µs) with a phase deviation of −10.3° to 14.5° across the passband (R-240) **[Established]**.
+- **Audio converters carry programmable biquads next to selectable decimation filters.** TI's TLV320ADC5140 quad audio ADC (data sheet SBAS892A, Oct 2019) "supports up to 12 programmable digital biquad filters" (one to three per channel depending on how many channels are active), each with transfer function $H(z) = (N_0 + 2N_1z^{-1} + N_2z^{-2})/(2^{31} - 2D_1z^{-1} - D_2z^{-2})$ and 32-bit coefficients in 1.31 format (application note SBAA378B, 2023), computed "in 32-bit fixed point arithmetic" (R-240) **[Established]**. The factors of 2 on $N_1$ and $D_1$ exist because a low-pass biquad's $b_1$ approaches 2 and any section's $a_1 = -2\rho\cos\theta$ ranges over ±2, outside a 1.31 format's [−1, 1). Its decimation filters at 48 kHz offer the latency trade of 16-06 and this chapter side by side: linear phase with a group delay of $17.1/f_S$ (**356** µs), low latency at $7.7/f_S$ (**160** µs) with group-delay deviation ±0.027 samples, and ultra-low latency at $4.1/f_S$ (**85** µs), specified over 0 to $0.325f_S$ with a group-delay deviation of ±0.525 samples and a phase deviation of −10.3° to 14.5° (R-240) **[Established]**.
 - **Microcontroller DSP libraries standardize the biquad cascade.** Arm's CMSIS-DSP (version 1.18.0) provides `arm_biquad_cascade_df1_*` in Q15, Q31, F16 and F32 and `arm_biquad_cascade_df2T_*` in floating point only, noting that Direct Form I is "numerically more robust for fixed-point data types" and that fixed-point coefficients restricted to [−1, 1) are rescaled by a `postShift` (R-241) **[Established]**. Its difference equation adds the feedback terms ($+a_1y[n - 1] + a_2y[n - 2]$), so "the feedback coefficients a1 and a2 must be negated" when taken from tools that subtract them.
-- **Every web browser implements bilinear-transform biquads.** The W3C Web Audio API (Recommendation, June 2021; version 1.1 a Working Draft in Sept 2026) defines a `BiquadFilterNode` with lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch and allpass types whose formulas "a conforming implementation MUST implement" and which are "inspired by formulas found in the Audio EQ Cookbook"; the cookbook itself (W3C Working Group Note, June 2021, adapted from R. Bristow-Johnson) derives every filter from an analog prototype "digitized using the Bilinear Transform (BLT)" with prewarping (R-242) **[Established]**. Its low-pass with $Q = 1/\sqrt2$ is exactly Example 16-07.3's Butterworth biquad (**0.09763**).
+- **Every web browser implements bilinear-transform biquads.** The W3C Web Audio API (Recommendation, June 2021; version 1.1 a Working Draft in Sept 2026) defines a `BiquadFilterNode` with lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch and allpass types whose formulas "a conforming implementation MUST implement" and which are "inspired by formulas found in the Audio EQ Cookbook"; the cookbook itself (W3C Working Group Note, June 2021, adapted from R. Bristow-Johnson) derives every filter from an analog prototype "digitized using the Bilinear Transform (BLT)" with prewarping (R-242) **[Established]**. The cookbook's low-pass with $Q = 1/\sqrt2$ is exactly Example 16-07.3's Butterworth biquad (**0.09763**). Web Audio's lowpass node treats $Q$ in decibels ($\alpha = \sin\omega_0/(2 \cdot 10^{Q/20})$), so the same filter there needs $Q = 20\log_{10}(1/\sqrt2)$ = **−3.01** (R-242).
 - **Design software defaults have caught up with numerical reality.** SciPy's documentation (v1.18) states that "the second-order sections ('sos') form is recommended because inferring the coefficients for the numerator/denominator form ('ba') suffers from numerical instabilities", while keeping 'ba' as the default for backward compatibility (R-242) **[Established]**.
 
 ### Why it matters commercially
@@ -417,7 +431,7 @@ IIR filters are why a coin-cell wearable or a hearing aid can run sharp filters 
 
 ### Marketing vs Reality
 
-- **"Ultra-low latency"** usually means a nonlinear-phase (IIR-like or minimum-phase) filter: the TLV320ADC5140's ultra-low-latency mode halves the delay at the price of up to 14.5° of phase deviation (R-240). Ask for group-delay and phase deviation, not only the latency figure.
+- **"Ultra-low latency"** usually means a nonlinear-phase (IIR-like or minimum-phase) filter: the TLV320ADC5140's ultra-low-latency mode cuts the delay to 4.1 samples, about half the low-latency mode's 7.7 and a quarter of the linear-phase filter's 17.1, at the price of up to 14.5° of phase deviation (R-240). Ask for group-delay and phase deviation, not only the latency figure.
 - **"Unlimited EQ bands"** are limited by the biquad count and the coefficient format: 12 biquads shared across channels in the example above, in 32-bit fixed point. Ask how many sections per channel and at what precision.
 - **Sign conventions** are not universal: the TI biquad subtracts $D_1$ and $D_2$ terms with factors of two, CMSIS-DSP adds negated coefficients, and SciPy writes $a$ with the textbook signs. A coefficient file moved between tools without conversion can turn a stable filter unstable (R-240, R-241).
 - **Even the reference notes contain slips.** The TI coefficient application note mislabels the 1.31 value of 1 and gives a first-order roll-off as 10 dB per decade (it is 20) (R-240): check formulas against first principles before relying on them.
@@ -460,7 +474,7 @@ The analog prototypes are all-pole: their $N$ zeros are at $s = \infty$, and the
 
 <details><summary>Answer</summary>
 
-To make the transition sharp, its poles sit very close to the unit circle at angles near the band edge, and a pole at radius $\rho$ delays frequencies near its angle by about $\rho/(1 - \rho)$ samples (66 for the outermost pole at 0.985).
+To make the transition sharp, its poles sit very close to the unit circle at angles near the band edge, and a pole at radius $\rho$ delays frequencies near its angle by about $\rho/(1 - \rho)$ samples (66 for the outermost pole at 0.985, which sits at 4.07 kHz, just beyond the 4 kHz edge).
 
 </details>
 
@@ -513,3 +527,4 @@ Practice: [Problems 16-07](../problems/16-07-problems.md) · [Solutions](../solu
 3. TI TLV320ADC5140 data sheet SBAS892A (Oct 2019) and application note SBAA378B (Dec 2023). Research log [R-240].
 4. Arm CMSIS-DSP documentation, version 1.18.0, Biquad Cascade IIR Filters (Direct Form I and Direct Form II Transposed). Research log [R-241].
 5. W3C, *Audio EQ Cookbook*, Working Group Note, 8 June 2021; W3C, *Web Audio API*, Recommendation, 17 June 2021, and *Web Audio API 1.1*, Working Draft, 22 Sept 2026; SciPy v1.18 documentation for `iirdesign` and `ellip`. Research log [R-242].
+6. L. B. Jackson, "A correction to impulse invariance", *IEEE Signal Processing Letters* 7(10), 273–275, Oct 2000, doi:10.1109/97.870677 (bibliographic record via Crossref).

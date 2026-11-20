@@ -111,7 +111,13 @@ x[n]──►(+)────────●──►[b0]──►(+)──► y[
         └─[−a2]◄──●──►[b2]────┘
 ```
 
-Cost: $2N + 1$ multipliers, $2N$ adders, only $N$ delays: the minimum, so DF II is called **canonical**. **Transposed Direct Form II (DF2T)** is its transposition; it also has $N$ delays and its state variables are partial sums.
+Cost: $2N + 1$ multipliers, $2N$ adders, only $N$ delays: the minimum, so DF II is called **canonical**. **Transposed Direct Form II (DF2T)** is its transposition; it also has $N$ delays and its state variables are partial sums. For a biquad, with states $s_1$ and $s_2$:
+
+$$
+y[n] = b_0x[n] + s_1, \qquad s_1 \leftarrow b_1x[n] - a_1y[n] + s_2, \qquad s_2 \leftarrow b_2x[n] - a_2y[n] .
+$$
+
+Each state is fed by the input and the output at once, which is why it needs the wide dynamic range §9 mentions.
 
 **The catch: internal gain.** In DF II the stored signal is $w = x/A(z)$: the input passed through the *poles alone*, before the zeros pull the response back down. For a sharp section the poles alone have enormous gain. The last section of the 16-07 elliptic filter (poles at radius 0.985) has $\max_\omega\lvert 1/A(e^{j\omega})\rvert$ = **66.10** (36.4 dB), so $w$ needs about **6.05** more bits of headroom than the input, while the section's own output peaks at only **6.25** (Example 16-08.3). In DF I the stored values are past inputs and past outputs, both bounded by the signal levels the system was designed for; only the accumulator sees large intermediate sums, and a wide accumulator (with two's-complement wrap-around in intermediate sums, which cancels if the final result fits) handles them. That is why fixed-point libraries prefer DF I and floating-point ones DF2T (§9).
 
@@ -166,7 +172,17 @@ $$
 k_m = a_m^{(m)}, \qquad A_{m-1}(z) = \frac{A_m(z) - k_m z^{-m}A_m(z^{-1})}{1 - k_m^2} .
 $$
 
-**The stability test.** All roots of $A_N(z)$ lie strictly inside the unit circle **if and only if** $\lvert k_m\rvert < 1$ for every $m$ (the Schur–Cohn test; the Jury test of 15-11 is an equivalent tabulation). So a lattice filter is stable by inspection, and an all-pole IIR lattice built on the same reflection coefficients stays stable under any quantization that keeps each $\lvert k_m\rvert < 1$. That property is why speech codecs transmit and interpolate reflection-type parameters rather than polynomial coefficients, and why adaptive IIR filters are often parameterized as lattices **[Established; textbook]**.
+**The stage equations.** Let $f_m[n]$ be the forward signal (the input filtered by $A_m(z)$) and $g_m[n]$ the backward signal (the input filtered by $z^{-m}A_m(z^{-1})$). The step-up recursion becomes, sample by sample,
+
+$$
+f_0[n] = g_0[n] = x[n], \qquad f_m[n] = f_{m-1}[n] + k_m\,g_{m-1}[n - 1], \qquad g_m[n] = k_m\,f_{m-1}[n] + g_{m-1}[n - 1],
+$$
+
+and the FIR lattice's output is $y[n] = f_N[n]$, the input filtered by $A_N(z)$. Each stage has one delay, holding $g_{m-1}[n - 1]$, and two multipliers by $k_m$ that cross-couple the paths: the delayed backward signal, scaled by $k_m$, joins the forward path, and the forward signal, scaled by $k_m$, joins the delayed backward path.
+
+**The all-pole (IIR) lattice** runs the forward path backwards: start from $f_N[n] = x[n]$ and, for $m = N, \dots, 1$, compute $f_{m-1}[n] = f_m[n] - k_m\,g_{m-1}[n - 1]$ and then $g_m[n] = k_m\,f_{m-1}[n] + g_{m-1}[n - 1]$, with output $y[n] = f_0[n] = g_0[n]$. It realizes $1/A_N(z)$ exactly, with $N$ delays and $2N$ multiplications, and it is stable whenever every $\lvert k_m\rvert < 1$. (Adding a ladder of taps on the $g_m$ signals gives the lattice–ladder form, which realizes a general $B(z)/A(z)$.) The verify script checks both recursions against direct filtering.
+
+**The stability test.** All roots of $A_N(z)$ lie strictly inside the unit circle **if and only if** $\lvert k_m\rvert < 1$ for every $m$ (the Schur–Cohn test; the Jury test of 15-11 is an equivalent tabulation). So a lattice filter is stable by inspection, and an all-pole IIR lattice built on the same reflection coefficients stays stable under any quantization that keeps each $\lvert k_m\rvert < 1$. That property is why older speech codecs transmitted and interpolated reflection-type parameters (current codecs quantize line spectral frequencies, which share the guaranteed-stability property) rather than polynomial coefficients, and why adaptive IIR filters are often parameterized as lattices **[Established; textbook]**.
 
 > **Going deeper — why the reflection coefficients are bounded.** In linear prediction, $k_m$ is the correlation between the forward and backward prediction errors of order $m - 1$ (normalized by their energies), so $\lvert k_m\rvert \le 1$ by the Cauchy–Schwarz inequality, with equality only for a perfectly predictable (singular) signal. The step-down recursion is the Levinson–Durbin recursion run backwards.
 
@@ -174,7 +190,7 @@ $$
 
 A practical biquad specification has four parts, each a decision:
 
-- **Coefficient format.** Biquad coefficients span $\lvert a_1\rvert < 2$ and $\lvert b_1\rvert \le 2$ for low-pass sections, so a format with range $[-2, 2)$ (Q2.14 in 16 bits) holds them directly; alternatively, store $a_1/2$ and $b_1/2$ in a [−1, 1) format and double them in the datapath, as TI's converters do (16-07 §9).
+- **Coefficient format.** Biquad coefficients span $\lvert a_1\rvert < 2$ and $\lvert b_1\rvert \le 2$ for low-pass sections, so a format with range $[-2, 2)$ (Q2.14 in 16 bits) holds them as long as the section gain stays in the numerator ($b_1 = 2b_0 < 2$, as in the lab's design). A numerator $(1, 2, 1)$ with its gain pulled out has $b_1 = +2$, which Q2.14 cannot represent (its maximum is $2 - 2^{-14}$): use Q3.13, or store $a_1/2$ and $b_1/2$ in a [−1, 1) format and double them in the datapath, as TI's converters do (16-07 §9).
 - **Accumulator width.** Five 16 × 16-bit products need 32 bits each, and their sum up to $32 + \lceil\log_2 5\rceil = 35$ bits; a 40-bit accumulator adds guard bits. With an exact accumulator, the only rounding is the final one.
 - **Rounding.** Round to nearest by adding half an output LSB ($2^{13}$ for Q2.14) before the arithmetic right shift.
 - **Overflow.** Saturate the output to the 16-bit range, and feed back the saturated value. Saturation is a deliberate nonlinearity: much better than two's-complement wrap-around, which turns an overflow into a full-scale error and can sustain large oscillations (16-10).
@@ -197,7 +213,7 @@ The lab's `biquad_df1.v` implements exactly this with the 16-07 Butterworth biqu
 
 **Setup.** A multiplier takes 2.0 ns and an adder 0.5 ns. Find the critical path and maximum clock rate of 8-tap and 64-tap FIR filters in direct form (adder chain), in direct form with an adder tree, and in transposed form.
 
-**Solution.** Direct form, adder chain: $T = 2.0 + (M)(0.5)$ with $M$ = taps − 1 adders. For 8 taps, $2.0 + 7 \times 0.5$ = **5.5** ns, **181.8** MHz; for 64 taps, $2.0 + 63 \times 0.5$ = **33.5** ns, **29.85** MHz. With a balanced adder tree the 64 products are summed in $\log_2 64 = 6$ levels: $2.0 + 6 \times 0.5$ = **5.0** ns, **200** MHz. Transposed: one multiplier and one adder, **2.5** ns, **400** MHz at any length.
+**Solution.** Direct form, adder chain: $T = 2.0 + (M)(0.5)$ with $M$ = taps − 1 adders. For 8 taps, $2.0 + 7 \times 0.5$ = **5.5** ns, **181.8** MHz; for 64 taps, $2.0 + 63 \times 0.5$ = **33.5** ns, **29.85** MHz. With a balanced adder tree, 8 products are summed in $\log_28 = 3$ levels, $2.0 + 3 \times 0.5$ = **3.5** ns, **285.7** MHz, and 64 products in $\log_2 64 = 6$ levels: $2.0 + 6 \times 0.5$ = **5.0** ns, **200** MHz. Transposed: one multiplier and one adder, **2.5** ns, **400** MHz at any length.
 
 **Units check.** $f_{\max} = 1/T$: $1/(2.5 \text{ ns}) = 400$ MHz.
 
@@ -272,6 +288,8 @@ For the 16-07 Butterworth biquad, $A(z) = 1 - 0.94281z^{-1} + 0.33333z^{-2}$: $k
 | Ex 16-08.2f | adder-tree clock | 200 | MHz |
 | Ex 16-08.2g | transposed path | 2.5 | ns |
 | Ex 16-08.2h | transposed clock | 400 | MHz |
+| Ex 16-08.2i | 8-tap tree critical path | 3.5 | ns |
+| Ex 16-08.2j | 8-tap tree clock | 285.7 | MHz |
 | Ex 16-08.3a | peak of 1/A | 66.10 | — |
 | Ex 16-08.3b | extra bits | 6.05 | bits |
 | Ex 16-08.3c | L1 norm of 1/A | 84.11 | — |
@@ -319,7 +337,7 @@ The lab, [labs/16-08-lab](../labs/16-08-lab/README.md), provides `structures.py`
 | Transposed (or systolic) FIR | Clock rate independent of length | Wider registers; input fan-out | FPGA or ASIC designer |
 | DF I instead of DF II | No internal gain beyond input and output levels; fixed-point friendly | Twice the delay registers | Firmware or hardware engineer |
 | DF2T in floating point | Fewest registers; good floating-point behaviour | Large state dynamic range in fixed point | Firmware engineer |
-| Cascade of biquads | Local, bounded coefficient sensitivity | Pairing, ordering and scaling decisions; one extra multiplier per section | DSP designer |
+| Cascade of biquads | Local, bounded coefficient sensitivity | Pairing, ordering and scaling decisions; one extra multiplier per section after the first | DSP designer |
 | Coupled-form section | Uniform pole accuracy (low-frequency resonators) | Four multiplications instead of two | DSP designer |
 | Lattice | Stability by inspection; modular orders | More multiplications than direct forms | Algorithm designer (speech, adaptive) |
 | Wider accumulator and coefficients | Lower round-off, accurate poles | Area, power, memory | Hardware architect |
@@ -328,7 +346,7 @@ The lab, [labs/16-08-lab](../labs/16-08-lab/README.md), provides `structures.py`
 
 | Quantity | Value | Source |
 |---|---|---|
-| DF I / DF II / cascade costs, order $N$ | $2N + 1$ multipliers each; $2N$ vs $N$ delays; biquad = 5 multipliers | §3.2–3.3 |
+| DF I / DF II / cascade costs, order $N$ | DF I and DF II: $2N + 1$ multipliers, $2N$ vs $N$ delays; a cascade of $N/2$ biquads: $5N/2$ multipliers (5 per biquad) | §3.2–3.3 |
 | Transposed FIR critical path | one multiplier + one adder, any length | §3.1 |
 | Pole sensitivity | $\partial p_i/\partial a_k = -p_i^{N-k}/\prod_{j\ne i}(p_i - p_j)$ | §3.4 |
 | Direct-form biquad angle sensitivity | $1/(2\rho\sin\theta)$: large near DC and Nyquist | §3.4 |

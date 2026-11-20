@@ -12,7 +12,16 @@ With $N = 6$: DF I: **13** multipliers, **12** adders, **12** delays. DF II: 13 
 
 ### Solution 16-08.2
 
-The transposed structure computes $y[n] = h_0x[n] + s_0$, then updates $s_0 \leftarrow h_1x[n] + s_1$ and $s_1 \leftarrow h_2x[n]$:
+The transposed structure broadcasts $x[n]$ to all three multipliers and puts the delays in the adder chain:
+
+```text
+ x[n] ──┬──────────────┬──────────────┐
+        │×h0           │×h1           │×h2
+        ↓              ↓              ↓
+ y[n] ←(+)←─[z⁻¹]─ s0 ←(+)←─[z⁻¹]─ s1 ←┘
+```
+
+It computes $y[n] = h_0x[n] + s_0$, then updates $s_0 \leftarrow h_1x[n] + s_1$ and $s_1 \leftarrow h_2x[n]$:
 
 | $n$ | $x$ | $y = x + s_0$ | new $s_0 = -x + s_1$ | new $s_1 = 0.5x$ |
 |---|---|---|---|---|
@@ -69,11 +78,11 @@ The reverse ordering's worst node is 53.57 times (34.6 dB) the input, so it need
 
 ### Solution 16-08.11
 
-$A(z) = 1 - 3.3569z^{-1} + 4.6785z^{-2} - 3.1232z^{-3} + 0.86488z^{-4}$. Step-down: $k_4$ = **0.8649**, $k_3$ = **−0.8726**, $k_2$ = **0.9978**, $k_1$ = **−0.8667**. All magnitudes are below 1, so it is **stable**; $k_2 = 0.9978$ is within 0.3% of 1, the warning that a root lies close to the circle (the pole pair at radius 0.985). Small coefficient errors in this direct fourth-order form could push $\lvert k_2\rvert$ past 1.
+$A(z) = 1 - 3.3569z^{-1} + 4.6785z^{-2} - 3.1232z^{-3} + 0.86488z^{-4}$. Step-down: $k_4$ = **0.8649**, $k_3$ = **−0.8726**, $k_2$ = **0.9978**, $k_1$ = **−0.8667**. All magnitudes are below 1, so it is **stable**; $k_2 = 0.9978$ is within 0.3% of 1, a warning that the step-down is close to $\lvert k\rvert = 1$, so small coefficient errors in this direct fourth-order form could push it past 1 and a root outside the circle.
 
 ### Solution 16-08.12
 
-The impulse response $g$ of $1/A$ decays slowly (poles at 0.985); $\sum g^2$ = **66.05**, **18.2** dB. A rounding error of variance $\sigma_e^2 = \Delta^2/12$ (16-10) therefore appears at the output with variance $66\sigma_e^2$: the section's own rounding contributes noise 18 dB above a single quantization step. Sharp sections are noisy sections; more accumulator bits before the final rounding, or error feedback, are the remedies (16-10).
+The impulse response $g$ of $1/A$ decays slowly (poles at 0.985); $\sum g^2$ = **66.05**, **18.2** dB. A rounding error of variance $\sigma_e^2 = \Delta^2/12$ (16-10) therefore appears at the output with variance $66\sigma_e^2$: the section's own rounding contributes noise 18 dB above the noise of a single rounding, $\Delta^2/12$. Sharp sections are noisy sections; more accumulator bits before the final rounding, or error feedback, are the remedies (16-10).
 
 ---
 

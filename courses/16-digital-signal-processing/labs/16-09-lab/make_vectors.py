@@ -27,15 +27,20 @@ for _ in range(8):
 
 
 def integrator_wraps(x):
-    """How many times the last integrator's unbounded sum crosses a 24-bit boundary (evidence of wrap-around)."""
+    """How many times the last integrator's W-bit register actually wraps (overflow events in the hardware).
+
+    Each integrator adds the previous integrator's wrapped value, so the registers hold the exact sums only modulo
+    2^W; counting the steps where the wrapped addition differs from the unbounded one counts the wraps."""
     acc = [0] * N
     wraps = 0
     for xn in x:
         v = xn
         for i in range(N):
-            acc[i] += v
+            raw = acc[i] + v
+            acc[i] = ((raw + 2 ** (W - 1)) % 2**W) - 2 ** (W - 1)
+            if i == N - 1 and acc[i] != raw:
+                wraps += 1
             v = acc[i]
-        wraps = max(wraps, abs(acc[-1]) >> (W - 1))
     return wraps
 
 
@@ -51,5 +56,4 @@ if __name__ == "__main__":
     lines = build()
     with open("vectors.hex", "w") as f:
         f.write("\n".join(lines) + "\n")
-    print(f"wrote vectors.hex: {len(tests)} tests; the DC test's last integrator spans {integrator_wraps(tests[0])}"
-          " multiples of 2^23 before wrapping")
+    print(f"wrote vectors.hex: {len(tests)} tests; the DC test's last integrator wraps {integrator_wraps(tests[0])} times")

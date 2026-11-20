@@ -88,7 +88,7 @@ $$
 
 (Group the terms $h[i]z^{-i}$ by $i \bmod M$: those with $i = nM + k$ give $z^{-k}(z^M)^{-n}$.)
 
-**Polyphase decimator.** Substituting into "$H(z)$ then $\downarrow M$" gives $M$ branches, each "$z^{-k}$ then $E_k(z^M)$ then $\downarrow M$"; by the first noble identity each becomes "$z^{-k}$, $\downarrow M$, then $E_k(z)$". Branch $k$ takes every $M$-th input sample starting at offset $k$ (a rotating switch, the **commutator**), filters it with the short filter $E_k$ at the output rate, and the branch outputs are summed. Every multiplication now contributes to a kept output: an $N$-tap decimation filter costs $N$ multiplications per *output* sample instead of per input sample, a saving of exactly $M$.
+**Polyphase decimator.** Substituting into "$H(z)$ then $\downarrow M$" gives $M$ branches, each "$z^{-k}$ then $E_k(z^M)$ then $\downarrow M$"; by the first noble identity each becomes "$z^{-k}$, $\downarrow M$, then $E_k(z)$". Branch $k$ takes the samples $x[mM - k]$, every $M$-th input sample delayed by $k$ (a rotating switch, the **commutator**), filters it with the short filter $E_k$ at the output rate, and the branch outputs are summed. Every multiplication now contributes to a kept output: an $N$-tap decimation filter costs $N$ multiplications per *output* sample instead of per input sample, a saving of exactly $M$.
 
 **Polyphase interpolator.** Dually, "$\uparrow L$ then $H(z)$" becomes $L$ branches $E_k(z)$ running at the *input* rate whose outputs are interleaved: output phase $k$ is $E_k$ applied to the input. The multiplications by inserted zeros disappear; an $N$-tap interpolation filter costs $N$ multiplications per input sample, $N/L$ per output.
 
@@ -119,7 +119,7 @@ $$
 
 **Alias protection.** The response has nulls at every multiple of the output rate $f_s/R$, exactly where the bands that alias onto DC sit. Signals near DC are protected superbly; protection falls off toward the edges of the null bands, so a CIC alone suits narrow passbands, and is usually followed by a half-band or FIR stage that also corrects its droop.
 
-**Register growth and wrap-around.** The DC gain $R^N$ means the output needs $B_{\text{out}} = B_{\text{in}} + N\log_2R$ bits. The integrators have infinite DC gain and *will* overflow; Hogenauer showed that this is harmless if every register has $B_{\text{out}}$ bits and uses two's-complement (modular) arithmetic: the final result fits in $B_{\text{out}}$ bits, and arithmetic modulo $2^{B_{\text{out}}}$ is exact for anything that fits. Saturating the integrators, by contrast, would corrupt the output. The lab's Verilog CIC lets its integrators wrap around 187 times on a full-scale DC input and still matches the exact model bit for bit.
+**Register growth and wrap-around.** The DC gain $R^N$ means the output needs $B_{\text{out}} = B_{\text{in}} + \lceil N\log_2R\rceil$ bits (exactly $N\log_2R$ when $R$ is a power of two). The integrators have infinite DC gain and *will* overflow; Hogenauer showed that this is harmless if every register has $B_{\text{out}}$ bits and uses two's-complement (modular) arithmetic: the final result fits in $B_{\text{out}}$ bits, and arithmetic modulo $2^{B_{\text{out}}}$ is exact for anything that fits. Saturating the integrators, by contrast, would corrupt the output. On the lab's full-scale DC input, the Verilog CIC's last integrator register wraps around **10** times and the third **6** times, while the exact sum that the last register represents modulo $2^{24}$ grows to $1.57 \times 10^9$, **93.5** times the register's range; the output still matches the exact model bit for bit.
 
 ![sinc4 CIC response with alias bands](../../../assets/figures/16-09/cic.svg)
 
@@ -137,7 +137,7 @@ $$
 
 **Units check.** All in kHz; folding is distance to the nearest multiple of $f_s'$.
 
-**Sanity check.** The 17 kHz interferer at 5 kHz lies outside the wanted 0–3 kHz band, so the cheaper 9 kHz stopband edge would let it through to 5 kHz, where a later filter at 12 kHz can remove it.
+**Sanity check.** The 9 kHz stopband edge still removes the 17 kHz interferer, which lies in the stopband. What the cheaper edge lets through is the 3–9 kHz transition band, which folds onto 3–6 kHz after decimation, outside the wanted 0–3 kHz band, where a later filter can remove it.
 
 ### Example 16-09.2 · Images of an upsampled tone (tier B)
 
@@ -189,11 +189,11 @@ Total **1.680** million per second, **2.77** times less than the single stage. T
 
 - −3 dB where each factor is $2^{-1/8}$: solving numerically, **91.05** kHz, $0.2276$ of the 400 kHz output rate. The data sheet lists **91.0** kHz.
 - Droop at 20 kHz: **−0.143** dB.
-- Alias protection: the band that folds onto 0–20 kHz around 400 kHz starts at 380 kHz, where the attenuation is **102.4** dB. But a component at 309 kHz, which folds to 91 kHz, is attenuated by only **45.5** dB: protection is excellent near DC and poor near the −3 dB edge, which is why the data sheet recommends the sinc filter for fast acquisition of DC signals and its FIR filter for AC work.
+- Alias protection: the band that folds onto 0–20 kHz around 400 kHz starts at 380 kHz, where the attenuation is **102.4** dB. But a component at 309 kHz, which folds to 91 kHz, is attenuated by only **45.5** dB: protection is excellent near DC and poor near the −3 dB edge, which is why the data sheet calls the sinc filter "suitable for fast acquisition of dc signals" (R-243); for wideband AC signals, the FIR filter's protection is the better match.
 - Register growth: $N\log_2R = 4 \times 5$ = **20** bits beyond the modulator's word.
-- Latency: the impulse response spans $N R = 128$ modulator samples, $128/12.8\text{ MHz}$ = **10.0** µs; the data sheet's latency at OSR 32 is **10.63** µs, and every OSR row in its table exceeds $4R/f_{MOD}$ by the same 0.63 µs, a fixed overhead.
+- Latency: the impulse response has $N(R - 1) + 1 = 125$ taps, and a step settles in $N$ output periods, $N R = 128$ modulator samples or $128/12.8\text{ MHz}$ = **10.0** µs. The data sheet's latency at OSR 32 is **10.63** µs; at OSR 32, 64 and 128 (the rows logged in R-243) it exceeds $4R/f_{MOD}$ by the same 0.63 µs, a fixed overhead.
 
-Against the device's linear-phase wideband FIR filter at the same 400 kSPS (group delay $34/f_{DATA}$ = 85 µs, R-238), the sinc filter settles **8.5** times faster.
+Against the device's linear-phase wideband FIR filter at the same 400 kSPS, whose settling time is $68/f_{DATA}$ = 170 µs (twice its 85 µs group delay, R-238), the sinc filter settles **16.0** times faster (170 µs against 10.63 µs). Compared delay for delay, the sinc filter's group delay is $N(R - 1)/2$ = 62 modulator samples, **4.84** µs, against 85 µs.
 
 **Units check.** $R/f_{MOD}$ = 2.5 µs per output sample; $N$ such spans for the full impulse response.
 
@@ -233,14 +233,19 @@ Against the device's linear-phase wideband FIR filter at the same 400 kSPS (grou
 | Ex 16-09.5e | register growth | 20 | bits |
 | Ex 16-09.5f | impulse-response span | 10.0 | µs |
 | Ex 16-09.5g | data-sheet overhead | 0.63 | µs |
-| Ex 16-09.5h | FIR delay over sinc latency | 8.5 | — |
+| Ex 16-09.5h | FIR settling time over sinc latency | 16.0 | — |
+| Ex 16-09.5j | sinc4 group delay | 4.84 | µs |
+| Ex 16-09.5k | sinc4 impulse-response taps | 125 | — |
 | Ex 16-09.5i | −3 dB frequency over output rate | 0.2276 | — |
 | Txt 16-09.a | 44.1 to 48 kHz intermediate rate | 7.056 | MHz |
 | Txt 16-09.b | gcd of 44,100 and 48,000 | 300 | — |
-| Txt 16-09.c | CIC integrator wraps in the lab's DC test | 187 | — |
+| Txt 16-09.c | last-integrator register wraps in the lab's DC test | 10 | — |
+| Txt 16-09.g | third-integrator register wraps in the lab's DC test | 6 | — |
+| Txt 16-09.i | exact last-integrator sum over the register range | 93.5 | — |
 | Txt 16-09.d | SRC4392 passband edge at 44.1 kHz | 20.0 | kHz |
 | Txt 16-09.e | SRC4392 delay, 64-sample FIFO, 48 kHz | 2.14 | ms |
 | Txt 16-09.f | SRC4392 delay, 8-sample FIFO, 48 kHz | 0.97 | ms |
+| Txt 16-09.h | SRC4392 decimation-filter delay, 48 kHz | 0.76 | ms |
 
 ## 5. Simulate it
 
@@ -263,7 +268,7 @@ The lab, [labs/16-09-lab](../labs/16-09-lab/README.md), provides `multirate.py` 
 | Half-band stages | Half the taps are zero; one branch is a delay | Only factor-of-two steps; equal ripple in both bands | DSP designer |
 | CIC first stage | No multipliers; any large $R$ | Passband droop; weak protection near its −3 dB edge; register growth $N\log_2R$ | Converter or radio architect |
 | Protecting only the final passband | Much wider transitions in early stages | Aliased junk in the transition band, to be removed later | DSP designer |
-| Linear-phase versus low-latency decimation | Waveform fidelity | Delay (85 µs against 10.6 µs in Example 16-09.5) | Product architect |
+| Linear-phase versus low-latency decimation | Waveform fidelity | Settling time (170 µs against 10.6 µs in Example 16-09.5) and group delay (85 µs against 4.8 µs) | Product architect |
 
 ## 7. Numbers to know
 
@@ -291,8 +296,8 @@ The lab, [labs/16-09-lab](../labs/16-09-lab/README.md), provides `multirate.py` 
 ### State of the art (as of Nov 2026)
 
 - **Delta-sigma ADCs offer CIC and FIR decimation side by side.** TI's ADS127L11 (data sheet SBAS946C, 2022) describes its low-latency filter as "a cascaded-integrator-comb (CIC) topology", selectable as sinc4, sinc4 + sinc1, sinc3 or sinc3 + sinc1, and gives for sinc4 at OSR 32 in high-speed mode a 400 kSPS data rate, a −3 dB frequency of 91.0 kHz and a latency of 10.63 µs; its wideband filter is a multistage linear-phase FIR (R-238, R-243) **[Established]**. Example 16-09.5 reproduces the sinc figures from CIC theory.
-- **RF-sampling converters decimate in half-band cascades.** AMD's RFSoC RF Data Converter (PG269 v2.6, May 2025) decimates its RF-ADC outputs by factors up to 40× (Gen 3/DFE) with "80% of Nyquist bandwidth, 89 dB stop-band attenuation" and a 48-bit NCO for the mixer; in the Gen 1/2 devices the decimation chain is three factor-of-two FIR stages of 59, 23 and 15 taps with passbands of 80%, 40% and 20% of their Nyquist bands, and the guide states "These are all half-band filters" (R-245) **[Established]**. The sharpest stage is the longest, as in Example 16-09.4. TI's ADC12DJ5200RF (SLVSEN9H, Aug 2026) offers 4×, 8×, 16× and 32× complex decimation with an alias-protected bandwidth of 0.8 times the output rate, more than 90 dB of stopband attenuation and passband ripple below ±0.001 dB, implemented "as linear phase finite impulse response (FIR) filters", with 32-bit NCOs (R-246) **[Established]**.
-- **Asynchronous sample-rate converters are interpolate–resample–decimate machines.** TI's SRC4392 (SBFS029D, 2012) converts between any rates from 4 to 216 kHz at ratios from 1:16 to 16:1, with THD+N of −140 dB typical for a full-scale input and 144 dB A-weighted dynamic range; its block diagram is an interpolation filter, a re-sampler and a decimation filter steered by a rate estimator, and its interpolation filter passes 0 to $0.4535f_{SIN}$ (**20.0** kHz at 44.1 kHz) with −144 dB stopband attenuation from $0.5465f_{SIN}$ (R-247) **[Established]**. Its group delay is set by a FIFO depth the user chooses: $102.53/f_{SIN}$ with 64 pre-buffered samples down to $46.53/f_{SIN}$ with 8, that is **2.14** ms down to **0.97** ms at 48 kHz.
+- **RF-sampling converters decimate in half-band cascades.** AMD's RFSoC RF Data Converter (PG269 v2.6, May 2025) decimates its RF-ADC outputs by factors up to 40× (Gen 3/DFE) with "80% of Nyquist bandwidth, 89 dB stop-band attenuation" and a 48-bit NCO for the mixer; in the Gen 1/2 devices the decimation chain is three factor-of-two FIR stages of 59, 23 and 15 taps with passbands of 80%, 40% and 20% of the final output's Nyquist band (each stage passing 80% of its own output Nyquist band), and the guide states "These are all half-band filters" (R-245) **[Established]**. The sharpest stage is the longest, as in Example 16-09.4. TI's ADC12DJ5200RF (SLVSEN9H, Aug 2026) offers 4×, 8×, 16× and 32× complex decimation with an alias-protected bandwidth of 0.8 times the output rate, more than 90 dB of stopband attenuation and passband ripple below ±0.001 dB, implemented "as linear phase finite impulse response (FIR) filters", with 32-bit NCOs (R-246) **[Established]**.
+- **Asynchronous sample-rate converters are interpolate–resample–decimate machines.** TI's SRC4392 (SBFS029D, 2012) converts between any rates from 4 to 216 kHz at ratios from 1:16 to 16:1, with THD+N of −140 dB typical for a full-scale input and 144 dB A-weighted dynamic range; its block diagram is an interpolation filter, a re-sampler and a decimation filter steered by a rate estimator, and its interpolation filter passes 0 to $0.4535f_{SIN}$ (**20.0** kHz at 44.1 kHz) with −144 dB stopband attenuation from $0.5465f_{SIN}$ (R-247) **[Established]**. The group delay of its interpolation path is set by a FIFO depth the user chooses: $102.53/f_{SIN}$ with 64 pre-buffered samples down to $46.53/f_{SIN}$ with 8, that is **2.14** ms down to **0.97** ms at 48 kHz; when the decimation filter is in use it adds $36.47/f_{SOUT}$ (**0.76** ms at 48 kHz) (R-247).
 
 ### Why it matters commercially
 
@@ -319,7 +324,7 @@ Multirate structures decide the power of every digital front end in radios, sens
 
 <details><summary>Answer</summary>
 
-After downsampling, the new Nyquist frequency corresponds to $\pi/M$ at the old rate; anything above it folds into the new band. The filter must remove it before the samples are discarded.
+After downsampling, the new Nyquist frequency corresponds to $\pi/M$ at the old rate; anything above it folds into the new band. The filter must remove it before the samples are discarded. (If only a final passband $\omega_p < \pi/M$ must stay clean, the stopband may start later, at $2\pi/M - \omega_p$: the transition band then folds onto frequencies above $\omega_p$, which a later filter removes; §3.1.)
 
 </details>
 

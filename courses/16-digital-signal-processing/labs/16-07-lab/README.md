@@ -31,7 +31,7 @@ Read §3 of the chapter. `iirdesign.py` computes prewarped frequencies, discrimi
 | 2 | Impulse invariance | the Nyquist/DC ratio exceeds the analog ratio at every cutoff, by 0.13 at 1 kHz (0.374 against 0.243) and more as the cutoff rises |
 | 3 | Prototypes | the lab's Butterworth and Chebyshev filters equal SciPy's to about 1e-12; order 14 Chebyshev reaches 64.62 dB and order 38 Butterworth 61.75 dB at the 5 kHz edge (their stopbands fall monotonically, so the edge is the worst point) |
 | 4 | Comparison | elliptic 14, Chebyshev 17, Butterworth 41 multiplications per output (sections, powers of two free), FIR 69; passband group-delay spreads 61.5, 89.4 and 49.9 samples against 0 |
-| 5 | Quantization | the single polynomial is unstable at 12 fractional bits (radius 1.030); the biquads stay stable at 8 |
+| 5 | Quantization | the single polynomial is unstable at 13 fractional bits or fewer (radius 1.032 at 13, 1.030 at 12), and its largest radius wanders between 0.978 and 0.994 at 14–17 bits; the biquads stay stable at 8 |
 
 ### Lab answer key
 
@@ -56,10 +56,10 @@ Read §3 of the chapter. `iirdesign.py` computes prewarped frequencies, discrimi
 ### Answers
 
 1. The bilinear map compresses the analog axis: an analog frequency $\Omega$ lands at $\omega = 2\arctan(\Omega T/2) < \Omega T$. The analog cutoff of 1 kHz therefore appears below 1 kHz in the digital filter.
-2. The aliased copies of the analog response, spaced $f_s$ apart, add to the response near Nyquist; the higher the cutoff, the less the analog response has fallen by $f_s/2$ and the larger the copies.
-3. Its poles are spread around a circle rather than packed toward the axis near the band edge, so no pole is as close to the unit circle (largest radius 0.979 against 0.985 and 0.990), which keeps the delay peak down; but a flat, gently curving response needs many more poles to reach 60 dB within a 1 kHz transition.
+2. Two effects add (chapter §3.3). The first-order prototype's impulse response jumps at $t = 0$, and $h[0] = Th_a(0^+)$ adds the constant $\Omega_cT/2$ at every frequency; this endpoint term causes most of the excess. The aliased copies of the analog response, spaced $f_s$ apart, add the rest. Both grow with the cutoff: $\Omega_cT/2$ directly, and the copies because the analog response has fallen less by $f_s/2$. Halving $h[0]$ removes the endpoint term.
+3. Not because its delay is low: the Butterworth design's passband delay runs from 43.0 samples at DC to 92.9 at the edge, the largest of the three. Its spread is the smallest only because its 38 poles give it a large delay even at DC, while the elliptic filter starts at 8.0 and ends at 69.5. The flat, gently curving response needs many more poles to reach 60 dB within a 1 kHz transition, hence the most multiplications.
 4. The roots move even when they stay inside the circle: the largest radius drops from 0.98499 to 0.98451, which changes the gain and ripple near the band edge. Stability is necessary, not sufficient; the quantized response must be rechecked against the mask (16-10).
 
 ## Optional hardware
 
-Implement the four biquads of Example 16-07.5 on a microcontroller with Arm's CMSIS-DSP (`arm_biquad_cascade_df1_f32`, remembering to negate $a_1$ and $a_2$ as its documentation requires) or in any audio plug-in host, and measure the response with a sound card and a sweep. Then implement it once as a single tenth-order difference equation in single-precision floating point and compare.
+Implement the four biquads of Example 16-07.5 on a microcontroller with Arm's CMSIS-DSP (`arm_biquad_cascade_df1_f32`, remembering to negate $a_1$ and $a_2$ as its documentation requires) or in any audio plug-in host, and measure the response with a sound card and a sweep. Then implement it once as a single eighth-order difference equation in single-precision floating point and compare.

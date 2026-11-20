@@ -84,7 +84,7 @@ v.check("Ex 16-09.2b", pku[2])
 xu = mr.upsample(x16, 3)
 Xu = np.abs(np.fft.rfft(xu)) / len(xu) * 2
 v.assert_true("each component has a third of the tone's amplitude", abs(Xu.max() - 1 / 3) < 1e-3)
-v.check("Ex 16-09.2c", 3)
+v.check("Ex 16-09.2c", round(1 / Xu.max()))
 x8 = np.cos(2 * PI * 1000 * np.arange(8000) / 8000)
 pk4 = peaks_khz(mr.upsample(x8, 4), 32000, 4)
 v.check("16-09.2a", pk4[1])
@@ -169,7 +169,9 @@ v.check("Ex 16-09.5f", 1e6 * 4 * 32 / fm)
 v.check("Ex 16-09.5g", 10.63 - 1e6 * 4 * 32 / fm)       # R-243: data-sheet latency 10.63 µs at OSR 32
 v.assert_true("the 0.63 µs overhead is the same at OSR 64 and 128 (R-243: 20.63, 40.63 µs)",
               abs(20.63 - 1e6 * 4 * 64 / fm - 0.63) < 1e-9 and abs(40.63 - 1e6 * 4 * 128 / fm - 0.63) < 1e-9)
-v.check("Ex 16-09.5h", 85 / 10.0)                          # R-238: 34/fDATA = 85 µs at 400 kSPS
+v.check("Ex 16-09.5h", 1e6 * 68 / 400e3 / 10.63)          # R-238: settling 68/fDATA; R-243: sinc4 latency 10.63 µs
+v.check("Ex 16-09.5j", 1e6 * 4 * (32 - 1) / 2 / fm)
+v.check("Ex 16-09.5k", len(np.convolve(np.convolve(np.ones(32), np.ones(32)), np.convolve(np.ones(32), np.ones(32)))))
 f64 = brentq(lambda fv: 20 * math.log10(cic_ref(fv, 64, 4, fm)[0]) + 10 * math.log10(2), 1e3, 1e5, xtol=1e-6)
 v.check("16-09.11a", f64 / 1e3)
 v.check("16-09.11b", 1e6 * 4 * 64 / fm)
@@ -182,19 +184,29 @@ v.check("Txt 16-09.e", 1e3 * 102.53125 / 48000)            # R-247: 102.53125/fS
 v.check("Txt 16-09.f", 1e3 * 46.53125 / 48000)             # R-247: 46.53125/fSIN
 
 
-def wraps_needed(x, N, W):
-    acc = [0] * N
-    worst = 0
+def wraps_counted(x, N, W, stage):
+    """Count actual wrap events of a W-bit two's-complement register: compare the exact sum with the wrapped one."""
+    exact = [0] * N
+    wrapped = [0] * N
+    count = 0
     for xn in x:
-        val = xn
+        val, valw = xn, xn
         for i in range(N):
-            acc[i] += val
-            val = acc[i]
-        worst = max(worst, abs(acc[-1]) >> (W - 1))
-    return worst
+            exact[i] += val
+            raw = wrapped[i] + valw
+            wrapped[i] = ((raw + 2 ** (W - 1)) % 2**W) - 2 ** (W - 1)
+            if i == stage and wrapped[i] != raw:
+                count += 1
+            val, valw = exact[i], wrapped[i]
+    return count, max(abs(e) for e in exact)
 
 
-v.check("Txt 16-09.c", wraps_needed(mv.tests[0], mv.N, mv.W))
+c4, vmax = wraps_counted(mv.tests[0], mv.N, mv.W, mv.N - 1)
+v.check("Txt 16-09.c", c4)
+v.check("Txt 16-09.i", vmax / 2**mv.W)
+v.assert_true("lab helper reports the same wrap count", mv.integrator_wraps(mv.tests[0]) == c4)
+v.check("Txt 16-09.g", wraps_counted(mv.tests[0], mv.N, mv.W, mv.N - 2)[0])
+v.check("Txt 16-09.h", 1e3 * 36.46875 / 48000)            # R-247: decimation filter 36.46875/fSOUT
 
 # ---------------------------------------------------------------------------------------- Problems 3-10, 12
 xa = np.array([1, 2, 3, 4, 5, 6], float)
@@ -220,7 +232,7 @@ v.assert_true("59-tap half-band: E1 is 0.5 z^-14", nh59 == 59 and abs(E59[1][14]
               and np.max(np.abs(np.delete(E59[1], 14))) < 1e-5)
 v.check("16-09.6a", int(np.sum(np.abs(h59) > 1e-5)))
 v.check("16-09.6b", (int(np.sum(np.abs(E59[0]) > 1e-5))) // 2)
-v.check("16-09.6c", 15 * 48000)
+v.check("16-09.6c", (int(np.sum(np.abs(E59[0]) > 1e-5))) // 2 * 48000)
 v.check("16-09.7a", 16 ** 3)
 v.check("16-09.7b", 3 * math.log2(16))
 v.check("16-09.7c", 20 * math.log10(cic_ref(10e3, 16, 3, 1.6e6)[0]))

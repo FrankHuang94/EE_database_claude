@@ -61,4 +61,4 @@ Read §3 of the chapter. `structures.py` computes every structure sample by samp
 
 ## Optional hardware
 
-Synthesize `biquad_df1.v` for any FPGA with a vendor tool and look at the resource report: the five products map onto DSP blocks, and the 40-bit accumulator onto their built-in adders. Then pipeline the multiply–add (add a register after the products) and observe that the feedback loop, not the multipliers, now limits the clock.
+Synthesize `biquad_df1.v` for any FPGA with a vendor tool and look at the resource report: the five products map onto DSP blocks, and the 40-bit accumulator onto their built-in adders. Then pipeline the feed-forward products only (registers after the $b_0x$, $b_1x$, $b_2x$ products, with matching delays so the outputs line up). A register inside the feedback path would change the recursion, so the feedback multiply–add–round–saturate loop stays as it is and now limits the clock; pipelining it needs look-ahead or retiming (16-11).

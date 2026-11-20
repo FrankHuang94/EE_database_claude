@@ -50,7 +50,7 @@ Single stage at 192 kHz, stopband from 28 kHz: the shortest equiripple filter ha
 
 ### Solution 16-09.11
 
-$R = 64$, $N = 4$: output rate $12.8\text{ MHz}/64$ = 200 kSPS. Solving $\lvert\sin(64\pi f/f_{MOD})/(64\sin(\pi f/f_{MOD}))\rvert^4 = 1/\sqrt2$ gives **45.51** kHz (data sheet: 45.5 kHz). The impulse response spans $NR = 256$ modulator samples, $256/12.8\text{ MHz}$ = **20.0** µs; the data sheet's 20.63 µs is that span plus the same 0.63 µs overhead seen at OSR 32. Theory and data sheet agree.
+$R = 64$, $N = 4$: output rate $12.8\text{ MHz}/64$ = 200 kSPS. Solving $\lvert\sin(64\pi f/f_{MOD})/(64\sin(\pi f/f_{MOD}))\rvert^4 = 1/\sqrt2$ gives **45.51** kHz (data sheet: 45.5 kHz). A step settles in $N$ output periods, $NR = 256$ modulator samples or $256/12.8\text{ MHz}$ = **20.0** µs (the impulse response itself has $N(R - 1) + 1 = 253$ taps); the data sheet's 20.63 µs is that settling time plus the same 0.63 µs overhead seen at OSR 32. Theory and data sheet agree.
 
 ### Solution 16-09.12
 

@@ -75,14 +75,16 @@ for taps, kp, kf in ((8, "Ex 16-08.2a", "Ex 16-08.2b"), (64, "Ex 16-08.2c", "Ex 
     v.check(kf, 1000 / T)
 v.check("Ex 16-08.2e", 2.0 + math.log2(64) * 0.5)
 v.check("Ex 16-08.2f", 1000 / (2.0 + math.log2(64) * 0.5))
-v.check("Ex 16-08.2g", 2.5)
+v.check("Ex 16-08.2g", 2.0 + 0.5)
+v.check("Ex 16-08.2i", 2.0 + math.log2(8) * 0.5)
+v.check("Ex 16-08.2j", 1000 / (2.0 + math.log2(8) * 0.5))
 v.check("Ex 16-08.2h", 1000 / 2.5)
 v.check("16-08.4a", 1.5 + 31 * 0.4)
 v.check("16-08.4b", 1000 / (1.5 + 31 * 0.4))
 v.check("16-08.4c", 1.5 + math.log2(32) * 0.4)
 v.check("16-08.4d", 1000 / (1.5 + math.log2(32) * 0.4))
-v.check("16-08.4e", 1.9)
-v.check("16-08.4f", 1000 / 1.9)
+v.check("16-08.4e", 1.5 + 0.4)
+v.check("16-08.4f", 1000 / (1.5 + 0.4))
 
 # ---------------------------------------------------------------------------------------- Example 3, Problems 10-12
 sos = signal.ellip(8, 0.1, 60, 4000, fs=48000, output="sos")
@@ -263,5 +265,55 @@ def trunc_model(xs, c):
 
 
 v.check("Lab 16-08.d", sum(sum(u != w_ for u, w_ in zip(biquad_int(xs, coef)[0], trunc_model(xs, coef))) for xs in mv.tests))
+
+# lattice stage equations (§3.5) and DF2T (§3.2), checked against direct filtering
+_rng = np.random.default_rng(1608)
+_kk = [0.5, -0.3, 0.2, 0.6]
+_A = st.lattice_to_poly(_kk)
+_x = _rng.standard_normal(300)
+
+
+def _fir_lattice(k, x):
+    g_prev = np.zeros(len(k))
+    y = np.zeros(len(x))
+    for n, xn in enumerate(x):
+        f, g = xn, xn
+        gs = [g]
+        for m, km in enumerate(k):
+            f, g = f + km * g_prev[m], km * f + g_prev[m]
+            gs.append(g)
+        g_prev = np.array(gs[:-1])
+        y[n] = f
+    return y
+
+
+def _allpole_lattice(k, x):
+    N = len(k)
+    g_prev = np.zeros(N)  # g_{m-1}[n-1], m = 1..N
+    y = np.zeros(len(x))
+    for n, xn in enumerate(x):
+        f = xn
+        fs_ = [0.0] * (N + 1)
+        fs_[N] = f
+        for m in range(N, 0, -1):
+            fs_[m - 1] = fs_[m] - k[m - 1] * g_prev[m - 1]
+        g = [fs_[0]] + [0.0] * N
+        for m in range(1, N + 1):
+            g[m] = k[m - 1] * fs_[m - 1] + g_prev[m - 1]
+        g_prev = np.array(g[:N])
+        y[n] = fs_[0]
+    return y
+
+
+v.assert_true("FIR lattice stage equations realize A_N(z)", np.allclose(_fir_lattice(_kk, _x), signal.lfilter(_A, [1.0], _x)))
+v.assert_true("all-pole lattice realizes 1/A_N(z)", np.allclose(_allpole_lattice(_kk, _x), signal.lfilter([1.0], _A, _x)))
+_b, _a = [0.2, 0.3, 0.1], [1.0, -0.5, 0.3]
+s1 = s2 = 0.0
+_y = []
+for xn in _x:
+    yn = _b[0] * xn + s1
+    s1, s2 = _b[1] * xn - _a[1] * yn + s2, _b[2] * xn - _a[2] * yn
+    _y.append(yn)
+v.assert_true("DF2T equations realize B/A", np.allclose(_y, signal.lfilter(_b, _a, _x)))
 
 sys.exit(v.finish())

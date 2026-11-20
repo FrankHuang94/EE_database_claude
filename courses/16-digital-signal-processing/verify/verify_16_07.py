@@ -188,8 +188,10 @@ mul = iir.mults_sos(sos)
 v.check("Ex 16-07.5i", mul)
 v.check("Ex 16-07.5j", mul * fs)
 v.check("Ex 16-07.5k", 69 / mul)
+v.check("Ex 16-07.5q", 69 * fs / 1e6)
 gdn = gd_numeric(sos, np.array([1e-3, wp_]))
 v.check("Ex 16-07.5l", gdn[0])
+v.check("Ex 16-07.5r", gdn[0] / fs * 1e3)
 v.check("Ex 16-07.5m", gdn[1])
 wpb = np.linspace(1e-3, wp_, 4001)
 g = gd_numeric(sos, wpb)
@@ -197,6 +199,61 @@ v.check("Ex 16-07.5n", g.max() - g.min())
 v.assert_true("lab root-by-root group delay matches the numerical one", np.allclose(iir.group_delay(z, p, wpb), g, atol=1e-4))
 _, aden = signal.sos2tf(sos)
 v.check("Ex 16-07.5o", float(np.max(np.abs(aden))))
+
+# endpoint term and aliased sum (16-07 §3.3, Example 2, Problem 7), the aliased sum summed directly
+def aliased_sum(wcT, w, M=200000):
+    m = np.arange(-M, M + 1)
+    return np.sum(wcT / (wcT + 1j * (w + 2 * PI * m))).real + wcT / (2 * PI) * 0  # real part (symmetric sum)
+
+
+for wcT, kt, kd, kn in ((PI / 4, "Ex 16-07.2o", "Ex 16-07.2p", "Ex 16-07.2q"), (PI / 2, "16-07.7e", "16-07.7f", "16-07.7g")):
+    v.check(kt, wcT / 2)
+    a0, api = aliased_sum(wcT, 0.0), aliased_sum(wcT, PI)
+    v.check(kd, a0)
+    v.check(kn, api)
+    pz_ = math.exp(-wcT)
+    v.assert_true(f"impulse-invariant response = aliased sum + endpoint term ({wcT:.3f})",
+                  abs(wcT / (1 - pz_) - (a0 + wcT / 2)) < 1e-4 and abs(wcT / (1 + pz_) - (api + wcT / 2)) < 1e-4)
+v.check("16-07.7h", aliased_sum(PI / 2, PI) / aliased_sum(PI / 2, 0.0))
+# group delay peaks just beyond the 4 kHz edge (about 84 samples near 4.07 kHz), outermost pole at 4.068 kHz
+wg = np.linspace(2 * PI * 3900 / fs, 2 * PI * 4300 / fs, 40001)
+gg = gd_numeric(sos, wg)
+v.assert_true("Ex 5: delay peak of about 84 samples just beyond the edge", 84 < gg.max() < 84.5 and 4000 < wg[np.argmax(gg)] * fs / (2 * PI) < 4100)
+v.assert_true("Ex 5: outermost pole near 4.068 kHz", abs(abs(np.angle(p[np.argmax(np.abs(p))])) * fs / (2 * PI) - 4068) < 1)
+# single-polynomial coefficient rounding: unstable at 13 bits or fewer
+_, aden8 = signal.sos2tf(sos)
+rad = {F: float(np.max(np.abs(np.roots(np.round(aden8 * 2**F) / 2**F)))) for F in range(8, 18)}
+v.assert_true("direct form unstable for F <= 13, stable 14..17", all(rad[F] > 1 for F in range(8, 14)) and all(rad[F] < 1 for F in range(14, 18)))
+v.check("Txt 16-07.l", rad[13])
+
+# ---------------------------------------------------------------------------------------- Problem 13 (band-pass)
+fs13 = 48000.0
+W13 = lambda f: 2 * fs13 * math.tan(PI * f / fs13)  # noqa: E731
+e13 = [W13(f_) for f_ in (1000, 2000, 500, 4000)]
+for key, val in zip(("16-07.13a", "16-07.13b", "16-07.13c", "16-07.13d"), e13):
+    v.check(key, val)
+O0 = math.sqrt(e13[0] * e13[1])
+B13 = e13[1] - e13[0]
+v.check("16-07.13e", O0)
+v.check("16-07.13f", B13)
+v.check("16-07.13g", fs13 / PI * math.atan(O0 / (2 * fs13)))
+lp = lambda O: abs(O * O - O0 * O0) / (B13 * O)  # noqa: E731
+v.check("16-07.13h", lp(e13[2]))
+v.check("16-07.13i", lp(e13[3]))
+N13 = math.log10((10**4 - 1) / (10**0.1 - 1)) / (2 * math.log10(min(lp(e13[2]), lp(e13[3]))))
+v.check("16-07.13j", N13)
+Nn = math.ceil(N13)
+v.check("16-07.13k", Nn)
+v.assert_true("P13: scipy buttord agrees on the prototype order", signal.buttord([1000, 2000], [500, 4000], 1, 40, fs=fs13)[0] == Nn)
+sos13 = signal.iirfilter(*signal.buttord([1000, 2000], [500, 4000], 1, 40, fs=fs13), btype="bandpass", ftype="butter",
+                         fs=fs13, output="sos")
+zz, pp, _ = signal.sos2zpk(sos13)
+v.check("16-07.13l", len(pp))
+v.check("16-07.13m", len(sos13))
+_, h13 = signal.sosfreqz(sos13, worN=[500, 1000, 2000, 4000], fs=fs13)
+v.check("16-07.13n", -20 * math.log10(abs(h13[0])))
+v.check("16-07.13o", -20 * math.log10(abs(h13[3])))
+v.assert_true("P13: 1 dB at both passband edges", np.allclose(20 * np.log10(np.abs(h13[1:3])), -1, atol=1e-6))
 
 # ---------------------------------------------------------------------------------------- Text and §9
 for rho, key in ((0.95, "Txt 16-07.a"), (0.99, "Txt 16-07.b")):
@@ -235,8 +292,8 @@ b4h, a4h = signal.butter(1, 100, btype="high", fs=fs)
 v.check("16-07.4a", K)
 v.check("16-07.4b", b4h[0])
 v.check("16-07.4c", -a4h[1])
-v.check("16-07.4d", 1 / (1 + a4h[1]))
-v.check("16-07.4e", 1000 / (1 + a4h[1]) / fs)
+v.check("16-07.4d", -1 / math.log(-a4h[1]))
+v.check("16-07.4e", -1000 / math.log(-a4h[1]) / fs)
 v.assert_true("high-pass gain at Nyquist is 1", abs(abs(signal.freqz(b4h, a4h, worN=[PI])[1][0]) - 1) < 1e-12)
 
 _, p3, _ = signal.buttap(3)

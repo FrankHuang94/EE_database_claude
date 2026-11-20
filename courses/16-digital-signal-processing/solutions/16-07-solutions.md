@@ -40,7 +40,7 @@ $$
 H(z) = \frac{s/\Omega_c}{s/\Omega_c + 1} = \frac{1 - z^{-1}}{(1 - z^{-1}) + K(1 + z^{-1})} = \frac{1}{1 + K}\,\frac{1 - z^{-1}}{1 - \frac{1 - K}{1 + K}z^{-1}} .
 $$
 
-Gain constant $1/(1 + K)$ = **0.99350**; pole $(1 - K)/(1 + K)$ = **0.98699**; zero at $z = 1$ (DC is blocked). At Nyquist, $H(-1) = \frac{1}{1 + K}\cdot\frac{2}{1 + p} = 1$ exactly. Time constant $1/(1 - p)$ = **76.9** samples = **1.60** ms. This is the DC blocker of 16-02, $(1 - z^{-1})/(1 - az^{-1})$, with $a = 0.98699$ and a gain of 0.99350 that makes the high-frequency gain exactly 1; its corner $1 - a = 0.0130$ rad/sample matches $2\pi \times 100/48{,}000 = 0.0131$.
+Gain constant $1/(1 + K)$ = **0.99350**; pole $(1 - K)/(1 + K)$ = **0.98699**; zero at $z = 1$ (DC is blocked). At Nyquist, $H(-1) = \frac{1}{1 + K}\cdot\frac{2}{1 + p} = 1$ exactly. Time constant $-1/\ln p$ = **76.4** samples = **1.59** ms (the approximation $1/(1 - p)$ gives 76.9), matching the analog $1/\Omega_c$ = 1.59 ms. This is the DC blocker of 16-02, $(1 - z^{-1})/(1 - az^{-1})$, with $a = 0.98699$ and a gain of 0.99350 that makes the high-frequency gain exactly 1; its corner $1 - a = 0.0130$ rad/sample matches $2\pi \times 100/48{,}000 = 0.0131$.
 
 ### Solution 16-07.5
 
@@ -64,7 +64,7 @@ The order is odd, so the DC gain is **1** (0 dB): the response starts at the top
 
 ### Solution 16-07.7
 
-$\Omega_cT = 2\pi \times 2000/8000 = \pi/2$; $H(z) = 1.5708/(1 - e^{-\pi/2}z^{-1})$ with pole $e^{-\pi/2} = 0.2079$. DC gain $1.5708/0.7921$ = **1.983**; Nyquist gain $1.5708/1.2079$ = **1.300**; ratio **0.656**. The analog filter at 4 kHz, relative to DC, has $1/\sqrt{1 + 2^2}$ = **0.447**. The aliased tails of the analog response raise the digital response near Nyquist by 47%, and the DC gain is nearly double: impulse invariance is a poor choice when the cutoff is a quarter of the sampling rate.
+$\Omega_cT = 2\pi \times 2000/8000 = \pi/2$; $H(z) = 1.5708/(1 - e^{-\pi/2}z^{-1})$ with pole $e^{-\pi/2} = 0.2079$. DC gain $1.5708/0.7921$ = **1.983**; Nyquist gain $1.5708/1.2079$ = **1.300**; ratio **0.656**. The analog filter at 4 kHz, relative to DC, has $1/\sqrt{1 + 2^2}$ = **0.447**. Two effects of 16-07 §3.3 combine. The impulse response jumps at $t = 0$, so the constant $\Omega_cT/2 = \pi/4$ = **0.785** is added at every frequency. The aliased sum alone gives a DC gain of $(\pi/4)\coth(\pi/4)$ = **1.198** and a Nyquist gain of $(\pi/4)\tanh(\pi/4)$ = **0.515**, a ratio of **0.430**, close to the analog 0.447. So the endpoint term causes both the nearly doubled DC gain and most of the raised ratio (0.656). Impulse invariance is a poor choice when the cutoff is a quarter of the sampling rate, and halving $h[0]$ is the first repair.
 
 ### Solution 16-07.8
 
@@ -122,6 +122,16 @@ At 12 bits a pole is outside the unit circle: the filter is **unstable**. (Even 
 
 (d) The roots of a high-degree polynomial with clustered roots are hypersensitive to its coefficients: a perturbation $\Delta a_k$ moves a root by roughly $\Delta a_k\,p^{N-k}/\prod_{j\ne i}(p_i - p_j)$, and the product of small distances between clustered poles in the denominator is tiny. A biquad's two poles depend only on its own two coefficients, with no clustered partners to amplify the error. This is why SciPy recommends `output='sos'` and why every product implements IIR filters as cascades of sections (16-08).
 
+### Solution 16-07.13
+
+(a) With $\Omega = 2f_s\tan(\pi f/f_s)$: passband edges **6292** and **12,639** rad/s; stopband edges **3143** and **25,723** rad/s. (Warping moves the 4 kHz edge by 2.3%, the 2 kHz edge by 0.6% and the others by less than 0.2%.)
+
+(b) $\Omega_0 = \sqrt{6292 \times 12{,}639}$ = **8918** rad/s and $B = 12{,}639 - 6292$ = **6346** rad/s. The centre maps back to $f = (f_s/\pi)\arctan(\Omega_0/2f_s)$ = **1415** Hz: the geometric mean of 1 and 2 kHz (1414 Hz), not the arithmetic mean.
+
+(c) A stopband edge maps to $\lvert\Omega_s^2 - \Omega_0^2\rvert/(B\Omega_s)$: **3.492** for 500 Hz and **3.566** for 4 kHz. The smaller ratio, 3.492 at the lower edge, is the harder requirement and governs.
+
+(d) $D = (10^4 - 1)/(10^{0.1} - 1)$ = 38,617, so $N \ge \log_{10}D/(2\log_{10}3.492)$ = **4.22**: a prototype of order **5**. Each pole becomes a pair, so the band-pass filter has order **10**, built as **5** biquads. SciPy's `buttord` returns the same prototype order, and the resulting filter has 48.4 dB of attenuation at 500 Hz and 49.4 dB at 4 kHz, with exactly 1 dB at both passband edges.
+
 ---
 
 ## Answer key
@@ -145,12 +155,12 @@ At 12 bits a pole is outside the unit circle: the filter is **unstable**. (Even 
 | 16-07.4a | K | 0.006545 | — |
 | 16-07.4b | gain constant | 0.99350 | — |
 | 16-07.4c | pole | 0.98699 | — |
-| 16-07.4d | time constant | 76.9 | samples |
-| 16-07.4e | time constant | 1.60 | ms |
+| 16-07.4d | time constant | 76.4 | samples |
+| 16-07.4e | time constant | 1.59 | ms |
 | 16-07.5a | fourth-order pole angle 1 | 112.5 | ° |
 | 16-07.5b | fourth-order pole angle 2 | 157.5 | ° |
-| 16-07.5c | damping of the inner pair | 0.924 | — |
-| 16-07.5d | damping of the outer pair | 0.383 | — |
+| 16-07.5c | damping of the pair nearer the real axis | 0.924 | — |
+| 16-07.5d | damping of the pair nearer the jΩ axis | 0.383 | — |
 | 16-07.6a | ε | 0.5088 | — |
 | 16-07.6b | a | 0.4760 | — |
 | 16-07.6c | sinh a | 0.4942 | — |
@@ -162,6 +172,10 @@ At 12 bits a pole is outside the unit circle: the filter is **unstable**. (Even 
 | 16-07.7b | Nyquist gain | 1.300 | — |
 | 16-07.7c | Nyquist over DC | 0.656 | — |
 | 16-07.7d | analog gain at 4 kHz over DC | 0.447 | — |
+| 16-07.7e | endpoint term | 0.785 | — |
+| 16-07.7f | aliased-sum DC gain | 1.198 | — |
+| 16-07.7g | aliased-sum Nyquist gain | 0.515 | — |
+| 16-07.7h | aliased-sum ratio | 0.430 | — |
 | 16-07.8a | near-pole delay | 19 | samples |
 | 16-07.8b | total group delay | 18.53 | samples |
 | 16-07.9a | elliptic bound | 6.76 | — |
@@ -186,3 +200,18 @@ At 12 bits a pole is outside the unit circle: the filter is **unstable**. (Even 
 | 16-07.12e | pole radius, 12 bits | 1.03017 | — |
 | 16-07.12f | pole radius, 10 bits | 1.10277 | — |
 | 16-07.12g | biquad pole radius, 8 bits | 0.98425 | — |
+| 16-07.13a | prewarped lower passband edge | 6292 | rad/s |
+| 16-07.13b | prewarped upper passband edge | 12639 | rad/s |
+| 16-07.13c | prewarped lower stopband edge | 3143 | rad/s |
+| 16-07.13d | prewarped upper stopband edge | 25723 | rad/s |
+| 16-07.13e | centre Ω0 | 8918 | rad/s |
+| 16-07.13f | bandwidth B | 6346 | rad/s |
+| 16-07.13g | digital centre frequency | 1415 | Hz |
+| 16-07.13h | prototype stopband, lower edge | 3.492 | — |
+| 16-07.13i | prototype stopband, upper edge | 3.566 | — |
+| 16-07.13j | Butterworth order bound | 4.22 | — |
+| 16-07.13k | prototype order | 5 | — |
+| 16-07.13l | band-pass order | 10 | — |
+| 16-07.13m | biquads | 5 | — |
+| 16-07.13n | attenuation at 500 Hz | 48.4 | dB |
+| 16-07.13o | attenuation at 4 kHz | 49.4 | dB |
