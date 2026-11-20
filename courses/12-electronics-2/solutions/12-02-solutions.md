@@ -60,6 +60,20 @@ M6 must carry 450 µA instead of the 400 µA it would carry at $V_{SG6} = V_{SG4
 
 Per volt of headroom: 10/0.3 = **33.3**, 18.26/0.45 = **40.6** and 210/0.6 = **350** per volt. Cascoding both sides gives by far the most gain per volt, as long as the supply has room for the fourth overdrive.
 
+### Solution 12-02.13
+
+(a) The diode transistor's collector carries $I$ while the node also feeds two base currents, so the copy is $I/(1 + 2/\beta)$: short by $1 - 1/1.02$ = **1.961**%. The output balances only when the input pair delivers that much less current to the mirror side than to the output side: $I_{C1}/I_{C2} = 1 + 2/\beta$, so $v_{id} = V_T\ln(1.02)$ = **0.5119** mV of systematic offset; the estimate $2V_T/\beta$ gives **0.5170** mV.
+
+(b) $g_m = 100\ \mu\text{A}/25.852\ \text{mV}$ = 3.868 mA/V and $r_\pi = \beta/g_m$ = 25.85 kΩ. The emitter of the cascode device sees $r_{o1} \parallel r_{\pi2}$ = 20.54 kΩ, because the base current returns signal to AC ground through $r_\pi$. So $R_{out} = r_{o2} + (r_{o1} \parallel r_{\pi2})(1 + g_{m2}r_{o2})$ = **8.066** MΩ, close to $\beta r_o$ = **10** MΩ and far below the MOS-style $g_mr_o^2$ = **38.68** MΩ.
+
+### Solution 12-02.14
+
+Each half is a cascode with a cascode load: $G_m = g_mr_o(1 + g_mr_o)/R_{out}$ and $R_{out} = 2r_o + g_mr_o^2$ for each side, so $A_d = G_m(R_{out}/2) = g_mr_o(1 + g_mr_o)/2 = 50 \times 51/2$ = **1275**, or **62.11** dB. Each output can move over $1.5 - 5 \times 0.15$ = **0.75** V, so the differential output swings **1.5** V peak to peak.
+
+### Solution 12-02.15
+
+With matched halves the output equals the diode node: $V_{DD} - V_{SG3} = 1.8 - (0.5 + 0.25)$ = **1.05** V. The lowest input common mode keeps the tail saturated: $V_{TN} + V_{ov} + V_{ov,t}$ = **0.9** V. The highest keeps M1 saturated with its drain at 1.05 V: $V_{IC} \le 1.05 + V_{TN}$ = **1.55** V.
+
 ---
 
 ## Answer key
@@ -113,3 +127,16 @@ Per volt of headroom: 10/0.3 = **33.3**, 18.26/0.45 = **40.6** and 210/0.6 = **3
 | 12-02.12h | gain per volt, cascode with cascode load | 350 | 1/V |
 | 12-02.12i | gain per volt, simple CS | 33.3 | 1/V |
 | 12-02.12j | gain per volt, cascode with simple load | 40.6 | 1/V |
+| 12-02.13a | mirror shortfall | 1.961 | % |
+| 12-02.13b | systematic offset | 0.5119 | mV |
+| 12-02.13c | estimate 2V_T/β | 0.5170 | mV |
+| 12-02.13d | bipolar cascode output resistance | 8.066 | MΩ |
+| 12-02.13e | βr_o | 10 | MΩ |
+| 12-02.13f | g_m r_o² | 38.68 | MΩ |
+| 12-02.14a | differential gain | 1275 | — |
+| 12-02.14b | differential gain | 62.11 | dB |
+| 12-02.14c | swing per output | 0.75 | V |
+| 12-02.14d | differential swing | 1.5 | V |
+| 12-02.15a | output DC level | 1.05 | V |
+| 12-02.15b | lowest input common mode | 0.9 | V |
+| 12-02.15c | highest input common mode | 1.55 | V |

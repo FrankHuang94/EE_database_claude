@@ -122,7 +122,7 @@ Read off three facts.
 
 - **The Miller term is in $b_1$.** $R_S\,C_{gd}(1 + g_mR_L)$ is exactly the Miller capacitance times the source resistance. But $b_1$ also contains the output node's time constant $R_L(C_{gd} + C_L)$, which the Miller input-pole estimate leaves out.
 - **The dominant pole** is about $1/b_1$, the second pole about $b_1/b_2$.
-- **A right-half-plane zero** at $s = +g_m/C_{gd}$. At that frequency the current through $C_{gd}$ equals the transistor's $g_mv_{gs}$ and cancels it, so the output current reverses sign. The zero is usually far above the bandwidth (at about $f_T$ times $C_{gs}/C_{gd}$), but it adds phase lag without reducing gain, which matters for stability (12-06).
+- **A right-half-plane zero** at $s = +g_m/C_{gd}$, a point on the positive real axis. There the current fed forward through $C_{gd}$, $sC_{gd}v_{gs}$, exactly equals the transistor's $g_mv_{gs}$ and cancels it. (On the $j\omega$ axis, at ω = $g_m/C_{gd}$, the two currents are equal in magnitude but 90° apart, so they do not cancel.) The zero is usually far above the bandwidth (at about $f_T$ times $C_{gs}/C_{gd}$), but it adds phase lag without reducing gain, which matters for stability (12-06).
 
 **Three estimates of the bandwidth.** Example 12-03.2 compares them: the Miller input pole alone overestimates the bandwidth by about 87% because the output node is nearly as slow as the input; $1/(2\pi b_1)$ underestimates it by about 10%; the exact −3 dB frequency lies between.
 
@@ -136,7 +136,7 @@ $$
 \omega_{in} \approx \frac{1}{(R_S \parallel 1/g_m)\,C_{gs}}, \qquad \omega_{out} = \frac{1}{R_L(C_L + C_{gd})} .
 $$
 
-The input pole is near $\omega_T$ when $R_S \gg 1/g_m$, so the output pole usually dominates. The price is the low input resistance $1/g_m$: with a high-impedance source the signal current divides, and the gain from the source is $g_mR_L/(1 + g_mR_S)$ (Example 12-03.4). The common-gate stage suits sources that deliver current, or low-impedance (50 Ω) ones.
+The input pole is near $\omega_T$ when $R_S \gg 1/g_m$, so the output pole usually dominates. The price is the low input resistance, about $1/g_m$. (In general it is $(r_o + R_L)/(1 + g_mr_o)$, which is close to $1/g_m$ only when $R_L \ll r_o$; a common-gate device loaded by a high resistance, such as a cascode load, has a much higher input resistance, so $r_o$ cannot be lumped into $R_L$ for these stages.) With a high-impedance source the signal current divides, and the gain from the source is $g_mR_L/(1 + g_mR_S)$ (Example 12-03.4). The common-gate stage suits sources that deliver current, or low-impedance (50 Ω) ones.
 
 ### 3.6 The source follower
 
@@ -150,13 +150,27 @@ A left-half-plane zero at $g_m/C_{gs}$ (about $\omega_T$) and a pole at $g_m/(C_
 
 ### 3.7 The cascode against the Miller effect
 
-Put a common-gate device M2 on the drain of the common-source device M1 (12-02). M1's drain now sees M2's source, whose small-signal resistance is about $1/g_{m2}$, so the gain from M1's gate to its drain is only about $-g_{m1}/g_{m2} \approx -1$. The Miller multiplication of $C_{gd1}$ falls from $(1 + g_mR_L)$ to about 2:
+Put a common-gate device M2 on the drain of the common-source device M1 (12-02). M1's drain now sees M2's source, whose small-signal resistance is $R_x = (r_{o2} + R_L)/(1 + g_{m2}r_{o2})$, about $1/g_{m2}$ when the cascode's load $R_L \ll r_{o2}$. Then the gain from M1's gate to its drain is only about $-g_{m1}/g_{m2} \approx -1$. *Caveat:* with a high-resistance load, such as 12-02's cascoded current source (10.2 MΩ), $R_x$ is about 102 kΩ for 12-02's devices; in parallel with M1's own $r_o$ the drain node sees about 50.5 kΩ, and the gate-to-drain gain at low frequency is about −50, not −1. It falls toward −1 only above the frequency at which $C_L$ shorts the output node, which is usually the frequency range where the Miller effect matters, so the cascode still helps; but the simple rule assumes a low-resistance load. The Miller multiplication of $C_{gd1}$ falls from $(1 + g_mR_L)$ to about 2:
 
 $$
 C_{in} \approx C_{gs1} + 2C_{gd1} .
 $$
 
 The new internal node has a pole near $g_{m2}/C_x$, where $C_x$ collects $C_{gs2}$, $C_{db1}$ and $C_{sb2}$: of the order of $\omega_T$, far above the bandwidth. The full gain $g_{m1}R_L$ appears only at the output, where $C_{gd2}$ goes to the grounded gate. The cascode keeps the common-source stage's gain with the common-gate stage's freedom from the Miller effect (Example 12-03.5).
+
+### 3.8 The differential pair and the OTA at high frequency
+
+A resistor-loaded differential pair driven differentially is two common-source half-circuits, so §3.4 applies to each half. The five-transistor OTA of 12-02 adds two new effects.
+
+**The mirror pole and its zero.** The signal from M1 reaches the output through the mirror: M1's current develops a voltage across the diode M3's $1/g_{m3}$ in parallel with the mirror node's capacitance $C_E$ (the gates of M3 and M4 and the drains of M1 and M3), and M4 copies it. That path has a pole at $p_m = g_{m3}/C_E$. M2's path to the output has no such pole. With the output shorted, the two halves contribute equal currents at low frequency, so
+
+$$
+G_m(s) = \frac{g_{m1}}{2}\left(\frac{1}{1 + s/p_m} + 1\right) = g_{m1}\,\frac{1 + s/(2p_m)}{1 + s/p_m} :
+$$
+
+a pole at $p_m$ and a left-half-plane zero at $2p_m$, a **pole–zero doublet** an octave apart. Its phase lag is at most about 19°, but because it sits near the crossover of fast op-amps it costs phase margin and leaves a slow-settling component (12-06). With $g_{m3}$ = 1 mA/V and $C_E$ = 100 fF, the pole is at **1.592** GHz and the zero at **3.183** GHz.
+
+**CMRR falls with frequency.** The tail's impedance is $R_{SS}$ in parallel with its capacitance $C_{SS}$, so above $1/(2\pi R_{SS}C_{SS})$ the tail impedance falls and the common-mode gain rises at 20 dB per decade: the CMRR rolls off. With $R_{SS}$ = 50 kΩ and $C_{SS}$ = 50 fF the corner is at **63.66** MHz, far below the differential bandwidth. This is why op-amp data sheets show CMRR falling from its DC value at a few kilohertz to tens of decibels at megahertz.
 
 ## 4. Worked examples
 
@@ -220,7 +234,7 @@ The new internal node has a pole near $g_{m2}/C_x$, where $C_x$ collects $C_{gs2
 
 (c) The Miller estimate is within 4% of the exact bandwidth here, because the output node (500 Ω with only $C_\mu$) is fast. A "300 MHz transistor" makes a 3.7 MHz amplifier at this gain: $f_T$ is a device property measured with the output shorted.
 
-**Sanity check.** $C_\mu$ is under 2% of the transistor's input capacitance, yet multiplied by 194.4 it supplies about four-fifths of $C_{in}$.
+**Sanity check.** $C_\mu$ is under 2% of the transistor's input capacitance, yet multiplied by 194.4 it supplies about four-fifths of $C_{in}$. The model omits the base resistance $r_x$, which the data sheet does not give: with $r_x$ of 20 to 50 Ω, the internal base node sees $(R_S + r_x) \parallel r_\pi$ = **55.08** to **72.11** Ω instead of 41.90 Ω, lowering the bandwidth by up to about 40%. With a 50 Ω source, the close Miller agreement depends on that assumption.
 
 ### Answer key
 
@@ -230,6 +244,13 @@ The new internal node has a pole near $g_{m2}/C_x$, where $C_x$ collects $C_{gs2
 | T 12-03.a | Miller capacitance of 6 fF at gain 20 | 126 | fF |
 | T 12-03.b | 2N3904 f_T (minimum, 10 mA) | 300 | MHz |
 | T 12-03.c | CS −3 dB with a 1 kΩ source (guided exercise) | 70.83 | MHz |
+| T 12-03.d | M1's drain-node resistance with a 10.2 MΩ cascode load | 50.5 | kΩ |
+| T 12-03.e | gate-to-drain gain with that load | −50 | — |
+| T 12-03.f | mirror pole | 1.592 | GHz |
+| T 12-03.g | mirror zero | 3.183 | GHz |
+| T 12-03.h | CMRR corner | 63.66 | MHz |
+| Ex 12-03.6x | input-node resistance with r_x = 20 Ω | 55.08 | Ω |
+| Ex 12-03.6y | input-node resistance with r_x = 50 Ω | 72.11 | Ω |
 | Ex 12-03.1a | g_m | 1 | mA/V |
 | Ex 12-03.1b | C_gs | 72.67 | fF |
 | Ex 12-03.1c | C_gd | 6 | fF |
@@ -390,7 +411,7 @@ It ignores the output node's time constant $R_L(C_L + C_{gd})$; when that node i
 
 <details><summary>Answer</summary>
 
-At $\omega = g_m/C_{gd}$ the current fed forward through $C_{gd}$ cancels the transistor's $g_mv_{gs}$. A right-half-plane zero adds phase lag like a pole while leaving the gain up, which erodes phase margin in feedback loops.
+At the real frequency $s = +g_m/C_{gd}$ the current fed forward through $C_{gd}$ cancels the transistor's $g_mv_{gs}$. A right-half-plane zero adds phase lag like a pole while leaving the gain up, which erodes phase margin in feedback loops.
 
 </details>
 
@@ -398,7 +419,7 @@ At $\omega = g_m/C_{gd}$ the current fed forward through $C_{gd}$ cancels the tr
 
 <details><summary>Answer</summary>
 
-M1's drain sees about $1/g_{m2}$, so its gate-to-drain gain is about −1 and $C_{gd1}$ is only doubled; the full gain appears at M2's drain, where $C_{gd2}$ goes to an AC-grounded gate.
+M1's drain sees about $1/g_{m2}$ (when the cascode's load resistance is small compared with its $r_o$, or at frequencies where the load capacitance shorts the output), so its gate-to-drain gain is about −1 and $C_{gd1}$ is only doubled; the full gain appears at M2's drain, where $C_{gd2}$ goes to an AC-grounded gate.
 
 </details>
 

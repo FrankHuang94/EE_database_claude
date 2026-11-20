@@ -84,6 +84,12 @@ def poles(nodes, elems, fixed):
     return np.sort(np.abs(lam.real)) / TP
 
 
+def real_zero(nodes, elems, fixed, out, lo, hi):
+    """A transmission zero on the positive real s axis: the real s at which the solved output vanishes.
+    Passing f = s/(j 2 pi) to response() evaluates the nodal system at s itself."""
+    return brentq(lambda sig: response(nodes, elems, fixed, sig / (1j * TP))[out].real, lo, hi, xtol=1e-3) / TP
+
+
 def f3db(fun, a0, lo, hi):
     return brentq(lambda f: abs(fun(f)) - a0 / math.sqrt(2), lo, hi, xtol=1e-6)
 
@@ -143,9 +149,8 @@ v.assert_true("b1 equals the sum of the solved poles' time constants", abs(b1 - 
 v.check("Ex 12-03.2g", b1 / b2 / TP / 1e6)
 v.check("Ex 12-03.2h", pl[0] / 1e6)
 v.check("Ex 12-03.2i", pl[1] / 1e6)
-# zero: the output current vanishes where gm*vg equals the current through Cgd; find |H| minimum of the
-# transconductance part by solving gm - s*Cgd = 0 on the real s axis numerically
-zero = brentq(lambda sig: gm - sig * Cgd, 1e3, 1e15) / TP
+# zero: the real s at which the solved common-source circuit's output vanishes
+zero = real_zero(["g", "o"], cs_elems(RS, RL, CL), {"vs": 1.0}, "o", 1e9, 1e14)
 v.check("Ex 12-03.2j", zero / 1e9)
 f3 = f3db(cs, A0, 1e6, 1e9)
 v.check("Ex 12-03.2k", f3 / 1e6)
@@ -226,6 +231,27 @@ v.check("Ex 12-03.6i", Ace)
 v.check("Ex 12-03.6j", f3ce / 1e6)
 v.check("Ex 12-03.6k", 100 * (1 / (TP * Rin * Cmb) / f3ce - 1))
 
+# ============================================================ section 3.8: the OTA's mirror doublet and CMRR corner
+def ota_gm(s, gm1=1e-3, gm3=1e-3, CE=100e-15, RSS=50e3, CSS=50e-15):
+    """Short-circuit output current per volt of v_id for the five-transistor OTA (r_o neglected)."""
+    Ys = 1 / RSS + s * CSS
+    A = np.array([[Ys + 2 * gm1, 0.0], [-gm1, gm3 + s * CE]], dtype=complex)   # unknowns: tail, mirror node
+    b = np.array([0.0, -gm1 * 0.5], dtype=complex)
+    vs, vm = np.linalg.solve(A, b)
+    return -gm1 * vm - gm1 * (-0.5 - vs)
+
+
+Gnum = lambda sg: ota_gm(sg).real  # noqa: E731
+# natural frequencies of the OTA's two internal nodes; the mirror pole is the one whose mode lives on the mirror node
+Gm_ = np.array([[1 / 50e3 + 2e-3, 0.0], [-1e-3, 1e-3]])
+Cm_ = np.diag([50e-15, 100e-15])
+lam, vec = np.linalg.eig(np.linalg.solve(-Cm_, Gm_))
+p_m = lam[int(np.argmax(np.abs(vec[1, :]) - np.abs(vec[0, :])))].real
+v.check("T 12-03.f", -p_m / TP / 1e9)
+v.check("T 12-03.g", -brentq(Gnum, 3 * p_m, 1.2 * p_m) / TP / 1e9)   # the real zero of the solved G_m(s)
+cmg = lambda f: abs(1 / (1 / 50e3 + 1j * TP * f * 50e-15))  # noqa: E731   tail impedance magnitude
+v.check("T 12-03.h", brentq(lambda f: cmg(f) - 50e3 / math.sqrt(2), 1e5, 1e10) / 1e6)
+
 # ============================================================ solutions
 v.check("12-03.1a", ft_of(2e-3, 50e-15, 10e-15) / 1e9)
 # input side: drive the input with 1 V and the output with -40 V; current through C over (s*1 V)
@@ -256,7 +282,7 @@ v.check("12-03.5c", 1 / (TP * b15) / 1e6)
 v.check("12-03.5d", 1 / (TP * p5[0] * TP * p5[1]))
 v.check("12-03.5e", p5[0] / 1e6)
 v.check("12-03.5f", p5[1] / 1e6)
-v.check("12-03.5g", brentq(lambda sig: 2e-3 - sig * 10e-15, 1e3, 1e16) / TP / 1e9)
+v.check("12-03.5g", real_zero(["g", "o"], el5, {"vs": 1.0}, "o", 1e10, 1e15) / 1e9)
 f35 = f3db(cs5, A5, 1e6, 1e10)
 v.check("12-03.5h", f35 / 1e6)
 v.check("12-03.5i", 100 * (1 - 1 / (TP * b15) / f35))
@@ -272,12 +298,26 @@ fol = lambda f: response(["o"], [("G", "0", "o", "i", "o", 1e-3), ("C", "i", "o"
                          {"i": 1.0}, f)["o"]
 p8 = poles(["o"], [("G", "0", "o", "i", "o", 1e-3), ("C", "i", "o", 72.67e-15), ("C", "o", "0", 100e-15)], {"i": 0.0})
 v.check("12-03.8a", p8[0] / 1e6)
-v.check("12-03.8b", brentq(lambda sig: 1e-3 - sig * 72.67e-15, 1e3, 1e16) / TP / 1e9)
+fol_el = [("G", "0", "o", "i", "o", 1e-3), ("C", "i", "o", 72.67e-15), ("C", "o", "0", 100e-15)]
+v.check("12-03.8b", -real_zero(["o"], fol_el, {"i": 1.0}, "o", -1e15, -8e9) / 1e9)   # LHP zero; bracket excludes the pole
 cas9 = response(["x"], [("G", "x", "0", "g", "0", 2e-3), ("G", "0", "x", "0", "x", 1e-3)], {"g": 1.0}, 1.0)
 gx9 = cas9["x"].real
 v.check("12-03.9a", gx9)
 v.check("12-03.9b", (50 + 10 * (1 - gx9)))
-v.check("12-03.9c", (50 + 10 * (1 + 30)))
+# without the cascode: a resistor load giving a gain of -30; input capacitance from the solved input current
+f9 = 1e3
+d9 = response(["d"], [("G", "d", "0", "g", "0", 2e-3), ("R", "d", "0", 15e3), ("C", "g", "d", 10e-15)], {"g": 1.0}, f9)["d"]
+v.check("12-03.9c", ((TP * f9 * 50e-15) + (TP * f9 * 10e-15) * abs(1 - d9)) / (TP * f9) * 1e15)
+# cascode caveat (chapter section 3.7): M1's drain resistance with 12-02's 10.2 MOhm cascode load
+casx = [("G", "o", "x", "0", "x", 1e-3), ("R", "o", "x", 100e3), ("R", "o", "0", 10.2e6), ("R", "x", "0", 100e3),
+        ("I", "0", "x", 1.0)]                       # M2 (g_m, r_o) on its 10.2 MOhm load, M1's r_o at the node
+Rnode = response(["x", "o"], casx, {}, 0.0)["x"].real
+v.check("T 12-03.d", Rnode / 1e3)
+gain_x = response(["x", "o"], casx[:4] + [("G", "x", "0", "g", "0", 1e-3)], {"g": 1.0}, 0.0)["x"].real
+v.check("T 12-03.e", gain_x)
+for rx_, key in ((20.0, "Ex 12-03.6x"), (50.0, "Ex 12-03.6y")):
+    rpi_ = 100 / (10e-3 / VT)
+    v.check(key, 1 / (1 / (50.0 + rx_) + 1 / rpi_))
 v.check("12-03.9d", (50 + 10 * 31) / (50 + 10 * (1 - gx9)))
 g10 = lambda f, R: response(["o"], [("G", "o", "0", "i", "0", 4e-3), ("R", "o", "0", R), ("C", "o", "0", 1e-12)],
                             {"i": 1.0}, f)["o"]

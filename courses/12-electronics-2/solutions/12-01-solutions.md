@@ -68,6 +68,20 @@ $I_{SS} = 0.3\ \text{V}/50\ \Omega$ = **6** mA; $V_{ov} = \sqrt{6/150}$ = **0.2*
 
 $5/2.086$ = **2.397** standard deviations, so the fraction within ±5 mV is $2\Phi(2.397) - 1$ = **98.35**%: **1.65**% of parts fail a 5 mV limit, and they would be screened out at test.
 
+### Solution 12-01.15
+
+(a) Each emitter carries $I_{EE}/2$ = 100 µA, so $I_B = 100\ \mu\text{A}/101$ = **0.9901** µA.
+
+(b) $I_{B1} = 100\ \mu\text{A}/106$ = **0.9434** µA and $I_{B2} = 100\ \mu\text{A}/96$ = **1.0417** µA, so $I_{OS}$ = **0.0983** µA (the estimate $I_B\Delta\beta/\beta = 0.9901 \times 0.1$ gives 0.0990 µA).
+
+(c) The difference of the two base currents through equal 10 kΩ resistances: $0.0983\ \mu\text{A} \times 10\ \text{k}\Omega$ = **0.983** mV.
+
+(d) $0.9901\ \mu\text{A} \times 10\ \text{k}\Omega$ = **9.901** mV: ten times worse. Balancing the source resistances turns a bias-current error into the much smaller offset-current error.
+
+### Solution 12-01.16
+
+At balance each drain is at $1.8 - 100\ \mu\text{A} \times 5\ \text{k}\Omega$ = **1.3** V. Fully switched, one output rises to **1.8** V (no current) and the other falls to $1.8 - 200\ \mu\text{A} \times 5\ \text{k}\Omega$ = **0.8** V, so each output swings ±0.5 V and the differential output reaches ±**1.0** V. The lower common-mode limit is $V_{TN} + V_{ov} + V_{ov,t}$ = **0.9** V. The upper limit must keep a transistor whose drain is at its lowest, 0.8 V, saturated: $V_{IC} \le 0.8 + V_{TN}$ = **1.3** V. The window is 0.9 to 1.3 V, only 0.4 V wide, and a larger $I_{SS}R_D$ for more gain or swing would shrink it further.
+
 ---
 
 ## Answer key
@@ -115,3 +129,16 @@ $5/2.086$ = **2.397** standard deviations, so the fraction within ±5 mV is $2\P
 | 12-01.8d | linearization's overstatement | 2.5 | % |
 | 12-01.10c | transconductance reduction | 10.67 | — |
 | 12-01.14c | fraction failing | 1.65 | % |
+| 12-01.15a | bias current | 0.9901 | µA |
+| 12-01.15b | base current, β = 105 | 0.9434 | µA |
+| 12-01.15c | base current, β = 95 | 1.0417 | µA |
+| 12-01.15d | offset current | 0.0983 | µA |
+| 12-01.15e | first-order offset current | 0.0990 | µA |
+| 12-01.15f | offset from the offset current | 0.983 | mV |
+| 12-01.15g | offset from the bias current | 9.901 | mV |
+| 12-01.16a | output DC level | 1.3 | V |
+| 12-01.16b | highest output | 1.8 | V |
+| 12-01.16c | lowest output | 0.8 | V |
+| 12-01.16d | peak differential output | 1.0 | V |
+| 12-01.16e | lowest input common mode | 0.9 | V |
+| 12-01.16f | highest input common mode | 1.3 | V |

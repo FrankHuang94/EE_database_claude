@@ -231,7 +231,10 @@ v.check("12-01.1b", abs(nP1[0] - nP1[1]))
 v.check("12-01.1c", abs(nP1[0]))
 # input resistance: drive vid = 1 V across two bases, each with r_pi = beta/g_m to the emitter node
 rpi = 100 / gmP1
-v.check("12-01.1d", 1.0 / (1.0 / (2 * rpi)) / 1e3)
+# emitter node: currents in from both bases (through r_pi) and both g_m sources, out through the tail
+M = np.array([[2 / rpi + 2 * gmP1 + 1e-12]])
+ve = np.linalg.solve(M, np.array([(0.5 - 0.5) / rpi + gmP1 * (0.5 - 0.5)]))[0]
+v.check("12-01.1d", 1.0 / ((0.5 - ve) / rpi) / 1e3)
 # 2
 d02 = mos_split(0.0, 100e-6, 1e-3)[0]
 v.check("12-01.2a", brentq(lambda x: 0.5e-3 * x * x - d02, 1e-3, 2.0, xtol=1e-14))
@@ -317,6 +320,26 @@ z14 = 5 / 2.086
 v.check("12-01.14a", z14)
 v.check("12-01.14b", 100 * (norm.cdf(z14) - norm.cdf(-z14)))
 v.check("12-01.14c", 100 * (1 - (norm.cdf(z14) - norm.cdf(-z14))))
+# 15: base currents from the emitter currents, I_B = I_E/(beta + 1)
+IE = 200e-6 / 2
+IB = lambda bt: IE / (bt + 1)  # noqa: E731
+v.check("12-01.15a", IB(100) * 1e6)
+v.check("12-01.15b", IB(105) * 1e6)
+v.check("12-01.15c", IB(95) * 1e6)
+v.check("12-01.15d", (IB(95) - IB(105)) * 1e6)
+v.check("12-01.15e", IB(100) * 0.1 * 1e6)
+v.check("12-01.15f", (IB(95) - IB(105)) * 10e3 * 1e3)
+v.check("12-01.15g", IB(100) * 10e3 * 1e3)
+# 16: drain levels from KVL; window from the saturation conditions solved as inequalities on a grid
+VDD, RD16, ISS16, VTN, VOV, VOVT = 1.8, 5e3, 200e-6, 0.5, 0.2, 0.2
+v.check("12-01.16a", VDD - ISS16 / 2 * RD16)
+v.check("12-01.16b", VDD)
+v.check("12-01.16c", VDD - ISS16 * RD16)
+v.check("12-01.16d", VDD - (VDD - ISS16 * RD16))   # one output at V_DD, the other at its lowest
+grid = np.linspace(0, 1.8, 180001)
+ok = [vic for vic in grid if vic - (VTN + VOV) >= VOVT - 1e-12 and (VDD - ISS16 * RD16) >= vic - VTN - 1e-12]
+v.check("12-01.16e", min(ok))
+v.check("12-01.16f", max(ok))
 
 # ============================================================ lab
 LAB = Path(COURSE / "labs" / "12-01-lab" / "README.md")

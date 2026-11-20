@@ -67,6 +67,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Offset yield.** The offset of Example 12-01.4 is normally distributed with σ = 2.086 mV and zero mean. What fraction of parts meets $\lvert V_{OS}\rvert$ < 5 mV?
 
+### Problem 12-01.15 [B]
+
+**Bias and offset currents.** A bipolar pair has $I_{EE}$ = 200 µA. (a) With β = 100 in both transistors, find each input's bias current. (b) The transistors' β are actually 105 and 95: find the two base currents and the input offset current. (c) Each input is driven through 10 kΩ: what offset voltage does the offset current produce? (d) If instead one input sees 10 kΩ and the other 0 Ω (β = 100 in both), what offset voltage does the bias current produce?
+
+### Problem 12-01.16 [B]
+
+**Output swing and common-mode window.** An NMOS pair with $R_D$ = 5 kΩ loads runs from 1.8 V with $I_{SS}$ = 200 µA, $V_{TN}$ = 0.5 V, $V_{ov}$ = 0.2 V at balance and a tail needing 0.2 V. Find each output's DC level, the range each output covers as the pair switches fully, the peak differential output, and the input common-mode window over which every transistor stays saturated even when an output is at its lowest.
+
 ---
 
 ## Objective coverage
@@ -75,6 +83,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Large-signal transfer and ranges | 2, 3, 5, 12 |
 | 2. Half-circuits, gains and CMRR | 1, 4, 9, 10 |
-| 3. Common-mode range and swing | 6 |
-| 4. Offset and Pelgrom | 7, 8, 11, 14 |
+| 3. Common-mode range and swing | 6, 16 |
+| 4. Offset and Pelgrom | 7, 8, 11, 14, 15 |
 | 5. Roles: op-amp input, comparator, CML | 13 |

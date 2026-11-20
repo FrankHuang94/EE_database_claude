@@ -52,7 +52,7 @@ Resistor and active loads (§3.1–3.2), the five-transistor OTA (§3.3), cascod
 ### Answers
 
 1. The large-signal model's output resistance includes the $(1 + \lambda v_{DS})$ factor of the square law with channel-length modulation, so each $r_o$ is a few percent above $1/(\lambda I_D)$, and the gain rises with it.
-2. For differential signals the tail node is a virtual ground (the two halves' current changes cancel there), so no signal current flows in $R_{SS}$.
+2. The gain is $G_mR_{out}$: $G_m$ is found with the output held still, when the two halves are nearly symmetric and the tail barely moves, and $R_{out} \approx r_{o2} \parallel r_{o4}$ is set by the mirror action. Neither depends on $R_{SS}$ once $R_{SS} \gg 1/g_m$: the full circuit gives 49.74 with a 10 kΩ tail and 49.75 with an ideal one, even though, with the output open, the tail node moves by about a quarter of $v_{id}$ (the circuit is not symmetric, so the tail is not a virtual ground).
 3. Matching makes the two branches mirror images: when the output equals the diode node, every transistor on the output side has the same voltages as its partner. With mismatch the branches differ, and the output must move until the current difference is absorbed across the large output resistance.
 
 ## Optional hardware extension

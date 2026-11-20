@@ -8,6 +8,8 @@ Independent routes (not the closed forms of the chapter):
 - DC levels, common-mode limits and currents from the square law solved for the operating point;
 - the follower's gain from its small-signal circuit with an explicit body-effect source;
 - offsets referred to the input by applying an input offset and finding the input that nulls the output.
+Swing, headroom and common-mode limits are sums of overdrives and thresholds: the chapter's definition of the
+saturation boundary, so those checks restate it rather than recompute it independently.
 """
 from __future__ import annotations
 
@@ -259,6 +261,9 @@ v.check("12-02.5f", db((g4 * r4 / 2) * 2 * g4 * RSS4 * 20))
 cm5 = [abs(ota(0.5, -0.5, RSS=R, gms=(g4,) * 4, ros=(r4,) * 4)["out"]) / abs(ota(1, 1, RSS=R, gms=(g4,) * 4,
                                                                                 ros=(r4,) * 4)["out"]) for R in (RSS4, 20 * RSS4)]
 v.assert_true("full-circuit CMRR rises about 26 dB with a 20x tail", abs(db(cm5[1] / cm5[0]) - 26.02) < 0.5)
+cm_full = abs(ota(1, 1, RSS=RSS4, gms=(g4,) * 4, ros=(r4,) * 4)["out"])
+v.assert_true("problem 5: hand common-mode gain within 10% of the full circuit's",
+              abs(cm_full / (1 / (2 * g4 * RSS4)) - 1) < 0.10)
 A6 = solve(["x", "out"], [("M", "x", "in", "0", 1e-3, 50e3), ("M", "out", "0", "x", 1e-3, 50e3)], {"in": 1.0})["out"]
 v.check("12-02.6a", abs(A6))
 v.check("12-02.7a", 1.2 - 5 * 0.15)
@@ -306,6 +311,33 @@ v.check("12-02.12g", 4 * 0.15)
 v.check("12-02.12h", c12 / 0.6)
 v.check("12-02.12i", a12 / 0.3)
 v.check("12-02.12j", b12 / 0.45)
+
+# ============================================================ problems 13-15
+VTb, beta = 0.025852, 100.0
+I0 = 100e-6
+# 13(a): diode node KCL I_C1 = I_c3 (1 + 2/beta); the pair must make I_c3 equal I_C2
+ic3 = brentq(lambda c: c * (1 + 2 / beta) - I0, 1e-6, 1e-3, xtol=1e-18)
+v.check("12-02.13a", 100 * (1 - ic3 / I0))
+vid13 = brentq(lambda x: math.exp(x / (2 * VTb)) / (1 + 2 / beta) - math.exp(-x / (2 * VTb)), -0.01, 0.01, xtol=1e-15)
+v.check("12-02.13b", vid13 * 1e3)
+v.check("12-02.13c", 2 * VTb / beta * 1e3)
+gmb_, rob = I0 / VTb, 100e3
+bjt_cas = [("R", "e", "0", rob), ("R", "e", "0", beta / gmb_), ("G", "out", "e", "0", "e", gmb_), ("R", "out", "e", rob)]
+Rb = rout_test(bjt_cas, ["e", "out"], "out", {})
+v.check("12-02.13d", Rb / 1e6)
+v.check("12-02.13e", beta * rob / 1e6)
+v.check("12-02.13f", gmb_ * rob * rob / 1e6)
+g14, r14 = 1e-3, 50e3
+half14 = [("M", "x", "in", "0", g14, r14), ("M", "out", "0", "x", g14, r14),
+          ("M", "out", "0", "y", g14, r14), ("M", "y", "0", "0", g14, r14)]
+A14 = abs(solve(["x", "out", "y"], half14, {"in": 1.0})["out"])
+v.check("12-02.14a", A14)
+v.check("12-02.14b", db(A14))
+v.check("12-02.14c", 1.5 - 5 * 0.15)
+v.check("12-02.14d", 2 * (1.5 - 5 * 0.15))
+v.check("12-02.15a", 1.8 - (0.5 + 0.25))
+v.check("12-02.15b", 0.5 + 0.2 + 0.2)
+v.check("12-02.15c", 1.8 - (0.5 + 0.25) + 0.5)
 
 # ============================================================ lab
 if lab.exists():

@@ -81,7 +81,7 @@ $$
 where $V_{ov} = \sqrt{I_{SS}/k_n}$ is each transistor's overdrive at balance ($I_D = I_{SS}/2 = \tfrac12k_nV_{ov}^2$). At $\lvert v_{id}\rvert = \sqrt2V_{ov}$ one transistor carries all of $I_{SS}$ and the other just turns off; beyond it the formula no longer applies and the pair is fully switched.
 
 - **The slope at balance** is $\frac{k_n}{2}\sqrt{4I_{SS}/k_n} = \sqrt{k_nI_{SS}}$, which is each transistor's $g_m = \sqrt{2k_nI_D}$ at $I_D = I_{SS}/2$, and also equals $I_{SS}/V_{ov}$.
-- **The linear range scales with overdrive.** A MOS pair's range is a fraction of $V_{ov}$, typically hundreds of millivolts, against tens for a BJT pair: a large $V_{ov}$ buys linearity at the cost of $g_m$ per unit current ($g_m/I_D = 2/V_{ov}$ against $1/V_T$ for a BJT, 10-04).
+- **The linear range scales with overdrive.** A MOS pair switches fully at $\sqrt2V_{ov}$, a few hundred millivolts, and stays within 1% of linear up to about $0.28V_{ov}$ (Problem 12-01.12), several tens of millivolts, against about ±9 mV for a BJT pair: a large $V_{ov}$ buys linearity at the cost of $g_m$ per unit current ($g_m/I_D = 2/V_{ov}$ against $1/V_T$ for a BJT, 10-04).
 
 ### 3.3 Small-signal analysis with half-circuits
 
@@ -107,7 +107,7 @@ $$
 \text{CMRR}_{se} = \left\lvert\frac{A_{d,se}}{A_{cm}}\right\rvert = \frac{g_mR_D/2}{g_mR_D/(1 + 2g_mR_{SS})} = \frac{1 + 2g_mR_{SS}}{2} \approx g_mR_{SS} .
 $$
 
-It is set entirely by the tail: an ideal current source ($R_{SS} \to \infty$) gives infinite CMRR. A resistor tail gives a modest value; a mirror or cascode tail (10-08) raises it by $g_mr_o$ or more.
+It is set entirely by the tail: an ideal current source ($R_{SS} \to \infty$) gives infinite CMRR. A resistor tail gives a modest value; a single-transistor mirror tail gives $R_{SS} = r_o$, and a cascode tail multiplies that by about $g_mr_o$ (10-08).
 
 **Mismatch converts common mode to differential.** With a differential output, CMRR is limited by asymmetry. If the drain resistors differ by $\Delta R_D$, a common-mode input that moves each drain current by $g_mv_{ic}/(1 + 2g_mR_{SS})$ produces a differential output $\Delta R_D$ times that current:
 
@@ -160,7 +160,9 @@ $$
 \sigma(\Delta V_{TN}) = \frac{A_{VT}}{\sqrt{WL}}, \qquad \sigma\!\left(\frac{\Delta k_n}{k_n}\right) = \frac{A_\beta}{\sqrt{WL}} .
 $$
 
-Independent random contributions add in variance: $\sigma^2(V_{OS}) = \sigma^2(\Delta V_{TN}) + (V_{ov}/2)^2[\sigma^2(\Delta R_D/R_D) + \sigma^2(\Delta k_n/k_n)]$. Halving the offset needs four times the area, which also quadruples the input capacitance: offset, speed and area trade directly (Example 12-01.4). Production parts are specified at a large multiple of σ (often a 3σ-like limit), which is why data-sheet maximum offsets are several times the typical values.
+Independent random contributions add in variance: $\sigma^2(V_{OS}) = \sigma^2(\Delta V_{TN}) + (V_{ov}/2)^2[\sigma^2(\Delta R_D/R_D) + \sigma^2(\Delta k_n/k_n)]$. Halving the offset needs four times the area, which also quadruples the input capacitance: offset, speed and area trade directly (Example 12-01.4). Production limits are set several standard deviations out, plus a test guardband, which is why data-sheet maximum offsets are several times the typical values (5.3 times for the part in §9).
+
+**Input bias and offset currents (bipolar pairs).** A BJT pair draws base current: each input carries $I_B = I_{EE}/[2(\beta + 1)]$. If the two transistors' β differ, the base currents differ by the **input offset current** $I_{OS} \approx I_B\,\Delta\beta/\beta$. Both turn into offset voltage through the source resistances: $I_B$ times any *difference* between the two inputs' source resistances, and $I_{OS}$ times the source resistance itself (Problem 12-01.15). This is why bipolar-input op-amps balance the resistance seen by both inputs, and why MOS inputs, with picoamp gate leakage, suit high-impedance sources (10-09).
 
 > **Going deeper — systematic offset.** Besides random mismatch, a pair can have a *systematic* offset from design asymmetry: unequal drain voltages with nonzero λ, a single-ended active load that is not balanced (12-02), or thermal gradients across the die. Systematic offset is identical on every chip and is removed by design (matching drain voltages, common-centroid layout, keeping the pair away from hot output stages), not by area.
 
@@ -349,7 +351,7 @@ The netlist [diffpair.cir](../labs/12-01-lab/diffpair.cir) simulates the MOS pai
 - **Using the small-signal gain beyond the linear range.** A BJT pair is linear only to about ±9 mV (1%); larger inputs compress.
 - **Quoting CMRR without saying which output.** Single-ended and differential CMRR can differ by 40 dB.
 - **Forgetting that offset adds in variance, not linearly.** Independent random sources combine as RSS; only systematic offsets add directly.
-- **Assuming bigger devices always fix offset.** Area shrinks only the threshold term; load and β mismatch scale with $V_{ov}$.
+- **Assuming bigger devices always fix offset.** Area shrinks the threshold and current-factor terms; the load-mismatch term, set by the resistors' matching and $V_{ov}$, is unaffected.
 - **Ignoring the common-mode range.** A pair driven outside it leaves saturation, and its gain and CMRR collapse.
 
 ## 9. Practitioner lens
@@ -397,7 +399,7 @@ The tail fixes the total current; a common-mode change moves both gates and the 
 
 <details><summary>Answer</summary>
 
-The BJT's current depends exponentially on $v_{BE}$ with scale $V_T$ (26 mV), so the split saturates within a few $V_T$; the MOSFET's square law has the scale $V_{ov}$, typically hundreds of millivolts.
+The BJT's current depends exponentially on $v_{BE}$ with scale $V_T$ (26 mV), so the split saturates within a few $V_T$ (1% linear to about ±9 mV); the MOSFET's square law has the scale $V_{ov}$, so a MOS pair stays 1% linear to about $0.28V_{ov}$, tens of millivolts, and switches fully at $\sqrt2V_{ov}$.
 
 </details>
 

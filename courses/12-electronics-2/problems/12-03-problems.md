@@ -45,7 +45,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 12-03.9 [B]
 
-**The cascode's Miller factor.** A common-source device with $g_{m1}$ = 2 mA/V, $C_{gs}$ = 50 fF and $C_{gd}$ = 10 fF is cascoded by a device with $g_{m2}$ = 1 mA/V. Find the gain from M1's gate to its drain and the input capacitance. Without the cascode, the stage's gain would be −30: find the input capacitance then.
+**The cascode's Miller factor.** A common-source device with $g_{m1}$ = 2 mA/V, $C_{gs}$ = 50 fF and $C_{gd}$ = 10 fF is cascoded by a device with $g_{m2}$ = 1 mA/V, whose own load resistance is small compared with its $r_o$. Find the gain from M1's gate to its drain and the input capacitance. Without the cascode, the stage's gain would be −30: find the input capacitance then.
 
 ### Problem 12-03.10 [B]
 

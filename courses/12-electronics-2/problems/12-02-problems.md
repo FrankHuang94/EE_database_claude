@@ -59,6 +59,18 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Gain per volt of headroom.** Every device has $g_m$ = 1 mA/V, $r_o$ = 20 kΩ and $V_{ov}$ = 0.15 V. Find the gain of (a) a common-source stage with a simple current-source load, (b) a cascode with a simple current-source load, (c) a cascode with a cascode load (same output resistance), and the minimum headroom ($\sum V_{ov}$ between the rails) each needs. Which gives the most gain per volt?
 
+### Problem 12-02.13 [B]
+
+**Bipolar versions.** (a) A bipolar pair with a simple mirror load runs each side at 100 µA with β = 100. The mirror's diode side supplies both transistors' base currents. By what fraction does the copied current fall short, and what differential input does the pair need to balance the output? Compare with the estimate $2V_T/\beta$. (b) A bipolar cascode has both transistors at 100 µA, $r_o$ = 100 kΩ and β = 100. Find its output resistance, and compare with $\beta r_o$ and with the MOS-style $g_mr_o^2$.
+
+### Problem 12-02.14 [B]
+
+**A telescopic cascode.** Every device of a fully differential telescopic cascode has $g_m$ = 1 mA/V, $r_o$ = 50 kΩ and $V_{ov}$ = 0.15 V, from a 1.5 V supply. Find the differential gain (in V/V and dB), each output's swing range and the peak-to-peak differential swing.
+
+### Problem 12-02.15 [B]
+
+**An OTA's DC levels.** A five-transistor OTA (NMOS pair, PMOS mirror) runs from 1.8 V with $I_{SS}$ = 200 µA. The NMOS devices have $V_{TN}$ = 0.5 V and $V_{ov}$ = 0.2 V; the PMOS mirror has $\lvert V_{TP}\rvert$ = 0.5 V and $V_{ov}$ = 0.25 V; the tail needs 0.2 V. Find the output's DC level when the halves match, and the input common-mode range.
+
 ---
 
 ## Objective coverage
@@ -66,7 +78,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 12-02) | Problems |
 |---|---|
 | 1. Resistor and active loads | 1, 2 |
-| 2. The five-transistor OTA | 4, 5 |
-| 3. Cascode output resistance and gain | 3, 6, 12 |
-| 4. Telescopic gain and swing | 7, 12 |
+| 2. The five-transistor OTA | 4, 5, 13, 15 |
+| 3. Cascode output resistance and gain | 3, 6, 12, 13 |
+| 4. Telescopic gain and swing | 7, 14 |
 | 5. Multistage gain, offset and DC coupling | 8, 9, 10, 11 |

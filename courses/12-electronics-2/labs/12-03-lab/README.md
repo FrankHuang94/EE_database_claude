@@ -57,4 +57,4 @@ Device capacitances and $f_T$ (§3.1), poles and the dominant-pole approximation
 
 ## Optional hardware extension
 
-Build a common-emitter stage with a 2N3904 at about 1 mA and a 5 kΩ collector load, driven from a 10 kΩ source resistor. Measure its bandwidth with a function generator and oscilloscope, then add a 10 pF capacitor from collector to base and measure again: the bandwidth falls by roughly the Miller factor.
+Build a common-emitter stage with a 2N3904 at about 1 mA and a 5 kΩ collector load, driven from a 10 kΩ source resistor. Measure its bandwidth with a function generator and oscilloscope, then add a 10 pF capacitor from collector to base and measure again: the bandwidth falls by the ratio of the total Miller input capacitances, $(C_\pi + 194(C_\mu + 10\ \text{pF}))/(C_\pi + 194C_\mu)$ at a gain near 193, a factor of about 3 to 4 (not 194).
