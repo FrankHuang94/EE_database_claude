@@ -6777,3 +6777,59 @@
   definition: Bit rate per hertz of occupied bandwidth; log2 M/(1 + α) b/s/Hz for M-point constellations with raised-cosine roll-off α, times the code rate; bounded by log2(1 + SNR).
   chapter: "17-06"
   see_also: [Roll-off factor, Eb/N0]
+- term: Information content
+  definition: The information carried by an outcome of probability p, −log2 p bits; rare outcomes carry more, and information from independent events adds.
+  chapter: "17-07"
+  see_also: [Entropy (information)]
+- term: Entropy (information)
+  definition: The average information content of a random variable, H = −Σ p·log2 p bits; between 0 and log2 M for M outcomes, and the minimum average number of bits per symbol for lossless compression.
+  chapter: "17-07"
+  see_also: [Binary entropy function, Huffman code, Mutual information]
+- term: Binary entropy function
+  definition: "The entropy of a binary source with probabilities p and 1 − p: h(p) = −p log2 p − (1 − p) log2(1 − p); 1 bit at p = 0.5, 0.469 bits at p = 0.1."
+  chapter: "17-07"
+  see_also: [Entropy (information), Binary symmetric channel]
+- term: Prefix code
+  definition: A code in which no codeword is the beginning of another, so a concatenated stream decodes without separators; its lengths must satisfy the Kraft inequality.
+  chapter: "17-07"
+  see_also: [Kraft inequality, Huffman code]
+- term: Kraft inequality
+  definition: The condition Σ 2^(−ℓi) ≤ 1 that binary codeword lengths ℓi must satisfy for a prefix code with those lengths to exist.
+  chapter: "17-07"
+  see_also: [Prefix code]
+- term: Huffman code
+  definition: The optimal prefix code for known symbol probabilities, built by repeatedly merging the two least likely symbols; its average length lies between H and H + 1.
+  chapter: "17-07"
+  see_also: [Prefix code, Entropy (information)]
+- term: Mutual information
+  definition: "The information one random variable gives about another: I(X;Y) = H(Y) − H(Y|X); symmetric, non-negative, and zero only for independent variables. For a channel, the information per use that gets through."
+  chapter: "17-07"
+  see_also: [Channel capacity, Entropy (information)]
+- term: Channel capacity
+  definition: The largest mutual information between a channel's input and output over all input distributions; Shannon's coding theorem makes every rate below it achievable with vanishing error probability and no rate above it.
+  chapter: "17-07"
+  see_also: [Mutual information, Shannon–Hartley theorem, Shannon capacity]
+- term: Binary symmetric channel
+  definition: A channel that flips each bit independently with probability p; its capacity is 1 − h(p) bits per use (0.919 at p = 0.01).
+  chapter: "17-07"
+  see_also: [Binary entropy function, Binary erasure channel]
+- term: Binary erasure channel
+  definition: A channel that loses each bit with probability ε but marks the loss; its capacity is 1 − ε, much more than a binary symmetric channel with the same error probability.
+  chapter: "17-07"
+  see_also: [Binary symmetric channel]
+- term: Differential entropy
+  definition: The continuous counterpart of entropy, h(X) = −∫ f log2 f dx; a Gaussian of variance σ² has ½ log2(2πeσ²), the most of any density with that variance.
+  chapter: "17-07"
+  see_also: [Entropy (information), Shannon–Hartley theorem]
+- term: Shannon–Hartley theorem
+  definition: The capacity of a band-limited channel with additive white Gaussian noise, C = B log2(1 + S/(N0·B)) bits per second; linear in bandwidth and logarithmic in power at high SNR, proportional to power at low SNR.
+  chapter: "17-07"
+  see_also: [Channel capacity, Shannon limit, Shannon capacity]
+- term: Shannon limit
+  definition: The minimum Eb/N0 for reliable communication at spectral efficiency η, (2^η − 1)/η; it falls to ln 2 = −1.59 dB as bandwidth grows without limit.
+  chapter: "17-07"
+  see_also: [Shannon–Hartley theorem, Eb/N0]
+- term: Soft decision
+  definition: Passing the demodulator's reliability information (amplitude or log-likelihood ratio) to the decoder instead of hard bits; worth about 1.6–2 dB of Eb/N0 for binary signalling.
+  chapter: "17-07"
+  see_also: [Shannon limit]
