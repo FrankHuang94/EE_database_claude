@@ -50,7 +50,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 17-05.10 [C]
 
-**Coloured noise.** *(lab)* A rectangular pulse of duration $T$ is received in Gaussian noise with PSD $S_n(f) = (N_0/2)[1 + 9/(1 + (fT)^2)]$, white plus a low-frequency excess. Compute, relative to $2E/N_0$ with white noise of density $N_0/2$, (a) the SNR of the filter matched to the pulse alone (ignoring the colour), and (b) the SNR of the optimal filter $H \propto S^*/S_n$. How much does accounting for the colour gain?
+**Coloured noise.** *(lab)* A rectangular pulse of duration $T$ is received in Gaussian noise with PSD $S_n(f) = (N_0/2)\,[1 + 9/(1 + (fT)^2)]$, white plus a low-frequency excess. Compute, relative to $2E/N_0$ with white noise of density $N_0/2$, (a) the SNR of the filter matched to the pulse alone (ignoring the colour), and (b) the SNR of the optimal filter $H \propto S^*/S_n$. How much does accounting for the colour gain?
 
 ### Problem 17-05.11 [C]
 
