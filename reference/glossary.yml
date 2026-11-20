@@ -6012,3 +6012,29 @@
   definition: In a Routh array with a row of zeros, the even or odd polynomial formed from the row above; it divides the original polynomial, and its roots (symmetric about the origin, often an imaginary-axis pair) give the oscillation frequency at a stability boundary.
   chapter: "15-05"
   see_also: [Routh array]
+
+# ---------------------------------------------------------------- 15-06
+- term: Root locus
+  definition: The set of paths traced in the s-plane by a closed-loop system's poles as a parameter, usually the loop gain K, runs from zero to infinity; the branches start at the open-loop poles and end at the open-loop zeros or at infinity.
+  chapter: "15-06"
+  see_also: [Angle condition, Magnitude condition]
+- term: Angle condition
+  definition: The requirement that a point s lies on the root locus of 1 + KG(s) = 0 with K > 0, namely that the angle of G(s), the sum of angles from the zeros minus the sum from the poles, is an odd multiple of 180°.
+  chapter: "15-06"
+  see_also: [Root locus]
+- term: Magnitude condition
+  definition: K = 1/|G(s)| at a point on the root locus, the product of the distances from the open-loop poles divided by the product of the distances from the zeros; it gives the gain that puts a closed-loop pole there.
+  chapter: "15-06"
+  see_also: [Root locus]
+- term: Asymptote centroid
+  definition: The point (Σ poles − Σ zeros)/(n − m) on the real axis from which the n − m asymptotes of a root locus radiate, at angles (2k + 1)·180°/(n − m).
+  chapter: "15-06"
+  see_also: [Root locus]
+- term: Breakaway point
+  definition: A point on the real axis where two branches of a root locus meet and leave the axis (or arrive and join it, a break-in point); it satisfies N(s)D′(s) − D(s)N′(s) = 0 with K > 0.
+  chapter: "15-06"
+  see_also: [Root locus]
+- term: Departure angle
+  definition: The angle at which a root-locus branch leaves a complex open-loop pole, 180° minus the angles from the other poles plus the angles from the zeros; the analogous arrival angle applies at a complex zero.
+  chapter: "15-06"
+  see_also: [Root locus]

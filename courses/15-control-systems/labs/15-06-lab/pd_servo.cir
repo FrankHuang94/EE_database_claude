@@ -1,0 +1,32 @@
+* Lab 15-06 -- Example 15-06.6's servo with the PD controller C(s) = 4 (s + 8) = 4 s + 32.
+* Plant P(s) = 1/(s (s + 4)): a lag 1/(s + 4) (1 F || 0.25 ohm driven by a 1 S transconductor) followed by an
+* integrator (1 F driven by a 1 S transconductor). Node voltages are the signals.
+* The derivative acts on the error e = r - y. Its value is computed without differentiating a node:
+* de/dt = dr/dt - dy/dt, where dy/dt = v(a) (the integrator's input) and dr/dt comes from a second source
+* that is the exact derivative of the reference ramp-step (1 V in 1 ms).
+* Expected (Python): overshoot 6.70%, 2% settling time 0.932 s.
+*
+* EXPECT os key:../../chapters/15-06-root-locus.md#Ex_15-06.6e rtol=3e-3
+* EXPECT ts key:../../chapters/15-06-root-locus.md#Ex_15-06.6f rtol=3e-3
+
+VR r 0 PWL(0 0 1m 1)
+VRD rd 0 PWL(0 1000 1m 1000 1.000001m 0)
+BU u 0 V=32*(v(r)-v(y)) + 4*(v(rd)-v(a))
+GA 0 a u 0 1
+RA a 0 0.25
+CA a 0 1 IC=0
+GY 0 y a 0 1
+CY y 0 1 IC=0
+RY y 0 1e12
+
+.control
+tran 0.1m 5 uic
+meas tran ypk max v(y) from=0 to=2
+meas tran thi when v(y)=1.02 cross=last
+meas tran tlo when v(y)=0.98 cross=last
+let os = 100*(ypk - 1)
+let ts = max(thi, tlo)
+print os ts
+quit
+.endc
+.end

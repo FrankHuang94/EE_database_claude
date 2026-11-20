@@ -32,7 +32,7 @@ Feedback control from modeling to design: transfer functions, time response, roo
 | [15-03 · Time Response and Specifications](chapters/15-03-time-response.md) | 7 | ✅ verified | [problems](problems/15-03-problems.md) · [solutions](solutions/15-03-solutions.md) · [lab](labs/15-03-lab/README.md) · [verify](verify/verify_15_03.py) |
 | [15-04 · Feedback Properties and Steady-State Error](chapters/15-04-feedback-and-steady-state-error.md) | 7 | ✅ verified | [problems](problems/15-04-problems.md) · [solutions](solutions/15-04-solutions.md) · [lab](labs/15-04-lab/README.md) · [verify](verify/verify_15_04.py) |
 | [15-05 · Stability and the Routh–Hurwitz Criterion](chapters/15-05-stability-routh-hurwitz.md) | 5 | ✅ verified | [problems](problems/15-05-problems.md) · [solutions](solutions/15-05-solutions.md) · [lab](labs/15-05-lab/README.md) · [verify](verify/verify_15_05.py) |
-| [15-06 · Root Locus](chapters/15-06-root-locus.md) | 8 | ⬜ planned | — |
+| [15-06 · Root Locus](chapters/15-06-root-locus.md) | 8 | ✅ verified | [problems](problems/15-06-problems.md) · [solutions](solutions/15-06-solutions.md) · [lab](labs/15-06-lab/README.md) · [verify](verify/verify_15_06.py) |
 | [15-07 · Frequency-Domain Design: Bode, Nyquist and Margins](chapters/15-07-frequency-domain-design.md) | 10 | ⬜ planned | — |
 | [15-08 · PID Control](chapters/15-08-pid-control.md) | 6 | ⬜ planned | — |
 | [15-09 · Lead and Lag Compensation](chapters/15-09-lead-lag-compensation.md) | 7 | ⬜ planned | — |
