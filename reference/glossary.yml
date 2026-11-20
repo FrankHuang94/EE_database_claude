@@ -4532,3 +4532,32 @@
   definition: "A small sustained oscillation in a fixed-point recursive filter with zero or constant input, caused by rounding inside the feedback loop; it cannot occur in the exact linear system."
   chapter: "11-04"
   see_also: [IIR filter]
+
+# ---------------------------------------------------------------- 11-05
+- term: Fourier series
+  definition: "The representation of a periodic signal as a sum of complex exponentials at multiples of its fundamental frequency, x(t) = Σ c_k e^{jkω₀t}, with c_k = (1/T₀)∫ x(t) e^{−jkω₀t} dt found by orthogonality."
+  chapter: "11-05"
+  see_also: [Fourier coefficient, Harmonic, Line spectrum]
+- term: Harmonic
+  definition: "A component of a periodic signal at an integer multiple k of its fundamental frequency; the k-th harmonic of a real signal is a sinusoid of amplitude 2|c_k|."
+  chapter: "11-05"
+- term: Fundamental frequency
+  definition: "The reciprocal of a periodic signal's fundamental (smallest) period, f₀ = 1/T₀; all of the signal's harmonics lie at its integer multiples."
+  chapter: "11-05"
+- term: Line spectrum
+  definition: "The plot of a periodic signal's Fourier coefficients (magnitude and phase) against frequency; it consists of lines at the harmonic frequencies only."
+  chapter: "11-05"
+- term: Half-wave symmetry
+  definition: "The property x(t + T₀/2) = −x(t), under which every even harmonic, including DC, is zero; zero-mean square and triangle waves have it."
+  chapter: "11-05"
+- term: Parseval's relation
+  definition: "For a periodic signal, average power equals the sum of the harmonic powers, (1/T₀)∫|x|² dt = Σ|c_k|²; RMS values of different harmonics therefore add in quadrature."
+  chapter: "11-05"
+  see_also: [Orthogonality, Total harmonic distortion (THD)]
+- term: PWM DAC
+  definition: "A digital-to-analog converter made from a pulse-width-modulated output and a low-pass filter; the filter keeps the average A·D and attenuates the switching harmonics, leaving a ripple set by the PWM frequency and filter order."
+  chapter: "11-05"
+  see_also: [Duty cycle]
+- term: Spread-spectrum clocking
+  definition: "Varying a clock's frequency slightly over time so that each harmonic is smeared over a band, lowering the peak that narrow-band emissions measurements report; the total harmonic energy is unchanged."
+  chapter: "11-05"
