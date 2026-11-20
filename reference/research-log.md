@@ -219,6 +219,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-211 | Sail formal specification of the RISC-V ISA | Nov 2026 |
 | R-212 | AMD Zen 5 core (Hot Chips 2024) | Nov 2026 |
 | R-213 | Spectre and Meltdown: disclosure and CVEs | Nov 2026 |
+| R-214 | HBM3, HBM3E and HBM4: bandwidth and capacity | Nov 2026 |
 
 ---
 
@@ -2189,3 +2190,12 @@ R&D % = R&D ÷ revenue.
 - J. Horn, Google Project Zero, "Reading privileged memory with a side-channel", 3 Jan 2018: "We reported this issue to Intel, AMD and ARM on 2017-06-01"; "Variant 1: bounds check bypass (CVE-2017-5753) Variant 2: branch target injection (CVE-2017-5715) Variant 3: rogue data cache load (CVE-2017-5754)". [Project Zero](https://googleprojectzero.blogspot.com/2018/01/reading-privileged-memory-with-side.html)
 - CVE-2017-5753 description: "Systems with microprocessors utilizing speculative execution and branch prediction may allow unauthorized disclosure of information to an attacker with local user access via a side-channel analysis." Records reserved 2017-02-01, public 2018-01-03, published 2018-01-04 (CNA: Intel). [CVE-2017-5753](https://cveawg.mitre.org/api/cve/CVE-2017-5753) · [CVE-2017-5715](https://cveawg.mitre.org/api/cve/CVE-2017-5715) · [CVE-2017-5754](https://cveawg.mitre.org/api/cve/CVE-2017-5754)
 - Papers: M. Lipp et al., "Meltdown: Reading Kernel Memory from User Space", USENIX Security 2018; P. Kocher et al., "Spectre Attacks: Exploiting Speculative Execution", IEEE S&P 2019.
+
+## R-214 · HBM3, HBM3E and HBM4: bandwidth and capacity
+
+*Read on 20 Nov 2026. JEDEC's own pages (jedec.org) returned Cloudflare 403s, so the two JEDEC releases were read as verbatim HPCwire reprints (secondary copies); the Micron and Samsung pages are primary vendor pages. Tagged [Established] for the standards' headline figures and for the vendors' own part specifications.*
+
+- **HBM3, JESD238 (JEDEC release, Arlington, Va., 27 Jan 2022):** "defining data rates of up to 6.4 Gb/s, equivalent to 819 GB/s per device" (6.4 × 1024 / 8 = 819.2); 16 independent channels, each with 2 pseudo-channels; 4-, 8- and 12-high TSV stacks with provision for 16-high; 8–32 Gb per layer; on-die ECC; 0.4 V low-swing interface and 1.1 V core supply. [HPCwire reprint](https://www.hpcwire.com/off-the-wire/jedec-publishes-hbm3-updated-to-high-bandwidth-memory-hbm-standard/)
+- **HBM3E (vendor parts; the 2022 JEDEC release does not use the name):** Micron: "HBM3E has 1024 IO pins and the HBM3E pin speed of greater than 9.2Gbps achieves a rate higher than 1.2TB/s"; 24 GB 8-high and 36 GB 12-high stacks. [Micron HBM3E](https://www.micron.com/products/memory/hbm/hbm3e). Samsung: "Its 12-layer stack offers up to 1,180GB/s bandwidth at 9.2Gbps" (9.2 × 1024 / 8 = 1177.6); its HBM3 page gives "processing speeds up to 6.4Gbps and bandwidth that reaches 819GB/s". [Samsung HBM3E](https://semiconductor.samsung.com/dram/hbm/hbm3e/) · [Samsung HBM3](https://semiconductor.samsung.com/dram/hbm/hbm3/)
+- **HBM4, JESD270-4 (JEDEC release, 16 Apr 2025):** "With transfer speeds up to 8 Gb/s across a 2048-bit interface, HBM4 boosts total bandwidth up to 2 TB/s"; 32 channels with 2 pseudo-channels each; 4- to 16-high stacks of 24 Gb or 32 Gb dies, up to 64 GB; vendor-specific VDDQ of 0.7, 0.75, 0.8 or 0.9 V. [HPCwire reprint](https://www.hpcwire.com/off-the-wire/jedec-releases-hbm4-standard-to-advance-ai-and-hpc-memory/)
+- **Not verified:** whether a revision JESD238A covers HBM3E speeds, and JEDEC's own name for HBM3E.

@@ -36,7 +36,7 @@ How processors and accelerators are built and why they perform the way they do: 
 | [14-06 · Pipelining and Hazards](chapters/14-06-pipelining-and-hazards.md) | 10 | ✅ verified | [problems](problems/14-06-problems.md) · [solutions](solutions/14-06-solutions.md) · [lab](labs/14-06-lab/README.md) · [verify](verify/verify_14_06.py) |
 | [14-07 · Branch Prediction and Speculation](chapters/14-07-branch-prediction-and-speculation.md) | 7 | ✅ verified | [problems](problems/14-07-problems.md) · [solutions](solutions/14-07-solutions.md) · [lab](labs/14-07-lab/README.md) · [verify](verify/verify_14_07.py) |
 | [14-08 · Out-of-Order and Superscalar Execution](chapters/14-08-out-of-order-and-superscalar.md) | 9 | ✅ verified | [problems](problems/14-08-problems.md) · [solutions](solutions/14-08-solutions.md) · [lab](labs/14-08-lab/README.md) · [verify](verify/verify_14_08.py) |
-| [14-09 · Memory Hierarchy and Caches](chapters/14-09-memory-hierarchy-and-caches.md) | 10 | ⬜ planned | — |
+| [14-09 · Memory Hierarchy and Caches](chapters/14-09-memory-hierarchy-and-caches.md) | 10 | ✅ verified | [problems](problems/14-09-problems.md) · [solutions](solutions/14-09-solutions.md) · [lab](labs/14-09-lab/README.md) · [verify](verify/verify_14_09.py) |
 | [14-10 · Virtual Memory, TLBs and the OS Interface](chapters/14-10-virtual-memory.md) | 7 | ⬜ planned | — |
 | [14-11 · I/O, Buses and Interconnect](chapters/14-11-io-buses-and-interconnect.md) | 5 | ⬜ planned | — |
 | [14-12 · Multicore, Coherence and Memory Consistency](chapters/14-12-multicore-coherence-consistency.md) | 8 | ⬜ planned | — |

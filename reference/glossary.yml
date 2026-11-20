@@ -5577,3 +5577,70 @@
 - term: Little's law
   definition: For any stable queueing system, average occupancy = throughput × average time in the system; it sizes a processor's window (about width × latency to hide) and the outstanding requests a memory system needs.
   chapter: "14-08"
+- term: Locality
+  definition: The tendency of programs to reuse data and instructions they accessed recently (temporal locality) and to access addresses near recent ones (spatial locality); the property every cache relies on.
+  chapter: "14-09"
+  see_also: [Cache block]
+- term: Cache block
+  definition: The unit of data a cache stores and moves, also called a line, typically 32 to 128 bytes; a miss brings in the whole block containing the requested address.
+  chapter: "14-09"
+  see_also: [Locality, Tag (cache)]
+- term: Direct-mapped cache
+  definition: A cache in which each memory block can be placed in exactly one line, chosen by the index bits of its address; simple and fast but prone to conflict misses.
+  chapter: "14-09"
+  see_also: [Set-associative cache]
+- term: Set-associative cache
+  definition: A cache divided into sets of A lines (ways); a block may be placed in any way of the one set its index selects, and a replacement policy picks the victim within the set.
+  chapter: "14-09"
+  see_also: [Direct-mapped cache, Fully associative cache]
+- term: Fully associative cache
+  definition: A cache with a single set, in which any block may occupy any line; it has no conflict misses but needs a tag comparator per line.
+  chapter: "14-09"
+  see_also: [Set-associative cache]
+- term: Tag (cache)
+  definition: The high-order address bits stored with each cache line, compared on a lookup to tell which of the memory blocks that map to the set is present.
+  chapter: "14-09"
+  see_also: [Cache block]
+- term: Average memory access time (AMAT)
+  definition: Hit time plus miss rate times miss penalty, nested for each level of the hierarchy; the average latency a memory access sees.
+  chapter: "14-09"
+  see_also: [Miss rate]
+- term: Miss rate
+  definition: The fraction of accesses to a cache that miss. The local miss rate counts only the accesses that reach a level; the global miss rate counts all accesses issued by the core.
+  chapter: "14-09"
+  see_also: [Average memory access time (AMAT)]
+- term: Three Cs (compulsory, capacity, conflict)
+  definition: A classification of cache misses into compulsory (first access to a block), capacity (the working set exceeds the cache, so a fully associative cache of the same size also misses) and conflict (too many blocks map to one set).
+  chapter: "14-09"
+  see_also: [Miss rate]
+- term: Least recently used (LRU)
+  definition: A replacement policy that evicts the block in the set that has gone longest without being accessed; real caches often approximate it (pseudo-LRU).
+  chapter: "14-09"
+  see_also: [Set-associative cache]
+- term: Write-back
+  definition: A write policy in which a store updates only the cache and marks the line dirty; the block is written to the next level once, when it is evicted.
+  chapter: "14-09"
+  see_also: [Write-through, Write-allocate]
+- term: Write-through
+  definition: A write policy in which every store updates both the cache and the next level, usually through a write buffer, so lines are never dirty.
+  chapter: "14-09"
+  see_also: [Write-back]
+- term: Write-allocate
+  definition: A policy for store misses that first fetches the block into the cache and then writes it; its opposite, no-write-allocate, sends the store to the next level without fetching.
+  chapter: "14-09"
+  see_also: [Write-back]
+- term: Prefetching
+  definition: Fetching blocks into a cache before they are requested, by hardware that predicts the access pattern (next-line, stride) or by software hints; judged by coverage, accuracy and timeliness.
+  chapter: "14-09"
+  see_also: [Memory-level parallelism (MLP)]
+- term: Memory-level parallelism (MLP)
+  definition: The number of cache misses outstanding at once; by Little's law, delivered bandwidth equals outstanding misses times block size divided by latency.
+  chapter: "14-09"
+  see_also: [Little's law, Prefetching]
+- term: Loop tiling
+  definition: Restructuring loops to work on blocks (tiles) of data small enough to stay in a cache while they are reused, also called blocking; the key optimization of dense linear algebra.
+  chapter: "14-09"
+  see_also: [Locality]
+- term: High Bandwidth Memory (HBM)
+  definition: DRAM built as a stack of dies joined by through-silicon vias and connected to a processor over a very wide interface on a silicon interposer (1024 bits per stack in HBM3, 2048 in HBM4), giving bandwidths of about 1–2 TB/s per stack.
+  chapter: "14-09"

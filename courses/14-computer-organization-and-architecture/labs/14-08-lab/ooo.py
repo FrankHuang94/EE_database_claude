@@ -105,19 +105,23 @@ def _producers(trace):
     return prods
 
 
-def critical_path(trace, lat=LAT) -> int:
+def critical_path(trace, lat=LAT, lat_of: dict | None = None) -> int:
     """Cycles to execute the trace with unlimited resources and perfect prediction: the longest chain of true
-    (read-after-write) dependences, through registers and through memory."""
+    (read-after-write) dependences, through registers and through memory. `lat_of` optionally overrides the
+    latency of individual instructions (trace index -> cycles), for example loads that miss in a cache."""
+    lat_of = lat_of or {}
     fin = []
     for i, p in enumerate(_producers(trace)):
-        fin.append(max((fin[j] for j in p), default=0) + lat[trace[i][1]])
+        fin.append(max((fin[j] for j in p), default=0) + lat_of.get(i, lat[trace[i][1]]))
     return max(fin, default=0)
 
 
 def schedule(trace, width=4, rob=64, in_order=False, rename=True, lat=LAT, mispredicted=frozenset(), refill=0,
-             detail=False) -> dict:
+             detail=False, lat_of: dict | None = None) -> dict:
     """Replay `trace` through the machine model described in the module docstring; return cycles, instr, ipc and,
-    with detail=True, each instruction's dispatch, issue, done and retire cycles."""
+    with detail=True, each instruction's dispatch, issue, done and retire cycles. `lat_of` optionally overrides
+    individual instructions' latencies (trace index -> cycles)."""
+    lat_of = lat_of or {}
     n = len(trace)
     issue = [None] * n
     done = [None] * n
@@ -163,7 +167,7 @@ def schedule(trace, width=4, rob=64, in_order=False, rename=True, lat=LAT, mispr
                     ok = False                              # WAR: reader must have issued; WAW: writer done
             if ok and not (in_order and blocked):
                 issue[i] = cycle
-                done[i] = cycle + lat[trace[i][1]]
+                done[i] = cycle + lat_of.get(i, lat[trace[i][1]])
                 issued += 1
                 if issued == width:
                     break
