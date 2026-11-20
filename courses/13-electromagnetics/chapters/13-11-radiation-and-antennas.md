@@ -52,7 +52,13 @@ With $\tilde{\vec{H}} = \nabla\times\tilde{\vec{A}}/\mu$ and, away from sources,
 
 ### 3.2 The Hertzian dipole
 
-Take a short current element: current $I_0$ (peak phasor) along $z$ over a length $\ell \ll \lambda$. Then $\tilde{\vec{A}} = \hat{z}\,\mu I_0\ell e^{-jkr}/(4\pi r)$. Taking the curls in spherical coordinates:
+Take a short current element: current $I_0$ (peak phasor) along $z$ over a length $\ell \ll \lambda$. Then $\tilde{\vec{A}} = \hat{z}\,\mu I_0\ell e^{-jkr}/(4\pi r)$. Write it in spherical components, using $\hat{z} = \hat{r}\cos\theta - \hat\theta\sin\theta$: $A_r = A_z\cos\theta$, $A_\theta = -A_z\sin\theta$, $A_\phi = 0$, with $A_z = \mu I_0\ell e^{-jkr}/(4\pi r)$ independent of θ and φ. Nothing depends on φ, so the spherical curl (13-01) has only a φ-component:
+
+$$
+\mu\tilde H_\phi = (\nabla\times\tilde{\vec{A}})_\phi = \frac1r\Big[\frac{\partial(rA_\theta)}{\partial r} - \frac{\partial A_r}{\partial\theta}\Big] = \frac1r\Big[-\sin\theta\,\frac{\partial(rA_z)}{\partial r} + A_z\sin\theta\Big] .
+$$
+
+Since $rA_z \propto e^{-jkr}$, $\partial(rA_z)/\partial r = -jk\,rA_z$, so $\mu\tilde H_\phi = \sin\theta\,A_z(jk + 1/r)$, which is the first line below. The electric field follows from Ampère's law in the source-free region, $\tilde{\vec{E}} = \nabla\times\tilde{\vec{H}}/(j\omega\varepsilon)$, whose θ-component is $-(1/r)\,\partial(rH_\phi)/\partial r$ divided by $j\omega\varepsilon$. Differentiating $rH_\phi \propto (jk + 1/r)e^{-jkr}$ once more and using $\omega\varepsilon = k/\eta$:
 
 $$
 \begin{aligned}
@@ -81,7 +87,7 @@ $$
 R_{rad} = \frac{2\pi\eta}{3}\Big(\frac{\ell}{\lambda}\Big)^2 \approx 789\Big(\frac{\ell}{\lambda}\Big)^2\ \Omega .
 $$
 
-For an antenna a fiftieth of a wavelength long it is only 0.3 Ω (Example 13-11.1). Any loss resistance in the conductors or matching network competes directly with it, so the **radiation efficiency** $e_r = R_{rad}/(R_{rad} + R_{loss})$ of small antennas is low. This is the fundamental difficulty of antennas in wearables and in low-frequency IoT devices.
+For an antenna a fiftieth of a wavelength long it is only 0.3 Ω (Example 13-11.1). This formula assumes the current is uniform along the element. A real centre-fed short dipole has a current that falls roughly linearly to zero at its tips, so its average current is half the feed current and its radiation resistance a quarter of this: about 0.079 Ω at λ/50. Either way the conclusion stands. Any loss resistance in the conductors or matching network competes directly with it, so the **radiation efficiency** $e_r = R_{rad}/(R_{rad} + R_{loss})$ of small antennas is low. This is the fundamental difficulty of antennas in wearables and in low-frequency IoT devices.
 
 ### 3.3 Patterns, directivity and gain
 
@@ -97,7 +103,13 @@ For $\sin^2\theta$: $\oint\sin^2\theta\,d\Omega = 8\pi/3$, so $D$ = 1.5, or 1.76
 
 ### 3.4 The half-wave dipole
 
-A dipole of total length λ/2 fed at its centre carries an approximately sinusoidal current, zero at the tips. Adding the fields of its Hertzian elements with their phases gives the far field
+A dipole of total length λ/2 fed at its centre carries an approximately sinusoidal current, zero at the tips: $I(z) = I_0\cos(kz)$ for $\lvert z\rvert \le \lambda/4$. Treat each piece $dz$ as a Hertzian dipole. In the far field its distance to the observer is $r - z\cos\theta$, which matters only in the phase, so the element contributes $d\tilde E_\theta = (j\eta kI(z)\,dz\sin\theta/4\pi r)\,e^{-jkr}e^{jkz\cos\theta}$. Summing,
+
+$$
+\tilde E_\theta = \frac{j\eta kI_0\sin\theta}{4\pi r}e^{-jkr}\int_{-\lambda/4}^{\lambda/4}\cos(kz)\,e^{jkz\cos\theta}\,dz .
+$$
+
+With $u = kz$ the integral is $(1/k)\int_{-\pi/2}^{\pi/2}\cos u\,\cos(u\cos\theta)\,du$ (the sine part is odd and vanishes), and the product-to-sum identity gives $(2/k)\cos(\tfrac\pi2\cos\theta)/\sin^2\theta$. So the far field is
 
 $$
 \tilde E_\theta = \frac{j\eta I_0}{2\pi r}\,\frac{\cos(\tfrac{\pi}{2}\cos\theta)}{\sin\theta}\,e^{-jkr} .
@@ -111,7 +123,13 @@ Its pattern is slightly narrower than the Hertzian dipole's (half-power beamwidt
 
 ### 3.5 Effective aperture and the Friis equation
 
-A receiving antenna in a field of power density $S$ delivers (when matched) a power $P_r = SA_e$, where the **effective aperture** $A_e$ is an area. Reciprocity and a thermodynamic argument tie it to gain:
+A receiving antenna in a field of power density $S$ delivers (when matched) a power $P_r = SA_e$, where the **effective aperture** $A_e$ is an area. For the Hertzian dipole it can be computed directly. A field $E$ (peak) parallel to the dipole induces an open-circuit voltage $V_{oc} = E\ell$; a conjugate-matched load takes $\lvert V_{oc}\rvert^2/(8R_{rad})$ from a source of internal resistance $R_{rad}$ (07-06); and the incident power density is $S = E^2/(2\eta)$. So
+
+$$
+A_e = \frac{E^2\ell^2/(8R_{rad})}{E^2/(2\eta)} = \frac{\eta\ell^2}{4R_{rad}} = \frac{\eta\ell^2}{4}\cdot\frac{3\lambda^2}{2\pi\eta\ell^2} = \frac{3\lambda^2}{8\pi} = \frac{1.5\,\lambda^2}{4\pi} ,
+$$
+
+which is $D\lambda^2/(4\pi)$ with $D$ = 1.5. Reciprocity (an antenna's receiving and transmitting patterns are the same) and a thermodynamic argument (an antenna in a black-body enclosure must absorb as much as it radiates) show that the same ratio holds for every antenna:
 
 $$
 A_e = \frac{G\lambda^2}{4\pi} .
@@ -130,7 +148,7 @@ The Friis equation assumes the far field (§3.6), free space, matched impedances
 
 ### 3.6 Near field, far field and arrays
 
-**Far-field distance.** For an antenna of largest dimension $D$, the phase difference between rays from its centre and edge to a distant point falls below π/8 when $r > 2D^2/\lambda$; beyond that distance (and $r \gg \lambda$) the pattern no longer changes with distance. A 1 m dish at 12 GHz has a far field beyond 80 m (Problem 13-11.4).
+**Far-field distance.** For an antenna of largest dimension $D_a$ (written with a subscript to keep it apart from the directivity $D$), the phase difference between rays from its centre and edge to a distant point falls below π/8 when $r > 2D_a^2/\lambda$; beyond that distance (and $r \gg \lambda$) the pattern no longer changes with distance. A 1 m dish at 12 GHz has a far field beyond 80 m (Problem 13-11.4).
 
 **Arrays.** $N$ identical elements spaced $d$ apart along a line, each fed with a progressive phase β, have a combined pattern equal to the element pattern times the **array factor**
 
@@ -170,7 +188,7 @@ Arrays are developed in Course 21 and their signal processing (beamforming) in C
 
 **Solution.** With $U \propto [\cos(\tfrac{\pi}{2}\cos\theta)/\sin\theta]^2$, numerical integration gives $\int_0^\pi U\sin\theta\,d\theta$ = 1.219 (for unit maximum). Then $D = 2/1.219$ = **1.641** (**2.151** dBi), and $R_{rad} = (\eta_0/2\pi)\times 1.219$ = **73.08** Ω. The half-power points are at 50.96° and 129.04°, a beamwidth of **78.08**°.
 
-**Sanity check.** The half-wave dipole is only slightly more directive than the Hertzian dipole (2.15 against 1.76 dBi), but its radiation resistance is hundreds of times larger: length buys efficiency far more than it buys gain.
+**Sanity check.** The half-wave dipole is only slightly more directive than the Hertzian dipole (2.15 against 1.76 dBi), but its radiation resistance (73 Ω) is over two hundred times that of Example 13-11.1's λ/50 dipole (0.32 Ω): length buys efficiency far more than it buys gain.
 
 ### Example 13-11.4 · A Wi-Fi link budget (tier B)
 
@@ -182,11 +200,11 @@ Arrays are developed in Course 21 and their signal processing (beamforming) in C
 
 ### Example 13-11.5 · Is higher frequency really worse? (tier B)
 
-**Setup.** Two antennas each with an effective aperture of 10 cm² face each other 100 m apart. Find $P_r/P_t$ in dB at 2.4 GHz and at 28 GHz.
+**Setup.** Two antennas each with an effective aperture of 100 cm² (a 10 cm square) face each other 100 m apart. Find $P_r/P_t$ in dB at 2.4 GHz and at 28 GHz.
 
-**Solution.** With fixed apertures, Friis becomes $P_r/P_t = A_{e,t}A_{e,r}/(\lambda R)^2$. At 2.4 GHz: **−81.93** dB. At 28 GHz: **−60.59** dB, over 21 dB better.
+**Solution.** With fixed apertures, Friis becomes $P_r/P_t = A_{e,t}A_{e,r}/(\lambda R)^2$. At 2.4 GHz: **−61.93** dB. At 28 GHz: **−40.59** dB, over 21 dB better.
 
-**Sanity check.** The ratio is $(28/2.4)^2$, **21.3** dB. The catch: at 28 GHz a 10 cm² aperture has a gain of $4\pi A_e/\lambda^2$ = **20.4** dBi and a correspondingly narrow beam, so it must be pointed, which is the job of a phased array.
+**Sanity check.** The ratio is $(28/2.4)^2$, **21.3** dB. The catch: at 28 GHz a 100 cm² aperture has a gain of $4\pi A_e/\lambda^2$ = **30.4** dBi (against **9.06** dBi at 2.4 GHz) and a correspondingly narrow beam, so it must be pointed, which is the job of a phased array. The argument needs apertures large against $\lambda^2/4\pi$ (12.4 cm² at 2.4 GHz): since directivity is at least 1, no lossless antenna has a smaller effective aperture, and the link is in the far field ($2D_a^2/\lambda$ is 3.7 m at 28 GHz for this aperture).
 
 ### Example 13-11.6 · An 8-element array at 28 GHz (tier C)
 
@@ -194,7 +212,7 @@ Arrays are developed in Course 21 and their signal processing (beamforming) in C
 
 **Solution.** The array gain is $10\log_{10}8$ = **9.031** dB. Computing $\lvert\text{AF}\rvert^2$ numerically, the broadside half-power beamwidth is **12.80**°. Steering to 30° needs $\beta = -kd\sin 30^\circ$ = **−90**° per element, and the beamwidth widens to **14.84**°.
 
-**Sanity check.** The estimate $0.886\lambda/(Nd)$ = 0.2215 rad = 12.69° is close to 12.80°; dividing by cos 30° gives 14.65°, close to the computed 14.84°. At λ/2 spacing, no grating lobe appears for any steering angle.
+**Sanity check.** The estimate $0.886\lambda/(Nd)$ = 0.2215 rad = 12.69° is close to 12.80°; dividing by cos 30° gives 14.65°, close to the computed 14.84°. At λ/2 spacing, no grating lobe appears for any steering angle short of endfire.
 
 ### Answer key
 
@@ -218,10 +236,11 @@ Arrays are developed in Course 21 and their signal processing (beamforming) in C
 | Ex 13-11.4a | free-space path loss | 80.05 | dB |
 | Ex 13-11.4b | received power | −55.75 | dBm |
 | Ex 13-11.4c | effective aperture | 20.4 | cm² |
-| Ex 13-11.5a | path ratio at 2.4 GHz | −81.93 | dB |
-| Ex 13-11.5b | path ratio at 28 GHz | −60.59 | dB |
+| Ex 13-11.5a | path ratio at 2.4 GHz | −61.93 | dB |
+| Ex 13-11.5b | path ratio at 28 GHz | −40.59 | dB |
 | Ex 13-11.5c | improvement | 21.3 | dB |
-| Ex 13-11.5d | gain of a 10 cm² aperture at 28 GHz | 20.4 | dBi |
+| Ex 13-11.5d | gain of a 100 cm² aperture at 28 GHz | 30.4 | dBi |
+| Ex 13-11.5e | gain of a 100 cm² aperture at 2.4 GHz | 9.06 | dBi |
 | Ex 13-11.6a | array gain | 9.031 | dB |
 | Ex 13-11.6b | broadside beamwidth | 12.80 | ° |
 | Ex 13-11.6c | progressive phase for 30° | −90 | ° |
@@ -267,12 +286,12 @@ The netlist [small_antenna.cir](../labs/13-11-lab/small_antenna.cir) matches Exa
 | Effective aperture | $G\lambda^2/4\pi$ | 20 cm² for a dipole at 2.4 GHz |
 | Free-space path loss | $20\log_{10}(4\pi R/\lambda)$ | 80 dB for 100 m at 2.4 GHz |
 | Array gain | +3 dB per doubling of elements | At about λ/2 spacing |
-| Far-field distance | $2D^2/\lambda$ | 80 m for a 1 m dish at 12 GHz |
+| Far-field distance | $2D_a^2/\lambda$ | 80 m for a 1 m dish at 12 GHz |
 | 6 GHz indoor Wi-Fi limit (US) | 30 dBm EIRP, 5 dBm/MHz | As of Nov 2026 [2] |
 
 ## 8. Common mistakes
 
-- **Using Friis in the near field.** Below about $2D^2/\lambda$ (or a few wavelengths for small antennas) the pattern and the $1/r^2$ law do not hold.
+- **Using Friis in the near field.** Below about $2D_a^2/\lambda$ (or a few wavelengths for small antennas) the pattern and the $1/r^2$ law do not hold.
 - **Confusing gain and directivity.** Gain includes efficiency; a small antenna can have a respectable directivity and a poor gain.
 - **Saying "higher frequencies travel less far" without a qualifier.** True for fixed gain; false for fixed aperture area.
 - **Forgetting that matching does not create efficiency.** A perfect match delivers all the power to the antenna; how much it radiates depends on $R_{rad}$ against $R_{loss}$.
@@ -283,14 +302,14 @@ The netlist [small_antenna.cir](../labs/13-11-lab/small_antenna.cir) matches Exa
 ### State of the art (as of Nov 2026)
 
 - **5G millimetre-wave bands drive arrays.** 3GPP's frequency range FR2-1 spans 24.25 to 52.6 GHz, with TDD bands such as n257 (26.5–29.5 GHz) and n261 (27.5–28.35 GHz) [1] **[Established]**. At 28 GHz half a wavelength is **5.353** mm, so an 8 × 8 array at λ/2 spacing is only **4.283** cm on a side (our arithmetic): large arrays fit in base stations and small ones in phones.
-- **Regulators cap EIRP and its density.** In the US 6 GHz band (5.925–7.125 GHz), an indoor access point is limited to 5 dBm/MHz EIRP and 30 dBm total EIRP; standard-power access points under automated frequency coordination are allowed 23 dBm/MHz and 36 dBm in parts of the band [2] **[Established]**. The density limit means a 160 MHz channel can reach only **27.04** dBm EIRP (our arithmetic), and only a 320 MHz channel reaches the 30 dBm cap.
+- **Regulators cap EIRP and its density.** In the US 6 GHz band (5.925–7.125 GHz), an indoor access point is limited to 5 dBm/MHz EIRP and 30 dBm total EIRP; standard-power access points are allowed 23 dBm/MHz and 36 dBm in parts of the band [2] **[Established]**. The density limit means a 160 MHz channel can reach only **27.04** dBm EIRP (our arithmetic), and only a 320 MHz channel reaches the 30 dBm cap.
 - **Small-antenna limits are fundamental.** The bandwidth and efficiency of electrically small antennas are bounded by their size in wavelengths (the Chu–Wheeler limit), so wearables and compact IoT devices trade size against efficiency and bandwidth **[Established]** (antenna theory; Course 21).
 
 ### Why it matters commercially
 
 - **Coverage and battery life.** Every decibel of antenna efficiency in a phone or wearable translates into range or into transmit power and battery drain.
-- **Millimetre-wave economics.** Phased-array modules (many transceiver channels, calibration, thermal design) dominate the cost of millimetre-wave radios; the array gain is what makes the link budget close.
-- **Automotive radar** at 76–81 GHz and Wi-Fi sensing use arrays for angular resolution, set by aperture in wavelengths.
+- **Millimetre-wave economics.** Phased-array modules (many transceiver channels, calibration, thermal design) are a large part of the cost of millimetre-wave radios **[Industry estimate]** (not quantified here); the array gain is what makes the link budget close.
+- **Automotive radar** (in the 77 GHz region) and Wi-Fi sensing use arrays for angular resolution, set by aperture in wavelengths **[Industry estimate]** (band edges not cited here).
 
 ### Marketing vs Reality
 
@@ -370,7 +389,8 @@ Next: the [13-11 problem set](../problems/13-11-problems.md).
 
 ## 13. Further study
 
-- F. T. Ulaby and U. Ravaioli, *Fundamentals of Applied Electromagnetics*, ch. 9–10 (radiation and antennas, arrays).
+- F. T. Ulaby and U. Ravaioli, *Fundamentals of Applied Electromagnetics*, ch. 9 (radiation, antennas and arrays).
+- MIT OpenCourseWare 6.013, *Electromagnetics and Applications*: the lecture notes and videos on radiation, antennas and arrays.
 - C. A. Balanis, *Antenna Theory: Analysis and Design*, ch. 2 (parameters), 4 (wire antennas) and 6 (arrays).
 - J. D. Kraus and R. J. Marhefka, *Antennas*, ch. 2–5.
 

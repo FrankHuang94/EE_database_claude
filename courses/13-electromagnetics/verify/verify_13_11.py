@@ -70,6 +70,15 @@ lam0 = 1.0
 U_h = lambda t: (eta0 / 2) * (2 * math.pi / lam0 * 1.0 * 1.0 / (4 * math.pi)) ** 2 * math.sin(t) ** 2  # noqa
 P_h = sphere_power(U_h)  # I0 = 1, ell = 1 lambda-units => R = 2P/(ell/lam)^2
 v.check("T 13-11.b", 2 * P_h)
+# independent route: the Poynting flux of the numerically curled fields through a sphere at r = 3 lambda
+# (only the radiation terms carry real power, so any radius works), for l = lambda/50, scaled by (l/lambda)^2
+gx, gw = np.polynomial.legendre.leggauss(48)
+ths = 0.5 * math.pi * (gx + 1)
+P_num = 0.0
+for th_, w_ in zip(ths, gw):
+    E_, H_ = hertz_fields(1.0, lam0 / 50, lam0, 3.0, th_)
+    P_num += w_ * 0.5 * (E_ * H_.conjugate()).real * 3.0**2 * math.sin(th_) * 2 * math.pi * 0.5 * math.pi
+v.assert_true("T 13-11.b from the Poynting flux of the curled fields", abs(2 * P_num * 50**2 / (2 * P_h) - 1) < 1e-6)
 
 # Example 1
 Rrad1 = 2 * sphere_power(lambda t: (eta0 / 2) * (2 * math.pi / 50 / (4 * math.pi)) ** 2 * math.sin(t) ** 2)
@@ -118,10 +127,11 @@ v.check("Ex 13-11.4c", D_hw * lam24**2 / (4 * math.pi) * 1e4)
 # Example 5 (fixed apertures)
 for f, key in ((2.4e9, "a"), (28e9, "b")):
     lam = c0 / f
-    Gt = Gr = 4 * math.pi * 1e-3 / lam**2
+    Gt = Gr = 4 * math.pi * 1e-2 / lam**2
     v.check(f"Ex 13-11.5{key}", db(Gt * Gr * (lam / (4 * math.pi * 100)) ** 2))
 v.check("Ex 13-11.5c", db((28 / 2.4) ** 2))
-v.check("Ex 13-11.5d", db(4 * math.pi * 1e-3 / (c0 / 28e9) ** 2))
+v.check("Ex 13-11.5d", db(4 * math.pi * 1e-2 / (c0 / 28e9) ** 2))
+v.check("Ex 13-11.5e", db(4 * math.pi * 1e-2 / (c0 / 2.4e9) ** 2))
 
 
 # Example 6 (array by phasor summation)
@@ -203,6 +213,7 @@ v.check("13-11.11a", math.degrees(nulls[nulls > 0].min()))
 # directivity of a 4-element line array (axis along z, elements isotropic): integrate over the sphere
 AFz = lambda th: abs(sum(cmath.exp(1j * n * math.pi * math.cos(th)) for n in range(4)) / 4) ** 2  # noqa: E731
 v.check("13-11.11b", 4 * math.pi * 1.0 / sphere_power(AFz))
+v.check("13-11.11c", db(4 * math.pi * 1.0 / sphere_power(AFz)))
 s_g = math.sin(math.radians(40)) - 1 / 0.8
 v.check("13-11.12a", math.degrees(math.asin(s_g)))
 pg = array_power(np.array([math.asin(s_g)]), 16, 0.8, -2 * math.pi * 0.8 * math.sin(math.radians(40)))[0]
@@ -210,6 +221,7 @@ v.assert_true("grating lobe is as strong as the main beam", abs(pg - 1) < 1e-9)
 v.check("13-11.12b", brentq(lambda d: d * (1 + math.sin(math.radians(60))) - 1, 0.1, 1))
 for B, key in ((20, "a"), (80, "b"), (160, "c"), (320, "d")):
     v.check(f"13-11.13{key}", min(30.0, 5 + db(B)))
+v.check("13-11.13e", 5 + db(320))
 v.check("13-11.14a", db(64))
 v.check("13-11.14b", db(64 * 10))
 v.check("13-11.14c", db(64 * 10) + db(64) + 5)
@@ -225,5 +237,41 @@ if lab.exists():
     Ufw = lambda t: fw_field(t) ** 2  # noqa: E731
     v.check("Lab 13-11.a", 4 * math.pi * Ufw(math.pi / 2) / sphere_power(Ufw))
     v.check("Lab 13-11.b", hpbw(16, 0.5, 0)[0])
+
+# 15: monopole = the half-wave dipole's field over the upper half-space only
+P_mono = 2 * math.pi * quad(lambda t: Uhw(t) * math.sin(t), 0, math.pi / 2, limit=200)[0]
+v.check("13-11.15a", 2 * P_mono)
+v.check("13-11.15b", 4 * math.pi * Uhw(math.pi / 2) / P_mono)
+v.check("13-11.15c", db(4 * math.pi * Uhw(math.pi / 2) / P_mono))
+# 16: polarization loss factors from unit vectors
+et = np.array([1.0, 0.0])
+er = np.array([math.cos(math.radians(30)), math.sin(math.radians(30))])
+v.check("13-11.16a", -db(abs(et @ er.conj()) ** 2))
+ec = np.array([1, 1j]) / math.sqrt(2)
+losses = [-db(abs(np.array([math.cos(p_), math.sin(p_)]) @ ec.conj()) ** 2) for p_ in np.linspace(0, math.pi, 7)]
+v.assert_true("13-11.16 linear-to-circular loss is the same at every rotation", max(losses) - min(losses) < 1e-12)
+v.check("13-11.16b", losses[0])
+v.assert_true("13-11.16 RHCP and LHCP are orthogonal", abs(np.array([1, -1j]) / math.sqrt(2) @ ec.conj()) < 1e-15)
+# 17: triangular current: radiated power by summing Hertzian elements, open-circuit voltage by integrating I(z)
+lam17, ell17 = 1.0, 0.02
+k17 = 2 * math.pi / lam17
+tri = lambda z: 1 - abs(z) / (ell17 / 2)  # noqa: E731
+def tri_field(t):
+    re_ = quad(lambda z: tri(z) * math.cos(k17 * z * math.cos(t)), -ell17 / 2, ell17 / 2)[0]
+    return (eta0 * k17 / (4 * math.pi)) * math.sin(t) * re_
+R17 = 2 * sphere_power(lambda t: tri_field(t) ** 2 / (2 * eta0))
+le17 = quad(tri, -ell17 / 2, ell17 / 2)[0]
+Ae17 = (le17**2 / (8 * R17)) / (1 / (2 * eta0))     # for a 1 V/m field
+v.assert_true("13-11.17 triangular R_rad is a quarter of the uniform value",
+              abs(R17 / (2 * math.pi * eta0 / 3 * ell17**2) - 0.25) < 1e-4)
+v.assert_true("13-11.17 aperture equals 3 lambda^2 / (8 pi) (to the finite-length correction)", abs(Ae17 / (3 / (8 * math.pi)) - 1) < 1e-3)
+v.check("13-11.17a", Ae17 / lam17**2 * (c0 / 2.4e9) ** 2 * 1e4)
+# 18: half-power angle of the half-wave dipole from its element-summed field
+Fn = lambda t: Uhw(t) / Uhw(math.pi / 2)  # noqa: E731
+th18 = brentq(lambda t: Fn(t) - 0.5, 0.5, math.pi / 2 - 1e-3, xtol=1e-13)
+v.check("13-11.18a", math.degrees(th18))
+v.check("13-11.18b", 180 - 2 * math.degrees(th18))
+v.check("13-11.18c", Fn(math.radians(50)))
+v.check("13-11.18d", Fn(math.radians(52)))
 
 sys.exit(v.finish())

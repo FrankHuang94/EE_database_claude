@@ -67,14 +67,30 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Why arrays win twice.** A 64-element array has elements of 5 dBi gain, each driven with 10 dBm, all combining in phase in the beam direction. Find the array gain, the total transmitted power, and the EIRP. Why does EIRP grow as $N^2$?
 
+### Problem 13-11.15 [B]
+
+**A monopole over a ground plane.** A λ/4 monopole stands on a large, perfectly conducting ground plane. (a) Use image theory to explain why its fields above the plane are those of a half-wave dipole. (b) Find its radiation resistance and its directivity in dBi.
+
+### Problem 13-11.16 [B]
+
+**Polarization mismatch.** The polarization loss factor is $\lvert\hat{e}_t\cdot\hat{e}_r^*\rvert^2$, with $\hat{e}$ the unit polarization vectors. Find the loss in dB (a) between two linear antennas rotated 30° relative to each other, (b) between a linear antenna and a circularly polarized one, in any orientation. (c) What happens between right- and left-hand circular antennas?
+
+### Problem 13-11.17 [C]
+
+**Aperture does not care about the current.** A short centre-fed dipole has a triangular current, $I_0$ at the feed falling linearly to zero at the tips, so its radiation resistance is a quarter of the uniform-current value. (a) Show that its open-circuit voltage in a field $E$ is $E\ell/2$. (b) Show that its effective aperture is still $3\lambda^2/(8\pi)$, and evaluate it at 2.4 GHz. Why does the current distribution matter so much for efficiency but not for aperture?
+
+### Problem 13-11.18 [B]
+
+**The half-wave dipole's beamwidth.** From the half-wave dipole's far field (§3.4), find the angle from the axis at which the power pattern falls to half its broadside value, and the half-power beamwidth.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 13-11) | Problems |
 |---|---|
-| 1. Hertzian dipole fields, near and far | 2, 9, 10 |
+| 1. Hertzian dipole fields, near and far | 2, 9, 10, 17 |
 | 2. Resistance, efficiency, directivity, gain | 2, 3, 8 |
-| 3. Half-wave dipole | 1, 8 |
-| 4. Effective aperture and Friis | 4, 5, 6, 7, 13 |
+| 3. Half-wave dipole | 1, 8, 15, 18 |
+| 4. Effective aperture and Friis | 4, 5, 6, 7, 13, 16, 17 |
 | 5. Arrays and steering | 11, 12, 14 |

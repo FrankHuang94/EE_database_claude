@@ -2,10 +2,12 @@
 * Near one resonance a cavity's input behaves like a parallel RLC with the same f0 and Q. With R = 1 kohm,
 * f0 = 9.2732 GHz and Q = 7838: C = Q/(2 pi f0 R) = 134.52 pF and L = 1/((2 pi f0)^2 C) = 2.1898 pH.
 * A 1 mA AC current drives the tank; the half-power points give the bandwidth, and their geometric mean is f0
-* (exact for a parallel RLC).
+* (exact for a parallel RLC). ngspice stores measured frequencies to seven significant figures, so a
+* bandwidth of 1.3e-4 of f0 is resolved only to about 0.1% (it reports Q = 7832); the tolerance allows that.
+* This checks the RLC model and the sweep, not the cavity itself, whose Q comes from the wall-loss integrals.
 *
 * EXPECT f0 key:../../chapters/13-10-waveguides-and-resonators.md#Sim_13-10.a scale=1e9 rtol=1e-5
-* EXPECT q key:../../chapters/13-10-waveguides-and-resonators.md#Sim_13-10.b rtol=2e-3
+* EXPECT q key:../../chapters/13-10-waveguides-and-resonators.md#Sim_13-10.b rtol=1.5e-3
 
 IIN 0 tank DC 0 AC 1m
 RT tank 0 1k
@@ -13,7 +15,7 @@ CT tank 0 134.519p
 LT tank 0 2.18983p
 
 .control
-ac lin 20001 9.2652e9 9.2812e9
+ac lin 40001 9.2712e9 9.2752e9
 let mag = abs(v(tank))
 meas ac vpk max mag
 let lvl = vpk / sqrt(2)

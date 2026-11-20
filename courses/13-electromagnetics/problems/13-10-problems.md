@@ -67,14 +67,22 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **How much light is in the core?** For the fibre of Example 13-10.6 at 1310 nm, integrate the LP₀₁ intensity to find the fraction of the power inside the core.
 
+### Problem 13-10.15 [B]
+
+**How many modes?** WR-90 is driven at 16 GHz. (a) Which modes propagate? (b) Find the phase constant of each. (c) Why is operating here a bad idea, and which mode is about to join them?
+
+### Problem 13-10.16 [C]
+
+**TE₁₀ from $H_z$.** Starting from $H_z = H_0\cos(\pi x/a)e^{-j\beta z}$ and the transverse-field relations of §3.1, (a) find $E_y$ and $H_x$ and show that $E_y$ satisfies the boundary conditions on all four walls; (b) find the wave impedance $-E_y/H_x$; (c) for WR-90 at 10 GHz, evaluate the wave impedance and the ratio of the largest $\lvert H_z\rvert$ to the largest $\lvert H_x\rvert$. Where in the cross-section does each occur?
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 13-10) | Problems |
 |---|---|
-| 1. Modes and cutoff | 1, 3 |
-| 2. Propagation, impedance, attenuation | 2, 4, 8, 11, 12 |
+| 1. Modes and cutoff | 1, 3, 15, 16 |
+| 2. Propagation, impedance, attenuation | 2, 4, 8, 11, 12, 15, 16 |
 | 3. Below-cutoff attenuation | 5 |
 | 4. Cavities and Q | 6, 7, 13 |
 | 5. Fibre: NA, V, cutoff, mode | 9, 10, 14 |

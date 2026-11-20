@@ -18,6 +18,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import sympy as sp
 import scipy.sparse as sps
 import scipy.sparse.linalg as spla
 from scipy.integrate import dblquad, quad
@@ -130,6 +131,7 @@ a4 = math.sqrt((2 * math.pi * fc_vent / c0) ** 2 - k4**2)
 v.check("Ex 13-10.4a", a4)
 v.check("Ex 13-10.4b", a4 * NP_DB)
 v.check("Ex 13-10.4c", a4 * 0.015 * NP_DB)
+v.check("Ex 13-10.4d", 20 * math.log10((c0 / 2.4e9) / (2 * 0.005)))   # rule of thumb, evaluated as stated
 
 
 # ---------------------------------------------------------------- Example 5 (cavity by field integration)
@@ -218,6 +220,13 @@ v.check("Ex 13-10.6k", mfd_gauss(af, u15, w15) * 1e6)
 # ---------------------------------------------------------------- practitioner and simulation
 v.check("Prac 13-10.a", 8.20e9 / fcs[0])
 v.check("Prac 13-10.b", 12.40e9 / fcs[1])
+# Petermann II MFD (the G.652 definition) of the LP01 field: 2 sqrt(2) [int E^2 r dr / int E'^2 r dr]^(1/2)
+E01 = lambda r: jv(0, u13 * r / af) / jv(0, u13) if r < af else kv(0, w13 * r / af) / kv(0, w13)  # noqa: E731
+dE01 = lambda r: (-u13 / af * jv(1, u13 * r / af) / jv(0, u13) if r < af  # noqa: E731
+                  else -w13 / af * kv(1, w13 * r / af) / kv(0, w13))
+num_p = quad(lambda r: E01(r) ** 2 * r, 0, af)[0] + quad(lambda r: E01(r) ** 2 * r, af, 60 * af, limit=300)[0]
+den_p = quad(lambda r: dE01(r) ** 2 * r, 0, af)[0] + quad(lambda r: dE01(r) ** 2 * r, af, 60 * af, limit=300)[0]
+v.check("Prac 13-10.c", 2 * math.sqrt(2) * math.sqrt(num_p / den_p) * 1e6)
 # equivalent parallel RLC: R = 1 kohm, C = Q/(w0 R), L = 1/(w0^2 C); find the peak and the 3 dB points
 Rr = 1000.0
 Cr = Q5 / (2 * math.pi * f5 * Rr)
@@ -249,6 +258,7 @@ fc3 = cutoffs_extrapolated(0.003, 0.003, n=100, nmodes=1)[0]
 a5 = math.sqrt((2 * math.pi * fc3 / c0) ** 2 - (2 * math.pi * 2.45e9 / c0) ** 2)
 v.check("13-10.5a", a5)
 v.check("13-10.5b", a5 * 1e-3 * NP_DB)
+v.check("13-10.5c", 20 * math.log10((c0 / 2.45e9) / (2 * 0.003)))   # aperture rule of thumb, evaluated as stated
 f6, Q6, Rs6 = cavity_te101(0.05, 0.05, 0.05)
 v.check("13-10.6a", f6 / 1e9)
 v.check("13-10.7a", Rs6 * 1e3)
@@ -266,6 +276,7 @@ v.check("13-10.11a", P11 / 1e6)
 b7 = math.sqrt((2 * math.pi * 7e9 / c0) ** 2 - kc**2)
 v.check("13-10.12a", 2 * math.pi * 7e9 * mu0 / b7)
 v.check("13-10.13a", f5 / (1 / (1 / Q5 + 1 / Q5)) / 1e6)
+v.check("13-10.13b", 1 / (1 / Q5 + 1 / Q5))
 E = lambda r: jv(0, u13 * r / af) / jv(0, u13) if r < af else kv(0, w13 * r / af) / kv(0, w13)  # noqa: E731
 pc = quad(lambda r: E(r) ** 2 * r, 0, af)[0]
 pt = pc + quad(lambda r: E(r) ** 2 * r, af, 50 * af, limit=200)[0]
@@ -278,5 +289,35 @@ if lab.exists():
     t_hi = 1 / (c0 * math.sqrt(1 - (fc10 / 12.4e9) ** 2))
     v.check("Lab 13-10.a", (t_lo - t_hi) * 1e9)
     v.check("Lab 13-10.b", 2 * math.pi * af / 1.26e-6 * NA)
+    v.check("Lab 13-10.c", t_lo * 1e9)
+    v.check("Lab 13-10.d", t_hi * 1e9)
+
+# 15: modes of WR-90 at 16 GHz from the finite-difference cutoffs (problem convention c = 2.998e8 for k)
+kcs = 2 * math.pi * fcs / c0                       # TE10, TE20, TE01, TE11 cutoff wavenumbers from the FD solve
+k16 = 2 * math.pi * 16e9 / 2.998e8
+prop = [kc for kc in kcs if kc < k16]
+v.assert_true("13-10.15 exactly three modes propagate at 16 GHz", len(prop) == 3)
+for key, kc in zip("abc", prop):
+    v.check(f"13-10.15{key}", math.sqrt(k16**2 - kc**2))
+v.check("13-10.15d", math.sqrt(kcs[3] ** 2 - k16**2) * NP_DB)
+# 16: TE10 fields from Hz by sympy; check Maxwell's equations and sample the magnitudes over the cross-section
+xs, zs, bs = sp.symbols("x_s z_s beta_s", real=True)
+a16 = sp.Float(22.86e-3)
+w16 = 2 * sp.pi * 1e10
+mu16 = 4e-7 * sp.pi
+kc16 = sp.pi / a16
+Hz16 = sp.cos(sp.pi * xs / a16) * sp.exp(-sp.I * bs * zs)
+Ey16 = sp.I * w16 * mu16 / kc16**2 * sp.diff(Hz16, xs)
+Hx16 = -sp.I * bs / kc16**2 * sp.diff(Hz16, xs)
+b16 = float(sp.sqrt((2 * sp.pi * 1e10 / 2.998e8) ** 2 - kc16**2))
+far = sp.simplify((sp.diff(Ey16, zs) * (-1) - (-sp.I * w16 * mu16 * Hx16)).subs(bs, b16))   # Faraday x: -dEy/dz
+v.assert_true("13-10.16 Faraday x-component satisfied", abs(complex(far.subs({xs: 0.007, zs: 0.003}))) < 1e-6)
+v.assert_true("13-10.16 Ey vanishes on the side walls",
+              abs(complex(Ey16.subs({xs: 0, zs: 0, bs: b16}))) < 1e-12 and abs(complex(Ey16.subs({xs: a16, zs: 0, bs: b16}))) < 1e-9)
+v.check("13-10.16a", float(sp.re(-Ey16 / Hx16).subs({xs: 0.01, zs: 0, bs: b16})))
+xg = np.linspace(0, 22.86e-3, 2001)
+fHz = sp.lambdify(xs, sp.Abs(Hz16.subs({zs: 0, bs: b16})), "numpy")
+fHx = sp.lambdify(xs, sp.Abs(Hx16.subs({zs: 0, bs: b16})), "numpy")
+v.check("13-10.16b", float(np.max(fHz(xg)) / np.max(fHx(xg))))
 
 sys.exit(v.finish())

@@ -24,9 +24,9 @@
 A transmission line needs two conductors. A hollow metal pipe has only one, so it cannot carry a TEM wave or DC, but above a certain frequency it guides waves with very low loss and high power handling: the plane wave bounces down the pipe between its walls. Close the pipe at both ends and it becomes a cavity, a resonator with a Q in the thousands. Replace the metal walls with a dielectric step and total internal reflection does the guiding: the optical fibre. These three structures carry radar power, set the frequency of microwave oscillators and filters, and carry nearly all long-distance data.
 
 - **Waveguides** feed radar and satellite antennas and connect millimetre-wave test equipment, where coax becomes too lossy or too small.
-- **Cutoff** is a feature as well as a limit: a pipe below cutoff blocks radio, which is how ventilation holes in shielded enclosures and microwave-oven doors work.
+- **Cutoff** is a feature as well as a limit: holes much smaller than a wavelength leak little, and a pipe below cutoff blocks radio, which is how honeycomb ventilation panels in shielded enclosures work and part of how microwave-oven doors work.
 - **Cavities** make high-Q filters for base stations and the frequency references of some oscillators.
-- **Single-mode fibre** carries every long-haul and most datacenter optical link (Course 24).
+- **Single-mode fibre** carries long-haul and metro optical links and the longer-reach links inside datacenters, while short-reach links often use multimode fibre (Course 24) **[Industry estimate]**.
 
 ## 2. Intuition first
 
@@ -48,7 +48,21 @@ $$
 \Big(\frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2} + k_c^2\Big)H_z = 0, \qquad k_c^2 = k^2 - \beta^2 .
 $$
 
-Separation of variables (13-02) with the boundary condition that tangential E vanishes on the walls (which requires $\partial H_z/\partial n$ = 0 there) gives
+**The transverse fields follow from $H_z$.** Write every field as a function of $(x, y)$ times $e^{-j\beta z}$, so $\partial/\partial z \to -j\beta$. With $E_z = 0$, the $x$- and $y$-components of Faraday's law ($\nabla\times\tilde{\vec{E}} = -j\omega\mu\tilde{\vec{H}}$) and Ampère's law ($\nabla\times\tilde{\vec{H}} = j\omega\varepsilon\tilde{\vec{E}}$) are
+
+$$
+j\beta E_y = -j\omega\mu H_x, \qquad -j\beta E_x = -j\omega\mu H_y, \qquad \frac{\partial H_z}{\partial y} + j\beta H_y = j\omega\varepsilon E_x, \qquad -j\beta H_x - \frac{\partial H_z}{\partial x} = j\omega\varepsilon E_y .
+$$
+
+Eliminating $H_x$ and $H_y$ between them (substitute the first two into the last two, and use $k^2 = \omega^2\mu\varepsilon$, $k_c^2 = k^2 - \beta^2$) gives
+
+$$
+E_x = -\frac{j\omega\mu}{k_c^2}\frac{\partial H_z}{\partial y}, \qquad E_y = \frac{j\omega\mu}{k_c^2}\frac{\partial H_z}{\partial x}, \qquad H_x = -\frac{j\beta}{k_c^2}\frac{\partial H_z}{\partial x}, \qquad H_y = -\frac{j\beta}{k_c^2}\frac{\partial H_z}{\partial y} .
+$$
+
+So $E_x/H_y = -E_y/H_x = \omega\mu/\beta$, the wave impedance of §3.2. On the walls $y = 0, b$ the tangential $E_x$ must vanish, so $\partial H_z/\partial y = 0$ there; on $x = 0, a$ the tangential $E_y$ must vanish, so $\partial H_z/\partial x = 0$. That is the condition $\partial H_z/\partial n = 0$ on every wall.
+
+**Separating variables** (13-02), $H_z = X(x)Y(y)$ gives $X'' + k_x^2X = 0$ and $Y'' + k_y^2Y = 0$ with $k_x^2 + k_y^2 = k_c^2$. The conditions $X'(0) = X'(a) = 0$ allow only $X = \cos(m\pi x/a)$, and likewise $Y = \cos(n\pi y/b)$, so
 
 $$
 H_z = H_0\cos\frac{m\pi x}{a}\cos\frac{n\pi y}{b}\,e^{-j\beta z}, \qquad k_c^2 = \Big(\frac{m\pi}{a}\Big)^2 + \Big(\frac{n\pi}{b}\Big)^2 .
@@ -69,7 +83,7 @@ The lowest is TE$_{10}$, at $f_c = c/(2a)$ for an air-filled guide: the **domina
 Writing $\beta = k\sqrt{1 - (f_c/f)^2}$:
 
 - **Guide wavelength:** $\lambda_g = 2\pi/\beta = \lambda/\sqrt{1 - (f_c/f)^2}$, longer than in free space.
-- **Phase velocity:** $v_p = \omega/\beta = c/\sqrt{1 - (f_c/f)^2}$, *faster* than light (no information travels at it).
+- **Phase velocity** (air-filled guide; in a filled guide replace $c$ by $1/\sqrt{\mu\varepsilon}$ throughout this list): $v_p = \omega/\beta = c/\sqrt{1 - (f_c/f)^2}$, *faster* than light (no information travels at it).
 - **Group velocity:** $v_g = d\omega/d\beta = c\sqrt{1 - (f_c/f)^2}$, slower than light, with $v_pv_g = c^2$. Energy and signals travel at $v_g$, which goes to zero at cutoff. The guide is dispersive: different frequencies arrive at different times, which limits the bandwidth of pulses sent through long runs.
 - **Wave impedance:** the ratio of transverse E to transverse H, $Z_{TE} = k\eta/\beta = \eta/\sqrt{1 - (f_c/f)^2}$, larger than η and infinite at cutoff. (TM modes have $Z_{TM} = \eta\sqrt{1 - (f_c/f)^2}$.)
 
@@ -79,17 +93,33 @@ In the bouncing-plane-wave picture, the two plane waves travel at angle θ to th
 
 *Figure 1. Dispersion diagram of WR-90. Each mode starts at its cutoff with β = 0 and approaches the light line from above; the slope $d\omega/d\beta$ is the group velocity, zero at cutoff. The recommended band (shaded) sits where only TE₁₀ propagates and its curve has straightened.*
 
-**Attenuation.** Wall currents flow in the metal's skin depth, dissipating $\tfrac12R_s\lvert H_t\rvert^2$ per unit area (13-05). Integrating over the walls for TE$_{10}$ gives (Pozar)
+**Attenuation.** Wall currents flow in the metal's skin depth, dissipating $\tfrac12R_s\lvert H_t\rvert^2$ per unit area (13-05). Because the power falls as $P(z) = P_0e^{-2\alpha z}$, the loss per unit length is $-dP/dz = 2\alpha P$, so $\alpha = P'_{loss}/(2P)$: compute the field once without loss, then the loss it causes. For TE$_{10}$ the fields of §3.1 are $H_z = H_0\cos(\pi x/a)$, $H_x = (j\beta a/\pi)H_0\sin(\pi x/a)$ and $E_y = -(j\omega\mu a/\pi)H_0\sin(\pi x/a)$. The power is $P = \tfrac12\int\!\!\int\lvert E_yH_x\rvert\,dx\,dy = \omega\mu\beta a^3b\lvert H_0\rvert^2/(4\pi^2)$. On the side walls ($x = 0, a$) the tangential field is $H_z$, of magnitude $\lvert H_0\rvert$, over a height $b$; on the top and bottom walls it is $H_x$ and $H_z$ together. Integrating $\tfrac12R_s\lvert H_t\rvert^2$ around the perimeter:
 
 $$
-\alpha_c = \frac{R_s}{a^3b\beta k\eta}\,\big(2b\pi^2 + a^3k^2\big)\quad\text{Np/m} .
+P'_{loss} = \frac{R_s}{2}\lvert H_0\rvert^2\Big[2b + 2\int_0^a\Big(\frac{\beta^2a^2}{\pi^2}\sin^2\frac{\pi x}{a} + \cos^2\frac{\pi x}{a}\Big)dx\Big] = R_s\lvert H_0\rvert^2\Big[b + \frac a2 + \frac{\beta^2a^3}{2\pi^2}\Big] .
 $$
 
-It is large near cutoff (β → 0) and has a broad minimum in the recommended band. For copper WR-90 at 10 GHz it is about 0.11 dB/m (Example 13-10.3), far below the loss of coax at the same frequency.
+Dividing by $2P$, using $\omega\mu = k\eta$ and $\beta^2a^3 + \pi^2a = k^2a^3$, gives
+
+$$
+\alpha_c = \frac{R_s}{a^3b\beta k\eta}\,\big(2b\pi^2 + a^3k^2\big)\quad\text{Np/m}
+$$
+
+(the same result as Pozar's).
+
+It is large near cutoff (β → 0), falls steeply above it and keeps decreasing across the recommended band; its minimum (about 15.4 GHz for WR-90, Problem 13-10.8) lies above the single-mode band. For copper WR-90 at 10 GHz it is about 0.11 dB/m (Example 13-10.3), far below the loss of coax at the same frequency.
 
 ### 3.3 Below cutoff: evanescent guides
 
-Below cutoff, β becomes imaginary: $\gamma = \alpha = \sqrt{k_c^2 - k^2}$. The field decays without propagating, by $e^{-\alpha z}$, carrying no power (as the evanescent wave of 13-06 did). Far below cutoff $\alpha \approx k_c = \pi/a$, independent of frequency: about 27 dB of attenuation per guide width. A tube whose length is several times its width is an excellent filter for everything below its cutoff. This is how a microwave oven's door mesh (holes far smaller than the 12 cm wavelength) keeps the energy in while letting light through, and how honeycomb vents on shielded rooms pass air but not radio (Example 13-10.4). Below-cutoff attenuators also make precise, frequency-independent RF attenuators.
+Below cutoff, β becomes imaginary: $\gamma = \alpha = \sqrt{k_c^2 - k^2}$. The field decays without propagating, by $e^{-\alpha z}$, carrying no power (as the evanescent wave of 13-06 did). Far below cutoff $\alpha \approx k_c = \pi/a$, independent of frequency: about 27 dB of attenuation per guide width. A tube whose length is several times its width is an excellent filter for everything below its cutoff. Honeycomb vents on shielded rooms pass air but not radio this way (Example 13-10.4), and below-cutoff attenuators make precise, frequency-independent RF attenuators.
+
+**Holes in thin shields.** A hole in a thin sheet has no length to attenuate along, yet it still leaks little if it is small: a small aperture couples weakly to the fields on either side. EMC engineering uses three rules of thumb for a sheet with holes of largest dimension $L$ (Ott, *Electromagnetic Compatibility Engineering*, ch. 6) **[Established]** (textbook approximations, good to a few decibels):
+
+- one thin-sheet hole gives a shielding effectiveness of about $20\log_{10}[\lambda/(2L)]$ dB, which falls to zero when the hole is half a wavelength long (a slot that size resonates and radiates freely);
+- $n$ similar holes close together reduce it by about $10\log_{10}n$ dB: more holes leak more;
+- depth helps: a hole of depth $t$ acts as a waveguide below cutoff and adds about $8.686\pi\,t/L$ = $27.3\,t/L$ dB, the $e^{-\alpha t}$ decay with $\alpha \approx \pi/L$ found above.
+
+A microwave oven's door mesh relies mostly on the first rule (its holes are tiny against the 12.2 cm wavelength) helped by the sheet's thickness; a honeycomb vent relies mostly on the third.
 
 ### 3.4 Cavity resonators
 
@@ -99,7 +129,7 @@ $$
 f_{mn\ell} = \frac{c}{2\sqrt{\mu_r\varepsilon_r}}\sqrt{\Big(\frac{m}{a}\Big)^2 + \Big(\frac{n}{b}\Big)^2 + \Big(\frac{\ell}{d}\Big)^2} .
 $$
 
-For $b < a < d$ the lowest is TE$_{101}$. The **quality factor** compares stored energy to the energy lost per radian of oscillation, $Q = \omega_0W/P_{loss}$. For TE$_{10\ell}$ with wall loss only (Pozar),
+For $b < a < d$ the lowest is TE$_{101}$. The **quality factor** compares stored energy to the energy lost per radian of oscillation, $Q = \omega_0W/P_{loss}$. For TE$_{10\ell}$ the standing-wave fields are those of §3.1 with $e^{-j\beta z}$ replaced by $\sin(\ell\pi z/d)$ (for $E_y$) and the matching cosines for $H$. At resonance the electric and magnetic stored energies are equal, so $W = 2W_e = 2 \times (\varepsilon/4)\int\lvert E_y\rvert^2dv = \varepsilon abdE_0^2/8$, with $E_0$ the peak of $E_y$; the loss is $\tfrac12R_s\oint\lvert H_t\rvert^2dS$ over the six walls, done exactly as for the guide. With wall loss only, the algebra (Pozar §6.7; the verify script repeats the integrals numerically) gives
 
 $$
 Q_c = \frac{(kad)^3b\eta}{2\pi^2R_s}\,\frac{1}{2\ell^2a^3b + 2bd^3 + \ell^2a^3d + ad^3} ,
@@ -109,7 +139,7 @@ which gives several thousand for copper at X band (Example 13-10.5). The Q is ro
 
 ### 3.5 Dielectric guides and optical fibre
 
-A dielectric slab or rod of higher index $n_1$ surrounded by lower index $n_2$ guides light by total internal reflection (13-06). The field is a standing wave inside the core and an evanescent tail in the cladding. For a step-index fibre of core radius $a$, the modes are characterized by the **V-number**
+A dielectric slab or rod of higher index $n_1$ surrounded by lower index $n_2$ guides light by total internal reflection (13-06). The field is a standing wave inside the core and an evanescent tail in the cladding. For a step-index fibre of core radius $a$ (in this section and the fibre examples $a$ is the core radius and $b$ the normalized propagation constant, not the guide dimensions of §3.1), the modes are characterized by the **V-number**
 
 $$
 V = \frac{2\pi a}{\lambda}\,\text{NA}, \qquad \text{NA} = \sqrt{n_1^2 - n_2^2} .
@@ -149,7 +179,7 @@ which the lab solves numerically. The field is close to Gaussian; the diameter o
 
 **Solution.** $R_s = \sqrt{\pi f\mu_0/\sigma}$ = **26.09** mΩ. The TE$_{10}$ formula gives $\alpha_c$ = **0.01248** Np/m = **0.1084** dB/m.
 
-**Sanity check.** The coax of Problem 13-05.13 lost 0.29 dB/m at only 1 GHz, and coax loss grows as $\sqrt f$ and faster: at 10 GHz a guide is about ten times better than a comparable coax, and it can carry far more power because there is no small centre conductor to concentrate the field.
+**Sanity check.** The coax of Problem 13-05.13 lost 0.32 dB/m at only 1 GHz, and coax loss grows as $\sqrt f$ and faster: at 10 GHz a guide is about ten times better than a comparable coax, and it can carry far more power because there is no small centre conductor to concentrate the field.
 
 ### Example 13-10.4 · A honeycomb vent (tier B)
 
@@ -157,7 +187,7 @@ which the lab solves numerically. The field is close to Gaussian; the diameter o
 
 **Solution.** The tube's TE$_{10}$ cutoff is $c/(2 \times 5\ \text{mm})$ = 30 GHz, far above 2.4 GHz. $\alpha = \sqrt{(\pi/0.005)^2 - k^2}$ = **626.3** Np/m, or **5440** dB/m, so 15 mm gives **81.60** dB.
 
-**Sanity check.** α is almost exactly $\pi/a$ = 628.3 Np/m: far below cutoff the attenuation is set by the geometry alone, about 27 dB per width of depth. A thin sheet with 5 mm holes (depth ≈ 0) would give almost nothing; the depth is what works.
+**Sanity check.** α is almost exactly $\pi/a$ = 628.3 Np/m: far below cutoff the attenuation is set by the geometry alone, about 27 dB per width of depth. A thin sheet with 5 mm holes (depth ≈ 0) loses this term but not the aperture's weak coupling: by the rule of thumb of §3.3, one such hole gives about $20\log_{10}(\lambda/2L)$ = **21.93** dB at 2.4 GHz, and many holes give less. The depth is what turns a modest shield into a very good one.
 
 ### Example 13-10.5 · An X-band cavity (tier B)
 
@@ -173,7 +203,7 @@ which the lab solves numerically. The field is close to Gaussian; the diameter o
 
 **Solution.** NA = **0.1167** and Δ = $(n_1 - n_2)/n_1$ = **0.3240**%. $\lambda_c = 2\pi a\,\text{NA}/2.405$ = **1.250** µm, so the fibre is single-mode at both 1310 and 1550 nm. At 1310 nm, $V$ = **2.294**; solving the LP$_{01}$ equation gives $u$ = 1.618, so $b$ = **0.5029** and $n_{eff} = \sqrt{n_2^2 + b(n_1^2 - n_2^2)}$ = **1.4481**. Fitting a Gaussian to the computed field gives an MFD of **9.238** µm (Marcuse's empirical formula gives 9.312 µm). At 1550 nm, $V$ = **1.939** and the MFD grows to **10.63** µm.
 
-**Sanity check.** The mode is much wider than the 8.2 µm core: at lower V more of the light travels in the cladding's evanescent tail, which is why the MFD grows with wavelength and why bending loss rises at long wavelengths.
+**Sanity check.** The mode is somewhat wider than the 8.2 µm core: at lower V more of the light travels in the cladding's evanescent tail, which is why the MFD grows with wavelength and why bending loss rises at long wavelengths.
 
 ### Answer key
 
@@ -197,6 +227,7 @@ which the lab solves numerically. The field is close to Gaussian; the diameter o
 | Ex 13-10.4a | attenuation constant | 626.3 | Np/m |
 | Ex 13-10.4b | attenuation | 5440 | dB/m |
 | Ex 13-10.4c | through 15 mm | 81.60 | dB |
+| Ex 13-10.4d | single thin-sheet hole, rule of thumb | 21.93 | dB |
 | Ex 13-10.5a | TE101 resonance | 9.273 | GHz |
 | Ex 13-10.5b | surface resistance at resonance | 25.12 | mΩ |
 | Ex 13-10.5c | conductor Q | 7838 | — |
@@ -214,8 +245,9 @@ which the lab solves numerically. The field is close to Gaussian; the diameter o
 | Ex 13-10.6k | MFD at 1550 nm | 10.63 | µm |
 | Prac 13-10.a | WR-90 band start over TE10 cutoff | 1.251 | — |
 | Prac 13-10.b | WR-90 band end over TE20 cutoff | 0.9455 | — |
+| Prac 13-10.c | Petermann II MFD of Example 13-10.6 | 9.148 | µm |
 | Sim 13-10.a | simulated cavity resonance | 9.273 | GHz |
-| Sim 13-10.b | simulated cavity Q | 7838 | — |
+| Sim 13-10.b | Q of the RLC model, simulated (a check of the sweep, not of the cavity) | 7838 | — |
 
 *Every value is recomputed by [verify_13_10.py](../verify/verify_13_10.py): cutoffs and β by solving the guide's Helmholtz eigenproblem numerically on a finite-difference grid, the attenuation and Q by numerically integrating the wall losses and stored energy of the computed fields, the fibre mode by root finding on the Bessel-function matching condition with the MFD from a numerical Gaussian overlap. The cavity's RLC equivalent is simulated in ngspice.*
 
@@ -258,7 +290,7 @@ The netlist [cavity_rlc.cir](../labs/13-10-lab/cavity_rlc.cir) models Example 13
 
 - **Treating phase velocity as signal speed.** $v_p > c$ in a guide; energy and information travel at $v_g < c$.
 - **Forgetting TE₀₁ and TE₂₀ when choosing a band.** Single-mode operation needs the frequency below both.
-- **Using a thin perforated sheet as a below-cutoff vent.** The attenuation scales with the depth of the holes, not their number.
+- **Treating a thin perforated sheet as a below-cutoff vent.** A thin sheet shields by the small size of its holes (about $20\log_{10}[\lambda/(2L)]$ per hole, less as the number of holes grows); only depth comparable to the hole size adds the below-cutoff term, 27.3 dB per hole-width of depth.
 - **Quoting a cavity's unloaded Q as its filter Q.** Coupling to the outside loads the cavity and lowers Q.
 - **Assuming the fibre's light stays in the core.** At V near 2 a large share travels in the cladding; the MFD exceeds the core diameter.
 
@@ -267,12 +299,12 @@ The netlist [cavity_rlc.cir](../labs/13-10-lab/cavity_rlc.cir) models Example 13
 ### State of the art (as of Nov 2026)
 
 - **Standard waveguides are specified by band.** WR-90 (IEC R100) has inside dimensions of 22.86 × 10.16 mm, a TE$_{10}$ cutoff of 6.557 GHz and a recommended band of 8.20 to 12.40 GHz [1] **[Established]**. The band starts at **1.251** times the TE$_{10}$ cutoff and ends at **0.9455** times the TE$_{20}$ cutoff (our arithmetic): it avoids the lossy, dispersive region near cutoff and stays clear of the next mode.
-- **Single-mode fibre is standardized by its mode.** ITU-T G.652.D specifies a mode field diameter at 1310 nm with nominal values from 8.6 to 9.2 µm (±0.4 µm), a 125 µm cladding and a cable cut-off wavelength of at most 1260 nm [2] **[Established]**. Example 13-10.6's illustrative fibre (MFD 9.238 µm, cutoff 1.250 µm) falls within these limits.
-- **Millimetre-wave and sub-terahertz test** uses waveguide bands whose sizes shrink with frequency; above about 100 GHz, waveguide flanges and their alignment become a significant source of measurement uncertainty **[Industry estimate]** (common metrology experience).
+- **Single-mode fibre is standardized by its mode.** ITU-T G.652.D specifies a mode field diameter at 1310 nm with nominal values from 8.6 to 9.2 µm (±0.4 µm), a 125 µm cladding and a cable cut-off wavelength of at most 1260 nm [2] **[Established]**. The standard's MFD uses the Petermann II definition, $2\sqrt2\,[\int E^2r\,dr/\int(dE/dr)^2r\,dr]^{1/2}$, not a Gaussian fit; for Example 13-10.6's illustrative fibre it gives **9.148** µm (our computation), inside the nominal range, while the Gaussian fit's 9.238 µm sits just above it. The example's 1.250 µm is the theoretical LP₁₁ cutoff of a straight fibre; the standard limits the *cable* cut-off, which is lower because bends strip the weakly guided LP₁₁ mode, so the comparison is conservative.
+- **Millimetre-wave and sub-terahertz test** uses waveguide bands whose sizes shrink with frequency: by the naming convention, WR-10 (for 75 to 110 GHz) is 0.100 inch, 2.54 mm, wide, so a few micrometres of misalignment at a flange is a noticeable fraction of the aperture.
 
 ### Why it matters commercially
 
-- **Optical links are fibre waveguides.** Every pluggable transceiver, co-packaged optics engine and silicon-photonics chip couples light into single-mode fibre, and the MFD match between chip and fibre is a large part of the coupling loss budget (Course 24).
+- **Optical links are fibre waveguides.** Single-mode pluggable transceivers (the DR, FR and LR classes), co-packaged optics engines and silicon-photonics chips couple light into single-mode fibre, and the MFD match between chip and fibre is a large part of the coupling loss budget; short-reach SR optics use multimode fibre instead (Course 24) **[Industry estimate]**.
 - **Base-station and satellite filters** are cavities and dielectric resonators; their size, Q and temperature stability set filter performance and cost.
 - **Shielded products** use below-cutoff vents and gaskets; the rules of §3.3 decide how much airflow a shielded enclosure can have.
 
@@ -356,7 +388,8 @@ Next: the [13-10 problem set](../problems/13-10-problems.md).
 
 - D. M. Pozar, *Microwave Engineering*, ch. 3 (waveguides) and ch. 6 (resonators).
 - F. T. Ulaby and U. Ravaioli, *Fundamentals of Applied Electromagnetics*, ch. 8 (waveguides and cavities).
-- B. E. A. Saleh and M. C. Teich, *Fundamentals of Photonics*, ch. 9 (fibre optics).
+- B. E. A. Saleh and M. C. Teich, *Fundamentals of Photonics*, 2nd ed. (Wiley, 2007), ch. 9 (fiber optics; ch. 10 in the 3rd ed.).
+- MIT OpenCourseWare 6.013, *Electromagnetics and Applications*: the lecture notes and videos on waveguides and resonators.
 - D. Marcuse, "Loss analysis of single-mode fiber splices," *Bell System Technical Journal* 56 (1977) (the Gaussian MFD formula).
 
 ## 14. Sources

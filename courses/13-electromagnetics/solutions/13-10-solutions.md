@@ -8,7 +8,7 @@ Problems: [13-10 problems](../problems/13-10-problems.md) · Chapter: [13-10](..
 
 ### Solution 13-10.1
 
-$f_c = c/(2a) = 2.998 \times 10^8/(2 \times 0.072136)$ = **2.078** GHz. (WR-284's recommended band, about 2.6 to 3.95 GHz, is S band.)
+$f_c = c/(2a) = 2.998 \times 10^8/(2 \times 0.072136)$ = **2.078** GHz. (WR-284 is used at S band, a few gigahertz, above this cutoff.)
 
 ### Solution 13-10.2
 
@@ -24,7 +24,7 @@ The delay is $L/v_g$ with $v_g = c\sqrt{1 - (f_c/f)^2}$: **4.870** ns at 9 GHz a
 
 ### Solution 13-10.5
 
-$k_c = \pi/0.003$ = 1047 rad/m and $k$ = 51.3 rad/m, so $\alpha = \sqrt{k_c^2 - k^2}$ = **1046** Np/m, and through 1 mm the attenuation is **9.085** dB. The real screen does much better because each hole is tiny compared with the 12.2 cm wavelength: a small aperture couples very weakly to the field outside it (its transmission scales roughly as the cube of its size in wavelengths), and the below-cutoff decay comes on top of that.
+$k_c = \pi/0.003$ = 1047 rad/m and $k$ = 51.3 rad/m, so $\alpha = \sqrt{k_c^2 - k^2}$ = **1046** Np/m, and through 1 mm the attenuation is **9.085** dB. The real screen does much better because each hole is tiny compared with the 12.2 cm wavelength, so it couples weakly to the fields in the first place: by the aperture rule of thumb of §3.3, one 3 mm hole in a thin sheet gives about $20\log_{10}(\lambda/2L)$ = **26.19** dB at 2.45 GHz. The many holes of a real door reduce that (about $10\log_{10}n$), and the below-cutoff decay through the sheet's thickness adds to it.
 
 ### Solution 13-10.6
 
@@ -62,11 +62,33 @@ $Z_{TE} = 376.7/\sqrt{1 - (6.557/7)^2}$ = **1076** Ω. Close to cutoff the imped
 
 ### Solution 13-10.13
 
-At critical coupling the external loss equals the internal loss, so $1/Q_L = 1/Q_0 + 1/Q_e = 2/Q_0$: $Q_L$ = 3919 and the bandwidth doubles to $f_0/Q_L$ = **2.366** MHz. Maximum power transfer into the cavity comes with half the unloaded Q.
+At critical coupling the external loss equals the internal loss, so $1/Q_L = 1/Q_0 + 1/Q_e = 2/Q_0$: $Q_L$ = **3919** and the bandwidth doubles to $f_0/Q_L$ = **2.366** MHz. Maximum power transfer into the cavity comes with half the unloaded Q.
 
 ### Solution 13-10.14
 
 With $u$ = 1.618 and $w = \sqrt{V^2 - u^2}$ = 1.627, the intensity is $J_0^2(u\rho/a)$ in the core and $K_0^2(w\rho/a)$ (scaled for continuity) outside. Integrating $\int I\rho\,d\rho$ numerically over the core and over all space, the core holds **80.82**% of the power; the remaining fifth travels in the cladding.
+
+### Solution 13-10.15
+
+(a) The cutoffs $f_c = (c/2)\sqrt{(m/a)^2 + (n/b)^2}$ of WR-90 are 6.557 GHz (TE₁₀), 13.11 GHz (TE₂₀), 14.75 GHz (TE₀₁), just above 16 GHz for TE₁₁ and TM₁₁ (Figure 1), and 19.74 GHz for TE₂₁. At 16 GHz three modes propagate: **TE₁₀, TE₂₀ and TE₀₁**.
+
+(b) With $k = 2\pi f/c$ = 335.3 rad/m and $\beta = \sqrt{k^2 - k_c^2}$: TE₁₀ **305.9** rad/m, TE₂₀ **192.1** rad/m, TE₀₁ **129.7** rad/m.
+
+(c) Three modes travel at three different speeds, so any discontinuity that couples energy between them (a bend, a flange step, a probe) smears a signal into three delayed copies, and the power split depends on the exact geometry. TE₁₁ and TM₁₁ are only just below cutoff: at 16 GHz TE₁₁ decays at $\sqrt{k_c^2 - k^2}$, about **393.7** dB/m, so a short discontinuity's local fields of that mode still reach several millimetres. That is why the recommended band ends well below the TE₂₀ cutoff (§9).
+
+### Solution 13-10.16
+
+(a) With $\partial H_z/\partial x = -(\pi/a)H_0\sin(\pi x/a)e^{-j\beta z}$, $\partial H_z/\partial y = 0$ and $k_c = \pi/a$, the relations of §3.1 give
+
+$$
+E_y = \frac{j\omega\mu}{k_c^2}\frac{\partial H_z}{\partial x} = -\frac{j\omega\mu a}{\pi}H_0\sin\frac{\pi x}{a}e^{-j\beta z}, \qquad H_x = -\frac{j\beta}{k_c^2}\frac{\partial H_z}{\partial x} = \frac{j\beta a}{\pi}H_0\sin\frac{\pi x}{a}e^{-j\beta z},
+$$
+
+and $E_x = H_y = 0$. On the side walls ($x = 0, a$) $E_y$ is tangential and $\sin(0) = \sin(\pi) = 0$ makes it vanish; on the top and bottom walls ($y = 0, b$) $E_y$ is normal to the wall, which is allowed (it ends on surface charge), and the tangential $E_x$ is zero everywhere.
+
+(b) $-E_y/H_x = \omega\mu/\beta$, independent of position: the TE wave impedance $Z_{TE} = k\eta/\beta$.
+
+(c) At 10 GHz, β = 158.2 rad/m, so $Z_{TE} = \omega\mu_0/\beta$ = **499.0** Ω. $\lvert H_z\rvert$ is largest ($\lvert H_0\rvert$) at the side walls, where $\cos(\pi x/a) = \pm1$; $\lvert H_x\rvert$ is largest ($\beta a\lvert H_0\rvert/\pi$) at the centre. Their ratio is $(\pi/a)/\beta = k_c/\beta$ = **0.8685**: in TE₁₀ the magnetic field loops in the $x$–$z$ plane, nearly as strong along the guide as across it, which is why slots cut in the walls couple to it so readily (slotted-guide antennas and couplers).
 
 ---
 
@@ -84,6 +106,7 @@ With $u$ = 1.618 and $w = \sqrt{V^2 - u^2}$ = 1.627, the intensity is $J_0^2(u\r
 | 13-10.4c | difference | 0.7153 | ns |
 | 13-10.5a | attenuation constant | 1046 | Np/m |
 | 13-10.5b | attenuation through 1 mm | 9.085 | dB |
+| 13-10.5c | single-hole aperture estimate | 26.19 | dB |
 | 13-10.6a | cube TE101 resonance | 4.240 | GHz |
 | 13-10.7a | surface resistance | 16.99 | mΩ |
 | 13-10.7b | conductor Q | 1.642 × 10⁴ | — |
@@ -95,4 +118,11 @@ With $u$ = 1.618 and $w = \sqrt{V^2 - u^2}$ = 1.627, the intensity is $J_0^2(u\r
 | 13-10.11a | maximum power | 1.047 | MW |
 | 13-10.12a | wave impedance at 7 GHz | 1076 | Ω |
 | 13-10.13a | loaded bandwidth | 2.366 | MHz |
+| 13-10.13b | loaded Q | 3919 | — |
 | 13-10.14a | power fraction in the core | 80.82 | % |
+| 13-10.15a | TE10 phase constant at 16 GHz | 305.9 | rad/m |
+| 13-10.15b | TE20 phase constant at 16 GHz | 192.1 | rad/m |
+| 13-10.15c | TE01 phase constant at 16 GHz | 129.7 | rad/m |
+| 13-10.15d | TE11 attenuation at 16 GHz | 393.7 | dB/m |
+| 13-10.16a | wave impedance at 10 GHz | 499.0 | Ω |
+| 13-10.16b | largest Hz over largest Hx | 0.8685 | — |

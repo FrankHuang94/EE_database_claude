@@ -105,6 +105,6 @@ Conventions:
 | Half-wave dipole $R_{rad}$ = 73.1 Ω, $D$ = 1.64 (2.15 dBi) |  | [13-11](../../courses/13-electromagnetics/chapters/13-11-radiation-and-antennas.md) |
 | $D = 4\pi U_{max}/P_{rad}$; $G = e_rD$, $e_r = R_{rad}/(R_{rad} + R_{loss})$; EIRP $= P_tG_t$ |  | [13-11](../../courses/13-electromagnetics/chapters/13-11-radiation-and-antennas.md) |
 | $A_e = G\lambda^2/(4\pi)$; Friis $P_r = P_tG_tG_r[\lambda/(4\pi R)]^2$; FSPL $= 20\log_{10}(4\pi R/\lambda)$ dB | Far field, matched, co-polarized | [13-11](../../courses/13-electromagnetics/chapters/13-11-radiation-and-antennas.md) |
-| Far field beyond $2D^2/\lambda$ (aperture size $D$) |  | [13-11](../../courses/13-electromagnetics/chapters/13-11-radiation-and-antennas.md) |
+| Far field beyond $2D_a^2/\lambda$ (aperture size $D_a$) |  | [13-11](../../courses/13-electromagnetics/chapters/13-11-radiation-and-antennas.md) |
 | Array factor $\text{AF} = \sum_ne^{jn(kd\sin\theta + \beta)}$, $\lvert\text{AF}\rvert = \lvert\sin(N\psi/2)/\sin(\psi/2)\rvert$; steering $\beta = -kd\sin\theta_0$; no grating lobes for $d < \lambda/(1 + \lvert\sin\theta_{max}\rvert)$ | Pattern = element pattern × AF | [13-11](../../courses/13-electromagnetics/chapters/13-11-radiation-and-antennas.md) |
 | $N$ coherent elements: array gain $N$, EIRP $\propto N^2$ | Equal power per element | [13-11](../../courses/13-electromagnetics/chapters/13-11-radiation-and-antennas.md) |
