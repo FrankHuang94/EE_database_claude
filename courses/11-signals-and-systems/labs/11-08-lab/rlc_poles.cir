@@ -1,0 +1,35 @@
+* Example 11-08.4 -- the series RLC circuit of 11-04 (L = 1 mH, C = 1 uF, R = 20 ohm).
+* Copy A (R, L, then C to ground): the capacitor voltage, the all-pole low-pass H_C(s).
+* Copy B (L, C, then R to ground): the resistor voltage, the band-pass H_R(s).
+* ngspice's pole-zero analysis reports the poles in rad/s; the AC sweeps measure the low-pass
+* peak and the band-pass -3 dB edges.
+*
+* EXPECT pre   key:../../chapters/11-08-laplace-transform-and-system-functions.md#Ex_11-08.4b scale=1e3 rtol=1e-4
+* EXPECT pim   key:../../chapters/11-08-laplace-transform-and-system-functions.md#Ex_11-08.4c scale=1e3 rtol=1e-4
+* EXPECT fpk   key:../../chapters/11-08-laplace-transform-and-system-functions.md#Ex_11-08.4g scale=1e3 rtol=2e-4
+* EXPECT hpk   key:../../chapters/11-08-laplace-transform-and-system-functions.md#Ex_11-08.4h rtol=3e-4
+* EXPECT hw0   key:../../chapters/11-08-laplace-transform-and-system-functions.md#Ex_11-08.4i rtol=3e-4
+* EXPECT flo   key:../../chapters/11-08-laplace-transform-and-system-functions.md#Ex_11-08.4j scale=1e3 rtol=2e-4
+* EXPECT fhi   key:../../chapters/11-08-laplace-transform-and-system-functions.md#Ex_11-08.4k scale=1e3 rtol=2e-4
+
+V1   in 0 DC 0 AC 1
+RA   in a1 20
+LA   a1 a2 1m
+CA   a2 0 1u
+LB   in b1 1m
+CB   b1 b2 1u
+RB   b2 0 20
+
+.control
+pz in 0 a2 0 vol pol
+let pre = real({pole(1)})
+let pim = abs(imag({pole(1)}))
+print pre pim
+ac lin 40001 3k 7k
+meas ac fpk max_at vm(a2)
+meas ac hpk max vm(a2)
+meas ac flo when vm(b2)=0.70710678 rise=1
+meas ac fhi when vm(b2)=0.70710678 fall=1
+meas ac hw0 find vm(a2) at=5032.92121
+.endc
+.end

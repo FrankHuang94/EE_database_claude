@@ -4628,3 +4628,24 @@
   definition: "Appending zeros to a sequence before a DFT, which samples the same DTFT more finely; it interpolates the spectrum but does not improve frequency resolution, which only a longer record does."
   chapter: "11-07"
   see_also: [Frequency resolution]
+# ---------------------------------------------------------------- 11-08
+- term: Bilateral Laplace transform
+  definition: "X(s) = ∫ x(t) e^{−st} dt over all t, with s = σ + jω: the Fourier transform of x(t)e^{−σt}; it describes signals and systems for all time and is meaningful only together with its region of convergence."
+  chapter: "11-08"
+  see_also: [Laplace transform, Region of convergence (ROC)]
+- term: Region of convergence (ROC)
+  definition: "The set of s for which a Laplace (or z-) transform's integral converges absolutely; for the Laplace transform a vertical strip bounded by poles, a right half-plane for right-sided signals and a left half-plane for left-sided ones. The same algebraic X(s) with different ROCs describes different signals."
+  chapter: "11-08"
+  see_also: [Bilateral Laplace transform]
+- term: s-plane
+  definition: "The complex plane of the Laplace variable s = σ + jω: the horizontal axis is the growth or decay rate (s⁻¹), the vertical axis the oscillation frequency (rad/s); the imaginary axis carries the frequency response."
+  chapter: "11-08"
+  see_also: [Poles and zeros]
+- term: Geometric evaluation
+  definition: "Reading a frequency response from a pole–zero plot: |H(jω)| is the product of the distances from jω to the zeros divided by the product of the distances to the poles, and the phase is the sum of the zero angles minus the sum of the pole angles."
+  chapter: "11-08"
+  see_also: [Poles and zeros, Frequency response]
+- term: Continuous-time linear equalizer (CTLE)
+  definition: "An analog filter in a high-speed receiver that boosts high frequencies relative to low ones with a zero placed below its poles, to undo the channel's frequency-dependent loss; its boost comes mostly from lowering the low-frequency gain."
+  chapter: "11-08"
+  see_also: [Poles and zeros]

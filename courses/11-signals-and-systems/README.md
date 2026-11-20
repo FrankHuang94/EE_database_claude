@@ -33,7 +33,7 @@ The mathematics of signals and linear time-invariant systems in continuous and d
 | [11-05 · Fourier Series](chapters/11-05-fourier-series.md) | 10 | ✅ verified | [problems](problems/11-05-problems.md) · [solutions](solutions/11-05-solutions.md) · [lab](labs/11-05-lab/README.md) · [verify](verify/verify_11_05.py) |
 | [11-06 · The Continuous-Time Fourier Transform](chapters/11-06-continuous-time-fourier-transform.md) | 12 | ✅ verified | [problems](problems/11-06-problems.md) · [solutions](solutions/11-06-solutions.md) · [lab](labs/11-06-lab/README.md) · [verify](verify/verify_11_06.py) |
 | [11-07 · The Discrete-Time Fourier Transform](chapters/11-07-discrete-time-fourier-transform.md) | 8 | ✅ verified | [problems](problems/11-07-problems.md) · [solutions](solutions/11-07-solutions.md) · [lab](labs/11-07-lab/README.md) · [verify](verify/verify_11_07.py) |
-| [11-08 · The Laplace Transform and System Functions](chapters/11-08-laplace-transform-and-system-functions.md) | 10 | ⬜ planned | — |
+| [11-08 · The Laplace Transform and System Functions](chapters/11-08-laplace-transform-and-system-functions.md) | 10 | ✅ verified | [problems](problems/11-08-problems.md) · [solutions](solutions/11-08-solutions.md) · [lab](labs/11-08-lab/README.md) · [verify](verify/verify_11_08.py) |
 | [11-09 · The z-Transform](chapters/11-09-z-transform.md) | 10 | ⬜ planned | — |
 | [11-10 · Sampling, Aliasing and Reconstruction](chapters/11-10-sampling-aliasing-reconstruction.md) | 10 | ⬜ planned | — |
 | [11-11 · Modulation and Filtering Applications](chapters/11-11-modulation-and-filtering-applications.md) | 7 | ⬜ planned | — |
