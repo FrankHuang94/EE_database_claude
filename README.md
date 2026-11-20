@@ -71,7 +71,7 @@ The full map, with university equivalents, textbook alignment, objectives and ch
 | 3 | [09 · Semiconductor Devices](courses/09-semiconductor-devices/README.md) | 14 | 116 | 14/14 |
 | 3 | [10 · Electronics I (Microelectronic Circuits)](courses/10-electronics-1/README.md) | 10 | 99 | 10/10 |
 | 3 | [11 · Signals and Systems](courses/11-signals-and-systems/README.md) | 11 | 106 | 11/11 |
-| 4 | [12 · Electronics II](courses/12-electronics-2/README.md) | 10 | 104 | 8/10 |
+| 4 | [12 · Electronics II](courses/12-electronics-2/README.md) | 10 | 104 | 9/10 |
 | 4 | [13 · Electromagnetics](courses/13-electromagnetics/README.md) | 11 | 106 | 0/11 |
 | 4 | [14 · Computer Organization and Architecture](courses/14-computer-organization-and-architecture/README.md) | 15 | 122 | 0/15 |
 | 5 | [15 · Control Systems](courses/15-control-systems/README.md) | 12 | 89 | 0/12 |

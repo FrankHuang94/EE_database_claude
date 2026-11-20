@@ -4930,3 +4930,23 @@
   definition: A complementary rail-to-rail input stage whose bias control keeps the total transconductance constant across the common-mode range, for square-law devices by giving each pair a quarter of its current where both conduct.
   chapter: "12-08"
   see_also: [Rail-to-rail input]
+- term: Barkhausen criterion
+  definition: The condition for a sustained oscillation in a positive-feedback loop, loop gain exactly 1 with zero phase at the oscillation frequency; practical oscillators start with loop gain above 1 and rely on a nonlinearity to bring it to 1.
+  chapter: "12-09"
+  see_also: [Describing function, Loop gain]
+- term: Colpitts oscillator
+  definition: An LC oscillator whose tank uses a capacitive divider (C1 and C2 in series with the inductor's resonance) to feed back part of the transistor's output; it oscillates at the resonance of L with C1 and C2 in series and starts if g_m·R exceeds C2/C1.
+  chapter: "12-09"
+  see_also: [Negative resistance, Crystal oscillator]
+- term: Crystal oscillator
+  definition: An oscillator whose frequency is set by a quartz crystal, modelled as a motional L_m, C_m, R_m branch in parallel with C_0; its quality factor of 10⁴ to 10⁶ makes the frequency nearly independent of the amplifier, and the load capacitance pulls it by parts per million.
+  chapter: "12-09"
+  see_also: [Colpitts oscillator]
+- term: Describing function
+  definition: The effective gain of a memoryless nonlinearity for a sinusoidal input, the fundamental of its output divided by the input amplitude; an oscillator's amplitude settles where the describing-function loop gain equals one.
+  chapter: "12-09"
+  see_also: [Barkhausen criterion]
+- term: Voltage-controlled oscillator
+  definition: An oscillator whose frequency is tuned by a control voltage, typically through a varactor in an LC tank or the bias of a ring oscillator's stages; the controlled element of a phase-locked loop.
+  chapter: "12-09"
+  see_also: [Ring oscillator, Negative resistance]

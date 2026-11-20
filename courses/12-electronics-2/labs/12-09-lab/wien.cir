@@ -1,0 +1,26 @@
+* Lab 12-09 -- a Wien-bridge oscillator with a soft-limiting amplifier, in ngspice.
+* R = 10 kohm and C = 10 nF in both arms (f0 = 1/(2 pi R C) = 1591.5 Hz). The amplifier is a behavioural
+* source v(out) = tanh(3.3 v(p)): small-signal gain 3.3, 10% above the 3 the bridge needs, saturating at
+* +/-1 V. The oscillation starts from a 1 mV initial voltage on the parallel capacitor, grows, and settles
+* where the amplifier's effective (describing-function) gain falls to 3. Measured after 150 ms: the
+* oscillation frequency from ten periods, and the amplitude at the bridge's output node p.
+*
+* EXPECT fosc key:README.md#Lab_12-09.a rtol=2e-3
+* EXPECT vpk key:README.md#Lab_12-09.b rtol=5e-3
+
+BAMP out 0 V = tanh(3.3 * v(p))
+R1 out a 10k
+C1 a p 10n
+R2 p 0 10k
+C2 p 0 10n
+.ic v(p)=1m v(a)=0
+
+.control
+tran 1u 200m 0 1u uic
+meas tran t1 when v(p)=0 rise=240
+meas tran t2 when v(p)=0 rise=250
+let fosc = 10 / (t2 - t1)
+meas tran vpk max v(p) from=150m to=200m
+print fosc vpk
+.endc
+.end
