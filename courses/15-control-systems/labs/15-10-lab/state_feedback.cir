@@ -1,0 +1,26 @@
+* Lab 15-10 -- state feedback u = N r - k1 x1 - k2 x2 on the servo plant 1/(s(s + 1)) (Example 15-10.3).
+* States: x2 = velocity (1 F || 1 ohm driven by a 1 S transconductor from u), x1 = position (1 F integrating x2).
+* Gains from pole placement at -2 +- j3.464: k1 = 16, k2 = 3, reference scaling N = 16.
+* Closed loop: 16/(s^2 + 4 s + 16), so the step overshoots 16.3% and peaks at pi/(4 sqrt(0.75)) = 0.907 s.
+*
+* EXPECT os key:../../chapters/15-10-state-space-introduction.md#Ex_15-10.3f rtol=2e-3
+* EXPECT tpk key:../../chapters/15-10-state-space-introduction.md#Ex_15-10.3g rtol=2e-3
+
+VR r 0 PWL(0 0 1u 1)
+BU u 0 V=16*v(r) - 16*v(x1) - 3*v(x2)
+GV 0 x2 u 0 1
+RV x2 0 1
+CV x2 0 1 IC=0
+GX 0 x1 x2 0 1
+CX x1 0 1 IC=0
+RX x1 0 1e12
+
+.control
+tran 0.1m 5 uic
+meas tran ypk max v(x1) from=0 to=3
+meas tran tpk when v(x2)=0 fall=1 td=0.1
+let os = 100*(ypk - 1)
+print os tpk
+quit
+.endc
+.end

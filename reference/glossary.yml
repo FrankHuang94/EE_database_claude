@@ -6108,3 +6108,29 @@
   definition: A switching-regulator compensator with an integrator, two zeros and two poles, ω_I(1 + s/ω_z)²/[s(1 + s/ω_p)²]; the zeros near the output LC resonance supply up to 180° of phase lead and the poles above crossover filter switching noise.
   chapter: "15-09"
   see_also: [Lead compensator]
+
+# ---------------------------------------------------------------- 15-10
+- term: Similarity transformation
+  definition: A change of state coordinates x = T z, which turns (A, B, C) into (T⁻¹AT, T⁻¹B, CT); it preserves the eigenvalues and the transfer function, and is used to reach canonical (controllable or modal) forms.
+  chapter: "15-10"
+  see_also: [State-space model]
+- term: Controllability
+  definition: The property that some input can drive a system's state from any value to any other in finite time; tested by rank[B AB … A^(n−1)B] = n. An uncontrollable mode cannot be moved by any feedback through that input.
+  chapter: "15-10"
+  see_also: [Observability, Pole placement]
+- term: Observability
+  definition: The property that a system's initial state can be determined from its outputs over a finite time; tested by the rank of the matrix of stacked C, CA, …, CA^(n−1). It is the dual of controllability.
+  chapter: "15-10"
+  see_also: [Controllability, State observer]
+- term: Pole placement
+  definition: Choosing a state-feedback gain K so that the closed-loop matrix A − BK has prescribed eigenvalues; possible for any eigenvalues when (A, B) is controllable, for example with Ackermann's formula.
+  chapter: "15-10"
+  see_also: [Controllability]
+- term: State observer
+  definition: A model of the plant run in parallel with it and corrected by the output error, x̂' = A x̂ + B u + L(y − C x̂); its estimation error decays with the eigenvalues of A − LC, which L places when (A, C) is observable. Also called a Luenberger observer.
+  chapter: "15-10"
+  see_also: [Observability, Separation principle]
+- term: Separation principle
+  definition: With state feedback acting on observer estimates, the closed-loop eigenvalues are those of A − BK together with those of A − LC, so the controller and the observer can be designed independently.
+  chapter: "15-10"
+  see_also: [Pole placement, State observer]
