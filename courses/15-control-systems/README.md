@@ -57,7 +57,7 @@ The twelve chapters fall into four blocks:
 - **Design (15-08 to 15-11).** PID control with its practical fixes (windup, derivative filtering, setpoint weighting, tuning rules); lead and lag compensation; state feedback, observers and integral action; and digital implementation, with the hold's delay and discrete stability.
 - **Applications (15-12).** The charge-pump PLL, LDO and switching-regulator loops, DVFS and thermal throttling, analyzed with the tools of the whole course.
 
-Work at least the [A] and [B] problems of every chapter (115 of the 154 problems; the 39 [C] problems are the stretch). The labs form a toolkit that later chapters import:
+Work at least the [A] and [B] problems of every chapter (120 of the 159 problems; the 39 [C] problems are the stretch). The labs form a toolkit that later chapters import:
 
 - `plants.py` (15-01) and `blocks.py` (15-02) model plants and combine transfer functions, with a general Mason's-formula solver;
 - `specs.py` (15-03) measures step specifications exactly, `steady.py` (15-04) predicts and simulates steady errors, `routh.py` (15-05) builds Routh arrays with both special cases, and `rlocus.py` (15-06) draws loci with every sketching rule;
@@ -65,9 +65,9 @@ Work at least the [A] and [B] problems of every chapter (115 of the 154 problems
 - `statespace.py` (15-10), `digital.py` (15-11) and `loops.py` (15-12) handle pole placement and observers, sampled loops simulated exactly between samples, and the PLL, regulator and thermal loops;
 - fourteen ngspice netlists confirm the circuit examples, among them a mass–spring–damper analogue, a ring oscillator, an op-amp loop measured by Middlebrook injection, an anti-windup integrator, a lead network, a switch-and-capacitor sampler, a phase-domain PLL and an LDO with ESR.
 
-Every verify script recomputes the chapters' numbers by an independent route and checks prose claims as well as answer keys, so a mismatch in your own work usually means a wrong method, not rounding.
+The verify scripts recompute the chapters' numbers, mostly by a route independent of the lab code (closed forms, a second integrator, symbolic algebra), and check prose claims as well as answer keys, so a mismatch in your own work usually means a wrong method, not rounding.
 
-**What to master cold.** The equation sheet collects the relations; these are the ideas behind them:
+**What to master cold.** The [equation sheet](../../reference/equation-sheets/15-control-systems.md) collects the relations; these are the ideas behind them:
 
 - a loop's behaviour is set by its loop gain $L$: $S = 1/(1 + L)$ measures how much disturbances and plant errors survive, and $T = L/(1 + L)$ how faithfully the output follows the reference (15-02, 15-04);
 - pole locations are specifications: $\zeta$ sets overshoot, $\sigma$ sets settling, and zeros and extra poles modify both (15-03);
@@ -79,6 +79,4 @@ Every verify script recomputes the chapters' numbers by an independent route and
 - going digital costs about half a sample of delay plus computation time, and the discretization method matters at coarse sampling (15-11);
 - PLLs, regulators and thermal limiters are ordinary loops: their bandwidths trade noise against speed, capacitance against droop, and burst against sustained performance (15-12).
 
-The [equation sheet](../../reference/equation-sheets/15-control-systems.md) collects them.
-
-**Assessment.** The [course final exam](exam/README.md) has 14 questions and takes 210 minutes, with a calculator and the equation sheet but no Python or simulator. Aim for at least 70%. Questions 1 to 12 follow the chapters; Question 13 asks for three short derivations (the ramp error of a type-1 loop, the lead compensator's maximum phase, the zero-order hold's frequency response); Question 14 is a diligence question about a power-management start-up's claims, partly graded against a rubric. The course maps onto the FE Electrical and Computer exam's Control Systems area, 6–9 questions ([R-001](../../reference/research-log.md#r-001--ncees-fe-electrical-and-computer-specification)). The [flashcards](../../flashcards/15-control-systems.csv) (82 cards) are for spaced review alongside the chapters.
+**Assessment.** The [course final exam](exam/README.md) has 14 questions and takes 210 minutes, with a calculator and the equation sheet but no Python or simulator. Aim for at least 70%. Questions 1 to 12 follow the chapters; Question 7 includes a Nyquist encirclement count; Question 13 asks for three short derivations (the ramp error of a type-1 loop, the lead compensator's maximum phase, the zero-order hold's frequency response); Question 14 is a diligence question about a power-management start-up's claims, partly graded against a rubric. The course maps onto the FE Electrical and Computer exam's Control Systems area, 6–9 questions ([R-001](../../reference/research-log.md#r-001--ncees-fe-electrical-and-computer-specification)). The [flashcards](../../flashcards/15-control-systems.csv) (82 cards) are for spaced review alongside the chapters.

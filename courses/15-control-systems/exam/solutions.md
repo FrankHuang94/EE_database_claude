@@ -68,21 +68,21 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_15_exa
 
 (c) The characteristic polynomial is $s^3 + 6s^2 + 8s + K$; Routh gives $6 \times 8 = K$: $K$ = **48**, with the auxiliary $6s^2 + 48 = 0$, $\omega = \sqrt8$ = **2.828** rad/s.
 
-(d) On the ray $\zeta$ = 0.5, $s = r(-0.5 + j0.866)$. The angle condition gives $r = 4/3$, so the pair is at **−0.667 ± j1.155**, with $K = \lvert s(s + 2)(s + 4)\rvert = 224/27$ = **8.30**. The poles sum to −6, so the third is **−4.667**.
+(d) On the ray $\zeta$ = 0.5 the pair is $s = r(-0.5 \pm j0.866)$, the roots of $s^2 + rs + r^2$. With the third pole at $-p$, match coefficients: $(s^2 + rs + r^2)(s + p) = s^3 + (r + p)s^2 + (r^2 + pr)s + pr^2$ must equal $s^3 + 6s^2 + 8s + K$. So $r + p = 6$ and $r^2 + pr = r(r + p) = 6r = 8$: $r = 4/3$ and $p = 14/3$. The pair is at **−0.667 ± j1.155** (ω_n = 4/3 rad/s), the third pole at **−4.667**, and $K = pr^2 = (14/3)(16/9) = 224/27$ = **8.30**.
 
 ### Solution 7
 
-(a) Solving $\lvert L(j\omega)\rvert = 1$: $\omega_c$ = **1.559** rad/s. The phase there is $-90° - \arctan(\omega_c/2) - \arctan(\omega_c/10)$, so PM = **43.2**°.
+(a) $\lvert L(j\omega)\rvert = 1$ means $\omega^2(\omega^2 + 4)(\omega^2 + 100) = 1600$. With $x = \omega^2$: $x^3 + 104x^2 + 400x - 1600 = 0$. Newton's method from $x_0$ = 2 ($x_{k+1} = x_k - f/f'$ with $f' = 3x^2 + 208x + 400$) gives 2.454, 2.4296, 2.4295, so $\omega_c = \sqrt{2.4295}$ = **1.559** rad/s. The phase there is $-90° - \arctan(\omega_c/2) - \arctan(\omega_c/10)$, so PM = **43.2**°.
 
 (b) The phase is −180° where $\arctan(\omega/2) + \arctan(\omega/10) = 90°$, that is $\omega^2 = 20$: $\omega_{180}$ = **4.472** rad/s. There $\lvert L\rvert = 40/(\sqrt{20}\sqrt{24}\sqrt{120}) = 1/6$, so GM = **6** (**15.6** dB).
 
-(c) $\text{PM}/\omega_c = 0.754\ \text{rad}/1.559$ = **0.484** s.
+(c) PM in radians is $43.2° \times \pi/180$ = **0.754** rad, so the delay margin is $0.754/1.559$ = **0.484** s.
 
-(d) $s^3 + 12s^2 + 20s + 40k$ is stable for $12 \times 20 > 40k$, that is $k < 6$: the gain can rise sixfold.
+(d) The open loop has no right-half-plane poles ($P$ = 0; the pole at the origin is indented around). As given, the plot crosses the negative real axis at $-1/6$, to the right of −1: **0** encirclements, so $Z = N + P$ = **0** closed-loop poles in the right half-plane. With 8 times the gain the crossing moves to $-8/6 = -1.33$, left of −1, and the plot circles −1 clockwise **2** times: $Z$ = **2** unstable closed-loop poles. (Routh agrees: $s^3 + 12s^2 + 20s + 40k$ needs $12 \times 20 > 40k$, that is $k < 6$.)
 
 ### Solution 8
 
-(a) $(s + 1)^3 + K = s^3 + 3s^2 + 3s + 1 + K$; Routh: $9 > 1 + K$, so $K_u$ = **8**, oscillating at $\sqrt3$ rad/s: $P_u = 2\pi/\sqrt3$ = **3.628** s.
+(a) The plant's phase is $-3\arctan\omega$, which reaches −180° at $\arctan\omega = 60°$, $\omega = \sqrt3$ rad/s. There its magnitude is $1/(1 + 3)^{3/2} = 1/8$, so a proportional gain of $K_u$ = **8** brings the loop to the edge of oscillation at $\sqrt3$ rad/s: $P_u = 2\pi/\sqrt3$ = **3.628** s. (Routh on $s^3 + 3s^2 + 3s + 1 + K$ gives the same: $9 > 1 + K$.)
 
 (b) $K_p$ = **4.8**, $T_i$ = **1.814** s, $T_d$ = **0.4534** s; $K_i = K_p/T_i$ = **2.646** s⁻¹ and $K_d = K_pT_d$ = **2.177** s.
 
@@ -96,7 +96,7 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_15_exa
 
 (c) The lead adds $10\log_{10}\alpha$ dB at $\omega_m$, so $\omega_m$ is where $\lvert L\rvert = 1/\sqrt\alpha$: $\omega^2(\omega^2 + 4) = 1600\alpha$, giving $\omega_m$ = **9.38** rad/s. Then $T = 1/(\omega_m\sqrt\alpha)$ = **0.0474** s; the zero is at $1/(\alpha T)$ = **4.17** rad/s and the pole at $1/T$ = **21.1** rad/s.
 
-(d) Evaluating the compensated loop at its crossover (9.38 rad/s): PM = **54.1**°, above the 50° target.
+(d) At $\omega_m$ the compensated loop's magnitude is $\sqrt\alpha \times (1/\sqrt\alpha) = 1$, so 9.38 rad/s is the new crossover, and the phase there is $-90° - \arctan(9.38/2) + \phi_{max} = -90° - 77.96° + 42.04°$. PM = 180° − 125.9° = **54.1**°, above the 50° target. (The 10° allowance pays for the extra lag of $KP$ at the higher crossover, $77.96° - 72.04°$ = 5.9°, so 4° of it is left over.)
 
 ### Solution 10
 
@@ -152,7 +152,7 @@ For $0 < \omega T/2 < \pi$, that is below the sampling frequency $2\pi/T$, the s
 
 **(a)** The delay is $1.5/(2\ \text{MHz})$ = 0.75 µs, costing $360° \times f \times 0.75\ \mu\text{s}$. At 1 MHz: **270**°, far more than any loop can afford: the claim is physically impossible for this architecture. For at most 30°: $f_c = 30/(360 \times 0.75 \times 10^{-6})$ = **111** kHz.
 
-**(b)** Load line: $\Delta V = \Delta I/(\omega_cC) = 5/(2\pi \times 5 \times 10^4 \times 2 \times 10^{-4})$ = **79.6** mV. Critically damped PI: $(2/e) \times 79.6$ = **58.5** mV. Meeting 20 mV needs $f_c = \Delta I/(2\pi C\Delta V)$ = **199** kHz for a load line and $(2/e) \times 199$ = **146** kHz for the PI design, three to four times the stated crossover. Either the capacitance, the crossover or the droop number is wrong, or the measurement excludes the fastest part of the step.
+**(b)** Load line: $\Delta V = \Delta I/(\omega_cC) = 5/(2\pi \times 5 \times 10^4 \times 2 \times 10^{-4})$ = **79.6** mV. Critically damped PI: its crossover is $1.029\,\omega_0$ with $\omega_0 = g/C$, so at a 50 kHz crossover $\omega_0/2\pi$ = 48.6 kHz and the peak is $(2/e)\Delta I/(\omega_0C) = (2/e) \times 79.6 \times 1.029$ = **60.3** mV. Meeting 20 mV needs $f_c = \Delta I/(2\pi C\Delta V)$ = **199** kHz for a load line and $1.029 \times (2/e) \times 199$ = **151** kHz for the PI design, 4.0 and 3.0 times the stated crossover. Both also exceed the 111 kHz that the digital delay of (a) allows, so the droop claim and the architecture are inconsistent with each other, not merely optimistic. Either the capacitance, the crossover or the droop number is wrong, or the measurement excludes the fastest part of the step.
 
 **(c)** $P_{sus} = (95 - 35)/12$ = **5** W. The claimed 12 W is **2.4** times what the thermal path can remove indefinitely; no algorithm changes the heat that must flow through 12 K/W. Prediction can only make the transition smoother or spend the thermal capacitance more cleverly.
 
@@ -187,6 +187,7 @@ For $0 < \omega T/2 < \pi$, that is below the sampling frequency $2\pi/T$, the s
 | X15.3d | exact settling time | 3.54 | s |
 | X15.3e | damping for 10% overshoot | 0.591 | — |
 | X15.3f | gain for 10% overshoot | 0.286 | — |
+| X15.3g | natural frequency for 10% overshoot | 1.692 | rad/s |
 | X15.4a | velocity error constant | 1 | 1/s |
 | X15.4b | acceleration error constant | 0 | 1/s² |
 | X15.4c | ramp error | 1 | — |
@@ -195,21 +196,26 @@ For $0 < \omega T/2 < \pi$, that is below the sampling frequency $2\pi/T$, the s
 | X15.5a | upper gain limit | 2 | — |
 | X15.5b | oscillation frequency | 1 | rad/s |
 | X15.5c | right-half-plane poles at K = 3 | 2 | — |
-| X15.6a | centroid | −2 | — |
+| X15.6a | centroid | −2 | 1/s |
 | X15.6b | asymptote angle | 60 | ° |
-| X15.6c | breakaway point | −0.845 | — |
+| X15.6c | breakaway point | −0.845 | 1/s |
 | X15.6d | gain at breakaway | 3.08 | — |
 | X15.6e | gain at the axis crossing | 48 | — |
 | X15.6f | crossing frequency | 2.828 | rad/s |
-| X15.6g | dominant pair | −0.667 + j1.155 | — |
+| X15.6g | dominant pair | −0.667 + j1.155 | 1/s |
 | X15.6h | gain for ζ = 0.5 | 8.30 | — |
-| X15.6i | third pole | −4.667 | — |
+| X15.6i | third pole | −4.667 | 1/s |
 | X15.7a | gain crossover | 1.559 | rad/s |
 | X15.7b | phase margin | 43.2 | ° |
 | X15.7c | phase crossover | 4.472 | rad/s |
 | X15.7d | gain margin | 6 | — |
 | X15.7e | gain margin | 15.6 | dB |
 | X15.7f | delay margin | 0.484 | s |
+| X15.7g | closed-loop RHP poles, gain as given | 0 | — |
+| X15.7h | clockwise encirclements, 8 × gain | 2 | — |
+| X15.7i | closed-loop RHP poles, 8 × gain | 2 | — |
+| X15.7j | PM in radians | 0.754 | rad |
+| X15.7k | x = ω² at crossover | 2.4295 | rad²/s² |
 | X15.8a | ultimate gain | 8 | — |
 | X15.8b | ultimate period | 3.628 | s |
 | X15.8c | Kp | 4.8 | — |
@@ -240,8 +246,9 @@ For $0 < \omega T/2 < \pi$, that is below the sampling frequency $2\pi/T$, the s
 | X15.11d | ZOH pole | 0.7408 | — |
 | X15.11e | b0 | 2.1 | — |
 | X15.11f | b1 | −1.9 | — |
-| X15.11g | hold phase | 5.73 | ° |
+| X15.11g | hold phase lag | 5.73 | ° |
 | X15.12a | √b | 2.747 | — |
+| X15.12k | crossover | 3.1416e6 | rad/s |
 | X15.12b | b | 7.549 | — |
 | X15.12c | τz | 0.8745 | µs |
 | X15.12d | τp | 0.1159 | µs |
@@ -257,10 +264,11 @@ For $0 < \omega T/2 < \pi$, that is below the sampling frequency $2\pi/T$, the s
 | X15.13d | hold phase at 50 rad/s | −14.32 | ° |
 | X15.13e | hold magnitude at 50 rad/s | 0.990 | — |
 | X15.14a | delay phase at 1 MHz | 270 | ° |
+| X15.14i | total digital delay | 0.75 | µs |
 | X15.14b | largest crossover for 30° | 111 | kHz |
 | X15.14c | load-line droop | 79.6 | mV |
-| X15.14d | PI droop | 58.5 | mV |
+| X15.14d | PI droop | 60.3 | mV |
 | X15.14e | crossover needed, load line | 199 | kHz |
-| X15.14f | crossover needed, PI | 146 | kHz |
+| X15.14f | crossover needed, PI | 151 | kHz |
 | X15.14g | sustained power | 5 | W |
 | X15.14h | ratio of claimed to sustainable power | 2.4 | — |

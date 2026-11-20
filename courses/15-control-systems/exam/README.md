@@ -7,7 +7,7 @@
 
 - Answer all 14 questions and show every step.
 - Question 1 [A] is worth 8 points (2 per part), each [B] 8, and Questions 13 and 14 [C] 12 each (Question 13: 4 per part; Question 14: 3 per part): 120 points in total. 84 or more (70%) is a strong pass.
-- Within a question the lettered parts carry equal weight.
+- Within a question the lettered parts carry equal weight, except Question 8 (3, 3 and 2 points).
 - Give numerical answers to 3–4 significant figures, with units.
 - Question 13 asks for derivations; Question 14 is a diligence question, partly graded against the rubric in the solutions.
 - Solutions are in a separate file, [solutions.md](solutions.md). Open it only after you finish.
@@ -18,6 +18,7 @@
 - Settling times use the 2% band; overshoot is a percentage of the final value.
 - Phase margins in degrees; gain margins as ratios (and dB where asked).
 - PLLs use the phase-domain model of 15-12 with the loop filter $R$ in series with $C$, and $C_2$ across both.
+- Symbols are reused as in the chapters: $T$ is the complementary sensitivity, but also a time constant or sample period where the question says so; $K_v$ is the velocity error constant in Questions 4 and 9 and the VCO gain in Question 12; $N$ is the PLL divider ratio.
 
 ---
 
@@ -68,17 +69,17 @@ $L = 40/[s(s + 2)(s + 10)]$.
 (a) Find the gain crossover frequency and the phase margin.
 (b) Find the phase crossover frequency and the gain margin, as a ratio and in dB.
 (c) Find the delay margin.
-(d) Confirm the gain margin with Routh.
+(d) The open loop is stable. How many times does the Nyquist plot of $L$ encircle −1 clockwise for the gain as given, and for a gain 8 times larger? How many closed-loop poles are in the right half-plane in each case?
 
 **8 [B] · PID tuning.** (15-08)
 A plant is $1/(s + 1)^3$.
-(a) Find the ultimate gain $K_u$ and the ultimate period $P_u$.
+(a) From the Bode plot (the frequency where the plant's phase is −180° and its magnitude there), find the ultimate gain $K_u$ and the ultimate period $P_u$.
 (b) Find the Ziegler–Nichols PID settings $K_p = 0.6K_u$, $T_i = P_u/2$, $T_d = P_u/8$, and the corresponding $K_i$ and $K_d$.
 (c) The actuator saturates during a large setpoint step. Explain integrator windup and one remedy.
 
 **9 [B] · Lead compensation.** (15-09)
-A plant $P = 4/[s(s + 2)]$ must have $K_v$ = 20 s⁻¹ and a phase margin of at least 50°.
-(a) Find the gain $K$, and the uncompensated crossover and phase margin.
+A lead compensator $C(s) = K(1 + \alpha Ts)/(1 + Ts)$, $\alpha > 1$, controls the plant $P = 4/[s(s + 2)]$. The loop $CP$ must have $K_v$ = 20 s⁻¹ and a phase margin of at least 50°.
+(a) Find the gain $K$, and the crossover and phase margin of $KP$ alone (the uncompensated loop).
 (b) Allowing 10° of extra lead, find the maximum phase the lead must supply and its ratio $\alpha$.
 (c) Place the lead's maximum phase at the new crossover: find $\omega_m$, $T$, and the lead's zero and pole.
 (d) Find the compensated phase margin.
@@ -111,6 +112,6 @@ A PLL has a 20 MHz reference, $N$ = 40, $I_{cp}$ = 200 µA and $K_v$ = 2π × 40
 **14 [C] · Diligence: a power-management start-up.** (15-07, 15-11, 15-12)
 A start-up selling a digital PMIC for phone SoCs claims: "a 1 MHz control bandwidth at a 2 MHz switching frequency", "our regulator holds a 5 A load step to within 20 mV with only 200 µF of output capacitance at a 50 kHz crossover", and "our predictive firmware lets the SoC sustain its 12 W burst indefinitely". The phone's thermal path from junction to ambient totals 12 K/W, the junction limit is 95 °C and the ambient 35 °C.
 (a) With a total digital delay of 1.5 switching periods, find the phase that delay costs at 1 MHz, and the largest crossover for which it costs at most 30°.
-(b) Using the transconductance model, find the droop of a load-line design and of a critically damped PI design at the stated crossover and capacitance, and the crossover each would need to meet 20 mV.
+(b) Using the transconductance model, find the droop of a load-line design and of a critically damped PI design at the stated crossover and capacitance (remember that the PI loop's crossover is $1.029\,g/C$), and the crossover each would need to meet 20 mV. Compare with (a).
 (c) Find the sustained power the thermal path allows, and how many times the claimed sustained power exceeds it.
 (d) List four questions you would ask the founders, and what a strong answer looks like for each.
