@@ -71,14 +71,16 @@ Why does CMRR matter in a non-inverting stage but hardly in an inverting one?,In
 Input technology and bias current?,Bipolar: nanoamps; CMOS: picoamps at room temperature but junction leakage grows exponentially with temperature; zero-drift parts show switching currents.,bsee::10 bsee::10-09
 Zero-drift op-amp tradeoff?,"Microvolt offset and nanovolt-per-kelvin drift, but lower bandwidth, switching artifacts and higher current noise.",bsee::10 bsee::10-09
 Rail-to-rail input caveat?,Complementary input pairs hand over near one rail; offset and CMRR change in the crossover region.,bsee::10 bsee::10-09
-Typical vs maximum data-sheet columns?,"Typical is a characterization median, not guaranteed; design to the min/max at your conditions and temperature.",bsee::10 bsee::10-09
+Typical vs maximum data-sheet columns?,"Typical describes expected performance (vendors define it differently) and is not guaranteed; design to the min/max at your conditions and temperature.",bsee::10 bsee::10-09
 Worst-case CMRR of a difference amplifier with resistor tolerance ε?,\((1 + K)/(4\varepsilon)\): 54 dB for \(K\) = 1 and 0.1% resistors.,bsee::10 bsee::10-10
 Why does a three-op-amp INA have higher CMRR than its difference stage?,Its first stage amplifies the differential signal by \(G_1\) but passes common mode with gain 1.,bsee::10 bsee::10-10
 Integrator with real op-amp: two problems?,"Finite \(A_0\) makes it lossy below \(1/(2\pi RCA_0)\); offset integrates and saturates it, so add a leak resistor or reset.",bsee::10 bsee::10-10
-Precision rectifier limit?,"Diode drop divided by loop gain at DC, but a dead time \(2V_D/\text{SR}\) at each zero crossing that grows in effect with frequency.",bsee::10 bsee::10-10
-Non-inverting Schmitt trigger hysteresis?,"\(V_{DD}R_1/R_2\), with \(V_{TH+} = V_{ref}(1 + R_1/R_2)\); make it exceed the noise's peak-to-peak value.",bsee::10 bsee::10-10
+Precision rectifier limit?,"Diode drop divided by loop gain at DC, but a dead time at each zero crossing: \(2V_D/\text{SR}\) for the two-diode inverting circuit, \(t_{OR} + (V_{rail} + V_D)/\text{SR}\) for the superdiode, which saturates. Its effect grows with frequency.",bsee::10 bsee::10-10
+Non-inverting Schmitt trigger hysteresis?,"\(V_{DD}R_1/R_2\), with \(V_U = V_{ref}(1 + R_1/R_2)\); make it exceed the noise's peak-to-peak value.",bsee::10 bsee::10-10
 Op-amp vs comparator for switching?,"Comparator: uncompensated, fast recovery, logic output (push-pull or open-drain). Op-amp: slew-limited and slow out of saturation.",bsee::10 bsee::10-10
 Open-drain output caveat?,"Needs a pull-up; rise time is \(RC\ln 9\) (10–90%), so speed trades against static current.",bsee::10 bsee::10-10
 Why does a TIA without \(C_F\) ring?,The input capacitance and \(R_F\) put a pole in the feedback factor; with the op-amp's pole the loop is second order with \(Q = \sqrt{\omega_tR_FC_{in}}\) ≫ 1.,bsee::10 bsee::10-10
 TIA bandwidth scaling?,\(f_0 = \sqrt{\text{GBW}/(2\pi R_FC_{in})}\): doubling GBW gives √2 more bandwidth.,bsee::10 bsee::10-10
-What \(C_F\) makes a TIA Butterworth?,The one that gives \(Q = 1/\sqrt2\) in \(R_F(C_{in} + C_F)s^2 + (1 + \omega_tR_FC_F)s + \omega_t\); approximately \(\sqrt{2(C_{in} + C_F)/(\omega_tR_F)}\).,bsee::10 bsee::10-10
+What \(C_F\) makes a TIA Butterworth?,"The one that gives \(Q = 1/\sqrt2\) in \(R_F(C_{in} + C_F)s^2 + (1 + \omega_tR_FC_F)s + \omega_t\); exactly \(C_F = \sqrt{2\omega_tR_FC_{in} - 1}/(\omega_tR_F)\), approximately \(\sqrt{2C_{in}/(\omega_tR_F)}\).",bsee::10 bsee::10-10
+Widlar current source?,"A mirror with \(R_E\) in the output emitter only: \(V_T\ln(I_{ref}/I_{out}) = I_{out}R_E\), so a small current needs only a modest resistor, with degeneration for free.",bsee::10 bsee::10-08
+Relaxation oscillator period?,"\(T = 2RC\ln[(1 + \beta)/(1 - \beta)]\) with \(\beta = R_1/(R_1 + R_2)\); the supply cancels. \(2RC\ln 3\) for equal resistors.",bsee::10 bsee::10-10

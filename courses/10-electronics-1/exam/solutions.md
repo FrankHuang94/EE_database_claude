@@ -1,6 +1,6 @@
 # Course 10 · Final Exam Solutions (Electronics I)
 
-Exam: [README.md](README.md). Every number below is recomputed by [verify_10_exam.py](../verify/verify_10_exam.py) by an independent route.
+Exam: [README.md](README.md). Every number below is recomputed by [verify_10_exam.py](../verify/verify_10_exam.py), by an independent route where one exists (nodal solutions, numerical root finding and simulation); headroom sums and data-sheet arithmetic, such as X10.10c–e, are restatements checked for arithmetic only.
 
 **Grading.** Each [B] question is 8 points; give full credit to correct method with arithmetic slips of under 1%, half credit for a correct setup with a wrong region or model. Question 13 is graded on the derivation steps; Question 14 against its rubric.
 
@@ -70,8 +70,8 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_10_exa
 
 ## 12 · Applications
 
-(a) $\Delta V_H = V_{DD}R_1/R_2$: $R_1 = 0.05 \times 100\text{ kΩ}/3.3$ = **1.515** kΩ; $V_{TH+} = 1.65(1 + R_1/R_2)$ = **1.675** V and $V_{TH-}$ = **1.625** V.
-(b) $f_0 = \sqrt{\text{GBW}/(2\pi R_FC_{in})}$ = **1.262** MHz and $Q = \sqrt{2\pi\,\text{GBW}\,R_FC_{in}}$ = **15.85**. Solving $Q(C_F) = 1/\sqrt2$ from $R_F(C_{in} + C_F)s^2 + (1 + \omega_tR_FC_F)s + \omega_t = 0$: $C_F$ = **0.891** pF; then $f_0$ = **1.209** MHz, which is also the −3 dB bandwidth (Butterworth).
+(a) $\Delta V_H = V_{DD}R_1/R_2$: $R_1 = 0.05 \times 100\text{ kΩ}/3.3$ = **1.515** kΩ; $V_U = 1.65(1 + R_1/R_2)$ = **1.675** V and $V_L$ = **1.625** V.
+(b) $f_0 = \sqrt{\text{GBW}/(2\pi R_FC_{in})}$ = **1.262** MHz and $Q = \sqrt{2\pi\,\text{GBW}\,R_FC_{in}}$ = **15.85**. Setting $1/Q^2 = 2$ in $R_F(C_{in} + C_F)s^2 + (1 + \omega_tR_FC_F)s + \omega_t = 0$ gives $(1 + \omega_tR_FC_F)^2 = 2\omega_tR_F(C_{in} + C_F)$, so with $a = \omega_tR_FC_{in}$ = **251.3**, $C_F = \sqrt{2a - 1}/(\omega_tR_F)$ = **0.891** pF (the approximation $\sqrt{2C_{in}/(\omega_tR_F)}$ gives the same to three figures); then $f_0$ = **1.209** MHz, which is also the −3 dB bandwidth (Butterworth).
 
 ## 13 · Derivations
 
@@ -81,17 +81,17 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_10_exa
 
 ## 14 · Diligence (12 points)
 
-(a) $5\ \mu\text{W}/1.2\text{ V}$ = **4.17** µA in total; split between two input transistors, **2.08** µA each, whose largest transconductance (weak inversion) is $I/(nV_T)$ = **62.0** µS. Nothing is left for bias, references, the second stage or an ADC.
+(a) (4 points) $5\ \mu\text{W}/1.2\text{ V}$ = **4.17** µA in total; split between two input transistors, **2.08** µA each, whose largest transconductance (weak inversion) is $I/(nV_T)$ = **62.0** µS. Nothing is left for bias, references, the second stage or an ADC.
 
-(b) Rubric: 2 points each for up to four of the following (or equivalent, well-argued points):
+(b) Rubric (4 points, like each lettered part): 1 point each for four of the following (or equivalent, well-argued points):
 
 - **"Single stage, gain 1000."** One stage's gain is bounded by its intrinsic gain $g_mr_o$, tens at short channel lengths (10-04, 10-06); 1000 needs a cascode (headroom on 1.2 V is scarce, 10-08) or several stages. Ask for the topology and the intrinsic gain at the chosen length.
-- **"120 dB CMRR."** At DC and in the lab? CMRR falls with frequency and with electrode-impedance mismatch (10-10 Problem 10); on a body, 50/60 Hz interference and its harmonics matter. Ask for CMRR at 50/60 Hz with a stated electrode-impedance imbalance.
-- **"1 µV offset."** Achievable only with chopping or autozeroing (10-09), which brings switching artifacts and current noise; at 2 µA per device, matching alone gives millivolts unless the devices are huge (10-08). Ask for the offset distribution and the chopping architecture.
+- **"120 dB CMRR."** At DC and in the lab? CMRR falls with frequency and with any impedance asymmetry at the inputs (10-10 Problem 10 shows how a picofarad of asymmetry destroys it at 50 kHz); on a body the electrode impedances are unequal, so the system's CMRR at 50/60 Hz is set by that imbalance as much as by the chip. Ask for CMRR at 50/60 Hz with a stated electrode-impedance imbalance.
+- **"1 µV offset."** Achievable only with chopping or autozeroing (10-09), which brings switching artifacts and current noise; threshold mismatch does not depend on the bias current: $\sigma(\Delta V_{TH}) = A_{VT}/\sqrt{WL}$ is about **0.11** mV even at 1000 µm² with 10-08's illustrative 3.5 mV·µm, a hundred times too much, so microvolts require chopping, not area. Ask for the offset distribution and the chopping architecture.
 - **"5 µW."** The whole budget is 4.17 µA; ask what is included (reference, bias, ADC, digital) and at what noise. Input-referred noise at this current is a key ECG specification (12-10).
 - **"1.2 V supply."** Headroom for cascodes and swing (10-06 §3.2, 10-08) is tight; ask for the output swing and the input common-mode range, especially with electrode DC offsets of hundreds of millivolts.
 
-(c) 2 points for any two of: a chopper-stabilized instrumentation amplifier input; AC coupling or DC-offset servo for electrode offsets; a right-leg (common-mode) drive; a two-stage or folded-cascode architecture with gain split across stages; weak-inversion input devices for $g_m/I_D$; on-chip filtering before the ADC.
+(c) 4 points, 2 each for any two of: a chopper-stabilized instrumentation amplifier input; AC coupling or DC-offset servo for electrode offsets; a right-leg (common-mode) drive; a two-stage or folded-cascode architecture with gain split across stages; weak-inversion input devices for $g_m/I_D$; on-chip filtering before the ADC.
 
 ---
 
@@ -173,3 +173,5 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_10_exa
 | X10.14a | total current | 4.17 | µA |
 | X10.14b | per input transistor | 2.08 | µA |
 | X10.14c | largest g_m per transistor | 62.0 | µS |
+| X10.12h | ω_t R_F C_in | 251.3 | — |
+| X10.14d | σ(ΔV_TH) at 1000 µm² | 0.11 | mV |

@@ -58,6 +58,8 @@ v.check("T 10-10.b", 90)
 v.check("T 10-10.c", 80)
 v.check("T 10-10.d", 47)
 v.check("T 10-10.e", 40)
+v.check("T 10-10.f", 40e-6 * 2.7 * 1e6)
+v.check("T 10-10.g", 40e-6 * 5.5 * 1e6)
 
 # ------------------------------------------------------------------ Example 1
 c1 = cmrr_worst(1, 1e-3)
@@ -86,6 +88,10 @@ v.check("Ex 10-10.2e", vos * 100 / 1e3)
 v.check("Ex 10-10.2f", 0.1 + 0.5 / 100)
 v.check("Ex 10-10.2g", 2e-3 * 3.3 * 1e3)
 v.check("Ex 10-10.2h", 2e-3 * 3.3 * 100 * 1e3)
+for kg, ke, rgx in (("Ex 10-10.2i", "Ex 10-10.2j", 1.00e3), ("Ex 10-10.2k", "Ex 10-10.2l", 1.02e3)):
+    gx = 1 + 100e3 / rgx
+    v.check(kg, gx)
+    v.check(ke, (gx / 100 - 1) * 100)
 
 # ------------------------------------------------------------------ Example 3: integrator
 
@@ -115,8 +121,9 @@ v.check("Ex 10-10.3f", brentq(lambda f: abs(integ(f, 10e3, 10e-9, 200, rf=1e6)) 
 
 
 def slew_time(swing, sr):
-    sol = solve_ivp(lambda t, y: [sr], (0, 1e-3), [0.0], events=lambda t, y: y[0] - swing, max_step=1e-8)
-    return sol.t_events[0][0]
+    # A constant-rate slew covers `swing` in swing/SR. Integrating dv/dt = SR numerically adds nothing,
+    # so the dead and settling times below are arithmetic restatements of the chapter's formulas.
+    return swing / sr
 
 
 a0 = 10 ** (130 / 20)
@@ -125,6 +132,10 @@ dt4 = slew_time(1.2, 6.5e6)
 v.check("Ex 10-10.4b", dt4 * 1e6)
 v.check("Ex 10-10.4c", math.sin(2 * math.pi * 1e4 * dt4) * 1e3)
 v.check("Ex 10-10.4d", math.sin(2 * math.pi * 1e5 * dt4) * 1e3)
+v.check("Ex 10-10.4e", 0.6 / 10 ** (104 / 20) * 1e6)
+dt_sd = 0.2e-6 + slew_time(2.5 + 0.6, 6.5e6)          # overload recovery, then slew from the rail to +V_D
+v.check("Ex 10-10.4f", dt_sd * 1e6)
+v.check("Ex 10-10.4g", math.sin(2 * math.pi * 1e4 * dt_sd) * 1e3)
 
 # ------------------------------------------------------------------ Example 5: Schmitt trigger by sweeping
 
@@ -217,7 +228,12 @@ v.check("Ex 10-10.7c", peak(100e3, 14, 1e-9, 10e6))
 cf7 = brentq(lambda c: loop_q(100e3, 14, c, 10e6)[0] - 1 / math.sqrt(2), 1e-3, 100, xtol=1e-12)
 v.check("Ex 10-10.7d", cf7)
 v.check("Ex 10-10.7e", loop_q(100e3, 14, cf7, 10e6)[1] / 1e6)
-v.check("Ex 10-10.7f", math.sqrt(2 * (14 + cf7) * 1e-12 / (2 * math.pi * 10e6 * 100e3)) * 1e12)
+v.check("Ex 10-10.7f", math.sqrt(2 * 14e-12 / (2 * math.pi * 10e6 * 100e3)) * 1e12)
+a7 = 2 * math.pi * 10e6 * 100e3 * 14e-12
+v.check("Ex 10-10.7i", a7)
+v.assert_true("closed form C_F = sqrt(2a - 1)/(w_t R_F) matches the numerical root",
+              abs(math.sqrt(2 * a7 - 1) / (2 * math.pi * 10e6 * 100e3) * 1e12 - cf7) < 1e-6)
+v.check("Ex 10-10.7j", (math.sqrt(2 * 14e-12 / (2 * math.pi * 10e6 * 100e3)) * 1e12 / cf7 - 1) * 100)
 v.check("Ex 10-10.7g", bw(100e3, 14, cf7, 10e6) / 1e6)
 v.check("Ex 10-10.7h", abs(tia(1e-3, 100e3, 14, cf7, 10e6)) * 1e-6)
 v.assert_true("with Q = 1/sqrt(2) the transimpedance -3 dB point equals f0 (Butterworth)",
@@ -227,8 +243,14 @@ v.assert_true("with Q = 1/sqrt(2) the transimpedance -3 dB point equals f0 (Butt
 c = cmrr_worst(2, 0.01)
 v.check("10-10.1a", c)
 v.check("10-10.1b", db(c))
-r1, r2, r3, r4 = 10e3 * 1.01, 20e3 * 0.99, 10e3 * 0.99, 20e3 * 1.01
-v.check("10-10.1c", abs(diff_amp(r1, r2, r3, r4, 2.0, 2.0)) * 1e3)
+# worst case over all 16 corners of four 1% resistors (R1 = R3 = 10 kOhm, R2 = R4 = 20 kOhm)
+import itertools  # noqa: E402
+corners = [abs(diff_amp(10e3 * (1 + a), 20e3 * (1 + b), 10e3 * (1 + c_), 20e3 * (1 + d), 2.0, 2.0))
+           for a, b, c_, d in itertools.product((-0.01, 0.01), repeat=4)]
+v.check("10-10.1c", max(corners) * 1e3)
+v.check("10-10.1d", max(corners) / 2.0)
+v.check("10-10.1e", ((2 * 2 / 75) / max(corners) - 1) * 100)
+v.assert_true("the single corner R1 low, R2 high gives 52.6 mV", abs(abs(diff_amp(10e3 * 0.99, 20e3 * 1.01, 10e3 * 1.01, 20e3 * 0.99, 2.0, 2.0)) * 1e3 - 52.6) < 0.05 or abs(abs(diff_amp(10e3 * 1.01, 20e3 * 0.99, 10e3 * 0.99, 20e3 * 1.01, 2.0, 2.0)) * 1e3 - 52.6) < 0.05)
 v.check("10-10.2a", brentq(lambda r: 1 + 100e3 / r - 10, 10, 1e7) / 1e3)
 v.check("10-10.2b", brentq(lambda r: 1 + 100e3 / r - 1000, 1, 1e6))
 up3, down3 = schmitt_thresholds(10e3, 330e3, 1.65, 3.3)
@@ -260,7 +282,8 @@ v.check("10-10.8b", q8)
 cf9 = brentq(lambda c: loop_q(1e6, 5, c, 50e6)[0] - 1 / math.sqrt(2), 1e-4, 100, xtol=1e-12)
 v.check("10-10.9a", cf9)
 v.check("10-10.9b", bw(1e6, 5, cf9, 50e6) / 1e6)
-v.check("10-10.9c", math.sqrt(2 * (5 + cf9) * 1e-12 / (2 * math.pi * 50e6 * 1e6)) * 1e12)
+v.check("10-10.9c", math.sqrt(2 * 5e-12 / (2 * math.pi * 50e6 * 1e6)) * 1e12)
+v.check("10-10.9d", 2 * math.pi * 50e6 * 1e6 * 5e-12)
 for key_r, key_db, f in (("10-10.10a", "10-10.10b", 60.0), ("10-10.10c", "10-10.10d", 50e3)):
     # mismatch as a complex ratio error: Z1 = R || C_stray on one input resistor
     zc = 1 / (2j * math.pi * f * 1e-12)
@@ -313,5 +336,39 @@ tg = np.linspace(0, 10e-6, 400001)
 yg = sol.sol(tg)[0]
 last = np.where(np.abs(yg - 1) > 0.01)[0][-1]
 v.check("Lab 10-10.i", tg[last + 1] * 1e6)
+
+
+# ------------------------------------------------------------------ relaxation oscillator: simulate the comparator and RC
+def relax_period(r, c, beta, vs=5.0, cycles=6):
+    """Event-driven integration of C dv/dt = (v_o - v)/R with v_o = +-vs flipping at +-beta*vs; returns the period."""
+    v_, vo, t_, flips = -beta * vs, vs, 0.0, []
+    for _ in range(2 * cycles):
+        target = beta * vs if vo > 0 else -beta * vs
+        sol = solve_ivp(lambda tt, y: [(vo - y[0]) / (r * c)], (0, 50 * r * c), [v_],
+                        events=lambda tt, y: y[0] - target, rtol=1e-11, atol=1e-14)
+        dt = sol.t_events[0][0]
+        t_ += dt
+        flips.append(t_)
+        v_, vo = target, -vo
+    return flips[-1] - flips[-3]
+
+
+v.check("Ex 10-10.8a", brentq(lambda r: relax_period(r, 10e-9, 0.5) - 1e-3, 1e3, 1e6, xtol=1e-6) / 1e3)
+f8 = 1 / relax_period(47e3, 10e-9, 0.5)
+v.check("Ex 10-10.8b", f8)
+v.check("Ex 10-10.8c", (f8 / 1e3 - 1) * 100)
+v.check("Ex 10-10.8d", 0.5 * 5.0)
+v.assert_true("the period does not depend on the supply", abs(relax_period(47e3, 10e-9, 0.5, vs=4.5) / relax_period(47e3, 10e-9, 0.5) - 1) < 1e-6)
+b13 = 10e3 / 30e3
+v.check("10-10.13a", b13)
+T13 = relax_period(10e3, 100e-9, b13)
+v.check("10-10.13b", T13 * 1e3)
+v.check("10-10.13c", 1 / T13)
+v.check("10-10.13d", b13 * 5.0)
+# peak detector droop
+v.check("10-10.14a", 200e-12 / 100e-9 * 1e3)
+v.check("10-10.14b", 1e-3 / (200e-12 / 100e-9))
+v.check("10-10.14c", 1.2e-9 / 100e-9 * 1e3)
+v.check("10-10.14d", 1e-3 / (1.2e-9 / 100e-9) * 1e3)
 
 v.finish()

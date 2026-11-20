@@ -38,6 +38,10 @@
 
 > **Conventions.** Op-amps are ideal unless a 10-09 limit is under study. Resistor tolerances ε are fractional (0.1% = 0.001). Data-sheet values are from the chapter's sources [1, 2] and 10-09's [R-182](../../../reference/research-log.md#r-182--op-amp-data-sheets).
 
+![Op-amp application circuits](../../../assets/figures/10-10/circuits.svg)
+
+*Figure 1. The six circuits of this chapter: (a) difference amplifier (§3.1); (b) superdiode and (c) improved two-diode inverting rectifier (§3.3); (d) non-inverting Schmitt trigger and (f) relaxation oscillator (§3.4); (e) photodiode transimpedance amplifier with its feedback capacitor (§3.5). Supplies are omitted.*
+
 ### 3.1 Common-mode rejection of a difference amplifier
 
 The difference amplifier of 06-10 §3.4 has resistors $R_1$, $R_2$ on the inverting side and $R_3$, $R_4$ on the non-inverting side, ideally with $R_2/R_1 = R_4/R_3 = K$. In general, superposition gives
@@ -83,40 +87,68 @@ a "lossy" integrator, accurate only well above $f_p$. More important in practice
 
 ### 3.3 Precision rectifiers
 
-A diode rectifier loses its forward drop (10-01), about 0.6 V: useless for millivolt signals. Placing the diode inside an op-amp's feedback loop divides the drop by the loop gain. In the **superdiode** (a follower with the diode between op-amp output and feedback node), the output follows positive inputs with an error of $V_D/A_0$, microvolts, and the diode disconnects the output for negative inputs. An improved inverting version adds a second diode that keeps the op-amp from saturating on the other half-cycle.
+A diode rectifier loses its forward drop (10-01), about 0.6 V: useless for millivolt signals. Placing the diode inside an op-amp's feedback loop divides the drop by the loop gain. In the **superdiode** (a follower with the diode between op-amp output and feedback node, Figure 1b), the output follows positive inputs with an error of $V_D/A_0$, microvolts, and the diode disconnects the output for negative inputs. The **improved (two-diode) inverting rectifier** (Figure 1c) adds a second diode that closes the loop on the other half-cycle, so the op-amp never leaves its linear range.
 
-**The slew-rate dead zone.** At each zero crossing the op-amp's output must jump by about two diode drops (from one diode conducting to the other), which takes
+**The dead zone depends on the topology.** At each zero crossing the op-amp's output must move before the output can follow the input again, and how far it must move is set by the circuit.
+
+- *Two-diode inverting rectifier.* The op-amp output only swings between about $-V_D$ and $+V_D$ (one diode or the other conducts), so the jump is two diode drops:
 
 $$
 \Delta t = \frac{2V_D}{\text{SR}} .
 $$
 
-During $\Delta t$ the output does not follow the input, so the rectifier misses roughly the input's change in that time, $2\pi fV_p\Delta t$ for a sine near its crossing. The error grows in proportion to frequency (Example 10-10.4), which is why precision rectifiers need fast op-amps even for audio-band signals.
+- *Superdiode.* On the negative half-cycle the diode is off, the loop is open, and the op-amp output saturates at its negative rail. At the next positive crossing it must first recover from saturation (the data sheet's overload-recovery time $t_{OR}$) and then slew from the rail up to $+V_D$:
+
+$$
+\Delta t \approx t_{OR} + \frac{V_{rail} + V_D}{\text{SR}} ,
+$$
+
+several times longer (Example 10-10.4).
+
+During $\Delta t$ the output does not follow the input, so the rectifier misses roughly the input's change in that time, $2\pi fV_p\Delta t$ for a sine near its crossing. The error grows in proportion to frequency, which is why precision rectifiers need fast op-amps even for audio-band signals, and why the two-diode circuit is preferred above a few kilohertz.
+
+**Full-wave rectification and peak detection.** Adding a summing stage that combines the input with twice the improved half-wave rectifier's output gives $v_o = \lvert v_{in}\rvert$, a precision full-wave (absolute-value) circuit used in AC measurement and envelope detection. A **peak detector** is a superdiode charging a capacitor $C$, followed by a buffer: the capacitor holds the largest input seen, and between peaks it droops at $I_{leak}/C$, where $I_{leak}$ is the sum of the buffer's bias current and the diode's and capacitor's leakage; a reset switch empties it (Problem 10-10.14).
 
 ### 3.4 Comparators and Schmitt triggers
 
 **Op-amp or comparator?** An op-amp without feedback switches, but it is designed to stay linear: its slew rate is limited by compensation, it recovers slowly from saturation, and its output stage is not specified for logic levels. A **comparator** is uncompensated, recovers quickly and drives logic directly, either push-pull or open-drain (which needs a pull-up resistor and allows wired-OR connections). The TLV3201, for example, specifies a propagation delay of 47 ns typical (50 ns maximum) for 20 mV of input overdrive at 5 V, with 40 µA quiescent current [2].
 
-**Chatter.** A slowly moving, noisy input crosses a single threshold many times, and the comparator output toggles each time (Figure 1a). **Hysteresis**, two thresholds separated by more than the noise, makes the output switch once.
+**Chatter.** A slowly moving, noisy input crosses a single threshold many times, and the comparator output toggles each time (Figure 2a). **Hysteresis**, two thresholds separated by more than the noise, makes the output switch once.
 
-**The non-inverting Schmitt trigger.** The input drives the + input through $R_1$, and $R_2$ feeds back from the output to the + input; the − input sits at $V_{ref}$. With output levels $0$ and $V_{DD}$, the + node is $v_{in}R_2/(R_1 + R_2) + v_oR_1/(R_1 + R_2)$, and the comparator switches when it crosses $V_{ref}$:
+**The non-inverting Schmitt trigger.** The input drives the + input through $R_1$, and $R_2$ feeds back from the output to the + input; the − input sits at $V_{ref}$. With output levels $0$ and $V_{DD}$, the + node is $v_{in}R_2/(R_1 + R_2) + v_oR_1/(R_1 + R_2)$, and the comparator switches when it crosses $V_{ref}$. Call the two switching points $V_U$ (upper, crossed by a rising input) and $V_L$ (lower, crossed by a falling input); $V_{TH}$ is reserved for transistor thresholds:
 
 $$
-V_{TH+} = V_{ref}\left(1 + \frac{R_1}{R_2}\right) \quad (v_o = 0), \qquad
-V_{TH-} = V_{ref}\left(1 + \frac{R_1}{R_2}\right) - V_{DD}\frac{R_1}{R_2} \quad (v_o = V_{DD}) ,
+V_U = V_{ref}\left(1 + \frac{R_1}{R_2}\right) \quad (v_o = 0), \qquad
+V_L = V_{ref}\left(1 + \frac{R_1}{R_2}\right) - V_{DD}\frac{R_1}{R_2} \quad (v_o = V_{DD}) ,
 $$
 
 so the hysteresis is
 
 $$
-\Delta V_H = V_{TH+} - V_{TH-} = V_{DD}\,\frac{R_1}{R_2} .
+\Delta V_H = V_U - V_L = V_{DD}\,\frac{R_1}{R_2} .
 $$
 
 Choose $\Delta V_H$ larger than the noise's peak-to-peak value (a few times its rms), and center the thresholds where the application needs them (Example 10-10.5).
 
-*Figure 1. A noisy ramp (10 mV rms) crossing 2.5 V. A plain comparator chatters through the crossing; the Schmitt trigger of Example 10-10.5, with thresholds at 2.45 and 2.55 V, switches once.*
+*Figure 2. A noisy ramp (10 mV rms) crossing 2.5 V. A plain comparator chatters through the crossing; the Schmitt trigger of Example 10-10.5, with thresholds at 2.45 and 2.55 V, switches once.*
 
 ![Schmitt trigger](../../../assets/figures/10-10/schmitt.svg)
+
+**The relaxation oscillator.** Turn the Schmitt trigger into a clock by feeding its own output back through an RC. Use the inverting form on symmetric supplies: the output, at $\pm V_s$, drives a divider that puts $\beta v_o$ on the + input, with $\beta = R_1/(R_1 + R_2)$, and charges a capacitor $C$ through $R$; the capacitor voltage drives the − input. With the output at $+V_s$, $v_C$ rises from $-\beta V_s$ toward $+V_s$,
+
+$$
+v_C(t) = V_s - (1 + \beta)V_se^{-t/RC} ,
+$$
+
+and the output flips when $v_C$ reaches $+\beta V_s$, at $e^{-t/RC} = (1 - \beta)/(1 + \beta)$. The second half-cycle is the mirror image, so the period is
+
+$$
+T = 2RC\ln\frac{1 + \beta}{1 - \beta} .
+$$
+
+The supply voltage cancels: the frequency depends only on $R$, $C$ and a resistor ratio. With $R_1 = R_2$ ($\beta$ = 1/2), $T = 2RC\ln3 \approx 2.197RC$ (Example 10-10.8). Such oscillators clock low-power timers and sensor interfaces where a crystal's accuracy is not needed.
+
+> **Math refresher — when does an exponential approach cross a level?** A first-order RC heading from $v(0)$ toward a final value $V_\infty$ follows $v(t) = V_\infty + \bigl(v(0) - V_\infty\bigr)e^{-t/\tau}$ ([07-02](../../07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md)). To find when it reaches a level $V_x$, isolate the exponential and take the natural logarithm of both sides: $e^{-t/\tau} = (V_x - V_\infty)/(v(0) - V_\infty)$, so $t = \tau\ln\bigl[(v(0) - V_\infty)/(V_x - V_\infty)\bigr]$. Only the ratio of the distance to the target at the start to the distance at the crossing matters. Here $v(0) = -\beta V_s$, $V_\infty = V_s$ and $V_x = \beta V_s$, so the ratio is $(1 + \beta)V_s/[(1 - \beta)V_s]$ and the supply cancels: scaling every voltage scales both distances alike. Units: the logarithm is of a ratio of volts, so it is dimensionless, and $t$ has the units of τ, seconds.
 
 ### 3.5 The photodiode transimpedance amplifier
 
@@ -140,13 +172,13 @@ $$
 \omega_0 = \sqrt{\frac{\omega_t}{R_F(C_{in} + C_F)}}, \qquad \frac{1}{Q} = \frac{1 + \omega_tR_FC_F}{\omega_0R_F(C_{in} + C_F)} .
 $$
 
-**Without $C_F$**, $Q = \sqrt{\omega_tR_FC_{in}}$, usually far above 1: the response peaks sharply near $\omega_0$ and the circuit may oscillate once higher op-amp poles add phase (Figure 2). **With $C_F$**, the zero it adds to β damps the loop; setting $Q = 1/\sqrt2$ gives a maximally flat closed loop. Solving the expression above for $C_F$ (Example 10-10.7) gives, when $\omega_tR_FC_F \gg 1$, the familiar approximation (an implicit one, since $C_F$ appears on both sides; in practice $C_F \ll C_{in}$)
+**Without $C_F$**, $Q = \sqrt{\omega_tR_FC_{in}}$, usually far above 1: the response peaks sharply near $\omega_0$ and the circuit may oscillate once higher op-amp poles add phase (Figure 3). **With $C_F$**, the zero it adds to β damps the loop; setting $Q = 1/\sqrt2$ gives a maximally flat closed loop. Setting $1/Q^2 = 2$ and substituting $\omega_0^2 = \omega_t/[R_F(C_{in} + C_F)]$ gives $(1 + \omega_tR_FC_F)^2 = 2\omega_tR_F(C_{in} + C_F)$. With $x = \omega_tR_FC_F$ and $a = \omega_tR_FC_{in}$ this is $(1 + x)^2 = 2a + 2x$, so $x^2 = 2a - 1$, an exact closed form:
 
 $$
-C_F \approx \sqrt{\frac{2(C_{in} + C_F)}{\omega_tR_F}} ,
+C_F = \frac{\sqrt{2\omega_tR_FC_{in} - 1}}{\omega_tR_F} \approx \sqrt{\frac{2C_{in}}{\omega_tR_F}} ,
 $$
 
-and the bandwidth is of order $\omega_0/2\pi = \sqrt{\text{GBW}/(2\pi R_F C_{in})}$: the geometric mean of the op-amp's GBW and the input RC corner.
+where the familiar approximation on the right drops the 1, valid when $\omega_tR_FC_{in} \gg 1$ (Example 10-10.7). With $C_F$ chosen this way, the bandwidth is of order $\omega_0/2\pi = \sqrt{\text{GBW}/(2\pi R_F C_{in})}$: the geometric mean of the op-amp's GBW and the input RC corner.
 
 **The whole transimpedance.** Multiplying $Z_F$ by $A\beta/(1 + A\beta)$, the $1 + sR_FC_F$ factors cancel and
 
@@ -156,7 +188,9 @@ $$
 
 a pure second-order low-pass with exactly the loop's poles. With $Q = 1/\sqrt2$ it is a Butterworth response, flat to its −3 dB frequency $f_0$. Larger $R_F$ gives more gain (and less noise, 12-10) but less bandwidth; larger photodiodes collect more light but add capacitance.
 
-*Figure 2. Transimpedance of Example 10-10.7 ($R_F$ = 100 kΩ, $C_{in}$ = 14 pF, GBW = 10 MHz). Without $C_F$ the response peaks by a factor of 9.4 near 1 MHz; with $C_F$ = 2.105 pF it is a Butterworth response with its −3 dB point at 0.994 MHz.*
+> **Going deeper — the same result read off a Bode plot.** Designers often judge this loop by drawing the op-amp's open-loop gain $\lvert A\rvert$ and the **noise gain** $1/\lvert\beta\rvert$ on one log–log plot. The loop gain $\lvert A\beta\rvert$ is the vertical distance between the two curves, so it crosses 1 where they meet ([12-06](../../12-electronics-2/chapters/12-06-stability-and-compensation.md) develops this). Here $1/\beta = [1 + sR_F(C_{in} + C_F)]/(1 + sR_FC_F)$ is flat at 1 at low frequency and rises at +20 dB/decade above $1/[2\pi R_F(C_{in} + C_F)]$. Meanwhile $\lvert A\rvert$ falls at −20 dB/decade. **Without $C_F$** the curves meet with slopes that differ by 40 dB/decade. There the loop's phase lag approaches 180°: 90° from the op-amp's integrator and nearly 90° more from the pole of β. Almost no phase margin is left, which is the high $Q$ found above. **With $C_F$**, $1/\beta$ levels off at $(C_{in} + C_F)/C_F$ above $1/(2\pi R_FC_F)$, so the curves meet with a closure of only about 20 dB/decade, and the zero that $C_F$ adds to β returns most of the lost phase. "Make the noise gain flat where it meets the open-loop gain" is the graphical form of the algebra above. It extends to op-amps with more poles, where the closed-form $Q$ no longer exists.
+
+*Figure 3. Transimpedance of Example 10-10.7 ($R_F$ = 100 kΩ, $C_{in}$ = 14 pF, GBW = 10 MHz). Without $C_F$ the response peaks by a factor of 9.4 near 1 MHz; with $C_F$ = 2.105 pF it is a Butterworth response with its −3 dB point at 0.994 MHz.*
 
 ![Transimpedance amplifier](../../../assets/figures/10-10/tia.svg)
 
@@ -172,19 +206,19 @@ a pure second-order low-pass with exactly the loop's poles. With $Q = 1/\sqrt2$ 
 
 ### Example 10-10.2 · An integrated instrumentation amplifier (tier B)
 
-**Setup.** An INA333 ($G = 1 + 100\text{ kΩ}/R_G$; offset referred to input ±25 ± 75/G µV max; offset drift ±0.1 ± 0.5/G µV/°C typical [1]) amplifies a bridge with 2 mV/V sensitivity excited by 3.3 V. (a) Find the exact $R_G$ for $G$ = 100, and the gain with the nearest E96 value, 1.01 kΩ, and its error. (b) Find the maximum input-referred offset and its value at the output. (c) Find the typical offset drift. (d) Find the full-scale input and output.
+**Setup.** An INA333 ($G = 1 + 100\text{ kΩ}/R_G$; offset referred to input ±25 ± 75/G µV max; offset drift ±0.1 ± 0.5/G µV/°C maximum [1]) amplifies a bridge with 2 mV/V sensitivity excited by 3.3 V. (a) Find the exact $R_G$ for $G$ = 100, the gain and its error with the nearest E192 (0.1% series) value, 1.01 kΩ, and with the neighboring E96 (1%) values, 1.00 kΩ and 1.02 kΩ. (b) Find the maximum input-referred offset and its value at the output. (c) Find the maximum offset drift. (d) Find the full-scale input and output.
 
 **Solution.**
 
-(a) $R_G = 100\text{ kΩ}/99$ = **1.0101** kΩ; with 1.01 kΩ, $G$ = **100.0099**, an error of **0.0099**%, far below the part's gain-error specification.
+(a) $R_G = 100\text{ kΩ}/99$ = **1.0101** kΩ; with 1.01 kΩ, $G$ = **100.0099**, an error of **0.0099**%, negligible, although the resistor's own 0.1% tolerance and the part's ±0.25% maximum gain error remain. With E96 values, 1.00 kΩ gives $G$ = **101** (**+1.00**%) and 1.02 kΩ gives **99.04** (**−0.96**%), each about four times the part's gain-error specification: at this gain, the 1% series is too coarse.
 
 (b) $25 + 75/100$ = **25.75** µV, or **2.575** mV at the output.
 
-(c) $0.1 + 0.5/100$ = **0.105** µV/°C.
+(c) $0.1 + 0.5/100$ = **0.105** µV/°C, a guaranteed maximum.
 
 (d) $2\text{ mV/V} \times 3.3\text{ V}$ = **6.6** mV in, **660** mV out.
 
-**Sanity check.** The worst-case offset is 0.4% of full scale; a two-point calibration removes it, and the drift adds about 0.16% over 100 °C.
+**Sanity check.** The worst-case offset is 0.4% of full scale; a two-point calibration removes it, and the drift adds at most 0.16% over 100 °C.
 
 ### Example 10-10.3 · An integrator that drifts (tier B)
 
@@ -202,15 +236,15 @@ a pure second-order low-pass with exactly the loop's poles. With $Q = 1/\sqrt2$ 
 
 ### Example 10-10.4 · The precision rectifier's dead zone (tier B)
 
-**Setup.** A precision half-wave rectifier uses a TLV9062 (SR = 6.5 V/µs, $A_0$ = 130 dB [R-182]) with diodes dropping 0.6 V. (a) Find the DC error of the superdiode. (b) Find the dead time at each zero crossing. (c) For a 1 V peak sine, estimate the missed voltage at 10 kHz and 100 kHz.
+**Setup.** A precision half-wave rectifier uses a TLV9062 on ±2.5 V (SR = 6.5 V/µs, $A_{OL}$ = 130 dB typical and 104 dB minimum, overload recovery 0.2 µs [R-182]) with diodes dropping 0.6 V. (a) Find the DC error of the superdiode with the typical and the guaranteed gain. (b) Find the dead time at each zero crossing for the two-diode inverting rectifier and for the superdiode. (c) For a 1 V peak sine, estimate the missed voltage at 10 kHz and 100 kHz for the two-diode circuit, and at 10 kHz for the superdiode.
 
 **Solution.**
 
-(a) $0.6\text{ V}/10^{130/20}$ = **0.190** µV.
+(a) $0.6\text{ V}/10^{130/20}$ = **0.190** µV typical; with the guaranteed 104 dB, **3.79** µV.
 
-(b) $2 \times 0.6/6.5$ = **0.185** µs.
+(b) Two-diode rectifier: $2 \times 0.6/6.5$ = **0.185** µs. Superdiode: $0.2 + (2.5 + 0.6)/6.5$ = **0.677** µs, 3.7 times longer, because the op-amp starts from its negative rail and must first recover from saturation.
 
-(c) $2\pi fV_p\Delta t$: **11.6** mV at 10 kHz and **116** mV at 100 kHz.
+(c) $2\pi fV_p\Delta t$: **11.6** mV at 10 kHz and **116** mV at 100 kHz for the two-diode circuit; **42.5** mV at 10 kHz for the superdiode.
 
 **Sanity check.** The diode drop is gone (0.19 µV instead of 600 mV), but the slew rate reintroduces an error that rises with frequency; at 100 kHz the rectifier misses more than a tenth of a 1 V signal's peak near every crossing.
 
@@ -222,11 +256,11 @@ a pure second-order low-pass with exactly the loop's poles. With $Q = 1/\sqrt2$ 
 
 (a) $\Delta V_H = V_{DD}R_1/R_2$ = 0.1 V gives $R_1$ = **2** kΩ.
 
-(b) $V_{TH+} = 2.5(1 + 0.02)$ = **2.55** V; $V_{TH-}$ = 2.55 − 0.1 = **2.45** V, centered on 2.5 V because $V_{ref} = V_{DD}/2$.
+(b) $V_U = 2.5(1 + 0.02)$ = **2.55** V; $V_L$ = 2.55 − 0.1 = **2.45** V, centered on 2.5 V because $V_{ref} = V_{DD}/2$.
 
 (c) The internal 1.2 mV hysteresis is far below the noise; it prevents oscillation during the transition but cannot stop chatter. The 3 mV offset shifts both thresholds by up to 3 mV, small against the 100 mV window.
 
-**Sanity check.** 100 mV of hysteresis is more than three times the 30 mV of noise, so the output switches once (Figure 1).
+**Sanity check.** 100 mV of hysteresis is more than three times the 30 mV of noise, so the output switches once (Figure 2).
 
 ### Example 10-10.6 · Op-amp against comparator (tier A)
 
@@ -242,15 +276,33 @@ a pure second-order low-pass with exactly the loop's poles. With $Q = 1/\sqrt2$ 
 
 **Solution.**
 
-(a) $f_0 = \sqrt{\text{GBW}/(2\pi R_FC_{in})}$ = **1.066** MHz; $Q = \sqrt{\omega_tR_FC_{in}}$ = **9.38**; the transimpedance peaks at **9.39** times $R_F$ (about 19.5 dB).
+(a) $f_0 = \sqrt{\text{GBW}/(2\pi R_FC_{in})}$ = **1.066** MHz; $Q = \sqrt{\omega_tR_FC_{in}}$ = **9.38**; a second-order low-pass peaks at $Q/\sqrt{1 - 1/(4Q^2)}$ times its DC value, so the transimpedance peaks at **9.39** times $R_F$ (about 19.5 dB).
 
-(b) Solving $Q(C_F) = 1/\sqrt2$: $C_F$ = **2.105** pF, with $f_0$ = **0.994** MHz. The approximation gives **2.26** pF: 7.6% high, because $\omega_tR_FC_F$ ≈ 13 is not much greater than 1.
+(b) With $a = \omega_tR_FC_{in}$ = **87.96**, the closed form of §3.5 gives $C_F = \sqrt{2a - 1}/(\omega_tR_F)$ = **2.105** pF, with $f_0$ = **0.994** MHz. The approximation $\sqrt{2C_{in}/(\omega_tR_F)}$ gives **2.111** pF, only **0.3**% high, because $2a$ = 176 is large against 1.
 
 (c) The transimpedance is the Butterworth low-pass of §3.5, so its −3 dB bandwidth is $f_0$ = **0.994** MHz (confirmed numerically from $Z_F\,A\beta/(1 + A\beta)$).
 
 (d) $1\ \mu\text{A} \times 100\text{ kΩ}$ = **0.1** V.
 
 **Sanity check.** A 10 MHz op-amp gives under 1 MHz of flat bandwidth at 100 kΩ: the input capacitance, not the op-amp alone, sets the speed. A faster receiver needs a smaller $R_F$, a smaller photodiode or a faster op-amp, and its bandwidth grows only as the square root of GBW.
+
+### Example 10-10.8 · A relaxation oscillator (tier B)
+
+**Setup.** A comparator on ±5 V with $R_1 = R_2$ and $C$ = 10 nF forms the relaxation oscillator of §3.4. (a) Find $R$ for 1 kHz. (b) With the nearest E12 value, 47 kΩ, find the frequency and its error. (c) Find the capacitor's voltage swing. (d) What happens to the frequency if the supply falls to ±4.5 V?
+
+**Solution.**
+
+(a) $T = 2RC\ln 3$ = 1 ms gives $R = 10^{-3}/(2 \times 10\text{ nF} \times 1.0986)$ = **45.51** kΩ.
+
+(b) With 47 kΩ, $f = 1/(2 \times 47\text{ kΩ} \times 10\text{ nF} \times \ln 3)$ = **968.3** Hz, **−3.17**%.
+
+(c) $v_C$ swings between $\pm\beta V_s$ = **±2.5** V.
+
+(d) Nothing, to first order: both the thresholds and the charging target scale with the supply, so it cancels from $T$. (Real comparators add a propagation delay per transition, 47 ns for the TLV3201 [2], which shortens or lengthens each half-period slightly.)
+
+**Units check.** $RC$ is Ω·F = s; the logarithm is dimensionless.
+
+**Sanity check.** About 2.2 time constants per period: each half-cycle the capacitor covers the middle third of its charging curve's way from $-2.5$ V toward +5 V.
 
 ### Answer key
 
@@ -275,7 +327,11 @@ a pure second-order low-pass with exactly the loop's poles. With $Q = 1/\sqrt2$ 
 | Ex 10-10.2c | gain error | 0.0099 | % |
 | Ex 10-10.2d | maximum offset, input-referred | 25.75 | µV |
 | Ex 10-10.2e | at the output | 2.575 | mV |
-| Ex 10-10.2f | typical drift | 0.105 | µV/°C |
+| Ex 10-10.2f | maximum drift | 0.105 | µV/°C |
+| Ex 10-10.2i | gain with 1.00 kΩ | 101 | — |
+| Ex 10-10.2j | error with 1.00 kΩ | 1.00 | % |
+| Ex 10-10.2k | gain with 1.02 kΩ | 99.04 | — |
+| Ex 10-10.2l | error with 1.02 kΩ | -0.96 | % |
 | Ex 10-10.2g | full-scale input | 6.6 | mV |
 | Ex 10-10.2h | full-scale output | 660 | mV |
 | Ex 10-10.3a | lowest integrating frequency | 0.0159 | Hz |
@@ -285,9 +341,12 @@ a pure second-order low-pass with exactly the loop's poles. With $Q = 1/\sqrt2$ 
 | Ex 10-10.3e | output offset with leak | 101 | mV |
 | Ex 10-10.3f | corner with leak | 15.9 | Hz |
 | Ex 10-10.4a | DC error | 0.190 | µV |
-| Ex 10-10.4b | dead time | 0.185 | µs |
+| Ex 10-10.4b | two-diode dead time | 0.185 | µs |
 | Ex 10-10.4c | missed voltage at 10 kHz | 11.6 | mV |
 | Ex 10-10.4d | missed voltage at 100 kHz | 116 | mV |
+| Ex 10-10.4e | DC error with the guaranteed gain | 3.79 | µV |
+| Ex 10-10.4f | superdiode dead time | 0.677 | µs |
+| Ex 10-10.4g | superdiode missed voltage at 10 kHz | 42.5 | mV |
 | Ex 10-10.5a | R_1 | 2 | kΩ |
 | Ex 10-10.5b | upper threshold | 2.55 | V |
 | Ex 10-10.5c | lower threshold | 2.45 | V |
@@ -299,22 +358,30 @@ a pure second-order low-pass with exactly the loop's poles. With $Q = 1/\sqrt2$ 
 | Ex 10-10.7c | peak transimpedance / R_F | 9.39 | — |
 | Ex 10-10.7d | C_F | 2.105 | pF |
 | Ex 10-10.7e | f_0 with C_F | 0.994 | MHz |
-| Ex 10-10.7f | approximate C_F | 2.26 | pF |
+| Ex 10-10.7f | approximate C_F | 2.111 | pF |
+| Ex 10-10.7i | ω_t R_F C_in | 87.96 | — |
+| Ex 10-10.7j | approximation error | 0.3 | % |
 | Ex 10-10.7g | -3 dB bandwidth | 0.994 | MHz |
 | Ex 10-10.7h | output for 1 µA | 0.1 | V |
+| T 10-10.f | TLV3201 power at 2.7 V | 108 | µW |
+| T 10-10.g | TLV3201 power at 5.5 V | 220 | µW |
+| Ex 10-10.8a | R for 1 kHz | 45.51 | kΩ |
+| Ex 10-10.8b | frequency with 47 kΩ | 968.3 | Hz |
+| Ex 10-10.8c | frequency error | -3.17 | % |
+| Ex 10-10.8d | capacitor swing | 2.5 | V |
 
-*Every value is recomputed by [verify_10_10.py](../verify/verify_10_10.py): the difference amplifier's common-mode gain by solving its nodal equations with worst-case resistor sets, the integrator and transimpedance amplifier from their complex loop equations (peaks, corners and $C_F$ by root finding), the rectifier's dead time by simulating a slew-limited output, and the Schmitt thresholds by sweeping the comparator's input in both directions. The lab's ngspice netlist confirms Examples 10-10.1 and 10-10.7.*
+*Every value is recomputed by [verify_10_10.py](../verify/verify_10_10.py): the difference amplifier's common-mode gain by solving its nodal equations with worst-case resistor sets, the integrator and transimpedance amplifier from their complex loop equations (peaks, corners and $C_F$ by root finding), the Schmitt thresholds by sweeping the comparator's input in both directions, and the oscillator's period by simulating its capacitor from switching point to switching point. The data-sheet arithmetic of Example 10-10.2 and the rectifier's dead times (swing divided by slew rate, plus overload recovery) are restatements of the formulas above, checked for arithmetic only. The lab's two ngspice netlists confirm Examples 10-10.1, 10-10.3, 10-10.5, 10-10.7 and 10-10.8 with behavioral op-amps and comparators.*
 
 ## 5. Simulate it
 
-The lab, [labs/10-10-lab](../labs/10-10-lab/README.md), has a notebook and an ngspice netlist:
+The lab, [labs/10-10-lab](../labs/10-10-lab/README.md), has a notebook and two ngspice netlists:
 
 1. Runs a Monte Carlo of difference-amplifier CMRR with 0.1% resistors and compares the distribution with the worst case.
 2. Simulates a precision rectifier with a slew-limited op-amp at 1 kHz, 10 kHz and 100 kHz and measures the average-value error.
 3. Sweeps the hysteresis of a Schmitt trigger against noise and counts output transitions.
 4. Plots the TIA's response against $C_F$ and finds the value that minimizes settling time.
 
-The netlist (`applications.cir`) checks the worst-case difference-amplifier CMRR and the TIA's peaking and bandwidth with a single-pole op-amp model.
+The first netlist (`applications.cir`) checks the worst-case difference-amplifier CMRR and the TIA's peaking and bandwidth with a single-pole op-amp model. The second (`applications_more.cir`) builds the drifting and leaky integrators of Example 10-10.3, the Schmitt trigger of Example 10-10.5 (a slow triangle finds both switching points) and the relaxation oscillator of Example 10-10.8 from behavioral comparators.
 
 **Guided exercise (predict, then run).** **Before running Part 1**, predict: for a unity-gain difference amplifier with 0.1% resistors whose errors are uniformly distributed, what fraction of units reach only the 54 dB worst case, and what is the median CMRR? Then run it. (Almost none come near the worst case, which needs all four resistors at opposite extremes; the median is near 68 dB, about five times better.)
 
@@ -358,14 +425,14 @@ The netlist (`applications.cir`) checks the worst-case difference-amplifier CMRR
 ### State of the art (as of Nov 2026)
 
 - **Integrated, trimmed instrumentation amplifiers are standard for bridges and biopotentials.** The INA333, a zero-drift, 50 µA (typical) part operating from 1.8 V, guarantees 100 dB CMRR at gains of 10 and above and sets its gain with one resistor [1] **[Established]** (data sheet).
-- **Fast comparators run on microwatts.** The TLV3201 specifies 47 ns typical propagation delay at 40 µA quiescent current [2] **[Established]**.
+- **Fast comparators run on a few hundred microwatts.** The TLV3201 specifies 47 ns typical propagation delay at 40 µA quiescent current [2], about **108**–**220** µW over its 2.7–5.5 V supply range **[Established]**.
 - **TIA design is an optics-plus-electronics trade.** Receivers for optical links and sensing choose photodiode size, $R_F$ and op-amp (or a dedicated TIA chip) together, because input capacitance couples them (§3.5) **[Established]** (textbook design practice).
 
 ### Why it matters commercially
 
-- **Sensor interfaces are where analog content meets volume.** Wearables (optical heart-rate sensing uses photodiode TIAs; biopotential sensing uses instrumentation amplifiers), industrial weigh scales and automotive current sensing all sit on these circuits.
-- **Integration absorbs these functions.** Many "analog front-end" chips integrate the INA, filters, comparators and ADC; the evaluation of such a product starts with the circuit-level limits in this chapter.
-- **Mismatch is money.** Laser trimming and calibration cost test time; designs that need less of them (by architecture, as in the INA's first-stage gain) cost less to produce.
+- **Sensor interfaces are where analog content meets volume** **[Industry estimate]**. Wearables (optical heart-rate sensing uses photodiode TIAs; biopotential sensing uses instrumentation amplifiers), industrial weigh scales and automotive current sensing all sit on these circuits.
+- **Integration absorbs these functions** **[Established]** (vendors' analog-front-end product lines, such as the ECG front end of 11-01 §9). Many "analog front-end" chips integrate the INA, filters, comparators and ADC; the evaluation of such a product starts with the circuit-level limits in this chapter.
+- **Mismatch is money** **[Industry estimate]**. Laser trimming and calibration cost test time; designs that need less of them (by architecture, as in the INA's first-stage gain) cost less to produce.
 
 ### Marketing vs Reality
 
@@ -449,6 +516,7 @@ By about √2: the natural frequency is $\sqrt{\text{GBW}/(2\pi R_FC_{in})}$.
 - A. S. Sedra and K. C. Smith, *Microelectronic Circuits*, ch. 2 (instrumentation amplifier, integrator) and ch. 18 (precision rectifiers, Schmitt triggers).
 - S. Franco, *Design with Operational Amplifiers and Analog Integrated Circuits*, ch. 2 (instrumentation amplifiers), ch. 9 (comparators and Schmitt triggers).
 - The INA333 [1] and TLV3201 [2] data sheets, application sections.
+- *Video:* MIT OpenCourseWare 6.002, *Circuits and Electronics* (Spring 2007, A. Agarwal), the closing operational-amplifier lectures: op-amp circuits (integrators, differentiators) and op-amps with positive feedback (comparators with hysteresis and oscillators).
 
 ## 14. Sources
 

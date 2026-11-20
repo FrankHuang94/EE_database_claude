@@ -242,4 +242,21 @@ v.check("T 10-09.n", 16 / 1.1)                                   # e_n at 1 kHz,
 v.check("Ex 10-09.3h", 27e6 / (2 * math.pi * 1.0) / 1e6)          # SR / (2 pi V_p) with V_p = 1 V
 v.check("Ex 10-09.5h", 2e-3 / 15e-6)                              # TLV9062 2 mV against OPA333 15 uV
 
+# Problem 13: inverting amplifier with finite A and R_o, solved as a nodal system (unknowns v_minus, v_out)
+def inv_amp(vi, a, ro, r1=10e3, r2=100e3, vx=None):
+    # op-amp internal source -a*v_minus behind ro; returns (v_out, test current) for a drive vi or an output test vx
+    if vx is None:
+        M = np.array([[1 / r1 + 1 / r2, -1 / r2], [a / ro - 1 / r2, 1 / r2 + 1 / ro]])
+        b = np.array([vi / r1, 0.0])
+        vm, vo = np.linalg.solve(M, b)
+        return vo, None
+    vm = vx * r1 / (r1 + r2)
+    ix = (vx - (-a * vm)) / ro + vx / (r1 + r2)
+    return vx, ix
+
+
+v.check("10-09.13a", inv_amp(1.0, 1e5, 1e-9)[0])
+_, ix13 = inv_amp(0.0, 1e5, 100.0, vx=1.0)
+v.check("10-09.13b", 1 / ix13 * 1e3)
+
 v.finish()

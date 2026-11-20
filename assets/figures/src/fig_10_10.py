@@ -15,6 +15,8 @@ import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import schemdraw
+import schemdraw.elements as elm
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -79,6 +81,137 @@ def fig_tia():
     save(fig, f"{OUT}/tia.svg")
 
 
+def fig_circuits():
+    """Schematics of the chapter's circuits (schemdraw): difference amplifier, superdiode, two-diode inverting
+    rectifier, non-inverting Schmitt trigger, transimpedance amplifier and relaxation oscillator."""
+    schemdraw.config(fontsize=11, bgcolor="white")
+    d = schemdraw.Drawing(show=False)
+
+    def title(x, y, text):
+        d.add(elm.Label().at((x, y)).label(text, fontsize=12))
+
+    # (a) difference amplifier
+    x, y = 2.5, 10.0
+    title(x + 1.0, y + 3.0, "(a) difference amplifier")
+    op = d.add(elm.Opamp(leads=True).right().at((x, y)))
+    d.add(elm.Line().at(op.in1).left().length(0.5))
+    n1 = d.add(elm.Dot())
+    d.add(elm.Resistor().left().length(2.0).label("$R_1$"))
+    d.add(elm.Dot(open=True).label("$v_1$", loc="left"))
+    d.add(elm.Line().at(n1.center).up().length(1.5))
+    d.add(elm.Resistor().right().tox(op.out[0] + 0.5).label("$R_2 = KR_1$"))
+    d.add(elm.Line().down().toy(op.out[1]))
+    d.add(elm.Line().at(op.out).right().length(0.5))
+    d.add(elm.Dot(open=True).label("$v_o$", loc="right"))
+    d.add(elm.Line().at(op.in2).left().length(0.5))
+    n2 = d.add(elm.Dot())
+    d.add(elm.Resistor().left().length(2.0).label("$R_3$", loc="bottom"))
+    d.add(elm.Dot(open=True).label("$v_2$", loc="left"))
+    d.add(elm.Resistor().at(n2.center).down().length(1.6).label("$R_4 = KR_3$", loc="bottom"))
+    d.add(elm.Ground())
+
+    # (b) superdiode: v_in into +, the diode inside the loop, feedback from v_o to -
+    x, y = 12.0, 10.0
+    title(x + 1.0, y + 3.0, "(b) superdiode")
+    op = d.add(elm.Opamp(leads=True).right().at((x, y)))
+    d.add(elm.Line().at(op.in2).left().length(1.2))
+    d.add(elm.Dot(open=True).label("$v_{in}$", loc="left"))
+    d.add(elm.Diode().at(op.out).right().length(1.6))
+    no = d.add(elm.Dot())
+    d.add(elm.Line().right().length(0.8))
+    d.add(elm.Dot(open=True).label("$v_o$", loc="right"))
+    d.add(elm.Resistor().at(no.center).down().length(1.6).label("$R_L$", loc="bottom"))
+    d.add(elm.Ground())
+    d.add(elm.Line().at(op.in1).left().length(0.5))
+    d.add(elm.Line().up().length(1.2))
+    d.add(elm.Line().right().tox(no.center[0]))
+    d.add(elm.Line().down().toy(no.center[1]))
+
+    # (c) two-diode inverting rectifier
+    x, y = 21.5, 10.0
+    title(x + 1.0, y + 3.5, "(c) two-diode inverting rectifier")
+    op = d.add(elm.Opamp(leads=True).right().at((x, y)))
+    d.add(elm.Line().at(op.in1).left().length(0.5))
+    nn = d.add(elm.Dot())
+    d.add(elm.Resistor().left().length(2.0).label("$R$"))
+    d.add(elm.Dot(open=True).label("$v_{in}$", loc="left"))
+    d.add(elm.Line().at(op.in2).left().length(0.5))
+    d.add(elm.Ground())
+    d.add(elm.Line().at(op.out).right().length(0.4))
+    na = d.add(elm.Dot())
+    d.add(elm.Diode().right().length(1.4).label("$D_2$", loc="bottom"))
+    nv = d.add(elm.Dot())
+    d.add(elm.Line().right().length(0.6))
+    d.add(elm.Dot(open=True).label("$v_o$", loc="right"))
+    d.add(elm.Line().at(nn.center).up().length(1.2))
+    d.add(elm.Diode().right().tox(na.center[0]).label("$D_1$"))
+    d.add(elm.Line().down().toy(na.center[1]))
+    d.add(elm.Line().at((nn.center[0], nn.center[1] + 1.2)).up().length(1.0))
+    d.add(elm.Resistor().right().tox(nv.center[0]).label("$R_F$"))
+    d.add(elm.Line().down().toy(nv.center[1]))
+
+    # (d) non-inverting Schmitt trigger
+    x, y = 2.5, 2.5
+    title(x + 1.0, y + 3.0, "(d) non-inverting Schmitt trigger")
+    op = d.add(elm.Opamp(leads=True).right().at((x, y)))
+    d.add(elm.Line().at(op.in1).left().length(1.2))
+    d.add(elm.Dot(open=True).label("$V_{ref}$", loc="left"))
+    d.add(elm.Line().at(op.in2).left().length(0.5))
+    npl = d.add(elm.Dot())
+    d.add(elm.Resistor().left().length(2.0).label("$R_1$"))
+    d.add(elm.Dot(open=True).label("$v_{in}$", loc="left"))
+    d.add(elm.Line().at(npl.center).down().length(1.4))
+    d.add(elm.Resistor().right().tox(op.out[0] + 0.5).label("$R_2$", loc="bottom"))
+    d.add(elm.Line().up().toy(op.out[1]))
+    d.add(elm.Line().at(op.out).right().length(0.5))
+    d.add(elm.Dot(open=True).label("$v_o$ (0 or $V_{DD}$)", loc="right"))
+
+    # (e) transimpedance amplifier
+    x, y = 12.5, 2.5
+    title(x + 1.0, y + 3.8, "(e) photodiode TIA")
+    op = d.add(elm.Opamp(leads=True).right().at((x, y)))
+    d.add(elm.Line().at(op.in1).left().length(0.8))
+    nt = d.add(elm.Dot())
+    d.add(elm.Photodiode().down().length(1.6).reverse().label("$C_{in}$", loc="bottom"))
+    d.add(elm.Ground())
+    d.add(elm.Line().at(op.in2).left().length(0.5))
+    d.add(elm.Ground())
+    d.add(elm.Line().at(nt.center).up().length(1.2))
+    d.add(elm.Resistor().right().tox(op.out[0] + 0.5).label("$R_F$"))
+    d.add(elm.Line().down().toy(op.out[1]))
+    d.add(elm.Line().at((nt.center[0], nt.center[1] + 1.2)).up().length(1.2))
+    d.add(elm.Capacitor().right().tox(op.out[0] + 0.5).label("$C_F$"))
+    d.add(elm.Line().down().length(1.2))
+    d.add(elm.Line().at(op.out).right().length(1.0))
+    d.add(elm.Dot(open=True).label("$v_o$", loc="right"))
+
+    # (f) relaxation oscillator
+    x, y = 22.0, 2.5
+    title(x + 1.0, y + 3.0, "(f) relaxation oscillator")
+    op = d.add(elm.Opamp(leads=True).right().at((x, y)))
+    d.add(elm.Line().at(op.in1).left().length(2.4))
+    nc = d.add(elm.Dot())
+    d.add(elm.Capacitor().down().length(1.6).label("$C$", loc="bottom"))
+    d.add(elm.Ground())
+    d.add(elm.Line().at(nc.center).up().length(1.4))
+    d.add(elm.Resistor().right().tox(op.out[0] + 0.6).label("$R$"))
+    d.add(elm.Line().down().toy(op.out[1]))
+    d.add(elm.Line().at(op.out).right().length(0.6))
+    nout = d.add(elm.Dot())
+    d.add(elm.Line().right().length(0.6))
+    d.add(elm.Dot(open=True).label("$v_o = \\pm V_s$", loc="right"))
+    d.add(elm.Line().at(op.in2).left().length(0.6))
+    npp = d.add(elm.Dot())
+    d.add(elm.Line().left().length(1.0))
+    d.add(elm.Resistor().down().length(1.4).label("$R_1$", loc="bottom"))
+    d.add(elm.Ground())
+    d.add(elm.Line().at(nout.center).down().length(2.3))
+    d.add(elm.Resistor().left().tox(npp.center[0]).label("$R_2$", loc="bottom"))
+    d.add(elm.Line().up().toy(npp.center[1]))
+    d.save(str(ROOT / OUT / "circuits.svg"))
+
+
 if __name__ == "__main__":
+    fig_circuits()
     fig_schmitt()
     fig_tia()

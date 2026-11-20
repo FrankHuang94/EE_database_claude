@@ -14,12 +14,13 @@ Difference-amplifier CMRR (§3.1), precision rectifiers (§3.3), Schmitt trigger
 
 - [10-10-applications.ipynb](10-10-applications.ipynb): the notebook (Parts 1–4).
 - [applications.cir](applications.cir): ngspice checks of Example 10-10.1(a) and Example 10-10.7.
+- [applications_more.cir](applications_more.cir): ngspice checks of Examples 10-10.3 (integrator offset, leak and corners), 10-10.5 (Schmitt thresholds) and 10-10.8 (oscillator frequency and swing).
 
 ## Procedure
 
 1. **CMRR Monte Carlo (Part 1, the chapter's guided exercise).** *Predict first:* the median CMRR of a unity-gain difference amplifier with 0.1% resistors whose errors are uniform within tolerance. Then sample 20,000 amplifiers.
-2. **Rectifier error against frequency (Part 2).** Model a precision half-wave rectifier whose output stays at zero for a dead time $2V_D/\text{SR}$ after each rising zero crossing (Example 10-10.4) and compute the error of the output's average value at 1, 10 and 100 kHz.
-3. **Hysteresis against noise (Part 3).** Count output transitions for the noisy ramp of Figure 1 with 0, 20, 50 and 100 mV of hysteresis.
+2. **Rectifier error against frequency (Part 2).** Model the improved two-diode inverting rectifier (chapter Figure 1c), whose output stays at zero for a dead time $2V_D/\text{SR}$ after each zero crossing into its conducting half-cycle (Example 10-10.4) and compute the error of the output's average value at 1, 10 and 100 kHz.
+3. **Hysteresis against noise (Part 3).** Count output transitions for the noisy ramp of the chapter's Figure 2 with 0, 20, 50 and 100 mV of hysteresis.
 4. **TIA step response (Part 4).** Simulate the step response of Example 10-10.7's TIA for several $C_F$ and measure 1% settling time.
 5. **ngspice.** Run `python tools/run_spice.py 10-10`.
 
@@ -48,13 +49,13 @@ Difference-amplifier CMRR (§3.1), precision rectifiers (§3.3), Schmitt trigger
 ## Discussion questions
 
 1. Why is the worst-case CMRR (54 dB) almost never observed in Part 1?
-2. In Part 2, why does the rectifier's average error grow with the square of frequency when Example 10-10.4's missed voltage grows only linearly?
+2. In Part 2, why does the rectifier's average error grow with the square of frequency when Example 10-10.4's missed voltage grows only linearly? How would a superdiode's error compare?
 3. In Part 4, a slightly larger $C_F$ than the Butterworth value settles faster to 1%. Why, and why might a designer still choose the Butterworth value?
 
 ### Answers
 
 1. The worst case needs all four resistors at opposite ends of their tolerance at once; with independent errors, the sum $\delta_2 - \delta_1$ of four errors is usually much smaller than $4\varepsilon$ (03-04: sums of independent errors grow as the square root of their number, not linearly).
-2. The missed part of each cycle is the area under the sine during the dead time, $\int_0^{\Delta t}V_p\sin\omega t\,dt \approx V_p\omega\Delta t^2/2$: the height grows with frequency and so does the fraction of the period the dead time occupies, giving $f^2$ overall.
+2. The missed part of each cycle is the area under the sine during the dead time, $\int_0^{\Delta t}V_p\sin\omega t\,dt \approx V_p\omega\Delta t^2/2$: the height grows with frequency and so does the fraction of the period the dead time occupies, giving $f^2$ overall. A superdiode's dead time adds overload recovery and a slew from the negative rail (§3.3), about $t_{OR} + (V_{rail} + V_D)/\text{SR}$, several times $2V_D/\text{SR}$ in Example 10-10.4, and the error scales with the square of the dead time, so it is many times larger at every frequency.
 3. A 1% settling specification rewards a response whose overshoot just stays inside the 1% band; a lower Q gives that. The Butterworth response is maximally flat in frequency, which matters for a receiver that must pass a band of frequencies evenly; settling and flatness are different specifications.
 
 ## Optional hardware extension

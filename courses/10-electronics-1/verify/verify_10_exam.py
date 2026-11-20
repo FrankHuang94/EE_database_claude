@@ -295,4 +295,8 @@ v.check("X10.14a", itot * 1e6)
 v.check("X10.14b", itot / 2 * 1e6)
 v.check("X10.14c", (itot / 2) / (1.3 * VT) * 1e6)
 
+v.check("X10.12h", 2 * math.pi * 20e6 * 200e3 * 10e-12)
+v.assert_true("closed form C_F matches 0.891 pF", abs(math.sqrt(2 * 2 * math.pi * 20e6 * 200e3 * 10e-12 - 1) / (2 * math.pi * 20e6 * 200e3) * 1e12 - 0.891) < 5e-4)
+v.check("X10.14d", 3.5 / math.sqrt(1000))
+
 v.finish()

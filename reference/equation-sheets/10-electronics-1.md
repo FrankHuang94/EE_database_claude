@@ -59,9 +59,9 @@ Conventions and course values:
 | Common gate | $(g_m + g_{mb} + 1/r_o)(R_D \parallel r_o)$ | $(r_o + R_D)/[1 + (g_m + g_{mb})r_o]$ | $R_D \parallel [r_o(1 + (g_m + g_{mb})R_{sig}) + R_{sig}]$ | [10-06](../../courses/10-electronics-1/chapters/10-06-mos-single-stage-amplifiers.md) |
 | Source follower | $g_mR_{eq}/(1 + g_mR_{eq})$, $R_{eq} = R_S \parallel r_o \parallel 1/g_{mb}$; ≤ $1/(1 + \chi)$ | ∞ | $1/(g_m + g_{mb}) \parallel r_o \parallel R_S$ | [10-06](../../courses/10-electronics-1/chapters/10-06-mos-single-stage-amplifiers.md) |
 | Common emitter | $-g_m(R_C \parallel r_o)$; $\lvert A\rvert = V_{RC}/V_T$ without $r_o$ | $r_\pi$ | $R_C \parallel r_o$ | [10-07](../../courses/10-electronics-1/chapters/10-07-bjt-single-stage-amplifiers.md) |
-| CE + $R_E$ | $-\alpha R_C/(r_e + R_E)$ | $(\beta + 1)(r_e + R_E)$ | $R_C \parallel \{r_o[1 + g_mR_E'r_\pi/(r_\pi + R_{sig})] + R_E'\}$, $R_E' = R_E \parallel (r_\pi + R_{sig})$; ≤ $(\beta + 1)r_o + r_\pi$ | [10-07](../../courses/10-electronics-1/chapters/10-07-bjt-single-stage-amplifiers.md) |
+| CE + $R_E$ | $-\alpha R_C/(r_e + R_E)$ | $(\beta + 1)(r_e + R_E)$ | $R_C \parallel \{r_o[1 + g_mR_{E\pi}r_\pi/(r_\pi + R_{sig})] + R_{E\pi}\}$, $R_{E\pi} = R_E \parallel (r_\pi + R_{sig})$; ≤ $(\beta + 1)r_o + r_\pi$ | [10-07](../../courses/10-electronics-1/chapters/10-07-bjt-single-stage-amplifiers.md) |
 | Common base | $g_mR_C$ | $r_e$ (+ $R_B/(\beta + 1)$) | $R_C \parallel$ (degenerated, large) | [10-07](../../courses/10-electronics-1/chapters/10-07-bjt-single-stage-amplifiers.md) |
-| Emitter follower | $(\beta + 1)R_E'/[R_{sig} + r_\pi + (\beta + 1)R_E']$ | $r_\pi + (\beta + 1)R_E'$ | $R_E \parallel (r_\pi + R_{sig})/(\beta + 1)$ | [10-07](../../courses/10-electronics-1/chapters/10-07-bjt-single-stage-amplifiers.md) |
+| Emitter follower ($R_E' = R_E \parallel R_L$) | $(\beta + 1)R_E'/[R_{sig} + r_\pi + (\beta + 1)R_E']$ | $r_\pi + (\beta + 1)R_E'$ | $R_E \parallel (r_\pi + R_{sig})/(\beta + 1)$ | [10-07](../../courses/10-electronics-1/chapters/10-07-bjt-single-stage-amplifiers.md) |
 
 Cascode: $R_{out} \approx g_mr_o^2$, gain with an ideal current-source load about $(g_mr_o)^2$ ([10-06](../../courses/10-electronics-1/chapters/10-06-mos-single-stage-amplifiers.md)).
 
@@ -73,7 +73,8 @@ Cascode: $R_{out} \approx g_mr_o^2$, gain with an ideal current-source load abou
 | BJT mirror $I_{out} = I_{ref}(1 + V_{CE2}/V_A)/(1 + V_{CE1}/V_A + 2/\beta)$; β helper: $2/[\beta(\beta + 1)]$ | Base current $I_Se^{V_{BE}/V_T}/\beta$ | [10-08](../../courses/10-electronics-1/chapters/10-08-current-sources-and-mirrors.md) |
 | Cascode mirror $R_{out} \approx g_mr_o^2$; compliance $V_{TN} + 2V_{ov}$ (or $2V_{ov}$, low-voltage) | | [10-08](../../courses/10-electronics-1/chapters/10-08-current-sources-and-mirrors.md) |
 | Wilson: error $2/(\beta^2 + 2\beta + 2)$, $R_{out} \approx \beta r_o/2$ | Bipolar | [10-08](../../courses/10-electronics-1/chapters/10-08-current-sources-and-mirrors.md) |
-| Mismatch $\sigma(\Delta V_{TH}) = A_{VT}/\sqrt{WL}$; mirror $\sigma(\Delta I/I) = (2/V_{ov})\sigma(\Delta V_{TH})$ | Pelgrom; closely spaced devices | [10-08](../../courses/10-electronics-1/chapters/10-08-current-sources-and-mirrors.md) |
+| Widlar: $V_T\ln(I_{ref}/I_{out}) = I_{out}R_E$; $R_{out} \approx r_o[1 + g_m(R_E \parallel r_\pi)]$ | Base currents neglected | [10-08](../../courses/10-electronics-1/chapters/10-08-current-sources-and-mirrors.md) |
+| Mismatch $\sigma(\Delta V_{TH}) = A_{VT}/\sqrt{WL}$, $\sigma(\Delta\beta_n/\beta_n) = A_\beta/\sqrt{WL}$; mirror $\sigma^2(\Delta I/I) = (2/V_{ov})^2\sigma^2(\Delta V_{TH}) + \sigma^2(\Delta\beta_n/\beta_n)$ | Pelgrom; closely spaced devices | [10-08](../../courses/10-electronics-1/chapters/10-08-current-sources-and-mirrors.md) |
 | Resistor reference supply sensitivity $\partial I/\partial V_{DD} = 1/(R + 1/g_m)$ | | [10-08](../../courses/10-electronics-1/chapters/10-08-current-sources-and-mirrors.md) |
 
 ## Real op-amps and applications
@@ -83,9 +84,10 @@ Cascode: $R_{out} \approx g_mr_o^2$, gain with an ideal current-source load abou
 | $A_f = A/(1 + A\beta)$; gain error ≈ noise gain/$A$ | Noise gain $1/\beta = 1 + R_2/R_1$ | [10-09](../../courses/10-electronics-1/chapters/10-09-real-op-amps-nonidealities.md) |
 | $f_{-3dB}$ = GBW/noise gain; 1% and 0.1% magnitude limits at 0.14 and 0.045 of $f_{-3dB}$ | Single pole | [10-09](../../courses/10-electronics-1/chapters/10-09-real-op-amps-nonidealities.md) |
 | Slew boundary $\text{SR}\cdot\tau$, $\tau = 1/(2\pi f_{-3dB})$; full-power bandwidth $\text{SR}/(2\pi V_p)$ | | [10-09](../../courses/10-electronics-1/chapters/10-09-real-op-amps-nonidealities.md) |
-| Input-referred errors: $V_{OS}$ + drift × ΔT; $\Delta V_{CM}$/CMRR; $\Delta V_S$/PSRR; $I_BR$ (or $I_{OS}R$ with compensation) | Superpose; worst case or RSS | [10-09](../../courses/10-electronics-1/chapters/10-09-real-op-amps-nonidealities.md) |
+| Input-referred errors: $V_{OS}$ + drift × ΔT; $\Delta V_{CM}$/CMRR; $\Delta V_S$/PSRR; $I_BR_2$ for an inverting or non-inverting stage with feedback resistor $R_2$ (or $I_{OS}R_2$ with a compensating resistor $R_1 \parallel R_2$) | Superpose; worst case or RSS | [10-09](../../courses/10-electronics-1/chapters/10-09-real-op-amps-nonidealities.md) |
 | Difference-amp CMRR $\ge (1 + K)/(4\varepsilon)$; INA multiplies by its first-stage gain | Resistor tolerance ε | [10-10](../../courses/10-electronics-1/chapters/10-10-op-amp-application-circuits.md) |
 | Lossy integrator corner $1/(2\pi RCA_0)$; offset ramp $V_{OS}/RC$ | | [10-10](../../courses/10-electronics-1/chapters/10-10-op-amp-application-circuits.md) |
-| Precision-rectifier dead time $2V_D/\text{SR}$ | | [10-10](../../courses/10-electronics-1/chapters/10-10-op-amp-application-circuits.md) |
-| Non-inverting Schmitt: $V_{TH+} = V_{ref}(1 + R_1/R_2)$, hysteresis $V_{DD}R_1/R_2$ | Rail-to-rail output | [10-10](../../courses/10-electronics-1/chapters/10-10-op-amp-application-circuits.md) |
-| TIA: $v_o/i = -R_F\omega_t/[R_F(C_{in} + C_F)s^2 + (1 + \omega_tR_FC_F)s + \omega_t]$; $f_0 = \sqrt{\text{GBW}/2\pi R_FC_{in}}$; $Q = \sqrt{\omega_tR_FC_{in}}$ without $C_F$ | Single-pole op-amp | [10-10](../../courses/10-electronics-1/chapters/10-10-op-amp-application-circuits.md) |
+| Precision-rectifier dead time: two-diode inverting $2V_D/\text{SR}$; superdiode $t_{OR} + (V_{rail} + V_D)/\text{SR}$ | The superdiode saturates on the off half-cycle | [10-10](../../courses/10-electronics-1/chapters/10-10-op-amp-application-circuits.md) |
+| Non-inverting Schmitt: $V_U = V_{ref}(1 + R_1/R_2)$, hysteresis $V_{DD}R_1/R_2$ | Rail-to-rail output | [10-10](../../courses/10-electronics-1/chapters/10-10-op-amp-application-circuits.md) |
+| Relaxation oscillator: $T = 2RC\ln[(1 + \beta)/(1 - \beta)]$, $\beta = R_1/(R_1 + R_2)$ | Symmetric output swing | [10-10](../../courses/10-electronics-1/chapters/10-10-op-amp-application-circuits.md) |
+| TIA: $v_o/i = -R_F\omega_t/[R_F(C_{in} + C_F)s^2 + (1 + \omega_tR_FC_F)s + \omega_t]$; without $C_F$: $f_0 = \sqrt{\text{GBW}/(2\pi R_FC_{in})}$, $Q = \sqrt{\omega_tR_FC_{in}}$; Butterworth ($Q = 1/\sqrt2$): $C_F = \sqrt{2\omega_tR_FC_{in} - 1}/(\omega_tR_F) \approx \sqrt{2C_{in}/(\omega_tR_F)}$ | Single-pole op-amp | [10-10](../../courses/10-electronics-1/chapters/10-10-op-amp-application-circuits.md) |

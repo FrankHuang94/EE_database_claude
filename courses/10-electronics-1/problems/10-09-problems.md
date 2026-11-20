@@ -59,13 +59,17 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Rail-to-rail input on 1.8 V.** A TLV9062 follower runs on 1.8 V. Up to what input voltage does it stay in its high-CMRR region, and what fraction of the supply is that? Suggest a configuration that keeps the inputs in that region for a full-range signal.
 
+### Problem 10-09.13 [C]
+
+**Finite gain, derived.** An inverting amplifier has $R_1$ (input) and $R_2$ (feedback) around an op-amp with finite open-loop gain $A$, infinite input resistance and an open-loop output resistance $R_o$. (a) With $R_o$ = 0, derive $v_o/v_i = -(R_2/R_1)/[1 + (1 + R_2/R_1)/A]$ by writing KCL at the inverting input with $v_- = -v_o/A$. (b) With the input grounded, derive the closed-loop output resistance $R_{out} = R_o/(1 + A\beta)$, $\beta = R_1/(R_1 + R_2)$, assuming $R_o \ll R_1 + R_2$. (c) Evaluate both for $R_1$ = 10 kΩ, $R_2$ = 100 kΩ, $A = 10^5$ and $R_o$ = 100 Ω.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 10-09) | Problems |
 |---|---|
-| 1. Finite gain and noise gain | 1, 4 |
+| 1. Finite gain and noise gain | 1, 4, 13 |
 | 2. Bandwidth and in-band error | 1, 4, 10 |
 | 3. Slew rate and full-power bandwidth | 3, 5, 10 |
 | 4. DC error budget | 2, 6, 7, 8, 11 |

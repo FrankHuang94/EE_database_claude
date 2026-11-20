@@ -33,7 +33,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 10-10.6 [B]
 
-**A slow precision rectifier.** A precision rectifier uses an op-amp with SR = 0.5 V/µs and diodes dropping 0.7 V. Find the dead time and the missed voltage for a 1 V peak sine at 1 kHz and 20 kHz.
+**A slow precision rectifier.** A two-diode inverting precision rectifier (§3.3) uses an op-amp with SR = 0.5 V/µs and diodes dropping 0.7 V. Find the dead time and the missed voltage for a 1 V peak sine at 1 kHz and 20 kHz.
 
 ### Problem 10-10.7 [B]
 
@@ -45,7 +45,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 10-10.9 [C]
 
-**Compensating it.** For Problem 10-10.8's TIA: (a) find $C_F$ for $Q = 1/\sqrt2$ by solving the loop equation; (b) find $f_0$, and the transimpedance's −3 dB bandwidth; (c) compare with the approximation $\sqrt{2(C_{in} + C_F)/(\omega_tR_F)}$.
+**Compensating it.** For Problem 10-10.8's TIA: (a) find $C_F$ for $Q = 1/\sqrt2$ by solving the loop equation; (b) find $f_0$, and the transimpedance's −3 dB bandwidth; (c) compare with the approximation $\sqrt{2C_{in}/(\omega_tR_F)}$, and explain why it is so close here.
 
 ### Problem 10-10.10 [C]
 
@@ -59,6 +59,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Timing error from delay.** A comparator with 47 ns propagation delay detects the zero crossings of a 1 MHz sine. Find the phase error, and explain how to reduce it without a faster comparator.
 
+### Problem 10-10.13 [B]
+
+**A slower clock.** A relaxation oscillator (§3.4) on ±5 V has $R$ = 10 kΩ, $C$ = 100 nF, $R_1$ = 10 kΩ and $R_2$ = 20 kΩ. (a) Find β, the period and the frequency. (b) Find the capacitor's voltage swing. (c) Which resistor would you trim to adjust the frequency without changing the swing?
+
+### Problem 10-10.14 [B]
+
+**A peak detector that droops.** A superdiode charges a 100 nF hold capacitor, buffered by an OPA333 (bias current 200 pA maximum [R-182]). (a) Find the droop rate due to the buffer's bias current. (b) How long does a 1 V peak stay within 0.1%? (c) If the diode and capacitor add 1 nA of leakage, repeat (a) and (b). (d) What two changes would extend the hold time?
+
 ---
 
 ## Objective coverage
@@ -67,6 +75,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Difference and instrumentation amplifier CMRR | 1, 2, 10, 11 |
 | 2. Integrator with offset and leak | 5 |
-| 3. Precision rectifier and slew rate | 6 |
-| 4. Schmitt triggers and comparators | 3, 4, 7, 12 |
+| 3. Precision rectifier, peak detector and slew rate | 6, 14 |
+| 4. Schmitt triggers, comparators and oscillators | 3, 4, 7, 12, 13 |
 | 5. Transimpedance amplifier stability | 8, 9 |

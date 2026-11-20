@@ -70,6 +70,20 @@ Problems: [10-09 problems](../problems/10-09-problems.md) · Chapter: [10-09](..
 
 $(V+) - 1.4\text{ V}$ = **0.4** V, only **22.2**% of the supply. An inverting configuration holds both inputs at a fixed reference voltage, but it also inverts and level-shifts: at a gain of −1 about $V_{ref}$, $v_o = 2V_{ref} - v_{in}$. With $V_{ref}$ = 0.2 V, inside the high-CMRR region, an output from 0 to 1.8 V needs an input from **−1.4** V to 0.4 V, which a single-supply source cannot provide; serving a 0 to 1.8 V input at unity gain would put the reference at **0.9** V, outside the region. The practical answers are an op-amp whose input has no crossover region (a zero-crossover design), or an inverting stage whose gain and reference are chosen together with the source's range.
 
+### Solution 10-09.13
+
+(a) The + input is grounded, so $v_o = A(0 - v_-)$ and $v_- = -v_o/A$. No current enters the op-amp, so the current in $R_1$ continues through $R_2$: $(v_i - v_-)/R_1 = (v_- - v_o)/R_2$. Substituting $v_- = -v_o/A$ and multiplying by $R_2$: $(R_2/R_1)(v_i + v_o/A) = -v_o/A - v_o$, so
+
+$$
+\frac{v_o}{v_i} = -\frac{R_2/R_1}{1 + \dfrac{1 + R_2/R_1}{A}} ,
+$$
+
+the ideal gain divided by $1 + (\text{noise gain})/A$, as §3.1 states.
+
+(b) Ground $v_i$, drive the output with a test voltage $v_x$ and find the current $i_x$ it delivers. The divider gives $v_- = \beta v_x$, so the op-amp's internal source is $-A\beta v_x$, and the current through $R_o$ into the output node is $(-A\beta v_x - v_x)/R_o$. The test source must supply the opposite of that, plus the small current into $R_1 + R_2$: $i_x = v_x(1 + A\beta)/R_o + v_x/(R_1 + R_2)$. With $R_o \ll R_1 + R_2$ the second term is negligible and $R_{out} = R_o/(1 + A\beta)$: feedback divides the output resistance by one plus the loop gain.
+
+(c) Noise gain 11: $v_o/v_i = -10/(1 + 11/10^5)$ = **−9.99890**. $\beta = 1/11$, $A\beta$ = 9091, and $R_{out} = 100/9092$ = **11.0** mΩ.
+
 ---
 
 ## Answer key
@@ -122,3 +136,5 @@ $(V+) - 1.4\text{ V}$ = **0.4** V, only **22.2**% of the supply. An inverting co
 | 10-09.12b | fraction of the supply | 22.2 | % |
 | 10-09.12c | lowest input needed with V_ref = 0.2 V | -1.4 | V |
 | 10-09.12d | reference for a 0 to 1.8 V input | 0.9 | V |
+| 10-09.13a | closed-loop gain | -9.99890 | — |
+| 10-09.13b | closed-loop output resistance | 11.0 | mΩ |
