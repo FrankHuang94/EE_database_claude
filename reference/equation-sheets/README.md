@@ -18,3 +18,6 @@ One sheet per course: the equations you should be able to write from memory (or 
 | 11 · Signals and Systems | [11-signals-and-systems.md](11-signals-and-systems.md) |
 | 12 · Electronics II | [12-electronics-2.md](12-electronics-2.md) |
 | 13 · Electromagnetics | [13-electromagnetics.md](13-electromagnetics.md) |
+| 14 · Computer Organization and Architecture | [14-computer-organization-and-architecture.md](14-computer-organization-and-architecture.md) |
+| 15 · Control Systems | [15-control-systems.md](15-control-systems.md) |
+| 16 · Digital Signal Processing | [16-digital-signal-processing.md](16-digital-signal-processing.md) |
