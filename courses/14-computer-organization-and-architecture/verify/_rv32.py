@@ -3,7 +3,7 @@
 - `tool(name)`: locate an LLVM tool (llvm-mc, ld.lld, clang, ...) on PATH, in /usr/lib/llvm-*/bin or in Homebrew.
 - `build(...)`: assemble/compile sources with LLVM, link them with ld.lld at a fixed address, and return the
   linked ELF's loadable image and symbol table (parsed here from the ELF file itself).
-- `Sim`: an RV32I instruction-set simulator written from the specification's instruction descriptions. It
+- `Sim`: an RV32IM instruction-set simulator written from the specification's instruction descriptions. It
   counts instructions, records the lowest stack pointer, counts calls per target, and stops on EBREAK/ECALL.
 """
 from __future__ import annotations
@@ -70,8 +70,9 @@ _start:
 
 
 def build(sources: dict[str, str], relax: bool = True, opt: str = "-O2", text: int = 0x10000,
-          keep: Path | None = None) -> tuple[dict[int, int], dict[str, int], int, int]:
-    """Build {filename: source} (.s assembled by llvm-mc, .c compiled by clang) for RV32I/ILP32 and link.
+          keep: Path | None = None, m: bool = False) -> tuple[dict[int, int], dict[str, int], int, int]:
+    """Build {filename: source} (.s assembled by llvm-mc, .c compiled by clang) for RV32I (RV32IM if `m`)
+    with the ILP32 ABI, and link.
 
     Returns (memory, symbols, entry, text_size_bytes)."""
     mc, clang, lld, size = tool("llvm-mc"), tool("clang"), tool("ld.lld"), tool("llvm-size")
@@ -79,14 +80,14 @@ def build(sources: dict[str, str], relax: bool = True, opt: str = "-O2", text: i
         td = Path(keep) if keep else Path(td)
         td.mkdir(parents=True, exist_ok=True)
         objs = []
-        attr = "-c," + ("+relax" if relax else "-relax")
+        attr = "-c," + ("+relax" if relax else "-relax") + (",+m" if m else "")
         for name, src in sources.items():
             (td / name).write_text(src)
             obj = td / (name + ".o")
             if name.endswith(".s"):
                 subprocess.run([mc, "-triple=riscv32", f"-mattr={attr}", "-filetype=obj", str(td / name), "-o", str(obj)], check=True)
             else:
-                subprocess.run([clang, "--target=riscv32", "-march=rv32i", "-mabi=ilp32", opt, "-ffreestanding", "-nostdlib",
+                subprocess.run([clang, "--target=riscv32", "-march=rv32im" if m else "-march=rv32i", "-mabi=ilp32", opt, "-ffreestanding", "-nostdlib",
                                 "-fno-builtin", "-fno-pic", "-mrelax" if relax else "-mno-relax", "-c", str(td / name), "-o", str(obj)], check=True)
             objs.append(str(obj))
         elf = td / "prog.elf"
@@ -152,6 +153,20 @@ class Sim:
             elif op == 0x23:  # stores
                 addr = (a + sx((w >> 25) << 5 | rd, 12)) & M32
                 self.store(addr, b, {0: 1, 1: 2, 2: 4}[f3])
+            elif op == 0x33 and f7 == 1:  # M extension
+                sa, sb = s(a), s(b)
+                if f3 == 0:
+                    res = a * b
+                elif f3 in (1, 2, 3):  # MULH, MULHSU, MULHU: upper 32 bits of the 64-bit product
+                    res = ({1: sa * sb, 2: sa * b, 3: a * b}[f3] >> 32) & M32
+                elif f3 == 4:  # DIV: round toward zero; /0 -> all ones; overflow -> dividend
+                    res = M32 if b == 0 else (a if (sa == -2**31 and sb == -1) else int(abs(sa) // abs(sb)) * (1 if (sa < 0) == (sb < 0) else -1))
+                elif f3 == 5:  # DIVU
+                    res = M32 if b == 0 else a // b
+                elif f3 == 6:  # REM: sign of the dividend; /0 -> dividend; overflow -> 0
+                    res = a if b == 0 else (0 if (sa == -2**31 and sb == -1) else (abs(sa) % abs(sb)) * (1 if sa >= 0 else -1))
+                else:  # REMU
+                    res = a if b == 0 else a % b
             elif op in (0x13, 0x33):  # OP-IMM, OP
                 y = sx(w >> 20, 12) & M32 if op == 0x13 else b
                 sh = y & 31
@@ -177,13 +192,13 @@ class Sim:
 
 
 def run_function(sources: dict[str, str], call: str, args: list[int] = (), relax: bool = True, opt: str = "-O2",
-                 data: dict[int, int] | None = None):
+                 data: dict[int, int] | None = None, m: bool = False):
     """Link the sources with a start-up stub that calls `call(args...)`, run it, and return a result dict:
     value (a0 as signed), count (instructions executed inside the call, excluding the stub), max stack depth
     in bytes below the initial sp, calls per symbol, text size and symbols."""
     body = "\n".join(f"    li   a{i}, {v}" for i, v in enumerate(args)) + f"\n    call {call}"
     srcs = {"start.s": START.format(body=body), **sources}
-    mem, syms, entry, tsize = build(srcs, relax=relax, opt=opt)
+    mem, syms, entry, tsize = build(srcs, relax=relax, opt=opt, m=m)
     if data:
         mem.update(data)
     sim = Sim(mem, entry)

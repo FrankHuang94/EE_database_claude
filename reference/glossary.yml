@@ -5392,3 +5392,38 @@
 - term: Structure padding
   definition: Unused bytes a compiler inserts between or after structure members so that each member sits at a multiple of its alignment; member order changes how much padding is needed.
   chapter: "14-03"
+# ---------------------------------------------------------------- 14-04
+- term: Wraparound
+  definition: The behaviour of fixed-width integer arithmetic, which keeps only the low n bits of a result, so that results wrap modulo 2^n (the largest 32-bit value plus 1 becomes the smallest).
+  chapter: "14-04"
+- term: Multiply-high
+  definition: An instruction that returns the upper half of a double-width product (RISC-V MULH, MULHU, MULHSU); used for full-width products and for dividing by constants.
+  chapter: "14-04"
+- term: Unit in the last place (ulp)
+  definition: The gap between a floating-point number and the next representable number of the same binade; for FP32 values in [1, 2) it is 2⁻²³.
+  chapter: "14-04"
+  see_also: [Unit roundoff]
+- term: Round to nearest, ties to even
+  definition: IEEE 754's default rounding rule — round to the nearer representable number, and on an exact tie to the one whose last bit is 0 — which avoids the systematic drift of always rounding halves up (banker's rounding).
+  chapter: "14-04"
+- term: Guard, round and sticky bits
+  definition: The three bits a floating-point adder keeps below the significand when aligning operands — the first two shifted-out bits plus an OR of all the rest — which suffice for correct rounding.
+  chapter: "14-04"
+- term: Fused multiply-add (FMA)
+  definition: An operation that computes a × b + c with a single rounding, more accurate than a separate multiply and add and the building block of dot products.
+  chapter: "14-04"
+- term: Pairwise summation
+  definition: Adding numbers in a balanced binary tree, so that each value passes through about log₂ n roundings instead of up to n; the shape of parallel reductions.
+  chapter: "14-04"
+  see_also: [Kahan summation]
+- term: Kahan summation
+  definition: Compensated summation that carries each addition's rounding error forward in a correction variable, giving an error bound independent of the number of terms at four operations per element.
+  chapter: "14-04"
+  see_also: [Pairwise summation]
+- term: Quantization (neural networks)
+  definition: Representing a model's weights or activations in a narrow format (INT8, FP8, FP4) with scale factors, x ≈ s(q − z), to cut memory, bandwidth and arithmetic cost at some loss of accuracy.
+  chapter: "14-04"
+  see_also: [Block floating point, Requantization]
+- term: Requantization
+  definition: Converting a wide integer accumulator result back to a narrow format by multiplying by the combined scale factors (usually a fixed-point multiply and shift) and rounding.
+  chapter: "14-04"
