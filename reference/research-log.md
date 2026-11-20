@@ -228,6 +228,9 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-220 | NVIDIA H100 (Hopper) specifications | Nov 2026 |
 | R-221 | NVIDIA Blackwell systems (GB200 NVL72, DGX B200) | Nov 2026 |
 | R-222 | Google TPU v4 and later TPUs | Nov 2026 |
+| R-223 | SPEC CPU 2017 and SPEC CPU 2026 | Nov 2026 |
+| R-224 | MLPerf divisions and scenarios | Nov 2026 |
+| R-225 | Geekbench 6 scoring and Geekbench 7 | Nov 2026 |
 
 ---
 
@@ -2276,3 +2279,24 @@ R&D % = R&D ÷ revenue.
 - **Derived:** 2 × 4 × 128 × 128 MACs × 2 FLOP × 1.05 GHz = 275.25 TFLOPS, matching the paper's 275.
 - **Later generations** (Google Cloud TPU documentation, per chip): v5p 459 TFLOPS BF16, 95 GiB HBM at 2765 GB/s, pods of 8960 chips; v6e (Trillium) 918 TFLOPS BF16, 32 GiB at 1638 GB/s, pods of 256; TPU7x (Ironwood) 2307 TFLOPS BF16 and 4614 FP8, 192 GiB HBM at 7380 GB/s, two TensorCores (built as two chiplets, each with one TensorCore, two SparseCores and 96 GiB HBM), pods of 9216 chips. [v6e](https://cloud.google.com/tpu/docs/v6e) · [TPU7x](https://cloud.google.com/tpu/docs/tpu7x)
 - **Caution (not used):** the v6e page's statement of two 256 × 256 MXUs per TensorCore would imply a clock near 3.5 GHz at 918 TFLOPS, which is implausible; Google states no v6e clock there. No derivation in this curriculum uses that MXU count.
+
+## R-223 · SPEC CPU 2017 and SPEC CPU 2026
+
+*Read on 20 Nov 2026 by this session's fact-finding pass from spec.org (primary); tagged [Established].*
+
+- **CPU 2017:** 43 benchmarks in four suites (SPECspeed 2017 Integer and Floating Point: time for one copy; SPECrate 2017 Integer and Floating Point: throughput of N concurrent copies). A benchmark's ratio is the reference machine's time over the system under test's time (multiplied by the number of copies for SPECrate); the overall metric is the geometric mean of the ratios; with three runs the median is used. Worked examples from the overview: "The reference machine ran 600.perlbench_s in 1775 seconds. … 1775/354.329738 = 5.009458"; "8*(1592/541.52471) = 23.518776". Base and peak: "The base metrics (such as SPECspeed2017_int_base) require that all modules of a given language in a suite must be compiled using the same flags, in the same order. All reported results must include the base metric. The optional peak metrics … allow greater flexibility. Different compiler options may be used for each benchmark, and feedback-directed optimization is allowed." [Overview](https://www.spec.org/cpu2017/Docs/overview.html)
+- **Retirement and successor:** "With the release of SPEC CPU 2026, SPEC has retired SPEC CPU 2017 as of November 17, 2026." SPEC CPU 2026 was released on 5 May 2026; it "Includes 52 benchmarks, up from 43, with more than two times the lines of source code", from 38 applications; it keeps the SPECspeed/SPECrate and base/peak structure; SPECspeed Integer now has explicit parallelism and its memory requirement rose from 16 GB to 64 GB. [CPU 2017 page](https://www.spec.org/cpu2017/) · [Press release, 5 May 2026](https://www.spec.org/pressreleases/2026/20260505-spec-releases-cpu-2026-benchmark-suite/) · [CPU 2026 overview](https://www.spec.org/cpu2026/Docs/overview.html)
+
+## R-224 · MLPerf divisions and scenarios
+
+*Read on 20 Nov 2026 by this session's fact-finding pass from MLCommons' rules on GitHub (primary; inference rules at commit d3eba2f, training rules at commit 14bc89f). The rules change every round; cite the commit and date.*
+
+- **Inference:** "The Closed division requires using pre-processing, post-processing, and model that is equivalent to the reference or alternative implementation. The closed division allows calibration for quantization and does not allow any retraining." "The Open division allows using arbitrary pre- or post-processing and model, including retraining. The qualified name 'MLPerf Open' must be used when referring to an Open Division suite result". Scenarios: single stream (90th-percentile latency), multistream (99th-percentile latency), server/interactive (Poisson arrivals; maximum throughput under a latency bound) and offline (throughput). [Inference rules](https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc)
+- **Training:** "The Closed division requires using the same preprocessing, model, training method, and quality target as the reference implementation"; the Open division allows arbitrary data, preprocessing, model or method. The current closed-division table (labelled v6.1) lists FLUX.1, GPT_OSS_20B, Llama31_8b, Llama2_70B_LoRA, deepseekv3_671b, Qwen3.5-397B-A17B and dlrm_v4_hstu. [Training rules](https://github.com/mlcommons/training_policies/blob/master/training_rules.adoc)
+
+## R-225 · Geekbench 6 scoring and Geekbench 7
+
+*Read on 20 Nov 2026 by this session's fact-finding pass from Primate Labs' documents (primary). Geekbench 7's internals could not be read (404/403), so its baseline and weights are not verified.*
+
+- **Geekbench 6** ("Geekbench 6 Benchmark Internals", May 2024): "Geekbench 6 scores are calibrated against a baseline score of 2,500 (which is the score of a Dell Precision 3460 with a Core i7-12700 processor)"; the composite is "computed using a weighted arithmetic mean of the subsection scores. The subsection scores are computed using the geometric mean of the scores of the workloads contained in that subsection", with weights Integer 65% and Floating Point 35%; multi-core uses a "shared task" model ("each thread processes part of a larger shared task"), where Geekbench 5 ran separate tasks per thread. [Internals (PDF)](https://www.geekbench.com/doc/geekbench6-benchmark-internals.pdf)
+- **Geekbench 7** (Primate Labs blog, 23 Jul 2026): "a major update that includes new media workloads, a smarter multi-core benchmark, and a refreshed GPU benchmark". [Announcement](https://www.primatelabs.com/blog/2026/07/geekbench-7/)

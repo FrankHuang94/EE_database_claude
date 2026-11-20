@@ -5872,3 +5872,19 @@
   definition: The arithmetic intensity (FLOP per byte) at which a machine's peak compute equals its memory bandwidth times the intensity; below it a workload is memory-bound, above it compute-bound.
   chapter: "14-14"
   see_also: [Arithmetic intensity]
+- term: Roofline model
+  definition: A performance bound that plots attainable throughput against arithmetic intensity as the lesser of peak compute and memory bandwidth times intensity, showing at a glance whether a kernel is compute- or memory-bound.
+  chapter: "14-15"
+  see_also: [Arithmetic intensity, Ridge point]
+- term: Benchmark
+  definition: A fixed workload with rules for how it is run and reported, used to compare systems; its rules (fixed code, accuracy targets, mandatory baselines) are what make results comparable.
+  chapter: "14-15"
+  see_also: [SPEC CPU, MLPerf]
+- term: SPEC CPU
+  definition: The Standard Performance Evaluation Corporation's processor benchmark suites (SPECspeed and SPECrate, integer and floating point), scored as the geometric mean of reference-time ratios, with mandatory base and optional peak results; SPEC CPU 2026 replaced SPEC CPU 2017 in 2026.
+  chapter: "14-15"
+  see_also: [Benchmark, Geometric mean]
+- term: MLPerf
+  definition: MLCommons' machine-learning training and inference benchmarks, with a Closed division (reference models, comparable systems) and an Open division, and inference scenarios from single-stream latency to offline throughput.
+  chapter: "14-15"
+  see_also: [Benchmark]
