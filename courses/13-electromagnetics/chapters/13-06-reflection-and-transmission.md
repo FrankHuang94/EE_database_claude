@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 13-06 · Reflection and Transmission of Waves
 
 | | |

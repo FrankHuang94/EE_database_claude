@@ -210,19 +210,19 @@ def fresnel(n1, n2, th):
     c1 = np.sqrt(n1**2 - kx**2 + 0j) / n1
     c2 = np.sqrt(n2**2 - kx**2 + 0j) / n2
     te = (n1 * c1 - n2 * c2) / (n1 * c1 + n2 * c2)
-    tm = (n2 * c1 - n1 * c2) / (n2 * c1 + n1 * c2)   # tangential-impedance ratio (Ulaby sign)
+    tm = (n1 * c2 - n2 * c1) / (n1 * c2 + n2 * c1)   # Ulaby's Gamma_par = (eta2 cos t - eta1 cos i)/(...)
     return te, tm
 
 
-te0, _ = fresnel(1.0, 2.0, 0.0)
+te0, _ = fresnel(1.0, 3.0, 0.0)
 v.check("X13.6a", te0.real)
 tau = 1 + te0.real
 v.check("X13.6b", tau)
 v.check("X13.6c", 100 * abs(te0) ** 2)
-v.check("X13.6d", 100 * tau**2 * 2.0)                  # |tau|^2 eta1/eta2 with eta1/eta2 = n2/n1
+v.check("X13.6d", 100 * tau**2 * 3.0)                  # |tau|^2 eta1/eta2 with eta1/eta2 = n2/n1
 
 
-def coat_R(n1, t_nm, lam_nm=550.0, ns=1.5):
+def coat_R(n1, t_nm, lam_nm=550.0, ns=1.8):
     dlt = TP * n1 * t_nm / lam_nm
     Mx = np.array([[np.cos(dlt), 1j * np.sin(dlt) / n1], [1j * n1 * np.sin(dlt), np.cos(dlt)]])
     B, C = Mx @ np.array([1.0, ns])
@@ -230,18 +230,20 @@ def coat_R(n1, t_nm, lam_nm=550.0, ns=1.5):
     return abs(rr) ** 2
 
 
-best = minimize_scalar(lambda n1: coat_R(n1, 550 / (4 * n1)), bounds=(1.05, 1.45), method="bounded",
+best = minimize_scalar(lambda n1: coat_R(n1, 550 / (4 * n1)), bounds=(1.1, 1.6), method="bounded",
                        options={"xatol": 1e-10})
 v.check("X13.6e", best.x)
 tbest = minimize_scalar(lambda tt: coat_R(best.x, tt), bounds=(80, 140), method="bounded",
                         options={"xatol": 1e-9}).x
 v.check("X13.6f", tbest)
 v.check("X13.6g", 100 * coat_R(1.38, 550 / (4 * 1.38)))
-v.check("X13.6h", 100 * coat_R(1.5, 0.0))
-v.check("X13.6i", math.degrees(brentq(lambda th: fresnel(1.0, 1.5, th)[1].real, 0.5, 1.2, xtol=1e-14)))
-v.check("X13.6j", math.degrees(brentq(lambda th: 1.0 - (1.5 * math.sin(th)) ** 2, 0.3, 1.2, xtol=1e-14)))
+v.check("X13.6h", 100 * coat_R(1.8, 0.0))
+v.check("X13.6i", math.degrees(brentq(lambda th: fresnel(1.0, 1.45, th)[1].real, 0.5, 1.2, xtol=1e-14)))
+v.check("X13.6j", math.degrees(brentq(lambda th: 1.0 - (1.45 * math.sin(th)) ** 2, 0.3, 1.2, xtol=1e-14)))
 v.assert_true("X13.6 total reflection beyond critical",
-              abs(abs(fresnel(1.5, 1.0, math.radians(45))[0]) - 1) < 1e-12)
+              abs(abs(fresnel(1.45, 1.0, math.radians(50))[0]) - 1) < 1e-12)
+v.assert_true("X13.6 Ulaby sign: Gamma_par = Gamma_perp at normal incidence",
+              abs(fresnel(1.0, 1.45, 0.0)[0] - fresnel(1.0, 1.45, 0.0)[1]) < 1e-15)
 
 # ---------------------------------------------------------------- Q7 line transient
 Z0, Rsrc, RL, Vs = 50.0, 25.0, 200.0, 2.0
@@ -341,6 +343,14 @@ dmax = minimize_scalar(lambda q_: -vabs(q_), bounds=(0.15, 0.4), method="bounded
                        options={"xatol": 1e-12}).x
 v.check("X13.9g", dmin)
 v.check("X13.9h", dmax)
+# (d) single-stub match: find where the line admittance has conductance 1/Z0, then the shorted-stub length
+Yd = lambda d_: 1 / line_zin(ZL9, 50.0, TP, d_)  # noqa: E731
+roots = [brentq(lambda d_: Yd(d_).real - 1 / 50, lo_, hi_, xtol=1e-14) for lo_, hi_ in ((0.05, 0.2), (0.35, 0.49))]
+for (kd, kl), d_ in zip((("X13.9i", "X13.9j"), ("X13.9k", "X13.9l")), roots):
+    b_need = -Yd(d_).imag * 50                        # normalized susceptance the stub must add
+    l_ = brentq(lambda l: (1 / line_zin(1e-12, 50.0, TP, l)).imag * 50 - b_need, 0.01, 0.49, xtol=1e-14)
+    v.check(kd, d_)
+    v.check(kl, l_)
 
 
 # ---------------------------------------------------------------- Q10 L-network
@@ -356,13 +366,16 @@ v.check("X13.10a", TP * 9e8 * Lh / 12.5)
 v.check("X13.10b", Lh * 1e9)
 v.check("X13.10c", Cf * 1e12)
 z8 = lnet_z(Lh, Cf, 8e8)
+Y8s = 1 / (12.5 + 1j * TP * 8e8 * Lh)
+v.check("X13.10i", Y8s.real * 1e3)
+v.check("X13.10j", Y8s.imag * 1e3)
+v.check("X13.10k", TP * 8e8 * Cf * 1e3)
+v.check("X13.10l", (1 / z8).imag * 1e3)
 g8 = abs((z8 - 50) / (z8 + 50))
 v.check("X13.10d", z8.real)
 v.check("X13.10e", z8.imag)
 v.check("X13.10f", g8)
 v.check("X13.10g", -10 * math.log10(1 - g8**2))
-z10 = lnet_z(Lh, Cf, 1e9)
-v.check("X13.10h", abs((z10 - 50) / (z10 + 50)))
 
 
 # ---------------------------------------------------------------- Q11 waveguide
@@ -423,12 +436,18 @@ Pel = 1e-2
 Gel = 10 ** 0.5
 
 
-def eirp_dbm(theta, f=28e9, dsp=5e-3):
+def eirp_dbm(theta, f=28e9, dsp=5e-3, R=1e3):
+    """EIRP toward theta: sum each element's field at a distant point using exact path lengths (not the
+    plane-wave phase), with steering phases for theta and a cos(theta) power pattern per element."""
     k_ = TP * f / c
-    nn = np.arange(Nel)
-    steer = np.exp(-1j * k_ * dsp * nn * math.sin(theta))
-    field = np.sum(np.sqrt(Pel * Gel * math.cos(theta)) * steer * np.exp(1j * k_ * dsp * nn * math.sin(theta)))
-    return 10 * math.log10(abs(field) ** 2 / 1e-3)
+    xn = (np.arange(Nel) - (Nel - 1) / 2) * dsp
+    obs = np.array([R * math.sin(theta), R * math.cos(theta)])
+    dist = np.hypot(obs[0] - xn, obs[1])
+    steer = np.exp(-1j * k_ * xn * math.sin(theta))       # phase that makes the paths add in phase at theta
+    amp = np.sqrt(Pel * Gel * math.cos(theta) * eta0 / (2 * math.pi)) / dist   # |E| of one element, peak
+    field = np.sum(amp * steer * np.exp(-1j * k_ * dist))
+    S = abs(field) ** 2 / (2 * eta0)
+    return 10 * math.log10(S * 4 * math.pi * R**2 / 1e-3)
 
 
 v.check("X13.14a", eirp_dbm(0.0))
@@ -453,5 +472,13 @@ dlim = minimize_scalar(lambda dd_: -edge_level(40e9, dd_ * 1e-3), bounds=(3.5, 4
 v.check("X13.14e", dlim * 1e-3 / (c / 40e9))
 v.check("X13.14f", dlim)
 v.check("X13.14g", 100 * (40 - 24) / ((40 + 24) / 2))
+def edge_level_scan(theta_max, f=40e9, dsp=5e-3):
+    k_ = TP * f / c
+    nn = np.arange(Nel)
+    return abs(np.sum(np.exp(1j * k_ * dsp * nn * (-1 - math.sin(theta_max))))) / Nel
+v.check("X13.14h", math.degrees(minimize_scalar(lambda t: -edge_level_scan(t), bounds=(0.3, 0.7), method="bounded",
+                                                options={"xatol": 1e-12}).x))
+for key, f in (("X13.14i", 24e9), ("X13.14j", 28e9)):
+    v.check(key, 10 * math.log10(4 * math.pi * 25e-6 / (c / f) ** 2))
 
 sys.exit(v.finish())

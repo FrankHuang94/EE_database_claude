@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 13-03 · Magnetostatics and Inductance
 
 | | |

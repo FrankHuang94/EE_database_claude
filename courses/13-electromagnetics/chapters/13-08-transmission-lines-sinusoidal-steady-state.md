@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 13-08 · Transmission Lines: Sinusoidal Steady State
 
 | | |

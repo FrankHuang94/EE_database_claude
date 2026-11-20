@@ -41,8 +41,8 @@
 "Copper's skin depth at 60 Hz, 1 MHz and 1 GHz?","About 8.5 mm, 66 µm and 2.1 µm.",13-05
 "Surface resistance?","R<sub>s</sub> = 1/(σδ) = √(πfμ/σ), rising as √f; the wall behaves like a sheet one skin depth thick.",13-05
 "AC resistance of a round wire much thicker than δ?","R<sub>s</sub>/(2πa) per metre, about a/(2δ) times the DC value.",13-05
-"Wavelength inside a good conductor?","2πδ: the wave dies within about one-sixth of its own wavelength.",13-05
-"Why do submarines use very low frequencies?","Seawater (σ ≈ 4 S/m) has a skin depth of a few metres at tens of kHz and much less above, so only the lowest frequencies reach useful depths.",13-05
+"Wavelength inside a good conductor?","2πδ, so over one wavelength inside the metal the field falls by e<sup>−2π</sup>, about 55 dB: the wave barely travels.",13-05
+"Why do submarines use very low frequencies?","Seawater (σ ≈ 4 S/m) has a skin depth of only 1–3 m from about 10 to 40 kHz and much less above, so only the lowest frequencies reach useful depths.",13-05
 "Phase velocity versus group velocity?","v<sub>p</sub> = ω/β is the speed of a single frequency's phase; v<sub>g</sub> = dω/dβ is the speed of energy and signals. They differ in a dispersive medium.",13-05
 "Circular polarization?","Two equal orthogonal components 90° apart in phase; the field vector rotates once per cycle. Its handedness is defined relative to the direction of travel.",13-05
 "Reflection coefficient at normal incidence?","Γ = (η<sub>2</sub> − η<sub>1</sub>)/(η<sub>2</sub> + η<sub>1</sub>); τ = 1 + Γ.",13-06
@@ -51,7 +51,7 @@
 "Snell's law?","n<sub>1</sub> sin θ<sub>i</sub> = n<sub>2</sub> sin θ<sub>t</sub>: the tangential wavenumber is continuous across the boundary.",13-06
 "Critical angle?","sin θ<sub>c</sub> = n<sub>2</sub>/n<sub>1</sub> for n<sub>1</sub> > n<sub>2</sub>; beyond it all power reflects and an evanescent field decays in the second medium.",13-06
 "Brewster angle?","tan θ<sub>B</sub> = n<sub>2</sub>/n<sub>1</sub>; parallel (TM) polarization is transmitted with no reflection. Glare from water is therefore mostly s-polarized.",13-06
-"How does a thin metal sheet shield?","By reflection (impedance mismatch, about 20 log[η<sub>0</sub>/4|η<sub>c</sub>|]) plus absorption (8.686 dB per skin depth of thickness).",13-06
+"How does a metal sheet several skin depths thick shield a plane wave?","By reflection (impedance mismatch, about 20 log[η<sub>0</sub>/4|η<sub>c</sub>|]) plus absorption (8.686 dB per skin depth of thickness).",13-06
 "Telegrapher's equations (lossless)?","∂v/∂z = −L′ ∂i/∂t and ∂i/∂z = −C′ ∂v/∂t; Z<sub>0</sub> = √(L′/C′), v<sub>p</sub> = 1/√(L′C′).",13-07
 "Voltage launched onto a line by a source V<sub>s</sub> with resistance R<sub>s</sub>?","v<sup>+</sup> = V<sub>s</sub>Z<sub>0</sub>/(R<sub>s</sub> + Z<sub>0</sub>): the line looks like Z<sub>0</sub> until reflections return.",13-07
 "Reflection coefficient at an open and at a short?","+1 (voltage doubles) and −1 (voltage cancels).",13-07
@@ -96,7 +96,7 @@
 "Friis transmission equation?","P<sub>r</sub> = P<sub>t</sub>G<sub>t</sub>G<sub>r</sub>[λ/(4πR)]²; free-space path loss 20 log(4πR/λ) dB, +6 dB per doubling of distance.",13-11
 "What is EIRP?","Transmitted power times antenna gain (dBm + dBi): the power an isotropic antenna would need to give the same peak power density.",13-11
 "Where does the far field begin for an aperture of size D?","About 2D²/λ (and beyond a few wavelengths).",13-11
-"Why does a phone's head exposure use SAR rather than power density?","The head is in the antenna's reactive near field (r ≲ λ/2π), where far-field power density is meaningless; absorbed power per mass is what heats tissue.",13-11
+"Why is a phone's head exposure (below 6 GHz) assessed by SAR rather than power density?","The head is in the antenna's reactive near field (r ≲ λ/2π), where far-field power density is meaningless; absorbed power per mass is what heats tissue.",13-11
 "Array factor of N equally spaced elements?","|sin(Nψ/2)/sin(ψ/2)| with ψ = kd sin θ + β; the pattern is element pattern × array factor.",13-11
 "How is a phased array steered?","Progressive phase β = −kd sin θ<sub>0</sub> between neighbours points the beam to θ<sub>0</sub>.",13-11
 "Condition for no grating lobes when scanning to θ<sub>max</sub>?","Element spacing d < λ/(1 + |sin θ<sub>max</sub>|); λ/2 spacing avoids them for every scan short of endfire.",13-11

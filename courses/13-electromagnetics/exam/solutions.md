@@ -1,6 +1,6 @@
 # Course 13 · Final Exam Solutions (Electromagnetics)
 
-Exam: [README.md](README.md). Every number below is recomputed by [verify_13_exam.py](../verify/verify_13_exam.py), which does not reuse these formulas. It uses symbolic differentiation and numerical quadrature for the vector calculus, finite-difference Laplace solutions and surface-charge integration for the electrostatics, field-energy integrals for the inductor, and the exact complex propagation constant for the lossy media. It also uses thin-film matrices and root finding for the optics, a discrete-time wave simulation for the line transient, ABCD matrices and a sampled standing-wave pattern for the lines, finite-difference eigenvalues for the guide, and direct summation of array fields.
+Exam: [README.md](README.md). Every number below is recomputed by [verify_13_exam.py](../verify/verify_13_exam.py), which mostly uses different routes from these formulas (where a value is a definition, such as an EIRP sum or a fractional bandwidth, it evaluates the definition). It uses symbolic differentiation and numerical quadrature for the vector calculus, finite-difference Laplace solutions and surface-charge integration for the electrostatics, field-energy integrals for the inductor, and the exact complex propagation constant for the lossy media. It also uses thin-film matrices and root finding for the optics, a discrete-time wave simulation for the line transient, ABCD matrices and a sampled standing-wave pattern for the lines, finite-difference eigenvalues for the guide, and direct summation of array fields.
 
 ---
 
@@ -32,7 +32,7 @@ which is (**−2**, **−3**, **−1**) at (1, 2, 3).
 
 ### Solution 3
 
-(a) The reluctances are $\mathcal{R}_c = \ell_c/(\mu_r\mu_0A) = 0.1/(1200 \times 4\pi \times 10^{-7} \times 10^{-5}) = 6.63 \times 10^6$ A/Wb and $\mathcal{R}_g = g/(\mu_0A) = 10^{-3}/(4\pi \times 10^{-7} \times 10^{-5}) = 7.96 \times 10^7$ A/Wb, so the gap holds $\mathcal{R}_g/(\mathcal{R}_c + \mathcal{R}_g) = 12/13$ = **92.31**% of the total (the gap is 1 mm of air against the core's 100 mm/1200 = 0.083 mm of "equivalent air"). $L = N^2/(\mathcal{R}_c + \mathcal{R}_g) = 62\,500/(8.62 \times 10^7)$ = **725.0** µH, and $B = NI/[(\mathcal{R}_c + \mathcal{R}_g)A]$ = **0.5800** T at 2 A, well below the saturation of a steel or powdered-iron core.
+(a) The reluctances are $\mathcal{R}_c = \ell_c/(\mu_r\mu_0A) = 0.1/(1200 \times 4\pi \times 10^{-7} \times 10^{-5}) = 6.63 \times 10^6$ A/Wb and $\mathcal{R}_g = g/(\mu_0A) = 10^{-3}/(4\pi \times 10^{-7} \times 10^{-5}) = 7.96 \times 10^7$ A/Wb, so the gap holds $\mathcal{R}_g/(\mathcal{R}_c + \mathcal{R}_g) = 12/13$ = **92.31**% of the total (the gap is 1 mm of air against the core's 100 mm/1200 = 0.083 mm of "equivalent air"). $L = N^2/(\mathcal{R}_c + \mathcal{R}_g) = 62\,500/(8.62 \times 10^7)$ = **725.0** µH, and $B = NI/[(\mathcal{R}_c + \mathcal{R}_g)A]$ = **0.5800** T at 2 A, well below the saturation of the laminated silicon steel (about 1.5 T). A ferrite core of the same permeability would saturate near 0.4 to 0.5 T, so this design would need fewer ampere-turns per gap or a larger cross-section with ferrite.
 
 (b) $W = \tfrac12LI^2$ = **1.450** mJ. The same flux passes the core and the gap, so the energy $\tfrac12\Phi^2\mathcal{R}$ divides as the reluctance does: **92.31**% of it sits in the 1 mm gap. A gap lets a small, lightly-magnetized core store a lot of energy without saturating, and it makes $L$ depend on a mechanical dimension rather than on the core's temperature-sensitive permeability.
 
@@ -42,7 +42,7 @@ which is (**−2**, **−3**, **−1**) at (1, 2, 3).
 
 (a) The phase velocity is $\omega/\beta = 2\pi \times 10^9/30 = 2.094 \times 10^8$ m/s, so $n = c/v_p$ = 1.431 and $\varepsilon_r = n^2$ = **2.049**. $\eta = \eta_0/n$ = **263.2** Ω. $\vec{H}$ is in phase with $\vec{E}$ with amplitude $100/263.2$ = **0.380** A/m, along $+\hat{y}$ so that $\vec{E}\times\vec{H}$ points along $+\hat{z}$. The time-average power density is $E_0^2/(2\eta)$ = **19.00** W/m² along $+\hat{z}$, and $\lambda = 2\pi/\beta$ = **20.94** cm.
 
-(b) The ratio of conduction to displacement current is $\sigma/(\omega\varepsilon) = 2 \times 10^{-3}/(2\pi f \times 4 \times 8.854 \times 10^{-12})$: **8.988** at 1 MHz and **0.008988** at 1 GHz. At 1 MHz conduction dominates but not overwhelmingly: the soil is a lossy, "quasi-conducting" medium and the exact formulas for γ are needed. At 1 GHz it is a low-loss dielectric (loss tangent 0.009), which is why ground-penetrating radar works at hundreds of MHz rather than at broadcast frequencies.
+(b) The ratio of conduction to displacement current is $\sigma/(\omega\varepsilon) = 2 \times 10^{-3}/(2\pi f \times 4 \times 8.854 \times 10^{-12})$: **8.988** at 1 MHz and **0.008988** at 1 GHz. At 1 MHz conduction dominates but not overwhelmingly: the soil is a lossy, "quasi-conducting" medium and the exact formulas for γ are needed. At 1 GHz it is a low-loss dielectric (loss tangent 0.009). In that regime α levels off and the wave propagates with little dispersion, so echoes keep their shape and timing, and shorter wavelengths give finer resolution: that is why ground-penetrating radar works at hundreds of MHz. At 1 MHz the field diffuses rather than propagates, so there are no sharp echoes to time, even though the soil attenuates less there.
 
 (c) $\tau = \varepsilon/\sigma = 4 \times 8.854 \times 10^{-12}/(2 \times 10^{-3})$ = **17.71** ns. A free charge placed inside the soil decays with this time constant; the ratio in (b) equals $1/(\omega\tau)$, so the soil behaves as a conductor for periods much longer than τ and as a dielectric for periods much shorter.
 
@@ -50,15 +50,15 @@ which is (**−2**, **−3**, **−1**) at (1, 2, 3).
 
 (a) $\delta = 1/\sqrt{\pi f\mu_0\sigma} = 1/\sqrt{\pi(3 \times 10^8)(4\pi \times 10^{-7})(3.5 \times 10^7)}$ = **4.912** µm and $R_s = 1/(\sigma\delta)$ = **5.817** mΩ. With the current in a skin of depth δ around the circumference $\pi d$, $R_{ac} = R_s\ell/(\pi d) = 5.817 \times 10^{-3}/(\pi \times 10^{-3})$ = **1.852** Ω, while $R_{dc} = \ell/(\sigma\pi d^2/4)$ = **36.38** mΩ. The ratio is $a/(2\delta)$ = **50.90**: at 300 MHz only the outer 5 µm of the 1 mm wire carries current. (The exact Bessel-function solution for a round wire is **0.5**% higher: the skin sits on a curved surface, and the correction is about $\delta/(2a)$, small because $a/\delta \approx 100$.)
 
-(b) $\sigma/(\omega\varepsilon) = 4/(2\pi \times 4 \times 10^4 \times 81 \times 8.854 \times 10^{-12}) = $ **2.219 × 10⁴** ≫ 1, a good conductor. $\delta = 1/\sqrt{\pi f\mu_0\sigma}$ = **1.258** m, the attenuation is $8.686/\delta$ = **6.903** dB/m, the wavelength in the water is $2\pi\delta$ = **7.9** m (against 7.5 km in air), and an 80 dB loss takes $80/6.903$ = **11.59** m. Submarine communication therefore uses very low frequencies (and still only reaches shallow depths).
+(b) $\sigma/(\omega\varepsilon) = 4/(2\pi \times 4 \times 10^4 \times 81 \times 8.854 \times 10^{-12}) = $ **2.219 × 10⁴** ≫ 1, a good conductor. $\delta = 1/\sqrt{\pi f\mu_0\sigma}$ = **1.258** m, the attenuation is $8.686/\delta$ = **6.903** dB/m, the wavelength in the water is $2\pi\delta$ = **7.906** m (against 7.5 km in air), and an 80 dB loss takes $80/6.903$ = **11.59** m. Submarine communication therefore uses very low frequencies (and still only reaches shallow depths).
 
 ### Solution 6
 
-(a) $\eta_2 = \eta_0/2$, so $\Gamma = (\eta_2 - \eta_1)/(\eta_2 + \eta_1) = (1 - 2)/(1 + 2)$ = **−0.3333** and $\tau = 1 + \Gamma = 2\eta_2/(\eta_1 + \eta_2)$ = **0.6667**. Reflected power $\lvert\Gamma\rvert^2$ = **11.11**%; transmitted $\lvert\tau\rvert^2\eta_1/\eta_2$ = **88.89**%, which together make 100%. (τ is less than 1, yet the transmitted power fraction is large, because the lower-impedance medium carries more power per unit field squared.)
+(a) $\eta_2 = \eta_0/3$, so $\Gamma = (\eta_2 - \eta_1)/(\eta_2 + \eta_1) = (1 - 3)/(1 + 3)$ = **−0.5** and $\tau = 1 + \Gamma = 2\eta_2/(\eta_1 + \eta_2)$ = **0.5**. Reflected power $\lvert\Gamma\rvert^2$ = **25**%; transmitted $\lvert\tau\rvert^2\eta_1/\eta_2$ = 0.25 × 3 = **75**%, which together make 100%. (τ is only 0.5, yet three-quarters of the power is transmitted, because the lower-impedance medium carries more power per unit field squared.)
 
-(b) The quarter-wave coating cancels the two reflections when its index is the geometric mean, $\sqrt{1 \times 1.5}$ = **1.225**, and its thickness is $\lambda_0/(4n_1) = 550/(4 \times 1.225)$ = **112.3** nm. With $n_1$ = 1.38 the input impedance transformation gives $\Gamma = (n_s - n_1^2)/(n_s + n_1^2) = (1.5 - 1.904)/(1.5 + 1.904)$, a reflectance of **1.411**%, against $[(1.5 - 1)/(1.5 + 1)]^2$ = **4.000**% for bare glass: no material with index 1.225 is durable enough, so the practical coating cuts reflection by about two-thirds rather than to zero.
+(b) The quarter-wave coating cancels the two reflections when its index is the geometric mean, $\sqrt{1 \times 1.8}$ = **1.342**, and its thickness is $\lambda_0/(4n_1) = 550/(4 \times 1.342)$ = **102.5** nm. A quarter-wave layer of MgF₂ (99.6 nm thick at 550 nm) transforms the glass's normalized impedance $1/n_s$ to $n_1^2/n_s$ (13-06 §3.2), so $\Gamma = (n_s - n_1^2)/(n_s + n_1^2) = (1.8 - 1.904)/(1.8 + 1.904)$, a reflectance of **0.0794**%, against $[(1.8 - 1)/(1.8 + 1)]^2$ = **8.163**% for bare glass. Because $1.38^2$ = 1.904 is close to 1.8, MgF₂ is nearly ideal on high-index glass (on ordinary glass of index 1.5 it leaves about 1.4%), one reason high-index lens elements are coated with it.
 
-(c) Brewster: $\tan\theta_B = n_2/n_1 = 1.5$, so $\theta_B$ = **56.31**° (parallel polarization only). Critical angle from glass into air: $\sin\theta_c = 1/1.5$, $\theta_c$ = **41.81**°; beyond it the glass totally reflects, which is how a fibre or a prism guides light.
+(c) Brewster: $\tan\theta_B = n_2/n_1 = 1.45$, so $\theta_B$ = **55.41**° (parallel polarization only). Critical angle from silica into air: $\sin\theta_c = 1/1.45$, $\theta_c$ = **43.60**°; beyond it the silica totally reflects, which is how a fibre or a prism guides light.
 
 ### Solution 7
 
@@ -70,7 +70,7 @@ which is (**−2**, **−3**, **−1**) at (1, 2, 3).
 
 converging (with ringing, because $\Gamma_L\Gamma_S < 0$) to the DC divider $2 \times 200/225$ = **1.778** V. The geometric series of arrivals, $1.333 \times 1.6/(1 + 0.2)$, gives the same answer.
 
-(b) At the load the line looks like a Thévenin source of $2v^+$ behind $Z_0$, so the capacitor charges with $\tau = Z_0C$ = **100** ps, and $v_L = 2v^+(1 - e^{-t/\tau})$. Its 10–90% rise time is $\tau\ln 9$ = **219.7** ps: even an ideal edge arrives at the receiver slowed by about 220 ps, a limit on data rate that no transmitter improvement removes.
+(b) At the load the line looks like a Thévenin source of $2v^+$ behind $Z_0$, so the capacitor charges with $\tau = Z_0C$ = **100** ps, and $v_L = 2v^+(1 - e^{-t/\tau})$. Its 10–90% rise time is $\tau\ln 9$ = **219.7** ps: even an ideal edge arrives at the receiver slowed by about 220 ps. Transmitter equalization can partly pre-compensate, and a shunt termination at the receiver halves τ to $Z_0C/2$, but the receiver's capacitance always costs bandwidth.
 
 ### Solution 8
 
@@ -86,13 +86,15 @@ converging (with ringing, because $\Gamma_L\Gamma_S < 0$) to the DC divider $2 \
 
 (b) $\Gamma_L = (Z_L - Z_0)/(Z_L + Z_0) = (-30 - j10)/(70 - j10)$, of magnitude $\sqrt{1000}/\sqrt{5000}$ = **0.4472** (the same anywhere on a lossless line, including at the 100 + j50 Ω input). VSWR $= (1 + 0.4472)/(1 - 0.4472)$ = **2.618**; return loss $-20\log_{10}0.4472$ = **6.990** dB; mismatch loss $-10\log_{10}(1 - 0.2)$ = **0.9691** dB.
 
-(c) The angle of $\Gamma_L$ is −153.43°. Moving a distance $d$ toward the source multiplies Γ by $e^{-j2\beta d}$, a clockwise rotation of 720° per wavelength. The voltage is a minimum where Γ's angle reaches −180°: $d_{min} = (180 - 153.43)/720$ = **0.0369**λ. It is a maximum where the angle reaches −360°, a quarter-wavelength further: $d_{max}$ = **0.2869**λ. The minimum sits close to the load because the load's resistance is below $Z_0$.
+(c) The angle of $\Gamma_L$ is −153.43°. Moving a distance $d$ toward the source multiplies Γ by $e^{-j2\beta d}$, a clockwise rotation of 720° per wavelength. The voltage is a minimum where Γ's angle reaches −180°: $d_{min} = (180 - 153.43)/720$ = **0.0369**λ. It is a maximum where the angle reaches −360°, a quarter-wavelength further: $d_{max}$ = **0.2869**λ. The first extremum is a minimum because Γ starts with a negative angle (the load is capacitive), and it comes early because −153° is already close to −180°.
+
+(d) In admittance terms, move until the conductance is $1/Z_0$, then cancel the susceptance with the stub. With $R_L$ = 20 Ω and $X_L$ = −10 Ω, the quadratic of 13-09 §3.4 gives $t = \tan\beta d = [X_L \pm \sqrt{R_L((Z_0 - R_L)^2 + X_L^2)/Z_0}]/(R_L - Z_0) = (-10 \pm 20)/(-30)$, so $t$ = −1/3 or 1. For $t$ = 1, $d$ = **0.125**λ, where the normalized admittance is $1 - j1$; a shorted stub ($y = -j\cot\beta\ell$) must add $+j1$, so $\cot\beta\ell = -1$ and ℓ = **0.375**λ. For $t$ = −1/3, $d = (\arctan(-1/3) + \pi)/2\pi$ = **0.4488**λ, where $y = 1 + j1$; the stub must add $-j1$, so $\cot\beta\ell = 1$ and ℓ = **0.125**λ. On the chart, both are the two crossings of the |Γ| = 0.4472 circle with the $g$ = 1 circle. The first solution needs the shorter line to the stub; the second the shorter stub.
 
 ### Solution 10
 
 (a) $Q = \sqrt{R_{high}/R_{low} - 1} = \sqrt{50/12.5 - 1}$ = **1.732**. The series reactance is $QR_{low}$ = 21.65 Ω, an inductor of $21.65/(2\pi \times 9 \times 10^8)$ = **3.829** nH; the shunt susceptance is $Q/R_{high}$ = 34.64 mS, a capacitor of $0.03464/\omega$ = **6.126** pF. (Check: 12.5 + j21.65 Ω has admittance 20 − j34.64 mS, and the capacitor cancels the imaginary part, leaving 1/50 S.)
 
-(b) At 800 MHz the series branch is $12.5 + j\omega L$ = 12.5 + j19.25 Ω, admittance 23.75 − j36.57 mS; the capacitor adds j30.79 mS, leaving 23.75 − j5.78 mS, so $Z$ = **39.79 + j9.64** Ω. Then $\lvert\Gamma\rvert = \lvert Z - 50\rvert/\lvert Z + 50\rvert$ = **0.1555** and the mismatch loss is $-10\log_{10}(1 - \lvert\Gamma\rvert^2)$ = **0.1063** dB. The same steps at 1 GHz give $\lvert\Gamma\rvert$ = **0.1733**. A 4:1 step with Q = 1.7 stays usefully matched over ±100 MHz; a larger ratio would need a higher Q and would narrow the band.
+(b) At 800 MHz the series branch is $12.5 + j\omega L$ = 12.5 + j19.25 Ω, admittance **23.74 − j36.54** mS; the capacitor adds j**30.79** mS, leaving **23.74 − j5.752** mS, so $Z$ = **39.79 + j9.64** Ω. Then $\lvert\Gamma\rvert = \lvert Z - 50\rvert/\lvert Z + 50\rvert$ = **0.1555** and the mismatch loss is $-10\log_{10}(1 - \lvert\Gamma\rvert^2)$ = **0.1063** dB. A 4:1 step with Q = 1.7 stays usefully matched over ±100 MHz; a larger ratio would need a higher Q and would narrow the band.
 
 ### Solution 11
 
@@ -104,15 +106,15 @@ converging (with ringing, because $\Gamma_L\Gamma_S < 0$) to the DC divider $2 \
 
 ### Solution 12
 
-(a) EIRP = 20 + 9 = **29** dBm. λ = 5.169 cm, so FSPL = $20\log_{10}(4\pi \times 2000/0.05169)$ = **113.7** dB, and $P_r$ = 29 + 9 − 113.7 = **−75.74** dBm.
+(a) EIRP = 20 + 9 = **29** dBm. λ = 5.169 cm, so FSPL = $20\log_{10}(4\pi \times 2000/0.05169)$ = **113.7** dB, and $P_r$ = 29 + 9 − 113.74 = **−75.74** dBm.
 
 (b) $A_e = G\lambda^2/(4\pi) = 7.943 \times 0.05169^2/(4\pi)$ = **16.89** cm².
 
-(c) The margin is −75.74 − (−90) = **14.26** dB. Free-space loss grows by 20 dB per decade of distance, so the range stretches by $10^{14.26/20}$ to **10.33** km. A real link must also budget for fading, rain (small at 5.8 GHz) and keeping the first Fresnel zone clear of obstacles, so a working design keeps 10 dB or more of margin and does not use it as range.
+(c) The margin is −75.74 − (−90) = **14.26** dB. Free-space loss grows by 20 dB per decade of distance, so the range stretches by $10^{14.26/20}$ to **10.33** km. A real link must also budget for fading, rain (small at 5.8 GHz) and obstacles near the path, so a working design keeps 10 dB or more of margin and does not use it as range.
 
 ### Solution 13
 
-(a) In a source-free, lossless, linear medium, $\nabla\times\vec{E} = -\mu\,\partial\vec{H}/\partial t$, $\nabla\times\vec{H} = \varepsilon\,\partial\vec{E}/\partial t$, and $\nabla\cdot\vec{E} = 0$. Take the curl of the first and substitute the second:
+(a) In a source-free, lossless, linear, homogeneous and isotropic medium (so that μ and ε are constants that can be taken outside the derivatives), $\nabla\times\vec{E} = -\mu\,\partial\vec{H}/\partial t$, $\nabla\times\vec{H} = \varepsilon\,\partial\vec{E}/\partial t$, and $\nabla\cdot\vec{E} = 0$. Take the curl of the first and substitute the second:
 
 $$
 \nabla\times\nabla\times\vec{E} = -\mu\frac{\partial}{\partial t}(\nabla\times\vec{H}) = -\mu\varepsilon\frac{\partial^2\vec{E}}{\partial t^2} .
@@ -126,13 +128,13 @@ $$
 Z_{in} = Z_0\frac{e^{j\beta\ell} + \Gamma_Le^{-j\beta\ell}}{e^{j\beta\ell} - \Gamma_Le^{-j\beta\ell}} .
 $$
 
-Substituting $\Gamma_L$ and multiplying through by $Z_L + Z_0$, the numerator is $(Z_L + Z_0)e^{j\beta\ell} + (Z_L - Z_0)e^{-j\beta\ell} = 2(Z_L\cos\beta\ell + jZ_0\sin\beta\ell)$ and the denominator $2(Z_0\cos\beta\ell + jZ_L\sin\beta\ell)$. Dividing both by $\cos\beta\ell$:
+Substituting $\Gamma_L$ and multiplying through by $Z_L + Z_0$, the numerator is $(Z_L + Z_0)e^{j\beta\ell} + (Z_L - Z_0)e^{-j\beta\ell} = 2(Z_L\cos\beta\ell + jZ_0\sin\beta\ell)$ and the denominator $2(Z_0\cos\beta\ell + jZ_L\sin\beta\ell)$, so $Z_{in} = Z_0(Z_L\cos\beta\ell + jZ_0\sin\beta\ell)/(Z_0\cos\beta\ell + jZ_L\sin\beta\ell)$. Dividing both by $\cos\beta\ell$ (where it is not zero):
 
 $$
 Z_{in} = Z_0\frac{Z_L + jZ_0\tan\beta\ell}{Z_0 + jZ_L\tan\beta\ell} .
 $$
 
-At ℓ = λ/4, βℓ = π/2 and $\tan\beta\ell \to \infty$, so only the tangent terms survive: $Z_{in} = Z_0(jZ_0)/(jZ_L) = Z_0^2/Z_L$. ∎
+At ℓ = λ/4, βℓ = π/2, so in the undivided form $\cos\beta\ell$ = 0 and $\sin\beta\ell$ = 1: $Z_{in} = Z_0(jZ_0)/(jZ_L) = Z_0^2/Z_L$. ∎
 
 (c) The far field is a local plane wave, so the power density is $S = \lvert E_\theta\rvert^2/(2\eta_0) = \eta_0k^2I^2\ell^2\sin^2\theta/(32\pi^2r^2)$. Integrating over a sphere, with $dA = r^2\sin\theta\,d\theta\,d\phi$ and $\int_0^\pi\sin^3\theta\,d\theta = 4/3$:
 
@@ -148,12 +150,13 @@ Setting $P_{rad} = \tfrac12I^2R_{rad}$ gives $R_{rad} = (2\pi\eta_0/3)(\ell/\lam
 
 (b) Grating lobes stay out of visible space while $d < \lambda/(1 + \sin\theta_{max})$, so for 5 mm and 60° the frequency must stay below $c/[d(1 + \sin60^\circ)] = 2.998 \times 10^8/(0.005 \times 1.866)$ = **32.13** GHz. At 40 GHz (λ = 7.495 mm) the spacing must be under **0.5359**λ = **4.02** mm. The band 24–40 GHz is a **50**% fractional bandwidth (16 GHz about a 32 GHz centre), several times what a single patch element usually covers well. As stated, the claim fails above 32 GHz: scanned to 60° at 40 GHz, a grating lobe enters visible space and radiates power in an unintended direction.
 
-(c) Rubric (4 points for three of these, each with what separates a strong from an evasive answer):
+(c) Rubric (4 points for any three of these or equivalent questions, about 4/3 points each: half for a sharp question, half for a clear contrast between a strong and an evasive answer):
 
 - **"Is 39 dBm EIRP measured at the scan edge and at the band edges, and at what linearity (EVM or ACLR) and compression?"** A strong answer gives a measured EIRP-against-angle-and-frequency plot at the standard's modulation and EVM limit. An evasive answer gives "peak" or "saturated" EIRP at broadside.
-- **"How do you avoid grating lobes at 40 GHz with 5 mm spacing?"** A strong answer explains a limited scan at the top band, a different lattice (triangular), or band-specific sub-arrays, with measured patterns. An evasive answer says "proprietary element" or quotes a simulation only.
+- **"How do you avoid grating lobes at 40 GHz with 5 mm spacing?"** At 40 GHz, 5 mm spacing is grating-lobe-free only for scans up to $\arcsin(\lambda/d - 1)$ = **29.93**°, so a strong answer concedes a reduced scan range at the top of the band, or a smaller spacing, or band-specific sub-arrays, and shows measured patterns. An evasive answer says "proprietary element" or quotes a simulation only.
+- **"What element gain do you get at 24 GHz?"** A 5 mm × 5 mm cell has an aperture of 25 mm², so even a perfectly efficient element is limited to $4\pi A/\lambda^2$ = **3.04** dBi at 24 GHz (**4.38** dBi at 28 GHz): the 5 dBi assumption cannot hold at the bottom of the band. A strong answer gives measured element gain and active return loss across 24–40 GHz; an evasive one quotes a single-frequency value.
 - **"What are the DC power and junction temperature at full EIRP, and how is the module cooled?"** A strong answer gives watts, thermal resistance and derating. An evasive answer quotes only RF output power or "typical" consumption at low duty cycle.
-- **"How does the EIRP compare with the regulatory limit and the standard's power class for the target device, and what is the link margin at the intended range?"** A strong answer gives a link budget with path loss, body/hand blockage and margins. An evasive answer gives free-space range in a lab.
+- **"How does the EIRP compare with the regulatory limit and the standard's power class for the target device, and what is the link margin at the intended range?"** A strong answer gives a link budget with path loss, body or hand blockage and margins. An evasive answer gives free-space range in a lab.
 - **"What does calibration cost per module, and how do patterns hold over temperature and part-to-part spread?"** A strong answer gives calibration time, tables and production yield. An evasive answer says it is "self-calibrating" without data.
 
 ---
@@ -203,19 +206,19 @@ Setting $P_{rad} = \tfrac12I^2R_{rad}$ gives $R_{rad} = (2\pi\eta_0/3)(\ell/\lam
 | X13.5f | seawater σ/ωε | 2.219 × 10⁴ | — |
 | X13.5g | seawater skin depth | 1.258 | m |
 | X13.5h | seawater attenuation | 6.903 | dB/m |
-| X13.5i | wavelength in seawater | 7.9 | m |
+| X13.5i | wavelength in seawater | 7.906 | m |
 | X13.5j | depth for 80 dB | 11.59 | m |
 | X13.5k | exact round-wire excess | 0.5 | % |
-| X13.6a | reflection coefficient | −0.3333 | — |
-| X13.6b | transmission coefficient | 0.6667 | — |
-| X13.6c | reflected power | 11.11 | % |
-| X13.6d | transmitted power | 88.89 | % |
-| X13.6e | ideal coating index | 1.225 | — |
-| X13.6f | ideal coating thickness | 112.3 | nm |
-| X13.6g | MgF2-coated reflectance | 1.411 | % |
-| X13.6h | bare glass reflectance | 4.000 | % |
-| X13.6i | Brewster angle | 56.31 | ° |
-| X13.6j | critical angle | 41.81 | ° |
+| X13.6a | reflection coefficient | −0.5 | — |
+| X13.6b | transmission coefficient | 0.5 | — |
+| X13.6c | reflected power | 25 | % |
+| X13.6d | transmitted power | 75 | % |
+| X13.6e | ideal coating index | 1.342 | — |
+| X13.6f | ideal coating thickness | 102.5 | nm |
+| X13.6g | MgF2-coated reflectance | 0.0794 | % |
+| X13.6h | bare glass reflectance | 8.163 | % |
+| X13.6i | Brewster angle | 55.41 | ° |
+| X13.6j | critical angle | 43.60 | ° |
 | X13.7a | launched voltage | 1.333 | V |
 | X13.7b | source reflection coefficient | −0.3333 | — |
 | X13.7c | load reflection coefficient | 0.6 | — |
@@ -242,14 +245,21 @@ Setting $P_{rad} = \tfrac12I^2R_{rad}$ gives $R_{rad} = (2\pi\eta_0/3)(\ell/\lam
 | X13.9f | mismatch loss | 0.9691 | dB |
 | X13.9g | first voltage minimum | 0.0369 | λ |
 | X13.9h | first voltage maximum | 0.2869 | λ |
+| X13.9i | stub position, first solution | 0.125 | λ |
+| X13.9j | stub length, first solution | 0.375 | λ |
+| X13.9k | stub position, second solution | 0.4488 | λ |
+| X13.9l | stub length, second solution | 0.125 | λ |
 | X13.10a | L-network Q | 1.732 | — |
 | X13.10b | series inductor | 3.829 | nH |
 | X13.10c | shunt capacitor | 6.126 | pF |
+| X13.10i | series-branch conductance at 800 MHz | 23.74 | mS |
+| X13.10j | series-branch susceptance at 800 MHz | −36.54 | mS |
+| X13.10k | capacitor susceptance at 800 MHz | 30.79 | mS |
+| X13.10l | total susceptance at 800 MHz | −5.752 | mS |
 | X13.10d | resistance at 800 MHz | 39.79 | Ω |
 | X13.10e | reactance at 800 MHz | 9.64 | Ω |
 | X13.10f | reflection at 800 MHz | 0.1555 | — |
 | X13.10g | mismatch loss at 800 MHz | 0.1063 | dB |
-| X13.10h | reflection at 1 GHz | 0.1733 | — |
 | X13.11a | TE10 cutoff | 7.869 | GHz |
 | X13.11b | TE20 cutoff | 15.74 | GHz |
 | X13.11c | TE01 cutoff | 15.74 | GHz |
@@ -274,3 +284,6 @@ Setting $P_{rad} = \tfrac12I^2R_{rad}$ gives $R_{rad} = (2\pi\eta_0/3)(\ell/\lam
 | X13.14e | spacing limit in wavelengths | 0.5359 | λ |
 | X13.14f | spacing limit at 40 GHz | 4.02 | mm |
 | X13.14g | fractional bandwidth | 50 | % |
+| X13.14h | grating-lobe-free scan at 40 GHz | 29.93 | ° |
+| X13.14i | element gain limit at 24 GHz | 3.04 | dBi |
+| X13.14j | element gain limit at 28 GHz | 4.38 | dBi |

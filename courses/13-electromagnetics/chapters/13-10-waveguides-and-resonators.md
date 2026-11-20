@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 13-10 · Waveguides and Resonators
 
 | | |

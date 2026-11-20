@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 13-07 · Transmission Lines: Time Domain
 
 | | |

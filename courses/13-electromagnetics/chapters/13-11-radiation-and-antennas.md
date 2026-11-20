@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 13-11 · Radiation and Antenna Fundamentals
 
 | | |

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 13-02 · Electrostatics: Boundary Conditions and Boundary-Value Problems
 
 | | |

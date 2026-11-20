@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 13-04 · Maxwell's Equations and Time-Varying Fields
 
 | | |

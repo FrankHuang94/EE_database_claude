@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 13-05 · Plane Waves in Lossless and Lossy Media
 
 | | |
