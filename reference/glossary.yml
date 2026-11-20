@@ -4714,3 +4714,47 @@
   definition: "One of the frequency intervals [(n − 1)f_s/2, nf_s/2] into which sampling at f_s divides the axis; every zone folds onto the first, with even zones spectrally inverted."
   chapter: "11-10"
   see_also: [Band-pass sampling]
+# ---------------------------------------------------------------- 11-11
+- term: Amplitude modulation (AM)
+  definition: "Carrying a message in a carrier's amplitude, A[1 + m x(t)] cos(2πf_c t); its spectrum is the carrier plus the message's spectrum shifted to ±f_c as two sidebands, occupying twice the message bandwidth."
+  chapter: "11-11"
+  see_also: [DSB-SC modulation, Modulation index, Envelope detector]
+- term: DSB-SC modulation
+  definition: "Double-sideband suppressed-carrier AM, x(t) cos(2πf_c t): the message multiplied by the carrier, with no carrier line; efficient, but it needs coherent demodulation with the carrier's frequency and phase."
+  chapter: "11-11"
+  see_also: [Coherent demodulation]
+- term: Modulation index
+  definition: "In conventional AM, the depth m of the envelope variation A[1 + m x(t)] with |x| ≤ 1; m ≤ 1 keeps the envelope equal to the message, and the sideband share of power is m²P_x/(1 + m²P_x)."
+  chapter: "11-11"
+  see_also: [Amplitude modulation (AM)]
+- term: Envelope detector
+  definition: "A diode charging a capacitor that discharges through a resistor, which tracks the peaks of an AM signal; its time constant must be much longer than the carrier period but at most √(1 − m²)/(mω_m) to avoid diagonal clipping."
+  chapter: "11-11"
+  see_also: [Amplitude modulation (AM)]
+- term: Coherent demodulation
+  definition: "Recovering a modulated message by multiplying by a local copy of the carrier and low-pass filtering; a phase error φ scales the output by cos φ and a frequency error makes it beat."
+  chapter: "11-11"
+  see_also: [DSB-SC modulation]
+- term: Mixer
+  definition: "A circuit that multiplies two signals, producing their sum and difference frequencies; it shifts a band from one frequency to another in every radio transmitter and receiver."
+  chapter: "11-11"
+  see_also: [Superheterodyne receiver, Image frequency]
+- term: Superheterodyne receiver
+  definition: "A receiver that mixes the wanted signal with a tunable local oscillator to a fixed intermediate frequency (IF), where a fixed, sharp filter selects it; it must reject the image frequency before the mixer."
+  chapter: "11-11"
+  see_also: [Mixer, Image frequency]
+- term: Image frequency
+  definition: "The input frequency on the other side of the local oscillator that mixes to the same IF as the wanted signal: f_RF + 2f_IF for a high-side LO; it must be filtered before mixing, because afterward it is inseparable."
+  chapter: "11-11"
+  see_also: [Superheterodyne receiver]
+- term: Frequency-division multiplexing (FDM)
+  definition: "Sharing a medium by giving each message its own carrier frequency slot, separated by guard bands sized for the selection filters' transition width; OFDM is its digital form."
+  chapter: "11-11"
+- term: Elliptic filter
+  definition: "A filter with equiripple passband and stopband, obtained by placing zeros on the jω axis just beyond the passband; it meets a magnitude specification with the lowest order of the classical families, at the cost of large group-delay variation."
+  chapter: "11-11"
+  see_also: [Butterworth response, Bessel filter]
+- term: Bessel filter
+  definition: "A filter whose poles are chosen for maximally flat group delay, preserving pulse shapes with almost no overshoot, at the cost of a gentle magnitude roll-off."
+  chapter: "11-11"
+  see_also: [Group delay, Elliptic filter]

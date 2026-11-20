@@ -36,7 +36,7 @@ The mathematics of signals and linear time-invariant systems in continuous and d
 | [11-08 · The Laplace Transform and System Functions](chapters/11-08-laplace-transform-and-system-functions.md) | 10 | ✅ verified | [problems](problems/11-08-problems.md) · [solutions](solutions/11-08-solutions.md) · [lab](labs/11-08-lab/README.md) · [verify](verify/verify_11_08.py) |
 | [11-09 · The z-Transform](chapters/11-09-z-transform.md) | 10 | ✅ verified | [problems](problems/11-09-problems.md) · [solutions](solutions/11-09-solutions.md) · [lab](labs/11-09-lab/README.md) · [verify](verify/verify_11_09.py) |
 | [11-10 · Sampling, Aliasing and Reconstruction](chapters/11-10-sampling-aliasing-reconstruction.md) | 10 | ✅ verified | [problems](problems/11-10-problems.md) · [solutions](solutions/11-10-solutions.md) · [lab](labs/11-10-lab/README.md) · [verify](verify/verify_11_10.py) |
-| [11-11 · Modulation and Filtering Applications](chapters/11-11-modulation-and-filtering-applications.md) | 7 | ⬜ planned | — |
+| [11-11 · Modulation and Filtering Applications](chapters/11-11-modulation-and-filtering-applications.md) | 7 | ✅ verified | [problems](problems/11-11-problems.md) · [solutions](solutions/11-11-solutions.md) · [lab](labs/11-11-lab/README.md) · [verify](verify/verify_11_11.py) |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 
