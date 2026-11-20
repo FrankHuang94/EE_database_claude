@@ -4862,3 +4862,27 @@
   definition: The impedance at any port of a feedback circuit, Z = Z0(1 + T_sc)/(1 + T_oc), with Z0 the impedance when the controlled source is zero and T_sc, T_oc the return ratios with the port shorted and open.
   chapter: "12-05"
   see_also: [Return ratio, Feedback topology]
+- term: Gain margin
+  definition: How far a loop gain's magnitude is below one, in decibels, at the frequency where its phase reaches −180°, −20·log|T(jω180)|; the extra loop gain the loop could tolerate before oscillating. A typical target is at least 10 dB.
+  chapter: "12-06"
+  see_also: [Phase margin, Crossover frequency]
+- term: Crossover frequency
+  definition: The frequency at which a loop gain's magnitude falls to one; the phase margin is read there, and for a well-compensated loop it is close to the closed-loop bandwidth.
+  chapter: "12-06"
+  see_also: [Phase margin, Loop gain]
+- term: Dominant-pole compensation
+  definition: Stabilizing a multi-pole feedback amplifier by making one pole so low that the loop gain falls to one before the other poles add much phase lag; lowering an existing pole costs less bandwidth than adding a new one.
+  chapter: "12-06"
+  see_also: [Miller compensation, Phase margin]
+- term: Miller compensation
+  definition: Compensation of a two-stage amplifier by a capacitor C_c across the inverting second stage, which splits the two poles; the gain-bandwidth product becomes g_m1/C_c, the second pole is about g_m2/C_L, and a right-half-plane zero appears at g_m2/C_c.
+  chapter: "12-06"
+  see_also: [Pole splitting, Nulling resistor, Right-half-plane zero]
+- term: Nulling resistor
+  definition: A resistor R_z in series with a Miller compensation capacitor; R_z = 1/g_m2 moves the right-half-plane zero to infinity, and a larger value turns it into a left-half-plane zero that can cancel the second pole, at the cost of a new pole near 1/(R_zC_1).
+  chapter: "12-06"
+  see_also: [Miller compensation, Right-half-plane zero]
+- term: Unity-gain stable
+  definition: Said of an op-amp whose compensation keeps it stable with 100% feedback (a buffer), the case of largest loop gain; a decompensated op-amp trades this for a higher gain-bandwidth product and a minimum stable closed-loop gain.
+  chapter: "12-06"
+  see_also: [Dominant-pole compensation, Phase margin]

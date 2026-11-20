@@ -1,0 +1,44 @@
+* Lab 12-06 -- Example 12-06.5's Miller-compensated two-stage amplifier as a small-signal circuit, in ngspice.
+* g_m1 = 1 mA/V, R1 = 200 kohm, C1 = 0.2 pF; g_m2 = 10 mA/V, R2 = 50 kohm, CL = 5 pF; Cc = 1.1 pF.
+* Copy 1 (nodes 1, 2) has Cc alone; copy 2 (nodes 11, 12, 13) adds the nulling resistor
+* Rz = (1 + CL/Cc)/g_m2 = 554.545 ohm that cancels p2. Both are driven by the same 1 V AC input; the open-loop
+* gain v(out)/v(in) is the loop gain of a unity-gain buffer, so the 0 dB crossing is the crossover and
+* 180 degrees plus the phase there is the phase margin (ngspice reports phase in radians).
+*
+* EXPECT fu1 key:../../chapters/12-06-stability-and-compensation.md#Ex_12-06.5h scale=1e6 rtol=5e-4
+* EXPECT pm1 key:../../chapters/12-06-stability-and-compensation.md#Ex_12-06.5i rtol=5e-4
+* EXPECT fu2 key:../../chapters/12-06-stability-and-compensation.md#Ex_12-06.6d scale=1e6 rtol=5e-4
+* EXPECT pm2 key:../../chapters/12-06-stability-and-compensation.md#Ex_12-06.6e rtol=5e-4
+
+VIN in 0 DC 0 AC 1
+
+* copy 1: Miller capacitor only
+G1 1 0 in 0 1m
+R1 1 0 200k
+C1 1 0 0.2p
+G2 2 0 1 0 10m
+R2 2 0 50k
+CL 2 0 5p
+CC 1 2 1.1p
+
+* copy 2: with the nulling resistor
+G11 11 0 in 0 1m
+R11 11 0 200k
+C11 11 0 0.2p
+G12 12 0 11 0 10m
+R12 12 0 50k
+CL2 12 0 5p
+RZ 11 13 554.545
+CC2 13 12 1.1p
+
+.control
+ac dec 400 1 10G
+meas ac fu1 when vdb(2)=0
+meas ac ph1 find vp(2) at=fu1
+meas ac fu2 when vdb(12)=0
+meas ac ph2 find vp(12) at=fu2
+let pm1 = 180 + ph1 * 180 / pi
+let pm2 = 180 + ph2 * 180 / pi
+print fu1 pm1 fu2 pm2
+.endc
+.end
