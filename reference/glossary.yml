@@ -6090,3 +6090,21 @@
   definition: The proportional gain K_u at which a loop sits on its stability boundary and oscillates steadily, with the ultimate period P_u; found by Routh, by experiment, or by relay feedback, and used by tuning rules.
   chapter: "15-08"
   see_also: [Ziegler–Nichols tuning, Routh–Hurwitz criterion]
+
+# ---------------------------------------------------------------- 15-09
+- term: Lead compensator
+  definition: C(s) = (1 + αTs)/(1 + Ts) with α > 1, a zero followed by a pole; it adds up to arcsin((α − 1)/(α + 1)) of phase at ω_m = 1/(T√α), used to raise phase margin and crossover. It is a PD controller with a filtering pole.
+  chapter: "15-09"
+  see_also: [Lag compensator, Phase margin]
+- term: Lag compensator
+  definition: C(s) = (1 + s/z)/(1 + s/p) with z > p, a pole followed by a zero; placed about a decade below crossover, it raises the low-frequency loop gain (and the error constants) by z/p at a cost of a few degrees of phase and a slow settling tail.
+  chapter: "15-09"
+  see_also: [Lead compensator, Pole–zero doublet]
+- term: Angle deficiency
+  definition: In root-locus design, the phase a compensator must add at a desired closed-loop pole location so that the loop's total angle there is −180°; a lead compensator's zero and pole are placed to supply it.
+  chapter: "15-09"
+  see_also: [Angle condition, Lead compensator]
+- term: Type III compensator
+  definition: A switching-regulator compensator with an integrator, two zeros and two poles, ω_I(1 + s/ω_z)²/[s(1 + s/ω_p)²]; the zeros near the output LC resonance supply up to 180° of phase lead and the poles above crossover filter switching noise.
+  chapter: "15-09"
+  see_also: [Lead compensator]

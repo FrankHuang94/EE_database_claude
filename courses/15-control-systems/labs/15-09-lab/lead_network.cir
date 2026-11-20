@@ -1,0 +1,22 @@
+* Lab 15-09 -- a passive lead network: R1 || C1 in series, R2 to ground.
+* R1 = 9 kohm, R2 = 1 kohm, C1 = 10 nF: alpha = (R1 + R2)/R2 = 10; zero at 1/(R1 C1) = 11.1 krad/s (1.77 kHz),
+* pole at 1/((R1 || R2) C1) = 111 krad/s (17.7 kHz). The maximum phase lead, arcsin((alpha - 1)/(alpha + 1)),
+* occurs at the geometric mean of zero and pole, where the gain is 1/sqrt(alpha) (-10 dB).
+*
+* EXPECT phmax key:README.md#Lab_15-09.a rtol=1e-3
+* EXPECT fm key:README.md#Lab_15-09.b scale=1e3 rtol=2e-3
+
+VIN in 0 DC 0 AC 1
+R1 in out 9k
+C1 in out 10n
+R2 out 0 1k
+
+.control
+ac dec 2000 10 10meg
+let ph = 180/pi*cph(v(out))
+meas ac phmax max ph
+meas ac fm when vdb(out)=-10
+print phmax fm
+quit
+.endc
+.end
