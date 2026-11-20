@@ -1,0 +1,104 @@
+#separator:comma
+#html:true
+#columns:Front,Back,Tags
+"What does the divergence of a field measure?","Net outward flux per unit volume at a point: the density of sources (positive) or sinks (negative).",13-01
+"What does the curl of a field measure?","Circulation per unit area about each axis: how much the field swirls around a point, with direction by the right-hand rule.",13-01
+"State the divergence theorem.","∮<sub>S</sub> A·dS = ∫<sub>v</sub> ∇·A dv: total outward flux through a closed surface equals the integrated divergence inside.",13-01
+"State Stokes's theorem.","∮<sub>C</sub> A·dℓ = ∫<sub>S</sub> (∇×A)·dS: circulation around a loop equals the flux of the curl through any surface bounded by it.",13-01
+"Scale factors (h<sub>1</sub>, h<sub>2</sub>, h<sub>3</sub>) for cylindrical and spherical coordinates?","Cylindrical (1, ρ, 1); spherical (1, r, r sin θ).",13-01
+"Divergence of a purely radial field A<sub>r</sub>(r) in spherical coordinates?","(1/r²) d(r²A<sub>r</sub>)/dr. A field falling as 1/r² has zero divergence away from the origin.",13-01
+"Which two vector identities make potentials possible?","∇×∇f = 0 (curl-free fields are gradients) and ∇·(∇×A) = 0 (divergence-free fields are curls).",13-01
+"What is ∇²(1/r)?","−4πδ³(r): zero everywhere except at the origin, where it is a spike whose volume integral is −4π.",13-01
+"Boundary conditions on E and D at a dielectric interface?","Tangential E continuous; normal D jumps by the free surface charge ρ<sub>s</sub> (continuous if there is none).",13-02
+"Fields at the surface of a perfect conductor?","E is normal to the surface with D<sub>n</sub> = ρ<sub>s</sub>; tangential E is zero; the field inside is zero.",13-02
+"Poisson's and Laplace's equations?","∇²V = −ρ<sub>v</sub>/ε; Laplace's equation is the charge-free case ∇²V = 0.",13-02
+"Why does the uniqueness theorem matter in practice?","Any potential that satisfies Laplace's (or Poisson's) equation and the boundary conditions is the answer, however it was found (guess, image, series or grid).",13-02
+"Image of a point charge q at height d above a grounded plane?","A charge −q at depth d below it; valid only for the region above the plane. The force is q²/[4πε(2d)²], attractive.",13-02
+"Capacitance per metre of a coaxial line?","C′ = 2πε/ln(b/a).",13-02
+"Where is the field largest in a coax, and how large?","At the inner conductor: E<sub>max</sub> = V/[a ln(b/a)].",13-02
+"Two dielectric layers between capacitor plates: which layer has the larger field?","The one with the lower permittivity (D is continuous, so E = D/ε). Air voids in insulation therefore break down first.",13-02
+"What does a finite-difference Laplace solver do?","Replaces each grid node's potential by the average of its neighbours (the mean-value property), iterating until the boundaries' values settle the interior.",13-02
+"Magnetostatic field equations?","∇·B = 0 and ∇×H = J; integral form: no net flux out of any closed surface, and ∮H·dℓ = I<sub>enc</sub> (Ampère).",13-03
+"Field at the centre of a circular loop of radius a carrying I?","B = μ<sub>0</sub>I/(2a).",13-03
+"Field of a long straight wire?","B = μ<sub>0</sub>I/(2πρ), circling the wire.",13-03
+"Boundary conditions on B and H?","Normal B continuous; tangential H jumps by the surface current K.",13-03
+"Two definitions of inductance?","Flux linkage per current, L = NΦ/I, or stored energy, L = 2W<sub>m</sub>/I².",13-03
+"Reluctance of a magnetic path?","ℛ = ℓ/(μA); NI = Φ Σℛ and L = N²/Σℛ, like resistors in series.",13-03
+"Why do power inductors have air gaps?","The gap holds most of the reluctance and the stored energy, so the core stores energy without saturating and L depends on a dimension, not on the core's variable permeability.",13-03
+"External inductance per metre of a coax?","L′ = (μ/2π) ln(b/a); with C′ = 2πε/ln(b/a), L′C′ = με.",13-03
+"Why does a loop's area matter for board layout?","Inductance (and pickup of external fields) grows with loop area, so signals should return directly beneath their own trace.",13-03
+"Faraday's law in differential form?","∇×E = −∂B/∂t: a changing magnetic field produces a circulating electric field.",13-04
+"What is the displacement current, and why is it needed?","∂D/∂t; without it Ampère's law contradicts charge conservation (e.g. across a charging capacitor), and with it the equations predict waves.",13-04
+"Write Maxwell's equations in phasor form.","∇×E = −jωμH; ∇×H = (σ + jωε)E; ∇·D = ρ<sub>v</sub>; ∇·B = 0.",13-04
+"When does a material behave as a conductor rather than a dielectric?","When σ/(ωε) ≫ 1 (conduction current dominates); ≪ 1 means a good dielectric. The same material can be either, depending on frequency.",13-04
+"Charge relaxation time?","τ = ε/σ: the time for free charge inside a conductor to decay by 1/e. The ratio σ/ωε equals 1/(ωτ).",13-04
+"Poynting vector and its time average with peak phasors?","S = E×H, the power flux density (W/m²); time average ½Re(E×H*).",13-04
+"When is a lumped circuit model good enough?","When the structure is much smaller than a wavelength (≲ λ/10), or its delay is much shorter than the signal's rise time.",13-04
+"Speed and intrinsic impedance of a plane wave in a lossless medium?","v<sub>p</sub> = 1/√(με) = c/n and η = √(μ/ε) = η<sub>0</sub>/n, with η<sub>0</sub> ≈ 376.7 Ω.",13-05
+"How are E, H and the propagation direction related in a plane wave?","They are mutually perpendicular, H = k̂×E/η, and E×H points along the direction of travel.",13-05
+"Propagation constant of a general medium?","γ = α + jβ = √(jωμ(σ + jωε)); fields vary as e<sup>−γz</sup>.",13-05
+"Skin depth of a good conductor?","δ = 1/√(πfμσ); fields and current fall by 1/e per δ (8.686 dB).",13-05
+"Copper's skin depth at 60 Hz, 1 MHz and 1 GHz?","About 8.5 mm, 66 µm and 2.1 µm.",13-05
+"Surface resistance?","R<sub>s</sub> = 1/(σδ) = √(πfμ/σ), rising as √f; the wall behaves like a sheet one skin depth thick.",13-05
+"AC resistance of a round wire much thicker than δ?","R<sub>s</sub>/(2πa) per metre, about a/(2δ) times the DC value.",13-05
+"Wavelength inside a good conductor?","2πδ: the wave dies within about one-sixth of its own wavelength.",13-05
+"Why do submarines use very low frequencies?","Seawater (σ ≈ 4 S/m) has a skin depth of a few metres at tens of kHz and much less above, so only the lowest frequencies reach useful depths.",13-05
+"Phase velocity versus group velocity?","v<sub>p</sub> = ω/β is the speed of a single frequency's phase; v<sub>g</sub> = dω/dβ is the speed of energy and signals. They differ in a dispersive medium.",13-05
+"Circular polarization?","Two equal orthogonal components 90° apart in phase; the field vector rotates once per cycle. Its handedness is defined relative to the direction of travel.",13-05
+"Reflection coefficient at normal incidence?","Γ = (η<sub>2</sub> − η<sub>1</sub>)/(η<sub>2</sub> + η<sub>1</sub>); τ = 1 + Γ.",13-06
+"Air-to-glass (n = 1.5) reflectance at normal incidence?","[(1.5 − 1)/(1.5 + 1)]² = 4% per surface.",13-06
+"Quarter-wave antireflection coating?","Index √(n<sub>0</sub>n<sub>s</sub>) and thickness λ<sub>0</sub>/(4n<sub>1</sub>): the two reflections cancel at the design wavelength.",13-06
+"Snell's law?","n<sub>1</sub> sin θ<sub>i</sub> = n<sub>2</sub> sin θ<sub>t</sub>: the tangential wavenumber is continuous across the boundary.",13-06
+"Critical angle?","sin θ<sub>c</sub> = n<sub>2</sub>/n<sub>1</sub> for n<sub>1</sub> > n<sub>2</sub>; beyond it all power reflects and an evanescent field decays in the second medium.",13-06
+"Brewster angle?","tan θ<sub>B</sub> = n<sub>2</sub>/n<sub>1</sub>; parallel (TM) polarization is transmitted with no reflection. Glare from water is therefore mostly s-polarized.",13-06
+"How does a thin metal sheet shield?","By reflection (impedance mismatch, about 20 log[η<sub>0</sub>/4|η<sub>c</sub>|]) plus absorption (8.686 dB per skin depth of thickness).",13-06
+"Telegrapher's equations (lossless)?","∂v/∂z = −L′ ∂i/∂t and ∂i/∂z = −C′ ∂v/∂t; Z<sub>0</sub> = √(L′/C′), v<sub>p</sub> = 1/√(L′C′).",13-07
+"Voltage launched onto a line by a source V<sub>s</sub> with resistance R<sub>s</sub>?","v<sup>+</sup> = V<sub>s</sub>Z<sub>0</sub>/(R<sub>s</sub> + Z<sub>0</sub>): the line looks like Z<sub>0</sub> until reflections return.",13-07
+"Reflection coefficient at an open and at a short?","+1 (voltage doubles) and −1 (voltage cancels).",13-07
+"What is a bounce diagram?","A space–time plot of each reflected wave; each round trip multiplies the wave by Γ<sub>L</sub>Γ<sub>S</sub>, and the load voltage converges to the DC divider value.",13-07
+"When is a PCB trace a transmission line?","When its one-way delay exceeds about one-sixth of the signal's rise time (rules from one-quarter to one-tenth are used); the real threshold depends on driver impedance and noise budget.",13-07
+"What does a capacitive load do to a step on a line?","Starts as a short (Γ = −1) and ends as an open; the load voltage rises as 2v<sup>+</sup>(1 − e<sup>−t/Z₀C</sup>), slowing the edge.",13-07
+"Series versus parallel (end) termination?","Series: R<sub>s</sub> = Z<sub>0</sub> at the source, half-amplitude wave doubles at an open end, no DC power. Parallel: R<sub>L</sub> = Z<sub>0</sub> at the end, no reflections anywhere, but DC current.",13-07
+"What does a TDR measure?","Reflections of a fast step versus time: distance = v<sub>p</sub>t/2, impedance from the reflected step's size, L or C from its shape.",13-07
+"Input impedance of a lossless line?","Z<sub>in</sub> = Z<sub>0</sub>(Z<sub>L</sub> + jZ<sub>0</sub> tan βℓ)/(Z<sub>0</sub> + jZ<sub>L</sub> tan βℓ).",13-08
+"What do λ/2 and λ/4 lines do to a load?","λ/2 repeats Z<sub>L</sub>; λ/4 inverts it to Z<sub>0</sub>²/Z<sub>L</sub>.",13-08
+"Input impedance of short- and open-circuited stubs?","Short: jZ<sub>0</sub> tan βℓ (a short one is an inductor). Open: −jZ<sub>0</sub> cot βℓ (a short one is a capacitor ≈ C′ℓ).",13-08
+"VSWR in terms of Γ?","(1 + |Γ|)/(1 − |Γ|): the ratio of maximum to minimum voltage along the line.",13-08
+"Return loss and mismatch loss?","RL = −20 log|Γ|; ML = −10 log(1 − |Γ|²), the power not delivered because of reflection.",13-08
+"Where are the voltage maxima and minima on a mismatched line?","Max where Γ(d) = Γ<sub>L</sub>e<sup>−j2βd</sup> is real and positive, min a quarter-wavelength away; they repeat every λ/2.",13-08
+"Quarter-wave transformer impedance?","Z<sub>1</sub> = √(Z<sub>0</sub>R<sub>L</sub>), exact only at the design frequency.",13-08
+"Low-loss attenuation constant of a line?","α ≈ R′/(2Z<sub>0</sub>) + G′Z<sub>0</sub>/2: conductor loss rises as √f (skin effect), dielectric loss as f.",13-08
+"Condition for a distortionless line?","R′/L′ = G′/C′: α and v<sub>p</sub> become independent of frequency.",13-08
+"What is the Smith chart?","The Γ plane with circles of constant normalized resistance and reactance drawn on it; moving along a lossless line rotates Γ about the centre, once per λ/2.",13-09
+"Normalized impedance from Γ?","z = (1 + Γ)/(1 − Γ); the chart's centre is a perfect match (Γ = 0).",13-09
+"Q and component values of an L-network?","Q = √(R<sub>high</sub>/R<sub>low</sub> − 1); series X = QR<sub>low</sub>, shunt B = Q/R<sub>high</sub>.",13-09
+"Why do larger impedance ratios give narrower matches?","A larger step needs a higher Q, and the reactances drift off the match faster with frequency.",13-09
+"How does a single-stub match work?","Move along the line until the admittance's real part equals 1/Z<sub>0</sub>, then cancel the susceptance with a short or open stub.",13-09
+"What does the Bode–Fano limit say?","For a parallel RC load, ∫ln(1/|Γ|)dω ≤ π/(RC): no lossless network can match it well over an arbitrarily wide band.",13-09
+"Conjugate match versus noise match?","Conjugate (Z<sub>S</sub> = Z<sub>L</sub>*) maximizes power transfer; a low-noise amplifier is matched to its noise-optimal source impedance, which is generally different.",13-09
+"TE<sub>10</sub> cutoff of a rectangular guide?","f<sub>c</sub> = c/(2a): half a wavelength must fit across the broad wall.",13-10
+"Single-mode band of a standard guide with b = a/2?","From c/(2a) to c/a, where TE<sub>20</sub> and TE<sub>01</sub> start.",13-10
+"Phase constant and guide wavelength above cutoff?","β = k√(1 − (f<sub>c</sub>/f)²); λ<sub>g</sub> = λ/√(1 − (f<sub>c</sub>/f)²), longer than in free space.",13-10
+"Phase and group velocity in a waveguide?","v<sub>p</sub> > c and v<sub>g</sub> < c with v<sub>p</sub>v<sub>g</sub> = c²; v<sub>g</sub> → 0 at cutoff.",13-10
+"TE wave impedance?","η/√(1 − (f<sub>c</sub>/f)²): larger than η, infinite at cutoff.",13-10
+"What happens below cutoff?","The field decays as e<sup>−αz</sup> with α ≈ k<sub>c</sub> = π/a (TE<sub>10</sub>) well below cutoff: the principle of a microwave oven's door holes, together with the weak coupling of small apertures.",13-10
+"Resonant frequencies of a rectangular cavity?","f = (c/2)√((m/a)² + (n/b)² + (ℓ/d)²); TE<sub>101</sub> is lowest when b is the smallest side.",13-10
+"Quality factor of a cavity?","Q = ω<sub>0</sub>W/P<sub>loss</sub>; roughly volume/(surface × skin depth), thousands for copper at X band.",13-10
+"Loaded Q at critical coupling?","Q<sub>L</sub> = Q<sub>0</sub>/2 (external loss equals internal loss), so the bandwidth doubles.",13-10
+"Numerical aperture and V-number of a step-index fibre?","NA = √(n<sub>1</sub>² − n<sub>2</sub>²); V = (2πa/λ)NA.",13-10
+"Single-mode condition for a step-index fibre?","V < 2.405 (the first zero of J<sub>0</sub>).",13-10
+"Why is multimode fibre limited to short links?","Its many modes travel at different speeds (modal dispersion), smearing pulses over distance.",13-10
+"Radiation resistance of a short dipole with uniform current?","(2πη<sub>0</sub>/3)(ℓ/λ)² ≈ 789(ℓ/λ)² Ω; a centre-fed short dipole with triangular current has a quarter of this.",13-11
+"Directivity of a short dipole and a half-wave dipole?","1.5 (1.76 dBi) and 1.64 (2.15 dBi).",13-11
+"Radiation resistance of a half-wave dipole?","About 73 Ω (plus about j42 Ω of reactance unless shortened slightly).",13-11
+"Gain versus directivity?","G = e<sub>r</sub>D with radiation efficiency e<sub>r</sub> = R<sub>rad</sub>/(R<sub>rad</sub> + R<sub>loss</sub>).",13-11
+"Effective aperture and gain?","A<sub>e</sub> = Gλ²/(4π).",13-11
+"Friis transmission equation?","P<sub>r</sub> = P<sub>t</sub>G<sub>t</sub>G<sub>r</sub>[λ/(4πR)]²; free-space path loss 20 log(4πR/λ) dB, +6 dB per doubling of distance.",13-11
+"What is EIRP?","Transmitted power times antenna gain (dBm + dBi): the power an isotropic antenna would need to give the same peak power density.",13-11
+"Where does the far field begin for an aperture of size D?","About 2D²/λ (and beyond a few wavelengths).",13-11
+"Why does a phone's head exposure use SAR rather than power density?","The head is in the antenna's reactive near field (r ≲ λ/2π), where far-field power density is meaningless; absorbed power per mass is what heats tissue.",13-11
+"Array factor of N equally spaced elements?","|sin(Nψ/2)/sin(ψ/2)| with ψ = kd sin θ + β; the pattern is element pattern × array factor.",13-11
+"How is a phased array steered?","Progressive phase β = −kd sin θ<sub>0</sub> between neighbours points the beam to θ<sub>0</sub>.",13-11
+"Condition for no grating lobes when scanning to θ<sub>max</sub>?","Element spacing d < λ/(1 + |sin θ<sub>max</sub>|); λ/2 spacing avoids them for every scan short of endfire.",13-11
+"Why does an array's EIRP grow as N²?","N elements give N times the power and, adding coherently, N times the gain: 6 dB per doubling.",13-11
+"What happens to EIRP when a phased array scans off broadside?","The element pattern falls (roughly as cos θ in power for a planar array), so EIRP drops by about 3 dB at 60°; the beam also widens.",13-11

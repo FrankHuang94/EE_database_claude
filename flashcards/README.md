@@ -24,3 +24,7 @@ Math is written as `\(...\)` (inline) and `\[...\]` (display), which Anki render
 | 07 · Circuit Analysis II | [07-circuit-analysis-2-transient-and-ac.csv](07-circuit-analysis-2-transient-and-ac.csv) | 134 |
 | 08 · Digital Logic Design | [08-digital-logic-design.csv](08-digital-logic-design.csv) | 110 |
 | 09 · Semiconductor Devices | [09-semiconductor-devices.csv](09-semiconductor-devices.csv) | 94 |
+| 10 · Electronics I | [10-electronics-1.csv](10-electronics-1.csv) | 82 |
+| 11 · Signals and Systems | [11-signals-and-systems.csv](11-signals-and-systems.csv) | 87 |
+| 12 · Electronics II | [12-electronics-2.csv](12-electronics-2.csv) | 93 |
+| 13 · Electromagnetics | [13-electromagnetics.csv](13-electromagnetics.csv) | 101 |
