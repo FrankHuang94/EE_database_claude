@@ -437,4 +437,57 @@ v.check("15-11.10a", f_plain)
 v.check("15-11.10b", f_pw)
 v.assert_true("P10: about 15% low", round(100 * (1 - f_plain / f0)) == 15)
 
+# ---------------------------------------------------------------- audit additions
+import sympy as sp  # noqa: E402
+zs, Ts_ = sp.symbols("z T", positive=True)
+q_ = sp.exp(-Ts_)
+Zstep = Ts_ * zs / (zs - 1) ** 2 - zs / (zs - 1) + zs / (zs - q_)
+G_sym = sp.simplify((zs - 1) / zs * Zstep)
+target = ((Ts_ - 1 + q_) * zs + (1 - q_ - Ts_ * q_)) / ((zs - 1) * (zs - q_))
+v.assert_true("3.2/Ex2: ZOH equivalent of 1/[s(s+1)] by partial fractions", sp.simplify(G_sym - target) == 0)
+Ga_sym = sp.simplify((zs - 1) / zs * (zs / (zs - 1) - zs / (zs - sp.exp(-2 * Ts_))))
+v.assert_true("3.2: ZOH equivalent of a/(s+a) (a = 2)", sp.simplify(Ga_sym - (1 - sp.exp(-2 * Ts_)) / (zs - sp.exp(-2 * Ts_))) == 0)
+# Ex 5: the other two Jury conditions
+for T_, lim_pub in ((1.0, 26.4), (0.1, 2.4e4)):
+    q = math.exp(-T_)
+    k_lim = 2 * (1 + q) / (T_ + T_ * q - 2 + 2 * q)
+    v.assert_true(f"Ex5: 1 - a1 + a0 > 0 needs K < {lim_pub} at T = {T_}",
+                  (round(k_lim, 1) == lim_pub) if lim_pub < 100 else (round(k_lim / 1e4, 1) == 2.4))
+    a1, a0 = char_servo(1.7, T_)[1:]
+    v.assert_true(f"Ex5: 1 + a1 + a0 = K T (1 - q) at T = {T_}", abs((1 + a1 + a0) - 1.7 * T_ * (1 - q)) < 1e-12)
+# 3.4 steady state in z and Problem 12
+for T_ in (0.1, 0.5, 1.0):
+    q = math.exp(-T_)
+    n1, n0 = T_ - 1 + q, 1 - q - T_ * q
+    v.assert_true(f"3.4: n1 + n0 = T(1 - e^-T) at T = {T_}", abs((n1 + n0) - T_ * (1 - q)) < 1e-14)
+T_ = 0.5
+q = math.exp(-T_)
+n1, n0 = T_ - 1 + q, 1 - q - T_ * q
+num12, den12 = [n1, n0], [1, -(1 + q), q]
+v.check("15-11.12a", int(sum(abs(r - 1) < 1e-9 for r in np.roots(den12))))
+Kv12 = (n1 + n0) / (T_ * (1 - q))
+v.check("15-11.12b", Kv12)
+# sampled ramp error by direct simulation of the discrete closed loop E/R = den/(den + num)
+kk = np.arange(0, 4000)
+r_k = kk * T_
+e_k = signal.lfilter(den12, np.polyadd(den12, num12), r_k)
+v.check("15-11.12c", e_k[-1])
+v.assert_true("P12: ramp error equals 1/Kv", abs(e_k[-1] - 1 / Kv12) < 1e-9)
+# Problem 11: digital derivative
+Kd, Tf, T11 = 0.1, 0.005, 0.02
+pole_be, gain_be = Tf / (Tf + T11), Kd / (Tf + T11)
+d_be = signal.lfilter([gain_be, -gain_be], [1, -pole_be], np.ones(5))
+v.check("15-11.11a", pole_be)
+v.check("15-11.11b", gain_be)
+v.check("15-11.11c", d_be[1])
+v.assert_true("P11: backward Euler of Kd s/(1 + Tf s) by substitution", np.allclose([d_be[0]], [gain_be]))
+tn, td = dg.tustin([Kd, 0], [Tf, 1], T11)
+tn, td = np.asarray(tn) / td[0], np.asarray(td) / td[0]
+v.check("15-11.11d", -td[1])
+v.check("15-11.11e", tn[0])
+d_tu = signal.lfilter(tn, td, np.ones(5))
+v.check("15-11.11f", d_tu[1])
+v.assert_true("P11: Tustin pole (2Tf - T)/(2Tf + T)", abs(-td[1] - (2 * Tf - T11) / (2 * Tf + T11)) < 1e-12)
+v.assert_true("P11: Tustin output alternates in sign", d_tu[1] < 0 < d_tu[2])
+
 sys.exit(v.finish())

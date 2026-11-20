@@ -36,7 +36,7 @@ Read §3 of the chapter. `loops.py` builds on the earlier labs: margins come fro
 | 2 | ngspice | 1.70 dB peak at 93.1 kHz, −3 dB at 313 kHz |
 | 3 | Jitter | minimum about 413 fs near 316 kHz |
 | 4 | ESR window | 0.094–0.568 Ω; 54.3° at 0.3 Ω in Python and ngspice |
-| 5 | Droop | load line flat at −40 mV; PI peaks at −40 mV at 5.44 µs and recovers |
+| 5 | Droop | load line flat at −40 mV; PI (ω0 = g/C at 58.5 kHz, crossover 60.3 kHz) peaks at −40 mV at 5.44 µs and recovers |
 | 6 | Throttling | power falls from 200 W at about 75 s toward 130 W; nearly identical curves for the other gains |
 
 ### Lab answer key

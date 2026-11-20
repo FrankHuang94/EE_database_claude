@@ -26,7 +26,7 @@ Transfer functions describe a system from the outside: input to output. The **st
 - **Power converters are analyzed in state space** by state-space averaging: inductor currents and capacitor voltages are the states (22-07).
 - **Multi-node thermal models of chips and packages** are state-space models with one state per thermal capacitance (15-01); thermal managers estimate unmeasured hot spots from a few sensors, which is an observer.
 - **Modern control methods** (optimal LQR control, Kalman filtering, model predictive control) are built on the state-space form.
-- **Simulators work in state space.** Every ODE solver integrates $\dot{\mathbf{x}} = f(\mathbf{x}, \mathbf{u})$; SPICE itself builds state equations from the circuit.
+- **Simulators work with the same ideas.** Every ODE solver integrates $\dot{\mathbf{x}} = f(\mathbf{x}, \mathbf{u})$; SPICE instead assembles the circuit's modified nodal equations, a set of differential-algebraic equations, and integrates them implicitly, but the energy-storage elements still supply the dynamics.
 
 ## 2. Intuition first
 
@@ -46,7 +46,7 @@ $$
 \dot{\mathbf{x}} = A\mathbf{x} + B\mathbf{u}, \qquad \mathbf{y} = C\mathbf{x} + D\mathbf{u} ,
 $$
 
-with $A$ ($n \times n$), $B$ ($n \times m$), $C$ ($p \times n$) and $D$ ($p \times m$). Natural states are the energy stores: capacitor voltages, inductor currents, positions and velocities, temperatures of thermal capacitances. The transfer function is $C(sI - A)^{-1}B + D$ (15-02), and its poles are the eigenvalues of $A$ unless a cancellation hides one.
+with $A$ ($n \times n$), $B$ ($n \times m$), $C$ ($p \times n$) and $D$ ($p \times m$). (Notation: as in most control texts, this course writes the state-space matrices as plain capitals $A, B, C, D, K, L$ and keeps bold for vectors; this deviates from the bold matrices of [notation.md](../../../reference/notation.md) and of 02-09.) Natural states are the energy stores: capacitor voltages, inductor currents, positions and velocities, temperatures of thermal capacitances. The transfer function is $C(sI - A)^{-1}B + D$ (15-02), and its poles are the eigenvalues of $A$ unless a cancellation hides one.
 
 ### 3.2 Solving the state equations
 
@@ -80,25 +80,37 @@ The characteristic polynomial's coefficients sit in the last row, which makes po
 
 ### 3.4 Controllability
 
-A system is **controllable** if some input can move the state from any initial value to any final value in finite time. For a single input the test is the rank of the **controllability matrix**
+A system is **controllable** if some input can move the state from any initial value to any final value in finite time. The test, for any number of inputs, is the rank of the **controllability matrix**
 
 $$
 \mathcal{C} = \begin{bmatrix} B & AB & A^2B & \cdots & A^{n-1}B \end{bmatrix} ,
 $$
 
-which must be $n$. Why: by the Cayley–Hamilton theorem, $e^{At}$ is a combination of $I, A, \ldots, A^{n-1}$, so the forced response always lies in the column space of $\mathcal{C}$. If that space is smaller than $\mathbb{R}^n$, some directions can never be reached.
+which must be $n$.
+
+> **Math refresher — the Cayley–Hamilton theorem.** Every square matrix satisfies its own characteristic equation: if $\det(sI - A) = s^n + a_{n-1}s^{n-1} + \cdots + a_0$, then $A^n + a_{n-1}A^{n-1} + \cdots + a_0I = 0$. For a diagonalizable $A = V\Lambda V^{-1}$ it is immediate: $A^k = V\Lambda^kV^{-1}$, so the polynomial evaluated at $A$ is $V\,\mathrm{diag}(p(\lambda_i))\,V^{-1}$, and every $p(\lambda_i) = 0$ because the $\lambda_i$ are the roots (02-08). The theorem holds for every square matrix. Its consequence: $A^n$, and therefore every higher power, is a combination of $I, A, \ldots, A^{n-1}$. So is $e^{At} = \sum_k A^kt^k/k!$, with coefficients that depend on time: $e^{At} = \sum_{k=0}^{n-1}\alpha_k(t)A^k$.
+
+**Why the test is necessary.** Starting from $\mathbf{x}(0) = 0$, the state at time $t$ is
+
+$$
+\mathbf{x}(t) = \int_0^te^{A(t - \tau)}B\mathbf{u}(\tau)\,d\tau = \sum_{k=0}^{n-1}A^kB\int_0^t\alpha_k(t - \tau)\mathbf{u}(\tau)\,d\tau ,
+$$
+
+a combination of the columns of $\mathcal{C}$, whatever the input. If the rank is below $n$, the reachable states fill only a subspace, and the directions outside it can never be reached.
+
+> **Going deeper — why the test is sufficient.** If $\operatorname{rank}\mathcal{C} = n$, the **controllability Gramian** $W(t_f) = \int_0^{t_f}e^{A\sigma}BB^Te^{A^T\sigma}d\sigma$ is invertible for every $t_f > 0$. (If $W\mathbf{v} = 0$ for some $\mathbf{v} \ne 0$, then $\mathbf{v}^TW\mathbf{v} = \int\lVert B^Te^{A^T\sigma}\mathbf{v}\rVert^2d\sigma = 0$, so $\mathbf{v}^Te^{A\sigma}B = 0$ for every $\sigma$; differentiating $n - 1$ times at $\sigma = 0$ gives $\mathbf{v}^T\mathcal{C} = 0$, contradicting full rank.) The input $\mathbf{u}(\tau) = B^Te^{A^T(t_f - \tau)}W(t_f)^{-1}(\mathbf{x}_f - e^{At_f}\mathbf{x}_0)$ then drives $\mathbf{x}_0$ to $\mathbf{x}_f$ exactly at $t_f$: substituting it into the solution of §3.2 and changing variable to $\sigma = t_f - \tau$ turns the integral into $W(t_f)W(t_f)^{-1}(\mathbf{x}_f - e^{At_f}\mathbf{x}_0)$. The input needed grows as $W$ approaches singularity, which is why a nearly uncontrollable system needs enormous effort (lab Part 3).
 
 An uncontrollable mode is untouched by the input, and therefore by any feedback through it: its eigenvalue appears unchanged in every closed loop. If it is stable the system is still **stabilizable**; if it is unstable no controller can fix it. In the transfer function, an uncontrollable mode cancels.
 
 ### 3.5 Observability and duality
 
-A system is **observable** if its initial state can be determined from the output over a finite time. The test is the rank of the **observability matrix**
+A system is **observable** if its initial state can be determined from the output over a finite time. The input's contribution to the output is known and can be subtracted, so take $\mathbf{u} = 0$. Then $\mathbf{y} = C\mathbf{x}$, and differentiating, $\dot{\mathbf{y}} = CA\mathbf{x}$, …, $\mathbf{y}^{(n-1)} = CA^{n-1}\mathbf{x}$. At $t = 0$ these stack into
 
 $$
-\mathcal{O} = \begin{bmatrix} C \\ CA \\ \vdots \\ CA^{n-1} \end{bmatrix} ,
+\begin{bmatrix} \mathbf{y}(0) \\ \dot{\mathbf{y}}(0) \\ \vdots \\ \mathbf{y}^{(n-1)}(0) \end{bmatrix} = \mathcal{O}\,\mathbf{x}(0), \qquad \mathcal{O} = \begin{bmatrix} C \\ CA \\ \vdots \\ CA^{n-1} \end{bmatrix} .
 $$
 
-which must be $n$. Observability of $(A, C)$ is controllability of $(A^T, C^T)$: the **duality** that lets every controller result be reused for estimators. An unobservable mode also cancels in the transfer function, and it can be unstable while the output looks fine.
+If $\operatorname{rank}\mathcal{O} = n$, this linear system has exactly one solution $\mathbf{x}(0)$. (In practice an observer, §3.7, recovers the state without differentiating noisy measurements.) If the rank is below $n$, some $\mathbf{x}(0) \ne 0$ has $\mathcal{O}\mathbf{x}(0) = 0$, and by Cayley–Hamilton $Ce^{At}\mathbf{x}(0) = \sum_k\alpha_k(t)CA^k\mathbf{x}(0) = 0$ for all $t$: that initial state produces no output at all and cannot be told apart from zero. So the test is rank $\mathcal{O} = n$. Observability of $(A, C)$ is controllability of $(A^T, C^T)$, since $\mathcal{O}^T = [C^T\ \ A^TC^T\ \cdots]$: the **duality** that lets every controller result be reused for estimators. An unobservable mode also cancels in the transfer function, and it can be unstable while the output looks fine.
 
 > **Going deeper — minimal realizations.** A transfer function of order $n$ (after cancelling common factors) has state-space realizations of dimension $n$ that are both controllable and observable, called **minimal**. Any realization with more states contains uncontrollable or unobservable parts. Kalman's decomposition splits a general system into four parts (controllable and observable, controllable only, observable only, neither); the transfer function sees only the first.
 
@@ -116,7 +128,15 @@ $$
 K = \begin{bmatrix} 0 & \cdots & 0 & 1 \end{bmatrix}\mathcal{C}^{-1}\phi(A) ,
 $$
 
-where $\phi(s)$ is the desired characteristic polynomial evaluated at the matrix $A$.
+where $\phi(s)$ is the desired characteristic polynomial evaluated at the matrix $A$ (single input).
+
+**Where Ackermann's formula comes from ($n = 2$).** Let $A_K = A - BK$ have the desired polynomial $\phi(s) = s^2 + \alpha_1s + \alpha_0$, so $\phi(A_K) = 0$ by Cayley–Hamilton. Write $A = A_K + BK$ and expand: $A^2 = A(A_K + BK) = (A_K + BK)A_K + ABK = A_K^2 + BKA_K + ABK$. Then
+
+$$
+\phi(A) = \underbrace{A_K^2 + \alpha_1A_K + \alpha_0I}_{=\,0} + B(KA_K + \alpha_1K) + ABK = \begin{bmatrix} B & AB \end{bmatrix}\begin{bmatrix} KA_K + \alpha_1K \\ K \end{bmatrix} .
+$$
+
+Multiplying on the left by $[0\ \ 1]\,\mathcal{C}^{-1}$ picks out the bottom block: $K = [0\ \ 1]\,\mathcal{C}^{-1}\phi(A)$. For general $n$ the same expansion gives $\phi(A) = \mathcal{C}\,[\,\cdots;\ K\,]$ with $K$ in the last block, hence the formula. It needs $\mathcal{C}$ invertible, which is controllability again.
 
 The **reference scaling** $N$ makes the DC gain 1. At steady state $\dot{\mathbf{x}} = 0$, so $\mathbf{x}_{ss} = -(A - BK)^{-1}BNr$ and
 
@@ -160,9 +180,9 @@ For a first-order plant this is exactly a PI controller with its proportional ac
 
 ### Example 15-10.1 · The motor in state space and in canonical form (tier A)
 
-**Setup.** The motor of 15-01 Example 15-01.2 has $\mathbf{x} = [i,\ \omega]^T$, $A = \begin{bmatrix} -R/L & -K/L \\ K/J & -B/J \end{bmatrix}$, $B = [1/L,\ 0]^T$ and $C = [0,\ 1]$ with $R$ = 2 Ω, $L$ = 1 mH, $K$ = 0.05 V·s/rad, $J$ = 2 × 10⁻⁵ kg·m² and $B$ = 10⁻⁵ N·m·s/rad. Find the eigenvalues, check controllability, and write the controllable canonical form.
+**Setup.** The motor of 15-01 Example 15-01.2 has $\mathbf{x} = [i,\ \omega]^T$, $A = \begin{bmatrix} -R/L_a & -K_m/L_a \\ K_m/J & -b/J \end{bmatrix}$, $B = [1/L_a,\ 0]^T$ and $C = [0,\ 1]$ with $R$ = 2 Ω, armature inductance $L_a$ = 1 mH, motor constant $K_m$ = 0.05 V·s/rad, $J$ = 2 × 10⁻⁵ kg·m² and friction $b$ = 10⁻⁵ N·m·s/rad. (Subscripts keep these apart from the input matrix $B$, the feedback gain $K$ and the observer gain $L$.) Find the eigenvalues, check controllability, and write the controllable canonical form.
 
-**Solution.** The eigenvalues are **−65.1** and **−1935.4** s⁻¹ (15-02 Example 15-02.2). The controllability matrix $[B,\ AB] = \begin{bmatrix} 1/L & -R/L^2 \\ 0 & K/(JL) \end{bmatrix}$ has determinant $K/(JL^2)$ = **2.5 × 10⁹**, nonzero, so the voltage controls both current and speed. From $G(s) = 2.5 \times 10^6/(s^2 + 2000.5s + 126{,}000)$:
+**Solution.** The eigenvalues are **−65.1** and **−1935.4** s⁻¹ (15-02 Example 15-02.2). The controllability matrix $[B,\ AB] = \begin{bmatrix} 1/L_a & -R/L_a^2 \\ 0 & K_m/(JL_a) \end{bmatrix}$ has determinant $K_m/(JL_a^2)$ = **2.5 × 10⁹**, nonzero, so the voltage controls both current and speed. From $G(s) = 2.5 \times 10^6/(s^2 + 2000.5s + 126{,}000)$:
 
 $$
 A_c = \begin{bmatrix} 0 & 1 \\ -126{,}000 & -2000.5 \end{bmatrix}, \quad B_c = \begin{bmatrix} 0 \\ 1 \end{bmatrix}, \quad C_c = \begin{bmatrix} 2.5 \times 10^6 & 0 \end{bmatrix} .
@@ -361,7 +381,7 @@ Rank $n$ means every state direction can be reached. By Cayley–Hamilton, the f
 
 <details><summary>Answer</summary>
 
-With all $n$ states fed back through $n$ gains, all $n$ closed-loop poles can be placed anywhere (if controllable). Output feedback with a fixed controller moves poles along a root locus only.
+With all $n$ states fed back through $n$ gains, all $n$ closed-loop poles can be placed anywhere (if controllable). Output feedback through a single adjustable gain moves the poles only along a root locus; a dynamic output controller, such as an observer plus state feedback (§3.7), can again place every pole (if the plant is also observable).
 
 </details>
 

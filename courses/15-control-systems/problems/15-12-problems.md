@@ -42,7 +42,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 15-12.8 [B]
 
-**Sizing output capacitance.** An accelerator's 0.8 V rail sees 100 A load steps and may move by 40 mV. Its regulator's loop crosses over at 100 kHz. Using the transconductance model, how much output capacitance does a load-line design need? A critically damped PI design?
+**Sizing output capacitance.** An accelerator's 0.8 V rail sees 100 A load steps and may move by 40 mV. Its regulator's proportional path has $g/C = 2\pi \times 100$ kHz (the crossover of a load-line design). Using the transconductance model, how much output capacitance does a load-line design need? A critically damped PI design with the same $g/C$, and where does that PI loop actually cross over?
 
 ### Problem 15-12.9 [A]
 

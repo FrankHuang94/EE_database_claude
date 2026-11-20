@@ -42,7 +42,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 15-10.8 [C]
 
-**Nearly uncontrollable.** Two RC circuits driven in parallel have time constants 1 ms and $\tau_2$. With time measured in milliseconds, find the singular values and condition number of the controllability matrix for $\tau_2$ = 1.1 ms and 1.01 ms. What does the trend mean for the input needed to set the two voltages independently?
+**Nearly uncontrollable.** Two RC circuits driven in parallel have time constants 1 ms and $\tau_2$. With time measured in milliseconds, find the singular values and condition number of the controllability matrix for $\tau_2$ = 1.1 ms and 1.01 ms. What does the trend mean for the input needed to set the two voltages independently? (The singular values of a matrix $M$ are the square roots of the eigenvalues of $M^TM$; the condition number is the largest divided by the smallest, a measure of how close $M$ is to losing rank; see 02-10 for its role in solving linear systems.)
 
 ### Problem 15-10.9 [C]
 

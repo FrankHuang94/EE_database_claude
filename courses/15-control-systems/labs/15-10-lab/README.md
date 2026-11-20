@@ -20,7 +20,7 @@ Read §3 of the chapter. `statespace.py` implements the controllability and obse
 
 1. **Modes (Part 1).** Plot Example 15-10.2's trajectories from several initial states in the $(x_1, x_2)$ plane, with the eigenvector directions.
 2. **State feedback in ngspice (Part 2).** Run `state_feedback.cir` and compare its overshoot and peak time with $16/(s^2 + 4s + 16)$. *Predict first:* both numbers.
-3. **Nearly uncontrollable (Part 3).** For two RC circuits with time constants 1 ms and $\tau_2$, sweep $\tau_2$ toward 1 ms and plot the smallest singular value of the controllability matrix (time in ms).
+3. **Nearly uncontrollable (Part 3).** For two RC circuits with time constants 1 ms and $\tau_2$, sweep $\tau_2$ toward 1 ms and plot the smallest singular value of the controllability matrix (time in ms), then compute the minimum input energy, from the controllability Gramian, needed to set the two voltages to +1 and −1 in 1 ms.
 4. **Observer and noise (Part 4).** Add noise to the measured position in Example 15-10.5 and compare the estimated velocity's noise for observer poles at −5, −10 and −40.
 
 ## Expected results

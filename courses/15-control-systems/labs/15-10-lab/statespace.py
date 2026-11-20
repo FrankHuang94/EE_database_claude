@@ -4,9 +4,9 @@
     acker(A, B, poles)               state-feedback gain K (single input) by Ackermann's formula
     observer_gain(A, C, poles)       observer gain L (single output), by duality with acker
     tf_of(A, B, C, D=0)              (num, den) of C (sI - A)^-1 B + D
-    step_state_feedback(...)         closed-loop step response of u = -K x + N r
-    simulate_observer(...)           plant + observer + state feedback from estimates, by the matrix exponential
     augment_integral(A, B, C)        plant augmented with the integral of the tracking error
+    closed_loop_response(...)        response of a closed-loop state model (state feedback, observer, augmentation)
+                                     to a reference step from an initial state, by the matrix exponential
 
 Everything is linear, so simulations use the exact discretization x[k+1] = Ad x[k] + Bd u[k] for piecewise-constant
 inputs, or the matrix exponential of the whole closed-loop system.

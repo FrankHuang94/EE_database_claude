@@ -20,6 +20,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import sympy as sp
 from scipy import signal
 from scipy.linalg import expm
 from scipy.optimize import brentq, minimize_scalar
@@ -217,8 +218,12 @@ v.assert_true("Ex4: load-line droop settles at -40 mV", abs(lp.droop(dI, C, wll,
 Lpi = lambda w: (wpi / (1j * w)) * (1 + wpi / 4 / (1j * w))  # noqa: E731
 wcp, pmp = crossover(Lpi, lambda w: -math.pi / 2 - math.atan(wpi / 4 / w), 1e3, 1e8)
 v.check("Ex 15-12.4h", pmp)
+v.check("Ex 15-12.4i", wcp)
+v.check("Ex 15-12.4j", wcp / TWO_PI / 1e3)
+v.assert_true("3.4: PI crossover is 1.029 w0 from u^4 - u^2 - 1/16 = 0",
+              abs(wcp / wpi - math.sqrt((1 + math.sqrt(5) / 2) / 2)) < 1e-9 and round(wcp / wpi, 3) == 1.029)
 v.assert_true("Ex4: PI crosses slightly above wc", 1 < wcp / wpi < 1.05)
-v.assert_true("Ex4: PI needs 26% less bandwidth", round(100 * (1 - wpi / wll)) == 26)
+v.assert_true("Ex4: PI needs 24% less actual crossover", round(100 * (1 - wcp / wll)) == 24)
 
 # ---------------------------------------------------------------- Example 15-12.5 (jitter)
 def jitter_trap(fc, L_ref=-110.0, L_vco=-120.0, f_out=2e9, n=400001):
@@ -399,7 +404,9 @@ v.assert_true("Lab discussion 1: crossover moves 0.2%, margin by hundredths of a
 
 # ---------------------------------------------------------------- Problems
 v.check("15-12.1a", 50e-6 * TWO_PI * 5e8 / (TWO_PI * 64 * 500e-12))
-v.check("15-12.1b", 0.0)
+s_, Ksym, tsym = sp.symbols("s K tau", positive=True)
+e_final = sp.limit(s_ * (1 / s_**2) / (1 + Ksym * (1 + s_ * tsym) / s_**2), s_, 0)
+v.check("15-12.1b", float(e_final))
 keys2 = {45: "abcd", 50: "efgh", 65: "ijkl"}
 for pm, ks in keys2.items():
     x = x_from_pm(pm)
@@ -451,6 +458,11 @@ phi6 = math.sqrt(2 * 1e-10 * (1e6 - 1e4))
 v.check("15-12.6a", phi6 * 1e3)
 v.check("15-12.6b", phi6 / (TWO_PI * 1e9) * 1e12)
 v.check("15-12.6c", 100 * (1e6 - 1e5) / (1e6 - 1e4))
+v.assert_true("Sol 6: 95.3% of the rms phase", round(100 * math.sqrt((1e6 - 1e5) / (1e6 - 1e4)), 1) == 95.3)
+d45, d60 = design(200e3, 45, Icp, Kv, N), design(200e3, 60, Icp, Kv, N)
+v.assert_true("3.2: area x1.55 and ratio x2.7 from 45 to 60 deg at fixed fc",
+              round(d60["Ctot"] / d45["Ctot"], 2) == 1.55 and round((d60["b"] - 1) / (d45["b"] - 1), 1) == 2.7)
+v.assert_true("Sol 5: N fixed gives 18.8%, the hop with N = 101 gives 18.9%", round(os60, 1) == 18.8 and round(100 * (ypk - 1), 1) == 18.9)
 
 wa7, pa7 = ldo_margin(0.3, RL=1000.0)
 v.check("15-12.7a", wa7 / TWO_PI / 1e3)
@@ -470,8 +482,13 @@ v.assert_true("P7a: RL = 10 ohm reference 621 kHz, 54.3 deg", round(wc6 / TWO_PI
 C8 = 100 / (TWO_PI * 1e5 * 0.04)
 v.check("15-12.8a", C8 * 1e3)
 v.check("15-12.8b", (2 / math.e) * C8 * 1e3)
+w8 = TWO_PI * 1e5
+wc8_, _ = crossover(lambda w: (w8 / (1j * w)) * (1 + w8 / 4 / (1j * w)), lambda w: -math.pi / 2 - math.atan(w8 / 4 / w), 1e3, 1e8)
+v.check("15-12.8c", wc8_ / TWO_PI / 1e3)
 
-v.check("15-12.9a", 20)
+relock = 20.0          # Example 15-12.1's stated relock time (µs); the downshift stalls only during the relock
+v.assert_true("P9: relock time is Example 15-12.1's c minus b (45 - 25 µs)", abs((200 / 10 + 5 + relock) - (200 / 10 + 5) - relock) < 1e-12)
+v.check("15-12.9a", relock)
 v.check("15-12.9b", 250 / 10)
 v.check("15-12.9c", (0.75 / 1.00) ** 2 * 1.0 / 2.0)
 v.check("15-12.9d", 0.75**2)

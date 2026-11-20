@@ -73,7 +73,7 @@ $$
 
 Two integrators (the VCO and the capacitor $C$) make the loop **type 2** (15-04): a reference frequency step leaves zero steady phase error, and a frequency ramp leaves a constant one. Two integrators also put the uncompensated phase at −180°, so the zero at $1/\tau_z$, from $R$, is what makes the loop stable; $C_2$ adds the pole at $1/\tau_p$ that filters the charge pump's current pulses (they would otherwise appear as **reference spurs**, sidebands at multiples of $f_{ref}$ on the output spectrum) at a cost in phase margin.
 
-**What the loop passes.** Write $T = L/(1 + L)$ and $S = 1/(1 + L)$ (15-04). Reference phase reaches the output as $\Theta_{out} = NT\,\Theta_{ref}$: low-pass, with the noise multiplied by $N$ (20 log N dB in power). Noise injected at the VCO's output reaches the output as $S$: since $\Theta_{out} = \Theta_n - L\Theta_{out}$, $\Theta_{out} = \Theta_n/(1 + L)$, a high-pass. The PLL suppresses its VCO's noise inside its bandwidth and passes the reference's.
+**What the loop passes.** Write $T = L/(1 + L)$ and $S = 1/(1 + L)$ (15-04). Reference phase reaches the output as $\Theta_{out} = NT\,\Theta_{ref}$: low-pass, with the noise multiplied by $N$ ($20\log_{10}N$ dB in power). Noise injected at the VCO's output reaches the output as $S$: since $\Theta_{out} = \Theta_n - L\Theta_{out}$, $\Theta_{out} = \Theta_n/(1 + L)$, a high-pass. The PLL suppresses its VCO's noise inside its bandwidth and passes the reference's.
 
 ### 3.2 Designing the loop filter for phase margin
 
@@ -95,7 +95,7 @@ $$
 \lvert L(j\omega_c)\rvert = \frac{K}{\omega_c^2}\frac{\sqrt{1 + x^2}}{\sqrt{1 + 1/x^2}} = \frac{K}{\omega_c^2}\,x = 1 \quad\Longrightarrow\quad K = \frac{\omega_c^2}{x} .
 $$
 
-**Step 4: the components.** $C + C_2 = I_{cp}K_v/(2\pi NK)$; since $\tau_p/\tau_z = C_2/(C + C_2) = 1/b$, $C_2 = (C + C_2)/b$; then $C$ follows, and $R = \tau_z/C$. The capacitor ratio $C/C_2 = b - 1$ grows quickly with the margin, which is why high-margin loop filters cost area.
+**Step 4: the components.** $C + C_2 = I_{cp}K_v/(2\pi NK)$; since $\tau_p/\tau_z = C_2/(C + C_2) = 1/b$, $C_2 = (C + C_2)/b$; then $C$ follows, and $R = \tau_z/C$. The capacitor ratio $C/C_2 = b - 1$ grows quickly with the margin. The total capacitance, which sets the filter's area, grows more slowly: at fixed $f_c$, $C + C_2 = I_{cp}K_v\sqrt b/(2\pi N\omega_c^2)$ scales as $\sqrt b$, so going from 45° to 60° multiplies the area by 1.55 while the ratio grows 2.7 times.
 
 **The closed-loop poles of this design.** The characteristic polynomial is $\tau_ps^3 + s^2 + K\tau_zs + K$. Substituting the design values ($\tau_p = 1/(x\omega_c)$, $K\tau_z = \omega_c$, $K = \omega_c^2/x$) and multiplying by $x\omega_c$:
 
@@ -105,9 +105,9 @@ $$
 
 (Expand the right side: $s^3 + (x - 1 + 1)\omega_cs^2 + (1 + x - 1)\omega_c^2s + \omega_c^3$.) So a maximum-margin third-order PLL always has a closed-loop pole exactly at $-\omega_c$, and a pair with natural frequency $\omega_c$ and damping $\zeta = (x - 1)/2$. The pair is real when $x \ge 3$, that is $b \ge 9$ or PM ≥ $\arctan(8/6)$ = 53.1°. The step response still overshoots, because of the zero at $-1/\tau_z = -\omega_c/x$, slower than every pole (15-03 §3.6).
 
-**The PFD samples.** The PFD compares phases once per reference period, so the PLL is a sampled loop (15-11). Treating the charge pump's update as a delay of about $T_{ref}/2$ costs $\omega_cT_{ref}/2 = \pi f_c/f_{ref}$ radians at crossover: 18° at $f_c = f_{ref}/10$. The usual rule keeps $f_c$ at or below about $f_{ref}/10$. (The charge pump's output is a current pulse, not a held level, so the $T/2$ estimate is approximate; Gardner's 1980 analysis gives the exact stability limit of the sampled charge-pump loop, which the rule keeps well clear of.)
+**The PFD samples.** The PFD compares phases once per reference period, so the PLL is a sampled loop (15-11). Treating the charge pump's update as a delay of about $T_{ref}/2$ costs $\omega_cT_{ref}/2 = \pi f_c/f_{ref}$ radians at crossover: 18° at $f_c = f_{ref}/10$. The usual rule keeps $f_c$ at or below about $f_{ref}/10$. (The charge pump's output is a current pulse, not a held level, so the $T/2$ estimate is approximate. Gardner's 1980 analysis gives the exact sampled stability limit for the second-order loop without $C_2$; the rule keeps well clear of it, and of the corresponding limit for this third-order loop.)
 
-**Jitter-transfer peaking.** Near its bandwidth $\lvert T(j\omega)\rvert$ rises above 1: the loop amplifies reference jitter there. The peak shrinks as phase margin grows (15-07 §3.5). It matters most in chains of clock-recovery circuits, such as repeaters, where identical stages peak at the same frequency and their peaks add in decibels.
+**Jitter-transfer peaking.** Near its bandwidth $\lvert T(j\omega)\rvert$ rises above 1: the loop amplifies reference jitter there. The peak shrinks as phase margin grows (15-07 §3.4 and §3.7). It matters most in chains of clock-recovery circuits, such as repeaters, where identical stages peak at the same frequency and their peaks add in decibels.
 
 > **Math refresher — phase noise and jitter.** An oscillator's phase noise $\mathcal{L}(f)$ (dBc/Hz) is the single-sideband noise power in a 1 Hz band at offset $f$ from the carrier, relative to the carrier power. For small phase deviations the one-sided phase spectrum is $S_\phi(f) = 2 \times 10^{\mathcal{L}(f)/10}$ rad²/Hz, so the rms phase over an offset band is $\phi_{rms} = \sqrt{2\int_{f_1}^{f_2}10^{\mathcal{L}(f)/10}\,df}$, and the rms jitter is $\phi_{rms}/(2\pi f_{out})$ seconds: one radian is $1/(2\pi)$ of a period. Because the spectra span decades, the integral is best done on a logarithmic axis: $df = f\ln 10\,d(\log_{10}f)$.
 
@@ -154,21 +154,23 @@ $$
 V(s) = -\frac{I_{load}(s)}{sC + G(s)}, \qquad L(s) = \frac{G(s)}{sC} .
 $$
 
-**Proportional control.** With $G = g$, the crossover is $\omega_c = g/C$ and the output impedance is $Z_{cl} = 1/[C(s + \omega_c)]$: a resistance $1/(\omega_cC)$ at low frequency, the capacitor's impedance above $\omega_c$. A load step gives a monotonic droop to $\Delta V = \Delta I/(\omega_cC)$, with no overshoot and no ringing when the load is released. Processor regulators often do this on purpose: the **load line** (adaptive voltage positioning) is a deliberately finite DC gain that makes the rail behave like a small resistance, so the voltage sits higher at light load and lower at heavy load, using the whole tolerance band for each transient **[Established]**. The design rule follows at once:
+Write $\omega_0 = g/C$: the frequency at which the controller's proportional path alone has unit loop gain.
+
+**Proportional control.** With $G = g$, the loop gain is $L = \omega_0/s$, so the crossover is $\omega_c = \omega_0$, and the output impedance is $Z_{cl} = 1/[C(s + \omega_0)]$: a resistance $1/(\omega_0C)$ at low frequency, the capacitor's impedance above $\omega_0$. A load step gives a monotonic droop to $\Delta V = \Delta I/(\omega_0C)$, with no overshoot and no ringing when the load is released. Processor regulators often do this on purpose: the **load line** (adaptive voltage positioning) is a deliberately finite DC gain that makes the rail behave like a small resistance, so the voltage sits higher at light load and lower at heavy load, using the whole tolerance band for each transient **[Established]**. The design rule follows at once:
 
 $$
-\omega_c \ge \frac{\Delta I}{C\,\Delta V} .
+\omega_c = \omega_0 \ge \frac{\Delta I}{C\,\Delta V} .
 $$
 
-**Proportional-integral control.** With $G = g(1 + \omega_z/s)$, $Z_{cl} = s/[C(s^2 + \omega_cs + \omega_c\omega_z)]$, which is zero at DC: no static error. Choosing $\omega_z = \omega_c/4$ makes the denominator $(s + \omega_c/2)^2$, critically damped. The response to a step $\Delta I$ is then the inverse transform of $-\Delta I/[C(s + \omega_c/2)^2]$:
+**Proportional-integral control.** With $G = g(1 + \omega_z/s)$, $Z_{cl} = s/[C(s^2 + \omega_0s + \omega_0\omega_z)]$, which is zero at DC: no static error. Choosing $\omega_z = \omega_0/4$ makes the denominator $(s + \omega_0/2)^2$, critically damped. The response to a step $\Delta I$ is then the inverse transform of $-\Delta I/[C(s + \omega_0/2)^2]$:
 
 $$
-v(t) = -\frac{\Delta I}{C}\,t\,e^{-\omega_ct/2} ,
+v(t) = -\frac{\Delta I}{C}\,t\,e^{-\omega_0t/2} ,
 $$
 
-which peaks at $t = 2/\omega_c$ (set the derivative to zero) with value $(2/e)\,\Delta I/(\omega_cC) \approx 0.736\,\Delta I/(\omega_cC)$, then recovers. Either way, **the droop is set by the product of loop bandwidth and capacitance**: halving the bandwidth needs twice the capacitance for the same droop. Above the regulator's bandwidth, the capacitors (bulk, ceramic, package and on-die) supply the current, which is the target-impedance view of power delivery.
+which peaks at $t = 2/\omega_0$ (set the derivative to zero) with value $(2/e)\,\Delta I/(\omega_0C) \approx 0.736\,\Delta I/(\omega_0C)$, then recovers. The PI loop gain $L = (\omega_0/s)(1 + \omega_0/(4s))$ crosses over slightly above $\omega_0$: with $u = \omega/\omega_0$, $\lvert L\rvert = 1$ gives $u^4 - u^2 - 1/16 = 0$, so $u^2 = (1 + \sqrt{5}/2)/2$ and $\omega_c = 1.029\,\omega_0$. Either way, **the droop is set by the product of loop bandwidth and capacitance**: halving the bandwidth needs twice the capacitance for the same droop. Above the regulator's bandwidth, the capacitors (bulk, ceramic, package and on-die) supply the current, which is the target-impedance view of power delivery.
 
-**Units check.** $\Delta I/(\omega_cC)$: A ÷ (1/s × A·s/V) = V.
+**Units check.** $\Delta I/(\omega_0C)$: A ÷ (1/s × A·s/V) = V.
 
 > **Deeper:** power-delivery networks and target impedance for datacenter processors are in [22-10 Datacenter Power Delivery](../../22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md); converter compensation in [22-07](../../22-power-electronics-and-energy-conversion/chapters/22-07-converter-dynamics-and-control.md).
 
@@ -203,7 +205,7 @@ a first-order system with time constant $C_H(R_{JC} \parallel R_{CA})$. The perm
 
 **Complications.**
 
-- **Leakage feedback.** Leakage power rises with temperature (15-01 §3.5), raising the plant's effective DC gain from $R$ to $R/(1 - G)$, with $G = R\,dP_L/dT$. The thermal loop's gain, and its margin, change with temperature.
+- **Leakage feedback.** Leakage power rises with temperature (15-01 §3.7), raising the plant's effective DC gain from $R$ to $R/(1 - G)$, with $G = R\,dP_L/dT$. The thermal loop's gain, and its margin, change with temperature.
 - **Quantized actuators.** A processor has a finite set of operating points, so the controller's output is quantized and the loop limit-cycles between neighbouring points; the integral term and dithering (time-averaging between two points) handle this.
 - **Sensor placement.** Sensors are not at the hottest spot, so firmware either adds a guard band or estimates the hot spot from a model, an observer in the sense of 15-10.
 
@@ -263,17 +265,17 @@ After the divider step, the loop has $N$ = 101 (its gain falls by 1%), and the o
 
 ### Example 15-12.4 · Load-step droop: load line against PI (tier B)
 
-**Setup.** A processor rail must stay within 40 mV of its setpoint when the load steps by 20 A. Its output capacitance is 1 mF (illustrative values). Using the transconductance model of §3.4, find the load-line resistance and the crossover a proportional (load-line) design needs, then the crossover a critically damped PI design needs for the same 40 mV peak, when that peak occurs, and when the deviation is back within 4 mV.
+**Setup.** A processor rail must stay within 40 mV of its setpoint when the load steps by 20 A. Its output capacitance is 1 mF (illustrative values). Using the transconductance model of §3.4, find the load-line resistance and the crossover a proportional (load-line) design needs, then the $\omega_0 = g/C$ and the actual crossover a critically damped PI design needs for the same 40 mV peak, when that peak occurs, and when the deviation is back within 4 mV.
 
-**Solution.** Load line: $R_{LL} = \Delta V/\Delta I$ = **2** mΩ, and $\omega_c = 1/(R_{LL}C) = \Delta I/(C\Delta V)$ = **5.00 × 10⁵** rad/s, that is **79.6** kHz.
+**Solution.** Load line: $R_{LL} = \Delta V/\Delta I$ = **2** mΩ, and $\omega_c = \omega_0 = 1/(R_{LL}C) = \Delta I/(C\Delta V)$ = **5.00 × 10⁵** rad/s, that is **79.6** kHz.
 
-PI with $\omega_z = \omega_c/4$: the peak is $(2/e)\Delta I/(\omega_cC)$, so $\omega_c = (2/e)\Delta I/(C\Delta V)$ = **3.68 × 10⁵** rad/s (**58.5** kHz). The peak occurs at $2/\omega_c$ = **5.44** µs. Solving $(\Delta I/C)\,t\,e^{-\omega_ct/2}$ = 4 mV for the later root gives **26.6** µs.
+PI with $\omega_z = \omega_0/4$: the peak is $(2/e)\Delta I/(\omega_0C)$, so $\omega_0 = (2/e)\Delta I/(C\Delta V)$ = **3.68 × 10⁵** rad/s (**58.5** kHz). The peak occurs at $2/\omega_0$ = **5.44** µs. Solving $(\Delta I/C)\,t\,e^{-\omega_0t/2}$ = 4 mV for the later root gives **26.6** µs.
 
-The PI loop $L = (\omega_c/s)(1 + \omega_z/s)$ crosses over slightly above $\omega_c$, with a phase margin of **76.3**°: the critically damped choice is a comfortable loop.
+The PI loop $L = (\omega_0/s)(1 + \omega_z/s)$ crosses over at $1.029\,\omega_0$ = **3.79 × 10⁵** rad/s (**60.3** kHz), with a phase margin of **76.3**°: the critically damped choice is a comfortable loop.
 
 **Units check.** $\Delta I/(C\Delta V)$: A ÷ (F × V) = A/(A·s) = 1/s.
 
-**Sanity check.** The PI design needs 26% less bandwidth for the same peak, because its integral starts pulling the voltage back before the droop reaches $\Delta I/(\omega_cC)$; but it then takes tens of microseconds to recover, while the load-line design sits at a steady −40 mV that its setpoint already allowed for.
+**Sanity check.** The PI design needs 24% less actual crossover (60.3 against 79.6 kHz) for the same peak, because its integral starts pulling the voltage back before the droop reaches $\Delta I/(\omega_0C)$; but it then takes tens of microseconds to recover, while the load-line design sits at a steady −40 mV that its setpoint already allowed for.
 
 ### Example 15-12.5 · The jitter-optimal PLL bandwidth (tier C)
 
@@ -293,7 +295,7 @@ A numerical search over $f_c$ finds the minimum at **316** kHz, at the crossing 
 
 **Units check.** rad ÷ (rad/cycle × cycles/s) = s.
 
-**Sanity check.** The table is nearly symmetric in $\log f_c$ because the two noise shapes mirror each other about the crossing, and $\lvert T\rvert$ and $\lvert S\rvert$ of this loop are mirror images on a log axis. A real VCO's noise flattens at large offsets and the reference noise rises toward low offsets, which moves the optimum; the crossing remains the starting estimate.
+**Sanity check.** The table is nearly symmetric in $\log_{10}f_c$ because the two noise shapes mirror each other about the crossing, and $\lvert T\rvert$ and $\lvert S\rvert$ of this loop are mirror images on a log axis. For this loop $\lvert T(j\omega_c^2/\omega)\rvert = \lvert S(j\omega)\rvert$ exactly, and with infinite integration limits the optimum would sit exactly at the crossing. A real VCO's noise flattens at large offsets and the reference noise rises toward low offsets, which moves the optimum; the crossing remains the starting estimate.
 
 ### Example 15-12.6 · An LDO's ESR window (tier C)
 
@@ -360,11 +362,13 @@ Below the window, the zero sits above crossover and the loop crosses with two po
 | Ex 15-12.4a | load-line resistance | 2 | mΩ |
 | Ex 15-12.4b | load-line crossover | 5.00e5 | rad/s |
 | Ex 15-12.4c | load-line crossover | 79.6 | kHz |
-| Ex 15-12.4d | PI crossover | 3.68e5 | rad/s |
-| Ex 15-12.4e | PI crossover | 58.5 | kHz |
+| Ex 15-12.4d | PI ω0 = g/C | 3.68e5 | rad/s |
+| Ex 15-12.4e | PI ω0/2π | 58.5 | kHz |
 | Ex 15-12.4f | time of peak | 5.44 | µs |
 | Ex 15-12.4g | back within 4 mV | 26.6 | µs |
 | Ex 15-12.4h | PI phase margin | 76.3 | ° |
+| Ex 15-12.4i | PI crossover | 3.79e5 | rad/s |
+| Ex 15-12.4j | PI crossover | 60.3 | kHz |
 | Ex 15-12.5a | noise crossing | 316 | kHz |
 | Ex 15-12.5b | jitter at 100 kHz | 545 | fs |
 | Ex 15-12.5c | jitter at 316 kHz | 413 | fs |
@@ -411,7 +415,7 @@ The lab, [labs/15-12-lab](../labs/15-12-lab/README.md), provides `loops.py`: PLL
 | Knob | Improves | Costs | Typical decision owner |
 |---|---|---|---|
 | PLL bandwidth | Faster lock; more VCO noise suppressed | More reference and charge-pump noise and spurs pass; closer to the sampling limit $f_{ref}/10$ | PLL designer / clock architect |
-| PLL phase margin (ratio $b$) | Less jitter peaking and overshoot | Capacitor ratio $b - 1$, so loop-filter area | PLL designer |
+| PLL phase margin (ratio $b$) | Less jitter peaking and overshoot | Capacitor ratio $b - 1$ and total capacitance (∝ $\sqrt b$ at fixed $f_c$), so loop-filter area | PLL designer |
 | Extra loop-filter poles ($C_2$, more) | Lower reference spurs | Phase margin | PLL designer |
 | LDO output capacitor and its ESR | Stability window, transient response | Board area and cost; constraints on capacitor type | Board / system designer with the LDO vendor |
 | Internally compensated (capless) LDO | No external capacitor, no ESR constraint | Lower bandwidth, larger droop on fast steps, PSRR | Analog designer |
@@ -429,13 +433,14 @@ The lab, [labs/15-12-lab](../labs/15-12-lab/README.md), provides `loops.py`: PLL
 | PLL bandwidth limit from PFD sampling | $f_c \lesssim f_{ref}/10$ (about 18° at the limit) | §3.2 |
 | Noise-optimal PLL bandwidth | near the crossing of reference-path and VCO noise | §3.2, Example 15-12.5 |
 | Jitter from phase | $\phi_{rms}/(2\pi f_{out})$ | §3.2 |
-| Load-step droop, load line | $\Delta I/(\omega_cC)$ | §3.4 |
-| Load-step droop, critically damped PI | $(2/e)\,\Delta I/(\omega_cC)$ at $t = 2/\omega_c$ | §3.4 |
+| Load-step droop, load line | $\Delta I/(\omega_0C)$ with $\omega_0 = g/C$ the crossover | §3.4 |
+| Load-step droop, critically damped PI | $(2/e)\,\Delta I/(\omega_0C)$ at $t = 2/\omega_0$; crossover $1.029\,\omega_0$ | §3.4 |
 | DVFS order | voltage up before frequency; frequency down before voltage | §3.5 |
 | Sustained thermal power | $(T_{lim} - T_A)/R_{total}$ | §3.6 |
 | Decay of permitted power (two nodes) | time constant $C_H(R_{JC} \parallel R_{CA})$ | §3.6 |
-| ACPI passive-cooling sampling granularity | 0.1 s (as of Nov 2026) | [R-232] |
-| Linux power-allocator defaults (as of Nov 2026) | $k_{pu} = 2P_{sus}/(T_{set} - T_{on})$, $k_{po} = P_{sus}/(T_{set} - T_{on})$, $k_i$ typically 1 or 2, $k_d$ = 0 | [R-231] |
+| ACPI passive-cooling sampling period | `_TSP` in tenths of seconds; `_TFP` (since ACPI 6.0) in milliseconds, overriding `_TSP` (as of Nov 2026) | [R-232] |
+| Linux power-allocator defaults (as of Nov 2026) | $k_{pu} = 2P_{sus}/(T_{set} - T_{on})$, $k_{po} = P_{sus}/(T_{set} - T_{on})$, $k_d$ = 0 | [R-231] |
+| Linux power-allocator typical setting (as of Nov 2026) | $k_i$ "typically" 1 or 2 (a recommendation, not a default) | [R-231] |
 
 ## 8. Common mistakes
 
@@ -453,8 +458,8 @@ The lab, [labs/15-12-lab](../labs/15-12-lab/README.md), provides `loops.py`: PLL
 ### State of the art (as of Nov 2026)
 
 - **Thermal controllers in shipping operating systems are textbook PI(D) loops.** Linux's power-allocator governor documents its controller as $P_{max} = k_pe + k_i\sum e + k_d\Delta e + P_{sus}$, with $e$ the temperature error, an asymmetric proportional gain ($k_{pu}$ when below the target, $k_{po}$ above), defaults $k_{pu} = 2P_{sus}/(T_{set} - T_{on})$ and $k_{po} = P_{sus}/(T_{set} - T_{on})$, $k_i$ "typically 1 or 2" and $k_d$ left at 0. As reference values it gives the sustainable power of a 4-inch phone as typically 2000 mW and of a 10-inch tablet as around 4500 mW **[Established]** [R-231].
-- **ACPI's passive cooling is a velocity-form PI with clamping and quantization.** The ACPI 6.5 specification (§11.1.5.1) defines $\Delta P[\%] = TC_1(T_n - T_{n-1}) + TC_2(T_n - T_t)$, evaluated every sampling period $T_{SP}$ (reported in tenths of seconds), and $P_n = P_{n-1} + HW[-\Delta P]$ clamped between a minimum and 100%, where HW rounds to an available frequency setting **[Established]** [R-232].
-- **All-digital and fractional-N PLLs are standard in SoCs**, with the loop filter implemented as a digital PI controller **[Established]** (Further study).
+- **ACPI's passive cooling is a velocity-form PI with clamping and quantization.** The ACPI specification (version 6.5, §11.1.5.1, unchanged in version 6.6) defines $\Delta P[\%] = TC_1(T_n - T_{n-1}) + TC_2(T_n - T_t)$, evaluated every sampling period (`_TSP`, in tenths of seconds, or the finer `_TFP`, in milliseconds, which overrides it), and $P_n = P_{n-1} + HW[-\Delta P]$ clamped between a minimum and 100%, where HW rounds to an available frequency setting **[Established]** [R-232].
+- **Fractional-N and all-digital PLLs are standard in SoCs** **[Established]** (Further study). Analog fractional-N synthesizers keep the charge pump and RC loop filter of §3.1; all-digital PLLs implement the loop filter as a digital PI controller.
 - **Processor voltage regulators use load lines** specified by the processor vendor, so the rail is designed as a resistance, not an ideal voltage source **[Established]**.
 
 ### Why it matters commercially
@@ -529,7 +534,7 @@ The ESR zero supplies the phase that the second low-frequency pole takes away. T
 
 <details><summary>Answer</summary>
 
-Inversely: droop ≈ $\Delta I/(\omega_cC)$, so $C \propto 1/\omega_c$.
+Inversely: droop ≈ $\Delta I/(\omega_0C)$ with $\omega_0$ close to the crossover, so $C \propto 1/\omega_c$.
 
 </details>
 
@@ -568,12 +573,12 @@ Practice: [Problems 15-12](../problems/15-12-problems.md) · [Solutions](../solu
 - B. Razavi, *Design of CMOS Phase-Locked Loops* (Cambridge University Press, 2020): loop dynamics, noise and digital PLLs.
 - R. W. Erickson and D. Maksimović, *Fundamentals of Power Electronics*, 3rd ed., ch. 9 (controller design, output impedance).
 - G. A. Rincón-Mora, *Analog IC Design with Low-Dropout Regulators* (McGraw-Hill): LDO compensation and ESR.
-- Linux kernel documentation, *Power allocator governor tunables*; UEFI Forum, *ACPI Specification* 6.5, ch. 11 (Thermal Management) (see Sources).
+- Linux kernel documentation, *Power allocator governor tunables*; UEFI Forum, *ACPI Specification* 6.5 and 6.6, ch. 11 (Thermal Management) (see Sources).
 
 ## 14. Sources
 
 1. Gardner; Razavi; Erickson and Maksimović; Rincón-Mora (Further study): PLL, regulator and compensation theory (textbook material).
 2. Linux kernel documentation, `Documentation/driver-api/thermal/power_allocator.rst`, "Power allocator governor tunables" (read Nov 2026): the PID form, default gains and sustainable-power examples. [R-231]
-3. UEFI Forum, *Advanced Configuration and Power Interface (ACPI) Specification*, version 6.5, §11.1.5.1 (passive cooling equations) and §11.4.22 (`_TSP`) (read Nov 2026). [R-232]
+3. UEFI Forum, *Advanced Configuration and Power Interface (ACPI) Specification*, versions 6.5 and 6.6, §11.1.5.1 (passive cooling equations), §11.4.17 (`_TFP`) and §11.4.22 (`_TSP`) (read Nov 2026). [R-232]
 
 Every number in the examples is recomputed by the verify script (PLL design by closed form and by margins of the resulting loop; closed-loop poles by root finding and by the factorization of §3.2; hop settling and phase error by exact step and impulse responses; jitter by numerical integration; LDO margins by root finding; droop in closed form; throttling by exact sampled simulation), and the PLL and LDO loops are confirmed in ngspice.

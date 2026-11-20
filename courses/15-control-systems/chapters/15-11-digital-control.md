@@ -56,13 +56,13 @@ $$
 \mathbf{x}_{k+1} = e^{AT}\mathbf{x}_k + \left(\int_0^Te^{A\tau}d\tau\right)Bu_k = \Phi\mathbf{x}_k + \Gamma u_k ,
 $$
 
-the exact discretization (15-10; the lab computes $\Phi$ and $\Gamma$ from one matrix exponential). The corresponding transfer function is
+the exact discretization (15-10; the lab computes $\Phi$ and $\Gamma$ from one matrix exponential). The corresponding transfer function follows from one observation. A held unit sample is a pulse of height 1 and width $T$: a unit step minus a unit step delayed by one sample. So the plant's sampled response to it is the sampled step response minus the same sequence delayed by one sample. The z-transform of the sampled step response is $\mathcal{Z}\{P(s)/s\}$, meaning: invert $P(s)/s$, sample the result at $t = kT$, and take the z-transform (11-09). A one-sample delay multiplies by $z^{-1}$, so
 
 $$
 G(z) = (1 - z^{-1})\,\mathcal{Z}\!\left\{\frac{P(s)}{s}\right\} .
 $$
 
-For $P = a/(s + a)$: $G(z) = (1 - e^{-aT})/(z - e^{-aT})$. The ZOH equivalent is exact at the sample instants.
+For $P = a/(s + a)$: $P/s = 1/s - 1/(s + a)$, whose samples $1 - e^{-akT}$ transform to $z/(z - 1) - z/(z - e^{-aT})$; multiplying by $(z - 1)/z$ gives $G(z) = (1 - e^{-aT})/(z - e^{-aT})$. The ZOH equivalent is exact at the sample instants. (The hold's frequency response, with phase exactly $-\omega T/2$, is derived in 11-10.)
 
 ### 3.3 Discretizing a controller
 
@@ -86,6 +86,14 @@ $$
 
 the **velocity form**: the controller computes a change in output. It has a built-in anti-windup advantage: clamping $u_k$ to the actuator limit stops the accumulation automatically.
 
+**A digital PID with a filtered derivative.** The derivative term of 15-08, $D(s) = K_ds/(1 + T_fs)$ with $T_f = T_d/N$, is usually discretized by backward Euler, $s \leftarrow (1 - z^{-1})/T$. Multiplying out $D(1 + T_fs) = K_dsE$ and substituting:
+
+$$
+d_k = \frac{T_f}{T_f + T}\,d_{k-1} + \frac{K_d}{T_f + T}\,(e_k - e_{k-1}) .
+$$
+
+Its pole $T_f/(T_f + T)$ lies between 0 and 1 for every $T$, so the derivative's response to a step decays smoothly. Tustin puts the same filter's pole at $(2T_f - T)/(2T_f + T)$, which is negative whenever $T > 2T_f$: the derivative output then alternates in sign from sample to sample (Problem 15-11.11). The full controller adds the proportional term $K_pe_k$ and an integral $i_k = i_{k-1} + K_iTe_k$ that is frozen while the output is clamped (15-08's anti-windup), and, as in 15-08, often applies the derivative to the measurement rather than the error to avoid derivative kick.
+
 ### 3.4 Stability of discrete loops
 
 The closed-loop characteristic equation is $1 + C(z)G(z) = 0$, a polynomial in $z$. For a second-order polynomial $z^2 + a_1z + a_0$, the **Jury conditions** for both roots inside the unit circle are
@@ -94,7 +102,9 @@ $$
 \lvert a_0\rvert < 1, \qquad 1 + a_1 + a_0 > 0, \qquad 1 - a_1 + a_0 > 0 .
 $$
 
-(The middle two say the polynomial is positive at $z = 1$ and $z = -1$; the first says the product of the roots has magnitude below 1.) Higher orders use the full Jury table or a computed root check, or the bilinear map $z = (1 + w)/(1 - w)$ followed by Routh (15-05).
+(The last two say the polynomial is positive at $z = 1$ and $z = -1$; the first says the product of the roots has magnitude below 1.) Higher orders use the full Jury table or a computed root check, or the bilinear map $z = (1 + w)/(1 - w)$ followed by Routh (15-05).
+
+**Steady-state error in z.** The discrete final-value theorem is $e_{ss} = \lim_{z \to 1}(z - 1)E(z)$, valid when the closed loop is stable. A pole at $z = 1$ plays the role of an integrator, so the **system type** is the number of poles of $L(z) = C(z)G(z)$ at $z = 1$, and the error constants become $K_p = \lim_{z \to 1}L(z)$ and $K_v = \lim_{z \to 1}(z - 1)L(z)/T$, with the same step and ramp errors as in 15-04. For the ZOH servo of Example 15-11.2 with proportional gain $K$, $(z - 1)KG(z)/T \to K(n_1 + n_0)/[T(1 - e^{-T})] = K$ because $n_1 + n_0 = T(1 - e^{-T})$: the same $K_v$ as the continuous loop $K/[s(s + 1)]$. The ZOH equivalent preserves DC behaviour, so sampling changes the error constants only through the controller (Problem 15-11.12).
 
 A sampled loop can be unstable at gains for which the continuous loop is stable: the hold's delay subtracts phase, so a loop whose continuous phase never reaches −180° (such as the servo of Examples 15-11.4 and 15-11.5) acquires a finite gain margin once it is sampled. Example 15-11.5 shows the stable-gain limit shrinking as $T$ grows.
 
@@ -108,7 +118,7 @@ $$
 
 Any computation delay $T_d$ (time from sampling to updating the output) adds $-\omega_cT_d$. Common rules of thumb follow from limiting this loss:
 
-- sample at 10 to 30 times the closed-loop bandwidth (about 6° to 18° of lag at crossover from the hold alone);
+- sample at 10 to 30 times the closed-loop bandwidth (about 18° to 6° of lag at crossover from the hold alone, respectively);
 - put an anti-aliasing filter before the ADC, whose own phase lag must also be counted;
 - in digital power converters, which update once per switching period, expect total delay of 1 to 1.5 periods, which often limits crossover to well below a tenth of the switching frequency.
 
@@ -141,7 +151,7 @@ A digital controller is a difference equation running in finite precision:
 
 **Solution.** (a) $G(z) = (1 - e^{-0.1})/(z - e^{-0.1})$ = **0.0952**/(z − **0.905**).
 
-(b) The general result (by $(1 - z^{-1})\mathcal{Z}\{P/s\}$, or the lab's exact discretization) is
+(b) Partial fractions give $P/s = 1/[s^2(s + 1)] = 1/s^2 - 1/s + 1/(s + 1)$, with samples $kT - 1 + e^{-kT}$ and z-transform $Tz/(z - 1)^2 - z/(z - 1) + z/(z - e^{-T})$. Multiplying by $(z - 1)/z$ gives $T/(z - 1) - 1 + (z - 1)/(z - e^{-T})$, and over the common denominator $(z - 1)(z - e^{-T})$ the numerator is $T(z - e^{-T}) - (z - 1)(z - e^{-T}) + (z - 1)^2 = (T - 1 + e^{-T})z + (1 - e^{-T} - Te^{-T})$. So
 
 $$
 G(z) = \frac{(T - 1 + e^{-T})z + (1 - e^{-T} - Te^{-T})}{(z - 1)(z - e^{-T})} = \frac{0.00484z + 0.00468}{z^2 - 1.905z + 0.905} .
@@ -179,7 +189,13 @@ At $T$ = 0.5 s, about 20 samples per plant time constant, the digital loop is cl
 
 **Setup.** Proportional control of $1/[s(s + 1)]$ through a ZOH is stable for every $K > 0$ in continuous time. Find the largest stable $K$ for $T$ = 0.1 s and $T$ = 1 s. Then, for $K$ = 1 and $T$ = 0.5 s, find the closed-loop poles, the overshoot and the peak time.
 
-**Solution.** With $G(z)$ from Example 15-11.2 (in general $T$), the characteristic polynomial $z^2 + a_1z + a_0$ has $a_0 = e^{-T} + K(1 - e^{-T} - Te^{-T})$. The binding Jury condition is $a_0 < 1$, giving $K_{max} = (1 - e^{-T})/(1 - e^{-T} - Te^{-T})$: **20.3** for $T$ = 0.1 s and **2.39** for $T$ = 1 s.
+**Solution.** With $G(z)$ from Example 15-11.2 (in general $T$, and writing $q = e^{-T}$), the characteristic polynomial $(z - 1)(z - q) + K[(T - 1 + q)z + (1 - q - Tq)]$ is $z^2 + a_1z + a_0$ with $a_1 = -(1 + q) + K(T - 1 + q)$ and $a_0 = q + K(1 - q - Tq)$. Check the three Jury conditions in turn:
+
+- $1 + a_1 + a_0 = KT(1 - q) > 0$ for every $K > 0$;
+- $1 - a_1 + a_0 = 2(1 + q) - K(T + Tq - 2 + 2q) > 0$ needs $K < 26.4$ at $T$ = 1 s and $K < 2.4 \times 10^4$ at $T$ = 0.1 s;
+- $a_0 < 1$ needs $K < (1 - q)/(1 - q - Tq)$.
+
+The last is the binding one: $K_{max} = (1 - e^{-T})/(1 - e^{-T} - Te^{-T})$ = **20.3** for $T$ = 0.1 s and **2.39** for $T$ = 1 s.
 
 For $K$ = 1 and $T$ = 0.5 s, the closed-loop poles are $0.75 \pm j0.366$ (magnitude **0.835**). Simulating: overshoot **28.7**% at **3.45** s, against 16.3% for the continuous loop. The lab's ngspice circuit, with a switch and hold capacitor as the sampler, measures 28.6% at 3.45 s.
 

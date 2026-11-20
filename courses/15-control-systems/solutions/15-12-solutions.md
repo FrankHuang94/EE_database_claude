@@ -49,7 +49,7 @@ The reference is 50 times the crossover, so the sampling cost is about $180° \t
 
 For PM = 45°, $x = 1 + \sqrt2$ and $\zeta = (x - 1)/2 = 1/\sqrt2$. The poles are $-\omega_c$ and the roots of $s^2 + \sqrt2\,\omega_cs + \omega_c^2$: **−1** and **−0.707 ± j0.707** in units of $\omega_c$.
 
-Exact responses of $T$: the frequency-step overshoot is **33.6**% and the jitter-transfer peak **3.20** dB at **0.713**$\omega_c$. The 60° design of Example 15-12.3 has 18.8% and 1.70 dB at 0.466$\omega_c$. Fifteen degrees of margin cost about 2.7 times the capacitor ratio (13.93 − 1 against 5.83 − 1) and buy roughly half the overshoot and the peaking.
+Exact responses of $T$: the frequency-step overshoot is **33.6**% and the jitter-transfer peak **3.20** dB at **0.713**$\omega_c$. The 60° design has 18.8% and 1.70 dB at 0.466$\omega_c$. (Example 15-12.3 quotes 18.9% for its hop because the divider step to 101 also lowers that loop's gain by 1%; with $N$ fixed the 60° loop overshoots 18.8%.) Fifteen degrees of margin cost about 2.7 times the capacitor ratio (13.93 − 1 against 5.83 − 1) and buy roughly half the overshoot and the peaking.
 
 ### Solution 15-12.6
 
@@ -57,7 +57,7 @@ $$
 \phi_{rms} = \sqrt{2 \times 10^{-10} \times (10^6 - 10^4)} = \mathbf{14.07}\ \text{mrad},
 $$
 
-and the jitter is $0.01407/(2\pi \times 10^9)$ = **2.24** ps. Because the integral runs over hertz, not decades, the top decade (100 kHz to 1 MHz) contributes **90.9**% of the total: flat noise is dominated by its highest offsets.
+and the jitter is $0.01407/(2\pi \times 10^9)$ = **2.24** ps. Because the integral runs over hertz, not decades, the top decade (100 kHz to 1 MHz) contributes **90.9**% of the phase variance (95.3% of the rms phase): flat noise is dominated by its highest offsets.
 
 ### Solution 15-12.7
 
@@ -69,7 +69,7 @@ and the jitter is $0.01407/(2\pi \times 10^9)$ = **2.24** ps. Because the integr
 
 ### Solution 15-12.8
 
-Load line: $C = \Delta I/(\omega_c\Delta V) = 100/(2\pi \times 10^5 \times 0.04)$ = **3.98** mF. Critically damped PI: the peak is $(2/e)$ times smaller for the same $C$, so $C = (2/e) \times 3.98$ mF = **2.93** mF. Either way, the capacitance is millifarads; doubling the regulator's bandwidth would halve it.
+Load line: $C = \Delta I/(\omega_0\Delta V) = 100/(2\pi \times 10^5 \times 0.04)$ = **3.98** mF. Critically damped PI with the same $\omega_0 = g/C$: the peak is $(2/e)$ times smaller for the same $C$, so $C = (2/e) \times 3.98$ mF = **2.93** mF, and the PI loop crosses over at $1.029\,\omega_0$, that is **102.9** kHz. Either way, the capacitance is millifarads; doubling the regulator's bandwidth would halve it.
 
 ### Solution 15-12.9
 
@@ -146,6 +146,7 @@ Crossing: $-115 + 20\log_{10}(1\ \text{MHz}/f) = -100$ gives $f = 10^{-0.75}$ MH
 | 15-12.7g | margin with 0.15 Ω, light load | 37.2 | ° |
 | 15-12.8a | load-line capacitance | 3.98 | mF |
 | 15-12.8b | PI capacitance | 2.93 | mF |
+| 15-12.8c | PI crossover | 102.9 | kHz |
 | 15-12.9a | stall | 20 | µs |
 | 15-12.9b | voltage ramp | 25 | µs |
 | 15-12.9c | dynamic power ratio | 0.281 | — |

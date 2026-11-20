@@ -61,6 +61,22 @@ The hold costs about $\omega_cT/2 = 5.24 \times 0.05$ rad = **15.0**°, leaving 
 
 Tustin maps a continuous frequency $\omega_a$ to the discrete frequency $\omega_d = (2/T)\arctan(\omega_aT/2)$, so $f_d = (f_s/\pi)\arctan(\pi f_a/f_s)$ = (4000/π) arctan(π/4) = **848** Hz: the notch lands 15% low and misses the 1 kHz tone it was meant to remove. Prewarping at 1 kHz places it at **1000** Hz exactly.
 
+### Solution 15-11.11
+
+Backward Euler: $d_k = \dfrac{T_f}{T_f + T}d_{k-1} + \dfrac{K_d}{T_f + T}(e_k - e_{k-1})$ with $T_f + T$ = 25 ms, so the pole is $5/25$ = **0.2** and the gain $0.1/0.025$ = **4**. For a unit step at $k = 0$: $d_0 = 4$, then $d_1 = 0.2 \times 4 + 4 \times 0$ = **0.8**, decaying by a factor of 5 each sample.
+
+Tustin: $s \leftarrow (2/T)(z - 1)/(z + 1) = 100(z - 1)/(z + 1)$, so
+
+$$
+D(z) = \frac{0.1 \times 100(z - 1)}{(z + 1) + 0.005 \times 100(z - 1)} = \frac{10(z - 1)}{1.5z + 0.5} = 6.667\,\frac{z - 1}{z + 0.3333} .
+$$
+
+The pole is **−0.333** (that is $(2T_f - T)/(2T_f + T)$) and the gain **6.667**: $d_k = -0.3333\,d_{k-1} + 6.667(e_k - e_{k-1})$. The step gives $d_0 = 6.667$ and $d_1$ = **−2.222**: the derivative output alternates in sign, a high-frequency ripple on the actuator. With $T > 2T_f$ the filter is too fast for the sample rate to represent, and backward Euler's monotonic response is the safer choice.
+
+### Solution 15-11.12
+
+$L(z) = G(z)$ has one pole at $z = 1$: **type 1**. $K_v = \lim_{z \to 1}(z - 1)G(z)/T = (n_1 + n_0)/[T(1 - e^{-T})]$, and $n_1 + n_0 = (T - 1 + e^{-T}) + (1 - e^{-T} - Te^{-T}) = T(1 - e^{-T})$, so $K_v$ = **1** s⁻¹ and the sampled ramp error is $1/K_v$ = **1**, exactly as for the continuous loop $1/[s(s + 1)]$. Sampling slows and destabilizes this loop (Example 15-11.5), but it does not change its steady-state accuracy.
+
 ---
 
 ## Answer key
@@ -99,3 +115,12 @@ Tustin maps a continuous frequency $\omega_a$ to the discrete frequency $\omega_
 | 15-11.9b | 16-bit step | 0.00229 | K |
 | 15-11.10a | notch without prewarping | 848 | Hz |
 | 15-11.10b | notch with prewarping | 1000 | Hz |
+| 15-11.11a | backward-Euler pole | 0.2 | — |
+| 15-11.11b | backward-Euler gain | 4 | — |
+| 15-11.11c | backward-Euler second output | 0.8 | — |
+| 15-11.11d | Tustin pole | −0.333 | — |
+| 15-11.11e | Tustin gain | 6.667 | — |
+| 15-11.11f | Tustin second output | −2.222 | — |
+| 15-11.12a | system type | 1 | — |
+| 15-11.12b | velocity constant | 1 | 1/s |
+| 15-11.12c | ramp error | 1 | — |

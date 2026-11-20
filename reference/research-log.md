@@ -237,7 +237,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-229 | Python Control Systems Library release | Nov 2026 |
 | R-230 | OPA627 settling-time specifications (TI SBOS165C) | Nov 2026 |
 | R-231 | Linux power-allocator thermal governor (PID form and defaults) | Nov 2026 |
-| R-232 | ACPI 6.5 passive-cooling equations | Nov 2026 |
+| R-232 | ACPI 6.5/6.6 passive-cooling equations | Nov 2026 |
 
 ---
 
@@ -2367,7 +2367,7 @@ R&D % = R&D ÷ revenue.
 - "For reference, the sustainable power of a 4" phone is typically 2000mW, while on a 10" tablet is around 4500mW (may vary depending on screen size)."
 - Perishable: kernel documentation changes between releases; recheck the current file before quoting defaults.
 
-## R-232 · ACPI 6.5 passive-cooling equations
+## R-232 · ACPI 6.5/6.6 passive-cooling equations
 
 *Read on 20 Nov 2026 from the UEFI Forum's HTML edition of the specification (primary); tagged [Established].*
 
@@ -2375,4 +2375,5 @@ R&D % = R&D ÷ revenue.
 - §11.1.5.1 (Processor Clock Throttling), Equation #1: ΔP [%] = _TC1 × (T_n − T_(n−1)) + _TC2 × (T_n − T_t), where T_n is the current temperature and T_t the target (_PSV); "The two coefficients _TC1 and _TC2 and the sampling period _TSP are hardware-dependent constants the OEM must supply to OSPM."
 - Equation #2: P_n = P_(n−1) + HW[−ΔP], with Minimum % ≤ P_n ≤ 100%; values outside the range are truncated; Minimum% is the _MTL limit (or 0%); HW maps to the next available frequency setting.
 - §11.4.22 (_TSP): the sampling period is returned "in tenths of seconds"; "The granularity of the sampling period is 0.1 seconds." §11.4.17 (_TFP) gives an optional fast sampling period in milliseconds.
+- Re-read 20 Nov 2026 for the Course 15 audit: version 6.6 (uefi.org/specs/ACPI/6.6/11_Thermal_Management.html) carries the same Equations #1 and #2 in §11.1.5.1 and the same `_TSP` text in §11.4.22. §11.4.17 `_TFP`: "The granularity of the sampling period is 1 milliseconds"; "If both _TFP and _TSP are present in a Thermal Zone, _TFP overrides _TSP." [ACPI 6.6, chapter 11](https://uefi.org/specs/ACPI/6.6/11_Thermal_Management.html)
 - Perishable: check for a newer ACPI version before citing section numbers.

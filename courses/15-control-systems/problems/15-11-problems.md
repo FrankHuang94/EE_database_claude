@@ -42,7 +42,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 15-11.8 [C]
 
-**Sampling a thermal limiter.** Example 15-08.6's thermal PI loop was designed for 60° of phase margin at $\omega_c$ = 5.24 rad/s, with a 0.1 s delay already included. If the firmware also samples with a ZOH at $T$ = 0.1 s, estimate the extra phase lost and the remaining margin.
+**Sampling a thermal limiter.** Example 15-08.6's thermal PI loop was designed for 60° of phase margin at $\omega_c$ = 5.24 rad/s, with a 0.1 s delay already included. Suppose that 0.1 s covers only the sensor and the computation, and the firmware's zero-order hold at $T$ = 0.1 s is an additional effect not yet counted. Estimate the extra phase lost and the remaining margin.
 
 ### Problem 15-11.9 [A]
 
@@ -52,6 +52,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A notch in the wrong place.** A notch filter designed in continuous time at 1 kHz is discretized with Tustin at a 4 kHz sample rate, without prewarping. At what frequency does the discrete notch fall? What does prewarping give?
 
+### Problem 15-11.11 [B]
+
+**A digital derivative that rings.** A PID's derivative term has $K_d$ = 0.1 s and filter time constant $T_f$ = 5 ms, and runs at $T$ = 20 ms. Find the backward-Euler difference equation's pole and gain, then the Tustin version's pole and gain, and the first two outputs of each for a unit step in the error at $k = 0$ (with $d_{-1} = 0$).
+
+### Problem 15-11.12 [B]
+
+**Type and ramp error in z.** For Example 15-11.5's loop (proportional gain $K$ = 1, ZOH, $T$ = 0.5 s), find the system type and the velocity constant from $L(z)$, and the steady error at the sample instants to a unit ramp. Compare with the continuous loop.
+
 ---
 
 ## Objective coverage
@@ -60,6 +68,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. ZOH equivalents and the z-plane | 1, 3 |
 | 2. Discretizing controllers | 4, 6, 10 |
-| 3. Discrete stability | 5, 7 |
+| 3. Discrete stability and steady-state error | 5, 7, 12 |
 | 4. Phase cost and sample-rate choice | 2, 8 |
-| 5. Implementation | 9 |
+| 5. Implementation | 9, 11 |
