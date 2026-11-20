@@ -30,7 +30,7 @@ How processors and accelerators are built and why they perform the way they do: 
 |---|---|---|---|
 | [14-01 · Performance, Power and the Iron Law](chapters/14-01-performance-power-iron-law.md) | 7 | ✅ verified | [problems](problems/14-01-problems.md) · [solutions](solutions/14-01-solutions.md) · [lab](labs/14-01-lab/README.md) · [verify](verify/verify_14_01.py) |
 | [14-02 · Instruction Set Architecture: RISC-V, Arm and x86](chapters/14-02-isa-risc-v-arm-x86.md) | 10 | ✅ verified | [problems](problems/14-02-problems.md) · [solutions](solutions/14-02-solutions.md) · [lab](labs/14-02-lab/README.md) · [verify](verify/verify_14_02.py) |
-| [14-03 · Assembly and the Compilation Stack](chapters/14-03-assembly-and-the-compilation-stack.md) | 8 | ⬜ planned | — |
+| [14-03 · Assembly and the Compilation Stack](chapters/14-03-assembly-and-the-compilation-stack.md) | 8 | ✅ verified | [problems](problems/14-03-problems.md) · [solutions](solutions/14-03-solutions.md) · [lab](labs/14-03-lab/README.md) · [verify](verify/verify_14_03.py) |
 | [14-04 · Computer Arithmetic and Number Formats](chapters/14-04-computer-arithmetic-and-number-formats.md) | 7 | ⬜ planned | — |
 | [14-05 · Single-Cycle Datapath and Control](chapters/14-05-single-cycle-datapath.md) | 8 | ⬜ planned | — |
 | [14-06 · Pipelining and Hazards](chapters/14-06-pipelining-and-hazards.md) | 10 | ⬜ planned | — |

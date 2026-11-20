@@ -5349,3 +5349,46 @@
   definition: A licence to build a licensor's ready-made processor design into one's chips, for a licence fee plus a per-chip royalty (Arm calls it a technology licence agreement).
   chapter: "14-02"
   see_also: [Architecture license]
+# ---------------------------------------------------------------- 14-03
+- term: Assembler
+  definition: The tool that translates assembly language, instruction by instruction, into machine code in an object file, leaving addresses it cannot know as relocations for the linker.
+  chapter: "14-03"
+  see_also: [Object file, Linker]
+- term: Loader
+  definition: The part of the operating system that maps an executable's code and data into a process's memory, sets up its stack and jumps to its entry point; on a bare microcontroller, start-up code plays this role.
+  chapter: "14-03"
+- term: Object file
+  definition: The output of an assembler or compiler for one source file — machine code and data in sections (.text, .data, .rodata, .bss), a symbol table, and relocations — in a format such as ELF.
+  chapter: "14-03"
+  see_also: [Relocation]
+- term: Relocation
+  definition: A note in an object file saying that an instruction or data word depends on a symbol's final address; the linker computes the address and patches the field.
+  chapter: "14-03"
+- term: Linker relaxation
+  definition: A RISC-V linker optimization that shrinks long instruction sequences once final addresses are known, such as replacing an AUIPC + JALR call with a single JAL when the target is within ±1 MiB.
+  chapter: "14-03"
+- term: Calling convention
+  definition: The part of an ABI that fixes how functions call each other — which registers carry arguments and return values, which must be preserved across calls, and how the stack is used.
+  chapter: "14-03"
+  see_also: [Caller-saved register, Callee-saved register]
+- term: Caller-saved register
+  definition: A register a called function may overwrite freely (RISC-V t0–t6, a0–a7, ra); a caller that needs its value after a call must save it first.
+  chapter: "14-03"
+  see_also: [Callee-saved register]
+- term: Callee-saved register
+  definition: A register whose value must survive a call (RISC-V s0–s11 and sp); a function that uses one must save it on entry and restore it before returning.
+  chapter: "14-03"
+  see_also: [Caller-saved register]
+- term: Stack frame
+  definition: The block of stack memory a function reserves on entry, by moving the stack pointer down, for its saved registers, return address and local data; RISC-V frames are multiples of 16 bytes.
+  chapter: "14-03"
+- term: Application binary interface (ABI)
+  definition: The binary-level contract that lets separately compiled code work together — calling convention, data type sizes and alignment, structure layout and object-file conventions; RISC-V's are ILP32 and LP64 families.
+  chapter: "14-03"
+  see_also: [Calling convention]
+- term: Pseudo-instruction
+  definition: An assembler mnemonic that expands into one or more real instructions, such as li, mv, j, ret and call in RISC-V.
+  chapter: "14-03"
+- term: Structure padding
+  definition: Unused bytes a compiler inserts between or after structure members so that each member sits at a multiple of its alignment; member order changes how much padding is needed.
+  chapter: "14-03"

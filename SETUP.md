@@ -70,15 +70,15 @@ sudo apt-get update
 ```
 
 ```bash
-sudo apt-get install -y build-essential ngspice iverilog verilator gtkwave yosys llvm
+sudo apt-get install -y build-essential ngspice iverilog verilator gtkwave yosys llvm clang lld
 ```
 
-The `llvm` package provides `llvm-mc`, the assembler that Course 14 uses to encode RISC-V, Arm and x86 instructions.
+The `llvm`, `clang` and `lld` packages provide the assembler (`llvm-mc`), compiler and linker (`ld.lld`) that Course 14 uses to build and run RISC-V, Arm and x86 code.
 
 ### macOS (Homebrew)
 
 ```bash
-brew install ngspice icarus-verilog verilator yosys llvm
+brew install ngspice icarus-verilog verilator yosys llvm lld
 ```
 
 Homebrew installs LLVM without putting it on your `PATH`; Course 14's scripts also look in Homebrew's `llvm/bin` directory, so no further step is needed for them.

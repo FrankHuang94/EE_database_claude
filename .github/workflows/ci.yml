@@ -48,8 +48,8 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
-      - name: LLVM assembler (llvm-mc) for the instruction-set chapters
-        run: sudo apt-get -o Acquire::Retries=5 update && sudo apt-get -o Acquire::Retries=5 install -y llvm
+      - name: LLVM toolchain (llvm-mc, clang, ld.lld) for the instruction-set chapters
+        run: sudo apt-get -o Acquire::Retries=5 update && sudo apt-get -o Acquire::Retries=5 install -y llvm clang lld
       - name: Unit tests for the verification toolkit
         run: python -m pytest -q tools/tests
       - name: Verification scripts (every published number)
