@@ -4,7 +4,7 @@ Chapter: [14-10](../chapters/14-10-virtual-memory.md) · Worked solutions: [14-1
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
 
-**Conventions.** RISC-V Sv32 unless stated: 4 KiB pages, 4 MiB megapages, two levels of 4-byte PTEs, PTE flags V = 0x01, R = 0x02, W = 0x04, X = 0x08, U = 0x10, G = 0x20, A = 0x40, D = 0x80, PPN in bits 31–10. TLBs are fully associative with LRU replacement unless stated. KiB, MiB and GiB are powers of two.
+**Conventions.** RISC-V Sv32 unless stated: 4 KiB pages, 4 MiB megapages, two levels of 4-byte PTEs, PTE flags V = 0x01, R = 0x02, W = 0x04, X = 0x08, U = 0x10, G = 0x20, A = 0x40, D = 0x80, PPN in bits 31–10. TLBs are fully associative with LRU replacement unless stated. Hardware sets the A and D bits during a walk (Svadu); under Svade those accesses would page-fault instead. KiB, MiB and GiB are powers of two.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 
@@ -76,6 +76,10 @@ For each user-mode access, give the physical address and number of PTE reads, or
 
 **Thrashing.** A loop touches 10 pages cyclically, 10 times over (100 references). Count the page faults with 9 and with 10 frames under FIFO, LRU and OPT. At 5 ms per fault, how long does the loop spend faulting with 9 frames under LRU, and with 10?
 
+### Problem 14-10.13 [B]
+
+**Two-dimensional walks.** With nested paging, every guest page-table pointer is a guest-physical address that needs a host walk, and so does the final guest-physical address. (a) Derive the number of memory references in a worst-case TLB miss for an $n$-level guest table over an $m$-level host table. (b) Evaluate it for an Sv39 guest (3 levels) on an Sv48 host (4 levels), and for Sv48 on Sv48. (c) The hypervisor maps guest memory with 1 GiB host pages, so each host walk of the Sv48 table stops after 2 levels. Recompute for an Sv48 guest. (d) Why do hypervisors back guests with huge pages?
+
 ---
 
 ## Objective coverage
@@ -84,6 +88,6 @@ For each user-mode access, give the physical address and number of PTE reads, or
 |---|---|
 | 1. Virtual memory and multilevel page tables | 1, 2, 7 |
 | 2. Walking Sv32 page tables | 1, 5 |
-| 3. TLB reach and translation cost | 3, 6, 8, 11 |
+| 3. TLB reach and translation cost | 3, 6, 8, 11, 13 |
 | 4. Traps and cause codes | 4, 5 |
 | 5. Replacement, thrashing and VIPT limits | 9, 10, 12 |

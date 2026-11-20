@@ -1,4 +1,5 @@
-// AXI4-Lite subordinate with four 32-bit registers, for Lab 14-11.
+// AXI4-Lite subordinate with four 32-bit registers, for Lab 14-11. It implements a subset of the interface:
+// no WSTRB (every write is a full word) and no AxPROT protection signals.
 //   0x0 CTRL    read/write; bit 0 = interrupt enable
 //   0x4 DATA    read/write; each write sets PENDING and increments COUNT
 //   0x8 STATUS  read-only;  {COUNT[15:0], 15'b0, PENDING}; a read clears PENDING;
@@ -42,6 +43,10 @@ module axil_regs (
     assign wready  = do_write;
     assign arready = do_read;
     assign irq     = ctrl[0] && pending;
+    // PENDING is set by a DATA write and cleared by a STATUS read; if both happen in one cycle the new event wins,
+    // so an interrupt is never lost (the read returns the old value).
+    wire set_pending = do_write && awaddr[3:2] == 2'd1;
+    wire clr_pending = do_read && araddr[3:2] == 2'd2;
 
     always @(posedge clk) begin
         if (rst) begin
@@ -55,11 +60,12 @@ module axil_regs (
                 bresp  <= 2'b00;
                 case (awaddr[3:2])
                     2'd0: ctrl <= wdata;
-                    2'd1: begin data <= wdata; count <= count + 1; pending <= 1; end
+                    2'd1: begin data <= wdata; count <= count + 1; end
                     2'd2: bresp <= 2'b10;                       // STATUS is read-only
                     2'd3: scratch <= wdata;
                 endcase
             end
+            pending <= set_pending | (pending & ~clr_pending);
             // read channel
             if (rvalid && rready) rvalid <= 0;
             if (do_read) begin
@@ -68,7 +74,7 @@ module axil_regs (
                 case (araddr[3:2])
                     2'd0: rdata <= ctrl;
                     2'd1: rdata <= data;
-                    2'd2: begin rdata <= {count, 15'b0, pending}; pending <= 0; end
+                    2'd2: rdata <= {count, 15'b0, pending};
                     2'd3: rdata <= scratch;
                 endcase
             end

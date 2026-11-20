@@ -3,7 +3,8 @@
 - `Memory` is a sparse physical memory of 32-bit words, with a frame allocator.
 - `PageTable` builds RISC-V Sv32 page tables in that memory (`map` for 4 KiB pages, `map_mega` for 4 MiB
   megapages) and `walk`s them following the privileged specification's translation algorithm (§11.1.3.2):
-  two levels, 4-byte PTEs, V/R/W/X/U/A/D checks, misaligned-superpage faults, A and D updates. A walk returns
+  two levels, 4-byte PTEs, V/R/W/X/U/A/D checks, misaligned-superpage faults, and hardware A and D updates
+  (the Svadu behaviour; under Svade an access that finds A, or D for a store, clear raises a page fault instead). A walk returns
   the physical address and the number of PTE reads, or raises `PageFault` with the RISC-V exception code
   (12 instruction, 13 load, 15 store/AMO page fault).
 - `TLB` is a set-associative (or fully associative) LRU cache of translations, holding 4 KiB and 4 MiB entries.
@@ -114,6 +115,7 @@ class PageTable:
         new = pte | A | (D if access == "store" else 0)
         if new != pte:
             self.mem.write(pte_addr, new)
+        self.last_pte = new                           # the leaf as updated, for the TLB to cache its flags
         if i == 1:
             pa = (ppn >> 10) << 22 | (va & (MEGA - 1))
         else:
@@ -144,12 +146,15 @@ class TLB:
         self.misses += 1
         return None
 
-    def insert(self, va: int, level: int, frame_base: int) -> None:
+    def insert(self, va: int, level: int, frame_base: int, flags: int = 0xFF) -> None:
+        """Cache a translation together with its leaf PTE's flags (V/R/W/X/U/G/A/D), as hardware TLBs do."""
         key = (level, va >> (22 if level else 12))
         s = self._set(key)
-        if len(s) == self.assoc:
+        if key in s:
+            del s[key]
+        elif len(s) == self.assoc:
             s.popitem(last=False)
-        s[key] = (level, frame_base)
+        s[key] = (level, frame_base, flags)
 
     def flush(self) -> None:
         for s in self.sets:
@@ -167,7 +172,7 @@ class MMU:
 
     def __init__(self, pt: PageTable, tlb: TLB, frames: int | None = None, policy: str = "lru"):
         self.pt, self.tlb, self.frames, self.policy = pt, tlb, frames, policy
-        self.walks = self.pte_reads = self.faults = self.evictions = 0
+        self.walks = self.pte_reads = self.faults = self.evictions = self.dirty_updates = 0
         self.resident: OrderedDict = OrderedDict()   # virtual page -> physical page, in FIFO/LRU order
         self.refbit: dict = {}                        # clock: the A bit the OS reads and clears
         self.slots: list = []                         # clock: virtual pages in frame order (a circular buffer)
@@ -198,8 +203,17 @@ class MMU:
                 self.resident.move_to_end(vp)
         hit = self.tlb.lookup(va)
         if hit is not None:
-            level, base = hit
-            return base | (va & ((MEGA if level else PAGE) - 1))
+            level, base, flags = hit
+            need = W if store else R
+            if not flags & need or not flags & U:     # permissions are checked on every access, hit or miss
+                raise PageFault(va, "store" if store else "load", "permission (TLB hit)")
+            if not store or flags & D:
+                return base | (va & ((MEGA if level else PAGE) - 1))
+            # a store to a clean page: the walker must set D in the PTE (counted in dirty_updates, not in walks)
+            pa, _, level = self.pt.walk(va, "store")
+            self.dirty_updates += 1
+            self.tlb.insert(va, level, pa & ~((MEGA if level else PAGE) - 1), self.pt.last_pte & 0xFF)
+            return pa
         try:
             pa, reads, level = self.pt.walk(va, "store" if store else "load")
         except PageFault:
@@ -220,7 +234,7 @@ class MMU:
             pa, reads, level = self.pt.walk(va, "store" if store else "load")
         self.walks += 1
         self.pte_reads += reads
-        self.tlb.insert(va, level, pa & ~((MEGA if level else PAGE) - 1))
+        self.tlb.insert(va, level, pa & ~((MEGA if level else PAGE) - 1), self.pt.last_pte & 0xFF)
         return pa
 
 

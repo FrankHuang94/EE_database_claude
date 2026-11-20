@@ -60,6 +60,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Dekker's handshake.** In a two-thread mutual-exclusion protocol, each thread sets its own flag and then reads the other's, entering the critical section only if the other flag is 0. Which litmus test is this? Show that TSO lets both enter, and count the fences needed to prevent it.
 
+### Problem 14-12.13 [B]
+
+**Tracing a directory.** A 16-core system keeps a full bit-vector directory at each block's home node. In its protocol, a request goes to the home. The home answers a read of an unowned block with data. For a write, the home sends the data and an invalidation to each sharer, and the sharers send their acknowledgements to the requester. For a read of a modified block, the home forwards the request to the owner, which sends the data to the requester and a copy to the home. Block X starts uncached. Core 3 reads X, core 7 reads X, core 12 writes X, then core 3 reads X again. (a) For each access, count the network messages and give the directory entry afterwards (state and sharers). (b) How many network traversals lie on the critical path of the write and of the last read?
+
 ---
 
 ## Objective coverage
@@ -68,7 +72,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. The coherence problem and its invariants | 1, 12 |
 | 2. Tracing MSI and MESI | 1, 4 |
-| 3. Directories and scaling | 2, 6, 11 |
+| 3. Directories and scaling | 2, 6, 11, 13 |
 | 4. True and false sharing | 5, 11 |
 | 5. Litmus tests and fences | 3, 7, 8, 12 |
 | 6. Atomics and locks | 9, 10 |

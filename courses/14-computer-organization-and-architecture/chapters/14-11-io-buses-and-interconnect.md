@@ -92,6 +92,7 @@ Every channel uses the same **valid/ready handshake**:
 - The receiver raises READY when it can accept.
 - A transfer happens on each clock edge where both are high.
 - A sender must not wait for READY before raising VALID, which rules out deadlock: either side may stall, but the protocol cannot hang with each side waiting for the other.
+- Once a sender raises VALID, it must keep VALID high, and its information unchanged, until the transfer happens. It cannot withdraw or alter an offer the receiver may be about to take.
 
 The lab's AXI4-Lite register block (§3.7) accepts one write or read every 2 cycles. Full AXI adds **bursts** (one address, many data beats) and **IDs**, which let a manager keep many transactions **outstanding** and lets responses return out of order. As with caches (14-09), Little's law sets the bandwidth:
 
@@ -136,7 +137,7 @@ PCI-SIG doubles the rate roughly every three years [3, R-216]:
 | PCIe 4.0 | 16.0 GT/s | 128b/130b | Oct 2017 |
 | PCIe 5.0 | 32.0 GT/s | 128b/130b | May 2019 |
 | PCIe 6.0 | 64 GT/s | PAM4, Flit, FEC | Jan 2022 |
-| PCIe 7.0 | 128.0 GT/s | PAM4, Flit | Jun 2025 |
+| PCIe 7.0 | 128.0 GT/s | PAM4, Flit (R-216 records these two) | Jun 2025 |
 | PCIe 8.0 | 256.0 GT/s (target) | — | planned by 2028 |
 
 PCI-SIG quotes bidirectional totals: "up to 256 GB/s via x16" for PCIe 6.0 is 64 GT/s × 16 lanes × 2 directions / 8, before Flit and FEC overhead [3, R-216].
@@ -164,7 +165,7 @@ The lab has two parts:
 
 ### Example 14-11.2 · Interrupts at network rates (tier B)
 
-**Setup.** A 1 Gb/s network port receives back-to-back 1500-byte packets. Each interrupt costs 2000 cycles on a 3 GHz core. (a) What fraction of the core do per-packet interrupts consume? (b) With coalescing of 32 packets per interrupt? (c) What latency can coalescing add?
+**Setup.** A 1 Gb/s network port receives back-to-back 1500-byte packets (ignore the preamble and inter-frame gap that Ethernet adds on the wire; they lower the packet rate slightly). Each interrupt costs 2000 cycles on a 3 GHz core. (a) What fraction of the core do per-packet interrupts consume? (b) With coalescing of 32 packets per interrupt? (c) What latency can coalescing add?
 
 **Solution.**
 
@@ -186,7 +187,7 @@ The lab has two parts:
 
 - **Programmed I/O:** $4096 / 4 = 1024$ loads × 50 cycles = **51,200** cycles, plus the stores.
 - **DMA:** $300 + 2000$ = **2300** cycles of CPU time, **95.5**% less, and the core is free during the transfer.
-- **Coherence:** without coherent DMA, the driver invalidates $4096 / 64$ = **64** cache lines covering the buffer, so that later loads fetch the new data from memory.
+- **Coherence:** without coherent DMA, the driver invalidates $4096 / 64$ = **64** cache lines covering the buffer (assuming the buffer is 64-byte aligned; otherwise it touches one more line, **65**), so that later loads fetch the new data from memory.
 
 **Units check.** Cycles; lines = bytes / bytes per line.
 
@@ -200,7 +201,7 @@ The lab has two parts:
 
 (a) Each write takes 16/8 = **2** cycles, one for the address and data handshake and one for the response. That gives 4 bytes per 20 ns = **200** MB/s. A late response stretches the write to $2 + 3$ = **5** cycles, because this subordinate accepts no new write while a response is pending.
 
-(b) By Little's law, $16 \times 10^9 \times 200 \times 10^{-9} / 64$ = **50** transactions in flight. This is why full AXI has transaction IDs and allows many outstanding requests, which AXI4-Lite does not.
+(b) By Little's law, $16 \times 10^9 \times 200 \times 10^{-9} / 64$ = **50** transactions in flight. This is why full AXI has transaction IDs, which let responses return out of order. AXI4-Lite has no IDs, so its responses must return in order. It does not forbid several outstanding transactions, but a subordinate may limit them with READY, and the lab's block accepts one at a time.
 
 **Units check.** bytes / s; (bytes/s × s) / bytes = transactions.
 
@@ -236,6 +237,7 @@ The lab has two parts:
 | Ex 14-11.3b | CPU cycles, DMA | 2300 | — |
 | Ex 14-11.3c | saving | 95.5 | % |
 | Ex 14-11.3d | lines to invalidate | 64 | — |
+| Ex 14-11.3e | lines, unaligned buffer | 65 | — |
 | Ex 14-11.4a | cycles per write | 2 | — |
 | Ex 14-11.4b | write throughput | 200 | MB/s |
 | Ex 14-11.4c | cycles, late response | 5 | — |
@@ -294,7 +296,7 @@ The lab, [labs/14-11-lab](../labs/14-11-lab/README.md), has the AXI4-Lite regist
 
 ### State of the art (as of Nov 2026)
 
-- **AXI is the default SoC fabric.** Arm's AXI specification is at Issue L (August 2025), which covers AXI5 and adds options such as a credited transport [1, R-217] **[Established]**.
+- **AXI keeps evolving.** Arm's AXI specification is at Issue L (August 2025), which covers AXI5 and adds options such as a credited transport [1, R-217] **[Established]**.
 - **PCIe doubling continues.** PCIe 7.0 (128 GT/s) was released to members in June 2025, and PCIe 8.0 (256 GT/s) is planned for release to members by 2028 [3, R-216] **[Established]** (from PCI-SIG releases, read as reprints).
 - **CXL for memory expansion.** CXL 4.0 (November 2025) runs at 128 GT/s and adds bundled ports [4, R-217] **[Established]**. How widely CXL-attached memory is deployed in production is outside this chapter's sources.
 
@@ -390,7 +392,7 @@ Now work the [problem set](../problems/14-11-problems.md).
 
 ## 14. Sources
 
-1. Arm, "AMBA AXI Protocol Specification," ARM IHI 0022 Issue L (Aug 2025), and Arm's AMBA web pages. [R-217](../../../reference/research-log.md#r-217--amba-axi-issue-l-and-cxl-40)
+1. Arm, "AMBA AXI Protocol Specification," ARM IHI 0022 Issue L (Aug 2025), and Arm's AMBA web pages. Issue J (2023) removed the AXI3, AXI4 and AXI4-Lite content, so the AXI4-Lite rules used here are those of the earlier issues (Issue H and before). [R-217](../../../reference/research-log.md#r-217--amba-axi-issue-l-and-cxl-40)
 2. D. Das Sharma, "What's the Difference Going from PCIe 3.0 to PCIe 6.0?", *Electronic Design*. [R-216](../../../reference/research-log.md#r-216--pci-express-generations-1080)
 3. PCI-SIG releases for PCIe 6.0 (Jan 2022), 7.0 (Jun 2025) and 8.0 (Aug 2025), read as reprints. [R-216](../../../reference/research-log.md#r-216--pci-express-generations-1080)
 4. CXL Consortium, "CXL Consortium Releases the Compute Express Link 4.0 Specification," 18 Nov 2025. [R-217](../../../reference/research-log.md#r-217--amba-axi-issue-l-and-cxl-40)

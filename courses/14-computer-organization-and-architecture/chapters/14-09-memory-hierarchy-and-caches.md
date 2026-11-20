@@ -174,10 +174,10 @@ Example 14-09.6 shows the resulting gap: a factor of 27 in misses between `ijk` 
 
 **Prefetching** fetches blocks before they are requested.
 
-- The simplest form, **next-line** prefetching, fetches block $b + 1$ whenever block $b$ is missed or first used. On a sequential stream it removes nearly all misses (Problem 14-09.10).
+- The simplest form, **next-line** prefetching, fetches block $b + 1$ whenever block $b$ is missed or first used. On a sequential stream it removes nearly all misses in the lab's model, where a prefetched block arrives instantly (Problem 14-09.10).
 - **Stride** prefetchers learn the distance between successive addresses of the same load instruction, and follow strided patterns.
-- A prefetcher is judged by **coverage** (the fraction of misses it removes), **accuracy** (the fraction of prefetches used) and **timeliness**. A wrong prefetch wastes bandwidth and evicts useful data.
-- No simple prefetcher helps pointer chasing, because the next address is unknown until the current load returns.
+- A prefetcher is judged by **coverage** (the fraction of misses it removes), **accuracy** (the fraction of prefetches used) and **timeliness**. A wrong prefetch wastes bandwidth and evicts useful data. The lab's model cannot measure timeliness: its prefetches have no latency, so they are never late. A real next-line prefetcher one block ahead of a tight loop often is late, which is why real prefetchers run several blocks ahead (the prefetch distance).
+- No simple prefetcher helps true pointer chasing, because the next address is unknown until the current load returns. (The lab's linked list places its nodes at a constant 64-byte stride, which a stride prefetcher would follow; a real heap scatters them.)
 
 **Non-blocking caches and memory-level parallelism (MLP).** An out-of-order core keeps executing after a miss, and may miss again. A **non-blocking** cache tracks each outstanding miss in a **miss status holding register (MSHR)** and continues to serve hits and further misses. By Little's law (14-08), the bandwidth a core can draw from memory is
 
@@ -292,7 +292,7 @@ The column traversal's 4096 misses are 512 compulsory, no capacity, and **3584**
 
 - A 4-way cache of the same size still misses **4096** times. Its 32 sets receive the column in 4 sets of 4 ways, 16 lines for 64 blocks.
 - A 16 KB direct-mapped cache (512 sets) spreads the column over 64 sets and misses only 512 times.
-- A 1 KB fully associative cache holds 32 lines, fewer than a column's 64 blocks. Cycling through 64 blocks with LRU, it misses on every access: **4096**, now all capacity misses.
+- A 1 KB fully associative cache holds 32 lines, fewer than a column's 64 blocks. Cycling through 64 blocks with LRU, it misses on every access: **4096**, of which 512 are compulsory and the other **3584** now capacity misses.
 
 **Units check.** Misses are counts; miss rates are misses per access.
 
@@ -365,6 +365,7 @@ Tiled code is **8.04** times faster than `ijk`, although it executes 25% more in
 | Ex 14-09.4f | misses, columns, fully associative 4 KB | 512 | — |
 | Ex 14-09.4g | misses, columns, 4-way 4 KB | 4096 | — |
 | Ex 14-09.4h | misses, columns, fully associative 1 KB | 4096 | — |
+| Ex 14-09.4i | capacity misses, fully associative 1 KB | 3584 | — |
 | Ex 14-09.5a | misses | 34 | — |
 | Ex 14-09.5b | bytes read from memory | 1088 | B |
 | Ex 14-09.5c | bytes written, write-back | 64 | B |
@@ -413,7 +414,7 @@ The lab, [labs/14-09-lab](../labs/14-09-lab/README.md), provides `cache.py`, the
 | Bandwidth from MLP | outstanding misses × $B$ / latency | Little's law |
 | HBM3 / HBM3E / HBM4 per stack | 819 GB/s / above 1.2 TB/s / up to 2 TB/s | [2–4, R-214] |
 | Zen 5 caches | L1 data 48 KB 12-way; L2 1 MB 16-way; L3 32 MB per 8-core complex | AMD, Hot Chips 2024 [5, R-212] |
-| DRAM load latency | of order 100 ns on PC and server processors | **[Industry estimate]**; measure it (lab extension) |
+| DRAM load latency | of order 100 ns: the round figure this chapter's examples use, not a sourced measurement | Illustrative; measure the target system (lab extension) |
 
 ## 8. Common mistakes
 

@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import itertools
 import math
+import re
 import sys
 from pathlib import Path
 
@@ -145,6 +146,9 @@ v.assert_true("Dekker = SB: (0, 0) under TSO, gone with one fence per thread", (
 locks = {n: [mesi.System(n).run(mesi.spin_lock(n, 100, k)).bus for k in ("tas", "ttas")] for n in (2, 4, 8)}
 v.check("Ex 14-12.6a", locks[4][0])
 v.check("Ex 14-12.6b", locks[4][1])
+inval = {k: mesi.System(4).run(mesi.spin_lock(4, 100, k)).stats["invalidations"] for k in ("tas", "ttas")}
+v.check("Ex 14-12.6c", inval["tas"])
+v.check("Ex 14-12.6d", inval["ttas"])
 v.assert_true("closed forms: TAS = (n-1) x 100 + 1 + 1 + (n-1); TTAS = 1 + (n-1) + 1 + 2(n-1)",
               all(locks[n] == [(n - 1) * 100 + 2 + (n - 1), 1 + (n - 1) + 1 + 2 * (n - 1)] for n in (4, 8)))
 v.check("14-12.10a", locks[2][0])
@@ -167,5 +171,50 @@ v.check("Lab 14-12.a", fs[8][1])
 v.check("Lab 14-12.b", locks[8][0])
 v.check("Lab 14-12.c", len(litmus.outcomes(litmus.MP_FENCED, "PSO")))
 v.check("Lab 14-12.d", len(litmus.outcomes(litmus.SB, "PSO")))
+
+# ---------------------------------------------------------------- Problem 13: a full-map directory, message by message
+
+
+class Directory:
+    """Home-node directory with the rules of Problem 13; counts messages and critical-path traversals."""
+
+    def __init__(self):
+        self.state, self.sharers, self.owner = "I", set(), None
+        self.log = []
+
+    def read(self, c):
+        if self.state == "M":                      # request, forward to owner, data to requester, copy to home
+            msgs, path = 4, 3
+            self.sharers = {self.owner, c}
+            self.state, self.owner = "S", None
+        else:                                      # request, data from home
+            msgs, path = 2, 2
+            self.sharers.add(c)
+            self.state = "S"
+        self.log.append((msgs, path, self.state, frozenset(self.sharers if self.state == "S" else {self.owner})))
+
+    def write(self, c):
+        others = self.sharers - {c}
+        msgs = 2 + 2 * len(others)                 # request, data, one invalidation and one ack per sharer
+        path = 3 if others else 2
+        self.state, self.owner, self.sharers = "M", c, set()
+        self.log.append((msgs, path, "M", frozenset({c})))
+
+
+d13 = Directory()
+d13.read(3)
+d13.read(7)
+d13.write(12)
+d13.read(3)
+for key, (msgs, _, _, _) in zip("abcd", d13.log):
+    v.check(f"14-12.13{key}", msgs)
+v.check("14-12.13e", sum(m for m, _, _, _ in d13.log))
+v.check("14-12.13f", d13.log[2][1])
+v.check("14-12.13g", d13.log[3][1])
+sol12 = (ROOT / "solutions" / "14-12-solutions.md").read_text(encoding="utf-8").split("<!-- directory trace -->")[1]
+rows13 = re.findall(r"^\| core \d+ \w+s X \| (\d+) \(.*?\) \| (\w) \{([\d, ]+)\} \|$", sol12, re.M)
+v.assert_true("Solution 13's table matches the directory model row by row",
+              [(int(m), s, frozenset(int(x) for x in sh.split(","))) for m, s, sh in rows13]
+              == [(m, s, sh) for m, _, s, sh in d13.log])
 
 sys.exit(v.finish())

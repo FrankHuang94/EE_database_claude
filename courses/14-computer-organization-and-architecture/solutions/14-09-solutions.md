@@ -119,11 +119,11 @@ The compulsory misses number **1024** (two 16 KB matrices in 32-byte blocks). Th
 | (b) Columns | 4096 | **4096** | **4096** |
 | (c) Linked list | 256 | **256** | **256** |
 
-(a) Only the first block misses. Each first use of a prefetched block fetches the next, so the stream stays one block ahead. All 512 prefetches but the last, which fetches the block after the matrix, are useful.
+(a) Only the first block misses. Each first use of a prefetched block fetches the next, so the stream stays one block ahead. All 512 prefetches but the last, which fetches the block after the matrix, are useful. This relies on the model's instant prefetches: in hardware, one block of lead is only 8 loads, far less than a memory latency, so a real prefetcher must run several blocks ahead to be on time.
 
-(b) Every access still misses, and every prefetch is wasted. The next block in memory belongs to the same row, which is not needed until the next column pass, by which time it has been evicted. The prefetches double the traffic for nothing.
+(b) Every access still misses, and every prefetch is wasted. The next block in memory belongs to the same row, but it is first needed when the traversal reaches column $j_0 + 8$, up to 8 column passes later, by which time it has been evicted. The prefetches double the traffic for nothing.
 
-(c) Each node is 64 bytes from the next, so the next 32-byte block is the unused second half of the node. All 256 prefetches are wasted. The address of the next node is known only after the current load returns.
+(c) Each node is 64 bytes from the next, so the next 32-byte block is the unused second half of the node. All 256 prefetches are wasted. Next-line prefetching fails here because the stride is two blocks, not because the next address is unknowable: the lab places the nodes at a constant stride, so a stride prefetcher would cover nearly every miss. In a real heap the nodes are scattered, and the next address is known only after the current load returns. That is true pointer chasing, which defeats both prefetchers.
 
 ### Solution 14-09.11
 
@@ -142,7 +142,7 @@ The inner loops reuse a $t \times t$ tile of $B$ for every row $i$. A tile of $B
 - 1 KB in a 2 KB cache is too much, so $t$ = 16 does badly there;
 - 1 KB in a 4 KB cache works best, giving the most reuse per tile.
 
-Very small tiles (4) reuse each block of $B$ only 4 times per load and add loop overhead. A tile of 32 is the whole matrix, the same as no tiling (4484 against `ikj`'s 4480).
+Very small tiles (4) do not lose reuse of $B$: each tile of $B$ still serves all 32 rows, and on the 2 KB cache $B$ misses only **128** times, its compulsory blocks. The cost moves to $A$ and $C$. The loops sweep them $n/t$ = **8** times, and each 16-byte tile row uses only half of a 32-byte block, so $A$ misses **2048** times and $C$ **2176**. Smaller tiles also add loop overhead. A tile of 32 is the whole matrix, the same as no tiling (4484 against `ikj`'s 4480).
 
 ### Solution 14-09.13
 
@@ -236,6 +236,10 @@ Even at a 1% miss rate, the average access costs **330** times a 32-bit add (33 
 | 14-09.12b | best tile, 4 KB | 16 | — |
 | 14-09.12c | tile of B, t = 8 | 256 | B |
 | 14-09.12d | tile of B, t = 16 | 1024 | B |
+| 14-09.12e | B misses, t = 4, 2 KB | 128 | — |
+| 14-09.12f | sweeps of A and C, t = 4 | 8 | — |
+| 14-09.12g | A misses, t = 4, 2 KB | 2048 | — |
+| 14-09.12h | C misses, t = 4, 2 KB | 2176 | — |
 | 14-09.13a | energy, 5%, 1.3 nJ | 85 | pJ |
 | 14-09.13b | energy, 1%, 1.3 nJ | 33 | pJ |
 | 14-09.13c | energy, 5%, 2.6 nJ | 150 | pJ |

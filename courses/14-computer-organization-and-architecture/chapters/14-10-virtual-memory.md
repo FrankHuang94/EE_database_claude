@@ -73,7 +73,7 @@ $$
 2. If it is invalid (V = 0, or W = 1 with R = 0), raise a page fault.
 3. If R or X is set, it is a leaf: a megapage. (Its PPN must be 4 MiB-aligned, or the walk raises a page fault.) Otherwise read the PTE at PTE.PPN × 4096 + VPN[0] × 4, check it the same way, and require it to be a leaf.
 4. Check U against the privilege mode, and R, W or X against the access type; on failure, raise a page fault.
-5. Set A (and D for a store) if they are clear. The physical address is the leaf's PPN followed by the offset.
+5. If A (or D, for a store) is clear, update it. The specification allows two behaviours here. Under **Svadu**, the hardware sets the bits itself; under **Svade**, the access raises a page fault, and the operating system sets the bits and retries [R-215]. This chapter, its problems and the lab assume Svadu. The physical address is the leaf's PPN followed by the offset.
 
 ```mermaid
 flowchart LR
@@ -213,7 +213,7 @@ The verify script checks the walker against an independent decoder written from 
 1. The root is at 0x80000 × 4096 = 0x8000_0000, so the level-1 PTE is at 0x8000_0000 + 1 × 4 = 0x8000_0004. It holds 0x2000_0401: V = 1 with R = W = X = 0, so it is a pointer, to PPN 0x2000_0401 >> 10 = 0x80001.
 2. The level-0 PTE is at 0x8000_1000 + 3 × 4 = 0x8000_100C. It holds 0x048D_1417, whose flags are 0x17 = V, R, W, U: a valid user leaf, readable and writable. Its PPN is 0x048D_1417 >> 10 = 0x12345.
 3. The physical address is 0x12345 × 4096 + 0xABC = **0x1234_5ABC**, after **2** PTE reads.
-4. The A bit was clear, so the walker sets it: the PTE becomes **0x048D_1457**. A later store would also set D, giving 0x048D_14D7.
+4. The A bit was clear, so the walker sets it (assuming Svadu; under Svade this load would instead take a load page fault, cause 13, for the OS to set A): the PTE becomes **0x048D_1457**. A later store would also set D, giving 0x048D_14D7.
 
 (b) A fetch needs X, which is 0, so it raises an instruction page fault (cause **12**). A supervisor-mode load from a U = 1 page with SUM = 0 also faults: a load page fault (cause **13**).
 
@@ -316,6 +316,8 @@ The verify script checks the walker against an independent decoder written from 
 | Ex 14-10.6b | way size, 64 KiB 8-way | 8 | KiB |
 | Ex 14-10.6c | possible sets for a block | 2 | — |
 | Ex 14-10.6d | way size, 48 KiB 12-way | 4 | KiB |
+| Txt 14-10.a | nested walk references, 4 + 4 levels | 24 | — |
+| Txt 14-10.b | native walk references, 4 levels | 4 | — |
 
 ## 5. Simulate it
 
@@ -346,11 +348,11 @@ The lab, [labs/14-10-lab](../labs/14-10-lab/README.md), provides `vm.py`, the mo
 |---|---|---|
 | Base page | 4 KiB (offset 12 bits) | RISC-V [1, R-215]; also the usual base page on x86 and Arm systems |
 | Sv32 | 2 levels, 4-byte PTEs, 4 MiB megapages | [1, R-215] |
-| Sv39 / Sv48 / Sv57 | 3 / 4 / 5 levels, 8-byte PTEs; 2 MiB, 1 GiB, 512 GiB superpages | [1, R-215] |
+| Sv39 / Sv48 / Sv57 | 3 / 4 / 5 levels, 8-byte PTEs; 2 MiB, 1 GiB, 512 GiB and (Sv57) 256 TiB superpages | [1, R-215] |
 | TLB reach | entries × page size | 64 × 4 KiB = 256 KiB |
 | RISC-V cause codes | 8 ecall from U; 12, 13, 15 instruction, load, store page faults; interrupts 5/7 S/M timer, 9/11 S/M external | [2, R-215] |
 | VIPT limit | cache size ≤ page size × ways | §3.4 |
-| Disk page fault | milliseconds, millions of cycles | Example 14-10.3 |
+| Disk page fault | milliseconds from a hard disk, millions of cycles (Example 14-10.3); less from a solid-state drive, but still far beyond any cache miss | Example 14-10.3 |
 
 ## 8. Common mistakes
 
@@ -367,11 +369,11 @@ The lab, [labs/14-10-lab](../labs/14-10-lab/README.md), provides `vm.py`, the mo
 
 - **64-bit page tables with four or five levels.** RISC-V defines Sv39, Sv48 and Sv57 with three to five levels [1, R-215], and x86-64 and 64-bit Arm use comparable multilevel schemes. Every TLB miss is therefore a short pointer chase **[Established]**.
 - **Huge pages as the reach fix.** The RISC-V specification keeps the 4 KiB base page and relies on operating systems' transparent superpage support for TLB reach [1, R-215] **[Established]**. Databases and other large in-memory workloads commonly request huge pages, such as Sv39's 2 MiB and 1 GiB sizes.
-- **Shootdowns at scale.** Changing a shared mapping on a many-core server requires interrupting the other cores (the RISC-V specification's "TLB shootdown" procedure [1, R-215]). This is a known scalability cost in operating systems **[Established]**.
+- **Shootdowns at scale.** Changing a shared mapping on a many-core server requires interrupting the other cores (the RISC-V specification's "TLB shootdown" procedure [1, R-215]) **[Established]**. Every core that may hold the old translation must take the interrupt and acknowledge it, so the cost grows with the number of cores involved (our reasoning; measure it on the target system).
 
 ### Why it matters commercially
 
-- **Virtualization doubles the walk.** A virtual machine has its own page tables, translated through the hypervisor's. A TLB miss then walks both, which is why hardware nested paging and large TLBs matter to cloud providers.
+- **Virtualization multiplies the walk.** A virtual machine has its own page tables, translated through the hypervisor's. With nested paging, every guest page-table pointer is itself a guest-physical address that needs a host walk. A guest walk of $n$ levels over a host table of $m$ levels therefore makes up to $n(m + 1) + m = nm + n + m$ memory references: **24** for four levels each, against 4 natively (our derivation). This is why large TLBs, page-walk caches and huge pages matter to cloud providers.
 - **Isolation is the security boundary.** Page-table permissions separate processes, and the kernel from users. Attacks such as Meltdown (14-07) were dangerous precisely because they bypassed this boundary.
 
 ### Marketing vs Reality
@@ -450,7 +452,7 @@ Now work the [problem set](../problems/14-10-problems.md).
 
 - **Builds on:** caches and replacement ([14-09](14-09-memory-hierarchy-and-caches.md)); precise exceptions ([14-08](14-08-out-of-order-and-superscalar.md)); speculation and Meltdown ([14-07](14-07-branch-prediction-and-speculation.md)).
 - **Next:** [14-11 I/O, Buses and Interconnect](14-11-io-buses-and-interconnect.md), where interrupts and DMA connect devices to memory.
-- **Used later:** coherence and TLB shootdowns in multicores ([14-12](14-12-multicore-coherence-consistency.md)); GPU unified memory ([14-13](14-13-gpus-and-simt.md)); microcontroller memory protection and interrupts ([18-01](../../18-embedded-systems-and-microcontrollers/chapters/18-01-microcontroller-architecture.md), [18-03](../../18-embedded-systems-and-microcontrollers/chapters/18-03-interrupts-exceptions-timers.md)).
+- **Used later:** coherence and TLB shootdowns in multicores ([14-12](14-12-multicore-coherence-consistency.md)); microcontroller memory protection and interrupts ([18-01](../../18-embedded-systems-and-microcontrollers/chapters/18-01-microcontroller-architecture.md), [18-03](../../18-embedded-systems-and-microcontrollers/chapters/18-03-interrupts-exceptions-timers.md)).
 
 ## 13. Further study
 

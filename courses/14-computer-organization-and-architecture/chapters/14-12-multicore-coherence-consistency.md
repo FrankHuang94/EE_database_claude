@@ -54,6 +54,8 @@ Suppose cores 0 and 1 both read $x = 0$ into their caches. Core 0 then writes $x
 - **the single-writer, multiple-reader (SWMR) invariant**: at any moment, either one core may write the block (and no other core may read it), or any number of cores may read it (and none may write);
 - **the data-value invariant**: a read returns the value of the most recent write to that block in the order the protocol establishes.
 
+Hardware coherence covers caches, not TLBs. When the operating system changes a page mapping, other cores' TLBs may still hold the old translation, and the OS must invalidate them itself with interprocessor interrupts: a **TLB shootdown** (14-10).
+
 Almost all real protocols are **write-invalidate**: a core that wants to write must first invalidate every other copy. (Write-update protocols, which broadcast each written value, cost too much bandwidth.)
 
 ### 3.3 Snooping protocols: MSI and MESI
@@ -122,9 +124,9 @@ Under SC, at least one store comes first in the global order, so $r1 = r2 = 0$ i
 - buffered stores drain to memory in order;
 - MFENCE (and LOCK'd instructions) flush the buffer [2, R-219].
 
-TSO thus relaxes only one thing, a store followed by a load to a different address. Stores stay ordered with each other, so the **message passing (MP)** idiom works: write data, then a flag; a reader that sees the flag then sees the data.
+TSO thus relaxes one ordering, a store followed by a load to a different address. (A core may also read its own buffered store before other cores can see it, Problem 14-12.7.) Stores stay ordered with each other, so the **message passing (MP)** idiom works: write data, then a flag; a reader that sees the flag then sees the data.
 
-Weaker models relax more. **RISC-V's RVWMO** is "defined in terms of the global memory order, a total ordering of the memory operations produced by all harts", with constraints that let hardware reorder independent memory operations: "memory instructions from another hart may observe the memory instructions from the first hart being executed in a different order" [3, R-218]. Arm's model is similar in spirit. Under such models even MP needs a **fence** (or release/acquire annotations) between the data and the flag. RISC-V also defines an optional **Ztso** extension for total store ordering [3, R-218], which eases porting x86 code.
+Weaker models relax more. **RISC-V's RVWMO** is "defined in terms of the global memory order, a total ordering of the memory operations produced by all harts", with constraints that let hardware reorder independent memory operations: "memory instructions from another hart may observe the memory instructions from the first hart being executed in a different order" [3, R-218]. Arm's model is similar in spirit. Under such models even MP needs ordering on both sides: a **fence** (or a release store) between the writer's data and flag stores, and a fence (or an acquire load) between the reader's flag and data loads, because these models may also reorder loads (Problem 14-12.8). RISC-V also defines an optional **Ztso** extension for total store ordering, the x86-style model [3, R-218].
 
 The programmer's escape hatch is the **data-race-free** discipline. Programs whose shared accesses are all protected by synchronization (locks, atomics with the right ordering) behave as if sequentially consistent on all these machines. The language memory models of C, C++, Java and Rust are built on that guarantee, and compilers insert the fences each architecture needs.
 
@@ -221,7 +223,7 @@ That is **6** bus transactions (4 BusRd, 2 BusUpgr), **2** invalidations and **2
 
 ### Example 14-12.6 · Spinning on a lock (tier C)
 
-**Setup.** Core 0 holds a lock. Cores 1–3 each spin 100 times, then core 0 releases it and each waiter makes one attempt. Count the MESI bus transactions with test-and-set and with test-and-test-and-set spinning.
+**Setup.** Core 0 holds a lock. Cores 1–3 each spin 100 times, taking turns round-robin. Core 0 then releases the lock, and each waiter makes one attempt, in order, even after another waiter has taken the lock (a simplification: real code would re-test first). Count the MESI bus transactions with test-and-set and with test-and-test-and-set spinning.
 
 **Solution.**
 
@@ -230,7 +232,7 @@ That is **6** bus transactions (4 BusRd, 2 BusUpgr), **2** invalidations and **2
 
 **Units check.** Transactions.
 
-**Sanity check.** TTAS turns 300 invalidations into 3. Under heavy contention, real locks add exponential backoff or queue-based designs, so that each waiter spins on its own block.
+**Sanity check.** TTAS cuts the transactions from 305 to 11 and the invalidations from **304** to **6**: 3 at the release and 1 at each attempt. Under heavy contention, real locks add exponential backoff or queue-based designs, so that each waiter spins on its own block.
 
 ### Answer key
 
@@ -255,6 +257,8 @@ That is **6** bus transactions (4 BusRd, 2 BusUpgr), **2** invalidations and **2
 | Ex 14-12.5d | outcomes, TSO with fences | 3 | — |
 | Ex 14-12.6a | bus transactions, test-and-set | 305 | — |
 | Ex 14-12.6b | bus transactions, test-and-test-and-set | 11 | — |
+| Ex 14-12.6c | invalidations, test-and-set | 304 | — |
+| Ex 14-12.6d | invalidations, test-and-test-and-set | 6 | — |
 
 ## 5. Simulate it
 
@@ -265,7 +269,7 @@ The lab, [labs/14-12-lab](../labs/14-12-lab/README.md), provides `mesi.py` and `
 3. **Compare spin locks** as the number of waiters grows.
 4. **Enumerate litmus tests** (SB, MP, with and without fences) under SC, TSO and PSO.
 
-**Guided exercise (predict, then run).** **Before Part 4,** predict whether TSO allows the message-passing outcome "flag seen, data not seen" (r1 = 1, r2 = 0). (No: TSO keeps stores in order, so data reaches memory before the flag. PSO allows it, and a fence between the two stores forbids it again.)
+**Guided exercise (predict, then run).** **Before Part 4,** predict whether TSO allows the message-passing outcome "flag seen, data not seen" (r1 = 1, r2 = 0). (No: TSO keeps stores in order, so data reaches memory before the flag. PSO allows it. In the lab's PSO model, which reorders only stores, a fence between the two stores forbids it again; on RVWMO or Arm the reader would also need a fence between its two loads.)
 
 ## 6. Engineering tradeoffs
 
@@ -303,8 +307,8 @@ The lab, [labs/14-12-lab](../labs/14-12-lab/README.md), provides `mesi.py` and `
 
 ### State of the art (as of Nov 2026)
 
-- **Formal memory models.** RISC-V specifies RVWMO formally, with an optional Ztso extension [3, R-218]. x86 behaviour is captured by the x86-TSO model, which was validated against hardware [2, R-219] **[Established]**.
-- **Directories everywhere.** Server processors with tens to hundreds of cores use directory or snoop-filter structures rather than pure broadcast **[Established]** (textbook practice; vendors rarely publish details).
+- **Formal memory models.** RISC-V specifies RVWMO formally, with an optional Ztso extension [3, R-218]. x86 behaviour is captured by the x86-TSO model of Sewell et al. [2, R-219] **[Established]**.
+- **Directories everywhere.** Server processors with tens to hundreds of cores use directory or snoop-filter structures rather than pure broadcast **[Industry estimate]** (textbook practice; vendors rarely publish details).
 - **Coherent interconnects beyond the chip.** CXL (14-11, [R-217](../../../reference/research-log.md#r-217--amba-axi-issue-l-and-cxl-40)) extends cache coherence to accelerators and attached memory.
 
 ### Why it matters commercially
@@ -388,7 +392,8 @@ Now work the [problem set](../problems/14-12-problems.md).
 
 - **Builds on:** caches and write-back ([14-09](14-09-memory-hierarchy-and-caches.md)); buses and networks-on-chip ([14-11](14-11-io-buses-and-interconnect.md)); out-of-order execution and store buffers ([14-08](14-08-out-of-order-and-superscalar.md)); Amdahl's law ([14-01](14-01-performance-power-iron-law.md)).
 - **Next:** [14-13 GPUs and SIMT](14-13-gpus-and-simt.md), which takes thread-level parallelism to thousands of threads with a much weaker coherence model.
-- **Used later:** TLB shootdowns ([14-10](14-10-virtual-memory.md)); CXL coherence ([24-05](../../24-high-speed-io-signal-integrity-and-photonics/chapters/24-05-pcie-cxl-ethernet.md)).
+- **Related:** TLB shootdowns, which coherence does not cover ([14-10](14-10-virtual-memory.md), §3.2 here).
+- **Used later:** CXL coherence ([24-05](../../24-high-speed-io-signal-integrity-and-photonics/chapters/24-05-pcie-cxl-ethernet.md)).
 
 ## 13. Further study
 

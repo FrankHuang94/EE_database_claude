@@ -77,6 +77,15 @@ module axil_regs_tb;
         // a write to the read-only STATUS register is refused
         write(4'h8, 32'hFFFF_FFFF, 2'b10);
         read(4'h8, {16'd1, 15'd0, 1'b0});
+        // a DATA write and a STATUS read accepted in the same cycle: the read returns the old PENDING (0), and the
+        // new event must win, so PENDING and irq end up set
+        @(negedge clk); @(negedge clk);           // let the previous response retire
+        awaddr = 4'h4; wdata = 32'h5; awvalid = 1; wvalid = 1; araddr = 4'h8; arvalid = 1;
+        @(negedge clk); awvalid = 0; wvalid = 0; arvalid = 0;
+        if (!(rvalid && bvalid)) begin errors = errors + 1; $display("FAIL collision: both not accepted together"); end
+        if (rdata !== {16'd1, 15'd0, 1'b0}) begin errors = errors + 1; $display("FAIL collision read %h", rdata); end
+        if (irq !== 1'b1) begin errors = errors + 1; $display("FAIL collision: interrupt lost"); end
+        read(4'h8, {16'd2, 15'd0, 1'b1});
 
         $display("CYCLES writes=%0d reads=%0d stalled_write=%0d", t_writes, t_reads, t_stalled);
         if (errors == 0 && t_writes == 16 && t_reads == 16 && t_stalled == 5) $display("TEST PASSED");

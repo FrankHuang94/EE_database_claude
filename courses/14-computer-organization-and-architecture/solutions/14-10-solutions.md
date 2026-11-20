@@ -123,6 +123,16 @@ With 9 frames, FIFO and LRU fault on every reference, because the page evicted i
 
 At 5 ms per fault, LRU spends **0.5** s faulting with 9 frames and **0.05** s with 10. One frame less makes the loop 10 times slower: thrashing is a cliff, not a slope.
 
+### Solution 14-10.13
+
+(a) Each of the $n$ guest levels reads one guest PTE, whose address is guest-physical: translating it costs a host walk of $m$ reads, then the PTE read itself, so $m + 1$ per level. The final guest-physical data address needs one more host walk of $m$ reads. In total, $n(m + 1) + m = nm + n + m$.
+
+(b) Sv39 on Sv48: $3 \times 4 + 3 + 4$ = **19**. Sv48 on Sv48: $16 + 4 + 4$ = **24**, against 4 for a native Sv48 walk.
+
+(c) With $m$ = 2: $4 \times 2 + 4 + 2$ = **14**.
+
+(d) Huge host pages shorten every host walk ($m$ appears $n + 1$ times in the count) and let one TLB entry cover more guest memory, so they attack both the walk length and the miss rate. Page-walk caches, which keep upper-level entries of both tables, reduce the count further in practice.
+
 ---
 
 ## Answer key
@@ -180,3 +190,6 @@ At 5 ms per fault, LRU spends **0.5** s faulting with 9 frames and **0.05** s wi
 | 14-10.12f | OPT, 10 frames | 10 | — |
 | 14-10.12g | time faulting, 9 frames, LRU | 0.5 | s |
 | 14-10.12h | time faulting, 10 frames, LRU | 0.05 | s |
+| 14-10.13a | references, Sv39 guest on Sv48 host | 19 | — |
+| 14-10.13b | references, Sv48 on Sv48 | 24 | — |
+| 14-10.13c | references, Sv48 guest, 1 GiB host pages | 14 | — |

@@ -210,6 +210,7 @@ v.check("Ex 14-09.4e", tcc["conflict"])
 v.check("Ex 14-09.4f", lru_both(cols, 4096, 32, 128))
 v.check("Ex 14-09.4g", lru_both(cols, 4096, 32, 4))
 v.check("Ex 14-09.4h", lru_both(cols, 1024, 32, 32))
+v.check("Ex 14-09.4i", lru_both(cols, 1024, 32, 32) - len({a // 32 for a, _ in cols}))   # misses minus compulsory
 v.assert_true("16 KB direct-mapped: 512", lru_both(cols, 16384, 32, 1) == 512)
 v.assert_true("lab: columns at 4 KB miss 4096 times up to 16 ways", all(lru_both(cols, 4096, 32, w) == 4096 for w in (8, 16)))
 v.assert_true("stack distances: fully associative 4 KB 512 and 1 KB 4096 misses",
@@ -273,6 +274,18 @@ v.check("14-09.12a", (4, 8, 16, 32)[tiles[2048].index(min(tiles[2048]))])
 v.check("14-09.12b", (4, 8, 16, 32)[tiles[4096].index(min(tiles[4096]))])
 v.check("14-09.12c", 8 * 8 * 4)
 v.check("14-09.12d", 16 * 16 * 4)
+c12 = cache.Cache(2048, 32, 4)
+per12 = {"A": 0, "B": 0, "C": 0}
+for addr, st in mm["t4"][0]:
+    if not c12.access(addr, st):
+        for name, base in (("A", cache.BASE), ("B", cache.BASE + 0x4000), ("C", cache.BASE + 0x8000)):
+            if base <= addr < base + 32 * 32 * 4:
+                per12[name] += 1
+v.check("14-09.12e", per12["B"])
+v.check("14-09.12f", 32 // 4)
+v.check("14-09.12g", per12["A"])
+v.check("14-09.12h", per12["C"])
+v.assert_true("B misses equal its compulsory blocks (32 x 32 x 4 / 32)", per12["B"] == 32 * 32 * 4 // 32)
 
 # ---------------------------------------------------------------------------------------------------------------
 # Problem 8: transpose

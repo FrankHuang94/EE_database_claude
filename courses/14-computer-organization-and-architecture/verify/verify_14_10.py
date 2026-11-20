@@ -320,4 +320,44 @@ v.assert_true("discussion 1: page 1 evicted twice by FIFO, once by clock",
               evicted_pages(REUSE, 3, "fifo").count(1) == 2 and evicted_pages(REUSE, 3, "clock").count(1) == 1)
 v.assert_true("clock on the Belady string behaves like FIFO here (9 and 10)", (mmu_faults(belady, 3, "clock"), mmu_faults(belady, 4, "clock")) == (9, 10))
 
+# ---------------------------------------------------------------- the TLB caches permissions and the D bit (audit fix)
+mem_t = vm.Memory()
+pt_t = vm.PageTable(mem_t)
+pt_t.map(0x1000_0000, 0x200, vm.R | vm.U)              # read-only user page
+pt_t.map(0x1000_1000, 0x201)                            # read-write user page
+mmu_t = vm.MMU(pt_t, vm.TLB(8))
+mmu_t.access(0x1000_0000)                               # load fills the TLB
+try:
+    mmu_t.access(0x1000_0004, store=True)               # store hits the TLB entry of a read-only page
+    ro_fault = False
+except vm.PageFault:
+    ro_fault = True
+v.assert_true("a store that hits the TLB entry of a read-only page still faults", ro_fault)
+mmu_t.access(0x1000_1000)                               # load: A set, D clear, entry cached
+leaf = lambda va: mem_t.read((mem_t.read(pt_t.root * vm.PAGE + (va >> 22) * 4) >> 10) * vm.PAGE + (va >> 12 & 0x3FF) * 4)  # noqa: E731
+d_before = bool(leaf(0x1000_1000) & vm.D)
+mmu_t.access(0x1000_1008, store=True)                   # store hits the clean entry: the walker sets D
+v.assert_true("a store that hits a clean TLB entry sets D in the PTE through the walker",
+              not d_before and leaf(0x1000_1000) & vm.D and mmu_t.dirty_updates == 1 and mmu_t.walks == 2)
+mmu_t.access(0x1000_100C, store=True)
+v.assert_true("a second store to the now-dirty page needs no walk", mmu_t.dirty_updates == 1 and mmu_t.walks == 2)
+
+
+def nested_refs(n, m):
+    """Count memory references of a two-stage walk by enumeration: each guest level's PTE address is
+    guest-physical (host walk of m reads, then the PTE read); the final guest-physical address needs one more host walk."""
+    refs = 0
+    for _ in range(n):
+        refs += m + 1
+    return refs + m
+
+
+v.check("Txt 14-10.a", nested_refs(4, 4))
+v.check("Txt 14-10.b", 4)
+v.assert_true("nested references equal nm + n + m for 1..5 levels", all(nested_refs(a, b) == a * b + a + b for a in range(1, 6) for b in range(1, 6)))
+
+v.check("14-10.13a", nested_refs(3, 4))
+v.check("14-10.13b", nested_refs(4, 4))
+v.check("14-10.13c", nested_refs(4, 2))
+
 sys.exit(v.finish())

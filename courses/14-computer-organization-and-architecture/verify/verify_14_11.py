@@ -65,6 +65,7 @@ v.check("Ex 14-11.3a", pio)
 v.check("Ex 14-11.3b", 300 + 2000)
 v.check("Ex 14-11.3c", 100 * (1 - 2300 / pio))
 v.check("Ex 14-11.3d", 4096 // 64)
+v.check("Ex 14-11.3e", len({a // 64 for a in range(32, 32 + 4096)}))       # a buffer starting mid-line
 v.assert_true("64-byte transfer: PIO 800 cycles < DMA 2300", 64 // 4 * 50 == 800 < 2300)
 
 v.check("Ex 14-11.4a", W_CYC / 8)

@@ -81,7 +81,7 @@ inc:  lr.w   t0, (a0)        # load-reserved
 
 The single AMO is `amoadd.w zero, t2, (a0)` with t2 = 1 (or `amoadd.w t3, t2, (a0)` to also get the old value).
 
-The SC fails if another core wrote the reserved block between the LR and the SC (its coherence request invalidated the reservation), or for implementation reasons such as an interrupt. The specification guarantees eventual success for *constrained* LR/SC loops: at most 16 instructions, with only simple integer instructions (no loads, stores or backward jumps) between the LR and the SC ([R-218](../../../reference/research-log.md#r-218--risc-v-rvwmo-ztso-and-atomics)). Under heavy contention, AMOs, which complete at the cache or even nearer the data, avoid the retries altogether.
+The SC fails if another core wrote the reserved block between the LR and the SC (its coherence request invalidated the reservation), or for implementation reasons such as an interrupt. For *constrained* LR/SC loops the specification guarantees livelock freedom, not success for every hart: if harts sit in such loops and nothing else writes the reservation set, at least one of them eventually exits its loop (or the loop is left by a branch or a trap). A constrained loop has at most 16 instructions, with only simple integer instructions (no loads, stores or backward jumps) between the LR and the SC ([R-218](../../../reference/research-log.md#r-218--risc-v-rvwmo-ztso-and-atomics)). Under heavy contention, AMOs, which complete at the cache or even nearer the data, avoid the retries altogether.
 
 ### Solution 14-12.10
 
@@ -101,6 +101,21 @@ $S(N)$ peaks where $0.95/N^2 = 0.005$, at $N = \sqrt{190} \approx 13.8$. The bes
 ### Solution 14-12.12
 
 It is the store-buffering (SB) test. Each thread's "set my flag" is the store and its "read the other's flag" the load. Under TSO both stores can sit in store buffers while both loads read 0 from memory, so both threads enter the critical section. One fence per thread between its store and its load, **2** in all, restores mutual exclusion: the fenced SB test allows only the three SC outcomes, none of them (0, 0). In practice one uses atomic instructions or locks, which include the necessary ordering.
+
+### Solution 14-12.13
+
+<!-- directory trace -->
+
+| Access | Messages | Directory afterwards |
+|---|---|---|
+| core 3 reads X | 2 (request, data) | S {3} |
+| core 7 reads X | 2 (request, data) | S {3, 7} |
+| core 12 writes X | 6 (request, data, 2 invalidations, 2 acknowledgements) | M {12} |
+| core 3 reads X | 4 (request, forward, data to core 3, copy to home) | S {3, 12} |
+
+(a) **14** messages in all. The write sends one invalidation per sharer, and its acknowledgements go straight to core 12. That is why the home includes the number of acknowledgements to expect with the data.
+
+(b) The write completes when the last acknowledgement arrives: requester → home → sharer → requester, **3** traversals (the data from the home travels in parallel). The last read is also **3**: requester → home → owner → requester. A snooping bus does either in one broadcast, which is the latency a directory pays for scalability.
 
 ---
 
@@ -137,3 +152,10 @@ It is the store-buffering (SB) test. Each thread's "set my flag" is the store an
 | 14-12.11a | best core count | 14 | — |
 | 14-12.11b | maximum speedup | 5.469 | — |
 | 14-12.12a | fences needed | 2 | — |
+| 14-12.13a | messages, first read | 2 | — |
+| 14-12.13b | messages, second read | 2 | — |
+| 14-12.13c | messages, write | 6 | — |
+| 14-12.13d | messages, read of the modified block | 4 | — |
+| 14-12.13e | total messages | 14 | — |
+| 14-12.13f | traversals on the write's critical path | 3 | — |
+| 14-12.13g | traversals on the last read's critical path | 3 | — |

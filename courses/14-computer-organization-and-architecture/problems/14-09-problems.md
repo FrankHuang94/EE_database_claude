@@ -64,7 +64,7 @@ Find the AMAT for each block size and program, and the best block size for each.
 
 ### Problem 14-09.10 [B]
 
-**Prefetching.** A tagged next-line prefetcher is added to a 4 KB 4-way cache with 32-byte blocks. Find the misses and the number of prefetches for:
+**Prefetching.** A tagged next-line prefetcher is added to a 4 KB 4-way cache with 32-byte blocks. As in the lab's model, a prefetched block arrives instantly. Find the misses and the number of prefetches for:
 
 - (a) the row traversal of Example 14-09.4;
 - (b) the column traversal of Example 14-09.4;
@@ -93,7 +93,7 @@ Explain the best tile for each cache from the size of a tile of $B$, and why bot
 
 ### Problem 14-09.13 [C]
 
-**Energy per access.** Use Horowitz's 45 nm figures: 20 pJ per 64-bit read of a 32 KB cache, and 1.3–2.6 nJ per DRAM access. A miss costs a cache read plus a DRAM access. Find the average energy per access at miss rates of 5% and 1%, at both ends of the DRAM range. Compare it with a 32-bit add (0.1 pJ).
+**Energy per access.** Use Horowitz's 45 nm figures: 20 pJ per 64-bit read of a 32 KB cache, and 1.3–2.6 nJ per DRAM access. A miss costs a cache read plus one DRAM access. (Horowitz's DRAM figure is per 64-bit access, and filling a 32- or 64-byte block takes 4 to 8 of them, so this simplification understates the miss energy.) Find the average energy per access at miss rates of 5% and 1%, at both ends of the DRAM range. Compare it with a 32-bit add (0.1 pJ).
 
 ### Problem 14-09.14 [C]
 
