@@ -1,0 +1,96 @@
+#separator:comma
+#html:true
+#columns:Front,Back,Tags
+"Differential-mode gain of a resistively loaded MOS pair (differential output)?","g<sub>m</sub>R<sub>D</sub>; half that single-ended.",12-01
+"Common-mode gain of a resistively loaded pair with tail resistance R<sub>SS</sub>?","g<sub>m</sub>R<sub>D</sub>/(1 + 2g<sub>m</sub>R<sub>SS</sub>) ≈ R<sub>D</sub>/(2R<sub>SS</sub>) per output.",12-01
+"What is a half-circuit?","Half of a symmetric circuit analysed alone: for differential signals the symmetry point is AC ground; for common-mode signals the tail resistance doubles.",12-01
+"At what differential input does a MOS pair fully switch?","|v<sub>id</sub>| = √(2I<sub>SS</sub>/k).",12-01
+"Large-signal current split of a bipolar pair?","Δi = I<sub>EE</sub> tanh(v<sub>id</sub>/2V<sub>T</sub>): linear only for a few tens of mV.",12-01
+"What limits a differential pair's input common-mode range?","Below: the tail needs its saturation voltage under V<sub>GS</sub>. Above: the input devices must stay saturated against their drain voltages.",12-01
+"Pelgrom's law?","σ(ΔV<sub>TH</sub>) = A<sub>VT</sub>/√(WL): mismatch falls with the square root of area.",12-01
+"Why is CML fast?","It steers a constant tail current between two loads with small swings, so it never fully switches transistors off and draws constant supply current.",12-01
+"Gain of a five-transistor OTA?","g<sub>m1</sub>(r<sub>o2</sub> ∥ r<sub>o4</sub>), about 1/(λV<sub>ov</sub>) per stage with equal output resistances.",12-02
+"Output resistance of a cascode?","r<sub>o1</sub> + r<sub>o2</sub> + g<sub>m2</sub>r<sub>o2</sub>r<sub>o1</sub> ≈ g<sub>m2</sub>r<sub>o2</sub>r<sub>o1</sub>.",12-02
+"Open-circuit gain of a cascode stage?","g<sub>m1</sub>r<sub>o1</sub>(1 + g<sub>m2</sub>r<sub>o2</sub>), not g<sub>m</sub>R<sub>out</sub>.",12-02
+"Cost of a telescopic cascode?","Output swing: about V<sub>DD</sub> minus five overdrive-plus-threshold allowances; limited input common-mode range.",12-02
+"What is systematic offset in a two-stage op-amp?","An output offset from mis-sized current densities between the mirror and the second stage; fixed by sizing, not trimming.",12-02
+"Why do multistage amplifiers need DC level shifting?","Each stage's output level must bias the next stage correctly; followers, level shifters or complementary stages provide it.",12-02
+"Transition frequency f<sub>T</sub>?","g<sub>m</sub>/[2π(C<sub>gs</sub> + C<sub>gd</sub>)]: where short-circuit current gain falls to 1.",12-03
+"Miller theorem for a capacitor across an inverting gain −A?","Input side C(1 + A); output side C(1 + 1/A).",12-03
+"Where is a common-source stage's zero, and why is it a problem?","At +g<sub>m</sub>/C<sub>gd</sub>, right half-plane: it adds phase lag like a pole while raising the gain.",12-03
+"Dominant-pole estimate of the −3 dB frequency?","1/(2πb<sub>1</sub>), with b<sub>1</sub> the first denominator coefficient; conservative when poles are close.",12-03
+"Why does a cascode help bandwidth?","It holds the input device's drain near small-signal ground, so its C<sub>gd</sub> is not Miller-multiplied.",12-03
+"Gain–bandwidth of a single-pole stage?","g<sub>m</sub>/(2πC), independent of the load resistance.",12-03
+"Open-circuit time constants?","b<sub>1</sub> = Σ R<sub>i0</sub>C<sub>i</sub>, each R<sub>i0</sub> seen by one capacitor with the others open; exact for b<sub>1</sub>.",12-04
+"Resistance seen by C<sub>gd</sub> in a CS stage?","R<sub>S</sub> + R<sub>L</sub> + g<sub>m</sub>R<sub>S</sub>R<sub>L</sub>.",12-04
+"Short-circuit time constants give what?","The low −3 dB corner ≈ Σ 1/(R<sub>is</sub>C<sub>i</sub>), with the other coupling capacitors shorted.",12-04
+"What does pole splitting do?","A capacitor across an inverting stage pushes the lower pole down (Miller) and the upper pole up (the capacitor shorts the stage at high frequency).",12-04
+"Upper pole after pole splitting (large C<sub>c</sub>)?","≈ g<sub>m2</sub>/(C<sub>1</sub> + C<sub>2</sub>) or more precisely g<sub>m2</sub>C<sub>c</sub>/[C<sub>1</sub>C<sub>2</sub> + C<sub>c</sub>(C<sub>1</sub> + C<sub>2</sub>)].",12-04
+"Why can a source follower peak?","Driven from a large resistance with a capacitive load, its two poles become complex; Q rises with source resistance.",12-04
+"Closed-loop gain of an ideal feedback amplifier?","A/(1 + T) = (1/β)·T/(1 + T), T = Aβ.",12-05
+"Desensitivity?","dA<sub>f</sub>/A<sub>f</sub> = (dA/A)/(1 + T); the feedback network β is not desensitized.",12-05
+"What does feedback do to a single-pole amplifier's bandwidth?","Multiplies it by 1 + T<sub>0</sub> while dividing gain by the same: GBW constant.",12-05
+"What can feedback not reduce?","Noise and offset at the amplifier's input, which look like signal.",12-05
+"Series mixing does what to input impedance?","Multiplies it by 1 + T. Shunt mixing divides it.",12-05
+"Shunt sampling does what to output impedance?","Divides it by 1 + T. Series sampling multiplies it.",12-05
+"Name the four feedback topologies and amplifier types.","Series–shunt: voltage; shunt–series: current; series–series: transconductance; shunt–shunt: transresistance.",12-05
+"Return ratio?","T = −(value the controlling variable calls for)/(injected source value), with the controlled source replaced by an independent one.",12-05
+"Asymptotic-gain formula?","A<sub>f</sub> = A<sub>∞</sub>T/(1 + T) + A<sub>0</sub>/(1 + T); A<sub>∞</sub> with the controlling variable forced to 0, A<sub>0</sub> with the source zeroed.",12-05
+"Blackman's impedance formula?","Z = Z<sup>(0)</sup>(1 + T<sub>sc</sub>)/(1 + T<sub>oc</sub>), return ratios with the port shorted and open.",12-05
+"Why can a two-pole loop never oscillate?","Its phase reaches −180° only at infinite frequency, where its gain is zero.",12-06
+"Phase margin?","180° plus the loop-gain phase where |T| = 1.",12-06
+"Gain margin?","−20 log |T| where the loop phase is −180°.",12-06
+"Phase-crossover frequency of three real poles?","ω<sub>180</sub>² = ω<sub>1</sub>ω<sub>2</sub> + ω<sub>1</sub>ω<sub>3</sub> + ω<sub>2</sub>ω<sub>3</sub>.",12-06
+"Two-pole loop: Q in terms of f<sub>2</sub>/f<sub>u</sub>?","Q = √(f<sub>u</sub>/f<sub>2</sub>), with f<sub>u</sub> = T<sub>0</sub>f<sub>1</sub>.",12-06
+"What does 60° of phase margin look like?","About 8.8% step overshoot and 0.28 dB of peaking (second pole at 1.5 f<sub>u</sub>).",12-06
+"What does 45° of phase margin look like?","About 23% overshoot, visible ringing.",12-06
+"Why lower an existing pole rather than add a dominant pole?","The existing pole's lag is spent usefully; the crossover can approach the next pole, often ten times higher.",12-06
+"Miller-compensated GBW?","g<sub>m1</sub>/(2πC<sub>c</sub>), independent of the output resistances.",12-06
+"Design rules for ~60° in a two-stage op-amp?","g<sub>m2</sub> ≈ 10 g<sub>m1</sub> (zero 10× above GBW) and C<sub>c</sub> ≈ 0.22 C<sub>L</sub> (p<sub>2</sub> ≈ 2.2 × GBW).",12-06
+"Nulling resistor values?","1/g<sub>m2</sub> removes the right-half-plane zero; (1 + C<sub>L</sub>/C<sub>c</sub>)/g<sub>m2</sub> moves it onto p<sub>2</sub>.",12-06
+"Why does a capacitive load threaten stability?","The non-dominant pole ≈ g<sub>m2</sub>/C<sub>L</sub> falls toward the crossover.",12-06
+"What is a decompensated op-amp?","One with less compensation, faster GBW, stable only above a minimum closed-loop gain.",12-06
+"Class A maximum efficiency (resistive load, current-source bias)?","25%; it dissipates most with no signal.",12-07
+"Class B efficiency?","(π/4)V<sub>op</sub>/V<sub>CC</sub>, at most 78.5%.",12-07
+"Class B worst-case dissipation?","2V<sub>CC</sub>²/(π²R<sub>L</sub>) at V<sub>op</sub> = 2V<sub>CC</sub>/π, where efficiency is 50%.",12-07
+"Crossover distortion?","Neither class B device conducts within about ±0.6 V of zero; a dead band notches every zero crossing.",12-07
+"Class AB translinear relation?","i<sub>N</sub>i<sub>P</sub> = I<sub>Q</sub>² for matched bipolar devices with fixed V<sub>BB</sub>.",12-07
+"V<sub>BE</sub> multiplier output?","V<sub>BE</sub>(1 + R<sub>1</sub>/R<sub>2</sub>); mounted on the heat sink so it tracks the output devices.",12-07
+"Junction temperature?","T<sub>J</sub> = T<sub>A</sub> + P<sub>D</sub>(θ<sub>JC</sub> + θ<sub>CS</sub> + θ<sub>SA</sub>).",12-07
+"Thermal runaway loop gain?","V<sub>CE</sub>θg<sub>m</sub>(2 mV/°C)/(1 + g<sub>m</sub>R<sub>E</sub>); runaway if ≥ 1.",12-07
+"Why is class D efficient?","Its switches are fully on (little voltage) or off (no current); losses are R<sub>DS(on)</sub>, switching and fixed idle losses.",12-07
+"Why does class D efficiency fall at low output?","Fixed losses (drivers, ripple, idle) dominate when the load power is small.",12-07
+"What does a bridge-tied load give?","Twice the voltage swing, four times the power from one supply.",12-07
+"Two-stage op-amp DC gain?","g<sub>m1</sub>(r<sub>o2</sub> ∥ r<sub>o4</sub>) · g<sub>m6</sub>(r<sub>o6</sub> ∥ r<sub>o7</sub>).",12-08
+"Internal slew rate?","I<sub>SS</sub>/C<sub>c</sub>: the fully switched pair's tail current charges C<sub>c</sub>.",12-08
+"When does the output stage limit slew?","Rising edges if I<sub>7</sub>/(C<sub>L</sub> + C<sub>c</sub>) < I<sub>SS</sub>/C<sub>c</sub>.",12-08
+"SR/ω<sub>u</sub> for MOS and bipolar input pairs?","V<sub>ov1</sub> for MOS; 2V<sub>T</sub> ≈ 52 mV for bipolar (more with emitter degeneration).",12-08
+"Full-power bandwidth?","SR/(2πV<sub>p</sub>).",12-08
+"What compensates a folded cascode?","Its load capacitance: GBW = g<sub>m1</sub>/(2πC<sub>L</sub>); a larger load improves phase margin.",12-08
+"Why is a folded cascode's transconductance slightly below g<sub>m1</sub>?","The input current divides at the folding node between its resistance and the cascode's ≈1/g<sub>m</sub> input.",12-08
+"Why does a fully differential amplifier need CMFB?","The differential loop does not set the output average, which drifts by ΔI·R<sub>out</sub> (often volts).",12-08
+"Rail-to-rail input g<sub>m</sub> seam?","Where NMOS and PMOS pairs both conduct, g<sub>m</sub> doubles; constant-g<sub>m</sub> control quarters each pair's current there.",12-08
+"Rail-to-rail output stage?","Common-source devices to each rail, swinging to within V<sub>ov</sub> of the rails at light load.",12-08
+"Barkhausen criterion?","Loop gain exactly 1 with zero phase at ω<sub>0</sub> (positive feedback); start above 1, limit back to 1.",12-09
+"Wien bridge frequency and gain?","ω<sub>0</sub> = 1/RC, β = 1/3, gain 3.",12-09
+"Three-section RC phase-shift oscillator?","ω<sub>0</sub> = √6/RC (series R, shunt C ladder), inverting gain 29.",12-09
+"Colpitts startup condition?","g<sub>m</sub>R ≥ C<sub>2</sub>/C<sub>1</sub>, at ω<sub>0</sub>² = (C<sub>1</sub> + C<sub>2</sub>)/(LC<sub>1</sub>C<sub>2</sub>).",12-09
+"Cross-coupled pair impedance?","−2/g<sub>m</sub> differentially; oscillates if g<sub>m</sub> > 2/R<sub>p</sub>, R<sub>p</sub> = Qω<sub>0</sub>L.",12-09
+"Crystal series and parallel resonance?","f<sub>s</sub> = 1/(2π√(L<sub>m</sub>C<sub>m</sub>)); f<sub>p</sub> = f<sub>s</sub>√(1 + C<sub>m</sub>/C<sub>0</sub>).",12-09
+"Crystal frequency with load capacitance C<sub>L</sub>?","f<sub>s</sub>√(1 + C<sub>m</sub>/(C<sub>0</sub> + C<sub>L</sub>)); pulls by ppm.",12-09
+"Typical crystal Q?","10⁴ to 10⁶.",12-09
+"Ring oscillator frequency?","1/(2Nt<sub>pd</sub>), N odd.",12-09
+"Three-stage ring, linear model?","Each stage 60°: ω<sub>0</sub> = √3/τ, gain ≥ 2.",12-09
+"What sets an oscillator's amplitude?","The nonlinearity: the describing-function loop gain falls to 1.",12-09
+"Why is the watch crystal 32.768 kHz?","2<sup>15</sup> Hz: fifteen divide-by-two stages give 1 Hz.",12-09
+"Thermal noise of a resistor?","4kTR V²/Hz; 1 kΩ ≈ 4.07 nV/√Hz at 300 K.",12-10
+"Shot noise?","2qI A²/Hz; 1 mA ≈ 17.9 pA/√Hz.",12-10
+"kT/C noise and why R drops out?","√(kT/C), 64 µV at 1 pF: density ∝ R, bandwidth ∝ 1/R.",12-10
+"Flicker noise integral?","S<sub>w</sub>f<sub>c</sub> ln(f<sub>2</sub>/f<sub>1</sub>): equal power per decade.",12-10
+"MOSFET input-referred thermal noise?","4kTγ/g<sub>m</sub>, γ ≈ 2/3 long-channel.",12-10
+"Bipolar input-referred noise?","2kT/g<sub>m</sub>: an equivalent resistance 1/(2g<sub>m</sub>), about 13 Ω at 1 mA.",12-10
+"Noise of a chain of stages, referred to the input?","v<sub>1</sub>² + v<sub>2</sub>²/A<sub>1</sub>² + …: the first stage dominates.",12-10
+"Total input noise with a source R<sub>s</sub>?","4kTR<sub>s</sub> + e<sub>n</sub>² + i<sub>n</sub>²R<sub>s</sub>².",12-10
+"Optimum source resistance and minimum noise factor?","R<sub>opt</sub> = e<sub>n</sub>/i<sub>n</sub>; F<sub>min</sub> = 1 + e<sub>n</sub>i<sub>n</sub>/(2kT).",12-10
+"How do you halve a MOSFET stage's input noise voltage?","Quadruple g<sub>m</sub> (noise power ∝ 1/g<sub>m</sub>), at fixed overdrive four times the current.",12-10
+"Sampling capacitor for an N-bit ADC?","kT/C ≤ quantization noise (LSB/√12)²; each extra bit quadruples C.",12-10

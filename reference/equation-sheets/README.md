@@ -14,3 +14,6 @@ One sheet per course: the equations you should be able to write from memory (or 
 | 07 · Circuit Analysis II (Transient and AC) | [07-circuit-analysis-2-transient-and-ac.md](07-circuit-analysis-2-transient-and-ac.md) |
 | 08 · Digital Logic Design | [08-digital-logic-design.md](08-digital-logic-design.md) |
 | 09 · Semiconductor Devices | [09-semiconductor-devices.md](09-semiconductor-devices.md) |
+| 10 · Electronics I | [10-electronics-1.md](10-electronics-1.md) |
+| 11 · Signals and Systems | [11-signals-and-systems.md](11-signals-and-systems.md) |
+| 12 · Electronics II | [12-electronics-2.md](12-electronics-2.md) |
