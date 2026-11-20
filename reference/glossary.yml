@@ -6389,3 +6389,23 @@
   definition: The standard implementation of an IIR filter as a cascade of biquads, each holding one pole pair and one zero pair, which keeps coefficient rounding from moving the poles far (or outside the unit circle).
   chapter: "16-07"
   see_also: [Biquad, IIR filter]
+- term: Transposed form
+  definition: The structure obtained from a signal-flow graph by reversing every branch, swapping input and output and exchanging adders with branch points; it has the same transfer function, and for an FIR filter it shortens the critical path to one multiplier and one adder.
+  chapter: "16-08"
+  see_also: [Signal-flow graph, Critical path]
+- term: Coefficient sensitivity
+  definition: "How far a filter's poles and zeros (and so its response) move when its coefficients are rounded; for a polynomial, ∂p_i/∂a_k = −p_i^(N−k)/∏(p_i − p_j), which is large when poles cluster, so high-order filters are built from second-order sections."
+  chapter: "16-08"
+  see_also: [Second-order sections (SOS)]
+- term: Coupled-form filter
+  definition: "A second-order recursive section that stores ρcosθ and ρsinθ instead of the polynomial coefficients, putting its realizable poles on a uniform grid; it places low-frequency poles accurately at the cost of four multiplications instead of two."
+  chapter: "16-08"
+  see_also: [Coefficient sensitivity, Biquad]
+- term: Lattice filter
+  definition: A modular filter structure built stage by stage from reflection coefficients; an FIR lattice realizes A(z), an all-pole lattice 1/A(z), and the filter is stable exactly when every reflection coefficient has magnitude below 1.
+  chapter: "16-08"
+  see_also: [Reflection coefficient (lattice filter)]
+- term: Reflection coefficient (lattice filter)
+  definition: "The parameter k_m of stage m of a lattice, defined by A_m(z) = A_(m−1)(z) + k_m z^(−m) A_(m−1)(1/z); the step-down recursion recovers the k_m from a polynomial, and all |k_m| < 1 if and only if all its roots lie inside the unit circle."
+  chapter: "16-08"
+  see_also: [Lattice filter]

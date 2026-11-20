@@ -33,7 +33,7 @@ Discrete-time signal processing for engineers who will build or buy DSP hardware
 | [16-05 · Spectral Analysis and Windowing](chapters/16-05-spectral-analysis-and-windowing.md) | 7 | ✅ verified | [problems](problems/16-05-problems.md) · [solutions](solutions/16-05-solutions.md) · [lab](labs/16-05-lab/README.md) · [verify](verify/verify_16_05.py) |
 | [16-06 · FIR Filter Design](chapters/16-06-fir-filter-design.md) | 9 | ✅ verified | [problems](problems/16-06-problems.md) · [solutions](solutions/16-06-solutions.md) · [lab](labs/16-06-lab/README.md) · [verify](verify/verify_16_06.py) |
 | [16-07 · IIR Filter Design](chapters/16-07-iir-filter-design.md) | 8 | ✅ verified | [problems](problems/16-07-problems.md) · [solutions](solutions/16-07-solutions.md) · [lab](labs/16-07-lab/README.md) · [verify](verify/verify_16_07.py) |
-| [16-08 · Filter Structures and Implementation](chapters/16-08-filter-structures.md) | 6 | ⬜ planned | — |
+| [16-08 · Filter Structures and Implementation](chapters/16-08-filter-structures.md) | 6 | ✅ verified | [problems](problems/16-08-problems.md) · [solutions](solutions/16-08-solutions.md) · [lab](labs/16-08-lab/README.md) · [verify](verify/verify_16_08.py) |
 | [16-09 · Multirate DSP: Decimation, Interpolation and Polyphase](chapters/16-09-multirate-dsp.md) | 8 | ⬜ planned | — |
 | [16-10 · Quantization and Fixed-Point Effects](chapters/16-10-quantization-and-fixed-point.md) | 7 | ⬜ planned | — |
 | [16-11 · DSP Hardware Architectures](chapters/16-11-dsp-hardware-architectures.md) | 7 | ⬜ planned | — |
