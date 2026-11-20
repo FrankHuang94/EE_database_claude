@@ -28,7 +28,7 @@ The mathematics of signals and linear time-invariant systems in continuous and d
 |---|---|---|---|
 | [11-01 · Signals: Classification and Operations](chapters/11-01-signals-classification-and-operations.md) | 8 | ✅ verified | [problems](problems/11-01-problems.md) · [solutions](solutions/11-01-solutions.md) · [lab](labs/11-01-lab/README.md) · [verify](verify/verify_11_01.py) |
 | [11-02 · Systems and Their Properties](chapters/11-02-system-properties.md) | 7 | ✅ verified | [problems](problems/11-02-problems.md) · [solutions](solutions/11-02-solutions.md) · [lab](labs/11-02-lab/README.md) · [verify](verify/verify_11_02.py) |
-| [11-03 · Convolution](chapters/11-03-convolution.md) | 10 | ⬜ planned | — |
+| [11-03 · Convolution](chapters/11-03-convolution.md) | 10 | ✅ verified | [problems](problems/11-03-problems.md) · [solutions](solutions/11-03-solutions.md) · [lab](labs/11-03-lab/README.md) · [verify](verify/verify_11_03.py) |
 | [11-04 · LTI Systems and Differential/Difference Equations](chapters/11-04-lti-systems-and-differential-equations.md) | 8 | ⬜ planned | — |
 | [11-05 · Fourier Series](chapters/11-05-fourier-series.md) | 10 | ⬜ planned | — |
 | [11-06 · The Continuous-Time Fourier Transform](chapters/11-06-continuous-time-fourier-transform.md) | 12 | ⬜ planned | — |

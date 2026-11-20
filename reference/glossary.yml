@@ -4469,3 +4469,35 @@
   definition: Output at sums and differences of input frequencies produced by nonlinearity; with two tones, second-order products fall at f₁ ± f₂ and third-order products at 2f₁ − f₂ and 2f₂ − f₁, close to the signals themselves.
   chapter: "11-02"
   see_also: [Harmonic distortion]
+
+# ---------------------------------------------------------------- 11-03
+- term: Convolution sum
+  definition: y[n] = Σₖ x[k] h[n − k], the output of a discrete-time LTI system with impulse response h; derived from x[n] = Σₖ x[k] δ[n − k], time invariance and linearity. Its length is the sum of the input and response lengths minus one.
+  chapter: "11-03"
+  see_also: [Convolution, Impulse response]
+- term: Convolution integral
+  definition: y(t) = ∫ x(τ) h(t − τ) dτ, the output of a continuous-time LTI system with impulse response h; the limit of a staircase of narrow pulses, each launching a scaled, shifted copy of h.
+  chapter: "11-03"
+  see_also: [Convolution, Graphical convolution]
+- term: Graphical convolution
+  definition: Evaluating a convolution integral by flipping one signal, sliding it across the other and integrating the product over the overlap, region by region between breakpoints at the sums of the signals' edges.
+  chapter: "11-03"
+- term: Absolute summability
+  definition: The condition Σ|h[n]| < ∞ (or ∫|h(t)| dt < ∞) on an impulse response, necessary and sufficient for BIBO stability of an LTI system; the sum is also the system's worst-case gain for bounded inputs.
+  chapter: "11-03"
+  see_also: [BIBO stability]
+- term: FIR filter
+  definition: A finite impulse response filter, y[n] = Σ h[k] x[n − k] over finitely many taps; always BIBO-stable, it costs one multiply-accumulate per tap per sample and, if symmetric, has exactly linear phase.
+  chapter: "11-03"
+  see_also: [Multiply-accumulate (MAC), Latency]
+- term: Toeplitz matrix
+  definition: A matrix whose entries are constant along every diagonal; writing a convolution as y = Hx gives a Toeplitz H, which lets convolution be computed with matrix-multiplication hardware and libraries.
+  chapter: "11-03"
+- term: Cross-correlation
+  definition: r_xy[n] = Σₖ x[k] y[k + n], a measure of how well y matches shifted copies of x; it equals convolution with x reversed in time. Deep-learning "convolution" layers compute cross-correlations.
+  chapter: "11-03"
+  see_also: [Matched filter]
+- term: Matched filter
+  definition: A filter whose impulse response is a known pattern reversed in time; its output is the correlation of the input with the pattern and peaks where the pattern occurs, adding the pattern's samples coherently against noise.
+  chapter: "11-03"
+  see_also: [Cross-correlation]
