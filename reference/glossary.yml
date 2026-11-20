@@ -5696,3 +5696,47 @@
   definition: A cache whose set index comes from untranslated page-offset bits, so it can be read in parallel with the TLB lookup and then compared against the physical tag; it requires size divided by associativity to be at most the page size.
   chapter: "14-10"
   see_also: [Translation lookaside buffer (TLB), Set-associative cache]
+- term: Polling
+  definition: Checking a device's status register repeatedly in software to learn whether it needs service; simple and fast to respond, but every unproductive check wastes CPU time.
+  chapter: "14-11"
+  see_also: [Interrupt]
+- term: Interrupt
+  definition: An asynchronous signal from a device or timer that makes the processor trap to a handler between instructions, so software need not poll; each one costs a fixed overhead for the trap and the handler.
+  chapter: "14-11"
+  see_also: [Polling, Interrupt coalescing, Trap (processor)]
+- term: Interrupt coalescing
+  definition: Raising one interrupt for several device events, after a count or a timeout, to cut the CPU cost of interrupts at high event rates at the price of added latency.
+  chapter: "14-11"
+  see_also: [Interrupt]
+- term: Direct memory access (DMA)
+  definition: Data transfer between a device and memory performed by a DMA engine acting as a bus manager, following descriptors set up by software and interrupting on completion, so the CPU need not move the data itself.
+  chapter: "14-11"
+  see_also: [Interrupt]
+- term: Valid/ready handshake
+  definition: "The flow-control rule of AXI and similar interfaces: the sender asserts VALID with the data, the receiver asserts READY when it can accept, and a transfer happens on each clock edge where both are high; a sender may not wait for READY before asserting VALID."
+  chapter: "14-11"
+  see_also: [AXI]
+- term: AXI
+  definition: Arm's AMBA Advanced eXtensible Interface, a royalty-free on-chip bus protocol with five independent valid/ready channels (write address, write data, write response, read address, read data), bursts and multiple outstanding transactions; AXI-Lite is its simple register-access subset.
+  chapter: "14-11"
+  see_also: [Valid/ready handshake]
+- term: Network-on-chip (NoC)
+  definition: An on-chip interconnect of routers and point-to-point links, often a 2D mesh, that carries packets between cores, caches, memory controllers and accelerators, scaling better than a shared bus or a crossbar.
+  chapter: "14-11"
+  see_also: [Bisection bandwidth]
+- term: Bisection bandwidth
+  definition: The total bandwidth of the links crossing the narrowest cut that divides a network into two equal halves; for a k × k mesh it is k links in each direction.
+  chapter: "14-11"
+  see_also: [Network-on-chip (NoC)]
+- term: PCI Express (PCIe)
+  definition: The serial, packet-based expansion interconnect of PCs and servers, built from lanes of differential pairs; each generation has roughly doubled the per-lane rate, from 2.5 GT/s in 1.0 to 128 GT/s in 7.0.
+  chapter: "14-11"
+  see_also: [Lane (serial link), Compute Express Link (CXL)]
+- term: Lane (serial link)
+  definition: One pair of differential signal pairs (transmit and receive) of a serial link such as PCIe; links bundle 1 to 16 lanes, and bandwidth scales with the lane count.
+  chapter: "14-11"
+  see_also: [PCI Express (PCIe)]
+- term: Compute Express Link (CXL)
+  definition: An interconnect standard that runs on the PCIe physical layer and adds cache-coherent protocols for accelerators and attached memory, enabling memory expansion and pooling; CXL 4.0 (Nov 2025) runs at 128 GT/s.
+  chapter: "14-11"
+  see_also: [PCI Express (PCIe)]
