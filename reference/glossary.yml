@@ -4501,3 +4501,34 @@
   definition: A filter whose impulse response is a known pattern reversed in time; its output is the correlation of the input with the pattern and peaks where the pattern occurs, adding the pattern's samples coherently against noise.
   chapter: "11-03"
   see_also: [Cross-correlation]
+
+# ---------------------------------------------------------------- 11-04
+- term: Difference equation
+  definition: "A recursion relating a sequence's present and past values, y[n] + a₁y[n − 1] + … + a_N y[n − N] = b₀x[n] + … + b_M x[n − M]; with constant coefficients and initial rest it defines a causal LTI system, the discrete-time counterpart of a linear ODE."
+  chapter: "11-04"
+  see_also: [IIR filter, Characteristic equation]
+- term: IIR filter
+  definition: "An infinite impulse response (recursive) digital filter, whose output feeds back into future outputs; it achieves sharp responses with few multiply-accumulates but must be checked for stability, has nonlinear phase and is sensitive to coefficient rounding."
+  chapter: "11-04"
+  see_also: [FIR filter, Biquad]
+- term: Initial rest
+  definition: "The condition that a system's output is zero until its input becomes nonzero; with it, a constant-coefficient differential or difference equation defines a causal LTI system."
+  chapter: "11-04"
+- term: Jump conditions
+  definition: "The values an impulse imposes at t = 0⁺ on an Nth-order differential equation's solution; only the highest derivative contains the impulse, so the next lower derivative jumps by the impulse weight over the leading coefficient and lower derivatives are continuous."
+  chapter: "11-04"
+- term: Direct form I and II
+  definition: "Block-diagram realizations of a difference equation; direct form I uses separate delay lines for input and output (2N delays for order N), direct form II runs the recursive part first so one line serves both (N delays, canonical); transposed direct form II rearranges it for better floating-point behavior."
+  chapter: "11-04"
+  see_also: [Biquad]
+- term: Eigenfunction of an LTI system
+  definition: "A signal that passes through every LTI system unchanged in shape, multiplied only by a complex constant: zⁿ → H(z)zⁿ in discrete time and e^{st} → H(s)e^{st} in continuous time. Sinusoids are sums of two such signals."
+  chapter: "11-04"
+  see_also: [System function, Frequency response]
+- term: System function
+  definition: "The eigenvalue of an LTI system for the exponential input, H(z) = Σ h[k]z^{−k} or H(s) = ∫ h(τ)e^{−sτ} dτ; for a constant-coefficient equation it is a ratio of polynomials whose denominator roots are the poles."
+  chapter: "11-04"
+- term: Limit cycle
+  definition: "A small sustained oscillation in a fixed-point recursive filter with zero or constant input, caused by rounding inside the feedback loop; it cannot occur in the exact linear system."
+  chapter: "11-04"
+  see_also: [IIR filter]
