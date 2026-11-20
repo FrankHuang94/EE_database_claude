@@ -34,7 +34,7 @@ How processors and accelerators are built and why they perform the way they do: 
 | [14-04 · Computer Arithmetic and Number Formats](chapters/14-04-computer-arithmetic-and-number-formats.md) | 7 | ✅ verified | [problems](problems/14-04-problems.md) · [solutions](solutions/14-04-solutions.md) · [lab](labs/14-04-lab/README.md) · [verify](verify/verify_14_04.py) |
 | [14-05 · Single-Cycle Datapath and Control](chapters/14-05-single-cycle-datapath.md) | 8 | ✅ verified | [problems](problems/14-05-problems.md) · [solutions](solutions/14-05-solutions.md) · [lab](labs/14-05-lab/README.md) · [verify](verify/verify_14_05.py) |
 | [14-06 · Pipelining and Hazards](chapters/14-06-pipelining-and-hazards.md) | 10 | ✅ verified | [problems](problems/14-06-problems.md) · [solutions](solutions/14-06-solutions.md) · [lab](labs/14-06-lab/README.md) · [verify](verify/verify_14_06.py) |
-| [14-07 · Branch Prediction and Speculation](chapters/14-07-branch-prediction-and-speculation.md) | 7 | ⬜ planned | — |
+| [14-07 · Branch Prediction and Speculation](chapters/14-07-branch-prediction-and-speculation.md) | 7 | ✅ verified | [problems](problems/14-07-problems.md) · [solutions](solutions/14-07-solutions.md) · [lab](labs/14-07-lab/README.md) · [verify](verify/verify_14_07.py) |
 | [14-08 · Out-of-Order and Superscalar Execution](chapters/14-08-out-of-order-and-superscalar.md) | 9 | ⬜ planned | — |
 | [14-09 · Memory Hierarchy and Caches](chapters/14-09-memory-hierarchy-and-caches.md) | 10 | ⬜ planned | — |
 | [14-10 · Virtual Memory, TLBs and the OS Interface](chapters/14-10-virtual-memory.md) | 7 | ⬜ planned | — |

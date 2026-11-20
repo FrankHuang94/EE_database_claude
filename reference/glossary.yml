@@ -5499,3 +5499,38 @@
 - term: Structural hazard
   definition: A pipeline hazard in which two instructions need the same hardware resource (a memory port, a register-file port, an unpipelined unit) in the same cycle.
   chapter: "14-06"
+# ---------------------------------------------------------------- 14-07
+- term: Branch prediction
+  definition: Guessing a branch's direction and target when it is fetched, so that the pipeline keeps fetching down the predicted path; a wrong guess costs a flush of the work done since.
+  chapter: "14-07"
+  see_also: [Speculative execution]
+- term: Branch history table (BHT)
+  definition: An untagged table of 1-bit flags or 2-bit counters, indexed by low bits of the branch address, that records how branches behaved recently and predicts their direction.
+  chapter: "14-07"
+- term: Two-bit saturating counter
+  definition: A predictor entry with four states, predicting taken in the upper two; it needs two consecutive wrong outcomes to change its prediction, so a loop branch is mispredicted only at the exit.
+  chapter: "14-07"
+- term: Global history
+  definition: A shift register of the outcomes of the most recent conditional branches, used by correlating predictors such as gshare to give the same branch different predictions in different contexts.
+  chapter: "14-07"
+- term: gshare
+  definition: A correlating branch predictor that indexes a table of 2-bit counters by the XOR of the branch address and the global history.
+  chapter: "14-07"
+  see_also: [Global history]
+- term: Branch target buffer (BTB)
+  definition: A tagged cache, looked up with the fetch address, that identifies control-transfer instructions before decode and supplies their last target so that fetch can redirect in the next cycle.
+  chapter: "14-07"
+- term: Return-address stack (RAS)
+  definition: A small hardware stack that pushes the return address at each call and pops it to predict each return's target, which a BTB alone predicts poorly.
+  chapter: "14-07"
+- term: Aliasing (predictor)
+  definition: Two branches sharing a predictor entry because their indexes coincide; usually destructive when their behaviour differs.
+  chapter: "14-07"
+- term: Speculative execution
+  definition: Executing instructions beyond an unresolved branch (or other prediction) before it is known that they should run, discarding their results without trace in architectural state if the prediction was wrong.
+  chapter: "14-07"
+  see_also: [Branch prediction, Spectre]
+- term: Spectre
+  definition: A family of attacks, disclosed in January 2018, that use speculatively executed instructions to leave secret-dependent traces in caches and other microarchitectural state, read back by timing (CVE-2017-5753 and CVE-2017-5715).
+  chapter: "14-07"
+  see_also: [Side channel, Speculative execution]

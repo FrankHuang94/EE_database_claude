@@ -218,6 +218,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-210 | Number formats: IEEE 754-2019, bfloat16 and OCP MX (primary re-check) | Nov 2026 |
 | R-211 | Sail formal specification of the RISC-V ISA | Nov 2026 |
 | R-212 | AMD Zen 5 core (Hot Chips 2024) | Nov 2026 |
+| R-213 | Spectre and Meltdown: disclosure and CVEs | Nov 2026 |
 
 ---
 
@@ -2180,3 +2181,11 @@ R&D % = R&D ÷ revenue.
 
 - B. Cohen and M. Subramony (with M. Clark), AMD, "Next Generation 'Zen 5' Core", Hot Chips 2024 (HC36), Aug 2024: "8-wide dispatch, rename, retire"; "ROB/retire queue 448/224 1T/2T entries"; "D-Cache: 48KB, 12-way; 4 mem ops/cycle"; "L2-Cache: 1MB, 16-way"; "6 integer ALU". Also listed: L1I 32 KB 8-way with 2 × 32 B fetch per cycle; op cache of 6K instructions, 2 × 6-wide; decode 2 pipes × 4-wide; 240 integer physical registers (64-bit) and 384 vector registers (512-bit); 4 AGUs; L1 BTB 16K entries; return stack 52 entries; full 512-bit AVX-512 datapath; 32 MB L3 per 8-core complex; "up to" +16% IPC over Zen 4 (AMD endnote). [Hot Chips 2024 slides (PDF)](https://www.hc2024.hotchips.org/assets/program/conference/day2/24_HC2024.AMD.Cohen.Subramony.final.pdf)
 - **Not verified:** a single published pipeline depth for Zen 5.
+
+## R-213 · Spectre and Meltdown: disclosure and CVEs
+
+*Read on 20 Nov 2026 (primary: the Project Zero post and the MITRE CVE records; NVD returned 403); tagged [Established].*
+
+- J. Horn, Google Project Zero, "Reading privileged memory with a side-channel", 3 Jan 2018: "We reported this issue to Intel, AMD and ARM on 2017-06-01"; "Variant 1: bounds check bypass (CVE-2017-5753) Variant 2: branch target injection (CVE-2017-5715) Variant 3: rogue data cache load (CVE-2017-5754)". [Project Zero](https://googleprojectzero.blogspot.com/2018/01/reading-privileged-memory-with-side.html)
+- CVE-2017-5753 description: "Systems with microprocessors utilizing speculative execution and branch prediction may allow unauthorized disclosure of information to an attacker with local user access via a side-channel analysis." Records reserved 2017-02-01, public 2018-01-03, published 2018-01-04 (CNA: Intel). [CVE-2017-5753](https://cveawg.mitre.org/api/cve/CVE-2017-5753) · [CVE-2017-5715](https://cveawg.mitre.org/api/cve/CVE-2017-5715) · [CVE-2017-5754](https://cveawg.mitre.org/api/cve/CVE-2017-5754)
+- Papers: M. Lipp et al., "Meltdown: Reading Kernel Memory from User Space", USENIX Security 2018; P. Kocher et al., "Spectre Attacks: Exploiting Speculative Execution", IEEE S&P 2019.
