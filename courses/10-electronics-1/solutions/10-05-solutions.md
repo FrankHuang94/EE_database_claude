@@ -73,7 +73,7 @@ X has the high input resistance the 50 kΩ source needs; Y has the low output re
 
 (b) Unilateral: $1/y_{11}$ = **10** kΩ. Actual: $Y_{in} = 0.1 - (-0.01)(40)/0.15$ = 2.767 mS, so $R_{in}$ = **361.4** Ω. With the output open, $Y_{in} = 0.1 + 0.4/0.05$ = 8.1 mS and $R_{in}$ = **123.5** Ω.
 
-(c) Unilateral prediction: $\frac{10}{11} \times (-266.7)$ = **−242.4**. Actual: $\frac{361.4}{1361.4} \times (-266.7)$ = **−70.8**. A feedback resistor of 100 kΩ, ten times the apparent input resistance, cuts the real input resistance by a factor of 28, because the output swings 267 times as far as the input in the opposite direction: the current through the feedback resistor is $(v_1 - v_2)/100\text{ kΩ} = 267.7v_1/100\text{ kΩ}$, as if a 374 Ω resistor were across the input. This is the Miller effect (12-03).
+(c) Unilateral prediction: $\frac{10}{11} \times (-266.7)$ = **−242.4**. Actual: $\frac{361.4}{1361.4} \times (-266.7)$ = **−70.8**. A feedback resistor of 100 kΩ, ten times the apparent input resistance, cuts the real input resistance by a factor of **28**, because the output swings 267 times as far as the input in the opposite direction: the current through the feedback resistor is $(v_1 - v_2)/100\text{ kΩ} = $ **267.7**$\,v_1/100\text{ kΩ}$, as if a **374** Ω resistor were across the input. This is the Miller effect (12-03).
 
 ### Solution 10-05.11
 
@@ -137,6 +137,9 @@ X has the high input resistance the 50 kΩ source needs; Y has the low output re
 | 10-05.10d | R_in with output open | 123.5 | Ω |
 | 10-05.10e | unilateral overall gain | -242.4 | — |
 | 10-05.10f | actual overall gain | -70.8 | — |
+| 10-05.10g | reduction in R_in | 28 | — |
+| 10-05.10h | (v_1 − v_2)/v_1 | 267.7 | — |
+| 10-05.10i | equivalent shunt resistor | 374 | Ω |
 | 10-05.11a | G-G-G | 383.5 | — |
 | 10-05.11b | G-G-G | 51.68 | dB |
 | 10-05.11c | B-G-G-B | 421.4 | — |

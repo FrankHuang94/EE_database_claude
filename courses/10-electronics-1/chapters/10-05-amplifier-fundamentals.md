@@ -104,7 +104,13 @@ $$
 R_o = R_L\left(\frac{v_{oc}}{v_L} - 1\right) .
 $$
 
-The input is measured the same way from the source side: with a known series resistance $R_s$ between a source of open-circuit voltage $v_s$ and the input, a reading $v_i$ at the input gives $R_i = R_s v_i/(v_s - v_i)$. A test resistance close to the unknown gives the best accuracy, because the reading then sits in the steep middle of the divider (Example 10-05.4).
+The input is measured the same way from the source side: with a known series resistance $R_s$ between a source of open-circuit voltage $v_s$ and the input, a reading $v_i$ at the input gives $R_i = R_s v_i/(v_s - v_i)$. Which test resistance gives the best accuracy depends on how the meter errs. Differentiating $R_o = R_L(v_{oc}/v_L - 1)$ with $v_L = v_{oc}R_L/(R_L + R_o)$, an error $\delta v$ in the loaded reading gives
+
+$$
+\frac{\delta R_o}{R_o} = -\frac{\delta v}{v_{oc}}\cdot\frac{(R_L + R_o)^2}{R_LR_o} .
+$$
+
+If $\delta v$ is a fixed amount (a meter's resolution or offset), the factor $(R_L + R_o)^2/(R_LR_o)$ is smallest, equal to 4, at $R_L = R_o$: a test load matched to the unknown puts the reading in the steep middle of the divider. If instead the error is a fixed *fraction* ε of the reading, $\delta v = \varepsilon v_L$, and the result is $\delta R_o/R_o = -\varepsilon(1 + R_L/R_o)$, which keeps shrinking as $R_L$ falls, until the test current drives the amplifier out of its linear range or past its current limit. Example 10-05.4 compares the two cases; the input measurement behaves the same way with $R_s$ in place of $R_L$.
 
 ### 3.4 Cascades
 
@@ -142,7 +148,7 @@ The second term can dominate: a small feedback path from output to input, multip
 
 The linear models hold only over a range. The **transfer characteristic** $v_O(v_I)$ of a real amplifier is a nonlinear curve; the bias point sets where on it the amplifier sits, and the small-signal gain is its slope there (10-04).
 
-*Figure 2. The transfer characteristic of the common-emitter stage of Example 10-04.1. The output is limited above by cutoff ($v_C \to V_{CC}$) and below by saturation ($v_{CE} \to$ 0.2 V); the bias point Q at 5 V gives a small-signal gain of −193 (the tangent).*
+*Figure 2. The transfer characteristic of the common-emitter stage of Example 10-04.1. The output is limited above by cutoff ($v_C \to V_{CC}$) and below by saturation ($v_{CE} \to$ 0.2 V); the bias point Q at 5 V gives a small-signal gain of −193 (the tangent, ignoring $r_o$; Example 10-05.3 includes $r_o$ and finds −175.8).*
 
 ![CE transfer characteristic](../../../assets/figures/10-05/ce-transfer.svg)
 
@@ -155,13 +161,13 @@ The largest *symmetric* swing is the smaller of the two, and the bias point that
 
 ### 3.7 A preview of frequency response
 
-An amplifier's gain is flat only over a band. At low frequencies, **coupling capacitors** (which block DC between stages so that each keeps its own bias) and **bypass capacitors** stop acting as shorts. A coupling capacitor $C$ between $R_{sig}$ and $R_i$ forms a high-pass filter (07-07) with
+An amplifier's gain is flat only over a band. At low frequencies, **coupling capacitors** (which block DC between stages so that each keeps its own bias) and **bypass capacitors** (which short an emitter or source resistor at signal frequencies while leaving it in place for the DC bias; 10-07 sizes them) stop acting as shorts. A coupling capacitor $C$ between $R_{sig}$ and $R_i$ forms a high-pass filter (07-07) with
 
 $$
 f_L = \frac{1}{2\pi C(R_{sig} + R_i)} ,
 $$
 
-because the capacitor sees the series resistance of everything around it. At high frequencies, the transistors' internal capacitances (09-06, 09-07) shunt the signal and set an upper corner $f_H$. Between them lies the **midband**, where the capacitors are negligible and the analysis of this chapter applies; the **bandwidth** is $f_H - f_L$, nearly $f_H$ when $f_L \ll f_H$. For a single dominant pole, raising the gain by feedback lowers $f_H$ in proportion, so the **gain–bandwidth product** is roughly constant (10-09). Course 12 derives $f_H$ from the device capacitances.
+because the capacitor sees the series resistance of everything around it. At high frequencies, the transistors' internal capacitances (09-06, 09-07) shunt the signal and set an upper corner $f_H$. Between them lies the **midband**, where the capacitors are negligible and the analysis of this chapter applies; the **bandwidth** is $f_H - f_L$, nearly $f_H$ when $f_L \ll f_H$. For a single dominant pole, setting a higher closed-loop gain (that is, using less feedback) lowers $f_H$ in proportion, so the **gain–bandwidth product** is roughly constant (10-09). Course 12 derives $f_H$ from the device capacitances.
 
 ### 3.8 Power and efficiency
 
@@ -193,7 +199,7 @@ At smaller signals $P_L$ falls as the square of the amplitude while $P_{DC}$ sta
 
 (b) $P_{in}$ = 10 mV × 1 µA = 10 nW = **−50** dBm and $P_L$ = 1 mW = **0** dBm, 50 dB apart.
 
-**Sanity check.** The power gain in dB is not the voltage gain in dB, because $R_i \neq R_L$: the output resistance is ten times smaller, so the same voltage ratio carries ten times more power gain (10 dB more than 40 dB). Remember: $20\log$ for voltage is a power statement only across equal resistances.
+**Sanity check.** The power gain in dB is not the voltage gain in dB, because $R_i \neq R_L$: the load resistance is ten times smaller than the input resistance, so the same voltage ratio carries ten times more power gain (10 dB more than 40 dB). Remember: $20\log$ for voltage is a power statement only across equal resistances.
 
 ### Example 10-05.2 · A loaded voltage amplifier (tier A)
 
@@ -215,11 +221,11 @@ At smaller signals $P_L$ falls as the square of the amplitude while $P_{DC}$ sta
 
 (c) $\frac{2.585}{3.585} \times (-175.8) \times \frac{10}{14.545}$: input factor **0.721**, output factor **0.6875**, overall **−87.16**.
 
-**Sanity check.** The short-circuit current gain is −β, as it must be: with the output shorted, the collector current is β times the base current. No single model is "ideal" for this stage; its input resistance is low and its output resistance moderate, which is why it loses half its gain at each interface here.
+**Sanity check.** The short-circuit current gain is −β, as it must be: with the output shorted, the collector current is β times the base current. No single model is "ideal" for this stage; its input resistance is low and its output resistance moderate, which is why, between this source and load, it loses about half its gain in total: the input keeps 0.721 and the output 0.6875, together **0.496**.
 
 ### Example 10-05.4 · Measuring output and input resistance (tier B)
 
-**Setup.** (a) An amplifier's output reads 2.00 V rms open-circuit and 1.60 V rms with a 1 kΩ load. Find $R_o$. (b) A 100 mV source drives the input through an added 10 kΩ series resistor, and the input reads 80 mV. Find $R_i$. (c) Suppose the loaded reading in (a) is 1% high (1.616 V). What $R_o$ results, and its error? Repeat with a 250 Ω test load, whose correct reading is 1.00 V, read 1% high.
+**Setup.** (a) An amplifier's output reads 2.00 V rms open-circuit and 1.60 V rms with a 1 kΩ load. Find $R_o$. (b) A 100 mV source drives the input through an added 10 kΩ series resistor, and the input reads 80 mV. Find $R_i$. (c) Suppose the voltmeter reads a fixed 10 mV high. What $R_o$ results, and with what error, using the 1 kΩ load, a 250 Ω load (correct reading 1.00 V) and a 25 Ω load? (d) Repeat for the 1 kΩ and 25 Ω loads if the reading is instead 1% high.
 
 **Solution.**
 
@@ -227,9 +233,11 @@ At smaller signals $P_L$ falls as the square of the amplitude while $P_{DC}$ sta
 
 (b) $R_i = 10\text{ kΩ} \times 80/(100 - 80)$ = **40** kΩ.
 
-(c) With the 1 kΩ load: $1\text{ kΩ} \times (2/1.616 - 1)$ = **237.6** Ω, an error of **−4.95**%. With 250 Ω: $250 \times (2/1.01 - 1)$ = **245.0** Ω, an error of **−1.98**%.
+(c) With the 1 kΩ load the reading is 1.61 V: $1\text{ kΩ} \times (2/1.61 - 1)$ = **242.2** Ω, an error of **−3.11**%. With 250 Ω: $250 \times (2/1.01 - 1)$ = **245.0** Ω, **−1.98**%. With 25 Ω the correct reading is only 0.1818 V, so 10 mV is a large part of it: **235.7** Ω, **−5.73**%. The matched load wins, as the factor of 4 predicts.
 
-**Sanity check.** A 1% reading error becomes a 5% error in $R_o$ with a test load four times $R_o$, but only 2% with a matched test load: choose the test resistance near the value you are measuring.
+(d) With the 1 kΩ load: $1\text{ kΩ} \times (2/1.616 - 1)$ = **237.6** Ω, **−4.95**%. With 25 Ω: **247.3** Ω, **−1.09**%. Now the small load wins, since the error scales as $1 + R_L/R_o$.
+
+**Sanity check.** Know your instrument's error before choosing the test load. A bench voltmeter's specification usually has both parts, a percentage of the reading plus a number of counts; at small readings the counts dominate, which favors a test load near the unknown. In practice a load near $R_o$ is also safe for the amplifier, while a 25 Ω load asks it for ten times the current.
 
 ### Example 10-05.5 · A cascade, and why buffers exist (tier B)
 
@@ -249,7 +257,7 @@ or **529.1** (**54.47** dB).
 
 (c) $50 \times 50$ = 2500, or **67.96** dB.
 
-**Sanity check.** The buffer has no gain, yet removing it costs 30 dB, because a 5 kΩ output cannot drive 100 Ω. The remaining 13.5 dB of loading loss (from 67.96 dB) is spread across the first three interfaces.
+**Sanity check.** The buffer has no gain, yet removing it costs **30.2** dB, because a 5 kΩ output cannot drive 100 Ω. The remaining **13.5** dB of loading loss (from 67.96 dB) is spread across all four interfaces: **−6.02** dB at the source, **−3.52** dB between the gain stages, **−0.42** dB into the buffer and **−3.52** dB into the load.
 
 ### Example 10-05.6 · Output swing and class-A efficiency (tier B)
 
@@ -273,7 +281,7 @@ or **529.1** (**54.47** dB).
 
 (a) Buffer: $\frac{10}{10.1} \times 1 \times \frac{10}{10.1}$ = **0.980** (input divider and the buffer's output into the first gain stage). Each gain stage then contributes $40 \times \frac{10}{11}$ = **36.36** (its own gain times the divider into the next 10 kΩ input). Overall: $0.980 \times 36.36^2$ = **1296**, or **62.25** dB.
 
-(b) Without the buffer, the first divider is $10/110$: $\frac{10}{110} \times 36.36^2$ = **120.2**, or **41.60** dB, which fails the specification by 18 dB.
+(b) Without the buffer, the first divider is $10/110$: $\frac{10}{110} \times 36.36^2$ = **120.2**, or **41.60** dB, which fails the specification by **18.4** dB.
 
 (c) $C = 1/(2\pi \times 0.05 \times 10.1\text{ MΩ})$ = **315** nF; with 330 nF, $f_L$ = **47.75** mHz.
 
@@ -313,17 +321,31 @@ or **529.1** (**54.47** dB).
 | Ex 10-05.3g | input factor | 0.721 | — |
 | Ex 10-05.3h | output factor | 0.6875 | — |
 | Ex 10-05.3i | overall gain | -87.16 | — |
+| Ex 10-05.3j | input and output factors together | 0.496 | — |
 | Ex 10-05.4a | R_o | 250 | Ω |
 | Ex 10-05.4b | R_i | 40 | kΩ |
-| Ex 10-05.4c | R_o from a 1% high reading, 1 kΩ load | 237.6 | Ω |
-| Ex 10-05.4d | error | -4.95 | % |
-| Ex 10-05.4e | R_o from a 1% high reading, 250 Ω load | 245.0 | Ω |
+| Ex 10-05.4c | R_o, 10 mV high, 1 kΩ load | 242.2 | Ω |
+| Ex 10-05.4d | error | -3.11 | % |
+| Ex 10-05.4e | R_o, 10 mV high, 250 Ω load | 245.0 | Ω |
 | Ex 10-05.4f | error | -1.98 | % |
+| Ex 10-05.4g | R_o, 10 mV high, 25 Ω load | 235.7 | Ω |
+| Ex 10-05.4h | error | -5.73 | % |
+| Ex 10-05.4i | R_o, 1% high, 1 kΩ load | 237.6 | Ω |
+| Ex 10-05.4j | error | -4.95 | % |
+| Ex 10-05.4k | R_o, 1% high, 25 Ω load | 247.3 | Ω |
+| Ex 10-05.4l | error | -1.09 | % |
+| Ex 10-05.4m | correct reading with 25 Ω | 0.1818 | V |
 | Ex 10-05.5a | gain with buffer | 529.1 | — |
 | Ex 10-05.5b | gain with buffer | 54.47 | dB |
 | Ex 10-05.5c | gain without buffer | 16.34 | — |
 | Ex 10-05.5d | gain without buffer | 24.26 | dB |
 | Ex 10-05.5e | unloaded gain | 67.96 | dB |
+| Ex 10-05.5f | cost of removing the buffer | 30.2 | dB |
+| Ex 10-05.5g | loading loss with the buffer | 13.5 | dB |
+| Ex 10-05.5h | source interface | -6.02 | dB |
+| Ex 10-05.5i | stage-to-stage interface | -3.52 | dB |
+| Ex 10-05.5j | into the buffer | -0.42 | dB |
+| Ex 10-05.5k | into the load | -3.52 | dB |
 | Ex 10-05.6a | largest symmetric swing | 4.8 | V |
 | Ex 10-05.6b | signal power | 2.304 | mW |
 | Ex 10-05.6c | efficiency | 23.04 | % |
@@ -337,10 +359,11 @@ or **529.1** (**54.47** dB).
 | Ex 10-05.7d | overall gain | 62.25 | dB |
 | Ex 10-05.7e | gain without buffer | 120.2 | — |
 | Ex 10-05.7f | gain without buffer | 41.60 | dB |
+| Ex 10-05.7i | shortfall against 60 dB | 18.4 | dB |
 | Ex 10-05.7g | coupling capacitor | 315 | nF |
 | Ex 10-05.7h | corner with 330 nF | 47.75 | mHz |
 
-*Every value is recomputed by [verify_10_05.py](../verify/verify_10_05.py): gains by solving each cascade's nodal equations with the stages as controlled sources (not by multiplying dividers), resistances from simulated two-reading measurements, swing and efficiency from the exponential transistor's transfer characteristic, and corners by finding the −3 dB point of the complex response. The lab's ngspice netlist confirms Examples 10-05.2, 10-05.5 and 10-05.7.*
+*Every value is recomputed by [verify_10_05.py](../verify/verify_10_05.py): gains by solving each cascade's nodal equations with the stages as controlled sources (not by multiplying dividers), resistances from simulated two-reading measurements, swing and efficiency by applying the bias-point rule to the stated cutoff and saturation limits (the exponential transfer characteristic only locates the bias point), and corners by finding the −3 dB point of the complex response. The lab's ngspice netlist confirms Examples 10-05.2, 10-05.5 and 10-05.7. Several values are short closed forms that the script restates rather than derives independently: Examples 10-05.3 and 10-05.6, T 10-05.f, and Problems 10-05.4, 10-05.7, 10-05.9 and 10-05.12.*
 
 ## 5. Simulate it
 
@@ -393,7 +416,7 @@ The netlist (`amp_cascade.cir`) builds the cascades of Examples 10-05.2 and 10-0
 
 ### State of the art (as of Nov 2026)
 
-- **Integrated class-D audio amplifiers dominate speaker drive.** The TI TPA3116D2 family, a representative part, specifies over 90% power efficiency, up to 2 × 50 W into 4 Ω at 21 V (at 10% THD+N), 0.1% THD+N at 25 W, and a quiescent current of 20 mA typical at 12 V [1] **[Established]** (data-sheet specification).
+- **Integrated class-D audio amplifiers are the usual choice for speaker drive in compact and battery-powered products** **[Industry estimate]**. The TI TPA3116D2 family, a representative part, specifies over 90% power efficiency, up to 2 × 50 W into 4 Ω at 21 V (at 10% THD+N), 0.1% THD+N at 25 W, and a quiescent current of 20 mA typical at 12 V [1] **[Established]** (data-sheet specification).
 - **Gain and input resistance trade in integrated amplifiers.** The same part sets its gain to 20, 26, 32 or 36 dB with a resistor divider on one pin, and its input impedance falls from 60 kΩ to 9 kΩ (±20%) as the gain rises; the data sheet sizes the input coupling capacitors (1.5 to 10 µF) for corners near 2 Hz [1] **[Established]**. This is §3.3 and §3.7 in a data sheet.
 - **Standardized interfaces are matched, everything else bridges.** 50 Ω RF chains and transmission lines are matched for power transfer and reflections (06-09, Course 15), while audio, sensor and on-chip interfaces bridge **[Established]** (textbook practice).
 
@@ -401,7 +424,7 @@ The netlist (`amp_cascade.cir`) builds the cascades of Examples 10-05.2 and 10-0
 
 - **Efficiency is thermal design and battery life.** At 50 W of output, a 90%-efficient class-D stage dissipates about 5.6 W, while an ideal class-A stage would dissipate 150 W (Problem 10-05.9): the difference between no heat sink and a large one, and in a portable product, between a usable and an unusable battery life.
 - **Interfaces are where integration pays.** Every off-chip interface needs buffers, coupling capacitors and protection; integrating stages removes interfaces and their loading losses, part of the case for system-on-chip and system-in-package designs.
-- **Sensor front ends are a growth category.** Wearables, medical patches and industrial IoT all begin with a high-impedance, low-power amplifier (Example 10-05.7), a design problem that 10-04's $g_m/I_D$ and this chapter's loading rules frame.
+- **Sensor front ends are a large design area** **[Industry estimate]**. Wearables, medical patches and industrial IoT all begin with a high-impedance, low-power amplifier (Example 10-05.7), a design problem that 10-04's $g_m/I_D$ and this chapter's loading rules frame.
 
 ### Marketing vs Reality
 

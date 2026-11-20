@@ -45,7 +45,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 10-05.9 [B]
 
-**Full power.** The TPA3116D2 is set to 26 dB and delivers 50 W into 4 Ω. (a) Find the voltage gain in V/V. (b) Find the peak and rms output voltages. (c) Find the rms input that produces full power. (d) At 90% efficiency, how much power does the amplifier dissipate? (e) How much would an ideal resistively loaded class-A stage dissipate at the same output?
+**Full power.** The TPA3116D2 is set to 26 dB and delivers 50 W into 4 Ω. (The 50 W rating is specified at 10% THD+N, so the output is already clipping; treat it as a clean sine of that power, an optimistic simplification.) (a) Find the voltage gain in V/V. (b) Find the peak and rms output voltages. (c) Find the rms input that produces full power. (d) At 90% efficiency, how much power does the amplifier dissipate? (e) How much would an ideal resistively loaded class-A stage dissipate at the same output?
 
 ### Problem 10-05.10 [C]
 

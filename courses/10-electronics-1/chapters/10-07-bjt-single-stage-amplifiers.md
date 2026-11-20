@@ -164,13 +164,13 @@ There is no winner, only jobs. The BJT wins where transconductance per ampere, l
 
 ### Example 10-07.1 · A discrete common-emitter amplifier (tier B)
 
-**Setup.** Take Example 10-03.3's four-resistor bias ($V_{CC}$ = 12 V, $R_1$ = 47 kΩ, $R_2$ = 10 kΩ, $R_C$ = 4.7 kΩ, $R_E$ = 1 kΩ, β = 100, $I_C$ = 1.286 mA) with $R_E$ fully bypassed; ignore $r_o$. (a) Find $g_m$, $r_\pi$, $R_B$ and $R_{in}$. (b) Find $A_{vo}$, and confirm $|A_{vo}| = V_{RC}/V_T$. (c) Find the overall gain from a 1 kΩ source into a 10 kΩ load.
+**Setup.** Take Example 10-03.3's four-resistor bias ($V_{CC}$ = 12 V, $R_1$ = 47 kΩ, $R_2$ = 10 kΩ, $R_C$ = 4.7 kΩ, $R_E$ = 1 kΩ, β = 100, $I_C$ = 1.2863 mA, carried to five figures because the gain is sensitive to it) with $R_E$ fully bypassed; ignore $r_o$. (a) Find $g_m$, $r_\pi$, $R_B$ and $R_{in}$. (b) Find $A_{vo}$, and confirm $|A_{vo}| = V_{RC}/V_T$. (c) Find the overall gain from a 1 kΩ source into a 10 kΩ load.
 
 **Solution.**
 
-(a) $g_m$ = 1.286 mA/25.852 mV = **49.76** mS; $r_\pi = 100/g_m$ = **2.010** kΩ; $R_B$ = 47 ∥ 10 = **8.246** kΩ; $R_{in} = R_B \parallel r_\pi$ = **1.616** kΩ.
+(a) $g_m$ = 1.2863 mA/25.852 mV = **49.76** mS; $r_\pi = 100/g_m$ = **2.010** kΩ; $R_B$ = 47 ∥ 10 = **8.246** kΩ; $R_{in} = R_B \parallel r_\pi$ = **1.616** kΩ.
 
-(b) $A_{vo} = -g_mR_C$ = **−233.9**; $V_{RC}$ = 1.286 mA × 4.7 kΩ = 6.046 V, and $6.046/0.025852$ = **233.9**.
+(b) $A_{vo} = -g_mR_C$ = **−233.9**; $V_{RC}$ = 1.2863 mA × 4.7 kΩ = **6.046** V, and $6.046/0.025852$ = **233.9**. (Rounding $I_C$ to 1.286 mA first would give 233.8: in a gain this large, the fourth digit of the bias current shows.)
 
 (c) Input factor $1.616/2.616$ = **0.618**; gain from base $-g_m(4.7 \parallel 10)$ = **−159.1**; overall **−98.27**.
 
@@ -261,6 +261,9 @@ There is no winner, only jobs. The BJT wins where transconductance per ampere, l
 | Ex 10-07.1g | input factor | 0.618 | — |
 | Ex 10-07.1h | gain from the base | -159.1 | — |
 | Ex 10-07.1i | overall gain | -98.27 | — |
+| Ex 10-07.1j | V_RC | 6.046 | V |
+| Ex 10-07.1k | A_vo from I_C rounded to 1.286 mA | 233.8 | — |
+| Ex 10-07.1l | I_C to five figures | 1.2863 | mA |
 | Ex 10-07.2a | r_e | 19.90 | Ω |
 | Ex 10-07.2b | R_in at the base | 12.11 | kΩ |
 | Ex 10-07.2c | R_in of the stage | 4.91 | kΩ |

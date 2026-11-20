@@ -63,4 +63,4 @@ Gains and decibels (§3.1), the four models (§3.2), loading and cascades (§3.3
 
 ## Optional hardware extension
 
-Build Example 10-05.4's measurement on any audio amplifier or op-amp stage: read the output open-circuit and with a load near the expected output resistance, then repeat with a load ten times larger and compare the scatter of the two estimates.
+Build Example 10-05.4's measurement on any audio amplifier or op-amp stage: read the output open-circuit and with a load near the expected output resistance, then repeat with a load ten times larger and compare the scatter of the two estimates. (A meter's resolution is a fixed absolute error, so the load near $R_o$ should give the tighter estimate; chapter §3.3.)

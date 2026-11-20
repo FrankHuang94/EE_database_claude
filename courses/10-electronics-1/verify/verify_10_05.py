@@ -119,18 +119,26 @@ x = chain([(rpi, gm_sc * Ro, Ro)], 1e3, 10e3)
 v.check("Ex 10-05.3g", x[0])
 v.check("Ex 10-05.3h", x[1] / (gm_sc * Ro * x[0]))
 v.check("Ex 10-05.3i", x[1])
+v.check("Ex 10-05.3j", x[1] / (gm_sc * Ro))
 
 # ------------------------------------------------------------------ Example 4
 ro_from = lambda voc, vl, rl: brentq(lambda r: voc * rl / (rl + r) - vl, 1e-6, 1e9)   # noqa: E731
 ri_from = lambda vs, vin, rs: brentq(lambda r: vs * r / (r + rs) - vin, 1e-6, 1e12)   # noqa: E731
 v.check("Ex 10-05.4a", ro_from(2.00, 1.60, 1e3))
 v.check("Ex 10-05.4b", ri_from(100e-3, 80e-3, 10e3) / 1e3)
-r1 = ro_from(2.00, 1.616, 1e3)
-r2 = ro_from(2.00, 1.01, 250)
-v.check("Ex 10-05.4c", r1)
-v.check("Ex 10-05.4d", (r1 / 250 - 1) * 100)
-v.check("Ex 10-05.4e", r2)
-v.check("Ex 10-05.4f", (r2 / 250 - 1) * 100)
+true_v = lambda rl: 2.00 * rl / (rl + 250.0)  # noqa: E731   the correct loaded reading
+for kr, ke, rl, err in (("Ex 10-05.4c", "Ex 10-05.4d", 1e3, "abs"), ("Ex 10-05.4e", "Ex 10-05.4f", 250.0, "abs"),
+                        ("Ex 10-05.4g", "Ex 10-05.4h", 25.0, "abs"), ("Ex 10-05.4i", "Ex 10-05.4j", 1e3, "rel"),
+                        ("Ex 10-05.4k", "Ex 10-05.4l", 25.0, "rel")):
+    reading = true_v(rl) + 0.01 if err == "abs" else true_v(rl) * 1.01
+    r_ = ro_from(2.00, reading, rl)
+    v.check(kr, r_)
+    v.check(ke, (r_ / 250 - 1) * 100)
+v.check("Ex 10-05.4m", true_v(25.0))
+# the error factor (R_L + R_o)^2 / (R_L R_o) for a fixed absolute error is minimized at R_L = R_o
+from scipy.optimize import minimize_scalar as _ms  # noqa: E402
+v.assert_true("matched load minimizes the absolute-error factor",
+              abs(_ms(lambda rl: (rl + 250) ** 2 / (rl * 250), bounds=(10, 1e4), method="bounded").x - 250) < 0.5)
 v.assert_true("the 250 ohm test load reads 1.00 V when correct", abs(2 * 250 / 500 - 1.0) < 1e-12)
 
 # ------------------------------------------------------------------ Example 5
@@ -142,6 +150,14 @@ x = chain([g_stage, g_stage], 10e3, 100)
 v.check("Ex 10-05.5c", x[-1])
 v.check("Ex 10-05.5d", db(x[-1]))
 v.check("Ex 10-05.5e", db(50 * 50))
+xb = chain([g_stage, g_stage, buf], 10e3, 100)
+xn = chain([g_stage, g_stage], 10e3, 100)
+v.check("Ex 10-05.5f", db(xb[-1]) - db(xn[-1]))
+v.check("Ex 10-05.5g", db(50 * 50) - db(xb[-1]))
+for key, ratio in (("Ex 10-05.5h", 10 / 20), ("Ex 10-05.5i", 10 / 15), ("Ex 10-05.5j", 100 / 105), ("Ex 10-05.5k", 100 / 150)):
+    v.check(key, db(ratio))
+v.assert_true("the four interface losses sum to the total loading loss",
+              abs(db(0.5) + 2 * db(10 / 15) + db(100 / 105) + (db(50 * 50) - db(xb[-1]))) < 1e-9)
 
 # ------------------------------------------------------------------ Example 6: swing from the exponential transfer curve
 i_s = 1e-3 / math.exp(0.7 / VT)
@@ -175,6 +191,7 @@ v.check("Ex 10-05.7d", db(x[3]))
 y = chain([g7, g7], 100e3, 10e3)
 v.check("Ex 10-05.7e", y[-1])
 v.check("Ex 10-05.7f", db(y[-1]))
+v.check("Ex 10-05.7i", 60 - db(y[-1]))
 
 
 def h_in(f, c, rs=100e3, ri=10e6):
@@ -266,6 +283,9 @@ v1o, v2o = two_port(0, 0.0)
 v.check("10-05.10d", v1o / (Y2[0, 0] * v1o + Y2[0, 1] * v2o))
 v.check("10-05.10e", (1 / Y2[0, 0]) / (1 / Y2[0, 0] + 1e3) * (v2 / v1))
 v.check("10-05.10f", two_port(1e3, yl)[1])
+v.check("10-05.10g", (1 / Y2[0, 0]) / (v1 / i1))
+v.check("10-05.10h", (v1 - v2) / v1)
+v.check("10-05.10i", 100e3 / ((v1 - v2) / v1))
 
 B11, G11 = (1e6, 0.95, 200), (5e3, 30, 3e3)
 gain = lambda s: chain([B11 if c == "B" else G11 for c in s], 50e3, 2e3)[-1]   # noqa: E731
