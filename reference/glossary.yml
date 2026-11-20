@@ -83,7 +83,7 @@
   chapter: "02-01"
   see_also: [Error vector magnitude]
 - term: Error vector magnitude
-  definition: EVM, the RMS distance between transmitted (or received) constellation points and their ideal positions, relative to the signal, often quoted in dB. It sets the highest usable QAM order.
+  definition: EVM, the RMS distance between transmitted (or received) constellation points and their ideal positions, relative to the signal, often quoted in dB. It sets the highest usable QAM order; if the error is noise-like it acts like an SNR of 1/EVM² (3.5% ↔ 29.1 dB, 17-06).
   chapter: "02-01"
 
 # ---------------------------------------------------------------- 07-01
@@ -6729,3 +6729,51 @@
   definition: The extra Eb/N0 a real receiver needs over the theoretical value for its modulation and code at the target error rate, from filter mismatch, timing and phase errors, quantization and nonlinearity.
   chapter: "17-05"
   see_also: [Implementation margin]
+- term: Complex envelope
+  definition: The complex low-pass signal s̃(t) = I(t) + jQ(t) that describes a bandpass signal s(t) = Re{s̃(t)·e^(jωct)}; digital modems process it at baseband instead of the carrier.
+  chapter: "17-06"
+  see_also: [In-phase and quadrature components, Constellation]
+- term: Constellation
+  definition: The set of complex points (I, Q) a modulation can send in one symbol; its minimum distance and average energy set the error rate, and its labelling (ideally Gray) sets how many bits each error costs.
+  chapter: "17-06"
+  see_also: [QAM, M-PSK, Gray code]
+- term: BPSK
+  definition: Binary phase-shift keying, ±√Eb on one carrier phase; antipodal signalling with Pb = Q(√(2Eb/N0)).
+  chapter: "17-06"
+  see_also: [QPSK, Antipodal signalling]
+- term: QPSK
+  definition: Quadrature phase-shift keying, four points (±a, ±a); with Gray labels it is two independent BPSK streams in quadrature, doubling BPSK's bit rate at the same bit-error rate.
+  chapter: "17-06"
+  see_also: [BPSK, M-PSK]
+- term: M-PSK
+  definition: M points equally spaced on a circle; minimum distance 2√Es·sin(π/M) and Ps ≈ 2Q(√(2Es/N0)·sin(π/M)); constant symbol envelope but poor distance beyond 8 points.
+  chapter: "17-06"
+  see_also: [QPSK, QAM]
+- term: QAM
+  definition: Quadrature amplitude modulation, independent PAM on I and Q; square M-QAM has Es = 2(M − 1)/3 for unit half-spacing and costs about 5–6 dB of SNR per extra two bits per symbol, but fills the plane better than PSK.
+  chapter: "17-06"
+  see_also: [Constellation, M-PSK, Error vector magnitude]
+- term: APSK
+  definition: Amplitude-and-phase-shift keying, points on a few concentric rings; used in satellite links (DVB-S2) because its few amplitude levels suit amplifiers run near saturation.
+  chapter: "17-06"
+  see_also: [QAM, M-PSK]
+- term: Frequency-shift keying
+  definition: Sending one of several tones per symbol; binary FSK is orthogonal signalling (3 dB behind BPSK coherently), and its continuous-phase forms (MSK, GFSK) have a constant envelope.
+  chapter: "17-06"
+  see_also: [MSK and GMSK, Orthogonal signalling, Noncoherent detection]
+- term: MSK and GMSK
+  definition: Continuous-phase binary FSK with modulation index 0.5 (tone spacing half the bit rate); Gaussian-filtered versions (GMSK in GSM, GFSK in Bluetooth) have compact spectra and a constant envelope for efficient saturated amplifiers.
+  chapter: "17-06"
+  see_also: [Frequency-shift keying]
+- term: DPSK
+  definition: Differential PSK, carrying data in the phase change between symbols so that the previous symbol serves as the phase reference; binary DPSK has Pb = ½·e^(−Eb/N0), about 0.75 dB behind BPSK at 10⁻⁵.
+  chapter: "17-06"
+  see_also: [Noncoherent detection, BPSK]
+- term: Noncoherent detection
+  definition: Detection without a carrier-phase reference, using energies or phase differences; simpler and faster to acquire, at a cost of about 1 dB (FSK) at practical error rates.
+  chapter: "17-06"
+  see_also: [DPSK, Frequency-shift keying]
+- term: Spectral efficiency
+  definition: Bit rate per hertz of occupied bandwidth; log2 M/(1 + α) b/s/Hz for M-point constellations with raised-cosine roll-off α, times the code rate; bounded by log2(1 + SNR).
+  chapter: "17-06"
+  see_also: [Roll-off factor, Eb/N0]

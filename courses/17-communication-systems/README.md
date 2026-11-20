@@ -33,7 +33,7 @@ How information moves over noisy channels: random processes and noise, analog an
 | [17-03 · Analog Modulation (Brief)](chapters/17-03-analog-modulation.md) | 5 | ✅ verified | [problems](problems/17-03-problems.md) · [solutions](solutions/17-03-solutions.md) · [lab](labs/17-03-lab/README.md) · [verify](verify/verify_17_03.py) |
 | [17-04 · Baseband Digital Transmission](chapters/17-04-baseband-digital-transmission.md) | 8 | ✅ verified | [problems](problems/17-04-problems.md) · [solutions](solutions/17-04-solutions.md) · [lab](labs/17-04-lab/README.md) · [verify](verify/verify_17_04.py) |
 | [17-05 · Matched Filters and Optimal Detection](chapters/17-05-matched-filters-and-detection.md) | 8 | ✅ verified | [problems](problems/17-05-problems.md) · [solutions](solutions/17-05-solutions.md) · [lab](labs/17-05-lab/README.md) · [verify](verify/verify_17_05.py) |
-| [17-06 · Bandpass Digital Modulation and BER](chapters/17-06-bandpass-digital-modulation.md) | 10 | ⬜ planned | — |
+| [17-06 · Bandpass Digital Modulation and BER](chapters/17-06-bandpass-digital-modulation.md) | 10 | ✅ verified | [problems](problems/17-06-problems.md) · [solutions](solutions/17-06-solutions.md) · [lab](labs/17-06-lab/README.md) · [verify](verify/verify_17_06.py) |
 | [17-07 · Information Theory and Shannon Capacity](chapters/17-07-information-theory-and-shannon.md) | 8 | ⬜ planned | — |
 | [17-08 · Channel Coding](chapters/17-08-channel-coding.md) | 9 | ⬜ planned | — |
 | [17-09 · Wireless Channels: Fading and Multipath](chapters/17-09-wireless-channels.md) | 6 | ⬜ planned | — |

@@ -2727,3 +2727,29 @@ R&D % = R&D ÷ revenue.
 *Read on 20 Nov 2026 by a research subagent from the Semtech SX1276/77/78/79 data sheet, Rev. 5 (August 2016), via a copy hosted by SparkFun; the newer Semtech downloads require a JavaScript portal and were not retrieved.*
 
 - **Table 13, "Range of Spreading Factors":** LoRa demodulator SNR from −5 dB at SF6 to −20 dB at SF12 (4096 chips per symbol), in steps of 2.5 dB (−7.5 dB at SF7). **Table 10:** sensitivity RFS_L125_HF (125 kHz, highest LNA gain) −118 dBm at SF6 to −136 dBm at SF12. **Table 12:** at 125 kHz, effective bit rate 9380 b/s at SF6 and 293 b/s at SF12 (coding rate 4/5). The measurement criterion (PER or BER) for the sensitivity is not stated in the table. [Established]
+
+## R-275 · 3GPP NR EVM requirements
+
+*Read on 20 Nov 2026 by a research subagent from the 3GPP archive zip files (V20.1.0, Sept 2026) and re-checked against the saved text.*
+
+- **TS 38.104, Table 6.5.2.2-1** (BS types 1-C and 1-H): EVM QPSK 17.5 %, 16QAM 12.5 %, 64QAM 8 %, 256QAM 3.5 %, 1024QAM 2.5 % (carrier frequencies ≤ 4.2 GHz) and 2.8 % (above). **Table 9.6.2.3-1** (BS type 2-O, FR2): QPSK 17.5 %, 16QAM 12.5 %, 64QAM 8 %, 256QAM 3.5 % (FR2-1 only). [Established] [38.104 archive](https://www.3gpp.org/ftp/Specs/archive/38_series/38.104/38104-k10.zip)
+- **TS 38.101-1, Table 6.4.2.1-1** (UE): Pi/2-BPSK 30 %, QPSK 17.5 %, 16QAM 12.5 %, 64QAM 8 %, 256QAM 3.5 %; no 1024QAM row. [Established] [38.101-1 archive](https://www.3gpp.org/ftp/Specs/archive/38_series/38.101-1/38101-1-k10.zip)
+
+## R-276 · DVB-S2 performance table and roll-offs (ETSI EN 302 307)
+
+*Read on 20 Nov 2026 by a research subagent from the ETSI PDFs; V1.4.1 of part 1 is the only version on the ETSI server.*
+
+- **EN 302 307-1 V1.4.1 (2014-11), Table 13**, "Es/No performance at Quasi Error Free PER = 10-7 (AWGN channel)", normal FECFRAME 64 800, ideal Es/N0 with spectral efficiency (bits per symbol): QPSK 1/4 −2.35 dB (0.490243), QPSK 1/2 1.00 dB (0.988858), QPSK 3/4 4.03 dB (1.487473), 8PSK 2/3 6.62 dB (1.980636), 16APSK 3/4 10.21 dB (2.966728), 32APSK 9/10 16.05 dB (4.453027); the note gives "Eb/N0 = Es/N0 - 10log10(ηtot)". §5.6: "square root raised cosine filtered. The roll-off factor shall be α = 0,35, 0,25 and 0,20". [Established] [ETSI EN 302 307-1](https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf)
+- **EN 302 307-2 V1.4.1 (2024-08)** (DVB-S2X), §5.6, adds roll-offs 0.15, 0.10 and 0.05. Its performance tables use FER = 10⁻⁵ and are not directly comparable with part 1's. [Established]
+
+## R-277 · Wi-Fi transmit constellation error (802.11ac/ax/be)
+
+*Read on 20 Nov 2026 by a research subagent from Rohde & Schwarz documents; IEEE 802.11 itself is paywalled and was not read. Secondary.*
+
+- **R&S, IEEE 802.11ax white paper (v01.00, 2020), Table 15:** relative constellation error for MCS 0–9 of −5, −10, −13, −16, −19, −22, −25, −27, −30 and −32 dB, stated to be "the same as in IEEE 802.11ac"; 1024-QAM (MCS 10–11) −35 dB, or −32 dB if amplitude-drift compensation is disabled. **R&S application note 1EF114 (Aug 2024):** 802.11be 4096-QAM −38 dB. [Established, secondary]
+
+## R-278 · Bluetooth LE PHY test conditions (secondary)
+
+*Read on 20 Nov 2026 by a research subagent. bluetooth.com refused automated access, so the Core Specification was not read; the facts below come from a copy of the Bluetooth SIG's RF-PHY test suite (RF-PHY.TS.5.1.1, 2019-08-01) hosted by Infineon and from Silicon Labs and TI documentation. Secondary.*
+
+- The LE 1M receiver-sensitivity test injects −70 dBm and passes below 30.8% packet-error rate for 37-byte payloads; the LE Coded PHY runs at 500 kb/s (S = 2) and 125 kb/s (S = 8), tested at −75 and −82 dBm; the modulation index of the test transmitter ranges from 0.45 to 0.55 and the deviation test requires 225 kHz ≤ Δf1avg ≤ 275 kHz. Silicon Labs states "Minimum RX sensitivity -70 dBm (BER 0.1%)". [Established, secondary]
