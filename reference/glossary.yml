@@ -5946,3 +5946,21 @@
   definition: A zero that coincides with a pole, removing that mode from one transfer function; the mode still exists inside the system, so cancelling an unstable pole leaves a hidden instability that disturbances or initial conditions excite.
   chapter: "15-02"
   see_also: [Poles and zeros]
+
+# ---------------------------------------------------------------- 15-03
+- term: Peak time
+  definition: The time t_p at which an underdamped step response reaches its first maximum; for the standard second-order system t_p = π/ω_d, half a damped period.
+  chapter: "15-03"
+  see_also: [Overshoot, Damped natural frequency]
+- term: Dominant poles
+  definition: The poles closest to the imaginary axis, whose slowly decaying modes shape most of a response; a pair dominates when the other poles are several times (commonly more than five times) farther to the left.
+  chapter: "15-03"
+  see_also: [Dominant-pole approximation]
+- term: Non-minimum-phase system
+  definition: A system with a zero (or delay) in the right half-plane; its step response starts in the wrong direction (undershoot), and the zero limits how fast any feedback controller can make the loop, as in a boost converter.
+  chapter: "15-03"
+  see_also: [Poles and zeros]
+- term: Pole–zero doublet
+  definition: A pole and a zero very close together; nearly invisible in the frequency response, it leaves a slow settling tail of amplitude about (z − p)/z decaying with the time constant 1/p, which dominates precision settling.
+  chapter: "15-03"
+  see_also: [Settling time]

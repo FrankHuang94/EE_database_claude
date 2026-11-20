@@ -235,6 +235,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-227 | Semiconductor and IC package thermal metrics (TI SPRA953D) | Nov 2026 |
 | R-228 | Silicon thermal properties | Nov 2026 |
 | R-229 | Python Control Systems Library release | Nov 2026 |
+| R-230 | OPA627 settling-time specifications (TI SBOS165C) | Nov 2026 |
 
 ---
 
@@ -2343,3 +2344,12 @@ R&D % = R&D ÷ revenue.
 
 - Latest release 0.10.2, uploaded to PyPI on 5 Jul 2025 (earlier: 0.10.1 on 17 Aug 2024, 0.10.0 on 31 Mar 2024); package summary "Python Control Systems Library". [PyPI](https://pypi.org/project/control/)
 - Perishable: check PyPI for a newer release before relying on the version number.
+
+## R-230 · OPA627 settling-time specifications (TI SBOS165C)
+
+*Read on 20 Nov 2026 from the datasheet PDF on ti.com (primary); tagged [Established].*
+
+- Texas Instruments, *OPA6x7 Precision, High-Speed JFET Operational Amplifiers*, SBOS165C, August 2000, revised January 2025. [PDF](https://www.ti.com/lit/ds/symlink/opa627.pdf)
+- Front page: "Fast settling time: OPA627: 550ns to 0.01%; OPA637: 450ns to 0.01%". Packages: SOIC-8 (D) and TO-99 (LMC).
+- Section 5.6, OPA627BU and OPA627AU (SOIC): gain-bandwidth 45 MHz typical (gain = 1 V/V, C_L = 30 pF); slew rate 150 V/µs typical (10 V step, gain = −1 V/V); settling time (10 V step, gain = −1 V/V, C_L = 30 pF) 120 ns to 0.01% and 110 ns to 0.1%, typical.
+- Section 5.7, OPA627AM, BM and SM (TO-99): gain-bandwidth 16 MHz typical; slew rate 55 V/µs typical (40 V/µs minimum); settling time (10 V step, gain = −1 V/V) 550 ns to 0.01% and 450 ns to 0.1%, typical.

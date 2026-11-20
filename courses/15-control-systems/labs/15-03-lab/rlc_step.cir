@@ -1,0 +1,30 @@
+* Lab 15-03 -- a series RLC low-pass as a standard second-order system: measure the step-response specs.
+* L = 1 mH, C = 1 uF: wn = 1/sqrt(LC) = 31,623 rad/s. R = 31.623 ohm: zeta = (R/2) sqrt(C/L) = 0.5.
+* A 1 V step (1 ns rise) at t = 0. The output is the capacitor voltage. Expected: 16.3% overshoot.
+* The settling time is the later of the last crossings of 1.02 V and 0.98 V.
+*
+* EXPECT tr key:README.md#Lab_15-03.a scale=1e-6 rtol=2e-3
+* EXPECT tp key:README.md#Lab_15-03.b scale=1e-6 rtol=2e-3
+* EXPECT os key:README.md#Lab_15-03.c rtol=2e-3
+* EXPECT ts key:README.md#Lab_15-03.d scale=1e-6 rtol=3e-3
+
+VIN in 0 PWL(0 0 1n 1)
+R1 in a 31.6228
+L1 a out 1m
+C1 out 0 1u
+
+.control
+tran 5n 1m
+meas tran t10 when v(out)=0.1 rise=1
+meas tran t90 when v(out)=0.9 rise=1
+meas tran vpk max v(out) from=0 to=300u
+meas tran tp when i(L1)=0 fall=1 td=10u
+meas tran thi when v(out)=1.02 cross=last
+meas tran tlo when v(out)=0.98 cross=last
+let tr = t90 - t10
+let os = 100*(vpk - 1)
+let ts = max(thi, tlo)
+print tr tp os ts
+quit
+.endc
+.end

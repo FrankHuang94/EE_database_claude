@@ -29,7 +29,7 @@ Feedback control from modeling to design: transfer functions, time response, roo
 |---|---|---|---|
 | [15-01 · Modeling Dynamic Systems](chapters/15-01-modeling-dynamic-systems.md) | 8 | ✅ verified | [problems](problems/15-01-problems.md) · [solutions](solutions/15-01-solutions.md) · [lab](labs/15-01-lab/README.md) · [verify](verify/verify_15_01.py) |
 | [15-02 · Transfer Functions and Block Diagrams](chapters/15-02-transfer-functions-and-block-diagrams.md) | 7 | ✅ verified | [problems](problems/15-02-problems.md) · [solutions](solutions/15-02-solutions.md) · [lab](labs/15-02-lab/README.md) · [verify](verify/verify_15_02.py) |
-| [15-03 · Time Response and Specifications](chapters/15-03-time-response.md) | 7 | ⬜ planned | — |
+| [15-03 · Time Response and Specifications](chapters/15-03-time-response.md) | 7 | ✅ verified | [problems](problems/15-03-problems.md) · [solutions](solutions/15-03-solutions.md) · [lab](labs/15-03-lab/README.md) · [verify](verify/verify_15_03.py) |
 | [15-04 · Feedback Properties and Steady-State Error](chapters/15-04-feedback-and-steady-state-error.md) | 7 | ⬜ planned | — |
 | [15-05 · Stability and the Routh–Hurwitz Criterion](chapters/15-05-stability-routh-hurwitz.md) | 5 | ⬜ planned | — |
 | [15-06 · Root Locus](chapters/15-06-root-locus.md) | 8 | ⬜ planned | — |
