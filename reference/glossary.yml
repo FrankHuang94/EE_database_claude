@@ -5066,3 +5066,19 @@
   definition: The ampere-turns NI that drive flux around a magnetic circuit, the analogue of voltage; equal to the line integral of H around the circuit, and to flux times total reluctance.
   chapter: "13-03"
   see_also: [Magnetic circuit, Reluctance]
+- term: Charge relaxation time
+  definition: The time constant τ = ε/σ with which free charge placed inside a conducting material decays away to its surface; about 10⁻¹⁹ s for copper and 0.18 ns for seawater. A material conducts at frequencies well below 1/(2πτ) and behaves as a dielectric well above it.
+  chapter: "13-04"
+  see_also: [Continuity equation]
+- term: Complex permittivity
+  definition: ε_c = ε′ − jε″, which folds a material's loss (conduction or polarization lag) into its permittivity for time-harmonic fields; ε″ = σ/ω for pure conduction, and ε″/ε′ is the loss tangent.
+  chapter: "13-04"
+  see_also: [Loss tangent]
+- term: Helmholtz equation
+  definition: The phasor wave equation ∇²E + k²E = 0 with k = ω√(µε), obtained by combining Maxwell's two curl equations in a source-free uniform region; its solutions are waves travelling at 1/√(µε).
+  chapter: "13-04"
+  see_also: [Maxwell's equations]
+- term: Quasi-static approximation
+  definition: Treating time-varying fields as if static at each instant, valid when the structure is much smaller than a wavelength (a common rule is below λ/10); it is the assumption behind lumped circuit theory.
+  chapter: "13-04"
+  see_also: [Maxwell's equations]

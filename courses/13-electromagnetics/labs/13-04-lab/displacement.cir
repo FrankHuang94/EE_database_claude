@@ -1,0 +1,19 @@
+* Lab 13-04 -- the displacement current of Example 13-04.2, seen as a circuit current.
+* A parallel-plate capacitor (1 cm^2 plates, 0.1 mm gap, eps_r = 4) has C = eps A / d = 35.4168 pF.
+* Driven with 1 V peak at 1 GHz, the current in its leads equals the displacement current in its gap,
+* omega C V = 0.2225 A, leading the voltage by 90 degrees.
+*
+* EXPECT imag key:../../chapters/13-04-maxwells-equations.md#Sim_13-04.a rtol=1e-3
+* EXPECT iph 90 rtol=1e-6
+
+VS in 0 DC 0 AC 1
+CGAP in 0 35.4168p
+
+.control
+ac lin 1 1e9 1e9
+let imag = mag(i(vs))
+let iph = 180 / pi * ph(-i(vs))
+print imag iph
+quit
+.endc
+.end

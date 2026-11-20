@@ -30,7 +30,7 @@ Maxwell's equations and their engineering consequences: waves, reflection, trans
 | [13-01 · Vector Calculus Refresher](chapters/13-01-vector-calculus-refresher.md) | 10 | ✅ verified | [problems](problems/13-01-problems.md) · [solutions](solutions/13-01-solutions.md) · [lab](labs/13-01-lab/README.md) · [verify](verify/verify_13_01.py) |
 | [13-02 · Electrostatics: Boundary Conditions and Boundary-Value Problems](chapters/13-02-electrostatics-boundary-value-problems.md) | 10 | ✅ verified | [problems](problems/13-02-problems.md) · [solutions](solutions/13-02-solutions.md) · [lab](labs/13-02-lab/README.md) · [verify](verify/verify_13_02.py) |
 | [13-03 · Magnetostatics and Inductance](chapters/13-03-magnetostatics-and-inductance.md) | 8 | ✅ verified | [problems](problems/13-03-problems.md) · [solutions](solutions/13-03-solutions.md) · [lab](labs/13-03-lab/README.md) · [verify](verify/verify_13_03.py) |
-| [13-04 · Maxwell's Equations and Time-Varying Fields](chapters/13-04-maxwells-equations.md) | 10 | ⬜ planned | — |
+| [13-04 · Maxwell's Equations and Time-Varying Fields](chapters/13-04-maxwells-equations.md) | 10 | ✅ verified | [problems](problems/13-04-problems.md) · [solutions](solutions/13-04-solutions.md) · [lab](labs/13-04-lab/README.md) · [verify](verify/verify_13_04.py) |
 | [13-05 · Plane Waves in Lossless and Lossy Media](chapters/13-05-plane-waves.md) | 10 | ⬜ planned | — |
 | [13-06 · Reflection and Transmission of Waves](chapters/13-06-reflection-and-transmission.md) | 8 | ⬜ planned | — |
 | [13-07 · Transmission Lines: Time Domain](chapters/13-07-transmission-lines-time-domain.md) | 10 | ⬜ planned | — |

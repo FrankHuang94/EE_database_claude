@@ -201,6 +201,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-193 | PCB laminate dielectric constants and loss tangents | Nov 2026 |
 | R-194 | RG-58 coaxial cable data sheets | Nov 2026 |
 | R-195 | Bond-wire inductance rule of thumb | Nov 2026 |
+| R-196 | RF exposure limits (FCC and ICNIRP) | Nov 2026 |
 
 ---
 
@@ -2025,3 +2026,11 @@ R&D % = R&D ÷ revenue.
 *Read on 20 Nov 2026 from a third-party archive of the manufacturer's manual (the original is no longer distributed by the manufacturer). Tagged [Established] as a long-standing instrument-maker's rule of thumb, not a specification.*
 
 - **Hewlett-Packard / Agilent 54753A and 54754A TDR plug-in User's Guide** (publication 54753-97015, 3rd edition, May 2000), "TDR Fundamentals" chapter: "A wire bond in free space would have an inductance of about 1.26 nH/mm", "typical wire bonds on hybrids is about 1 nH/mm", with the example of 3 nH for a 3 mm bond. [Archived manual](https://xdevs.com/doc/HP_Agilent_Keysight/HP%2054753A%20USER.pdf)
+
+## R-196 · RF exposure limits (FCC and ICNIRP)
+
+*Re-read on 20 Nov 2026 to extend R-083 with the full US maximum-permissible-exposure table; values tagged [Established] as regulation and published guidelines.*
+
+- **47 CFR § 1.1310(e)(1), Table 1** (eCFR text read 20 Nov 2026), "(ii) Limits for General Population/Uncontrolled Exposure": "30-300 27.5 0.073 0.2 <30" (frequency MHz; electric field V/m; magnetic field A/m; power density mW/cm²; averaging time minutes), "300-1,500 f/1500 <30", "1,500-100,000 1.0 <30". § 1.1310(c): "a peak spatial-average SAR of 1.6 W/kg, averaged over any 1 gram of tissue (defined as a tissue volume in the shape of a cube)". [eCFR § 1.1310](https://www.ecfr.gov/current/title-47/chapter-I/subchapter-A/part-1/subpart-I/section-1.1310)
+- **ICNIRP 2020**, *Health Physics* 118(5):483–524, Table 2 (basic restrictions, averaging intervals ≥ 6 min), general public: 100 kHz to 6 GHz whole-body 0.08 W/kg, local head/torso 2 W/kg, local limb 4 W/kg; above 6 GHz to 300 GHz, absorbed power density 20 W/m²; "Local SAR is to be averaged over a 10-g cubic mass". [ICNIRP 2020 (PDF)](https://www.icnirp.org/cms/upload/publications/ICNIRPrfgdl2020.pdf)
+- **Derived here (13-04):** the ratio 27.5 V/m ÷ 0.073 A/m = 376.7 Ω (the plane-wave impedance the table assumes); the rms field of a 10 W/m² plane wave, √(10 × 376.7) = 61.38 V/m; the far-field distance at which 1 W EIRP gives 10 W/m², 8.92 cm.
