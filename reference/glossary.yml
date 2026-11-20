@@ -5844,3 +5844,31 @@
   definition: A pruning pattern (such as 2:4, two zeros in every four weights) that tensor cores can exploit to skip zeros, doubling peak throughput; vendors' headline figures often assume it.
   chapter: "14-13"
   see_also: [Tensor core]
+- term: Domain-specific accelerator
+  definition: A processor specialized for one class of workloads, such as neural networks, trading generality for much higher throughput and efficiency through dedicated datapaths, local memories and narrow number formats.
+  chapter: "14-14"
+  see_also: [Systolic array]
+- term: Systolic array
+  definition: A grid of simple processing elements that pass operands to their neighbours each cycle, so that every value fetched at the edge is reused by a whole row or column; used for matrix multiplication in accelerators.
+  chapter: "14-14"
+  see_also: [Processing element (PE), Dataflow (accelerator)]
+- term: Processing element (PE)
+  definition: One cell of an accelerator array, typically a multiply-accumulate unit with a few registers, connected to its neighbours.
+  chapter: "14-14"
+  see_also: [Systolic array, Multiply-accumulate (MAC)]
+- term: Dataflow (accelerator)
+  definition: The choice of which operand an accelerator array keeps in place while the others move (weights, outputs or inputs), which determines the data reuse the hardware exploits.
+  chapter: "14-14"
+  see_also: [Weight-stationary, Output-stationary]
+- term: Weight-stationary
+  definition: A dataflow in which each processing element holds a weight while inputs stream past and partial sums move on, so each weight fetched is reused across a whole batch.
+  chapter: "14-14"
+  see_also: [Dataflow (accelerator)]
+- term: Output-stationary
+  definition: A dataflow in which each processing element holds one output's accumulator while inputs and weights stream past, suiting long accumulations.
+  chapter: "14-14"
+  see_also: [Dataflow (accelerator)]
+- term: Ridge point
+  definition: The arithmetic intensity (FLOP per byte) at which a machine's peak compute equals its memory bandwidth times the intensity; below it a workload is memory-bound, above it compute-bound.
+  chapter: "14-14"
+  see_also: [Arithmetic intensity]

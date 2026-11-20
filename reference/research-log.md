@@ -227,6 +227,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-219 | x86-TSO (Sewell et al., CACM 2010) | Nov 2026 |
 | R-220 | NVIDIA H100 (Hopper) specifications | Nov 2026 |
 | R-221 | NVIDIA Blackwell systems (GB200 NVL72, DGX B200) | Nov 2026 |
+| R-222 | Google TPU v4 and later TPUs | Nov 2026 |
 
 ---
 
@@ -2266,3 +2267,12 @@ R&D % = R&D ÷ revenue.
 - **GB200 NVL72** (specifications table): a GB200 superchip (1 Grace CPU, 2 Blackwell GPUs) lists NVFP4 Tensor 40 PFLOPS sparse / 20 dense, FP8/FP6 20 PFLOPS and FP16/BF16 10 PFLOPS (sparse; "Dense is one-half sparse spec shown"), and HBM3E "372 GB, 16 TB/s"; the 72-GPU rack has 13.4 TB of HBM3E at 576 TB/s. [GB200 NVL72](https://www.nvidia.com/en-us/data-center/gb200-nvl72/)
 - **DGX B200** (8 Blackwell GPUs): 1,440 GB of HBM3e at 64 TB/s in total; FP4 Tensor 144 PFLOPS sparse / 72 dense; maximum system power about 14.3 kW. [DGX B200](https://www.nvidia.com/en-us/data-center/dgx-b200/)
 - **Derived per GPU:** from the rack, 13.4 TB / 72 ≈ 186 GB and 576 / 72 = 8 TB/s; from DGX B200, 1,440 / 8 = 180 GB and 64 / 8 = 8 TB/s. The two capacity figures differ (186 against 180 GB), presumably by product configuration; the bandwidth agrees.
+
+## R-222 · Google TPU v4 and later TPUs
+
+*Read on 20 Nov 2026 by this session's fact-finding pass: the TPU v4 paper from the authors' arXiv version (primary, author copy) and Google Cloud's TPU documentation (primary). Tagged [Established] for the paper's figures and Google's published specifications.*
+
+- **TPU v4** (N. P. Jouppi et al., "TPU v4: An Optically Reconfigurable Supercomputer for Machine Learning with Hardware Support for Embeddings", ISCA 2023, doi:10.1145/3579371.3589350; [arXiv 2304.01433](https://arxiv.org/abs/2304.01433)): "Each TC contains four 128x128 Matrix Multiply Units (MXUs) and a Vector Processing Unit (VPU) with 128 lanes (16 ALUs per lane) and a 16 MiB Vector Memory (VMEM)"; 2 TensorCores per chip; Table 4: "Peak TFLOPS 275 (bf16 or int8) | 123 (bf16)" for v4 against v3, "HBM2 capacity, BW 32 GiB, 1200 GB/s | 32 GiB, 900 GB/s"; clock 1050 MHz; 7 nm, under 600 mm², 22 billion transistors; 6 ICI links at 50 GB/s; systems of up to 4096 chips; first deployed 2020.
+- **Derived:** 2 × 4 × 128 × 128 MACs × 2 FLOP × 1.05 GHz = 275.25 TFLOPS, matching the paper's 275.
+- **Later generations** (Google Cloud TPU documentation, per chip): v5p 459 TFLOPS BF16, 95 GiB HBM at 2765 GB/s, pods of 8960 chips; v6e (Trillium) 918 TFLOPS BF16, 32 GiB at 1638 GB/s, pods of 256; TPU7x (Ironwood) 2307 TFLOPS BF16 and 4614 FP8, 192 GiB HBM at 7380 GB/s, two TensorCores (built as two chiplets, each with one TensorCore, two SparseCores and 96 GiB HBM), pods of 9216 chips. [v6e](https://cloud.google.com/tpu/docs/v6e) · [TPU7x](https://cloud.google.com/tpu/docs/tpu7x)
+- **Caution (not used):** the v6e page's statement of two 256 × 256 MXUs per TensorCore would imply a clock near 3.5 GHz at 918 TFLOPS, which is implausible; Google states no v6e clock there. No derivation in this curriculum uses that MXU count.
