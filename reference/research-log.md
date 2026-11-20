@@ -197,6 +197,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-189 | SerDes reference equalizer | Nov 2026 |
 | R-190 | Sampling and anti-aliasing in converter data sheets | Nov 2026 |
 | R-191 | High-power class-D audio amplifier data sheet | Nov 2026 |
+| R-192 | Crystal, MEMS and TCXO data sheets; crystal-oscillator application notes | Nov 2026 |
 
 ---
 
@@ -1986,3 +1987,16 @@ R&D % = R&D ÷ revenue.
 *Read on 20 Nov 2026 from the PDF at the URL below, as downloaded (10 pages: features, specifications and typical characteristics). Specifications are tagged [Established] as specifications of that part.*
 
 - **TI TPA3255** (SLASEA8A, February 2016, revised October 2016), "315-W Stereo, 600-W Mono PurePath Ultra-HD Analog-Input": features list 315 W stereo into 4 Ω BTL and 600 W mono into 2 Ω PBTL at 10% THD+N; 260 W stereo into 4 Ω at 1% THD+N; "90% Efficient Class-D Operation (4 Ω)"; supply 18–53.5 V; 0.006% THD+N at 1 W into 4 Ω; description: "power stage idle losses below 2.5W", "85 mΩ MOSFETs". §7.5: PWM frame rate 430/450/470 kHz (nominal, min/typ/max), 475/500/525 kHz (AM1), 575/600/625 kHz (AM2); output MOSFET R_DS(on) 85 mΩ typ, 100 mΩ max (low and high side, T_J = 25 °C, GVDD = 12 V). §7.6 (BTL, PVDD = 51 V, R_L = 4 Ω, f_S = 450 kHz, output filter 10 µH / 1 µF, T_C = 75 °C): P_O per channel 315 W at 10% THD+N and 255 W at 1% THD+N (the electrical table's 255 W differs from the front page's 260 W); THD+N 0.006% at 1 W; P_idle 2.5 W with four channels switching [Established]. Used in 12-07. [Data sheet](https://www.ti.com/lit/ds/symlink/tpa3255.pdf).
+
+## R-192 · Crystal, MEMS and TCXO data sheets; crystal-oscillator application notes
+
+*Read on 20 Nov 2026 from the PDFs at the URLs below, as downloaded. Specifications are tagged [Established] as specifications of those parts; the application notes' margins are vendor guidance.*
+
+- **Abracon ABS07** 32.768 kHz tuning-fork crystal (revised 08-10-22): frequency tolerance ±20 ppm at +25 °C (±10 and ±30 ppm options); temperature coefficient −0.036 ppm/°C² typical (−0.040 limit) about a turnover of +25 ± 5 °C; load capacitance 12.5 pF standard (9, 7, 6, 4 pF options); ESR 70 kΩ max (−40 to +85 °C); C0 0.9–1.2 pF typical; drive level 0.1 µW typical, 0.5 µW max; ageing ±3 ppm first year; Q 30 000 typical. [Data sheet](https://abracon.com/Resonators/ABS07.pdf)
+- **Abracon ABM8** AT-cut crystal, 3.2 × 2.5 mm (revised 07-29-20): tolerance ±50 ppm standard (to ±10 ppm options); stability ±50 ppm over −10 to +60 °C; load capacitance 18 pF standard; ESR 50 Ω max for 20.000–29.999 MHz (70 Ω for 16–19.999 MHz, 40 Ω for 30–39.999 MHz); C0 3.0 pF max; drive level 10 µW typical, 100 µW max; ageing ±2 ppm first year. [Data sheet](https://abracon.com/Resonators/abm8.pdf)
+- **SiTime SiT8008B** MEMS oscillator, 1–110 MHz (Rev 1.08, 1 Jan 2023): frequency stability ±20, ±25 or ±50 ppm "inclusive of initial tolerance at 25°C, 1st year aging at 25°C, and variations over operating temperature, rated power supply voltage and load"; 3.5 mA typical at 20 MHz, 1.8 V; start-up 5 ms max; RMS phase jitter 1.3 ps typical (12 kHz–20 MHz, 75 MHz). [Data sheet](https://www.sitime.com/datasheet/SiT8008)
+- **SiTime SiT1630** 32.768 kHz MEMS oscillator (Rev 1.3, 9 Feb 2018): initial tolerance 20 ppm; 100 ppm over −40 to +85 °C, "measured peak-to-peak"; 1.0 µA typical; start-up 180 ms typical. [Data sheet](https://www.sitime.com/datasheet/SiT1630)
+- **SiTime SiT5356** MEMS Super-TCXO (Rev 1.08, 1 Jan 2023): ±0.1 ppm over temperature (Stratum 3+ grade); 0.31 ps RMS phase jitter typical; 44 mA typical. [Data sheet](https://www.sitime.com/datasheet/SiT5356)
+- **Epson TG2016SMN** TCXO (brief, © 2025): ±0.5 ppm (grade C) or ±2.0 ppm (grade F) over −40 to +85 °C; 1.5 mA max (10–26 MHz); start-up 1.0 ms max. [Brief](https://download.epsondevice.com/td/pdf/brief/TG2016SMN_en.pdf)
+- **ST AN2867**, "Oscillator design guide for STM8AF/AL/S, STM32 MCUs and MPUs", DocID15287 **Rev 10 (August 2015)**, read from third-party copies because st.com refused automated download; the current revision (reported as Rev 24) was not read: safety factor Sf = oscillator negative resistance / crystal ESR, "recommended to have a ratio higher than x5 for the HSE oscillators and higher than x3 for the LSE oscillators"; C_L = C_L1·C_L2/(C_L1 + C_L2) + C_s, with C_s the pin plus PCB capacitance (example 5 pF). [Copy](https://www.raltron.com/webproducts/technical/technical_notes/Oscillator-design-guide-for-STM8S-STM8A-and-STM32-microcontrollers-ST-MICRO-1.pdf)
+- **Microchip AN2648** (DS00002648B, 2018): safety factor SF = (R_MAX + ESR)/ESR, graded ">5 excellent, 4 very good, 3 good, <3 not recommended", noting that "Various MCU and crystal vendors operate with different safety factor recommendations." [Application note](https://ww1.microchip.com/downloads/en/Appnotes/AN2648-Selecting_Testing-32KHz-Crystal-Osc-for-AVR-MCUs-00002648B.pdf)

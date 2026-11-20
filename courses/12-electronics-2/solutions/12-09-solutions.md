@@ -60,6 +60,30 @@ Each stage must contribute 36°: $\omega_0 = \tan 36^\circ/\tau$, so $f_0$ = **1
 
 The limiter's output fundamental is $N(a) \cdot a = 4V_s/\pi$ = **1.273** V, independent of $a$; the bridge passes a third of it, so the amplitude at its output is **0.4244** V. (The square wave's harmonics are attenuated by the bridge but not removed, so the waveform at the bridge's output is visibly distorted.)
 
+### Solution 12-09.13
+
+(a) $f_p - f_s = f_s(\sqrt{1 + C_m/C_0} - 1)$, or $\sqrt{1 + 4/1500} - 1$ as a fraction: **1332** ppm (33.3 kHz at 25 MHz).
+
+(b) $C_L = C_1C_2/(C_1 + C_2) + C_{stray}$ = 9 + 3 = **12** pF. The motional branch resonates with $C_0 + C_L$ = 13.5 pF in series, so the circuit oscillates $\sqrt{1 + 4/13\,500} - 1$ = **148.1** ppm above $f_s$: inside the inductive region, near its lower end.
+
+(c) $R_{neg} = -g_m/(\omega^2C_1C_2) = -5\ \text{mA/V}/[(2\pi \times 25\ \text{MHz})^2 \times (18\ \text{pF})^2]$ = **−625.4** Ω (the oscillation frequency is within 0.015% of 25 MHz, which changes nothing at four figures). Against $R_m$ = 30 Ω that is a gain margin of **20.85**: the circuit starts reliably, well above the factor of 5 that vendors' guides ask for in MHz oscillators (12-09 §9). Note how the margin falls as $1/\omega^2$ and as $1/(C_1C_2)$: doubling both capacitors to raise $C_L$ cuts it by four.
+
+### Solution 12-09.14
+
+With $y = sRC$, the input resistance $R$ at node 3 adds a third current there: $(V_2 - V_3)/R = sCV_3 + V_3/R$, so $V_2 = V_3(2 + y)$. Then
+
+$$
+V_1 = V_2(2 + y) - V_3 = V_3(3 + 4y + y^2), \qquad V_{in} = V_1(2 + y) - V_2 = V_3(2 + y)(2 + 4y + y^2) = V_3(4 + 10y + 6y^2 + y^3) .
+$$
+
+At $y = jx$ the denominator is $(4 - 6x^2) + j(10x - x^3)$. It is real at $x = \sqrt{10}$ = **3.162**, so $\omega_0 = 3.162/(RC)$ (against $\sqrt6$ = 2.449 for the buffered ladder), and there it equals $4 - 60 = -56$: the amplifier must invert with a gain of at least **56** (against 29). Loading the last node steals current from the ladder, so each section must shift its phase at a higher frequency, where the ladder also attenuates more.
+
+### Solution 12-09.15
+
+(a) $T = 2RC\ln[(1 + \beta)/(1 - \beta)] = 2 \times 47\ \mu\text{s} \times \ln 2$ = **65.16** µs, so $f$ = **15.35** kHz.
+
+(b) $f = 1/[(R_A + 2R_B)C\ln2]$ = **14.62** kHz, with duty cycle $(R_A + R_B)/(R_A + 2R_B)$ = **52.38**%. The charging path always includes $R_A$ as well as $R_B$, while the discharge path is $R_B$ alone, so the high time is always longer; $R_A$ cannot be zero, because the discharge transistor would then short the supply. A diode across $R_B$ (so that charging bypasses it) or a different connection is needed for 50%.
+
 ---
 
 ## Answer key
@@ -95,3 +119,14 @@ The limiter's output fundamental is $N(a) \cdot a = 4V_s/\pi$ = **1.273** V, ind
 | 12-09.11b | minimum stage gain | 1.236 | — |
 | 12-09.12a | output fundamental | 1.273 | V |
 | 12-09.12b | amplitude at the bridge output | 0.4244 | V |
+| 12-09.13a | f_p − f_s | 1332 | ppm |
+| 12-09.13b | load capacitance | 12 | pF |
+| 12-09.13c | pulled offset | 148.1 | ppm |
+| 12-09.13d | negative resistance | −625.4 | Ω |
+| 12-09.13e | gain margin | 20.85 | — |
+| 12-09.14a | normalized frequency ωRC | 3.162 | — |
+| 12-09.14b | inverting gain needed | 56 | — |
+| 12-09.15a | astable period | 65.16 | µs |
+| 12-09.15b | astable frequency | 15.35 | kHz |
+| 12-09.15c | 555 frequency | 14.62 | kHz |
+| 12-09.15d | 555 duty cycle | 52.38 | % |

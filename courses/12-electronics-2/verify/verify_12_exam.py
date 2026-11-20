@@ -230,7 +230,8 @@ v.check("X12.11b", math.sqrt(S11) * 1e9)
 v.check("X12.11c", math.sqrt(quad(lambda f: S11, 0, 1e6)[0]) * 1e6)
 v.check("X12.11d", math.sqrt(quad(lambda x: 4 * kT * 1e3 / (1 + x * x), 0, np.inf)[0] / (TP * 1e3 * 2e-12)) * 1e6)
 en, inn = 3e-9, 0.5e-12
-F = lambda R: (4 * kT * R + en ** 2 + (inn * R) ** 2) / (4 * kT * R)  # noqa: E731
+kT0 = kT * 290 / 300                                   # noise figure uses the standard T0 = 290 K
+F = lambda R: (4 * kT0 * R + en ** 2 + (inn * R) ** 2) / (4 * kT0 * R)  # noqa: E731
 v.check("X12.12a", F(1e3))
 v.check("X12.12b", 10 * math.log10(F(1e3)))
 o = minimize_scalar(lambda r: F(math.exp(r)), bounds=(0, 15), method="bounded", options={"xatol": 1e-12})

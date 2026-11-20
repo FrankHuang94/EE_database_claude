@@ -76,9 +76,9 @@ $R_{gd} = R_S + R_L + g_mR_SR_L$ = **115** kΩ. $b_1 = 10\ \text{k}\Omega \times
 
 ### Solution 12
 
-(a) $4kTR_s$ = 1.657 × 10⁻¹⁷, $e_n^2$ = 9 × 10⁻¹⁸ and $(i_nR_s)^2$ = 2.5 × 10⁻¹⁹ V²/Hz, so $F$ = **1.558** and NF = **1.927** dB.
+(a) With the source at the standard $T_0$ = 290 K, $4kT_0R_s$ = 1.602 × 10⁻¹⁷, $e_n^2$ = 9 × 10⁻¹⁸ and $(i_nR_s)^2$ = 2.5 × 10⁻¹⁹ V²/Hz, so $F$ = **1.578** and NF = **1.980** dB.
 
-(b) $R_{opt} = e_n/i_n$ = **6** kΩ, where $F_{min} = 1 + e_ni_n/(2kT)$ = **1.181**, NF = **0.7228** dB.
+(b) $R_{opt} = e_n/i_n$ = **6** kΩ, where $F_{min} = 1 + e_ni_n/(2kT_0)$ = **1.187**, NF = **0.7457** dB.
 
 ### Solution 13
 
@@ -169,11 +169,11 @@ $R_{gd} = R_S + R_L + g_mR_SR_L$ = **115** kΩ. $b_1 = 10\ \text{k}\Omega \times
 | X12.11b | input noise density | 1.127 | nV/√Hz |
 | X12.11c | RMS over 1 MHz | 1.127 | µV |
 | X12.11d | kT/C at 2 pF | 45.51 | µV |
-| X12.12a | noise factor | 1.558 | — |
-| X12.12b | noise figure | 1.927 | dB |
+| X12.12a | noise factor | 1.578 | — |
+| X12.12b | noise figure | 1.980 | dB |
 | X12.12c | optimum source resistance | 6 | kΩ |
-| X12.12d | minimum noise factor | 1.181 | — |
-| X12.12e | minimum noise figure | 0.7228 | dB |
+| X12.12d | minimum noise factor | 1.187 | — |
+| X12.12e | minimum noise figure | 0.7457 | dB |
 | X12.14a | g_m at 1 µA | 38.68 | µA/V |
 | X12.14b | minimum noise density | 14.63 | nV/√Hz |
 | X12.14c | power ratio to the claim | 857 | — |

@@ -18,7 +18,7 @@ Spectral density and integration (§3.1), thermal noise (§3.2), kT/C (§3.3), f
 ## Procedure
 
 1. **Thermal noise (Part 1).** Generate samples with a 1 kΩ resistor's PSD, estimate the spectrum with Welch's method, and compare with $4kTR$.
-2. **kT/C (Part 2, the chapter's guided exercise).** *Predict first:* does raising $R$ from 1 kΩ to 100 kΩ raise the capacitor's noise? Then simulate the RC circuit exactly for three resistances.
+2. **kT/C (Part 2, the chapter's guided exercise).** *Predict first:* does raising $R$ from 1 kΩ to 100 kΩ raise the capacitor's noise? Then simulate the RC circuit, driven only by the resistor's noise current, for three resistances (an Euler–Maruyama integration of 20 000 independent capacitors; expect agreement with $\sqrt{kT/C}$ to within about 1%, the step size's bias).
 3. **1/f noise (Part 3).** Synthesize 1/f noise and plot its integrated RMS against the lower frequency limit.
 4. **Noise figure (Part 4).** Plot NF against source resistance for $e_n$ = 1 nV/√Hz and $i_n$ = 1 pA/√Hz.
 5. **ngspice.** Run `rc_noise.cir`.

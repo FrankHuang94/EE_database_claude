@@ -73,7 +73,7 @@ With square-law devices, $g_mr_o = 2/(\lambda V_{ov})$: each stage's gain is abo
 
 ### 3.2 Slew rate
 
-**The large-signal limit.** Apply a large positive step to a unity-gain follower. Until the output catches up, the differential input is large, so the input pair is fully switched: one side carries all of $I_{SS}$, the other none (12-01 §3.1). The first stage's output current is therefore at its limit, $\pm I_{SS}$. Meanwhile the second stage, with its large gain, keeps node 1 nearly still (it is a Miller integrator), so all of $I_{SS}$ flows through $C_c$ and
+**The large-signal limit.** Apply a large positive step to a unity-gain follower. Until the output catches up, the differential input is large, so the input pair is fully switched: one side carries all of $I_{SS}$, the other none (12-01 §3.2). The first stage's output current is therefore at its limit, $\pm I_{SS}$. Meanwhile the second stage, with its large gain, keeps node 1 nearly still (it is a Miller integrator), so all of $I_{SS}$ flows through $C_c$ and
 
 $$
 \frac{dv_{out}}{dt} = \frac{I_{SS}}{C_c} .
@@ -129,7 +129,7 @@ The load capacitance *is* the compensation: a larger load improves phase margin,
 
 **Slew rate.** The output slews at $I_{SS}/C_L$ if the folding current sources carry at least $I_{SS}$ each; otherwise a cascode device shuts off and the slewing current is limited by the folding source.
 
-**Trade-offs against the two-stage op-amp.** The folded cascode is faster for the same power (one high-impedance node), has better power-supply rejection and is easy to make fully differential, but its gain is one stage's worth ($(g_mr_o)^2$ at best) and its output swing is limited by the cascodes: about $V_{DD}$ minus four overdrive voltages. It is also noisier than a telescopic cascode with the same input pair: the folding current sources inject their own noise currents at the folding nodes, where they add directly to the signal current, so their transconductance appears alongside the input pair's in the input-referred noise (12-10 §3.6).
+**Trade-offs against the two-stage op-amp.** The folded cascode is faster for the same power (one high-impedance node), has better power-supply rejection and is easy to make fully differential, but its gain is one stage's worth ($(g_mr_o)^2$ at best) and its output swing is limited by the cascodes: about $V_{DD}$ minus four overdrive voltages. It is also noisier than a telescopic cascode with the same input pair: the folding current sources inject their own noise currents at the folding nodes, where they add directly to the signal current, so their transconductance appears alongside the input pair's in the input-referred noise (12-10 §3.7).
 
 ### 3.4 Fully differential amplifiers and common-mode feedback
 

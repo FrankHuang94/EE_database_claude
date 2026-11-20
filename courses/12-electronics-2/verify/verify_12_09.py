@@ -239,6 +239,92 @@ fund = df(0.5, lambda x: math.copysign(1.0, x)) * 0.5
 v.check("12-09.12a", fund)
 v.check("12-09.12b", fund * b1)
 
+# ============================================================ practitioner arithmetic (ABS07, R-192)
+parab = lambda T_: -0.036 * (T_ - 25.0) ** 2   # noqa: E731  ppm, parabolic about the 25 C turnover
+v.check("Prac 12-09.a", -parab(0.0))
+v.check("Prac 12-09.b", -parab(0.0) * 1e-6 * 86400)
+
+# ============================================================ added theory: amplitude, describing function, relaxation
+# cross-coupled pair fully switched: the differential current is a +/- I_tail/2 square wave; its fundamental
+# (by FFT) flows through R_p
+Nf = 4096
+sq = np.sign(np.sin(TP * (np.arange(Nf) + 0.5) / Nf)) * 2e-3 / 2
+fund_sq = np.abs(np.fft.rfft(sq))[1] / Nf * 2
+v.check("Ex 12-09.3f", fund_sq * Rp3)
+# describing function of y = g1 v - g3 v^3 by quadrature, amplitude where N(a) = 3
+a_cubic = brentq(lambda a: df(a, lambda x: 3.3 * x - 1.0 * x ** 3) - 3, 1e-3, 1.0, xtol=1e-14)
+v.check("T 12-09.c", a_cubic)
+
+
+def relax_period(vsat_hi, vsat_lo, th_hi, th_lo, tau_up, tau_dn, v0):
+    """Integrate a capacitor charging toward vsat_hi until th_hi, then toward vsat_lo until th_lo; return the
+    two half-cycle times (event detection on the ODE, not the logarithm formula)."""
+    up = solve_ivp(lambda t, x: [(vsat_hi - x[0]) / tau_up], (0, 50 * tau_up), [v0], rtol=1e-12, atol=1e-15,
+                   events=lambda t, x: x[0] - th_hi)
+    dn = solve_ivp(lambda t, x: [(vsat_lo - x[0]) / tau_dn], (0, 50 * tau_dn), [th_hi], rtol=1e-12, atol=1e-15,
+                   events=lambda t, x: x[0] - th_lo)
+    return up.t_events[0][0], dn.t_events[0][0]
+
+
+tu, td = relax_period(1.0, -1.0, 0.5, -0.5, 10e3 * 10e-9, 10e3 * 10e-9, -0.5)
+v.check("T 12-09.d", (tu + td) * 1e3)
+v.check("T 12-09.e", 1 / (tu + td) / 1e3)
+th5, tl5 = relax_period(1.0, 0.0, 2 / 3, 1 / 3, 11e3 * 10e-9, 10e3 * 10e-9, 1 / 3)   # V_CC = 1 (it cancels)
+v.check("T 12-09.f", th5 * 1e6)
+v.check("T 12-09.g", tl5 * 1e6)
+v.check("T 12-09.h", 1 / (th5 + tl5) / 1e3)
+v.check("T 12-09.i", 100 * th5 / (th5 + tl5))
+tu15, td15 = relax_period(1.0, -1.0, 1 / 3, -1 / 3, 47e3 * 1e-9, 47e3 * 1e-9, -1 / 3)
+v.check("12-09.15a", (tu15 + td15) * 1e6)
+v.check("12-09.15b", 1 / (tu15 + td15) / 1e3)
+h15, l15 = relax_period(5.0, 0.0, 10 / 3, 5 / 3, 51.7e3 * 1e-9, 47e3 * 1e-9, 5 / 3)       # V_CC = 5 V this time
+v.check("12-09.15c", 1 / (h15 + l15) / 1e3)
+v.check("12-09.15d", 100 * h15 / (h15 + l15))
+
+# 13: Pierce oscillator -- crystal resonances numerically, and the circuit's impedance by a nodal solve
+fs13, Cm13, C013 = 25e6, 4e-15, 1.5e-12
+Lm13 = brentq(lambda L: (TP * fs13) ** 2 * L * Cm13 - 1, 1e-6, 10.0, xtol=1e-18)
+fp13 = brentq(lambda f: (1 / crystal_z(f, Lm13, Cm13, 1e-9, C013)).imag, fs13 * 1.0001, fs13 * 1.01, xtol=1e-6)
+v.check("12-09.13a", (fp13 / fs13 - 1) * 1e6)
+CL13 = 1 / (1 / 18e-12 + 1 / 18e-12) + 3e-12
+v.check("12-09.13b", CL13 * 1e12)
+fo13 = brentq(lambda f: crystal_z(f, Lm13, Cm13, 1e-9, C013, CL13).imag, fs13 * 1.00001, fs13 * 1.001, xtol=1e-6)
+v.check("12-09.13c", (fo13 / fs13 - 1) * 1e6)
+
+
+def pierce_z(f, gm, C1, C2):
+    """Impedance between the inverter's input and output nodes (test current in at the input, out at the output)."""
+    s = 1j * TP * f
+    Y = np.array([[s * C1, 0.0], [gm, s * C2]], complex)        # rows: KCL at input, output; inverter sinks gm*v_in
+    v_ = np.linalg.solve(Y, np.array([1.0, -1.0]))
+    return v_[0] - v_[1]
+
+
+zp = pierce_z(25e6, 5e-3, 18e-12, 18e-12)
+v.check("12-09.13d", zp.real)
+v.check("12-09.13e", -zp.real / 30)
+v.assert_true("Pierce reactance is the series C1-C2 combination",
+              abs(zp.imag * TP * 25e6 * 9e-12 + 1) < 1e-9)
+
+
+# 14: phase-shift ladder with the amplifier's input resistance R loading the last node
+def loaded_ladder(x):
+    Y = np.zeros((3, 3), complex)
+    for k in range(3):
+        Y[k, k] += 1 + 1j * x
+        if k + 1 < 3:
+            Y[k, k] += 1
+            Y[k, k + 1] -= 1
+            Y[k + 1, k] -= 1
+    Y[2, 2] += 1                                   # R at node 3 (normalized R = 1, C such that wRC = x)
+    return np.linalg.solve(Y, np.array([1.0, 0, 0]))[-1]
+
+
+x14 = brentq(lambda x: loaded_ladder(x).imag, 1.5, 6.0, xtol=1e-14)
+v.check("12-09.14a", x14)
+v.check("12-09.14b", abs(1 / loaded_ladder(x14).real))
+v.assert_true("loaded ladder inverts at its zero-phase point", loaded_ladder(x14).real < 0)
+
 # ============================================================ lab README (ngspice Wien oscillator)
 if lab.exists():
     v.check("Lab 12-09.a", f_sim)

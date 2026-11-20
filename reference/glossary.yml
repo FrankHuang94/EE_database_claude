@@ -4966,6 +4966,18 @@
   definition: An oscillator whose frequency is set by a quartz crystal, modelled as a motional L_m, C_m, R_m branch in parallel with C_0; its quality factor of 10⁴ to 10⁶ makes the frequency nearly independent of the amplifier, and the load capacitance pulls it by parts per million.
   chapter: "12-09"
   see_also: [Colpitts oscillator]
+- term: Relaxation oscillator
+  definition: An oscillator without a resonator, in which a capacitor charges until a threshold, a comparator switches, and the capacitor discharges to a second threshold; its period is set by an RC time constant and the thresholds (an op-amp astable, the 555 timer).
+  chapter: "12-09"
+  see_also: [Schmitt trigger]
+- term: Pierce oscillator
+  definition: The standard crystal-oscillator circuit, an inverting amplifier with the crystal from output to input and a capacitor from each end to ground; it presents the crystal with a load capacitance and a negative resistance -g_m/(omega^2 C1 C2) that must exceed the crystal's ESR by a safety factor.
+  chapter: "12-09"
+  see_also: [Negative resistance, Barkhausen criterion]
+- term: Signal-to-noise ratio
+  definition: The ratio of a signal's power to the noise power in the same bandwidth, usually in decibels, 10 log(P_s/P_n) = 20 log(V_s,rms/v_n,rms); a noise density alone does not fix it until the bandwidth is stated.
+  chapter: "12-10"
+  see_also: [Noise figure, Thermal noise]
 - term: Describing function
   definition: The effective gain of a memoryless nonlinearity for a sinusoidal input, the fundamental of its output divided by the input amplitude; an oscillator's amplitude settles where the describing-function loop gain equals one.
   chapter: "12-09"

@@ -16,6 +16,7 @@
 3. Analyse LC oscillators: the Colpitts oscillator's frequency and startup condition, and the cross-coupled pair's negative resistance against the tank's loss.
 4. Model a quartz crystal, compute its series and parallel resonances and pulling, and explain why crystals set the frequency of nearly every electronic system.
 5. Compute the frequency of a ring oscillator from its stage delay, and its required stage gain from a linear model.
+6. Compute the period of a relaxation oscillator from its RC time constant and switching thresholds.
 
 ---
 
@@ -38,7 +39,7 @@ Chapter 12-06 worked hard to keep feedback loops from oscillating. An **oscillat
 
 ```mermaid
 flowchart LR
-    A[amplifier, gain A] --> R[frequency-selective network β(jω)]
+    A["amplifier, gain A"] --> R["frequency-selective network β(jω)"]
     R -->|positive feedback| A
     N[noise] --> A
 ```
@@ -83,7 +84,7 @@ $$
 
 At $s = j\omega$ with $x = \omega RC$, the denominator is $(1 - 5x^2) + j(6x - x^3)$. It is real at $x = \sqrt6$, where it equals $1 - 30 = -29$: so $\omega_0 = \sqrt6/(RC)$ and $\beta = -1/29$. The amplifier must invert with a gain of at least 29.
 
-> **Math refresher — why the ladder has those coefficients.** For two sections, the nodal equations of the ladder give $1 + 3sRC + (sRC)^2$; each additional section multiplies the order by one and the loading adds cross-terms. The verify script obtains the cubic's coefficients numerically by solving the ladder's nodal equations and fitting, rather than trusting the formula.
+> **Math refresher — where the cubic comes from.** Work backward from the last node, with $y = sRC$ and node voltages $V_1, V_2, V_3$ after the first, second and third resistors. At node 3 the current arriving through the last resistor all flows into its capacitor: $(V_2 - V_3)/R = sCV_3$, so $V_2 = V_3(1 + y)$. At node 2 the current arriving through the second resistor feeds the capacitor and continues to node 3: $(V_1 - V_2)/R = sCV_2 + (V_2 - V_3)/R$, so $V_1 = V_2(2 + y) - V_3 = V_3(1 + 3y + y^2)$. At node 1, likewise, $V_{in} = V_1(2 + y) - V_2 = V_3\big[(1 + 3y + y^2)(2 + y) - (1 + y)\big] = V_3(1 + 6y + 5y^2 + y^3)$. Each section adds one power of $y$, and the loading of each section by the next produces the middle coefficients 6 and 5 (an unloaded cascade would give $(1 + y)^3 = 1 + 3y + 3y^2 + y^3$). The verify script solves the ladder's nodal equations numerically rather than trusting this algebra.
 
 ### 3.3 LC oscillators
 
@@ -117,15 +118,31 @@ $$
 
 The frequency is the tank's $1/(2\pi\sqrt{LC})$, and it is tuned with a voltage-variable capacitor (a varactor), making a **VCO**.
 
+**Amplitude.** If the pair is fed from a tail current $I_{tail}$ and the swing is large enough to switch it fully, the tail current is steered alternately to one side and the other. Write the drain currents as $I_{tail}/2 \pm \delta$: the differential part $\delta$ is a square wave of amplitude $I_{tail}/2$, which flows through the tank's differential resistance $R_p$. Only its fundamental, $(4/\pi)(I_{tail}/2)$, sees $R_p$ (the tank shorts the harmonics), so the differential amplitude is
+
+$$
+V_{diff} = \frac{2}{\pi}\,I_{tail}R_p .
+$$
+
+This **current-limited** regime holds until the swing approaches the supply; beyond that the amplitude is voltage-limited and extra current is wasted.
+
 ### 3.4 Crystal oscillators
 
 A quartz crystal is a piezoelectric resonator: mechanical vibration produces charge and vice versa. Its electrical model is a series **motional** branch $L_m$, $C_m$, $R_m$ (the mechanical resonance) in parallel with the electrode capacitance $C_0$:
 
 - **Series resonance** $f_s = 1/(2\pi\sqrt{L_mC_m})$, where the motional branch is purely resistive ($R_m$).
 - **Parallel resonance** $f_p = f_s\sqrt{1 + C_m/C_0}$, where $C_0$ resonates with the motional branch's net inductance; since $C_m \ll C_0$, $f_p$ is only slightly above $f_s$.
-- **Quality factor** $Q = 2\pi f_sL_m/R_m$, typically $10^4$ to $10^6$, a hundred to ten thousand times an on-chip LC tank's.
+- **Quality factor** $Q = 2\pi f_sL_m/R_m$, typically $10^4$ to $10^6$, a thousand to a hundred thousand times an on-chip LC tank's (whose $Q$ is about 10).
 
 Between $f_s$ and $f_p$ the crystal looks inductive, and most oscillators (the **Pierce** circuit, an inverter with the crystal from output to input and a capacitor from each end to ground) operate there, with the crystal resonating against a specified **load capacitance** $C_L$. The motional branch then resonates with $C_0 + C_L$ in series, so the frequency is $f_s\sqrt{1 + C_m/(C_0 + C_L)} \approx f_s(1 + C_m/[2(C_0 + C_L)])$, and changing $C_L$ "pulls" the frequency by parts per million, which is how crystal oscillators are trimmed and how voltage-controlled crystal oscillators work.
+
+**The Pierce oscillator's negative resistance.** Remove the crystal and look into the two terminals it connects: the inverter's input (with $C_1$ to ground) and its output (with $C_2$ to ground), the inverter drawing $g_mv_{in}$ from its output node. A test current $I$ into the input node and out of the output node gives $V_{in} = I/(sC_1)$ and $V_{out} = -(I + g_mV_{in})/(sC_2)$, so the impedance between the terminals is
+
+$$
+Z = \frac{1}{sC_1} + \frac{1}{sC_2} + \frac{g_m}{s^2C_1C_2} \;\xrightarrow{\;s = j\omega\;}\; -\frac{j}{\omega C_1} - \frac{j}{\omega C_2} - \frac{g_m}{\omega^2C_1C_2} .
+$$
+
+The circuit presents the series combination of $C_1$ and $C_2$, which (with the board's stray capacitance) is the crystal's load capacitance $C_L = C_1C_2/(C_1 + C_2) + C_{stray}$, and a **negative resistance** $-g_m/(\omega^2C_1C_2)$. Oscillation starts if this exceeds the crystal's motional resistance $R_m$ (its ESR); designers ask for several times more, a ratio called the gain margin, to cover ageing, temperature and process (Problem 12-09.13).
 
 Why crystals win: quartz's elastic properties are stable with temperature (for the right crystal cut), age slowly, and give a $Q$ that makes the frequency almost insensitive to the amplifier. Frequency accuracy of tens of parts per million is cheap; parts per billion is possible with temperature control.
 
@@ -155,11 +172,41 @@ With loop gain above one, the amplitude grows until something nonlinear limits i
 
 *Figure 2. Example 12-09.1's Wien bridge with a $\tanh(3.3\,v)$ amplifier, started from 1 mV. With 10% excess gain the envelope grows as $e^{\sigma t}$, with $\sigma = (K - 3)/(2RC)$ for a linear gain $K$, until saturation lowers the effective gain to 3 at the describing-function amplitude (dashed).*
 
+**A describing function in closed form.** Let the amplifier be $y = g_1v - g_3v^3$. With $v = a\sin\theta$, the identity $\sin^3\theta = (3\sin\theta - \sin3\theta)/4$ splits the cubic into a fundamental $\tfrac34g_3a^3\sin\theta$ and a third harmonic, so
+
+$$
+N(a) = g_1 - \frac34g_3a^2 .
+$$
+
+In a Wien bridge ($\beta$ = 1/3) the amplitude settles where $N(a) = 3$: $a = \sqrt{4(g_1 - 3)/(3g_3)}$. With 10% excess gain, $g_1$ = 3.3, and $g_3$ = 1 V⁻², that is **0.6325** V; more excess gain means a larger amplitude and more distortion.
+
 Three common limiting mechanisms:
 
 - **Soft saturation of the amplifier** (simplest, most distortion).
 - **A nonlinear element in the gain network**: diodes across part of the feedback resistor, or a thermistor or lamp whose resistance changes with power (low distortion, slow).
 - **Automatic gain control (AGC)**: a detector measures the amplitude and a slow loop adjusts a variable gain (lowest distortion; used in precision oscillators).
+
+### 3.7 Relaxation oscillators
+
+Not every oscillator has a resonator. A **relaxation oscillator** charges a capacitor until a threshold, switches, and discharges it to another threshold. Its frequency is set by an RC time constant and two thresholds, so it is cheap, starts instantly and tunes easily, but its edges jitter because nothing filters the noise at the switching instants.
+
+**An op-amp astable.** A comparator with positive feedback (a Schmitt trigger) has outputs $\pm V_{sat}$ and thresholds $\pm\beta V_{sat}$, with $\beta = R_2/(R_1 + R_2)$ from its divider. Its output charges $C$ through $R$; the capacitor voltage moves exponentially from $-\beta V_{sat}$ toward $+V_{sat}$, and the output flips when it reaches $+\beta V_{sat}$. The time for that half-cycle follows from $v(t) = V_{sat} - (V_{sat} + \beta V_{sat})e^{-t/RC}$:
+
+$$
+t_{half} = RC\ln\frac{1 + \beta}{1 - \beta}, \qquad T = 2RC\ln\frac{1 + \beta}{1 - \beta} .
+$$
+
+With $\beta$ = 1/2, $R$ = 10 kΩ and $C$ = 10 nF, $T$ = **0.2197** ms ($f$ = **4.551** kHz).
+
+**The 555 timer.** The classic 555 timer's comparators switch at one-third and two-thirds of the supply (set by three equal internal resistors). In the astable connection the capacitor charges through $R_A + R_B$ from $V_{CC}/3$ toward $V_{CC}$ and discharges through $R_B$ from $2V_{CC}/3$ toward ground, so both half-cycles span a factor of 2 in the exponential:
+
+$$
+t_{high} = (R_A + R_B)C\ln2, \qquad t_{low} = R_BC\ln2 .
+$$
+
+With $R_A$ = 1 kΩ, $R_B$ = 10 kΩ and $C$ = 10 nF: $t_{high}$ = **76.25** µs, $t_{low}$ = **69.31** µs, $f$ = **6.870** kHz and a duty cycle of **52.38**%. Note that the supply voltage cancels: the thresholds scale with it.
+
+Relaxation oscillators run low-cost timers, LED flashers, and the trimmed on-chip RC oscillators many microcontrollers boot from before a crystal starts; where the frequency must be accurate to parts per million, a resonator takes over.
 
 > **Going deeper — phase noise.** A real oscillator's zero crossings jitter, because noise perturbs its phase and nothing restores the phase (unlike the amplitude). The resulting spectrum spreads around the carrier as *phase noise*, and Leeson's model shows it falls with the square of the resonator's $Q$ and rises with the device noise. This is why crystal references are locked to by noisier on-chip VCOs in a PLL: the PLL takes the crystal's phase noise at low offsets and the VCO's at high offsets. Courses 20 and 21 develop it.
 
@@ -185,7 +232,7 @@ Three common limiting mechanisms:
 
 **Setup.** A cross-coupled VCO has a tank with $L$ = 2 nH (differential), $C$ = 2 pF total and $Q$ = 10. Find the oscillation frequency, the tank's parallel loss resistance, the minimum transconductance per device, and the tuning range if a varactor varies the total capacitance from 1.6 to 2.4 pF.
 
-**Solution.** $f_0 = 1/(2\pi\sqrt{2\ \text{nH} \times 2\ \text{pF}})$ = **2.516** GHz. $R_p = Q\omega_0L$ = **316.2** Ω. Startup needs $g_m > 2/R_p$ = **6.325** mA/V; designers use about twice that. The tuning range is **2.297** to **2.813** GHz.
+**Solution.** $f_0 = 1/(2\pi\sqrt{2\ \text{nH} \times 2\ \text{pF}})$ = **2.516** GHz. $R_p = Q\omega_0L$ = **316.2** Ω. Startup needs $g_m > 2/R_p$ = **6.325** mA/V; designers use about twice that. The tuning range is **2.297** to **2.813** GHz. With a 2 mA tail current, once the pair switches fully the differential amplitude is $(2/\pi) \times 2\ \text{mA} \times 316.2\ \Omega$ = **0.4026** V.
 
 **Sanity check.** A 20% swing in capacitance tunes about ±10% in frequency, since $f \propto C^{-1/2}$.
 
@@ -220,6 +267,13 @@ Three common limiting mechanisms:
 |---|---|---|---|
 | T 12-09.a | Wien feedback fraction at f_0 | 0.3333 | — |
 | T 12-09.b | phase-shift ladder denominator at x² = 6 | −29 | — |
+| T 12-09.c | describing-function amplitude, cubic | 0.6325 | V |
+| T 12-09.d | astable period | 0.2197 | ms |
+| T 12-09.e | astable frequency | 4.551 | kHz |
+| T 12-09.f | 555 high time | 76.25 | µs |
+| T 12-09.g | 555 low time | 69.31 | µs |
+| T 12-09.h | 555 frequency | 6.870 | kHz |
+| T 12-09.i | 555 duty cycle | 52.38 | % |
 | Ex 12-09.1a | oscillation frequency | 1592 | Hz |
 | Ex 12-09.1b | required gain | 3 | — |
 | Ex 12-09.1c | R_2 | 20 | kΩ |
@@ -231,6 +285,7 @@ Three common limiting mechanisms:
 | Ex 12-09.3c | minimum g_m | 6.325 | mA/V |
 | Ex 12-09.3d | tuning range, low | 2.297 | GHz |
 | Ex 12-09.3e | tuning range, high | 2.813 | GHz |
+| Ex 12-09.3f | differential amplitude with a 2 mA tail | 0.4026 | V |
 | Ex 12-09.4a | oscillation frequency | 7.118 | MHz |
 | Ex 12-09.4b | minimum g_m | 1 | mA/V |
 | Ex 12-09.5a | motional inductance | 10.13 | mH |
@@ -243,6 +298,8 @@ Three common limiting mechanisms:
 | Ex 12-09.6b | switching power | 32 | µW |
 | Ex 12-09.6c | three-stage frequency | 27.57 | GHz |
 | Ex 12-09.6d | three-stage gain | 2 | — |
+| Prac 12-09.a | watch-crystal parabola at 0 °C | 22.5 | ppm |
+| Prac 12-09.b | that error per day | 1.944 | s |
 | Sim 12-09.a | simulated Wien frequency | 1584 | Hz |
 | Sim 12-09.b | frequency shift | −0.5 | % |
 | Sim 12-09.c | describing-function amplitude at p | 0.195 | V |
@@ -299,9 +356,12 @@ The netlist [wien.cir](../labs/12-09-lab/wien.cir) simulates the Wien-bridge osc
 
 ### State of the art (as of Nov 2026)
 
-- **The 32.768 kHz watch crystal** is chosen because $32\,768 = 2^{15}$: fifteen divide-by-two stages produce exactly 1 Hz **[Established]**. Real-time clocks in nearly every phone, PC and microcontroller use it.
+- **The 32.768 kHz watch crystal** is chosen because $32\,768 = 2^{15}$: fifteen divide-by-two stages produce exactly 1 Hz **[Established]**. A typical part, Abracon's ABS07, specifies ±20 ppm at 25 °C, a parabolic temperature coefficient of −0.036 ppm/°C² about a 25 °C turnover, 12.5 pF of load capacitance, an ESR of at most 70 kΩ and ±3 ppm of ageing in the first year [1] **[Established]** (data sheet). The parabola alone costs **22.5** ppm at 0 °C, about **1.944** seconds a day, which is why a watch gains or loses more in winter (our arithmetic).
+- **MHz crystals.** An AT-cut part such as Abracon's ABM8 specifies, at 20–30 MHz, ±50 ppm tolerance and stability as standard (±10 ppm options), 18 pF of load, an ESR of at most 50 Ω, $C_0$ of at most 3 pF and ±2 ppm first-year ageing [1] **[Established]**.
+- **MEMS oscillators and TCXOs compete with crystals.** SiTime's SiT8008B MEMS oscillator specifies ±20 ppm *including* initial tolerance, first-year ageing, temperature, supply and load, at 3.5 mA, with 1.3 ps RMS phase jitter (12 kHz–20 MHz) [1] **[Established]**. Temperature-compensated oscillators reach ±0.5 ppm (Epson TG2016SMN, 1.5 mA max) or ±0.1 ppm (SiTime SiT5356, 44 mA typical) over −40 to +85 °C [1] **[Established]**: each tenfold gain in stability costs current.
 - **Crystal references and PLLs.** High-frequency clocks on chips are produced by an on-chip VCO (LC for low noise, ring for low area) locked by a PLL to a crystal reference in the tens of megahertz **[Established]** (Razavi; Course 20). The crystal provides long-term accuracy; the VCO provides the frequency.
 - **Ring oscillators as process monitors** are standard on production chips; their frequency is measured at test to bin parts by speed **[Established]**.
+- **Startup margin is vendor guidance, not physics.** ST's crystal-oscillator guide asks for a negative resistance at least 5 times the crystal's ESR for MHz oscillators and 3 times for 32 kHz ones (Rev 10, 2015; the current revision was not read), and Microchip grades 5 or more as excellent and below 3 as not recommended, noting that vendors differ [2] **[Contested]** in the exact threshold, not in the principle.
 
 ### Why it matters commercially
 
@@ -313,7 +373,7 @@ The netlist [wien.cir](../labs/12-09-lab/wien.cir) simulates the Wien-bridge osc
 
 - **"±10 ppm frequency accuracy."** *Reality:* at 25 °C, with the specified load capacitance; temperature and aging add more. *Sanity check:* ask for stability over temperature and aging per year, and the load capacitance assumed.
 - **"Low-jitter clock."** *Reality:* jitter depends on the integration bandwidth. *Sanity check:* ask for phase noise against offset and the integration range of the jitter figure.
-- **"Crystal-less" or "replaces the crystal."** *Reality:* usually an on-chip oscillator calibrated against something; accuracy and temperature drift are typically worse. *Sanity check:* ask for accuracy over temperature without recalibration.
+- **"Crystal-less" or "replaces the crystal."** *Reality:* usually an on-chip oscillator calibrated against something, or a MEMS resonator; accuracy, temperature drift or current are typically worse than the crystal solution it replaces **[Industry estimate]**; compare the inclusive ±20 ppm of a MEMS part with a crystal's ±20 ppm at 25 °C plus temperature and ageing [1]. *Sanity check:* ask for accuracy over temperature without recalibration.
 
 ### Questions for engineering leaders
 
@@ -378,7 +438,7 @@ The nonlinearity: the amplitude settles where the effective (describing-function
 
 ## 11. Key terms
 
-[Barkhausen criterion](../../../reference/glossary.md#barkhausen-criterion) · [Wien-bridge oscillator](../../../reference/glossary.md#wien-bridge-oscillator) · [Colpitts oscillator](../../../reference/glossary.md#colpitts-oscillator) · [Negative resistance](../../../reference/glossary.md#negative-resistance) · [Crystal oscillator](../../../reference/glossary.md#crystal-oscillator) · [Ring oscillator](../../../reference/glossary.md#ring-oscillator) · [Describing function](../../../reference/glossary.md#describing-function) · [Voltage-controlled oscillator](../../../reference/glossary.md#voltage-controlled-oscillator)
+[Barkhausen criterion](../../../reference/glossary.md#barkhausen-criterion) · [Relaxation oscillator](../../../reference/glossary.md#relaxation-oscillator) · [Pierce oscillator](../../../reference/glossary.md#pierce-oscillator) · [Wien-bridge oscillator](../../../reference/glossary.md#wien-bridge-oscillator) · [Colpitts oscillator](../../../reference/glossary.md#colpitts-oscillator) · [Negative resistance](../../../reference/glossary.md#negative-resistance) · [Crystal oscillator](../../../reference/glossary.md#crystal-oscillator) · [Ring oscillator](../../../reference/glossary.md#ring-oscillator) · [Describing function](../../../reference/glossary.md#describing-function) · [Voltage-controlled oscillator](../../../reference/glossary.md#voltage-controlled-oscillator)
 
 ## 12. Connections
 
@@ -394,4 +454,8 @@ The nonlinearity: the amplitude settles where the effective (describing-function
 
 ## 14. Sources
 
-1. No perishable figures are used in this chapter: crystal and ring-oscillator values are illustrative orders of magnitude, and the 2¹⁵ relation of the watch crystal is arithmetic.
+1. Data sheets: Abracon ABS07 and ABM8 crystals, SiTime SiT8008B and SiT1630 MEMS oscillators, SiTime SiT5356 and Epson TG2016SMN temperature-compensated oscillators. [R-192](../../../reference/research-log.md#r-192--crystal-mems-and-tcxo-data-sheets-crystal-oscillator-application-notes).
+2. ST AN2867, *Oscillator design guide for STM8AF/AL/S, STM32 MCUs and MPUs*, Rev 10 (2015), and Microchip AN2648 (2018): startup safety factors and load capacitance. [R-192](../../../reference/research-log.md#r-192--crystal-mems-and-tcxo-data-sheets-crystal-oscillator-application-notes).
+3. B. Razavi, *RF Microelectronics*, 2nd ed., Prentice Hall, 2011: oscillators, phase noise and PLL-based synthesis.
+
+The worked examples' crystal values are illustrative orders of magnitude; the 2¹⁵ relation of the watch crystal is arithmetic.

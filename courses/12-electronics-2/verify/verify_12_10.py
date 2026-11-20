@@ -54,11 +54,26 @@ def ktc_integral(R, C, temp=T):
 # ============================================================ theory numbers
 v.check("T 12-10.a", 4 * kT)
 v.check("T 12-10.b", 1 / (2 * (1e-3 / VT)))
-v.check("T 12-10.c", 100 * (math.sqrt(1 + (1 / 3) ** 2) - 1))   # a source 3x smaller raises the RMS total ~5%
+v.check("T 12-10.c", 100 * (math.sqrt(1 + (1 / 3) ** 2) - 1))   # a source 3x smaller raises the RMS total 5.4%
+v.check("T 12-10.d", 100 * (1 / 3) ** 2)                          # and the power 11.1%
+h_pl = 6.62607015e-34
+v.check("T 12-10.e", kT / h_pl / 1e12)
+from scipy.stats import norm  # noqa: E402
+v.check("T 12-10.f", 2 * norm.ppf(1 - 0.001 / 2))                # +/- bounds holding 99.9% of a Gaussian
+# 4kTR from equipartition: the white density S that makes (1/2) C <v^2> = (1/2) kT through an RC low-pass
+S_eq = brentq(lambda S: 0.5 * 1e-12 * quad(lambda x: S / (1 + x * x), 0, np.inf)[0] / (TP * 1e3 * 1e-12)
+              - 0.5 * kT, 1e-25, 1e-15, xtol=1e-35)
+v.assert_true("equipartition forces S = 4kTR", abs(S_eq / (4 * kT * 1e3) - 1) < 1e-9)
+# 2qI from Poisson counting: variance of the window-averaged current equals S times the window's noise bandwidth
+Tw = 1e-6
+nbw = quad(lambda f: np.sinc(f * Tw) ** 2, 0, 200 / Tw, limit=4000)[0]
+v.assert_true("averaging window's noise bandwidth is 1/(2 T_w)", abs(nbw * 2 * Tw - 1) < 2e-3)
+v.assert_true("Poisson variance q I / T_w gives S = 2qI", abs((q * 1e-3 / Tw) / (1 / (2 * Tw)) / (2 * q * 1e-3) - 1) < 1e-12)
 
 # ============================================================ Example 1
 v.check("Ex 12-10.1a", math.sqrt(thermal(1e3)) * 1e9)
 v.check("Ex 12-10.1b", math.sqrt(thermal(50)) * 1e9)
+v.check("Ex 12-10.1d", 20 * math.log10(1.0 / math.sqrt(white(thermal(1e3), 0, 20e3))))
 v.check("Ex 12-10.1c", math.sqrt(white(thermal(1e3), 0, 20e3)) * 1e9)
 
 # ============================================================ Example 2
@@ -67,6 +82,13 @@ v.check("Ex 12-10.2a", i_sh * 1e12)
 v.check("Ex 12-10.2b", i_sh * 1e3 * 1e9)
 v.check("Ex 12-10.2c", i_sh * 1e3 / math.sqrt(thermal(1e3)))
 v.check("Ex 12-10.2d", brentq(lambda R: 4 * kT / R - 2 * q * 1e-3, 1, 1e4))   # resistor with the same current noise
+Is_d = 1e-14
+Vd = VT * math.log(1e-3 / Is_d)
+rd = 1 / ((Is_d * math.exp((Vd + 1e-7) / VT) - Is_d * math.exp((Vd - 1e-7) / VT)) / 2e-7)  # slope of the exponential
+v.check("Ex 12-10.2e", rd)
+vd2 = 2 * q * 1e-3 * rd ** 2
+v.check("Ex 12-10.2f", math.sqrt(vd2) * 1e9)
+v.check("Ex 12-10.2g", vd2 / (4 * kT))
 
 # ============================================================ Example 3: white plus 1/f
 Sw, fc = (5e-9) ** 2, 1e5
@@ -123,12 +145,15 @@ v.assert_true("kT/C integral independent of R (1 k vs 100 k)",
 
 
 # ============================================================ Example 6: noise figure
+T0 = 290.0                                       # IEEE standard noise temperature for noise figure
+
+
 def noise_factor(Rs, en, inn):
-    return (thermal(Rs) + en ** 2 + (inn * Rs) ** 2) / thermal(Rs)
+    return (thermal(Rs, T0) + en ** 2 + (inn * Rs) ** 2) / thermal(Rs, T0)
 
 
 en, inn = 1e-9, 1e-12
-v.check("Ex 12-10.6a", thermal(50))
+v.check("Ex 12-10.6a", thermal(50, T0))
 v.check("Ex 12-10.6b", noise_factor(50, en, inn))
 v.check("Ex 12-10.6c", 10 * math.log10(noise_factor(50, en, inn)))
 opt = minimize_scalar(lambda r: noise_factor(math.exp(r), en, inn), bounds=(0, 15), method="bounded",
@@ -184,8 +209,8 @@ v.check("12-10.7c", g7 * 0.2 / 2 * 1e6)
 v.check("12-10.8a", math.sqrt(2 ** 2 + (10 / 10) ** 2))
 v.check("12-10.8b", math.sqrt(2 ** 2 + (10 / 3) ** 2))
 en9, in9, R9 = 5e-9, 2e-12, 1e4
-S9 = thermal(R9) + en9 ** 2 + (in9 * R9) ** 2
-v.check("12-10.9a", math.sqrt(thermal(R9)) * 1e9)
+S9 = thermal(R9, T0) + en9 ** 2 + (in9 * R9) ** 2
+v.check("12-10.9a", math.sqrt(thermal(R9, T0)) * 1e9)
 v.check("12-10.9b", in9 * R9 * 1e9)
 v.check("12-10.9c", math.sqrt(S9) * 1e9)
 v.check("12-10.9d", 10 * math.log10(noise_factor(R9, en9, in9)))
@@ -210,6 +235,72 @@ v.check("12-10.11d", gm11 * RD11)
 nb = quad(lambda f: 1 / (1 + (f / 10e3) ** 2), 0, np.inf)[0]
 v.check("12-10.12a", nb / 1e3)
 v.check("12-10.12b", math.sqrt(white((4e-9) ** 2, 0, nb)) * 1e9)
+
+# ============================================================ 13: OTA and folded-cascode noise by nodal analysis
+
+
+def ota_noise(gm1, gm3, gamma=2 / 3, gm_src=0.0):
+    """Small-signal 5T OTA (output shorted): nodes t (tail, ideal source) and m (mirror). Each device's channel
+    noise is a current in parallel with its channel; optional folding-source noise currents (an ideal-cascode
+    folded cascode) enter at the mirror node and at the output. Returns the input-referred PSD (V^2/Hz)."""
+    def solve_out(vg1, vg2, noise):
+        n1, n2, n3, n4, ns1, ns2 = noise
+        # unknowns v_t, v_m; i_ds = g_m (v_g - v_s) + n, drain-to-source
+        A = np.array([[2 * gm1 + 1e-12, 0.0],            # node t: -(i1 + i2) + g v_t = 0
+                      [-gm1, gm3]])                       # node m: i1 + i3 + ns1 = 0
+        b = np.array([gm1 * vg1 + gm1 * vg2 + n1 + n2, -(gm1 * vg1 + n1) - n3 - ns1])
+        vt, vm = np.linalg.solve(A, b)
+        i2 = gm1 * (vg2 - vt) + n2
+        i4 = gm3 * vm + n4
+        return i2 + i4 + ns2
+    Gm = abs(solve_out(0.5, -0.5, (0, 0, 0, 0, 0, 0)))
+    S_out = 0.0
+    for k, gk in enumerate((gm1, gm1, gm3, gm3, gm_src, gm_src)):
+        unit = [0.0] * 6
+        unit[k] = 1.0
+        S_out += abs(solve_out(0.0, 0.0, unit)) ** 2 * 4 * kT * gamma * gk
+    return S_out / Gm ** 2
+
+
+S13 = ota_noise(1e-3, 0.5e-3)
+v.check("12-10.13a", S13 / (4 * kT))
+v.check("12-10.13b", math.sqrt(S13) * 1e9)
+S13f = ota_noise(1e-3, 0.5e-3, gm_src=1e-3)
+v.check("12-10.13c", S13f / (4 * kT))
+v.check("12-10.13d", math.sqrt(S13f) * 1e9)
+v.check("12-10.13e", math.sqrt(S13f / S13))
+v.assert_true("OTA noise equals (8kT gamma/gm1)(1 + gm3/gm1)",
+              abs(S13 / (8 * kT * (2 / 3) / 1e-3 * 1.5) - 1) < 1e-6)
+
+
+# 14: non-inverting op-amp noise by superposition through the solved circuit (A = 1e7)
+def ninv_out_psd(Rs, en, R1, R2, A=1e7):
+    """Output PSD from the source resistor, e_n (both in series with + input), and R1, R2 (noise currents in
+    parallel with each resistor). Unknowns v_n (inverting node) and v_o."""
+    def vo(e_plus, i1, i2):
+        # KCL at n: v_n/R1 + (v_n - v_o)/R2 + i1 - i2 = 0 ; op-amp: v_o = A (e_plus - v_n)
+        M = np.array([[1 / R1 + 1 / R2, -1 / R2], [A, 1.0]])
+        rhs = np.array([-i1 + i2, A * e_plus])
+        return np.linalg.solve(M, rhs)[1]
+    return (vo(1, 0, 0) ** 2 * (thermal(Rs) + en ** 2) + vo(0, 1, 0) ** 2 * 4 * kT / R1
+            + vo(0, 0, 1) ** 2 * 4 * kT / R2), vo(1, 0, 0)
+
+
+So14, g14 = ninv_out_psd(1e3, 10e-9, 1e3, 9e3)
+v.check("12-10.14a", math.sqrt(So14) / g14 * 1e9)
+v.check("12-10.14b", math.sqrt(So14) * 1e9)
+v.check("12-10.14c", math.sqrt(white(So14, 0, 20e3)) * 1e6)
+v.check("12-10.14d", 20 * math.log10(1.0 / math.sqrt(white(So14, 0, 20e3))))
+So14b, g14b = ninv_out_psd(1e3, 10e-9, 10e3, 90e3)
+v.check("12-10.14e", math.sqrt(So14b) / g14b * 1e9)
+v.check("12-10.14f", 10 * math.log10(So14b / So14))
+# 15: data-sheet conversions
+v.check("12-10.15a", brentq(lambda R: thermal(R) - (16e-9) ** 2, 1, 1e6, xtol=1e-9) / 1e3)
+v.check("12-10.15b", 1.5 / 6.6)                         # the 6.6 convention (T 12-10.f)
+Sw15, fc15 = (9.092e-9) ** 2, 2100.0
+rms15 = math.sqrt(quad(lambda f: Sw15 * (1 + fc15 / f), 0.1, 10, limit=200)[0])
+v.check("12-10.15c", rms15 * 1e6)
+v.check("12-10.15d", 6.6 * rms15 * 1e6)
 
 # ============================================================ lab README (ngspice at its default 27 C)
 if lab.exists():

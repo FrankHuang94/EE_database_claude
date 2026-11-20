@@ -50,7 +50,7 @@ flowchart LR
 
 ## 3. Theory
 
-> **Conventions.** Noise is described by its one-sided power spectral density (PSD), written $\overline{v_n^2}$ in V²/Hz or $\overline{i_n^2}$ in A²/Hz, and its square root, the **spectral density** in V/√Hz or A/√Hz. $k$ = 1.380649 × 10⁻²³ J/K; $q$ = 1.602176634 × 10⁻¹⁹ C; $T$ = 300 K unless stated, so $4kT$ = 1.657 × 10⁻²⁰ J. RMS values come from integrating the PSD over frequency.
+> **Conventions.** Noise is described by its one-sided power spectral density (PSD), written $\overline{v_n^2}$ in V²/Hz or $\overline{i_n^2}$ in A²/Hz, and its square root, the **spectral density** in V/√Hz or A/√Hz. $k$ = 1.380649 × 10⁻²³ J/K; $q$ = 1.602176634 × 10⁻¹⁹ C; $T$ = 300 K unless stated, so $4kT$ = 1.657 × 10⁻²⁰ J. RMS values come from integrating the PSD over frequency. (The notation guide writes a density as $\overline{v_n^2}/\Delta f$; in this chapter the barred quantities are densities, per hertz, unless a bandwidth is stated.)
 
 ### 3.1 Spectral density and integrated noise
 
@@ -60,7 +60,9 @@ $$
 v_{rms}^2 = \int_{f_1}^{f_2} S(f)\,df .
 $$
 
-For white noise of density $e_n$ (V/√Hz) over a bandwidth $B$, $v_{rms} = e_n\sqrt B$. Passing noise through a linear system with transfer function $H(f)$ multiplies the PSD by $\lvert H(f)\rvert^2$. **Uncorrelated sources add in power**: $v^2 = v_1^2 + v_2^2$. A source 3 times smaller than another adds only 5% to the total.
+For white noise of density $e_n$ (V/√Hz) over a bandwidth $B$, $v_{rms} = e_n\sqrt B$. Passing noise through a linear system with transfer function $H(f)$ multiplies the PSD by $\lvert H(f)\rvert^2$. **Uncorrelated sources add in power**: $v^2 = v_1^2 + v_2^2$. A source 3 times smaller than another adds 11.1% to the power but only **5.4**% to the RMS total.
+
+The **signal-to-noise ratio** compares a signal's power with the noise power in the same band: $\text{SNR} = 10\log_{10}(P_s/P_n) = 20\log_{10}(V_{s,rms}/v_{n,rms})$ dB. Data sheets that quote $e_n$ in nV/√Hz leave the bandwidth to the user; the SNR depends on it (Example 12-10.1).
 
 ### 3.2 Thermal noise
 
@@ -70,7 +72,9 @@ $$
 \overline{v_n^2} = 4kTR \quad\text{(V}^2\text{/Hz)}, \qquad\text{or in parallel with } \overline{i_n^2} = \frac{4kT}{R} .
 $$
 
-A 1 kΩ resistor at 300 K produces **4.070** nV/√Hz (Example 12-10.1). The formula follows from the equipartition theorem: the next section shows it is exactly what makes an RC circuit's capacitor hold the $\tfrac12kT$ of energy that thermodynamics requires. Reactive elements (ideal capacitors and inductors) are noiseless; only dissipation generates thermal noise.
+A 1 kΩ resistor at 300 K produces **4.070** nV/√Hz (Example 12-10.1). Reactive elements (ideal capacitors and inductors) are noiseless; only dissipation generates thermal noise.
+
+**Where $4kTR$ comes from.** Suppose only that a resistor's noise is white, with some density $S$, and connect it across a capacitor $C$. The capacitor voltage's variance is the integral of $S$ through the RC low-pass, which the next section evaluates as $S/(4RC)$. In thermal equilibrium, the equipartition theorem of statistical mechanics requires the capacitor's average stored energy to be $\tfrac12kT$, so $\tfrac12C \cdot S/(4RC) = \tfrac12kT$, which forces $S = 4kTR$. Nothing about the resistor's material entered: every resistor at temperature $T$ must have this noise, or energy would flow between a hot capacitor and a cold resistor at the same temperature (Nyquist's 1928 argument). The derivation assumes classical equipartition, valid while $hf \ll kT$; at 300 K, $kT/h$ = **6.25** THz, so for electronics the result is exact.
 
 ### 3.3 kT/C noise
 
@@ -92,7 +96,9 @@ $$
 \overline{i_n^2} = 2qI .
 $$
 
-At 1 mA it is **17.90** pA/√Hz. Shot noise appears in diodes, bipolar transistors (collector and base currents) and photodiodes; it does not appear in the current through a resistor in thermal equilibrium, whose noise is thermal.
+At 1 mA it is **17.90** pA/√Hz. Shot noise appears in diodes, bipolar transistors (collector and base currents) and photodiodes; it does not appear in the current a voltage source drives through a resistor: there the carriers scatter many times and their arrivals are not independent, and the noise is the resistor's thermal noise.
+
+**Where $2qI$ comes from.** Model the current as independent charges $q$ arriving at random times at an average rate $\lambda = I/q$: a Poisson process (03-02). In a window of length $T_w$ the count $N$ has mean and variance both $\lambda T_w$, so the window-averaged current $qN/T_w$ has variance $q^2\lambda T_w/T_w^2 = qI/T_w$. Averaging over $T_w$ is a filter with impulse response $1/T_w$ for $0 < t < T_w$, whose squared response $\text{sinc}^2(fT_w)$ integrates to $1/(2T_w)$ over positive frequencies; white noise of one-sided density $S$ through it has variance $S/(2T_w)$. Equating, $S/(2T_w) = qI/T_w$, so $S = 2qI$.
 
 ### 3.5 Flicker (1/f) noise
 
@@ -106,7 +112,9 @@ $$
 
 *Figure 2. Example 12-10.3's amplifier. Left: the density $\sqrt{S_w(1 + f_c/f)}$ with its white and 1/f parts; they are equal at the corner. Right: RMS noise integrated from 1 Hz up to each frequency. The 1/f part climbs by the same amount every decade; the white part matters only in the last decade or two.*
 
-Every decade contributes the same flicker noise power, so "starting the integral at 1 Hz instead of 10 Hz" adds as much as any other decade. For MOSFETs a common model is $\overline{v_n^2} = K/(C_{ox}WLf)$ at the gate: larger devices (more area to average over) have less. Corners are typically kilohertz to megahertz for MOSFETs and tens to hundreds of hertz for bipolar transistors. **Chopping** and **auto-zeroing** (the zero-drift op-amps of 10-09) move the signal away from the 1/f region instead of fighting it.
+Every decade contributes the same flicker noise power, so "starting the integral at 1 Hz instead of 10 Hz" adds as much as any other decade. For MOSFETs a common model is $\overline{v_n^2} = K/(C_{ox}WLf)$ at the gate: larger devices (more area to average over) have less. Corners are typically kilohertz to megahertz for MOSFETs and tens to hundreds of hertz for bipolar transistors. The zero-drift op-amps of 10-09 sidestep it rather than fight it. **Chopping** modulates the signal up past the 1/f corner, amplifies it there, and demodulates it back, leaving the 1/f noise at the chopping frequency where a filter removes it. **Auto-zeroing** periodically measures the amplifier's offset and low-frequency noise with the input shorted and subtracts the stored value, which cancels everything slower than the sampling rate (at the price of some white noise folded down by the sampling).
+
+**Peak-to-peak and RMS.** Data sheets often quote low-frequency noise as a peak-to-peak value over 0.1–10 Hz, because that is what a scope shows. For Gaussian noise, the usual convention takes peak-to-peak as **6.6** times the RMS value: the signal stays within ±3.3σ 99.9% of the time.
 
 ### 3.6 Transistor noise models
 
@@ -130,7 +138,7 @@ $$
 \overline{v_{n,in}^2} = \frac{2qI_C}{g_m^2} = \frac{2kT}{g_m} = 4kT\cdot\frac{1}{2g_m} ,
 $$
 
-an equivalent noise resistance of $1/(2g_m)$, about 12.93 Ω at 1 mA. The base current's shot noise $2qI_B$ appears as an input *current* noise, which matters with high source resistances.
+an equivalent noise resistance of $1/(2g_m)$, about 12.93 Ω at 1 mA. The base spreading resistance $r_b$ adds its own thermal noise in series with the base, so in full $\overline{v_{n,in}^2} = 4kT\big(r_b + 1/(2g_m)\big)$; at high currents $r_b$ (tens to hundreds of ohms) sets the floor. The base current's shot noise $2qI_B$ appears as an input *current* noise, which matters with high source resistances.
 
 ### 3.7 Input-referred noise of amplifiers
 
@@ -140,7 +148,15 @@ $$
 \overline{v_{n,in}^2} = 4kT\left(\frac{\gamma}{g_m} + \frac{1}{g_m^2R_D}\right) .
 $$
 
-The load's contribution is smaller than the transistor's by $\gamma g_mR_D$, the stage's gain times γ.
+The load's contribution is smaller than the transistor's by $\gamma g_mR_D$, the stage's gain times γ. With a current-source load (a PMOS M2 of transconductance $g_{m2}$), the load's drain noise $4kT\gamma g_{m2}$ adds to the transistor's in the same way, and $\overline{v_{n,in}^2} = (4kT\gamma/g_{m1})(1 + g_{m2}/g_{m1})$: an active load is noisy unless its $g_m$ is small, which is why load devices are given a large overdrive.
+
+**A differential pair and a five-transistor OTA.** In a differential pair the two input devices' noises are independent and both reach the differential output, so the input-referred noise is twice one device's: $2 \times 4kT\gamma/g_{m1}$. In the OTA of 12-02, the mirror devices M3 and M4 also inject their drain noise into the output current: M4's directly, M3's through the mirror. All four noise currents add at the output, $\overline{i_{out}^2} = 2 \cdot 4kT\gamma(g_{m1} + g_{m3})$, and dividing by the transconductance squared, $g_{m1}^2$,
+
+$$
+\overline{v_{n,in}^2} = \frac{8kT\gamma}{g_{m1}}\left(1 + \frac{g_{m3}}{g_{m1}}\right) .
+$$
+
+A folded cascode (12-08 §3.3) adds its folding current sources' noise in the same way, with their $g_m$ in the bracket, which is why it is noisier than a telescopic cascode with the same input pair (Problem 12-10.13).
 
 **A chain of stages.** Referring each stage's noise to the input through the gains ahead of it,
 
@@ -158,15 +174,23 @@ $$
 
 assuming $e_n$ and $i_n$ uncorrelated. At low $R_s$ the voltage noise dominates; at high $R_s$ the current noise does. This is why bipolar-input op-amps (low $e_n$, higher $i_n$) suit low-impedance sources and CMOS or JFET inputs (tiny $i_n$) suit high-impedance sources.
 
+**An op-amp circuit.** In a non-inverting amplifier with gain resistors $R_1$ (to ground) and $R_2$ (to the output), every noise source can be referred to the non-inverting input and multiplied by the **noise gain** $1 + R_2/R_1$ to reach the output. The resistors' thermal noise appears there as that of $R_1 \parallel R_2$, and the op-amp's current noise flows through the same parallel combination at the inverting input and through $R_s$ at the other:
+
+$$
+\overline{v_{n,in}^2} = 4kTR_s + e_n^2 + 4kT(R_1 \parallel R_2) + i_n^2\big(R_s^2 + (R_1 \parallel R_2)^2\big) .
+$$
+
+Large gain resistors therefore add noise, and low-noise designs keep $R_1 \parallel R_2$ small compared with the op-amp's equivalent noise resistance (Problem 12-10.14).
+
 ### 3.8 Noise figure (preview)
 
-The **noise factor** $F$ compares an amplifier's total input noise with the source's own thermal noise, and the **noise figure** is it in decibels:
+The **noise factor** $F$ compares an amplifier's total input noise with the source's own thermal noise, with the source by definition at the standard temperature $T_0$ = 290 K (IEEE convention), and the **noise figure** is it in decibels:
 
 $$
-F = \frac{4kTR_s + e_n^2 + i_n^2R_s^2}{4kTR_s}, \qquad \text{NF} = 10\log_{10}F .
+F = \frac{4kT_0R_s + e_n^2 + i_n^2R_s^2}{4kT_0R_s}, \qquad \text{NF} = 10\log_{10}F .
 $$
 
-$F$ is minimized at the **optimum source resistance** $R_{opt} = e_n/i_n$, where $F_{min} = 1 + e_ni_n/(2kT)$. A transformer or matching network can present $R_{opt}$ to the amplifier from a different source resistance; this is noise matching, the core of low-noise amplifier design in Course 21. For a chain of stages, Friis's formula $F = F_1 + (F_2 - 1)/G_1 + \cdots$ restates §3.7 in these units.
+$F$ is minimized at the **optimum source resistance** $R_{opt} = e_n/i_n$, where $F_{min} = 1 + e_ni_n/(2kT_0)$. (Using 300 K instead changes noise figures by a few percent of their excess; the standard temperature makes figures comparable between laboratories.) A transformer or matching network can present $R_{opt}$ to the amplifier from a different source resistance; this is noise matching, the core of low-noise amplifier design in Course 21. For a chain of stages, Friis's formula $F = F_1 + (F_2 - 1)/G_1 + \cdots$, with $G_1$ the first stage's *available* power gain, restates §3.7 in these units.
 
 > **Going deeper — why the γ factor and where noise comes from microscopically.** In a long-channel MOSFET the channel's thermal noise integrates the local conductance along the channel; in saturation the result is 2/3 of what a resistor of conductance $g_m$ would produce. In short channels, hot carriers and velocity saturation raise γ to 1 or more. Noise in nonlinear and time-varying circuits (mixers, oscillators, sampled systems) needs cyclostationary analysis, which Courses 20 and 21 introduce.
 
@@ -176,17 +200,19 @@ $F$ is minimized at the **optimum source resistance** $R_{opt} = e_n/i_n$, where
 
 **Setup.** Find the noise density of 1 kΩ and 50 Ω resistors at 300 K, and the RMS noise of the 1 kΩ resistor over the 20 kHz audio band.
 
-**Solution.** $\sqrt{4kT \times 1\ \text{k}\Omega}$ = **4.070** nV/√Hz; $\sqrt{4kT \times 50\ \Omega}$ = **0.9102** nV/√Hz. Over 20 kHz: $4.070\ \text{nV} \times \sqrt{20\,000}$ = **575.6** nV RMS.
+**Solution.** $\sqrt{4kT \times 1\ \text{k}\Omega}$ = **4.070** nV/√Hz; $\sqrt{4kT \times 50\ \Omega}$ = **0.9102** nV/√Hz. Over 20 kHz: $4.070\ \text{nV} \times \sqrt{20\,000}$ = **575.6** nV RMS. Against a 1 V RMS signal that is an SNR of $20\log_{10}(1\ \text{V}/575.6\ \text{nV})$ = **124.8** dB: the resistor alone would cap an audio system near 21 bits.
 
 **Sanity check.** A useful memory aid: 1 kΩ ≈ 4 nV/√Hz, scaling with $\sqrt R$.
 
 ### Example 12-10.2 · Shot noise (tier A)
 
-**Setup.** Find the shot noise of a 1 mA diode current, and the voltage it develops across a 1 kΩ load. Compare with the load's own thermal noise.
+**Setup.** (a) A bipolar transistor's collector (a high-impedance current source) delivers 1 mA into a 1 kΩ load. Find the shot noise of the current and the voltage it develops across the load, and compare with the load's own thermal noise. (b) A forward-biased diode at 1 mA, by contrast, presents its small-signal resistance $r_d = V_T/I$ to its own shot noise. Find its noise voltage.
 
-**Solution.** $\sqrt{2q \times 1\ \text{mA}}$ = **17.90** pA/√Hz, which across 1 kΩ is **17.90** nV/√Hz, about 4.4 times the load's 4.070 nV/√Hz.
+**Solution.** (a) $\sqrt{2q \times 1\ \text{mA}}$ = **17.90** pA/√Hz. The collector's output resistance is far above 1 kΩ, so the noise current flows through the load: **17.90** nV/√Hz, about **4.4** times the load's 4.070 nV/√Hz.
 
-**Sanity check.** At 1 mA the shot noise is equivalent to the thermal noise of a resistor $2kT/(qI) = 2V_T/I$, about 52 Ω, in parallel: smaller than 1 kΩ, so more noise current.
+(b) The diode's shot-noise current flows through its own $r_d$ = **25.85** Ω, so $\overline{v_n^2} = 2qI\,r_d^2 = 2qI(V_T/I)^2 = 2kT\,r_d$: **0.4628** nV/√Hz, the thermal noise of a resistor $r_d/2$ = **12.93** Ω. A diode is a quiet voltage reference (to the extent its $r_d$ is small), not a noisy current source; the shot noise only shows up as a large voltage when it flows into a high impedance, as in (a).
+
+**Sanity check.** At 1 mA the shot noise current equals the thermal noise current of a resistor $2kT/(qI) = 2V_T/I$, about **52** Ω: smaller than 1 kΩ, so more noise current than the load's.
 
 ### Example 12-10.3 · Flicker noise and integration limits (tier B)
 
@@ -216,9 +242,9 @@ $F$ is minimized at the **optimum source resistance** $R_{opt} = e_n/i_n$, where
 
 **Setup.** An amplifier has $e_n$ = 1 nV/√Hz and $i_n$ = 1 pA/√Hz. Find its noise figure from a 50 Ω source, its optimum source resistance and its noise figure there.
 
-**Solution.** From 50 Ω: $4kTR_s$ = **8.284 × 10⁻¹⁹** V²/Hz, $e_n^2$ = 10⁻¹⁸ and $(i_nR_s)^2$ = 2.5 × 10⁻²¹, so $F$ = **2.210** and NF = **3.444** dB. $R_{opt} = e_n/i_n$ = **1** kΩ, where $F$ = **1.121** and NF = **0.4950** dB.
+**Solution.** From 50 Ω at $T_0$ = 290 K: $4kT_0R_s$ = **8.008 × 10⁻¹⁹** V²/Hz, $e_n^2$ = 10⁻¹⁸ and $(i_nR_s)^2$ = 2.5 × 10⁻²¹, so $F$ = **2.252** and NF = **3.526** dB. $R_{opt} = e_n/i_n$ = **1** kΩ, where $F = 1 + e_ni_n/(2kT_0)$ = **1.125** and NF = **0.511** dB.
 
-**Sanity check.** At 50 Ω the amplifier's voltage noise exceeds the source's own noise; a transformer with an impedance ratio of **20** (turns ratio **4.47**) would present 1 kΩ and recover **2.95** dB.
+**Sanity check.** At 50 Ω the amplifier's voltage noise exceeds the source's own noise; a transformer with an impedance ratio of **20** (turns ratio **4.47**) would present 1 kΩ and recover **3.01** dB.
 
 ### Answer key
 
@@ -227,14 +253,21 @@ $F$ is minimized at the **optimum source resistance** $R_{opt} = e_n/i_n$, where
 |---|---|---|---|
 | T 12-10.a | 4kT at 300 K | 1.657 × 10⁻²⁰ | J |
 | T 12-10.b | BJT equivalent noise resistance at 1 mA | 12.93 | Ω |
-| T 12-10.c | power added by a source 3 times smaller | 5 | % |
+| T 12-10.c | RMS added by a source 3 times smaller | 5.4 | % |
+| T 12-10.d | power added by it | 11.1 | % |
+| T 12-10.e | kT/h at 300 K | 6.25 | THz |
+| T 12-10.f | peak-to-peak to RMS convention | 6.6 | — |
 | Ex 12-10.1a | 1 kΩ noise density | 4.070 | nV/√Hz |
 | Ex 12-10.1b | 50 Ω noise density | 0.9102 | nV/√Hz |
 | Ex 12-10.1c | 1 kΩ over 20 kHz | 575.6 | nV |
+| Ex 12-10.1d | SNR of a 1 V RMS signal | 124.8 | dB |
 | Ex 12-10.2a | shot noise at 1 mA | 17.90 | pA/√Hz |
 | Ex 12-10.2b | across 1 kΩ | 17.90 | nV/√Hz |
 | Ex 12-10.2c | ratio to the load's thermal noise | 4.4 | — |
 | Ex 12-10.2d | equivalent shot-noise resistance | 52 | Ω |
+| Ex 12-10.2e | diode small-signal resistance | 25.85 | Ω |
+| Ex 12-10.2f | diode noise voltage | 0.4628 | nV/√Hz |
+| Ex 12-10.2g | equivalent resistance r_d/2 | 12.93 | Ω |
 | Ex 12-10.3a | white part | 5.000 | µV |
 | Ex 12-10.3b | flicker part | 5.877 | µV |
 | Ex 12-10.3c | total | 7.716 | µV |
@@ -251,15 +284,15 @@ $F$ is minimized at the **optimum source resistance** $R_{opt} = e_n/i_n$, where
 | Ex 12-10.5e | 16-bit LSB | 15.26 | µV |
 | Ex 12-10.5f | 16-bit quantization noise | 4.405 | µV |
 | Ex 12-10.5g | 16-bit capacitor | 213.5 | pF |
-| Ex 12-10.6a | 4kTR_s at 50 Ω | 8.284 × 10⁻¹⁹ | V²/Hz |
-| Ex 12-10.6b | noise factor at 50 Ω | 2.210 | — |
-| Ex 12-10.6c | noise figure at 50 Ω | 3.444 | dB |
+| Ex 12-10.6a | 4kT_0R_s at 50 Ω | 8.008 × 10⁻¹⁹ | V²/Hz |
+| Ex 12-10.6b | noise factor at 50 Ω | 2.252 | — |
+| Ex 12-10.6c | noise figure at 50 Ω | 3.526 | dB |
 | Ex 12-10.6d | optimum source resistance | 1 | kΩ |
-| Ex 12-10.6e | noise factor at the optimum | 1.121 | — |
-| Ex 12-10.6f | noise figure at the optimum | 0.4950 | dB |
+| Ex 12-10.6e | noise factor at the optimum | 1.125 | — |
+| Ex 12-10.6f | noise figure at the optimum | 0.511 | dB |
 | Ex 12-10.6g | impedance ratio | 20 | — |
 | Ex 12-10.6h | turns ratio | 4.47 | — |
-| Ex 12-10.6i | noise figure recovered | 2.95 | dB |
+| Ex 12-10.6i | noise figure recovered | 3.01 | dB |
 | Prac 12-10.a | OPA1611 equivalent noise resistance | 73.03 | Ω |
 | Prac 12-10.b | TLV9062 equivalent noise resistance | 6.036 | kΩ |
 | Prac 12-10.c | TLV9062 fitted white floor | 9.092 | nV/√Hz |
@@ -272,13 +305,13 @@ $F$ is minimized at the **optimum source resistance** $R_{opt} = e_n/i_n$, where
 The lab, [labs/12-10-lab](../labs/12-10-lab/README.md), has a notebook and an ngspice netlist:
 
 1. Generates white Gaussian noise with a resistor's PSD, estimates its spectrum with Welch's method, and checks $4kTR$.
-2. Simulates an RC circuit driven by the resistor's noise (exactly, as a discretized Ornstein–Uhlenbeck process) for several resistances, and shows the capacitor's variance stays at kT/C.
+2. Simulates an RC circuit driven by the resistor's noise (by Euler–Maruyama integration of the stochastic differential equation, using only the driving noise) for several resistances, and shows the capacitor's variance stays at kT/C.
 3. Synthesizes 1/f noise and shows integrated noise growing with the logarithm of the bandwidth.
 4. Plots an amplifier's noise figure against source resistance, with its minimum at $e_n/i_n$.
 
 The netlist [rc_noise.cir](../labs/12-10-lab/rc_noise.cir) runs ngspice's noise analysis of an RC low-pass and integrates its output noise.
 
-**Guided exercise (predict, then run).** **Before running Part 2**, predict: the capacitor in an RC circuit is 1 pF. If the resistor is raised from 1 kΩ to 100 kΩ, does the capacitor's RMS noise voltage rise tenfold? Then run it. (No: it stays at **64.36** µV for every resistance, because the noise density rises by √100 while the bandwidth falls by 100.)
+**Guided exercise (predict, then run).** **Before running Part 2**, predict: the capacitor in an RC circuit is 1 pF. If the resistor is raised from 1 kΩ to 100 kΩ, does the capacitor's RMS noise voltage rise tenfold? Then run it. (No: it stays at **64.36** µV for every resistance, to within the simulation's 1% step-size bias, because the noise density rises by √100 while the bandwidth falls by 100.)
 
 ## 6. Engineering tradeoffs
 
@@ -327,7 +360,7 @@ The netlist [rc_noise.cir](../labs/12-10-lab/rc_noise.cir) runs ngspice's noise 
 
 - **Noise per milliwatt is the figure of merit** of sensor front ends: since input noise power falls as $1/g_m$, halving it doubles the current, which a wearable's battery may not allow.
 - **ADC resolution costs capacitance and power** through kT/C; high-resolution converters are large and power-hungry for physical, not design, reasons.
-- **Process scaling does not help noise much**: thermal noise depends on $g_m$ per current, flicker noise worsens with smaller devices, so precision analog often stays on older nodes.
+- **Process scaling does not help noise much**: thermal noise depends on $g_m$ per current, flicker noise worsens with smaller devices, so precision analog often stays on older nodes **[Industry estimate]**.
 
 ### Marketing vs Reality
 
@@ -398,7 +431,7 @@ Quadruple $g_m$ (the noise power is $4kT\gamma/g_m$), which at fixed overdrive m
 
 ## 11. Key terms
 
-[Thermal noise](../../../reference/glossary.md#thermal-noise) · [Shot noise](../../../reference/glossary.md#shot-noise) · [Flicker noise](../../../reference/glossary.md#flicker-noise) · [kT/C noise](../../../reference/glossary.md#ktc-noise) · [Input-referred noise](../../../reference/glossary.md#input-referred-noise) · [Equivalent noise resistance](../../../reference/glossary.md#equivalent-noise-resistance) · [Noise figure](../../../reference/glossary.md#noise-figure) · [Power spectral density](../../../reference/glossary.md#power-spectral-density)
+[Thermal noise](../../../reference/glossary.md#thermal-noise) · [Signal-to-noise ratio](../../../reference/glossary.md#signal-to-noise-ratio) · [Shot noise](../../../reference/glossary.md#shot-noise) · [Flicker noise](../../../reference/glossary.md#flicker-noise) · [kT/C noise](../../../reference/glossary.md#ktc-noise) · [Input-referred noise](../../../reference/glossary.md#input-referred-noise) · [Equivalent noise resistance](../../../reference/glossary.md#equivalent-noise-resistance) · [Noise figure](../../../reference/glossary.md#noise-figure) · [Power spectral density](../../../reference/glossary.md#power-spectral-density)
 
 ## 12. Connections
 
