@@ -6038,3 +6038,25 @@
   definition: The angle at which a root-locus branch leaves a complex open-loop pole, 180° minus the angles from the other poles plus the angles from the zeros; the analogous arrival angle applies at a complex zero.
   chapter: "15-06"
   see_also: [Root locus]
+
+# ---------------------------------------------------------------- 15-07
+- term: Gain crossover frequency
+  definition: The frequency ω_c at which a loop gain's magnitude |L(jω)| equals 1 (0 dB); the phase margin is read there, and it sets the loop's speed (closed-loop bandwidth is typically 1 to 2 times ω_c).
+  chapter: "15-07"
+  see_also: [Phase margin]
+- term: Delay margin
+  definition: The largest extra time delay a stable loop tolerates before it oscillates, PM (in radians) divided by the gain crossover frequency; a delay adds phase lag ωT without changing the magnitude.
+  chapter: "15-07"
+  see_also: [Phase margin]
+- term: Nyquist criterion
+  definition: Z = N + P, the number of unstable closed-loop poles equals the clockwise encirclements of −1 by the Nyquist plot of L(s) plus the number of open-loop right-half-plane poles; stability requires N = −P. It follows from the argument principle and handles time delay exactly.
+  chapter: "15-07"
+  see_also: [Phase margin, Gain margin]
+- term: Sensitivity peak
+  definition: M_s = max |S(jω)| = 1/(min |1 + L(jω)|), the reciprocal of the Nyquist plot's closest approach to −1; a single robustness number that guarantees GM ≥ M_s/(M_s − 1) and PM ≥ 2 arcsin(1/(2M_s)).
+  chapter: "15-07"
+  see_also: [Sensitivity function]
+- term: Bode's sensitivity integral
+  definition: For a stable closed loop whose loop gain has relative degree of at least 2, the integral of ln|S(jω)| over all positive frequencies equals π times the sum of the real parts of the open-loop right-half-plane poles (zero for a stable plant), so sensitivity reduced in one band rises in another (the waterbed effect).
+  chapter: "15-07"
+  see_also: [Sensitivity function, Sensitivity peak]
