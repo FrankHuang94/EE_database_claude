@@ -95,6 +95,11 @@ zero_f = lambda g: brentq(lambda f: abs(10 ** (g / 20) + 1j * f / fz) - math.sqr
 v.check("T 11-08.d", zero_f(-20) / 1e9)
 boost = lambda g: db(abs(ctle(fb / 2, g))) - db(abs(ctle(0.0, g)))
 v.check("T 11-08.e", boost(-20))
+fhp = fb / 80
+ctle2 = lambda f, g, ghp: ctle(f, g) * (10 ** (ghp / 20) + 1j * f / fhp) / (1 + 1j * f / fhp)
+v.check("T 11-08.i", brentq(lambda f: abs(10 ** (-6 / 20) + 1j * f / fhp) - math.sqrt(2) * 10 ** (-6 / 20), 1e3, 1e12,
+                            xtol=1e-6) / 1e6)
+v.check("T 11-08.j", db(abs(ctle2(fb / 2, -20, -6))) - db(abs(ctle2(0.0, -20, -6))))
 poles2 = np.roots(np.polymul([1, 1], [1, -2]))
 v.check("T 11-08.f", len(set(np.round(poles2.real, 9))) + 1)
 pc = complex(-2, 6)
@@ -241,7 +246,7 @@ v.assert_true("product of squared distances equals w^4 + 1",
               all(abs(np.prod([abs(1j * w - p) ** 2 for p in p2]) - (w ** 4 + 1)) < 1e-12 for w in (0.3, 1.7, 4.0)))
 
 # ============================================================ solutions
-v.check("11-08.1a", -4)
+v.check("11-08.1a", np.roots([1, 4])[0])          # pole of 1/(s + 4) bounds the ROC
 v.check("11-08.1b", laplace(lambda t: np.exp(-4 * t), 1.0, 0, INF).real)
 v.check("11-08.1c", lap_terms([(-1, -4)], -5.0, -INF, 0).real)
 pulse = lambda s: laplace(lambda t: 1.0, s, 0, 2)
@@ -343,6 +348,9 @@ v.check("11-08.14a", f0 / B)
 v.check("11-08.14b", -alpha / 1e6)
 v.check("11-08.14c", 1 / alpha * 1e9)
 v.check("11-08.14d", f0 / alpha)
+# damped frequency from the actual poles of s^2 + (w0/Q)s + w0^2
+pr = np.roots([1, 2 * math.pi * f0 / 25, (2 * math.pi * f0) ** 2])
+v.check("11-08.14e", abs(pr[0].imag) / (2 * math.pi) / (-pr[0].real))
 
 # ============================================================ lab
 v.check("Lab 11-08.a", two_sided(TS_POS, TS_NEG, 0.5).real)

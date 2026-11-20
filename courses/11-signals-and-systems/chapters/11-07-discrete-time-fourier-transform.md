@@ -15,7 +15,7 @@
 2. Compute the DTFTs of standard sequences (unit sample, exponential, rectangular window, ideal low-pass, sinusoids) and use the properties to find others.
 3. Find and interpret the frequency response of a difference equation or FIR filter: magnitude, phase, group delay and nulls, including linear-phase FIR filters.
 4. Explain truncation and windowing in filter design and spectral analysis, and the trade between ripple, transition width and resolution.
-5. Relate DT frequency to CT frequency for sampled signals, and explain what the DFT computes.
+5. Relate DT frequency to CT frequency for sampled signals, explain what the DFT computes, and expand a periodic sequence in its discrete-time Fourier series.
 
 ---
 
@@ -24,7 +24,7 @@
 Every DT system in this course so far, digital filters, decimators, recursions, has been described in time. 11-04 showed that an LTI system multiplies the sequence $e^{j\omega n}$ by $H(e^{j\omega})$. The **discrete-time Fourier transform** (DTFT) extends this to any sequence, exactly as 11-06 extended the Fourier series: it writes a sequence as a continuum of complex exponentials $e^{j\omega n}$ and gives each one a complex amplitude $X(e^{j\omega})$. The new feature is that DT frequency lives on a circle. Because $n$ is an integer, $e^{j(\omega + 2\pi)n} = e^{j\omega n}$ (11-01), so every DTFT repeats every 2π, and only frequencies from −π to π (DC to half the sample rate) are distinct. Everything a digital filter or a spectrum analyzer does happens on that circle.
 
 - **Digital filters are specified by $H(e^{j\omega})$.** Passbands, stopbands and notches are statements about the DTFT of the impulse response, and the sample rate converts them to hertz.
-- **Linear phase is a DT superpower.** A symmetric FIR filter delays every frequency by exactly the same number of samples, which no causal analog filter can do: audio, imaging and communications use this constantly.
+- **Linear phase is a DT superpower.** A symmetric FIR filter delays every frequency by exactly the same number of samples, which no causal lumped (rational) analog filter can do exactly: audio, imaging and communications use this constantly.
 - **Truncation costs ripple.** Making an infinite ideal response finite (to build it) creates Gibbs ripple; windows trade ripple for transition width. Every FIR design method is a version of this trade.
 - **Resolution costs observation time.** Telling two close frequencies apart needs a record lasting about the inverse of their spacing: the time–bandwidth trade of 11-06, now in samples.
 - **The FFT computes samples of the DTFT.** Spectrum analyzers, radar processors and AI audio front ends all run the DFT, which is the DTFT of a finite record sampled at $N$ frequencies (Course 16).
@@ -136,7 +136,7 @@ $$
 H(e^{j\omega}) = e^{-j\omega M/2}\sum_nh[n]\,e^{-j\omega(n - M/2)} = e^{-j\omega M/2}\,A(\omega) ,
 $$
 
-where $A(\omega)$ is real because the paired exponentials $e^{\mp j\omega(n - M/2)}$ add to cosines. The phase is $-\omega M/2$ (plus jumps of π where $A$ changes sign), so the group delay is exactly $M/2$ samples at every frequency: **every frequency is delayed equally, and the waveform's shape is preserved**. This is the latency of 11-02 §3.5, $(N - 1)/2$ samples for $N = M + 1$ taps, now seen as a phase. Causal analog filters cannot have exactly linear phase; FIR digital filters can, which is a major reason audio, imaging and data-link equalizers are digital.
+where $A(\omega)$ is real because the paired exponentials $e^{\mp j\omega(n - M/2)}$ add to cosines. The phase is $-\omega M/2$ (plus jumps of π where $A$ changes sign), so the group delay is exactly $M/2$ samples at every frequency: **every frequency is delayed equally, and the waveform's shape is preserved**. This is the latency of 11-02 §3.5, $(N - 1)/2$ samples for $N = M + 1$ taps, now seen as a phase. Causal lumped (rational) analog filters cannot have exactly linear phase (only an ideal delay line can); FIR digital filters can, which is a major reason audio, imaging and data-link equalizers are digital.
 
 ![Magnitude of a five-point moving average with nulls at 0.4π and 0.8π, and its constant group delay of two samples](../../../assets/figures/11-07/ma5.svg)
 
@@ -177,6 +177,18 @@ the DTFT is the CT spectrum, scaled by $1/T_s$, with frequency $\Omega$ mapped t
 ![Two tones 50 Hz apart: a single merged peak with 64 samples, two separate peaks with 512 samples](../../../assets/figures/11-07/resolution.svg)
 
 *Figure 4. Tones at 1000 and 1050 Hz sampled at 8 kHz (Example 11-07.7). With 64 samples (8 ms) the window's main lobe, about 125 Hz wide per side, merges them; with 512 samples (64 ms) they are resolved.*
+
+### 3.7 Periodic sequences: the discrete-time Fourier series
+
+A sequence with period $N$ is the DT counterpart of 11-05's periodic signals, and it has a Fourier series with a twist: since $e^{jk(2\pi/N)n}$ repeats in $k$ with period $N$ (11-01 §3.7), only $N$ harmonics exist, so the series is a *finite* sum. The **discrete-time Fourier series** (DTFS) is
+
+$$
+x[n] = \sum_{k=0}^{N-1}a_ke^{jk(2\pi/N)n}, \qquad a_k = \frac1N\sum_{n=0}^{N-1}x[n]e^{-jk(2\pi/N)n} .
+$$
+
+*Derivation.* Multiply the synthesis sum by $e^{-jm(2\pi/N)n}$ and sum over one period. The finite geometric sum $\sum_{n=0}^{N-1}e^{j(k - m)(2\pi/N)n}$ equals $N$ when $k - m$ is a multiple of $N$ and $(1 - e^{j2\pi(k - m)})/(1 - e^{j2\pi(k - m)/N}) = 0$ otherwise. So only the term $k = m$ survives, giving $\sum_nx[n]e^{-jm(2\pi/N)n} = Na_m$: the analysis formula. Unlike the CT series, there is no convergence question; the sum is finite and exact.
+
+Three connections tie it to the rest of the chapter. The coefficients are the DFT of one period divided by $N$, $a_k = X[k]/N$, so an FFT computes them. Power splits over the harmonics, $\frac1N\sum_{n=0}^{N-1}\lvert x[n]\rvert^2 = \sum_{k=0}^{N-1}\lvert a_k\rvert^2$ (Parseval, by the same orthogonality). And the DTFT of the periodic sequence is a train of lines, $X(e^{j\omega}) = 2\pi\sum_ka_k\,\delta(\omega - 2\pi k/N)$ with the index $k$ running over all integers ($a_k$ repeating with period $N$), just as a CT periodic signal's transform is lines at its harmonics (11-06). For example, the period-4 sequence $1, 1, 0, 0, \dots$ has $a_k = \tfrac14(1 + e^{-jk\pi/2})$: $a_0$ = **0.5** (its average), $\lvert a_1\rvert = \lvert a_3\rvert$ = **0.3536**, $a_2 = 0$, and the power $\tfrac14(1 + 1)$ = **0.5** equals $0.25 + 2 \times 0.125$.
 
 ## 4. Worked examples
 
@@ -234,9 +246,9 @@ the DTFT is the CT spectrum, scaled by $1/T_s$, with frequency $\Omega$ mapped t
 
 ### Example 11-07.6 · The resonator's frequency response (tier B)
 
-**Setup.** The resonator of 11-04, $y[n] - 1.273y[n - 1] + 0.81y[n - 2] = x[n]$ with poles at $0.9e^{\pm j\pi/4}$. Find (a) its DC gain, (b) its peak gain and the frequency of the peak, (c) its −3 dB bandwidth and the ratio of peak frequency to bandwidth.
+**Setup.** The resonator of 11-04, $y[n] - 1.2728y[n - 1] + 0.81y[n - 2] = x[n]$ with poles at $0.9e^{\pm j\pi/4}$ (so $a_1 = 2 \times 0.9\cos(\pi/4) = 1.27279$, printed to five digits; the numbers below use the exact value). Find (a) its DC gain, (b) its peak gain and the frequency of the peak, (c) its −3 dB bandwidth and the ratio of peak frequency to bandwidth.
 
-**Solution.** Evaluating $\lvert H\rvert = 1/\lvert1 - 1.273e^{-j\omega} + 0.81e^{-j2\omega}\rvert$ numerically:
+**Solution.** Evaluating $\lvert H\rvert = 1/\lvert1 - 1.2728e^{-j\omega} + 0.81e^{-j2\omega}\rvert$ numerically:
 
 (a) **1.861**, as 11-04 found.
 
@@ -275,6 +287,9 @@ the DTFT is the CT spectrum, scaled by $1/T_s$, with frequency $\Omega$ mapped t
 | T 11-07.j | its floor at π | 0.31 | — |
 | T 11-07.k | transition narrowing from 21 to 81 taps | 3.6 | — |
 | T 11-07.l | 81-tap rectangular overshoot | 9.4 | % |
+| T 11-07.m | DTFS a₀ of 1, 1, 0, 0 | 0.5 | — |
+| T 11-07.n | DTFS magnitude of a₁ | 0.3536 | — |
+| T 11-07.o | power of 1, 1, 0, 0 | 0.5 | — |
 | Ex 11-07.1a | magnitude at DC | 5 | — |
 | Ex 11-07.1b | magnitude at π | 0.5556 | — |
 | Ex 11-07.1c | magnitude at π/2 | 0.7809 | — |
@@ -317,7 +332,7 @@ The lab, [labs/11-07-lab](../labs/11-07-lab/README.md), is a notebook in four pa
 3. Designs low-pass filters by windowed truncation for several lengths and windows and plots ripple against transition width.
 4. Resolves two close tones as the observation time grows, and shows that zero-padding smooths the plot without improving resolution.
 
-**Guided exercise (predict, then run).** **Before running Part 3**, predict: if the rectangular-window filter of Example 11-07.4 is lengthened from 21 to 81 taps, does its passband overshoot shrink, and does its transition band? Then run it. (The 10–90% transition narrows **3.6**-fold, roughly in proportion to the length, but the overshoot *rises* to **9.4**%: it is Gibbs's overshoot, and only a better window removes it.)
+**Guided exercise (predict, then run).** **Before running Part 3**, predict: if the rectangular-window filter of Example 11-07.4 is lengthened from 21 to 81 taps, does its passband overshoot shrink, and does its transition band? Then run it. (The 10–90% transition narrows **3.6**-fold, roughly in proportion to the length, but the overshoot *rises* to **9.4**%: it is Gibbs's overshoot, and only a better window removes it. It sits a little above 11-05's 8.95% limit because the ringing from the passband's other edge, at $-\pi/4$, adds to the peak; that contribution fades as the filter lengthens.)
 
 ## 6. Engineering tradeoffs
 
@@ -357,7 +372,7 @@ The lab, [labs/11-07-lab](../labs/11-07-lab/README.md), is a notebook in four pa
 ### State of the art (as of Nov 2026)
 
 - **Converter decimation filters are Dirichlet kernels.** The ADS1292R's digital filter is a third-order sinc filter, $\lvert(1 - z^{-N})/(1 - z^{-1})\rvert^3$ at the modulator rate [1]: on the unit circle, the cube of the Dirichlet kernel of §3.2, with nulls at every multiple of the output data rate **[Established]** (data sheet).
-- **Embedded and codec DSP mixes FIR and IIR.** The TLV320AIC3204's ADC processing blocks offer FIR filters of 20 or 25 taps and up to five biquads [2], and Arm's CMSIS-DSP library provides both FIR and biquad-cascade functions [3] **[Established]**: designers choose per block between linear phase (FIR) and few-MAC selectivity (IIR).
+- **Embedded and codec DSP mixes FIR and IIR.** The TLV320AIC3204's ADC processing blocks offer FIR filters of 20 or 25 taps and up to five biquads [2], and Arm's CMSIS-DSP library provides both FIR functions (in floating point and in Q7, Q15 and Q31 fixed point) and biquad-cascade functions [3] **[Established]**: designers choose per block between linear phase (FIR) and few-MAC selectivity (IIR).
 - **Linear phase is a selling point where waveform shape matters.** A 25-tap symmetric FIR at 48 kHz has a fixed group delay of **12** samples, **0.25** ms, at every frequency (by §3.4; the codec's own coefficients are user-programmable and need not be symmetric).
 
 ### Why it matters commercially
@@ -456,4 +471,4 @@ Multiply its taps by $(-1)^n$: the response shifts by π, moving the passband fr
 
 1. Texas Instruments, *ADS129x Low-Power, 2-Channel, 24-Bit Analog Front-End for Biopotential Measurements*, SBAS502C, revised April 2020, §8.3.5: [data sheet](https://www.ti.com/lit/ds/symlink/ads1292r.pdf). [R-186](../../../reference/research-log.md#r-186--convolution-in-practice).
 2. Texas Instruments, *TLV320AIC3204 Ultra Low Power Stereo Audio Codec*, SLOS602E, revised September 2019, Table 2: [data sheet](https://www.ti.com/lit/ds/symlink/tlv320aic3204.pdf). [R-186](../../../reference/research-log.md#r-186--convolution-in-practice).
-3. Arm, CMSIS-DSP library documentation, biquad cascade functions (accessed 20 Nov 2026): [documentation](https://arm-software.github.io/CMSIS-DSP/latest/group__BiquadCascadeDF1.html). [R-187](../../../reference/research-log.md#r-187--iir-filter-implementations).
+3. Arm, CMSIS-DSP library documentation, biquad cascade and FIR functions (accessed 20 Nov 2026): [biquad documentation](https://arm-software.github.io/CMSIS-DSP/latest/group__BiquadCascadeDF1.html), [FIR documentation](https://arm-software.github.io/CMSIS-DSP/latest/group__FIR.html). [R-187](../../../reference/research-log.md#r-187--iir-filter-implementations).

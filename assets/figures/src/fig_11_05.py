@@ -44,11 +44,11 @@ def fig_synthesis():
     axs[0].set_xlabel("t / T₀")
     axs[0].legend(fontsize=8, ncol=3, loc="lower center")
     axs[0].set_ylim(-2.3, 1.45)
-    z = np.linspace(-0.05, 0.25, 3001)
+    z = np.linspace(-0.05, 0.45, 5001)  # wide enough to show the k <= 9 peak at pi/10
     for N, c in ((9, PALETTE[2]), (99, PALETTE[3])):
         axs[1].plot(z, square_partial(z, N), color=c, lw=1.2, label=f"k ≤ {N}")
     axs[1].axhline(1.179, ls="--", color="0.4", lw=1)
-    axs[1].text(0.12, 1.2, "1.179", fontsize=9)
+    axs[1].text(0.36, 1.2, "1.179", fontsize=9)
     axs[1].set_xlabel("ω₀t (rad), near the jump")
     axs[1].set_title("Gibbs overshoot", fontsize=10)
     axs[1].set_ylim(-0.2, 1.35)

@@ -36,7 +36,7 @@
 
 **Projection onto perpendicular directions.** In three dimensions, the component of a vector along the $x$-axis is its dot product with the unit vector $\hat x$; this works because the axes are perpendicular. The harmonics $e^{jk\omega_0t}$ are "perpendicular" in the same sense: the average over a period of the product of two different harmonics (one conjugated) is zero (11-01). So the amount of harmonic $k$ in a signal is found by a "dot product", an average of the signal times $e^{-jk\omega_0t}$, and the other harmonics drop out. That is the whole derivation in §3.2.
 
-**An analogy from finance: seasonality, and where it breaks.** Monthly retail sales have an annual cycle with harmonics: a December spike, a summer bump, quarter-end effects. Decomposing the pattern into cycles of 12, 6, 4 and 3 months is a Fourier series of one year's seasonal profile; seasonal-adjustment methods use exactly such components. The analogy shows the essential features: a few harmonics often capture most of the variation, and a sharp spike (like December) needs many harmonics to reproduce. It breaks because real business series are not exactly periodic: they trend, the seasonal pattern drifts, and one-off events never repeat. A Fourier series describes a signal that repeats forever, exactly; anything else needs the Fourier transform (11-06) and care.
+**An analogy from finance: seasonality, and where it breaks.** Monthly retail sales have an annual cycle with harmonics: a December spike, a summer bump, quarter-end effects. Decomposing the pattern into cycles of 12, 6, 4 and 3 months is a Fourier series of one year's seasonal profile, and trigonometric seasonal terms of this kind are one standard way to model it (others use moving averages instead). The analogy shows the essential features: a few harmonics often capture most of the variation, and a sharp spike (like December) needs many harmonics to reproduce. It breaks because real business series are not exactly periodic: they trend, the seasonal pattern drifts, and one-off events never repeat. A Fourier series describes a signal that repeats forever, exactly; anything else needs the Fourier transform (11-06) and care.
 
 ## 3. Theory
 
@@ -137,7 +137,13 @@ $$
 \lvert V_p\sin\omega t\rvert = \frac{2V_p}{\pi} - \frac{4V_p}{\pi}\sum_{m=1}^{\infty}\frac{\cos(2m\omega t)}{4m^2 - 1} ,
 $$
 
-a DC term of $2V_p/\pi$ (the rectifier's output, 10-01) plus ripple at 120 Hz, 240 Hz, … for 60 Hz mains (Example 11-05.6).
+a DC term of $2V_p/\pi$ (the rectifier's output, 10-01) plus ripple at 120 Hz, 240 Hz, … for 60 Hz mains (Example 11-05.6). *Derivation.* The waveform is even, so only cosines appear. With $\theta = \omega t$ over one period $0 < \theta < \pi$, the coefficient of harmonic $m$ (frequency $2m\omega$) is $c_m = \frac{V_p}{\pi}\int_0^\pi\sin\theta\cos 2m\theta\,d\theta$. The product-to-sum identity gives $\sin\theta\cos2m\theta = \tfrac12[\sin(2m + 1)\theta - \sin(2m - 1)\theta]$, and $\int_0^\pi\sin n\theta\,d\theta = 2/n$ for odd $n$, so
+
+$$
+c_m = \frac{V_p}{\pi}\left(\frac{1}{2m + 1} - \frac{1}{2m - 1}\right) = -\frac{2V_p}{\pi(4m^2 - 1)} .
+$$
+
+At $m = 0$ this is $2V_p/\pi$, the DC term; for $m \ge 1$ the cosine amplitude is $2c_m = -4V_p/[\pi(4m^2 - 1)]$, as displayed.
 
 **Smoothness and decay.** The square wave and sawtooth jump, and their coefficients fall as $1/k$. The triangle is continuous with corners, and its coefficients fall as $1/k^2$. The rectified sine is continuous with corners, $1/k^2$ again. In general, if $x$ and its first $m - 1$ derivatives are continuous and the $m$th derivative jumps, the coefficients fall as $1/k^{m+1}$. The reason is the differentiation property (§3.7): each derivative multiplies $c_k$ by $jk\omega_0$, and a jump in the $m$th derivative appears as a $1/k$ series after $m$ differentiations. **Sharp edges mean slowly decaying spectra**, which is the Fourier-series form of the rule that fast edges need wide bandwidth and cause emissions.
 
@@ -149,7 +155,13 @@ a DC term of $2V_p/\pi$ (the rectifier's output, 10-01) plus ripple at 120 Hz, 2
 
 **Dirichlet conditions.** If $x$ is absolutely integrable over a period and has finitely many maxima, minima and jumps per period, the series converges to $x(t)$ wherever $x$ is continuous, and to the midpoint $\tfrac12[x(t^-) + x(t^+)]$ at a jump. Every signal an engineer generates satisfies these conditions.
 
-**Mean-square convergence.** For any signal with finite power, the partial sums $x_N = \sum_{\lvert k\rvert\le N}c_ke^{jk\omega_0t}$ converge in the sense that the power of the error, $\frac{1}{T_0}\int\lvert x - x_N\rvert^2dt$, goes to zero. Moreover, among all sums of harmonics up to $N$, the Fourier partial sum has the smallest error power: the coefficients are the least-squares best fit (the projection of §2). Truncating a Fourier series is therefore the best approximation of its size.
+**Mean-square convergence.** For any signal with finite power, the partial sums $x_N = \sum_{\lvert k\rvert\le N}c_ke^{jk\omega_0t}$ converge in the sense that the power of the error, $\frac{1}{T_0}\int\lvert x - x_N\rvert^2dt$, goes to zero. Moreover, among all sums of harmonics up to $N$, the Fourier partial sum has the smallest error power: the coefficients are the least-squares best fit (the projection of §2). *Proof.* Try any coefficients $d_k$ for $\lvert k\rvert \le N$. Write the error as $x - \sum d_ke^{jk\omega_0t} = (x - x_N) + \sum(c_k - d_k)e^{jk\omega_0t}$. The first part contains only harmonics above $N$, so it is orthogonal to the second, and by orthogonality the error power is
+
+$$
+\frac{1}{T_0}\int_{T_0}\Big\lvert x - \sum_{\lvert k\rvert\le N}d_ke^{jk\omega_0t}\Big\rvert^2dt = \sum_{\lvert k\rvert > N}\lvert c_k\rvert^2 + \sum_{\lvert k\rvert\le N}\lvert c_k - d_k\rvert^2 ,
+$$
+
+which is smallest, term by term, when $d_k = c_k$. Truncating a Fourier series is therefore the best approximation of its size.
 
 **The Gibbs phenomenon.** Near a jump, the partial sums overshoot. For the ±1 square wave, the peak of every large partial sum is about **1.179**: an overshoot of about 9% of the jump of 2 (Figure 2). Adding more harmonics squeezes the overshoot closer to the jump, at $\omega_0t \approx \pi/(N + 1)$, but does not reduce its height. The limiting peak is $\frac{2}{\pi}\operatorname{Si}(\pi)$, where $\operatorname{Si}(z) = \int_0^z\frac{\sin u}{u}du$. Mean-square convergence still holds, because the region of overshoot shrinks to zero width. The engineering consequences: any band-limited version of a sharp edge rings, and an ideal low-pass filter applied to a square wave produces this overshoot (11-06, 11-11).
 
@@ -245,7 +257,7 @@ a periodic signal with the same period and coefficients $c_kH(jk\omega_0)$. For 
 
 (c) $\operatorname{sinc}(1) = 0$, so $c_4$ = **0**: a 25% pulse fills exactly a quarter period, and the 4th harmonic completes one whole cycle under it, averaging to zero.
 
-**Sanity check.** At $D = 0.5$ the formula gives $c_k = 0.5A\,\operatorname{sinc}(k/2)$, which vanishes for even $k$: the 0-to-$A$ square wave, the ±A square wave shifted up by $A$ and halved.
+**Sanity check.** At $D = 0.5$ the formula gives $\lvert c_k\rvert = 0.5A\,\lvert\operatorname{sinc}(k/2)\rvert$, which vanishes for even $k$: the 0-to-$A$ square wave, the ±A square wave shifted up by $A$ and halved.
 
 ### Example 11-05.3 · Power in the harmonics (tier B)
 
@@ -259,7 +271,7 @@ a periodic signal with the same period and coefficients $c_kH(jk\omega_0)$. For 
 
 (c) $\text{THD} = \sqrt{(1 - 8/\pi^2)/(8/\pi^2)}$ = **48.34**%.
 
-**Sanity check.** A square wave is a very distorted sinusoid, so a THD near 50% is plausible; it is the standard upper reference for "how distorted can an oscillator's output get".
+**Sanity check.** A square wave is a very distorted sinusoid, so a THD near 50% is plausible. The square wave is the limit an overdriven sine oscillator approaches as it clips harder.
 
 ### Example 11-05.4 · The Gibbs overshoot (tier B)
 
@@ -273,7 +285,7 @@ a periodic signal with the same period and coefficients $c_kH(jk\omega_0)$. For 
 
 (c) The overshoot $0.179$ is **8.95**% of the jump of 2. The limit is $\frac{2}{\pi}\operatorname{Si}(\pi)$ = **1.17898**.
 
-**Sanity check.** If the overshoot shrank with $N$, the series would converge uniformly to a discontinuous function, which a sum of continuous functions cannot do. The non-vanishing overshoot is the price of a jump.
+**Sanity check.** Near the jump the partial sum depends on $t$ only through $(N + 1)\omega_0t$ (the Si integral of §3.5's "Going deeper"), so raising $N$ compresses the same shape horizontally toward the jump without changing its height: the peak sits at a fixed value of $(N + 1)\omega_0t \approx \pi$, and its height is the fixed number $\frac{2}{\pi}\operatorname{Si}(\pi)$. The non-vanishing overshoot is the price of a jump.
 
 ### Example 11-05.5 · The triangle from the square (tier B)
 
@@ -307,7 +319,7 @@ using $T_0\omega_0 = 2\pi$. The coefficients are real (even signal), and $A_k = 
 
 **Solution.** (a) $H(0) = 1$: **0.825** V.
 
-(b) $\lvert H(j100\,\text{kHz})\rvert = 1/\sqrt{1 + 100^2}$ = **0.0100**, so the fundamental's amplitude is $1.486 \times 0.0100$ = **14.85** mV. $\lvert H(j200\,\text{kHz})\rvert$ = **0.00500**, giving $1.050 \times 0.00500$ = **5.252** mV.
+(b) $\lvert H(j100\,\text{kHz})\rvert = 1/\sqrt{1 + 100^2}$ = **0.0100**, so the fundamental's amplitude is $1.4855\ \text{V} \times 0.0099995$ = **14.85** mV. $\lvert H(j200\,\text{kHz})\rvert$ = **0.00500**, giving $1.0504\ \text{V} \times 0.0049999$ = **5.252** mV (carry the unrounded amplitudes: 1.486 × 0.0100 would give 14.86).
 
 (c) Twice the fundamental is 29.7 mV, so the fundamental alone underestimates the peak-to-peak ripple: the higher harmonics, though small, add up at the waveform's corners. The estimate assumes the capacitor current is constant during each phase (the capacitor voltage barely moves): during the high phase the current is $(A - AD)/R$ for a time $DT_0$, so the change is $(3.3 - 0.825) \times 2.5\ \mu\text{s}/159.2\ \mu\text{s}$ = **38.88** mV, within 0.03% of the exact value.
 
@@ -323,15 +335,15 @@ using $T_0\omega_0 = 2\pi$. The coefficients are real (even signal), and $A_k = 
 
 (a) 400 kHz: 400, 800, 1200, 1600 kHz; nearest to 1000 kHz is 800 or 1200, **200** kHz away. 500 kHz: 500, 1000, 1500 kHz; the 2nd harmonic lands **0** kHz from the station. 600 kHz: 600, 1200, 1800 kHz; nearest **200** kHz away.
 
-(b) 400 kHz and 600 kHz: in each case two consecutive harmonics straddle the station. 500 kHz puts a strong harmonic on top of it; the radio would demodulate the amplifier's switching as a tone.
+(b) 400 kHz and 600 kHz: no harmonic falls within 200 kHz of the station, far outside an AM channel (10 kHz spacing in the Americas). 500 kHz puts a strong harmonic on top of it; the radio would demodulate the amplifier's switching as a tone.
 
-(c) The data sheet recommends 600 kHz (or 400 kHz) for stations from 917 to 1125 kHz, and states the principle: choose the frequency so that "the fundamental frequency and its second harmonic straddle the AM radio band listed" [1]. For 600 kHz, the harmonics 600 and 1200 kHz straddle the 917–1125 kHz band; for 400 kHz, 800 and 1200 kHz do.
+(c) The data sheet recommends 600 kHz (or 400 kHz) for stations from 917 to 1125 kHz, and states the principle: choose the frequency so that "the fundamental frequency and its second harmonic straddle the AM radio band listed" [1]. The test that matters is that no harmonic falls *inside* the band. For 600 kHz, the harmonics 600 and 1200 kHz lie on either side of the whole 917–1125 kHz band; for 400 kHz, 800 and 1200 kHz do. For 500 kHz, the harmonic at 1000 kHz lies inside it.
 
-**Sanity check.** A band narrower than the switching frequency can always be straddled by two consecutive harmonics; the art is choosing among a few available clock frequencies so that every band has one that works.
+**Sanity check.** Harmonics are spaced $f_{sw}$ apart, so a band narrower than $f_{sw}$ contains at most one of them, but it may contain one. The art is choosing among a few available clock frequencies so that, for every slice of the band, one of them puts no harmonic inside the slice: hence the data sheet's table.
 
 ![Harmonics of 400, 500 and 600 kHz switching against the AM band; only 500 kHz puts a harmonic on a 1000 kHz station](../../../assets/figures/11-05/am-avoid.svg)
 
-*Figure 4. Switching harmonics $kf_{sw}$ against the AM broadcast band and a station at 1000 kHz (Example 11-05.8). At 500 kHz the 2nd harmonic falls on the station; at 400 and 600 kHz consecutive harmonics straddle it.*
+*Figure 4. Switching harmonics $kf_{sw}$ against the AM broadcast band and a station at 1000 kHz (Example 11-05.8). At 500 kHz the 2nd harmonic falls on the station; at 400 and 600 kHz the nearest harmonics are 200 kHz away on either side.*
 
 ### Answer key
 
@@ -433,8 +445,8 @@ The lab, [labs/11-05-lab](../labs/11-05-lab/README.md), is a notebook in four pa
 ### State of the art (as of Nov 2026)
 
 - **Class-D amplifiers choose their switching frequency to dodge radio bands.** TI's TPA3116D2 offers switching (oscillator) frequencies of 400, 500, 600, 1000 and 1200 kHz (typical), selected with three pins, and its "AM avoidance" table recommends a frequency for each slice of the AM broadcast band so that "the fundamental frequency and its second harmonic straddle the AM radio band listed" [1] **[Established]** (data sheet). The data sheet also explains that an LC output filter with a corner below the switching frequency lets the switching ripple current circulate in the filter rather than the speaker [1].
-- **Emissions concerns extend to tens of megahertz.** The same data sheet advises ferrite-bead output filters effective in the 10 to 100 MHz range, noting that "many of the specifications regulating consumer electronics have emissions limits as low as 30 MHz" [1] **[Established]** (vendor application guidance): the high harmonics of fast switching edges are what those limits catch.
-- **Linearity specifications are Fourier coefficients.** The THD figures in 11-02 §9 (op-amps at −136 dB, codecs at −85 dB, class-D at 0.1% at half power) are all ratios of harmonic amplitudes measured exactly as in Example 11-05.3.
+- **Emissions concerns extend to tens of megahertz.** The same data sheet advises ferrite-bead output filters effective in the 10 to 100 MHz range, noting that "many of the specifications regulating consumer electronics have emissions limits as low as 30 MHz" [1] (the ferrite guidance is **[Established]** as the vendor's application advice; the regulatory remark is the vendor's summary, and the regulations themselves were not read here): the high harmonics of fast switching edges are what those limits catch.
+- **Linearity specifications are Fourier coefficients.** The THD+N figures in 11-02 §9 (op-amps at −136 dB, codecs at −85 dB, class-D at 0.1% at half power) are ratios of the harmonic amplitudes of Example 11-05.3 with the noise in the measurement band added ("+N"), so they are upper bounds on the THD alone.
 
 ### Why it matters commercially
 
@@ -445,7 +457,7 @@ The lab, [labs/11-05-lab](../labs/11-05-lab/README.md), is a notebook in four pa
 ### Marketing vs Reality
 
 - **"Spread-spectrum clocking eliminates EMI."** *Reality:* varying the clock frequency smears each harmonic over a band, lowering the *peak* that narrow-band EMI tests measure; it does not remove the energy (Parseval), and it can degrade jitter-sensitive circuits. *Sanity check:* ask for the total power in the band of concern, not only the peak reading, and for the jitter impact.
-- **"No output filter needed."** *Reality:* true for some class-D modulation schemes driving short speaker wires [1], but the switching harmonics are still present and radiate from the wires; the same data sheet devotes sections to ferrite-bead filters and AM avoidance. *Sanity check:* ask for emissions results with the customer's cable lengths.
+- **"No output filter needed."** *Reality:* filter-free claims refer to dropping the bulky LC filter, not the switching harmonics, which are still present and radiate from the speaker wires; the TPA3116D2 data sheet, for example, devotes sections to LC and ferrite-bead output filters and to AM avoidance [1]. *Sanity check:* ask for emissions results with the customer's cable lengths.
 - **"16-bit PWM."** *Reality:* resolution trades against PWM frequency (the timer must count $2^{16}$ ticks per period), and ripple is set by the frequency and filter. *Sanity check:* ask for the PWM frequency at the quoted resolution and the residual ripple after the recommended filter.
 
 ### Questions for engineering leaders

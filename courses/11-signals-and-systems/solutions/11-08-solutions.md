@@ -94,7 +94,7 @@ Poles at −10 and −100; DC gain $1000/1000 = 1$. At ω = 10: the vectors have
 
 ### Solution 11-08.14
 
-$Q = f_0/B = 100/4$ = **25**. For a band-pass resonance the −3 dB bandwidth in rad/s is exactly $2\alpha$ (§3.7), so $\alpha = \pi B = \pi \times 4$ MHz, and the poles' real part is **−12.57** × 10⁶ s⁻¹. The ringing envelope $e^{-\alpha t}$ has time constant $1/\alpha$ = **79.58** ns, during which the resonator completes $f_0/\alpha = Q/\pi$ = **7.958** cycles. A high-Q resonator rings for about $Q/\pi$ cycles per $e$-fold decay.
+$Q = f_0/B = 100/4$ = **25**. For a band-pass resonance the −3 dB bandwidth in rad/s is exactly $2\alpha$ (§3.7), so $\alpha = \pi B = \pi \times 4$ MHz, and the poles' real part is **−12.57** × 10⁶ s⁻¹. The ringing envelope $e^{-\alpha t}$ has time constant $1/\alpha$ = **79.58** ns, during which the resonator completes about $f_0/\alpha = Q/\pi$ = **7.958** cycles. (Strictly it rings at the damped frequency $f_d = f_0\sqrt{1 - 1/(4Q^2)}$, so the count is $f_d/\alpha$ = **7.956**; at $Q$ = 25 the difference is negligible.) A high-Q resonator rings for about $Q/\pi$ cycles per $e$-fold decay.
 
 ---
 
@@ -168,3 +168,4 @@ $Q = f_0/B = 100/4$ = **25**. For a band-pass resonance the −3 dB bandwidth in
 | 11-08.14b | pole real part | −12.57 | 10⁶ s⁻¹ |
 | 11-08.14c | envelope time constant | 79.58 | ns |
 | 11-08.14d | cycles per e-fold decay | 7.958 | — |
+| 11-08.14e | cycles at the damped frequency | 7.956 | — |

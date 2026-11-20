@@ -161,15 +161,16 @@ m = np.arange(200)
 s30 = np.cos(2 * np.pi * 30e3 / 48e3 * m)
 s18 = np.cos(2 * np.pi * 18e3 / 48e3 * m)
 v.assert_true("30 kHz and 18 kHz give the same samples at 48 kHz", np.allclose(s30, s18))
-v.check("11-07.2c", 18)
+v.check("11-07.2c", abs(30e3 - 48e3 * round(30e3 / 48e3)) / 1e3)  # fold into [0, fs/2]
 xr = np.random.default_rng(7).normal(size=12)
 Xp = dtft(xr, 0.3 * math.pi)
 Xm = dtft(xr, -0.3 * math.pi)
 v.assert_true("conjugate symmetry and 2pi periodicity",
               abs(Xm - np.conj(Xp)) < 1e-12 and abs(dtft(xr, 1.7 * math.pi) - Xm) < 1e-12
               and abs(dtft(xr, 2.3 * math.pi) - Xp) < 1e-12)
-v.check("11-07.3a", 2)
-v.check("11-07.3b", 40)
+X03 = 2 * np.exp(-1j * math.radians(40))           # the given value at +0.3*pi
+v.check("11-07.3a", abs(np.conj(X03)))
+v.check("11-07.3b", math.degrees(np.angle(np.conj(X03))))
 xm5 = (-0.5) ** np.arange(400)
 v.check("11-07.4a", abs(dtft(xm5, 0)))
 v.check("11-07.4b", abs(dtft(xm5, math.pi)))
@@ -226,5 +227,33 @@ v.check("Lab 11-07.h", ratio(512))
 _, H201h, _, _ = design(201, "hamming")
 v.check("Lab 11-07.i", db(np.abs(H201h[wg >= 0.5 * np.pi]).max()))
 v.check("Lab 11-07.j", db(np.abs(H21h[wg >= 0.5 * np.pi]).max()))
+
+# ============================================================ DTFS (3.7) and Problems 13-14, by FFT
+x4 = np.array([1.0, 1.0, 0.0, 0.0])
+a4 = np.fft.fft(x4) / 4
+v.check("T 11-07.m", a4[0].real)
+v.check("T 11-07.n", abs(a4[1]))
+v.check("T 11-07.o", np.mean(x4 ** 2))
+v.assert_true("DTFS Parseval, period 4", abs(np.mean(x4 ** 2) - np.sum(abs(a4) ** 2)) < 1e-12)
+x6 = np.array([3.0, 2, 1, 0, 1, 2])
+a6 = np.fft.fft(x6) / 6
+v.assert_true("DTFS of a real even period is real", np.allclose(a6.imag, 0))
+v.check("11-07.13a", a6[0].real)
+v.check("11-07.13b", a6[1].real)
+v.check("11-07.13c", a6[2].real)
+v.check("11-07.13d", a6[3].real)
+v.check("11-07.13e", np.mean(x6 ** 2))
+v.assert_true("Parseval, period 6", abs(np.mean(x6 ** 2) - np.sum(abs(a6) ** 2)) < 1e-12)
+v.assert_true("synthesis recovers the period", np.allclose(np.fft.ifft(a6 * 6).real, x6))
+X4 = np.fft.fft(np.ones(4))
+X8 = np.fft.fft(np.ones(4), 8)
+v.check("11-07.14a", X4[0].real)
+v.assert_true("other 4-point bins are zero", np.allclose(X4[1:], 0))
+v.check("11-07.14b", abs(X8[1]))
+v.check("11-07.14c", abs(X8[2]))
+v.check("11-07.14d", abs(X8[3]))
+w8 = np.pi * np.arange(8) / 4
+dtft = np.array([np.sum(np.exp(-1j * w * np.arange(4))) for w in w8])
+v.assert_true("8-point DFT samples the DTFT", np.allclose(X8, dtft))
 
 sys.exit(v.finish())

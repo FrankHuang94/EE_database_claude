@@ -91,7 +91,7 @@ The half-wave rectifier has a fundamental ripple at the line frequency itself, h
 
 ### Solution 11-05.11
 
-(a) The ordinary partial sum peaks at **1.179**; the Fejér sum at **0.9868**: no overshoot at all.
+(a) The ordinary partial sum peaks at **1.179**; the Fejér sum's maximum is **0.9936**, reached at $\omega_0t = \pi/2$, the middle of the half-cycle: no overshoot at all. (It falls short of 1 because the kernel's small tails reach into the neighbouring half-cycles at −1.)
 
 (b) The Fejér sum equals the average of the partial sums $S_0, \dots, S_N$, which is the square wave convolved with the Fejér kernel, a positive pulse of unit area. Averaging a signal that lies between −1 and +1 with positive weights cannot leave that range, so no overshoot is possible. The cost is a slower transition: the edge is smeared over a wider interval than the partial sum's, because the highest harmonics are weighted down. This is the first example of **windowing**, the central trade between ringing and resolution in spectral analysis and filter design (Course 16).
 
@@ -160,7 +160,7 @@ The half-wave rectifier has a fundamental ripple at the line frequency itself, h
 | 11-05.10b | residual 10 MHz | 21.01 | mV |
 | 11-05.10c | residual 50 MHz | 13.29 | mV |
 | 11-05.11a | partial-sum peak | 1.179 | — |
-| 11-05.11b | Fejér-sum peak | 0.9868 | — |
+| 11-05.11b | Fejér-sum maximum (at π/2) | 0.9936 | — |
 | 11-05.12a | PWM frequency | 15625 | Hz |
 | 11-05.12b | one LSB | 0.8057 | mV |
 | 11-05.12c | half an LSB | 0.4028 | mV |

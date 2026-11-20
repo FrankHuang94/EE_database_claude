@@ -59,14 +59,22 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Keeping every other sample.** $x[n] = \cos(0.6\pi n)$ is downsampled by 2, $y[n] = x[2n]$. (a) Find $y$'s frequency in $[0, \pi]$. (b) Explain why the result is not $1.2\pi$, and what a designer must do before downsampling a signal with content above $\pi/2$.
 
+### Problem 11-07.13 [B]
+
+**A discrete-time Fourier series.** A sequence of period 6 has one period $x[0..5] = 3, 2, 1, 0, 1, 2$. (a) Find its DTFS coefficients $a_0, \dots, a_5$. (b) Check Parseval's relation. (c) Write its DTFT on $-\pi < \omega \le \pi$.
+
+### Problem 11-07.14 [B]
+
+**What zero-padding shows.** $x[n] = 1$ for $n = 0, 1, 2, 3$. (a) Find its 4-point DFT. (b) Zero-pad to 8 points and find $\lvert X[1]\rvert$, $\lvert X[2]\rvert$ and $\lvert X[3]\rvert$. (c) Explain the difference between (a) and (b) using the DTFT, and say whether zero-padding improved the resolution.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 11-07) | Problems |
 |---|---|
-| 1. Definition, inverse, periodicity | 1, 3, 5, 6 |
+| 1. Definition, inverse, periodicity | 1, 3, 5, 6, 13 |
 | 2. Standard pairs and properties | 1, 4, 5, 6 |
 | 3. Frequency response, group delay, nulls, linear phase | 7, 8 |
 | 4. Truncation, windows, resolution | 10, 11 |
-| 5. DT and CT frequency; the DFT | 2, 9, 12 |
+| 5. DT and CT frequency; the DFT; the DTFS | 2, 9, 12, 13, 14 |

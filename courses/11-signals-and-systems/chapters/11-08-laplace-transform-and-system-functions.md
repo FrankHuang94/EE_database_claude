@@ -24,7 +24,7 @@
 The Fourier transform of 11-06 describes a signal as a sum of pure oscillations $e^{j\omega t}$. It fails for signals and systems that grow: an unstable impulse response, a ramp, even the step $u(t)$ need impulses or have no transform at all. The **Laplace transform** fixes this by letting the exponent be complex, $e^{st}$ with $s = \sigma + j\omega$, so that a signal is built from exponentials that grow or decay *and* oscillate. 02-05 and 07-04 used its one-sided form as a machine for solving circuits with initial conditions. This chapter uses the two-sided form as a *description of systems*: the system function $H(s)$, with its poles and zeros, says at a glance whether a system is causal and stable, how it rings, and what its frequency response looks like.
 
 - **Poles are a system's natural modes.** Their real parts say how fast transients die, their imaginary parts how they ring. Every stability discussion, from an LDO to a phase-locked loop, is about where the poles sit.
-- **Feedback moves poles.** Closing a loop replaces $G$ by $G/(1 + GK)$, and its poles are where $1 + GK = 0$. Compensation, oscillation and control (Course 13) are the study of that movement.
+- **Feedback moves poles.** Closing a loop replaces $G$ by $G/(1 + GK)$, and its poles are where $1 + GK = 0$. Compensation, oscillation and control (Courses 12 and 15) are the study of that movement.
 - **The frequency response is a slice.** $H(j\omega)$ is the system function along the imaginary axis; a pole near the axis makes a peak, a zero on it makes a notch. Designers place poles and zeros to shape a response.
 - **Equalizers are pole–zero placements.** A high-speed link's receiver boosts high frequencies with a continuous-time linear equalizer whose zero and poles are specified directly as frequencies (§9).
 - **Some systems cannot be undone.** A zero in the right half-plane makes the response start the wrong way and forbids a stable causal inverse: a hard limit on equalization and control.
@@ -248,7 +248,7 @@ flowchart LR
 
 *Figure 4. A negative-feedback loop: $H = G/(1 + GK)$.*
 
-The closed loop's poles are the roots of $1 + G(s)K(s) = 0$, not the poles of $G$. Feedback can move a stable system's poles into the right half-plane (oscillation, 07-04's Example 6) or pull an unstable or marginal system's poles into the left half-plane (stabilization, Example 11-08.3). Course 13 develops this as root locus and frequency-domain stability.
+The closed loop's poles are the roots of $1 + G(s)K(s) = 0$, not the poles of $G$. Feedback can move a stable system's poles into the right half-plane (oscillation, 07-04's Example 6) or pull an unstable or marginal system's poles into the left half-plane (stabilization, Example 11-08.3). Course 15 develops this as root locus and frequency-domain stability (15-06, 15-07).
 
 ### 3.7 Poles, zeros and geometric evaluation
 
@@ -324,9 +324,9 @@ An all-pass system passes every frequency at full strength but delays them by di
 
 - **No stable causal inverse.** The inverse system $1/H$ has poles where $H$ has zeros. A right-half-plane zero becomes a right-half-plane pole, so a causal inverse is unstable and a stable inverse is noncausal: the CT version of 11-02's echo channel. Only minimum-phase systems can be inverted exactly, causally and stably; equalizers can only approximate the inverse of the minimum-phase part.
 - **The wrong-way start.** A real zero at $+a$ makes the step response start in the direction opposite to where it ends (Example 11-08.5). Physically, two paths with different delays and signs compete, and the fast one has the wrong sign. Boost converters, which store energy in an inductor before delivering it, have such a zero in their control-to-output response, and it limits how fast their control loops can be.
-- **A bandwidth limit for feedback.** Trying to speed up a loop around a right-half-plane zero at $a$ by raising gain drives the closed-loop poles toward that zero (Course 13), so practical loops keep their crossover well below $a$.
+- **A bandwidth limit for feedback.** Trying to speed up a loop around a right-half-plane zero at $a$ by raising gain drives the closed-loop poles toward that zero (Course 15), so practical loops keep their crossover well below $a$.
 
-> **Going deeper — Bode's gain–phase relation.** For a minimum-phase system the phase is completely determined by the magnitude response: there is no freedom left once $\lvert H(j\omega)\rvert$ is fixed. Bode showed in 1940 that a magnitude falling at a constant $6k$ dB per octave over a wide band corresponds to a phase of about $-k\pi/2$ radians there [3]. The proof uses the fact that $\ln H(s) = \ln\lvert H\rvert + j\angle H$ is analytic in the right half-plane when $H$ has no poles or zeros there, so its real and imaginary parts on the axis are linked by a Hilbert transform. A right-half-plane zero breaks the link and adds phase lag on top of the minimum. This is why a feedback designer cannot cut a loop's gain steeply near crossover without losing phase margin, the subject of Course 13.
+> **Going deeper — Bode's gain–phase relation.** For a minimum-phase system the phase is completely determined by the magnitude response: there is no freedom left once $\lvert H(j\omega)\rvert$ is fixed. Bode showed in 1940 that a magnitude falling at a constant $6k$ dB per octave over a wide band corresponds to a phase of about $-k\pi/2$ radians there [3]. The proof uses the fact that $\ln H(s) = \ln\lvert H\rvert + j\angle H$ is analytic in the right half-plane when $H$ has no poles or zeros there, so its real and imaginary parts on the axis are linked by a Hilbert transform. A right-half-plane zero breaks the link and adds phase lag on top of the minimum. This is why a feedback designer cannot cut a loop's gain steeply near crossover without losing phase margin, the subject of 15-07 and 12-06.
 
 ## 4. Worked examples
 
@@ -368,7 +368,7 @@ The poles are at −3 and −2; the zero, where $2s + 5 = 0$, is at **−2.5**. 
 
 ### Example 11-08.3 · Feedback moves the poles (tier B)
 
-**Setup.** A plant $G(s) = K/[s(s + 2)]$ (an integrator with a lag, like a motor's position or a PLL's phase) is placed in a unity-feedback loop, $K(s) = 1$ in Figure 4's notation, with gain $K$. (a) Find the closed-loop system function. (b) For $K$ = 5, find the poles, ω₀, ζ and the step overshoot. (c) For which $K$ is ζ = 0.7071, and for which is the loop critically damped?
+**Setup.** A plant $G(s) = K/[s(s + 2)]$ (an integrator with a lag, like a motor's position or a PLL's phase) is placed in a unity-feedback loop (Figure 4's feedback block equal to 1), with loop gain $K$. (a) Find the closed-loop system function. (b) For $K$ = 5, find the poles, ω₀, ζ and the step overshoot. (c) For which $K$ is ζ = 0.7071, and for which is the loop critically damped?
 
 **Solution.** (a) $H = G/(1 + G) = K/[s(s + 2) + K] = K/(s^2 + 2s + K)$. The open-loop plant has poles at 0 and −2; its pole at the origin makes it not BIBO-stable (a bounded step input produces a ramp). Feedback replaces them by the roots of $s^2 + 2s + K = 0$.
 
@@ -422,7 +422,7 @@ $$
 H(f) = \frac{G + jf/f_z}{(1 + jf/f_{p1})(1 + jf/f_{p2})}, \qquad G = 10^{g_{DC}/20},
 $$
 
-with $f_z = f_{p1}$ = 21.25 GHz, $f_{p2}$ = 53.125 GHz, and $g_{DC}$ selectable from −20 to 0 dB. For $g_{DC}$ = −12 dB: (a) find $G$, the zero's frequency and the poles; (b) find the gain at DC and at the Nyquist frequency $f_b/2$, and the boost between them; (c) find the frequency and height of the peak relative to DC. (d) What does the equalizer do at $g_{DC}$ = 0 dB?
+with $f_z = f_{p1}$ = 21.25 GHz, $f_{p2}$ = 53.125 GHz, and $g_{DC}$ selectable from −20 to 0 dB. (The full reference receiver multiplies this by a second, low-frequency stage, $(G_{HP} + jf/f_{HP})/(1 + jf/f_{HP})$; this example takes that stage at its 0 dB setting, $G_{HP} = 1$, where it reduces to 1. §9 gives both stages together.) For $g_{DC}$ = −12 dB: (a) find $G$, the zero's frequency and the poles; (b) find the gain at DC and at the Nyquist frequency $f_b/2$, and the boost between them; (c) find the frequency and height of the peak relative to DC. (d) What does the equalizer do at $g_{DC}$ = 0 dB?
 
 **Solution.** (a) $G = 10^{-12/20}$ = **0.2512**. In terms of $s = j2\pi f$, the numerator $G + s/(2\pi f_z)$ vanishes at $s = -2\pi Gf_z$: a real zero at $Gf_z = 0.2512 \times 21.25$ = **5.338** GHz. The poles are real, at 21.25 GHz and 53.125 GHz (that is, at $s = -2\pi \times$ those frequencies). The zero sits below both poles.
 
@@ -472,6 +472,8 @@ At DC the product of distances is $\omega_c^2$, so with unity DC gain $H = \omeg
 | T 11-08.c | ESR zero, 0.1 Ω with 2.2 µF | 723 | kHz |
 | T 11-08.d | CTLE zero at g_DC = −20 dB | 2.125 | GHz |
 | T 11-08.e | CTLE boost at Nyquist, g_DC = −20 dB | 16.91 | dB |
+| T 11-08.i | low-frequency zero at g_DC,HP = −6 dB | 332.8 | MHz |
+| T 11-08.j | combined boost, both stages deepest | 22.91 | dB |
 | T 11-08.f | number of possible ROCs, poles at −1 and 2 | 3 | — |
 | T 11-08.g | ω₀ for poles at −2 ± j6 | 6.32 | rad/s |
 | T 11-08.h | ζ for poles at −2 ± j6 | 0.32 | — |
@@ -598,9 +600,11 @@ The netlist [rlc_poles.cir](../labs/11-08-lab/rlc_poles.cir) runs ngspice's pole
 
 ### State of the art (as of Nov 2026)
 
-- **High-speed links specify their equalizers as poles and zeros.** The IEEE 802.3ck task force's channel operating margin (COM) tool evaluates candidate channels with the reference CTLE of Example 11-08.6, $H(f) = (G + jf/f_z)/[(1 + jf/f_{p1})(1 + jf/f_{p2})]$ [1]. Its configuration sheet for draft 3.1 (dated 30 Nov 2021, distributed with COM version 3.70 in March 2022) sets, for backplane (KR) channels, a signaling rate of 53.125 GBd (Nyquist **26.56** GHz), $f_z = f_{p1}$ = 21.25 GHz, $f_{p2}$ = 53.125 GHz and $g_{DC}$ from −20 to 0 dB in 1 dB steps, plus a second low-frequency stage with a pole–zero pair at $f_b/80$ = **664.1** MHz and its own gain from −6 to 0 dB **[Established]** (task-force tool; the values in the published standard were not checked here). At the deepest setting the zero sits at **2.125** GHz and the boost at Nyquist is **16.91** dB.
-- **Regulators are stabilized by placing a zero.** TI's application note on LDO stability explains that an LDO's loop has three important poles and that the output capacitor's ESR supplies a stabilizing zero; for the TPS76050 with 2.2 µF, the ESR must be between 0.1 Ω and 20 Ω [2] **[Established]**. At 0.1 Ω the zero is at $1/(2\pi \times 0.1 \times 2.2\ \mu\text{F})$ = **723** kHz (the note's printed 72.3 kHz is a slip of a factor of ten; see R-117). Ceramic-stable LDOs move that zero inside the chip.
+- **High-speed links specify their equalizers as poles and zeros.** The IEEE 802.3ck task force's channel operating margin (COM) tool evaluates candidate channels with the reference CTLE of Example 11-08.6, $H(f) = (G + jf/f_z)/[(1 + jf/f_{p1})(1 + jf/f_{p2})]$ [1]. Its configuration sheet for draft 3.1 (dated 30 Nov 2021, distributed with COM version 3.70 in March 2022) sets, for backplane (KR) channels, a signaling rate of 53.125 GBd (Nyquist **26.56** GHz), $f_z = f_{p1}$ = 21.25 GHz, $f_{p2}$ = 53.125 GHz and $g_{DC}$ from −20 to 0 dB in 1 dB steps, plus a second low-frequency stage $(G_{HP} + jf/f_{HP})/(1 + jf/f_{HP})$ with its pole at $f_{HP} = f_b/80$ = **664.1** MHz and its gain $g_{DC,HP}$ from −6 to 0 dB, which puts its zero at $G_{HP}f_{HP}$ **[Established]** (a draft task-force configuration; the values in the published standard were not checked here). The configurations for cable (CR) and chip-to-chip (C2C) channels use the same equalizer; the chip-to-module (C2M) configuration uses a different one ($f_z$ = 12.58 GHz, poles at 20 and 28 GHz, $g_{DC}$ down to −13 dB) [1]. With the low-frequency stage at 0 dB, the deepest setting puts the zero at **2.125** GHz and the boost at Nyquist at **16.91** dB (Example 11-08.6); with both stages at their deepest settings ($g_{DC}$ = −20 dB, $g_{DC,HP}$ = −6 dB), the low-frequency zero moves to **332.8** MHz and the combined boost is **22.91** dB.
+- **Regulators are stabilized by placing a zero.** TI's application note on LDO stability explains that an LDO with a PMOS or PNP pass element has three important poles in its loop and that the output capacitor's ESR supplies a stabilizing zero; for the TPS76050 with 2.2 µF, the ESR must be between 0.1 Ω and 20 Ω [2] **[Established]**. At 0.1 Ω the zero is at $1/(2\pi \times 0.1 \times 2.2\ \mu\text{F})$ = **723** kHz (the note's printed 72.3 kHz is a slip of a factor of ten; see R-117). Ceramic-stable LDOs move that zero inside the chip.
 - **Simulators find poles directly.** ngspice's `.pz` analysis computes the poles and zeros of a circuit's transfer function [4]; the lab uses it to confirm Example 11-08.4.
+
+> **Deeper:** see companion repo *Datacenter Networking* for how CTLE, FFE and DFE equalizers are combined and specified in high-speed links.
 
 ### Why it matters commercially
 
@@ -693,7 +697,7 @@ At the roots of $1 + G(s)K(s) = 0$, not at the poles of $G$: feedback moves them
 
 - **Builds on:** the Fourier transform from [11-06](11-06-continuous-time-fourier-transform.md); eigenfunctions, $H(s)$ and the RLC impulse response from [11-04](11-04-lti-systems-and-differential-equations.md); BIBO stability from [11-03](11-03-convolution.md); the echo channel's unstable inverse from [11-02](11-02-system-properties.md); the unilateral transform from [02-05](../../02-complex-numbers-des-and-linear-algebra/chapters/02-05-laplace-transform-for-odes.md) and [07-04](../../07-circuit-analysis-2-transient-and-ac/chapters/07-04-laplace-domain-circuit-analysis.md); Bode plots from [07-07](../../07-circuit-analysis-2-transient-and-ac/chapters/07-07-frequency-response-and-bode-plots.md).
 - **Next:** [11-09 The z-Transform](11-09-z-transform.md) does the same for DT systems, with the unit circle in place of the imaginary axis.
-- **Used later:** sampling in [11-10](11-10-sampling-aliasing-reconstruction.md); feedback, root locus and phase margin in Course 13; active filters and amplifier compensation in Course 12; SerDes equalization in Course 17.
+- **Used later:** sampling in [11-10](11-10-sampling-aliasing-reconstruction.md); feedback, root locus and phase margin in Course 15; amplifier compensation in Course 12; SerDes equalization in Course 24 (24-03).
 
 ## 13. Further study
 

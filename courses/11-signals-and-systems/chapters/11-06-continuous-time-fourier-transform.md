@@ -36,7 +36,7 @@ The Fourier series of 11-05 describes signals that repeat forever. Most signals 
 
 **Short in time, wide in frequency.** Compressing a signal in time by a factor $a$ makes every feature happen $a$ times faster, so every frequency component moves up by $a$: the spectrum stretches by $a$. A narrow pulse has a wide spectrum and a wide pulse a narrow one. This is the uncertainty principle of signal processing, and it is why sending more bits per second needs more bandwidth.
 
-**An analogy from finance: the yield curve of a cash flow, and where it breaks.** A bond's price can be computed by discounting each cash flow, or by decomposing the bond into zero-coupon strips, one per payment date, and summing their prices. Two complete descriptions of the same object, related by a transform; questions that are hard in one are easy in the other (duration and convexity are natural in one view, cash-flow timing in the other). The Fourier transform does the same for signals: time and frequency are two complete descriptions, and filtering, which is a convolution in time, is a simple multiplication in frequency. The analogy breaks because discounting is a real exponential weighting that only shrinks distant flows, while the Fourier kernel $e^{-j\omega t}$ rotates without shrinking: it measures oscillation, not decay. (Its decaying cousin, $e^{-st}$, is the Laplace transform of 11-08.)
+**An analogy from finance: a bond's schedule and its price–yield curve, and where it breaks.** A bond can be described by its schedule, the cash flow due on each date, or by its price as a function of yield, $P(y) = \sum_t CF_t\,e^{-yt}$ with continuous compounding. The second description is a transform of the first: each yield weights the whole schedule at once, and the schedule can be recovered from the whole curve. Questions that are hard in one view are easy in the other: "what is paid when" is read off the schedule, while interest-rate sensitivity (duration, $-P'/P$, and convexity) is natural on the price–yield curve. The Fourier transform does the same for signals: time and frequency are two complete descriptions, and filtering, a convolution in time, is a simple multiplication in frequency. The analogy breaks because the yield kernel $e^{-yt}$ is a real exponential that only shrinks distant flows, while the Fourier kernel $e^{-j\omega t}$ rotates without shrinking: it measures oscillation, not decay. (The yield transform is in fact a Laplace transform, the decaying cousin of 11-08.)
 
 ## 3. Theory
 
@@ -106,15 +106,15 @@ $$
 
 which is 1 for $\lvert\omega\rvert < W$ and 0 outside. This is the **ideal low-pass filter's** impulse response (§3.4).
 
-**Gaussian.** For $x(t) = e^{-t^2/(2\sigma^2)}$, note that $\dot x = -(t/\sigma^2)x$. The differentiation and frequency-differentiation properties (§3.3) turn this into $j\omega X = \frac{1}{\sigma^2}\cdot\frac{d X}{d\omega}\cdot(-1)$, that is $dX/d\omega = -\sigma^2\omega X$, whose solution is again a Gaussian. Fixing the constant by $X(0) = \int x\,dt = \sigma\sqrt{2\pi}$,
+**Gaussian.** For $x(t) = e^{-t^2/(2\sigma^2)}$, note that $\dot x = -(t/\sigma^2)x$. Transform both sides. Differentiation in time gives $\dot x \leftrightarrow j\omega X$; differentiation in frequency (§3.3) gives $t\,x(t) \leftrightarrow j\,dX/d\omega$. So $j\omega X = -\frac{1}{\sigma^2}\,j\frac{dX}{d\omega}$, and cancelling $j$, $dX/d\omega = -\sigma^2\omega X$. That first-order ODE (02-02) has the solution $X(0)e^{-\sigma^2\omega^2/2}$: again a Gaussian. Fixing the constant by $X(0) = \int x\,dt = \sigma\sqrt{2\pi}$,
 
 $$
 e^{-t^2/(2\sigma^2)} \;\leftrightarrow\; \sigma\sqrt{2\pi}\,e^{-\sigma^2\omega^2/2} .
 $$
 
-A Gaussian of width σ in time has width $1/\sigma$ in angular frequency (Figure 2c): it is the only shape that keeps its form, and it achieves the smallest possible product of the two widths (§3.6).
+A Gaussian of width σ in time has width $1/\sigma$ in angular frequency (Figure 2c): it keeps its Gaussian form under the transform, and it achieves the smallest possible product of the two widths (§3.6). (It is not the only self-transforming shape: the Hermite–Gaussian functions, a Gaussian times a polynomial, also transform into scaled copies of themselves.)
 
-**Step.** $u(t)$ is neither integrable nor of finite energy. Writing $u = \tfrac12 + \tfrac12\operatorname{sgn}(t)$ and using $\operatorname{sgn}(t) \leftrightarrow 2/(j\omega)$ (the limit of $e^{-a\lvert t\rvert}\operatorname{sgn}t$ as $a \to 0$),
+**Step.** $u(t)$ is neither integrable nor of finite energy. Writing $u = \tfrac12 + \tfrac12\operatorname{sgn}(t)$ and using $\operatorname{sgn}(t) \leftrightarrow 2/(j\omega)$, which follows as a limit: $e^{-a\lvert t\rvert}\operatorname{sgn}t = e^{-at}u(t) - e^{at}u(-t)$ transforms to $\frac{1}{a + j\omega} - \frac{1}{a - j\omega} = \frac{-2j\omega}{a^2 + \omega^2}$, which tends to $-2j/\omega = 2/(j\omega)$ as $a \to 0$ for every $\omega \ne 0$,
 
 $$
 u(t) \;\leftrightarrow\; \pi\,\delta(\omega) + \frac{1}{j\omega} .
@@ -167,7 +167,13 @@ $$
 H(j\omega) = Ke^{-j\omega t_0} :
 $$
 
-constant magnitude and **linear phase**. The slope of the phase measures delay. The **group delay** $\tau_g(\omega) = -\frac{d\angle H}{d\omega}$ is the delay experienced by a narrow band of frequencies around ω (by the envelope of a signal concentrated there). If τ_g varies with frequency, different parts of the spectrum arrive at different times and pulses spread: **dispersion**, a central impairment of long cables and fibers.
+constant magnitude and **linear phase**. The slope of the phase measures delay. The **group delay** $\tau_g(\omega) = -\frac{d\angle H}{d\omega}$ is the delay experienced by a narrow band of frequencies around ω, that is, by the envelope of a signal concentrated there. *Derivation.* Let $x(t) = a(t)\cos\omega_ct$, where the envelope $a(t)$ has spectrum confined to $\lvert\omega\rvert < B$ with $B \ll \omega_c$. Over the narrow band $\omega_c \pm B$, take $\lvert H\rvert \approx \lvert H(j\omega_c)\rvert$ and expand the phase to first order, $\angle H(j\omega) \approx \phi_c - \tau_g(\omega - \omega_c)$, with $\phi_c = \angle H(j\omega_c)$. The positive-frequency half of $x$, $\tfrac12a(t)e^{j\omega_ct}$, has spectrum $\tfrac12A(j(\omega - \omega_c))$, so the output's positive-frequency half is $\tfrac12\lvert H\rvert e^{j\phi_c}\cdot\frac{1}{2\pi}\int A(j\nu)e^{-j\tau_g\nu}e^{j(\omega_c + \nu)t}d\nu = \tfrac12\lvert H\rvert e^{j(\omega_ct + \phi_c)}a(t - \tau_g)$, using the shift property. Adding the conjugate half,
+
+$$
+y(t) \approx \lvert H(j\omega_c)\rvert\,a(t - \tau_g)\cos\big(\omega_c(t - \tau_p)\big), \qquad \tau_p = -\frac{\phi_c}{\omega_c} :
+$$
+
+the envelope is delayed by the group delay, the carrier by the **phase delay** $\tau_p$. They are equal only for linear phase. If τ_g varies with frequency, different parts of the spectrum arrive at different times and pulses spread: **dispersion**, a central impairment of long cables and fibers.
 
 **Ideal filters.** The ideal low-pass filter passes $\lvert\omega\rvert < W$ unchanged and removes the rest: $H = \operatorname{rect}(\omega/2W)$, with impulse response $h(t) = \sin(Wt)/(\pi t)$ (duality, §3.2). It cannot be built, for three reasons that the theory of earlier chapters makes precise:
 
@@ -196,7 +202,7 @@ The function $\lvert X(f)\rvert^2$ is the **energy spectral density** (ESD): ene
 - **−3 dB (half-power) bandwidth:** where $\lvert H\rvert$ falls to $1/\sqrt2$ of its peak. Natural for filters and amplifiers.
 - **Null-to-null (or first-null) bandwidth:** to the first zero of the spectrum; for a pulse of width $T$, $1/T$.
 - **Fractional-energy bandwidth:** the band containing a stated fraction (for example 99%) of the energy. Natural for occupied-spectrum rules.
-- **Nyquist frequency of a data stream:** half the symbol rate, the highest frequency a symbol pattern alternating every symbol contains (11-01's PAM4 discussion).
+- **Nyquist frequency of a data stream:** half the symbol rate, the fundamental frequency of the fastest pattern, one that alternates every symbol (11-01's PAM4 discussion).
 
 These can differ enormously for the same signal: a decaying exponential's 99%-energy bandwidth is 64 times its −3 dB bandwidth, because its spectrum falls only as $1/\omega$ (Example 11-06.6).
 
@@ -216,7 +222,7 @@ $$
 t_r = \frac{\ln9}{2\pi f_{3dB}} \approx \frac{0.350}{f_{3dB}} .
 $$
 
-A system with a Gaussian impulse response of standard deviation σ has $t_r = 2.563\sigma$ and $f_{3dB} = 0.1325/\sigma$, a product of 0.340. Because the two very different shapes give nearly the same product, **$t_r \approx 0.35/\text{bandwidth}$** is a dependable rule (Figure 3, Example 11-06.7).
+A system with a Gaussian impulse response of standard deviation σ, $h(t) = e^{-t^2/(2\sigma^2)}/(\sigma\sqrt{2\pi})$, has as its step response the Gaussian distribution function $\Phi(t/\sigma)$ (03-02), which crosses 10% and 90% at $\mp1.2816\sigma$: $t_r = 2.563\sigma$. Its transform is $\lvert H(f)\rvert = e^{-(2\pi f\sigma)^2/2}$ (§3.2), which falls to $1/\sqrt2$ when $(2\pi f\sigma)^2/2 = \tfrac12\ln2$, so $f_{3dB} = \sqrt{\ln2}/(2\pi\sigma) = 0.1325/\sigma$. The product is 0.340. Because the two very different shapes give nearly the same product, **$t_r \approx 0.35/\text{bandwidth}$** is a dependable rule (Figure 3, Example 11-06.7).
 
 **Cascades: rise times add in quadrature.** When systems with nonnegative, unit-area impulse responses are cascaded, the impulse responses convolve, and the **variances of the impulse responses add**: the same arithmetic as for a sum of independent random variables (03-04), because a nonnegative unit-area function is a probability density and convolution is the density of a sum. For Gaussian-like responses, rise time is proportional to the standard deviation, so
 
@@ -431,10 +437,12 @@ The lab, [labs/11-06-lab](../labs/11-06-lab/README.md), is a notebook in four pa
 - **PAM4 trades levels for bandwidth.** PCIe 6.0 doubled PCIe 5.0's 32 GT/s by sending two bits per symbol at the same symbol rate, keeping the 16 GHz Nyquist frequency [2] **[Established]** (PCI-SIG presentations): Example 11-06.8's point that the symbol rate, not the bit rate, sets the spectrum.
 - **Converter bandwidths follow from their filters.** The ADS1292R's −3 dB bandwidth of $0.262f_{DR}$ [1] **[Established]** is the cube of a boxcar's transform (Example 11-06.4).
 
+> **Deeper:** see companion repo *Datacenter Networking* for channel loss budgets, PAM4 links and SerDes equalization at the system level.
+
 ### Why it matters commercially
 
 - **Every doubling of link speed is a bandwidth problem.** Each generation of PCIe, Ethernet or memory interface either doubles the Nyquist frequency (more channel loss, costlier boards, retimers) or adds levels (less noise margin, more complex receivers). Which path a standard takes shapes the silicon and board markets for years.
-- **Loss budgets allocate cost.** Splitting 32 dB among package, board and add-in card (the work-group's −8.0/−15.5/−8.5 dB split [3]) decides who pays for low-loss materials, retimers or cables.
+- **Loss budgets allocate cost.** Splitting 32 dB among the root complex (the host chip's package and breakout), the system board and the add-in card (the work group's −8.0/−15.5/−8.5 dB split [3]) decides who pays for low-loss materials, retimers or cables.
 - **Bandwidth claims are the first line of instrument and amplifier marketing.** Knowing that rise time ≈ 0.35/bandwidth, and that rise times add in quadrature, turns a bandwidth number into what can actually be measured.
 
 ### Marketing vs Reality

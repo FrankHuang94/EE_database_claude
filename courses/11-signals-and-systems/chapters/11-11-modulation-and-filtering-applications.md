@@ -63,7 +63,7 @@ $$
 s(t)\cos(2\pi f_ct + \phi) = x(t)\cdot\tfrac12\left[\cos\phi + \cos(4\pi f_ct + \phi)\right] .
 $$
 
-The second term sits at $2f_c$ and is removed by a low-pass filter with cutoff between $W$ and $2f_c - W$, leaving $\tfrac12x(t)\cos\phi$. The demodulator needs the carrier's **frequency and phase**: a phase error φ scales the output by $\cos\phi$ (zero at 90°, where the message is lost entirely), and a small frequency error $\Delta f$ makes $\phi = 2\pi\Delta ft$ drift, so the output beats as $\cos(2\pi\Delta ft)$. Real receivers recover the carrier with a phase-locked loop (Course 13) or transmit a reference.
+The second term sits at $2f_c$ and is removed by a low-pass filter with cutoff between $W$ and $2f_c - W$, leaving $\tfrac12x(t)\cos\phi$. The demodulator needs the carrier's **frequency and phase**: a phase error φ scales the output by $\cos\phi$ (zero at 90°, where the message is lost entirely), and a small frequency error $\Delta f$ makes $\phi = 2\pi\Delta ft$ drift, so the output beats as $\cos(2\pi\Delta ft)$. Real receivers recover the carrier with a phase-locked loop (15-12, 20-10) or transmit a reference.
 
 ### 3.3 Conventional AM and envelope detection
 
@@ -358,8 +358,8 @@ Doubling bandwidth doubles capacity; doubling SNR adds only about 1 bit/s/Hz to 
 ## 12. Connections
 
 - **Builds on:** the modulation property and ideal filters from [11-06](11-06-continuous-time-fourier-transform.md); pole placement, Butterworth and group delay from [11-08](11-08-laplace-transform-and-system-functions.md); frequency shifting by sampling from [11-10](11-10-sampling-aliasing-reconstruction.md); class-D AM avoidance from [11-05](11-05-fourier-series.md); filter design from [07-08](../../07-circuit-analysis-2-transient-and-ac/chapters/07-08-filters-and-resonance.md).
-- **Next:** the Course 11 exam and review; then Course 12 (Electronics II) and Course 13 (control, phase-locked loops).
-- **Used later:** communication systems (modulation, noise, digital modulation, OFDM) in Course 17; RF front ends and mixers in the RF course.
+- **Next:** the Course 11 exam and review; then Course 12 (Electronics II). Control and phase-locked loops follow in Course 15.
+- **Used later:** communication systems (modulation, noise, digital modulation, OFDM) in Course 17; RF front ends and mixers in Course 21 (21-05, 21-08).
 
 ## 13. Further study
 

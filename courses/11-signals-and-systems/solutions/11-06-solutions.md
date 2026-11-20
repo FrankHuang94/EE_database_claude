@@ -86,11 +86,11 @@ The energy fraction within $\lvert f\rvert < W$ is $\int_{-WT}^{WT}\operatorname
 
 (b) $15.5\ \text{dB}/(1\ \text{dB/in})$ ≈ **15.5** inches.
 
-(c) Twice the frequency at twice the loss per inch: about **7.75** inches for the same allocation. Real board loss grows somewhat faster than proportionally at high frequency (dielectric loss is proportional to frequency, conductor loss grows as its square root, and roughness adds), so this estimate is optimistic for some materials and pessimistic for others. The point stands: doubling the Nyquist frequency roughly halves the reach, which is why PCIe 6.0 chose PAM4.
+(c) Twice the frequency at twice the loss per inch: about **7.75** inches for the same allocation. Real board loss per inch is a mix of two terms: dielectric loss grows in proportion to frequency, as assumed here, while conductor (skin-effect) loss grows only as its square root, with surface roughness adding to it. For a dielectric-dominated board the estimate is about right; where conductor loss matters, the loss at 32 GHz is less than double and the reach somewhat longer. The point stands: doubling the Nyquist frequency roughly halves the reach, which is why PCIe 6.0 chose PAM4.
 
 ### Solution 11-06.14
 
-(a) $0.2619 \times 2000$ = **523.9** Hz.
+(a) The −3 dB point of $\operatorname{sinc}^3(u)$ is at $u$ = 0.26194 (0.2619 to four digits), so $0.26194 \times 2000$ = **523.9** Hz.
 
 (b) $u = 60/2000 = 0.03$: $20\log_{10}\operatorname{sinc}^3(0.03)$ = **−0.039** dB, essentially no attenuation; the faster rate passes mains hum untouched.
 

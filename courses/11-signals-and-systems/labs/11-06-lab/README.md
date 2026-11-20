@@ -38,7 +38,7 @@ The transform pairs of §3.2; the convolution theorem (§3.3); Parseval (§3.5);
 | Lab 11-06.c | output energy by FFT convolution | 28.4 | V²·ms |
 | Lab 11-06.d | exact digital −3 dB frequency | 131.0 | Hz |
 | Lab 11-06.e | two single-pole stages | 1.528 | ns |
-| Lab 11-06.f | four single-pole stages | 2.245 | ns |
+| Lab 11-06.f | four single-pole stages | 2.2465 | ns |
 | Lab 11-06.g | two Gaussian stages | 1.414 | ns |
 | Lab 11-06.h | rise time of a 20 MHz limit | 17.5 | ns |
 

@@ -19,7 +19,7 @@ from pathlib import Path
 import numpy as np
 from scipy.integrate import quad
 from scipy.optimize import brentq
-from scipy.special import erf, erfinv, sici
+from scipy.special import erf, erfinv, gammaincinv, sici
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2] / "tools"))
@@ -62,7 +62,7 @@ G = lambda f: math.exp(-2 * math.pi ** 2 * sig ** 2 * f ** 2)
 f3g = brentq(lambda f: G(f) - 1 / math.sqrt(2), 1e-4, 1)
 v.check("T 11-06.c", f3g * sig)
 v.check("T 11-06.d", 10 ** (-32 / 20))                                    # 32 dB at 16 GHz [R-141]
-v.check("T 11-06.e", 26.56)                                               # 802.3ck objective [R-141]
+v.check("T 11-06.e", 53.125 / 2)                                         # half of 53.125 GBd [R-141]
 v.check("T 11-06.f", math.sqrt(500 ** 2 + 350 ** 2))
 v.check("T 11-06.g", 100 * (math.sqrt(500 ** 2 + 350 ** 2) / 500 - 1))
 v.check("T 11-06.h", 10 ** (32 / 20))
@@ -82,7 +82,8 @@ v.check("Lab 11-06.e", tr2 * 1e9)
 h4 = h2.copy()
 for _ in range(2):
     h4 = np.convolve(h4, h1)[: len(t)] * dt
-v.check("Lab 11-06.f", rise(np.cumsum(h4) * dt, t) * 1e9)
+v.check("Lab 11-06.f", (gammaincinv(4, 0.9) - gammaincinv(4, 0.1)) * tau * 1e9)  # Erlang-4, exact
+v.assert_true("numerical 4-stage convolution agrees within 0.1%", abs(rise(np.cumsum(h4) * dt, t) / ((gammaincinv(4, 0.9) - gammaincinv(4, 0.1)) * tau) - 1) < 1e-3)
 sg = 1e-9 / (t90 - t10)
 gg = 0.5 * (1 + erf((t - 10e-9) / (math.sqrt(2 * 2) * sg)))
 v.check("Lab 11-06.g", rise(gg, t) * 1e9)
@@ -194,8 +195,8 @@ Wc = 2 * math.pi * 1000
 v.check("11-06.3a", quad(lambda w: 1.0, -Wc, Wc)[0] / (2 * math.pi))
 v.check("11-06.4a", 1 / 10e-9 / 1e6)
 v.check("11-06.4b", 1 / 1e-9 / 1e9)
-v.check("11-06.4c", 10)
-v.check("11-06.4d", 1)
+v.check("11-06.4c", quad(lambda tt: 1.0 ** 2, 0, 10e-9)[0] * 1e9)    # energy of a 1 V, 10 ns pulse in V²·ns
+v.check("11-06.4d", quad(lambda tt: 1.0 ** 2, 0, 1e-9)[0] * 1e9)
 v.check("11-06.4e", abs(ft(lambda tt: 1.0, 0.0, 0, 10e-9)) / abs(ft(lambda tt: 1.0, 0.0, 0, 1e-9)))
 tri = lambda tt: max(0.0, 1 - abs(tt))
 v.check("11-06.5a", ft(tri, 0.0, -1, 1, pts=[0]).real)

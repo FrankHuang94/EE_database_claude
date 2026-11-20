@@ -19,7 +19,7 @@ The DTFT and its periodicity (§3.1), the Dirichlet kernel (§3.2), frequency re
 1. **Two ways (Part 1).** Compare the FFT of a zero-padded sequence with the DTFT summed directly at the FFT's frequencies.
 2. **Measured response (Part 2).** Drive the five-point average at 500 SPS with 50, 100, 150 and 200 Hz sinusoids and compare steady-state amplitudes with $\lvert H\rvert$.
 3. **Windowed design (Part 3, the chapter's guided exercise).** *Predict first:* what lengthening a rectangular-window design from 21 to 81 taps does to its overshoot and transition. Then tabulate peak, transition and stopband for rectangular and Hamming windows at 21, 81 and 201 taps.
-4. **Resolution (Part 4).** Compare the DTFT midway between tones at 1000 and 1050 Hz with its value at the tones, for records of 64, 160 and 512 samples at 8 kHz; check that zero-padding samples the same DTFT.
+4. **Resolution (Part 4).** Compare the DTFT midway between tones at 1000 and 1050 Hz (equal-amplitude cosines, both with zero phase at $n = 0$) with its value at the tones, for records of 64, 160 and 512 samples at 8 kHz; check that zero-padding samples the same DTFT.
 
 ## Expected results
 
@@ -28,7 +28,7 @@ The DTFT and its periodicity (§3.1), the Dirichlet kernel (§3.2), frequency re
 | 1 | FFT versus sum | Agreement to rounding |
 | 2 | Measured amplitudes | Equal to $\lvert H\rvert$; zero at the nulls (100 and 200 Hz) |
 | 3 | Windows | Rectangular overshoot stays near 9% as length grows; Hamming keeps it near 0.2–0.4% with a transition about twice as wide |
-| 4 | Resolution | One merged peak at 8 ms; separated tones at 20 ms and beyond |
+| 4 | Resolution | One merged peak at 8 ms; separated tones at 20 ms and beyond (for these phases: the midpoint value adds two complex contributions, so a different relative phase between the tones changes the ratios, and at 8 ms can change whether the peaks merge) |
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
@@ -53,7 +53,7 @@ The DTFT and its periodicity (§3.1), the Dirichlet kernel (§3.2), frequency re
 ### Answers
 
 1. At 500 SPS a 100 Hz cosine completes exactly one cycle in five samples, and five equally spaced samples of one cycle of a sinusoid sum to zero. The average of any five consecutive samples is therefore zero.
-2. No. With 160 samples the tones are exactly $f_s/N$ = 50 Hz apart, so each tone's Dirichlet kernel has a zero at the other tone's frequency and the midpoint falls near a deep notch of their combined pattern. With 512 samples both main lobes are narrower and the midpoint sits in a sidelobe region. Both resolve the tones; the ratio is a crude measure, and the longer record also separates them from other nearby components better.
+2. No. With 160 samples the tones are exactly $f_s/N$ = 50 Hz apart, so each tone's Dirichlet kernel has a zero at the other tone's frequency and the midpoint falls near a deep notch of their combined pattern. With 512 samples both main lobes are narrower and the midpoint sits in a sidelobe region. Both resolve the tones; the ratio is a crude measure, and it also depends on the tones' relative phase, because the midpoint value is the sum of the two tones' complex kernel values. A dependable resolution test is the record length itself, about $1/\Delta f$ or more; the longer record also separates the tones from other nearby components better.
 3. The passband ripple of a windowed design is set by the window's shape (its sidelobe level), which does not change with length; longer filters sharpen the transition and push the stopband sidelobes down further from the edge, so the worst stopband value measured from a fixed frequency (π/2) improves.
 
 ## Optional hardware extension

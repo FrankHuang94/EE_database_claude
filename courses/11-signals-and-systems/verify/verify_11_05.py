@@ -220,9 +220,11 @@ v.check("11-05.10a", 2 * abs(ck(sqc, 3, breaks=(0.5,))))
 v.check("11-05.10b", 2 * abs(ck(sqc, 1, breaks=(0.5,))) * 10 ** (-40 / 20) * 1e3)
 v.check("11-05.10c", 2 * abs(ck(sqc, 5, breaks=(0.5,))) * 10 ** (-30 / 20) * 1e3)
 v.check("11-05.11a", pk99)
-th = np.linspace(1e-6, 0.5, 200001)
+th = np.linspace(1e-6, math.pi - 1e-6, 400001)  # the whole positive half-cycle
 fej = sum((1 - k / 100) * 4 / (math.pi * k) * np.sin(k * th) for k in range(1, 100, 2))
 v.check("11-05.11b", fej.max())
+v.assert_true("Fejér maximum at the half-cycle midpoint", abs(th[fej.argmax()] - math.pi / 2) < 1e-3)
+v.assert_true("Fejér sum never exceeds 1", fej.max() < 1)
 fpwm = 64e6 / 4096
 lsb = 3.3 / 4096
 v.check("11-05.12a", fpwm)

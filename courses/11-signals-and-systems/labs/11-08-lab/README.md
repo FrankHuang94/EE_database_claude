@@ -50,12 +50,12 @@ The bilateral transform and its ROC (§3.1–3.3), inversion with the ROC (§3.4
 
 1. In Part 1, the integral for the causal signal converges at σ = 3 but not at σ = 1. Which term of the signal is responsible, and how does that explain why its ROC starts at the rightmost pole?
 2. In Part 3 the transient decays at the same rate for every $K > 1$. Why, from the pole positions? What would you change in the plant to make the loop settle faster?
-3. In Part 4, why does the shallowest CTLE setting give slightly *negative* boost, and why do the deeper settings approach $\lvert g_{DC}\rvert - 3.1$ dB?
+3. In Part 4, why does the −1 dB CTLE setting give a slightly *negative* boost (−0.33 dB; the 0 dB setting, a plain low-pass, is more negative still), and why do the deeper settings approach $\lvert g_{DC}\rvert - 3.1$ dB?
 
 ### Answers
 
 1. The $e^{2t}$ term: $e^{2t}e^{-\sigma t}$ is integrable on $t > 0$ only for σ > 2. The other term, $-e^{-t}$, only needs σ > −1. A right-sided signal's integral converges only where *every* term decays after weighting, so the ROC starts at the largest growth rate, the rightmost pole.
-2. For $K > 1$ the poles are $-1 \pm j\sqrt{K - 1}$: the gain changes only the imaginary part, and the real part, which sets the envelope $e^{-t}$, is fixed by the sum of the open-loop poles (0 and −2 average to −1). To settle faster, the open-loop poles must move left (a faster plant) or a zero must be added (lead compensation, Course 13).
+2. For $K > 1$ the poles are $-1 \pm j\sqrt{K - 1}$: the gain changes only the imaginary part, and the real part, which sets the envelope $e^{-t}$, is fixed by the sum of the open-loop poles (0 and −2 average to −1). To settle faster, the open-loop poles must move left (a faster plant) or a zero must be added (lead compensation, 15-09).
 3. At −1 dB the zero sits just below the first pole, so it barely lifts the response before the poles pull it down; the second pole's droop at Nyquist (−0.97 dB at 0 dB setting) outweighs the small rise. At deep settings the zero is far below Nyquist, the numerator is essentially $jf/f_z$, and the Nyquist gain approaches $1.25/(1.6008 \times 1.1180)$, −3.1 dB, while the DC gain is $g_{DC}$.
 
 ## Optional hardware extension

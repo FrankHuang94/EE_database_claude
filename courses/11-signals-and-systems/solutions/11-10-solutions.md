@@ -62,7 +62,7 @@ Setting $-20\log_{10}(2\pi f_0\sigma_t) = 70$: $\sigma_t = 10^{-3.5}/(2\pi f_0)$
 
 ### Solution 11-10.13
 
-Before: $6.02 \times 12 + 1.76$ = **74.0** dB. Oversampling by 64 keeps $1/64$ of the quantization noise in band: $+10\log_{10}64$ = **18.06** dB, giving **92.06** dB. The equivalent resolution is $(92.06 - 1.76)/6.02$ = **15.0** bits: 3 bits gained by a 64-fold rate increase, half a bit per doubling. Noise shaping (Course 12) does much better.
+Before: $6.02 \times 12 + 1.76$ = **74.0** dB. Oversampling by 64 keeps $1/64$ of the quantization noise in band: $+10\log_{10}64$ = **18.06** dB, giving **92.06** dB. The equivalent resolution is $(92.06 - 1.76)/6.02$ = **15.0** bits: 3 bits gained by a 64-fold rate increase, half a bit per doubling. Noise shaping (20-08) does much better.
 
 ### Solution 11-10.14
 

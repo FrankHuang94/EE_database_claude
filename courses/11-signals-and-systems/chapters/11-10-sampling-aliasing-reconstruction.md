@@ -169,7 +169,7 @@ $$
 \text{SNR} = 10\log_{10}\frac{V_{FS}^2/8}{V_{FS}^2/(12 \cdot 2^{2N})} = 10\log_{10}\left(1.5 \cdot 2^{2N}\right) = 6.02N + 1.76\ \text{dB} .
 $$
 
-**Oversampling gain.** That noise is spread evenly from 0 to $f_s/2$. Sampling at $\text{OSR}$ times the Nyquist rate of a band $f_B$ and then filtering digitally to $f_B$ keeps only $1/\text{OSR}$ of it: an improvement of $10\log_{10}(\text{OSR})$ dB, half a bit per doubling of the rate. Sigma–delta converters add **noise shaping**, pushing quantization noise to high frequencies before it is filtered, to gain far more (Course 12).
+**Oversampling gain.** That noise is spread evenly from 0 to $f_s/2$. Sampling at $\text{OSR}$ times the Nyquist rate of a band $f_B$ and then filtering digitally to $f_B$ keeps only $1/\text{OSR}$ of it: an improvement of $10\log_{10}(\text{OSR})$ dB, half a bit per doubling of the rate. Sigma–delta converters add **noise shaping**, pushing quantization noise to high frequencies before it is filtered, to gain far more (20-08).
 
 **Decimation.** After digital low-pass filtering to the new band, keeping every $M$th sample reduces the rate (11-07, Problem 12). The filter before decimation is itself an anti-aliasing filter, in the digital domain, against everything between the new $f_s/2$ and the old one. The ADS1292R's sinc³ filter plays exactly this role, with nulls at every multiple of its output data rate [1]. Its one blind spot is near multiples of the *modulator* rate, where its response repeats: interference there needs the analog filter (Example 11-10.7).
 
@@ -473,7 +473,7 @@ In even Nyquist zones the copy that lands in 0 to $f_s/2$ comes from the negativ
 
 - **Builds on:** the CT Fourier transform, modulation and the ideal low-pass filter from [11-06](11-06-continuous-time-fourier-transform.md); the DTFT from [11-07](11-07-discrete-time-fourier-transform.md); $z = e^{sT}$ from [11-09](11-09-z-transform.md); Butterworth responses from [11-08](11-08-laplace-transform-and-system-functions.md); sampled-tone ambiguity from [11-01](11-01-signals-classification-and-operations.md); the uniform distribution from [03-02](../../03-probability-statistics-and-random-variables/chapters/03-02-random-variables-and-distributions.md).
 - **Next:** [11-11 Modulation and Filtering Applications](11-11-modulation-and-filtering-applications.md) uses the same frequency shifting for communication.
-- **Used later:** data converters (sigma–delta, SAR, pipeline) in Course 12; multirate DSP in Course 16; RF receivers and band-pass sampling in Course 17; SerDes receivers in the networking material.
+- **Used later:** data converters (SAR, pipeline, sigma–delta) in Course 20 (20-06 to 20-08); multirate DSP in Course 16; RF receivers and band-pass sampling in Course 21 (21-08); SerDes receivers in the networking material.
 
 ## 13. Further study
 

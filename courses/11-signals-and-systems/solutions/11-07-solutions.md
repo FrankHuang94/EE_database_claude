@@ -70,6 +70,22 @@ Searching odd lengths: **75** taps is the first with a 10–90% transition of at
 
 (b) Downsampling by 2 stretches the spectrum by 2, so content above $\pi/2$ moves beyond π and wraps around the circle: aliasing. Before downsampling by $M$, a designer must low-pass filter to $\pi/M$ (a decimation filter, like the ADS1292R's sinc³); 11-10 and Course 16 develop this.
 
+### Solution 11-07.13
+
+(a) The period is even about $n = 0$ ($x[1] = x[5]$, $x[2] = x[4]$), so the sum pairs into cosines: $a_k = \tfrac16[3 + 4\cos(k\pi/3) + 2\cos(2k\pi/3) + 0 \cdot \cos k\pi]$. Then $a_0 = 9/6$ = **1.5** (the average), $a_1 = a_5 = (3 + 2 - 1)/6$ = **0.6667**, $a_2 = a_4 = (3 - 2 - 1)/6$ = **0**, and $a_3 = (3 - 4 + 2)/6$ = **0.1667**. All are real because the sequence is real and even.
+
+(b) Time side: $(9 + 4 + 1 + 0 + 1 + 4)/6 = 19/6$ = **3.167**. Frequency side: $1.5^2 + 2(0.6667)^2 + 0.1667^2 = 2.25 + 0.8889 + 0.0278 = 3.167$. They agree.
+
+(c) $X(e^{j\omega}) = 2\pi[1.5\,\delta(\omega) + 0.6667\,\delta(\omega \mp \pi/3) + 0.1667\,\delta(\omega - \pi)]$, with both signs of the $\pi/3$ lines (from $a_1$ and $a_5 = a_{-1}$), and the pattern repeating every 2π.
+
+### Solution 11-07.14
+
+(a) $X[0] = 1 + 1 + 1 + 1$ = **4**; for $k = 1, 2, 3$, $X[k] = \sum_{n=0}^{3}e^{-j\pi kn/2}$ is a sum of the four 4th roots of unity raised to the power $k$, which is 0. The 4-point DFT shows a single line at DC.
+
+(b) The DTFT is $X(e^{j\omega}) = e^{-j3\omega/2}\sin(2\omega)/\sin(\omega/2)$ (the rectangular pulse of §3.2 with $L = 4$). The 8-point DFT samples it at $\omega = \pi k/4$: $\lvert X[1]\rvert = \sin(\pi/2)/\sin(\pi/8) = 1/0.38268$ = **2.613**, $\lvert X[2]\rvert = \sin\pi/\sin(\pi/4)$ = **0**, and $\lvert X[3]\rvert = \lvert\sin(3\pi/2)\rvert/\sin(3\pi/8) = 1/0.92388$ = **1.082**.
+
+(c) Both DFTs sample the same DTFT. The 4-point DFT happens to sample it only at DC and at its zeros ($\omega = \pi/2, \pi, 3\pi/2$), so it hides the main lobe's shape and the sidelobes; the 8-point DFT also samples between them and shows the Dirichlet kernel. No resolution is gained: the main lobe is still $4\pi/N = \pi$ wide for $N = 4$ samples, and only a longer record narrows it. Zero-padding interpolates the spectrum; it does not add information.
+
 ---
 
 ## Answer key
@@ -106,3 +122,12 @@ Searching odd lengths: **75** taps is the first with a 10–90% transition of at
 | 11-07.11b | transition achieved | 0.0493 | π rad/sample |
 | 11-07.11c | stopband depth | −55.8 | dB |
 | 11-07.12a | frequency after downsampling | 0.8 | π rad/sample |
+| 11-07.13a | a₀ | 1.5 | — |
+| 11-07.13b | a₁ = a₅ | 0.6667 | — |
+| 11-07.13c | a₂ = a₄ | 0 | — |
+| 11-07.13d | a₃ | 0.1667 | — |
+| 11-07.13e | power | 3.167 | — |
+| 11-07.14a | X[0], 4 points | 4 | — |
+| 11-07.14b | 8-point magnitude at k = 1 | 2.613 | — |
+| 11-07.14c | 8-point magnitude at k = 2 | 0 | — |
+| 11-07.14d | 8-point magnitude at k = 3 | 1.082 | — |

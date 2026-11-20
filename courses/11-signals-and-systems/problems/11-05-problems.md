@@ -53,7 +53,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 11-05.11 [C]
 
-**Taming Gibbs.** The Fejér sum replaces the partial sum's coefficients by tapered ones: harmonic $k$ is weighted by $1 - k/(N + 1)$. (a) For the ±1 square wave with $N = 99$, the Fejér sum's maximum is 0.9868. Compare with the ordinary partial sum's. (b) Explain why tapering removes the overshoot, and what it costs.
+**Taming Gibbs.** The Fejér sum replaces the partial sum's coefficients by tapered ones: harmonic $k$ is weighted by $1 - k/(N + 1)$. (a) For the ±1 square wave with $N = 99$, the Fejér sum's maximum is 0.9936, reached in the middle of each half-cycle. Compare with the ordinary partial sum's peak. (b) Explain why tapering removes the overshoot, and what it costs.
 
 ### Problem 11-05.12 [C]
 

@@ -294,9 +294,9 @@ In positive powers, $X(z) = z(2z - 0.75)/[(z - 0.5)(z - 0.25)]$: poles at 0.5 an
 
 **Solution.** (a) $H(z) = 1/(1 + a_1z^{-1} + a_2z^{-2})$ with $a_1 = -2(0.9)\cos(\pi/4)$ = **−1.273** and $a_2 = 0.81$.
 
-(b) Long division is the recursion $h[n] = -a_1h[n - 1] - a_2h[n - 2]$ from $h[0] = 1$: $h[1]$ = **1.273**, $h[2] = 1.273^2 - 0.81$ = **0.81**, $h[3] = 1.273 \times 0.81 - 0.81 \times 1.273$ = **0**, $h[4]$ = **−0.6561**. The closed form gives $h[3] = 0.9^3\sin(\pi)/\sin(\pi/4) = 0$: the ringing has a period of 8 samples, and $n = 3$ falls on a zero crossing of $\sin((n + 1)\pi/4)$.
+(b) Long division is the recursion $h[n] = -a_1h[n - 1] - a_2h[n - 2]$ from $h[0] = 1$: $h[1]$ = **1.273**, $h[2] = a_1^2 - 0.81 = 1.62 - 0.81$ = **0.81** (with the exact $a_1 = 0.9\sqrt2$, $a_1^2 = 1.62$), $h[3] = a_1 \times 0.81 - 0.81 \times a_1$ = **0**, $h[4]$ = **−0.6561**. The closed form gives $h[3] = 0.9^3\sin(\pi)/\sin(\pi/4) = 0$: the ringing has a period of 8 samples, and $n = 3$ falls on a zero crossing of $\sin((n + 1)\pi/4)$.
 
-(c) $H(1) = 1/(1 - 1.273 + 0.81)$ = **1.861**: geometrically, $1/\lvert1 - p\rvert^2$, the inverse squared distance from $z = 1$ to the poles.
+(c) $H(1) = 1/(1 - 1.2728 + 0.81)$ = **1.861** (carry $a_1$ to five digits: 1.273 would give 1.862): geometrically, $1/\lvert1 - p\rvert^2$, the inverse squared distance from $z = 1$ to the poles.
 
 (d) At $e^{j\pi/4}$ the near pole is at distance $1 - r = 0.1$, the far pole at $\lvert e^{j\pi/4} - 0.9e^{-j\pi/4}\rvert$ = **1.345**. So the peak is about $1/(0.1 \times 1.345)$ = **7.433**, within 0.2% of the exact 7.443 (the true peak sits slightly off π/4 because the far pole's distance also varies). The bandwidth estimate $2(1 - r)$ = **0.2** rad/sample is 7% below the exact 0.2140: at $r$ = 0.9 the pole is not very close to the circle.
 
@@ -586,7 +586,7 @@ $a_2 = r^2$: the radius is $\sqrt{a_2}$. The angle then follows from $a_1 = -2r\
 
 - **Builds on:** the Laplace transform and its ROC from [11-08](11-08-laplace-transform-and-system-functions.md); the DTFT from [11-07](11-07-discrete-time-fourier-transform.md); difference equations, resonators and biquads from [11-04](11-04-lti-systems-and-differential-equations.md); BIBO stability from [11-03](11-03-convolution.md); geometric series from [01-08](../../01-calculus-for-engineers/chapters/01-08-sequences-series-and-taylor.md).
 - **Next:** [11-10 Sampling, Aliasing and Reconstruction](11-10-sampling-aliasing-reconstruction.md) explains the $z = e^{sT}$ map's wrapping as aliasing and shows how to avoid it.
-- **Used later:** digital filter design and multirate systems in Course 16; digital control in Course 13; CIC decimators in data converters (Course 12).
+- **Used later:** digital filter design and multirate systems in Course 16; digital control in Course 15 (15-11); CIC decimators in multirate DSP (16-09) and sigma–delta converters (20-08).
 
 ## 13. Further study
 
