@@ -5740,3 +5740,59 @@
   definition: An interconnect standard that runs on the PCIe physical layer and adds cache-coherent protocols for accelerators and attached memory, enabling memory expansion and pooling; CXL 4.0 (Nov 2025) runs at 128 GT/s.
   chapter: "14-11"
   see_also: [PCI Express (PCIe)]
+- term: Cache coherence
+  definition: The guarantee that all cores see a single, consistent sequence of values for each memory location despite private caches, maintained by a protocol enforcing the single-writer/multiple-reader and data-value invariants.
+  chapter: "14-12"
+  see_also: [MESI protocol, Memory consistency model]
+- term: MESI protocol
+  definition: A write-invalidate cache-coherence protocol whose block states are Modified, Exclusive, Shared and Invalid; the Exclusive state lets a core write data no other core holds without a bus transaction.
+  chapter: "14-12"
+  see_also: [Cache coherence, Snooping]
+- term: Snooping
+  definition: Cache coherence by broadcast, in which every cache observes all requests on a shared bus or broadcast network and updates or supplies its copies accordingly; simple and fast, but limited in scalability.
+  chapter: "14-12"
+  see_also: [Directory protocol]
+- term: Directory protocol
+  definition: Cache coherence in which a directory at each block's home node records which caches hold the block, so requests and invalidations go only to those caches; scales to many cores at the cost of directory storage and extra hops.
+  chapter: "14-12"
+  see_also: [Snooping]
+- term: Coherence miss
+  definition: A cache miss on a block the core held earlier but lost to another core's invalidation; the fourth C beside compulsory, capacity and conflict misses.
+  chapter: "14-12"
+  see_also: [False sharing, "Three Cs (compulsory, capacity, conflict)"]
+- term: False sharing
+  definition: Coherence misses caused by different cores writing different data that happen to share a cache block, so the block moves between caches although no variable is shared; fixed by padding or aligning data to blocks.
+  chapter: "14-12"
+  see_also: [Coherence miss]
+- term: Memory consistency model
+  definition: The part of an ISA's contract that specifies the order in which a core's loads and stores to different addresses may appear to other cores, such as sequential consistency, TSO or RISC-V's RVWMO.
+  chapter: "14-12"
+  see_also: [Sequential consistency, Total store ordering (TSO), Fence]
+- term: Sequential consistency
+  definition: The memory model (Lamport, 1979) in which every execution behaves as if all cores' operations occurred in one global order that respects each core's program order.
+  chapter: "14-12"
+  see_also: [Memory consistency model]
+- term: Total store ordering (TSO)
+  definition: A memory model, like that of x86, in which each core's stores pass through a FIFO store buffer, so a later load may overtake an earlier store to a different address while stores stay in order.
+  chapter: "14-12"
+  see_also: [Store buffer, Memory consistency model]
+- term: Store buffer
+  definition: A queue that holds a core's retired stores until they are written to the cache, letting the core continue; its contents are visible to the core's own loads but not yet to other cores.
+  chapter: "14-12"
+  see_also: [Total store ordering (TSO)]
+- term: Fence
+  definition: An instruction that orders memory operations, preventing specified earlier accesses from being reordered after specified later ones (for example RISC-V FENCE, x86 MFENCE).
+  chapter: "14-12"
+  see_also: [Memory consistency model]
+- term: Litmus test
+  definition: A tiny multithreaded program, such as store buffering or message passing, whose allowed final outcomes characterize a memory consistency model.
+  chapter: "14-12"
+  see_also: [Memory consistency model]
+- term: Load-reserved/store-conditional (LR/SC)
+  definition: "A pair of atomic instructions: LR loads a word and registers a reservation, and SC stores only if the reservation is still valid, reporting success or failure, so that a short retry loop implements any atomic update."
+  chapter: "14-12"
+  see_also: [Spin lock]
+- term: Spin lock
+  definition: A lock acquired by repeatedly attempting an atomic operation until it succeeds; spinning on ordinary reads first (test-and-test-and-set) avoids flooding the interconnect with coherence traffic.
+  chapter: "14-12"
+  see_also: [Load-reserved/store-conditional (LR/SC)]

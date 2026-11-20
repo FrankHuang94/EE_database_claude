@@ -223,6 +223,8 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-215 | RISC-V privileged ISA: virtual memory and traps | Nov 2026 |
 | R-216 | PCI Express generations 1.0–8.0 | Nov 2026 |
 | R-217 | AMBA AXI Issue L and CXL 4.0 | Nov 2026 |
+| R-218 | RISC-V RVWMO, Ztso and atomics | Nov 2026 |
+| R-219 | x86-TSO (Sewell et al., CACM 2010) | Nov 2026 |
 
 ---
 
@@ -2229,3 +2231,20 @@ R&D % = R&D ÷ revenue.
 
 - **AXI:** Arm, "AMBA AXI Protocol Specification", ARM IHI 0022, Issue L, "Date of issue 27 Aug 2025" (defines AXI5, AXI5-Lite, ACE5-Lite; Issue L added a credited transport option, Arm Compression Technology and other features). Issue J (1 Mar 2023): "AXI3, AXI4, AXI4-Lite, ACE, and ACE5 content removed"; Issue H (2020) adopted the Manager/Subordinate terminology; first release Issue A, Jun 2003. The five channels are AW, W, B, AR and R. Arm: "AMBA specifications are royalty free and platform independent, and can be used with any processor architecture." [AXI Issue L (PDF)](https://documentation-service.arm.com/static/68b03beb01ae952d9559f9eb) · [Arm AMBA](https://www.arm.com/architecture/system-architectures/amba)
 - **CXL 4.0** (CXL Consortium release, Beaverton, Ore., 18 Nov 2025): "CXL 4.0 specification doubles bandwidth from 64GTs to 128GTs, adds support for bundled ports, and enhances memory RAS features"; keeps the 256-byte Flit of CXL 3.x, adds native x2 links and up to four retimers, and is backward compatible with CXL 3.x, 2.0, 1.1 and 1.0. As of 20 Nov 2026 the specification page still offers CXL 4.0. [Press release (PDF)](https://computeexpresslink.org/wp-content/uploads/2025/11/CXL_4.0-Specification-Release_FINAL_Website-Copy.pdf) · [Specification page](https://computeexpresslink.org/cxl-specification/)
+
+## R-218 · RISC-V RVWMO, Ztso and atomics
+
+*Read on 20 Nov 2026 from the unprivileged volume of the ratified manual set 20260120 on docs.riscv.org (primary; see R-201); tagged [Established].*
+
+- **RVWMO (Chapter 17, "RVWMO Memory Consistency Model, Version 2.0"):** "Under RVWMO, code running on a single hart appears to execute in order from the perspective of other memory instructions in the same hart, but memory instructions from another hart may observe the memory instructions from the first hart being executed in a different order. Therefore, multithreaded code may require explicit synchronization to guarantee ordering between memory instructions from different harts. The base RISC-V ISA provides a FENCE instruction for this purpose"; "The RVWMO memory model is defined in terms of the global memory order, a total ordering of the memory operations produced by all harts." [RVWMO](https://docs.riscv.org/reference/isa/v20260120/unpriv/rvwmo.html)
+- **Ztso:** the manual's table of contents lists Chapter 18, "'Ztso' Extension for Total Store Ordering, Version 1.0".
+- **Same-address ordering:** the explanatory chapter notes that RVWMO enforces "CoRR (Coherence for Read-Read pairs)", part of "sequential consistency per location". [Explanatory material](https://docs.riscv.org/reference/isa/v20260120/unpriv/mm-eplan.html)
+- **A extension:** "LR.W loads a word from the address in rs1, places the sign-extended value in rd, and registers a reservation set"; "SC.W conditionally writes a word in rs2 to the address in rs1: the SC.W succeeds only if the reservation is still valid and the reservation set contains the bytes being written. If the SC.W succeeds, the instruction writes the word in rs2 to memory, and it writes zero to rd. If the SC.W fails, the instruction does not write to memory, and it writes a nonzero value to rd." "The A extension comprises instructions provided by the Zaamo and Zalrsc extensions." §12.1.3, "Eventual Success of Store-Conditional Instructions": "The Zalrsc extension defines constrained LR/SC loops", which "must comprise at most 16 instructions placed sequentially in memory", with only base-I instructions (no loads, stores or backward jumps) between the LR and the SC. [A extension](https://docs.riscv.org/reference/isa/v20260120/unpriv/a-st-ext.html)
+
+## R-219 · x86-TSO (Sewell et al., CACM 2010)
+
+*Read on 20 Nov 2026 from the authors' final version of the CACM Research Highlights paper (dated 17 May 2010) on the Cambridge weak-memory pages (primary, author copy); tagged [Established].*
+
+- P. Sewell, S. Sarkar, S. Owens, F. Zappa Nardelli and M. O. Myreen, "x86-TSO: A Rigorous and Usable Programmer's Model for x86 Multiprocessors", *Communications of the ACM* 53(7), July 2010. [Author version (PDF)](https://www.cl.cam.ac.uk/~pes20/weakmemory/cacm.pdf)
+- **SB:** for x86, with x and y initially 0, "if two processors respectively write 1 to x and y and then read from y and x …, it is possible for both to read 0 in the same execution … this result cannot arise from any interleaving"; "Allowed Final State: Proc 0:EAX=0 ∧ Proc 1:EBX=0"; explained "as a visible consequence of store buffering".
+- **The model:** shared memory, "a global lock to indicate when a particular hardware thread has exclusive access to memory, and one store buffer per hardware thread"; "The store buffers are FIFO and a reading thread must read its most recent buffered write, if there is one, to that address; otherwise reads are satisfied from shared memory"; "An MFENCE instruction flushes the store buffer of that thread"; a LOCK'd instruction takes the global lock and flushes the buffer at its end.
