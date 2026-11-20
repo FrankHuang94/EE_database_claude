@@ -5082,3 +5082,35 @@
   definition: Treating time-varying fields as if static at each instant, valid when the structure is much smaller than a wavelength (a common rule is below λ/10); it is the assumption behind lumped circuit theory.
   chapter: "13-04"
   see_also: [Maxwell's equations]
+- term: Uniform plane wave
+  definition: An electromagnetic wave whose fields are uniform over planes perpendicular to its direction of travel, with E, H and the direction mutually perpendicular and E/H equal to the medium's intrinsic impedance; the far-field model of every radiated wave.
+  chapter: "13-05"
+  see_also: [Intrinsic impedance, Helmholtz equation]
+- term: Intrinsic impedance
+  definition: The ratio of electric to magnetic field in a uniform plane wave, η = √(jωµ/(σ + jωε)); √(µ/ε) for a lossless medium (376.7 Ω in free space), and small and at 45° for a good conductor.
+  chapter: "13-05"
+  see_also: [Impedance of free space, Uniform plane wave]
+- term: Phase velocity
+  definition: The speed ω/β at which points of constant phase move; 1/√(µε) in a lossless medium, and frequency-dependent (dispersive) in conductors, waveguides and real dielectrics.
+  chapter: "13-05"
+  see_also: [Group velocity]
+- term: Group velocity
+  definition: The speed dω/dβ at which a narrowband signal's envelope, and its energy and information, travel; equal to the phase velocity only in a non-dispersive medium.
+  chapter: "13-05"
+  see_also: [Phase velocity]
+- term: Propagation constant
+  definition: γ = α + jβ, with a wave varying as e^(−γz); α (Np/m) is the attenuation and β (rad/m) the phase constant. For a plane wave γ = √(jωµ(σ + jωε)); for a transmission line γ = √((R + jωL)(G + jωC)).
+  chapter: "13-05"
+  see_also: [Neper]
+- term: Axial ratio
+  definition: The ratio of the major to the minor axis of the ellipse traced by a wave's electric field; 1 for circular polarization and infinite for linear. A linear antenna on an axial-ratio-r wave captures between 1/(1 + r²) and r²/(1 + r²) of the power.
+  chapter: "13-05"
+  see_also: [Polarization (light)]
+- term: Skin depth
+  definition: The depth δ = 1/√(πfµσ) at which a field entering a good conductor falls by a factor e; 2.1 µm in copper at 1 GHz. The current flows mostly within a few skin depths of the surface.
+  chapter: "13-05"
+  see_also: [Skin effect, Surface resistance]
+- term: Surface resistance
+  definition: R_s = 1/(σδ) = √(πfµ/σ), the resistance per square of a conductor at high frequency (8.25 mΩ for copper at 1 GHz); the loss per area is ½R_s|H_t|², and it rises as √f.
+  chapter: "13-05"
+  see_also: [Skin depth]
