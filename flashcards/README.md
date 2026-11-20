@@ -28,3 +28,5 @@ Math is written as `\(...\)` (inline) and `\[...\]` (display), which Anki render
 | 11 · Signals and Systems | [11-signals-and-systems.csv](11-signals-and-systems.csv) | 87 |
 | 12 · Electronics II | [12-electronics-2.csv](12-electronics-2.csv) | 93 |
 | 13 · Electromagnetics | [13-electromagnetics.csv](13-electromagnetics.csv) | 101 |
+| 14 · Computer Organization and Architecture | [14-computer-organization-and-architecture.csv](14-computer-organization-and-architecture.csv) | 96 |
+| 15 · Control Systems | [15-control-systems.csv](15-control-systems.csv) | 82 |
