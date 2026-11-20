@@ -68,6 +68,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Reading a thermal data sheet.** A regulator's data sheet gives $R_{\theta JA}$ = 40 °C/W (JEDEC test board) and $\Psi_{JT}$ = 2 °C/W. (a) Estimate $T_J$ at 2 W and 85 °C ambient from $R_{\theta JA}$. (b) On your board, a thermocouple on top of the package reads 120 °C at 2 W. Estimate $T_J$ from $\Psi_{JT}$. (c) Which estimate would you trust, and why?
 
+### Problem 15-01.15 [B]
+
+**Gears and reflected inertia.** A motor of rotor inertia $J_m$ = 2 × 10⁻⁵ kg·m² drives a load of inertia $J_L$ = 0.01 kg·m² through an ideal gearbox that turns the motor $N$ = 10 times for each load turn. (a) Show that the load, seen from the motor shaft, behaves like an inertia $J_L/N^2$, and find the total inertia the motor accelerates. (b) What does a load torque $\tau_L$ look like at the motor shaft? (c) For which gear ratio is the load's angular acceleration largest for a given motor torque?
+
+### Problem 15-01.16 [B]
+
+**A thermal transfer function, and where the analogy stops.** For Example 15-01.3's two-node network, (a) find the transfer function $\Theta_J(s)/P(s)$ from power to junction temperature rise, its DC gain, its zero and its poles; (b) name two physical effects that the RC analogy of this network leaves out for a real processor and heat sink.
+
 ---
 
 ## Objective coverage
@@ -75,8 +83,8 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 15-01) | Problems |
 |---|---|
 | 1. Write equations from element and interconnection laws | 1, 3, 8, 9 |
-| 2. Analogies and their limits | 2, 8 |
-| 3. State-variable and transfer-function forms | 1, 7, 13 |
-| 4. DC motor | 6, 7, 12 |
+| 2. Analogies and their limits | 2, 8, 16 |
+| 3. State-variable and transfer-function forms | 1, 7, 13, 16 |
+| 4. DC motor | 6, 7, 12, 15 |
 | 5. Lumped thermal models | 4, 5, 11, 14 |
 | 6. Linearization and runaway | 9, 10, 12 |

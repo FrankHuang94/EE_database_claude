@@ -81,9 +81,9 @@ Since $(sI - A)^{-1} = \operatorname{adj}(sI - A)/\det(sI - A)$ (02-07), every e
 
 Three rules reduce any loop-free connection, and a fourth closes loops.
 
-- **Series:** $G_1$ then $G_2$ gives $G_2G_1$ (for single-input single-output blocks the order does not matter).
+- **Series:** $G_1$ then $G_2$ gives $G_2G_1$ (for single-input single-output blocks the order does not matter). This assumes the blocks do not load each other: each block's transfer function must already include the source it is driven from and the load it drives. Two RC low-pass sections joined through a buffer give $1/(RCs + 1)^2$; joined directly, the second section loads the first and the pair gives $1/(R^2C^2s^2 + 3RCs + 1)$.
 - **Parallel:** two blocks fed the same input, outputs added, give $G_1 + G_2$.
-- **Moving a pickoff or summing point** across a block: multiply or divide the moved branch by that block so that every signal keeps its value.
+- **Moving a pickoff or summing point** across a block: multiply or divide the moved branch by that block so that every signal keeps its value. For example, a disturbance $D$ added *after* a block $G$ gives $Y = GE + D$; moving that summing point to *before* $G$ requires $Y = G(E + D/G)$, so the moved branch becomes $D/G$. Moving a pickoff from before $G$ to after it divides the picked-off signal by $G$, and moving it from after to before multiplies by $G$ (Problem 15-02.6).
 - **Feedback:** with forward path $G$ and feedback path $H$ subtracted at the summing junction,
 
 $$
@@ -136,6 +136,18 @@ $$
 
 A load-current step $i_L$ is a disturbance injected at the output node. The closed loop divides the open-loop output impedance $Z_L$ by $1 + L$, where $L = G\beta$. Problem 15-02.11 puts numbers on it.
 
+```mermaid
+flowchart LR
+    VREF(("V_ref")) --> S(("Σ"))
+    S --> A["error amplifier A(s)"]
+    A --> GM["pass device g_m"]
+    GM --> S2(("Σ"))
+    IL(("load step −i_L")) --> S2
+    S2 --> ZL["output node Z_L(s)"]
+    ZL --> VOUT(("V_out"))
+    VOUT -- "divider β, subtracted" --> S
+```
+
 **A charge-pump phase-locked loop.** In the linear model of a PLL (15-12), phases are the signals. A phase–frequency detector and charge pump produce a current $K_{pd}(\theta_{ref} - \theta_{div})$ with $K_{pd} = I_{cp}/(2\pi)$ (A/rad). A loop filter, a resistor $R$ in series with a capacitor $C$, turns that current into a control voltage, $Z(s) = R + 1/(sC)$. The VCO turns voltage into frequency, so its output phase is the integral, $K_v/s$ (rad/s per volt, divided by $s$). A divider by $N$ feeds the phase back. The loop gain is
 
 $$
@@ -148,6 +160,17 @@ $$
 \frac{\Theta_{div}}{\Theta_{ref}} = \frac{L}{1 + L} = \frac{\omega_n^2(1 + sRC)}{s^2 + \omega_n^2RC\,s + \omega_n^2} ,
 \qquad 2\zeta\omega_n = \omega_n^2RC \;\Rightarrow\; \zeta = \frac{RC\omega_n}{2} .
 $$
+
+```mermaid
+flowchart LR
+    TR(("θ_ref")) --> PFD(("Σ: PFD"))
+    PFD --> CP["charge pump I_cp/2π (A/rad)"]
+    CP --> LF["loop filter Z(s) = R + 1/(sC)"]
+    LF --> VCO["VCO K_v/s"]
+    VCO --> TO(("θ_out"))
+    TO --> DIV["divider 1/N"]
+    DIV -- "θ_div, subtracted" --> PFD
+```
 
 The VCO's own output phase is $N$ times the divided one, so the output tracks $N$ times the reference: this is how a PLL multiplies a frequency. The two integrators in the loop (the VCO and the capacitor) make it a "type 2" loop that tracks a frequency step with zero phase error (15-04).
 
@@ -194,6 +217,17 @@ Multiplying numerator and denominator by $LJ$ gives $K/[(Ls + R)(Js + B) + K^2]$
 ### Example 15-02.3 · Reducing a two-loop diagram (tier B)
 
 **Setup.** A controller $G_1 = 10/(s + 1)$ drives an integrating plant $G_2 = 1/s$, which has an inner velocity-feedback loop of gain $H_2 = 2$ around it. An outer unity loop closes around both. Find the closed-loop transfer function, its natural frequency, damping ratio and DC gain, and the overshoot of its step response.
+
+```mermaid
+flowchart LR
+    R((R)) --> S1(("Σ outer"))
+    S1 -- "E" --> G1["G1 = 10/(s+1)"]
+    G1 --> S2(("Σ inner"))
+    S2 --> G2["G2 = 1/s"]
+    G2 --> Y((Y))
+    G2 -- "−H2 = −2" --> S2
+    Y -- "−1" --> S1
+```
 
 **Solution.** Close the inner loop first:
 
@@ -364,6 +398,7 @@ The lab, [labs/15-02-lab](../labs/15-02-lab/README.md), provides `blocks.py`: po
 
 - **Forgetting the sign at the summing junction.** Negative feedback gives $1 + GH$; positive feedback gives $1 - GH$. Most block diagrams mark the sign; check it.
 - **Cancelling an unstable pole with a zero.** On paper the transfer function looks stable, but the internal mode still grows (§3.2). Never "cancel" a right-half-plane pole with a controller zero.
+- **Cascading blocks that load each other.** Multiplying two RC sections' transfer functions is correct only through a buffer; connected directly, the second loads the first (§3.3).
 - **Moving a pickoff point without compensating.** Moving a branch past a block changes the signal it carries unless the branch is multiplied or divided by that block.
 - **Missing non-touching loops in Mason's formula,** or counting loops that share a node as non-touching (Example 15-02.5 shows the size of the error).
 - **Reading a DC gain from an unstable system.** The final-value theorem needs all poles in the left half-plane.
@@ -375,7 +410,7 @@ The lab, [labs/15-02-lab](../labs/15-02-lab/README.md), provides `blocks.py`: po
 
 - **Loop analysis is software-assisted.** Engineers enter block diagrams in MATLAB/Simulink or in open-source tools. The Python Control Systems Library is at release 0.10.2, published 5 July 2025 [1, R-229] **[Established]**. Its `feedback`, `series` and `parallel` functions implement this chapter's rules on transfer-function and state-space objects. Hand reduction remains essential for insight and for checking the software.
 - **Loop gain is measured, not only computed.** Regulator and PLL designers inject a small signal into the closed loop through a series resistor and measure the ratio of the signals on either side. This is R. D. Middlebrook's injection method (1975), which measures the loop gain without opening the loop and disturbing the operating point [2] **[Established]**.
-- **Power-management chips expose their loops.** Many switching and linear regulators let the designer choose compensation components or settings, because the load ($Z_L$ in §3.6) is the customer's and differs from board to board (22-07).
+- **Power-management chips expose their loops.** Many switching and linear regulators let the designer choose compensation components or settings, because the load ($Z_L$ in §3.6) is the customer's and differs from board to board (22-07) **[Established]**.
 
 ### Why it matters commercially
 

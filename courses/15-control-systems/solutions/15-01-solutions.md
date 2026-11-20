@@ -63,7 +63,18 @@ $$
 
 With $m_1 = m_2$ = 1 kg, the stiffness matrix is $\begin{bmatrix} 200 & -100 \\ -100 & 100 \end{bmatrix}$ N/m. Its eigenvalues are $150 \mp \sqrt{12500}$ = **38.2** and **261.8** s⁻², so the natural frequencies are **6.18** and **16.18** rad/s. In the slow mode the masses move together; in the fast mode they move against each other.
 
-In the force–current analogue each mass is a 1 F capacitor from its node to ground. The first spring is a 10 mH inductor from node 1 to ground, and the second spring a 10 mH inductor between nodes 1 and 2. The circuit has the mechanism's topology.
+In the force–current analogue each mass is a 1 F capacitor from its node to ground (node voltages are the two velocities). The first spring is a 10 mH inductor from node 1 to ground, and the second spring a 10 mH inductor between nodes 1 and 2. The circuit has the mechanism's topology:
+
+```text
+   node 1 (v1)          node 2 (v2)
+      o------- L2 = 10 mH -------o
+      |                          |
+   C1 = 1 F    L1 = 10 mH     C2 = 1 F
+      |          |               |
+   ---+----------+---------------+---  ground (the wall's velocity, zero)
+```
+
+(L1 also runs from node 1 to ground, beside C1.) Check: node 1's KCL, $C_1\dot v_1 + (1/L_1)\int v_1\,dt + (1/L_2)\int(v_1 - v_2)\,dt = 0$, is the first mass's equation with $C = m$, $1/L = k$ and $v = \dot x$.
 
 ### Solution 15-01.9
 
@@ -81,13 +92,13 @@ So $\ddot{\delta x} = (2g/x^*)\,\delta x - (2g/i^*)\,\delta i$. The open-loop po
 
 ### Solution 15-01.10
 
-The equilibrium solves $T = 35 + 0.8(40 + 2e^{(T - 25)/25})$. Root finding gives **83.8** °C, with leakage **21.0** W. The loop gain is $G = RP_L/T_x = 0.8 \times 21.04/25$ = **0.673**, so disturbances decay with $\tau_{\text{eff}} = RC/(1 - G) = 16/0.327$ = **49.0** s instead of 16 s.
+The equilibrium solves $T = 35 + 0.8(40 + 2e^{(T - 25)/25})$. Iterating it from the no-growth guess $35 + 0.8 \times 42$ = 68.6 °C gives 76.15, 79.38, 81.09, 82.08, …, converging slowly because each step shrinks the error only by the loop gain (0.673, below); Newton's method gets there in a few steps. The limit is **83.8** °C, with leakage **21.0** W. The loop gain is $G = RP_L/T_x = 0.8 \times 21.04/25$ = **0.673**, so disturbances decay with $\tau_{\text{eff}} = RC/(1 - G) = 16/0.327$ = **49.0** s instead of 16 s.
 
-The critical resistance, where the heat-removed line is tangent to the generation curve ($G$ = 1), is **0.824** K/W, reached at **93.0** °C. The design's 0.8 K/W leaves only **3.0**% margin: a little dust in the heat sink would remove the equilibrium. The large loop gain is the warning sign; a robust design keeps $G$ well below 1 at the worst ambient.
+The critical resistance, where the heat-removed line is tangent to the generation curve ($G$ = 1), follows as in Example 15-01.4: $T_{crit} = T_A + RP_d + T_x$ and $R\,e^{RP_d/T_x} = (T_x/P_{L0})e^{-(T_A - T_0 + T_x)/T_x}$, here $R\,e^{1.6R} = 12.5\,e^{-1.4} = 3.082$, so $R_{crit}$ = **0.824** K/W, reached at $35 + 0.824 \times 40 + 25$ = **93.0** °C. The design's 0.8 K/W leaves only **3.0**% margin: a little dust in the heat sink would remove the equilibrium. The large loop gain is the warning sign; a robust design keeps $G$ well below 1 at the worst ambient.
 
 ### Solution 15-01.11
 
-At idle, $T_J = 25 + 2 \times 10$ = 45 °C and $T_C = 25 + 2 \times 8$ = 41 °C. Without throttling, the burst would drive the junction toward $25 + 15 \times 10$ = **175** °C.
+At idle, $T_J = 25 + 2 \times 10$ = 45 °C and the heat-sink node ($T_C$, the node between $R_{JC}$ and $R_{HA}$) sits at $25 + 2 \times 8$ = 41 °C. Without throttling, the burst would drive the junction toward $25 + 15 \times 10$ = **175** °C.
 
 The network's time constants are **0.984** s and **244.0** s. The junction first jumps by about $\Delta P \times R_{JC}$ = **26** K above the slowly warming case, reaching about **72** °C at 5 s, then climbs slowly as the heat sink warms. Solving $T_J(t)$ = 95 °C with the matrix exponential gives **66.0** s.
 
@@ -120,11 +131,27 @@ $\omega_n = 1/\sqrt{LC} = 1/\sqrt{10^{-9}}$ = **31,623** rad/s and $\zeta = (R/2
 
 (b) $T_J = T_{top} + P\Psi_{JT}$ = 120 + 2 × 2 = **124** °C.
 
-(c) The $\Psi_{JT}$ estimate. $R_{\theta JA}$ describes the JEDEC test board, not your board, which may conduct heat away much better or worse [R-227]. $\Psi_{JT}$ combines a measurement on your own board with a small, stable correction. TI's note recommends exactly this use, and warns that $\Psi_{JT}$ is not a true thermal resistance, so it cannot be used to design a heat path.
+(c) The $\Psi_{JT}$ estimate. $R_{\theta JA}$ describes the JEDEC test board, not your board, which may conduct heat away much better or worse [R-227]. $\Psi_{JT}$ combines a measurement on your own board with a small correction; because it is small, its variation with board construction and airflow (which TI's note acknowledges) matters little. TI's note recommends exactly this use, and warns that $\Psi_{JT}$ is not a true thermal resistance, so it cannot be used to design a heat path.
 
----
+### Solution 15-01.15
 
-## Answer key
+**(a)** Let the load turn by $\theta_L$ while the motor turns $\theta_m = N\theta_L$. An ideal gearbox transmits power without loss, so the torque it delivers to the load is $N$ times the torque $\tau_g$ it takes from the motor: $\tau_L^{gear} = N\tau_g$. The load obeys $J_L\ddot\theta_L = N\tau_g$, so $\tau_g = J_L\ddot\theta_L/N = (J_L/N^2)\ddot\theta_m$: at the motor shaft the load is an inertia $J_L/N^2$. The motor accelerates $J_m + J_L/N^2 = 2 \times 10^{-5} + 0.01/100$ = **1.2 × 10⁻⁴** kg·m², six times its own rotor.
+
+**(b)** A load torque $\tau_L$ appears at the motor shaft divided by $N$: $\tau_L/N$. (Viscous friction $b_L$ at the load reflects as $b_L/N^2$, like inertia.)
+
+**(c)** For a motor torque $\tau$, the load's acceleration is $\ddot\theta_L = \ddot\theta_m/N = \tau/[N(J_m + J_L/N^2)] = \tau/(NJ_m + J_L/N)$. The denominator is smallest where its derivative $J_m - J_L/N^2$ vanishes: $N = \sqrt{J_L/J_m}$ = **22.4**, the ratio that matches the reflected load inertia to the rotor's (an "inertia match", the mechanical analogue of maximum power transfer, 06-09).
+
+### Solution 15-01.16
+
+**(a)** With states $\theta_J$, $\theta_C$ and input $P$, the transfer function $C(sI - A)^{-1}B$ (15-02) is
+
+$$
+\frac{\Theta_J}{P} = \frac{0.2s + 0.006349}{s^2 + 1.3651s + 0.012698} = \frac{(1/C_J)\,(s + 1/[C_H(R_{JC} \parallel R_{CA})])}{(s + 1.356)(s + 0.00937)} .
+$$
+
+Its DC gain is $0.006349/0.012698$ = **0.5** K/W, which is $R_{JC} + R_{CA}$ as it must be. The zero is at $-1/[C_H(R_{JC} \parallel R_{CA})] = -1/(300 \times 0.105)$ = **−0.0317** s⁻¹, and the poles at **−1.356** and **−0.00937** s⁻¹ (Example 15-01.3's two time constants). The zero sits between the poles: the fast pole's 1/s fall is undone above the slow pole by the zero, so the junction "sees" mostly $R_{JC}$ at intermediate frequencies.
+
+**(b)** Any two of: thermal conductivity and heat capacity change with temperature (the elements are not linear); heat spreads in three dimensions through the die and spreader, so the true network is distributed rather than two lumps; convection from the fins depends on air speed and on the temperature difference itself, and radiation grows as $T^4$, so the "resistance" to ambient is not constant; hot spots on the die are hotter than the single junction node.
 
 <!-- answer-key -->
 
@@ -190,3 +217,9 @@ $\omega_n = 1/\sqrt{LC} = 1/\sqrt{10^{-9}}$ = **31,623** rad/s and $\zeta = (R/2
 | 15-01.12d | operating speed | 2530 | rpm |
 | 15-01.12e | fan damping 2cω* | 1.06e-4 | N·m·s/rad |
 | 15-01.12f | total damping | 5.06e-4 | N·m·s/rad |
+| 15-01.15a | total inertia at the motor | 1.2e-4 | kg·m² |
+| 15-01.15b | gear ratio for the largest acceleration | 22.4 | — |
+| 15-01.16a | DC gain | 0.5 | K/W |
+| 15-01.16b | zero | −0.0317 | 1/s |
+| 15-01.16c | fast pole | −1.356 | 1/s |
+| 15-01.16d | slow pole | −0.00937 | 1/s |

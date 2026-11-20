@@ -36,6 +36,19 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Interlocking loops.** A gain $G_1$ = 5 drives $G_2 = 1/(s + 1)$ followed by $G_3 = 1/s$. The output $Y$ is fed back through $H_2$ = 2 to a summing junction between $G_1$ and $G_2$. The signal between $G_2$ and $G_3$ is fed back through $H_1$ = 0.4 to the input summing junction, which also receives $R$; both feedbacks are negative. Neither loop contains the other. (a) Reduce the diagram by moving the $H_1$ pickoff point to the output, and find $Y/R$. (b) Check with Mason's formula. (c) Give the poles and DC gain.
 
+```mermaid
+flowchart LR
+    R((R)) --> S1(("Σ1"))
+    S1 --> G1["G1 = 5"]
+    G1 --> S2(("Σ2"))
+    S2 --> G2["G2 = 1/(s+1)"]
+    G2 --> P(("x"))
+    P --> G3["G3 = 1/s"]
+    G3 --> Y((Y))
+    P -- "−H1 = −0.4" --> S1
+    Y -- "−H2 = −2" --> S2
+```
+
 ### Problem 15-02.7 [B]
 
 **Sensitivity across frequency.** A unity-feedback loop has $L(s) = 8/[s(s + 2)]$. (a) Find $T(s)$, $\omega_n$ and $\zeta$. (b) Compute $\lvert S\rvert$ and $\lvert T\rvert$ at $\omega$ = 0.5 rad/s and at 10 rad/s. (c) Show that $\lvert S\rvert + \lvert T\rvert \ne 1$ at either frequency, and reconcile that with $S + T = 1$.
@@ -68,13 +81,17 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Adding an integrator.** A plant $P = 2/(s + 4)$ is controlled by an integral controller $C = K_I/s$ with unity feedback. (a) Find $T(s)$. (b) Choose $K_I$ for $\zeta$ = 0.707 and give $\omega_n$. (c) Find the steady-state error to a unit step and compare with Example 15-02.4's proportional loop.
 
+### Problem 15-02.15 [B]
+
+**Op-amp transfer functions by impedances.** For an ideal op-amp in the inverting configuration, $V_o/V_i = -Z_f(s)/Z_{in}(s)$, where $Z_{in}$ is the input element and $Z_f$ the feedback element, written as Laplace impedances ($R$, $1/(sC)$, $sL$). With $Z_{in} = R_1$ = 10 kΩ: (a) $Z_f$ is $R_2$ = 100 kΩ in parallel with $C$ = 1 nF; find the transfer function, its DC gain and its pole (in rad/s and Hz). (b) $Z_f$ is $R_2$ in series with $C$; find the transfer function and show that it is a PI controller, giving its zero and its integral gain.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 15-02) | Problems |
 |---|---|
-| 1. Transfer functions from equations and state space; poles, zeros, DC gain | 1, 5, 11 |
+| 1. Transfer functions from equations, state space and impedances; poles, zeros, DC gain | 1, 5, 11, 15 |
 | 2. Block-diagram reduction | 2, 3, 6, 10 |
 | 3. Closed-loop, sensitivity and disturbance transfer functions | 4, 7, 8, 11, 14 |
 | 4. Signal-flow graphs and Mason's gain formula | 6, 9, 10 |

@@ -2,9 +2,15 @@
 """Figure for chapter 15-01 (modeling dynamic systems).
 
 Run from anywhere:  python assets/figures/src/fig_15_01.py
-Outputs assets/figures/15-01/thermal.svg: left, Example 15-01.3's two-node junction and case temperatures after a
-100 W step, on a logarithmic time axis; right, Example 15-01.4's heat balance, the leakage-dependent heat
-generated against the heat removed for R = 0.5 K/W and the critical 0.628 K/W. Uses labs/15-01-lab/plants.py.
+Outputs
+  assets/figures/15-01/thermal.svg          left, Example 15-01.3's two-node junction and case temperatures after a
+                                            100 W step; right, Example 15-01.4's heat balance (heat generated with
+                                            leakage against heat removed for R = 0.5 K/W and the critical 0.628 K/W)
+  assets/figures/15-01/analogues.svg        the mass-spring-damper's force-voltage (series RLC) and force-current
+                                            (parallel RLC) analogue circuits
+  assets/figures/15-01/motor-circuit.svg    the DC motor's armature circuit with its back-EMF source
+  assets/figures/15-01/thermal-network.svg  the two-node junction / heat-sink thermal network of Example 15-01.3
+Uses labs/15-01-lab/plants.py; the schematics use schemdraw.
 """
 from __future__ import annotations
 
@@ -13,6 +19,8 @@ import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import schemdraw
+import schemdraw.elements as elm
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -59,5 +67,73 @@ def fig_thermal():
     save(fig, f"{OUT}/thermal.svg")
 
 
+def save_schem(d, rel):
+    path = ROOT / rel
+    path.parent.mkdir(parents=True, exist_ok=True)
+    d.save(str(path))
+    print(f"wrote {rel}")
+
+
+def fig_analogues():
+    schemdraw.config(fontsize=11, bgcolor="white")
+    d = schemdraw.Drawing(show=False)
+    # force-voltage: one loop carrying the velocity v as current
+    d += (src := elm.SourceV().up().label("$F(t)$", loc="left"))
+    d += elm.Inductor().right().label("$L = m$", loc="top")
+    d += elm.Resistor().right().label("$R = b$", loc="top")
+    d += elm.Capacitor().down().label("$C = 1/k$", loc="right")
+    d += elm.Line().left().tox(src.start)
+    d += elm.Label().at((3.0, -1.2)).label("force–voltage: series RLC, loop current = velocity v")
+    # force-current: one node whose voltage is the velocity
+    x0 = 11.0
+    d += (isrc := elm.SourceI().at((x0, 0)).up().label("$F(t)$", loc="left"))
+    d += (top := elm.Line().right().length(2.0))
+    d += elm.Capacitor().down().label("$C = m$", loc="right")
+    d += elm.Line().at(top.end).right().length(2.0)
+    d += elm.Resistor().down().label("$R = 1/b$", loc="right")
+    d += elm.Line().at((x0 + 4.0, 3.0)).right().length(2.0)
+    d += elm.Inductor().down().label("$L = 1/k$", loc="right")
+    d += elm.Line().left().tox(isrc.start)
+    d += elm.Label().at((x0 + 3.0, -1.2)).label("force–current: parallel RLC, node voltage = velocity v")
+    save_schem(d, f"{OUT}/analogues.svg")
+
+
+def fig_motor_circuit():
+    schemdraw.config(fontsize=11, bgcolor="white")
+    d = schemdraw.Drawing(show=False)
+    d += (src := elm.SourceV().up().label("$v_a$", loc="left"))
+    d += elm.Resistor().right().label("$R$", loc="top")
+    d += elm.Inductor().right().label("$L$", loc="top").label("$i$ →", loc="bottom")
+    d += elm.SourceV().down().reverse().label("$e_b = K_e\\omega$", loc="right")
+    d += elm.Line().left().tox(src.start)
+    d += elm.Label().at((3.0, -1.1)).label("torque on the rotor: $\\tau_{em} = K_t i$;  $J\\dot\\omega = K_t i - b\\omega - \\tau_L$")
+    save_schem(d, f"{OUT}/motor-circuit.svg")
+
+
+def fig_thermal_network():
+    schemdraw.config(fontsize=11, bgcolor="white")
+    d = schemdraw.Drawing(show=False)
+    d += (p := elm.SourceI().up())
+    d += elm.Line().right().length(2.5)
+    d += (j := elm.Dot())
+    d += elm.Capacitor().down()
+    d += elm.Resistor().at(j.center).right().length(4.5).label("$R_{JC}$ = 0.15 K/W", loc="top", ofst=0.25)
+    d += (c := elm.Dot())
+    d += elm.Capacitor().down()
+    d += elm.Resistor().at(c.center).right().length(4.5).label("$R_{CA}$ = 0.35 K/W", loc="top", ofst=0.25)
+    d += elm.SourceV().down().reverse()
+    d += elm.Line().left().tox(p.start)
+    d += elm.Ground().at(p.start)
+    x0, y0 = p.start
+    for txt, dx, dy in (("$P$", -1.0, 1.5), ("$T_J$", 2.3, 3.55), ("$C_J$ = 5 J/K", 3.9, 1.5), ("$T_C$", 6.8, 3.55),
+                        ("$C_H$ = 300 J/K", 8.6, 1.5), ("$T_A$ = 30 °C", 13.1, 1.5)):
+        d += elm.Label().at((x0 + dx, y0 + dy)).label(txt)
+    d += elm.Label().at((x0 + 6.0, y0 - 1.4)).label("heat flow ↔ current, temperature ↔ voltage (ground = 0 °C reference)")
+    save_schem(d, f"{OUT}/thermal-network.svg")
+
+
 if __name__ == "__main__":
     fig_thermal()
+    fig_analogues()
+    fig_motor_circuit()
+    fig_thermal_network()

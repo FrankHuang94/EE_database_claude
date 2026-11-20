@@ -55,7 +55,7 @@ Read §3 of the chapter. `specs.py` computes step responses exactly with the mat
 1. Settling time is the last time the response leaves the band. The response oscillates inside a decaying envelope, so the last exit is a crossing next to one of its peaks or troughs. As $\zeta$ increases, the last peak or trough that poked out of the band shrinks inside it, and the last exit jumps back by about half a damped period.
 2. The source has a 1 ns rise time rather than an ideal step, and ngspice integrates with finite time steps and interpolates its crossing measurements. Both effects are tiny compared with the 115 µs time scale. The circuit itself is exactly second-order: with ideal elements its transfer function is exactly $1/(LCs^2 + RCs + 1)$.
 3. After the fast pole has died out, the error is $A e^{-pt}$, and $\ln(\text{error}) = \ln A - pt$ is a straight line. Its slope is $-p$, so the tail's time constant $1/p$ can be read from a measured settling plot, which is how designers find doublets in silicon.
-4. The rules are approximations fitted near $\zeta \approx$ 0.5 to 0.6; at $\zeta$ = 0.83 the exact rise time is 44% longer than $1.8/\omega_n$. Use the rules to find a region, then verify the candidate design by simulation, with margin.
+4. The rules are approximations fitted near $\zeta \approx$ 0.5 to 0.6; at $\zeta$ = 0.83 the rule $1.8/\omega_n$ is 30% below the exact rise time (equivalently, the exact value is 44% longer than the rule). Use the rules to find a region, then verify the candidate design by simulation, with margin.
 
 ## Optional hardware
 

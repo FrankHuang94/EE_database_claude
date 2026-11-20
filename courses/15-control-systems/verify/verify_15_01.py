@@ -318,5 +318,52 @@ v.check("Lab 15-01.j", -1 / jac(lambda x: [f06(x[0]) / C4], [T06])[0, 0])
 v.check("Lab 15-01.k", 0.6 * C4)
 s06 = solve_ivp(plants.leakage_rhs(Pd, PL0, Tx, 0.6, C4, T0), (0, 3000), [25.0], **TIGHT)
 v.assert_true("R = 0.6 K/W settles at its lower equilibrium", abs(s06.y[0, -1] - T06) < 1e-6)
+s06d = solve_ivp(plants.leakage_rhs(Pd, PL0, Tx, 0.6, C4, T0), (0, 3000), [25.0], dense_output=True, **TIGHT)
+band06 = 0.02 * (T06 - 25)
+v.check("Lab 15-01.l", brentq(lambda tt: (T06 - s06d.sol(tt)[0]) - band06, 10, 2000, xtol=1e-9))
+# Example 4 hand methods: fixed-point iterates and the critical-resistance equation
+it4 = [57.5]
+for _ in range(4):
+    it4.append(25 + 0.5 * (60 + 5 * math.exp((it4[-1] - 25) / 30)))
+v.assert_true("Ex4: iterates 62.39, 63.69, 64.08, 64.20", [round(x, 2) for x in it4[1:]] == [62.39, 63.69, 64.08, 64.2])
+Rc4 = brentq(lambda r: r * math.exp(2 * r) - 6 / math.e, 0.1, 2)
+v.assert_true("Ex4: R e^{2R} = 6/e = 2.207 gives 0.628 K/W and 92.7 C",
+              round(6 / math.e, 3) == 2.207 and round(Rc4, 3) == 0.628 and round(25 + Rc4 * 60 + 30, 1) == 92.7)
+it10 = [35 + 0.8 * 42]
+for _ in range(4):
+    it10.append(35 + 0.8 * (40 + 2 * math.exp((it10[-1] - 25) / 25)))
+Rc10 = brentq(lambda r: r * math.exp(1.6 * r) - 12.5 * math.exp(-1.4), 0.1, 2)
+v.assert_true("P10: iterates 76.15, 79.38, 81.09, 82.08; 3.082; 0.824 K/W at 93.0 C",
+              [round(x, 2) for x in it10[1:]] == [76.15, 79.38, 81.09, 82.08] and round(12.5 * math.exp(-1.4), 3) == 3.082
+              and round(Rc10, 3) == 0.824 and round(35 + Rc10 * 40 + 25, 1) == 93.0)
+
+# ---------------------------------------------------------------------------------------- prose numbers (audit)
+pm = np.sort(np.roots([2e-8, 4.001e-5, 0.00252]).real)
+v.assert_true("Ex 2: exact poles -1935.4 and -65.1", round(pm[0], 1) == -1935.4 and round(pm[1], 1) == -65.1)
+A3 = plants.thermal_two_node(0.15, 0.35, 5.0, 300.0)[0]
+ev3 = np.sort(np.linalg.eigvals(A3).real)
+v.assert_true("Ex 3: eigenvalues -1.356 and -0.00937", round(ev3[0], 3) == -1.356 and round(ev3[1], 5) == -0.00937)
+for th_deg, pct in ((30, 1.71), (90, 15.4)):
+    th = math.radians(th_deg)
+    v.assert_true(f"Ex 5: T0(1 + theta0^2/16) gives +{pct}% at {th_deg} deg", round(100 * th**2 / 16, 2 if th_deg == 30 else 1) == pct)
+
+# ---------------------------------------------------------------------------------------- Problems 15 and 16
+Jm15, JL15, N15 = 2e-5, 0.01, 10
+# simulate: constant motor torque 1e-3 N m through the gear; load acceleration = tau/(N Jm + JL/N)
+v.check("15-01.15a", Jm15 + JL15 / N15**2)
+from scipy.optimize import minimize_scalar  # noqa: E402
+best15 = minimize_scalar(lambda n: -(1.0 / (n * Jm15 + JL15 / n)), bounds=(1, 100), method="bounded", options={"xatol": 1e-10})
+v.check("15-01.15b", best15.x)
+v.assert_true("P15: optimum ratio sqrt(JL/Jm)", abs(best15.x - math.sqrt(JL15 / Jm15)) < 1e-4)
+from scipy import signal as _sig  # noqa: E402
+A16, B16 = plants.thermal_two_node(0.15, 0.35, 5.0, 300.0)
+n16, d16 = _sig.ss2tf(A16, np.asarray(B16).reshape(-1, 1), np.array([[1.0, 0.0]]), np.zeros((1, 1)))
+n16 = np.trim_zeros(np.where(np.abs(n16[0]) < 1e-14, 0, n16[0]), "f")
+v.check("15-01.16a", n16[-1] / d16[-1])
+v.check("15-01.16b", float(np.roots(n16)[0].real))
+pp16 = np.sort(np.roots(d16).real)
+v.check("15-01.16c", pp16[0])
+v.check("15-01.16d", pp16[1])
+v.assert_true("P16: zero at -1/(C_H (R_JC || R_CA))", abs(np.roots(n16)[0].real + 1 / (300 * 0.15 * 0.35 / 0.5)) < 1e-12)
 
 sys.exit(v.finish())

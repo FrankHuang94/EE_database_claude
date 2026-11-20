@@ -202,8 +202,12 @@ v.check("Ex 15-02.6a", wn6)
 v.check("Ex 15-02.6b", wn6 / (2 * math.pi) / 1e3)
 v.check("Ex 15-02.6c", d6[1] / d6[0] / (2 * wn6))
 v.check("Ex 15-02.6d", float(sp.limit(sol6[th_o] / th_r, s, 0)))
-v.assert_true("Ex 6: R = 0 puts the closed-loop poles on the imaginary axis",
-              all(abs(complex(p).real) < 1e-6 for p in sp.solve(s**2 + wn6**2, s)))
+eqs6_R0 = [sp.Eq(i_cp, Icp / (2 * sp.pi) * (th_r - th_d)), sp.Eq(vc, (1 / (s * Cf)) * i_cp),
+           sp.Eq(th_o, Kv / s * vc), sp.Eq(th_d, th_o / N)]
+T6_R0 = sp.simplify(sp.solve(eqs6_R0, [th_d, i_cp, vc, th_o], dict=True)[0][th_d] / th_r)
+poles_R0 = [complex(pp_) for pp_ in sp.solve(sp.denom(sp.together(T6_R0)), s)]
+v.assert_true("Ex 6: R = 0 in the derived loop puts the closed-loop poles on the imaginary axis",
+              len(poles_R0) == 2 and all(abs(pp_.real) < 1e-6 and abs(abs(pp_.imag) - wn6) < 1e-3 * wn6 for pp_ in poles_R0))
 
 # ---------------------------------------------------------------------------------------- Problem 1
 G = 5 / (s**2 + 7 * s + 10)
@@ -425,5 +429,25 @@ for Rx, kz, ko in ((2.5e3, "h", "j"), (5e3, None, "k"), (10e3, "i", "l")):
         v.check(f"Lab 15-02.{kz}", Rx * 1e-9 * wn / 2)
     pk, _, _, _, _ = step_peak([wn**2 * Rx * 1e-9, wn**2], [1, wn**2 * Rx * 1e-9, wn**2], 1e-4)
     v.check(f"Lab 15-02.{ko}", 100 * (pk - 1))
+
+# ---------------------------------------------------------------------------------------- prose numbers (audit)
+wa_, wL_ = 2 * math.pi * 1e4, 1e5
+pl = np.roots([1, wa_ + wL_, 2501 * wa_ * wL_])
+c_ = pl[np.argmax(pl.imag)]
+v.assert_true("Sol 11(c): LDO poles -8.14e4 +- j3.963e6", round(c_.real / 1e4, 2) == -8.14 and round(c_.imag / 1e6, 3) == 3.963)
+
+# ---------------------------------------------------------------------------------------- Problem 15 (op-amp impedances)
+R1, R2, Cop = 1e4, 1e5, 1e-9
+Zf_a = R2 / (1 + s * R2 * Cop)
+Ha = sp.simplify(-Zf_a / R1)
+v.check("15-02.15a", float(Ha.subs(s, 0)))
+pa = [complex(x) for x in sp.solve(sp.denom(sp.together(Ha)), s)][0]
+v.check("15-02.15b", -pa.real)
+v.check("15-02.15c", -pa.real / (2 * math.pi) / 1e3)
+Hb = sp.simplify(-(R2 + 1 / (s * Cop)) / R1)
+Ki_b = float(sp.limit(-s * Hb, s, 0))
+v.check("15-02.15d", Ki_b)
+zb = [complex(x) for x in sp.solve(sp.numer(sp.together(Hb)), s)][0]
+v.check("15-02.15e", zb.real)
 
 sys.exit(v.finish())

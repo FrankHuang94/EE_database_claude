@@ -49,6 +49,7 @@ Read §3 of the chapter. Every model here has states equal to its energy stores 
 | Lab 15-01.h | equilibrium at 0.6 K/W | 79.4 | °C |
 | Lab 15-01.i | loop gain at 0.6 K/W | 0.61 | — |
 | Lab 15-01.j | effective time constant at 0.6 K/W | 77 | s |
+| Lab 15-01.l | nonlinear 2% settling from 25 °C at 0.6 K/W | 245 | s |
 | Lab 15-01.k | passive time constant at 0.6 K/W | 30 | s |
 
 ## Discussion
@@ -63,7 +64,7 @@ Read §3 of the chapter. Every model here has states equal to its energy stores 
 1. They obey the same differential equation with the same coefficients: $L = m$, $R = b$, $C = 1/k$, and the charge plays the displacement. The analogy is an exact mapping of the equations, not an approximation.
 2. In the first-order model the current jumps instantly to $V/R$, while in the full model it rises with $\tau_e$ = 0.5 ms, so the full model's torque, and its speed, start more slowly. Later the full model's slow pole is the faster one (15.36 ms against 15.87 ms), because the first-order model folds the electrical lag into its single time constant, so the full model pulls slightly ahead.
 3. The junction's own small capacitance and $R_{JC}$, which set the fast 0.74 s rise. The slow time constant is essentially $R_{CA}C_H$, the heat sink's, so it says nothing about how quickly the junction overshoots the case.
-4. It still settles, at **79.4** °C, closer to the point where the two equilibria merge. The loop gain there is **0.61**, so the time constant is $RC/(1 - G)$ = **77** s instead of the passive **30** s, and settling within 2% (about four time constants) takes about 5 minutes. Near the critical resistance the restoring force almost vanishes, so the system lingers.
+4. It still settles, at **79.4** °C, closer to the point where the two equilibria merge. The loop gain there is **0.61**, so the time constant near equilibrium is $RC/(1 - G)$ = **77** s instead of the passive **30** s. The linear estimate of 2% settling (about four time constants, 5 minutes) is pessimistic far from equilibrium, where $G$ is smaller: the nonlinear model, started at 25 °C, enters the 2% band of its 54.4 K rise after **245** s, about 4 minutes. Near the critical resistance the restoring force almost vanishes, so the system lingers.
 
 ## Optional hardware
 

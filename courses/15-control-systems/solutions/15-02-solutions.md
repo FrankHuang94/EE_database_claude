@@ -260,6 +260,26 @@ $$
 
 **(c)** $T(0) = 2K_I/(2K_I) = 1$, so the steady-state error to a step is **0**. In Example 15-02.4 the proportional loop always left an error of $1/(1 + K)$. The integrator has infinite gain at DC, so $S(0) = 0$: integral action removes steady-state error (15-04, 15-08).
 
+### Solution 15-02.15
+
+The ideal op-amp holds its inverting input at virtual ground, so the input current $V_i/Z_{in}$ flows through $Z_f$ and $V_o = -Z_fV_i/Z_{in}$ (06-10).
+
+**(a)** $Z_f = R_2 \parallel (1/sC) = R_2/(1 + sR_2C)$, so
+
+$$
+\frac{V_o}{V_i} = -\frac{R_2/R_1}{1 + sR_2C} = \frac{-10}{1 + s \times 10^{-4}} ,
+$$
+
+a DC gain of **−10** and a pole at $1/(R_2C)$ = **10⁴** rad/s, that is **1.59** kHz: an inverting amplifier with a built-in low-pass filter.
+
+**(b)** $Z_f = R_2 + 1/(sC)$, so
+
+$$
+\frac{V_o}{V_i} = -\frac{R_2 + 1/(sC)}{R_1} = -\left(\frac{R_2}{R_1} + \frac{1}{sR_1C}\right) = -\frac{1 + sR_2C}{sR_1C} .
+$$
+
+That is (apart from the inversion) $K_p + K_i/s$ with $K_p = R_2/R_1$ = 10 and $K_i = 1/(R_1C)$ = **10⁵** s⁻¹: a PI controller (15-08) with its zero at $-1/(R_2C)$ = **−10⁴** s⁻¹. Analog regulators build their compensators exactly this way (15-09).
+
 ---
 
 ## Answer key
@@ -333,3 +353,8 @@ $$
 | 15-02.14a | natural frequency | 2.828 | rad/s |
 | 15-02.14b | integral gain | 4 | 1/s |
 | 15-02.14c | steady-state step error | 0 | — |
+| 15-02.15a | DC gain | −10 | — |
+| 15-02.15b | pole | 1e4 | rad/s |
+| 15-02.15c | pole | 1.59 | kHz |
+| 15-02.15d | integral gain | 1e5 | 1/s |
+| 15-02.15e | PI zero | −1e4 | 1/s |

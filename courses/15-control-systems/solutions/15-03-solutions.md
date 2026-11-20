@@ -85,7 +85,7 @@ $$
 
 **(c)** Exact responses:
 
-- B: overshoot **0.90**%, settling **1.12** s, but rise time **0.719** s, above 0.6 s: **fails**. At $\zeta$ = 0.83 the rule $1.8/\omega_n$ (0.50 s) underestimates the rise time by 30%.
+- B: overshoot **0.90**%, settling **1.12** s, but rise time **0.719** s, above 0.6 s: **fails**. At $\zeta$ = 0.83 the rule $1.8/\omega_n$ (0.50 s) is 30% below the exact rise time.
 - E: overshoot **1.52**%, settling **0.751** s, rise time **0.493** s: **passes** all three.
 
 The rules found the region; only the exact check separates B from E.

@@ -86,7 +86,7 @@ $$
 \qquad \omega_n = \frac{1}{\sqrt{LC}}, \quad \zeta = \frac{R}{2}\sqrt{\frac{C}{L}} .
 $$
 
-Here $\omega_n$ (rad/s) is the **natural frequency** and $\zeta$ (dimensionless) the **damping ratio** (07-03). Every second-order model in this chapter ends in this standard form, and 15-03 reads time-response specifications straight from $\omega_n$ and $\zeta$.
+Here $\omega_n$ (rad/s) is the **natural frequency** and $\zeta$ (dimensionless) the **damping ratio** (07-03). (Control texts write $\omega_n$ for what 07-03 and the notation guide call $\omega_0$, and 15-03 writes the decay rate $\sigma = \zeta\omega_n$ for 07-03's $\alpha$; the quantities are the same. In this course $K$ alone usually means a gain, with subscripts such as $K_t$ and $K_e$ for physical constants.) Every second-order model in this chapter ends in this standard form, and 15-03 reads time-response specifications straight from $\omega_n$ and $\zeta$.
 
 ### 3.3 Mechanical systems
 
@@ -127,14 +127,22 @@ The **force–current analogy** pairs force with current and velocity with volta
 | stiffness $k$ | elastance $1/C = k$ | inverse inductance $1/L = k$ |
 | shared velocity | series connection | parallel connection |
 
+![Two circuits side by side. Left, the force-voltage analogue of a mass-spring-damper: a voltage source F(t) drives a single series loop through an inductor L = m, a resistor R = b and a capacitor C = 1/k, and the loop current is the velocity. Right, the force-current analogue: a current source F(t) feeds three elements in parallel, a capacitor C = m, a resistor R = 1/b and an inductor L = 1/k, and the common node voltage is the velocity.](../../../assets/figures/15-01/analogues.svg)
+
+*Figure 1. The mass–spring–damper's two analogue circuits. Elements sharing one velocity are in series in the force–voltage analogue and in parallel in the force–current analogue.*
+
 ### 3.5 Electromechanical systems: the DC motor
+
+![The DC motor's armature circuit: a voltage source v_a drives current i through a resistor R and an inductor L into a second source, the back-EMF e_b = K_e times omega, which opposes the current. Below the circuit, the torque relation tau_em = K_t i and the mechanical equation J times d omega/dt = K_t i - b omega - tau_L.](../../../assets/figures/15-01/motor-circuit.svg)
+
+*Figure 2. The armature circuit. The back-EMF source couples the electrical loop to the mechanical speed; the current couples back through the torque.*
 
 A permanent-magnet DC motor couples a circuit to a rotating mass through two laws that are really one law seen from two sides (04-06, 04-07):
 
-- the **torque** on the rotor is proportional to the armature current, $\tau_m = K_ti$, where $K_t$ (N·m/A) is the **torque constant**;
+- the **torque** on the rotor is proportional to the armature current, $\tau_{em} = K_ti$ (the electromagnetic torque; $\tau_m$ is reserved below for the mechanical time constant), where $K_t$ (N·m/A) is the **torque constant**;
 - the spinning rotor generates a **back-EMF** proportional to its speed $\omega$ (rad/s), $e_b = K_e\omega$, with $K_e$ in V·s/rad.
 
-**Derivation that $K_t = K_e$.** The electrical power that disappears into the back-EMF, $e_bi = K_e\omega i$, must reappear as mechanical power, $\tau_m\omega = K_ti\omega$, if the coupling itself stores and loses nothing. Equating the two gives $K_t = K_e$ in SI units, so we write both as $K$. (Units check: N·m/A = J/(A·rad) = V·A·s/(A·rad) = V·s/rad.)
+**Derivation that $K_t = K_e$.** The electrical power that disappears into the back-EMF, $e_bi = K_e\omega i$, must reappear as mechanical power, $\tau_{em}\omega = K_ti\omega$, if the coupling itself stores and loses nothing. Equating the two gives $K_t = K_e$ in SI units, so we write both as $K$. (Units check: N·m/A = J/(A·rad) = V·A·s/(A·rad) = V·s/rad.)
 
 With armature resistance $R$ and inductance $L$, rotor inertia $J$, viscous friction $B$ and a load torque $\tau_L$:
 
@@ -174,6 +182,10 @@ C_{th}\frac{dT}{dt} = P - \frac{T - T_A}{R_{th}} ,
 $$
 
 which is an RC circuit driven by a current source. A power step gives $T(t) = T_A + PR_{th}(1 - e^{-t/\tau})$ with $\tau = R_{th}C_{th}$ (07-02).
+
+![The two-node thermal network of Example 15-01.3 drawn as a circuit: a current source P injects heat into node T_J, which has capacitance C_J = 5 J/K to the reference; a resistor R_JC = 0.15 K/W connects T_J to node T_C, which has capacitance C_H = 300 J/K to the reference; a resistor R_CA = 0.35 K/W connects T_C to a voltage source representing the ambient temperature T_A = 30 degrees C. Heat flow corresponds to current and temperature to voltage.](../../../assets/figures/15-01/thermal-network.svg)
+
+*Figure 3. Example 15-01.3's processor and heat sink as a circuit. Each thermal capacitance connects to the temperature reference, the thermal ground.*
 
 **A chip's heat path.** Heat made in the transistors crosses the silicon, a thermal interface material (TIM), a heat spreader or lid, a second TIM and a heat sink, and finally passes to the air. Vendors summarize the path by **junction-to-case** and **case-to-ambient** resistances, $R_{JC}$ and $R_{CA}$, and the **junction temperature** $T_J$ (the transistors' temperature) is the quantity limits are set on. The masses involved differ enormously. A 10 mm × 10 mm silicon die 0.75 mm thick has a volume of 0.075 cm³; at 2.329 g/cm³ and 0.7 J/(g·K) [2, R-228] its heat capacity is only **0.122** J/K, while a heat sink of a few hundred grams has hundreds of joules per kelvin. So a thermal network has widely separated time constants: the die responds in milliseconds, the spreader in seconds and the heat sink in minutes. A one-node model catches the slowest of them and misses the fast junction rise that a sudden load causes (Example 15-01.3).
 
@@ -220,11 +232,11 @@ $$
 \tau_{\text{eff}} = \frac{RC}{1 - G} ,
 $$
 
-slower than the passive $RC$ because the positive feedback partly cancels the cooling. If $G > 1$, the deviation grows: **thermal runaway**. The boundary $G = 1$ is where the heat-generated curve touches the heat-removed line tangentially, and beyond it no equilibrium exists at all (Example 15-01.4). This is the same mechanism as thermal runaway in a bipolar output stage (12-07), and the loop-gain idea is the subject of 15-04.
+slower than the passive $RC$ because the positive feedback partly cancels the cooling. If $G > 1$, the deviation grows: **thermal runaway**. Two different things must be kept apart here. At a given thermal resistance there are usually two equilibria: a stable one with $G < 1$ and an unstable one with $G > 1$ (an equilibrium with $G > 1$ exists, but any disturbance grows away from it). As $R$ rises the two move together, and at the critical resistance $R_{crit}$, where $G$ reaches 1, they merge: the heat-generated curve touches the heat-removed line tangentially. Above $R_{crit}$ no equilibrium exists at all and the temperature runs away from any starting point (Example 15-01.4). This is the same mechanism as thermal runaway in a bipolar output stage (12-07), and the loop-gain idea is the subject of 15-04.
 
 ![Two plots. Left: junction and case temperatures of Example 15-01.3 after a 100 W step, on a logarithmic time axis from 0.01 to 1600 s. The junction rises about 15 K within a few seconds while the case stays near 30 °C, then both climb together toward 80 °C and 65 °C over a few hundred seconds. Right: heat generated, 60 W plus a leakage term growing exponentially with temperature, against straight lines of heat removed for R = 0.5 K/W and 0.628 K/W. The 0.5 K/W line crosses the curve twice, at a stable point near 64 °C and an unstable one near 125 °C; the 0.628 K/W line just touches the curve near 93 °C.](../../../assets/figures/15-01/thermal.svg)
 
-*Figure 1. Left: a thermal network's two time scales (Example 15-01.3). Right: leakage feedback (Example 15-01.4). An equilibrium is a crossing of the heat-generated curve and the heat-removed line; where the curve is steeper than the line ($G > 1$) the crossing is unstable, and once the line is tangent (the dashed critical resistance) the equilibria vanish.*
+*Figure 4. Left: a thermal network's two time scales (Example 15-01.3). Right: leakage feedback (Example 15-01.4). An equilibrium is a crossing of the heat-generated curve and the heat-removed line; where the curve is steeper than the line ($G > 1$) the crossing is unstable, and once the line is tangent (the dashed critical resistance) the equilibria vanish.*
 
 > **Going deeper — when linearization fails.** A linear model can be trusted only near its operating point, and only if the operating point is hyperbolic: no eigenvalue of $A$ on the imaginary axis. The Hartman–Grobman theorem says that near a hyperbolic equilibrium, the nonlinear system's trajectories look like the linear model's. If an eigenvalue sits on the imaginary axis (the pendulum without friction, or $G = 1$ exactly), the neglected nonlinear terms decide stability, and the linear model says nothing. Large signals need the nonlinear model itself, or gain scheduling: a family of linear models, one per operating point, with the controller switched between them.
 
@@ -294,11 +306,17 @@ Its eigenvalues are −1.356 and −0.00937 s⁻¹, time constants **0.738** s a
 
 **Setup.** A chip has dynamic power $P_d$ = 60 W and leakage $P_L(T) = 5\ \text{W} \times e^{(T - 25\,°\text{C})/30\ \text{K}}$ (illustrative values). Its one-node thermal model has $R$ = 0.5 K/W and $C$ = 50 J/K, with $T_A$ = 25 °C. Find the operating temperature, the loop gain and the effective time constant there. What is the largest $R$ for which an equilibrium exists?
 
-**Solution.** The equilibrium solves $T = T_A + R(P_d + P_L(T))$. The right side curves upward, so there may be two solutions or none. Root-finding gives the lower one, **64.25** °C, where leakage is **18.50** W, so the chip dissipates **78.5** W. (Had leakage stayed at its 25 °C value, the chip would sit at 25 + 0.5 × 65 = **57.5** °C: the leakage feedback adds about **7** K.)
+**Solution.** The equilibrium solves $T = T_A + R(P_d + P_L(T))$. The right side curves upward, so there may be two solutions or none. A calculator finds the lower one by iterating the equation itself, $T_{k+1} = T_A + R(P_d + P_L(T_k))$, from the no-leakage-growth guess 57.5 °C: 62.39, 63.69, 64.08, 64.20, … Each step shrinks the error by about the loop gain $G$ (found below), which is why the iteration converges here and would fail for $G > 1$. The limit is **64.25** °C, where leakage is **18.50** W, so the chip dissipates **78.5** W. (Had leakage stayed at its 25 °C value, the chip would sit at 25 + 0.5 × 65 = **57.5** °C: the leakage feedback adds about **7** K.)
 
 The loop gain there is $G = RP_L/T_x = 0.5 \times 18.50/30$ = **0.308**, so a small disturbance decays with $\tau_{\text{eff}} = RC/(1 - G) = 25/0.692$ = **36.1** s instead of the passive 25 s.
 
-The second, upper solution, **124.9** °C, has $G > 1$: it is an unstable equilibrium. Above it, heat generation outruns removal and the temperature runs away. The equilibria merge, and then vanish, when the heat-removed line is tangent to the generation curve: $G = 1$, $P_L = T_x/R$, and $f(T) = 0$ together. Solving gives the critical resistance $R_{\text{crit}}$ = **0.628** K/W, at **92.7** °C. A heat sink only **26**% worse than the design, or a fan failure that raises $R$ beyond 0.628 K/W, leaves the chip with no thermal equilibrium at all, unless something cuts the power.
+The second, upper solution, **124.9** °C, has $G > 1$: it is an unstable equilibrium. Above it, heat generation outruns removal and the temperature runs away. The equilibria merge, and then vanish, when the heat-removed line is tangent to the generation curve: $G = 1$, that is $RP_L = T_x$, and the equilibrium equation hold together. Substituting $RP_L = T_x$ into the equilibrium gives $T_{crit} = T_A + RP_d + T_x$; putting that temperature into $P_L(T) = T_x/R$ gives one equation for $R$,
+
+$$
+R\,e^{RP_d/T_x} = \frac{T_x}{P_{L0}}\,e^{-(T_A - T_0 + T_x)/T_x} ,
+$$
+
+here $R\,e^{2R} = 6/e = 2.207$. A few trials (or Newton's method) give the critical resistance $R_{\text{crit}}$ = **0.628** K/W, and then $T_{crit} = 25 + 0.628 \times 60 + 30$ = **92.7** °C. A heat sink only **26**% worse than the design, or a fan failure that raises $R$ beyond 0.628 K/W, leaves the chip with no thermal equilibrium at all, unless something cuts the power.
 
 **Units check.** $RP_L/T_x$: (K/W)(W)/K, dimensionless, as a loop gain must be.
 
@@ -310,7 +328,7 @@ The second, upper solution, **124.9** °C, has $G > 1$: it is an unstable equili
 
 **Solution.** (a) $\omega_0 = \sqrt{g/L} = \sqrt{19.62}$ = **4.429** rad/s, period $T_0 = 2\pi/\omega_0$ = **1.4185** s.
 
-(b) The nonlinear pendulum's period from amplitude $\theta_0$ is exact in terms of the complete elliptic integral of the first kind, $T = 4\sqrt{L/g}\,K(\sin^2(\theta_0/2))$ (with $K$ written in terms of its parameter $m = k^2$). At 30°, $T$ = **1.4432** s, **1.74**% longer than the linear prediction. At 90°, $T$ = **1.6743** s, **18.0**% longer. The linear model is excellent for small swings and poor for large ones, as the Taylor estimate predicts: $\sin\theta \approx \theta$ is off by about $\theta^3/6$, the first neglected term: **4.6**% of $\theta$ at 30° and **41**% at 90° by that estimate, against exact errors of **4.5**% and **36**%.
+(b) The nonlinear pendulum's period from amplitude $\theta_0$ is exact in terms of the complete elliptic integral of the first kind, $T = 4\sqrt{L/g}\,K(\sin^2(\theta_0/2))$ (with $K$ written in terms of its parameter $m = k^2$). At 30°, $T$ = **1.4432** s, **1.74**% longer than the linear prediction. At 90°, $T$ = **1.6743** s, **18.0**% longer. The linear model is excellent for small swings and poor for large ones, as the Taylor estimate predicts: $\sin\theta \approx \theta$ is off by about $\theta^3/6$, the first neglected term: **4.6**% of $\theta$ at 30° and **41**% at 90° by that estimate, against exact errors of **4.5**% and **36**%. A hand check needs no elliptic integral: the first term of its series gives $T \approx T_0(1 + \theta_0^2/16)$, that is +1.71% at 30° ($\theta_0$ = 0.524 rad), against the exact 1.74%; at 90° the same term gives only +15.4% against 18.0%, because the higher terms of the series matter for large swings. (The elliptic-integral formula itself comes from integrating the energy equation over a quarter swing, beyond this course.)
 
 (c) About $\theta^* = \pi$ the linear model is $\ddot{\delta\theta} = +\omega_0^2\,\delta\theta$, with poles at $\pm\omega_0$ = ±4.429 s⁻¹. The unstable pole makes a small tilt grow as $e^{4.429t}$, doubling every $\ln 2/4.429$ = **0.156** s. A controller must act within a fraction of that time to balance it.
 
@@ -433,13 +451,13 @@ The lab, [labs/15-01-lab](../labs/15-01-lab/README.md), provides `plants.py` (th
 ### State of the art (as of Nov 2026)
 
 - **Thermal metrics have conditions.** TI's application note on package thermal metrics (revised March 2024) stresses that $R_{\theta JA}$ "is not a characteristic of the package by itself but of the package, PCB, and other environmental factors", and recommends using it to compare packages. For estimating junction temperature in a system it describes the $\Psi_{JT}$ metric (JESD51-2), which is "not a true thermal resistance" because only part of the heat flows through the package top [1, R-227] **[Established]**.
-- **Power has outgrown passive cooling.** NVIDIA lists the H100 SXM at up to 700 W, configurable (14-13, [R-220](../../../reference/research-log.md#r-220--nvidia-h100-hopper-specifications)) **[Established]**. At that power, every 0.01 K/W of thermal resistance is **7** K of junction temperature, which is why accelerator thermal design is now a system-level discipline (Course 25).
+- **Accelerator power makes every 0.01 K/W count.** NVIDIA lists the H100 SXM at up to 700 W, configurable (14-13, [R-220](../../../reference/research-log.md#r-220--nvidia-h100-hopper-specifications)) **[Established]**. At that power, every 0.01 K/W of thermal resistance is **7** K of junction temperature, which is why accelerator thermal design is now a system-level discipline (Course 25).
 - **Models are fitted, not derived.** Industrial practice builds detailed thermal models with finite-element tools and reduces them to compact resistor–capacitor networks whose parameters are fitted to measured or simulated heating curves, so that system designers can simulate them quickly. The reduction step is exactly the model reduction of §3.5 **[Established]** (textbook practice; vendor-specific tools vary).
 
 ### Why it matters commercially
 
 - **Sustained performance is a thermal number.** A phone or laptop chip's sustained clock is set by the power its enclosure can shed at a skin-temperature limit; peak clocks last as long as the thermal capacitance allows (15-12, Course 25).
-- **Cooling cost scales with power.** Heat sinks, fans, cold plates and pumps are a growing share of a server's bill of materials and power budget (Course 22, 22-10).
+- **Cooling cost scales with power.** Heat that must be removed sets the size of heat sinks, fans, cold plates and pumps, and the power those fans and pumps draw; the datacenter chapters quantify it (Course 22, 22-10) **[Established]** as a principle, without a market-share figure here.
 - **Motor-driven products** (fans, pumps, HDD actuators, drones, robots) are sold on response time and efficiency, which come straight from $K$, $R$ and $J$.
 
 ### Marketing vs Reality
@@ -497,7 +515,7 @@ At stall there is no back-EMF, so the whole supply voltage drives current throug
 
 <details><summary>Answer</summary>
 
-The junction has a small local thermal capacitance and a resistance to the case; it rises by about $PR_{JC}$ within a fraction of a second, long before the bulk heats. A one-node model lumps all capacitance together and misses this fast mode.
+The junction has a small local thermal capacitance and a resistance to the case; it rises by about $PR_{JC}$ within a few seconds (time constant about 0.74 s in Example 15-01.3), long before the bulk heats. A one-node model lumps all capacitance together and misses this fast mode.
 
 </details>
 
@@ -505,7 +523,7 @@ The junction has a small local thermal capacitance and a resistance to the case;
 
 <details><summary>Answer</summary>
 
-It is the fraction by which a temperature rise feeds back into itself through extra leakage. For $G < 1$ disturbances decay, with time constant $RC/(1 - G)$; at $G = 1$ the equilibrium disappears, and beyond it the temperature runs away.
+It is the fraction by which a temperature rise feeds back into itself through extra leakage. For $G < 1$ disturbances decay, with time constant $RC/(1 - G)$. An equilibrium with $G > 1$ exists but is unstable. When the thermal resistance reaches the critical value at which $G = 1$, the stable and unstable equilibria merge; above it no equilibrium exists and the temperature runs away.
 
 </details>
 

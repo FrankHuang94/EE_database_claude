@@ -63,7 +63,7 @@ $$
 
 - After one time constant it has covered $1 - e^{-1}$ = 63.2% of the way.
 - The **10–90% rise time** solves $e^{-t_1/\tau} = 0.9$ and $e^{-t_2/\tau} = 0.1$: $t_r = t_2 - t_1 = \tau\ln 9 = 2.197\tau$.
-- The **settling time** to within a fraction $\epsilon$ of the final value solves $e^{-t_s/\tau} = \epsilon$: $t_s = \tau\ln(1/\epsilon)$. For 2%, $t_s = \tau\ln 50 = 3.912\tau$; for 0.1%, $6.908\tau$.
+- The **settling time** to within a fraction $\epsilon$ of the final value (here $\epsilon$ is a dimensionless tolerance such as 0.02, not a permittivity) solves $e^{-t_s/\tau} = \epsilon$: $t_s = \tau\ln(1/\epsilon)$. For 2%, $t_s = \tau\ln 50 = 3.912\tau$; for 0.1%, $6.908\tau$.
 - The **bandwidth**, where $\lvert T(j\omega)\rvert$ falls 3 dB, is $\omega_B = 1/\tau$, so $f_B = 1/(2\pi\tau)$ and
 
 $$
@@ -126,7 +126,7 @@ $$
 
 The envelope is a bound. The actual response crosses into the band earlier when the last crossing falls between envelope peaks, so the exact settling time jumps as $\zeta$ changes (the table below shows a drop from 5.96/$\omega_n$ to 3.76/$\omega_n$ between $\zeta$ = 0.707 and 0.8).
 
-**Rise time** has no closed form for the underdamped case; it is computed numerically. The rule of thumb $t_r \approx 1.8/\omega_n$ is accurate near $\zeta$ = 0.6 and within about 20% for $0.4 \le \zeta \le 0.7$.
+**Rise time** has no closed form for the underdamped case; it is computed numerically. The rule of thumb $t_r \approx 1.8/\omega_n$ is accurate near $\zeta$ = 0.6 and within about 25% of the exact value for $0.4 \le \zeta \le 0.7$ (23% high at $\zeta$ = 0.4, 15% low at 0.7). This chapter quotes such errors as the rule's deviation from the exact value.
 
 | $\zeta$ | Overshoot | $\omega_nt_r$ (10–90%) | $\omega_nt_s$ (2%, exact) | $4/\zeta$ |
 |---|---|---|---|---|
@@ -155,7 +155,7 @@ The permitted region is the intersection. Design then means choosing a controlle
 
 A higher-order response is a sum of modes, one per pole (02-09). A mode with a large decay rate dies quickly and affects only the first moments. If one pair of poles is much closer to the imaginary axis than all others, that pair **dominates**: the response looks second-order with those poles. A common rule is that other poles should be at least five times farther left than the dominant pair's real part.
 
-An extra real pole at $-p$ in $T(s)\,p/(s + p)$ acts as a low-pass filter on the second-order response: it slows the rise, delays the peak and usually lowers the overshoot. Example 15-03.4 measures the effect for $p$ from 20 times $\sigma$ down to $2\sigma$. When approximating, keep the DC gain: replace $p/(s + p)$ by 1, not by 1/(s + p).
+An extra real pole at $-p$ in $T(s)\,p/(s + p)$ acts as a low-pass filter on the second-order response: it slows the rise, delays the peak and usually lowers the overshoot. Example 15-03.4 measures the effect for $p$ from 20 times $\sigma$ down to $2\sigma$. When approximating, keep the DC gain: replace $p/(s + p)$ by 1. Replacing $1/(s + p)$ by 1 instead would change the DC gain by a factor of $p$.
 
 ### 3.6 Zeros, right-half-plane zeros and doublets
 
@@ -215,13 +215,13 @@ The settling-time rule gives $4/\sigma$ = **2.67** s, and the envelope gives $\l
 
 **Units check.** $\sigma$ and $\omega_d$ in 1/s; their ratio, in the exponent, is dimensionless.
 
-**Sanity check.** The rule $1.8/\omega_n$ gives 0.52 s for the rise time, 19% high, as expected for $\zeta$ = 0.43. The exact settling time is shorter than the envelope bound, because at 2.42 s the response is between envelope peaks.
+**Sanity check.** The rule $1.8/\omega_n$ gives 0.52 s for the rise time, 19% above the exact value, as expected for $\zeta$ = 0.43. The exact settling time is shorter than the envelope bound, because at 2.42 s the response is between envelope peaks.
 
 ### Example 15-03.3 · Choosing a gain from specifications (tier B)
 
 **Setup.** A positioning loop has $L(s) = K/[s(s + 25)]$ with unity feedback. The specification is overshoot at most 10% and 2% settling time at most 0.4 s. Find the range of $K$ that meets the overshoot specification, choose $K$ for $\zeta$ = 0.6, and give the resulting specs.
 
-**Solution.** The closed loop is $T = K/(s^2 + 25s + K)$, so $\omega_n = \sqrt K$ and $2\zeta\omega_n = 25$. The real part of the poles is fixed: $\sigma$ = 12.5 s⁻¹, whatever $K$. The settling rule gives $4/12.5$ = **0.32** s, so the settling specification is met for every underdamped $K$.
+**Solution.** The closed loop is $T = K/(s^2 + 25s + K)$, so $\omega_n = \sqrt K$ and $2\zeta\omega_n = 25$. The real part of the poles is fixed: $\sigma$ = 12.5 s⁻¹, whatever $K$. The settling rule gives $4/12.5$ = **0.32** s for every underdamped $K$, which suggests the settling specification is met whatever the gain. The rule only bounds the envelope, though. Exactly, the 2% settling time jumps around between about 0.23 and 0.47 s as $K$ varies (the response re-enters the band at different points of its oscillation, §3.3), and it exceeds 0.4 s for $K \lesssim 173$ ($\zeta \gtrsim 0.95$), where the nearly critically damped response creeps into the band slowly.
 
 For overshoot at most 10%, $\zeta \ge -\ln 0.1/\sqrt{\pi^2 + \ln^2 0.1}$ = **0.591**. Since $\zeta = 12.5/\sqrt K$, that means $K \le (12.5/0.591)^2$ = **447**.
 
@@ -229,7 +229,7 @@ For $\zeta$ = 0.6: $\omega_n = 12.5/0.6$ = 20.83 rad/s and $K = \omega_n^2$ = **
 
 **Units check.** $K$ has units of 1/s² (it equals $\omega_n^2$), consistent with $L$ being dimensionless.
 
-**Sanity check.** The poles move along the vertical line $\sigma$ = 12.5 as $K$ rises (15-06 calls this the root locus). Raising $K$ raises $\omega_d$ and the overshoot but cannot speed the settling. To settle faster, the plant pole at −25 must move, which needs a different controller (15-09).
+**Sanity check.** The poles move along the vertical line $\sigma$ = 12.5 as $K$ rises (15-06 calls this the root locus). Raising $K$ raises $\omega_d$ and the overshoot but cannot change the envelope's decay rate $\sigma$, so it cannot improve the settling *bound*; the exact settling time only wanders within it. To settle reliably faster, the plant pole at −25 must move, which needs a different controller (15-09).
 
 ### Example 15-03.4 · How much does an extra pole matter? (tier C)
 
@@ -258,6 +258,14 @@ At $p$ = 20σ the extra pole is invisible. At 6σ it costs 7% in rise time and l
 - $z$ = 2 (four times $\sigma$): overshoot **19.1**%, rise time **1.37** s, against 16.3% and 1.64 s without the zero.
 - $z$ = 0.5 (equal to $\sigma$): overshoot **69.9**%, rise time **0.479** s. The derivative term now dominates.
 - Right-half-plane zero at 2: the response first dips to an undershoot of **9.12**% of the final value at **0.385** s, then overshoots by **17.8**%.
+
+**By hand.** The base response is $y = 1 - e^{-\sigma t}(\cos\omega_dt + (\sigma/\omega_d)\sin\omega_dt)$, with $\dot y = (\omega_n^2/\omega_d)e^{-\sigma t}\sin\omega_dt$ and $\ddot y = (\omega_n^2/\omega_d)e^{-\sigma t}(\omega_d\cos\omega_dt - \sigma\sin\omega_dt)$; here $\sigma$ = 0.5 and $\omega_d$ = 0.866. The peak of $y_z = y + \dot y/z$ is where $\dot y + \ddot y/z = 0$, that is $\sin\omega_dt\,(1 - \sigma/z) + (\omega_d/z)\cos\omega_dt = 0$, or
+
+$$
+\tan\omega_dt_p = -\frac{\omega_d}{z - \sigma} .
+$$
+
+For $z$ = 2 this is $-0.577$, so $\omega_dt_p = \pi - 0.524$ and $t_p$ = 3.023 s; substituting into $y_z$ gives the 19.1% overshoot. For $z = \sigma$ = 0.5 the tangent is infinite, $\omega_dt_p = \pi/2$ and $t_p$ = 1.814 s, giving 69.9%. For the right-half-plane zero, $y_z = y - \dot y/z$ and the same steps give $\tan\omega_dt = \omega_d/(z + \sigma) = 0.346$ for the first extremum: $t$ = 0.385 s, the undershoot. Rise and settling times have no such closed form; they are found by locating the level crossings, which the lab does by root-finding on the exact response (the last exit from the band, bracketed by the envelope).
 
 **Units check.** $\dot y/z$: (1/s)/(1/s) is dimensionless, like $y$.
 
@@ -381,7 +389,7 @@ The lab, [labs/15-03-lab](../labs/15-03-lab/README.md), provides `specs.py`: exa
 | Settling to ½ LSB at 12 and 16 bits | 9.0 τ and 11.8 τ | §3.2 |
 | Overshoot at $\zeta$ = 0.5, 0.707, 0.8 | 16.3%, 4.3%, 1.5% | §3.3 |
 | Settling-time rule (2%) | $t_s \approx 4/\sigma$ | §3.3 |
-| Rise-time rule | $t_r \approx 1.8/\omega_n$ (within 20% for $0.4 \le \zeta \le 0.7$) | §3.3 |
+| Rise-time rule | $t_r \approx 1.8/\omega_n$ (within about 25% of exact for $0.4 \le \zeta \le 0.7$) | §3.3 |
 | Dominance rule | other poles more than 5σ to the left | §3.5 |
 | A precision JFET op-amp's settling time to 0.01% (10 V step, gain −1), as of Nov 2026 | 120 ns (SOIC version) and 550 ns (TO-99 version) of the same part number | [1, R-230] |
 
@@ -389,7 +397,7 @@ The lab, [labs/15-03-lab](../labs/15-03-lab/README.md), provides `specs.py`: exa
 
 - **Measuring overshoot relative to 1** when the DC gain is not 1. Overshoot is relative to the final value.
 - **Using $t_s \approx 4/\sigma$ as exact.** It is an estimate that can be off by a third either way (5 against an exact 3.76 at $\zeta$ = 0.8; 4 against 5.83 at $\zeta$ = 1, in units of $1/\omega_n$). Simulate near a specification limit.
-- **Using $t_r \approx 1.8/\omega_n$ outside its range.** At $\zeta$ = 0.8 the true rise time is 37% longer.
+- **Using $t_r \approx 1.8/\omega_n$ outside its range.** At $\zeta$ = 0.8 the rule is 27% below the exact rise time (the true value is 37% longer than the rule).
 - **Ignoring zeros.** A zero near the dominant poles can double the overshoot; $\zeta$ alone then misleads.
 - **Dropping a pole without keeping the DC gain.** Replace $p/(s + p)$ by 1, not $1/(s + p)$ by 1.
 - **Reading settling time from a Bode plot.** A doublet barely shows on a Bode plot but dominates precision settling.
@@ -400,13 +408,13 @@ The lab, [labs/15-03-lab](../labs/15-03-lab/README.md), provides `specs.py`: exa
 ### State of the art (as of Nov 2026)
 
 - **Settling is specified with its test conditions.** The datasheet for TI's OPA627 (revision SBOS165C, January 2025) specifies settling time for a 10 V step at a gain of −1, to 0.1% and to 0.01% [1, R-230] **[Established]**. The two package versions sharing that part number differ: the SOIC version is specified at 45 MHz gain-bandwidth, 150 V/µs slew rate and 120 ns to 0.01%; the TO-99 version at 16 MHz, 55 V/µs and 550 ns. The front page quotes 550 ns. Always read the table for the exact variant and conditions.
-- **Precision settling is a design discipline in analog ICs.** Pole–zero doublets and their settling tails are textbook topics in analog IC design [2] **[Established]**, and fast-settling amplifiers are judged on the time to reach 12 to 18 bits, not on bandwidth.
-- **Loop specifications in power and timing chips are time-domain.** Regulators state load-transient overshoot and recovery time; PLLs state lock time; both follow from the closed-loop poles and zeros of this chapter (15-12, 22-07).
+- **Precision settling is a design discipline in analog ICs.** Pole–zero doublets and their settling tails are textbook topics in analog IC design [2] **[Established]**. For amplifiers that drive data converters, the relevant figure is the settling time to the converter's resolution (0.01% is about 13 bits), as the OPA627 datasheet's 0.01% specification illustrates, rather than bandwidth alone.
+- **Loop specifications in power and timing chips are time-domain.** Regulators state load-transient overshoot and recovery time; PLLs state lock time; both follow from the closed-loop poles and zeros of this chapter (15-12, 22-07) **[Established]**.
 
 ### Why it matters commercially
 
 - **Throughput is often a settling time.** A multiplexed ADC channel, a DVFS step or a frequency hop cannot proceed until the analog quantity has settled; settling time is a direct limit on samples per second or on transitions per second.
-- **Overshoot is a reliability and safety specification.** A voltage overshoot above a process's maximum gate voltage ages transistors (23-04); a mechanical overshoot can collide.
+- **Overshoot is a reliability and safety specification.** A voltage overshoot above a process's maximum gate voltage ages transistors (25-09); a mechanical overshoot can collide.
 - **Doublets and slew limits are where competing parts differ.** Two amplifiers with the same gain-bandwidth can settle to 16 bits in very different times.
 
 ### Marketing vs Reality
@@ -444,11 +452,11 @@ $M_p = e^{-\sigma t_p} = e^{-\pi\sigma/\omega_d}$, and $\sigma/\omega_d = \zeta/
 
 </details>
 
-**Q3.** In Example 15-03.3, why can raising $K$ not shorten the settling time?
+**Q3.** In Example 15-03.3, why can raising $K$ not change the decay rate $\sigma$ of the response's envelope?
 
 <details><summary>Answer</summary>
 
-The closed-loop characteristic polynomial is $s^2 + 25s + K$, so the sum of the poles is fixed at −25 and, once they are complex, their real part is fixed at −12.5. $K$ moves them vertically, changing $\omega_d$ and the overshoot but not $\sigma$.
+The closed-loop characteristic polynomial is $s^2 + 25s + K$, so the sum of the poles is fixed at −25 and, once they are complex, their real part is fixed at −12.5. $K$ moves them vertically, changing $\omega_d$ and the overshoot but not $\sigma$. (The exact settling time still varies with $K$, between about 0.23 and 0.47 s, because the last exit from the 2% band falls at different points of the oscillation; only the envelope bound $4/\sigma$ is fixed.)
 
 </details>
 

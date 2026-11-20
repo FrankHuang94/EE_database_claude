@@ -120,6 +120,9 @@ v.check("Ex 15-03.3e", 100 * r["overshoot"])
 v.check("Ex 15-03.3f", r["tpeak"])
 v.check("Ex 15-03.3g", r["rise"])
 v.check("Ex 15-03.3h", r["settle"])
+tr_3, pk_3, tp_3, ts_3 = ivp_specs([[0, 1], [-K3, -25]], [0, 1], [K3, 0], 1.0, 1.0)
+v.assert_true("Ex 3: solve_ivp cross-check of rise, peak time and settling",
+              abs(tr_3 - r["rise"]) < 1e-7 and abs(tp_3 - r["tpeak"]) < 1e-7 and abs(ts_3 - r["settle"]) < 1e-7)
 
 # ---------------------------------------------------------------------------------------- Example 4
 ids4 = {None: ("a", "e", "i"), 10: ("b", "f", "j"), 3: ("c", "g", "k"), 1: ("d", "h", "l")}
@@ -356,5 +359,53 @@ v.check("Lab 15-03.d", ts_i * 1e6)
 r = step_specs([1], [L * C, R * C, 1], 2e-3)
 v.assert_true("Lab: specs.py agrees with solve_ivp on the RLC circuit",
               max(abs(r["rise"] - tr_i), abs(r["tpeak"] - tp_i), abs(r["settle"] - ts_i)) < 1e-9)
+
+# ---------------------------------------------------------------------------------------- audit additions (Ex 3)
+ts3 = lambda k: step_specs([k], [1, 25, k], 3, n=200001)["settle"]  # noqa: E731
+k_th = brentq(lambda k: ts3(k) - 0.4, 160, 200, xtol=1e-6)
+v.assert_true("Ex 3: exact settling exceeds 0.4 s below K = 173 (zeta 0.95)", round(k_th) == 173 and round(12.5 / math.sqrt(k_th), 2) == 0.95)
+tvals = [ts3(k) for k in (156.25, 200, 250, 300, 434, 1000)]
+v.assert_true("Ex 3: exact settling spans about 0.23 to 0.47 s", round(min(tvals), 2) == 0.23 and round(max(tvals), 2) == 0.47)
+
+def _rule_dev(z):
+    return 100 * (1.8 / step_specs([1], [1, 2 * z, 1], 40, n=400001)["rise"] - 1)
+
+
+v.assert_true("3.3: rise rule 23% high at zeta 0.4, 15% low at 0.7, 19% high at 0.43",
+              round(_rule_dev(0.4)) == 23 and round(_rule_dev(0.7)) == -15 and round(_rule_dev(0.43)) == 19)
+v.assert_true("Common mistakes: rule 27% below exact at 0.8 (exact 37% longer); 30% below at 0.83 (44% longer)",
+              round(_rule_dev(0.8)) == -27 and round(100 * (1 / (1 + _rule_dev(0.8) / 100) - 1)) == 37
+              and round(_rule_dev(0.83)) == -30 and round(100 * (1 / (1 + _rule_dev(0.83) / 100) - 1)) == 44)
+
+# ---------------------------------------------------------------------------------------- prose numbers (audit)
+base = step_specs([1], [1, 1, 1], 40, n=400001)
+p6 = step_specs([3], np.polymul([1, 3], [1, 1, 1]), 40, n=400001)
+p2 = step_specs([1], np.polymul([1, 1], [1, 1, 1]), 40, n=400001)
+v.assert_true("Ex 4: at 6 sigma +7% rise and about 1 point less overshoot; at 2 sigma +40% rise and overshoot halves",
+              round(100 * (p6["rise"] / base["rise"] - 1)) == 7 and round(100 * (base["overshoot"] - p6["overshoot"])) == 1
+              and round(100 * (p2["rise"] / base["rise"] - 1)) == 40 and 0.45 < p2["overshoot"] / base["overshoot"] < 0.55)
+wn3 = 12.5 / 0.6
+v.assert_true("Ex 3: wn = 20.83, wd = 16.67", round(wn3, 2) == 20.83 and round(wn3 * 0.8, 2) == 16.67)
+wc6, pp6, zz6 = 2 * math.pi * 1e8, 2 * math.pi * 1e6, 2 * math.pi * 1.05e6
+t6 = math.log(48.1) / pp6
+w6 = np.logspace(4, 10, 200001)
+Hdb = 20 * np.log10(np.abs((1 + 1j * w6 / zz6) / (1 + 1j * w6 / pp6)))
+v.assert_true("Ex 6: 56 times longer; doublet changes |T| by 0.42 dB (< 0.5 dB)",
+              round(t6 / (math.log(1000) / wc6)) == 56 and round(float(np.max(np.abs(Hdb))), 2) == 0.42)
+v.assert_true("P5(b): D overshoot 8.1% at zeta 0.625", round(100 * math.exp(-math.pi * 0.625 / math.sqrt(1 - 0.625**2)), 1) == 8.1)
+v.assert_true("P5(b): table zeta and wn", all(round(abs(complex(a_, b_)), 2) == wn_ and round(a_ / abs(complex(a_, b_)), 3) == z_
+                                             for a_, b_, wn_, z_ in ((2, 2, 2.83, 0.707), (3, 2, 3.61, 0.832), (1, 1, 1.41, 0.707), (4, 5, 6.40, 0.625), (4, 3, 5, 0.8))))
+v.assert_true("P13(b): e^{-pt} = 0.730 at 50 ns; 0.14%", round(math.exp(-pp6 * 50e-9), 3) == 0.730)
+
+sg, wd_ = 0.5, math.sqrt(0.75)
+y_b = lambda tt: 1 - math.exp(-sg * tt) * (math.cos(wd_ * tt) + sg / wd_ * math.sin(wd_ * tt))  # noqa: E731
+yd_b = lambda tt: (1 / wd_) * math.exp(-sg * tt) * math.sin(wd_ * tt)  # noqa: E731
+tp2 = (math.pi - math.atan(wd_ / (2 - sg))) / wd_
+tp05 = (math.pi / 2) / wd_
+tu = math.atan(wd_ / (2 + sg)) / wd_
+v.assert_true("Ex 5 by hand: tp 3.023 s and 19.1%; 1.814 s and 69.9%; undershoot at 0.385 s (9.12%)",
+              round(tp2, 3) == 3.023 and round(100 * (y_b(tp2) + yd_b(tp2) / 2 - 1), 1) == 19.1
+              and round(tp05, 3) == 1.814 and round(100 * (y_b(tp05) + yd_b(tp05) / 0.5 - 1), 1) == 69.9
+              and round(tu, 3) == 0.385 and round(-100 * (y_b(tu) - yd_b(tu) / 2), 2) == 9.12)
 
 sys.exit(v.finish())
