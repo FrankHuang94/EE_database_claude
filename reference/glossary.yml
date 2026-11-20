@@ -6269,3 +6269,41 @@
   definition: A copy of the last G samples of each OFDM symbol placed in front of it, so that a channel with up to G + 1 taps convolves the symbol circularly; it removes inter-symbol and inter-carrier interference at an overhead of G/(N + G).
   chapter: "16-03"
   see_also: [OFDM, Circular convolution]
+
+# ---------------------------------------------------------------- 16-04
+- term: Fast Fourier transform (FFT)
+  definition: Any algorithm that computes the DFT in O(N log N) operations instead of N²; the radix-2 Cooley–Tukey FFT splits an N-point DFT into two N/2-point DFTs recursively, using (N/2)log₂N butterflies.
+  chapter: "16-04"
+  see_also: [Butterfly, Discrete Fourier transform (DFT)]
+- term: Butterfly
+  definition: "The FFT's basic computation, X[k] = G[k] + W·H[k] and X[k + N/2] = G[k] − W·H[k]: one complex multiplication by a twiddle factor, one addition and one subtraction producing two outputs."
+  chapter: "16-04"
+  see_also: [Twiddle factor, Fast Fourier transform (FFT)]
+- term: Twiddle factor
+  definition: A root of unity W_N^k = e^{−j2πk/N} by which an FFT butterfly multiplies one of its inputs; W = 1 and W = −j need no multiplier, and the radix-2 FFT has (N/2)log₂N − 3N/2 + 2 non-trivial twiddle products.
+  chapter: "16-04"
+  see_also: [Butterfly]
+- term: Decimation in time
+  definition: The FFT split into even- and odd-indexed input samples, giving bit-reversed input order, natural output order, and butterflies that multiply by the twiddle before the add and subtract.
+  chapter: "16-04"
+  see_also: [Decimation in frequency, Bit-reversed order]
+- term: Decimation in frequency
+  definition: The FFT split into even- and odd-indexed output bins (input split into halves), giving natural input order, bit-reversed output order, and butterflies that multiply the difference by the twiddle.
+  chapter: "16-04"
+  see_also: [Decimation in time]
+- term: Bit-reversed order
+  definition: "The order in which a radix-2 FFT reads its input (DIT) or produces its output (DIF): index n is placed at the position whose log₂N-bit binary representation is n's bits reversed."
+  chapter: "16-04"
+  see_also: [Decimation in time]
+- term: In-place computation
+  definition: An FFT organization in which each butterfly writes its two outputs back to the memory locations of its two inputs, so the transform needs only N words of data memory.
+  chapter: "16-04"
+  see_also: [Butterfly]
+- term: Radix-4 FFT
+  definition: An FFT that splits the DFT four ways at each stage; its 4-point butterflies need only trivial internal twiddles, so it uses (3N/8)log₂N complex multiplications, 75% of radix-2.
+  chapter: "16-04"
+  see_also: [Fast Fourier transform (FFT)]
+- term: Pipelined FFT
+  definition: A streaming FFT architecture with one butterfly per stage and delay lines between stages, taking one sample per clock; the radix-2 single-path delay-feedback (R2SDF) form uses log₂N butterflies, log₂N − 2 general multipliers and N − 1 words of delay.
+  chapter: "16-04"
+  see_also: [Fast Fourier transform (FFT)]
