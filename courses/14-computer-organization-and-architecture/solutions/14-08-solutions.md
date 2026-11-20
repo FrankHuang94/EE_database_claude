@@ -94,7 +94,7 @@ The last result is ready in cycle **12**.
 
 (b) **390** cycles at 4-wide, and **390** at 8-wide. The loop's 643 instructions need only about 161 cycles of dispatch at 4-wide, so the multiply chain sets the pace.
 
-(c) The four chains each have 32 multiplies ($32 \times 3$ = 96 cycles after the first loads, at 4). Two levels of combining multiplies add 6, so the critical path is $4 + 96 + 6$ = **106**. The model gives **110** cycles at 4-wide and **108** at 8-wide. The speedup at 4-wide is 390/110 = **3.545**.
+(c) The four chains each have 32 multiplies ($32 \times 3$ = 96 cycles after the first loads, at 4). Combining as a tree, $(t_0t_2)(t_4t_6)$, takes two levels of multiplies, which add 6, so the critical path is $4 + 96 + 6$ = **106**. The model gives **110** cycles at 4-wide and **108** at 8-wide. The speedup at 4-wide is 390/110 = **3.545**.
 
 (d) Integer multiplication (and addition) modulo $2^{32}$ is associative, so regrouping gives the identical result. Floating-point addition and multiplication are not associative, because each operation rounds (14-04), so regrouping can change the result. Compilers therefore reassociate floating-point reductions only when allowed to, for example with `-ffast-math`.
 
@@ -127,11 +127,11 @@ Without renaming, **1092** cycles. Every instruction now writes or reads t1, so 
 
 - The misprediction is discovered only when the branch executes, and the branch waits for its operands. A return waits for `lw ra` to reload the return address from the stack, for example.
 - The refill then costs 10 cycles.
-- The window restarts empty, so the instructions after the branch cannot overlap with those before it, as they would with correct prediction.
+- Nothing after the branch was dispatched while it waited, so the instructions after it cannot overlap with those before it, as they would with correct prediction. (The older instructions stay in the ROB until they retire; what is lost is the younger work that would have filled the window.)
 
 ### Solution 14-08.11
 
-(a) With the window full, 70% of 256 = 179.2 instructions hold new results, so 180 in the worst case, in addition to the 32 committed architectural values: $32 + 180$ = **212** physical registers. (A design that never gives x0 a physical register needs one fewer.)
+(a) Never stalling means covering the worst case, a full window in which every instruction writes a register: the 32 committed architectural values plus 256 in flight, $32 + 256$ = **288** physical registers (**287** if x0 gets none). If exactly 70% of a full window writes a register, $0.7 \times 256$ = 179.2, so 180 new results plus the 32 committed values: $32 + 180$ = **212**. A design sized to the 70% average stalls renaming whenever more than 180 of the in-flight instructions write registers; Zen 5's numbers in (b) show designers accept that.
 
 (b) $240 - 16$ = **224** integer results can be in flight, which is **50**% of the 448-entry ROB. Many ROB entries hold stores, branches or vector operations that need no integer register, so this ratio is a design choice, not a shortage. With two threads, the architectural state doubles to 32 registers, and the same ROB is split between the threads. This is a rough estimate: it ignores renamed flags and microcode temporaries, which AMD's disclosure does not break down.
 
@@ -177,7 +177,80 @@ Above about 100 entries the window stops being the limit. 256 entries give the s
 
 (b) Each of $w$ results goes to $2w$ inputs: $2w^2$ = **32** paths at 4-wide, and **128** at 8-wide.
 
-(c) Doubling the width, and the queue with it, quadruples both. The wake-up and select loop must also finish in one cycle for dependent instructions to issue back to back, so the larger structures also slow the clock. This is why wide cores split their execution units into clusters with partial bypassing, and why widths have stayed near 8 for decades.
+(c) Doubling the width, and the queue with it, quadruples both. The wake-up and select loop must also finish in one cycle for dependent instructions to issue back to back, so the larger structures also slow the clock. This is why wide cores split their execution units into clusters with partial bypassing, and why designs settled at widths of 4 to 8 (§3.4) instead of growing with the transistor budget.
+
+### Solution 14-08.15
+
+(a) Work down the list, applying the rules:
+
+<!-- tomasulo table -->
+
+| # | Instruction | Issue | Execute | CDB |
+|---|---|---|---|---|
+| 1 | `lw x1, 0(x10)` | 1 | 2–3 | 4 |
+| 2 | `mul x2, x1, x3` | 2 | 5–8 | 9 |
+| 3 | `add x4, x2, x5` | 3 | 10–10 | 11 |
+| 4 | `lw x6, 4(x10)` | 4 | 5–6 | 7 |
+| 5 | `sub x1, x6, x9` | 5 | 8–8 | 10 |
+| 6 | `add x7, x1, x4` | 6 | 12–12 | 13 |
+
+- 1 has its operand (x10) at issue and starts in cycle 2.
+- 2 waits for x1, broadcast in cycle 4, and starts in 5.
+- 3 waits for x2 (cycle 9).
+- 4 is independent and starts in cycle 5, overtaking 2 and 3.
+- 5 gets x6 from the CDB in cycle 7 and finishes in cycle 8, but the CDB is taken in cycle 9 by the older multiply, so 5 broadcasts in 10.
+- 6 needs x1 from 5 (cycle 10) and x4 from 3 (cycle 11), so it starts in 12 and broadcasts in **13**, the total.
+
+(b) Instruction 5 writes x1, which instruction 2 reads (a WAR dependence) and instruction 1 writes (a WAW dependence). Renaming gives 5's result its own tag, so 5 executes before 2 has even started, and instruction 6 correctly takes x1 from 5, not from 1. Without renaming, 5 would have to wait until 2 had read x1 (cycle 5) and its write would have to follow 1's.
+
+(c) With two CDBs, instruction 5 broadcasts in cycle **9**. But 6 still waits for x4 from instruction 3 in cycle 11, so the total stays **13**. The CDB conflict was off the critical path 1 → 2 → 3 → 6.
+
+### Solution 14-08.16
+
+(a) The load can share bundle 1 with the `addi`, because both read a0 at the start of the bundle. The `add` must wait two bundles for t0, and the branch must come last and in a different ALU slot from the `add`:
+
+<!-- vliw schedule 1 -->
+
+| Bundle | ALU/branch slot | Load/store slot |
+|---|---|---|
+| 1 | `addi a0, a0, 4` | `lw t0, 0(a0)` |
+| 2 | — | — |
+| 3 | `add a1, a1, t0` | — |
+| 4 | `bne a0, a2, loop` | — |
+
+That is **4** bundles per element, and an exhaustive search finds no 3-bundle schedule. The ALU slot needs three bundles, and the `add` cannot come before bundle 3.
+
+(b) The second load comes after the `addi`, which has already added 8 to a0, so its offset becomes 4 − 8 = −4:
+
+<!-- vliw schedule 2 -->
+
+| Bundle | ALU/branch slot | Load/store slot |
+|---|---|---|
+| 1 | `addi a0, a0, 8` | `lw t0, 0(a0)` |
+| 2 | — | `lw t1, -4(a0)` |
+| 3 | `add a1, a1, t0` | — |
+| 4 | `add a1, a1, t1` | — |
+| 5 | `bne a0, a2, loop` | — |
+
+**5** bundles for 2 elements: **2.5** per element.
+
+(c) With four loads the load/store slot keeps feeding the adds, one per bundle from bundle 3:
+
+<!-- vliw schedule 4 -->
+
+| Bundle | ALU/branch slot | Load/store slot |
+|---|---|---|
+| 1 | `addi a0, a0, 16` | `lw t0, 0(a0)` |
+| 2 | — | `lw t1, -12(a0)` |
+| 3 | `add a1, a1, t0` | `lw t2, -8(a0)` |
+| 4 | `add a1, a1, t1` | `lw t3, -4(a0)` |
+| 5 | `add a1, a1, t2` | — |
+| 6 | `add a1, a1, t3` | — |
+| 7 | `bne a0, a2, loop` | — |
+
+**7** bundles for 4 elements, **1.75** per element, a speedup of 4/1.75 = **2.29** over (a).
+
+(d) The single ALU/branch slot. Unrolling by $k$ puts $k$ adds plus the `addi` and the `bne` in that slot, so a loop needs at least $k + 2$ bundles. Here it takes $k + 3$, because the first add cannot start before bundle 3. Bundles per element, $(k + 3)/k$, approach **1** as $k$ grows: one add per element through one ALU. Getting below 1 needs a second ALU slot. The price of unrolling is code size and registers, which is why VLIW compilers also use *software pipelining*: overlapping iterations so that the loop body reaches the steady state without the start-up bundles.
 
 ---
 
@@ -221,7 +294,9 @@ Above about 100 entries the window stops being the limit. 256 entries give the s
 | 14-08.10a | cost per misprediction, 4-wide | 12.76 | cycles |
 | 14-08.10b | cost per misprediction, 8-wide | 13.43 | cycles |
 | 14-08.10c | time lost, 8-wide | 68.9 | % |
-| 14-08.11a | physical registers needed | 212 | — |
+| 14-08.11a | physical registers at 70% writers | 212 | — |
+| 14-08.11d | physical registers, worst case | 288 | — |
+| 14-08.11e | worst case without x0 | 287 | — |
 | 14-08.11b | Zen 5 integer results in flight | 224 | — |
 | 14-08.11c | as a share of the ROB | 50 | % |
 | 14-08.12a | chain cost per element | 5 | cycles |
@@ -243,3 +318,18 @@ Above about 100 entries the window stops being the limit. 256 entries give the s
 | 14-08.14b | comparators, 8-wide, 96 entries | 1536 | — |
 | 14-08.14c | bypass paths, 4-wide | 32 | — |
 | 14-08.14d | bypass paths, 8-wide | 128 | — |
+| 14-08.15a | CDB cycle of instruction 1 | 4 | — |
+| 14-08.15b | CDB cycle of instruction 2 | 9 | — |
+| 14-08.15c | CDB cycle of instruction 3 | 11 | — |
+| 14-08.15d | CDB cycle of instruction 4 | 7 | — |
+| 14-08.15e | CDB cycle of instruction 5 | 10 | — |
+| 14-08.15f | total cycles | 13 | — |
+| 14-08.15g | CDB cycle of instruction 5, two CDBs | 9 | — |
+| 14-08.15h | total cycles, two CDBs | 13 | — |
+| 14-08.16a | bundles per element, no unrolling | 4 | — |
+| 14-08.16b | bundles, unrolled by 2 | 5 | — |
+| 14-08.16c | bundles per element, unrolled by 2 | 2.5 | — |
+| 14-08.16d | bundles, unrolled by 4 | 7 | — |
+| 14-08.16e | bundles per element, unrolled by 4 | 1.75 | — |
+| 14-08.16f | speedup over no unrolling | 2.29 | — |
+| 14-08.16g | limit of bundles per element | 1 | — |

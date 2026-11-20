@@ -75,6 +75,10 @@ On the 1000 unsorted values, the branchy version executes 5526 instructions with
 
 **When one bit beats two.** In the lab program, the 1-bit predictor (185 mispredicted fetches, with BTB and no RAS) beats the 2-bit counter (205). Looking only at `fib`'s base-case branch (`blt a0, t0, base`, 177 executions, 89 taken), the 1-bit predictor is wrong 67 times, the 2-bit counter 87 times and gshare 35 times. Explain why hysteresis hurts here, and why global history helps.
 
+### Problem 14-07.13 [B]
+
+**Correlation by hand.** A loop body contains two conditional branches, b1 then b2. In iteration $i$ (from 0), b1 is taken when $i$ is even and not taken when $i$ is odd, and b2 always has the same outcome as the b1 just before it. The loop runs 8 iterations, so 16 branches in all; ignore the loop's own branch. (a) With a separate 1-bit predictor per branch, each starting at "not taken", how many of the 16 are mispredicted? (b) A (1,1) correlating predictor keeps one bit of global history (the outcome of the most recent branch, starting at "not taken") and gives each branch two 1-bit entries, one for each history value, all starting at "not taken". Trace it and count the mispredictions. (c) A tournament predictor adds a per-branch 2-bit predictor and a chooser that learns, per branch, which component has been right more often. Give one kind of branch for which the chooser should prefer the per-branch component.
+
 ---
 
 ## Objective coverage
@@ -82,7 +86,7 @@ On the 1000 unsorted values, the branchy version executes 5526 instructions with
 | Learning objective (chapter 14-07) | Problems |
 |---|---|
 | 1. CPI cost of mispredictions | 1, 8, 9 |
-| 2. Static, 1-bit, 2-bit and gshare predictors | 2, 3, 4, 5, 12 |
+| 2. Static, 1-bit, 2-bit and gshare predictors | 2, 3, 4, 5, 12, 13 |
 | 3. BTB and return-address stack | 6, 7, 11 |
 | 4. Trace-driven evaluation and cycle counts | 5, 6, 9, 12 |
 | 5. Speculation and Spectre | 10 |

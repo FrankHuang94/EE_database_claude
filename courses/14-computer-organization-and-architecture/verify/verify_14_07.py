@@ -49,6 +49,13 @@ v.check("Ex 14-07.2a", (bpred.simulate(inner, direction="1bit")["dir_wrong"]) //
 v.check("Ex 14-07.2b", round(bpred.simulate(inner, direction="2bit")["dir_wrong"] / 100))
 v.check("Ex 14-07.2c", r1["mispredicts"])
 v.check("Ex 14-07.2d", r2["mispredicts"])
+flags2: list = []
+bpred.simulate(ev10, direction="2bit", flags=flags2)
+pc_in = min(e.pc for e in ev10 if e.kind == "br")
+wrong_in = [i for i, (e, f) in enumerate(zip(ev10, flags2)) if f and e.pc == pc_in]
+wrong_out = [i for i, (e, f) in enumerate(zip(ev10, flags2)) if f and e.kind == "br" and e.pc != pc_in]
+v.assert_true("2-bit extras: inner warm-up once (its first execution), outer warm-up once and the outer exit once",
+              len(wrong_in) == 101 and wrong_in[0] == 0 and len(wrong_out) == 2 and wrong_out[-1] == len(ev10) - 1)
 
 ev4, _, _ = bpred.trace({"l.s": LOOP.format(trip=4)})
 r2b, rg = bpred.simulate(ev4, direction="2bit"), bpred.simulate(ev4, direction="gshare", hist_bits=8)
@@ -70,6 +77,13 @@ N, S = n, 10
 v.assert_true("lab program: N = 1924; 554 transfers (188 branches, 178 calls, 178 returns), 456 taken",
               N == 1924 and len(ev) == 554 and sum(e.kind == "br" for e in ev) == 188 and sum(e.call for e in ev) == 178
               and sum(e.ret for e in ev) == 178 and sum(e.taken for e in ev) == 456)
+v.check("Ex 14-07.5g", len(ev))
+v.check("Ex 14-07.5h", sum(e.kind == "br" for e in ev))
+v.check("Ex 14-07.5i", sum(e.kind == "br" and e.taken for e in ev))
+v.check("Ex 14-07.5j", sum(e.call for e in ev))
+v.check("Ex 14-07.5k", sum(e.kind != "br" and not e.call and not e.ret for e in ev))
+v.check("Ex 14-07.5l", sum(e.ret for e in ev))
+v.check("Ex 14-07.5m", sum(e.taken for e in ev))
 cyc = lambda m: N + 4 + S + 2 * m  # noqa: E731
 m_none = bpred.simulate(ev, direction="none")["mispredicts"]
 m_2b = bpred.simulate(ev, direction="2bit")["mispredicts"]
@@ -203,5 +217,32 @@ v.assert_true("base-case branch: 177 executions, 89 taken; wrong 67 (1-bit), 87 
               len(bc) == 177 and sum(e.taken for e in bc) == 89 and bpred.simulate(bc, direction="1bit")["dir_wrong"] == 67
               and bpred.simulate(bc, direction="2bit")["dir_wrong"] == 87 and bpred.simulate(bc, direction="gshare")["dir_wrong"] == 35)
 v.assert_true("whole program: 1-bit 185 against 2-bit 205 (BTB, no RAS)", bpred.simulate(ev, direction="1bit")["mispredicts"] == 185 and m_2b == 205)
+
+# ---------------------------------------------------------------- Problem 13: a (1,1) correlating predictor, by its own model
+outs = []
+for i in range(8):
+    b1 = i % 2 == 0
+    outs += [("b1", b1), ("b2", b1)]
+one_bit = {"b1": False, "b2": False}
+miss_1 = 0
+for br, taken in outs:
+    miss_1 += one_bit[br] != taken
+    one_bit[br] = taken
+v.check("14-07.13a", miss_1)
+corr = {(br, h): False for br in ("b1", "b2") for h in (False, True)}
+hist, miss_c, rows_c = False, 0, []
+for br, taken in outs:
+    pred = corr[(br, hist)]
+    rows_c.append((br, hist, pred, taken))
+    miss_c += pred != taken
+    corr[(br, hist)] = taken
+    hist = taken
+v.check("14-07.13b", miss_c)
+v.assert_true("(1,1) mispredictions all in iteration 0", [k for k, (_, _, p, t) in enumerate(rows_c) if p != t] == [0, 1])
+tn = lambda b: "T" if b else "N"  # noqa: E731
+sol13 = (ROOT / "solutions" / "14-07-solutions.md").read_text().split("### Solution 14-07.13")[1].split("\n---")[0]
+table13 = [tuple(c.strip() for c in ln.strip("|").split("|")) for ln in sol13.split("\n") if ln.startswith("| ") and ln[2].isdigit()]
+v.assert_true("Solution 13's trace table matches the model row by row",
+              [(r[1], r[2], r[4], r[5]) for r in table13] == [(b, tn(h), tn(p), tn(t)) for b, h, p, t in rows_c[:6]])
 
 sys.exit(v.finish())

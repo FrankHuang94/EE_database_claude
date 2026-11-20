@@ -195,6 +195,8 @@ v.assert_true("critical path = 2 (li a0 and its use) + 100 loads x 3", ooo.criti
 # Example 6: window sizing
 v.check("Ex 14-08.6a", 4 * 100)
 v.check("Ex 14-08.6b", 448 / 8)
+v.check("Ex 14-08.6c", 448 / 3)
+v.check("Ex 14-08.6d", 448 / 2)
 
 # ---------------------------------------------------------------------------------------------------------------
 # Lab
@@ -389,6 +391,8 @@ v.check("14-08.10c", 100 * (f8m - f8) / f8m)
 
 # Problem 11
 v.check("14-08.11a", 32 + math.ceil(0.7 * 256))
+v.check("14-08.11d", 32 + 256)
+v.check("14-08.11e", 31 + 256)
 v.check("14-08.11b", 240 - 16)
 v.check("14-08.11c", 100 * (240 - 16) / 448)
 
@@ -452,5 +456,118 @@ v.check("14-08.14a", 2 * 4 * 48)
 v.check("14-08.14b", 2 * 8 * 96)
 v.check("14-08.14c", 2 * 4**2)
 v.check("14-08.14d", 2 * 8**2)
+
+# ---------------------------------------------------------------- Problem 15: a Tomasulo table, from its stated rules
+TOMA = [("lw", "x1", ["x10"]), ("mul", "x2", ["x1", "x3"]), ("add", "x4", ["x2", "x5"]),
+        ("lw", "x6", ["x10"]), ("sub", "x1", ["x6", "x9"]), ("add", "x7", ["x1", "x4"])]
+TLAT = {"lw": 2, "mul": 4, "add": 1, "sub": 1}
+
+
+def tomasulo(prog, cdbs=1):
+    producer: dict = {}                     # register -> index of the latest instruction writing it (renaming)
+    srcs, issue = [], []
+    for k, (op, rd, rs) in enumerate(prog):
+        issue.append(k + 1)
+        srcs.append([producer.get(r) for r in rs])
+        producer[rd] = k
+    start, end, cdb = [None] * len(prog), [None] * len(prog), [None] * len(prog)
+    cycle = 0
+    while None in cdb:
+        cycle += 1
+        for k in range(len(prog)):           # start execution
+            if start[k] is None and cycle > issue[k] and all(p is None or (cdb[p] is not None and cdb[p] < cycle) for p in srcs[k]):
+                start[k], end[k] = cycle, cycle + TLAT[prog[k][0]] - 1
+        ready = [k for k in range(len(prog)) if end[k] is not None and end[k] < cycle and cdb[k] is None]
+        for k in sorted(ready)[:cdbs]:        # oldest first
+            cdb[k] = cycle
+    return issue, start, end, cdb
+
+
+iss, st, en, cdb1 = tomasulo(TOMA)
+for key, k in zip("abcde", range(5)):
+    v.check(f"14-08.15{key}", cdb1[k])
+v.check("14-08.15f", max(cdb1))
+_, _, _, cdb2 = tomasulo(TOMA, cdbs=2)
+v.check("14-08.15g", cdb2[4])
+v.check("14-08.15h", max(cdb2))
+sol_txt = (ROOT / "solutions" / "14-08-solutions.md").read_text(encoding="utf-8")
+trows = re.findall(r"^\| (\d) \| `[^`]+` \| (\d+) \| (\d+)–(\d+) \| (\d+) \|$", sol_txt.split("<!-- tomasulo table -->")[1], re.M)
+v.assert_true("Solution 15's table matches the simulator row by row",
+              [tuple(int(x) for x in row) for row in trows] == [(k + 1, iss[k], st[k], en[k], cdb1[k]) for k in range(6)])
+
+# ---------------------------------------------------------------- Problem 16: VLIW packing, by exhaustive search and a schedule checker
+
+
+def vliw_min(k):
+    ops = [("lw", i) for i in range(k)] + [("add", i) for i in range(k)] + [("addi", 0), ("bne", 0)]
+    for K in range(1, 3 * k + 6):
+        def ok(a):
+            alu = [b for (t, _), b in a.items() if t != "lw"]
+            ls = [b for (t, _), b in a.items() if t == "lw"]
+            if len(set(alu)) < len(alu) or len(set(ls)) < len(ls):
+                return False
+            for (t, i), b in a.items():
+                if t == "add" and (("lw", i) in a and b < a[("lw", i)] + 2 or i and ("add", i - 1) in a and b < a[("add", i - 1)] + 1):
+                    return False
+                if t == "bne" and (b != K or ("addi", 0) in a and b < a[("addi", 0)] + 1):
+                    return False
+            return True
+
+        def dfs(n, a):
+            if n == len(ops):
+                return True
+            for b in range(1, K + 1):
+                a[ops[n]] = b
+                if ok(a) and dfs(n + 1, a):
+                    return True
+                del a[ops[n]]
+            return False
+
+        if dfs(0, {}):
+            return K
+    return None
+
+
+def check_schedule(marker, k):
+    """Parse a published bundle table and check slots, latencies, the branch position and the load offsets."""
+    block = sol_txt.split(marker)[1].lstrip("\n").split("\n\n")[0]      # the table right after the marker
+    rows = re.findall(r"^\| (\d+) \| (.+?) \| (.+?) \|$", block, re.M)
+    where, offs = {}, {}
+    for b, alu, ls in rows:
+        b = int(b)
+        a_op, l_op = alu.strip("` "), ls.strip("` ")
+        if a_op.startswith("addi"):
+            where["addi"] = b
+        elif a_op.startswith("add"):
+            where[("add", int(a_op.split("t")[-1]))] = b
+        elif a_op.startswith("bne"):
+            where["bne"] = b
+        if l_op.startswith("lw"):
+            m = re.match(r"lw t(\d), (-?\d+)\(a0\)", l_op)
+            where[("lw", int(m.group(1)))] = b
+            offs[int(m.group(1))] = int(m.group(2))
+    n = len(rows)
+    good = where.get("bne") == n and where["bne"] > where["addi"]
+    for i in range(k):
+        good &= where[("add", i)] >= where[("lw", i)] + 2
+        good &= i == 0 or where[("add", i)] > where[("add", i - 1)]
+        good &= offs[i] == 4 * i - (4 * k if where[("lw", i)] > where["addi"] else 0)
+    return n, good
+
+
+for k, mark, keys in ((1, "<!-- vliw schedule 1 -->", ("16a",)), (2, "<!-- vliw schedule 2 -->", ("16b", "16c")),
+                      (4, "<!-- vliw schedule 4 -->", ("16d", "16e"))):
+    n_pub, good = check_schedule(mark, k)
+    best = vliw_min(k)
+    v.assert_true(f"unroll {k}: the published schedule is legal (slots, latencies, branch last, offsets) and optimal",
+                  good and n_pub == best, f"published {n_pub}, minimum {best}")
+    if k == 1:
+        v.check("14-08.16a", best)
+    else:
+        v.check(f"14-08.{keys[0]}", best)
+        v.check(f"14-08.{keys[1]}", best / k)
+v.check("14-08.16f", vliw_min(1) / (vliw_min(4) / 4))
+v.assert_true("bundles = k + 3 for k = 2 and 4, so bundles per element tend to 1", all(vliw_min(k) == k + 3 for k in (2, 4)))
+v.check("14-08.16g", 1)
 
 sys.exit(v.finish())

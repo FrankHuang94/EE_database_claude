@@ -239,8 +239,9 @@ v.assert_true("the core's decoder drives ResultSrc = ALU for stores and ALUOp = 
 
 cpi8 = 0.25 * 5 + 0.10 * 4 + 0.45 * 4 + 0.15 * 3 + 0.05 * 3
 v.check("14-05.8a", cpi8)
-v.check("14-05.8b", cpi8 * 250)
-v.check("14-05.8c", cpi8 * 250 / T)
+step8 = 40 + 200 + 25 + 20                       # slowest multi-cycle step: a memory access
+v.check("14-05.8b", cpi8 * step8)
+v.check("14-05.8c", cpi8 * step8 / T)
 
 # --------------------------------------------------------------------------- the lab program: rebuild, simulate, run the Verilog
 with tempfile.TemporaryDirectory() as td:
@@ -252,6 +253,7 @@ words = gen["words"]
 v.check("Ex 14-05.6a", n)
 v.check("Ex 14-05.6b", n * T / 1e6)
 v.check("Ex 14-05.6c", gen["fib"])
+v.check("Ex 14-05.3h", 40 + 200 + 25 + 20)
 v.assert_true("sum = 115 = sum of 7i - 20", gen["sum"] == sum(make_program.ARRAY) == 115)
 v.assert_true("cycles = (6n + 4) + (21F(11) - 18) + 8 = 64 + 1851 + 8", n == 64 + 1851 + 8)
 
@@ -263,6 +265,8 @@ sim.run(trace=tr)
 CLS = {0x33: "R", 0x13: "I", 0x03: "lw", 0x23: "sw", 0x63: "br", 0x6F: "jal", 0x67: "jalr", 0x37: "lui", 0x17: "auipc"}
 mixc = Counter(CLS[words[pc // 4] & 0x7F] for pc, _ in tr)
 v.assert_true("dynamic mix as stated in Example 6", dict(mixc) == dict(I=729, lw=274, sw=266, jal=188, br=188, jalr=178, R=98, lui=2))
+v.check("Ex 14-05.6f", 100 * mixc["lw"] / n)
+v.check("Ex 14-05.6g", 100 * (mixc["lw"] + mixc["sw"]) / n)
 dl6 = dict(R=P["R"], I=P["R"], lw=P["lw"], sw=P["sw"], br=P["br"], jal=P["jal"], jalr=P["jalr"], lui=P["lui"], auipc=P["lui"])
 var_ns = sum(dl6[k] * c for k, c in mixc.items()) / 1e3
 v.check("Ex 14-05.6d", var_ns)

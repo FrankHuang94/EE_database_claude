@@ -91,6 +91,25 @@ The BTB is the larger structure, because each entry stores a target address. Rea
 
 Global history helps because the outcome is predictable from context. Whether `fib` was just called from `fib(n-1)` or `fib(n-2)`, and what the previous base-case tests did, shows up in the recent outcomes of the same and nearby branches. gshare cuts the branch's errors from 87 to 35.
 
+### Solution 14-07.13
+
+(a) Each branch alternates T, N, T, N, …, and a 1-bit entry always predicts its last outcome, so it is wrong every time: all **16** branches are mispredicted. (The first prediction, "not taken", meets a taken branch.)
+
+(b) Write the history bit before each branch, the entry it selects, the prediction and the outcome:
+
+| Iteration | Branch | History | Entry used | Prediction | Outcome | Right? |
+|---|---|---|---|---|---|---|
+| 0 | b1 | N | b1[N] | N | T | no |
+| 0 | b2 | T | b2[T] | N | T | no |
+| 1 | b1 | T | b1[T] | N | N | yes |
+| 1 | b2 | N | b2[N] | N | N | yes |
+| 2 | b1 | N | b1[N] | T | T | yes |
+| 2 | b2 | T | b2[T] | T | T | yes |
+
+From iteration 1 on, every entry has seen its one outcome and is right forever after. b2's history bit is b1's outcome in the same iteration, which is exactly b2's own outcome. b1's history bit is the previous iteration's b2 outcome, the opposite of b1's next outcome, and each entry learns that. Total: **2** mispredictions in 16, both in iteration 0.
+
+(c) A loop branch with a long, fixed trip count, surrounded by many unrelated branches. Its global history is diluted by the other branches' outcomes, so the gshare-style component sees a different history almost every time and trains slowly. The per-branch 2-bit counter is right on every iteration except the exit. A branch with a stable bias (almost always taken, say, an error check) is another good answer.
+
 ---
 
 ## Answer key
@@ -124,3 +143,5 @@ Global history helps because the outcome is predictable from context. Whether `f
 | 14-07.10a | masked index | 232 | — |
 | 14-07.11a | gshare storage | 1.0 | KiB |
 | 14-07.11b | BTB storage | 6.4 | KiB |
+| 14-07.13a | 1-bit mispredictions | 16 | — |
+| 14-07.13b | (1,1) correlating mispredictions | 2 | — |

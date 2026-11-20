@@ -41,7 +41,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 14-05.8 [B]
 
-**Multi-cycle instead.** A multi-cycle version of the datapath uses a 250 ps cycle. Loads take 5 cycles, stores and ALU instructions 4, branches and JAL 3. For the mix of Example 14-05.4, find the CPI, the average time per instruction, and its ratio to the single-cycle machine's 730 ps. What does the result say about why multi-cycle designs were used?
+**Multi-cycle instead.** A multi-cycle version of the datapath uses a 285 ps cycle, set by its slowest step, a memory access with register overhead ($40 + 200 + 25 + 20$ ps, as in 14-06). Loads take 5 cycles, stores and ALU instructions 4, branches and JAL 3. For the mix of Example 14-05.4, find the CPI, the average time per instruction, and its ratio to the single-cycle machine's 730 ps. What does the result say about why multi-cycle designs were used?
 
 ### Problem 14-05.9 [B]
 

@@ -160,6 +160,8 @@ This chapter uses the illustrative component delays below. They are round number
 | Branch comparator | 80 ps |
 | Data memory read; write setup | 200 ps; 20 ps |
 
+The control decoder is not in the table. Every path below assumes it settles while the register file is being read (both start when the instruction arrives), so its delay hides under the 100 ps register read. A decoder slower than that would add to every path.
+
 The **load** is the longest path: it goes through both memories, the register file, the ALU and the result multiplexer. With these numbers it takes 730 ps (Example 14-05.3), so the single-cycle clock can run no faster than 1/730 ps = 1.37 GHz. An R-type instruction needs only 530 ps, a branch 465 ps.
 
 ![Horizontal stacked bars of component delays along the critical path of each instruction class: load 730 ps (instruction memory, register read, ALU and data memory dominate), R-type 530 ps, store 505 ps, branch 465 ps and JAL 415 ps; a dotted line at 730 ps marks the clock period.](../../../assets/figures/14-05/paths.svg)
@@ -217,7 +219,7 @@ The **load** is the longest path: it goes through both memories, the register fi
 - **Load:** the same plus the data memory: $40 + 200 + 100 + 25 + 120 + 200 + 25 + 20$ = **730** ps.
 - **Store:** to the data memory's write setup: $40 + 200 + 100 + 25 + 120 + 20$ = **505** ps.
 - **Branch:** comparator, next-PC mux, PC setup: $40 + 200 + 100 + 80 + 25 + 20$ = **465** ps. The target path, through the immediate generator and target adder, is shorter: $40 + 200 + 50 + 80 + 25 + 20 = 415$ ps.
-- **JAL:** immediate generator, target adder, next-PC mux, PC setup: $40 + 200 + 50 + 80 + 25 + 20$ = **415** ps. Its write of PC + 4 to rd needs only 165 ps.
+- **JAL:** immediate generator, target adder, next-PC mux, PC setup: $40 + 200 + 50 + 80 + 25 + 20$ = **415** ps. Its write of PC + 4 to rd is not faster: the PC + 4 adder finishes early, but rd, RegWrite and the result-multiplexer select all come from the instruction, so that path takes at least $40 + 200 + 25 + 20$ = 285 ps.
 
 The clock period is the maximum, $T$ = **730** ps (the load), so $f = 1/T$ = **1.370** GHz.
 
@@ -239,11 +241,11 @@ The clock period is the maximum, $T$ = **730** ps (the load), so $f = 1/T$ = **1
 
 **Setup.** The immediate generator produces 32 output bits. For each output bit, count the distinct sources it must choose between across the five immediate formats (I, S, B, U, J). A source is an instruction bit, the constant 0, or the sign bit (instruction bit 31). Sum over the 32 bits for the RISC-V layout. Then repeat for a hypothetical "contiguous" layout in which the B immediate's bits imm[5:1] sit in instruction bits 11–7 and imm[12:6] in bits 31–25, and the J immediate's imm[20:1] fill bits 31–12 in order. What is the widest multiplexer each layout needs?
 
-**Solution.** In the RISC-V layout, most output bits need only two sources. Bits 12–30 choose between the sign (instruction bit 31) and the U-format's own instruction bit, and bits 5–10 between 0 and instruction bits 30–25. Bit 31 is instruction bit 31 in every format, so it needs no multiplexer at all. Bits 0–4 need three sources, and bit 11 needs four (the sign, instruction bit 7, instruction bit 20, and 0). The total is **70** multiplexer inputs, and the widest multiplexer has **4** inputs. In the contiguous layout, the B and J bits land in different instruction positions from I and S, and bits 1–4 need five sources. The total is **98**, with a widest multiplexer of **5** inputs. Scrambling saves 28 multiplexer inputs, about 29%, at no cost to the instruction's information. (The verify script derives each format's bit positions by assembling single-bit immediates with LLVM, so the count does not rely on a hand-copied table.)
+**Solution.** In the RISC-V layout, most output bits need only two sources. Bits 12–30 choose between the sign (instruction bit 31) and the U-format's own instruction bit, and bits 5–10 between 0 and instruction bits 30–25. Bit 31 is instruction bit 31 in every format, so it needs no multiplexer at all. Bits 0–4 need three sources, and bit 11 needs four (the sign, instruction bit 7, instruction bit 20, and 0). The total is **70** sources: 69 multiplexer inputs plus bit 31's direct wire. The widest multiplexer has **4** inputs. In the contiguous layout, the B and J bits land in different instruction positions from I and S, and bits 1–4 need five sources. The total is **98** sources (97 multiplexer inputs plus bit 31), with a widest multiplexer of **5** inputs. Scrambling saves 28 multiplexer inputs, about 29%, at no cost to the instruction's information. (The verify script derives each format's bit positions by assembling single-bit immediates with LLVM, so the count does not rely on a hand-copied table.)
 
 **Units check.** Counts are numbers of multiplexer inputs.
 
-**Sanity check.** Every format puts its sign in bit 31, so the high output bits never choose between different sign sources. That is why bits 12–30 cost only two inputs each and bit 31 none.
+**Sanity check.** Every format puts its sign in bit 31, so the high output bits never choose between different sign sources. That is why bits 12–30 cost only two inputs each and bit 31 a single wire.
 
 ### Example 14-05.6 · Running a program on the Verilog core (tier B)
 
@@ -253,7 +255,7 @@ The clock period is the maximum, $T$ = **730** ps (the load), so $f = 1/T$ = **1
 
 **Units check.** Cycles × ps per cycle = ps; 1923 × 730 ps = 1,403,790 ps.
 
-**Sanity check.** This program has more loads and stores than average (the recursion saves and restores registers), yet the gap is larger than Example 14-05.4's. It is so because I-type instructions, the most common class here, need only 530 ps.
+**Sanity check.** The gap is larger than Example 14-05.4's because the 730 ps class is rarer here. Loads are only 274/1923 = 14.2% of the instructions (25% in Example 14-05.4's mix), and loads plus stores 28.1% (35%). The more of the mix that finishes well before 730 ps, the more of each cycle the single-cycle machine wastes.
 
 ### Answer key
 
@@ -279,15 +281,18 @@ The clock period is the maximum, $T$ = **730** ps (the load), so $f = 1/T$ = **1
 | Ex 14-05.4a | mix-weighted average path | 562.0 | ps |
 | Ex 14-05.4b | single-cycle efficiency | 77.0 | % |
 | Ex 14-05.4c | idealized speedup | 1.299 | — |
-| Ex 14-05.5a | multiplexer inputs, RISC-V layout | 70 | — |
+| Ex 14-05.5a | sources, RISC-V layout | 70 | — |
 | Ex 14-05.5b | widest multiplexer, RISC-V layout | 4 | inputs |
-| Ex 14-05.5c | multiplexer inputs, contiguous layout | 98 | — |
+| Ex 14-05.5c | sources, contiguous layout | 98 | — |
 | Ex 14-05.5d | widest multiplexer, contiguous layout | 5 | inputs |
 | Ex 14-05.6a | cycles | 1923 | — |
 | Ex 14-05.6b | run time | 1.404 | µs |
 | Ex 14-05.6c | stored fib(10) | 55 | — |
 | Ex 14-05.6d | idealized run time | 1033.4 | ns |
 | Ex 14-05.6e | single-cycle slowdown on this program | 1.358 | — |
+| Ex 14-05.6f | load share of the program | 14.2 | % |
+| Ex 14-05.6g | load and store share | 28.1 | % |
+| Ex 14-05.3h | JAL rd-write path, lower bound | 285 | ps |
 
 ## 5. Simulate it
 

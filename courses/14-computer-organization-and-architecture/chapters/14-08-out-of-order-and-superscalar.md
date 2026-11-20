@@ -60,7 +60,9 @@ No machine, however wide or clever, beats it (Example 14-08.2). Real machines fa
 
 A **superscalar** processor fetches, decodes and issues up to $w$ instructions per cycle (its **width**). In an **in-order** superscalar, instructions issue in program order: a group goes together only if none depends on another in the group, and an instruction waiting for an operand blocks every younger one behind it. Doubling the width therefore never doubles performance. On the lab's unrolled loop, going from 1 to 2 to 4 wide raises IPC from 1.0 to 1.7 to 2.3 (Example 14-08.4), because every stalled load blocks the whole group behind it.
 
-Multiple issue also multiplies hardware: $2w$ register-file read ports and $w$ write ports (14-05 Problem 10), $w$ ALUs, and forwarding paths that grow as $w^2$, since every result may go to every input.
+Multiple issue also multiplies hardware: $2w$ register-file read ports and $w$ write ports ([14-05 Problem 10](../problems/14-05-problems.md)), $w$ ALUs, and forwarding paths that grow as $w^2$, since every result may go to every input.
+
+The alternative is **static** multiple issue, the **VLIW** (very long instruction word) approach. The compiler packs independent operations into fixed-format bundles, one per functional-unit slot, and the hardware checks nothing: the compiler must respect every latency, filling empty slots with no-ops. Unrolling loops gives it independent operations to pack (Problem 14-08.16). VLIW cores are common in DSPs and AI accelerators, where code is regular and the compiler sees it all. They are rare in general-purpose CPUs, where latencies vary (cache misses) and binary compatibility across generations matters.
 
 ### 3.3 Out-of-order execution: renaming, the window and the reorder buffer
 
@@ -68,7 +70,7 @@ An out-of-order core separates the in-order front end from an out-of-order execu
 
 1. **Fetch and decode, in order**, $w$ per cycle, guided by the branch predictor (14-07).
 2. **Rename, in order.**
-   - A **register alias table** (map table) gives the current physical register for each of the 32 architectural registers.
+   - A **register alias table** (map table) gives the current physical register for each architectural register (x1–x31; x0 is always zero and needs none).
    - The instruction's sources are looked up in it.
    - Its destination gets a *new* physical register from a free list, and the table is updated.
    - After renaming, only true dependences remain: two writes to x5 now write different physical registers, and a reader of the old x5 keeps its own copy.
@@ -79,7 +81,7 @@ An out-of-order core separates the in-order front end from an out-of-order execu
    - Results are broadcast so that waiting instructions see that their operands are ready (Tomasulo's "common data bus").
 5. **Retire (commit), in order.**
    - The oldest instruction in the ROB retires once it has finished. Its result becomes architectural, and the physical register it replaced returns to the free list.
-   - A mispredicted branch or a faulting instruction reaching the head of the ROB causes everything younger to be squashed and the map table to be restored.
+   - In the simplest scheme, a mispredicted branch or a faulting instruction is handled when it reaches the head of the ROB: everything younger is squashed and the map table is restored. Real cores recover from a mispredicted branch as soon as it resolves, from a checkpoint of the map table taken at the branch. Exceptions still wait for the head, so that they stay precise.
    - Exceptions are therefore **precise**: the state is exactly as if all older instructions had finished and no younger one had started. That is what lets the operating system handle a page fault and resume the program (14-10).
 
 This organization descends from Tomasulo's algorithm for the IBM System/360 Model 91 floating-point unit (1967). The ROB and in-order retirement were added later to make speculation and exceptions precise.
@@ -109,7 +111,10 @@ The lab's `ooo.py` replays a program's dynamic instruction stream, recorded by t
 - issue of up to $w$ ready instructions per cycle, oldest first, with latencies of 1 cycle (ALU), 3 (load, a cache hit, and multiply) and 20 (divide);
 - loads waiting for the most recent older store to the same word, as with a perfect memory-dependence predictor;
 - in-order retirement of up to $w$ per cycle;
-- optionally, in-order issue, no renaming (then WAR and WAW also stall), and fetch blocked by mispredicted branches, taken from 14-07's predictor models.
+- the window is the ROB: an entry is freed only when its instruction retires;
+- an instruction issues at the earliest in the cycle after it is dispatched;
+- fetch is unlimited across correctly predicted taken branches;
+- optionally, in-order issue, no renaming (then WAR and WAW also stall), and mispredictions taken from 14-07's predictor models. A mispredicted branch stops dispatch after itself; no wrong-path instructions are simulated, and fetch resumes a fixed **refill** time after the branch completes. The refill models recovery at resolution plus the front end's restart, in cycles.
 
 It has no caches, no port limits and no front-end details, so its IPC values are upper bounds for each configuration. Its point is to separate the limits.
 
@@ -122,7 +127,7 @@ A modern high-performance core combines everything in this chapter. AMD's Zen 5,
 - has 240 integer physical registers, against the 16 general-purpose registers of the x86-64 architecture, with 6 integer ALUs and 4 address-generation units;
 - has a 48 KB level-1 data cache serving 4 memory operations per cycle [1, R-212] **[Established]** (vendor disclosure).
 
-Every number above was chosen with the trade-offs of §3.4 in mind. 448 entries at 8 per cycle cover about 56 cycles of latency, enough for a level-2 cache hit but not for a trip to DRAM. Simultaneous multithreading (14-12) uses the same window for two threads when one alone cannot fill it.
+Every number above was chosen with the trade-offs of §3.4 in mind. 448 entries at 8 per cycle cover about 56 cycles of latency at the peak rate. At a sustained 2 to 3 instructions per cycle, the same window covers 149 to 224 cycles. A DRAM access, hundreds of cycles at multi-GHz clocks (14-09), still fills it. Simultaneous multithreading (14-12) uses the same window for two threads when one alone cannot fill it.
 
 ## 4. Worked examples
 
@@ -226,7 +231,7 @@ The critical path is only **69** cycles, so there is ample ILP. In-order issue g
 
 **Setup.** A 4-wide core must keep issuing while a load misses all the way to DRAM, taking 100 cycles. How many instructions must its window hold? What latency does Zen 5's 448-entry ROB cover at its 8-wide dispatch rate?
 
-**Solution.** By Little's law, occupancy = throughput × time in the system. To keep 4 instructions per cycle flowing past a 100-cycle stall, the window must hold the $4 \times 100$ = **400** instructions fetched while the load waits. Zen 5's 448 entries at 8 per cycle last 448/8 = **56** cycles: enough to hide a level-2 cache hit and most of a level-3 hit, but not a DRAM access, which stalls the core once the window fills.
+**Solution.** By Little's law, occupancy = throughput × time in the system. To keep 4 instructions per cycle flowing past a 100-cycle stall, the window must hold the $4 \times 100$ = **400** instructions fetched while the load waits. Zen 5's 448 entries at 8 per cycle last 448/8 = **56** cycles: and that assumes the peak dispatch rate. At a sustained 2 to 3 per cycle, the same window lasts 448/3 = **149** to 448/2 = **224** cycles. Either way, a DRAM access of hundreds of cycles stalls the core once the window fills.
 
 **Units check.** Instructions per cycle × cycles = instructions.
 
@@ -268,6 +273,8 @@ The critical path is only **69** cycles, so there is ample ILP. In-order issue g
 | Ex 14-08.5d | 1-wide in-order cycles | 505 | — |
 | Ex 14-08.6a | window needed | 400 | instructions |
 | Ex 14-08.6b | latency covered by Zen 5's ROB | 56 | cycles |
+| Ex 14-08.6c | window lifetime at 3 per cycle | 149 | cycles |
+| Ex 14-08.6d | window lifetime at 2 per cycle | 224 | cycles |
 
 ## 5. Simulate it
 
@@ -325,7 +332,7 @@ The lab, [labs/14-08-lab](../labs/14-08-lab/README.md), provides `ooo.py`, the t
 ### Marketing vs Reality
 
 - **"8-wide core."** *Reality:* the width is the maximum per cycle in one stage; sustained IPC on real code is usually far lower, limited by dependences, branches and cache misses. *Sanity check:* ask for measured IPC on representative workloads, and where the bottleneck is (front end, back end, memory).
-- **"+16% IPC."** *Reality:* vendor IPC gains are averages over the vendor's chosen benchmarks at fixed frequency. *Sanity check:* ask which benchmarks, and how the gain varies (memory-bound code may gain nothing).
+- **"+16% IPC."** *Reality:* AMD's figure is an "up to" claim, the best result over its chosen benchmarks at fixed frequency; the average is lower. *Sanity check:* ask which benchmarks, and how the gain varies (memory-bound code may gain nothing).
 
 ### Questions for engineering leaders
 

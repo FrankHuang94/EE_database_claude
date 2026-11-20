@@ -79,7 +79,7 @@ An instruction issues once its sources are ready, and its result is ready its la
 
 ### Problem 14-08.7 [B]
 
-**Breaking a reduction chain.** A loop multiplies together 128 words (`lw`, `mul t0, t0, t1`, and three loop-control instructions per element). (a) Explain why its critical path is 388 cycles. (b) What does the model give at 4-wide and at 8-wide? (c) The loop is rewritten with four partial products in t0, t2, t4 and t6 (four loads, four multiplies and three loop-control instructions per iteration of four elements), combined with three multiplies at the end. Find its critical path, its cycles at 4-wide and 8-wide, and the speedup at 4-wide. (d) Why may a compiler do this for integers but, by default, not for floating point?
+**Breaking a reduction chain.** A loop multiplies together 128 words (`lw`, `mul t0, t0, t1`, and three loop-control instructions per element). (a) Explain why its critical path is 388 cycles. (b) What does the model give at 4-wide and at 8-wide? (c) The loop is rewritten with four partial products in t0, t2, t4 and t6 (four loads, four multiplies and three loop-control instructions per iteration of four elements), combined at the end as a tree, $(t_0 t_2)(t_4 t_6)$, with three multiplies. Find its critical path, its cycles at 4-wide and 8-wide, and the speedup at 4-wide. (d) Why may a compiler do this for integers but, by default, not for floating point?
 
 ### Problem 14-08.8 [B]
 
@@ -102,7 +102,7 @@ An instruction issues once its sources are ready, and its result is ready its la
 
 ### Problem 14-08.11 [B]
 
-**How many physical registers?** (a) A RISC-V core has a 256-entry reorder buffer, and 70% of its instructions write an integer register. How many integer physical registers does it need so that renaming never stalls with a full window? (b) Zen 5 has 240 integer physical registers and a 448-entry ROB, and x86-64 has 16 general-purpose registers. With one thread, how many integer results can be in flight, and what fraction of the ROB is that?
+**How many physical registers?** (a) A RISC-V core has a 256-entry reorder buffer. How many integer physical registers does it need so that renaming never stalls, whatever the mix in a full window? How many cover a full window if exactly 70% of its instructions write an integer register? (b) Zen 5 has 240 integer physical registers and a 448-entry ROB, and x86-64 has 16 general-purpose registers. With one thread, how many integer results can be in flight, and what fraction of the ROB is that?
 
 ### Problem 14-08.12 [C]
 
@@ -135,14 +135,51 @@ sets `a[i+1] = a[i] + 1` for 256 elements: 1538 instructions in all.
 
 **The cost of width.** Each cycle, every issue-queue entry compares each of its 2 source tags with each of the $w$ result tags broadcast that cycle. Every ALU's result must be forwardable to both inputs of every ALU. (a) How many tag comparators does a 4-wide core with a 48-entry issue queue need? An 8-wide core with 96 entries? (b) How many bypass paths connect $w$ ALUs, for $w$ = 4 and 8? (c) What does this say about doubling the width?
 
+### Problem 14-08.15 [B]
+
+**A Tomasulo table.** A Tomasulo-style core runs:
+
+```asm
+    lw   x1, 0(x10)     # 1
+    mul  x2, x1, x3     # 2
+    add  x4, x2, x5     # 3
+    lw   x6, 4(x10)     # 4
+    sub  x1, x6, x9     # 5
+    add  x7, x1, x4     # 6
+```
+
+Rules:
+
+- One instruction issues per cycle, in order, starting in cycle 1; reservation stations never run out.
+- At issue, an instruction takes ready operands from the register file and otherwise records which instruction will produce each one (renaming).
+- It starts executing in the cycle after the last of its operands appears on the common data bus (CDB), and no earlier than the cycle after it issues.
+- Execution takes 2 cycles for a load, 4 for a multiply and 1 for an add or subtract. Units are pipelined and never busy.
+- An instruction broadcasts its result on the CDB in the cycle after it finishes. There is one CDB: if two results are ready in the same cycle, the older instruction goes first and the other waits.
+
+(a) Give each instruction's issue cycle, execution cycles and CDB cycle, and the total cycles. (b) Which name dependences did renaming remove? (c) With two CDBs, which broadcast moves, and does the total change?
+
+### Problem 14-08.16 [C]
+
+**Packing a VLIW.** A two-slot VLIW issues one bundle per cycle with one ALU/branch slot and one load/store slot. An ALU result can be used in the next bundle. A loaded value can be used two bundles later (one bundle in between). All operations in a bundle read their registers at the start of the bundle. There are no branch delay slots, so the branch must sit in the loop's last bundle. The loop is:
+
+```asm
+loop:
+    lw   t0, 0(a0)
+    add  a1, a1, t0
+    addi a0, a0, 4
+    bne  a0, a2, loop
+```
+
+(a) Schedule one iteration in as few bundles as possible. How many bundles per element? (b) Unroll by 2 (two loads, two adds, `addi a0, a0, 8`) and schedule. Adjust load offsets where a load comes after the `addi`. (c) Repeat for an unroll by 4, and find the speedup over (a). (d) What limits the speedup as unrolling grows, and what bundles-per-element does it approach?
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 14-08) | Problems |
 |---|---|
-| 1. True and name dependences; what renaming removes | 1, 5, 9 |
-| 2. The dataflow limit | 2, 6, 7, 8, 12 |
-| 3. Renaming, the window and the reorder buffer | 4, 5, 11, 14 |
+| 1. True and name dependences; what renaming removes | 1, 5, 9, 15 |
+| 2. The dataflow limit | 2, 6, 7, 8, 12, 16 |
+| 3. Renaming, the window and the reorder buffer | 4, 5, 11, 14, 15 |
 | 4. Trace-driven measurement of ILP limits | 7, 8, 9, 10, 12, 13 |
 | 5. Window sizing with Little's law | 3, 11, 13 |

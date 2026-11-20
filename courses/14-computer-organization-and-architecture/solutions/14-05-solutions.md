@@ -29,7 +29,7 @@ Each follows 14-02's decoding (Examples 14-02.2 and Solutions 14-02.2 and 14-02.
 
 ### Solution 14-05.4
 
-The load path loses 80 ps: $730 - 80$ = **650** ps. The other paths are unchanged (R-type 530, store 505, branch 465, JAL 415), so the load still sets the period: $T$ = **650** ps, $f$ = **1.538** GHz. The R-type and JALR paths (530 ps) are now the next longest, 120 ps behind.
+The load path loses 80 ps: $730 - 80$ = **650** ps. The other paths are unchanged (R-type 530, store 505, branch 465, JAL 415), so the load still sets the period: $T$ = **650** ps, $f$ = **1.538** GHz. The R-type, I-type ALU and JALR paths (530 ps) are now the next longest, 120 ps behind.
 
 ### Solution 14-05.5
 
@@ -49,7 +49,7 @@ $0.20(730) + 0.10(505) + 0.50(530) + 0.15(465) + 0.05(415)$ = **552.0** ps. The 
 
 ### Solution 14-05.8
 
-The CPI is $0.25(5) + 0.10(4) + 0.45(4) + 0.15(3) + 0.05(3)$ = **4.05**, so the average time is $4.05 \times 250$ = **1012.5** ps per instruction. That is 1012.5/730 = **1.387** times *slower* than the single-cycle machine.
+The CPI is $0.25(5) + 0.10(4) + 0.45(4) + 0.15(3) + 0.05(3)$ = **4.05**, so the average time is $4.05 \times 285$ = **1154.25** ps per instruction. That is 1154.25/730 = **1.581** times *slower* than the single-cycle machine.
 
 Splitting the work did not help speed here: the step overheads (each cycle has its own register clock-to-Q and setup) and the uneven split cost more than skipping unneeded steps saved. Multi-cycle designs were valuable when logic was expensive. They let one ALU and one memory port do the work of several adders and two memories. Their speed advantage depends on a good balance of steps; pipelining then overlaps the steps to get both a short cycle and CPI near 1.
 
@@ -111,8 +111,8 @@ The `fib` part grows from $21F(11) - 18 = 1851$ to $21F(16) - 18 = 21 \times 987
 | 14-05.7c | register corrupted by the branch | 16 | — |
 | 14-05.7d | value written | 0 | — |
 | 14-05.8a | multi-cycle CPI | 4.05 | — |
-| 14-05.8b | average time per instruction | 1012.5 | ps |
-| 14-05.8c | ratio to single-cycle | 1.387 | — |
+| 14-05.8b | average time per instruction | 1154.25 | ps |
+| 14-05.8c | ratio to single-cycle | 1.581 | — |
 | 14-05.9a | cycles with fib(15) | 20781 | — |
 | 14-05.9b | run time | 15.17 | µs |
 | 14-05.10a | read ports, 2-wide | 4 | — |

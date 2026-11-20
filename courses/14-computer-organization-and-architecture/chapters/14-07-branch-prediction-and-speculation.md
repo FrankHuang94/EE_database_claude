@@ -36,7 +36,7 @@ In [14-06](14-06-pipelining-and-hazards.md) the five-stage pipeline lost two cyc
 
 **History as context.** Some branches follow patterns: taken three times, then not, then repeat. Others depend on what nearby branches just did. A predictor that indexes its counters by the recent history of outcomes (a *global history*) learns such patterns, as a commuter learns that the bridge is closed on Tuesdays (Example 14-07.3).
 
-**A finance analogy, and its limit.** Speculative execution is like a trader acting on a forecast before the data is published, with the right to unwind the position at no cost if the forecast is wrong. The hardware's "unwind" really does restore the architectural state exactly. Where the analogy breaks is the leak. A trader's unwound trade leaves a record that others can see, and so does speculation: it changes *microarchitectural* state, such as which data sits in the cache. That is invisible to correct programs but measurable by an attacker with a stopwatch (§3.6).
+**A finance analogy, and its limit.** Speculative execution is like a trader acting on a forecast before the data is published, with the right to unwind the position if the forecast is wrong. The hardware's "unwind" really does restore the architectural state exactly, though not for free: a misprediction costs the penalty cycles and the energy of the discarded work. Where the analogy breaks is the leak. A trader's unwound trade leaves a record that others can see, and so does speculation: it changes *microarchitectural* state, such as which data sits in the cache. That is invisible to correct programs but measurable by an attacker with a stopwatch (§3.6).
 
 ## 3. Theory
 
@@ -112,7 +112,7 @@ Speculation does change **microarchitectural state**:
 - predictor tables;
 - TLB entries.
 
-None of it is architecturally visible, but all of it changes timing. In 2017, Google's Project Zero found that this can be exploited. It reported the issue to Intel, AMD and ARM on 1 June 2017 and published on 3 January 2018 [2]. The attacks were catalogued as three variants [2, 3]:
+None of it is architecturally visible, but all of it changes timing. In 2017, Google's Project Zero found that this can be exploited. It reported the issue to Intel, AMD and ARM on 1 June 2017 and published on 3 January 2018 [2]. Independent teams, among them Paul Kocher's and a group at Graz University of Technology, found the same attacks and published the Spectre and Meltdown papers (Further study). The attacks were catalogued as three variants [2, 3]:
 
 - **Variant 1, bounds check bypass** (Spectre, CVE-2017-5753). Code such as
 
@@ -125,14 +125,14 @@ None of it is architecturally visible, but all of it changes timing. In 2017, Go
 - **Variant 2, branch target injection** (Spectre, CVE-2017-5715): the attacker trains the BTB so that a victim's indirect jump speculatively goes to a "gadget" of the attacker's choosing.
 - **Variant 3, rogue data cache load** (Meltdown, CVE-2017-5754): on affected processors, a user-mode load from kernel memory returns data speculatively before the permission check squashes it.
 
-The official CVE description states the essence: "Systems with microprocessors utilizing speculative execution and branch prediction may allow unauthorized disclosure of information to an attacker with local user access via a side-channel analysis" [3] **[Established]**.
+The CVE description of variant 1 (CVE-2017-5753) states the essence; the other two records are worded differently: "Systems with microprocessors utilizing speculative execution and branch prediction may allow unauthorized disclosure of information to an attacker with local user access via a side-channel analysis" [3] **[Established]**.
 
 **Mitigations** come in four layers:
 
 - **Software:** speculation barriers after security-relevant bounds checks; masking indices so that even a speculative access stays in bounds; and, for variant 2, "retpolines", which replace indirect jumps with returns that a controlled RAS predicts.
 - **Hardware:** isolating predictor state between privilege levels and processes, and new processors designed so that speculative loads cannot cross protection boundaries (the fix for Meltdown).
 - **Operating systems:** separate kernel page tables (the Meltdown mitigation).
-- **Architecture:** treating the leak as part of the ISA contract. Some ISAs now define constant-time or speculation-control features.
+- **Architecture:** treating the leak as part of the ISA contract. RISC-V's Zkt extension, for example, lets an implementation guarantee that a listed subset of instructions has "execution latency … independent of the data values they operate on", so that cryptographic code can rely on it [1, R-213] **[Established]**.
 
 Every layer costs some performance, and the field remains active **[Established]** (the existence and categories of mitigations; their costs vary by processor and workload and are **[Contested]**).
 
@@ -158,13 +158,13 @@ All counts in these examples come from trace-driven simulation: programs run on 
 
 **Units check.** Mispredictions are counts.
 
-**Sanity check.** The 2-bit counter's extra mispredictions over 100 come from warm-up: it starts weakly not taken, so the first loop's first iterations are guessed wrong before the counter saturates.
+**Sanity check.** The 2-bit counter's 3 mispredictions beyond the 100 exits have three causes. The inner branch's first iteration is mispredicted once: the counter starts weakly not taken, and one taken outcome moves it to predicting taken. The outer branch warms up the same way, once. And the outer loop's own exit is mispredicted, which is not warm-up at all.
 
 ### Example 14-07.3 · Learning a pattern with global history (tier B)
 
 **Setup.** The inner loop now has 4 iterations (pattern T, T, T, N), still run 100 times. Compare the 2-bit predictor with gshare (8 bits of history).
 
-**Solution.** The 2-bit counter still mispredicts every exit: **103** mispredictions in 500 branches, **79.4**% accuracy. gshare's history, the last 8 outcomes, distinguishes the fourth iteration ("three takens just happened") from the others. After a warm-up, it predicts the exit correctly too: **12** mispredictions, **97.6**% accuracy.
+**Solution.** The 2-bit counter still mispredicts every exit: **103** mispredictions in 500 branches, **79.4**% accuracy. gshare's history, the last 8 outcomes, distinguishes the fourth iteration from the others. The outer loop's taken branch comes just before each inner execution, so the exit iteration is the only one preceded by four takens in a row (the outer branch plus three inner iterations). The third iteration sees the previous exit's N followed by three takens, so at least 4 bits of history are needed (Problem 14-07.5). After a warm-up, it predicts the exit correctly too: **12** mispredictions, **97.6**% accuracy.
 
 **Units check.** Accuracy = 1 − mispredictions/branches.
 
@@ -188,7 +188,7 @@ Going from 95% to 99% makes the machine 1.15/1.03 = **1.117** times faster.
 
 ### Example 14-07.5 · The lab program under five predictors (tier C)
 
-**Setup.** The lab program of 14-05 and 14-06 (an array sum and recursive `fib(10)`) executes $N$ = 1924 instructions, with $S$ = 10 load-use stalls and 554 control transfers (188 conditional branches, 178 calls and 178 returns, 456 of the transfers taken). On the five-stage pipeline, cycles $= N + 4 + S + 2M$. Find the cycles with no prediction, with a BTB and 2-bit counters, with a RAS added, and with gshare plus RAS.
+**Setup.** The lab program of 14-05 and 14-06 (an array sum and recursive `fib(10)`) executes $N$ = 1924 instructions, with $S$ = 10 load-use stalls and 554 control transfers (188 conditional branches, 90 of them taken; 178 calls; 10 jumps, the `j` at the bottom of the top-tested sum loop; 178 returns; 456 taken in all). On the five-stage pipeline, cycles $= N + 4 + S + 2M$. Find the cycles with no prediction, with a BTB and 2-bit counters, with a RAS added, and with gshare plus RAS.
 
 **Solution.** The simulation gives the mispredicted fetches $M$:
 
@@ -241,6 +241,13 @@ The RAS removes most of the return mispredictions; gshare learns `fib`'s base-ca
 | Ex 14-07.5d | mispredictions, gshare + BTB + RAS | 42 | — |
 | Ex 14-07.5e | cycles, gshare + BTB + RAS | 2022 | — |
 | Ex 14-07.5f | speedup over no prediction | 1.409 | — |
+| Ex 14-07.5g | control transfers | 554 | — |
+| Ex 14-07.5h | conditional branches | 188 | — |
+| Ex 14-07.5i | taken conditional branches | 90 | — |
+| Ex 14-07.5j | calls | 178 | — |
+| Ex 14-07.5k | jumps | 10 | — |
+| Ex 14-07.5l | returns | 178 | — |
+| Ex 14-07.5m | taken transfers | 456 | — |
 | Ex 14-07.6a | mispredictions, unsorted | 504 | — |
 | Ex 14-07.6b | mispredictions, sorted | 6 | — |
 | Ex 14-07.6c | extra cycles at a 15-cycle penalty | 7470 | — |
@@ -294,7 +301,7 @@ The lab, [labs/14-07-lab](../labs/14-07-lab/README.md), provides `bpred.py`: it 
 
 - **Front ends are large.** AMD's Zen 5 core, for example, has a 16K-entry level-1 BTB and a 52-entry return-address stack, and fetches two 32-byte blocks per cycle [4, R-212] **[Established]** (vendor disclosure). Vendors rarely disclose the organization of their direction predictors in detail.
 - **Prediction algorithms.** In the research literature, TAGE-style predictors (tagged tables indexed by geometrically increasing history lengths) and perceptron-style predictors are the state of the art; production designs are disclosed only in outline **[Established]** (for the literature; vendor internals are not public).
-- **Speculative-execution attacks remain an active area.** New variants and mitigations continue to be published after the 2018 originals; mitigations combine hardware isolation, microcode and OS changes, and compiler barriers [2, 3, R-213] **[Established]** (the original CVEs and their disclosure dates are primary facts; the performance cost of mitigations is workload-dependent and **[Contested]**).
+- **Speculative-execution attacks remain an active area.** New variants continued after the 2018 originals: Retbleed (CVE-2022-29900 and CVE-2022-29901, published July 2022) mistrains predictions for *return* instructions and, on some Intel generations, bypasses the retpoline mitigation [R-213]. Mitigations combine hardware isolation, microcode and OS changes, and compiler barriers [2, 3, R-213] **[Established]** (the original CVEs and their disclosure dates are primary facts; the performance cost of mitigations is workload-dependent and **[Contested]**).
 
 ### Why it matters commercially
 
@@ -389,7 +396,7 @@ Now work the [problem set](../problems/14-07-problems.md).
 
 ## 14. Sources
 
-1. RISC-V International, *The RISC-V Instruction Set Manual, Volume I*, version 20260120, RV32I chapter (JAL and JALR, and the return-address-stack hints for x1 and x5). [R-201](../../../reference/research-log.md#r-201--risc-v-unprivileged-isa-manual-version-20260120)
+1. RISC-V International, *The RISC-V Instruction Set Manual, Volume I*, version 20260120, RV32I chapter (JAL and JALR, and the return-address-stack hints for x1 and x5) and scalar cryptography chapter (Zkt, data-independent execution latency). [R-201](../../../reference/research-log.md#r-201--risc-v-unprivileged-isa-manual-version-20260120) · [R-213](../../../reference/research-log.md#r-213--spectre-and-meltdown-disclosure-and-cves)
 2. J. Horn, Google Project Zero, "Reading privileged memory with a side-channel," 3 Jan 2018. [R-213](../../../reference/research-log.md#r-213--spectre-and-meltdown-disclosure-and-cves)
 3. MITRE CVE records CVE-2017-5753, CVE-2017-5715 and CVE-2017-5754. [R-213](../../../reference/research-log.md#r-213--spectre-and-meltdown-disclosure-and-cves)
 4. AMD, "Next Generation 'Zen 5' Core," Hot Chips 2024. [R-212](../../../reference/research-log.md#r-212--amd-zen-5-core-hot-chips-2024)
