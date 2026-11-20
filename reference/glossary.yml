@@ -6207,3 +6207,24 @@
   chapter: "16-01"
   see_also: [Multiply-accumulate (MAC)]
 
+# ---------------------------------------------------------------- 16-02
+- term: Digital resonator
+  definition: A second-order recursive filter with poles at r e^{±jω0} near the unit circle (often with zeros at z = ±1), whose response peaks at ω0 with gain about 1/(1 − r), −3 dB width about 2(1 − r) rad/sample and Q about ω0/[2(1 − r)]; it rings for about 1/(1 − r) samples.
+  chapter: "16-02"
+  see_also: [Notch filter, Poles and zeros]
+- term: DC blocker
+  definition: The filter (1 − z^−1)/(1 − a z^−1) with a just below 1, a zero at z = 1 and a pole just inside it, which removes DC and passes frequencies above about (1 − a) rad/sample; used to strip converter offsets.
+  chapter: "16-02"
+- term: Feed-forward equalizer (FFE)
+  definition: An FIR filter in a receiver that approximately inverts the channel; taps acting on samples before the main cursor (precursor taps) cancel precursor intersymbol interference, at the cost of one symbol of latency per precursor tap and of noise enhancement where the channel's response is low.
+  chapter: "16-02"
+  see_also: [Decision-feedback equalizer (DFE), Precursor tap, Noise enhancement]
+- term: Precursor tap
+  definition: An equalizer tap that weights a sample received after the one being decided, cancelling energy that the channel delivers before the main pulse; needed because channels are generally not minimum phase, so their stable inverse is partly anticausal.
+  chapter: "16-02"
+  see_also: [Feed-forward equalizer (FFE), Minimum-phase system]
+- term: Noise enhancement
+  definition: "The rise in output noise when an equalizer inverts a channel: the equalizer's gain is high wherever the channel's response is low, so noise there is amplified; it grows without bound near a channel null and limits how much loss linear equalization can recover."
+  chapter: "16-02"
+  see_also: [Feed-forward equalizer (FFE), Decision-feedback equalizer (DFE)]
+
