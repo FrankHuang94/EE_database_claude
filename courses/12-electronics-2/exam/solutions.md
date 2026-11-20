@@ -82,7 +82,7 @@ $R_{gd} = R_S + R_L + g_mR_SR_L$ = **115** kΩ. $b_1 = 10\ \text{k}\Omega \times
 
 ### Solution 13
 
-(a) Close the loop, $s_c = Px$: then $x = cu + dPx$, so $x = cu/(1 - dP)$ and $y = au + bPcu/(1 - dP)$. Define the return ratio $T = -dP$ (the loop gain at the source), the direct transmission $A_0 = a$ (gain with $P = 0$), and the asymptotic gain $A_\infty = a - bc/d$ (gain as $P \to \infty$, forcing $x \to 0$). Then $A_\infty T + A_0 = (a - bc/d)(-dP) + a = a(1 - dP) + bcP$, and dividing by $1 + T = 1 - dP$ gives $a + bcP/(1 - dP)$, the closed-loop gain. ∎
+(a) Close the loop, $s_c = Px$: then $x = cu + dPx$, so $x = cu/(1 - dP)$ and $y = au + bPcu/(1 - dP)$. Define the return ratio $T = -dP$ (the loop gain at the source), the direct transmission $A_{\mathrm{dir}} = a$ (gain with $P = 0$), and the asymptotic gain $A_\infty = a - bc/d$ (gain as $P \to \infty$, forcing $x \to 0$). Then $A_\infty T + A_{\mathrm{dir}} = (a - bc/d)(-dP) + a = a(1 - dP) + bcP$, and dividing by $1 + T = 1 - dP$ gives $a + bcP/(1 - dP)$, the closed-loop gain. ∎
 
 (b) Each transistor carries a half-sine of peak $V_{op}/R_L$, whose average over a cycle is $V_{op}/(\pi R_L)$, so $P_S = 2V_{CC}V_{op}/(\pi R_L)$ and $\eta = P_L/P_S = (\pi/4)(V_{op}/V_{CC})$, at most π/4 at $V_{op} = V_{CC}$. The dissipation $P_D = 2V_{CC}V_{op}/(\pi R_L) - V_{op}^2/(2R_L)$ is maximized where $dP_D/dV_{op} = 0$: $V_{op} = 2V_{CC}/\pi$.
 

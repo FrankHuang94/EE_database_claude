@@ -62,6 +62,12 @@ so $x^2 + 5.2x - 4.513 = 0$, $x$ = 0.7575 pF⁻¹ and $C_c$ = **1.320** pF. The 
 
 From the overshoot, $\zeta = -\ln(0.2)/\sqrt{\pi^2 + \ln^2(0.2)}$ = **0.4559**, so $Q = 1/(2\zeta)$ = **1.097** and $r = 1/Q^2$ = **0.8316**. Solving $x^2(1 + x^2/r^2) = 1$ and PM $= 90^\circ - \arctan(x/r)$ gives PM = **48.15**°. A scope and Table 1 together give a quick read of a loop's margin without breaking the loop.
 
+### Solution 12-06.13
+
+Once the 2 MHz pole is lowered far enough to be dominant, it contributes nearly 90° at crossover, and only the 20 MHz pole adds lag beyond that. A 45° margin therefore needs the crossover where the 20 MHz pole contributes 45°, at about 20 MHz itself. There $\lvert T \rvert = A_0/[(f_c/f_1')\sqrt2] = 1$, so $f_1' \approx \sqrt2 f_c/A_0$. Solving PM = 45° exactly gives $f_1'$ = **282.9** Hz and a crossover of **20.00** MHz.
+
+Problem 12-06.6(b) added a pole and crossed over at 1.689 MHz, so moving the existing pole gives **11.8** times the crossover, and about the same factor in closed-loop bandwidth. The reason is Example 12-06.4's: the added pole leaves all the original poles in place, so the crossover must sit below the first of them (2 MHz), whereas the moved pole spends its own lag, letting the crossover rise to the next one (20 MHz). The ratio exceeds the pole ratio of 10 because 6(b)'s crossover sat a little below 2 MHz.
+
 ---
 
 ## Answer key
@@ -115,6 +121,9 @@ From the overshoot, $\zeta = -\ln(0.2)/\sqrt{\pi^2 + \ln^2(0.2)}$ = **0.4559**, 
 | 12-06.6f | 2 MHz pole's lag there | 38.11 | ° |
 | 12-06.6g | 20 MHz pole's lag there | 4.49 | ° |
 | 12-06.6h | dominant pole's lag there | 90.00 | ° |
+| 12-06.13a | lowered pole for 45° | 282.9 | Hz |
+| 12-06.13b | crossover | 20.00 | MHz |
+| 12-06.13c | ratio to Problem 6(b)'s crossover | 11.8 | — |
 | 12-06.9d | C_L/C_c | 4.545 | — |
 | 12-06.10e | exact margin lost | 13 | ° |
 | 12-06.10f | estimated margin lost | 18 | ° |

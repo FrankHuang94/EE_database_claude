@@ -33,15 +33,15 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 12-05.6 [B]
 
-**Series–shunt impedances.** An op-amp with $R_{id}$ = 2 MΩ, $R_o$ = 50 Ω and $A$ = 2 × 10⁵ is used as a non-inverting amplifier with a gain of 10. Estimate the closed-loop input and output resistances with the topology rules.
+**Series–shunt impedances.** An op-amp with $R_{id}$ = 2 MΩ, $R_o$ = 50 Ω and $A$ = 2 × 10⁵ is used as a non-inverting amplifier with a gain of 10 ($R_1$ = 1 kΩ to ground, $R_2$ = 9 kΩ to the output). Estimate the closed-loop input and output resistances with the topology rules.
 
 ### Problem 12-05.7 [B]
 
-**A photodiode transimpedance amplifier.** A photodiode with a shunt resistance of 1 MΩ drives the inverting input of an op-amp with $A$ = 10⁴ (infinite input resistance, zero output resistance); the non-inverting input is grounded and $R_F$ = 100 kΩ connects output to inverting input. Find the return ratio, the transresistance by the asymptotic-gain formula, and the input resistance by Blackman's formula.
+**A photodiode transimpedance amplifier.** A photodiode with a shunt resistance $R_S$ = 1 MΩ drives the inverting input of an op-amp with $A$ = 10⁴ (infinite input resistance, zero output resistance); the non-inverting input is grounded and $R_F$ = 100 kΩ connects output to inverting input. Find the return ratio, the transresistance by the asymptotic-gain formula, and the input resistance by Blackman's formula.
 
 ### Problem 12-05.8 [B]
 
-**An inverting amplifier with loading.** An op-amp with $A$ = 1000, $R_{id}$ = 10 kΩ and $R_o$ = 1 kΩ is wired as an inverting amplifier with $R_1$ = 1 kΩ and $R_2$ = 10 kΩ. Find (a) the loop gain a naive "$A\beta$ with β = $R_1/(R_1 + R_2)$" would give; (b) the true return ratio at the op-amp's controlled source; (c) $A_\infty$ and $A_0$; (d) the closed-loop gain and its error from −10.
+**An inverting amplifier with loading.** An op-amp with $A$ = 1000, $R_{id}$ = 10 kΩ and $R_o$ = 1 kΩ is wired as an inverting amplifier with $R_1$ = 1 kΩ and $R_2$ = 10 kΩ. Find (a) the loop gain a naive "$A\beta$ with β = $R_1/(R_1 + R_2)$" would give; (b) the true return ratio at the op-amp's controlled source; (c) $A_\infty$ and $A_{\mathrm{dir}}$; (d) the closed-loop gain and its error from −10.
 
 ### Problem 12-05.9 [B]
 
@@ -53,7 +53,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 12-05.11 [C]
 
-**Example 12-05.4 with $r_o$.** Repeat Example 12-05.4 with $r_o$ = 40 kΩ: find the return ratio, $A_\infty$, $A_0$, the transresistance, and the input and output resistances.
+**Example 12-05.4 with $r_o$.** Repeat Example 12-05.4 with $r_o$ = 40 kΩ: find the return ratio, $A_\infty$, $A_{\mathrm{dir}}$, the transresistance, and the input and output resistances.
 
 ### Problem 12-05.12 [C]
 
@@ -67,6 +67,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **What feedback cleans up.** An amplifier with 1% second-harmonic distortion at 1 V output and an input-referred noise of 10 nV/√Hz is placed in a loop with $T$ = 49 and a closed-loop gain of 10. Estimate the second harmonic at the same output level, and the noise density at the output.
 
+### Problem 12-05.15 [B]
+
+**The loading method against the return ratio.** An op-amp with $A$ = 1000, $R_{id}$ = 10 kΩ and $R_o$ = 1 kΩ is a non-inverting amplifier with $R_1$ = 1 kΩ and $R_2$ = 9 kΩ. (a) By the two-port loading method (§3.7), find β, $R_{11}$, $R_{22}$, the loaded gain $A_L$, the loop gain, the closed-loop gain and the input and output resistances. (b) Find the return ratio and the direct transmission exactly, and the closed-loop gain by the asymptotic-gain formula. (c) Why do the two loop gains differ while the closed-loop gains agree so closely?
+
+### Problem 12-05.16 [C]
+
+**Blackman with both return ratios nonzero: bootstrapping.** A source follower ($g_m$ = 2 mA/V, $r_o$ neglected, drain at AC ground) has $R_S$ = 10 kΩ from source to ground. Its gate is biased by $R_G$ = 1 MΩ from gate to ground and $R_B$ = 1 MΩ from gate to source. Find the input resistance at the gate by Blackman's formula: $Z^{(0)}$, $T_{sc}$, $T_{oc}$ and $R_{in}$. Explain why $R_{in}$ exceeds $R_G \parallel (R_B + R_S)$, and find the voltage gain from gate to source.
+
 ---
 
 ## Objective coverage
@@ -75,6 +83,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Closed-loop gain, loop gain, error and sensitivity | 1, 2, 5, 13 |
 | 2. Bandwidth, distortion and what feedback does not fix | 3, 10, 13, 14 |
-| 3. The four topologies and their impedances | 4, 6, 7, 9 |
+| 3. The four topologies, their impedances and the loading method | 4, 6, 7, 9, 15 |
 | 4. Return ratio and the asymptotic-gain formula | 7, 8, 9, 11, 12 |
-| 5. Blackman's impedance formula | 7, 9, 11 |
+| 5. Blackman's impedance formula | 7, 9, 11, 16 |

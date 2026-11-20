@@ -13,7 +13,7 @@
 
 1. Derive the closed-loop gain $A/(1 + A\beta)$, define the loop gain, and compute the error and the sensitivity of a feedback amplifier.
 2. Show how negative feedback extends bandwidth, reduces distortion and leaves the gain–bandwidth product unchanged, and explain what it does not improve.
-3. Identify the four feedback topologies and derive how each changes input and output impedance.
+3. Identify the four feedback topologies, derive how each changes input and output impedance, and apply the two-port loading method.
 4. Compute a circuit's loop gain as a return ratio, and its closed-loop gain with the asymptotic-gain formula, without splitting it into idealized A and β blocks.
 5. Find a feedback circuit's port impedance with Blackman's formula.
 
@@ -108,7 +108,15 @@ $$
 Z_{if} = \frac{v_i}{i_i} = Z_i(1 + T) .
 $$
 
-The fed-back voltage opposes the input, so for a given input voltage only a small current flows. **Shunt mixing** is the dual: the fed-back current is subtracted from the input current, and the input impedance falls by $1 + T$.
+The fed-back voltage opposes the input, so for a given input voltage only a small current flows.
+
+**Shunt mixing lowers input impedance.** The input current $i_i$ divides at the input node: the amplifier takes $i_\varepsilon = v_i/Z_i$, and the feedback network draws the fed-back current $\beta y$. For a current-input amplifier $y = Ai_\varepsilon$, so $i_i = i_\varepsilon + A\beta i_\varepsilon = i_\varepsilon(1 + T)$ and
+
+$$
+Z_{if} = \frac{v_i}{i_i} = \frac{Z_i}{1 + T} .
+$$
+
+The loop absorbs almost all of the input current, so the input node hardly moves: the virtual ground of an inverting amplifier.
 
 **Shunt sampling lowers output impedance.** With the input zeroed, apply a test voltage $v_t$ at the output. The feedback network returns $\beta v_t$, the amplifier sees $-\beta v_t$ and its internal source produces $-A\beta v_t$ behind its output impedance $Z_o$. The test source supplies $i_t = [v_t - (-A\beta v_t)]/Z_o$, so
 
@@ -116,7 +124,15 @@ $$
 Z_{of} = \frac{v_t}{i_t} = \frac{Z_o}{1 + T} .
 $$
 
-The loop fights any change in output voltage, which is what a low output impedance means. **Series sampling** is the dual: the loop fights any change in output current, raising the output impedance by $1 + T$. These formulas assume the ideal structure of Figure 1, with the loop gain evaluated with the port in the condition the derivation used; §3.6 gives the exact statement.
+The loop fights any change in output voltage, which is what a low output impedance means.
+
+**Series sampling raises output impedance.** Model the amplifier's output as a Norton source $Ax_\varepsilon$ (delivered out of the port node) in parallel with $Z_o$, with the feedback network sensing the output current $y$. With the input zeroed, push a test current $i_t$ into the port, so $y = -i_t$. The network returns $\beta y = -\beta i_t$, the amplifier sees $x_\varepsilon = -\beta y = \beta i_t$, and its source delivers $A\beta i_t$ into the port node. Both currents leave through $Z_o$, so $v_t = Z_oi_t(1 + T)$ and
+
+$$
+Z_{of} = \frac{v_t}{i_t} = Z_o(1 + T) .
+$$
+
+The loop fights any change in output current: the current can move only $1/(1 + T)$ as far as it would open loop, so the port behaves as a stiffer current source. These formulas assume the ideal structure of Figure 1, with the loop gain evaluated with the port in the condition the derivation used; §3.6 gives the exact statement.
 
 ### 3.6 Return-ratio analysis
 
@@ -130,15 +146,15 @@ $$
 
 It is the gain around the loop, measured at a point where the loop is cut without disturbing any loading.
 
-**The asymptotic-gain formula.** By linearity, with the controlled source treated as independent, the output and the controlling variable are $y = a\,u + b\,s_c$ and $x = c\,u + d\,s_c$, where $u$ is the input. With the loop closed, $s_c = Px$, so $x = cu/(1 - dP)$ and $y = au + bPcu/(1 - dP)$. Here $T = -dP$. Define the **direct transmission** $A_0 = a$ (the gain with $P = 0$) and the **asymptotic gain** $A_\infty = a - bc/d$ (the gain as $P \to \infty$, which forces $x \to 0$: a virtual ground or virtual short). Then
+**The asymptotic-gain formula.** By linearity, with the controlled source treated as independent, the output and the controlling variable are $y = a\,u + b\,s_c$ and $x = c\,u + d\,s_c$, where $u$ is the input. With the loop closed, $s_c = Px$, so $x = cu/(1 - dP)$ and $y = au + bPcu/(1 - dP)$. Here $T = -dP$. Define the **direct transmission** $A_{\mathrm{dir}} = a$ (the gain with $P = 0$; the subscript keeps it distinct from the DC open-loop gain $A_0$) and the **asymptotic gain** $A_\infty = a - bc/d$ (the gain as $P \to \infty$, which forces $x \to 0$: a virtual ground or virtual short). Then
 
 $$
-A_f = \frac{y}{u} = A_\infty\frac{T}{1 + T} + \frac{A_0}{1 + T} .
+A_f = \frac{y}{u} = A_\infty\frac{T}{1 + T} + \frac{A_{\mathrm{dir}}}{1 + T} .
 $$
 
-*Check.* $A_\infty T + A_0 = (a - bc/d)(-dP) + a = a(1 - dP) + bcP$, and dividing by $1 + T = 1 - dP$ gives $a + bcP/(1 - dP)$, the closed-loop gain found above. ∎
+*Check.* $A_\infty T + A_{\mathrm{dir}} = (a - bc/d)(-dP) + a = a(1 - dP) + bcP$, and dividing by $1 + T = 1 - dP$ gives $a + bcP/(1 - dP)$, the closed-loop gain found above. ∎
 
-The formula says: the closed-loop gain is the ideal gain $A_\infty$ (found by assuming the controlling variable is zero, the way every op-amp circuit is first analysed), corrected by the loop's error factor $T/(1 + T)$, plus a feed-forward term $A_0/(1 + T)$ that is usually tiny. No loading has been neglected (Example 12-05.4).
+The formula says: the closed-loop gain is the ideal gain $A_\infty$ (found by assuming the controlling variable is zero, the way every op-amp circuit is first analysed), corrected by the loop's error factor $T/(1 + T)$, plus a feed-forward term $A_{\mathrm{dir}}/(1 + T)$ that is usually tiny. No loading has been neglected (Example 12-05.4).
 
 **Blackman's impedance formula.** The impedance at any port of a feedback circuit is
 
@@ -148,7 +164,18 @@ $$
 
 where $Z_{port}^{(0)}$ is the port impedance with the controlled source set to zero, $T_{sc}$ is the return ratio with the port short-circuited, and $T_{oc}$ is the return ratio with the port open. It contains §3.5's rules: series mixing at an input breaks the loop when the port is open ($T_{oc}$ = 0), so the impedance is multiplied by $1 + T_{sc}$; shunt sampling at an output kills the loop when the port is shorted ($T_{sc}$ = 0), so the impedance is divided by $1 + T_{oc}$.
 
-> **Going deeper — why Blackman's formula holds.** Treat the port's test current $i$ as the input and the port voltage $v$ as the output; the asymptotic-gain argument shows that $Z(P) = v/i$ is a bilinear function of $P$, $Z = (\alpha + \beta'P)/(1 + \gamma P)$. At $P = 0$, $Z = \alpha = Z^{(0)}$. The denominator is $1 + T$ for the loop with the port driven by a current source, that is with the port open for signals: $1 + T_{oc}$. The numerator vanishes when the port voltage can be zero with the loop active, which is the condition $1 + T_{sc} = 0$ for the loop with the port shorted; since both are linear in $P$ and equal at $P = 0$, the numerator is $Z^{(0)}(1 + T_{sc})$. Gray, Hurst, Lewis and Meyer (ch. 8) give the full proof.
+> **Going deeper — why Blackman's formula holds.** Drive the port with a test current $i$ and take the port voltage $v$ as the output. The asymptotic-gain argument, with $P$ the only parameter, shows that $Z(P) = v/i$ is a ratio of two functions linear in $P$: $Z = (\alpha + \beta'P)/(1 + \gamma P)$, and $Z(0) = \alpha = Z^{(0)}$. The denominator is the closed-loop denominator of the circuit as driven, by a current source, which leaves the port open for the loop: $1 + \gamma P = 1 + T_{oc}$. Now drive the port with a test *voltage* instead and take the current as the output: the admittance $1/Z$ has the denominator of the loop with the port held by a voltage source, that is shorted, $1 + T_{sc}$. That denominator must be the numerator of $Z$, up to a constant that $P = 0$ fixes, so $\alpha + \beta'P = Z^{(0)}(1 + T_{sc})$. Gray, Hurst, Lewis and Meyer (ch. 8) give the full proof.
+
+### 3.7 The two-port (loading) method
+
+Many textbooks, and many exam problems, use an older route to the same numbers: absorb the feedback network's loading into the amplifier, then treat what is left as the ideal structure of Figure 1. For the series–shunt amplifier (a voltage divider $R_2$ from output to inverting input, $R_1$ from there to ground):
+
+1. **β** is the fraction of the output voltage the network returns with its input port open: $\beta = R_1/(R_1 + R_2)$.
+2. **Input loading.** The network loads the amplifier's input with the resistance seen at its input port with its *output port shorted* (shunt sampling): $R_{11} = R_1 \parallel R_2$, in series with $R_{id}$.
+3. **Output loading.** It loads the amplifier's output with the resistance seen at its output port with its *input port open* (series mixing): $R_{22} = R_1 + R_2$.
+4. **The loaded amplifier.** $A_L = A\,\dfrac{R_{id}}{R_{id} + R_{11}}\cdot\dfrac{R_{22}}{R_{22} + R_o}$, so $T = A_L\beta$, $A_f = A_L/(1 + T)$, $R_{if} = (R_{id} + R_{11})(1 + T)$ and $R_{of} = (R_o \parallel R_{22})/(1 + T)$.
+
+The rule for each port is "short a shunt connection, open a series one", the same conditions that kill the network's influence at the other port. For Example 12-05.3's amplifier, $R_{11}$ = **990** Ω and $R_{22}$ = **100** kΩ give $A_L$ = **9.980** × 10⁴ and $T$ = **998.0**, the same as the return ratio to four figures, and the closed-loop results of the full circuit. The method neglects two things the return ratio keeps: signal fed *forward* through the network (the direct transmission) and signal fed *backward* through the amplifier. Both are tiny in op-amp circuits and can matter in single-transistor stages, where the return ratio and Blackman's formula are the safer tools. Problem 12-05.15 compares the two on a heavily loaded amplifier.
 
 ## 4. Worked examples
 
@@ -158,7 +185,7 @@ where $Z_{port}^{(0)}$ is the port impedance with the controlled source set to z
 
 **Solution.** (a) $T = A\beta$ = **1000**; $A_f = A/(1 + T)$ = **99.90**, against the ideal $1/\beta$ = 100: a gain error of $1/(1 + T)$ = **0.0999**%.
 
-(b) The sensitivity rule predicts $10\%/(1 + T)$ = **0.00999**% (to first order). Exactly, $A = 9 \times 10^4$ gives $A_f$ = **99.889**, a change of **−0.0111**%; the first-order rule underestimates slightly because a 10% change is not infinitesimal.
+(b) The sensitivity rule predicts a change of $-10\%/(1 + T)$ = **−0.00999**% (to first order). Exactly, $A = 9 \times 10^4$ gives $A_f$ = **99.889**, a change of **−0.0111**%; the first-order rule underestimates slightly because a 10% change is not infinitesimal.
 
 **Sanity check.** A 10% process variation in a transistor gain becomes a hundredth of a percent of closed-loop gain: this is why precision amplifiers are possible.
 
@@ -176,13 +203,15 @@ where $Z_{port}^{(0)}$ is the port impedance with the controlled source set to z
 
 **Solution.** (a) Series mixing: $R_{if} \approx 1\ \text{M}\Omega \times 1001$ = **1.001** GΩ. Shunt sampling: $R_{of} \approx 100\ \Omega/1001$ = **0.0999** Ω.
 
-(b) The estimates agree to within about 0.1%; the small differences come from the divider loading the op-amp's output and from the op-amp's input resistance shunting $R_1$, both of which the ideal structure ignores and Blackman's formula would include.
+(b) The estimates agree to within about 0.1%. The small differences come from the divider loading the op-amp's output and from the op-amp's input resistance shunting $R_1$, both of which the ideal structure ignores.
+
+(c) Blackman's formula reproduces the full circuit exactly. The return ratio at the op-amp's controlled source, with the input port shorted, is $T = A\,(R_1 \parallel R_{id})/(R_o + R_2 + R_1 \parallel R_{id})$ = **998.0**, a little below $A\beta$ = 1000 because $R_o$ and $R_{id}$ load the divider. *Input:* with the op-amp's gain set to zero, the port sees $R_{id}$ in series with $R_1 \parallel (R_2 + R_o)$, $Z^{(0)}$ = **1.00099** MΩ. Opening the port leaves no path for current into the + input, so $v_d$ = 0 and $T_{oc}$ = 0. So $R_{in} = 1.00099\ \text{M}\Omega \times (1 + 998.0)$ = **1.000** GΩ. *Output:* with the gain set to zero, $Z^{(0)} = R_o \parallel (R_2 + R_1 \parallel R_{id})$ = **99.90** Ω. Shorting the port kills the loop ($T_{sc}$ = 0), and with it open $T_{oc}$ = 998.0, so $R_{out}$ = 99.90 Ω/999.0 = **0.1000** Ω.
 
 **Sanity check.** Feedback has turned a 1 MΩ, 100 Ω amplifier into a 1 GΩ, 0.1 Ω one: three orders of magnitude each way, from a loop gain of 1000.
 
 ### Example 12-05.4 · A shunt–shunt stage by return ratio (tier B)
 
-**Setup.** A common-source stage ($g_m$ = 4 mA/V, $r_o$ neglected) has $R_D$ = 10 kΩ from drain to AC ground and a feedback resistor $R_F$ = 50 kΩ from drain to gate. It is driven by a signal current source with source resistance $R_S$ = 10 kΩ at the gate. Find (a) the return ratio at the $g_m$ source, (b) $A_\infty$ and $A_0$ for the transresistance $v_d/i_s$, (c) the closed-loop transresistance, and (d) the input and output resistances by Blackman's formula.
+**Setup.** A common-source stage ($g_m$ = 4 mA/V, $r_o$ neglected) has $R_D$ = 10 kΩ from drain to AC ground and a feedback resistor $R_F$ = 50 kΩ from drain to gate. It is driven by a signal current source with source resistance $R_S$ = 10 kΩ at the gate. Find (a) the return ratio at the $g_m$ source, (b) $A_\infty$ and $A_{\mathrm{dir}}$ for the transresistance $v_d/i_s$, (c) the closed-loop transresistance, and (d) the input and output resistances by Blackman's formula.
 
 **Solution.** (a) Replace $g_mv_{gs}$ by a current $i_t$ drawn from the drain. The drain sees $R_D \parallel (R_F + R_S)$ = **8.571** kΩ, so $v_d = -i_t \times 8.571$ kΩ, and the gate is the divided fraction $v_g = v_dR_S/(R_F + R_S)$. The returned source value is $g_mv_g$, so
 
@@ -190,13 +219,13 @@ $$
 T = g_m\,[R_D \parallel (R_F + R_S)]\,\frac{R_S}{R_F + R_S} = 4\ \text{mA/V} \times 8.571\ \text{k}\Omega \times \tfrac16 = \mathbf{5.714} .
 $$
 
-(b) As $g_m \to \infty$ the gate is held at zero (a virtual ground), so all of $i_s$ flows through $R_F$: $A_\infty = -R_F$ = **−50** kΩ. With $g_m$ = 0, $i_s$ divides between $R_S$ and the path $R_F + R_D$, and $v_d = i_s\,R_SR_D/(R_S + R_F + R_D)$: $A_0$ = **1.429** kΩ.
+(b) As $g_m \to \infty$ the gate is held at zero (a virtual ground), so all of $i_s$ flows through $R_F$: $A_\infty = -R_F$ = **−50** kΩ. With $g_m$ = 0, $i_s$ divides between $R_S$ and the path $R_F + R_D$, and $v_d = i_s\,R_SR_D/(R_S + R_F + R_D)$: $A_{\mathrm{dir}}$ = **1.429** kΩ.
 
 (c) $A_f = (-50 \times 5.714 + 1.429)/6.714$ kΩ = **−42.34** kΩ, which a direct nodal solution confirms. The ideal value $-R_F$ is 18% too high in magnitude here because $T$ is only 5.7.
 
 (d) Input: with $g_m$ = 0 the source sees $R_S \parallel (R_F + R_D)$ = **8.571** kΩ; shorting the input port kills the loop ($T_{sc}$ = 0), and with it open $T_{oc} = T$, so $R_{in} = 8.571/6.714$ = **1.277** kΩ. Output: likewise $R_D \parallel (R_F + R_S)$ = 8.571 kΩ divided by $1 + T$: **1.277** kΩ. Both are lowered, as shunt mixing and shunt sampling should.
 
-**Sanity check.** The feed-forward term $A_0/(1 + T)$ is only 213 Ω against the 42 kΩ answer: in most amplifiers it is negligible, but the formula does not need that assumption.
+**Sanity check.** The feed-forward term $A_{\mathrm{dir}}/(1 + T)$ is only 213 Ω against the 42 kΩ answer: in most amplifiers it is negligible, but the formula does not need that assumption.
 
 ### Example 12-05.5 · Gain spread and feedback (tier B)
 
@@ -224,7 +253,7 @@ $$
 | Ex 12-05.1a | loop gain | 1000 | — |
 | Ex 12-05.1b | closed-loop gain | 99.90 | — |
 | Ex 12-05.1c | gain error | 0.0999 | % |
-| Ex 12-05.1d | first-order change for −10% in A | 0.00999 | % |
+| Ex 12-05.1d | first-order change for −10% in A | −0.00999 | % |
 | Ex 12-05.1e | closed-loop gain at 0.9A | 99.889 | — |
 | Ex 12-05.1f | exact change | −0.0111 | % |
 | Ex 12-05.2a | gain–bandwidth product | 1 | MHz |
@@ -235,6 +264,15 @@ $$
 | Ex 12-05.3c | gain, full circuit | 99.90 | — |
 | Ex 12-05.3d | input resistance, full circuit | 1.000 | GΩ |
 | Ex 12-05.3e | output resistance, full circuit | 0.1000 | Ω |
+| Ex 12-05.3f | return ratio | 998.0 | — |
+| Ex 12-05.3g | input Z with the gain zeroed | 1.00099 | MΩ |
+| Ex 12-05.3h | input resistance by Blackman | 1.000 | GΩ |
+| Ex 12-05.3i | output Z with the gain zeroed | 99.90 | Ω |
+| Ex 12-05.3j | output resistance by Blackman | 0.1000 | Ω |
+| T 12-05.a | R_11 | 990 | Ω |
+| T 12-05.b | R_22 | 100 | kΩ |
+| T 12-05.c | loaded amplifier gain | 9.980 × 10⁴ | — |
+| T 12-05.d | loop gain by the loading method | 998.0 | — |
 | Ex 12-05.4a | drain resistance with the loop cut | 8.571 | kΩ |
 | Ex 12-05.4b | return ratio | 5.714 | — |
 | Ex 12-05.4c | asymptotic gain | −50 | kΩ |
@@ -297,7 +335,7 @@ The netlist [shunt_shunt.cir](../labs/12-05-lab/shunt_shunt.cir) solves Example 
 | Sensitivity | $dA_f/A_f = (dA/A)/(1 + T)$ | β not desensitized |
 | Single-pole bandwidth | $\omega_p(1 + T_0)$; GBW constant | |
 | Impedances | ×$(1 + T)$ for series, ÷$(1 + T)$ for shunt | Input mixing and output sampling |
-| Asymptotic gain | $A_f = A_\infty T/(1 + T) + A_0/(1 + T)$ | No A/β split needed |
+| Asymptotic gain | $A_f = A_\infty T/(1 + T) + A_{\mathrm{dir}}/(1 + T)$ | No A/β split needed |
 | Blackman | $Z = Z^{(0)}(1 + T_{sc})/(1 + T_{oc})$ | Any port |
 
 ## 8. Common mistakes
@@ -375,7 +413,7 @@ The fed-back voltage is in series with the input and opposes it, so the amplifie
 
 <details><summary>Answer</summary>
 
-An exact closed-loop gain without neglecting loading or feed-forward: the ideal gain $A_\infty$ corrected by $T/(1 + T)$, plus the direct transmission $A_0/(1 + T)$.
+An exact closed-loop gain without neglecting loading or feed-forward: the ideal gain $A_\infty$ corrected by $T/(1 + T)$, plus the direct transmission $A_{\mathrm{dir}}/(1 + T)$.
 
 </details>
 
@@ -391,7 +429,7 @@ Noise at the input is indistinguishable from the signal, so the loop amplifies i
 
 ## 11. Key terms
 
-[Negative feedback](../../../reference/glossary.md#negative-feedback) · [Loop gain](../../../reference/glossary.md#loop-gain) · [Desensitivity factor](../../../reference/glossary.md#desensitivity-factor) · [Feedback topology](../../../reference/glossary.md#feedback-topology) · [Return ratio](../../../reference/glossary.md#return-ratio) · [Asymptotic-gain formula](../../../reference/glossary.md#asymptotic-gain-formula) · [Blackman's impedance formula](../../../reference/glossary.md#blackmans-impedance-formula) · [Gain–bandwidth product](../../../reference/glossary.md#gain-bandwidth-product-gbw)
+[Negative feedback](../../../reference/glossary.md#negative-feedback) · [Loop gain](../../../reference/glossary.md#loop-gain) · [Desensitivity factor](../../../reference/glossary.md#desensitivity-factor) · [Feedback topology](../../../reference/glossary.md#feedback-topology) · [Return ratio](../../../reference/glossary.md#return-ratio) · [Asymptotic-gain formula](../../../reference/glossary.md#asymptotic-gain-formula) · [Blackman's impedance formula](../../../reference/glossary.md#blackmans-impedance-formula) · [Two-port loading method](../../../reference/glossary.md#two-port-loading-method) · [Bootstrapping](../../../reference/glossary.md#bootstrapping) · [Gain–bandwidth product](../../../reference/glossary.md#gain-bandwidth-product-gbw)
 
 ## 12. Connections
 

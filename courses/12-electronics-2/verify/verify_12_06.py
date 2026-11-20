@@ -170,10 +170,14 @@ v.check("T 12-06.m", 2.2 * ratio)
 v.check("T 12-06.n", deg(math.atan(1 / 2.2)))
 v.check("T 12-06.o", 90 - deg(math.atan(1 / 2.2)) - deg(math.atan(ratio)))
 v.assert_true("r = 1.5 gives a crossover of sqrt(3)/2 times f_u", abs(t15["wc"] - math.sqrt(3) / 2) < 1e-9)
+t4 = two_pole(4.0)
+v.check("T 12-06.p", t4["pm"])
+v.assert_true("r = 4 is critical damping: Q = 1/2 and no overshoot", abs(t4["Q"] - 0.5) < 1e-6 and t4["os"] < 1e-6)
+v.assert_true("r slightly below 4 overshoots", two_pole(3.9)["os"] > 0)
 
 # ============================================================ Example 1
 T1 = poles_T(1000, [1e3, 2e6])
-v.check("Ex 12-06.1a", 1000 * 1e3 / 1e6)
+v.check("Ex 12-06.1a", crossover(poles_T(1000, [1e3])) / 1e6)    # the single-pole loop's crossover
 v.check("Ex 12-06.1b", 90 + phase(poles_T(1, [2e6]), 1e6))   # dominant pole's 90 deg less the second pole's lag
 fc1, pm1 = margins(T1)
 v.check("Ex 12-06.1c", fc1 / 1e6)
@@ -249,6 +253,25 @@ v.check("Ex 12-06.5k", gm1 / (TP * Cc60 * 1e-12) / 1e6)
 v.check("Ex 12-06.5l", pz5[0] / 1e3)                 # the circuit's lowest natural frequency
 v.check("Ex 12-06.5m", 1 / (TP * gm2 * R1 * R2 * Cc) / 1e3)
 
+
+def den_coeffs(*args, **kw):
+    """Normalized denominator coefficients a1, a2, ... from the circuit's natural frequencies."""
+    w = TP * np.asarray(stage_poles(*args, **kw))
+    c = np.poly(-w)[::-1]
+    return c[1:] / c[0]
+
+
+b5 = den_coeffs(gm1, R1, C1, gm2, R2, CL, Cc)
+v.check("Ex 12-06.5n", b5[0])
+v.check("Ex 12-06.5o", b5[1])
+el5, nd5 = stage_elems(gm1, R1, C1, gm2, R2, CL, Cc)
+z5 = brentq(lambda sg: solve_ac(nd5, el5, {"in": 1.0}, sg / (1j * TP))["n2"].real, 1e9, 1e11, xtol=1e-3)
+v.check("Ex 12-06.5p", z5)
+for f in (1e3, 1e6, 1e8, 1e9):
+    sj = 1j * TP * f
+    v.assert_true(f"A(s) = A0(1 - s/z)/(1 + b1 s + b2 s^2) at {f:g} Hz",
+                  abs(A5(0.0) * (1 - sj / z5) / (1 + b5[0] * sj + b5[1] * sj ** 2) / A5(f) - 1) < 1e-9)
+
 # ============================================================ Example 6: nulling resistor
 Rz0 = 1 / gm2
 v.check("Ex 12-06.6a", Rz0)
@@ -260,6 +283,18 @@ v.check("Ex 12-06.6d", fc6 / 1e6)
 v.check("Ex 12-06.6e", pm6)
 v.check("Ex 12-06.6f", 1 / (TP * Rzc * C1) / 1e6)
 v.check("Ex 12-06.6g", CL / Cc)
+a6 = den_coeffs(gm1, R1, C1, gm2, R2, CL, Cc, Rz=Rzc)
+el6, nd6 = stage_elems(gm1, R1, C1, gm2, R2, CL, Cc, Rz=Rzc)
+A6c = lambda f: solve_ac(nd6, el6, {"in": 1.0}, f)["n2"]  # noqa: E731
+z6 = -brentq(lambda sg: solve_ac(nd6, el6, {"in": 1.0}, sg / (1j * TP))["n2"].real, -1.9e9, -2.001e9, xtol=1e-3)
+v.check("Ex 12-06.6h", z6)
+v.check("Ex 12-06.6i", a6[0])
+v.check("Ex 12-06.6j", a6[1])
+v.check("Ex 12-06.6k", a6[2])
+for f in (1e3, 1e6, 1e8, 1e9):
+    sj = 1j * TP * f
+    model = A6c(0.0) * (1 + sj / z6) / (1 + a6[0] * sj + a6[1] * sj ** 2 + a6[2] * sj ** 3)
+    v.assert_true(f"third-order A(s) with the LHP zero matches the nodal solve at {f:g} Hz", abs(model / A6c(f) - 1) < 1e-8)
 pz6 = stage_poles(gm1, R1, C1, gm2, R2, CL, Cc, Rz=Rzc)
 v.assert_true("third pole of the circuit within 15% of 1/(2 pi R_z C_1)",
               abs(pz6[-1] / (1 / (TP * Rzc * C1)) - 1) < 0.15)
@@ -315,6 +350,12 @@ v.check("12-06.6h", -phase(poles_T(1, [20.0]), fc6r))
 fd6 = brentq(lambda x: margins(poles_T(A6, [x] + fp6))[1] - 45, 1, 1e3, xtol=1e-10)
 v.check("12-06.6c", fd6)
 v.check("12-06.6d", crossover(poles_T(A6, [fd6] + fp6)) / 1e6)
+# 13: move the 2 MHz pole instead of adding one
+f13 = brentq(lambda x: margins(poles_T(A6, [x, 20e6]))[1] - 45, 10, 1e4, xtol=1e-10)
+fc13 = crossover(poles_T(A6, [f13, 20e6]))
+v.check("12-06.13a", f13)
+v.check("12-06.13b", fc13 / 1e6)
+v.check("12-06.13c", fc13 / crossover(poles_T(A6, [fd6] + fp6)))
 # 7
 g1, g2, CL7 = 0.5e-3, 5e-3, 2e-12
 Cc7 = 2.2 * (g1 / g2) * CL7

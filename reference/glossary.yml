@@ -4862,6 +4862,14 @@
   definition: The impedance at any port of a feedback circuit, Z = Z0(1 + T_sc)/(1 + T_oc), with Z0 the impedance when the controlled source is zero and T_sc, T_oc the return ratios with the port shorted and open.
   chapter: "12-05"
   see_also: [Return ratio, Feedback topology]
+- term: Two-port loading method
+  definition: The classical way to analyse a feedback amplifier by absorbing the feedback network's loading into the amplifier (its input-port resistance with the other port shorted for shunt or opened for series connections) and then applying A/(1 + Aβ); it neglects forward transmission through the network and reverse transmission through the amplifier.
+  chapter: "12-05"
+  see_also: [Return ratio, Feedback topology]
+- term: Bootstrapping
+  definition: Driving the far end of an element with a copy of the voltage at its near end, so that little voltage appears across it and its effective impedance rises by 1/(1 − A_v); used to raise a follower's input resistance or to cancel cable capacitance with a driven guard.
+  chapter: "12-05"
+  see_also: [Blackman's impedance formula]
 - term: Gain margin
   definition: How far a loop gain's magnitude is below one, in decibels, at the frequency where its phase reaches −180°, −20·log|T(jω180)|; the extra loop gain the loop could tolerate before oscillating. A typical target is at least 10 dB.
   chapter: "12-06"

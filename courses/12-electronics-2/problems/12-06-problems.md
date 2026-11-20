@@ -49,15 +49,19 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 12-06.10 [B]
 
-**A heavier load.** Example 12-06.5's amplifier ($C_c$ = 1.1 pF) now drives 10 pF instead of 5 pF. Estimate the phase margin with §3.5's formula, and compare with the exact value from the full circuit, 45.91°, at a crossover of 110.8 MHz.
+**A heavier load.** Example 12-06.5's amplifier ($C_c$ = 1.1 pF) now drives 10 pF instead of 5 pF. Estimate the phase margin with §3.5's formula, and compare with the exact value from the full circuit (Example 12-06.5's $A(s)$ with the new $C_L$), 45.91°, at a crossover of 110.8 MHz.
 
 ### Problem 12-06.11 [C]
 
-**A better $C_c$ estimate.** For Example 12-06.5's amplifier, use the improved $p_2 = g_{m2}C_c/[C_1C_L + C_c(C_1 + C_L)]$, with the crossover taken as $g_{m1}/C_c$ and the zero as $g_{m2}/C_c$, to solve for the $C_c$ that gives an estimated 60°. The exact solution of the circuit at that $C_c$ gives a phase margin of 62.20°; the exact $C_c$ for 60° is 1.180 pF. Explain the difference.
+**A better $C_c$ estimate.** For Example 12-06.5's amplifier, use the improved $p_2 = g_{m2}C_c/[C_1C_L + C_c(C_1 + C_L)]$, with the crossover taken as $g_{m1}/C_c$ and the zero as $g_{m2}/C_c$, to solve for the $C_c$ that gives an estimated 60°. The exact solution of the circuit (Example 12-06.5's $A(s)$) at that $C_c$ gives a phase margin of 62.20°; the exact $C_c$ for 60° is 1.180 pF. Explain the difference.
 
 ### Problem 12-06.12 [C]
 
 **Phase margin from a scope.** A unity-gain buffer shows 20% overshoot on a small step. Assuming a two-pole loop, estimate its damping ratio, $Q$, the ratio $f_2/f_u$ and its phase margin.
+
+### Problem 12-06.13 [B]
+
+**Move the pole instead.** For Problem 12-06.6's amplifier ($A_0$ = 10⁵, poles at 2 MHz and 20 MHz), lower the 2 MHz pole to a new frequency $f_1'$ instead of adding a pole. Find the $f_1'$ that gives a 45° phase margin at unity gain and the resulting crossover, and compare the crossover with Problem 12-06.6(b)'s. Explain the ratio.
 
 ---
 
@@ -67,6 +71,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Stability, phase margin and gain margin | 1, 2, 5 |
 | 2. Phase margin and the closed-loop response | 3, 4, 12 |
-| 3. Dominant-pole compensation | 5, 6 |
+| 3. Dominant-pole compensation, and moving an existing pole | 5, 6, 13 |
 | 4. Miller compensation of a two-stage amplifier | 7, 8, 10, 11 |
 | 5. The right-half-plane zero and the nulling resistor | 8, 9 |

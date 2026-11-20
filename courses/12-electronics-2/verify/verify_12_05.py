@@ -147,7 +147,7 @@ v.check("Ex 12-05.1c", 100 * (1 - Af1 * beta))
 v.assert_true("error signal is x/(1 + T)", abs(e1 * (1 + A * beta) - 1) < 1e-12)
 h = 1e-6
 sens = (block_gain(A * (1 + h), beta)[0] / Af1 - 1) / h     # dAf/Af per dA/A, numerically
-v.check("Ex 12-05.1d", 10 * sens)             # percent change for a 10% change in A
+v.check("Ex 12-05.1d", -10 * sens)            # percent change for a 10% fall in A
 Af09 = block_gain(0.9 * A, beta)[0]
 v.check("Ex 12-05.1e", Af09)
 v.check("Ex 12-05.1f", 100 * (Af09 / Af1 - 1))
@@ -188,6 +188,36 @@ v.check("Ex 12-05.3d", Zin3["Z"] / 1e9)
 v.assert_true("series mixing: loop broken with the input open (T_oc = 0)", abs(Zin3["Toc"]) < 1e-9)
 Zo3 = port_z(b3, "o")
 v.check("Ex 12-05.3e", Zo3["Z"])
+v.check("Ex 12-05.3f", L3["T"])
+v.check("Ex 12-05.3g", Zin3["Z0"] / 1e6)
+v.check("Ex 12-05.3h", Zin3["Z0"] * (1 + Zin3["Tsc"]) / (1 + Zin3["Toc"]) / 1e9)
+v.check("Ex 12-05.3i", Zo3["Z0"])
+v.check("Ex 12-05.3j", Zo3["Z0"] * (1 + Zo3["Tsc"]) / (1 + Zo3["Toc"]))
+v.assert_true("Ex 3: return ratio equals the output port's T_oc and the input port's T_sc",
+              abs(L3["T"] / Zo3["Toc"] - 1) < 1e-12 and abs(L3["T"] / Zin3["Tsc"] - 1) < 1e-12)
+
+
+def two_port(A_, Rid, Ro, R1, R2):
+    """Loading method: the divider's two-port quantities found by solving the network alone (test sources),
+    then the loaded amplifier."""
+    net = [("R", "o", "n", R2), ("R", "n", "0", R1)]
+    beta_ = solve(net + [("V", "o", "0", 1.0)])[0]["n"]                     # input port open
+    R11 = vd(solve(net + [("V", "o", "0", 0.0), ("I", "0", "n", 1.0)]), "n", "0")   # output port shorted
+    R22 = vd(solve(net + [("I", "0", "o", 1.0)]), "o", "0")                  # input port open
+    AL = A_ * Rid / (Rid + R11) * R22 / (R22 + Ro)
+    T_ = AL * beta_
+    return dict(beta=beta_, R11=R11, R22=R22, AL=AL, T=T_, Af=AL / (1 + T_), Rif=(Rid + R11) * (1 + T_),
+                Rof=Ro * R22 / (Ro + R22) / (1 + T_))
+
+
+tp3 = two_port(1e5, 1e6, 100.0, 1e3, 99e3)
+v.check("T 12-05.a", tp3["R11"])
+v.check("T 12-05.b", tp3["R22"] / 1e3)
+v.check("T 12-05.c", tp3["AL"])
+v.check("T 12-05.d", tp3["T"])
+v.assert_true("loading method reproduces Example 3's gain and impedances to 1e-5",
+              abs(tp3["Af"] / L3["Af"] - 1) < 1e-5 and abs(tp3["Rif"] / Zin3["Z"] - 1) < 1e-5
+              and abs(tp3["Rof"] / Zo3["Z"] - 1) < 1e-5)
 v.assert_true("shunt sampling: loop killed with the output shorted (T_sc ~ 0)", abs(Zo3["Tsc"]) < 1e-6)
 v.assert_true("full-circuit impedances within 0.2% of the topology-rule estimates",
               abs(Zin3["Z"] / 1.001e9 - 1) < 2e-3 and abs(Zo3["Z"] / (100 / 1001) - 1) < 2e-3)
@@ -452,7 +482,55 @@ ol14, cl14 = hd2(1000.0, c14, 49 / 1000)
 v.assert_true("problem 14: open-loop HD2 is 1%", abs(ol14 - 0.01) < 1e-4)
 v.check("12-05.14a", ol14 / cl14)
 v.check("12-05.14b", 100 * cl14)
-v.check("12-05.14c", 10 * 10)
+# the noise source sits at the amplifier's input: it sees the closed-loop gain A/(1 + T), with A = A_f (1 + T)
+v.check("12-05.14c", 10 * block_gain(10 * 50, 49 / (10 * 50))[0])
+# 15: loading method against the return ratio
+tp15 = two_port(1e3, 10e3, 1e3, 1e3, 9e3)
+for k, key in (("beta", "a"), ("R11", "b"), ("AL", "d"), ("T", "e"), ("Af", "f")):
+    v.check(f"12-05.15{key}", tp15[k])
+v.check("12-05.15c", tp15["R22"] / 1e3)
+v.check("12-05.15g", tp15["Rif"] / 1e3)
+v.check("12-05.15h", tp15["Rof"])
+b15 = ninv(10e3, 1e3, 1e3, 1e3, 9e3)
+L15 = loop(b15, lambda s: s[0]["o"])
+Zi15, Zo15 = port_z(ninv(10e3, 1e3, 1e3, 1e3, 9e3, src=False), "p"), port_z(b15, "o")
+v.check("12-05.15i", L15["T"])
+v.check("12-05.15j", L15["A0"])
+v.check("12-05.15k", L15["Ainf"] * L15["T"] / (1 + L15["T"]) + L15["A0"] / (1 + L15["T"]))
+v.assert_true("problem 15: asymptotic-gain result equals the direct solution", abs(
+    (L15["Ainf"] * L15["T"] + L15["A0"]) / (1 + L15["T"]) / L15["Af"] - 1) < 1e-12)
+v.check("12-05.15l", Zi15["Z0"] / 1e3)
+v.check("12-05.15m", Zi15["Z"] / 1e3)
+v.check("12-05.15n", Zo15["Z0"])
+v.check("12-05.15o", Zo15["Z"])
+v.assert_true("problem 15: Blackman equals the direct port solutions",
+              abs(Zi15["Z0"] * (1 + Zi15["Tsc"]) / (1 + Zi15["Toc"]) / Zi15["Z"] - 1) < 1e-12
+              and abs(Zo15["Z0"] * (1 + Zo15["Tsc"]) / (1 + Zo15["Toc"]) / Zo15["Z"] - 1) < 1e-12)
+
+
+# 16: bootstrapped follower, both return ratios nonzero
+def boot(gm_, RS_, RB, RG, src=True):
+    def build(u, sc):
+        el = [("R", "g", "s", RB), ("R", "g", "0", RG), ("R", "s", "0", RS_)]
+        el.append(("G", "0", "s", "g", "s", gm_) if sc is None else ("I", "0", "s", sc))
+        if src:
+            el.append(("V", "g", "0", u))
+        return el, (gm_, "g", "s")
+    return build
+
+
+Zb = port_z(boot(2e-3, 10e3, 1e6, 1e6, src=False), "g")
+Lb = loop(boot(2e-3, 10e3, 1e6, 1e6), lambda s: s[0]["s"])
+v.check("12-05.16a", Zb["Z0"] / 1e3)
+v.check("12-05.16b", Zb["Tsc"])
+v.check("12-05.16c", Zb["Toc"])
+v.check("12-05.16d", Zb["Z"] / 1e3)
+v.assert_true("problem 16: Blackman with both T nonzero equals the direct solution",
+              abs(Zb["Z0"] * (1 + Zb["Tsc"]) / (1 + Zb["Toc"]) / Zb["Z"] - 1) < 1e-12)
+v.check("12-05.16e", Lb["Af"])
+v.assert_true("problem 16: the gain's return ratio is the port-shorted one", abs(Lb["T"] / Zb["Tsc"] - 1) < 1e-12)
+v.check("12-05.16f", 1e6 / (1 - Lb["Af"]) / 1e6)
+v.assert_true("problem 16: R_in = R_G || R_B/(1 - A_v)", abs(1 / (1 / 1e6 + (1 - Lb["Af"]) / 1e6) / Zb["Z"] - 1) < 1e-12)
 
 # ============================================================ lab README
 if lab.exists():

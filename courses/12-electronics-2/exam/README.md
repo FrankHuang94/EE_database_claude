@@ -79,7 +79,7 @@ An amplifier has $e_n$ = 3 nV/√Hz and $i_n$ = 0.5 pA/√Hz.
 (b) Find its optimum source resistance and minimum noise figure.
 
 **13 [C] · Derivations.**
-(a) A circuit has one controlled source $Px$. With the source replaced by an independent source $s_c$ and input $u$, the output and controlling variable are $y = au + bs_c$ and $x = cu + ds_c$. Derive the closed-loop gain and show it equals $A_\infty T/(1 + T) + A_0/(1 + T)$, defining $T$, $A_\infty$ and $A_0$.
+(a) A circuit has one controlled source $Px$. With the source replaced by an independent source $s_c$ and input $u$, the output and controlling variable are $y = au + bs_c$ and $x = cu + ds_c$. Derive the closed-loop gain and show it equals $A_\infty T/(1 + T) + A_{\mathrm{dir}}/(1 + T)$, defining $T$, $A_\infty$ and $A_{\mathrm{dir}}$.
 (b) Derive the maximum efficiency of a class B stage and the output amplitude at which its transistors dissipate the most.
 (c) Derive the RMS noise voltage on the capacitor of an RC low-pass driven by the resistor's thermal noise, and explain why it does not depend on $R$.
 

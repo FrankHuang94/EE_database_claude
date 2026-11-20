@@ -50,7 +50,7 @@ $$
 T = A\,\frac{R_S}{R_S + R_F} = 10^4 \times \frac{1}{1.1} = \mathbf{9091} .
 $$
 
-As $A \to \infty$ the inverting input is a virtual ground, all of the photocurrent flows through $R_F$, and $A_\infty = -R_F$ = **−100** kΩ. With $A$ = 0 the output is held at 0 V by the ideal output, so $A_0$ = 0. Then $A_f = -100\ \text{k}\Omega \times 9091/9092$ = **−99.99** kΩ.
+As $A \to \infty$ the inverting input is a virtual ground, all of the photocurrent flows through $R_F$, and $A_\infty = -R_F$ = **−100** kΩ. With $A$ = 0 the output is held at 0 V by the ideal output, so $A_{\mathrm{dir}}$ = 0. Then $A_f = -100\ \text{k}\Omega \times 9091/9092$ = **−99.99** kΩ.
 
 Input resistance: with $A$ = 0, the input node sees $R_S \parallel R_F$ = **90.91** kΩ. Shorting the input node kills the loop ($T_{sc}$ = 0); with it open, $T_{oc} = T$. Blackman gives $R_{in} = 90.91\ \text{k}\Omega/9092$ = **9.999** Ω: the photodiode looks into almost a short, which keeps its voltage, and so its capacitance's effect, small.
 
@@ -66,7 +66,7 @@ $$
 
 The naive value is 19% too high: it ignores $R_{id}$ shunting $R_1$ and $R_o$ in series with $R_2$.
 
-(c) As $A \to \infty$ the inverting node is a virtual ground: $A_\infty = -R_2/R_1$ = **−10**. With $A$ = 0, the input drives $R_1$ into $R_{id} \parallel (R_2 + R_o)$ = 5238 Ω, giving 0.8397 of the input at the inverting node, and the divider $R_o/(R_2 + R_o)$ passes 1/11 of that to the output: $A_0$ = **0.07634**.
+(c) As $A \to \infty$ the inverting node is a virtual ground: $A_\infty = -R_2/R_1$ = **−10**. With $A$ = 0, the input drives $R_1$ into $R_{id} \parallel (R_2 + R_o)$ = 5238 Ω, giving 0.8397 of the input at the inverting node, and the divider $R_o/(R_2 + R_o)$ passes 1/11 of that to the output: $A_{\mathrm{dir}}$ = **0.07634**.
 
 (d) $A_f = (-10 \times 76.34 + 0.07634)/77.34$ = **−9.870**, an error of **1.30**% from −10. A direct nodal solution agrees.
 
@@ -78,7 +78,7 @@ $$
 T = g_m(r_o \parallel R_L) = 2\ \text{mA/V} \times 6.667\ \text{k}\Omega = \mathbf{13.33} .
 $$
 
-As $g_m \to \infty$, $v_{gs} \to 0$ and $A_\infty$ = 1; with $g_m$ = 0 nothing reaches the output, $A_0$ = 0. Gain $= T/(1 + T)$ = **0.9302**. At the output, $R^{(0)} = r_o \parallel R_L$ = **6.667** kΩ; shorting the output kills the loop and opening it leaves $T$, so $R_{out} = 6.667\ \text{k}\Omega/14.33$ = **465.1** Ω, exactly $1/g_m \parallel r_o \parallel R_L$. The follower is a series–shunt amplifier with β = 1.
+As $g_m \to \infty$, $v_{gs} \to 0$ and $A_\infty$ = 1; with $g_m$ = 0 nothing reaches the output, $A_{\mathrm{dir}}$ = 0. Gain $= T/(1 + T)$ = **0.9302**. At the output, $R^{(0)} = r_o \parallel R_L$ = **6.667** kΩ; shorting the output kills the loop and opening it leaves $T$, so $R_{out} = 6.667\ \text{k}\Omega/14.33$ = **465.1** Ω, exactly $1/g_m \parallel r_o \parallel R_L$. The follower is a series–shunt amplifier with β = 1.
 
 ### Solution 12-05.10
 
@@ -92,7 +92,7 @@ $$
 T = g_m\,[R_D' \parallel (R_F + R_S)]\,\frac{R_S}{R_F + R_S} = 4\ \text{mA/V} \times 7.059\ \text{k}\Omega \times \tfrac16 = \mathbf{4.706} .
 $$
 
-$A_\infty = -R_F$ = **−50** kΩ (a virtual ground at the gate sends all of $i_s$ through $R_F$ whatever $r_o$ is). $A_0 = R_SR_D'/(R_S + R_F + R_D')$ = **1.176** kΩ. So $A_f = (-50 \times 4.706 + 1.176)/5.706$ kΩ = **−41.03** kΩ.
+$A_\infty = -R_F$ = **−50** kΩ (a virtual ground at the gate sends all of $i_s$ through $R_F$ whatever $r_o$ is). $A_{\mathrm{dir}} = R_SR_D'/(R_S + R_F + R_D')$ = **1.176** kΩ. So $A_f = (-50 \times 4.706 + 1.176)/5.706$ kΩ = **−41.03** kΩ.
 
 Input: $R^{(0)} = R_S \parallel (R_F + R_D')$ = **8.529** kΩ, divided by $1 + T$: **1.495** kΩ. Output: $R^{(0)} = R_D' \parallel (R_F + R_S)$ = **7.059** kΩ, divided by $1 + T$: **1.237** kΩ. The lower loop gain makes the transresistance a little further from $-R_F$ and the port resistances a little higher than in Example 12-05.4.
 
@@ -101,7 +101,7 @@ Input: $R^{(0)} = R_S \parallel (R_F + R_D')$ = **8.529** kΩ, divided by $1 + T
 Short the drain to ground and take the drain current $i_o$ as the output.
 
 - **Asymptotic gain.** As $g_m \to \infty$, $v_{gs} \to 0$, so the source follows the gate: $v_s = v_i$. The current in $R_S$ is $v_i/R_S$, and by KCL at the source all of it arrives from the drain, so $A_\infty = 1/R_S$ = **1** mA/V.
-- **Direct transmission.** With $g_m$ = 0 there is no path from the gate to the output: $A_0$ = 0.
+- **Direct transmission.** With $g_m$ = 0 there is no path from the gate to the output: $A_{\mathrm{dir}}$ = 0.
 - **Return ratio.** With the drain shorted, a current injected by the controlled source flows into $R_S \parallel r_o$, so $T = g_m(R_S \parallel r_o)$ = **1.961**.
 
 Then $G_m = (1\ \text{mA/V}) \times 1.961/2.961$ = **0.6623** mA/V, which is exactly $g_m/(1 + g_mR_S + R_S/r_o)$, the value Example 12-05.6 quoted from the full circuit.
@@ -113,6 +113,34 @@ The error $1/(1 + T) \le 5 \times 10^{-4}$ needs $T \ge$ **1999**, so with β = 
 ### Solution 12-05.14
 
 Distortion generated inside the loop falls by $1 + T$ = **50** at the same output level, to about **0.02**%. Noise at the amplifier's input is indistinguishable from the signal, so it is amplified by the closed-loop gain: **100** nV/√Hz at the output, the same 10 nV/√Hz referred to the input as without feedback.
+
+### Solution 12-05.15
+
+(a) $\beta = R_1/(R_1 + R_2)$ = **0.1**. With the network's output port shorted, its input port sees $R_{11} = R_1 \parallel R_2$ = **900** Ω; with its input port open, its output port sees $R_{22} = R_1 + R_2$ = **10** kΩ. The loaded gain is
+
+$$
+A_L = 1000 \times \frac{10\ \text{k}\Omega}{10\ \text{k}\Omega + 900\ \Omega} \times \frac{10\ \text{k}\Omega}{10\ \text{k}\Omega + 1\ \text{k}\Omega} = \mathbf{834.0} ,
+$$
+
+so $T = A_L\beta$ = **83.40**, $A_f = A_L/(1 + T)$ = **9.882**, $R_{if} = (10\ \text{k}\Omega + 900\ \Omega)(1 + T)$ = **920.0** kΩ and $R_{of} = (1\ \text{k}\Omega \parallel 10\ \text{k}\Omega)/(1 + T)$ = **10.77** Ω.
+
+(b) Replace the op-amp's internal source by an independent $v_x$ behind $R_o$, with the input grounded. The output node feeds $R_2$ into the inverting node, which sees $R_1 \parallel R_{id}$ = 909.1 Ω, so the inverting node receives $v_x \times 909.1/(1000 + 9000 + 909.1) = v_x/12$. The op-amp would respond with $A(0 - v_x/12)$, so the return ratio is $T = 1000/12$ = **83.33**. With $A$ = 0, the input drives $R_{id}$ into the inverting node, which sees $R_1 \parallel (R_2 + R_o)$ = 909.1 Ω, and $R_o/(R_2 + R_o)$ of that node's voltage reaches the output: $A_{\mathrm{dir}} = (909.1/10\,909) \times 0.1$ = **0.008333**. With $A_\infty = 1 + R_2/R_1$ = 10, the asymptotic-gain formula gives $A_f = (10 \times 83.33 + 0.008333)/84.33$ = **9.882**. Blackman's formula gives the impedances: $Z^{(0)}_{in} = R_{id} + R_1 \parallel (R_2 + R_o)$ = **10.91** kΩ with $T_{sc}$ = 83.33 and $T_{oc}$ = 0, so $R_{in}$ = **920.0** kΩ; $Z^{(0)}_{out} = R_o \parallel (R_2 + R_1 \parallel R_{id})$ = **908.3** Ω with $T_{oc}$ = 83.33, so $R_{out}$ = **10.77** Ω.
+
+(c) The loading method treats the input and output loading as independent factors, while the real divider couples them, so its loop gain is off in the second order of the loading ratios (here by under 0.1%). The loop gain is not itself a measurable output, and its error reaches the closed-loop gain only through the desensitivity factor $1 + T \approx 84$; the direct transmission the method ignores is similarly diluted. Both routes give 9.882, 920.0 kΩ and 10.77 Ω.
+
+### Solution 12-05.16
+
+*With $g_m$ = 0*, the gate sees $R_G \parallel (R_B + R_S) = 1\ \text{M}\Omega \parallel 1.01\ \text{M}\Omega$: $Z^{(0)}$ = **502.5** kΩ.
+
+*Port shorted.* With the gate grounded, inject a test current $i_t$ into the source node in place of $g_mv_{gs}$. The source sees $R_S \parallel R_B$ = 9.901 kΩ, so $v_s = 9.901\ \text{k}\Omega \times i_t$ and $v_{gs} = -v_s$. The source would return $g_mv_{gs} = -g_m \times 9.901\ \text{k}\Omega \times i_t$, so $T_{sc} = g_m(R_S \parallel R_B)$ = **19.80**.
+
+*Port open.* The gate still connects to ground through $R_G$ and to the source through $R_B$. The source sees $R_S \parallel (R_B + R_G)$ = 9.950 kΩ, the gate sits at $v_s R_G/(R_G + R_B) = v_s/2$, and $v_{gs} = -v_s/2$, so $T_{oc} = g_m \times 9.950\ \text{k}\Omega \times 0.5$ = **9.950**.
+
+$$
+R_{in} = 502.5\ \text{k}\Omega \times \frac{1 + 19.80}{1 + 9.950} = \mathbf{954.6}\ \text{k}\Omega .
+$$
+
+*Why it exceeds $R_G \parallel (R_B + R_S)$.* The follower holds the source close to the gate, so little voltage appears across $R_B$ and little current flows in it: $R_B$ is **bootstrapped**. The gain from gate to source by the asymptotic-gain formula, with the gate driven by an ideal source (the port shorted for the loop, $T = T_{sc}$), $A_\infty$ = 1 and $A_{\mathrm{dir}} = R_S/(R_B + R_S)$ = 0.009901, is $A_v = (19.80 + 0.009901)/20.80$ = **0.9524**. The current into the gate is $v_g/R_G + v_g(1 - A_v)/R_B$, so $R_B$ acts like $R_B/(1 - A_v)$ = **21.01** MΩ, and $R_G \parallel 21.01\ \text{M}\Omega$ = 954.6 kΩ, as Blackman's formula found. Bootstrapping is used to raise the input resistance of AC-coupled followers and to cancel cable capacitance with a driven guard.
 
 ---
 
@@ -173,3 +201,24 @@ Distortion generated inside the loop falls by $1 + T$ = **50** at the same outpu
 | 12-05.14a | distortion reduction factor | 50 | — |
 | 12-05.14b | closed-loop second harmonic | 0.02 | % |
 | 12-05.14c | output noise density | 100 | nV/√Hz |
+| 12-05.15a | β | 0.1 | — |
+| 12-05.15b | R_11 | 900 | Ω |
+| 12-05.15c | R_22 | 10 | kΩ |
+| 12-05.15d | loaded gain | 834.0 | — |
+| 12-05.15e | loop gain, loading method | 83.40 | — |
+| 12-05.15f | closed-loop gain, loading method | 9.882 | — |
+| 12-05.15g | input resistance, loading method | 920.0 | kΩ |
+| 12-05.15h | output resistance, loading method | 10.77 | Ω |
+| 12-05.15i | return ratio | 83.33 | — |
+| 12-05.15j | direct transmission | 0.008333 | — |
+| 12-05.15k | closed-loop gain, asymptotic | 9.882 | — |
+| 12-05.15l | input Z with A = 0 | 10.91 | kΩ |
+| 12-05.15m | input resistance, Blackman | 920.0 | kΩ |
+| 12-05.15n | output Z with A = 0 | 908.3 | Ω |
+| 12-05.15o | output resistance, Blackman | 10.77 | Ω |
+| 12-05.16a | Z with g_m = 0 | 502.5 | kΩ |
+| 12-05.16b | T with the port shorted | 19.80 | — |
+| 12-05.16c | T with the port open | 9.950 | — |
+| 12-05.16d | input resistance | 954.6 | kΩ |
+| 12-05.16e | gain, gate to source | 0.9524 | — |
+| 12-05.16f | effective R_B | 21.01 | MΩ |

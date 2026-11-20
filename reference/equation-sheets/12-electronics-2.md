@@ -36,7 +36,7 @@ Conventions:
 | $A_f = A/(1 + T) = (1/\beta)\,T/(1 + T)$; $dA_f/A_f = (dA/A)/(1 + T)$ | $T = A\beta$ | [12-05](../../courses/12-electronics-2/chapters/12-05-feedback-topologies.md) |
 | Single pole: bandwidth × $(1 + T_0)$, GBW constant | Bandwidth extension | [12-05](../../courses/12-electronics-2/chapters/12-05-feedback-topologies.md) |
 | Series ×$(1 + T)$, shunt ÷$(1 + T)$ (input mixing, output sampling) | Four topologies | [12-05](../../courses/12-electronics-2/chapters/12-05-feedback-topologies.md) |
-| $A_f = A_\infty T/(1 + T) + A_0/(1 + T)$; $Z = Z^{(0)}(1 + T_{sc})/(1 + T_{oc})$ | Return ratio; Blackman | [12-05](../../courses/12-electronics-2/chapters/12-05-feedback-topologies.md) |
+| $A_f = A_\infty T/(1 + T) + A_{\mathrm{dir}}/(1 + T)$; $Z = Z^{(0)}(1 + T_{sc})/(1 + T_{oc})$ | Return ratio; Blackman | [12-05](../../courses/12-electronics-2/chapters/12-05-feedback-topologies.md) |
 | PM $= 180^\circ + \angle T(j\omega_c)$; GM $= -20\log\lvert T(j\omega_{180})\rvert$ | Bode criterion | [12-06](../../courses/12-electronics-2/chapters/12-06-stability-and-compensation.md) |
 | Two-pole loop: $Q = \sqrt{f_u/f_2}$; 60° at $f_2 = 1.5f_u$ (8.8% overshoot); 45° ≈ 23% | $f_u = T_0f_1$ | [12-06](../../courses/12-electronics-2/chapters/12-06-stability-and-compensation.md) |
 | Miller: GBW $= g_{m1}/(2\pi C_c)$, $p_2 \approx g_{m2}/C_L$, zero $g_{m2}/C_c$; $g_{m2} \approx 10g_{m1}$, $C_c \approx 0.22C_L$ → about 60° | Two-stage | [12-06](../../courses/12-electronics-2/chapters/12-06-stability-and-compensation.md) |

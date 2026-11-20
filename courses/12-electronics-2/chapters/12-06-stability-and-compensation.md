@@ -25,7 +25,7 @@ Chapter 12-05 showed that feedback buys accuracy, linearity and bandwidth with l
 
 - **Phase margin** is the headline number. It sets the overshoot and ringing of a step response and the peaking of the frequency response; data sheets quote it for exactly this reason.
 - **Compensation costs bandwidth.** A compensated op-amp's gain–bandwidth product is set by the compensation capacitor, not by the transistors' speed.
-- **Unity gain is the hardest case.** A loop with β = 1 has the most loop gain, so an amplifier that is stable as a buffer is stable at every resistive gain; "unity-gain stable" is a data-sheet property.
+- **Unity gain is the hardest case.** A loop with β = 1 has the most loop gain, so an amplifier that is stable as a buffer is stable at every resistive gain, provided the feedback network adds no lag of its own (input capacitance can break this, §3.7); "unity-gain stable" is a data-sheet property.
 - **Capacitive loads move poles.** Many field failures are an amplifier that was stable on the bench and oscillates when driving a cable or a large capacitor.
 
 ## 2. Intuition first
@@ -52,7 +52,7 @@ flowchart LR
 
 ### 3.1 When does a loop oscillate?
 
-The closed-loop poles are the roots of $1 + T(s) = 0$. If $T(j\omega_0) = -1$ at some real frequency, $s = j\omega_0$ is a closed-loop pole on the imaginary axis: the loop sustains a sinusoid at $\omega_0$ with no input. If $\lvert T \rvert > 1$ where the phase is −180°, the poles have crossed into the right half-plane and any disturbance grows exponentially until the amplifier saturates (11-08 §3.5).
+The closed-loop poles are the roots of $1 + T(s) = 0$. If $T(j\omega_0) = -1$ at some real frequency, $s = j\omega_0$ is a closed-loop pole on the imaginary axis: the loop sustains a sinusoid at $\omega_0$ with no input. If $\lvert T \rvert > 1$ where the phase is −180°, the poles have crossed into the right half-plane and any disturbance grows exponentially until the amplifier saturates (11-08 §3.6–3.7).
 
 **Why a one-pole loop is always stable.** $T(s) = T_0/(1 + s/\omega_1)$ has phase between 0° and −90°, so $T(j\omega) = -1$ is impossible; the closed-loop pole is $-\omega_1(1 + T_0)$, always in the left half-plane (12-05 §3.3).
 
@@ -64,11 +64,17 @@ $$
 \arctan\frac{\omega}{\omega_1} + \arctan\frac{\omega}{\omega_2} + \arctan\frac{\omega}{\omega_3} = \pi \quad\Longleftrightarrow\quad \omega_{180}^2 = \omega_1\omega_2 + \omega_1\omega_3 + \omega_2\omega_3 ,
 $$
 
-(the tangent-sum identity: the sum is π when $1 - \sum_{i<k} \omega^2/(\omega_i\omega_k) = 0$), and the loop is unstable if $\lvert T(j\omega_{180}) \rvert > 1$.
+and the loop is unstable if $\lvert T(j\omega_{180}) \rvert > 1$. The condition comes from the tangent-sum identity. With $t_i = \omega/\omega_i$,
+
+$$
+\tan(\theta_1 + \theta_2 + \theta_3) = \frac{t_1 + t_2 + t_3 - t_1t_2t_3}{1 - (t_1t_2 + t_1t_3 + t_2t_3)} ,
+$$
+
+where $\theta_i = \arctan t_i$. Each angle lies between 0 and π/2, so the sum lies between 0 and 3π/2, and the only multiple of π it can reach is π itself, where the tangent's numerator vanishes: $t_1 + t_2 + t_3 = t_1t_2t_3$. Multiplying by $\omega_1\omega_2\omega_3/\omega$ gives $\omega_2\omega_3 + \omega_1\omega_3 + \omega_1\omega_2 = \omega^2$. (The denominator vanishes where the sum is π/2.)
 
 ### 3.2 Phase margin and gain margin
 
-For a loop whose open-loop gain $T(s)$ has no right-half-plane poles and whose magnitude crosses unity once, the **Bode stability criterion** is: the closed loop is stable if and only if the phase at crossover is above −180°. Two margins measure the distance from instability:
+For a loop whose open-loop gain $T(s)$ (previewed in 07-07 §3.9) has no right-half-plane poles and whose magnitude crosses unity once, the **Bode stability criterion** is: the closed loop is stable if and only if the phase at crossover is above −180°. Two margins measure the distance from instability:
 
 $$
 \text{PM} = 180^\circ + \angle T(j\omega_c), \qquad \text{GM} = -20\log_{10}\lvert T(j\omega_{180})\rvert\ \text{dB} .
@@ -86,7 +92,7 @@ $$
 \frac{T}{1 + T} = \frac{1}{1 + s/\omega_u + s^2/(\omega_u\omega_2)} = \frac{1}{1 + s/(Q\omega_n) + s^2/\omega_n^2}, \qquad \omega_n = \sqrt{\omega_u\omega_2},\quad Q = \sqrt{\frac{\omega_u}{\omega_2}} .
 $$
 
-So $Q$ depends only on the ratio $r = \omega_2/\omega_u$: $Q = 1/\sqrt{r}$. The crossover $\omega_c = x\,\omega_u$ solves $\lvert T \rvert = 1$, that is $x^2(1 + x^2/r^2) = 1$, and the phase margin is $90^\circ - \arctan(x/r)$: the dominant pole contributes 90° and the second pole the rest. The damping ratio is $\zeta = 1/(2Q)$, and 07-03's step-response results apply: overshoot $e^{-\pi\zeta/\sqrt{1 - \zeta^2}}$ for $\zeta < 1$, and frequency-response peaking $Q/\sqrt{1 - 1/(4Q^2)}$ for $Q > 1/\sqrt2$.
+So $Q$ depends only on the ratio $r = \omega_2/\omega_u$: $Q = 1/\sqrt{r}$. The crossover $\omega_c = x\,\omega_u$ solves $\lvert T \rvert = 1$, that is $x^2(1 + x^2/r^2) = 1$, and the phase margin is $90^\circ - \arctan(x/r)$: the dominant pole contributes 90° and the second pole the rest. The damping ratio is $\zeta = 1/(2Q)$, and 07-03 §3.6's step-response results apply: overshoot $e^{-\pi\zeta/\sqrt{1 - \zeta^2}}$ for $\zeta < 1$, and frequency-response peaking $Q/\sqrt{1 - 1/(4Q^2)}$ for $Q > 1/\sqrt2$.
 
 | $r = f_2/f_u$ | Phase margin | $Q$ | Step overshoot | Peaking |
 |---|---|---|---|---|
@@ -97,7 +103,7 @@ So $Q$ depends only on the ratio $r = \omega_2/\omega_u$: $Q = 1/\sqrt{r}$. The 
 
 *Table 1. Phase margin against the closed-loop response for a two-pole loop. The second pole at 1.5 times $f_u$ gives exactly 60°: $x = \sqrt3/2$ and $\arctan(x/1.5) = 30^\circ$.*
 
-The rules of thumb follow: **45°** of phase margin rings noticeably (about 23% overshoot); **60°** gives under 10% overshoot and almost no peaking; beyond about **70°** the response is overdamped and slower than necessary. Practical loops have more than two poles, so the table is a guide, not a law; but almost all well-designed amplifiers behave like it near crossover.
+The rules of thumb follow: **45°** of phase margin rings noticeably (about 23% overshoot); **60°** gives under 10% overshoot and almost no peaking; the step response stops overshooting altogether at **76.35**°, where $r$ = 4, $Q$ = 1/2 and the poles are critically damped. Beyond about 70° the extra margin buys little except a slower response. Practical loops have more than two poles, so the table is a guide, not a law; but almost all well-designed amplifiers behave like it near crossover.
 
 ### 3.4 Dominant-pole compensation
 
@@ -127,7 +133,7 @@ $$
 \text{PM} \approx 90^\circ - \arctan\frac{\omega_u}{p_2} - \arctan\frac{\omega_u}{z} .
 $$
 
-The right-half-plane zero subtracts phase like a pole (12-03 §3.6) while *raising* the magnitude, which is worse. With $\omega_u/z = g_{m1}/g_{m2}$, the classic design rules are:
+The right-half-plane zero subtracts phase like a pole (12-03 §3.4) while *raising* the magnitude, which is worse. With $\omega_u/z = g_{m1}/g_{m2}$, the classic design rules are:
 
 1. **Make $g_{m2}$ about ten times $g_{m1}$.** Then the zero costs only $\arctan(0.1)$ = **5.711**°.
 2. **Place $p_2$ at about 2.2 times $\omega_u$.** With $p_2 \approx g_{m2}/C_L$ and $\omega_u = g_{m1}/C_c$, this means $C_c \approx 2.2(g_{m1}/g_{m2})C_L$ = **0.22** $C_L$. It costs $\arctan(1/2.2)$ = **24.44**°.
@@ -142,7 +148,7 @@ Together they give $90 - 24.44 - 5.71$ = **59.85**°. These are estimates: the c
 
 The zero exists because $C_c$ is a feed-forward path: at high frequency, the current through $C_c$ from node 1 reaches node 2 directly, in phase with the input, while the second stage's current $g_{m2}v_1$ is inverted. At the frequency where the two cancel, $sC_c v_1 = g_{m2}v_1$, the output is zero: $s = g_{m2}/C_c$, a positive (right-half-plane) value.
 
-**The nulling resistor.** Put a resistor $R_z$ in series with $C_c$. The feed-forward current is now $v_1/(R_z + 1/(sC_c))$ (to first order, since node 2's voltage is small at the zero), and the cancellation condition becomes $R_z + 1/(sC_c) = 1/g_{m2}$, so
+**The nulling resistor.** Put a resistor $R_z$ in series with $C_c$. The feed-forward current is now $v_1/(R_z + 1/(sC_c))$ (exactly, because at the zero the output voltage, node 2's, is zero by definition), and the cancellation condition becomes $R_z + 1/(sC_c) = 1/g_{m2}$, so
 
 $$
 z = \frac{1}{C_c\,(1/g_{m2} - R_z)} .
@@ -220,7 +226,17 @@ so GM = **−38.26** dB: the loop gain is 82 times too large at the oscillation 
 - $z = g_{m2}/(2\pi C_c)$ = **1447** MHz;
 - PM ≈ **59.85**°.
 
-Including $C_1$, the better estimate of $p_2$ is $g_{m2}C_c/[2\pi(C_1C_L + C_c(C_1 + C_L))]$ = **260.5** MHz. Solving the full two-node circuit (with $C_c$ bridging the nodes) gives a crossover of **129.5** MHz and a phase margin of **58.56**°. The rule landed within 1.3°; an exact 60° needs $C_c$ = **1.180** pF, with a GBW of **134.9** MHz.
+Including $C_1$, the better estimate of $p_2$ is $g_{m2}C_c/[2\pi(C_1C_L + C_c(C_1 + C_L))]$ = **260.5** MHz. The full two-node circuit, with $C_c$ bridging the nodes, has the gain of 12-04 §3.4,
+
+$$
+A(s) = \frac{A_0(1 - s/z)}{1 + b_1s + b_2s^2}, \qquad
+\begin{aligned}
+b_1 &= R_1[C_1 + C_c(1 + g_{m2}R_2)] + R_2(C_c + C_L) = 1.106 \times 10^{-4}\ \text{s}, \\
+b_2 &= R_1R_2[C_1C_L + C_c(C_1 + C_L)] = 6.72 \times 10^{-14}\ \text{s}^2 ,
+\end{aligned}
+$$
+
+with $A_0$ = 10⁵ and $z = g_{m2}/C_c$ = **9.091** × 10⁹ rad/s. Solving $\lvert A(jf) \rvert$ = 1 numerically gives a crossover of **129.5** MHz and a phase margin of **58.56**°. The rule landed within 1.3°; an exact 60° needs $C_c$ = **1.180** pF, with a GBW of **134.9** MHz.
 
 **Sanity check.** Compensation set the speed: 1.1 pF and 1 mA/V give about 145 MHz however fast the transistors are. To go faster at the same margin, $g_{m1}$, $g_{m2}$ and the power have to rise together.
 
@@ -230,7 +246,13 @@ Including $C_1$, the better estimate of $p_2$ is $g_{m2}C_c/[2\pi(C_1C_L + C_c(C
 
 **Solution.** (a) $R_z$ = **100** Ω removes the zero; the exact solution gives a phase margin of **63.49**°, a gain of about 5° as the zero's lag disappears.
 
-(b) $R_z = (1 + C_L/C_c)/g_{m2} = (1 + 4.545)/10\ \text{mA/V}$ = **554.5** Ω. The exact solution gives a crossover of **143.3** MHz and a phase margin of **84.37**°. The new pole is near $1/(2\pi R_zC_1)$ = **1435** MHz, ten times above crossover.
+(b) $R_z = (1 + C_L/C_c)/g_{m2} = (1 + 4.545)/10\ \text{mA/V}$ = **554.5** Ω. The compensation branch now has its own node, and the exact gain is third order,
+
+$$
+A(s) = \frac{A_0(1 + s/z')}{1 + a_1s + a_2s^2 + a_3s^3}, \qquad z' = \frac{1}{C_c(R_z - 1/g_{m2})} = 2.000 \times 10^9\ \text{rad/s} ,
+$$
+
+with $a_1$ = 1.106 × 10⁻⁴ s, $a_2$ = 6.738 × 10⁻¹⁴ s² and $a_3 = R_1R_2R_zC_1C_LC_c$ = 6.100 × 10⁻²⁴ s³ (from the three node equations, or from 12-04's time-constant sums). The exact solution gives a crossover of **143.3** MHz and a phase margin of **84.37**°. The new pole is near $1/(2\pi R_zC_1)$ = **1435** MHz, ten times above crossover.
 
 **Sanity check.** The cancellation turned a two-pole loop back into a nearly single-pole one up to 1.4 GHz, so the phase margin approaches 90°. If $C_L$ changes, the zero no longer sits on $p_2$; a designer would aim for a margin near 70° that survives the expected spread of $C_L$, rather than for 84°.
 
@@ -254,6 +276,7 @@ Including $C_1$, the better estimate of $p_2$ is $g_{m2}C_c/[2\pi(C_1C_L + C_c(C
 | T 12-06.m | C_c rule | 0.22 | C_L |
 | T 12-06.n | p_2's phase cost at 2.2 ω_u | 24.44 | ° |
 | T 12-06.o | estimated phase margin | 59.85 | ° |
+| T 12-06.p | phase margin at critical damping (r = 4) | 76.35 | ° |
 | Ex 12-06.1a | single-pole crossover estimate | 1 | MHz |
 | Ex 12-06.1b | estimated phase margin | 63.43 | ° |
 | Ex 12-06.1c | exact crossover | 0.9102 | MHz |
@@ -295,6 +318,13 @@ Including $C_1$, the better estimate of $p_2$ is $g_{m2}C_c/[2\pi(C_1C_L + C_c(C
 | Ex 12-06.6g | C_L/C_c | 4.545 | — |
 | Ex 12-06.5l | dominant pole | 1.439 | kHz |
 | Ex 12-06.5m | dominant-pole estimate | 1.447 | kHz |
+| Ex 12-06.5n | b_1 | 1.106 × 10⁻⁴ | s |
+| Ex 12-06.5o | b_2 | 6.72 × 10⁻¹⁴ | s² |
+| Ex 12-06.5p | right-half-plane zero | 9.091 × 10⁹ | rad/s |
+| Ex 12-06.6h | left-half-plane zero with the cancelling R_z | 2.000 × 10⁹ | rad/s |
+| Ex 12-06.6i | a_1 | 1.106 × 10⁻⁴ | s |
+| Ex 12-06.6j | a_2 | 6.738 × 10⁻¹⁴ | s² |
+| Ex 12-06.6k | a_3 | 6.100 × 10⁻²⁴ | s³ |
 | Ex 12-06.1e | dominant pole's lag at crossover | 89.94 | ° |
 | Ex 12-06.1f | second pole's lag at crossover | 24.47 | ° |
 | Ex 12-06.1g | second pole's lag at 1 MHz | 26.57 | ° |
@@ -359,12 +389,12 @@ The netlist [two_stage.cir](../labs/12-06-lab/two_stage.cir) runs an AC analysis
 
 ### State of the art (as of Nov 2026)
 
-- **Data sheets quote phase margin.** The TLV9062 specifies a 10 MHz GBW and a **55**° phase margin [1] **[Established]** (data sheet). Read through Table 1's two-pole model, 55° corresponds to a second pole at about **1.170** times $f_u$, a closed-loop $Q$ near **0.925** and about **13**% overshoot as a buffer, the kind of mild ringing one sees on its step-response plots. (The two-pole reading is a model, not the data sheet's claim.)
+- **Data sheets quote phase margin.** The TLV9062 specifies a 10 MHz GBW and a **55**° phase margin [1] **[Established]** (data sheet). Read through Table 1's two-pole model, 55° corresponds to a second pole at about **1.170** times $f_u$, a closed-loop $Q$ near **0.925** and about **13**% overshoot as a buffer, consistent with mild ringing on a step response. (The two-pole reading is a model, not the data sheet's claim **[Industry estimate]**.)
 - **Two-stage Miller-compensated op-amps remain the workhorse** of CMOS analog design, with nulling-resistor or cascode ("indirect") compensation to manage the right-half-plane zero **[Established]** (Gray, Hurst, Lewis and Meyer, ch. 9; Razavi).
 
 ### Why it matters commercially
 
-- **Stability is a top cause of analog field failures.** An amplifier that oscillates with a customer's cable or a regulator that rings with a particular capacitor becomes an applications-engineering cost and, at worst, a recall.
+- **Stability problems are a common source of analog field failures [Industry estimate].** An amplifier that oscillates with a customer's cable or a regulator that rings with a particular capacitor becomes an applications-engineering cost and, at worst, a recall.
 - **Compensation sets power efficiency.** For a given margin, bandwidth is bought with $g_m$, hence with current; a vendor's "speed per milliamp" reflects how well its compensation is done.
 - **LDO regulators and PLLs are stability products.** Their data sheets specify allowed output-capacitor ranges and loop bandwidths for this reason.
 
