@@ -5534,3 +5534,46 @@
   definition: A family of attacks, disclosed in January 2018, that use speculatively executed instructions to leave secret-dependent traces in caches and other microarchitectural state, read back by timing (CVE-2017-5753 and CVE-2017-5715).
   chapter: "14-07"
   see_also: [Side channel, Speculative execution]
+- term: Instruction-level parallelism (ILP)
+  definition: The parallelism among the instructions of a single sequential program, the number that could execute at once if only true dependences constrained them; superscalar and out-of-order hardware extract it without help from the programmer.
+  chapter: "14-08"
+  see_also: [Dataflow limit, Superscalar]
+- term: Superscalar
+  definition: A processor that fetches, decodes, issues and retires more than one instruction per cycle; its width is the maximum per cycle.
+  chapter: "14-08"
+  see_also: [Out-of-order execution]
+- term: Out-of-order execution
+  definition: Executing instructions in the order their operands become ready rather than in program order, within a window of upcoming instructions, while retiring them in program order so that software sees sequential behaviour.
+  chapter: "14-08"
+  see_also: [Reorder buffer (ROB), Register renaming]
+- term: True dependence
+  definition: A read-after-write (RAW) dependence, in which a later instruction needs the value an earlier one produces; it carries data and cannot be removed, only waited for.
+  chapter: "14-08"
+  see_also: [Name dependence, Data hazard]
+- term: Name dependence
+  definition: A write-after-read (WAR, anti-) or write-after-write (WAW, output) dependence, which exists only because two values share a register name and is removed by register renaming.
+  chapter: "14-08"
+  see_also: [True dependence, Register renaming]
+- term: Register renaming
+  definition: Mapping each architectural register written by an instruction to a new physical register from a free list, recorded in a register alias (map) table, so that only true dependences remain between instructions.
+  chapter: "14-08"
+  see_also: [Name dependence, Out-of-order execution]
+- term: Reorder buffer (ROB)
+  definition: A queue holding every in-flight instruction in program order; instructions finish in any order but retire from its head in order, which makes speculation and exceptions precise. Its size bounds the instruction window.
+  chapter: "14-08"
+  see_also: [Precise exception, Out-of-order execution]
+- term: Reservation station
+  definition: An issue-queue entry, introduced in Tomasulo's algorithm, where a dispatched instruction waits for its source operands and from which it issues to an execution unit once they are ready.
+  chapter: "14-08"
+  see_also: [Out-of-order execution]
+- term: Precise exception
+  definition: An exception taken so that the architectural state is exactly as if every instruction before the faulting one had completed and none after it had started, which lets the operating system handle it and resume the program.
+  chapter: "14-08"
+  see_also: [Reorder buffer (ROB)]
+- term: Dataflow limit
+  definition: The execution time with unlimited resources and perfect prediction, set by the longest latency-weighted chain of true dependences (the critical path); no machine can be faster.
+  chapter: "14-08"
+  see_also: [Instruction-level parallelism (ILP), True dependence]
+- term: Little's law
+  definition: For any stable queueing system, average occupancy = throughput × average time in the system; it sizes a processor's window (about width × latency to hide) and the outstanding requests a memory system needs.
+  chapter: "14-08"

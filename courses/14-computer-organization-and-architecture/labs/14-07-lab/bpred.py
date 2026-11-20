@@ -73,10 +73,10 @@ class TwoBit:
 
 
 def simulate(events: list[Event], direction: str = "2bit", entries: int = 1024, hist_bits: int = 8,
-             btb_entries: int = 64, ras_depth: int = 0) -> dict:
+             btb_entries: int = 64, ras_depth: int = 0, flags: list | None = None) -> dict:
     """Count mispredicted fetches. direction: 'none' (always PC + 4), 'nt' (static not taken), 'btfn' (backward
     taken, forward not taken), '1bit', '2bit', 'gshare'. Targets come from a direct-mapped BTB (full-PC tags);
-    returns use the RAS if ras_depth > 0."""
+    returns use the RAS if ras_depth > 0. If `flags` is a list, one boolean per event (mispredicted?) is appended."""
     btb: dict[int, tuple[int, int]] = {}
     one = [False] * entries
     two = TwoBit(entries)
@@ -112,6 +112,8 @@ def simulate(events: list[Event], direction: str = "2bit", entries: int = 1024, 
         else:
             pnext = e.pc + 4
         mis += pnext != e.next_pc
+        if flags is not None:
+            flags.append(pnext != e.next_pc)
         if e.kind == "br":
             br += 1
             dir_wrong += pred_taken != e.taken

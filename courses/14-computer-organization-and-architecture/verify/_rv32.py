@@ -120,9 +120,11 @@ class Sim:
         for i in range(n):
             self.mem[(a + i) & M32] = val >> 8 * i & 0xFF
 
-    def run(self, limit: int = 10**7, trace: list | None = None, wtrace: list | None = None) -> int:
+    def run(self, limit: int = 10**7, trace: list | None = None, wtrace: list | None = None,
+            mtrace: list | None = None) -> int:
         """Execute until EBREAK/ECALL. If `trace` is a list, append (pc, sp) after every instruction; if
-        `wtrace` is a list, append (pc, rd, value) for every register write (rd != 0)."""
+        `wtrace` is a list, append (pc, rd, value) for every register write (rd != 0); if `mtrace` is a list,
+        append (pc, address, is_store) for every load and store."""
         x = self.x
         s = lambda u: sx(u, 32)  # noqa: E731
         while True:
@@ -148,11 +150,15 @@ class Sim:
                     nxt = pc + imm
             elif op == 0x03:  # loads
                 addr = (a + sx(w >> 20, 12)) & M32
+                if mtrace is not None:
+                    mtrace.append((pc, addr, False))
                 n = {0: 1, 1: 2, 2: 4, 4: 1, 5: 2}[f3]
                 v = self.load(addr, n)
                 res = sx(v, 8 * n) & M32 if f3 in (0, 1) else v
             elif op == 0x23:  # stores
                 addr = (a + sx((w >> 25) << 5 | rd, 12)) & M32
+                if mtrace is not None:
+                    mtrace.append((pc, addr, True))
                 self.store(addr, b, {0: 1, 1: 2, 2: 4}[f3])
             elif op == 0x33 and f7 == 1:  # M extension
                 sa, sb = s(a), s(b)
