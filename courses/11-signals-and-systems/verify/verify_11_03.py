@@ -276,4 +276,17 @@ r[137:137 + len(code_)] += code_
 v.check("Lab 11-03.i", int(np.argmax(np.convolve(r, code_[::-1]))) - (len(code_) - 1))
 v.check("Lab 11-03.j", math.sqrt(len(code_)))
 
+# ---- Problem 11-03.15: two-sided convolution, by a long explicit sum and by quadrature
+nn = np.arange(-60, 1)
+xs = 2.0 ** nn                         # x[n] = 2^n for n <= 0
+def y15(n):
+    return sum(xk for k, xk in zip(nn, xs) if n - k >= 0)
+v.check("11-03.15a", y15(-3))
+v.check("11-03.15b", y15(0))
+v.check("11-03.15c", y15(5))
+
+y15c = lambda t: quad(lambda tau: math.exp(2 * tau), -40, min(0.0, t - 3))[0]
+v.check("11-03.15d", y15c(2.0))
+v.check("11-03.15e", y15c(4.0))
+
 sys.exit(v.finish())

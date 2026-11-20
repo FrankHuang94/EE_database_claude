@@ -67,6 +67,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Diligence on an accelerator claim.** A start-up's accelerator has 4096 MAC units at 1 GHz. Its slides claim that a 3 × 3 convolution layer with 128 input and 128 output channels on a 28 × 28 output runs in 25 µs. (a) Count the layer's MACs. (b) Find the minimum time at 100% utilization. (c) What utilization does the claim imply, and what does that tell you? (d) Name two legitimate ways the claim could still be true, and the question that would distinguish them.
 
+### Problem 11-03.15 [B]
+
+**Two-sided signals.** (a) Convolve the anticausal $x[n] = 2^nu[-n]$ with $h[n] = u[n]$, and give $y[-3]$, $y[0]$ and $y[5]$. (b) Convolve $x(t) = e^{2t}u(-t)$ with $h(t) = u(t - 3)$, and give $y(2)$ and $y(4)$. In both, find where the limits of the sum or integral change.
+
 ---
 
 ## Objective coverage
@@ -74,7 +78,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 11-03) | Problems |
 |---|---|
 | 1. Derive convolution; the impulse response describes an LTI system | 3, 9, 10 |
-| 2. Compute DT and CT convolutions | 1, 2, 4, 5, 6, 7, 8 |
+| 2. Compute DT and CT convolutions | 1, 2, 4, 5, 6, 7, 8, 15 |
 | 3. Properties: commutative, associative, distributive, shift, area, support | 2, 3, 10 |
 | 4. Step and impulse responses; circuits by convolution | 6, 8, 9 |
 | 5. Stability from absolute summability; worst-case gain | 11, 12 |

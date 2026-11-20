@@ -10,9 +10,9 @@ Problems: [11-04 problems](../problems/11-04-problems.md) · Chapter: [11-04](..
 
 (a) $y[n] = x[n] - x[n - 2]$: memory, causal, stable with $\sum\lvert h\rvert$ = **2**. Its inverse is the recursion $w[n] = y[n] + w[n - 2]$, whose roots are ±1: not stable, because $h$ is zero at $\omega = 0$ and $\omega = \pi$ (it removes DC and the fastest alternation, which cannot be restored).
 
-(b) $h(t) = e^{-t}$ for $t > -1$: nonzero for $-1 < t < 0$, so **noncausal** (the output responds up to 1 s before the input). It is stable: $\int_{-1}^{\infty}e^{-t}\,dt = e$ = **2.718**.
+(b) $h(t) = e^{-t}$ for $t > -1$: nonzero for $-1 < t < 0$, so **noncausal** (the output responds up to 1 s before the input). It is stable: $\int_{-1}^{\infty}e^{-t}\,dt = e$ = **2.718**. Inverse: $h(t) = e\cdot e^{-(t + 1)}u(t + 1)$ is the system $e^{-t}u(t)$ (whose inverse is $\frac{d}{dt} + 1$), advanced by 1 s and scaled by $e$, so $w(t) = \frac1e\left[y'(t - 1) + y(t - 1)\right]$ undoes it: a delayed, scaled differentiator plus identity, which is not BIBO-stable.
 
-(c) $h[n] = 2^n$ for $n \le 0$: values $1, 0.5, 0.25, \dots$ at $n = 0, -1, -2, \dots$. Noncausal (anticausal), and stable with $\sum\lvert h\rvert = 1/(1 - 0.5)$ = **2**. A stable system need not be causal.
+(c) $h[n] = 2^n$ for $n \le 0$: values $1, 0.5, 0.25, \dots$ at $n = 0, -1, -2, \dots$. Noncausal (anticausal), and stable with $\sum\lvert h\rvert = 1/(1 - 0.5)$ = **2**. A stable system need not be causal. Inverse: $w[n] = y[n] - 0.5y[n + 1]$, i.e. $\delta[n] - 0.5\delta[n + 1]$, a stable noncausal FIR filter (check: $h[n] - 0.5h[n + 1]$ is 0 for $n \le -1$, 1 at $n = 0$ and 0 for $n \ge 1$).
 
 (d) A 2 s delay: memory, causal, stable; its inverse $\delta(t + 2)$ is an advance, noncausal.
 
@@ -74,6 +74,17 @@ The ringing frequency in rad/sample is $\theta = 2\pi \times 1/8$ = π/4, about 
 
 (a) Direct form I: the input delay line holds $x[n - 1]$ and the output delay line holds $y[n - 1]$: **2** delays, **3** multipliers (0.5, 0.5, 0.9) and **2** additions. Direct form II: $w[n] = x[n] + 0.9w[n - 1]$, $y[n] = 0.5w[n] + 0.5w[n - 1]$, sharing one delay: **1** delay, the same 3 multipliers and 2 additions.
 
+Direct form I:
+
+```mermaid
+flowchart LR
+  XA(("x[n]")) --> P0["× 0.5"] --> SA((Σ)) --> YA(("y[n]"))
+  XA --> DA["z⁻¹"] --> P1["× 0.5"] --> SA
+  YA --> DB["z⁻¹"] --> Q1["× 0.9"] --> SA
+```
+
+Direct form II:
+
 ```mermaid
 flowchart LR
   X(("x[n]")) --> S1((Σ)) --> W["w[n]"] --> M0["× 0.5"] --> S2((Σ)) --> Y(("y[n]"))
@@ -104,6 +115,14 @@ $H(e^{j\omega}) = \dfrac{0.5(1 + e^{-j\omega})}{1 - 0.9e^{-j\omega}}$. At $\omeg
 (c) The exponential average stores one number and does 2 multiplications per sample. A 5 s moving average at 50 SPS stores **250** samples and needs 250 additions (or a running sum with one addition and one subtraction, but still 250 words of memory).
 
 (d) Its impulse response never ends, so old data are never completely forgotten; it weights recent samples most, which lags a moving trend; and it has nonlinear phase. For a heart-rate display these are usually acceptable trades for the memory and power saved.
+
+### Solution 11-04.13
+
+(a) Zero input: $y_{zi}[n] = 0.5^{n+1}y[-1] = 3(0.5)^n$ for $n \ge 0$. Zero state: the step response of $h[n] = 0.5^nu[n]$, $y_{zs}[n] = \sum_{k=0}^n0.5^k = 2 - 0.5^n$.
+
+(b) $y[n] = 2 + 2(0.5)^n$, so $y[0]$ = **4** and $y[1]$ = **3**. Directly: $y[0] = 0.5 \times 6 + 1 = 4$ and $y[1] = 0.5 \times 4 + 1 = 3$.
+
+(c) At $n = 3$: $y_{zi}$ = **0.375**, $y_{zs}$ = **1.875**, total **2.25**. Final value **2**, the DC gain $1/(1 - 0.5)$ times the step: the initial condition only adds a transient, which dies out at the system's own rate $0.5^n$. This split, natural plus forced response, is the same one 07-02 used for circuits; the unilateral z-transform (11-09) produces it algebraically.
 
 ---
 
@@ -163,3 +182,9 @@ $H(e^{j\omega}) = \dfrac{0.5(1 + e^{-j\omega})}{1 - 0.9e^{-j\omega}}$. At $\omeg
 | 11-04.12a | α | 0.0198 | — |
 | 11-04.12b | time constants to 1% | 4.605 | — |
 | 11-04.12c | moving-average memory | 250 | samples |
+| 11-04.13a | y[0] | 4 | — |
+| 11-04.13b | y[1] | 3 | — |
+| 11-04.13c | zero-input part at n = 3 | 0.375 | — |
+| 11-04.13d | zero-state part at n = 3 | 1.875 | — |
+| 11-04.13e | total at n = 3 | 2.25 | — |
+| 11-04.13f | final value | 2 | — |

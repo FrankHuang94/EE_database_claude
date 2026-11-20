@@ -61,7 +61,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 11-02.13 [C]
 
-**A latency budget.** A guitar effects processor sampling at 48 kHz must keep its total latency under 2 ms. Its converters' decimation and interpolation filters already use 40 samples. (a) What is the total budget in samples? (b) What is the longest symmetric (linear-phase) FIR filter, with an odd number of taps, that fits? (c) An envelope follower designed offline uses a centered window that looks 10 ms ahead. How many samples is that, and can it be used live?
+**A latency budget.** A guitar effects processor sampling at 48 kHz must keep its total latency to at most 2 ms. Its converters' decimation and interpolation filters already use 40 samples. (a) What is the total budget in samples? (b) What is the longest symmetric (linear-phase) FIR filter, with an odd number of taps, that fits? (c) An envelope follower designed offline uses a centered window that looks 10 ms ahead. How many samples is that, and can it be used live?
 
 ### Problem 11-02.14 [C]
 

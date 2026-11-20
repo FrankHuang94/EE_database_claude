@@ -131,6 +131,12 @@ which is $10\left(e^{-t/2\,\text{ms}} - e^{-t/1\,\text{ms}}\right)$ V.
 
 (d) Two legitimate possibilities. **Sparsity:** if many weights or activations are zero and the hardware skips them, fewer MACs are executed; the result is exact only if the zeros are really there. **A fast algorithm:** Winograd-type transforms compute a 3 × 3 convolution with fewer multiplications than the direct method by spending extra additions. The distinguishing question is: "How many MACs does your hardware actually execute for this layer, on dense weights, and what is the latency on a dense benchmark?" A sparsity-based number collapses on dense weights; a fast-algorithm number does not, but may lose some numerical accuracy at low precision.
 
+### Solution 11-03.15
+
+(a) $y[n] = \sum_kx[k]h[n - k]$, and $h[n - k] = 1$ when $k \le n$ while $x[k] = 2^k$ only for $k \le 0$. So the sum runs over $k \le \min(0, n)$. For $n \ge 0$: $\sum_{k\le0}2^k = 1 + \tfrac12 + \tfrac14 + \cdots = 2$. For $n < 0$: $\sum_{k\le n}2^k = 2^n \cdot 2 = 2^{n+1}$. So $y[-3]$ = **0.25**, $y[0]$ = **2** and $y[5]$ = **2**: the output rises toward 2 as $n$ increases and stays there once $n \ge 0$.
+
+(b) $y(t) = \int x(\tau)h(t - \tau)d\tau$; $h(t - \tau) = 1$ for $\tau \le t - 3$ and $x(\tau) = e^{2\tau}$ only for $\tau \le 0$, so the upper limit is $\min(0, t - 3)$: $y(t) = \tfrac12e^{2\min(0, t - 3)}$. For $t < 3$, $y = \tfrac12e^{2(t - 3)}$, so $y(2) = \tfrac12e^{-2}$ = **0.06767**; for $t \ge 3$, $y$ = **0.5**, so $y(4) = 0.5$. The limits change at $n = 0$ and at $t = 3$, where the edge of one signal's support crosses the other's.
+
 ---
 
 ## Answer key
@@ -187,3 +193,8 @@ which is $10\left(e^{-t/2\,\text{ms}} - e^{-t/1\,\text{ms}}\right)$ V.
 | 11-03.14a | MACs | 115.6 | M |
 | 11-03.14b | minimum time | 28.22 | µs |
 | 11-03.14c | implied utilization | 113 | % |
+| 11-03.15a | y[−3] | 0.25 | — |
+| 11-03.15b | y[0] | 2 | — |
+| 11-03.15c | y[5] | 2 | — |
+| 11-03.15d | y(2) | 0.06767 | — |
+| 11-03.15e | y(4) | 0.5 | — |

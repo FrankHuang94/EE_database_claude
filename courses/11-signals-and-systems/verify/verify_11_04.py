@@ -120,11 +120,23 @@ v.assert_true("narrow-pulse response matches h at 60 us (within 0.5%)",
               abs(nar.sol(60e-6)[0] - hr(60e-6 - wdt / 2)) < 5e-3 * abs(hr(60e-6)))
 
 # ============================================================ Example 6
-v.check("Ex 11-04.6a", 4)                                           # DF-I: two input and two output delays
-v.check("Ex 11-04.6b", 5)
-v.check("Ex 11-04.6c", 2)
-v.check("Ex 11-04.6d", 2 * 5)
-v.check("Ex 11-04.6e", 5 * 5)
+def realization_counts(b, a, form):
+    """Delays, multipliers and two-input additions of a direct-form realization of B(z)/A(z), counted from
+    the structure: DF-I keeps separate input and output delay lines, DF-II shares one line of max order."""
+    nb, na = len(b) - 1, len(a) - 1
+    mults = sum(1 for c in b if c != 0) + sum(1 for c in a[1:] if c != 0)
+    delays = nb + na if form == "I" else max(nb, na)
+    return delays, mults, mults - 1
+
+
+biq_b, biq_a = [1.0, 2.0, 1.0], [1.0, -1.5, 0.56]
+d1_, m1_, _ = realization_counts(biq_b, biq_a, "I")
+d2_, m2_, _ = realization_counts(biq_b, biq_a, "II")
+v.check("Ex 11-04.6a", d1_)
+v.check("Ex 11-04.6b", m1_)
+v.check("Ex 11-04.6c", d2_)
+v.check("Ex 11-04.6d", 5 * (len(biq_a) - 1))                        # five sections of order 2
+v.check("Ex 11-04.6e", 5 * m1_)
 v.check("Ex 11-04.6f", 25 * 48e3 / 1e6)
 # CMSIS form y = b0 x + ... + a1 y[n-1] + a2 y[n-2]: run it with the negated coefficients and compare
 cm_a1, cm_a2 = 1.5, -0.56
@@ -159,7 +171,7 @@ v.check("Ex 11-04.7g", y9[0] - y9[150] / 0.9 ** 150)
 v.check("Ex 11-04.7h", y9[2])
 
 # ============================================================ solutions
-v.check("11-04.1a", 2)
+v.check("11-04.1a", float(np.sum(np.abs([1.0, 0.0, -1.0]))))
 v.check("11-04.1b", quad(lambda t: math.exp(-t), -1, 60)[0])
 v.check("11-04.1c", sum(2.0 ** k for k in range(0, -200, -1)))
 h12 = iterate([0.2], [1, -0.8], imp(300))
@@ -209,7 +221,11 @@ v.check("11-04.7d", brentq(lambda t: ode7.sol(t)[1], 1e-6, 200e-6, xtol=1e-14) *
 # 8: 2y'' + 3y' + y = delta
 ode8 = solve_ivp(lambda t, y: [y[1], (-3 * y[1] - y[0]) / 2], (0, 60), [0.0, 0.5], rtol=1e-11, atol=1e-13,
                  dense_output=True)
-v.check("11-04.8a", 0.5)
+# 8a: the slope jump, from a narrow unit-area pulse driving 2y'' + 3y' + y = x (independent of the jump rule)
+_wd = 1e-5
+_p8 = solve_ivp(lambda t, y: [y[1], ((1 / _wd if t < _wd else 0.0) - 3 * y[1] - y[0]) / 2], (0, 2 * _wd), [0.0, 0.0],
+                max_step=_wd / 50, rtol=1e-10, atol=1e-12)
+v.check("11-04.8a", _p8.y[1][-1], rtol=1e-3)
 t8 = brentq(lambda t: ode8.sol(t)[1], 0.1, 5, xtol=1e-14)
 v.check("11-04.8b", t8)
 v.check("11-04.8c", ode8.sol(t8)[0])
@@ -224,10 +240,12 @@ for k, xn in enumerate(x):                                           # direct fo
     yd2[k] = 0.5 * w + 0.5 * w1
     w1 = w
 v.assert_true("DF-II with one delay equals DF-I", np.allclose(yd2, iterate(b9, a9, x)))
-v.check("11-04.9a", 2)
-v.check("11-04.9b", 3)
-v.check("11-04.9c", 2)
-v.check("11-04.9d", 1)
+_c9i = realization_counts([0.5, 0.5], [1.0, -0.9], "I")
+_c9ii = realization_counts([0.5, 0.5], [1.0, -0.9], "II")
+v.check("11-04.9a", _c9i[0])
+v.check("11-04.9b", _c9i[1])
+v.check("11-04.9c", _c9i[2])
+v.check("11-04.9d", _c9ii[0])
 v.check("11-04.9e", iterate(b9, a9, imp(400)).sum())
 v.check("11-04.10a", np.mean(iterate(b9, a9, np.ones(400))[300:]))
 v.check("11-04.10b", np.max(np.abs(iterate(b9, a9, (-1.0) ** np.arange(400))[300:])))
@@ -253,7 +271,27 @@ alpha12 = brentq(lambda al: iterate([al], [1, -(1 - al)], np.ones(51))[49] - (1 
 v.assert_true("step reaches 63% at about sample 50", abs(alpha12 - (1 - math.exp(-1 / 50))) < 5e-4)
 v.check("11-04.12a", 1 - math.exp(-1 / 50))
 v.check("11-04.12b", math.log(100))
-v.check("11-04.12c", 5 * 50)
+v.check("11-04.12c", int(round(5.0 * 50)))                       # 5 s of samples at 50 per second
+
+# 13: zero-input plus zero-state, each by iterating the recursion
+def it13(x, y_init):
+    out, yp = [], y_init
+    for xn in x:
+        yp = 0.5 * yp + xn
+        out.append(yp)
+    return np.array(out)
+
+
+zi = it13(np.zeros(60), 6.0)
+zs = it13(np.ones(60), 0.0)
+tot = it13(np.ones(60), 6.0)
+v.assert_true("total equals zero-input plus zero-state", np.allclose(tot, zi + zs))
+v.check("11-04.13a", tot[0])
+v.check("11-04.13b", tot[1])
+v.check("11-04.13c", zi[3])
+v.check("11-04.13d", zs[3])
+v.check("11-04.13e", tot[3])
+v.check("11-04.13f", tot[-1])
 
 # ============================================================ lab
 d40 = imp(40)

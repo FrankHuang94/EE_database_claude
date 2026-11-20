@@ -59,6 +59,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Smoothing in a wearable.** A wearable smooths a heart-rate estimate updated at 50 samples per second. (a) Choose α in $y[n] = (1 - \alpha)y[n - 1] + \alpha x[n]$ so that its step response reaches 63% (one time constant) after 50 samples (1 s). (b) How long until it settles within 1% of a step? (c) Compare its memory and arithmetic per sample with a 5 s moving average. (d) What does the exponential average give up?
 
+### Problem 11-04.13 [B]
+
+**Zero input plus zero state.** $y[n] = 0.5y[n - 1] + x[n]$ starts with $y[-1] = 6$ (not at rest) and is driven by $x[n] = u[n]$. (a) Find the zero-input response (initial condition, no input) and the zero-state response (input, zero initial condition). (b) Add them, and check $y[0]$ and $y[1]$ by iterating the equation directly. (c) Evaluate both parts and the total at $n = 3$, and the final value.
+
 ---
 
 ## Objective coverage
@@ -66,7 +70,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 11-04) | Problems |
 |---|---|
 | 1. Properties and inverses from $h$ | 1 |
-| 2. Difference equations: iteration, roots, stability | 2, 3, 4, 5, 11 |
+| 2. Difference equations: iteration, roots, stability | 2, 3, 4, 5, 11, 13 |
 | 3. Differential equations: impulse responses and jump conditions | 6, 7, 8 |
 | 4. Block-diagram realizations and their cost | 9, 11, 12 |
 | 5. Eigenfunctions and frequency response | 6, 10 |

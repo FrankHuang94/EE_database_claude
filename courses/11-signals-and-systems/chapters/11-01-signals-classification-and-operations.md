@@ -40,9 +40,9 @@ Courses 06, 07 and 10 analyzed particular circuits driven by particular inputs: 
 
 **An analogy from finance, and where it breaks.** A stock's price as it trades through the day behaves like a CT signal. The daily closing prices are a DT signal: one number per integer day. Prices quoted to the cent are digital: discrete in time and value. The analogy captures the three classes well, and it also shows why the order of operations matters: an average of closing prices is not the average price over the year. It breaks in one important way. An electrical signal sampled by an ADC usually comes from a smooth, band-limited waveform, so its samples can determine it completely (the sampling theorem, 11-10). A traded price is event-driven, jumping at each trade, and no sampling rate recovers it from daily closes.
 
-**Measuring size: energy versus power.** Some signals are transient: a pulse, a decaying ring. Integrate the square of such a signal over all time and you get a finite number, its **energy**, the natural measure of its size. Other signals go on forever, such as a mains hum or a carrier. Their energy is infinite, but the energy per unit time settles to a finite average **power**. Which measure applies is the first classification of size, and it matters later: the Fourier transform of an energy signal is an ordinary function (11-06), while that of a periodic power signal is a set of lines (11-05).
+**Measuring size: energy versus power.** A transient (a pulse, a decaying ring) has a finite integral of its square over all time, its **energy**. A signal that goes on forever (mains hum, a carrier) has infinite energy but a finite average energy per unit time, its **power**. The distinction returns later: an energy signal's Fourier transform is an ordinary function (11-06); a periodic power signal's is a set of lines (11-05).
 
-**Operations on the time axis are function composition.** Delaying a recording, playing it backward or playing it at double speed all change the argument of the function, not its values: $x(t - 2)$, $x(-t)$, $x(2t)$. They are easy one at a time and easy to get wrong in combination, so §3.5 gives a rule that always works.
+**Operations on the time axis are function composition.** Delaying a recording, playing it backward or at double speed changes the function's argument, not its values: $x(t - 2)$, $x(-t)$, $x(2t)$. Combinations are easy to get wrong, so §3.5 gives a rule that always works.
 
 **The impulse is the limit of a short, strong kick.** Hit a bell with a hammer: the contact lasts microseconds, and the bell's ring depends only on the total impulse (force times time, 04-01), not on the contact's exact shape. The **unit impulse** $\delta(t)$ idealizes that: zero width, unit area. Its one essential property, that integrating it against a smooth function picks out the function's value at one instant, is what makes it the probe that characterizes systems.
 
@@ -83,9 +83,9 @@ $$
 E_x = \sum_{n=-\infty}^{\infty} \lvert x[n]\rvert^2, \qquad P_x = \lim_{N\to\infty}\frac{1}{2N + 1}\sum_{n=-N}^{N} \lvert x[n]\rvert^2 .
 $$
 
-The magnitude bars make the definitions work for complex signals; for real signals $\lvert x\rvert^2 = x^2$. These are **normalized** quantities: they are the energy and power the signal would deliver to a 1 Ω resistor. If $x$ is a voltage $v(t)$ across a resistor $R$, the actual energy dissipated is $\int v^2/R\,dt = E_x/R$ joules; if $x$ is a current through $R$, it is $E_xR$. Units: for a voltage, $E_x$ is in V²·s and $P_x$ in V²; dividing by ohms gives joules and watts. In DT, $E_x$ has the units of $x^2$ because $n$ is dimensionless; multiply by $T_s$ to estimate the energy of the underlying CT signal.
+The magnitude bars cover complex signals. These are **normalized** quantities: the energy and power the signal would deliver to a 1 Ω resistor. If $x$ is a voltage $v(t)$ across a resistor $R$, the actual energy dissipated is $\int v^2/R\,dt = E_x/R$ joules; if $x$ is a current through $R$, it is $E_xR$. Units: for a voltage, $E_x$ is in V²·s and $P_x$ in V²; dividing by ohms gives joules and watts. In DT, $E_x$ has the units of $x^2$ because $n$ is dimensionless; multiply by $T_s$ to estimate the energy of the underlying CT signal.
 
-**Three classes.** If $0 < E_x < \infty$, then $P_x = 0$, because the finite energy is divided by a window that grows without bound: an **energy signal**. If $0 < P_x < \infty$, then $E_x = \infty$, because a finite, nonzero average over an infinite time integrates to infinity: a **power signal**. Some signals are neither: the ramp $t\,u(t)$ has infinite energy and infinite power, as do growing exponentials. Every bounded, time-limited signal is an energy signal. Every periodic signal that is not zero everywhere is a power signal.
+**Three classes.** If $0 < E_x < \infty$, then $P_x = 0$, because the finite energy is divided by a window that grows without bound: an **energy signal**. If $0 < P_x < \infty$, then $E_x = \infty$, because a finite, nonzero average over an infinite time integrates to infinity: a **power signal**. Some signals are neither: the ramp $t\,u(t)$ has infinite energy and infinite power, as do growing exponentials. Every bounded, time-limited signal is an energy signal. Every bounded periodic signal that is not zero everywhere is a power signal. (A periodic train of impulses is the exception: each impulse carries infinite energy, so its power is infinite too; 11-05 and 11-10 use it as an idealization.)
 
 > **Math refresher — improper integrals and geometric series.** An integral over an infinite range is the limit of integrals over growing finite ranges: $\int_0^\infty e^{-at}\,dt = \lim_{T\to\infty}(1 - e^{-aT})/a = 1/a$ for $a > 0$ (01-05). The DT counterpart is the geometric series: for $\lvert r\rvert < 1$, $\sum_{n=0}^{\infty} r^n = 1/(1 - r)$, and the finite sum is $\sum_{n=0}^{N-1} r^n = (1 - r^N)/(1 - r)$ for $r \ne 1$ (01-08). Both appear in nearly every energy calculation, and the geometric sum returns in the z-transform (11-09).
 
@@ -109,7 +109,7 @@ $$
 P_x = \frac{A^2}{2}, \qquad X_{rms} = \frac{A}{\sqrt2} \approx 0.7071A .
 $$
 
-A complex exponential $x(t) = Ce^{j\omega_0t}$ has $\lvert x\rvert^2 = \lvert C\rvert^2$ at every instant, so $P_x = \lvert C\rvert^2$: its power is constant in time, which is one reason complex exponentials are so convenient.
+A complex exponential $Ce^{j\omega_0t}$ has $\lvert x\rvert^2 = \lvert C\rvert^2$ at every instant, so $P_x = \lvert C\rvert^2$.
 
 **Powers of sums: when they add.** Let $x(t) = x_1(t) + x_2(t)$ with both real. Then
 
@@ -129,7 +129,7 @@ $$
 P_x = A_0^2 + \sum_k \frac{A_k^2}{2} .
 $$
 
-This is the first appearance of Parseval's relation (11-05): power splits cleanly over frequency. It is why a spectrum analyzer can report the power in each band separately, and why noise powers in different bands add.
+This is the first appearance of Parseval's relation (11-05): power splits cleanly over frequency, which is why noise powers in different bands add.
 
 At the *same* frequency the cross term does not vanish. Two sinusoids at $\omega_0$ add as phasors (02-01) to a single sinusoid of amplitude $\lvert\mathbf{A}_1 + \mathbf{A}_2\rvert$, so $P = \lvert\mathbf{A}_1 + \mathbf{A}_2\rvert^2/2$, which equals $(A_1^2 + A_2^2)/2$ only when the phasors are perpendicular. The cross term is $A_1A_2\cos(\phi_1 - \phi_2)$: positive when the two are nearly in phase, negative when they oppose. Example 11-01.3 does both cases.
 
@@ -149,7 +149,7 @@ $$
 
 If the ratio is rational, written in lowest terms as $m/k$, the sum is periodic with period $T = kT_1 = mT_2$, the **least common multiple** of $T_1$ and $T_2$. In frequency terms, $f_0$ is the greatest common divisor of $f_1$ and $f_2$: the components are harmonics (integer multiples) of $f_0$. If the ratio is irrational, no such $T$ exists, and the sum is not periodic even though each part is. The sum still has finite average power ($P_1 + P_2$ when the frequencies differ), so it is a power signal that is not periodic.
 
-A caution on the LCM: the period of a sum can be *shorter* than the LCM if parts cancel or combine. For example $\cos^2(\omega t)$ is $\tfrac12 + \tfrac12\cos2\omega t$ and has period $\pi/\omega$, half the period of $\cos\omega t$. Simplify first, then apply the rule. Taking the LCM of the components' fundamental periods is otherwise reliable for sums of sinusoids at distinct frequencies, because such a sum is identically zero only if every component is.
+A caution: a product or a sum whose parts combine can have a *shorter* period. $\cos^2(\omega t) = \tfrac12 + \tfrac12\cos2\omega t$ has period $\pi/\omega$, half that of $\cos\omega t$. Simplify to a sum of sinusoids at distinct frequencies first; for such a sum the LCM rule is reliable.
 
 **DT periodicity.** A DT signal is periodic with period $N$, a positive *integer*, if $x[n + N] = x[n]$ for all $n$. The smallest such $N$ is the fundamental period $N_0$. The integer requirement changes everything for sinusoids. For $x[n] = \cos(\omega n + \phi)$ to be periodic we need $\omega N = 2\pi m$ for some integer $m$, that is,
 
@@ -157,7 +157,7 @@ $$
 \frac{\omega}{2\pi} = \frac{m}{N}, \quad \text{a rational number.}
 $$
 
-If $\omega/2\pi$ is rational, written in lowest terms as $m/N$, then $N_0 = N$, and one period of the sequence spans $m$ cycles of the underlying cosine. If $\omega/2\pi$ is irrational, the sequence never repeats exactly. So $\cos(0.3\pi n)$, with $\omega/2\pi = 3/20$, has $N_0 = 20$ and spans 3 cosine cycles per period, while $\cos(0.5n)$, with $\omega/2\pi = 1/(4\pi)$, is not periodic at all, although it consists of samples of the periodic CT signal $\cos(0.5t)$. Sampling a periodic CT signal gives a periodic DT signal only if the period $T_0$ and the sampling interval $T_s$ are commensurate, $T_0/T_s$ rational. Sums of periodic DT signals are always periodic, with $N_0$ dividing the LCM of the integer periods, because integers always have a common multiple.
+In lowest terms $m/N$, $N_0 = N$ and one period spans $m$ cycles of the underlying cosine; if $\omega/2\pi$ is irrational, the sequence never repeats. So $\cos(0.3\pi n)$, with $\omega/2\pi = 3/20$, has $N_0 = 20$ and spans 3 cosine cycles per period, while $\cos(0.5n)$, with $\omega/2\pi = 1/(4\pi)$, is not periodic at all, although it consists of samples of the periodic CT signal $\cos(0.5t)$. Sampling a periodic CT signal gives a periodic DT signal only if the period $T_0$ and the sampling interval $T_s$ are commensurate, $T_0/T_s$ rational. Sums of periodic DT signals are always periodic, with $N_0$ dividing the LCM of the integer periods, because integers always have a common multiple.
 
 ### 3.4 Even and odd signals
 
@@ -171,7 +171,7 @@ $$
 
 These are forced, so the split is unique, and conversely these two formulas always produce an even and an odd function that sum to $x$.
 
-**Properties.** Products follow the sign rules of multiplication: even × even and odd × odd are even, even × odd is odd. The integral of an odd signal over a symmetric interval $[-T, T]$ is zero, and that of an even signal is twice the integral over $[0, T]$. These two facts halve the work of many Fourier integrals (11-05), where cosines are even and sines odd.
+**Properties.** Even × even and odd × odd are even; even × odd is odd. Over a symmetric interval $[-T, T]$ an odd signal integrates to zero and an even one to twice its integral over $[0, T]$, which halves the work of many Fourier integrals (11-05).
 
 **Energy splits too.** Since $x_ex_o$ is odd, it integrates to zero over the whole line, so for a real energy signal
 
@@ -197,7 +197,7 @@ $$
 at - b = \tau \quad\Longrightarrow\quad t = \frac{\tau + b}{a} .
 $$
 
-Every feature of $x$ at $\tau$ (a corner, a jump, the edge of its support) appears in $y$ at $(\tau + b)/a$. This mapping is the one rule to trust. It also tells you how to perform the operations graphically, in either of two orders:
+Every feature of $x$ at $\tau$ (a corner, a jump, an edge of its support) appears in $y$ at $(\tau + b)/a$. This mapping is the one rule to trust. Graphically, either of two orders works:
 
 1. **Shift first, then scale:** form $w(t) = x(t - b)$, then $y(t) = w(at)$. Check: $w(at) = x(at - b)$.
 2. **Scale first, then shift by $b/a$:** form $v(t) = x(at)$, then $y(t) = v(t - b/a)$. Check: $v(t - b/a) = x(a(t - b/a)) = x(at - b)$.
@@ -212,7 +212,7 @@ $$
 E_y = \int \lvert x(at)\rvert^2\,dt = \frac{1}{\lvert a\rvert}\int \lvert x(\tau)\rvert^2\,d\tau = \frac{E_x}{\lvert a\rvert} .
 $$
 
-Compressing a pulse by 2 halves its energy, because the same values last half as long. The power of a periodic signal is unchanged by scaling (the period scales too, and the average over one period is the same). To keep a compressed pulse's energy, its amplitude must rise by $\sqrt{\lvert a\rvert}$; §6 returns to this when a serial link shortens its symbols.
+Compressing a pulse by 2 halves its energy: the same values last half as long. A periodic signal's power is unchanged (its period scales too). Keeping a compressed pulse's energy needs $\sqrt{\lvert a\rvert}$ more amplitude, the issue §6 meets when a serial link shortens its symbols.
 
 **Discrete time.** Shifts $x[n - n_0]$ (integer $n_0$) and reversal $x[-n]$ work exactly as in CT. Scaling does not, because the argument must stay an integer.
 
@@ -223,7 +223,7 @@ Compressing a pulse by 2 halves its energy, because the same values last half as
 
 **Steps and ramps.** The **unit step** $u(t)$ is 0 for $t < 0$ and 1 for $t > 0$ (notation.md; its value at $t = 0$ is a convention that never affects an integral, and this course does not need it). The **unit ramp** is $r(t) = t\,u(t)$, with $dr/dt = u(t)$. The **rectangular pulse** of width $W$ starting at 0 is $u(t) - u(t - W)$, and the **sign function** is $\operatorname{sgn}(t) = 2u(t) - 1$.
 
-Steps and ramps are building blocks. Any piecewise-linear signal is a sum of shifted ramps (one per change of slope, weighted by the change) plus shifted steps (one per jump, weighted by the jump). Reading a signal from left to right: at each breakpoint, add a ramp whose weight is the slope after minus the slope before, and a step whose weight is the value after minus the value before. For example, the signal that rises with slope 1 from $t = 0$ to $t = 1$, holds at 1 until $t = 2$, then drops to 0 is
+Any piecewise-linear signal is a sum of shifted ramps and steps. Reading left to right, at each breakpoint add a ramp weighted by the slope after minus the slope before, and a step weighted by the value after minus the value before. For example, the signal that rises with slope 1 from $t = 0$ to $t = 1$, holds at 1 until $t = 2$, then drops to 0 is
 
 $$
 x(t) = r(t) - r(t - 1) - u(t - 2) .
@@ -256,7 +256,7 @@ $$
 
 *Derivation.* Test it in an integral against a smooth $f$, substituting $\tau = at$. For $a > 0$, $\int f(t)\delta(at)\,dt = \int f(\tau/a)\delta(\tau)\,d\tau/a = f(0)/a$. For $a < 0$ the limits swap, and swapping them back gives a minus sign that cancels the negative $a$: the result is $f(0)/\lvert a\rvert$. Both cases are what $\delta(t)/\lvert a\rvert$ gives. Physically, compressing the narrow pulse $p_\Delta$ in time by $a$ narrows it to $\Delta/\lvert a\rvert$ without raising it, so its area falls by $\lvert a\rvert$. For a shifted argument, factor first: $\delta(2t - 4) = \delta\big(2(t - 2)\big) = \tfrac12\delta(t - 2)$.
 
-> **Going deeper — the impulse as a distribution.** Mathematicians make δ rigorous as a *distribution*, or generalized function: an object defined only by what it does to smooth "test functions" inside an integral, $\langle\delta, f\rangle = f(0)$. Derivatives of distributions are defined through integration by parts, $\langle\delta', f\rangle = -f'(0)$, which gives a meaning to the derivative of an impulse (a doublet) and shows that $\delta(g(t)) = \sum_i\delta(t - t_i)/\lvert g'(t_i)\rvert$ for the simple roots $t_i$ of $g$. Laurent Schwartz's theory of distributions, the work for which he received the 1950 Fields Medal, put on a firm footing what physicists and engineers, Dirac and Heaviside among them, had been using successfully for decades. Engineering never needs more than the sifting property, the scaling rule and the step–impulse relation.
+> **Going deeper — the impulse as a distribution.** Mathematicians make δ rigorous as a *distribution*: an object defined only by its action on smooth test functions, $\langle\delta, f\rangle = f(0)$. Derivatives are defined by integration by parts, $\langle\delta', f\rangle = -f'(0)$, which gives meaning to the doublet and shows that $\delta(g(t)) = \sum_i\delta(t - t_i)/\lvert g'(t_i)\rvert$ over the simple roots $t_i$ of $g$. Laurent Schwartz's theory (Fields Medal, 1950) put on firm footing what Heaviside and Dirac had used for decades. Engineering needs only the sifting property, the scaling rule and the step–impulse relation.
 
 **DT counterparts, with no subtleties.** The **unit sample** $\delta[n]$ is 1 at $n = 0$ and 0 elsewhere: an ordinary sequence, with no limits needed. The DT unit step $u[n]$ is 1 for $n \ge 0$ (including $n = 0$, unambiguously) and 0 for $n < 0$. They are related by a running sum and a first difference,
 
@@ -284,9 +284,9 @@ $$
 x(t) = \lvert C\rvert e^{\sigma t}e^{j(\omega t + \theta)} = \lvert C\rvert e^{\sigma t}\big[\cos(\omega t + \theta) + j\sin(\omega t + \theta)\big] .
 $$
 
-It covers every case in one formula: $\omega = 0$ gives real exponentials (decaying for $\sigma < 0$, growing for $\sigma > 0$); $\sigma = 0$ gives the periodic complex exponential $e^{j\omega t}$ with period $2\pi/\lvert\omega\rvert$; both nonzero give a sinusoid inside an exponential envelope, the natural response of every underdamped second-order circuit (07-03). Real sinusoids are sums of two conjugate exponentials, $\cos(\omega t + \theta) = \tfrac12\big(e^{j(\omega t + \theta)} + e^{-j(\omega t + \theta)}\big)$.
+$\omega = 0$ gives real exponentials (decaying for $\sigma < 0$, growing for $\sigma > 0$); $\sigma = 0$ gives the periodic $e^{j\omega t}$ with period $2\pi/\lvert\omega\rvert$; both nonzero give a sinusoid in an exponential envelope, the natural response of an underdamped second-order circuit (07-03). Real sinusoids are sums of two conjugate exponentials, $\cos(\omega t + \theta) = \tfrac12\big(e^{j(\omega t + \theta)} + e^{-j(\omega t + \theta)}\big)$.
 
-The **harmonically related** set $e^{jk\omega_0t}$, $k = 0, \pm1, \pm2, \dots$, all share the period $2\pi/\omega_0$ and are all different signals: each higher $k$ rotates faster. Sums of them build every periodic signal (Fourier series, 11-05). In CT, a higher frequency always means a faster oscillation, without limit.
+The **harmonically related** set $e^{jk\omega_0t}$, $k = 0, \pm1, \pm2, \dots$, share the period $2\pi/\omega_0$ and are all different: each higher $k$ rotates faster, without limit. Sums of them build every periodic signal (11-05).
 
 **Discrete time.** The DT exponential is $x[n] = Cz^n$ with complex $z = re^{j\omega}$:
 
@@ -320,7 +320,7 @@ $$
 x[n] = \cos\Big(2\pi\frac{f}{f_s}n\Big), \qquad \omega = 2\pi\frac{f}{f_s}\ \text{rad/sample}.
 $$
 
-(To keep the two frequencies apart, this chapter writes the CT frequency in hertz, $f$, whenever a DT frequency $\omega$ in rad/sample is in play.) Two CT frequencies $f$ and $f + kf_s$ give DT frequencies differing by $2\pi k$, hence *identical samples*. For cosines, $kf_s - f$ does too, because cosine is even. After sampling at 10 kHz, a 3 kHz tone, a 7 kHz tone and a 13 kHz tone produce exactly the same sequence (Example 11-01.7, Figure 4(b)). The sampler cannot tell them apart, and nothing done afterward can. The only defense is to remove the unwanted frequencies *before* sampling, with an analog anti-aliasing filter. That is the subject of 11-10; here the point is that it follows directly from $e^{j2\pi n} = 1$.
+(To keep the two frequencies apart, this chapter writes the CT frequency in hertz, $f$, whenever a DT frequency $\omega$ in rad/sample is in play.) Two CT frequencies $f$ and $f + kf_s$ give DT frequencies differing by $2\pi k$, hence *identical samples*. For cosines, $kf_s - f$ does too, because cosine is even. After sampling at 10 kHz, a 3 kHz tone, a 7 kHz tone and a 13 kHz tone produce exactly the same sequence (Example 11-01.7, Figure 4(b)). The sampler cannot tell them apart, and nothing done afterward can. The only defense is to remove the unwanted frequencies *before* they are sampled at the rate that would alias them: with an analog anti-aliasing filter before the first sampler, and, in oversampled converters that sample fast and then reduce the rate, with a digital filter before each rate reduction. That is the subject of 11-10; here the point is that it follows directly from $e^{j2\pi n} = 1$.
 
 ![Two panels: (a) stem plots of cos(ωn) for four DT frequencies, showing 15π/8 identical to π/8; (b) continuous 3 kHz and 7 kHz cosines passing through the same samples taken at 10 kHz](../../../assets/figures/11-01/dt-sinusoids.svg)
 
@@ -466,6 +466,9 @@ In particular $x_e[-2]$ = **1.5** and $x_o[-2]$ = **−1.5**. Energies: $E_x = 1
 | T 11-01.i | ADS1292R full-scale input at G = 6 | 0.403 | V |
 | T 11-01.j | ADS1292R full-scale range at G = 6 | 0.8067 | V |
 | T 11-01.k | PAM4 eye-height loss | 9.54 | dB |
+| T 11-01.l | white-noise rise for a 16× bandwidth | 4 | — |
+| T 11-01.m | Nyquist frequency of 32 GT/s | 16 | GHz |
+| T 11-01.n | ADS1292R filter bandwidth at 8 kSPS | 2096 | Hz |
 | Ex 11-01.1a | T_1 | 0.5 | s |
 | Ex 11-01.1b | T_2 | 0.3333 | s |
 | Ex 11-01.1c | T_0 of x_1 | 1 | s |
@@ -588,20 +591,20 @@ The lab, [labs/11-01-lab](../labs/11-01-lab/README.md), is a notebook in five pa
 ### State of the art (as of Nov 2026)
 
 - **Biopotential front ends make ECG a DT signal at hundreds of samples per second.** TI's ADS1292R, a two-channel ECG front end, converts at data rates from 125 SPS to 8 kSPS with 24-bit output words, at 335 µW per channel, with 120 dB CMRR [1] **[Established]** (data-sheet specification). Its electrical characteristics are specified at 500 SPS, where the digital filter's −3 dB bandwidth is 131 Hz [1].
-- **Resolution is set by noise, not by word length.** At 500 SPS and a gain of 6, the same data sheet measures 0.9 µV rms and 5.6 µV peak-to-peak of input-referred noise. Against a full-scale differential input of ±VREF/gain (±**0.403** V with its 2.42 V reference), the data sheet tabulates 109.9 dB of dynamic range and an effective resolution of 17.14 bits; at 8 kSPS the noise rises to 42.7 µV rms, **47** times more, and the effective resolution falls to 10.84 bits [1] **[Established]**. Both figures follow from this chapter's definitions. The dynamic range is the ratio of a full-scale sine's RMS value, $2.42/(6\sqrt2)$ = **0.2852** V, to the noise RMS: $20\log_{10}(0.2852/0.9\ \mu\text{V})$ = **110.0** dB with the rounded noise figure, matching the table. The tabulated effective resolution equals $\log_2$ of the full-scale range over the *peak-to-peak* noise (often called noise-free resolution), $\log_2(0.8067\ \text{V}/5.6\ \mu\text{V})$ = **17.14** bits, out of 24 coded bits, which number $2^{24}$ = **16777216** levels.
+- **Resolution is set by noise, not by word length.** At 500 SPS and a gain of 6, the same data sheet measures 0.9 µV rms and 5.6 µV peak-to-peak of input-referred noise. Against a full-scale differential input of ±VREF/gain (±**0.403** V with its 2.42 V reference), the data sheet tabulates 109.9 dB of dynamic range and an effective resolution of 17.14 bits; at 8 kSPS the noise rises to 42.7 µV rms, **47** times more, and the effective resolution falls to 10.84 bits [1] **[Established]**. Only part of that rise is bandwidth: the filter's bandwidth grows sixteenfold, from 131 Hz to 2096 Hz, which alone would raise white noise by √16 = **4** times; the rest comes from the modulator's reduced oversampling (11-10). Both figures follow from this chapter's definitions. The dynamic range is the ratio of a full-scale sine's RMS value, $2.42/(6\sqrt2)$ = **0.2852** V, to the noise RMS: $20\log_{10}(0.2852/0.9\ \mu\text{V})$ = **110.0** dB with the rounded noise figure, matching the table. The tabulated effective resolution equals $\log_2$ of the full-scale range over the *peak-to-peak* noise (often called noise-free resolution), $\log_2(0.8067\ \text{V}/5.6\ \mu\text{V})$ = **17.14** bits, out of 24 coded bits, which number $2^{24}$ = **16777216** levels.
 - **Audio is sampled at tens of kilohertz.** A low-power stereo codec such as TI's TLV320AIC3204 specifies its playback and record power at 48 kHz sampling (4.1 mW for stereo DAC playback, 6.1 mW for stereo ADC recording) [2] **[Established]**. The compact disc uses 44.1 kHz **[Established]** (IEC 60908; the standard's text was not read).
-- **Digital signals in links need not be binary.** PCIe 6.0 doubled PCIe 5.0's 32.0 GT/s to 64.0 GT/s by moving from two-level (NRZ) to four-level (PAM4) signaling, which carries $\log_2 4$ = **2** bits per symbol in the same unit interval, so the Nyquist frequency stays at that of 32.0 GT/s, 16 GHz [3, 4] **[Established]** (PCI-SIG presentations; the specification itself is members-only). The four transmit levels are $\pm V_{tx}$ and $\pm V_{tx}/3$, so each of the three stacked eyes is a third as tall as a two-level eye of the same swing, a $20\log_{10}3$ = **9.54** dB loss of vertical margin; the presentation lists the reduced eye height as raising susceptibility to errors, and PCIe 6.0 adopted forward error correction with a first-bit-error-rate target of $10^{-6}$ [3] **[Established]**.
+- **Digital signals in links need not be binary.** PCIe 6.0 doubled PCIe 5.0's 32.0 GT/s to 64.0 GT/s by moving from two-level (NRZ) to four-level (PAM4) signaling, $\log_2 4$ = **2** bits per symbol in the same unit interval, so the Nyquist frequency stays that of 32.0 GT/s ("same Nyquist as 32.0 GT/s" [3]), 32 GT/s ÷ 2 = 16 GHz **[Industry estimate]** (a PCI-SIG presentation; the specification is members-only). With levels $\pm V_{tx}$ and $\pm V_{tx}/3$, each of the three stacked eyes is a third as tall as a two-level eye of the same swing, a $20\log_{10}3$ = **9.54** dB loss of vertical margin, which is why PCIe 6.0 adopted forward error correction with a first-bit-error-rate target of $10^{-6}$ [3] **[Established]**.
 
 ### Why it matters commercially
 
-- **Data rate is a power and cost line item.** A 24-bit ECG channel at 500 SPS produces $24 \times 500$ = **12** kbit/s before compression; a wearable's radio and memory budget, and therefore its battery life, scale with it. Choosing the sampling rate and word length is an architecture decision, not a detail.
+- **Data rate is a power and cost line item.** A 24-bit ECG channel at 500 SPS produces $24 \times 500$ = **12** kbit/s before compression; a wearable's radio and memory budget, and so its battery life, scale with it.
 - **Signal classification decides the toolchain and the team.** Continuous-time front ends are analog design (Courses 12, 20); everything after the ADC is DSP and firmware (Courses 16, 18). The boundary, the sampling rate and the anti-aliasing filter, is where integration and IP-licensing decisions are made.
 - **Energy is the unit of a battery-powered product.** Average power sets battery life; peak power sets the regulator and the battery's internal-resistance drop; RMS current sets resistive losses. One pulse train has all three, and they answer different questions.
 
 ### Marketing vs Reality
 
 - **"24-bit resolution."** *Reality:* the word is 24 bits; the resolution the noise allows is about 17 noise-free bits at 500 SPS and under 11 at 8 kSPS for the ADS1292R, by its own tables [1]. *Sanity check:* ask for the noise in µV rms at the data rate and gain you will use, and compute the dynamic range yourself as in §9.
-- **"Samples at up to 8 kSPS."** *Reality:* the top rate exists, and its noise is 47 times higher than at 500 SPS for the same part and gain [1]. *Sanity check:* ask which rate the headline noise and power figures were measured at.
+- **"Samples at up to 8 kSPS."** *Reality:* the top rate exists, and its noise is 47 times higher than at 500 SPS for the same part and gain [1], over a 2096 Hz rather than a 131 Hz bandwidth; only a factor of 4 of that is the wider band. *Sanity check:* ask which rate the headline noise and power figures were measured at.
 - **"Double the bandwidth."** *Reality:* PCIe 6.0 doubles the bit rate, not the analog bandwidth: the symbol rate and Nyquist frequency are unchanged, and the extra bits come from finer amplitude levels with less noise margin [3, 4]. *Sanity check:* ask for the symbol rate and the number of levels, not only the bit rate.
 - **"Average power 1 mW."** *Reality:* a pulsed load with a small duty cycle can draw tens of times its average current at peak; batteries and regulators must handle the peaks. *Sanity check:* ask for average, RMS and peak, and the duty cycle.
 
@@ -612,7 +615,7 @@ The lab, [labs/11-01-lab](../labs/11-01-lab/README.md), is a notebook in five pa
 2. **"How many bits are real?"**
    *Strong:* input-referred noise at the operating rate and gain, the resulting dynamic range or noise-free bits, and how that compares with the signal's smallest feature. *Evasive:* the ADC's word length.
 3. **"What interferers can alias into the band?"**
-   *Strong:* a list (mains and its harmonics, switching-regulator frequencies, radio), where each lands after sampling, and the filtering against each. *Evasive:* "we filter digitally."
+   *Strong:* a list (mains and its harmonics, switching-regulator frequencies, radio), where each lands after sampling, and the filtering against each. *Evasive:* "we filter", with no filter, attenuation or rate named. (Filtering digitally is a legitimate answer for an oversampled converter if it comes with the decimation filter's rejection and the analog filter that protects the modulator.)
 4. **"What are the average, RMS and peak currents of your worst load?"**
    *Strong:* three numbers with duty cycle and duration, and which components each one sizes. *Evasive:* only the average.
 5. **"Why this sampling rate rather than half or double?"**

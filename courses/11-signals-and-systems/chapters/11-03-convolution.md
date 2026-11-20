@@ -50,7 +50,7 @@ That is the convolution sum exactly, and analysts who build cohort models are co
 
 ## 3. Theory
 
-> **Conventions.** Systems are LTI and start at rest. $h[n]$ ($h(t)$) is the response to $\delta[n]$ ($\delta(t)$). Sums and integrals without limits run over all integers or all real numbers. "Support" means the interval on which a signal can be nonzero.
+> **Conventions.** Systems are LTI and start at rest. (Notation: following the standard signals texts, this chapter uses τ as the dummy variable of the convolution integral, where [notation.md](../../../reference/notation.md) would use λ; τ also denotes the RC time constant in Example 11-03.4, and context distinguishes the two.) $h[n]$ ($h(t)$) is the response to $\delta[n]$ ($\delta(t)$). Sums and integrals without limits run over all integers or all real numbers. "Support" means the interval on which a signal can be nonzero.
 
 ### 3.1 The convolution sum
 
@@ -166,7 +166,7 @@ Each property below follows from the definition by a change of variables or by e
 
 **Commutative: $x * h = h * x$.** Substitute $m = n - k$ in the sum (§3.1). *Meaning:* the input and the impulse response play symmetric roles; the output of system $h$ driven by $x$ equals that of system $x$ driven by $h$.
 
-**Associative: $(x * h_1) * h_2 = x * (h_1 * h_2)$.** Write out both sides as double sums and exchange the order of summation. *Meaning:* a **cascade** of LTI systems is one LTI system with impulse response $h_1 * h_2$. With commutativity, the order of LTI systems in a cascade does not matter, the result 11-02 promised (Example 11-03.5). Physically, the stages must not load each other: two RC sections connected directly are *not* the cascade of two isolated RC impulse responses, which is why the example buffers them.
+**Associative: $(x * h_1) * h_2 = x * (h_1 * h_2)$.** Write out the left side: $[(x * h_1) * h_2][n] = \sum_m\left(\sum_kx[k]h_1[m - k]\right)h_2[n - m]$. Exchange the order of summation and substitute $j = m - k$: $\sum_kx[k]\sum_jh_1[j]h_2[n - k - j] = \sum_kx[k]\,\big(h_1 * h_2\big)[n - k]$, which is the right side. (The exchange is legitimate whenever the double sum converges absolutely, for example for absolutely summable impulse responses and bounded inputs.) *Meaning:* a **cascade** of LTI systems is one LTI system with impulse response $h_1 * h_2$. With commutativity, the order of LTI systems in a cascade does not matter, the result 11-02 promised (Example 11-03.5). Physically, the stages must not load each other: two RC sections connected directly are *not* the cascade of two isolated RC impulse responses, which is why the example buffers them.
 
 **Distributive: $x * (h_1 + h_2) = x * h_1 + x * h_2$.** Linearity of the sum. *Meaning:* systems **in parallel** with added outputs have impulse response $h_1 + h_2$.
 
@@ -210,13 +210,13 @@ $$
 
 a bound that depends only on $B$.
 
-*Only if.* Suppose $S = \infty$. For any proposed bound $C$, pick $N$ so large that $\sum_{\lvert k\rvert\le N}\lvert h[k]\rvert > C$, and feed the input $x[-k] = \operatorname{sign}(h[k])$ for $\lvert k\rvert \le N$ and $x = 0$ elsewhere. It is bounded by 1, and at $n = 0$ every term of the output sum is positive:
+*Only if.* Suppose $S = \infty$. Feed the single input $x[n] = \operatorname{sign}(h[-n])$ for every $n$ (with sign(0) = 0). It is bounded by 1, and at $n = 0$ every term of the output sum $\sum_kh[k]x[-k]$ is $\lvert h[k]\rvert \ge 0$, so the partial sums over $\lvert k\rvert \le N$ grow without bound:
 
 $$
-y[0] = \sum_{\lvert k\rvert\le N}h[k]\,\operatorname{sign}(h[k]) = \sum_{\lvert k\rvert\le N}\lvert h[k]\rvert > C .
+\sum_{\lvert k\rvert\le N}h[k]\,x[-k] = \sum_{\lvert k\rvert\le N}\lvert h[k]\rvert > C
 $$
 
-So no single $C$ bounds the outputs of all inputs bounded by 1, and the system is not BIBO-stable. The input that does the damage is $h$'s sign pattern, reversed in time: the worst-case input lines up with the impulse response so that every echo adds.
+for every $C$, once $N$ is large enough. The output at $n = 0$ is therefore infinite: one bounded input produces an unbounded output, exactly the counterexample 11-02 asks for, and the system is not BIBO-stable. The input that does the damage is $h$'s sign pattern, reversed in time: the worst-case input lines up with the impulse response so that every echo adds.
 
 **Consequences.**
 
@@ -356,7 +356,7 @@ Setting its derivative to zero, $(1 - t/\tau)e^{-t/\tau}/\tau^2 = 0$, gives the 
 
 (b) $766/128\ \text{kHz}$ = **5.984** ms, just under three output periods of 2 ms (6 ms). A step response reaches its final value when the whole impulse response has passed, which is the data sheet's three periods [4].
 
-(c) Each boxcar sums to $N$, and areas multiply: $N^3$ = **16777216**, which is $2^{24}$. The converter divides by it (a shift by 24 bits), so the output has unity DC gain.
+(c) Each boxcar sums to $N$, and areas multiply: $N^3$ = **16777216**, which is $2^{24}$. For unity DC gain the result must be normalized by $N^3$ (at 500 SPS a factor of $2^{24}$; at other data rates $N$ differs). The data sheet gives only the output word's scaling, an LSB of $V_{REF}/(2^{23} - 1)$, not how the normalization is done internally.
 
 **Sanity check.** The support rule turned a filter specification ($H(z)$) into a latency figure without any frequency-domain work. The notches at the output rate and its multiples follow in 11-07.
 
@@ -493,8 +493,8 @@ The lab, [labs/11-03-lab](../labs/11-03-lab/README.md), is a notebook in five pa
 ### State of the art (as of Nov 2026)
 
 - **Audio codecs expose convolution directly.** The TLV320AIC3204's ADC processing blocks include programmable FIR filters of 25 taps (decimation filter types A and C) and 20 taps (type B), alongside biquad IIR sections, with a "resource class" column indicating relative power [1] **[Established]**.
-- **ADC decimation filters are cascaded boxcars.** The ADS1292R's digital filter "consists of a third-order sinc filter", whose transfer function is a cubed running sum; its step settling of three output periods follows from the support rule (Example 11-03.6) [4] **[Established]**.
-- **AI accelerators are MAC arrays.** Google's first TPU (in datacenters since 2015, described in 2017) has a 256 × 256 array of 65,536 8-bit MAC units at 700 MHz, for 92 TOPS peak, executed systolically "to save energy" [2] **[Established]**. In the same paper, convolutional networks were only 5% of the TPU's inference workload in July 2016, against 61% for multilayer perceptrons and 29% for LSTMs; four of six benchmark networks were memory-bandwidth-limited [2] **[Established]** (dated: workloads have since shifted toward transformers, whose core is matrix multiplication rather than convolution).
+- **ADC decimation filters are cascaded boxcars.** The ADS1292R's digital filter "consists of a third-order sinc filter", whose transfer function is a cubed running sum; its step settling of three output periods follows from the support rule (Example 11-03.6), and a step arriving partway through an output period is fully reflected in the fourth output, which the data sheet states as "Settled data are available on the fourth DRDY pulse" [4] **[Established]**.
+- **AI accelerators are MAC arrays.** Google's first TPU (in datacenters since 2015, described in 2017) has a 256 × 256 array of 65,536 8-bit MAC units at 700 MHz, for 92 TOPS peak, executed systolically "to save energy" [2] **[Established]**. In the same paper, convolutional networks were only 5% of the TPU's inference workload in July 2016, against 61% for multilayer perceptrons and 29% for LSTMs; four of six benchmark networks were memory-bandwidth-limited [2] **[Established]** (dated to 2016; workload mixes change, and current ones need current data).
 - **Framework convolutions are correlations.** PyTorch documents its 2-D convolution layer with "the valid 2D cross-correlation operator" [3] **[Established]**.
 
 ### Why it matters commercially
@@ -506,7 +506,7 @@ The lab, [labs/11-03-lab](../labs/11-03-lab/README.md), is a notebook in five pa
 ### Marketing vs Reality
 
 - **"92 TOPS."** *Reality:* a peak figure, every MAC busy every cycle; the same paper reports most of its benchmark networks limited by memory bandwidth instead [2]. *Sanity check:* ask for utilization on a named network, or for throughput in images or tokens per second at a stated batch size and precision.
-- **"AI is convolution."** *Reality:* in Google's 2016 data, convolutional networks were 5% of the TPU's inference work [2], and today's transformer workloads are dominated by matrix multiplication. Convolution and matrix multiplication share the MAC, but their data reuse differs. *Sanity check:* ask which operators dominate the target workload, by MAC count and by bytes moved.
+- **"AI is convolution."** *Reality:* in Google's 2016 data, convolutional networks were 5% of the TPU's inference work [2]; even then, most of the work was matrix multiplication in fully connected and recurrent layers. Convolution and matrix multiplication share the MAC, but their data reuse differs. *Sanity check:* ask which operators dominate the target workload, by MAC count and by bytes moved.
 - **"Programmable FIR filter."** *Reality:* a fixed maximum of 20–25 taps in this codec's ADC path [1]; a filter needing more taps, or a sharper response, must go elsewhere. *Sanity check:* ask for the tap count, the coefficient word length and the latency.
 
 ### Questions for engineering leaders

@@ -125,7 +125,14 @@ v.check("Ex 11-02.3a", ma5[-2])
 v.check("Ex 11-02.3b", ma5[-1])
 v.check("Ex 11-02.3c", ma5[0])
 v.assert_true("the centered average responds two samples before the step", ma5[-3] == 0 and ma5[-2] > 0)
-lookahead = 2
+# look-ahead: the largest future offset whose sample the centered average uses, found by probing it with
+# a unit sample placed k samples in the future and checking whether the output at n = 0 responds
+def _ma5_at0(xseq, idx):
+    return sum(xseq[idx == j].sum() for j in range(-2, 3)) / 5     # the centered average evaluated at n = 0
+
+
+_idx = np.arange(-20, 21)
+lookahead = max(k for k in range(0, 10) if _ma5_at0((_idx == k).astype(float), _idx) != 0)
 v.check("Ex 11-02.3d", lookahead)
 v.check("Ex 11-02.3e", lookahead / 500 * 1e3)
 taps = 101

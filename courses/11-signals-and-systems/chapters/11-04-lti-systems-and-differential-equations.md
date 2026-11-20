@@ -39,7 +39,7 @@
 
 ## 3. Theory
 
-> **Conventions.** Systems are LTI and start at rest unless an initial condition is given. Difference equations are normalized so that the coefficient of $y[n]$ is 1. Characteristic roots are written $r_i$ (DT) and $s_i$ (CT).
+> **Conventions.** Systems are LTI and start at rest unless an initial condition is given. (Notation: τ is the convolution integral's dummy variable, as in 11-03; α denotes the neper frequency $R/2L$ of §3.3 and, separately, the smoothing weight of the moving-average analogy in §2 and Problem 11-04.12.) Difference equations are normalized so that the coefficient of $y[n]$ is 1. Characteristic roots are written $r_i$ (DT) and $s_i$ (CT).
 
 ### 3.1 System properties from the impulse response
 
@@ -87,7 +87,7 @@ $$
 
 With distinct roots $r_1, \dots, r_N$, every solution of the homogeneous equation is $\sum_ic_ir_i^n$, and the constants $c_i$ follow from the first few values found by iteration. (A root repeated $m$ times contributes $r^n, nr^n, \dots, n^{m-1}r^n$, exactly as for repeated roots of ODEs in 02-03.)
 
-**Stability from the roots.** $h$ is a combination of $r_i^n$ (times polynomials in $n$ for repeated roots), which is absolutely summable exactly when every $\lvert r_i\rvert < 1$. So a causal difference equation is BIBO-stable if and only if all its characteristic roots lie strictly inside the unit circle (assuming no root is cancelled by the input side, a subtlety 11-09 handles). Roots on the circle give bounded but non-summable responses (the accumulator, $r = 1$); roots outside give growth.
+**Stability from the roots.** $h$ is a combination of $r_i^n$ (times polynomials in $n$ for repeated roots), which is absolutely summable exactly when every $\lvert r_i\rvert < 1$. So a causal difference equation is BIBO-stable if and only if all its characteristic roots lie strictly inside the unit circle (assuming no root is cancelled by the input side, a subtlety 11-09 handles). Simple (non-repeated) roots on the circle give bounded but non-summable responses (the accumulator, $r = 1$); repeated roots on the circle grow (a double root at 1 gives $h[n] = n + 1$); roots outside give growth.
 
 **Second order, real roots.** For $y[n] - (r_1 + r_2)\,y[n - 1] + r_1r_2\,y[n - 2] = x[n]$, the characteristic polynomial factors as $(r - r_1)(r - r_2)$. The system is a cascade of two first-order recursions with impulse responses $r_1^nu[n]$ and $r_2^nu[n]$, so by 11-03 §3.2,
 
@@ -177,7 +177,18 @@ flowchart LR
   E2 --> G2["× b2"] --> S2
 ```
 
-Same 5 multipliers, but only 2 delays: the minimum possible for a second-order system, so the form is called **canonical**. The **transposed** direct form II (reversing every arrow and swapping adders with branch points) has the same counts and better numerical behavior in floating point, which is why libraries offer it (§9).
+Same 5 multipliers, but only 2 delays: the minimum possible for a second-order system, so the form is called **canonical**. The **transposed** direct form II (reversing every arrow and swapping adders with branch points; the diagram below) has the same counts. Libraries choose between the forms on numerical grounds: Arm's CMSIS-DSP notes that direct form I "is numerically more robust for fixed-point data types", while the transposed form II "requires a wide dynamic range for the state variables", so it offers the transposed form only in floating point, where its advantage is "half the number of state variables" (§9, [2]).
+
+```mermaid
+flowchart LR
+  X3(("x[n]")) --> H0["× b0"] --> T0((Σ)) --> Y3(("y[n]"))
+  X3 --> H1["× b1"] --> T1((Σ)) --> R1["z⁻¹ (state d1)"] --> T0
+  X3 --> H2["× b2"] --> T2((Σ)) --> R2["z⁻¹ (state d2)"] --> T1
+  Y3 --> K1["× (−a1)"] --> T1
+  Y3 --> K2["× (−a2)"] --> T2
+```
+
+The transposed form computes $y[n] = b_0x[n] + d_1[n - 1]$, then updates $d_1[n] = b_1x[n] - a_1y[n] + d_2[n - 1]$ and $d_2[n] = b_2x[n] - a_2y[n]$: two states, five multipliers, and every adder sits just before a delay.
 
 **Why cascades of biquads.** A high-order filter could be realized as one long direct form, but the roots of a high-order polynomial are extremely sensitive to small coefficient changes: rounding the coefficients to a fixed word length can move roots outside the unit circle and make the filter unstable. Factoring the filter into second-order sections keeps each pair of roots controlled by its own two coefficients. An 8th-order filter becomes four biquads, a 9th-order one five biquads with one reduced to first order.
 
@@ -219,7 +230,7 @@ and likewise in CT. This is the phasor method of 07-05, now justified for every 
 
 *Figure 3. The eigenfunction property at work (Example 11-04.7). (a) The three-point average multiplies $\cos\omega n$ by $(1 + 2\cos\omega)/3$: 1 at DC, 2/3 at $\pi/3$, and 0 at $2\pi/3$, where it removes the tone completely. (b) An RC low-pass driven at $\omega = 1/\tau$: in steady state the output is the same sinusoid at 0.707 of the amplitude, 45° late.*
 
-**Two-sided versus one-sided inputs.** The eigenfunction property is exact for an exponential that has existed forever. An exponential switched on at $n = 0$ produces the eigen-part $H(z)z^n$ plus a transient made of the system's own modes $r_i^n$, which dies out if the system is stable (Example 11-04.7c). In circuit language: forced response plus natural response (07-02 to 07-05).
+**Two-sided versus one-sided inputs.** The eigenfunction property is exact for an exponential that has existed forever. An exponential switched on at $n = 0$ produces the eigen-part $H(z)z^n$ plus a transient made of the system's own modes $r_i^n$, which becomes negligible relative to the eigen-part only if the system is stable *and* the input exponential decays more slowly than every mode, $\lvert z\rvert > \max\lvert r_i\rvert$, that is, if $z$ lies in the ROC of $H$ (Example 11-04.7c; 11-09). An input $0.3^n$ into a system with a pole at 0.5 is dominated by the transient forever. In circuit language: forced response plus natural response (07-02 to 07-05).
 
 > **Going deeper — why eigenfunctions organize the whole course.** In linear algebra, a matrix with a full set of eigenvectors becomes diagonal in that basis: applying it is just scaling each component (02-08). Convolution is a linear operator on signals, and complex exponentials are its eigenvectors, the same ones for *every* LTI system. Expanding a signal in exponentials therefore turns every LTI system into simple multiplication, component by component. Expanding periodic signals in $e^{jk\omega_0t}$ is the Fourier series (11-05), general signals in $e^{j\omega t}$ the Fourier transform (11-06), and in $e^{st}$ or $z^n$ the Laplace and z-transforms (11-08, 11-09). The convolution theorem, "convolution in time is multiplication in frequency", is this diagonalization.
 
@@ -235,7 +246,7 @@ A difference or differential equation that does not start at rest is incremental
 
 **Solution.** (a) Memoryless (a gain of 3), causal, stable ($\sum\lvert h\rvert = 3$), inverse $\tfrac13\delta[n]$.
 
-(b) Not memoryless, **noncausal** ($h_b[-1] = 1 \ne 0$: $y[n] = x[n + 1] + x[n]$), stable ($\sum\lvert h\rvert = 2$). Its inverse is the echo-channel inverse of 11-02 with $b = 1$, advanced by one sample, which is not stable.
+(b) Not memoryless, **noncausal** ($h_b[-1] = 1 \ne 0$: $y[n] = x[n + 1] + x[n]$), stable ($\sum\lvert h\rvert = 2$). It is the echo channel of 11-02 with $b = 1$, advanced by one sample, so its inverse is the echo inverse *delayed* by one sample, $h_b^{-1}[n] = (-1)^{n-1}u[n - 1]$ (check: $h_b * h_b^{-1} = \delta[n]$), which is not stable.
 
 (c) Memory, causal, stable with $\sum\lvert h\rvert$ = **2**. Inverse: the recursion $y[n] = 0.5y[n - 1] + x[n]$ is undone by $x[n] = y[n] - 0.5y[n - 1]$, so $h_i = \delta[n] - 0.5\,\delta[n - 1]$. Check: $0.5^nu[n] - 0.5 \cdot 0.5^{n-1}u[n - 1] = \delta[n]$.
 
@@ -275,7 +286,7 @@ A difference or differential equation that does not start at rest is incremental
 
 (c) $0.9^n = 0.01$ at $n = \ln0.01/\ln0.9$ = **43.7** samples, about five and a half cycles.
 
-(d) $H(1) = 1/(1 - 1.273 + 0.81)$ = **1.861**.
+(d) $H(1) = 1/(1 - 1.2728 + 0.81)$ = **1.861** (with the unrounded $2(0.9)\cos(\pi/4) = 1.27279$).
 
 **Sanity check.** Moving the roots closer to the unit circle ($r \to 1$) makes the ringing last longer and the resonance sharper; at $r = 1$ the oscillation never decays and the system is no longer stable.
 
@@ -293,7 +304,7 @@ A difference or differential equation that does not start at rest is incremental
 
 **Units check.** $\omega_0^2/\omega_d$: (rad/s)²/(rad/s) = 1/s.
 
-**Sanity check.** The impulse response is the circuit's natural response from 07-03, with $v_C(0^+) = 0$ and $dv_C/dt(0^+) = \omega_0^2$ per unit impulse: the impulse dumps charge-rate into the inductor current instantly, while the capacitor voltage cannot jump.
+**Sanity check.** The impulse response is the circuit's natural response from 07-03, with $v_C(0^+) = 0$ and $dv_C/dt(0^+) = \omega_0^2$ per unit impulse: the voltage impulse delivers flux linkage (volt-seconds) to the inductor, so its current jumps by $1/L$ per unit impulse, while the capacitor voltage cannot jump; then $dv_C/dt(0^+) = i_L/C = 1/(LC) = \omega_0^2$.
 
 ### Example 11-04.6 · Realizations and their cost (tier B)
 
@@ -317,7 +328,7 @@ A difference or differential equation that does not start at rest is incremental
 
 (c) $H(0.9) = (1 + 0.9^{-1})/(1 - 0.5 \times 0.9^{-1}) = 2.111/0.4444$ = **4.75**. The output is $4.75 \times 0.9^n + B\,0.5^n$, the eigen-part plus a transient at the system's root 0.5. At $n = 0$, $y[0] = x[0] = 1$, so $B = 1 - 4.75$ = **−3.75**. Then $y[2] = 4.75 \times 0.81 - 3.75 \times 0.25$ = **2.91**, which iteration confirms ($y[0] = 1$, $y[1] = 0.5 + 0.9 + 1 = 2.4$, $y[2] = 1.2 + 0.81 + 0.9 = 2.91$).
 
-**Sanity check.** In (c) the transient decays as $0.5^n$ while the eigen-part decays as $0.9^n$, so after a few samples the output is almost exactly $4.75 \times$ the input: the eigenfunction property emerges once the start-up is forgotten.
+**Sanity check.** In (c) the transient decays as $0.5^n$ while the eigen-part decays as $0.9^n$, so after a few samples the output is almost exactly $4.75 \times$ the input: the eigenfunction property emerges once the start-up is forgotten, because the input's 0.9 exceeds the pole's 0.5.
 
 ### Answer key
 
@@ -411,9 +422,9 @@ The lab, [labs/11-04-lab](../labs/11-04-lab/README.md), is a notebook in four pa
 
 - **Sign conventions for feedback coefficients.** "$y[n] + a_1y[n - 1]$" and "$y[n] = \cdots + a_1y[n - 1]$" use opposite signs; libraries and design tools differ (Example 11-04.6).
 - **Forgetting the jump conditions.** For a second-order equation driven by an impulse, the response is continuous and its *slope* jumps; for a first-order one, the response itself jumps.
-- **Treating one-sided exponentials as eigenfunctions.** A switched-on exponential adds a transient at the system's own roots; the eigen-relation holds only after it dies out.
-- **Checking stability from the numerator.** Stability depends on the denominator's roots (the poles); the zeros shape the response but cannot make a causal system unstable.
-- **Calling a root on the unit circle stable.** It gives a bounded impulse response that is not summable: an accumulator ($r = 1$) or an undamped oscillator.
+- **Treating one-sided exponentials as eigenfunctions.** A switched-on exponential adds a transient at the system's own roots; the eigen-relation emerges only if that transient dies out relative to the input, which needs $\lvert z\rvert > \max\lvert r_i\rvert$.
+- **Checking stability from the numerator.** Stability depends on the denominator's roots (the poles); the zeros shape the response but cannot make a causal system unstable, provided the system is proper (no more zeros than poles; in CT, the differentiator $H(s) = s$ is causal and not BIBO-stable).
+- **Calling a root on the unit circle stable.** A simple root gives a bounded impulse response that is not summable (an accumulator, $r = 1$, or an undamped oscillator); a repeated one gives growth.
 - **Implementing a high-order IIR filter as one direct form in fixed point.** Coefficient rounding moves the poles; use second-order sections.
 - **Confusing $H(z)$ evaluated at a point with $h[n]$ at an index.** $H(0.9)$ is a gain applied to $0.9^n$, not a sample of the impulse response.
 
@@ -423,7 +434,7 @@ The lab, [labs/11-04-lab](../labs/11-04-lab/README.md), is a notebook in four pa
 
 - **Embedded DSP libraries standardize on biquad cascades.** Arm's CMSIS-DSP library implements recursive filters "as a cascade of second order Biquad sections". Its direct form I version uses "5 coefficients and 4 state variables per stage", and a transposed direct form II version provides "a slight memory savings". An 8th-order filter uses 4 stages and a 9th-order filter 5, one configured as first order. The documentation warns that some design tools negate the feedback coefficients relative to the library's convention [2] **[Established]** (library documentation).
 - **Audio codecs expose biquads in hardware.** The TLV320AIC3204's ADC processing blocks offer 0, 3 or 5 programmable biquads per channel alongside a first-order IIR section [1] **[Established]**.
-- **The same mathematics describes circuits and code.** An RLC filter and a biquad are both second-order systems, one with poles in the s-plane and one in the z-plane; 11-10 and Course 16 map one to the other (for example, by the bilinear transform).
+- **The same mathematics describes circuits and code.** An RLC filter and a biquad are both second-order systems, one with poles in the s-plane and one in the z-plane; 11-09 and Course 16 map one to the other (for example, by the bilinear transform).
 
 ### Why it matters commercially
 
@@ -433,7 +444,7 @@ The lab, [labs/11-04-lab](../labs/11-04-lab/README.md), is a notebook in four pa
 
 ### Marketing vs Reality
 
-- **"Programmable IIR filter, any order."** *Reality:* implemented as a fixed number of biquads (here 5, so order 10) [1], each with a fixed coefficient word length. *Sanity check:* ask for the number of sections, the coefficient format and the internal word length.
+- **"Programmable IIR filter, any order."** *Reality:* implemented as a fixed number of sections (here up to 5 biquads plus a first-order IIR section, so order 11) [1], each with a fixed coefficient word length. *Sanity check:* ask for the number of sections, the coefficient format and the internal word length.
 - **"Drop-in coefficients from your design tool."** *Reality:* sign conventions for feedback coefficients differ between tools and libraries [2]; a mismatch silently builds a different filter. *Sanity check:* ask for an impulse-response or frequency-response test after loading coefficients.
 - **"Stable by design."** *Reality:* stable with exact coefficients; rounding can move poles toward or across the unit circle. *Sanity check:* ask for the pole radii after quantization and the margin to the unit circle.
 
@@ -470,7 +481,7 @@ Unstable: $\lvert -1.2\rvert > 1$. The impulse response contains a term $c(-1.2)
 
 <details><summary>Answer</summary>
 
-The impulse appears in the equation on the side of $\ddot v_C$; only the highest derivative can contain an impulse. Its integral, $\dot v_C$, therefore jumps by $\omega_0^2$, and $v_C$, the integral of a finite jump, stays continuous. Physically the impulse delivers a finite charge to the inductor's current instantly, and the capacitor then charges from that current.
+The impulse appears in the equation on the side of $\ddot v_C$; only the highest derivative can contain an impulse. Its integral, $\dot v_C$, therefore jumps by $\omega_0^2$, and $v_C$, the integral of a finite jump, stays continuous. Physically, the voltage impulse delivers flux linkage (volt-seconds) to the inductor, so the inductor current jumps by $1/L$ per unit impulse (the charge delivered in zero time is zero); the capacitor then charges from that current, at $dv_C/dt(0^+) = i_L/C = \omega_0^2$.
 
 </details>
 

@@ -62,7 +62,7 @@ Problems: [11-02 problems](../problems/11-02-problems.md) · Chapter: [11-02](..
 
 (b) $x = y^{1/3}$, the real cube root, which is single-valued for every real $y$: invertible, and the inverse is stable ($\lvert x\rvert \le B^{1/3}$ when $\lvert y\rvert \le B$).
 
-(c) Not invertible: $x$ and $x + c$ have the same derivative for every constant $c$, so the output cannot tell them apart.
+(c) On signals at rest, as this problem set assumes, the differentiator is invertible: the running integral $w(t) = \int_{-\infty}^ty(\lambda)d\lambda$ recovers $x$, because $x$ vanishes in the far past. The inverse, an integrator, is not BIBO-stable (a bounded step integrates to a ramp). Without the at-rest assumption no inverse exists: $x$ and $x + c$ have the same derivative for every constant $c$.
 
 (d) Not invertible: inputs that differ only at odd $n$ give the same output.
 
@@ -154,7 +154,7 @@ So $\ddot v_C + \omega_0^2v_C = \omega_0^2\cos\omega_0t - \tfrac12\omega_0^3t\si
 
 (a) $2\ \text{ms} \times 48\ \text{kHz}$ = **96** samples.
 
-(b) The FIR may add $96 - 40 = 56$ samples, so $(N - 1)/2 \le 56$ and $N \le 113$: the longest odd-length symmetric FIR has **113** taps. (Even-length symmetric filters have a half-sample delay, $(N - 1)/2$ with $N$ even; the budget would allow 113 at most in either case.)
+(b) The FIR may add $96 - 40 = 56$ samples, so $(N - 1)/2 \le 56$ and $N \le 113$: the longest odd-length symmetric FIR has **113** taps. (An even-length symmetric filter has a delay of $(N - 1)/2$ samples, a half-integer; the longest even length that fits is 112 taps.)
 
 (c) $10\ \text{ms} \times 48\ \text{kHz}$ = **480** samples of look-ahead, five times the whole budget: it cannot be used live. A live envelope follower must be causal, typically a recursion like S10 that reacts to the past only, at the cost of lagging the true envelope.
 

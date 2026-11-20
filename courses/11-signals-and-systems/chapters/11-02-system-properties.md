@@ -141,7 +141,7 @@ $$
 x^2 = \tfrac12A_1^2 + \tfrac12A_2^2 + \tfrac12A_1^2\cos2\theta_1 + \tfrac12A_2^2\cos2\theta_2 + A_1A_2\bigl[\cos(\theta_1 - \theta_2) + \cos(\theta_1 + \theta_2)\bigr] .
 $$
 
-So $a_2x^2$ produces **second-order intermodulation (IM2)** at $f_1 \pm f_2$, amplitude $a_2A_1A_2$. Expanding $x^3$ the same way gives, among other terms, $\tfrac34a_3A_1^2A_2$ at $2f_1 - f_2$ and $2f_1 + f_2$, and $\tfrac34a_3A_1A_2^2$ at $2f_2 - f_1$ and $2f_2 + f_1$: **third-order intermodulation (IM3)**. When $f_1$ and $f_2$ are close, $2f_1 - f_2$ and $2f_2 - f_1$ land right next to the signals, inside any filter that passes them. That is why IM3, not harmonics, limits a radio receiver's ability to handle strong neighboring channels (Course 21), and why the failure of superposition matters even for tiny nonlinearities (Example 11-02.5, Figure 3).
+So $a_2x^2$ produces **second-order intermodulation (IM2)** at $f_1 \pm f_2$, amplitude $a_2A_1A_2$. Expanding $x^3 = (A_1\cos\theta_1 + A_2\cos\theta_2)^3$ gives the cross term $3A_1^2A_2\cos^2\theta_1\cos\theta_2 = \tfrac32A_1^2A_2(1 + \cos2\theta_1)\cos\theta_2$, whose second part is $\tfrac32A_1^2A_2\cos2\theta_1\cos\theta_2 = \tfrac34A_1^2A_2[\cos(2\theta_1 - \theta_2) + \cos(2\theta_1 + \theta_2)]$; the cross term $3A_1A_2^2\cos\theta_1\cos^2\theta_2$ gives the mirror pair. So $a_3x^3$ produces $\tfrac34a_3A_1^2A_2$ at $2f_1 - f_2$ and $2f_1 + f_2$, and $\tfrac34a_3A_1A_2^2$ at $2f_2 - f_1$ and $2f_2 + f_1$: **third-order intermodulation (IM3)**. When $f_1$ and $f_2$ are close, $2f_1 - f_2$ and $2f_2 - f_1$ land right next to the signals, inside any filter that passes them. That is why IM3, not harmonics, limits a radio receiver's ability to handle strong neighboring channels (Course 21), and why the failure of superposition matters even for tiny nonlinearities (Example 11-02.5, Figure 3).
 
 > **Going deeper — additivity alone is not quite enough.** Additivity implies homogeneity for every *rational* scalar: $\mathcal{T}\{2x\} = \mathcal{T}\{x + x\} = 2\mathcal{T}\{x\}$, and by induction for integers. From $q\,\mathcal{T}\{x/q\} = \mathcal{T}\{x\}$ it holds for $1/q$, so it holds for every ratio $p/q$. Extending to all real scalars needs continuity, which every physical system has. For complex scalars additivity really is not enough. Complex conjugation, $\mathcal{T}\{x\} = x^*$, is additive and homogeneous for real scalars, but $\mathcal{T}\{jx\} = -jx^* \ne j\,\mathcal{T}\{x\}$. It is not linear over the complex numbers. This matters in communications, where complex baseband signals (Course 17) pass through blocks that are linear for real signals but conjugate their complex representation, producing "image" terms.
 
@@ -214,10 +214,10 @@ So the recursion is BIBO-stable when $\lvert a\rvert < 1$, and the bound is tigh
 
 *Figure 2. The recursion $y[n] = a\,y[n - 1] + x[n]$ from rest with $\lvert x\rvert \le 1$ (Example 11-02.4). For $a = 0.9$ (step) and $a = -0.9$ (alternating input) the output approaches the bound $1/(1 - \lvert a\rvert) = 10$, with identical magnitudes. For $a = 1$ a step makes the output grow by 1 every sample.*
 
-**Continuous time.** The RC filter at rest has $y(t) = \frac{1}{\tau}\int_{-\infty}^{t}e^{-(t - \lambda)/\tau}x(\lambda)\,d\lambda$, so with $s = t - \lambda$,
+**Continuous time.** The RC filter at rest has $y(t) = \frac{1}{\tau}\int_{-\infty}^{t}e^{-(t - \lambda)/\tau}x(\lambda)\,d\lambda$, so with $\xi = t - \lambda$,
 
 $$
-\lvert y(t)\rvert \le \frac{B}{\tau}\int_0^\infty e^{-s/\tau}\,ds = B :
+\lvert y(t)\rvert \le \frac{B}{\tau}\int_0^\infty e^{-\xi/\tau}\,d\xi = B :
 $$
 
 stable, and the output never exceeds the input's bound. The ideal integrator $y(t) = \frac{1}{\tau}\int_{-\infty}^{t}x(\lambda)\,d\lambda$, the CT accumulator, is unstable: a step gives $y = t/\tau$. A lossless LC resonator is also unstable in the BIBO sense, although nothing in it grows on its own: driven exactly at its resonant frequency, its response grows in proportion to time (07-04, 02-04, Problem 11-02.10). Any loss, however small, bounds the response, at $Q$ times the drive.
@@ -259,15 +259,15 @@ which reproduces $x$ exactly: substituting $w = x$ gives $x[n] = x[n] + b\,x[n -
 | S1 amplifier with offset | yes | no (affine) | yes | yes | yes | yes |
 | S2 delay, $t_0 > 0$ | no | yes | yes | yes | yes | yes (inverse noncausal) |
 | S3 RC low-pass at rest | no | yes | yes | yes | yes | yes (inverse amplifies noise) |
-| S4 accumulator | no | yes | yes | yes | **no** | yes (first difference) |
-| S5 centered moving average | no | yes | yes | **no** | yes | no |
+| S4 accumulator | no | yes | yes | yes | **no** | yes, on inputs at rest in the far past (first difference) |
+| S5 centered moving average | no | yes | yes | **no** | yes | on inputs at rest only, by an unstable recursion |
 | S6 squarer | yes | no | yes | yes | yes | no |
 | S7 modulator | yes | yes | **no** (periodic) | yes | yes | no (zeros of the cosine) |
 | S8 decimator | no | yes | **no** (periodic) | no | yes | no |
 | S9 time reversal | no | yes | no | no | yes | yes (itself) |
 | S10 recursion at rest | no | yes | yes | yes | if $\lvert a\rvert < 1$ | yes (two-tap filter) |
 
-Two entries deserve a comment. The decimator is noncausal by the strict definition, because $y[1] = x[2]$ is produced "at time 1" from a sample that arrives at time 2. In practice the output runs at half the rate and is produced when $x[2]$ arrives, so the issue is only one of labeling. The moving average is not invertible because inputs that alternate with a period of 5 samples, such as a sequence repeating 1, −1, 0, 0, 0, sum to zero over every window and produce zero output.
+Two entries deserve a comment. The decimator is noncausal by the strict definition, because $y[1] = x[2]$ is produced "at time 1" from a sample that arrives at time 2. In practice the output runs at half the rate and is produced when $x[2]$ arrives, so the issue is only one of labeling. Invertibility depends on the class of inputs. On inputs at rest (zero before some time), the moving average can be undone sample by sample: $x[n + 2] = 5y[n] - x[n + 1] - x[n] - x[n - 1] - x[n - 2]$, a recursion whose characteristic roots are the fifth roots of unity other than 1, on the unit circle, so the inverse is not BIBO-stable. On inputs that were never at rest it is not invertible at all: a sequence repeating 1, −1, 0, 0, 0 sums to zero over every window and produces zero output. The accumulator's first-difference inverse likewise assumes inputs at rest in the far past.
 
 ## 4. Worked examples
 
@@ -297,7 +297,7 @@ Two entries deserve a comment. The decimator is noncausal by the strict definiti
 
 (b) $\delta[n]$ gives $\delta[2n] = \delta[n]$. The input $\delta[n - 1]$ gives $\delta[2n - 1]$, which is zero for every integer $n$: an output of energy **0**, where the delayed output $\delta[n - 1]$ would have energy 1. The input $\delta[n - 2]$ gives $\delta[2n - 2] = \delta[n - 1]$: a two-sample input delay delays the output by **1** sample. Periodically time-varying with period 2.
 
-(c) At $t$ = 1 ms, $\mathcal{T}\{u(t - 0.25\ \text{ms})\} = u(0.75\ \text{ms})\cos(2\pi)$ = **1**, but $y(t - 0.25\ \text{ms}) = u(0.75\ \text{ms})\cos(2\pi \cdot 0.75)$ = **0**. Time-varying. (Had the input been the constant 1, both paths would give $\cos(2\pi \cdot 1000t)$: a single input can hide time variation.)
+(c) At $t$ = 1 ms, $\mathcal{T}\{u(t - 0.25\ \text{ms})\} = u(0.75\ \text{ms})\cos(2\pi)$ = **1**, but $y(t - 0.25\ \text{ms}) = u(0.75\ \text{ms})\cos(2\pi \cdot 0.75)$ = **0**. Time-varying. (A single test can hide time variation: shift the same step by exactly one carrier period, 1 ms, and both paths agree at every $t$, because the cosine repeats. The decimator S8 is an even plainer case: a constant input passes its time-invariance test for every shift.)
 
 **Sanity check.** Each of these systems contains the time index explicitly ($n$, $2n$, $\cos\omega_ct$): a system whose rule mentions the time variable outside the input's argument is usually time-varying.
 
@@ -469,7 +469,7 @@ Two entries deserve a comment. The decimator is noncausal by the strict definiti
 | Ex 11-02.7f | g[−2] | −0.25 | — |
 | Ex 11-02.7g | absolute sum of g | 1 | — |
 
-*Every value is recomputed by [verify_11_02.py](../verify/verify_11_02.py). The examples are checked by running the systems themselves: each system is coded as a function of a whole input sequence or waveform, and the properties are tested by feeding it the stated inputs, shifting, scaling and comparing. The recursions are iterated sample by sample, the distortion products are read from an FFT of the amplifier's output, the RC response is integrated numerically, and the noncausal inverse is found by solving its defining equation backward in time. Data-sheet conversions (T 11-02.a–g) are arithmetic on the values in [R-185](../../../reference/research-log.md#r-185--system-property-specifications-in-data-sheets).*
+*Every value is recomputed by [verify_11_02.py](../verify/verify_11_02.py). The examples are checked by running the systems themselves: each system is coded as a function of a whole input sequence or waveform, and the properties are tested by feeding it the stated inputs, shifting, scaling and comparing. The recursions are iterated sample by sample, the distortion products are read from an FFT of the amplifier's output, the RC response is integrated numerically, and the noncausal inverse is found by solving its defining equation backward in time. Data-sheet conversions (T 11-02.a–g) are arithmetic on the values in [R-179](../../../reference/research-log.md#r-179--class-d-audio-amplifier-data-sheet), [R-182](../../../reference/research-log.md#r-182--op-amp-data-sheets) and [R-185](../../../reference/research-log.md#r-185--system-property-specifications-in-data-sheets).*
 
 ## 5. Simulate it
 
@@ -509,7 +509,7 @@ The lab, [labs/11-02-lab](../labs/11-02-lab/README.md), is a notebook in four pa
 ## 8. Common mistakes
 
 - **Calling $y = mx + b$ linear.** It is affine (incrementally linear). The test $\mathcal{T}\{0\} = 0$ catches it in one line.
-- **Testing a property with one input.** A constant input through a modulator passes the time-invariance test; a step through $y[n] = -y[n-1] + x[n]$ stays bounded. Properties are statements about *all* inputs; one success proves nothing.
+- **Testing a property with one input.** A constant input through a decimator passes the time-invariance test, and so does any input through a modulator shifted by a whole carrier period; a step through $y[n] = -y[n-1] + x[n]$ stays bounded. Properties are statements about *all* inputs; one success proves nothing.
 - **Shifting in the wrong place in the time-invariance test.** For $y(t) = x(2t)$ the delayed input gives $x(2t - t_0)$, not $x(2(t - t_0))$. Define the delayed input as a new signal and apply the rule to it.
 - **Confusing a causal signal with a causal system.** A system acting on causal signals can still be noncausal, and a causal system can be driven by any signal.
 - **Assuming memory implies noncausality, or the reverse.** The RC filter has memory and is causal; the advance $y(t) = x(t + 1)$ has memory and is not causal; every memoryless system is causal.
@@ -525,7 +525,7 @@ The lab, [labs/11-02-lab](../labs/11-02-lab/README.md), is a notebook in four pa
 - **Linearity is a data-sheet number.** TI's OPA1611 audio op-amp specifies THD+N of 0.000015% at 1 kHz [1], about **−136.5** dB **[Established]** (data-sheet typical). The TLV320AIC3204 low-power audio codec's ADC specifies THD+N of −85 dB typical and −70 dB maximum for a −3 dB full-scale, 1 kHz input [2], that is **0.0056**% typical and **0.032**% maximum **[Established]**. THD+N lumps harmonics and noise together; the analyzer's bandwidth (20 kHz here) is part of the specification.
 - **Power ratings are quoted where linearity has failed.** The TPA3116D2 class-D amplifier's 50 W rating into 4 Ω at 21 V is the power at 10% THD+N, **−20** dB: deep into clipping. The same data sheet gives 0.1% (**−60** dB) at 25 W [5] **[Established]**.
 - **Precision amplifiers are deliberately time-varying inside.** The OPA333 zero-drift op-amp's data sheet shows chopping stages in its block diagram and states that its 350 kHz signal-path amplifier "is zero-corrected every 8 µs", a **125** kHz correction rate, and needs about 100 µs after power-up to reach its specified offset [4] **[Established]**. The same paragraph states that the design has no aliasing or flicker noise, a vendor claim that the data sheet does not support with a spectrum near the correction frequency.
-- **Every digital filter has latency.** The ADS1292R ECG front end's sinc decimation filter has notches at the output data rate and its multiples and a −3 dB bandwidth of 0.262 times the data rate, **131** Hz at 500 SPS. Its text says a step change takes three data periods to settle, while its specification table lists full settling as 4 conversions [3] **[Established]** (both statements are the data sheet's own).
+- **Every digital filter has latency.** The ADS1292R ECG front end's sinc decimation filter has notches at the output data rate and its multiples and a −3 dB bandwidth of 0.262 times the data rate, **131** Hz at 500 SPS. The data sheet reconciles its two settling figures: "it takes 3 tDR for the filter to settle to the new value. Settled data are available on the fourth DRDY pulse" [3] **[Established]**: three output periods of settling, and a step that arrives partway through a period is first fully reflected in the fourth output (the 4 conversions of its specification table).
 
 ### Why it matters commercially
 

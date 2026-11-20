@@ -17,7 +17,7 @@ The convolution sum and its four computational forms (§3.1–3.2); the convolut
 ## Procedure
 
 1. **Four ways (Part 1).** Convolve Example 11-03.1's sequences with a double loop, `np.convolve`, a Toeplitz matrix and polynomial multiplication; repeat on random sequences.
-2. **Graphical, numerically (Part 2).** Sample Example 11-03.3's pulses with Δ = 1 ms (in the example's units) and approximate the integral by a sum.
+2. **Graphical, numerically (Part 2).** Sample Example 11-03.3's pulses with a step Δ = 0.001 (the example's time units) and approximate the integral by a sum.
 3. **RC by convolution (Part 3, the chapter's guided exercise).** *Predict first:* how the error of the discretized integral at 2 ms changes when Δ halves, for the rectangle and trapezoidal rules. Then compare with an ODE solution of the circuit.
 4. **Decimation filter (Part 4).** Build the sinc³ filter from three 256-sample boxcars and plot its step response.
 5. **Matched filter (Part 5).** Insert a 21-chip pattern into noise of standard deviation 0.8 and locate it.
@@ -27,7 +27,7 @@ The convolution sum and its four computational forms (§3.1–3.2); the convolut
 | Part | Quantity | Expected |
 |---|---|---|
 | 1 | Four methods | Identical to rounding error |
-| 2 | Pulses | Trapezoid with a flat top of 3 and area 6; edge values off by about Δ |
+| 2 | Pulses | Trapezoid with a flat top of 3 and area 6; edge values off by about 3Δ (the slope 3 times the step) |
 | 3 | RC | Rectangle-rule error halves with Δ; trapezoidal error falls fourfold; both converge to the ODE's 4.323 V |
 | 4 | sinc³ | 766 samples (5.984 ms) long; step response symmetric about its midpoint |
 | 5 | Matched filter | Peak at the true position despite noise comparable to the chips |

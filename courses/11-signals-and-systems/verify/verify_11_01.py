@@ -101,6 +101,16 @@ v.check("T 11-01.i", ads_vref / ads_gain)
 v.check("T 11-01.j", 2 * ads_vref / ads_gain)
 levels = np.array([-1, -1 / 3, 1 / 3, 1])  # PAM4 levels in units of V_tx (R-184)
 v.check("T 11-01.k", 20 * math.log10((levels[-1] - levels[0]) / np.min(np.diff(levels))))
+# white noise through a brick-wall band: RMS grows as the square root of the bandwidth (simulated)
+_rng = np.random.default_rng(16)
+_w = _rng.normal(size=2 ** 18)
+_W = np.fft.rfft(_w)
+_f = np.arange(len(_W))
+_n1 = np.fft.irfft(_W * (_f < 1000), 2 ** 18)
+_n16 = np.fft.irfft(_W * (_f < 16000), 2 ** 18)
+v.check("T 11-01.l", np.std(_n16) / np.std(_n1), rtol=0.02)
+v.check("T 11-01.m", 32.0 / 2)
+v.check("T 11-01.n", 0.262 * 8000)       # the sinc^3 filter's -3 dB point, 0.262 f_DR (11-06), at 8 kSPS
 
 # --------------------------------------------------------------------------- Example 1
 v.check("Ex 11-01.1a", ct_period(lambda t: 3 * np.cos(4 * np.pi * t), 2))
@@ -143,7 +153,7 @@ v.check("Ex 11-01.3i", np.max(np.abs(w(tt))))
 cre = quad(lambda s: w(s) * math.cos(100 * math.pi * s), 0, 0.02, limit=200)[0] / 0.01
 cim = -quad(lambda s: w(s) * math.sin(100 * math.pi * s), 0, 0.02, limit=200)[0] / 0.01
 v.check("Ex 11-01.3j", math.degrees(math.atan2(cim, cre)))
-v.check("Ex 11-01.3h", 3 * math.sin(math.pi / 3))
+v.check("Ex 11-01.3h", cim)                                    # imaginary part of the summed phasor, by quadrature
 v.check("Ex 11-01.3k", 16 / 2 + 9 / 2)
 v.check("Ex 11-01.3l", Pw - (16 / 2 + 9 / 2))
 v.check("Ex 11-01.3m", quad(lambda t: (7 * np.cos(100 * np.pi * t)) ** 2, 0, 0.02)[0] / 0.02)
