@@ -6337,3 +6337,43 @@
   definition: The ratio of the fundamental to the largest other spectral component (harmonic or not), in dB.
   chapter: "16-05"
   see_also: [SINAD]
+- term: Amplitude response
+  definition: "The real function A(ω) in H(e^{jω}) = e^{−jωM/2}A(ω) of a linear-phase FIR filter; it can be negative (the magnitude is |A| and the phase jumps by π), and for symmetric taps it is a sum of cosines."
+  chapter: "16-06"
+  see_also: [Linear phase, FIR filter]
+- term: Passband ripple
+  definition: "The tolerance δp within which a filter's passband gain must stay around 1, quoted in dB either peak to peak, 20 log10((1 + δp)/(1 − δp)), or as ±20 log10(1 + δp)."
+  chapter: "16-06"
+  see_also: [Stopband attenuation, Transition band]
+- term: Stopband attenuation
+  definition: The minimum suppression a filter must give above its stopband edge, A_s = −20 log10 δs dB, where δs is the largest allowed stopband gain.
+  chapter: "16-06"
+  see_also: [Passband ripple]
+- term: Window method (FIR design)
+  definition: Designing an FIR filter by truncating the ideal impulse response and tapering it with a window; the window's shape sets the ripple (equal in both bands) and its length sets the transition width.
+  chapter: "16-06"
+  see_also: [Window function, Gibbs phenomenon, Kaiser window]
+- term: Kaiser window
+  definition: "A window w[n] = I0(β√(1 − ((n − M/2)/(M/2))²))/I0(β) whose parameter β trades sidelobe level against main-lobe width continuously; Kaiser's formulas give β and the order M from an attenuation and a transition width."
+  chapter: "16-06"
+  see_also: [Window method (FIR design)]
+- term: Frequency-sampling design
+  definition: Designing an FIR filter by specifying its response at N equally spaced frequencies and taking the inverse DFT; the response is exact at the samples and ripples between them, and transition samples reduce the ripple.
+  chapter: "16-06"
+  see_also: [Discrete Fourier transform (DFT)]
+- term: Equiripple filter
+  definition: A minimax-optimal filter whose weighted error has equal-height ripples across its bands; it meets a ripple specification with the fewest taps and is designed by the Parks–McClellan algorithm.
+  chapter: "16-06"
+  see_also: [Parks–McClellan algorithm, Alternation theorem]
+- term: Alternation theorem
+  definition: "A linear-phase FIR approximation with L + 1 free cosine coefficients is the unique minimax solution if and only if its weighted error reaches its maximum magnitude, with alternating signs, at no fewer than L + 2 frequencies."
+  chapter: "16-06"
+  see_also: [Equiripple filter]
+- term: Parks–McClellan algorithm
+  definition: The standard optimal FIR design method (1972), which finds the equiripple filter for given band edges, weights and order by the Remez exchange of extremal frequencies.
+  chapter: "16-06"
+  see_also: [Alternation theorem, Equiripple filter]
+- term: Pre-adder
+  definition: An adder in front of a DSP block's multiplier, used to add the two samples that share a coefficient in a symmetric FIR filter, which halves the number of multiplications.
+  chapter: "16-06"
+  see_also: [FIR filter, Multiply-accumulate (MAC)]
