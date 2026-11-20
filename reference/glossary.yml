@@ -4427,3 +4427,45 @@
 - term: PAM4
   definition: Four-level pulse-amplitude modulation, carrying two bits per symbol; it doubles a link's bit rate at the same symbol rate and Nyquist frequency as two-level signaling, at the cost of eyes a third as tall for the same swing (PCIe 6.0).
   chapter: "11-01"
+
+# ---------------------------------------------------------------- 11-02
+- term: System (signals and systems)
+  definition: A rule y = T{x} that maps a whole input signal to a whole output signal, such as a circuit, a filter, a channel or an algorithm; its properties (memory, linearity, time invariance, causality, stability, invertibility) decide which analysis tools apply.
+  chapter: "11-02"
+  see_also: [LTI system]
+- term: Memoryless system
+  definition: A system whose output at each time depends only on the input at that same time, such as a resistor divider or a squarer; capacitors, inductors, delays and sums over past samples give memory.
+  chapter: "11-02"
+- term: Incrementally linear system
+  definition: A system whose output is a linear system's output plus a fixed zero-input response, y = L{x} + y₀, such as an amplifier with offset or a linear circuit with initial stored energy; differences of outputs obey superposition.
+  chapter: "11-02"
+  see_also: [Linearity, Zero-input response]
+- term: Time-invariant system
+  definition: A system for which delaying the input by any t₀ only delays the output by t₀; tested by comparing "delay, then system" with "system, then delay" for every input.
+  chapter: "11-02"
+  see_also: [LTI system]
+- term: Periodically time-varying system
+  definition: A system that commutes with delays equal to multiples of a period but not with other delays, such as a mixer, a sampler, a chopper or a decimator; such linear systems create frequency-shifted outputs.
+  chapter: "11-02"
+  see_also: [Time-invariant system, Chopper stabilization]
+- term: LTI system
+  definition: A system that is both linear and time-invariant; it is completely described by its impulse response (convolution) and passes complex exponentials unchanged in shape, only scaled.
+  chapter: "11-02"
+- term: Causal system
+  definition: A system whose output at any time depends only on present and past input values; every real-time system is causal, and a linear system is causal exactly when an input that starts at t₁ produces no output before t₁ (initial rest).
+  chapter: "11-02"
+  see_also: [Latency]
+- term: Latency
+  definition: The delay between an input event and the corresponding output; a filter that needs M future samples can only run in real time delayed by M samples, so a symmetric N-tap FIR filter has a latency of (N − 1)/2 samples.
+  chapter: "11-02"
+- term: BIBO stability
+  definition: Bounded-input, bounded-output stability; every bounded input produces a bounded output. An LTI system is BIBO-stable exactly when its impulse response is absolutely summable (integrable); accumulators, integrators and lossless resonators are not.
+  chapter: "11-02"
+  see_also: [Stability (of a circuit)]
+- term: Invertible system
+  definition: A system for which distinct inputs give distinct outputs, so an inverse system can recover the input; the inverse may still be noncausal or unstable, as for an echo channel whose echo is stronger than its direct path.
+  chapter: "11-02"
+- term: Intermodulation distortion
+  definition: Output at sums and differences of input frequencies produced by nonlinearity; with two tones, second-order products fall at f₁ ± f₂ and third-order products at 2f₁ − f₂ and 2f₂ − f₁, close to the signals themselves.
+  chapter: "11-02"
+  see_also: [Harmonic distortion]

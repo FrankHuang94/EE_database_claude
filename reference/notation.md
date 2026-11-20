@@ -56,6 +56,7 @@ The total-, DC-, small-signal- and phasor-quantity convention (Sedra & Smith sty
 |---|---|
 | Continuous-time signal | $x(t)$; unit step $u(t)$; unit impulse $\delta(t)$ |
 | Discrete-time signal | $x[n]$; unit step $u[n]$; unit sample $\delta[n]$ |
+| System (operator) | $y = \mathcal{T}\{x\}$; $y(t) = \mathcal{T}\{x\}(t)$ is the output's value at $t$ |
 | Laplace transform | $X(s)$, $s = \sigma + j\omega$; transfer function $H(s)$ |
 | Continuous-time Fourier transform | $X(j\omega)$ (Signals & Systems, Control); $X(f)$ in Hz (Communications, DSP spectra). Each chapter states which. |
 | Discrete-time Fourier transform | $X(e^{j\omega})$, $\omega$ in rad/sample |
