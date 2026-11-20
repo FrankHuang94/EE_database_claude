@@ -4962,3 +4962,15 @@
   definition: The resistance whose thermal noise 4kTR equals a device's or amplifier's input-referred noise power density; γ/g_m for a MOSFET and 1/(2g_m) for a bipolar transistor.
   chapter: "12-10"
   see_also: [Input-referred noise, Thermal noise]
+- term: Laplacian
+  definition: The divergence of the gradient, ∇²V; in Cartesian coordinates the sum of second partial derivatives. Laplace's equation ∇²V = 0 governs potential in charge-free regions; the vector Laplacian is ∇(∇·A) − ∇×∇×A.
+  chapter: "13-01"
+  see_also: [Gradient, Divergence]
+- term: Scale factor
+  definition: In an orthogonal coordinate system, the factor h_i that converts a step du_i in a coordinate into a distance h_i·du_i; (1, ρ, 1) for cylindrical and (1, r, r·sinθ) for spherical coordinates. It appears inside the derivatives of the divergence and curl.
+  chapter: "13-01"
+  see_also: [Divergence, Curl]
+- term: Helmholtz theorem
+  definition: A smooth vector field that decays fast enough at infinity is determined uniquely by its divergence and its curl, and is the sum of a gradient and a curl; the reason Maxwell's equations specify both for each field.
+  chapter: "13-01"
+  see_also: [Divergence, Curl]
