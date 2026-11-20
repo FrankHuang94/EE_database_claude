@@ -59,6 +59,18 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Class B with music.** Music has a peak-to-average power ratio of about 10 dB. Model the average as a sine 10 dB below the maximum of a ±15 V, 8 Ω class B stage. Find the maximum power, the average output power, the efficiency at that level and the dissipation.
 
+### Problem 12-07.13 [B]
+
+**Drive current and the Darlington.** A class AB stage must deliver 20 W of sine power into 4 Ω. Its output transistors have β = 50. Find the peak output voltage and current, the peak base current, and the peak drive current if each output device is replaced by a Darlington of two β = 50 transistors. The driver is an op-amp that can source 10 mA cleanly: which version can it drive?
+
+### Problem 12-07.14 [B]
+
+**A current limit.** A ±24 V output stage has 0.25 Ω emitter resistors, and a limiting transistor across each turns on at 0.65 V. Find the current limit and the dissipation in the conducting output device when the output is shorted to ground. Explain what a foldback limit would change, and why the safe operating area, not the heat sink, decides whether the device survives a brief short.
+
+### Problem 12-07.15 [C]
+
+**Estimating crossover distortion.** For a class B stage modelled as a ±0.65 V dead band, estimate the THD at 5 V and 20 V peak with §3.2's square-wave approximation, and compare with the exact values from an FFT, 8.201% and 2.011%. Why is the approximation better at 20 V?
+
 ---
 
 ## Objective coverage
@@ -66,7 +78,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 12-07) | Problems |
 |---|---|
 | 1. Class A and class B efficiency and dissipation | 1, 2, 3, 4, 5, 12 |
-| 2. Crossover distortion and class AB bias | 6, 8 |
+| 2. Crossover distortion and class AB bias | 6, 8, 15 |
 | 3. Class AB currents and output resistance | 7 |
-| 4. Heat sinks and thermal runaway | 9, 10 |
+| 4. Heat sinks, thermal runaway, drive and protection | 9, 10, 13, 14 |
 | 5. Class D efficiency | 11 |

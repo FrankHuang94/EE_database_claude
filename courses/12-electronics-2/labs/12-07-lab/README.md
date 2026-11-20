@@ -8,7 +8,7 @@ Compare the efficiency and dissipation of class A, class B and class D stages ac
 
 ## Background
 
-Class A (§3.1), class B and crossover (§3.2), class AB and the $V_{BE}$ multiplier (§3.3), thermal design (§3.4) and class D (§3.5).
+Class A (§3.1), class B and crossover (§3.2), class AB and the $V_{BE}$ multiplier (§3.3), thermal design (§3.4), drive and protection (§3.5) and class D (§3.6).
 
 ## Files
 
@@ -39,6 +39,8 @@ Class A (§3.1), class B and crossover (§3.2), class AB and the $V_{BE}$ multip
 | Lab 12-07.a | simulated load power | 5.098 | W |
 | Lab 12-07.b | simulated supply power | 10.44 | W |
 | Lab 12-07.c | simulated efficiency | 48.82 | % |
+| Lab 12-07.d | ideal efficiency at 9.222 V | 48.29 | % |
+| Lab 12-07.e | efficiency with β_F → ∞ | 48.34 | % |
 
 *These are recomputed by [verify_12_07.py](../../verify/verify_12_07.py) with its own Ebers–Moll solution of the same stage (ngspice's default temperature of 27 °C, $I_S$ = 10⁻¹³ A, $\beta_F$ = 100), sample by sample over a cycle.*
 
@@ -46,13 +48,13 @@ Class A (§3.1), class B and crossover (§3.2), class AB and the $V_{BE}$ multip
 
 1. In Part 2, why does class AB distortion at 1 V exceed that at 10 V, even though there is no dead band?
 2. In Part 4, why does the runaway accelerate near the end?
-3. Why does the ngspice stage lose more efficiency than its lost swing alone would suggest?
+3. The ngspice stage's peak output is 9.222 V. Compare its efficiency with the ideal class B formula at that amplitude. Which is higher, and why?
 
 ### Answers
 
 1. The stage's incremental output resistance changes with current (from $V_T/(2I_Q)$ at idle to $V_T/i$ for one device at high current), so its gain into 8 Ω varies over the cycle; at small amplitude that variation is a larger share of the signal.
 2. The current depends exponentially on temperature with fixed base voltage, so each degree raises the current, and with it the dissipation, more than the last.
-3. Efficiency is load power over supply power: the $V_{BE}$ drop removes load power while the supplies still deliver the full current through the transistors, whose $V_{CE}$ includes the lost swing. The dead band also removes output near zero.
+3. The formula gives $(\pi/4)(9.222/15)$ = **48.29**%, slightly *below* the simulated 48.82%. The lost $V_{BE}$ accounts for the fall from the ideal 52.36%, because class B efficiency is proportional to the output amplitude. Two smaller effects push the other way. The base current, about 1% of each emitter current with $\beta_F$ = 100, is supplied by the signal source, not the rails; with $\beta_F \to \infty$ the efficiency is **48.34**%. And the dead band removes output near the zero crossings, where the supply current it saves (proportional to $v$) is large compared with the load power it costs (proportional to $v^2$).
 
 ## Optional hardware extension
 

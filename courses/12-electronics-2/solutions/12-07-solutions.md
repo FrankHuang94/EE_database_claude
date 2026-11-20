@@ -54,6 +54,18 @@ At 50 W, $I_{rms} = \sqrt{50/8}$ = **2.5** A and the conduction loss is $6.25 \t
 
 $P_{max} = 15^2/16$ = **14.06** W, so the average is **1.406** W, with $V_{op} = V_{CC}/\sqrt{10}$. Then $\eta = (\pi/4)/\sqrt{10}$ = **24.84**% and the dissipation is $1.406/0.2484 - 1.406$ = **4.256** W: three times the useful output.
 
+### Solution 12-07.13
+
+$V_p = \sqrt{2PR_L} = \sqrt{2 \times 20 \times 4}$ = **12.65** V and $I_p = V_p/R_L$ = **3.162** A. With β = 50 the peak base current is $I_p/\beta$ = **63.25** mA, six times what the op-amp can give. A Darlington of two β = 50 devices has a current gain of about $\beta^2$ = 2500, so the drive falls to $3.162\ \text{A}/2500$ = **1.265** mA: only the Darlington version can be driven directly. The price is a second $V_{BE}$ per side (the bias generator must supply about four $V_{BE}$) and a larger loss of swing at the rails.
+
+### Solution 12-07.14
+
+The limiting transistor turns on when $I_ER_E$ = 0.65 V, so $I_{lim} = 0.65/0.25$ = **2.6** A. With the output shorted to ground, the conducting device has the full 24 V across it, so it dissipates $24 \times 2.6$ = **62.4** W. A foldback limiter makes the current limit fall as $V_{CE}$ rises (by adding a term proportional to $V_{CE}$ to the sensed voltage), so that a short, which puts the largest $V_{CE}$ on the device, draws much less current than a normal full-swing peak. Whether the device survives the first milliseconds depends on its safe operating area at 24 V and 2.6 A for that duration, including the second-breakdown boundary, because the heat sink's thermal time constant is far too long to help.
+
+### Solution 12-07.15
+
+With $d$ = 0.65 V, the estimate is $0.6155\,d/V$: **8.002**% at 5 V and **2.000**% at 20 V, against the exact 8.201% and 2.011%. The approximation treats the error as a square wave of amplitude $d$ and the fundamental as $V$. Both are first-order in $d/V$: near the zero crossings the true error is smaller than $d$ (it equals $-v_i$ inside the dead band), and the fundamental is reduced by about $4d/\pi$. These corrections scale with $d/V$, which is **0.13** at 5 V and **0.0325** at 20 V, so the estimate is within 2.4% (relative) at 5 V and 0.5% at 20 V.
+
 ---
 
 ## Answer key
@@ -93,3 +105,17 @@ $P_{max} = 15^2/16$ = **14.06** W, so the average is **1.406** W, with $V_{op} =
 | 12-07.12b | average power | 1.406 | W |
 | 12-07.12c | efficiency | 24.84 | % |
 | 12-07.12d | dissipation | 4.256 | W |
+| 12-07.13a | peak output voltage | 12.65 | V |
+| 12-07.13b | peak output current | 3.162 | A |
+| 12-07.13c | peak base current | 63.25 | mA |
+| 12-07.13d | peak drive with a Darlington | 1.265 | mA |
+| 12-07.14a | current limit | 2.6 | A |
+| 12-07.14b | dissipation into a short | 62.4 | W |
+| 12-07.15a | THD estimate at 5 V | 8.002 | % |
+| 12-07.15b | THD estimate at 20 V | 2.000 | % |
+| 12-07.15c | exact THD at 5 V | 8.201 | % |
+| 12-07.15d | exact THD at 20 V | 2.011 | % |
+| 12-07.15e | relative error at 5 V | 2.4 | % |
+| 12-07.15f | relative error at 20 V | 0.5 | % |
+| 12-07.15g | d/V at 5 V | 0.13 | — |
+| 12-07.15h | d/V at 20 V | 0.0325 | — |

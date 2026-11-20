@@ -15,7 +15,7 @@
 2. Explain crossover distortion, compute its effect with and without feedback, and bias a class AB stage with a $V_{BE}$ multiplier.
 3. Calculate the currents of a class AB pair from the translinear relation, and its output resistance at idle.
 4. Size a heat sink from a thermal-resistance chain, and test a stage for thermal runaway.
-5. Estimate the efficiency of a class D amplifier from its conduction and fixed losses, and explain why class D dominates audio and power delivery.
+5. Estimate the efficiency of a class D amplifier from its conduction and fixed losses, and explain why class D dominates audio (and why the same switching idea runs power conversion, Course 22).
 
 ---
 
@@ -24,7 +24,7 @@
 Every signal chain ends by delivering power to something that is not a transistor's drain: a loudspeaker, a motor, an antenna, a cable, a laser. The **output stage** does that job. It must swing large voltages into low impedances with low distortion, and do so efficiently: every watt it dissipates must be removed as heat, and in a battery product every wasted watt shortens the battery's life. Output stages are classified by how much of each cycle their transistors conduct. Class A is linear and wasteful; class B is efficient but distorts near zero; class AB is the practical compromise for linear amplifiers; and class D switches its transistors fully on or off, reaching efficiencies above 90%.
 
 - **Op-amp and line-driver outputs** are class AB stages; their idle current and crossover behaviour show up as distortion specifications.
-- **Audio power amplifiers** in phones, earbuds, laptops and televisions are now almost all class D.
+- **Audio power amplifiers** in phones, earbuds, laptops and televisions are now almost all class D **[Industry estimate]**.
 - **Thermal limits set power ratings.** A part's maximum output often comes from its package's ability to shed heat, not from its transistors.
 - **The same ideas recur** in RF power amplifiers (Course 21) and switching converters (Course 22).
 
@@ -89,11 +89,19 @@ $$
 
 and the efficiency there is exactly 50%. The heat sink must be sized for this point, not for full output: the stage runs **cooler** at full power than at 64% of full swing.
 
-![Efficiency and transistor dissipation against output amplitude for a plus-or-minus 15 V, 8 ohm stage in class A, class B and a class D model: class A stays below 25% and dissipates most at idle, class B rises linearly to 78.5% with a dissipation peak at two-thirds of full swing, and class D climbs fastest with nearly constant dissipation](../../../assets/figures/12-07/efficiency.svg)
+![Efficiency and transistor dissipation against output amplitude for a plus-or-minus 15 V, 8 ohm stage in class A, class B and a class D model: class A stays below 25% and dissipates most at idle, class B rises linearly to 78.5% with a dissipation peak at 64% of full swing (2V_CC/π), and class D climbs fastest with nearly constant dissipation](../../../assets/figures/12-07/efficiency.svg)
 
 *Figure 2. Efficiency (left) and transistor dissipation (right) against output amplitude for a ±15 V stage driving 8 Ω: class A biased for full swing, ideal class B, and a class D model with two 85 mΩ switches in the current path and 2.5 W of fixed loss. Class B's dissipation peaks at $2V_{CC}/\pi$ (dashed); class D's barely changes with level, so its efficiency is set by its fixed losses at low output.*
 
-**Crossover distortion.** Neither transistor conducts until its $\lvert v_{BE} \rvert$ reaches about 0.6 V, so for inputs within ±0.6 V the output stays near zero. The transfer characteristic has a dead band, and every zero crossing of the signal is notched. Small signals suffer most: a 1 V-peak sine through a ±0.6 V dead band loses most of its waveform (Example 12-07.3), while a 10 V sine loses a little near each crossing. Crossover distortion is particularly objectionable in audio because it does not fall with signal level the way clipping does.
+**Crossover distortion.** Neither transistor conducts until its $\lvert v_{BE} \rvert$ reaches about 0.6 V, so for inputs within ±0.6 V the output stays near zero. The transfer characteristic has a dead band, and every zero crossing of the signal is notched. Small signals suffer most: a 1 V-peak sine through a ±0.6 V dead band loses most of its waveform (Example 12-07.3), while a 10 V sine loses a little near each crossing. Crossover distortion is particularly objectionable in audio because it is worst at low signal levels, where music spends most of its time, whereas clipping appears only at the loudest peaks.
+
+**How large?** For an amplitude $V$ well above the dead band's half-width $d$, the output is the input minus $d\,\text{sgn}(v_i)$ almost everywhere: the error is nearly a square wave of amplitude $d$. A square wave of amplitude $d$ has odd harmonics of amplitude $4d/(\pi n)$ (11-05), and since the sum of $1/n^2$ over odd $n$ is $\pi^2/8$, the harmonics from $n$ = 3 upward have a combined RMS of $(4d/\pi)\sqrt{\pi^2/8 - 1}/\sqrt2$. Dividing by the fundamental's RMS, $V/\sqrt2$ to first order,
+
+$$
+\text{THD} \approx \frac{4}{\pi}\sqrt{\frac{\pi^2}{8} - 1}\;\frac{d}{V} = 0.6155\,\frac{d}{V} \qquad (V \gg d) .
+$$
+
+For $d$ = 0.6 V and $V$ = 10 V this gives **3.69**%, against the exact **3.731**% of Example 12-07.3. The THD falls only as $1/V$, which is why crossover distortion dominates at low level; at 1 V the estimate (**37**%) is poor because $d/V$ is no longer small.
 
 **Feedback helps, but not completely.** Placed inside a loop with gain $A$ ahead of it, the dead band referred to the input shrinks by $A$ (an op-amp must move its output by only 0.6 V/$A$ of input to cross it), so distortion falls dramatically. But the loop gain falls with frequency (12-05), and while the output stage is cut off the loop is open and the op-amp's output must slew across the dead band, so crossover distortion rises at high frequency. Removing the dead band at its source is better.
 
@@ -127,6 +135,8 @@ $$
 
 Mounting $Q_M$ on the output devices' heat sink makes $V_{BB}$ fall about $(1 + R_1/R_2) \times 2$ mV/°C as they heat, which is what keeps $I_Q$ from rising (§3.4).
 
+**CMOS class AB output stages.** CMOS op-amps rarely use followers at the output, because a source follower loses $V_{GS}$ plus body effect from each rail. Instead a PMOS common-source device pulls the output toward $V_{DD}$ and an NMOS one toward $V_{SS}$, so the output can swing to within an overdrive voltage of each rail (a **rail-to-rail output**). A class AB control loop, typically a translinear-style arrangement of replica devices, sets the quiescent current and keeps one device from cutting off as the other conducts. Because the output devices are common-source stages, they add gain and have a high output resistance; the low closed-loop output impedance comes from the op-amp's feedback (12-05), and the output stage becomes part of the compensation problem (12-08).
+
 ### 3.4 Thermal design and thermal runaway
 
 **The thermal resistance chain.** Heat flows from the junction to the case, through the mounting interface to the heat sink, and from the heat sink to the air. Each step has a thermal resistance θ in °C/W, and like resistors in series
@@ -151,7 +161,15 @@ $$
 
 and if $L \ge 1$ the current runs away until something fails. Emitter resistors of a fraction of an ohm, a $V_{BE}$ multiplier coupled to the heat sink (which lowers $V_{BB}$ as it warms), and a sufficient heat sink all lower $L$. MOSFETs at high current have a negative temperature coefficient of drain current (mobility falls with temperature) and are less prone to runaway, though below a crossover current they too have a positive coefficient.
 
-### 3.5 Class D: switching instead of throttling
+### 3.5 Driving and protecting the output stage
+
+**Drive current.** The output devices need base current $i_C/\beta$. Example 12-07.2's stage delivers 1.875 A peaks into 8 Ω; with β = 100 the driver must supply **18.75** mA peaks, more than a small-signal stage or an op-amp output can give cleanly. A **Darlington** pair (one transistor's emitter driving the next one's base) multiplies the current gains to about β², cutting the drive to **0.1875** mA, at the cost of two $V_{BE}$ drops per side (so the class AB bias needs about four), a higher saturation voltage and slower turn-off. The **Sziklai** (complementary feedback) pair uses a driver of the opposite polarity, which gives the same current gain with only one $V_{BE}$ drop and better thermal behaviour.
+
+**Safe operating area.** A power transistor's data sheet bounds its permitted $(V_{CE}, I_C)$ points: a maximum current, a maximum voltage, the power hyperbola $V_{CE}I_C = P_{max}$ (for the case temperature and pulse length), and for bipolar transistors a **second-breakdown** boundary inside the hyperbola at high $V_{CE}$. Second breakdown is thermal runaway (§3.4) at the scale of the die: current concentrates in a hot spot, which heats and draws more current, until the device fails even though its average dissipation was within rating. A reactive load such as a loudspeaker moves the operating point through high voltage and high current at the same time, so the load line must be checked against the SOA, not just the average dissipation. Power MOSFETs lack classic second breakdown but have a similar linear-mode limit at low current, below the crossover current of §3.4.
+
+**Short-circuit protection.** A small transistor $Q_L$ with its base–emitter junction across the emitter resistor steals the output device's drive once $i_ER_E$ reaches about 0.6 V, so the current limit is about $0.6\ \text{V}/R_E$: **1.818** A for 0.33 Ω. With the output shorted to ground on ±15 V rails, the conducting device then dissipates $V_{CC}I_{lim}$ = **27.27** W, far above its normal 2.85 W worst case; a **foldback** limiter lowers the current limit as $V_{CE}$ rises to stay inside the SOA, and integrated amplifiers add a thermal shutdown.
+
+### 3.6 Class D: switching instead of throttling
 
 A class D stage drives its output to $+V_{DD}$ or to ground (or $-V_{DD}$) with switches, at a frequency $f_s$ far above the signal. The fraction of each period spent high, the **duty cycle**, follows the signal (pulse-width modulation, PWM). An LC low-pass filter, or the loudspeaker's own inductance, removes the switching frequency and leaves the average, which is the signal. In a **bridge-tied load** (BTL) arrangement, two half-bridges drive the two ends of the load in opposite phase, doubling the voltage swing and quadrupling the power from one supply.
 
@@ -203,9 +221,11 @@ At high output, conduction losses dominate and efficiencies of 90% or more are t
 
 ### Example 12-07.5 · Heat sink and thermal runaway (tier B)
 
-**Setup.** (a) Each transistor of Example 12-07.2 dissipates up to 2.850 W, with $\theta_{JC}$ = 1.5 °C/W, $\theta_{CS}$ = 0.5 °C/W and $\theta_{SA}$ = 10 °C/W at 40 °C ambient. Find $T_J$, and the largest $\theta_{SA}$ that keeps $T_J \le$ 125 °C. (b) A transistor biased at 100 mA with fixed base voltage has $V_{CE}$ = 15 V and a total θ of 12 °C/W. Find the thermal loop gain without and with a 0.47 Ω emitter resistor.
+**Setup.** (a) Each transistor of Example 12-07.2 dissipates up to 2.850 W, with $\theta_{JC}$ = 1.5 °C/W, $\theta_{CS}$ = 0.5 °C/W and $\theta_{SA}$ = 10 °C/W at 40 °C ambient. Find $T_J$, and the largest $\theta_{SA}$ that keeps $T_J \le$ 125 °C, with each transistor on its own heat sink. (b) A transistor biased at 100 mA with fixed base voltage has $V_{CE}$ = 15 V and a total θ of 12 °C/W. Find the thermal loop gain without and with a 0.47 Ω emitter resistor.
 
 **Solution.** (a) $T_J = 40 + 2.850 \times 12$ = **74.2** °C. The limit allows $\theta_{total} = (125 - 40)/2.850$ = 29.83 °C/W, so $\theta_{SA} \le$ **27.83** °C/W.
+
+If the two transistors share one heat sink of 10 °C/W, the sink carries both, $2 \times 2.850$ W, and rises to $40 + 5.699 \times 10$ = 96.99 °C; each junction is then $2.850 \times 2$ °C/W above that, at **102.7** °C. The shared sink must satisfy $40 + 5.699\,\theta_{SA} + 2.850 \times 2 \le 125$, so $\theta_{SA} \le$ **13.91** °C/W: half the per-device value, as two heat sources on one path require.
 
 (b) $g_m = 100\ \text{mA}/25.852\ \text{mV}$ = **3.868** A/V, so $L = 15 \times 12 \times 3.868 \times 0.002$ = **1.393**: the transistor runs away. With $R_E$ = 0.47 Ω, $1 + g_mR_E$ = 2.818 and $L$ = **0.4942**, safely below one.
 
@@ -228,6 +248,14 @@ At high output, conduction losses dominate and efficiencies of 90% or more are t
 | T 12-07.b | class B maximum efficiency | 78.54 | % |
 | T 12-07.c | worst-dissipation swing fraction | 64 | % |
 | T 12-07.d | efficiency at worst dissipation | 50 | % |
+| T 12-07.e | crossover THD coefficient | 0.6155 | — |
+| T 12-07.f | THD estimate, 10 V | 3.69 | % |
+| T 12-07.g | THD, 10 V, exact | 3.731 | % |
+| T 12-07.h | driver current, β = 100 | 18.75 | mA |
+| T 12-07.i | driver current with a Darlington | 0.1875 | mA |
+| T 12-07.j | current limit with 0.33 Ω | 1.818 | A |
+| T 12-07.k | dissipation into a short | 27.27 | W |
+| T 12-07.l | THD estimate, 1 V | 37 | % |
 | Ex 12-07.1a | maximum output power | 0.5 | W |
 | Ex 12-07.1b | supply power | 2 | W |
 | Ex 12-07.1c | efficiency | 25 | % |
@@ -260,6 +288,8 @@ At high output, conduction losses dominate and efficiencies of 90% or more are t
 | Ex 12-07.5e | loop gain without R_E | 1.393 | — |
 | Ex 12-07.5f | 1 + g_m R_E | 2.818 | — |
 | Ex 12-07.5g | loop gain with R_E | 0.4942 | — |
+| Ex 12-07.5h | junction temperature, shared sink | 102.7 | °C |
+| Ex 12-07.5i | largest θ_SA, shared sink | 13.91 | °C/W |
 | Ex 12-07.6a | load current | 5 | A |
 | Ex 12-07.6b | conduction loss | 4.25 | W |
 | Ex 12-07.6c | class D efficiency | 93.68 | % |
@@ -275,10 +305,12 @@ At high output, conduction losses dominate and efficiencies of 90% or more are t
 | Sim 12-07.e | V_BE at the peak | 0.778 | V |
 | Sim 12-07.f | peak load current | 1.153 | A |
 | Sim 12-07.g | peak output | 9.222 | V |
+| Sim 12-07.h | ideal efficiency at the reduced swing | 48.29 | % |
+| Sim 12-07.i | efficiency with β_F → ∞ | 48.34 | % |
 | Prac 12-07.a | largest undistorted BTL sine power | 299 | W |
 | Prac 12-07.b | ideal BTL limit | 325.1 | W |
 
-*Every value is recomputed by [verify_12_07.py](../verify/verify_12_07.py): efficiencies and dissipations by numerical integration of the device currents over a cycle (not from the closed forms), the worst dissipation by bounded optimization, THD by FFT of the solved waveforms, the class AB currents by solving the exponential device equations, and the filter attenuation from the LC transfer function. The class B stage is also simulated in ngspice with real transistor models.*
+*Every value is recomputed by [verify_12_07.py](../verify/verify_12_07.py): efficiencies and dissipations by numerical integration of the device currents over a cycle (not from the closed forms), the worst dissipation by bounded optimization, THD by FFT of the solved waveforms, the class AB currents by solving the exponential device equations, and the filter's 40 dB-per-decade estimate checked against the LC transfer function. The class B stage is also simulated in ngspice with real transistor models.*
 
 ## 5. Simulate it
 
@@ -291,7 +323,7 @@ The lab, [labs/12-07-lab](../labs/12-07-lab/README.md), has a notebook and an ng
 
 The netlist [class_b.cir](../labs/12-07-lab/class_b.cir) simulates a ±15 V class B stage with bipolar transistor models driving 8 Ω and measures load power, supply power and efficiency.
 
-**Guided exercise (predict, then run).** **Before running the netlist**, predict: a 10 V-peak input drives the ±15 V class B stage into 8 Ω. The ideal formulas give $P_L$ = **6.25** W and η = **52.36**%. Will the real stage deliver more or less, and why? Then run it. (Less: about **5.098** W at **48.82**% efficiency, because each transistor's $V_{BE}$ is lost from the swing (**0.778** V at the **1.153** A peak, so the output reaches only **9.222** V), and the dead band removes the signal near zero.)
+**Guided exercise (predict, then run).** **Before running the netlist**, predict: a 10 V-peak input drives the ±15 V class B stage into 8 Ω. The ideal formulas give $P_L$ = **6.25** W and η = **52.36**%. Will the real stage deliver more or less, and why? Then run it. (Less: about **5.098** W at **48.82**% efficiency. Each transistor's $V_{BE}$ is lost from the swing (**0.778** V at the **1.153** A peak, so the output reaches only **9.222** V), and since class B efficiency is proportional to the output amplitude, the lost swing alone predicts $(\pi/4)(9.222/15)$ = **48.29**%. The simulation does slightly better for two second-order reasons: the base current, about $1/\beta_F$ of each emitter current, comes from the signal source rather than the rails (with $\beta_F \to \infty$ the efficiency would be **48.34**%), and the dead band removes output near the zero crossings, where the supply current it saves is large compared with the load power it costs.)
 
 ## 6. Engineering tradeoffs
 
@@ -336,14 +368,14 @@ The netlist [class_b.cir](../labs/12-07-lab/class_b.cir) simulates a ±15 V clas
 
 ### Why it matters commercially
 
-- **Class D won audio.** Phones, earbuds, televisions, smart speakers and cars use class D because battery life and heat matter more than the last fraction of a decibel of distortion.
+- **Class D won audio.** Phones, earbuds, televisions, smart speakers and cars use class D because battery life and heat matter more than the last fraction of a decibel of distortion **[Industry estimate]**.
 - **Output stages decide thermal design and package cost.** A package's θ sets how much power a chip can deliver continuously; product power ratings are thermal ratings.
 - **Linear output stages persist** where switching noise is unacceptable: op-amp outputs, headphone drivers in high-end products, and sensitive RF and instrumentation front ends.
 
 ### Marketing vs Reality
 
 - **"315 W per channel."** *Reality:* at 10% THD+N, which is audibly clipped; the 1% figure (255 W) is closer to usable power, and the continuous rating depends on cooling. *Sanity check:* compute $V_{DD}^2/(8R_L)$ for BTL and ask for the THD level and duration.
-- **"90% efficient."** *Reality:* at high output; at the watt or two of typical listening, idle losses can halve the efficiency. *Sanity check:* ask for efficiency at 1 W and the idle loss.
+- **"90% efficient."** *Reality:* at high output; at the watt or two of typical listening, fixed losses can cut it by half or more (Problem 12-07.11's amplifier falls from 93.02% at 50 W to 28.37% at 1 W). *Sanity check:* ask for efficiency at 1 W and the idle loss.
 - **"Class A sound."** *Reality:* a marketing label for linearity; any good class AB or class D amplifier with enough loop gain matches it on measurable distortion. *Sanity check:* ask for THD+N against frequency and power.
 
 ### Questions for engineering leaders
@@ -409,7 +441,7 @@ Its switches are either fully on (little voltage) or off (no current); it loses 
 
 ## 11. Key terms
 
-[Class-A amplifier](../../../reference/glossary.md#class-a-amplifier) · [Class-B amplifier](../../../reference/glossary.md#class-b-amplifier) · [Class-AB amplifier](../../../reference/glossary.md#class-ab-amplifier) · [Class-D amplifier](../../../reference/glossary.md#class-d-amplifier) · [Crossover distortion](../../../reference/glossary.md#crossover-distortion) · [VBE multiplier](../../../reference/glossary.md#vbe-multiplier) · [Thermal resistance](../../../reference/glossary.md#thermal-resistance) · [Thermal runaway](../../../reference/glossary.md#thermal-runaway) · [Bridge-tied load](../../../reference/glossary.md#bridge-tied-load) · [Conduction angle](../../../reference/glossary.md#conduction-angle)
+[Class-A amplifier](../../../reference/glossary.md#class-a-amplifier) · [Class-B amplifier](../../../reference/glossary.md#class-b-amplifier) · [Class-AB amplifier](../../../reference/glossary.md#class-ab-amplifier) · [Class-D amplifier](../../../reference/glossary.md#class-d-amplifier) · [Safe operating area](../../../reference/glossary.md#safe-operating-area) · [Second breakdown](../../../reference/glossary.md#second-breakdown) · [Darlington pair](../../../reference/glossary.md#darlington-pair) · [Foldback current limiting](../../../reference/glossary.md#foldback-current-limiting) · [Crossover distortion](../../../reference/glossary.md#crossover-distortion) · [VBE multiplier](../../../reference/glossary.md#vbe-multiplier) · [Thermal resistance](../../../reference/glossary.md#thermal-resistance) · [Thermal runaway](../../../reference/glossary.md#thermal-runaway) · [Bridge-tied load](../../../reference/glossary.md#bridge-tied-load) · [Conduction angle](../../../reference/glossary.md#conduction-angle)
 
 ## 12. Connections
 

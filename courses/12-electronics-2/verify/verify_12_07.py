@@ -70,7 +70,7 @@ PL1, PS1 = class_a(10, 100, 0.1, 10)
 v.check("Ex 12-07.1a", PL1)
 v.check("Ex 12-07.1b", PS1)
 v.check("Ex 12-07.1c", 100 * PL1 / PS1)
-v.check("Ex 12-07.1d", 10 * 0.1)          # idle: V_CE = V_CC at I_Q
+v.check("Ex 12-07.1d", float(np.mean((10 - 0 * SIN) * (0.1 + 0 * SIN))))   # idle: mean of V_CE * i_C with no signal
 PLh, PSh = class_a(10, 100, 0.1, 5)
 v.check("Ex 12-07.1e", 100 * PLh / PSh)
 v.check("Ex 12-07.1f", PLh)
@@ -128,6 +128,23 @@ t_cl10 = thd_sub(in_loop(10.0 * np.sin(ph_s)))
 v.check("Ex 12-07.3d", 100 * t_cl1)
 v.check("Ex 12-07.3e", 100 * t_cl10)
 v.check("Ex 12-07.3f", t_open1 / t_cl1)
+# square-wave estimate of crossover THD: harmonic content of a unit square wave (by FFT, not the series sum)
+sq = np.sign(SIN)
+Fsq = np.abs(np.fft.rfft(sq)) / N * 2
+coef = math.sqrt(float(np.sum(Fsq[2:] ** 2)))      # RMS-ratio coefficient: harmonics of a unit square wave
+v.check("T 12-07.e", coef)
+v.assert_true("square-wave coefficient equals (4/pi) sqrt(pi^2/8 - 1)",
+              abs(coef - 4 / math.pi * math.sqrt(math.pi ** 2 / 8 - 1)) < 1e-3)
+v.check("T 12-07.f", 100 * coef * 0.6 / 10)
+v.check("T 12-07.g", 100 * t_open10)
+v.check("T 12-07.l", 100 * coef * 0.6 / 1)
+for Vp, ke, kx in ((5.0, "a", "c"), (20.0, "b", "d")):
+    v.check(f"12-07.15{ke}", 100 * coef * 0.65 / Vp)
+    v.check(f"12-07.15{kx}", 100 * thd(dead(Vp * SIN, 0.65)))
+v.check("12-07.15e", 100 * (1 - coef * 0.65 / 5 / thd(dead(5 * SIN, 0.65))))
+v.check("12-07.15f", 100 * (1 - coef * 0.65 / 20 / thd(dead(20 * SIN, 0.65))))
+v.check("12-07.15g", 0.65 / 5)
+v.check("12-07.15h", 0.65 / 20)
 
 # ============================================================ Example 4: class AB bias
 IS, IQ = 1e-13, 20e-3
@@ -171,7 +188,7 @@ def junction_temp(P, thetas, Ta):
 
 Pd = pdw / 2
 v.check("Ex 12-07.5a", junction_temp(Pd, [1.5, 0.5, 10.0], 40))
-v.check("Ex 12-07.5b", (125 - 40) / Pd)
+v.check("Ex 12-07.5b", brentq(lambda th: junction_temp(Pd, [th], 40) - 125, 0.1, 100, xtol=1e-12))
 tsa = brentq(lambda th: junction_temp(Pd, [1.5, 0.5, th], 40) - 125, 0.1, 100, xtol=1e-12)
 v.check("Ex 12-07.5c", tsa)
 
@@ -186,10 +203,37 @@ def thermal_loop(I0, Vce, theta, RE):
     return dIdT * Vce * theta
 
 
-v.check("Ex 12-07.5d", 0.1 / VT)
+v.check("Ex 12-07.5d", (lambda vb: (IS * math.exp((vb + 1e-6) / VT) - IS * math.exp((vb - 1e-6) / VT)) / 2e-6)(
+    VT * math.log(0.1 / IS)))                 # g_m as the slope of the exponential at 100 mA
 v.check("Ex 12-07.5e", thermal_loop(0.1, 15, 12, 0.0))
-v.check("Ex 12-07.5f", 1 + 0.1 / VT * 0.47)
+v.check("Ex 12-07.5f", thermal_loop(0.1, 15, 12, 0.0) / thermal_loop(0.1, 15, 12, 0.47))
 v.check("Ex 12-07.5g", thermal_loop(0.1, 15, 12, 0.47))
+
+
+def shared_sink(P_each, n, th_jc, th_cs, th_sa, Ta):
+    """n devices, each with its own junction-case-sink path, on one heat sink: nodal solution."""
+    m = 2 * n + 1                              # junctions, cases, then the sink node
+    G = np.zeros((m, m))
+
+    def link(a, b, th):
+        G[a, a] += 1 / th
+        if b is not None:
+            G[b, b] += 1 / th
+            G[a, b] -= 1 / th
+            G[b, a] -= 1 / th
+    for k in range(n):
+        link(k, n + k, th_jc)
+        link(n + k, 2 * n, th_cs)
+    link(2 * n, None, th_sa)
+    rhs = np.zeros(m)
+    rhs[:n] = P_each
+    return Ta + np.linalg.solve(G, rhs)[0]
+
+
+v.check("Ex 12-07.5h", shared_sink(Pd, 2, 1.5, 0.5, 10.0, 40))
+v.check("Ex 12-07.5i", brentq(lambda th: shared_sink(Pd, 2, 1.5, 0.5, th, 40) - 125, 0.1, 100, xtol=1e-12))
+v.assert_true("one device on its own sink reproduces Example 5(a)",
+              abs(shared_sink(Pd, 1, 1.5, 0.5, 10.0, 40) - junction_temp(Pd, [1.5, 0.5, 10.0], 40)) < 1e-9)
 
 # ============================================================ Example 6: class D against class B
 Rdson, Pfix = 0.085, 2.5
@@ -239,6 +283,43 @@ kpk = int(np.argmax(vo_s))
 v.check("Sim 12-07.e", vin_s[kpk] - vo_s[kpk])
 v.check("Sim 12-07.f", vo_s[kpk] / RLs)
 v.check("Sim 12-07.g", vo_s[kpk])
+PLr, PSr = class_b(15, 8, vo_s[kpk])               # ideal class B at the simulated peak
+v.check("Sim 12-07.h", 100 * PLr / PSr)
+
+
+def em_eta(beta_f):
+    """The same Ebers-Moll stage with a different forward beta: efficiency in percent."""
+    def out(vin):
+        f = lambda vo: (ISB * math.expm1((vin - vo) / VT27) - ISB * math.expm1((vo - vin) / VT27)) * (  # noqa: E731
+            1 + 1 / beta_f) - vo / RLs
+        return brentq(f, vin - 1.5, vin + 1.5, xtol=1e-14)
+    vo_b = np.array([out(x) for x in vin_s])
+    icn_b = ISB * np.expm1((vin_s - vo_b) / VT27)
+    icp_b = ISB * np.expm1((vo_b - vin_s) / VT27)
+    return 100 * float(np.mean(vo_b ** 2 / RLs)) / float(VCCs * (np.mean(icn_b) + np.mean(icp_b)))
+
+
+eta_inf = em_eta(1e12)
+v.check("Sim 12-07.i", eta_inf)
+v.assert_true("simulated efficiency exceeds the reduced-swing ideal, and beta accounts for most of it",
+              100 * PLs / PSs > eta_inf > 100 * PLr / PSr)
+
+# ============================================================ drive and protection (section 3.5)
+Ipk2 = 15.0 / 8.0
+v.check("T 12-07.h", Ipk2 / 100 * 1e3)
+v.check("T 12-07.i", Ipk2 / (100 * 100) * 1e3)
+Ilim = brentq(lambda i: i * 0.33 - 0.6, 0.0, 10.0, xtol=1e-15)       # Q_L turns on at 0.6 V across R_E
+v.check("T 12-07.j", Ilim)
+v.check("T 12-07.k", 15.0 * Ilim)
+# problems 13-14
+Vp13 = brentq(lambda x: class_b(1, 4, x)[0] - 20, 1, 30, xtol=1e-13)  # sine power into 4 ohm
+v.check("12-07.13a", Vp13)
+v.check("12-07.13b", Vp13 / 4)
+v.check("12-07.13c", Vp13 / 4 / 50 * 1e3)
+v.check("12-07.13d", Vp13 / 4 / (50 * 50) * 1e3)
+Il14 = brentq(lambda i: i * 0.25 - 0.65, 0.0, 10.0, xtol=1e-15)
+v.check("12-07.14a", Il14)
+v.check("12-07.14b", 24 * Il14)
 
 # ============================================================ practitioner arithmetic (TPA3255, R-191)
 v.check("Prac 12-07.a", class_b(1, 4, 51 * 4 / (4 + 2 * 0.085))[0])   # BTL: the load sees a ±V_DD swing
@@ -305,5 +386,7 @@ if lab.exists():
     v.check("Lab 12-07.a", PLs)
     v.check("Lab 12-07.b", PSs)
     v.check("Lab 12-07.c", 100 * PLs / PSs)
+    v.check("Lab 12-07.d", 100 * PLr / PSr)
+    v.check("Lab 12-07.e", eta_inf)
 
 sys.exit(v.finish())
