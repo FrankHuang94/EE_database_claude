@@ -1,0 +1,73 @@
+* Lab 12-01 -- the NMOS differential pair of Examples 12-01.2 and 12-01.3 in ngspice.
+* Level-1 MOSFETs with KP = 2 mA/V^2 and W = L (so k_n = 2 mA/V^2), VTO = 0.5 V, lambda = 0, no body effect.
+* Copy A: ideal 200 uA tail, drains held at VDD through 0 V ammeters (ideal loads that keep both
+*         transistors saturated), swept differentially about a 1.15 V common mode: the current split.
+* Copy D: the same pair with the 10 kohm loads, biased at balance: the differential AC gain.
+* Copy B: the same pair with a 50 kohm tail resistance (a Norton tail set so the total is 200 uA at
+*         the operating point), driven in common mode: the single-ended common-mode gain.
+* Copy C: as copy B, with the drain resistors mismatched by 1% (10.05k and 9.95k): common mode to
+*         differential output.
+*
+* EXPECT id1 key:../../chapters/12-01-differential-pairs.md#Ex_12-01.2e scale=1e-6 rtol=1e-3
+* EXPECT id2 key:../../chapters/12-01-differential-pairs.md#Ex_12-01.2f scale=1e-6 rtol=1e-3
+* EXPECT ad  key:../../chapters/12-01-differential-pairs.md#Ex_12-01.2c rtol=1e-3
+* EXPECT acm key:../../chapters/12-01-differential-pairs.md#Ex_12-01.3b rtol=2e-3
+* EXPECT acmdm key:../../chapters/12-01-differential-pairs.md#Ex_12-01.3e rtol=2e-3
+
+.model NM nmos level=1 vto=0.5 kp=2m lambda=0 gamma=0
+
+VDD vdd 0 DC 1.8
+
+* ---- copy A
+VIC vic 0 DC 1.15
+VID vid 0 DC 0
+EA1 ga1 vic vid 0 0.5
+EA2 ga2 vic vid 0 -0.5
+VMA1 vdd da1 DC 0
+VMA2 vdd da2 DC 0
+MA1 da1 ga1 sa sa NM W=1u L=1u
+MA2 da2 ga2 sa sa NM W=1u L=1u
+IA  sa 0 DC 200u
+
+* ---- copy D
+VIDD vidd 0 DC 0 AC 1
+ED1 gd1 vic vidd 0 0.5
+ED2 gd2 vic vidd 0 -0.5
+RD1 vdd dd1 10k
+RD2 vdd dd2 10k
+MD1 dd1 gd1 sd sd NM W=1u L=1u
+MD2 dd2 gd2 sd sd NM W=1u L=1u
+ID  sd 0 DC 200u
+
+* ---- copy B: tail node sits at 1.15 - 0.5 - 0.31623 = 0.33377 V; 0.33377/50k = 6.6754 uA in the resistor
+VICB gb 0 DC 1.15 AC 1
+RB1 vdd db1 10k
+RB2 vdd db2 10k
+MB1 db1 gb sb sb NM W=1u L=1u
+MB2 db2 gb sb sb NM W=1u L=1u
+IB  sb 0 DC 193.3246u
+RSB sb 0 50k
+
+* ---- copy C
+VICC gc 0 DC 1.15 AC 1
+RC1 vdd dc1 10.05k
+RC2 vdd dc2 9.95k
+MC1 dc1 gc sc sc NM W=1u L=1u
+MC2 dc2 gc sc sc NM W=1u L=1u
+IC  sc 0 DC 193.3246u
+RSC sc 0 50k
+
+.control
+op
+print v(sb) i(VDD)
+dc VID -0.6 0.6 0.0005
+meas dc id1 find i(VMA1) at=0.2
+meas dc id2 find i(VMA2) at=0.2
+ac lin 3 100 1k
+let vodd = mag(v(dd1) - v(dd2))
+let vodc = mag(v(dc1) - v(dc2))
+meas ac ad find vodd at=1k
+meas ac acm find vm(db1) at=1k
+meas ac acmdm find vodc at=1k
+.endc
+.end

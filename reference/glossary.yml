@@ -4758,3 +4758,32 @@
   definition: "A filter whose poles are chosen for maximally flat group delay, preserving pulse shapes with almost no overshoot, at the cost of a gentle magnitude roll-off."
   chapter: "11-11"
   see_also: [Group delay, Elliptic filter]
+# ---------------------------------------------------------------- 12-01
+- term: Differential pair
+  definition: "Two matched transistors whose emitters or sources share a tail current source, so that the tail fixes their total current and the input difference decides how it splits; the input stage of op-amps, comparators and CML buffers."
+  chapter: "12-01"
+  see_also: [Tail current source, Half-circuit, Common-mode rejection ratio (CMRR)]
+- term: Differential-mode gain
+  definition: The gain from the difference of a differential stage's two inputs to its output, g_mR_D for a resistor-loaded pair with a differential output and half that for one output.
+  chapter: "12-01"
+  see_also: [Common-mode gain, Differential pair]
+- term: Common-mode gain
+  definition: The gain from the average of a differential stage's two inputs to its output; for one output of a resistor-loaded pair it is about R_D/(2R_SS), set by the tail's output resistance R_SS.
+  chapter: "12-01"
+  see_also: [Differential-mode gain, Common-mode rejection ratio (CMRR)]
+- term: Half-circuit
+  definition: One half of a symmetric circuit analyzed alone, using the fact that for differential signals the symmetry plane (such as a pair's tail node) is a virtual ground, and for common-mode signals each half sees twice the shared impedance.
+  chapter: "12-01"
+  see_also: [Differential pair]
+- term: Input common-mode range
+  definition: The range of common-mode input voltage over which every transistor of a differential stage, including its tail source, stays in its active (saturation) region, so that gain and CMRR hold.
+  chapter: "12-01"
+  see_also: [Differential pair, Rail-to-rail]
+- term: Current-mode logic (CML)
+  definition: Logic or buffering built from differential pairs that steer a constant tail current fully to one side, giving small differential swings across resistor loads, high speed and nearly constant supply current; standard in high-speed serial links.
+  chapter: "12-01"
+  see_also: [Differential pair, Differential signaling]
+- term: Tail current source
+  definition: The current source feeding a differential pair's shared emitter or source node; its value sets the pair's total current and its output resistance sets the single-ended common-mode rejection.
+  chapter: "12-01"
+  see_also: [Differential pair, Common-mode gain]
