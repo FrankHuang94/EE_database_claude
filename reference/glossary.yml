@@ -5644,3 +5644,55 @@
 - term: High Bandwidth Memory (HBM)
   definition: DRAM built as a stack of dies joined by through-silicon vias and connected to a processor over a very wide interface on a silicon interposer (1024 bits per stack in HBM3, 2048 in HBM4), giving bandwidths of about 1–2 TB/s per stack.
   chapter: "14-09"
+- term: Virtual memory
+  definition: The mechanism, shared by hardware and operating system, that gives each process its own address space by translating virtual addresses to physical ones page by page, providing isolation, protection, relocation and demand paging.
+  chapter: "14-10"
+  see_also: [Page table, Translation lookaside buffer (TLB)]
+- term: Page (memory)
+  definition: The fixed-size unit (typically 4 KiB) in which virtual memory maps addresses; a virtual page number is translated to a physical page (frame) number while the page offset passes through unchanged.
+  chapter: "14-10"
+  see_also: [Virtual memory, Huge page]
+- term: Page table
+  definition: The per-process data structure, usually a multilevel radix tree, that maps virtual page numbers to physical page numbers and permissions; the hardware walks it on a TLB miss.
+  chapter: "14-10"
+  see_also: [Page-table entry (PTE), Translation lookaside buffer (TLB)]
+- term: Page-table entry (PTE)
+  definition: One entry of a page table, holding a physical page number and flag bits (valid, read, write, execute, user, global, accessed, dirty); a PTE with no read, write or execute permission points to the next level.
+  chapter: "14-10"
+  see_also: [Page table]
+- term: Translation lookaside buffer (TLB)
+  definition: A small cache of recent virtual-to-physical page translations and their permissions, consulted on every memory access; a miss triggers a page-table walk.
+  chapter: "14-10"
+  see_also: [TLB reach, Page table]
+- term: TLB reach
+  definition: The amount of memory a TLB can map without missing, equal to its number of entries times the page size.
+  chapter: "14-10"
+  see_also: [Huge page]
+- term: Huge page
+  definition: A page much larger than the base page (such as RISC-V's 4 MiB Sv32 megapages or 2 MiB and 1 GiB Sv39 superpages), mapped by a leaf entry at a higher page-table level to increase TLB reach.
+  chapter: "14-10"
+  see_also: [TLB reach]
+- term: Page fault
+  definition: The exception raised when a translation finds no valid mapping or a forbidden access; the operating system's handler may fix the cause (demand paging, copy-on-write) and re-execute the instruction.
+  chapter: "14-10"
+  see_also: [Demand paging, Trap (processor)]
+- term: Demand paging
+  definition: Mapping a page only when it is first accessed, by servicing the resulting page fault, so that memory is allocated or loaded lazily.
+  chapter: "14-10"
+  see_also: [Page fault, Thrashing]
+- term: Thrashing
+  definition: The collapse in performance when a program's working set exceeds the available physical frames, so that nearly every access causes a page fault.
+  chapter: "14-10"
+  see_also: [Demand paging]
+- term: Trap (processor)
+  definition: A transfer of control to a more privileged handler caused by an exception, a system call (ecall) or an interrupt; the hardware saves the PC and cause, and an xRET instruction returns.
+  chapter: "14-10"
+  see_also: [Precise exception, Privilege mode, Page fault]
+- term: Privilege mode
+  definition: The level of authority at which code runs (RISC-V machine, supervisor and user modes), determining which instructions, registers and pages it may use.
+  chapter: "14-10"
+  see_also: [Trap (processor)]
+- term: Virtually indexed, physically tagged (VIPT) cache
+  definition: A cache whose set index comes from untranslated page-offset bits, so it can be read in parallel with the TLB lookup and then compared against the physical tag; it requires size divided by associativity to be at most the page size.
+  chapter: "14-10"
+  see_also: [Translation lookaside buffer (TLB), Set-associative cache]
