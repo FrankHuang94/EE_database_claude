@@ -198,6 +198,8 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-190 | Sampling and anti-aliasing in converter data sheets | Nov 2026 |
 | R-191 | High-power class-D audio amplifier data sheet | Nov 2026 |
 | R-192 | Crystal, MEMS and TCXO data sheets; crystal-oscillator application notes | Nov 2026 |
+| R-193 | PCB laminate dielectric constants and loss tangents | Nov 2026 |
+| R-194 | RG-58 coaxial cable data sheets | Nov 2026 |
 
 ---
 
@@ -2000,3 +2002,19 @@ R&D % = R&D ÷ revenue.
 - **Epson TG2016SMN** TCXO (brief, © 2025): ±0.5 ppm (grade C) or ±2.0 ppm (grade F) over −40 to +85 °C; 1.5 mA max (10–26 MHz); start-up 1.0 ms max. [Brief](https://download.epsondevice.com/td/pdf/brief/TG2016SMN_en.pdf)
 - **ST AN2867**, "Oscillator design guide for STM8AF/AL/S, STM32 MCUs and MPUs", DocID15287 **Rev 10 (August 2015)**, read from third-party copies because st.com refused automated download; the current revision (reported as Rev 24) was not read: safety factor Sf = oscillator negative resistance / crystal ESR, "recommended to have a ratio higher than x5 for the HSE oscillators and higher than x3 for the LSE oscillators"; C_L = C_L1·C_L2/(C_L1 + C_L2) + C_s, with C_s the pin plus PCB capacitance (example 5 pF). [Copy](https://www.raltron.com/webproducts/technical/technical_notes/Oscillator-design-guide-for-STM8S-STM8A-and-STM32-microcontrollers-ST-MICRO-1.pdf)
 - **Microchip AN2648** (DS00002648B, 2018): safety factor SF = (R_MAX + ESR)/ESR, graded ">5 excellent, 4 very good, 3 good, <3 not recommended", noting that "Various MCU and crystal vendors operate with different safety factor recommendations." [Application note](https://ww1.microchip.com/downloads/en/Appnotes/AN2648-Selecting_Testing-32KHz-Crystal-Osc-for-AVR-MCUs-00002648B.pdf)
+
+## R-193 · PCB laminate dielectric constants and loss tangents
+
+*Read on 20 Nov 2026 from the manufacturers' data sheets at the URLs below, as downloaded. Values are typical, construction-dependent laminate properties, tagged [Established] as the manufacturers' published values.*
+
+- **Isola 370HR** (standard high-Tg FR-4 class; data sheet footer "Last Updated November 18, 2026, Revision No: B"; Bereskin stripline method): Dk 4.24 and Df 0.0150 at 100 MHz; Dk 4.17, Df 0.0161 at 1 GHz; Dk 4.04, Df 0.0210 at 2 GHz; Dk 3.92, Df 0.0250 at 10 GHz. The companion Dk/Df table shows the values vary with glass style and resin content (for example 1x106 glass at 71% resin: Dk 3.77, Df 0.0250 at 2 GHz). [Data sheet](https://www.isola-group.com/wp-content/uploads/data-sheets/370hr-laminate-prepreg.pdf)
+- **Isola I-Tera MT40** (low-loss laminate; "Last Updated November 13, 2026", Rev F): Dk 3.45 and Df 0.0031 at 2, 5 and 10 GHz. [Data sheet](https://www.isola-group.com/wp-content/uploads/data-sheets/i-tera-mt40.pdf)
+- **Rogers RO4350B** (RF laminate; publication 92-004, © 2022): process Dk 3.48 ± 0.05 at 10 GHz and 23 °C (clamped stripline test); design Dk 3.66 (8–40 GHz, the value recommended for circuit design); Df 0.0037 at 10 GHz and 0.0031 at 2.5 GHz. [Data sheet](https://www.rogerscorp.com/-/media/project/rogerscorp/documents/advanced-electronics-solutions/english/data-sheets/ro4000-laminates-ro4003c-and-ro4350b---data-sheet.pdf)
+- Panasonic MEGTRON 6 values were found only in a search-engine excerpt and are **not used** (the manufacturer's page could not be fetched).
+
+## R-194 · RG-58 coaxial cable data sheets
+
+*Read on 20 Nov 2026 from copies of Belden's data sheets hosted by a distributor (catalog.belden.com refused automated access); values tagged [Established] as the manufacturer's specifications.*
+
+- **Belden 8262** (RG-58 C/U type, Mil-Spec construction, commercial; Rev 0.530, 2025-09-07): nominal impedance 50 Ω; nominal velocity of propagation 66%; nominal capacitance 30.8 pF/ft (101 pF/m); nominal attenuation 4.9 dB/100 ft at 100 MHz (16.08 dB/100 m) and 21.5 dB/100 ft at 1000 MHz (70.54 dB/100 m). [Data sheet copy](https://docs.rs-online.com/334f/A700000014606838.pdf)
+- **Belden 8259** (RG-58 A/U type; Rev 0.531, 2025-02-03): 50 Ω, 66%, 5.4 dB/100 ft at 100 MHz and 22.8 dB/100 ft at 1000 MHz. [Data sheet copy](https://docs.rs-online.com/e040/A700000013640140.pdf)

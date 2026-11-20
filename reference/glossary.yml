@@ -5010,3 +5010,31 @@
   definition: A smooth vector field that decays fast enough at infinity is determined uniquely by its divergence and its curl, and is the sum of a gradient and a curl; the reason Maxwell's equations specify both for each field.
   chapter: "13-01"
   see_also: [Divergence, Curl]
+- term: Boundary condition
+  definition: A rule linking fields on the two sides of an interface, derived from the integral laws on vanishing loops and pillboxes; in electrostatics the tangential E is continuous and the normal D jumps by the surface charge, and at a conductor E is normal with D_n equal to the surface charge.
+  chapter: "13-02"
+  see_also: [Gauss's law]
+- term: Laplace's equation
+  definition: The equation del-squared V = 0 obeyed by the electrostatic potential in a charge-free uniform region; its solutions have no interior maxima or minima, each point being the average of its surroundings.
+  chapter: "13-02"
+  see_also: [Poisson's equation, Uniqueness theorem]
+- term: Uniqueness theorem
+  definition: Poisson's equation with the potential (or the normal field) given on every boundary has only one solution, so any function satisfying the equation and the boundary conditions, however found, is the solution.
+  chapter: "13-02"
+  see_also: [Laplace's equation, Method of images]
+- term: Separation of variables
+  definition: Solving a partial differential equation by trying products of one-variable functions; each factor satisfies an ordinary differential equation with a separation constant, and boundary conditions select a series of such products.
+  chapter: "13-02"
+  see_also: [Laplace's equation, Fourier series]
+- term: Method of images
+  definition: Replacing a grounded conductor by fictitious charges outside the region of interest that make the conductor's surface an equipotential; by uniqueness, the real charges plus the images give the true field in the region.
+  chapter: "13-02"
+  see_also: [Uniqueness theorem]
+- term: Finite-difference method
+  definition: Approximating derivatives by differences on a grid; for Laplace's equation each grid potential equals the average of its four neighbours to second order in the spacing, giving linear equations that a computer, or a grid of equal resistors, solves.
+  chapter: "13-02"
+  see_also: [Laplace's equation]
+- term: Capacitance per unit length
+  definition: The charge per metre on a long two-conductor structure divided by the voltage between the conductors, C' in F/m, such as 2 pi epsilon/ln(b/a) for a coaxial line; with the inductance per length it sets a transmission line's impedance and delay.
+  chapter: "13-02"
+  see_also: [Characteristic impedance]

@@ -28,7 +28,7 @@ Maxwell's equations and their engineering consequences: waves, reflection, trans
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
 | [13-01 · Vector Calculus Refresher](chapters/13-01-vector-calculus-refresher.md) | 10 | ✅ verified | [problems](problems/13-01-problems.md) · [solutions](solutions/13-01-solutions.md) · [lab](labs/13-01-lab/README.md) · [verify](verify/verify_13_01.py) |
-| [13-02 · Electrostatics: Boundary Conditions and Boundary-Value Problems](chapters/13-02-electrostatics-boundary-value-problems.md) | 10 | ⬜ planned | — |
+| [13-02 · Electrostatics: Boundary Conditions and Boundary-Value Problems](chapters/13-02-electrostatics-boundary-value-problems.md) | 10 | ✅ verified | [problems](problems/13-02-problems.md) · [solutions](solutions/13-02-solutions.md) · [lab](labs/13-02-lab/README.md) · [verify](verify/verify_13_02.py) |
 | [13-03 · Magnetostatics and Inductance](chapters/13-03-magnetostatics-and-inductance.md) | 8 | ⬜ planned | — |
 | [13-04 · Maxwell's Equations and Time-Varying Fields](chapters/13-04-maxwells-equations.md) | 10 | ⬜ planned | — |
 | [13-05 · Plane Waves in Lossless and Lossy Media](chapters/13-05-plane-waves.md) | 10 | ⬜ planned | — |

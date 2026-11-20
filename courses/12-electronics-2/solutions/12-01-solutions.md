@@ -43,7 +43,7 @@ Exact: $V_T\ln(1.05)$ = **1.261** mV; linear: $V_T \times 0.05$ = **1.293** mV (
 With $g_{m1,2} = g_m \pm \Delta g_m/2$ and a common-mode input $v_{ic}$, the tail node moves to $v_s$ with $(g_{m1} + g_{m2})(v_{ic} - v_s) = v_s/R_{SS}$, so $v_{ic} - v_s = v_{ic}/(1 + 2g_mR_{SS})$. The drain currents differ by $\Delta g_m(v_{ic} - v_s)$, so
 
 $$
-A_{cm\to dm} = \frac{R_D\Delta g_m}{1 + 2g_mR_{SS}}, \qquad \text{CMRR}_{diff} = \frac{g_mR_D}{A_{cm\to dm}} = \frac{g_m}{\Delta g_m}(1 + 2g_mR_{SS}) = 100 \times 201 = \mathbf{20\,100},
+A_{cm\to dm} = \frac{R_D\Delta g_m}{1 + 2g_mR_{SS}}, \qquad \text{CMRR}_{diff} = \frac{g_mR_D}{A_{cm\to dm}} = \frac{g_m}{\Delta g_m}(1 + 2g_mR_{SS}) = 100 \times 201 = \mathbf{2.010 \times 10^4},
 $$
 
 or **86.06** dB.
@@ -111,7 +111,7 @@ At balance each drain is at $1.8 - 100\ \mu\text{A} \times 5\ \text{k}\Omega$ = 
 | 12-01.8a | exact offset | 1.261 | mV |
 | 12-01.8b | linear offset | 1.293 | mV |
 | 12-01.8c | drift | 4.204 | µV/K |
-| 12-01.9a | differential CMRR | 20100 | — |
+| 12-01.9a | differential CMRR | 2.010 × 10⁴ | — |
 | 12-01.9b | differential CMRR | 86.06 | dB |
 | 12-01.10a | undegenerated g_m | 19.34 | mA/V |
 | 12-01.10b | degenerated transconductance | 1.813 | mA/V |

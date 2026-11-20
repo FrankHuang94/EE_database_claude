@@ -1,0 +1,77 @@
+* Lab 13-02 -- a resistor grid as an analogue solver for Laplace's equation (the square trough).
+* 5 x 5 interior nodes n_i_j (i = column 1..5 from the left, j = row 1..5 from the bottom), joined to their
+* four neighbours by equal 1 kohm resistors. KCL at each node makes its voltage the average of its neighbours',
+* the finite-difference form of Laplace's equation. The top edge is held at 1 V; the other edges are grounded.
+*
+* EXPECT vc key:../../chapters/13-02-electrostatics-boundary-value-problems.md#Sim_13-02.a rtol=1e-6
+* EXPECT vu key:README.md#Lab_13-02.a rtol=2e-4
+
+VTOP top 0 DC 1
+R1 n_1_1 n_2_1 1k
+R2 n_1_1 n_1_2 1k
+R3 n_1_1 0 1k
+R4 n_1_1 0 1k
+R5 n_2_1 n_3_1 1k
+R6 n_2_1 n_2_2 1k
+R7 n_2_1 0 1k
+R8 n_3_1 n_4_1 1k
+R9 n_3_1 n_3_2 1k
+R10 n_3_1 0 1k
+R11 n_4_1 n_5_1 1k
+R12 n_4_1 n_4_2 1k
+R13 n_4_1 0 1k
+R14 n_5_1 0 1k
+R15 n_5_1 n_5_2 1k
+R16 n_5_1 0 1k
+R17 n_1_2 n_2_2 1k
+R18 n_1_2 n_1_3 1k
+R19 n_1_2 0 1k
+R20 n_2_2 n_3_2 1k
+R21 n_2_2 n_2_3 1k
+R22 n_3_2 n_4_2 1k
+R23 n_3_2 n_3_3 1k
+R24 n_4_2 n_5_2 1k
+R25 n_4_2 n_4_3 1k
+R26 n_5_2 0 1k
+R27 n_5_2 n_5_3 1k
+R28 n_1_3 n_2_3 1k
+R29 n_1_3 n_1_4 1k
+R30 n_1_3 0 1k
+R31 n_2_3 n_3_3 1k
+R32 n_2_3 n_2_4 1k
+R33 n_3_3 n_4_3 1k
+R34 n_3_3 n_3_4 1k
+R35 n_4_3 n_5_3 1k
+R36 n_4_3 n_4_4 1k
+R37 n_5_3 0 1k
+R38 n_5_3 n_5_4 1k
+R39 n_1_4 n_2_4 1k
+R40 n_1_4 n_1_5 1k
+R41 n_1_4 0 1k
+R42 n_2_4 n_3_4 1k
+R43 n_2_4 n_2_5 1k
+R44 n_3_4 n_4_4 1k
+R45 n_3_4 n_3_5 1k
+R46 n_4_4 n_5_4 1k
+R47 n_4_4 n_4_5 1k
+R48 n_5_4 0 1k
+R49 n_5_4 n_5_5 1k
+R50 n_1_5 n_2_5 1k
+R51 n_1_5 top 1k
+R52 n_1_5 0 1k
+R53 n_2_5 n_3_5 1k
+R54 n_2_5 top 1k
+R55 n_3_5 n_4_5 1k
+R56 n_3_5 top 1k
+R57 n_4_5 n_5_5 1k
+R58 n_4_5 top 1k
+R59 n_5_5 0 1k
+R60 n_5_5 top 1k
+
+.control
+op
+let vc = v(n_3_3)
+let vu = v(n_3_4)
+print vc vu
+.endc
+.end
