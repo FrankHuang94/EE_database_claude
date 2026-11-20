@@ -4825,3 +4825,20 @@
   definition: For a transfer function whose denominator is 1 + b_1s + b_2s² + …, with one pole far below the others, the low pole is about 1/b_1 and the next about b_1/b_2; it errs low when the poles are less than about a decade apart.
   chapter: "12-03"
   see_also: [Gain-bandwidth product, Miller effect]
+# ---------------------------------------------------------------- 12-04
+- term: Open-circuit time constants
+  definition: The products R_i0C_i of each capacitor and the resistance it sees with every other capacitor open; their sum is exactly the coefficient b_1 of the circuit's denominator, and 1/Σ R_i0C_i is a conservative estimate of the upper −3 dB frequency.
+  chapter: "12-04"
+  see_also: [Zero-value time constants, Dominant-pole approximation]
+- term: Zero-value time constants
+  definition: The resistances seen by one capacitor with another shorted, used in pairs to give the second denominator coefficient b_2 = Σ R_i0C_iR_j^iC_j and from it the second pole, about b_1/b_2.
+  chapter: "12-04"
+  see_also: [Open-circuit time constants]
+- term: Short-circuit time constants
+  definition: The time constants R_isC_i of coupling and bypass capacitors, each found with the other low-frequency capacitors shorted; the sum Σ 1/(R_isC_i) is a conservative estimate of the lower −3 dB frequency.
+  chapter: "12-04"
+  see_also: [Open-circuit time constants]
+- term: Pole splitting
+  definition: "The separation of a two-stage amplifier's two poles by a capacitor bridging the inverting second stage: Miller multiplication pushes the lower pole down to about 1/(g_m2R_1R_2C_c), and the capacitor's shorting of the second stage at high frequency pushes the upper pole up to about g_m2/(C_1 + C_2)."
+  chapter: "12-04"
+  see_also: [Miller effect, Right-half-plane zero]

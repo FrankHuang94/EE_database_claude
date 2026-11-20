@@ -1,0 +1,30 @@
+* Lab 12-04 -- pole splitting in Example 12-04.4's two-stage amplifier, in ngspice.
+* Node 1: R1 = 50 kohm, C1 = 50 fF; second stage g_m2 = 4 mA/V (VCCS), R2 = 12.5 kohm, C2 = 1 pF.
+* The compensation capacitor CC from node 1 to node 2 starts at 1e-21 F (negligible) and is then
+* altered to 1 pF. Pole-zero analysis with a current driven into node 1 reports the circuit's natural
+* frequencies in rad/s; the lets convert them to hertz.
+*
+* EXPECT fa1 key:../../chapters/12-04-high-frequency-analysis-methods.md#Ex_12-04.4b scale=1e6 rtol=2e-4
+* EXPECT fa2 key:../../chapters/12-04-high-frequency-analysis-methods.md#Ex_12-04.4a scale=1e6 rtol=2e-4
+* EXPECT fb1 key:../../chapters/12-04-high-frequency-analysis-methods.md#Ex_12-04.4g scale=1e3 rtol=2e-4
+* EXPECT fb2 key:../../chapters/12-04-high-frequency-analysis-methods.md#Ex_12-04.4h scale=1e6 rtol=2e-4
+
+R1 n1 0 50k
+C1 n1 0 50f
+G2 n2 0 n1 0 4m
+R2 n2 0 12.5k
+C2 n2 0 1p
+CC n1 n2 1e-21
+
+.control
+pz n1 0 n2 0 cur pol
+let fa1 = min(abs(real(pole(1))), abs(real(pole(2)))) / (2*pi)
+let fa2 = max(abs(real(pole(1))), abs(real(pole(2)))) / (2*pi)
+print fa1 fa2
+alter CC = 1p
+pz n1 0 n2 0 cur pol
+let fb1 = min(abs(real(pole(1))), abs(real(pole(2)))) / (2*pi)
+let fb2 = max(abs(real(pole(1))), abs(real(pole(2)))) / (2*pi)
+print fb1 fb2
+.endc
+.end
