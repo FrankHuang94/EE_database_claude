@@ -45,7 +45,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 10-09.9 [B]
 
-**Output current.** An OPA333 (±5 mA short-circuit current [2]) runs on 5 V with its output biased at midsupply. (a) What current does a 2.5 V peak sine require into 1 kΩ (to midsupply)? (b) What is the largest sine it can drive into 100 Ω? (c) What peak current does a 2 V peak, 10 kHz sine need into a 10 nF capacitor?
+**Output current.** An OPA333 (±5 mA typical short-circuit current [2]) runs on 5 V with its output biased at midsupply. (a) What peak current does a 2 V peak sine require into 1 kΩ (returned to midsupply)? Compare it with the short-circuit current, and say why that comparison is not a design guarantee. (b) Budgeting at most half the typical short-circuit current for linear drive (a designer's assumption, not a data-sheet number), what is the largest sine into 100 Ω? (c) What peak current does a 2 V peak, 10 kHz sine need into a 10 nF capacitor?
 
 ### Problem 10-09.10 [C]
 

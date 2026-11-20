@@ -39,17 +39,17 @@
 
 ## 3. Theory
 
-> **Notation.** $A$ open-loop gain ($A_0$ at DC), β feedback factor (the fraction of the output fed back to the inverting input), $1/\beta$ the **noise gain** ($1 + R_2/R_1$ for both inverting and non-inverting stages), $T = A\beta$ the loop gain. Data-sheet values are quoted with their test conditions and tagged by source; "typ" and "max" are the data sheet's typical and maximum columns.
+> **Notation.** $A$ open-loop gain ($A_0$ at DC), β feedback factor (the fraction of the output fed back to the inverting input), $1/\beta$ the **noise gain** ($1 + R_2/R_1$ for both inverting and non-inverting stages), $L = A\beta$ the loop gain (notation.md; some texts write $T$). Data-sheet values are quoted with their test conditions and tagged by source; "typ" and "max" are the data sheet's typical and maximum columns.
 
 ### 3.1 Finite open-loop gain
 
 For a non-inverting amplifier, $v_o = A(v_+ - v_-)$ with $v_- = \beta v_o$. Solving:
 
 $$
-\frac{v_o}{v_{in}} = \frac{A}{1 + A\beta} = \frac{1}{\beta}\cdot\frac{T}{1 + T} = \frac{1}{\beta}\left(1 - \frac{1}{1 + T}\right) .
+\frac{v_o}{v_{in}} = \frac{A}{1 + A\beta} = \frac{1}{\beta}\cdot\frac{L}{1 + L} = \frac{1}{\beta}\left(1 - \frac{1}{1 + L}\right) .
 $$
 
-The ideal gain $1/\beta$ is reduced by the fraction $1/(1 + T) \approx 1/T$:
+The ideal gain $1/\beta$ is reduced by the fraction $1/(1 + L) \approx 1/L$:
 
 $$
 \text{gain error} \approx \frac{1}{A\beta} = \frac{\text{noise gain}}{A} .
@@ -87,7 +87,7 @@ Feedback trades gain for bandwidth one for one (Figure 1). A 10 MHz op-amp at a 
 
 ![Gain-bandwidth](../../../assets/figures/10-09/gbw.svg)
 
-> **Going deeper — when the model is not single-pole.** The single-pole model fails near the unity-gain frequency, where higher poles add phase lag; the data sheet's **phase margin** measures how close the loop is to instability (Course 12). Some parts are **decompensated**: stable only above a minimum gain, with a higher GBW in exchange. The OPA1611 data sheet, for example, lists a GBW of 40 MHz at a gain of 1 and 80 MHz at a gain of 100 [3]: its gain does not fall at exactly 20 dB/decade over that range.
+> **Going deeper — when the model is not single-pole.** The single-pole model fails near the unity-gain frequency, where higher poles add phase lag; the data sheet's **phase margin** measures how close the loop is to instability (Course 12). Some parts are **decompensated**: stable only above a minimum gain, with a higher GBW in exchange. Even a unity-gain-stable part need not have one GBW: the OPA1611, which its data sheet describes as unity-gain stable, lists 40 MHz at a gain of 1 and 80 MHz at a gain of 100 [3]: its gain does not fall at exactly 20 dB/decade over that range.
 
 ### 3.3 Slew rate and full-power bandwidth
 
@@ -115,7 +115,7 @@ Above $f_{FP}$ a full-amplitude sine turns into a triangle wave, whatever the sm
 
 06-10 §3.7 introduced the **input offset voltage** $V_{OS}$, amplified by the noise gain, and the **input bias currents** $I_B$, which develop voltages across the resistances seen by each input; a resistor equal to $R_1 \parallel R_2$ in the + input cancels the bias-current errors to within the **offset current** $I_{OS}$. Two refinements matter in practice:
 
-- **Drift.** $V_{OS}$ changes with temperature, specified as $dV_{OS}/dT$ in µV/°C. Over an industrial range (−40 to 125 °C), a drift of a few µV/°C adds hundreds of microvolts: often more than the 25 °C offset itself. Offset at 25 °C can be calibrated out; drift is harder to remove.
+- **Drift.** $V_{OS}$ changes with temperature, specified as $dV_{OS}/dT$ in µV/°C. Over the extended (automotive-grade) range of −40 to 125 °C (the industrial range is usually −40 to 85 °C), a drift of a few µV/°C adds hundreds of microvolts: often more than the 25 °C offset itself. Offset at 25 °C can be calibrated out; drift is harder to remove.
 - **Input technology sets $I_B$.** Bipolar inputs draw nanoamperes (OPA1611: ±60 nA typ, ±250 nA max [3]); CMOS inputs draw picoamperes at room temperature (TLV9062: ±0.5 pA typ [1]), but that current is mostly junction leakage in the input protection, which grows exponentially with temperature (09-06), and zero-drift CMOS parts show larger, switching-related currents (OPA333: ±70 pA typ, ±200 pA max [2]).
 
 **Zero-drift amplifiers** (06-10's Going deeper) correct their own offset continuously, giving microvolt offsets and nanovolt-per-kelvin drift (OPA333: 10 µV max, 0.05 µV/°C max [2]) at the cost of bandwidth, switching artifacts and higher current noise.
@@ -134,16 +134,16 @@ with CMRR usually in dB ($20\log_{10}$ of the ratio) and PSRR in dB or µV/V. In
 
 - **Input common-mode range.** The input stage works only for common-mode voltages within its range: OPA1611, $(V-) + 2$ V to $(V+) - 2$ V [3]. A follower on a ±15 V supply can therefore handle only ±13 V of signal, although its output could swing further.
 - **Rail-to-rail input.** Parts such as the TLV9062 combine an NMOS and a PMOS input pair to cover the whole supply [1]. Near the transition between pairs, offset and CMRR change: the TLV9062's CMRR is 103 dB typical within $(V-) - 0.1$ V to $(V+) - 1.4$ V, but 87 dB typical (57 dB minimum) over the full range [1].
-- **Output swing.** A common-source (rail-to-rail) output stage (12-07) can approach the rails within tens of millivolts at light load (TLV9062: 20 mV max at 10 kΩ, 60 mV at 2 kΩ [1]); emitter-follower outputs stop a volt or more short (OPA1611: within 0.6 V at 2 kΩ [3]). The swing shrinks as the load current rises.
+- **Output swing.** A common-source (rail-to-rail) output stage (12-07) can approach the rails within tens of millivolts at light load (TLV9062: 20 mV max at 10 kΩ, 60 mV at 2 kΩ [1]); outputs that are not specified as rail-to-rail stop further short, as the OPA1611 does (within 0.6 V of the rails at 2 kΩ [3]; its data sheet does not describe the output stage's topology). The swing shrinks as the load current rises.
 - **Output current and short circuit.** The output current is limited (TLV9062: ±50 mA short-circuit; OPA333: ±5 mA [1, 2]), which caps the load and the speed of driving capacitance.
 
 ### 3.7 The rest of the data sheet
 
-- **Noise.** Input voltage noise density $e_n$ (nV/√Hz) and current noise $i_n$; the OPA1611's 1.1 nV/√Hz at 1 kHz is about ten times lower than the TLV9062's 16 nV/√Hz [1, 3]. Course 12 (12-10) turns these into signal-to-noise ratios.
+- **Noise.** Input voltage noise density $e_n$ (nV/√Hz) and current noise $i_n$; the OPA1611's 1.1 nV/√Hz at 1 kHz is about **15** times lower than the TLV9062's 16 nV/√Hz [1, 3]. Course 12 (12-10) turns these into signal-to-noise ratios.
 - **Quiescent current.** Power and battery life: 17 µA for the OPA333, 538 µA for the TLV9062, 3.6 mA for the OPA1611 per channel [1–3]. Speed, noise and output drive cost current.
 - **Output impedance and capacitive loads.** A capacitive load adds a pole inside the feedback loop and erodes phase margin; data sheets give a stable capacitance or a curve (Course 12).
 
-**Reading the table.** Every entry has test conditions (supply, load, common-mode voltage, temperature) and up to three columns. *Typical* is a characterization median, not a guarantee; *minimum* and *maximum* are guaranteed, often only at 25 °C unless a temperature range is stated. Design to the guaranteed values at your conditions.
+**Reading the table.** Every entry has test conditions (supply, load, common-mode voltage, temperature) and up to three columns. *Typical* is the manufacturer's statement of expected performance, often described as a characterization mean or median but defined differently by different vendors, and never a guarantee; *minimum* and *maximum* are guaranteed, often only at 25 °C unless a temperature range is stated. Design to the guaranteed values at your conditions.
 
 ## 4. Worked examples
 
@@ -163,7 +163,7 @@ with CMRR usually in dB ($20\log_{10}$ of the ratio) and PSRR in dB or µV/V. In
 
 (a) Non-inverting: noise gain 10, $f_{-3dB}$ = **1.0** MHz. Inverting: noise gain 11, **0.909** MHz.
 
-(b) **3.5** kHz. At 1 kHz the magnitude is low by **−3.85**% and the phase lags by **15.9**°.
+(b) **3.5** kHz. At 1 kHz the magnitude error is **−3.85**% and the phase lags by **15.9**°.
 
 **Sanity check.** A "350 kHz" amplifier misses a 1 kHz signal by almost 4% at a gain of 100: GBW is shared between gain and bandwidth.
 
@@ -175,7 +175,7 @@ with CMRR usually in dB ($20\log_{10}$ of the ratio) and PSRR in dB or µV/V. In
 
 (a) $27 \times 10^6/(2\pi \times 10)$ = **429.7** kHz.
 
-(b) $V_p$ = 0.5 V gives **8.59** MHz, about twice the tabulated 4 MHz. The table and its own footnote disagree; a designer should treat the lower number as the safer one, or measure.
+(b) $V_p$ = 0.5 V gives **8.59** MHz, about twice the tabulated 4 MHz. The formula with $V_p$ = 1 V instead gives **4.30** MHz, close to the table, which suggests the table entry used 1 V as the peak rather than the peak-to-peak value. Whatever the cause, the table and its own footnote disagree; a designer should treat the lower number as the safer one, or measure.
 
 (c) TLV9062: **413.8** kHz. OPA333: **10.19** kHz.
 
@@ -201,11 +201,11 @@ with CMRR usually in dB ($20\log_{10}$ of the ratio) and PSRR in dB or µV/V. In
 
 **Solution.** Full scale is 2 mV/V × 5 V = **10** mV at the input. OPA333: $10 + 0.05 \times 100$ = **15** µV, **1.5** mV at the output, **0.15**% of full scale. TLV9062: **2** mV, **200** mV at the output, **20**% of full scale.
 
-**Sanity check.** A hundredfold difference in part cost may be a thousandfold difference in accuracy; for millivolt bridges the zero-drift part is the only one of the two that works without calibration.
+**Sanity check.** The two parts' worst-case budgets differ by a factor of **133**; for millivolt bridges the zero-drift part is the only one of the two that works without calibration.
 
 ### Example 10-09.6 · Ranges (tier B)
 
-**Setup.** (a) An OPA1611 on ±15 V drives 2 kΩ: find its guaranteed output range and its input common-mode range [3]. (b) A TLV9062 on 3.3 V drives 2 kΩ: find its output range and the input voltage above which it leaves its high-CMRR region [1].
+**Setup.** (a) An OPA1611 on ±15 V drives 2 kΩ: find its guaranteed output range and its input common-mode range [3]. (b) A TLV9062 on 3.3 V drives 2 kΩ: find its output range and the input voltage above which it leaves its high-CMRR region [1]. (The data sheet specifies swing and the CMRR boundary at a 5.5 V supply; assume they carry over to 3.3 V, which a careful design would confirm from the characteristic curves.)
 
 **Solution.**
 
@@ -279,19 +279,22 @@ with CMRR usually in dB ($20\log_{10}$ of the ratio) and PSRR in dB or µV/V. In
 | Ex 10-09.7e | TLV9062 closed-loop bandwidth | 100 | kHz |
 | Ex 10-09.7f | TLV9062 error at 1 kHz | -0.0050 | % |
 | Ex 10-09.7g | OPA333 error at 1 kHz | -3.85 | % |
+| T 10-09.n | OPA1611 over TLV9062 voltage noise | 15 | — |
+| Ex 10-09.3h | formula with V_p = 1 V | 4.30 | MHz |
+| Ex 10-09.5h | ratio of worst-case budgets | 133 | — |
 
-*Every value is recomputed by [verify_10_09.py](../verify/verify_10_09.py): closed-loop gains and bandwidths from the complex single-pole loop equation solved numerically (the −3 dB point by root finding), slew boundaries and full-power bandwidths by simulating the slew-limited response, and DC errors from data-sheet values with the conversions written out. Data-sheet values are read from the documents in R-182. The lab's ngspice netlist confirms Examples 10-09.1 and 10-09.2 with a single-pole op-amp macromodel.*
+*Every value is recomputed by [verify_10_09.py](../verify/verify_10_09.py): closed-loop gains and bandwidths from the complex single-pole loop equation solved numerically (the −3 dB point by root finding), slew boundaries and full-power bandwidths from the condition that a sine's maximum slope equals the slew rate (a restatement of $\text{SR}/(2\pi V_p)$, checked against a simulated slew-limited response only in the lab), and DC errors from data-sheet values with the conversions written out. Data-sheet values are read from the documents in R-182. The lab's ngspice netlists confirm Examples 10-09.1 and 10-09.2 with a single-pole op-amp macromodel (`opamp_model.cir`) and the slew-limited response of lab Part 2 with a current-clipped integrator (`slew.cir`).*
 
 ## 5. Simulate it
 
-The lab, [labs/10-09-lab](../labs/10-09-lab/README.md), has a notebook and an ngspice netlist:
+The lab, [labs/10-09-lab](../labs/10-09-lab/README.md), has a notebook and two ngspice netlists:
 
 1. Plots closed-loop magnitude and phase error against frequency for several noise gains and finds where each meets a 0.1% specification.
 2. Simulates slew-limited step and sine responses and measures the distortion of a sine above its full-power bandwidth.
 3. Runs a Monte Carlo DC error budget (offset, drift, bias currents) using each part's typical and maximum values.
 4. Tabulates the three data sheets side by side and computes figures of merit (GBW per milliampere, offset per drift).
 
-The netlist (`opamp_model.cir`) builds a single-pole op-amp from controlled sources and confirms the closed-loop gain and bandwidth of Examples 10-09.1 and 10-09.2.
+The netlist `opamp_model.cir` builds a single-pole op-amp from controlled sources and confirms the closed-loop gain and bandwidth of Examples 10-09.1 and 10-09.2; `slew.cir` adds a slew limit (a clipped input current into the integrating capacitor) and reproduces Part 2's slew-limited output.
 
 **Guided exercise (predict, then run).** **Before running Part 2**, predict: a TLV9062 follower is driven by a 2.5 V peak sine at 800 kHz, about twice its full-power bandwidth. What will the output look like, and roughly what amplitude will it reach? Then run it. (A triangle-like wave whose slopes are ±6.5 V/µs; in each half period of 0.625 µs it can travel about 4 V, so the peak falls to roughly 2 V.)
 
@@ -339,9 +342,9 @@ The netlist (`opamp_model.cir`) builds a single-pole op-amp from controlled sour
 
 ### Why it matters commercially
 
-- **Op-amps are a large, fragmented catalog business.** Broad catalogs of parts trade off speed, precision, noise, power and price; each design-in is a socket that lasts for the life of the customer's product. Data-sheet fluency is how engineers and acquirers evaluate an analog portfolio.
-- **Sensor-rich products are precision-amplifier products.** Wearables, industrial IoT and automotive systems multiply the number of low-power, low-drift amplifier sockets per product.
-- **Specification is competition.** Vendors compete on guaranteed numbers over temperature; the gap between typical and guaranteed values reflects how tightly a process and its test flow are controlled.
+- **Op-amps are a large, fragmented catalog business** **[Industry estimate]**. Broad catalogs of parts trade off speed, precision, noise, power and price; each design-in is a socket that lasts for the life of the customer's product. Data-sheet fluency is how engineers and acquirers evaluate an analog portfolio.
+- **Sensor-rich products are precision-amplifier products** **[Industry estimate]**. Wearables, industrial IoT and automotive systems multiply the number of low-power, low-drift amplifier sockets per product.
+- **Specification is competition** **[Industry estimate]**. Vendors compete on guaranteed numbers over temperature; the gap between typical and guaranteed values reflects how tightly a process and its test flow are controlled.
 
 ### Marketing vs Reality
 
@@ -404,7 +407,7 @@ Input bias current in CMOS parts is mostly junction leakage of the input protect
 
 <details><summary>Answer</summary>
 
-Nothing contractually: it is a characterization median. Only minimum and maximum values are guaranteed, under the stated conditions.
+Nothing contractually: it describes expected performance (vendors define it differently, often as a characterization mean or median). Only minimum and maximum values are guaranteed, under the stated conditions.
 
 </details>
 

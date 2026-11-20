@@ -1,0 +1,25 @@
+* Lab 10-09 -- a slew-limited follower: the TLV9062-like op-amp of Part 2 (GBW = 10 MHz, SR = 6.5 V/us) as an
+* integrator whose input current is clipped: C dv/dt = clip(g_m (v_in - v_out), +-I_max), with C = 1 nF,
+* g_m = 2 pi x 10 MHz x C (so the small-signal pole of the follower is at 10 MHz) and I_max = SR x C = 6.5 mA.
+* It is driven by a 2.5 V peak, 800 kHz sine; the output peak over the last five cycles of twenty is measured,
+* against the lab's key (computed in verify_10_09.py by integrating the same equation). It also confirms the
+* chapter's boundary: below SR/(2 pi V_p) = 413.8 kHz the same circuit follows a 2.5 V sine almost exactly.
+*
+* EXPECT vpk  key:README.md#Lab_10-09.b rtol=2e-3
+
+.options reltol=1e-6 abstol=1e-12
+VIN in 0 SIN(0 2.5 800k)
+BI 0 out I = min(max(0.0628318530718 * (v(in) - v(out)), -6.5e-3), 6.5e-3)
+C1 out 0 1n
+VIN2 in2 0 SIN(0 2.5 100k)
+BI2 0 out2 I = min(max(0.0628318530718 * (v(in2) - v(out2)), -6.5e-3), 6.5e-3)
+C2 out2 0 1n
+
+.control
+tran 1n 25u 0 1n
+meas tran vpk MAX v(out) from=18.75u to=25u
+meas tran vpk2 MAX v(out2) from=15u to=25u
+echo "vpk = $&vpk"
+echo "vpk2 = $&vpk2"
+.endc
+.end

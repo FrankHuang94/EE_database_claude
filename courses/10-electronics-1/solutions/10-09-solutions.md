@@ -36,7 +36,7 @@ Problems: [10-09 problems](../problems/10-09-problems.md) · Chapter: [10-09](..
 
 (a) Bias current through $R_2$: $250\text{ nA} \times 100\text{ kΩ}$ = **25** mV; offset × noise gain 11: **5.5** mV; worst case **30.5** mV.
 
-(b) With the compensating resistor, the bias-current term becomes $I_{OS}R_2$ = **17.5** mV, and the worst case **23** mV. The rule assumes $I_{OS} \ll I_B$; for this part the *maximum* offset current is 70% of the maximum bias current, so compensation cuts only 30% in the worst case (the typical values, 25 nA against 60 nA, do much better).
+(b) With the compensating resistor, the bias-current term becomes $I_{OS}R_2$ = **17.5** mV, and the worst case **23** mV. The rule assumes $I_{OS} \ll I_B$; for this part the *maximum* offset current is 70% of the maximum bias current, so compensation cuts the bias-current term by only **30**% and the worst-case total by **25**% (from 30.5 to 23 mV); with the typical values, 25 nA against 60 nA, it does much better.
 
 ### Solution 10-09.7
 
@@ -46,11 +46,11 @@ Problems: [10-09 problems](../problems/10-09-problems.md) · Chapter: [10-09](..
 
 ### Solution 10-09.8
 
-Two decades above 100 Hz, PSRR = **40** dB, and 100 mV of ripple appears as **1.0** mV at the input. Supply filtering matters most at the regulator's switching frequency.
+100 kHz is three decades above 100 Hz, so PSRR = 100 − 3 × 20 = **40** dB, and 100 mV of ripple appears as **1.0** mV at the input. Supply filtering matters most at the regulator's switching frequency.
 
 ### Solution 10-09.9
 
-(a) **2.5** mA, within the 5 mA limit. (b) **0.5** V peak (5 mA × 100 Ω). (c) $\omega CV_p = 2\pi \times 10\text{ kHz} \times 10\text{ nF} \times 2\text{ V}$ = **1.257** mA, feasible for current, but such a capacitive load would threaten stability (Course 12).
+(a) **2.0** mA peak, below the 5 mA short-circuit current. That comparison is not a guarantee: the short-circuit current is a *typical* value measured with the output shorted, not a limit up to which the output stays linear, and the output swing specification (within 50 mV of the rails at 10 kΩ [2]) degrades as the load current rises, so a 2 V peak on a 5 V supply (0.5 V from each rail) needs the swing-versus-current curves to confirm. (b) With a 2.5 mA budget, **0.25** V peak into 100 Ω. (c) $\omega CV_p = 2\pi \times 10\text{ kHz} \times 10\text{ nF} \times 2\text{ V}$ = **1.257** mA, feasible for current, but such a capacitive load would threaten stability (Course 12).
 
 ### Solution 10-09.10
 
@@ -68,7 +68,7 @@ Two decades above 100 Hz, PSRR = **40** dB, and 100 mV of ripple appears as **1.
 
 ### Solution 10-09.12
 
-$(V+) - 1.4\text{ V}$ = **0.4** V, only **22.2**% of the supply. An inverting configuration holds both inputs at a fixed reference voltage (say 0.2 V), inside the high-CMRR region, while the output swings rail to rail.
+$(V+) - 1.4\text{ V}$ = **0.4** V, only **22.2**% of the supply. An inverting configuration holds both inputs at a fixed reference voltage, but it also inverts and level-shifts: at a gain of −1 about $V_{ref}$, $v_o = 2V_{ref} - v_{in}$. With $V_{ref}$ = 0.2 V, inside the high-CMRR region, an output from 0 to 1.8 V needs an input from **−1.4** V to 0.4 V, which a single-supply source cannot provide; serving a 0 to 1.8 V input at unity gain would put the reference at **0.9** V, outside the region. The practical answers are an op-amp whose input has no crossover region (a zero-crossover design), or an inverting stage whose gain and reference are chosen together with the source's range.
 
 ---
 
@@ -101,12 +101,14 @@ $(V+) - 1.4\text{ V}$ = **0.4** V, only **22.2**% of the supply. An inverting co
 | 10-09.6c | worst case, uncompensated | 30.5 | mV |
 | 10-09.6d | offset-current term | 17.5 | mV |
 | 10-09.6e | worst case, compensated | 23 | mV |
+| 10-09.6f | reduction of the bias-current term | 30 | % |
+| 10-09.6g | reduction of the total | 25 | % |
 | 10-09.7a | typical drift to 125 °C | 53 | µV |
 | 10-09.7b | guaranteed change | 3.6 | mV |
 | 10-09.8a | PSRR at 100 kHz | 40 | dB |
 | 10-09.8b | input-referred ripple | 1.0 | mV |
-| 10-09.9a | current into 1 kΩ | 2.5 | mA |
-| 10-09.9b | largest sine into 100 Ω | 0.5 | V |
+| 10-09.9a | current into 1 kΩ | 2.0 | mA |
+| 10-09.9b | largest sine into 100 Ω | 0.25 | V |
 | 10-09.9c | capacitor current | 1.257 | mA |
 | 10-09.10a | minimum GBW | 2.025 | MHz |
 | 10-09.10b | τ | 78.61 | ns |
@@ -118,3 +120,5 @@ $(V+) - 1.4\text{ V}$ = **0.4** V, only **22.2**% of the supply. An inverting co
 | 10-09.11b | allowable drift | 0.0714 | µV/°C |
 | 10-09.12a | top of the high-CMRR region | 0.4 | V |
 | 10-09.12b | fraction of the supply | 22.2 | % |
+| 10-09.12c | lowest input needed with V_ref = 0.2 V | -1.4 | V |
+| 10-09.12d | reference for a 0 to 1.8 V input | 0.9 | V |

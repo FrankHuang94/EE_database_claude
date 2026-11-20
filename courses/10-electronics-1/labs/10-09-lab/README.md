@@ -14,12 +14,13 @@ The single-pole model and GBW (§3.2), slew rate (§3.3), DC errors, CMRR and PS
 
 - [10-09-opamps.ipynb](10-09-opamps.ipynb): the notebook (Parts 1–4).
 - [opamp_model.cir](opamp_model.cir): a single-pole op-amp macromodel in ngspice confirming Examples 10-09.1 and 10-09.2.
+- [slew.cir](slew.cir): ngspice slew-limited follower (Part 2): an integrator whose input current is clipped at SR × C.
 
 ## Procedure
 
 1. **In-band error (Part 1).** *Predict first:* up to what frequency does a TLV9062 at a noise gain of 10 hold 0.1% magnitude accuracy? Then plot magnitude and phase error against frequency for noise gains of 1, 10 and 100.
 2. **Slew-limited sine (Part 2, the chapter's guided exercise).** *Predict first:* the output amplitude of a TLV9062 follower driven with 2.5 V peak at 800 kHz. Then simulate the slew-limited response and plot it with the input.
-3. **DC budget (Part 3).** For Example 10-09.5's bridge (350 Ω arms, 2.5 V common mode, 0.1 V of supply variation, 25 to 125 °C), tabulate offset, drift, bias-current, CMRR and PSRR terms for the OPA333 and the TLV9062, and compare worst-case and root-sum-square totals.
+3. **DC budget (Part 3).** For Example 10-09.5's bridge (350 Ω arms, 2.5 V common mode on a 5 V supply, 0.1 V of supply variation, 25 to 125 °C), tabulate offset, drift, bias-current, CMRR and PSRR terms for the OPA333 and the TLV9062, and compare worst-case and root-sum-square totals.
 4. **Figures of merit (Part 4).** Compute GBW per milliampere of quiescent current for the three parts.
 5. **ngspice.** Run `python tools/run_spice.py 10-09`.
 
@@ -29,7 +30,7 @@ The single-pole model and GBW (§3.2), slew rate (§3.3), DC errors, CMRR and PS
 |---|---|---|
 | 1 | 0.1% bandwidth | about 4.5% of the closed-loop bandwidth |
 | 2 | Output | a near-triangle with ±6.5 V/µs slopes, about 2 V peak |
-| 3 | Budget | the OPA333's total is tens of microvolts, dominated by offset and CMRR; the TLV9062's is millivolts, dominated by offset |
+| 3 | Budget | the OPA333's total is about 15 µV, dominated by offset and drift; the TLV9062's is millivolts, dominated by offset; the CMRR term is zero because the common mode sits at the data sheets' $V_S/2$ test condition |
 | 4 | GBW per mA | similar for the two CMOS parts, lower for the low-noise bipolar part (noise costs current) |
 
 <!-- answer-key -->
@@ -38,10 +39,10 @@ The single-pole model and GBW (§3.2), slew rate (§3.3), DC errors, CMRR and PS
 | Lab 10-09.a | 0.1% bandwidth, TLV9062 at noise gain 10 | 44.755 | kHz |
 | Lab 10-09.b | slew-limited output peak | 1.982 | V |
 | Lab 10-09.c | linear-model output peak | 2.492 | V |
-| Lab 10-09.d | OPA333 worst-case total | 28.06 | µV |
-| Lab 10-09.e | OPA333 RSS total | 16.80 | µV |
-| Lab 10-09.f | TLV9062 worst-case total | 1.911 | mV |
-| Lab 10-09.g | TLV9062 RSS total | 1.620 | mV |
+| Lab 10-09.d | OPA333 worst-case total | 15.535 | µV |
+| Lab 10-09.e | OPA333 RSS total | 11.19 | µV |
+| Lab 10-09.f | TLV9062 worst-case total | 1.661 | mV |
+| Lab 10-09.g | TLV9062 RSS total | 1.601 | mV |
 | Lab 10-09.h | TLV9062 GBW per mA | 18.59 | MHz/mA |
 | Lab 10-09.i | OPA333 GBW per mA | 20.59 | MHz/mA |
 | Lab 10-09.j | OPA1611 GBW per mA | 11.11 | MHz/mA |

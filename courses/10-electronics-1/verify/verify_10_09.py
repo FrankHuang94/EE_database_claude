@@ -181,13 +181,15 @@ v.check("10-09.6b", 500e-6 * 11 * 1e3)
 v.check("10-09.6c", (250e-9 * 100e3 + 500e-6 * 11) * 1e3)
 v.check("10-09.6d", 175e-9 * 100e3 * 1e3)
 v.check("10-09.6e", (175e-9 * 100e3 + 500e-6 * 11) * 1e3)
+v.check("10-09.6f", (1 - 175e-9 / 250e-9) * 100)
+v.check("10-09.6g", (1 - (175e-9 * 100e3 + 500e-6 * 11) / (250e-9 * 100e3 + 500e-6 * 11)) * 100)
 v.check("10-09.7a", 0.53 * 100)
 v.check("10-09.7b", 2.0 + 1.6)
 psrr_100k = 100 - 20 * math.log10(100e3 / 100)
 v.check("10-09.8a", psrr_100k)
 v.check("10-09.8b", 0.1 * 10 ** (-psrr_100k / 20) * 1e3)
-v.check("10-09.9a", 2.5 / 1e3 * 1e3)
-v.check("10-09.9b", 5e-3 * 100)
+v.check("10-09.9a", 2.0 / 1e3 * 1e3)
+v.check("10-09.9b", 0.5 * 5e-3 * 100)
 v.check("10-09.9c", 2 * math.pi * 10e3 * 10e-9 * 2 * 1e3)
 tol10 = 2 * 1e-4
 g10 = brentq(lambda g: settle_time(2.0, 4e6, g, tol10) - 1e-6, 1e5, 1e9, xtol=1e-3)
@@ -203,6 +205,9 @@ v.check("10-09.11b", 0.1 * 50 / 70)
 v.assert_true("only the OPA333's guaranteed drift meets 0.0714 uV/C", 0.05 < 0.1 * 50 / 70 < 0.53 < 4.0)
 v.check("10-09.12a", 1.8 - 1.4)
 v.check("10-09.12b", (1.8 - 1.4) / 1.8 * 100)
+# inverting stage at gain -1 about V_ref: v_o = 2 V_ref - v_in; v_o = 1.8 V needs v_in = 2(0.2) - 1.8
+v.check("10-09.12c", brentq(lambda vin: 2 * 0.2 - vin - 1.8, -10, 10))
+v.check("10-09.12d", brentq(lambda vr: (2 * vr - 0.0) - 1.8, -10, 10))     # v_in = 0 -> v_o = 1.8 V
 
 # ================================================================== lab
 dc = abs(H(0.0, 130, 10e6, 10))
@@ -216,8 +221,9 @@ v.check("Lab 10-09.b", sol.y[0][tt > 15 * T].max())
 v.check("Lab 10-09.c", vp * abs(H(f0, 200, 10e6, 1)))
 
 
-def budget(vos, drift, ib, cmrr_db, psrr):
-    terms = [vos, drift * 100, ib * 175, 2.5 * 10 ** (-cmrr_db / 20), 0.1 * psrr]
+def budget(vos, drift, ib, cmrr_db, psrr, vcm=2.5, vs=5.0):
+    # V_OS is specified at V_CM = V_S/2 (both data sheets, R-182): only the departure from it costs CMRR
+    terms = [vos, drift * 100, ib * 175, abs(vcm - vs / 2) * 10 ** (-cmrr_db / 20), 0.1 * psrr]
     return sum(abs(x) for x in terms), math.sqrt(sum(x * x for x in terms))
 
 
@@ -230,5 +236,10 @@ v.check("Lab 10-09.g", r2 * 1e3)
 v.check("Lab 10-09.h", 10 / 0.538)
 v.check("Lab 10-09.i", 0.35 / 0.017)
 v.check("Lab 10-09.j", 40 / 3.6)
+
+# audit additions
+v.check("T 10-09.n", 16 / 1.1)                                   # e_n at 1 kHz, TLV9062 over OPA1611 (R-182)
+v.check("Ex 10-09.3h", 27e6 / (2 * math.pi * 1.0) / 1e6)          # SR / (2 pi V_p) with V_p = 1 V
+v.check("Ex 10-09.5h", 2e-3 / 15e-6)                              # TLV9062 2 mV against OPA333 15 uV
 
 v.finish()
