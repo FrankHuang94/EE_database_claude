@@ -53,14 +53,14 @@ It deliberately leaves out how many cycles anything takes, how many instructions
 
 ### 3.2 Design principles
 
-Four principles, from Patterson and Hennessy [7], explain most of RISC-V's choices.
+Four principles explain most of RISC-V's choices. The first three are the design principles of Patterson and Hennessy's instruction-set chapter [7]; the fourth is one of the "great ideas" of their first chapter.
 
 1. **Simplicity favours regularity.** All base instructions are 32 bits; register specifiers sit in the same bit positions in every format.
 2. **Smaller is faster.** 32 registers, not 128: each register specifier costs bits in every instruction, and a larger register file is slower and costs more power per access.
 3. **Good design demands good compromises.** Immediates are only 12 bits in most instructions, so that they fit beside three register fields; larger constants need two instructions (§3.4).
 4. **Make the common case fast.** Most constants are small and most branches are short, so the common forms take one instruction; the rare long forms take two.
 
-**The encoding budget.** A 32-bit instruction has 2³² patterns to share among all instructions. RISC-V spends its 7-bit major opcode (bits 6–0) on instruction groups, a 3-bit funct3 and, for register–register operations, a 7-bit funct7 to tell the members apart. Every register field costs $\log_2(\text{number of registers})$ bits: three fields of 5 bits each take 15 of the 32. With 64 registers, the three fields would take 18 bits, leaving 2 fewer bits for every immediate (Example 14-02.6). This is the concrete cost behind "smaller is faster".
+**The encoding budget.** A 32-bit instruction has 2³² patterns to share among all instructions. RISC-V spends its 7-bit major opcode (bits 6–0) on instruction groups, a 3-bit funct3 and, for register–register operations, a 7-bit funct7 to tell the members apart. Every register field costs $\log_2(\text{number of registers})$ bits: three fields of 5 bits each take 15 of the 32. With 64 registers, the three fields would take 18 bits. Formats with two register fields beside the immediate (I, S and B) would lose 2 immediate bits, and those with one (U and J) would lose 1 (Example 14-02.6). This is the concrete cost behind "smaller is faster".
 
 ### 3.3 The six RV32I formats
 
@@ -140,7 +140,7 @@ A core is named by its base and extensions: RV64IMAFDC, abbreviated **RV64GC** (
 | Memory in arithmetic | no (load–store) | no (load–store) | yes |
 | Condition codes | none: compare-and-branch | flags (NZCV) set by explicit instructions | flags set by most arithmetic |
 | Addressing | base + 12-bit offset | base + offset, base + scaled index, pre/post-increment | base + index × {1, 2, 4, 8} + displacement |
-| Byte order | instructions little-endian; data little-endian in practice (required by the RVA23 profile) | little-endian in practice (bi-endian capable) | little-endian |
+| Byte order | instructions little-endian; data little-endian in practice | little-endian in practice (bi-endian capable) | little-endian |
 
 **Arm A64.** Fixed 32-bit instructions like RISC-V, but with richer forms: load/store pair (`ldp`, `stp`, two registers in one instruction), post-increment addressing (`ldr w3, [x0], #4` loads and advances the pointer), conditional select, and condition flags. These pack more work into each instruction, lowering IC at some decoding cost. The older 32-bit Arm and Thumb instruction sets (with 16-bit Thumb encodings) are separate.
 
@@ -190,7 +190,7 @@ SUB changes funct7 to 0100000, which sets bit 30: **0x407302B3**. Stored in litt
 
 **Setup.** Decode the RV32I word 0xFE051CE3.
 
-**Solution.** In binary: 1111111 00000 01010 001 11001 1100011. The opcode 1100011 is BRANCH (B format); funct3 001 is BNE; rs1 = 01010 = x10 (a0); rs2 = 00000 = x0. The immediate is gathered from four places: imm[12] = bit 31 = 1; imm[10:5] = bits 30–25 = 111111; imm[4:1] = bits 11–8 = 1110; imm[11] = bit 7 = 1. So imm[12:1] = 1 1 111111 1110 and, with imm[0] = 0, the 13-bit value is 1111111111000, which as a signed number is **−8**. The instruction is `bne x10, x0, -8`: branch back two instructions if a0 is not zero.
+**Solution.** In binary: 1111111 00000 01010 001 11001 1100011. The opcode 1100011 is BRANCH (B format); funct3 001 is BNE; rs1 = 01010 = x10 (a0); rs2 = 00000 = x0. The immediate is gathered from four places: imm[12] = bit 31 = 1; imm[10:5] = bits 30–25 = 111111; imm[4:1] = bits 11–8 = 1100; imm[11] = bit 7 = 1. So imm[12:1] = 1 1 111111 1100 and, with imm[0] = 0, the 13-bit value is 1111111111000, which as a signed number is **−8**. The instruction is `bne x10, x0, -8`: branch back two instructions if a0 is not zero.
 
 **Units check.** The offset is in bytes; −8 is two 4-byte instructions back.
 
@@ -327,7 +327,7 @@ The lab, [labs/14-02-lab](../labs/14-02-lab/README.md), is a notebook that uses 
 - **Profiles.** RVA23 (version 1.0, ratified in Oct 2024) is the profile for 64-bit application processors. It makes the vector (V) and hypervisor extensions mandatory, where RVA22 left them optional, and Google described it as the baseline requirement for the Android RISC-V ABI [2, R-202] **[Established]**.
 - **RISC-V licensing.** RISC-V International, a non-profit founded in 2015 and incorporated in Switzerland, states that there is no fee to use the ISA and that implementations may be proprietary and closed-source; using the RISC-V *trademark* requires a licence, granted to members for compliant implementations [3, R-203] **[Established]**.
 - **Arm's model and its economics.** Arm's Form 20-F for the year to 31 Mar 2026 lists five licensing models: Compute Subsystems (CSS), Arm Total Access, Arm Flexible Access, technology licence agreements (TLAs, one core design for a fixed fee) and architecture licence agreements (ALAs, the right to design compliant cores). "Regardless of the license model", Arm receives a royalty on substantially every chip, set as a percentage of the chip's average selling price or a fixed amount per chip, with rates that typically fall as volume grows. Revenue was $4,920 M: royalties $2,613 M (53%) and licence and other revenue $2,307 M [4, R-204] **[Established]**.
-- **x86.** AMD's rights rest on its 2009 settlement and patent cross-licence with Intel: Intel paid AMD $1.25 billion, the licences are royalty-free, and the agreement terminates automatically if either party undergoes a change of control. AMD's latest 10-K still describes the x86 instruction set as "controlled by Intel" [5, R-205] **[Established]**. In Oct 2024 the two companies formed the x86 Ecosystem Advisory Group to align their extensions; at its first anniversary they reported agreement on FRED (event delivery), AVX10 (vectors), ChkTag (memory tagging) and ACE (matrix extensions) [6, R-206] **[Established]**.
+- **x86.** AMD's rights rest on its 2009 settlement and patent cross-licence with Intel: Intel paid AMD $1.25 billion, the licences are royalty-free, and the agreement terminates automatically if either party undergoes a change of control. AMD's latest 10-K still describes the x86 instruction set as "controlled by Intel" [5, R-205] **[Established]**. In Oct 2024 the two companies formed the x86 Ecosystem Advisory Group to align their extensions; at its first anniversary AMD reported FRED (event delivery) finalized, AVX10 (vectors) established, a ChkTag memory-tagging specification introduced, and ACE (matrix extensions) accepted [6, R-206] **[Established]**.
 - **x86 instruction length.** Intel's current manual (Sep 2026) states that "the maximum length of an Intel 64 and IA-32 instruction remains 15 bytes" [8, R-207] **[Established]**.
 
 ### Why it matters commercially
@@ -342,7 +342,7 @@ The lab, [labs/14-02-lab](../labs/14-02-lab/README.md), is a notebook that uses 
 
 - **"RISC-V is free."** *Reality:* the ISA licence is free; cores, verification, compilers, operating-system support and security certification are not. *Sanity check:* ask what the company pays for its cores, toolchain and verification, and how much of its software runs on RISC-V today.
 - **"Our ISA makes our chip efficient."** *Reality:* the ISA sets decoding cost and instruction count, but process, microarchitecture, caches and design quality dominate efficiency. *Sanity check:* compare chips of the same process node and power class across ISAs.
-- **"Licensing revenue is surging."** *Reality:* Arm's licence and other revenue rose from $1,839 M to $2,307 M in FY2026, but licence revenue from related parties (SoftBank-linked) rose from $418 M to $1,009 M, more than the whole increase [4]. *Sanity check:* read the related-party note before extrapolating licence growth to the market.
+- **"Licensing revenue is surging."** *Reality:* Arm's licence and other revenue rose from $1,839 M to $2,307 M in FY2026, but licence and other revenue from related parties rose from $418 M to $1,009 M, more than the whole increase [4]. *Sanity check:* read the related-party note before extrapolating licence growth to the market.
 - **"Drop-in compatible."** *Reality:* compatibility is defined by the specification and its profiles; custom extensions and missing optional ones break binaries. *Sanity check:* ask which profile the chip conforms to, and whether it passes the official compatibility tests.
 
 ### Questions for engineering leaders

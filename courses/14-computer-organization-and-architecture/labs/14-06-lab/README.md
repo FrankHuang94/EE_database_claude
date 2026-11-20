@@ -71,7 +71,7 @@ Icarus Verilog, as in [Lab 14-05](../14-05-lab/README.md#tools). The notebook's 
 ### Answers
 
 1. Different combinations can give the same total. One stall too many and one flush too few, for example, cancel out. Checking each count separately pins down which mechanism misbehaves.
-2. The three loads (`lw ra`, `lw s0`, `lw s1`) are followed by `addi sp, sp, 16` and `ret`. Neither of those reads a register loaded by the instruction just before it: `ret` reads ra, which was loaded three instructions earlier, and `addi` reads sp. The compiler-style ordering of an epilogue naturally hides load latency.
+2. The three loads (`lw ra`, `lw s0`, `lw s1`) are followed by `addi sp, sp, 16` and `ret`. Neither of those reads a register loaded by the instruction just before it: `ret` reads ra, which was loaded four instructions earlier, and `addi` reads sp. The compiler-style ordering of an epilogue naturally hides load latency.
 3. No instruction writes a register or memory before MEM (stores) or WB (registers), and the two wrong-path instructions are only in IF and ID when the branch resolves in EX. Turning them into bubbles discards work that has no visible effect yet.
 
 ## Optional hardware extension

@@ -152,7 +152,7 @@ The assembler cannot finish an instruction like `call printf`, because it does n
 2. *resolves* each undefined symbol to a definition in another object file or library (failing with "undefined reference" if there is none);
 3. *applies* each relocation by computing the now-known offset and patching the immediate, splitting it into AUIPC and JALR parts exactly as in 14-02 §3.4.
 
-**Linker relaxation (RISC-V).** The assembler must emit the two-instruction call because it cannot know the distance. If the linker finds that the target is within JAL's ±1 MiB, it may replace the pair with a single JAL. The assembler marks each call it allows to shrink with an extra `R_RISCV_RELAX` relocation [3]. Shrinking one call moves every later instruction 4 bytes earlier, so the linker must recompute every offset that crosses it (Problem 14-03.11). For the same reason, when relaxation is enabled the assembler leaves even branches to labels in the same file as relocations (`R_RISCV_BRANCH`) for the linker to finish. Relaxation makes programs smaller and faster (Example 14-03.5) at the cost of a more complex linker. Fixed-length ISAs without it pay for distant calls on every call.
+**Linker relaxation (RISC-V).** The assembler must emit the two-instruction call because it cannot know the distance. If the linker finds that the target is within JAL's ±1 MiB, it may replace the pair with a single JAL. The assembler marks each call it allows to shrink with an extra `R_RISCV_RELAX` relocation [3]. Shrinking one call moves every later instruction 4 bytes earlier, so the linker must recompute every offset that crosses it (Problem 14-03.11). For the same reason, when relaxation is enabled the assembler leaves even branches to labels in the same file as relocations (`R_RISCV_BRANCH`) for the linker to finish. Relaxation makes programs smaller and faster (Example 14-03.5) at the cost of a more complex linker. Without relaxation, a fixed-length ISA must either emit the long two-instruction form for every call whose target is unknown at assembly time, or limit calls to the short form's range.
 
 **Static and dynamic linking.** A statically linked executable contains copies of every library function it uses. A dynamically linked one leaves calls to shared libraries (`.so` files on Linux, DLLs on Windows) unresolved until load time or first use, through small stubs (the procedure linkage table, PLT) and a table of addresses (the global offset table, GOT). Shared libraries save memory and let a library be updated without relinking its users, but only if the update keeps the ABI (§3.5).
 
@@ -282,9 +282,9 @@ max3:                     # int max3(int a, int b, int c)
 
 **Units check.** Frame size in bytes: 2 registers × 4 bytes = 8, rounded up to 16.
 
-**Sanity check.** Of 16 instructions, only 3 compare or move values; the rest are call overhead. This is why compilers inline small functions like `max`, which would reduce `max3` to a handful of instructions with no frame.
+**Sanity check.** Of 16 instructions, only 3 do the computation: the 2 compares and the one `mv` that picks the larger value. The rest, including the moves that shuffle arguments around the calls, are call overhead. This is why compilers inline small functions like `max`, which would reduce `max3` to a handful of instructions with no frame.
 
-### Example 14-03.4 · Recursion, counted exactly (tier C)
+### Example 14-03.4 · Recursion, counted exactly (tier B)
 
 **Setup.** Recursive Fibonacci, `int fib(int n) { return n < 2 ? n : fib(n-1) + fib(n-2); }`, translated by hand:
 
@@ -331,7 +331,7 @@ For $n$ = 10, $F(11)$ = 89: the result is $F(10)$ = **55**, there are $2 \times 
 
 ### Example 14-03.5 · Linking and relaxation (tier B)
 
-**Setup.** A program has two files, `main.s` (`_start: li a0, 10; call fib; ebreak`) and the `fib.s` of Example 14-03.4, linked with `.text` starting at 0x10000. (a) How many call relocations does each object file contain? (b) Without relaxation, find the AUIPC and JALR immediates of the call in `main`, and the program's code size. (c) With relaxation, find the JAL offset, the code size and the bytes saved. (d) How many more instructions does `fib(10)` execute without relaxation?
+**Setup.** A program has two files, `main.s` (`_start: li a0, 10; call fib; ebreak`) and the `fib.s` of Example 14-03.4, linked with `.text` starting at 0x10000. (a) How many call relocations does each object file contain? (b) Without relaxation, find the AUIPC and JALR immediates of the call in `main`, and the program's code size. (c) With relaxation, find the JAL offset, the code size and the bytes saved. (d) How many instructions does `fib(10)` execute without relaxation, and how many more is that than with it?
 
 **Solution.** (a) Each `call` produces one `R_RISCV_CALL_PLT` relocation (plus `R_RISCV_RELAX`): **1** in `main.o` and **2** in `fib.o`.
 
@@ -339,7 +339,7 @@ For $n$ = 10, $F(11)$ = 89: the result is $F(10)$ = **55**, there are $2 \times 
 
 (c) With relaxation each call becomes one JAL. `main` shrinks to 12 bytes, so `fib` starts at 0x1000C, and the JAL at 0x10004 has offset **8**. The code is 12 + 72 = **84** bytes, a saving of **12** bytes (3 calls × 4 bytes).
 
-(d) Every call executed inside `fib(10)` costs one more instruction without relaxation. The recursion makes 177 − 1 = 176 calls from within `fib`, so it executes 1851 + 176 = **2027** instructions.
+(d) Every call executed inside `fib(10)` costs one more instruction without relaxation. The recursion makes 177 − 1 = 176 calls from within `fib`, so it executes 1851 + 176 = **2027** instructions, **176** more than with relaxation.
 
 **Units check.** Offsets and sizes in bytes; counts in instructions.
 
@@ -387,11 +387,17 @@ For $n$ = 10, $F(11)$ = 89: the result is $F(10)$ = **55**, there are $2 \times 
 | Ex 14-03.5g | code size with relaxation | 84 | bytes |
 | Ex 14-03.5h | bytes saved | 12 | bytes |
 | Ex 14-03.5i | fib(10) instructions without relaxation | 2027 | — |
+| Ex 14-03.5j | extra instructions without relaxation | 176 | — |
 | Ex 14-03.6a | offset of d in struct A | 16 | bytes |
 | Ex 14-03.6b | size of struct A | 24 | bytes |
 | Ex 14-03.6c | size reordered | 16 | bytes |
 | Ex 14-03.6d | struct P under ILP32 | 8 | bytes |
 | Ex 14-03.6e | struct P under LP64 | 16 | bytes |
+| Fig 14-03.a | fib(6) instructions | 255 | — |
+| Fig 14-03.b | fib(6) calls | 25 | — |
+| Fig 14-03.c | fib(6) peak stack depth | 80 | bytes |
+| Txt 14-03.a | clang 18 -O2 increment loop, 100 elements | 504 | — |
+| Txt 14-03.b | clang 18 -O0 increment loop, 100 elements | 1718 | — |
 
 ## 5. Simulate it
 
@@ -442,7 +448,7 @@ The lab, [labs/14-03-lab](../labs/14-03-lab/README.md), drives the real toolchai
 ### State of the art (as of Nov 2026)
 
 - **The RISC-V psABI** (the ELF processor-specific ABI, maintained by RISC-V International's psABI task group) defines the register roles, the 16-byte stack alignment, the ILP32/LP64 families and the relocation types used in this chapter, including the AUIPC + JALR call that the linker may relax to JAL [2, 3, R-209] **[Established]**.
-- **Toolchains.** GCC and LLVM both support RISC-V, and the lab's clang 18, LLVM assembler and LLD linker handle every listing in this chapter. RVA23 is the baseline for the Android RISC-V ABI (14-02, [R-202](../../../reference/research-log.md#r-202--risc-v-rva23-profile)), so compilers targeting RISC-V phones and servers can assume vector and hypervisor support **[Established]**.
+- **Toolchains.** GCC and LLVM both support RISC-V, and the lab's clang 18, LLVM assembler and LLD linker handle every listing in this chapter. RVA23 is the baseline for the Android RISC-V ABI (14-02, [R-202](../../../reference/research-log.md#r-202--risc-v-rva23-profile)), so compilers targeting Android on RISC-V can assume the vector extension **[Established]**. (The profile's hypervisor extension matters to operating systems, not to user-mode code generation.)
 - **Control-flow integrity.** The current RISC-V manuals define two control-flow-integrity extensions: Zicfilp requires indirect jumps and calls to land on a landing-pad (LPAD) instruction, and Zicfiss keeps a shadow copy of return addresses on a separate shadow stack, defending against attacks that overwrite the return address in a stack frame [1, R-201] **[Established]**.
 
 ### Why it matters commercially
@@ -556,7 +562,7 @@ Now work the [problem set](../problems/14-03-problems.md).
 
 ## 14. Sources
 
-1. RISC-V International, *The RISC-V Instruction Set Manual, Volume I: Unprivileged Architecture*, version 20260120: chapter "Control-flow Integrity (CFI)" (Zicfilp landing pads, Zicfiss shadow stack); the RV32I chapter on the standard calling-convention registers. [R-201](../../../reference/research-log.md#r-201--risc-v-unprivileged-isa-manual-version-20260120)
+1. RISC-V International, *The RISC-V Instruction Set Manual, Volume I: Unprivileged Architecture*, version 20260120: chapter "Control-flow Integrity (CFI)" (Zicfilp landing pads, Zicfiss shadow stack). [R-201](../../../reference/research-log.md#r-201--risc-v-unprivileged-isa-manual-version-20260120)
 2. RISC-V International, *RISC-V ELF psABI*, "RISC-V Calling Conventions" (riscv-cc.adoc, read Nov 2026): integer register convention, integer calling convention, stack alignment, ILP32 and LP64 type sizes. [R-209](../../../reference/research-log.md#r-209--risc-v-elf-psabi-calling-convention-relocations-and-relaxation)
 3. RISC-V International, *RISC-V ELF psABI*, "ELF Object Files" (riscv-elf.adoc, read Nov 2026): procedure-call relocations and function-call relaxation. [R-209](../../../reference/research-log.md#r-209--risc-v-elf-psabi-calling-convention-relocations-and-relaxation)
 

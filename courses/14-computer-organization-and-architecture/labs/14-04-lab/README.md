@@ -20,7 +20,7 @@ Python with NumPy and Matplotlib. Part 1 also uses the LLVM tools of [Lab 14-03]
 
 ## Procedure
 
-1. **Integers (Part 1).** Run MUL, MULH, MULHU, DIV and REM on the simulator for the cases of Example 14-04.2. Write a search for the smallest shift $k$ for which $M = \lceil 2^{32+k}/d \rceil$ divides exactly ($7M - 2^{32+k} \le 2^k$ for $d$ = 7, in general $dM - 2^{32+k} \le 2^k$). Run it for $d$ = 3, 7, 10 and 1000 and compare with clang's output.
+1. **Integers (Part 1).** Run MUL, MULH, MULHU, DIV and REM on the simulator for the cases of Example 14-04.2. Write a search for the smallest shift $k$ for which $M = \lceil 2^{32+k}/d \rceil$ divides exactly ($dM - 2^{32+k} \le 2^k$, a sufficient test that is also necessary for $d$ = 7, as Problem 14-04.7 shows). Run it for $d$ = 3, 7, 10 and 1000 and compare with clang's output.
 2. **A floating-point adder from integers (Part 2).** Implement addition of two positive FP32 numbers: unpack the fields, align with guard, round and sticky bits, add, normalize, and round to nearest even. *Predict first:* if you drop the sticky bit, will your adder still agree with the hardware?
 3. **Summation (Part 3).** Plot the relative error of sequential, pairwise and Kahan summation of the FP32 value 0.1 for $n$ from 10 to $10^6$.
 4. **Quantization (Part 4).** Quantize 4096 Gaussian samples to INT8, INT4 and MX-style FP4 (blocks of 32 with a power-of-two scale), and compare SQNR and bits per element.

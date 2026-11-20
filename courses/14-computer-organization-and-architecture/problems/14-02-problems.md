@@ -82,6 +82,10 @@ done: addi a0, t0, 0            ret                 done: ret
 
 **The economics of an ISA choice.** *The figures in this problem are hypothetical, chosen for the exercise; real licence terms are confidential and vary.* A microcontroller line will ship 40 million units a year for five years at an average selling price of $2.00. Option L licenses a ready-made core: a $1.5 M licence fee now and a royalty of 1.5% of the selling price on every unit, paid as units ship. Option O builds an in-house RISC-V core: $6 M of engineering now and $0.5 M a year to maintain it, with no royalty. Treat each year's flows as occurring at year-end, and discount at 10% a year. (a) Find the present value of each option's cost. (b) Find the annual volume at which the two cost the same. (c) At 80 million units a year, which is cheaper, and by how much in present value? (d) Name three costs or risks this comparison leaves out.
 
+### Problem 14-02.15 [B]
+
+**The S format.** (a) Encode `sw x15, 40(x10)` in hexadecimal. (b) Decode 0xFEA40623: give the format, the operation, the registers and the signed offset. (c) Why does the S format split its immediate between bits 31–25 and bits 11–7, instead of placing all 12 bits where the I format puts them?
+
 ---
 
 ## Objective coverage
@@ -89,7 +93,7 @@ done: addi a0, t0, 0            ret                 done: ret
 | Learning objective (chapter 14-02) | Problems |
 |---|---|
 | 1. What an ISA specifies and leaves to the implementation | 3, 4, 9, 12 |
-| 2. Encode and decode RV32I in all formats | 1, 2, 6, 7 |
+| 2. Encode and decode RV32I in all formats | 1, 2, 6, 7, 15 |
 | 3. Build constants; compute the reach of branches and jumps | 3, 5, 8 |
 | 4. Contrast RISC-V, A64 and x86-64; relate to the iron law | 9, 10, 11, 13 |
 | 5. Open, architecture-licence and core-licence models | 14 |

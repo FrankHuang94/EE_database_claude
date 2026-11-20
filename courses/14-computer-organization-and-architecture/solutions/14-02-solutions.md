@@ -119,7 +119,7 @@ AUIPC (U format) is 0x301 in bits 31–12, rd = 00110 and opcode 0010111, giving
 
 (b) The saving needed is 1 − 32/48 = **33.3**%.
 
-(c) The loop's saving is exactly 16/36 = 44.4%, giving 48 × 20/36 = **26.67** KiB. But a five-instruction loop that happens to use mostly compressible instructions is not a program. The specification's typical whole-program saving is 25–30%, and at those figures the code still would not fit (it needs 33.3%). Plan on measured results for the actual code, compiled with the actual compiler.
+(c) The loop's saving is exactly 16/36 = 44.4%, giving 48 × 20/36 = **26.67** KiB. But a six-instruction loop (nine instructions in the whole function) that happens to use mostly compressible instructions is not a program. The specification's typical whole-program saving is 25–30%, and at those figures the code still would not fit (it needs 33.3%). Plan on measured results for the actual code, compiled with the actual compiler.
 
 ### Solution 14-02.12
 
@@ -161,7 +161,7 @@ At this volume licensing is cheaper by **1.846** $M.
 
 (b) Setting $1.5 + 0.03V \times 3.7908 = 7.895$, with $V$ in millions of units a year, gives $V$ = **56.24** million units a year.
 
-(c) At 80 M units a year, option L costs $1.5 + 2.4 \times 3.7908$ = **10.60** $M. Building is cheaper by **2.70** $M. Royalties scale with volume and price; engineering is a fixed cost. The finance analogy is operating against financial leverage: option O has high fixed cost and low marginal cost.
+(c) At 80 M units a year, option L costs $1.5 + 2.4 \times 3.7908$ = **10.60** $M. Building is cheaper by **2.70** $M. Royalties scale with volume and price; engineering is a fixed cost. The finance analogy is operating leverage: option O has high fixed cost and low marginal cost.
 
 (d) It leaves out:
 
@@ -173,6 +173,16 @@ At this volume licensing is cheaper by **1.846** $M.
 - the middle option of licensing a commercial RISC-V core;
 - the strategic value of custom extensions and of not depending on a licensor;
 - the licence's change-of-control and assignment terms.
+
+### Solution 14-02.15
+
+(a) SW is STORE (opcode 0100011) with funct3 010. The fields are rs2 = x15 = 01111 (the data), rs1 = x10 = 01010 (the base) and imm = 40 = 0000001 01000. The S format puts imm[11:5] = 0000001 in bits 31–25 and imm[4:0] = 01000 in bits 11–7:
+
+0000001 01111 01010 010 01000 0100011 = **0x02F52423**.
+
+(b) In binary: 1111111 01010 01000 000 01100 0100011. Opcode 0100011 is STORE (S format), and funct3 000 is SB (store byte). rs2 = 01010 = x10, the value stored; rs1 = 01000 = x8, the base. The immediate joins bits 31–25 (1111111) and bits 11–7 (01100) into 1111111 01100, which as a 12-bit signed number is **−20**. The instruction is `sb x10, -20(x8)`: store the low byte of x10 at x8 − 20.
+
+(c) A store writes no register, so it has no rd, but it reads two registers. The S format keeps rs1 and rs2 in the same bit positions as every other format, so the register file can be read before the format is known. The immediate therefore fills the two leftover slots, bits 31–25 and the rd position 11–7. Its sign stays in bit 31, as in every format, so sign extension can start at once.
 
 ---
 
@@ -241,3 +251,5 @@ At this volume licensing is cheaper by **1.846** $M.
 | 14-02.14d | break-even volume | 56.24 | M units/yr |
 | 14-02.14e | present value of L at 80 M units/yr | 10.60 | $M |
 | 14-02.14f | advantage of O at 80 M units/yr | 2.70 | $M |
+| 14-02.15a | encoding of sw x15, 40(x10) | 0x02F52423 | — |
+| 14-02.15b | decoded offset of 0xFEA40623 | −20 | bytes |

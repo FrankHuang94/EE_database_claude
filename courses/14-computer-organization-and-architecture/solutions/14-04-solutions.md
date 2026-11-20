@@ -66,7 +66,8 @@ The error term is below $2^{32}/(3 \cdot 2^{33}) = 1/6$. Write $x = 3q + r$ with
 The error term is $xM_k/2^{32+k} - x/7 = x e_k / (7 \cdot 2^{32+k})$. With $x = 7q + r$, the floor stays $q$ as long as $r/7 + x e_k/(7 \cdot 2^{32+k}) < 1$, that is, $r + x e_k/2^{32+k} < 7$.
 
 - **Sufficient:** the worst case has $r = 6$ and $x$ near $2^{32}$, where the condition becomes $e_k \cdot 2^{32}/2^{32+k} < 1$, which holds if $e_k \le 2^k$ (with equality, $x < 2^{32}$ keeps it strict).
-- **Not met for $k \le 2$:** $e_k$ exceeds $2^k$ in every row of the table.
+- **Necessary:** take the largest 32-bit $x$ with remainder 6. Since $2^{32} \bmod 7$ = 4, that is $x^* = 2^{32} - 5$. For it the condition reads $6 + x^*e_k/2^{32+k} < 7$, i.e. $x^*e_k < 2^{32+k}$. If $e_k \ge 2^k + 1$, then $x^*e_k \ge (2^{32} - 5)(2^k + 1) = 2^{32+k} + 2^{32} - 5 \cdot 2^k - 5 > 2^{32+k}$, because $2^{32}$ dwarfs $5 \cdot 2^k + 5$. So the floor fails at $x^*$. Since $e_k$ is an integer, the shift works if and only if $e_k \le 2^k$.
+- **Not met for $k \le 2$:** $e_k$ exceeds $2^k$ in every row of the table. Indeed $x^*$ = 4,294,967,291 gives 613,566,756 for all three shifts, while $\lfloor x^*/7 \rfloor$ = 613,566,755.
 
 (b) For $k$ = 2 the condition fails when $r = 6$ and $5x/2^{34} \ge 1$, that is, $x \ge 2^{34}/5 = 3\,435\,973\,836.8$. The smallest $x \ge 3\,435\,973\,837$ with $x \bmod 7 = 6$ is **3435973841**. There the sequence gives 490,853,406 instead of the correct 490,853,405. Every smaller $x$ is safe: for $r \le 5$ the condition needs $5x/2^{34} \ge 2$, which is beyond $2^{32}$.
 
@@ -138,6 +139,39 @@ The bound is a worst case. Typical errors grow more like $\sqrt{K}u$ when roundi
 
 (c) Exact fixed-point accumulation inside a block needs only a small integer adder tree: no alignment shifters, no rounding, and no dependence on summation order. Only the block results, scaled by the two blocks' power-of-two scales (an exponent addition), need a floating-point accumulator. This is a large part of why block-scaled FP4 is cheap in hardware.
 
+### Solution 14-04.15
+
+(a) 200 = 1100 1000 in binary and $d$ = 7. Each step shifts the next bit into $T = 2R + x_i$ and subtracts 7 if it fits:
+
+<!-- trace 200/7 -->
+
+| Step | Bit in | $T$ | $T \ge 7$? | $R$ after |
+|---|---|---|---|---|
+| 1 | 1 | 1 | no (0) | 1 |
+| 2 | 1 | 3 | no (0) | 3 |
+| 3 | 0 | 6 | no (0) | 6 |
+| 4 | 0 | 12 | yes (1) | 5 |
+| 5 | 1 | 11 | yes (1) | 4 |
+| 6 | 0 | 8 | yes (1) | 1 |
+| 7 | 0 | 2 | no (0) | 2 |
+| 8 | 0 | 4 | no (0) | 4 |
+
+The quotient bits read 0001 1100 = **28**, and the remainder is **4**.
+
+(b) 28 × 7 + 4 = 196 + 4 = 200, and 4 < 7.
+
+(c) At one bit per cycle a 32-bit quotient needs **32** cycles. At two bits per cycle (radix 4) it needs **16**.
+
+(d) The remainder entering a step satisfies $R < d$, so $T = 2R + x_i \le 2(d - 1) + 1 = 2d - 1 < 2d$. $T$ therefore contains $d$ at most once, and a single compare-and-subtract settles the bit. In the trace, $T$ never exceeds 2 × 7 − 1 = 13 (its largest value is 12).
+
+### Solution 14-04.16
+
+(a) bfloat16 has $p$ = 8, so $p^2$ = 64. FP8 E4M3 has $p$ = 4, so $p^2$ = 16: **4** FP8 multipliers fit in one bfloat16 multiplier's area. FP4 E2M1 has $p$ = 2, so $p^2$ = 4, and **4** FP4 multipliers fit in one FP8 multiplier's area.
+
+(b) Doubling achieves 2 of the model's 4, i.e. **50**% of the potential gain.
+
+(c) Any three of the following. Operand delivery: each halving of width halves the bytes per value, but feeding four times as many multipliers needs twice the bytes per cycle from registers and buffers. Accumulators: products are summed in FP32 or wide integers whatever the input width, so the adders do not shrink. Exponent and alignment logic, and per-block scaling for MX formats. Wiring and control. The multiplier itself is only part of a MAC unit's area and energy.
+
 ---
 
 ## Answer key
@@ -167,6 +201,9 @@ The bound is a worst case. Typical errors grow more like $\sqrt{K}u$ when roundi
 | 14-04.6b | total shift | 33 | bits |
 | 14-04.7a | smallest failing x for k = 2 | 3435973841 | — |
 | 14-04.7b | low 32 bits of M3 | 0x24924925 | — |
+| 14-04.7c | necessity witness x* | 4294967291 | — |
+| 14-04.7d | shifted result at x*, k = 0 to 2 | 613566756 | — |
+| 14-04.7e | true quotient at x* | 613566755 | — |
 | 14-04.8a | ulp of FP32 at 1000 | 6.1035e-5 | — |
 | 14-04.8b | smallest unrepresentable integer | 16777217 | — |
 | 14-04.8c | it rounds to | 16777216 | — |
@@ -189,3 +226,12 @@ The bound is a worst case. Typical errors grow more like $\sqrt{K}u$ when roundi
 | 14-04.13d | dequantized value | 2.4980 | — |
 | 14-04.14a | INT8 accumulator bits, K = 4096 | 27 | bits |
 | 14-04.14b | exact FP4 block accumulator bits | 14 | bits |
+| 14-04.15a | quotient of 200 ÷ 7 | 28 | — |
+| 14-04.15b | remainder | 4 | — |
+| 14-04.15c | cycles at one bit per cycle | 32 | — |
+| 14-04.15d | cycles at two bits per cycle | 16 | — |
+| 14-04.15e | largest possible T for d = 7 | 13 | — |
+| 14-04.15f | largest T in the trace | 12 | — |
+| 14-04.16a | FP8 multipliers per bfloat16 multiplier | 4 | — |
+| 14-04.16b | FP4 multipliers per FP8 multiplier | 4 | — |
+| 14-04.16c | share of the model's gain | 50 | % |

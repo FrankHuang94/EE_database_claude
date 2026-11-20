@@ -24,7 +24,7 @@
 A processor is judged by one number above all others: how long it takes to do the work you care about, and, increasingly, how much energy it spends doing it. Everything in this course (instruction sets, pipelines, caches, multicore, GPUs, accelerators) is a way to shorten that time or cut that energy, and every design decision trades one against the other and against area, which is cost. This chapter builds the measuring stick. The **iron law** splits execution time into three factors owned by different people (the compiler writer, the microarchitect and the circuit designer); **Amdahl's law** says how much any one improvement can help; the right **mean** turns many benchmark results into a fair summary; and the physics of **dynamic and leakage power** explains why clock rates stopped rising and why performance per watt is now the figure of merit.
 
 - **Product claims** ("2× faster", "40% better performance per watt") are statements about these quantities, usually measured under conditions chosen by the vendor.
-- **Datacenter economics** are set by performance per watt: power and cooling, not chip price alone, dominate the cost of running a server for years.
+- **Datacenter economics** depend on performance per watt as well as purchase price: a server draws power and needs cooling for years, so electricity and cooling are a large part of its lifetime cost.
 - **Battery life** in phones, wearables and IoT devices is energy per task, not power.
 - **Parallel hardware** (multicore, GPUs, accelerators) is limited by the part of the work that does not parallelize, which Amdahl's law quantifies.
 
@@ -157,7 +157,7 @@ $$
 f_{max} \propto \frac{(V - V_{TH})^a}{V}, \qquad 1 < a \le 2 ,
 $$
 
-with $a$ near 1 for velocity-saturated short-channel devices. Well above threshold, $f_{max}$ is roughly proportional to $V$. Then running at the highest frequency each voltage allows gives
+with $a$ near 1 for velocity-saturated short-channel devices. Over the range where DVFS normally operates, this curve is usually fitted by a straight line, and the simplest first-order model takes $f_{max} \propto V$. Treat that as an empirical fit, not a law. Well above threshold the alpha-power law grows more slowly than $V$ (for $a$ near 1 it nearly flattens), so near the top of the range each extra hertz costs more voltage than proportion suggests, and power climbs even faster than the cube below. With the first-order fit, running at the highest frequency each voltage allows gives
 
 $$
 P_{dyn} \propto V^2f \propto f^3, \qquad E_{op} = \alpha CV^2 \propto f^2 :
@@ -227,7 +227,7 @@ ED²P does not change when one design is simply run at a different voltage. It t
 
 **Sanity check.** Sixteen processors at 6.4× is 40% efficiency; the scaled speedup is higher because the parallel part grew with the machine while the serial part did not.
 
-### Example 14-01.4 · Dynamic and static power (tier A)
+### Example 14-01.4 · Dynamic and static power (tier B)
 
 **Setup.** A processor core has an effective switched capacitance $\alpha C$ of 1.5 nF. It runs at 0.9 V and 3.2 GHz, and leaks 1.2 W at that voltage. Find its dynamic power, the energy per clock cycle and the total power.
 
@@ -283,6 +283,7 @@ Option 2 saves **20.73**% of the energy and takes a third longer.
 | Ex 14-01.4a | dynamic power | 3.888 | W |
 | Ex 14-01.4b | energy per cycle | 1.215 | nJ |
 | Ex 14-01.4c | total power | 5.088 | W |
+| Ex 14-01.4d | leakage share of total power | 24 | % |
 | Ex 14-01.5a | dynamic power at 0.75 V, 2.4 GHz | 2.025 | W |
 | Ex 14-01.5b | ratio to full speed | 0.5208 | — |
 | Ex 14-01.5c | energy at full speed | 5.088 | J |
@@ -290,11 +291,19 @@ Option 2 saves **20.73**% of the energy and takes a third longer.
 | Ex 14-01.5e | run time at low speed | 1.333 | s |
 | Ex 14-01.5f | energy at low speed | 4.033 | J |
 | Ex 14-01.5g | energy saved | 20.73 | % |
+| Ex 14-01.5h | leakage current | 1.333 | A |
+| Ex 14-01.5i | leakage power at 0.75 V | 1.0 | W |
+| Ex 14-01.5j | dynamic-energy ratio | 0.694 | — |
 | Ex 14-01.6a | workload speedup of B | 9.1 | — |
 | Ex 14-01.6b | arithmetic mean of ratios | 5.05 | — |
 | Ex 14-01.6c | geometric mean of ratios | 1 | — |
 | Sim 14-01.a | supply power, 1 pF switched at 100 MHz, 1 V | 100 | µW |
 | Sim 14-01.b | resistor energy per charge | 0.5 | pJ |
+| Txt 14-01.a | time after a 30% speedup, share of old | 77 | % |
+| Txt 14-01.b | 10× kernel on 30% of the run | 1.37 | — |
+| Txt 14-01.c | two-core power at iso-performance | 0.25 | — |
+| Txt 14-01.d | two-core clock at iso-power | 0.794 | — |
+| Txt 14-01.e | two-core throughput at iso-power | 1.59 | — |
 
 ## 5. Simulate it
 
@@ -348,11 +357,11 @@ The netlist [switched_cap.cir](../labs/14-01-lab/switched_cap.cir) charges and d
 ### State of the art (as of Nov 2026)
 
 - **Frequency stopped scaling two decades ago.** The IEEE IRDS 2024 executive summary places the power limit in 2004 and puts processor clocks at about 5 GHz since then [1] **[Established]**. Gains since have come from IPC, more cores, larger caches and specialized hardware (14-13, 14-14).
-- **Efficiency claims are operating-point claims.** Because power rises roughly as the cube of frequency near the top of the range (§3.5), the same design can show very different performance per watt depending on where on its voltage–frequency curve it is measured. A claim of better efficiency at "iso-performance" (equal speed) and one at "iso-power" (equal power) can describe the same chips and differ several-fold (our derivation).
+- **Efficiency claims are operating-point claims.** Because power rises roughly as the cube of frequency near the top of the range (§3.5), the same design can show very different performance per watt depending on where on its voltage–frequency curve it is measured. A claim of better efficiency at "iso-performance" (equal speed) and one at "iso-power" (equal power) can describe the same chips and differ widely. Under the cubic model, a chip with two cores of the same design matches a one-core chip's speed with each core at half the clock, using 2 × (1/2)³ = 0.25 of the power: 4× better at iso-performance. At equal power each of its cores gets half the power, runs at $2^{-1/3}$ = 0.794 of the clock, and the pair delivers 1.59× the throughput: only 1.59× better at iso-power (our derivation).
 
 ### Why it matters commercially
 
-- **Datacenter total cost of ownership** includes years of electricity and cooling, so buyers rank servers and accelerators by performance per watt on their own workloads **[Established]**.
+- **Datacenter total cost of ownership** is the purchase price plus years of electricity and cooling, and the split between them varies with the hardware's price and the local cost of power **[Established]**. Buyers therefore compare performance per dollar and performance per watt on their own workloads.
 - **Mobile and wearable products** live on energy per task; the operating system's DVFS and idle policies are as important as the silicon (Course 22) **[Established]**.
 - **Parallel products** (many-core CPUs, GPUs) are sold on throughput; customers with fixed, partly serial jobs see Amdahl's limit, not the peak.
 
@@ -422,7 +431,7 @@ Because the ratio of two machines' geometric means does not depend on the refere
 
 <details><summary>Answer</summary>
 
-Dynamic power is $\alpha CV^2f$, and the highest frequency a design can run at is roughly proportional to its supply voltage well above threshold. Raising $f$ requires raising $V$ in proportion, so power goes as $V^2f \propto f^3$.
+Dynamic power is $\alpha CV^2f$, and over the usual DVFS range the highest frequency a design can run at is, to first order, proportional to its supply voltage (an empirical fit to the alpha-power law). Raising $f$ then requires raising $V$ in proportion, so power goes as $V^2f \propto f^3$. At the very top the curve bends further: frequency grows more slowly than voltage, so power rises even faster than the cube.
 
 </details>
 

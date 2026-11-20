@@ -640,4 +640,14 @@ for s_ in lines:
 v.assert_true("decoder recovers every immediate from its encoding", rt)
 v.assert_true("canonical NOP is 0x00000013", asm("addi x0, x0, 0") == 0x00000013 == mc_word("nop"))
 
+# ---------------------------------------------------------------------------- Problem 14-02.15 (S format)
+w15 = asm("sw x15, 40(x10)")
+v.assert_true("sw x15, 40(x10) matches llvm-mc", w15 == mc_word("sw x15, 40(x10)"))
+v.check("14-02.15a", w15)
+d15 = decode(0xFEA40623)
+v.assert_true("0xFEA40623 is S format, funct3 000 (sb), rs2 = x10, rs1 = x8",
+              d15["fmt"] == "S" and d15["f3"] == 0 and d15["rs2"] == 10 and d15["rs1"] == 8)
+v.assert_true("the LLVM disassembler agrees: sb a0, -20(s0)", mc_disasm(0xFEA40623) == "sb a0, -20(s0)")
+v.check("14-02.15b", d15["imm"])
+
 sys.exit(v.finish())

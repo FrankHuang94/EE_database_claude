@@ -124,6 +124,7 @@ P4 = p_dyn(1.5e-9, 0.9, 3.2e9)
 v.check("Ex 14-01.4a", P4)
 v.check("Ex 14-01.4b", P4 / 3.2e9 * 1e9)
 v.check("Ex 14-01.4c", P4 + 1.2)
+v.check("Ex 14-01.4d", 100 * 1.2 / (P4 + 1.2))
 
 # ---------------------------------------------------------------- Example 5
 P5 = p_dyn(1.5e-9, 0.75, 2.4e9)
@@ -139,6 +140,18 @@ v.check("Ex 14-01.5d", P5 * t_slow)
 v.check("Ex 14-01.5e", t_slow)
 v.check("Ex 14-01.5f", E_slow)
 v.check("Ex 14-01.5g", 100 * (1 - E_slow / E_fast))
+v.check("Ex 14-01.5h", Il)
+v.check("Ex 14-01.5i", Il * 0.75)
+v.check("Ex 14-01.5j", p_dyn(1.5e-9, 0.75, 1.0) / p_dyn(1.5e-9, 0.9, 1.0))
+
+# ---------------------------------------------------------------- text: speedup slips and operating points
+v.check("Txt 14-01.a", 100 / 1.3)
+v.check("Txt 14-01.b", 1 / (0.7 + 0.3 / 10))
+f_pow = lambda f: f ** 3                       # cubic model: per-core power at relative clock f
+v.check("Txt 14-01.c", 2 * f_pow(brentq(lambda f: 2 * f - 1, 0.01, 1)))
+f_iso = brentq(lambda f: 2 * f_pow(f) - 1, 0.01, 1, xtol=1e-14)
+v.check("Txt 14-01.d", f_iso)
+v.check("Txt 14-01.e", 2 * f_iso)
 
 # ---------------------------------------------------------------- Example 6
 TA6, TB6 = np.array([1.0, 1000.0]), np.array([10.0, 100.0])
@@ -163,6 +176,7 @@ c3, n3 = stream_cycles(mix3)
 v.check("14-01.3a", c3 / n3)
 v.check("14-01.3b", 100 * stream_cycles(mix3, only=1)[0] / c3)
 v.check("14-01.4a", (1e9 * 1.0 / 3e9) / (1e9 * 1.3 / 4e9))
+v.check("14-01.4b", 100 * ((1e9 * 1.0 / 3e9) / (1e9 * 1.3 / 4e9) - 1))
 
 
 def enhance(parts):
@@ -174,11 +188,13 @@ v.check("14-01.5a", enhance([(0.6, 1), (0.4, 4)]))
 v.check("14-01.5b", enhance([(0.4, 1), (0.6, 1.2)]))
 v.check("14-01.6a", brentq(lambda s: enhance([(0.4, 1), (0.6, s)]) - 1.5, 1.01, 100, xtol=1e-14))
 v.assert_true("2.5x is out of reach", enhance([(0.4, 1), (0.6, 1e12)]) < 2.5)
+v.check("14-01.6b", enhance([(0.4, 1), (0.6, 1e15)]))
 for N, ks, ke in ((8, "a", "b"), (64, "c", "d")):
     S = amdahl_sim(0.95, N)
     v.check(f"14-01.7{ks}", S)
     v.check(f"14-01.7{ke}", 100 * S / N)
 v.check("14-01.7e", amdahl_limit(0.95))
+v.check("14-01.7f", amdahl_sim(0.95, 64) / amdahl_sim(0.95, 8))
 times8 = np.array([1e9 / 100e6, 1e9 / 200e6, 1e9 / 400e6])
 v.check("14-01.8a", times8.sum())
 v.check("14-01.8b", 3e9 / times8.sum() / 1e6)
@@ -209,6 +225,7 @@ v.check("14-01.11b", 0.3 + 0.2 * opt.x)
 v.check("14-01.11c", opt.fun)
 v.check("14-01.11d", task_energy(3.0))
 v.check("14-01.11e", 100 * (1 - opt.fun / task_energy(3.0)))
+v.check("14-01.11f", 1e9 / (opt.x * 1e9))
 
 
 def race_minus_slow(PL, Psys=0.0):

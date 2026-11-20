@@ -15,7 +15,7 @@ $N + k - 1$: $1000 + 4$ = **1004** cycles on 5 stages and $1000 + 9$ = **1009** 
 - `add x6, x5, x5` uses the loaded x5 in the very next instruction: a load-use hazard, **1** stall. After the stall, x5 is forwarded from MEM/WB.
 - `sub x7, x6, x5` gets x6 from EX/MEM (one ahead). It gets x5 from the register file: while `sub` was in ID, the load was in WB, and write-before-read passed x5 straight through. (MEM/WB holds the stall's bubble when `sub` reaches EX.)
 - `sw x7, 4(x10)` gets its store data x7 from EX/MEM.
-- x10 comes from the register file or from forwarding: `li x10` is far enough ahead by the time it is needed, or is forwarded from MEM/WB to the load.
+- `lw` gets its base x10 from **EX/MEM**: `li x10` is the instruction just ahead. `sw` gets x10 from the register file, since `li x10` wrote back long before.
 
 The six instructions (with EBREAK) take $6 + 4 + 1$ = **11** cycles.
 

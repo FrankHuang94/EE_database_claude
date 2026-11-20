@@ -55,7 +55,9 @@ def checked(code: str, array=None, label="") -> dict:
 
 # --------------------------------------------------------------------------- stage delays (14-05's delays)
 cq, su, mem_t, rf, mux, alu = 40, 20, 200, 100, 25, 120
-stages = dict(IF=cq + mem_t + mux + su, ID=cq + rf + mux + su, EX=cq + mux + mux + alu + su, MEM=cq + mem_t + mux + su)
+ex_alu = cq + mux + mux + alu + su                     # forwarding mux, ALU-input mux, ALU
+ex_redirect = cq + mux + mux + alu + mux + su          # ... then the next-PC mux into the PC register (JALR target)
+stages = dict(IF=cq + mem_t + su, ID=cq + rf + mux + su, EX=max(ex_alu, ex_redirect), MEM=cq + mem_t + mux + su)
 T = max(stages.values())
 T_single = 730
 v.check("Ex 14-06.2a", stages["IF"])
@@ -65,6 +67,7 @@ v.check("Ex 14-06.2d", stages["MEM"])
 v.check("Ex 14-06.2e", T)
 v.check("Ex 14-06.2f", 1e3 / T)
 v.check("Ex 14-06.2g", 5 * T)
+v.check("Ex 14-06.2h", ex_alu)
 v.assert_true("14-05's single-cycle period is 730 ps", (HERE.parent / "chapters" / "14-05-single-cycle-datapath.md").read_text().count("| Ex 14-05.3f | clock period | 730 | ps |") == 1)
 
 v.check("Ex 14-06.1a", 100 + 4)
@@ -77,6 +80,9 @@ cb = asm(CH)
 ex3, ex4a, ex4b, ex5c = cb[0], cb[1], cb[2], cb[3]
 r = checked(HDR + ex3, label="Example 3")
 v.assert_true("Example 3 computes x5 = 7, x8 = 6, x10 = 7 | 6", r["sim"].x[5] == 7 and r["sim"].x[8] == 6 and r["sim"].x[10] == 7)
+if IV:   # operand sources logged by the testbench: M = EX/MEM, W = MEM/WB, R = register file, - = unused
+    v.assert_true("Example 3 forwarding: add x6 from the register file and x7 from MEM/WB; sub x5 EX/MEM, x9 MEM/WB; "
+                  "or x5 MEM/WB, x8 EX/MEM", [(a, b) for _, a, b in r["fwd"][3:6]] == [("R", "W"), ("M", "W"), ("W", "M")])
 v.check("Ex 14-06.3a", r["stalls"])
 v.check("Ex 14-06.3b", r["c"])
 ra = checked(HDR + ex4a.replace("# (a)", ""), [42], "Example 4a")
@@ -150,6 +156,10 @@ pb = asm(PR)
 p2, p5, p6a, p6b = pb[0], pb[1], pb[2], pb[3]
 r = checked(HDR + p2, [42, 0], "Problem 2")
 v.assert_true("Problem 2 stores 42 (x7 = 84 - 42) at 0x2004", int.from_bytes(bytes(r["sim"].mem[0x2004 + k] for k in range(4)), "little") == 42)
+if IV:
+    v.assert_true("Problem 2 forwarding: lw base x10 from EX/MEM; add x5 twice from MEM/WB after the stall; "
+                  "sub x6 EX/MEM and x5 register file; sw base x10 register file, data x7 EX/MEM",
+                  [(a, b) for _, a, b in r["fwd"][1:5]] == [("M", "-"), ("W", "W"), ("M", "R"), ("R", "M")])
 v.check("14-06.2a", r["stalls"])
 v.check("14-06.2b", r["c"])
 v.check("14-06.3a", 300 + 30)

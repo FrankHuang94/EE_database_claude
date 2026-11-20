@@ -58,9 +58,10 @@ def run(asm: str, array: list[int] | None = None) -> dict:
             f"`define EXPECT_WRITES {len(wt)}\n`define EXPECT_STALLS {h['stalls']}\n`define EXPECT_FLUSHES {h['taken']}\n"
             f"`define EXPECT_CYCLES {out['model_cycles']}\n")
         subprocess.run(["iverilog", "-g2012", "-I", ".", "-o", "s.vvp", *SRCS], cwd=td, check=True)
-        res = subprocess.run(["vvp", "-n", "s.vvp", "+trace"], cwd=td, capture_output=True, text=True).stdout
+        res = subprocess.run(["vvp", "-n", "s.vvp", "+trace", "+fwd"], cwd=td, capture_output=True, text=True).stdout
+        fwd = [(int(a, 16), b, c) for a, b, c in (ln.split() for ln in (td / "fwd.txt").read_text().splitlines())]
         vt = [(int(a, 16), int(b), int(c, 16)) for a, b, c in (ln.split() for ln in (td / "trace.txt").read_text().splitlines())]
     m = re.search(r"(\d+) cycles for (\d+) instructions .*?, (\d+) load-use stalls, (\d+) flushes", res)
-    out.update(verilog_passed="TEST PASSED" in res and "ERROR" not in res, trace_match=vt == wt,
+    out.update(fwd=fwd, verilog_passed="TEST PASSED" in res and "ERROR" not in res, trace_match=vt == wt,
                cycles=int(m.group(1)), v_stalls=int(m.group(3)), v_flushes=int(m.group(4)), report=res)
     return out

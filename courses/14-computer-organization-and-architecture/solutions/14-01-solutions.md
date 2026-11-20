@@ -87,14 +87,17 @@ Setting $dE/df = 0.4(0.3 + 0.2f) - 0.15/f^2 = 0$ gives the cubic $0.08f^3 + 0.12
 | 14-01.3a | CPI | 1.8 | — |
 | 14-01.3b | time in memory instructions | 50 | % |
 | 14-01.4a | speedup of Y over X | 1.026 | — |
+| 14-01.4b | gain from the faster clock | 2.6 | % |
 | 14-01.5a | speedup, option 1 | 1.4286 | — |
 | 14-01.5b | speedup, option 2 | 1.111 | — |
 | 14-01.6a | required speedup of the part | 2.25 | — |
+| 14-01.6b | ceiling | 2.5 | — |
 | 14-01.7a | speedup on 8 processors | 5.926 | — |
 | 14-01.7b | efficiency on 8 processors | 74.1 | % |
 | 14-01.7c | speedup on 64 processors | 15.42 | — |
 | 14-01.7d | efficiency on 64 processors | 24.10 | % |
 | 14-01.7e | ceiling | 20 | — |
+| 14-01.7f | gain from 8 to 64 processors | 2.6 | — |
 | 14-01.8a | total time | 17.5 | s |
 | 14-01.8b | true average rate | 171.4 | MFLOPS |
 | 14-01.8c | arithmetic mean of rates | 233.3 | MFLOPS |
@@ -111,6 +114,7 @@ Setting $dE/df = 0.4(0.3 + 0.2f) - 0.15/f^2 = 0$ gives the cubic $0.08f^3 + 0.12
 | 14-01.11c | minimum energy | 0.4970 | J |
 | 14-01.11d | energy at 3 GHz | 0.96 | J |
 | 14-01.11e | energy saved | 48.23 | % |
+| 14-01.11f | run time at the optimum | 1.128 | s |
 | 14-01.12a | leakage for racing to win | 10.69 | W |
 | 14-01.12b | system power for racing to win | 3.164 | W |
 | 14-01.13a | A's geometric mean | 3.420 | — |

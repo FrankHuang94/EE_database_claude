@@ -81,16 +81,16 @@ Two design points make it work.
 
 **Stage delays.** With 14-05's illustrative delays, each stage is $t_{\text{clk-q}}$ (40 ps) plus its logic plus $t_{\text{setup}}$ (20 ps):
 
-- IF: memory read 200 + next-PC multiplexer 25, so 285 ps in all.
+- IF: instruction-memory read 200, so 260 ps in all. The PC register drives the memory directly. The next-PC multiplexer sits in front of the PC register, and its slowest input comes from EX (below).
 - ID: register read 100 + write-through multiplexer 25, so 185 ps.
-- EX: forwarding multiplexer 25 + ALU-input multiplexer 25 + ALU 120, so 230 ps.
+- EX: two paths. The ALU path is forwarding multiplexer 25 + ALU-input multiplexer 25 + ALU 120, so 230 ps. The redirect path carries a JALR target from the ALU through the next-PC multiplexer (25) into the PC register, so 255 ps.
 - MEM: memory 200 + result multiplexer 25, so 285 ps.
 
-The clock is set by the two memory stages at 285 ps (Example 14-06.2): 2.56 times faster than the single-cycle 730 ps, not 5 times, because the memory stages dominate and every stage pays 60 ps of register overhead.
+The clock is set by the data-memory stage, MEM, at 285 ps (Example 14-06.2): 2.56 times faster than the single-cycle 730 ps, not 5 times, because the memory stage dominates and every stage pays 60 ps of register overhead.
 
 ### 3.3 Data hazards and forwarding
 
-A **read-after-write (RAW) dependence** exists when an instruction reads a register that an earlier instruction writes. In the pipeline the value is computed in EX and written in WB, three cycles later, but the next instruction wants it in its own EX, one cycle after the producer's. Without help it would read a stale value from the register file. The cure is **forwarding** (also called *bypassing*): route the result from the pipeline register where it already sits straight to the ALU input that needs it.
+A **read-after-write (RAW) dependence** exists when an instruction reads a register that an earlier instruction writes. In the pipeline the value is computed in EX and written in WB, two cycles later, but the next instruction wants it in its own EX, one cycle after the producer's. Without help it would read a stale value from the register file. The cure is **forwarding** (also called *bypassing*): route the result from the pipeline register where it already sits straight to the ALU input that needs it.
 
 Two forwarding paths cover every distance an ALU result needs:
 
@@ -127,7 +127,7 @@ A branch's outcome and target are known only in EX. By then the pipeline has alr
 
 Ways to reduce the penalty:
 
-- **Resolve earlier.** Comparing registers and computing the target in ID cuts the penalty to one cycle, at the cost of a comparator and forwarding paths into ID, which lengthens that stage.
+- **Resolve earlier.** Comparing registers and computing the target in ID cuts the penalty to one cycle, at the cost of a comparator and forwarding paths into ID, which lengthens that stage. It also creates new data hazards: a branch that tests an ALU result from the instruction just before it must stall one cycle (the result exists only at the end of EX), and one that tests a just-loaded value must stall two (Problem 14-06.12).
 - **Delayed branches.** Older ISAs such as MIPS defined that the instruction after a branch *always* executes, so the compiler could fill that "delay slot". The rule bakes one pipeline's timing into the ISA forever, and RISC-V deliberately omits it.
 - **Predict.** Guess the outcome and target in IF from history, so that most taken branches cost nothing. This is the subject of [14-07](14-07-branch-prediction-and-speculation.md), and the reason modern cores can have deep pipelines.
 
@@ -183,9 +183,9 @@ All cycle counts in these examples are confirmed on the lab's pipelined Verilog 
 
 **Solution.** From §3.2:
 
-- IF: $40 + 200 + 25 + 20$ = **285** ps.
+- IF: $40 + 200 + 20$ = **260** ps.
 - ID: $40 + 100 + 25 + 20$ = **185** ps.
-- EX: $40 + 25 + 25 + 120 + 20$ = **230** ps.
+- EX: the ALU path is $40 + 25 + 25 + 120 + 20$ = 230 ps, and the redirect path adds the next-PC multiplexer: $230 + 25$ = **255** ps.
 - MEM: $40 + 200 + 25 + 20$ = **285** ps.
 
 The clock period is the maximum, **285** ps, so $f$ = **3.509** GHz. One instruction's latency is $5 \times 285$ = **1425** ps, almost twice the single-cycle 730 ps.
@@ -211,7 +211,7 @@ _start:
 
 **Solution.**
 
-- `add` reads x7 from EX/MEM (written by the instruction just ahead) and x6 from MEM/WB (two ahead).
+- `add` reads x7 from **MEM/WB** (`li x7` is two ahead; the instruction just ahead, in EX/MEM, is `li x9`). It reads x6 from the register file: `li x6` wrote back while `add` was in ID, and write-before-read passed it through.
 - `sub` reads x5 from **EX/MEM**, and x9 from MEM/WB.
 - `or` reads x5 from **MEM/WB** (two ahead) and x8 from **EX/MEM** (one ahead).
 
@@ -219,7 +219,7 @@ There are no loads and no branches, so **0** stalls, and the 7 instructions take
 
 **Units check.** Cycles count clock periods.
 
-**Sanity check.** Every dependence here is on an ALU result one or two instructions back, exactly what the two forwarding paths cover.
+**Sanity check.** The example shows all three ways an operand can arrive: from EX/MEM (one ahead), from MEM/WB (two ahead) and from the register file (three or more ahead). Every dependence is on an ALU result, so forwarding covers it without a stall.
 
 ### Example 14-06.4 · A load-use stall and how to schedule it away (tier B)
 
@@ -304,9 +304,10 @@ With no branch penalty the count would be $1924 + 4 + 10$ = **1938** cycles. Tha
 | Ex 14-06.1b | pipelined time | 29.64 | ns |
 | Ex 14-06.1c | speedup for N = 100 | 2.463 | — |
 | Ex 14-06.1d | limiting speedup | 2.561 | — |
-| Ex 14-06.2a | IF stage | 285 | ps |
+| Ex 14-06.2a | IF stage | 260 | ps |
 | Ex 14-06.2b | ID stage | 185 | ps |
-| Ex 14-06.2c | EX stage | 230 | ps |
+| Ex 14-06.2c | EX stage (redirect path) | 255 | ps |
+| Ex 14-06.2h | EX ALU path | 230 | ps |
 | Ex 14-06.2d | MEM stage | 285 | ps |
 | Ex 14-06.2e | clock period | 285 | ps |
 | Ex 14-06.2f | clock frequency | 3.509 | GHz |
@@ -344,7 +345,7 @@ The lab, [labs/14-06-lab](../labs/14-06-lab/README.md), is a five-stage pipeline
 |---|---|---|---|
 | More pipeline stages | Clock frequency | Register overhead, branch and load penalties, power, verification effort | CPU architect |
 | Forwarding paths | Removes most data stalls | Multiplexers on the critical EX path; wiring | CPU designer |
-| Branch resolution in ID instead of EX | Penalty 1 instead of 2 cycles | A comparator and forwarding into ID; longer ID stage | CPU designer |
+| Branch resolution in ID instead of EX | Penalty 1 instead of 2 cycles | A comparator and forwarding into ID; longer ID stage; new stalls when a branch tests a result from just before it (1 cycle after an ALU op, 2 after a load) | CPU designer |
 | Branch prediction (14-07) | Removes most control stalls | Predictor tables, recovery logic | CPU architect |
 | Compiler scheduling | Removes load-use and other stalls for free | Compiler complexity; code tuned to one pipeline | Compiler team |
 | Stage balancing (splitting memory access) | Clock frequency | More stages and penalties | CPU architect, physical designer |

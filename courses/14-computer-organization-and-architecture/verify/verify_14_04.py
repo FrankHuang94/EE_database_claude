@@ -157,6 +157,7 @@ v.assert_true("clang 18 emits lui/addi/mulhu/srli with 0xCCCCCCCD and shift 3", 
 v.check("Ex 14-04.3a", len(cins))
 v.check("Ex 14-04.3b", M10)
 v.check("Ex 14-04.3c", sh10 - 32)
+v.check("Ex 14-04.3d", M10 / 2**35)
 v.assert_true("error term bound 2x/(10*2^35) < 1/40 and M/2^35 = 0.100000000005821", 2 * 2**32 / (10 * 2**35) <= 1 / 40
               and abs(M10 / 2**35 - 0.100000000005821) < 5e-16)
 v.assert_true("lui 0xCCCCD + addi -819 builds the constant", (0xCCCCD << 12) - 819 == M10)
@@ -194,6 +195,12 @@ v.check("Ex 14-04.5a", float(seq))
 v.check("Ex 14-04.5b", 100 * rel(seq))
 v.check("Ex 14-04.5c", float(pw))
 v.check("Ex 14-04.5d", float(s))
+v.check("Ex 14-04.5e", rel(pw))
+v.check("Ex 14-04.5f", rel(s))
+v.check("Ex 14-04.5g", 100 * (N - 1) * 2.0**-24)
+v.check("Ex 14-04.5h", 100 * rel(seq))
+v.check("Ex 14-04.5i", float(np.spacing(np.float32(1e5))))
+v.check("Ex 14-04.5j", float(exact))
 v.assert_true("pairwise relative error about -9.3e-8", abs(rel(pw) + 9.3e-8) < 5e-10)
 v.assert_true("Kahan relative error about -1.5e-8 and Kahan = nearest FP32 to the exact sum", abs(rel(s) + 1.5e-8) < 1e-9 and Fr(float(s)) == round_f32(exact))
 v.assert_true("pairwise is one ulp below Kahan at 1e5", float(s) - float(pw) == 2**-7)
@@ -236,6 +243,8 @@ v.check("Ex 14-04.6f", X)
 v.assert_true("FP4 elements", P == [1.0, -3.0, 0.0, 6.0, -1.0, 0.0, 4.0, -0.5])
 v.check("Ex 14-04.6g", P[3])
 v.check("Ex 14-04.6h", max(abs(p * X - x) for p, x in zip(P, vv)))
+v.check("Ex 14-04.6i", sc / 2)
+v.check("Ex 14-04.6j", 100 * abs(P[3] * X - 5.3) / 5.3)
 v.assert_true("E2M1 has 15 distinct values with sign", len({s * g for g in E2M1 for s in (1, -1)}) == 15)
 
 # §3.6 area model and the Google comparison
@@ -305,6 +314,12 @@ lo = first - 2_000_000
 xs = np.arange(lo, first, dtype=np.uint64)
 v.assert_true("no failure in the 2 million inputs below it", bool(np.all((xs * np.uint64(M2)) >> np.uint64(34) == xs // np.uint64(7))))
 v.check("14-04.7a", first)
+xs7 = max(x for x in range(2**32 - 7, 2**32) if x % 7 == 6)
+shifted7 = {(xs7 * (-(-2**(32 + k) // 7))) >> (32 + k) for k in range(3)}
+v.assert_true("x* breaks the shift for k = 0, 1 and 2 alike", len(shifted7) == 1 and shifted7 != {xs7 // 7})
+v.check("14-04.7c", xs7)
+v.check("14-04.7d", shifted7.pop())
+v.check("14-04.7e", xs7 // 7)
 cm7, csh7, cins7 = clang_magic(7)
 v.check("14-04.7b", rows7[3][1] - 2**32)
 v.assert_true("clang's x/7 uses 0x24924925 with the sub/srli/add/srli fix-up", cm7 == rows7[3][1] - 2**32 and cins7 == ["lui", "addi", "mulhu", "sub", "srli", "add", "srli"] and csh7 == [1, 2])
@@ -440,5 +455,68 @@ mx = np.concatenate([np.array(mx_block(list(blk))[1]) * mx_block(list(blk))[0] f
 s8, s4, smx = sqnr(int_q(8)), sqnr(int_q(4)), sqnr(mx)
 v.assert_true(f"INT8 - INT4 SQNR about 6 dB per bit ({s8 - s4:.1f} dB for 4 bits)", 21 < s8 - s4 < 27)
 v.assert_true(f"MX FP4 ({smx:.1f} dB) beats per-tensor INT4 ({s4:.1f} dB)", smx > s4)
+
+# ---------------------------------------------------------------- restoring division (§3.2, Problem 15)
+
+
+def restoring(x, d, n):
+    """Bit-serial restoring division: returns (quotient, remainder, rows of (bit, T, q, R))."""
+    R = Q = 0
+    rows = []
+    for i in range(n - 1, -1, -1):
+        b = x >> i & 1
+        T = 2 * R + b
+        q = int(T >= d)
+        R = T - d if q else T
+        Q = Q << 1 | q
+        rows.append((b, T, q, R))
+    return Q, R, rows
+
+
+rng_div = np.random.default_rng(11)
+pairs = [(int(a), int(b)) for a, b in zip(rng_div.integers(0, 2**32, 20000), rng_div.integers(1, 2**32, 20000))]
+pairs += [(2**32 - 1, 1), (2**32 - 1, 2**32 - 1), (0, 5), (12345, 2**31)]
+v.assert_true("restoring division equals divmod on 20,004 32-bit cases",
+              all(restoring(a, b, 32)[:2] == divmod(a, b) for a, b in pairs))
+q13, r13, rows13 = restoring(13, 3, 4)
+v.check("Txt 14-04.a", q13)
+v.check("Txt 14-04.b", r13)
+ulp17 = float(np.spacing(np.float32(2**16)))
+v.check("Txt 14-04.c", 0.1 / ulp17)
+v.check("Txt 14-04.d", round(0.1 / ulp17) * ulp17)
+v.check("Txt 14-04.e", 100 * (round(0.1 / ulp17) * ulp17 / 0.1 - 1))
+v.assert_true("FP32 addition of 0.1 in [2^16, 2^17) adds exactly 13 ulps",
+              float(np.float32(70000.0) + np.float32(0.1)) - 70000.0 == 13 * ulp17)
+
+
+def trace_table(path, marker=None, heading=None):
+    text = path.read_text(encoding="utf-8")
+    start = text.index(marker) if marker else text.index(heading)
+    rows = []
+    for line in text[start:].splitlines()[1:]:
+        m = re.match(r"\| (\d+) \| (\d) \| (\d+) \| (?:yes|no) \((\d)\) \| (\d+) \|", line)
+        if m:
+            rows.append(tuple(int(g) for g in m.groups()[1:]))
+        elif rows and not line.startswith("|"):
+            break
+    return rows
+
+
+v.assert_true("the chapter's 13 / 3 trace table matches the divider row by row",
+              trace_table(ROOT / "chapters" / "14-04-computer-arithmetic-and-number-formats.md",
+                          heading="| Step | Bit in | $T = 2R + x_i$ |") == rows13)
+q200, r200, rows200 = restoring(200, 7, 8)
+v.assert_true("Solution 14-04.15's trace table matches the divider row by row",
+              trace_table(ROOT / "solutions" / "14-04-solutions.md", marker="<!-- trace 200/7 -->") == rows200)
+v.check("14-04.15a", q200)
+v.check("14-04.15b", r200)
+v.check("14-04.15c", sum(1 for _ in range(32)))
+v.check("14-04.15d", math.ceil(32 / 2))
+v.check("14-04.15e", max(2 * R + b for R in range(7) for b in (0, 1)))
+v.check("14-04.15f", max(T for _, T, _, _ in rows200))
+p_bits = {"bf16": 8, "fp8": 4, "fp4": 2}
+v.check("14-04.16a", p_bits["bf16"] ** 2 / p_bits["fp8"] ** 2)
+v.check("14-04.16b", p_bits["fp8"] ** 2 / p_bits["fp4"] ** 2)
+v.check("14-04.16c", 100 * 2 / (p_bits["bf16"] ** 2 / p_bits["fp8"] ** 2))
 
 sys.exit(v.finish())

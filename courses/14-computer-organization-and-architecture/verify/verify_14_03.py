@@ -159,6 +159,12 @@ v.check("Ex 14-03.5f", joff)
 v.check("Ex 14-03.5g", sizeR)
 v.check("Ex 14-03.5h", sizeN - sizeR)
 v.check("Ex 14-03.5i", run_function(src("fib"), "fib", [10], relax=False)["count"])
+v.check("Ex 14-03.5j", run_function(src("fib"), "fib", [10], relax=False)["count"]
+        - run_function(src("fib"), "fib", [10])["count"])
+fib6 = run_function(src("fib"), "fib", [6])
+v.check("Fig 14-03.a", fib6["count"])
+v.check("Fig 14-03.b", fib6["calls"]["fib"])
+v.check("Fig 14-03.c", fib6["depth"])
 
 # Ex 6 and Problems 10, 14: structure layouts compiled by clang for three ABIs
 LAYOUT_C = r"""
@@ -217,7 +223,8 @@ v.assert_true("compiled code is correct", read_words(c0["sim"], ARR, 100) == rea
 v.assert_true("-O0 executes more than three times as many instructions as -O2 (inc loop)", c0["count"] > 3 * c2["count"])
 v.assert_true("-O2 fib makes fewer calls than -O0", f2["calls"]["fib"] < f0["calls"]["fib"] == 177)
 if re.search(r"clang version 18\.", clang_ver):
-    v.assert_true("clang 18: -O2 inc is 504 instructions, -O0 is 1718", c2["count"] == 504 and c0["count"] == 1718)
+    v.check("Txt 14-03.a", c2["count"])
+    v.check("Txt 14-03.b", c0["count"])
     v.assert_true("clang 18: -O2 fib(10) makes 89 calls (about half of 177)", f2["calls"]["fib"] == 89)
     hand15 = run_function(src("fib"), "fib", [15])["count"]
     o0_15 = run_function({"fib.c": CFIB}, "fib", [15], opt="-O0")["count"]
@@ -225,7 +232,8 @@ if re.search(r"clang version 18\.", clang_ver):
     v.assert_true("clang 18, fib(15): -O0 about twice the hand count; -O2 half the calls (987) but about 8% more instructions",
                   1.9 < o0_15 / hand15 < 2.2 and o2_15["calls"]["fib"] == 987 and 1.07 < o2_15["count"] / hand15 < 1.09)
 else:
-    print(f"  note: clang is not version 18 ({clang_ver.splitlines()[0]}); version-specific counts not checked")
+    v.assert_true("clang 18 is required to check Txt 14-03.a and Txt 14-03.b (version-specific counts)", False,
+                  clang_ver.splitlines()[0])
 
 # =========================================================================== Problems
 v.check("14-03.1a", len(["ra", "s0", "s1", "s2"]))

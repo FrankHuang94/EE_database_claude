@@ -24,17 +24,25 @@ module rv32_pipe_tb;
 
     always @(posedge clk) if (dmem_we) dmem[dmem_addr[13:2]] <= dmem_wdata;
 
-    integer cycles = 0, writes = 0, stalls = 0, flushes = 0, errors = 0, fd = 0, i;
+    integer cycles = 0, writes = 0, stalls = 0, flushes = 0, errors = 0, fd = 0, ff = 0, i;
     initial begin
         for (i = 0; i < 1024; i = i + 1) imem[i] = 32'h00100073;
         $readmemh("program.hex", imem);
         $readmemh("data.hex", dmem);
         if ($test$plusargs("trace")) fd = $fopen("trace.txt", "w");
+        if ($test$plusargs("fwd")) ff = $fopen("fwd.txt", "w");
         @(posedge clk); #0.05 reset = 1'b0;
     end
 
     // Each edge ends one cycle. The cycle in which the halting instruction occupies WB is counted, so the total
     // is the textbook N + (k - 1) + stalls + flush penalties for k = 5 stages.
+    // With +fwd, log where each EX-stage instruction's operands come from: M = EX/MEM, W = MEM/WB,
+    // R = register file (including write-before-read), - = operand not used.
+    always @(posedge clk) if (!reset && ff != 0 && dut.e_valid)
+        $fdisplay(ff, "%08x %s %s", dut.e_pc,
+                  !dut.e_u1 ? "-" : dut.fa_m ? "M" : dut.fa_w ? "W" : "R",
+                  !dut.e_u2 ? "-" : dut.fb_m ? "M" : dut.fb_w ? "W" : "R");
+
     always @(posedge clk) if (!reset) begin
         cycles = cycles + 1;
         if (stall) stalls = stalls + 1;

@@ -73,6 +73,22 @@ The low halves agree for every interpretation, but the high halves differ (Examp
 
 Without a trap, a divide unit needs no special path into the exception machinery. Software that must detect division by zero adds one branch. C leaves both cases undefined, so portable code must test for them anyway.
 
+**How a divider works: restoring division.** Long division in base 2 needs no guessing: each quotient bit is 0 or 1, and one trial subtraction decides it. To divide an $n$-bit unsigned $x$ by $d \ne 0$, keep a partial remainder $R$, starting at 0, and take the dividend's bits $x_{n-1}, \ldots, x_0$ from the top:
+
+1. Shift a dividend bit in: $T = 2R + x_i$.
+2. Trial-subtract: if $T \ge d$, set $q_i = 1$ and $R = T - d$; otherwise $q_i = 0$ and $R = T$.
+
+Why one subtraction suffices: let $X_i = \lfloor x/2^i \rfloor$ be the dividend's top bits and $Q_i$ the quotient bits found so far. The loop keeps the invariant $X_i = Q_id + R$ with $0 \le R < d$. Shifting in a bit gives $X_i = 2X_{i+1} + x_i = 2Q_{i+1}d + T$, and because $R < d$, $T = 2R + x_i \le 2d - 1$. So $T$ holds $d$ at most once, the new bit is $[T \ge d]$, and the invariant carries to the next step. After $n$ steps $X_0 = x$, so $Q$ is the quotient and $R$ the remainder. For 13 ÷ 3 with 4 bits ($x$ = 1101):
+
+| Step | Bit in | $T = 2R + x_i$ | $T \ge 3$? | $R$ after |
+|---|---|---|---|---|
+| 1 | 1 | 1 | no (0) | 1 |
+| 2 | 1 | 3 | yes (1) | 0 |
+| 3 | 0 | 0 | no (0) | 0 |
+| 4 | 1 | 1 | no (0) | 1 |
+
+The quotient bits read 0100 = 4 and the remainder is 1: 13 = 4 × 3 + 1. Hardware computes $T - d$ every cycle and keeps it only if it is not negative; the name comes from early designs that subtracted first and then added $d$ back ("restored") when the result went negative. This basic divider yields one quotient bit per cycle, 32 cycles for a 32-bit divide. Faster dividers retire 2 or more bits per cycle: *non-restoring* division skips the add-back by letting the remainder go negative, and *SRT* division picks each quotient digit from a redundant set such as {−1, 0, 1} by inspecting only a few leading bits of the remainder, so no full-width comparison sits on the critical path. Problem 14-04.15 traces one division.
+
 **Division by a constant.** A divider produces one or a few quotient bits per cycle, so a 32-bit division takes many cycles, against a few for a multiply (14-06). Compilers therefore replace division by a known constant $d$ with a multiplication by a precomputed "magic number" and a shift. For unsigned 32-bit $x$ and $d = 10$, choose
 
 $$
@@ -100,7 +116,7 @@ In RV32IM this is `mulhu` (which supplies the division by $2^{32}$) followed by 
 
    If rounding up carries out of the significand, renormalize.
 
-Three extra bits suffice for correct rounding of addition: G and R hold the bits that can matter after a one-bit normalization, and S records whether anything at all lies further down. Without the sticky bit, a value just above one half could not be told from an exact tie. Example 14-04.4 works three cases.
+Three extra bits suffice for correct rounding of addition. When the signs agree, the sum can overflow by one bit and is normalized by a right shift, so G alone (with S) would do. When the signs differ (effective subtraction), the result can lose its leading bit and is normalized by a one-bit left shift: G moves up into the last kept place and R becomes the new guard bit. Larger cancellations happen only when the exponents differ by at most one, and then the shifted-out bits are exact. S records whether anything at all lies further down. Without the sticky bit, a value just above one half could not be told from an exact tie. Example 14-04.4 works three cases.
 
 **Multiplication** adds exponents and multiplies the 24-bit significands into a 48-bit product, then normalizes and rounds it to 24 bits with the same rule. The 24 × 24 significand array dominates its cost (§3.6).
 
@@ -152,7 +168,7 @@ Example 14-04.5 shows all three methods on a million additions, and Figure 1 fol
 
 **Why a scale factor.** Narrow formats have little range: FP8 E4M3 spans only 18 binades, FP4 E2M1 only the magnitudes 0.5 to 6 (08-01 §3.6). A tensor's values must be scaled into that range before conversion and scaled back afterwards. Choosing one scale per tensor is cheapest, but a few outliers then force everything else into the coarse low end. Smaller scaling groups track the local range better, at the cost of storing more scales.
 
-**Block scaling (the MX formats).** The OCP Microscaling specification [4] gives every block of $k$ = 32 elements one shared scale $X$, an 8-bit power of two (E8M0), and stores each element in a narrow format (FP8, FP6, FP4 or INT8). Its conversion rule is:
+**Block scaling (the MX formats).** The OCP Microscaling specification [4] gives every block of $k$ = 32 elements one shared scale $X$, an 8-bit power of two (E8M0 in v1.0, renamed UE8M0 in v1.1), and stores each element in a narrow format (FP8, FP6, FP4 or INT8). Its conversion rule is:
 
 1. Set $X$ to the largest power of two not exceeding $\max_i \lvert V_i \rvert$, divided by the largest power of two representable in the element format.
 2. Quantize each $V_i / X$ to the element format, rounding ties to even and clamping values beyond the largest normal to it.
@@ -302,6 +318,7 @@ The sequential sum is wrong in its third significant digit. Its error, about 0.9
 | Ex 14-04.3a | instructions in the sequence | 4 | — |
 | Ex 14-04.3b | magic number | 0xCCCCCCCD | — |
 | Ex 14-04.3c | final shift | 3 | bits |
+| Ex 14-04.3d | M/2³⁵ | 0.100000000005821 | — |
 | Ex 14-04.4a | 1 + 2⁻²⁴ | 0x3F800000 | — |
 | Ex 14-04.4b | 1 + 1.5 × 2⁻²⁴ | 0x3F800001 | — |
 | Ex 14-04.4c | (1 + 2⁻²³) + 2⁻²⁴ | 0x3F800002 | — |
@@ -309,14 +326,27 @@ The sequential sum is wrong in its third significant digit. Its error, about 0.9
 | Ex 14-04.5b | sequential relative error | 0.958 | % |
 | Ex 14-04.5c | pairwise sum | 99999.99 | — |
 | Ex 14-04.5d | Kahan sum | 100000.0 | — |
+| Ex 14-04.5e | pairwise relative error | -9.3e-8 | — |
+| Ex 14-04.5f | Kahan relative error | -1.5e-8 | — |
+| Ex 14-04.5g | bound (n − 1)u | 6 | % |
+| Ex 14-04.5h | sequential error, rounded | 0.96 | % |
+| Ex 14-04.5i | ulp at 10⁵ | 0.0078 | — |
+| Ex 14-04.5j | exact sum of the stored values | 100000.00149 | — |
 | Ex 14-04.6a | INT8 scale | 0.010315 | — |
 | Ex 14-04.6b | code for 1.12 | 109 | — |
 | Ex 14-04.6c | largest INT8 error | 0.004331 | — |
 | Ex 14-04.6d | SQNR | 48.1 | dB |
 | Ex 14-04.6e | safe INT32 accumulation length | 133144 | products |
 | Ex 14-04.6f | MX block scale | 1 | — |
+| Txt 14-04.a | restoring division 13 ÷ 3: quotient | 4 | — |
+| Txt 14-04.b | restoring division 13 ÷ 3: remainder | 1 | — |
+| Txt 14-04.c | 0.1 in ulps of 2⁻⁷ | 12.8 | — |
+| Txt 14-04.d | each added 0.1 becomes | 0.1015625 | — |
+| Txt 14-04.e | systematic excess | 1.56 | % |
 | Ex 14-04.6g | element for 5.3 | 6 | — |
 | Ex 14-04.6h | largest FP4 error | 0.7 | — |
+| Ex 14-04.6i | INT8 error bound s/2 | 0.005157 | — |
+| Ex 14-04.6j | FP4 error as a share of 5.3 | 13 | % |
 
 ## 5. Simulate it
 
@@ -337,7 +367,7 @@ The lab, [labs/14-04-lab](../labs/14-04-lab/README.md), is a notebook with four 
 | Hardware divider against multiply-by-reciprocal | Simple code for any divisor | Divider area and latency; magic numbers only for constants | CPU team, compiler team |
 | Fused multiply-add | One rounding, higher throughput per op | A three-input datapath; results differ from separate mul + add | ISA architect |
 | Narrower element format | Area (about $p^2$), energy, bytes moved | Accuracy; needs scaling and calibration | Accelerator architect, ML team |
-| Smaller scaling block | Tracks local range, lower error | More scale storage and logic (4.25 vs 4.5 bits per element) | Format designers |
+| Smaller scaling block | Tracks local range, lower error | More scale storage and logic: an 8-bit scale per 32 FP4 elements costs 4.25 bits per element, per 16 elements 4.5 | Format designers |
 | Wider accumulator | Accuracy of long dot products | Area and power in every MAC unit | Accelerator architect |
 | Sequential, pairwise or compensated sums | Speed (sequential) or accuracy (pairwise, Kahan) | Accuracy (sequential) or extra operations (Kahan) | Library author |
 
@@ -370,11 +400,11 @@ The lab, [labs/14-04-lab](../labs/14-04-lab/README.md), is a notebook with four 
 
 - **IEEE 754-2019** is the active floating-point standard, superseding 754-2008; a revision project, P754, is open [6, R-210] **[Established]**.
 - **bfloat16.** Google describes it as one sign, eight exponent and seven mantissa bits, with FP32's dynamic range. Its Cloud TPU documentation says TPUs multiply in bfloat16 and accumulate in FP32, and that converting FP32 to bfloat16 flushes subnormals to zero [3, R-210] **[Established]**. RISC-V has ratified BF16 extensions, noting that bfloat16 "is not an IEEE-754 standard format" but a valid format under IEEE 754's rules [R-210] **[Established]**.
-- **MX formats.** OCP MX v1.0 (Sep 2023) defines MXFP8, MXFP6, MXFP4 and MXINT8 with 32-element blocks and E8M0 scales. It specifies the conversion rule of §3.5 (power-of-two scale, ties-to-even rounding, clamping) and leaves the dot product's internal precision implementation-defined [4, R-210] **[Established]**. NVIDIA's NVFP4 uses 16-element blocks with FP8 scales (08-01, [R-143](../../../reference/research-log.md#r-143--block-scaled-ai-number-formats)).
+- **MX formats.** OCP MX v1.0 (Sep 2023) defines MXFP8, MXFP6, MXFP4 and MXINT8 with 32-element blocks and E8M0 scales. It specifies the conversion rule of §3.5 (power-of-two scale, ties-to-even rounding, clamping) and leaves the dot product's internal precision implementation-defined [4, R-210] **[Established]**. Version 1.1 (9 Oct 2026) keeps the formats and block size. It renames the scale type UE8M0, clarifies NaN and out-of-range cases, and lets the conversion raise the scale by one extra power of two (an optional, implementation-defined adjustment). §3.5's rule is the default case [4, R-143] **[Established]**. NVIDIA's NVFP4 uses 16-element blocks with FP8 scales (08-01, [R-143](../../../reference/research-log.md#r-143--block-scaled-ai-number-formats)).
 
 ### Why it matters commercially
 
-- **Formats are a competitive weapon.** Halving the element width typically lets the same multiplier array do about twice as many operations per cycle, so vendors quote peak throughput in their narrowest format (14-14). Comparing chips' "TOPS" requires the same format and the same scaling scheme.
+- **Formats are a competitive weapon.** Vendors quote peak throughput in their narrowest format. NVIDIA's H100 SXM, for example, lists 1,979 TFLOPS for FP16 and 3,958 for FP8 (both with sparsity): one halving of the width, twice the peak (14-14, [R-220](../../../reference/research-log.md#r-220--nvidia-h100-hopper-specifications)) **[Established]**. The $p^2$ model of §3.6 would allow about four times as many FP8 multipliers in the area of the 16-bit ones. Operand bandwidth, register files, accumulators and exponent logic do not shrink as fast as the multipliers, so the delivered gain per halving is closer to 2× (Problem 14-04.16). Comparing chips' "TOPS" requires the same format and the same scaling scheme.
 - **Numerical behaviour is part of compatibility.** Customers porting models between accelerators see different results when rounding, accumulator width or summation order differ. Reproducibility guarantees, or their absence, matter in regulated domains.
 - **Quantization tooling is a moat.** Getting a model to INT8 or FP4 with negligible accuracy loss needs calibration software, and vendors with mature tools win designs.
 
@@ -443,7 +473,7 @@ Each value passes through only about $\log_2 n$ roundings instead of up to $n$, 
 
 <details><summary>Answer</summary>
 
-Products individually tolerate low precision, but a sum of thousands of them accumulates rounding error in proportion to the number of terms times the accumulator's unit roundoff. A wide accumulator keeps that error small at modest cost, because there is one accumulator per many multipliers' worth of work.
+Products individually tolerate low precision, but a sum of thousands of them accumulates rounding error in proportion to the number of terms times the accumulator's unit roundoff. A wide accumulator keeps that error small at modest cost. Every MAC unit has one (in a systolic array, one per processing element), but an adder grows only linearly with its width, while the multiplier beside it grows with the square of its input width.
 
 </details>
 
@@ -480,7 +510,7 @@ Now work the [problem set](../problems/14-04-problems.md).
 1. RISC-V International, *The RISC-V Instruction Set Manual, Volume I*, version 20260120, chapter "M" Extension for Integer Multiplication and Division (multiply-high variants, fused MULH/MUL sequence, division rounding, division-by-zero and overflow semantics). [R-201](../../../reference/research-log.md#r-201--risc-v-unprivileged-isa-manual-version-20260120)
 2. Same manual, chapter "F" Extension for Single-Precision Floating-Point (rounding-mode encodings, `fcsr`/`fflags`, canonical NaN 0x7FC00000, FMADD). [R-201](../../../reference/research-log.md#r-201--risc-v-unprivileged-isa-manual-version-20260120)
 3. S. Wang and P. Kanwar, "BFloat16: The secret to high performance on Cloud TPUs," Google Cloud Blog, 23 Aug 2019; Google Cloud TPU documentation, "Improve your model's performance with bfloat16" (updated Nov 2026). [R-210](../../../reference/research-log.md#r-210--number-formats-ieee-754-2019-bfloat16-and-ocp-mx-primary-re-check)
-4. Open Compute Project, *OCP Microscaling Formats (MX) Specification*, Version 1.0, Sep 2023, §§5–6 (element formats, dot product, conversion from scalar vectors). [R-210](../../../reference/research-log.md#r-210--number-formats-ieee-754-2019-bfloat16-and-ocp-mx-primary-re-check)
+4. Open Compute Project, *OCP Microscaling Formats (MX) Specification*, Version 1.0, Sep 2023, §§5–6 (element formats, dot product, conversion from scalar vectors); Version 1.1, 9 Oct 2026, version history and §6.3 ([R-143](../../../reference/research-log.md#r-143--block-scaled-ai-number-formats)). [R-210](../../../reference/research-log.md#r-210--number-formats-ieee-754-2019-bfloat16-and-ocp-mx-primary-re-check)
 5. M. Horowitz, "Computing's energy problem (and what we can do about it)," ISSCC 2014, Figure 1.1.9. [R-157](../../../reference/research-log.md#r-157--arithmetic-energy-and-dsp-blocks)
 6. IEEE SA, "IEEE 754-2019 — IEEE Standard for Floating-Point Arithmetic" (standard page, read Nov 2026). [R-210](../../../reference/research-log.md#r-210--number-formats-ieee-754-2019-bfloat16-and-ocp-mx-primary-re-check)
 

@@ -75,14 +75,22 @@ srli  q, q, 2           # q = x / 7
 
 **Sizing accumulators exactly.** (a) An INT8 × INT8 dot product with symmetric operands (magnitudes up to 127) has $K$ = 4096 terms. How many bits, including the sign, does an accumulator need to be safe for every input? (b) Within one MX block, FP4 E2M1 elements multiply to products that are all multiples of 0.25, with magnitude at most 36. How many bits, including the sign, does a fixed-point accumulator need to sum the 32 products of a block exactly? (c) Why is exact block accumulation attractive in hardware?
 
+### Problem 14-04.15 [B]
+
+**A restoring divider by hand.** (a) Trace restoring division of the 8-bit unsigned dividend 200 by 7, one row per step, giving the shifted-in bit, $T = 2R + x_i$, the quotient bit and the new remainder. (b) Check the result. (c) How many cycles does a 32-bit divide take at one quotient bit per cycle, and at two? (d) Explain why one trial subtraction per step is always enough.
+
+### Problem 14-04.16 [B]
+
+**What a narrower format buys.** Use the $p^2$ area model of §3.6, with $p$ counting significand bits including the hidden 1 (FP4 E2M1 has $p$ = 2). (a) How many FP8 E4M3 multipliers fit in the area of one bfloat16 multiplier, and how many FP4 E2M1 multipliers in the area of one FP8 multiplier? (b) A vendor's peak throughput doubles from a 16-bit format to FP8. What fraction of the model's potential gain is that? (c) Name three parts of a MAC array that keep the gain below the model's.
+
 ---
 
 ## Objective coverage
 
 | Learning objective (chapter 14-04) | Problems |
 |---|---|
-| 1. Integer results, comparisons, overflow, multiply-high and division | 1, 2, 3, 4, 5 |
+| 1. Integer results, comparisons, overflow, multiply-high and division | 1, 2, 3, 4, 5, 15 |
 | 2. Division by a constant | 6, 7 |
 | 3. Floating-point rounding and FMA | 8, 9, 10 |
 | 4. Error in sums and accumulator width | 11, 14 |
-| 5. Quantization, block scaling and cost | 12, 13, 14 |
+| 5. Quantization, block scaling and cost | 12, 13, 14, 16 |
