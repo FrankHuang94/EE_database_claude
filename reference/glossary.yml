@@ -5114,3 +5114,31 @@
   definition: R_s = 1/(σδ) = √(πfµ/σ), the resistance per square of a conductor at high frequency (8.25 mΩ for copper at 1 GHz); the loss per area is ½R_s|H_t|², and it rises as √f.
   chapter: "13-05"
   see_also: [Skin depth]
+- term: Transmission coefficient
+  definition: The ratio τ of the transmitted to the incident electric field at an interface; 1 + Γ = 2η₂/(η₁ + η₂) at normal incidence. The transmitted power fraction is (η₁/η₂)|τ|², not |τ|².
+  chapter: "13-06"
+  see_also: [Reflection coefficient]
+- term: Critical angle
+  definition: The angle of incidence, θc = arcsin(n₂/n₁), above which a wave going from a denser to a less dense medium is totally reflected; 41.8° from glass (n = 1.5) into air.
+  chapter: "13-06"
+  see_also: [Total internal reflection, Snell's law]
+- term: Brewster angle
+  definition: The angle of incidence, tan θB = n₂/n₁ for nonmagnetic media, at which a wave polarized in the plane of incidence (TM) is fully transmitted; 56.3° from air into glass. Reflected light near it is mostly TE polarized.
+  chapter: "13-06"
+  see_also: [Fresnel equations]
+- term: Fresnel equations
+  definition: The reflection and transmission coefficients of a plane wave at a planar interface as functions of angle, separately for TE (perpendicular) and TM (parallel) polarization; they follow from continuity of the tangential fields.
+  chapter: "13-06"
+  see_also: [Brewster angle, Snell's law]
+- term: Evanescent wave
+  definition: A field that decays exponentially away from an interface instead of propagating, as on the far side of a totally reflecting boundary; it carries no average power across the interface but can couple to a nearby structure.
+  chapter: "13-06"
+  see_also: [Total internal reflection]
+- term: Quarter-wave transformer
+  definition: A layer (or transmission-line section) a quarter wavelength thick whose impedance is the geometric mean of those on either side, √(η₁η₃); it cancels reflection at its design frequency, as in antireflection coatings.
+  chapter: "13-06"
+  see_also: [Reflection coefficient]
+- term: Shielding effectiveness
+  definition: The reduction, in dB, of a field by a barrier; for a solid conducting sheet roughly the absorption loss 8.686 t/δ plus the reflection loss 20 log₁₀(η₀/4|η_c|). Real enclosures are usually limited by seams and apertures instead.
+  chapter: "13-06"
+  see_also: [Skin depth]

@@ -1,0 +1,25 @@
+* Lab 13-06 -- normal incidence on air-glass as a junction of two transmission lines.
+* A plane wave's E/H ratio is the medium's intrinsic impedance, just as a line's V/I ratio is its characteristic
+* impedance. Line 1 (376.7 ohm, air) feeds line 2 (251.2 ohm = 376.7/1.5, glass), which is matched at its far end.
+* A 2 V step behind a matched 376.7 ohm source launches a 1 V incident wave. At the junction the transmitted
+* step is tau = 1 + Gamma = 0.8 V; the reflection Gamma = -0.2 V returns to the source end after one more delay.
+*
+* EXPECT vtran key:../../chapters/13-06-reflection-and-transmission.md#Sim_13-06.a rtol=1e-3
+* EXPECT vrefl key:../../chapters/13-06-reflection-and-transmission.md#Sim_13-06.b rtol=1e-3
+
+VS src 0 PWL(0 0 10p 2 10n 2)
+RS src in 376.7
+T1 in 0 junc 0 Z0=376.7 TD=1n
+T2 junc 0 out 0 Z0=251.13 TD=1n
+RL out 0 251.13
+
+.control
+tran 5p 6n
+meas tran vinc avg v(in) from=0.5n to=1.5n
+meas tran vlate avg v(in) from=2.5n to=3.5n
+meas tran vtran avg v(junc) from=1.5n to=2.5n
+let vrefl = vlate - vinc
+print vinc vtran vrefl
+quit
+.endc
+.end

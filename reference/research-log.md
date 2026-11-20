@@ -202,6 +202,7 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-194 | RG-58 coaxial cable data sheets | Nov 2026 |
 | R-195 | Bond-wire inductance rule of thumb | Nov 2026 |
 | R-196 | RF exposure limits (FCC and ICNIRP) | Nov 2026 |
+| R-197 | ITU-T G.652 single-mode fibre attributes | Nov 2026 |
 
 ---
 
@@ -2034,3 +2035,10 @@ R&D % = R&D ÷ revenue.
 - **47 CFR § 1.1310(e)(1), Table 1** (eCFR text read 20 Nov 2026), "(ii) Limits for General Population/Uncontrolled Exposure": "30-300 27.5 0.073 0.2 <30" (frequency MHz; electric field V/m; magnetic field A/m; power density mW/cm²; averaging time minutes), "300-1,500 f/1500 <30", "1,500-100,000 1.0 <30". § 1.1310(c): "a peak spatial-average SAR of 1.6 W/kg, averaged over any 1 gram of tissue (defined as a tissue volume in the shape of a cube)". [eCFR § 1.1310](https://www.ecfr.gov/current/title-47/chapter-I/subchapter-A/part-1/subpart-I/section-1.1310)
 - **ICNIRP 2020**, *Health Physics* 118(5):483–524, Table 2 (basic restrictions, averaging intervals ≥ 6 min), general public: 100 kHz to 6 GHz whole-body 0.08 W/kg, local head/torso 2 W/kg, local limb 4 W/kg; above 6 GHz to 300 GHz, absorbed power density 20 W/m²; "Local SAR is to be averaged over a 10-g cubic mass". [ICNIRP 2020 (PDF)](https://www.icnirp.org/cms/upload/publications/ICNIRPrfgdl2020.pdf)
 - **Derived here (13-04):** the ratio 27.5 V/m ÷ 0.073 A/m = 376.7 Ω (the plane-wave impedance the table assumes); the rms field of a 10 W/m² plane wave, √(10 × 376.7) = 61.38 V/m; the far-field distance at which 1 W EIRP gives 10 W/m², 8.92 cm.
+
+## R-197 · ITU-T G.652 single-mode fibre attributes
+
+*Read on 20 Nov 2026 from the ITU-T recommendation's published PDF; values tagged [Established] as a standard.*
+
+- **Recommendation ITU-T G.652 (08/2024)**, "Characteristics of a single-mode optical fibre and cable", Table 2 (ITU-T G.652.D attributes). Fibre attributes: mode field diameter at 1310 nm, "Range of nominal values 8.6-9.2 μm", tolerance 0.4 μm; cladding diameter "Nominal 125.0 μm"; cable cut-off wavelength "Maximum 1260 nm"; chromatic dispersion at 1550 nm between 13.3 and 18.6 ps/(nm × km). Cable attributes: attenuation coefficient "Maximum from 1310 nm to 1625 nm 0.40 dB/km" and "Maximum at 1530-1565 nm 0.30 dB/km"; Note 1 says these values "should not be applied to short cables such as jumper cables, indoor cables and drop cables". [ITU-T G.652](https://www.itu.int/rec/T-REC-G.652-202408-I/en)
+- **Derived here (13-06):** the ratio of a 1 GHz coax's loss (0.29 dB/m, Problem 13-05.13) to the fibre's 0.30 dB/km.
