@@ -6377,3 +6377,15 @@
   definition: An adder in front of a DSP block's multiplier, used to add the two samples that share a coefficient in a symmetric FIR filter, which halves the number of multiplications.
   chapter: "16-06"
   see_also: [FIR filter, Multiply-accumulate (MAC)]
+- term: Chebyshev filter
+  definition: "A filter whose response ripples equally across one band: type I in the passband (all poles, on an ellipse), type II in the stopband (with zeros on the jω axis); it is steeper than a Butterworth filter of the same order."
+  chapter: "16-07"
+  see_also: [Butterworth response, Elliptic filter]
+- term: Discrimination (filter specification)
+  definition: "D = (10^(As/10) − 1)/(10^(Ap/10) − 1), the ratio by which a low-pass filter must separate its power gains at the passband and stopband edges; every classical order formula is a function of D and the edge ratio."
+  chapter: "16-07"
+  see_also: [Passband ripple, Stopband attenuation]
+- term: Second-order sections (SOS)
+  definition: The standard implementation of an IIR filter as a cascade of biquads, each holding one pole pair and one zero pair, which keeps coefficient rounding from moving the poles far (or outside the unit circle).
+  chapter: "16-07"
+  see_also: [Biquad, IIR filter]

@@ -245,6 +245,9 @@ Confidence tags follow the curriculum convention: **[Established]** (stable, mul
 | R-237 | ADC dynamic testing: IEEE 1241, ENOB conventions, coherent sampling, a data-sheet example | Nov 2026 |
 | R-238 | Converter digital filters: ADS127L11/ADS127L21 decimation filters, PCM5122 interpolation filters | Nov 2026 |
 | R-239 | FPGA DSP blocks for symmetric FIR filters (AMD DSP48E2/DSP58, Altera Agilex 7) and SciPy `remez` | Nov 2026 |
+| R-240 | Audio ADC biquads and decimation-filter latency options (TI TLV320ADC5140, SBAA378B) | Nov 2026 |
+| R-241 | Arm CMSIS-DSP biquad cascade functions and conventions | Nov 2026 |
+| R-242 | W3C Audio EQ Cookbook and Web Audio BiquadFilterNode; SciPy's second-order-sections recommendation | Nov 2026 |
 
 ---
 
@@ -2454,3 +2457,30 @@ R&D % = R&D ÷ revenue.
 - **Altera Agilex 7 Variable Precision DSP Blocks User Guide**, UG-20213, version 24.3.1, 6 Aug 2025: "Two 18 x 19 multipliers or one 27 x 27 multiplier per DSP block"; "Hard pre-adder supported in 18-bit and 27-bit DSP operation modes for symmetric filters"; "Internal coefficient register bank in both 18-bit and 27-bit modes"; "18-bit and 27-bit systolic finite impulse response (FIR) filters with distributed output adder". [Established] [Altera UG-20213](https://docs.altera.com/r/docs/683037/current)
 - **SciPy `scipy.signal.remez`** documentation (SciPy v1.18.0 manual, stable in Nov 2026): "Calculate the minimax optimal filter using the Remez exchange algorithm"; references McClellan and Parks (1973). Observed locally with SciPy 1.18.1: `scipy.signal.kaiserord(60, width)` returns 176 taps for the 4–5 kHz, 48 kHz example, because its order formula uses A − 7.95 where Kaiser's (as in Oppenheim and Schafer) uses A − 8. [Established] [SciPy remez](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.remez.html)
 - Perishable: product generations and tool versions change; the pre-adder's role in symmetric FIR filters is stable.
+
+## R-240 · Audio ADC biquads and decimation-filter latency options (TI TLV320ADC5140, SBAA378B)
+
+*Read on 20 Nov 2026 by a research subagent (curl through the build proxy; garbled equations and tables were rendered as images to read them). The biquad count sentence and the Table 26 and Table 34 rows were re-read by the main author from the converted text.*
+
+- **TI TLV320ADC5140** ("Quad-Channel, 768-kHz, Burr-Brown Audio ADC"), data sheet SBAS892A, July 2019, revised October 2019. §8.3.6.5: "The device supports up to 12 programmable digital biquad filters"; a biquad is "a second-order, recursive linear filter with two poles and two zeros"; Equation 2: H(z) = (N0 + 2N1 z⁻¹ + N2 z⁻²)/(2³¹ − 2D1 z⁻¹ − D2 z⁻²); default "flat at a gain of 0 dB (all-pass filter)". Table 18 (BIQUAD_CFG): 1 biquad per channel for all 8 channels, 2 per channel for up to 6 (default), 3 per channel for up to 4, or disabled. [Established] [TLV320ADC5140 data sheet](https://www.ti.com/lit/ds/symlink/tlv320adc5140.pdf)
+- **Decimation filters at 48 kHz** (§8.3.6.7, selected by DECI_FILT): linear phase (Table 26): pass-band ripple ±0.05 dB from 0 to 0.454 fS, stop-band attenuation 73.8 dB (0.58 to 4 fS) and 98.1 dB (from 4 fS), group delay 17.1/fS; low latency (Table 34): ±0.015 dB to 0.452 fS, 86.4 dB from 0.6 fS, group delay 7.7/fS over 0 to 0.365 fS, group-delay deviation ±0.027/fS, phase deviation −0.25° to 0.30°; ultra-low latency (Table 40): ±0.015 dB to 0.452 fS, 86.4 dB from 0.6 fS, group delay 4.1/fS over 0 to 0.325 fS, deviation ±0.525/fS, phase −10.3° to 14.5°. [Established]
+- **TI SBAA378B** (application note on the device family's biquads), November 2019, revised December 2023: "The coefficients of these biquad filters [N0, N1, N2, D1, and D2] are each 32-bits wide, in 2s-complement format… the filter coefficients are in 1.31 format"; "the coefficients N1 and D1 are multiplied by two… coefficients D1 and D2 have a negative sign"; conversion N0 = b0, N1 = b1/2, N2 = b2, D1 = −a1/2, D2 = −a2; "The biquads are computed in 32-bit fixed point arithmetic." **Errors in the note:** it writes the 1.31 value of 1 as "2^–31 (0x7FFFFFF)" (it is 2³¹ − 1 = 0x7FFFFFFF in integer form), says both "truncate" and "round", and gives a first-order Butterworth slope as "–10 dB / decade" (it is 20 dB per decade). [Established] [SBAA378B](https://www.ti.com/lit/pdf/sbaa378)
+- Perishable: data-sheet and note revisions change; re-read before citing.
+
+## R-241 · Arm CMSIS-DSP biquad cascade functions and conventions
+
+*Read on 20 Nov 2026 by a research subagent from the official documentation site (footer "Generated on Thu Sep 10 2026 … for CMSIS-DSP 1.18.0"). The coefficient-negation sentence was re-read by the main author from the saved page.*
+
+- Function families: Direct Form I `arm_biquad_cascade_df1_{f16,f32,q15,q31}` (plus `_fast_q15`, `_fast_q31`); Direct Form II transposed `arm_biquad_cascade_df2T_{f16,f32,f64}` and stereo variants; "Only floating-point data is supported" for DF2T. [Established] [CMSIS-DSP Biquad DF1](https://arm-software.github.io/CMSIS-DSP/latest/group__BiquadCascadeDF1.html), [DF2T](https://arm-software.github.io/CMSIS-DSP/latest/group__BiquadCascadeDF2T.html)
+- Difference equation: "y[n] = b0 * x[n] + b1 * x[n-1] + b2 * x[n-2] + a1 * y[n-1] + a2 * y[n-2]"; "Some design tools use the difference equation … - a1 * y[n-1] - a2 * y[n-2]. In this case the feedback coefficients a1 and a2 must be negated when used with the CMSIS DSP Library." Coefficients stored per stage as {b0, b1, b2, a1, a2} (Q15 adds a zero after b0 for SIMD). [Established]
+- Fixed point: "coefficients are restricted to lie in the range [-1 +1). The fixed-point functions have an additional scaling parameter postShift … This essentially scales the filter coefficients by 2^postShift"; Direct Form I "is numerically more robust for fixed-point data types… transposed Direct Form II … requires a wide dynamic range for the state variables." [Established]
+- Perishable: library versions and function sets change.
+
+## R-242 · W3C Audio EQ Cookbook and Web Audio BiquadFilterNode; SciPy's second-order-sections recommendation
+
+*Read on 20 Nov 2026 by a research subagent. The SciPy 'sos' sentence was re-read by the main author from the saved page.*
+
+- **W3C Audio EQ Cookbook**, Working Group Note, 8 June 2021, editor Raymond Toy; "Adapted from Audio-EQ-Cookbook.txt, by Robert Bristow-Johnson, with permission"; filters "were derived from analog prototypes … digitized using the Bilinear Transform (BLT)" with prewarping; ω0 = 2π f0/Fs, α = sin ω0/(2Q); low-pass b0 = (1 − cos ω0)/2, b1 = 1 − cos ω0, b2 = (1 − cos ω0)/2, a0 = 1 + α, a1 = −2 cos ω0, a2 = 1 − α. [Established] [Audio EQ Cookbook](https://www.w3.org/TR/audio-eq-cookbook/)
+- **W3C Web Audio API**: Recommendation, 17 June 2021; version 1.1 a Working Draft dated 22 September 2026. `BiquadFilterType`: "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"; §1.13.5: "The formulas in this section describe the filters that a conforming implementation MUST implement… They are inspired by formulas found in the Audio EQ Cookbook." Lowpass and highpass treat Q in decibels (α = sin ω0/(2·10^(Q/20))). [Established] [Web Audio API](https://www.w3.org/TR/webaudio/)
+- **SciPy v1.18.0** (`iirdesign`, `iirfilter`): "In general the second-order sections ('sos') form is recommended because inferring the coefficients for the numerator/denominator form ('ba') suffers from numerical instabilities. For reasons of backward compatibility the default form is the numerator/denominator form ('ba')"; `ellip`: "the DC gain is unity for odd-order filters, or -rp dB for even-order filters". [Established] [SciPy iirdesign](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.iirdesign.html)
+- Perishable: specification status and software defaults change.
