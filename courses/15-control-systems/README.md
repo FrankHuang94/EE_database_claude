@@ -34,7 +34,7 @@ Feedback control from modeling to design: transfer functions, time response, roo
 | [15-05 · Stability and the Routh–Hurwitz Criterion](chapters/15-05-stability-routh-hurwitz.md) | 5 | ✅ verified | [problems](problems/15-05-problems.md) · [solutions](solutions/15-05-solutions.md) · [lab](labs/15-05-lab/README.md) · [verify](verify/verify_15_05.py) |
 | [15-06 · Root Locus](chapters/15-06-root-locus.md) | 8 | ✅ verified | [problems](problems/15-06-problems.md) · [solutions](solutions/15-06-solutions.md) · [lab](labs/15-06-lab/README.md) · [verify](verify/verify_15_06.py) |
 | [15-07 · Frequency-Domain Design: Bode, Nyquist and Margins](chapters/15-07-frequency-domain-design.md) | 10 | ✅ verified | [problems](problems/15-07-problems.md) · [solutions](solutions/15-07-solutions.md) · [lab](labs/15-07-lab/README.md) · [verify](verify/verify_15_07.py) |
-| [15-08 · PID Control](chapters/15-08-pid-control.md) | 6 | ⬜ planned | — |
+| [15-08 · PID Control](chapters/15-08-pid-control.md) | 6 | ✅ verified | [problems](problems/15-08-problems.md) · [solutions](solutions/15-08-solutions.md) · [lab](labs/15-08-lab/README.md) · [verify](verify/verify_15_08.py) |
 | [15-09 · Lead and Lag Compensation](chapters/15-09-lead-lag-compensation.md) | 7 | ⬜ planned | — |
 | [15-10 · State-Space Introduction](chapters/15-10-state-space-introduction.md) | 8 | ⬜ planned | — |
 | [15-11 · Digital Control](chapters/15-11-digital-control.md) | 5 | ⬜ planned | — |

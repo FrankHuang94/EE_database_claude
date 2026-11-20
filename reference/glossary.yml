@@ -6060,3 +6060,33 @@
   definition: For a stable closed loop whose loop gain has relative degree of at least 2, the integral of ln|S(jω)| over all positive frequencies equals π times the sum of the real parts of the open-loop right-half-plane poles (zero for a stable plant), so sensitivity reduced in one band rises in another (the waterbed effect).
   chapter: "15-07"
   see_also: [Sensitivity function, Sensitivity peak]
+
+# ---------------------------------------------------------------- 15-08
+- term: PID controller
+  definition: A controller whose output is a weighted sum of the error, its integral and its derivative, u = K_p e + K_i ∫e dt + K_d de/dt, or in standard form K_p(1 + 1/(T_i s) + T_d s); in practice the derivative is filtered and actuator limits are handled with anti-windup.
+  chapter: "15-08"
+  see_also: [Integral action, Integrator windup]
+- term: Integrator windup
+  definition: The build-up of a controller's integral term while the actuator is saturated and the error stays large; when the output finally reaches the setpoint, the oversized integral keeps the actuator saturated, causing a large overshoot and slow recovery.
+  chapter: "15-08"
+  see_also: [Anti-windup]
+- term: Anti-windup
+  definition: A modification that stops integrator windup, either by clamping (pausing integration while saturated in the direction that would deepen saturation) or by back-calculation (feeding the difference between the limited and unlimited controller output back into the integrator).
+  chapter: "15-08"
+  see_also: [Integrator windup]
+- term: Derivative kick
+  definition: The large, brief controller output produced when the derivative term acts on the error and the setpoint steps; it is avoided by taking the derivative of the measurement only and is bounded by the derivative filter at K_p(1 + N).
+  chapter: "15-08"
+  see_also: [Setpoint weighting]
+- term: Setpoint weighting
+  definition: Applying a PID's proportional and derivative actions to b·r − y and c·r − y (with 0 ≤ b, c ≤ 1) instead of the full error; it softens the response to setpoint changes without changing stability, steady-state accuracy or disturbance rejection.
+  chapter: "15-08"
+  see_also: [PID controller, Derivative kick]
+- term: Ziegler–Nichols tuning
+  definition: Classic 1942 PID tuning rules; the ultimate-gain version sets K_p = 0.6 K_u, T_i = P_u/2, T_d = P_u/8 from the gain and period at which proportional control just oscillates. It gives fast disturbance rejection but typically only about 30° of phase margin.
+  chapter: "15-08"
+  see_also: [Ultimate gain]
+- term: Ultimate gain
+  definition: The proportional gain K_u at which a loop sits on its stability boundary and oscillates steadily, with the ultimate period P_u; found by Routh, by experiment, or by relay feedback, and used by tuning rules.
+  chapter: "15-08"
+  see_also: [Ziegler–Nichols tuning, Routh–Hurwitz criterion]

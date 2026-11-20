@@ -1,0 +1,42 @@
+* Lab 15-08 -- integrator windup and back-calculation anti-windup (Example 15-08.4).
+* Plant: illustrative thermal path P(s) = 0.5/(10 s + 1) K/W, built as 10 F || 1 ohm driven by a 0.5 S
+* transconductor from the actuator power u. Node voltages are signals (volts = kelvin or watts).
+* Controller: PI with Kp = 14 W/K and Ki = 5 W/(K s); actuator limited to +-10 W. Setpoint step of 4 K.
+* Loop 1 (no anti-windup): the integrator integrates the error even while u is saturated.
+* Loop 2 (back-calculation, Tt = Ti = 2.8 s): dz/dt = e + (u - u_raw)/(Ki Tt).
+*
+* EXPECT pk1 key:../../chapters/15-08-pid-control.md#Ex_15-08.4a rtol=2e-3
+* EXPECT pk2 key:../../chapters/15-08-pid-control.md#Ex_15-08.4e rtol=2e-3
+
+VR r 0 PWL(0 0 1m 4)
+
+* loop 1
+BE1 e1 0 V=v(r)-v(y1)
+BUR1 ur1 0 V=14*v(e1)+5*v(z1)
+BU1 u1 0 V=max(-10, min(10, v(ur1)))
+GZ1 0 z1 e1 0 1
+CZ1 z1 0 1 IC=0
+RZ1 z1 0 1e12
+GY1 0 y1 u1 0 0.5
+RY1 y1 0 1
+CY1 y1 0 10 IC=0
+
+* loop 2
+BE2 e2 0 V=v(r)-v(y2)
+BUR2 ur2 0 V=14*v(e2)+5*v(z2)
+BU2 u2 0 V=max(-10, min(10, v(ur2)))
+BZ2 0 z2 I=v(e2) + (v(u2)-v(ur2))/14
+CZ2 z2 0 1 IC=0
+RZ2 z2 0 1e12
+GY2 0 y2 u2 0 0.5
+RY2 y2 0 1
+CY2 y2 0 10 IC=0
+
+.control
+tran 5m 80 uic
+meas tran pk1 max v(y1) from=0 to=80
+meas tran pk2 max v(y2) from=0 to=80
+print pk1 pk2
+quit
+.endc
+.end
