@@ -1,0 +1,30 @@
+* Lab 12-08 -- large-signal slew of Example 12-08.1's two-stage op-amp as a unity-gain follower (behavioural).
+* Stage 1: square-law NMOS pair, I_SS = 20 uA, k1 = 0.5 mA/V^2: differential output current saturates at
+*   +/- I_SS beyond |v_id| = sqrt(2) V_ov = 0.2828 V; into R1 = 500 kohm and C1 = 0.2 pF at node 1.
+* Stage 2: square-law PMOS M6 (k6 = 5 mA/V^2, biased at I_7 = 100 uA, V_ov = 0.2 V) sourcing into the output
+*   against an NMOS sink I_7; it cuts off when node 1 rises by V_ov. R2 = 50 kohm, CL = 5 pF, Cc = 1.1 pF.
+* Node voltages are deviations from the bias point. The follower's input steps -0.5 -> +0.5 V and back.
+*
+* EXPECT srr key:../../chapters/12-08-op-amp-internals.md#Ex_12-08.2e scale=1e6 rtol=1e-2
+* EXPECT srf key:../../chapters/12-08-op-amp-internals.md#Ex_12-08.2f scale=1e6 rtol=1e-2
+
+VIN in 0 PULSE(-0.5 0.5 50n 0.1n 0.1n 600n 1.3u)
+.param iss=20u k1=0.5m i7=100u k6=5m vov6=0.2
+.func i1(x) {x >= 0.28284271 ? iss : (x <= -0.28284271 ? -iss : 0.5*k1*x*sqrt(max(4*iss/k1 - x*x, 0)))}
+B1 n1 0 I = i1(v(in) - v(out))
+R1 n1 0 500k
+C1 n1 0 0.2p
+CC n1 out 1.1p
+B6 0 out I = (v(n1) < vov6) ? (0.5*k6*(vov6 - v(n1))*(vov6 - v(n1)) - i7) : -i7
+R2 out 0 50k
+CL out 0 5p
+
+.control
+tran 0.05n 1.3u 0 0.05n
+let slope = deriv(v(out))
+meas tran srr max slope from=50n to=600n
+meas tran srm min slope from=650n to=1.2u
+let srf = -srm
+print srr srf
+.endc
+.end

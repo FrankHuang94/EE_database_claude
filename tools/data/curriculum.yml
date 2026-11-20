@@ -901,7 +901,7 @@ courses:
       - Explain matching, PVT variation and layout techniques, and why analog area and power do not shrink with digital scaling.
     chapters:
       - {id: "20-01", slug: analog-design-fundamentals-gm-id, title: "Analog Design Fundamentals in Nanometer CMOS", hours: 8, topics: "gm/ID methodology, intrinsic gain, f_T, design space exploration, corners"}
-      - {id: "20-02", slug: two-stage-op-amp-design, title: "Two-Stage Op-Amp Design", hours: 12, topics: "Specifications, topology, Miller compensation design, slew, CMRR/PSRR, design procedure, simulation verification"}
+      - {id: "20-02", slug: two-stage-op-amp-design, title: "Two-Stage Op-Amp Design", hours: 12, topics: "Specifications, topology, Miller compensation design, indirect (cascode) and nested Miller compensation, gain boosting, slew, CMRR/PSRR, switched-capacitor CMFB, design procedure, simulation verification"}
       - {id: "20-03", slug: bandgap-references, title: "Bandgap and Voltage References", hours: 8, topics: "PTAT/CTAT, bandgap derivation, curvature, sub-1V references, startup"}
       - {id: "20-04", slug: ldo-regulators, title: "Low-Dropout Regulators", hours: 8, topics: "LDO architecture, dropout, load/line regulation, PSRR, stability, capless LDOs"}
       - {id: "20-05", slug: comparators-and-sample-and-hold, title: "Comparators and Sample-and-Hold Circuits", hours: 8, topics: "Latched comparators, offset, kickback, metastability, bootstrapped switches, kT/C"}

@@ -944,7 +944,7 @@ Designing analog and mixed-signal blocks in CMOS: gm/ID methodology, two-stage o
 | Chapter | Hours | Key topics |
 |---|---|---|
 | [20-01 · Analog Design Fundamentals in Nanometer CMOS](courses/20-analog-and-mixed-signal-ic-design/chapters/20-01-analog-design-fundamentals-gm-id.md) | 8 | gm/ID methodology, intrinsic gain, f_T, design space exploration, corners |
-| [20-02 · Two-Stage Op-Amp Design](courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md) | 12 | Specifications, topology, Miller compensation design, slew, CMRR/PSRR, design procedure, simulation verification |
+| [20-02 · Two-Stage Op-Amp Design](courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md) | 12 | Specifications, topology, Miller compensation design, indirect (cascode) and nested Miller compensation, gain boosting, slew, CMRR/PSRR, switched-capacitor CMFB, design procedure, simulation verification |
 | [20-03 · Bandgap and Voltage References](courses/20-analog-and-mixed-signal-ic-design/chapters/20-03-bandgap-references.md) | 8 | PTAT/CTAT, bandgap derivation, curvature, sub-1V references, startup |
 | [20-04 · Low-Dropout Regulators](courses/20-analog-and-mixed-signal-ic-design/chapters/20-04-ldo-regulators.md) | 8 | LDO architecture, dropout, load/line regulation, PSRR, stability, capless LDOs |
 | [20-05 · Comparators and Sample-and-Hold Circuits](courses/20-analog-and-mixed-signal-ic-design/chapters/20-05-comparators-and-sample-and-hold.md) | 8 | Latched comparators, offset, kickback, metastability, bootstrapped switches, kT/C |

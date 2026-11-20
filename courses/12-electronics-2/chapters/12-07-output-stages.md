@@ -446,7 +446,7 @@ Its switches are either fully on (little voltage) or off (no current); it loses 
 ## 12. Connections
 
 - **Builds on:** the emitter follower from [10-07](../../10-electronics-1/chapters/10-07-bjt-single-stage-amplifiers.md); distortion reduction by feedback from [12-05](12-05-feedback-topologies.md); average power from [07-06](../../07-circuit-analysis-2-transient-and-ac/chapters/07-06-ac-power-and-power-factor.md).
-- **Next:** [12-08 Op-Amp Internals](12-08-op-amp-internals.md) puts a class AB output stage behind the two-stage amplifier of 12-06.
+- **Next:** [12-08 Op-Amp Internals](12-08-op-amp-internals.md) opens up the two-stage amplifier of 12-06, including the common-source rail-to-rail output stage with class AB control of §3.3.
 - **Used later:** switching converters and power semiconductors in [Course 22](../../22-power-electronics-and-energy-conversion/README.md); RF power amplifier classes in [Course 21](../../21-rf-and-microwave-engineering/README.md); delta-sigma modulators in [Course 20](../../20-analog-and-mixed-signal-ic-design/README.md).
 
 ## 13. Further study

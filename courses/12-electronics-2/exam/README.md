@@ -61,7 +61,7 @@ A two-stage amplifier has $g_{m1}$ = 0.4 mA/V, $g_{m2}$ = 4 mA/V and $C_L$ = 3 p
 (b) Find the amplitude of worst-case dissipation, the total and per-transistor dissipation there, and the largest $\theta_{SA}$ that keeps $T_J \le$ 125 °C at 50 °C ambient with $\theta_{JC} + \theta_{CS}$ = 3 °C/W.
 
 **9 [B] · Op-amp slew rate.** (12-08)
-A two-stage CMOS op-amp has $I_{SS}$ = 40 µA, input overdrive 0.2 V, $C_c$ = 2 pF, second-stage current $I_7$ = 150 µA and $C_L$ = 8 pF.
+A two-stage CMOS op-amp (NMOS input pair with a PMOS mirror load; PMOS common-source second stage M6 with an NMOS current-sink load) has $I_{SS}$ = 40 µA, input overdrive 0.2 V, $C_c$ = 2 pF, second-stage current $I_7$ = 150 µA and $C_L$ = 8 pF.
 (a) Find $g_{m1}$ and the GBW.
 (b) Find the internal and output-stage slew limits, the rising and falling slew rates, and the full-power bandwidth at 2 V peak.
 

@@ -50,7 +50,7 @@ Conventions:
 | Class B worst dissipation $2V_{CC}^2/(\pi^2R_L)$ at $V_{op} = 2V_{CC}/\pi$ | 50% efficiency there | [12-07](../../courses/12-electronics-2/chapters/12-07-output-stages.md) |
 | Class AB: $i_Ni_P = I_Q^2$; $V_{BB} = V_{BE}(1 + R_1/R_2)$; $R_{out} = V_T/(2I_Q)$ at idle | Translinear | [12-07](../../courses/12-electronics-2/chapters/12-07-output-stages.md) |
 | $T_J = T_A + P_D\sum\theta$; runaway if $V_{CE}\theta g_m(2\ \text{mV/°C})/(1 + g_mR_E) \ge 1$ | Thermal | [12-07](../../courses/12-electronics-2/chapters/12-07-output-stages.md) |
-| Two-stage op-amp gain $g_{m1}R_1 \cdot g_{m6}R_2$; SR $= I_{SS}/C_c$ (rising also ≤ $I_7/(C_L + C_c)$) | $\text{SR}/\omega_u = V_{ov1}$ (MOS), $2V_T$ (BJT) | [12-08](../../courses/12-electronics-2/chapters/12-08-op-amp-internals.md) |
+| Two-stage op-amp gain $g_{m1}R_1 \cdot g_{m6}R_2$; SR $= I_{SS}/C_c$ (on the edge where M6 cuts off, also ≤ $(I_7 - I_{SS})/C_L$) | $\text{SR}/\omega_u = V_{ov1}$ (MOS), $2V_T$ (BJT) | [12-08](../../courses/12-electronics-2/chapters/12-08-op-amp-internals.md) |
 | Full-power bandwidth $\text{SR}/(2\pi V_p)$; folded cascode GBW $g_{m1}/(2\pi C_L)$ | | [12-08](../../courses/12-electronics-2/chapters/12-08-op-amp-internals.md) |
 | CM error without CMFB $\Delta I\cdot R_{out}$; with CMFB ÷$(1 + g_{m,cm}R_{out})$ | Fully differential | [12-08](../../courses/12-electronics-2/chapters/12-08-op-amp-internals.md) |
 

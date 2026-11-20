@@ -63,7 +63,7 @@
 "What does a bridge-tied load give?","Twice the voltage swing, four times the power from one supply.",12-07
 "Two-stage op-amp DC gain?","g<sub>m1</sub>(r<sub>o2</sub> ∥ r<sub>o4</sub>) · g<sub>m6</sub>(r<sub>o6</sub> ∥ r<sub>o7</sub>).",12-08
 "Internal slew rate?","I<sub>SS</sub>/C<sub>c</sub>: the fully switched pair's tail current charges C<sub>c</sub>.",12-08
-"When does the output stage limit slew?","Rising edges if I<sub>7</sub>/(C<sub>L</sub> + C<sub>c</sub>) < I<sub>SS</sub>/C<sub>c</sub>.",12-08
+"When does the output stage limit slew?","On the edge where the common-source device M6 cuts off (falling, for an NMOS pair and PMOS M6), if (I<sub>7</sub> − I<sub>SS</sub>)/C<sub>L</sub> < I<sub>SS</sub>/C<sub>c</sub>.",12-08
 "SR/ω<sub>u</sub> for MOS and bipolar input pairs?","V<sub>ov1</sub> for MOS; 2V<sub>T</sub> ≈ 52 mV for bipolar (more with emitter degeneration).",12-08
 "Full-power bandwidth?","SR/(2πV<sub>p</sub>).",12-08
 "What compensates a folded cascode?","Its load capacitance: GBW = g<sub>m1</sub>/(2πC<sub>L</sub>); a larger load improves phase margin.",12-08

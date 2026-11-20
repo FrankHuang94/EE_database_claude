@@ -53,11 +53,23 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 12-08.11 [C]
 
-**A two-stage design.** Design a two-stage op-amp for a 20 MHz GBW and about 60° of phase margin into 4 pF, with both stages at $V_{ov}$ = 0.2 V. Using the rules $C_c = 0.22C_L$ and $g_{m6} = 10g_{m1}$, find $C_c$, $g_{m1}$, $g_{m6}$, $I_{SS}$, $I_6$ and both slew limits.
+**A two-stage design.** Design a two-stage op-amp for a 20 MHz GBW and about 60° of phase margin into 4 pF, with both stages at $V_{ov}$ = 0.2 V. Using the rules $C_c = 0.22C_L$ and $g_{m6} = 10g_{m1}$, find $C_c$, $g_{m1}$, $g_{m6}$, $I_{SS}$, the second-stage current $I_7$ and both slew limits.
 
 ### Problem 12-08.12 [C]
 
-**Checking the design.** For Problem 12-08.11's design with λ = 0.1 V⁻¹ (so $R_1 = r_o/2$ at $I_{SS}/2$ and $R_2 = r_o/2$ at $I_6$) and 0.15 pF at node 1, find $R_1$, $R_2$ and the DC gain. The exact solution gives a phase margin of 59.97° at a crossover of 17.59 MHz. Why is the crossover below the 20 MHz target?
+**Checking the design.** For Problem 12-08.11's design with λ = 0.1 V⁻¹ (so $R_1 = r_o/2$ at $I_{SS}/2$ and $R_2 = r_o/2$ at $I_7$) and 0.15 pF at node 1, find $R_1$, $R_2$ and the DC gain. The exact solution gives a phase margin of 59.97° at a crossover of 17.59 MHz. Why is the crossover below the 20 MHz target?
+
+### Problem 12-08.13 [C]
+
+**The falling edge with $C_1$.** For Example 12-08.1's op-amp ($I_{SS}$ = 20 µA, $I_7$ = 100 µA, $C_1$ = 0.2 pF, $C_c$ = 1.1 pF, $C_L$ = 5 pF), take a falling edge with M6 cut off, the first stage delivering its full $I_{SS}$ into node 1 and the sink drawing $I_7$ from the output, and $R_1$, $R_2$ neglected. Write the two node equations, solve them for the output slew rate and the rate at which node 1 moves, and show that the result lies between $(I_7 - I_{SS})/C_L$ and $I_7/(C_L + C_c)$, approaching each in a limit of $C_1$.
+
+### Problem 12-08.14 [B]
+
+**Range, swing and a hand phase-margin estimate.** Example 12-08.1's op-amp (NMOS input pair with an NMOS tail source, PMOS mirror, PMOS M6, NMOS sink M7) runs from $V_{DD}$ = 1.8 V with $V_{TN} = \lvert V_{TP} \rvert$ = 0.5 V and every device at 0.2 V overdrive. (a) Find its input common-mode range. (b) Find its output swing. (c) Estimate its phase margin by hand at unity gain, using the improved $p_2$ that includes $C_1$ = 0.2 pF and the crossover taken at $g_{m1}/C_c$; then repeat with the exact crossover, 12.70 MHz, and compare with the exact 59.78°.
+
+### Problem 12-08.15 [C]
+
+**Sizing common-mode feedback, and a sensing trap.** Example 12-08.5's fully differential folded cascode ($R_{out}$ = 5.175 MΩ at each output, 50 µA pull-up and pull-down currents) must hold its output common mode within 1 mV for a 0.5% current mismatch. (a) Find the common-mode shift with no CMFB, the loop gain needed and the CMFB transconductance. (b) A designer senses the common mode with a 1 MΩ resistor from each output to a centre node. By what factor does this reduce the differential gain, and what would you do instead?
 
 ---
 
@@ -65,8 +77,8 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 | Learning objective (chapter 12-08) | Problems |
 |---|---|
-| 1. Two-stage gain, GBW and phase margin | 1, 11, 12 |
-| 2. Slew rate and its link to GBW | 2, 3, 4, 5, 6, 11 |
+| 1. Two-stage gain, GBW and phase margin | 1, 11, 12, 14 |
+| 2. Slew rate and its link to GBW | 2, 3, 4, 5, 6, 11, 13 |
 | 3. The folded cascode | 7, 8 |
-| 4. Fully differential amplifiers and CMFB | 9 |
+| 4. Fully differential amplifiers and CMFB | 9, 15 |
 | 5. Rail-to-rail input stages | 10 |

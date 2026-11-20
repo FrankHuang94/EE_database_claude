@@ -203,8 +203,10 @@ gm1 = 2 * (Iss9 / 2) / Vov
 v.check("X12.9a", gm1 * 1e6)
 v.check("X12.9b", gm1 / (TP * Cc9) / 1e6)
 v.check("X12.9c", Iss9 / Cc9 / 1e6)
-v.check("X12.9d", I7 / (CL9 + Cc9) / 1e6)
-v.check("X12.9e", min(Iss9 / Cc9, I7 / (CL9 + Cc9)) / (TP * 2.0) / 1e6)
+fall9 = -np.linalg.solve(np.array([[1e-18 + Cc9, -Cc9], [-Cc9, CL9 + Cc9]]), np.array([Iss9, -I7]))[1]
+v.check("X12.9d", fall9 / 1e6)
+v.check("X12.9e", min(Iss9 / Cc9, fall9) / (TP * 2.0) / 1e6)
+v.check("X12.9f", -np.linalg.solve(np.array([[1e-3 + Cc9, -Cc9], [-Cc9, CL9 + Cc9]]), np.array([Iss9, -I7]))[1] / 1e6)
 
 # ============================================================ 10 oscillators (Colpitts eigenvalues)
 from scipy.linalg import eigvals  # noqa: E402

@@ -4,9 +4,10 @@
 Run from anywhere:  python assets/figures/src/fig_12_08.py
 Outputs SVGs to assets/figures/12-08/:
 - slew.svg: the unity-gain follower step response of Example 12-08.1's two-stage op-amp for a 1 V step up
-  and down, from a large-signal model (square-law input pair saturating at I_SS = 20 uA; square-law second
-  stage at I_7 = 100 uA that can cut off; C_c = 1.1 pF, C_L = 5 pF, C_1 = 0.2 pF), integrated with Radau,
-  with the slew-rate lines I_7/(C_L + C_c) and I_SS/C_c for reference.
+  and down, from a large-signal model (square-law NMOS input pair saturating at I_SS = 20 uA; square-law PMOS
+  second stage M6 sourcing into the output against an NMOS sink I_7 = 100 uA, able to cut off; C_c = 1.1 pF,
+  C_L = 5 pF, C_1 = 0.2 pF), integrated with Radau, with the slew-rate lines I_SS/C_c (rising) and
+  (I_7 - I_SS)/C_L (falling, M6 off) for reference.
 """
 from __future__ import annotations
 
@@ -37,12 +38,12 @@ def step(v0, vs):
     def i1(x):
         return math.copysign(ISS, x) if abs(x) >= lim else (k1 / 2) * x * math.sqrt(4 * ISS / k1 - x * x)
 
-    def i6(v1):
-        return (k6 / 2) * (VOV + v1) ** 2 - I7 if v1 > -VOV else -I7
+    def i6(v1):                       # PMOS M6: net current into the output, more as its gate (node 1) falls
+        return (k6 / 2) * (VOV - v1) ** 2 - I7 if v1 < VOV else -I7
 
     Ci = np.linalg.inv(np.array([[C1 + CC, -CC], [-CC, CL + CC]]))
-    x0 = fsolve(lambda x: [-i1(v0 - x[1]) - x[0] / R1, -i6(x[0]) - x[1] / R2], [0.0, v0], xtol=1e-12)
-    sol = solve_ivp(lambda t, x: Ci @ np.array([-i1(vs - x[1]) - x[0] / R1, -i6(x[0]) - x[1] / R2]),
+    x0 = fsolve(lambda x: [-i1(v0 - x[1]) - x[0] / R1, i6(x[0]) - x[1] / R2], [0.0, v0], xtol=1e-12)
+    sol = solve_ivp(lambda t, x: Ci @ np.array([-i1(vs - x[1]) - x[0] / R1, i6(x[0]) - x[1] / R2]),
                     (0, 0.3e-6), x0, method="Radau", max_step=1e-9, rtol=1e-9, atol=1e-12)
     return sol.t, sol.y[1]
 
@@ -53,8 +54,9 @@ def fig_slew():
         t, vo = step(v0, vs)
         ax.plot(t * 1e9, vo, color=col, lw=1.8, label=f"{lab} step")
     t = np.linspace(0, 80e-9, 10)
-    ax.plot(t * 1e9 + 8, -0.5 + I7 / (CL + CC) * t, ":", color=PALETTE[0], lw=1, label="I_7/(C_L + C_c) = 16.4 V/µs")
-    ax.plot(t * 1e9 + 8, 0.5 - ISS / CC * t, ":", color=PALETTE[1], lw=1, label="I_SS/C_c = 18.2 V/µs")
+    ax.plot(t * 1e9 + 8, -0.5 + ISS / CC * t, ":", color=PALETTE[0], lw=1, label="I_SS/C_c = 18.2 V/µs")
+    ax.plot(t * 1e9 + 8, 0.5 - (I7 - ISS) / CL * t, ":", color=PALETTE[1], lw=1,
+            label="(I_7 − I_SS)/C_L = 16.0 V/µs")
     ax.set_xlim(0, 200)
     ax.set_ylim(-0.6, 0.6)
     ax.set_xlabel("time (ns)")

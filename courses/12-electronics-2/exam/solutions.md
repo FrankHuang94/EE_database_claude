@@ -60,7 +60,7 @@ $R_{gd} = R_S + R_L + g_mR_SR_L$ = **115** kΩ. $b_1 = 10\ \text{k}\Omega \times
 
 (a) $g_{m1} = I_{SS}/V_{ov}$ = **200** µA/V; GBW $= g_{m1}/(2\pi C_c)$ = **15.92** MHz.
 
-(b) Internal $I_{SS}/C_c$ = **20** V/µs; output stage $I_7/(C_L + C_c)$ = **15** V/µs. Rising edges are output-limited (15 V/µs), falling edges input-limited (20 V/µs). Full-power bandwidth at 2 V peak: $15\ \text{V/µs}/(2\pi \times 2\ \text{V})$ = **1.194** MHz.
+(b) Internal $I_{SS}/C_c$ = **20** V/µs. On the falling edge the PMOS M6 cuts off, and the sink $I_7$ discharges $C_L$ while the first stage still pushes $I_{SS}$ through $C_c$ into the output: $(I_7 - I_{SS})/C_L$ = **13.75** V/µs. (If node 1 clamped at its rail, the bound would be $I_7/(C_L + C_c)$ = **15** V/µs.) Rising edges are input-limited (20 V/µs), falling edges output-limited (13.75 V/µs). Full-power bandwidth at 2 V peak, set by the slower edge: $13.75\ \text{V/µs}/(2\pi \times 2\ \text{V})$ = **1.094** MHz.
 
 ### Solution 10
 
@@ -159,8 +159,9 @@ $R_{gd} = R_S + R_L + g_mR_SR_L$ = **115** kΩ. $b_1 = 10\ \text{k}\Omega \times
 | X12.9a | g_m1 | 200 | µA/V |
 | X12.9b | GBW | 15.92 | MHz |
 | X12.9c | internal slew limit | 20 | V/µs |
-| X12.9d | output slew limit | 15 | V/µs |
-| X12.9e | full-power bandwidth | 1.194 | MHz |
+| X12.9d | output slew limit | 13.75 | V/µs |
+| X12.9e | full-power bandwidth | 1.094 | MHz |
+| X12.9f | output bound with node 1 clamped | 15 | V/µs |
 | X12.10a | Colpitts frequency | 2.596 | MHz |
 | X12.10b | minimum g_m | 2.667 | mA/V |
 | X12.10c | ring frequency | 2.222 | GHz |

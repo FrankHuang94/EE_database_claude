@@ -118,14 +118,14 @@ def slew(I7, k6, R2, Iss=20e-6, k1=5e-4, R1=500e3, C1=0.2e-12, Cc=1.1e-12, CL=5e
             return math.copysign(Iss, vid)
         return (k1 / 2) * vid * math.sqrt(4 * Iss / k1 - vid * vid)
 
-    def i6(v1):                                            # M6 current above its bias, cut off below -V_ov6
-        return (k6 / 2) * (Vov6 + v1) ** 2 - I7 if v1 > -Vov6 else -I7
+    def i6(v1):            # PMOS M6: net current into the output (M6 minus the I_7 sink); cut off when node 1 rises
+        return (k6 / 2) * (Vov6 - v1) ** 2 - I7 if v1 < Vov6 else -I7
 
     Cinv = np.linalg.inv(np.array([[C1 + Cc, -Cc], [-Cc, CL + Cc]]))
     rates = []
     for v0, vs in ((-0.5, 0.5), (0.5, -0.5)):
-        x0 = fsolve(lambda x: [-i1(v0 - x[1]) - x[0] / R1, -i6(x[0]) - x[1] / R2], [0.0, v0], xtol=1e-12)
-        sol = solve_ivp(lambda t, x: Cinv @ np.array([-i1(vs - x[1]) - x[0] / R1, -i6(x[0]) - x[1] / R2]),
+        x0 = fsolve(lambda x: [-i1(v0 - x[1]) - x[0] / R1, i6(x[0]) - x[1] / R2], [0.0, v0], xtol=1e-12)
+        sol = solve_ivp(lambda t, x: Cinv @ np.array([-i1(vs - x[1]) - x[0] / R1, i6(x[0]) - x[1] / R2]),
                         (0, 2e-6), x0, method="Radau", max_step=1e-9, rtol=1e-9, atol=1e-12)
         v.assert_true(f"follower settles to the step ({vs:+.1f} V)", abs(sol.y[1][-1] - vs) < 2e-3)
         rates.append(float(np.max(np.abs(np.gradient(sol.y[1], sol.t)))) / 1e6)
@@ -142,6 +142,7 @@ CL, C1 = 5e-12, 0.2e-12
 Cc = 0.22 * CL
 A1 = two_stage(gm1, R1, C1, gm6, R2, CL, Cc)
 v.check("T 12-08.a", 2 * VT * 1e3)
+v.check("T 12-08.b", 2 * 1.4 * VT * 1e3)          # weak inversion: g_m = I_D/(n V_T), n = 1.4
 v.check("Ex 12-08.1a", gm1 * 1e6)
 v.check("Ex 12-08.1b", R1 / 1e3)
 v.check("Ex 12-08.1c", gm1 * R1)
@@ -160,16 +161,30 @@ v.check("Ex 12-08.1n", fc1 / 1e6)
 
 # ============================================================ Example 2 and 3: slew
 v.check("Ex 12-08.2a", Iss / Cc / 1e6)
-v.check("Ex 12-08.2b", I7 / (CL + Cc) / 1e6)
+
+
+def fall_rate(Iss_, I7_, C1_, Cc_, CL_):
+    """Output rate with M6 off: node 1 receives I_SS, the output loses I_7 (capacitive KCL, R1 and R2 neglected)."""
+    return np.linalg.solve(np.array([[C1_ + Cc_, -Cc_], [-Cc_, CL_ + Cc_]]), np.array([Iss_, -I7_]))
+
+
+sr_free = -fall_rate(Iss, I7, 1e-18, Cc, CL)[1] / 1e6          # node 1 free (C_1 -> 0)
+sr_clamp = -fall_rate(Iss, I7, 1e-3, Cc, CL)[1] / 1e6          # node 1 pinned (C_1 -> infinity)
+v.check("Ex 12-08.2b", sr_free)
+v.check("Ex 12-08.2g", sr_clamp)
 v.check("Ex 12-08.2c", (Iss / Cc) / (gm1 / Cc))
-v.check("Ex 12-08.2d", min(Iss / Cc, I7 / (CL + Cc)) / (TP * 1.0) / 1e6)
+v.check("Ex 12-08.2d", min(Iss / Cc / 1e6, sr_free) / (TP * 1.0))
+v.check("Ex 12-08.2h", math.sqrt(2 * Iss / (2 * (Iss / 2) / Vov ** 2)))
+v.assert_true("free-node bound is (I7 - ISS)/CL and clamped is I7/(CL + Cc)",
+              abs(sr_free * 1e6 / ((I7 - Iss) / CL) - 1) < 1e-6 and abs(sr_clamp * 1e6 / (I7 / (CL + Cc)) - 1) < 1e-6)
 k1 = 2 * (Iss / 2) / Vov ** 2
 k6 = 2 * I7 / Vov ** 2
 rise, fall = slew(I7, k6, R2)
 v.check("Ex 12-08.2e", rise)
 v.check("Ex 12-08.2f", fall)
-v.assert_true("simulated slew within 3% of the formulas", abs(rise / (I7 / (CL + Cc) / 1e6) - 1) < 0.03
-              and abs(fall / (Iss / Cc / 1e6) - 1) < 0.03)
+v.assert_true("simulated rising edge within 3% of I_SS/C_c and falling edge within 3% of (I_7 - I_SS)/C_L",
+              abs(rise / (Iss / Cc / 1e6) - 1) < 0.03 and abs(fall / sr_free - 1) < 0.03)
+v.assert_true("the falling edge is the slower (output-limited) one", fall < rise)
 v.check("Ex 12-08.3a", 2 * VT * gm1 / Cc / 1e6)
 v.check("Ex 12-08.3b", Vov / (2 * VT))
 
@@ -213,10 +228,11 @@ v.check("Ex 12-08.6e", fc6 / 1e6)
 v.assert_true("quartered currents restore the single-pair g_m", abs(2 * math.sqrt(k1 * Iss / 4) / gm1 - 1) < 1e-12)
 
 # ============================================================ guided exercise and practitioner ratios
-v.check("Sim 12-08.a", 200e-6 / (CL + Cc) / 1e6)
+v.check("Sim 12-08.a", -fall_rate(Iss, 200e-6, 1e-18, Cc, CL)[1] / 1e6)
 r2, f2 = slew(200e-6, 2 * 200e-6 / Vov ** 2, 1 / (2 / ro(200e-6)))
-v.check("Sim 12-08.b", r2)
-v.check("Sim 12-08.c", f2)
+v.check("Sim 12-08.b", f2)
+v.check("Sim 12-08.c", r2)
+v.assert_true("doubling I_7 lifts the falling edge, barely moves the rising one", f2 - fall > 1.0 and abs(r2 - rise) < 0.1)
 for key, sr, gbw in (("Prac 12-08.a", 6.5e6, 10e6), ("Prac 12-08.b", 0.16e6, 350e3), ("Prac 12-08.c", 27e6, 40e6)):
     v.check(key, sr / (TP * gbw))
 
@@ -235,8 +251,9 @@ gmb = 50e-6 / VT
 v.check("12-08.5a", gmb * 1e3)
 v.check("12-08.5b", brentq(lambda r: 2 * VT * (1 + gmb * r) / (2 * VT) - 4, 1, 1e5, xtol=1e-9))
 v.check("12-08.6a", 50e-6 / 2e-12 / 1e6)
-v.check("12-08.6b", 200e-6 / 12e-12 / 1e6)
-v.check("12-08.6c", brentq(lambda i: i / 12e-12 - 50e-6 / 2e-12, 1e-6, 1e-3, xtol=1e-15) * 1e6)
+v.check("12-08.6b", -fall_rate(50e-6, 200e-6, 1e-18, 2e-12, 10e-12)[1] / 1e6)
+v.check("12-08.6c", brentq(lambda i: -fall_rate(50e-6, i, 1e-18, 2e-12, 10e-12)[1] - 50e-6 / 2e-12, 1e-4, 1e-3,
+                           xtol=1e-15) * 1e6)
 up7 = [("R", "fold", "0", 50e3)] + mos("out", "0", "fold", 1e-3, 100e3)
 dn7 = mos("out", "0", "nb", 1e-3, 100e3) + [("R", "nb", "0", 100e3)]
 Rup7, Rdn7, Rout7 = r_test(up7, "out"), r_test(dn7, "out"), r_test(up7 + dn7, "out")
@@ -265,7 +282,38 @@ v.check("12-08.11c", g6 * 1e3)
 v.check("12-08.11d", Iss11 * 1e6)
 v.check("12-08.11e", I6 * 1e6)
 v.check("12-08.11f", Iss11 / Cc11 / 1e6)
-v.check("12-08.11g", I6 / (CL11 + Cc11) / 1e6)
+v.check("12-08.11g", -fall_rate(Iss11, I6, 1e-18, Cc11, CL11)[1] / 1e6)
+r13 = fall_rate(Iss, I7, C1, Cc, CL)
+v.check("12-08.13a", np.linalg.det(np.array([[C1 + Cc, -Cc], [-Cc, CL + Cc]])) * 1e24)
+v.check("12-08.13b", r13[1] / 1e6)
+v.check("12-08.13c", r13[0] / 1e6)
+v.assert_true("problem 13: the C_1 = 0.2 pF rate lies between the two bounds", sr_free < -r13[1] / 1e6 < sr_clamp)
+# 14: input range and swing from the square-law saturation conditions (V_DD = 1.8 V, V_TH = 0.5 V, V_ov = 0.2 V)
+VDD14, VTH14 = 1.8, 0.5
+VGS14 = VTH14 + brentq(lambda vo: 0.5 * k1 * vo ** 2 - Iss / 2, 1e-3, 1.0, xtol=1e-15)   # pair device at I_SS/2
+v.check("12-08.14a", VGS14 + brentq(lambda vo: 0.5 * (2 * Iss / Vov ** 2) * vo ** 2 - Iss, 1e-3, 1.0, xtol=1e-15))
+v.check("12-08.14b", (VDD14 - VGS14) + VTH14)
+v.check("12-08.14c", brentq(lambda vo: 0.5 * k6 * vo ** 2 - I7, 1e-3, 1.0, xtol=1e-15))
+v.check("12-08.14d", VDD14 - brentq(lambda vo: 0.5 * k6 * vo ** 2 - I7, 1e-3, 1.0, xtol=1e-15))
+G14 = np.array([[1 / R1, 0.0], [gm6, 1 / R2]])
+C14 = np.array([[C1 + Cc, -Cc], [-Cc, CL + Cc]])
+upper14 = np.max(np.abs(np.linalg.eigvals(np.linalg.solve(C14, G14)).real)) / TP   # the circuit's upper pole
+p2i = gm6 * Cc / (C1 * CL + Cc * (C1 + CL)) / TP         # the improved estimate the problem asks for
+v.check("12-08.14e", p2i / 1e6)
+v.assert_true("improved p2 within 5% of the circuit's upper pole (26.95 MHz)", abs(p2i / upper14 - 1) < 0.05)
+zr = gm6 / Cc / TP
+v.check("12-08.14f", 90 - math.degrees(math.atan((gm1 / Cc / TP) / p2i)) - math.degrees(math.atan((gm1 / Cc / TP) / zr)))
+v.check("12-08.14g", 90 - math.degrees(math.atan(fc1 / p2i)) - math.degrees(math.atan(fc1 / zr)))
+# 15: CMFB sizing and resistive sensing, with R_out from Example 4's solved circuit
+dv15 = 0.005 * 50e-6 * Rout
+v.check("12-08.15a", dv15)
+T15 = math.ceil(dv15 / 1e-3 - 1)
+v.check("12-08.15b", T15)
+v.check("12-08.15c", T15 / Rout * 1e3)
+Rl15 = r_test(fold_up + fold_dn + [("R", "out", "0", 1e6)], "out")
+v.check("12-08.15d", Rl15 / 1e6)
+v.check("12-08.15e", 100 * Rl15 / Rout)
+v.check("12-08.15f", 20 * math.log10(Rl15 / Rout))
 R1_12 = 1 / (2 / ro(Iss11 / 2))
 R2_12 = 1 / (2 / ro(I6))
 A12 = two_stage(g1, R1_12, 0.15e-12, g6, R2_12, CL11, Cc11)

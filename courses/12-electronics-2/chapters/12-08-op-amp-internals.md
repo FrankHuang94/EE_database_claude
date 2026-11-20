@@ -49,11 +49,11 @@ flowchart LR
 
 ## 3. Theory
 
-> **Conventions.** Square-law MOSFETs (10-02) with $I_D = (k/2)V_{ov}^2$, $g_m = 2I_D/V_{ov}$ and $r_o = 1/(\lambda I_D)$; $I_{SS}$ is the input pair's tail current, so each input device carries $I_{SS}/2$. The first stage's output resistance is $R_1 = r_{o2} \parallel r_{o4}$ and the second's $R_2 = r_{o6} \parallel r_{o7}$, where M6 is the common-source device and M7 its current-source load carrying $I_7$. The compensation network is 12-06 §3.5's.
+> **Conventions.** Square-law MOSFETs (10-02) with $I_D = (k/2)V_{ov}^2$, $g_m = 2I_D/V_{ov}$ and $r_o = 1/(\lambda I_D)$; $I_{SS}$ is the input pair's tail current, set by the tail device M5, so each input device carries $I_{SS}/2$. The first stage's output resistance is $R_1 = r_{o2} \parallel r_{o4}$ and the second's $R_2 = r_{o6} \parallel r_{o7}$, where M6 is the common-source device and M7 its current-source load carrying $I_7$. The compensation network is 12-06 §3.5's.
 
 ### 3.1 The two-stage CMOS op-amp
 
-The first stage is 12-02's five-transistor OTA: an NMOS pair M1–M2 with a PMOS current-mirror load M3–M4 and tail current $I_{SS}$. Its single-ended output drives the gate of M6, a PMOS (or NMOS) common-source stage loaded by the current source M7. The capacitor $C_c$ connects M6's gate and drain.
+The first stage is 12-02's five-transistor OTA: an NMOS pair M1–M2 with a PMOS current-mirror load M3–M4 and tail current $I_{SS}$. Its single-ended output, at the mirror side a source–gate voltage below $V_{DD}$, drives the gate of M6, a PMOS common-source stage with its source at $V_{DD}$, loaded by the NMOS current sink M7. The capacitor $C_c$ connects M6's gate and drain. (A PMOS input pair with an NMOS mirror would call for an NMOS M6 instead, and every statement below about rising and falling edges would swap.)
 
 **DC gain.** From 12-02, the first stage's gain is $g_{m1}R_1$ and the second's $g_{m6}R_2$, so
 
@@ -65,6 +65,10 @@ With square-law devices, $g_mr_o = 2/(\lambda V_{ov})$: each stage's gain is abo
 
 **Bandwidth and compensation.** 12-06 §3.5 applies directly: GBW $= g_{m1}/(2\pi C_c)$, the non-dominant pole is near $g_{m6}/(2\pi C_L)$, and the right-half-plane zero sits at $g_{m6}/(2\pi C_c)$. The design rules $g_{m6} \approx 10g_{m1}$ and $C_c \approx 0.22C_L$ give about 60° of phase margin. With equal overdrive voltages, $g_{m6} = 10g_{m1}$ means $I_7 = 5I_{SS}$: the second stage takes most of the current, because it has to drive the load capacitance at a frequency above the GBW.
 
+**Other ways to tame the zero.** The nulling resistor of 12-06 §3.6 is one remedy. Two others block or reroute the feed-forward path through $C_c$. A **buffered** scheme puts a source follower between the output and $C_c$, so current can flow back from the output into node 1 but not forward from node 1 to the output; the zero disappears, at the cost of the follower's $V_{GS}$ of headroom and its own pole. **Indirect** (cascode, or "Ahuja") compensation connects $C_c$ from the output to the low-impedance source of a cascode device in the first stage: the compensation current still reaches node 1 through the cascode, but node 1's voltage no longer drives $C_c$ directly, so the feed-forward path is gone, and the non-dominant pole moves higher than with plain Miller compensation. Course 20 (20-02) designs both.
+
+**Input common-mode range, output swing and supply rejection.** The input pair needs $V_{CM} \ge V_{GS1} + V_{ov,tail}$ to keep the tail source saturated, and $V_{CM} \le V_{DD} - V_{SG3} + V_{TN}$ to keep M1 saturated with its drain one $V_{SG}$ below the supply (12-01 §3.4). The output swings from $V_{ov7}$ (M7 saturated) to $V_{DD} - V_{ov6}$ (M6 saturated), within one overdrive of each rail. Ripple on $V_{DD}$ reaches the output mainly through M6, whose source is the supply: at low frequency the loop suppresses it by the loop gain, like any disturbance inside the loop (12-05), but above the dominant pole $C_c$ ties M6's gate to its drain, M6 behaves as a diode from $V_{DD}$, and the output follows the supply ripple more and more closely. The positive-supply rejection therefore falls at about 20 dB per decade above the dominant pole, a known weakness of Miller-compensated two-stage op-amps [2].
+
 **Systematic offset.** For the output to sit at its intended level with zero input, M6's current density must match what the mirror sets (12-02 §3.6): $(W/L)_6/(W/L)_4 = 2(W/L)_7/(W/L)_5$ in the standard design. This is a sizing condition, not a random error.
 
 ### 3.2 Slew rate
@@ -75,15 +79,17 @@ $$
 \frac{dv_{out}}{dt} = \frac{I_{SS}}{C_c} .
 $$
 
-This is the **internal slew rate**. The output stage can also limit. When the output rises, M6 shuts off and only the current source $I_7$ can charge the output node, which carries both $C_L$ and $C_c$ (whose other side is nearly fixed): by KCL, $I_7 = (C_L + C_c)\,dv_{out}/dt$ at most. When the output falls, M6 can sink far more than $I_7$, so only the internal limit applies. Hence
+This is the **internal slew rate**. The output stage can also limit, on one edge. When the output rises, the first stage pulls node 1 down, the PMOS M6 conducts harder and can source far more than $I_7$, so only the internal limit applies. When the output falls, the first stage pushes node 1 up and M6 shuts off; only the sink $I_7$ can discharge the output. Node 1 is then free to move, and the first stage keeps forcing its full $I_{SS}$ through $C_c$ *into* the output node, so the net current discharging $C_L$ is $I_7 - I_{SS}$ (with $C_1$ neglected; Problem 12-08.13 keeps it). Hence
 
 $$
-\text{SR}_{rise} = \min\left(\frac{I_{SS}}{C_c},\ \frac{I_7}{C_L + C_c}\right), \qquad \text{SR}_{fall} \approx \frac{I_{SS}}{C_c} .
+\text{SR}_{rise} \approx \frac{I_{SS}}{C_c}, \qquad \text{SR}_{fall} = \min\left(\frac{I_{SS}}{C_c},\ \frac{I_7 - I_{SS}}{C_L}\right) .
 $$
 
-![Step response of a two-stage op-amp follower to 1 V steps up and down: both edges are straight ramps, the rising one following the output-stage slew line and the falling one the internal slew line, before settling with a small overshoot](../../../assets/figures/12-08/slew.svg)
+If node 1 instead runs into its rail and stops, $C_c$ no longer carries a fixed current and the output node sees $C_L + C_c$, so the bound becomes $I_7/(C_L + C_c)$. Real amplifiers sit near one bound or between the two; data sheets quote the measured edges.
 
-*Figure 2. Example 12-08.1's op-amp as a follower, from a large-signal model: a 1 V step up is limited by the output stage, $I_7/(C_L + C_c)$, and a step down by the input stage, $I_{SS}/C_c$ (dotted lines). Once the error is small, the response turns into the small-signal settling set by the phase margin.*
+![Step response of a two-stage op-amp follower to 1 V steps up and down: both edges are straight ramps, the rising one following the internal slew line and the falling one the output-stage slew line, before settling with a small overshoot](../../../assets/figures/12-08/slew.svg)
+
+*Figure 2. Example 12-08.1's op-amp as a follower, from a large-signal model with an NMOS input pair and a PMOS second stage: a 1 V step up is limited by the input stage, $I_{SS}/C_c$, and a step down, on which M6 cuts off, by the output stage, $(I_7 - I_{SS})/C_L$ (dotted lines). Once the error is small, the response turns into the small-signal settling set by the phase margin.*
 
 **Slew rate and bandwidth are linked through the overdrive.** Divide the internal slew rate by $\omega_u = g_{m1}/C_c$:
 
@@ -91,7 +97,7 @@ $$
 \frac{\text{SR}}{\omega_u} = \frac{I_{SS}}{g_{m1}} = V_{ov1}, \quad \text{since } g_{m1} = \frac{2(I_{SS}/2)}{V_{ov1}} .
 $$
 
-For a bipolar input pair, $g_{m1} = (I_{EE}/2)/V_T$, so $\text{SR}/\omega_u = 2V_T$ ≈ 52 mV. A MOS pair with $V_{ov}$ = 0.2 V slews about four times faster at the same GBW. Bipolar op-amps that need slew rate degenerate their input pair with emitter resistors, which multiplies $\text{SR}/\omega_u$ by $1 + g_mR_E$ (Problem 12-08.5).
+For a bipolar input pair, $g_{m1} = (I_{EE}/2)/V_T$, so $\text{SR}/\omega_u = 2V_T$ ≈ 52 mV. A MOS pair in **weak inversion**, common in micropower parts, behaves like a bipolar one with $V_T$ replaced by $nV_T$ ($g_m = I_D/(nV_T)$, with the slope factor $n$ ≈ 1.2–1.5), so $\text{SR}/\omega_u = 2nV_T$: **72.39** mV for $n$ = 1.4. A MOS pair with $V_{ov}$ = 0.2 V slews about four times faster at the same GBW. Bipolar op-amps that need slew rate degenerate their input pair with emitter resistors, which multiplies $\text{SR}/\omega_u$ by $1 + g_mR_E$ (Problem 12-08.5).
 
 **Full-power bandwidth.** A sine $V_p\sin\omega t$ has a maximum slope $\omega V_p$. The highest frequency at which the op-amp can deliver it without slew distortion is
 
@@ -103,7 +109,7 @@ Above it, a sine output turns into a triangle wave. Note the difference from the
 
 ### 3.3 The folded cascode
 
-A telescopic cascode (12-02 §3.4) stacks the input devices and cascodes between the rails, which wastes headroom. The **folded cascode** turns the signal current around: the NMOS input pair's drain currents are subtracted from fixed PMOS current sources at two folding nodes, and PMOS common-gate devices carry the difference down to the output, where NMOS cascoded current sources (or a cascoded mirror) form the load.
+A telescopic cascode (12-02 §3.4) stacks the input devices and cascodes between the rails, which wastes headroom. The **folded cascode** turns the signal current around: the NMOS input pair's drain currents are subtracted from fixed PMOS current sources at two folding nodes, and PMOS common-gate devices carry the difference down to the output, where a cascoded NMOS current mirror forms the load. The mirror matters for a single-ended output: it folds the other side's signal current over, so the output receives both halves and $G_m \approx g_{m1}$. With plain cascoded current sources instead, only one side's current would reach the output and $G_m$ would halve; that arrangement suits the fully differential version (§3.4), where each side has its own output. The mirror adds a pole at its gate node, accompanied by a zero at twice its frequency (the doublet of 12-03 §3.8), usually well above the crossover.
 
 **Gain.** The output node sees a cascode looking up and a cascode looking down. Looking up, the PMOS cascode M3 has at its source the folding node's resistance $R_f = r_{o,src} \parallel r_{o1}$ (the PMOS current source in parallel with the input device), so by 12-02's cascode result
 
@@ -123,7 +129,7 @@ The load capacitance *is* the compensation: a larger load improves phase margin,
 
 **Slew rate.** The output slews at $I_{SS}/C_L$ if the folding current sources carry at least $I_{SS}$ each; otherwise a cascode device shuts off and the slewing current is limited by the folding source.
 
-**Trade-offs against the two-stage op-amp.** The folded cascode is faster for the same power (one high-impedance node), has better power-supply rejection and is easy to make fully differential, but its gain is one stage's worth ($(g_mr_o)^2$ at best) and its output swing is limited by the cascodes: about $V_{DD}$ minus four overdrive voltages.
+**Trade-offs against the two-stage op-amp.** The folded cascode is faster for the same power (one high-impedance node), has better power-supply rejection and is easy to make fully differential, but its gain is one stage's worth ($(g_mr_o)^2$ at best) and its output swing is limited by the cascodes: about $V_{DD}$ minus four overdrive voltages. It is also noisier than a telescopic cascode with the same input pair: the folding current sources inject their own noise currents at the folding nodes, where they add directly to the signal current, so their transconductance appears alongside the input pair's in the input-referred noise (12-10 §3.6).
 
 ### 3.4 Fully differential amplifiers and common-mode feedback
 
@@ -143,11 +149,11 @@ With $R_{out}$ of megohms, a 0.1% mismatch moves the common mode by a large frac
 
 **Input common-mode range.** An NMOS input pair needs its common-mode input at least $V_{GS} + V_{ov,tail}$ above the negative rail (12-01 §3.4); a PMOS pair needs it at least as far below the positive rail. A **complementary input stage** places an NMOS and a PMOS pair in parallel: near the negative rail only the PMOS pair works, near the positive rail only the NMOS pair, and in between both. The input range extends to (and slightly beyond) both rails.
 
-**The transconductance seam.** With constant tail currents, $g_m$ in the middle region, where both pairs conduct, is twice that near the rails. Since GBW $= g_{m1}/(2\pi C_c)$, the GBW doubles there and the phase margin falls (Example 12-08.6). **Constant-$g_m$** techniques fix this: for square-law devices, $g_m \propto \sqrt{I}$, so when both pairs are on, giving each a quarter of its tail current halves each one's $g_m$ and keeps the sum constant. The transition region also shows up as a change in offset voltage and in common-mode rejection across the input range, a visible signature of the complementary pairs on data sheets.
+**The transconductance seam.** With constant tail currents, $g_m$ in the middle region, where both pairs conduct, is twice that near the rails. Since GBW $= g_{m1}/(2\pi C_c)$, the GBW doubles there and the phase margin falls (Example 12-08.6). **Constant-$g_m$** techniques fix this: for square-law devices, $g_m \propto \sqrt{I}$, so when both pairs are on, giving each a quarter of its tail current halves each one's $g_m$ and keeps the sum constant. The trick relies on the square law, so it works only in strong inversion; it also halves the slew current in the overlap, and in practice $g_m$ is flat only to within a ripple of several percent across the transitions. The transition region also shows up as a change in offset voltage and in common-mode rejection across the input range, a visible signature of the complementary pairs on data sheets.
 
 **Rail-to-rail output.** Followers (12-07) lose a $V_{GS}$ at each end. Rail-to-rail outputs use **common-source** devices (a PMOS to the positive rail and an NMOS to the negative), which can pull the output to within a saturation voltage, $V_{ov}$, of each rail at light load. Their gates need a class AB control circuit to set the quiescent current, and the stage's output resistance is higher than a follower's, so it relies on the loop gain for low closed-loop output impedance.
 
-> **Going deeper — gain boosting and nested compensation.** To get two-stage gain with folded-cascode speed, designers add auxiliary amplifiers that drive the cascode gates and multiply $R_{out}$ by their gain ("gain boosting", or regulated cascodes). Three-stage amplifiers for very low supply voltages use nested Miller compensation, with two capacitors and careful pole placement. Both are covered in Course 20.
+> **Going deeper — gain boosting and nested compensation.** To get two-stage gain with folded-cascode speed, designers add auxiliary amplifiers that drive the cascode gates and multiply $R_{out}$ by their gain ("gain boosting", or regulated cascodes). Three-stage amplifiers for very low supply voltages use nested Miller compensation, with two capacitors and careful pole placement. Course 20 (20-02) develops both.
 
 ## 4. Worked examples
 
@@ -159,15 +165,15 @@ With $R_{out}$ of megohms, a 0.1% mismatch moves the common mode by a large frac
 
 $g_{m6} = 10g_{m1}$ already. $C_c = 0.22 \times 5$ = **1.1** pF; GBW $= 100\ \mu\text{A/V}/(2\pi \times 1.1\ \text{pF})$ = **14.47** MHz; $p_2 \approx 1\ \text{mA/V}/(2\pi \times 5\ \text{pF})$ = **31.83** MHz; zero at **144.7** MHz. The full circuit gives **59.78**° at a crossover of **12.70** MHz.
 
-**Sanity check.** Each stage's gain is $1/(\lambda V_{ov})/1$ = 50 because the two output resistances are equal: halving λ (longer channels) would quadruple the total.
+**Sanity check.** Each stage's gain is $g_mr_o/2 = 1/(\lambda V_{ov})$ = 50 because the two output resistances are equal: halving λ (longer channels) would quadruple the total.
 
 ### Example 12-08.2 · Slew rate (tier A)
 
 **Setup.** For Example 12-08.1's op-amp, find the internal and output-stage slew limits, the rising and falling slew rates, $\text{SR}/\omega_u$, and the full-power bandwidth for a 1 V peak output.
 
-**Solution.** Internal: $20\ \mu\text{A}/1.1\ \text{pF}$ = **18.18** V/µs. Output stage: $100\ \mu\text{A}/6.1\ \text{pF}$ = **16.39** V/µs. Rising edges are limited by the output stage (**16.39** V/µs), falling edges by the input stage (**18.18** V/µs). $\text{SR}_{int}/\omega_u = I_{SS}/g_{m1}$ = **0.2** V, the input pair's overdrive. Full-power bandwidth: $16.39\ \text{V/µs}/(2\pi \times 1\ \text{V})$ = **2.609** MHz.
+**Solution.** Internal: $20\ \mu\text{A}/1.1\ \text{pF}$ = **18.18** V/µs. Output stage, with M6 off and node 1 free: $(100 - 20)\ \mu\text{A}/5\ \text{pF}$ = **16.00** V/µs (or $100\ \mu\text{A}/6.1\ \text{pF}$ = **16.39** V/µs if node 1 were clamped). Rising edges are limited by the input stage (**18.18** V/µs), falling edges by the output stage (about **16.00** V/µs). $\text{SR}_{int}/\omega_u = I_{SS}/g_{m1}$ = **0.2** V, the input pair's overdrive. Full-power bandwidth, set by the slower edge: $16.00\ \text{V/µs}/(2\pi \times 1\ \text{V})$ = **2.546** MHz.
 
-**Sanity check.** A large-signal simulation of this amplifier (the lab, Part 2) gives **16.2** and **17.7** V/µs, within about 2.5% of the formulas: node 1 moves slightly and $R_1$, $R_2$ divert a little current.
+**Sanity check.** A large-signal simulation of this amplifier (the lab, Part 2) gives **17.7** V/µs rising and **16.2** V/µs falling, within 2.5% of the bounds but not on them. A 1 V step is too small for a clean textbook ramp: the pair is fully switched only while the differential input exceeds $\sqrt2V_{ov}$ = **0.2828** V, and the steepest point of each edge comes as it leaves full switching, while $R_1$ and $R_2$ divert a few microamperes.
 
 ### Example 12-08.3 · Bipolar against MOS input pairs (tier A)
 
@@ -179,7 +185,7 @@ $g_{m6} = 10g_{m1}$ already. $C_c = 0.22 \times 5$ = **1.1** pF; GBW $= 100\ \mu
 
 ### Example 12-08.4 · A folded-cascode op-amp (tier B)
 
-**Setup.** A folded cascode has input devices at 50 µA ($g_{m1}$ = 0.5 mA/V), PMOS folding sources at 100 µA, PMOS cascodes and NMOS cascoded sources at 50 µA (all $g_m$ = 0.5 mA/V at $V_{ov}$ = 0.2 V), λ = 0.1 V⁻¹, $C_L$ = 2 pF and a folding-node capacitance of 0.5 pF. Find $R_f$, $R_{up}$, $R_{dn}$, $R_{out}$, the estimated gain $g_{m1}R_{out}$ and the exact gain; then the GBW, the slew rate with $I_{SS}$ = 100 µA, the folding-node pole and the estimated and exact phase margins at unity gain.
+**Setup.** A folded cascode has input devices at 50 µA ($g_{m1}$ = 0.5 mA/V), PMOS folding sources at 100 µA, PMOS cascodes and a cascoded NMOS mirror load at 50 µA (all $g_m$ = 0.5 mA/V at $V_{ov}$ = 0.2 V), λ = 0.1 V⁻¹, $C_L$ = 2 pF and a folding-node capacitance of 0.5 pF. Find $R_f$, $R_{up}$, $R_{dn}$, $R_{out}$, the estimated gain $g_{m1}R_{out}$ and the exact gain; then the GBW, the slew rate with $I_{SS}$ = 100 µA, the folding-node pole and the estimated and exact phase margins at unity gain.
 
 **Solution.** $r_o$ = 200 kΩ at 50 µA and 100 kΩ at 100 µA. $R_f$ = 100 ∥ 200 kΩ = **66.67** kΩ. $R_{up} = 200\ \text{k} + 66.67\ \text{k} + 0.5\ \text{mA/V} \times 200\ \text{k}\Omega \times 66.67\ \text{k}\Omega$ = **6.933** MΩ; $R_{dn} = 400\ \text{k} + 0.5\ \text{mA/V} \times (200\ \text{k}\Omega)^2$ = **20.4** MΩ; $R_{out}$ = **5.175** MΩ. The estimate is $g_{m1}R_{out}$ = **2587** (68.26 dB); solving the circuit gives **2513**, 3% lower because some of the input current flows into $R_f$ instead of the cascode.
 
@@ -209,6 +215,7 @@ GBW $= 0.5\ \text{mA/V}/(2\pi \times 2\ \text{pF})$ = **39.79** MHz; SR = 100 µ
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
 | T 12-08.a | bipolar SR/ω_u | 52 | mV |
+| T 12-08.b | weak-inversion SR/ω_u, n = 1.4 | 72.39 | mV |
 | Ex 12-08.1a | g_m1 | 100 | µA/V |
 | Ex 12-08.1b | R_1 | 500 | kΩ |
 | Ex 12-08.1c | first-stage gain | 50 | — |
@@ -224,11 +231,13 @@ GBW $= 0.5\ \text{mA/V}/(2\pi \times 2\ \text{pF})$ = **39.79** MHz; SR = 100 µ
 | Ex 12-08.1m | exact phase margin | 59.78 | ° |
 | Ex 12-08.1n | exact crossover | 12.70 | MHz |
 | Ex 12-08.2a | internal slew limit | 18.18 | V/µs |
-| Ex 12-08.2b | output-stage slew limit | 16.39 | V/µs |
+| Ex 12-08.2b | output-stage slew limit, node 1 free | 16.00 | V/µs |
 | Ex 12-08.2c | SR/ω_u | 0.2 | V |
-| Ex 12-08.2d | full-power bandwidth | 2.609 | MHz |
-| Ex 12-08.2e | simulated rising slew | 16.2 | V/µs |
-| Ex 12-08.2f | simulated falling slew | 17.7 | V/µs |
+| Ex 12-08.2d | full-power bandwidth | 2.546 | MHz |
+| Ex 12-08.2e | simulated rising slew | 17.7 | V/µs |
+| Ex 12-08.2f | simulated falling slew | 16.2 | V/µs |
+| Ex 12-08.2g | output-stage bound, node 1 clamped | 16.39 | V/µs |
+| Ex 12-08.2h | input for full switching | 0.2828 | V |
 | Ex 12-08.3a | bipolar slew rate | 4.700 | V/µs |
 | Ex 12-08.3b | MOS advantage | 3.868 | — |
 | Ex 12-08.4a | R_f | 66.67 | kΩ |
@@ -252,9 +261,9 @@ GBW $= 0.5\ \text{mA/V}/(2\pi \times 2\ \text{pF})$ = **39.79** MHz; SR = 100 µ
 | Ex 12-08.6c | GBW in the overlap | 28.94 | MHz |
 | Ex 12-08.6d | phase margin in the overlap | 42.24 | ° |
 | Ex 12-08.6e | crossover in the overlap | 21.94 | MHz |
-| Sim 12-08.a | output-stage limit with I_7 = 200 µA | 32.8 | V/µs |
-| Sim 12-08.b | simulated rising slew with I_7 = 200 µA | 17.5 | V/µs |
-| Sim 12-08.c | simulated falling slew with I_7 = 200 µA | 17.8 | V/µs |
+| Sim 12-08.a | output-stage limit with I_7 = 200 µA | 36.0 | V/µs |
+| Sim 12-08.b | simulated falling slew with I_7 = 200 µA | 17.5 | V/µs |
+| Sim 12-08.c | simulated rising slew with I_7 = 200 µA | 17.8 | V/µs |
 | Prac 12-08.a | TLV9062 SR/(2π GBW) | 0.1035 | V |
 | Prac 12-08.b | OPA333 SR/(2π GBW) | 0.0728 | V |
 | Prac 12-08.c | OPA1611 SR/(2π GBW) | 0.1074 | V |
@@ -267,12 +276,12 @@ The lab, [labs/12-08-lab](../labs/12-08-lab/README.md), has a notebook and an ng
 
 1. Computes the two-stage op-amp's gain, GBW and phase margin from its bias design, and sweeps λ and $V_{ov}$.
 2. Simulates the large-signal step response of the follower, showing the slew ramp and comparing rising and falling rates with §3.2.
-3. Solves the folded cascode and compares its gain and margin with the two-stage design at equal power.
+3. Solves the folded cascode and compares its gain and margin with the two-stage design (which draws 120 µA against the folded cascode's 200 µA from the positive supply).
 4. Plots $g_m$ and GBW against input common mode for a complementary input stage, with and without constant-$g_m$ control.
 
-The netlist [two_stage_opamp.cir](../labs/12-08-lab/two_stage_opamp.cir) runs an AC analysis of Example 12-08.1's amplifier and measures its DC gain, crossover and phase margin.
+The netlist [two_stage_opamp.cir](../labs/12-08-lab/two_stage_opamp.cir) runs an AC analysis of Example 12-08.1's amplifier and measures its DC gain, crossover and phase margin. The netlist [slew.cir](../labs/12-08-lab/slew.cir) runs the follower's large-signal step response from a behavioural model (the square-law pair and the PMOS second stage as nonlinear sources) and measures both slew rates.
 
-**Guided exercise (predict, then run).** **Before running Part 2**, predict: with $I_7$ raised from 100 to 200 µA, which edge speeds up, and to what? Then run it. (Only the rising edge, which was output-limited. With $I_7$ = 200 µA (and M6 resized to keep its overdrive) the output-stage limit is 32.8 V/µs, so the internal **18.18** V/µs takes over: the simulation's rising slew rises from 16.2 to **17.5** V/µs, while the falling edge barely moves, to **17.8** V/µs.)
+**Guided exercise (predict, then run).** **Before running Part 2**, predict: with $I_7$ raised from 100 to 200 µA, which edge speeds up, and to what? Then run it. (Only the falling edge, which was output-limited. With $I_7$ = 200 µA (and M6 resized to keep its overdrive) the output-stage limit is $(I_7 - I_{SS})/C_L$ = **36.0** V/µs, so the internal **18.18** V/µs takes over: the simulation's falling slew rises from 16.2 to **17.5** V/µs, while the rising edge barely moves, to **17.8** V/µs.)
 
 ## 6. Engineering tradeoffs
 
@@ -280,7 +289,7 @@ The netlist [two_stage_opamp.cir](../labs/12-08-lab/two_stage_opamp.cir) runs an
 |---|---|---|---|
 | Input overdrive $V_{ov1}$ | Slew rate at fixed GBW ($\text{SR}/\omega_u = V_{ov1}$) | $g_m$ per current, noise, offset | Analog designer |
 | Channel length (λ) | DC gain ($\propto 1/\lambda^2$ for two stages) | Speed (larger capacitances), area | Analog designer |
-| Second-stage current $I_7$ | $p_2$, rising slew rate | Power | Analog designer |
+| Second-stage current $I_7$ | $p_2$, falling slew rate | Power | Analog designer |
 | Two-stage vs folded cascode | Gain and swing vs speed and PSRR | One or the other | Architect |
 | Fully differential | Swing, common-mode rejection | CMFB circuit, area, power | Architect |
 | Rail-to-rail input | Input range | $g_m$ seam, offset change, CMRR | Product definition |
@@ -291,7 +300,7 @@ The netlist [two_stage_opamp.cir](../labs/12-08-lab/two_stage_opamp.cir) runs an
 |---|---|---|
 | Two-stage gain | $g_{m1}R_1 \cdot g_{m6}R_2$ | each about $1/(\lambda V_{ov})$, $10^3$–$10^4$ total |
 | GBW (two-stage) | $g_{m1}/(2\pi C_c)$ | GBW (folded cascode) $g_{m1}/(2\pi C_L)$ |
-| Slew rate | $I_{SS}/C_c$, or $I_7/(C_L + C_c)$ rising | Whichever is smaller |
+| Slew rate | $I_{SS}/C_c$; falling also ≤ $(I_7 - I_{SS})/C_L$ | NMOS pair, PMOS M6; the edge on which M6 cuts off |
 | SR/ω_u | $V_{ov1}$ (MOS), $2V_T$ ≈ 52 mV (bipolar) | MOS slews faster per GBW |
 | Full-power bandwidth | $\text{SR}/(2\pi V_p)$ | Amplitude-dependent |
 | CM error without CMFB | $\Delta I\cdot R_{out}$ | Divided by $1 + g_{m,cm}R_{out}$ with CMFB |
@@ -316,8 +325,8 @@ The netlist [two_stage_opamp.cir](../labs/12-08-lab/two_stage_opamp.cir) runs an
   - OPA1611: 27 V/µs and 40 MHz.
 - **What the ratio reveals.** Dividing slew rate by $2\pi \times$ GBW gives an "effective input overdrive" (our arithmetic, a diagnostic rather than a data-sheet claim):
   - TLV9062: **0.1035** V, consistent with a MOS input pair at moderate overdrive.
-  - OPA333: **0.0728** V.
-  - OPA1611: **0.1074** V. A bipolar-input part would give only $2V_T$ = 52 mV unless its input pair is degenerated (or it uses slew enhancement), so this ratio points to such a technique.
+  - OPA333: **0.0728** V, close to the $2nV_T$ of a MOS pair in weak inversion with $n$ ≈ 1.4, as a micropower part's input pair would be (our inference) **[Industry estimate]**.
+  - OPA1611: **0.1074** V. The OPA1611 is a bipolar-input part (its data sheet's title [1]) **[Established]**, and an undegenerated bipolar pair gives only $2V_T$ = 52 mV, so this ratio points to a degenerated input pair or slew enhancement (our inference) **[Industry estimate]**.
 - **Rail-to-rail seams on data sheets.** The TLV9062's CMRR is specified as 103 dB typical over a common-mode range ending 1.4 V below the positive rail, but 87 dB over the full rail-to-rail range [1] **[Established]** (data sheet). A complementary input stage's transition region is the usual cause of such a drop (our interpretation of the specification).
 
 ### Why it matters commercially
@@ -387,7 +396,7 @@ In the middle of the range both complementary pairs conduct and their transcondu
 
 <details><summary>Answer</summary>
 
-When the output rises, the common-source device turns off and only its current-source load $I_7$ charges $C_L + C_c$; if $I_7/(C_L + C_c) < I_{SS}/C_c$, that edge is output-limited.
+On the edge where the common-source device M6 turns off (the falling edge for a PMOS M6), only its current-sink load $I_7$ discharges the output, while the first stage still pushes $I_{SS}$ through $C_c$ into it, so the net rate is $(I_7 - I_{SS})/C_L$. If that is below $I_{SS}/C_c$, that edge is output-limited.
 
 </details>
 
@@ -412,3 +421,4 @@ When the output rises, the common-source device turns off and only its current-s
 ## 14. Sources
 
 1. Texas Instruments data sheets for TLV906xS (SBOS839N), OPA333 (SBOS351E) and OPA1611 (SBOS450C): slew rate, gain–bandwidth product, CMRR and common-mode ranges. [R-182](../../../reference/research-log.md#r-182--op-amp-data-sheets).
+2. P. R. Gray, P. J. Hurst, S. H. Lewis and R. G. Meyer, *Analysis and Design of Analog Integrated Circuits*, 5th ed., Wiley, 2009: ch. 6 (the two-stage op-amp, including its supply rejection) and ch. 9 (frequency compensation).

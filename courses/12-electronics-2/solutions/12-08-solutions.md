@@ -28,7 +28,7 @@ $\text{SR}/\omega_u = 2V_T(1 + g_mR_E)$, so quadrupling needs $g_mR_E$ = 3. With
 
 ### Solution 12-08.6
 
-Internal: $50\ \mu\text{A}/2\ \text{pF}$ = **25** V/µs. Output stage: $200\ \mu\text{A}/12\ \text{pF}$ = **16.67** V/µs. Rising edges are output-limited (16.67 V/µs); falling edges are input-limited (25 V/µs). Balancing needs $I_7 = 25\ \text{V/µs} \times 12\ \text{pF}$ = **300** µA.
+Internal: $50\ \mu\text{A}/2\ \text{pF}$ = **25** V/µs. Output stage, on the edge where M6 cuts off (falling, for the chapter's NMOS pair and PMOS M6): $(200 - 50)\ \mu\text{A}/10\ \text{pF}$ = **15.00** V/µs. Rising edges are input-limited (25 V/µs); falling edges are output-limited (15.00 V/µs). Balancing needs $(I_7 - 50\ \mu\text{A})/10\ \text{pF} = 25$ V/µs, so $I_7$ = **300** µA.
 
 ### Solution 12-08.7
 
@@ -48,11 +48,43 @@ The NMOS pair needs $V_{CM} \ge 0.6 + 0.2 + 0.2$ = **1.0** V; the PMOS pair need
 
 ### Solution 12-08.11
 
-$C_c = 0.22 \times 4$ = **0.88** pF. $g_{m1} = 2\pi \times 20\ \text{MHz} \times 0.88\ \text{pF}$ = **110.6** µA/V, so $g_{m6}$ = **1.106** mA/V. At 0.2 V overdrive, $I_{SS} = g_{m1}V_{ov}$ = **22.12** µA (each input device carries half) and $I_6 = g_{m6}V_{ov}/2$ = **110.6** µA. Slew limits: $I_{SS}/C_c$ = **25.13** V/µs internal and $I_6/(C_L + C_c)$ = **22.66** V/µs at the output.
+$C_c = 0.22 \times 4$ = **0.88** pF. $g_{m1} = 2\pi \times 20\ \text{MHz} \times 0.88\ \text{pF}$ = **110.6** µA/V, so $g_{m6}$ = **1.106** mA/V. At 0.2 V overdrive, $I_{SS} = g_{m1}V_{ov}$ = **22.12** µA (each input device carries half) and $I_7 = g_{m6}V_{ov}/2$ = **110.6** µA. Slew limits: $I_{SS}/C_c$ = **25.13** V/µs internal (rising) and $(I_7 - I_{SS})/C_L$ = **22.12** V/µs at the output (falling).
 
 ### Solution 12-08.12
 
 $R_1 = 1/(0.1 \times 11.06\ \mu\text{A})/2$ = **452.1** kΩ and $R_2 = 1/(0.1 \times 110.6\ \mu\text{A})/2$ = **45.21** kΩ, so the gain is $(110.6\ \mu\text{A/V} \times 452.1\ \text{k}\Omega)(1.106\ \text{mA/V} \times 45.21\ \text{k}\Omega) = 50 \times 50$ = **2500**. The crossover sits below $g_{m1}/(2\pi C_c)$ because the non-dominant pole, only 2.2 times above it, already lowers the magnitude there: the same effect as in Example 12-06.1. To reach 20 MHz of actual crossover, raise $g_{m1}$ and $g_{m6}$ together by about **13**% (found by solving the circuit again at scaled transconductances).
+
+### Solution 12-08.13
+
+KCL at node 1 and at the output, with the capacitor currents written in terms of the two node voltages' rates:
+
+$$
+(C_1 + C_c)\dot v_1 - C_c\dot v_o = I_{SS}, \qquad -C_c\dot v_1 + (C_L + C_c)\dot v_o = -I_7 .
+$$
+
+The determinant is $\Delta = C_1C_L + C_1C_c + C_cC_L$ = 0.2 × 5 + 0.2 × 1.1 + 1.1 × 5 = **6.72** pF². By Cramer's rule,
+
+$$
+\dot v_o = -\frac{(C_1 + C_c)I_7 - C_cI_{SS}}{\Delta} = -\frac{1.3 \times 100 - 1.1 \times 20}{6.72}\ \frac{\mu\text{A}}{\text{pF}} = \mathbf{-16.07}\ \text{V/µs},
+\qquad
+\dot v_1 = \frac{(C_L + C_c)I_{SS} - C_cI_7}{\Delta} = \mathbf{1.786}\ \text{V/µs} .
+$$
+
+(µA/pF is V/µs.) Node 1 drifts up slowly while the output falls. As $C_1 \to 0$, $\dot v_o \to -(C_cI_7 - C_cI_{SS})/(C_cC_L) = -(I_7 - I_{SS})/C_L$ = −16.00 V/µs; as $C_1 \to \infty$, node 1 is pinned and $\dot v_o \to -I_7/(C_L + C_c)$ = −16.39 V/µs. The 0.2 pF case sits between, close to the free-node bound because $C_1 \ll C_c$.
+
+### Solution 12-08.14
+
+(a) Every $V_{GS}$ is $V_{TH} + V_{ov}$ = 0.7 V. The tail source needs its drain at least $V_{ov}$ = 0.2 V above ground, so $V_{CM} \ge V_{GS1} + 0.2$ = **0.9** V. M1's drain sits at the mirror's gate–drain node, $V_{DD} - V_{SG3}$ = 1.1 V, and M1 stays saturated while its gate is no more than $V_{TN}$ above its drain: $V_{CM} \le 1.1 + 0.5$ = **1.6** V. The range is 0.7 V wide, inside a 1.8 V supply.
+
+(b) M7 needs $v_{out} \ge V_{ov7}$ = **0.2** V and M6 needs $v_{out} \le V_{DD} - V_{ov6}$ = **1.6** V.
+
+(c) The improved non-dominant pole is $g_{m6}C_c/[2\pi(C_1C_L + C_c(C_1 + C_L))]$ = **26.05** MHz, the zero is at 144.7 MHz and $g_{m1}/(2\pi C_c)$ = 14.47 MHz, so PM ≈ $90^\circ - \arctan(14.47/26.05) - \arctan(14.47/144.7)$ = **55.24**°. At the exact crossover, 12.70 MHz, the same formula gives **59.0**°, within a degree of the exact 59.78°: most of the hand estimate's error comes from taking the crossover at $g_{m1}/C_c$, which the non-dominant pole pulls down (12-06 Example 1).
+
+### Solution 12-08.15
+
+(a) $\Delta V_{CM} = 0.005 \times 50\ \mu\text{A} \times 5.175\ \text{M}\Omega$ = **1.294** V: more than the output can swing, so without CMFB the outputs would simply rail. Holding 1 mV needs $1 + T \ge 1294$, so $T \ge$ **1293** and $g_{m,cm} \ge 1293/5.175\ \text{M}\Omega$ = **0.2499** mA/V.
+
+(b) For differential signals the centre node is an AC ground, so each 1 MΩ resistor appears directly in parallel with that output's 5.175 MΩ: $R_{out}$ falls to **0.838** MΩ, and the differential gain to **16.20**% of its value (**−15.81** dB). Resistive sensing works only if the resistors are much larger than $R_{out}$, which is impractical at megohms, or if the outputs are first buffered by source followers, which costs headroom. In sampled-data circuits, switched-capacitor sensing draws no DC current and is the usual answer; in continuous-time circuits, a separate differential pair per output that compares each output with $V_{CM}$ avoids loading the outputs at all.
 
 ---
 
@@ -73,7 +105,7 @@ $R_1 = 1/(0.1 \times 11.06\ \mu\text{A})/2$ = **452.1** kΩ and $R_2 = 1/(0.1 \t
 | 12-08.5a | g_m | 1.934 | mA/V |
 | 12-08.5b | emitter resistor | 1551 | Ω |
 | 12-08.6a | internal limit | 25 | V/µs |
-| 12-08.6b | output-stage limit | 16.67 | V/µs |
+| 12-08.6b | output-stage limit | 15.00 | V/µs |
 | 12-08.6c | balancing I_7 | 300 | µA |
 | 12-08.7a | R_up | 5.15 | MΩ |
 | 12-08.7b | R_dn | 10.2 | MΩ |
@@ -93,9 +125,25 @@ $R_1 = 1/(0.1 \times 11.06\ \mu\text{A})/2$ = **452.1** kΩ and $R_2 = 1/(0.1 \t
 | 12-08.11b | g_m1 | 110.6 | µA/V |
 | 12-08.11c | g_m6 | 1.106 | mA/V |
 | 12-08.11d | I_SS | 22.12 | µA |
-| 12-08.11e | I_6 | 110.6 | µA |
+| 12-08.11e | I_7 | 110.6 | µA |
 | 12-08.11f | internal slew limit | 25.13 | V/µs |
-| 12-08.11g | output slew limit | 22.66 | V/µs |
+| 12-08.11g | output slew limit | 22.12 | V/µs |
+| 12-08.13a | capacitance determinant | 6.72 | pF² |
+| 12-08.13b | output slew rate | −16.07 | V/µs |
+| 12-08.13c | node-1 rate | 1.786 | V/µs |
+| 12-08.14a | lowest input common mode | 0.9 | V |
+| 12-08.14b | highest input common mode | 1.6 | V |
+| 12-08.14c | lowest output | 0.2 | V |
+| 12-08.14d | highest output | 1.6 | V |
+| 12-08.14e | improved p_2 | 26.05 | MHz |
+| 12-08.14f | hand phase-margin estimate | 55.24 | ° |
+| 12-08.14g | estimate at the exact crossover | 59.0 | ° |
+| 12-08.15a | common-mode shift | 1.294 | V |
+| 12-08.15b | loop gain needed | 1293 | — |
+| 12-08.15c | CMFB transconductance | 0.2499 | mA/V |
+| 12-08.15d | loaded output resistance | 0.838 | MΩ |
+| 12-08.15e | remaining differential gain | 16.20 | % |
+| 12-08.15f | gain loss | −15.81 | dB |
 | 12-08.12a | R_1 | 452.1 | kΩ |
 | 12-08.12b | R_2 | 45.21 | kΩ |
 | 12-08.12c | DC gain | 2500 | — |
