@@ -85,6 +85,10 @@ def f3db(fun, a0, lo, hi):
     return brentq(lambda f: abs(fun(f)) - a0 / math.sqrt(2), lo, hi, xtol=1e-6)
 
 
+def real_zero(nodes, elems, fixed, out, lo, hi):
+    """A real transmission zero (in hertz, s = sigma) of node `out`, found by root finding on the solved
+    response at real s between sigma = lo and hi (rad/s); the bracket must hold no pole."""
+    return brentq(lambda sig: response(nodes, elems, fixed, sig / (1j * TP))[out].real, lo, hi, xtol=1e-3) / TP
 
 
 def coeffs(nodes, elems, fixed):
@@ -195,7 +199,9 @@ v.check("Ex 12-04.4f", b14 / b24 / TP / 1e6)
 p4 = poles_of(el4)
 v.check("Ex 12-04.4g", p4[0] / 1e3)
 v.check("Ex 12-04.4h", p4[1] / 1e6)
-v.check("Ex 12-04.4i", brentq(lambda sg: gm2 - sg * 1e-12, 1, 1e16) / TP / 1e6)
+drive = [("G", "0", "n1", "vin", "0", 1e-3)]          # a test current injected into node 1
+z4 = real_zero(["n1", "n2"], el4 + drive, {"vin": 1.0}, "n2", 1e8, 1e11)
+v.check("Ex 12-04.4i", z4 / 1e6)
 s1 = 1 / (TP * gm2 * R1 * R2 * 1e-12)
 s2 = gm2 * 1e-12 / (C1 * C2 + 1e-12 * (C1 + C2)) / TP
 v.check("Ex 12-04.4j", s1 / 1e3)
@@ -220,7 +226,8 @@ def q_f0(RS_, CL_, gm_=gm, cgs=Cgs, cgd=Cgd):
     return w0 / abs(np.sum(lam).real), w0 / TP                 # Q = w0 / (sum of -poles)
 
 
-Sig = Cgs * Cgd + Cgd * 1e-12 + Cgs * 1e-12
+# Sigma from the s^2 coefficient of the solved circuit's denominator, b2 = R_S * Sigma / g_m
+Sig = coeffs(["g", "o"], fol_el(30e3, 1e-12), {"vs": 0.0})[1] * gm / 30e3
 v.check("Ex 12-04.5a", Sig * 1e30)
 q30, f30 = q_f0(30e3, 1e-12)
 q10, f10 = q_f0(10e3, 1e-12)
@@ -235,6 +242,43 @@ for RS_, kpk, kf in ((30e3, "5f", "5g"), (10e3, "5h", None)):
     if kf:
         v.check(f"Ex 12-04.{kf}", 10 ** pk.x / 1e6)
 v.check("Ex 12-04.5i", brentq(lambda R: q_f0(R, 1e-12)[0] - 1 / math.sqrt(2), 100, 30e3, xtol=1e-6) / 1e3)
+qmax = minimize_scalar(lambda lr: -q_f0(10 ** lr, 1e-12)[0], bounds=(3, 7), method="bounded",
+                       options={"xatol": 1e-10})
+v.check("Ex 12-04.5j", -qmax.fun)
+v.check("Ex 12-04.5k", 10 ** qmax.x / 1e3)
+v.check("Ex 12-04.5l", brentq(lambda R: q_f0(R, 1e-12)[0] - 1 / math.sqrt(2), 10 ** qmax.x, 1e9, xtol=1) / 1e6)
+v.assert_true("max-Q source resistance is where g_m R_S C_gd = C_gs + C_L",
+              abs(gm * 10 ** qmax.x * Cgd / (Cgs + 1e-12) - 1) < 1e-4)
+qg2, qc2, qcx = q_f0(30e3, 1e-12, 2 * gm)[0], q_f0(30e3, 0.5e-12)[0], q_f0(30e3, 2e-12)[0]
+v.check("Ex 12-04.5m", qg2)
+v.check("Ex 12-04.5n", qc2)
+v.check("Ex 12-04.5o", qcx)
+v.assert_true("Q rises with g_m and as C_L shrinks, falls as C_L grows (R_S = 30 kOhm)",
+              qg2 > q30 and qc2 > q30 and qcx < q30)
+v.assert_true("Q falls with a smaller R_S", q_f0(15e3, 1e-12)[0] < q30)
+v.assert_true("a series output resistor damps the peak", (lambda el: max(
+    abs(response(["g", "o", "x"], el, {"vs": 1.0}, f)["o"]) for f in np.logspace(7, 9.5, 400)))(
+    [("R", "vs", "g", 30e3), ("C", "g", "0", Cgd), ("C", "g", "x", Cgs), ("G", "0", "x", "g", "x", gm),
+     ("R", "x", "o", 300.0), ("C", "o", "0", 1e-12)]) < 10 ** (2.59 / 20))
+
+# ---- the OCTC bound fails with complex poles: the follower at 100 kOhm
+q100 = q_f0(100e3, 1e-12)[0]
+b1f = coeffs(["g", "o"], fol_el(100e3, 1e-12), {"vs": 0.0})[0]
+taus_f = [seen(["g", "o"], [("R", "g", "0", 100e3), ("G", "0", "o", "g", "o", gm)], a, b) * c
+          for a, b, c in (("g", "0", Cgd), ("g", "o", Cgs), ("o", "0", 1e-12))]
+v.assert_true("follower OCTC sum equals b1", abs(sum(taus_f) / b1f - 1) < 1e-6)
+Hf = lambda f: response(["g", "o"], fol_el(100e3, 1e-12), {"vs": 1.0}, f)["o"]
+f3f = brentq(lambda f: abs(Hf(f)) - 1 / math.sqrt(2), 5e7, 1e9, xtol=1e-3)
+v.check("T 12-04.a", q100)
+v.check("T 12-04.b", 1 / (TP * sum(taus_f)) / 1e6)
+v.check("T 12-04.c", f3f / 1e6)
+v.check("T 12-04.d", 100 * (1 / (TP * sum(taus_f)) / f3f - 1))
+v.assert_true("OCTC is optimistic here (complex poles)", 1 / (TP * sum(taus_f)) > f3f)
+# ---- and holds for real poles: random all-real-pole sets never fall below -3 dB at 1/b1
+rng = np.random.default_rng(4)
+worst = min(-10 * np.log10(np.prod(1 + (1 / (np.sum(1 / p)) / p) ** 2))
+            for p in (10 ** rng.uniform(0, 3, rng.integers(2, 6)) for _ in range(2000)))
+v.assert_true("all-real-pole gain at 1/b1 is never below -3.0103 dB", worst >= -10 * math.log10(2) - 1e-12)
 
 # ============================================================ Example 6: OCTC of a cascode (r_o neglected)
 Cx = Cgs + 10e-15
@@ -288,7 +332,11 @@ v.check("12-04.3f", 100 * t3[1] / b13)
 v.check("12-04.4a", seen(["g", "d"], res3, "g", "d", shorts=[("g", "0")]) / 1e3)
 v.check("12-04.4b", seen(["g", "d"], res3, "d", "0", shorts=[("g", "d")]))
 v.check("12-04.4c", b23)
-w5 = [1 / ((600 + 10e3) * 1e-6), 1 / ((2e3 + 8e3) * 10e-6)]
+amp5 = [("R", "vs", "a", 600.0), ("R", "b", "0", 10e3), ("G", "0", "c", "b", "0", 0.05), ("R", "c", "0", 2e3),
+        ("R", "d", "0", 8e3), ("R", "vs", "0", 1e-6)]
+n5 = ["vs", "a", "b", "c", "d"]
+w5 = [1 / (seen(n5, amp5, "a", "b", shorts=[("c", "d")]) * 1e-6),
+      1 / (seen(n5, amp5, "c", "d", shorts=[("a", "b")]) * 10e-6)]
 v.check("12-04.5a", w5[0])
 v.check("12-04.5b", w5[1])
 v.check("12-04.5c", sum(w5))
@@ -305,8 +353,9 @@ v.check("12-04.7c", p7[0] / 1e3)
 v.check("12-04.7d", p7[1] / 1e6)
 v.check("12-04.7e", 1 / (TP * 2e-3 * 100e3 * 50e3 * 2e-12) / 1e3)
 v.check("12-04.7f", 2e-3 * 2e-12 / (0.1e-12 * 2e-12 + 2e-12 * 2.1e-12) / TP / 1e6)
-v.check("12-04.7g", 2e-3 / (TP * 2e-12) / 1e6)
-v.check("12-04.8a", (100e-15 * 10e-15 + 10e-15 * 2e-12 + 100e-15 * 2e-12) * 1e30)
+v.check("12-04.7g", real_zero(["n1", "n2"], el7 + drive, {"vin": 1.0}, "n2", 1e8, 1e11) / 1e6)
+v.check("12-04.8a", coeffs(["g", "o"], fol_el(20e3, 2e-12, 2e-3, 100e-15, 10e-15), {"vs": 0.0})[1]
+        * 2e-3 / 20e3 * 1e30)
 q8, f8 = q_f0(20e3, 2e-12, 2e-3, 100e-15, 10e-15)
 v.check("12-04.8b", q8)
 v.check("12-04.8c", f8 / 1e6)
@@ -323,6 +372,34 @@ Hcg = lambda f: response(["sn", "o"], cg_full, {"vs": 1.0}, f)["o"]
 f3cg = brentq(lambda f: abs(Hcg(f)) - abs(Hcg(1.0)) / math.sqrt(2), 1e6, 1e11, xtol=1)
 v.check("12-04.10e", 100 * (1 - 1 / (TP * sum(t10)) / f3cg))
 
+# ---- Problem 11: the follower's transfer function and its inductive output impedance
+for RS_, CL_ in ((30e3, 1e-12), (100e3, 0.3e-12)):
+    for f in (1e6, 3e7, 2e8, 1e9):
+        s = 1j * TP * f
+        sig_ = Cgs * Cgd + Cgd * CL_ + Cgs * CL_
+        Hd = (gm + s * Cgs) / (gm + s * (Cgs + CL_ + gm * RS_ * Cgd) + s ** 2 * RS_ * sig_)
+        Hn = response(["g", "o"], fol_el(RS_, CL_), {"vs": 1.0}, f)["o"]
+        v.assert_true(f"derived follower H(s) matches nodal solve (R_S={RS_:g}, f={f:g})", abs(Hd / Hn - 1) < 1e-9)
+
+
+def zout(RS_, f):
+    """Output impedance of the follower (C_gd neglected) by a test current into the output node."""
+    el = [("R", "g", "0", RS_), ("C", "g", "o", Cgs), ("G", "0", "o", "g", "o", gm), ("I", "0", "o", 1.0)]
+    return response(["g", "o"], el, {}, f)["o"]
+
+
+z_dc = zout(30e3, 1e-3).real
+Lq = -1 / (TP * 1e8 * (1 / (zout(30e3, 1e8) - z_dc)).imag)       # inductive part from the solved impedance
+v.assert_true("low-frequency output impedance is 1/g_m", abs(z_dc * gm - 1) < 1e-9)
+for f in (1e7, 1e8, 1e9):
+    zp = 1 / (1 / (1j * TP * f * Lq) + 1 / (30e3 - z_dc))
+    v.assert_true(f"Z_out = 1/g_m + (sL || (R_S - 1/g_m)) at {f:g} Hz", abs((z_dc + zp) / zout(30e3, f) - 1) < 1e-9)
+v.check("12-04.11a", Lq * 1e6)
+v.check("12-04.11b", 1 / (TP * math.sqrt(Lq * 1e-12)) / 1e6)
+v.check("12-04.11c", q_f0(30e3, 1e-12, cgd=0.0)[1] / 1e6)
+v.assert_true("at R_S = 1/g_m the output impedance is flat", max(abs(zout(1 / gm, f) * gm - 1)
+                                                               for f in (1e6, 1e8, 1e10)) < 1e-9)
+
 # ============================================================ lab
 if lab.exists():
     RSb100 = seen(nodes3 + ["vs"], base + gnd, "sn", "0", shorts=[("a", "g"), ("d", "o")])
@@ -336,4 +413,19 @@ if lab.exists():
         pk = minimize_scalar(lambda lf: -abs(response(["g", "o"], fol_el(RS_, CL_), {"vs": 1.0}, 10 ** lf)["o"]),
                              bounds=(6, 11), method="bounded", options={"xatol": 1e-10})
         v.check(f"Lab 12-04.{key}", 20 * math.log10(-pk.fun))
+
+    def tau_gd(RS_, RL_):
+        return seen(["g", "d"], [("R", "g", "0", RS_), ("G", "d", "0", "g", "0", gm), ("R", "d", "0", RL_)],
+                    "g", "d") * Cgd
+
+    slope = lambda RL_: (tau_gd(20e3, RL_) - tau_gd(10e3, RL_)) / 10e3      # d(tau_gd)/dR_S, farads
+    v.assert_true("tau_gd grows as R_S x 126 fF at R_L = 20 kOhm", abs(slope(20e3) / 126e-15 - 1) < 1e-6)
+    v.check("Lab 12-04.e", gm * brentq(lambda RL_: slope(RL_) - Cgs, 1e3, 50e3, xtol=1e-6))
+    t5 = [seen(["g", "d"], [("R", "g", "0", RS), ("G", "d", "0", "g", "0", gm), ("R", "d", "0", 5e3)], "g", "0") * Cgs,
+          tau_gd(RS, 5e3),
+          seen(["g", "d"], [("R", "g", "0", RS), ("G", "d", "0", "g", "0", gm), ("R", "d", "0", 5e3)], "d", "0") * CL]
+    v.check("Lab 12-04.f", t5[0] * 1e9)
+    v.check("Lab 12-04.g", t5[1] * 1e9)
+    v.check("Lab 12-04.h", t5[2] * 1e9)
+    v.assert_true("with R_L = 5 kOhm, C_gs is the largest contributor", t5[0] == max(t5))
 sys.exit(v.finish())

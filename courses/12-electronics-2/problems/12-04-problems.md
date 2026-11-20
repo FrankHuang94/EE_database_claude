@@ -51,6 +51,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **OCTC of a common-gate stage.** Apply OCTC to Example 12-03.4's common-gate stage with the 10 kΩ source ($g_m$ = 1 mA/V, $C_{gs}$ = 72.67 fF, $R_L$ = 20 kΩ, $C_L + C_{gd}$ = 106 fF), and compare with the exact 75.00 MHz.
 
+### Problem 12-04.11 [C]
+
+**Deriving the follower's response and its inductive output.** (a) For the source follower of §3.5 (source resistance $R_S$, $C_{gs}$ from gate to output, $C_{gd}$ from gate to ground, load $C_L$), write KCL at the gate and at the output and derive $V_o/V_s$, showing every cancellation. (b) Neglect $C_{gd}$, zero $V_s$, and find the impedance $Z_{out}$ seen by the load. Show that it equals $1/g_m$ in series with an inductance $L = (C_{gs}/g_m)(R_S - 1/g_m)$ shunted by a resistance $R_S - 1/g_m$. (c) Evaluate $L$ for Example 12-04.5's follower at $R_S$ = 30 kΩ and compare $1/(2\pi\sqrt{LC_L})$ with the follower's natural frequency with $C_{gd}$ neglected. (d) What happens at $R_S = 1/g_m$, and what does it say about peaking?
+
 ---
 
 ## Objective coverage
@@ -61,4 +65,4 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 2. Zero-value time constants and the second pole | 4, 9 |
 | 3. Short-circuit time constants | 5, 6 |
 | 4. Pole splitting | 7 |
-| 5. Follower peaking | 8 |
+| 5. Follower response and peaking | 8, 11 |

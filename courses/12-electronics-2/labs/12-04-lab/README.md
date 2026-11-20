@@ -28,7 +28,7 @@ Open-circuit time constants (§3.1), zero-value time constants (§3.2), short-ci
 | Part | Quantity | Expected |
 |---|---|---|
 | 1 | OCTC against $b_1$ | Equal to rounding; the load capacitor contributes about half |
-| 2 | SCTC against exact | The estimate is always above the exact corner, by more when no capacitor dominates |
+| 2 | SCTC against exact | The estimate is always above the exact corner (the poles are real), by more when no capacitor dominates |
 | 3 | Poles against $C_c$ | Monotonic, fastest at small $C_c$ |
 | 4 | Follower | No peak from 1 kΩ; peaks of a few decibels from tens of kilohms |
 | ngspice | Poles | 12.73 and 63.66 MHz uncompensated; 61.75 kHz and 596.6 MHz with 1 pF |
@@ -40,6 +40,10 @@ Open-circuit time constants (§3.1), zero-value time constants (§3.2), short-ci
 | Lab 12-04.b | exact low corner with a 100 µF bypass | 14.03 | Hz |
 | Lab 12-04.c | follower peak, 100 kΩ and 1 pF | 4.92 | dB |
 | Lab 12-04.d | follower peak, 10 kΩ and 0.1 pF | 2.81 | dB |
+| Lab 12-04.e | largest g_m R_L for C_gs to win | 11.1 | — |
+| Lab 12-04.f | τ_gs with R_L = 5 kΩ | 0.7267 | ns |
+| Lab 12-04.g | τ_gd with R_L = 5 kΩ | 0.39 | ns |
+| Lab 12-04.h | τ_L with R_L = 5 kΩ | 0.5 | ns |
 
 *These are recomputed by [verify_12_04.py](../../verify/verify_12_04.py) with its own solver.*
 
@@ -53,7 +57,7 @@ Open-circuit time constants (§3.1), zero-value time constants (§3.2), short-ci
 
 1. As $C_S$ grows its corner falls toward the other two, so no capacitor dominates; the sum of the three corners then overestimates the true corner more.
 2. $Q = \sqrt{g_mR_S\Sigma}/(C_{gs} + C_L + g_mR_SC_{gd})$ depends on both: a small $C_L$ shrinks the denominator, raising $Q$ at moderate $R_S$, but at very large $R_S$ the $g_mR_SC_{gd}$ term dominates the denominator and a larger $\Sigma$ (larger $C_L$) wins.
-3. A larger source resistance: $\tau_{gs} = R_SC_{gs}$ grows in proportion, while the load's $R_LC_L$ does not change (the Miller term grows too).
+3. Raising $R_S$ alone does not work. $\tau_{gs} = R_SC_{gs}$ grows as $R_S \times$ 72.67 fF, but $\tau_{gd} = (R_S + R_L + g_mR_SR_L)C_{gd}$ grows as $R_S(1 + g_mR_L)C_{gd} = R_S \times$ 126 fF, faster. First lower the gain until $(1 + g_mR_L)C_{gd} < C_{gs}$, that is $g_mR_L$ < **11.1**, then make $R_SC_{gs}$ exceed $R_LC_L$. For example, with $R_L$ = 5 kΩ and the original 10 kΩ source, $\tau_{gs}$ = **0.7267** ns is the largest, against $\tau_{gd}$ = **0.39** ns and $\tau_L$ = **0.5** ns.
 
 ## Optional hardware extension
 

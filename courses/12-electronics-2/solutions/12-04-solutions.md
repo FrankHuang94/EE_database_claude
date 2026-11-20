@@ -46,6 +46,50 @@ With $C_L$ shorted, the drain is grounded, so $C_{gd}$ sees only $R_S$: $R_{gd}^
 
 The input capacitor sees $R_S \parallel 1/g_m$ = 909.1 Ω: $\tau_{in}$ = **0.06606** ns. The output: $20\ \text{k}\Omega \times 106\ \text{fF}$ = **2.12** ns. Sum **2.186** ns, estimate **72.80** MHz, 3% below the exact 75.00 MHz: with one dominant node, OCTC is accurate.
 
+### Solution 12-04.11
+
+(a) At the gate, the current leaving through $R_S$, $C_{gd}$ and $C_{gs}$ sums to zero:
+
+$$
+\frac{V_g - V_s}{R_S} + sC_{gd}V_g + sC_{gs}(V_g - V_o) = 0 .
+$$
+
+At the output, the transistor delivers $g_m(V_g - V_o)$ and $C_{gs}$ delivers $sC_{gs}(V_g - V_o)$; together they charge $C_L$:
+
+$$
+(g_m + sC_{gs})(V_g - V_o) = sC_LV_o \quad\Rightarrow\quad V_g = V_o\,\frac{g_m + s(C_{gs} + C_L)}{g_m + sC_{gs}} .
+$$
+
+Multiply the gate equation by $R_S$: $V_g[1 + sR_S(C_{gs} + C_{gd})] - sR_SC_{gs}V_o = V_s$. Substituting $V_g$ and multiplying through by $g_m + sC_{gs}$, the coefficient of $V_o$ is
+
+$$
+\begin{aligned}
+&[g_m + s(C_{gs} + C_L)][1 + sR_S(C_{gs} + C_{gd})] - sR_SC_{gs}(g_m + sC_{gs}) \\
+&\quad = g_m + s\big[C_{gs} + C_L + g_mR_S(C_{gs} + C_{gd}) - g_mR_SC_{gs}\big] + s^2R_S\big[(C_{gs} + C_L)(C_{gs} + C_{gd}) - C_{gs}^2\big] \\
+&\quad = g_m + s(C_{gs} + C_L + g_mR_SC_{gd}) + s^2R_S(C_{gs}C_{gd} + C_{gd}C_L + C_{gs}C_L) ,
+\end{aligned}
+$$
+
+where the $g_mR_SC_{gs}$ terms and the $C_{gs}^2$ terms cancel. Hence $V_o/V_s = (g_m + sC_{gs})/[g_m + s(C_{gs} + C_L + g_mR_SC_{gd}) + s^2R_S\Sigma]$, as in §3.5. Units: each term of the denominator is in siemens ($s \cdot$ F = S; $s^2 \cdot \Omega \cdot \text{F}^2$ = S).
+
+(b) Apply $V_x$ at the output with $V_s = 0$. The gate is a divider of $R_S$ and $C_{gs}$: $V_g = V_x\,sR_SC_{gs}/(1 + sR_SC_{gs})$, so $V_x - V_g = V_x/(1 + sR_SC_{gs})$. The test source supplies the current that leaves through the transistor and through $C_{gs}$, $I_x = (g_m + sC_{gs})(V_x - V_g)$, so
+
+$$
+Z_{out} = \frac{V_x}{I_x} = \frac{1 + sR_SC_{gs}}{g_m + sC_{gs}} .
+$$
+
+Subtract the low-frequency value $1/g_m$:
+
+$$
+Z_{out} - \frac{1}{g_m} = \frac{g_m + sg_mR_SC_{gs} - g_m - sC_{gs}}{g_m(g_m + sC_{gs})} = \frac{sC_{gs}R_p}{g_m + sC_{gs}}, \qquad R_p = R_S - \frac{1}{g_m} .
+$$
+
+For an inductor $L$ in parallel with $R_p$, $sLR_p/(R_p + sL)$; with $L = C_{gs}R_p/g_m$ this is $sC_{gs}R_p^2/g_m \div (R_p + sC_{gs}R_p/g_m) = sC_{gs}R_p/(g_m + sC_{gs})$, the same. So $Z_{out} = 1/g_m + (sL \parallel R_p)$. Units: $C_{gs}R_p/g_m$ is F·Ω·Ω = s·Ω = H. ✓
+
+(c) $L = 72.67\ \text{fF} \times 29\ \text{k}\Omega/(1\ \text{mA/V})$ = **2.107** µH. With $C_L$ = 1 pF, $1/(2\pi\sqrt{LC_L})$ = **109.6** MHz, against the follower's natural frequency with $C_{gd}$ neglected, $\sqrt{g_m/(R_SC_{gs}C_L)}/2\pi$ = **107.8** MHz: the inductive model captures the resonance to within 2%. The small difference comes from the series $1/g_m$ and the shunt $R_p$, which the bare $LC$ formula ignores.
+
+(d) At $R_S = 1/g_m$, $R_p = 0$ and $L = 0$: $Z_{out} = (1 + sC_{gs}/g_m)/(g_m + sC_{gs}) = 1/g_m$ at every frequency. A purely resistive source cannot resonate with $C_L$, which is why a follower driven from a low resistance does not peak (the lab's 1 kΩ case) and why lowering $R_S$ is the first cure.
+
 ---
 
 ## Answer key
@@ -93,3 +137,6 @@ The input capacitor sees $R_S \parallel 1/g_m$ = 909.1 Ω: $\tau_{in}$ = **0.066
 | 12-04.10c | sum | 2.186 | ns |
 | 12-04.10d | estimate | 72.80 | MHz |
 | 12-04.10e | estimate's shortfall | 3 | % |
+| 12-04.11a | L at 30 kΩ | 2.107 | µH |
+| 12-04.11b | LC resonance | 109.6 | MHz |
+| 12-04.11c | natural frequency, C_gd neglected | 107.8 | MHz |

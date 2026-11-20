@@ -21,7 +21,7 @@
 
 ## 1. Big picture
 
-12-03 found a common-source stage's poles by solving its two node equations. Real amplifiers have dozens of capacitances, and solving the full circuit by hand is impractical; even simulators give answers without insight. Designers need a way to estimate the bandwidth *and* to see which capacitor limits it, so that they know what to change. **Time-constant methods** do exactly that: each capacitor is examined alone, with a simple resistance calculation, and the results add. The sum is close to the true bandwidth when one pole dominates, and it is always on the safe side. The same reasoning, turned around, explains **pole splitting**, the mechanism that makes two-stage op-amps stable (12-06).
+12-03 found a common-source stage's poles by solving its two node equations. Real amplifiers have dozens of capacitances, and solving the full circuit by hand is impractical; even simulators give answers without insight. Designers need a way to estimate the bandwidth *and* to see which capacitor limits it, so that they know what to change. **Time-constant methods** do exactly that: each capacitor is examined alone, with a simple resistance calculation, and the results add. The sum is close to the true bandwidth when one pole dominates, and when the poles are real it errs on the safe side. The same reasoning, turned around, explains **pole splitting**, the mechanism that makes two-stage op-amps stable (12-06).
 
 - **Design reviews run on time constants.** "The output node is 60% of the delay" is a time-constant statement; it tells a team where to spend effort.
 - **Discrete and AC-coupled designs** set their low-frequency corner with coupling and bypass capacitors, sized by short-circuit time constants.
@@ -46,7 +46,21 @@ For a circuit with capacitors $C_1, \dots, C_n$ and otherwise only resistors and
 
 **The theorem.** $b_1 = \sum_iR_{i0}C_i$.
 
-*Why.* $D(s)$ is a polynomial in each $C_i$ separately, of degree at most one in each (each capacitor appears in the matrix through one admittance $sC_i$, and a determinant is linear in each such term). So the coefficient of $s$, $b_1$, is a sum of terms, each linear in a single $C_i$ with all other capacitors set to zero. Setting all capacitors but $C_i$ to zero leaves a one-capacitor circuit, whose denominator is $1 + sR_{i0}C_i$ (its single pole is at $1/R_{i0}C_i$). Comparing coefficients, $C_i$'s contribution to $b_1$ is $R_{i0}C_i$. ∎
+*Why.* A capacitor $C_i$ between nodes $p$ and $q$ enters the nodal matrix as $sC_i\mathbf{u}_i\mathbf{u}_i^{\mathsf T}$, where the column vector $\mathbf{u}_i$ has $+1$ in row $p$, $-1$ in row $q$ (no entry if that node is ground) and zeros elsewhere: a rank-one term. For an invertible matrix $\mathbf{A}$, the **matrix determinant lemma** states
+
+$$
+\det\big(\mathbf{A} + t\,\mathbf{u}\mathbf{u}^{\mathsf T}\big) = \det\mathbf{A}\,\big(1 + t\,\mathbf{u}^{\mathsf T}\mathbf{A}^{-1}\mathbf{u}\big) ,
+$$
+
+which is affine (degree at most one) in $t$. So $\det(\mathbf{G} + s\mathbf{C})$ has degree at most one in each $C_i$, and since every $C_i$ arrives multiplied by $s$, the coefficient of $s^k$ contains only products of $k$ *different* capacitors. In particular $b_1 = \sum_ia_iC_i$, and each $a_i$ can be found with every other capacitor set to zero (open). That leaves a one-capacitor circuit, for which the lemma with $\mathbf{A} = \mathbf{G}$ and $t = sC_i$ gives
+
+$$
+D(s) = \frac{\det\big(\mathbf{G} + sC_i\mathbf{u}_i\mathbf{u}_i^{\mathsf T}\big)}{\det\mathbf{G}} = 1 + sC_i\,\mathbf{u}_i^{\mathsf T}\mathbf{G}^{-1}\mathbf{u}_i .
+$$
+
+The number $\mathbf{u}_i^{\mathsf T}\mathbf{G}^{-1}\mathbf{u}_i$ is exactly $R_{i0}$: $\mathbf{G}^{-1}\mathbf{u}_i$ is the vector of node voltages produced by a 1 A test current injected at $p$ and drawn out at $q$ (controlled sources included, since they are part of $\mathbf{G}$), and $\mathbf{u}_i^{\mathsf T}$ picks out $v_p - v_q$. So $a_i = R_{i0}$. ∎
+
+> **Going deeper — the matrix determinant lemma.** Write $\mathbf{A} + t\mathbf{u}\mathbf{u}^{\mathsf T} = \mathbf{A}(\mathbf{I} + t\mathbf{w}\mathbf{u}^{\mathsf T})$ with $\mathbf{w} = \mathbf{A}^{-1}\mathbf{u}$. Every vector $\mathbf{x}$ with $\mathbf{u}^{\mathsf T}\mathbf{x} = 0$ is unchanged by $\mathbf{I} + t\mathbf{w}\mathbf{u}^{\mathsf T}$, which gives the eigenvalue 1 on an $(n-1)$-dimensional subspace, and $\mathbf{w}$ itself maps to $(1 + t\mathbf{u}^{\mathsf T}\mathbf{w})\mathbf{w}$, the last eigenvalue. The determinant is the product of the eigenvalues, $1 + t\mathbf{u}^{\mathsf T}\mathbf{A}^{-1}\mathbf{u}$. (If $\mathbf{u}^{\mathsf T}\mathbf{w} = 0$ the matrix is the identity plus a nilpotent term, with determinant 1, which the formula also gives; by continuity the affine dependence on $t$ holds for singular $\mathbf{A}$ too.)
 
 The denominator also factors as $\prod_k(1 + s/\omega_{pk})$, so $b_1 = \sum_k1/\omega_{pk}$: the sum of the time constants equals the sum of the pole time constants. The **open-circuit time constant (OCTC) estimate** is
 
@@ -54,7 +68,9 @@ $$
 \omega_H \approx \frac{1}{\sum_iR_{i0}C_i} .
 $$
 
-It is accurate when one pole dominates, and since $\sum_k1/\omega_{pk} \ge 1/\omega_{p1}$, it errs low (conservatively) otherwise. Zeros, which the estimate ignores, can move the true bandwidth either way, but in most amplifiers they are far above it.
+It is accurate when one pole dominates. **When every pole is real, it is also a guaranteed lower bound.** At a frequency $\omega \le 1/b_1$ the ratios $x_k = \omega/\omega_{pk}$ sum to at most 1, and the all-pole gain relative to DC is $|H|^2 = 1/\prod_k(1 + x_k^2)$. The function $\ln(1 + x^2)$ is convex for $0 \le x \le 1$ (its second derivative, $2(1 - x^2)/(1 + x^2)^2$, is not negative there), so with the sum of the $x_k$ fixed the product is largest when one $x_k$ takes the whole sum; with the sum at most 1, the product is at most 2. The gain therefore stays at or above −3 dB at every frequency up to $1/b_1$, and the true bandwidth is at or above the estimate. Real zeros only help: each multiplies the gain by $|1 + j\omega/\omega_z| \ge 1$.
+
+**With complex poles the bound fails.** Example 12-04.5's follower driven from $R_S$ = 100 kΩ has $Q$ = **1.68**. OCTC gives **95.15** MHz, but the exact −3 dB frequency is **82.38** MHz: the estimate is **15.5**% optimistic. The sum of time constants still equals $b_1$ exactly; it is the reading of $1/b_1$ as a bandwidth that breaks down when the poles ring.
 
 **The bridging capacitor's resistance.** For $C_{gd}$ in a common-source stage, apply a test current $i_t$ from drain to gate with the other capacitors open. The gate sits at $v_g = i_tR_S$ (the current flows out through $R_S$); the drain node carries $i_t$ plus the transistor's $g_mv_g$ into $R_L$, so $v_d = -(i_t + g_mi_tR_S)R_L$. The test voltage is $v_g - v_d$:
 
@@ -82,7 +98,11 @@ $$
 \omega_L \approx \sum_i\frac{1}{R_{is}C_i} ,
 $$
 
-the **short-circuit time constant (SCTC)** estimate. It is good when one capacitor dominates the low corner and errs high (conservatively) otherwise. The largest $1/(R_{is}C_i)$, usually the source-bypass capacitor because it sees the small $1/g_m$, is the one to enlarge first (Example 12-04.3).
+the **short-circuit time constant (SCTC)** estimate.
+
+*Why.* Substitute $p = 1/s$. A capacitor's impedance $1/(sC_i)$ becomes $pS_i$, with the elastance $S_i = 1/C_i$: in the variable $p$ each capacitor behaves like an inductor, and $S_i = 0$ is a short. Write the nodal equations with each capacitor's current $i_i$ as an extra unknown and its branch equation $v_p - v_q - pS_i\,i_i = 0$. Now $S_i$ appears in a single matrix entry, so the determinant is affine in each $S_i$, and the denominator, normalized to 1 at $p = 0$ (midband, every capacitor shorted), is $1 + a_1p + \cdots$ with $a_1 = \sum_iS_i \times$ (its coefficient with every other capacitor shorted). A single capacitor seeing $R_{is}$ has its pole at $s = -1/(R_{is}C_i)$, the factor $1 + pS_i/R_{is}$, so $a_1 = \sum_i1/(R_{is}C_i)$. Factored, the same denominator is $\prod_k(1 + p\,\omega_{pk})$ over the low-frequency poles $\omega_{pk}$, so the SCTC sum equals $\sum_k\omega_{pk}$ exactly.
+
+The estimate is good when one capacitor dominates the low corner. When the low-frequency poles are real, the convexity argument of §3.1 with $x_k = \omega_{pk}/\omega$ shows that it is an upper bound on the true corner (it errs high, conservatively); real zeros away from the origin, like the one a bypass capacitor adds, only push the true corner lower. The largest $1/(R_{is}C_i)$, usually the source-bypass capacitor because it sees the small $1/g_m$, is the one to enlarge first (Example 12-04.3).
 
 ### 3.4 Pole splitting
 
@@ -106,7 +126,13 @@ Adding one capacitor pushes the low pole *down* (the Miller-multiplied $C_c$ loa
 
 ### 3.5 The source follower driven from a resistance
 
-12-03 §3.6 treated the follower driven from an ideal source. With a source resistance $R_S$, $C_{gs}$ from gate to output and $C_{gd}$ from gate to AC ground, the gate and output node equations (derived in the same way as 12-03's common-source stage) give
+12-03 §3.6 treated the follower driven from an ideal source. With a source resistance $R_S$, $C_{gs}$ from gate to output and $C_{gd}$ from gate to AC ground (the drain is at AC ground), KCL at the gate and at the output reads
+
+$$
+\frac{V_g - V_s}{R_S} + sC_{gd}V_g + sC_{gs}(V_g - V_o) = 0, \qquad (g_m + sC_{gs})(V_g - V_o) = sC_LV_o .
+$$
+
+The second says that the transistor's current $g_m(V_g - V_o)$, plus the current through $C_{gs}$, charges $C_L$. Solve it for $V_g = V_o\,[g_m + s(C_{gs} + C_L)]/(g_m + sC_{gs})$, multiply the first by $R_S$ to get $V_g[1 + sR_S(C_{gs} + C_{gd})] - sR_SC_{gs}V_o = V_s$, and substitute. In the resulting numerator the $sg_mR_SC_{gs}$ terms cancel, and so do the $s^2R_SC_{gs}^2$ terms, leaving
 
 $$
 \frac{V_o}{V_s} = \frac{g_m + sC_{gs}}{g_m + s\,(C_{gs} + C_L + g_mR_SC_{gd}) + s^2R_S\Sigma}, \qquad \Sigma = C_{gs}C_{gd} + C_{gd}C_L + C_{gs}C_L .
@@ -118,7 +144,15 @@ $$
 \omega_0 = \sqrt{\frac{g_m}{R_S\Sigma}}, \qquad Q = \frac{\sqrt{g_mR_S\Sigma}}{C_{gs} + C_L + g_mR_SC_{gd}} .
 $$
 
-$Q$ grows as $\sqrt{R_S}$ at first, so a follower driven from a high-impedance node can have complex poles and peak or ring; the second-order part peaks once $Q > 1/\sqrt2$, and the left-half-plane zero at $g_m/C_{gs}$ adds a little more. The physical picture: seen from the load, the follower's output impedance rises from $1/g_m$ at low frequency toward $R_S$ at high frequency (because $C_{gs}$ couples the source resistance through), and a rising impedance is inductive. An inductive source driving a capacitive load is a resonant pair. The cures are a smaller $R_S$, a larger $g_m$, or a series resistor at the output.
+$Q$ grows as $\sqrt{R_S}$ at first, so a follower driven from a high-impedance node can have complex poles and peak or ring; the second-order part peaks once $Q > 1/\sqrt2$, and the left-half-plane zero at $g_m/C_{gs}$ adds a little more. At very large $R_S$ the $g_mR_SC_{gd}$ term takes over the denominator and $Q$ falls again as $1/\sqrt{R_S}$, so peaking occupies a window of source resistances (Example 12-04.5).
+
+The physical picture: seen from the load, the follower's output impedance rises from $1/g_m$ at low frequency toward $R_S$ at high frequency, because $C_{gs}$ couples the source resistance through. With $C_{gd}$ neglected and $V_s$ zeroed, a test source at the output gives (Problem 12-04.11)
+
+$$
+Z_{out} = \frac{1 + sR_SC_{gs}}{g_m + sC_{gs}} = \frac{1}{g_m} + \Big(sL \parallel \big(R_S - \tfrac{1}{g_m}\big)\Big), \qquad L = \frac{C_{gs}}{g_m}\Big(R_S - \frac{1}{g_m}\Big) :
+$$
+
+a resistance $1/g_m$ in series with an inductance $L$ that is shunted by $R_S - 1/g_m$. An inductive source driving a capacitive load is a resonant pair. Its damping comes from the series $1/g_m$, so a *larger* $g_m$ (less damping) or a *smaller* $C_L$ (a higher characteristic impedance $\sqrt{L/C_L}$ against the same damping) raises $Q$ over the usual range, until $g_mR_SC_{gd}$ approaches $C_{gs} + C_L$ (Example 12-04.5). When $R_S = 1/g_m$ the inductance vanishes and the output impedance is flat. The cures are therefore a smaller $R_S$ (less inductance, at the cost of a stronger driving stage), a resistor in series with the output (more damping), or a larger $C_L$ (lower $Q$, at the cost of bandwidth).
 
 ## 4. Worked examples
 
@@ -156,7 +190,7 @@ matching 12-03, and the second-pole estimate $b_1/b_2$ is **393.6** MHz (exact 3
 
 **Setup.** A two-stage amplifier's first-stage output has $R_1$ = 50 kΩ and $C_1$ = 50 fF; the second stage has $g_{m2}$ = 4 mA/V, $R_2$ = 12.5 kΩ and $C_2$ = 1 pF. (a) Find the two poles without compensation. (b) With $C_c$ = 1 pF across the second stage, find $b_1$, $b_2$, the estimated and exact poles, and the right-half-plane zero.
 
-**Solution.** (a) Node 1: $1/(2\pi \times 50\ \text{k}\Omega \times 50\ \text{fF})$ = **63.66** MHz. Node 2: $1/(2\pi \times 12.5\ \text{k}\Omega \times 1\ \text{pF})$ = **12.73** MHz. Two poles a factor of 5 apart, within a decade: a feedback loop around this amplifier would ring or oscillate (12-06).
+**Solution.** (a) Node 1: $1/(2\pi \times 50\ \text{k}\Omega \times 50\ \text{fF})$ = **63.66** MHz. Node 2: $1/(2\pi \times 12.5\ \text{k}\Omega \times 1\ \text{pF})$ = **12.73** MHz. Two poles a factor of 5 apart, within a decade: a feedback loop around this amplifier would ring badly (12-06). Two poles alone cannot make a loop oscillate, since their phase lag never reaches 180°, but they leave almost no phase margin, and one more parasitic pole could tip it over.
 
 (b) $b_1 = 50\ \text{k}\Omega(50\ \text{fF} + 1\ \text{pF} \times 51) + 12.5\ \text{k}\Omega \times 2\ \text{pF}$ = **2.578** µs, so $\omega_{p1} \approx 1/b_1$ corresponds to **61.75** kHz. $b_2 = 50\ \text{k}\Omega \times 12.5\ \text{k}\Omega \times (0.05 + 1.05)\ \text{pF}^2$ = **6.875** × 10⁻¹⁶ s², so $b_1/b_2$ corresponds to **596.7** MHz. The exact roots are at **61.75** kHz and **596.6** MHz. The right-half-plane zero is at $g_{m2}/(2\pi C_c)$ = **636.6** MHz.
 
@@ -172,9 +206,9 @@ matching 12-03, and the second-pole estimate $b_1/b_2$ is **393.6** MHz (exact 3
 
 (b) $Q$ = 1.23 predicts clear peaking, and the response peaks by 2.59 dB; $Q$ = 0.785, just above $1/\sqrt2$, predicts a trace of it, 0.16 dB.
 
-(c) Solving $Q(R_S) = 1/\sqrt2$ numerically gives $R_S$ = **7.933** kΩ: a follower driven from more than about 8 kΩ will peak with this load.
+(c) Solving $Q(R_S) = 1/\sqrt2$ numerically gives $R_S$ = **7.933** kΩ: a follower driven from more than about 8 kΩ will peak with this load. The peaking window is bounded above too: $Q$ is largest, **1.75**, at $R_S$ ≈ **178.8** kΩ, where $g_mR_SC_{gd} = C_{gs} + C_L$, and it falls back to $1/\sqrt2$ at about **4.03** MΩ.
 
-**Sanity check.** Doubling $g_m$ or halving $C_L$ lowers $Q$ at a given $R_S$; adding a small resistor in series with the load does too, by damping the resonance.
+**Sanity check.** At $R_S$ = 30 kΩ, doubling $g_m$ ($Q$ → **1.521**) or halving $C_L$ ($Q$ → **1.451**) *raises* $Q$: less series damping, or a lighter load on the same inductance (§3.5). Doubling $C_L$ lowers it ($Q$ → **0.9658**) at the cost of bandwidth, and so do a smaller $R_S$ or a resistor in series with the output.
 
 ### Example 12-04.6 · Open-circuit time constants of a cascode (tier B)
 
@@ -189,6 +223,10 @@ matching 12-03, and the second-pole estimate $b_1/b_2$ is **393.6** MHz (exact 3
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
+| T 12-04.a | follower Q at 100 kΩ | 1.68 | — |
+| T 12-04.b | its OCTC estimate | 95.15 | MHz |
+| T 12-04.c | its exact −3 dB frequency | 82.38 | MHz |
+| T 12-04.d | estimate's excess | 15.5 | % |
 | Ex 12-04.1a | R_gs0 | 10 | kΩ |
 | Ex 12-04.1b | τ_gs | 0.7267 | ns |
 | Ex 12-04.1c | R_gd0 | 230 | kΩ |
@@ -236,6 +274,12 @@ matching 12-03, and the second-pole estimate $b_1/b_2$ is **393.6** MHz (exact 3
 | Ex 12-04.5g | frequency of that peak | 84.57 | MHz |
 | Ex 12-04.5h | peak at 10 kΩ | 0.16 | dB |
 | Ex 12-04.5i | R_S for Q = 1/√2 | 7.933 | kΩ |
+| Ex 12-04.5j | largest Q | 1.75 | — |
+| Ex 12-04.5k | R_S at the largest Q | 178.8 | kΩ |
+| Ex 12-04.5l | upper R_S for Q = 1/√2 | 4.03 | MΩ |
+| Ex 12-04.5m | Q with g_m doubled | 1.521 | — |
+| Ex 12-04.5n | Q with C_L halved | 1.451 | — |
+| Ex 12-04.5o | Q with C_L doubled | 0.9658 | — |
 | Ex 12-04.6a | R_gd1,0 | 21 | kΩ |
 | Ex 12-04.6b | τ_gd1 | 0.126 | ns |
 | Ex 12-04.6c | τ_x | 0.08267 | ns |
@@ -269,15 +313,16 @@ The netlist [pole_split.cir](../labs/12-04-lab/pole_split.cir) finds the two-sta
 | Compensation capacitor $C_c$ | Splits poles, makes one dominant | Bandwidth, slew rate, RHP zero | Analog designer |
 | Lower driving resistance for a follower | Removes peaking | Power in the driving stage | Analog designer |
 | Series output resistor | Damps follower peaking | A small DC drop, lower drive | Board or analog designer |
+| Larger load capacitance on a follower | Damps peaking | Bandwidth, drive current | Analog designer |
 
 ## 7. Numbers to know
 
 | Quantity | Value | Note |
 |---|---|---|
-| OCTC bandwidth | $1/\sum R_{i0}C_i$ | Exact $b_1$; errs low |
+| OCTC bandwidth | $1/\sum R_{i0}C_i$ | Exact $b_1$; a lower bound if every pole is real |
 | Bridging-capacitor resistance (CS) | $R_S + R_L + g_mR_SR_L$ | Miller without a gain assumption |
 | Second pole | $\approx b_1/b_2$ | $b_2$ from zero-value pairs |
-| SCTC low corner | $\sum 1/(R_{is}C_i)$ | Errs high |
+| SCTC low corner | $\sum 1/(R_{is}C_i)$ | Exact sum of low poles; an upper bound if they are real |
 | Split poles | $1/(g_{m2}R_1R_2C_c)$ and $\approx g_{m2}/(C_1 + C_2)$ | $C_c \gg C_1$ |
 | Follower Q | $\sqrt{g_mR_S\Sigma}/(C_{gs} + C_L + g_mR_SC_{gd})$ | Peaks above about $1/\sqrt2$ |
 
@@ -285,7 +330,7 @@ The netlist [pole_split.cir](../labs/12-04-lab/pole_split.cir) finds the two-sta
 
 - **Forgetting the controlled source when finding $R_{i0}$.** Only independent sources are zeroed; the $g_m$ term is what produces $g_mR_SR_L$.
 - **Shorting instead of opening the other capacitors for OCTC (or the reverse for SCTC).**
-- **Reading the OCTC estimate as exact.** It is a lower bound on bandwidth for all-pole circuits and can be 20% low or more.
+- **Reading the OCTC estimate as exact.** It is a lower bound on bandwidth only when every pole is real, and then it can be 20% low or more; with complex poles, as in a peaking follower, it can be optimistic.
 - **Ignoring the bypass capacitor's small resistance.** It sees $1/g_m$ in parallel with the source resistor and dominates the low corner.
 - **Treating a follower as always well behaved.** From a high-impedance node into a capacitive load it can peak and ring.
 
@@ -294,7 +339,7 @@ The netlist [pole_split.cir](../labs/12-04-lab/pole_split.cir) finds the two-sta
 ### State of the art (as of Nov 2026)
 
 - **Simulators compute poles directly, but designers still use time constants to decide what to change.** ngspice's `.pz` analysis returns poles and zeros (the 11-08 and 12-03 labs used it) [1] **[Established]**, but it does not say which capacitor to shrink; open-circuit time constants do, which is why the method remains standard in analog and RF design texts **[Established]** (textbook practice; 12-03's Further study lists them).
-- **Compensated two-stage op-amps are everywhere.** The 10 MHz gain–bandwidth and 55° phase margin specified for the TLV9062 [2] **[Established]** (data sheet) are the products of a designed pole split; 12-06 shows how such numbers follow from $C_c$ and $g_m$.
+- **Compensated op-amps publish the results of their pole placement.** The TLV9062 data sheet specifies 10 MHz gain–bandwidth and 55° phase margin [2] **[Established]**. The data sheet does not describe the internal compensation; reading such numbers as the outcome of a designed pole split is the textbook interpretation for an internally compensated op-amp, not a disclosed fact **[Industry estimate]**. 12-06 shows how such numbers follow from $C_c$ and $g_m$.
 
 ### Why it matters commercially
 
@@ -322,15 +367,15 @@ The netlist [pole_split.cir](../labs/12-04-lab/pole_split.cir) finds the two-sta
 
 <details><summary>Answer</summary>
 
-The denominator $\det(\mathbf{G} + s\mathbf{C})$ is linear in each capacitor, so the coefficient of $s$ is a sum of single-capacitor terms, each found with the other capacitors at zero (open): exactly $R_{i0}C_i$.
+Each capacitor enters the nodal matrix as a rank-one term $sC_i\mathbf{u}_i\mathbf{u}_i^{\mathsf T}$, and by the matrix determinant lemma the determinant is affine in each such term. So the coefficient of $s$ is a sum of single-capacitor terms, each found with the other capacitors at zero (open), and for a single capacitor the lemma gives $1 + sC_i\mathbf{u}_i^{\mathsf T}\mathbf{G}^{-1}\mathbf{u}_i = 1 + sR_{i0}C_i$.
 
 </details>
 
-**Q2.** Why is the OCTC estimate conservative for an all-pole circuit?
+**Q2.** Why is the OCTC estimate conservative when every pole is real, and when can it be optimistic?
 
 <details><summary>Answer</summary>
 
-$b_1 = \sum_k1/\omega_{pk}$ includes every pole's time constant, so $1/b_1$ is below the lowest pole and below the true −3 dB frequency.
+Up to $\omega = 1/b_1$ the ratios $\omega/\omega_{pk}$ sum to at most 1, and by convexity $\prod_k(1 + x_k^2) \le 2$ for such ratios, so the gain is still at or above −3 dB there: the true bandwidth is at least the estimate. The argument needs real poles. With complex poles, such as a follower with $Q$ = 1.68, the true bandwidth can fall below the estimate (by 15.5% in §3.1's example).
 
 </details>
 
@@ -338,7 +383,7 @@ $b_1 = \sum_k1/\omega_{pk}$ includes every pole's time constant, so $1/b_1$ is b
 
 <details><summary>Answer</summary>
 
-Near the low corner, the other coupling and bypass capacitors are still large admittances, nearly short circuits; the dual of the OCTC argument then gives the coefficient that sets the low pole.
+Near the low corner, the other coupling and bypass capacitors are still large admittances, nearly short circuits. Formally, in the variable $p = 1/s$ each capacitor is an impedance $p/C_i$ whose zero value is a short; the denominator is affine in each $1/C_i$, so the coefficient of $p$, the sum of the low-frequency poles, is a sum of single-capacitor terms, each found with the others shorted.
 
 </details>
 
