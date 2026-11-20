@@ -6485,3 +6485,39 @@
   definition: "Coordinate rotation digital computer: an iteration of shifts, adds and a small arctangent table that rotates a vector by ±arctan 2^(−i) per step, computing sin, cos, magnitude and angle with about one bit per iteration; gain 1.64676, range ±99.88°."
   chapter: "16-11"
   see_also: [Multiply-accumulate (MAC)]
+- term: Strict-sense stationary
+  definition: A random process whose every joint distribution of samples is unchanged by a common time shift; it implies wide-sense stationarity when the power is finite, and the two coincide for Gaussian processes.
+  chapter: "17-01"
+  see_also: [Wide-sense stationary, Gaussian process]
+- term: Cyclostationary process
+  definition: A random process whose mean and autocorrelation repeat periodically in time, such as a PAM signal with a fixed symbol clock; adding a random timing offset uniform over one period makes it wide-sense stationary, with the period-averaged autocorrelation.
+  chapter: "17-01"
+  see_also: [Wide-sense stationary, Spectral line]
+- term: Cross-spectral density
+  definition: "The Fourier transform of the cross-correlation of two jointly WSS processes; for an LTI system, S_YX(f) = H(f)S_X(f), so dividing by the input PSD measures the full complex frequency response even with noise added after the system."
+  chapter: "17-01"
+  see_also: [Cross-correlation, Power spectral density]
+- term: Gaussian process
+  definition: A random process all of whose finite sets of samples are jointly Gaussian; it is fixed by its mean and autocorrelation, stays Gaussian through linear systems, and its uncorrelated samples are independent.
+  chapter: "17-01"
+  see_also: [White noise, Wide-sense stationary]
+- term: AR(1) process
+  definition: "The first-order autoregressive sequence x[n] = a x[n-1] + w[n] with white w; its autocorrelation decays as a^|k| and its PSD is σw²/|1 - a e^(-jω)|². Sampling exponentially correlated (RC-filtered) noise produces exactly this sequence."
+  chapter: "17-01"
+  see_also: [Correlation time, Noise folding]
+- term: Noise folding
+  definition: The aliasing of noise by a sampler; every band of width fs of the continuous noise spectrum lands in the first Nyquist zone, so unfiltered wideband noise raises the in-band density by about 2B_N/fs while the total power is unchanged.
+  chapter: "17-01"
+  see_also: [Aliasing (sampling), Equivalent noise bandwidth (ENBW)]
+- term: Spectral line
+  definition: A delta function in a power spectral density, the spectral signature of a periodic or constant component (a DC mean, a carrier, or the symbol-rate lines of a PAM signal with nonzero-mean symbols); its power sits at one frequency rather than per hertz.
+  chapter: "17-01"
+  see_also: [Power spectral density, Cyclostationary process]
+- term: In-phase and quadrature components
+  definition: "The two baseband signals n_I and n_Q obtained by mixing a bandpass signal or noise with a cosine and a sine and low-pass filtering, so that n = n_I cos(ωc t) − n_Q sin(ωc t); for bandpass noise each carries the full noise power, and they are uncorrelated at the same instant."
+  chapter: "17-01"
+  see_also: [Circularly symmetric complex Gaussian]
+- term: Circularly symmetric complex Gaussian
+  definition: "A complex Gaussian variable or process ñ = n_I + j n_Q whose real and imaginary parts are independent with equal variance (pseudo-covariance zero), written CN(0, N0) per sample; the baseband noise model of communication receivers."
+  chapter: "17-01"
+  see_also: [In-phase and quadrature components, Gaussian process]

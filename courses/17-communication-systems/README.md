@@ -28,7 +28,7 @@ How information moves over noisy channels: random processes and noise, analog an
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [17-01 · Random Processes and Power Spectral Density](chapters/17-01-random-processes-and-psd.md) | 9 | ⬜ planned | — |
+| [17-01 · Random Processes and Power Spectral Density](chapters/17-01-random-processes-and-psd.md) | 9 | ✅ verified | [problems](problems/17-01-problems.md) · [solutions](solutions/17-01-solutions.md) · [lab](labs/17-01-lab/README.md) · [verify](verify/verify_17_01.py) |
 | [17-02 · Noise and SNR in Communication Systems](chapters/17-02-noise-and-snr.md) | 6 | ⬜ planned | — |
 | [17-03 · Analog Modulation (Brief)](chapters/17-03-analog-modulation.md) | 5 | ⬜ planned | — |
 | [17-04 · Baseband Digital Transmission](chapters/17-04-baseband-digital-transmission.md) | 8 | ⬜ planned | — |

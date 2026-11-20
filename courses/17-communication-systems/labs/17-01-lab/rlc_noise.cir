@@ -1,0 +1,27 @@
+* Example 17-01.3 -- thermal noise of a resistor driving a series L-C, measured across C.
+* .noise integrates the output noise spectral density over frequency (onoise_total).
+* Circuit 1: R = 5 ohm, L = 1 uH, C = 1 nF (Q = 6.32): sqrt(kT/C) = 2.035 uV at 300 K.
+* Circuit 2: R = 50 ohm, same L and C (Q = 0.632): the same 2.035 uV -- kT/C depends on neither R nor L.
+*
+* EXPECT vn1 key:../../chapters/17-01-random-processes-and-psd.md#Ex_17-01.3d scale=1e-6 rtol=2e-3
+* EXPECT vn2 key:README.md#Lab_17-01.a scale=1e-6 rtol=2e-3
+
+.options temp=26.85 tnom=26.85
+V1 in1 0 DC 0 AC 1
+R1 in1 a1 5
+L1 a1  o1 1u
+C1 o1  0  1n
+V2 in2 0 DC 0 AC 1
+R2 in2 a2 50
+L2 a2  o2 1u
+C2 o2  0  1n
+
+.control
+noise v(o1) V1 dec 400 1 1e11
+setplot noise2
+echo "vn1 = $&onoise_total"
+noise v(o2) V2 dec 400 1 1e11
+setplot noise4
+echo "vn2 = $&onoise_total"
+.endc
+.end
