@@ -2616,3 +2616,32 @@ R&D % = R&D ÷ revenue.
 
 - **TS 38.104 V20.1.0 (2026-09), base station:** ACLR is "the ratio of the filtered mean power centred on the assigned channel frequency to the filtered mean power centred on an adjacent channel frequency"; FR1 conducted (Table 6.6.3.2-1): 45 dB at the first and second adjacent NR channels (38 dB for band n104); absolute basic limits (Table 6.6.3.2-2): −13 dBm/MHz (Category A wide area), −15 (Category B wide area), −25 (medium range), −32 (local area), applied "whichever is less stringent"; FR2 (Table 9.7.3.3-1): 28 dB at 24.25–33.4 GHz, 26 dB at 37–52.6 GHz, 24 dB at 52.6–71 GHz (the last not in Release 15). [Established] [38.104 archive](https://www.3gpp.org/ftp/Specs/archive/38_series/38.104/38104-k10.zip)
 - **TS 38.101-1 V20.1.0 (2026-09), UE:** NR ACLR (Table 6.5.2.4.1-2): power class 1: 37 dB, 1.5: 31 dB, 2: 31 dB, 3: 30 dB (26 dB in n104), applying when the adjacent-channel power exceeds −50 dBm; UTRA ACLR1 33 dB and ACLR2 36 dB with a 3.84 MHz RRC (roll-off 0.22) filter; §6.5.2.4: the result "should be integrated over the measurement bandwidth in order to obtain the equivalent noise bandwidth of the measurement bandwidth." [Established] [38.101-1 archive](https://www.3gpp.org/ftp/Specs/archive/38_series/38.101-1/38101-1-k10.zip)
+
+## R-259 · GPS L1 C/A minimum received power (IS-GPS-200N)
+
+*Read on 20 Nov 2026 from the interface specification itself (gps.gov PDF, converted with pdftotext). The interface revision notices IRN-IS-200N-003 (19 Jan 2024) and IRN-IS-200N-004 (16 Jun 2026) were also read; neither changes Table 3-V.*
+
+- **IS-GPS-200N (1 Aug 2022), Table 3-Va** ("Received Minimum RF Signal Strength for Block IIR, IIR-M, IIF, GPS III, and GPS IIIF Satellites", 20.46 MHz bandwidth): L1 C/A −158.5 dBW (−128.5 dBm), L1 P(Y) −161.5 dBW; the level is "measured at the output of a 3 dBi linearly polarized user receiving antenna (located near ground) at worst normal orientation, when the SV is above a 5-degree elevation angle". Carriers: "The nominal carrier frequencies (f0) shall be 1575.42 MHz, and 1227.6 MHz for L1 and L2"; the C/A code is a "1023 BIT Gold Code @ 1023 kbps" with a 1 ms period. [Established] [IS-GPS-200N](https://www.gps.gov/sites/default/files/2025-07/IS-GPS-200N.pdf)
+
+## R-260 · 3GPP NR reference sensitivity and its noise-figure assumptions
+
+*Read on 20 Nov 2026 by a research subagent and re-checked against the local copies of the published specification archives (zip/docx).*
+
+- **TR 38.817-02 V15.12.0, §7.2.1 (base station):** reference sensitivity follows $P_{\text{REFSENS}} = -174 + 10\log_{10}(\text{BW}) + \text{NF} + \text{IM} + \text{SNR}$, where "NF is BS noise figure, equal to 5 dB for Wide Area BS, 10 dB for Medium Range BS and 13 dB for Local Area BS" and "IM is the implementation margin, equal to 2dB"; SNR is the value "for which we reach 95% throughput". [Established]
+- **TR 38.817-01 V16.4.0, §6.2 (UE):** "Sensitivity = -174dBm(kT) + 10*log(RX BW) + NF + SNR +IM – diversity gain"; SNR −1 dB; "If 2Rx is considered, the diversity gain is 3dB and the Implementation Margin (IM) uses 2.5dB"; for bands n77–n79 "the agreed NR values are 10.5dB, 10dB and 10dB". [Established]
+- **TS 38.104 V20.1.0 (2026-09), Table 7.2.2-1:** wide-area BS REFSENS −101.7 dBm for 5–15 MHz channels at 15 kHz with reference channel G-FR1-A1-1, which Table A.1-1 defines as 25 resource blocks, QPSK, code rate 1/3. [Established] [38.104 archive](https://www.3gpp.org/ftp/Specs/archive/38_series/38.104/38104-k10.zip)
+- **TS 38.101-1 V20.1.0 (2026-09), Table 7.3.2-1b:** two-port REFSENS for n78: −95.8 + 10log10(NRB/52) dBm at 15 kHz, −96.1 + 10log10(NRB/24) at 30 kHz, −96.5 + 10log10(NRB/11) at 60 kHz; note 1: four receive ports are the baseline for this band (two-port values are adjusted by Table 7.3.2-2). Derived (ours): the TR 38.817-01 equation with NF 10 dB reproduces −95.79 dBm for 52 RB at 15 kHz. [Established] [38.101-1 archive](https://www.3gpp.org/ftp/Specs/archive/38_series/38.101-1/38101-1-k10.zip)
+
+## R-261 · Wi-Fi (802.11ac) receiver minimum sensitivity
+
+*Read on 20 Nov 2026 from a secondary source: the IEEE 802.11 standard itself is behind a paywall and was not read. Rohde & Schwarz reproduces the standard's table; its 802.11ax white paper (3609.9470.52, v01.00, Apr 2020) extends it to 1024-QAM.*
+
+- **Rohde & Schwarz, "802.11ac Technology Introduction", application note 1MA192, 7e (March 2012), Table 11** ("Receiver Minimum Sensitivity Specification", 4096-byte packets, PER < 10%): at 20 MHz, BPSK 1/2 −82 dBm, QPSK 1/2 −79, QPSK 3/4 −77, 16-QAM 1/2 −74, 16-QAM 3/4 −70, 64-QAM 2/3 −66, 64-QAM 3/4 −65, 64-QAM 5/6 −64, 256-QAM 3/4 −59, 256-QAM 5/6 −57 dBm; each doubling of bandwidth adds 3 dB (40, 80, 160 MHz columns). The 802.11ax white paper's Table 19 repeats these rows and adds 1024-QAM 3/4 −54 dBm and 5/6 −52 dBm at 20 MHz. [Established, secondary source]
+
+## R-262 · LNA and GNSS front-end data sheets
+
+*Read on 20 Nov 2026 from the manufacturers' data sheets (PDF, converted with pdftotext).*
+
+- **Infineon BGA9H1MN9** (data sheet Rev. 2.0, 2021-05-06), 1.4–2.7 GHz LNA with gain steps: at 2100 MHz, state G0 gain 20.2 dB typ., NF 0.6 dB typ. (1.2 max), IIP3 −6 dBm typ., IP1dB −16 dBm typ.; lowest-gain state G6 gain −2.7 dB, NF 2.7 dB typ., IIP3 +23 dBm typ.; state G5 gain −1.2 dB, NF 10.4 dB typ.; supply current 5.8 mA typ. in G0. [Established]
+- **Infineon BGA524N6** (data sheet Rev. 3.5, 2021-08-31), GNSS LNA: insertion power gain 19.6 dB typ., NF 0.55 dB typ. (1.0 max) with a 50 Ω source; the product page marks it "not for new design". [Established]
+- **Skyworks SKY55951-11** (data sheet 205521I, 2 Mar 2026), GNSS L1 + L5 LNA front-end module with post filter: at 1575 MHz small-signal gain 17 dB typ., NF 1.4 dB typ. (2.2 max). [Established]

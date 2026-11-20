@@ -76,7 +76,7 @@ The full map, with university equivalents, textbook alignment, objectives and ch
 | 4 | [14 · Computer Organization and Architecture](courses/14-computer-organization-and-architecture/README.md) | 15 | 122 | 15/15 |
 | 5 | [15 · Control Systems](courses/15-control-systems/README.md) | 12 | 89 | 12/12 |
 | 5 | [16 · Digital Signal Processing](courses/16-digital-signal-processing/README.md) | 11 | 83 | 11/11 |
-| 5 | [17 · Communication Systems](courses/17-communication-systems/README.md) | 13 | 103 | 1/13 |
+| 5 | [17 · Communication Systems](courses/17-communication-systems/README.md) | 13 | 103 | 2/13 |
 | 5 | [18 · Embedded Systems and Microcontrollers](courses/18-embedded-systems-and-microcontrollers/README.md) | 11 | 83 | 0/11 |
 | 6 | [19 · Digital VLSI Design](courses/19-digital-vlsi-design/README.md) | 13 | 112 | 0/13 |
 | 6 | [20 · Analog and Mixed-Signal IC Design](courses/20-analog-and-mixed-signal-ic-design/README.md) | 12 | 104 | 0/12 |

@@ -6314,9 +6314,9 @@
   chapter: "16-05"
   see_also: [Window function]
 - term: Processing gain
-  definition: The amount by which an FFT lowers the per-bin noise floor relative to a tone, 10 log10(N/(2·ENBW)) dB; it makes the floor depth much larger than the SNR, which it does not change.
+  definition: The amount by which narrowing the analysis bandwidth raises a signal above the noise without changing the signal-to-noise-density ratio. For an FFT it is the per-bin floor drop, 10 log10(N/(2·ENBW)) dB (16-05); in spread spectrum it is the chip rate times the integration time, the SNR gained by correlating with the code (17-02).
   chapter: "16-05"
-  see_also: [Equivalent noise bandwidth (ENBW)]
+  see_also: [Equivalent noise bandwidth (ENBW), Eb/N0]
 - term: Periodogram
   definition: The squared magnitude of a (windowed) DFT, normalized as a power estimate per bin; for noise its bins scatter as much as their mean regardless of record length.
   chapter: "16-05"
@@ -6521,3 +6521,55 @@
   definition: "A complex Gaussian variable or process ñ = n_I + j n_Q whose real and imaginary parts are independent with equal variance (pseudo-covariance zero), written CN(0, N0) per sample; the baseband noise model of communication receivers."
   chapter: "17-01"
   see_also: [In-phase and quadrature components, Gaussian process]
+- term: Available noise power
+  definition: "The largest noise power a source can deliver, which it delivers to a matched load: kT·B for a resistor at temperature T in bandwidth B, independent of the resistance; −174 dBm/Hz at 290 K."
+  chapter: "17-02"
+  see_also: [Thermal noise, Noise temperature]
+- term: Noise temperature
+  definition: The temperature a matched resistor would need to offer a given available noise density, T = N/k. An amplifier's equivalent noise temperature Te is the input source temperature that would account for its added noise; Te = (F − 1)·290 K.
+  chapter: "17-02"
+  see_also: [Noise figure, System noise temperature]
+- term: Antenna noise temperature
+  definition: The noise temperature of the power an antenna collects from its surroundings, a pattern-weighted average of the sky and ground brightness temperatures; tens of kelvin for a cold, clear sky, about 290 K for an antenna that sees the ground.
+  chapter: "17-02"
+  see_also: [System noise temperature]
+- term: System noise temperature
+  definition: The sum of the antenna noise temperature and the receiver's equivalent noise temperature referred to the antenna terminals; the noise density there is N0 = k·Tsys.
+  chapter: "17-02"
+  see_also: [Noise temperature, Antenna noise temperature, Carrier-to-noise-density ratio]
+- term: Friis noise formula
+  definition: The cascade rule F = F1 + (F2 − 1)/G1 + (F3 − 1)/(G1G2) + …, with available gains, or Te = Te1 + Te2/G1 + …; each stage's excess noise is divided by the gain ahead of it, so the first stage dominates.
+  chapter: "17-02"
+  see_also: [Noise figure, Noise measure]
+- term: Noise measure
+  definition: M = (F − 1)/(1 − 1/G), the excess noise factor an infinite chain of identical stages would have; of two amplifiers, the one with the smaller noise measure should come first.
+  chapter: "17-02"
+  see_also: [Friis noise formula]
+- term: AWGN channel
+  definition: The additive white Gaussian noise model r(t) = s(t) + n(t), with n zero-mean, white with two-sided density N0/2, Gaussian and independent of the signal; the benchmark on which modulations and codes are compared.
+  chapter: "17-02"
+  see_also: [White noise, Eb/N0]
+- term: Eb/N0
+  definition: Received energy per bit divided by the one-sided noise density, S/(N0·Rb) = SNR·B_N/Rb; the bandwidth-independent figure of merit for digital links. Reliable communication needs at least ln 2 (−1.59 dB).
+  chapter: "17-02"
+  see_also: [Es/N0, Carrier-to-noise-density ratio, Signal-to-noise ratio]
+- term: Es/N0
+  definition: Received energy per symbol divided by the one-sided noise density; Es/N0 = (Eb/N0)·log2 M for M-ary symbols, and equal to the SNR at the output of a matched filter whose noise bandwidth is the symbol rate.
+  chapter: "17-02"
+  see_also: [Eb/N0]
+- term: Carrier-to-noise-density ratio
+  definition: C/N0, the received signal power divided by the noise density, in dB-Hz; it depends only on the received power and the system noise temperature, and Eb/N0 = C/N0 − 10 log10(Rb).
+  chapter: "17-02"
+  see_also: [Eb/N0, System noise temperature]
+- term: Receiver sensitivity
+  definition: The smallest input power at which a receiver meets a stated error criterion; in dBm, −174 + 10 log10(B) + NF + required SNR + implementation margin for a 290 K source.
+  chapter: "17-02"
+  see_also: [Noise figure, Implementation margin, Reference sensitivity (REFSENS)]
+- term: Implementation margin
+  definition: The allowance in a sensitivity or link budget for impairments the AWGN model leaves out (phase noise, quantization, distortion, timing and frequency errors); 2–2.5 dB in 3GPP's reference-sensitivity assumptions.
+  chapter: "17-02"
+  see_also: [Receiver sensitivity]
+- term: Reference sensitivity (REFSENS)
+  definition: The 3GPP minimum input level at which a receiver must reach 95% of maximum throughput on a reference channel, derived from −174 dBm/Hz, the occupied bandwidth, an assumed noise figure, SNR, implementation margin and diversity gain.
+  chapter: "17-02"
+  see_also: [Receiver sensitivity]

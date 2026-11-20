@@ -1,0 +1,45 @@
+* Lab 17-02 -- available thermal noise and the noise figure of a matched resistive pad.
+* All parts at 290 K (16.85 C). The load RL is noiseless (noisy=0) so only the power it receives counts.
+* Circuit 1: a 50 ohm source into a matched 50 ohm load: the load receives kTB (-113.98 dBm in 1 MHz).
+* Circuit 2: the same source through a 6 dB T-pad whose resistors are made noiseless: only the source's
+*            noise arrives, attenuated by the pad's loss L.
+* Circuit 3: the same with the pad's resistors noisy: the total output noise.
+* Noise figure = total output noise / output noise due to the source = (v3/v2)^2; loss = (v1/v2)^2.
+* A matched pad at T0 has F = L (chapter 17-02, section 3.4).
+*
+* EXPECT pdbm key:../../chapters/17-02-noise-and-snr.md#Ex_17-02.1b rtol=1e-4
+* EXPECT nf key:README.md#Lab_17-02.a rtol=1e-3
+* EXPECT loss key:README.md#Lab_17-02.b rtol=1e-3
+
+.options temp=16.85 tnom=16.85
+* circuit 1
+V1 in1 0 DC 0 AC 1
+Rs1 in1 o1 50
+RL1 o1 0 50 noisy=0
+* circuit 2 (noiseless pad): R1 = R3 = 50 (K-1)/(K+1), R2 = 2*50*K/(K^2-1), K = 10^(6/20)
+V2 in2 0 DC 0 AC 1
+Rs2 in2 a2 50
+Ra2 a2 b2 16.6139 noisy=0
+Rb2 b2 0 66.9310 noisy=0
+Rc2 b2 o2 16.6139 noisy=0
+RL2 o2 0 50 noisy=0
+* circuit 3 (noisy pad)
+V3 in3 0 DC 0 AC 1
+Rs3 in3 a3 50
+Ra3 a3 b3 16.6139
+Rb3 b3 0 66.9310
+Rc3 b3 o3 16.6139
+RL3 o3 0 50 noisy=0
+
+.control
+noise v(o1) V1 lin 1001 1 1000001
+noise v(o2) V2 lin 1001 1 1000001
+noise v(o3) V3 lin 1001 1 1000001
+let pdbm = 10*log10(noise2.onoise_total^2/50/1e-3)
+let nf = 20*log10(noise6.onoise_total/noise4.onoise_total)
+let loss = 20*log10(noise2.onoise_total/noise4.onoise_total)
+echo "pdbm = $&pdbm"
+echo "nf = $&nf"
+echo "loss = $&loss"
+.endc
+.end
