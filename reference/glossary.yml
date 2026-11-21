@@ -6833,3 +6833,83 @@
   definition: Passing the demodulator's reliability information (amplitude or log-likelihood ratio) to the decoder instead of hard bits; worth about 1.6–2 dB of Eb/N0 for binary signalling.
   chapter: "17-07"
   see_also: [Shannon limit]
+- term: Code rate
+  definition: The fraction k/n of transmitted bits that carry information in a code that sends n coded bits for every k information bits; each coded bit then carries energy R·Eb.
+  chapter: "17-08"
+  see_also: [Coding gain, Puncturing]
+- term: Minimum distance
+  definition: The smallest Hamming distance between two distinct codewords (for a linear code, the smallest weight of a nonzero codeword); a code with minimum distance d corrects floor((d − 1)/2) errors or d − 1 erasures.
+  chapter: "17-08"
+  see_also: [Hamming distance, Hamming bound]
+- term: Hamming bound
+  definition: The sphere-packing limit 2^k · Σ_{i≤t} C(n, i) ≤ 2^n on any t-error-correcting (n, k) binary code; codes that meet it with equality (Hamming, Golay) are called perfect.
+  chapter: "17-08"
+  see_also: [Minimum distance, Hamming code]
+- term: Linear block code
+  definition: A block code in which the XOR of any two codewords is a codeword, so the code is a k-dimensional subspace described by a generator matrix G and a parity-check matrix H.
+  chapter: "17-08"
+  see_also: [Generator matrix, Parity-check matrix, Syndrome]
+- term: Generator matrix
+  definition: A k × n matrix G whose rows form a basis of a linear code; a message row vector m encodes as c = mG, and in systematic form G = [I | P].
+  chapter: "17-08"
+  see_also: [Parity-check matrix, Linear block code]
+- term: Parity-check matrix
+  definition: An (n − k) × n matrix H with cH^T = 0 for every codeword; its columns determine the syndromes of error patterns and its sparsity defines LDPC codes.
+  chapter: "17-08"
+  see_also: [Syndrome, Generator matrix, LDPC code]
+- term: Syndrome
+  definition: The vector s = rH^T computed from a received word; it equals eH^T for error pattern e, independent of the codeword sent, and indexes the most likely error to correct.
+  chapter: "17-08"
+  see_also: [Parity-check matrix, Hamming code]
+- term: Burst error
+  definition: A set of bit errors confined to a run of consecutive positions; CRCs of degree r detect all bursts of length r or less, and Reed–Solomon codes correct long bursts because they count symbol errors.
+  chapter: "17-08"
+  see_also: [Cyclic redundancy check (CRC), Reed–Solomon code, Interleaving]
+- term: Convolutional code
+  definition: A code that encodes a continuous bit stream with a shift register, each output bit being the XOR of selected register taps (generators, written in octal); decoded with the Viterbi algorithm.
+  chapter: "17-08"
+  see_also: [Constraint length, Trellis, Viterbi algorithm, Free distance]
+- term: Constraint length
+  definition: The number K of input bits (current plus K − 1 remembered) that influence each output of a convolutional encoder; the trellis has 2^(K−1) states.
+  chapter: "17-08"
+  see_also: [Convolutional code, Trellis]
+- term: Trellis
+  definition: The state diagram of a convolutional encoder unrolled in time; every coded sequence is a path through it, and the Viterbi algorithm searches it for the best path.
+  chapter: "17-08"
+  see_also: [Viterbi algorithm, Convolutional code]
+- term: Viterbi algorithm
+  definition: Maximum-likelihood sequence decoding by dynamic programming over a trellis, keeping one survivor path per state with add-compare-select steps; cost 2^(K−1) operations per bit instead of exponential in message length.
+  chapter: "17-08"
+  see_also: [Trellis, Free distance]
+- term: Free distance
+  definition: The smallest Hamming weight of a convolutional-code path that leaves the all-zero state and returns to it; it sets the asymptotic soft-decision gain 10·log10(R·d_free).
+  chapter: "17-08"
+  see_also: [Convolutional code, Coding gain]
+- term: Puncturing
+  definition: Deleting coded bits in a fixed pattern to raise a mother code's rate (e.g. rate 1/2 to 3/4) so one decoder serves several rates; deleted positions are decoded as erasures.
+  chapter: "17-08"
+  see_also: [Code rate, Convolutional code]
+- term: Coding gain
+  definition: The reduction in Eb/N0 that a code allows for a target error rate, compared at equal energy per information bit; asymptotically 10·log10(R·d_min) with soft decisions and about 10·log10(R(t + 1)) with hard decisions.
+  chapter: "17-08"
+  see_also: [Code rate, Minimum distance, Soft decision]
+- term: Log-likelihood ratio (LLR)
+  definition: "L = ln[P(b = 0)/P(b = 1)] for a bit b: its sign is the decision and its magnitude the confidence; for BPSK in Gaussian noise L = 2y/σ², and independent evidence adds."
+  chapter: "17-08"
+  see_also: [Soft decision, Belief propagation]
+- term: LDPC code
+  definition: A low-density parity-check code, a linear code with a sparse parity-check matrix, decoded by iterative belief propagation; long LDPC codes operate within a fraction of a decibel of capacity and are used in 5G NR data channels, Wi-Fi and DVB-S2.
+  chapter: "17-08"
+  see_also: [Tanner graph, Belief propagation, Parity-check matrix]
+- term: Tanner graph
+  definition: The bipartite graph of a parity-check matrix, with a variable node per bit, a check node per parity equation and an edge per 1 in H; LDPC decoders pass messages along its edges.
+  chapter: "17-08"
+  see_also: [LDPC code, Belief propagation]
+- term: Belief propagation
+  definition: Iterative decoding in which variable nodes add incoming log-likelihood ratios and check nodes combine them with the tanh rule (or its min-sum approximation), refining every bit's belief each iteration.
+  chapter: "17-08"
+  see_also: [LDPC code, Log-likelihood ratio (LLR)]
+- term: Polar code
+  definition: A code built by recursively combining channel uses so that synthesized bit-channels polarize into nearly perfect and nearly useless ones; information rides on the reliable ones, decoded by successive cancellation (with a list and CRC in 5G NR control channels).
+  chapter: "17-08"
+  see_also: [Channel capacity, Cyclic redundancy check (CRC)]

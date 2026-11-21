@@ -35,7 +35,7 @@ How information moves over noisy channels: random processes and noise, analog an
 | [17-05 · Matched Filters and Optimal Detection](chapters/17-05-matched-filters-and-detection.md) | 8 | ✅ verified | [problems](problems/17-05-problems.md) · [solutions](solutions/17-05-solutions.md) · [lab](labs/17-05-lab/README.md) · [verify](verify/verify_17_05.py) |
 | [17-06 · Bandpass Digital Modulation and BER](chapters/17-06-bandpass-digital-modulation.md) | 10 | ✅ verified | [problems](problems/17-06-problems.md) · [solutions](solutions/17-06-solutions.md) · [lab](labs/17-06-lab/README.md) · [verify](verify/verify_17_06.py) |
 | [17-07 · Information Theory and Shannon Capacity](chapters/17-07-information-theory-and-shannon.md) | 8 | ✅ verified | [problems](problems/17-07-problems.md) · [solutions](solutions/17-07-solutions.md) · [lab](labs/17-07-lab/README.md) · [verify](verify/verify_17_07.py) |
-| [17-08 · Channel Coding](chapters/17-08-channel-coding.md) | 9 | ⬜ planned | — |
+| [17-08 · Channel Coding](chapters/17-08-channel-coding.md) | 9 | ✅ verified | [problems](problems/17-08-problems.md) · [solutions](solutions/17-08-solutions.md) · [lab](labs/17-08-lab/README.md) · [verify](verify/verify_17_08.py) |
 | [17-09 · Wireless Channels: Fading and Multipath](chapters/17-09-wireless-channels.md) | 6 | ⬜ planned | — |
 | [17-10 · OFDM](chapters/17-10-ofdm.md) | 7 | ⬜ planned | — |
 | [17-11 · MIMO and Beamforming Basics](chapters/17-11-mimo-and-beamforming.md) | 6 | ⬜ planned | — |
