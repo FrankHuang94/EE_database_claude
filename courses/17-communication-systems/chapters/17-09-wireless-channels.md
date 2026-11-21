@@ -206,8 +206,10 @@ The error rate falls only *inversely* with SNR, not exponentially as in AWGN: th
 **Diversity.** If the receiver has $L$ independently fading copies (antennas spaced by more than about half a wavelength in rich scattering, frequencies separated by more than $B_c$, or times separated by more than $T_c$) and combines them optimally (**maximal-ratio combining**, MRC, 17-11), the combined SNR is the sum of $L$ exponentials, and
 
 $$
-\bar P_b \approx \binom{2L - 1}{L}\Big(\frac{1}{4\bar\gamma}\Big)^L ,
+\bar P_b = \Big(\frac{1 - \mu}{2}\Big)^L\sum_{k=0}^{L-1}\binom{L - 1 + k}{k}\Big(\frac{1 + \mu}{2}\Big)^k \approx \binom{2L - 1}{L}\Big(\frac{1}{4\bar\gamma}\Big)^L ,\qquad \mu = \sqrt{\frac{\bar\gamma}{1 + \bar\gamma}} ,
 $$
+
+(the exact form, for i.i.d. branches with average SNR $\bar\gamma$ each, follows from averaging $Q(\sqrt{2\gamma})$ over the sum of $L$ exponentials; Proakis gives the derivation; at high SNR $(1 - \mu)/2 \to 1/(4\bar\gamma)$, $(1 + \mu)/2 \to 1$, and the sum becomes $\binom{2L - 1}{L}$)
 
 falling as $\bar\gamma^{-L}$: the **diversity order** $L$. Coding with interleaving achieves the same effect across time or frequency: a code of minimum distance $d$ whose bits fade independently gets diversity order $d$ (with soft decisions). This is why fading channels, more than AWGN, made coding indispensable in cellular systems.
 

@@ -86,13 +86,13 @@ Carson's rule captures 99.5% of the power here, which is why it is a good engine
 
 (a) $E = A^2T = (2 \times 10^{-3})^2 \times 0.5 \times 10^{-6}$ = **2 × 10⁻¹²** V²·s, and $N_0 = 2 \times 10^{-14}$ V²/Hz, so $2E/N_0$ = **200**, **23.01** dB.
 
-(b) With $x = T/\tau = 2$:
+(b) With $x = T/\tau = 0.5$:
 
 $$
-\text{SNR}_{RC} = \frac{A^2(1 - e^{-x})^2}{N_0/(4\tau)}, \qquad \frac{\text{SNR}_{RC}}{2E/N_0} = \frac{4\tau(1 - e^{-x})^2}{2T} = \frac{2(1 - e^{-x})^2}{x} = (1 - e^{-2})^2 = \textbf{0.748},
+\text{SNR}_{RC} = \frac{A^2(1 - e^{-x})^2}{N_0/(4\tau)}, \qquad \frac{\text{SNR}_{RC}}{2E/N_0} = \frac{4\tau(1 - e^{-x})^2}{2T} = \frac{2(1 - e^{-x})^2}{x} = 4(1 - e^{-0.5})^2 = \textbf{0.619},
 $$
 
-so $\text{SNR}_{RC}$ = **149.5**, **21.75** dB, a loss of **1.26** dB. The best τ (17-05) loses 0.89 dB.
+so $\text{SNR}_{RC}$ = **123.9**, **20.93** dB, a loss of **2.08** dB. This filter is too slow: its output has not risen far by $t = T$, so it loses signal. The best τ (17-05) loses 0.89 dB.
 
 (c) $E_b/N_0 = 10^{0.9} = 7.943$. Antipodal: $Q(\sqrt{2 \times 7.943}) = Q(3.986)$ = **3.36 × 10⁻⁵**. Orthogonal: $Q(\sqrt{7.943}) = Q(2.818)$ = **2.41 × 10⁻³**, 3 dB worse in SNR and 72 times worse in error rate here.
 
@@ -110,19 +110,19 @@ $$
 
 (b) $E_s/N_0 = 4 \times 10^{1.4} = 100.5$. Per dimension, $p = 2(1 - 1/4)Q(\sqrt{3E_s/(15N_0)}) = 1.5\,Q(4.483) = 1.5 \times 3.68 \times 10^{-6} = 5.53 \times 10^{-6}$. Then $P_s = 1 - (1 - p)^2$ = **1.11 × 10⁻⁵**. With Gray coding almost every symbol error flips one of four bits, so $P_b \approx P_s/4$ = **2.76 × 10⁻⁶**.
 
-(c) $\text{SNR}_{\text{EVM}} = 1/\text{EVM}^2$: 3.5% gives **29.12** dB and 8% gives **21.94** dB.
+(c) $\text{SNR}_{\text{EVM}} = 1/\text{EVM}^2$: 4.5% gives **26.94** dB and 8% gives **21.94** dB.
 
 (d) Noise-like impairments add in power, so $1/\text{SNR} = 1/316.2 + 0.05^2 = 0.003162 + 0.0025$, giving SNR = **176.6**, **22.47** dB. The transmitter's 26 dB of EVM-equivalent SNR costs the link 2.5 dB.
 
 ### Solution 7
 
-(a) $H = -\sum p\log_2p = 0.4(1.322) + 2 \times 0.2(2.322) + 2 \times 0.1(3.322)$ = **2.122** bits. Huffman merges 0.1 + 0.1 = 0.2, then two of the three 0.2s, then 0.2 + 0.4 = 0.6, then 0.6 + 0.4. One valid set of lengths is (2, 2, 2, 3, 3) for (0.4, 0.2, 0.2, 0.1, 0.1); tie-breaking can also give (1, 2, 3, 4, 4). Either way the average is **2.2** bits, an efficiency of 2.122/2.2 = **0.965**. A fixed-length code needs 3 bits.
+(a) $H = -\sum p\log_2p = 0.35(1.515) + 0.25(2) + 0.20(2.322) + 0.12(3.059) + 0.08(3.644)$ = **2.153** bits. Huffman merges 0.08 + 0.12 = 0.20, then 0.20 + 0.20 = 0.40, then 0.25 + 0.35 = 0.60, then 0.40 + 0.60. Reading off the tree gives lengths (2, 2, 2, 3, 3) for (0.35, 0.25, 0.20, 0.12, 0.08), for example codewords 00, 01, 10, 110, 111. The average is $0.35 \cdot 2 + 0.25 \cdot 2 + 0.20 \cdot 2 + 0.12 \cdot 3 + 0.08 \cdot 3$ = **2.2** bits, an efficiency of 2.153/2.2 = **0.979**. A fixed-length code needs 3 bits.
 
 (b) $H_b(0.05) = -0.05\log_20.05 - 0.95\log_20.95 = 0.2864$, so $C = 1 - 0.2864$ = **0.714** bits per channel use.
 
 (c) $C = B\log_2(1 + \text{SNR}) = 10^7\log_2(1 + 31.62)$ = **50.28** Mb/s.
 
-(d) At capacity, $\text{SNR} = \eta E_b/N_0$, so $\eta = \log_2(1 + \eta E_b/N_0)$ and $E_b/N_0 \ge (2^\eta - 1)/\eta$. At η = 4 this is 15/4 = 3.75, **5.74** dB. As η → 0 it tends to $\ln 2$, **−1.59** dB (Solution 13b).
+(d) At capacity, $\text{SNR} = \eta E_b/N_0$, so $\eta = \log_2(1 + \eta E_b/N_0)$ and $E_b/N_0 \ge (2^\eta - 1)/\eta$. At η = 3 this is 7/3 = 2.333, **3.68** dB. As η → 0 it tends to $\ln 2$, **−1.59** dB (Solution 13b).
 
 ### Solution 8
 
@@ -134,21 +134,21 @@ $$
 
 against $1 - 0.99^4$ = **0.0394** for four uncoded bits, 19 times better. This compares at equal channel bit-error rate; at equal $E_b/N_0$ each coded bit has only 4/7 of the energy, and the gain shrinks to the 0.58 dB of 17-08.
 
-(b) A CRC of degree 24 detects **all bursts of 24 bits or fewer** (and every odd number of errors if its generator has the factor $x + 1$). Longer random patterns escape with probability about $2^{-24}$ = **5.96 × 10⁻⁸**.
+(b) A CRC of degree 16 detects **all bursts of 16 bits or fewer** (and every odd number of errors if its generator has the factor $x + 1$). Longer random patterns escape with probability about $2^{-16}$ = **1.53 × 10⁻⁵**.
 
-(c) Soft: $10\log_{10}(Rd_{free}) = 10\log_{10}5$ = **6.99** dB. Hard decisions lose about 3 dB asymptotically ($t + 1 \approx d_{free}/2$): $10\log_{10}(2.5)$ ≈ **3.98** dB.
+(c) Soft: $10\log_{10}(Rd_{free}) = 10\log_{10}6$ = **7.78** dB. Hard decisions: $t = \lfloor(12 - 1)/2\rfloor = 5$, so $10\log_{10}(R(t + 1)) = 10\log_{10}3$ ≈ **4.77** dB, about 3 dB less.
 
-(d) $t = (n - k)/2 = 14/2$ = **7** symbols. Overhead $528/514 - 1$ = **2.72**%. A burst of $b$ bits can touch $\lceil(b - 1)/10\rceil + 1$ symbols, so every burst up to $10(t - 1) + 1$ = **61** bits is corrected.
+(d) $t = (n - k)/2 = 32/2$ = **16** symbols. Overhead $255/223 - 1$ = **14.35**%. A burst of $b$ bits can touch $\lceil(b - 1)/8\rceil + 1$ symbols, so every burst up to $8(t - 1) + 1$ = **121** bits is corrected.
 
 ### Solution 9
 
-(a) $L_{fs} = 20\log_{10}(4\pi d/\lambda)$ with λ = 0.1249 m: $20\log_{10}(4\pi \times 100/0.1249)$ = **80.05** dB. The received power is $20 - 80.05$ = **−60.05** dBm.
+(a) $L_{fs} = 20\log_{10}(4\pi d/\lambda)$ with λ = 0.3277 m: $20\log_{10}(4\pi \times 300/0.3277)$ = **81.22** dB. The received power is $20 - 81.22$ = **−61.22** dBm.
 
 (b) $d_{BP} = 4h_th_r/\lambda = 4 \times 10 \times 1.5/0.1249$ = **480.3** m. Beyond it, $P_r/P_t = h_t^2h_r^2/d^4$, so $L = 40\log_{10}2000 - 20\log_{10}15 = 132.04 - 23.52$ = **108.5** dB. (The exact two-ray sum gives **108.7** dB: at only four times the breakpoint, $\sin x \approx x$ is still 0.2 dB optimistic.)
 
 (c) $f_D = vf_c/c = 25 \times 2.6 \times 10^9/2.998 \times 10^8$ = **216.8** Hz, and $T_c = 1.521/(2\pi f_D) \approx 0.242/f_D$ = **1.117** ms. A 0.5 ms slot is shorter than $T_c$. The correlation across it is $J_0(2\pi f_D \times 0.5\ \text{ms})$ = **0.887**, so the fading is **slow** over the slot, but channel estimates must be refreshed every millisecond or so.
 
-(d) With μ = $\sqrt{\bar\gamma/(1 + \bar\gamma)}$ = 0.99504, one antenna gives $\tfrac12(1 - \mu)$ = **2.48 × 10⁻³**, close to $1/(4\bar\gamma)$ = **2.50 × 10⁻³**. Two-branch MRC gives $\big(\tfrac{1 - \mu}{2}\big)^2(2 + \mu)$ = **1.84 × 10⁻⁵**, against the approximation $\binom31(1/(4\bar\gamma))^2$ = **1.88 × 10⁻⁵**. Diversity gains a factor of 135 at 20 dB.
+(d) With $\bar\gamma = 10^{2.5}$ = 316.2 and μ = $\sqrt{\bar\gamma/(1 + \bar\gamma)}$ = 0.998422, one antenna gives $\tfrac12(1 - \mu)$ = **7.89 × 10⁻⁴**, close to $1/(4\bar\gamma)$ = **7.91 × 10⁻⁴**. The sheet's $L$-branch formula with $L$ = 2 is $\big(\tfrac{1 - \mu}{2}\big)^2\big[1 + 2\cdot\tfrac{1 + \mu}{2}\big] = \big(\tfrac{1 - \mu}{2}\big)^2(2 + \mu)$ = **1.865 × 10⁻⁶**, against the approximation $\binom32(1/(4\bar\gamma))^2$ = **1.875 × 10⁻⁶**. Diversity gains a factor of **423** at 25 dB.
 
 ### Solution 10
 
@@ -168,13 +168,13 @@ SISO with unit gain gives $\log_2 101$ = **6.66** b/s/Hz: the two layers raise c
 
 ### Solution 11
 
-(a) Slotted: $S = Ge^{-G} = 0.5e^{-0.5}$ = **0.303**. Pure: $S = Ge^{-2G} = 0.5e^{-1}$ = **0.184**, which is pure ALOHA's maximum, reached exactly at $G$ = 0.5.
+(a) Slotted: $S = Ge^{-G} = 0.75e^{-0.75}$ = **0.354**. Pure: $S = Ge^{-2G} = 0.75e^{-1.5}$ = **0.167**, already past pure ALOHA's optimum at $G$ = 0.5, while slotted ALOHA is still climbing toward its optimum at $G$ = 1.
 
 (b) Erlang B with $A$ = 3 and $c$ = 8, by the recursion $B(k) = AB(k - 1)/(k + AB(k - 1))$, gives **0.813**%. For 10 Erlangs: $B(17)$ = 1.29% and $B(18)$ = 0.714%, so **18** channels.
 
 (c) $\text{SIR} = (\sqrt{3N})^n/6$. $N$ = 3 gives $3^{3.5}/6$ = 7.79, **8.92** dB, too low. $N$ = 4 gives $12^{1.75}/6$ = 12.9, **11.10** dB. The smallest valid cluster is **N = 4**.
 
-(d) Each block needs a geometric number of attempts with success probability 0.9. The mean is 1/0.9 = **1.111** transmissions, so the throughput is **0.9** of one attempt per block. The residual failure after four attempts is $0.1^4$ = **10⁻⁴**.
+(d) A block uses a second attempt with probability 0.2 and a third with probability $0.2^2$, so the mean number of transmissions is $1 + 0.2 + 0.04$ = **1.24**. It is delivered with probability $1 - 0.2^3 = 0.992$, so the throughput is $0.992/1.24$ = **0.8** of one attempt per block, which is $1 - p$ for any attempt limit (17-12). The residual failure is $0.2^3$ = **0.008**.
 
 ### Solution 12
 
@@ -182,15 +182,19 @@ SISO with unit gain gives $\log_2 101$ = **6.66** b/s/Hz: the two layers raise c
 
 (b) $2^{7} - 2 = 126 \ge 100$, but $2^6 - 2 = 62$ is too few, so the prefix is **/25** with **126** hosts, and the /20 holds $2^{25 - 20}$ = **32** of them.
 
-(c) The limit is $8 \times 65\,535/0.05$ = **10.49** Mb/s. The BDP is $10^9 \times 0.05/8$ = **6.25** MB. The shift must satisfy $65\,535 \times 2^s \ge 6.25 \times 10^6$: $2^6$ gives 4.19 MB and $2^7$ gives 8.39 MB, so the shift is **7**.
+(c) The limit is $8 \times 65\,535/0.08$ = **6.55** Mb/s. The BDP is $2.5 \times 10^9 \times 0.08/8$ = **25.0** MB. The shift must satisfy $65\,535 \times 2^s \ge 25 \times 10^6$: $2^8$ gives 16.8 MB and $2^9$ gives 33.6 MB, so the shift is **9**.
 
-(d)
+(d) Dijkstra from P, settling the closest unsettled router each time:
 
-$$
-R = \frac{8 \times 1460}{0.05}\sqrt{\frac{3}{2 \times 10^{-4}}} = 233.6\ \text{kb/s} \times 122.5 = \textbf{28.61}\ \text{Mb/s} .
-$$
+| Step | Settled | Tentative distances (Q, R, S, T) |
+|---|---|---|
+| 0 | P (0) | Q 3, R 1, S ∞, T ∞ |
+| 1 | R (1) | Q min(3, 1 + 1) = 2, S 1 + 6 = 7, T 1 + 5 = 6 |
+| 2 | Q (2) | S min(7, 2 + 2) = 4, T 6 |
+| 3 | S (4) | T min(6, 4 + 1) = 5 |
+| 4 | T (5) | — |
 
-For 1 Gb/s, $p = 1.5\,(233.6 \times 10^3/10^9)^2$ = **8.19 × 10⁻⁸**: under one loss in 12 million segments, which is why long fat pipes need modern congestion control or parallel streams.
+Distances: Q **2**, R **1**, S **4**, T **5**. The path to T is P–R–Q–S–T, so P forwards T-bound packets to **R**, its first hop, even though the direct-looking route P–R–T costs 6.
 
 ### Solution 13
 
@@ -232,7 +236,7 @@ because $n - l \ge -(L - 1) \ge -G$ always lands inside the prefix or the block,
 
 So 20 km is plausible at hundreds of bits per second, and 1 Mb/s is plausible over a few kilometres, but not both at once.
 
-(d) Rubric (3 points; any four well-chosen questions with the matching consistency condition earn full credit):
+(d) Rubric (3 points: 1 point for each well-chosen question paired with the condition that would make the claims consistent, up to 3; a strong answer usually offers four or more):
 
 | Question to the founders | What would make the claims consistent |
 |---|---|
@@ -275,7 +279,7 @@ A strong answer computes the Shannon-limit violation first, then shows that each
 | X17.3e | FM advantage over DSB (ratio) | 24 | — |
 | X17.3f | FM advantage over DSB | 13.80 | dB |
 | X17.3g | AM power efficiency | 0.111 | — |
-| X17.3h | AM penalty against DSB | -9.54 | dB |
+| X17.3h | AM output SNR relative to DSB | -9.54 | dB |
 | X17.4a | RC bandwidth of PAM4 | 18.2 | GHz |
 | X17.4b | channel time constant | 13.26 | ps |
 | X17.4c | r for NRZ | 0.260 | — |
@@ -287,10 +291,10 @@ A strong answer computes the Shannon-limit violation first, then shows that each
 | X17.5a | pulse energy | 2e-12 | V²·s |
 | X17.5b | matched-filter SNR | 200 | — |
 | X17.5c | matched-filter SNR | 23.01 | dB |
-| X17.5d | RC/matched SNR ratio | 0.748 | — |
-| X17.5e | RC filter SNR | 149.5 | — |
-| X17.5f | RC filter SNR | 21.75 | dB |
-| X17.5g | RC filter loss | 1.26 | dB |
+| X17.5d | RC/matched SNR ratio | 0.619 | — |
+| X17.5e | RC filter SNR | 123.9 | — |
+| X17.5f | RC filter SNR | 20.93 | dB |
+| X17.5g | RC filter loss | 2.08 | dB |
 | X17.5h | antipodal BER at 9 dB | 3.36e-5 | — |
 | X17.5i | orthogonal BER at 9 dB | 2.41e-3 | — |
 | X17.5j | MAP threshold | -0.169 | — |
@@ -302,38 +306,39 @@ A strong answer computes the Shannon-limit violation first, then shows that each
 | X17.6b | QPSK BER at 7 dB | 7.73e-4 | — |
 | X17.6c | 16-QAM symbol-error probability | 1.11e-5 | — |
 | X17.6d | 16-QAM BER | 2.76e-6 | — |
-| X17.6e | SNR for 3.5% EVM | 29.12 | dB |
+| X17.6e | SNR for 4.5% EVM | 26.94 | dB |
 | X17.6f | SNR for 8% EVM | 21.94 | dB |
 | X17.6g | effective SNR (ratio) | 176.6 | — |
 | X17.6h | effective SNR | 22.47 | dB |
-| X17.7a | entropy | 2.122 | bits |
+| X17.7a | entropy | 2.153 | bits |
 | X17.7b | Huffman average length | 2.2 | bits |
-| X17.7c | code efficiency | 0.965 | — |
+| X17.7c | code efficiency | 0.979 | — |
 | X17.7d | BSC capacity | 0.714 | bits/use |
 | X17.7e | AWGN capacity | 50.28 | Mb/s |
-| X17.7f | minimum Eb/N0 at 4 b/s/Hz | 5.74 | dB |
+| X17.7f | minimum Eb/N0 at 3 b/s/Hz | 3.68 | dB |
 | X17.7g | Shannon limit | -1.59 | dB |
 | X17.8a | Hamming rate | 0.571 | — |
 | X17.8b | Hamming block-error probability | 2.03e-3 | — |
 | X17.8c | four uncoded bits in error | 0.0394 | — |
-| X17.8d | CRC-24 escape probability | 5.96e-8 | — |
-| X17.8e | soft coding gain | 6.99 | dB |
-| X17.8f | hard coding gain (approx.) | 3.98 | dB |
-| X17.8g | RS correctable symbols | 7 | — |
-| X17.8h | RS overhead | 2.72 | % |
-| X17.8i | longest burst corrected | 61 | bits |
-| X17.9a | free-space path loss | 80.05 | dB |
-| X17.9b | received power | -60.05 | dBm |
+| X17.8d | CRC-16 escape probability | 1.53e-5 | — |
+| X17.8e | soft coding gain | 7.78 | dB |
+| X17.8f | hard coding gain (approx.) | 4.77 | dB |
+| X17.8g | RS correctable symbols | 16 | — |
+| X17.8h | RS overhead | 14.35 | % |
+| X17.8i | longest burst corrected | 121 | bits |
+| X17.9a | free-space path loss | 81.22 | dB |
+| X17.9b | received power | -61.22 | dBm |
 | X17.9c | two-ray breakpoint | 480.3 | m |
 | X17.9d | two-ray loss at 2 km (d⁴ law) | 108.5 | dB |
 | X17.9d2 | two-ray loss at 2 km (exact sum) | 108.7 | dB |
 | X17.9e | Doppler shift | 216.8 | Hz |
 | X17.9f | coherence time | 1.117 | ms |
 | X17.9g | correlation over 0.5 ms | 0.887 | — |
-| X17.9h | Rayleigh BPSK BER | 2.48e-3 | — |
-| X17.9i | 1/(4γ̄) | 2.50e-3 | — |
-| X17.9j | two-branch MRC BER | 1.84e-5 | — |
-| X17.9k | two-branch approximation | 1.88e-5 | — |
+| X17.9h | Rayleigh BPSK BER | 7.89e-4 | — |
+| X17.9i | 1/(4γ̄) | 7.91e-4 | — |
+| X17.9j | two-branch MRC BER | 1.865e-6 | — |
+| X17.9k | two-branch approximation | 1.875e-6 | — |
+| X17.9l | diversity factor at 25 dB | 423 | — |
 | X17.10a | useful symbol | 66.67 | µs |
 | X17.10b | cyclic prefix | 4.69 | µs |
 | X17.10c | CP overhead | 6.57 | % |
@@ -345,23 +350,26 @@ A strong answer computes the Shannon-limit violation first, then shows that each
 | X17.10i | SISO capacity | 6.66 | b/s/Hz |
 | X17.10j | MRC SNR | 12.55 | dB |
 | X17.10k | Alamouti SNR | 9.54 | dB |
-| X17.11a | slotted ALOHA throughput | 0.303 | — |
-| X17.11b | pure ALOHA throughput | 0.184 | — |
+| X17.11a | slotted ALOHA throughput | 0.354 | — |
+| X17.11b | pure ALOHA throughput | 0.167 | — |
 | X17.11c | Erlang B, 8 channels, 3 E | 0.813 | % |
 | X17.11d | channels for 10 E at 1% | 18 | — |
 | X17.11e | SIR, N = 3 | 8.92 | dB |
 | X17.11f | SIR, N = 4 | 11.10 | dB |
-| X17.11g | mean HARQ transmissions | 1.111 | — |
-| X17.11h | residual failure after four | 1e-4 | — |
+| X17.11g | mean HARQ transmissions | 1.24 | — |
+| X17.11g2 | HARQ throughput | 0.8 | — |
+| X17.11h | residual failure after three | 0.008 | — |
 | X17.12a | wire bytes | 266 | bytes |
 | X17.12b | UDP efficiency | 75.2 | % |
 | X17.12c | prefix length | 25 | — |
 | X17.12d | subnets in the /20 | 32 | — |
-| X17.12e | window-limited throughput | 10.49 | Mb/s |
-| X17.12f | bandwidth-delay product | 6.25 | MB |
-| X17.12g | window shift count | 7 | — |
-| X17.12h | Mathis throughput | 28.61 | Mb/s |
-| X17.12i | loss rate for 1 Gb/s | 8.19e-8 | — |
+| X17.12e | window-limited throughput | 6.55 | Mb/s |
+| X17.12f | bandwidth-delay product | 25.0 | MB |
+| X17.12g | window shift count | 9 | — |
+| X17.12h | distance to Q | 2 | — |
+| X17.12i | distance to R | 1 | — |
+| X17.12j | distance to S | 4 | — |
+| X17.12k | distance to T | 5 | — |
 | X17.14a | implied Eb/N0 | -29.0 | dB |
 | X17.14b | gap to the Shannon limit | 27.4 | dB |
 | X17.14c | C/N0 | 1259 | Hz |
@@ -372,3 +380,18 @@ A strong answer computes the Shannon-limit violation first, then shows that each
 | X17.14h | two-ray range with margin | 13.0 | km |
 | X17.14i | sensitivity at 1 Mb/s | -103 | dBm |
 | X17.14j | two-ray range at 1 Mb/s | 3.26 | km |
+| X17.3i | FM bandwidth | 100 | kHz |
+| X17.3j | DSB bandwidth | 20 | kHz |
+| X17.4i | NRZ symbol rate | 56 | GBd |
+| X17.4j | NRZ Nyquist frequency | 28 | GHz |
+| X17.4k | PAM4 symbol rate | 28 | GBd |
+| X17.4l | PAM4 Nyquist frequency | 14 | GHz |
+| X17.5o | orthogonal-to-antipodal BER ratio at 9 dB | 72 | — |
+| X17.6i | QPSK bit rate | 50 | Mb/s |
+| X17.6j | QPSK occupied bandwidth | 30 | MHz |
+| X17.8j | Hamming improvement factor | 19 | — |
+| X17.10l | 2×2 gain over SISO | 59 | % |
+| X17.12l | usable hosts per subnet | 126 | — |
+| X17.14k | two-ray breakpoint, 868 MHz | 174 | m |
+| X17.14l | link budget at 1 Mb/s | 117 | dB |
+| X17.14m | two-ray range at 1 Mb/s with margin | 1.83 | km |

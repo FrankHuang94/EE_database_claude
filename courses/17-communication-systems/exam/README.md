@@ -1,6 +1,6 @@
 # Course 17 · Final Exam (Communication Systems)
 
-**Time limit:** 210 minutes.
+**Time limit:** 240 minutes.
 **Allowed:** a scientific calculator with the normal distribution, and the [Course 17 equation sheet](../../../reference/equation-sheets/17-communication-systems.md) printed without its chapter links. No notes, no Python, no simulator.
 
 **Instructions.**
@@ -52,33 +52,33 @@ A chip-to-chip link carries 56 Gb/s over a channel modelled as one pole at 12 GH
 **5 [B] · Matched filtering and detection.** (17-05)
 A rectangular pulse of amplitude 2 mV and duration $T$ = 0.5 µs arrives in white noise with $N_0/2 = 10^{-14}$ V²/Hz.
 (a) Find the pulse energy and the matched filter's peak output SNR (ratio and dB).
-(b) An RC low-pass filter with τ = T/2 replaces the matched filter and is sampled at $t = T$. Its output signal is $A(1 - e^{-T/\tau})$ and its output noise variance $N_0/(4\tau)$. Find its SNR and its loss against the matched filter.
+(b) An RC low-pass filter with τ = 2T replaces the matched filter and is sampled at $t = T$. Its output signal is $A(1 - e^{-T/\tau})$ and its output noise variance $N_0/(4\tau)$. Find its SNR and its loss against the matched filter.
 (c) At $E_b/N_0$ = 9 dB, find the bit-error probabilities of antipodal and of orthogonal binary signalling.
 (d) Antipodal symbols ±1 are received in noise with $N_0$ = 0.8, and +1 is sent with probability 0.7. Find the MAP threshold, the MAP error probability and the ML error probability.
 
 **6 [B] · Bandpass modulation.** (17-06)
 (a) QPSK runs at 25 Msymbol/s with root-raised-cosine pulses, α = 0.2. Give the bit rate, occupied bandwidth and spectral efficiency, and the BER at $E_b/N_0$ = 7 dB.
 (b) For Gray-coded 16-QAM at $E_b/N_0$ = 14 dB, find the symbol-error probability and the approximate BER.
-(c) What SNRs correspond to transmitter EVMs of 3.5% and 8%, if the impairments are noise-like?
+(c) What SNRs correspond to transmitter EVMs of 4.5% and 8%, if the impairments are noise-like?
 (d) A transmitter with 5% EVM feeds a channel whose own SNR is 25 dB. What is the effective SNR at the receiver?
 
 **7 [B] · Information theory.** (17-07)
-(a) A source emits five symbols with probabilities 0.4, 0.2, 0.2, 0.1 and 0.1. Find its entropy, a Huffman code's average length and the code's efficiency.
+(a) A source emits five symbols with probabilities 0.35, 0.25, 0.20, 0.12 and 0.08. Find its entropy, a Huffman code and its average length, and the code's efficiency.
 (b) Find the capacity of a binary symmetric channel with crossover probability 0.05.
 (c) Find the Shannon capacity of a 10 MHz AWGN channel at 15 dB SNR.
-(d) What is the minimum $E_b/N_0$ for reliable communication at 4 b/s/Hz, and as the spectral efficiency tends to zero?
+(d) What is the minimum $E_b/N_0$ for reliable communication at 3 b/s/Hz, and as the spectral efficiency tends to zero?
 
 **8 [B] · Channel coding.** (17-08)
 (a) The (7,4) Hamming code is used on a binary symmetric channel with $p$ = 0.01 and decodes single errors. Give its rate, $d_{min}$ and $t$, and compare its block-error probability with the probability that four uncoded bits contain an error.
-(b) A 24-bit CRC protects a transport block. Which error bursts does it always detect, and roughly what fraction of random error patterns escapes it?
-(c) The rate-1/2, K = 7 convolutional code has $d_{free}$ = 10. Give its asymptotic soft-decision coding gain, and the approximate gain with hard decisions.
-(d) The Reed–Solomon code RS(528,514) over GF($2^{10}$) is used on a 100 Gb/s Ethernet lane. How many symbol errors does it correct, what is its overhead, and what is the longest bit burst it always corrects?
+(b) A 16-bit CRC protects a packet. Which error bursts does it always detect, and roughly what fraction of random error patterns escapes it?
+(c) A rate-1/2, K = 9 convolutional code has $d_{free}$ = 12. Give its asymptotic soft-decision coding gain, and the approximate gain with hard decisions.
+(d) The Reed–Solomon code RS(255,223) over GF($2^8$) (8-bit symbols) protects a storage or broadcast link. How many symbol errors does it correct, what is its overhead, and what is the longest bit burst it always corrects?
 
 **9 [B] · Wireless channels.** (17-09)
-(a) Find the free-space path loss at 2.4 GHz over 100 m, and the received power from a 20 dBm transmitter with 0 dBi antennas.
+(a) Find the free-space path loss at 915 MHz over 300 m, and the received power from a 20 dBm transmitter with 0 dBi antennas.
 (b) With antennas at 10 m and 1.5 m, find the two-ray breakpoint at 2.4 GHz and the path loss at 2 km beyond it.
-(c) A user moves at 90 km/h on a 2.6 GHz carrier. Find the maximum Doppler shift and the coherence time (0.5 correlation). Is the channel slow or fast over a 0.5 ms slot?
-(d) Find the average BER of coherent BPSK in Rayleigh fading at $\bar\gamma$ = 20 dB, with one antenna and with two-branch MRC (exact and high-SNR approximation).
+(c) A user moves at 90 km/h on a 2.6 GHz carrier. Find the maximum Doppler shift and the coherence time (0.5 correlation). Is the channel slow or fast over a 0.5 ms slot? (If your calculator evaluates $J_0$, also give the correlation across the slot.)
+(d) Find the average BER of coherent BPSK in Rayleigh fading at $\bar\gamma$ = 25 dB, with one antenna and with two-branch MRC (exact, from the equation sheet's $L$-branch formula, and the high-SNR approximation).
 
 **10 [B] · OFDM and MIMO.** (17-10, 17-11)
 (a) For NR's 15 kHz numerology with the normal cyclic prefix (144/2048 of the useful symbol), find the useful symbol and CP durations, the CP overhead and the longest excess path length the CP absorbs.
@@ -87,16 +87,16 @@ A rectangular pulse of amplitude 2 mV and duration $T$ = 0.5 µs arrives in whit
 (d) A channel has $|h_1|^2$ = 1.2 and $|h_2|^2$ = 0.6, and $E_s/N_0$ = 10 dB. Compare the SNR of 1×2 MRC with that of 2×1 Alamouti coding.
 
 **11 [B] · Multiple access and cellular systems.** (17-12)
-(a) Find the throughput of slotted and of pure ALOHA at an offered load of $G$ = 0.5.
+(a) Find the throughput of slotted and of pure ALOHA at an offered load of $G$ = 0.75.
 (b) Find the blocking probability of 8 channels offered 3 Erlangs, and the number of channels needed to carry 10 Erlangs at 1% blocking.
 (c) With six first-tier interferers and a path-loss exponent of 3.5, what is the smallest valid hexagonal cluster size that gives at least 10 dB SIR at the cell edge?
-(d) HARQ retransmits a block whose independent attempts each fail with probability 0.1. Give the throughput relative to one attempt per block, the mean number of transmissions, and the residual failure probability after four attempts.
+(d) HARQ retransmits a block, with at most three attempts, and independent attempts each fail with probability 0.2. Give the throughput relative to one attempt per block, the mean number of transmissions, and the residual failure probability.
 
 **12 [B] · Networks.** (17-13)
 (a) Find the wire efficiency of a 200-byte UDP payload over IPv4 and Ethernet.
 (b) 172.16.0.0/20 is to be split into equal subnets of at least 100 hosts each. Which prefix, how many hosts and how many subnets?
-(c) A TCP receiver offers 65 535 bytes without window scaling on a 50 ms path. Find the throughput limit, the window needed to fill 1 Gb/s, and the smallest RFC 7323 shift count that allows it.
-(d) With an MSS of 1460 bytes and a loss rate of $10^{-4}$, what does the Mathis formula give on that path, and what loss rate would allow 1 Gb/s?
+(c) A TCP receiver offers 65 535 bytes without window scaling on an 80 ms path. Find the throughput limit, the window needed to fill 2.5 Gb/s, and the smallest RFC 7323 shift count that allows it.
+(d) Routers P, Q, R, S and T are joined by links of cost P–Q 3, P–R 1, Q–R 1, Q–S 2, R–S 6, R–T 5 and S–T 1. Run Dijkstra's algorithm from P: give each router's distance and P's shortest path to T. Which router does P forward T-bound packets to?
 
 **13 [C] · Derivations.** (17-05, 17-07, 17-10)
 (a) Derive the matched filter: show that the filter maximizing the output SNR of a known pulse $s(t)$ in white noise at $t = T$ is $h(t) = ks(T - t)$, and that the maximum SNR is $2E/N_0$.
@@ -107,5 +107,5 @@ A rectangular pulse of amplitude 2 mV and duration $T$ = 0.5 µs arrives in whit
 An IoT start-up pitches a sub-GHz radio at 868 MHz: "1 Mb/s at −137 dBm sensitivity, 20 km range from a 14 dBm transmitter, one antenna." Assume a 6 dB noise figure and 0 dBi antennas.
 (a) What $E_b/N_0$ does −137 dBm imply at 1 Mb/s? Compare it with the Shannon limit.
 (b) What is the highest bit rate −137 dBm can support at the Shannon limit, and at a practical $E_b/N_0$ of 5 dB?
-(c) The link budget is 14 dBm − (−137 dBm) = 151 dB. Find the range in free space, and with the two-ray model for antennas at 15 m and 1 m, with and without a 10 dB fade margin. Then find the two-ray range at 1 Mb/s with $E_b/N_0$ = 5 dB.
+(c) The link budget is 14 dBm − (−137 dBm) = 151 dB. Find the range in free space, and for the two-ray model with antennas at 15 m and 1 m, with and without a 10 dB fade margin. Then find the two-ray range at 1 Mb/s with $E_b/N_0$ = 5 dB.
 (d) List the questions you would ask the founders, and what answers would make the claims consistent.

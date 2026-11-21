@@ -21,7 +21,7 @@ Conventions:
 | White noise: $S = N_0/2$, $R = (N_0/2)\delta(\tau)$; output power $N_0B_N\lvert H(0)\rvert^2$ with $B_N = \int_0^\infty\lvert H\rvert^2df/\lvert H(0)\rvert^2$ | One-sided $N_0$ | [17-01](../../courses/17-communication-systems/chapters/17-01-random-processes-and-psd.md) |
 | One-pole filter: $B_N = (\pi/2)f_{3\text{dB}}$; output $R \propto e^{-\lvert\tau\rvert/RC}$; $\overline{v^2} = kT/C$ for any RC |  | [17-01](../../courses/17-communication-systems/chapters/17-01-random-processes-and-psd.md) |
 | Random polar NRZ of amplitude $A$: $S(f) = A^2T\operatorname{sinc}^2(fT)$ | Independent equiprobable bits | [17-01](../../courses/17-communication-systems/chapters/17-01-random-processes-and-psd.md) |
-| Bandpass noise $n = n_I\cos\omega_ct - n_Q\sin\omega_ct$: $n_I$, $n_Q$ each carry the full bandpass power | Symmetric band | [17-01](../../courses/17-communication-systems/chapters/17-01-random-processes-and-psd.md) |
+| Bandpass noise $n = n_I\cos\omega_ct - n_Q\sin\omega_ct$: $n_I$, $n_Q$ each carry the full bandpass power | Any WSS bandpass noise; uncorrelated at all lags only if the PSD is symmetric about $f_c$ | [17-01](../../courses/17-communication-systems/chapters/17-01-random-processes-and-psd.md) |
 
 ## Noise and link budgets
 
@@ -62,7 +62,7 @@ Conventions:
 |---|---|---|
 | Matched filter $h(t) = ks(T - t)$; peak SNR $2E/N_0$ for any pulse shape | White noise | [17-05](../../courses/17-communication-systems/chapters/17-05-matched-filters-and-detection.md) |
 | RC filter on a rectangular pulse: $\text{SNR}/(2E/N_0) = 2(1 - e^{-x})^2/x$, $x = T/\tau$; best 0.8145 (−0.89 dB) at $x$ = 1.256 |  | [17-05](../../courses/17-communication-systems/chapters/17-05-matched-filters-and-detection.md) |
-| Two signals at distance $d$: $P_e = Q(d/\sqrt{2N_0})$; antipodal $Q(\sqrt{2E_b/N_0})$; orthogonal and on-off $Q(\sqrt{E_b/N_0})$ | Equal priors, ML | [17-05](../../courses/17-communication-systems/chapters/17-05-matched-filters-and-detection.md) |
+| Two signals at distance $d$: $P_e = Q(d/\sqrt{2N_0})$; antipodal $Q(\sqrt{2E_b/N_0})$; orthogonal, and on-off at equal average energy, $Q(\sqrt{E_b/N_0})$ | Equal priors, ML | [17-05](../../courses/17-communication-systems/chapters/17-05-matched-filters-and-detection.md) |
 | MAP threshold for $\pm\sqrt E$: $t = (N_0/(4\sqrt E))\ln(P_-/P_+)$ | Priors $P_\pm$ | [17-05](../../courses/17-communication-systems/chapters/17-05-matched-filters-and-detection.md) |
 | Union bound: $P_e \le \sum_{j\ne i}Q(d_{ij}/\sqrt{2N_0})$; nearest neighbours dominate at high SNR |  | [17-05](../../courses/17-communication-systems/chapters/17-05-matched-filters-and-detection.md) |
 | $Q(x) \approx e^{-x^2/2}/(x\sqrt{2\pi})$ for $x \gtrsim 3$; $Q^{-1}(10^{-5})$ = 4.265, $Q^{-1}(10^{-6})$ = 4.753 |  | [17-05](../../courses/17-communication-systems/chapters/17-05-matched-filters-and-detection.md) |
@@ -72,7 +72,7 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | $s(t) = I(t)\cos\omega_ct - Q(t)\sin\omega_ct = \operatorname{Re}\{\tilde s(t)e^{j\omega_ct}\}$ | Complex envelope $\tilde s = I + jQ$ | [17-06](../../courses/17-communication-systems/chapters/17-06-bandpass-digital-modulation.md) |
-| BPSK, Gray QPSK: $P_b = Q(\sqrt{2E_b/N_0})$; QPSK $P_s = 2q - q^2$ |  | [17-06](../../courses/17-communication-systems/chapters/17-06-bandpass-digital-modulation.md) |
+| BPSK, Gray QPSK: $P_b = Q(\sqrt{2E_b/N_0})$; QPSK $P_s = 2q - q^2$ with $q = Q(\sqrt{E_s/N_0})$ |  | [17-06](../../courses/17-communication-systems/chapters/17-06-bandpass-digital-modulation.md) |
 | M-PSK: $P_s \approx 2Q(\sqrt{2E_s/N_0}\sin(\pi/M))$ | $M \ge 4$ | [17-06](../../courses/17-communication-systems/chapters/17-06-bandpass-digital-modulation.md) |
 | Square M-QAM: $p = 2(1 - 1/\sqrt M)Q(\sqrt{3E_s/((M - 1)N_0)})$ per dimension, $P_s = 1 - (1 - p)^2$; Gray $P_b \approx P_s/\log_2M$ |  | [17-06](../../courses/17-communication-systems/chapters/17-06-bandpass-digital-modulation.md) |
 | DPSK $\tfrac12e^{-E_b/N_0}$; coherent BFSK $Q(\sqrt{E_b/N_0})$; noncoherent BFSK $\tfrac12e^{-E_b/(2N_0)}$ |  | [17-06](../../courses/17-communication-systems/chapters/17-06-bandpass-digital-modulation.md) |
@@ -105,20 +105,20 @@ Conventions:
 
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
-| Friis: $P_r = P_tG_tG_r(\lambda/4\pi d)^2$; $L_{fs} = 32.45 + 20\log f_{\text{MHz}} + 20\log d_{\text{km}}$ dB | Far field | [17-09](../../courses/17-communication-systems/chapters/17-09-wireless-channels.md) |
+| Friis: $P_r = P_tG_tG_r(\lambda/4\pi d)^2$; $L_{fs} = 32.45 + 20\log_{10}f_{\text{MHz}} + 20\log_{10}d_{\text{km}}$ dB | Far field | [17-09](../../courses/17-communication-systems/chapters/17-09-wireless-channels.md) |
 | Two-ray beyond $d_{BP} = 4h_th_r/\lambda$: $P_r \approx P_tG_tG_rh_t^2h_r^2/d^4$ (40 dB/decade) | Flat ground, reflection −1 | [17-09](../../courses/17-communication-systems/chapters/17-09-wireless-channels.md) |
 | Log-distance: $PL(d) = PL(d_0) + 10n\log_{10}(d/d_0) + X_\sigma$; margin $z\sigma$ (1.28σ for 90%) | Shadowing lognormal | [17-09](../../courses/17-communication-systems/chapters/17-09-wireless-channels.md) |
 | RMS delay spread $\tau_{rms}$; coherence bandwidth (50%) $0.276/\tau_{rms}$ for an exponential PDP |  | [17-09](../../courses/17-communication-systems/chapters/17-09-wireless-channels.md) |
 | Doppler $f_D = vf_c/c$; Clarke correlation $J_0(2\pi f_D\tau)$; $T_c = 1.521/(2\pi f_D) \approx 0.242/f_D$ | 50% correlation | [17-09](../../courses/17-communication-systems/chapters/17-09-wireless-channels.md) |
 | Rayleigh: $\lvert h\rvert^2$ exponential; outage $1 - e^{-1/M} \approx 1/M$ for margin $M$ |  | [17-09](../../courses/17-communication-systems/chapters/17-09-wireless-channels.md) |
-| BPSK in Rayleigh: $\tfrac12(1 - \mu)$, $\mu = \sqrt{\bar\gamma/(1 + \bar\gamma)}$, ≈ $1/(4\bar\gamma)$; $L$-branch MRC ≈ $\binom{2L-1}{L}(4\bar\gamma)^{-L}$ | Per-branch $\bar\gamma$ | [17-09](../../courses/17-communication-systems/chapters/17-09-wireless-channels.md) |
+| BPSK in Rayleigh: $\tfrac12(1 - \mu)$, $\mu = \sqrt{\bar\gamma/(1 + \bar\gamma)}$, ≈ $1/(4\bar\gamma)$; $L$-branch MRC exactly $\big(\tfrac{1 - \mu}{2}\big)^L\sum_{k=0}^{L-1}\binom{L - 1 + k}{k}\big(\tfrac{1 + \mu}{2}\big)^k$, ≈ $\binom{2L-1}{L}(4\bar\gamma)^{-L}$ | Per-branch $\bar\gamma$, i.i.d. branches | [17-09](../../courses/17-communication-systems/chapters/17-09-wireless-channels.md) |
 
 ## OFDM
 
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | Subcarriers $\Delta f = 1/T$ orthogonal over $T$; IFFT/FFT of size $N$; sample rate $N\Delta f$ |  | [17-10](../../courses/17-communication-systems/chapters/17-10-ofdm.md) |
-| CP of $G \ge L - 1$ samples: $Y[k] = H[k]X[k]$; overhead $T_{CP}/(T + T_{CP})$; NR normal CP $144/2048$ of $T$ (6.57%) | Channel shorter than CP | [17-10](../../courses/17-communication-systems/chapters/17-10-ofdm.md) |
+| CP of $G \ge L - 1$ samples: $Y[k] = H[k]X[k]$; overhead $T_{CP}/(T + T_{CP})$; NR normal CP $144/2048$ = 7.03% of $T$, overhead $144/2192$ = 6.57% | Channel shorter than CP | [17-10](../../courses/17-communication-systems/chapters/17-10-ofdm.md) |
 | CFO ICI ≈ $(\pi\varepsilon)^2/3$, ε = offset/spacing; Doppler ICI ≈ $(\pi f_D/\Delta f)^2/6$ | ε ≪ 1 | [17-10](../../courses/17-communication-systems/chapters/17-10-ofdm.md) |
 | Design: $T_{CP} > \tau_{max}$ and $f_D \ll \Delta f$; NR $\Delta f = 15 \cdot 2^\mu$ kHz |  | [17-10](../../courses/17-communication-systems/chapters/17-10-ofdm.md) |
 | PAPR exceeded with probability $p$: ≈ $\ln(N/p)$ (Gaussian approximation) | Many subcarriers | [17-10](../../courses/17-communication-systems/chapters/17-10-ofdm.md) |
@@ -141,7 +141,7 @@ Conventions:
 | Hexagonal reuse: $N = i^2 + ij + j^2$, $D/R = \sqrt{3N}$, SIR ≈ $(\sqrt{3N})^n/6$ | Six first-tier interferers | [17-12](../../courses/17-communication-systems/chapters/17-12-multiple-access-and-cellular-wifi.md) |
 | Pure ALOHA $S = Ge^{-2G}$ (max $1/2e$); slotted $S = Ge^{-G}$ (max $1/e$) | Poisson load $G$ | [17-12](../../courses/17-communication-systems/chapters/17-12-multiple-access-and-cellular-wifi.md) |
 | CSMA/CA slot success $n\tau(1 - \tau)^{n-1}$, best at τ = $1/n$ | $n$ saturated stations | [17-12](../../courses/17-communication-systems/chapters/17-12-multiple-access-and-cellular-wifi.md) |
-| Erlang B: $B(c, A) = (A^c/c!)/\sum_{k\le c}A^k/k!$; recursion $B(k) = AB(k - 1)/(k + AB(k - 1))$ | Blocked calls cleared | [17-12](../../courses/17-communication-systems/chapters/17-12-multiple-access-and-cellular-wifi.md) |
+| Erlang B: $B(c, A) = (A^c/c!)/\sum_{k\le c}A^k/k!$; recursion $B(k) = AB(k - 1)/(k + AB(k - 1))$, $B(0) = 1$; Erlang C (calls wait) $C = cB/(c - A(1 - B))$ | Blocked calls cleared (B), delayed (C, $A < c$) | [17-12](../../courses/17-communication-systems/chapters/17-12-multiple-access-and-cellular-wifi.md) |
 | HARQ with independent attempts and at most $M$: throughput $(1 - p^M)/\sum_{k<M}p^k$, which is $1 - p$ for any $M$; mean transmissions $\sum_{k<M}p^k$ ($1/(1 - p)$ unlimited); residual failure $p^M$ |  | [17-12](../../courses/17-communication-systems/chapters/17-12-multiple-access-and-cellular-wifi.md) |
 
 ## Computer networks
@@ -149,10 +149,10 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | Wire bytes per Ethernet frame: $8 + 14 + \max(\text{L3}, 46) + 4 + 12$; efficiency = payload / wire bytes | IPv4 20, IPv6 40, TCP 20, UDP 8 bytes | [17-13](../../courses/17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) |
-| IPv4 /p: $2^{32-p} - 2$ usable hosts; longest-prefix match forwards |  | [17-13](../../courses/17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) |
+| IPv4 /p: $2^{32-p} - 2$ usable hosts; longest-prefix match forwards | $p \le 30$ | [17-13](../../courses/17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) |
 | Dijkstra (link state) and Bellman–Ford $d_u = \min_w(c_{uw} + d_w)$ (distance vector; counts to infinity after failures) |  | [17-13](../../courses/17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) |
 | Window limit $W/\text{RTT}$; BDP $= R \cdot \text{RTT}$; window scaling $65\,535 \cdot 2^s$, $s \le 14$ | RFC 7323 | [17-13](../../courses/17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) |
-| Mathis: $R = (\text{MSS}/\text{RTT})\sqrt{3/(2p)}$; slow start doubles per RTT | AIMD, random loss | [17-13](../../courses/17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) |
-| RFC 6298: RTTVAR ← ¾ RTTVAR + ¼ $\lvert\text{SRTT} - R\rvert$, then SRTT ← ⅞ SRTT + ⅛ $R$; RTO = SRTT + 4 RTTVAR, at least 1 s |  | [17-13](../../courses/17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) |
+| Mathis: $R = (\text{MSS}/\text{RTT})\sqrt{3/(2p)}$; slow start doubles per RTT | AIMD with one loss every $1/p$ packets; random loss raises the constant by about 7%, delayed ACKs lower it by $\sqrt2$ | [17-13](../../courses/17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) |
+| RFC 6298: first sample SRTT = $R$, RTTVAR = $R/2$; then RTTVAR ← ¾ RTTVAR + ¼ $\lvert\text{SRTT} - R\rvert$ and SRTT ← ⅞ SRTT + ⅛ $R$; RTO = SRTT + max($G$, 4 RTTVAR), at least 1 s; doubles on each timeout | $G$ = clock granularity | [17-13](../../courses/17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) |
 | M/M/1: $T = 1/(\mu - \lambda)$; Little's law $N = \lambda T$ | Poisson arrivals, exponential service | [17-13](../../courses/17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) |
-| Brute force: half of $2^k$ keys on average; birthday collision after ≈ $1.18\sqrt{2^b}$ hashes |  | [17-13](../../courses/17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) |
+| Brute force: half of $2^k$ keys on average; birthday collision after ≈ $\sqrt{2\ln2}\sqrt{2^b} = 1.177\sqrt{2^b}$ hashes | 50% collision probability | [17-13](../../courses/17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) |

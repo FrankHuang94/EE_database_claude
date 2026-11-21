@@ -121,6 +121,43 @@ def bellman_ford(graph, src, max_rounds=None):
     return dist, rounds
 
 
+def dv_after_failure(graph, failed, dest, infinity=16, split_horizon=False, max_rounds=100):
+    """Distance-vector routing to `dest` after the link `failed` = (u, w) goes down.
+
+    Starts from the converged distances and next hops of the intact graph, removes the link, then runs synchronous
+    rounds: every router recomputes d = min over neighbours (link cost + neighbour's last advertisement), capped at
+    `infinity`. With `split_horizon`, a router does not advertise its route back to the neighbour it routes through.
+    Returns (rounds until no change, final distances).
+    """
+    dist, _ = bellman_ford(graph, dest)
+    g = {u: dict(nb) for u, nb in graph.items()}
+    a, b = failed
+    g[a].pop(b, None)
+    g[b].pop(a, None)
+    d = {u: min(dist[u], infinity) for u in g}
+    nxt = {u: None for u in g}
+    for u in g:
+        if u != dest:
+            nxt[u] = min(graph[u], key=lambda v: graph[u][v] + dist[v])
+    for rnd in range(1, max_rounds + 1):
+        new, new_nxt = dict(d), dict(nxt)
+        for u in g:
+            if u == dest:
+                continue
+            best, hop = infinity, None
+            for v, c in g[u].items():
+                adv = d[v]
+                if split_horizon and nxt[v] == u:
+                    adv = infinity
+                if c + adv < best:
+                    best, hop = c + adv, v
+            new[u], new_nxt[u] = min(best, infinity), hop
+        if new == d:
+            return rnd - 1, d
+        d, nxt = new, new_nxt
+    return max_rounds, d
+
+
 # ------------------------------------------------------------------ TCP
 def window_throughput(window_bytes, rtt):
     return 8 * window_bytes / rtt

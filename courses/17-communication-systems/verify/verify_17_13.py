@@ -19,6 +19,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from scipy import optimize
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -75,7 +76,7 @@ G1 = {"A": {"B": 2, "C": 5}, "B": {"A": 2, "C": 1, "D": 4}, "C": {"A": 5, "B": 1
 G2 = {"S": {"A": 4, "B": 1}, "A": {"S": 4, "B": 2, "C": 5}, "B": {"S": 1, "A": 2, "D": 8}, "C": {"A": 5, "D": 3, "T": 2}, "D": {"B": 8, "C": 3, "T": 6}, "T": {"C": 2, "D": 6}}
 
 # ------------------------------------------------------------------ text
-v.check("Txt 17-13.a", 10 * 9 // 2)
+v.check("Txt 17-13.a", len(list(itertools.combinations(range(10), 2))))
 v.check("Txt 17-13.b", 1 / (1 - 0.8))
 v.check("Txt 17-13.c", round(math.log2(math.sqrt(2.0**256))))
 v.assert_true("header bytes: 1518-byte maximum frame = 14 + 1500 + 4; 64-byte minimum = 14 + 46 + 4", ETH + 1500 + FCS == 1518 and ETH + 46 + FCS == 64)
@@ -110,7 +111,9 @@ v.check("Ex 17-13.4a", bdp / 1e6)
 v.check("Ex 17-13.4b", 8 * 65535 / 0.04 / 1e6)
 v.check("Ex 17-13.4c", next(s for s in range(15) if 65535 * 2**s >= bdp))
 v.assert_true("Example 4: shift 7 gives 8.39 MB", abs(65535 * 2**7 / 1e6 - 8.39) < 0.005)
-iw = 3 if 1095 < 1460 <= 2190 else None
+# RFC 5681 initial-window rule written independently: 2 segments above 2190 bytes, 3 above 1095, else 4
+iw = next(n for lim, n in ((2190, 2), (1095, 3), (0, 4)) if 1460 > lim)
+v.assert_true("lab initial_window agrees with the RFC 5681 rule", nl.initial_window(1460) == iw)
 v.check("Ex 17-13.5a", iw)
 rtts = next(k for k in range(40) if iw * 2**k >= bdp / 1460)
 v.check("Ex 17-13.5b", rtts)
@@ -124,7 +127,9 @@ v.check("Ex 17-13.6c", seq[-1][2] * 1e3)
 v.check("Ex 17-13.6d", max(1.0, max(s[2] for s in seq)))
 v.assert_true("Example 6: intermediate RTOs 300, 272.5, 249.7 ms; lab estimator agrees", [round(s[2] * 1e3, 1) for s in seq[:3]] == [300.0, 272.5, 249.7] and all(abs(a[2] - b[2]) < 1e-12 for a, b in zip(seq, nl.rto_sequence([0.1, 0.12, 0.08, 0.2]))))
 wbar = nl.simulate_aimd(1e-3, 200_000, rng)
-v.assert_true(f"AIMD simulation mean window {wbar:.1f} within 10% of sqrt(3/(2p)) = 38.7", abs(wbar / math.sqrt(1.5e3) - 1) < 0.1)
+v.assert_true(f"AIMD with random loss: mean window {wbar:.1f} is 3-12% above the periodic-loss sqrt(3/(2p)) = 38.7 (constant about 1.3)", 0.03 < wbar / math.sqrt(1.5e3) - 1 < 0.12)
+v.assert_true("Example 3: Bellman-Ford converges in four synchronous rounds", nl.bellman_ford(G1, "A")[1] == 4)
+v.assert_true("Example 5: the BDP is 3425 segments", round(bdp / 1460) == 3425)
 sim_mm1 = nl.simulate_mm1(0.8, 1.0, 300_000, rng)
 v.assert_true(f"M/M/1 simulation at 80%: {sim_mm1:.2f} service times vs 5", abs(sim_mm1 / 5 - 1) < 0.05)
 
@@ -132,7 +137,7 @@ v.assert_true(f"M/M/1 simulation at 80%: {sim_mm1:.2f} service times vs 5", abs(
 v.check("17-13.1a", wire(40 + UDP + IP4))
 v.check("17-13.1b", 100 * 40 / wire(40 + UDP + IP4))
 v.check("17-13.2a", 20 * 19 // 2)
-v.check("17-13.2b", 20)
+v.check("17-13.2b", len(nx_star := [(0, k) for k in range(1, 21)]))  # one hub-to-host link per host
 host = ip_to_int("172.16.45.130")
 mask = (0xFFFFFFFF << (32 - 27)) & 0xFFFFFFFF
 v.check("17-13.3a", (host | ~mask & 0xFFFFFFFF) & 0xFF)
@@ -192,5 +197,40 @@ v.check("Lab 17-13.d", math.sqrt(3 / (2 * 1e-3)))
 v.check("Lab 17-13.e", math.sqrt(3 / (2 * 1e-4)))
 v.check("Lab 17-13.f", 1 / (1 - 0.95))
 v.assert_true("Lab part 1: 64-byte payload efficiency 45.1%", abs(100 * 64 / wire(64 + TCP + IP4) - 45.1) < 0.05)
+
+# Problems 17-13.16 to 17-13.19
+_pa, _tp, _fp = 1e-5, 0.99, 1e-3
+v.check("17-13.16a", 100 * _tp * _pa / (_tp * _pa + _fp * (1 - _pa)))
+v.check("17-13.16b", _fp * (1 - _pa) / (_tp * _pa))
+v.check("17-13.16c", optimize.brentq(lambda f: _tp * _pa - f * (1 - _pa), 0, 1e-3))
+v.check("17-13.17a", 1500 * 8 / 1e9 * 1e6)
+v.check("17-13.17b", 1e6 / 2e8 * 1e3)
+_wait = 1 / (1 / 12e-6 - 0.8 / 12e-6) - 12e-6  # M/M/1 time in system minus service
+v.check("17-13.17c", _wait * 1e6)
+v.check("17-13.17d", (2e-6 + _wait + 12e-6 + 5e-3) * 1e6)
+_table, _flood = {}, 0
+for src, port, dst in (("A", 1, "B"), ("B", 2, "A"), ("C", 3, "A"), ("A", 1, "C"), ("D", 4, "B")):
+    _table[src] = port
+    if dst not in _table:
+        _flood += 1
+v.check("17-13.18", _flood)
+for key, b in (("17-13.19a", 2), ("17-13.19b", 1)):
+    v.check(key, 8 * 1460 / 0.05 * math.sqrt(3 / (2 * b * 1e-4)) / 1e6)
+_wm = math.sqrt(8 / (3 * 2 * 1e-4))
+v.assert_true("delayed-ACK cycle carries 1/p packets", abs(0.75 * _wm * 2 * _wm / 2 - 1e4) < 1e-6)
+
+# lab: distance vector after a failure, with and without split horizon (rounds independent of the lab via brute force)
+_chain = {"A": {"B": 1}, "B": {"A": 1, "C": 1}, "C": {"B": 1}}
+_G2 = {"S": {"A": 4, "B": 1}, "A": {"S": 4, "B": 2, "C": 5}, "B": {"S": 1, "A": 2, "D": 8},
+       "C": {"A": 5, "D": 3, "T": 2}, "D": {"B": 8, "C": 3, "T": 6}, "T": {"C": 2, "D": 6}}
+v.check("Lab 17-13.g", nl.dv_after_failure(_chain, ("B", "C"), "C")[0])
+v.check("Lab 17-13.h", nl.dv_after_failure(_chain, ("B", "C"), "C", split_horizon=True)[0])
+_r8, _d8 = nl.dv_after_failure(_G2, ("C", "T"), "T")
+_r4, _d4 = nl.dv_after_failure(_G2, ("C", "T"), "T", split_horizon=True)
+v.check("Lab 17-13.i", _r8)
+v.check("Lab 17-13.j", _r4)
+_G2f = {u: {w: c for w, c in nb.items() if {u, w} != {"C", "T"}} for u, nb in _G2.items()}
+v.assert_true("after the failure both variants converge to the true shortest distances",
+              all(_d8[n] == _d4[n] == brute_paths(_G2f, n, "T") for n in "SABCD"))
 
 sys.exit(v.finish())

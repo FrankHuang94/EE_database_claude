@@ -157,7 +157,7 @@ v.check("X17.5a", E)
 snr_mf = 2 * E / N0
 v.check("X17.5b", snr_mf)
 v.check("X17.5c", db(snr_mf))
-tau_rc = T / 2
+tau_rc = 2 * T
 sig = integrate.quad(lambda s: Amp * math.exp(-(T - s) / tau_rc) / tau_rc, 0, T)[0]
 # substitute s = u tau: the integral of h^2 is (1/tau) * integral of exp(-2u) du
 nvar = N0 / 2 / tau_rc * integrate.quad(lambda u: math.exp(-2 * u), 0, 60)[0]
@@ -184,21 +184,21 @@ v.check("X17.5n", stats.norm.cdf(0, 1, s5))
 v.check("X17.6a", 2 * 25 / (1.2 * 25))
 v.check("X17.6b", Qf(math.sqrt(2 * 10**0.7)))
 Es = 4 * 10**1.4
-# 16-QAM SER by integrating the exact square-constellation decision regions (per-dimension 4-PAM)
+# 16-QAM SER from the per-dimension 4-PAM error probability (inner points err two ways, outer one way)
 d = math.sqrt(3 * Es / 15)  # half-distance over sigma, in units where sigma = 1
 p_inner, p_outer = 2 * Qf(d), Qf(d)
 p_dim = 0.5 * p_inner + 0.5 * p_outer
 Ps = 1 - (1 - p_dim) ** 2
 v.check("X17.6c", Ps)
 v.check("X17.6d", Ps / 4)
-v.check("X17.6e", -20 * math.log10(0.035))
+v.check("X17.6e", -20 * math.log10(0.045))
 v.check("X17.6f", -20 * math.log10(0.08))
 snr_eff = 1 / (10**-2.5 + 0.05**2)
 v.check("X17.6g", snr_eff)
 v.check("X17.6h", db(snr_eff))
 
 # ---------------------------------------------------------------- Q7
-P = [0.4, 0.2, 0.2, 0.1, 0.1]
+P = [0.35, 0.25, 0.20, 0.12, 0.08]
 H = -sum(p * math.log2(p) for p in P)
 v.check("X17.7a", H)
 heap = [(p, i, {i: 0}) for i, p in enumerate(P)]
@@ -217,7 +217,7 @@ v.check("X17.7c", H / Lbar)
 pb = 0.05
 v.check("X17.7d", 1 + pb * math.log2(pb) + (1 - pb) * math.log2(1 - pb))
 v.check("X17.7e", 10e6 * math.log2(1 + 10**1.5) / 1e6)
-v.check("X17.7f", db(brentq(lambda e: math.log2(1 + 4 * e) - 4, 0.1, 100)))
+v.check("X17.7f", db(brentq(lambda e: math.log2(1 + 3 * e) - 3, 0.1, 100)))
 v.check("X17.7g", db(brentq(lambda e: math.log2(1 + 1e-7 * e) - 1e-7, 0.1, 10)))
 
 # ---------------------------------------------------------------- Q8
@@ -236,22 +236,23 @@ for e in itertools.product([0, 1], repeat=7):
         pfail += pbsc**w * (1 - pbsc) ** (7 - w)
 v.check("X17.8b", pfail)
 v.check("X17.8c", 1 - (1 - pbsc) ** 4)
-v.check("X17.8d", 2.0**-24)
-v.check("X17.8e", db(0.5 * 10))
-v.check("X17.8f", db(0.5 * 10 / 2))
-v.check("X17.8g", (528 - 514) // 2)
-v.check("X17.8h", (528 / 514 - 1) * 100)
+v.check("X17.8d", 2.0**-16)
+v.check("X17.8e", db(0.5 * 12))
+v.check("X17.8f", db(0.5 * ((12 - 1) // 2 + 1)))
+v.check("X17.8g", (255 - 223) // 2)
+v.check("X17.8h", (255 / 223 - 1) * 100)
 best = 0
-for b in range(1, 120):
-    worst = max(len({(s + i) // 10 for i in range(b)}) for s in range(10))
-    if worst <= 7:
+for b in range(1, 200):
+    worst = max(len({(s + i) // 8 for i in range(b)}) for s in range(8))
+    if worst <= 16:
         best = b
 v.check("X17.8i", best)
 
 # ---------------------------------------------------------------- Q9
+lam9 = C / 915e6
+v.check("X17.9a", 20 * math.log10(4 * math.pi * 300 / lam9))
+v.check("X17.9b", 20 - 20 * math.log10(4 * math.pi * 300 / lam9))
 lam = C / 2.4e9
-v.check("X17.9a", 20 * math.log10(4 * math.pi * 100 / lam))
-v.check("X17.9b", 20 - 20 * math.log10(4 * math.pi * 100 / lam))
 ht, hr = 10.0, 1.5
 v.check("X17.9c", 4 * ht * hr / lam)
 dd = 2000.0
@@ -263,7 +264,7 @@ fD = 25 * 2.6e9 / C
 v.check("X17.9e", fD)
 v.check("X17.9f", brentq(lambda t: special.j0(2 * math.pi * fD * t) - 0.5, 1e-5, 2e-3) * 1e3)
 v.check("X17.9g", special.j0(2 * math.pi * fD * 0.5e-3))
-gb = 100.0
+gb = 10 ** 2.5
 p1 = integrate.quad(lambda g: Qf(math.sqrt(2 * g)) * math.exp(-g / gb) / gb, 0, 50 * gb, points=[1, 10, 100])[0]
 v.check("X17.9h", p1)
 v.check("X17.9i", 1 / (4 * gb))
@@ -295,8 +296,8 @@ v.check("X17.10j", db((1.2 + 0.6) * 10))
 v.check("X17.10k", db((1.2 + 0.6) * 10 / 2))
 
 # ---------------------------------------------------------------- Q11
-v.check("X17.11a", 0.5 * math.exp(-0.5))
-v.check("X17.11b", 0.5 * math.exp(-1))
+v.check("X17.11a", 0.75 * math.exp(-0.75))
+v.check("X17.11b", 0.75 * math.exp(-1.5))
 
 
 def erlang_b(a, c):
@@ -308,8 +309,11 @@ v.check("X17.11d", next(c for c in range(1, 60) if erlang_b(10, c) <= 0.01))
 v.check("X17.11e", db(math.sqrt(9) ** 3.5 / 6))
 v.check("X17.11f", db(math.sqrt(12) ** 3.5 / 6))
 v.assert_true("Q11 N = 3 fails and N = 4 passes 10 dB", db(3**3.5 / 6) < 10 < db(12**1.75 / 6))
-v.check("X17.11g", sum(kk * 0.9 * 0.1 ** (kk - 1) for kk in range(1, 200)))
-v.check("X17.11h", 0.1**4)
+_ph, _mh = 0.2, 3
+_tx = sum(_ph ** (k - 1) for k in range(1, _mh + 1))  # attempt k happens if the first k - 1 failed
+v.check("X17.11g", _tx)
+v.check("X17.11g2", (1 - _ph ** _mh) / _tx)
+v.check("X17.11h", _ph ** _mh)
 
 # ---------------------------------------------------------------- Q12
 fields = {"preamble+SFD": 8, "MAC header": 14, "IPv4": 20, "UDP": 8, "payload": 200, "FCS": 4, "IFG": 12}
@@ -319,12 +323,33 @@ v.check("X17.12b", 200 / wire * 100)
 plen = next(p for p in range(30, 0, -1) if ipaddress.ip_network(f"10.0.0.0/{p}").num_addresses - 2 >= 100)
 v.check("X17.12c", plen)
 v.check("X17.12d", len(list(ipaddress.ip_network("172.16.0.0/20").subnets(new_prefix=plen))))
-v.check("X17.12e", 8 * 65535 / 0.05 / 1e6)
-bdp = 1e9 * 0.05 / 8
+v.check("X17.12e", 8 * 65535 / 0.08 / 1e6)
+bdp = 2.5e9 * 0.08 / 8
 v.check("X17.12f", bdp / 1e6)
 v.check("X17.12g", next(s for s in range(15) if 65535 * 2**s >= bdp))
-v.check("X17.12h", 8 * 1460 / 0.05 * math.sqrt(3 / (2 * 1e-4)) / 1e6)
-v.check("X17.12i", brentq(lambda p: 8 * 1460 / 0.05 * math.sqrt(1.5 / p) - 1e9, 1e-10, 1e-5))
+v.check("X17.12l", ipaddress.ip_network(f"10.0.0.0/{plen}").num_addresses - 2)
+_G = {"P": {"Q": 3, "R": 1}, "Q": {"P": 3, "R": 1, "S": 2}, "R": {"P": 1, "Q": 1, "S": 6, "T": 5},
+      "S": {"Q": 2, "R": 6, "T": 1}, "T": {"R": 5, "S": 1}}
+
+
+def _all_paths(u, dst, seen):
+    if u == dst:
+        yield [u]
+        return
+    for w in _G[u]:
+        if w not in seen:
+            for rest in _all_paths(w, dst, seen | {w}):
+                yield [u] + rest
+
+
+def _dist(dst):
+    return min(sum(_G[a][b] for a, b in zip(pth, pth[1:])) for pth in _all_paths("P", dst, {"P"}))
+
+
+for key, node in (("X17.12h", "Q"), ("X17.12i", "R"), ("X17.12j", "S"), ("X17.12k", "T")):
+    v.check(key, _dist(node))
+_best = min(_all_paths("P", "T", {"P"}), key=lambda pth: sum(_G[a][b] for a, b in zip(pth, pth[1:])))
+v.assert_true("shortest path to T is P-R-Q-S-T (brute-force enumeration)", _best == ["P", "R", "Q", "S", "T"])
 
 # ---------------------------------------------------------------- Q14
 N0dbm = -174 + 6
@@ -344,7 +369,7 @@ def two_ray_range(budget_db, h1=15.0, h2=1.0):
         fld = abs(np.exp(-2j * np.pi * a / lam8) / a - np.exp(-2j * np.pi * b / lam8) / b) * lam8 / (4 * math.pi)
         return -20 * math.log10(fld)
 
-    return brentq(lambda dist: loss(dist) - budget_db, 2e3, 2e5)
+    return brentq(lambda dist: loss(dist) - budget_db, 1e3, 2e5)
 
 
 v.check("X17.14f", lam8 / (4 * math.pi) * 10 ** (151 / 20) / 1e3)
@@ -354,5 +379,22 @@ s1m = -174 + 6 + 60 + 5
 v.check("X17.14i", s1m)
 v.check("X17.14j", two_ray_range(14 - s1m) / 1e3)
 v.assert_true("Q14 breakpoint well inside the ranges", 4 * 15 * 1 / lam8 < 1000)
+
+# requested intermediate answers and quoted ratios
+v.check("X17.3i", 2 * (40 + 10))
+v.check("X17.3j", 2 * 10)
+v.check("X17.4i", 56)
+v.check("X17.4j", 56 / 2)
+v.check("X17.4k", 56 / 2)
+v.check("X17.4l", 28 / 2)
+v.check("X17.5o", Qf(math.sqrt(g9)) / Qf(math.sqrt(2 * g9)))
+v.check("X17.6i", 2 * 25)
+v.check("X17.6j", 1.2 * 25)
+v.check("X17.8j", (1 - (1 - pbsc) ** 4) / pfail)
+v.check("X17.9l", p1 / p2)
+v.check("X17.10l", 100 * (cap / math.log2(101) - 1))
+v.check("X17.14k", 4 * 15 * 1 / lam8)
+v.check("X17.14l", 14 - s1m)
+v.check("X17.14m", two_ray_range(14 - s1m - 10) / 1e3)
 
 sys.exit(v.finish())

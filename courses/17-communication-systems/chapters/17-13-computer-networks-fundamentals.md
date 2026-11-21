@@ -79,7 +79,7 @@ Routers compute forwarding tables with distributed shortest-path algorithms over
 
 **Link state (Dijkstra).** Every router floods its links and their costs to all others, so each has the whole graph, and each runs **Dijkstra's algorithm**: keep a set of nodes whose shortest distance is final; repeatedly finalize the unfinalized node with the smallest tentative distance and relax the edges out of it ($d(w) \leftarrow \min(d(w), d(u) + c(u, w))$). Because edge costs are non-negative, the node with the smallest tentative distance cannot be reached more cheaply through a node finalized later. With a priority queue the cost is $O((V + E)\log V)$. OSPF and IS-IS are link-state protocols.
 
-**Distance vector (Bellman–Ford).** Each router keeps only its distance to every destination and periodically tells its neighbours; each updates $d_x(y) = \min_v\big(c(x, v) + d_v(y)\big)$. Iterating converges to the shortest paths in at most $V - 1$ rounds when costs are stable. When a link fails, distance-vector protocols can **count to infinity**: two routers keep advertising stale routes through each other, increasing the cost by one per exchange; split horizon and a small "infinity" (RIP uses 16) limit the damage.
+**Distance vector (Bellman–Ford).** Each router keeps only its distance to every destination and periodically tells its neighbours; each updates $d_x(y) = \min_v\big(c(x, v) + d_v(y)\big)$. Iterating converges to the shortest paths in at most $V - 1$ rounds when costs are stable. When a link fails, distance-vector protocols can **count to infinity**: two routers keep advertising stale routes through each other, increasing the cost by the cost of the link between them (one, with unit costs) per exchange; split horizon and a small "infinity" (RIP uses 16) limit the damage.
 
 **Between networks**, the Border Gateway Protocol (BGP) is a path-vector protocol in which each autonomous system advertises reachable prefixes with the list of networks on the path, and chooses routes by policy (business relationships) rather than by shortest distance.
 
@@ -102,19 +102,21 @@ $$
 
 To keep a link of rate $R$ busy, $W$ must be at least the **bandwidth-delay product** $R \times \text{RTT}$: 5 MB for 1 Gb/s across 40 ms. TCP's window field is 16 bits, so without extensions $W \le 65\,535$ bytes, which caps that path at 13.1 Mb/s; the window-scale option (RFC 7323) multiplies the field by $2^s$ with $s \le 14$, allowing windows up to $2^{30}$ bytes ([R-294], Example 17-13.4).
 
-**Slow start and congestion avoidance.** A new connection starts with an initial window of two to four segments (RFC 5681; three for a 1460-byte segment) and **doubles** cwnd every round trip (each ACK adds one segment) until a loss or the slow-start threshold; it then adds **one segment per round trip** (congestion avoidance) and **halves** cwnd on a loss signalled by duplicate ACKs: additive increase, multiplicative decrease (**AIMD**) ([R-294]). AIMD is what makes TCP flows sharing a bottleneck converge toward equal shares.
+**Slow start and congestion avoidance.** A new connection starts with an initial window of two to four segments (RFC 5681; three for a 1460-byte segment) and **doubles** cwnd every round trip (each ACK adds one segment) until a loss or the slow-start threshold; it then adds **one segment per round trip** (congestion avoidance) and **halves** cwnd on a loss signalled by duplicate ACKs: additive increase, multiplicative decrease (**AIMD**) ([R-294]). AIMD is what makes TCP flows sharing a bottleneck converge toward equal shares when their RTTs are equal; a flow's share scales as 1/RTT (the square-root formula below). A **retransmission timeout** is treated more severely than duplicate ACKs: RFC 5681 sets the slow-start threshold to half the data in flight (at least two segments) and cwnd to one segment, the loss window, and restarts slow start ([R-296]). Deployed stacks go beyond this baseline: CUBIC, the default in the Linux, Windows and Apple stacks, grows the window as a cubic function of time since the last loss and cuts it by a factor of 0.7 rather than 0.5 (RFC 9438), and an initial window of ten segments is widely used (RFC 6928, Experimental) ([R-296]) **[Established]**.
 
-**The square-root formula.** In steady state with random loss probability $p$ per packet, the window saws between $W_m/2$ and $W_m$ segments, growing by one per RTT, so a cycle lasts $W_m/2$ RTTs and carries about $\tfrac34W_m \times \tfrac{W_m}{2} = \tfrac38W_m^2$ packets, which must equal $1/p$ (one loss per cycle). Hence $W_m = \sqrt{8/(3p)}$, the average window is $\tfrac34W_m$, and
+**The square-root formula.** In steady state with one loss every $1/p$ packets (periodic loss), the window saws between $W_m/2$ and $W_m$ segments, growing by one per RTT, so a cycle lasts $W_m/2$ RTTs and carries about $\tfrac34W_m \times \tfrac{W_m}{2} = \tfrac38W_m^2$ packets, which must equal $1/p$ (one loss per cycle). Hence $W_m = \sqrt{8/(3p)}$, the average window is $\tfrac34W_m$, and
 
 $$
 \text{throughput} \approx \frac{\text{MSS}}{\text{RTT}}\sqrt{\frac{3}{2p}} .
 $$
 
-Throughput falls with the square root of the loss rate and inversely with RTT: on a long path, even $10^{-5}$ loss limits a single TCP flow to about 113 Mb/s (Example 17-13.5). This is why high-speed transfers use many parallel flows or different congestion controllers, and why data-centre networks engineer for near-zero loss.
+With random, independent losses the cycles vary in length and the constant rises by about 7% (the lab's simulation gives about 1.3 instead of $\sqrt{3/2}$ = 1.22). With **delayed ACKs** (one ACK per $b$ segments), the window grows by $1/b$ per RTT, a cycle lasts $bW_m/2$ RTTs, and the same counting gives $\sqrt{3/(2bp)}$: $\sqrt2$ less for $b$ = 2. Throughput falls with the square root of the loss rate and inversely with RTT: on a long path, even $10^{-5}$ loss limits a single TCP flow to about 113 Mb/s (Example 17-13.5). This is why high-speed transfers use many parallel flows or different congestion controllers, and why data-centre networks engineer for near-zero loss.
 
-**Retransmission timeout** (RFC 6298). The sender smooths RTT samples $R$ with $\text{SRTT} \leftarrow \tfrac78\text{SRTT} + \tfrac18R$ and the deviation $\text{RTTVAR} \leftarrow \tfrac34\text{RTTVAR} + \tfrac14|\text{SRTT} - R|$ (updating RTTVAR first), sets $\text{RTO} = \text{SRTT} + 4\,\text{RTTVAR}$, and rounds RTO up to at least 1 second ([R-294], Example 17-13.6).
+**Retransmission timeout** (RFC 6298). The sender smooths RTT samples $R$ with $\text{SRTT} \leftarrow \tfrac78\text{SRTT} + \tfrac18R$ and the deviation $\text{RTTVAR} \leftarrow \tfrac34\text{RTTVAR} + \tfrac14|\text{SRTT} - R|$ (updating RTTVAR first), sets $\text{RTO} = \text{SRTT} + \max(G, 4\,\text{RTTVAR})$ with $G$ the clock granularity, and rounds RTO up to at least 1 second ([R-294], Example 17-13.6). The first sample initializes $\text{SRTT} = R$ and $\text{RTTVAR} = R/2$. On each timeout the RTO doubles (exponential backoff), and by **Karn's rule** no RTT sample is taken from a retransmitted segment, since its acknowledgement could belong to either copy ([R-296]).
 
 ### 3.6 Queues and delay
+
+**Where delay comes from.** A packet's delay at each hop is the sum of four parts: processing (header lookup, typically microseconds), **queueing** (waiting behind other packets), **transmission** $L/R$ (pushing $L$ bits onto a link of rate $R$) and **propagation** $d/s$ (distance over signal speed, about $2 \times 10^8$ m/s in fibre). A 1500-byte packet takes 12 μs to transmit at 1 Gb/s but 5 ms to cross 1000 km of fibre: on long paths propagation dominates and only queueing is under the network's control (Problem 17-13.17).
 
 Packets wait in router and switch buffers. The simplest model, the **M/M/1 queue** (Poisson arrivals at rate λ, exponential service at rate μ), gives a mean time in the system of
 
@@ -122,7 +124,9 @@ $$
 T = \frac{1}{\mu - \lambda} = \frac{1/\mu}{1 - \rho},\qquad \rho = \frac\lambda\mu ,
 $$
 
-so at 80% utilization a packet spends on average five times its transmission time in the system, and delay grows without bound as ρ → 1. **Little's law** ($N = \lambda T$: mean number in the system equals arrival rate times mean time) holds for any stable queue. These curves are why networks are provisioned well below full utilization and why latency-sensitive traffic gets priority queues.
+so at 80% utilization a packet spends on average five times its transmission time in the system (see the callout for the derivation), and delay grows without bound as ρ → 1. **Little's law** ($N = \lambda T$: mean number in the system equals arrival rate times mean time) holds for any stable queue. These curves are why networks are provisioned well below full utilization and why latency-sensitive traffic gets priority queues.
+
+> **Going deeper — deriving the M/M/1 delay.** Let $p_n$ be the probability that $n$ packets are in the system. In steady state, the rate of moves up from $n$ to $n + 1$ (arrivals, $\lambda p_n$) equals the rate of moves down from $n + 1$ (departures, $\mu p_{n+1}$), so $p_{n+1} = \rho p_n$ and $p_n = (1 - \rho)\rho^n$ after normalizing (a geometric distribution, valid for ρ < 1). The mean number in the system is $\bar N = \sum np_n = \rho/(1 - \rho)$, and Little's law gives $T = \bar N/\lambda = 1/(\mu - \lambda)$. The waiting part, excluding the packet's own service, is $T - 1/\mu = \rho/(\mu - \lambda)$.
 
 ### 3.7 Network security basics
 
@@ -130,15 +134,15 @@ so at 80% utilization a packet spends on average five times its transmission tim
 
 **Cryptographic building blocks.**
 
-- **Symmetric ciphers** (for example AES with 128- or 256-bit keys) encrypt bulk data fast with a shared key. Their strength is the key length: exhaustively searching $2^{128}$ keys at $10^{12}$ keys per second takes about $5 \times 10^{18}$ years, while a 56-bit key falls in about 10 hours (Problem 17-13.11).
+- **Symmetric ciphers** (for example AES with 128- or 256-bit keys) encrypt bulk data fast with a shared key. Their strength is the key length: an exhaustive search of $2^{128}$ keys at $10^{12}$ keys per second takes on average (half the key space) about $5 \times 10^{18}$ years, while a 56-bit key falls in about 10 hours on average (Problem 17-13.11).
 - **Public-key cryptography** (RSA, elliptic-curve Diffie–Hellman and signatures) lets parties agree on keys and authenticate without a prior shared secret, at much higher computational cost.
-- **Hash functions** (for example SHA-256) map any input to a fixed-length digest; finding any two inputs with the same digest takes about $2^{n/2}$ attempts (the **birthday bound**), so a 256-bit hash offers 128-bit collision resistance. A hash keyed with a secret (HMAC) protects integrity.
+- **Hash functions** (for example SHA-256) map any input to a fixed-length digest; finding any two inputs with the same digest takes about $2^{n/2}$ attempts (the **birthday bound**), so a 256-bit hash offers 128-bit collision resistance. The bound follows from counting: with $N = 2^n$ equally likely digests, $k$ hashes are all distinct with probability $\prod_{i<k}(1 - i/N) \approx e^{-k^2/(2N)}$ (using $1 - x \approx e^{-x}$), so a collision becomes likely (probability 1/2) after $k = \sqrt{2N\ln2} = 1.177\sqrt N$. A hash keyed with a secret (HMAC) protects integrity.
 - **TLS 1.3** (RFC 8446) combines them: an ephemeral Diffie–Hellman exchange agrees on keys, certificates and signatures authenticate the server, and symmetric authenticated encryption protects the data, with a full handshake in one round trip (and an optional 0-RTT mode that is vulnerable to replay) ([R-293]).
 
 **Network defences.**
 
 - A **firewall** filters traffic by rules on addresses, ports and protocol (packet filters), by connection state (stateful firewalls, which allow replies to connections initiated inside), or by application content (application-layer gateways). Rules are checked in order and the first match decides; a final "deny all" makes the policy explicit.
-- An **intrusion detection system** (IDS) watches traffic or hosts for attacks, using **signatures** of known attacks or **anomaly** detection against a baseline; an **intrusion prevention system** (IPS) sits in the path and blocks them. **Endpoint detection** runs on hosts; **network detection** inspects traffic at chokepoints.
+- An **intrusion detection system** (IDS) watches traffic or hosts for attacks, using **signatures** of known attacks or **anomaly** detection against a baseline; an **intrusion prevention system** (IPS) sits in the path and blocks them. **Endpoint detection** runs on hosts; **network detection** inspects traffic at chokepoints. The hard part is false alarms: attacks are rare, so even a detector with a 99% detection rate and a 0.1% false-positive rate, watching traffic in which 1 flow in $10^5$ is malicious, raises about 100 false alerts for every true one (Bayes' theorem, 03-01; Problem 17-13.16). Alert fatigue, not detection rate, usually limits an IDS.
 - **Segmentation** (separate subnets or VLANs for different trust levels) limits how far an intruder can move.
 
 **Testing.** **Port scanning** probes which TCP/UDP ports answer (for example by sending SYNs and watching for SYN-ACKs), revealing exposed services: attackers use it for reconnaissance, defenders to audit their own exposure. **Vulnerability scanning** checks those services against known weaknesses; **web vulnerability testing** probes applications for flaws such as injection; **penetration testing** is an authorized, goal-directed attempt to exploit weaknesses, which measures real exposure rather than theoretical findings. These appear explicitly in the FE specification's Computer Networks area ([R-001], [R-295]).
@@ -260,10 +264,11 @@ The lab, [labs/17-13-lab](../labs/17-13-lab/README.md), provides `netlab.py`: pr
 | Larger frames / jumbo MTU | Wire efficiency, fewer packets per second | Latency per packet, compatibility, larger loss per error | Network architect |
 | Larger TCP windows and buffers | Throughput on long paths | Memory; queueing delay ("bufferbloat") in routers | Host and router designers |
 | Smaller subnets | Isolation, smaller broadcast domains | Address waste, more routes | Network administrator |
-| Link-state vs distance-vector routing | Fast, loop-free convergence | Memory and CPU for the full topology, flooding | Network architect |
+| Link-state vs distance-vector routing | Faster convergence, no count-to-infinity (transient micro-loops still possible) | Memory and CPU for the full topology, flooding | Network architect |
 | Lower link utilization | Queueing delay (∝ 1/(1 − ρ)) | Capacity cost | Capacity planner |
 | Stronger cryptography | Confidentiality and integrity margin | CPU, latency of handshakes | Security architect |
 | Stateful firewalls and IPS inline | Protection | Throughput, latency, single points of failure | Security and network architects |
+| IDS sensitivity threshold | Detection rate | False alerts, analyst load | Security operations |
 
 ## 7. Numbers to know
 
@@ -287,7 +292,7 @@ The lab, [labs/17-13-lab](../labs/17-13-lab/README.md), provides `netlab.py`: pr
 - **Forgetting the two reserved addresses** when counting IPv4 hosts, or the preamble and gap when computing wire efficiency.
 - **Matching the first route instead of the longest prefix.** Forwarding picks the most specific matching route, not the first listed.
 - **Treating TCP's window as fixed.** The effective window is the minimum of the receiver's advertisement and the congestion window, which changes every RTT.
-- **Running links near 100% utilization.** Queueing delay grows as $1/(1 - \rho)$; at 95% load an M/M/1 packet waits twenty service times.
+- **Running links near 100% utilization.** Queueing delay grows as $1/(1 - \rho)$; at 95% load an M/M/1 packet spends twenty service times in the system, nineteen of them waiting.
 - **Equating a firewall with security.** Firewalls control reachability; vulnerabilities in allowed services, stolen credentials and insiders require other controls (patching, authentication, monitoring, segmentation).
 
 ## 9. Practitioner lens
@@ -300,7 +305,7 @@ The lab, [labs/17-13-lab](../labs/17-13-lab/README.md), provides `netlab.py`: pr
 
 ### Why it matters commercially
 
-For a semiconductor company, networking is both a market and a constraint. Switch and NIC silicon is designed around packet rates (Example 17-13.1), table sizes (longest-prefix-match lookups at line rate) and buffer sizes (bandwidth-delay products). AI clusters push the same arithmetic to extremes: thousands of accelerators exchange data with microsecond RTTs, where a single lost packet and a TCP-style timeout would stall a training step, which is why those fabrics use lossless or specially engineered transports. In enterprise deals, network security architecture (segmentation, monitoring, patch processes) is a standard diligence item.
+For a semiconductor company, networking is both a market and a constraint. Switch and NIC silicon is designed around packet rates (Example 17-13.1), table sizes (longest-prefix-match lookups at line rate) and buffer sizes (bandwidth-delay products). AI clusters push the same arithmetic to extremes: thousands of accelerators exchange data with microsecond RTTs; a TCP-style timeout, at least 1 s by RFC 6298's minimum, would stall a training step for orders of magnitude longer than the RTT, which is why those fabrics use lossless or specially engineered transports **[Industry estimate]**. In enterprise deals, network security architecture (segmentation, monitoring, patch processes) is a standard diligence item.
 
 > **Deeper:** see companion repo *Datacenter Networking* for RDMA, lossless Ethernet, congestion control in AI fabrics and switch silicon architecture.
 
@@ -349,7 +354,7 @@ The /24: forwarding uses the longest matching prefix, the most specific route.
 
 <details><summary>Answer</summary>
 
-It finalizes the node with the smallest tentative distance, assuming no later path can be cheaper; a negative edge could make a path through a later node cheaper, breaking that guarantee (Bellman–Ford handles negative costs).
+It finalizes the node with the smallest tentative distance, assuming no later path can be cheaper; a negative edge could make a path through a later node cheaper, breaking that guarantee (Bellman–Ford handles negative costs, provided there are no negative cycles).
 
 </details>
 

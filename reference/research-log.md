@@ -2865,3 +2865,12 @@ R&D % = R&D ÷ revenue.
 *Read on 21 Nov 2026 from the NCEES specification PDF (the same document as R-001).*
 
 - **Knowledge area 14, Computer Networks, 4–6 questions:** "A. Routing and switching; B. Network topologies (e.g., mesh, ring, star); C. Network types (e.g., LAN, WAN, internet); D. Network models (e.g., OSI, TCP/IP); E. Network intrusion detection and prevention (e.g., firewalls, endpoint detection, network detection); F. Security (e.g., port scanning, network vulnerability testing, web vulnerability testing, penetration testing, security triad)". [Established] [NCEES FE E&C specification](https://ncees.org/wp-content/uploads/FE-Electrical-and-Computer-CBT-specs.pdf)
+
+## R-296 · TCP congestion control in practice: CUBIC, the initial window and timeout behaviour
+
+*Read on 21 Nov 2026 from the RFC Editor's plain-text copies (rfc-editor.org), primary.*
+
+- **RFC 9438, "CUBIC for Fast and Long-Distance Networks" (Standards Track, August 2023):** "CUBIC has been adopted as the default TCP congestion control algorithm by the Linux, Windows, and Apple stacks"; it "sets the multiplicative window decrease factor to 0.7, whereas Reno" uses 0.5, and "The parameter β_cubic SHOULD be set to 0.7". [Established]
+- **RFC 6928, "Increasing TCP's Initial Window" (Experimental, April 2013):** raises the initial window "to 10 segments (maximum 14600 B)", specified as "min (10*MSS, max (2*MSS, 14600))". [Established]
+- **RFC 5681 §3.1:** after a retransmission timeout, "ssthresh = max (FlightSize / 2, 2*SMSS)" and cwnd is set to "no more than the loss window, LW, which equals 1 full-sized segment". [Established]
+- **RFC 6298:** "(5.5) The host MUST set RTO <- RTO * 2 ("back off the timer")"; "TCP MUST use Karn's algorithm [KP87] for taking RTT samples. That is, RTT samples MUST NOT be made using segments that were retransmitted". [Established]
