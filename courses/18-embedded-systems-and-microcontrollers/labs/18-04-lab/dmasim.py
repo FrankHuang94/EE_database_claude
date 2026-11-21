@@ -19,13 +19,16 @@ import numpy as np
 def pingpong_min_block(fs: float, a: float, b: float, latency: float = 0.0, n_buffers: int = 2) -> float:
     """Smallest N (samples) for which a block can always be processed before its buffer is refilled.
 
-    With n_buffers buffers the CPU has (n_buffers - 1) N / fs after a block completes; it needs the worst service
-    latency L plus a + bN. So L + a + bN <= (n_buffers - 1) N / fs, i.e. N >= (a + L) fs / (n_buffers - 1 - b fs).
+    Two conditions. Deadline: with n_buffers buffers the CPU has (n_buffers - 1) N / fs after a block completes, and it
+    needs the worst service latency L plus a + bN, so N >= (a + L) fs / (n_buffers - 1 - b fs). Throughput: blocks
+    keep arriving every N / fs, so on average the CPU must finish one in that time, a + bN <= N / fs, i.e.
+    N >= a fs / (1 - b fs). With two buffers the deadline condition implies the throughput one; with more it can bind.
     """
-    room = n_buffers - 1 - b * fs
-    if room <= 0:
+    if b * fs >= 1:
         return math.inf
-    return (a + latency) * fs / room
+    deadline = (a + latency) * fs / (n_buffers - 1 - b * fs)
+    throughput = a * fs / (1 - b * fs)
+    return max(deadline, throughput)
 
 
 def simulate_pingpong(fs, n_block, a, b, n_blocks=2000, n_buffers=2, service_latency=0.0, jitter=0.0, seed=0):

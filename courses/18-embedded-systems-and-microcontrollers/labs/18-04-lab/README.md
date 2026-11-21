@@ -23,7 +23,7 @@ QEMU's `mps2-an386` board has no general-purpose DMA controller for the firmware
 
 ## Procedure
 
-1. **Block size.** For Example 18-04.2 (1 MS/s, $a$ = 20 µs, $b$ = 0.6 µs, $L$ up to 25 µs), predict the smallest safe block for two and three buffers. Simulate 20 000 blocks with service latencies uniform from 5 to 25 µs at 64, 112 and 128 samples (two buffers) and 64 samples (three buffers).
+1. **Block size.** For Example 18-04.2 (1 MS/s, $a$ = 20 µs, $b$ = 0.6 µs, $L$ up to 25 µs), predict the smallest safe block for two and three buffers. Simulate 20 000 blocks with service latencies uniform from 5 to 25 µs at 64, 112 and 128 samples (two buffers) and 48 and 64 samples (three buffers).
 2. **Latency against memory.** For $L$ from 0 to 60 µs, plot the power-of-two block, memory and worst latency for two and three buffers.
 3. **Contention.** For $p$ = 0.3 and DMA periods of 25, 10 and 4 cycles, predict the CPU's stall fraction; run `bus_sim` for $10^6$ cycles with both policies.
 4. **The ring on the core.** Predict what happens when the consumer stops while the producer continues. Run the firmware at `-O2` and `-O0`.
@@ -31,8 +31,8 @@ QEMU's `mps2-an386` board has no general-purpose DMA controller for the firmware
 
 ## Expected results
 
-- Part 1: bounds of 112.5 (two buffers) and 32.1 (three). Overruns at 64 and 112 with two buffers (about 191 of 20 000 at 112), none at 128, none at 64 with three buffers.
-- Part 2: the third buffer halves the block and roughly halves the latency for the same safety.
+- Part 1: bounds of 112.5 (two buffers) and 50 (three: the deadline condition alone gives 32.1, but the throughput floor $af_s/(1 - bf_s)$ = 50 binds). Overruns at 64 and 112 with two buffers (about 191 of 20 000 at 112), none at 128; with three buffers almost every block overruns at 48, because the backlog grows without limit, and none does at 64.
+- Part 2: with three buffers the block stays at 64 over the whole range (the throughput floor of 50 binds up to $L$ = 50 µs), and the worst latency grows only from 122 to 182 µs. With two buffers the block steps to 128 above $L$ = 5.6 µs and to 256 above 31.2 µs, and the worst latency reaches 490 µs. The third buffer's advantage grows with the service latency.
 - Part 3: stall fractions of about 1.2%, 3.0% and 7.5%, within 1% of $p\rho$; the two policies agree here because the DMA never has more than one request waiting.
 - Part 4: `TEST PASSED` at both levels: 5000 items in order through the index wrap, then exactly 64 items accepted by the full ring, later drops counted, and the ring drains intact.
 - Part 5: 32 and 20 lines.

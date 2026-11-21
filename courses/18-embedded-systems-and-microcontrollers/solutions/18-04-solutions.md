@@ -36,7 +36,7 @@ $bf_s = 5 \times 10^{-6} \times 48\,000 = 0.24$.
 
 ### Solution 18-04.5
 
-With three buffers, $N \ge 300 \times 10^{-6} \times 48\,000/(2 - 0.24)$ = **8.2**, so **16** as a power of two. Memory: $3 \times 16 \times 2$ = **96** bytes against $2 \times 32 \times 2$ = **128** for two buffers of 32. Worst latency: $333.3 + 100 + 200 + 80$ = **713** µs against 1127 µs. The third buffer wins on both counts here, because it lets the blocks halve.
+With three buffers the deadline condition gives $N \ge 300 \times 10^{-6} \times 48\,000/(2 - 0.24)$ = **8.2**, but the CPU must also keep up on average: the throughput floor $af_s/(1 - bf_s)$ is the **12.6** of Solution 18-04.4(a), and it binds. So $N \ge 12.6$, and **16** as a power of two. Memory: $3 \times 16 \times 2$ = **96** bytes against $2 \times 32 \times 2$ = **128** for two buffers of 32. Worst latency: $333.3 + 100 + 200 + 80$ = **713** µs against 1127 µs. The third buffer wins on both counts here, because it lets the blocks halve; it could not take them below 13 samples, however long the service latency allowed.
 
 ### Solution 18-04.6
 
@@ -99,7 +99,8 @@ With three buffers, $N \ge 300 \times 10^{-6} \times 48\,000/(2 - 0.24)$ = **8.2
 | 18-04.4b | smallest block with 100 µs | 18.9 | samples |
 | 18-04.4c | chosen block | 32 | samples |
 | 18-04.4d | worst latency, two buffers | 1127 | µs |
-| 18-04.5a | smallest block, three buffers | 8.2 | samples |
+| 18-04.5a | deadline bound, three buffers | 8.2 | samples |
+| 18-04.5f | throughput floor, three buffers | 12.6 | samples |
 | 18-04.5b | chosen block, three buffers | 16 | samples |
 | 18-04.5c | memory, three buffers | 96 | bytes |
 | 18-04.5d | memory, two buffers | 128 | bytes |

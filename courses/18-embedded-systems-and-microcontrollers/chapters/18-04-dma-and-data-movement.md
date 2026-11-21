@@ -79,13 +79,13 @@ $$
 
 ![Smallest safe block size and worst latency against service latency, for two and three buffers](../../../assets/figures/18-04/buffer-sizing.svg)
 
-The condition $bf_s < 1$ says the per-sample processing must be faster than the samples arrive; no buffer size helps otherwise. The fixed cost $a$ and the latency $L$ are amortized over $N$: that is what larger blocks buy. With $k$ buffers the CPU has $(k - 1)N/f_s$, so
+The condition $bf_s < 1$ says the per-sample processing must be faster than the samples arrive; no buffer size helps otherwise. The fixed cost $a$ and the latency $L$ are amortized over $N$: that is what larger blocks buy. With $k$ buffers the CPU has $(k - 1)N/f_s$ to finish a block, but blocks still arrive every $N/f_s$, so it must also keep up on average, $a + bN \le N/f_s$. Both conditions must hold:
 
 $$
-N \ge \frac{(a + L)f_s}{(k - 1) - bf_s} ,
+N \ge \max\left(\frac{(a + L)f_s}{(k - 1) - bf_s},\ \frac{a f_s}{1 - bf_s}\right) .
 $$
 
-and more buffers allow smaller blocks (less latency per block) for the same safety. The price of a block is **latency**: a sample at the start of a block waits $N/f_s$ for the block to fill, then up to $L + a + bN$ to be processed. Memory is $kN$ items. Example 18-04.2 sizes a design, and the lab's simulator shows overruns appearing exactly where the bound says.
+For $k = 2$ the first term is always the larger, so the ping-pong condition above is complete. For $k \ge 3$ the second, the **throughput floor**, can bind: extra buffers absorb a long service latency, but they cannot make the CPU process a block faster than one arrives. More buffers therefore allow smaller blocks (less latency per block) for the same safety, down to that floor. The price of a block is **latency**: a sample at the start of a block waits $N/f_s$ for the block to fill, then up to $L + a + bN$ to be processed. Memory is $kN$ items. Example 18-04.2 sizes a design, and the lab's simulator shows overruns appearing exactly where the bound says.
 
 **Circular buffering.** For streams without natural blocks (a UART receiving messages of unknown length), the DMA writes continuously into a ring of $S$ bytes, wrapping at the end. Software reads the DMA's remaining-count register to find the write position, $\text{head} = (S - \text{remaining}) \bmod S$, and consumes from its own tail; the number of unread bytes is $(\text{head} - \text{tail}) \bmod S$. Half-transfer and transfer-complete interrupts, plus the UART's **idle-line** interrupt (the line has been quiet for one character time, so a message has probably ended), tell the software when to look. The ring must hold everything that can arrive between two services: $S > r_{bytes} \times t_{service,max}$ (Example 18-04.6).
 
@@ -147,11 +147,11 @@ The DMA is another bus master, so the CPU's view of memory and the DMA's must be
 
 (b) $N \ge (20 + 25) \times 10^{-6} \times 10^6/0.4$ = **112.5**, so 113 at least; the next power of two is **128**. Memory: $2 \times 128 \times 2$ = **512** bytes. Worst latency, for the first sample of a block: $128\ \mu\text{s}$ to fill, plus $25 + 20 + 0.6 \times 128 = 121.8$ µs to process: **249.8** µs.
 
-(c) With $k = 3$: $N \ge 45/(2 - 0.6)$ = **32.1**, so 64 as a power of two (32 is just too small). Memory $3 \times 64 \times 2$ = **384** bytes, and worst latency $64 + 25 + 20 + 38.4$ = **147.4** µs: less memory and less latency than (b).
+(c) With $k = 3$ the deadline condition gives $N \ge 45/(2 - 0.6)$ = **32.1**, but the throughput floor is the 50 samples of (a): a block of 32 would take $20 + 0.6 \times 32 = 39.2$ µs to process yet arrive every 32 µs, and the backlog would grow without limit. The floor binds, so $N \ge 50$, and 64 as a power of two. Memory $3 \times 64 \times 2$ = **384** bytes, and worst latency $64 + 25 + 20 + 38.4$ = **147.4** µs: less memory and less latency than (b).
 
 **Units check.** (s × samples/s) / (dimensionless) = samples.
 
-**Sanity check.** The lab's simulator, with service latencies drawn from 5 to 25 µs, finds overruns at $N$ = 112 with two buffers and none at 128, and none at 64 with three buffers, exactly as the bound predicts.
+**Sanity check.** The lab's simulator, with service latencies drawn from 5 to 25 µs, finds overruns at $N$ = 112 with two buffers and none at 128; with three buffers it finds overruns at 48 (below the throughput floor, although above the deadline bound) and none at 64, exactly as the two conditions predict.
 
 ### Example 18-04.3 · DMA traffic and the CPU (tier B)
 
@@ -216,7 +216,7 @@ The DMA is another bus master, so the CPU's view of memory and the DMA's must be
 | Ex 18-04.2c | chosen block | 128 | samples |
 | Ex 18-04.2d | memory, two buffers | 512 | bytes |
 | Ex 18-04.2e | worst latency, two buffers | 249.8 | µs |
-| Ex 18-04.2f | smallest block, three buffers | 32.1 | samples |
+| Ex 18-04.2f | deadline bound, three buffers | 32.1 | samples |
 | Ex 18-04.2g | memory, three buffers of 64 | 384 | bytes |
 | Ex 18-04.2h | worst latency, three buffers | 147.4 | µs |
 | Ex 18-04.3a | estimated CPU stall fraction | 0.075 | — |
@@ -330,7 +330,7 @@ The per-sample processing must be faster than the sample arrival rate, $bf_s < 1
 
 <details><summary>Answer</summary>
 
-With three buffers the CPU has two block times instead of one to service a block, so the same service latency is tolerated with blocks about half as large; smaller blocks mean each sample waits less to be processed.
+With three buffers the CPU has two block times instead of one to service a block, so the same service latency is tolerated with smaller blocks, down to the throughput floor $af_s/(1 - bf_s)$; smaller blocks mean each sample waits less to be processed.
 
 </details>
 
