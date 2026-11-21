@@ -76,6 +76,28 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Check-node messages.** A degree-3 check node receives LLRs $L_1 = 2$ and $L_2 = -1$ from two of its bits. Compute the exact message to the third bit, the min-sum approximation, and the normalized min-sum value with factor 0.75.
 
+### Problem 17-08.17 [B]
+
+**From H to G.** A shortened Hamming code has the parity-check matrix
+
+$$
+\mathbf{H} = \left[\begin{array}{ccc|ccc}1&1&0&1&0&0\\1&0&1&0&1&0\\0&1&1&0&0&1\end{array}\right] .
+$$
+
+(a) Write the systematic generator matrix $\mathbf{G}$ and check $\mathbf{G}\mathbf{H}^\mathsf{T} = \mathbf{0}$. (b) Find $n$, $k$, the number of codewords of weight 3 and $d_{min}$. (c) Build the syndrome table. Which syndrome has no single-error pattern, and what is the weight of its coset leader? (d) Encode the message 101, flip the second bit, and decode.
+
+### Problem 17-08.18 [B]
+
+**RS(255,223) and interleaving.** The classic RS(255,223) code over GF($2^8$) protects deep-space and storage links. (a) Find $d_{min}$, $t$ and the longest burst, in bits, that one codeword always corrects. (b) Four codewords are block-interleaved (depth $I$ = 4). What is the longest burst, in symbols and in bits, that is always corrected, and how many bytes must the receiver buffer before decoding?
+
+### Problem 17-08.19 [B]
+
+**A CRC by long division.** *(lab)* Compute the CRC6 ($g(x) = x^6 + x^5 + 1$) check bits of the 10-bit message 1011001110 by polynomial long division, write the transmitted 16-bit word, and confirm that the receiver's division leaves remainder zero. Check your answer with the lab's shift-register routine.
+
+### Problem 17-08.20 [C]
+
+**One min-sum iteration.** The (7,4) code of Example 17-08.1 has checks $c_1$ on bits 1, 2, 4, 5; $c_2$ on bits 1, 3, 4, 6; and $c_3$ on bits 2, 3, 4, 7. The channel LLRs (positive favours 0) are $(-2.5, 1.8, 0.4, -3.0, 2.2, -1.6, 1.2)$. (a) Make hard decisions and compute the syndrome. (b) Starting with each bit's message equal to its channel LLR, compute the (unscaled) min-sum message from each check to bit 3. (c) Compute every bit's LLR after one iteration (channel LLR plus all incoming check messages), the decisions, and the syndrome.
+
 ---
 
 ## Objective coverage
@@ -83,8 +105,8 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 17-08) | Problems |
 |---|---|
 | 1. Rate, distance, capability, Hamming bound | 1, 2, 5, 6 |
-| 2. Linear codes, syndrome decoding | 4, 5, 6 |
-| 3. CRCs | 3 |
+| 2. Linear codes, syndrome decoding | 4, 17 |
+| 3. CRCs | 3, 19 |
 | 4. Convolutional codes and Viterbi | 8, 9, 10, 11, 15 |
-| 5. RS, LDPC and polar codes | 12, 13, 16 |
+| 5. RS, LDPC and polar codes | 12, 13, 16, 18, 20 |
 | 6. Coding gain and the gap to capacity | 7, 14, 15 |

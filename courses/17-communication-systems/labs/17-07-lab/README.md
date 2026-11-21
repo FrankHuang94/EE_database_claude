@@ -14,7 +14,7 @@ Compute the chapter's information measures and check its claims numerically:
 
 ## Background
 
-Entropy $H = -\sum p_i\log_2p_i$ is the least average number of bits per symbol a lossless code can achieve (§3.2). Capacity is the largest mutual information over input distributions (§3.4); the Blahut–Arimoto algorithm finds it for any discrete channel by alternately computing the output distribution and reweighting each input by $2^{D(x)}$, where $D(x)$ is the divergence between that input's output distribution and the overall one. For the Gaussian channel $C = B\log_2(1 + S/(N_0B))$ (§3.5); a binary input caps it at 1 bit per use, and hard slicing lowers it further (§3.7). Over parallel channels the optimum power is $p_k = (\mu - 1/g_k)^+$ (§3.8).
+Entropy $H = -\sum p_i\log_2p_i$ is the least average number of bits per symbol a lossless code can achieve (§3.2). Capacity is the largest mutual information over input distributions (§3.4); the Blahut–Arimoto algorithm finds it for any discrete channel by alternately computing the output distribution and reweighting each input by $2^{D(x)}$, where $D(x) = D\big(p(y\mid x)\,\Vert\,p(y)\big)$ is the relative entropy (§3.3) between that input's output distribution and the overall one. For the Gaussian channel $C = B\log_2(1 + S/(N_0B))$ (§3.5); a binary input caps it at 1 bit per use, and hard slicing lowers it further (§3.7). Over parallel channels the optimum power is $p_k = (\mu - 1/g_k)^+$ (§3.8).
 
 ## Files
 
@@ -54,7 +54,7 @@ Entropy $H = -\sum p_i\log_2p_i$ is the least average number of bits per symbol 
 
 ## Discussion
 
-1. Why does the Huffman code on single characters fall well short of the true information rate of English, which Shannon's 1951 prediction experiments put at roughly 0.6–1.3 bits per letter?
+1. Why does the Huffman code on single characters fall well short of the true information rate of English, which Shannon's 1951 prediction experiments put at roughly 0.6–1.3 bits per letter (C. E. Shannon, "Prediction and entropy of printed English", *Bell System Technical Journal* 30, 1951, pp. 50–64)?
 2. Why is the Z-channel's optimal input not uniform, while the BSC's is?
 3. In Part 5, why does water-filling help more at low SNR than at high SNR?
 

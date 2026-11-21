@@ -22,11 +22,11 @@
 
 ## 1. Big picture
 
-Every chapter so far has traded something for reliability: bandwidth for SNR (FM, spreading), power for distance (constellations), redundancy for error rate (coding, next chapter). In 1948 Claude Shannon showed that these trades have a hard, computable limit. For a channel with bandwidth $B$ and signal-to-noise ratio $S/N$, no system can send more than $C = B\log_2(1 + S/N)$ bits per second reliably, and, astonishingly, every rate below $C$ **can** be sent with an error probability as small as desired. The proof did not say how; it took fifty years of coding research (turbo codes in 1993, LDPC codes rediscovered in the late 1990s, polar codes in 2009) to come within a fraction of a decibel. Today the bound is the yardstick against which every modem, SerDes and radio standard is judged, and the vocabulary of entropy and mutual information has spread to compression, cryptography and machine learning.
+Every chapter so far has traded something for reliability: bandwidth for SNR (FM, spreading), power for distance (constellations), redundancy for error rate (coding, next chapter). In 1948 Claude Shannon showed that these trades have a hard, computable limit. For a channel with bandwidth $B$ and signal-to-noise ratio $S/N$, no system can send more than $C = B\log_2(1 + S/N)$ bits per second reliably, and, astonishingly, every rate below $C$ **can** be sent with an error probability as small as desired. The proof did not say how; it took fifty years of coding research (turbo codes in 1993, LDPC codes rediscovered in the mid-1990s, polar codes in 2009) to come within a fraction of a decibel. Today the bound is the yardstick against which every modem, SerDes and radio standard is judged, and the vocabulary of entropy and mutual information has spread to compression, cryptography and machine learning.
 
 - **Link budgets end at Shannon.** The gap between a system's required $E_b/N_0$ and the Shannon limit is the room left for better coding; DVB-S2 sits 1–3 dB away, uncoded modulation 7–10 dB (§9).
 - **Spectral efficiency has a price in SNR.** Every extra bit per second per hertz at high SNR costs about 3 dB, which is why the last steps of Wi-Fi and 5G peak rates (1024- and 4096-QAM) need such clean channels.
-- **Compression and entropy.** File, image and model-weight compression all stop at the source's entropy; quantization formats for AI accelerators (16-10) are entropy-limited representations.
+- **Compression and entropy.** Lossless compression of files, images and model weights stops at the source's entropy. Quantizing weights to low-precision formats for AI accelerators (16-10) is lossy and governed by rate–distortion theory instead; entropy-coding the quantized values can shrink them further, down to their entropy.
 - **Water-filling** is how OFDM systems and DSL modems allocate power and bits across subcarriers (17-10).
 
 ## 2. Intuition first
@@ -40,7 +40,7 @@ flowchart LR
   C --> D["Channel<br/>capacity C"]
   D --> E["Channel decoder"]
   E --> F["Source decoder"]
-  F --> G["Reliable if H × rate ≤ C"]
+  F --> G["Reliable if H × rate < C<br/>(separation theorem)"]
 ```
 
 **Analogy: diversification and the information in a portfolio's returns.** A financial analyst knows that the uncertainty of a fair coin flip and of a highly predictable stock differ: the stock's tomorrow is mostly known, the coin's is not. Entropy quantifies this as a number of bits, and it adds over independent sources as variance does over independent bets. Capacity is like a bound on how much independent information a noisy market signal can carry about the true value, however cleverly you trade on it. **Where it breaks down:** entropy depends only on the probabilities, not on what the outcomes mean or are worth, so it says nothing about value; and Shannon's theorems are about long blocks and averages, while a trader faces one path.
@@ -70,7 +70,13 @@ $$
 H(X) \le \bar\ell < H(X) + 1 ,
 $$
 
-the upper bound by rounding the ideal lengths up. Coding blocks of $n$ symbols together makes the overhead $1/n$ per symbol: **the entropy is the minimum average number of bits per symbol for lossless compression** (Shannon's source coding theorem).
+the upper bound by rounding the ideal lengths up: $\ell_i = \lceil -\log_2p_i\rceil$ satisfies Kraft, because $2^{-\ell_i} \le p_i$, and is less than $-\log_2p_i + 1$. The lower bound holds for **every** prefix code, not only at the Lagrange stationary point. Write $\bar\ell - H = -\sum_ip_i\log_2(2^{-\ell_i}/p_i)$ and apply Jensen's inequality to the concave logarithm, $\mathbb{E}[\log_2W] \le \log_2\mathbb{E}[W]$ with $W = 2^{-\ell_i}/p_i$:
+
+$$
+\bar\ell - H \ge -\log_2\sum_ip_i\frac{2^{-\ell_i}}{p_i} = -\log_2\sum_i2^{-\ell_i} \ge 0 ,
+$$
+
+the last step by Kraft. Coding blocks of $n$ symbols together makes the overhead $1/n$ per symbol: **the entropy is the minimum average number of bits per symbol for lossless compression** (Shannon's source coding theorem).
 
 **Huffman's algorithm** finds the optimal prefix code: repeatedly merge the two least likely symbols into one node, then read codewords off the tree. For probabilities 1/2, 1/4, 1/8, 1/8 it gives lengths 1, 2, 3, 3, an average of exactly the entropy, **1.75** bits (Example 17-07.1).
 
@@ -84,6 +90,22 @@ $$
 
 is the reduction in uncertainty about one variable from observing the other. It is symmetric, non-negative, and zero exactly when $X$ and $Y$ are independent. For a channel with input $X$ and output $Y$, it is the information per channel use that gets through.
 
+**Relative entropy.** For two distributions $p$ and $q$ on the same alphabet, the **relative entropy** (Kullback–Leibler divergence) is
+
+$$
+D(p\,\Vert\,q) = \sum_xp(x)\log_2\frac{p(x)}{q(x)} \ge 0 ,
+$$
+
+with equality only when $p = q$. The inequality (Gibbs') is Jensen again: $-D = \sum p\log_2(q/p) \le \log_2\sum q = 0$. In coding terms, $D$ is the number of extra bits per symbol paid for compressing a $p$-source with a code designed for $q$. Mutual information is a divergence, $I(X; Y) = D(p_{XY}\,\Vert\,p_Xp_Y)$, the distance of the joint distribution from independence; that is why $I \ge 0$, with equality only for independent variables. The same definition with integrals applies to densities.
+
+**The data-processing inequality.** If $Z$ depends on $X$ only through $Y$ (a Markov chain $X \to Y \to Z$), then
+
+$$
+I(X; Z) \le I(X; Y) :
+$$
+
+no processing of the received signal, however clever, creates information about the input. Proof: with the conditional mutual information $I(X; Y\mid Z) = H(X\mid Z) - H(X\mid Y, Z) \ge 0$, the chain rule expands $I(X; Y, Z)$ two ways, $I(X; Z) + I(X; Y\mid Z) = I(X; Y) + I(X; Z\mid Y)$. The Markov property makes $I(X; Z\mid Y) = 0$, so $I(X; Z) = I(X; Y) - I(X; Y\mid Z) \le I(X; Y)$. A hard slicer, $Z = \operatorname{sgn}Y$, is such a processing step, so hard decisions can only lose capacity; §3.7 measures how much.
+
 ### 3.4 Channel capacity
 
 A **discrete memoryless channel** is described by transition probabilities $p(y\mid x)$. Its **capacity** is the largest mutual information over input distributions:
@@ -92,11 +114,11 @@ $$
 C = \max_{p(x)}I(X; Y)\quad\text{bits per channel use} .
 $$
 
-**Shannon's channel coding theorem.** For every rate $R < C$ there exist codes of block length $n$ whose error probability goes to zero as $n \to \infty$; for $R > C$ the error probability is bounded away from zero for every code. Capacity is a sharp threshold.
+**Shannon's channel coding theorem.** For every rate $R < C$ there exist codes of block length $n$ whose error probability goes to zero as $n \to \infty$; for $R > C$ the error probability is bounded away from zero for every code. Capacity is a sharp threshold. Together with the source coding theorem it gives Shannon's **source–channel separation theorem**: a source of entropy $H$ bits per symbol, emitting $r$ symbols per second, can be sent reliably over a channel of capacity $C$ bits per second if $Hr < C$ and cannot if $Hr > C$, and compressing first, then channel coding separately, loses nothing (for a single link with no limit on delay).
 
 > **Going deeper — why random codes work.** Shannon's proof picks $2^{nR}$ codewords at random and decodes by finding the codeword "jointly typical" with the received sequence. For long blocks, the received sequence lies, with high probability, in a "noise cloud" of about $2^{nH(Y\mid X)}$ sequences around the transmitted codeword, inside a space of about $2^{nH(Y)}$ typical outputs. About $2^{n[H(Y) - H(Y\mid X)]} = 2^{nI(X;Y)}$ clouds fit without overlapping, so any rate below $I$ can be decoded reliably. The converse uses Fano's inequality. Cover & Thomas, chapter 7, gives the full argument.
 
-**The binary symmetric channel (BSC)** flips each bit with probability $p$. With a uniform input, $H(Y) = 1$ and $H(Y\mid X) = h(p)$, so
+**The binary symmetric channel (BSC)** flips each bit with probability $p$. For **any** input distribution, $H(Y\mid X) = h(p)$: whichever bit is sent, the output is uncertain only through the flip. So $I(X; Y) = H(Y) - h(p) \le 1 - h(p)$, because a binary $Y$ has at most 1 bit of entropy, and a uniform input makes $Y$ uniform and achieves the bound:
 
 $$
 C_{\text{BSC}} = 1 - h(p) .
@@ -104,14 +126,14 @@ $$
 
 At $p$ = 0.01, $C$ = **0.919**: a 1% raw error rate costs 8% of the bits as redundancy, not 1%. At $p$ = 0.11, $C \approx$ **0.500**.
 
-**The binary erasure channel (BEC)** loses each bit with probability ε but marks the loss; its capacity is $1 - \varepsilon$: knowing where the errors are is worth a lot.
+**The binary erasure channel (BEC)** loses each bit with probability ε but marks the loss. An unerased output reveals $X$ exactly; an erasure, which happens with probability ε whatever was sent, leaves $X$ as uncertain as before. So $H(X\mid Y) = \varepsilon H(X)$, $I(X; Y) = (1 - \varepsilon)H(X) \le 1 - \varepsilon$, and the uniform input gives capacity $1 - \varepsilon$: knowing where the errors are is worth a lot.
 
 ### 3.5 The Gaussian channel and the Shannon–Hartley theorem
 
 For continuous variables, the **differential entropy** $h(X) = -\int f(x)\log_2f(x)\,dx$ plays the role of entropy. Two facts drive everything:
 
 1. **A Gaussian with variance σ² has** $h = \tfrac12\log_2(2\pi e\sigma^2)$ (integrate $-\log_2$ of the Gaussian density against itself).
-2. **Among all densities with variance σ², the Gaussian has the largest differential entropy** (the maximum-entropy property, from $\ln x \le x - 1$ again).
+2. **Among all densities with variance σ², the Gaussian has the largest differential entropy** (the maximum-entropy property). Proof: let φ be the Gaussian density with the same mean μ and variance σ² as a density $f$. Relative entropy (§3.3) is non-negative for densities too, so $0 \le D(f\,\Vert\,\varphi) = \int f\log_2(f/\varphi) = -h(f) - \int f\log_2\varphi$. But $\log_2\varphi(x) = -\tfrac12\log_2(2\pi\sigma^2) - (x - \mu)^2/(2\sigma^2\ln2)$ is a quadratic in $x$, so its average depends only on the mean and variance, which $f$ and φ share: $\int f\log_2\varphi = \int\varphi\log_2\varphi = -h(\varphi)$. Hence $h(f) \le h(\varphi)$, with equality only when $f = \varphi$.
 
 Now send real samples $x$ with average power $P$ through $Y = X + Z$, $Z \sim \mathcal N(0, \sigma^2)$ independent. Then $I(X; Y) = h(Y) - h(Y\mid X) = h(Y) - h(Z)$. The output has variance $P + \sigma^2$, so $h(Y) \le \tfrac12\log_2(2\pi e(P + \sigma^2))$, with equality when $X$ is Gaussian. Therefore
 
@@ -119,7 +141,7 @@ $$
 C = \tfrac12\log_2\Big(1 + \frac{P}{\sigma^2}\Big)\quad\text{bits per real sample} .
 $$
 
-**From samples to seconds.** A signal of bandwidth $B$ has $2B$ independent real samples per second (17-01 §3.6), and white noise of two-sided density $N_0/2$ gives each sample variance $\sigma^2 = N_0/2$ while signal power $S$ spreads over the samples as $P = S/(2B)$, so $P/\sigma^2 = S/(N_0B)$. Multiplying by $2B$ samples per second:
+**From samples to seconds.** A signal of bandwidth $B$ can be expanded on $2B$ orthonormal sinc functions per second (17-01 §3.6), so it has $2B$ independent real coefficients per second. Each coefficient carries signal energy $P = S/(2B)$ and, for white noise of two-sided density $N_0/2$, noise variance $\sigma^2 = N_0/2$; both are energies per dimension (J). Equivalently, literal samples of the band-limited signal and noise have powers $S$ and $N_0B$ (W). Either way $P/\sigma^2 = S/(N_0B)$. Multiplying by $2B$ samples per second:
 
 $$
 C = B\log_2\Big(1 + \frac{S}{N_0B}\Big)\quad\text{bits per second} .
@@ -159,7 +181,7 @@ The **1.59** dB between soft and hard decisions is why every modern decoder work
 
 ### 3.8 Parallel channels and water-filling
 
-Suppose a transmitter can split total power $P$ among parallel Gaussian channels with noise-normalized gains $g_k$ (SNR per unit power), as across OFDM subcarriers or MIMO eigenmodes. The capacity $\sum_k\log_2(1 + g_kp_k)$ is maximized, subject to $\sum p_k = P$, by the **water-filling** solution (a Lagrange-multiplier argument):
+Suppose a transmitter can split total power $P$ among parallel Gaussian channels with noise-normalized gains $g_k$ (SNR per unit power), as across OFDM subcarriers or MIMO eigenmodes. The capacity $\sum_k\log_2(1 + g_kp_k)$ is maximized, subject to $\sum p_k = P$, by the **water-filling** solution. Derivation: the objective is concave and the constraints are linear, so the Karush–Kuhn–Tucker conditions identify the global maximum. With a multiplier λ for the total power and $\nu_k \ge 0$ for each constraint $p_k \ge 0$, the Lagrangian is $L = \sum_k\log_2(1 + g_kp_k) - \lambda(\sum_kp_k - P) + \sum_k\nu_kp_k$. Setting $\partial L/\partial p_k = 0$ gives $g_k/[(1 + g_kp_k)\ln2] = \lambda - \nu_k$. Where $p_k > 0$, complementary slackness makes $\nu_k = 0$, so $1/g_k + p_k = 1/(\lambda\ln2) \equiv \mu$, the same for every active channel. Where $p_k = 0$, $\nu_k \ge 0$ requires $g_k/\ln2 \le \lambda$, that is $1/g_k \ge \mu$. Together:
 
 $$
 p_k = \Big(\mu - \frac{1}{g_k}\Big)^+ ,
@@ -318,14 +340,14 @@ The lab, [labs/17-07-lab](../labs/17-07-lab/README.md), provides `infotheory.py`
 - **Using real-channel and complex-channel formulas interchangeably.** Per real sample, $\tfrac12\log_2(1 + P/\sigma^2)$; per complex sample, $\log_2(1 + \text{SNR})$.
 - **Believing more bandwidth always helps a lot.** At high SNR doubling bandwidth (at fixed power) adds less than doubling; at low SNR it adds almost nothing because capacity is power-limited.
 - **Treating entropy as a property of a single message.** It is an average over the source's distribution; a particular message may compress better or worse.
-- **Claiming a system "beats Shannon".** MIMO adds parallel channels (17-11), each obeying its own bound; feedback, side information or non-Gaussian noise change the channel, not the theorem.
+- **Claiming a system "beats Shannon".** MIMO adds parallel channels (17-11), each obeying its own bound. Feedback simplifies coding but does not raise the capacity of a memoryless channel (Shannon, 1956); side information or a different noise model changes the channel, not the theorem.
 
 ## 9. Practitioner lens
 
 ### State of the art (as of Nov 2026)
 
-- **Satellite broadcasting is within about 1–3 dB.** DVB-S2's quasi-error-free requirements (ETSI EN 302 307-1, Table 13) sit 1.07 dB from the Shannon bound for QPSK rate 1/2 and 2.85 dB for 32APSK rate 9/10 (17-06 Example 5, [R-276]) **[Established]**, the comparison is ours.
-- **Cellular reference sensitivity is near capacity too.** 3GPP's NR sensitivity assumptions use an SNR of −1 dB for QPSK with a rate-1/3 code ([R-260]), that is 2 × 1/3 = 0.667 b/s/Hz; Shannon requires only $2^{0.667} - 1$, an SNR of −2.31 dB, so the assumption leaves 1.31 dB for the code's shortfall and finite block length **[Established]**, the comparison is ours.
+- **Satellite broadcasting is within about 1–3 dB.** DVB-S2's quasi-error-free requirements (ETSI EN 302 307-1, Table 13) sit 1.07 dB from the Shannon bound for QPSK rate 1/2 and 2.85 dB for 32APSK rate 9/10 (Example 17-06.5, [R-276]) **[Established]**, the comparison is ours.
+- **Cellular reference sensitivity is near capacity too.** 3GPP's NR sensitivity assumptions use an SNR of −1 dB for QPSK with a rate-1/3 code ([R-260]), that is 2 × 1/3 = 0.667 b/s/Hz. The criterion is 95% of maximum throughput with a single transmission (a block error rate near 5%), not error-free operation. Shannon requires only $2^{0.667} - 1$, an SNR of −2.31 dB, so the assumption leaves 1.31 dB for the code's shortfall and finite block length **[Established]**, the comparison is ours.
 - **LoRa trades almost all its bandwidth for sensitivity.** At spreading factor 12, 293 b/s in 125 kHz is η = 0.0023 b/s/Hz, deep in the power-limited regime; its −20 dB SNR limit corresponds to $E_b/N_0$ = 6.3 dB ([R-274], 17-05), about 7.9 dB above the −1.59 dB ultimate limit: the price of simple, low-power, noncoherent-friendly modulation without strong codes **[Established]**, the comparison is ours.
 - **Modern codes approach capacity.** LDPC codes in Wi-Fi, 5G data channels and DVB-S2, and polar codes in 5G control channels, are designed to operate within a fraction of a decibel to about a decibel of the constrained capacity at long block lengths; the gap grows at short block lengths, where finite-length bounds rather than capacity apply (17-08) **[Established]**.
 
@@ -408,7 +430,7 @@ Practice: [17-07 problems](../problems/17-07-problems.md) · [worked solutions](
 
 - **Builds on:** [03-01](../../03-probability-statistics-and-random-variables/chapters/03-01-probability-in-ee-language.md)–[03-04](../../03-probability-statistics-and-random-variables/chapters/03-04-joint-distributions-and-clt.md) (probability and joint distributions), [17-01](17-01-random-processes-and-psd.md) (2B samples per second), [17-02](17-02-noise-and-snr.md) ($E_b/N_0$), [17-05](17-05-matched-filters-and-detection.md) and [17-06](17-06-bandpass-digital-modulation.md) (constellations and their error rates).
 - **Next:** [17-08](17-08-channel-coding.md) builds the codes that close the gap to capacity.
-- **Used later:** fading-channel capacity and diversity ([17-09](17-09-wireless-channels.md)), OFDM bit loading ([17-10](17-10-ofdm.md)), MIMO capacity ([17-11](17-11-mimo-and-beamforming.md)), and the quantization and number formats of AI accelerators ([16-10](../../16-digital-signal-processing/chapters/16-10-quantization-and-fixed-point.md)).
+- **Used later:** fading and diversity ([17-09](17-09-wireless-channels.md)), ergodic capacity ([17-11](17-11-mimo-and-beamforming.md)), OFDM bit loading ([17-10](17-10-ofdm.md)), MIMO capacity ([17-11](17-11-mimo-and-beamforming.md)), and the quantization and number formats of AI accelerators ([16-10](../../16-digital-signal-processing/chapters/16-10-quantization-and-fixed-point.md)).
 
 ## 13. Further study
 

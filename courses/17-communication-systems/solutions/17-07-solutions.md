@@ -30,7 +30,21 @@ BEC: $1 - 0.2$ = **0.8**. BSC: $1 - h(0.2)$ = **0.278**. With erasures the recei
 
 ### Solution 17-07.6
 
-With $q$ = 0.5: $C = \log_2(1 + 0.5 \times 0.5^{1}) = \log_21.25$ = **0.322** bits per use, achieved with $P(X = 1)$ = **0.4**. The channel is asymmetric: a 0 is always received correctly, while a 1 is ambiguous, so the input should favour the reliable symbol. The Blahut–Arimoto algorithm finds the same result numerically.
+Let $\pi = P(X = 1)$. A 0 is always received as 0, and a 1 arrives as 1 with probability $1 - q$, so $P(Y = 1) = \pi(1 - q)$ and $H(Y\mid X) = \pi h(q)$. Hence
+
+$$
+I(\pi) = h\big(\pi(1 - q)\big) - \pi h(q) ,
+$$
+
+which is concave in π. Using $h'(u) = \log_2[(1 - u)/u]$, setting $dI/d\pi = 0$ gives
+
+$$
+(1 - q)\log_2\frac{1 - \pi(1 - q)}{\pi(1 - q)} = h(q)
+\quad\Rightarrow\quad
+\pi^* = \frac{1}{(1 - q)\big(1 + 2^{h(q)/(1 - q)}\big)} .
+$$
+
+With $q$ = 0.5, $h(q)$ = 1 and $2^{1/0.5}$ = 4, so $\pi^* = 1/(0.5 \times 5)$ = **0.4**, and $C = h(0.2) - 0.4 \times 1 = 0.722 - 0.4$ = **0.322** bits per use. The general closed form is $C = \log_2(1 + (1 - q)q^{q/(1 - q)})$; at $q$ = 0.5 it is $\log_21.25$, the same number. The channel is asymmetric: a 0 is always received correctly, while a 1 is ambiguous, so the input should favour the reliable symbol. The Blahut–Arimoto algorithm finds the same result numerically.
 
 ### Solution 17-07.7
 
@@ -38,11 +52,15 @@ $C = 10^6\log_2 11$ = **3.459** Mb/s. 10 b/s/Hz needs $\text{SNR} = 2^{10} - 1 =
 
 ### Solution 17-07.8
 
-Solve $B\log_2(1 + (S/N_0)/B) = 10^7$. With $S/N_0 = 10^7$ Hz, $x = (S/N_0)/B$ must satisfy $\log_2(1 + x)/x = 1$, so $x = 1$ and $B$ = **10** MHz (η = 1, and $E_b/N_0 = (S/N_0)/R_b$ = 0 dB, exactly the Shannon limit at η = 1). With 73 dB-Hz ($2 \times 10^7$ Hz), the minimum bandwidth is **3.77** MHz: more power buys a much narrower channel.
+Solve $B\log_2(1 + (S/N_0)/B) = 10^7$. With $S/N_0 = 10^7$ Hz, $x = (S/N_0)/B$ must satisfy $\log_2(1 + x)/x = 1$, so $x = 1$ and $B$ = **10** MHz (η = 1, and $E_b/N_0 = (S/N_0)/R_b$ = 0 dB, exactly the Shannon limit at η = 1). With 73 dB-Hz ($10^{7.3} = 1.995 \times 10^7$ Hz) there is no closed form. Solve $B\log_2(1 + 1.995 \times 10^7/B) = 10^7$ numerically, for example by bisection: the left side grows with $B$, and it is 0.88 × 10⁷ at $B$ = 3 MHz and 1.03 × 10⁷ at 4 MHz. The root is $B$ = **3.77** MHz: more power buys a much narrower channel. (Rounding $S/N_0$ to 2 × 10⁷ Hz gives 3.76 MHz; at this step the third digit is sensitive to the rounding.)
 
 ### Solution 17-07.9
 
-$(2^{1.5} - 1)/1.5 = 1.219$, **0.86** dB. A practical rate-3/4 code sits a decibel or two above this.
+(a) $(2^{1.5} - 1)/1.5 = 1.219$, **0.86** dB: the Gaussian-input bound at 1.5 b/s/Hz, for any modulation.
+
+(b) QPSK is two independent BPSK dimensions, each carrying 0.75 bit per use. The BPSK soft-decision capacity (§3.7) reaches 0.75 bit at $E_s/N_0$ = 0.377 dB per dimension; with 0.75 information bit per dimension, $E_b/N_0 = E_s/N_0 - 10\log_{10}0.75$ = **1.63** dB. Restricting the input to QPSK costs 0.77 dB at this rate.
+
+(c) $E_b/N_0 = 4.03 - 10\log_{10}1.487473$ = **2.31** dB, 1.45 dB from the unconstrained bound (evaluated at 1.5 b/s/Hz) but only 0.68 dB from the QPSK bound. The second gap is the honest measure of the code: 64 800-bit LDPC codes at quasi-error-free operation sit within a decibel of what their constellation allows.
 
 ### Solution 17-07.10
 
@@ -72,6 +90,32 @@ With σ² = $N_0/2$ and $E_s/N_0$ = 1:
 
 At this SNR soft BPSK keeps most of the Gaussian capacity; hard decisions throw away almost a quarter of it.
 
+### Solution 17-07.15
+
+(a) With $2^\eta = e^{\eta\ln2} = 1 + \eta\ln2 + (\eta\ln2)^2/2 + \dots$,
+
+$$
+\frac{2^\eta - 1}{\eta} = \ln2 + \frac{\eta(\ln2)^2}{2} + \dots \to \ln2 = 0.693 ,
+$$
+
+that is $10\log_{10}0.693$ = **−1.59** dB. L'Hôpital's rule gives the same: the derivative of the numerator is $2^\eta\ln2 \to \ln2$.
+
+(b) $E_b/N_0 = 6.62 - 10\log_{10}1.980636$ = **3.65** dB. The limit at η = 1.980636 is $(2^{1.980636} - 1)/1.980636$ = 1.488, **1.73** dB, so the gap is **1.93** dB. Part of the gap is the 8PSK constellation constraint and part is the finite (64 800-bit) block length and the quasi-error-free target.
+
+### Solution 17-07.16
+
+(a) With a multiplier λ for the power constraint and $\nu_k \ge 0$ for $p_k \ge 0$,
+
+$$
+L = \log_2(1 + 2p_1) + \log_2(1 + 0.5p_2) - \lambda(p_1 + p_2 - P) + \nu_1p_1 + \nu_2p_2 .
+$$
+
+$\partial L/\partial p_k = 0$ gives $g_k/[(1 + g_kp_k)\ln2] = \lambda - \nu_k$. For an active channel ($p_k > 0$, so $\nu_k = 0$), $1/g_k + p_k = 1/(\lambda\ln2) \equiv \mu$; for an inactive one, $\nu_k \ge 0$ means $1/g_k \ge \mu$. So $p_k = (\mu - 1/g_k)^+$. The objective is concave and the constraints linear, so these conditions give the global maximum.
+
+(b) The floors are $1/g_1$ = 0.5 and $1/g_2$ = 2. Try channel 1 alone: $p_1$ = 1 puts the water level at μ = 1.5, below channel 2's floor of 2, so channel 2 stays dry: $p_1$ = **1**, $p_2$ = **0**, and $C = \log_2(1 + 2)$ = **1.585** bits per use.
+
+(c) Channel 2 starts to fill when μ reaches its floor, 2: then $p_1 = 2 - 0.5$ = 1.5, so the threshold is $P$ = **1.5**. Above it both channels fill to a common level.
+
 ---
 
 ## Answer key
@@ -96,6 +140,8 @@ At this SNR soft BPSK keeps most of the Gaussian capacity; hard decisions throw 
 | 17-07.8a | minimum bandwidth at 70 dB-Hz | 10 | MHz |
 | 17-07.8b | minimum bandwidth at 73 dB-Hz | 3.77 | MHz |
 | 17-07.9a | limit at 1.5 b/s/Hz | 0.86 | dB |
+| 17-07.9b | QPSK-constrained limit at 1.5 b/s/Hz | 1.63 | dB |
+| 17-07.9c | DVB-S2 QPSK 3/4 Eb/N0 | 2.31 | dB |
 | 17-07.10a | unlimited-bandwidth capacity | 1.443 | Mb/s |
 | 17-07.10b | capacity in 1 MHz | 1.0 | Mb/s |
 | 17-07.10c | capacity in 10 MHz | 1.375 | Mb/s |
@@ -108,3 +154,11 @@ At this SNR soft BPSK keeps most of the Gaussian capacity; hard decisions throw 
 | 17-07.14a | Gaussian-input capacity | 0.792 | bits/use |
 | 17-07.14b | BPSK soft capacity | 0.721 | bits/use |
 | 17-07.14c | BPSK hard capacity | 0.603 | bits/use |
+| 17-07.15a | ultimate limit | −1.59 | dB |
+| 17-07.15b | DVB-S2 8PSK 2/3 Eb/N0 | 3.65 | dB |
+| 17-07.15c | Shannon limit at 1.980636 b/s/Hz | 1.73 | dB |
+| 17-07.15d | gap | 1.93 | dB |
+| 17-07.16a | power in the stronger channel at P = 1 | 1 | — |
+| 17-07.16b | power in the weaker channel at P = 1 | 0 | — |
+| 17-07.16c | capacity at P = 1 | 1.585 | bits/use |
+| 17-07.16d | total power at which the weaker channel opens | 1.5 | — |

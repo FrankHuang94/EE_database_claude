@@ -73,26 +73,26 @@ A code that meets it with equality is **perfect**: every word lies within distan
 
 A code is **linear** if the XOR of any two codewords is a codeword. Then the codewords form a $k$-dimensional subspace of the $n$-bit vectors, and two matrices describe everything:
 
-- The **generator matrix** $G$ ($k \times n$) has a basis of the code as its rows; the message row vector $\mathbf{m}$ encodes as $\mathbf{c} = \mathbf{m}G$.
-- The **parity-check matrix** $H$ ($(n - k) \times n$) has every codeword in its null space: $\mathbf{c}H^T = \mathbf{0}$, so $GH^T = 0$.
+- The **generator matrix** $\mathbf{G}$ ($k \times n$) has a basis of the code as its rows; the message row vector $\mathbf{m}$ encodes as $\mathbf{c} = \mathbf{m}\mathbf{G}$.
+- The **parity-check matrix** $\mathbf{H}$ ($(n - k) \times n$) has every codeword in its null space: $\mathbf{c}\mathbf{H}^\mathsf{T} = \mathbf{0}$, so $\mathbf{G}\mathbf{H}^\mathsf{T} = 0$.
 
-In **systematic form** the message appears unchanged in the codeword: $G = [I_k \mid P]$ and $H = [P^T \mid I_{n-k}]$, where $P$ is $k \times (n - k)$; then $GH^T = P + P = 0$.
+In **systematic form** the message appears unchanged in the codeword: $\mathbf{G} = [\mathbf{I}_k \mid \mathbf{P}]$ and $\mathbf{H} = [\mathbf{P}^\mathsf{T} \mid \mathbf{I}_{n-k}]$, where $\mathbf{P}$ is $k \times (n - k)$; then $\mathbf{G}\mathbf{H}^\mathsf{T} = \mathbf{P} + \mathbf{P} = 0$.
 
-> **Math refresher — arithmetic in GF(2).** The two-element field has $0 + 0 = 0$, $1 + 1 = 0$, $1 + 0 = 1$ (addition is XOR), and multiplication is AND. Subtraction equals addition, so $P + P = 0$. Matrix products are ordinary products with every sum reduced modulo 2. Everything you know about rank, null spaces and row reduction from 02-06 carries over, with "divide by a pivot" trivial because the only nonzero element is 1.
+> **Math refresher — arithmetic in GF(2).** The two-element field has $0 + 0 = 0$, $1 + 1 = 0$, $1 + 0 = 1$ (addition is XOR), and multiplication is AND. Subtraction equals addition, so $\mathbf{P} + \mathbf{P} = 0$. Matrix products are ordinary products with every sum reduced modulo 2. Everything you know about rank, null spaces and row reduction from 02-06 carries over, with "divide by a pivot" trivial because the only nonzero element is 1.
 
-**Minimum distance from weights.** For a linear code, the distance between $\mathbf{c}_1$ and $\mathbf{c}_2$ is the weight (number of 1s) of $\mathbf{c}_1 + \mathbf{c}_2$, itself a codeword. So $d_{min}$ is the smallest weight of a nonzero codeword, and the **weight distribution** $A_w$ (the number of codewords of weight $w$) gives every distance in the code. Equivalently, $d_{min}$ is the smallest number of columns of $H$ that add to zero.
+**Minimum distance from weights.** For a linear code, the distance between $\mathbf{c}_1$ and $\mathbf{c}_2$ is the weight (number of 1s) of $\mathbf{c}_1 + \mathbf{c}_2$, itself a codeword. So $d_{min}$ is the smallest weight of a nonzero codeword, and the **weight distribution** $A_w$ (the number of codewords of weight $w$) gives every distance in the code. Equivalently, $d_{min}$ is the smallest number of columns of $\mathbf{H}$ that add to zero.
 
 **Syndrome decoding.** Received $\mathbf{r} = \mathbf{c} + \mathbf{e}$, with $\mathbf{e}$ the error pattern. The **syndrome** is
 
 $$
-\mathbf{s} = \mathbf{r}H^T = \mathbf{c}H^T + \mathbf{e}H^T = \mathbf{e}H^T ,
+\mathbf{s} = \mathbf{r}\mathbf{H}^\mathsf{T} = \mathbf{c}\mathbf{H}^\mathsf{T} + \mathbf{e}\mathbf{H}^\mathsf{T} = \mathbf{e}\mathbf{H}^\mathsf{T} ,
 $$
 
-which depends only on the error, not on the message. There are $2^{n-k}$ syndromes; the decoder stores, for each, the most likely (lowest-weight) error pattern that produces it, and subtracts it. For a single error in position $j$, $\mathbf{s}$ is the $j$th column of $H$.
+which depends only on the error, not on the message. There are $2^{n-k}$ syndromes; the decoder stores, for each, the most likely (lowest-weight) error pattern that produces it, and subtracts it. For a single error in position $j$, $\mathbf{s}$ is the $j$th column of $\mathbf{H}$.
 
 ### 3.3 Hamming codes and SEC-DED, in matrix form
 
-A **Hamming code** with $r$ check bits takes as the columns of $H$ all $2^r - 1$ nonzero $r$-bit vectors, so $n = 2^r - 1$ and $k = n - r$. No column is zero and no two are equal, so no one or two columns add to zero, while three can (e.g. 001 + 010 + 011): $d_{min}$ = 3 and $t$ = 1. Every single error has a distinct nonzero syndrome, and because $2^k(1 + n) = 2^{n-r}2^r = 2^n$ the code is perfect. Example 17-08.1 builds the (7,4) code with $G$, $H$ and a syndrome table, the matrix form of 08-01's positional construction.
+A **Hamming code** with $r$ check bits takes as the columns of $\mathbf{H}$ all $2^r - 1$ nonzero $r$-bit vectors, so $n = 2^r - 1$ and $k = n - r$. No column is zero and no two are equal, so no one or two columns add to zero, while three can (e.g. 001 + 010 + 011): $d_{min}$ = 3 and $t$ = 1. Every single error has a distinct nonzero syndrome, and because $2^k(1 + n) = 2^{n-r}2^r = 2^n$ the code is perfect. Example 17-08.1 builds the (7,4) code with $\mathbf{G}$, $\mathbf{H}$ and a syndrome table, the matrix form of 08-01's positional construction.
 
 Appending an overall parity bit makes every codeword weight even, so the weight-3 codewords become weight 4: the **extended Hamming code** has $d_{min}$ = 4 and is **SEC-DED** (single-error-correcting, double-error-detecting, 08-01). For a memory word of $k$ data bits, the Hamming part needs the smallest $r$ with $2^r \ge k + r + 1$; for $k$ = 64 that is $r$ = 7, plus the parity bit: 8 check bits, a (72,64) code.
 
@@ -107,7 +107,7 @@ Used for detection, this is a **cyclic redundancy check (CRC)**. An error patter
 - if $(x + 1)$ divides $g(x)$, every odd-weight error pattern is detected; since $g(1)$ is the number of terms modulo 2, this holds exactly when $g$ has an even number of terms;
 - of bursts of length $r + 1$, a fraction $2^{-(r-1)}$ goes undetected, and of longer bursts $2^{-r}$; for random error patterns the undetected fraction is also close to $2^{-r}$.
 
-**The CRCs of 5G NR** ([R-279]) show how a standard chooses. TS 38.212 defines six generator polynomials: CRC24A, CRC24B and CRC24C ($r$ = 24), CRC16, CRC11 and CRC6. Data transport blocks carry CRC24A if they exceed 3824 bits and CRC16 otherwise; each LDPC code block after segmentation carries CRC24B; the broadcast channel and downlink control information carry CRC24C; uplink control information uses CRC11 or CRC6 depending on its size. CRC16 ($x^{16} + x^{12} + x^5 + 1$), CRC24A and CRC24B have an even number of terms and catch every odd-weight error; CRC24C, CRC11 and CRC6 do not, which is acceptable because for polar-coded control channels the CRC also serves as a selector among candidate decodings (§3.8).
+**The CRCs of 5G NR** ([R-279]) show how a standard chooses. TS 38.212 defines six generator polynomials: CRC24A, CRC24B and CRC24C ($r$ = 24), CRC16, CRC11 and CRC6. Data transport blocks carry CRC24A if they exceed 3824 bits and CRC16 otherwise; each LDPC code block after segmentation carries CRC24B; the broadcast channel and downlink control information carry CRC24C; uplink control information uses CRC11 or CRC6 depending on its size. CRC16 ($x^{16} + x^{12} + x^5 + 1$), CRC24A and CRC24B have an even number of terms and catch every odd-weight error; CRC24C, CRC11 and CRC6 do not. TS 38.212 states no rationale for these choices. One relevant consideration is that the CRCs on polar-coded channels do double duty: with CRC-aided list decoding (§3.8) the CRC also picks among $L$ candidate decodings, which spends about $\log_2L$ of its $r$ bits, so the false-alarm rate is roughly $2^{-(r - \log_2L)}$.
 
 > **Going deeper — undetected error probability.** For a binary symmetric channel with bit-error probability $p$, a linear code's undetected-error probability is exactly $P_u = \sum_{w \ge 1}A_wp^w(1 - p)^{n-w}$, the probability that the error pattern is a nonzero codeword. For long CRC-protected blocks and moderate $p$ it approaches $2^{-r}$, but not for every $p$: some polynomials are "improper" and exceed $2^{-r}$ at particular error rates. Koopman's tables of CRC polynomials list the minimum distance each achieves for each data length, which is how standards bodies choose them.
 
@@ -146,6 +146,10 @@ $$
 the largest possible for any code with these $n$ and $k$ (the **Singleton bound** $d_{min} \le n - k + 1$ holds for every code, because deleting $d_{min} - 1$ positions must leave the codewords distinct). Such codes are called **maximum-distance separable**. An RS code corrects $t = (n - k)/2$ symbol errors, or $n - k$ symbol erasures.
 
 Because a symbol counts as one error however many of its bits are wrong, RS codes are natural for **burst errors**. A burst of $b$ bits, in the worst alignment, starts at the last bit of a symbol and touches $1 + \lceil(b - 1)/m\rceil$ symbols, so every burst of up to $(t - 1)m + 1$ bits is correctable.
+
+**Interleaving.** A burst longer than one codeword can absorb is spread across several codewords by an **interleaver**. A **block interleaver** of depth $I$ writes $I$ codewords of $n$ symbols as the rows of an $I \times n$ array and transmits it column by column. A channel burst of $b$ consecutive symbols then puts at most $\lceil b/I\rceil$ errors into any one codeword, so $I$ codewords that each correct $t$ symbol errors survive every burst of up to $tI$ symbols. The price is latency and memory: the receiver must buffer the whole array, $In$ symbols (twice that with double buffering), before it can decode. Problem 17-08.18 sizes one.
+
+**BCH codes.** Reed–Solomon codes have binary cousins. A binary **BCH code** of length $n = 2^m - 1$ is the cyclic code whose generator polynomial has as roots $\alpha, \alpha^2, \dots, \alpha^{2t}$, with α a primitive element of GF($2^m$). Over GF(2) each root brings its whole minimal polynomial, of degree at most $m$, and the even powers come free ($\alpha^{2i}$ is a root of the same minimal polynomial as $\alpha^i$), so $g(x)$ is the product of at most $t$ minimal polynomials and $n - k \le mt$. The **BCH bound** guarantees $d_{min} \ge 2t + 1$, the **designed distance**. With $m$ = 4: $t$ = 1 gives the (15,11) Hamming code, and $t$ = 2 gives $g(x) = (x^4 + x + 1)(x^4 + x^3 + x^2 + x + 1) = x^8 + x^7 + x^6 + x^4 + 1$, a (15,7) code with $d_{min}$ = 5. RS codes are the non-binary case of the same construction: with symbols in GF($2^m$) itself every minimal polynomial has degree 1, so $n - k = 2t$ exactly. BCH codes are decoded with the same syndrome, Berlekamp–Massey and Chien machinery; they are DVB-S2's outer code (§3.9) and the classic ECC of NAND flash.
 
 With independent bit errors of probability $p$, a symbol is wrong with probability $q = 1 - (1 - p)^m$, and a codeword is uncorrectable with probability $P_{cw} = \sum_{i > t}\binom{n}{i}q^i(1 - q)^{n-i}$. Ethernet's "KP4" code is RS(544,514) over GF($2^{10}$), $t$ = 15 ([R-280]); Example 17-08.6 works its numbers.
 
@@ -195,28 +199,37 @@ tight once $P_b$ is below about $10^{-3}$. The asymptotic soft coding gain is $1
 
 Viterbi-decoded convolutional codes leave about 4 dB on the table at $10^{-5}$ (Example 17-08.5). Closing that gap took codes whose decoders iterate: **turbo codes** (two convolutional codes joined by an interleaver, decoded by exchanging soft information; used in 3G and 4G cellular data), **LDPC** codes and **polar** codes.
 
-**LDPC codes.** A **low-density parity-check** code is a linear code whose $H$ is sparse: each of the $n$ bits takes part in only a few checks (say 3) and each check involves only a few bits (say 6). Draw $H$ as a bipartite **Tanner graph**, with variable nodes for bits, check nodes for parity equations, and an edge for each 1 in $H$. Decoding is **belief propagation**: nodes exchange **log-likelihood ratios** along the edges, and each iteration refines every bit's belief using what its checks say about it.
+**LDPC codes.** A **low-density parity-check** code is a linear code whose $\mathbf{H}$ is sparse: each of the $n$ bits takes part in only a few checks (say 3) and each check involves only a few bits (say 6). Draw $\mathbf{H}$ as a bipartite **Tanner graph**, with variable nodes for bits, check nodes for parity equations, and an edge for each 1 in $\mathbf{H}$. Decoding is **belief propagation**: nodes exchange **log-likelihood ratios** along the edges, and each iteration refines every bit's belief using what its checks say about it.
 
-> **Math refresher — log-likelihood ratios.** For a bit $b$, $L = \ln\frac{P(b = 0)}{P(b = 1)}$: positive favours 0, and $|L|$ is the confidence. For BPSK ($b \mapsto 1 - 2b$) in Gaussian noise of variance σ², the channel LLR of a received $y$ is $L = 2y/\sigma^2$. Independent evidence about the same bit adds: $L_{total} = L_1 + L_2$.
+> **Math refresher — log-likelihood ratios.** For a bit $b$, $L = \ln\frac{P(b = 0)}{P(b = 1)}$: positive favours 0, and $|L|$ is the confidence. For BPSK with amplitude $\sqrt{E_c}$ ($b \mapsto \sqrt{E_c}(1 - 2b)$) in Gaussian noise of variance σ², the channel LLR of a received $y$ is $L = 2\sqrt{E_c}\,y/\sigma^2$, which is $2y/\sigma^2$ for unit amplitude. Independent evidence about the same bit adds: $L_{total} = L_1 + L_2$.
 
 The two update rules follow from that definition:
 
 - **Variable node:** a bit's outgoing message to one check is its channel LLR plus the messages from all its *other* checks (independent evidence adds).
 - **Check node:** a check says the XOR of its bits is 0. With $\tanh(L/2) = P(0) - P(1)$, the "expected sign" of an XOR is the product of the expected signs, so the message to one bit is $2\tanh^{-1}\prod_j\tanh(L_j/2)$ over the *other* bits. Its **min-sum** approximation keeps the product of signs and the smallest magnitude, usually scaled by about 0.75 to correct its overconfidence (Problem 17-08.16).
 
-Random sparse graphs have almost no short cycles, so the messages are nearly independent and the decoder behaves like the ML decoder of a very long code. Long LDPC codes show a **threshold**: below a certain $E_b/N_0$ they fail, and just above it the error rate falls off a cliff (the "waterfall"). Well-designed codes put the threshold within a fraction of a decibel of capacity.
+Random sparse graphs have almost no short cycles, so over many iterations each bit's neighbourhood looks like a tree, the messages stay nearly independent, and belief propagation approximately computes each bit's posterior probability. It is **not** maximum-likelihood decoding. For the (3,6)-regular ensemble on the erasure channel, density evolution gives a BP threshold of ε ≈ **0.429**, against about 0.488 for optimal (MAP) decoding and 0.5 for capacity (Richardson & Urbanke, ch. 3). What brings practical codes close to capacity is the design of irregular degree distributions, which push the BP threshold to within a fraction of a decibel of capacity. Long LDPC codes show a **threshold**: below a certain $E_b/N_0$ they fail, and just above it the error rate falls off a cliff (the "waterfall"). Well-designed codes put the threshold within a fraction of a decibel of capacity.
 
-For hardware, $H$ is built from a small **base graph** whose entries are replaced by $Z_c \times Z_c$ cyclically shifted identity matrices, so the decoder processes $Z_c$ edges in parallel with simple barrel shifters. 5G NR ([R-279]) uses two base graphs: BG1 (46 × 68, codeword length $66Z_c$) and BG2 (42 × 52, $50Z_c$), with lifting sizes up to $Z_c$ = 384. BG1 has $68 - 46 = 22$ information columns, so its largest code block is $22 \times 384$ = **8448** bits and its lowest rate $22/66$ = **1/3**; BG2's are $10 \times 384$ = 3840 bits and $10/50$ = **1/5**. Small blocks, or low rates, use BG2. Higher rates are reached by not transmitting some parity bits (rate matching), so one decoder serves every rate.
+For hardware, $\mathbf{H}$ is built from a small **base graph** whose entries are replaced by $Z_c \times Z_c$ cyclically shifted identity matrices, so the decoder processes $Z_c$ edges in parallel with simple barrel shifters. 5G NR ([R-279]) uses two base graphs: BG1 (46 × 68, codeword length $66Z_c$) and BG2 (42 × 52, $50Z_c$), with lifting sizes up to $Z_c$ = 384. BG1 has $68 - 46 = 22$ information columns, so its largest code block is $22 \times 384$ = **8448** bits and its lowest rate $22/66$ = **1/3**; BG2's are $10 \times 384$ = 3840 bits and $10/50$ = **1/5**. Small blocks, or low rates, use BG2. Higher rates are reached by not transmitting some parity bits (rate matching), so one decoder serves every rate.
+
+**Codes with QAM: bit LLRs and BICM.** Every code above is described on binary inputs, yet Wi-Fi and NR send up to 4096-QAM. The standard bridge is **bit-interleaved coded modulation (BICM)**: encode with a binary code, interleave the coded bits, and map each group of $\log_2M$ bits to one Gray-labelled QAM symbol. The demodulator computes one LLR per bit from each received symbol $y$:
+
+$$
+L_i = \ln\frac{\sum_{s \in \mathcal S_i^0}e^{-\lvert y - s\rvert^2/N_0}}{\sum_{s \in \mathcal S_i^1}e^{-\lvert y - s\rvert^2/N_0}}
+\approx \frac{\min_{s \in \mathcal S_i^1}\lvert y - s\rvert^2 - \min_{s \in \mathcal S_i^0}\lvert y - s\rvert^2}{N_0} ,
+$$
+
+where $\mathcal S_i^b$ is the set of constellation points whose $i$th bit is $b$ and the approximation ("max-log") keeps only the nearest point of each set. The binary decoder then runs unchanged. With Gray labelling, BICM loses little against the constellation-constrained capacity of 17-07 (Caire, Taricco and Biglieri, *IEEE Trans. Inf. Theory*, 1998), which is why Wi-Fi, LTE and NR all use it. Historically, **trellis-coded modulation** (Ungerboeck, 1982) instead designed the code and the constellation labelling together to maximize Euclidean distance; it gave the voiceband modems of the 1980s and 1990s gains of several decibels without extra bandwidth.
 
 **Polar codes.** Take two uses of a binary erasure channel with erasure probability ε and send $x_1 = u_1 \oplus u_2$ and $x_2 = u_2$. Decode $u_1$ first: it needs both $x_1$ and $x_2$, so it is lost if either is erased, probability $2\varepsilon - \varepsilon^2$ (a worse channel). Then, knowing $u_1$, recover $u_2$ from $x_2$ or from $x_1 \oplus u_1$: lost only if both are erased, probability $\varepsilon^2$ (a better channel). The total capacity is unchanged, $(1 - 2\varepsilon + \varepsilon^2) + (1 - \varepsilon^2) = 2(1 - \varepsilon)$, but it has been redistributed. Applying the step recursively $n$ times makes $N = 2^n$ synthesized channels that **polarize**: almost all become nearly perfect or nearly useless, and the fraction of good ones tends to the capacity. For $N$ = 8 and ε = 0.5, the erasure probabilities range from **0.0039** to **0.9961** while still summing to 4.
 
-A **polar code** puts information on the $K$ most reliable channels and fixes ("freezes") the others to 0. The encoder is $\log_2N$ stages of XOR butterflies, like an FFT. The **successive-cancellation** decoder decodes the bits in order, each using the earlier decisions, with the same LLR rules as LDPC. Practical decoders keep a short list of candidate paths and use a CRC to pick the right one (CRC-aided list decoding). NR uses polar codes for its control channels and broadcast channel, with a mother code length of at most 1024 ([R-279]): short blocks, where polar codes with list decoding are strong and their simple structure helps latency.
+A **polar code** puts information on the $K$ most reliable channels and fixes ("freezes") the others to 0. The encoder is $\log_2N$ stages of XOR butterflies, like an FFT. The **successive-cancellation** decoder decodes the bits in order, each using the earlier decisions, with the same LLR rules as LDPC. Practical decoders keep a short list of candidate paths and use a CRC to pick the right one (CRC-aided list decoding). NR uses polar codes for its control channels and broadcast channel, with a mother code of at most 512 bits for the broadcast channel and downlink control information and at most 1024 bits for uplink control information ([R-279]): short blocks, where polar codes with list decoding are strong and their simple structure helps latency.
 
 ### 3.9 Coding gain against the Shannon limit
 
 At $P_b = 10^{-5}$ uncoded BPSK needs 9.59 dB. The rate-1/2 BPSK-input bound of 17-07 is 0.19 dB. Between them sit the codes:
 
-- a $K$ = 7 Viterbi decoder, about 4.2 dB (Example 17-08.5): a 5.4 dB gain, still 4 dB from the bound;
+- a $K$ = 7 Viterbi decoder: the union bound puts it at about 4.2 dB (Example 17-08.5), and simulation needs slightly less, a gain of about 5.4 dB that still leaves about 4 dB to the bound;
 - long LDPC codes. DVB-S2's QPSK rate-1/2 code needs $E_b/N_0$ = 1.05 dB for quasi-error-free operation (packet error rate $10^{-7}$, [R-276], 17-06), only **0.89** dB above the BPSK-input limit at its 0.494 bits per dimension (**0.16** dB).
 
 The remaining fraction of a decibel buys diminishing returns at the cost of longer blocks (latency), more iterations (power) and more memory, which is why standards stop where they do.
@@ -227,20 +240,20 @@ The remaining fraction of a decibel buys diminishing returns at the cost of long
 
 ### Example 17-08.1 · The (7,4) Hamming code in matrix form (tier A)
 
-**Setup.** Use the systematic (7,4) code with parity bits $p_1 = d_1 \oplus d_2 \oplus d_4$, $p_2 = d_1 \oplus d_3 \oplus d_4$ and $p_3 = d_2 \oplus d_3 \oplus d_4$. Write $G$ and $H$, encode 1011, decode the received word 1001 010, find the weight distribution and check that the code is perfect.
+**Setup.** Use the systematic (7,4) code with parity bits $p_1 = d_1 \oplus d_2 \oplus d_4$, $p_2 = d_1 \oplus d_3 \oplus d_4$ and $p_3 = d_2 \oplus d_3 \oplus d_4$. Write $\mathbf{G}$ and $\mathbf{H}$, encode 1011, decode the received word 1001 010, find the weight distribution and check that the code is perfect.
 
 **Solution.** With codeword order $(d_1, d_2, d_3, d_4, p_1, p_2, p_3)$:
 
 $$
-G = \left[\begin{array}{cccc|ccc}1&0&0&0&1&1&0\\0&1&0&0&1&0&1\\0&0&1&0&0&1&1\\0&0&0&1&1&1&1\end{array}\right], \qquad
-H = \left[\begin{array}{cccc|ccc}1&1&0&1&1&0&0\\1&0&1&1&0&1&0\\0&1&1&1&0&0&1\end{array}\right] .
+\mathbf{G} = \left[\begin{array}{cccc|ccc}1&0&0&0&1&1&0\\0&1&0&0&1&0&1\\0&0&1&0&0&1&1\\0&0&0&1&1&1&1\end{array}\right], \qquad
+\mathbf{H} = \left[\begin{array}{cccc|ccc}1&1&0&1&1&0&0\\1&0&1&1&0&1&0\\0&1&1&1&0&0&1\end{array}\right] .
 $$
 
-Encoding 1011: $p_1 = 1 \oplus 0 \oplus 1 = 0$, $p_2 = 1 \oplus 1 \oplus 1 = 1$, $p_3 = 0 \oplus 1 \oplus 1 = 0$, so $\mathbf{c}$ = 1011 010. The received 1001 010 has syndrome $\mathbf{r}H^T$ = 011, which is column 3 of $H$: flip bit 3 to recover 1011 010. The rate is $4/7$ = **0.571**. Enumerating the 16 codewords gives weights $A_0 = 1$, $A_3$ = **7**, $A_4 = 7$, $A_7 = 1$, so $d_{min}$ = **3**. Spheres of radius 1 hold $1 + 7 = 8$ words each, and $16 \times 8$ = **128** = $2^7$: the spheres fill the space exactly.
+Encoding 1011: $p_1 = 1 \oplus 0 \oplus 1 = 0$, $p_2 = 1 \oplus 1 \oplus 1 = 1$, $p_3 = 0 \oplus 1 \oplus 1 = 0$, so $\mathbf{c}$ = 1011 010. The received 1001 010 has syndrome $\mathbf{r}\mathbf{H}^\mathsf{T}$ = 011, which is column 3 of $\mathbf{H}$: flip bit 3 to recover 1011 010. The rate is $4/7$ = **0.571**. Enumerating the 16 codewords gives weights $A_0 = 1$, $A_3$ = **7**, $A_4 = 7$, $A_7 = 1$, so $d_{min}$ = **3**. Spheres of radius 1 hold $1 + 7 = 8$ words each, and $16 \times 8$ = **128** = $2^7$: the spheres fill the space exactly.
 
 **Units check.** Counts of words and bits.
 
-**Sanity check.** $GH^T$ = 0 (each row of $G$ satisfies all three checks), and the seven columns of $H$ are the seven distinct nonzero 3-bit vectors.
+**Sanity check.** $\mathbf{G}\mathbf{H}^\mathsf{T}$ = 0 (each row of $\mathbf{G}$ satisfies all three checks), and the seven columns of $\mathbf{H}$ are the seven distinct nonzero 3-bit vectors.
 
 ### Example 17-08.2 · Choosing CRCs in 5G NR (tier B)
 
@@ -250,7 +263,7 @@ Encoding 1011: $p_1 = 1 \oplus 0 \oplus 1 = 0$, $p_2 = 1 \oplus 1 \oplus 1 = 1$,
 
 **Units check.** Probabilities and percentages are dimensionless.
 
-**Sanity check.** Doubling the protection from 16 to 24 bits costs eight bits per block but cuts the miss rate by $2^8$ = 256: cheap insurance once blocks are a few thousand bits long.
+**Sanity check.** Going from 16 to 24 bits costs eight bits per block but cuts the miss rate by $2^8$ = 256: cheap insurance once blocks are a few thousand bits long.
 
 ### Example 17-08.3 · Does a Hamming code pay with hard decisions? (tier B)
 
@@ -279,17 +292,17 @@ The last two steps are tail bits, so only input 0 is allowed. Tracing back from 
 
 **Units check.** Metrics count bit disagreements.
 
-**Sanity check.** With $d_{free}$ = 5 the code corrects any two errors spread far enough apart, and these two fall in different branches.
+**Sanity check.** Because the trellis is terminated, any two codewords differ in at least $d_{free}$ = 5 positions, so the Viterbi (ML) decoder corrects any two errors anywhere in the block, however close together. Three or more errors are also corrected when they lie several constraint lengths apart.
 
 ### Example 17-08.5 · The K = 7 code against Shannon (tier C)
 
-**Setup.** For the rate-1/2, $K$ = 7, $(171, 133)_8$ code, the distance spectrum (computed by the lab from the state diagram) begins $d_{free}$ = 10 with $A_{10}$ = 11 paths of total information weight $B_{10}$ = 36, then $B_{12}$ = 211, $B_{14}$ = 1404, $B_{16}$ = 11 633 (odd weights do not occur). Find the asymptotic soft gain, the $E_b/N_0$ at which the union bound gives $P_b = 10^{-5}$, the coding gain there, and the remaining gap to the rate-1/2 BPSK-input limit of 0.19 dB.
+**Setup.** For the rate-1/2, $K$ = 7, $(171, 133)_8$ code, the distance spectrum (computed by the lab from the state diagram) begins $d_{free}$ = 10 with $A_{10}$ = 11 paths of total information weight $B_{10}$ = 36, then $B_{12}$ = 211, $B_{14}$ = 1404, $B_{16}$ = 11 633, $B_{18}$ = 77 433, $B_{20}$ = 502 690, $B_{22}$ = 3 322 763 and $B_{24}$ = 21 292 910 (odd weights do not occur; terms beyond $d$ = 24 change the result below by less than 0.001 dB). Find the asymptotic soft gain, the $E_b/N_0$ at which the union bound gives $P_b = 10^{-5}$, the coding gain there, and the remaining gap to the rate-1/2 BPSK-input limit of 0.19 dB.
 
-**Solution.** $G_{soft} = 10\log_{10}(\tfrac12 \times 10)$ = **6.99** dB. Solving $\sum_dB_dQ(\sqrt{dE_b/N_0}) = 10^{-5}$ (with $2R = 1$) numerically gives $E_b/N_0$ = **4.17** dB. Uncoded BPSK needs 9.59 dB, so the gain at $10^{-5}$ is **5.41** dB, and the gap to 0.19 dB is **3.99** dB.
+**Solution.** $G_{soft} = 10\log_{10}(\tfrac12 \times 10)$ = **6.99** dB. Solving $\sum_dB_dQ(\sqrt{dE_b/N_0}) = 10^{-5}$ (with $2R = 1$) numerically, with the eight listed terms, gives $E_b/N_0$ = **4.17** dB (the first four terms alone give 4.16 dB: the tail matters at the second decimal). Uncoded BPSK needs 9.59 dB, so the gain at $10^{-5}$ is **5.41** dB, and the gap to 0.19 dB is **3.99** dB.
 
 **Units check.** The argument of $Q$ is dimensionless: $R$ and $d$ are pure numbers and $E_b/N_0$ is a ratio.
 
-**Sanity check.** The gain at $10^{-5}$ (5.4 dB) is below the asymptotic 7.0 dB because the many paths at weights 12–16 add up: at 4.17 dB the $d$ = 10 term contributes only 57% of the bound. A long simulation (a million bits) at 3.5 dB gives a BER about half the bound, as an upper bound should; short runs scatter widely because Viterbi errors arrive in bursts of several bits.
+**Sanity check.** The gain at $10^{-5}$ (5.4 dB) is below the asymptotic 7.0 dB because the many paths at weights 12–16 add up: at 4.17 dB the $d$ = 10 term contributes only 57% of the bound. Simulations at 3.5 dB land below the bound, as an upper bound should, but scatter widely: three independent runs of a million bits each gave 0.35, 0.53 and 1.0 times the bound. Viterbi errors arrive in bursts of several bits, so even a million bits holds only a few dozen independent error events.
 
 ### Example 17-08.6 · Ethernet's KP4 Reed–Solomon code (tier C)
 
@@ -350,7 +363,7 @@ The last two steps are tail bits, so only input 0 is allowed. Tracing back from 
 
 The lab, [labs/17-08-lab](../labs/17-08-lab/README.md), provides `coding.py`: GF(2) linear algebra, Hamming codes, syndrome decoding, CRCs with the NR polynomials, convolutional encoding with hard and soft Viterbi decoding, distance spectra and union bounds, a Gallager LDPC code with a min-sum decoder, polar encoding with successive-cancellation decoding, and Reed–Solomon failure probabilities. In the notebook, **predict, then run**:
 
-1. **Hamming and SEC-DED.** Predict the weight distribution of the (15,11) Hamming code's lightest words and the block error rate at $p = 10^{-3}$; enumerate and simulate.
+1. **Hamming and SEC-DED.** Predict the weight distribution of the (15,11) Hamming code's lightest words and the block error rate at $p = 10^{-2}$; enumerate and simulate.
 2. **CRC bursts.** Predict which bursts a CRC6 misses; test every burst of length 5 to 9 exhaustively.
 3. **Viterbi.** Predict the BER of the $K$ = 3 and $K$ = 7 codes at 3.5 dB from their union bounds; simulate with soft and hard decisions and measure the soft-decision advantage.
 4. **LDPC.** Predict where a rate-1/2 LDPC code of length 504 starts to work; simulate the frame-error rate and the average number of iterations against $E_b/N_0$.
@@ -384,7 +397,7 @@ The lab, [labs/17-08-lab](../labs/17-08-lab/README.md), provides `coding.py`: GF
 | (171,133), K = 7 | $d_{free}$ = 10, 64 states; ≈ 4.2 dB at $10^{-5}$ | CCSDS, 802.11 [R-281] |
 | KP4 RS(544,514) | t = 15, 5.84% overhead, raw BER ≈ 2.4 × 10⁻⁴ for $10^{-12}$ | independent errors [R-280] |
 | NR LDPC | BG1 rate ≥ 1/3, ≤ 8448 bits; BG2 rate ≥ 1/5, ≤ 3840 bits | $Z_c$ ≤ 384 [R-279] |
-| NR polar | mother code ≤ 1024 bits | control and broadcast [R-279] |
+| NR polar | mother code ≤ 512 bits (broadcast, downlink control), ≤ 1024 bits (uplink control) | control and broadcast [R-279] |
 | Best long codes | ≈ 0.5–1 dB from the constrained limit | DVB-S2 QPSK 1/2: 0.89 dB |
 
 ## 8. Common mistakes
@@ -401,7 +414,7 @@ The lab, [labs/17-08-lab](../labs/17-08-lab/README.md), provides `coding.py`: GF
 
 ### State of the art (as of Nov 2026)
 
-- **5G NR codes.** TS 38.212 (V19.4.0, June 2026) assigns LDPC to the data and paging channels and polar codes to the broadcast channel and downlink control information, with block or polar codes for uplink control; it specifies two quasi-cyclic LDPC base graphs (46 × 68 and 42 × 52), lifting sizes up to 384, maximum code blocks of 8448 and 3840 bits, a polar mother code of at most 1024 bits, and six CRC polynomials ([R-279]) **[Established]**.
+- **5G NR codes.** TS 38.212 (V19.4.0, June 2026) assigns LDPC to the data and paging channels and polar codes to the broadcast channel and downlink control information, with block or polar codes for uplink control; it specifies two quasi-cyclic LDPC base graphs (46 × 68 and 42 × 52), lifting sizes up to 384, maximum code blocks of 8448 and 3840 bits, a polar mother code of at most 512 bits for the broadcast channel and downlink control and 1024 bits for uplink control, and six CRC polynomials ([R-279]) **[Established]**.
 - **Ethernet FEC.** RS(544,514) over GF($2^{10}$), the "KP4" code, corrects up to 15 symbol errors and is the FEC of 200G and 400G Ethernet (802.3bs Clause 119) and is required for the 50 and 100 Gb/s-per-lane interfaces of 802.3cd, 802.3ck and 802.3cu; RS(528,514) remains for 25 Gb/s lanes ([R-280], from an IEEE draft and task-force slides; the published standard is paywalled) **[Established]**.
 - **Space and legacy Wi-Fi.** CCSDS 131.0-B-5 (Sept 2023) still specifies the rate-1/2, $K$ = 7, $(171, 133)_8$ convolutional code with maximum-likelihood (Viterbi) decoding, alongside its newer turbo and LDPC options; the same code is the mother code of 802.11's binary convolutional coding (a secondary source) ([R-281]) **[Established]**.
 - **Near-capacity broadcast.** DVB-S2's LDPC+BCH codes reach quasi-error-free operation within about 1 dB of the BPSK-input limit at rate 1/2 (§3.9, [R-276]) **[Established]**, the comparison is ours.
@@ -441,7 +454,7 @@ Correct $t = \lfloor 5/2\rfloor = 2$; detect 5; fill 5 erasures. It can also cor
 
 <details><summary>Answer</summary>
 
-Because every codeword satisfies $\mathbf{c}H^T = 0$, so $(\mathbf{c} + \mathbf{e})H^T = \mathbf{e}H^T$; the decoder never needs to know which codeword was sent to find the error.
+Because every codeword satisfies $\mathbf{c}\mathbf{H}^\mathsf{T} = 0$, so $(\mathbf{c} + \mathbf{e})\mathbf{H}^\mathsf{T} = \mathbf{e}\mathbf{H}^\mathsf{T}$; the decoder never needs to know which codeword was sent to find the error.
 
 </details>
 
@@ -473,7 +486,7 @@ They count symbol errors, not bit errors: a burst of up to $m$ bits damages at m
 
 <details><summary>Answer</summary>
 
-LDPC: long sparse codes decoded by iterative message passing on a nearly cycle-free graph behave like near-ML decoders of random-like codes. Polar: recursive channel combining polarizes synthetic channels into nearly perfect and nearly useless ones, and data rides only on the good ones.
+LDPC: long sparse codes decoded by iterative message passing on a nearly cycle-free graph approximate bitwise MAP decoding, and well-chosen degree distributions put the iterative threshold near capacity. Polar: recursive channel combining polarizes synthetic channels into nearly perfect and nearly useless ones, and data rides only on the good ones.
 
 </details>
 
@@ -516,5 +529,5 @@ Practice: [17-08 problems](../problems/17-08-problems.md) · [worked solutions](
 6. Koopman, P. and Chakravarty, T., "Cyclic Redundancy Code (CRC) Polynomial Selection for Embedded Networks", *Proc. DSN*, 2004.
 7. [R-279] 3GPP TS 38.212 V19.4.0 (2026-06): coding schemes, CRC polynomials, LDPC base graphs and lifting sizes, polar mother-code length.
 8. [R-280] IEEE P802.3bs draft Clause 119 (RS(544,514), t = 15, GF($2^{10}$)); Cideciyan et al., *IEEE Communications Magazine*, Dec 2013; IEEE P802.3db task-force FEC overview (2020).
-9. [R-281] CCSDS 131.0-B-5 (Sept 2023), §3.3; Yan and Dai, arXiv:2502.15475 (2025) for 802.11's use of the same code (secondary).
+9. [R-281] CCSDS 131.0-B-5 (Sept 2023), §3.3 and sections 6–8; Yan and Dai, arXiv:2502.15475 (2025) for 802.11's use of the same code (secondary).
 10. [R-276] ETSI EN 302 307-1 V1.4.1, Table 13 (DVB-S2 QEF thresholds).

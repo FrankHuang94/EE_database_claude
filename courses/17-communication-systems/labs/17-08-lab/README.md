@@ -15,7 +15,7 @@ Build and run every class of code in the chapter and check its claims:
 
 ## Background
 
-A linear code is fixed by its generator matrix $G$ or parity-check matrix $H$; distances are weights of codewords (§3.2). A CRC misses an error pattern only if the generator polynomial divides it (§3.4). A convolutional code's error rate follows from the weights of paths that leave and rejoin the zero state, $P_b \le \sum_dB_dQ(\sqrt{2RdE_b/N_0})$ (§3.7). LDPC decoders pass log-likelihood ratios between bits and checks; polar decoders decode bits in order on polarized channels (§3.8). Reed–Solomon codes fail when more than $t$ of $n$ symbols are wrong (§3.6).
+A linear code is fixed by its generator matrix $\mathbf{G}$ or parity-check matrix $\mathbf{H}$; distances are weights of codewords (§3.2). A CRC misses an error pattern only if the generator polynomial divides it (§3.4). A convolutional code's error rate follows from the weights of paths that leave and rejoin the zero state, $P_b \le \sum_dB_dQ(\sqrt{2RdE_b/N_0})$ (§3.7). LDPC decoders pass log-likelihood ratios between bits and checks; polar decoders decode bits in order on polarized channels (§3.8). Reed–Solomon codes fail when more than $t$ of $n$ symbols are wrong (§3.6).
 
 ## Files
 
@@ -37,9 +37,9 @@ The convolutional encoder takes generators in octal with the most significant bi
 
 - Part 1: 35 codewords of weight 3 ($d_{min}$ = 3); simulation on the formula.
 - Part 2: all bursts up to 6 bits detected; 1 of the 32 seven-bit patterns and 1/64 of longer ones missed.
-- Part 3: union bounds of about $2.8 \times 10^{-3}$ ($K$ = 3) and $1.2 \times 10^{-4}$ ($K$ = 7) at 3.5 dB. Long simulations land below them (about half, for $K$ = 7); short ones scatter by a factor of 2 or more because each decoding error event flips several bits. Hard decisions need roughly 2 dB more.
-- Part 4: rank 250 of 252 rows, so the code has $k$ = 254; frame errors fall from about 20% at 1.5 dB to almost none by 3 dB, with fewer iterations at higher SNR.
-- Part 5: undecided fraction 0.75 at $N$ = 8, 0.31 at 64 and 0.13 at 1024; the (256,128) code reaches a frame-error rate below 1% near 3 dB.
+- Part 3: union bounds of about $2.8 \times 10^{-3}$ ($K$ = 3) and $1.2 \times 10^{-4}$ ($K$ = 7) at 3.5 dB. Simulations land below them but scatter: for $K$ = 7, independent runs of a million bits fall between about 0.35 and 1.0 times the bound, because each decoding error event flips several bits and a run holds only a few dozen events. Hard decisions need roughly 2 dB more.
+- Part 4: rank 250 of 252 rows, so the code has $k$ = 254; frame errors fall from about 30% at 1.5 dB to under 10% at 2 dB and none in 100 frames at 3 dB, with fewer iterations at higher SNR (25 at 1.5 dB, about 5 at 3 dB).
+- Part 5: undecided fraction 0.75 at $N$ = 8, 0.31 at 64 and 0.13 at 1024; with successive-cancellation decoding the (256,128) code has a frame-error rate of about 13% at 2 dB and about 2% at 3 dB, and none in 200 frames at 4 dB.
 - Part 6: thresholds of $2.4 \times 10^{-4}$ (KP4) and $2.3 \times 10^{-5}$ (KR4).
 
 ### Lab answer key

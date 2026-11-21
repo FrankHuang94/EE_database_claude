@@ -46,7 +46,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 17-07.9 [B]
 
-**A coded QPSK system.** QPSK with a rate-3/4 code and ideal Nyquist pulses carries 1.5 b/s/Hz. What is the smallest $E_b/N_0$ any such system could need?
+**A coded QPSK system.** QPSK with a rate-3/4 code and ideal Nyquist pulses carries 1.5 b/s/Hz. (a) What is the smallest $E_b/N_0$ that any system at 1.5 b/s/Hz could need? (b) What is the smallest for a system that, like this one, must send equiprobable QPSK symbols (soft decisions)? (c) DVB-S2's QPSK 3/4 mode needs $E_s/N_0$ = 4.03 dB at a spectral efficiency of 1.487473 b/s/Hz ([R-276](../../../reference/research-log.md)). How far is it from each bound?
 
 ### Problem 17-07.10 [B]
 
@@ -68,6 +68,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Constrained capacity at 0 dB.** *(lab)* At $E_s/N_0$ = 0 dB on a real AWGN channel, compute the capacity per use with a Gaussian input, with BPSK and soft decisions, and with BPSK and hard decisions. What fraction of the Gaussian capacity does each binary option achieve?
 
+### Problem 17-07.15 [B]
+
+**The ultimate limit and a real gap.** (a) Show that $(2^\eta - 1)/\eta \to \ln2$ as $\eta \to 0$, using a Taylor series, and express the limit in dB. (b) DVB-S2's 8PSK rate-2/3 mode needs $E_s/N_0$ = 6.62 dB at a spectral efficiency of 1.980636 b/s/Hz ([R-276](../../../reference/research-log.md)). Find its $E_b/N_0$, the Shannon limit at its efficiency, and the gap between them.
+
+### Problem 17-07.16 [B]
+
+**Water-filling from the KKT conditions.** Two parallel Gaussian channels have noise-normalized gains $g_1$ = 2 and $g_2$ = 0.5 per unit power. (a) Write the Lagrangian for maximizing $\log_2(1 + g_1p_1) + \log_2(1 + g_2p_2)$ subject to $p_1 + p_2 = P$ and $p_k \ge 0$, and derive the water-filling rule. (b) With $P$ = 1, find the powers and the capacity. (c) Above what total power does the weaker channel receive any power?
+
 ---
 
 ## Objective coverage
@@ -77,6 +85,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Entropy and source coding | 1, 2, 3, 12 |
 | 2. Mutual information, BSC, BEC | 4, 5, 6 |
 | 3. AWGN capacity and regimes | 7, 8, 10, 11 |
-| 4. Shannon limit | 8, 9 |
+| 4. Shannon limit | 8, 9, 15 |
 | 5. Constrained inputs, soft decisions | 14 |
-| 6. Water-filling | 13 |
+| 6. Water-filling | 13, 16 |

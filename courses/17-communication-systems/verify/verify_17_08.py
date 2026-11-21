@@ -140,7 +140,9 @@ lim = it.required_es_n0_db(it.bpsk_soft_capacity, r_dvb) - db(r_dvb)
 v.check("Txt 17-08.i", ebn0_dvb - lim)
 v.check("Txt 17-08.j", lim)
 v.assert_true("DVB-S2 QPSK 1/2 Eb/N0 = 1.05 dB (17-06); rate-1/2 BPSK-input limit 0.19 dB (17-07)", abs(ebn0_dvb - 1.05) < 0.005 and abs(it.required_es_n0_db(it.bpsk_soft_capacity, 0.5) + db(2) - 0.19) < 0.005)
-v.assert_true("NR: BG2 largest block 10 x 384 = 3840; codeword 66 Zc and 50 Zc have 68 - 2 and 52 - 2 columns (2 Zc punctured)", 10 * 384 == 3840 and 66 == 68 - 2 and 50 == 52 - 2)
+bg = {"BG1": (46, 68, 66, 8448), "BG2": (42, 52, 50, 3840)}  # rows, columns, transmitted Zc multiples, Kcb (R-279)
+v.assert_true("NR base graphs (R-279): info columns 22 and 10 give Kcb = 22 x 384 and 10 x 384; N = (columns - 2) Zc (2 Zc punctured)",
+              all((c - r) * 384 == kcb and c - 2 == nz for r, c, nz, kcb in bg.values()))
 
 # sphere bound, perfect codes, syndrome independence, Singleton
 v.assert_true("Hamming codes r = 2..5 are perfect: 2^k (1 + n) = 2^n", all(2 ** (2**r - 1 - r) * 2**r == 2 ** (2**r - 1) for r in range(2, 6)))
@@ -150,7 +152,32 @@ G74, H74 = cd.hamming74()
 cws = cd.all_codewords(G74)
 e = bits("0010000")
 v.assert_true("syndrome depends only on the error pattern (all 16 codewords)", all((cd.syndrome(c ^ e, H74) == cd.syndrome(e, H74)).all() for c in cws))
-v.assert_true("RS d_min = n - k + 1 meets Singleton; t = 15 for (544,514)", (544 - 514 + 1 - 1) // 2 == 15)
+# RS(7,3) over GF(8): enumerate all 512 codewords and confirm d_min = n - k + 1 (MDS)
+EXP = [1] * 14
+for i8 in range(1, 14):
+    x8 = EXP[i8 - 1] << 1
+    EXP[i8] = x8 ^ 0b1011 if x8 & 0b1000 else x8  # primitive x^3 + x + 1
+LOG = {EXP[i8]: i8 for i8 in range(7)}
+
+
+def gmul(a, b):
+    return 0 if a == 0 or b == 0 else EXP[(LOG[a] + LOG[b]) % 7]
+
+
+def pmul(a, b):
+    out = [0] * (len(a) + len(b) - 1)
+    for i8, ai in enumerate(a):
+        for j8, bj in enumerate(b):
+            out[i8 + j8] ^= gmul(ai, bj)
+    return out
+
+
+g73 = [1]
+for i8 in range(1, 5):
+    g73 = pmul(g73, [EXP[i8], 1])  # (x + alpha^i), coefficients lowest power first
+rs_w = [sum(1 for c in pmul(list(m), g73) if c) for m in itertools.product(range(8), repeat=3) if any(m)]
+v.assert_true("RS(7,3) over GF(8): 511 nonzero codewords, minimum weight 5 = n - k + 1 (MDS, meets Singleton)", len(rs_w) == 511 and min(rs_w) == 5)
+v.assert_true("KP4: t = (n - k)/2 = 15 for (544,514)", (544 - 514) // 2 == 15)
 ext = np.hstack([cws, cws.sum(axis=1, keepdims=True) % 2])
 v.assert_true("extended (8,4) Hamming code has d_min = 4 (SEC-DED)", int(ext.sum(axis=1)[1:].min()) == 4)
 v.assert_true("SEC-DED for 64 bits: r = 7 is the least with 2^r >= 64 + r + 1, so 8 check bits", min(r for r in range(1, 20) if 2**r >= 64 + r + 1) == 7)
@@ -268,12 +295,19 @@ v.assert_true("Example 5: threshold stable to 1e-4 dB when the spectrum is cut a
 v.assert_true("Example 5: the d = 10 term is 57% of the bound at 4.17 dB", round(100 * 36 * Q(math.sqrt(10 * un(x5))) / 1e-5) == 57)
 ub35 = ub(3.5)
 errs35 = 0
+rng35 = np.random.default_rng(1735)  # its own generator, so other checks cannot shift it
 for _ in range(6):
-    u = rng.integers(0, 2, 100_000).astype(np.uint8)
-    y, _ = cd.bpsk_awgn(cd.conv_encode(u, ("171", "133"), 7), 3.5, 0.5, rng)
+    u = rng35.integers(0, 2, 100_000).astype(np.uint8)
+    y, _ = cd.bpsk_awgn(cd.conv_encode(u, ("171", "133"), 7), 3.5, 0.5, rng35)
     errs35 += int(np.sum(cd.viterbi(y, ("171", "133"), 7) != u))
 sim35 = errs35 / 600_000
-v.assert_true(f"Example 5: soft Viterbi at 3.5 dB over 600k bits gives {sim35:.2e}, below the bound {ub35:.2e} and within a factor 4 of it", 0.25 * ub35 < sim35 < 1.2 * ub35)
+v.assert_true(f"Example 5: soft Viterbi at 3.5 dB over 600k bits gives {sim35:.2e}, below the bound {ub35:.2e} (0.2 to 1.0 of it: error events are bursty, so a run holds only a few dozen)", 0.2 * ub35 < sim35 < 1.0 * ub35)
+spec24 = {d: b for d, b in spec7.items() if d <= 24}
+x24 = optimize.brentq(lambda x: cd.union_bound_ber(spec24, 0.5, un(x)) - 1e-5, 2, 8, xtol=1e-12)
+spec16 = {d: b for d, b in spec7.items() if d <= 16}
+x16 = optimize.brentq(lambda x: cd.union_bound_ber(spec16, 0.5, un(x)) - 1e-5, 2, 8, xtol=1e-12)
+v.assert_true("Example 5: B18..B24 = 77433, 502690, 3322763, 21292910; d <= 24 within 0.001 dB of d <= 60; d <= 16 gives 4.16 dB",
+              [spec7[d][1] for d in (18, 20, 22, 24)] == [77433, 502690, 3322763, 21292910] and abs(x24 - x5) < 1e-3 and round(x16, 2) == 4.16 and round(x24, 2) == 4.17)
 
 v.check("Ex 17-08.6a", (544 - 514) // 2)
 v.check("Ex 17-08.6b", 100 * (544 / 514 - 1))
@@ -350,6 +384,7 @@ v.check("17-08.13e", z4[2] + z4[3])
 v.assert_true("Problem 13: erasures sum to 1.2; the two best are indices 2 and 3; lab agrees", abs(sum(z4) - 1.2) < 1e-12 and sorted(np.argsort(z4)[:2]) == [2, 3] and np.allclose(cd.bec_polarize(0.3, 2), z4))
 unc6 = db(Qi(1e-6) ** 2 / 2)
 x6 = optimize.brentq(lambda x: ub(x) - 1e-6, 2, 8, xtol=1e-12)
+v.check("17-08.14f", unc6)
 v.check("17-08.14a", x6)
 v.check("17-08.14b", unc6 - x6)
 v.check("17-08.14c", 10 ** ((unc6 - x6) / 20))
@@ -385,5 +420,114 @@ z1024 = cd.bec_polarize(0.5, 10)
 v.check("Lab 17-08.f", np.mean((z1024 >= 0.1) & (z1024 <= 0.9)))
 v.assert_true("Lab part 5: undecided fraction 0.75 at N = 8 and 0.31 at N = 64; mean of 1 - z stays 0.5", abs(np.mean((cd.bec_polarize(0.5, 3) >= 0.1) & (cd.bec_polarize(0.5, 3) <= 0.9)) - 0.75) < 1e-12 and abs(np.mean((cd.bec_polarize(0.5, 6) >= 0.1) & (cd.bec_polarize(0.5, 6) <= 0.9)) - 0.3125) < 1e-12 and abs(np.mean(1 - z1024) - 0.5) < 1e-12)
 v.check("Lab 17-08.g", thr(544, 514))
+
+# ------------------------------------------------------------------ text: BP threshold, BCH (15,7)
+def de_ok(eps, iters=5000):
+    x = eps
+    for _ in range(iters):
+        x = eps * (1 - (1 - x) ** 5) ** 2
+    return x < 1e-9
+
+
+eps_bp = optimize.brentq(lambda e: 0.5 - de_ok(e), 0.40, 0.46, xtol=1e-5)
+v.assert_true(f"(3,6) BEC density-evolution threshold {eps_bp:.4f} is 0.429, below 0.488 (MAP) and 0.5", round(eps_bp, 3) == 0.429)
+gx = sp.Poly(sp.expand((sp.Symbol("x") ** 4 + sp.Symbol("x") + 1) * (sp.Symbol("x") ** 4 + sp.Symbol("x") ** 3 + sp.Symbol("x") ** 2 + sp.Symbol("x") + 1)), modulus=2)
+gbits = [int(c) % 2 for c in gx.all_coeffs()]
+G157 = np.array([[0] * i + gbits + [0] * (6 - i) for i in range(7)], np.uint8)
+v.assert_true("BCH (15,7): g = x^8 + x^7 + x^6 + x^4 + 1, d_min = 5 = 2t + 1, n - k = 8 = m t", gbits == [1, 1, 1, 0, 1, 0, 0, 0, 1] and cd.min_distance(G157) == 5 and 15 - 7 == 4 * 2)
+x15 = sp.Symbol("x")
+v.assert_true("BCH (15,7): g divides x^15 - 1 over GF(2)", sp.rem(sp.Poly(x15 ** 15 + 1, x15, modulus=2), gx).is_zero)
+
+# ------------------------------------------------------------------ Problems 17-20
+H17 = np.array([[1, 1, 0, 1, 0, 0], [1, 0, 1, 0, 1, 0], [0, 1, 1, 0, 0, 1]], np.uint8)
+P17 = H17[:, :3].T
+G17 = np.hstack([np.eye(3, dtype=np.uint8), P17])
+cw17 = cd.all_codewords(G17)
+w17 = cw17.sum(axis=1)
+v.assert_true("P17: G H^T = 0 and rank 3", not cd.gf2_matmul(G17, H17.T).any() and cd.gf2_rank(G17) == 3)
+v.check("17-08.17a", G17.shape[1])
+v.check("17-08.17b", G17.shape[0])
+v.check("17-08.17c", int(np.sum(w17 == 3)))
+v.check("17-08.17d", cd.min_distance(G17))
+leaders = {}
+for e_ in itertools.product((0, 1), repeat=6):
+    e_ = np.array(e_, np.uint8)
+    key = tuple(int(b) for b in cd.syndrome(e_, H17)[0])
+    if key not in leaders or e_.sum() < leaders[key].sum():
+        leaders[key] = e_
+v.check("17-08.17e", int(leaders[(1, 1, 1)].sum()))
+v.assert_true("P17: three weight-2 patterns share syndrome 111", sum(1 for e_ in itertools.combinations(range(6), 2) if tuple(H17[:, list(e_)].sum(axis=1) % 2) == (1, 1, 1)) == 3)
+c17 = cd.encode_block(np.array([1, 0, 1]), G17)[0]
+r17 = c17.copy()
+r17[1] ^= 1
+syn17 = cd.syndrome(r17, H17)[0]
+pos17 = [j for j in range(6) if (H17[:, j] == syn17).all()][0] + 1
+v.assert_true("P17: 101 encodes to 101101 and decodes back", "".join(map(str, c17)) == "101101" and ((r17 ^ np.eye(6, dtype=np.uint8)[pos17 - 1]) == c17).all())
+v.check("17-08.17f", pos17)
+
+v.check("17-08.18a", 255 - 223 + 1)
+v.check("17-08.18b", (255 - 223) // 2)
+v.check("17-08.18c", cd.rs_burst_bits(16, 8))
+v.check("17-08.18d", 16 * 4)
+v.check("17-08.18e", max(b for b in range(1, 2000) if 1 + math.ceil((b - 1) / 8) <= 64))
+v.check("17-08.18f", 4 * 255)
+# interleaver simulation: every burst of 64 symbols leaves at most 16 errors per codeword; some 65-symbol burst gives 17
+order = [(col, row) for col in range(255) for row in range(4)]  # column-by-column read-out of a 4 x 255 array
+def worst(b):
+    return max(max(sum(1 for (c_, r_) in order[s0:s0 + b] if r_ == row) for row in range(4)) for s0 in range(len(order) - b + 1))
+v.assert_true("P18: depth-4 interleaver: 64-symbol bursts give <= 16 errors per codeword, 65 give 17", worst(64) == 16 and worst(65) == 17)
+
+msg19 = bits("1011001110")
+rem19 = cd.crc_remainder(msg19, cd.poly_bits([6, 5, 0]))
+v.check("17-08.19a", int("".join(map(str, rem19)), 2))
+x19 = sp.Symbol("x")
+mpoly = sp.Poly(sum(int(b) * x19 ** (15 - i) for i, b in enumerate("1011001110")), x19, modulus=2)
+v.assert_true("P19: sympy division gives the same remainder; the 16-bit word checks", sp.rem(mpoly, sp.Poly(x19 ** 6 + x19 ** 5 + 1, x19, modulus=2)).all_coeffs()[-6:] in ([0, 1, 1, 1, 0, 1], [1, 1, 1, 0, 1]) and cd.crc_check(np.concatenate([msg19, rem19]), cd.poly_bits([6, 5, 0])))
+
+H20 = H74
+L20 = np.array([-2.5, 1.8, 0.4, -3.0, 2.2, -1.6, 1.2])
+v.assert_true("P20: the three checks are bits {1,2,4,5}, {1,3,4,6}, {2,3,4,7}", [list(np.nonzero(r)[0] + 1) for r in H20] == [[1, 2, 4, 5], [1, 3, 4, 6], [2, 3, 4, 7]])
+msg20 = {}
+for ci, row in enumerate(H20):
+    idx = np.nonzero(row)[0]
+    for vi in idx:
+        others = [u for u in idx if u != vi]
+        msg20[(ci, vi)] = float(np.prod(np.sign(L20[others])) * np.min(np.abs(L20[others])))
+post20 = L20.copy()
+for (ci, vi), m_ in msg20.items():
+    post20[vi] += m_
+v.check("17-08.20a", msg20[(1, 2)])
+v.check("17-08.20b", msg20[(2, 2)])
+v.check("17-08.20c", post20[2])
+dec20 = (post20 < 0).astype(np.uint8)
+v.check("17-08.20d", int(np.sum(dec20 != bits("1011010"))))
+v.assert_true("P20: hard decisions give syndrome 011; after one iteration syndrome 000; posteriors as tabulated",
+              tuple(int(b) for b in cd.syndrome((L20 < 0).astype(np.uint8), H20)[0]) == (0, 1, 1) and not cd.syndrome(dec20, H20).any()
+              and np.allclose(post20, [-3.9, 3.6, -2.4, -4.0, 4.0, -1.2, 0.8]))
+
+# ------------------------------------------------------------------ lab expected results (loose; own RNG)
+rng_lab = np.random.default_rng(170808)
+Hl = cd.gallager_ldpc(504, 3, 6, np.random.default_rng(3))
+Gl = cd.gf2_nullspace(Hl)
+def ldpc_fer(eb, nf):
+    fe = 0
+    for _ in range(nf):
+        c = cd.encode_block(rng_lab.integers(0, 2, Gl.shape[0]), Gl)[0]
+        _, llr = cd.bpsk_awgn(c, eb, Gl.shape[0] / 504, rng_lab)
+        fe += not (cd.min_sum_decode(llr, Hl)[0] == c).all()
+    return fe / nf
+fer15, fer30 = ldpc_fer(1.5, 200), ldpc_fer(3.0, 200)
+v.assert_true(f"Lab 4: LDPC FER about 30% at 1.5 dB ({fer15:.2f}) and essentially zero at 3 dB ({fer30:.3f})", 0.2 < fer15 < 0.45 and fer30 <= 0.02)
+frz = cd.polar_design(256, 128)
+def polar_fer(eb, nf):
+    fe = 0
+    for _ in range(nf):
+        u = np.zeros(256, np.uint8)
+        u[~frz] = rng_lab.integers(0, 2, 128)
+        _, llr = cd.bpsk_awgn(cd.polar_encode(u), eb, 0.5, rng_lab)
+        fe += not (cd.polar_sc_decode(llr, frz)[0] == u).all()
+    return fe / nf
+pf3 = polar_fer(3.0, 600)
+v.assert_true(f"Lab 5: (256,128) polar SC FER about 2% at 3 dB ({pf3:.3f})", 0.005 < pf3 < 0.04)
 
 sys.exit(v.finish())

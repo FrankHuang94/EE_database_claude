@@ -20,7 +20,7 @@ $g(1) = 1 + 1 + 1 = 1$ (three terms), so $x + 1$ does not divide $g$ and not eve
 
 ### Solution 17-08.4
 
-Received 0111 010. The errors are in positions 1 and 2, so $\mathbf{s}$ = column 1 + column 2 of $H$ = 110 + 101 = 011, which is column 3. The decoder flips bit 3, giving 0101 010, a valid codeword (check: $p_1 = 0 \oplus 1 \oplus 1 = 0$, $p_2 = 0 \oplus 0 \oplus 1 = 1$, $p_3 = 1 \oplus 0 \oplus 1 = 0$). It differs from the sent 1011 010 in positions 1, 2 and 3: **3** wrong bits, one more than the channel caused. This is why SEC-DED adds a parity bit: two errors leave the overall parity even while the syndrome is nonzero, and the decoder flags rather than "corrects".
+Received 0111 010. The errors are in positions 1 and 2, so $\mathbf{s}$ = column 1 + column 2 of $\mathbf{H}$ = 110 + 101 = 011, which is column 3. The decoder flips bit 3, giving 0101 010, a valid codeword (check: $p_1 = 0 \oplus 1 \oplus 1 = 0$, $p_2 = 0 \oplus 0 \oplus 1 = 1$, $p_3 = 1 \oplus 0 \oplus 1 = 0$). It differs from the sent 1011 010 in positions 1, 2 and 3: **3** wrong bits, one more than the channel caused. This is why SEC-DED adds a parity bit: two errors leave the overall parity even while the syndrome is nonzero, and the decoder flags rather than "corrects".
 
 ### Solution 17-08.5
 
@@ -56,7 +56,16 @@ Output 11 01 01 00 10 11, weight **7**.
 
 ### Solution 17-08.9
 
-Received 11 11 01 00 11 11 (bits 3 and 10 flipped). Running the add-compare-select steps (as in Example 17-08.4) and tracing back from state 00 gives inputs 1101 then 00, re-encoding to the transmitted word at Hamming distance **2** from the received one: both errors corrected. They fall in branches 2 and 5, far enough apart that no competing path within distance 2 exists ($d_{free}$ = 5).
+Received 11 11 01 00 11 11 (bits 3 and 10 flipped). The add-compare-select steps, as in Example 17-08.4, give these survivor metrics (states $u_{t-1}u_{t-2}$; the last two steps are tail bits, input 0 only):
+
+| State | after 1 | after 2 | after 3 | after 4 | after 5 | after 6 |
+|---|---|---|---|---|---|---|
+| 00 | 2 | 4 | 2 | 2 | 3 | **2** |
+| 10 | 0 | 2 | 2 | 1 | — | — |
+| 01 | — | 1 | 1 | 3 | 2 | — |
+| 11 | — | 1 | 2 | 3 | — | — |
+
+Tracing back from state 00 gives the path 00 → 10 → 11 → 01 → 10 → 01 → 00, inputs 1101 then 00, which re-encodes to the transmitted word at Hamming distance **2** from the received one: both errors corrected. Any two errors are correctable, wherever they fall: every other terminated codeword is at least $d_{free}$ = 5 from the sent one, hence at least 3 from the received word.
 
 ### Solution 17-08.10
 
@@ -90,7 +99,7 @@ Sum $= 1.2 = 4 \times 0.3$, so the total capacity $4 - 1.2 = 2.8 = 4 \times 0.7$
 
 ### Solution 17-08.14
 
-Uncoded BPSK: $Q(\sqrt{2E_b/N_0}) = 10^{-6}$ needs 10.53 dB. $K$ = 7 union bound $\sum B_dQ(\sqrt{dE_b/N_0}) = 10^{-6}$: **4.79** dB, a gain of **5.74** dB. In free space received power falls as $1/r^2$, so range scales by $10^{G/20}$ = **1.94**. LDPC at $0.19 + 1 = 1.19$ dB: gain **9.34** dB, range × **2.93**. (A practical coded system also loses the rate: at rate 1/2 the coded symbols occupy twice the bandwidth.)
+Uncoded BPSK: $Q(\sqrt{2E_b/N_0}) = 10^{-6}$ needs **10.53** dB. $K$ = 7 union bound $\sum B_dQ(\sqrt{dE_b/N_0}) = 10^{-6}$: **4.79** dB, a gain of **5.74** dB. In free space received power falls as $1/r^2$, so range scales by $10^{G/20}$ = **1.94**. LDPC at $0.19 + 1 = 1.19$ dB: gain **9.34** dB, range × **2.93**. (A practical coded system also loses the rate: at rate 1/2 the coded symbols occupy twice the bandwidth.)
 
 ### Solution 17-08.15
 
@@ -111,6 +120,66 @@ $A_5, A_6, A_7, A_8$ = 1, 2, 4, **8**; $\partial T/\partial N|_{N=1} = D^5/(1 - 
 ### Solution 17-08.16
 
 Exact: $2\tanh^{-1}\big(\tanh(1)\tanh(-0.5)\big) = 2\tanh^{-1}(0.7616 \times -0.4621) = 2\tanh^{-1}(-0.3519)$ = **−0.735**. Min-sum: sign $(+)(-) = -$, magnitude $\min(2, 1)$: **−1**. Normalized: $0.75 \times -1$ = **−0.75**. Min-sum overstates the confidence because the less reliable input dominates a parity check but the other input still adds doubt; the scale factor corrects much of the excess.
+
+### Solution 17-08.17
+
+(a) $\mathbf{H} = [\mathbf{P}^\mathsf{T} \mid \mathbf{I}_3]$ with $\mathbf{P}^\mathsf{T}$ the first three columns, so $\mathbf{P}$ has rows 110, 101, 011 and
+
+$$
+\mathbf{G} = [\mathbf{I}_3 \mid \mathbf{P}] = \left[\begin{array}{ccc|ccc}1&0&0&1&1&0\\0&1&0&1&0&1\\0&0&1&0&1&1\end{array}\right] .
+$$
+
+$\mathbf{G}\mathbf{H}^\mathsf{T} = \mathbf{P} + \mathbf{P} = \mathbf{0}$: for example, row 1 of $\mathbf{G}$, 100110, meets check 1 (bits 1, 2, 4: 1 + 0 + 1), check 2 (bits 1, 3, 5: 1 + 0 + 1) and check 3 (bits 2, 3, 6: 0 + 0 + 0).
+
+(b) $n$ = **6**, $k$ = **3**. The eight codewords are 000000, 100110, 010101, 001011, 110011, 101101, 011110 and 111000: **4** of weight 3 and three of weight 4, so $d_{min}$ = **3**. Equivalently, the columns of $\mathbf{H}$ are distinct and nonzero, and columns 1, 2 and 3 add to zero.
+
+(c) A single error in position $j$ gives column $j$ of $\mathbf{H}$: positions 1 to 6 give syndromes 110, 101, 011, 100, 010 and 001. The seventh nonzero syndrome, **111**, is no column, so no single error produces it. Its coset leader has weight **2** (for example bits 1 and 6: 110 + 001), and three different double-error patterns share it (1 and 6, 2 and 5, 3 and 4), so the decoder can detect but not reliably correct it. The code shortened from the perfect (7,4) code has lost perfection.
+
+(d) 101 encodes to row 1 + row 3 of $\mathbf{G}$: **101101**. Flipping bit 2 gives 111101, whose syndrome is $1+1+1$, $1+1+0$, $1+1+1$ → 101 = column **2**. Flipping bit 2 restores 101101 and the message 101.
+
+### Solution 17-08.18
+
+(a) $d_{min} = n - k + 1 = 255 - 223 + 1$ = **33**, $t = 32/2$ = **16** symbol errors. A burst always fits in $t$ symbols if $1 + \lceil(b - 1)/8\rceil \le 16$: $b \le (16 - 1) \times 8 + 1$ = **121** bits.
+
+(b) With depth 4, consecutive channel symbols come from different codewords in rotation, so a burst of $b$ symbols puts at most $\lceil b/4\rceil$ errors in any codeword. Every burst of up to $16 \times 4$ = **64** symbols is corrected. In bits, a burst touches at most 64 symbols if $1 + \lceil(b - 1)/8\rceil \le 64$: $b \le 63 \times 8 + 1$ = **505** bits. The receiver buffers the whole $4 \times 255$ array, **1020** bytes, before it can decode the first codeword.
+
+### Solution 17-08.19
+
+Append six zeros, giving 1011001110 000000, and divide by 1100001, XORing $g$ under each leading 1:
+
+```text
+1011001110000000
+1100001          -> 0111000110000000
+ 1100001         -> 0001000010000000
+   1100001       -> 0000100011000000
+    1100001      -> 0000010011100000
+     1100001     -> 0000001011110000
+      1100001    -> 0000000111111000
+       1100001   -> 0000000001111100
+         1100001 -> 0000000000011101
+```
+
+After the eight subtractions (at positions 1, 2, 4, 5, 6, 7, 8 and 10, counting from the left), the remainder in the last six places is **011101** (hexadecimal **0x1D**). The transmitted word is the message followed by the remainder, 1011001110 011101. The receiver divides all 16 bits by $g(x)$; because the sender made $m(x)x^6 + r(x)$ a multiple of $g(x)$, the remainder is zero. The lab's `crc_remainder` and `crc_check` reproduce both results.
+
+### Solution 17-08.20
+
+(a) Negative LLRs mean 1: the decisions are 1001 010, and the checks give $c_1$: bits 1, 2, 4, 5 = 1 + 0 + 1 + 0 = 0; $c_2$: bits 1, 3, 4, 6 = 1 + 0 + 1 + 1 = 1; $c_3$: bits 2, 3, 4, 7 = 0 + 0 + 1 + 0 = 1. The syndrome 011 is column 3 of $\mathbf{H}$: bit 3, the weakest LLR (0.4), is suspect.
+
+(b) To bit 3 from $c_2$ the other bits are 1, 4, 6 with LLRs −2.5, −3.0, −1.6: three negatives give sign −, and the smallest magnitude is 1.6, so the message is **−1.6**. From $c_3$ the others are bits 2, 4, 7 with 1.8, −3.0, 1.2: sign −, magnitude 1.2, message **−1.2**.
+
+(c) The same rule for every edge gives these messages:
+
+| Bit | Channel | From $c_1$ | From $c_2$ | From $c_3$ | After one iteration |
+|---|---|---|---|---|---|
+| 1 | −2.5 | −1.8 | +0.4 | | −3.9 |
+| 2 | 1.8 | +2.2 | | −0.4 | 3.6 |
+| 3 | 0.4 | | −1.6 | −1.2 | **−2.4** |
+| 4 | −3.0 | −1.8 | +0.4 | +0.4 | −4.0 |
+| 5 | 2.2 | +1.8 | | | 4.0 |
+| 6 | −1.6 | | +0.4 | | −1.2 |
+| 7 | 1.2 | | | −0.4 | 0.8 |
+
+The decisions are now 1011 010, the codeword of Example 17-08.1, with syndrome 000: **0** bit errors after one iteration. Bit 3's own weak evidence (+0.4) was outvoted by both of its checks. Bit 7's belief weakened (1.2 to 0.8) because check 3 carried bit 3's wrong sign; with more iterations the corrected bit 3 sends better messages back.
 
 ---
 
@@ -167,3 +236,21 @@ Exact: $2\tanh^{-1}\big(\tanh(1)\tanh(-0.5)\big) = 2\tanh^{-1}(0.7616 \times -0.
 | 17-08.16a | exact check message | −0.735 | — |
 | 17-08.16b | min-sum message | −1 | — |
 | 17-08.16c | normalized min-sum message | −0.75 | — |
+| 17-08.14f | uncoded BPSK at 1e-6 | 10.53 | dB |
+| 17-08.17a | n | 6 | — |
+| 17-08.17b | k | 3 | — |
+| 17-08.17c | codewords of weight 3 | 4 | — |
+| 17-08.17d | minimum distance | 3 | — |
+| 17-08.17e | weight of the coset leader of syndrome 111 | 2 | — |
+| 17-08.17f | position flipped by the decoder | 2 | — |
+| 17-08.18a | RS(255,223) d_min | 33 | — |
+| 17-08.18b | RS(255,223) t | 16 | symbols |
+| 17-08.18c | single-codeword burst | 121 | bits |
+| 17-08.18d | interleaved burst, depth 4 | 64 | symbols |
+| 17-08.18e | interleaved burst, depth 4 | 505 | bits |
+| 17-08.18f | interleaver buffer | 1020 | bytes |
+| 17-08.19a | CRC6 remainder of 1011001110 | 0x1D | — |
+| 17-08.20a | min-sum message c2 to bit 3 | −1.6 | — |
+| 17-08.20b | min-sum message c3 to bit 3 | −1.2 | — |
+| 17-08.20c | bit 3 LLR after one iteration | −2.4 | — |
+| 17-08.20d | bit errors after one iteration | 0 | — |
