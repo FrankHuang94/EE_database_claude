@@ -2950,3 +2950,11 @@ R&D % = R&D ÷ revenue.
 - **Core maxima:** Cortex-M4 data sheet "External interrupts, configurable from 1 to 240" and "Bits of priority, configurable from 3 to 8"; Cortex-M33 "configurable from 1 to 480"; Arm's comparison table gives M23 240 and M33/M52/M55/M85 480; the M23 TRM "Up to 240 external interrupt inputs, each with four levels of priority". [Established]
 - **STM32F4:** ST's CMSIS device header (github.com/STMicroelectronics/cmsis-device-f4, stm32f407xx.h): "#define __NVIC_PRIO_BITS 4U /*!< STM32F4XX uses 4 Bits for the Priority Levels */" (the programming manual itself could not be fetched). [Established]
 - **Espressif ESP32-C3 data sheet v2.5 (2026-11-11):** "Up to 32 vectored interrupts at seven priority levels". [Established]
+
+## R-305 · DMA controllers in microcontrollers
+
+*Read on 21 Nov 2026 by a research subagent from vendor data sheets, Arm's TRM and ST's HAL source (ST's reference manual could not be fetched).*
+
+- **Microchip SAM D5x/E5x DMAC** (data sheet DS60001507N): "Up to 32channels"; "4 configurable priority levels for each channel"; "Multi-buffer or circular buffer modes by linking multiple descriptors"; "From 1 to 256KB data transfer in a single block transfer"; "The DMAC has four bus interfaces". Bus matrix: "Symmetric crossbar bus switch implementation"; "Allows concurrent accesses from different Hosts to different Clients"; "32-bit data bus"; hosts include the CM4, cache controller, DMAC read and write, ICM and DSU; clients include flash, SRAM ports and AHB-APB bridges; a four-level SRAM quality-of-service setting. [Established]
+- **Arm PrimeCell µDMA controller PL230, TRM DDI0417A** ([PDF](https://documentation-service.arm.com/static/5f74b4911b758617cd95b9e6)): "up to 32 channels"; "performs all DMA transfers using the SINGLE AHB-Lite burst type"; "transfers in a single DMA cycle can be programmed from 1 to 1024"; ping-pong and scatter-gather cycle types. [Established]
+- **STM32F4 DMA** (ST's HAL source, stm32f4xx_hal_dma_ex.c, on ST's GitHub): two controllers with eight streams each (DMA1_Stream0 to DMA2_Stream7); memory burst options "DMA_MBURST_INC4/INC8/INC16"; FIFO thresholds from 1/4 to full; "When Multi (Double) Buffer mode is enabled the, transfer is circular by default." [Established, from source code rather than the reference manual]

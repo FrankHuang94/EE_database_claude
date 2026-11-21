@@ -30,7 +30,7 @@ Building products around microcontrollers: MCU architecture (Arm Cortex-M, RISC-
 | [18-01 · Microcontroller Architecture](chapters/18-01-microcontroller-architecture.md) | 7 | ✅ verified | [problems](problems/18-01-problems.md) · [solutions](solutions/18-01-solutions.md) · [lab](labs/18-01-lab/README.md) · [verify](verify/verify_18_01.py) |
 | [18-02 · Bare-Metal C and the Build Toolchain](chapters/18-02-bare-metal-c-and-toolchain.md) | 8 | ✅ verified | [problems](problems/18-02-problems.md) · [solutions](solutions/18-02-solutions.md) · [lab](labs/18-02-lab/README.md) · [verify](verify/verify_18_02.py) |
 | [18-03 · Interrupts, Exceptions and Timers](chapters/18-03-interrupts-exceptions-timers.md) | 8 | ✅ verified | [problems](problems/18-03-problems.md) · [solutions](solutions/18-03-solutions.md) · [lab](labs/18-03-lab/README.md) · [verify](verify/verify_18_03.py) |
-| [18-04 · DMA and Data Movement](chapters/18-04-dma-and-data-movement.md) | 5 | ⬜ planned | — |
+| [18-04 · DMA and Data Movement](chapters/18-04-dma-and-data-movement.md) | 5 | ✅ verified | [problems](problems/18-04-problems.md) · [solutions](solutions/18-04-solutions.md) · [lab](labs/18-04-lab/README.md) · [verify](verify/verify_18_04.py) |
 | [18-05 · Peripherals and Serial Buses: GPIO, UART, SPI, I²C](chapters/18-05-gpio-uart-spi-i2c.md) | 8 | ⬜ planned | — |
 | [18-06 · Analog Interfaces: ADC, DAC and PWM](chapters/18-06-adc-dac-pwm.md) | 6 | ⬜ planned | — |
 | [18-07 · RTOS Concepts](chapters/18-07-rtos-concepts.md) | 8 | ⬜ planned | — |

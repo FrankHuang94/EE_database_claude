@@ -7357,3 +7357,19 @@
   definition: "A digital output that switches at a fixed frequency with a variable fraction of each period high (the duty cycle); a timer generates it by comparing its count with a compare register, trading frequency against duty resolution."
   chapter: "18-03"
   see_also: [Input capture, PWM DAC]
+- term: Ping-pong buffering
+  definition: "Double buffering for streams: a DMA fills one buffer while the CPU processes the other, then they swap; safe when service latency plus processing time fits in one block time, N >= (a + L) fs / (1 - b fs)."
+  chapter: "18-04"
+  see_also: [Direct memory access (DMA), Circular buffer]
+- term: Scatter-gather DMA
+  definition: "DMA driven by a linked list of transfer descriptors in memory, so one channel moves data between several non-contiguous buffers, or cycles through buffers, without CPU intervention."
+  chapter: "18-04"
+  see_also: [Direct memory access (DMA)]
+- term: Bus contention
+  definition: "Delay that occurs when two bus masters (for example the CPU and a DMA controller) need the same memory port in the same cycle; to first order the CPU loses p x rho of its cycles, removed by placing their data in different memory banks."
+  chapter: "18-04"
+  see_also: [Bus matrix, Direct memory access (DMA)]
+- term: DMA overrun
+  definition: "Loss of data when a DMA overwrites a buffer, or a receiver's ring, before software has finished with its previous contents; detected by comparing indices or by status flags, and prevented by sizing blocks for the worst-case service latency."
+  chapter: "18-04"
+  see_also: [Ping-pong buffering]
