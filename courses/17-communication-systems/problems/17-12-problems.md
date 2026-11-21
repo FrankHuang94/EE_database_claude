@@ -52,13 +52,25 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Best of K.** The mean of the largest of $K$ unit exponentials is $\sum_{k=1}^K1/k$. Find the mean SNR gain of the max-SNR scheduler in dB for 4 and for 50 users.
 
-### Problem 17-12.11 [C]
+### Problem 17-12.11 [B]
 
 **Starving the edge.** Two Rayleigh users have mean SNRs of 20 dB and 0 dB. Under max-SNR scheduling, what fraction of slots does the weak user win? (For independent exponentials, $P(aX > bY) = a/(a + b)$.)
 
 ### Problem 17-12.12 [C]
 
 **HARQ with combining.** Independent attempts that each fail with probability 0.3, up to 4 transmissions: find the throughput and residual error. With combining, the conditional failure probabilities become 0.3, 0.05, 0.01, 0.002: find the expected number of transmissions and the throughput.
+
+### Problem 17-12.13 [B]
+
+**Reuse and trunking together.** *(lab)* An operator has 25 MHz of spectrum in 200 kHz channels and hexagonal cells with path-loss exponent 4. For cluster sizes $N$ = 7 and $N$ = 4: (a) how many channels does each cell get, and what is the first-tier edge SIR? (b) How many Erlangs can each cell carry at 2% blocking? (c) How many subscribers per cell is that, if each makes one 3-minute call in the busy hour? (d) Which would you choose if the modulation needs 15 dB?
+
+### Problem 17-12.14 [B]
+
+**Scheduling a strong and a weak user.** *(lab)* Two users share a channel with Rayleigh fading that is independent from slot to slot, at mean SNRs of 20 dB and 0 dB. (a) Under round robin, find each user's throughput $\tfrac12\mathbb E[\log_2(1 + \bar\gamma X)]$, $X$ ~ Exp(1). (b) A simple stand-in for proportional fair serves whichever user has the larger *normalized* SNR $\gamma_k/\bar\gamma_k$. Show that each user is then served half the time, always when its normalized SNR is the larger of two independent exponentials, and find each user's throughput. (c) Compare with the lab's rate-based proportional-fair simulation and with max-SNR, and explain the weak user's fate under each.
+
+### Problem 17-12.15 [A]
+
+**Where the course lives in a modem.** For each feature of NR or Wi-Fi, name the chapter of this course that explains it and the quantity it trades: (a) LDPC codes on data channels; (b) the choice of 30 kHz subcarrier spacing for a 3.5 GHz macro cell; (c) four receive antennas on a phone; (d) HARQ with soft combining; (e) CSMA/CA with exponential backoff; (f) link adaptation between QPSK and 256-QAM.
 
 ---
 
@@ -67,7 +79,8 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Learning objective (chapter 17-12) | Problems |
 |---|---|
 | 1. FDMA/TDMA/CDMA/OFDMA, duplexing | 1, 2, 3, 4 |
-| 2. Cellular reuse and SIR | 5, 6 |
+| 2. Cellular reuse and SIR | 5, 6, 13 |
 | 3. ALOHA and CSMA/CA | 7, 8 |
-| 4. Erlang B | 9 |
-| 5. Scheduling, multi-user diversity, HARQ | 10, 11, 12 |
+| 4. Erlang B | 9, 13 |
+| 5. Scheduling, multi-user diversity, HARQ | 10, 11, 12, 14 |
+| 6. NR and Wi-Fi as applications of the course | 15 |

@@ -12,7 +12,7 @@ Usable time 0.9: downlink $0.9 \times 0.7$ = **0.63**, uplink $0.9 \times 0.3$ =
 
 ### Solution 17-12.2
 
-Every pair's chip-by-chip product sums to zero (e.g. $[1,-1,1,-1]\cdot[1,1,-1,-1] = 1 - 1 - 1 + 1 = 0$). Shifting $[1,-1,1,-1]$ by one chip gives $[-1,1,-1,1]$, whose correlation with the original is $-4/4$ = **−1**: a one-chip timing error turns the code into its own negative and destroys the orthogonality with the others, which is why Walsh codes need synchronization.
+Every pair's chip-by-chip product sums to zero (e.g. $[1,-1,1,-1]\cdot[1,1,-1,-1] = 1 - 1 - 1 + 1 = 0$). Shifting $[1,-1,1,-1]$ by one chip gives $[-1,1,-1,1]$, whose correlation with the original is $-4/4$ = **−1**: a one-chip timing error inverts this user's own despread output. It can also destroy orthogonality with other users: shifting $[1,1,-1,-1]$ by one chip gives $[-1,1,1,-1] = -[1,-1,-1,1]$, fully correlated with another user's code. That is why Walsh codes need chip-level synchronization.
 
 ### Solution 17-12.3
 
@@ -54,6 +54,39 @@ The weak user wins when $1 \cdot X_w > 100 \cdot X_s$: probability $1/(1 + 100)$
 
 Independent: throughput **0.7**, residual $0.3^4$ = **0.0081**. With combining, the probabilities of still failing after 1, 2, 3 transmissions are 0.3, 0.015, 0.00015, so the expected number of transmissions is $1 + 0.3 + 0.015 + 0.00015$ = **1.315** and the throughput $(1 - 3 \times 10^{-7})/1.315$ = **0.760**.
 
+### Solution 17-12.13
+
+(a) 25 MHz / 200 kHz = 125 channels. $N$ = 7: $\lfloor125/7\rfloor$ = **17** channels per cell, SIR $(\sqrt{21})^4/6 = 441/6 = 73.5$, **18.66** dB. $N$ = 4: **31** channels, SIR $144/6 = 24$, **13.80** dB.
+
+(b) Solving $B(c, A) = 0.02$ with the Erlang B recursion: **10.66** Erlangs for 17 channels and **22.83** Erlangs for 31.
+
+(c) Each subscriber offers $3/60$ = 0.05 Erlang, so **213** and **456** subscribers per cell.
+
+(d) $N$ = 4 carries 2.1 times the traffic per cell but its 13.8 dB edge SIR misses the 15 dB requirement; $N$ = 7 meets it. Choose $N$ = 7 or, to keep $N$ = 4, add three-sector antennas (+4.8 dB, 18.6 dB) at the cost of splitting each cell's channels among sectors. Smaller clusters gain twice: more channels per cell and better trunking efficiency on the larger pool.
+
+### Solution 17-12.14
+
+(a) With $X$ exponential, $\mathbb E[\log_2(1 + \bar\gamma X)] = \int_0^\infty\log_2(1 + \bar\gamma x)e^{-x}dx$ = 5.88 b/s/Hz at 20 dB and 0.860 at 0 dB. Round robin halves each: **2.94** and **0.430** b/s/Hz.
+
+(b) The normalized SNRs $X_1 = \gamma_1/\bar\gamma_1$ and $X_2 = \gamma_2/\bar\gamma_2$ are independent Exp(1) variables, so by symmetry each is the larger half the time, whatever the means. When user $k$ is served its $X_k$ is the maximum of two exponentials, whose density is $2e^{-x}(1 - e^{-x})$. Its throughput is
+
+$$
+R_k = \tfrac12\int_0^\infty\log_2(1 + \bar\gamma_kx)\,2e^{-x}(1 - e^{-x})\,dx ,
+$$
+
+giving **3.42** b/s/Hz for the strong user and **0.600** for the weak one: both gain over round robin (16% and 40%) because each is served near its own peaks, and the weak user gains proportionally more.
+
+(c) The lab's rate-based proportional fair gives about 3.69 and 0.58 b/s/Hz: close, with the strong user served somewhat more than half the time because the metric compares rates, not SNRs. Max-SNR serves the 0 dB user only when its SNR beats the 20 dB user's, which almost never happens: about 5.88 and 0.01 b/s/Hz, the largest sum rate and complete starvation of the weak user.
+
+### Solution 17-12.15
+
+- (a) **17-08** (channel coding): LDPC codes approach capacity at long block lengths with parallel decoders; the trade is decoder area, power and latency against the dB of coding gain.
+- (b) **17-10** (OFDM) with 17-09: the 2.34 μs prefix must cover the macro cell's delay spread, while the 30 kHz spacing keeps Doppler ICI negligible; the trade is prefix overhead against delay-spread and Doppler tolerance.
+- (c) **17-11** (MIMO): receive diversity and up to four layers of spatial multiplexing; the trade is antennas, RF chains and power against capacity and reliability.
+- (d) **17-12** with 17-08: retransmissions combined with earlier copies raise the effective SNR; the trade is latency and buffer memory against throughput at a given block error rate.
+- (e) **17-12** (random access): the backoff window trades idle slots against collisions as the number of contenders changes.
+- (f) **17-06** (bandpass modulation) and 17-07 (capacity): each extra two bits per symbol costs about 6 dB of SNR; link adaptation chooses the most bits the current SNR supports.
+
 ---
 
 ## Answer key
@@ -87,3 +120,17 @@ Independent: throughput **0.7**, residual $0.3^4$ = **0.0081**. With combining, 
 | 17-12.12b | independent residual error | 0.0081 | — |
 | 17-12.12c | expected transmissions with combining | 1.315 | — |
 | 17-12.12d | throughput with combining | 0.760 | — |
+| 17-12.13a | channels per cell, N = 7 | 17 | — |
+| 17-12.13b | SIR, N = 7 | 18.66 | dB |
+| 17-12.13c | channels per cell, N = 4 | 31 | — |
+| 17-12.13d | SIR, N = 4 | 13.80 | dB |
+| 17-12.13e | Erlangs at 2%, 17 channels | 10.66 | E |
+| 17-12.13f | Erlangs at 2%, 31 channels | 22.83 | E |
+| 17-12.13g | subscribers per cell, N = 7 | 213 | — |
+| 17-12.13h | subscribers per cell, N = 4 | 456 | — |
+| 17-12.14a | round robin, strong user | 2.94 | b/s/Hz |
+| 17-12.14b | round robin, weak user | 0.430 | b/s/Hz |
+| 17-12.14c | normalized-SNR scheduler, strong user | 3.42 | b/s/Hz |
+| 17-12.14d | normalized-SNR scheduler, weak user | 0.600 | b/s/Hz |
+| 17-12.4x | power-control restoration | 21.07 | dB |
+| 17-12.7x | throughput lost beyond the optimum | 28 | % |

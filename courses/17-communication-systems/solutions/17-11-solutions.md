@@ -8,7 +8,7 @@ Problems: [17-11 problems](../problems/17-11-problems.md) · Chapter: [17-11](..
 
 ### Solution 17-11.1
 
-(a) **Array gain only**: coherent addition doubles the SNR, but both antennas fade together, so the error-rate slope is unchanged. (b) **Diversity** (order $N$) with a smaller array gain than MRC. (c) **Diversity** of order 2 with no array gain (the 3 dB loss offsets the power split). (d) **Multiplexing** gain (up to 4), plus diversity and array gain on each stream depending on the receiver.
+(a) **Array gain only**: coherent addition doubles the SNR, but both antennas fade together, so the error-rate slope is unchanged. (b) **Diversity** (order $N$) with a smaller array gain than MRC. (c) **Diversity** of order 2 with no array gain: the power split costs 3 dB, cancelling the coherent-combining gain, so the mean SNR equals SISO's. (d) **Multiplexing** gain (up to 4), plus diversity and array gain on each stream depending on the receiver.
 
 ### Solution 17-11.2
 
@@ -44,11 +44,11 @@ Equal power (0.5 each): $\log_2(1.5) + \log_2(1 + 0.045)$ = **0.648** b/s/Hz. Wa
 
 ### Solution 17-11.10
 
-Singular values **1.9** and **0.1**; condition number **19**. $(\mathbf H^H\mathbf H)^{-1}$ has diagonal entries $(1 + 0.81)/(0.19)^2 = 50.1$, so each ZF stream's SNR is $50/50.1$ = **−0.01** dB. ZF sum rate $2\log_2(1 + 0.998)$ = **2.00** b/s/Hz; capacity $\log_2(1 + 50 \times 3.61) + \log_2(1 + 50 \times 0.01)$ = **8.09** b/s/Hz. Alone, a stream would be received by MRC on its own column with SNR $(\rho/N_t)\|\mathbf h_k\|^2 = 50 \times 1.81$ = **19.57** dB: ZF gives up almost 20 dB per stream to cancel the other. MMSE-SIC or ML detection recovers most of the gap.
+Singular values **1.9** and **0.1**; condition number **19**. $(\mathbf H^H\mathbf H)^{-1}$ has diagonal entries $(1 + 0.81)/(0.19)^2 = 50.1$, so each ZF stream's SNR is $50/50.1$ = **−0.01** dB. ZF sum rate $2\log_2(1 + 0.998)$ = **2.00** b/s/Hz; capacity $\log_2(1 + 50 \times 3.61) + \log_2(1 + 50 \times 0.01)$ = **8.09** b/s/Hz. Alone, a stream would be received by MRC on its own column with SNR $(\rho/N_t)\|\mathbf h_k\|^2 = 50 \times 1.81$ = **19.57** dB: ZF gives up almost 20 dB per stream to cancel the other. MMSE does better on this ill-conditioned channel: $(\mathbf I + 50\mathbf H^H\mathbf H)^{-1}$ has diagonal entries 0.336, so each stream's SINR is $1/0.336 - 1 = 1.975$, **2.96** dB, and the sum rate is $2\log_2(2.975)$ = **3.15** b/s/Hz: it accepts some interference instead of amplifying noise. MMSE-SIC or ML detection recovers most of the remaining gap to capacity.
 
 ### Solution 17-11.11
 
-$2\int\log_2(1 + \rho\lambda/2)p(\lambda)d\lambda$: at 10 dB **5.55** b/s/Hz; at 30 dB **17.74** b/s/Hz. From 20 to 30 dB it rises by **6.45** b/s/Hz, close to $2 \times 3.32$; SISO rises by **3.26** b/s/Hz. Ten decibels buy two bits per hertz per eigenmode.
+$2\int\log_2(1 + \rho\lambda/2)p(\lambda)d\lambda$: at 10 dB **5.55** b/s/Hz; at 30 dB **17.74** b/s/Hz. From 20 to 30 dB it rises by **6.45** b/s/Hz, close to $2 \times 3.32$; SISO rises by **3.26** b/s/Hz. Ten decibels buy about $\log_210$ = 3.3 b/s/Hz per eigenmode at high SNR, so about 6.6 with two eigenmodes; the 2×2 gain of 6.45 is already close to that.
 
 ### Solution 17-11.12
 
@@ -99,6 +99,8 @@ MRC at 20 dB: **1.84e-5**. Alamouti (MRC formula at half the SNR, 17 dB): **7.26
 | 17-11.10e | ZF sum rate | 2.00 | b/s/Hz |
 | 17-11.10f | capacity | 8.09 | b/s/Hz |
 | 17-11.10g | single-stream MRC SNR | 19.57 | dB |
+| 17-11.10h | MMSE stream SINR | 2.96 | dB |
+| 17-11.10i | MMSE sum rate | 3.15 | b/s/Hz |
 | 17-11.11a | 2×2 ergodic at 10 dB | 5.55 | b/s/Hz |
 | 17-11.11b | 2×2 ergodic at 30 dB | 17.74 | b/s/Hz |
 | 17-11.11c | 2×2 increase, 20 → 30 dB | 6.45 | b/s/Hz |
@@ -109,3 +111,8 @@ MRC at 20 dB: **1.84e-5**. Alamouti (MRC formula at half the SNR, 17 dB): **7.26
 | 17-11.14a | MRC BER at 20 dB | 1.84e-5 | — |
 | 17-11.14b | Alamouti BER at 20 dB | 7.26e-5 | — |
 | 17-11.14c | Alamouti SNR to match | 23.01 | dB |
+| 17-11.5x | saving of the second antenna | 27.6 | dB |
+| 17-11.5y | further saving with four antennas | 13.7 | dB |
+| 17-11.5z | AWGN requirement at 1e-6 | 10.53 | dB |
+| 17-11.2x | EGC loss against MRC | 0.46 | dB |
+| 17-11.9x | water-filling gain over equal power | 54 | % |

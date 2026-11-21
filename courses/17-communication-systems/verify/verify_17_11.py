@@ -218,4 +218,35 @@ v.check("Lab 17-11.e", 1 / math.sqrt(256))
 sims = {k: mm.simulate_combining(2, 10, k, 400_000, rng) for k in ("sc", "egc", "mrc")}
 v.assert_true(f"Lab part 1: simulated SC > EGC > MRC at 10 dB ({sims}); MRC on its formula; SC about 2x MRC", sims["sc"] > sims["egc"] > sims["mrc"] and abs(sims["mrc"] / ber_mrc(10, 2) - 1) < 0.1 and 1.6 < sims["sc"] / sims["mrc"] < 2.2)
 
+# MMSE SINRs (independent: explicit error covariance), half-power point of sinc
+def _mmse(H, rho):
+    E = np.linalg.inv(np.eye(H.shape[1]) + rho / H.shape[1] * H.conj().T @ H)
+    return 1 / np.real(np.diag(E)) - 1
+
+
+_H4 = np.array([[1, 0.5], [0.2j, 0.8]])
+_m4 = _mmse(_H4, 100)
+v.check("Ex 17-11.4h", db(_m4[0]))
+v.check("Ex 17-11.4i", db(_m4[1]))
+v.check("Ex 17-11.4j", float(np.sum(np.log2(1 + _m4))))
+v.assert_true("lab mmse_sinr agrees", np.allclose(mm.mmse_sinr(_H4, 100), _m4))
+_m10 = _mmse(np.array([[1, 0.9], [0.9, 1]]), 100)
+v.check("17-11.10h", db(_m10[0]))
+v.check("17-11.10i", float(np.sum(np.log2(1 + _m10))))
+v.check("Txt 17-11.hp", optimize.brentq(lambda x: math.sin(x) / x - 1 / math.sqrt(2), 0.5, 2.5))
+
+# derived figures quoted in Solutions 17-11.5, 17-11.2 and 17-11.9
+from scipy.stats import norm as _nrm  # noqa: E402
+
+
+def _req_db(L):
+    return optimize.brentq(lambda d: mm.ber_bpsk_mrc(10 ** (d / 10), L) - 1e-6, 0, 80)
+
+
+v.check("17-11.5x", _req_db(1) - _req_db(2))
+v.check("17-11.5y", _req_db(2) - _req_db(4))
+v.check("17-11.5z", db(_nrm.isf(1e-6) ** 2 / 2))
+v.check("17-11.2x", db(1.25 / ((1 + 0.5) ** 2 / 2)))
+v.check("17-11.9x", 100 * (math.log2(2) / (math.log2(1.5) + math.log2(1.045)) - 1))
+
 sys.exit(v.finish())

@@ -50,7 +50,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 17-11.10 [C]
 
-**An ill-conditioned channel.** For $\mathbf H = \begin{bmatrix}1 & 0.9\\0.9 & 1\end{bmatrix}$ at ρ = 20 dB, find the singular values, the condition number, the per-stream ZF SNR, the ZF sum rate and the capacity. What SNR would one stream get if the other were absent and the receiver used MRC on its column?
+**An ill-conditioned channel.** For $\mathbf H = \begin{bmatrix}1 & 0.9\\0.9 & 1\end{bmatrix}$ at ρ = 20 dB, find the singular values, the condition number, the per-stream ZF SNR, the ZF sum rate, the per-stream MMSE SINR and sum rate, and the capacity. What SNR would one stream get if the other were absent and the receiver used MRC on its column?
 
 ### Problem 17-11.11 [C]
 

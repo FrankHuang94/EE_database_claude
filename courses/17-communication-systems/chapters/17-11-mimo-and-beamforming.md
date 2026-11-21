@@ -23,7 +23,7 @@
 Every radio since the early 2010s that claims a high data rate uses several antennas at each end. Multiple antennas do three different things, and confusing them is the most common error in conversations about MIMO. They can **add power coherently** (array gain: $N$ antennas give $N$ times the SNR), **average out fading** (diversity: deep fades become rare), or **carry several independent streams in the same band at the same time** (spatial multiplexing: capacity grows linearly with the number of antennas instead of logarithmically with power). Which one you get depends on the channel and on whether the transmitter knows it.
 
 - **Capacity without new spectrum.** Spatial multiplexing is the only way to raise throughput in a fixed bandwidth faster than $\log_2$ of the power (17-07). A 4×4 link at 20 dB has almost four times the ergodic capacity of a single antenna.
-- **Beamforming is array gain made steerable.** Millimetre-wave systems need 20–30 dB of array gain to overcome their small antenna apertures (17-09 §3.1), which only large phased arrays provide.
+- **Beamforming is array gain made steerable.** Millimetre-wave systems need 20–30 dB of combined transmit and receive array gain: an isotropic antenna's aperture at 28 GHz is $20\log_{10}8$ = 18.1 dB smaller than at 3.5 GHz (Friis, 17-09 §3.1), and blockage and foliage add further loss. Only large phased arrays provide that.
 - **Diversity makes links reliable.** Two receive antennas cut the SNR needed for $10^{-5}$ BER in Rayleigh fading by about 22 dB (17-09).
 - **Antennas cost RF chains.** Each fully digital antenna needs a mixer, ADC/DAC and baseband processing; hybrid analog-digital beamforming and massive MIMO are architectures for spending those chains wisely.
 
@@ -80,7 +80,7 @@ $$
 \tilde s_1 = h_1^*r_1 + h_2r_2^* = \frac{|h_1|^2 + |h_2|^2}{\sqrt2}s_1 + h_1^*n_1 + h_2n_2^* ,
 $$
 
-and similarly $\tilde s_2 = h_2^*r_1 - h_1r_2^*$, the cross terms cancel exactly, leaving each symbol scaled by $|h_1|^2 + |h_2|^2$ with noise of variance $(|h_1|^2 + |h_2|^2)N_0$. The SNR is $(|h_1|^2 + |h_2|^2)E_s/(2N_0)$: full diversity order 2, at the full rate of one symbol per period, but **3 dB less than two-branch MRC** because the transmit power is split without knowing where to point it (Example 17-11.2).
+and similarly $\tilde s_2 = h_2^*r_1 - h_1r_2^*$, the cross terms cancel exactly, leaving each symbol scaled by $(|h_1|^2 + |h_2|^2)/\sqrt2$ (each antenna sends $s/\sqrt2$, splitting the power) with noise of variance $(|h_1|^2 + |h_2|^2)N_0$. The SNR is $(|h_1|^2 + |h_2|^2)E_s/(2N_0)$: full diversity order 2, at the full rate of one symbol per period, but **3 dB less than two-branch MRC** because the transmit power is split without knowing where to point it (Example 17-11.2).
 
 ### 3.3 Beamforming with a uniform linear array
 
@@ -99,7 +99,7 @@ $$
 Its properties, for $d = \lambda/2$:
 
 - **Gain.** In the steered direction the signals add coherently: the power gain over one element is $N$ (9.03 dB for eight elements). Transmitting with the same weights gives the same gain toward the target, and since the radiated power is the same, it also reduces the energy sent elsewhere.
-- **Beamwidth.** The main lobe narrows as $1/N$: the half-power beamwidth at broadside is about $0.886\lambda/(Nd)$ radians, 12.8° for eight elements, and it widens by $1/\cos\theta_0$ when steered off broadside.
+- **Beamwidth.** The main lobe narrows as $1/N$: the half-power beamwidth at broadside is about $0.886\lambda/(Nd)$ radians (12.7° for eight elements by this rule, 12.80° exactly). It follows from $\lvert AF\rvert/N \approx \lvert\sin x/x\rvert$ with $x = N\psi/2$ near broadside: $\sin x/x = 1/\sqrt2$ at $x$ = 1.392, so $\psi = 2.783/N$ and, with $\psi = (2\pi d/\lambda)\sin\theta \approx (2\pi d/\lambda)\theta$, each half-power point is at $\theta = 2.783\lambda/(2\pi Nd)$ and the full width is $0.886\lambda/(Nd)$, and it widens by $1/\cos\theta_0$ when steered off broadside.
 - **Nulls.** The first null is at $\sin\theta = \sin\theta_0 + \lambda/(Nd)$; a receiver can place nulls on interferers by choosing other weights.
 - **Grating lobes.** If $d > \lambda/2$, the factor ψ can reach $2\pi$ inside visible space, creating full-strength copies of the main beam; scanning to $\theta_0$ without grating lobes needs $d \le \lambda/(1 + |\sin\theta_0|)$. This is why arrays use half-wavelength spacing: 4.3 cm at 3.5 GHz, 5.4 mm at 28 GHz.
 
@@ -126,7 +126,7 @@ $$
 C = \log_2\det\Big(\mathbf I_{N_r} + \frac{\rho}{N_t}\mathbf H\mathbf H^H\Big) = \sum_{i=1}^{r}\log_2\Big(1 + \frac{\rho}{N_t}\sigma_i^2\Big)\quad\text{b/s/Hz} ,
 $$
 
-the two forms being equal because the determinant is the product of the eigenvalues $1 + \rho\sigma_i^2/N_t$.
+the two forms being equal because the determinant is the product of the eigenvalues $1 + \rho\sigma_i^2/N_t$. Why equal power reaches it without channel knowledge: a white input $\mathbf x \sim \mathcal{CN}(0, \tfrac{\rho}{N_t}\mathbf I)$ stays white under the rotation $\mathbf V^H$, so the transmitter need not know $\mathbf V$; the receiver alone rotates by $\mathbf U^H$ and sees the $r$ parallel channels, each carrying power $\rho/N_t$.
 
 **Why capacity scales with $\min(N_t, N_r)$.** At high SNR each nonzero eigenmode contributes about $\log_2\rho$, so $C \approx r\log_2\rho + \text{const}$: the capacity curve's slope, the **multiplexing gain**, is the rank. In rich scattering with i.i.d. Rayleigh entries the rank is $\min(N_t, N_r)$ almost surely, and the ergodic capacity of an $N \times N$ system grows nearly linearly in $N$ (Example 17-11.5). In a pure line-of-sight channel between two compact arrays, $\mathbf H$ is close to rank 1: one eigenmode carries almost all the energy, and MIMO gives array gain but little multiplexing.
 
@@ -134,8 +134,10 @@ the two forms being equal because the determinant is the product of the eigenval
 
 Capacity requires joint processing; practical receivers often separate the streams linearly first.
 
-- **Zero-forcing (ZF)** inverts the channel: $\hat{\mathbf x} = (\mathbf H^H\mathbf H)^{-1}\mathbf H^H\mathbf y$, which removes inter-stream interference completely but amplifies noise. Stream $k$'s SNR is $\dfrac{\rho/N_t}{[(\mathbf H^H\mathbf H)^{-1}]_{kk}}$. When $\mathbf H$ is ill-conditioned (two columns nearly parallel), the inverse is large and the SNR collapses. With $N_r$ receive antennas and $N_t$ streams over i.i.d. Rayleigh fading, each ZF stream has diversity order $N_r - N_t + 1$: a 2×2 ZF receiver has no diversity at all.
+- **Zero-forcing (ZF)** inverts the channel: $\hat{\mathbf x} = (\mathbf H^H\mathbf H)^{-1}\mathbf H^H\mathbf y$, which removes inter-stream interference completely but amplifies noise. Stream $k$'s SNR is $\dfrac{\rho/N_t}{[(\mathbf H^H\mathbf H)^{-1}]_{kk}}$. When $\mathbf H$ is ill-conditioned (two columns nearly parallel), the inverse is large and the SNR collapses. With $N_r$ receive antennas and $N_t$ streams over i.i.d. Rayleigh fading, each ZF stream has diversity order $N_r - N_t + 1$: ZF projects the received vector onto the subspace orthogonal to the other $N_t - 1$ columns, which has dimension $N_r - N_t + 1$, so the stream's SNR is a sum of $N_r - N_t + 1$ independent exponential terms (chi-square with $2(N_r - N_t + 1)$ degrees of freedom), like MRC over that many branches. A 2×2 ZF receiver has no diversity at all.
 - **MMSE** balances interference and noise: $\hat{\mathbf x} = (\mathbf H^H\mathbf H + \tfrac{N_t}{\rho}\mathbf I)^{-1}\mathbf H^H\mathbf y$, with stream SINR $1/[(\mathbf I + \tfrac{\rho}{N_t}\mathbf H^H\mathbf H)^{-1}]_{kk} - 1$. It is never worse than ZF and approaches it at high SNR.
+
+> **Going deeper — the MMSE receiver.** With unit-power symbols scaled so that $\mathbf y = \sqrt{\rho/N_t}\,\mathbf H\mathbf x + \mathbf n$, $E[\mathbf x\mathbf x^H] = \mathbf I$ and $E[\mathbf n\mathbf n^H] = \mathbf I$, choose the linear filter $\mathbf W$ minimizing $E\lVert\mathbf W\mathbf y - \mathbf x\rVert^2$. Setting the gradient to zero (the orthogonality principle, $E[(\mathbf W\mathbf y - \mathbf x)\mathbf y^H] = 0$) gives $\mathbf W = \sqrt{\rho/N_t}\,\mathbf H^H\big(\tfrac{\rho}{N_t}\mathbf H\mathbf H^H + \mathbf I\big)^{-1}$, equivalent to the form above by the push-through identity. The resulting error covariance is $\mathbf E = (\mathbf I + \tfrac{\rho}{N_t}\mathbf H^H\mathbf H)^{-1}$; stream $k$'s mean-square error is $E_{kk}$, and after removing the filter's bias its SINR is $1/E_{kk} - 1$. As ρ → ∞ the identity term vanishes and the filter becomes the ZF inverse.
 - **Successive interference cancellation** (decode one stream, subtract it, repeat) with MMSE filtering achieves capacity when each stream's rate is matched to its SINR; **maximum-likelihood** detection searches all combinations and gains full diversity, at a cost exponential in the number of streams (sphere decoders reduce it).
 
 ### 3.6 Massive MIMO and hybrid beamforming
@@ -144,9 +146,21 @@ With many more base-station antennas than users ($M \gg K$), two effects simplif
 
 At millimetre wave, hundreds of elements are needed for array gain, but one ADC and RF chain per element is too costly in power. **Hybrid beamforming** splits the job: analog phase shifters form a few beams, each fed by one RF chain, and digital precoding across the chains handles multiplexing. The cost is that each analog beam must be found by a beam search, and switching takes time.
 
-### 3.7 How 5G NR uses multiple antennas
+### 3.7 Multi-user MIMO and channel knowledge
 
-NR maps one codeword onto up to four layers, and two codewords onto five to eight, so the downlink supports up to eight spatial layers; the uplink maps each codeword onto up to four layers, with Release 18 adding eight-port uplink precoders for up to eight layers ([R-290]). Phones must support at least four downlink layers in bands where four receive antennas are mandatory, and at least two in FR2 ([R-289]). TS 38.306 defines the approximate peak rate a device must support:
+A base station with $N_t$ antennas can serve several single-antenna users at once on the same frequencies, as long as it can steer each user's signal away from the others. Stack the users' channels as the rows of $\mathbf H$ ($K \times N_t$, with $K \le N_t$): user $k$ receives $y_k = \mathbf h_k^\mathsf T\mathbf x + n_k$. **Zero-forcing precoding** transmits $\mathbf x = \mathbf W\mathbf s$ with
+
+$$
+\mathbf W = \beta\,\mathbf H^H(\mathbf H\mathbf H^H)^{-1} ,
+$$
+
+so that $\mathbf H\mathbf W = \beta\mathbf I$: each user receives only its own symbol, scaled by β, with no interference. The scale β is set by the total power, $\beta^2 = P/\operatorname{tr}\big((\mathbf H\mathbf H^H)^{-1}\big)$ for unit-power symbols, so the scheme works well when the users' channel vectors are nearly orthogonal (users spread out in angle) and poorly when two users' channels are nearly parallel, which is why schedulers choose *which* users to pair. With many more antennas than users (**massive MIMO**), independent channel vectors become nearly orthogonal by the law of large numbers, and even the simpler matched-filter precoder $\mathbf W \propto \mathbf H^H$ approaches zero forcing.
+
+Everything here needs **channel knowledge at the transmitter**, which the receiver-side techniques of §3.5 did not. It is obtained in two ways. In time-division duplexing the uplink and downlink share a frequency, so the base station measures the channel from the users' uplink pilots and relies on reciprocity (after calibrating its own transmit and receive chains). In frequency-division duplexing the users measure downlink reference signals and feed back a compressed description: typically an index into a codebook of precoders, the number of layers they can support and a channel-quality figure for link adaptation. Feedback is quantized and ages as the channel changes (the coherence time of 17-09), and any error leaves residual interference between users, so multi-user gains in practice are below the ideal. Alamouti coding (§3.2), which needs no channel knowledge at the transmitter, remains attractive exactly where feedback is unavailable or stale.
+
+### 3.8 How 5G NR uses multiple antennas
+
+NR maps one codeword onto up to four layers, and two codewords onto five to eight, so the downlink supports up to eight spatial layers; the uplink maps each codeword onto up to four layers, with eight-port uplink codebooks supporting up to eight layers ([R-290]). Phones must support at least four downlink layers in bands where four receive antennas are mandatory, and at least two in FR2 ([R-289]). TS 38.306 defines the approximate peak rate a device must support:
 
 $$
 \text{rate} = 10^{-6}\,v_{layers}\,Q_m\,f\,R_{max}\,\frac{12N_{PRB}}{T_s^\mu}\,(1 - OH)\ \text{Mb/s} ,
@@ -172,7 +186,7 @@ with $R_{max} = 948/1024$, $T_s^\mu = 10^{-3}/(14 \cdot 2^\mu)$ s the average sy
 
 **Setup.** (a) With $h_1 = 0.8 + 0.6j$, $h_2 = -0.3 + 0.4j$ and symbols $s_1 = 1 + j$, $s_2 = 1 - j$, verify noise-free Alamouti decoding. (b) Compare the BPSK error rate at 15 dB average SNR of 2×1 Alamouti and 1×2 MRC.
 
-**Solution.** (a) $|h_1|^2 + |h_2|^2 = 1 + 0.25$ = **1.25**. Encoding and combining as in §3.2 gives $\tilde s_1 = (1.25/\sqrt2)(1 + j)$ and $\tilde s_2 = (1.25/\sqrt2)(1 - j)$: both symbols recovered exactly after dividing by $1.25/\sqrt2$. (b) MRC with two branches at 15 dB: $\bar P_b$ = **1.78e-4**. Alamouti's SNR is half: the MRC formula at 12 dB gives **6.77e-4**, the same slope, shifted by 3 dB.
+**Solution.** (a) $|h_1|^2 + |h_2|^2 = 1 + 0.25$ = **1.25**. Encoding and combining as in §3.2 gives $\tilde s_1 = (1.25/\sqrt2)(1 + j)$ and $\tilde s_2 = (1.25/\sqrt2)(1 - j)$: both symbols recovered exactly after dividing by $1.25/\sqrt2$. (b) MRC with two branches at 15 dB: $\bar P_b$ = **1.78e-4**. Alamouti's SNR is half: the MRC formula at $15 - 3.01$ = 11.99 dB gives **6.77e-4**, the same slope, shifted by 3 dB.
 
 **Units check.** $|h|^2$ is a power gain; symbols are dimensionless.
 
@@ -192,7 +206,7 @@ with $R_{max} = 948/1024$, $T_s^\mu = 10^{-3}/(14 \cdot 2^\mu)$ s the average sy
 
 **Setup.** $\mathbf H = \begin{bmatrix}1 & 0.5\\ 0.2j & 0.8\end{bmatrix}$ at ρ = 20 dB. Find the singular values, the capacity with equal power and with water-filling, the per-stream ZF SNRs and the resulting sum rate, and compare with a single antenna pair of gain 1.
 
-**Solution.** $\sigma_1$ = **1.223**, $\sigma_2$ = **0.659** (condition number 1.85). Equal power: $\log_2(1 + 50 \times 1.4953) + \log_2(1 + 50 \times 0.4347)$ = **10.75** b/s/Hz; water-filling adds only 0.0004 at this SNR. ZF: $(\mathbf H^H\mathbf H)^{-1}$ has diagonal 1.369 and 1.600, so the stream SNRs are $50/1.369$ = **15.62** dB and $50/1.6$ = **14.95** dB, a sum rate of $\log_2(1 + 36.52) + \log_2(1 + 31.25)$ = **10.24** b/s/Hz. A single pair: $\log_2101$ = **6.66** b/s/Hz.
+**Solution.** $\sigma_1$ = **1.223**, $\sigma_2$ = **0.659** (condition number 1.85). Equal power: $\log_2(1 + 50 \times 1.4953) + \log_2(1 + 50 \times 0.4347)$ = **10.75** b/s/Hz; water-filling adds only 0.0004 at this SNR. ZF: $(\mathbf H^H\mathbf H)^{-1}$ has diagonal 1.369 and 1.600, so the stream SNRs are $50/1.369$ = **15.62** dB and $50/1.6$ = **14.95** dB, a sum rate of $\log_2(1 + 36.52) + \log_2(1 + 31.25)$ = **10.24** b/s/Hz. MMSE: the diagonal of $(\mathbf I + 50\mathbf H^H\mathbf H)^{-1}$ gives SINRs of **15.67** dB and **14.98** dB, a sum rate of **10.26** b/s/Hz, barely above ZF at this SNR because the channel is well conditioned. A single pair: $\log_2101$ = **6.66** b/s/Hz.
 
 **Units check.** b/s/Hz throughout.
 
@@ -202,7 +216,7 @@ with $R_{max} = 948/1024$, $T_s^\mu = 10^{-3}/(14 \cdot 2^\mu)$ s the average sy
 
 **Setup.** For i.i.d. Rayleigh channels at ρ = 20 dB, find the ergodic capacity of 1×1 (closed form $\log_2(e)e^{1/\rho}E_1(1/\rho)$), 2×2 (integrating the eigenvalue density $p(\lambda) = \tfrac12(1 + (1 - \lambda)^2)e^{-\lambda}$), and 4×4 (Monte Carlo).
 
-**Solution.** 1×1: **5.88** b/s/Hz (against 6.66 for an unfaded channel at 20 dB). 2×2: $2\int_0^\infty\log_2(1 + 10\lambda)p(\lambda)d\lambda$ = **11.29** b/s/Hz. 4×4: **22.1** b/s/Hz. The ratios to SISO are 1.92 and 3.76.
+**Solution.** 1×1: **5.88** b/s/Hz (against 6.66 for an unfaded channel at 20 dB). 2×2: $2\int_0^\infty\log_2(1 + 50\lambda)p(\lambda)d\lambda$ (that is, $\rho/N_t = 50$) = **11.29** b/s/Hz. 4×4: **22.1** b/s/Hz. The ratios to SISO are 1.92 and 3.76.
 
 **Units check.** Capacity per channel use in b/s/Hz; λ is dimensionless.
 
@@ -216,7 +230,7 @@ with $R_{max} = 948/1024$, $T_s^\mu = 10^{-3}/(14 \cdot 2^\mu)$ s the average sy
 
 **Units check.** Resource elements/s × bits/RE = b/s.
 
-**Sanity check.** 23.4 b/s/Hz over four layers is 5.84 b/s/Hz per layer, about 6.4 bits per resource element before overhead: each layer needs an SNR above roughly 20 dB, so peak rates occur only near the cell centre.
+**Sanity check.** 23.4 b/s/Hz over four layers is 5.84 b/s/Hz per layer: 7.4 coded bits per resource element (6.4 after the 14% overhead), which needs at least 22.3 dB by Shannon–Hartley (about 24 dB with 256-QAM inputs, 17-07 §3.7). Peak rates therefore occur only near the cell centre.
 
 <!-- answer-key -->
 
@@ -248,6 +262,10 @@ with $R_{max} = 948/1024$, $T_s^\mu = 10^{-3}/(14 \cdot 2^\mu)$ s the average sy
 | Ex 17-11.4e | ZF stream 2 SNR | 14.95 | dB |
 | Ex 17-11.4f | ZF sum rate | 10.24 | b/s/Hz |
 | Ex 17-11.4g | SISO capacity | 6.66 | b/s/Hz |
+| Ex 17-11.4h | MMSE stream 1 SINR | 15.67 | dB |
+| Ex 17-11.4i | MMSE stream 2 SINR | 14.98 | dB |
+| Ex 17-11.4j | MMSE sum rate | 10.26 | b/s/Hz |
+| Txt 17-11.hp | half-power x of sinc | 1.392 | — |
 | Ex 17-11.5a | 1×1 ergodic capacity | 5.88 | b/s/Hz |
 | Ex 17-11.5b | 2×2 ergodic capacity | 11.29 | b/s/Hz |
 | Ex 17-11.5c | 4×4 ergodic capacity | 22.1 | b/s/Hz |
@@ -283,6 +301,8 @@ The lab, [labs/17-11-lab](../labs/17-11-lab/README.md), provides `mimo.py`: comb
 
 ## 7. Numbers to know
 
+Rows citing the research log describe the standards as of Nov 2026.
+
 | Quantity | Value | Note |
 |---|---|---|
 | MRC | SNR = $\|\mathbf h\|^2E_s/N_0$; mean $N\bar\gamma$; diversity $N$ | matched filter in space |
@@ -309,12 +329,12 @@ The lab, [labs/17-11-lab](../labs/17-11-lab/README.md), provides `mimo.py`: comb
 ### State of the art (as of Nov 2026)
 
 - **NR layers and peak rates.** TS 38.211 V19.5.0 maps up to eight downlink layers onto one or two codewords and up to four uplink layers per codeword, with eight-port uplink codebooks supporting up to eight layers ([R-290]); TS 38.306 V19.4.0 requires at least four downlink layers in bands where four receive antennas are mandatory and at least two in FR2, and defines the peak-rate formula used in Example 17-11.6 ([R-289]) **[Established]**.
-- **Wi-Fi.** 802.11ax added multi-user MIMO on resource units of at least 106 tones, with up to eight users and at most eight space-time streams in total (from Keysight's documentation); the maximum number of spatial streams in the final 802.11be standard could not be confirmed from a primary source ([R-288]) **[Established, secondary]**.
+- **Wi-Fi.** 802.11ax supports downlink and uplink multi-user MIMO on resource units of at least 106 tones, with up to eight users (from Keysight's documentation); the maximum number of spatial streams in the final 802.11be standard could not be confirmed from a primary source ([R-288]) **[Established, secondary]**.
 - **Massive MIMO and mmWave.** The architectures of §3.6 (large arrays at base stations, hybrid analog-digital beamforming at millimetre wave) follow directly from the theory here; specific base-station antenna counts and RF-chain configurations are vendor-specific and are not covered by the sources logged for this chapter, so none are quoted.
 
 ### Why it matters commercially
 
-Spatial multiplexing is the cheapest capacity a network can buy after spectrum, but it is not free: each layer needs its own RF chain, a well-conditioned channel and an SNR high enough for its modulation. For devices, the number of receive antennas (two or four in a phone) sets the peak layer count and also gives diversity at the cell edge. For base stations, the trade is between fully digital massive MIMO (flexible, power-hungry) and hybrid beamforming (efficient, slower to adapt). For investors, peak-rate headlines are products of bandwidth, layers and modulation; the typical user rate depends on how often the channel supports more than one or two layers.
+Spatial multiplexing adds capacity without new spectrum, but it is not free: each layer needs its own RF chain, a well-conditioned channel and an SNR high enough for its modulation. For devices, the number of receive antennas (two or four in a phone) sets the peak layer count and also gives diversity at the cell edge. For base stations, the trade is between fully digital massive MIMO (flexible, power-hungry) and hybrid beamforming (efficient, slower to adapt). For investors, peak-rate headlines are products of bandwidth, layers and modulation; the typical user rate depends on how often the channel supports more than one or two layers.
 
 ### Marketing vs Reality
 

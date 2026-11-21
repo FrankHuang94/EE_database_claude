@@ -135,8 +135,9 @@ v.check("Ex 17-10.5a", papr_level(1e-3, 64))
 v.check("Ex 17-10.5b", papr_level(1e-3, 1024))
 v.check("Ex 17-10.5c", papr_level(1e-3, 3276))
 v.check("Ex 17-10.5d", papr_level(1e-3, 3276) - 10 * math.log10(18 / 10))
-p300 = of.ofdm_papr(300, 4000, rng, nfft=1200)
-d300 = of.dfts_papr(300, 4000, rng)
+_rng_papr = np.random.default_rng(171005)  # own generator, so the larger sample does not shift later draws
+p300 = of.ofdm_papr(300, 40000, _rng_papr, nfft=1200)
+d300 = of.dfts_papr(300, 40000, _rng_papr)
 q_ofdm, q_dfts = np.quantile(p300, 0.999), np.quantile(d300, 0.999)
 v.assert_true(f"PAPR Monte Carlo (300 sc, 4x oversampled): OFDM {q_ofdm:.2f} dB at 1e-3, within 0.5 dB above the approximation; DFT-spread {q_dfts:.2f} dB, at least 2 dB lower", 0 <= q_ofdm - papr_level(1e-3, 300) < 0.5 and q_ofdm - q_dfts > 2)
 v.assert_true("16-QAM PAPR (17-06) is 18/10 = 2.55 dB", abs(db(18 / 10) - 2.55) < 0.005)
@@ -179,7 +180,7 @@ v.check("17-10.11a", 100 * norm.cdf((math.log10(144 * Ts / 2 / 3) - mu_ds) / 0.3
 v.check("17-10.11b", 100 * norm.cdf((math.log10(144 * Ts / 3) - mu_ds) / 0.39))
 v.check("17-10.11c", 10 ** (mu_ds + norm.isf(0.01) * 0.39) * 1e6)
 v.check("17-10.12a", 4096 * 144 / 2048)
-v.check("17-10.12b", 0.5)
+v.check("17-10.12b", math.pi / (2 * math.pi))  # phase 2*pi*eps is unambiguous for |2*pi*eps| < pi
 v.check("17-10.13a", ici_exact(0.2, 64))
 v.check("17-10.13b", (math.pi * 0.2) ** 2 / 3)
 s = of.qam(4)[rng.integers(0, 4, 256)]
@@ -190,12 +191,56 @@ v.assert_true("Problem 14: full-band DFT-spread returns the QPSK symbols exactly
 # ------------------------------------------------------------------ lab
 v.check("Lab 17-10.a", corr_window(2, 0.9))
 h6 = np.array([0.7, 0.5, 0.3, 0.3, 0.2, 0.15])
-sers = {cp: of.simulate_link(64, cp, h6 / np.linalg.norm(h6), 16, 30.0, 300, rng) for cp in (0, 3, 5, 8)}
-v.check("Lab 17-10.b", min(cp for cp, ser in sers.items() if ser == 0))
-v.assert_true(f"Lab part 2: SER {sers} (0 and 3 leave an error floor)", sers[0] > 1e-3 and sers[3] > 1e-4 and sers[5] == 0 and sers[8] == 0)
+# noise-free: the residual error power after one-tap equalization is the ISI/ICI floor of a too-short prefix
+_h6n = h6 / np.linalg.norm(h6)
+_X = of.qam(16)[rng.integers(0, 16, (300, 64))]
+
+
+def _floor(cp):
+    y = np.convolve(of.ofdm_mod(_X, cp), _h6n)[: 300 * (64 + cp)]
+    Xh = of.ofdm_demod(y, 64, cp, 300) / of.channel_response(_h6n, 64)
+    return float(np.mean(np.abs(Xh - _X) ** 2) / np.mean(np.abs(_X) ** 2))
+
+
+floors = {cp: _floor(cp) for cp in (0, 3, 4, 5, 8)}
+v.check("Lab 17-10.b", min(cp for cp, f in floors.items() if f < 1e-20))
+v.assert_true(f"Lab part 2: noise-free error floors {floors}: prefixes of 0, 3 and 4 samples leave one, 5 and 8 do not",
+              all(floors[c] > 1e-5 for c in (0, 3, 4)) and floors[5] < 1e-20 and floors[8] < 1e-20)
 v.check("Lab 17-10.c", db(ici_exact(0.05, 256)))
 v.check("Lab 17-10.d", papr_level(1e-3, 300))
 v.check("Lab 17-10.e", of.nr_slot_duration(4) * 1e6)
 v.assert_true("Lab part 4: -28.8 and -14.9 dB at eps 0.02 and 0.1", abs(db(ici_exact(0.02, 256)) + 28.8) < 0.05 and abs(db(ici_exact(0.1, 256)) + 14.9) < 0.05)
+
+# Problem 17-10.15 (pilot spacing) and the 256-QAM-constrained limit of Example 17-10.6
+v.check("17-10.15a", 1 / 2e-6 / 1e3)
+v.check("17-10.15b", math.floor((1 / 2e-6) / 30e3))
+_fd = (120 / 3.6) * 3.5e9 / 2.998e8
+_tsym = (1 / 30e3) * (1 + 144 / 2048)
+v.check("17-10.15c", 1 / (2 * _fd) * 1e3)
+v.check("17-10.15d", math.floor(1 / (2 * _fd) / _tsym))
+v.check("17-10.15e", 100 / (12 * 7))
+_xh, _wh = np.polynomial.hermite.hermgauss(80)
+_lv = np.arange(-15, 16, 2.0)
+
+
+def _c16pam(snr):
+    a = _lv * math.sqrt(snr / np.mean(_lv ** 2))
+    tot = 0.0
+    for ai in a:
+        y = ai + math.sqrt(2) * _xh
+        tot += np.sum(_wh * np.log2(np.sum(np.exp(-((y[:, None] - a[None, :]) ** 2 - (y[:, None] - ai) ** 2) / 2), axis=1))) / math.sqrt(math.pi)
+    return math.log2(len(a)) - tot / len(a)
+
+
+v.check("Ex 17-10.6z", optimize.brentq(lambda d: 2 * _c16pam(10 ** (d / 10)) - 7.2, 15, 35))
+
+# derived figures quoted in Solutions 17-10.11, 17-10.13 and 17-10.7
+v.check("17-10.11x", 10 ** (-6.47 - 0.134 * math.log10(6)) * 1e6)
+_ex = 1 - (math.sin(math.pi * 0.2) / (64 * math.sin(math.pi * 0.2 / 64))) ** 2
+v.check("17-10.13x", 10 * math.log10(_ex))
+v.check("17-10.13y", 10 * math.log10((math.pi * 0.2) ** 2 / 3))
+v.check("17-10.13z", 10 * math.log10((math.pi * 0.2) ** 2 / 3) - 10 * math.log10(_ex))
+_pp = lambda p: 10 * math.log10(-math.log(1 - (1 - p) ** (1 / 256)))  # noqa: E731
+v.check("17-10.7x", _pp(1e-4) - _pp(1e-2))
 
 sys.exit(v.finish())

@@ -16,11 +16,11 @@
 3. Derive the throughput of ALOHA and slotted ALOHA, and analyse CSMA/CA's collision behaviour as the number of stations grows.
 4. Use the Erlang B formula to size a system for a blocking target.
 5. Compare round-robin, max-SNR and proportional-fair scheduling, quantify multi-user diversity, and compute HARQ throughput.
-6. Map every earlier chapter of this course onto the physical and access layers of 5G NR and Wi-Fi.
+6. Map the course's main techniques (modulation, coding, OFDM, MIMO, multiple access, HARQ) onto the physical and access layers of 5G NR and Wi-Fi.
 
 ## 1. Big picture
 
-The previous eleven chapters built one link: a transmitter, a channel, a receiver. Real systems serve many users on shared spectrum, and the rules for sharing decide most of their capacity. Cellular networks schedule every resource centrally from the base station; Wi-Fi lets stations contend for the medium and back off when they collide. Both reuse the same spectrum in neighbouring cells, accepting interference in exchange for capacity. This chapter adds the multi-user layer and then shows how 5G NR and Wi-Fi assemble the whole course into working systems.
+The previous eleven chapters built one link: a transmitter, a channel, a receiver. Real systems serve many users on shared spectrum, and the rules for sharing decide most of their capacity. Cellular networks schedule almost every resource centrally from the base station (initial access is the exception: a phone announces itself on a random-access channel by contention, slotted ALOHA over a set of preambles, §3.4); Wi-Fi lets stations contend for the medium and back off when they collide. Both reuse the same spectrum in neighbouring cells, accepting interference in exchange for capacity. This chapter adds the multi-user layer and then shows how 5G NR and Wi-Fi assemble the whole course into working systems.
 
 - **Spectrum is shared in frequency, time, code and space.** Each axis has its own orthogonality condition and its own cost.
 - **Reuse is the multiplier.** A cellular network's capacity grows with the number of cells, not the amount of spectrum; interference between cells is the price.
@@ -66,7 +66,7 @@ $$
 
 is the factor by which despreading raises the signal relative to wideband interference (17-02 introduced the same idea as despreading gain for GNSS).
 
-**Orthogonal codes.** Walsh codes (rows of a Hadamard matrix) are exactly orthogonal when synchronized: for length 4, $[1,1,1,1]$, $[1,-1,1,-1]$, $[1,1,-1,-1]$, $[1,-1,-1,1]$, whose pairwise products sum to zero. Downlinks from one transmitter can keep them synchronized; uplinks from different phones cannot, so they use pseudo-noise codes with small (not zero) cross-correlation and see each other as noise.
+**Orthogonal codes.** Walsh codes (rows of a Hadamard matrix) are exactly orthogonal when synchronized: for length 4, $[1,1,1,1]$, $[1,-1,1,-1]$, $[1,1,-1,-1]$, $[1,-1,-1,1]$, whose pairwise products sum to zero. Downlinks from one transmitter can keep them synchronized, although multipath delays partly destroy the orthogonality at the receiver (an "orthogonality factor" below 1 accounts for it); uplinks from different phones cannot, so they use pseudo-noise codes with small (not zero) cross-correlation and see each other as noise.
 
 **Single-cell uplink capacity.** With $N$ users received at equal power $P$ (by power control), each sees $N - 1$ interferers. If interference is treated as white noise spread over $R_c$, the energy per bit to interference density is
 
@@ -74,7 +74,7 @@ $$
 \frac{E_b}{I_0} = \frac{P/R_b}{(N - 1)P/R_c} = \frac{G_p}{N - 1}\quad\Rightarrow\quad N = 1 + \frac{G_p}{E_b/I_0} ,
 $$
 
-ignoring thermal noise. Voice activity (silence is not transmitted) divides the interference by an activity factor, and interference from neighbouring cells multiplies it by $(1 + f)$. CDMA's capacity is **soft**: adding users degrades everyone gradually instead of being refused. Its Achilles heel is the **near-far problem**: a nearby phone received 30 dB stronger than a distant one swamps it, so uplink power control must be fast and accurate.
+ignoring thermal noise. Voice activity (silence is not transmitted) multiplies the interference by the activity factor α (about 0.4–0.5), and interference from neighbouring cells multiplies it by $(1 + f)$, so $N \approx 1 + G_p/\big((E_b/I_0)\,\alpha(1 + f)\big)$. CDMA's capacity is **soft**: adding users degrades everyone gradually instead of being refused. Its Achilles heel is the **near-far problem**: a nearby phone received 30 dB stronger than a distant one swamps it, so uplink power control must be fast and accurate.
 
 ### 3.3 The cellular concept and frequency reuse
 
@@ -90,9 +90,9 @@ $$
 \text{SIR} \approx \frac{R^{-n}}{6D^{-n}} = \frac{(\sqrt{3N})^n}{6} .
 $$
 
-For $n$ = 4, $N$ = 7 gives 18.7 dB and $N$ = 1 gives only 1.8 dB (Example 17-12.2). Larger clusters buy SIR at the cost of capacity per cell (each cell gets $1/N$ of the spectrum). Sectorized antennas cut the number of interferers each cell sees.
+For $n$ = 4, $N$ = 7 gives 18.7 dB and $N$ = 1 gives only 1.8 dB (Example 17-12.2), though the six-interferer approximation fails for $N$ = 1: a user at a cell corner is equidistant from its own and two neighbouring base stations, so its SIR is below −3 dB, and a full lattice sum gives −3.85 dB at $n$ = 4. Larger clusters buy SIR at the cost of capacity per cell (each cell gets $1/N$ of the spectrum). Sectorized antennas cut the number of interferers each cell sees: with three 120° sectors, a sector faces about two of the six first-tier interferers, which raises the SIR by about $10\log_{10}3$ = **4.77** dB ($N$ = 7, $n$ = 4: 23.4 dB), at the cost of splitting each cell's channels among its sectors and so reducing trunking efficiency.
 
-**Reuse 1 in modern systems.** OFDMA systems with strong coding and link adaptation (NR, LTE) use the full band in every cell ($N$ = 1) and live with low cell-edge SIR, because users near the centre enjoy high SIR and the scheduler, interference coordination and MIMO manage the edge. The total capacity of a network then grows with the number of cells: halving the cell radius quadruples the number of cells per area, the **cell-splitting** dividend that has driven most of the capacity growth in cellular history.
+**Reuse 1 in modern systems.** OFDMA systems with strong coding and link adaptation (NR, LTE) use the full band in every cell ($N$ = 1) and live with low cell-edge SIR, because users near the centre enjoy high SIR and the scheduler, interference coordination and MIMO manage the edge. The total capacity of a network then grows with the number of cells: halving the cell radius quadruples the number of cells per area, the **cell-splitting** dividend that has been a major source of capacity growth in cellular history **[Industry estimate]**.
 
 **Handover** moves a connection between cells as a user crosses a boundary; hysteresis margins and time-to-trigger settings prevent ping-ponging between cells whose signals fluctuate with shadowing (17-09).
 
@@ -100,10 +100,12 @@ For $n$ = 4, $N$ = 7 gives 18.7 dB and $N$ = 1 gives only 1.8 dB (Example 17-12.
 
 When users transmit without coordination, packets collide. Model packet attempts (new and retransmitted) as a Poisson process with $G$ attempts per packet time.
 
+> **Math refresher — the Poisson process.** If attempts arrive independently at an average rate λ, the number in an interval of length $t$ is Poisson, $P(k) = (\lambda t)^ke^{-\lambda t}/k!$ (03-02), so the probability of none is $e^{-\lambda t}$. With time measured in packet times and λ = $G$, the chance that no other packet starts in a window of length $x$ packet times is $e^{-Gx}$.
+
 - **Pure ALOHA.** A packet survives if no other starts within one packet time before or after it, a window of two packet times: probability $e^{-2G}$. Throughput (successful packets per packet time) is $S = Ge^{-2G}$, maximized at $G$ = 1/2 with $S_{max} = 1/(2e)$ = **0.184**.
 - **Slotted ALOHA.** Transmissions start only at slot boundaries, so the vulnerable window shrinks to one slot: $S = Ge^{-G}$, with $S_{max} = 1/e$ = **0.368** at $G$ = 1.
 
-**Carrier sensing.** Listening before talking (CSMA) avoids most collisions when the propagation delay is short compared with a packet. Wi-Fi's **CSMA/CA** adds collision avoidance: a station that finds the medium busy waits until it is idle, then counts down a random backoff of $0$ to $W - 1$ slots, transmitting when the counter reaches zero; after a collision (no acknowledgement) it doubles $W$ (**binary exponential backoff**). Because a radio cannot detect a collision while transmitting, every successful frame is acknowledged.
+**Carrier sensing.** Listening before talking (CSMA) avoids most collisions when the propagation delay is short compared with a packet. Wi-Fi's **CSMA/CA** adds collision avoidance: a station that finds the medium busy waits until it has been idle for a fixed interframe space (DIFS, or AIFS for prioritized traffic), then counts down a random backoff of $0$ to $W - 1$ slots, freezing the counter whenever the medium becomes busy again, transmitting when the counter reaches zero; after a collision (no acknowledgement) it doubles $W$ (**binary exponential backoff**). Because a radio cannot detect a collision while transmitting, every successful frame is acknowledged.
 
 **A slot model.** If each of $n$ backlogged stations transmits in a given slot with probability τ, then
 
@@ -111,27 +113,29 @@ $$
 P_{idle} = (1 - \tau)^n,\qquad P_{success} = n\tau(1 - \tau)^{n-1},\qquad P_{coll} = 1 - P_{idle} - P_{success} .
 $$
 
-With a fixed window, τ ≈ $2/(W + 1)$ (the mean of a uniform backoff); for $W$ = 16, τ = 0.118. Ten stations then succeed in 38% of slots and collide in 33%; fifty stations collide in 98.5% (Example 17-12.4). The success probability is maximized at τ = $1/n$, where it tends to $1/e$: the window must grow with the number of contenders, which is what exponential backoff approximates.
+With a fixed window, τ ≈ $2/(W + 1)$ (the mean of a uniform backoff); for $W$ = 16, τ = 0.118. Ten stations then succeed in 38% of slots and collide in 33%; fifty stations collide in 98.5% (Example 17-12.4). The success probability is maximized where its derivative $n(1 - \tau)^{n-2}(1 - n\tau)$ vanishes, at τ = $1/n$, where it equals $(1 - 1/n)^{n-1}$ and tends to $1/e$: the window must grow with the number of contenders, which is what exponential backoff approximates.
 
 **Hidden and exposed terminals.** Carrier sensing fails when two stations cannot hear each other but both reach the access point (**hidden terminals**): both sense an idle medium and collide at the receiver. A short **RTS/CTS** handshake reserves the medium, because the access point's CTS is heard by both. Wi-Fi 6 added scheduled OFDMA uplinks triggered by the access point, moving part of Wi-Fi toward cellular-style scheduling ([R-288]).
 
 ### 3.5 Traffic engineering: Erlang B
 
-Circuit-style resources (voice channels, connections, or any pool of servers) are sized with the **Erlang B** formula. Calls arrive as a Poisson process at rate λ and hold for an exponentially distributed time of mean $1/\mu$; the offered traffic is $A = \lambda/\mu$ Erlangs. With $c$ channels and blocked calls cleared, the number of calls in progress is a birth-death chain with stationary probabilities $p_k \propto A^k/k!$ for $k = 0, \dots, c$ (balance $\lambda p_{k-1} = k\mu p_k$). A new call is blocked when all $c$ are busy:
+Circuit-style resources (voice channels, connections, or any pool of servers) are sized with the **Erlang B** formula. Calls arrive as a Poisson process at rate λ and hold for an exponentially distributed time of mean $1/\mu$; the offered traffic is $A = \lambda/\mu$ Erlangs. With $c$ channels and blocked calls cleared, the number of calls in progress is a birth-death chain with stationary probabilities $p_k \propto A^k/k!$ for $k = 0, \dots, c$ (balance $\lambda p_{k-1} = k\mu p_k$: in steady state the rate of moves up from $k - 1$ busy channels equals the rate of moves down from $k$). Each step multiplies by $A/k$, so $p_k = p_{k-1}A/k = p_0A^k/k!$, and normalizing over $k = 0$ to $c$ fixes $p_0$. A new call is blocked when all $c$ are busy, and because Poisson arrivals see the system in its time-average state (**PASTA**: an arrival is equally likely at any instant, independent of the past), the fraction of arriving calls blocked equals the fraction of time all channels are busy, $p_c$:
 
 $$
 B(c, A) = \frac{A^c/c!}{\sum_{k=0}^{c}A^k/k!} ,
 $$
 
-computed stably by the recursion $B(k) = AB(k - 1)/(k + AB(k - 1))$, $B(0) = 1$. Ten channels carrying 5 Erlangs block 1.84% of calls; carrying 20 Erlangs at 2% blocking needs 28 channels (Example 17-12.5). Large pools are more efficient (**trunking gain**): 28 channels carry 20 Erlangs (71% occupancy), while 10 channels carry only 5 at a similar blocking rate (50%).
+computed stably by the recursion $B(k) = AB(k - 1)/(k + AB(k - 1))$, $B(0) = 1$, which follows from dividing the formula for $B(k)$ by that for $B(k - 1)$: $1/B(k) = 1 + k/(AB(k - 1))$. Ten channels carrying 5 Erlangs block 1.84% of calls; carrying 20 Erlangs at 2% blocking needs 28 channels (Example 17-12.5). Large pools are more efficient (**trunking gain**): 28 channels carry 20 Erlangs (70% occupancy, counting the carried traffic), while 10 channels carry only 5 at a similar blocking rate (49%).
+
+**Erlang C: calls that wait.** If blocked requests queue instead of being cleared (a call centre, a server pool, a scheduler's buffer), the same birth-death chain continues past $c$ with departure rate $c\mu$, and the probability that an arrival must wait is $C(c, A) = cB/(c - A(1 - B))$ with $B = B(c, A)$, requiring $A < c$. The mean wait is $C/(c\mu - \lambda)$. Twelve servers offered 10 Erlangs make **44.9%** of arrivals wait, on average **0.225** holding times: running near capacity is cheap in blocking but expensive in delay, the queueing lesson of 17-13 §3.6.
 
 ### 3.6 Scheduling and multi-user diversity
 
 A base station with $K$ users and one resource per slot must choose whom to serve.
 
-- **Round robin** serves users in turn, ignoring their channels: fair in time, but each user gets its average rate $\mathbb E[\log_2(1 + \bar\gamma X)]$, $X$ ~ Exp(1).
-- **Max-SNR (max C/I)** serves whichever user has the best instantaneous channel, maximizing total throughput. With $K$ users fading independently, the scheduled SNR is the *maximum* of $K$ exponentials, whose mean is $\bar\gamma\sum_{k=1}^K1/k$: **multi-user diversity**. At 10 dB with 10 users, the sum rate rises from 2.91 to 4.81 b/s/Hz (Example 17-12.6). But users with weaker average channels (at the cell edge) are starved.
-- **Proportional fair** (PF) serves the user maximizing $r_k(t)/\bar R_k$, its instantaneous rate relative to its own recent average throughput. Each user is served near its own peaks, so PF keeps most of the multi-user diversity gain while giving every user a share; with equal average SNRs it behaves like max-SNR, and with unequal ones it trades a little sum rate for much better fairness.
+- **Round robin** serves users in turn, ignoring their channels: fair in time. Each of $K$ users gets $1/K$ of the slots, so its throughput is $\mathbb E[\log_2(1 + \bar\gamma_kX)]/K$ with $X$ ~ Exp(1), and with equal means the sum rate is $\mathbb E[\log_2(1 + \bar\gamma X)]$.
+- **Max-SNR (max C/I)** serves whichever user has the best instantaneous channel, maximizing total throughput. With $K$ users fading independently, the scheduled SNR is the *maximum* of $K$ exponentials (with equal mean SNR), whose mean is $\bar\gamma\sum_{k=1}^K1/k$: **multi-user diversity**. At 10 dB with 10 users, the sum rate rises from 2.91 to 4.81 b/s/Hz (Example 17-12.6). But users with weaker average channels (at the cell edge) are starved.
+- **Proportional fair** (PF) serves the user maximizing $r_k(t)/\bar R_k$, its instantaneous rate relative to its own recent average throughput. Each user is served near its own peaks, so PF keeps most of the multi-user diversity gain while giving every user a share; with equal average SNRs it behaves like max-SNR. With unequal ones it gives up a substantial part of max-SNR's sum rate (about a quarter in the lab's five-user case, 4.59 against 6.27 b/s/Hz) for much better fairness (Jain index 0.80 against 0.31), while still beating round robin by about 45%.
 
 **Jain's fairness index** $J = (\sum x_k)^2/(K\sum x_k^2)$ summarizes how evenly throughput $x_k$ is shared: 1 when equal, $1/K$ when one user takes everything.
 
@@ -143,7 +147,7 @@ A base station with $K$ users and one resource per slot must choose whom to serv
 
 | Layer of the course | 5G NR | Wi-Fi 6/7 |
 |---|---|---|
-| Modulation (17-06) | QPSK to 256-QAM (1024-QAM in some FR1 configurations, [R-289]) | up to 1024-QAM (6) and 4096-QAM (7) [R-288] |
+| Modulation (17-06) | QPSK to 256-QAM; 1024-QAM on the FR1 downlink ([R-275]); π/2-BPSK on the uplink with transform precoding | up to 1024-QAM (6) and 4096-QAM (7) [R-288] |
 | Channel coding (17-08) | LDPC for data, polar for control, CRC24A/B/C, 16, 11, 6 [R-279] | LDPC and binary convolutional codes [R-281] |
 | Multicarrier (17-10) | OFDM, 15–960 kHz numerologies, 12-subcarrier RBs, DFT-spread uplink option [R-285]–[R-287] | OFDM with 4× longer symbols than 802.11ac (6), up to 320 MHz channels (7) [R-288] |
 | Antennas (17-11) | up to 8 DL layers; UE ≥ 4 layers where 4Rx mandatory [R-289], [R-290] | MU-MIMO on resource units [R-288] |
@@ -160,7 +164,7 @@ The table is a map, not a list to memorize: each entry is a design choice that t
 
 **Setup.** (a) A 20 MHz allocation is divided into 200 kHz channels with 8 TDMA slots each. How many simultaneous users? (b) A CDMA system spreads 12.2 kb/s voice over 5 MHz. Find the processing gain, and the single-cell uplink capacity for a required $E_b/I_0$ of 7 dB. (c) Repeat (b) with voice activity 0.5 and other-cell interference equal to 60% of in-cell interference.
 
-**Solution.** (a) $100 \times 8$ = **800** users. (b) $G_p = 5 \times 10^6/12\,200$ = 409.8, **26.13** dB. $N = 1 + 409.8/5.012$ = **82.8**, so 82 users. (c) $N = 1 + 409.8/(5.012 \times 0.5 \times 1.6)$ = **103.2**, so 103 users.
+**Solution.** (a) $100 \times 8$ = **800** users. (b) $G_p = 5 \times 10^6/12\,200$ = 409.8, **26.13** dB (taking the whole 5 MHz as the chip rate; WCDMA's actual 3.84 Mchip/s gives **25.0** dB). $N = 1 + 409.8/5.012$ = **82.8**, so 82 users. (c) $N = 1 + 409.8/(5.012 \times 0.5 \times 1.6)$ = **103.2**, so 103 users.
 
 **Units check.** Hz/(b/s) is dimensionless; $E_b/I_0$ converted to linear (5.012).
 
@@ -224,6 +228,15 @@ The table is a map, not a list to memorize: each entry is a design choice that t
 | Txt 17-12.b | slotted ALOHA maximum | 0.368 | — |
 | Txt 17-12.c | HARQ throughput, p = 0.1, 4 transmissions | 0.9 | — |
 | Txt 17-12.d | HARQ residual error | 1e-4 | — |
+| Txt 17-12.e | reuse-1 corner SIR, lattice sum, n = 4 | -3.85 | dB |
+| Txt 17-12.j | Erlang C wait probability, 12 servers, 10 E | 44.9 | % |
+| Txt 17-12.k | Erlang C mean wait | 0.225 | holding times |
+| Txt 17-12.l | three-sector SIR gain | 4.77 | dB |
+| Txt 17-12.m | WCDMA processing gain for 12.2 kb/s | 25.0 | dB |
+| Txt 17-12.f | PF sum rate, five users (lab) | 4.59 | b/s/Hz |
+| Txt 17-12.g | max-SNR sum rate, five users (lab) | 6.27 | b/s/Hz |
+| Txt 17-12.h | Jain index, PF | 0.80 | — |
+| Txt 17-12.i | Jain index, max-SNR | 0.31 | — |
 | Ex 17-12.1a | FDMA/TDMA users | 800 | — |
 | Ex 17-12.1b | processing gain | 26.13 | dB |
 | Ex 17-12.1c | single-cell CDMA users | 82.8 | — |
@@ -282,11 +295,13 @@ The lab, [labs/17-12-lab](../labs/17-12-lab/README.md), provides `access.py`: FD
 
 ## 7. Numbers to know
 
+Rows citing the research log describe the standards as of Nov 2026.
+
 | Quantity | Value | Note |
 |---|---|---|
 | CDMA processing gain | $R_c/R_b$ | single-cell users ≈ $1 + G_p/(E_b/I_0)$ |
 | Hexagonal reuse | $D/R = \sqrt{3N}$; $N = i^2 + ij + j^2$ | SIR ≈ $(\sqrt{3N})^n/6$ |
-| Edge SIR ($n$ = 4) | 1.8 dB ($N$ = 1), 11.3 dB ($N$ = 3), 18.7 dB ($N$ = 7) | |
+| Edge SIR ($n$ = 4) | 11.3 dB ($N$ = 3), 18.7 dB ($N$ = 7) | $N$ = 1: formula 1.8 dB, but a cell corner is below −3 dB |
 | ALOHA maximum | 0.184 (pure, $G$ = 0.5), 0.368 (slotted, $G$ = 1) | |
 | CSMA slot success | $n\tau(1 - \tau)^{n-1}$; best ≈ $1/e$ at τ = $1/n$ | |
 | Erlang B | 10 channels at 5 Erl: 1.84%; 20 Erl at 2%: 28 channels | trunking gain |
@@ -313,7 +328,7 @@ The lab, [labs/17-12-lab](../labs/17-12-lab/README.md), provides `access.py`: FD
 
 ### Why it matters commercially
 
-Most of a wireless operator's capacity comes from reuse and cell density, not from spectral efficiency per link: once links run within a few decibels of Shannon (17-07), capacity per area grows by adding cells, spectrum and spatial layers. Access design decides how close a system gets to its link capacity under real load. Contention-based Wi-Fi is excellent when lightly loaded and degrades in dense deployments, which is why Wi-Fi 6 and 7 added scheduled, cellular-like features; cellular scheduling extracts multi-user diversity but requires the operator's controller and spectrum. For chip vendors, these choices set the complexity of the MAC and scheduler, the number of HARQ processes and buffers, and the feedback loops a modem must run.
+Much of a wireless operator's capacity comes from reuse and cell density rather than from spectral efficiency per link **[Industry estimate]**: once links run within a few decibels of Shannon (17-07), capacity per area grows by adding cells, spectrum and spatial layers. Access design decides how close a system gets to its link capacity under real load. Contention-based Wi-Fi is excellent when lightly loaded and degrades in dense deployments, which is why Wi-Fi 6 and 7 added scheduled, cellular-like features; cellular scheduling extracts multi-user diversity but requires the operator's controller and spectrum. For chip vendors, these choices set the complexity of the MAC and scheduler, the number of HARQ processes and buffers, and the feedback loops a modem must run.
 
 > **Deeper:** see companion repo *Datacenter Networking* for contention, scheduling and congestion in wired fabrics, where the same throughput-fairness tradeoffs reappear.
 

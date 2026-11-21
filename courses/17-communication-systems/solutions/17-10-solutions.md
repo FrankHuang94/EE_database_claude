@@ -48,7 +48,7 @@ $106 \times 12$ = 1272 subcarriers × 14 symbols per 1 ms slot = $17.81 \times 1
 
 ### Solution 17-10.11
 
-The prefix must exceed about $3\tau_{rms}$, so it covers links with $\tau_{rms} < T_{CP}/3$. At 30 kHz: $\log_{10}(2.344\,\mu\text{s}/3) = -6.107$; $z = (-6.107 + 6.57)/0.39 = 1.19$, so **88.4** % of links (using the unrounded mean $-6.4700 - 0.134\log_{10}6 = -6.5743$). At 15 kHz ($T_{CP}$ = 4.69 μs): **97.6** %. 99th percentile: $10^{-6.5743 + 2.326 \times 0.39}$ = **2.15** μs. The tail of the delay-spread distribution, not its median of 0.27 μs, sets the prefix, which is why wide-area deployments favour 15 or 30 kHz.
+The prefix must exceed about $3\tau_{rms}$, so it covers links with $\tau_{rms} < T_{CP}/3$. At 30 kHz: $\log_{10}(2.344\,\mu\text{s}/3) = -6.107$; with the mean $-6.47 - 0.134\log_{10}6 = -6.574$, $z = (-6.107 + 6.574)/0.39 = 1.198$, so **88.4** % of links. At 15 kHz ($T_{CP}$ = 4.69 μs): **97.6** %. 99th percentile: $10^{-6.5743 + 2.326 \times 0.39}$ = **2.15** μs. The tail of the delay-spread distribution, not its median of 0.27 μs, sets the prefix, which is why wide-area deployments favour 15 or 30 kHz.
 
 ### Solution 17-10.12
 
@@ -61,6 +61,16 @@ $\sin(\pi\varepsilon)/(N\sin(\pi\varepsilon/N)) \approx \sin(\pi\varepsilon)/(\p
 ### Solution 17-10.14
 
 With DFT size $M = N$, the transmitter computes $x = \text{IFFT}_N(\text{FFT}_N(s)) = s$ (with consistent normalization): the samples are exactly the original QAM symbols, a single-carrier waveform. For QPSK all samples have the same magnitude, so the Nyquist-sampled PAPR is **0** dB. With $M < N$ (a contiguous allocation of a fraction of the band) the IFFT interpolates between the symbols with a sinc-like kernel, which creates modest peaks between samples: the several-decibel advantage over OFDM in §3.6 rather than a perfect 0 dB.
+
+### Solution 17-10.15
+
+(a) The channel's frequency response is the transform of an impulse response no longer than $\tau_{max}$ = 2 μs, so sampling it in frequency needs a spacing below $1/\tau_{max}$ = **500** kHz: at most $\lfloor 500/30\rfloor$ = **16** subcarriers.
+
+(b) $f_D = vf_c/c = 33.33 \times 3.5 \times 10^9/2.998 \times 10^8$ = 389.2 Hz, so the time spacing must be below $1/(2f_D)$ = **1.285** ms, or $1.285\ \text{ms}/35.68\ \mu\text{s}$ = **36** symbols.
+
+(c) One resource element in $12 \times 7 = 84$: **1.19** % of the grid.
+
+(d) The limits assume ideal interpolation and noiseless pilots. Real estimators average several pilots to reduce noise and use short interpolation filters, which need oversampling; designs also leave margin for faster users and longer delays, and every MIMO antenna port needs its own pilots, multiplying the overhead.
 
 ---
 
@@ -101,3 +111,13 @@ With DFT size $M = N$, the transmitter computes $x = \text{IFFT}_N(\text{FFT}_N(
 | 17-10.13a | exact ICI | 0.1248 | — |
 | 17-10.13b | approximate ICI | 0.1316 | — |
 | 17-10.14a | Nyquist-sampled PAPR | 0 | dB |
+| 17-10.15a | largest pilot spacing in frequency | 500 | kHz |
+| 17-10.15b | largest spacing in subcarriers | 16 | — |
+| 17-10.15c | largest spacing in time | 1.285 | ms |
+| 17-10.15d | largest spacing in symbols | 36 | — |
+| 17-10.15e | pilot overhead | 1.19 | % |
+| 17-10.11x | median delay spread | 0.27 | μs |
+| 17-10.13x | exact ICI, N = 64, ε = 0.2 | -9.04 | dB |
+| 17-10.13y | approximate ICI | -8.81 | dB |
+| 17-10.13z | approximation error | 0.23 | dB |
+| 17-10.7x | PAPR shift for a factor of 100 in probability | 1.6 | dB |

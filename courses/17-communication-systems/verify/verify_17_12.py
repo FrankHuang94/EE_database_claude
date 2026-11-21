@@ -189,4 +189,60 @@ v.assert_true("Lab part 3: W = 16 beats W = 64 for 5 stations; W = 64 beats W = 
 s5 = ac.simulate_schedulers([20, 15, 10, 5, 0], 40_000, rng)
 v.assert_true(f"Lab part 5: Jain index max-SNR {ac.jain(s5['max']):.2f} (about 0.3), PF {ac.jain(s5['pf']):.2f} (about 0.8); PF sum between RR and max", abs(ac.jain(s5["max"]) - 0.31) < 0.05 and abs(ac.jain(s5["pf"]) - 0.80) < 0.05 and s5["rr"].sum() < s5["pf"].sum() < s5["max"].sum())
 
+# reuse-1 corner SIR by a full hexagonal lattice sum; scheduler figures quoted in §3.6 from the lab simulation
+_a1, _a2 = np.array([math.sqrt(3), 0.0]), np.array([math.sqrt(3) / 2, 1.5])
+_pts = np.array([i * _a1 + j * _a2 for i in range(-60, 61) for j in range(-60, 61)])
+_d = np.linalg.norm(_pts - np.array([0.0, 1.0]), axis=1)
+_own = int(np.argmin(np.linalg.norm(_pts, axis=1)))
+_pr = _d ** -4.0
+v.check("Txt 17-12.e", 10 * math.log10(_pr[_own] / (_pr.sum() - _pr[_own])))
+v.assert_true("corner is equidistant from three base stations", np.sum(np.isclose(_d, 1.0)) == 3)
+_sch = ac.simulate_schedulers([20, 15, 10, 5, 0], 1_000_000, np.random.default_rng(1712))
+v.check("Txt 17-12.f", float(np.sum(_sch["pf"])))
+v.check("Txt 17-12.g", float(np.sum(_sch["max"])))
+v.check("Txt 17-12.h", ac.jain(_sch["pf"]))
+v.check("Txt 17-12.i", ac.jain(_sch["max"]))
+v.assert_true("PF loses about a quarter of max-SNR's sum rate and beats round robin by about 45%",
+              0.2 < 1 - np.sum(_sch["pf"]) / np.sum(_sch["max"]) < 0.3 and 1.4 < np.sum(_sch["pf"]) / np.sum(_sch["rr"]) < 1.5)
+
+# Erlang C (from the birth-death chain continued past c, computed directly), sectorization, WCDMA gain
+_A, _c = 10.0, 12
+_terms = [_A**k / math.factorial(k) for k in range(_c)]
+_tail = _A**_c / math.factorial(_c) * _c / (_c - _A)
+_pw = _tail / (sum(_terms) + _tail)
+v.check("Txt 17-12.j", 100 * _pw)
+v.check("Txt 17-12.k", _pw / (_c - _A))
+_b = ac.erlang_b(_c, _A)
+v.assert_true("Erlang C from Erlang B: cB/(c - A(1 - B))", abs(_c * _b / (_c - _A * (1 - _b)) - _pw) < 1e-12)
+v.check("Txt 17-12.l", 10 * math.log10(6 / 2))
+v.check("Txt 17-12.m", 10 * math.log10(3.84e6 / 12200))
+
+# Problems 17-12.13 (reuse + trunking) and 17-12.14 (normalized-SNR scheduler)
+for tag, n_cl in (("a", 7), ("c", 4)):
+    cpc = 125 // n_cl
+    v.check(f"17-12.13{tag}", cpc)
+    v.check(f"17-12.13{chr(ord(tag) + 1)}", 10 * math.log10(math.sqrt(3 * n_cl) ** 4 / 6))
+_A7 = optimize.brentq(lambda a: ac.erlang_b(17, a) - 0.02, 1, 50)
+_A4 = optimize.brentq(lambda a: ac.erlang_b(31, a) - 0.02, 1, 80)
+v.check("17-12.13e", _A7)
+v.check("17-12.13f", _A4)
+v.check("17-12.13g", math.floor(_A7 / 0.05))
+v.check("17-12.13h", math.floor(_A4 / 0.05))
+for tag, g in (("a", 100.0), ("b", 1.0)):
+    v.check(f"17-12.14{tag}", integrate.quad(lambda x: math.log2(1 + g * x) * math.exp(-x), 0, np.inf)[0] / 2)
+for tag, g in (("c", 100.0), ("d", 1.0)):
+    v.check(f"17-12.14{tag}", integrate.quad(lambda x: math.log2(1 + g * x) * 2 * math.exp(-x) * (1 - math.exp(-x)), 0, np.inf)[0] / 2)
+_rng14 = np.random.default_rng(171214)
+_g = _rng14.exponential(1.0, (400_000, 2)) * np.array([100.0, 1.0])
+_win = np.argmax(_g / np.array([100.0, 1.0]), axis=1)
+_thr = [np.sum(np.log2(1 + _g[_win == k, k])) / len(_g) for k in (0, 1)]
+v.assert_true("normalized-SNR scheduler simulated: equal time shares and the integral throughputs", abs(np.mean(_win == 0) - 0.5) < 0.005 and abs(_thr[0] - 3.415) < 0.03 and abs(_thr[1] - 0.600) < 0.01, f"{_thr}")
+_pf = ac.simulate_schedulers([20, 0], 300_000, np.random.default_rng(1715))
+v.assert_true("rate-based PF gives about 3.69 and 0.58", abs(_pf["pf"][0] - 3.69) < 0.05 and abs(_pf["pf"][1] - 0.58) < 0.02, f"{_pf['pf']}")
+
+# derived figures quoted in Solutions 17-12.4 and 17-12.7
+v.check("17-12.4x", 10 * math.log10(128))
+_s = lambda p: 20 * p * (1 - p) ** 19  # noqa: E731
+v.check("17-12.7x", 100 * (1 - _s(0.1) / _s(0.05)))
+
 sys.exit(v.finish())

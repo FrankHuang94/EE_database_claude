@@ -54,19 +54,23 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 17-10.11 [C]
 
-**Prefix against the delay-spread distribution.** TR 38.901 models UMa NLOS delay spread as lognormal: $\log_{10}(\text{DS}/1\,\text{s})$ has mean −6.57 and standard deviation 0.39 (below 6 GHz). Assume the channel's maximum excess delay is about three times its rms delay spread. What fraction of links does a 30 kHz NR prefix cover? A 15 kHz prefix? What is the 99th-percentile delay spread?
+**Prefix against the delay-spread distribution.** TR 38.901 models UMa NLOS delay spread as lognormal: $\log_{10}(\text{DS}/1\,\text{s})$ has mean $\mu_{lgDS} = -6.47 - 0.134\log_{10}f_c$ (with $f_c$ = 6 for carriers below 6 GHz) and standard deviation 0.39 (TR 38.901 V19.5.0, Table 7.5-6, [R-284](../../../reference/research-log.md#r-284--3gpp-tr-38901-delay-spread-parameters)). Assume the channel's maximum excess delay is about three times its rms delay spread. What fraction of links does a 30 kHz NR prefix cover? A 15 kHz prefix? What is the 99th-percentile delay spread?
 
 ### Problem 17-10.12 [B]
 
 **The prefix as a frequency detector.** With a 4096-point FFT at 30 kHz, how many samples long is the normal cyclic prefix? A receiver correlates the prefix with the end of the symbol; the correlation's phase is $2\pi\varepsilon$. What range of ε can it measure without ambiguity?
 
-### Problem 17-10.13 [C]
+### Problem 17-10.13 [B]
 
 **Exact against approximate ICI.** Derive $P_{ICI} \approx (\pi\varepsilon)^2/3$ from the exact expression, then evaluate both for $N$ = 64 and ε = 0.2.
 
 ### Problem 17-10.14 [C]
 
 **DFT-spread at full band.** Show that DFT-spread OFDM with the DFT size equal to the IFFT size transmits exactly the original single-carrier symbols at the sample instants. What is the Nyquist-sampled PAPR for QPSK?
+
+### Problem 17-10.15 [B]
+
+**Placing pilots.** An NR carrier at 3.5 GHz uses 30 kHz subcarriers (symbol with prefix 35.68 μs). The channel's maximum excess delay is 2 μs and users move at up to 120 km/h. (a) What is the largest pilot spacing in frequency, in hertz and in subcarriers? (b) The largest spacing in time, in seconds and in OFDM symbols? (c) A grid with a pilot every 12 subcarriers and every 7 symbols meets both. What fraction of resource elements does it use? (d) Why do real systems place pilots more densely than these limits?
 
 ---
 
@@ -76,7 +80,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Orthogonality | 1, 14 |
 | 2. Sizing: FFT, sampling, bandwidth | 2, 8, 10, 12 |
-| 3. Cyclic prefix and numerology | 3, 4, 11 |
+| 3. Cyclic prefix, one-tap equalization and numerology | 3, 4, 9, 11 |
 | 4. Frequency offset and Doppler ICI | 5, 6, 12, 13 |
 | 5. PAPR and DFT-spread OFDM | 7, 14 |
-| 6. OFDMA, per-subcarrier quality | 9, 10 |
+| 6. OFDMA, the resource grid and pilots | 10, 15 |

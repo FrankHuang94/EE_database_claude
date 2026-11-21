@@ -34,7 +34,7 @@ Subcarriers spaced by $1/T$ are orthogonal over a window of length $T$ (§3.1). 
 ## Expected results
 
 - Part 1: about 0.109 and 0.104: a 10% window error couples subcarriers at about −19 dB.
-- Part 2: prefixes of 5 and 8 samples work (the channel has 5 samples of memory); 0 and 3 leave an error floor.
+- Part 2: prefixes of 5 and 8 samples work (the channel has 5 samples of memory); 0 and 3 leave a residual ISI/ICI floor that no SNR removes. With 16-QAM at 30 dB the floor shows as symbol errors, mostly on the weakest subcarriers; a noise-free run shows it directly as nonzero error power after equalization.
 - Part 3: per-subcarrier error rates follow the AWGN formula at each subcarrier's own SNR; ZF and MMSE decisions agree.
 - Part 4: −28.8, −20.9 and −14.9 dB, measured within a few tenths of a decibel.
 - Part 5: OFDM about 11 dB at $10^{-3}$ (slightly above the 11.0 dB approximation); DFT-spread OFDM several decibels lower.
