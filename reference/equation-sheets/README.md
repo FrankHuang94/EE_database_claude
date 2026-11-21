@@ -21,3 +21,5 @@ One sheet per course: the equations you should be able to write from memory (or 
 | 14 · Computer Organization and Architecture | [14-computer-organization-and-architecture.md](14-computer-organization-and-architecture.md) |
 | 15 · Control Systems | [15-control-systems.md](15-control-systems.md) |
 | 16 · Digital Signal Processing | [16-digital-signal-processing.md](16-digital-signal-processing.md) |
+| 17 · Communication Systems | [17-communication-systems.md](17-communication-systems.md) |
+| 18 · Embedded Systems and Microcontrollers | [18-embedded-systems-and-microcontrollers.md](18-embedded-systems-and-microcontrollers.md) |

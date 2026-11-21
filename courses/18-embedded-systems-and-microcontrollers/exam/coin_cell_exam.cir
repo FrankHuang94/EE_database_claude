@@ -1,0 +1,24 @@
+* Course 18 exam, Question 10(d): a coin cell (3.0 V open circuit, 60 Ohm internal resistance when cold) supplying a
+* 10 mA, 3 ms radio burst, without a capacitor, with the minimum 72.13 uF for 0.3 V of droop, and with 100 uF.
+* EXPECT droop_nocap_v key:solutions.md#X18.10i rtol=1e-3
+* EXPECT droop_100u_mv key:solutions.md#X18.10k rtol=2e-3
+VB b 0 DC 3.0
+RI b out 60
+IL out 0 PULSE(0 10m 1m 1n 1n 3m 100m)
+VB2 b2 0 DC 3.0
+RI2 b2 out2 60
+C2 out2 0 72.13475u IC=3.0
+IL2 out2 0 PULSE(0 10m 1m 1n 1n 3m 100m)
+VB3 b3 0 DC 3.0
+RI3 b3 out3 60
+C3 out3 0 100u IC=3.0
+IL3 out3 0 PULSE(0 10m 1m 1n 1n 3m 100m)
+.options reltol=1e-6 abstol=1e-12 vntol=1e-9
+.tran 1u 5m 0 1u UIC
+.meas tran vmin1 MIN v(out) FROM=0 TO=5m
+.meas tran vmin2 MIN v(out2) FROM=0 TO=5m
+.meas tran vmin3 MIN v(out3) FROM=0 TO=5m
+.meas tran droop_nocap_v PARAM='3.0-vmin1'
+.meas tran droop_min_v PARAM='3.0-vmin2'
+.meas tran droop_100u_mv PARAM='(3.0-vmin3)*1000'
+.end

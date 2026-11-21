@@ -30,3 +30,6 @@ Math is written as `\(...\)` (inline) and `\[...\]` (display), which Anki render
 | 13 · Electromagnetics | [13-electromagnetics.csv](13-electromagnetics.csv) | 101 |
 | 14 · Computer Organization and Architecture | [14-computer-organization-and-architecture.csv](14-computer-organization-and-architecture.csv) | 96 |
 | 15 · Control Systems | [15-control-systems.csv](15-control-systems.csv) | 82 |
+| 16 · Digital Signal Processing | [16-digital-signal-processing.csv](16-digital-signal-processing.csv) | 86 |
+| 17 · Communication Systems | [17-communication-systems.csv](17-communication-systems.csv) | 102 |
+| 18 · Embedded Systems and Microcontrollers | [18-embedded-systems-and-microcontrollers.csv](18-embedded-systems-and-microcontrollers.csv) | 95 |
