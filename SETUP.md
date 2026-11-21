@@ -12,6 +12,8 @@ Everything in this curriculum runs on free, open-source tools. Only the first bl
 | Verilator | Fast simulation, lint | Course 08 |
 | GTKWave (or another VCD viewer) | Waveform viewing | Course 08 |
 | Yosys | Logic synthesis | Course 08 (FPGA) / Course 19 |
+| LLVM (clang, lld, llvm tools) | Cross-compiling and linking for RISC-V, Arm and Cortex-M | Course 14 |
+| QEMU (`qemu-system-arm`) | Running bare-metal Cortex-M firmware | Course 18 (18-02) |
 | *Optional:* KiCad | Schematics/PCB | Capstone C3 (optional) |
 | *Optional:* Docker + OpenLane-style flow on SkyWater 130 nm | RTL-to-GDS | Course 19, Capstone C2 |
 
@@ -70,15 +72,15 @@ sudo apt-get update
 ```
 
 ```bash
-sudo apt-get install -y build-essential ngspice iverilog verilator gtkwave yosys llvm clang lld
+sudo apt-get install -y build-essential ngspice iverilog verilator gtkwave yosys llvm clang lld qemu-system-arm
 ```
 
-The `llvm`, `clang` and `lld` packages provide the assembler (`llvm-mc`), compiler and linker (`ld.lld`) that Course 14 uses to build and run RISC-V, Arm and x86 code.
+The `llvm`, `clang` and `lld` packages provide the assembler (`llvm-mc`), compiler and linker (`ld.lld`) that Course 14 uses to build and run RISC-V, Arm and x86 code. `qemu-system-arm` emulates the Cortex-M4 board on which Course 18's labs run their firmware.
 
 ### macOS (Homebrew)
 
 ```bash
-brew install ngspice icarus-verilog verilator yosys llvm lld
+brew install ngspice icarus-verilog verilator yosys llvm lld qemu
 ```
 
 Homebrew installs LLVM without putting it on your `PATH`; Course 14's scripts also look in Homebrew's `llvm/bin` directory, so no further step is needed for them.

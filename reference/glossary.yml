@@ -7277,3 +7277,43 @@
   definition: "Arm's mixed 16- and 32-bit instruction encoding, the only instruction set of Cortex-M cores; Armv6-M implements a mostly 16-bit subset, Armv7-M and later the full set."
   chapter: "18-01"
   see_also: [Microcontroller]
+- term: Cross-compiler
+  definition: "A compiler that runs on one machine (the host) and generates code for another (the target), selected by a target triple such as thumbv7em-none-eabi and CPU options such as -mcpu=cortex-m4."
+  chapter: "18-02"
+  see_also: [Linker script]
+- term: Linker script
+  definition: "The file that tells the linker which memory regions exist and where each output section goes, including load and run addresses, alignment, exported symbols and size checks; the memory map expressed in software."
+  chapter: "18-02"
+  see_also: [Linker, Startup code]
+- term: Load and run addresses
+  definition: "The two addresses of a section: where its bytes are stored in the image (load address, LMA) and where the program uses it (run address, VMA); for .data the first is in flash and the second in SRAM, and the startup code copies between them."
+  chapter: "18-02"
+  see_also: [Linker script, Startup code]
+- term: Startup code
+  definition: "The code that runs from reset before main on a bare-metal system: it relies on the vector table for the initial stack pointer, copies .data from flash to SRAM, zeroes .bss, optionally configures clocks and the FPU, and calls main."
+  chapter: "18-02"
+  see_also: [Vector table, Load and run addresses]
+- term: Read-modify-write hazard
+  definition: "The loss of an update when two contexts (for example main code and an interrupt handler) each read a register or variable, change part of it and write it back; volatile does not prevent it, while set/clear registers, exclusive access or a critical section do."
+  chapter: "18-02"
+  see_also: [Volatile]
+- term: Semihosting
+  definition: "A debug mechanism in which target code executes BKPT 0xAB with a request in R0 and a debugger or emulator performs the I/O (print, file access, exit); convenient for tests, but it halts the core on each request."
+  chapter: "18-02"
+  see_also: [Debug probe]
+- term: Debug probe
+  definition: "Hardware that connects a host to a microcontroller's debug port (SWD with two pins on Cortex-M, or JTAG), letting a debugger halt the core, read and write memory, set breakpoints and program flash."
+  chapter: "18-02"
+  see_also: [Semihosting]
+- term: CMSIS
+  definition: "Arm's Common Microcontroller Software Interface Standard: standard names and headers for Cortex-M core registers and functions, device headers that describe each peripheral as a struct of volatile registers, and libraries such as CMSIS-DSP."
+  chapter: "18-02"
+  see_also: [Hardware abstraction layer (HAL)]
+- term: Hardware abstraction layer (HAL)
+  definition: "A vendor library of functions that configure and use peripherals without touching registers directly; it speeds bring-up and handles errata at a cost in flash, cycles and portability to other vendors."
+  chapter: "18-02"
+  see_also: [CMSIS]
+- term: Exception stack frame
+  definition: "The registers a Cortex-M core pushes automatically on exception entry: R0-R3, R12, LR, PC and xPSR (8 words, 32 bytes), or 26 words (104 bytes) with the floating-point registers S0-S15 and FPSCR."
+  chapter: "18-02"
+  see_also: [Startup code]

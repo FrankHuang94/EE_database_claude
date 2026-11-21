@@ -2932,3 +2932,12 @@ R&D % = R&D ÷ revenue.
 - **Infineon–Cypress:** closed 16 Apr 2020, "US\$23.85 per share in cash, corresponding to an enterprise value of €9.0 billion" (EEPower reprint, secondary). [Established]
 - **Renesas–Dialog:** completed 31 Aug 2021, cash consideration "approximately EUR 4.8 billion" (renesas.com). [Established]
 - **Automotive MCU share:** Infineon, 7 Apr 2025 (EE Journal reprint, secondary): "The global market share in microcontrollers rose again, to 32.0 percent", in automotive MCUs, citing TechInsights, "2024 Automotive Semiconductor Vendor Market Share" (March 2025). No total MCU market size was found from a filing or public analyst statement. [Industry estimate]
+
+## R-303 · Embedded toolchains, CMSIS and RTOS releases
+
+*Read on 21 Nov 2026 by a research subagent (GitLab, Keil pack pages, GitHub via git, Zephyr documentation).*
+
+- **Arm GNU Toolchain 15.3.rel2:** the developer.arm.com download page redirects to gitlab.arm.com/tooling/gnu-toolchains-for-arm, whose README lists "Arm GNU Toolchain 15.3.rel2" as the newest release; release notes: "Updated GCC to source code based on version 15.3.", Binutils 2.45, GDB 16. Package timestamp 2026-10-12 (the notes state no date); 15.3.rel1 is dated 2026-07-02. [Established]
+- **CMSIS 6.4.0:** Keil pack page "Version 6.4.0: Oct. 8, 2026 Recommended", "CMSIS-Core: 6.4.0"; GitHub tag v6.4.0 dated 2026-10-08 (CMSIS-RTOS2 2.3.0, CMSIS-Driver 2.12.0); CMSIS-Core revision history "V6.4.0 Added initial support for Armv8-A, Armv7-R, and Armv8-R profiles" ([history](https://arm-software.github.io/CMSIS_6/latest/Core/core_revisionHistory.html)). [Established]
+- **Zephyr** ([release list](https://docs.zephyrproject.org/latest/releases/index.html)): "Zephyr 4.5.0 2026-10-28 2027-10-28 Latest stable"; "Zephyr 3.7.0 (LTS3) 2024-07-26 2029-07-27 Long Term Support"; next LTS planned as "4.6 April 2027 LTS4". [Established]
+- **FreeRTOS LTS** (github.com/FreeRTOS/FreeRTOS-LTS, read via git): "202604.01-LTS (August 2026)… FreeRTOS-Kernel V11.3.1"; 202604.00 (April 2026) shipped Kernel V11.3.0, "LTS Until 04/30/2028"; newest kernel tag V11.3.3 (2026-10-30). [Established]
