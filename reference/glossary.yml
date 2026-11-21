@@ -7405,3 +7405,23 @@
   definition: "Current forced into a pin's protection diodes when its voltage goes beyond the supply rails; data sheets limit it (for example to 2 mA), so higher-voltage signals need series resistors, tolerant pins or level translators."
   chapter: "18-05"
   see_also: [Push-pull output]
+- term: Successive-approximation (SAR) ADC
+  definition: "An ADC that holds its sample on a capacitor array doubling as a DAC and decides one bit per clock, most significant first, by comparing the DAC's output with the sample (a binary search); the usual converter on microcontrollers."
+  chapter: "18-06"
+  see_also: [Sample-and-hold, Effective number of bits (ENOB)]
+- term: Integral nonlinearity (INL)
+  definition: "For a data converter, the largest deviation of the transfer function from a straight line after offset and gain errors are removed, in LSB; averaging does not reduce it."
+  chapter: "18-06"
+  see_also: [Differential nonlinearity (DNL)]
+- term: Total unadjusted error (TUE)
+  definition: "The worst-case static error of an uncalibrated ADC reading, combining offset, gain error and nonlinearity (and often the reference), in LSB; the honest figure for an absolute measurement."
+  chapter: "18-06"
+  see_also: [Integral nonlinearity (INL)]
+- term: Acquisition time
+  definition: "The time a sampling ADC connects its sample capacitor to the input; it must cover about (N + 1) ln 2 time constants of the source and switch resistance with the capacitor for N-bit settling."
+  chapter: "18-06"
+  see_also: [Sample-and-hold]
+- term: Ratiometric measurement
+  definition: "Reading a sensor excited by the same voltage that serves as the ADC's reference, so that the code depends only on the sensor's ratio (for example a divider's resistances) and not on the supply's value or drift."
+  chapter: "18-06"
+  see_also: [Bandgap reference]

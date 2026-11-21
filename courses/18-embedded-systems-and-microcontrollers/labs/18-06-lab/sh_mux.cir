@@ -1,0 +1,19 @@
+* Lab 18-06: a 10 kOhm source with a 100 nF external capacitor, sampled at 100 kHz by a 3.3 pF sample-and-hold
+* capacitor that arrives each time at 0 V (the previous channel). Switch on-resistance 500 Ohm, acquisition 100 ns.
+* Example 18-06.3: the sampled value settles 10.91 mV below 3.3 V (the exact recursion); 8 ms is 8 R_s C_ext.
+* EXPECT err_mv key:../../chapters/18-06-adc-dac-pwm.md#Ex_18-06.3e rtol=2e-3
+VIN in 0 DC 3.3
+RS in x 10k
+CEXT x 0 100n IC=3.3
+S1 x h acq 0 swmod
+S2 h 0 rst 0 swmod
+CSH h 0 3.3p IC=0
+VACQ acq 0 PULSE(0 1 0 1n 1n 98n 10u)
+VRST rst 0 PULSE(0 1 2u 1n 1n 2u 10u)
+.model swmod sw vt=0.5 vh=0.1 ron=500 roff=1e12
+.options reltol=1e-6 abstol=1e-15 vntol=1e-9
+.tran 20n 8.0001m 0 200n UIC
+.meas tran vs FIND v(h) AT=7.990095m
+.meas tran vx FIND v(x) AT=7.99m
+.meas tran err_mv PARAM='(3.3-vs)*1000'
+.end

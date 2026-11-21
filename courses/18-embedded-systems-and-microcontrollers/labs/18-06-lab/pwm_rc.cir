@@ -1,0 +1,15 @@
+* Lab 18-06: a 3.3 V, 62.5 kHz PWM signal at 50% duty (10-bit PWM from 64 MHz) through R = 4.096 kOhm,
+* C = 1 uF (tau = 4.096 ms). Starts at the mean so that only the ripple has to settle.
+* Example 18-06.6: peak-to-peak ripple 3.2227 mV, one LSB of the 10-bit PWM; mean 1.65 V.
+* EXPECT ripple_mv key:../../chapters/18-06-adc-dac-pwm.md#Ex_18-06.6e rtol=1e-3
+* EXPECT vavg 1.65 rtol=1e-3
+VPWM p 0 PULSE(0 3.3 0 1n 1n 7.999u 16u)
+R1 p out 4.096k
+C1 out 0 1u IC=1.65
+.options reltol=1e-7 abstol=1e-15 vntol=1e-10
+.tran 10n 12.8m 0 40n UIC
+.meas tran vmax MAX v(out) FROM=12.784m TO=12.8m
+.meas tran vmin MIN v(out) FROM=12.784m TO=12.8m
+.meas tran vavg AVG v(out) FROM=12.784m TO=12.8m
+.meas tran ripple_mv PARAM='(vmax-vmin)*1000'
+.end
