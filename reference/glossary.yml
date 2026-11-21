@@ -7693,3 +7693,27 @@
   definition: "A weak PMOS from the supply to a dynamic node, gated by the node's inverted value, that replaces charge lost to leakage and noise while the node is high. It must be weak enough that the pull-down network still wins when it discharges the node."
   chapter: "19-03"
   see_also: [Dynamic logic]
+- term: Logical effort
+  definition: "How much more input capacitance a gate presents than an inverter delivering the same output current: 1 for an inverter, (n + 2)/3 for an n-input NAND and (2n + 1)/3 for an n-input NOR when the PMOS is twice as wide as the NMOS. Also the name of the sizing method built on it."
+  chapter: "19-04"
+  see_also: [Electrical effort, Parasitic delay, Path effort]
+- term: Electrical effort
+  definition: "A gate's load capacitance divided by its own input capacitance, h = C_out/C_in; for a path, the final load over the first gate's input capacitance, H."
+  chapter: "19-04"
+  see_also: [Logical effort]
+- term: Parasitic delay
+  definition: "The part of a gate's delay due to its own output (self-loading) capacitance, independent of its size and load; about 1 τ for an inverter and n τ for an n-input NAND or NOR."
+  chapter: "19-04"
+  see_also: [Intrinsic delay, Logical effort]
+- term: Branching effort
+  definition: "At a node that drives gates off the path as well as the next gate on it, the ratio of total to on-path capacitance, b = (C_on + C_off)/C_on; its product along a path is B."
+  chapter: "19-04"
+  see_also: [Path effort]
+- term: Stage effort
+  definition: "The effort a single gate bears, f = g h, the part of its delay proportional to its load. A path is fastest when every stage bears the same effort, about 4 in practice (3.59 for an inverter parasitic delay of 1)."
+  chapter: "19-04"
+  see_also: [Path effort, FO4 delay]
+- term: Path effort
+  definition: "The product F = G B H of a path's logical, branching and electrical efforts, fixed by its topology and end capacitances; the minimum delay of an N-stage path is N F^(1/N) plus its parasitic delays."
+  chapter: "19-04"
+  see_also: [Stage effort, Logical effort]

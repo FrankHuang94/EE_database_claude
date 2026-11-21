@@ -1,0 +1,34 @@
+* Lab 19-04: a unit inverter and a three-stage tapered chain (sizes 1, 4, 16) driving 128 fF (H = 64)
+* Square-law level-1 devices, kn = kp = 200 uA/V^2 per unit size, thresholds 0.35 V, VDD = 1.2 V, no device
+* capacitances; each node carries explicit self-loading (2 fF per unit size) and the next stage's gate (2 fF per unit).
+* The input is a 10 ps ramp; delays run from the input's 50% point to the output's 50% point.
+* EXPECT tsingle key:README.md#Lab_19-04.a scale=1e-12 rtol=2e-3
+* EXPECT tchain key:README.md#Lab_19-04.b scale=1e-12 rtol=2e-3
+
+VDD vdd 0 DC 1.2
+VIN in 0 PULSE(0 1.2 0 10p 10p 5n 10n)
+
+* single unit inverter driving 2 fF of its own plus 128 fF
+MP1 outs in vdd vdd pm W=1u L=1u
+MN1 outs in 0 0 nm W=1u L=1u
+CS outs 0 130f
+
+* chain: stage 1 (size 1), stage 2 (size 4), stage 3 (size 16)
+MPA a in vdd vdd pm W=1u L=1u
+MNA a in 0 0 nm W=1u L=1u
+CA a 0 10f
+MPB b a vdd vdd pm W=4u L=1u
+MNB b a 0 0 nm W=4u L=1u
+CB b 0 40f
+MPC c b vdd vdd pm W=16u L=1u
+MNC c b 0 0 nm W=16u L=1u
+CC c 0 160f
+
+.model nm NMOS (LEVEL=1 KP=200u VTO=0.35 LAMBDA=0)
+.model pm PMOS (LEVEL=1 KP=200u VTO=-0.35 LAMBDA=0)
+.ic v(outs)=1.2 v(a)=1.2 v(b)=0 v(c)=1.2
+.options reltol=1e-6 abstol=1e-15 vntol=1e-9
+.tran 0.1p 4n 0 0.5p UIC
+.meas tran tsingle TRIG v(in) VAL=0.6 RISE=1 TARG v(outs) VAL=0.6 FALL=1
+.meas tran tchain TRIG v(in) VAL=0.6 RISE=1 TARG v(c) VAL=0.6 FALL=1
+.end
