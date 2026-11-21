@@ -7717,3 +7717,11 @@
   definition: "The product F = G B H of a path's logical, branching and electrical efforts, fixed by its topology and end capacitances; the minimum delay of an N-stage path is N F^(1/N) plus its parasitic delays."
   chapter: "19-04"
   see_also: [Stage effort, Logical effort]
+- term: Crosstalk
+  definition: "Unwanted coupling between neighboring wires, mostly through their sidewall capacitance on chip. A switching aggressor moves a floating victim by ΔV·C_c/(C_c + C_g), causes a transient glitch on a driven victim, and changes the victim's delay when both switch."
+  chapter: "19-05"
+  see_also: [Miller coupling factor]
+- term: Miller coupling factor
+  definition: "The multiplier on a coupling capacitance seen by a switching wire: 0 if its neighbor switches the same way at the same time, 1 if the neighbor is quiet, 2 if it switches the opposite way. It makes wire delay depend on neighbors' activity."
+  chapter: "19-05"
+  see_also: [Crosstalk]

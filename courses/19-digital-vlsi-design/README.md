@@ -31,7 +31,7 @@ Designing digital chips: the CMOS inverter, logic families, sizing and logical e
 | [19-02 · The CMOS Inverter: Dynamic Behavior and Delay](chapters/19-02-cmos-inverter-dynamic.md) | 8 | ✅ verified | [problems](problems/19-02-problems.md) · [solutions](solutions/19-02-solutions.md) · [lab](labs/19-02-lab/README.md) · [verify](verify/verify_19_02.py) |
 | [19-03 · Combinational Logic Families](chapters/19-03-logic-families.md) | 8 | ✅ verified | [problems](problems/19-03-problems.md) · [solutions](solutions/19-03-solutions.md) · [lab](labs/19-03-lab/README.md) · [verify](verify/verify_19_03.py) |
 | [19-04 · Transistor Sizing and Logical Effort](chapters/19-04-sizing-and-logical-effort.md) | 9 | ✅ verified | [problems](problems/19-04-problems.md) · [solutions](solutions/19-04-solutions.md) · [lab](labs/19-04-lab/README.md) · [verify](verify/verify_19_04.py) |
-| [19-05 · Interconnect](chapters/19-05-interconnect.md) | 8 | ⬜ planned | — |
+| [19-05 · Interconnect](chapters/19-05-interconnect.md) | 8 | ✅ verified | [problems](problems/19-05-problems.md) · [solutions](solutions/19-05-solutions.md) · [lab](labs/19-05-lab/README.md) · [verify](verify/verify_19_05.py) |
 | [19-06 · Power and Low-Power Design](chapters/19-06-power-and-low-power-design.md) | 9 | ⬜ planned | — |
 | [19-07 · Sequential Circuits, Timing and Clocking](chapters/19-07-sequential-timing-and-clocking.md) | 9 | ⬜ planned | — |
 | [19-08 · SRAM Design](chapters/19-08-sram-design.md) | 8 | ⬜ planned | — |
