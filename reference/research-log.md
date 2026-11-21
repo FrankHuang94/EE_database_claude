@@ -2822,3 +2822,15 @@ R&D % = R&D ÷ revenue.
 - **IEEE 802.11 TGbn update page (Nov 2026):** 802.11bn targets 1–7.25 GHz with "Ultra High Reliability"; D2.0 letter ballot done July 2026; D3.0 January 2027; RevCom/SASB approval projected May 2028. [Established] [TGbn](https://www.ieee802.org/11/Reports/tgbn_update.htm)
 - **Wi-Fi Alliance (MAC/PHY page; Wi-Fi CERTIFIED 7 highlights, Jan 2024):** Wi-Fi 6 uses OFDMA, 160 MHz channels and 1024-QAM; Wi-Fi 7 adds 320 MHz channels (6 GHz band), 4K-QAM ("20% higher transmission rates than 1024 QAM"), multi-link operation and multiple resource units per station. [Established, secondary] [WFA](https://www.wi-fi.org/wi-fi-macphy)
 - **Keysight N7617 "802.11ax Introduction" (undated):** resource units; downlink and uplink MU-MIMO on RUs of at least 106 tones with up to eight users; "Up to 1024QAM"; "OFDM with reduced sub-carrier spacing (4x symbol length of 802.11ac)". The final 802.11be spatial-stream count was not verified from a primary source. [Established, secondary] [Keysight](https://helpfiles.keysight.com/csg/n7617/Content/Main/802.11ax%20Introduction.htm)
+
+## R-289 · NR UE capabilities: maximum data rate and MIMO layers (TS 38.306)
+
+*Read on 20 Nov 2026 by a research subagent from the 3GPP archive (38306-j40.zip); the data-rate clause and layer requirement re-checked against the saved text on 21 Nov 2026.*
+
+- **TS 38.306 V19.4.0 (2026-09), clause 4.1.2 "Supported max data rate for DL/UL":** approximate rate $= 10^{-6}\sum_j v_{Layers}^{(j)}Q_m^{(j)}f^{(j)}R_{max}\frac{N_{PRB}^{BW(j),\mu}\cdot12}{T_s^\mu}(1 - OH^{(j)})$ Mb/s, with "Rmax = 948/1024", $T_s^\mu$ "the average OFDM symbol duration in a subframe … normal cyclic prefix is assumed" ($10^{-3}/(14 \cdot 2^\mu)$), scaling factor $f$ ∈ {1, 0.8, 0.75, 0.4}, and overhead "0.14, for frequency range FR1 for DL; 0.18, for frequency range FR2 for DL; 0.08, for frequency range FR1 for UL; 0.10, for frequency range FR2 for UL". **maxNumberMIMO-LayersPDSCH:** "it is mandatory with capability signalling to support at least 4 MIMO layers in the bands where 4Rx is specified as mandatory for the given UE and at least 2 MIMO layers in FR2". Derived (ours): 100 MHz FR1, 30 kHz, 273 RBs, 4 layers of 256-QAM → 2337 Mb/s. [Established] [38.306 archive](https://www.3gpp.org/ftp/Specs/archive/38_series/38.306/38306-j40.zip)
+
+## R-290 · NR codeword-to-layer mapping (TS 38.211)
+
+*Read on 20 Nov 2026 by a research subagent from the 3GPP archive (38211-j50.zip); re-checked against the saved text on 21 Nov 2026.*
+
+- **TS 38.211 V19.5.0, clause 7.3.1.3, Table 7.3.1.3-1** (downlink): one codeword for 1–4 layers, two codewords for 5–8 layers. **Clause 6.3.1.3** (uplink): "The complex-valued modulation symbols for each of the codewords to be transmitted shall be mapped onto up to four layers". **Table 6.3.1.5-47** caption: precoding for eight antenna ports, "Up to 8 layers are supported with transform precoding disabled and up to one layer with transform precoding enabled." [Established] [38.211 archive](https://www.3gpp.org/ftp/Specs/archive/38_series/38.211/38211-j50.zip)

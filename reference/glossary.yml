@@ -7021,3 +7021,51 @@
   definition: The throughput gain a scheduler obtains by giving each time-frequency resource to a user whose independently fading channel is currently strong there.
   chapter: "17-10"
   see_also: [OFDMA, Rayleigh fading]
+- term: Array gain
+  definition: The SNR increase from coherently combining N antennas against independent noise, a factor N (10 log10 N dB); it shifts error-rate curves without changing their slope.
+  chapter: "17-11"
+  see_also: [Diversity order, Maximal-ratio combining, Spatial multiplexing]
+- term: Selection combining
+  definition: Using only the strongest of N diversity branches; it achieves diversity order N with one receiver chain, but its mean SNR gain is only Σ 1/k (1.5 for two branches) instead of MRC's N.
+  chapter: "17-11"
+  see_also: [Maximal-ratio combining, Diversity order]
+- term: Alamouti code
+  definition: A space-time block code for two transmit antennas that sends (s1, s2) then (−s2*, s1*), letting a linear receiver separate both symbols with full diversity order 2 at rate one, 3 dB below receive MRC, without channel knowledge at the transmitter.
+  chapter: "17-11"
+  see_also: [Diversity order, Maximal-ratio combining]
+- term: Steering vector
+  definition: The vector of phase shifts a plane wave from angle θ produces across an antenna array, e^(−j2π(d/λ)k sin θ) for a uniform linear array; weighting by it points the beam at θ.
+  chapter: "17-11"
+  see_also: [Array factor, Phased array]
+- term: Grating lobe
+  definition: A full-strength copy of an array's main beam that appears in visible space when the element spacing exceeds λ/(1 + |sin θ0|) for scan angle θ0; avoided by half-wavelength spacing.
+  chapter: "17-11"
+  see_also: [Array factor, Steering vector]
+- term: Spatial multiplexing
+  definition: Sending several independent data streams (layers) over multiple antennas in the same band and time, separated by the receiver using the channel's spatial structure; it multiplies capacity by up to min(Nt, Nr).
+  chapter: "17-11"
+  see_also: [MIMO capacity, Layer (MIMO)]
+- term: MIMO capacity
+  definition: The capacity of a multi-antenna channel, log2 det(I + (ρ/Nt) H H^H) b/s/Hz without transmitter channel knowledge; by the SVD it is a sum over eigenmodes, growing as rank × log2 ρ at high SNR.
+  chapter: "17-11"
+  see_also: [Singular value decomposition, Spatial multiplexing, Water-filling]
+- term: Zero-forcing receiver
+  definition: A MIMO detector that inverts the channel, (H^H H)^(−1) H^H, removing inter-stream interference but amplifying noise when H is ill-conditioned; each stream gets diversity order Nr − Nt + 1.
+  chapter: "17-11"
+  see_also: [MMSE receiver, Zero-forcing equalizer]
+- term: MMSE receiver
+  definition: A linear MIMO detector, (H^H H + (Nt/ρ) I)^(−1) H^H, that balances residual interference against noise enhancement; never worse than zero-forcing and close to it at high SNR.
+  chapter: "17-11"
+  see_also: [Zero-forcing receiver]
+- term: Channel hardening
+  definition: The concentration of a beamformed channel's gain ||h||²/M around its mean as the number of antennas M grows (spread ∝ 1/√M), which removes most small-scale fading in massive MIMO.
+  chapter: "17-11"
+  see_also: [Maximal-ratio combining, Rayleigh fading]
+- term: Hybrid beamforming
+  definition: A multi-antenna architecture that forms beams with analog phase shifters feeding a smaller number of RF chains and digital precoders, trading flexibility for power and cost at millimetre wave.
+  chapter: "17-11"
+  see_also: [Phased array, Spatial multiplexing]
+- term: Layer (MIMO)
+  definition: In 3GPP terminology, one spatially multiplexed data stream; NR maps one codeword onto up to four layers and two codewords onto five to eight downlink layers.
+  chapter: "17-11"
+  see_also: [Spatial multiplexing]
