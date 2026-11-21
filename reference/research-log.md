@@ -2941,3 +2941,12 @@ R&D % = R&D ÷ revenue.
 - **CMSIS 6.4.0:** Keil pack page "Version 6.4.0: Oct. 8, 2026 Recommended", "CMSIS-Core: 6.4.0"; GitHub tag v6.4.0 dated 2026-10-08 (CMSIS-RTOS2 2.3.0, CMSIS-Driver 2.12.0); CMSIS-Core revision history "V6.4.0 Added initial support for Armv8-A, Armv7-R, and Armv8-R profiles" ([history](https://arm-software.github.io/CMSIS_6/latest/Core/core_revisionHistory.html)). [Established]
 - **Zephyr** ([release list](https://docs.zephyrproject.org/latest/releases/index.html)): "Zephyr 4.5.0 2026-10-28 2027-10-28 Latest stable"; "Zephyr 3.7.0 (LTS3) 2024-07-26 2029-07-27 Long Term Support"; next LTS planned as "4.6 April 2027 LTS4". [Established]
 - **FreeRTOS LTS** (github.com/FreeRTOS/FreeRTOS-LTS, read via git): "202604.01-LTS (August 2026)… FreeRTOS-Kernel V11.3.1"; 202604.00 (April 2026) shipped Kernel V11.3.0, "LTS Until 04/30/2028"; newest kernel tag V11.3.3 (2026-10-30). [Established]
+
+## R-304 · NVIC sizes, priority bits and vendor interrupt controllers
+
+*Read on 21 Nov 2026 by a research subagent from Arm architecture manuals and data sheets, ST's CMSIS device header and Espressif's data sheet.*
+
+- **Armv7-M ARM DDI0403E.e:** "The Armv7-M NVIC architecture supports up to 496 interrupts"; priority fields are "an IMPLEMENTATION DEFINED power of two in the range 8 to 256… All priority value fields are 8-bits" (that is, 3 to 8 implemented bits). **Armv8-M ARM DDI0553B.z:** "The Nested Vectored Interrupt Controller (NVIC) can support up to 496 external interrupts". **Armv6-M ARM DDI0419E:** "supports up to 32 discrete external interrupts" and "2-bit priority fields, providing four priority levels". [Established]
+- **Core maxima:** Cortex-M4 data sheet "External interrupts, configurable from 1 to 240" and "Bits of priority, configurable from 3 to 8"; Cortex-M33 "configurable from 1 to 480"; Arm's comparison table gives M23 240 and M33/M52/M55/M85 480; the M23 TRM "Up to 240 external interrupt inputs, each with four levels of priority". [Established]
+- **STM32F4:** ST's CMSIS device header (github.com/STMicroelectronics/cmsis-device-f4, stm32f407xx.h): "#define __NVIC_PRIO_BITS 4U /*!< STM32F4XX uses 4 Bits for the Priority Levels */" (the programming manual itself could not be fetched). [Established]
+- **Espressif ESP32-C3 data sheet v2.5 (2026-11-11):** "Up to 32 vectored interrupts at seven priority levels". [Established]

@@ -40,11 +40,14 @@ def run(cmd: list[str], **kw) -> subprocess.CompletedProcess:
 
 
 # ------------------------------------------------------------------ build
-def build(out: Path, sources=("startup.c", "main.c"), opt="-O2", defines=(), mapfile: Path | None = None) -> Path:
-    """Compile and link the firmware; return the ELF path. Raises on any compiler or linker error."""
+def build(out: Path, sources=("startup.c", "main.c"), opt="-O2", defines=(), mapfile: Path | None = None,
+          fw_dir: Path = FW) -> Path:
+    """Compile and link the firmware in `fw_dir` (default: this lab's fw/); return the ELF path.
+    Raises on any compiler or linker error."""
     out = Path(out)
+    fw_dir = Path(fw_dir)
     cmd = [tool("clang"), *TARGET, opt, *CFLAGS, *[f"-D{d}" for d in defines], "-fuse-ld=lld",
-           "-Wl,-T," + str(FW / "link.ld"), "-o", str(out), *[str(FW / s) for s in sources]]
+           "-Wl,-T," + str(fw_dir / "link.ld"), "-o", str(out), *[str(fw_dir / s) for s in sources]]
     if mapfile:
         cmd.insert(-len(sources), f"-Wl,-Map,{mapfile}")
     r = run(cmd)

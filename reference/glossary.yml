@@ -7317,3 +7317,43 @@
   definition: "The registers a Cortex-M core pushes automatically on exception entry: R0-R3, R12, LR, PC and xPSR (8 words, 32 bytes), or 26 words (104 bytes) with the floating-point registers S0-S15 and FPSCR."
   chapter: "18-02"
   see_also: [Startup code]
+- term: Nested Vectored Interrupt Controller (NVIC)
+  definition: "The Cortex-M interrupt controller: per-interrupt enable, pending, active and priority registers, hardware vectoring through the vector table, and nesting by priority."
+  chapter: "18-03"
+  see_also: [Vector table, Interrupt priority]
+- term: Interrupt priority
+  definition: "On Cortex-M, an 8-bit value per exception of which the top 3 to 8 bits are implemented; a smaller number is more urgent, and a pending exception preempts only if strictly more urgent than the running one."
+  chapter: "18-03"
+  see_also: [Nested Vectored Interrupt Controller (NVIC)]
+- term: Tail-chaining
+  definition: "Starting the next pending exception handler directly when one returns, skipping the unstacking and restacking of registers (6 cycles instead of 12 + 12 on a Cortex-M3 or M4)."
+  chapter: "18-03"
+  see_also: [Exception stack frame]
+- term: EXC_RETURN
+  definition: "The special value the core places in LR on exception entry; returning to it ends the handler, and its bits record the mode, stack and frame type to restore (0xFFFFFFF9: Thread mode, main stack, no FP state)."
+  chapter: "18-03"
+  see_also: [Exception stack frame]
+- term: BASEPRI
+  definition: "A Cortex-M special register that masks every exception whose priority value is greater than or equal to its own, letting more urgent interrupts through; the basis of critical sections that keep the tightest deadlines live."
+  chapter: "18-03"
+  see_also: [Interrupt priority]
+- term: Worst-case response time
+  definition: "The longest time from an interrupt or task request to its completion, found for fixed priorities from R = C + B + sum of ceil(R/T_j) C_j over more urgent sources, where B is the longest blocking."
+  chapter: "18-03"
+  see_also: [Interrupt priority]
+- term: Input capture
+  definition: "A timer function that copies the running count into a register on an input edge, so the time between edges is a difference of captures modulo the counter's range."
+  chapter: "18-03"
+  see_also: [Pulse-width modulation (PWM)]
+- term: Watchdog timer
+  definition: "A timer that resets the system unless software restarts it before it expires; an independent watchdog runs from its own oscillator, and a window watchdog also rejects restarts that come too early."
+  chapter: "18-03"
+  see_also: [Microcontroller]
+- term: Fault status registers
+  definition: "The Cortex-M registers that record why a fault occurred: CFSR (MemManage, BusFault and UsageFault causes), HFSR (including FORCED escalation) and the fault address registers MMFAR and BFAR."
+  chapter: "18-03"
+  see_also: [Exception stack frame]
+- term: Pulse-width modulation (PWM)
+  definition: "A digital output that switches at a fixed frequency with a variable fraction of each period high (the duty cycle); a timer generates it by comparing its count with a compare register, trading frequency against duty resolution."
+  chapter: "18-03"
+  see_also: [Input capture, PWM DAC]
