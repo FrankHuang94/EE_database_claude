@@ -1,0 +1,18 @@
+* Lab 18-09: a coin cell (3.0 V EMF, 100 Ohm internal resistance when cold and part-discharged) supplying an 8 mA,
+* 2 ms radio burst, with and without a 100 uF reservoir capacitor at the load (Example 18-09.5).
+* EXPECT droop_cap_mv key:../../chapters/18-09-ultra-low-power-design.md#Ex_18-09.5b scale=1 rtol=2e-3
+* EXPECT droop_nocap_v key:../../chapters/18-09-ultra-low-power-design.md#Ex_18-09.5a rtol=1e-3
+VB b 0 DC 3.0
+RI b out 100
+C1 out 0 100u IC=3.0
+IL out 0 PULSE(0 8m 1m 1n 1n 2m 100m)
+VB2 b2 0 DC 3.0
+RI2 b2 out2 100
+IL2 out2 0 PULSE(0 8m 1m 1n 1n 2m 100m)
+.options reltol=1e-6 abstol=1e-12 vntol=1e-9
+.tran 1u 4m 0 1u UIC
+.meas tran vmin MIN v(out) FROM=0 TO=4m
+.meas tran vmin2 MIN v(out2) FROM=0 TO=4m
+.meas tran droop_cap_mv PARAM='(3.0-vmin)*1000'
+.meas tran droop_nocap_v PARAM='3.0-vmin2'
+.end

@@ -7525,3 +7525,79 @@
   definition: "An update that sends only the difference between the installed and the new image; the device rebuilds the new image locally, saving airtime and energy at the cost of working space and server-side patch management."
   chapter: "18-08"
   see_also: [Over-the-air (OTA) update]
+- term: Leakage current
+  definition: "Current that flows through transistors (and other devices) when they are nominally off; it grows roughly exponentially with temperature and with lower threshold voltages, and dominates a sleeping chip's consumption."
+  chapter: "18-09"
+  see_also: [Dynamic power]
+- term: Power mode
+  definition: "One of an MCU's operating states (run, sleep, stop or deep sleep, standby or shutdown), each stopping more clocks and power domains in exchange for lower current and a longer, costlier wake-up."
+  chapter: "18-09"
+  see_also: [Always-on domain, Break-even time]
+- term: Always-on domain
+  definition: "The small part of a chip that stays powered in every mode: a low-frequency oscillator and real-time clock, wake-up logic and a few backup registers."
+  chapter: "18-09"
+  see_also: [Power mode]
+- term: Break-even time
+  definition: "The idle duration above which entering a deeper sleep mode saves charge: the extra wake-up charge divided by the current the deeper mode saves, Q_tr / (I_shallow - I_deep)."
+  chapter: "18-09"
+  see_also: [Power mode]
+- term: Duty cycling
+  definition: "Waking a device briefly and periodically to do its work and sleeping otherwise; its average current is the sleep current plus the active charge per period divided by the period."
+  chapter: "18-09"
+  see_also: [Break-even time]
+- term: Low-dropout regulator (LDO)
+  definition: "A linear regulator that can regulate with a small difference between input and output; its input current equals its output current plus a quiescent current, so its efficiency is at most V_out/V_in."
+  chapter: "18-09"
+  see_also: [Quiescent current]
+- term: Quiescent current
+  definition: "The current a regulator or other circuit draws for its own operation with no (or negligible) load; it matters most when the load current is microamps."
+  chapter: "18-09"
+  see_also: [Low-dropout regulator (LDO)]
+- term: Self-discharge
+  definition: "The loss of a battery's stored charge with no external load, quoted as a fraction of capacity per month or year; for multi-year products it can rival the electronics' own consumption."
+  chapter: "18-09"
+  see_also: [Duty cycling]
+- term: Energy harvesting
+  definition: "Powering a device from ambient energy (light, heat, vibration, radio waves) through a harvesting converter and storage; the device is energy-neutral if its average consumption does not exceed the average harvest."
+  chapter: "18-09"
+  see_also: [Duty cycling]
+- term: Noise density
+  definition: "A sensor's or circuit's white noise per square root of bandwidth (for example µg/√Hz or °/s/√Hz); the rms noise over a bandwidth B is the density times √B."
+  chapter: "18-10"
+  see_also: [Angle random walk]
+- term: Coriolis effect
+  definition: "The apparent force on a mass moving in a rotating frame, giving an acceleration 2Ω × v; MEMS gyroscopes vibrate a proof mass and measure the Coriolis motion to sense rotation."
+  chapter: "18-10"
+  see_also: [Gyroscope bias]
+- term: Angle random walk
+  definition: "The growth of orientation error from integrating a gyroscope's white rate noise, as N√t; quoted in °/√h, equal to 60 times the noise density in °/s/√Hz."
+  chapter: "18-10"
+  see_also: [Noise density, Gyroscope bias]
+- term: Gyroscope bias
+  definition: "A gyroscope's nonzero output at zero rotation rate; integrated, it produces an orientation error that grows linearly with time unless estimated and removed."
+  chapter: "18-10"
+  see_also: [Complementary filter]
+- term: Complementary filter
+  definition: "A sensor-fusion filter that low-passes one sensor (accelerometer tilt) and high-passes another (integrated gyroscope rate) with a common time constant τ = αΔt/(1 − α); a gyroscope bias b leaves a steady error bτ."
+  chapter: "18-10"
+  see_also: [Gyroscope bias]
+- term: Photoplethysmography (PPG)
+  definition: "Optical measurement of blood-volume changes: an LED illuminates tissue and a photodiode measures the light returned, whose small pulsatile part follows the heartbeat; used for heart rate and, with red and infrared light, blood-oxygen saturation."
+  chapter: "18-10"
+  see_also: [Perfusion index]
+- term: Perfusion index
+  definition: "The ratio of a PPG signal's pulsatile (AC) part to its steady (DC) part, typically around 1% at the wrist and lower when cold; it sets the signal size that noise and motion must not swamp."
+  chapter: "18-10"
+  see_also: [Photoplethysmography (PPG)]
+- term: Sound pressure level (SPL)
+  definition: "20 log10 of the rms sound pressure relative to 20 µPa; 1 Pa rms is 94 dB SPL, the reference level at which microphone sensitivity and SNR are specified."
+  chapter: "18-10"
+  see_also: [Pulse-density modulation (PDM)]
+- term: Pulse-density modulation (PDM)
+  definition: "A 1-bit, high-rate bit stream whose density of ones follows the signal, produced by a sigma-delta modulator (as in digital MEMS microphones) and turned into multibit samples by a decimation filter."
+  chapter: "18-10"
+  see_also: [Decimation]
+- term: Sensor hub
+  definition: "A low-power processor (or dedicated block) that collects and processes sensor data (fusion, step counting, gesture and activity detection) while the main application processor sleeps."
+  chapter: "18-10"
+  see_also: [Duty cycling]
