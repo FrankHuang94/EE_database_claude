@@ -7673,3 +7673,23 @@
   definition: "The linear resistance that stands in for a switching transistor in delay estimates: the average of V/I as the output swings from V_DD to V_DD/2, about 3V_DD/(4I_sat), giving t_p ≈ 0.69 R_eq C_L."
   chapter: "19-02"
   see_also: [Propagation delay]
+- term: Pseudo-NMOS logic
+  definition: "A ratioed logic style with an NMOS pull-down network and a single always-on PMOS load. It needs N + 1 transistors and light input loads, but its low level V_OL is set by the ratio k_n/k_p and it draws static current whenever the output is low."
+  chapter: "19-03"
+  see_also: [Static CMOS]
+- term: Pass-transistor logic
+  definition: "Logic that routes signals through transistor channels rather than connecting outputs to the rails. An NMOS passes a strong 0 but a 1 only up to V_DD − V_TN (raised by the body effect), which can leave the next stage drawing static current."
+  chapter: "19-03"
+  see_also: [Transmission gate, Body effect]
+- term: Dynamic logic
+  definition: "Logic that precharges its output through a clocked PMOS and then, in the evaluate phase, conditionally discharges it through an NMOS network. It is fast and has light input loads, but is sensitive to leakage, charge sharing and noise, and its inputs must not fall during evaluation."
+  chapter: "19-03"
+  see_also: [Domino logic, Keeper, Charge sharing]
+- term: Domino logic
+  definition: "Dynamic gates each followed by a static inverter, so that every dynamic-gate input starts low and can only rise during evaluation; the stages evaluate in sequence like falling dominoes. Each stage is non-inverting, so inverted functions need dual-rail domino."
+  chapter: "19-03"
+  see_also: [Dynamic logic]
+- term: Keeper
+  definition: "A weak PMOS from the supply to a dynamic node, gated by the node's inverted value, that replaces charge lost to leakage and noise while the node is high. It must be weak enough that the pull-down network still wins when it discharges the node."
+  chapter: "19-03"
+  see_also: [Dynamic logic]

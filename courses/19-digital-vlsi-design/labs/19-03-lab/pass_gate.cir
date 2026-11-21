@@ -1,0 +1,27 @@
+* Lab 19-03: an NMOS pass transistor passing a 1, with body effect (Example 19-03.4), SPICE level-1 model
+* Pass device: VTO = 0.35 V, GAMMA = 0.4 V^0.5, PHI (2 phi_B) = 0.8 V, gate at VDD = 1.2 V, body at ground.
+* Its output x (10 fF, starting at 0 V) drives a symmetric inverter (kn = kp = 200 uA/V^2, thresholds 0.35 V).
+* The approach to VDD - VT is slow (the current falls to zero), so the levels are read after 2 us.
+* EXPECT vx key:../../chapters/19-03-logic-families.md#Ex_19-03.4a rtol=1e-3
+* EXPECT vy key:../../chapters/19-03-logic-families.md#Ex_19-03.4c scale=1e-3 rtol=4e-3
+* EXPECT iinv key:../../chapters/19-03-logic-families.md#Ex_19-03.4d scale=1e-6 rtol=4e-3
+
+VDD vdd 0 DC 1.2
+VIN a 0 PULSE(0 1.2 1n 10p 10p 10u 20u)
+MPASS x vdd a 0 npass W=1u L=1u
+CX x 0 10f
+* the following inverter, with its own supply current sensed
+VSENSE vdd ps DC 0
+MP y x ps vdd pm W=1u L=1u
+MN y x 0 0 nm W=1u L=1u
+CY y 0 5f
+.model npass NMOS (LEVEL=1 KP=200u VTO=0.35 GAMMA=0.4 PHI=0.8 LAMBDA=0)
+.model nm NMOS (LEVEL=1 KP=200u VTO=0.35 LAMBDA=0)
+.model pm PMOS (LEVEL=1 KP=200u VTO=-0.35 LAMBDA=0)
+.ic v(x)=0 v(y)=1.2
+.options reltol=1e-6 abstol=1e-15 vntol=1e-9
+.tran 1n 2u 0 2n UIC
+.meas tran vx FIND v(x) AT=2u
+.meas tran vy FIND v(y) AT=2u
+.meas tran iinv FIND i(VSENSE) AT=2u
+.end

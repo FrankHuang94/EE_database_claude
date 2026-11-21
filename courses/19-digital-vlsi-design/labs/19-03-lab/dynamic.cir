@@ -1,0 +1,25 @@
+* Lab 19-03: charge sharing in a dynamic NAND2 (Example 19-03.6), SPICE level-1 model, no body effect
+* Output CL = 10 fF precharged to VDD = 1.2 V; internal node at 0 V; in evaluation A = 1 (top NMOS), B = 0.
+* Two copies: internal-node capacitance 3 fF (the top NMOS cuts off) and 12 fF (the nodes equalize).
+* The cut-off case approaches VDD - VTN slowly, so levels are read after 2 us.
+* EXPECT vout1 key:../../chapters/19-03-logic-families.md#Ex_19-03.6b rtol=1e-3
+* EXPECT vout2 key:../../chapters/19-03-logic-families.md#Ex_19-03.6c rtol=1e-3
+
+VA a 0 PULSE(0 1.2 1n 10p 10p 10u 20u)
+* copy 1: 3 fF internal node
+MA1 out1 a mid1 0 nm W=1u L=1u
+MB1 mid1 0 0 0 nm W=1u L=1u
+CL1 out1 0 10f
+CA1 mid1 0 3f
+* copy 2: 12 fF internal node
+MA2 out2 a mid2 0 nm W=1u L=1u
+MB2 mid2 0 0 0 nm W=1u L=1u
+CL2 out2 0 10f
+CA2 mid2 0 12f
+.model nm NMOS (LEVEL=1 KP=200u VTO=0.35 GAMMA=0 LAMBDA=0)
+.ic v(out1)=1.2 v(mid1)=0 v(out2)=1.2 v(mid2)=0
+.options reltol=1e-6 abstol=1e-15 vntol=1e-9
+.tran 1n 2u 0 2n UIC
+.meas tran vout1 FIND v(out1) AT=2u
+.meas tran vout2 FIND v(out2) AT=2u
+.end
