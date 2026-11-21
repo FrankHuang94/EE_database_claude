@@ -6762,7 +6762,7 @@
   chapter: "17-06"
   see_also: [MSK and GMSK, Orthogonal signalling, Noncoherent detection]
 - term: MSK and GMSK
-  definition: Continuous-phase binary FSK with modulation index 0.5 (tone spacing half the bit rate); Gaussian-filtered versions (GMSK in GSM, GFSK in Bluetooth) have compact spectra and a constant envelope for efficient saturated amplifiers.
+  definition: Continuous-phase binary FSK with modulation index 0.5 (tone spacing half the bit rate); Gaussian-filtered versions (GMSK in GSM; GFSK in Bluetooth LE, index ≈ 0.5) have compact spectra and a constant envelope for efficient saturated amplifiers.
   chapter: "17-06"
   see_also: [Frequency-shift keying]
 - term: DPSK

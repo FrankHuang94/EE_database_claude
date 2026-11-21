@@ -30,7 +30,7 @@ A link's sampled pulse response (cursors $h_k$) determines everything: the worst
 2. **Eyes on an RC channel.** For a 5 GHz pole, predict the worst-case eye at 10, 25 and 45 Gb/s; then simulate random NRZ through `rc_channel`, fold the eyes and measure the openings.
 3. **Timing sensitivity.** Predict how the eye of sinc and raised-cosine (α = 0.22, 0.5) pulses shrinks as the sampling instant moves from 0 to 0.3T; then sweep it.
 4. **Equalization.** For the channel of Example 17-04.5 at σ = 0.25, predict the bit-error rate with no equalizer, the three-tap ZF FFE and a two-tap DFE; then simulate.
-5. **PAM4 against NRZ.** At the same bit rate through a one-pole channel, predict which has the larger worst-case eye relative to its level spacing; then compare the eyes.
+5. **PAM4 against NRZ.** At the same bit rate through a one-pole channel, predict which has the larger worst-case eye as a fraction of the common peak swing (equal transmitter swing); then compare the eyes.
 6. **ngspice.** Run `python tools/run_spice.py 17-04` and compare $h_0$ and $h_1$ with $1 - r$ and $(1 - r)r$.
 
 ## Expected results
@@ -38,7 +38,7 @@ A link's sampled pulse response (cursors $h_k$) determines everything: the worst
 - Part 1: (a), (c) and (d) pass; (b) fails with $h(T)/h(0) = -0.156$.
 - Part 2: worst-case eyes of 0.914, 0.431 and 0.005 of the ideal at 10, 25 and 45 Gb/s (the last just short of closing at 45.3 Gb/s); the simulated eyes match.
 - Part 3: the sinc eye closes within about 0.1T; the raised-cosine eyes degrade gradually, more slowly for larger α.
-- Part 4: the DFE's error rate is close to the statistical eye with only the precursor left, $8.2 \times 10^{-5}$, a little higher because of error propagation; both equalizers beat no equalization.
+- Part 4: no equalizer gives about $1.25 \times 10^{-2}$ (the statistical eye) and the ZF FFE about $4 \times 10^{-4}$; the DFE's error rate is close to the statistical eye with only the precursor left, $8.2 \times 10^{-5}$ (error propagation adds roughly 10–20%, comparable to the Monte Carlo scatter of a $10^6$-symbol run).
 - Part 5: NRZ keeps the larger worst-case eye at every rate. On a one-pole channel PAM4 never wins: with $x = e^{-T_{\text{NRZ}}/\tau}$, NRZ's eye is $1 - 2x$ and PAM4's (relative to its peak) is $(1 - 4x^2)/3 = (1 - 2x)(1 + 2x)/3$, a factor $(1 + 2x)/3 < 1$ smaller, and both close at the same bit rate.
 - Part 6: 0.715 and 0.204.
 
@@ -61,7 +61,7 @@ A link's sampled pulse response (cursors $h_k$) determines everything: the worst
 ### Answers
 
 1. The pulse response is self-similar: every cursor is $(1 - r)r^k$, so their sum and the main cursor depend only on how much the output decays in one bit, which is $r$.
-2. With correct decisions the DFE subtracts the postcursors exactly, so only $h_{-1}$ remains as ISI. Errors are rare at σ = 0.25, so error propagation adds only a modest fraction (each error makes the next decision likelier to fail, which is why the simulated rate sits somewhat above the statistical eye).
+2. With correct decisions the DFE subtracts the postcursors exactly, so only $h_{-1}$ remains as ISI. Errors are rare at σ = 0.25, so error propagation adds only a modest fraction, roughly 10–20% (each error makes the next decision likelier to fail); with $10^6$ symbols and about 80 errors, the Monte Carlo scatter is of the same size, so a single run can land on either side of the statistical eye.
 3. The eye drawn from a short record may never include the rare worst-case patterns, and noise enhancement or jitter can be hidden by averaging or by the display; the BER counts every pattern.
 
 ## Optional hardware

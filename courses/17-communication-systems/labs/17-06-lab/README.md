@@ -31,7 +31,7 @@ In complex baseband a symbol is a point $I + jQ$; white noise adds independent G
 
 ## Expected results
 
-- Part 1: $E_s$ = 2, 1, 10 and 42 (with the lab's scalings), peak-to-average 0, 0, 2.55 and 3.68 dB.
+- Part 1: $E_s$ = 1, 1, 10 and 42 (PSK at unit energy; QAM with levels ±1, ±3, …), $d_{min}$ = 1.414, 0.765, 2 and 2, peak-to-average 0, 0, 2.55 and 3.68 dB.
 - Part 2: simulations on the formulas; QPSK on top of BPSK per bit.
 - Part 3: natural labelling about 1.3 times worse.
 - Part 4: about 3.49% from phase noise and about 1.0% from the imbalance; amplifier EVM grows steeply as back-off falls below the peak-to-average ratio.

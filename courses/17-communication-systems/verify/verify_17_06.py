@@ -210,4 +210,28 @@ v.check("Lab 17-06.a", md.es(md.qam(64)[0]))
 v.check("Lab 17-06.b", 100 * math.sqrt(2 - 2 * math.exp(-sg * sg / 2)))
 v.check("Lab 17-06.c", db(math.log(1 / 2e-5)) - db(Qi(1e-5) ** 2 / 2))
 
+# Problem 17-06.14 note, 15 (DVB-S2 against Shannon) and 16 (phase error)
+v.check("17-06.14f", 18 + db(1.25))
+for tag, esn0, eta in (("a", 6.62, 1.980636), ("d", 10.21, 2.966728)):
+    shannon = db(2**eta - 1)
+    v.check(f"17-06.15{tag}", esn0 - db(eta))
+    v.check(f"17-06.15{chr(ord(tag) + 1)}", shannon)
+    v.check(f"17-06.15{chr(ord(tag) + 2)}", esn0 - shannon)
+from scipy.stats import norm as _norm  # noqa: E402
+for tag, deg in (("a", 0), ("b", 10), ("c", 20)):
+    v.check(f"17-06.16{tag}", _norm.sf(math.sqrt(20) * math.cos(math.radians(deg))))
+_rng = np.random.default_rng(1706)
+_n = 2_000_000
+_g = 10 ** 0.3
+_bits = _rng.integers(0, 2, _n)
+_sym = (1 - 2 * _bits) * np.exp(1j * math.radians(30))
+_r = _sym + (_rng.normal(size=_n) + 1j * _rng.normal(size=_n)) * math.sqrt(1 / (2 * _g))  # N0/2 per component, Eb = 1
+_ber = np.mean((np.real(_r) < 0) != (_bits == 1))
+_th = _norm.sf(math.sqrt(2 * _g) * math.cos(math.radians(30)))
+v.assert_true("phase-error BPSK simulation matches Q(sqrt(2Eb/N0) cos theta) at 3 dB, 30 deg", abs(_ber / _th - 1) < 0.03, f"{_ber} vs {_th}")
+_p = (3 + 3j) * np.exp(1j * math.radians(5))
+v.check("17-06.16d", _p.real - 2)
+v.check("17-06.16e", _p.imag - 2)
+v.check("17-06.16f", -20 * math.log10(_p.real - 2))
+
 sys.exit(v.finish())

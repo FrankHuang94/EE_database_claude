@@ -100,7 +100,7 @@ $$
 
 with bandwidth exactly $1/(2T)$, Nyquist's minimum, but a spectrum that falls smoothly to zero at the band edge instead of the sinc's brick wall. Its samples are $h(0) = h(T) = 1$ and zero elsewhere: controlled ISI from exactly one neighbour. With ±1 symbols the sampler sees $a_n + a_{n-1} \in \{-2, 0, +2\}$ with probabilities **0.25**, **0.5** and 0.25: **3** levels. With the same peak amplitude (2), the level spacing is 2 against binary's 4: the eye is half as tall, **−6.02** dB.
 
-The controlled ISI lets the pulse use the minimum bandwidth with a realizable, slowly varying spectrum. Its problem is that decoding $a_n = y_n - a_{n-1}$ propagates errors. **Precoding** at the transmitter ($b_n = d_n \oplus b_{n-1}$, sending $a_n = 2b_n - 1$) makes each received level depend on one data bit alone (0 means the bit is 1, ±2 means it is 0), so errors no longer propagate.
+The controlled ISI lets the pulse use the minimum bandwidth with a spectrum that is still strictly band-limited, so only approximately realizable, but far easier to approximate than the sinc's because it falls to zero at the band edge instead of jumping. Its problem is that decoding $a_n = y_n - a_{n-1}$ propagates errors. **Precoding** at the transmitter ($b_n = d_n \oplus b_{n-1}$, sending $a_n = 2b_n - 1$) makes each received level depend on one data bit alone (0 means the bit is 1, ±2 means it is 0), so errors no longer propagate.
 
 ### Solution 17-04.13
 
@@ -120,6 +120,26 @@ $$
 $$
 
 almost entirely from the worst pattern: $Q(6)/4$. The worst-case bound is $Q(6)$ = **9.87 × 10⁻¹⁰**, only four times higher, and the ISI-free value is $Q(10)$ = **7.6 × 10⁻²⁴**. The statistical eye's lesson: at low error rates, the worst patterns set the BER, and their probability, not the average ISI, is what matters.
+
+### Solution 17-04.15
+
+(a) With $q_k = \sum_jc_jh_{k-j}$, the three conditions are
+
+$$
+\begin{aligned}
+q_{-1} &= c_{-1}h_0 + c_0h_{-1} + c_1h_{-2} = c_{-1} + 0.15c_0 = 0 ,\\
+q_0 &= c_{-1}h_1 + c_0h_0 + c_1h_{-1} = 0.5c_{-1} + c_0 + 0.15c_1 = 1 ,\\
+q_1 &= c_{-1}h_2 + c_0h_1 + c_1h_0 = 0.2c_{-1} + 0.5c_0 + c_1 = 0 .
+\end{aligned}
+$$
+
+From the first, $c_{-1} = -0.15c_0$; the third gives $c_1 = -0.5c_0 + 0.03c_0 = -0.47c_0$; the second then gives $c_0(1 - 0.075 - 0.0705) = 1$, so $c_0$ = **1.1703**, $c_{-1}$ = **−0.1755** and $c_1$ = **−0.5500**.
+
+(b) $q_{-2} = c_{-1}h_{-1} = -0.0263$; $q_{-1} = 0$, $q_0 = 1$, $q_1 = 0$ by design; $q_2 = c_0h_2 + c_1h_1 = 0.2341 - 0.2750 = -0.0410$; $q_3 = c_1h_2 = -0.1100$. Residual ISI $0.0263 + 0.0410 + 0.1100$ = **0.1773**: the equalizer zeroes the taps it controls and pushes smaller ISI outside its span.
+
+(c) Before: $h_0 - (0.15 + 0.5 + 0.2)$ = **0.15**, a nearly closed eye. After: $1 - 0.1773$ = **0.823**.
+
+(d) $\sum c_j^2 = 0.0308 + 1.3695 + 0.3025$ = **1.703**, **2.31** dB of noise enhancement. Worth it: the worst-case eye grows 5.5 times (14.8 dB) for 2.3 dB more noise. A DFE could remove $q_2$ and $q_3$ without enhancing noise, and more FFE taps would shrink the residual further.
 
 ---
 
@@ -178,3 +198,11 @@ almost entirely from the worst pattern: $Q(6)/4$. The worst-case bound is $Q(6)$
 | 17-04.14b | exact BER | 2.47e-10 | — |
 | 17-04.14c | worst-case bound | 9.87e-10 | — |
 | 17-04.14d | ISI-free BER | 7.6e-24 | — |
+| 17-04.15a | c0 | 1.1703 | — |
+| 17-04.15b | c−1 | -0.1755 | — |
+| 17-04.15c | c1 | -0.5500 | — |
+| 17-04.15d | residual ISI | 0.1773 | — |
+| 17-04.15e | eye before | 0.15 | — |
+| 17-04.15f | eye after | 0.823 | — |
+| 17-04.15g | noise enhancement | 1.703 | — |
+| 17-04.15h | noise enhancement | 2.31 | dB |

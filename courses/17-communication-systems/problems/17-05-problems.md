@@ -46,7 +46,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 17-05.9 [B]
 
-**A slower one-pole filter.** For the one-pole receive filter of Example 17-05.2 with τ = T/2, find the SNR relative to the matched filter.
+**A faster one-pole filter.** For the one-pole receive filter of Example 17-05.2 with τ = T/2, find the SNR relative to the matched filter.
 
 ### Problem 17-05.10 [C]
 
@@ -58,7 +58,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 17-05.12 [C]
 
-**Orthogonal signalling gets better with M.** Using the union bound $(M - 1)Q\big(\sqrt{E_s/N_0}\big)$ with $E_s = E_b\log_2M$, evaluate the symbol-error bound at $E_b/N_0$ = 6 dB for M = 2, 16 and 64, and the bandwidth expansion $M/\log_2M$ relative to binary. What limit does this trend approach?
+**Orthogonal signalling gets better with M.** Using the union bound $(M - 1)Q\big(\sqrt{E_s/N_0}\big)$ with $E_s = E_b\log_2M$, evaluate the symbol-error bound at $E_b/N_0$ = 6 dB for M = 2, 16 and 64, and the bandwidth expansion $M/\log_2M$ relative to binary antipodal signalling (one dimension per bit). What limit does this trend approach?
 
 ### Problem 17-05.13 [C]
 
@@ -77,6 +77,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Matched filter and correlator | 1, 4, 9, 10, 11 |
 | 2. Signal space and Gram–Schmidt | 5, 6 |
 | 3. ML and MAP detection | 7 |
-| 4. Error probabilities | 2, 3, 8 |
+| 4. Error probabilities | 2, 3, 8, 12 |
 | 5. Union bound | 6, 12 |
 | 6. Practical receivers, pulse compression | 4, 9, 13, 14 |

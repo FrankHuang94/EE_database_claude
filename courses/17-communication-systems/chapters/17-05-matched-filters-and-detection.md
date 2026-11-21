@@ -27,7 +27,7 @@
 - **Every digital receiver contains a matched filter**, whether as a root-raised-cosine filter in a radio (17-04), a correlator in a GPS receiver, or a sampler and equalizer tuned to a SerDes channel.
 - **Radar and sonar** use matched filtering to compress long, low-peak-power pulses into sharp, high-resolution returns (pulse compression).
 - **Bit-error-rate specifications** ($10^{-12}$ for a link, 10% packet error for Wi-Fi) are $Q$-function statements about distance and noise; this chapter shows how to turn them into required $E_b/N_0$.
-- **Machine-learning detectors** in modern modems are trained to approximate exactly the maximum-likelihood rule derived here; the theory says how good they can possibly be.
+- **Machine-learning detectors**, now studied for 6G and used in a few products, are judged against exactly the maximum-likelihood rule derived here; the theory says how good they can possibly be.
 
 ## 2. Intuition first
 
@@ -93,7 +93,9 @@ $$
 
 the **correlation** of the received signal with the expected one. A **correlation receiver** multiplies by the template and integrates; for a rectangular pulse the template is a constant and the receiver simply integrates over the symbol and dumps (**integrate-and-dump**).
 
-**In frequency.** The matched filter's response is $H(f) = kS^*(f)e^{-j2\pi fT}$: it passes each frequency in proportion to how much signal is there and aligns all their phases to peak at $T$. With **colored** noise of PSD $S_n(f)$, the same argument applied after a whitening filter gives $H(f) \propto S^*(f)e^{-j2\pi fT}/S_n(f)$ and an SNR of $\int\lvert S(f)\rvert^2/S_n(f)\,df$: weight the frequencies where the noise is low (Problem 17-05.10).
+**In frequency.** The matched filter's response is $H(f) = kS^*(f)e^{-j2\pi fT}$: it passes each frequency in proportion to how much signal is there and aligns all their phases to peak at $T$. With **colored** noise of PSD $S_n(f)$, the same Cauchy–Schwarz argument works in frequency (see the callout): $H(f) \propto S^*(f)e^{-j2\pi fT}/S_n(f)$, with an SNR of $\int\lvert S(f)\rvert^2/S_n(f)\,df$: weight the frequencies where the noise is low (Problem 17-05.10).
+
+> **Going deeper — the matched filter for colored noise.** The output signal at $T$ is $\int S(f)H(f)e^{j2\pi fT}df$ and the output noise power is $\int\lvert H(f)\rvert^2S_n(f)\,df$. Write the signal integrand as $\big(S(f)e^{j2\pi fT}/\sqrt{S_n(f)}\big)\big(H(f)\sqrt{S_n(f)}\big)$ and apply the Cauchy–Schwarz inequality: $\lvert\int SHe^{j2\pi fT}df\rvert^2 \le \int\lvert S\rvert^2/S_n\,df \cdot \int\lvert H\rvert^2S_n\,df$. Dividing by the noise power, $\text{SNR} \le \int\lvert S(f)\rvert^2/S_n(f)\,df$, with equality when $H\sqrt{S_n} \propto \big(Se^{j2\pi fT}/\sqrt{S_n}\big)^*$, that is $H(f) \propto S^*(f)e^{-j2\pi fT}/S_n(f)$. For white noise, $S_n = N_0/2$ and this reduces to $2E/N_0$ by Parseval. The filter is a whitening filter $1/\sqrt{S_n}$ followed by the matched filter for the whitened pulse.
 
 **The output waveform.** The matched filter's signal output is $\int s(\tau)s(\tau - t + T)\,d\tau$, the pulse's **autocorrelation** shifted to peak at $T$. For a rectangular pulse it is a triangle of base $2T$: sampling a fraction $\delta$ of a symbol early or late reduces the signal by $(1 - \delta)$ and the SNR by $(1 - \delta)^2$ (Example 17-05.1).
 
@@ -158,7 +160,7 @@ where $Q(x)$ is the Gaussian tail probability (03-02). Error probability is a fu
 **Three binary schemes at the same average energy per bit $E_b$:**
 
 - **Antipodal** ($\pm\sqrt{E_b}$, BPSK or polar NRZ): $d = 2\sqrt{E_b}$, and $P_b = Q\big(\sqrt{2E_b/N_0}\big)$.
-- **Orthogonal** (two equal-energy signals with $\int s_1s_2 = 0$, such as two tones or Manchester's two phases): $d = \sqrt{2E_b}$, and $P_b = Q\big(\sqrt{E_b/N_0}\big)$: **3 dB worse**.
+- **Orthogonal** (two equal-energy signals with $\int s_1s_2 = 0$, such as two tones spaced by a multiple of $1/(2T)$, or two non-overlapping pulse positions, 2-PPM; Manchester's two waveforms, by contrast, are negatives of each other and therefore antipodal): $d = \sqrt{2E_b}$, and $P_b = Q\big(\sqrt{E_b/N_0}\big)$: **3 dB worse**.
 - **On-off** (energies 0 and $2E_b$, average $E_b$): $d = \sqrt{2E_b}$, the same as orthogonal.
 
 Antipodal signalling is the most efficient binary scheme because it puts the two points as far apart as their energy allows. BPSK needs $E_b/N_0$ = **9.59** dB for $P_b = 10^{-5}$ and **10.53** dB for $10^{-6}$; each factor of ten lower in BER costs less than the one before, because $Q$ falls faster than exponentially.
@@ -177,7 +179,7 @@ and with Gray coding $P_b \approx P_s/\log_2M$. For PAM4 at $P_b = 10^{-6}$ this
 
 ### 3.6 The union bound
 
-For a general constellation, the exact error probability needs integrals over polygonal regions. A simple and usually tight upper bound comes from the fact that an error toward any wrong point is at least as likely as the error event to the nearest of them, and no more likely than the sum of all pairwise events:
+For a general constellation, the exact error probability needs integrals over polygonal regions. A simple and usually tight upper bound follows from the union of events. Given $s_i$ was sent, an error is the union of the pairwise events $E_{ik}$ = {$\mathbf r$ is closer to $s_k$ than to $s_i$}. Each has probability $Q(d_{ik}/\sqrt{2N_0})$ by the two-point result, and the probability of a union is at most the sum of the probabilities. It is also at least the largest single term, so the bound is tight when the nearest neighbours dominate:
 
 $$
 P(e\mid\mathbf s_i) \le \sum_{k \ne i}Q\Big(\frac{d_{ik}}{\sqrt{2N_0}}\Big) .
@@ -375,8 +377,8 @@ The lab, [labs/17-05-lab](../labs/17-05-lab/README.md), provides `detection.py`:
 - **Link specifications are $Q$-function statements.** IEEE P802.3dj's objective of a BER of $10^{-13}$ at the MAC interface ([R-270]) corresponds to $Q^{-1}(10^{-13})$ = 7.35, which for uncoded binary signalling would need $E_b/N_0$ = **14.31** dB at the slicer; real links reach it with FEC, which corrects a much higher raw error rate (17-08) **[Established]** for the objective; the conversion is ours.
 - **Correlation receivers in GNSS.** A GPS receiver correlates with the 1023-chip, 1 ms C/A code ([R-259]): a matched filter one code period long. At the 46.87 dB-Hz of 17-02's example, the 1 ms correlation's peak SNR is $2E/N_0$ = **19.88** dB (Problem 17-05.14) **[Established]**.
 - **LoRa is pulse compression for the Internet of Things.** Semtech's SX1276 data sheet (Rev. 5, Aug 2016) lists a LoRa demodulator SNR of −20 dB at spreading factor 12 (4096 chips per symbol), a sensitivity of −136 dBm in 125 kHz, and an effective bit rate of 293 b/s ([R-274]) **[Established]**. Each symbol is a chirp correlated against its reference, a matched filter with a time–bandwidth product of 4096 (36.1 dB). The figures are consistent with §3 and 17-02: −174 dBm/Hz + 51.0 dB (125 kHz) − 20 dB is −143.0 dBm, so −136 dBm implies a noise figure of about **7.0** dB, and the −20 dB SNR in 125 kHz at 293 b/s is an $E_b/N_0$ of **6.3** dB.
-- **Radio sensitivity budgets assume near-matched filtering.** 3GPP's NR reference-sensitivity assumptions use an SNR of about −1 dB in the occupied bandwidth with QPSK and a rate-1/3 code ([R-260]); that is only possible because the receiver's matched filtering and decoding collect the energy of many symbols and coded bits **[Established]**.
-- **PCIe 6.0 traded raw error rate for a light FEC and retry.** PCI-SIG's design accepts a retry probability per 256-byte flit of about $5 \times 10^{-6}$ with a light-weight FEC and strong CRC ([R-273], secondary): the detector's raw error rate is engineered, not minimized at any cost **[Established, secondary]**.
+- **Radio sensitivity budgets assume near-matched filtering.** 3GPP's NR reference-sensitivity assumptions use an SNR of about −1 dB in the occupied bandwidth with QPSK and a rate-1/3 code ([R-260]); that is possible because the rate-1/3 code spreads each information bit over three coded bits ($E_b/N_0 \approx 0.8$ dB), on top of matched filtering of each symbol **[Established]**.
+- **PCIe 6.0 traded raw error rate for a light FEC and retry.** PCI-SIG's design accepts a retry probability per 256-byte flit of about $5 \times 10^{-6}$ with a light-weight FEC and strong CRC ([R-059]; flit format also in [R-273], secondary): the detector's raw error rate is engineered, not minimized at any cost **[Established, secondary]**.
 
 ### Why it matters commercially
 
@@ -384,7 +386,7 @@ The matched filter and ML detector are the ceiling every receiver chip is measur
 
 ### Marketing vs Reality
 
-- **"Our receiver works at negative SNR."** Every matched-filter receiver does when SNR is measured in the RF bandwidth. Ask for the required $E_b/N_0$ at the target error rate and compare it with the theoretical value for the modulation and code; the gap is the implementation loss.
+- **"Our receiver works at negative SNR."** Any receiver whose processing gain (occupied bandwidth divided by bit rate, as with spreading or a low-rate code) exceeds its required $E_b/N_0$ does, when SNR is measured in the RF bandwidth; LoRa and GPS are examples, while an uncoded QPSK receiver at negative SNR has a bit-error rate above $10^{-1}$. Ask for the required $E_b/N_0$ at the target error rate and compare it with the theoretical value for the modulation and code; the gap is the implementation loss.
 - **"Machine-learning detection beats the classical receiver."** In AWGN with a known signal set, nothing beats ML detection; gains are possible only against impairments the classical receiver ignores (nonlinearity, interference, unknown channels). Ask what the baseline was.
 - **"Radar resolution of a few centimetres with low peak power."** Plausible with pulse compression, if the bandwidth is several GHz; ask for the bandwidth and the range sidelobe level, which pulse compression trades against.
 - **"BER below $10^{-15}$."** Usually extrapolated, not measured: at 100 Gb/s, observing one error at $10^{-15}$ takes **2.8** hours on average, and confidence in the rate needs many errors. Ask how it was measured (03-05).
@@ -415,7 +417,7 @@ Each component is $\int n\phi_j$, and white noise's autocorrelation $(N_0/2)\del
 
 </details>
 
-**Q3.** By how much must $E_b/N_0$ increase to go from orthogonal to antipodal performance? In which direction?
+**Q3.** How much more $E_b/N_0$ does orthogonal signalling need than antipodal for the same BER, and why?
 
 <details><summary>Answer</summary>
 
@@ -476,5 +478,5 @@ Practice: [17-05 problems](../problems/17-05-problems.md) · [worked solutions](
 5. IEEE P802.3dj objectives (Mar 2024). Research log [R-270].
 6. IS-GPS-200N. Research log [R-259].
 7. 3GPP TR 38.817-01 and TS 38.104 reference sensitivity. Research log [R-260].
-8. D. Das Sharma, SNIA SDC slides on PCIe 6.0 and 7.0. Research log [R-273].
+8. D. Das Sharma, PCIe 6.0 slides (IEEE San Diego CAS/SSCS, Aug 2021; OFA Workshop 2022). Research log [R-059]; SNIA SDC slides on PCIe 6.0 and 7.0, [R-273].
 9. Semtech SX1276/77/78/79 data sheet, Rev. 5 (Aug 2016). Research log [R-274].

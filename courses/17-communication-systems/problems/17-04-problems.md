@@ -60,13 +60,17 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Duobinary.** The duobinary pulse has $h(t) = \operatorname{sinc}(t/T) + \operatorname{sinc}((t - T)/T)$. Find its spectrum, its bandwidth and its samples $h(kT)$. For ±1 symbols, what levels appear at the sampler and with what probabilities? How tall is its eye relative to binary NRZ with the same peak amplitude? Why is the controlled ISI useful, and what problem does precoding solve?
 
-### Problem 17-04.13 [C]
+### Problem 17-04.13 [B]
 
 **When does PAM4 pay?** At 112 Gb/s, find the smallest loss slope for which PAM4 beats NRZ before equalization (equal peak swing), (a) for loss $a \cdot f$ dB with $f$ in GHz, and (b) for loss $b\sqrt f$ dB. For (b), what is the corresponding loss at 28 GHz?
 
 ### Problem 17-04.14 [C]
 
 **A statistical eye by hand.** *(lab)* A binary ±1 link has $h_{-1}$ = 0.1, $h_0$ = 1, $h_1$ = 0.3 and Gaussian noise σ = 0.1 at the sampler. List the noiseless sample values for $a_0 = +1$, compute the exact BER by averaging over the interfering patterns, and compare it with the worst-case bound and the ISI-free value.
+
+### Problem 17-04.15 [B]
+
+**Design a zero-forcing equalizer.** *(lab)* A channel's sampled pulse response has $h_{-1}$ = 0.15, $h_0$ = 1, $h_1$ = 0.5 and $h_2$ = 0.2 (zero elsewhere). (a) Set up and solve the equations for a three-tap ZF FFE $(c_{-1}, c_0, c_1)$ that forces $q_{-1} = q_1 = 0$ and $q_0 = 1$. (b) Find the combined response $q_k$ for $k = -2$ to 3 and its residual ISI $\sum_{k\ne0}\lvert q_k\rvert$. (c) Compare the worst-case binary eye opening before and after equalization. (d) Find the noise enhancement $\sum c_j^2$ for independent noise samples, in dB, and say whether the trade was worth it.
 
 ---
 
@@ -79,4 +83,4 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 3. ISI and peak distortion | 8, 9, 10 |
 | 4. Nyquist criterion and raised-cosine design | 5, 6, 11, 12 |
 | 5. Eye diagrams and BER | 7, 9, 14 |
-| 6. Equalization and PAM4 trade-offs | 10, 13 |
+| 6. Equalization and PAM4 trade-offs | 10, 13, 15 |

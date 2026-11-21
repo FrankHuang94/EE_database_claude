@@ -52,11 +52,11 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **MSK and GFSK spacing.** For continuous-phase binary FSK at 1 Mb/s with modulation index $h = \Delta f\,T = 0.5$, find the tone spacing $\Delta f$ and the peak frequency deviation from the carrier. How do these compare with Bluetooth LE's nominal index of about 0.5?
 
-### Problem 17-06.11 [C]
+### Problem 17-06.11 [B]
 
 **The QAM figure of merit.** Derive $E_s = 2(M - 1)/3$ for square M-QAM with levels $\pm1, \pm3, \ldots$, then $d_{min}^2/(4E_b) = 3\log_2M/(2(M - 1))$. Check that it equals 1 for $M = 4$ and explain why.
 
-### Problem 17-06.12 [C]
+### Problem 17-06.12 [B]
 
 **A fuller union bound for 8-PSK.** At $E_s/N_0$ = 15 dB, compute the full union bound for 8-PSK, including all seven other points, and compare it with the nearest-neighbour approximation and Craig's exact value.
 
@@ -66,7 +66,15 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 17-06.14 [C]
 
-**Link adaptation.** A modem chooses the highest of QPSK, 16-, 64- and 256-QAM whose uncoded symbol-error rate stays below $10^{-3}$. Find each threshold $E_s/N_0$. At an SNR of 18 dB in a 20 MHz channel with roll-off 0.25, which modulation is chosen and what bit rate results?
+**Link adaptation.** A modem chooses the highest of QPSK, 16-, 64- and 256-QAM whose uncoded symbol-error rate stays below $10^{-3}$. Find each threshold $E_s/N_0$. At an SNR of 18 dB in a 20 MHz channel with roll-off 0.25 (take SNR = $E_s/N_0$), which modulation is chosen and what bit rate results?
+
+### Problem 17-06.15 [B]
+
+**DVB-S2 against Shannon.** DVB-S2 (EN 302 307-1, Table 13, [R-276](../../../reference/research-log.md#r-276--dvb-s2-performance-table-and-roll-offs-etsi-en-302-307)) needs $E_s/N_0$ = 6.62 dB for 8PSK rate 2/3 at 1.980636 b/symbol and 10.21 dB for 16APSK rate 3/4 at 2.966728 b/symbol, both at a packet error rate of $10^{-7}$. For each, find $E_b/N_0$, the Shannon bound $E_s/N_0 \ge 2^\eta - 1$ at the same spectral efficiency η (b/symbol), and the gap.
+
+### Problem 17-06.16 [C]
+
+**The cost of a carrier-phase error.** A coherent receiver's carrier reference has a static phase error θ. (a) Show that BPSK's bit-error rate becomes $Q\big(\sqrt{2E_b/N_0}\cos\theta\big)$. (b) Evaluate it at $E_b/N_0$ = 10 dB for θ = 0°, 10° and 20°. (c) In 16-QAM with levels ±1, ±3, the corner point (3, 3) is rotated by θ = 5°. Find its distance to each of its two decision boundaries (at 2 in each coordinate) and the SNR penalty, for that point, of the nearer one. Why do dense constellations need much better phase tracking?
 
 ---
 
@@ -76,7 +84,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. I/Q and complex envelope | 1, 2 |
 | 2. Constellations, energy, distance, PAPR | 2, 5, 11 |
-| 3. PSK and QAM error rates | 4, 5, 6, 12, 14 |
-| 4. Coherent, differential, noncoherent, constant envelope | 9, 10 |
-| 5. Spectral efficiency | 3, 14 |
+| 3. PSK and QAM error rates | 4, 5, 6, 12, 14, 16 |
+| 4. Coherent, differential, noncoherent, constant envelope | 9, 10, 16 |
+| 5. Spectral efficiency and the Shannon bound | 3, 14, 15 |
 | 6. EVM | 7, 8, 13 |

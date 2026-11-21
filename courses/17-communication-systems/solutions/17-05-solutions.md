@@ -65,7 +65,7 @@ Each doubling of M costs about 6–7 dB of $E_s/N_0$ (and, per bit, about 4–5 
 
 ### Solution 17-05.9
 
-With $x = T/\tau = 2$, the ratio is $2(1 - e^{-2})^2/2 = (1 - e^{-2})^2$ = **0.748**, **−1.26** dB: worse than the optimum (0.815 at $x$ = 1.256) because the narrower filter passes more noise.
+With $x = T/\tau = 2$, the ratio is $2(1 - e^{-2})^2/2 = (1 - e^{-2})^2$ = **0.748**, **−1.26** dB: worse than the optimum (0.815 at $x$ = 1.256) because the wider filter ($f_{3\text{dB}} = 1/(2\pi\tau) = 1/(\pi T) \approx 0.32/T$, against the optimum's $0.20/T$) passes more noise while gaining little extra signal.
 
 ### Solution 17-05.10
 
@@ -85,7 +85,7 @@ With transmit spectrum $P = \sqrt{H_{RC}}$ (unit-energy normalization aside) and
 
 $E_s/N_0 = \log_2M \times 3.981$:
 
-- M = 2: $Q(\sqrt{3.98})$ = **0.0230**, bandwidth ×1.
+- M = 2: $Q(\sqrt{3.98})$ = **0.0230**, bandwidth ×2 (two dimensions per bit, against one for antipodal binary).
 - M = 16: $15\,Q(\sqrt{15.92})$ = **4.9 × 10⁻⁴**, bandwidth ×4.
 - M = 64: $63\,Q(\sqrt{23.89})$ = **3.2 × 10⁻⁵**, bandwidth ×10.7.
 

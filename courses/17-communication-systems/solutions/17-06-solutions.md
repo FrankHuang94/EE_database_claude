@@ -44,7 +44,7 @@ $\tfrac12e^{-E_b/N_0} = 10^{-6}$ gives $E_b/N_0 = \ln(5 \times 10^5) = 13.12$, *
 
 ### Solution 17-06.10
 
-$\Delta f = h/T = 0.5 \times 1$ MHz = **500** kHz, so the two tones sit at ±**250** kHz from the carrier. Bluetooth LE's 1 Mb/s PHY uses GFSK with an index near 0.5, the MSK spacing; its test specification checks an average deviation between 225 and 275 kHz for a pattern of alternating bits ([R-278], secondary), consistent with ±250 kHz.
+$\Delta f = h/T = 0.5 \times 1$ MHz = **500** kHz, so the two tones sit at ±**250** kHz from the carrier. Bluetooth LE's 1 Mb/s PHY uses GFSK with an index near 0.5, the MSK spacing; its test specification checks an average deviation $\Delta f_{1avg}$ between 225 and 275 kHz ([R-278], secondary), consistent with ±250 kHz.
 
 ### Solution 17-06.11
 
@@ -80,6 +80,31 @@ Solving $P_s = 10^{-3}$ numerically:
 - 256-QAM: **30.08** dB.
 
 At 18 dB the modem picks **16-QAM**. The symbol rate is $20/1.25 = 16$ Msymbol/s, so the bit rate is $4 \times 16$ = **64** Mb/s before coding. (Real modems use coded thresholds, several dB lower, and a finer grid of code rates.)
+
+(The problem takes SNR = $E_s/N_0$. Strictly, the SNR in the 20 MHz occupied band is $E_s/N_0$ divided by $1 + \alpha$, so 18 dB of in-band SNR means $E_s/N_0$ = 18.97 dB; 16-QAM is still the choice.)
+
+### Solution 17-06.15
+
+$E_b/N_0 = E_s/N_0 - 10\log_{10}\eta$:
+
+- 8PSK 2/3: $6.62 - 10\log_{10}1.980636$ = **3.65** dB. Shannon needs $E_s/N_0 \ge 2^{1.980636} - 1 = 2.947$, **4.69** dB, so the gap is $6.62 - 4.69$ = **1.93** dB.
+- 16APSK 3/4: $10.21 - 10\log_{10}2.966728$ = **5.49** dB. Shannon needs $2^{2.966728} - 1 = 6.818$, **8.34** dB; the gap is **1.87** dB.
+
+Both sit about 1.9 dB from capacity at a packet error rate of $10^{-7}$ with 64 800-bit frames. QPSK 1/2, at 1.07 dB, is the closest of the table's rates (Example 17-06.5).
+
+### Solution 17-06.16
+
+(a) The receiver correlates with $\cos(\omega_ct + \theta)$ instead of $\cos\omega_ct$. The signal's projection on the mis-phased reference is $\pm\sqrt{E_b}\cos\theta$, while the noise projected on any unit-energy reference still has variance $N_0/2$. The decision distance shrinks by $\cos\theta$:
+
+$$
+P_b = Q\Big(\frac{\sqrt{E_b}\cos\theta}{\sqrt{N_0/2}}\Big) = Q\Big(\sqrt{2E_b/N_0}\cos\theta\Big) .
+$$
+
+The remaining signal energy, $E_b\sin^2\theta$, falls in the quadrature arm and is lost.
+
+(b) With $\sqrt{2E_b/N_0} = \sqrt{20} = 4.472$: θ = 0° gives **3.87 × 10⁻⁶**, 10° gives $Q(4.404)$ = **5.31 × 10⁻⁶**, and 20° gives $Q(4.202)$ = **1.32 × 10⁻⁵**. A 20° error costs a factor of 3.4 in error rate, about 0.5 dB.
+
+(c) Rotating (3, 3) by 5° gives $(3\cos5° - 3\sin5°,\ 3\sin5° + 3\cos5°) = (2.727, 3.250)$. Its distances to the boundaries at 2 are **0.727** and **1.250**, against 1 for both without rotation. The nearer one sets this point's error rate: an SNR penalty of $20\log_{10}(1/0.727)$ = **2.77** dB for that point. The rotation moves a point by about its radius times θ, so the outer points of a dense constellation, which sit far from the origin with small spacing, suffer most; that is why 1024- and 4096-QAM need very low oscillator phase noise (21-06).
 
 ---
 
@@ -122,3 +147,16 @@ At 18 dB the modem picks **16-QAM**. The symbol rate is $20/1.25 = 16$ Msymbol/s
 | 17-06.14c | 64-QAM threshold | 23.97 | dB |
 | 17-06.14d | 256-QAM threshold | 30.08 | dB |
 | 17-06.14e | bit rate at 18 dB | 64 | Mb/s |
+| 17-06.15a | 8PSK 2/3 Eb/N0 | 3.65 | dB |
+| 17-06.15b | 8PSK 2/3 Shannon Es/N0 | 4.69 | dB |
+| 17-06.15c | 8PSK 2/3 gap | 1.93 | dB |
+| 17-06.15d | 16APSK 3/4 Eb/N0 | 5.49 | dB |
+| 17-06.15e | 16APSK 3/4 Shannon Es/N0 | 8.34 | dB |
+| 17-06.15f | 16APSK 3/4 gap | 1.87 | dB |
+| 17-06.16a | BER at 0° | 3.87e-6 | — |
+| 17-06.16b | BER at 10° | 5.31e-6 | — |
+| 17-06.16c | BER at 20° | 1.32e-5 | — |
+| 17-06.16d | distance to the x boundary | 0.727 | — |
+| 17-06.16e | distance to the y boundary | 1.250 | — |
+| 17-06.16f | penalty for that point | 2.77 | dB |
+| 17-06.14f | Es/N0 for 18 dB in-band SNR | 18.97 | dB |

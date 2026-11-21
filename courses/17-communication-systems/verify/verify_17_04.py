@@ -64,12 +64,13 @@ v.check("Txt 17-04.j", isi_sum(np.sinc, 0.1))
 v.check("Txt 17-04.k", isi_sum(lambda t: bb.raised_cosine(t, 0.22), 0.1))
 v.check("Txt 17-04.l", isi_sum(lambda t: bb.raised_cosine(t, 0.5), 0.1))
 v.check("Txt 17-04.m", 10 * math.log10((1 + 2e6 ** 2) / (1 + 1e6 ** 2)))  # |H|^2 of a one-pole, an octave far above the corner
+worst = 0.0
 for xx in np.linspace(0.01, 0.49, 25):
     nrz = 1 - 2 * xx
     hk4 = bb.rc_cursors(xx * xx, 200)
     pam4 = (hk4[0] - 3 * (np.sum(hk4) - hk4[0])) / 3
-    assert abs(pam4 - nrz * (1 + 2 * xx) / 3) < 1e-9
-v.assert_true("one-pole: PAM4 worst eye is (1 + 2r)/3 of NRZ, never larger", True)
+    worst = max(worst, abs(pam4 - nrz * (1 + 2 * xx) / 3))
+v.assert_true("one-pole: PAM4 worst eye is (1 + 2r)/3 of NRZ, never larger", worst < 1e-9, f"{worst}")
 v.assert_true("sum of (2i-1)^2 identity for M = 2..16", all(abs(bb.mean_energy(m) - (m * m - 1) / 3) < 1e-12 for m in (2, 4, 8, 16)))
 
 # ------------------------------------------------------------------ Example 1
@@ -80,13 +81,17 @@ v.check("Ex 17-04.1d", db20(1 / 3))
 v.check("Ex 17-04.1e", db10(np.mean((bb.pam_levels(4) / 3) ** 2)))
 bits = rng.integers(0, 2, 4000)
 lv = bb.gray_map(bits, 4)
-v.assert_true("Gray map: adjacent levels differ in one bit", True if set(np.unique(lv)) == {-3.0, -1.0, 1.0, 3.0} else False)
+_words = [(b1, b0) for b1 in (0, 1) for b0 in (0, 1)]
+_lab = {float(bb.gray_map(np.array(w), 4)[0]): w for w in _words}
+_adj = [sum(x != y for x, y in zip(_lab[lo], _lab[hi])) for lo, hi in ((-3.0, -1.0), (-1.0, 1.0), (1.0, 3.0))]
+v.assert_true("Gray map: adjacent levels differ in one bit", set(np.unique(lv)) == {-3.0, -1.0, 1.0, 3.0} and _adj == [1, 1, 1], f"{_adj}")
 
 # ------------------------------------------------------------------ Example 2 (closed form, integration, simulation)
 nrz_frac, _ = integrate.quad(lambda x: np.sinc(x) ** 2, -1, 1, points=[0])
 v.check("Ex 17-04.2a", 100 * nrz_frac)
 v.check("Ex 17-04.2b", float(bb.manchester_psd(0.0)))
-v.check("Ex 17-04.2c", optimize.brentq(lambda x: bb.manchester_psd(x), 1.9, 2.1) if bb.manchester_psd(1.9) * bb.manchester_psd(2.1) < 0 else 2.0)
+v.check("Ex 17-04.2c", optimize.minimize_scalar(lambda x: float(bb.manchester_psd(x)), bounds=(1.5, 2.5), method="bounded").x)
+v.assert_true("Manchester PSD positive on (0.01, 1.99): first null at 2/T", min(float(bb.manchester_psd(x)) for x in np.linspace(0.01, 1.99, 400)) > 0)
 seg = lambda a, b: integrate.quad(bb.manchester_psd, a, b, limit=400)[0]  # noqa: E731
 tot = 2 * sum(seg(2 * k, 2 * k + 2) for k in range(0, 4000))
 v.assert_true("Manchester total power is A^2", abs(tot - 1) < 2e-4, f"{tot}")
@@ -263,8 +268,9 @@ a = rng.choice([-1.0, 1.0], 200_000)
 yv = a[1:] + a[:-1]
 levels, counts = np.unique(yv, return_counts=True)
 v.check("17-04.12a", len(levels))
-v.check("17-04.12b", 0.5)
-v.check("17-04.12c", 0.25)
+_y = [p + q for p in (-1, 1) for q in (-1, 1)]
+v.check("17-04.12b", _y.count(0) / 4)
+v.check("17-04.12c", _y.count(2) / 4)
 v.assert_true("duobinary level frequencies 1/4, 1/2, 1/4 (simulated)", np.allclose(counts / counts.sum(), [0.25, 0.5, 0.25], atol=0.005))
 v.check("17-04.12d", db20(2 / 4))
 # precoding removes error propagation: each level maps to one bit
@@ -304,5 +310,20 @@ v.check("Lab 17-04.c", ber_dfe_th)
 # ------------------------------------------------------------------ concept checks
 v.assert_true("CC3 rates 20 and 16 Msymbol/s", 2 * 10 == 20 and abs(2 * 10 / 1.25 - 16) < 1e-12)
 v.assert_true("CC5 eye 0.2", abs(bb.worst_case_eye([1.0, 0.5, 0.3], 0) - 0.2) < 1e-12)
+
+# Problem 17-04.15: ZF design, checked against the lab's general solver and by convolution
+_h = [0.15, 1.0, 0.5, 0.2]
+_c = bb.zf_equalizer(_h, 1, 3)
+_q = np.convolve(_h, _c)  # indices k = -2..3
+v.check("17-04.15a", _c[1])
+v.check("17-04.15b", _c[0])
+v.check("17-04.15c", _c[2])
+v.assert_true("ZF forces q(-1) = q(1) = 0 and q(0) = 1", np.allclose(_q[1:4], [0, 1, 0], atol=1e-12))
+_res = np.sum(np.abs(_q)) - 1
+v.check("17-04.15d", _res)
+v.check("17-04.15e", _h[1] - (abs(_h[0]) + abs(_h[2]) + abs(_h[3])))
+v.check("17-04.15f", 1 - _res)
+v.check("17-04.15g", float(np.sum(_c ** 2)))
+v.check("17-04.15h", db10(float(np.sum(_c ** 2))))
 
 sys.exit(v.finish())

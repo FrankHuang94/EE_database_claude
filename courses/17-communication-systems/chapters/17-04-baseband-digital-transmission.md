@@ -66,6 +66,8 @@ $$
 
 using $\sum_{i=1}^{n}(2i - 1)^2 = n(4n^2 - 1)/3$ with $n = M/2$. For NRZ ($M$ = 2) it is 1; for PAM4, **5**; for PAM8, 21. Adjacent levels are assigned bit patterns differing in one bit (**Gray coding**), so the most likely error, to a neighbouring level, costs one bit.
 
+> **Math refresher — sums of odd squares.** Expand and use $\sum_{i=1}^ni = n(n + 1)/2$ and $\sum_{i=1}^ni^2 = n(n + 1)(2n + 1)/6$: $\sum_{i=1}^n(2i - 1)^2 = 4\sum i^2 - 4\sum i + n = \tfrac23n(n + 1)(2n + 1) - 2n(n + 1) + n = n(4n^2 - 1)/3$. Check: $n = 2$ gives $1 + 9 = 10 = 2 \cdot 15/3$.
+
 **NRZ against PAM4 at the same bit rate.** PAM4 halves the symbol rate, so it halves the frequency the channel must pass. The cost is level spacing. With the same **peak** amplitude $A$, NRZ uses $\pm A$ (spacing $2A$) and PAM4 uses $\pm A$, $\pm A/3$ (spacing $2A/3$): each of PAM4's three eyes is one third as tall, **−9.54** dB. With the same **average** power, the spacing ratio is $\sqrt{3/(M^2 - 1)}$, $1/\sqrt5$ for PAM4, **−6.99** dB (Problem 17-04.3). Peak-limited links (SerDes drivers swing between supply rails) pay the 9.54 dB figure.
 
 **The Nyquist frequency.** For symbol rate $R_s$, the frequency $R_s/2$ is the **Nyquist frequency** $f_N$: a $\ldots{+}{-}{+}{-}\ldots$ symbol pattern is a square wave at $f_N$, the fastest the signal ever alternates. Link specifications quote channel loss at $f_N$.
@@ -138,6 +140,8 @@ $$
 \sum_{m=-\infty}^{\infty}H\Big(f - \frac mT\Big) = T\quad\text{for all }f .
 $$
 
+> **Math refresher — Poisson summation.** Multiplying $h(t)$ by the impulse train $\sum_k\delta(t - kT)$ samples it. The impulse train is periodic, so its Fourier series is $\frac1T\sum_me^{j2\pi mt/T}$, whose transform is $\frac1T\sum_m\delta(f - m/T)$. Multiplication in time is convolution in frequency, so the sampled pulse has transform $\frac1T\sum_mH(f - m/T)$. The same transform, computed directly from the impulses, is $\sum_kh(kT)e^{-j2\pi fkT}$. Equating the two gives Poisson's formula (11-10 derives it in detail).
+
 This is **Nyquist's criterion**: the pulse spectrum, shifted by every multiple of the symbol rate and summed, must be flat. Three consequences:
 
 1. **Minimum bandwidth.** If $H(f) = 0$ for $\lvert f\rvert > B$ with $B < 1/(2T)$, the shifted copies do not overlap or touch, and gaps between them make the sum zero somewhere. Zero ISI therefore needs $B \ge 1/(2T)$: **a channel of bandwidth $B$ carries at most $2B$ symbols per second without ISI.** This is Nyquist's rate.
@@ -176,7 +180,7 @@ which keeps the sinc's zeros at every nonzero multiple of $T$ and multiplies its
 
 An **eye diagram** overlays the received waveform, cut into segments one or two symbol periods long and aligned to the symbol clock. Every possible symbol history traces one curve, and the curves form "eyes" between the levels. It is the single most informative picture of a link:
 
-- **Eye height** at the sampling instant is the worst-case opening of §3.3 (for the patterns seen), reduced further by noise; it is the margin against amplitude errors.
+- **Eye height** at the sampling instant is twice the worst-case opening of §3.3 (which is measured from the threshold to one side; for the patterns seen), reduced further by noise; it is the margin against amplitude errors.
 - **Eye width** is the time range over which the eye stays open; it is the margin against timing errors (jitter, CDR offset).
 - **Slope** of the eye's sides is the sensitivity to timing: a steep side means a small timing error costs a lot of height.
 - **Crossing spread** of the zero crossings shows the jitter that ISI itself creates (data-dependent jitter), which the CDR sees.
@@ -187,17 +191,23 @@ An **eye diagram** overlays the received waveform, cut into segments one or two 
 
 When the channel's pulse response has ISI, the receiver can filter it out. A **feed-forward equalizer** (FFE) is an FIR filter with taps $c_j$ applied to the samples. The combined response is the convolution $q_k = \sum_jc_jh_{k-j}$. A **zero-forcing** (ZF) equalizer with $2N + 1$ taps chooses them so that $q_0 = 1$ and $q_k = 0$ for $0 < \lvert k\rvert \le N$: a linear system of $2N + 1$ equations in $2N + 1$ unknowns. ISI beyond the equalizer's span remains.
 
-The price is **noise enhancement**: the equalizer filters the noise too, multiplying its variance by $\sum_jc_j^2$ when the noise samples are independent. Inverting a channel that loses 20 dB at the Nyquist frequency means boosting the noise there by 20 dB. A **decision-feedback equalizer** (DFE) avoids this for postcursors: once the previous symbols have been decided, their contributions $a_{n-k}h_k$ are known and subtracted, with no filtering of the noise. Its weakness is **error propagation**: a wrong decision subtracts the wrong ISI and makes the next decision worse. Practical SerDes receivers combine a continuous-time linear equalizer (CTLE, an analog high-frequency boost), an FFE and a DFE; Course 24 covers them in depth.
+The price is **noise enhancement**: the equalizer filters the noise too, multiplying its variance by $\sum_jc_j^2$ when the noise samples are independent. Inverting a channel that loses 20 dB at the Nyquist frequency means boosting the noise there by 20 dB. A **decision-feedback equalizer** (DFE) avoids this for postcursors: once the previous symbols have been decided, their contributions $a_{n-k}h_k$ are known and subtracted, with no filtering of the noise. Its weakness is **error propagation**: a wrong decision subtracts the wrong ISI and makes the next decision worse.
+
+**MMSE and adaptive equalizers.** Zero forcing ignores noise. The **minimum mean-square-error** (MMSE) equalizer instead chooses the taps to minimize $E[(\hat a_n - a_n)^2]$, where $\hat a_n = \sum_jc_jy_{n-j}$ is the equalizer output: residual ISI and enhanced noise are counted together. Setting the derivative with respect to each $c_j$ to zero gives the linear system $\mathbf R\mathbf c = \mathbf p$ (the Wiener–Hopf equations), where $\mathbf R$ is the autocorrelation matrix of the received samples and $\mathbf p$ their cross-correlation with the wanted symbol. As the noise vanishes it reduces to ZF; at low SNR it deliberately leaves some ISI rather than amplify noise. Real receivers do not know the channel in advance, so they adapt: the **least-mean-squares** (LMS) rule $c_j \leftarrow c_j + \mu e_ny_{n-j}$, with error $e_n = a_n - \hat a_n$ (known training symbols at first, then decisions), moves the taps a small step μ down the gradient of the squared error at every symbol and converges toward the MMSE solution.
+
+**Controlled ISI: duobinary and precoding.** Instead of removing ISI, a system can design a known amount in. The **duobinary** pulse is the sum of two Nyquist pulses one symbol apart, so $h_0 = h_1 = 1$ and the sample is $y_n = a_n + a_{n-1}$: three levels, −2, 0 and +2, for binary ±1 symbols. Its spectrum, $2T\cos(\pi fT)$ for $\lvert f\rvert < 1/(2T)$, uses only the minimum bandwidth yet falls smoothly to zero at the band edge, so it is far easier to approximate than the sinc pulse's brick wall. Recovering $a_n = y_n - \hat a_{n-1}$ would propagate errors; **precoding** removes the memory. Transmit $b_n = d_n \oplus b_{n-1}$ mapped to $a_n = 2b_n - 1$; then $y_n = 2(b_n + b_{n-1}) - 2$, which is 0 exactly when $d_n = 1$ (the two bits differ) and ±2 when $d_n = 0$, so each data bit is decided from one sample by comparing $\lvert y_n\rvert$ with 1.
+
+Practical SerDes receivers combine a continuous-time linear equalizer (CTLE, an analog high-frequency boost), an FFE and a DFE; Course 24 covers them in depth.
 
 ### 3.8 When PAM4 beats NRZ
 
-On a channel whose loss grows with frequency, PAM4 at bit rate $R_b$ has its Nyquist frequency at $R_b/4$, half NRZ's $R_b/2$. Before equalization, PAM4 wins when the extra loss NRZ suffers between the two frequencies exceeds PAM4's eye penalty, 9.54 dB at equal peak swing:
+On a channel whose loss grows with frequency, PAM4 at bit rate $R_b$ has its Nyquist frequency at $R_b/4$, half NRZ's $R_b/2$. A common first-order rule of thumb treats each scheme's eye as scaling with the channel loss at its own Nyquist frequency. Before equalization, PAM4 then wins when the extra loss NRZ suffers between the two frequencies exceeds PAM4's eye penalty, 9.54 dB at equal peak swing:
 
 $$
 L(R_b/2) - L(R_b/4) > 9.54\ \text{dB} .
 $$
 
-The answer depends on the loss's shape. Dielectric loss grows roughly in proportion to $f$; skin-effect loss as $\sqrt f$. For 112 Gb/s with a loss of 0.8 dB/GHz, NRZ suffers 44.8 dB at 56 GHz and PAM4 22.4 dB at 28 GHz: a 22.4 dB difference, so PAM4 is 12.86 dB better. If instead the loss were 20 dB at 28 GHz growing as $\sqrt f$, NRZ would suffer only 8.28 dB more, and NRZ would win by 1.26 dB (Example 17-04.6). A one-pole channel is the extreme case: above its corner its loss grows by only 6.02 dB per octave, less than 9.54 dB, so PAM4 never beats NRZ on it (the lab shows the worst-case PAM4 eye is always $(1 + 2r)/3$ of NRZ's, with $r$ the NRZ decay factor). Long, dielectric-dominated channels at high rates are where PAM4 pays, and that is where the industry adopted it (§9). The comparison also ignores PAM4's other costs: three eyes to keep aligned, sensitivity to driver nonlinearity, and a more complex receiver, usually an ADC and DSP rather than a slicer.
+The answer depends on the loss's shape. Dielectric loss grows roughly in proportion to $f$; skin-effect loss as $\sqrt f$. For 112 Gb/s with a loss of 0.8 dB/GHz, NRZ suffers 44.8 dB at 56 GHz and PAM4 22.4 dB at 28 GHz: a 22.4 dB difference, so PAM4 is 12.86 dB better. If instead the loss were 20 dB at 28 GHz growing as $\sqrt f$, NRZ would suffer only 8.28 dB more, and NRZ would win by 1.26 dB (Example 17-04.6). The rule is a heuristic: the real eye depends on the whole pulse response, and after equalization the comparison is between noise-enhanced SNRs. A one-pole channel illustrates the other side (a flat-loss channel, which costs both formats equally, is the true extreme): above its corner its loss grows by only 6.02 dB per octave, less than 9.54 dB, so PAM4 never beats NRZ on it (the lab shows the worst-case PAM4 eye is always $(1 + 2r)/3$ of NRZ's, with $r$ the NRZ decay factor). Long, dielectric-dominated channels at high rates are where PAM4 pays, and that is where the industry adopted it (§9). The comparison also ignores PAM4's other costs: three eyes to keep aligned, sensitivity to driver nonlinearity, and a more complex receiver, usually an ADC and DSP rather than a slicer.
 
 ## 4. Worked examples
 
@@ -382,8 +392,10 @@ The lab, [labs/17-04-lab](../labs/17-04-lab/README.md), provides `baseband.py`: 
 - **Ethernet's electrical lanes are PAM4.** IEEE Std 802.3ck-2022, approved 21 September 2022, defines 100 Gb/s per lane electrical interfaces; its objectives specify a single-lane backplane PHY "supporting an insertion loss ≤ 28 dB at 26.56 GHz" and twin-axial cables "up to at least 2 m" ([R-269]) **[Established]**. 26.56 GHz is the Nyquist frequency of a 53.125 GBd signal, PAM4 at about 106 Gb/s raw (our inference from the loss frequency, consistent with Example 17-04.1's arithmetic). The next step, P802.3dj (200 Gb/s per lane), set objectives of "die-to-die insertion loss <= 40 dB at 53.125 GHz" and a BER of 10⁻¹³ at the MAC interface; its initial Standards Association ballot closed on 26 March 2026 with 77% approval, and it was still an active project, not yet an approved standard, as of the last check ([R-270]) **[Established]**.
 - **OIF electrical interfaces.** OIF-CEI-05.3 (July 2025) defines CEI-112G extra-short, very-short, medium and long-reach interfaces, all PAM4 at 36 to 58 Gsymbol/s; CEI-224G interfaces were still listed as current projects, with a long-reach objective of at least 1000 mm ([R-271]) **[Established]**.
 - **PCI Express moved to PAM4 at 64 GT/s.** PCIe 6.0 runs 64 GT/s with PAM4 and fixed 256-byte flits protected by a light FEC and CRC; PAM4 "Helps channel loss (same Nyquist as 32.0 GT/s)". PCIe 7.0, released to members on 11 June 2025, doubles this to 128 GT/s, again PAM4 with flit encoding, and PCI-SIG announced in August 2025 that PCIe 8.0 will reach 256 GT/s, planned for release "by 2028" ([R-273], read from reprints and a PCI-SIG board member's slides because pcisig.com refused automated access) **[Established, secondary sources]**.
-- **USB4 Version 2.0** (USB-IF, October 2022) runs "Up to 80Gbps ... based on PAM3 signal encoding", three levels carrying about 1.5 bits per symbol ([R-272]) **[Established]**.
+- **USB4 Version 2.0** (USB-IF, October 2022) runs "Up to 80Gbps ... based on PAM3 signal encoding", three levels, which can carry at most $\log_23$ = 1.585 bits per symbol (our inference; R-272 does not record the encoding) ([R-272]) **[Established]**.
 - **Radios use RRC shaping.** 3GPP's UTRA reference for ACLR measurement is a 3.84 Mchip/s root-raised-cosine filter with roll-off 0.22 ([R-258]); Example 17-04.4 shows why it fits a 5 MHz channel **[Established]**.
+
+> **Deeper:** see companion repo *Datacenter Networking* for how 200G-per-lane electrical and optical links are deployed in AI fabrics.
 
 ### Why it matters commercially
 
@@ -422,7 +434,7 @@ Zero ISI only requires the pulse to be zero at the other symbols' sampling insta
 
 </details>
 
-**Q3.** A channel has bandwidth 10 MHz. What is the highest symbol rate without ISI, and the highest with a raised-cosine pulse of α = 0.25?
+**Q3.** A baseband channel passes 0–10 MHz. What is the highest symbol rate without ISI, and the highest with a raised-cosine pulse of α = 0.25?
 
 <details><summary>Answer</summary>
 

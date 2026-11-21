@@ -55,7 +55,7 @@ $$
 s(t) = I(t)\cos\omega_ct - Q(t)\sin\omega_ct = \operatorname{Re}\big\{\tilde s(t)e^{j\omega_ct}\big\},\qquad \tilde s(t) = I(t) + jQ(t) ,
 $$
 
-where $I$ and $Q$ are low-pass signals and $\tilde s$ is the **complex envelope** (17-01 §3.9 did the same for noise). A quadrature modulator builds $s$ from $I$ and $Q$ (17-03 §3.2); a quadrature demodulator recovers them by mixing with $2\cos\omega_ct$ and $-2\sin\omega_ct$ and low-pass filtering.
+where $I$ and $Q$ are low-pass signals and $\tilde s$ is the **complex envelope** (here $Q(t)$ is the quadrature component; $Q(\cdot)$ applied to a number is the Gaussian tail function of 17-05) (17-01 §3.9 did the same for noise). A quadrature modulator builds $s$ from $I$ and $Q$ (17-03 §3.2); a quadrature demodulator recovers them by mixing with $2\cos\omega_ct$ and $-2\sin\omega_ct$ and low-pass filtering.
 
 **One symbol's signal space.** For a symbol of duration $T$ with $f_cT$ large (many carrier cycles per symbol), the two functions
 
@@ -93,7 +93,9 @@ $$
 
 accurate at high SNR (for $M \ge 4$). An exact single-integral form (Craig's formula) is $P_s = \frac1\pi\int_0^{(M-1)\pi/M}\exp\big(-\frac{E_s}{N_0}\frac{\sin^2(\pi/M)}{\sin^2\theta}\big)d\theta$, which the lab uses.
 
-**The efficiency figure of merit.** Compare constellations by $d_{min}^2/(4E_b)$, the squared minimum distance relative to antipodal signalling at the same energy per bit. For PSK it is $\log_2M\sin^2(\pi/M)$: 1 for BPSK and QPSK, 0.439 for 8-PSK (**−3.57** dB) and 0.152 for 16-PSK (**−8.17** dB). PSK wastes the interior of the circle; beyond 8 points its penalty grows by about 6 dB per extra bit.
+> **Going deeper — where Craig's formula comes from.** Let $(X, Y)$ be independent standard normal variables. $Q(x)$ is the probability that the point lies beyond the line $X = x$. In polar coordinates a ray at angle φ from the $X$ axis ($\lvert\varphi\rvert < \pi/2$) crosses that line at radius $x/\cos\varphi$, and the probability beyond radius $\rho$ along any ray is $\int_\rho^\infty e^{-r^2/2}r\,dr/(2\pi)\,d\varphi = e^{-\rho^2/2}d\varphi/(2\pi)$. Integrating over φ gives $Q(x) = \frac1\pi\int_0^{\pi/2}\exp\big(-x^2/(2\sin^2\theta)\big)d\theta$ (substituting θ = π/2 − φ). The M-PSK decision region of the transmitted point is a wedge of half-angle π/M; the same polar integration over the complementary angles, measured from the transmitted point, gives the formula above. Its advantage is a finite range of integration with the SNR inside an exponential, which is easy to evaluate and to average over fading.
+
+**The efficiency figure of merit.** Compare constellations by $d_{min}^2/(4E_b)$, the squared minimum distance relative to antipodal signalling at the same energy per bit. For PSK it is $\log_2M\sin^2(\pi/M)$: 1 for BPSK and QPSK, 0.439 for 8-PSK (**−3.57** dB) and 0.152 for 16-PSK (**−8.17** dB). PSK wastes the interior of the circle: its penalty grows by 4.6–5.2 dB per extra bit from 8- to 64-PSK, approaching 6 dB.
 
 ### 3.4 Square M-QAM
 
@@ -109,7 +111,7 @@ $$
 P_s = 1 - (1 - p)^2 .
 $$
 
-With Gray labelling in each dimension, $P_b \approx P_s/\log_2M$ at high SNR. The figure of merit $d_{min}^2/(4E_b)$ is 0.4 for 16-QAM (**−3.98** dB), 0.143 for 64-QAM (**−8.45** dB), 0.047 for 256-QAM (**−13.27** dB) and 0.0147 for 1024-QAM (**−18.34** dB): **about 5 dB per extra two bits** once M is large (the energy grows with M while bits grow with log M). QAM beats PSK because it fills the plane: 16-QAM needs **4.20** dB less than 16-PSK for the same SER at high SNR.
+With Gray labelling in each dimension, $P_b \approx P_s/\log_2M$ at high SNR. The figure of merit $d_{min}^2/(4E_b)$ is 0.4 for 16-QAM (**−3.98** dB), 0.143 for 64-QAM (**−8.45** dB), 0.047 for 256-QAM (**−13.27** dB) and 0.0147 for 1024-QAM (**−18.34** dB): **about 4.5–5 dB per extra two bits** over the practical range, approaching 6 dB as M grows (the energy grows as M while the bits grow only as $\log_2M$). QAM beats PSK because it fills the plane: 16-QAM needs **4.20** dB less than 16-PSK for the same SER at high SNR.
 
 ![QPSK, 8-PSK, 16-QAM and 64-QAM constellations with received noise clouds at the same Es/N0](../../../assets/figures/17-06/constellations.svg)
 
@@ -127,9 +129,19 @@ $$
 
 The noncoherent receiver measures the energy in each tone's matched filter without knowing the carrier phase; the price at practical error rates is under 1 dB beyond coherent FSK (**0.75** dB at $10^{-5}$), which is itself 3 dB behind BPSK.
 
-**Continuous-phase FSK** avoids phase jumps at symbol boundaries; with spacing exactly $1/(2T)$ it is **MSK**, and smoothing the frequency transitions with a Gaussian filter gives **GMSK** (GSM) and **GFSK** (Bluetooth). Their envelope is constant, so the transmitter's power amplifier can be operated in saturation at high efficiency; the cost is spectral efficiency of roughly 1 b/s/Hz and the 3 dB disadvantage of orthogonal signalling.
+**Deriving the noncoherent error rate.** Correlate the received signal with $\sqrt{2/T}\cos\omega_kt$ and $\sqrt{2/T}\sin\omega_kt$ for each tone $k$; each output carries noise of variance $\sigma^2 = N_0/2$. If tone 1 was sent with energy $E$ and unknown phase φ, its two outputs are $\sqrt E\cos\varphi + n_1$ and $\sqrt E\sin\varphi + n_2$, so the envelope $R_1$ is **Rician** with parameter $\nu = \sqrt E$; tone 0 carries noise only, so $R_0$ is **Rayleigh** with $P(R_0 > r) = e^{-r^2/(2\sigma^2)}$ (17-09 §3.6). An error occurs when $R_0 > R_1$:
 
-**Differential PSK.** Coding information in the phase *change* between symbols lets the receiver use the previous symbol as its phase reference. Binary DPSK has $P_b = \tfrac12e^{-E_b/N_0}$, needing about **0.75** dB more than BPSK at $10^{-5}$, in exchange for not tracking the carrier phase.
+$$
+P_b = \int_0^\infty\frac{r}{\sigma^2}e^{-(r^2 + \nu^2)/(2\sigma^2)}I_0\Big(\frac{r\nu}{\sigma^2}\Big)e^{-r^2/(2\sigma^2)}\,dr .
+$$
+
+Substitute $r = u/\sqrt2$ and split $\nu^2 = \nu^2/2 + \nu^2/2$: the integrand becomes $\tfrac12e^{-\nu^2/(4\sigma^2)}$ times a Rician density in $u$ with parameter $\nu/\sqrt2$, which integrates to 1. So $P_b = \tfrac12e^{-\nu^2/(4\sigma^2)} = \tfrac12e^{-E_b/(2N_0)}$.
+
+> **Math refresher — the Rician density.** The envelope of a constant $\nu$ plus complex Gaussian noise of variance $\sigma^2$ per component has density $f(r) = (r/\sigma^2)e^{-(r^2 + \nu^2)/(2\sigma^2)}I_0(r\nu/\sigma^2)$, where $I_0(x) = \frac1\pi\int_0^\pi e^{x\cos\theta}d\theta$ is the modified Bessel function of order zero (it comes from averaging over the unknown phase). With $\nu = 0$ it is the Rayleigh density. Like any density it integrates to 1, which is all the derivation above uses.
+
+**Continuous-phase FSK** avoids phase jumps at symbol boundaries; with spacing exactly $1/(2T)$ it is **MSK**, and smoothing the frequency transitions with a Gaussian filter gives **GMSK** (GSM, BT = 0.3) and the GFSK of Bluetooth LE (index ≈ 0.5; Bluetooth Classic uses about 0.32). Their envelope is constant, so the power amplifier can run saturated at high efficiency. Detected coherently, MSK performs exactly like BPSK and QPSK (it is offset QPSK with half-sine pulses, §3.6), and GMSK loses only a fraction of a decibel to its Gaussian smoothing. The low-cost frequency-discriminator receivers typical of Bluetooth detect noncoherently and give up several decibels. The spectral efficiency is roughly 1 b/s/Hz.
+
+**Differential PSK.** Coding information in the phase *change* between symbols lets the receiver use the previous symbol as its phase reference. Binary DPSK has $P_b = \tfrac12e^{-E_b/N_0}$, needing about **0.75** dB more than BPSK at $10^{-5}$, in exchange for not tracking the carrier phase. The result follows from the noncoherent FSK one: over two symbol periods, a 0 sends $(s, s)$ and a 1 sends $(s, -s)$. These two waveforms of length $2T$ are orthogonal (their inner product is $E_b - E_b = 0$), each has energy $2E_b$, and the receiver does not know their common phase. DPSK is therefore binary noncoherent orthogonal signalling with energy $2E_b$, and $\tfrac12e^{-2E_b/(2N_0)} = \tfrac12e^{-E_b/N_0}$.
 
 ### 3.6 Spectral efficiency
 
@@ -141,9 +153,13 @@ $$
 
 QPSK with α = 0.25 gives 1.6 b/s/Hz; 64-QAM with α = 0.22 gives **4.92** b/s/Hz.
 
+**What the spectrum looks like.** With rectangular pulses, any linearly modulated PSK or QAM signal has the baseband PSD $E_s\operatorname{sinc}^2(fT_s)$ (17-01 §3.8), with nulls at multiples of $1/T_s$: for QPSK, $T_s = 2T_b$ and the first null is at $0.5/T_b$, but the sidelobes decay only as $f^{-2}$. MSK's half-sine pulses give a PSD proportional to $\big[\cos(2\pi fT_b)/(1 - 16f^2T_b^2)\big]^2$: a wider main lobe (first null at $0.75/T_b$) but sidelobes falling as $f^{-4}$, which is why constant-envelope schemes keep adjacent channels clean without linear amplifiers. Root-raised-cosine shaping confines either to $(1 + \alpha)R_s$, at the price of envelope variation.
+
+**Offset and rotated variants.** In QPSK, I and Q can change sign at the same instant, sending the signal through the origin; after pulse shaping the envelope then dips toward zero, which raises the peak-to-average ratio the power amplifier must handle. **Offset QPSK** delays Q by half a symbol so that only one of I and Q changes at a time, limiting phase steps to ±90°. **π/2-BPSK** rotates every other BPSK symbol by 90° to the same effect; it is the NR uplink option for the lowest peak-to-average ratio (§9). MSK itself is offset QPSK with half-sine pulses.
+
 ![Bit-error rate against Eb/N0 for BPSK/QPSK, 8-PSK, 16-, 64- and 256-QAM](../../../assets/figures/17-06/ber-curves.svg)
 
-*Approximate bit-error rates with Gray labelling ($P_s/\log_2M$; Craig's exact SER for 8-PSK). The curves shift right by roughly the efficiency penalties of §3.3–§3.4: about 4 dB from QPSK to 16-QAM, then about 5 dB for each further two bits per symbol.* Forward error correction reduces η by the code rate but lowers the required SNR by much more (17-08). 17-07 shows that no scheme can exceed $\log_2(1 + \text{SNR})$ b/s/Hz, and §9 places real modulation-and-coding schemes against that bound.
+*Approximate bit-error rates with Gray labelling ($P_s/\log_2M$; Craig's exact SER for 8-PSK). The curves shift right by roughly the efficiency penalties of §3.3–§3.4: about 4 dB from QPSK to 16-QAM, then 4.5–5 dB for each further two bits per symbol.* Forward error correction reduces η by the code rate but lowers the required SNR by much more (17-08). 17-07 shows that no scheme can exceed $\log_2(1 + \text{SNR})$ b/s/Hz, and §9 places real modulation-and-coding schemes against that bound.
 
 ### 3.7 Error vector magnitude
 
@@ -213,7 +229,7 @@ The transmitter limit alone would leave uncoded high-order QAM with error rates 
 
 **Units check.** η in bits per symbol; $E_s/N_0$ dimensionless.
 
-**Sanity check.** Uncoded QPSK would need about 9.6 dB of $E_b/N_0$ for a BER of $10^{-5}$; the code buys about 8.5 dB at a cost of half the bit rate. Dense constellations sit farther from the bound because their shaping and labelling are harder to optimize.
+**Sanity check.** Uncoded QPSK would need about 9.6 dB of $E_b/N_0$ for a BER of $10^{-5}$; the code buys about 8.5 dB at a cost of half the bit rate (at a much lower error rate, so the true gain is larger). Dense constellations sit farther from the bound because uniform constellations give up shaping gain (up to 1.53 dB) at high SNR, and bit-interleaved labelling loses a little more.
 
 ### Example 17-06.6 · Coherent, differential and noncoherent (tier C)
 
@@ -295,8 +311,8 @@ The lab, [labs/17-06-lab](../labs/17-06-lab/README.md), provides `modulation.py`
 |---|---|---|---|
 | Higher-order QAM | Bits per symbol, throughput in good channels | About 5–6 dB SNR per extra 2 bits; tighter EVM, phase noise and linearity | Standards body; link adaptation in the modem |
 | PSK/APSK instead of QAM | Lower peak-to-average; tolerance of saturated amplifiers | Worse distance for the same energy at large M | Satellite system architect |
-| Constant envelope (GFSK, GMSK) | Saturated, efficient power amplifier; simple receivers | About 1 b/s/Hz; orthogonal signalling's 3 dB | Low-power standards (Bluetooth), product architect |
-| Differential or noncoherent detection | No carrier-phase tracking; fast acquisition | 0.75–3 dB at $10^{-5}$ | Modem designer |
+| Constant envelope (GFSK, GMSK) | Saturated, efficient power amplifier; simple receivers | About 1 b/s/Hz; several dB if detected noncoherently | Low-power standards (Bluetooth), product architect |
+| Differential or noncoherent detection | No carrier-phase tracking; fast acquisition | 0.75 dB (DPSK) to 3.76 dB (noncoherent FSK) relative to BPSK at $10^{-5}$ | Modem designer |
 | Smaller roll-off | Spectral efficiency | Longer filters, timing sensitivity, peak-to-average | Standards body |
 | Tighter EVM | Supports denser constellations, more SNR margin | Power-amplifier back-off (efficiency), better oscillators, calibration | RF front-end and PA designers |
 
@@ -319,7 +335,7 @@ The lab, [labs/17-06-lab](../labs/17-06-lab/README.md), provides `modulation.py`
 - **Using the nearest-neighbour approximation at low SNR**, where it can exceed the true SER (and exceed 1).
 - **Forgetting Gray coding** when converting SER to BER; with natural binary labels, one symbol error can flip several bits.
 - **Assuming QPSK is worse than BPSK.** Per bit it is identical; it only doubles throughput.
-- **Reading EVM in dB as a power ratio of signals.** EVM in dB is $20\log_{10}$ of an rms magnitude ratio, numerically equal to $-\text{SNR}_{\text{EVM}}$ in dB.
+- **Converting EVM percent to dB with $10\log_{10}$.** EVM is an rms amplitude ratio, so EVM(dB) = $20\log_{10}(\text{EVM})$. That equals $10\log_{10}$ of the error-to-signal power ratio and $-\text{SNR}_{\text{EVM}}$ in dB: 3.5% is −29.1 dB, not −14.6 dB.
 - **Ignoring peak-to-average ratio.** A QAM transmitter needs amplifier back-off, which costs efficiency the BER curve does not show.
 - **Treating a standard's EVM limit as sufficient for the highest modulation.** The limit is a minimum, and the receiver's noise adds to it.
 
@@ -328,7 +344,7 @@ The lab, [labs/17-06-lab](../labs/17-06-lab/README.md), provides `modulation.py`
 ### State of the art (as of Nov 2026)
 
 - **NR EVM limits.** 3GPP TS 38.104 V20.1.0 (Table 6.5.2.2-1) limits base-station EVM to 17.5% for QPSK, 12.5% for 16-QAM, 8% for 64-QAM, 3.5% for 256-QAM and, for 1024-QAM, 2.5% at carrier frequencies up to 4.2 GHz (2.8% above); the UE limits in TS 38.101-1 (Table 6.4.2.1-1) are 30% for π/2-BPSK, then 17.5%, 12.5%, 8% and 3.5% up to 256-QAM, with no 1024-QAM row ([R-275]) **[Established]**. In equivalent SNR these are 15.1, 18.1, 21.9, 29.1 and 32.0 dB.
-- **Wi-Fi transmit constellation error.** As reproduced by Rohde & Schwarz from IEEE 802.11ax, the relative constellation error limits for MCS 0–9 run from −5 dB (BPSK 1/2) to −32 dB (256-QAM 5/6), "the same as in IEEE 802.11ac", with −35 dB for 1024-QAM; 802.11be's 4096-QAM requires −38 dB ([R-277], secondary) **[Established, secondary]**. Each step of two bits per symbol tightens the limit by about 3 dB at the top end, far less than the 6 dB the constellation geometry would suggest: the code and the receiver absorb the rest.
+- **Wi-Fi transmit constellation error.** As reproduced by Rohde & Schwarz from IEEE 802.11ax, the relative constellation error limits for MCS 0–9 run from −5 dB (BPSK 1/2) to −32 dB (256-QAM 5/6), "the same as in IEEE 802.11ac", with −35 dB for 1024-QAM; 802.11be's 4096-QAM requires −38 dB ([R-277], secondary) **[Established, secondary]**. Each step of two bits per symbol tightens the limit by about 3 dB at the top end, far less than the roughly 6 dB rise in required SNR: at the top orders the transmitter's own error consumes a growing share of the link budget, which is why 1024- and 4096-QAM are reached only at short range with transmitters well inside their limits.
 - **DVB-S2's performance table** (ETSI EN 302 307-1 V1.4.1, Table 13) gives the ideal $E_s/N_0$ for quasi-error-free operation (packet-error rate $10^{-7}$) of 28 modulation-and-coding combinations, from QPSK 1/4 at −2.35 dB (0.49 b/symbol) to 32APSK 9/10 at 16.05 dB (4.45 b/symbol); roll-offs of 0.35, 0.25 and 0.20 are allowed, extended in DVB-S2X to 0.15, 0.10 and 0.05 ([R-276]) **[Established]**. Example 17-06.5 places them 1–3 dB from Shannon.
 - **Bluetooth LE** uses GFSK with a modulation index around 0.5; its RF test specification checks receivers at −70 dBm for the 1 Mb/s PHY and its coded PHYs at 500 kb/s (S = 2) and 125 kb/s (S = 8) for range ([R-278], secondary: the Core Specification itself could not be retrieved) **[Established, secondary]**.
 
@@ -340,7 +356,7 @@ Modulation order is where silicon quality turns into throughput. A radio that ho
 
 - **"4096-QAM gives 20% more throughput."** Twelve bits per symbol against ten is 20% more bits per symbol, but only where the SNR supports it: roughly 6 dB more than 1024-QAM, typically within a few metres of the access point. Ask for the throughput-versus-range curve, not the peak.
 - **"−40 dB EVM."** Under what conditions: at what output power and back-off, with digital predistortion on, averaged over how many symbols, with which equalizer settings? EVM worsens rapidly as the amplifier approaches compression.
-- **"Our modem is within 1 dB of Shannon."** For which modulation and code, at what error rate and block length? DVB-S2's best combination is about 1 dB from the bound at low spectral efficiency and nearly 3 dB at high.
+- **"Our modem is within 1 dB of Shannon."** For which modulation and code, at what error rate and block length? DVB-S2 is about 1.1 dB from the bound at its best (QPSK 1/2), 1.5–2 dB at most rates and nearly 3 dB at 32APSK 9/10 (Problem 17-06.15).
 - **"BPSK is more robust than QPSK."** Per bit it is not; it only uses half the bandwidth efficiency.
 
 ### Questions for engineering leaders
@@ -389,7 +405,7 @@ $1/0.04^2 = 625$, 27.96 dB. No: NR's 256-QAM limit is 3.5% (29.1 dB).
 
 <details><summary>Answer</summary>
 
-Both are noncoherent, with error rates $\tfrac12e^{-x}$, but FSK's signals are orthogonal (distance $\sqrt{2E_b}$) while DPSK's are effectively antipodal relative to the previous symbol; the exponent halves, $E_b/(2N_0)$ against $E_b/N_0$.
+Both are binary noncoherent orthogonal signalling, with error rate $\tfrac12e^{-E/(2N_0)}$ for signals of energy $E$. Noncoherent FSK uses one symbol per bit, $E = E_b$. DPSK decides each bit from two symbols, the pairs $(s, s)$ and $(s, -s)$, which are orthogonal with energy $E = 2E_b$ (§3.5); the exponent doubles to $E_b/N_0$.
 
 </details>
 
