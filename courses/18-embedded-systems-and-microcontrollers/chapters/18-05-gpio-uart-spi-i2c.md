@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 18-05 · Peripherals and Serial Buses: GPIO, UART, SPI, I²C
 
 | | |

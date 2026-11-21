@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 18-01 · Microcontroller Architecture
 
 | | |

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 18-06 · Analog Interfaces: ADC, DAC and PWM
 
 | | |

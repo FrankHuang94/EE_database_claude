@@ -32,7 +32,7 @@ The smallest odd $n$ with $1 - (1 - P_{bit})^{256} \le 10^{-6}$ is **33**, using
 
 (b) $1/(10^{-10} \times 50)$ s = $2 \times 10^8$ s = **6.34** years, if the faults are independent.
 
-(c) Two identical checks back to back can be defeated by one longer glitch or by a fault that corrupts the shared value both read. The checks should read the value separately, test complementary encodings (a pattern and its bitwise complement), and ideally be separated by a random delay so that their timing differs between runs.
+(c) Two identical checks back to back can be defeated by one longer glitch or by a fault that corrupts the shared value both read. The checks should read the value separately, test complementary encodings (a pattern and its bitwise complement), and ideally be separated by a random delay so that their timing differs between runs. Check the generated code as well: an optimizer may merge two identical tests into one unless the value is `volatile` or the tests are separated by a compiler barrier.
 
 ### Solution 18-11.6
 
@@ -40,7 +40,7 @@ The smallest odd $n$ with $1 - (1 - P_{bit})^{256} \le 10^{-6}$ is **33**, using
 
 (b) **\$200 000** per device.
 
-(c) At least **5** years, unless the product's expected lifetime is shorter; an early warning within **24** hours of becoming aware of active exploitation (the full notification within 72 hours).
+(c) The support period "shall be at least" **5** years, unless the product's expected use time is shorter; an early warning within **24** hours of becoming aware of active exploitation (the full notification within 72 hours).
 
 ### Solution 18-11.7
 
@@ -77,13 +77,13 @@ int ct_compare(const uint8_t *a, const uint8_t *b, size_t n)
 
 (b) *Assets:* the ability to unlock, the user's credentials and pairing keys, the access log. *Attackers:* a remote attacker (through the phone app or cloud), a nearby attacker over Bluetooth, an attacker with physical access to the outdoor unit. *Surfaces:* the Bluetooth pairing and protocol, the cloud and app interface, the firmware-update path, the physical unit (debug pads, wiring to the motor).
 
-(c) Exponentially growing lockouts or a hard lock after a small number of failures (cost: a denial-of-service risk, where an attacker locks out the owner, so recovery needs a second factor); out-of-band pairing that needs physical presence inside, such as a button on the indoor unit (cost: user friction and an extra component); or a pairing protocol not based on a guessable PIN, such as numeric comparison with authenticated key exchange (cost: implementation complexity).
+(c) Exponentially growing lockouts or a hard lock after a small number of failures (cost: a denial-of-service risk, where an attacker locks out the owner, so recovery needs a second factor); out-of-band pairing that needs physical presence inside, such as a button on the indoor unit (cost: user friction and an extra component); or a pairing protocol not based on a guessable PIN, such as numeric comparison with authenticated key exchange (cost: implementation complexity). Above all, the PIN must not be static if it is used as a Bluetooth passkey: the Bluetooth Core Specification warns that static passkeys "should not be used since they can compromise the security of the link", because LE Secure Connections commits to the passkey one bit per round and an active attacker learns a bit from each failed run, so a reused passkey falls in about 20 pairing attempts, not half a million ([R-313]). Use a fresh random passkey for each pairing, numeric comparison, or out-of-band pairing.
 
 ### Solution 18-11.10
 
 (a) The leakage of the attacked look-up appears at the measured instant only one time in 16, so its correlation falls by about a factor of **16**.
 
-(b) $\rho = 0.426/16 = 0.0267$, so $N \approx (4.5/0.0267)^2$ = **28 512** traces, **256** times more.
+(b) $\rho = 0.4264/16 = 0.02665$, so $N \approx (4.5/0.02665)^2 = 256 \times 4.5^2 \times 11/2$ = **28 512** traces, **256** times more.
 
 (c) Shuffling only dilutes the leakage; an attacker can still align or combine traces (integrating over the possible positions) and recover much of the loss. Masking removes the first-order dependence entirely. Combined, the attacker must defeat both the randomization in time and the randomization in value, which multiplies the effort.
 

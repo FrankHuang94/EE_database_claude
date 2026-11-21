@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 18-02 · Bare-Metal C and the Build Toolchain
 
 | | |

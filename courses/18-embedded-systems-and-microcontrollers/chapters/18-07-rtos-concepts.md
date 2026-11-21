@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 18-07 · RTOS Concepts
 
 | | |

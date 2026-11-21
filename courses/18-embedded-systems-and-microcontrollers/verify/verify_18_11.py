@@ -156,4 +156,20 @@ with tempfile.TemporaryDirectory(prefix="v1811_") as td:
     out = subprocess.run([f"{td}/t"], capture_output=True, text=True).stdout
 v.assert_true("host constant-time comparison test passes", "TEST PASSED" in out, out)
 
+# ---------------------------------------------------------------- audit additions
+from scipy.stats import norm  # noqa: E402
+rng = np.random.default_rng(18110)
+mx = np.abs(rng.normal(size=(4000, 255))).max(axis=1).mean()
+v.assert_true("expected maximum of 255 |N(0,1)| is about 3", 2.8 < mx < 3.2, f"{mx:.2f}")
+hw_true = hs.HW[sb[np.arange(256) ^ 0x2B]]
+ghost = max(abs(np.corrcoef(hw_true, hs.HW[sb[np.arange(256) ^ k]])[0, 1]) for k in range(256) if k != 0x2B)
+v.assert_true("ghost peaks reach about a quarter of the right key's correlation", 0.15 < ghost < 0.3, f"{ghost:.3f}")
+n111 = int(round((4.5 / rho(3)) ** 2))
+succ = np.mean([hs.cpa_rank(*hs.simulate_traces(0x2B, n111, 3.0, seed=50000 + s_), 0x2B)[1] == 0 for s_ in range(150)])
+v.assert_true("the (4.5/rho)^2 rule succeeds roughly 90% of the time at sigma = 3", 0.8 <= succ <= 0.99, f"{succ:.2f}")
+z4 = norm.isf(1e-4)
+v.assert_true("Mangard: 3 + 8 z^2 / ln^2((1 + rho)/(1 - rho)) is about 28/rho^2 for small rho",
+              abs((3 + 8 * z4 ** 2 / math.log((1 + 0.05) / (1 - 0.05)) ** 2) * 0.05 ** 2 / 28 - 1) < 0.02)
+v.assert_true("a 6-digit passkey is 20 bits, one bit per failed pairing", math.ceil(math.log2(999999 + 1)) == 20)
+v.assert_true("Solution 10(b): 256 x 4.5^2 x 11/2 = 28 512", 256 * 4.5 ** 2 * 11 / 2 == 28512)
 sys.exit(v.finish())

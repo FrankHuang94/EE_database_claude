@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 18-09 · Ultra-Low-Power Design
 
 | | |

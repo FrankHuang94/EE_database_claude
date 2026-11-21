@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 18-08 · Boot, Bootloaders and Firmware Update
 
 | | |

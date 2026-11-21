@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 18-11 · Hardware Security
 
 | | |
@@ -51,13 +51,13 @@ A **threat model** lists the **assets** (keys, firmware, user data, the device's
 - **Remote, scalable software attacks** exploit bugs (memory corruption, logic flaws, weak protocols) over a network. One exploit can compromise every device running the same code. Defences are software quality, isolation that limits what a compromised component can reach, secure update to fix bugs quickly (18-08), and authentication.
 - **Physical attacks** need the device: reading out flash through a debug port, probing a bus, measuring power or electromagnetic emissions (**side channels**), or disturbing the chip with glitches, electromagnetic pulses or light (**fault injection**). They do not scale by themselves, but they can extract a secret that then enables a scalable attack: a fleet-wide key, or firmware to analyse for bugs.
 
-PSA Certified's guidance states the consequence plainly: "Cryptographic keys stored in the PSA-RoT should be unique per device to prevent creation of a honeypot for physical attacks, including side-channel attacks" ([R-312]) **[Established]**. Example 18-11.6 prices it.
+PSA Certified's guidance states the consequence plainly: "Cryptographic keys stored in the PSA-RoT should be unique per device to prevent creation of a honeypot for physical attacks" (side-channel attacks among them) ([R-312]) **[Established]**. Example 18-11.6 prices it.
 
 Attack effort is the currency. **Brute force** of a uniformly random $n$-bit secret takes $(2^n + 1)/2$ guesses on average, so 128-bit keys are out of reach, while 32-bit passwords and PINs are protected only by **rate limiting** (attempt counters, delays, lockout) (Example 18-11.1).
 
 ### 3.2 Roots of trust and the chain of trust
 
-A **root of trust** is what everything else relies on without being able to check it. NIST describes roots of trust as "highly reliable hardware, firmware, and software components that perform specific, critical security functions" that "must be secure by design" ([R-312]). In an MCU it is typically:
+A **root of trust** is what everything else relies on without being able to check it. NIST describes roots of trust as "highly reliable hardware, firmware, and software components that perform specific, critical security functions" ([R-312]); because everything else trusts them, they must be secure by design. In an MCU it is typically:
 
 - **Immutable boot code** in mask ROM, which cannot be modified after manufacture.
 - **Provisioned secrets and hashes** in one-time-programmable (OTP) memory or eFuses: the hash of the vendor's public key (for secure boot, 18-08 §3.5), a device-unique key, and lifecycle state bits.
@@ -65,18 +65,18 @@ A **root of trust** is what everything else relies on without being able to chec
 
 Each boot stage **verifies** the next before running it, forming a **chain of trust** from the ROM up to the application. A broken link anywhere breaks everything above it. NIST SP 800-193 frames the same goal for platform firmware as **protect, detect and recover** ([R-312]): protect the code and keys from modification, detect a modification by verification, and recover a known-good image (the two-slot designs of 18-08).
 
-**Debug and read-out protection.** Production devices disable or lock the debug port (SWD/JTAG) and set a flash **read-out protection** level, so that an attacker with a probe cannot simply read the firmware and keys. These protections are only as strong as the hardware that enforces them, and several have been bypassed with physical attacks: the STM32F0's read-out protection by an optical attack published at USENIX WOOT 2017; STM32F205-based hardware wallets by voltage glitching, in an attack Kraken Security Labs said needed "just 15 minutes of physical access" (January 2020); the ESP32's eFuse read protection by a glitch after reset (CVE-2019-17391); and the nRF52840's APPROTECT debug lock by a fault during boot (CVE-2020-27211) ([R-312]) **[Established]**. The lesson is not that these parts are bad. Read-out protection on a general-purpose MCU is a speed bump against a determined lab; secrets that must survive one need a part evaluated against physical attacks (§3.7).
+**Debug and read-out protection.** Production devices disable or lock the debug port (SWD/JTAG) and set a flash **read-out protection** level, so that an attacker with a probe cannot simply read the firmware and keys. These protections are only as strong as the hardware that enforces them, and several have been bypassed with physical attacks: the STM32F0's read-out protection at USENIX WOOT 2017, by an optical (UV-C) downgrade of its highest protection level followed by an exploit of the debug interface at the lower level; STM32F205-based hardware wallets by voltage glitching, in an attack Kraken Security Labs said needed "just 15 minutes of physical access" (January 2020); the ESP32's eFuse read protection by a glitch after reset (CVE-2019-17391); and the nRF52840's APPROTECT debug lock by a fault during boot (CVE-2020-27211) ([R-312]) **[Established]**. The lesson is not that these parts are bad. Read-out protection on a general-purpose MCU is a speed bump against a determined lab; secrets that must survive one need a part evaluated against physical attacks (§3.7).
 
 ### 3.3 Isolation: MPU and TrustZone-M
 
 **The MPU.** A Cortex-M memory protection unit divides memory into regions with access permissions (read, write, execute, privileged only). An RTOS can run each task unprivileged with access only to its own stack and data, so a bug in one task cannot overwrite the kernel or another task (18-07). Marking RAM non-executable stops injected code from running.
 
-**TrustZone for Armv8-M** adds a second, orthogonal division: every address and every execution state is **Secure** or **Non-secure**. In Arm's description, the division "is memory map based and the transitions takes place automatically without the need of a Secure Monitor exception handler" ([R-312]) **[Established]**:
+**TrustZone for Armv8-M** adds a second, orthogonal division: every address and every execution state is **Secure** or **Non-secure**. In Arm's description, the division "is memory map based", and transitions between the states need no secure-monitor exception handler ([R-312]) **[Established]**:
 
 - The **SAU** (programmed by Secure code) and the chip-specific **IDAU** mark each region Secure, Non-secure, or **Non-Secure Callable** (NSC).
 - Non-secure code can enter Secure code only at **SG** (secure gateway) instructions placed in NSC regions; any other entry raises a fault. Secure code returns with **BXNS**, and clears registers so as not to leak secrets.
 - Peripherals and interrupts are assigned to either world, so a Secure crypto engine or key store is invisible to Non-secure code.
-- TrustZone-M is available on Cortex-M23, M33, M35P, M55 and M85; Trusted Firmware-M is the open-source reference implementation of the Secure side ([R-312]).
+- TrustZone-M is available on Cortex-M23, M33, M35P, M55 and M85, and optionally on the Cortex-M52 (announced November 2023, [R-313]); on most of these cores it is an implementation option, so check the part; Trusted Firmware-M is the open-source reference implementation of the Secure side ([R-312]).
 
 The design pattern is a small, carefully written **secure processing environment** (boot, crypto, key storage, attestation, secure update) and a large Non-secure application (RTOS, network stacks, application code). A remote exploit of the application then cannot read keys, only ask the Secure side to use them.
 
@@ -85,9 +85,9 @@ The design pattern is a small, carefully written **secure processing environment
 - **OTP and eFuses** hold keys written at provisioning. They are simple, but a physical attacker may read them, and they cannot be changed.
 - **Key slots in a crypto accelerator** hold keys that software can use but never read: the hardware encrypts or signs with a key referenced by number.
 - **Secure elements** (separate chips) and **secure enclaves** (isolated blocks on the same die) are evaluated against physical attacks and protect the most valuable keys.
-- **Physical unclonable functions (PUFs)** derive a device-unique key from manufacturing variation, so the key is never stored: it exists only while the device is powered. In an **SRAM PUF**, the power-up state of each memory cell depends on tiny mismatches in its transistors. A fingerprint of thousands of cells is recorded once (**enrollment**), and at each later power-up the same cells are read again.
+- **Physical unclonable functions (PUFs)** derive a device-unique key from manufacturing variation, so the key is never stored: it exists only while the device is powered (what is stored is the helper data below, not the key). In an **SRAM PUF**, the power-up state of each memory cell depends on tiny mismatches in its transistors. A fingerprint of thousands of cells is recorded once (**enrollment**), and at each later power-up the same cells are read again.
 
-The catch is noise: some cells are nearly balanced and flip between power-ups. Measured SRAM PUFs show about 3–5% of bits differing at the enrollment temperature and up to 20.5% at temperature extremes ([R-312]) **[Established]**, so error correction is essential. At enrollment the device stores **helper data** (which reveals nothing useful about the key if designed correctly) that lets a decoder correct the noisy readout back to the enrolled key.
+The catch is noise: some cells are nearly balanced and flip between power-ups. Measured SRAM PUFs show about 3–5% of bits differing at the enrollment temperature and up to 20.5% at temperature extremes ([R-312]) **[Established]**, so error correction is essential. At enrollment the device stores **helper data** that lets a decoder correct the noisy readout back to the enrolled key. The common **code-offset** construction shows how: at enrollment, pick a random codeword $c$ of an error-correcting code and store $w = r \oplus c$, where $r$ is the enrolled response; at each power-up, compute $r' \oplus w = c \oplus e$, where $e = r \oplus r'$ is the pattern of flipped cells, decode it to $c$, and derive the key from $c$ (or from $r = w \oplus c$). Decoding $c \oplus e$ is exactly where the bit-failure probability below comes from. Two caveats: with an $n$-fold repetition code each block of $n$ cells yields at most one key bit, and if the cells are biased (more likely to power up as 1 than 0), the helper data leaks information about the key, so real designs debias the response first.
 
 The simplest scheme protects each key bit with an $n$-fold **repetition code**: $n$ cells encode one bit, and majority vote decodes it. With independent cell errors of probability $p$, a bit fails when more than half its copies flip,
 
@@ -95,7 +95,7 @@ $$
 P_{bit} = \sum_{k = (n+1)/2}^{n} \binom{n}{k} p^k (1 - p)^{n - k} ,
 $$
 
-and a $K$-bit key fails if any bit fails, $P_{key} = 1 - (1 - P_{bit})^K$. Example 18-11.4 shows that a 128-bit key with a $10^{-6}$ failure target needs $n$ of tens of cells per bit at realistic error rates, thousands of SRAM cells in all. Real designs use stronger codes (BCH, concatenated with repetition, 17-08) to cut that overhead.
+and a $k$-bit key fails if any bit fails, $P_{key} = 1 - (1 - P_{bit})^k$. Example 18-11.4 shows that a 128-bit key ($k$ = 128 bits) with a $10^{-6}$ failure target needs $n$ of tens of cells per bit at realistic error rates, thousands of SRAM cells in all. Real designs use stronger codes (BCH, concatenated with repetition, 17-08) to cut that overhead.
 
 ### 3.5 Side-channel attacks
 
@@ -105,7 +105,7 @@ and a $K$-bit key fails if any bit fails, $P_{key} = 1 - (1 - P_{bit})^K$. Examp
 
 1. Record the power at one instant for $N$ encryptions with known, varying inputs $p_i$.
 2. For each guess $k$ of one key byte, predict the leakage $h_{i,k} = HW(S(p_i \oplus k))$, the Hamming weight of the first-round S-box output of AES.
-3. Compute the correlation coefficient between predictions and measurements for each guess. The right guess correlates; wrong guesses do not, because the S-box scrambles the relation.
+3. Compute the correlation coefficient between predictions and measurements for each guess. The right guess correlates; wrong guesses correlate only weakly, because the S-box scrambles the relation ("ghost peaks" can still reach about a quarter of the right key's correlation, which is one reason a margin of several standard deviations is needed).
 
 How many traces does it take? With a leakage of Hamming weight (variance 2 for a uniform byte) plus Gaussian noise of standard deviation $\sigma$, the true correlation is
 
@@ -113,19 +113,19 @@ $$
 \rho = \sqrt{\frac{2}{2 + \sigma^2}} ,
 $$
 
-while the sample correlation of unrelated data has a standard deviation of about $1/\sqrt N$ (03-04). The right key stands out by $z$ standard deviations when $\rho\sqrt N \approx z$:
+*Why.* A uniform byte's eight bits are independent fair coins, so its Hamming weight is binomial with mean 4 and variance $8 \times \tfrac14 = 2$. For a leakage $\ell = \text{HW} + n$ with independent noise, $\text{Cov}(\text{HW}, \ell) = \text{Var}(\text{HW}) = 2$ and $\text{Var}(\ell) = 2 + \sigma^2$, so $\rho = 2/\sqrt{2(2 + \sigma^2)}$, the expression above. The sample correlation of unrelated data has a standard deviation of about $1/\sqrt N$ (03-04). The right key stands out by $z$ standard deviations when $\rho\sqrt N \approx z$:
 
 $$
 N \approx \left(\frac{z}{\rho}\right)^2 .
 $$
 
-Noise therefore costs the attacker quadratically: halving the correlation quadruples the traces (Example 18-11.3).
+Noise therefore costs the attacker quadratically: halving the correlation quadruples the traces (Example 18-11.3). The margin $z$ must beat the *largest* of 255 wrong-key correlations, not a typical one; the expected maximum of 255 independent standard normal magnitudes is about 3, so this chapter uses $z$ = 4.5, which in the lab's model recovers the key about 90% of the time at that trace count, a rule of thumb rather than a guarantee. Mangard's more conservative formula, $N = 3 + 8z^2/\ln^2\frac{1 + \rho}{1 - \rho} \approx 28/\rho^2$ for small ρ at a $10^{-4}$ error level, is the usual literature reference (Further study).
 
-**Countermeasures.** *Hiding* lowers $\rho$: noise generators, random delays, shuffling the order of operations, balanced logic. *Masking* removes the first-order dependence altogether: every sensitive value $v$ is split into random shares, for example $v \oplus m$ and $m$ with a fresh random mask $m$ each run, so each individual leakage is independent of the key. A first-order CPA then fails whatever $N$ is (the lab shows it). The attacker must combine two leakage points (a second-order attack), which needs many more traces. Cortex-M35P adds physical-attack resilience in the core itself ([R-312]).
+**Countermeasures.** *Hiding* lowers $\rho$: noise generators, random delays, shuffling the order of operations, balanced logic. *Masking* removes the first-order dependence altogether: every sensitive value $v$ is split into random shares, for example $v \oplus m$ and $m$ with a fresh random mask $m$ each run, so each individual leakage is independent of the key. In this idealized model, where each share leaks separately, a first-order CPA fails whatever $N$ is (the lab shows it). Real implementations also leak when shares meet in a register or on a bus (transition leakage), through glitches in combinational hardware, and through reused masks or a weak random-number generator, which is why masked designs are still evaluated (for example with leakage-assessment tests) and why hardware uses threshold implementations. The attacker must combine two leakage points (a second-order attack), which needs many more traces. Cortex-M35P adds physical-attack resilience in the core itself ([R-312]).
 
 ![CPA correlations for all 256 key guesses, unprotected and masked](../../../assets/figures/18-11/cpa.svg)
 
-*The lab's simulated CPA with 1000 traces at a noise of 3 Hamming-weight units: unprotected, the true key's correlation (about 0.43) towers over the 255 wrong guesses, which stay within the dotted $\pm 4.5/\sqrt N$ band; with a fresh mask per trace, the true key is indistinguishable from the rest.*
+*The lab's simulated CPA with 1000 traces at a noise of 3 Hamming-weight units: unprotected, the true key's correlation (about 0.43) towers over the 255 wrong guesses, which stay close to the dotted $\pm 4.5/\sqrt N$ band (one grazes it); with a fresh mask per trace, the true key is indistinguishable from the rest.*
 
 ### 3.6 Fault injection
 
@@ -133,7 +133,7 @@ Disturbing a chip's supply voltage, clock or local electromagnetic field for nan
 
 Glitching is a numbers game. If one attempt succeeds with probability $p$ and the attacker can try $r$ times per second, the expected time is $1/(pr)$ (Example 18-11.5). Defences raise the number of faults needed or detect them:
 
-- **Redundant checks:** test the condition twice, ideally with complementary encodings (for example a status that must equal a pattern and its complement rather than 0 or 1), so that one fault is not enough. If two faults with independent probabilities $p$ are needed, success falls to about $p^2$ per attempt.
+- **Redundant checks:** test the condition twice, ideally with complementary encodings (for example a status that must equal a pattern and its complement rather than 0 or 1), so that one fault is not enough. If two faults with independent probabilities $p$ are needed, success falls to about $p^2$ per attempt. Two caveats. A compiler may merge two identical checks into one (common-subexpression elimination) unless the value is `volatile` or separated by barriers, so check the generated code (Problem 18-11.8(b)). And $p$ is not a fixed property of the chip: most of an attack's effort goes into searching for the glitch's timing, width and depth, after which a well-characterized glitch can succeed far more often than the search suggests.
 - **Random delays** around sensitive operations, so the attacker cannot time the glitch.
 - **Glitch and clock monitors, voltage detectors and light sensors** that reset the chip.
 - **Control-flow integrity checks** and secure defaults (fail closed: an unexpected path ends in lockdown, not in the open state).
@@ -145,8 +145,9 @@ Security is hard to judge from a data sheet, so evaluation schemes provide indep
 - **PSA Certified** (governed by GlobalPlatform since September 2025, launched by Arm and partners in 2019). Level 1 is a reviewed questionnaire. Level 2 is "a laboratory evaluation of a PSA Root of Trust ... against scalable software attacks". Level 3 "includes more attack types, more sophisticated side channel and perturbation attacks as well as physical attacks". Level 4 evaluates secure elements and enclaves at a higher attack potential. The site listed 319 certifications from 124 companies in November 2026.
 - **SESIP** (GlobalPlatform), adopted as the European standard EN 17927, with five assurance levels derived from Common Criteria; PSA Levels 2 and 3 are based on it.
 - **Common Criteria** (ISO/IEC 15408): seven evaluation assurance levels, from EAL1 "functionally tested" to EAL7 "formally verified design and tested", with vulnerability analysis rising from AVA_VAN.1 to AVA_VAN.5. Smart cards and secure elements are typically certified at the high end against high-potential attackers; the EU's EUCC scheme based on it has applied since 27 February 2025.
-- **FIPS 140-3** (NIST): validation of cryptographic modules at four levels, effective since September 2019; FIPS 140-2 validations are accepted through 21 September 2026 before moving to the historical list.
-- **The EU Cyber Resilience Act** (Regulation (EU) 2024/2847) entered into force on 10 December 2024. Its reporting obligations apply from 11 September 2026: an actively exploited vulnerability needs an early warning within 24 hours and a notification within 72 hours. Its main obligations apply from 11 December 2027. Microcontrollers with security-related functionalities are listed as important products (Class I), and support periods should be at least five years unless the product's lifetime is shorter.
+- **FIPS 140-3** (NIST): validation of cryptographic modules at four levels, effective since September 2019; FIPS 140-2 validations were accepted through 21 September 2026 and then move to the historical list (as of Nov 2026 NIST had posted no completion notice).
+- **The EU Cyber Resilience Act** (Regulation (EU) 2024/2847) entered into force on 10 December 2024. Its reporting obligations (Article 14) apply from 11 September 2026, and also to products placed on the market before 11 December 2027: an actively exploited vulnerability, or a severe incident affecting the product's security, must be reported to the national CSIRT designated as coordinator and to ENISA through a single reporting platform, with an early warning "without undue delay and in any event within 24 hours" of the manufacturer becoming aware, a notification within 72 hours and a final report within 14 days of a fix being available (one month for incidents). Its main obligations apply from 11 December 2027, and the support period "shall be at least five years", or the expected use time if shorter ([R-313]). The product classes matter for this learner's coverage: microprocessors and microcontrollers with security-related functionalities are important products of Class I; *tamper-resistant* microprocessors and microcontrollers are Class II; and smartcards and similar devices, including secure elements, are critical products (Annex IV). Class I may self-assess (internal control) only by applying harmonised standards or a certification scheme in full; Class II needs third-party assessment (an EU-type examination or full quality assurance, or a European cybersecurity certification scheme at level "substantial"); critical products may be required to hold a European cybersecurity certificate. Commission Implementing Regulation (EU) 2025/2392 gives the technical descriptions that decide which category a part falls in, for example tamper resistance at Common Criteria AVA_VAN levels 2–3 for Class II and at least AVA_VAN.4 for secure elements ([R-313]) **[Established]**.
+- **Automotive cybersecurity** has its own regime: UN Regulation No. 155 requires a certified cybersecurity management system for vehicle type approval, mandatory in the EU for new vehicle types from 6 July 2022 and for all new vehicles registered from 7 July 2024, with ISO/SAE 21434:2021 as the engineering standard behind it ([R-313]) **[Established]**. It is what drives hardware security modules, secure boot and key management into automotive MCUs at the Tier-1s.
 - **The Radio Equipment Directive's** cybersecurity requirements (Delegated Regulation (EU) 2022/30) have applied since 1 August 2025, with the EN 18031 series as harmonised standards (cited with restrictions).
 
 ## 4. Worked examples
@@ -155,7 +156,7 @@ Security is hard to judge from a data sheet, so evaluation schemes provide indep
 
 **Setup.** (a) How long does an attacker testing $10^{12}$ keys per second need, on average, for a 128-bit key? (b) A debug port is unlocked by a 32-bit password that can be tried 1000 times per second. How long, on average? (c) A 4-digit PIN locks after 10 wrong tries. What is the chance a random attacker gets in?
 
-**Solution.** (a) $(2^{128} + 1)/2/10^{12}$ s = **5.39e18** years.
+**Solution.** (a) $(2^{128} + 1)/2/10^{12}$ s = **5.39e18** years (Julian years of 365.25 days).
 
 (b) $(2^{32} + 1)/2/1000$ s = **24.9** days: weak. Use a challenge–response unlock with a per-device key, and rate-limit it.
 
@@ -181,13 +182,13 @@ Security is hard to judge from a data sheet, so evaluation schemes provide indep
 
 ### Example 18-11.3 · How many traces? (tier B)
 
-**Setup.** A device leaks the Hamming weight of the first S-box output plus Gaussian noise. (a) With noise $\sigma$ = 3 (in Hamming-weight units), what correlation does the right key guess have, and how many traces for a 4.5-standard-deviation margin? (b) With $\sigma$ = 6? (c) The lab's CPA with 2000 traces and the masked implementation with 20 000: what happened?
+**Setup.** A device leaks the Hamming weight of the first S-box output plus Gaussian noise. (a) With noise $\sigma$ = 3 (in Hamming-weight units), what correlation does the right key guess have, and how many traces for a 4.5-standard-deviation margin? (b) With $\sigma$ = 6? (c) The lab's CPA with 2000 unmasked traces at σ = 1, 3 and 6, and the masked implementation with 20 000 traces at σ = 1: what happened?
 
 **Solution.** (a) $\rho = \sqrt{2/11}$ = **0.426**; $N \approx (4.5/0.426)^2$ = **111** traces.
 
 (b) $\rho = \sqrt{2/38}$ = **0.229**; **385** traces: doubling the noise multiplied the effort by about 3.5.
 
-(c) Unmasked, the right key ranked first at every noise level; masked, its correlation was **0.006** and it ranked **95th** of 256, no better than chance.
+(c) Unmasked, the right key ranked first at every noise level; masked, its correlation was **0.006** and its rank was **95** (0 = best, so 96th of 256), no better than chance.
 
 **Units check.** Correlations are dimensionless.
 
@@ -229,7 +230,7 @@ Security is hard to judge from a data sheet, so evaluation schemes provide indep
 
 (b) **\$50 000** per device: physical attacks stop scaling.
 
-(c) Early warning by 09:00 Tuesday (**24** hours), notification by 09:00 Thursday (**72** hours).
+(c) "Without undue delay", and at the latest by 09:00 Tuesday for the early warning (**24** hours) and 09:00 Thursday for the notification (**72** hours); both go to the coordinating CSIRT and ENISA through the single reporting platform, and a final report follows within 14 days of a fix being available.
 
 **Units check.** \$ per device.
 
@@ -315,8 +316,8 @@ The lab, [labs/18-11-lab](../labs/18-11-lab/README.md), provides `hwsec.py`. **P
 ### State of the art (as of Nov 2026)
 
 - **Certification scale.** PSA Certified listed 319 certifications from 124 companies in November 2026, after GlobalPlatform took over its governance in September 2025, when over 250 products were certified. The Common Criteria portal lists 1753 certified products, 748 of them ICs and smart-card devices ([R-312]) **[Established]**.
-- **Regulation is now dated.** The EU Cyber Resilience Act's reporting duties began on 11 September 2026 and its main obligations follow on 11 December 2027; the Radio Equipment Directive's cybersecurity requirements have applied since 1 August 2025 ([R-312]) **[Established]**. US federal procurement relies on FIPS 140-3, with FIPS 140-2 validations accepted through 21 September 2026 (NIST's own pages differ by a day on the exact date) ([R-312]) **[Established]**.
-- **Isolation hardware is mainstream** in new MCUs: TrustZone-M on Cortex-M23/M33/M35P/M55/M85, with Trusted Firmware-M as the reference secure firmware ([R-312]) **[Established]**.
+- **Regulation is now dated.** The EU Cyber Resilience Act's reporting duties began on 11 September 2026 and its main obligations follow on 11 December 2027; the Radio Equipment Directive's cybersecurity requirements have applied since 1 August 2025 ([R-312]) **[Established]**. US federal procurement relies on FIPS 140-3, with FIPS 140-2 validations accepted until 21 September 2026 (NIST's own pages differ by a day on the exact date) ([R-312]) **[Established]**.
+- **Isolation hardware is mainstream** in new MCUs: TrustZone-M on Cortex-M23/M33/M35P/M55/M85 and optionally the M52, with Trusted Firmware-M as the reference secure firmware ([R-312]) **[Established]**.
 - **Physical attacks on general-purpose MCUs are routinely published** by academic and industry labs (read-out protection and debug-lock bypasses on STM32, ESP32 and nRF52 parts, among others), which is why high-value keys go into evaluated secure elements ([R-312]) **[Established]**.
 
 ### Why it matters commercially

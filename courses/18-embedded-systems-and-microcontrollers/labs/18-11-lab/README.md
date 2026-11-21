@@ -18,7 +18,7 @@ The simulations are deliberately idealized: the leakage is exactly the Hamming w
 ## Files
 
 - `hwsec.py`: `aes_sbox` (generated from the GF(2⁸) inverse and the affine map), `expected_guesses`, `early_exit_time`, `constant_time`, `timing_attack`, `simulate_traces`, `cpa_rank`, `theoretical_rho`, `traces_needed`, `bit_failure`, `key_failure`, `smallest_repetition`, `simulate_puf`, `expected_attempts`.
-- `c/ctcompare.h` and `c/ctcompare_test.c`: constant-time and early-exit comparisons in C, with a host test that counts the bytes each examines (`python tools/run_c.py 18-11`).
+- `c/ctcompare.h` and `c/ctcompare_test.c`: constant-time and early-exit comparisons in C, with a host test that counts the bytes each examines (`python tools/run_c.py 18-11`). The test checks correctness only: the byte count is set by the loop, so it cannot show a timing leak the compiler might introduce. Timing must be checked in the generated assembly or by measurement on the target (Problem 18-11.8(b)).
 - `18-11-security-lab.ipynb`: the guided notebook.
 
 ## Procedure

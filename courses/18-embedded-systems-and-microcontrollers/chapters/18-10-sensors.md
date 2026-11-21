@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 18-10 · Sensors: IMU, PPG, MEMS and Audio
 
 | | |
