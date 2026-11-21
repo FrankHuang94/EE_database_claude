@@ -2840,3 +2840,28 @@ R&D % = R&D ÷ revenue.
 *Read on 20 Nov 2026 by a research subagent from the 3GPP website; re-checked against the saved pages on 21 Nov 2026.*
 
 - **3GPP "Releases" page** ("Future dates are proposals, subject to change"): Release 20 Open, functional freeze (Stage 3) 2027-03 (projected SA#115), protocols stable 2027-06 (projected SA#116); Release 19 Open, 2025-09 (SA#109) / 2025-12-12 (SA#110); Release 18 Frozen, 2024-03 / 2024-06; Release 17 Frozen, 2022-03-18 / 2022-06-10; Release 16 Frozen, 2020-07-03; Release 15 Frozen, Stage 3 2019-03-22 (SA#83), protocols 2019-06-07. **"Release 19" page:** "With the availability of fully implementable specifications at the end of December 2025, 3GPP Rel-19 - the second 5G-Advanced release - is now complete." **"Release 20" page:** "Stage-3 (protocol details) is targeted for March 2027, followed by the final ASN.1/OpenAPI freeze in June 2027"; Rel-20 includes "early 6G Studies"; TR 22.870 (6G use cases and service requirements, Stage 1) "is now complete (Approved - TSG SA#111)". [Established] [3GPP releases](https://www.3gpp.org/specifications-technologies/releases)
+
+## R-292 · Ethernet framing (RFC 894; IEEE 802.3 interpretation)
+
+*Read on 21 Nov 2026 with curl from rfc-editor.org and ieee802.org; the IEEE 802.3 standard itself is paywalled and was not read.*
+
+- **RFC 894 (1984), "A Standard for the Transmission of IP Datagrams over Ethernet Networks":** Ethernet with "48-bit addresses"; "The minimum length of the data field of a packet sent over an Ethernet is 46 octets", padded with zeros if necessary; "the maximum length of an IP datagram sent over an Ethernet is 1500 octets" (the preceding sentence in the RFC says "minimum" where "maximum" is meant). [Established] [RFC 894](https://www.rfc-editor.org/rfc/rfc894.txt)
+- **IEEE 802.3 interpretation request 1-11/09:** the committee's response states "The 96 bit value defined in sub clause 4.4.2 therefore applies at MAC transmit"; the request's own accounting uses "1518:data+8:preamble+12:IPG" bytes per maximum-size frame. Derived (ours): 1518 = 14-byte header + 1500 payload + 4-byte FCS; minimum frame 64 bytes = 14 + 46 + 4. [Established] [IEEE 802.3 interp 1-11/09](https://www.ieee802.org/3/interp/interp-1-1109.pdf)
+
+## R-293 · IP, UDP, TCP, ARP, addressing and TLS (IETF RFCs)
+
+*Read on 21 Nov 2026 with curl from rfc-editor.org.*
+
+- **RFC 791 (IPv4):** Total Length allows datagrams "up to 65,535 octets"; all hosts must accept datagrams "of up to 576 octets"; Time to Live bounds a datagram's lifetime. **RFC 768 (UDP):** "Length is the length in octets of this user datagram including this header" (8-byte header: ports, length, checksum). **RFC 9293 (TCP, 2022):** 4-bit Data Offset (header length in 32-bit words; 20-byte minimum header), 16-bit Window field, "the three-way (or three message) handshake". **RFC 826:** Address Resolution Protocol. **RFC 1918:** private ranges "10.0.0.0 - 10.255.255.255 (10/8 prefix)", "172.16.0.0 - 172.31.255.255 (172.16/12 prefix)", "192.168.0.0 - 192.168.255.255 (192.168/16 prefix)". **RFC 4632:** CIDR. **RFC 8200 (IPv6):** 128-bit source and destination addresses, Hop Limit and Flow Label fields (40-byte fixed header), and every link "must be configured to have an MTU of at least 1280 octets". **RFC 2453 (RIP v2):** a metric of 16 "is normally referred to as 'infinity'". **RFC 8446 (TLS 1.3):** full handshake in one round trip, with an optional 0-RTT mode and its replay caveats. [Established] [RFC index](https://www.rfc-editor.org/)
+
+## R-294 · TCP congestion control, timers and window scaling
+
+*Read on 21 Nov 2026 with curl from rfc-editor.org.*
+
+- **RFC 5681:** initial window "IW = 2 * SMSS bytes and MUST NOT be more than 2 segments" if SMSS > 2190 bytes, 3 segments if 1095 < SMSS ≤ 2190, 4 if SMSS ≤ 1095; slow start and congestion avoidance with "cwnd += SMSS*SMSS/cwnd" per ACK; slow-start threshold. **RFC 6298:** first measurement "SRTT <- R, RTTVAR <- R/2"; then "RTTVAR <- (1 - beta) * RTTVAR + beta * |SRTT - R'|", "SRTT <- (1 - alpha) * SRTT + alpha * R'", "RTO <- SRTT + max (G, K*RTTVAR)" with K = 4, "alpha=1/8 and beta=1/4"; "(2.4) Whenever RTO is computed, if it is less than 1 second, then the RTO SHOULD be rounded up to 1 second." **RFC 7323:** Window Scale option shift.cnt; "the shift count MUST be limited to 14 (which allows windows of 2^30 = 1 GiB)". [Established] [RFC 5681](https://www.rfc-editor.org/rfc/rfc5681.txt), [RFC 6298](https://www.rfc-editor.org/rfc/rfc6298.txt), [RFC 7323](https://www.rfc-editor.org/rfc/rfc7323.txt)
+
+## R-295 · NCEES FE Electrical and Computer: Computer Networks topics
+
+*Read on 21 Nov 2026 from the NCEES specification PDF (the same document as R-001).*
+
+- **Knowledge area 14, Computer Networks, 4–6 questions:** "A. Routing and switching; B. Network topologies (e.g., mesh, ring, star); C. Network types (e.g., LAN, WAN, internet); D. Network models (e.g., OSI, TCP/IP); E. Network intrusion detection and prevention (e.g., firewalls, endpoint detection, network detection); F. Security (e.g., port scanning, network vulnerability testing, web vulnerability testing, penetration testing, security triad)". [Established] [NCEES FE E&C specification](https://ncees.org/wp-content/uploads/FE-Electrical-and-Computer-CBT-specs.pdf)

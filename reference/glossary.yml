@@ -7129,3 +7129,91 @@
   definition: Choosing the modulation and code rate for each transmission from reported channel quality, typically aiming at around 10% block errors that HARQ repairs.
   chapter: "17-12"
   see_also: [Hybrid ARQ (HARQ)]
+- term: OSI model
+  definition: "A seven-layer reference model for networks: physical, data link, network, transport, session, presentation and application; each layer serves the one above and hides the one below."
+  chapter: "17-13"
+  see_also: [TCP/IP model, Encapsulation]
+- term: TCP/IP model
+  definition: The four- or five-layer model the internet actually uses (link, internet, transport, application), folding OSI's session and presentation layers into the application.
+  chapter: "17-13"
+  see_also: [OSI model]
+- term: Encapsulation
+  definition: Each layer wrapping the data from the layer above in its own header (and sometimes trailer), so an application message becomes a TCP segment, an IP packet and an Ethernet frame on the wire.
+  chapter: "17-13"
+  see_also: [OSI model, Ethernet frame]
+- term: Network topology
+  definition: "The pattern of connections among nodes: bus, star, ring or mesh; a full mesh of n nodes needs n(n − 1)/2 links, while a star needs n."
+  chapter: "17-13"
+  see_also: [OSI model]
+- term: MAC address
+  definition: The 48-bit link-layer address of a network interface, used by Ethernet and Wi-Fi to deliver frames within a LAN.
+  chapter: "17-13"
+  see_also: [Ethernet frame, ARP]
+- term: Ethernet frame
+  definition: The link-layer unit of Ethernet, a 14-byte header (two MAC addresses and a type), a 46–1500-byte payload and a 4-byte CRC-32, sent after an 8-byte preamble and followed by a 12-byte inter-frame gap.
+  chapter: "17-13"
+  see_also: [MAC address, Cyclic redundancy check (CRC)]
+- term: Switch learning
+  definition: How an Ethernet switch builds its forwarding table, recording each frame's source MAC address against its arrival port and flooding frames to unknown destinations.
+  chapter: "17-13"
+  see_also: [MAC address, Ethernet frame]
+- term: ARP
+  definition: The Address Resolution Protocol, which finds the MAC address of a neighbour with a given IPv4 address by broadcasting a request and caching the reply.
+  chapter: "17-13"
+  see_also: [MAC address]
+- term: Subnet mask and CIDR
+  definition: A prefix length /p marks the first p bits of an IPv4 address as the network; a /p subnet holds 2^(32−p) − 2 usable hosts, and classless inter-domain routing aggregates contiguous prefixes into shorter ones.
+  chapter: "17-13"
+  see_also: [Longest-prefix match]
+- term: Longest-prefix match
+  definition: The forwarding rule that a router uses the most specific (longest) table prefix containing the destination address.
+  chapter: "17-13"
+  see_also: [Subnet mask and CIDR]
+- term: NAT
+  definition: Network address translation, mapping many private addresses (10/8, 172.16/12, 192.168/16) to one or a few public addresses by rewriting addresses and ports.
+  chapter: "17-13"
+  see_also: [Subnet mask and CIDR, IPv6]
+- term: IPv6
+  definition: The successor to IPv4, with 128-bit addresses, a fixed 40-byte header, a hop limit, no fragmentation by routers, and a minimum link MTU of 1280 bytes.
+  chapter: "17-13"
+  see_also: [NAT]
+- term: Dijkstra's algorithm
+  definition: The shortest-path algorithm of link-state routing, finalizing nodes in order of distance from the source; it requires non-negative link costs.
+  chapter: "17-13"
+  see_also: [Bellman–Ford algorithm]
+- term: Bellman–Ford algorithm
+  definition: The iterative shortest-path update d_x(y) = min_v [c(x, v) + d_v(y)] used by distance-vector routing; it handles negative costs but can count to infinity after failures.
+  chapter: "17-13"
+  see_also: [Dijkstra's algorithm]
+- term: TCP
+  definition: The internet's reliable, in-order byte-stream transport, with a three-way handshake, sequence numbers and acknowledgements, flow control and AIMD congestion control.
+  chapter: "17-13"
+  see_also: [Congestion window, Bandwidth-delay product, UDP]
+- term: UDP
+  definition: "A minimal transport protocol (8-byte header: ports, length, checksum) with no reliability or congestion control, used for real-time media and simple queries."
+  chapter: "17-13"
+  see_also: [TCP]
+- term: Bandwidth-delay product
+  definition: The data in flight needed to keep a path busy, rate × round-trip time (5 MB for 1 Gb/s over 40 ms); a TCP window smaller than this limits throughput to window/RTT.
+  chapter: "17-13"
+  see_also: [TCP, Congestion window]
+- term: Congestion window
+  definition: TCP's sender-side limit on unacknowledged data, grown exponentially in slow start and by one segment per RTT in congestion avoidance, and halved on loss; steady-state throughput ≈ (MSS/RTT)·√(3/(2p)).
+  chapter: "17-13"
+  see_also: [TCP, Bandwidth-delay product]
+- term: Security triad (CIA)
+  definition: Confidentiality, integrity and availability, the three properties network and information security aim to protect.
+  chapter: "17-13"
+  see_also: [Firewall, Penetration testing]
+- term: Firewall
+  definition: A device or program that permits or blocks traffic by ordered rules on addresses, ports, protocols, connection state or content, normally ending in a default deny.
+  chapter: "17-13"
+  see_also: [Intrusion detection system, Security triad (CIA)]
+- term: Intrusion detection system
+  definition: A monitor that flags attacks in network traffic or on hosts by signatures of known attacks or by anomalies against a baseline; an intrusion prevention system sits inline and blocks them.
+  chapter: "17-13"
+  see_also: [Firewall]
+- term: Penetration testing
+  definition: An authorized, goal-directed attempt to exploit a system's weaknesses, going beyond port and vulnerability scanning to measure real exposure.
+  chapter: "17-13"
+  see_also: [Security triad (CIA), Firewall]
