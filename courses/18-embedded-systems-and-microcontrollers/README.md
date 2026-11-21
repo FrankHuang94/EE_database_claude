@@ -34,7 +34,7 @@ Building products around microcontrollers: MCU architecture (Arm Cortex-M, RISC-
 | [18-05 · Peripherals and Serial Buses: GPIO, UART, SPI, I²C](chapters/18-05-gpio-uart-spi-i2c.md) | 8 | ✅ verified | [problems](problems/18-05-problems.md) · [solutions](solutions/18-05-solutions.md) · [lab](labs/18-05-lab/README.md) · [verify](verify/verify_18_05.py) |
 | [18-06 · Analog Interfaces: ADC, DAC and PWM](chapters/18-06-adc-dac-pwm.md) | 6 | ✅ verified | [problems](problems/18-06-problems.md) · [solutions](solutions/18-06-solutions.md) · [lab](labs/18-06-lab/README.md) · [verify](verify/verify_18_06.py) |
 | [18-07 · RTOS Concepts](chapters/18-07-rtos-concepts.md) | 8 | ✅ verified | [problems](problems/18-07-problems.md) · [solutions](solutions/18-07-solutions.md) · [lab](labs/18-07-lab/README.md) · [verify](verify/verify_18_07.py) |
-| [18-08 · Boot, Bootloaders and Firmware Update](chapters/18-08-boot-and-firmware-update.md) | 5 | ⬜ planned | — |
+| [18-08 · Boot, Bootloaders and Firmware Update](chapters/18-08-boot-and-firmware-update.md) | 5 | ✅ verified | [problems](problems/18-08-problems.md) · [solutions](solutions/18-08-solutions.md) · [lab](labs/18-08-lab/README.md) · [verify](verify/verify_18_08.py) |
 | [18-09 · Ultra-Low-Power Design](chapters/18-09-ultra-low-power-design.md) | 9 | ⬜ planned | — |
 | [18-10 · Sensors: IMU, PPG, MEMS and Audio](chapters/18-10-sensors.md) | 7 | ⬜ planned | — |
 | [18-11 · Hardware Security](chapters/18-11-hardware-security.md) | 7 | ⬜ planned | — |

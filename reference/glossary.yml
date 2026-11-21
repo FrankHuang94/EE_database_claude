@@ -7481,3 +7481,47 @@
   definition: "Stopping an RTOS's periodic tick while no task is due, and reprogramming a timer for the next deadline, so the MCU can stay in a low-power state longer."
   chapter: "18-07"
   see_also: [Real-time operating system (RTOS)]
+- term: Bootloader
+  definition: "The first software to run after reset (after any ROM code): it decides which firmware image to start, verifies it, installs pending updates and falls back to a previous image if needed."
+  chapter: "18-08"
+  see_also: [ROM bootloader, Secure boot]
+- term: ROM bootloader
+  definition: "A bootloader in an MCU's mask ROM, entered by a boot pin, a blank flash or a command, that programs flash over a wire (UART, I2C, USB); it cannot be erased, so it is the factory programming and last-resort recovery path."
+  chapter: "18-08"
+  see_also: [Bootloader]
+- term: Firmware image
+  definition: "A firmware binary packaged for a bootloader: a header (magic, version, sizes, security counter), the code, and trailer metadata such as a hash, a signature and installation status."
+  chapter: "18-08"
+  see_also: [Secure boot]
+- term: A/B update
+  definition: "A firmware-update scheme with two executable slots: the new image is written to the inactive slot and the bootloader starts the newest valid one, so no copy is needed and the other slot remains for rollback."
+  chapter: "18-08"
+  see_also: [Image swap, Rollback]
+- term: Image swap
+  definition: "Installing a downloaded image by exchanging the primary and secondary slots sector by sector (through a scratch area or by shifting), recording progress atomically so a power cut can resume it, and keeping the old image for rollback."
+  chapter: "18-08"
+  see_also: [A/B update, Rollback]
+- term: Rollback
+  definition: "Returning to the previous firmware image when a new one fails; typically the new image boots on test and is reverted if the device resets before the application confirms it is healthy."
+  chapter: "18-08"
+  see_also: [Anti-rollback counter]
+- term: Anti-rollback counter
+  definition: "A monotonic minimum security version stored in fuses or protected memory; the bootloader refuses images whose security counter is lower, so genuinely signed but vulnerable old images cannot be reinstalled."
+  chapter: "18-08"
+  see_also: [Secure boot, Rollback]
+- term: Secure boot
+  definition: "Booting only images whose signature verifies against a public key held in immutable or protected storage, starting from an immutable first stage (the root of trust)."
+  chapter: "18-08"
+  see_also: [Bootloader, Anti-rollback counter]
+- term: Over-the-air (OTA) update
+  definition: "A firmware update delivered through a device's radio (Bluetooth LE, Wi-Fi, cellular, LoRa) by its running application, usually into a second slot for installation at the next reset."
+  chapter: "18-08"
+  see_also: [Device firmware update (DFU), Delta update]
+- term: Device firmware update (DFU)
+  definition: "Updating a device's firmware over a wired or local link (UART, USB, a ROM bootloader's protocol); also the name of the USB class for it."
+  chapter: "18-08"
+  see_also: [Over-the-air (OTA) update]
+- term: Delta update
+  definition: "An update that sends only the difference between the installed and the new image; the device rebuilds the new image locally, saving airtime and energy at the cost of working space and server-side patch management."
+  chapter: "18-08"
+  see_also: [Over-the-air (OTA) update]
