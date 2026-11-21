@@ -7069,3 +7069,63 @@
   definition: In 3GPP terminology, one spatially multiplexed data stream; NR maps one codeword onto up to four layers and two codewords onto five to eight downlink layers.
   chapter: "17-11"
   see_also: [Spatial multiplexing]
+- term: FDMA
+  definition: Frequency-division multiple access, giving each user its own frequency channel separated from its neighbours by guard bands.
+  chapter: "17-12"
+  see_also: [TDMA, OFDMA]
+- term: TDMA
+  definition: Time-division multiple access, giving each user a recurring time slot in a frame, with guard times for timing error; usually combined with FDMA.
+  chapter: "17-12"
+  see_also: [FDMA, OFDMA]
+- term: CDMA
+  definition: Code-division multiple access, in which all users transmit over the whole band at once, each spread by its own code; the receiver despreads the wanted user and sees the rest as noise reduced by the processing gain.
+  chapter: "17-12"
+  see_also: [Processing gain, Near-far problem]
+- term: Near-far problem
+  definition: In CDMA, a nearby transmitter received much more strongly than a distant one drowns it, because codes are not perfectly orthogonal; solved by fast uplink power control.
+  chapter: "17-12"
+  see_also: [CDMA]
+- term: FDD and TDD
+  definition: Frequency-division duplexing uses paired bands for uplink and downlink; time-division duplexing alternates them on one band, allowing a flexible split and channel reciprocity at the cost of guard periods and inter-cell synchronization.
+  chapter: "17-12"
+  see_also: [OFDMA]
+- term: Frequency reuse
+  definition: Using the same frequencies again in cells far enough apart; with hexagonal clusters of N cells the co-channel distance is D = R√(3N), and modern OFDMA systems reuse every frequency in every cell (N = 1).
+  chapter: "17-12"
+  see_also: [Cluster size, Handover]
+- term: Cluster size
+  definition: The number N of cells that share a frequency allocation without reuse in a hexagonal layout, N = i² + ij + j² (1, 3, 4, 7, …); edge SIR is about (√(3N))^n/6 for path-loss exponent n.
+  chapter: "17-12"
+  see_also: [Frequency reuse]
+- term: Handover
+  definition: Transferring a connection from one cell to another as a user moves, with hysteresis and time-to-trigger settings to avoid switching back and forth on shadowing fluctuations.
+  chapter: "17-12"
+  see_also: [Frequency reuse, Shadowing]
+- term: ALOHA
+  definition: Random access in which users transmit whenever they have data and retransmit after collisions; throughput peaks at 1/(2e) ≈ 0.184 (pure) or 1/e ≈ 0.368 (slotted) of the channel.
+  chapter: "17-12"
+  see_also: [CSMA/CA]
+- term: CSMA/CA
+  definition: "Carrier-sense multiple access with collision avoidance, Wi-Fi's contention method: sense the medium, wait for it to be idle, count down a random backoff, transmit, and double the backoff window after a failed (unacknowledged) attempt."
+  chapter: "17-12"
+  see_also: [ALOHA, Hidden terminal]
+- term: Hidden terminal
+  definition: A station that cannot hear another station transmitting to the same receiver, so carrier sensing fails and their frames collide; mitigated by RTS/CTS reservation.
+  chapter: "17-12"
+  see_also: [CSMA/CA]
+- term: Erlang B
+  definition: "The blocking probability of a loss system with c servers and offered traffic A Erlangs: B = (A^c/c!)/Σ A^k/k!; used to size channel pools (10 channels at 5 Erlangs block 1.84%)."
+  chapter: "17-12"
+  see_also: [Frequency reuse]
+- term: Proportional-fair scheduling
+  definition: Serving, in each slot, the user with the largest ratio of instantaneous achievable rate to its own recent average throughput; it keeps most of the multi-user diversity gain while sharing resources fairly.
+  chapter: "17-12"
+  see_also: [Multi-user diversity, OFDMA]
+- term: Hybrid ARQ (HARQ)
+  definition: Retransmission of blocks whose CRC fails, with the receiver combining the copies (Chase) or receiving new parity (incremental redundancy), so retransmissions succeed more often than independent attempts.
+  chapter: "17-12"
+  see_also: [Link adaptation, Cyclic redundancy check (CRC)]
+- term: Link adaptation
+  definition: Choosing the modulation and code rate for each transmission from reported channel quality, typically aiming at around 10% block errors that HARQ repairs.
+  chapter: "17-12"
+  see_also: [Hybrid ARQ (HARQ)]

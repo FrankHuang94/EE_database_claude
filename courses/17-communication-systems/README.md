@@ -39,7 +39,7 @@ How information moves over noisy channels: random processes and noise, analog an
 | [17-09 · Wireless Channels: Fading and Multipath](chapters/17-09-wireless-channels.md) | 6 | ✅ verified | [problems](problems/17-09-problems.md) · [solutions](solutions/17-09-solutions.md) · [lab](labs/17-09-lab/README.md) · [verify](verify/verify_17_09.py) |
 | [17-10 · OFDM](chapters/17-10-ofdm.md) | 7 | ✅ verified | [problems](problems/17-10-problems.md) · [solutions](solutions/17-10-solutions.md) · [lab](labs/17-10-lab/README.md) · [verify](verify/verify_17_10.py) |
 | [17-11 · MIMO and Beamforming Basics](chapters/17-11-mimo-and-beamforming.md) | 6 | ✅ verified | [problems](problems/17-11-problems.md) · [solutions](solutions/17-11-solutions.md) · [lab](labs/17-11-lab/README.md) · [verify](verify/verify_17_11.py) |
-| [17-12 · Multiple Access, Cellular and Wi-Fi Systems](chapters/17-12-multiple-access-and-cellular-wifi.md) | 8 | ⬜ planned | — |
+| [17-12 · Multiple Access, Cellular and Wi-Fi Systems](chapters/17-12-multiple-access-and-cellular-wifi.md) | 8 | ✅ verified | [problems](problems/17-12-problems.md) · [solutions](solutions/17-12-solutions.md) · [lab](labs/17-12-lab/README.md) · [verify](verify/verify_17_12.py) |
 | [17-13 · Computer Networks Fundamentals](chapters/17-13-computer-networks-fundamentals.md) | 8 | ⬜ planned | — |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
