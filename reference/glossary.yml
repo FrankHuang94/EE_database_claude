@@ -7425,3 +7425,59 @@
   definition: "Reading a sensor excited by the same voltage that serves as the ADC's reference, so that the code depends only on the sensor's ratio (for example a divider's resistances) and not on the supply's value or drift."
   chapter: "18-06"
   see_also: [Bandgap reference]
+- term: Real-time operating system (RTOS)
+  definition: "A small kernel that runs an embedded application as prioritized tasks with their own stacks, switches between them preemptively, and provides blocking services (delays, semaphores, mutexes, queues) with bounded, analyzable timing."
+  chapter: "18-07"
+  see_also: [Context switch, Rate-monotonic scheduling]
+- term: Task control block (TCB)
+  definition: "The kernel's record of a task: its saved stack pointer, priority, state (ready, blocked, suspended) and the objects it waits for."
+  chapter: "18-07"
+  see_also: [Context switch]
+- term: Context switch
+  definition: "Saving the running task's registers and stack pointer and restoring another's; on Cortex-M usually done in the lowest-priority PendSV handler, saving only R4-R11 (and S16-S31) because exception entry stacks the rest."
+  chapter: "18-07"
+  see_also: [Task control block (TCB)]
+- term: Worst-case execution time (WCET)
+  definition: "The longest time a task's job can take on the CPU without interruption, C_i in schedulability analysis; obtained by measurement with margin or by static analysis."
+  chapter: "18-07"
+  see_also: [Response-time analysis]
+- term: Rate-monotonic scheduling
+  definition: "Fixed-priority scheduling with shorter periods given higher priorities; optimal among fixed priorities for implicit deadlines, and schedulable whenever U <= n(2^(1/n) - 1) (0.828 for two tasks, tending to ln 2)."
+  chapter: "18-07"
+  see_also: [Earliest deadline first (EDF), Response-time analysis]
+- term: Earliest deadline first (EDF)
+  definition: "Dynamic-priority scheduling that always runs the job with the nearest absolute deadline; optimal on one core, meeting all implicit deadlines whenever U <= 1, but prone to cascading misses under overload."
+  chapter: "18-07"
+  see_also: [Rate-monotonic scheduling]
+- term: Response-time analysis
+  definition: "The exact fixed-priority schedulability test R_i = C_i + B_i + sum over higher-priority j of ceil(R_i / T_j) C_j, solved by iteration and compared with each deadline."
+  chapter: "18-07"
+  see_also: [Worst-case execution time (WCET), Priority ceiling protocol]
+- term: Semaphore
+  definition: "A kernel counter with take (wait while zero, then decrement) and give (increment, waking a waiter); binary semaphores signal events such as an interrupt to a task, counting semaphores count events or free resources. It has no owner."
+  chapter: "18-07"
+  see_also: [Mutex]
+- term: Mutex
+  definition: "A binary lock with an owner, the task that took it, which alone may release it; ownership lets the kernel apply priority inheritance. Used for mutual exclusion, not signalling."
+  chapter: "18-07"
+  see_also: [Semaphore, Priority inheritance]
+- term: Priority inversion
+  definition: "A high-priority task waiting for a lower-priority task that holds a resource it needs; unbounded when medium-priority tasks preempt the holder, as on Mars Pathfinder in 1997."
+  chapter: "18-07"
+  see_also: [Priority inheritance, Priority ceiling protocol]
+- term: Priority inheritance
+  definition: "A mutex protocol in which a task holding a mutex temporarily runs at the priority of the highest-priority task waiting for it, bounding priority inversion to the holder's critical section (once per mutex)."
+  chapter: "18-07"
+  see_also: [Priority inversion, Mutex]
+- term: Priority ceiling protocol
+  definition: "A mutex protocol in which each mutex has a ceiling (the highest priority of its users) and a holder runs at that ceiling; a task is then blocked at most once, by one critical section, and deadlock between mutexes cannot occur."
+  chapter: "18-07"
+  see_also: [Priority inheritance, Deadlock]
+- term: Deadlock
+  definition: "Tasks waiting forever for resources held by each other, for example A holding X and waiting for Y while B holds Y and waits for X; prevented by a global lock order or the priority ceiling protocol."
+  chapter: "18-07"
+  see_also: [Mutex]
+- term: Tickless idle
+  definition: "Stopping an RTOS's periodic tick while no task is due, and reprogramming a timer for the next deadline, so the MCU can stay in a low-power state longer."
+  chapter: "18-07"
+  see_also: [Real-time operating system (RTOS)]
