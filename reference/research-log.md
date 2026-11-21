@@ -2879,3 +2879,56 @@ R&D % = R&D ÷ revenue.
 - **RFC 6928, "Increasing TCP's Initial Window" (Experimental, April 2013):** raises the initial window "to 10 segments (maximum 14600 B)", specified as "min (10*MSS, max (2*MSS, 14600))". [Established]
 - **RFC 5681 §3.1:** after a retransmission timeout, "ssthresh = max (FlightSize / 2, 2*SMSS)" and cwnd is set to "no more than the loss window, LW, which equals 1 full-sized segment". [Established]
 - **RFC 6298:** "(5.5) The host MUST set RTO <- RTO * 2 ("back off the timer")"; "TCP MUST use Karn's algorithm [KP87] for taking RTT samples. That is, RTT samples MUST NOT be made using segments that were retransmitted". [Established]
+
+## R-297 · Arm Cortex-M processor comparison (architecture, pipeline, CoreMark/MHz)
+
+*Read on 21 Nov 2026 by a research subagent (direct fetch of Arm's documentation service and product pages).*
+
+- **Arm, "Cortex-M Processor Comparison Table", document 102787, version 3.0 (metadata 2024-12-11)** ([PDF](https://documentation-service.arm.com/static/655e085f2c8b3557fee7048f)): architecture M0+ "Armv6-M"; M3, M4, M7 "Armv7-M" (Arm's M4 and M7 product pages and data sheets say "Armv7E-M", that is Armv7-M with the DSP extension); M23 "Armv8-M Baseline"; M33 "Armv8-M Mainline"; M52, M55, M85 "Armv8.1-M Mainline". Rows "DMIPS/MHz*" and "CoreMark®/MHz*": M0+ 0.99 / 2.46; M3 1.24 / 3.45; M4 1.26 / 3.54; M7 2.31 / 5.29; M23 1.03 / 2.64; M33 1.54 / 4.10; M52 1.60 / 4.30; M55 1.69 / 4.40; M85 3.13 / 6.28 (Arm Compiler 6.17; 6.18 for the M85). Options: FPU M4 and M33 "SP (option)", M7 "SP, DP (option)"; Helium M52 "Single-beat (option)", M55 and M85 "Dual-beat (option)"; TrustZone M23/M33/M52/M55 "Yes (option)", M85 "Yes"; caches and TCMs only on M7, M52, M55, M85. [Established]
+- **Arm product pages (support.arm.com/compute-ip/cortex-x), pipelines:** M0+ "2-stage"; M3 "Three-stage"; M4 "3-stage"; M23 "Two-stage"; M33 "Three-stage"; M7 "6-stage superscalar and branch prediction"; M52 "4-stage pipeline"; M55 "4-stage (for main integer pipeline)"; M85 "7-stage (for main integer pipeline)". [Established]
+- **Older data sheets (© 2020) give lower figures:** M4 "CoreMark/MHz 3.42", M7 "5.01", M33 "4.02" (compiler improvements). [Established]
+
+## R-298 · Cortex-M interrupt latency
+
+*Read on 21 Nov 2026 by a research subagent from Arm technical reference manuals.*
+
+- **Cortex-M3 TRM DDI0337H and Cortex-M4 TRM DDI0439B:** "There is a maximum of a 12 cycle latency from asserting the interrupt to execution of the first instruction of the ISR when the memory being accessed has no wait states"; "Tail chaining requires 6 cycles when using zero wait state memory." [Established] ([M4 TRM](https://documentation-service.arm.com/static/5f19da2a20b7cf4bc524d99a))
+- **Cortex-M0+ TRM DDI0484C:** "The worst case interrupt latency, for the highest priority active interrupt in a zero wait-state system not using jitter suppression, is 15 cycles." [Established]
+- **Cortex-M23 TRM DDI0550D:** "If the Security Extension is not implemented or when a short stack is used, the interrupt latency is 15 cycles"; with a full stack (Non-secure exception interrupting Secure code) "the interrupt latency is 25 cycles." [Established]
+- **Cortex-M7:** "Typically 12, worst case 14" (Arm white paper "ARM Cortex-M for Beginners", J. Yiu, March 2017, read from a copy hosted on a university course site: secondary hosting). The M52, M55 and M85 TRMs state no latency figure. [Established, secondary hosting for the M7]
+
+## R-299 · RISC-V for microcontrollers
+
+*Read on 21 Nov 2026 by a research subagent (git and vendor data sheets).*
+
+- **RISC-V unprivileged ISA manual, tag 20250508** (github.com/riscv/riscv-isa-manual): "The inclusion of all ratified extensions through May 2025"; RV32I 2.1 and RV32E 2.0 ratified; M, A, F, D, C, Zicsr, Zifencei, Zicntr, Zmmul, Zce and B ratified. No later dated release tag. [Established]
+- **Fast interrupts** (github.com/riscv/riscv-fast-interrupt, main branch, last commit 2026-11-16): titled "Advanced Core-Local Interrupt Controller (ACLIC) RISC-V Privileged Architecture Extensions"; "This document is in Stable state. Assume anything could still change, but limited change should be expected." Not ratified. [Established]
+- **Espressif ESP32-C3 data sheet v2.5 (2026-11-11):** "RV32IMC ISA"; "Four-stage pipeline that supports a clock frequency of up to 160 MHz"; "400 KB of on-chip SRAM"; "384 KB of ROM"; "3.02 CoreMark/MHz"; no on-die flash. **ESP32-C6 data sheet v1.6 (2026-11-10):** "RV32IMAC ISA", up to 160 MHz, "HP SRAM: 512 KB"; low-power RISC-V core "up to 20 MHz" with a "Two stage pipeline". [Established]
+- **GigaDevice GD32VF103** (product page): "up to 108 MHz, the series supports zero-wait-state Flash access… up to 128 KB Flash memory and 32 KB SRAM"; Bumblebee core with Nuclei, "two-stage variable-length pipeline" (launch news, 2019-08-22). **Renesas R9A02G021** (product page): RISC-V core, "48 MHz operation", "128KB code flash memory… 16KB SRAM with ECC support". [Established]
+
+## R-300 · Flash wait-state tables and a vendor CoreMark figure
+
+*Read on 21 Nov 2026 by a research subagent from vendor documents (PDF via pdftotext). ST's reference manuals could not be fetched (st.com returned empty replies).*
+
+- **Microchip SAM D5x/E5x Family Data Sheet DS60001507N** ([PDF](https://ww1.microchip.com/downloads/aemDocuments/documents/MCU32/ProductDocuments/DataSheets/SAM-D5x-E5x-Family-Data-Sheet-DS60001507.pdf)): Table 54-39 (non-EFP parts, 85 °C), VDD > 2.7 V: "CPU FMax (MHz) 24 51 77 101 119 120" for 0–5 wait states; 1.71–2.7 V: 22 44 67 89 111 120; the limit is "the Embedded Flash access time when the processor is fetching code out of it". Features: "120 MHz Arm Cortex-M4"; "403 CoreMark® at 120 MHz"; "4 KB combined instruction cache and data cache". [Established]
+- **Renesas RA6M5 User's Manual: Hardware R01UH0891EJ0150 Rev.1.50 (Mar 13, 2026):** FLWT "0 wait (ICLK ≤ 50 MHz)", "1 wait (50 MHz < ICLK ≤ 100 MHz)", "2 wait (100 MHz < ICLK ≤ 150 MHz)", "3 wait (ICLK > 150 MHz)"; "For faster clock frequencies, set FLWT.FLWT before changing the clock frequency"; "200 MHz Arm Cortex-M33 core". [Established]
+
+## R-301 · Embedded non-volatile memory beyond flash
+
+*Read on 21 Nov 2026 by a research subagent; vendor press releases unless noted.*
+
+- **ST, 19 Mar 2024** (newsroom.st.com, c3244): "18nm Fully Depleted Silicon On Insulator (FD-SOI) technology with embedded phase change memory (ePCM)… co-developed by ST and Samsung Foundry"; "2.5-times higher non-volatile memory (NVM) density" than ST's 40 nm eNVM. **ST, 18 Nov 2025** (p4733): STM32V8, "first microcontroller designed using next-generation 18nm FD-SOI technology, with advanced phase-change embedded memory (PCM)", Cortex-M85 "up to 800 MHz", "4MB of embedded non-volatile memory". [Established]
+- **NXP, 11 Mar 2025** (S32K5 release): "the automotive industry's first 16nm FinFET MCU with embedded magnetic RAM (MRAM)"; "more than 15x faster write speeds than embedded Flash". [Established]
+- **Renesas, 1 Jul 2025** (RA8P1 release): "manufactured on the 22ULL (22nm ultra-low leakage) process from TSMC… enables the use of embedded Magnetoresistive RAM (MRAM)"; "1MB/512KB On-chip MRAM"; Cortex-M85 at 1 GHz. [Established]
+- **Infineon and TSMC, Nov 2022** (Power Systems Design reprint, secondary): "the majority of MCU families in the market are based on embedded Flash memory technology. RRAM is a next step in embedded memories that allows to further scale to 28nm and beyond"; AURIX TC4x 28 nm RRAM samples promised "by end of 2023". An eeNews article (2022-11-25) says "flash struggles to scale below 28nm" (journalist's statement). [Established for the announcements; Industry estimate for the 28 nm limit]
+
+## R-302 · MCU industry consolidation and automotive share
+
+*Read on 21 Nov 2026 by a research subagent; company releases where reachable, reprints otherwise (NXP IR and infineon.com blocked automated fetches).*
+
+- **NXP–Freescale:** announced 2 Mar 2015 (nxp.com): Freescale "enterprise value of approximately \$16.7 billion", combined enterprise "just over \$40 billion"; completion announced 7 Dec 2015 (Design & Reuse reprint, secondary). [Established]
+- **Microchip–Atmel:** announced 19 Jan 2016, "total enterprise value of about \$3.40 billion"; completed 4 Apr 2016 (ir.microchip.com). [Established]
+- **Renesas–IDT:** completed "as of March 30, 2019 JST", "using approximately US\$6.3 billion" (renesas.com). [Established]
+- **Infineon–Cypress:** closed 16 Apr 2020, "US\$23.85 per share in cash, corresponding to an enterprise value of €9.0 billion" (EEPower reprint, secondary). [Established]
+- **Renesas–Dialog:** completed 31 Aug 2021, cash consideration "approximately EUR 4.8 billion" (renesas.com). [Established]
+- **Automotive MCU share:** Infineon, 7 Apr 2025 (EE Journal reprint, secondary): "The global market share in microcontrollers rose again, to 32.0 percent", in automotive MCUs, citing TechInsights, "2024 Automotive Semiconductor Vendor Market Share" (March 2025). No total MCU market size was found from a filing or public analyst statement. [Industry estimate]

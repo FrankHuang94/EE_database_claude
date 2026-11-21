@@ -7237,3 +7237,43 @@
   definition: "The reduction in required SNR, at equal total received energy, from combining independently fading branches; distinct from array gain, which is the extra energy the branches collect."
   chapter: "17-09"
   see_also: [Array gain]
+- term: Microcontroller
+  definition: "A single chip combining a processor core with flash, SRAM, peripherals, clocks, reset and power management, built to control a product directly with no external memory or operating system required; contrast an application processor, which runs from external DRAM under a full operating system."
+  chapter: "18-01"
+  see_also: [Memory-mapped I/O]
+- term: Memory map
+  definition: "The assignment of a processor's address space to code memory, SRAM, peripherals and system registers; on Cortex-M a fixed 4 GiB default map with code at 0x0000 0000, SRAM at 0x2000 0000, peripherals at 0x4000 0000 and core registers at 0xE000 0000."
+  chapter: "18-01"
+  see_also: [Memory-mapped I/O]
+- term: Bit-banding
+  definition: "An optional Cortex-M3/M4 feature that maps each bit of the first 1 MiB of SRAM and of peripheral space to its own 32-bit word in an alias region, so one store sets or clears one bit atomically; absent from Armv8-M."
+  chapter: "18-01"
+  see_also: [Memory map]
+- term: Vector table
+  definition: "The table of addresses a processor reads on reset and on exceptions; on Cortex-M its first word is the initial main stack pointer, its second the reset handler, then one entry per exception and interrupt."
+  chapter: "18-01"
+  see_also: [Memory map]
+- term: Flash wait state
+  definition: "An extra clock cycle inserted in each flash read because the flash access time exceeds one clock period; WS = ceil(f t_acc) - 1, so each wait state buys a band of clock frequencies 1/t_acc wide."
+  chapter: "18-01"
+  see_also: [Prefetch buffer]
+- term: Prefetch buffer
+  definition: "A buffer that reads whole flash lines ahead of the program counter so sequential code runs without wait-state stalls; taken branches still pay the wait states unless a cache holds the target."
+  chapter: "18-01"
+  see_also: [Flash wait state]
+- term: CoreMark
+  definition: "EEMBC's synthetic processor benchmark (list processing, matrix arithmetic, a state machine and a CRC), reported per MHz; vendors' core figures assume zero-wait-state memory, so a chip's delivered score is lower."
+  chapter: "18-01"
+  see_also: [Flash wait state]
+- term: Bus matrix
+  definition: "A crossbar interconnect inside a microcontroller that lets several bus masters (core instruction and data ports, DMA) reach different slaves (flash, SRAM banks, peripheral bridges) at the same time, arbitrating only when two want the same slave."
+  chapter: "18-01"
+  see_also: [Memory map]
+- term: Brown-out reset
+  definition: "A reset asserted by a supervisor circuit when the supply voltage falls below a threshold, so the processor never runs, or writes flash, at a voltage where its logic or memory is unreliable."
+  chapter: "18-01"
+  see_also: [Microcontroller]
+- term: Thumb-2
+  definition: "Arm's mixed 16- and 32-bit instruction encoding, the only instruction set of Cortex-M cores; Armv6-M implements a mostly 16-bit subset, Armv7-M and later the full set."
+  chapter: "18-01"
+  see_also: [Microcontroller]

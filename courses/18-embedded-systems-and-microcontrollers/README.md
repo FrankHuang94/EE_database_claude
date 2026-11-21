@@ -27,7 +27,7 @@ Building products around microcontrollers: MCU architecture (Arm Cortex-M, RISC-
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [18-01 · Microcontroller Architecture](chapters/18-01-microcontroller-architecture.md) | 7 | ⬜ planned | — |
+| [18-01 · Microcontroller Architecture](chapters/18-01-microcontroller-architecture.md) | 7 | ✅ verified | [problems](problems/18-01-problems.md) · [solutions](solutions/18-01-solutions.md) · [lab](labs/18-01-lab/README.md) · [verify](verify/verify_18_01.py) |
 | [18-02 · Bare-Metal C and the Build Toolchain](chapters/18-02-bare-metal-c-and-toolchain.md) | 8 | ⬜ planned | — |
 | [18-03 · Interrupts, Exceptions and Timers](chapters/18-03-interrupts-exceptions-timers.md) | 8 | ⬜ planned | — |
 | [18-04 · DMA and Data Movement](chapters/18-04-dma-and-data-movement.md) | 5 | ⬜ planned | — |
