@@ -42,7 +42,7 @@ iverilog -g2012 -o /tmp/uart_rx_tb hdl/uart_rx.v hdl/uart_rx_tb.v && vvp /tmp/ua
 - Part 1: from 16 MHz, 9600 baud is off by only +0.16% (divisor 104) but 115 200 by −3.55%. 48 MHz does well at both (+0.16%). 14.7456 MHz is exact for 9600 and 115 200 but cannot reach 1 Mbaud at 16× (its divisor would be below 1; the integer divisor 1 gives −7.84%).
 - Part 2: the stock receiver passes from 0.9575 to 1.0550, the grid points just inside the derived 0.95625 and 1.05556; with `tick == 6` it passes from 0.9500 to 1.0475, the window shifted down by $1/144$ at the top and $1/160$ at the bottom.
 - Part 3: `BAUDDIV 217`, `actual baud 115207` (+0.0064%), the greeting and `TEST PASSED` at both levels.
-- Part 4: the windows close at about 1221 pF (standard), 366 pF (fast) and 977 pF (fast-mode plus). Only fast mode closes below its specification limit: a 3.3 V fast-mode bus with 3 mA drivers cannot actually use its full 400 pF.
+- Part 4: the windows close at about 1221 pF (standard), 366 pF (fast) and 977 pF (fast-mode plus). Only fast mode closes below its specification limit with the 3 mA (0.4 V) rule. The specification also requires fast-mode devices to sink 6 mA at 0.6 V for exactly this case: with that rule, $R_{p,min} = 2.7\ \text{V}/6\ \text{mA}$ = 450 Ω and the window stays open to about 787 pF, so a fully compliant fast-mode bus can use its 400 pF; one whose devices meet only the 3 mA row cannot.
 - Part 5: the highest SCK falls as $1/(2(9\ \text{ns} + t_{CO}))$ (Example 18-05.4's other delays sum to 9 ns), so the translators matter most for fast targets.
 
 ### Lab answer key

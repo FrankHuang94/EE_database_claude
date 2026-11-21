@@ -267,4 +267,10 @@ v.assert_true("overload: EDF misses both tasks, RM only B",
 v.assert_true("hyperbolic product at equal shares equals 2 at the LL bound",
               abs((ll(3) / 3 + 1) ** 3 - 2) < 1e-12)
 
+v.assert_true("lab Part 3: B's WCET at 5 gives U = 1.11", round(2 / 5 + 5 / 7, 2) == 1.11)
+ceil_m = [rs.simulate(ex4(m), 60, protocol="ceiling").worst("H") for m in (1, 5, 20)]
+inh_m = [rs.simulate(ex4(m), 60, protocol="inherit").worst("H") for m in (1, 5, 20)]
+v.assert_true("lab Part 4: with inheritance or ceiling H's response stays at 6 for m = 1, 5, 20", ceil_m == [6, 6, 6] and inh_m == [6, 6, 6], f"{ceil_m} {inh_m}")
+v.assert_true("response_time returns None when C + B already exceeds the deadline",
+              rs.response_time([rs.Task("X", 4, [(3, None)])], 0, blocking=2) is None)
 sys.exit(v.finish())

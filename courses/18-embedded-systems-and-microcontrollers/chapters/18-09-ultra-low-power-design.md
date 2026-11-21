@@ -75,6 +75,8 @@ MCUs offer a ladder of modes; names differ by vendor, but the steps are similar:
 | Stop / deep sleep | high-speed clocks, most peripherals; regulator to low-power mode | SRAM and registers, RTC, low-power peripherals, wake-up logic | RTC, pin or peripheral, microseconds to tens of µs | sleeping between samples |
 | Standby / shutdown | almost everything, SRAM lost (or a few backup registers kept) | an always-on domain: RTC, wake-up pins, backup registers | pin or RTC, through a reset; milliseconds with re-initialization | long idle periods |
 
+Vendors' names do not follow the rows: TI's MSPM0 "STANDBY", for example, keeps SRAM and wakes in microseconds, so it belongs in the stop row of this table. Read each mode's retention and wake-up time in the data sheet, not its name.
+
 The **always-on domain** is the small island that never powers down: a 32.768 kHz oscillator and real-time clock, wake-up pin logic and a few backup registers. Low-power peripherals that can run from it (an LPUART receiving characters, a comparator, a low-power timer) let the device wait for an event without waking the CPU. Event systems or peripheral-to-peripheral triggers (for example a timer starting an ADC conversion whose result DMA stores) let whole measurement chains run while the CPU sleeps.
 
 **The break-even time.** Entering a deeper mode and leaving it costs extra charge $Q_{tr}$, for restarting oscillators and regulators and restoring lost state, compared with staying in the shallower mode. The deeper mode saves $\Delta I = I_{shallow} - I_{deep}$ every second it lasts. It pays only if the sleep lasts longer than
@@ -105,7 +107,7 @@ where $\eta$ is the usable fraction (capacity is lost to the cutoff voltage, to 
 
 *Average current of a node spending 24 µC per wake-up (Example 18-09.1) as the wake-up period grows. Below a few seconds the wake-ups dominate and the line falls as $1/T$; beyond the crossover, where the wake-up term equals the sleep current, the sleep current sets a floor and longer periods gain nothing.*
 
-> **Math refresher: mAh.** A capacity of 220 mAh is $0.220\ \text{A} \times 3600\ \text{s} = 792$ C of charge. At an average of 25 µA it lasts $0.220/25 \times 10^{-6} = 8800$ hours. Energy is capacity times voltage: 220 mAh at 3 V is 0.66 Wh, or 2376 J.
+> **Math refresher: mAh.** A capacity of 220 mAh is $0.220\ \text{A} \times 3600\ \text{s} = 792$ C of charge. At an average of 25 µA it lasts $0.220/(25 \times 10^{-6}) = 8800$ hours. Energy is capacity times voltage: 220 mAh at 3 V is 0.66 Wh, or 2376 J.
 
 ### 3.4 Race to idle, or slow and steady?
 
@@ -117,7 +119,7 @@ $$
 
 The first term, the dynamic charge, does not depend on $f$; the second falls as $f$ rises because $I_0 > I_{sleep}$. So at a fixed voltage, **running as fast as possible and then sleeping minimizes charge** ("race to idle", Example 18-09.3). The fixed costs of being awake are paid for less time.
 
-Voltage changes the answer. Dynamic energy per cycle is $C_{sw}V^2$, so if running slower allows a lower supply (**voltage scaling**, the DVFS of application processors, 14-01), every cycle becomes cheaper by $(V_{low}/V_{high})^2$: 44% of the energy at 1.2 V compared with 1.8 V. Then the comparison is between the saved dynamic energy and the extra static energy of staying awake longer. MCUs usually offer a few fixed voltage ranges, each with a maximum clock, so the practical rule is: pick the lowest voltage range whose maximum clock finishes the work in time, run at that range's top speed, and sleep.
+Voltage changes the answer. Dynamic energy per cycle is $C_{sw}V^2$, so if running slower allows a lower supply (**voltage scaling**, the DVFS of application processors, 14-01), every cycle becomes cheaper by $(V_{low}/V_{high})^2$ at the core: 44% of the energy at 1.2 V compared with 1.8 V. What the battery sees depends on the regulator (§3.5). Each cycle draws a charge $C_{sw}V_{core}$ from the core rail; an internal LDO passes that charge straight through from the battery, so the battery's charge per cycle falls only as $V_{low}/V_{high}$ (67% at 1.2 V against 1.8 V), and the $V^2$ saving reaches the battery only through a buck converter, which turns the lower core voltage into a lower battery current. Then the comparison is between the saved dynamic energy and the extra static energy of staying awake longer. MCUs usually offer a few fixed voltage ranges, each with a maximum clock, so the practical rule is: pick the lowest voltage range whose maximum clock finishes the work in time, run at that range's top speed, and sleep.
 
 ### 3.5 Regulators: LDO or buck
 
@@ -132,13 +134,13 @@ At sleep currents of a few microamps the comparison flips: a buck's switching lo
 
 A battery is not an ideal source: it has an **internal resistance** $R_{int}$ that grows as it discharges and as it gets cold, and small cells (coin cells especially) are rated for small continuous currents. A radio burst of $I$ drops the supply by $IR_{int}$; if that crosses the MCU's brown-out threshold, the device resets in the middle of transmitting.
 
-A **reservoir capacitor** $C$ at the load supplies the burst. With the capacitor charged to the battery's voltage before a burst of constant current $I$ and duration $t_p$, the load voltage follows the RC response of 07-02:
+A **reservoir capacitor** $C$ at the load supplies the burst. With the capacitor charged to the battery's open-circuit voltage $E$ before a burst of constant current $I$ and duration $t_p$, the node equation at the load is $C\,dv/dt = (E - v)/R_{int} - I$. Its solution from $v(0) = E$ is $v(t) = E - IR_{int}(1 - e^{-t/R_{int}C})$, the RC response of 07-02, so the droop at the end of the burst is
 
 $$
 \Delta V(t_p) = IR_{int}\left(1 - e^{-t_p/R_{int}C}\right).
 $$
 
-For a short burst ($t_p \ll R_{int}C$) this is about $It_p/C$: the capacitor alone supplies the charge. Solving for $C$ at a given allowed droop gives the capacitor to fit (Example 18-09.5). The capacitor's own leakage then adds to the sleep current, which matters for electrolytic types.
+For a short burst ($t_p \ll R_{int}C$) this is about $It_p/C$: the capacitor alone supplies the charge. Solving for $C$ at a given allowed droop gives the capacitor to fit (Example 18-09.5). The capacitor's own leakage then adds to the sleep current, which matters for electrolytic types, and its series resistance (ESR) adds an immediate step $I \times \text{ESR}$ at the start of the burst. The formula also assumes the capacitor has recharged before each burst, which takes about $3R_{int}C$ (30 ms for 100 Ω and 100 µF). Bursts that repeat faster, such as Bluetooth connection events every 7.5 ms, do not recover fully, and the droop builds up toward the DC value $\bar I R_{int}$ of the average burst current.
 
 Battery capacity also depends on how it is drawn. Data sheets specify capacity at a light test load to a cutoff voltage, and pulses, cold and age reduce the usable fraction $\eta$.
 
@@ -195,7 +197,7 @@ A device with a harvester (a small solar cell, a thermoelectric generator, a vib
 
 **Solution.** (a) At 8 MHz: active 125 ms at 880 µA = 110 µC, plus sleep $2\ \mu\text{A} \times 0.875$ s: **111.75** µC. At 48 MHz: active 20.8 ms at 3280 µA = 68.3 µC, plus sleep: **70.29** µC. Racing saves 37%, all of it in the fixed 400 µA, which runs six times longer at 8 MHz.
 
-(b) $(1.2/1.8)^2$ = **0.444**. With voltage scaling the slower clock cuts the dynamic charge too, and whether that beats racing depends on how large the fixed current is; at a fixed voltage, racing always wins.
+(b) $(1.2/1.8)^2$ = **0.444** for the energy at the core. The battery sees that saving only through a buck converter; through the internal LDO most MCUs use, the battery's charge per cycle falls as $1.2/1.8$ = **0.667** (§3.4). With voltage scaling the slower clock cuts the dynamic charge too, and whether that beats racing depends on how large the fixed current is; at a fixed voltage, racing always wins.
 
 **Units check.** A × s = C.
 
@@ -203,7 +205,7 @@ A device with a harvester (a small solar cell, a thermoelectric generator, a vib
 
 ### Example 18-09.4 · LDO or buck? (tier B)
 
-**Setup.** A Li-ion cell at 3.7 V supplies a 1.8 V core. (a) Active load 5 mA: what battery current with an LDO, and with an 85%-efficient buck? What is the LDO's efficiency? (b) Sleep load 2 µA: LDO quiescent current 0.1 µA; buck at 50% efficiency at this load with 0.5 µA quiescent. Which is better asleep?
+**Setup.** A Li-ion cell at 3.7 V supplies a 1.8 V core. (a) Active load 5 mA: what battery current with an LDO, and with an 85%-efficient buck? What is the LDO's efficiency? (b) Sleep load 2 µA: LDO quiescent current 0.1 µA; buck at 50% efficiency at this load, plus 0.5 µA quiescent current not included in that efficiency. Which is better asleep?
 
 **Solution.** (a) LDO: 5 mA, efficiency $1.8/3.7$ = **48.6** %. Buck: $1.8 \times 5/(0.85 \times 3.7)$ = **2.86** mA, 43% less.
 
@@ -211,7 +213,7 @@ A device with a harvester (a small solar cell, a thermoelectric generator, a vib
 
 **Units check.** V × A/(V) = A.
 
-**Sanity check.** A perfect buck would draw $5 \times 1.8/3.7$ = 2.43 mA; 85% efficiency adds 15%.
+**Sanity check.** A perfect buck would draw $5 \times 1.8/3.7$ = 2.43 mA; 85% efficiency adds about 18% ($1/0.85 = 1.176$).
 
 ### Example 18-09.5 · A coin cell and a radio burst (tier B)
 
@@ -255,6 +257,7 @@ A device with a harvester (a small solar cell, a thermoelectric generator, a vib
 | Ex 18-09.3b | charge per second at 48 MHz | 70.29 | µC |
 | Ex 18-09.3c | saving from racing | 37 | % |
 | Ex 18-09.3d | dynamic energy ratio, 1.2 V against 1.8 V | 0.444 | — |
+| Ex 18-09.3e | battery charge per cycle through an LDO, 1.2 V against 1.8 V | 0.667 | — |
 | Ex 18-09.4a | LDO efficiency | 48.6 | % |
 | Ex 18-09.4b | buck battery current, active | 2.86 | mA |
 | Ex 18-09.4c | LDO battery current, sleep | 2.10 | µA |
@@ -266,7 +269,7 @@ A device with a harvester (a small solar cell, a thermoelectric generator, a vib
 | Ex 18-09.6b | total sleep current | 70.0 | µA |
 | Ex 18-09.6c | improvement factor | 46.7 | — |
 
-*Every value is recomputed by [verify_18_09.py](../verify/verify_18_09.py): budgets by direct arithmetic and by an event-driven simulation of a day, break-even times and race-to-idle charges by formula and by numerical comparison of the modes, and the coin-cell droop by solving the RC circuit; the lab's ngspice netlist confirms Example 18-09.5.*
+*Every value is recomputed by [verify_18_09.py](../verify/verify_18_09.py): budgets by direct arithmetic and by a per-phase charge sum over a day, break-even times and race-to-idle charges by formula and by numerical comparison of the modes, and the coin-cell droop by solving the RC circuit; the lab's ngspice netlist confirms Example 18-09.5.*
 
 ## 5. Simulate it
 

@@ -54,7 +54,11 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 18-09.11 [C]
 
-**Indoor solar.** A 5 cm² indoor solar cell delivers 10 µW/cm² under office light, through a harvesting converter of 75% efficiency. (a) What average power can the electronics use, and what average current at 3 V? (b) Over a 64-hour dark weekend, how much energy must storage supply at that power? (c) What supercapacitor, used between 3.3 V and 2.0 V, stores it?
+**Indoor solar.** A 5 cm² indoor solar cell delivers 10 µW/cm² under office light, through a harvesting converter of 75% efficiency. The office is lit 50 hours a week (10 hours on each weekday) and dark otherwise, including a 64-hour weekend. Treat the storage as lossless. (a) What power does the converter deliver while the lights are on, and how much energy per week? (b) What is the largest continuous load, in µW and in µA at 3 V, that keeps the node energy-neutral over a week? Why can it not simply use the power of (a)? (c) How much energy must the storage supply over the dark weekend at that load, and what supercapacitor, used between 3.3 V and 2.0 V, holds it?
+
+### Problem 18-09.12 [B]
+
+**Sleep current is a temperature specification.** The node of Example 18-09.1 uses an MCU whose sleep mode is specified at 1.5 µA typical and 4 µA maximum at 25 °C, and 4 µA typical and 40 µA maximum at 85 °C (TI's MSPM0G3507 standby figures, [R-310]). Keeping the active phases unchanged, (a) find the average current and the 220 mAh coin cell's life with 4 µA and with 40 µA of sleep current. (b) Which figure belongs in a product's battery-life claim, and what would you ask a supplier who quotes only the 25 °C typical?
 
 ---
 
@@ -62,7 +66,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 | Learning objective (chapter 18-09) | Problems |
 |---|---|
-| 1. Where the current goes | 1, 2 |
+| 1. Where the current goes | 1, 2, 12 |
 | 2. Power modes and break-even | 4 |
 | 3. Duty-cycled budgets and battery life | 3, 7, 10, 11 |
 | 4. Race to idle and voltage scaling | 2, 5 |

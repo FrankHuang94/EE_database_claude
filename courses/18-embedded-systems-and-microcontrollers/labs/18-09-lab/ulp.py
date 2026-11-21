@@ -84,8 +84,11 @@ def cap_for_droop(i_pulse: float, r_int: float, t_pulse: float, max_droop: float
 # ------------------------------------------------------------------ event simulation
 def simulate_day(events: list[tuple[float, float, float, float]], i_sleep: float, horizon: float = 86400.0,
                  dt: float = 1e-4) -> float:
-    """events: (period s, offset s, current A, duration s). Time-stepped over `horizon`; returns the total charge
-    (C). Overlapping events add their currents to the sleep floor (a crude but conservative model)."""
+    """events: (period s, offset s, current A, duration s). Sums each event's occurrences over `horizon` and returns
+    the total charge (C): the sleep current for the whole horizon, plus (event current - sleep current) for the time
+    each event is on. It enumerates the events rather than stepping in time (`dt` is unused, kept for compatibility),
+    so it checks the budget's bookkeeping (offsets, the last partial period), not its physics. Where two events
+    overlap, both currents are added and the sleep floor is counted once less: i1 + i2 - i_sleep."""
     import numpy as np
     total = i_sleep * horizon
     for period, offset, i, dur in events:

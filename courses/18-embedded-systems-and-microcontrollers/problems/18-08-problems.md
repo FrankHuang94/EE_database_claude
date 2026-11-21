@@ -34,7 +34,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 18-08.6 [B]
 
-**A risky fleet.** 200 000 devices receive a 1 MiB update over Bluetooth at 20 kB/s into their only slot. (a) How long is each device vulnerable? (b) With four power interruptions a month per device, how many devices are expected to brick per update from power loss? (c) If 3% of downloads are interrupted by the link and each brick costs $80, what does one update cost? (d) How would you present the case for a second slot to a product owner?
+**A risky fleet.** 200 000 devices receive a 1 MiB update over Bluetooth at 20 kB/s into their only slot, with no recovery path (nothing can receive a new image if the download is cut). (a) How long is each device vulnerable? (b) With four power interruptions a month per device, how many devices are expected to brick per update from power loss? (c) If 3% of downloads are interrupted by the link and each brick costs $80, what do the link-drop bricks cost per update, and what is the total with the power-loss bricks of (b)? (d) How would you present the case to a product owner, comparing this design with a single slot behind a DFU-capable bootloader and with two slots?
 
 ### Problem 18-08.7 [B]
 

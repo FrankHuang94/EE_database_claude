@@ -4,7 +4,7 @@ Chapter: [18-07](../chapters/18-07-rtos-concepts.md) · Worked solutions: [18-07
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
 
-**Conventions.** Tasks are periodic with implicit deadlines ($D_i = T_i$) unless stated, run on one core under preemptive fixed priority, and are written $(C_i, T_i)$. Rate-monotonic (RM) priorities give shorter periods higher priority. "Blocking" $B_i$ is the longest time a task can wait for lower-priority work holding something it needs. Problems marked *(lab)* can be checked with `labs/18-07-lab/rtsched.py`.
+**Conventions.** Tasks are periodic with implicit deadlines ($D_i = T_i$) unless stated, run on one core under preemptive fixed priority, and are written $(C_i, T_i)$. Rate-monotonic (RM) priorities give shorter periods higher priority. "Blocking" $B_i$ is the longest time a task can be kept from running by lower-priority work: a critical section on a mutex it needs, and under the ceiling protocol also one on any mutex whose ceiling is at or above its priority (§3.3). Problems marked *(lab)* can be checked with `labs/18-07-lab/rtsched.py`.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 

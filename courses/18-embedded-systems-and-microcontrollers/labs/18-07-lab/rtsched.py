@@ -65,6 +65,8 @@ class Result:
 
 
 def simulate(tasks: list[Task], horizon: int, policy: str = "fp", protocol: str = "none") -> Result:
+    # Inheritance is modelled directly: a mutex holder runs at the highest priority of the jobs waiting for that
+    # mutex. Transitive chains (a holder itself waiting for another mutex) are not propagated.
     ceilings = {}
     for t in tasks:
         for _, m in t.script:
@@ -168,12 +170,14 @@ def rm_priorities(tasks: list[Task]) -> list[Task]:
     return tasks
 
 
-def response_time(tasks: list[Task], i: int, blocking: float = 0.0, jitter_free: bool = True) -> float | None:
+def response_time(tasks: list[Task], i: int, blocking: float = 0.0) -> float | None:
     """Exact worst-case response time of task i under preemptive fixed priority:
     R = C_i + B_i + sum_{j in hp(i)} ceil(R / T_j) C_j, iterated from R = C_i + B_i. None if it exceeds the deadline."""
     t = tasks[i]
     hp = [o for o in tasks if o.priority > t.priority]
     r = t.wcet + blocking
+    if r > t.rel_deadline:
+        return None
     while True:
         r_new = t.wcet + blocking + sum(math.ceil(r / o.period) * o.wcet for o in hp)
         if r_new == r:

@@ -12,7 +12,7 @@ Problems: [18-08 problem set](../problems/18-08-problems.md) · Chapter: [18-08]
 
 (b) **0x000102C8**. Bit 0 of a branch target marks Thumb state; Cortex-M executes only Thumb (Problem 18-02.3), so every vector has it set, and the handler starts at the even address.
 
-(c) Stop the timers, interrupts and peripherals the bootloader used (and clear pending interrupts); set VTOR to 0x0001 0000; load MSP from the first word; branch to the reset handler. The application's startup code then initializes its own `.data` and `.bss` (18-02 §3.5).
+(c) Mask interrupts globally; stop SysTick and the timers and peripherals the bootloader used, and clear their NVIC enable and pending bits; if the bootloader used the process stack or an RTOS, return to the main stack in Thread mode (CONTROL.SPSEL = 0); clean and disable the caches if it enabled them; set VTOR to 0x0001 0000; load MSP from the first word; re-enable interrupts as the application expects, and branch to the reset handler. (Armv6-M's Cortex-M0 has no VTOR, so its bootloaders remap memory or copy the vector table to SRAM instead.) The application's startup code then initializes its own `.data` and `.bss` (18-02 §3.5).
 
 ### Solution 18-08.2
 
@@ -54,9 +54,9 @@ Problems: [18-08 problem set](../problems/18-08-problems.md) · Chapter: [18-08]
 
 (b) $1 - e^{-(4/2\,592\,000\ \text{s}) \times 52.4\ \text{s}}$ = **8.09e-5**, so about **16.2** devices of 200 000.
 
-(c) $0.03 \times 200\,000$ = **6000** devices, $6000 \times \$80$ = **\$480 000** per update.
+(c) $0.03 \times 200\,000$ = **6000** devices, $6000 \times \$80$ = **\$480 000** per update; with the 16.18 power-loss bricks of (b), $\$480\,000 + 16.18 \times \$80$ = **\$481 294**, the power-loss part being a rounding error.
 
-(d) Put it in expected cost per update and per year: every campaign costs about half a million dollars of returns, plus support and reputation. Compare that with the bill-of-materials cost of the extra flash (a bigger part or an external flash) multiplied by volume. The second slot also removes the need to ask users to keep devices powered and in range, and it enables rollback.
+(d) Put it in expected cost per update and per year: with no recovery path every campaign costs about half a million dollars of returns, plus support and reputation. Then compare the two fixes. A DFU-capable bootloader removes the bricks for the cost of a larger bootloader, at the price of downtime during each update and no rollback (a bad image needs another download). A second slot also removes the bricks, keeps the product working during the download and enables rollback, for the bill-of-materials cost of the extra flash (a bigger part or an external flash) multiplied by volume. The choice turns on whether downtime and rollback are worth that flash.
 
 ### Solution 18-08.7
 
@@ -119,6 +119,7 @@ Problems: [18-08 problem set](../problems/18-08-problems.md) · Chapter: [18-08]
 | 18-08.6c | expected bricks from power loss | 16.2 | — |
 | 18-08.6d | bricks from link drops | 6000 | — |
 | 18-08.6e | cost per update | 480000 | \$ |
+| 18-08.6f | total cost per update with power-loss bricks | 481294 | \$ |
 | 18-08.7a | fuse life | 10.7 | years |
 | 18-08.8a | download energy | 1.89 | J |
 | 18-08.8b | delta download time | 6.29 | s |

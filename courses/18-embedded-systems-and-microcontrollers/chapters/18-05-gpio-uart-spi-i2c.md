@@ -119,7 +119,7 @@ $$
 R_p \ge \frac{V_{DD} - V_{OL,max}}{I_{OL}},\qquad R_p \le \frac{t_{r,max}}{0.8473\,C_b} .
 $$
 
-The first keeps the low level below $V_{OL,max}$ = 0.4 V when a device sinks its specified current $I_{OL}$ (3 mA in standard and fast mode, 20 mA in fast-mode plus); the second meets the rise time (1000 ns, 300 ns and 120 ns for standard, fast and fast-mode plus, with $C_b$ up to 400, 400 and 550 pF) ([R-306]). If the window is empty, the bus has too much capacitance for that speed: split it, buffer it, or slow down. Example 18-05.5 sizes one.
+The first keeps the low level below $V_{OL,max}$ = 0.4 V when a device sinks its specified current $I_{OL}$ (3 mA in standard and fast mode, 20 mA in fast-mode plus; a fast-mode device must also sink 6 mA at 0.6 V, which the specification requires "to drive full bus load at 400 kHz"); the second meets the rise time (1000 ns, 300 ns and 120 ns for standard, fast and fast-mode plus, with $C_b$ up to 400, 400 and 550 pF) ([R-306]). If the window is empty, the bus has too much capacitance for that speed: split it, buffer it, or slow down. Example 18-05.5 sizes one.
 
 **Protocol.** While SCL is high, SDA must not change, except to signal:
 
@@ -304,7 +304,7 @@ The lab, [labs/18-05-lab](../labs/18-05-lab/README.md), has three parts: `serial
 | SPI modes | CPOL = idle clock level, CPHA = sample on first (0) or second (1) edge | no formal standard [R-306] |
 | I²C speeds | 100 k, 400 k, 1 M, 3.4 Mbit/s (+5 Mbit/s write-only) | Sm, Fm, Fm+, Hs, UFm [R-306] |
 | I²C rise time, capacitance | 1000/300/120 ns; 400/400/550 pF | Sm/Fm/Fm+ [R-306] |
-| I²C sink | 0.4 V at 3 mA (20 mA Fm+) | sets $R_{p,min}$ |
+| I²C sink | 0.4 V at 3 mA (20 mA Fm+); Fm also 0.6 V at 6 mA | sets $R_{p,min}$ |
 | Rise time 30–70% | $0.8473R_pC_b$ | from the RC solution |
 | I3C | 12.5 MHz SCL, about 11 Mbit/s SDR; about 30 Mbit/s HDR | [R-306] |
 | CMOS input thresholds | $V_{IH(min)} = 0.7V_{DD}$, $V_{IL(max)} = 0.3V_{DD}$ | typical |

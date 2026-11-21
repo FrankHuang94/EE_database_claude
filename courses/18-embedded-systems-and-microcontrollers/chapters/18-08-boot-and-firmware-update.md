@@ -5,7 +5,7 @@
 |---|---|
 | **Course** | [18 · Embedded Systems and Microcontrollers](../README.md) |
 | **University equivalent** | The boot, bootloader and field-update unit of a senior embedded or IoT systems course (secure boot and over-the-air update chapters of IoT security courses; IETF RFC 9019 as reading) |
-| **Prerequisites** | [18-02](18-02-bare-metal-c-and-toolchain.md) (vector table, linker scripts, startup code), [18-01](18-01-microcontroller-architecture.md) (flash and memory map), [18-07](18-07-rtos-concepts.md) (tasks and watchdogs in an application), [17-08](../../17-communication-systems/chapters/17-08-channel-coding.md) (error detection) |
+| **Prerequisites** | [18-02](18-02-bare-metal-c-and-toolchain.md) (vector table, linker scripts, startup code), [18-01](18-01-microcontroller-architecture.md) (flash and memory map), [18-07](18-07-rtos-concepts.md) (tasks in an application), [18-03](18-03-interrupts-exceptions-timers.md) (watchdogs), [17-08](../../17-communication-systems/chapters/17-08-channel-coding.md) (error detection) |
 | **Estimated study hours** | 5 |
 | **Last verified** | 2026-11-21 |
 
@@ -75,13 +75,14 @@ MCUboot's documentation lists the main families: **overwrite-only**, **swap-usin
 |---|---|---|---|---|
 | Overwrite | copy secondary over primary | no (old image lost) | 2 slots | each primary sector once |
 | Swap (scratch) | exchange sector by sector via scratch | yes (swap back) | 2 slots + scratch | scratch erased once per sector |
-| Swap (move/offset) | shift then exchange, no scratch | yes | 2 slots + one sector | spread over the slots |
-| Direct execute (A/B) | none: boot the newer slot | yes (boot the other) | 2 executable slots | none extra |
+| Swap (move) | shift the primary up one sector, then exchange; about three erases per sector (two in the primary, one in the secondary) | yes | 2 slots + one sector | spread over the slots |
+| Swap (offset) | exchange with the secondary image offset by one sector; one erase per sector in each slot | yes | 2 slots + one sector | spread over the slots |
+| Direct execute (A/B) | none: boot the newer slot | optional (MCUboot's direct-xip revert must be enabled) | 2 executable slots | none extra |
 | RAM load | copy the chosen image to RAM and run it | yes | 2 slots + RAM | none extra |
 
-MCUboot's documentation notes that "the swap-using-scratch algorithm may be removed in the coming future" and that swap-using-offset "is preferred over swap-using-move except when building for existing products already using the latter" ([R-309]). That evolution is driven by the wear and speed costs computed in Example 18-08.2.
+MCUboot's documentation notes that "the swap-using-scratch algorithm may be removed in the coming future" and that swap-using-offset "is preferred over swap-using-move except when building for existing products already using the latter" ([R-309]). The wear and speed costs computed in Example 18-08.2 are a plausible reason for that evolution, though the documentation does not give one.
 
-**Installation time.** Copying a sector costs one erase and one program. If an image spans $n$ sectors and each sector is copied $k$ times (once for overwrite, three times for a swap through scratch: primary to scratch, secondary to primary, scratch to secondary), then
+**Installation time.** Copying a sector costs one erase and one program. If an image spans $n$ sectors and each sector is copied $k$ times (once for overwrite, about two for swap-using-offset, about three for swap-using-move, and three for a swap through scratch: primary to scratch, secondary to primary, scratch to secondary), then
 
 $$
 t_{install} = n\,k\,(t_{erase} + t_{program}) .
@@ -97,7 +98,7 @@ An update must leave the device bootable whatever instant power fails: battery r
 2. **Record progress atomically, and make every step repeatable.** A swap records, after each step, which sector and sub-step is done, in a status record written atomically (for example two alternating copies with a CRC, so a torn write leaves the previous record intact). Each step copies from a source that remains intact until the step's completion is recorded, so after a cut the bootloader simply repeats the interrupted step.
 3. **Test, then confirm.** After installation the new image boots as a **test**. The application runs its self-tests (it can reach the network, its sensors respond, the watchdog is being fed) and only then writes the **confirm** flag. If the device resets before confirming (a crash, a watchdog reset or a power cut), the bootloader treats the image as bad and reverts to the old one. In MCUboot's words: "If the device crashes immediately upon booting a new (bad) image, MCUboot will revert to the old (working) image at the next device reset" ([R-309]) **[Established]**.
 
-The lab's simulator does exactly this analysis for three schemes, cutting power during every flash operation (Example 18-08.4 summarizes). Writing it exposed two bugs in this chapter's own first-draft bootloader model, both in recovery from a cut at a boundary between phases. Power-loss safety must be *tested exhaustively*, not argued informally.
+The lab's simulator does exactly this analysis for three schemes, cutting power during every flash operation (Example 18-08.4 summarizes). The bugs such a campaign finds are typically in recovery from a cut at a boundary between phases, exactly where an informal argument is weakest: power-loss safety must be *tested exhaustively*, not argued informally.
 
 ![Outcome of a power cut during each flash operation for in-place, overwrite and swap installation](../../../assets/figures/18-08/power-cut-outcomes.svg)
 
@@ -157,13 +158,13 @@ The image reaches the device by **device firmware update (DFU)** over a wire (UA
 
 ### Example 18-08.4 · The business case for two slots (tier B)
 
-**Setup.** A fleet of one million devices downloads a 384 KiB update over Bluetooth at 50 kB/s. A single-slot design writes the download directly over the running image, so the device is unbootable until the download completes. (a) How long is that vulnerable window? (b) If each device suffers on average two power interruptions a month, as a Poisson process, what fraction of devices is hit during the window, and how many devices is that? (c) Far more often, the radio link drops mid-download; if 1% of downloads are interrupted, how many devices brick, and at $50 per field return what does one update cost? (d) What do the lab's power-cut campaigns show for in-place, overwrite and swap installation?
+**Setup.** A fleet of one million devices downloads a 384 KiB update over Bluetooth at 50 kB/s. The baseline is a single slot *with no recovery path*: the download is written over the image (from code running in RAM), and nothing on the device can receive a new image if the download is cut, so the device is unbootable until the download completes. (a) How long is that vulnerable window? (b) If each device suffers on average two power interruptions a month, as a Poisson process, what fraction of devices is hit during the window, and how many devices is that? (c) Far more often, the radio link drops mid-download; if 1% of downloads are interrupted, how many devices brick, and at $50 per field return what does one update cost? (d) What do the lab's power-cut campaigns show for in-place, overwrite and swap installation?
 
 **Solution.** (a) $393\,216/50\,000$ = **7.86** s.
 
 (b) $1 - e^{-(2/2\,592\,000\ \text{s}) \times 7.86\ \text{s}}$ = **6.07** × 10⁻⁶, about **6.1** devices per million per update.
 
-(c) **10 000** devices, **$500 000** per update, before counting reputation. A two-slot design loses nothing: an interrupted download leaves the running image untouched, and the download simply restarts.
+(c) **10 000** devices, **$500 000** per update, before counting reputation. A two-slot design loses nothing: an interrupted download leaves the running image untouched, and the download simply restarts. The figure is for the no-recovery baseline; the common single-slot design puts the radio transport in a protected first-stage bootloader (a DFU bootloader, as in Nordic's single-bank DFU), and then an interrupted download leaves the device in the bootloader, recoverable over the air, so link drops brick nothing either. Its costs are different: the product does nothing during the update, a bad image has no old one to fall back to and needs a fresh download, and the bootloader grows to carry the radio stack. The honest comparison is three designs, not two.
 
 (d) In the lab's model, with six-sector images, in-place installation is bricked by **12** of its 14 possible cut positions, overwrite by **0** of 32, and swap by **0** of 69. In the swap, cuts during download and the final confirmation leave the old image (the latter by design, since an unconfirmed image is reverted) and every other cut completes the new one.
 
@@ -187,7 +188,7 @@ The image reaches the device by **device firmware update (DFU)** over a wire (UA
 
 **Solution.** (a) $7.86\ \text{s} \times 8\ \text{mA} \times 3\ \text{V}$ = **0.189** J.
 
-(b) $0.15 \times 7.86$ = **1.18** s, with a sixth of the energy and a sixth of the exposure to link drops. In exchange, the device must rebuild the image from the old one and the patch, which needs working space and code, and the server must hold a patch for every installed version.
+(b) $0.15 \times 7.86$ = **1.18** s, with about a seventh of the energy and of the exposure to link drops (15%). In exchange, the device must rebuild the image from the old one and the patch, which needs working space and code, and the server must hold a patch for every installed version.
 
 **Units check.** s × A × V = J.
 
@@ -280,7 +281,7 @@ The lab, [labs/18-08-lab](../labs/18-08-lab/README.md), provides `bootsim.py`: a
 
 ### Why it matters commercially
 
-- **Updates are a liability and an asset.** A safe update path lets a company ship sooner and fix later; an unsafe one turns a bug into a recall (Example 18-08.4).
+- **Updates are a liability and an asset.** A safe update path lets a company ship sooner and fix later; one with no recovery path turns an interrupted download into a field return (Example 18-08.4). Between the extremes, a single slot with a DFU-capable bootloader avoids bricks at the cost of downtime and rollback, and two slots buy both at the cost of flash.
 - **Flash is the bill.** Two-slot updates roughly double the code flash a product needs, which moves it up an MCU family's price ladder or adds an external flash.
 - **Regulation and certification** increasingly expect secure, authenticated updates and vulnerability handling over a product's support life **[Industry estimate]**; the update design and its key management are diligence items.
 
@@ -301,7 +302,7 @@ The lab, [labs/18-08-lab](../labs/18-08-lab/README.md), provides `bootsim.py`: a
 
 ## 10. Concept check
 
-**Q1.** Why can an MCU's ROM bootloader always recover a device, and why is it not enough for field updates?
+**Q1.** Why can an MCU's ROM bootloader recover a device (unless the product's security settings have disabled or locked it), and why is it not enough for field updates?
 
 <details><summary>Answer</summary>
 
@@ -357,7 +358,7 @@ Reinstallation of an old image that is genuinely signed but has a known vulnerab
 
 ## 12. Connections
 
-- **Builds on:** [18-02](18-02-bare-metal-c-and-toolchain.md) (vector tables, linker scripts, startup), [18-01](18-01-microcontroller-architecture.md) (flash), [18-07](18-07-rtos-concepts.md) (watchdogs and application health), [17-08](../../17-communication-systems/chapters/17-08-channel-coding.md) (CRCs and error detection).
+- **Builds on:** [18-02](18-02-bare-metal-c-and-toolchain.md) (vector tables, linker scripts, startup), [18-01](18-01-microcontroller-architecture.md) (flash), [18-07](18-07-rtos-concepts.md) (application structure and health), [18-03](18-03-interrupts-exceptions-timers.md) (watchdogs), [17-08](../../17-communication-systems/chapters/17-08-channel-coding.md) (CRCs and error detection).
 - **Next:** [18-09](18-09-ultra-low-power-design.md) (ultra-low-power design).
 - **Used later:** [18-11](18-11-hardware-security.md) (roots of trust, key storage, secure boot in depth).
 

@@ -31,7 +31,7 @@ The model is deliberately small (six 64-byte sectors per image) so that exhausti
 ## Expected results
 
 - Parts 1 and 2: in-place 14 operations, of which 12 cuts brick; overwrite 32 operations, 0 bricked (13 keep the old image, 19 finish the new); swap 69 operations, 0 bricked (14 keep or return to the old image, 55 finish the new).
-- Part 3: the broken rule bricks 44 of the 69 cut positions, every cut from the erase of the secondary slot's first sector (operation 20 of 69) onward. Once the secondary holds part of the old image it no longer validates, so a resume conditioned on it never happens; the progress record, not the slot's contents, must decide.
+- Part 3: the broken rule bricks 44 of the 69 cut positions, every cut from the erase of the secondary slot's first sector (operation 20 of 69) to operation 63; cuts at operations 64 to 69 do not brick, because by then the primary is complete or the secondary is intact. Once the secondary holds part of the old image it no longer validates, so a resume conditioned on it never happens; the progress record, not the slot's contents, must decide.
 - Part 4: the unconfirmed image is reverted to version 1; each of the revert's 56 operations can be cut without bricking, and every cut ends with the old image.
 - Part 5: installation time grows linearly with image size and with copies per sector, as in Example 18-08.2.
 

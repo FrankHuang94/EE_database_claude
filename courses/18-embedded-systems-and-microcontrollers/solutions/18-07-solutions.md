@@ -20,7 +20,7 @@ Problems: [18-07 problem set](../problems/18-07-problems.md) · Chapter: [18-07]
 
 (b) $2\ \mu\text{s} \times 64\ \text{MHz}$ = **128** cycles.
 
-(c) Between **4** and **5** ms. The kernel counts tick interrupts, not time: if `delay(5)` is called just before a tick, the first of the five ticks arrives almost at once, so the task waits only a little over 4 tick periods. A delay of $n$ ticks therefore lasts between $n - 1$ and $n$ periods. Ask for one tick more than the minimum you need, or use a hardware timer for precise delays.
+(c) Between **4** and **5** ms. The kernel counts tick interrupts, not time: if `delay(5)` is called just before a tick, the first of the five ticks arrives almost at once, so the task waits only a little over 4 tick periods. A delay of $n$ ticks therefore makes the task *ready* again after between $n - 1$ and $n$ tick periods; it resumes later than that if higher-priority tasks are running then. Ask for one tick more than the minimum you need, or use a hardware timer for precise delays.
 
 ### Solution 18-07.3
 
@@ -66,7 +66,16 @@ Problems: [18-07 problem set](../problems/18-07-problems.md) · Chapter: [18-07]
 
 ### Solution 18-07.7
 
-(a) L holds S from 0. H arrives at 1, needs S and blocks. M1 arrives at 2 and preempts L; M2 arrives at 3 and preempts M1. M2 runs 3–7, M1 runs 7–11 (it ran 2–3 before), L finishes S at 12, and H runs 12–15. Response **14** ms.
+(a) L holds S from 0. H arrives at 1, needs S and blocks. M1 arrives at 2 and preempts L; M2 arrives at 3 and preempts M1. M2 runs 3–7, M1 runs 7–11 (it ran 2–3 before), L finishes S at 12, and H runs 12–15. Response **14** ms. As a timeline, one character per millisecond:
+
+```text
+time  0         1
+      0123456789012345
+H      ...........HHH     . = blocked on S
+M1      M----MMMM     - = preempted
+M2       MMMM
+L     LL---------L     (L holds S from 0 to 12)
+```
 
 (b) From 1, L runs at H's priority, so neither M can preempt it. L releases S at 3, and H runs 3–6. Response **5** ms.
 

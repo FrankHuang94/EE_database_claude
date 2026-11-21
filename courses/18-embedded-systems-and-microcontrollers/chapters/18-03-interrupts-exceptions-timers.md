@@ -47,7 +47,7 @@ $$
 U = \frac{r\,(c_{entry} + c_{work} + c_{exit})}{f_{CPU}}
 $$
 
-of the CPU, where the cycle counts include the hardware's entry and exit and the handler's own work. On a Cortex-M3 or M4 with zero-wait-state memory, entry takes 12 cycles from request to the handler's first instruction (0.25 µs at 48 MHz), and the return, which unstacks the same eight registers, costs about as much again; back-to-back handlers **tail-chain** in 6 cycles (0.125 µs at 48 MHz) instead of a full return and re-entry ([R-298]). Polling costs a loop iteration per check whether or not anything happened, and its latency is up to one loop period. Interrupts win when events are sparse and latency matters; polling (or DMA) wins when events are so frequent that the per-event overhead dominates. Example 18-03.1 shows a UART at 1.44% load and an ADC that would need 250% of the CPU.
+of the CPU, where the cycle counts include the hardware's entry and exit and the handler's own work. On a Cortex-M3 or M4 with zero-wait-state memory, entry takes 12 cycles from request to the handler's first instruction (0.25 µs at 48 MHz), and the return, which unstacks the same eight registers while fetching the instruction it returns to, 12 more; back-to-back handlers **tail-chain** in 6 cycles (0.125 µs at 48 MHz) instead of 12 + 12 ([R-298]). Polling costs a loop iteration per check whether or not anything happened, and its latency is up to one loop period. Interrupts win when events are sparse and latency matters; polling (or DMA) wins when events are so frequent that the per-event overhead dominates. Example 18-03.1 shows a UART at 1.44% load and an ADC that would need 250% of the CPU.
 
 ### 3.2 The Cortex-M exception model
 

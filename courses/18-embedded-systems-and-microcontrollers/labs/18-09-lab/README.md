@@ -4,7 +4,7 @@ Chapter: [18-09 · Ultra-Low-Power Design](../../chapters/18-09-ultra-low-power-
 
 ## Objective
 
-- Build duty-cycled current budgets and check the averages against an event-driven simulation of a day.
+- Build duty-cycled current budgets and check the averages against a sum over every event of a day (`simulate_day`).
 - Find the crossovers between sleep modes from their currents and wake-up costs.
 - Compare running fast and sleeping with running slowly, with and without voltage scaling.
 - Size a reservoir capacitor for a coin cell's pulse loads and confirm it in ngspice.
@@ -23,7 +23,7 @@ Average current is $I_{sleep} + \sum I_kt_k/T$ (§3.3); a deeper mode pays after
 
 1. **Budget.** For Example 18-09.1, predict the average current and battery life if advertising slows to once every 2 s; compute with `average_current`, then simulate a day with `simulate_day` and compare the charge.
 2. **Modes.** Plot charge per idle period against idle time (10 µs to 100 s) for the sleep, stop and shutdown modes of Example 18-09.2; read off the crossovers.
-3. **Race.** Plot the charge per second of Example 18-09.3 against clock frequency from 2 to 48 MHz; then let the clock be at most 24 MHz at 1.2 V with the per-MHz and fixed currents both scaled by $1.2/1.8$, and find the best operating point.
+3. **Race.** Plot the charge per second of Example 18-09.3 against clock frequency from 2 to 48 MHz; then let the clock be at most 24 MHz at 1.2 V with the per-MHz and fixed currents both scaled by $1.2/1.8$, and find the best operating point. The linear factor models a core fed by an internal LDO, whose battery charge per cycle falls as $V$, not $V^2$ (chapter §3.4); scaling the fixed current the same way is a simplifying assumption (regulator bias may not scale, while leakage usually falls faster).
 4. **The burst.** Predict the droop with 47, 100 and 220 µF; run `ngspice -b coin_cell_pulse.cir` and `droop_with_cap`.
 5. **Self-discharge.** Compare battery lives with 0%, 1% per year and 3% per month of self-discharge for nodes averaging 2, 20 and 200 µA on 1000 mAh.
 

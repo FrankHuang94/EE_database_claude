@@ -83,6 +83,7 @@ v.check("Ex 18-09.3a", 1e6 * q8)
 v.check("Ex 18-09.3b", 1e6 * q48)
 v.check("Ex 18-09.3c", 100 * (1 - q48 / q8))
 v.check("Ex 18-09.3d", (1.2 / 1.8) ** 2)
+v.check("Ex 18-09.3e", 1.2 / 1.8)
 v.assert_true("dynamic charge is 60 uC at both clocks", abs(60e-6 / 1e6 * 1e6 * 1e6 - 60) < 1e-9)
 
 # ---------------------------------------------------------------- Example 4
@@ -167,13 +168,13 @@ c9 = brentq(lambda c: droop_ode(10e-3, 150, c, 3e-3) - 0.3, 10e-6, 1e-3, xtol=1e
 v.check("18-09.9b", 1e6 * c9)
 
 # ---------------------------------------------------------------- Problem 10
-q10 = 30 * 25e-3 + 5 * 120e-3 + 2 * 200e-3 + 3e-6 * HOUR
+q10 = 30 * 25e-3 + 5 * 120e-3 + 2 * 200e-3 + 3e-6 * (HOUR - 37)
 v.check("18-09.10a", 1e3 * q10)
 i10 = q10 / HOUR
 v.check("18-09.10b", 1e3 * i10)
 v.check("18-09.10c", 0.8 * 2.400 * HOUR / i10 / DAY)
 v.assert_true("report 57%, fix 43%", round(100 * 1.0 / q10) == 57 and round(100 * 0.75 / q10) == 43)
-q10b = 5 * 25e-3 + 5 * 120e-3 + 2 * 200e-3 + 3e-6 * 4 * HOUR
+q10b = 5 * 25e-3 + 5 * 120e-3 + 2 * 200e-3 + 3e-6 * (4 * HOUR - 12)
 i10b = q10b / (4 * HOUR)
 v.check("18-09.10d", 1e6 * i10b)
 v.check("18-09.10e", 0.8 * 2.400 * HOUR / i10b / YEAR)
@@ -181,10 +182,27 @@ v.check("18-09.10e", 0.8 * 2.400 * HOUR / i10b / YEAR)
 # ---------------------------------------------------------------- Problem 11
 p11 = 0.75 * 5 * 10e-6
 v.check("18-09.11a", 1e6 * p11)
-v.check("18-09.11b", 1e6 * p11 / 3)
-e11 = p11 * 64 * HOUR
-v.check("18-09.11c", e11)
-v.check("18-09.11d", 2 * e11 / (3.3 ** 2 - 2.0 ** 2))
+week = p11 * 50 * HOUR
+v.check("18-09.11b", week)
+load11 = week / (168 * HOUR)
+v.check("18-09.11c", 1e6 * load11)
+v.check("18-09.11d", 1e6 * load11 / 3)
+e11 = load11 * 64 * HOUR
+v.check("18-09.11e", e11)
+v.check("18-09.11f", 2 * e11 / (3.3 ** 2 - 2.0 ** 2))
+# hour-by-hour week: storage starting full at Friday evening never runs dry, and the week balances
+store, low = 0.0, 0.0
+for h in range(168):
+    lit = h < 120 and (h % 24) < 10          # Monday..Friday, 10 lit hours each
+    store += (p11 if lit else 0.0) * HOUR - load11 * HOUR
+    low = min(low, store)
+v.assert_true("Problem 11: the weekly balance closes to zero at the energy-neutral load", abs(store) < 1e-9)
+
+# ---------------------------------------------------------------- Problem 12
+for ident_i, ident_l, i_sl in (("18-09.12a", "18-09.12b", 4e-6), ("18-09.12c", "18-09.12d", 40e-6)):
+    i12 = 3e-3 * 2e-3 + 6e-3 * 3e-3 + i_sl * (1 - 5e-3)
+    v.check(ident_i, 1e6 * i12)
+    v.check(ident_l, 0.220 / i12 / 24)
 
 # ---------------------------------------------------------------- lab
 la = avg([(3e-3, 2e-3), (6e-3, 3e-3 / 2)], 1.0, 1.5e-6)      # measuring every second, advertising every 2 s

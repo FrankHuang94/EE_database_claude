@@ -408,4 +408,6 @@ v.assert_true("100 characters at 115 200 baud take about 8.7 ms",
 
 v.assert_true("Example 1 caution: a 1.8 V LED with 220 ohm from 3.3 V draws 6.8 mA", round((3.3 - 1.8) / 220 * 1e3, 1) == 6.8)
 v.assert_true("Q6: I3C SDR data about 30x fast mode and 12x fast-mode plus", round(11 / (0.4 * 8 / 9)) == 31 and round(11 / (1.0 * 8 / 9)) == 12)
+c_close_6ma = 300e-9 / (math.log(7 / 3) * (3.3 - 0.6) / 6e-3)
+v.assert_true("lab Part 4: with 6 mA at 0.6 V the fast-mode window stays open to about 787 pF", round(c_close_6ma * 1e12) == 787)
 sys.exit(v.finish())
