@@ -142,7 +142,9 @@ def noise_sigma(ebn0_db, energy_per_bit, complex_signal=False):
 
     energy_per_bit is the sum of |sample|^2 over one bit (unit sample spacing). With unit sample
     spacing, white noise of one-sided density N0 has variance N0/2 per real sample, and N0/2 in each
-    of I and Q for complex samples (total N0 per complex sample).
+    of I and Q for complex samples (total N0 per complex sample): the energy-preserving complex
+    normalization of 17-01 §3.9, in which signal energy is the sum of |sample|^2. The result is the same
+    for real and complex signals; `complex_signal` is accepted only so callers can say which they mean.
     """
     n0 = energy_per_bit / 10 ** (ebn0_db / 10)
     return math.sqrt(n0 / 2)

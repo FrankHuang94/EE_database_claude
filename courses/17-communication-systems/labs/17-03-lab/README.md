@@ -34,7 +34,7 @@ All schemes are compared at the same received power $S_R$ and noise density $N_0
 - Part 1: the unwanted sideband about 41 dB down with a 1° error, and below the numerical floor with none.
 - Part 2: FFT line magnitudes equal $\lvert J_n(\beta)\rvert$; the carrier vanishes at β = 2.405.
 - Part 3: DSB and SSB at 30 dB; AM at $10\log_{10}[k_a^2P_m/(1 + k_a^2P_m)] + 30$ dB, about 20.8 dB for the lab's message.
-- Part 4: about 45.7 dB at γ = 30 dB; the simulation follows the formula down to γ ≈ 21 dB (10 dB CNR in Carson's band) and then collapses; with the IF filter at exactly Carson's bandwidth a distortion floor near 57 dB appears at high γ.
+- Part 4: about 45.7 dB at γ = 30 dB; the simulation follows the formula down to γ ≈ 21 dB (10 dB CNR in Carson's band) and then collapses; with the IF filter at exactly Carson's bandwidth the output SNR approaches a distortion floor near 57 dB at high γ (about 53 dB at γ = 40 dB).
 - Part 5: a parabola, and a reduction of about 13.2 dB.
 
 ### Lab answer key

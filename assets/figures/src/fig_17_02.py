@@ -38,8 +38,8 @@ points = [
     (2.046e6, -128.5, "GPS L1 C/A minimum (−128.5 dBm)"),
     (4.5e6, -101.7, "NR base station REFSENS, 25 RB"),
     (9.36e6, -95.8, "NR phone REFSENS, n78 10 MHz"),
-    (16.25e6, -82.0, "Wi-Fi 20 MHz, BPSK 1/2"),
-    (16.25e6, -57.0, "Wi-Fi 20 MHz, 256-QAM 5/6"),
+    (17.5e6, -82.0, "Wi-Fi 20 MHz, BPSK 1/2"),
+    (17.5e6, -57.0, "Wi-Fi 20 MHz, 256-QAM 5/6"),
 ]
 for (bw, p, lab), mk in zip(points, ("v", "s", "D", "o", "^")):
     ax.plot(bw, p, mk, color="0.15", ms=6, label=lab)

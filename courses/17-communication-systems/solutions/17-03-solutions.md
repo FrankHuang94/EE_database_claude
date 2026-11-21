@@ -99,7 +99,7 @@ Threshold requires $S_R/(N_0B_T) = \gamma/(2(D + 1)) \ge 10$, so $D \le \gamma/2
 - γ = 25 dB (316.2): $D_{max}$ = **14.81**, and the tone output SNR is $\tfrac32D^2\gamma$: $25 + 10\log_{10}(1.5 \times 14.81^2)$ = **50.17** dB, 25 dB better than SSB's 25 dB.
 - γ = 15 dB (31.62): $D_{max}$ = **0.581** and the output SNR is $15 + 10\log_{10}(1.5 \times 0.581^2)$ = **12.05** dB, **worse** than SSB's 15 dB.
 
-FM pays only when there is enough received power to afford a large deviation: roughly, γ must be at least 20 dB (10 dB CNR in at least $2W$) before FM can even match a linear scheme. At low SNR, the bandwidth is better spent another way (coding, 17-08).
+FM pays only when there is enough received power to afford a large deviation. Staying at the threshold (10 dB CNR in Carson's band $2(D + 1)W$) allows at most $D = \gamma/20 - 1$, and FM then matches SSB when $1.5D^2 = 1$: $D$ = 0.8165 and γ = $20(1 + 0.8165)$ = 36.33, **15.60** dB. Below 13 dB (10 dB CNR in $2W$) FM cannot even stay above threshold. At low SNR, the bandwidth is better spent another way (coding, 17-08).
 
 ### Solution 17-03.13
 
@@ -133,6 +133,23 @@ The chirp slope is $S = 4\ \text{GHz}/40\ \mu\text{s} = 10^{14}$ Hz/s. An echo d
 - Resolution: $c/(2B) = 3 \times 10^8/(8 \times 10^9)$ = **3.75** cm.
 
 Two targets closer than $c/2B$ produce beat tones less than one FFT bin ($1/T_{chirp}$ = 25 kHz) apart, which is where the resolution formula comes from: $\Delta f_b = S \cdot 2\Delta R/c = 1/T$ gives $\Delta R = c/(2ST) = c/(2B)$.
+
+### Solution 17-03.15
+
+(a) Multiplying by $\cos(\omega_ct + \phi)$ and low-pass filtering keeps $\tfrac12A_cm\cos\phi$; multiplying by $\sin(\omega_ct + \phi)$ keeps $\tfrac12A_cm\sin\phi$ (from $\cos a\sin b = \tfrac12[\sin(a + b) - \sin(a - b)]$ with $a - b = -\phi$). Their product is $\tfrac14A_c^2m^2\sin\phi\cos\phi = \tfrac18A_c^2m^2\sin2\phi$.
+
+(b) Averaged over the message, the detector output is $\tfrac18A_c^2P_m\sin2\phi$, whose slope at φ = 0 is $\tfrac14A_c^2P_m = \tfrac14 \times 4 \times 0.5$ = **0.5** V²/rad. The loop feeds this to the oscillator with the polarity that reduces φ.
+
+(c) The output is zero, with restoring slope, at φ = 0 and φ = π. At π the in-phase arm delivers $-m(t)$: inaudible for speech, but data would be inverted, which is why BPSK systems use differential coding or a known preamble.
+
+(d) A PLL needs a spectral line at the carrier, and DSB-SC has none because $m$ has zero mean: the average of $A_cm(t)\cos\omega_ct$ times any fixed sinusoid is zero. The Costas loop's product (like the squaring loop's square) removes the dependence on the sign of $m$.
+
+### Solution 17-03.16
+
+- **DSB-SC, 30° phase error:** both tones come out at their own frequencies scaled by $\cos30°$ = **0.866**: 300 Hz at 0.866 and 1200 Hz at 0.433. Only the level drops (1.25 dB).
+- **DSB-SC, 20 Hz error:** the output is $m(t)\cos(2\pi \cdot 20t)$, so each tone splits into two at half amplitude: **280** and **320** Hz at 0.5, **1180** and **1220** Hz at 0.25. The listener hears a 20 Hz beat (40 Hz flutter in power): very noticeable.
+- **SSB, 30° phase error:** 300 Hz and 1200 Hz at full amplitude (1 and 0.5), each shifted in phase by 30°: inaudible.
+- **SSB, 20 Hz error:** the upper sideband at $f_c + f_m$ mixed with $f_c + 20$ gives **280** Hz and **1180** Hz at full amplitude: every frequency moves down by 20 Hz, which changes the pitch slightly (the "Donald Duck" effect at larger offsets) but keeps speech intelligible.
 
 ---
 
@@ -173,6 +190,7 @@ Two targets closer than $c/2B$ produce beat tones less than one FFT bin ($1/T_{c
 | 17-03.12b | FM output SNR at γ = 25 dB | 50.17 | dB |
 | 17-03.12c | largest D at γ = 15 dB | 0.581 | — |
 | 17-03.12d | FM output SNR at γ = 15 dB | 12.05 | dB |
+| 17-03.12e | FM break-even against SSB (threshold-limited) | 15.60 | dB |
 | 17-03.13a | suppression, 1° | 41.18 | dB |
 | 17-03.13b | suppression, 1% gain | 46.06 | dB |
 | 17-03.13c | suppression, both | 39.96 | dB |
@@ -180,3 +198,8 @@ Two targets closer than $c/2B$ produce beat tones less than one FFT bin ($1/T_{c
 | 17-03.14b | range for a 10 MHz beat | 15.0 | m |
 | 17-03.14c | range resolution | 3.75 | cm |
 | 17-03.14d | echo delay at 30 m | 200.1 | ns |
+| 17-03.15 | Costas detector gain | 0.5 | V²/rad |
+| 17-03.16a | DSB gain with 30° error | 0.866 | — |
+| 17-03.16b | DSB beat components of the 300 Hz tone, lower | 280 | Hz |
+| 17-03.16c | DSB beat components of the 300 Hz tone, upper | 320 | Hz |
+| 17-03.16d | SSB output of the 1200 Hz tone with 20 Hz error | 1180 | Hz |

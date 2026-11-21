@@ -57,7 +57,7 @@ $$
 P_n = \frac{\overline{v_n^2}/4}{R} = \frac{4kTR\,\Delta f}{4R} = kT\,\Delta f .
 $$
 
-The resistance cancels. **Every resistor, of any value, offers the same available noise power density $kT$ (W/Hz).** This is why noise in RF systems, which are matched to a fixed impedance, is described by a power density rather than a voltage. At the **standard reference temperature** $T_0$ = 290 K (IEEE and ITU-R convention, [R-257]),
+The resistance cancels. **Every resistor, of any value, offers the same available noise power density $kT$ (W/Hz).** This is why noise in RF systems, which are matched to a fixed impedance, is described by a power density rather than a voltage. At the **standard reference temperature** $T_0$ = 290 K (ITU-R P.372 convention, [R-257]),
 
 $$
 kT_0 = 1.380649 \times 10^{-23} \times 290 = 4.004 \times 10^{-21}\ \text{W/Hz} = -173.98\ \text{dBm/Hz} ,
@@ -140,6 +140,14 @@ The gains in the formula are **available** gains, and each $F_i$ is measured wit
 
 *Left: Example 17-02.3, stage by stage. With the cable first, its 1.5 dB is locked in before the LNA can help; with the LNA first, the cable and the receiver are divided by its gain. Right: a 1 dB LNA ahead of an ADC with a 23 dB noise figure (Problem 17-02.13). Below about 20 dB of gain the ADC dominates; beyond about 35 dB, extra gain buys almost nothing.*
 
+**Measuring a noise figure: the Y-factor method.** A calibrated noise source switches between a "hot" state of noise temperature $T_{hot}$ and a "cold" state at $T_0$; its **excess noise ratio** is $\text{ENR} = (T_{hot} - T_0)/T_0$. The output noise powers of the device under test are proportional to $T_{hot} + T_e$ and $T_0 + T_e$, so their ratio $Y = (T_{hot} + T_e)/(T_0 + T_e)$ gives $T_e = (T_{hot} - YT_0)/(Y - 1)$ and
+
+$$
+F = 1 + \frac{T_e}{T_0} = \frac{(Y - 1)T_0 + T_{hot} - YT_0}{T_0(Y - 1)} = \frac{\text{ENR}}{Y - 1} .
+$$
+
+A 15 dB ENR source (31.6) and a measured $Y$ of 10 dB give $F = 31.6/9 = 3.51$, an NF of **5.46** dB. No absolute power measurement is needed, only a ratio, which is why the method is the industry standard.
+
 ### 3.6 The AWGN channel
 
 The workhorse model of communication theory is the **additive white Gaussian noise (AWGN) channel**:
@@ -158,7 +166,7 @@ where $s(t)$ is the transmitted signal as it arrives at the receiver input and $
 
 **What the model leaves out.** Interference from other transmitters (not white, not independent of other users' signals), phase noise of the local oscillator (multiplicative), quantization and nonlinear distortion (signal-dependent), and fading (a random, time-varying gain, 17-09). Each is a separate impairment, and practical budgets add an **implementation margin** for them (§3.8). The AWGN model is still the benchmark: every modulation and code is first characterized by its error rate on AWGN against $E_b/N_0$ (17-06).
 
-### 3.7 SNR, $E_s/N_0$, $E_b/N_0$ and $C/N_0$
+### 3.7 SNR, Es/N0, Eb/N0 and C/N0
 
 **SNR needs a bandwidth.** The signal-to-noise ratio at a point in the receiver is $\text{SNR} = S/N$ with $N = N_0B_N$, where $B_N$ is the noise bandwidth of the filtering up to that point (17-01 §3.5). For a bandpass receiver, $B_N$ is the width of the RF passband counted once, at positive frequencies; with the one-sided density $N_0$, the noise power is $N_0B_N$. The same signal in the same noise has a different SNR in a different bandwidth: quoting an SNR without its bandwidth says nothing.
 
@@ -178,7 +186,7 @@ With the **spectral efficiency** $\eta = R_b/B_N$ (b/s/Hz), $\text{SNR} = \eta\,
 
 **Why $E_b/N_0$ is the fair comparison.** Two systems with different data rates and bandwidths can be compared at the same SNR only by first agreeing on a bandwidth. $E_b/N_0$ asks the economically meaningful question instead: how much received energy does each bit cost, relative to the noise density nature imposes? A bit-error-rate curve plotted against $E_b/N_0$ (17-06) is a property of the modulation and code, independent of the filter, the bandwidth and the data rate. Shannon's theorem (17-07) puts a floor under it: reliable communication at any rate requires $E_b/N_0 \ge \ln 2$, **−1.59** dB.
 
-**Matched filters and the symbol rate.** A receiver that filters with a pulse matched to the transmit pulse (17-05) has, for the Nyquist pulses of 17-04, an RF noise bandwidth equal to the symbol rate. The SNR at its output, measured in that bandwidth, equals $E_s/N_0$, which is why the two are often used interchangeably in practice. They differ whenever the filter is not matched.
+**Matched filters and the symbol rate.** A receiver that filters with a pulse matched to the transmit pulse (17-05) has, for the Nyquist pulses of 17-04, an RF noise bandwidth equal to the symbol rate. The average signal power divided by the noise power in that bandwidth equals $E_s/N_0$, which is why the two are often used interchangeably in practice; they differ whenever the filter is not matched. The *peak sample* SNR of a matched filter on a real signal, used in 17-05, is $2E_s/N_0$: twice as large, because only the noise in one real dimension reaches the sample, half the bandpass noise.
 
 ### 3.8 Receiver sensitivity
 
@@ -200,7 +208,7 @@ with BW the occupied transmission bandwidth, the number of resource blocks × 12
 
 ![Thermal noise floor plus noise figure against bandwidth, with published sensitivity levels](../../../assets/figures/17-02/noise-floor.svg)
 
-*Each line is $kT_0B$ plus a noise figure. A published sensitivity sits above the line for its receiver by the required SNR and margins: Wi-Fi's most efficient mode needs 25 dB more signal than its most robust one in the same bandwidth. The GPS signal sits below every line, because its receiver correlates over a millisecond before it decides anything (§3.9). Sources: §9.*
+*Each line is $kT_0B$ plus a noise figure. A published sensitivity sits above the line for its receiver by the required SNR and margins: 802.11ac's most efficient mode (256-QAM 5/6) needs 25 dB more signal than its most robust one in the same bandwidth. The GPS signal sits below every line, because its receiver correlates over a millisecond before it decides anything (§3.9). Sources: §9.*
 
 ### 3.9 Signals below the noise: correlation and processing gain
 
@@ -280,7 +288,7 @@ Moving the LNA to the antenna improves the noise figure by **1.41** dB, almost t
 
 **Sanity check.** In both cases the downconverter's term, $(F_{rx} - 1)L/G_{LNA}$ = 0.072, is the same: it sits behind both the cable and the LNA either way. Mast-head amplifiers on cellular towers exist for exactly reason B.
 
-### Example 17-02.4 · Comparing links by $E_b/N_0$ (tier B)
+### Example 17-02.4 · Comparing links by energy per bit (tier B)
 
 **Setup.** Link 1 carries 10 Mb/s and measures an SNR of 9 dB in its receiver's 12.5 MHz noise bandwidth. Link 2 carries 40 Mb/s and measures 20 dB in a 10 MHz noise bandwidth. Which link spends more received energy per bit relative to the noise density, and what are their spectral efficiencies?
 
@@ -294,17 +302,17 @@ Link 2 has 11 dB more SNR but needs only 4 dB more energy per bit: most of its e
 
 ### Example 17-02.5 · Reproducing published sensitivities (tier B)
 
-**Setup.** (a) A 5G NR phone in band n78 receives a 10 MHz carrier with 15 kHz subcarriers, of which 52 resource blocks (12 subcarriers each) are occupied. 3GPP's assumptions for this band are NF = 10 dB, SNR = −1 dB, IM = 2.5 dB and a 3 dB two-antenna diversity gain. Compute the reference sensitivity. (b) A wide-area base station's REFSENS for a 25-resource-block, 15 kHz test channel is −101.7 dBm, with NF = 5 dB and IM = 2 dB assumed. What SNR does that imply? (c) A Wi-Fi receiver's minimum sensitivity at the most robust 20 MHz rate is −82 dBm. The signal occupies 52 subcarriers spaced 312.5 kHz. What is the noise floor in the occupied bandwidth, and how many dB are left for noise figure, required SNR and margin together?
+**Setup.** (a) A 5G NR phone in band n78 receives a 10 MHz carrier with 15 kHz subcarriers, of which 52 resource blocks (12 subcarriers each) are occupied. 3GPP's assumptions for this band are NF = 10 dB, SNR = −1 dB, IM = 2.5 dB and a 3 dB two-antenna diversity gain. Compute the reference sensitivity. (b) A wide-area base station's REFSENS for a 25-resource-block, 15 kHz test channel is −101.7 dBm, with NF = 5 dB and IM = 2 dB assumed. What SNR does that imply? (c) A Wi-Fi receiver's minimum sensitivity at the most robust 20 MHz rate is −82 dBm. The signal occupies 56 subcarriers (52 data and 4 pilots, the 802.11n/ac format) spaced 312.5 kHz. What is the noise floor in the occupied bandwidth, and how many dB are left for noise figure, required SNR and margin together?
 
 **Solution.** (a) $\text{BW} = 52 \times 12 \times 15$ kHz = 9.36 MHz, $10\log_{10}(9.36 \times 10^6)$ = 69.71 dB. $P = -174 + 69.71 + 10 - 1 + 2.5 - 3$ = **−95.79** dBm. The published value is −95.8 dBm (TS 38.101-1, two receive ports, [R-260]).
 
 (b) $\text{BW} = 25 \times 12 \times 15$ kHz = 4.5 MHz (66.53 dB). $\text{SNR} = -101.7 - (-174 + 66.53 + 5 + 2)$ = **−1.23** dB, consistent with the −1 dB used for the UE.
 
-(c) $\text{BW} = 52 \times 312.5$ kHz = 16.25 MHz (72.11 dB), so the floor is $-174 + 72.11$ = **−101.89** dBm. The budget for NF + SNR + IM is $-82 - (-101.89)$ = **19.89** dB, generous by modern standards: with a 6 dB system noise figure, about 14 dB is left for the demodulator and the margin.
+(c) $\text{BW} = 56 \times 312.5$ kHz = 17.5 MHz (72.43 dB), so the floor is $-174 + 72.43$ = **−101.57** dBm. The budget for NF + SNR + IM is $-82 - (-101.57)$ = **19.57** dB, generous by modern standards: with a 6 dB system noise figure, about 13.6 dB is left for the demodulator and the margin.
 
 **Units check.** dBm + dB = dBm throughout.
 
-**Sanity check.** The NR SNR of about −1 dB is below 0 dB because the base station's reference channel uses QPSK with a rate-1/3 code (TS 38.104 Table A.1-1): each information bit is spread over three coded bits, so the energy per information bit is well above the noise density even when the SNR is negative (§3.7). The Wi-Fi budget is loose by comparison: even a receiver with a 10 dB noise figure and a 5 dB margin would keep **4.89** dB for its demodulator.
+**Sanity check.** The NR SNR of about −1 dB is below 0 dB because the base station's reference channel uses QPSK with a rate-1/3 code (TS 38.104 Table A.1-1): each information bit is spread over three coded bits, so $E_b/N_0 = \text{SNR}/\eta \approx$ +0.5 dB ($\eta \approx 2/3$ b/s/Hz before overheads) even though the SNR is negative (§3.7), within about 1 dB of the Shannon bound at that efficiency. The Wi-Fi budget is loose by comparison: even a receiver with a 10 dB noise figure and a 5 dB margin would keep **4.57** dB for its demodulator.
 
 ### Example 17-02.6 · A GPS receiver works below the noise (tier C)
 
@@ -371,9 +379,10 @@ Link 2 has 11 dB more SNR but needs only 4 dB more energy per bit: most of its e
 | Ex 17-02.4d | spectral efficiency, link 2 | 4 | b/s/Hz |
 | Ex 17-02.5a | NR UE REFSENS, n78, 10 MHz | −95.79 | dBm |
 | Ex 17-02.5b | implied BS SNR | −1.23 | dB |
-| Ex 17-02.5c | Wi-Fi noise floor, 16.25 MHz | −101.89 | dBm |
-| Ex 17-02.5d | Wi-Fi budget for NF + SNR + IM | 19.89 | dB |
-| Ex 17-02.5e | Wi-Fi demodulator allowance at 10 dB NF, 5 dB IM | 4.89 | dB |
+| Txt 17-02.yf | Y-factor example noise figure | 5.46 | dB |
+| Ex 17-02.5c | Wi-Fi noise floor, 17.5 MHz | −101.57 | dBm |
+| Ex 17-02.5d | Wi-Fi budget for NF + SNR + IM | 19.57 | dB |
+| Ex 17-02.5e | Wi-Fi demodulator allowance at 10 dB NF, 5 dB IM | 4.57 | dB |
 | Ex 17-02.6a | front-end noise temperature | 110.3 | K |
 | Ex 17-02.6b | system noise temperature | 210.3 | K |
 | Ex 17-02.6c | N0 | −175.37 | dBm/Hz |
@@ -427,6 +436,7 @@ The lab, [labs/17-02-lab](../labs/17-02-lab/README.md), provides `noisebudget.py
 ## 8. Common mistakes
 
 - **Adding decibels of noise powers.** Noise powers add in watts. Two −100 dBm noises make −96.99 dBm, not −200 dBm and not −100 dBm.
+- **Mixing single- and double-sideband noise figures.** A mixer without image rejection also converts the noise in its image band to the IF. A double-sideband (DSB) noise figure, often quoted in data sheets and measured with a broadband noise source that fills both sidebands, credits that image band with signal; a receiver whose signal sits in one sideband sees about 3 dB more: its single-sideband (SSB) noise figure is about DSB + 3 dB.
 - **Using NF where the source is not at 290 K.** For a cold antenna the SNR degradation is $1 + T_e/T_A$, larger than $F$ (Example 17-02.2).
 - **Forgetting loss before the LNA.** Every dB of filter, switch or cable loss in front of the first amplifier is a dB of noise figure.
 - **Using the 3 dB bandwidth for noise.** Noise power integrates the PSD over the noise bandwidth; for a one-pole filter it is π/2 times the 3 dB bandwidth (1.96 dB).
@@ -440,15 +450,15 @@ The lab, [labs/17-02-lab](../labs/17-02-lab/README.md), provides `noisebudget.py
 
 ### State of the art (as of Nov 2026)
 
-- **Cellular reference sensitivity is a noise-figure budget written into the standard.** 3GPP's NR studies give the formula of §3.8 explicitly: for base stations, "NF is BS noise figure, equal to 5 dB for Wide Area BS, 10 dB for Medium Range BS and 13 dB for Local Area BS" and IM is 2 dB; for UEs, $-174 + 10\log(\text{RX BW}) + \text{NF} + \text{SNR} + \text{IM} - \text{diversity gain}$, with SNR −1 dB, IM 2.5 dB and 3 dB diversity gain for two receive ports, and NF 10.5, 10 and 10 dB for bands n77–n79 (TR 38.817-01 and -02, [R-260]) **[Established]**. The published requirements follow: −95.8 dBm for a 10 MHz n78 carrier at 15 kHz spacing with two receive ports (TS 38.101-1 V20.1.0) and −101.7 dBm for a wide-area base station's 25-RB test channel (TS 38.104 V20.1.0). Note that n78's baseline is four receive ports, which adjusts the two-port value by a separate table.
-- **Wi-Fi minimum sensitivity.** The 802.11ac table, as reproduced in Rohde & Schwarz's application note 1MA192, runs from −82 dBm (BPSK, rate 1/2) to −57 dBm (256-QAM, rate 5/6) at 20 MHz, 3 dB higher for each doubling of bandwidth, at 10% packet-error rate (R&S 1MA192, [R-261]) **[Established]**. The 25 dB spread is the difference in required SNR between the most robust and most efficient modes; the noise floor is the same.
+- **Cellular reference sensitivity is a noise-figure budget written into the standard.** 3GPP's NR studies give the formula of §3.8 explicitly: for base stations, "NF is BS noise figure, equal to 5 dB for Wide Area BS, 10 dB for Medium Range BS and 13 dB for Local Area BS" and IM is 2 dB; for UEs, $-174 + 10\log_{10}(\text{RX BW}) + \text{NF} + \text{SNR} + \text{IM} - \text{diversity gain}$, with SNR −1 dB, IM 2.5 dB and 3 dB diversity gain for two receive ports, and NF 10.5, 10 and 10 dB for bands n77–n79 (TR 38.817-01 and -02, [R-260]) **[Established]**. The published requirements follow: −95.8 dBm for a 10 MHz n78 carrier at 15 kHz spacing with two receive ports (TS 38.101-1 V20.1.0) and −101.7 dBm for a wide-area base station's 25-RB test channel (TS 38.104 V20.1.0). Note that n78's baseline is four receive ports, which adjusts the two-port value by a separate table.
+- **Wi-Fi minimum sensitivity.** The 802.11ac table, as reproduced in Rohde & Schwarz's application note 1MA192, runs from −82 dBm (BPSK, rate 1/2) to −57 dBm (256-QAM, rate 5/6) at 20 MHz, 3 dB higher for each doubling of bandwidth, at 10% packet-error rate (R&S 1MA192, [R-261]) **[Established]**. The 25 dB spread is the difference in required SNR between 802.11ac's most robust and most efficient modes; the noise floor is the same. (802.11ax's 1024-QAM 5/6, at −52 dBm, widens it to 30 dB, [R-261].)
 - **GNSS signals are specified below the noise.** IS-GPS-200N (Aug 2022, amended by later interface revision notices that do not change the power tables) specifies a minimum received L1 C/A power of −158.5 dBW (−128.5 dBm), "measured at the output of a 3 dBi linearly polarized user receiving antenna (located near ground) at worst normal orientation, when the SV is above a 5-degree elevation angle" (Table 3-Va, [R-259]) **[Established]**.
 - **LNAs.** A current cellular LNA (Infineon BGA9H1MN9, Rev. 2.0, 2021) lists 20.2 dB gain and 0.6 dB typical NF (1.2 dB maximum) at 2.1 GHz in its highest-gain state, with an input third-order intercept of −6 dBm; in its lowest-gain state it has −2.7 dB gain, 2.7 dB NF and +23 dBm IIP3 ([R-262]) **[Established]**. The low-gain state behaves like a passive path: its NF equals its loss, as §3.4 predicts. A GNSS LNA (Infineon BGA524N6, now marked "not for new design") lists 19.6 dB and 0.55 dB typical (1.0 dB maximum), and a GNSS front-end module that includes a post-filter (Skyworks SKY55951-11, data sheet dated Mar 2026) lists 17 dB and 1.4 dB typical (2.2 dB maximum) at 1575 MHz ([R-262]) **[Established]**.
 - **Converters.** An RF-sampling ADC's noise spectral density of −152 dBFS/Hz corresponds to a noise figure of about 23 dB (17-01 §9, [R-237]); about 28 dB of gain from a 1 dB-NF LNA ahead of it holds the cascade to 2 dB (Problem 17-02.13).
 
 ### Why it matters commercially
 
-Sensitivity sells: every dB of link budget is range, coverage, battery life or data rate. In cellular infrastructure, a better base-station noise figure means fewer sites for the same coverage; in a phone, it means fewer dropped calls at the cell edge; in an IoT device, it means lower transmit power or longer battery life at the other end of the link. Front-end modules, LNAs, filters and antenna switches are a large semiconductor business precisely because their tenths of a dB compound across billions of units. For due diligence, the noise budget is where a startup's "10 dB better sensitivity" claim can be tested in an afternoon: the physics allows only so much.
+Sensitivity sells: every dB of link budget is range, coverage, battery life or data rate. In cellular infrastructure, a better base-station noise figure means fewer sites for the same coverage; in a phone, it means fewer dropped calls at the cell edge; in an IoT device, it means lower transmit power or longer battery life at the other end of the link. Front-end modules, LNAs, filters and antenna switches are a substantial semiconductor business **[Industry estimate]** precisely because their tenths of a dB compound across billions of units. For due diligence, the noise budget is where a startup's "10 dB better sensitivity" claim can be tested in an afternoon: the physics allows only so much.
 
 ### Marketing vs Reality
 

@@ -32,6 +32,20 @@ $$
 
 which depends only on τ. **WSS.** The quadrature term fills in exactly the power the cosine lacks at each instant.
 
+(c) Using $\cos a\cos b = \tfrac12[\cos(a - b) + \cos(a + b)]$ with $\omega = 2\pi f_0$,
+
+$$
+R_X(t + \tau, t) = \frac{\sigma^2}{2}\left[\cos\omega\tau + \cos(2\omega t + \omega\tau)\right] .
+$$
+
+The mean (zero) is trivially periodic, and the autocorrelation is periodic in $t$ with period $\pi/\omega = 1/(2f_0)$ = **0.5** ms, the period of $\cos(2\omega t)$: shifting both times by half a carrier cycle flips the sign of both cosines and leaves their product unchanged. So $X$ is **cyclostationary**, with period half the carrier period (the power $\sigma^2\cos^2\omega t$ peaks twice per cycle). Averaging over one period removes the $2\omega t$ term:
+
+$$
+\bar R_X(\tau) = \frac{\sigma^2}{2}\cos\omega\tau = \cos(2\pi \cdot 1000\,\tau)\ \text{V}^2 ,
+$$
+
+so the average power is $\bar R_X(0) = \sigma^2/2$ = **1** V², half of the 2 V² of the WSS process in (b), which has a second, quadrature component of equal power. Its spectrum is the transform of $\bar R_X$: $\tfrac{\sigma^2}{4}[\delta(f - f_0) + \delta(f + f_0)]$, the same line shape as (b) at half the height.
+
 ### Solution 17-01.4
 
 (a) The transform of $e^{-a\lvert\tau\rvert}$ is $2a/(a^2 + 4\pi^2f^2)$; multiplying by the cosine shifts half of it to $\pm f_0$:
@@ -95,7 +109,7 @@ $$
 R_{n_In_Q}(\tau) = -\frac{N_0}{2}\cdot\frac{1 - \cos(2\pi B\tau)}{\pi\tau} = -N_0B\,\frac{1 - \cos x}{x},\qquad x = 2\pi B\tau .
 $$
 
-It is zero at τ = 0, as it must be, and odd. The correlation coefficient $-(1 - \cos x)/x$ reaches its largest magnitude, **0.725**, at $x$ = 2.331, that is at $\tau = \pm$**0.371**$/B$. It is **negative** for $\tau > 0$: a tone above the carrier, $\cos(2\pi(f_c + \delta)t)$, gives $n_I = \cos2\pi\delta t$ and $n_Q = \sin2\pi\delta t$, so $n_Q$ leads $n_I$ by 90°. The simulation in the verify script confirms the sign.
+It is zero at τ = 0, as it must be, and odd. The correlation coefficient $-(1 - \cos x)/x$ reaches its largest magnitude, **0.725**, at $x$ = 2.331, that is at $\tau = \pm$**0.371**$/B$. It is **negative** for $\tau > 0$: a tone above the carrier, $\cos(2\pi(f_c + \delta)t)$, gives $n_I = \cos2\pi\delta t$ and $n_Q = \sin2\pi\delta t$, so $n_Q$ lags $n_I$ by 90° ($n_Q(t) = n_I(t - 1/(4\delta))$). Then $\mathbb E[n_I(t + \tau)n_Q(t)] = -\tfrac12\sin(2\pi\delta\tau) < 0$ for small τ > 0. The simulation in the verify script confirms the sign.
 
 ### Solution 17-01.14
 
@@ -121,6 +135,8 @@ At DC it is **0**: AMI is DC-free, which is why it was used on transformer-coupl
 | 17-01.2a | one-sided density | 1.6e-17 | V²/Hz |
 | 17-01.2b | two-sided density | 8e-18 | V²/Hz |
 | 17-01.2c | rms noise, 10 kHz–1 MHz | 3.98 | µV |
+| 17-01.3a | shortest period of the cyclostationary process | 0.5 | ms |
+| 17-01.3b | its average power | 1 | V² |
 | 17-01.4a | first frequency with S < 0 | 0.715 | Hz |
 | 17-01.4b | end of the negative region | 1.230 | Hz |
 | 17-01.4c | minimum of S | −0.115 | V²/Hz |

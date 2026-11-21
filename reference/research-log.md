@@ -2455,6 +2455,8 @@ R&D % = R&D ÷ revenue.
 - Perishable: data-sheet revisions change typical values; re-read before citing numbers.
 - **ADC12DJ5200RF, further figures** (added 20 Nov 2026; read by an independent review subagent from data sheet SLVSEN9H, revised August 2026, and by a research subagent for the noise density): SINAD at −12 dBFS input is 56.1 dBFS at 347, 997 and 2397 MHz; aperture jitter 50–60 fs rms; SINAD at −1 dBFS falls to 46.2 dBFS at 8 GHz; noise spectral density −152.0 dBFS/Hz in dual-channel mode with 1.0 Vpp full scale (−150.4 dBFS/Hz at the default 0.8 Vpp), with A_IN = −20 dBFS. [Established] [ADC12DJ5200RF data sheet](https://www.ti.com/lit/ds/symlink/adc12dj5200rf.pdf)
 
+- **ADC12DJ5200RF noise by mode (SLVSEN9H, revised Aug 2026, read 21 Nov 2026, primary):** dual-channel mode (§6.7): NSD −152.0 dBFS/Hz at VFS = 1.0 Vpp and −150.4 at 0.8 Vpp, noise figure (ZS = 100 Ω) 23.0 and 22.6 dB; single-channel mode: NSD −154.2 and −152.9 dBFS/Hz, noise figure 20.8 and 20.0 dB. [Established]
+
 ## R-238 · Converter digital filters: ADS127L11/ADS127L21 decimation filters, PCM5122 interpolation filters
 
 *Read on 20 Nov 2026 by a research subagent (curl through the build proxy, PDFs converted with pdftotext); the ADS127L11 wideband-filter rows and the PCM5122 filter rows were re-read by the main author from the converted text. Quotations as recorded.*

@@ -152,7 +152,7 @@ v.assert_true("Ex 4 sanity identity", abs((e2 - e1) - (11 - db(4) - db(12.5 / 10
 # ------------------------------------------------------------------ Example 5
 v.check("Ex 17-02.5a", -174 + db(52 * 12 * 15e3) + 10 - 1 + 2.5 - 3)
 v.check("Ex 17-02.5b", -101.7 - (-174 + db(25 * 12 * 15e3) + 5 + 2))
-floor_w = -174 + db(52 * 312.5e3)
+floor_w = -174 + db(56 * 312.5e3)
 v.check("Ex 17-02.5c", floor_w)
 v.check("Ex 17-02.5d", -82 - floor_w)
 v.check("Ex 17-02.5e", -82 - floor_w - 10 - 5)
@@ -378,5 +378,13 @@ v.assert_true("correlation gain by Monte Carlo within 0.3 dB", abs(db(snr_out) -
 v.assert_true("CC2 NF of 75 K is 1.0 dB, 30 K source 5.4 dB", round(db(1 + 75 / T0), 1) == 1.0 and round(db(1 + 75 / 30), 1) == 5.4)
 v.assert_true("CC3 pad + amplifier 4.0 dB", round(db(friis([(un(3), 1 / un(3)), (un(1), un(20))])), 1) == 4.0)
 v.assert_true("CC4 Eb/N0 at 1 and 100 Mb/s", 70 - db(1e6) == 10 and abs(70 - db(1e8) + 10) < 1e-12)
+
+# Y-factor example: derive F from the hot/cold temperatures directly, then compare with ENR/(Y - 1)
+_T0 = 290.0
+_Thot = _T0 * (1 + 10 ** 1.5)
+_Y = 10.0
+_Te = (_Thot - _Y * _T0) / (_Y - 1)
+v.check("Txt 17-02.yf", db(1 + _Te / _T0))
+v.assert_true("Y-factor: F = ENR/(Y - 1)", abs((1 + _Te / _T0) - 10 ** 1.5 / (_Y - 1)) < 1e-12)
 
 sys.exit(v.finish())

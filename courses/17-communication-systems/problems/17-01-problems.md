@@ -22,7 +22,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 17-01.3 [A]
 
-**Is it WSS?** (a) $X(t) = A\cos(2\pi f_0t)$ with $A$ a zero-mean random variable of variance $\sigma^2$. (b) $X(t) = A\cos(2\pi f_0t) + B\sin(2\pi f_0t)$ with $A$, $B$ uncorrelated, zero mean, each of variance $\sigma^2$. Compute the mean and autocorrelation of each and decide.
+**Is it WSS?** (a) $X(t) = A\cos(2\pi f_0t)$ with $A$ a zero-mean random variable of variance $\sigma^2$. (b) $X(t) = A\cos(2\pi f_0t) + B\sin(2\pi f_0t)$ with $A$, $B$ uncorrelated, zero mean, each of variance $\sigma^2$. Compute the mean and autocorrelation of each and decide. (c) Show that the process in (a) is cyclostationary. With $f_0$ = 1 kHz and $\sigma^2$ = 2 V², find its shortest period, its period-averaged autocorrelation $\bar R_X(\tau)$ and its average power, and compare with (b).
 
 ### Problem 17-01.4 [B]
 

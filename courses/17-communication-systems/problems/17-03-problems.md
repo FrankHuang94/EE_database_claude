@@ -24,7 +24,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Instantaneous frequency.** $s(t) = \cos(2\pi \cdot 10^6t + 3\sin(2\pi \cdot 1000t))$. Find the instantaneous frequency, its range, the modulation index and Carson's bandwidth. Is this FM or PM of a tone? (Both answers can be right; say what each assumes about the message.)
 
-### Problem 17-03.4 [B]
+### Problem 17-03.4 [A]
 
 **Where the power goes.** *(lab)* For tone FM with β = 1, find the fraction of power in the carrier, in the first sideband pair, and inside Carson's bandwidth.
 
@@ -44,11 +44,11 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Equal peak power.** A transmitter is limited by its peak envelope power. Compare the output SNR of 100%-modulated tone AM with that of SSB carrying the same tone when both transmit the same peak envelope power.
 
-### Problem 17-03.9 [B]
+### Problem 17-03.9 [A]
 
 **Pre-emphasis and deviation.** With a 75 µs pre-emphasis network $1 + j2\pi f\tau$, by what factor (and how many dB) is a 15 kHz tone boosted relative to a low-frequency tone? What does this imply for a transmitter's audio processing?
 
-### Problem 17-03.10 [B]
+### Problem 17-03.10 [A]
 
 **A digital FM discriminator.** *(lab)* A receiver computes $f_i[n] = (f_s/2\pi)\arg\{z[n]z^*[n - 1]\}$ on complex baseband samples of a broadcast-style FM signal (75 kHz deviation, 15 kHz audio). What is the smallest sample rate at which the discriminator never wraps for the peak deviation alone? Why is a higher rate used in practice?
 
@@ -64,9 +64,17 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Unwanted-sideband suppression of the phasing method.** In the phasing modulator, the 90° network has phase error ε and the Q path has gain $g$ relative to the I path. Show that the ratio of wanted to unwanted sideband power is $(1 + 2g\cos\varepsilon + g^2)/(1 - 2g\cos\varepsilon + g^2)$. Evaluate it in dB for ε = 1°, $g$ = 1; for ε = 0, $g$ = 1.01; and for both errors together. The same formula gives the image rejection of an I/Q receiver (21-08).
 
-### Problem 17-03.14 [C]
+### Problem 17-03.14 [B]
 
 **FM measures distance.** A radar transmits a linear chirp sweeping 4 GHz in 40 µs. The echo from a target at range $R$ returns after $2R/c$; mixing it with the transmitted chirp gives a beat tone. Find the beat frequency for a target at 30 m, the range of a target producing a 10 MHz beat, and the range resolution $c/(2B)$.
+
+### Problem 17-03.15 [B]
+
+**A Costas loop.** A DSB-SC signal $A_cm(t)\cos\omega_ct$ with $A_c$ = 2 V and a message of power $P_m$ = 0.5 (zero mean) enters a Costas loop whose arms multiply by $\cos(\omega_ct + \phi)$ and $\sin(\omega_ct + \phi)$ and low-pass filter. (a) Write the two arm outputs and their product. (b) With the product averaged over the message, find the phase detector's gain (V²/rad) at φ = 0. (c) At which phase errors can the loop lock, and what does the ambiguity do to the output? (d) Why would a simple PLL locked to the received signal fail here?
+
+### Problem 17-03.16 [B]
+
+**Carrier errors, DSB against SSB.** The message $m(t) = \cos(2\pi \cdot 300t) + 0.5\cos(2\pi \cdot 1200t)$ is sent by DSB-SC and by upper-sideband SSB, and each is demodulated coherently with a local oscillator that is (a) 30° out of phase, or (b) 20 Hz above the carrier frequency. List the output frequencies and amplitudes in each of the four cases (ignore the common scale factor of the receiver) and say which errors a listener would notice.
 
 ---
 
@@ -74,7 +82,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 | Learning objective (chapter 17-03) | Problems |
 |---|---|
-| 1. SSB, the Hilbert transform, carrier errors | 1, 2, 13 |
+| 1. SSB, the Hilbert transform, carrier errors and carrier recovery | 1, 2, 13, 15, 16 |
 | 2. Instantaneous frequency, modulation index, deviation | 3, 6, 10, 14 |
 | 3. Bessel spectra and Carson's rule | 3, 4, 5, 7 |
 | 4. Output SNR, threshold, pre-emphasis | 7, 8, 9, 11, 12 |

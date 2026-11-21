@@ -16,7 +16,7 @@ Confirm with ngspice that a 50 Ω source delivers $kTB$ to a matched load and th
 
 ## Background
 
-A source at temperature $T$ offers $kT$ watts per hertz to a matched load (§3.1). A two-port's noise factor is its total output noise over the part due to a 290 K source (§3.3), and a matched passive loss at 290 K has $F = L$ (§3.4). Cascades follow Friis's formula (§3.5). In a sampled simulation with unit sample spacing, white noise of one-sided density $N_0$ has variance $N_0/2$ per real sample, so the noise must be set from $E_b/N_0$ and the energy of a bit's samples, not from a per-sample SNR (§8, Problem 17-02.10).
+A source at temperature $T$ offers $kT$ watts per hertz to a matched load (§3.1). A two-port's noise factor is its total output noise over the part due to a 290 K source (§3.3), and a matched passive loss at 290 K has $F = L$ (§3.4). Cascades follow Friis's formula (§3.5). In a sampled simulation with unit sample spacing, white noise of one-sided density $N_0$ has variance $N_0/2$ per real sample, so the noise must be set from $E_b/N_0$ and the energy of a bit's samples, not from a per-sample SNR (§8, Problem 17-02.10). Complex signals use the energy-preserving normalization of 17-01 §3.9: $N_0/2$ in each of I and Q, with $E_b$ the sum of $\lvert x\rvert^2$ over a bit's samples.
 
 ## Files
 

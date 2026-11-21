@@ -164,6 +164,26 @@ r4 = lambda t: 1 - t * t if abs(t) <= 1 else 0.0  # noqa: E731
 S4 = lambda f: ft_even(r4, f, 1.0)  # noqa: E731
 z1 = optimize.brentq(S4, 0.6, 0.8, xtol=1e-12)
 z2 = optimize.brentq(S4, 1.1, 1.3, xtol=1e-12)
+# Problem 3(c): A cos(w0 t) is cyclostationary
+f03, var3 = 1e3, 2.0
+w3 = 2 * math.pi * f03
+
+
+def R3(t1, t2):
+    return var3 * math.cos(w3 * t1) * math.cos(w3 * t2)
+
+
+tg = np.linspace(0, 2e-3, 4001)
+taus = (0.0, 0.1e-3, 0.37e-3)
+# smallest T > 0 (on a 1 us grid) with R(t + T + tau, t + T) = R(t + tau, t) for all t, tau tested
+periods = [T for T in np.arange(1, 1001) * 1e-6
+           if all(np.allclose([R3(t + T + tau, t + T) for t in tg[::50]], [R3(t + tau, t) for t in tg[::50]], atol=1e-9) for tau in taus)]
+v.check("17-01.3a", periods[0] * 1e3)
+v.assert_true("P3c not periodic over a quarter cycle", abs(R3(0.25e-3, 0.25e-3) - R3(0, 0)) > 1)
+Tp = periods[0]
+Rbar = [integrate.quad(lambda t: R3(t + tau, t), 0, Tp)[0] / Tp for tau in taus]
+v.assert_true("P3c period-averaged R = (s^2/2) cos(w tau)", np.allclose(Rbar, [var3 / 2 * math.cos(w3 * tau) for tau in taus], atol=1e-9))
+v.check("17-01.3b", Rbar[0])
 v.check("17-01.4a", z1)
 v.check("17-01.4b", z2)
 v.check("17-01.4c", optimize.minimize_scalar(S4, bounds=(z1, z2), method="bounded").fun)

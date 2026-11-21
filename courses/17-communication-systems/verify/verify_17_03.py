@@ -173,10 +173,13 @@ fs, n = 100e3, 100_000
 t = np.arange(n) / fs
 m1 = np.cos(2 * np.pi * 300 * t) + 0.5 * np.sin(2 * np.pi * 2000 * t)
 u = am.ssb(m1, 10e3, fs, upper=True)
-v.check("17-03.1a", 10.3)
-v.check("17-03.1b", line_amp(u, fs, 10.3e3))
-v.check("17-03.1c", 12)
-v.check("17-03.1d", line_amp(u, fs, 12e3))
+U = np.abs(np.fft.rfft(u)) / n * 2
+lines_u = np.fft.rfftfreq(n, 1 / fs)[U > 0.1]
+v.assert_true("P1 exactly two spectral lines", len(lines_u) == 2, str(lines_u))
+v.check("17-03.1a", lines_u[0] / 1e3)
+v.check("17-03.1b", line_amp(u, fs, lines_u[0]))
+v.check("17-03.1c", lines_u[1] / 1e3)
+v.check("17-03.1d", line_amp(u, fs, lines_u[1]))
 v.assert_true("P1 nothing below the carrier", max(line_amp(u, fs, 9.7e3), line_amp(u, fs, 8e3)) < 1e-9)
 v.assert_true("P1 Hilbert of the message", np.max(np.abs(am.hilbert(m1) - (np.sin(2 * np.pi * 300 * t) - 0.5 * np.cos(2 * np.pi * 2000 * t)))) < 1e-9)
 
@@ -198,7 +201,7 @@ env = np.sqrt(1 + (0.2 * np.sin(2 * np.pi * tt)) ** 2)
 v.check("17-03.5a", env.max())
 v.check("17-03.6a", 75e3 / 25)
 v.check("17-03.6b", 200e3 * 3000 / 1e6)
-v.check("17-03.6c", 600 - 100)
+v.check("17-03.6c", (200e3 * (75e3 / 25) - 100e6) / 1e6)
 v.check("17-03.7a", db(4))
 v.check("17-03.7b", am.carson(150, 15))
 v.check("17-03.7c", db(330 / 180))
@@ -269,6 +272,70 @@ v.assert_true("P14 beat equals S tau", abs(fb - S * tau) < fsr / nfft)
 v.check("17-03.14b", 10e6 * C / (2 * S))
 v.check("17-03.14c", C / (2 * B) * 100)
 v.check("17-03.14d", tau * 1e9)
+
+# ------------------------------------------------------------------ Problem 12(e): threshold-limited break-even
+def fm_minus_ssb(gl):
+    dmax = gl / 20 - 1
+    return 1.5 * dmax ** 2 * gl - gl
+
+
+g_even = optimize.brentq(fm_minus_ssb, 21, 1000, xtol=1e-12)
+v.check("17-03.12e", db(g_even))
+v.assert_true("P12e D = sqrt(2/3) at break-even", abs((g_even / 20 - 1) - math.sqrt(2 / 3)) < 1e-9)
+
+# ------------------------------------------------------------------ Problem 15: Costas loop detector (simulated)
+fs15, n15 = 200e3, 200_000
+t15 = np.arange(n15) / fs15
+m15 = np.cos(2 * np.pi * 300 * t15)  # zero mean, P_m = 0.5
+s15 = am.dsb_sc(m15, 20e3, fs15, amp=2.0)
+trim = slice(5000, n15 - 5000)
+
+
+def costas_out(phi):
+    i_arm = am.lowpass(s15 * np.cos(2 * np.pi * 20e3 * t15 + phi), 3e3, fs15)
+    q_arm = am.lowpass(s15 * np.sin(2 * np.pi * 20e3 * t15 + phi), 3e3, fs15)
+    return np.mean((i_arm * q_arm)[trim])
+
+
+dphi = 1e-3
+kd = abs(costas_out(dphi) - costas_out(-dphi)) / (2 * dphi)
+v.check("17-03.15", kd)
+v.assert_true("P15 detector is (1/8)A^2 Pm sin(2 phi)", all(abs(costas_out(p) - 0.125 * 4 * 0.5 * math.sin(2 * p)) < 1e-3 for p in (0.3, 1.0, 2.0)))
+v.assert_true("P15 null at pi as well as 0", abs(costas_out(math.pi)) < 1e-6 and abs(costas_out(0.0)) < 1e-6)
+
+# ------------------------------------------------------------------ Problem 16: carrier errors (simulated)
+fs16, n16, fc16 = 100e3, 100_000, 10e3
+t16 = np.arange(n16) / fs16
+m16 = np.cos(2 * np.pi * 300 * t16) + 0.5 * np.cos(2 * np.pi * 1200 * t16)
+dsb16 = am.dsb_sc(m16, fc16, fs16)
+usb16 = am.ssb(m16, fc16, fs16, upper=True)
+
+
+def out_lines(sig, phase=0.0, df=0.0, scale=1.0):
+    y = am.coherent_demod(sig, fc16, fs16, 4e3, phase=phase, freq_offset=df)[trim.start // 2:n16 - trim.start // 2]
+    y = y[: (len(y) // int(fs16)) * int(fs16)] if len(y) >= fs16 else y
+    Y = np.abs(np.fft.rfft(y)) / len(y) * 2 / scale
+    f = np.fft.rfftfreq(len(y), 1 / fs16)
+    keep = Y > 0.05
+    return f[keep], Y[keep]
+
+
+f_ref, a_ref = out_lines(dsb16)
+v.assert_true("P16 reference DSB output is the message", np.allclose(f_ref, [300, 1200]) and np.allclose(a_ref, [1, 0.5], atol=5e-3))
+f_a, a_a = out_lines(dsb16, phase=math.radians(30))
+v.check("17-03.16a", a_a[0] / a_ref[0])
+v.assert_true("P16 DSB phase error scales both tones alike", abs(a_a[1] / a_ref[1] - a_a[0] / a_ref[0]) < 1e-3)
+f_b, a_b = out_lines(dsb16, df=20.0)
+v.assert_true("P16 DSB 20 Hz error gives four lines", len(f_b) == 4, str(f_b))
+v.check("17-03.16b", f_b[0])
+v.check("17-03.16c", f_b[1])
+v.assert_true("P16 DSB beat amplitudes 0.5, 0.5, 0.25, 0.25", np.allclose(a_b, [0.5, 0.5, 0.25, 0.25], atol=1e-2), str(a_b))
+f_c, a_c = out_lines(usb16, phase=math.radians(30))
+f_c0, a_c0 = out_lines(usb16)
+v.assert_true("P16 SSB phase error leaves amplitudes unchanged", np.allclose(f_c, [300, 1200]) and np.allclose(a_c, a_c0, rtol=1e-3))
+f_d, a_d = out_lines(usb16, df=20.0)
+v.assert_true("P16 SSB 20 Hz error gives two shifted lines", len(f_d) == 2 and np.allclose(a_d / a_c0, 1, atol=1e-2), f"{f_d} {a_d}")
+v.check("17-03.16d", f_d[1])
 
 # ------------------------------------------------------------------ lab
 v.check("Lab 17-03.a", am.snr_theory_db("fm", 30.0))
