@@ -41,7 +41,7 @@ A microcontroller talks to the rest of a product through its pins. **GPIO** (gen
 
 A GPIO pin is a CMOS input buffer and an output driver, configurable through registers (direction, push-pull or open-drain, pull-up or pull-down, drive strength and slew rate, alternate function). Its data sheet limits matter as much as its registers ([R-306], for TI's MSPM0G350x as an example) **[Established]**:
 
-- **Input thresholds.** A voltage above $V_{IH}$ reads 1 and below $V_{IL}$ reads 0; for CMOS inputs these scale with the supply, typically $V_{IH} \ge 0.7V_{DD}$ and $V_{IL} \le 0.3V_{DD}$, with a few hundred millivolts of **hysteresis** (a Schmitt-trigger input) so that slow or noisy edges switch once. Between the thresholds the result is undefined, and a floating input wanders there: unused or open inputs need a pull resistor (often a built-in one of about 40 kΩ).
+- **Input thresholds.** A voltage above $V_{IH}$ reads 1 and below $V_{IL}$ reads 0; for CMOS inputs these scale with the supply, typically $V_{IH(min)} = 0.7V_{DD}$ and $V_{IL(max)} = 0.3V_{DD}$ (inputs above 0.7 $V_{DD}$ read high, below 0.3 $V_{DD}$ low), with a few hundred millivolts of **hysteresis** (a Schmitt-trigger input) so that slow or noisy edges switch once. Between the thresholds the result is undefined, and a floating input wanders there: unused or open inputs need a pull resistor (often a built-in one of about 40 kΩ).
 - **Output levels under load.** An output is not an ideal source: at a specified current it guarantees only $V_{OL} \le$ 0.4 V and $V_{OH} \ge V_{DD} - 0.4$ V (at 6 mA for this part's standard pins). Designs must use these worst-case levels, not the supply rails.
 - **Current limits.** Each pin has an absolute maximum (6 mA for standard pins, 20 mA for high-drive pins here) and the whole package has a total (80 mA into VDD here). Eleven LEDs at 6 mA each already approach the package limit.
 - **Clamp diodes and injection current.** Inputs have protection diodes to the rails. A signal above $V_{DD}$ forward-biases the upper diode and pushes current into the supply rail; data sheets limit this **injection current** (±2 mA here), so a 5 V signal into a 3.3 V pin needs a series resistor or, better, a 5 V-tolerant pin or a level translator.
@@ -78,7 +78,7 @@ while the sender holds bit $k$ during $[kr, (k + 1)r)$. Every sample must fall i
 
 So this receiver accepts a sender whose baud rate is up to 4.58% fast or 5.26% slow. The asymmetry comes from the detection delay, which always makes the receiver late. With $S = 8$ the fast limit tightens to 3.90%, which is why vendors recommend tighter clock budgets in 8× mode. The tolerance must cover **both** ends' errors combined: the divisor error and the oscillator tolerance at each end. Receivers with three-sample majority voting have slightly different windows; Microchip's ATmega328P data sheet gives 95.36% to 104.58% for its 16× receiver and recommends keeping the total error within ±2% ([R-306]) **[Established]**. The lab's Verilog receiver implements exactly the model above, and its testbench measures the window by simulation: 0.9575 to 1.0550 on a 0.0025 grid, against the derived 0.95625 to 1.05556.
 
-**Electrical layers and flow control.** A UART defines timing, not voltages: at the MCU's pins it uses logic levels, and transceivers convert to RS-232 (single-ended, bipolar, short distances) or RS-485 (differential, multi-drop, long cables). Hardware flow control (RTS/CTS) lets a receiver pause the sender when its buffer is full; with DMA receive (18-04 §3.3) it prevents overruns.
+**Electrical layers and flow control.** A UART defines timing, not voltages: at the MCU's pins it uses logic levels, and transceivers convert to RS-232 (single-ended, bipolar, short distances) or RS-485 (differential, multi-drop, long cables). Hardware flow control (RTS/CTS) lets a receiver pause the sender when its FIFO is full. With DMA receive (18-04 §3.3) the FIFO stays nearly empty, so hardware RTS does not protect the software ring: that needs software-driven RTS, deasserted when the ring passes a threshold.
 
 ### 3.4 SPI
 
@@ -95,7 +95,7 @@ SPI connects a **controller** to one or more **targets** with four signals: SCK 
 
 Both sides must use the same mode; a wrong mode usually shifts every byte by one bit or reads garbage. There is no formal SPI standard ([R-306]), so word length, bit order, chip-select timing and maximum clock come from each target's data sheet.
 
-**The timing loop that limits the clock.** For a read, the controller launches an SCK edge; the target sees it after the board delay, changes MISO after its clock-to-output delay $t_{CO}$, the new bit travels back, and the controller must capture it with its setup time $t_{SU}$ before its sampling edge, half a period later in modes 0 and 3. So
+**The timing loop that limits the clock.** For a read, the controller launches an SCK edge; the target sees it after the board delay, changes MISO after its clock-to-output delay $t_{CO}$, the new bit travels back, and the controller must capture it with its setup time $t_{SU}$ before its sampling edge, half a period later (in every mode the target launches on one edge and the controller samples on the opposite one). So
 
 $$
 \frac{1}{2f_{SCK}} \ge t_{SCK,out} + t_{wire} + t_{CO} + t_{wire} + t_{SU} ,
@@ -162,7 +162,7 @@ MIPI's **I3C** keeps I²C's two wires but drives SCL push-pull at up to 12.5 MHz
 
 **Units check.** V/A = Ω; V/Ω = A.
 
-**Sanity check.** A bright indicator needs only a few milliamps with modern LEDs; driving LEDs harder belongs on a high-drive pin or a transistor.
+**Sanity check.** A bright indicator needs only a few milliamps with modern LEDs; driving LEDs harder belongs on a high-drive pin or a transistor. One caution: 6 mA is the pin's absolute maximum and 2.0 V the LED's nominal forward voltage. Red LEDs spread to 1.8 V or lower, which with 220 Ω from 3.3 V gives 6.8 mA, above the rating; absolute-maximum ratings are stress limits, not operating points. A production design targets a recommended operating current (a few milliamps) using $V_F(min)$ and $V_{DD}(max)$.
 
 ### Example 18-05.2 · Baud-rate divisors (tier A)
 
@@ -172,7 +172,7 @@ MIPI's **I3C** keeps I²C's two wires but drives SCL push-pull at up to 12.5 MHz
 
 (b) $8.681 \times 16 = 138.9$, rounded to $139/16$ = **8.6875**: **115 108** baud, **−0.080** %.
 
-(c) A sender slow by 3.55%, in the worst case also against a receiver 1% fast, gives about 4.6% of mismatch: inside the slow-sender limit of 5.26% for the ideal receiver, but outside the ±2% recommended for real receivers with sampling uncertainty and noise. Use the fractional divisor, or a clock that divides evenly (for example 14.7456 MHz = 128 × 115 200).
+(c) A link runs both ways, so check both. *MCU transmitting* at 111 111 baud to a peer whose clock is 1% fast (116 352 baud): the sender's bit is longer than the receiver's by $r = 116\,352/111\,111 = 1.047$, inside $r_{max}$ = 1.0556. *MCU receiving* from that peer: the sender's bit is now the shorter, $r = 111\,111/116\,352$ = **0.9550**, below $r_{min}$ = 0.95625: the peer looks 4.72% fast, beyond the 4.58% that even the ideal 16× receiver tolerates. The integer divisor therefore fails outright in one direction, before any allowance for sampling uncertainty and noise. Use the fractional divisor, or a clock that divides evenly (for example 14.7456 MHz = 128 × 115 200).
 
 **Units check.** Hz/(baud) is dimensionless; the error is a ratio.
 
@@ -248,6 +248,7 @@ MIPI's **I3C** keeps I²C's two wires but drives SCL push-pull at up to 12.5 MHz
 | Ex 18-05.2e | fractional divisor | 8.6875 | — |
 | Ex 18-05.2f | achieved baud, fractional divisor | 115108 | baud |
 | Ex 18-05.2g | error, fractional divisor | −0.080 | % |
+| Ex 18-05.2h | bit-time ratio, MCU receiving from a peer 1% fast | 0.9550 | — |
 | Ex 18-05.3a | r_max | 1.0556 | — |
 | Ex 18-05.3b | r_min, 16× | 0.95625 | — |
 | Ex 18-05.3c | r_min, 8× | 0.9625 | — |
@@ -306,7 +307,7 @@ The lab, [labs/18-05-lab](../labs/18-05-lab/README.md), has three parts: `serial
 | I²C sink | 0.4 V at 3 mA (20 mA Fm+) | sets $R_{p,min}$ |
 | Rise time 30–70% | $0.8473R_pC_b$ | from the RC solution |
 | I3C | 12.5 MHz SCL, about 11 Mbit/s SDR; about 30 Mbit/s HDR | [R-306] |
-| CMOS input thresholds | $V_{IH} \ge 0.7V_{DD}$, $V_{IL} \le 0.3V_{DD}$ | typical |
+| CMOS input thresholds | $V_{IH(min)} = 0.7V_{DD}$, $V_{IL(max)} = 0.3V_{DD}$ | typical |
 | GPIO limits (example part) | 6 mA per standard pin, 80 mA total, ±2 mA injection | TI MSPM0G350x [R-306] |
 
 ## 8. Common mistakes
@@ -325,14 +326,14 @@ The lab, [labs/18-05-lab](../labs/18-05-lab/README.md), has three parts: `serial
 ### State of the art (as of Nov 2026)
 
 - **I²C:** the specification is at Rev. 7.0 (October 2021), which replaced master/slave with controller/target; speed modes reach 1 Mbit/s for ordinary bidirectional use (fast-mode plus), with 3.4 Mbit/s high-speed and a write-only 5 Mbit/s ultra-fast mode ([R-306]) **[Established]**.
-- **I3C:** MIPI's I3C v1.2 (February 2025) and I3C Basic v1.2 (April 2025) are current; v1.2 adds no features beyond v1.1.1's but incorporates its errata. Single-data-rate operation runs at 12.5 MHz for about 11 Mbit/s of data, high-data-rate modes reach about 30 Mbit/s on one lane, and most I²C targets remain usable on an I3C bus ([R-306]) **[Established]**.
-- **SPI** remains a de facto convention without a governing standard ([R-306]); MCU SPI ports reach tens of MHz (32 MHz on TI's MSPM0G350x, for example), and memory interfaces have moved to quad and octal SPI ([R-306]) **[Established]**.
+- **I3C:** MIPI's I3C v1.2 (February 2025) and I3C Basic v1.2 (April 2025) are current; v1.2 does not introduce any new features. Single-data-rate operation runs at 12.5 MHz for about 11 Mbit/s of data, high-data-rate modes reach about 30 Mbit/s on one lane, and most I²C targets remain usable on an I3C bus ([R-306]) **[Established]**.
+- **SPI** remains a de facto convention without a governing standard ([R-306]); MCU SPI ports reach tens of MHz (32 MHz on TI's MSPM0G350x, for example) ([R-306]) **[Established]**; external flash and RAM increasingly use four- and eight-line variants (quad and octal SPI), which 18-01's execute-in-place discussion assumes.
 
 ### Why it matters commercially
 
 - **Pin count is cost.** Two-wire buses let a small-package MCU serve many sensors; a design that needs SPI for every peripheral needs more pins, a bigger package and more board routing.
 - **The sensor ecosystem decides the bus.** Wearable and phone sensors are mostly I²C and SPI today, with I3C adopted where its speed and in-band interrupts pay; an MCU vendor's I3C support matters for future sensor platforms.
-- **Bring-up time.** Bus problems (signal integrity, timing, address conflicts) are among the most common causes of board re-spins and schedule slips; good vendor examples and diagnostic tools shorten them.
+- **Bring-up time.** Bus problems (signal integrity, timing, address conflicts) are a frequent cause of board re-spins and schedule slips **[Industry estimate]**; good vendor examples and diagnostic tools shorten them.
 
 ### Marketing vs Reality
 
@@ -394,7 +395,7 @@ Each clock shifts one bit out of each side's shift register into the other's, so
 
 <details><summary>Answer</summary>
 
-The separate interrupt line per sensor (I3C has in-band interrupts) and fixed-address conflicts (dynamic addressing), while raising the data rate about tenfold on the same two wires.
+The separate interrupt line per sensor (I3C has in-band interrupts) and fixed-address conflicts (dynamic addressing), while raising the data rate on the same two wires about thirtyfold against fast mode (about 11 Mbit/s against roughly 0.36 Mbit/s of data at 400 kHz) and about twelvefold against fast-mode plus.
 
 </details>
 

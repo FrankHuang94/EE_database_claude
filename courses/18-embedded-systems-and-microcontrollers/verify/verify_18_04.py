@@ -161,4 +161,17 @@ v.check("18-04.11c", 2 * pow2(n11) * 2)
 v.check("18-04.11d", 100 * 0.4 * 200e3 / 64e6)
 v.assert_true("Problem 11(d): a 1024-point block fits its block time (2063 < 5120 µs)", 15 + 2 * 1024 == 2063 and 1024 / 200e3 * 1e6 == 5120)
 
+# lab Part 2 expected results
+def p2(x): return 2 ** math.ceil(math.log2(x))
+lat3 = [(p2(dm.pingpong_min_block(fs, a, b, L * 1e-6, 3)) / fs + L * 1e-6 + a + b * p2(dm.pingpong_min_block(fs, a, b, L * 1e-6, 3))) * 1e6 for L in (0, 60)]
+lat2_60 = (p2(dm.pingpong_min_block(fs, a, b, 60e-6, 2)) / fs + 60e-6 + a + b * p2(dm.pingpong_min_block(fs, a, b, 60e-6, 2))) * 1e6
+v.assert_true("lab Part 2: three buffers stay at 64, latency 122 -> 182 us; two buffers reach 490 us",
+              all(p2(dm.pingpong_min_block(fs, a, b, L * 1e-6, 3)) == 64 for L in range(0, 61))
+              and round(lat3[0]) == 122 and round(lat3[1]) == 182 and round(lat2_60) == 490)
+v.assert_true("lab Part 2: two-buffer steps above 5.6 and 31.2 us", abs((64 * 0.4 - 20) - 5.6) < 1e-9 and abs((128 * 0.4 - 20) - 31.2) < 1e-9)
+lines12 = dm.cache_lines(0x20000410, 200)
+v.check("18-04.12a", lines12)
+v.check("18-04.12b", 32 * lines12)
+v.assert_true("Problem 12: the first line also holds rx_count at 0x20000408", 0x20000408 // 32 == 0x20000410 // 32)
+v.assert_true("Problem 12: 200 bytes round up to 224, seven whole lines", math.ceil(200 / 32) * 32 == 224)
 sys.exit(v.finish())

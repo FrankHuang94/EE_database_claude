@@ -152,7 +152,14 @@ v.check("Ex 18-06.4d", c33 - c30)
 v.assert_true("B = 3950 K gives -4.44 %/K at 25 C", abs(3950 / 298.15 ** 2 - 0.0444) < 5e-5)
 sens = 4096 * 10e3 * 10e3 / (20e3) ** 2 * 0.0444
 v.check("Ex 18-06.4e", sens)
-v.check("Ex 18-06.4f", (c33 - c30) / sens)
+sens25 = sens * 3.3 / 2.5
+v.check("Ex 18-06.4j", sens25)
+v.check("Ex 18-06.4f", (c33 - c30) / sens25)
+# exact: firmware assumes 3.3 V; at 3.0 V the code is 2457.6
+v_in = 2457.6 * 2.5 / 4096
+r_t = 10e3 * (v_in / 3.3) / (1 - v_in / 3.3)
+t_k = 1 / (1 / 298.15 + math.log(r_t / 10e3) / 3950)
+v.assert_true("B-equation: R_T = 8.333 kOhm and +4.17 K", abs(r_t - 8333.3) < 1 and abs((t_k - 298.15) - 4.17) < 0.01, f"{t_k - 298.15:.3f}")
 vdd = 4096 * 1.20 / 1489
 v.check("Ex 18-06.4g", vdd)
 v.check("Ex 18-06.4h", 1e3 * vdd / 1489)
@@ -419,4 +426,8 @@ v.assert_true("C results match exact rounding", vals == [round(1241 * 3300e3 / 4
                                                           math.floor((8 * 2047 + 8 * 2048) / 4 + 0.5),
                                                           math.floor((6 * 2047 + 10 * 2048) / 4 + 0.5)])
 
+v.assert_true("Solution 1(c): 6.02 x 10 + 1.76 = 61.96 against the exact 61.97", round(6.02 * 10 + 1.76, 2) == 61.96 and round(10 * math.log10(1.5 * 2 ** 20), 2) == 61.97)
+v.assert_true("Solution 12(e): f <= 1/(8192 R_s C_sh) is about 370 Hz for 100 kOhm and 3.3 pF", round(1 / (8192 * 100e3 * 3.3e-12), -1) == 370)
+v.assert_true("lab discussion 4: 0.1% of the 3.22 mV ripple is about 3 uV; ln(1.65/3e-6) is about 13 time constants, 54 ms",
+              round(3.2227e-3 * 1e-3 * 1e6) == 3 and round(math.log(1.65 / 3e-6)) == 13 and round(13.2 * 4.096) == 54)
 sys.exit(v.finish())

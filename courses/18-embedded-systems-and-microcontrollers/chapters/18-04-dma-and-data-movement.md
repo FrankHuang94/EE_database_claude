@@ -67,7 +67,7 @@ A DMA controller has several **channels** (streams), each describing one transfe
 - **Bursts and FIFOs:** moving several items per bus arbitration, packing 8-bit peripheral data into 32-bit memory writes.
 - **Events:** half-transfer, transfer-complete and error interrupts, which the software uses to hand buffers over.
 
-Real controllers illustrate the range ([R-305]) **[Established]**: Arm's PL230 µDMA (up to 32 channels, single AHB-Lite transfers, 1 to 1024 per cycle, ping-pong and scatter-gather modes); Microchip's SAM D5x DMAC (up to 32 channels, four priority levels, linked descriptors for multi-buffer and circular modes, blocks up to 256 KB, four bus interfaces); and ST's STM32F4 (two controllers of eight streams, memory bursts of 4, 8 or 16 beats through a FIFO, and a double-buffer mode that is circular).
+Real controllers illustrate the range ([R-305]) **[Established]**: Arm's PL230 µDMA (up to 32 channels, single AHB-Lite transfers, 1 to 1024 transfers per DMA cycle, one programmed transfer, ping-pong and scatter-gather modes); Microchip's SAM D5x DMAC (up to 32 channels, four priority levels, linked descriptors for multi-buffer and circular modes, blocks up to 256 KB, four bus interfaces); and ST's STM32F4 (two controllers of eight streams, memory bursts of 4, 8 or 16 beats through a FIFO, and a double-buffer mode that is circular).
 
 ### 3.3 Buffering: ping-pong, multi-buffer and circular
 
@@ -89,7 +89,7 @@ For $k = 2$ the first term is always the larger, so the ping-pong condition abov
 
 **Circular buffering.** For streams without natural blocks (a UART receiving messages of unknown length), the DMA writes continuously into a ring of $S$ bytes, wrapping at the end. Software reads the DMA's remaining-count register to find the write position, $\text{head} = (S - \text{remaining}) \bmod S$, and consumes from its own tail; the number of unread bytes is $(\text{head} - \text{tail}) \bmod S$. Half-transfer and transfer-complete interrupts, plus the UART's **idle-line** interrupt (the line has been quiet for one character time, so a message has probably ended), tell the software when to look. The ring must hold everything that can arrive between two services: $S > r_{bytes} \times t_{service,max}$ (Example 18-04.6).
 
-**Lock-free hand-over.** Between an interrupt handler (or DMA) and main code, a **single-producer, single-consumer ring buffer** needs no critical section: the producer writes only the head index, the consumer only the tail, and each reads the other's. With free-running 32-bit indices and a power-of-two size $S$, "full" is $\text{head} - \text{tail} = S$ and "empty" is $\text{head} = \text{tail}$, and unsigned arithmetic makes the index wrap at $2^{32}$ harmless. The producer must make the data visible before it publishes the new head (a `DMB` barrier on Arm, or a C11 release store), and the consumer must read the head before the data. The lab's firmware runs exactly this between a SysTick handler and `main` on the emulated Cortex-M4, through the 32-bit index wrap.
+**Lock-free hand-over.** Between an interrupt handler (or DMA) and main code, a **single-producer, single-consumer ring buffer** needs no critical section: the producer writes only the head index, the consumer only the tail, and each reads the other's. With free-running 32-bit indices and a power-of-two size $S$, "full" is $\text{head} - \text{tail} = S$ and "empty" is $\text{head} = \text{tail}$, and unsigned arithmetic makes the index wrap at $2^{32}$ harmless. What ordering it needs depends on who the two sides are. **On one core** (an interrupt handler and `main`), the core always observes its own memory accesses in program order and takes exceptions between instructions, so no hardware barrier is needed; what *is* needed is to stop the **compiler** from reordering or caching the accesses: `volatile` indices and a compiler barrier (an `asm volatile("" ::: "memory")`, or C11 atomics) between writing the data and publishing the head. **Across cores**, or between a CPU and another bus master through shared memory, the hardware can also reorder, and both halves need a barrier: the producer must make the data visible before it publishes the new head (a release store: `DMB` on Arm, or C11 `memory_order_release`), and the consumer must read the head before the data (an acquire), *and* finish reading a slot before it publishes the new tail (another release), or the producer may overwrite the slot while it is still being read. A DMA controller is a special case: a CPU-side barrier cannot order the DMA's own writes, whose completion is signalled by its interrupt or status flag. The lab's firmware runs this ring between a SysTick handler and `main` on the emulated Cortex-M4, through the 32-bit index wrap, with the barriers of the multi-core version in place.
 
 ### 3.4 Bus bandwidth and contention
 
@@ -102,14 +102,14 @@ $$
 \text{stall fraction} \approx p\,\rho
 $$
 
-of its cycles, each collision costing one cycle when the DMA wins arbitration. The lab's cycle-level model of one port shared by a CPU and a DMA master reproduces this estimate to within 1% across loads. The fix is layout: put the DMA's buffers in a separate SRAM bank (many MCUs provide two or more, and a bus matrix lets different masters reach different banks in the same cycle; 18-01 §3.4), so $p\rho \to 0$ for the CPU's own data and stack.
+of its cycles, each collision costing one cycle when the DMA wins arbitration. The lab's cycle-level model of one port shared by a CPU and a DMA master reproduces this estimate to within 1% for DMA occupancies up to about ρ = 0.5. That agreement is close to built in, because the model's CPU accesses are independent and its DMA requests single-cycle and evenly spaced; real contention is worse when CPU accesses come in bursts, when the DMA uses multi-beat bursts, or when wait states and flash fetches stretch the collisions, and above ρ ≈ 0.5 the simple product underestimates the stall. The fix is layout: put the DMA's buffers in a separate SRAM bank (many MCUs provide two or more, and a bus matrix lets different masters reach different banks in the same cycle; 18-01 §3.4), so $p\rho \to 0$ for the CPU's own data and stack.
 
 ### 3.5 DMA, memory ordering and caches
 
 The DMA is another bus master, so the CPU's view of memory and the DMA's must be kept consistent.
 
 - **Ordering.** Before starting a DMA that reads a buffer the CPU just filled, the CPU's writes must have reached memory: on Arm, a `DSB` (data synchronization barrier) before the write that enables the channel. When the DMA reports completion, a `DMB` before reading the buffer keeps the CPU from using values loaded too early. Buffers shared with DMA should be `volatile` or accessed only after such barriers.
-- **Caches.** On a core with a data cache (Cortex-M7, M55, M85; 18-01 §9), the CPU may hold a buffer's contents in cache while the DMA reads or writes memory directly.
+- **Caches.** On a core with a data cache (Cortex-M7, M55, M85, and optionally M52; 18-01 §9), the CPU may hold a buffer's contents in cache while the DMA reads or writes memory directly.
   - Before a DMA **reads** a buffer (transmit): **clean** the cache lines covering it, so memory holds the CPU's latest data.
   - Before the CPU **reads** a buffer a DMA wrote (receive): **invalidate** those lines, so the CPU fetches the new data instead of stale cached copies (and invalidate *before* the DMA starts too, so no dirty line is evicted over the new data).
   - Cache maintenance works on whole **lines** (32 bytes on the Cortex-M7). A receive buffer that shares a line with another variable is dangerous: invalidating the line discards that variable's cached updates. Align DMA buffers to the line size and pad their length to a whole number of lines (Example 18-04.5).
@@ -137,7 +137,7 @@ The DMA is another bus master, so the CPU's view of memory and the DMA's must be
 
 **Units check.** samples/s ÷ samples/block = blocks/s; (1/s × cycles)/(cycles/s) is dimensionless.
 
-**Sanity check.** 5.3 ms of buffering is acceptable for playback but noticeable in a two-way voice call, where the total delay budget is shared with the network and codec; latency is the price of large blocks.
+**Sanity check.** 5.3 ms of buffering is acceptable for playback, and in a two-way voice call it is a real part of the end-to-end delay budget, which is shared with the codec, the network and the far end's buffers; latency is the price of large blocks.
 
 ### Example 18-04.2 · Sizing a ping-pong buffer (tier B)
 
@@ -187,7 +187,7 @@ The DMA is another bus master, so the CPU's view of memory and the DMA's must be
 
 **Units check.** Addresses and lengths in bytes; lines of 32 bytes.
 
-**Sanity check.** On a core without a data cache (Cortex-M0+, M3, M4, M33) none of this applies, but the ordering barriers of §3.5 still do.
+**Sanity check.** On a core without a data cache (Cortex-M0+, M3, M4, M33 and M52 without its optional cache) none of this applies, but the ordering barriers of §3.5 still do.
 
 ### Example 18-04.6 · A UART on circular DMA (tier B)
 
@@ -201,7 +201,7 @@ The DMA is another bus master, so the CPU's view of memory and the DMA's must be
 
 **Units check.** bits/s ÷ bits/byte = bytes/s.
 
-**Sanity check.** A burst at full line rate fills the 512-byte ring in **5.56** ms; if the consumer is late by more than 0.56 ms beyond its 5 ms bound, data is overwritten, so the consumer should check for overrun (head passing tail) and count it.
+**Sanity check.** A burst at full line rate fills the 512-byte ring in **5.56** ms; if the consumer is late by more than 0.56 ms beyond its 5 ms bound, data is overwritten, so the consumer must detect overrun. The remaining-count register alone cannot show it, because a ring that has been lapped looks exactly like one with less data. Count the half-transfer and transfer-complete events in their interrupt (a lap counter) and compare the total bytes written with the consumer's total read, or use the UART's or DMA's overrun flag where the hardware has one.
 
 <!-- answer-key -->
 
@@ -265,7 +265,7 @@ The lab, [labs/18-04-lab](../labs/18-04-lab/README.md), provides `dmasim.py` (bu
 |---|---|---|
 | Load with one interrupt per item | $r\,c_{item}/f$ | 18-03 |
 | Load with DMA blocks | $(r/N)\,c_{block}/f$ | $N$ items per block |
-| Ping-pong bound | $N \ge (a + L)f_s/(1 - bf_s)$ | $k$ buffers: denominator $(k - 1) - bf_s$ |
+| Ping-pong bound | $N \ge (a + L)f_s/(1 - bf_s)$ | $k$ buffers: $N \ge \max\big((a + L)f_s/((k - 1) - bf_s),\ af_s/(1 - bf_s)\big)$ |
 | Worst latency of a block scheme | $N/f_s + L + a + bN$ | first sample of a block |
 | Circular buffer | $S > r_{bytes}\,t_{service}$; head $= S -$ remaining | power-of-two sizes |
 | Contention | stall ≈ $p\rho$ | removed by separate banks |
@@ -291,8 +291,8 @@ The lab, [labs/18-04-lab](../labs/18-04-lab/README.md), provides `dmasim.py` (bu
 
 ### Why it matters commercially
 
-- **Throughput per milliwatt.** In wearables and IoT, the ability to stream sensors and audio by DMA while the CPU sleeps is a direct battery-life lever (18-09); vendors advertise "autonomous peripherals" and low-power DMA for this reason.
-- **Integration level.** MCUs with good DMA, multiple SRAM banks and peripheral-to-peripheral triggering can replace an FPGA or a second processor in data-acquisition designs, which shows up in bill-of-materials cost.
+- **Throughput per milliwatt.** In wearables and IoT, the ability to stream sensors and audio by DMA while the CPU sleeps is a direct battery-life lever (18-09); vendors advertise "autonomous peripherals" and low-power DMA for this reason **[Industry estimate]**.
+- **Integration level.** MCUs with good DMA, multiple SRAM banks and peripheral-to-peripheral triggering can sometimes replace an FPGA or a second processor in data-acquisition designs, which shows up in bill-of-materials cost **[Industry estimate]**.
 - **Software maturity.** DMA drivers with correct cache maintenance and overrun handling are hard to write; the quality of a vendor's DMA drivers and examples is part of the ecosystem value of 18-02 §9.
 
 ### Marketing vs Reality

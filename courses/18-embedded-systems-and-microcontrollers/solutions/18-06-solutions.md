@@ -12,7 +12,7 @@ Problems: [18-06 problem set](../problems/18-06-problems.md) · Chapter: [18-06]
 
 (b) $1.8/2.441\ \text{mV} = 737.3$, which rounds to code **737**. Code 512 is $512 \times 2.441\ \text{mV}$ = **1.25** V, mid-scale.
 
-(c) Half an LSB, **1.221** mV. SQNR $= 6.02 \times 10 + 1.76$ = **61.97** dB.
+(c) Half an LSB, **1.221** mV. SQNR $= 10\log_{10}(1.5 \times 2^{20})$ = **61.97** dB (the rounded rule $6.02 \times 10 + 1.76$ gives 61.96).
 
 ### Solution 18-06.2
 
@@ -126,7 +126,7 @@ Problems: [18-06 problem set](../problems/18-06-problems.md) · Chapter: [18-06]
 
 (d) The scan shrinks to 2.298 µs, **435** kHz. Now $g = 100\ \text{kΩ} \times 435\ \text{kHz} \times 3.3\ \text{pF} = 0.144$, so the 2.0 V channel is pulled toward the 1.0 V channel by about $1.0 \times 0.144/1.144$ = **126** mV, or **156** LSB. The exact recursion agrees.
 
-(e) Buffer the 100 kΩ source with an op-amp (the robust fix), or scan it in a separate, slow sequence (at 1 kHz its error falls to about 0.35 mV), or keep its long sampling time and accept the 191 kHz scan. An external capacitor only works when the channel's own sample rate is low compared with $1/(R_sC_{sh})$.
+(e) Buffer the 100 kΩ source with an op-amp (the robust fix), or scan it in a separate, slow sequence (at 1 kHz its error falls to about 0.35 mV), or keep its long sampling time and accept the 191 kHz scan. An external capacitor fixes the charge-sharing step but not the refill error: that stays under half an LSB only if $R_sfC_{sh} \le (V_{REF}/\lvert V_s - V_0\rvert)/2^{N+1}$, which for a full-scale difference at 12 bits is $f \le 1/(8192\,R_sC_{sh})$, about 370 Hz for this 100 kΩ source.
 
 ---
 

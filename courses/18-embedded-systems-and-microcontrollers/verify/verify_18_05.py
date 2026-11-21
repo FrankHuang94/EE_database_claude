@@ -151,8 +151,11 @@ v.check("Ex 18-05.2g", 100 * e_fr)
 v.assert_true("serialbus baud_error agrees", abs(sb.baud_error(16e6, 115200) - e_int) < 1e-12
               and abs(sb.baud_error(16e6, 115200, 16, 4) - e_fr) < 1e-12)
 v.assert_true("14.7456 MHz = 128 x 115 200", 14_745_600 == 128 * 115200)
-v.assert_true("integer error plus 1% stays under the slow-sender limit but over 2%",
-              2 < abs(100 * e_int) + 1 < 100 * (1 - 9 / 9.5))
+r_tx = 1.01 * 115200 / (16e6 / (16 * 9))      # MCU sends, peer 1% fast receives
+r_rx = (16e6 / (16 * 9)) / (1.01 * 115200)      # peer 1% fast sends, MCU receives
+v.assert_true("integer divisor: MCU TX inside r_max, MCU RX below r_min (fails)",
+              round(r_tx, 3) == 1.047 and r_tx < 9.5 / 9 and r_rx < (9.5 + 1 / 16) / 10)
+v.check("Ex 18-05.2h", r_rx)
 
 # ---------------------------------------------------------------- Example 3 (window, theory and simulation)
 rmin16, rmax = window(10)
@@ -403,4 +406,6 @@ v.assert_true("Example 18-05.4's other delays sum to 9 ns", 2 + 1 + 1 + 5 == 9)
 v.assert_true("100 characters at 115 200 baud take about 8.7 ms",
               abs(100 * 10 / 115200 - 8.7e-3) < 0.05e-3 and abs(10 / 115200 - 86.8e-6) < 0.05e-6)
 
+v.assert_true("Example 1 caution: a 1.8 V LED with 220 ohm from 3.3 V draws 6.8 mA", round((3.3 - 1.8) / 220 * 1e3, 1) == 6.8)
+v.assert_true("Q6: I3C SDR data about 30x fast mode and 12x fast-mode plus", round(11 / (0.4 * 8 / 9)) == 31 and round(11 / (1.0 * 8 / 9)) == 12)
 sys.exit(v.finish())

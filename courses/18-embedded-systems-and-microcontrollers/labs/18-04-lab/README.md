@@ -10,7 +10,7 @@ Chapter: [18-04 · DMA and Data Movement](../../chapters/18-04-dma-and-data-move
 
 ## Background
 
-A block of $N$ samples is safe with $k$ buffers when $L + a + bN \le (k - 1)N/f_s$ (§3.3). A DMA master occupying a port for a fraction $\rho$ of cycles stalls a CPU that uses that port in a fraction $p$ of its cycles by about $p\rho$ (§3.4). A ring buffer with one writer per index needs no critical section, only a barrier between writing data and publishing the index (§3.3).
+A block of $N$ samples is safe with $k$ buffers when $L + a + bN \le (k - 1)N/f_s$ and the CPU keeps up on average, $a + bN \le N/f_s$ (§3.3). A DMA master occupying a port for a fraction $\rho$ of cycles stalls a CPU that uses that port in a fraction $p$ of its cycles by about $p\rho$ (§3.4). A ring buffer with one writer per index needs no critical section, only the right ordering between writing data and publishing the index (§3.3).
 
 QEMU's `mps2-an386` board has no general-purpose DMA controller for the firmware to drive, so the DMA side is modelled in Python; the firmware plays the DMA completion interrupt's role with SysTick.
 
@@ -52,13 +52,13 @@ QEMU's `mps2-an386` board has no general-purpose DMA controller for the firmware
 
 1. Why do overruns at $N$ = 112 appear only occasionally rather than on every block?
 2. Why does the ring buffer use free-running 32-bit indices instead of indices reduced modulo the size?
-3. What would break in the ring buffer if the `dmb` in `ring_put` were removed on a core with a write buffer, and why does the test not catch it on QEMU?
+3. What would break in the ring buffer if the `dmb` in `ring_put` were removed, in this lab and if the ring were shared between two cores, and why does the test not catch it on QEMU?
 
 ## Answers
 
 1. The bound uses the worst service latency, 25 µs. The simulator draws latencies uniformly from 5 to 25 µs, and $N$ = 112 fails only when the latency exceeds $112(1 - 0.6) - 20 = 24.8$ µs, which happens in about 1% of blocks. A design sized for typical latency fails rarely, which is the worst kind of failure to debug.
 2. With free-running indices, $\text{head} - \text{tail}$ is the number of items stored, from 0 to the size, so full and empty are distinguishable without wasting a slot or keeping a shared count; unsigned arithmetic makes the wrap at $2^{32}$ harmless. Only the array access reduces the index modulo the (power-of-two) size.
-3. The consumer could see the new head before the data write reached memory and read a stale item. QEMU executes memory accesses in program order and has no write buffer to reorder them, so the test passes with or without the barrier; the barrier is required by the architecture's memory model, not by this emulator. This is a case where only reasoning, not testing, shows correctness.
+3. Here, nothing: the producer (the SysTick handler) and the consumer (`main`) run on the same core, which always observes its own accesses in program order, so the hardware barrier is not needed on a real Cortex-M4 either. What the code does need on one core is the compiler barrier (the `"memory"` clobber of the `asm` statement) and the `volatile` indices, which stop the compiler from moving the data write after the head update or caching the indices in registers. The `dmb` instructions matter when the ring is shared between two cores or with another bus master: then the consumer could see the new head before the data, or the producer could overwrite a slot the consumer has not finished reading. QEMU would pass the test either way, so this is a case where reasoning about the memory model, not testing on an emulator, shows correctness.
 
 ## Optional hardware
 

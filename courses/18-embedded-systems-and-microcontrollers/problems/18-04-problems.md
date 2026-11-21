@@ -50,11 +50,31 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 18-04.10 [C]
 
-**Copying with the CPU or the DMA.** A 1 MB block must be copied on a 48 MHz MCU at 3.3 V. A CPU copy loop takes 4 cycles per byte with the MCU drawing 5 mA. A DMA copy with word transfers takes 2 bus cycles per word, during which the CPU sleeps and the MCU draws 1.5 mA. (a) How long does each take? (b) How much energy does each use? (c) By what factor does DMA save energy, and what assumption matters most?
+**Copying with the CPU or the DMA.** A 1 MB ($10^6$-byte) block must be copied on a 48 MHz MCU at 3.3 V, whose bus also runs at 48 MHz. A CPU copy loop takes 4 cycles per byte with the MCU drawing 5 mA. A DMA copy with word transfers takes 2 bus cycles per word, during which the CPU sleeps and the MCU draws 1.5 mA. (a) How long does each take? (b) How much energy does each use? (c) By what factor does DMA save energy, and what assumption matters most?
 
 ### Problem 18-04.11 [C]
 
-**Designing a sensor stream.** A vibration sensor delivers 200 kS/s of 16-bit samples to an MCU at 64 MHz. Each block runs an FFT costing $15\ \mu\text{s} + 2\ \mu\text{s} \times N$. Other interrupts can delay processing by up to 40 µs. The stream's DMA writes one sample per bus cycle into SRAM, and the CPU spends 40% of its cycles on memory accesses. (a) Is a ping-pong design possible? (b) Find the smallest power-of-two block for two buffers, and its SRAM. (c) Estimate the CPU slowdown from contention if the buffers share the CPU's SRAM bank (bus at 64 MHz). (d) What would you change?
+**Designing a sensor stream.** A vibration sensor delivers 200 kS/s of 16-bit samples to an MCU at 64 MHz. Each block runs an FFT whose cost over the block sizes of interest is approximated as $15\ \mu\text{s} + 2\ \mu\text{s} \times N$ (a real FFT grows as $N\log N$, so check the fit at the block you choose). Other interrupts can delay processing by up to 40 µs. Each sample costs the DMA one bus cycle of SRAM writes, and the CPU spends 40% of its cycles on memory accesses. (a) Is a ping-pong design possible? (b) Find the smallest power-of-two block for two buffers, and its SRAM. (c) Estimate the CPU slowdown from contention if the buffers share the CPU's SRAM bank (bus at 64 MHz). (d) What would you change?
+
+### Problem 18-04.12 [B]
+
+**Cache maintenance for DMA.** *(lab)* A Cortex-M7 with a write-back data cache of 32-byte lines sends a buffer to a UART by DMA (TX) and receives another from an ADC by DMA (RX). (a) Give the cache operations and barriers, in order, for TX and for RX. (b) The RX buffer is 200 bytes at 0x2000 0410, and the interrupt handler's counter `rx_count` sits at 0x2000 0408. How many cache lines does the buffer touch, and which one does it share? (c) Describe two ways the shared line corrupts data. (d) Fix the declaration: how many bytes must the buffer occupy?
+
+### Problem 18-04.13 [B]
+
+**Spot the race.** A UART driver shares a buffer between its receive handler and `main` through a shared count:
+
+```c
+volatile uint8_t buf[64]; volatile unsigned count, wr, rd;
+void UART_IRQHandler(void) { buf[wr] = UART->DR; wr = (wr + 1) % 64; count++; }
+int get(uint8_t *c) { if (count == 0) return 0; *c = buf[rd]; rd = (rd + 1) % 64; count--; return 1; }
+```
+
+(a) Find the race and describe the failure it causes. (b) Why does `volatile` not prevent it? (c) Rewrite the hand-over so that it needs no critical section, and say which variables each side writes.
+
+### Problem 18-04.14 [C]
+
+**A ring between two cores.** A dual-core MCU (a Cortex-M7 and a Cortex-M4) passes sensor records from the M4 to the M7 through a single-producer, single-consumer ring in shared SRAM. (a) Where must memory barriers go in `put` and `get`, and what goes wrong without each? (b) Why is the barrier before the consumer's tail update needed here although it is not in the single-core lab? (c) The ring sits in memory that the M7 caches. What must the M7 do in addition, and what is the simpler alternative? (d) How would you test this, given that QEMU will not show the failures?
 
 ---
 
@@ -66,5 +86,5 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 2. DMA controller anatomy | 2, 3, 7 |
 | 3. Buffer sizing | 4, 5, 9, 11 |
 | 4. Bus contention | 6, 11 |
-| 5. Caches and ordering | 8 |
-| 6. Lock-free hand-over | 3, 9 |
+| 5. Caches and ordering | 8, 12, 14 |
+| 6. Lock-free hand-over | 13, 14 |

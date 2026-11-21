@@ -36,7 +36,7 @@ $bf_s = 5 \times 10^{-6} \times 48\,000 = 0.24$.
 
 ### Solution 18-04.5
 
-With three buffers the deadline condition gives $N \ge 300 \times 10^{-6} \times 48\,000/(2 - 0.24)$ = **8.2**, but the CPU must also keep up on average: the throughput floor $af_s/(1 - bf_s)$ is the **12.6** of Solution 18-04.4(a), and it binds. So $N \ge 12.6$, and **16** as a power of two. Memory: $3 \times 16 \times 2$ = **96** bytes against $2 \times 32 \times 2$ = **128** for two buffers of 32. Worst latency: $333.3 + 100 + 200 + 80$ = **713** µs against 1127 µs. The third buffer wins on both counts here, because it lets the blocks halve; it could not take them below 13 samples, however long the service latency allowed.
+With three buffers the deadline condition gives $N \ge 300 \times 10^{-6} \times 48\,000/(2 - 0.24)$ = **8.2**, but the CPU must also keep up on average: the throughput floor $af_s/(1 - bf_s)$ is the **12.6** of Solution 18-04.4(a), and it binds. So $N \ge 12.6$, and **16** as a power of two. Memory: $3 \times 16 \times 2$ = **96** bytes against $2 \times 32 \times 2$ = **128** for two buffers of 32. Worst latency: $333.3 + 100 + 200 + 80$ = **713** µs against 1127 µs. The third buffer wins on both counts here, because it lets the blocks halve; it could not take them below 13 samples, however short the service latency.
 
 ### Solution 18-04.6
 
@@ -79,6 +79,53 @@ With three buffers the deadline condition gives $N \ge 300 \times 10^{-6} \times
 (c) $\rho = 200\,000/(64 \times 10^6) = 0.003125$; stall $\approx 0.4 \times 0.003125$ = **0.125** %: negligible.
 
 (d) The timing bound is not the binding constraint here; the FFT's frequency resolution, $f_s/N$, is. With $N$ = 32 the bins are 6.25 kHz wide, too coarse for most vibration analysis. Choose $N$ from the resolution needed (for example 1024 samples for 195 Hz bins, 4 KiB for two buffers) and confirm that processing still fits: $15 + 2 \times 1024 = 2063$ µs against a block time of 5120 µs. Contention can be ignored; a separate bank would only matter at much higher rates.
+
+### Solution 18-04.12
+
+(a) TX: the CPU writes the buffer; **clean** the buffer's lines (write the dirty data to memory); `DSB`; start the DMA. RX: **clean and invalidate** (or just invalidate, if no line is shared) the buffer's lines before starting, so that no dirty line can later be evicted over the DMA's data; start the DMA; when it completes, `DSB`, **invalidate** the lines again (the CPU may have speculatively refetched them meanwhile), then read.
+
+(b) The buffer runs from 0x2000 0410 to $0x2000\,0410 + 199 = 0x2000\,04D7$. Lines are 0x20 bytes: from the line at 0x2000 0400 to the one at 0x2000 04C0, $\lfloor 0x4D7/32\rfloor - \lfloor 0x410/32\rfloor + 1 = 38 - 32 + 1$ = **7** lines. The first, 0x2000 0400–0x2000 041F, also holds `rx_count`.
+
+(c) Two failures. If the handler has incremented `rx_count`, its line is dirty in the cache; invalidating the buffer's lines after the transfer throws the new count away. If instead the driver *cleans* that line while the DMA is running (or the cache evicts it), the cache writes its stale copy of bytes 0x410–0x41F over the data the DMA has just written. Either corrupts data only when the timing is unlucky.
+
+(d) `__attribute__((aligned(32))) uint8_t rx[224];`: 200 bytes rounded up to whole lines, $7 \times 32$ = **224** bytes, that no other variable shares. Alternatively, place DMA buffers in a non-cacheable region set up with the MPU, or in the M7's DTCM, which the cache does not cover.
+
+### Solution 18-04.13
+
+(a) `count++` in the handler and `count--` in `main` are both read-modify-writes of the same variable. If the receive interrupt arrives between `main`'s load of `count` and its store, `main` writes back the old value minus one and the handler's increment is lost: `count` now under-reports the data in the buffer, and bytes sit unread until another byte arrives. The handler cannot be interrupted by `main`, so the error only ever goes one way: each lost increment leaves the count one lower for good, until the writer starts overwriting data the count says is free. It is the race of 18-02 §3.6 in a different place.
+
+(b) `volatile` makes each access happen, but `count--` is still a load, a subtract and a store, and an interrupt can fall between them.
+
+(c) Drop the shared count and use free-running head and tail indices, each written by only one side (the lab's `ring.h`): the handler writes `head` only, `main` writes `tail` only, and the number of bytes is `head - tail`, computed by whichever side needs it.
+
+```c
+#define N 64u                                   /* power of two */
+volatile uint8_t buf[N]; volatile uint32_t head, tail, overruns;
+void UART_IRQHandler(void)                      /* producer: writes head only */
+{
+    uint8_t c = UART->DR;
+    if (head - tail != N) { buf[head % N] = c; __asm__ volatile("" ::: "memory"); head++; }
+    else overruns++;                            /* full: count the loss */
+}
+int get(uint8_t *c)                             /* consumer: writes tail only */
+{
+    if (head == tail) return 0;
+    *c = buf[tail % N]; __asm__ volatile("" ::: "memory"); tail++;
+    return 1;
+}
+```
+
+On one core the compiler barriers are enough (§3.3).
+
+### Solution 18-04.14
+
+(a) `put`: write the data, then a `DMB` (a release), then store the new head; without it the M7 may see the new head before the data and read a stale record. `get`: load the head, then a `DMB` (an acquire), then read the slot; without it the M7 may read the slot before it has seen the head that made it valid. Then a second `DMB` before storing the new tail; without it the M4 may see the slot freed and overwrite it before the M7's read of it has completed.
+
+(b) On one core the core observes its own accesses in order and an interrupt falls between instructions, so the slot's read always completes before the tail store. Between two cores, each core's accesses can become visible to the other in a different order than they were issued, so the order must be enforced on both sides.
+
+(c) The M7 must clean its cache lines for anything it writes (the tail) before publishing, and invalidate the lines of the head and the slots before reading them, because the M4 writes memory directly and the M7's cache would otherwise serve stale copies; the line rules of Problem 12 apply, and head, tail and data should sit in separate lines. The simpler alternative is to place the ring in a region the MPU marks non-cacheable (or shareable, where the cache supports it), at the cost of slower access.
+
+(d) Reason from the memory model, then test on the real part under stress: run both cores at full rate for hours with sequence numbers in the records and a checker on the consumer, vary the timing (other bus traffic, interrupts, cache pressure), and confirm that removing a barrier makes the checker fail, so the test is known to be able to detect the bug.
 
 ---
 
@@ -123,3 +170,5 @@ With three buffers the deadline condition gives $N \ge 300 \times 10^{-6} \times
 | 18-04.11b | chosen block | 32 | samples |
 | 18-04.11c | SRAM for two buffers | 128 | bytes |
 | 18-04.11d | contention stall | 0.125 | % |
+| 18-04.12a | cache lines touched by the RX buffer | 7 | — |
+| 18-04.12b | padded buffer size | 224 | bytes |

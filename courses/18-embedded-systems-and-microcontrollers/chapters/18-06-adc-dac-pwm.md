@@ -76,7 +76,7 @@ $$
 
 - **Offset error:** the shift of the whole transfer function, in LSB at code 0.
 - **Gain error:** the slope error after offset is removed, often quoted at full scale; it includes the reference's error if the reference is internal.
-- **Differential nonlinearity (DNL):** how much each code's width differs from 1 LSB. DNL below −1 LSB means a **missing code**.
+- **Differential nonlinearity (DNL):** how much each code's width differs from 1 LSB. A code of zero width, DNL = −1 LSB, is a **missing code**; DNL cannot go below −1, and "no missing codes" means DNL > −1 LSB everywhere.
 - **Integral nonlinearity (INL):** the largest deviation of the transfer function from a straight line, after offset and gain are removed.
 - **Total unadjusted error (TUE):** the combined worst case of all of these, the honest figure for an uncalibrated measurement.
 - **Noise:** thermal and reference noise make repeated conversions of a constant input spread over several codes.
@@ -89,7 +89,7 @@ $$
 
 An ADC with 12-bit output codes and ENOB 11.1 performs like an ideal 11.1-bit converter. Offset and gain errors do not enter ENOB at all, so a converter can have an excellent ENOB and a poor TUE.
 
-> **Math refresher: decibels of a power ratio.** $10\log_{10}(P_1/P_2)$. One bit doubles the amplitude ratio, a factor of 4 in power: $10\log_{10}4 = 6.02$ dB per bit. The 1.76 dB is $10\log_{10}1.5$, the ratio of a full-scale sine's power to that of a full-scale square of the same peak.
+> **Math refresher: decibels of a power ratio.** $10\log_{10}(P_1/P_2)$. One bit doubles the amplitude ratio, a factor of 4 in power: $10\log_{10}4 = 6.02$ dB per bit. The 1.76 dB is $10\log_{10}1.5$: a full-scale sine of peak $A$ has power $A^2/2$, while a signal spread uniformly over $\pm A$ (a full-scale sawtooth, the same distribution that gives quantization noise its $q^2/12$) has mean square $A^2/3$, and their ratio is 1.5.
 
 **The SAR principle in one paragraph.** A successive-approximation (SAR) ADC holds the sample on a capacitor array that doubles as a DAC. It then decides one bit per clock, most significant first: it tries the bit, compares the DAC's output with the held sample, and keeps or clears the bit. That is a binary search, so an $N$-bit conversion takes $N$ comparator decisions plus overhead, and a conversion cycle is the acquisition time plus about $N$ clocks. The architecture's details, and why it dominates MCU ADCs, are in 20-07.
 
@@ -241,7 +241,7 @@ The filter's bandwidth, $f_c = 1/2\pi\tau$, is then at most $2f_{clk}/(\pi 4^N)$
 
 > **Going deeper: better filters and smarter modulation.** A second-order filter attenuates the PWM fundamental by roughly $(f_c/f_{PWM})^2$ instead of $f_c/f_{PWM}$, so it buys bandwidth at the same ripple. Splitting the period into many shorter pulses with the same total width ("distributed" or sigma-delta-like PWM) moves the energy to higher frequencies, where the same filter removes more of it. Many loads need no filter at all: a motor winding's inductance averages the current, and the eye averages an LED's light above a few hundred hertz.
 
-**When to use which.** An on-chip DAC gives a clean, fast output with no filter design, but few MCUs have one or more than one or two channels. PWM is available on almost every timer pin, costs only an RC network and is ideal for slow set-points (bias voltages, LED brightness, heater power), but its ripple and slow settling rule it out for audio-band waveforms unless filtered hard.
+**When to use which.** An on-chip DAC gives a clean, fast output with no filter design, but many MCUs have none, and few have more than two channels. PWM is available on almost every timer pin, costs only an RC network and is ideal for slow set-points (bias voltages, LED brightness, heater power), but its ripple and slow settling rule it out for audio-band waveforms unless filtered hard.
 
 ## 4. Worked examples
 
@@ -275,7 +275,7 @@ The filter's bandwidth, $f_c = 1/2\pi\tau$, is then at most $2f_{clk}/(\pi 4^N)$
 
 ### Example 18-06.3 · An external capacitor and a multiplexed input (tier B)
 
-**Setup.** A 10 kΩ source (the Thévenin resistance of a 20 kΩ/20 kΩ divider) at 3.3 V has a 100 nF capacitor at the pin. The ADC ($C_{sh}$ = 3.3 pF, 12 bits, 3.3 V reference) samples this channel at 100 kHz, alternating with a channel at 0 V, so the S/H arrives at 0 V each time. (a) What is the charge-sharing step, and what capacitor would keep it below half an LSB? (b) What equivalent resistance does the S/H present, and what DC error results? (c) Repeat (b) at 1 kHz.
+**Setup.** A 3.3 V source with 10 kΩ of output resistance (a sensor's output stage, or a 20 kΩ/20 kΩ divider fed from 6.6 V) has a 100 nF capacitor at the pin. The ADC ($C_{sh}$ = 3.3 pF, 12 bits, 3.3 V reference) samples this channel at 100 kHz, alternating with a channel at 0 V, so the S/H arrives at 0 V each time. (a) What is the charge-sharing step, and what capacitor would keep it below half an LSB? (b) What equivalent resistance does the S/H present, and what DC error results? (c) Repeat (b) at 1 kHz.
 
 **Solution.** (a) $3.3 \times 3.3\ \text{pF}/100.0033\ \text{nF}$ = **0.109** mV, about a quarter of the half-LSB allowance; the half-LSB limit needs $C_{ext} \ge 3.3\ \text{pF} \times 8191$ = **27.0** nF, so 100 nF passes.
 
@@ -295,7 +295,7 @@ The filter's bandwidth, $f_c = 1/2\pi\tau$, is then at most $2f_{clk}/(\pi 4^N)$
 
 (b) $V_{IN} = V_{DD}/2$: at 3.3 V, $4096 \times 1.65/2.5$ = **2703**; at 3.0 V, **2458**: a shift of **245** codes with no temperature change.
 
-(c) $d(\text{code})/d\ln R_T = 4096\,R_TR_f/(R_T + R_f)^2 = 1024$, times 0.0444/K: **45.5** codes/K. The supply drop looks like $245/45.5$ = **5.4** K.
+(c) Ratiometrically, $d(\text{code})/d\ln R_T = 4096\,R_TR_f/(R_T + R_f)^2 = 1024$, times 0.0444/K: **45.5** codes/K. Against the 2.5 V reference the same divider swings $V_{DD}/2.5$ times as many codes, $45.5 \times 3.3/2.5$ = **60.0** codes/K at 3.3 V, so the 245-code drop looks like $245/60.0$ = **4.1** K. (Inverting the B-equation exactly for code 2457.6, with firmware that assumes 3.3 V, gives $R_T$ = 8.333 kΩ and +4.17 K.)
 
 (d) $V_{DD} = 4096 \times 1.20/1489$ = **3.301** V. One code changes it by about $3.301/1489$ = **2.2** mV, but the 1% tolerance contributes **33** mV unless the reference is calibrated.
 
@@ -367,7 +367,8 @@ The filter's bandwidth, $f_c = 1/2\pi\tau$, is then at most $2f_{clk}/(\pi 4^N)$
 | Ex 18-06.4c | code with 2.5 V reference, V_DD 3.0 V | 2458 | — |
 | Ex 18-06.4d | shift | 245 | codes |
 | Ex 18-06.4e | sensitivity | 45.5 | codes/K |
-| Ex 18-06.4f | apparent temperature error | 5.4 | K |
+| Ex 18-06.4f | apparent temperature error | 4.1 | K |
+| Ex 18-06.4j | sensitivity against 2.5 V at 3.3 V | 60.0 | codes/K |
 | Ex 18-06.4g | V_DD from the internal reference | 3.301 | V |
 | Ex 18-06.4h | change per code | 2.2 | mV |
 | Ex 18-06.4i | change from 1% reference tolerance | 33 | mV |
@@ -451,15 +452,15 @@ The lab, [labs/18-06-lab](../labs/18-06-lab/README.md), has four parts: `mcuanal
 
 ### Why it matters commercially
 
-- **Integration removes parts.** A good on-chip ADC and reference replace an external converter, its reference and its SPI link: cents to dollars of BOM and board area in high-volume wearables and IoT nodes.
-- **Analog quality differentiates MCUs.** Behind the same "12-bit" label, parts differ by more than two effective bits (11.1 against 8.7 in the examples above); for battery gauging, sensor readout and motor control that can decide the design win.
+- **Integration removes parts.** A good on-chip ADC and reference replace an external converter, its reference and its SPI link: cents to dollars of BOM and board area in high-volume wearables and IoT nodes **[Industry estimate]**.
+- **Analog quality differentiates MCUs.** Behind the same "12-bit" label, parts differ by more than two effective bits (11.1 against 8.7 in the examples above); for battery gauging, sensor readout and motor control that can decide the design win **[Industry estimate]**.
 - **Precision still goes outside.** Medical, metering and instrumentation front ends that need 16 or more effective bits use dedicated sigma-delta converters (20-08) or MCUs built around them.
 
 ### Marketing vs Reality
 
 - **"12-bit ADC."** That is the output word. Ask for ENOB at your input frequency and reference, and for TUE over temperature.
 - **"14-bit effective resolution with hardware averaging."** Averaging 16 samples of a 12-bit ADC yields 14-bit output words; the same part's measured ENOB with that averaging is 12.5 ([R-307]). Ask for the measured ENOB, not the word length.
-- **"Up to 4 Msps."** At the minimum sampling time, with a low-impedance source. With a 10 kΩ sensor the usable rate may be a tenth of that (Example 18-06.2).
+- **"Up to 4 Msps."** At the minimum sampling time, with a low-impedance source. With a 10 kΩ sensor the sampling time alone can cut it to about half (Problem 18-06.4).
 - **"Internal reference, no external parts."** Check its initial tolerance and drift; a 1% reference is a 41-LSB gain error at 12 bits.
 
 ### Questions for engineering leaders

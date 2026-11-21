@@ -1,5 +1,7 @@
 /* A single-producer, single-consumer ring buffer: safe between one interrupt handler and main code
- * without disabling interrupts, because each index has exactly one writer. Size must be a power of two. */
+ * without disabling interrupts, because each index has exactly one writer. Size must be a power of two.
+ * On one core only the compiler barrier (the "memory" clobber) is needed; the dmb instructions make the same code
+ * correct when producer and consumer run on different cores (chapter 18-04, section 3.3). */
 #ifndef RING_H
 #define RING_H
 #include <stdint.h>
@@ -30,6 +32,7 @@ static inline int ring_get(ring_t *r, uint32_t *v)         /* consumer side */
         return 0;                                          /* empty */
     __asm__ volatile("dmb" ::: "memory");                  /* read the data after seeing the head */
     *v = r->data[t & (RING_SIZE - 1u)];
+    __asm__ volatile("dmb" ::: "memory");                  /* finish reading the slot before freeing it */
     r->tail = t + 1u;
     return 1;
 }
