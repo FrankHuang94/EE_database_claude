@@ -7741,3 +7741,15 @@
   definition: "Disconnecting an idle block from its supply through a high-threshold sleep transistor to cut its leakage, at the cost of the transistor's area and IR drop, state loss or retention, wake-up latency and recharge energy; it saves energy only for sleeps longer than the break-even time."
   chapter: "19-06"
   see_also: [Static power]
+- term: Clock jitter
+  definition: "Variation of a clock edge's timing from its ideal position from cycle to cycle. Cycle-to-cycle jitter shortens the time available for logic in the setup budget but does not affect hold checks, which compare the same edge at two registers."
+  chapter: "19-07"
+  see_also: [Clock skew, Setup time]
+- term: Sequencing overhead
+  definition: "The part of every clock cycle consumed by registers rather than logic, t_pcq + t_setup for flip-flops, plus clock uncertainty. Its share of the cycle grows as pipelines deepen; it is often quoted in FO4 delays."
+  chapter: "19-07"
+  see_also: [Setup time, FO4 delay]
+- term: Time borrowing
+  definition: "In latch-based (for example two-phase) design, a slow half-cycle's data passing through a transparent latch and using time from the next half-cycle; up to T_c/2 − t_setup may be borrowed with a 50% duty cycle."
+  chapter: "19-07"
+  see_also: [Sequencing overhead]

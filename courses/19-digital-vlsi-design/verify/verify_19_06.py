@@ -190,5 +190,7 @@ v.check("Txt 19-06.a", 0.86 / 0.08)
 v.check("Txt 19-06.b", 50 * 0.35 / 1.2)
 v.check("Txt 19-06.c", static_current(0.6, 200e-6, 1.2, 0.35) * 1e6)
 v.check("Txt 19-06.d", 50 * (1.2 - 0.35) / 1.2)
+v.check("Txt 19-06.e", (1.000 / 0.675) ** 2)
+v.check("Txt 19-06.f", (1.000 / 0.675) ** 2 * 2)
 
 sys.exit(v.finish())

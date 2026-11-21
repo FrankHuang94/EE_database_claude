@@ -232,6 +232,8 @@ The left side rises from zero at $x$ = 2 to a peak at $x$ = 3 and then decays; t
 | Ex 19-06.6g | minimum with depth 50 | 241 | mV |
 | Ex 19-06.6h | switching-energy ratio, 0.4 V over minimum | 3.95 | — |
 | Txt 19-06.a | SKY130 hd over hdll leakage | 10.75 | — |
+| Txt 19-06.e | RK3588 A76 energy per operation, 2400 over 1200 MHz | 2.19 | — |
+| Txt 19-06.f | RK3588 A76 dynamic power, 2400 over 1200 MHz | 4.39 | — |
 | Txt 19-06.b | short-circuit current starts | 14.6 | ps |
 | Txt 19-06.c | peak short-circuit current | 6.25 | µA |
 | Txt 19-06.d | short-circuit current ends | 35.4 | ps |
@@ -289,7 +291,10 @@ The lab ([labs/19-06-lab](../labs/19-06-lab/README.md)) has two parts:
 
 ### State of the art (as of Nov 2026)
 
+- **Why the free lunch ended [Established].** Dennard and colleagues' 1974 scaling rules kept power density constant, so that "even if many more circuits are placed on a given integrated circuit chip, the cooling problem is essentially unchanged", but the same paper warned that "the subthreshold behavior does not scale as desired". Horowitz and colleagues (IEDM 2005) explained the consequence: "since kT/q does not scale … there is a limit to how low one can make a transistor's Vth", and supplies have scaled "slowly, if at all" since the 130 nm generation; in 2014 Horowitz dated the end of rapid clock-frequency scaling to "the early 2000s", at an air-cooling "power wall … around 100W" ([R-316]).
 - **Supplies have stalled [Industry estimate].** The IEEE IRDS 2024 More Moore roadmap holds logic supplies at 0.70 V (2024), 0.65 V (2025) and 0.60 V from 2027 through 2039, giving as the reason "Power scaling — no solutions left to reduce the supply voltage because of lack of steep-subthreshold devices"; it notes that supplies were even raised to 0.75 V in 2021 because of "higher than anticipated leakage of FinFET transistors" ([R-314]). With the quadratic lever of §3.4 mostly spent, power savings now come from architecture, gating and specialization.
+- **DVFS tables in shipping products [Established].** The mainline Linux device tree for Rockchip's RK3588 runs its Cortex-A76 cores from 1200 MHz at 0.675 V to 2400 MHz at 1.000 V, and NXP's i.MX 8M Mini runs its Cortex-A53 cores at 1.2, 1.6 and 1.8 GHz at 0.85, 0.95 and 1.00 V ([R-316]). Doubling the RK3588's A76 frequency costs $(1.000/0.675)^2$ = **2.19** times the energy per operation, and **4.39** times the dynamic power.
+- **How much leakage is optimal [Established].** Horowitz and colleagues argued that minimizing total energy "sets the leakage energy to be about 30% of the active power" ([R-316]): leakage is not simply to be minimized, but traded against the speed that lower thresholds buy, as §3.6 does for subthreshold logic.
 - **Leakage is a library choice [Established].** SkyWater's open SKY130 process offers a high-density library (`hd`) with leakage of "0.86 nA / kGate" at 1.8 V and 25 °C and a low-leakage variant (`hdll`) at 0.08 nA/kGate, described as having "5-10X lower leakage power" ([R-314]): a factor of **10.75** between two libraries of the same process, bought with speed.
 - **Near-threshold operation in silicon [Established].** Intel's Claremont research processor (ISSCC 2012) ran "from 280mV @3MHz to 1.2V @915MHz" with "4.7x better energy efficiency" in its near-threshold mode, and Ambiq's SPOT microcontrollers operate transistors "at sub-threshold voltages (less than 0.5V)" ([R-314]), consistent with §3.6's minimum-energy range.
 - **Power reshaped circuit styles [Established].** IBM's POWER6 (2008) was designed "without the use of power-hungry dynamic circuits outside of register files and arrays", and Harris's textbook slides describe domino as "Largely displaced by static CMOS now that power is the limiter" ([R-315], 19-03).
@@ -391,3 +396,4 @@ Problems: [19-06 problem set](../problems/19-06-problems.md).
 4. A. P. Chandrakasan, S. Sheng and R. W. Brodersen, "Low-power CMOS digital design", *IEEE J. Solid-State Circuits*, vol. 27, no. 4, 1992.
 5. [R-314] IEEE IRDS 2024 More Moore tables, report and Executive Summary; SkyWater SKY130 library documentation; Intel Labs ISSCC 2012 press overview (Claremont); Ambiq news releases.
 6. [R-315] Stolt et al., POWER6 (*JSSC*, 2008); Harris, *CMOS VLSI Design* lecture slides; Intel PowerVia (VLSI Symposium 2023).
+7. [R-316] Dennard et al. (*JSSC*, 1974); Horowitz et al. (IEDM 2005); Horowitz (ISSCC 2014); Linux device trees for Rockchip RK3588 and NXP i.MX 8M Mini.

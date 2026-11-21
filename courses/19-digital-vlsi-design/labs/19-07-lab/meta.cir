@@ -1,0 +1,27 @@
+* Lab 19-07: metastability of a cross-coupled inverter pair, SPICE level-1 model
+* kn = kp = 200 uA/V^2, thresholds 0.35 V, VDD = 1.2 V, 10 fF per node, lambda = 0, no device capacitances.
+* Each pair starts balanced at VDD/2 with a small differential offset (1 mV or 1 uV); the time for the high node to
+* reach 0.9 V grows by tau ln(1000) = 690.8 ps for the thousand-fold smaller offset (tau = C / g_m = 100 ps).
+* EXPECT t1mv key:../../chapters/19-07-sequential-timing-and-clocking.md#Ex_19-07.6a scale=1e-12 rtol=2e-3
+* EXPECT t1uv key:../../chapters/19-07-sequential-timing-and-clocking.md#Ex_19-07.6b scale=1e-12 rtol=2e-3
+
+VDD vdd 0 DC 1.2
+.subckt inv in out vdd
+MP out in vdd vdd pm W=1u L=1u
+MN out in 0 0 nm W=1u L=1u
+C1 out 0 10f
+.ends
+* pair A: 1 mV offset
+XA1 a2 a1 vdd inv
+XA2 a1 a2 vdd inv
+* pair B: 1 uV offset
+XB1 b2 b1 vdd inv
+XB2 b1 b2 vdd inv
+.model nm NMOS (LEVEL=1 KP=200u VTO=0.35 LAMBDA=0)
+.model pm PMOS (LEVEL=1 KP=200u VTO=-0.35 LAMBDA=0)
+.ic v(a1)=0.6005 v(a2)=0.5995 v(b1)=0.6000005 v(b2)=0.5999995
+.options reltol=1e-9 abstol=1e-18 vntol=1e-12 method=gear maxord=2
+.tran 0.1p 2n 0 0.1p UIC
+.meas tran t1mv WHEN v(a1)=0.9 RISE=1
+.meas tran t1uv WHEN v(b1)=0.9 RISE=1
+.end
