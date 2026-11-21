@@ -7601,3 +7601,47 @@
   definition: "A low-power processor (or dedicated block) that collects and processes sensor data (fusion, step counting, gesture and activity detection) while the main application processor sleeps."
   chapter: "18-10"
   see_also: [Duty cycling]
+- term: Threat model
+  definition: "A statement of what must be protected (assets), from whom (attackers with their access, skill and budget) and through which entry points (attack surfaces), used to choose and justify security mechanisms."
+  chapter: "18-11"
+  see_also: [Root of trust]
+- term: Root of trust
+  definition: "The components a system trusts without being able to verify them (immutable boot code, provisioned keys and hashes in OTP), from which every later stage is verified."
+  chapter: "18-11"
+  see_also: [Chain of trust, Secure boot]
+- term: Chain of trust
+  definition: "A boot sequence in which each stage verifies the next before running it, starting from the root of trust, so that a device runs only authenticated code."
+  chapter: "18-11"
+  see_also: [Root of trust]
+- term: TrustZone-M
+  definition: "Arm's security extension for Armv8-M cores: every address and execution state is Secure or Non-secure (set by the SAU and IDAU), and Non-secure code may enter Secure code only through secure-gateway (SG) instructions in Non-Secure Callable memory."
+  chapter: "18-11"
+  see_also: [Root of trust]
+- term: Physical unclonable function (PUF)
+  definition: "A circuit whose response depends on uncontrollable manufacturing variation, such as the power-up state of SRAM cells, used to derive a device-unique key that is never stored; its noisy readout needs error correction and helper data."
+  chapter: "18-11"
+  see_also: [Secure element]
+- term: Side-channel attack
+  definition: "Extracting secrets from physical effects of computation (time, power, electromagnetic emission) rather than from the algorithm's inputs and outputs."
+  chapter: "18-11"
+  see_also: [Correlation power analysis (CPA), Constant-time code]
+- term: Correlation power analysis (CPA)
+  definition: "A side-channel attack that correlates measured power with a leakage model (for example the Hamming weight of an S-box output) for each key guess; the right guess correlates, and about (z/ρ)² traces are needed."
+  chapter: "18-11"
+  see_also: [Masking]
+- term: Masking
+  definition: "A side-channel countermeasure that splits each secret-dependent value into random shares (for example v XOR m with a fresh mask m), so that no single leakage point depends on the key."
+  chapter: "18-11"
+  see_also: [Correlation power analysis (CPA)]
+- term: Constant-time code
+  definition: "Code whose execution time and memory-access pattern do not depend on secret data, for example comparing all bytes of a tag before deciding, which removes timing side channels."
+  chapter: "18-11"
+  see_also: [Side-channel attack]
+- term: Fault injection
+  definition: "Deliberately disturbing a chip (voltage or clock glitches, electromagnetic pulses, light) so that an instruction misbehaves, for example to skip a security check; countered by redundant checks, random delays and glitch detectors."
+  chapter: "18-11"
+  see_also: [Side-channel attack]
+- term: Secure element
+  definition: "A separate tamper-resistant chip (or an isolated on-die enclave) that stores keys and performs cryptography, evaluated against physical side-channel and fault attacks."
+  chapter: "18-11"
+  see_also: [Physical unclonable function (PUF)]

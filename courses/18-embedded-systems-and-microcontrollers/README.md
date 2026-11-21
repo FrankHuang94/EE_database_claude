@@ -37,7 +37,7 @@ Building products around microcontrollers: MCU architecture (Arm Cortex-M, RISC-
 | [18-08 · Boot, Bootloaders and Firmware Update](chapters/18-08-boot-and-firmware-update.md) | 5 | ✅ verified | [problems](problems/18-08-problems.md) · [solutions](solutions/18-08-solutions.md) · [lab](labs/18-08-lab/README.md) · [verify](verify/verify_18_08.py) |
 | [18-09 · Ultra-Low-Power Design](chapters/18-09-ultra-low-power-design.md) | 9 | ✅ verified | [problems](problems/18-09-problems.md) · [solutions](solutions/18-09-solutions.md) · [lab](labs/18-09-lab/README.md) · [verify](verify/verify_18_09.py) |
 | [18-10 · Sensors: IMU, PPG, MEMS and Audio](chapters/18-10-sensors.md) | 7 | ✅ verified | [problems](problems/18-10-problems.md) · [solutions](solutions/18-10-solutions.md) · [lab](labs/18-10-lab/README.md) · [verify](verify/verify_18_10.py) |
-| [18-11 · Hardware Security](chapters/18-11-hardware-security.md) | 7 | ⬜ planned | — |
+| [18-11 · Hardware Security](chapters/18-11-hardware-security.md) | 7 | ✅ verified | [problems](problems/18-11-problems.md) · [solutions](solutions/18-11-solutions.md) · [lab](labs/18-11-lab/README.md) · [verify](verify/verify_18_11.py) |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 
