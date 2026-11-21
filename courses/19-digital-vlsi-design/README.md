@@ -34,7 +34,7 @@ Designing digital chips: the CMOS inverter, logic families, sizing and logical e
 | [19-05 · Interconnect](chapters/19-05-interconnect.md) | 8 | ✅ verified | [problems](problems/19-05-problems.md) · [solutions](solutions/19-05-solutions.md) · [lab](labs/19-05-lab/README.md) · [verify](verify/verify_19_05.py) |
 | [19-06 · Power and Low-Power Design](chapters/19-06-power-and-low-power-design.md) | 9 | ✅ verified | [problems](problems/19-06-problems.md) · [solutions](solutions/19-06-solutions.md) · [lab](labs/19-06-lab/README.md) · [verify](verify/verify_19_06.py) |
 | [19-07 · Sequential Circuits, Timing and Clocking](chapters/19-07-sequential-timing-and-clocking.md) | 9 | ✅ verified | [problems](problems/19-07-problems.md) · [solutions](solutions/19-07-solutions.md) · [lab](labs/19-07-lab/README.md) · [verify](verify/verify_19_07.py) |
-| [19-08 · SRAM Design](chapters/19-08-sram-design.md) | 8 | ⬜ planned | — |
+| [19-08 · SRAM Design](chapters/19-08-sram-design.md) | 8 | ✅ verified | [problems](problems/19-08-problems.md) · [solutions](solutions/19-08-solutions.md) · [lab](labs/19-08-lab/README.md) · [verify](verify/verify_19_08.py) |
 | [19-09 · Layout, Design Rules and Standard Cells](chapters/19-09-layout-and-standard-cells.md) | 6 | ⬜ planned | — |
 | [19-10 · The ASIC Flow I: Synthesis and Static Timing Analysis](chapters/19-10-synthesis-and-sta.md) | 9 | ⬜ planned | — |
 | [19-11 · The ASIC Flow II: Floorplan, Place and Route, Signoff](chapters/19-11-place-route-signoff.md) | 10 | ⬜ planned | — |

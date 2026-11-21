@@ -1,0 +1,37 @@
+* Lab 19-08: a 6T SRAM cell's read disturb and a write half-cell, SPICE level-1 model
+* VDD = 1.0 V, VTN = |VTP| = 0.3 V, access k_A = 100 uA/V^2, pull-down k_N = 200 uA/V^2 (cell ratio 2),
+* pull-up k_P = 50 uA/V^2 (pull-up ratio 0.5), lambda = 0, no device capacitances.
+* Circuit A: the full cell storing 0 at Q, read with both bitlines held at VDD and the wordline on; V(Q) is the read
+*   disturbance (exact here, because it stays below VTN so the other inverter's output remains at VDD).
+* Circuit B: write half-cell; the node storing 1 is pulled toward a 0 V bitline through the access transistor
+*   against the pull-up PMOS, whose gate (the other node) is held at 0 V.
+* EXPECT vread key:README.md#Lab_19-08.a rtol=1e-3
+* EXPECT vwrite key:README.md#Lab_19-08.b rtol=1e-3
+
+VDD vdd 0 DC 1.0
+VWL wl 0 DC 1.0
+VBL bl 0 DC 1.0
+VBLB blb 0 DC 1.0
+* cell: inverter driving Q (input QB), inverter driving QB (input Q), access transistors
+MPQ q qb vdd vdd pm W=1u L=1u
+MNQ q qb 0 0 nm2 W=1u L=1u
+MPQB qb q vdd vdd pm W=1u L=1u
+MNQB qb q 0 0 nm2 W=1u L=1u
+MAQ bl wl q 0 nm1 W=1u L=1u
+MAQB blb wl qb 0 nm1 W=1u L=1u
+.nodeset v(q)=0.1 v(qb)=1.0
+
+* write half-cell
+VBLW blw 0 DC 0
+VQW qw 0 DC 0
+MPW qbw qw vdd vdd pm W=1u L=1u
+MAW blw wl qbw 0 nm1 W=1u L=1u
+
+.model nm1 NMOS (LEVEL=1 KP=100u VTO=0.3 LAMBDA=0)
+.model nm2 NMOS (LEVEL=1 KP=200u VTO=0.3 LAMBDA=0)
+.model pm PMOS (LEVEL=1 KP=50u VTO=-0.3 LAMBDA=0)
+.options reltol=1e-9 abstol=1e-18 vntol=1e-12
+.dc VDD 0.9 1.1 0.05
+.meas dc vread FIND v(q) AT=1.0
+.meas dc vwrite FIND v(qbw) AT=1.0
+.end

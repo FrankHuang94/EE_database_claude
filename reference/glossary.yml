@@ -7753,3 +7753,31 @@
   definition: "In latch-based (for example two-phase) design, a slow half-cycle's data passing through a transparent latch and using time from the next half-cycle; up to T_c/2 − t_setup may be borrowed with a 50% duty cycle."
   chapter: "19-07"
   see_also: [Sequencing overhead]
+- term: SRAM
+  definition: "Static random-access memory: each bit is held by two cross-coupled inverters (six transistors in the standard 6T cell, with two access transistors to a pair of bitlines), so it needs no refresh while powered. It is the densest memory a logic process builds, used for caches, register files and on-chip buffers."
+  chapter: "19-08"
+  see_also: [Cell ratio, Static noise margin, Sense amplifier]
+- term: Cell ratio
+  definition: "In a 6T SRAM cell, the strength of the pull-down transistor relative to the access transistor, k_N/k_A, typically about 1.5–2.5; a higher ratio keeps the node storing 0 low during reads and protects read stability."
+  chapter: "19-08"
+  see_also: [Pull-up ratio, SRAM]
+- term: Pull-up ratio
+  definition: "In a 6T SRAM cell, the strength of the pull-up PMOS relative to the access transistor, k_P/k_A; it must be small enough (about 1 or less) for a low bitline to overpower the pull-up and write the cell."
+  chapter: "19-08"
+  see_also: [Cell ratio, SRAM]
+- term: Static noise margin
+  definition: "For a bistable cell such as an SRAM, the side of the largest square that fits inside the smaller lobe of its butterfly plot (one inverter's transfer curve with the other's mirrored): the largest static offset the cell tolerates. The read SNM is smaller than the hold SNM."
+  chapter: "19-08"
+  see_also: [Noise margin, SRAM]
+- term: Sense amplifier
+  definition: "A regenerative circuit, usually a cross-coupled latch, that amplifies a small bitline voltage difference (around 100 mV) to full logic levels, so that memory reads need not wait for a full bitline swing."
+  chapter: "19-08"
+  see_also: [SRAM, Metastability]
+- term: Read assist
+  definition: "A circuit technique that improves an SRAM cell's read stability at low voltage, for example by underdriving the wordline to weaken the access transistor; write assists (negative bitlines, lowered cell supply during writes) do the same for writability."
+  chapter: "19-08"
+  see_also: [SRAM, Static noise margin]
+- term: Redundancy
+  definition: "Spare rows and columns in a memory array that replace failing ones after test, so that an array with a few defective or marginal cells still works; combined with error-correcting codes, it lets large SRAMs yield despite rare cell failures."
+  chapter: "19-08"
+  see_also: [SRAM]
