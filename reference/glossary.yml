@@ -6977,3 +6977,47 @@
   definition: Weighting each diversity branch by the conjugate of its channel gain and adding, which maximizes the combined SNR (the sum of the branch SNRs) and achieves full diversity order.
   chapter: "17-09"
   see_also: [Diversity order]
+- term: Subcarrier spacing
+  definition: The frequency step Δf between OFDM subcarriers, equal to 1/T for a useful symbol of length T so that the subcarriers are orthogonal; NR uses 15·2^μ kHz (15 to 960 kHz).
+  chapter: "17-10"
+  see_also: [OFDM, Numerology]
+- term: One-tap equalizer
+  definition: Per-subcarrier equalization in OFDM by one complex multiply (division by the channel gain H_k), valid when the cyclic prefix makes each subcarrier a flat channel.
+  chapter: "17-10"
+  see_also: [Cyclic prefix, OFDM]
+- term: Guard band
+  definition: Unused spectrum at the edges of a channel (in OFDM, empty subcarriers) that lets the signal's spectrum fall off before the neighbouring channel; NR's 100 MHz carrier at 30 kHz keeps 845 kHz on each side.
+  chapter: "17-10"
+  see_also: [OFDM]
+- term: Numerology
+  definition: In 5G NR, the choice of subcarrier spacing (15·2^μ kHz) together with its symbol, cyclic-prefix and slot durations, which scale by powers of two to trade delay-spread tolerance against Doppler, phase-noise tolerance and latency.
+  chapter: "17-10"
+  see_also: [Subcarrier spacing, Cyclic prefix]
+- term: Inter-carrier interference (ICI)
+  definition: Leakage of power between OFDM subcarriers when their orthogonality is broken by a frequency offset, Doppler spread, phase noise or a misaligned window; about (πε)²/3 for an offset of ε subcarrier spacings.
+  chapter: "17-10"
+  see_also: [Carrier frequency offset (CFO), Subcarrier spacing]
+- term: Carrier frequency offset (CFO)
+  definition: The difference between the received carrier frequency and the receiver's oscillator, from oscillator error or Doppler; OFDM receivers estimate and remove it, for example from the cyclic prefix's correlation with the end of the symbol.
+  chapter: "17-10"
+  see_also: [Inter-carrier interference (ICI)]
+- term: DFT-spread OFDM
+  definition: OFDM in which each block of data symbols is DFT-precoded before subcarrier mapping, giving a nearly single-carrier waveform with several decibels lower PAPR; NR's uplink "transform precoding" (also called SC-FDMA).
+  chapter: "17-10"
+  see_also: [Peak-to-average power ratio (PAPR), OFDM]
+- term: Pilot
+  definition: A known symbol (reference signal) inserted on some time-frequency resources so the receiver can estimate the channel; its spacing must be below the coherence bandwidth in frequency and the coherence time in time.
+  chapter: "17-10"
+  see_also: [Coherence bandwidth, Coherence time]
+- term: OFDMA
+  definition: Orthogonal frequency-division multiple access, sharing an OFDM channel among users by giving each different subcarrier blocks in different symbols, as in LTE and NR downlinks and Wi-Fi 6 onward.
+  chapter: "17-10"
+  see_also: [Resource block, Multi-user diversity]
+- term: Resource block
+  definition: The basic NR scheduling unit of 12 consecutive subcarriers (for one slot in time); a 100 MHz carrier at 30 kHz spacing holds 273 of them.
+  chapter: "17-10"
+  see_also: [OFDMA, Numerology]
+- term: Multi-user diversity
+  definition: The throughput gain a scheduler obtains by giving each time-frequency resource to a user whose independently fading channel is currently strong there.
+  chapter: "17-10"
+  see_also: [OFDMA, Rayleigh fading]

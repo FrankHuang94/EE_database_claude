@@ -37,7 +37,7 @@ How information moves over noisy channels: random processes and noise, analog an
 | [17-07 · Information Theory and Shannon Capacity](chapters/17-07-information-theory-and-shannon.md) | 8 | ✅ verified | [problems](problems/17-07-problems.md) · [solutions](solutions/17-07-solutions.md) · [lab](labs/17-07-lab/README.md) · [verify](verify/verify_17_07.py) |
 | [17-08 · Channel Coding](chapters/17-08-channel-coding.md) | 9 | ✅ verified | [problems](problems/17-08-problems.md) · [solutions](solutions/17-08-solutions.md) · [lab](labs/17-08-lab/README.md) · [verify](verify/verify_17_08.py) |
 | [17-09 · Wireless Channels: Fading and Multipath](chapters/17-09-wireless-channels.md) | 6 | ✅ verified | [problems](problems/17-09-problems.md) · [solutions](solutions/17-09-solutions.md) · [lab](labs/17-09-lab/README.md) · [verify](verify/verify_17_09.py) |
-| [17-10 · OFDM](chapters/17-10-ofdm.md) | 7 | ⬜ planned | — |
+| [17-10 · OFDM](chapters/17-10-ofdm.md) | 7 | ✅ verified | [problems](problems/17-10-problems.md) · [solutions](solutions/17-10-solutions.md) · [lab](labs/17-10-lab/README.md) · [verify](verify/verify_17_10.py) |
 | [17-11 · MIMO and Beamforming Basics](chapters/17-11-mimo-and-beamforming.md) | 6 | ⬜ planned | — |
 | [17-12 · Multiple Access, Cellular and Wi-Fi Systems](chapters/17-12-multiple-access-and-cellular-wifi.md) | 8 | ⬜ planned | — |
 | [17-13 · Computer Networks Fundamentals](chapters/17-13-computer-networks-fundamentals.md) | 8 | ⬜ planned | — |

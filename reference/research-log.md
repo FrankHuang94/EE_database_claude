@@ -2800,3 +2800,25 @@ R&D % = R&D ÷ revenue.
 *Read on 20 Nov 2026 by a research subagent from the 3GPP archive and the ETSI PDF of TS 38.211 V19.5.0; re-checked against the saved text on 21 Nov 2026.*
 
 - **TS 38.211 V19.5.0 (2026-09), Table 4.2-1:** μ = 0…6 with $\Delta f = 2^\mu \cdot 15$ kHz (15 to 960 kHz), normal cyclic prefix for all and extended for μ = 2. **Clause 4.3.1:** "frames with Tf = … = 10 ms duration, each consisting of ten subframes of Tsf = … = 1 ms duration". **Table 4.3.2-1:** 14 OFDM symbols per slot for every μ (normal CP), 10·2^μ slots per frame, 2^μ slots per subframe; Table 4.3.2-2: 12 symbols per slot for extended CP (μ = 2). **Clause 4.4.4.1:** "A resource block is defined as N_sc^RB = 12 consecutive subcarriers in the frequency domain." Derived (ours): slot durations 1, 0.5, 0.25, 0.125 ms … for μ = 0, 1, 2, 3. [Established] [38.211 archive](https://www.3gpp.org/ftp/Specs/archive/38_series/38.211/38211-j50.zip)
+
+## R-286 · NR OFDM symbol and cyclic-prefix timing (TS 38.211)
+
+*Read on 21 Nov 2026 from the ETSI PDF of TS 38.211 V19.5.0 saved by a research subagent (its equations extract as text).*
+
+- **TS 38.211 V19.5.0 (2026-09), clause 4.1:** "time units Tc = 1/(Δfmax · Nf) where Δfmax = 480·10³ Hz and Nf = 4096. The constant κ = Ts/Tc = 64 where Ts = 1/(Δfref · Nf,ref), Δfref = 15·10³ Hz and Nf,ref = 2048." **Clause 5.3.1:** useful symbol $N_u^\mu = 2048\kappa \cdot 2^{-\mu}$; cyclic prefix $N_{CP,l}^\mu = 512\kappa \cdot 2^{-\mu}$ (extended), $144\kappa \cdot 2^{-\mu} + 16\kappa$ (normal, $l = 0$ or $l = 7 \cdot 2^\mu$) and $144\kappa \cdot 2^{-\mu}$ (normal, other $l$), in units of $T_c$. **Clause 6.3.1.4 "Transform precoding"**: applied to the uplink when enabled (per TS 38.214), with a single layer. Derived (ours): $T = 1/\Delta f$; normal CP = 144/2048 of $T$ (4.69 μs at 15 kHz, 2.34 μs at 30 kHz); each subframe sums to exactly 1 ms. [Established] [ETSI TS 138 211](https://www.etsi.org/deliver/etsi_ts/138200_138299/138211/19.05.00_60/ts_138211v190500p.pdf)
+
+## R-287 · NR channel bandwidths, resource blocks and frequency ranges (TS 38.101-1/-2)
+
+*Read on 20 Nov 2026 by a research subagent from the 3GPP archive zips (V20.1.0, Sept 2026); tables re-checked against the saved text on 21 Nov 2026.*
+
+- **TS 38.101-1 V20.1.0, Table 5.1-1:** FR1 = 410–7125 MHz. **Table 5.3.2-1** (maximum $N_{RB}$): 15 kHz: 25 (5 MHz), 52 (10), 106 (20), 270 (50 MHz; N/A above); 30 kHz: 51 (20 MHz), 106 (40), 273 (100 MHz); 60 kHz: 135 (100 MHz). **Table 5.3.3-1:** minimum guard bands, e.g. 845 kHz (100 MHz, 30 kHz) and 452.5 kHz (20 MHz, 15 kHz), with the note "GBChannel = (BWChannel x 1000 (kHz) - NRB x SCS x 12) / 2 - SCS/2". [Established] [38.101-1 archive](https://www.3gpp.org/ftp/Specs/archive/38_series/38.101-1/38101-1-k10.zip)
+- **TS 38.101-2 V20.1.0, Table 5.1-1:** FR2-1 = 24 250–52 600 MHz, FR2-2 = 52 600–71 000 MHz. **Table 5.3.2-1:** 120 kHz: 32/66/132/264 RBs in 50/100/200/400 MHz; 480 kHz: 66/124/248 in 400/800/1600 MHz; 960 kHz: 33/62/124/148 in 400/800/1600/2000 MHz, the 480 and 960 kHz spacings marked "optional in this release". [Established] [38.101-2 archive](https://www.3gpp.org/ftp/Specs/archive/38_series/38.101-2/38101-2-k10.zip)
+
+## R-288 · Wi-Fi 6/7 OFDM features and 802.11be/bn status
+
+*Read on 20 Nov 2026 by a research subagent. IEEE 802.11 standards are paywalled and the IEEE SA page for 802.11be returned HTTP 403; the facts below come from IEEE 802.11 task-group pages (primary for status), Wi-Fi Alliance pages and Keysight documentation (secondary for technical features).*
+
+- **IEEE 802.11 TGbe update page:** 802.11be defines EHT PHY and MAC layers "capable of supporting a maximum throughput of at least 30 Gbps"; D7.0 "received final approval from the IEEE SA Standards Board in September 2024". [Established] [TGbe](https://www.ieee802.org/11/Reports/tgbe_update.htm)
+- **IEEE 802.11 TGbn update page (Nov 2026):** 802.11bn targets 1–7.25 GHz with "Ultra High Reliability"; D2.0 letter ballot done July 2026; D3.0 January 2027; RevCom/SASB approval projected May 2028. [Established] [TGbn](https://www.ieee802.org/11/Reports/tgbn_update.htm)
+- **Wi-Fi Alliance (MAC/PHY page; Wi-Fi CERTIFIED 7 highlights, Jan 2024):** Wi-Fi 6 uses OFDMA, 160 MHz channels and 1024-QAM; Wi-Fi 7 adds 320 MHz channels (6 GHz band), 4K-QAM ("20% higher transmission rates than 1024 QAM"), multi-link operation and multiple resource units per station. [Established, secondary] [WFA](https://www.wi-fi.org/wi-fi-macphy)
+- **Keysight N7617 "802.11ax Introduction" (undated):** resource units; downlink and uplink MU-MIMO on RUs of at least 106 tones with up to eight users; "Up to 1024QAM"; "OFDM with reduced sub-carrier spacing (4x symbol length of 802.11ac)". The final 802.11be spatial-stream count was not verified from a primary source. [Established, secondary] [Keysight](https://helpfiles.keysight.com/csg/n7617/Content/Main/802.11ax%20Introduction.htm)
