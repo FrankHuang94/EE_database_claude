@@ -1,0 +1,28 @@
+* Lab 19-02: five-stage ring oscillator of square-law inverters, 10 fF per node
+* kn = kp = 200 uA/V^2, VTN = |VTP| = 0.35 V, VDD = 1.2 V, lambda = 0, no device capacitances.
+* The stage delay is the period over 2N = 10; five periods are averaged after start-up.
+* EXPECT tstage key:../../chapters/19-02-cmos-inverter-dynamic.md#Ex_19-02.5c scale=1e-12 rtol=1e-3
+* EXPECT freq key:../../chapters/19-02-cmos-inverter-dynamic.md#Ex_19-02.5e scale=1e6 rtol=1e-3
+
+VDD vdd 0 DC 1.2
+.subckt inv in out vdd
+MN out in 0 0 nm W=1u L=1u
+MP out in vdd vdd pm W=1u L=1u
+C1 out 0 10f
+.ends
+X1 n0 n1 vdd inv
+X2 n1 n2 vdd inv
+X3 n2 n3 vdd inv
+X4 n3 n4 vdd inv
+X5 n4 n0 vdd inv
+.model nm NMOS (LEVEL=1 KP=200u VTO=0.35 LAMBDA=0)
+.model pm PMOS (LEVEL=1 KP=200u VTO=-0.35 LAMBDA=0)
+* start one node just above the switching threshold and the rest at alternating rails
+.ic v(n0)=0.61 v(n1)=1.2 v(n2)=0 v(n3)=1.2 v(n4)=0
+.options reltol=1e-6 abstol=1e-15 vntol=1e-9
+.tran 1p 20n 0 1p UIC
+.meas tran t1 WHEN v(n0)=0.6 RISE=4
+.meas tran t2 WHEN v(n0)=0.6 RISE=9
+.meas tran tstage PARAM='(t2-t1)/50'
+.meas tran freq PARAM='5/(t2-t1)'
+.end

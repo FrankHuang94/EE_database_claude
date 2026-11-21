@@ -1,0 +1,28 @@
+* Lab 19-02: step-driven CMOS inverter discharging and charging 20 fF, with SPICE's level-1 (square-law) model
+* kn = KP W/L = 200 uA/V^2, kp = 100 uA/V^2, VTN = |VTP| = 0.35 V, VDD = 1.2 V, lambda = 0, no device capacitances.
+* A second, linear circuit applies the same step to the equivalent-resistance model (R_eq = 12.57 kOhm, 20 fF).
+* EXPECT tphl key:../../chapters/19-02-cmos-inverter-dynamic.md#Ex_19-02.2b scale=1e-12 rtol=2e-3
+* EXPECT tplh key:../../chapters/19-02-cmos-inverter-dynamic.md#Ex_19-02.2c scale=1e-12 rtol=2e-3
+* EXPECT trc key:../../chapters/19-02-cmos-inverter-dynamic.md#Ex_19-02.3c scale=1e-12 rtol=2e-3
+
+VDD vdd 0 DC 1.2
+* input: an almost ideal step up at 10 ps and down at 2.01 ns
+VIN in 0 PULSE(0 1.2 10p 0.01p 0.01p 2n 4n)
+MN out in 0 0 nm W=1u L=1u
+MP out in vdd vdd pm W=1u L=1u
+CL out 0 20f
+
+* RC model: a resistor from the output to ground, charged to VDD at t = 0 (a falling step)
+RRC orc 0 12.57k
+CRC orc 0 20f IC=1.2
+
+.model nm NMOS (LEVEL=1 KP=200u VTO=0.35 LAMBDA=0)
+.model pm PMOS (LEVEL=1 KP=100u VTO=-0.35 LAMBDA=0)
+.ic v(out)=1.2 v(orc)=1.2
+.options reltol=1e-6 abstol=1e-15 vntol=1e-9
+.tran 0.1p 4n 0 0.1p UIC
+
+.meas tran tphl TRIG v(in) VAL=0.6 RISE=1 TARG v(out) VAL=0.6 FALL=1
+.meas tran tplh TRIG v(in) VAL=0.6 FALL=1 TARG v(out) VAL=0.6 RISE=1
+.meas tran trc WHEN v(orc)=0.6 FALL=1
+.end

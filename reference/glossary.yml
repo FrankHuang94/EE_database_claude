@@ -7657,3 +7657,19 @@
   definition: "Digital logic run at a supply below the transistor thresholds, where current is exponential in the gate voltage; it minimizes energy per operation at low speed, and an inverter keeps gain down to a supply of 2(kT/q)ln(1 + n)."
   chapter: "19-01"
   see_also: [Subthreshold swing]
+- term: Intrinsic delay
+  definition: "The delay of a gate driving only its own drain and Miller capacitance, t_p0 = 0.69 R_eq C_int. It does not change when the gate is made wider, because its resistance falls in proportion as its own capacitance rises."
+  chapter: "19-02"
+  see_also: [Self-loading, FO4 delay]
+- term: Self-loading
+  definition: "The part of a gate's load that is its own drain (diffusion) capacitance and Miller-doubled gate–drain capacitance; it grows with the gate's width. Its ratio to the gate's input capacitance, γ = C_int/C_g, is typically between about 0.5 and 1."
+  chapter: "19-02"
+  see_also: [Intrinsic delay]
+- term: FO4 delay
+  definition: "The delay of an inverter driving four copies of itself, t_p0(1 + 4/γ). Because it scales with the process like other gate delays, clock periods quoted in FO4 delays compare designs across nodes."
+  chapter: "19-02"
+  see_also: [Intrinsic delay, Ring oscillator]
+- term: Equivalent resistance of a transistor
+  definition: "The linear resistance that stands in for a switching transistor in delay estimates: the average of V/I as the output swings from V_DD to V_DD/2, about 3V_DD/(4I_sat), giving t_p ≈ 0.69 R_eq C_L."
+  chapter: "19-02"
+  see_also: [Propagation delay]
