@@ -42,10 +42,48 @@ How information moves over noisy channels: random processes and noise, analog an
 | [17-12 · Multiple Access, Cellular and Wi-Fi Systems](chapters/17-12-multiple-access-and-cellular-wifi.md) | 8 | ✅ verified | [problems](problems/17-12-problems.md) · [solutions](solutions/17-12-solutions.md) · [lab](labs/17-12-lab/README.md) · [verify](verify/verify_17_12.py) |
 | [17-13 · Computer Networks Fundamentals](chapters/17-13-computer-networks-fundamentals.md) | 8 | ✅ verified | [problems](problems/17-13-problems.md) · [solutions](solutions/17-13-solutions.md) · [lab](labs/17-13-lab/README.md) · [verify](verify/verify_17_13.py) |
 
+**Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/17-communication-systems.csv) · [Equation sheet](../../reference/equation-sheets/17-communication-systems.md)
+
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 
 <!-- END GENERATED -->
 
 ## Course notes
 
-*(Hand-written notes for this course go below the generated block.)*
+**How to approach this course.** Course 17 is planned at about 103 hours: the chapters' own estimates add to 98, plus 5 hours of review and the exam. Course 03 gave you random variables, Course 11 the Fourier transform and Course 16 the DFT and filters. This course uses them to answer one question in every form it takes: how many bits per second can cross a noisy, bandwidth-limited, fading channel, and at what cost in power, bandwidth, antennas and silicon? Every link budget, modem data sheet, Wi-Fi or 5G rate claim, SerDes eye and network throughput figure in a semiconductor portfolio is an answer to that question.
+
+The thirteen chapters fall into five blocks:
+
+- **Noise (17-01 to 17-02).** Random processes, autocorrelation and PSD through LTI systems; then thermal noise, noise figure, Friis cascades, $E_b/N_0$ and receiver sensitivity from −174 dBm/Hz.
+- **Modulation and detection (17-03 to 17-06).** Analog AM and FM with their noise performance; baseband PAM, ISI, the Nyquist criterion and PAM4 against NRZ; the matched filter, signal space and ML/MAP detection; bandpass PSK, QAM and FSK with their error rates, spectral efficiency and EVM.
+- **Limits and codes (17-07 to 17-08).** Entropy, channel capacity, Shannon–Hartley and the −1.59 dB limit; block codes, CRCs, Reed–Solomon, convolutional codes with Viterbi decoding, LDPC and polar codes, and coding gain.
+- **Wireless systems (17-09 to 17-12).** Path loss, shadowing, delay spread, Doppler and Rayleigh fading; OFDM with the cyclic prefix and NR numerology; diversity, beamforming and MIMO capacity; multiple access, cellular reuse, ALOHA, CSMA/CA, Erlang B, scheduling and HARQ.
+- **Networks (17-13).** Layering and headers, IPv4 addressing, routing, TCP windows and congestion control, queueing and the arithmetic of network security.
+
+Work at least the [A] and [B] problems of every chapter (137 of the 182 problems; the 45 [C] problems are the stretch). The labs form a toolkit that later chapters import:
+
+- `randproc.py` (17-01) and `noisebudget.py` (17-02) generate and filter noise processes and compute cascades and sensitivities; `analogmod.py` (17-03) builds AM and FM signals and simulates their detectors;
+- `baseband.py` (17-04), `detection.py` (17-05) and `modulation.py` (17-06) cover pulses, eyes and equalizers, matched filters and decision rules, and every constellation with Monte Carlo error rates and EVM;
+- `infotheory.py` (17-07) and `coding.py` (17-08) compute entropies and capacities and implement Hamming, CRC, convolutional, LDPC and polar coding with their decoders;
+- `channels.py` (17-09), `ofdm.py` (17-10), `mimo.py` (17-11) and `access.py` (17-12) simulate fading channels, a complete OFDM link, combining and MIMO detection, and random access and traffic;
+- `netlab.py` (17-13) covers subnetting, routing, TCP's window and loss limits, queues and a firewall;
+- three ngspice netlists confirm the circuit results: resistor noise in an RLC tank (17-01), a matched pad's noise (17-02) and the pulse response of an RC channel (17-04).
+
+The verify scripts recompute the chapters' numbers, mostly by a route independent of the lab code (numerical integration, simulation, exhaustive enumeration), and check prose claims as well as answer keys, so a mismatch in your own work usually means a wrong method, not rounding.
+
+**What to master cold.** The [equation sheet](../../reference/equation-sheets/17-communication-systems.md) collects the relations; these are the ideas behind them:
+
+- noise is a power density: $kT_0$ = −174 dBm/Hz, every hertz you let in adds noise, and the first stage's noise figure dominates the cascade (17-01, 17-02);
+- sensitivity is a sum in decibels: −174 + 10 log B + NF + required SNR; every rate, range and battery claim can be checked with it (17-02, 17-09);
+- the matched filter makes the detection SNR $2E/N_0$ whatever the pulse shape, so error rates depend only on energy and on distances between signals (17-05);
+- each extra bit per symbol costs about 3 dB (PSK more, QAM less), and coding buys some of it back; Shannon's $(2^\eta - 1)/\eta$ is the floor no design crosses (17-06 to 17-08);
+- bandwidth is not free either: Nyquist's $1/(2T)$ plus roll-off, Carson's $2(\Delta f + W)$, and PAM4's 9.5 dB penalty for halving it (17-03, 17-04);
+- fading turns exponential error curves into $1/\bar\gamma$ ones, and diversity of order $L$ restores $\bar\gamma^{-L}$: antennas, frequency and time are bought for diversity first (17-09, 17-11);
+- OFDM converts a frequency-selective channel into many flat ones at the price of a cyclic prefix, sensitivity to frequency offset and a high peak-to-average ratio (17-10);
+- MIMO capacity grows with the number of strong eigenmodes, not with the antenna count as such (17-11);
+- shared channels lose to collisions and are sized by traffic statistics: ALOHA's $1/e$, Erlang B, reuse SIR (17-12);
+- end to end, throughput is the minimum of the link rate, window/RTT and the loss limit, and delay explodes as load approaches capacity (17-13).
+
+**Assessment.** The [course final exam](exam/README.md) has 14 questions and takes 210 minutes, with a calculator and the equation sheet but no Python or simulator. Aim for at least 70%. Questions 1 to 9 follow the chapters from random processes to fading; Question 10 combines OFDM and MIMO, Question 11 covers multiple access and Question 12 networks. Question 13 asks for three derivations (the matched filter, the Shannon limit, the cyclic prefix's one-tap equalization). Question 14 is a diligence question about an IoT radio start-up's rate, sensitivity and range claims, partly graded against a rubric. The course maps onto the FE Electrical and Computer exam's Communications area (5–8 questions) and Computer Networks area (4–6 questions) ([R-001](../../reference/research-log.md#r-001--ncees-fe-electrical-and-computer-specification), [R-295](../../reference/research-log.md#r-295--ncees-fe-electrical-and-computer-computer-networks-topics)). The [flashcards](../../flashcards/17-communication-systems.csv) (96 cards) are for spaced review alongside the chapters.
+
+**Deeper:** see companion repo *Datacenter Networking* for RDMA, lossless Ethernet, congestion control in AI fabrics and switch silicon architecture, which build on 17-04, 17-08 and 17-13.
