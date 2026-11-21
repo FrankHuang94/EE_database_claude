@@ -100,6 +100,7 @@ v.check("Ex 18-01.2g", 168e6 / cpi(5) / 1e6)
 v.check("Ex 18-01.2h", cpi(5, m=0.05))
 v.check("Ex 18-01.2i", 168e6 / cpi(5, m=0.05) / 1e6)
 v.check("Txt 18-01.f", (1 - 1 / cpi(5)) * 100)
+v.check("Ex 18-01.2j", (168 / cpi(5)) / (84 / cpi(2)))
 v.check("Txt 18-01.g", (1 - 1 / cpi(5, m=0.05)) * 100)
 
 # the cycle simulator reproduces the formula for line-aligned targets and 16-bit code
@@ -292,4 +293,21 @@ for key, i0 in (("Lab 18-01.d", 0.2e-3), ("Lab 18-01.e", 2e-3)):
     Ei = np.array([energy(f, 1.2e6, 0.1, 1.8, i0, 40e-12, 3e-6) for f in fs])
     v.check(key, fs[np.argmin(Ei)] / 1e6)
 
+# Problems 16-17
+entry = {"m4": 12, "rv32i": 4 + len(["ra"] + [f"t{i}" for i in range(7)] + [f"a{i}" for i in range(8)]),
+         "rv32e": 4 + len(["ra", "t0", "t1", "t2"] + [f"a{i}" for i in range(6)]), "attr": 4 + 4}
+for ident, key in (("18-01.16a", "m4"), ("18-01.16b", "rv32i"), ("18-01.16c", "rv32e"), ("18-01.16d", "attr")):
+    v.check(ident, entry[key])
+for ident, key in (("18-01.16e", "m4"), ("18-01.16f", "rv32i"), ("18-01.16g", "rv32e"), ("18-01.16h", "attr")):
+    v.check(ident, 100 * 2e5 * entry[key] / 48e6)
+ok = [t for t in (1.7, 2.1, 2.5) if t >= max(1.71, 2.0) - 1e-9 and t < 2.2]
+v.assert_true("only 2.1 V is above the ADC and flash minimums and below the sag", ok == [2.1])
+v.check("18-01.17a", ok[0])
+v.check("18-01.17b", 2.2 - ok[0])
+# prose numbers outside the answer keys (audit)
+v.assert_true("Example 2: the cache delivers 97% of the clock", round(100 * (168 / cpi(5, m=0.05)) / 168) == 97)
+v.assert_true("Solution 6(a): (WS + 1) s / L = 0.78", round(5 * 2.5 / 16, 2) == 0.78)
+v.assert_true("Solution 9(a): 631 s a year is about 10.5 minutes", round(20e-6 * 86400 * 365.25 / 60, 1) == 10.5)
+v.assert_true("Example 6 sanity check: both scores are 3.66 at w = 0.434",
+              round(2 * 0.434 + 4.933 * 0.566, 2) == 3.66 and round(4 * 0.434 + 3.4 * 0.566, 2) == 3.66)
 sys.exit(v.finish())

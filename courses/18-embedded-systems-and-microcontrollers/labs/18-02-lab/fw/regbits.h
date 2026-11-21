@@ -23,7 +23,7 @@ static inline uint32_t field_extract(uint32_t reg, unsigned lsb, unsigned width)
 }
 
 /* Read-modify-write of a memory-mapped register. Not atomic: an interrupt between the read and the
- * write that changes other bits of the same register loses its change (see the chapter, section 3.5). */
+ * write that changes other bits of the same register loses its change (see chapter 18-02, section 3.6). */
 static inline void reg_write_field(volatile uint32_t *reg, unsigned lsb, unsigned width, uint32_t value)
 {
     *reg = field_insert(*reg, lsb, width, value);

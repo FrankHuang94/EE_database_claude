@@ -33,7 +33,7 @@ A microcontroller's job is to respond to the world on time: a byte arriving on a
 
 **Priorities.** An emergency-room triage nurse treats patients by urgency, not arrival: a cardiac arrest interrupts a sprained ankle, while two sprained ankles wait their turn. Cortex-M's interrupt controller does the same in hardware: a more urgent interrupt **preempts** a less urgent handler; one of equal or lower urgency waits and runs when the current one finishes. **Where the analogy breaks down:** a nurse can judge urgency on the spot; an MCU's priorities are fixed numbers chosen at design time, and a careless choice (or a long stretch with interrupts disabled) can make even the most urgent interrupt late. §3.4 shows how to compute exactly how late.
 
-![The worst case for the lowest-priority interrupt C of Example 18-03.3: an 8 µs critical section in main code, then A, B and C all requested at once; C finishes at 43 µs](../../../assets/figures/18-03/critical-instant.svg)
+![The worst case for the lowest-priority interrupt C of Example 18-03.3: an 8 µs critical section in main code starts at t = 0, the moment A, B and C are all requested; C finishes at 43 µs](../../../assets/figures/18-03/critical-instant.svg)
 
 **Timers.** A timer is a counter clocked by a (possibly divided) clock. Everything it does follows from comparing that count with registers: when the count reaches the **auto-reload** value it wraps and raises an update event (periodic interrupts); when an input pin changes, the hardware **captures** the count (measuring time between edges); when the count passes a **compare** value, the hardware changes an output pin (PWM). No software runs in the timing path, which is why timers are exact to one clock tick.
 
@@ -47,7 +47,7 @@ $$
 U = \frac{r\,(c_{entry} + c_{work} + c_{exit})}{f_{CPU}}
 $$
 
-of the CPU, where the cycle counts include the hardware's entry and exit and the handler's own work. On a Cortex-M3 or M4 with zero-wait-state memory, entry takes 12 cycles from request to the handler's first instruction and the return 12 more; back-to-back handlers **tail-chain** in 6 cycles instead of 12 + 12 ([R-298]). Polling costs a loop iteration per check whether or not anything happened, and its latency is up to one loop period. Interrupts win when events are sparse and latency matters; polling (or DMA) wins when events are so frequent that the per-event overhead dominates. Example 18-03.1 shows a UART at 1.44% load and an ADC that would need 250% of the CPU.
+of the CPU, where the cycle counts include the hardware's entry and exit and the handler's own work. On a Cortex-M3 or M4 with zero-wait-state memory, entry takes 12 cycles from request to the handler's first instruction (0.25 µs at 48 MHz), and the return, which unstacks the same eight registers, costs about as much again; back-to-back handlers **tail-chain** in 6 cycles (0.125 µs at 48 MHz) instead of a full return and re-entry ([R-298]). Polling costs a loop iteration per check whether or not anything happened, and its latency is up to one loop period. Interrupts win when events are sparse and latency matters; polling (or DMA) wins when events are so frequent that the per-event overhead dominates. Example 18-03.1 shows a UART at 1.44% load and an ADC that would need 250% of the CPU.
 
 ### 3.2 The Cortex-M exception model
 
@@ -93,12 +93,14 @@ Here $hp(i)$ are the more urgent interrupts, each recurring at most every $T_j$;
 
 **Why it is true.** The worst case, the **critical instant**, is when $i$ is requested just as the longest blocking section begins and every more urgent interrupt is requested at the same moment, and then again as often as allowed. In the window $[0, R)$, interrupt $j$ arrives at most $\lceil R/T_j\rceil$ times and each arrival takes $C_j$ of the CPU before $i$ can finish; $i$ itself needs $C_i$, and the blocking takes $B_i$. $R_i$ is the smallest $R$ for which this demand fits in $R$. The recurrence is solved by iterating from $R^{(0)} = C_i + B_i$: each step can only increase $R$, so it either converges or exceeds the deadline. The method comes from the fixed-priority scheduling theory of real-time systems (18-07 applies it to tasks); here it is applied to interrupt handlers, with the hardware's priorities as the scheduler.
 
-A useful necessary condition is the **utilization** $\sum_j C_j/T_j \le 1$: above it, no schedule works. Example 18-03.3 solves the recurrence and shows how a long critical section breaks the most urgent deadline; the lab checks the recurrence against a discrete-event simulation of the same interrupts.
+> **Math refresher — fixed-point iteration.** The recurrence has $R_i$ on both sides, $R = g(R)$, and $g$ is a staircase that never decreases ($\lceil R/T_j\rceil$ only steps up as $R$ grows). Start below the answer, at $R^{(0)} = C_i + B_i$, and apply $g$ repeatedly: each value is at least the previous one, and because $g$ changes only in steps of whole $C_j$, the sequence either repeats a value, which is then the smallest solution (the **fixed point**), or grows past the deadline. Example 18-03.3 converges in two or three steps; the same method solves the RTOS recurrence of 18-07.
+
+The recurrence assumes that each interrupt's response time stays within its own period ($R_i \le T_i$), so that at most one request of $i$ is outstanding. That matters more for interrupts than for tasks: the NVIC holds one pending bit per interrupt, so a second request that arrives before the first is serviced is not queued but lost, an overrun. A useful necessary condition is the **utilization** $\sum_j C_j/T_j \le 1$: above it, no schedule works. Example 18-03.3 solves the recurrence and shows how a long critical section breaks the most urgent deadline; the lab checks the recurrence against a discrete-event simulation of the same interrupts.
 
 ### 3.5 Designing interrupt handlers
 
 - **Keep handlers short.** Every cycle in a handler adds to the response time of everything less urgent ($C_j$ in §3.4). Do the minimum in the handler (read the data, clear the flag, record what happened) and **defer** the rest: to the main loop through a flag or a ring buffer, to an RTOS task (18-07), or to **PendSV**, the exception set aside for deferred work, configured at the lowest priority and pended from the urgent handler (the lab demonstrates this ordering).
-- **Clear the request, then make sure the clear has landed.** A peripheral's interrupt flag must be cleared, or the interrupt fires again as soon as the handler returns. Because of write buffers, clearing it as the very last instruction can let the handler return before the write reaches the peripheral, and the interrupt re-enters once; clear it early, or follow the write with `DSB`.
+- **Clear the request, then make sure the clear has landed.** A peripheral's interrupt flag must be cleared, or the interrupt fires again as soon as the handler returns. Because of write buffers, clearing it as the very last instruction can let the handler return before the write reaches the peripheral, and the interrupt re-enters once. Clear it early in the handler, and if it must be the last action, read the same peripheral register back: a `DSB` guarantees completion only as far as the core's bus interface, and a peripheral behind a bridge with its own write buffer may not have taken the write yet (18-01 §3.4 gives the same advice).
 - **Share data safely.** Variables shared between a handler and main code must be `volatile`, and multi-step updates need protection (18-02 §3.6): a short critical section, BASEPRI rather than PRIMASK where possible, or lock-free structures such as a single-producer, single-consumer ring buffer whose head is written only by one side and tail only by the other.
 - **Never block.** No waiting loops, no `printf` to a slow port, no `malloc` in a handler.
 - **Know the stack cost.** Each nesting level adds a frame and the handler's own frame (18-02 Problem 13).
@@ -115,9 +117,11 @@ $$
 
 Choosing the pair is a factoring problem: $(PSC + 1)(ARR + 1) = f_{clk}T$ must be an integer, and each factor must fit its register (16 or 32 bits).
 
-**SysTick**, the timer every Cortex-M core contains, is simpler: a 24-bit down-counter that reloads from its reload register $RVR$ and fires every $RVR + 1$ clocks. A 1 ms tick at 168 MHz needs $RVR$ = 167 999; the longest period at 168 MHz is $2^{24}/168\ \text{MHz}$ = 99.86 ms. RTOS kernels use SysTick for their tick.
+**SysTick**, the core timer that Armv7-M requires and that Armv6-M and Armv8-M Baseline cores (M0, M0+, M23) make optional, though nearly every vendor includes it, is simpler: a 24-bit down-counter that reloads from its reload register $RVR$ and fires every $RVR + 1$ clocks. A 1 ms tick at 168 MHz needs $RVR$ = 167 999; the longest period at 168 MHz is $2^{24}/168\ \text{MHz}$ = 99.86 ms. RTOS kernels use SysTick for their tick.
 
-**Input capture.** On a chosen edge of an input pin, the hardware copies the running count into a capture register and can raise an interrupt. The time between two edges is the difference of two captures, computed **modulo** $2^{N}$ for an $N$-bit counter, so a single wraparound between them is harmless (unsigned subtraction does this automatically). The resolution is one tick, $(PSC + 1)/f_{clk}$; a period longer than $2^N$ ticks wraps more than once and needs overflow counting.
+**Input capture.** On a chosen edge of an input pin, the hardware copies the running count into a capture register and can raise an interrupt. The time between two edges is the difference of two captures, computed **modulo** $2^{N}$ for an $N$-bit counter, so a single wraparound between them is harmless (unsigned subtraction does this automatically). The resolution is one tick, $(PSC + 1)/f_{clk}$. The modulo difference is unambiguous only for periods shorter than $2^N$ ticks; a longer period gives a wrong result even if the counter wrapped only once (when the first capture is near zero), so it needs an overflow count.
+
+> **Math refresher — modular arithmetic.** An $N$-bit counter holds its value modulo $2^N$: after $2^N - 1$ comes 0. Differences behave the same way: $(b - a) \bmod 2^N$ is the number of steps from $a$ forward to $b$, a value between 0 and $2^N - 1$. For 16 bits, $(0x0010 - 0xFFF0) \bmod 0x10000 = 0x0020$: the counter went 0x10 steps to wrap and 0x10 more. Unsigned C arithmetic of the counter's width computes exactly this, `(uint16_t)(b - a)`, while signed or wider arithmetic gives a negative or huge number. The result is the true elapsed count only if fewer than $2^N$ steps occurred, because any whole number of extra laps leaves the same remainder.
 
 **Output compare and PWM.** When the count passes a compare value $CCR$ the hardware sets, clears or toggles an output pin. In **edge-aligned PWM** the output is high while the count is below $CCR$:
 
@@ -125,7 +129,7 @@ $$
 f_{PWM} = \frac{f_{clk}}{(PSC + 1)(ARR + 1)},\qquad D = \frac{CCR}{ARR + 1},\qquad \text{resolution} = \log_2(ARR + 1)\ \text{bits} .
 $$
 
-With $PSC = 0$, $f_{PWM} \cdot 2^{bits} = f_{clk}$: frequency and resolution trade one for one. **Center-aligned PWM** counts up to $ARR$ and back down, so the period is $2ARR$ ticks and the duty $CCR/ARR$: half the frequency (or half the resolution) for the same clock, in exchange for pulses centred in each period, which motor drives use so that the currents of several phases are sampled at a common, quiet instant.
+With $PSC = 0$, $f_{PWM} \cdot 2^{bits} = f_{clk}$: frequency and resolution trade one for one. **Center-aligned PWM** counts up to $ARR$ and back down, so the period is $2ARR$ ticks and the duty $CCR/ARR$: half the frequency, or one bit less resolution at the same frequency, for the same clock, in exchange for pulses centred in each period, which motor drives use so that the currents of several phases are sampled at a common, quiet instant.
 
 ![Edge-aligned and center-aligned PWM generated from one counter and one compare value](../../../assets/figures/18-03/pwm-modes.svg)
 
@@ -167,7 +171,7 @@ and because that oscillator is inaccurate, the design must use the **shortest** 
 
 **Units check.** Priority bytes are bit patterns.
 
-**Sanity check.** If the part implemented 8 bits, 0x90 would still mean group 2, subpriority 1 under a split at bit 6; writing priorities as left-justified bytes keeps code portable across parts with different numbers of implemented bits.
+**Sanity check.** If the part implemented 8 bits with the group still in bits 7:6, 0x90 would still mean group 2, and its subpriority field (bits 5:0, 0b010000 = 16) would still order it the same way against other left-justified values: writing priorities as left-justified bytes keeps code portable across parts with different numbers of implemented bits.
 
 ### Example 18-03.3 · Worst-case response times (tier B)
 
@@ -205,7 +209,7 @@ and because that oscillator is inaccurate, the design must use the **shortest** 
 
 (b) The counter wrapped between the captures. Modulo $2^{16}$: $(0x03D8 - 0xFFF0) \bmod 0x10000 = 0x03E8$ = **1000** ticks = 1000 µs, so the frequency is **1000** Hz.
 
-(c) One tick in 1000: **0.1** %. The counter spans $2^{16}$ µs = 65.5 ms, so signals below $1/65.536\ \text{ms}$ = **15.26** Hz wrap more than once between edges and need an overflow count.
+(c) One tick in 1000: **0.1** %. The counter spans $2^{16}$ µs = 65.5 ms, so signals below $1/65.536\ \text{ms}$ = **15.26** Hz have periods longer than the counter's span, and their modulo difference is ambiguous: they need an overflow count.
 
 **Units check.** Ticks × µs/tick = µs; 1/period = Hz.
 
@@ -219,7 +223,7 @@ and because that oscillator is inaccurate, the design must use the **shortest** 
 
 (b) Shortest at 40 kHz: $64\,000/40\,000$ = **1.6** s. Longest at 24 kHz: $64\,000/24\,000$ = **2.67** s.
 
-(c) 1.2 s < 1.6 s, so even a fast oscillator never resets a healthy system, with 0.4 s of margin. A hang is detected within at most 2.67 s (plus the time since the last kick).
+(c) 1.2 s < 1.6 s, so even a fast oscillator never resets a healthy system, with 0.4 s of margin. A hang causes a reset at most 2.67 s after the last kick, and so at most 2.67 s after it began.
 
 **Units check.** counts / (counts/s) = s.
 
@@ -304,12 +308,12 @@ The lab, [labs/18-03-lab](../labs/18-03-lab/README.md), has two halves. The firm
 ## 8. Common mistakes
 
 - **Doing the work in the handler.** Long handlers delay every less urgent interrupt; defer to the main loop, a task or PendSV.
-- **Forgetting to clear the interrupt flag, or clearing it last.** The interrupt fires again immediately, or once more after return; clear early or follow the write with `DSB`.
+- **Forgetting to clear the interrupt flag, or clearing it last.** The interrupt fires again immediately, or once more after return; clear it early, and read the register back if the clear must come last.
 - **Inverting priorities.** On Cortex-M a *smaller* number is *more* urgent; 0 is the most urgent configurable priority.
 - **Using PRIMASK for every critical section.** It blocks the interrupts with the tightest deadlines (Example 18-03.3); use BASEPRI where they do not share the data.
 - **Kicking the watchdog from a timer interrupt.** The interrupt keeps running when the main loop hangs, so the watchdog never fires; kick from the main loop after checking progress.
 - **Using signed or wider arithmetic for capture differences.** Use unsigned arithmetic of the counter's width so one wraparound cancels.
-- **Assuming the emulator matches the chip.** QEMU implements 8 priority bits and no cycle-accurate timing; real parts implement 3–4 bits and have wait states (the lab shows the first).
+- **Assuming the emulator matches the chip.** QEMU implements 8 priority bits and no cycle-accurate timing; real parts commonly implement 3–4 bits (some more, up to 8) and have wait states (the lab shows the first).
 - **Ignoring the fault registers.** A HardFault handler that only loops wastes the CFSR, HFSR, BFAR and stacked PC that identify the bug.
 
 ## 9. Practitioner lens
@@ -317,7 +321,7 @@ The lab, [labs/18-03-lab](../labs/18-03-lab/README.md), has two halves. The firm
 ### State of the art (as of Nov 2026)
 
 - **Arm's NVIC** supports up to 496 external interrupts in the Armv7-M and Armv8-M architectures, and 32 with four priority levels in Armv6-M; Arm's cores configure up to 240 (Cortex-M4, M23) or 480 (M33, M52, M55, M85), with 3 to 8 priority bits on the M4 ([R-304]) **[Established]**. Entry latency is 12 cycles on the M3/M4 and 15 on the M0+, at zero wait states ([R-298]) **[Established]**.
-- **RISC-V interrupts are still being standardized.** RISC-V International's fast interrupt controller specification (now the Advanced Core-Local Interrupt Controller, ACLIC) allows up to 1023 external interrupts and is in the *Stable* state, not ratified; vendors ship their own controllers meanwhile, such as Espressif's ESP32-C3 with 32 vectored interrupts at seven priority levels ([R-299], [R-304]) **[Established]**. Portable interrupt code is therefore easier on Cortex-M than across RISC-V MCUs today.
+- **RISC-V interrupts are still being standardized.** RISC-V International's fast interrupt controller specification (now the Advanced Core-Local Interrupt Controller, ACLIC) allows up to 1023 external interrupts (its specification's introduction) and is in the *Stable* state, not ratified; vendors ship their own controllers meanwhile, such as Espressif's ESP32-C3 with 32 vectored interrupts at seven priority levels ([R-299], [R-304]) **[Established]**. Portable interrupt code is therefore easier on Cortex-M than across RISC-V MCUs today.
 
 ### Why it matters commercially
 

@@ -135,6 +135,26 @@ The bracket is $\dfrac{(1 + bw)(w + 2) - (1 + bw + b)(w + 1)}{(w + 1)(w + 2)} = 
 - (b) **Cortex-M4F** (Armv7E-M): field-oriented control needs Clarke and Park transforms, PI loops and space-vector PWM every 50 µs. Single-cycle multiply-accumulate, saturating arithmetic and a single-precision FPU make this a few thousand cycles per period, easily inside a 100 MHz budget of 5000 cycles.
 - (c) **Cortex-M33** (Armv8-M Mainline): TrustZone isolates credentials and the firmware-update verifier in the Secure world from the application and its network stack, so a bug in the application cannot read keys or install unsigned firmware (18-08, 18-11).
 
+### Solution 18-01.16
+
+(a) Cortex-M4: **12** cycles, and the handler can be an ordinary C function because the hardware has already saved what the calling convention requires. RV32I: $4 + 16$ = **20** cycles.
+
+(b) RV32E: $4 + 10$ = **14** cycles.
+
+(c) $4 + 4$ = **8** cycles, faster than the Cortex-M4, because only the registers the handler uses are saved.
+
+(d) Entry fraction = rate × cycles / clock: Cortex-M4 $2 \times 10^5 \times 12/(48 \times 10^6)$ = **5.0** %; RV32I **8.33** %; RV32E **5.83** %; RV32I with the attribute **3.33** %.
+
+(e) On Cortex-M the entry cost is fixed by the hardware; on RISC-V it depends on the ISA variant, the interrupt controller (the CLIC's hardware vectoring and register-saving options) and the compiler's conventions, so a quoted latency is meaningless without them. Ask which handler type was measured, and whether the figure includes the register saves.
+
+### Solution 18-01.17
+
+(a) **2.1** V: it is above the ADC's 2.0 V and the flash's 1.71 V minimum, so the part never runs out of specification, and below the 2.2 V sag, with a margin of **0.1** V. 1.7 V would let the ADC run below its rating; 2.5 V would reset the device on every burst.
+
+(b) The sag is deeper than the 2.2 V assumed: a cold or ageing cell has a higher internal resistance (18-09), or the burst is longer. Fixes: add or enlarge a reservoir capacitor at the load so that it supplies the burst (18-09 §3.6); reduce or spread the peak current (a lower transmit power, staggering the radio and the sensor); or, if the ADC is not used during bursts, accept the 1.7 V threshold while bursts last.
+
+(c) The flags are sticky: they accumulate until cleared, so without clearing them the next startup cannot tell which event caused it. Reading them tells the firmware (and a field log) whether a reset came from the pin, the power-on circuit, a brown-out, the watchdog, a software request or a lockup, which is the first clue in diagnosing field failures.
+
 ---
 
 ## Answer key
@@ -191,3 +211,13 @@ The bracket is $\dfrac{(1 + bw)(w + 2) - (1 + bw + b)(w + 1)}{(w + 1)(w + 2)} = 
 | 18-01.14d | octal miss penalty | 187.7 | cycles |
 | 18-01.14e | octal CPI | 1.94 | — |
 | 18-01.14f | octal delivered rate | 247.6 | MIPS |
+| 18-01.16a | Cortex-M4 entry | 12 | cycles |
+| 18-01.16b | RV32I entry | 20 | cycles |
+| 18-01.16c | RV32E entry | 14 | cycles |
+| 18-01.16d | RV32I entry with the interrupt attribute | 8 | cycles |
+| 18-01.16e | CPU fraction, Cortex-M4 | 5.0 | % |
+| 18-01.16f | CPU fraction, RV32I | 8.33 | % |
+| 18-01.16g | CPU fraction, RV32E | 5.83 | % |
+| 18-01.16h | CPU fraction, attribute | 3.33 | % |
+| 18-01.17a | brown-out threshold | 2.1 | V |
+| 18-01.17b | margin to the sag | 0.1 | V |

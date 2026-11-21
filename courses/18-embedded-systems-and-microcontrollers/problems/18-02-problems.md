@@ -34,7 +34,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 18-02.6 [B]
 
-**A layout.** *(lab)* With flash at 0x0000 0000, 32 KiB of SRAM at 0x2000 0000, 32 external interrupts, `.text` 0x2F1D, `.rodata` 0x0412, `.data` 0x0099, `.bss` 0x0721 and a 0x800-byte stack, find `_sidata`, `_edata`, `_ebss`, the stack bottom, the free SRAM in bytes and the flash used.
+**A layout.** *(lab)* With flash at 0x0000 0000, 32 KiB of SRAM at 0x2000 0000, 32 external interrupts, `.text` 0x2F1C, `.rodata` 0x0412, `.data` 0x0099, `.bss` 0x0721 and a 0x800-byte stack, find `_sidata`, `_edata`, `_ebss`, the stack bottom, the free SRAM in bytes and the flash used.
 
 ### Problem 18-02.7 [B]
 
@@ -64,6 +64,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Sizing the stack.** The deepest call chain from `main` uses frames of 64, 120, 248 and 56 bytes. Two interrupt priority levels can nest on top of it; their handlers use 96 and 40 bytes of their own stack. (a) What is the worst-case stack with integer-only code (8-word exception frames)? (b) With the FPU in use, so that each exception pushes a 26-word frame? (c) With a 25% margin, rounded up to a multiple of 8 bytes, what stack size should the linker script reserve for case (b)? (d) Why can the hardware frame be 4 bytes larger than stated?
 
+### Problem 18-02.14 [B]
+
+**Write the critical section.** *(code)* Using the CMSIS intrinsics `__get_PRIMASK()`, `__set_PRIMASK(x)` and `__disable_irq()`, write (a) `uint32_t irq_save(void)` and `void irq_restore(uint32_t state)`, which can be nested, and (b) `void field_update_atomic(volatile uint32_t *reg, unsigned pos, unsigned width, uint32_t value)`, which performs Example 18-02.3's field update without the race. (c) Why must `irq_restore` restore the saved state rather than simply re-enable interrupts? (d) What does the critical section cost the system, and when would you use BASEPRI (18-03) instead? Check your code with `labs/18-02-lab/host/critical_test.c`, which injects an interrupt request between the read and the write.
+
 ---
 
 ## Objective coverage
@@ -74,5 +78,5 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 2. Sections, flash and SRAM budgets | 1, 2, 6, 7 |
 | 3. Linker scripts | 6, 7 |
 | 4. Startup code and its cost | 3, 8, 13 |
-| 5. Registers from C, races and `volatile` | 4, 5, 9, 10 |
+| 5. Registers from C, races and `volatile` | 4, 5, 9, 10, 14 |
 | 6. Registers, CMSIS and HALs | 10, 12 |

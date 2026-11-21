@@ -12,7 +12,7 @@ Chapter: [18-03 · Interrupts, Exceptions and Timers](../../chapters/18-03-inter
 
 A pending exception preempts only if its priority value is strictly smaller than the running one; equal priorities wait and then tail-chain (§3.3). BASEPRI masks priority values greater than or equal to its own; PRIMASK masks all configurable exceptions. On entry the core stacks eight registers and puts EXC_RETURN in LR (§3.2). An unmapped data access raises a precise BusFault, which escalates to HardFault when BusFault is not enabled (§3.5). Worst-case response times follow $R_i = C_i + B_i + \sum_{j \in hp(i)}\lceil R_i/T_j\rceil C_j$ (§3.4).
 
-The firmware is built with Lab 18-02's toolchain wrapper (clang 18, ld.lld) and run on QEMU's `mps2-an386` board. QEMU models the NVIC's logic faithfully but not the timing of a real chip: it implements all 8 priority bits (real parts implement 3 or 4) and is not cycle-accurate, so latency must come from Arm's documents, not from the emulator.
+The firmware is built with Lab 18-02's toolchain wrapper (clang 18, ld.lld) and run on QEMU's `mps2-an386` board. QEMU models the NVIC's logic faithfully but not the timing of a real chip: it implements all 8 priority bits (real parts commonly implement 3 or 4, some more) and is not cycle-accurate, so latency must come from Arm's documents, not from the emulator.
 
 ## Files
 

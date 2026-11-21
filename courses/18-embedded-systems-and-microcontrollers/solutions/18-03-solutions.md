@@ -80,11 +80,40 @@ $R_C$: start at $20 + 8 = 28$: $28 + \lceil 28/50\rceil 5 + \lceil 28/200\rceil 
 
 ### Solution 18-03.12
 
-(a) CFSR = 0x0000 8200 has bit 9 (**PRECISERR**: a precise data bus error, so the stacked PC is the faulting instruction) and bit 15 (**BFARVALID**: BFAR holds the address). HFSR = 0x4000 0000 is bit 30, **FORCED**: the BusFault was not enabled, so it escalated to HardFault.
+(a) CFSR = 0x0000 8200 has bit 9 (**PRECISERR**: a precise data bus error, so the stacked PC is the faulting instruction) and bit 15 (**BFARVALID**: BFAR holds the address). HFSR = 0x4000 0000 is bit 30, **FORCED**: the BusFault could not be taken as itself, so it escalated to HardFault. That happens when BusFault is disabled, which is the reset default and the likely cause here, but also when it is enabled and its priority is not above the current execution priority, or when FAULTMASK masks it.
 
 (b) The SRAM ends at $0x2000\,0000 + 192 \times 1024 = 0x2003\,0000$. BFAR is **4** bytes past the end.
 
 (c) A read or write just beyond the end of SRAM, with a word-sized step past the last address: typically an array index or pointer that ran off the end of a buffer placed at the top of SRAM, or a stack that **underflowed** upward past its top (popping more than was pushed, possibly from a corrupted frame). Next: disassemble the instruction at 0x0800 4A1E (which register held the address), check the map file for what sits at the top of SRAM, and look at the stacked LR for the caller.
+
+### Solution 18-03.13
+
+(a) The model solution is [labs/18-03-lab/host/capx.h](../labs/18-03-lab/host/capx.h):
+
+```c
+typedef struct { uint32_t overflows, last; int have_last; } capx_t;
+
+static inline int capx_isr(capx_t *s, int update, int capture, uint16_t ccr, uint32_t *period)
+{
+    int ready = 0;
+    if (capture) {
+        uint32_t hi = s->overflows;
+        if (update && ccr < 0x8000u)    /* the overflow came first: the edge is in the new lap */
+            hi += 1u;
+        uint32_t ext = (hi << 16) | ccr;
+        if (s->have_last) { *period = ext - s->last; ready = 1; }
+        s->last = ext;
+        s->have_last = 1;
+    }
+    if (update)
+        s->overflows += 1u;
+    return ready;
+}
+```
+
+(b) Both events happened since the handler last ran, which is at most 20 000 ticks ago. If the overflow came first, the counter restarted at 0 and the edge was captured at most 20 000 ticks later, so `ccr` is small. If the edge came first, it was captured at most 20 000 ticks before the counter reached 0xFFFF, so `ccr` is above 65 535 − 20 000. Testing against half the range, 0x8000, separates the two cases as long as the handler always runs within half a counter period (32 768 ticks) of the earliest pending event. Counting the overflow before or after the edge without this test is wrong whenever both are pending, which the test's simulation hits tens of thousands of times; it is the classic field bug of input-capture code, because it shows up only when an edge falls near an overflow.
+
+(c) The extended count wraps at $2^{32}$ ticks (71.6 minutes at 1 MHz). Unsigned subtraction is arithmetic modulo $2^{32}$, so the difference is right across that wrap too, as long as the period itself is shorter than $2^{32}$ ticks, exactly as for the 16-bit counter in §3.6.
 
 ---
 

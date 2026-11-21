@@ -102,6 +102,7 @@ SECTIONS
 {
   .isr_vector : ALIGN(4) { KEEP(*(.isr_vector)) } > FLASH
   .text       : ALIGN(4) { *(.text .text.*) *(.rodata .rodata.*) . = ALIGN(4); _etext = .; } > FLASH
+  .ARM.exidx  : { *(.ARM.exidx*) } > FLASH
   .data       : ALIGN(4) { _sdata = .; *(.data .data.*) . = ALIGN(4); _edata = .; } > RAM AT > FLASH
   _sidata = LOADADDR(.data);
   .bss (NOLOAD) : ALIGN(4) { _sbss = .; *(.bss .bss.* COMMON) . = ALIGN(4); _ebss = .; } > RAM
@@ -111,6 +112,7 @@ SECTIONS
 
 - **`MEMORY`** declares the regions with their origins and lengths; the linker errors if a region overflows.
 - **`SECTIONS`** places output sections in order. Within a section, `.` is the **location counter** (the current address); `*(.text .text.*)` collects those input sections from every object file; `. = ALIGN(4)` pads to a word boundary so the startup loops can copy whole words.
+- **`.ARM.exidx`** holds the stack-unwinding index that the compiler emits for C++ exceptions and for debuggers; it is often present (24 bytes in the lab) even in C, and it sits between `_etext` and the load address of `.data`.
 - **`KEEP`** stops the linker's garbage collection (`--gc-sections`) from discarding the vector table, which no code references by name.
 - **`> RAM AT > FLASH`** gives `.data` its run address in SRAM and its load address in flash; **`LOADADDR(.data)`** exports that load address as `_sidata`.
 - **`NOLOAD`** marks `.bss` as occupying addresses but no bytes in the image.
@@ -121,14 +123,14 @@ SECTIONS
 
 $$
 \begin{aligned}
-\_etext &= \operatorname{align}_4(\text{origin}_F + V + T + R), &\quad \_sidata &= \_etext,\\
+\_etext &= \operatorname{align}_4(\text{origin}_F + V + T + R), &\quad \_sidata &= \_etext + E,\\
 \_sdata &= \text{origin}_R, &\quad \_edata &= \operatorname{align}_4(\_sdata + D),\\
 \_sbss &= \_edata, &\quad \_ebss &= \operatorname{align}_4(\_sbss + B),\\
 \_estack &= \text{origin}_R + \text{length}_R, &\quad \text{free SRAM} &= \_estack - S - \_ebss ,
 \end{aligned}
 $$
 
-for vector-table, text, rodata, data, bss and stack sizes $V, T, R, D, B, S$ in bytes ($V$ = 4 bytes per vector, itself a multiple of 4). The flash used is $\_sidata + (\_edata - \_sdata) - \text{origin}_F$. Example 18-02.2 works one layout in hexadecimal, and the lab checks the formulas against the linker's own symbol table.
+for vector-table, text, rodata, data, bss and stack sizes $V, T, R, D, B, S$ in bytes ($V$ = 4 bytes per vector, itself a multiple of 4), and $E$ the size of any `.ARM.exidx` section (0 in the examples, 24 bytes in the lab). The model treats the input sections as packed end to end; the real linker pads each input section to its own alignment (word tables in `.rodata` to 4 bytes, for example), so `_etext` can come out a few bytes higher, which the lab's symbol table shows. The flash used is $\_sidata + (\_edata - \_sdata) - \text{origin}_F$. Example 18-02.2 works one layout in hexadecimal, and the lab checks the formulas against the linker's own symbol table.
 
 > **Going deeper — what real scripts add.** Production linker scripts also place `.init_array` (constructors for C++ and for C functions marked `constructor`), `.ARM.exidx` (exception-unwinding index; clang emits a few "cannot unwind" entries even for C, 24 bytes in the lab's image), a heap region with `_end`, sections for tightly coupled memories or RAM-resident functions (`.ramfunc`, copied like `.data`), a no-init region that survives a warm reset (for crash logs), and fixed-address blocks for a bootloader and its image header (18-08). Each is just another output section with its own region and load address.
 
@@ -186,8 +188,8 @@ The lab's `regbits.h` implements this (`field_mask`, `field_insert`, `field_extr
 
 **The read-modify-write race.** `REG = (REG & ~M) | x;` is three steps: load, modify in a register, store. If an interrupt handler changes *another* bit of the same register between the load and the store, the store writes back the stale snapshot and the handler's change is lost (Example 18-02.3). The window is a few cycles, but a few cycles out of millions per second, hit by interrupts thousands of times per second, adds up to many losses per hour (Problem 18-02.5). The fixes, in order of preference:
 
-- **Hardware that needs no read:** dedicated set and clear registers (writing 1 sets or clears only that bit; many GPIO ports have one), write-1-to-clear status flags, or 18-01's bit-band aliases on Armv7-M.
-- **Exclusive access:** `LDREX`/`STREX` retry the update if anything intervened (on a single core, an interrupt clears the exclusive monitor).
+- **Hardware that needs no read:** dedicated set and clear registers (writing 1 sets or clears only that bit; many GPIO ports have one) and write-1-to-clear status flags. They help only if *every* context that changes the register uses them: one context that still writes back the whole register (Example 18-02.3) destroys the others' bits. 18-01's bit-band aliases on Armv7-M are a hardware-locked read-modify-write, safe against interrupts but never to be used on write-1-to-clear registers (18-01 §3.3).
+- **Exclusive access:** `LDREX`/`STREX` retry the update if anything intervened (on a single core, an interrupt clears the exclusive monitor). Three caveats: Armv6-M (Cortex-M0/M0+) has no exclusive instructions; the architecture does not guarantee exclusive access to Device-memory peripheral registers, which the bus or peripheral may not support; and the local monitor sees exception entry and exit, not a change made by hardware or DMA. For peripheral registers the critical section below is the portable fix.
 - **A short critical section:** save `PRIMASK`, disable interrupts, update, restore. Correct and simple, but it delays every interrupt by the length of the section.
 - **Ownership:** design so that each register (or each bit group) is written from only one context.
 
@@ -217,7 +219,7 @@ On a small image, `-Oz` saves 41% over `-O2` here. On real firmware the spread i
 
 **The calling convention.** The Arm Procedure Call Standard (AAPCS, 14-03 §3.5) passes the first four integer arguments in R0–R3, returns results in R0 (and R1), makes R4–R11 callee-saved, and requires 8-byte stack alignment at public function boundaries. It is also why Cortex-M hardware stacks exactly R0–R3, R12, LR, PC and xPSR on an exception: those are the registers a C function may clobber, so a handler can be an ordinary C function (18-01 Q1). The exception **stack frame** is 8 words (32 bytes), or 26 words (104 bytes) when the FPU's caller-saved registers S0–S15 and FPSCR are stacked too; stack sizing must include one frame per level of interrupt nesting (Problem 18-02.13).
 
-**Integer types and layout.** Use the fixed-width types of `<stdint.h>` for anything that maps to hardware. Cortex-M is little-endian (on the parts in this course), and its ABI aligns each type to its size, so structure layout and padding follow 05-06 §3.5. `__attribute__((packed))` removes padding but turns aligned word accesses into byte or unaligned accesses, which is slower and, on Armv6-M, faults.
+**Integer types and layout.** Use the fixed-width types of `<stdint.h>` for anything that maps to hardware. Cortex-M is little-endian (on the parts in this course), and its ABI aligns each type to its size, so structure layout and padding follow 05-06 §3.5. `__attribute__((packed))` removes padding; the compiler then accesses packed members with byte (or, where the core allows it, unaligned) loads and stores, which is slower. The fault on Armv6-M comes from taking the address of a packed member, or casting a misaligned buffer, and dereferencing it as an aligned wider type.
 
 ### 3.8 Layers of abstraction: registers, CMSIS and HALs
 
@@ -274,7 +276,7 @@ In SRAM, `.data` starts at `_sdata` = 0x2000 0000 and ends at $\operatorname{ali
 
 (b) Main reads 0x8C31 into a register. The handler sets bit 3: the hardware register becomes 0x8C39. Main then writes its own computation from the stale snapshot, 0x8631: the result is **0x00008631**, with the handler's bit lost. The correct result has both changes: $0x8631 \mathbin{|} 0x8 =$ **0x00008639**.
 
-(c) If the peripheral has set and clear registers (or the bit has a bit-band alias on Armv7-M), the handler sets its bit with a single write that needs no read, and main's field update cannot overwrite it. Otherwise, make main's read-modify-write a critical section (save `PRIMASK`, disable interrupts, update, restore), or retry it with `LDREX`/`STREX`. Moving all writes of this register into one context also works.
+(c) The bit is lost because *main* writes back a stale copy of the whole register, so the fix must change what main does; making the handler's own write atomic is not enough (with a set register the handler's bit is set at once, and main's stale write-back still clears it). Fixes: make main's read-modify-write a critical section (save `PRIMASK`, disable interrupts, update, restore) or, where the core and the peripheral support exclusive access, retry it with `LDREX`/`STREX`; or, if the peripheral has set and clear registers, have *main* update PRESC through them (clear 0xF00, then set 0x600) so that it never writes back bit 3; or move all writes of this register into one context.
 
 **Units check.** Hexadecimal bit patterns; each hex digit is 4 bits.
 
@@ -292,7 +294,7 @@ In SRAM, `.data` starts at `_sdata` = 0x2000 0000 and ends at $\operatorname{ali
 
 **Units check.** cycles ÷ (cycles/s) = s; V × A × s = J.
 
-**Sanity check.** Zeroing dominates (79% of the cycles) because `.bss` is seven times larger than `.data`. At one wake per second, 38.8 µJ is a 38.8 µW average drain before the application does anything, about **7.2** times the 5.4 µW sleep power of Example 18-01.5's MCU (3 µA at 1.8 V); 18-09 returns to this with SRAM retention and wake-up strategies.
+**Sanity check.** Zeroing dominates (79% of the cycles) because `.bss` is 6.7 times larger than `.data`. At one wake per second, 38.8 µJ is a 38.8 µW average drain before the application does anything, about **7.2** times the 5.4 µW sleep power of Example 18-01.5's MCU (3 µA at 1.8 V); 18-09 returns to this with SRAM retention and wake-up strategies.
 
 ### Example 18-02.5 · The disappearing loop (tier B)
 
@@ -350,7 +352,7 @@ At `-O0` the compiler optimizes nothing, so `wait_plain` contains **1** load per
 
 (c) On the 64 KiB part, headroom is $64 - 62$ = **2** KiB, **3.1** % of the flash. A 10% larger image needs $2 \times 27 \times 1.1 + 8$ = **67.4** KiB, which no longer fits: the first year of features or fixes forces a board change or abandons dual-image updates. The HAL design on the 128 KiB part is no better: $128 - 124$ = **4** KiB, also 3.1%.
 
-(d) Neither "cheap" combination is shippable, because each fills 97% of its flash on day one. Register-level code on the 128 KiB part leaves $128 - 62$ = **66** KiB, **51.6** % of the flash, free for growth: it costs the \$468 000 parts premium plus \$80 000 of engineering, and buys a product that can be updated for its whole life. The alternatives are a HAL build on a larger part, if one is priced acceptably, or register-level code on the 64 KiB part with a different update scheme (a single slot plus an external flash staging area, 18-08) that restores 20–30% headroom. The cost comparison favoured the small part; the headroom rule (18-01 §3.8) overrules it.
+(d) Neither "cheap" combination is shippable, because each fills 97% of its flash on day one. Register-level code on the 128 KiB part leaves $128 - 62$ = **66** KiB, **51.6** % of the flash, free for growth: it costs the \$468 000 parts premium plus \$80 000 of engineering, and buys a product that can be updated for its whole life. The alternatives are a HAL build on a larger part, if one is priced acceptably, or register-level code on the 64 KiB part with a different update scheme (a single 27 KiB slot plus an external flash staging area, 18-08), which leaves $64 - 8 - 27 = 29$ KiB, 45% of the flash, free and so meets the headroom rule. The cost comparison favoured the small part; the headroom rule (18-01 §3.8) overrules it.
 
 **Units check.** KiB for memory; dollars for costs.
 
@@ -462,7 +464,7 @@ The lab, [labs/18-02-lab](../labs/18-02-lab/README.md), is a complete bare-metal
 
 ### State of the art (as of Nov 2026)
 
-- **Free toolchains dominate Cortex-M development.** Arm's own GNU toolchain release is Arm GNU Toolchain 15.3.rel2 (GCC 15.3, Binutils 2.45, GDB 16), published in October 2026; LLVM's clang and lld build the same targets, as this chapter's lab shows ([R-303]) **[Established]**.
+- **Free toolchains are fully capable for Cortex-M development** (commercial compilers such as IAR and Arm Compiler remain common, especially where a certified toolchain is needed). Arm's own GNU toolchain release is Arm GNU Toolchain 15.3.rel2 (GCC 15.3, Binutils 2.45, GDB 16), published in October 2026; LLVM's clang and lld build the same targets, as this chapter's lab shows ([R-303]) **[Established]**.
 - **CMSIS** is at version 6.4.0 (8 October 2026), whose CMSIS-Core now also covers Armv8-A and Armv7-R/Armv8-R profiles ([R-303]) **[Established]**.
 - **RTOS releases.** Zephyr 4.5.0 (28 October 2026) is the latest stable release; Zephyr 3.7 is the long-term-support line, supported to July 2029, and 4.6 (April 2027) is planned as the next LTS. FreeRTOS's long-term-support release is 202604.01-LTS (August 2026) with kernel V11.3.1 ([R-303]) **[Established]**.
 - **Coding standards and the language.** MISRA C:2025 (March 2025) is the current edition of the coding guidelines most safety-related embedded C follows, and C23 (ISO/IEC 9899:2024) is the current language standard ([R-092]) **[Established]**. Memory-safety pressure is pushing Rust into systems code (Android, the Linux kernel; [R-094], [R-095]) **[Established]**; its use in shipping microcontroller products is growing but harder to measure **[Contested]**.

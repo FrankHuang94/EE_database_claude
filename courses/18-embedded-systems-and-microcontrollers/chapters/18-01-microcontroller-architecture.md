@@ -20,7 +20,7 @@
 
 ## 1. Big picture
 
-A microcontroller (MCU) is a whole computer on one die: a processor core, the non-volatile memory that holds its program, the SRAM that holds its data, and the peripherals that connect it to the physical world, timers, serial ports, analog-to-digital converters and radios, all clocked, reset and powered by on-chip circuits. It costs from tens of cents to a few dollars, draws microamps when asleep, and runs one program forever without an operating system or with a small real-time one. Tens of billions ship every year inside watches, earbuds, motor drives, thermostats, car body controllers and the management controllers of data-centre servers. This chapter is the map of the chip that the rest of Course 18 programs.
+A microcontroller (MCU) is a whole computer on one die: a processor core, the non-volatile memory that holds its program, the SRAM that holds its data, and the peripherals that connect it to the physical world, timers, serial ports, analog-to-digital converters and radios, all clocked, reset and powered by on-chip circuits. It costs from tens of cents to a few dollars, draws microamps when asleep, and runs one program forever without an operating system or with a small real-time one. Billions ship every year inside watches, earbuds, motor drives, thermostats, car body controllers and the management controllers of data-centre servers. This chapter is the map of the chip that the rest of Course 18 programs.
 
 - **Integration is the product.** An MCU wins designs by replacing a board of parts: memory, analog, timers and often a radio are on the same die, so the bill of materials, board area and standby power all shrink.
 - **Everything is an address.** The core talks to memory and peripherals the same way, by loading and storing at addresses; the memory map is the contract between hardware and software.
@@ -54,7 +54,7 @@ The boundary is not sharp. High-end MCUs reach several hundred megahertz with ca
 
 ### 3.2 The core and its programmer's model
 
-**Cortex-M.** Arm's Cortex-M family dominates 32-bit microcontrollers. Every member executes only the **Thumb** instruction set (16-bit encodings, extended by **Thumb-2** with 32-bit encodings), is a load-store RISC machine, and presents the same programmer's model:
+**Cortex-M.** Arm's Cortex-M family is the core of the 32-bit lines of every major MCU vendor in this course (STMicroelectronics, NXP, Microchip, Renesas, TI, Infineon, Nordic). Every member executes only the **Thumb** instruction set (16-bit encodings, extended by **Thumb-2** with 32-bit encodings), is a load-store RISC machine, and presents the same programmer's model:
 
 - sixteen 32-bit registers: R0–R12 general purpose, **R13** the stack pointer (two banked copies: the main stack pointer MSP, used after reset and by exception handlers, and the process stack pointer PSP, used by RTOS tasks), **R14** the link register (return address of a call) and **R15** the program counter;
 - the **program status register** xPSR: condition flags N, Z, C, V (and Q for saturation), the number of the exception being handled, and the Thumb state bit;
@@ -100,13 +100,13 @@ $$
 
 C code reaches a register through a pointer to that address; the `volatile` qualifier tells the compiler that every read and write must actually happen, in order (18-02). Unlike memory, peripheral registers can change on their own (a status bit set by hardware), can have side effects when read (reading a data register may clear a flag), and can ignore or redefine writes (write-1-to-clear flags). A register is a hardware interface, not storage.
 
-**Bit-banding (Armv7-M).** Changing one bit of a register shared with an interrupt handler normally takes a read-modify-write sequence: load, change the bit, store. If an interrupt between the load and the store changes another bit of the same register, the store overwrites it. Armv7-M's bit-band feature removes the race in hardware. Each bit of the first 1 MiB of the SRAM region (0x2000 0000–0x200F FFFF) and of the peripheral region (0x4000 0000–0x400F FFFF) is mapped to its own 32-bit word in a 32 MiB **alias** region (at 0x2200 0000 and 0x4200 0000). Writing 1 or 0 to the alias word sets or clears that single bit, atomically, as one bus transaction. The mapping follows from counting: one byte holds 8 bits, each bit gets a 4-byte word, so each byte of the bit-band region owns 32 bytes of alias space:
+**Bit-banding (Armv7-M).** Changing one bit of a register shared with an interrupt handler normally takes a read-modify-write sequence: load, change the bit, store. If an interrupt between the load and the store changes another bit of the same register, the store overwrites it. Armv7-M's bit-band feature removes the race in hardware. Each bit of the first 1 MiB of the SRAM region (0x2000 0000–0x200F FFFF) and of the peripheral region (0x4000 0000–0x400F FFFF) is mapped to its own 32-bit word in a 32 MiB **alias** region (at 0x2200 0000 and 0x4200 0000). Writing 1 or 0 to the alias word sets or clears that single bit atomically: the bus interface turns the write into a *locked* read-modify-write of the target word, which no interrupt or other bus master can split. It is still a read followed by a write, so **never use bit-banding on registers with write-1-to-clear flags or read side effects**: the hidden read and write-back clears every other flag that happens to be set, or triggers the side effect. The mapping follows from counting: one byte holds 8 bits, each bit gets a 4-byte word, so each byte of the bit-band region owns 32 bytes of alias space:
 
 $$
 \text{alias address} = \text{alias base} + 32 \times \text{byte offset} + 4 \times \text{bit number} ,
 $$
 
-where the byte offset is the target address minus the region base and the bit number is 0–7 within that byte (or, equivalently for a word-aligned target, 0–31 within the word). Armv8-M dropped bit-banding; its parts provide separate set and reset registers for GPIO, atomic exclusive-access instructions (LDREX/STREX) and, on some parts, hardware bit-set/clear aliases of their own.
+where the byte offset is the target address minus the region base and the bit number is 0–7 within that byte (or, equivalently for a word-aligned target, 0–31 within the word). Armv8-M dropped bit-banding; its parts provide separate set and reset registers for GPIO, the exclusive-access instructions LDREX/STREX (which Armv7-M also has, and Armv6-M lacks) and, on some parts, hardware bit-set/clear aliases of their own.
 
 ### 3.4 Buses and the bus matrix
 
@@ -147,7 +147,7 @@ and the delivered instruction rate is $f/\text{CPI}_{\text{eff}}$. The model ass
 
 ![Left: flash wait states rise by one every 30 MHz; right: instructions per microsecond against clock with no cache and with a 95% hit-rate cache](../../../assets/figures/18-01/flash-wait-states.svg)
 
-*With 0.12 taken branches per instruction, a prefetch buffer alone loses 37% of the clock at 168 MHz (5 wait states); a cache that catches 95% of branch targets loses 3%. The sawtooth shows that the clock just below a wait-state boundary delivers more than the clock just above it.*
+*With 0.12 taken branches per instruction, a prefetch buffer alone loses 37.5% of the clock at 168 MHz (5 wait states); a cache that catches 95% of branch targets loses 3%. The sawtooth shows that the clock just below a wait-state boundary delivers more than the clock just above it.*
 
 **Other memories.** **SRAM** is single-cycle at the core clock and retains data only while powered; keeping it powered in sleep costs leakage current, which is why low-power parts let software choose how many banks to retain (18-09). **Tightly coupled memories** (TCM) on Cortex-M7 and M55/M85 are zero-wait-state SRAMs attached directly to the core for deterministic code and data. Large parts add **execute-in-place** from external quad or octal SPI flash through a cache. **ECC** on flash and SRAM corrects single-bit errors and is standard on safety-rated parts. And because embedded flash has not followed logic transistors to the most advanced nodes, newer MCUs use other non-volatile memories, magnetic (MRAM), resistive (RRAM) or phase-change (PCM), on the same die (§9).
 
@@ -158,7 +158,7 @@ An MCU usually has four or five clock sources, chosen for accuracy, start-up tim
 - an **internal RC oscillator** (several to tens of megahertz), trimmed at the factory to about ±1%, which starts in microseconds and is used after reset;
 - an **external crystal oscillator** (typically 4–48 MHz) accurate to tens of parts per million, needed for USB, CAN, Ethernet and radios, which takes milliseconds to start;
 - a **32.768 kHz crystal** for the real-time clock: $32\,768 = 2^{15}$, so a 15-bit counter overflows exactly once per second, and the oscillator runs on well under a microamp;
-- a **low-speed internal RC** (tens of kilohertz, accurate to several percent) for the independent watchdog, which must keep running if the main clock fails;
+- a **low-speed internal RC** (tens of kilohertz, untrimmed and accurate only to tens of percent: 17–47 kHz for a nominal 32 kHz is typical) for the independent watchdog, which must keep running if the main clock fails;
 - a **phase-locked loop** (PLL) that multiplies a reference up to the core clock.
 
 **The PLL.** An integer-N PLL (15-12) divides its input $f_{in}$ by $M$ to a phase-detector frequency $f_{in}/M$, locks a voltage-controlled oscillator (VCO) to $N$ times that, and divides the VCO output by $P$ for the system clock (and by another divider $Q$ for a second clock such as USB's 48 MHz):
@@ -181,7 +181,7 @@ A reset puts the chip into a known state. Sources include:
 - **brown-out reset** (BOR), which resets it when the supply falls below a threshold (with hysteresis), because a core or a flash write running at too low a voltage can corrupt memory;
 - the external **reset pin**;
 - **watchdog** timers, which reset the chip if software stops refreshing them (18-03);
-- **software reset** and **lockup** (a fault inside a fault handler).
+- **software reset**, and **lockup**: a fault while the core runs the HardFault or NMI handler (or while stacking for them), which the core cannot escalate further; many MCUs turn lockup into a reset through vendor logic.
 
 A reset-cause register records which one occurred; logging it is the cheapest field-diagnostic tool there is.
 
@@ -206,7 +206,7 @@ The ecosystem term is often underweighted by people who have not shipped firmwar
 
 **Solution.** (a) 0x4002 0000 + 0x14 = **0x40020014**, in the peripheral region (0x4000 0000–0x5FFF FFFF).
 
-(b) The byte offset from the peripheral bit-band base is 0x2 0014, and pin 5 is bit 5 of byte 0 of the register. The alias is $0x4200\,0000 + 32 \times 0x2\,0014 + 4 \times 5 = 0x4200\,0000 + 0x40\,0280 + 0x14$ = **0x42400294**. Writing 1 to that word sets the pin without a read-modify-write.
+(b) The byte offset from the peripheral bit-band base is 0x2 0014, and pin 5 is bit 5 of byte 0 of the register. The alias is $0x4200\,0000 + 32 \times 0x2\,0014 + 4 \times 5 = 0x4200\,0000 + 0x40\,0280 + 0x14$ = **0x42400294**. Writing 1 to that word sets the pin without a *software* read-modify-write; the hardware performs a locked one, which is safe here because the output data register has no write-1-to-clear bits.
 
 (c) $0x2001\,FFFF - 0x2000\,0000 + 1 = 0x2\,0000 = 2^{17}$ bytes = **128** KiB.
 
@@ -224,7 +224,7 @@ The ecosystem term is often underweighted by people who have not shipped firmwar
 
 - 24 MHz: CPI 1, **24.0** instructions per µs;
 - 84 MHz: CPI 1.24, $84/1.24$ = **67.7** per µs;
-- 168 MHz: CPI = 1 + 0.12 × 5 = **1.60**, $168/1.6$ = **105.0** per µs, only 1.56 times the 84 MHz figure for twice the clock.
+- 168 MHz: CPI = 1 + 0.12 × 5 = **1.60**, $168/1.6$ = **105.0** per µs, only **1.55** times the 84 MHz figure for twice the clock.
 
 With the cache, $\text{CPI}_{\text{eff}} = 1 + 0.12 \times 0.05 \times 5$ = **1.030** and the rate is $168/1.03$ = **163.1** per µs, 97% of the clock.
 
@@ -254,7 +254,7 @@ With the cache, $\text{CPI}_{\text{eff}} = 1 + 0.12 \times 0.05 \times 5$ = **1.
 
 (c) The Cortex-M0+ is out. Armv6-M has no floating-point unit and no DSP extension (§3.2), so every floating-point operation becomes a library call costing tens of cycles, and CoreMark, an integer benchmark, does not even measure that cost. The M4F and M33F both have single-precision FPUs, and 87 MHz and 75 MHz are well within parts on the market: the SAM D5x runs its M4F at up to 120 MHz and Renesas's RA6M5 its M33 at up to 200 MHz ([R-300]). The M33 needs **13.7** % less clock for the same work ($1 - 3.54/4.10$), which at a fixed µA/MHz is roughly that much less dynamic current, and it adds TrustZone (18-11). Unless cost or a software base favours the M4F, the M33 is the better choice.
 
-(d) $403/120$ = **3.36** CoreMark/MHz, **94.9** % of Arm's 3.54 for the core. Even the vendor's own benchmark run, with its cache and its chosen compiler, delivers about 5% less than the core figure, because the core figure assumes zero-wait-state memory.
+(d) $403/120$ = **3.36** CoreMark/MHz, **94.9** % of Arm's 3.54 for the core. Even the vendor's own benchmark run delivers about 5% less than the core figure. The two runs differ in compiler, version and flags as well as in memory (the core figure assumes zero-wait-state memory), and these two numbers alone cannot say how much each contributes.
 
 **Units check.** CoreMark per second ÷ (CoreMark per second per MHz) = MHz.
 
@@ -262,7 +262,7 @@ With the cache, $\text{CPI}_{\text{eff}} = 1 + 0.12 \times 0.05 \times 5$ = **1.
 
 ### Example 18-01.5 · Race to idle, with wait states (tier C)
 
-**Setup.** A sensor node wakes every 100 ms to run a task of $1.2 \times 10^6$ instructions (16-bit, 0.12 taken branches per instruction, no cache) from the flash of Example 18-01.2. Running, the MCU draws $I = 0.6\ \text{mA} + 40\ \mu\text{A/MHz} \times f$ at 1.8 V; asleep it draws 3 µA. Compare the energy per period at 30, 60 and 168 MHz, and find the best clock.
+**Setup.** A sensor node wakes every 100 ms to run a task of $1.2 \times 10^6$ instructions (16-bit, 0.12 taken branches per instruction, no cache) from the flash of Example 18-01.2. Running, the MCU draws $I = 0.6\ \text{mA} + 40\ \mu\text{A/MHz} \times f$ from a 1.8 V supply (assume a part whose flash keeps the access time of Example 18-01.2 at this supply; on many parts it would be slower, §3.5); asleep it draws 3 µA. Compare the energy per period at 30, 60 and 168 MHz, and find the best clock.
 
 **Solution.** The energy per period is
 
@@ -320,7 +320,7 @@ D wins only if cost carries more than 43% of the weight, much more than 25%, so 
 | Txt 18-01.c | AHB peak at 168 MHz | 672 | MB/s |
 | Txt 18-01.d | USB full-speed tolerance | 2500 | ppm |
 | Txt 18-01.e | RTC crystal frequency | 32768 | Hz |
-| Txt 18-01.f | prefetch-only loss at 168 MHz | 37 | % |
+| Txt 18-01.f | prefetch-only loss at 168 MHz | 37.5 | % |
 | Txt 18-01.g | cached loss at 168 MHz | 3 | % |
 | Ex 18-01.1a | ODR address | 0x40020014 | — |
 | Ex 18-01.1b | bit-band alias for pin 5 | 0x42400294 | — |
@@ -336,6 +336,7 @@ D wins only if cost carries more than 43% of the weight, much more than 25%, so 
 | Ex 18-01.2g | instruction rate at 168 MHz | 105.0 | per µs |
 | Ex 18-01.2h | CPI with cache | 1.030 | — |
 | Ex 18-01.2i | instruction rate with cache | 163.1 | per µs |
+| Ex 18-01.2j | speed-up from 84 to 168 MHz without a cache | 1.55 | — |
 | Ex 18-01.3a | USB divider Q | 7 | — |
 | Ex 18-01.3b | number of configurations | 5 | — |
 | Ex 18-01.4a | M0+ clock for 300 CoreMark | 122.0 | MHz |
@@ -434,7 +435,7 @@ The lab, [labs/18-01-lab](../labs/18-01-lab/README.md), provides `mcuarch.py`: t
 
 ### Why it matters commercially
 
-- **Consolidation.** The MCU industry consolidated in a series of large deals ([R-302]) **[Established]**: NXP–Freescale (closed 7 December 2015; Freescale's enterprise value about \$16.7 billion), Microchip–Atmel (closed 4 April 2016; about \$3.40 billion enterprise value), Renesas–IDT (closed 30 March 2019 JST, about \$6.3 billion), Infineon–Cypress (closed 16 April 2020, enterprise value €9.0 billion) and Renesas–Dialog (closed 31 August 2021, about €4.8 billion). The buyers paid for portfolios and design-wins, and for the software ecosystems that keep customers in a family.
+- **Consolidation.** The MCU industry consolidated in a series of large deals ([R-302]) **[Established]**: NXP–Freescale (closed 7 December 2015; Freescale's enterprise value about \$16.7 billion), Microchip–Atmel (closed 4 April 2016; about \$3.40 billion enterprise value), Renesas–IDT (closed 30 March 2019 JST, about \$6.3 billion of cash used at closing), Infineon–Cypress (closed 16 April 2020, enterprise value €9.0 billion) and Renesas–Dialog (closed 31 August 2021, about €4.8 billion of cash consideration). The measures differ (enterprise value against cash paid), so the figures rank the deals only roughly. The buyers paid for portfolios and design-wins, and for the software ecosystems that keep customers in a family.
 - **Stickiness is the asset.** A design-win lasts the product's life because changing the MCU means re-porting drivers, re-qualifying and re-certifying (Example 18-01.6, Problem 18-01.13). That is why vendors invest in free tools, middleware and reference designs, and why "pin-compatible" migration paths within a family matter more to customers than a better core elsewhere.
 - **Automotive concentration.** Infineon reported a 32.0% share of automotive microcontrollers for 2024, citing TechInsights ([R-302]) **[Industry estimate]**: a market where safety qualification makes the stickiness even stronger.
 - **Process and memory roadmaps decide the next round.** Moving to 16–22 nm with MRAM, PCM or RRAM buys SRAM density, clock speed and AI acceleration (Helium, NPUs) at a cost; which vendors own or secure that technology through foundry partnerships is a strategic question for anyone valuing an MCU business.
@@ -473,7 +474,7 @@ Memory-mapped I/O lets ordinary loads and stores, and therefore ordinary C point
 
 </details>
 
-**Q3.** In Example 18-01.2, doubling the clock from 84 to 168 MHz without a cache raised the instruction rate only 1.56 times. Why, and what are two ways to recover the loss?
+**Q3.** In Example 18-01.2, doubling the clock from 84 to 168 MHz without a cache raised the instruction rate only 1.55 times. Why, and what are two ways to recover the loss?
 
 <details><summary>Answer</summary>
 
@@ -509,7 +510,7 @@ Firmware grows over a product's life, and a safe over-the-air update keeps two i
 
 <details><summary>Answer</summary>
 
-Arm's figure is the core alone running from zero-wait-state memory; the chip's figure includes its flash, wait states and cache, which cost about 5% here (Example 18-01.4). A design should use measured performance of the actual part running the actual workload, and treat both published figures as upper bounds.
+Arm's figure is the core alone running from zero-wait-state memory; the chip's figure includes its flash, wait states and cache, and a different compiler setup, which together cost about 5% here (Example 18-01.4). A design should use measured performance of the actual part running the actual workload, and treat both published figures as upper bounds.
 
 </details>
 

@@ -1,4 +1,4 @@
-/* Host test for fw/regbits.h: exhaustive over every field position and width, plus the race of section 3.5. */
+/* Host test for fw/regbits.h: exhaustive over every field position and width, plus the race of section 3.6. */
 #include <stdint.h>
 #include <stdio.h>
 #include "../fw/regbits.h"

@@ -60,6 +60,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Reading a fault.** A product returns from the field with a saved fault record: CFSR = 0x0000 8200, HFSR = 0x4000 0000, BFAR = 0x2003 0004 and stacked PC = 0x0800 4A1E. The MCU has 192 KiB of SRAM at 0x2000 0000. (a) Decode CFSR and HFSR. (b) Where is BFAR relative to the SRAM? (c) What are the likely causes, and what would you look at next?
 
+### Problem 18-03.13 [C]
+
+**Write a capture handler that measures long periods.** *(code)* A 16-bit timer counts at 1 MHz and captures rising edges; signals of 3 Hz to 50 Hz (periods up to 333 000 ticks) must be measured, so the count is extended with a software overflow counter. The timer's interrupt can be pending for both an overflow (update) and a capture at once; the handler runs within 20 ms of the earliest pending event, and edges are at least 20 ms apart. (a) Write `int capx_isr(capx_t *s, int update, int capture, uint16_t ccr, uint32_t *period)`, which keeps the state in `s` and returns 1 with the period when one is available. (b) When both flags are pending, how does the handler decide whether the edge came before or after the overflow, and why does that need the handler to run within half a counter period? (c) Why is the period computed with unsigned 32-bit subtraction? Check your code with `labs/18-03-lab/host/capx_test.c`, which simulates 200 000 edges with random latencies.
+
 ---
 
 ## Objective coverage
@@ -70,5 +74,5 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 2. The exception model | 1, 5, 12 |
 | 3. Priorities, groups and masking | 1, 4, 5 |
 | 4. Worst-case response times | 6, 7 |
-| 5. Handler design and faults | 2, 12 |
-| 6. Timers, PWM and watchdogs | 3, 8, 9, 10, 11 |
+| 5. Handler design and faults | 2, 12, 13 |
+| 6. Timers, PWM and watchdogs | 3, 8, 9, 10, 11, 13 |

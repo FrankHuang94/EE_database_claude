@@ -38,7 +38,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 18-01.7 [B]
 
-**Diminishing returns.** For the flash of Example 18-01.2 ($t_{acc}$ = 33.3 ns, prefetch only, 0.12 taken branches per instruction, 16-bit code): (a) find the MIPS at 90, 120 and 150 MHz; (b) show that, at any clock, the delivered rate can never exceed $1/(b\,t_{acc})$, and evaluate the bound. What does this say about raising the clock without a cache?
+**Diminishing returns.** For the flash of Example 18-01.2 ($t_{acc}$ = 1/(30 MHz) = 33.33 ns, prefetch only, 0.12 taken branches per instruction, 16-bit code): (a) find the MIPS at 90, 120 and 150 MHz; (b) show that, at any clock, the delivered rate can never exceed $1/(b\,t_{acc})$, and evaluate the bound. What does this say about raising the clock without a cache?
 
 ### Problem 18-01.8 [B]
 
@@ -54,7 +54,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 18-01.11 [B]
 
-**Energy at the top of each band.** *(lab)* A task of $5 \times 10^5$ instructions (16-bit code, 0.12 taken branches per instruction, the 33.3 ns flash, prefetch only) runs every 50 ms. Running, the MCU draws $1.0\ \text{mA} + 30\ \mu\text{A/MHz} \times f$ at 3.0 V; asleep, 2 µA. Find the energy per period at 30, 60, 90 and 120 MHz, and the best clock.
+**Energy at the top of each band.** *(lab)* A task of $5 \times 10^5$ instructions (16-bit code, 0.12 taken branches per instruction, the 1/(30 MHz) = 33.33 ns flash, prefetch only) runs every 50 ms. Running, the MCU draws $1.0\ \text{mA} + 30\ \mu\text{A/MHz} \times f$ at 3.0 V; asleep, 2 µA. Find the energy per period at 30, 60, 90 and 120 MHz, and the best clock.
 
 ### Problem 18-01.12 [C]
 
@@ -64,7 +64,7 @@ $$
 I_0 - I_s > \frac{(w + 1)(w + 2)\,k\,b}{(1 - b)\,t_{acc}} .
 $$
 
-(b) Evaluate the threshold for $w$ = 0, 1 and 2 with $k$ = 40 µA/MHz, $b$ = 0.12 and $t_{acc}$ = 33.3 ns, and check Example 18-01.5's result.
+(b) Evaluate the threshold for $w$ = 0, 1 and 2 with $k$ = 40 µA/MHz, $b$ = 0.12 and $t_{acc}$ = 1/(30 MHz) = 33.33 ns, and check Example 18-01.5's result.
 
 ### Problem 18-01.13 [C]
 
@@ -78,6 +78,14 @@ $$
 
 **Choosing an architecture.** For each application, choose among Armv6-M (Cortex-M0+), Armv7E-M with FPU (Cortex-M4F) and Armv8-M Mainline with TrustZone (Cortex-M33), and justify in two sentences: (a) a disposable temperature logger that wakes once a minute; (b) a motor controller running field-oriented control at 20 kHz with floating-point PI loops; (c) a smart lock that stores credentials and accepts firmware updates over the air.
 
+### Problem 18-01.16 [B]
+
+**Interrupt entry on RISC-V and on Cortex-M.** A Cortex-M4 stacks eight registers in hardware and reaches the first instruction of a C handler in 12 cycles. Take a hypothetical RV32I core whose trap entry and vector dispatch cost 4 cycles, after which a C handler compiled with the standard calling convention saves the 16 caller-saved integer registers (ra, t0–t6, a0–a7) with one store per cycle before its own code runs. (a) How many cycles does each core need from the request to the handler's own first instruction? (b) Repeat for RV32E, whose calling convention has 10 caller-saved registers (ra, t0–t2, a0–a5). (c) A compiler's `interrupt` attribute makes the handler save only the 4 registers it actually uses. What is the RV32I entry cost now? (d) At 48 MHz and 200 000 interrupts a second, what fraction of the CPU does entry alone take in each of the four cases? (e) What does the comparison say about quoting "interrupt latency" for a RISC-V core?
+
+### Problem 18-01.17 [A]
+
+**Choosing the brown-out threshold.** An MCU's brown-out reset (BOR) can be set to 1.7, 2.1 or 2.5 V. Its flash is specified down to 1.71 V and its ADC down to 2.0 V. The product runs from a coin cell that sags to 2.2 V during radio bursts. (a) Which threshold do you choose, and what margin does it leave to the sag? (b) Units in the field log "BOR" in their reset-cause register after radio bursts. What is happening, and what are two fixes? (c) Why should the firmware read and then clear the reset-cause flags at every startup?
+
 ---
 
 ## Objective coverage
@@ -85,8 +93,8 @@ $$
 | Learning objective (chapter 18-01) | Problems |
 |---|---|
 | 1. MCU blocks against an application processor | 1, 10 |
-| 2. Cortex-M and RISC-V cores | 14, 15 |
+| 2. Cortex-M and RISC-V cores | 15, 16 |
 | 3. Memory map, registers, bit-banding | 1, 2, 3, 4 |
 | 4. Wait states and effective instruction rate | 5, 6, 7, 11, 12, 14 |
-| 5. PLLs, clock sources and resets | 2, 8, 9 |
+| 5. PLLs, clock sources and resets | 2, 8, 9, 17 |
 | 6. Part selection | 11, 13, 15 |

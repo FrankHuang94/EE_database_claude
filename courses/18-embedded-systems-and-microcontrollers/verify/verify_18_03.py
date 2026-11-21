@@ -159,4 +159,6 @@ v.check("18-03.11d", need / 24e3)
 v.check("18-03.12a", 0x20030004 - (0x20000000 + 192 * 1024))
 v.assert_true("Problem 12: the record's CFSR equals what the lab firmware measures for a precise bus error", rep["CFSR"] == 0x00008200)
 
+v.assert_true("Solution 13(c): a 32-bit count at 1 MHz wraps after 71.6 minutes", round(2 ** 32 / 1e6 / 60, 1) == 71.6)
+v.assert_true("Solution 13(b): 20 000 ticks is under half the 16-bit range", 20000 < 2 ** 15 and 65535 - 20000 >= 0x8000)
 sys.exit(v.finish())

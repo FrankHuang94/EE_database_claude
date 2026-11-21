@@ -53,11 +53,11 @@ $0x1234\,5678 \mathbin{\&} \lnot 0x800F\,0000 = 0x1230\,5678$ (bit 31 was alread
 
 (b) $2000 \times 3600 \times 0.00625$ = **45 000** lost updates an hour.
 
-(c) A race that hits one interrupt in 160 still happens 12 times a second. Races that are "rare" per event are frequent per hour, yet any one bench test may not show them; prevent them by design (single writer, atomic set/clear registers, critical sections) rather than by testing.
+(c) A race that hits one interrupt in 160 still happens 12.5 times a second. Races that are "rare" per event are frequent per hour, yet any one bench test may not show them; prevent them by design (single writer, atomic set/clear registers, critical sections) rather than by testing.
 
 ### Solution 18-02.6
 
-Vectors: $(16 + 32) \times 4 = 192$ = 0xC0 bytes. Code and constants: $0x2F1D + 0x0412 = 0x332F$, ending at $0xC0 + 0x332F = 0x33EF$, aligned up: `_sidata` = **0x000033F0**. `.data` rounds to 0x9C: `_edata` = **0x2000009C**. `.bss`: $0x2000\,009C + 0x721 = 0x2000\,07BD$, aligned: `_ebss` = **0x200007C0**. Stack top $0x2000\,8000$, bottom $0x2000\,8000 - 0x800$ = **0x20007800**. Free SRAM: $0x7800 - 0x07C0 = 0x7040$ = **28 736** bytes. Flash used: $0x33F0 + 0x9C = 0x348C$ = **13 452** bytes.
+Vectors: $(16 + 32) \times 4 = 192$ = 0xC0 bytes. Code and constants: $0x2F1C + 0x0412 = 0x332E$, ending at $0xC0 + 0x332E = 0x33EE$, aligned up: `_sidata` = **0x000033F0**. `.data` rounds to 0x9C: `_edata` = **0x2000009C**. `.bss`: $0x2000\,009C + 0x721 = 0x2000\,07BD$, aligned: `_ebss` = **0x200007C0**. Stack top $0x2000\,8000$, bottom $0x2000\,8000 - 0x800$ = **0x20007800**. Free SRAM: $0x7800 - 0x07C0 = 0x7040$ = **28 736** bytes. Flash used: $0x33F0 + 0x9C = 0x348C$ = **13 452** bytes.
 
 ### Solution 18-02.7
 
@@ -131,6 +131,39 @@ typedef struct {
 (c) $832 \times 1.25 = 1040$, already a multiple of 8: reserve **1040** bytes (in practice a round 1.5 or 2 KiB, since measurement, library calls and future code all add depth).
 
 (d) On exception entry the Cortex-M aligns the frame to 8 bytes (the default `CCR.STKALIGN` setting), inserting one padding word when the stack pointer is only 4-byte aligned; each frame can therefore be 4 bytes larger.
+
+### Solution 18-02.14
+
+(a) and (b): the model solution is [labs/18-02-lab/host/critical.h](../labs/18-02-lab/host/critical.h):
+
+```c
+static inline uint32_t irq_save(void)
+{
+    uint32_t state = __get_PRIMASK();   /* 1 if interrupts were already disabled */
+    __disable_irq();
+    return state;
+}
+
+static inline void irq_restore(uint32_t state)
+{
+    __set_PRIMASK(state);               /* restore, do not enable */
+}
+
+static inline void field_update_atomic(volatile uint32_t *reg, unsigned pos, unsigned width, uint32_t value)
+{
+    uint32_t mask = (((uint32_t)1u << width) - 1u) << pos;   /* width < 32 */
+    uint32_t state = irq_save();
+    uint32_t r = *reg;
+    *reg = (r & ~mask) | ((value << pos) & mask);
+    irq_restore(state);
+}
+```
+
+The host test replays Example 18-02.3: the racy version ends at 0x8631 and the protected one at 0x8639, with the handler running as soon as PRIMASK is restored.
+
+(c) A function that disables and then unconditionally enables interrupts breaks its callers: called inside another critical section (or from code that runs with interrupts masked, such as early startup), it would re-enable interrupts in the middle of the caller's protected region. Saving and restoring makes the sections nest; the test checks exactly this case.
+
+(d) Every interrupt, including the most urgent, can be delayed by the length of the section, so it adds to every handler's blocking term $B$ (18-03 §3.4) and must be a few instructions long. With BASEPRI set at the priority of the handlers that share the register, the most urgent handlers, which do not touch it, keep running; use it when they have tight deadlines (Example 18-03.3(c)). Armv6-M has no BASEPRI, so PRIMASK is the only choice there.
 
 ---
 
