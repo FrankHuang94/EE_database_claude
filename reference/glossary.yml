@@ -7570,7 +7570,7 @@
   chapter: "18-10"
   see_also: [Gyroscope bias]
 - term: Angle random walk
-  definition: "The growth of orientation error from integrating a gyroscope's white rate noise, as N√t; quoted in °/√h, equal to 60 times the noise density in °/s/√Hz."
+  definition: "The growth of orientation error from integrating a gyroscope's white rate noise, as N√(t/2) for a one-sided rate noise density N; quoted in °/√h, equal to 60/√2 times N in °/s/√Hz (the common shortcut 60N assumes a two-sided density)."
   chapter: "18-10"
   see_also: [Noise density, Gyroscope bias]
 - term: Gyroscope bias

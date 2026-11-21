@@ -86,12 +86,32 @@ $$
 a_c = 2\Omega v ,
 $$
 
-along the third axis, at the drive frequency. The sense electronics demodulate the sense-axis motion with the drive signal (the synchronous detection of 17-03) to obtain $\Omega$. Because $a_c$ is small (a few m/s² at 100 °/s for typical drive amplitudes, Example 18-10.3) and must be separated from the huge drive motion, gyroscopes draw much more current than accelerometers; the drive must run continuously.
+along the third axis, at the drive frequency.
+
+**Where the 2Ω v comes from.** Describe the mass by a vector $\mathbf r$ in the chip's frame, which rotates at $\boldsymbol\Omega$. The rate of change of any vector seen from an inertial frame is its rate in the rotating frame plus $\boldsymbol\Omega \times$ itself, so the inertial velocity is $\dot{\mathbf r} + \boldsymbol\Omega \times \mathbf r$. Applying the same rule again (for constant $\boldsymbol\Omega$) gives the inertial acceleration
+
+$$
+\mathbf a_{in} = \ddot{\mathbf r} + 2\,\boldsymbol\Omega \times \dot{\mathbf r} + \boldsymbol\Omega \times (\boldsymbol\Omega \times \mathbf r) .
+$$
+
+Seen from the chip, the mass therefore behaves as if pushed by an extra acceleration $-2\boldsymbol\Omega \times \mathbf v$ (the **Coriolis** term) and the centrifugal term, which is tiny at MEMS dimensions. With the drive velocity perpendicular to the rotation axis, $|2\boldsymbol\Omega \times \mathbf v| = 2\Omega v$, directed along the third axis and oscillating with the drive.
+
+**The sense mode.** The sense axis is a second spring–mass resonator, at $\omega_s$. Driven at $\omega_d$ by $a_c$, its displacement amplitude is
+
+$$
+y = \frac{a_c}{\sqrt{(\omega_s^2 - \omega_d^2)^2 + (\omega_s\omega_d/Q_s)^2}} ,
+$$
+
+the forced response of 02-04. With the sense mode a little above the drive (a few kilohertz of "mode split", so that the bandwidth stays wide), $y \approx a_c/(\omega_s^2 - \omega_d^2)$: for Example 18-10.3's 2.19 m/s² at 20 kHz and a 2 kHz split, about 0.66 nm, against an accelerometer's 15.5 nm per g (Example 18-10.1). Placing the modes together ("mode matching") multiplies the response by about $Q_s$, at the cost of a narrow bandwidth and a need for electronic tuning. The sense electronics demodulate this sub-nanometre motion with the drive signal (the synchronous detection of 17-03) to obtain $\Omega$, while rejecting the drive motion, which is thousands of times larger. Gyroscopes draw much more current than accelerometers mainly because the drive loop runs all the time: it keeps the proof mass oscillating at constant amplitude with an amplitude-control loop and a phase-locked loop, often from a charge pump that raises the drive voltage, and the sense chain must demodulate at the drive frequency.
 
 **Integrating a rate.** Orientation is the integral of rate, so the gyroscope's errors accumulate:
 
 - A constant **bias** $b$ (°/s) gives an angle error growing linearly, $bt$: 0.5 °/s becomes 30° in a minute.
-- White rate noise of density $N$ (°/s/√Hz) gives a random walk in angle with standard deviation $N\sqrt t$. Quoted as **angle random walk** it is $60N$ in °/√h, because $\sqrt{3600}$ = 60.
+- White rate noise gives a random walk in angle. With the data sheet's density $N$ in °/s/√Hz taken as one-sided, as for the accelerometer in §3.1 (rms = $N\sqrt B$), the two-sided level is $N^2/2$, and the integral of white noise of two-sided level $S_0$ over a time $t$ has variance $S_0t$. So the angle's standard deviation is $N\sqrt{t/2}$. Quoted as **angle random walk** in °/√h, that is $60N/\sqrt2$, because $\sqrt{3600}$ = 60.
+
+> **Going deeper — two conventions for ARW.** IEEE Std 952 defines the angle-random-walk coefficient from the Allan deviation of the rate (below), which corresponds to the two-sided level. Many vendor notes convert with "ARW = 60 × noise density" and treat the density as if it were that two-sided level; applied to a one-sided density, the shortcut overstates the ARW by √2. When a data sheet gives both numbers, check which relation they satisfy before combining them.
+
+**Allan deviation: reading a gyroscope's noise.** A data sheet's "bias instability" comes from the **Allan deviation** $\sigma(\tau)$: record the stationary sensor's rate for hours, average it over clusters of length $\tau$, and take half the mean squared difference between successive cluster averages; $\sigma(\tau)$ is its square root, plotted against $\tau$ on log–log axes. White rate noise gives a line of slope −½, $\sigma(\tau) = N_2/\sqrt\tau$, where $N_2$ (in °/√s) is the ARW coefficient, read off at $\tau$ = 1 s. A slowly wandering bias gives a flat minimum, whose level is about 0.664 times the **bias instability** coefficient; at long $\tau$ the curve rises again (rate random walk, temperature drift). The minimum tells you the best averaging time and the bias stability you can count on after calibration, which is why navigation-grade and consumer gyroscopes differ by orders of magnitude in it, far more than in ARW.
 
 So a gyroscope is excellent over seconds and useless over minutes unless something corrects its drift.
 
@@ -111,7 +131,7 @@ $$
 
 (For $\alpha$ close to 1 the recursion $\hat\theta_n - \alpha\hat\theta_{n-1} = (1 - \alpha)\theta_{acc}$ is a first-order low-pass with pole $\alpha = e^{-\Delta t/\tau'}$, so $\tau' = -\Delta t/\ln\alpha \approx \alpha\Delta t/(1 - \alpha)$.)
 
-Two consequences follow. A constant gyroscope bias $b$ no longer grows without limit: in steady state the estimate settles at $\theta_{ss} = \alpha(\theta_{ss} + b\Delta t) + (1 - \alpha)\theta$, so the error is $\alpha b\Delta t/(1 - \alpha) = b\tau$. And the accelerometer's white noise passes through the low-pass with variance reduced by $(1 - \alpha)/(1 + \alpha)$. A larger $\tau$ suppresses accelerometer noise and motion artefacts more, but lets gyroscope bias produce a larger error and makes the filter slower to correct. That is the classic tradeoff (Example 18-10.4).
+Two consequences follow. A constant gyroscope bias $b$ no longer grows without limit: in steady state the estimate settles at $\theta_{ss} = \alpha(\theta_{ss} + b\Delta t) + (1 - \alpha)\theta$, so the error is $\alpha b\Delta t/(1 - \alpha) = b\tau$. And the accelerometer's white noise passes through the low-pass with variance reduced by $(1 - \alpha)/(1 + \alpha)$. Both statements follow from the filter's two transfer functions. In $z$-transforms (11-09), the accelerometer path is $H_{acc}(z) = (1 - \alpha)/(1 - \alpha z^{-1})$, a low-pass with unit gain at DC; the gyroscope path, acting on the integrated angle $\theta_g$ (for which $\omega_n\Delta t = \theta_{g,n} - \theta_{g,n-1}$), is $H_{gyro}(z) = \alpha(1 - z^{-1})/(1 - \alpha z^{-1})$, a high-pass with zero gain at DC; and $H_{acc} + H_{gyro} = 1$, so a true angle seen by both sensors passes unchanged. For white noise of variance $\sigma^2$ into $H_{acc}$, whose impulse response is $(1 - \alpha)\alpha^k$, the output variance is $\sigma^2(1 - \alpha)^2\sum_k\alpha^{2k} = \sigma^2(1 - \alpha)^2/(1 - \alpha^2) = \sigma^2(1 - \alpha)/(1 + \alpha)$. A larger $\tau$ suppresses accelerometer noise and motion artefacts more, but lets gyroscope bias produce a larger error and makes the filter slower to correct. That is the classic tradeoff (Example 18-10.4).
 
 ![Accelerometer, gyroscope and complementary-filter tilt estimates over 20 s](../../../assets/figures/18-10/complementary-filter.svg)
 
@@ -119,9 +139,9 @@ Two consequences follow. A constant gyroscope bias $b$ no longer grows without l
 
 ### 3.4 Photoplethysmography (PPG)
 
-**The signal.** Light entering tissue is absorbed and scattered. Along a path, intensity falls as in the **Beer–Lambert law**, $I = I_0e^{-\varepsilon cl}$, where $\varepsilon c$ is the absorber's absorption coefficient (absorptivity times concentration) and $l$ the path length. Most absorption is constant (skin, bone, venous blood). The arterial blood volume pulses with each heartbeat, adding a small varying part, so the detected photocurrent is a large DC level with a small AC ripple. The ratio AC/DC is the **perfusion index**, typically around 1% at the wrist, and can fall well below that in cold conditions.
+**The signal.** Light entering tissue is absorbed and scattered. Along a path, intensity falls as in the **Beer–Lambert law**, $I = I_0e^{-\varepsilon cl}$, where $\varepsilon c$ is the absorber's absorption coefficient (absorptivity times concentration) and $l$ the path length. Most absorption is constant (skin, bone, venous blood). The arterial blood volume pulses with each heartbeat, adding a small varying part, so the detected photocurrent is a large DC level with a small AC ripple. The ratio AC/DC is the **perfusion index**, typically around 1% at the wrist, and can fall well below that in cold conditions **[Industry estimate]**. Here $m$ is the *peak* amplitude of the pulsatile part divided by the DC level; perfusion index as clinicians quote it is usually peak to peak, about $2m$, so check the convention before comparing figures (a factor of 2 in $m$ is 6 dB in the SNR below).
 
-**The front end.** An **analog front end (AFE)** pulses LEDs (green for heart rate at the wrist; red and infrared for blood-oxygen saturation), converts the photodiode current with a transimpedance amplifier, samples just after each pulse, subtracts ambient light measured with the LED off, and digitizes. Pulsing the LED for microseconds at tens to hundreds of hertz saves power, because the LED, not the electronics, dominates the budget (Example 18-10.5).
+**The front end.** An **analog front end (AFE)** pulses LEDs (green for heart rate at the wrist; red and infrared for blood-oxygen saturation), converts the photodiode current with a transimpedance amplifier, samples just after each pulse, subtracts ambient light measured with the LED off, and digitizes. Pulsing the LED for microseconds at tens to hundreds of hertz saves power: driven continuously, the LED dominates the budget, but once it is duty-cycled the AFE's own current (hundreds of microamps for the AFE4404 of §9) can dominate instead (Example 18-10.5).
 
 **The noise limit.** Even with perfect electronics the photocurrent carries **shot noise** of density $\sqrt{2qI}$ (17-02). For a DC photocurrent $I$ with an AC part of relative size $m$ (the perfusion index), the best possible SNR of the pulse in a bandwidth $B$ is
 
@@ -194,25 +214,25 @@ A MEMS barometer measures absolute pressure with a piezoresistive or capacitive 
 
 **Solution.** (a) $v = 2\pi \times 20\,000 \times 5 \times 10^{-6}$ = **0.628** m/s; $a_c = 2 \times 1.745 \times 0.628$ = **2.19** m/s².
 
-(b) ARW $= 60 \times 0.007$ = **0.42** °/√h; after 60 s, $0.007\sqrt{60}$ = **0.054** °.
+(b) With the density one-sided, ARW $= 60 \times 0.007/\sqrt2$ = **0.297** °/√h; after 60 s, $0.007\sqrt{60/2}$ = **0.0383** °. (The shortcut $60 \times 0.007 = 0.42$ °/√h treats the density as two-sided.)
 
 (c) $0.5 \times 60$ = **30** °: bias, not noise, is the gyroscope's problem over a minute.
 
 **Units check.** m × s⁻¹ = m/s; rad/s × m/s = m/s²; (°/s)/√Hz × √s = °.
 
-**Sanity check.** 2 m/s² is a fifth of g, measured on a mass already swinging at 0.6 m/s: the sense electronics must reject the drive motion very precisely.
+**Sanity check.** 2 m/s² is a fifth of g, but it arrives at 20 kHz on a mass already swinging 5 µm: with a 2 kHz mode split the sense motion is $2.19/((2\pi \times 22\,000)^2 - (2\pi \times 20\,000)^2)$ = **0.66** nm, nearly 8000 times smaller than the drive amplitude, which is why the sense electronics must reject the drive motion so precisely.
 
 ### Example 18-10.4 · A complementary filter (tier B)
 
-**Setup.** Tilt is estimated at 100 Hz with $\alpha$ = 0.98 from an accelerometer whose tilt noise is 0.02 g per sample and a gyroscope with 0.5 °/s bias. (a) What is the filter's time constant? (b) What steady-state error does the bias cause? (c) By what factor does the filter reduce the accelerometer's white noise? (d) Compare with the lab's 60 s simulation.
+**Setup.** The true tilt is held at 0°. It is estimated at 100 Hz with $\alpha$ = 0.98 from an accelerometer whose tilt noise is 0.02 g per sample and a gyroscope with 0.5 °/s bias and 0.05 °/s rms of white noise per sample. (a) What is the filter's time constant? (b) What steady-state error does the bias cause? (c) By what factor does the filter reduce the accelerometer's white noise? (d) Compare with the lab's 60 s simulation, whose fused error is the rms over the last 30 s.
 
 **Solution.** (a) $\tau = 0.98 \times 0.01/0.02$ = **0.49** s.
 
 (b) $b\tau = 0.5 \times 0.49$ = **0.245** °.
 
-(c) The accelerometer alone has $\arctan(0.02)$ = **1.146** ° rms of tilt noise; the low-pass passes $\sqrt{(1 - \alpha)/(1 + \alpha)}$ = **0.1005** of it, about 0.115°.
+(c) Near level the tilt is the accelerometer's reading in radians, so 0.02 g of noise is 0.02 rad = **1.146** ° rms of tilt noise; the low-pass passes $\sqrt{(1 - \alpha)/(1 + \alpha)}$ = **0.1005** of it, about 0.115°.
 
-(d) The simulation gives **1.145** ° rms for the accelerometer alone, **29.9** ° of drift for the gyroscope alone after 60 s, and **0.288** ° rms for the fused estimate, consistent with $\sqrt{0.245^2 + 0.115^2 + \ldots}$ (the gyroscope's own noise adds a little).
+(d) The simulation gives **1.145** ° rms for the accelerometer alone, **29.9** ° of drift for the gyroscope alone after 60 s, and **0.288** ° rms for the fused estimate, against the predicted $\sqrt{0.245^2 + 0.115^2}$ = **0.271** °. The 6% difference is the statistical scatter of one 30 s run: the filtered noise is correlated over about τ = 0.5 s, so 30 s holds only about 30 independent values, and over many seeds the fused error averages 0.270°. The gyroscope's own noise, passed through the high-pass, adds only about 0.003°.
 
 **Units check.** s; °/s × s = °.
 
@@ -220,13 +240,15 @@ A MEMS barometer measures absolute pressure with a piezoresistive or capacitive 
 
 ### Example 18-10.5 · A PPG budget (tier B)
 
-**Setup.** A wrist PPG gives 1 µA of DC photocurrent with a 1% perfusion index, measured in a 10 Hz bandwidth. (a) What is the shot-noise-limited SNR of the pulse? (b) The LED is pulsed at 20 mA for 100 µs, 100 times a second. What average current does it draw? (c) And at 25 pulses a second of 50 µs?
+**Setup.** A wrist PPG gives 1 µA of DC photocurrent with a 1% perfusion index, measured in a 10 Hz bandwidth. (a) What is the shot-noise-limited SNR of the pulse? (b) The LED is pulsed at 20 mA for 100 µs, 100 times a second. What average current does it draw? (c) And at 25 pulses a second of 50 µs? (d) If the 1 µA flows only while the LED is on, what are the shot-noise-limited SNRs of (b) and (c)?
 
 **Solution.** (a) $m^2I/(4qB) = 10^{-4} \times 10^{-6}/(4 \times 1.602 \times 10^{-19} \times 10)$, so **71.9** dB. Shot noise is far below the motion artefacts that limit real wrists.
 
 (b) $20\ \text{mA} \times 100\ \mu\text{s} \times 100$ = **200** µA, much more than a whole sleeping MCU.
 
 (c) **25** µA: eight times less, at the cost of sampling time and SNR per pulse.
+
+(d) Shot noise depends on the charge collected, so the SNR scales with the duty cycle: (b) is on 1% of the time, $71.9 + 10\log_{10}0.01$ = **51.9** dB; (c) is on 0.125%, **42.9** dB. Cutting the LED's average current eightfold costs 9 dB of SNR: that tradeoff between microamps and SNR, not the LED current alone, is the PPG design lever.
 
 **Units check.** A/(C × Hz) = dimensionless; A × s × s⁻¹ = A.
 
@@ -260,9 +282,10 @@ A MEMS barometer measures absolute pressure with a piezoresistive or capacitive 
 | Ex 18-10.2c | tilt noise averaged | 0.00486 | ° |
 | Ex 18-10.3a | drive velocity | 0.628 | m/s |
 | Ex 18-10.3b | Coriolis acceleration | 2.19 | m/s² |
-| Ex 18-10.3c | angle random walk | 0.42 | °/√h |
-| Ex 18-10.3d | angle noise after 60 s | 0.054 | ° |
+| Ex 18-10.3c | angle random walk | 0.297 | °/√h |
+| Ex 18-10.3d | angle noise after 60 s | 0.0383 | ° |
 | Ex 18-10.3e | drift from bias after 60 s | 30 | ° |
+| Ex 18-10.3f | sense displacement with a 2 kHz mode split | 0.66 | nm |
 | Ex 18-10.4a | time constant | 0.49 | s |
 | Ex 18-10.4b | steady-state bias error | 0.245 | ° |
 | Ex 18-10.4c | accelerometer tilt noise | 1.146 | ° |
@@ -270,9 +293,12 @@ A MEMS barometer measures absolute pressure with a piezoresistive or capacitive 
 | Ex 18-10.4e | simulated accelerometer-only error | 1.145 | ° |
 | Ex 18-10.4f | simulated gyro-only drift | 29.9 | ° |
 | Ex 18-10.4g | simulated fused error | 0.288 | ° |
+| Ex 18-10.4h | predicted fused error | 0.271 | ° |
 | Ex 18-10.5a | shot-noise-limited SNR | 71.9 | dB |
 | Ex 18-10.5b | LED average current | 200 | µA |
 | Ex 18-10.5c | LED average current, reduced | 25 | µA |
+| Ex 18-10.5d | SNR at 1% duty | 51.9 | dB |
+| Ex 18-10.5e | SNR at 0.125% duty | 42.9 | dB |
 | Ex 18-10.6a | full-scale SPL | 120 | dB SPL |
 | Ex 18-10.6b | noise floor | 29 | dB(A) SPL |
 | Ex 18-10.6c | dynamic range | 91 | dB |
@@ -313,7 +339,7 @@ The lab, [labs/18-10-lab](../labs/18-10-lab/README.md), provides `sensors.py`. *
 | Thermomechanical noise | $\sqrt{4k_BT\omega_0/(mQ)}$ | |
 | rms from density | $n\sqrt{B}$ | |
 | Coriolis acceleration | $2\Omega v$ | |
-| Angle random walk | $60N$ °/√h for $N$ in °/s/√Hz | |
+| Angle random walk | $60N/\sqrt2$ °/√h for a one-sided $N$ in °/s/√Hz (the shortcut $60N$ assumes two-sided) | |
 | Complementary filter | $\tau = \alpha\Delta t/(1 - \alpha)$; bias error $b\tau$ | |
 | PPG perfusion index | around 1% at the wrist | lower when cold |
 | 94 dB SPL | 1 Pa rms | microphone reference |
@@ -337,8 +363,8 @@ The lab, [labs/18-10-lab](../labs/18-10-lab/README.md), provides `sensors.py`. *
 
 ### State of the art (as of Nov 2026)
 
-- **IMUs.** Bosch's BMI270 (data sheet revision of March 2026) specifies accelerometer noise of 160 µg/√Hz and gyroscope noise of 0.007 °/s/√Hz in its performance mode. Its current ranges from 10 µA for the accelerometer alone in low-power mode at 25 Hz to 970 µA with the gyroscope in performance mode, and 3.5 µA suspended, with a 2 KB FIFO. The BMI323 is similar (180 µg/√Hz, 0.007 °/s/√Hz, 45–790 µA) ([R-311]) **[Established]**. The gyroscope, not the accelerometer, dominates an IMU's power.
-- **MEMS microphones.** TDK's ICS-43434 digital microphone specifies −26 dBFS sensitivity, 65 dBA SNR at 490 µA (64 dBA at 230 µA in low-power mode) and a 120 dB SPL acoustic overload point, and its product page now marks it end-of-life. A 2021 TDK announcement for the T5838 claims 68 dB SNR, a 133 dB SPL overload point and wake-on-sound detection at 20 µA ([R-311]) **[Established; the T5838 figures are manufacturer claims]**.
+- **IMUs.** Bosch's BMI270 (data sheet revision of March 2026) specifies accelerometer noise of 160 µg/√Hz (in its normal mode) and gyroscope noise of 0.007 °/s/√Hz (in its performance mode). Its current ranges from 10 µA for the accelerometer alone in low-power mode at 25 Hz to 970 µA with the gyroscope in performance mode, and 3.5 µA suspended, with a 2 KB FIFO. The BMI323 is similar (180 µg/√Hz, 0.007 °/s/√Hz, 45–790 µA) ([R-311]) **[Established]**. The gyroscope, not the accelerometer, dominates an IMU's power.
+- **MEMS microphones.** TDK's ICS-43434 digital microphone, which decimates on chip and outputs I²S rather than PDM, specifies −26 dBFS sensitivity, 65 dBA SNR at 490 µA (64 dBA at 230 µA in low-power mode) and a 120 dB SPL acoustic overload point, and its product page now marks it end-of-life. A 2021 TDK announcement for the T5838 claims 68 dB SNR, a 133 dB SPL overload point and wake-on-sound detection at 20 µA ([R-311]) **[Established; the T5838 figures are manufacturer claims]**.
 - **PPG front ends.** TI's AFE4404 drives LEDs at up to 50 mA (100 mA extended) with transimpedance gains of 10 kΩ to 2 MΩ and per-phase ambient subtraction; its receiver draws 300 µA typical in its dynamic power-down mode, while its feature list claims an average below 200 µA without stating the conditions. The newer AFE4950 extends LED current to 250 mA and adds a 256-sample FIFO ([R-311]) **[Established]**.
 - **Environmental sensors.** Bosch's BME280 measures pressure and temperature at 2.8 µA at 1 Hz, with 1.3 Pa (11 cm) of pressure noise at full bandwidth and 0.2 Pa filtered; its gas-sensing sibling, the BME688, averages 0.09 mA in its ultra-low-power mode (one reading per 300 s) because its heater draws 12 mA when on ([R-311]) **[Established]**.
 
@@ -346,7 +372,7 @@ The lab, [labs/18-10-lab](../labs/18-10-lab/README.md), provides `sensors.py`. *
 
 - **Sensors are the wearable's differentiator.** Heart-rate accuracy during exercise, step counts and battery life are what reviewers and buyers compare; they depend on sensor noise, power and the algorithms that use them.
 - **Integration and power drive design wins.** Sensors that batch data, detect events on chip and run at microamps let the system sleep; a sensor that needs the MCU awake costs battery life no algorithm can recover.
-- **Medical claims carry regulatory weight.** SpO₂ and arrhythmia features require clinical validation; accuracy across skin tones and conditions is an active scrutiny topic.
+- **Medical claims carry regulatory weight.** SpO₂ and arrhythmia features are medical functions, which bring medical-device regulation and clinical validation in most markets. Optical accuracy also depends on skin pigmentation (melanin absorbs strongly at the green and red wavelengths PPG uses) and on perfusion, so a credible validation covers a range of skin tones and conditions; ask for that data rather than a single headline accuracy.
 
 ### Marketing vs Reality
 
@@ -376,7 +402,7 @@ The spring must hold the proof mass against gravity, exactly as if the frame wer
 
 <details><summary>Answer</summary>
 
-The random thermal force depends on the damping, not the mass; dividing it by a larger mass gives a smaller equivalent acceleration: $a_n \propto 1/\sqrt{mQ}$ at fixed $\omega_0$.
+At fixed $\omega_0$ and $Q$ the damping coefficient $b = m\omega_0/Q$ grows with the mass, so the random thermal force, $\sqrt{4k_BTb}$, grows only as $\sqrt m$, while dividing by the mass to get acceleration divides by $m$: the equivalent acceleration noise falls as $1/\sqrt m$, $a_n \propto 1/\sqrt{mQ}$.
 
 </details>
 

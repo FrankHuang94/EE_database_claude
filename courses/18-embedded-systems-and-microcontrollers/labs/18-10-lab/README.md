@@ -29,7 +29,7 @@ Deflection is $a/\omega_0^2$ and the thermomechanical floor $\sqrt{4k_BT\omega_0
 
 - Part 1: doubling the mass lowers the floor by $\sqrt2$ (to 23.3 µg/√Hz); raising $Q$ from 2 to 200 lowers it tenfold (to 3.29 µg/√Hz).
 - Part 2: about 0.26°, 0.29° and 2.5° rms for $\alpha$ = 0.9, 0.98 and 0.998; the minimum, about 0.21°, lies near $\alpha$ = 0.96, where accelerometer noise and bias error balance.
-- Part 3: the 72 beats-per-minute peak is found while the artefact is smaller than the pulse; once the artefact's amplitude exceeds the pulse's, the estimate jumps to 90 beats per minute (1.5 Hz).
+- Part 3: the 72 beats-per-minute pulse is found (the notebook prints 71.8, the nearest FFT bin: the zero-padded grid is 50/4096 Hz, 0.73 bpm wide) while the artefact is smaller than the pulse; once the artefact's amplitude exceeds the pulse's, the estimate jumps to the artefact's 90 beats per minute (printed as 90.1, again the nearest bin to 1.5 Hz).
 - Part 4: the climb appears as a 3 m step in the 1 s averages, with about 2.5 cm of noise.
 
 ### Lab answer key
@@ -40,8 +40,8 @@ Deflection is $a/\omega_0^2$ and the thermomechanical floor $\sqrt{4k_BT\omega_0
 |---|---|---|---|
 | Lab 18-10.a | floor with double mass | 23.3 | µg/√Hz |
 | Lab 18-10.b | floor with Q = 200 | 3.29 | µg/√Hz |
-| Lab 18-10.c | heart rate estimated with a small artefact | 72 | bpm |
-| Lab 18-10.d | rate locked onto by a large artefact | 90 | bpm |
+| Lab 18-10.c | heart rate estimated with a small artefact | 71.8 | bpm |
+| Lab 18-10.d | rate locked onto by a large artefact | 90.1 | bpm |
 
 ## Discussion
 

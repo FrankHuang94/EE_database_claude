@@ -17,6 +17,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from scipy import signal
 from scipy.integrate import quad
 
 HERE = Path(__file__).resolve().parent
@@ -91,12 +92,24 @@ v.check("Ex 18-10.2c", math.degrees(math.atan(r2)) / 10)
 vel = 2 * math.pi * 20e3 * 5e-6
 v.check("Ex 18-10.3a", vel)
 v.check("Ex 18-10.3b", 2 * math.radians(100) * vel)
-v.check("Ex 18-10.3c", 0.007 * math.sqrt(3600))
+v.check("Ex 18-10.3c", 0.007 * math.sqrt(3600) / math.sqrt(2))
+# one-sided density N: white samples at fs have variance N^2 fs / 2 (their one-sided PSD is then N^2)
 rng = np.random.default_rng(18103)
-walks = np.cumsum(rng.normal(0, 0.007 * math.sqrt(100), size=(2000, 6000)) * 0.01, axis=1)[:, -1]
-v.assert_true("simulated angle random walk after 60 s matches N sqrt(t) within 5%", abs(np.std(walks) / (0.007 * math.sqrt(60)) - 1) < 0.05)
-v.check("Ex 18-10.3d", 0.007 * math.sqrt(60))
+samples = rng.normal(0, 0.007 * math.sqrt(100 / 2), size=(2000, 6000))
+f_w, psd = signal.welch(samples[0], fs=100, nperseg=1024)
+v.assert_true("simulated rate noise has a one-sided density of 0.007 deg/s/rtHz", abs(math.sqrt(np.mean(psd[5:-5])) / 0.007 - 1) < 0.05,
+              f"{math.sqrt(np.mean(psd[5:-5])):.5f}")
+walks = np.cumsum(samples * 0.01, axis=1)[:, -1]
+v.assert_true("simulated angle random walk after 60 s matches N sqrt(t/2) within 5%", abs(np.std(walks) / (0.007 * math.sqrt(30)) - 1) < 0.05)
+v.assert_true("lab functions agree", abs(sn.angle_random_walk_deg_per_rt_hour(0.007) - 0.297) < 5e-4 and abs(sn.angle_noise_after(0.007, 60) - 0.0383) < 5e-5)
+v.check("Ex 18-10.3d", 0.007 * math.sqrt(60 / 2))
 v.check("Ex 18-10.3e", 0.5 * 60)
+ws, wd = 2 * math.pi * 22e3, 2 * math.pi * 20e3
+y3 = 2 * math.radians(100) * vel / math.sqrt((ws ** 2 - wd ** 2) ** 2 + (ws * wd / 1000) ** 2)
+v.check("Ex 18-10.3f", 1e9 * y3)
+v.assert_true("sense motion is nearly 8000 times smaller than the 5 um drive", 7500 < 5e-6 / y3 < 8000, f"{5e-6 / y3:.0f}")
+v.assert_true("Coriolis term: |2 Omega x v| = 2 Omega v for perpendicular vectors",
+              abs(np.linalg.norm(2 * np.cross([0, 0, math.radians(100)], [vel, 0, 0])) - 2 * math.radians(100) * vel) < 1e-12)
 
 # ---------------------------------------------------------------- Example 4
 tau4 = 0.98 * 0.01 / 0.02
@@ -110,12 +123,18 @@ acc, gyro, fused = sn.simulate_fusion(0.98)
 v.check("Ex 18-10.4e", acc)
 v.check("Ex 18-10.4f", gyro)
 v.check("Ex 18-10.4g", fused)
-v.assert_true("fused error is near the root-sum of bias error and filtered noise",
-              0.25 < fused < 0.32 and math.hypot(0.245, 1.146 * 0.1005) < fused)
+v.check("Ex 18-10.4h", math.hypot(0.245, 1.146 * 0.1005))
+seeds = [sn.simulate_fusion(0.98, seed=s)[2] for s in range(40)]
+v.assert_true("mean fused error over 40 seeds is within 0.01 deg of the prediction 0.271", abs(np.mean(seeds) - 0.2707) < 0.01, f"{np.mean(seeds):.4f}")
+v.assert_true("gyro noise contributes little: the same seed without it gives the same 0.288",
+              abs(sn.simulate_fusion(0.98, gyro_noise_dps=0.0)[2] - fused) < 0.002)
 
 # ---------------------------------------------------------------- Example 5
 snr = 10 * math.log10(0.01 ** 2 * 1e-6 / (4 * QE * 10))
 v.check("Ex 18-10.5a", snr)
+v.check("Ex 18-10.5d", snr + 10 * math.log10(100e-6 * 100))
+v.check("Ex 18-10.5e", snr + 10 * math.log10(50e-6 * 25))
+v.assert_true("duty-cycle cut of 8x costs 9.0 dB", abs(10 * math.log10(8) - 9.03) < 0.01)
 fs_sim, n_sim = 2000.0, 400000
 rng5 = np.random.default_rng(18105)
 t5 = np.arange(n_sim) / fs_sim
@@ -208,4 +227,32 @@ v.assert_true("best alpha near 0.96 with about 0.21 deg", abs(grid[int(np.argmin
 v.assert_true("alpha 0.998: tau about 5 s and bias error about 2.5 deg",
               abs(sn.complementary_time_constant(0.998, 0.01) - 4.99) < 0.01 and abs(0.5 * 4.99 - 2.5) < 0.01)
 
+# ---------------------------------------------------------------- Problems 11-13 (audit additions)
+a11 = 1 / (1 + 0.005)
+v.check("18-10.11a", a11)
+v.check("18-10.11b", math.sqrt((1 - a11) / (1 + a11)))
+h = (1 - a11) * a11 ** np.arange(20000)
+v.assert_true("impulse-response sum of squares equals (1 - a)/(1 + a)", abs(np.sum(h ** 2) - (1 - a11) / (1 + a11)) < 1e-12)
+zz = np.exp(1j * np.linspace(0.01, 3.1, 50))
+v.assert_true("H_acc + H_gyro = 1 on the unit circle",
+              np.allclose((1 - a11) / (1 - a11 / zz) + a11 * (1 - 1 / zz) / (1 - a11 / zz), 1))
+v12 = 2 * math.pi * 25e3 * 4e-6
+ac12 = 2 * math.radians(10) * v12
+v.check("18-10.12a", ac12)
+v.check("18-10.12b", 1e9 * ac12 / ((2 * math.pi) ** 2 * (27e3 ** 2 - 25e3 ** 2)))
+w12 = 2 * math.pi * 25e3
+v.check("18-10.12c", 1e9 * ac12 / math.sqrt(0 + (w12 * w12 / 500) ** 2))
+v.check("18-10.13a", 60 * 0.004)
+v.check("18-10.13b", 0.0012 / 0.664)
+v.check("18-10.13c", 3600 * 0.0012 / 0.664)
+v.check("18-10.13d", math.sqrt(2) * 0.004)
+v.assert_true("IEEE 952 flat-region factor sqrt(2 ln 2 / pi) = 0.664", abs(math.sqrt(2 * math.log(2) / math.pi) - 0.664) < 5e-4)
+# Allan deviation of simulated white rate noise of two-sided level N2^2: sigma(tau) = N2 / sqrt(tau)
+rng = np.random.default_rng(181013)
+fs13 = 100.0
+x13 = rng.normal(0, 0.004 * math.sqrt(fs13), 200000)
+m13 = 100                                     # 1 s clusters
+cl = x13[: len(x13) // m13 * m13].reshape(-1, m13).mean(axis=1)
+adev = math.sqrt(0.5 * np.mean(np.diff(cl) ** 2))
+v.assert_true("simulated Allan deviation at 1 s is 0.004 deg/s within 3%", abs(adev / 0.004 - 1) < 0.03, f"{adev:.5f}")
 sys.exit(v.finish())

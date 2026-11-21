@@ -52,8 +52,9 @@ def coriolis_acceleration(omega: float, v: float) -> float:
 
 
 def angle_random_walk_deg_per_rt_hour(density_dps_per_rt_hz: float) -> float:
-    """ARW in deg/sqrt(h) from a rate noise density in (deg/s)/sqrt(Hz): multiply by 60 (sqrt(3600 s/h))."""
-    return density_dps_per_rt_hz * 60.0
+    """ARW in deg/sqrt(h) from a one-sided rate noise density in (deg/s)/sqrt(Hz): 60 / sqrt(2) times it
+    (sqrt(3600 s/h), and the one-sided density's two-sided level is N^2 / 2)."""
+    return density_dps_per_rt_hz * 60.0 / math.sqrt(2.0)
 
 
 def angle_drift_from_bias(bias_dps: float, t: float) -> float:
@@ -61,8 +62,9 @@ def angle_drift_from_bias(bias_dps: float, t: float) -> float:
 
 
 def angle_noise_after(density_dps_per_rt_hz: float, t: float) -> float:
-    """Standard deviation of the integrated angle (deg) after t seconds of white rate noise: N sqrt(t)."""
-    return density_dps_per_rt_hz * math.sqrt(t)
+    """Standard deviation of the integrated angle (deg) after t seconds of white rate noise of one-sided density N:
+    N sqrt(t / 2)."""
+    return density_dps_per_rt_hz * math.sqrt(t / 2.0)
 
 
 # ------------------------------------------------------------------ tilt and fusion

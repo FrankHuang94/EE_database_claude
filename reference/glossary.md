@@ -88,7 +88,7 @@
 
 <a id="angle-deficiency"></a>**Angle deficiency** — In root-locus design, the phase a compensator must add at a desired closed-loop pole location so that the loop's total angle there is −180°; a lead compensator's zero and pole are placed to supply it. *First defined in* [15-09](../courses/15-control-systems/chapters/15-09-lead-lag-compensation.md). *See also:* [Angle condition](#angle-condition), [Lead compensator](#lead-compensator).
 
-<a id="angle-random-walk"></a>**Angle random walk** — The growth of orientation error from integrating a gyroscope's white rate noise, as N√t; quoted in °/√h, equal to 60 times the noise density in °/s/√Hz. *First defined in* [18-10](../courses/18-embedded-systems-and-microcontrollers/chapters/18-10-sensors.md). *See also:* [Noise density](#noise-density), [Gyroscope bias](#gyroscope-bias).
+<a id="angle-random-walk"></a>**Angle random walk** — The growth of orientation error from integrating a gyroscope's white rate noise, as N√(t/2) for a one-sided rate noise density N; quoted in °/√h, equal to 60/√2 times N in °/s/√Hz (the common shortcut 60N assumes a two-sided density). *First defined in* [18-10](../courses/18-embedded-systems-and-microcontrollers/chapters/18-10-sensors.md). *See also:* [Noise density](#noise-density), [Gyroscope bias](#gyroscope-bias).
 
 <a id="angular-frequency"></a>**Angular frequency** — ω = 2πf, the rate of a sinusoid's phase advance in rad/s, where f is the frequency in hertz. *First defined in* [02-01](../courses/02-complex-numbers-des-and-linear-algebra/chapters/02-01-complex-numbers-euler-and-phasors.md).
 

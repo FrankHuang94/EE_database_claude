@@ -84,6 +84,32 @@ Problems: [18-10 problem set](../problems/18-10-problems.md) · Chapter: [18-10]
 
 (d) The gyroscope (45 µA, 39%) and the PPG chain (55 µA, 48%) dominate. Run the gyroscope only when motion demands it, perhaps triggered by the accelerometer, and reduce the PPG duty cycle (or LED current) when the wearer is still. A larger FIFO watermark would save less than 5 µA.
 
+### Solution 18-10.11
+
+(a) Write the filter with $u_n = \omega_n\Delta t = \theta_{g,n} - \theta_{g,n-1}$: $\hat\theta_n = \alpha\hat\theta_{n-1} + \alpha(\theta_{g,n} - \theta_{g,n-1}) + (1 - \alpha)\theta_{acc,n}$. Taking $z$-transforms, $\hat\Theta(1 - \alpha z^{-1}) = \alpha(1 - z^{-1})\Theta_g + (1 - \alpha)\Theta_{acc}$, which gives the two transfer functions. Their sum is $[(1 - \alpha) + \alpha - \alpha z^{-1}]/(1 - \alpha z^{-1}) = 1$: a tilt seen identically by both sensors passes unchanged, while each sensor's errors see only its own filter.
+
+(b) $H_{acc}$'s impulse response is $h_k = (1 - \alpha)\alpha^k$, $k \ge 0$. White noise of variance $\sigma^2$ gives an output variance $\sigma^2\sum h_k^2 = \sigma^2(1 - \alpha)^2/(1 - \alpha^2) = \sigma^2(1 - \alpha)/(1 + \alpha)$, using the geometric series and $1 - \alpha^2 = (1 - \alpha)(1 + \alpha)$.
+
+(c) $\tau = \alpha\Delta t/(1 - \alpha) = 1$ s with $\Delta t$ = 5 ms gives $\alpha = \tau/(\tau + \Delta t) = 1/1.005$ = **0.99502**, and the rms factor $\sqrt{(1 - \alpha)/(1 + \alpha)}$ = **0.0499**.
+
+### Solution 18-10.12
+
+(a) $v = 2\pi \times 25\,000 \times 4 \times 10^{-6}$ = 0.628 m/s; $a_c = 2 \times (10 \times \pi/180) \times 0.628$ = **0.219** m/s².
+
+(b) $y = a_c/(\omega_s^2 - \omega_d^2) = 0.219/((2\pi)^2(27\,000^2 - 25\,000^2))$ = **0.0534** nm, about half an ångström.
+
+(c) Matched, $y = Q_sa_c/\omega_s^2$ = **4.44** nm, 83 times more. The price is bandwidth (the sense resonance is only $f/Q$ = 50 Hz wide, which limits how fast the rate can change and makes the response depend on temperature), and the need to tune the modes electronically and hold them matched.
+
+### Solution 18-10.13
+
+(a) On the −½ slope $\sigma(\tau) = N_2/\sqrt\tau$, so $N_2 = 0.004$ °/√s at $\tau$ = 1 s, and ARW $= 60N_2$ = **0.24** °/√h.
+
+(b) The flat level is about 0.664 times the bias instability: $0.0012/0.664$ = **0.00181** °/s, or **6.51** °/h.
+
+(c) $N_2$ corresponds to the two-sided level, so the one-sided density is $\sqrt2N_2$ = **0.00566** °/s/√Hz.
+
+(d) About 200 s, where the curve is lowest: shorter averages are dominated by white noise, which falls as $1/\sqrt\tau$, while longer ones see the bias itself wander (and temperature drift), so the estimate gets worse again. The bias instability is the floor any calibration by averaging can reach.
+
 ---
 
 ## Answer key
@@ -119,3 +145,12 @@ Problems: [18-10 problem set](../problems/18-10-problems.md) · Chapter: [18-10]
 | 18-10.10b | MCU wake cost | 4.69 | µA |
 | 18-10.10c | total average current | 114.7 | µA |
 | 18-10.10d | battery life | 72.7 | days |
+| 18-10.11a | α for a 1 s time constant at 200 Hz | 0.99502 | — |
+| 18-10.11b | rms noise factor | 0.0499 | — |
+| 18-10.12a | Coriolis acceleration | 0.219 | m/s² |
+| 18-10.12b | sense displacement, 2 kHz split | 0.0534 | nm |
+| 18-10.12c | sense displacement, matched, Q = 500 | 4.44 | nm |
+| 18-10.13a | angle random walk | 0.24 | °/√h |
+| 18-10.13b | bias instability | 0.00181 | °/s |
+| 18-10.13c | bias instability | 6.51 | °/h |
+| 18-10.13d | one-sided rate noise density | 0.00566 | °/s/√Hz |

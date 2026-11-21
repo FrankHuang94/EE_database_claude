@@ -30,7 +30,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 18-10.5 [B]
 
-**Which gyroscope error dominates?** A gyroscope has an angle random walk of 0.3 °/√h and a bias that, after calibration, still drifts by 2 °/h. Over a 10-minute integration: (a) what is the angle noise from the random walk? (b) What angle error does the residual bias produce? (c) Which dominates, and what does that imply for calibration?
+**Which gyroscope error dominates?** A gyroscope has an angle random walk of 0.3 °/√h and a residual bias of 2 °/h after calibration. Over a 10-minute integration: (a) what is the angle noise from the random walk? (b) What angle error does the residual bias produce? (c) Which dominates, and what does that imply for calibration?
 
 ### Problem 18-10.6 [B]
 
@@ -50,7 +50,19 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 18-10.10 [C]
 
-**A wristband's sensor budget.** A wristband runs an accelerometer continuously at 8 µA, turns its gyroscope (900 µA) on 5% of the time, pulses its PPG LED as in Example 18-10.5(c) (25 µA) with a 30 µA AFE, and wakes its MCU when the accelerometer's FIFO holds 32 samples at 25 Hz, each wake costing 2 ms at 3 mA. The MCU otherwise sleeps at 2 µA. (a) How often does the MCU wake, and what does it cost on average? (b) What is the total average current? (c) How long does a 200 mAh battery last? (d) Which two changes would you make first?
+**A wristband's sensor budget.** A wristband runs an accelerometer continuously at 8 µA, turns its gyroscope (900 µA) on 5% of the time, pulses its PPG LED as in Example 18-10.5(c) (25 µA) with a hypothetical next-generation AFE drawing 30 µA (the AFE4404 of 18-10 §9 draws about 300 µA in its power-down mode), and wakes its MCU when the accelerometer's FIFO holds 32 samples at 25 Hz, each wake costing 2 ms at 3 mA. The MCU otherwise sleeps at 2 µA. (a) How often does the MCU wake, and what does it cost on average? (b) What is the total average current? (c) How long does a 200 mAh battery last? (d) Which two changes would you make first?
+
+### Problem 18-10.11 [B]
+
+**The complementary filter's algebra.** (a) Show that the filter of §3.3 acts on the accelerometer's tilt through $H_{acc}(z) = (1 - \alpha)/(1 - \alpha z^{-1})$ and on the gyroscope's integrated angle through $H_{gyro}(z) = \alpha(1 - z^{-1})/(1 - \alpha z^{-1})$, and that they sum to 1. (b) Derive the white-noise variance factor $(1 - \alpha)/(1 + \alpha)$. (c) At 200 Hz, what α gives a 1 s time constant, and what fraction of the accelerometer's white-noise rms passes?
+
+### Problem 18-10.12 [B]
+
+**Sense-mode motion.** A gyroscope drives its proof mass at 25 kHz with 4 µm amplitude. (a) What is the Coriolis acceleration at 10 °/s? (b) What is the sense displacement with the sense mode at 27 kHz (Q large)? (c) With the modes matched and a sense Q of 500, what is it, and what does matching cost?
+
+### Problem 18-10.13 [B]
+
+**Reading an Allan plot.** A stationary gyroscope's Allan deviation falls with slope −½ through 0.004 °/s at $\tau$ = 1 s and flattens to a minimum of 0.0012 °/s near $\tau$ = 200 s. (a) What is its angle random walk in °/√h? (b) What is its bias instability, in °/s and °/h? (c) What one-sided rate noise density does the ARW correspond to? (d) What is the best averaging time for estimating its bias, and why does averaging longer not help?
 
 ---
 
@@ -60,7 +72,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Accelerometer physics and noise floor | 1, 4 |
 | 2. Noise density, bandwidth and tilt | 2, 9 |
-| 3. Gyroscopes and integration | 5 |
-| 4. Complementary filtering | 6 |
+| 3. Gyroscopes and integration | 5, 12, 13 |
+| 4. Complementary filtering | 6, 11 |
 | 5. PPG signal, noise and power | 7, 8, 10 |
 | 6. Microphone and barometer specifications | 3, 9 |
