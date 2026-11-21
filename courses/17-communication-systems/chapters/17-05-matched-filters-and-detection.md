@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 17-05 · Matched Filters and Optimal Detection
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The optimum-receiver chapter of a senior digital-communications course: the matched filter and correlator, signal-space representation and Gram–Schmidt, maximum-likelihood and MAP detection in AWGN, error probabilities of binary and M-ary signalling, and the union bound (Proakis & Salehi, *Communication Systems Engineering*, optimum receivers for AWGN; Gallager, *Principles of Digital Communication*, detection; Haykin & Moher, signal-space analysis) |
 | **Prerequisites** | [17-02](17-02-noise-and-snr.md) ($E_b/N_0$, AWGN), [17-04](17-04-baseband-digital-transmission.md) (PAM, pulses, eyes), [03-05](../../03-probability-statistics-and-random-variables/chapters/03-05-estimation-and-hypothesis-testing.md) (hypothesis tests), [02-06](../../02-complex-numbers-des-and-linear-algebra/chapters/02-06-vectors-matrices-and-linear-systems.md) (vectors, inner products) |
 | **Estimated study hours** | 8 |
-| **Last verified** | 2026-11-20 |
+| **Last verified** | 2026-11-21 |
 
 **Learning objectives.** After this chapter you can:
 

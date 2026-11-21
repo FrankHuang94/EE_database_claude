@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 17-11 · MIMO and Beamforming Basics
 
 | | |

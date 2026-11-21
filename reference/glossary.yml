@@ -7217,3 +7217,23 @@
   definition: An authorized, goal-directed attempt to exploit a system's weaknesses, going beyond port and vulnerability scanning to measure real exposure.
   chapter: "17-13"
   see_also: [Security triad (CIA), Firewall]
+- term: Relative entropy
+  definition: "The Kullback–Leibler divergence D(p‖q) = Σ p log2(p/q) ≥ 0 between two distributions: the extra bits per symbol paid for coding a p-source with a code designed for q. Mutual information is the relative entropy between a joint distribution and the product of its marginals."
+  chapter: "17-07"
+  see_also: [Mutual information]
+- term: Data-processing inequality
+  definition: "For a Markov chain X → Y → Z, I(X;Z) ≤ I(X;Y): no processing of an observation creates information about the input; the reason hard decisions lose capacity."
+  chapter: "17-07"
+  see_also: [Mutual information]
+- term: BCH code
+  definition: "A binary cyclic code of length 2^m − 1 whose generator polynomial has 2t consecutive powers of a primitive element as roots, guaranteeing d_min ≥ 2t + 1 with at most mt check bits; Reed–Solomon codes are the non-binary case."
+  chapter: "17-08"
+  see_also: [Reed–Solomon code]
+- term: Bit-interleaved coded modulation
+  definition: "BICM: a binary code whose interleaved bits are Gray-mapped onto QAM symbols, with the demodulator computing one LLR per bit; the coded-modulation scheme of Wi-Fi, LTE and NR."
+  chapter: "17-08"
+  see_also: [Log-likelihood ratio (LLR)]
+- term: Diversity gain
+  definition: "The reduction in required SNR, at equal total received energy, from combining independently fading branches; distinct from array gain, which is the extra energy the branches collect."
+  chapter: "17-09"
+  see_also: [Array gain]

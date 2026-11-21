@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 17-03 · Analog Modulation (Brief)
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The analog-modulation chapters of a senior communications course, condensed: single-sideband and the Hilbert transform, phase and frequency modulation, Bessel spectra and Carson's rule, and the noise performance of AM, DSB, SSB and FM with the threshold effect and pre-emphasis (Proakis & Salehi, *Communication Systems Engineering*, analog modulation and its noise performance; Haykin & Moher, *Communication Systems*; Lathi & Ding, angle modulation) |
 | **Prerequisites** | [11-11](../../11-signals-and-systems/chapters/11-11-modulation-and-filtering-applications.md) (DSB-SC, AM, envelope detection, mixers, superheterodyne), [17-01](17-01-random-processes-and-psd.md) (bandpass noise, I/Q components), [17-02](17-02-noise-and-snr.md) (SNR and the noise density $N_0$) |
 | **Estimated study hours** | 5 |
-| **Last verified** | 2026-11-20 |
+| **Last verified** | 2026-11-21 |
 
 **Learning objectives.** After this chapter you can:
 

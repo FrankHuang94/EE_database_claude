@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 17-06 · Bandpass Digital Modulation and BER
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The digital bandpass modulation chapter of a senior communications course: I/Q representation, BPSK, QPSK, M-PSK, M-QAM and FSK, their constellations, symbol- and bit-error rates in AWGN, differential and noncoherent detection, spectral efficiency, and transmitter quality (EVM) (Proakis & Salehi, *Communication Systems Engineering*, digital modulation; Haykin & Moher; Goldsmith, *Wireless Communications*, modulation for wireless) |
 | **Prerequisites** | [17-05](17-05-matched-filters-and-detection.md) (signal space, ML detection, $Q(d/\sqrt{2N_0})$), [17-04](17-04-baseband-digital-transmission.md) (PAM, RRC pulses), [17-01](17-01-random-processes-and-psd.md) (bandpass noise and I/Q), [02-01](../../02-complex-numbers-des-and-linear-algebra/chapters/02-01-complex-numbers-euler-and-phasors.md) (complex numbers and phasors) |
 | **Estimated study hours** | 10 |
-| **Last verified** | 2026-11-20 |
+| **Last verified** | 2026-11-21 |
 
 **Learning objectives.** After this chapter you can:
 

@@ -261,6 +261,9 @@ v.check("17-09.11b", db(math.log(2)))
 v.assert_true("Problem 11: mean sigma sqrt(pi/2), mean square 2 sigma^2", abs(mean_r - math.sqrt(math.pi / 2)) < 1e-9 and abs(ms_r - 2) < 1e-9)
 v.check("17-09.12a", avg_ber(lambda gg: 0.5 * math.exp(-gg), 1000.0))
 v.check("17-09.12b", avg_ber(bpsk_awgn, 1000.0))
+dpsk_req = db(optimize.brentq(lambda g: 0.5 * math.exp(-g) - 1e-5, 1, 50, xtol=1e-12))
+v.assert_true("Solution 12: DPSK needs 10.34 dB at 1e-5 in AWGN; BPSK 9.59", round(dpsk_req, 2) == 10.34 and round(db(Qi(1e-5) ** 2 / 2), 2) == 9.59)
+v.check("17-09.12c", dpsk_req - db(Qi(1e-5) ** 2 / 2))
 v.assert_true("Problem 12: DPSK in Rayleigh is 1/(2(1 + gbar))", abs(avg_ber(lambda gg: 0.5 * math.exp(-gg), 1000.0) - 1 / (2 * 1001)) < 1e-12)
 v.check("17-09.13a", 1 - math.exp(-0.1))
 e2 = rng.exponential(1.0, (2, 400_000))
@@ -288,5 +291,54 @@ v.check("Lab 17-09.e", 1e3 * (math.exp(rho**2) - 1) / (math.sqrt(2 * math.pi) * 
 v.check("Lab 17-09.f", 100 * ch.rician_outage(10, 10**0.6))
 v.check("Lab 17-09.g", ch.ber_bpsk_mrc(un(15), 2))
 v.assert_true("Lab part 6: at 15 dB one branch gives 7.7e-3 and four about 1e-7", abs(ch.ber_bpsk_rayleigh(un(15)) - 7.7e-3) < 5e-5 and 0.5e-7 < ch.ber_bpsk_mrc(un(15), 4) < 2e-7)
+
+# ------------------------------------------------------------------ Example 6: array vs diversity gain
+for L_, xL, tagT, tagD, tagP in ((2, ch.required_db(lambda gg: ch.ber_bpsk_mrc(gg, 2), 1e-5), "f", "h", "j"), (4, ch.required_db(lambda gg: ch.ber_bpsk_mrc(gg, 4), 1e-5), "g", "i", "k")):
+    v.check(f"Ex 17-09.6{tagT}", xL + db(L_))
+    v.check(f"Ex 17-09.6{tagD}", x6 - (xL + db(L_)))
+    v.check(f"Ex 17-09.6{tagP}", xL + db(L_) - db(Qi(1e-5) ** 2 / 2))
+# exact MRC formula against direct averaging over the chi-square(2L) SNR distribution
+for L_ in (2, 4):
+    g_ = 10.0
+    direct = integrate.quad(lambda s_: 0.5 * special.erfc(math.sqrt(s_)) * s_ ** (L_ - 1) * math.exp(-s_ / g_) / (math.factorial(L_ - 1) * g_ ** L_), 0, np.inf)[0]
+    v.assert_true(f"MRC L = {L_}: closed form equals direct average at 10 dB per branch", abs(ch.ber_bpsk_mrc(g_, L_) / direct - 1) < 1e-6)
+
+# ------------------------------------------------------------------ Rayleigh derivation and Rician CDF (section 3.6)
+sig = 1.3
+v.assert_true("Rayleigh: polar joint density integrates (over theta) to the Rayleigh pdf and to 1",
+              abs(integrate.dblquad(lambda th, r: r / (2 * math.pi * sig**2) * math.exp(-r * r / (2 * sig**2)), 0, 20, 0, 2 * math.pi)[0] - 1) < 1e-8)
+rng_r = np.random.default_rng(1709)
+hx = rng_r.normal(0, 1, 400_000) + 1j * rng_r.normal(0, 1, 400_000)
+v.assert_true("Rayleigh: simulated phase uniform and uncorrelated with the envelope", abs(np.mean(np.angle(hx) / math.pi)) < 0.01 and abs(np.corrcoef(np.abs(hx), np.abs(np.angle(hx)))[0, 1]) < 0.01)
+v.check("17-09.16a", integrate.quad(lambda r: r * r * math.exp(-r * r / 2), 0, np.inf)[0])
+v.check("17-09.16b", optimize.brentq(lambda m: 1 - math.exp(-m * m / 2) - 0.5, 0.1, 5))
+K6 = 10**0.6
+
+
+def rician_cdf_marcum(x, K):
+    a, b = math.sqrt(2 * K), math.sqrt(2 * (K + 1) * x)
+    q1 = integrate.quad(lambda t: t * math.exp(-(t * t + a * a) / 2) * special.i0(a * t), b, 60)[0]
+    return 1 - q1
+
+
+v.assert_true("Rician: Marcum-Q form by direct integration equals the lab's noncentral chi-square", all(abs(rician_cdf_marcum(x_, K6) - ch.rician_outage(-db(x_), K6)) < 1e-9 for x_ in (0.1, 0.01, 1e-3)))
+v.assert_true("Rician pdf integrates to 1 and its power has unit mean (A^2 + 2 sigma^2 = 1)",
+              abs(integrate.quad(lambda r: r / (1 / (2 * (K6 + 1))) * math.exp(-(r * r + K6 / (K6 + 1)) * (K6 + 1)) * special.i0(r * math.sqrt(K6 / (K6 + 1)) * 2 * (K6 + 1)), 0, 10)[0] - 1) < 1e-8)
+v.check("17-09.15a", 100 * (1 - math.exp(-0.1)))
+v.check("17-09.15b", 100 * rician_cdf_marcum(0.1, K6))
+v.check("17-09.15c", 100 * (K6 + 1) * math.exp(-K6) * 0.1)
+v.check("17-09.15d", 100 * rician_cdf_marcum(1e-3, K6))
+v.assert_true("Rician small-x limit: ratio to (K+1)e^-K x tends to 1; deep-fade advantage e^K/(K+1) = 10.8", abs(rician_cdf_marcum(1e-5, K6) / ((K6 + 1) * math.exp(-K6) * 1e-5) - 1) < 1e-3 and round(math.exp(K6) / (K6 + 1), 1) == 10.8)
+
+# ------------------------------------------------------------------ text: UMi PL2, fade durations, lab discussion
+d_bp = 4 * 9 * 0.5 * 3.5e9 / 3e8
+d3bp = math.sqrt(d_bp**2 + 8.5**2)
+pl1_bp = 32.4 + 21 * math.log10(d3bp) + 20 * math.log10(3.5)
+pl2_bp = 32.4 + 40 * math.log10(d3bp) + 20 * math.log10(3.5) - 9.5 * math.log10(d_bp**2 + 8.5**2)
+v.assert_true("UMi PL2 meets PL1 at the breakpoint (within 0.1 dB) and grows 40 dB/decade beyond", abs(pl1_bp - pl2_bp) < 0.1 and abs(umi(2100, 3.5, False) - umi(210.0001, 3.5, False) - 40) < 0.5)
+afd10 = ch.afd(0.316, 389)
+v.assert_true("10 dB fade at 389 Hz lasts 0.341 ms: about 10 symbols at 30 kHz SCS and 5 at 15 kHz", round(afd10 * 1e3, 3) == 0.341 and round(afd10 / (1e-3 / 28)) == 10 and round(afd10 / (1e-3 / 14)) == 5)
+v.assert_true("Lab discussion 2: Tc 2.42 ms; AFD 1.33 ms at -10 dB and 0.40 ms at -20 dB at fD = 100 Hz",
+              round(ch.coherence_time(100) * 1e3, 2) == 2.42 and round(ch.afd(10 ** -0.5, 100) * 1e3, 2) == 1.33 and round(ch.afd(0.1, 100) * 1e3, 2) == 0.40)
 
 sys.exit(v.finish())

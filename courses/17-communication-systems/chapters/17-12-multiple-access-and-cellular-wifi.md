@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 17-12 · Multiple Access, Cellular and Wi-Fi Systems
 
 | | |

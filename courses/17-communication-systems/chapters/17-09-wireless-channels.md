@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 17-09 · Wireless Channels: Fading and Multipath
 
 | | |
@@ -87,11 +87,12 @@ where $n$ ≈ 2 in free space, 2–4 in urban environments, and $X_\sigma$ is th
 TR 38.901 ([R-283]) is the channel model 3GPP uses from 0.5 to 100 GHz. For the **UMi-Street Canyon** scenario (base station at 10 m, below rooftops), with $f_c$ in GHz and the 3-D distance $d_{3D}$ in metres:
 
 - **LOS**, up to the breakpoint $d'_{BP} = 4h'_{BS}h'_{UT}f_c/c$ (effective heights $h' = h - 1$ m): $PL = 32.4 + 21\log_{10}d_{3D} + 20\log_{10}f_c$, shadowing σ = 4 dB;
+  beyond it, out to 5 km, $PL_2 = 32.4 + 40\log_{10}d_{3D} + 20\log_{10}f_c - 9.5\log_{10}\big[(d'_{BP})^2 + (h_{BS} - h_{UT})^2\big]$, the two-ray $d^4$ law of §3.2 with the same σ;
 - **NLOS**: $PL = \max\big(PL_{LOS},\ 35.3\log_{10}d_{3D} + 22.4 + 21.3\log_{10}f_c - 0.3(h_{UT} - 1.5)\big)$, σ = 7.82 dB.
 
 Compare with free space at 1 m: $32.4 + 20\log_{10}f_c$ (GHz, metres). The LOS model is free space with a slightly steeper exponent (2.1), and NLOS adds an exponent of 3.53. The UMa (macro) and InH (indoor office) models have the same form with different coefficients ([R-283]).
 
-**Shadowing.** At a fixed distance, the local mean power varies from place to place with a roughly lognormal distribution: $X_\sigma$ is Gaussian in decibels with standard deviation σ (4–8 dB in TR 38.901). To meet a power budget with probability $p$ at a given distance, the design adds a **shadowing margin**
+**Shadowing.** At a fixed distance, the local mean power varies from place to place with a roughly lognormal distribution: $X_\sigma$ is Gaussian in decibels with standard deviation σ (3–8.3 dB in TR 38.901, by scenario). To meet a power budget with probability $p$ at a given distance, the design adds a **shadowing margin**
 
 $$
 M = \sigma\,Q^{-1}(1 - p) ,
@@ -163,7 +164,19 @@ $$
 
 ### 3.6 Rayleigh and Rician fading
 
-**Rayleigh.** With many scattered paths and no dominant one, the in-phase and quadrature parts of $h$ are sums of many small independent terms, so by the central limit theorem $h = X + jY$ with $X, Y$ independent $\mathcal N(0, \sigma^2)$. The envelope $r = |h|$ then has the **Rayleigh** density (change to polar coordinates and integrate out the uniform phase):
+**Rayleigh.** With many scattered paths and no dominant one, the in-phase and quadrature parts of $h$ are sums of many small independent terms, so by the central limit theorem $h = X + jY$ with $X, Y$ independent $\mathcal N(0, \sigma^2)$. The envelope $r = |h|$ then has the **Rayleigh** density. Derivation: the joint density of the two components is
+
+$$
+f_{XY}(x, y) = \frac{1}{2\pi\sigma^2}e^{-(x^2 + y^2)/(2\sigma^2)} .
+$$
+
+Change to polar coordinates, $x = r\cos\theta$ and $y = r\sin\theta$, whose Jacobian is $r$ ($dx\,dy = r\,dr\,d\theta$):
+
+$$
+f_{R\Theta}(r, \theta) = \frac{r}{2\pi\sigma^2}e^{-r^2/(2\sigma^2)},\qquad r \ge 0,\ 0 \le \theta < 2\pi .
+$$
+
+The joint density factors into a function of $r$ times the constant $1/(2\pi)$, so the phase is **uniform** and independent of the envelope. Integrating θ over $2\pi$ leaves
 
 $$
 f_r(r) = \frac{r}{\sigma^2}e^{-r^2/(2\sigma^2)},\qquad r \ge 0 ,
@@ -175,11 +188,23 @@ $$
 P\big(|h|^2 < x\big) = 1 - e^{-x/\Omega} \approx \frac{x}{\Omega}\quad(x \ll \Omega) .
 $$
 
-So the probability of fading more than 10 dB below the mean is $1 - e^{-0.1}$ = 9.5%, 20 dB about 1%, 30 dB about 0.1%: each extra 10 dB of margin buys only a factor of ten in **outage probability**. This one-decade-per-10-dB slope is the signature of a single fading path (diversity order 1).
+So the probability of fading more than 10 dB below the mean is $1 - e^{-0.1}$ = 9.5%, 20 dB about 1%, 30 dB about 0.1%: each extra 10 dB of margin buys only a factor of ten in **outage probability**. This one-decade-per-10-dB slope is the signature of a single Rayleigh-fading branch (diversity order 1); the Rayleigh statistics themselves come from many unresolved paths.
 
-**Rician.** With a line-of-sight component of power $|A|^2$ plus scattered power $2\sigma^2$, the **K-factor** $K = |A|^2/2\sigma^2$ measures how dominant it is. $K = 0$ is Rayleigh; large $K$ approaches no fading. The power then follows a noncentral chi-square distribution with two degrees of freedom, and deep fades become much rarer (Example 17-09.5).
+**Rician.** With a line-of-sight component of power $|A|^2$ plus scattered power $2\sigma^2$, the **K-factor** $K = |A|^2/2\sigma^2$ measures how dominant it is. $K = 0$ is Rayleigh; large $K$ approaches no fading. The envelope then has the **Rician** density
 
-> **Going deeper — how often and how long.** For the Clarke model, the envelope crosses a level $R$ downward at a rate $N_R = \sqrt{2\pi}f_D\rho e^{-\rho^2}$ per second and stays below it for an average $\bar t_R = (e^{\rho^2} - 1)/(\sqrt{2\pi}f_D\rho)$, where $\rho = R/R_{rms}$. At 3.5 GHz and 120 km/h ($f_D$ = 389 Hz), a 10 dB fade ($\rho$ = 0.316) happens **279** times a second and lasts **0.341** ms on average: a few OFDM symbols, which is why interleaving and coding across a slot work.
+$$
+f_r(r) = \frac{r}{\sigma^2}\exp\Big(-\frac{r^2 + |A|^2}{2\sigma^2}\Big)I_0\Big(\frac{r|A|}{\sigma^2}\Big),\qquad r \ge 0 ,
+$$
+
+where $I_0$ is the modified Bessel function of the first kind and order zero ($I_0(0) = 1$, so $A = 0$ gives Rayleigh). The power is a scaled noncentral chi-square variable with two degrees of freedom. Normalized to mean power $\Omega = |A|^2 + 2\sigma^2 = 1$, its CDF is
+
+$$
+P\big(|h|^2 < x\big) = 1 - Q_1\big(\sqrt{2K},\ \sqrt{2(K + 1)x}\big) \approx (K + 1)e^{-K}x\quad(x \to 0) ,
+$$
+
+with $Q_1$ the first-order **Marcum Q-function**, $Q_1(a, b) = \int_b^\infty t\,e^{-(t^2 + a^2)/2}I_0(at)\,dt$. The small-$x$ form follows from the density of $|h|^2$ at zero, $(K + 1)e^{-K}$. Deep fades become much rarer (Example 17-09.5, Problem 17-09.15), but the slope is still one decade per 10 dB: a line-of-sight path lowers the constant, not the diversity order.
+
+> **Going deeper — how often and how long.** For the Clarke model, the envelope crosses a level $R$ downward at a rate $N_R = \sqrt{2\pi}f_D\rho e^{-\rho^2}$ per second and stays below it for an average $\bar t_R = (e^{\rho^2} - 1)/(\sqrt{2\pi}f_D\rho)$, where $\rho = R/R_{rms}$. At 3.5 GHz and 120 km/h ($f_D$ = 389 Hz), a 10 dB fade ($\rho$ = 0.316) happens **279** times a second and lasts **0.341** ms on average: about 10 OFDM symbols at 30 kHz subcarrier spacing (35.7 µs each) or 5 at 15 kHz (71.4 µs), which is why interleaving and coding across a slot work.
 
 ### 3.7 Error rates in fading
 
@@ -271,11 +296,11 @@ falling as $\bar\gamma^{-L}$: the **diversity order** $L$. Coding with interleav
 
 **Setup.** BPSK on a Rayleigh-fading channel. Find $\bar P_b$ at $\bar\gamma$ = 20 dB, the $\bar\gamma$ needed for $10^{-5}$, the penalty against AWGN, and the requirement with 2- and 4-branch MRC.
 
-**Solution.** $\bar\gamma$ = 100: $\tfrac12(1 - \sqrt{100/101})$ = **2.48e-3** (≈ $1/400$). For $10^{-5}$: **43.98** dB, against 9.59 dB in AWGN, a penalty of **34.39** dB. With exact MRC formulas (§3.7): **21.34** dB for $L$ = 2 and **9.96** dB for $L$ = 4 (per-branch average), a saving of 22.6 and 34.0 dB.
+**Solution.** $\bar\gamma$ = 100: $\tfrac12(1 - \sqrt{100/101})$ = **2.48e-3** (≈ $1/400$). For $10^{-5}$: **43.98** dB, against 9.59 dB in AWGN, a penalty of **34.39** dB. With exact MRC formulas (§3.7): **21.34** dB for $L$ = 2 and **9.96** dB for $L$ = 4 (per-branch average), a saving of 22.6 and 34.0 dB. Part of that saving is **array gain**: $L$ branches collect $L$ times the energy, 3.01 and 6.02 dB. At equal **total** received SNR (**24.35** and **15.98** dB combined), the **diversity gain** is **19.63** and **27.99** dB, and a fading penalty of **14.76** and **6.40** dB remains against AWGN.
 
 **Units check.** $\bar\gamma$ is a power ratio; BER is a probability.
 
-**Sanity check.** The $L$ = 2 approximation $3/(16\bar\gamma^2) = 10^{-5}$ gives $\bar\gamma$ = 21.37 dB, close to the exact 21.34. With four branches, the fading penalty is almost gone.
+**Sanity check.** The $L$ = 2 approximation $3/(16\bar\gamma^2) = 10^{-5}$ gives $\bar\gamma$ = 21.37 dB, close to the exact 21.34. With four branches the per-branch requirement approaches AWGN's 9.59 dB, but at equal total energy a 6.4 dB penalty remains: diversity has tamed the fading, not removed it.
 
 <!-- answer-key -->
 
@@ -317,6 +342,12 @@ falling as $\bar\gamma^{-L}$: the **diversity order** $L$. Coding with interleav
 | Ex 17-09.6c | fading penalty | 34.39 | dB |
 | Ex 17-09.6d | 2-branch MRC requirement | 21.34 | dB |
 | Ex 17-09.6e | 4-branch MRC requirement | 9.96 | dB |
+| Ex 17-09.6f | 2-branch total received SNR | 24.35 | dB |
+| Ex 17-09.6g | 4-branch total received SNR | 15.98 | dB |
+| Ex 17-09.6h | 2-branch diversity gain | 19.63 | dB |
+| Ex 17-09.6i | 4-branch diversity gain | 27.99 | dB |
+| Ex 17-09.6j | 2-branch residual penalty | 14.76 | dB |
+| Ex 17-09.6k | 4-branch residual penalty | 6.40 | dB |
 
 *Every value is recomputed by [verify_17_09.py](../verify/verify_17_09.py): path losses from the formulas and from an exact two-ray field sum, PDP moments directly and coherence bandwidth by root finding, the Jakes correlation by averaging over arrival angles, Rayleigh and Rician statistics in closed form and by Monte Carlo, crossing rates from simulated fading, and error rates by numerical integration and simulation.*
 
@@ -379,7 +410,7 @@ The lab, [labs/17-09-lab](../labs/17-09-lab/README.md), provides `channels.py`: 
 - **The 3GPP channel model.** TR 38.901 V19.5.0 (Sept 2026) covers 0.5–100 GHz with path-loss formulas for UMa, UMi-Street Canyon, RMa and indoor office, shadowing standard deviations of 3–8.3 dB, and lognormal delay-spread distributions; Release 19 updated several large-scale parameters for 7–24 GHz ([R-283], [R-284]) **[Established]**.
 - **Free-space loss.** ITU-R P.525-5 (Nov 2024) is the in-force recommendation, with the 32.4 dB form used throughout the industry ([R-282]) **[Established]**.
 - **NR's answer to time variation.** NR scales its slot with subcarrier spacing: 14 symbols per slot and $2^\mu$ slots per 1 ms subframe, from 15 kHz ($\mu$ = 0) to 960 kHz ($\mu$ = 6), so higher-frequency, higher-Doppler deployments get shorter slots ([R-285]) **[Established]**.
-- **Upper mid-band.** Release 19's study of channel modelling for 7–24 GHz is why several delay-spread values changed in TR 38.901 ([R-284]); models for these frequencies are still being refined **[Established]**.
+- **Upper mid-band.** Release 19's study of channel modelling for 7–24 GHz is why several delay-spread values changed in TR 38.901 ([R-284]); the frequency range is new to the model, so further revisions would not be surprising (our inference, not a 3GPP statement).
 
 ### Why it matters commercially
 
@@ -454,7 +485,7 @@ Practice: [17-09 problems](../problems/17-09-problems.md) · [worked solutions](
 
 ## 11. Key terms
 
-[Path loss](../../../reference/glossary.md#path-loss) · [Friis transmission equation](../../../reference/glossary.md#friis-transmission-equation) · [Effective aperture](../../../reference/glossary.md#effective-aperture) · [Path-loss exponent](../../../reference/glossary.md#path-loss-exponent) · [Shadowing](../../../reference/glossary.md#shadowing) · [Multipath](../../../reference/glossary.md#multipath) · [Power-delay profile](../../../reference/glossary.md#power-delay-profile) · [RMS delay spread](../../../reference/glossary.md#rms-delay-spread) · [Coherence bandwidth](../../../reference/glossary.md#coherence-bandwidth) · [Flat fading](../../../reference/glossary.md#flat-fading) · [Frequency-selective fading](../../../reference/glossary.md#frequency-selective-fading) · [Doppler shift](../../../reference/glossary.md#doppler-shift) · [Coherence time](../../../reference/glossary.md#coherence-time) · [Rayleigh fading](../../../reference/glossary.md#rayleigh-fading) · [Rician fading](../../../reference/glossary.md#rician-fading) · [Outage probability](../../../reference/glossary.md#outage-probability) · [Diversity order](../../../reference/glossary.md#diversity-order) · [Maximal-ratio combining](../../../reference/glossary.md#maximal-ratio-combining)
+[Path loss](../../../reference/glossary.md#path-loss) · [Friis transmission equation](../../../reference/glossary.md#friis-transmission-equation) · [Effective aperture](../../../reference/glossary.md#effective-aperture) · [Path-loss exponent](../../../reference/glossary.md#path-loss-exponent) · [Shadowing](../../../reference/glossary.md#shadowing) · [Multipath](../../../reference/glossary.md#multipath) · [Power-delay profile](../../../reference/glossary.md#power-delay-profile) · [RMS delay spread](../../../reference/glossary.md#rms-delay-spread) · [Coherence bandwidth](../../../reference/glossary.md#coherence-bandwidth) · [Flat fading](../../../reference/glossary.md#flat-fading) · [Frequency-selective fading](../../../reference/glossary.md#frequency-selective-fading) · [Doppler shift](../../../reference/glossary.md#doppler-shift) · [Coherence time](../../../reference/glossary.md#coherence-time) · [Rayleigh fading](../../../reference/glossary.md#rayleigh-fading) · [Rician fading](../../../reference/glossary.md#rician-fading) · [Outage probability](../../../reference/glossary.md#outage-probability) · [Diversity order](../../../reference/glossary.md#diversity-order) · [Maximal-ratio combining](../../../reference/glossary.md#maximal-ratio-combining) · [Array gain](../../../reference/glossary.md#array-gain) · [Diversity gain](../../../reference/glossary.md#diversity-gain)
 
 ## 12. Connections
 

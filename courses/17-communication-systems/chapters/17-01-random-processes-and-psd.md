@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 17-01 · Random Processes and Power Spectral Density
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The random-processes chapter of a senior communications course: stationarity, autocorrelation, the Wiener–Khinchin theorem, random processes through LTI systems, Gaussian processes, the spectrum of digital signals and bandpass noise (Proakis & Salehi, *Communication Systems Engineering*; Lathi & Ding, *Modern Digital and Analog Communication Systems*; Gallager, *Principles of Digital Communication*, random processes and noise) |
 | **Prerequisites** | [03-06](../../03-probability-statistics-and-random-variables/chapters/03-06-random-processes-preview.md) (random processes preview), [03-04](../../03-probability-statistics-and-random-variables/chapters/03-04-joint-distributions-and-clt.md) (jointly Gaussian variables), [11-06](../../11-signals-and-systems/chapters/11-06-continuous-time-fourier-transform.md) (Fourier transform), [11-10](../../11-signals-and-systems/chapters/11-10-sampling-aliasing-reconstruction.md) (sampling), [16-05](../../16-digital-signal-processing/chapters/16-05-spectral-analysis-and-windowing.md) (spectral estimation) |
 | **Estimated study hours** | 9 |
-| **Last verified** | 2026-11-20 |
+| **Last verified** | 2026-11-21 |
 
 **Learning objectives.** After this chapter you can:
 

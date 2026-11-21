@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 17-04 · Baseband Digital Transmission
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The baseband-transmission chapter of a senior digital-communications course: pulse-amplitude modulation, line codes and their spectra, intersymbol interference, the Nyquist criterion, raised-cosine pulse shaping, eye diagrams and an introduction to equalization (Proakis & Salehi, *Communication Systems Engineering*, digital transmission through band-limited channels; Lathi & Ding, *Modern Digital and Analog Communication Systems*, principles of digital data transmission; Gallager, *Principles of Digital Communication*, the Nyquist criterion) |
 | **Prerequisites** | [17-01](17-01-random-processes-and-psd.md) (PSD of PAM signals), [17-02](17-02-noise-and-snr.md) (SNR, $E_b/N_0$), [11-10](../../11-signals-and-systems/chapters/11-10-sampling-aliasing-reconstruction.md) (sampling and Poisson summation), [16-06](../../16-digital-signal-processing/chapters/16-06-fir-filter-design.md) (FIR filters) |
 | **Estimated study hours** | 8 |
-| **Last verified** | 2026-11-20 |
+| **Last verified** | 2026-11-21 |
 
 **Learning objectives.** After this chapter you can:
 

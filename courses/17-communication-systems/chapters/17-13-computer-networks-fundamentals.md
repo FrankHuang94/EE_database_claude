@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 17-13 · Computer Networks Fundamentals
 
 | | |

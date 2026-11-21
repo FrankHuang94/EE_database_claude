@@ -52,7 +52,7 @@ $\mathbb E[r] = \int_0^\infty\frac{r^2}{\sigma^2}e^{-r^2/2\sigma^2}dr = \sigma\s
 
 ### Solution 17-09.12
 
-$\bar P_b = \int_0^\infty\tfrac12e^{-\gamma}\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}d\gamma = \frac{1}{2\bar\gamma}\cdot\frac{1}{1 + 1/\bar\gamma} = \frac{1}{2(1 + \bar\gamma)}$. At 30 dB ($\bar\gamma$ = 1000): DPSK **5.00e-4**; BPSK $\tfrac12(1 - \sqrt{1000/1001})$ = **2.50e-4**. In fading the 3 dB gap between them is the whole story: both fall as $1/\bar\gamma$, against 0.75 dB in AWGN at low error rates.
+$\bar P_b = \int_0^\infty\tfrac12e^{-\gamma}\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}d\gamma = \frac{1}{2\bar\gamma}\cdot\frac{1}{1 + 1/\bar\gamma} = \frac{1}{2(1 + \bar\gamma)}$. At 30 dB ($\bar\gamma$ = 1000): DPSK **5.00e-4**; BPSK $\tfrac12(1 - \sqrt{1000/1001})$ = **2.50e-4**. In fading the 3 dB gap between them is the whole story: both fall as $1/\bar\gamma$. In AWGN at a BER of $10^{-5}$ the gap is only **0.75** dB (BPSK needs 9.59 dB; DPSK, from $\tfrac12e^{-\gamma} = 10^{-5}$, needs $10\log_{10}\ln(5 \times 10^4)$ = 10.34 dB).
 
 ### Solution 17-09.13
 
@@ -61,6 +61,30 @@ Threshold $x$ = 0.1 of the mean. One branch: $1 - e^{-0.1}$ = **0.0952**. Select
 ### Solution 17-09.14
 
 $v$ = 138.9 m/s: $f_D = 138.9 \times 3.5 \times 10^9/c$ = **1621** Hz. Nyquist sampling of a process bandlimited to $\pm f_D$ needs a spacing below $1/(2f_D)$ = **0.308** ms. A symbol lasts $0.5/14$ = 35.7 μs, so pilots at most every **8** symbols ($0.308/0.0357$ = 8.6). Practical designs add margin for noise and channel-estimation error, so pilots are placed more densely than this bound.
+
+### Solution 17-09.15
+
+(a) Rayleigh: $P(|h|^2 < 0.1) = 1 - e^{-0.1}$ = **9.52** %.
+
+(b) $K = 10^{0.6}$ = 3.981. With $a = \sqrt{2K}$ = 2.822 and $b = \sqrt{2(K + 1)x} = \sqrt{2 \times 4.981 \times 0.1}$ = 0.998, the outage is $1 - Q_1(2.822, 0.998)$ = **1.65** %: the line-of-sight path cuts the outage by a factor of about 6.
+
+(c) $(K + 1)e^{-K}x = 4.981 \times 0.01867 \times 0.1$ = **0.93** %, 44% low. The approximation replaces the density of $|h|^2$ on $[0, x]$ by its value at zero, but for a Rician channel that density rises steeply away from zero (it peaks near the line-of-sight power), so it is valid only for $x \ll 1/(K + 1)$, that is for deeper fades.
+
+(d) At $x = 10^{-3}$: Rayleigh $1 - e^{-0.001}$ ≈ 0.1 %; Rician $1 - Q_1(2.822, 0.0998)$ = **0.0094** %, which now matches $(K + 1)e^{-K}x$ = 0.0093 % closely. Both curves fall one decade per 10 dB at deep fades: the Rician advantage is a constant factor, $e^{K}/(K + 1)$ ≈ 10.7, not a steeper slope.
+
+### Solution 17-09.16
+
+(a) Independence gives $f_{XY}(x, y) = \frac{1}{2\pi\sigma^2}e^{-(x^2 + y^2)/(2\sigma^2)}$. With $x = r\cos\theta$, $y = r\sin\theta$, the Jacobian is
+
+$$
+\left|\frac{\partial(x, y)}{\partial(r, \theta)}\right| = \left|\begin{matrix}\cos\theta & -r\sin\theta\\ \sin\theta & r\cos\theta\end{matrix}\right| = r ,
+$$
+
+so $f_{R\Theta}(r, \theta) = \frac{r}{2\pi\sigma^2}e^{-r^2/(2\sigma^2)}$ for $r \ge 0$, $0 \le \theta < 2\pi$. This is $\big[\frac{r}{\sigma^2}e^{-r^2/(2\sigma^2)}\big] \times \frac{1}{2\pi}$, a product of a function of $r$ alone and a constant in θ: θ is uniform on $[0, 2\pi)$ and independent of $r$.
+
+(b) Integrating out θ gives $f_r(r) = \frac{r}{\sigma^2}e^{-r^2/(2\sigma^2)}$. For $s = r^2$, $f_s(s) = f_r(\sqrt s)\,\frac{1}{2\sqrt s} = \frac{1}{2\sigma^2}e^{-s/(2\sigma^2)}$: exponential with mean $2\sigma^2 = \Omega$.
+
+(c) Mean: $\int_0^\infty r\,f_r\,dr = \sigma\sqrt{\pi/2}$ = **1.253**σ (a Gaussian integral). Median: $P(r < m) = 1 - e^{-m^2/(2\sigma^2)} = \tfrac12$ gives $m = \sigma\sqrt{2\ln2}$ = **1.177**σ. The mean exceeds the median because the density has a long upper tail.
 
 ---
 
@@ -106,3 +130,10 @@ $v$ = 138.9 m/s: $f_D = 138.9 \times 3.5 \times 10^9/c$ = **1621** Hz. Nyquist s
 | 17-09.14a | Doppler at 500 km/h | 1621 | Hz |
 | 17-09.14b | Nyquist pilot spacing | 0.308 | ms |
 | 17-09.14c | symbols between pilots | 8 | — |
+| 17-09.12c | BPSK-DPSK gap in AWGN at 1e-5 | 0.75 | dB |
+| 17-09.15a | Rayleigh outage, 10 dB margin | 9.52 | % |
+| 17-09.15b | Rician outage, K = 6 dB, 10 dB margin | 1.65 | % |
+| 17-09.15c | small-x approximation at 10 dB | 0.93 | % |
+| 17-09.15d | Rician outage at 30 dB | 0.0094 | % |
+| 17-09.16a | mean envelope | 1.253 | σ |
+| 17-09.16b | median envelope | 1.177 | σ |

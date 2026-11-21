@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 17-07 · Information Theory and Shannon Capacity
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The information-theory chapter of a senior communications course, with the core of an introductory information-theory course: entropy and source coding, mutual information, the capacity of discrete and Gaussian channels, the Shannon–Hartley theorem and the Shannon limit (Cover & Thomas, *Elements of Information Theory*, chapters 2, 5, 7 and 9; Proakis & Salehi, information sources and channel capacity; MacKay, *Information Theory, Inference, and Learning Algorithms*) |
 | **Prerequisites** | [03-01](../../03-probability-statistics-and-random-variables/chapters/03-01-probability-in-ee-language.md) to [03-04](../../03-probability-statistics-and-random-variables/chapters/03-04-joint-distributions-and-clt.md) (probability, joint distributions), [17-02](17-02-noise-and-snr.md) ($E_b/N_0$), [17-05](17-05-matched-filters-and-detection.md) (detection), [17-06](17-06-bandpass-digital-modulation.md) (constellations), [01-04](../../01-calculus-for-engineers/chapters/01-04-applications-of-derivatives.md) (optimization) |
 | **Estimated study hours** | 8 |
-| **Last verified** | 2026-11-20 |
+| **Last verified** | 2026-11-21 |
 
 **Learning objectives.** After this chapter you can:
 
@@ -424,7 +424,7 @@ Practice: [17-07 problems](../problems/17-07-problems.md) · [worked solutions](
 
 ## 11. Key terms
 
-[Information content](../../../reference/glossary.md#information-content) · [Entropy (information)](../../../reference/glossary.md#entropy-information) · [Binary entropy function](../../../reference/glossary.md#binary-entropy-function) · [Prefix code](../../../reference/glossary.md#prefix-code) · [Kraft inequality](../../../reference/glossary.md#kraft-inequality) · [Huffman code](../../../reference/glossary.md#huffman-code) · [Mutual information](../../../reference/glossary.md#mutual-information) · [Channel capacity](../../../reference/glossary.md#channel-capacity) · [Binary symmetric channel](../../../reference/glossary.md#binary-symmetric-channel) · [Binary erasure channel](../../../reference/glossary.md#binary-erasure-channel) · [Differential entropy](../../../reference/glossary.md#differential-entropy) · [Shannon–Hartley theorem](../../../reference/glossary.md#shannon-hartley-theorem) · [Shannon limit](../../../reference/glossary.md#shannon-limit) · [Soft decision](../../../reference/glossary.md#soft-decision) · [Water-filling](../../../reference/glossary.md#water-filling)
+[Information content](../../../reference/glossary.md#information-content) · [Entropy (information)](../../../reference/glossary.md#entropy-information) · [Binary entropy function](../../../reference/glossary.md#binary-entropy-function) · [Prefix code](../../../reference/glossary.md#prefix-code) · [Kraft inequality](../../../reference/glossary.md#kraft-inequality) · [Huffman code](../../../reference/glossary.md#huffman-code) · [Mutual information](../../../reference/glossary.md#mutual-information) · [Channel capacity](../../../reference/glossary.md#channel-capacity) · [Binary symmetric channel](../../../reference/glossary.md#binary-symmetric-channel) · [Binary erasure channel](../../../reference/glossary.md#binary-erasure-channel) · [Differential entropy](../../../reference/glossary.md#differential-entropy) · [Shannon–Hartley theorem](../../../reference/glossary.md#shannon-hartley-theorem) · [Shannon limit](../../../reference/glossary.md#shannon-limit) · [Soft decision](../../../reference/glossary.md#soft-decision) · [Water-filling](../../../reference/glossary.md#water-filling) · [Relative entropy](../../../reference/glossary.md#relative-entropy) · [Data-processing inequality](../../../reference/glossary.md#data-processing-inequality)
 
 ## 12. Connections
 

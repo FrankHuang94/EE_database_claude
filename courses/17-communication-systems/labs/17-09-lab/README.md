@@ -57,13 +57,13 @@ Free-space power falls as $1/d^2$; with a ground reflection it falls as $1/d^4$ 
 ## Discussion
 
 1. Why does the two-ray loss stop depending on frequency beyond the breakpoint?
-2. In Part 4, why do fades below −10 dB last much shorter than the coherence time?
+2. In Part 4, why do fades below −20 dB last much shorter than the coherence time, while −10 dB fades do not?
 3. Why does a Rician channel with K = 6 dB still show a slope of one decade per 10 dB at very small outage probabilities?
 
 ## Answers
 
 1. Beyond the breakpoint the direct and reflected rays nearly cancel, and the residual is proportional to their phase difference $4\pi h_th_r/(\lambda d)$. That factor's $1/\lambda$ cancels the $\lambda$ of the free-space term, leaving $h_t^2h_r^2/d^4$.
-2. A deep fade is a narrow notch in the envelope: the gain passes close to zero and moves away quickly, because the derivative of the complex gain is not small at the crossing. The coherence time measures how long the whole gain stays correlated, which is much longer than the time spent in the notch.
+2. A deep fade is a narrow notch in the envelope: the gain passes close to zero and moves away quickly, because the derivative of the complex gain is not small at the crossing. The coherence time measures how long the whole gain stays correlated, which is much longer than the time spent in a deep notch. At $f_D$ = 100 Hz, $T_c$ = 2.42 ms; the mean −10 dB fade lasts 1.33 ms, not much shorter, but the mean −20 dB fade lasts only 0.40 ms, a sixth of $T_c$. For deep fades the average fade duration $(e^{\rho^2} - 1)/(\sqrt{2\pi}f_D\rho) \approx \rho/(\sqrt{2\pi}f_D)$ scales with ρ, so each further 10 dB of depth divides it by about 3.
 3. At small thresholds the noncentral chi-square CDF is still linear in the threshold (the density at zero power is finite, $\propto e^{-K}$), so the slope is the same as Rayleigh; the line-of-sight path only lowers the constant, by about $e^{-K}(K + 1)$.
 
 ## Optional hardware

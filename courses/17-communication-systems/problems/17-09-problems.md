@@ -68,6 +68,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Pilot spacing for a fast train.** A 3.5 GHz NR carrier with 30 kHz subcarriers (14 symbols in a 0.5 ms slot) serves a train at 500 km/h. Treating the channel's time variation as bandlimited to $\pm f_D$, find $f_D$, the longest pilot spacing that samples it at the Nyquist rate, and the largest whole number of OFDM symbols between pilots.
 
+### Problem 17-09.15 [B]
+
+**Rician outage.** *(lab)* A link has a 10 dB fade margin. (a) Find the outage probability (the chance that $|h|^2$ falls below 0.1 of its mean) for Rayleigh fading. (b) Repeat for Rician fading with $K$ = 6 dB, normalized to unit mean power, using the Marcum-Q form of §3.6 (the lab's `rician_outage` evaluates it). (c) Evaluate the small-$x$ approximation $(K + 1)e^{-K}x$ and explain why it is poor here. (d) What outage does each give at a 30 dB margin?
+
+### Problem 17-09.16 [B]
+
+**Deriving Rayleigh.** The complex gain is $h = X + jY$ with $X$ and $Y$ independent $\mathcal N(0, \sigma^2)$. (a) Derive the joint density of the envelope $r = |h|$ and the phase θ, and show that θ is uniform and independent of $r$. (b) Derive the density of $r$ and that of the power $s = r^2$. (c) Find the mean and the median of $r$ in units of σ.
+
 ---
 
 ## Objective coverage
@@ -77,5 +85,5 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Free space, two-ray, path-loss models and shadowing | 1, 2, 3, 4, 5, 6 |
 | 2. Delay spread and coherence bandwidth | 7, 8 |
 | 3. Doppler and coherence time | 9, 14 |
-| 4. Rayleigh/Rician statistics, outage, level crossings | 10, 11, 13 |
+| 4. Rayleigh/Rician statistics, outage, level crossings | 10, 11, 13, 15, 16 |
 | 5. Error rates in fading and diversity | 12, 13 |

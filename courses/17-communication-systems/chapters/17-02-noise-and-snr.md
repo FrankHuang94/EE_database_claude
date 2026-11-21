@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 17-02 · Noise and SNR in Communication Systems
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The noise chapter of a senior communications course: thermal noise and available power, noise temperature and noise figure, cascaded receivers, the AWGN channel, SNR, $E_b/N_0$ and receiver sensitivity (Proakis & Salehi, *Communication Systems Engineering*, effect of noise; Haykin & Moher, *Communication Systems*, noise in receivers; Pozar, *Microwave and RF Design of Wireless Systems*, noise in receivers) |
 | **Prerequisites** | [17-01](17-01-random-processes-and-psd.md) (PSD, noise bandwidth, bandpass noise), [12-10](../../12-electronics-2/chapters/12-10-noise-in-circuits.md) (thermal noise, noise figure preview), [06-09](../../06-circuit-analysis-1-dc/chapters/06-09-maximum-power-transfer.md) (maximum power transfer) |
 | **Estimated study hours** | 6 |
-| **Last verified** | 2026-11-20 |
+| **Last verified** | 2026-11-21 |
 
 **Learning objectives.** After this chapter you can:
 
