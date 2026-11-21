@@ -2776,3 +2776,27 @@ R&D % = R&D ÷ revenue.
 
 - **CCSDS 131.0-B-5, "TM Synchronization and Channel Coding", Blue Book, Sept 2023, §3.3.1:** "The basic convolutional code shall be the non-systematic code with the following characteristics: (1) Nomenclature: Convolutional code with maximum-likelihood decoding. (2) Code rate (r): 1/2 bit per symbol. (3) Constraint length (K): 7 bits. (4) Connection vectors: G1 = 1111001 (171 octal); G2 = 1011011 (133 octal). (5) Symbol inversion: On output path of G2." The same vectors define the punctured codes of §3.4. [Established] [CCSDS 131.0-B-5](https://ccsds.org/Pubs/131x0b5.pdf)
 - **Yan and Dai, arXiv:2502.15475 (2025), §2.1.1:** IEEE 802.11's convolutional encoder has generators g0 = 133₈ and g1 = 171₈, "a mother code rate of 1/2 and a constraint length of 7", punctured to rates 2/3, 3/4 and 5/6. The output ordering in the 802.11 text itself was not verified. [Established, secondary] [arXiv:2502.15475](https://arxiv.org/pdf/2502.15475)
+
+## R-282 · ITU-R P.525-5 free-space attenuation
+
+*Read on 20 Nov 2026 by a research subagent from the ITU PDF; re-checked against the saved text on 21 Nov 2026.*
+
+- **Recommendation ITU-R P.525-5 (11/2024), "Calculation of free-space attenuation"**, in force, superseding P.525-4 (08/2019). Annex 1, eq. (5): $L_{bf} = 20\log_{10}(4\pi d/\lambda)$ dB with $d$ and λ in the same unit; eq. (6): "$L_{bf}$ = 32.4 + 20 log10 f + 20 log10 d dB" with f in MHz and d in km. Derived (ours): the exact constant is $20\log_{10}(4\pi \times 10^9/c)$ = 32.45 dB. [Established] [P.525-5](https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.525-5-202411-I!!PDF-E.pdf)
+
+## R-283 · 3GPP TR 38.901 path loss and shadowing
+
+*Read on 20 Nov 2026 by a research subagent from the 3GPP archive (38901-j50.zip; its OMML equations extract cleanly); the breakpoint note and UMi rows re-checked against the saved text on 21 Nov 2026.*
+
+- **TR 38.901 V19.5.0 (2026-09), Release 19**, scope "0.5-100 GHz". **Table 7.4.1-1** ("fc is in GHz and d is in meters"): UMa LOS $PL_1 = 28.0 + 22\log_{10}d_{3D} + 20\log_{10}f_c$ (σ_SF = 4); UMa NLOS $\max(PL_{LOS}, 13.54 + 39.08\log_{10}d_{3D} + 20\log_{10}f_c - 0.6(h_{UT} - 1.5))$ (σ_SF = 6), optional $32.4 + 20\log_{10}f_c + 30\log_{10}d_{3D}$ (σ_SF = 7.8); UMi-Street Canyon LOS $PL_1 = 32.4 + 21\log_{10}d_{3D} + 20\log_{10}f_c$ for $10\,\text{m} \le d_{2D} \le d'_{BP}$ (σ_SF = 4, $h_{BS}$ = 10 m); UMi NLOS $\max(PL_{LOS}, 35.3\log_{10}d_{3D} + 22.4 + 21.3\log_{10}f_c - 0.3(h_{UT} - 1.5))$ (σ_SF = 7.82), optional $32.4 + 20\log_{10}f_c + 31.9\log_{10}d_{3D}$ (σ_SF = 8.2); InH LOS $32.4 + 17.3\log_{10}d_{3D} + 20\log_{10}f_c$ (σ_SF = 3), NLOS σ_SF = 8.03 (optional 8.29); RMa σ_SF = 4/6 (LOS) and 8 (NLOS). **Note 1:** "Effective breakpoint distance d'BP = 4 h'BS h'UT fc/c", $h' = h - h_E$, "For UMi hE = 1.0m", c = 3.0 × 10⁸ m/s; for UMa $h_E$ is random. [Established] [38.901 archive](https://www.3gpp.org/ftp/Specs/archive/38_series/38.901/38901-j50.zip)
+
+## R-284 · 3GPP TR 38.901 delay-spread parameters
+
+*Same source as R-283; the row labels (mean, then standard deviation, of log10(DS/1 s)) were confirmed on 21 Nov 2026 from the table layout and Note 4 ("mean (μlgX = mean{log10(X)}) and standard deviation (σlgX = std{log10(X)})").*
+
+- **Table 7.5-6 Part-1** (UMi-Street Canyon, UMa), $\mu_{lgDS}$ / $\sigma_{lgDS}$: UMi LOS $-0.18\log_{10}(1 + f_c) - 7.28$ / 0.39; UMi NLOS $-0.22\log_{10}(1 + f_c) - 6.87$ / $0.19\log_{10}(1 + f_c) + 0.22$; UMa LOS $-7.067 - 0.0794\log_{10}f_c$ / $0.57 + 0.026\log_{10}f_c$; UMa NLOS $-6.47 - 0.134\log_{10}f_c$ / 0.39; O2I −6.62 / 0.32. Notes: "NOTE 1: DS = rms delay spread"; "the delay distribution is modelled by an exponential distribution"; "For UMa and frequencies below 6 GHz, use fc = 6"; "For UMi and frequencies below 2 GHz, use fc = 2"; values marked Note 8 "were updated as part of Release 19 Study on channel modelling enhancements for 7-24 GHz". **Part-2:** InH LOS $-0.01\log_{10}(1 + f_c) - 7.692$ / 0.18, InH NLOS $-0.28\log_{10}(1 + f_c) - 7.173$ / $0.10\log_{10}(1 + f_c) + 0.055$ ("For InH and frequencies below 6 GHz, use fc = 6"); RMa means −7.49 / −7.43 / −7.47. The pre-Release-19 values were not checked. [Established]
+
+## R-285 · 3GPP NR numerology and frame structure (TS 38.211)
+
+*Read on 20 Nov 2026 by a research subagent from the 3GPP archive and the ETSI PDF of TS 38.211 V19.5.0; re-checked against the saved text on 21 Nov 2026.*
+
+- **TS 38.211 V19.5.0 (2026-09), Table 4.2-1:** μ = 0…6 with $\Delta f = 2^\mu \cdot 15$ kHz (15 to 960 kHz), normal cyclic prefix for all and extended for μ = 2. **Clause 4.3.1:** "frames with Tf = … = 10 ms duration, each consisting of ten subframes of Tsf = … = 1 ms duration". **Table 4.3.2-1:** 14 OFDM symbols per slot for every μ (normal CP), 10·2^μ slots per frame, 2^μ slots per subframe; Table 4.3.2-2: 12 symbols per slot for extended CP (μ = 2). **Clause 4.4.4.1:** "A resource block is defined as N_sc^RB = 12 consecutive subcarriers in the frequency domain." Derived (ours): slot durations 1, 0.5, 0.25, 0.125 ms … for μ = 0, 1, 2, 3. [Established] [38.211 archive](https://www.3gpp.org/ftp/Specs/archive/38_series/38.211/38211-j50.zip)

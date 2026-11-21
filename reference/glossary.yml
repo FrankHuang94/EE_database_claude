@@ -6913,3 +6913,67 @@
   definition: A code built by recursively combining channel uses so that synthesized bit-channels polarize into nearly perfect and nearly useless ones; information rides on the reliable ones, decoded by successive cancellation (with a list and CRC in 5G NR control channels).
   chapter: "17-08"
   see_also: [Channel capacity, Cyclic redundancy check (CRC)]
+- term: Path loss
+  definition: The ratio of transmitted to received power between antennas, excluding their gains; 20 log10(4πd/λ) dB in free space, growing faster (exponent 3–4) in cluttered environments.
+  chapter: "17-09"
+  see_also: [Friis transmission equation, Path-loss exponent, Shadowing]
+- term: Path-loss exponent
+  definition: The exponent n in PL(d) = PL(d0) + 10n log10(d/d0); 2 in free space, 4 for two rays beyond the breakpoint, typically 2–4 in urban models.
+  chapter: "17-09"
+  see_also: [Path loss]
+- term: Shadowing
+  definition: Location-to-location variation of the local mean received power caused by obstacles, modelled as a Gaussian term in decibels with standard deviation σ (about 3–8 dB); covering it with probability p needs a margin σ·Q⁻¹(1 − p).
+  chapter: "17-09"
+  see_also: [Path loss, Outage probability]
+- term: Multipath
+  definition: Arrival of a radio signal by several paths (direct, reflected, scattered) with different delays and phases, whose sum makes the channel a filter and makes its gain fluctuate with position, frequency and time.
+  chapter: "17-09"
+  see_also: [Power-delay profile, Rayleigh fading]
+- term: Power-delay profile
+  definition: The average received power of a multipath channel as a function of excess delay; its Fourier transform is the channel's frequency correlation.
+  chapter: "17-09"
+  see_also: [RMS delay spread, Coherence bandwidth]
+- term: RMS delay spread
+  definition: The power-weighted standard deviation of path delays in a power-delay profile; from about 20 ns indoors to a few hundred nanoseconds in urban macro cells.
+  chapter: "17-09"
+  see_also: [Power-delay profile, Coherence bandwidth]
+- term: Coherence bandwidth
+  definition: The frequency separation over which a channel's responses remain strongly correlated; 0.276/τ_rms at correlation 0.5 for an exponential delay profile.
+  chapter: "17-09"
+  see_also: [RMS delay spread, Flat fading, Frequency-selective fading]
+- term: Flat fading
+  definition: Fading in which the signal bandwidth is much smaller than the coherence bandwidth, so the whole signal sees one complex gain and no intersymbol interference.
+  chapter: "17-09"
+  see_also: [Frequency-selective fading, Coherence bandwidth]
+- term: Frequency-selective fading
+  definition: Fading in which the signal bandwidth exceeds the coherence bandwidth, so different frequencies fade differently and symbols smear into each other; handled by equalizers or OFDM.
+  chapter: "17-09"
+  see_also: [Flat fading, Coherence bandwidth]
+- term: Doppler shift
+  definition: The frequency offset f_D·cos α of a path arriving at angle α to a receiver moving at speed v, with maximum f_D = v·f_c/c (389 Hz at 3.5 GHz and 120 km/h); many paths spread it into a Doppler spectrum.
+  chapter: "17-09"
+  see_also: [Coherence time]
+- term: Coherence time
+  definition: The time over which a fading channel stays strongly correlated; 0.242/f_D at correlation 0.5 for the Clarke (Jakes) model, whose autocorrelation is J0(2π f_D τ).
+  chapter: "17-09"
+  see_also: [Doppler shift]
+- term: Rayleigh fading
+  definition: Fading of a channel made of many scattered paths with no dominant one, so its complex gain is Gaussian and its envelope Rayleigh-distributed; the probability of a fade more than M dB deep is about 10^(−M/10).
+  chapter: "17-09"
+  see_also: [Rician fading, Rayleigh distribution, Outage probability]
+- term: Rician fading
+  definition: Fading of a channel with a fixed line-of-sight path plus scattering; its K-factor (LOS to scattered power) sets how rare deep fades are, with K = 0 giving Rayleigh fading.
+  chapter: "17-09"
+  see_also: [Rayleigh fading]
+- term: Outage probability
+  definition: The probability that a fading or shadowed link's instantaneous SNR (or power) falls below the level needed for service.
+  chapter: "17-09"
+  see_also: [Rayleigh fading, Shadowing, Diversity order]
+- term: Diversity order
+  definition: The exponent L in an error or outage probability that falls as SNR^(−L); obtained from L independently fading copies of the signal across antennas, frequency or time.
+  chapter: "17-09"
+  see_also: [Maximal-ratio combining, Rayleigh fading]
+- term: Maximal-ratio combining
+  definition: Weighting each diversity branch by the conjugate of its channel gain and adding, which maximizes the combined SNR (the sum of the branch SNRs) and achieves full diversity order.
+  chapter: "17-09"
+  see_also: [Diversity order]
