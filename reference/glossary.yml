@@ -7645,3 +7645,15 @@
   definition: "A separate tamper-resistant chip (or an isolated on-die enclave) that stores keys and performs cryptography, evaluated against physical side-channel and fault attacks."
   chapter: "18-11"
   see_also: [Physical unclonable function (PUF)]
+- term: Unity-gain point
+  definition: "An input voltage at which an inverter's transfer curve has slope −1; V_IL (below the switching threshold) and V_IH (above it) bound the inputs a gate reads reliably and define its noise margins."
+  chapter: "19-01"
+  see_also: [Noise margin, Switching threshold]
+- term: Alpha-power law
+  definition: "Sakurai and Newton's model of a short-channel MOSFET's saturation current, I = (K/2)(V_GS − V_TH)^α, with α = 2 for the square law and α approaching 1 under full velocity saturation."
+  chapter: "19-01"
+  see_also: [Velocity saturation]
+- term: Subthreshold logic
+  definition: "Digital logic run at a supply below the transistor thresholds, where current is exponential in the gate voltage; it minimizes energy per operation at low speed, and an inverter keeps gain down to a supply of 2(kT/q)ln(1 + n)."
+  chapter: "19-01"
+  see_also: [Subthreshold swing]

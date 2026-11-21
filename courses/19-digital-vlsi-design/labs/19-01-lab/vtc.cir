@@ -1,0 +1,33 @@
+* Lab 19-01: CMOS inverter transfer curves with SPICE's level-1 (square-law) MOSFET, the chapter's model.
+* Inverter 1: symmetric (kn = kp = 200 uA/V^2, VTN = |VTP| = 0.35 V, VDD = 1.2 V), Example 19-01.1.
+* Inverter 2: equal widths with mobility ratio 2.5, VTN = 0.35 V, |VTP| = 0.40 V, Example 19-01.2(a).
+* Inverter 3: symmetric with LAMBDA = 0.1 V^-1 on both transistors, Example 19-01.4.
+* EXPECT vm1 key:../../chapters/19-01-cmos-inverter-static.md#Ex_19-01.1c rtol=1e-4
+* EXPECT vm2 key:../../chapters/19-01-cmos-inverter-static.md#Ex_19-01.2a rtol=1e-3
+* EXPECT gain3 key:../../chapters/19-01-cmos-inverter-static.md#Ex_19-01.4a rtol=5e-3
+VDD vdd 0 DC 1.2
+VIN in 0 DC 0
+* inverter 1
+MN1 out1 in 0 0 nmod1 W=1u L=1u
+MP1 out1 in vdd vdd pmod1 W=1u L=1u
+* inverter 2: kn = 250 uA/V^2, kp = 100 uA/V^2 at equal W/L
+MN2 out2 in 0 0 nmod2 W=1u L=1u
+MP2 out2 in vdd vdd pmod2 W=1u L=1u
+* inverter 3
+MN3 out3 in 0 0 nmod3 W=1u L=1u
+MP3 out3 in vdd vdd pmod3 W=1u L=1u
+.model nmod1 NMOS (LEVEL=1 KP=200u VTO=0.35 LAMBDA=0)
+.model pmod1 PMOS (LEVEL=1 KP=200u VTO=-0.35 LAMBDA=0)
+.model nmod2 NMOS (LEVEL=1 KP=250u VTO=0.35 LAMBDA=0)
+.model pmod2 PMOS (LEVEL=1 KP=100u VTO=-0.40 LAMBDA=0)
+.model nmod3 NMOS (LEVEL=1 KP=200u VTO=0.35 LAMBDA=0.1)
+.model pmod3 PMOS (LEVEL=1 KP=200u VTO=-0.35 LAMBDA=0.1)
+.options reltol=1e-7 abstol=1e-15 vntol=1e-9
+.dc VIN 0 1.2 0.0001
+.meas dc vm1 WHEN v(out1)=v(in)
+.meas dc vm2 WHEN v(out2)=v(in)
+.meas dc vm3 WHEN v(out3)=v(in)
+.meas dc va3 FIND v(out3) AT=0.5999
+.meas dc vb3 FIND v(out3) AT=0.6001
+.meas dc gain3 PARAM='-(vb3-va3)/0.0002'
+.end

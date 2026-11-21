@@ -27,7 +27,7 @@ Designing digital chips: the CMOS inverter, logic families, sizing and logical e
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [19-01 · The CMOS Inverter: Static Characteristics](chapters/19-01-cmos-inverter-static.md) | 8 | ⬜ planned | — |
+| [19-01 · The CMOS Inverter: Static Characteristics](chapters/19-01-cmos-inverter-static.md) | 8 | ✅ verified | [problems](problems/19-01-problems.md) · [solutions](solutions/19-01-solutions.md) · [lab](labs/19-01-lab/README.md) · [verify](verify/verify_19_01.py) |
 | [19-02 · The CMOS Inverter: Dynamic Behavior and Delay](chapters/19-02-cmos-inverter-dynamic.md) | 8 | ⬜ planned | — |
 | [19-03 · Combinational Logic Families](chapters/19-03-logic-families.md) | 8 | ⬜ planned | — |
 | [19-04 · Transistor Sizing and Logical Effort](chapters/19-04-sizing-and-logical-effort.md) | 9 | ⬜ planned | — |
