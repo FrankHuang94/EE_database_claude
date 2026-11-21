@@ -7725,3 +7725,19 @@
   definition: "The multiplier on a coupling capacitance seen by a switching wire: 0 if its neighbor switches the same way at the same time, 1 if the neighbor is quiet, 2 if it switches the opposite way. It makes wire delay depend on neighbors' activity."
   chapter: "19-05"
   see_also: [Crosstalk]
+- term: Short-circuit power
+  definition: "Power drawn while both transistors of a CMOS gate conduct during an input transition. For an unloaded symmetric inverter with input ramps of duration τ, Veendrick's formula gives (β/12)(V_DD − 2V_T)³τ/T; it vanishes when V_DD < 2V_T."
+  chapter: "19-06"
+  see_also: [Dynamic power]
+- term: Stack effect
+  definition: "The large reduction in leakage when two or more off transistors are in series: the intermediate node rises slightly, reverse-biasing the upper device's gate and removing most of the drain bias, and with it the DIBL, from the lower one."
+  chapter: "19-06"
+  see_also: [Drain-induced barrier lowering]
+- term: Clock gating
+  definition: "Stopping the clock to registers whose contents will not change, which removes the switching power of the clock and of the logic behind them; synthesis tools insert it automatically from enable conditions."
+  chapter: "19-06"
+  see_also: [Dynamic power, Activity factor]
+- term: Power gating
+  definition: "Disconnecting an idle block from its supply through a high-threshold sleep transistor to cut its leakage, at the cost of the transistor's area and IR drop, state loss or retention, wake-up latency and recharge energy; it saves energy only for sleeps longer than the break-even time."
+  chapter: "19-06"
+  see_also: [Static power]

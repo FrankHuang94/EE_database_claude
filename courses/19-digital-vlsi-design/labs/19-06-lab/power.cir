@@ -1,0 +1,32 @@
+* Lab 19-06: switching energy and short-circuit charge of a CMOS inverter, SPICE level-1 model
+* kn = kp = 200 uA/V^2, thresholds 0.35 V, VDD = 1.2 V, lambda = 0, no device capacitances.
+* Circuit A: an inverter charging 10 fF; the input falls fast at 1 ns, so the charge drawn from VDDA while the output
+*   rises is C VDD and the energy VDD C VDD = 14.4 fJ (half of it is dissipated in the PMOS, half stored).
+* Circuit B: an unloaded inverter driven by 50 ps ramps (period 1 ns); the supply charge per period is the
+*   short-circuit charge of two transitions, 2 x 0.0434 fC (Veendrick's model is exact for this circuit).
+* EXPECT qa key:README.md#Lab_19-06.a scale=1e-15 rtol=2e-3
+* EXPECT qb key:README.md#Lab_19-06.b scale=1e-15 rtol=2e-3
+
+VDDA vdda 0 DC 1.2
+VDDB vddb 0 DC 1.2
+VINA ina 0 PULSE(1.2 0 1n 0.01p 0.01p 2n 4n)
+VINB inb 0 PULSE(0 1.2 0 50p 50p 450p 1n)
+
+MPA outa ina vdda vdda pm W=1u L=1u
+MNA outa ina 0 0 nm W=1u L=1u
+CLA outa 0 10f
+
+MPB outb inb vddb vddb pm W=1u L=1u
+MNB outb inb 0 0 nm W=1u L=1u
+
+.model nm NMOS (LEVEL=1 KP=200u VTO=0.35 LAMBDA=0)
+.model pm PMOS (LEVEL=1 KP=200u VTO=-0.35 LAMBDA=0)
+.ic v(outa)=0
+.options reltol=1e-7 abstol=1e-16 vntol=1e-9
+.tran 0.05p 3n 0 0.05p UIC
+* the supply current i(VDDx) is negative when the source delivers current, hence the minus signs
+.meas tran qa_neg INTEG i(VDDA) FROM=0.9n TO=1.9n
+.meas tran qa PARAM='-qa_neg'
+.meas tran qb_neg INTEG i(VDDB) FROM=1n TO=2n
+.meas tran qb PARAM='-qb_neg'
+.end
