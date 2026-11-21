@@ -7781,3 +7781,31 @@
   definition: "Spare rows and columns in a memory array that replace failing ones after test, so that an array with a few defective or marginal cells still works; combined with error-correcting codes, it lets large SRAMs yield despite rare cell failures."
   chapter: "19-08"
   see_also: [SRAM]
+- term: Design rules
+  definition: "A foundry's geometric constraints on layout (minimum widths and spacings, enclosures and extensions, density and context-dependent rules) that ensure what is drawn can be manufactured reliably; textbooks use scalable rules in units of λ, real processes absolute rules."
+  chapter: "19-09"
+  see_also: [Design-rule check (DRC)]
+- term: Stick diagram
+  definition: "A dimensionless sketch of a cell's layout topology, with lines for active, polysilicon and metal and crossings of poly over active marking transistors, used to plan transistor ordering and wiring before drawing polygons."
+  chapter: "19-09"
+  see_also: [Euler path]
+- term: Euler path
+  definition: "A walk through a graph that uses every edge exactly once (it exists if the graph is connected with zero or two odd-degree nodes). An input ordering that is an Euler path in both networks of a static CMOS gate lets each network be one unbroken diffusion strip."
+  chapter: "19-09"
+  see_also: [Stick diagram, Standard cell]
+- term: Standard cell
+  definition: "A pre-drawn, characterized logic gate or flip-flop built to a library template (fixed height in routing tracks, power rails along its edges, width in whole placement sites, pins on a grid), so that tools can place and route millions of them in rows."
+  chapter: "19-09"
+  see_also: [Utilization]
+- term: Design-rule check (DRC)
+  definition: "Automated verification that every polygon of a layout obeys the foundry's design rules; a required signoff step before masks are made."
+  chapter: "19-09"
+  see_also: [Design rules, Layout versus schematic (LVS)]
+- term: Layout versus schematic (LVS)
+  definition: "Automated verification that the circuit extracted from a layout (devices and their connections) matches the intended schematic or netlist, catching shorts, opens and wrong devices that geometric checks cannot."
+  chapter: "19-09"
+  see_also: [Design-rule check (DRC)]
+- term: Antenna effect
+  definition: "Damage to thin gate oxide from charge collected by long metal lines during plasma processing, before the line connects to a diffusion. Antenna rules limit the ratio of connected metal area to gate area; fixes are layer jumps and protection diodes."
+  chapter: "19-09"
+  see_also: [Design-rule check (DRC)]
