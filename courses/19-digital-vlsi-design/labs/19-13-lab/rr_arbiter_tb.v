@@ -33,8 +33,10 @@ module rr_arbiter_tb;
         repeat (2) @(posedge clk);
         rst = 1'b0;
         for (cyc = 0; cyc < CYCLES; cyc = cyc + 1) begin
-            // stimulus: each idle requester raises a request with probability 1/2 (one LFSR bit each)
-            lfsr = {lfsr[14:0], lfsr[15] ^ lfsr[13] ^ lfsr[12] ^ lfsr[10]};
+            // stimulus: each idle requester raises a request with probability 1/2. The LFSR advances four steps per
+            // cycle, so the four bits read are fresh each cycle (one step would hand requester i the bit requester
+            // i-1 saw a cycle earlier, correlating their requests).
+            repeat (4) lfsr = {lfsr[14:0], lfsr[15] ^ lfsr[13] ^ lfsr[12] ^ lfsr[10]};
             for (i = 0; i < 4; i = i + 1) begin
                 if (!req_g[i] && lfsr[i]) req_g[i] = 1'b1;
                 if (!req_f[i] && lfsr[i]) req_f[i] = 1'b1;

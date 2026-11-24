@@ -32,7 +32,7 @@ Files:
 ## Expected results
 
 - Part 1: c17 has 34 faults in 21 equivalence classes, none undetectable, and needs 4 tests; the consensus circuit has 28 faults, 3 of them undetectable (the redundant term), and 4 tests cover the rest.
-- Part 2: 9 of the 30 faults are detected within a few patterns; the other 21 need the 10 AND inputs all at 1 (or all but one) with the XOR at 0, a probability of $2^{-11}$ per pattern, so the curve climbs only after about a thousand patterns and reaches 100 % after several thousand.
+- Part 2: 9 of the 30 faults are detected within a few patterns; the other 21 need the 10 AND inputs all at 1 (or all but one) with the XOR at 0, a probability of $2^{-11}$ per pattern, so their climb is centred near $1/p \approx 2000$ patterns (about 63 % of them caught by then) and finishes after several thousand.
 - Part 3: 44 clock cycles, $P(L + 1) + L$ with $P = 4$, $L = 8$; only pattern 5A detects the fault (5A + 3 = 5D has bit 2 set; the other three sums do not), and the testbench prints TEST PASSED.
 - Part 4: periods 15 and 6; 255 of the 4095 nonzero error streams alias, $(2^8 - 1)/(2^{12} - 1)$, close to $2^{-4}$.
 - Part 5: March C− detects all 32 stuck-at and transition faults and all 224 coupling faults; MATS+ misses 8 transition faults (every falling transition, because its last write of 0 is never read) and 140 of the 224 coupling faults.
@@ -71,3 +71,5 @@ Any JTAG-equipped development board and an open-source tool such as OpenOCD can 
 | Lab 19-12.e | coupling faults injected | 224 | — |
 | Lab 19-12.f | hard faults in the wide circuit | 21 | — |
 | Lab 19-12.g | easy faults in the wide circuit | 9 | — |
+| Lab 19-12.h | tests covering the consensus circuit's detectable faults | 4 | — |
+| Lab 19-12.i | share of hard faults caught by 2048 patterns | 63 | % |

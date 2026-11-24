@@ -60,15 +60,19 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Planning hardware-assisted runs.** A software team needs 200 tests, each of $5 \times 10^8$ cycles. Assume an emulator at 1 MHz, an FPGA prototype at 25 MHz and RTL simulation at 100 cycles per second (illustrative speeds; vendors do not publish comparable figures). (a) How long does one test take on the emulator, and how long does the whole suite take run one at a time? (b) The same suite split evenly across 4 emulator partitions? (c) The whole suite run one at a time on the prototype, in minutes? (d) One test in RTL simulation, in days? (e) Give two reasons a team still runs some of these tests on the emulator rather than the prototype.
 
+### Problem 19-13.13 [B]
+
+**Writing the checks for a FIFO.** An 8-entry synchronous FIFO has inputs `push` and `pop`, an occupancy counter `count` (0 to 8) and flags `full` and `empty`. A push when full and a pop when empty are ignored; a simultaneous push and pop when neither is blocked leaves `count` unchanged; data must come out in the order it went in. (a) Write four rows of a verification plan: feature, how it is checked, and how its exercise is measured. (b) Write SVA assertions that `count` never exceeds 8, that `empty` and `full` match `count`, and that a push alone on a full FIFO leaves it full; and write an assumption that restricts a formal tool to consumers that never pop an empty FIFO. What does that assumption stop the proof from checking? (c) Write a covergroup with a coverpoint on the level (empty, partly full, full), a coverpoint on the four `{push, pop}` combinations, and their cross. How many cross bins are there, and how many can be hit when the assumption of (b) holds? (d) Which of these checks would you prove formally, and which would you leave to simulation with a scoreboard, and why?
+
 ---
 
 ## Objective coverage
 
 | Objective | Problems |
 |---|---|
-| 1. Verification, validation, test and the plan | 1, 12 |
-| 2. Testbench structure and UVM | 1 |
+| 1. Verification, validation, test and the plan | 1, 13 |
+| 2. Testbench structure and UVM | 1, 13 |
 | 3. Coverage closure and rare bins | 2, 3, 4 |
-| 4. Assertions and arbiter fairness | 5, 6 |
+| 4. Assertions and arbiter fairness | 5, 6, 13 |
 | 5. BDDs, variable order and equivalence | 7, 8, 9 |
 | 6. Reachability, BMC, k-induction and platforms | 10, 11, 12 |

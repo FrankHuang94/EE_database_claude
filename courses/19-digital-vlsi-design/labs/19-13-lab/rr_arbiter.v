@@ -20,7 +20,7 @@ module rr_arbiter #(
         gnt   = 4'b0000;
         found = 1'b0;
         for (k = 1; k <= 4; k = k + 1) begin
-            idx = FIXED_PRIORITY ? k[1:0] - 2'd1 : last + k[1:0];
+            idx = (FIXED_PRIORITY != 0) ? k[1:0] - 2'd1 : last + k[1:0];
             if (!found && req[idx]) begin
                 gnt[idx] = 1'b1;
                 found    = 1'b1;

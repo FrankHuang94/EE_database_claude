@@ -46,7 +46,7 @@ Files:
 **Answers.**
 
 1. A requester's wait depends on what the arbiter does while it waits. Counting grants to others measures exactly the arbiter's decisions; the number of cycles would also depend on whether other requesters happened to be requesting, which is the stimulus, not the design.
-2. Each idle requester raises a request with probability 1/2 per cycle and keeps it until served, so requests pile up and all-four-requesting is the most common case. If requests were rare (say probability 1/16 per cycle and dropped after one cycle), all four would request together with probability $(1/16)^4 = 1.53 \times 10^{-5}$ per cycle, and that bin would need a directed test.
+2. Each idle requester raises a request with probability 1/2 per cycle and keeps it until served, so requests pile up and three or four simultaneous requests are the common cases. If requests were rare (say probability 1/16 per cycle and dropped after one cycle), all four would request together with probability $(1/16)^4 = 1.53 \times 10^{-5}$ per cycle, and that bin would need a directed test.
 3. Each output bit depends on the inputs through the carry chain, and a BDD read in bit order needs to remember only the carry, one bit of state, so each level holds a constant number of nodes. With all $a$ bits first, the diagram must remember the whole of $A$ before it sees $B$.
 4. That no input sequence of 4 or fewer cycles from reset violates the invariant. It does not show that the invariant holds: the first violation needs 5 cycles. A bounded result is a proof only if the bound reaches the diameter or an induction step completes it.
 

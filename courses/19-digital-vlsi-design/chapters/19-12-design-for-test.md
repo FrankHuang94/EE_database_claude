@@ -4,7 +4,7 @@
 | | |
 |---|---|
 | **Course** | [19 · Digital VLSI Design](../README.md) |
-| **University equivalent** | The testing chapter of a senior VLSI course, or the first half of a graduate VLSI-testing course: defects, yield and defect level; stuck-at and delay fault models; fault simulation and test generation; scan design; logic and memory built-in self-test; test compression; boundary scan (Weste & Harris, *CMOS VLSI Design*, ch. 15; Bushnell & Agrawal, *Essentials of Electronic Testing*; Wang, Wu & Wen, *VLSI Test Principles and Architectures*) |
+| **University equivalent** | The testing chapter of a senior VLSI course, with a first look at a graduate VLSI-testing course: defects, yield and defect level; stuck-at and delay fault models; fault simulation and test generation; scan design; logic and memory built-in self-test; test compression; boundary scan (Weste & Harris, *CMOS VLSI Design*, ch. 15; Bushnell & Agrawal, *Essentials of Electronic Testing*; Wang, Wu & Wen, *VLSI Test Principles and Architectures*) |
 | **Prerequisites** | [19-11](19-11-place-route-signoff.md) (the physical flow), [19-07](19-07-sequential-timing-and-clocking.md) (flip-flops and timing), [19-08](19-08-sram-design.md) (SRAM arrays), [08-07](../../08-digital-logic-design/chapters/08-07-registers-counters-shift-registers.md) (shift registers and LFSRs), [08-05](../../08-digital-logic-design/chapters/08-05-verilog-and-testbenches.md) (Verilog testbenches), [03-02](../../03-probability-statistics-and-random-variables/chapters/03-02-random-variables-and-distributions.md) (probability) |
 | **Estimated study hours** | 6 |
 | **Last verified** | 2026-11-24 |
@@ -53,20 +53,20 @@ flowchart LR
 
 Let a fraction $Y$ of manufactured dies be free of defects (the **yield**). A test detects a fraction $T$ of the modeled faults (the **fault coverage**). The **defect level** DL is the fraction of dies that pass the test but are defective: the escapes that customers receive.
 
-**The Williams–Brown model.** Suppose a die has $N$ possible fault sites, each faulty independently with probability $p$. A die is good with probability $Y = (1 - p)^N$. The test examines $TN$ of the sites, so a die passes with probability $(1 - p)^{TN} = Y^T$ (all examined sites fault-free). Every good die passes, so
+**The Williams–Brown model.** Suppose a die has $N_s$ possible fault sites, each faulty independently with probability $q$. A die is good with probability $Y = (1 - q)^{N_s}$. The test examines $TN_s$ of the sites, so a die passes with probability $(1 - q)^{TN_s} = Y^T$ (all examined sites fault-free). Every good die passes, so
 
 $$
 \text{DL} = P(\text{defective} \mid \text{passes}) = 1 - \frac{P(\text{good})}{P(\text{passes})} = 1 - \frac{Y}{Y^{T}} = 1 - Y^{\,1 - T} .
 $$
 
-For coverage near 1, $Y^{1-T} = e^{(1-T)\ln Y} \approx 1 + (1 - T)\ln Y$, so $\text{DL} \approx (1 - T)(-\ln Y)$: every missing percent of coverage lets through escapes in proportion to the logarithm of the yield loss. With $Y = 0.8$, 99 % coverage ships about 2200 defective parts per million (DPPM) and 99.9 % about 220 (Example 1). Real defects cluster and do not map one-to-one onto modeled faults, so the model is a guide, not a guarantee; it explains why quality-critical markets demand coverage far above 99 %.
+For coverage near 1, $Y^{1-T} = e^{(1-T)\ln Y} \approx 1 + (1 - T)\ln Y$, so $\text{DL} \approx (1 - T)(-\ln Y)$: every missing percent of coverage lets through escapes in proportion to $-\ln Y$, which is close to the yield loss $1 - Y$ when the yield is high. With $Y = 0.8$, 99 % coverage ships about 2200 defective parts per million (DPPM) and 99.9 % about 220 (Example 1). Real defects cluster and do not map one-to-one onto modeled faults, so the model is a guide, not a guarantee; it explains why quality-critical markets demand coverage far above 99 %.
 
 ### 3.2 Fault models
 
 A **fault model** describes the logical effect of a class of defects so that tests can be generated and counted.
 
 - **Single stuck-at faults.** One line is permanently 0 (stuck-at-0, s-a-0) or 1 (s-a-1); exactly one fault at a time. A circuit with $\ell$ lines has $2\ell$ such faults, where a **line** is every gate output and primary input (a **stem**) plus every **branch** of a stem with fanout greater than one, because a defect on one branch need not affect the others. Despite its simplicity, a test set with high stuck-at coverage also detects many real defects.
-- **Fault collapsing.** Two faults are **equivalent** if every test for one detects the other (they produce identical faulty functions). For an $n$-input NAND gate, any input s-a-0 forces the output to 1, exactly like the output s-a-1, so those $n + 1$ faults form one class; similar rules hold for each gate type. Testing one fault per class suffices, which typically cuts the list substantially. A fault **dominates** another if every test for the second also detects the first, which allows further reduction.
+- **Fault collapsing.** Two faults are **equivalent** if every test for one detects the other (they produce identical faulty functions). For an $n$-input NAND gate, any input s-a-0 forces the output to 1, exactly like the output s-a-1, so those $n + 1$ faults form one class; similar rules hold for each gate type. Applying these gate rules is **structural** collapsing; comparing the faulty functions exhaustively (**functional** equivalence) can merge a few more faults that happen to have identical test sets. Testing one fault per class suffices, which typically cuts the list substantially. A fault **dominates** another if every test for the second also detects the first; for test generation keep the dominated fault and drop the dominating one, since any test for the former catches the latter. For example, a NAND's output stuck-at-0 dominates each input stuck-at-1: the test for an input stuck-at-1 (that input 0, the others 1) also detects the output stuck-at-0.
 - **Delay faults.** A transition fault makes a node slow to rise or fall; a path-delay fault makes a whole path slower than the clock. They need *two* patterns: one to set the initial value and one to launch the transition, then capture at speed. Scan supports this by launching from the last shift (launch-on-shift) or from a first functional capture (launch-on-capture).
 - **Other models.** Bridging faults (two nets shorted), cell-aware faults (defects inside a standard cell, characterized from its layout and transistor netlist), and IDDQ testing (abnormal quiescent supply current) target defects that stuck-at tests can miss.
 
@@ -84,17 +84,17 @@ The D-algorithm (Roth, 1966) formalized this with the five-valued algebra $\{0, 
 
 **Fault simulation** runs a set of patterns against the fault list and records which faults each pattern detects; the cumulative fraction is the fault coverage. Production flows combine them: random or pseudo-random patterns detect the easy faults cheaply, fault simulation drops them from the list, and deterministic ATPG targets what remains.
 
-**Random-pattern-resistant faults.** If a fault is detected only when $k$ specific inputs take specific values, a random pattern detects it with probability $p = 2^{-k}$, and $N$ independent patterns detect it with probability $1 - (1 - p)^N$. Reaching confidence $P$ needs
+**Random-pattern-resistant faults.** If a fault is detected only when $k$ specific inputs take specific values, a random pattern detects it with probability $p = 2^{-k}$, and $N$ independent patterns detect it with probability $1 - (1 - p)^N$. Reaching confidence $P_d$ (probability of detection) needs
 
 $$
-N = \frac{\ln(1 - P)}{\ln(1 - p)} \approx \frac{-\ln(1 - P)}{p} .
+N = \frac{\ln(1 - P_d)}{\ln(1 - p)} \approx \frac{-\ln(1 - P_d)}{p} .
 $$
 
 A 16-input AND gate's output stuck-at-0 needs all 16 inputs at 1: $p = 2^{-16}$, and 95 % confidence takes about 196 000 random patterns, against 17 deterministic ones for all its faults (Example 4). Designers add **test points** (extra control or observation logic) to make such nodes easier.
 
-![Stuck-at fault coverage against the number of random patterns on a logarithmic axis, for a 10-input AND gate feeding an OR: coverage jumps to 30 percent within a few patterns, stays flat, then climbs from about a thousand patterns to 100 percent at several thousand, with a dashed line at 2048.](../../../assets/figures/19-12/random-coverage.svg)
+![Stuck-at fault coverage against the number of random patterns on a logarithmic axis, for a 10-input AND gate feeding an OR: coverage jumps to 30 percent within a few patterns, then rises again in a climb centred near 2048 patterns, the dashed line, reaching 100 percent after several thousand.](../../../assets/figures/19-12/random-coverage.svg)
 
-*Figure 2. Random-pattern coverage stalls on hard faults. In this circuit 21 of 30 faults need a specific setting of 11 inputs ($p = 2^{-11}$); the shaded band is the spread over 20 random seeds.*
+*Figure 2. Random-pattern coverage stalls on hard faults. In this circuit 21 of 30 faults need all ten AND inputs fixed and the XOR at 0 ($p = 2^{-11}$); the shaded band is the spread over 20 random seeds.*
 
 ### 3.4 Scan design
 
@@ -112,9 +112,9 @@ $$
 \text{cycles} = P\,(L + 1) + L ,
 $$
 
-one capture per pattern plus a final unload. **Test data volume** is about $2FP$ bits: stimulus and expected response for every scan cell and pattern. Shift clocks are usually slower than functional clocks (shifting every flip-flop at once draws large switching current), so shift time dominates. Test time is limited by how many scan pins the tester can drive, which is why chains are balanced and kept short.
+one capture per pattern plus a final unload. **Test data volume** is about $2FP$ bits: stimulus and expected response for every scan cell and pattern. Shift time dominates because each pattern needs $L$ shift cycles but only one capture; shift clocks are also usually slower than functional clocks, because shifting every flip-flop at once draws large switching current. Test time is limited by how many scan pins the tester can drive, which is why chains are balanced and kept short.
 
-**Compression.** The tester drives a few scan-in pins; on chip, a **decompressor** (a linear network of XORs, often an LFSR-based ring generator) expands them into many short internal chains, and a **compactor** (an XOR tree or MISR) folds the many chain outputs into a few. This works because a pattern generated for a few target faults specifies only a small fraction of the scan cells (its "care bits"); the decompressor can fill the rest with whatever its linear expansion produces. With $C_{\text{int}}$ internal chains fed from $C_{\text{ext}}$ pins, shift time and data volume shrink by about $C_{\text{int}}/C_{\text{ext}}$ for the same pattern count, minus some extra patterns for faults the compressed stream cannot target. The X-values (unknowns from uninitialized memories, bus contention or analog blocks) must be blocked from the compactor, since one X corrupts the compacted response.
+**Compression.** The tester drives a few scan-in pins; on chip, a **decompressor** (a linear network of XORs, often an LFSR-based ring generator) expands them into many short internal chains, and a **compactor** (an XOR tree or MISR) folds the many chain outputs into a few. This works because a pattern generated for a few target faults specifies only a small fraction of the scan cells (its "care bits"); the decompressor can fill the rest with whatever its linear expansion produces. With $C_{\text{int}}$ internal chains fed from $C_{\text{ext}}$ pins, shift time and data volume shrink by about $C_{\text{int}}/C_{\text{ext}}$ for the same pattern count, minus some extra patterns for faults the compressed stream cannot target. That ratio is an upper bound on the test-time saving, for three reasons: compressed flows need more patterns; the shift clock may have to slow down for power or for the decompressor; and every die also spends fixed time on steps compression does not touch (setup, parametric and analog tests, memory BIST). Once scan shifting is no longer the largest part of a die's test time, more compression saves little. The X-values (unknowns from uninitialized memories, bus contention or analog blocks) must be blocked from the compactor, since one X corrupts the compacted response.
 
 **Costs.** Scan adds a multiplexer to every flip-flop (area and a little setup-time delay), routing for the chains, and test-mode logic that must itself be timed (19-10, a test mode in the MMMC analysis). A classic textbook estimate counts a scan flip-flop as 14 gate equivalents against 10 for a plain one, so the gate overhead is $4n_{\text{sff}}/(n_g + 10n_{\text{sff}})$ for $n_g$ combinational gates and $n_{\text{sff}}$ scan flip-flops: 6.7 % for 100 000 gates and 2000 flip-flops (teaching data from 2001; wiring adds more) [R-320]. Hold timing during shift is a classic problem because adjacent scan flip-flops have no logic between them (19-07).
 
@@ -275,7 +275,7 @@ The lab ([labs/19-12-lab](../labs/19-12-lab/README.md)) has a Python fault simul
 **Predict, then run.**
 
 1. Predict the number of faults, equivalence classes and minimal tests for c17, then compute them.
-2. Predict the shape of the fault-coverage curve under random patterns for a circuit containing a 12-input AND; plot it.
+2. Predict the shape of the fault-coverage curve under random patterns for a circuit containing a 10-input AND (12 inputs in all); plot it.
 3. Predict how many clock cycles the Verilog testbench needs for 4 patterns on an 8-bit chain, then run it.
 4. Predict which of March C− and MATS+ misses coupling faults in a small memory, and how many; inject them all.
 5. Predict the fraction of error streams a 4-bit MISR fails to catch over three words; enumerate them.
@@ -298,12 +298,12 @@ The lab ([labs/19-12-lab](../labs/19-12-lab/README.md)) has a Python fault simul
 | Defect level | $1 - Y^{1-T} \approx (1 - T)(-\ln Y)$ | Williams–Brown |
 | Stuck-at faults | $2 \times$ lines (stems + fanout branches) | Collapsing removes equivalents |
 | Tests for an $n$-input AND or NAND | $n + 1$ | |
-| Random patterns to detect with confidence $P$ | $\ln(1 - P)/\ln(1 - p)$ | $p = 2^{-k}$ for $k$ required inputs |
+| Random patterns to detect with confidence $P_d$ | $\ln(1 - P_d)/\ln(1 - p)$ | $p = 2^{-k}$ for $k$ required inputs |
 | Scan test cycles | $P(L + 1) + L$ | $L = \lceil F/C \rceil$ |
 | Scan test data | $\approx 2FP$ bits | Before compression |
 | Compression | ≈ internal chains / scan pins | Same pattern count |
 | Maximal LFSR period | $2^n - 1$ | Primitive polynomial |
-| MISR aliasing | $\approx 2^{-n}$ | Exactly $(2^{n(m-1)} - 1)/(2^{nm} - 1)$ |
+| MISR aliasing | $\approx 2^{-n}$ | Exactly $(2^{n(m-1)} - 1)/(2^{nm} - 1)$ if every nonzero error stream is equally likely |
 | March C− | $10n$ operations | |
 | Scan gate overhead (classic estimate) | $4n_{\text{sff}}/(n_g + 10n_{\text{sff}})$; 6.7 % for 100k gates, 2k flip-flops | 2001 teaching data [R-320] |
 | Cost of test | under 2–3 % of IC revenue | ITRS 2015 [R-320] |
@@ -329,7 +329,7 @@ The lab ([labs/19-12-lab](../labs/19-12-lab/README.md)) has a Python fault simul
 - **Test is a small, closely watched cost [Industry estimate].** ITRS 2015 put the cost of test at "less than 2-3%" of IC revenue, with most SoCs tested 2 to 16 at a time and memories over 1000 at once, and argued that improving test quality pays more than cutting test cost. I found no later IRDS figure [R-320].
 - **Automotive pushes quality and in-field test [Established / Industry estimate].** ISO 26262-5's hardware metrics, as reproduced by Texas Instruments, require single-point-fault metrics of at least 90, 97 and 99 % and latent-fault metrics of at least 60, 80 and 90 % for ASIL B, C and D; these measure on-chip safety mechanisms in the field, not production fault coverage. Vendors meet the latent-fault part with start-up memory and logic BIST (TI's C2000 tests its SRAMs with a March algorithm at power-up). On shipped quality, a 2007 TI paper cited automotive goals "in single digits; even 'zero'" DPPM, and trade press in 2022 described the bar moving to 10 defective parts per *billion* [R-320].
 - **Silent data corruption is a fleet problem [Established].** Google reported "on the order of a few mercurial cores per several thousand machines" that compute wrong results, often getting worse with age; Meta found "hundreds of CPUs" with silent errors across "hundreds of thousands of machines", reproducible rather than transient, and later described a rate of about one in a thousand devices. Both conclude that testing must continue through a CPU's life [R-320].
-- **Open-source DFT is basic [Established].** Fault (Apache 2.0, version 0.9.4) offers pseudo-random pattern generation with stuck-at fault simulation, scan stitching, compaction and JTAG insertion; OpenROAD's `dft` module replaces flip-flops with scan flip-flops and stitches chains, with no ATPG or compression; LibreLane's default flow has no scan step. Production DFT remains a commercial-tool domain [R-320].
+- **Open-source DFT is basic [Established].** Fault (Apache 2.0, version 0.9.4) offers pseudo-random pattern generation with stuck-at fault simulation, scan stitching, compaction and JTAG insertion; OpenROAD's `dft` module replaces flip-flops with scan flip-flops and stitches chains, with no ATPG or compression; LibreLane's default flow has no scan-insertion step that I could find in its code. Production DFT remains a commercial-tool domain [R-320].
 
 ### Why it matters commercially
 
@@ -339,7 +339,7 @@ The lab ([labs/19-12-lab](../labs/19-12-lab/README.md)) has a Python fault simul
 
 ### Marketing vs Reality
 
-- **"400X compression."** Ask what the baseline is (uncompressed scan or the vendor's previous compression), how many extra patterns the compressed flow needs, and what the test-time reduction is. The same 2016 release that claimed compression "beyond 400X" claimed "up to 3X" less test time, and ITRS cautioned that pattern compression "does little to help reduce test times" once other overheads dominate.
+- **"400X compression."** Ask what the baseline is (uncompressed scan or the vendor's previous compression), how many extra patterns the compressed flow needs, and what the test-time reduction is. The same 2016 release that claimed compression "beyond 400X" claimed "up to 3X" less test time, and ITRS cautioned that pattern compression "does little to help reduce test times": the shift-time saving is bounded by the chain ratio, and the fixed per-die steps of §3.4 remain.
 - **"99 % fault coverage."** Of which fault model, and of detectable faults only? At 80 % yield, 99 % stuck-at coverage still implies about 2200 DPPM by Williams–Brown; real quality depends on transition, cell-aware and memory coverage too.
 - **"Zero defects."** A target, not a measurement. Ask for field-return data in DPPM over a stated volume and period.
 - **"Fully tested at the factory."** The hyperscaler studies show that some defects escape or appear later; ask what in-field self-test and screening the product supports.

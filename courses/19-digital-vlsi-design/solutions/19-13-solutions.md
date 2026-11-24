@@ -34,7 +34,7 @@ so 30 samples fill all 8 bins with probability **0.8593**; the later terms are b
 
 ### Solution 19-13.4
 
-(a) With $p = (0.5, 0.3, 0.15, 0.05)$, sum $1/P(S)$ over the 15 nonempty subsets with alternating signs:
+(a) With $p = (0.5, 0.3, 0.15, 0.05)$, sum $1/p(S)$ over the 15 nonempty subsets with alternating signs:
 
 - singles: $1/0.5 + 1/0.3 + 1/0.15 + 1/0.05 = 2 + 3.3333 + 6.6667 + 20 = 32.0000$;
 - pairs: $1/0.8 + 1/0.65 + 1/0.55 + 1/0.45 + 1/0.35 + 1/0.2 = 14.6860$;
@@ -119,6 +119,43 @@ $E[T] = 32.0000 - 14.6860 + 5.6577 - 1$ = **21.97** samples, only 10 % above the
 
 (e) The emulator keeps deep signal visibility, so a failing test can be debugged from captured waveforms; prototypes expose only a few probed signals. And the emulator recompiles quickly as the RTL changes daily, while a multi-FPGA prototype often needs re-partitioning and timing closure on each new RTL drop, so prototypes lag the latest design.
 
+### Solution 19-13.13
+
+(a) A plan row names a feature, its checker and its coverage. For example:
+
+| Feature | Checked by | Measured by |
+|---|---|---|
+| Data come out in order, none lost or duplicated | Scoreboard with a reference queue in simulation | Coverage of the level × operation cross |
+| `count` stays within 0 to 8 and tracks pushes and pops | Assertions, proven formally | Cover properties reaching 0 and 8 |
+| `full` and `empty` match `count` | Assertions, proven formally | Bins for empty and full |
+| Push when full and pop when empty are ignored | Assertion in simulation (and formal without the assumption) | Cross bins for push-on-full and pop-on-empty |
+
+(b) One set of answers:
+
+```systemverilog
+a_bound:   assert property (@(posedge clk) disable iff (rst) count <= 8);
+a_empty:   assert property (@(posedge clk) disable iff (rst) empty == (count == 0));
+a_full:    assert property (@(posedge clk) disable iff (rst) full == (count == 8));
+a_noover:  assert property (@(posedge clk) disable iff (rst) (full && push && !pop) |=> full);
+m_nounder: assume property (@(posedge clk) disable iff (rst) !(pop && empty));
+```
+
+The assumption removes every trace with a pop on an empty FIFO, so the proof says nothing about how the design handles underflow: a bug there would pass. Either check underflow in simulation, or run a second formal job without the assumption, or turn the assumption into an assertion on the consumer block.
+
+(c)
+
+```systemverilog
+covergroup fifo_cg @(posedge clk);
+  cp_level: coverpoint count { bins empty = {0}; bins part = {[1:7]}; bins full = {8}; }
+  cp_op:    coverpoint {push, pop};          // 00, 01, 10, 11
+  x_level_op: cross cp_level, cp_op;
+endgroup
+```
+
+The cross has $3 \times 4$ = **12** bins. Under the assumption, pop with an empty FIFO never happens, so (empty, 01) and (empty, 11) cannot be hit: **10** bins are coverable, and the other two should be marked `ignore_bins` (or the assumption dropped) rather than left as permanent holes.
+
+(d) Prove the counter and flag properties formally: they involve a 4-bit counter and two inputs, a tiny state space, and a proof covers every sequence, including corner cases such as simultaneous push and pop at full. Leave data ordering to simulation with a scoreboard (or to formal with abstraction): it depends on the data values in all eight entries, a much larger state space, and a reference model expresses it naturally.
+
 <!-- answer-key -->
 
 | ID | Quantity | Value | Unit |
@@ -158,3 +195,5 @@ $E[T] = 32.0000 - 14.6860 + 5.6577 - 1$ = **21.97** samples, only 10 % above the
 | 19-13.12c | suite time on 4 partitions | 6.94 | h |
 | 19-13.12d | prototype suite time | 66.7 | min |
 | 19-13.12e | RTL simulation time for one test | 57.9 | days |
+| 19-13.13a | cross bins | 12 | — |
+| 19-13.13b | coverable cross bins under the assumption | 10 | — |

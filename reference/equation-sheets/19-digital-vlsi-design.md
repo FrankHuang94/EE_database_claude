@@ -132,7 +132,7 @@ Conventions:
 |---|---|---|
 | Defect level $\text{DL} = 1 - Y^{1-T} \approx (1 - T)(-\ln Y)$ | Williams–Brown; $Y$ yield, $T$ fault coverage | [19-12](../../courses/19-digital-vlsi-design/chapters/19-12-design-for-test.md) |
 | Single stuck-at faults $= 2 \times$ (stems + fanout branches) | Before collapsing; $n + 1$ tests for an $n$-input AND or NAND | [19-12](../../courses/19-digital-vlsi-design/chapters/19-12-design-for-test.md) |
-| Random patterns for confidence $P$: $N = \ln(1 - P)/\ln(1 - p)$ | $p = 2^{-k}$ for $k$ required input values | [19-12](../../courses/19-digital-vlsi-design/chapters/19-12-design-for-test.md) |
+| Random patterns for confidence $P_d$: $N = \ln(1 - P_d)/\ln(1 - p)$ | $p = 2^{-k}$ for $k$ required input values | [19-12](../../courses/19-digital-vlsi-design/chapters/19-12-design-for-test.md) |
 | Scan cycles $P(L + 1) + L$, $L = \lceil F/C \rceil$; data $\approx 2FP$ bits | $F$ flip-flops, $C$ chains, $P$ patterns | [19-12](../../courses/19-digital-vlsi-design/chapters/19-12-design-for-test.md) |
 | Maximal LFSR period $2^n - 1$; MISR aliasing $(2^{n(m-1)} - 1)/(2^{nm} - 1) \approx 2^{-n}$ | Primitive polynomial; $m$ response words | [19-12](../../courses/19-digital-vlsi-design/chapters/19-12-design-for-test.md) |
 | March C−: $10n$ operations | $n$ cells | [19-12](../../courses/19-digital-vlsi-design/chapters/19-12-design-for-test.md) |
@@ -142,7 +142,7 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | Equal bins: $E[T] = nH_n \approx n\ln n + 0.577n + \tfrac12$; $\Pr(\text{all covered after } t) = \sum_{k} (-1)^k\binom{n}{k}(1 - k/n)^t$ | Independent samples | [19-13](../../courses/19-digital-vlsi-design/chapters/19-13-verification-methods.md) |
-| Unequal bins: $E[T] = \sum_{S \ne \emptyset} (-1)^{\lvert S\rvert+1}/P(S) \ge 1/p_{\min}$ | Inclusion–exclusion; the rarest bin dominates | [19-13](../../courses/19-digital-vlsi-design/chapters/19-13-verification-methods.md) |
+| Unequal bins: $E[T] = \sum_{S \ne \emptyset} (-1)^{\lvert S\rvert+1}/p(S) \ge 1/p_{\min}$ | Inclusion–exclusion; the rarest bin dominates | [19-13](../../courses/19-digital-vlsi-design/chapters/19-13-verification-methods.md) |
 | A bug needing $m$ specific input bits: $p = 2^{-m}$; 99 % detection needs $\approx 4.6 \times 2^m$ random vectors | Uniform random stimulus | [19-13](../../courses/19-digital-vlsi-design/chapters/19-13-verification-methods.md) |
 | Round-robin arbiter: at most $N - 1$ grants to others while pending | Fixed priority: unbounded | [19-13](../../courses/19-digital-vlsi-design/chapters/19-13-verification-methods.md) |
 | Miter $M = \bigvee_k (F_k \oplus G_k)$: equivalent iff $M \equiv 0$ | Any satisfying input is a counterexample | [19-13](../../courses/19-digital-vlsi-design/chapters/19-13-verification-methods.md) |

@@ -74,6 +74,8 @@ v.check("Ex 19-13.1b", 16 * math.log(16) + 0.5772156649 * 16 + 0.5)
 t95 = next(t for t in range(1, 500) if p_all_markov(16, t) >= 0.95)
 v.check("Ex 19-13.1c", t95)
 v.assert_true("t = 89 is below 95 %", p_all_markov(16, 89) < 0.95, f"{p_all_markov(16, 89):.4f}")
+v.check("Ex 19-13.1f", p_all_markov(16, 90))
+v.check("Ex 19-13.1g", p_all_markov(16, 89))
 rare = [0.99 / 7] * 7 + [0.01]
 e_rare = expected_cover_dp(rare)
 v.check("Ex 19-13.1d", e_rare)
@@ -257,7 +259,10 @@ def adder_bit(i):
 sizes = [robdd_size(table(adder_bit(i), inter(8)), 16) for i in range(8)]
 v.assert_true("sum bit i has 3i + 3 nodes (8-bit adder)", sizes == [3 * i + 3 for i in range(8)], str(sizes))
 v.check("Lab 19-13.e", sizes[7])
-v.check("Txt 19-13.e", 3 * 31 + 3)
+b32 = verif.BDD(64)                     # build the 32-bit ripple adder in interleaved order with the lab package
+A32 = [b32.var(2 * i) for i in range(32)]
+B32 = [b32.var(2 * i + 1) for i in range(32)]
+v.check("Txt 19-13.e", b32.size(verif.ripple_adder(b32, A32, B32)[31]))
 v.check("Txt 19-13.f", -math.log(0.01))
 
 
@@ -286,9 +291,16 @@ v.check("Ex 19-13.3a", len(bad))
 v.assert_true("correct lookahead equals ripple on all inputs",
               all(lookahead_buggy(x, y, bug_carry=99) == x + y for x in range(16) for y in range(16)), "")
 v.assert_true("(7, 1) is a counterexample", (7, 1) in bad, "")
-v.check("Ex 19-13.3b", 7)
-v.check("Ex 19-13.3c", 1)
-v.check("Ex 19-13.3d", 7 + 1)
+bb8 = verif.BDD(8)
+cex = verif.equivalent(bb8, verif.ripple_adder(bb8, [bb8.var(2 * i) for i in range(4)], [bb8.var(2 * i + 1) for i in range(4)]),
+                       verif.lookahead_adder(bb8, [bb8.var(2 * i) for i in range(4)], [bb8.var(2 * i + 1) for i in range(4)],
+                                             bug_bit=3))[1]
+A_cex = sum(cex.get(2 * i, 0) << i for i in range(4))     # free variables taken as 0
+B_cex = sum(cex.get(2 * i + 1, 0) << i for i in range(4))
+v.assert_true("a3 and b3 are free in the counterexample cube", 6 not in cex and 7 not in cex, str(cex))
+v.check("Ex 19-13.3b", A_cex)
+v.check("Ex 19-13.3c", B_cex)
+v.check("Ex 19-13.3d", A_cex + B_cex)
 v.check("Ex 19-13.3e", lookahead_buggy(7, 1))
 v.assert_true("the lab's BDD miter returns the same counterexample",
               (lambda b: (lambda A, B: verif.equivalent(b, verif.ripple_adder(b, A, B),
@@ -438,5 +450,38 @@ v.check("19-13.12b", 200 * test / 1e6 / 3600)
 v.check("19-13.12c", 200 * test / 1e6 / 3600 / 4)
 v.check("19-13.12d", 200 * test / 25e6 / 60)
 v.check("19-13.12e", test / 100 / 86400)
+
+# problem 13: level x operation cross bins, and those reachable when pops on an empty FIFO are assumed away
+levels = lambda c: "empty" if c == 0 else ("full" if c == 8 else "part")
+hit, seen, frontier = set(), {0}, [0]
+while frontier:
+    c = frontier.pop()
+    for push in (0, 1):
+        for pop in (0, 1):
+            if pop and c == 0:
+                continue                                  # the assumption
+            hit.add((levels(c), push, pop))
+            n = c + (1 if push and c < 8 else 0) - (1 if pop and c > 0 else 0)
+            if push and pop and 0 < c < 8:
+                n = c
+            if n not in seen:
+                seen.add(n)
+                frontier.append(n)
+v.check("19-13.13a", 3 * 4)
+v.check("19-13.13b", len(hit))
+
+# the Verilog testbench's own report, when Icarus Verilog is installed
+import shutil  # noqa: E402
+import subprocess  # noqa: E402
+import tempfile  # noqa: E402
+if shutil.which("iverilog") and shutil.which("vvp"):
+    with tempfile.TemporaryDirectory() as tmp:
+        sim = Path(tmp) / "rr.vvp"
+        subprocess.run(["iverilog", "-g2012", "-o", str(sim), str(LAB / "rr_arbiter_tb.v"), str(LAB / "rr_arbiter.v")],
+                       check=True)
+        out = subprocess.run(["vvp", str(sim)], capture_output=True, text=True).stdout
+    v.assert_true("testbench reports worst wait 3 grants", "worst wait 3 grants" in out, out[-300:])
+    v.assert_true("testbench reports 9 of 9 bins", "coverage: 9 of 9 bins" in out, out[-300:])
+    v.assert_true("testbench passes", "TEST PASSED" in out, out[-300:])
 
 sys.exit(v.finish())

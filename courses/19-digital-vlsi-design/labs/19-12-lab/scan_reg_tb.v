@@ -14,11 +14,11 @@ module scan_reg_tb;
 
     reg [N-1:0] pats [0:P-1];
     reg [N-1:0] got_g, got_f, expected;
-    integer i, k, errors, detected, cycles;
+    integer i, k, errors, detected, cycles, which;
 
     initial begin
         pats[0] = 8'h00; pats[1] = 8'h5A; pats[2] = 8'hFF; pats[3] = 8'h80;
-        errors = 0; detected = 0; cycles = 0;
+        errors = 0; detected = 0; cycles = 0; which = -1;
         se = 1'b1;
         for (k = 0; k <= P; k = k + 1) begin
             got_g = {N{1'b0}};
@@ -38,6 +38,7 @@ module scan_reg_tb;
                 end
                 if (got_f !== expected) begin
                     detected = detected + 1;
+                    which = k - 1;
                     $display("pattern %0d (%h) detects the stuck-at-0 on bit 2: %h instead of %h",
                              k - 1, pats[k-1], got_f, expected);
                 end
@@ -50,7 +51,8 @@ module scan_reg_tb;
             end
         end
         $display("%0d patterns, %0d clock cycles, fault detected by %0d pattern(s)", P, cycles, detected);
-        if (errors == 0 && detected > 0) $display("TEST PASSED");
+        // exactly one pattern (5A, index 1) can catch a stuck-at-0 on bit 2 of q + 3: 5A + 3 = 5D has bit 2 set
+        if (errors == 0 && detected == 1 && which == 1 && cycles == P * (N + 1) + N) $display("TEST PASSED");
         else $display("TEST FAILED");
         $finish;
     end

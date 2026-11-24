@@ -7918,7 +7918,7 @@
   chapter: "19-12"
   see_also: [Fault collapsing, Automatic test pattern generation (ATPG)]
 - term: Fault collapsing
-  definition: "Reducing a fault list by keeping one fault from each equivalence class (faults detected by exactly the same tests, such as a NAND input stuck-at-0 and its output stuck-at-1) and, optionally, dropping dominated faults."
+  definition: "Reducing a fault list by keeping one fault from each equivalence class (faults detected by exactly the same tests, such as a NAND input stuck-at-0 and its output stuck-at-1) and, for test generation, dropping a fault that dominates another (every test for the dominated fault also detects the dominating one, so only the dominated fault needs a test)."
   chapter: "19-12"
   see_also: [Stuck-at fault]
 - term: Transition fault
@@ -7934,7 +7934,7 @@
   chapter: "19-12"
   see_also: [Test compression, Automatic test pattern generation (ATPG)]
 - term: Test compression
-  definition: "On-chip decompressors that expand a few tester channels into many short internal scan chains, and compactors that fold their outputs back, cutting test time and data by roughly the ratio of internal chains to pins."
+  definition: "On-chip decompressors that expand a few tester channels into many short internal scan chains, and compactors that fold their outputs back, cutting shift time and data by up to the ratio of internal chains to pins; realized test-time savings are smaller because of extra patterns, shift-speed limits and fixed per-die test steps."
   chapter: "19-12"
   see_also: [Scan chain, Multiple-input signature register (MISR)]
 - term: Built-in self-test (BIST)

@@ -1418,7 +1418,7 @@
 
 <a id="fastspice"></a>**FastSPICE** — A class of transistor-level circuit simulators that partition the circuit and use simplified or tabulated device models to gain speed and capacity, at some loss of accuracy relative to SPICE. *First defined in* [06-04](../courses/06-circuit-analysis-1-dc/chapters/06-04-nodal-analysis.md). *See also:* [SPICE](#spice).
 
-<a id="fault-collapsing"></a>**Fault collapsing** — Reducing a fault list by keeping one fault from each equivalence class (faults detected by exactly the same tests, such as a NAND input stuck-at-0 and its output stuck-at-1) and, optionally, dropping dominated faults. *First defined in* [19-12](../courses/19-digital-vlsi-design/chapters/19-12-design-for-test.md). *See also:* [Stuck-at fault](#stuck-at-fault).
+<a id="fault-collapsing"></a>**Fault collapsing** — Reducing a fault list by keeping one fault from each equivalence class (faults detected by exactly the same tests, such as a NAND input stuck-at-0 and its output stuck-at-1) and, for test generation, dropping a fault that dominates another (every test for the dominated fault also detects the dominating one, so only the dominated fault needs a test). *First defined in* [19-12](../courses/19-digital-vlsi-design/chapters/19-12-design-for-test.md). *See also:* [Stuck-at fault](#stuck-at-fault).
 
 <a id="fault-coverage"></a>**Fault coverage** — The fraction of modeled faults (for example stuck-at faults) that a set of test patterns detects. *First defined in* [03-01](../courses/03-probability-statistics-and-random-variables/chapters/03-01-probability-in-ee-language.md). *See also:* [Defect level (DPPM)](#defect-level-dppm).
 
@@ -4032,7 +4032,7 @@
 
 <a id="tensor-core"></a>**Tensor core** — A GPU execution unit that performs a small matrix multiply-accumulate per instruction in low-precision formats, giving an order of magnitude more throughput than ordinary arithmetic lanes on matrix math. *First defined in* [14-13](../courses/14-computer-organization-and-architecture/chapters/14-13-gpus-and-simt.md). *See also:* [Structured sparsity](#structured-sparsity).
 
-<a id="test-compression"></a>**Test compression** — On-chip decompressors that expand a few tester channels into many short internal scan chains, and compactors that fold their outputs back, cutting test time and data by roughly the ratio of internal chains to pins. *First defined in* [19-12](../courses/19-digital-vlsi-design/chapters/19-12-design-for-test.md). *See also:* [Scan chain](#scan-chain), [Multiple-input signature register (MISR)](#multiple-input-signature-register-misr).
+<a id="test-compression"></a>**Test compression** — On-chip decompressors that expand a few tester channels into many short internal scan chains, and compactors that fold their outputs back, cutting shift time and data by up to the ratio of internal chains to pins; realized test-time savings are smaller because of extra patterns, shift-speed limits and fixed per-die test steps. *First defined in* [19-12](../courses/19-digital-vlsi-design/chapters/19-12-design-for-test.md). *See also:* [Scan chain](#scan-chain), [Multiple-input signature register (MISR)](#multiple-input-signature-register-misr).
 
 <a id="test-source"></a>**Test source** — A voltage or current source applied at a port, with all independent sources turned off but dependent sources left in place, to find the resistance seen there as v_t/i_t. *First defined in* [06-06](../courses/06-circuit-analysis-1-dc/chapters/06-06-dependent-sources.md). *See also:* [Dependent source](#dependent-source).
 

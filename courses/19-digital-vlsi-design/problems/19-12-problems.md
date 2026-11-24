@@ -60,6 +60,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **MISR aliasing exactly.** An $n$-bit MISR (seed 0) compacts $m$ response words. (a) Show that the signature of a faulty response equals the good signature XOR the signature of the error stream, so the fault escapes exactly when the error stream's signature is 0. (b) Show that a single-bit error can never alias. (c) Argue that the fraction of nonzero error streams that alias is $(2^{n(m-1)} - 1)/(2^{nm} - 1)$, and evaluate it for $n = 4$, $m = 3$ against $2^{-n}$. (d) Check (c) by exhaustive simulation with the lab.
 
+### Problem 19-12.13 [B]
+
+**Safety metrics in the field.** ISO 26262-5, as reproduced in a TI application report (R-320), requires single-point-fault metrics (SPFM) of at least 90, 97 and 99 % and latent-fault metrics (LFM) of at least 60, 80 and 90 % for ASIL B, C and D. A block's on-line checker gives an SPFM of 98 %, and start-up memory BIST plus periodic logic BIST give an LFM of 85 %. (a) Which ASILs does the block meet on each metric, and overall? (b) To reach ASIL D, by what fraction must the undetected latent faults and the uncovered single-point faults each be reduced? (c) Why are these metrics a matter of in-field self-test rather than production fault coverage, and what does a datacenter operator screen for that is analogous?
+
 ---
 
 ## Objective coverage
@@ -71,4 +75,4 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 3. Test generation and redundancy | 4, 5, 6 |
 | 4. Scan, test time and compression | 7 |
 | 5. LFSRs, MISRs and March tests | 8, 9, 12 |
-| 6. Boundary scan and in-field test | 10 |
+| 6. Boundary scan and in-field test | 10, 13 |

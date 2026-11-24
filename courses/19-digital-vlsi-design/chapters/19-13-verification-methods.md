@@ -98,24 +98,24 @@ endgroup
 
 This covergroup has 9 bins: a grant to each of the four requesters, and each number of simultaneous requests from 0 to 4. A cross of the two would add combinations such as "a grant to requester 3 while all four request".
 
-**How much random stimulus closes a coverage model?** Model each sampled transaction as landing in bin $i$ with probability $p_i$, independently of other samples, and let $T$ be the number of samples until every one of the $n$ bins has been hit. For equally likely bins, 08-05 §3.8 derived the coupon-collector result $E[T] = nH_n$ with $H_n = \sum_{k=1}^{n} 1/k \approx \ln n + \gamma + 1/(2n)$ and $\gamma = 0.5772$, so
+**How much random stimulus closes a coverage model?** Model each sampled transaction as landing in bin $i$ with probability $p_i$, independently of other samples, and let $T$ be the number of samples until every one of the $n$ bins has been hit. For equally likely bins, 08-05 §3.8 derived the coupon-collector result $E[T] = nH_n$ with $H_n = \sum_{k=1}^{n} 1/k \approx \ln n + \gamma_E + 1/(2n)$ with Euler's constant $\gamma_E = 0.5772$, so
 
 $$
-E[T] = nH_n \approx n\ln n + \gamma n + \tfrac12 .
+E[T] = nH_n \approx n\ln n + \gamma_E n + \tfrac12 .
 $$
 
-Real coverage models are not uniform: corner-case bins are, by definition, rare. To handle unequal $p_i$, write the event "$T > t$" as "after $t$ samples some bin is still empty". For a set $S$ of bins with total probability $P(S) = \sum_{i \in S} p_i$, the chance that all $t$ samples miss every bin of $S$ is $(1 - P(S))^t$. The **inclusion–exclusion principle** turns the probability of a union of events into alternating sums over intersections:
+Real coverage models are not uniform: corner-case bins are, by definition, rare. To handle unequal $p_i$, write the event "$T > t$" as "after $t$ samples some bin is still empty". For a set $S$ of bins with total probability $p(S) = \sum_{i \in S} p_i$, the chance that all $t$ samples miss every bin of $S$ is $(1 - p(S))^t$. The **inclusion–exclusion principle** turns the probability of a union of events into alternating sums over intersections:
 
 $$
-\Pr(T > t) = \Pr\Big(\bigcup_{i} \{\text{bin } i \text{ empty}\}\Big) = \sum_{\emptyset \ne S \subseteq \{1..n\}} (-1)^{|S|+1} \big(1 - P(S)\big)^{t} .
+\Pr(T > t) = \Pr\Big(\bigcup_{i} \{\text{bin } i \text{ empty}\}\Big) = \sum_{\emptyset \ne S \subseteq \{1..n\}} (-1)^{|S|+1} \big(1 - p(S)\big)^{t} .
 $$
 
 > **Math refresher — inclusion–exclusion.** For two events, $\Pr(A \cup B) = \Pr(A) + \Pr(B) - \Pr(A \cap B)$: adding the two probabilities counts the overlap twice, so subtract it once. For three, add back the triple overlap, and so on with alternating signs. Here "bins $i$ and $j$ both empty" is the event that every sample misses both, which has probability $(1 - p_i - p_j)^t$.
 
-For a non-negative integer random variable, $E[T] = \sum_{t=0}^{\infty} \Pr(T > t)$ (each sample $t$ contributes 1 to $T$ exactly when $T > t$). Summing the geometric series $\sum_{t \ge 0} (1 - P(S))^t = 1/P(S)$ term by term gives the exact result
+For a non-negative integer random variable, $E[T] = \sum_{t=0}^{\infty} \Pr(T > t)$ (each sample $t$ contributes 1 to $T$ exactly when $T > t$). Summing the geometric series $\sum_{t \ge 0} (1 - p(S))^t = 1/p(S)$ term by term gives the exact result
 
 $$
-E[T] = \sum_{\emptyset \ne S \subseteq \{1..n\}} \frac{(-1)^{|S|+1}}{P(S)} .
+E[T] = \sum_{\emptyset \ne S \subseteq \{1..n\}} \frac{(-1)^{|S|+1}}{p(S)} .
 $$
 
 With equal $p_i = 1/n$ it reduces to $nH_n$; the sum has $2^n - 1$ terms, so it is practical for coverpoints of up to about twenty bins. Two simpler facts carry most of the engineering insight:
@@ -210,18 +210,18 @@ Bryant proved in 1986 that, for a fixed variable order, every Boolean function h
 - **Interleaved order** $x_1, y_1, x_2, y_2, \ldots$: after fixing $x_1..x_{i-1}$ and $y_1..y_{i-1}$, either some product was already 1 (the function is the constant 1) or the remainder is $x_iy_i + \cdots + x_ny_n$, the same for every such assignment. So each level has one node: $2n$ nodes in all.
 - **Separated order** $x_1, \ldots, x_n, y_1, \ldots, y_n$: after fixing $x_1..x_{i-1}$, the remaining function must remember which of those $x$'s were 1, because each one decides whether its $y$ matters later. All $2^{i-1}$ assignments give different subfunctions, each depending on $x_i$, so level $x_i$ has $2^{i-1}$ nodes, $2^n - 1$ in total. At level $y_i$, with no earlier product equal to 1, the remainder is $\sum_{j \in S,\, j \ge i} y_j$ for the set $S$ of indices whose $x$ was 1; it depends on $y_i$ only if $i \in S$, and differs for every choice of $S \cap \{i+1..n\}$, giving $2^{n-i}$ nodes, again $2^n - 1$ in total. The diagram has $2^{n+1} - 2$ nodes.
 
-The same function needs $16$ nodes or $510$ for $n = 8$, depending only on the order. Some functions are hard under every order: Bryant showed in 1991 that the BDDs of the middle output bits of an $n$-bit multiplier grow exponentially in $n$ whatever the order [4], which is why multipliers defeat pure BDD-based checkers.
+The same function needs $16$ nodes or $510$ for $n = 8$, depending only on the order. Adders are the friendly case: with the operand bits interleaved from the least significant, the diagram of sum bit $i$ only has to remember the carry. Bit 0 needs one $a_0$ node and one $b_0$ node (the carry is 1 only if both are). Each lower bit $j$ needs two $a_j$ nodes (carry in 0 or 1) and one $b_j$ node, because $b_j$ matters for the carry out only when $a_j$ and the carry in differ, and those two cases leave the same subfunction. Bit $i$ itself needs two $a_i$ and two $b_i$ nodes, for $s_i$ or its complement. In all, $2 + 3(i - 1) + 4 = 3i + 3$ nodes, linear in the width. Some functions are hard under every order: Bryant showed in 1991 that the BDDs of the middle output bits of an $n$-bit multiplier grow exponentially in $n$ whatever the order [4], which is why multipliers defeat pure BDD-based checkers.
 
-> **Going deeper — how equivalence checkers scale.** Practical checkers convert both designs to **and-inverter graphs** (networks of two-input ANDs and inverters) and merge structurally identical gates. Random simulation gives each internal node a signature; nodes with equal signatures in the two designs are candidate equivalences, proven one at a time with a **SAT** solver (a program that searches for a satisfying assignment) or a small BDD, and then used as **cut points** that split large cones into small ones. Synthesis restructures logic locally, so most internal nodes have partners. Heavily restructured arithmetic leaves few cut points and needs hints or datapath-specific engines. When register correspondence breaks (retiming, state re-encoding), the problem becomes **sequential equivalence checking**, model checking on the product of the two machines (§3.7). The open-source EQY front end for Yosys does this kind of check [R-321].
+> **Going deeper — how equivalence checkers scale.** Practical checkers convert both designs to **and-inverter graphs** (networks of two-input ANDs and inverters) and merge structurally identical gates. Random simulation gives each internal node a signature; nodes with equal signatures in the two designs are candidate equivalences, proven one at a time with a **SAT** solver (a program that searches for a satisfying assignment) or a small BDD, and then used as **cut points** that split large cones into small ones. Synthesis restructures logic locally, so most internal nodes have partners. Heavily restructured arithmetic leaves few cut points and needs hints or datapath-specific engines. The open-source EQY front end for Yosys does this kind of combinational check on netlists [R-321]. When register correspondence breaks (retiming, state re-encoding), the problem becomes **sequential equivalence checking**, model checking on the product of the two machines (§3.7).
 
 ### 3.7 Model checking
 
-**Property checking**, or **model checking**, proves temporal properties of sequential designs. Model the design as a **transition system**: the state is the vector of its register values ($n$ bits give up to $2^n$ states), a set $I$ of initial states (after reset), and a transition relation $T(s, s')$ that holds when the design can move from $s$ to $s'$ in one clock for *some* input value. Inputs make the system nondeterministic, which is exactly what we want: the proof covers every possible input sequence. An **invariant** $P$ is a property that must hold in every reachable state.
+**Property checking**, or **model checking**, proves temporal properties of sequential designs. Model the design as a **transition system**: the state is the vector of its register values ($n$ bits give up to $2^n$ states), a set $I$ of initial states (after reset), and a transition relation $\mathcal{T}(s, s')$ that holds when the design can move from $s$ to $s'$ in one clock for *some* input value. Inputs make the system nondeterministic, which is exactly what we want: the proof covers every possible input sequence. An **invariant** $P$ is a property that must hold in every reachable state.
 
 **Reachability.** Compute the reachable set as a fixed point:
 
 $$
-R_0 = I, \qquad R_{k+1} = R_k \cup \operatorname{Post}(R_k), \qquad \operatorname{Post}(R) = \{s' : T(s, s') \text{ for some } s \in R\} ,
+R_0 = I, \qquad R_{k+1} = R_k \cup \operatorname{Post}(R_k), \qquad \operatorname{Post}(R) = \{s' : \mathcal{T}(s, s') \text{ for some } s \in R\} ,
 $$
 
 stopping when $R_{k+1} = R_k$, which must happen within $2^n$ steps because the sets only grow. $P$ holds if and only if every state in the final $R$ satisfies it. Computed breadth-first, the first bad state found lies at minimum depth, and following parent links back to $I$ gives the **shortest counterexample**, the most useful debug trace there is. Explicit enumeration is hopeless beyond a few dozen state bits; **symbolic model checking** represents the sets $R_k$ and the relation $T$ as BDDs and computes $\operatorname{Post}$ with BDD operations, reaching state spaces far beyond enumeration (Burch, Clarke, McMillan, Dill and Hwang titled their 1990 paper "10²⁰ states and beyond" [5]).
@@ -229,7 +229,7 @@ stopping when $R_{k+1} = R_k$, which must happen within $2^n$ steps because the 
 **Bounded model checking (BMC)** gives up on proving and hunts for bugs. Unroll the transition relation $k$ times and ask a SAT solver whether
 
 $$
-I(s_0) \wedge \bigwedge_{i=0}^{k-1} T(s_i, s_{i+1}) \wedge \bigvee_{i=0}^{k} \neg P(s_i)
+I(s_0) \wedge \bigwedge_{i=0}^{k-1} \mathcal{T}(s_i, s_{i+1}) \wedge \bigvee_{i=0}^{k} \neg P(s_i)
 $$
 
 is satisfiable (Biere, Cimatti, Clarke and Zhu, 1999 [R-321]). A satisfying assignment is a counterexample of length at most $k$, with the input values at every step. An unsatisfiable answer means only that no violation exists *within $k$ cycles*. If $k$ is at least the **diameter** of the reachable state graph (the longest shortest path from an initial state to any reachable state), every reachable state has been examined and the answer becomes a proof, but the diameter is rarely known and often enormous (a 32-bit counter's is $2^{32} - 1$).
@@ -237,9 +237,9 @@ is satisfiable (Biere, Cimatti, Clarke and Zhu, 1999 [R-321]). A satisfying assi
 **k-induction** (Sheeran, Singh and Stålmarck, 2000 [R-321]) turns BMC into a proof method. Ordinary induction proves $P$ from a base case and a one-step inductive step; k-induction lets the step use $k$ previous states:
 
 - **Base case:** no counterexample of length less than $k$ (a BMC run to depth $k - 1$).
-- **Inductive step:** for *every* path of states $s_0, \ldots, s_k$ allowed by $T$ (reachable or not), if $P$ holds at $s_0, \ldots, s_{k-1}$, then it holds at $s_k$.
+- **Inductive step:** for *every* path of states $s_0, \ldots, s_k$ allowed by $\mathcal{T}$ (reachable or not), if $P$ holds at $s_0, \ldots, s_{k-1}$, then it holds at $s_k$.
 
-If both hold, $P$ holds in every reachable state: any reachable state at depth $\ge k$ ends a path whose previous $k$ states satisfy $P$ (by induction on depth), so the step applies. The step is checked over *all* states because the solver does not know which are reachable, and that is where induction fails: an **unreachable** state that satisfies $P$ but steps to a violation is a **counterexample to induction** (CTI). It says nothing about the design, only that $P$ is too weak to be inductive. Increasing $k$ removes CTIs that cannot be preceded by long enough runs of $P$-states; **strengthening** adds a lemma $Q$ (often an invariant the designer knows, such as "the one-hot state register has exactly one bit set") so that $P \wedge Q$ is inductive. When an unreachable $P$-state can either stay put or step to a violation, $P$ is not $k$-inductive for any $k$, and only strengthening works.
+If both hold, $P$ holds in every reachable state: any reachable state at depth $\ge k$ ends a path whose previous $k$ states satisfy $P$ (by induction on depth), so the step applies. The step is checked over *all* states because the solver does not know which are reachable, and that is where induction fails: an **unreachable** state that satisfies $P$ but steps to a violation is a **counterexample to induction** (CTI). It says nothing about the design, only that $P$ is too weak to be inductive. Increasing $k$ removes CTIs that cannot be preceded by long enough runs of $P$-states; **strengthening** adds a lemma $Q$ (often an invariant the designer knows, such as "the one-hot state register has exactly one bit set") so that $P \wedge Q$ is inductive. When an unreachable $P$-state can either stay put or step to a violation, this plain step fails for every $k$. Sheeran, Singh and Stålmarck also require the states of the step's path to be distinct, which removes such self-loop CTIs and makes k-induction complete for finite systems, though the $k$ needed can be as long as the longest loop-free path; in practice a strengthening lemma is usually the faster route.
 
 > **Math refresher — induction.** To show a statement $P(m)$ for all $m \ge 0$: prove $P(0)$, then prove that $P(m)$ implies $P(m+1)$. *Strong* induction assumes $P$ for several previous values. k-induction is the strong version applied to positions along an execution path.
 
@@ -252,10 +252,10 @@ If both hold, $P$ holds in every reachable state: any reachable state at depth $
 Some questions need billions of cycles: does the operating system boot, does the driver run, does the power manager survive a sleep-wake loop? Three platforms trade speed against visibility and turnaround:
 
 - **RTL simulation** has full visibility (every signal at every time) and compiles in minutes, but a full SoC advances very slowly.
-- **Emulators** are purpose-built machines (built from custom chips or from FPGAs) that compile the RTL onto hardware, keep deep signal visibility, hold designs of tens of billions of gates and serve many users at once. Vendors publish capacity and generation-on-generation speed-ups rather than clock rates [R-321].
+- **Emulators** are purpose-built machines (built from custom chips or from FPGAs) that compile the RTL onto hardware, keep deep signal visibility, hold designs of tens of billions of gates and serve many users at once. The vendor pages read for this chapter give capacity and generation-on-generation speed-ups, not clock rates [R-321]; search summaries point to a 2021 Synopsys release claiming 10 MHz for its ZeBu EP1 emulator, but that page could not be read here (an open issue in PROGRESS.md).
 - **FPGA prototypes** partition the design across commercial FPGAs and run at "up to 10s of MHz" in one vendor's words, fast enough for real software and real interfaces, but with less visibility, longer bring-up and re-partitioning whenever the RTL changes [R-321].
 
-No comparable public figures exist for simulation and emulation speed (an open issue in PROGRESS.md), so take the next numbers as an illustration of orders of magnitude, not as data. Assume $2 \times 10^9$ cycles to boot an operating system, simulation at 100 cycles per second, an emulator at 1 MHz and a prototype at 20 MHz. Simulation then needs $2 \times 10^7$ s, about **231** days; the emulator 2000 s, about **33** minutes; the prototype **100** s. Only the hardware platforms make software bring-up a pre-silicon activity, so chip and software schedules can overlap. **Hybrid** setups run the processor subsystem as a fast instruction-set model on a host computer and only the new RTL in hardware.
+I found no comparable, sourced figures for full-SoC simulation and emulation speed (an open issue in PROGRESS.md), so take the next numbers as an illustration of orders of magnitude, not as data; the 1 MHz emulator figure is deliberately conservative. Assume $2 \times 10^9$ cycles to boot an operating system, simulation at 100 cycles per second, an emulator at 1 MHz and a prototype at 20 MHz. Simulation then needs $2 \times 10^7$ s, about **231** days; the emulator 2000 s, about **33** minutes; the prototype **100** s. Only the hardware platforms make software bring-up a pre-silicon activity, so chip and software schedules can overlap. **Hybrid** setups run the processor subsystem as a fast instruction-set model on a host computer and only the new RTL in hardware.
 
 After tape-out, **post-silicon validation** runs at full silicon speed with real software, but with the worst visibility of all: internal signals are seen only through on-chip trace buffers, performance counters and scan dumps. Bugs found there become **errata**, firmware or microcode workarounds, or respins ([25-12](../../25-fabrication-packaging-test-and-reliability/chapters/25-12-post-silicon-validation.md)).
 
@@ -273,7 +273,7 @@ Verification is never complete in the mathematical sense, so signoff is a risk d
 
 (b) $16 \ln 16 + 0.5772 \times 16 + 0.5 = 44.36 + 9.24 + 0.5$ = **54.10**, within 0.01 of the exact value.
 
-(c) We need the smallest $t$ with $\sum_{k=0}^{16} (-1)^k\binom{16}{k}(1 - k/16)^t \ge 0.95$. The first two terms give $1 - 16(15/16)^t \ge 0.95$, so $t \ge \ln(0.05/16)/\ln(15/16) = 89.4$; the full sum confirms $t$ = **90** ($\Pr = 0.9504$). Being 95 % sure takes two-thirds more stimulus than the mean.
+(c) We need the smallest $t$ with $\sum_{k=0}^{16} (-1)^k\binom{16}{k}(1 - k/16)^t \ge 0.95$. The first two terms give $1 - 16(15/16)^t \ge 0.95$, so $t \ge \ln(0.05/16)/\ln(15/16) = 89.4$; the full sum confirms $t$ = **90** ($\Pr$ = **0.9527**; at $t = 89$ it is **0.9496**). Being 95 % sure takes two-thirds more stimulus than the mean.
 
 (d) Inclusion–exclusion over the 255 nonempty subsets of bins gives $E[T]$ = **101.9** transactions. The floor $1/p_{\min} = 100$ accounts for almost all of it.
 
@@ -309,7 +309,7 @@ Verification is never complete in the mathematical sense, so signoff is a risk d
 
 ### Example 19-13.3 · Equivalence checking with a miter (tier B)
 
-**Setup.** A 4-bit ripple-carry adder is the reference; a carry-lookahead version computes each carry as $c_{i} = g_{i-1} + p_{i-1}g_{i-2} + \cdots + p_{i-1}\cdots p_1 g_0$, with generate $g_j = a_jb_j$ and propagate $p_j = a_j \oplus b_j$ (08-09). A designer accidentally drops the last term, $p_2p_1g_0$, from $c_3$. (a) What fraction of the 256 input pairs exposes the bug? (b) The miter's BDD returns the counterexample $a_0 = b_0 = 1$, $a_1 = a_2 = 1$, $b_1 = b_2 = 0$ with $a_3 = b_3 = 0$. What are $A$ and $B$, and what do the two adders output? (c) The same slip in a 32-bit adder drops the $g_0$ term from $c_{31}$. What is the per-vector probability that a uniformly random input exposes it? (d) How many random vectors give 99 % confidence of catching it?
+**Setup.** A 4-bit ripple-carry adder is the reference; a carry-lookahead version computes each carry as $c_{i} = g_{i-1} + p_{i-1}g_{i-2} + \cdots + p_{i-1}\cdots p_1 g_0$, with generate $g_j = a_jb_j$ and propagate $p_j = a_j \oplus b_j$ (08-09). A designer accidentally drops the last term, $p_2p_1g_0$, from $c_3$. (a) What fraction of the 256 input pairs exposes the bug? (b) The miter's BDD returns the counterexample $a_0 = b_0 = 1$, $a_1 = a_2 = 1$, $b_1 = b_2 = 0$, leaving $a_3$ and $b_3$ free (a BDD counterexample is a cube; take them as 0). What are $A$ and $B$, and what do the two adders output? (c) The same slip in a 32-bit adder drops the $g_0$ term from $c_{31}$. What is the per-vector probability that a uniformly random input exposes it? (d) How many random vectors give 99 % confidence of catching it?
 
 **Solution.** (a) The buggy $c_3$ is wrong only when the dropped term is 1 and the others are 0. $p_2p_1g_0 = 1$ needs $a_0 = b_0 = 1$ (probability 1/4), $a_1 \ne b_1$ (1/2) and $a_2 \ne b_2$ (1/2); then $p_1 = p_2 = 1$ forces $g_1 = g_2 = 0$, so the other terms vanish, and the wrong $c_3$ flips $s_3 = p_3 \oplus c_3$. The fraction is $1/16$: **16** of the 256 input pairs.
 
@@ -366,6 +366,8 @@ Verification is never complete in the mathematical sense, so signoff is a risk d
 | Ex 19-13.1c | transactions for 95 % probability of closure | 90 | — |
 | Ex 19-13.1d | expected transactions with the rare bin | 101.9 | — |
 | Ex 19-13.1e | expected transactions for the seven common bins | 18.33 | — |
+| Ex 19-13.1f | probability of closure at 90 transactions | 0.9527 | — |
+| Ex 19-13.1g | probability of closure at 89 transactions | 0.9496 | — |
 | Ex 19-13.2a | ROBDD nodes, interleaved, 3 pairs | 6 | — |
 | Ex 19-13.2b | ROBDD nodes, separated, 3 pairs | 14 | — |
 | Ex 19-13.2c | ROBDD nodes, interleaved, 8 pairs | 16 | — |
@@ -422,7 +424,7 @@ The lab ([labs/19-13-lab](../labs/19-13-lab/README.md)) has a Verilog round-robi
 | Quantity | Value | Notes |
 |---|---|---|
 | Random samples to fill $n$ equal bins | $nH_n \approx n\ln n + 0.577n + \tfrac12$ | 54 for 16 bins (08-05) |
-| Unequal bins | $E[T] = \sum_{S \ne \emptyset} (-1)^{\lvert S\rvert+1}/P(S) \ge 1/p_{\min}$ | The rarest bin dominates |
+| Unequal bins | $E[T] = \sum_{S \ne \emptyset} (-1)^{\lvert S\rvert+1}/p(S) \ge 1/p_{\min}$ | The rarest bin dominates |
 | Random detection of a bug that needs $m$ specific input bits | $p = 2^{-m}$; 99 % confidence needs about $4.6 \times 2^{m}$ vectors | Formal finds it directly |
 | Round-robin worst wait | $N - 1$ grants to others | Fixed priority: unbounded |
 | ROBDD of $\sum_{i=1}^n x_iy_i$ | $2n$ (interleaved) vs $2^{n+1} - 2$ (separated) | Order decides size |
@@ -446,17 +448,17 @@ The lab ([labs/19-13-lab](../labs/19-13-lab/README.md)) has a Verilog round-robi
 
 ### State of the art (as of Nov 2026)
 
-- **Verification still dominates, and first-silicon success is falling [Industry estimate].** The 2026 Siemens EDA and Wilson Research Group study (604 participants: 320 IC/ASIC, 284 FPGA) found verification taking 49 % of IC/ASIC and 51 % of FPGA project time, and only 5 % of IC/ASIC respondents reporting first-silicon success, against 14.4 % in 2024, about 24 % in 2022 and about 30 % historically; about three in four projects missed schedule. Logic and functional errors "remain important", alongside rising firmware, safety, security, power and clocking causes. Caveats: the sponsor sells verification tools, recruitment changed in 2024, and 5 % of 320 is about 16 respondents [R-018, R-321].
+- **Verification still dominates, and first-silicon success is falling [Industry estimate].** The 2026 Siemens EDA and Wilson Research Group study (604 participants: 320 IC/ASIC, 284 FPGA) found verification taking 49 % of IC/ASIC and 51 % of FPGA project time, and only 5 % of IC/ASIC respondents reporting first-silicon success, against 14.4 % in 2024, about 24 % in 2022 and about 30 % historically; about three in four projects missed schedule. Logic and functional errors "remain important", alongside rising firmware, safety, security, power and clocking causes. Caveats: the sponsor sells verification tools, recruitment changed in 2024, and 5 % of 320 is at most about 16 respondents (if all 320 answered) [R-018, R-321].
 - **Staffing [Industry estimate].** The 2022 study found about one verification engineer per design engineer on average, up to five per designer in processors, with designers themselves spending 49 % of their time verifying; verification headcount grew at 6.2 % a year against 2.7 % for designers over 2007–2022 [R-321].
 - **Standards [Established].** SystemVerilog is IEEE 1800-2023 (published February 2024) and UVM is IEEE 1800.2-2020, both active; Accellera's open-source UVM library is at version 2020.3.1 (September 2024, Apache 2.0) and documents its own deviations from the standard. The 2022 study called UVM the predominant IC/ASIC testbench standard and SVA the predominant assertion language [R-321].
-- **Emulation and prototyping [Vendor claim].** Synopsys quotes ZeBu Server 5 at "up to 30 billion gates" and HAPS-200 prototypes at "up to 10s of MHz" (a customer quoted 50 MHz); Cadence's Palladium Z3 and Protium X3 (April 2024) scale "from 16 million gates up to 48 billion gates" with 1.5× the previous generation's performance; Siemens' Veloce CS (February 2024) spans 40 million to "40+ billion gates". All three vendors' new FPGA-based systems use the same AMD Versal Premium VP1902 device; Siemens' emulator uses its own "Crystal" chip. None publishes an emulator clock rate [R-321].
+- **Emulation and prototyping [Vendor claim].** Synopsys quotes ZeBu Server 5 at "up to 30 billion gates" and HAPS-200 prototypes at "up to 10s of MHz" (a customer quoted 50 MHz); Cadence's Palladium Z3 and Protium X3 (April 2024) scale "from job sizes of 16 million gates up to 48 billion gates" with 1.5× the previous generation's performance; Siemens' Veloce CS (February 2024) spans 40 million to "40+ billion gates". All three vendors' new FPGA-based systems use the same AMD Versal Premium VP1902 device; Siemens' emulator uses its own "Crystal" chip. None of these pages gives an emulator clock rate [R-321].
 - **Open source [Established].** Verilator 5.054 (November 2026) compiles SystemVerilog into multithreaded C++ and says it may not be "a full-featured replacement" for commercial simulators; cocotb 2.1.0 (August 2026) writes testbenches in Python; SymbiYosys runs BMC, k-induction and cover checks (full SVA needs a commercial front end); EQY checks equivalence [R-321].
 - **AI in verification [Industry estimate].** In the 2026 study, 82.8 % of participants used AI beyond pilots, but only 9.0 % described it as broadly integrated into the flow [R-321].
 
 ### Why it matters commercially
 
 - **Respins are expensive.** Mask sets cost over \$10 M at 7 nm and push towards \$40 M at 3 nm by one 2022 estimate [Industry estimate], before the months of lost schedule [R-321, R-019].
-- **Escapes are worse.** The Pentium division flaw led Intel to a \$475 million pre-tax charge for Q4 1994, announced in January 1995 [R-321]. In 2023, Zenbleed (CVE-2023-20593), a microarchitectural flaw in AMD Zen 2 cores that could expose data from other software on the same core, was fixed by microcode update or a configuration "chicken bit": post-silicon fixability is part of verification strategy [R-321].
+- **Escapes are worse [Established].** The Pentium division flaw led Intel to a \$475 million pre-tax charge for Q4 1994, announced in January 1995 [R-321]. In 2023, Zenbleed (CVE-2023-20593), a microarchitectural flaw in AMD Zen 2 cores that could expose data from other software on the same core, was fixed by microcode update or a configuration "chicken bit": post-silicon fixability is part of verification strategy [R-321].
 - **Verification capacity is a moat.** Emulator fleets, verification-IP libraries and formal teams take years to build; in diligence they are as telling as the design team.
 
 ### Marketing vs Reality

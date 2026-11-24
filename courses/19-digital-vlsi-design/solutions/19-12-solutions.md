@@ -30,7 +30,7 @@ Problems: [19-12 problem set](../problems/19-12-problems.md) · Chapter: [19-12]
 
 (a) N3 feeds N10 and N11; N11 feeds N16 and N19; N16 feeds N22 and N23: three nets with fanout two, adding 6 branches to 11 stems (5 inputs and 6 gate outputs). 17 lines, **34** faults.
 
-(b) **21** functional equivalence classes; **0** undetectable faults (c17 has no redundancy).
+(b) **21** functional equivalence classes; **0** undetectable faults (c17 has no redundancy). Structural collapsing by the gate rules of §3.2 gives **22** classes (each NAND merges its two input stuck-at-0 faults with its output stuck-at-1), the count textbooks quote; the exhaustive functional comparison merges one more pair, N11 stuck-at-0 and N23 stuck-at-0, which happen to have identical test sets.
 
 (c) **4** vectors, for example (N1, N2, N3, N6, N7) = 00100, 01100, 10011 and 11111; an exhaustive search over all three-vector subsets finds none that covers every fault.
 
@@ -46,9 +46,9 @@ Problems: [19-12 problem set](../problems/19-12-problems.md) · Chapter: [19-12]
 
 (a) $p = 2^{-8}$: $N = \ln 0.01/\ln(1 - 1/256)$ = 1176.6, so **1177** patterns.
 
-(b) Output stuck-at-1 is detected whenever the good output is 0, which is every pattern except all ones: probability $1 - 2^{-8} = 0.996$ per pattern.
+(b) Output stuck-at-1 is detected whenever the good output is 0, which is every pattern except all ones: probability $1 - 2^{-8} = 0.996$ per pattern. The input faults are another matter: each input stuck-at-1 needs that input at 0 and the other seven at 1, also $p = 2^{-8}$, so they are as random-resistant as the output stuck-at-0.
 
-(c) Split the AND into two halves and add an observation point (a scan flip-flop or a test-only XOR into a compactor) at each half's output, or a control point forcing one half to 1 in test mode. Each half then needs only 4 specific inputs, $p = 2^{-4}$.
+(c) For the output stuck-at-0, use a **control point**: split the AND into two 4-input halves and add a test-mode OR that forces one half's output to 1. Then only the other half's four inputs must be 1, $p = 2^{-4}$. Alternate which half is forced between two test modes, because the forced half's own faults cannot be seen while it is overridden. An **observation point** (a scan flip-flop at each half's output) does not help the output stuck-at-0, which still needs all eight inputs at 1; it helps the input stuck-at-1 faults and the halves' internal faults, bringing them to $p = 2^{-4}$ as well.
 
 ### Solution 19-12.7
 
@@ -70,7 +70,7 @@ Problems: [19-12 problem set](../problems/19-12-problems.md) · Chapter: [19-12]
 
 (a) $10 \times 131\,072$ = **1 310 720** operations; at 100 MHz, **13.1** ms.
 
-(b) A coupling fault in which a transition in cell $i$ disturbs cell $j$ is detected only if cell $j$ is read after cell $i$ has made the transition. If $i < j$, an ascending element does this; if $i > j$, a descending one. Using both orders, with reads of the expected value before each write, catches coupling faults in either direction.
+(b) A coupling fault in which a transition in cell $i$ disturbs cell $j$ is detected only if cell $j$ is read after cell $i$ has made the transition and before cell $j$ is written again. Within one March element each cell is read and then rewritten in address order, so if the victim is visited before the aggressor, the victim's read and rewrite come first and the disturbance arrives after them; the corrupted value may then be overwritten by a later element before any read sees it. Running the elements in both address orders guarantees that, for every aggressor–victim pair and both transition directions, some element visits the aggressor first and reads the victim before rewriting it.
 
 ### Solution 19-12.10
 
@@ -100,6 +100,14 @@ Problems: [19-12 problem set](../problems/19-12-problems.md) · Chapter: [19-12]
 
 ---
 
+### Solution 19-12.13
+
+(a) SPFM 98 % meets ASIL B (≥ 90 %) and C (≥ 97 %) but not D (≥ 99 %). LFM 85 % meets B (≥ 60 %) and C (≥ 80 %) but not D (≥ 90 %). Overall the block qualifies for **ASIL C**: both metrics must pass.
+
+(b) Latent faults left undetected must fall from 15 % to 10 %, a reduction of $5/15$ = **33.3** %. Uncovered single-point faults must fall from 2 % to 1 %, a reduction of **50** %. The single-point target is the harder one in relative terms, even though it is only one percentage point.
+
+(c) These metrics measure how well safety mechanisms on the chip catch faults that arise *during operation*: a single-point fault must be caught as it happens, and a latent fault (one in a safety mechanism itself) must be caught before a second fault makes it dangerous, which is why start-up and periodic BIST appear. Production coverage only screens defects present at manufacture. The datacenter analogue is fleet screening for silent data corruption: operators run periodic self-tests and known-answer workloads on cores in service, because some defective or ageing cores compute wrong results without signalling an error (R-320).
+
 <!-- answer-key -->
 
 | ID | Quantity | Value | Unit |
@@ -113,6 +121,7 @@ Problems: [19-12 problem set](../problems/19-12-problems.md) · Chapter: [19-12]
 | 19-12.4b | c17 equivalence classes | 21 | — |
 | 19-12.4c | c17 undetectable faults | 0 | — |
 | 19-12.4d | c17 minimal test set | 4 | — |
+| 19-12.4e | c17 structural equivalence classes | 22 | — |
 | 19-12.5a | tests for A stuck-at-1 | 1 | — |
 | 19-12.5b | tests for o stuck-at-0 | 3 | — |
 | 19-12.6a | random patterns for 99 % confidence | 1177 | — |
@@ -134,3 +143,5 @@ Problems: [19-12 problem set](../problems/19-12-problems.md) · Chapter: [19-12]
 | 19-12.11c | relative error of the approximation | 3.5 | % |
 | 19-12.12a | exact aliasing fraction, n = 4, m = 3 | 0.06227 | — |
 | 19-12.12b | aliasing error streams found | 255 | — |
+| 19-12.13a | reduction of undetected latent faults for ASIL D | 33.3 | % |
+| 19-12.13b | reduction of uncovered single-point faults for ASIL D | 50 | % |

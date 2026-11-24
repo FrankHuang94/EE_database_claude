@@ -122,6 +122,8 @@ v.check("Ex 19-12.3a", len(f3))
 v.check("Ex 19-12.3b", len(und))
 v.check("Ex 19-12.3c", 100 * (len(f3) - len(und)) / len(f3))
 v.check("Ex 19-12.3d", len(f3) // 2)
+v.check("Lab 19-12.h", min_tests(m3, w3))
+v.check("Lab 19-12.i", 100 * (1 - (1 - 2 ** -11) ** 2048))
 v.assert_true("the undetectable faults are on the consensus gate", all("g3" in str(f[0]) for f in und), str(und))
 v.assert_true("110 detects g1 stuck-at-0", bool(m3[("g1", 0)] >> 0b110 & 1), "")
 v.assert_true("lab agrees on the consensus circuit", len(dft.Circuit(list("ABC"), g3, ["F"]).faults()) == len(f3), "")
@@ -145,6 +147,30 @@ v.check("19-12.4c", sum(1 for m in m17.values() if m == 0))
 v.check("19-12.4d", min_tests(m17, w17))
 v.assert_true("lab agrees on c17", len(dft.equivalence_classes(dft.Circuit(["N1", "N2", "N3", "N6", "N7"], c17g,
                                                                          ["N22", "N23"]))) == len(set(m17.values())), "")
+# structural collapsing by the gate rules (union-find), for comparison with the functional count
+fo17 = {}
+for g, _, ins in c17g:
+    for src in ins:
+        fo17[src] = fo17.get(src, 0) + 1
+parent = {}
+
+
+def find(x):
+    parent.setdefault(x, x)
+    while parent[x] != x:
+        parent[x] = parent[parent[x]]
+        x = parent[x]
+    return x
+
+
+for g, _, ins in c17g:
+    for pin, src in enumerate(ins):
+        line = ("br", g, pin) if fo17[src] > 1 else src
+        parent[find((line, 0))] = find((g, 1))        # NAND: input stuck-at-0 == output stuck-at-1
+all_lines = ["N1", "N2", "N3", "N6", "N7"] + [g for g, _, _ in c17g]
+all_lines += [("br", g, pin) for g, _, ins in c17g for pin, src in enumerate(ins) if fo17[src] > 1]
+v.check("19-12.4e", len({find((ln, val)) for ln in all_lines for val in (0, 1)}))
+v.assert_true("N11/0 and N23/0 have identical test sets", m17[("N11", 0)] == m17[("N23", 0)], "")
 # Problem 5: NAND(OR(A, B), C)
 f5, m5, w5 = bitpar(list("ABC"), [("o", "OR", ["A", "B"]), ("F", "NAND", ["o", "C"])], ["F"])
 v.check("19-12.5a", bin(m5[("A", 1)]).count("1"))
@@ -172,16 +198,19 @@ v.assert_true("lab defect level agrees", abs(dft.defect_level(0.8, 0.99) - dl(0.
 
 
 def n_patterns(p, conf):
-    """Smallest N with 1 - (1 - p)^N >= conf, by search."""
-    lo = math.log(1 - conf) / math.log(1 - p)
-    return lo
+    """Smallest integer N with 1 - (1 - p)^N >= conf: start from the log estimate and step to the exact boundary."""
+    n = max(1, int(math.log(1 - conf) / math.log(1 - p)) - 2)
+    while 1 - (1 - p) ** n < conf:
+        n += 1
+    assert 1 - (1 - p) ** (n - 1) < conf
+    return n
 
 
 v.check("Ex 19-12.4a", n_patterns(2 ** -16, 0.95))
 v.check("Ex 19-12.4b", 3 / 2 ** -16)
-v.check("Ex 19-12.4c", math.ceil(n_patterns(1 / 16, 0.95)))
+v.check("Ex 19-12.4c", n_patterns(1 / 16, 0.95))
 v.assert_true("47 random patterns reach 95 % for p = 1/16", 1 - (15 / 16) ** 47 >= 0.95 > 1 - (15 / 16) ** 46, "")
-v.check("19-12.6a", math.ceil(n_patterns(2 ** -8, 0.99)))
+v.check("19-12.6a", n_patterns(2 ** -8, 0.99))
 v.check("19-12.6b", 1 - 2 ** -8)
 
 
@@ -327,5 +356,12 @@ v.check("19-12.10c", 32)
 # scan gate overhead, classic estimate: scan FF 14 gate equivalents, plain FF 10
 ng, nsff = 100_000, 2_000
 v.check("Txt 19-12.a", 100 * (14 - 10) * nsff / (ng + 10 * nsff))
+
+# problem 13: ISO 26262 metrics (TI's reproduction, R-320): SPFM 90/97/99, LFM 60/80/90 for ASIL B/C/D
+spfm_req, lfm_req = {"B": 90, "C": 97, "D": 99}, {"B": 60, "C": 80, "D": 90}
+met = [a for a in "BCD" if 98 >= spfm_req[a] and 85 >= lfm_req[a]]
+v.assert_true("block meets ASIL B and C, not D", met == ["B", "C"], str(met))
+v.check("19-12.13a", 100 * ((100 - 85) - (100 - lfm_req["D"])) / (100 - 85))
+v.check("19-12.13b", 100 * ((100 - 98) - (100 - spfm_req["D"])) / (100 - 98))
 
 sys.exit(v.finish())
