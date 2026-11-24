@@ -3996,3 +3996,71 @@ R&D % = R&D ÷ revenue.
 - **L. J. Chu, "Physical Limitations of Omni-Directional Antennas," *J. Appl. Phys.* 19(12):1163–1175, Dec 1948, DOI 10.1063/1.1715038** [Established].
 - **J. S. McLean, "A re-examination of the fundamental limits on the radiation Q of electrically small antennas," *IEEE TAP* 44(5):672, May 1996, DOI 10.1109/8.496253** [Established]: the bound $Q = 1/(ka)^3 + 1/ka$ used in 21-10 (stated from the antenna-theory literature; the paper's full text was not opened).
 - **E. O. Hammerstad, "Equations for Microstrip Circuit Design," 5th European Microwave Conference, 1975, pp. 268–272, DOI 10.1109/EUMA.1975.332206** [Established]: origin of the effective-permittivity and edge-extension fits used for patch design (as presented in Balanis, *Antenna Theory*).
+
+## R-406 · Bluetooth LE requirements and receiver data sheets (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: the Bluetooth Core Specification HTML, the SIG range page and vendor data sheets (some via distributor copies).*
+
+- **Bluetooth Core Specification v6.2 (2025-11-03), Vol 6 Part A** [Established]: "The reference sensitivity level referred to in this section is -70 dBm"; Table 4.1 BER by maximum payload (1–37 bytes: 0.1 %; 38–63: 0.064 %; 64–127: 0.034 %; 128–255: 0.017 %); Table 4.2: uncoded ≤ −70, Coded S=2 ≤ −75, Coded S=8 ≤ −82 dBm; transmit power "between 0.01 mW (-20 dBm) and 100 mW (+20 dBm)"; power classes 1, 1.5, 2, 3. The 30.8 % PER at 0.1 % BER for 368 counted bits is the author's arithmetic (1 − 0.999^368); a SIG test-suite document stating it was seen only as a third-party copy marked proprietary and is not cited.
+- **Bluetooth SIG, "Understanding Bluetooth range" (undated page)** [Established as a SIG statement]: "More than a kilometer. Less than a meter."; "Bluetooth devices typically achieve an antenna gain in the range of –10 dBi to +10 dBi."
+- **TI CC2340R5 data sheet SWRS272F (rev. May 2026)** [vendor typical]: BER 10⁻³ sensitivity −96.5 dBm (1M), −92 (2M), −99 (Coded 500k), −102 (Coded 125k); TX 5.1 mA at 0 dBm, RX 5.3 mA (DC/DC on).
+- **Nordic nRF52840 Product Brief v2.3** (distributor copy) [vendor]: "-103 dBm at 125 kbps, -95 dBm at 1 Mbps"; "6.40 mA at 0 dBm TX power"; "a total link budget of >111 dBm [sic] is achievable".
+- **Silicon Labs EFR32FG22 preliminary data sheet rev 0.4** (Farnell copy) [vendor]: −98.9 dBm at 1 Mbit/s, −106.4 dBm at 125 kbps, 3.6 mA RX, 4.1 mA TX at 0 dBm. EFR32BG22 and Nordic nRF54L15 values were seen only in snippets and are not used.
+- **Sources:** [Core 6.2 RF PHY](https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-62/out/en/low-energy-controller/radio-physical-layer-specification.html); [SIG range page](https://www.bluetooth.com/learn-about-bluetooth/key-attributes/range/); [CC2340R5](https://www.ti.com/lit/ds/symlink/cc2340r5.pdf); [nRF52840 brief](https://www.rutronik.com/fileadmin/Rutronik/Supplier/Nordic/Micropage_2020/nRF52840_SoC_PB_2.3.pdf); [EFR32FG22](https://www.farnell.com/datasheets/2912926.pdf). Checked Nov 2026.
+
+## R-407 · Wi-Fi sensitivity, transmit power and 2.4/5 GHz regulation (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **Rohde & Schwarz, *IEEE 802.11be Technology Introduction* (L. Ward, J. Köpp), Mar 2022, Table 6-4** [Established for MCS0–11; based on draft D1.0]: "a packet error rate (PER) of less than 10 %" with 4096-byte packets; 20 MHz minimum sensitivity MCS0 −82, MCS7 −64, MCS9 −57, MCS11 −52, MCS13 −46 dBm; 3 dB worse per bandwidth doubling. The final IEEE 802.11be-2024 table was not read (open issue).
+- **Espressif ESP32-C6 Series Datasheet v1.6 (Nov 2026)** [vendor typical]: HE20 TX power 19.5 dBm (MCS0) and 16.5 dBm (MCS9) "with Spectral Mask and EVM Meeting 802.11 Standards"; sensitivity −93.8 dBm (HE20 MCS0) and −69.0 dBm (MCS9) at 10 % PER.
+- **47 CFR §15.247 and §15.407 (eCFR, as of 1 Nov 2026)** [Established]: 2.4 GHz digital modulation "1 Watt" conducted with antennas up to 6 dBi, PSD "8 dBm in any 3 kHz band"; U-NII limits as quoted in the research notes.
+- **ETSI EN 300 328 V2.2.2 (2019-07)** [Established]: "The RF output power for non-FHSS equipment shall be equal to or less than 20 dBm" (e.i.r.p.); "10 dBm per MHz".
+- **Sources:** [R&S white paper](https://8928696.fs1.hubspotusercontent-na1.net/hubfs/8928696/20240507%20-%20Rohde%20&%20Schwarz%20IEEE%20802-11be%20Whitepaper.pdf); [ESP32-C6](https://www.espressif.com/sites/default/files/documentation/esp32-c6_datasheet_en.pdf); [eCFR Part 15](https://www.ecfr.gov/current/title-47/chapter-I/subchapter-A/part-15); [EN 300 328](https://www.etsi.org/deliver/etsi_en/300300_300399/300328/02.02.02_60/en_300328v020202p.pdf). Checked Nov 2026.
+
+## R-408 · 3GPP and ITU cellular link-budget parameters (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: ETSI PDFs of the 3GPP specifications and the ITU report.*
+
+- **3GPP TS 38.101-1 V19.7.0 (2026-10), Table 6.2.1-1** [Established]: power class 3 23 dBm (default), class 2 26 dBm, class 1.5 29 dBm ("Achieved via Tx diversity"), class 1 31 dBm ("Generally, PC1 UE is not targeted for smartphone form factor"). REFSENS n1, 15 kHz: −100.0 dBm at 5 MHz.
+- **3GPP TS 38.104 V19.6.0 (2026-09)** [Established]: Medium Range BS ≤ 38 dBm, Local Area ≤ 24 dBm per connector; "There is no upper limit for the Prated,c,AC rated output power of the Wide Area Base Station"; minimum coupling losses 70 / 53 / 45 dB.
+- **3GPP TR 38.913 V19.0.0 (2025-10), §7.10** [Established]: mMTC "MaxCL … for a data rate of 160bps … The target for coverage should be 164dB"; template "UL MaxCL = UL Max Tx power - eNB Sensitivity"; assumptions "UE Tx power 23dBm / DL Tx power 46dBm / eNB receiver noise figure 5dB / UE receiver noise figure 9dB / Interference margin 0dB"; eMBB extreme coverage 140 dB (2 Mbps DL / 60 kbps UL) and 143 dB.
+- **Report ITU-R M.2412-0 (10/2017), Table 5** [Established]: IMT-2020 evaluation "BS noise figure 5 dB", "UE noise figure 7 dB", "BS antenna element gain 8 dBi".
+- **Sources:** [TS 38.101-1](https://www.etsi.org/deliver/etsi_ts/138100_138199/13810101/19.07.00_60/ts_13810101v190700p.pdf); [TS 38.104](https://www.etsi.org/deliver/etsi_ts/138100_138199/138104/19.06.00_60/ts_138104v190600p.pdf); [TR 38.913](https://www.etsi.org/deliver/etsi_tr/138900_138999/138913/19.00.00_60/tr_138913v190000p.pdf); [M.2412](https://www.itu.int/dms_pub/itu-r/opb/rep/R-REP-M.2412-2017-PDF-E.pdf). Checked Nov 2026.
+
+## R-409 · Path-loss and penetration models (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **3GPP TR 38.901 V19.5.0 (2026-09), §7.4** [Established model]: UMa NLOS $PL' = 13.54 + 39.08\log_{10}d_{3D} + 20\log_{10}f_c - 0.6(h_{UT} - 1.5)$, σ_SF 6 dB; UMa LOS σ 4 dB; UMi NLOS σ 7.82 dB; InH NLOS σ 8.03 dB. O2I: standard glass $2 + 0.2f$, IRR glass $25.4 + 0.11f$ ("updated as part of Release 19"), concrete $5 + 4f$; low-loss $PL_{tw} = 5 - 10\log_{10}(0.3 \cdot 10^{-L_{glass}/10} + 0.7 \cdot 10^{-L_{concrete}/10})$, σ 4.4 dB; high-loss (70 % IRR glass, 30 % concrete), σ 6.5 dB; car loss 9 dB, σ 5 dB.
+- **Rec. ITU-R P.1238-13 (09/2025)** [Established model]: site-general $L_b = 10\alpha\log_{10}d + \beta + 10\gamma\log_{10}f$; office NLoS α 2.39, β 30.13, γ 2.40, σ 5.01 dB (fitted 4–30 m).
+- **Rec. ITU-R P.525-5 (11/2024)** [Established]: "Lbf = 32.4 + 20 log10 f + 20 log10 d dB" (f in MHz, d in km).
+- **Sources:** [TR 38.901](https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/19.05.00_60/tr_138901v190500p.pdf); [P.1238-13](https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.1238-13-202509-I!!PDF-E.pdf); [P.525-5](https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.525-5-202411-I!!PDF-E.pdf). Checked Nov 2026.
+
+## R-410 · Non-terrestrial and direct-to-device links (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **3GPP TR 38.821 V16.2.0 (2023-03)** [Established study assumptions]: LEO-600 S-band EIRP density 34 dBW/MHz, satellite G/T 1.1 dB/K; handheld "0 dBi per element", "Antenna temperature 290 K", "Noise figure 7 dB", "200 mW (23 dBm)"; UL bandwidth 360 kHz; 30° elevation; shadowing margin 3 dB, ionospheric/scintillation 2.2 dB, atmospheric 0.1 dB. Table 6.1.3.3-1 case SC9: DL EIRP 78.8 dBm, G/T −31.6 dB/K, FSPL 159.1 dB, CNR 6.6 dB; UL CNR 2.8 dB. GEO handheld (SC4): FSPL 190.6 dB, UL CNR −10.9 dB. Recomputed in verify_21_11.py (UL 2.74 dB).
+- **3GPP TS 38.101-5 V19.6.0 (2026-09)** [Established]: NTN bands n255/n256 classes 1–3 (31/26/23 dBm).
+- **FCC Order DA 25-197 (7 Mar 2025)** [Established rule; Contested impact]: limit "-120 dBW/m2/MHz at 1.5 meters above ground level"; waiver "up to -110.6 dBW/m2/MHz"; AT&T "18% reduction in average network throughput"; T-Mobile ".2% to 1.8%".
+- **Apple Support 105097 (29 Sep 2026) and 101573** [Established as Apple statement]: "a message might take 30 seconds or more to send"; "might not work in places above 62° latitude".
+- **SatNews, "AST SpaceMobile Deploys BlueBird 6," 24 Dec 2025** [Industry estimate]: "phased array antenna spanning nearly 2,400 square feet"; "up to 120 Mbps". AST's SEC filings not opened.
+- **Sources:** [TR 38.821](https://www.3gpp.org/ftp/Specs/archive/38_series/38.821/38821-g20.zip); [TS 38.101-5](https://www.etsi.org/deliver/etsi_ts/138100_138199/13810105/19.06.00_60/ts_13810105v190600p.pdf); [DA 25-197](https://docs.fcc.gov/public/attachments/DA-25-197A1.pdf); [Apple 105097](https://support.apple.com/en-us/105097); [SatNews](https://satnews.com/2025/12/24/ast-spacemobile-deploys-bluebird-6-largest-commercial-array-in-leo/). Checked Nov 2026.
+
+## R-411 · LoRa and GNSS sensitivity (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **Semtech SX1261/2 Data Sheet Rev 1.1 (Dec 2017)** (distributor copy) and *LoRa SX126x* brochure [vendor]: "High sensitivity down to -148 dBm"; "+22 dBm output power"; "170 dB maximum link budget"; Table 3-8 (boosted gain, switch loss excluded): BW 10.4 kHz SF12 −148 dBm, BW 125 kHz SF12 −137 dBm. Newer data-sheet revisions were not read.
+- **IS-GPS-200N (1 Aug 2022), §3.3.1.6, Table 3-Va** [Established]: L1 C/A minimum received power −158.5 dBW "at the output of a 3 dBi linearly polarized user receiving antenna".
+- **u-blox MAX-M10S Data sheet UBX-20035208 R08 (30 Jan 2026)** [vendor typical]: "Tracking and navigation –167 dBm", "Cold Start –148 dBm", "Demonstrated with a good external LNA".
+- **Sources:** [SX1262 Rev 1.1](https://datasheet.chipsmall.com/SX1262IMLTRT/249951.pdf); [Semtech brochure](https://www.semtech.com/uploads/common/LoRa_products_sx126x.pdf); [IS-GPS-200N](https://www.gps.gov/sites/default/files/2025-07/IS-GPS-200N.pdf); [MAX-M10S](https://content.u-blox.com/sites/default/files/MAX-M10S_DataSheet_UBX-20035208.pdf). Checked Nov 2026.
+
+## R-412 · Classic link-budget references (Course 21)
+
+*Checked on 24 Nov 2026 against Crossref metadata.*
+
+- **H. Suzuki, "A Statistical Model for Urban Radio Propogation [sic]," *IEEE Trans. Commun.* 25(7):673–680, Jul 1977, DOI 10.1109/TCOM.1977.1093888** [Established].
+- **H. T. Friis, "A Note on a Simple Transmission Formula," *Proc. IRE* 34(5):254–256, May 1946, DOI 10.1109/JRPROC.1946.234568** [Established].
+- **W. C. Jakes (ed.), *Microwave Mobile Communications*, Wiley, 1974** [Established]: origin of the edge-to-area coverage result (as reproduced in Rappaport, *Wireless Communications*); not opened in this session.

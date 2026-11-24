@@ -8718,3 +8718,40 @@
   definition: Attenuation of radio waves by oxygen and water vapour, about 0.1 dB/km at 28 to 39 GHz but about 15 dB/km near the 60 GHz oxygen band at sea level (ITU-R P.676), which limits range and eases frequency reuse there.
   chapter: "21-10"
   see_also: [EIRP]
+# ---------------------------------------------------------------- 21-11
+- term: Link budget
+  definition: The ledger, in dB, of a radio link from transmit power through antenna gains, path loss, environment losses and receive losses to the received power, compared with the receiver's sensitivity plus a margin; it tells whether a link closes and by how much.
+  chapter: "21-11"
+  see_also: [Maximum allowable path loss (MAPL), Fade margin]
+- term: Maximum allowable path loss (MAPL)
+  definition: The largest propagation loss a link can tolerate and still close, EIRP plus receive gain minus receive losses, sensitivity and margins; inverted through a path-loss model it gives the range.
+  chapter: "21-11"
+  see_also: [Link budget, Maximum coupling loss (MCL)]
+- term: Maximum coupling loss (MCL)
+  definition: 3GPP's coverage metric, the largest loss between the transmitter's and receiver's antenna connectors (including antenna gains, path loss, shadowing and body loss) at which a service still works, for example a 164 dB target for massive IoT at 160 b/s.
+  chapter: "21-11"
+  see_also: [Maximum allowable path loss (MAPL), Repetition gain]
+- term: Fade margin
+  definition: Extra received power held in reserve so that shadowing and fading cause outage no more often than a target; shadowing and Rayleigh margins combine probabilistically, to less than their sum in dB.
+  chapter: "21-11"
+  see_also: [Shadowing, Area coverage]
+- term: Area coverage
+  definition: The fraction of a cell's area where the signal exceeds the threshold, higher than the probability at the cell edge because most of the area lies closer in; Jakes's formula relates the two (75 percent at the edge is about 90 percent over the area for σ = 8 dB, n = 3.5).
+  chapter: "21-11"
+  see_also: [Fade margin]
+- term: Noise rise
+  definition: The increase of a receiver's effective noise floor caused by interference from other users, 10 log(1/(1 − η)) at load η; carried in cellular budgets as an interference margin, 3 dB at 50 percent load.
+  chapter: "21-11"
+  see_also: [Uplink-limited coverage]
+- term: Repetition gain
+  definition: The SNR gain of sending a transmission N times and combining the copies coherently, 10 log N dB at the cost of N times the airtime; with narrow bandwidth it is how NB-IoT, LTE-M and Bluetooth's Coded PHY reach long range.
+  chapter: "21-11"
+  see_also: [Maximum coupling loss (MCL)]
+- term: G/T (figure of merit)
+  definition: A receiving system's antenna gain divided by its system noise temperature, in dB/K, which with the transmitter's EIRP and the path loss gives the carrier-to-noise density; about −31.6 dB/K for a handheld phone receiving a satellite.
+  chapter: "21-11"
+  see_also: [Carrier-to-noise-density ratio]
+- term: Uplink-limited coverage
+  definition: The usual state of cellular networks, in which the phone's far lower transmit power makes the uplink close at a shorter range than the downlink, so the cell edge is where the phone can no longer be heard; balanced with receive diversity, narrow uplink allocations and higher power classes.
+  chapter: "21-11"
+  see_also: [Link budget, Noise rise]
