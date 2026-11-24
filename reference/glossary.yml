@@ -8378,3 +8378,40 @@
   definition: A three-element matching network of a shunt, a series and a shunt reactance; viewed as two back-to-back L-networks through a virtual resistance, it lets the designer choose the loaded Q independently of the resistance ratio.
   chapter: "21-02"
   see_also: [L-network]
+# ---------------------------------------------------------------- 21-03
+- term: Noise parameters
+  definition: The four real numbers that fully describe a linear two-port's noise independently of the circuit around it, usually given as the minimum noise figure, the optimum source reflection coefficient (complex) and the noise resistance; the noise factor for any source is F = Fmin + (Rn/Gs)|Ys − Yopt|².
+  chapter: "21-03"
+  see_also: [Noise figure, Noise circle]
+- term: Noise circle
+  definition: The locus, in the source-reflection-coefficient plane, of source impedances that give a two-port a stated noise figure; the circles are nested around the optimum source reflection and widen as the noise figure rises.
+  chapter: "21-03"
+  see_also: [Noise parameters]
+- term: Y-factor method
+  definition: Measuring noise figure by switching a calibrated noise source between hot and cold states and taking the ratio Y of the two output noise powers; with the cold state at 290 K, F = ENR/(Y − 1).
+  chapter: "21-03"
+  see_also: [Excess noise ratio (ENR), Noise figure]
+- term: Excess noise ratio (ENR)
+  definition: The difference between a noise source's hot and cold noise temperatures divided by 290 K, usually in dB; 0 dB ENR means a hot temperature of 580 K, not noise equal to kTB.
+  chapter: "21-03"
+  see_also: [Y-factor method]
+- term: P1dB (1 dB compression point)
+  definition: The input (or output) power at which an amplifier's small-signal gain has fallen by 1 dB; for a cubic nonlinearity it lies 9.64 dB below the third-order intercept.
+  chapter: "21-03"
+  see_also: [Third-order intercept point (IP3)]
+- term: Third-order intercept point (IP3)
+  definition: The extrapolated power at which the third-order intermodulation products of two equal tones, growing 3 dB per dB, would equal the fundamental, growing 1 dB per dB; quoted at the input (IIP3) or output (OIP3) and measured as IIP3 = Pin + (Pfund − PIM3)/2.
+  chapter: "21-03"
+  see_also: [Intermodulation distortion, P1dB (1 dB compression point), Second-order intercept point (IP2)]
+- term: Second-order intercept point (IP2)
+  definition: The extrapolated power at which second-order intermodulation products, growing 2 dB per dB, would equal the fundamental; critical in zero-IF receivers, where second-order products fall at DC on top of the wanted signal.
+  chapter: "21-03"
+  see_also: [Third-order intercept point (IP3)]
+- term: Desensitization
+  definition: Loss of a receiver's ability to detect weak signals in the presence of a strong blocker, through gain compression of the wanted signal, reciprocal mixing or added noise; a blocker compresses a weak signal's gain by 1 dB at a power 3 dB below the amplifier's own 1 dB compression point.
+  chapter: "21-03"
+  see_also: [Reciprocal mixing, P1dB (1 dB compression point)]
+- term: Reciprocal mixing
+  definition: The mixing of a strong blocker with the local oscillator's phase-noise skirt, which places noise of power P_B + L(Δf) + 10 log B in the wanted channel.
+  chapter: "21-03"
+  see_also: [Desensitization, Phase noise]

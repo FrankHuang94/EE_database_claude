@@ -1,0 +1,67 @@
+* Lab 21-03 -- distortion of a bare bipolar transistor (ideal exponential, no Early effect, no resistances).
+* The base-emitter voltage is a DC bias plus small cosine tones; VC holds the collector at 1.5 V and acts as
+* an ammeter. After the transient the waveform is resampled on a uniform grid (linearize) and correlated with
+* cosines over one common period, which is a discrete Fourier transform evaluated at chosen frequencies.
+*   Circuit A: one tone, 5 mV peak at 1 MHz             -> HD2 and HD3 (Example 21-03.4)
+*   Circuit B: two tones, 5 mV peak each, at 9 and 10 MHz -> IM3 at 8 MHz relative to the 9 MHz fundamental
+*   Circuit C: an emitter-coupled pair with a 1 mA ideal tail, two differential tones of 10 mV peak each at 9 and
+*              10 MHz -> IM3 of the differential output current, and its 1 MHz (IM2) residue, which cancels
+* Temperature 26.85 C (300 K), so V_T = 25.852 mV and the tone amplitude is x = 0.1934 V_T.
+*
+* EXPECT hd2 key:../../chapters/21-03-noise-figure-and-linearity.md#Ex_21-03.4e scale=0.01 rtol=2e-3
+* EXPECT hd3 key:../../chapters/21-03-noise-figure-and-linearity.md#Ex_21-03.4f scale=0.01 rtol=2e-3
+* EXPECT im3 key:../../chapters/21-03-noise-figure-and-linearity.md#Ex_21-03.4g rtol=2e-3
+* EXPECT im3dp key:../../chapters/21-03-noise-figure-and-linearity.md#Ex_21-03.4n rtol=2e-3
+* EXPECT im2dp 0 atol=1e-6
+.options temp=26.85 tnom=26.85 reltol=1e-6 abstol=1e-15 vntol=1e-9
+.model qn npn (is=1e-16 bf=1e9)
+* Circuit A
+VA ba 0 dc 0.6 sin(0.6 5m 1meg 0 0 90)
+VCA ca 0 dc 1.5
+QA ca ba 0 qn
+* Circuit B (two cosines in series)
+VB1 bb1 0 dc 0.6 sin(0.6 5m 9meg 0 0 90)
+VB2 bb bb1 dc 0 sin(0 5m 10meg 0 0 90)
+VCB cb 0 dc 1.5
+QB cb bb 0 qn
+* Circuit C: each base carries half the differential tones, in antiphase
+VP1 p1 0 dc 0.6 sin(0.6 5m 9meg 0 0 90)
+VP2 bp p1 dc 0 sin(0 5m 10meg 0 0 90)
+VN1 n1 0 dc 0.6 sin(0.6 5m 9meg 0 0 270)
+VN2 bn n1 dc 0 sin(0 5m 10meg 0 0 270)
+VC1 c1 0 dc 1.5
+VC2 c2 0 dc 1.5
+Q1 c1 bp e qn
+Q2 c2 bn e qn
+IEE e 0 dc 1m
+.tran 0.2n 2u 0 0.2n
+.control
+run
+linearize
+let ic_a = -i(vca)
+let ic_b = -i(vcb)
+let k1 = ic_a * cos(2 * pi * 1e6 * time)
+let k2 = ic_a * cos(2 * pi * 2e6 * time)
+let k3 = ic_a * cos(2 * pi * 3e6 * time)
+let k9 = ic_b * cos(2 * pi * 9e6 * time)
+let k8 = ic_b * cos(2 * pi * 8e6 * time)
+let id_c = i(vc2) - i(vc1)
+let d9 = id_c * cos(2 * pi * 9e6 * time)
+let d8 = id_c * cos(2 * pi * 8e6 * time)
+let d1 = id_c * cos(2 * pi * 1e6 * time)
+meas tran a1 integ k1 from=1u to=2u
+meas tran a2 integ k2 from=1u to=2u
+meas tran a3 integ k3 from=1u to=2u
+meas tran b9 integ k9 from=1u to=2u
+meas tran b8 integ k8 from=1u to=2u
+meas tran e9 integ d9 from=1u to=2u
+meas tran e8 integ d8 from=1u to=2u
+meas tran e1 integ d1 from=1u to=2u
+let hd2 = abs(a2 / a1)
+let hd3 = abs(a3 / a1)
+let im3 = 20 * log10(abs(b8 / b9))
+let im3dp = 20 * log10(abs(e8 / e9))
+let im2dp = abs(e1 / e9)
+print hd2 hd3 im3 im3dp im2dp
+.endc
+.end

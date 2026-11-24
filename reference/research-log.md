@@ -3623,3 +3623,38 @@ R&D % = R&D ÷ revenue.
 
 - **Infineon BGA9H1BN6** (2.3–2.7 GHz LNA, SiGe BiCMOS), data sheet Rev. 2.1, 20 Dec 2023: input return loss at 2600 MHz 9 dB min, 13 dB typ. (high-performance mode); NF 0.6 dB typ., 1.1 dB max; footnote "Can be tuned by using different external matching components". [Established]
 - **Qorvo QPF4609** (Wi-Fi 7 FEM, 5925–7125 MHz), Data Sheet Rev. C (preliminary), Sep 2024: receive path "ANT Port Return Loss" 6 dB min, 7 dB typ.; "Noise Figure" 1.8 dB typ., 2.2 dB max; "Specifications are not guaranteed over all recommended operating conditions." [Established]
+
+## R-367 · Noise figure and two-port noise theory, measurement and zero-IF linearity: primary references (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref and OpenAlex metadata and abstracts; Agilent AN 57-1 (2000 edition) read from an archival copy (Keysight's current edition is gated).*
+
+- **Friis**, "Noise Figures of Radio Receivers," *Proc. IRE* 32(7):419–422, Jul. 1944, DOI 10.1109/JRPROC.1944.232049: "A rigorous definition of the noise figure of radio receivers is given ... can be applied to four-terminal networks in general." [Established]
+- **Rothe and Dahlke**, "Theory of Noisy Fourpoles," *Proc. IRE* 44(6):811–818, Jun. 1956, DOI 10.1109/JRPROC.1956.274998: a noise-free fourpole preceded by a noise fourpole with "the equivalent noise conductance G., the equivalent noise resistance Rn and the complex correlation admittance Ycor." [Established]
+- **IRE Subcommittee 7.9 on Noise (Haus, chair)**, "Representation of Noise in Linear Twoports," *Proc. IRE* 48(1):69–74, Jan. 1960, DOI 10.1109/JRPROC.1960.287381: "the noise factor is then shown to be a function of four parameters which are independent of the circuit external to the twoport." Companion "IRE Standards on Methods of Measuring Noise in Linear Twoports, 1959," DOI 10.1109/JRPROC.1960.287380. [Established]
+- **Agilent AN 57-1**, "Fundamentals of RF and Microwave Noise Figure Measurements," 5952-8255E, Oct. 2000: 290 K reference; "The power spectral density kTo ... is the even number 4.00 x 10-21 watts per hertz of bandwidth (–174 dBm/Hz). The IRE ... adopted 290K"; "ENR is not the 'on' noise relative to kTB as is often erroneously believed"; "An ENR of 0 dB corresponds to Th = 580K"; F = ENR/(Y − 1) and F = [ENR − Y(Tc/T0 − 1)]/(Y − 1); "Generally the Y-factor method is not used when the noise figure is more than 10 dB above the ENR of the noise source"; "The absolute power level accuracy of the measuring device is not important since a ratio is to be measured." [Established]
+- **Keysight PNA-X Pro** data sheet (Aug 2026, with R-362): built-in noise receiver; options add "a built-in noise tuner" for noise-parameter (source-pull) measurements. [Established]
+- **Shaeffer and Lee**, *IEEE JSSC* 32(5):745–759, May 1997, DOI 10.1109/4.568846: "a forward gain (S21) of 22 dB with a noise figure of only 3.5 dB while drawing 30 mW from a 1.5 V supply" (0.6 µm CMOS, 1.5 GHz GPS). [Established]
+- **Razavi**, *IEEE TCAS-II* 44(6):428–435, Jun. 1997, DOI 10.1109/82.592569 ("dc offset, I/Q mismatch, even-order distortion, flicker noise, and oscillator leakage"); **Abidi**, *IEEE JSSC* 30(12):1399–1410, Dec. 1995, DOI 10.1109/4.482187. [Established]
+
+## R-368 · 3GPP NR handset receiver requirements and the sensitivity derivation (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: TS 38.101-1 V19.7.0 (2026-09) and TR 38.817-01 V16.4.0 (2022-09), DOCX from the 3GPP FTP archive.*
+
+- **TS 38.101-1 V19.7.0** §7.3: REFSENS is "the minimum mean power applied to each one of the UE antenna ports ... at which the throughput shall meet or exceed the requirements for the specified reference measurement channel"; throughput "≥ 95 %"; QPSK. Table 7.3.2-1a (two antenna ports, FDD), n1 at 15 kHz SCS: −100.0 / −96.8 / −93.8 / −89.6 dBm for 5 / 10 / 20 / 50 MHz; NOTE 2 "The transmitter shall be set to PUMAX". Table 7.3.2-1b: n78 at 30 kHz "−96.1 + 10log10(NRB/24)" dBm. NOTE 8: "The REFSENS value is rounded to the nearest number down to one decimal point." 4Rx and 8Rx allowances (Tables 7.3.2-2, 7.3.2-2a) and the XR two-port allowance −1.0 dB (Table 7.3.2-2b). [Established]
+- **Interference tests (same TS):** ACS (§7.5) 33 dB for 3–10 MHz below 2.7 GHz, interferers up to −25 dBm; in-band blocking (§7.6.2) −56 / −44 dBm; out-of-band CW blocking (§7.6.3) −44 / −30 / −15 dBm by range (−20 dBm above 6 GHz); narrow-band blocking (§7.6.4) −55 dBm CW; wide-band intermodulation (§7.8.2) "PInterferer 1 (CW)" −46 dBm and "PInterferer 2 (Modulated)" −46 dBm with FInterferer 2 = 2 × FInterferer 1, wanted at REFSENS + 6 to 9 dB; maximum input level (§7.4) −25 dBm. [Established]
+- **TR 38.817-01 V16.4.0** §6.2: "Sensitivity = -174dBm(kT) + 10*log(RX BW) + NF + SNR +IM – diversity gain"; SNR "−1dB"; "the diversity gain is 3dB and the Implementation Margin (IM) uses 2.5dB"; "The NF for the NR bands can reuse those for E-UTRA. For the three new NR bands, i.e. Bands n77~79, the agreed NR values are 10.5dB, 10dB and 10dB respectively." The 9 dB for legacy bands is inferred by reconstructing the n1 values (−99.97 and −96.79 dBm before rounding); no direct statement was found (open issue). [Established for quoted text; Industry estimate for the inferred 9 dB]
+
+## R-369 · LNA, front-end and radar receiver data sheets: noise figure, compression and intercepts (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: vendor PDFs (Infineon and TI direct; Qorvo through DigiKey-hosted copies).*
+
+- **Infineon BGA9H1BN6** (Rev. 2.1, 20 Dec 2023): gain 20.3 dB typ. (18.8–21.8), NF 0.6 dB typ., 1.1 dB max at 2600 MHz, IP1dB −17 dBm typ., IIP3 −7 dBm typ., V_CC 1.8 V, 5.5 mA; two-tone test "Input power = −30 dBm for each tone ... f2 = f1 + 1 MHz". **Infineon BGA8U1BN6** (Rev. 3.2, 19 Apr 2021): gain 13.7 dB, NF 1.6 dB typ., 2.5 dB max at 5500 MHz, IP1dB −18 dBm, IIP3 −10 dBm; "PCB losses are subtracted"; "Verification based on AQL; not 100% tested in production". [Established]
+- **Qorvo QPF4609** (Rev. C, Sep 2024, preliminary): Rx gain 16 dB, NF 1.8 dB typ., 2.2 dB max, IP1dB −5 dBm, IIP3 +8 dBm ("2-tone CW, 1MHz spacing"); "Specifications are not guaranteed over all recommended operating conditions"; Tx PSAT +32 dBm, OP1dB +30 dBm typ., "POUT = +15.5 dBm MCS13 EHT320 -43dB Dynamic EVM", "Corrected w/ memoryless/LUT DPD", EVM "Normalized to -55dB source". **Qorvo QPF4657** (Rev. D, Feb 2025): Rx NF 1.9 dB typ., IP1dB −3 dBm, IIP3 +8 dBm. IIP3 − IP1dB across the four parts: 10, 8, 13 and 11 dB (computed). [Established]
+- **TI AWR1843** (SWRS222D, rev. Sep 2024): NF 14 dB (76–77 GHz), 15 dB (77–81 GHz); in-band IIP2 16 dBm; all typical. **TI AWR2944** (SWRS273E, rev. Feb 2026): NF 12 dB typ.; features list prints "RX noise figure • 12dBm" (unit typo; the table says dB). [Established]
+
+## R-370 · Bluetooth LE receiver sensitivity in a data sheet (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: TI data sheet PDF; the Bluetooth Core specification site was blocked (Cloudflare), so the −70 dBm reference sensitivity and its 0.1 % BER criterion come from secondary sources (open issue).*
+
+- **TI CC2340R5** (SWRS272F, Apr 2023, revised May 2026): "–96.5dBm sensitivity for Bluetooth® LE 1Mbps"; conditions "When measured on the CC2340R5 reference design with Tc = 25°C, VDDS = 3.0V, fRF = 2440MHz ... All measurements are performed conducted"; BER = 10⁻³, typical only; footnote "Actual performance exceeding Bluetooth specification". [Established for the data sheet]
+- **Bluetooth LE 1M reference sensitivity −70 dBm at BER 0.1 %**: from a university wiki quoting the specification and an arXiv paper; the Core-specification clause was not read. [Industry estimate]
