@@ -6,11 +6,13 @@ Answers with a non-trivial route are recomputed independently; closed-form arith
 - the op-amp poles and zero from the roots of its exact transfer-function polynomials, the phase margin from the
   exact phase at the numerically found unity-gain frequency;
 - the bandgap from Tsividis's V_BE(T) evaluated directly, the flat-point gain by root finding on dV/dT;
-- LDO and PLL crossovers by root finding on the loop-gain magnitude;
+- LDO crossovers by root finding on the loop gain with Z_out = R_out || (R_ESR + 1/sC); the PLL crossover likewise;
 - settling, regeneration and jitter limits by root finding on their defining equations;
 - SAR switching energy by explicit charge bookkeeping over all codes;
-- sigma-delta noise by numerical integration of |NTF|^2; leakage bounds by root finding;
-- the DAC INL-yield constant by Monte Carlo of a pinned random walk; harmonics by FFT of the compression law;
+- sigma-delta noise by numerical integration of |NTF|^2, including the leaky NTF whose +3 dB point checks the leak bound;
+- the DAC INL-yield constant from the Kolmogorov series and a two-sided Monte Carlo of a pinned random walk;
+  harmonics by FFT of the compression law;
+- quantization noise by quantizing a sine; the op-amp second stage by root finding on the exact p2 expression;
 - confidence intervals from the inverse incomplete gamma function; run counts by direct search;
 - the kT/C integral by quadrature and the PLL phase maximum by numerical optimization.
 """
@@ -139,10 +141,20 @@ v.check("X20.4b", rout)
 L0 = 50 * 0.5 * 1 * rout
 v.check("X20.4c", L0)
 v.check("X20.4d", 20 * lg(L0))
-# crossover of L(s) = A beta gmp Rout / (1 + s Rout CL) (ESR zero far above), by root finding
+# crossover of L(s) = A beta gmp Rout / (1 + s Rout CL), first without the ESR, by root finding
 wc = optimize.brentq(lambda w: abs(L0 / (1 + 1j * w * rout * 10e-6)) - 1, 1e3, 1e9)
 v.check("X20.4e", wc / TWO_PI / 1e3)
 v.check("X20.4f", (0.1 / (wc * 10e-6) + 0.1 * 0.01) * 1e3)
+v.check("X20.4g", 1 / (TWO_PI * 0.01 * 10e-6) / 1e6)
+
+
+def zout_esr(w):
+    zc = 0.01 + 1 / (1j * w * 10e-6)
+    return rout * zc / (rout + zc)
+
+
+wc_esr = optimize.brentq(lambda w: abs(50 * 0.5 * 1 * zout_esr(w)) - 1, 1e3, 1e9)
+v.check("X20.4h", wc_esr / TWO_PI / 1e3)
 
 # ---- Q5
 delta = 1 / 4096
@@ -157,18 +169,31 @@ tl = 20e-15 / 1e-3
 v.check("X20.5e", tl * 1e12)
 v.check("X20.5f", optimize.brentq(lambda t_ps: 1e-6 * math.exp(t_ps * 1e-12 / tl) - 0.5, 0, 1e3))
 v.check("X20.5g", 0.5 * math.exp(-300e-12 / tl) * 1e6)
+v.check("X20.5h", optimize.brentq(lambda c_pf: 2 * KT / (c_pf * 1e-12) - delta ** 2 / 12, 0.1, 10))
 
-# ---- Q6
-enob = (58 - 1.76) / 6.02
-v.check("X20.6a", 6.02 * 10 + 1.76)
-v.check("X20.6b", enob)
-v.check("X20.6c", 5e-3 / (2 ** enob * 1e8) * 1e15)
-v.check("X20.6d", 58 + 10 * lg(5e7 / 5e-3))
-v.check("X20.6e", -60 - 10 * lg(5e7))
-v.check("X20.6f", 60 + 10 * lg(50))
-sd = 0.01 * math.sqrt(1023)
-v.check("X20.6g", sd)
-v.check("X20.6h", 0.5 * special.erfc(1 / sd / math.sqrt(2)) * 100)
+# ---- Q6: noise budget, term by term
+nq = np.arange(1 << 18)
+xq = 0.5 * np.sin(TWO_PI * 0.1234567 * nq)          # incommensurate tone exercises every code
+eq = np.round(xq / delta) * delta - xq
+v.assert_true("measured quantization noise within 1% of delta^2/12", abs(eq.var() / (delta ** 2 / 12) - 1) < 0.01)
+n6 = {
+    "q": delta ** 2 / 12,
+    "ktc": 2 * KT / 1e-12,
+    "jit": 0.5 * 0.5 ** 2 * (TWO_PI * 1e8 * 200e-15) ** 2,
+    "cmp": 50e-6 ** 2,
+}
+for key, name in zip("abcd", ["q", "ktc", "jit", "cmp"]):
+    v.check(f"X20.6{key}", n6[name] * 1e12)
+snr6 = 10 * lg(0.125 / sum(n6.values()))
+v.check("X20.6e", snr6)
+v.check("X20.6f", (snr6 - 1.76) / 6.02)
+v.check("X20.6g", 10 * lg(0.125 / n6["ktc"]))
+c6 = optimize.brentq(lambda c_pf: 2 * KT / (c_pf * 1e-12) - delta ** 2 / 12, 0.1, 10)
+v.check("X20.6h", c6)
+n6d = n6["q"] + 2 * KT / (c6 * 1e-12) + 0.5 * 0.5 ** 2 * (TWO_PI * 1e8 * 100e-15) ** 2 + n6["cmp"]
+snr6d = 10 * lg(0.125 / n6d)
+v.check("X20.6i", snr6d)
+v.check("X20.6j", (snr6d - 1.76) / 6.02)
 
 # ---- Q7: SAR energy by explicit charge bookkeeping (differential arrays, trial-and-revert, all codes)
 
@@ -242,6 +267,18 @@ v.check("X20.8f", a_single)
 v.check("X20.8g", a_mash)
 v.check("X20.8h", 20 * lg(a_mash))
 
+
+def leak_penalty(a, osr=128):
+    p = (1 + 1 / a) / (1 + 2 / a)                       # Cs = Ci
+    lk, _ = integrate.quad(lambda w: abs(1 - p * np.exp(-1j * w)) ** 2, 0, math.pi / osr)
+    idl, _ = integrate.quad(lambda w: abs(1 - np.exp(-1j * w)) ** 2, 0, math.pi / osr)
+    return lk / idl
+
+
+a_double = optimize.brentq(lambda a: leak_penalty(a) - 2, 5, 1e4)
+v.assert_true("numerical doubling gain within 5% of sqrt(3) OSR/pi", abs(a_double / a_single - 1) < 0.05)
+v.check("X20.8j", a_double)
+
 # ---- Q9
 v.check("X20.9a", 0.005 * math.sqrt(2 ** 7 - 1))
 v.check("X20.9b", 0.005 * math.sqrt(4095))
@@ -250,8 +287,14 @@ v.check("X20.9c", 0.5 / (1.818 * math.sqrt(1023)) * 100)
 walks = rng.normal(0, 1, (6000, 1023)).cumsum(axis=1)
 idx = np.arange(1, 1024) / 1023
 bridge = walks - idx * walks[:, -1:]
-frac = np.mean(np.abs(bridge).max(axis=1) / math.sqrt(1023) > 1.818 / 2 * 2)
-v.assert_true(f"Brownian-bridge tail at 1.818 is about 0.27% (MC {frac * 100:.2f}%)", frac < 0.008)
+frac_a = np.mean(np.abs(bridge).max(axis=1) / math.sqrt(1023) > 1.818)
+walks = rng.normal(0, 1, (6000, 1023)).cumsum(axis=1)
+bridge = walks - idx * walks[:, -1:]
+frac = 0.5 * (frac_a + np.mean(np.abs(bridge).max(axis=1) / math.sqrt(1023) > 1.818))
+kol = 2 * sum((-1) ** (k - 1) * math.exp(-2 * k * k * 1.818 ** 2) for k in range(1, 50))
+v.assert_true(f"Kolmogorov tail at 1.818 is 0.27% ({kol * 100:.4f}%)", abs(kol - 0.0027) < 1e-4)
+# the discrete walk's maximum sits slightly below the continuous supremum, so the MC tail reads a little low
+v.assert_true(f"Brownian-bridge Monte Carlo tail near 0.27% (MC {frac * 100:.2f}%)", abs(frac - 0.0027) < 0.0015)
 x = 25 / 1e6
 codes = np.arange(1024)
 t = np.arange(4096)
@@ -312,23 +355,43 @@ lo = math.sqrt(dof / (2 * special.gammaincinv(dof / 2, 0.975)))
 hi = math.sqrt(dof / (2 * special.gammaincinv(dof / 2, 0.025)))
 v.check("X20.11f", 1.2 * lo)
 v.check("X20.11g", 1.2 * hi)
-pf = special.erfc(4 / math.sqrt(2))
-nrun = 1
-while (1 - pf) ** nrun > 0.05:
-    nrun += 1
-v.check("X20.11h", nrun)
+for pf in (special.erfc(4 / math.sqrt(2)), 6.334e-5):     # exact and as given in the question
+    nrun = 1
+    while (1 - pf) ** nrun > 0.05:
+        nrun += 1
+    v.check("X20.11h", nrun / 1e3)
 
-# ---- Q12
-c12 = 2 * KT * 1e8 / 0.25 ** 2
-v.check("X20.12a", c12 * 1e12)
-gm12 = TWO_PI * 2e7 * c12 / 0.5
-v.check("X20.12b", gm12 / 15 * 1e6)
-v.check("X20.12c", 0.9 * gm12 / 15 * 1e6)
-v.check("X20.12d", 10 * 3)
-v.check("X20.12e", 0.9 - 5 * 0.12)
-e12 = 1 / (1 + 50 * 0.4)
-v.check("X20.12f", e12 * 100)
-v.check("X20.12g", 2 ** -14 / e12 * 100)
+# ---- Q12: low-supply two-stage design
+cc12, c1_12, cl12 = 0.5e-12, 0.2e-12, 2e-12
+wu12 = TWO_PI * 1e8
+gm1_12 = wu12 * cc12
+v.check("X20.12a", gm1_12 * 1e3)
+v.check("X20.12b", 2 * gm1_12 / 15 * 1e6)
+v.check("X20.12c", 2 * gm1_12 / 15 / cc12 / 1e6)
+iss12 = 100e6 * cc12
+v.check("X20.12d", iss12 * 1e6)
+v.check("X20.12e", gm1_12 / (iss12 / 2))
+
+
+def p2_exact(gm6, r1=1e7, r2=1e7):
+    """Non-dominant root of the full two-stage denominator, with large stage resistances standing in for high gain."""
+    a2 = r1 * r2 * (c1_12 * cl12 + cc12 * (c1_12 + cl12))
+    a1 = r1 * (c1_12 + cc12) + r2 * (cl12 + cc12) + gm6 * r1 * r2 * cc12
+    return max(abs(np.roots([a2, a1, 1])))
+
+
+gm6_12 = optimize.brentq(lambda g: p2_exact(g) - 2.2 * wu12, 1e-5, 1)
+v.check("X20.12f", gm6_12 * 1e3)
+i6p = gm6_12 / 10
+i6s = iss12 * (1 + cl12 / cc12)
+v.check("X20.12g", i6p * 1e6)
+v.check("X20.12h", i6s * 1e6)
+itot = iss12 + max(i6p, i6s)
+v.check("X20.12i", itot * 1e6)
+v.check("X20.12j", 0.9 * itot * 1e6)
+v.check("X20.12k", 2 / 10)
+v.check("X20.12l", 0.9 - 2 * 2 / 10)
+v.check("X20.12m", 5 * 2 / (gm1_12 / (iss12 / 2)))
 
 # ---- Q13
 fcorner = 1 / (TWO_PI * 1e3 * 2e-12)   # R = 1 kohm; the result must not depend on it
@@ -348,8 +411,12 @@ v.check("X20.14b", sndr + 10 * lg(5e8 / 10e-3))
 pmin = 8 * KT * 10 ** (sndr / 10) * 1e9
 v.check("X20.14c", pmin * 1e3)
 v.check("X20.14d", 10e-3 / pmin)
+v.check("X20.14h", 10 * lg(10e-3 / pmin))
 v.check("X20.14e", optimize.brentq(lambda s_fs: -20 * lg(TWO_PI * 5e8 * s_fs * 1e-15) - 65, 1, 1e4))
-v.check("X20.14f", optimize.brentq(lambda d_ps: 20 * lg(math.pi * 5e8 * d_ps * 1e-12) + 70, 1e-4, 10))
+v.check("X20.14i", optimize.brentq(lambda s_fs: (TWO_PI * 5e8 * s_fs * 1e-15) ** 2 - 0.5 * 10 ** -6.5, 1, 1e4))
+v.check("X20.14f", optimize.brentq(lambda d_ps: (TWO_PI * 5e8 * d_ps * 1e-12) ** 2 - 1e-7, 1e-4, 10))
+v.assert_true("per-channel rms skew x 2 matches the two-channel 0.201 ps formula",
+              abs(2 * 10 ** -3.5 / (TWO_PI * 5e8) - 10 ** -3.5 / (math.pi * 5e8)) < 1e-18)
 v.check("X20.14g", 0.3 * 0.75 / 0.7 + 0.7 * 0.7 * (0.7 / 0.75) ** 2)
 
 sys.exit(v.finish())

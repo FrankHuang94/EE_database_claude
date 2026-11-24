@@ -48,7 +48,7 @@ Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 
 
 ## Course notes
 
-**How to approach this course.** Course 20 is planned at about 104 hours: the chapters' own estimates add to 98, plus 6 hours of review and the exam. Course 10 gave you the transistor's circuit models, Course 12 differential pairs, cascodes and frequency response, Course 15 feedback and phase margin, Course 16 sampling and quantization, and Course 19 the CMOS process and its layout. This course turns those into working analog and mixed-signal blocks: how to size a transistor for a specification, how to build the amplifiers, references and regulators every chip needs, how data converters and clocks work and fail, and why analog is the part of a chip that does not shrink.
+**How to approach this course.** Course 20 is planned at about 104 hours: the chapters' own estimates add to 98, plus 6 hours of review and the exam. Course 09 gave you the device physics (threshold, velocity saturation, $f_T$), Course 10 the transistor's circuit models, Course 12 differential pairs, cascodes and frequency response, Course 15 feedback and phase margin, Course 16 sampling and quantization, and Course 19 the CMOS process and its layout. This course turns those into working analog and mixed-signal blocks: how to size a transistor for a specification, how to build the amplifiers, references and regulators every chip needs, how data converters and clocks work and fail, and why analog is the part of a chip that does not shrink.
 
 The twelve chapters fall into five blocks:
 
@@ -58,7 +58,7 @@ The twelve chapters fall into five blocks:
 - **Clocking (20-10).** Charge-pump and all-digital PLLs, phase noise and jitter, and fractional-N synthesis.
 - **Physical reality (20-11 and 20-12).** Mismatch, layout, corners and Monte Carlo; and why analog does not scale like digital, which ties the course together.
 
-Work at least the [A] and [B] problems of every chapter. The labs are of two kinds, both run in CI (the verify scripts and `run_spice.py` for the netlists' EXPECT lines):
+Work at least the [A] and [B] problems of every chapter. The labs are of two kinds, both run in CI (the verify scripts, `run_spice.py` for the netlists' EXPECT lines, and `run_notebooks.py` for the notebooks):
 
 - ngspice netlists: a gain stage (20-01), the op-amp's loop, compensation variants, PSRR and slewing (20-02), two bandgaps (20-03), the LDO's loop and PSRR (20-04), kT/C, a switch and a latch (20-05), a resistor-ladder converter (20-06), an MDAC (20-07), a continuous-time sigma-delta loop (20-08), an R-2R ladder and output-impedance compression (20-09), a PLL's open loop (20-10), mismatched mirrors (20-11) and a cascode's headroom (20-12);
 - Python models imported by their notebooks: `gmid.py`, `opamp.py`, `bandgap.py`, `ldo.py`, `sh.py`, `adc.py`, `nyq.py`, `dsm.py`, `dac.py`, `pll.py`, `matching.py` and `scaling.py`.
