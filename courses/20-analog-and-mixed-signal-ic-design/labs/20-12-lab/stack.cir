@@ -1,0 +1,30 @@
+* Lab 20-12 -- a single current-sink transistor and a cascoded one, swept together over output voltage (0.8 V supply).
+* Square-law (level 1) NMOS: VTO = 0.4 V, KP = 300 uA/V^2, W/L = 10/0.5, LAMBDA = 0.2 /V (a short channel), no body effect.
+* Bottom gates at 0.55 V (overdrive 0.15 V); the cascode gate at 0.75 V, so the cascode leaves saturation below about 0.35 V.
+* Zero-volt sources V1S and V2S measure the two drain currents; the small-signal output resistance is 1/(dI/dV).
+.model nsc nmos level=1 vto=0.4 kp=300u lambda=0.2
+VB1 g1 0 0.55
+VB2 g2 0 0.75
+VO o 0 0.8
+V1S o o1 0
+M1 o1 g1 0 0 nsc w=10u l=0.5u
+V2S o o2 0
+M2 x g1 0 0 nsc w=10u l=0.5u
+M3 o2 g2 x 0 nsc w=10u l=0.5u
+.dc VO 0.1 0.8 0.001
+.control
+run
+let r1 = 1 / deriv(i(v1s))
+let r2 = 1 / deriv(i(v2s))
+meas dc r1a find r1 at=0.6
+meas dc r2a find r2 at=0.6
+meas dc r2b find r2 at=0.3
+let rsk = r1a / 1e3
+let rcm = r2a / 1e6
+let rck = r2b / 1e3
+print rsk rcm rck
+.endc
+* EXPECT rsk key:README.md#Lab_20-12.a rtol=2e-3
+* EXPECT rcm key:README.md#Lab_20-12.b rtol=5e-3
+* EXPECT rck key:README.md#Lab_20-12.c rtol=5e-3
+.end

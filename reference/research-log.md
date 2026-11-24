@@ -3528,3 +3528,39 @@ R&D % = R&D ÷ revenue.
 - **Dongaonkar, Mudanai and Giles**, *IEEE TED* 66(1), pp. 19–27, Jan. 2019, DOI 10.1109/TED.2018.2860929: corner-based validation "has fundamental limitations in predicting the circuit performance variation". Temperature-effect inversion in FinFETs: ICCAD 2015, DOI 10.1109/ICCAD.2015.7372611.
 - **Renesas** temperature-ranges page and **TI** qualification FAQ: commercial 0 to 70 °C; industrial −40 to 85 °C; AEC-Q100 Grade 3/2/1/0 −40 °C to 85/105/125/150 °C; Q100 parts "pre and post tested at room and hot temperature per the grade".
 - **TI REF35** (SNAS809C, rev. Sep. 2024): initial accuracy ±0.05% max at 25 °C; 12 ppm/°C max (box method) over −40 to 105 °C; long-term stability 40 ppm and hysteresis 70 ppm typical; "long-term stability is not ensured by design". **TI TMP117** (SNOSD82D, rev. Sep. 2022): ±0.1 °C (−20 to 50 °C) to ±0.3 °C (−55 to 150 °C), 8 averages. **Pertijs, Makinwa and Huijsing**, *IEEE JSSC* 40(12), Dec. 2005, DOI 10.1109/JSSC.2005.858476: "3σ inaccuracy of ±0.1 °C", trimmed "based on a calibration at one temperature".
+
+## R-357 · Supply-voltage and analog-device scaling literature (Course 20)
+
+*Read on 24 Nov 2026 by a research subagent: Annema et al. read in full (Twente repository); IRDS More Moore workbooks (2020–2024) downloaded; ITRS 2003 and 2009 wireless chapters read.*
+
+- **Annema, Nauta, van Langevelde and Tuinhout**, "Analog circuits in ultra-deep-submicron CMOS," *IEEE JSSC* 40(1), pp. 132–143, Jan. 2005, DOI 10.1109/JSSC.2004.837247: "the supply voltage has dropped from 5 V in the early nineties down to 1.2 V today"; "power consumption rises with decreasing supply voltages"; transistor voltage gain falls "a factor 2 in four generations" at fixed bias; A_VT "roughly proportional to the gate-oxide thickness, saturating in UDSM technologies around 2–3 mV·µm".
+- **IRDS More Moore MM01** (editions 2020–2024): V_dd 0.70 V (0.75 V in 2021), 0.65 V in 2025, 0.60 V from 2027; 2024 V_t,sat 155.6 mV (HP) and 288.4 mV (HD). 2024 Executive Summary: 2021 V_DD raised to 0.75 V for "higher than anticipated leakage of FinFET transistors"; "no solutions left to reduce the supply voltage". "Analog + IO scaling" row ×0.85 per node (2020–22 editions), ×0.90 (2023–24); NAND2 density 19.29 → 27.33 Mgates/mm² (2024 → 2025). The 2022 edition's "Analog gain" row (42.3 dB in 2022) has no stated bias and was dropped in 2023.
+- **Stillmaker and Baas**, *Integration* 58, pp. 74–81, 2017, DOI 10.1016/j.vlsi.2017.02.002, Table 2 (ITRS high-performance V_DD): 1.8 V (180 nm), 1.2 V (130 nm), 1.1 V (90–45 nm), 0.97 V (32 nm), 0.9 V (20 nm), 0.86 V (16/14 nm), 0.83 V (10 nm), 0.8 V (7 nm).
+- **ITRS 2003** wireless chapter: "Analog supply voltage is expected to lag digital by at least two or more generations"; "Avt = Tox [nm] mV·µm"; roadmap g_m/g_ds = 100 at 5× minimum length. **ITRS 2009**: halo implants degrade transistor gain "even at long channel lengths".
+
+## R-358 · Analog device behavior in FinFET nodes (Course 20)
+
+*Read on 24 Nov 2026 by a research subagent (with R-357): Loke's slides read; others from abstracts. No public A_VT found for 7/5/3 nm or GAA.*
+
+- **Loke et al. (Qualcomm)**, CICC 2018, DOI 10.1109/CICC.2018.8357060, and CERN talk (Sep. 2017): FinFET "3× intrinsic gain", "Less RDF mismatch", "High S/D resistance → big deal"; "AMS area scaling 0.8-0.9x per node vs. 0.5x for logic/SRAM"; I/O "migrated from 5.0V to 3.3V to 2.5V to 1.8V", "Many I/Os still use 1.8V signaling despite core VDD reduction"; "node name = PPAC marketing".
+- **Subramanian et al.** (imec), *IEEE TED* 53(12), 2006, DOI 10.1109/TED.2006.885649: FinFETs have "better voltage gain without degradation of noise or linearity". **Wambacq et al.**, *IEEE TCAS-I* 54(11), 2007, DOI 10.1109/TCSI.2007.907866.
+- **Jeong et al.** (Samsung), VLSI 2017, DOI 10.23919/VLSIT.2017.7998155: "3.8 times higher intrinsic gain" than 28 nm planar (with R-322).
+- **Paul et al.**, IEDM 2013, DOI 10.1109/IEDM.2013.6724625: 14 nm SOI FinFET A_VT 1.4 (n) / 0.7 (p) mV·µm. **Mazurier et al.**, *IEEE TED* 58(8), 2011, DOI 10.1109/TED.2011.2157162: FD-SOI σ(VT) below A_VT = 1.4 mV·µm. **Hsueh et al.** (TSMC), VLSI 2016, DOI 10.1109/VLSIT.2016.7573399: stacked-gate devices for mismatch-sensitive circuits.
+- **M. Pelgrom**, TWEPP-13 slides: 65 nm NMOS A_VT 3.5 mV·µm; mismatch energy C_ox·A_VT² "70x higher than thermal noise energy".
+
+## R-359 · Digitally assisted analog, ADC trends and scaling-friendly circuits (Course 20)
+
+*Read on 24 Nov 2026 by a research subagent (with R-357): Murmann's Hot Chips 2005 slides and ISSCC 2022 short course read; ADC survey spreadsheet (rev. 2026-08-01) analyzed; other items from abstracts.*
+
+- **B. Murmann**, "Digitally assisted analog circuits," *IEEE Micro* 26(2), 2006, DOI 10.1109/MM.2006.33; Hot Chips 17 (2005), DOI 10.1109/HOTCHIPS.2005.7476593: NAND2 in 0.13 µm "Energy/Gate = 6fJ", 10-bit ADC "Energy/Conversion = 1nJ", "1nJ/6fJ= 166,666". CICC 2008, DOI 10.1109/CICC.2008.4672032: ADC power efficiency improved "by a factor of two every two years". ISSCC 2022 short course: "~1 dB/year" for low-frequency FoM_S.
+- **ADC survey extraction (Medium, our computation):** median Walden FoM ≈ 15.3 pJ (1997–99) → 26.6 fJ (2024–26), about 575×; best FoM_S 189.17 dB (Zhao et al., ISSCC 2025, DOI 10.1109/ISSCC49661.2025.10904778, 0.18 µm); in 2022–2026, none of 29 designs with SNDR ≥ 90 dB used a node ≤ 16 nm, while all 51 at ≥ 1 GS/s used ≤ 28 nm. Survey readme: power "Sometimes ... includes power for clocks, references, etc.; sometimes it doesn't".
+- **Straayer and Perrott**, *IEEE JSSC* 43(4), 2008, DOI 10.1109/JSSC.2008.917500 (VCO-based quantizer); **Taylor and Galton**, *IEEE JSSC* 45(12), 2010, DOI 10.1109/JSSC.2010.2073193 ("does not contain analog integrators, feedback DACs, comparators, or reference voltages"); **Hershberg et al.**, *IEEE JSSC* 47(12), 2012, DOI 10.1109/JSSC.2012.2217865 (ring amplifiers, "performance that scales with process technology"); **Chae and Han**, *IEEE JSSC* 44(2), 2009, DOI 10.1109/JSSC.2008.2010973 (inverter-based, 0.7 V); **Staszewski et al.**, *IEEE TCAS-II* 50(11), 2003, DOI 10.1109/TCSII.2003.819128 (DCO; analog imperfections "compensated through digital means").
+
+## R-360 · Analog area, wafer cost and chiplet partitioning (Course 20)
+
+*Read on 24 Nov 2026 by a research subagent (with R-357): AMD white paper and CSET report read; TSMC figures via press reports (tsmc.com unreachable).*
+
+- **Tom's Hardware** (A. Shilov), 24 Aug 2020: TSMC N3 vs N5 "(up to) 1.7X density improvement ... a 1.2X increase in SRAM density and a 1.1X increase in analog density". 16 June 2022: N3E "chip density" 1.3× over N5, N2 ">1.1X" over N3E, chip density assuming "50% logic, 30% SRAM, and 20% analog". [Industry estimate: vendor claim, press report.]
+- **CSET** (Khan and Mann, April 2020), Table 9 wafer price estimates: $2,891 (28 nm), $9,346 (7 nm), $16,988 (5 nm); "Some analysts claim that decreases [in cost per transistor] have stopped past the 28 nm node ... while others disagree" [Contested].
+- **AMD**: Naffziger et al., ISSCC 2020, DOI 10.1109/ISSCC19947.2020.9063103: I/O and SerDes "see a very small shrink factor to 7nm and very little performance or power gain from advanced nodes"; ISCA 2021, DOI 10.1109/ISCA52012.2021.00014 (via The Next Platform): chiplet cost "approximately 0.59 of the monolithic approach despite consuming approximately 10% more total silicon"; 4th Gen EPYC white paper (May 2024): 5 nm cores, 6 nm I/O dies, "a different innovation path".
+- **Intel Meteor Lake** (Hot Chips 34, DOI 10.1109/HCS55958.2022.9895532): "Transistor Diversity Opportunity" slide; tile processes via press report (compute Intel 4, SoC and IOE TSMC N6).

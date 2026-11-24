@@ -38,7 +38,7 @@ Designing analog and mixed-signal blocks in CMOS: gm/ID methodology, two-stage o
 | [20-09 · DACs](chapters/20-09-dacs.md) | 6 | ✅ verified | [problems](problems/20-09-problems.md) · [solutions](solutions/20-09-solutions.md) · [lab](labs/20-09-lab/README.md) · [verify](verify/verify_20_09.py) |
 | [20-10 · PLLs and Jitter](chapters/20-10-plls-and-jitter.md) | 10 | ✅ verified | [problems](problems/20-10-problems.md) · [solutions](solutions/20-10-solutions.md) · [lab](labs/20-10-lab/README.md) · [verify](verify/verify_20_10.py) |
 | [20-11 · Layout, Matching and PVT Variation](chapters/20-11-layout-matching-pvt.md) | 7 | ✅ verified | [problems](problems/20-11-problems.md) · [solutions](solutions/20-11-solutions.md) · [lab](labs/20-11-lab/README.md) · [verify](verify/verify_20_11.py) |
-| [20-12 · Why Analog Does Not Scale Like Digital](chapters/20-12-why-analog-does-not-scale.md) | 5 | ⬜ planned | — |
+| [20-12 · Why Analog Does Not Scale Like Digital](chapters/20-12-why-analog-does-not-scale.md) | 5 | ✅ verified | [problems](problems/20-12-problems.md) · [solutions](solutions/20-12-solutions.md) · [lab](labs/20-12-lab/README.md) · [verify](verify/verify_20_12.py) |
 
 **Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/20-analog-and-mixed-signal-ic-design.csv) · [Equation sheet](../../reference/equation-sheets/20-analog-and-mixed-signal-ic-design.md)
 
