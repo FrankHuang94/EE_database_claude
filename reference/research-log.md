@@ -4347,3 +4347,51 @@ R&D % = R&D ÷ revenue.
 - **Renesas RAA229139 short-form data sheet, Rev.1.00, 18 Jun 2025** [Established; "industry-best" is a vendor claim]: "digital triple output multiphase (X+Y+Z ≤ 8) PWM controller compliant with AMD SVI3"; "uses the proprietary Renesas digital synthetic current modulation scheme".
 - **Not verified:** MPS MP2891 phase counts (bot challenge); ADI controller data sheets (analog.com unreachable from the session).
 - **Sources:** [TPS53355](https://www.ti.com/lit/ds/symlink/tps53355.pdf); [TPS56C215](https://www.ti.com/lit/ds/symlink/tps56c215.pdf); [TPS536C7](https://www.ti.com/lit/ds/symlink/tps536c7.pdf); [XDPE1A2G5C](https://www.infineon.com/assets/row/public/documents/24/49/infineon-xdpe1a2g5c-0000-datasheet-en.pdf); [RAA229139](https://www.renesas.com/en/document/sds/raa229139-short-form-datasheet). Checked Nov 2026.
+
+## R-435 · Application-processor and wearable PMICs (Course 22)
+
+*Read on 24 Nov 2026 by a research subagent (curl through the session proxy, pdftotext).*
+
+- **TI *TPS65219* data sheet, SLVSGA0D (Rev. D, Apr 2026)** [Established as data-sheet values]:
+  - Bucks: "1× VIN: 2.5V – 5.5V; IOUT: 3.5A; VOUT 0.6V – 3.4V" and "2× … IOUT: 2A"; LDOs: "2x … IOUT: 400mA" and "2x … IOUT: 300mA"; "Designed to support systems with 14+ rails (2× TPS65219 devices in multi-PMIC configuration)".
+  - DVS: "All Buck Converters support Dynamic Voltage Frequency Scaling (DVFS)… between 0.6V and 1.4V"; "25mV-steps for 0.6V ≤ VOUT ≤ 1.4V"; rising slew (0.6 V to 1.4 V) 2.9/3.2/3.5 mV/µs min/typ/max; falling slew 0.45/0.53/0.61 mV/µs.
+  - Sequencing: "The duration of each slot is defined in the POWER_UP_SLOT_DURATION_x registers and are configurable as 0ms, 1.5ms, 3ms or 10ms. In total, 16 slots are available"; "a subsequent rail only gets enabled after the previous one passed the undervoltage threshold"; power-down "also gated by the previous rail being discharged".
+  - Quiescent current (typ): INITIALIZE 15 µA; ACTIVE with all rails on, bucks in PFM, no load 250 µA; STBY with only LDO1 on 105 µA; each buck in PFM, no load 10 µA.
+  - I²C: "standard mode (100 kHz), fast mode (400 kHz), and fast mode+ (1 MHz)".
+- **TI *TPS6594-Q1* data sheet, SLVSEA7B (Rev. B, Feb 2022)** [Established as data-sheet values]:
+  - Bucks "One with 4 A, three with 3.5 A, and one with 2 A", "up to 14 A output current from a single rail" in multiphase; output "0.3 V to 3.34 V … in 5, 10, or 20-mV steps"; 3 LDOs at 500 mA and a 300 mA low-noise LDO.
+  - BUCKn_SLEW_RATE: 33.3, 20, 10, 5, 2.5, 1.25, 0.625, 0.3125 mV/µs typ; "Output capacitance, forward and negative current limits and load current may limit the maximum and minimum slew rates"; 33.3 mV/µs "not recommended for LBx ≥ 1 µH, as this can trigger OV detection".
+  - "2 μA typical shutdown current", "20 μA typical in low power standby mode"; I²C "high-speed mode (3.4 MHz) only when VIO is 1.8 V"; SPMI used to "distribute power state information to at most five satellite PMICs".
+- **Nordic *nPM1300 Product Specification* v1.3 (doc 4490_483, 2026-03-02)** [Established as data-sheet values; read from a public copy, see Open issues]:
+  - "two configurable, dual mode 200 mA BUCK regulators, and two dual purpose 50 mA LDO/100 mA load switches"; "The charge current limit is set between 32 mA and 800 mA in 2 mA steps."
+  - Quiescent (typ): ship mode 370 nA; hibernate 500 nA; all regulators off 600 nA; one buck in auto mode, no load 800 nA; both bucks in auto mode 1100 nA; one buck in PWM at 1.8 V 4.0 mA; both bucks in PWM 7.1 mA.
+  - "auto-controlled Hysteretic mode for high efficiency down to 1 µA load currents"; auto mode switches to PWM at 90 mA and back at 40 mA; PWM at 3.6 MHz; ripple 5 mVpp (PWM) against 50 mVpp (hysteretic).
+- **Sources:** [TPS65219](https://www.ti.com/lit/ds/symlink/tps65219.pdf); [TPS6594-Q1](https://www.ti.com/lit/ds/symlink/tps6594-q1.pdf); nPM1300 PS v1.3, read from a public copy at github.com (Liesegang/env_sensor, docs/datasheets) because Nordic's own site served a bot challenge. Checked Nov 2026.
+
+## R-436 · PMIC control interfaces: SPMI and AVSBus (Course 22)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **MIPI Alliance, SPMI specification page** [Established]: "specifies the hardware interface between baseband or application processors and peripheral components to support advanced power management techniques… used in smartphones, tablets, and other portable devices"; "a two-wire serial interface… connects the integrated power controller of a system-on-chip (SoC) processor system with one or more power management IC voltage regulation systems… dynamically control the various supply voltages in real time". Current version "MIPI SPMI℠ v2.0 (August 2012)".
+- **MIPI, *SPMI Overview* r01 slides (© 2012)** [Established, dated]: "Low Speed: 32kHz to 15MHz", "High Speed: 32kHz to 26MHz"; "Up to 4 Masters", "Up to 16 Slaves"; "v1.00.00 Adopted: 4Q 2008".
+- **PMBus FAQ and current-specifications pages** [Established]: AVSBus "describes a power management bus design to allowed complex logic devices, like processors and large FPGAs, to control their supply voltages as fast as possible"; "can operate at speeds up to 50 MHz"; current revision 2.1; physical layer "very much like the common SPI".
+- **TI *TPS53676* data sheet, SLUSDP0A (May 2021)** [Established as data-sheet values]: "Clock operation up to 50 MHz is supported"; "AVSBus is a point-to-point protocol"; 1 mV per LSB; transition rate "1 mV/µs to 40 mV/µs".
+- **Sources:** [MIPI SPMI](https://www.mipi.org/specifications/system-power-management-interface); [SPMI overview](https://www.mipi.org/hubfs/MIPI_SPM_Interface_Overview_r01.pdf); [PMBus FAQ](https://pmbus.org/resources/faq/); [PMBus specifications](https://pmbus.org/current-specifications/); [TPS53676](https://www.ti.com/lit/ds/symlink/tps53676.pdf). Checked Nov 2026.
+
+## R-437 · Adaptive voltage scaling: windows and claimed savings (Course 22)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **D. Ernst et al., "Razor: A Low-Power Pipeline Based on Circuit-Level Timing Speculation," MICRO-36, Dec 2003** [Established, peer-reviewed]: "Razor energy overheads during normal operation are limited to 3.1%"; "substantial energy savings are possible for these devices (up to 64.2%) with little impact on performance due to error recovery (less than 3%)". The 64.2% is for multiplier and adder circuits, not a whole chip.
+- **TI, *Adaptive Voltage Scaling Technology*, SLYB186 (2012)** [Industry estimate, vendor marketing]: "can reduce overall energy consumption by up to 60%.*" with footnote "*Actual power savings will vary by process, temperature, aging, and other factors"; "With AVS, 64% energy saving is achieved compared to the fixed-voltage scheme. AVS also demonstrates 28% energy saving over Dynamic Voltage Scaling (DVS)". The same claim appears in National Semiconductor SNVY002 (15 Jun 2009).
+- **Qualcomm *QRB5165 Data Sheet*, 80-PV086-1 Rev. E (7 Jun 2023), Table 3-2 "Operating conditions for voltage rails with AVS Type-1"** [Established]: VDD_APC0 Turbo_L1 0.740–1.030 V, Nominal 0.605–0.898 V, Low_SVS 0.470–0.730 V; VDD_CX Retention 0.352–0.480 V. Lists "SPMI version 1.0".
+- **Sources:** [Razor](https://www.cecs.uci.edu/~papers/micro03/pdf/ernst-Razor.pdf); [SLYB186](https://www.ti.com/lit/pdf/slyb186); [SNVY002](https://www.ti.com/lit/pdf/snvy002); [QRB5165](https://docs.qualcomm.com/bundle/publicresource/80-PV086-1_REV_E_QRB5165_Data_Sheet.pdf). Checked Nov 2026.
+
+## R-438 · Phone and platform PMIC structure (Course 22)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **iFixit, *Samsung Galaxy S25 Ultra Chip ID*, 18 Feb 2025** [Established, teardown]: lists "Qualcomm PM8550VE-001 power management", "Qualcomm PM8550VS-001 power management", "Qualcomm power management", "Samsung S2MPBA3 power management", "Samsung S2MPB02 power management", "Samsung S2DOS07 display power management", plus a MAX77751 charger and an SM5443 switched-capacitor charger. A lower bound: the chip ID is not exhaustive.
+- **Qualcomm, RB5 documentation 80-88500-4 (published 18 Aug 2023)** [Established]: "There are two types of power management integrated circuits (PMIC) – PM8250 and PM8150L/PM8150A, and PM8150B"; "PM8150B is the interface PMIC for charger and fuel gauge"; power-grid table "VDDCX | S1A + S2A + S3A", "VDD_APC1 | S7A + S8A + S9A", "VDDMM | S4C + S5C".
+- **Not found:** a public statement of PMIC counts per Snapdragon platform (TechInsights reports are paywalled); NXP PCA9450 data sheet (page unavailable).
+- **Sources:** [iFixit](https://www.ifixit.com/Guide/Samsung+Galaxy+S25+Ultra+Chip+ID/181690); [RB5 PMIC](https://docs.qualcomm.com/bundle/publicresource/80-88500-4/topics/42_PMIC.md); [RB5 power grid](https://docs.qualcomm.com/bundle/publicresource/80-88500-4/topics/41_Power_grid.md). Checked Nov 2026.

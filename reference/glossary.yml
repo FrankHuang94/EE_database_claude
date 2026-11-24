@@ -9169,3 +9169,43 @@
 - term: Digital multiphase controller
   definition: A controller IC that samples the output and phase currents digitally and computes the duty cycles of many interleaved phases, with programmable compensation, phase shedding and telemetry over PMBus or similar buses.
   chapter: "22-07"
+- term: Power-management IC (PMIC)
+  definition: "A chip that supplies a system's many rails: several buck converters and LDOs, load switches, a sequencer, a control interface through which the processor sets voltages and modes, and often a charger, fuel gauge and monitoring ADC."
+  chapter: "22-08"
+  see_also: [Post-regulation, Power sequencing]
+- term: Usage profile
+  definition: "The list of states a device spends its day in, each with an output power, a converter efficiency at that load and a duration; the sum of power × time / efficiency over the states, plus the standing quiescent draw, gives the daily energy and the battery life."
+  chapter: "22-08"
+  see_also: [Quiescent current]
+- term: DVS slew rate
+  definition: "The rate, in mV/µs, at which a regulator ramps its output during a dynamic voltage change; the output capacitance draws C × slew on top of the load, and a converter that cannot sink current ramps down only as fast as the load discharges it."
+  chapter: "22-08"
+  see_also: [Dynamic voltage and frequency scaling (DVFS)]
+- term: Adaptive voltage scaling (AVS)
+  definition: "Setting each chip's supply from measurements of that chip (ring oscillators, critical-path monitors) rather than a worst-case table, removing guardband; dynamic power falls as the square of the voltage reduction ratio."
+  chapter: "22-08"
+  see_also: [Dynamic voltage and frequency scaling (DVFS), AVSBus]
+- term: Soft start
+  definition: "Ramping a regulator's output or a load switch's current slowly at turn-on so the charging current C dV/dt stays small; it lowers the peak inrush current but not the energy dissipated, which is ½CV² whatever the ramp."
+  chapter: "22-08"
+  see_also: [Inrush current, Load switch]
+- term: Inrush current
+  definition: "The surge of current that charges a rail's or domain's capacitance when it is switched on; through a plain switch it starts at V/R_on and can collapse a shared supply."
+  chapter: "22-08"
+  see_also: [Soft start]
+- term: Power sequencing
+  definition: "Enabling a system's rails in a required order with programmed delays, each after the previous rail reports power-good, and disabling them in a defined order, so that no block is powered before the blocks it depends on."
+  chapter: "22-08"
+  see_also: [Power-good signal]
+- term: Power-good signal
+  definition: "A regulator's output flag that its rail has risen above an under-voltage threshold and is in regulation; sequencers and processors wait for it before the next step."
+  chapter: "22-08"
+  see_also: [Power sequencing]
+- term: System Power Management Interface (SPMI)
+  definition: "A MIPI two-wire serial bus that links a phone or tablet SoC's power controller to one or more PMICs, so the SoC can change supply voltages and power states in real time."
+  chapter: "22-08"
+  see_also: [Power-management IC (PMIC)]
+- term: AVSBus
+  definition: "A PMBus point-to-point, SPI-like interface at up to 50 MHz through which a processor or FPGA sets its own supply voltage on a voltage regulator, used for adaptive and dynamic voltage scaling in servers."
+  chapter: "22-08"
+  see_also: [Adaptive voltage scaling (AVS)]

@@ -1,0 +1,31 @@
+* Lab 22-08, Part 2 -- switching on a power domain: a 1.0 V rail charges 100 uF of domain capacitance through
+* a load switch. (a) Hard turn-on: the switch is a 0.1 ohm resistance. (b) Soft start: the switch limits the
+* current to 0.1 A (a current-source model that falls back to 0.1 ohm when the domain is nearly charged).
+* The energy dissipated in the switch is integrated: it is 1/2 C V^2 in both cases; only the peak current differs.
+* EXPECT ehard key:../../chapters/22-08-pmics.md#Ex_22-08.6c scale=1e-6 rtol=5e-3
+* EXPECT esoft key:../../chapters/22-08-pmics.md#Ex_22-08.6c scale=1e-6 rtol=5e-3
+* EXPECT ipk_hard 10 rtol=1e-3
+* EXPECT ipk_soft key:../../chapters/22-08-pmics.md#Ex_22-08.6a rtol=1e-3
+* EXPECT tcharge key:README.md#Lab_22-08.b scale=1e-3 rtol=5e-3
+.param V=1.0 C=100u Ron=0.1 Iss=0.1
+Vs in 0 dc {V}
+* (a) hard
+Bh in a I = (V(in)-V(a))/{Ron}
+Ca a 0 {C}
+Bph ph 0 V = (V(in)-V(a))*(V(in)-V(a))/{Ron}
+* (b) soft start, current limited
+Bs in b I = min({Iss}, (V(in)-V(b))/{Ron})
+Cbb b 0 {C}
+Bps ps 0 V = (V(in)-V(b))*min({Iss}, (V(in)-V(b))/{Ron})
+Bis isw 0 V = min({Iss}, (V(in)-V(b))/{Ron})
+.ic v(a)=0 v(b)=0
+.control
+tran 0.1u 2m 0 0.1u uic
+meas tran ehard integ v(ph) from=0 to=2m
+meas tran esoft integ v(ps) from=0 to=2m
+let ih = (v(in)-v(a))/0.1
+meas tran ipk_hard max ih from=0 to=2m
+meas tran ipk_soft max v(isw) from=0 to=2m
+meas tran tcharge when v(b)=0.99
+.endc
+.end

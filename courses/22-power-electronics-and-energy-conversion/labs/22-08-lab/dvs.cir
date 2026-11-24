@@ -1,0 +1,26 @@
+* Lab 22-08, Part 1 -- a DVS ramp on Example 22-07.3's voltage-mode buck (averaged), with the type-III network
+* around an op-amp whose + input carries the reference. The reference ramps from 1.0 V to 1.2 V over 1 ms
+* (0.2 mV/us) starting at 0.1 ms. During the ramp the output leads the reference by about S (1 - V_M/V_g)/w_I.
+* EXPECT lead key:README.md#Lab_22-08.a scale=1e-3 rtol=1e-2
+* EXPECT vfinal 1.2 rtol=1e-4
+.param Vg=12 VM=1 L=0.6u C=62.5u Rl=0.12
+.param R1=10k R2=992.3005 C1=11.236714n C2=0.6740832n R3=599.89353 C3=1.0519160n
+Bsw sw 0 V = {Vg}*V(vc)/{VM}
+Lb sw out {L}
+Cb out 0 {C}
+Rload out 0 {Rl}
+Rin out n {R1}
+R3a out n3 {R3}
+C3a n3 n {C3}
+R2a n n2 {R2}
+C1a n2 vc {C1}
+C2a n vc {C2}
+Vref ref 0 pwl(0 1.0 0.1m 1.0 1.1m 1.2 3m 1.2)
+Eamp vc 0 ref n 1e6
+.control
+tran 0.05u 3m
+let err = v(out) - v(ref)
+meas tran lead find err at=0.6m
+meas tran vfinal find v(out) at=3m
+.endc
+.end
