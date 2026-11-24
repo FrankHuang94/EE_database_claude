@@ -3658,3 +3658,31 @@ R&D % = R&D ÷ revenue.
 
 - **TI CC2340R5** (SWRS272F, Apr 2023, revised May 2026): "–96.5dBm sensitivity for Bluetooth® LE 1Mbps"; conditions "When measured on the CC2340R5 reference design with Tc = 25°C, VDDS = 3.0V, fRF = 2440MHz ... All measurements are performed conducted"; BER = 10⁻³, typical only; footnote "Actual performance exceeding Bluetooth specification". [Established for the data sheet]
 - **Bluetooth LE 1M reference sensitivity −70 dBm at BER 0.1 %**: from a university wiki quoting the specification and an arXiv paper; the Core-specification clause was not read. [Industry estimate]
+
+## R-371 · LNA classics, the short-channel noise-factor debate and LNA figures of merit (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref and OpenAlex metadata and abstracts; Belostotski and Klumperink (2022) read in full from the University of Twente repository.*
+
+- **Shaeffer and Lee**, *IEEE JSSC* 32(5):745–759, May 1997, DOI 10.1109/4.568846: "a forward gain (S21) of 22 dB with a noise figure of only 3.5 dB while drawing 30 mW from a 1.5 V supply" (0.6 µm CMOS, 1.5 GHz GPS), with "a discussion on the effects of induced gate noise". Corrections: *IEEE JSSC* 40(6):1397–1398, Jun. 2005, DOI 10.1109/JSSC.2005.848626. [Established]
+- **Bruccoleri, Klumperink and Nauta**, *IEEE JSSC* 39(2):275–282, Feb. 2004, DOI 10.1109/JSSC.2003.821786: "a fundamental tradeoff between noise figure (NF) and source impedance matching, which limits the NF to values typically above 3 dB"; NF below 2.4 dB from 150 to 2000 MHz, 13.7 dB voltage gain, IIP3 0 dBm, IIP2 +12 dBm, 14 mA from 2.5 V (0.25 µm CMOS). [Established]
+- **Belostotski and Haslett**, *IEEE JSSC* 42(11):2492–2502, Nov. 2007, DOI 10.1109/JSSC.2007.907172: "sub-0.2 dB noise figure from 800 MHz to 1400 MHz" (90 nm CMOS), with "the required signal-source resistance ... presented by the telescope custom-made antenna elements". [Established]
+- **Abidi**, *IEEE TED* 33(11):1801–1805, Nov. 1986, DOI 10.1109/T-ED.1986.22743: noise "greater by factors of 2 to 4 than the noise expected from long-channel noise theory". **Scholten et al.**, *IEEE TED* 50(3):618–632, Mar. 2003, DOI 10.1109/TED.2003.810480: "we find only a moderate enhancement of the drain current noise for short-channel MOSFETs. The gate current noise on the other hand is more significantly enhanced, which is explained by the effects of the gate resistance." Also Knoblinger et al. (JSSC 2001, DOI 10.1109/4.918922), Chen and Deen (TED 2002, DOI 10.1109/TED.2002.801229), Navid et al. (J. Appl. Phys. 2007, DOI 10.1063/1.2740345). No recent FinFET/FDSOI value found. [Contested]
+- **Belostotski and Klumperink**, *IEEE TCAS-II* 69(3):734–738, Mar. 2022, DOI 10.1109/TCSII.2021.3113607: "over 30 different FoMs were identified"; dataset of "nearly 500" (abstract) or "more than 500" (introduction) CMOS LNAs over 20 years; eq. (1) Fmin = 1 + 2(ω0/ωT)√(δγ(1−|c|²)/5), credited to Lee's textbook, with long-channel γ = 2/3, δ = 4/3, c = j0.395. [Established]
+
+## R-372 · LNA research results, 2023–2026 (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref metadata and OpenAlex abstracts.*
+
+- **Huynh, Lee, Park and Yun**, *IEEE JSSC* 60(7):2461–2472, Jul. 2025, DOI 10.1109/JSSC.2024.3511578: 0.11 µm CMOS, 6.8 GHz, NF 2.8 dB, gain 13.6 dB, 1.2 mW at 1 V, IIP3 −5.2 dBm; matching without the lossy on-chip gate inductor. [Established]
+- **mmWave:** Kim et al., RFIC 2023, DOI 10.1109/RFIC54547.2023.10186167 (65 nm, 32–46 GHz, 2.2 dB min at 36.5 GHz, 22 mA at 1 V); Deng et al., RFIC 2026, DOI 10.1109/RFIC70222.2026.11602368 (22 nm bulk, 77.3 GHz, 3.36 dB min, 26.2 dB, 18.6 mW); Lin et al., *IEEE JSSC* 61(5), May 2026, DOI 10.1109/JSSC.2025.3646869 (22 nm FDSOI, 60.6–74.4 GHz, 2.32 dB min, 3.23 dB average); Han, Zhou and Luo, *IEEE JSSC* 60(3), Mar. 2025, DOI 10.1109/JSSC.2024.3440053 (40 nm, 70–86 GHz noise-cancelling, 4.8–6.5 dB, 25 mW); Smirnova et al., *IEEE MWTL* 33(8), Aug. 2023, DOI 10.1109/LMWT.2023.3279574 (130 nm SiGe, 100 GHz, 4 dB at 23.5 mW or 6.3 dB at 3.8 mW). [Established per paper]
+- **Shao, Martins and Mak**, *IEEE JSSC* 59(12):3980–3992, Dec. 2024, DOI 10.1109/JSSC.2024.3462093: BLE receiver with a passive front end and no LNA, NF 8.5 dB, 167 µW including the VCO. [Established]
+- **Cryogenic CMOS LNAs** (pointer to the *Quantum Computing* companion repo): Chaubey et al., RFIC 2024, DOI 10.1109/RFIC61187.2024.10600033 (9.3 K, 28 nm); Geng et al., RFIC 2026, DOI 10.1109/RFIC70222.2026.11602232 (4 K). [Established]
+
+## R-373 · Discrete LNA and receiver data sheets (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: vendor PDFs (Infineon, Skyworks, Mini-Circuits, TI). qorvo.com and analog.com were blocked and not used.*
+
+- **Infineon BGA524N6** (Rev. 3.5, 31 Aug 2021): GNSS 1550–1615 MHz, SiGe; at 1.8 V: ICC 2.5 typ / 3.2 max mA, gain 19.6 dB typ, NF 0.55 typ / 1.0 max dB, IP1dB −16 dBm, IIP3 −9 dBm, out-of-band IIP3 −5 dBm; at 2.8 V: IP1dB −12 dBm, out-of-band IIP3 −4 dBm (the front-page values). Footnotes "PCB losses are subtracted"; "Verification based on AQL; not 100% tested in production". [Established]
+- **Skyworks SKY67177-11** (205909M, 13 Aug 2025): 3.3–4.2 GHz, 5 V; high-gain mode gain 34 dB typ, NF 0.6 typ / 1.0 max dB, IIP3 −1 to −4 dBm, IP1dB −14 dBm; bypass mode gain 15 dB, NF 0.8 dB, IIP3 +13 to +15 dBm; IDQ 120 typ / 145 max mA; "min/max limits, valid over temperature –40 °C to 105 °C ... are verified by characterization". [Established]
+- **Mini-Circuits PMA3-83LN+** (Rev. E, date code 240417): at 2 GHz, +6 V: NF 1.3 dB typ (1.7 max), gain 22.1 dB, OIP3 +35.2 dBm, OP1dB +20.7 dBm, 77 mA; +5 V: gain 21.3 dB, OIP3 +30.0 dBm, 60 mA; "Measured on Mini-Circuits Characterization test board TB-830A+". [Established]
+- **TI AWR2944** (SWRS273E, rev. Feb 2026): receiver NF 12 dB typ "with run time calibrations enabled"; **AWR1843** (SWRS222D, rev. Sep 2024): 14 dB (76–77 GHz), 15 dB (77–81 GHz), "quoted for complex 1x mode", image rejection 30 dB. [Established]

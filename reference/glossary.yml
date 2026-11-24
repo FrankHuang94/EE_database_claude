@@ -8415,3 +8415,24 @@
   definition: The mixing of a strong blocker with the local oscillator's phase-noise skirt, which places noise of power P_B + L(Δf) + 10 log B in the wanted channel.
   chapter: "21-03"
   see_also: [Desensitization, Phase noise]
+# ---------------------------------------------------------------- 21-04
+- term: Low-noise amplifier (LNA)
+  definition: The first amplifier after a receiver's antenna or filter, designed for the lowest noise figure at a defined input impedance (usually 50 Ω), with enough gain to make the following stages' noise negligible and enough linearity to tolerate blockers.
+  chapter: "21-04"
+  see_also: [Noise figure, Inductive source degeneration, Noise-cancelling LNA]
+- term: Inductive source degeneration
+  definition: An inductor in a transistor's source that, together with the gate–source capacitance and transconductance, creates a real input impedance ω_T·L_s without a resistor; with a gate inductor resonating the reactance it gives a noiseless 50 Ω LNA input at one frequency band.
+  chapter: "21-04"
+  see_also: [Low-noise amplifier (LNA), Source degeneration]
+- term: Channel noise factor (gamma)
+  definition: The factor γ in a MOSFET's channel thermal-noise current density 4kTγg_d0; 2/3 for a long-channel device in saturation and larger, by amounts that measurements dispute, in short channels.
+  chapter: "21-04"
+  see_also: [Induced gate noise]
+- term: Induced gate noise
+  definition: Gate current noise in a MOSFET produced by the channel's thermal fluctuations coupling capacitively to the gate; it grows with frequency, is partly correlated with the drain noise and sets an optimum device size in LNA design.
+  chapter: "21-04"
+  see_also: [Channel noise factor (gamma)]
+- term: Noise-cancelling LNA
+  definition: A wideband LNA in which the matching device's noise appears at two outputs in phase while the signal appears in antiphase, so a differencing output cancels that noise; the match no longer fixes the noise figure, which falls as the cancelling path's transconductance rises.
+  chapter: "21-04"
+  see_also: [Low-noise amplifier (LNA), Common-gate amplifier]
