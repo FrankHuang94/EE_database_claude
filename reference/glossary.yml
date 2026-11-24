@@ -8357,3 +8357,24 @@
   definition: Calibration that estimates and corrects a circuit's errors continuously while it operates, so that it tracks temperature and supply drift without interrupting the signal.
   chapter: "20-12"
   see_also: [Digitally assisted analog]
+# ---------------------------------------------------------------- 21-01
+- term: Vector network analyzer
+  definition: An instrument that measures S-parameters in magnitude and phase by separating incident and reflected waves at each port with directional couplers and detecting them coherently; its systematic errors are removed by calibration.
+  chapter: "21-01"
+  see_also: [S-parameters, De-embedding]
+- term: De-embedding
+  definition: Removing the effect of a characterized fixture (board traces, package, probe pads) from a measurement, usually by inverting its transfer or ABCD matrices, to obtain a device's S-parameters at its own terminals.
+  chapter: "21-01"
+- term: Stability circle
+  definition: The circle in the source or load reflection-coefficient plane on which a two-port's input or output reflection has unit magnitude; it separates terminations that keep the device stable from those that can make it oscillate.
+  chapter: "21-01"
+  see_also: [Rollett stability factor]
+- term: Rollett stability factor
+  definition: K = (1 − |S11|² − |S22|² + |Δ|²)/(2|S12S21|); a two-port is unconditionally stable if K > 1 and |Δ| < 1, where Δ = S11S22 − S12S21.
+  chapter: "21-01"
+  see_also: [Stability circle]
+# ---------------------------------------------------------------- 21-02
+- term: Pi network
+  definition: A three-element matching network of a shunt, a series and a shunt reactance; viewed as two back-to-back L-networks through a virtual resistance, it lets the designer choose the loaded Q independently of the resistance ratio.
+  chapter: "21-02"
+  see_also: [L-network]

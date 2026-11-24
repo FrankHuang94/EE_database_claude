@@ -1,0 +1,43 @@
+* Lab 21-01 -- S-parameters of three separate two-ports in a 50 ohm system, by ngspice's .sp analysis at 1 GHz.
+* The three networks are independent, so one six-port analysis gives each one's S-parameters:
+*   ports 1-2: a series 10 ohm + 6.366 nH (reactance 40 ohm at 1 GHz), Example 21-01.2;
+*   ports 3-4: a 6 dB pi attenuator from standard resistors (150 ohm shunts, 37.4 ohm series arm);
+*   ports 5-6: a lossless 75 ohm line one-eighth of a wavelength long at 1 GHz (delay 125 ps), Example 21-01.3.
+V1 p1 0 dc 0 ac 1 portnum 1 z0 50
+V2 p2 0 dc 0 ac 0 portnum 2 z0 50
+Ra p1 a1 10
+La a1 p2 6.366198n
+V3 p3 0 dc 0 ac 0 portnum 3 z0 50
+V4 p4 0 dc 0 ac 0 portnum 4 z0 50
+Rb1 p3 0 150
+Rb2 p3 p4 37.4
+Rb3 p4 0 150
+V5 p5 0 dc 0 ac 0 portnum 5 z0 50
+V6 p6 0 dc 0 ac 0 portnum 6 z0 50
+T1 p5 0 p6 0 z0=75 td=125p
+.sp lin 1 1e9 1e9 0
+.control
+run
+let as11m = mag(s_1_1)
+let as11p = 180 / pi * ph(s_1_1)
+let as21m = mag(s_2_1)
+let as21p = 180 / pi * ph(s_2_1)
+let bs21db = db(s_4_3)
+let bs11db = db(s_3_3)
+let cs11m = mag(s_5_5)
+let cs11p = 180 / pi * ph(s_5_5)
+let cs21p = 180 / pi * ph(s_6_5)
+let cs21m = mag(s_6_5)
+print as11m as11p as21m as21p bs21db bs11db cs11m cs11p cs21m cs21p
+.endc
+* EXPECT as11m key:../../chapters/21-01-s-parameters.md#Ex_21-01.2a rtol=2e-3
+* EXPECT as11p key:../../chapters/21-01-s-parameters.md#Ex_21-01.2b rtol=2e-3
+* EXPECT as21m key:../../chapters/21-01-s-parameters.md#Ex_21-01.2c rtol=2e-3
+* EXPECT as21p key:../../chapters/21-01-s-parameters.md#Ex_21-01.2d rtol=3e-3
+* EXPECT bs21db key:README.md#Lab_21-01.a rtol=2e-3
+* EXPECT bs11db key:README.md#Lab_21-01.b rtol=2e-3
+* EXPECT cs11m key:../../chapters/21-01-s-parameters.md#Ex_21-01.3a rtol=2e-3
+* EXPECT cs11p key:../../chapters/21-01-s-parameters.md#Ex_21-01.3b rtol=2e-3
+* EXPECT cs21m key:../../chapters/21-01-s-parameters.md#Ex_21-01.3c rtol=2e-3
+* EXPECT cs21p key:../../chapters/21-01-s-parameters.md#Ex_21-01.3d rtol=2e-3
+.end
