@@ -1,0 +1,34 @@
+* Lab 22-06, Part 2 -- a ZVS transition: during the dead time a 2 A inductor current (modelled as a current
+* source) swings a 400 V half bridge's switch node to ground by moving both switches' output charge.
+* (a) GaN-like: C_o(tr) = 88 pF per switch; (b) superjunction-like: C_o(tr) = 1212 pF per switch.
+* Linear capacitors equal to C_o(tr) carry the right charge, so the transition takes 2 C_o(tr) V / I.
+* The high-side switch holds the node at 400 V until it opens at t = 1 ns (the start of the dead time);
+* an ideal clamp diode (the low side's reverse conduction) then stops the node at about 0 V.
+* EXPECT ta key:../../chapters/22-06-converter-losses-and-wide-bandgap.md#Ex_22-06.7a scale=1e-9 rtol=3e-3
+* EXPECT tb key:../../chapters/22-06-converter-losses-and-wide-bandgap.md#Ex_22-06.7b scale=1e-9 rtol=3e-3
+.model dclamp d is=1e-12 n=0.02 rs=1m
+.model swm sw vt=0.5 vh=0 ron=1m roff=1e12
+Vdc in 0 dc 400
+Vg g 0 pulse(1 0 1n 0.01n 0.01n 1 2)
+* (a) GaN-like
+Sa in swa g 0 swm
+Cha in swa 88p
+Cla swa 0 88p
+Ia swa 0 dc 2
+Da 0 swa dclamp
+* (b) superjunction-like
+Sb in swb g 0 swm
+Chb in swb 1212p
+Clb swb 0 1212p
+Ib swb 0 dc 2
+Db 0 swb dclamp
+.control
+tran 0.05n 700n 0 0.05n
+meas tran t0 when v(g)=0.5 fall=1
+meas tran ta_abs when v(swa)=0.5 fall=1
+meas tran tb_abs when v(swb)=0.5 fall=1
+let ta = ta_abs - t0
+let tb = tb_abs - t0
+print ta tb
+.endc
+.end

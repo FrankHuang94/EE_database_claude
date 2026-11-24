@@ -4292,3 +4292,34 @@ R&D % = R&D ÷ revenue.
 - **MagNet** [Established]: APEC 2022 (doi:10.1109/APEC43599.2022.9773372) abstract, "over 150,000 excitation waveforms for six ferrite materials"; IEEE OJPEL 6:883–898 (2025, doi:10.1109/OJPEL.2024.3469916): "Over 2,000,000 data points like this are available in the MagNet database for 15 different materials"; "In April 2023, 39 teams from 17 countries registered".
 - **Derived here:** the 60µ Kool Mµ fit gives 76.7% at 50 Oe and 47.7% at 100 Oe.
 - **Sources:** [Magnetics catalog (distributor copy)](https://www.acalbfi.com/media/pdf/Magnetics-Powder-Core-Catalog-2024.pdf); [Magnetics powder-core page](https://www.mag-inc.com/Products/Powder-Cores/Learn-More-about-Powder-Cores); [Google TDCommons](https://www.tdcommons.org/dpubs_series/2194); [TI SLUP413](https://www.ti.com/lit/pdf/slup413); [Infineon TLVR AN (mirror)](https://www.eenewseurope.com/download_whitepaper/18484); [Wang et al. 2025](https://pearl.shanghaitech.edu.cn/pdf/wangziyao2025.pdf); [Payton](https://paytongroup.com/about-paytons-planar-transformer); [MagNet Challenge](https://repository.tudelft.nl/file/File_e85a2106-420c-4e9c-8194-9627ad46e046). Checked Nov 2026.
+
+## R-430 · Power switch data sheets: GaN, SiC and silicon (Course 22)
+
+*Read on 24 Nov 2026 by a research subagent. Typical values at 25 °C unless stated.*
+
+- **Infineon IGOT65R055D2 (CoolGaN Transistor 650 V G5), Rev 1.1, 2026-03-05** [Established]: "RDS(on),max 66 mΩ"; typical 0.055 Ω at 25 °C and 0.120 Ω at Tj = 150 °C; "Qg,typ 4.7 nC"; "Qoss @ 400 V 35 nC"; "Qrr 0 nC"; Co(tr) 88 pF and Co(er) 65 pF (0–400 V); Eoss 5.2 µJ; no avalanche rating, "Drain source voltage transient VDS,trans … 900 V … <1% duty cycle; <1 μs; 1 million pulses".
+- **Infineon IMZA65R050M2H (CoolSiC 650 V G2), Rev 2.3, 2026-02-24** [Established]: RDS(on) 50 mΩ typ at VGS = 18 V, 65 mΩ at 15 V, 82 mΩ at 175 °C; "QG,typ 22 nC"; "Qoss @ 400 V 47 nC"; "Eoss @ 400 V 6.3 μJ"; body-diode VSD 4.3 V; "MOSFET forward recovery charge … Qfr" 49 nC (1000 A/µs), "Qfr includes Qoss".
+- **Infineon IPW60R045P7 (CoolMOS P7), Rev 2.0, 2019-02-26** [Established]: RDS(on) 0.038 typ / 0.045 max Ω; "Qg,typ 90 nC"; "Eoss @ 400V 9.4 µJ"; Co(tr) 1212 pF and Co(er) 117 pF (0–400 V); "Reverse recovery charge Qrr … 3.6 µC" (400 V, 8 A, 100 A/µs). **IPW60R040CFD7, Rev 2.1, 2018-02-27:** "Qrr … 0.88 … 1.76 µC" (400 V, 14.6 A, 100 A/µs).
+- **100 V class** [Established]: Infineon ISC022N10NM6 (OptiMOS 6, Rev 2.1, 2023-02-14): RDS(on) 1.8 typ / 2.24 max mΩ at 10 V; "QG(0V...10V) 73 nC"; "Qoss 135 nC"; "Qrr(100A/µs) 70 nC". Infineon IGC033S10S1 (CoolGaN 100 V G3, Rev 1.1, 2025-04-22): RDS(on) 2.4 typ / 3.3 max mΩ at 5 V; "Gate charge total … 11 … 14 nC"; "Output charge … 43 … 47 nC VDS=50 V"; "Qrr 0 nC". TI LMG2100R044 (SNOSDF9B, Mar 2024): "Integrated 4.4mΩ half-bridge GaN FETs and driver"; "Gate driver capable of up to 10MHz switching".
+- **1200 V SiC** [Established]: Wolfspeed C3M0016120K (Rev. 5, Nov 2025): RDS(on) 16 typ mΩ at 15 V; "Reverse Recovery Charge Qrr 1365 … nC diF/dt = 2760 A/µs" (800 V, 75 A, 175 °C); VSD 4.9 V; no short-circuit rating found. Infineon IMZA120R020M1H (Rev 1.30, 2024-11-15): "Short-circuit withstand time tSC VDD ≤ 800 V … 3 µs".
+- **Derived here:** R·Q_g of 258.5, 1100, 3420, 131.4 and 26.4 mΩ·nC; the superjunction's Q_oss ≈ C_o(tr) × 400 V = 485 nC.
+- **Sources:** [IGOT65R055D2](https://www.infineon.com/assets/row/public/documents/24/49/infineon-igot65r055d2-datasheet-en.pdf); [C3M0016120K](https://assets.wolfspeed.com/uploads/2024/01/Wolfspeed_C3M0016120K_data_sheet.pdf); other data sheets from infineon.com and ti.com product pages. Checked Nov 2026.
+
+## R-431 · Wide-bandgap materials, figures of merit and reliability (Course 22)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **J. Y. Tsao et al., "Ultrawide-Bandgap Semiconductors: Research Opportunities and Challenges," Adv. Electron. Mater. 4(1):1600501, 2018, doi:10.1002/aelm.201600501** [Established; GaN critical field Contested]: Table 3 (εr; µ at 10¹⁶ cm⁻³; E_C in MV/cm; BFOM = ¼εµE_C³ in 10⁶ V²Ω⁻¹cm⁻²): "Si 11.9 1240 0.3 145 8.8"; "4H-SiC 9.7 980 3.1 370 6270"; "GaN 10.4//c axis 1000 4.9 253 27 900". Table 2 lists GaN's E_C as a projected 4.9 MV/cm and 2.6 "(reported)" for an example AlGaN/GaN HEMT.
+- **Infineon AN2025-10, "Understanding and interpreting the CoolSiC MOSFET 1200 V datasheet," V1.2, 2026-10-30** [Established]: "Compared to 1 μs, a significant reduction in reverse recovery charge can be observed for a dead time of 300 ns … At a dead time ≥ 1 μs, no difference is observed".
+- **JEDEC JEP173 via EEPower, 11 Feb 2019** [Established]: "the value of the resulting measured RDS(on) is method dependent"; "some charge may get trapped in particular regions of the transistor".
+- **Infineon AN2018-09 Rev 1.4 (2024-02-01), Japanese edition, translated by the research subagent** [Contested in magnitude]: names "drift of the gate threshold voltage VGS(th) during long-term operation"; its "main effect … is a long-term increase in RDS(on)".
+- **Sources:** [Tsao et al. (author copy)](https://djena.engineering.cornell.edu/papers-new/2017/tsao2018ultrawide.pdf); [EEPower on JEP173](https://eepower.com/news/jedec-publishes-rdson-test-guidelines-for-gan-hemt-based-devices/); Infineon application notes from infineon.com. Checked Nov 2026.
+
+## R-432 · GaN and SiC market structure, 2025–2026 (Course 22)
+
+*Read on 24 Nov 2026 by a research subagent. Market figures are analyst estimates.*
+
+- **Semiconductor Today, 20 Aug 2026, on Yole "Power GaN 2026"** [Industry estimate]: "Innoscience held the top spot in 2025 … Infineon Technologies posted the year's sharpest gains"; onsemi "a collaboration with GlobalFoundries on 650V devices built on a 200mm GaN-on-silicon platform"; foundries "VIS and … PSMC are absorbing volume as customers move off TSMC". Per-company shares were seen only in reprint excerpts and are not used.
+- **Semiconductor Today, 3 Jul 2025** [Established as reported]: Navitas was "informed by TSMC that it will end GaN wafer foundry production by end-July 2027" (citing a Form 8-K, which was not read directly).
+- **Compound Semiconductor, 18 Dec 2025, on Yole "Power SiC 2025"** [Industry estimate]: "utilisation rates have dropped to around 50 percent for upstream processes and 70 percent for device lines. The downturn is expected to persist until 2027–2028"; "Chinese players already captured around 40 percent of SiC wafer and epiwafer capacity".
+- **Sources:** [Semiconductor Today GaN 2026](https://semiconductor-today.com/news_items/2026/aug/yole-200826.shtml); [Semiconductor Today TSMC exit](https://www.semiconductor-today.com/news_items/2025/jul/tsmc-030725.shtml); [Compound Semiconductor SiC](https://compoundsemiconductor.net/article/123168/Power_SiC_faces_overcapacity_downturn_says_Yole). Checked Nov 2026.

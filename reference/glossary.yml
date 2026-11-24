@@ -9055,3 +9055,72 @@
   definition: The TLVR, a multiphase buck in which each phase's inductor has a secondary winding and all secondaries form one series loop, so a transient on any phase drives every phase's current at once.
   chapter: "22-05"
   see_also: [Coupled inductor]
+- term: Hard switching
+  definition: Turning a switch on or off while it carries current with voltage across it, so that it absorbs the voltage–current overlap energy and its output-capacitance and recovery energies at every transition.
+  chapter: "22-06"
+  see_also: [Soft switching, Overlap loss]
+- term: Soft switching
+  definition: Arranging a converter so that each switch turns on at zero voltage or off at zero current, removing the overlap and output-charge losses; the energy is recycled by the circuit's inductance instead.
+  chapter: "22-06"
+  see_also: [Zero-voltage switching, Zero-current switching]
+- term: Conduction loss
+  definition: The power a switch dissipates while on, I_rms²·R_DS(on) for a MOSFET or HEMT, evaluated at the operating junction temperature because the on-resistance rises with heat.
+  chapter: "22-06"
+- term: Switching loss
+  definition: The energy a switch dissipates at each transition (overlap, output charge, reverse recovery) plus its gate-drive energy, multiplied by the switching frequency.
+  chapter: "22-06"
+  see_also: [Overlap loss, Output charge]
+- term: Overlap loss
+  definition: The loss from current and voltage coexisting during a clamped-inductive transition, ½·V·I·(t_on + t_off)·f_s for linear ramps.
+  chapter: "22-06"
+- term: Output charge
+  definition: Q_oss, the charge needed to raise a switch's nonlinear output capacitance from 0 to V; a hard turn-on in a half bridge dissipates Q_oss·V, not the stored energy E_oss.
+  chapter: "22-06"
+  see_also: [Time-related output capacitance]
+- term: Time-related output capacitance
+  definition: C_o(tr) = Q_oss/V, the linear capacitance with the same charge as a switch's output capacitance; it sets how long a current takes to swing the switch node. The energy-related C_o(er) = 2E_oss/V² is far smaller for superjunction parts.
+  chapter: "22-06"
+  see_also: [Output charge]
+- term: Body diode
+  definition: The p-n junction built into a silicon or SiC MOSFET between drain and source, which conducts in reverse during dead time and must have its stored charge removed (reverse recovery) before it blocks.
+  chapter: "22-06"
+  see_also: [Reverse recovery]
+- term: Third-quadrant conduction
+  definition: Reverse conduction of a GaN HEMT, which has no body diode, at a voltage drop that depends on its off-state gate voltage; it has no recovery charge but can cost more per nanosecond of dead time.
+  chapter: "22-06"
+- term: Gate charge
+  definition: Q_g, the total charge a driver must deliver to turn a switch fully on; gate-drive power is Q_g·V_drv·f_s whatever the gate resistance.
+  chapter: "22-06"
+- term: Switch figure of merit
+  definition: The product R_DS(on)·Q (gate or output charge) of a switch technology, independent of device size; the minimum conduction-plus-charge loss is 2·I·√((RQ)·V·f_s), so a lower figure of merit allows a higher frequency.
+  chapter: "22-06"
+- term: Commutation loop
+  definition: The current path through the input capacitor and the two switches of a half bridge whose parasitic inductance causes a voltage overshoot L·di/dt at every fast transition.
+  chapter: "22-06"
+- term: Zero-voltage switching
+  definition: ZVS, turning a switch on after the circuit's current has already swung its voltage to zero during the dead time; it needs a current of at least 2·Q_oss/t_dead at the switching instant.
+  chapter: "22-06"
+  see_also: [Soft switching, LLC converter]
+- term: Zero-current switching
+  definition: ZCS, turning a switch off when a resonant current through it has already fallen to zero; it suits devices such as IGBTs whose turn-off tail current is costly.
+  chapter: "22-06"
+  see_also: [Soft switching]
+- term: LLC converter
+  definition: A resonant converter whose bridge drives a series inductor and capacitor and a transformer's magnetizing inductance near the tank's resonant frequency, giving a gain near the turns ratio and zero-voltage switching from the magnetizing current.
+  chapter: "22-06"
+  see_also: [Zero-voltage switching]
+- term: Superjunction MOSFET
+  definition: A silicon power MOSFET whose drift region is made of alternating p and n columns, beating silicon's unipolar on-resistance limit at 600–800 V at the cost of a very nonlinear output capacitance and large body-diode recovery charge.
+  chapter: "22-06"
+- term: Insulated-gate bipolar transistor
+  definition: The IGBT, a MOSFET-gated device that injects minority carriers into a thick drift layer to cut its on-resistance at high voltage; it has a near-constant conduction knee and a slow turn-off tail.
+  chapter: "22-06"
+- term: Totem-pole PFC
+  definition: A bridgeless power-factor-correction boost whose fast leg is a half bridge of switches; in continuous conduction it hard-commutates reverse conduction every cycle, which is practical only with SiC or GaN switches.
+  chapter: "22-06"
+- term: Dynamic on-resistance
+  definition: A transient rise of a GaN HEMT's on-resistance after switching at high voltage, caused by trapped charge; its measured value depends on the test method (JEDEC JEP173).
+  chapter: "22-06"
+- term: Threshold-voltage drift
+  definition: A slow shift of a SiC MOSFET's gate threshold under gate and switching stress over its life, which mainly raises its on-resistance; managed by the gate-drive voltage window.
+  chapter: "22-06"

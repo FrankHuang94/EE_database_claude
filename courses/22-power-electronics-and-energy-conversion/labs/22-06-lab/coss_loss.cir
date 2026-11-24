@@ -1,0 +1,36 @@
+* Lab 22-06, Part 1 -- the hard turn-on of a half bridge into nonlinear output capacitances.
+* Each switch's output capacitance is the depletion capacitance of a reverse-biased, non-conducting junction:
+* C(v) = CJO/(1 + v/VJ)^M with CJO = 2 nF, VJ = 2 V, M = 0.9 (a superjunction-like shape: large at low voltage,
+* small at high voltage). A 1 MOhm resistor sets the switch node's DC point at 0 V (the freewheeling state).
+* The high-side switch (0.5 ohm channel) closes at 1 ns with its own capacitance charged to 400 V and the low
+* side's at 0 V. The energy dissipated in the channel is integrated and compared with Q_oss V and E_oss.
+* A linear twin with the same charge (C = Q_oss/V) runs alongside.
+* EXPECT ediss key:README.md#Lab_22-06.c scale=1e-6 rtol=5e-3
+* EXPECT elin key:README.md#Lab_22-06.c scale=1e-6 rtol=5e-3
+.param V=400 Ron=0.5 Clin=69.9496p
+.model swm sw vt=0.5 vh=0 ron={Ron} roff=1e12
+.model dcoss d is=1e-30 n=1 cjo=2n vj=2 m=0.9 fc=0.5
+Vg g 0 pulse(0 1 1n 0.01n 0.01n 1 2)
+* nonlinear half bridge
+Vdc in 0 dc {V}
+Vm in hsd dc 0
+S1 hsd sw g 0 swm
+Dhs sw in dcoss
+Dls 0 sw dcoss
+Rl1 sw 0 1Meg
+Bp p 0 V = I(Vm)*I(Vm)*{Ron}
+* linear twin with the same charge
+Vdc2 in2 0 dc {V}
+Vm2 in2 hsd2 dc 0
+S2 hsd2 sw2 g 0 swm
+Chs2 in2 sw2 {Clin}
+Cls2 sw2 0 {Clin}
+Rl2 sw2 0 1Meg
+Bp2 p2 0 V = I(Vm2)*I(Vm2)*{Ron}
+.control
+tran 1p 60n 0 5p
+meas tran ediss integ v(p) from=0.9n to=60n
+meas tran elin integ v(p2) from=0.9n to=60n
+meas tran vend find v(sw) at=60n
+.endc
+.end
