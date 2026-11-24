@@ -77,7 +77,7 @@ $$
 
 which reduces to each limit where the other term is negligible and follows from the charge-sheet model when the surface potential is linearized in the inversion charge [1, 2]. We take it as the model's starting point.
 
-> **Going deeper — where $2q + \ln q$ comes from.** In the charge-sheet model the inversion charge is $-Q_i = C_{ox}(V_G - V_{FB} - \psi_s) - Q_{dep}(\psi_s)$, and the electron density at the surface sets $\psi_s - V_{ch}$ through a Boltzmann factor. Expanding the depletion charge to first order around the pinch-off surface potential makes $-Q_i$ linear in $\psi_s$ with slope $nC_{ox}$, and the Boltzmann factor contributes the logarithm. The result is exact in both limits and within a few percent in between; the full EKV model adds mobility degradation, short-channel effects and the charges needed for capacitances [2].
+> **Going deeper — where $2q + \ln q$ comes from.** In the charge-sheet model the inversion charge is $-Q_i = C_{ox}(V_G - V_{FB} - \psi_s) - Q_{dep}(\psi_s)$, and the electron density at the surface sets $\psi_s - V_{ch}$ through a Boltzmann factor. Three steps give the relation. (1) Expand the depletion charge to first order around the pinch-off surface potential; at fixed gate voltage $d|Q_i| = -(C_{ox} + C_{dep})\,d\psi_s = -nC_{ox}\,d\psi_s$. (2) The inversion charge is proportional to the surface electron density, a Boltzmann factor in $\psi_s - V_{ch}$, so $d\psi_s - dV_{ch} = V_T\,d|Q_i|/|Q_i|$. (3) Eliminate $d\psi_s$: $dV_{ch} = -d|Q_i|/(nC_{ox}) - V_T\,d|Q_i|/|Q_i|$, and with $|Q_i| = 2nC_{ox}V_Tq$ this is $dV_{ch} = -V_T(2 + 1/q)\,dq$. Integrating gives $V_{ch} = \text{const} - V_T(2q + \ln q)$; the constant is absorbed into the definition of $V_{TH}$, and so of $V_P$. The linearization makes the result exact in both limits and within a few percent in between; the full EKV model adds mobility degradation, short-channel effects and the charges needed for capacitances [2].
 
 **The current.** Current flows by drift in the field and diffusion down the charge gradient; with the channel potential defined as the quasi-Fermi potential, both are captured by $I_D = -\mu W Q_i\,dV_{ch}/dx$. Differentiating the charge–potential relation gives $dV_{ch} = -V_T(2 + 1/q)\,dq$, so
 
@@ -204,7 +204,7 @@ $$
 WL = \frac{I_D L^2}{I_{spec,\square}\,IC} .
 $$
 
-In weak inversion $IC$ is small and the transistor is wide. The extra area is not all bad: matching improves with area (Pelgrom's law, 20-11), and flicker noise falls with it. But the gate capacitance grows with area too, which loads whatever drives the transistor and is the physical reason $f_T$ falls. A transistor that is 10 times wider for 20% more $g_m$ per microampere is rarely a good trade except where power is everything.
+In weak inversion $IC$ is small and the transistor is wide. The extra area is not all bad: matching improves with area (Pelgrom's law, 20-11), and flicker noise falls with it. But the gate capacitance grows with area too, which loads whatever drives the transistor and is the physical reason $f_T$ falls. Deep in weak inversion the returns vanish: at a fixed current, moving from $IC$ = 0.3 to $IC$ = 0.03 makes the transistor 10 times wider for only **21**% more $g_m$ per microampere, rarely a good trade except where power is everything.
 
 ### 3.8 The sweet spot: $(g_m/I_D) \cdot f_T$
 
@@ -218,7 +218,7 @@ which rises monotonically toward $3\mu/(2\pi nL^2)$: without velocity saturation
 
 ![Log-log plot of the product of g_m/I_D and f_T against inversion coefficient for three channel lengths; each curve rises through weak inversion, peaks (marked with a dot) and falls in strong inversion; the peak is highest and furthest left for the 0.15 µm channel and moves right and down for 0.5 µm and 1 µm](../../../assets/figures/20-01/sweet-spot.svg)
 
-*Figure 4. The efficiency–speed product for T130. Velocity saturation creates a peak; it sits in moderate inversion for short channels and moves into strong inversion as the channel lengthens.*
+*Figure 3. The efficiency–speed product for T130. Velocity saturation creates a peak; it sits in moderate inversion for short channels and moves into strong inversion as the channel lengthens.*
 
 ### 3.9 The sizing procedure
 
@@ -229,13 +229,13 @@ In practice the curves come not from a closed-form model but from SPICE simulati
 3. **Choose $L$** for intrinsic gain (and matching), checking that $f_T$ stays well above the signal frequencies.
 4. **Compute the current** $I_D = g_m/(g_m/I_D)$.
 5. **Look up the current density** $I_D/W$ at that $g_m/I_D$ and $L$, and compute $W = I_D/(I_D/W)$.
-6. **Check** the resulting capacitance against the load, $f_T$ against the bandwidth, $V_{DS,sat}$ (about 4–5 $V_T$ in weak inversion, about $V_{ov}$ in strong) against the headroom, and iterate.
+6. **Check** the resulting capacitance against the load, $f_T$ against the bandwidth, $V_{DS,sat}$ (about $4V_T$ in weak inversion, about $V_P = V_{ov}/n$ in strong) against the headroom, and iterate.
 
 Every step but the last is algebra on the tables, which is why the method is easy to automate and to review.
 
 ![Three panels against g_m/I_D from 3 to 28 S/A for channel lengths 0.15, 0.5 and 1 µm: current density falls by orders of magnitude from left to right, f_T falls similarly and is highest for the shortest channel, and intrinsic gain rises in straight lines whose slope is proportional to the length](../../../assets/figures/20-01/design-chart.svg)
 
-*Figure 3. The $g_m/I_D$ design chart for T130. Read a column at the chosen $g_m/I_D$: the left panel gives the current density that sizes $W$, the middle the speed, the right the gain. Longer channels trade speed and current density for gain.*
+*Figure 4. The $g_m/I_D$ design chart for T130. Read a column at the chosen $g_m/I_D$: the left panel gives the current density that sizes $W$, the middle the speed, the right the gain. Longer channels trade speed and current density for gain.*
 
 ### 3.10 Corners and temperature
 
@@ -300,7 +300,7 @@ Maximizing numerically, the product peaks at $IC$ = **6.86**, $g_m/I_D$ = **8.00
 
 **Setup.** The transistor of Example 1 is biased at its 20 µA operating point. (a) If its gate voltage (0.516 V) were held fixed instead, what current would flow if the threshold rose or fell by 50 mV? (b) With the current fixed at 20 µA, how does $g_m$ change between −40 °C and 100 °C, taking μ ∝ $T^{-3/2}$ and ignoring the threshold's own temperature coefficient (which current bias cancels)?
 
-**Solution.** (a) With $V_{TH}$ = 0.50 V the current falls to **8.61** µA (×0.430); with 0.40 V it rises to **38.5** µA (×1.92). A 50 mV corner, routine in practice, more than doubles or halves the current, and $g_m$ with it. (b) At fixed current: at −40 °C (233.15 K) $IC$ = **2.17**, $g_m/I_D$ = **18.13** S/A and $g_m$ = **362.6** µS; at 100 °C (373.15 K) $IC$ = **1.71**, $g_m/I_D$ = **12.35** S/A and $g_m$ = **247.0** µS, against 295.5 µS at 27 °C. Current bias removes the threshold sensitivity of (a), but $g_m$ still falls by **32** % from −40 °C to 100 °C.
+**Solution.** (a) With $V_{TH}$ = 0.50 V the current falls to **8.61** µA (×0.430); with 0.40 V it rises to **38.5** µA (×1.92). A 50 mV corner, routine in practice, more than doubles or halves the current, and $g_m$ with it. (b) At fixed current: at −40 °C (233.15 K) $IC$ = **2.17**, $g_m/I_D$ = **18.13** S/A and $g_m$ = **362.6** µS; at 100 °C (373.15 K) $IC$ = **1.71**, $g_m/I_D$ = **12.35** S/A and $g_m$ = **247.0** µS, against 295.5 µS at 27 °C (taken as 300 K, as throughout). Current bias removes the threshold sensitivity of (a), but $g_m$ still falls by **32** % from −40 °C to 100 °C.
 
 **Units check.** A/(A/V) = V; S = A/V.
 
@@ -374,6 +374,8 @@ Maximizing numerically, the product peaks at $IC$ = **6.86**, $g_m/I_D$ = **8.00
 | Txt 20-01.o | weak-inversion limit, n = 1.2 | 32 | S/A |
 | Txt 20-01.p | 4 V_T at 300 K | 103 | mV |
 | Txt 20-01.q | SKY130 nfet_01v8 C_ox from t_ox = 4.148 nm | 8.3 | fF/µm² |
+| Txt 20-01.r | extra g_m/I_D from IC = 0.3 to 0.03 | 21 | % |
+| Txt 20-01.s | V_DS for 2% of saturation in weak inversion, in units of V_T | 3.91 | — |
 | Ex 20-01.1h | ratio to the weak-inversion maximum | 0.51 | — |
 | Ex 20-01.2j | gate capacitance as a share of the load | 6.3 | % |
 | Ex 20-01.2k | f_T over GBW | 16 | — |
@@ -416,9 +418,9 @@ The lab ([labs/20-01-lab](../labs/20-01-lab/README.md)) implements the chapter's
 | $g_m/I_D$ at $IC$ = 1 | 62% of the limit | Center of moderate inversion |
 | Working range of $g_m/I_D$ | about 5 to 25 S/A | Low for speed, high for power |
 | Square-law error | "20–60%" in strong inversion; "a factor of two or even more" in moderate inversion | Jespers and Murmann [3] |
-| $V_{DS,sat}$ | about $4V_T$ ≈ **103** mV in weak inversion; about $V_{ov}$ in strong | Current within 2% of saturation at $4V_T$ |
+| $V_{DS,sat}$ | about $4V_T$ ≈ **103** mV in weak inversion; about $V_P = V_{ov}/n$ in strong | Weak inversion: current within 2% of saturation at $V_T\ln 50$ = **3.91** $V_T$. The $n = 1$ square law says $V_{ov}$ |
 | Velocity-saturated $f_T$ limit | $3v_{sat}/(4\pi L)$: 127 GHz at 0.15 µm (T130 model) | Real devices lower: overlap and wiring capacitance |
-| Measured peak NMOS $f_T$, 32 nm to 12 nm | 300 to 450 GHz | Peak current density, RF layout; as of Nov 2026 [R-322] |
+| Measured peak NMOS $f_T$, 32 nm to 12 nm | 230 to 445 GHz (most above 300 GHz) | Peak current density, RF layout; as of Nov 2026 [R-322] |
 | IRDS intrinsic delay $CV/I$ | 1.061 ps (2024) to 0.624 ps (2039) | NMOS, FO3 load [R-314] |
 | FinFET self-gain $g_m/g_{ds}$ | 40 (N) and 34 (P) in a 14 nm FinFET process | Single company; bias not stated [R-322] |
 | SKY130 thin-oxide NMOS | $L_{min}$ = 0.15 µm, $t_{ox}$ = 4.148 nm ($C_{ox}$ ≈ **8.3** fF/µm²), BSIM4 4.5 models | Open PDK [R-322]; close to T130's 8.6 fF/µm² |
@@ -439,9 +441,9 @@ The lab ([labs/20-01-lab](../labs/20-01-lab/README.md)) implements the chapter's
 
 - **A thirty-year-old method, now the default [Established].** Silveira, Flandre and Jespers proposed basing synthesis on "the relation between the ratio of the transconductance over dc drain current gm/ID and the normalized current ID/(W/L)", noting that gm/ID "is a universal characteristic of all the transistors belonging to a same process" [4]. Jespers and Murmann's 2017 book made pre-computed lookup tables the standard route and calls moderate inversion "a design 'sweet spot'" in nanometer technologies [3, R-322].
 - **Open tools make it reproducible [Established].** Murmann's companion repository (AGPL-3.0, last updated Oct 2025) provides lookup-table sweeps for the open SKY130, IHP SG13G2 and GF180MCU processes; pygmid (Apache-2.0, last commit Jan 2026) reads such tables in Python; and Mosplot (Apache-2.0, active Sep 2026) "sizes complete circuits automatically across process corners". The open PDKs ship BSIM4 4.5 models for SKY130 and GF180MCU. The tables' author warns that SKY130's PMOS models "look non-physical in moderate and weak inversion" and "should probably not be used for designs with VGS−Vt < 150 mV" [R-322]: open models are for learning, not for signoff.
-- **Peak $f_T$ has stopped climbing [Industry estimate].** Published peak NMOS $f_T$: 445 GHz for Intel's 32 nm process (from 209 GHz at 90 nm), 349 GHz for a 28 nm low-power bulk process, 347 GHz for GlobalFoundries' 22FDX, 314 GHz for its 14 nm FinFET and 305 GHz for a 12 nm low-threshold FinFET [R-322]. Each is an established measurement; reading them as a plateau of roughly 300 to 450 GHz since 32 nm is this chapter's interpretation. The IEEE IRDS 2024 roadmap now shows CMOS peak $f_T$ only as TCAD projections and removed $f_{MAX}$ from its CMOS tables because it is "strongly dependent on the device layout" [R-322]. A 5 nm FinFET measured with a single gate contact reached only about 100 GHz, a reminder that parasitics dominate small devices [R-322].
-- **FinFETs recovered intrinsic gain [Established, single-company data].** GlobalFoundries reported a "self-gain (Gm/Gds) 40 and 34" for its 14 nm N and P FinFETs, and Samsung a "3.8 times higher intrinsic gain (gm/gds)" for its 14 nm RF FinFET than its 28 nm planar device [R-322]. Neither abstract states the bias or length, so compare such numbers only at stated operating points.
-- **Design automation [Vendor claim; Established for academic papers].** Synopsys reports that Credo migrated a VCO from 5 nm to 7 nm with its ASO.ai tool, "reducing the migration efforts from multiple weeks to just a few hours", "up to 100X productivity improvement" (2024); Cadence claimed "more than a 3X improvement in design throughput" for Virtuoso Studio (2023) [R-322]. In academic work, BAG2 generated circuits in five processes from one code base (CICC 2018), MAGICAL produced a 40 nm delta-sigma ADC layout in "around 90 seconds" with measured SNDR "within 2dB" of the manual design (CICC 2021), and ALIGN, still active in 2026, generates RF layouts "in hours compared to weeks" [R-322]. No independent benchmark of the commercial tools was found.
+- **Peak $f_T$ has stopped climbing [Industry estimate].** Published peak NMOS $f_T$: 445 GHz for Intel's 32 nm process (from 209 GHz at 90 nm), 349 GHz for a 28 nm low-power bulk process, 347 GHz for GlobalFoundries' 22FDX, 314 GHz for its 14 nm FinFET, 305 GHz for a 12 nm low-threshold FinFET and 230 GHz for Intel's low-power 22FFL FinFET [R-322]. Each is an established measurement; reading them as a plateau of roughly 230 to 445 GHz since 32 nm, with no node beating 32 nm, is this chapter's interpretation. The IEEE IRDS 2024 roadmap now shows CMOS peak $f_T$ only as TCAD projections and removed $f_{MAX}$ from its CMOS tables because it is "strongly dependent on the device layout" [R-322]. A 5 nm FinFET measured with a single gate contact reached only about 100 GHz, a reminder that parasitics dominate small devices [R-322].
+- **FinFETs recovered intrinsic gain [Established].** The data come from single companies. GlobalFoundries reported a "self-gain (Gm/Gds) 40 and 34" for its 14 nm N and P FinFETs, and Samsung a "3.8 times higher intrinsic gain (gm/gds)" for its 14 nm RF FinFET than its 28 nm planar device [R-322]. Neither abstract states the bias or length, so compare such numbers only at stated operating points.
+- **Design automation: vendor claims [Industry estimate], academic results [Established].** Synopsys reports that Credo migrated a VCO from 5 nm to 7 nm with its ASO.ai tool, "reducing the migration efforts from multiple weeks to just a few hours", "up to 100X productivity improvement" (2024); Cadence claimed "more than a 3X improvement in design throughput" for Virtuoso Studio (2023) [R-322]. In academic work, BAG2 generated circuits in five processes from one code base (CICC 2018), MAGICAL produced a 40 nm delta-sigma ADC layout in "around 90 seconds" with measured SNDR "within 2dB" of the manual design (CICC 2021), and ALIGN, still active in 2026, generates RF layouts "in hours compared to weeks" [R-322]. No independent benchmark of the commercial tools was found.
 
 ### Why it matters commercially
 
@@ -503,7 +505,7 @@ Velocity saturation caps $f_T$ near $3v_{sat}/(4\pi L)$ in strong inversion, whi
 
 <details><summary>Answer</summary>
 
-Double the length (gain $\propto L$ through $V_A$), at roughly a quarter of the $f_T$ and twice the area per unit width; or double $g_m/I_D$ toward weak inversion, at much lower $f_T$ and current density (more area). Neither is free; cascoding (12-02) multiplies the gain instead of trading for it.
+Double the length (gain $\propto L$ through $V_A$) at the same $g_m/I_D$. At the same current that keeps $IC$ fixed only if $W$ doubles too, so the gate area quadruples and $f_T$ falls to roughly a quarter ($\propto 1/L^2$ for a long channel). Or double $g_m/I_D$, which needs headroom below the weak-inversion limit: from 10 to 20 S/A it works, at much lower $f_T$ and current density (more area); from 15 S/A it cannot, because 30 S/A is above the **29.8** S/A limit for $n$ = 1.3. Neither is free; cascoding (12-02) multiplies the gain instead of trading for it.
 
 </details>
 

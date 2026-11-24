@@ -389,7 +389,10 @@ v.check("20-04.7a", 1 / (TWO_PI * 0.5 * 1e-6) / 1e3)
 fc, pm = Loop(0.1, esr=0.5).margins()
 v.check("20-04.7b", fc / 1e6)
 v.check("20-04.7c", pm)
-v.check("20-04.7d", HI.k * 0.5)
+l7 = Loop(0.1, esr=0.5)
+plateau = abs(l7.k * np.polyval(l7.zn, 2j * math.pi * 1e11) / np.polyval(l7.zd, 2j * math.pi * 1e11))   # |K Z_out| far above the zero
+v.check("20-04.7d", plateau)
+v.assert_true("plateau is K (R_out || R_ESR)", abs(plateau - l7.k * l7.rout * 0.5 / (l7.rout + 0.5)) < 1e-6)
 PP = TWO_PI * 30e6
 fc_a, pm_a = Loop(0.1, extra_pole=PP).margins()
 v.check("20-04.7e", fc_a / 1e6)

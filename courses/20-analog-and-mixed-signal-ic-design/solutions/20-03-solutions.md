@@ -59,9 +59,9 @@ The 0.2 mV offset lowers the 300 K output by **2.55** mV (about $1 + R_2/R_1$ ti
 
 ### Solution 20-03.8
 
-(a) A 0.5% higher $R_2$ multiplies the PTAT term $KV_T\ln N$ (0.5741 V at 300 K) by 1.005: the error is **+2.88** mV at 300 K, proportional to $V_T$ and hence PTAT, and it is removed by the same one-temperature trim.
+(a) A 0.5% higher $R_2$ multiplies the PTAT term $KV_T\ln N$ (**0.5762** V at 300 K) by 1.005: the error is **+2.88** mV at 300 K, proportional to $V_T$ and hence PTAT, and it is removed by the same one-temperature trim.
 
-(b) Nothing happens to the output: it depends only on the ratio $R_2/R_1$, which a common temperature coefficient leaves unchanged. The current $V_T\ln N/R_1$ changes by the PTAT factor 400/300 = **1.333** divided by the resistor factor 1 + 2000 × 10⁻⁶ × 100 = **1.2**, so it rises by a factor of **1.111** instead of 1.333. (The junction current then is no longer exactly PTAT, which slightly changes the curvature; the lab can show by how much.)
+(b) The ratio $R_2/R_1$, and with it the gain $K$, is unchanged by a common temperature coefficient, but the junction current is not. The current $V_T\ln N/R_1$ changes by the PTAT factor 400/300 = **1.333** divided by the resistor factor 1 + 2000 × 10⁻⁶ × 100 = **1.2**, so it rises by a factor of only **1.111** instead of 1.333. That current reaches the output through $V_{BE1} = V_T\ln(I/I_S)$: a current that grows more slowly than PTAT lowers $V_{BE1}$ at high temperature by $V_T\ln(1.333/1.111)$, about $V_T\ln 1.2$. Solving the circuit exactly, the output at 400 K falls by **6.28** mV, and the box TC from −40 to 125 °C rises from **9.10** to **44.3** ppm/K: the current exponent is no longer $m = 1$, so the slope at the trim point is no longer zero. A design that must use such resistors re-chooses $K$ for the actual $m$, or uses a low-TC resistor for $R_1$.
 
 ### Solution 20-03.9
 
@@ -81,9 +81,9 @@ $$
 
 ### Solution 20-03.11
 
-(a) $I = V_T\ln K/R$, so $R = V_T\ln 8/(1\ \mu\text{A})$ = **53.76** kΩ.
+(a) $I = V_T\ln M/R$, so $R = V_T\ln 8/(1\ \mu\text{A})$ = **53.76** kΩ.
 
-(b) $I = nV_T\ln K/R$, so $R$ = **69.89** kΩ.
+(b) $I = nV_T\ln M/R$, so $R$ = **69.89** kΩ.
 
 (c) Both circuits are self-biased and also satisfy their equations with zero current (all devices off), so they can power up dead.
 
@@ -93,13 +93,13 @@ $$
 
 (b) In the zero-current limit both devices are off and every node voltage is consistent with no current: a valid solution of the circuit equations, but no reference.
 
-(c) M1 carries $I_P + δ$ and M2 carries $I_P$. In weak inversion $I_{M1} = I_0e^{V_P/V_T}$ and $I_{M2} = KI_0e^{(V_P - I_PR)/V_T}$; dividing, $(I_P + δ)/I_P = e^{I_PR/V_T}/K$, so $I_PR = V_T\ln[K(I_P + δ)/I_P]$. To first order $\Delta I_P \approx (V_T/R)(δ/I_P) = δ/\ln K$ = **0.72** nA, **0.19**% of the current. The exact charge-based model gives **+0.77** nA (**0.21**%): a startup leak of a nanoampere is already a 0.2% error.
+(c) M1 carries $I_P + δ$ and M2 carries $I_P$. In weak inversion $I_{M1} = I_0e^{V_P/V_T}$ and $I_{M2} = MI_0e^{(V_P - I_PR)/V_T}$; dividing, $(I_P + δ)/I_P = e^{I_PR/V_T}/K$, so $I_PR = V_T\ln[K(I_P + δ)/I_P]$. To first order $\Delta I_P \approx (V_T/R)(δ/I_P) = δ/\ln K$ = **0.72** nA, **0.19**% of the current. The exact charge-based model gives **+0.77** nA (**0.21**%): a startup leak of a nanoampere is already a 0.2% error.
 
 ### Solution 20-03.13
 
-(a) The op-amp's noise reaches the output like its offset, multiplied by $1 + K$ = **11.72**: **352** nV/√Hz. Over 10 kHz the rms noise is 352 nV × √10⁴ = **35.2** µV, **28.0** ppm of 1.2546 V.
+(a) The op-amp's noise reaches the output like its offset, multiplied by the gain of §3.5, $(R_2/R_1)(1 + r_e/R_2)^2 + (1 + r_e/R_2)$ = **12.75** (not quite $1 + K$ = 11.72): **382** nV/√Hz. Over 10 kHz the rms noise is 382 nV × √10⁴ = **38.2** µV, **30.5** ppm of 1.2546 V.
 
-(b) With $N$ = 24, $K$ = **7.01**, so the gain is **8.01** and the noise **24.0** µV rms, 32% less.
+(b) With $N$ = 24, $K$ = **7.01**, so the gain is **8.70** and the noise **26.1** µV rms, **32**% less.
 
 ### Solution 20-03.14
 
@@ -147,6 +147,10 @@ $$
 | 20-03.8b | PTAT factor 400/300 | 1.333 | — |
 | 20-03.8c | resistor factor | 1.2 | — |
 | 20-03.8d | current factor | 1.111 | — |
+| 20-03.8e | PTAT term at 300 K | 0.5762 | V |
+| 20-03.8f | output shift at 400 K, +2000 ppm/K | −6.28 | mV |
+| 20-03.8g | box TC, nominal | 9.10 | ppm/K |
+| 20-03.8h | box TC, +2000 ppm/K resistors | 44.3 | ppm/K |
 | 20-03.9a | R_3 for 0.5 V | 45.92 | kΩ |
 | 20-03.9b | V_BE1 at −40 C | 0.805 | V |
 | 20-03.9c | minimum supply | 0.955 | V |
@@ -162,13 +166,14 @@ $$
 | 20-03.12d | exact current change | 0.77 | nA |
 | 20-03.12e | exact relative change | 0.21 | % |
 | 20-03.12f | first-order relative change | 0.19 | % |
-| 20-03.13a | noise gain 1 + K | 11.72 | — |
-| 20-03.13b | output noise density | 352 | nV/√Hz |
-| 20-03.13c | rms noise in 10 kHz | 35.2 | µV |
-| 20-03.13d | rms noise in ppm | 28.0 | ppm |
+| 20-03.13a | noise gain | 12.75 | — |
+| 20-03.13i | 1 + K | 11.72 | — |
+| 20-03.13b | output noise density | 382 | nV/√Hz |
+| 20-03.13c | rms noise in 10 kHz | 38.2 | µV |
+| 20-03.13d | rms noise in ppm | 30.5 | ppm |
 | 20-03.13e | K, N = 24 | 7.01 | — |
-| 20-03.13f | noise gain, N = 24 | 8.01 | — |
-| 20-03.13g | rms noise, N = 24 | 24.0 | µV |
+| 20-03.13f | noise gain, N = 24 | 8.70 | — |
+| 20-03.13g | rms noise, N = 24 | 26.1 | µV |
 | 20-03.13h | reduction | 32 | % |
 | 20-03.14a | worst-case band | 995 | ppm |
 | 20-03.14b | worst-case band | 2.49 | mV |

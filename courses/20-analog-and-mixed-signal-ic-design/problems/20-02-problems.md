@@ -4,7 +4,7 @@ Chapter: [20-02](../chapters/20-02-two-stage-op-amp-design.md) · Worked solutio
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
 
-**Conventions.** Unless stated, use the chapter's T130 devices at 300 K ($V_T$ = 25.85 mV, $kT$ = 4.142 × 10⁻²¹ J, γ = 2/3), its notation ($\omega_u = g_{m1}/C_c$ is the GBW, $\omega_c$ the actual crossover, $k = p_2/\omega_u$), and the op-amp of Example 20-02.3 when a problem refers to "the design": $g_{m1}$ = 188.5 µS, $I_{SS}$ = 20.94 µA, $g_{m6}$ = 1.558 mS, $I_6$ = 155.8 µA, $R_1$ = 382.0 kΩ, $R_2$ = 12.84 kΩ, $C_1$ = 110.7 fF, $C_c$ = 0.6 pF, $C_L$ = 2 pF, GBW 50 MHz, SR = 34.9 V/µs. Margins are for a unity-gain follower. Problems marked *(lab)* can be checked with `labs/20-02-lab/opamp.py`.
+**Conventions.** Unless stated, use the chapter's T130 devices at 300 K ($V_T$ = 25.85 mV, $kT$ = 4.142 × 10⁻²¹ J, γ = 2/3), its notation ($\omega_u = g_{m1}/C_c$ is the GBW, $\omega_c$ the actual crossover, $\kappa = p_2/\omega_u$), and the op-amp of Example 20-02.3 when a problem refers to "the design": $g_{m1}$ = 188.5 µS, $I_{SS}$ = 20.94 µA, $g_{m6}$ = 1.558 mS, $I_6$ = 155.8 µA, $R_1$ = 382.0 kΩ, $R_2$ = 12.84 kΩ, $C_1$ = 110.7 fF, $C_c$ = 0.6 pF, $C_L$ = 2 pF, GBW 50 MHz, SR = 34.9 V/µs. Margins are for a unity-gain follower. Problems marked *(lab)* can be checked with `labs/20-02-lab/opamp.py`.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 
@@ -18,7 +18,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 20-02.2 [A]
 
-**The two-pole phase margin.** For a loop gain $\omega_u/[s(1 + s/p_2)]$, find the crossover $\omega_c/\omega_u$ and the exact phase margin for $k = p_2/\omega_u$ = 1, 2.2 and 3. Compare each with the estimate $90^\circ - \arctan(1/k)$ that evaluates the lag at $\omega_u$. Which way is the estimate wrong, and why?
+**The two-pole phase margin.** For a loop gain $\omega_u/[s(1 + s/p_2)]$, find the crossover $\omega_c/\omega_u$ and the exact phase margin for $\kappa = p_2/\omega_u$ = 1, 2.2 and 3. Compare each with the estimate $90^\circ - \arctan(1/\kappa)$ that evaluates the lag at $\omega_u$. Which way is the estimate wrong, and why?
 
 ### Problem 20-02.3 [A]
 

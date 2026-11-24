@@ -44,12 +44,12 @@ A **low-dropout regulator** (LDO) turns a noisy or variable input voltage into a
    └──┬─────────┬──┘   │               │
       │ −       │ +  R_bot            GND
       │         │      │
-    V_FB      V_REF   GND
+    V_REF     V_FB    GND
 
    V_FB = β·V_out, β = R_bot/(R_top + R_bot)
 ```
 
-*Figure 1. An LDO. The error amplifier compares a fraction β of the output with the reference and drives the gate of a wide PMOS pass device. The output capacitor $C_L$ (with its equivalent series resistance) holds the output during fast load changes.*
+*Figure 1. An LDO. The error amplifier compares a fraction β of the output with the reference and drives the gate of a wide PMOS pass device. With a PMOS pass device the feedback goes to the non-inverting input, so that a rising output raises the gate and cuts the current (the lab's netlist does the same). The output capacitor $C_L$ (with its equivalent series resistance) holds the output during fast load changes.*
 
 **A water analogy, and its limits.** Picture a valve between a high-pressure main and a household line, with a float that senses the household pressure and opens the valve when it drops. The valve wastes the pressure difference as turbulence (heat), more of it when the main pressure is high. If the main pressure falls almost to the household's, even a fully open valve cannot keep up: that is **dropout**. The float's speed matters when a tap is opened suddenly, and a tank on the household side (the output capacitor) carries the demand until the valve responds. The analogy breaks where the valve's own behavior changes with flow: a transistor's gain grows with its current, so the "float and valve" loop is fast and stiff at heavy flow and slow and soft at a trickle. A mechanical valve has no such dependence, and this one is the central difficulty of LDO design.
 
@@ -57,7 +57,7 @@ A **low-dropout regulator** (LDO) turns a noisy or variable input voltage into a
 
 ## 3. Theory
 
-> **Conventions.** $V_{in}$ input, $V_{out}$ output, $I_L$ load current, $I_Q$ quiescent current (everything the regulator draws that does not reach the load), $\beta = V_{REF}/V_{out}$ the divider ratio. Pass device: a T130 PMOS (20-02's PMOS: μ = 100 cm²/V·s, $v_{sat}$ = 6 × 10⁶ cm/s, $n$ = 1.3, $\lvert V_{TH}\rvert$ = 0.45 V, $V_A'$ = 8 V/µm) at $L$ = 0.15 µm, so $r_{ds} = V_A'L/I_D$ = 1.2 V/$I_D$. The running design: $V_{out}$ = 1.2 V from $V_{REF}$ = 0.6 V (20-03's sub-1 V reference, β = 0.5), $I_L$ from 100 µA to 100 mA, a 1 µF ceramic output capacitor with 5 mΩ ESR, nominal $V_{in}$ = 1.8 V and 150 mV dropout at 100 mA.
+> **Conventions.** $V_{in}$ input, $V_{out}$ output, $I_L$ load current, $I_Q$ quiescent current (everything the regulator draws that does not reach the load), $\beta = V_{REF}/V_{out}$ the divider ratio. Pass device: a T130 PMOS (20-02's PMOS: μ = 100 cm²/V·s, $v_{sat}$ = 6 × 10⁶ cm/s, $n$ = 1.3, $\lvert V_{TH}\rvert$ = 0.45 V, $V_A'$ = 8 V/µm) with channel length $L_{ch}$ = 0.15 µm, so $r_{ds} = V_A'L_{ch}/I_D$ = 1.2 V/$I_D$. ($L$ without a subscript is always the loop gain: $L(s)$, $L_0$.) The load is modeled as a resistor $R_L = V_{out}/I_L$. The running design: $V_{out}$ = 1.2 V from $V_{REF}$ = 0.6 V (20-03's sub-1 V reference, β = 0.5), $I_L$ from 100 µA to 100 mA, a 1 µF ceramic output capacitor with 5 mΩ ESR, nominal $V_{in}$ = 1.8 V and 150 mV dropout at 100 mA.
 
 ### 3.1 Efficiency, headroom and the pass device
 
@@ -79,7 +79,7 @@ $$
 
 with $V_P = (V_{SG} - \lvert V_{TH}\rvert)/n$ and $I_{spec} \propto W/L$. Given $V_{SG}$, $V_{SD}$ and the required current, this fixes $W$.
 
-**Velocity saturation.** The long-channel model ignores the carriers' speed limit (09-10). The lateral field along the channel is about $V_{SD}/L$; when it approaches the critical field $E_{sat} = v_{sat}/\mu$, the current falls by roughly the factor $1/(1 + V_{SD}/(E_{sat}L))$, the standard first-order correction. For T130's PMOS, $E_{sat}$ = **6.0** V/µm, and 150 mV across 0.15 µm is 1 V/µm, so the width must grow by **1.167** (Example 20-04.2).
+**Velocity saturation.** The long-channel model ignores the carriers' speed limit (09-10). The lateral field along the channel is about $V_{SD}/L$; when it approaches the critical field $E_{sat} = v_{sat}/\mu$, the current falls by roughly the factor $1/(1 + V_{SD}/(E_{sat}L_{ch}))$, the standard first-order correction for a device in triode. (20-01's $1 + \lambda_cq$ is a different first-order correction, for the saturated device in terms of its inversion charge; each suits its region, and this chapter uses 20-01's for the pass device in saturation.) For T130's PMOS, $E_{sat}$ = **6.0** V/µm, and 150 mV across 0.15 µm is 1 V/µm, so the width must grow by **1.167** (Example 20-04.2).
 
 **Consequences of a wide device.** A pass device delivering 100 mA from 150 mV of headroom is millimeters wide. Its gate capacitance (picofarads) must be driven over a large swing: from near $V_{in}$ minus a threshold at light load down to ground at dropout. The gate driver's current, set by how fast the gate must move, is a large part of $I_Q$.
 
@@ -166,7 +166,7 @@ At very low supplies an analog error amplifier runs out of headroom. A **digital
 
 ## 4. Worked examples
 
-All examples use the running design of §3: T130 PMOS pass device at $L$ = 0.15 µm, $V_{out}$ = 1.2 V, β = 0.5, $C_L$ = 1 µF with 5 mΩ ESR, $R_{div}$ = 1.2 MΩ, $g_{ma}$ = 1 mS, $R_a$ = 100 kΩ, $C_a$ = 0.2 pF, $g_{mb}$ = 2 mS, $I_Q$ = 120 µA, unless stated.
+All examples use the running design of §3: T130 PMOS pass device with $L_{ch}$ = 0.15 µm, $V_{out}$ = 1.2 V, β = 0.5, $C_L$ = 1 µF with 5 mΩ ESR, $R_{div}$ = 1.2 MΩ, $g_{ma}$ = 1 mS, $R_a$ = 100 kΩ, $C_a$ = 0.2 pF, $g_{mb}$ = 2 mS, $I_Q$ = 120 µA, unless stated.
 
 ### Example 20-04.1 · Efficiency and headroom (tier A)
 
@@ -250,7 +250,7 @@ With 0.1 µF: **225** kHz and **88.4**° at 100 µA, but **13.0** MHz and **31.2
 
 At 100 µA, $k$ = 1: **64.6** dB.
 
-**Sanity check.** The 13.6 dB difference is $20\log[(g_{mp} + g_{ds})/g_{ds}]$, the pass device's intrinsic gain plus one, about 4.8 at full load (where $g_{mp}r_{ds}$ = 3.76). Rejection improves at 10 MHz because the capacitor shorts the output; it is worse at full load because $r_{ds}$ is smallest there.
+**Sanity check.** The 13.6 dB difference is $20\log_{10}[(g_{mp} + g_{ds})/g_{ds}]$, the pass device's intrinsic gain plus one, about 4.8 at full load (where $g_{mp}r_{ds}$ = 3.76). Rejection improves at 10 MHz because the capacitor shorts the output; it is worse at full load because $r_{ds}$ is smallest there.
 
 ### Example 20-04.6 · A large load step (tier C)
 
@@ -391,9 +391,9 @@ The lab ([labs/20-04-lab](../labs/20-04-lab/README.md)) implements the running d
 | Efficiency bound | $V_{out}/V_{in}$ | exact; times the current efficiency $I_L/(I_L + I_Q)$ |
 | PMOS LDO dropout at rated current (as of Nov 2026) | about 100–300 mV | TI TPS7A20: 140 mV max at 300 mA; TLV755P: 215 mV max at 500 mA; TPS7A83A: 200 mV max at 2 A [R-330] |
 | Quiescent current of discrete LDOs (as of Nov 2026) | 25 nA to 15 mA | TPS7A02 nanopower (25 nA typ) to TPS7A94 ultra-low-noise (15 mA ground current) [R-330] |
-| PSRR of good discrete LDOs (as of Nov 2026) | 55–110 dB at 1 kHz; about 45–50 dB at 1 MHz | TPS7A20: 45 dB at 1 MHz (20 mA); TPS7A94: 51 dB at 1 MHz (750 mA) [R-330] |
+| PSRR of good discrete LDOs (as of Nov 2026) | 55–110 dB at 1 kHz; about 45–52 dB at 1 MHz | TPS7A20: 45 dB at 1 MHz (20 mA); TPS7A94: 51 dB at 1 MHz (750 mA); TLV755P: 52 dB [R-330] |
 | Output noise, 10 Hz–100 kHz (as of Nov 2026) | 0.46 µVrms to 130 µVrms | TPS7A94 vs TPS7A02 [R-330] |
-| Minimum output capacitor, discrete LDOs | 1 µF (general purpose) to 10–22 µF (high current, low noise) | data-sheet requirements [R-330] |
+| Minimum output capacitor, discrete LDOs | 1 to 22 µF depending on the part (the lowest-noise part cited needs only 4.7 µF) | data-sheet requirements [R-330] |
 | On-chip output capacitance | tens of pF to about 1 nF | 100 pF (Milliken et al., 2007), 0.6 nF (Hazucha et al., 2005) [R-328] |
 | Response time $C\Delta V/\Delta I$ of a fast on-chip LDO | about 0.5 ns | 0.54 ns: 90 mV droop, 100 mA step, 0.6 nF, 90 nm (Hazucha et al., 2005) [R-328] |
 | Processor digital LDO current density (as of Nov 2026) | tens to hundreds of A/mm² | 40 A/mm² (5 nm, 2021), 263 A/mm² (3 nm, 2024) [R-329] |
@@ -412,9 +412,9 @@ The lab ([labs/20-04-lab](../labs/20-04-lab/README.md)) implements the running d
 
 ### State of the art (as of Nov 2026)
 
-- **The classic designs [Established].** Rincón-Mora and Allen (1998) built a CMOS LDO that runs from a 1 V input with 23 µA of zero-load quiescent current, by exploiting the load dependence of the loop's poles that §3.4 derived [1]. Hazucha et al. (2005) put a regulator for a microprocessor on a 90 nm die: 1.2 V in, 0.9 V out, 0.54 ns response time with 0.6 nF of on-chip capacitance, a 90 mV droop for a 100 mA step, and 94% current efficiency [2]. Milliken et al. (2007) removed the external capacitor entirely, stable from 0 to 50 mA with up to 100 pF of load [3]. Okuma et al. (2010) replaced the error amplifier with digital control to regulate from a 0.5 V input at 2.7 µA quiescent current [4]; it is widely cited as the first digital LDO, though earlier digitally controlled linear regulators exist [R-328].
-- **Research has moved to supply rejection and speed without a capacitor [Established].** Feed-forward ripple cancellation reached more than 60 dB of PSRR over a 10 MHz range and a 100 mA load range (Jiang, Shu and Chang, 2018); an adaptive ripple-cancellation capless design kept PSR better than −36 dB from 10 kHz to 1 GHz with 240 pF (Lim et al., 2018). A digitally assisted 500 mA capless LDO with 250 pF dips 55 mV for a 450 mA step with 100 ns edges at 120 µA quiescent current (Chen, Lu and Mok, 2021) [5], [R-328].
-- **Processors regulate per core [Established for the existence; details mostly not public].** AMD's Zen core paper states that "each core has a digital low drop-out (LDO) voltage regulator" for per-core voltage and frequency (ISSCC 2017) [6]. IBM's POWER8 uses distributed, digitally controlled microregulators that function as a fast LDO, with 90.5% peak efficiency, "only 3.1% worse than an ideal LDO," and a bypass mode at maximum performance [6]. Intel and Samsung circuit papers report on-die LDOs up to 4 A (Intel 4, 2022) and a 10 A digital LDO at 263 A/mm² in a 3 nm GAAFET process (2024), but do not name shipping products [R-329]. Their measured performance in products is not public **[Contested]**.
+- **The classic designs [Established].** Rincón-Mora and Allen (1998) built a CMOS LDO that runs from a 1 V input with 23 µA of zero-load quiescent current, by exploiting the load dependence of the loop's poles that §3.4 derived [1]. Hazucha et al. (2005) put a regulator on a 90 nm die: 1.2 V in, 0.9 V out, 0.54 ns response time with 0.6 nF of on-chip capacitance, a 90 mV droop for a 100 mA step, and 94% current efficiency [2]. Milliken et al. (2007) removed the external capacitor entirely, stable from 0 to 50 mA with up to 100 pF of load [3]. Okuma et al. (2010) replaced the error amplifier with digital control to regulate from a 0.5 V input at 2.7 µA quiescent current [4]; it is widely cited as the first digital LDO, though earlier digitally controlled linear regulators exist [R-328].
+- **Research has moved to supply rejection and speed without a capacitor [Established].** Feed-forward ripple cancellation reached more than 60 dB of PSRR over a 10 MHz range and a 100 mA load range (Jiang, Shu and Chang, 2018); a capless design kept PSR better than −36 dB from 10 kHz to 1 GHz with 240 pF (Lim et al., 2018). A 500 mA capless LDO with 250 pF dips 55 mV for a 450 mA step with 100 ns edges at 120 µA quiescent current (Chen, Lu and Mok, 2021) [5], [R-328].
+- **Processors regulate per core [Established; the details are mostly not public].** AMD's Zen core paper states that "each core has a digital low drop-out (LDO) voltage regulator" for per-core voltage and frequency (ISSCC 2017) [6]. IBM's POWER8 uses distributed, digitally controlled microregulators that function as a fast LDO, with 90.5% peak efficiency, "only 3.1% worse than an ideal LDO," and a bypass mode at maximum performance [6]. Intel and Samsung circuit papers report on-die LDOs up to 4 A (Intel 4, 2022) and a 10 A digital LDO at 263 A/mm² in a 3 nm GAAFET process (2024), but do not name shipping products [R-329]. Their measured performance in products is not public, so it cannot be checked.
 - **Discrete LDOs span six orders of magnitude in quiescent current [Established].** TI's TPS7A02 idles at 25 nA with 130 µVrms of noise; the TPS7A94 reaches 0.46 µVrms and 110 dB at 1 kHz, but draws 15 mA of ground current at light load (data sheets revised 2022–2026) [7].
 
 ### Why it matters commercially
@@ -427,7 +427,7 @@ LDOs are the most common power block on a mixed-signal chip and among the most c
 - **"Ultra-low noise."** The 0.46 µVrms part draws 15 mA of ground current [7]. Low noise is bought with current, like everything in analog (20-01).
 - **"25 nA quiescent current."** At no load. The same part's PSRR is 55 dB at 1 kHz and its noise 130 µVrms [7]. Fine for a sensor hub, not for a PLL supply.
 - **Monotonic PSRR curves.** The TLV755P's PSRR is 52 dB at 1 kHz, 46 dB at 100 kHz and 52 dB at 1 MHz [7]: the dip where the loop gain has fallen but the output capacitor has not yet taken over, as §3.5 predicts.
-- **Transient figures of merit.** Response time $C\Delta V/\Delta I$ and quiescent-current-weighted FoMs are defined differently from paper to paper; recomputing one recent paper's FoM from its abstract with the common formula gives 0.0082 ps against the 0.0073 ps it reports [R-328]. Compare the raw numbers instead: $\Delta I$, edge rate, droop, on-chip capacitance and $I_Q$.
+- **Transient figures of merit.** Response time $C\Delta V/\Delta I$ and quiescent-current-weighted FoMs are defined differently from paper to paper (R-328 records that their origin is unverified), so the same design can score differently under two definitions. Compare the raw numbers instead: $\Delta I$, edge rate, droop, on-chip capacitance and $I_Q$.
 - **Sanity check.** Efficiency is at most $V_{out}/V_{in}$ whatever the brochure says; droop is at least $\Delta I\,t_{resp}/C$; and a stability claim without a load range and an output-capacitor range (after DC-bias derating) is incomplete.
 
 ### Questions for engineering leaders
@@ -476,7 +476,7 @@ If the gate is fixed relative to ground, supply ripple appears directly as $v_{s
 
 <details><summary>Answer</summary>
 
-Rejection is the injection divided by $1 + L$. Above the error amplifier's dominant pole the loop gain falls while the injection does not, so the ripple reaching the output grows until the crossover. Above the crossover the output capacitor shorts the ripple and rejection improves again.
+Rejection is the injection divided by $1 + L$. Above the error amplifier's pole $p_a$ the loop gain falls while the injection does not, so the ripple reaching the output grows until the crossover. Above the crossover the output capacitor shorts the ripple and rejection improves again.
 
 </details>
 

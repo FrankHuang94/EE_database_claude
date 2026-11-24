@@ -34,7 +34,7 @@ Files:
 
 ## Expected results
 
-- **Part 1.** At $(g_m/I_D)_6$ = 6 S/A the optimum $C_c$ barely moves (**0.672** pF), but the total current rises to **262.0** µA: a faster but less efficient M6 costs more current than its smaller gate saves. With the slew condition enforced, the minimum is at $(g_m/I_D)_6$ ≈ **18** S/A and $C_c$ ≈ **0.92** pF, at **136** µA, **23**% below Example 20-02.3. Beyond it, the slew condition forces a larger $C_c$ and the current rises again.
+- **Part 1.** At $(g_m/I_D)_6$ = 6 S/A the optimum $C_c$ barely moves (**0.672** pF), but the total current rises to **262.0** µA: a faster but less efficient M6 costs more current than its smaller gate saves. With the slew condition enforced, the minimum is at $(g_m/I_D)_6$ ≈ **18** S/A and $C_c$ ≈ **0.92** pF, at **136** µA, **23**% below Example 20-02.3. The notebook's grid (1 S/A and 2 fF steps) lands on 18 S/A exactly and prints **0.932** pF; the continuous optimum sits at **17.9** S/A with 0.92 pF, for the same 136 µA. Beyond it, the slew condition forces a larger $C_c$ and the current rises again.
 - **Part 2.** The ngspice crossovers and margins match Example 20-02.4 to the fourth digit.
 - **Part 3.** Both edges slew at **32.7** V/µs, not 34.9 V/µs.
 - **Part 4.** PSRR⁻ is **69.18** dB at 1 kHz and **33.72** dB at 1 MHz, within a hundredth of a decibel of the open-loop PSRR of §3.10 (the follower's loop gain is large at both frequencies).
@@ -85,3 +85,5 @@ A discrete two-stage op-amp can be built from CMOS transistor arrays (for exampl
 | Lab 20-02.v | A_2 correction factor 1 + 1/A_2 | 1.05 | — |
 | Lab 20-02.w | p3 estimate g_m6/C_1 at 18 S/A | 0.98 | GHz |
 | Lab 20-02.y | shortfall of the simulation against the steady-ramp estimate | 1.6 | % |
+| Lab 20-02.x | continuous slew-constrained optimum (g_m/I_D)_6 | 17.9 | S/A |
+| Lab 20-02.z | notebook grid C_c at 18 S/A | 0.932 | pF |

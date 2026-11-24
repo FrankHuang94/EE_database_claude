@@ -83,7 +83,7 @@ $$
 This is the linear-bandgap form of Tsividis's expression [1]. Three facts follow.
 
 - **A straight line from $V_{g0}$.** The first two terms are a line falling from $V_{g0}$ at 0 K through $V_{BE0}$ at $T_0$. Its slope, $-(V_{g0} - V_{BE0})/T_0$, depends on $V_{BE0}$, hence on the current density and the process.
-- **A curvature term.** The last term is $(\eta - m)V_T\ln(T/T_0)$, zero at $T_0$ with zero slope there, and concave. It vanishes only if the bias current rises as $T^\eta$.
+- **A curvature term.** The last term, $-(\eta - m)V_T\ln(T/T_0)$, is zero at $T_0$, contributes $-(\eta - m)k/q$ to the slope there (included in the next bullet), and is concave: its second derivative is $-(\eta - m)k/(qT)$. It vanishes only if the bias current rises as $T^\eta$.
 - **The slope at $T_0$.** Differentiating, $dV_{BE}/dT|_{T_0} = [V_{BE0} - V_{g0} - (\eta - m)V_{T0}]/T_0$, 09-06's result generalized to a temperature-dependent current.
 
 Units check: every term is a voltage; $V_T\ln(T/T_0)$ is V × dimensionless. ✓
@@ -164,7 +164,7 @@ $$
 I R_1 = V_{BE1} - V_{BE2} = V_T\ln N \quad\Rightarrow\quad I = \frac{V_T\ln N}{R_1}, \qquad V_{REF} = V_{BE1} + \frac{R_2}{R_1}\,V_T\ln N .
 $$
 
-The bias current is PTAT ($m$ = 1) if $R_1$ has no temperature coefficient, and the gain is $K = R_2/R_1$, a ratio of like resistors that matches to a fraction of a percent and has no temperature coefficient to first order. The output does not depend on the resistors' absolute value or their temperature coefficient, only on their ratio; the absolute value sets the current and power.
+The bias current is PTAT ($m$ = 1) if $R_1$ has no temperature coefficient, and the gain is $K = R_2/R_1$, a ratio of like resistors that matches to a fraction of a percent and has no temperature coefficient to first order. The gain depends only on that ratio. The junction current $V_T\ln N/R_1$, however, depends on $R_1$'s absolute value and temperature coefficient, and both reach the output through $V_{BE1}$. An absolute error shifts $V_{BE1}$ by $-V_T\ln(R_1/R_{1,nom})$, which is PTAT and trimmed out like an $I_S$ error (−4.7 mV for resistors 20% high). A resistor temperature coefficient makes the current non-PTAT ($m \ne 1$), which changes the slope at $T_c$: in this design, resistors of +2000 ppm/K move the output by **−6.28** mV at 400 K and raise the box TC from 9.10 to **44.3** ppm/K, unless $K$ is re-chosen for the actual $m$ (Problem 20-03.8). The absolute value also sets the current and power.
 
 **Other topologies.** The earliest references used bipolar transistors only. Widlar's 1971 paper introduced the temperature-compensated reference "with numerous advantages over zener diodes" [2]; Kuijk's 1973 source used an op-amp and noted that the output is temperature-independent when the sum "equals the gap voltage of silicon" [3]; Brokaw's 1974 three-terminal 2.5 V cell sensed the two collector currents directly and reported 5 ppm/°C over the military temperature range [4]. CMOS versions use the substrate PNP because it is free in any process, at the price of its grounded collector, which forces the diode connection above.
 
@@ -174,9 +174,15 @@ A reference's output error has three main sources. The key question is the shape
 
 **Saturation-current spread (PTAT error).** If every PNP's $I_S$ is a factor $(1 + \varepsilon)$ off (a process shift), every $V_{BE}$ moves by $-V_T\ln(1 + \varepsilon)$ at fixed current, while $\Delta V_{BE}$ and hence the current are unchanged. The output error $-V_T(T)\ln(1 + \varepsilon)$ is PTAT. The PTAT term $KV_T\ln N$ has exactly the same shape, so adjusting $K$ (trimming $R_2$) to restore the magic voltage at *one* temperature cancels the error at *every* temperature. This is why bandgaps are trimmed to their magic voltage at room temperature during test: one measurement fixes both the value and the slope. Ge, Zhang, Hoogzaad and Makinwa built a reference on exactly this argument: after chopping and higher-order curvature correction, the residual error "is mainly PTAT, and can be removed by a single room temperature trim", and they reported ±0.15% (3σ) from −40 to 125 °C [6].
 
-**Op-amp offset (constant error).** An input offset $V_{os}$ adds to $\Delta V_{BE}$ across $R_1$, so the PTAT term becomes $(R_2/R_1)(V_T\ln N \pm V_{os})$ and the output shifts by about $(1 + R_2/R_1)V_{os}$ (the extra 1 from $V_{BE}$'s response to the changed current), with a gain of about 12 here. This error is nearly constant in temperature. Trimming it away by adjusting $K$ converts a constant error into a PTAT one: the trimmed output is exact at the trim temperature and wrong everywhere else (Example 20-03.3). Offset must therefore be made small *before* trimming: large input devices, careful layout and, in precision references, chopping (20-11).
+**Op-amp offset (constant error).** An input offset $V_{os}$ adds to $\Delta V_{BE}$ across $R_1$. Linearize the circuit: each junction carrying $I$ is a resistance $r_e = V_T/I$, node A sits at $V_{out}r_e/(R_2 + r_e)$, node B at $V_{out}(R_1 + r_e)/(R_2 + R_1 + r_e)$, and the op-amp holds them $V_{os}$ apart. Solving,
 
-![Two panels of reference output error against temperature: on the left, a 30 percent saturation-current error shifts the curve down by about 7 millivolts and trimming at 27 degrees puts it exactly back on the nominal arch; on the right, a 1 millivolt offset shifts the curve down by about 13 millivolts, and trimming at 27 degrees tilts it, leaving errors of minus 5 to plus 2.4 millivolts at the ends](../../../assets/figures/20-03/trim.svg)
+$$
+\left\lvert\frac{\Delta V_{REF}}{V_{os}}\right\rvert = \frac{R_2}{R_1}\left(1 + \frac{r_e}{R_2}\right)^2 + \left(1 + \frac{r_e}{R_2}\right) \approx 1 + \frac{R_2}{R_1} ,
+$$
+
+the non-inverting gain of the $R_2$–$R_1$ network (the 1 comes from the $V_{os}/R_2$ imbalance between the two feeds), raised about 9% by the junctions: **12.75** here, against $1 + K$ = 11.72. This error is nearly constant in temperature. Trimming it away by adjusting $K$ converts a constant error into a PTAT one: the trimmed output is exact at the trim temperature and wrong everywhere else (Example 20-03.3). Offset must therefore be made small *before* trimming: large input devices, careful layout and, in precision references, chopping (20-11).
+
+![Two panels of reference output error against temperature: on the left, a 30 percent saturation-current error shifts the curve down by about 7 millivolts and trimming at 27 degrees puts it exactly back on the nominal arch; on the right, a 1 millivolt offset shifts the curve down by about 13 millivolts, and trimming at 27 degrees tilts it, leaving errors of about minus 4.7 to plus 2.4 millivolts at the ends relative to the 27 degree nominal](../../../assets/figures/20-03/trim.svg)
 
 *Figure 4. Example 20-03.3's two errors before and after a one-temperature trim. A PTAT error (left) is removed at every temperature; a constant error (right) is removed only at the trim temperature, and the trim adds a slope.*
 
@@ -202,13 +208,13 @@ the ordinary bandgap voltage scaled by $R_3/R_2$, which can be any value. With $
 
 **Two operating points.** Every reference in this chapter is **self-biased**: its currents are set by its own output. Such loops have a second solution with every current at zero. In Figure 3, $V_{REF}$ = 0 gives zero current in both branches, $V_A = V_B$ = 0, and an op-amp output of zero: perfectly consistent. Which state the circuit settles into after power-up depends on how the supply ramps. A **startup circuit** injects current when it detects the dead state (for example a transistor that pulls the output or a bias node up while $V_{REF}$ is below a threshold) and must then turn off completely, because any current it leaks in normal operation adds an error.
 
-**The β-multiplier.** The simplest self-biased current reference uses two NMOS transistors, M1 and M2, with M2 $K$ times wider and a resistor $R$ in its source, and a 1:1 PMOS mirror forcing equal currents. M1 is diode-connected; both gates are at the same voltage. In weak inversion the drain current is proportional to $\exp[(V_P - V_S)/V_T]$ (20-01, with the bulk at ground, so the source voltage enters with unit coefficient). Equal currents through devices of widths 1 and $K$ require
+**The β-multiplier.** The simplest self-biased current reference uses two NMOS transistors, M1 and M2, with M2 $M$ times wider and a resistor $R$ in its source, and a 1:1 PMOS mirror forcing equal currents. M1 is diode-connected; both gates are at the same voltage. In weak inversion the drain current is proportional to $\exp[(V_P - V_S)/V_T]$ (20-01, with the bulk at ground, so the source voltage enters with unit coefficient). Equal currents through devices of widths 1 and $K$ require
 
 $$
-e^{V_P/V_T} = K\,e^{(V_P - IR)/V_T} \quad\Rightarrow\quad I = \frac{V_T\ln K}{R} .
+e^{V_P/V_T} = M\,e^{(V_P - IR)/V_T} \quad\Rightarrow\quad I = \frac{V_T\ln M}{R} .
 $$
 
-The current is PTAT and independent of the MOSFET parameters, the MOS analogue of $\Delta V_{BE}$. (If M2 sits in its own well tied to its source, the source voltage enters as $1/n$ of the gate's and the result becomes $nV_T\ln K/R$.) It too has a zero-current state, and needs a startup circuit. Its moderate-inversion correction follows from 20-01's full model (Example 20-03.6).
+The current is PTAT and independent of the MOSFET parameters, the MOS analogue of $\Delta V_{BE}$. (If M2 sits in its own well tied to its source, the source voltage enters as $1/n$ of the gate's and the result becomes $nV_T\ln M/R$.) In weak inversion M1's transconductance is $g_m = I/(nV_T) = \ln M/(nR)$, independent of temperature for a zero-TC resistor: this is the **constant-$g_m$ bias** of 20-01. It too has a zero-current state, and needs a startup circuit. Its moderate-inversion correction follows from 20-01's full model (Example 20-03.6).
 
 ### 3.8 Curvature compensation
 
@@ -222,7 +228,7 @@ a pure "$T\ln T$" term. Adding α times this difference to the reference changes
 
 ### 3.9 Noise, supply rejection and long-term stability
 
-- **Noise.** The op-amp's input noise sits in series with $\Delta V_{BE}$ and reaches the output with the same gain as its offset, $1 + R_2/R_1$ ≈ 12 here; flicker noise dominates the 0.1–10 Hz band that precision data sheets specify. Larger $N$ and larger $\Delta V_{BE}$ (stacked junctions) reduce that gain; chopping removes the op-amp's flicker noise along with its offset.
+- **Noise.** The op-amp's input noise sits in series with $\Delta V_{BE}$ and reaches the output with the same gain as its offset, about $1 + R_2/R_1$ (12.75 here, §3.5); flicker noise dominates the 0.1–10 Hz band that precision data sheets specify. Larger $N$ and larger $\Delta V_{BE}$ (stacked junctions) reduce that gain; chopping removes the op-amp's flicker noise along with its offset.
 - **Supply rejection.** The op-amp's loop gain suppresses supply ripple at low frequency; at high frequency an output capacitor (or a pre-regulated supply) takes over, much as in an LDO (20-04).
 - **Stability over time.** Mechanical stress from the package and from soldering shifts junction voltages; data sheets specify long-term drift (ppm per 1000 h) and thermal hysteresis (the output's change after a temperature cycle) separately from the TC.
 
@@ -272,9 +278,9 @@ All examples use the T130 PNP of §3 ($I_{S0}$ = 2 × 10⁻¹⁷ A per unit devi
 
 **Solution.**
 
-(a) Every $V_{BE}$ falls by $V_T\ln 1.3$ while the current is unchanged: the output error is **−6.78** mV at 300 K, a PTAT error with slope **−22.6** µV/K. Untrimmed, the box TC is **20.6** ppm/K. Raising $R_2$ by **1.18**% restores 1.25463 V at 300 K, and because the error was PTAT, the trimmed curve matches the nominal one at every temperature (to within nanovolts): box TC **9.10** ppm/K again.
+(a) Every $V_{BE}$ falls by $V_T\ln 1.3$ while the current is unchanged: the output error is **−6.78** mV at 300 K, a PTAT error with slope **−22.6** µV/K. Untrimmed, the box TC is **20.6** ppm/K (normalized, like every box TC here, to the nominal 1.25463 V). Raising $R_2$ by **1.18**% restores 1.25463 V at 300 K, and because the error was PTAT, the trimmed curve matches the nominal one at every temperature (to within nanovolts): box TC **9.10** ppm/K again.
 
-(b) The offset reduces the voltage across $R_1$: the output becomes **1.24187** V, an error of **−12.76** mV, about $(1 + R_2/R_1)$ = **11.7** times the offset plus a little from $V_{BE}$. Because the error is nearly constant, the untrimmed curve keeps its shape (box TC **9.12** ppm/K). Trimming $R_2$ to **117.8** kΩ restores 1.25463 V at 300 K, but adds a PTAT slope: the output is now **4.26** mV high at 125 °C and **2.90** mV low at −40 °C, and the box TC is **34.6** ppm/K, almost four times worse.
+(b) The offset reduces the voltage across $R_1$: the output becomes **1.24187** V, an error of **−12.76** mV: the 12.75 offset gain of §3.5, that is $1 + R_2/R_1$ = **11.7** plus about 1 from the junctions. Because the error is nearly constant, the untrimmed curve keeps its shape (box TC **9.12** ppm/K). Trimming $R_2$ to **117.8** kΩ restores 1.25463 V at 300 K, but adds a PTAT slope: the output is now **4.26** mV high at 125 °C and **2.90** mV low at −40 °C, and the box TC is **34.6** ppm/K, almost four times worse.
 
 **Sanity check.** A one-temperature trim targets the right *value* only if the error has the shape of the trim knob. Production references therefore minimize offset first (chopping, large devices) and trim second.
 
@@ -304,7 +310,7 @@ All examples use the T130 PNP of §3 ($I_{S0}$ = 2 × 10⁻¹⁷ A per unit devi
 
 ### Example 20-03.6 · A β-multiplier current reference (tier B)
 
-**Setup.** A β-multiplier in T130 has M1 with $W/L$ = 10, M2 with $K$ = 4 times the width, $R$ = 100 kΩ, bulks at ground. Find (a) the weak-inversion estimate of the current, (b) the exact current from 20-01's long-channel charge-based model and M1's inversion coefficient, (c) the current at 125 °C and at −40 °C (with μ held constant), and compare with a PTAT scaling.
+**Setup.** A β-multiplier in T130 has M1 with $W/L$ = 10, M2 with $M$ = 4 times the width, $R$ = 100 kΩ, bulks at ground. Find (a) the weak-inversion estimate of the current, (b) the exact current from 20-01's long-channel charge-based model and M1's inversion coefficient, (c) the current at 125 °C and at −40 °C (with μ held constant), and compare with a PTAT scaling.
 
 **Solution.**
 
@@ -404,6 +410,9 @@ All examples use the T130 PNP of §3 ($I_{S0}$ = 2 × 10⁻¹⁷ A per unit devi
 | Txt 20-03.v | magic voltage from Tsividis' fits, high | 1.242 | V |
 | Txt 20-03.w | Banba measured output | 518 | mV |
 | Txt 20-03.x | 3 ppm/K over 165 K | 495 | ppm |
+| Txt 20-03.y | output shift at 400 K, +2000 ppm/K resistors | −6.28 | mV |
+| Txt 20-03.z | box TC with +2000 ppm/K resistors | 44.3 | ppm/K |
+| Txt 20-03.aa | offset gain, exact | 12.75 | — |
 
 ## 5. Simulate it
 
@@ -443,16 +452,16 @@ The lab ([labs/20-03-lab](../labs/20-03-lab/README.md)) implements the device mo
 | Single-trim CMOS bandgaps (as of Nov 2026) | ±0.15% to +0.02%/−0.12% (3σ), −40 to 125 °C | published JSSC results [R-326] |
 | Commercial precision references (as of Nov 2026) | ±0.025–0.05% initial, 2–3 ppm/°C | TI REF7025, REF5025 data sheets [R-327] |
 | Commercial low-power references (as of Nov 2026) | ±0.05%, 6–12 ppm/°C at 72 µA to 0.65 µA | TI REF3425, REF35250 [R-327] |
-| Long-term drift | 10–75 ppm per 1000 h | data-sheet values, package dependent [R-327] |
+| Long-term drift | about 20–40 ppm in the first 1000 h (REF5025 22 ppm, REF3425 25 ppm, REF35250 40 ppm) | data-sheet values, package dependent [R-327] |
 
 ## 8. Common mistakes
 
 - **Treating $V_{BE}$'s temperature coefficient as a constant.** It depends on the current density and on how the bias current varies with temperature (§3.1); −2 mV/K is a rough value, not a law.
 - **Forgetting the curvature.** No choice of $K$ makes a first-order bandgap flat; the best it can do is place the arch's peak. Quoting a "zero-TC" design without a range is meaningless.
 - **Trimming every error the same way.** A one-temperature trim to the magic voltage removes PTAT errors exactly but turns an offset into a slope (Example 20-03.3).
-- **Ignoring the op-amp.** Its offset and flicker noise appear at the output multiplied by $1 + R_2/R_1$; the op-amp is often the dominant error source, not the bipolar transistors.
+- **Ignoring the op-amp.** Its offset and flicker noise appear at the output multiplied by about $1 + R_2/R_1$; the op-amp is often the dominant error source, not the bipolar transistors.
 - **No startup circuit, or one that never turns off.** Self-biased references have a zero-current state; a startup device that leaks in normal operation shifts the output.
-- **Assuming the resistors' absolute value matters.** It sets the current; the output depends only on ratios, which is why references are stable despite ±20% resistor tolerance.
+- **Assuming resistors matter only through their ratio.** The gain is a ratio, but $R_1$'s absolute value and temperature coefficient set the junction current: the absolute error is PTAT and trimmable, the temperature coefficient bends the curve and is not.
 - **Reading box-method TC as a slope.** It bounds the variation over the stated range only; outside the range, or for a different range, it says nothing.
 
 ## 9. Practitioner lens
@@ -460,13 +469,13 @@ The lab ([labs/20-03-lab](../labs/20-03-lab/README.md)) implements the device mo
 ### State of the art (as of Nov 2026)
 
 - **The principle is fifty years old and still universal [Established].** Widlar (1971), Kuijk (1973) and Brokaw (1974) established the bandgap; Brokaw's three-terminal 2.5 V cell reported 5 ppm/°C over the military range [2]–[4]. Every reference in this chapter is a refinement of their circuits.
-- **Precision now comes from trimming and correction, not from untrimmed accuracy [Established].** Published CMOS bandgaps reach ±0.15% (3σ) from −40 to 125 °C with one room-temperature trim, using chopping and curvature correction (Ge et al., 2011) [6], and +0.02%/−0.12% (3σ) over the same range with a switched-capacitor design (Boo et al., 2021), at 17 µA from 1.8 V [R-326]. A 7 nm FinFET bandgap reports ±0.2% and 6 ppm/°C from −45 to 125 °C (Kamath et al., 2019) [R-326]: the parasitic bipolar transistor survives in FinFET processes.
-- **Ultra-low-power references trade accuracy for picowatts [Established].** A subthreshold MOS reference for IoT systems runs at 35 pW from 1.4 V with ±1.0% (3σ) from 0 to 100 °C after one trim (Lee, Sylvester and Blaauw, 2017); a 192 pW bandgap-minus-threshold hybrid reports an untrimmed process variation of 0.53% across 45 chips (Ji et al., 2019) [R-326].
+- **Precision now comes from trimming and correction, not from untrimmed accuracy [Established].** Published CMOS bandgaps reach ±0.15% (3σ) from −40 to 125 °C with one room-temperature trim, using chopping and curvature correction (Ge et al., 2011) [6], and +0.02%/−0.12% (3σ) over the same range (Boo et al., 2021), at 17 µA from 1.8 V [R-326]. A 7 nm FinFET bandgap reports ±0.2% and 6 ppm/°C from −45 to 125 °C (Kamath et al., 2019) [R-326]: the parasitic bipolar transistor survives in FinFET processes.
+- **Ultra-low-power references trade accuracy for picowatts [Established].** A subthreshold MOS reference for IoT systems runs at 35 pW from 1.4 V with ±1.0% (3σ) from 0 to 100 °C after one trim (Lee, Sylvester and Blaauw, 2017); a 192 pW reference reports an untrimmed process variation of 0.53% across 45 chips (Ji et al., 2019) [R-326].
 - **Commercial parts span four orders of magnitude in current [Established].** TI's REF7025 specifies ±0.025% and 2 ppm/°C (−40 to 125 °C) and 0.23 ppm p-p noise at 4 mA typical; the REF5025 ±0.05% and 3 ppm/°C at 0.8 mA; the REF3425 ±0.05% and 6 ppm/°C at 72 µA; the nanopower REF35250 ±0.05% and 12 ppm/°C (−40 to 105 °C) at 0.65 µA (typical currents, maximum accuracy and TC; data sheets revised 2023–2026) [R-327].
 
 ### Why it matters commercially
 
-A reference is a small block whose errors are multiplied by everything downstream. In a battery-management IC, the reference's accuracy is the state-of-charge accuracy: Boo et al. designed theirs for battery monitoring [R-326]. In an automotive sensor interface, the reference's drift over the vehicle's life is a warranty cost. In an AI accelerator, dozens of on-die references set the regulators, sensors and SerDes biases, and their supply rejection and noise couple into clock jitter and supply margins. A design team's ability to trim once, at room temperature, and still meet the specification over temperature decides test cost per unit, which matters as much as silicon area at high volume.
+A reference is a small block whose errors are multiplied by everything downstream. In a battery-management IC, the reference's accuracy is the state-of-charge accuracy: In an automotive sensor interface, the reference's drift over the vehicle's life is a warranty cost. In an AI accelerator, dozens of on-die references set the regulators, sensors and SerDes biases, and their supply rejection and noise couple into clock jitter and supply margins. A design team's ability to trim once, at room temperature, and still meet the specification over temperature decides test cost per unit, which matters as much as silicon area at high volume.
 
 ### Marketing vs Reality
 
@@ -542,11 +551,11 @@ The correction cancels a term proportional to η − 1, and the residual is prop
 
 </details>
 
-**Q8.** In a β-multiplier with the bulk grounded, why is the weak-inversion current $V_T\ln K/R$ rather than $nV_T\ln K/R$?
+**Q8.** In a β-multiplier with the bulk grounded, why is the weak-inversion current $V_T\ln M/R$ rather than $nV_T\ln M/R$?
 
 <details><summary>Answer</summary>
 
-With the bulk at ground, raising M2's source by $IR$ reduces its channel charge exactly as $(V_P - V_S)/V_T$, with unit coefficient (the body effect). Only the gate's influence is divided by $n$. If M2's bulk were tied to its source, the source voltage would act through the gate-source voltage instead, giving $nV_T\ln K/R$.
+With the bulk at ground, raising M2's source by $IR$ reduces its channel charge exactly as $(V_P - V_S)/V_T$, with unit coefficient (the body effect). Only the gate's influence is divided by $n$. If M2's bulk were tied to its source, the source voltage would act through the gate-source voltage instead, giving $nV_T\ln M/R$.
 
 </details>
 

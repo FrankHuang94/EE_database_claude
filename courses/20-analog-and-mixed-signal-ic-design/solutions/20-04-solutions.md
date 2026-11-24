@@ -71,7 +71,7 @@ The estimate $A_{EA}\beta g_{mp}/(2\pi C_L)$ = 100 × 0.5 × 0.3136/(2π × 0.40
 
 (a) The ESR zero is $1/(2\pi R_{ESR}C_L)$ = 1/(2π × 0.5 Ω × 1 µF) = **318** kHz. The crossover moves to **54.9** MHz with a phase margin of **82.4**°.
 
-Above the zero, $Z_{out}$ stops falling and flattens at the ESR. The loop gain then flattens at $A_{EA}\beta g_{mp}R_{ESR}$ = 100 × 0.5 × 0.3136 × 0.5 = **7.84**, and stays there until the error amplifier's pole rolls it off. It crosses unity near 7.84 × 7.96 MHz, lowered somewhat by the gate pole: the loop has become an error-amplifier-dominant loop with a crossover above 50 MHz.
+Above the zero, $Z_{out}$ stops falling and flattens at $R_{out} \parallel R_{ESR}$ = 6.00 Ω ∥ 0.5 Ω = 0.462 Ω. The loop gain then flattens at $A_{EA}\beta g_{mp}(R_{out} \parallel R_{ESR})$ = 100 × 0.5 × 0.3136 × 0.462 = **7.24**, and stays there until the error amplifier's pole rolls it off. It crosses unity near 7.24 × 7.96 MHz ≈ 58 MHz, lowered by the gate pole to 54.9 MHz: the loop has become an error-amplifier-dominant loop with a crossover above 50 MHz.
 
 (b) With a 30 MHz parasitic pole:
 
@@ -218,7 +218,7 @@ PSRR suffers because, from §3.5, the rejection degrades from $p_a$ up to the cr
 | 20-04.7a | ESR zero | 318 | kHz |
 | 20-04.7b | crossover, 0.5 ohm ESR | 54.9 | MHz |
 | 20-04.7c | PM, 0.5 ohm ESR | 82.4 | ° |
-| 20-04.7d | flat loop gain | 7.84 | — |
+| 20-04.7d | flat loop gain above the ESR zero | 7.24 | — |
 | 20-04.7e | crossover, 5 mohm, 30 MHz pole | 2.39 | MHz |
 | 20-04.7f | PM, 5 mohm, 30 MHz pole | 73.0 | ° |
 | 20-04.7g | crossover, 0.5 ohm, 30 MHz pole | 35.6 | MHz |

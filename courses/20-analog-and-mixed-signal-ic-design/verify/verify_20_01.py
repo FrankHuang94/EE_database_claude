@@ -99,6 +99,11 @@ v.check("Txt 20-01.n", 1 / (1.4 * VT300))
 v.check("Txt 20-01.o", 1 / (1.2 * VT300))
 v.check("Txt 20-01.p", 4 * VT300 * 1e3)
 v.check("Txt 20-01.q", 3.9 * 8.8541878128e-12 / 4.148e-9 * 1e3)
+# section 3.7: long-channel g_m/I_D ratio between IC = 0.03 and IC = 0.3 (q from q^2 + q = IC by root-finding)
+q_of = lambda ic: brentq(lambda q: q * q + q - ic, 1e-9, 10.0, xtol=1e-15)
+v.check("Txt 20-01.r", 100 * ((1 + q_of(0.3)) / (1 + q_of(0.03)) - 1))
+# weak inversion: I_D ~ 1 - exp(-V_DS/V_T) reaches 98% of saturation at V_DS = V_T ln 50
+v.check("Txt 20-01.s", brentq(lambda x: 1 - math.exp(-x) - 0.98, 0.1, 20.0))
 v.assert_true("current within 2% of saturation at 4 V_T", abs(math.exp(-4)) < 0.02, "")
 # overdrive at IC = 1 and IC = 0.1 (long-channel relation, source charge)
 for ic, key_units, key_mv in ((1.0, "Txt 20-01.g", "Txt 20-01.h"), (0.1, None, "Txt 20-01.i")):
@@ -398,6 +403,14 @@ for length, ki, kg in ((0.5e-6, "Lab 20-01.j", "Lab 20-01.l"), (1e-6, "Lab 20-01
     v.check(kg, dd.gmid(o))
 dt125 = Dev(10e-6, 0.5e-6, temp=398.15, mu=MU * (398.15 / 300) ** -1.5)
 v.check("Lab 20-01.n", dt125.g_m(dt125.vgs_for_current(20e-6)) / U)
+# Discussion 4: the lab transistor (10 um / 1 um) at 1 uA, charge-based model against level-1
+dlab = Dev(10e-6, 1e-6)
+vg_lab = dlab.vgs_for_current(1e-6)
+v.check("Lab 20-01.o", 1e-6 / dlab.ispec)
+v.check("Lab 20-01.p", dlab.gmid(vg_lab))
+vov_l1 = brentq(lambda x: 0.5 * 200e-6 * 10 * x * x * (1 + 0.1 * (0.45 + x)) - 1e-6, 1e-4, 0.3, xtol=1e-14)
+v.check("Lab 20-01.q", 2 / vov_l1)
+v.check("Lab 20-01.r", vov_l1 * 1e3)
 
 # ---------------------------------------------------------------- the lab module agrees with this implementation
 proc = gm_lab.Process()

@@ -34,7 +34,7 @@ Files:
 
 - **Part 1.** At 5 µA: **0.8101** V at −40 °C and **0.4784** V at 125 °C with a constant current; **0.8050** V and **0.4881** V with a PTAT current. The PTAT current flattens the junction slightly.
 - **Part 2.** ngspice gives 1.25463 V at 300 K, a peak of 1.25467 V near 39 °C and 1.25279 V at −40 °C (Example 20-03.2); with a 1 mV offset, 1.24187 V at 300 K.
-- **Part 3.** The untrimmed 300 K outputs spread with a standard deviation of **7.06** mV, dominated by the offset (about 11.7 × 0.5 mV) and by $V_T\ln$ of the $I_S$ spread. The untrimmed box TC has a median of **11.37** ppm/K and a 95th percentile of **18.14** ppm/K. After trimming, every part sits at 1.25463 V at 300 K, but the median box TC rises to **15.39** ppm/K and the 95th percentile to **35.15** ppm/K; only **47.75**% of trimmed parts are within 15 ppm/K. Repeat with the offset set to zero: every trimmed part returns exactly to the nominal 9.10 ppm/K.
+- **Part 3.** The untrimmed 300 K outputs spread with a standard deviation of **7.06** mV, dominated by the offset (about 12.7 × 0.5 mV) and by $V_T\ln$ of the $I_S$ spread. The untrimmed box TC has a median of **11.37** ppm/K and a 95th percentile of **18.14** ppm/K. After trimming, every part sits at 1.25463 V at 300 K, but the median box TC rises to **15.39** ppm/K and the 95th percentile to **35.15** ppm/K; only **47.75**% of trimmed parts are within 15 ppm/K. Repeat with the offset set to zero: every trimmed part returns exactly to the nominal 9.10 ppm/K.
 - **Part 4.** ngspice gives 0.6000 V at 300 K, 0.60002 V at the peak and 0.59912 V at −40 °C (Example 20-03.4).
 - **Part 5.** The first-order TC grows in proportion to η − 1; the compensated TC is proportional to |η − 3| and vanishes at η = 3.
 - **Part 6.** The curves cross at 0.363 V and 0.372 µA; below it the M2 branch carries more current than M1 for the same gate voltage, so the only other consistent state is zero current.
@@ -63,5 +63,5 @@ Two diode-connected transistors from a matched array (for example a CA3096-style
 | Lab 20-03.h | median trimmed box TC | 15.39 | ppm/K |
 | Lab 20-03.i | 95th-percentile trimmed box TC | 35.15 | ppm/K |
 | Lab 20-03.j | trimmed parts within 15 ppm/K | 47.75 | % |
-| Lab 20-03.k | offset gain | 11.7 | — |
+| Lab 20-03.k | offset gain | 12.7 | — |
 | Lab 20-03.l | V_BE shift per sigma of I_S | 2.6 | mV |

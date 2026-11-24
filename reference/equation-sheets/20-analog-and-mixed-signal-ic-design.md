@@ -46,10 +46,10 @@ Conventions:
 |---|---|---|
 | $V_{BE}(T) = V_{g0} - (V_{g0} - V_{BE0})T/T_0 - (\eta - m)V_T\ln(T/T_0)$ | Tsividis; bias current $\propto T^m$ | [20-03](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-03-bandgap-references.md) |
 | $\Delta V_{BE} = V_T\ln N$ (PTAT) | Equal currents, area ratio N | [20-03](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-03-bandgap-references.md) |
-| $V_{REF} = V_{BE1} + (R_2/R_1)V_T\ln N$; current mode: $V_{REF} = (R_3/R_2)(V_{BE1} + (R_2/R_1)V_T\ln N)$ | Op-amp and current-mode bandgaps | [20-03](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-03-bandgap-references.md) |
+| $V_{REF} = V_{BE1} + (R_2/R_1)V_T\ln N$; offset gain $(R_2/R_1)(1 + r_e/R_2)^2 + 1 + r_e/R_2 \approx 1 + R_2/R_1$; current mode: $V_{REF} = (R_3/R_2)(V_{BE1} + (R_2/R_1)V_T\ln N)$ | Op-amp and current-mode bandgaps | [20-03](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-03-bandgap-references.md) |
 | $V_{REF}(T) = V_{g0} + (\eta - 1)V_T(T)\,[1 - \ln(T/T_c)]$ | First-order compensated at $T_c$ (PTAT bias, $m = 1$); peak $V_{g0} + (\eta - 1)V_T(T_c)$ | [20-03](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-03-bandgap-references.md) |
 | $\text{TC}_{box} = (V_{max} - V_{min})/[V_{nom}(T_2 - T_1)] \times 10^6$ ppm/K | Data-sheet box method | [20-03](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-03-bandgap-references.md) |
-| β-multiplier: $I = V_T\ln K/R$ | Weak inversion, bulk at ground ($nV_T\ln K/R$ if M2's bulk is tied to its source); needs a start-up circuit | [20-03](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-03-bandgap-references.md) |
+| β-multiplier: $I = V_T\ln M/R$ ($M$ = width ratio) | Weak inversion, bulk at ground ($nV_T\ln M/R$ if M2's bulk is tied to its source); needs a start-up circuit | [20-03](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-03-bandgap-references.md) |
 
 ## Low-dropout regulators
 

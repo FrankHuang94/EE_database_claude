@@ -8088,7 +8088,7 @@
   chapter: "20-03"
   see_also: [Beta multiplier, Bandgap reference]
 - term: Beta multiplier
-  definition: "A self-biased MOS current reference in which two transistors of width ratio K, one with a source resistor R, are forced to equal currents by a mirror; in weak inversion with grounded bulks it gives I = V_T ln K/R, a PTAT current, and it needs a startup circuit."
+  definition: "A self-biased MOS current reference in which two transistors of width ratio M, one with a source resistor R, are forced to equal currents by a mirror; in weak inversion with grounded bulks it gives I = V_T ln M/R, a PTAT current, and it needs a startup circuit."
   chapter: "20-03"
   see_also: [Startup circuit, PTAT voltage, Weak inversion]
 - term: Substrate PNP

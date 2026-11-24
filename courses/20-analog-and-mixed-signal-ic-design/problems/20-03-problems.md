@@ -58,7 +58,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 20-03.12 [C] *(lab)*
 
-**Two operating points.** For Example 20-03.6's β-multiplier ($W/L$ = 10, $K$ = 4, $R$ = 100 kΩ), plot (on paper or in the lab) M1's current against its gate voltage and the current that M2 + $R$ conducts at the same gate voltage. (a) Where do the curves intersect? (b) Why is the lower intersection a valid but useless state? (c) A startup device leaks δ = 1 nA into the M1 branch in normal operation, so M1 carries $I_P + δ$ while M2 carries the mirror current $I_P$. Derive the weak-inversion relation $I_PR = V_T\ln[K(I_P + δ)/I_P]$ and estimate the change in $I_P$.
+**Two operating points.** For Example 20-03.6's β-multiplier ($W/L$ = 10, $M$ = 4, $R$ = 100 kΩ), plot (on paper or in the lab) M1's current against its gate voltage and the current that M2 + $R$ conducts at the same gate voltage. (a) Where do the curves intersect? (b) Why is the lower intersection a valid but useless state? (c) A startup device leaks δ = 1 nA into the M1 branch in normal operation, so M1 carries $I_P + δ$ while M2 carries the mirror current $I_P$. Derive the weak-inversion relation $I_PR = V_T\ln[K(I_P + δ)/I_P]$ and estimate the change in $I_P$.
 
 ### Problem 20-03.13 [B]
 

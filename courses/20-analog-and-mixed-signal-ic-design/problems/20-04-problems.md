@@ -4,7 +4,7 @@ Chapter: [20-04](../chapters/20-04-ldo-regulators.md) · Worked solutions: [20-0
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
 
-**Conventions.** Unless stated, "the design" is the chapter's running design: T130 PMOS pass device (μ = 100 cm²/V·s, $C_{ox}$ = 8.6 fF/µm², $n$ = 1.3, $\lvert V_{TH}\rvert$ = 0.45 V, $v_{sat}$ = 6 × 10⁶ cm/s, $V_A'$ = 8 V/µm, $L$ = 0.15 µm, $W$ = 1.877 mm), $V_{out}$ = 1.2 V, $V_{REF}$ = 0.6 V (β = 0.5), $R_{div}$ = 1.2 MΩ, error amplifier $g_{ma}$ = 1 mS, $R_a$ = 100 kΩ, $C_a$ = 0.2 pF, gate buffer $g_{mb}$ = 2 mS, $C_L$ = 1 µF with 5 mΩ ESR, $V_{in}$ = 1.8 V, $I_Q$ = 120 µA, load from 100 µA to 100 mA. Phase margins come from the full loop gain of §3.4. Problems marked *(lab)* need `labs/20-04-lab/ldo.py` or an equivalent numerical tool.
+**Conventions.** Unless stated, "the design" is the chapter's running design: T130 PMOS pass device (μ = 100 cm²/V·s, $C_{ox}$ = 8.6 fF/µm², $n$ = 1.3, $\lvert V_{TH}\rvert$ = 0.45 V, $v_{sat}$ = 6 × 10⁶ cm/s, $V_A'$ = 8 V/µm, $L_{ch}$ = 0.15 µm, $W$ = 1.877 mm), $V_{out}$ = 1.2 V, $V_{REF}$ = 0.6 V (β = 0.5), $R_{div}$ = 1.2 MΩ, error amplifier $g_{ma}$ = 1 mS, $R_a$ = 100 kΩ, $C_a$ = 0.2 pF, gate buffer $g_{mb}$ = 2 mS, $C_L$ = 1 µF with 5 mΩ ESR, $V_{in}$ = 1.8 V, $I_Q$ = 120 µA, load from 100 µA to 100 mA. Phase margins come from the full loop gain of §3.4. Problems marked *(lab)* need `labs/20-04-lab/ldo.py` or an equivalent numerical tool.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 

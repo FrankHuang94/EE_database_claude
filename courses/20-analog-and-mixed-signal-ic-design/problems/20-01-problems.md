@@ -50,7 +50,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 20-01.10 [B]
 
-**Temperature in weak inversion.** The same transistor carries a constant 1 µA. Find $g_m$ at −40 °C, 27 °C and 125 °C, both from the weak-inversion limit $I_D/(nV_T)$ and from the model. Why are the model's values lower?
+**Temperature in weak inversion.** The same transistor carries a constant 1 µA. Find $g_m$ at −40 °C, 27 °C (take 300 K) and 125 °C, both from the weak-inversion limit $I_D/(nV_T)$ and from the model. Why are the model's values lower?
 
 ### Problem 20-01.11 [C] *(lab)*
 

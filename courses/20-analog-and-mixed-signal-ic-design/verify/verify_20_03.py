@@ -166,6 +166,11 @@ v.check("Ex 20-03.2h", R1 / 1e3)
 v.check("Ex 20-03.2i", R2 / 1e3)
 vs = np.array([bandgap_fs(t, R1, R2) for t in TS])
 VN = bandgap_fs(T0, R1, R2)
+OFFSET_GAIN = abs(bandgap_fs(T0, R1, R2, vos=1e-5) - bandgap_fs(T0, R1, R2, vos=-1e-5)) / 2e-5   # exact circuit
+_re = VT0 / I0
+v.assert_true("offset gain matches the linearized formula", abs(OFFSET_GAIN - ((R2 / R1) * (1 + _re / R2) ** 2 + 1 + _re / R2))
+              < 1e-3)
+v.check("Txt 20-03.aa", OFFSET_GAIN)
 v.check("Ex 20-03.2d", VN)
 v.check("Ex 20-03.2e", vs.max())
 v.check("Ex 20-03.2f", vs.min())
@@ -359,6 +364,23 @@ v.check("20-03.8a", (bandgap_fs(T0, R1, 1.005 * R2) - VN) * 1e3)
 v.check("20-03.8b", 400 / 300)
 v.check("20-03.8c", 1 + 2000e-6 * 100)
 v.check("20-03.8d", (400 / 300) / 1.2)
+v.check("20-03.8e", KC * VT0 * math.log(8))
+
+
+def vref_rtc(t, tc):
+    f = 1 + tc * (t - T0)
+    return bandgap_fs(t, R1 * f, R2 * f)
+
+
+shift400 = (vref_rtc(400.0, 2000e-6) - vref_rtc(400.0, 0.0)) * 1e3
+v.check("20-03.8f", shift400)
+v.check("Txt 20-03.y", shift400)
+v.check("20-03.8g", box([vref_rtc(t, 0.0) for t in TS_COARSE], VN))
+box_tc = box([vref_rtc(t, 2000e-6) for t in TS_COARSE], VN)
+v.check("20-03.8h", box_tc)
+v.check("Txt 20-03.z", box_tc)
+v.assert_true("absolute +20% resistor error equals -V_T ln 1.2 (PTAT)",
+              abs((bandgap_fs(T0, 1.2 * R1, 1.2 * R2) - VN) + VT0 * math.log(1.2)) < 1e-9)
 # 20-03.9
 v.check("20-03.9a", 0.5 / i_tot / 1e3)
 v.check("20-03.9b", vbe(I0 * TA / T0, TA))
@@ -382,8 +404,9 @@ v.check("20-03.12d", (ibd - ib) * 1e9)
 v.check("20-03.12e", (ibd - ib) / ib * 100)
 v.check("20-03.12f", 1e-9 / math.log(4) / ib * 100)
 # 20-03.13
-gain = 1 + KC
+gain = OFFSET_GAIN
 v.check("20-03.13a", gain)
+v.check("20-03.13i", 1 + KC)
 v.check("20-03.13b", 30 * gain)
 rms = 30e-9 * gain * 100
 v.check("20-03.13c", rms / U)
@@ -391,10 +414,12 @@ v.check("20-03.13d", rms / VN * 1e6)
 k24 = brentq(lambda k: bandgap_fs(TA, R1 * math.log(24) / math.log(8), k * R1 * math.log(24) / math.log(8), n=24)
              - bandgap_fs(TB, R1 * math.log(24) / math.log(8), k * R1 * math.log(24) / math.log(8), n=24), 6.0, 8.5,
              xtol=1e-13)
+r1_24 = R1 * math.log(24) / math.log(8)
+g24 = abs(bandgap_fs(T0, r1_24, k24 * r1_24, n=24, vos=1e-5) - bandgap_fs(T0, r1_24, k24 * r1_24, n=24, vos=-1e-5)) / 2e-5
 v.check("20-03.13e", k24)
-v.check("20-03.13f", 1 + k24)
-v.check("20-03.13g", 30e-9 * (1 + k24) * 100 / U)
-v.check("20-03.13h", (1 - (1 + k24) / gain) * 100)
+v.check("20-03.13f", g24)
+v.check("20-03.13g", 30e-9 * g24 * 100 / U)
+v.check("20-03.13h", (1 - g24 / gain) * 100)
 # 20-03.14
 v.check("20-03.14a", 500 + 3 * 165)
 v.check("20-03.14b", (500 + 3 * 165) * 1e-6 * 2.5 * 1e3)
@@ -424,7 +449,7 @@ v.check("Lab 20-03.g", np.percentile(bun, 95))
 v.check("Lab 20-03.h", np.median(btr))
 v.check("Lab 20-03.i", np.percentile(btr, 95))
 v.check("Lab 20-03.j", np.mean(btr < 15) * 100)
-v.check("Lab 20-03.k", 1 + R2 / R1)
+v.check("Lab 20-03.k", OFFSET_GAIN)
 v.check("Lab 20-03.l", VT0 * 0.1 * 1e3)
 # offset-free parts return to the nominal curve after the trim
 z1 = zz[0, 0]

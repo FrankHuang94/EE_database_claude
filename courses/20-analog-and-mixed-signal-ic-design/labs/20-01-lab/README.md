@@ -48,7 +48,7 @@ Files:
 1. The square law keeps only drift current, which vanishes at zero overdrive, so $2/V_{ov}$ grows without bound. In weak inversion the current is diffusion, exponential in $V_{GS}$, and $g_m/I_D$ saturates at $1/(nV_T)$; the model's $2q + \ln q$ relation contains both mechanisms and joins them smoothly (§3.2–3.3).
 2. At fixed length, $g_m$, $I_D$ and $C_{gg}$ are all proportional to $W$, so their ratios ($g_m/I_D$, $I_D/W$, $f_T$, $g_m/g_{ds}$) are functions of the inversion level alone. One simulation per length therefore sizes every width (§3.3).
 3. The peak exists only because velocity saturation flattens $f_T$ while $g_m/I_D$ keeps falling. A longer channel saturates at a higher inversion coefficient ($\lambda_c \propto 1/L$), so the flattening, and with it the peak, moves to higher $IC$ (§3.8).
-4. At 1 µA the real transistor would be in weak inversion, where $g_m/I_D$ approaches 30 S/A; the level-1 model would still report the square law's $2/V_{ov}$ at a tiny overdrive, overstating $g_m/I_D$ and the gain. The intrinsic-gain relation $(g_m/I_D)V_A$ still holds, but the $g_m/I_D$ that goes into it must come from a model that includes weak inversion.
+4. At 1 µA the 10 µm/1 µm transistor sits at $IC$ ≈ **0.19**, at the weak-inversion edge of moderate inversion, where the charge-based model gives $g_m/I_D$ ≈ **25.5** S/A. The level-1 model has no weak inversion and would still report the square law's $2/V_{ov}$ at a **31** mV overdrive, about **65** S/A, more than twice the physical value and above the 29.8 S/A limit, overstating the gain in proportion. The intrinsic-gain relation $(g_m/I_D)V_A$ still holds, but the $g_m/I_D$ that goes into it must come from a model that includes weak inversion.
 
 ## Optional hardware
 
@@ -72,3 +72,7 @@ A CD4007 or ALD1106 MOSFET array lets you measure $g_m/I_D$ directly: force a dr
 | Lab 20-01.l | sweet-spot g_m/I_D at 0.5 um | 5.12 | S/A |
 | Lab 20-01.m | sweet-spot g_m/I_D at 1 um | 3.84 | S/A |
 | Lab 20-01.n | g_m at 125 C | 234.2 | µS |
+| Lab 20-01.o | IC of the lab transistor at 1 uA | 0.19 | — |
+| Lab 20-01.p | model g_m/I_D at 1 uA | 25.5 | S/A |
+| Lab 20-01.q | level-1 2/V_ov at 1 uA | 65 | S/A |
+| Lab 20-01.r | level-1 overdrive at 1 uA | 31 | mV |

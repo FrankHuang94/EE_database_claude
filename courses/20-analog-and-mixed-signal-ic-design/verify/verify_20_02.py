@@ -346,6 +346,7 @@ v.check("Ex 20-02.3m", gmid3)
 v.check("Ex 20-02.3n", ID1 / m3.i_d(vgs6) * U / U)
 v.check("Ex 20-02.3ai", vgs6)
 v.check("Txt 20-02.af", 2 * vgs6)
+v.check("Txt 20-02.bg", vgs6 * (1 + N))
 m7 = Dev(1 * U, L7, mu=MUP, vsat=VSP)
 vsg7 = m7.vgs_for_gmid(10.0)
 v.check("Ex 20-02.3o", m7.i_d(vsg7) / m7.ispec)
@@ -602,12 +603,15 @@ def ts_two_pole(k, eps=1e-3, t_end=40.0, npts=200001):
     return t[bad[-1] + 1]
 
 
-ks = np.arange(3.1, 3.6, 0.01)
-tss = np.array([ts_two_pole(k) for k in ks])
-kmin = ks[int(np.argmin(tss))]
-v.check("Txt 20-02.t", tss.min())
+# The minimum sits where the first overshoot just equals the 0.1% band: overshoot exp(-pi zeta/sqrt(1-zeta^2)) = 1e-3,
+# zeta = sqrt(k)/2. Find that k by root finding, then confirm the step response settles there (just above it).
+kmin = brentq(lambda k: math.exp(-math.pi * (math.sqrt(k) / 2) / math.sqrt(1 - k / 4)) - 1e-3, 2.0, 3.9, xtol=1e-12)
+tmin = ts_two_pole(kmin * (1 + 1e-6), npts=400001)
+v.check("Txt 20-02.t", tmin)
 v.check("Txt 20-02.u", kmin)
 v.check("Txt 20-02.v", two_pole(kmin)[1])
+coarse = min(ts_two_pole(k) for k in np.arange(3.1, 3.6, 0.01))
+v.assert_true("the notch is lower than any point of a 0.01-step grid", tmin <= coarse + 1e-3)
 v.check("Txt 20-02.w", ts_two_pole(1.5))
 v.assert_true("two-pole settling is not monotonic in k", ts_two_pole(2.5) < ts_two_pole(3.0) or
               ts_two_pole(3.5) < ts_two_pole(4.0), "")
@@ -906,8 +910,12 @@ i_best, c_best, wt_best = constrained_best(rr.x)
 v.check("Lab 20-02.g", rr.x)
 v.check("Lab 20-02.h", i_best / U)
 v.check("Lab 20-02.n", c_best / PF)
+v.check("Lab 20-02.x", rr.x)
+# the notebook scans C_c from 0.4 pF in 2 fF steps at exactly 18 S/A: the first feasible grid point
+c18 = constrained_best(18.0)[1]
+v.check("Lab 20-02.z", (0.4 + 0.002 * math.ceil((c18 / PF - 0.4) / 0.002)))
 v.check("Lab 20-02.r", (1 - i_best / ITOT) * 100)
-# width and C_1 at 18 S/A and the 0.93 pF of the README
+# width and C_1 at the slew-constrained optimum (about 18 S/A, 0.92 pF)
 gopt = rr.x
 gm6_18 = gm6_for(2 * WU, c_best, wt_best)
 d18 = Dev(1 * U, L6)

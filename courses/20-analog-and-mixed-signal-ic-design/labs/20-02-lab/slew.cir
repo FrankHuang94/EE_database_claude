@@ -6,7 +6,7 @@
 * series with Cc = 0.6 pF; CL = 2 pF. The input steps between 0.2 V and 1.0 V, inside the output swing; the
 * behavioral model has no input-range limit (a real follower would leave Example 20-02.3's 0.24-0.55 V input range,
 * so on silicon this test is run in an inverting configuration). The slew rate is measured between 0.4 V and 0.7 V
-* on each edge, while the pair is fully switched; README section 4 derives the steady-ramp value
+* on each edge, while the pair is fully switched; README Discussion item 2 derives the steady-ramp value
 * (I_SS/C_c)/(1 + 1/A_2).
 *
 * EXPECT srr key:README.md#Lab_20-02.c scale=1e6 rtol=1e-2

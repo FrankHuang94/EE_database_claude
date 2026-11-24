@@ -20,16 +20,16 @@
 
 ## 1. Big picture
 
-Course 12 explained how a two-stage op-amp works. This chapter is about designing one: starting from a list of numbers a system architect hands over (gain, bandwidth, phase margin, slew rate, swing, noise, power, load) and ending with every transistor's current, width and length, a compensation network, and the simulations that prove the design meets the list. The two-stage CMOS op-amp is still the workhorse wherever an amplifier must drive a capacitor with a large output swing: the residue amplifiers of pipelined ADCs, the integrators of switched-capacitor filters and sigma-delta modulators, the error amplifiers of regulators, the buffers of reference and bias networks. Its design is the canonical exercise of analog IC design because every trade-off of the field shows up in it at once.
+Course 12 explained how a two-stage op-amp works. This chapter designs one: from the numbers a system architect hands over (gain, bandwidth, phase margin, slew rate, swing, noise, power, load) to every transistor's current, width and length, a compensation network, and the simulations that prove the design. The two-stage CMOS op-amp remains the workhorse wherever an amplifier must drive a capacitor with a large swing: residue amplifiers of pipelined ADCs, switched-capacitor integrators, regulators' error amplifiers, reference buffers. Every trade-off of analog design shows up in it at once.
 
 - **The specification is a set of coupled constraints.** Bandwidth fixes $g_{m1}/C_c$, slew rate caps the input pair's $g_m/I_D$, phase margin sets the second stage's current, and noise puts a floor under $g_{m1}$. Change one and the others move.
-- **Compensation is where the power goes.** In the Miller-compensated design of this chapter the second stage takes 88% of the current, and its job is to push the second pole beyond the crossover. Better compensation schemes are, in the end, ways of buying that pole more cheaply.
-- **Nanometer processes changed the playbook.** Low supplies leave no room for stacked cascodes, so designers cascade three stages (nested Miller compensation) or boost the gain of cascodes with auxiliary amplifiers, each with its own failure mode.
-- **Margins on a slide are only as good as the simulation behind them.** How the loop gain was measured, at which corner and with which load decides whether a reported phase margin means anything.
+- **Compensation is where the power goes.** In this chapter's Miller design the second stage takes 88% of the current, to push the second pole beyond the crossover; better compensation schemes buy that pole more cheaply.
+- **Nanometer processes changed the playbook.** Low supplies leave no room for stacked cascodes, so designers cascade three stages or boost cascodes with auxiliary amplifiers, each with its own failure mode.
+- **Margins are only as good as the simulation behind them.** How the loop gain was measured, at which corner and load, decides whether a phase margin means anything.
 
 ```mermaid
 flowchart LR
-    A[Specification<br/>GBW, PM, SR, A0,<br/>swing, noise, C_L] --> B[Constraints<br/>g_m1 = ω_u C_c<br/>g_m/I_D ≤ 2ω_u/SR<br/>p2 ≥ k ω_u]
+    A[Specification<br/>GBW, PM, SR, A0,<br/>swing, noise, C_L] --> B[Constraints<br/>g_m1 = ω_u C_c<br/>g_m/I_D ≤ 2ω_u/SR<br/>p2 ≥ κ ω_u]
     B --> C[Size with g_m/I_D<br/>currents, W, L]
     C --> D[Hand check<br/>exact poles, margins,<br/>swing, noise, PSRR]
     D -->|fails| B
@@ -63,11 +63,11 @@ The physical picture is a small, precise first stage and a large, fast second st
 
 *Figure 2. The two-stage op-amp designed in this chapter: a PMOS input pair M1–M2 with tail M5 and NMOS mirror load M3–M4 (M3 diode-connected), driving the NMOS common-source stage M6, whose load is the PMOS current source M7. The compensation branch $R_z$–$C_c$ joins node 1 (M6's gate) to the output. M5 and M7 share the gate bias $V_{bp}$. It is the mirror image of 12-08's circuit, which used an NMOS pair and a PMOS second stage.*
 
-**Why this arrangement.** The first stage converts the input voltage into a current $g_{m1}v_{in}$. Above a low frequency, the second stage with $C_c$ around it is an integrator: it keeps node 1 almost still and turns all of that current into output voltage through $C_c$. So the gain is $g_{m1}/(sC_c)$, falling at 20 dB per decade and crossing unity at $\omega_u = g_{m1}/C_c$. This is all the first stage has to do, and it can do it with little current. The second stage's job is different: it must actually move the load capacitance at frequencies up to and beyond $\omega_u$, so that the integrator stays an integrator there. If it is too slow, a second pole $p_2 \approx g_{m6}/C_L$ arrives near the crossover, adds phase lag, and the closed loop rings. The second stage's current is the price of keeping $p_2$ out of the way.
+**Why this arrangement.** The first stage converts the input into a current $g_{m1}v_{in}$; above a low frequency the second stage with $C_c$ around it is an integrator that turns all of that current into output voltage through $C_c$. So the gain is $g_{m1}/(sC_c)$, falling at 20 dB per decade and crossing unity at $\omega_u = g_{m1}/C_c$. The first stage can do this with little current. The second stage's job is different: it must actually move the load capacitance at frequencies up to and beyond $\omega_u$, so that the integrator stays an integrator there. If it is too slow, a second pole $p_2 \approx g_{m6}/C_L$ arrives near the crossover, adds phase lag, and the closed loop rings.
 
-**An analogy, and its limits.** Think of a trading desk with a strategist and an execution team. The strategist (the first stage) decides how fast positions should change, a decision that costs little; the execution team (the second stage) must carry the orders out against the market's inertia (the load capacitance). The firm's response speed is set by the strategist's decision rate ($g_{m1}/C_c$), but only if execution is faster still; a slow execution team makes the firm overshoot its targets and correct back and forth. Staffing execution is where the cost is. The analogy breaks in two places: the strategist's own desk has inertia too ($C_1$, mostly the execution team's input capacitance, which grows as the team grows), and the feedforward path through $C_c$, which produces the right-half-plane zero, has no counterpart in it. Both turn out to matter.
+**An analogy, and its limits.** Think of a trading desk: a strategist (the first stage) decides how fast positions should change, cheaply; an execution team (the second stage) carries the orders out against the market's inertia (the load capacitance). The firm responds at the strategist's rate ($g_{m1}/C_c$) only if execution is faster still; slow execution makes it overshoot and correct back and forth. The analogy breaks in two places: the strategist's desk has inertia too ($C_1$, mostly the execution team's input capacitance, which grows with the team), and the feedforward path through $C_c$, which makes the right-half-plane zero, has no counterpart.
 
-**What "design" adds to Course 12.** 12-06 gave the classic rules $g_{m6} \approx 10g_{m1}$ and $C_c \approx 0.22C_L$. They are a starting point, but they ignore that $C_1$ grows with $g_{m6}$, that the crossover is not at $\omega_u$, and that the right choice of $C_c$ depends on what current is being minimized. This chapter replaces the rules with the equations behind them, then sizes transistors with 20-01's $g_m/I_D$ method in the illustrative T130 process.
+**What "design" adds to Course 12.** 12-06's rules $g_{m6} \approx 10g_{m1}$ and $C_c \approx 0.22C_L$ ignore that $C_1$ grows with $g_{m6}$, that the crossover is not at $\omega_u$, and that the best $C_c$ depends on what is being minimized. This chapter replaces them with the equations behind them and sizes transistors with 20-01's $g_m/I_D$ method in T130.
 
 ## 3. Theory
 
@@ -80,7 +80,7 @@ A specification is a list of inequalities. The first design step is to write eac
 | Specification | Governing relation | What it constrains |
 |---|---|---|
 | GBW $f_u$ | $\omega_u = g_{m1}/C_c$ | the ratio $g_{m1}/C_c$ |
-| Phase margin (PM) | $p_2 \ge k\,\omega_u$, with $k$ from §3.2 | $g_{m6}$, given $C_c$, $C_L$, $C_1$ |
+| Phase margin (PM) | $p_2 \ge \kappa\,\omega_u$, with $\kappa$ from §3.2 | $g_{m6}$, given $C_c$, $C_L$, $C_1$ |
 | Slew rate SR | $\text{SR} = I_{SS}/C_c = 2\omega_u/(g_m/I_D)_1$ (§3.3) | the input pair's $g_m/I_D$ |
 | Output slew | $I_6 \ge I_{SS}(1 + C_L/C_c)$ (§3.8) | the second stage's current |
 | DC gain $A_0$ | $A_0 = (g_m/I_D)_1V_{A,1} \cdot (g_m/I_D)_6V_{A,2}$, with $V_A = V_A'L$ combined per stage | channel lengths |
@@ -129,17 +129,17 @@ $$
 
 This is 12-06's result, now with $C_1$ kept. Only when $C_1 \ll C_c$ and $C_1 \ll C_L$ does $p_2$ reduce to the familiar $g_{m6}/C_L$. The product $p_1p_2 = 1/a_2$ is exact and fixed by the capacitances: increasing $C_c$ pushes $p_1$ down and $p_2$ up together.
 
-**The crossover is not at the GBW.** Above $p_1$ the gain is $\approx (g_{m1}/sC_c)/(1 + s/p_2)$, ignoring the zero. Call $k = p_2/\omega_u$ and $x = \omega_c/\omega_u$. Setting the magnitude to one, $x^2(1 + x^2/k^2) = 1$, a quadratic in $x^2$:
+**The crossover is not at the GBW.** Above $p_1$ the gain is $\approx (g_{m1}/sC_c)/(1 + s/p_2)$, ignoring the zero. Call $\kappa = p_2/\omega_u$ and $x = \omega_c/\omega_u$. Setting the magnitude to one, $x^2(1 + x^2/\kappa^2) = 1$, a quadratic in $x^2$:
 
 $$
-x^2 = \frac{k^2}{2}\left(\sqrt{1 + \frac{4}{k^2}} - 1\right), \qquad \text{PM} = 90^\circ - \arctan\frac{x}{k} .
+x^2 = \frac{\kappa^2}{2}\left(\sqrt{1 + \frac{4}{\kappa^2}} - 1\right), \qquad \text{PM} = 90^\circ - \arctan\frac{x}{\kappa} .
 $$
 
-Two useful facts follow. The crossover always sits below the GBW ($x < 1$). And for $k$ = 1.5, $x = \sqrt3/2$ and $\arctan(x/k) = \arctan(1/\sqrt3)$ = 30°, so **a non-dominant pole at 1.5 times the GBW gives exactly 60° of phase margin** before the zero and any further poles are counted. With $k$ = 2, PM = **65.5**°, a sensible design target that leaves room for the zero, the third pole of §3.4 and the mirror pole of Problem 20-02.11. (12-06's rule "$p_2$ = 2.2 $\omega_u$ for 60°" also budgets **5.7**° for the zero, and evaluates the lag at $\omega_u$ rather than at the true crossover.)
+Two useful facts follow. The crossover always sits below the GBW ($x < 1$). And for $\kappa$ = 1.5, $x = \sqrt3/2$ and $\arctan(x/\kappa) = \arctan(1/\sqrt3)$ = 30°, so **a non-dominant pole at 1.5 times the GBW gives exactly 60° of phase margin** before the zero and any further poles are counted. With $\kappa$ = 2, PM = **65.5**°, a sensible design target that leaves room for the zero, the third pole of §3.4 and the mirror pole of Problem 20-02.11. (12-06's "$p_2$ = 2.2 $\omega_u$ for 60°" also budgets **5.7**° for the zero.)
 
 ### 3.3 What the second stage's own capacitance costs
 
-Node 1's capacitance is mostly M6's gate: $C_1 = C_p + C_{gg6}$, where $C_p$ collects the drain junctions of M2 and M4 and wiring, and $C_{gg6} = g_{m6}/\omega_{T6}$ by the definition of the transit frequency (20-01 §3.4). A bigger $g_{m6}$ means a wider M6 and a bigger $C_1$. Put this into $p_2$:
+Node 1's capacitance is mostly M6's gate: $C_1 = C_p + C_{gg6}$, where $C_p$ collects the drain junctions of M2 and M4 and wiring, and $C_{gg6} = g_{m6}/\omega_{T6}$ by the definition of the transit frequency (20-01 §3.5). A bigger $g_{m6}$ means a wider M6 and a bigger $C_1$. Put this into $p_2$:
 
 $$
 p_2 = \frac{g_{m6}C_c}{(C_p + g_{m6}/\omega_{T6})(C_L + C_c) + C_cC_L} .
@@ -177,11 +177,11 @@ $$
 \text{SR} = \frac{I_{SS}}{C_c} = \frac{2\,\omega_u}{(g_m/I_D)_1} .
 $$
 
-Once the bandwidth is fixed, **the slew rate depends only on the input pair's transconductance efficiency**, not on $C_c$ or the current. For a square-law device $g_m/I_D = 2/V_{ov}$ and this is 12-08's $\text{SR}/\omega_u = V_{ov}$; in weak inversion $g_m/I_D \to 1/(nV_T)$ and $\text{SR}/\omega_u \to 2nV_T$. A slew specification is therefore a ceiling on $(g_m/I_D)_1$, $2\omega_u/\text{SR}$, while low noise per microampere asks for the highest $(g_m/I_D)_1$. This is one of the central tensions of op-amp design, and it is resolved before any transistor is sized.
+Once the bandwidth is fixed, **the slew rate depends only on the input pair's transconductance efficiency**, not on $C_c$ or the current. For a square-law device $g_m/I_D = 2/V_{ov}$ and this is 12-08's $\text{SR}/\omega_u = V_{ov}$; in weak inversion $g_m/I_D \to 1/(nV_T)$ and $\text{SR}/\omega_u \to 2nV_T$. A slew specification therefore caps $(g_m/I_D)_1$ at $2\omega_u/\text{SR}$, while low noise per microampere asks for the highest value: a tension resolved before any transistor is sized.
 
 ### 3.4 Taming the zero: the nulling resistor, exactly
 
-12-06 §3.6 showed that a resistor $R_z$ in series with $C_c$ moves the zero to $z = 1/[C_c(1/g_{m6} - R_z)]$. Repeating §3.2's analysis with the extra node between $R_z$ and $C_c$ (three equations; Problem 20-02.12 carries it out) gives
+12-06 §3.6 showed that a resistor $R_z$ in series with $C_c$ moves the zero to $z = 1/[C_c(1/g_{m6} - R_z)]$. Repeating §3.2's analysis with the extra node between $R_z$ and $C_c$ (three nodal equations, whose determinant Solution 20-02.12 expands term by term) gives
 
 $$
 \begin{aligned}
@@ -200,7 +200,7 @@ $$
 $R_z$ in series with the three capacitors. With $R_z = 1/g_{m6}$, which puts the zero at infinity, $p_3 \approx g_{m6}/C_1$, close to M6's own $\omega_T$ when $C_1$ is mostly its gate. Two settings are common.
 
 - **$R_z = 1/g_{m6}$** removes the zero and costs only a pole near $\omega_{T6}$. It is robust: nothing has to match.
-- **$R_z = (1 + C_L/C_c)/g_{m6}$** places a left-half-plane zero on $p_2 \approx g_{m6}/C_L$ (12-06 §3.6), so the phase margin jumps. But $p_2$ moves with the load and the cancellation is lost when $C_L$ changes, while $p_3 = 1/(R_zC_1)$ is now several times lower. Example 20-02.4 quantifies both effects.
+- **$R_z = (1 + C_L/C_c)/g_{m6}$** places a left-half-plane zero on $p_2 \approx g_{m6}/C_L$ (12-06 §3.6), so the phase margin jumps, and in Example 20-02.4 it stays ahead of $R_z = 1/g_{m6}$ even at twice the load. Its costs lie elsewhere: $p_3 = 1/(R_zC_1)$ is several times lower, and when the load moves the zero no longer sits on $p_2$, leaving a pole–zero doublet that slows settling to high accuracy (as in §3.7).
 
 **Making $R_z$ track $g_{m6}$.** A polysilicon resistor does not track a transistor's $g_m$ over process and temperature. A MOSFET in triode does. In the charge-based model, the small-signal conductance of a device with $V_{DS} = 0$ (source and drain charges equal, $q_s = q_d = q$) is obtained by differentiating $I_D = I_{spec}[(q_s^2 + q_s) - (q_d^2 + q_d)]$ with respect to the drain voltage, using $-dV_D = V_T(2 + 1/q_d)\,dq_d$:
 
@@ -214,13 +214,23 @@ $$
 R_z\,g_{m6} = \frac{g_{m6}}{g_{ds0,z}} = \frac{(W/L)_6}{n\,(W/L)_z} .
 $$
 
-The product depends only on a geometry ratio and the slope factor, both stable across corners, so the zero stays where it was put. For $R_z = 1/g_{m6}$ the triode device needs $(W/L)_z = (W/L)_6/n$: **43.3** for Example 20-02.3's M6 ($W/L$ = **28.16**/0.5). Its gate must sit $V_{GS6}$ above node 1, about $2V_{GS6}$ ≈ **1.20** V, which is why practical circuits generate it with a dedicated bias branch.
+The product depends only on a geometry ratio and the slope factor, both stable across corners, so the zero stays where it was put. For $R_z = 1/g_{m6}$ the triode device needs $(W/L)_z = (W/L)_6/n$: **43.3** for Example 20-02.3's M6 ($W/L$ = **28.16**/0.5). Its gate must sit $V_{GS6}$ above node 1 if its bulk is tied to its source (a triple-well device), about $2V_{GS6}$ ≈ **1.20** V, already at $V_{DD}$; with a grounded bulk, the body effect raises that to about $(1 + n)V_{GS6}$ ≈ **1.38** V, above the supply. Practical designs therefore bias the replica from a higher rail or a charge pump, or accept a fixed $R_z$, which Problem 20-02.6 shows is robust.
 
 ### 3.5 Indirect (cascode) compensation
 
-Plain Miller compensation has two weaknesses that share one cause: $C_c$ connects node 1's *voltage* directly to the output. The feedforward current through $C_c$ creates the right-half-plane zero, and (§3.10) the same capacitor couples supply noise into the output. **Indirect compensation**, introduced by Ahuja [1], returns the compensation current to a low-impedance node instead: the source $x$ of a cascode device $M_c$ through which the first stage's signal current flows on its way to node 1. Current still reaches node 1 through $M_c$, so the feedback through $C_c$ still splits the poles, but node 1's voltage no longer drives $C_c$.
+Miller compensation's right-half-plane zero and its poor supply rejection (§3.10) share one cause: $C_c$ connects node 1's *voltage* directly to the output. **Indirect compensation**, introduced by Ahuja [1], returns the compensation current to a low-impedance node instead: the source $x$ of a cascode device $M_c$ through which the first stage's signal current flows on its way to node 1. Current still reaches node 1 through $M_c$, so the feedback through $C_c$ still splits the poles, but node 1's voltage no longer drives $C_c$.
 
-**The model.** Node $x$ has the cascode's transconductance $g_{mc}$ (its resistance to small signals is about $1/g_{mc}$), a resistance $R_x$ and capacitance $C_x$; the first stage's current $g_{m1}v_{in}$ is drawn from node $x$, and $M_c$ passes $g_{mc}v_x$ on to node 1. With $C_x = 0$ and $R_x \to \infty$, the same elimination as in §3.2 gives a third-order denominator with
+**The model.** Node $x$ has a resistance $R_x$ and capacitance $C_x$; the cascode $M_c$ (transconductance $g_{mc}$, gate at small-signal ground) passes $g_{mc}v_x$ on to node 1, and the first stage draws $g_{m1}v_{in}$ from node $x$. KCL at the three nodes, with $G = 1/R$:
+
+$$
+\begin{aligned}
+x:&\quad (G_x + sC_x + g_{mc})V_x + sC_c(V_x - V_o) = -g_{m1}V_{in},\\
+1:&\quad (G_1 + sC_1)V_1 = g_{mc}V_x,\\
+\text{out}:&\quad g_{m6}V_1 + (G_2 + sC_L)V_o + sC_c(V_o - V_x) = 0 .
+\end{aligned}
+$$
+
+Set $C_x = 0$ and $G_x \to 0$, take $V_1$ from the second equation and $V_x$ from the first, and substitute into the third: the result has a third-order denominator with
 
 $$
 a_1 \approx g_{m6}R_1R_2C_c, \qquad a_2 \approx R_1R_2\,C_1(C_L + C_c), \qquad a_3 = \frac{R_1R_2\,C_1C_LC_c}{g_{mc}} ,
@@ -240,15 +250,21 @@ $$
 \zeta = \frac12\sqrt{\frac{p_3}{p_2}} .
 $$
 
-For the outer loop this pair has two effects. Well below $\omega_n$ it adds phase lag $\approx 2\zeta\omega/\omega_n = \omega/p_2$, the same as a real pole at $p_2$, so **the phase margin is set by $p_2$** and is excellent. Near $\omega_n$ the pair peaks by about $1/(2\zeta)$, and the loop gain there is about $(\omega_u/\omega_n)/(2\zeta) = \omega_u/p_3$, so **the gain margin is about $p_3/\omega_u$**. A design can show 80° of phase margin and almost no gain margin (Example 20-02.5). The fix is a cascode strong enough to put $p_3$ well above the crossover, $g_{mc} \gtrsim 3\,\omega_u\,C_cC_L/(C_L + C_c)$, usually more current than the input branch alone provides; the cascode is then given its own bias current.
+For the outer loop this pair has two effects. Well below $\omega_n$ it adds phase lag $\approx 2\zeta\omega/\omega_n = \omega/p_2$, the same as a real pole at $p_2$, so **the phase margin is set by $p_2$** and is excellent. Near $\omega_n$ the pair peaks by about $1/(2\zeta)$, and the loop gain there is about $(\omega_u/\omega_n)/(2\zeta) = \omega_u/p_3$, so **the gain margin is about $p_3/\omega_u$**. A design can show 80° of phase margin and almost no gain margin (Example 20-02.5). The fix is a cascode strong enough to put $p_3$ well above the crossover, $g_{mc} \gtrsim 3\,\omega_u\,C_cC_L/(C_L + C_c)$, usually with its own bias current.
 
-> **Going deeper — where the cascode goes.** In a five-transistor first stage only half the signal current flows through any one cascode (the mirrored half reaches node 1 directly), which adds a zero pair and changes the coefficients, not the conclusions. Folded-cascode and fully differential first stages pass each side's whole signal current through one cascode, and "split-length" devices (a long transistor drawn as two in series, with $C_c$ returned to the internal node) provide the low-impedance node without an extra bias. Saxena and Baker's papers and Baker's *CMOS* textbook develop these variants; Ahuja's original paper also reports the supply-rejection benefit [1].
+> **Going deeper — where the cascode goes.** In a five-transistor first stage only half the signal current passes any one cascode, which adds a zero pair but not new conclusions; folded-cascode and fully differential stages, and split-length devices, provide the low-impedance node directly. Ahuja's paper also reports the supply-rejection benefit [1].
 
 ### 3.6 Three stages: nested Miller compensation
 
 At supplies below about 1 V, a cascode's extra $V_{DS,sat}$ does not fit, and the way to more gain is a third stage. Three poles need two compensation capacitors: in **nested Miller compensation** (NMC), $C_{m1}$ wraps the outer two stages (node 1 to the output) and $C_{m2}$ the output stage (node 2 to the output). The output stage must invert, and the middle stage must not, so that both capacitors give negative feedback.
 
-**Butterworth design.** With large stage gains, parasitics neglected and $g_{m3} \gg g_{m1}, g_{m2}$, the same pole-splitting argument nests: $C_{m1}$ makes the amplifier an integrator, $A \approx g_{m1}/(sC_{m1})$, above the dominant pole, and the inner loop makes stages 2 and 3 behave as $1/(1 + sC_{m2}/g_{m2} + s^2C_{m2}C_L/(g_{m2}g_{m3}))$. In unity-gain feedback the closed-loop denominator is
+**Butterworth design.** Neglect the stages' output conductances and node capacitances. KCL at node 1, node 2 and the output gives $g_{m1}V_{in} + sC_{m1}(V_o - V_1) = 0$, $g_{m2}V_1 + sC_{m2}(V_o - V_2) = 0$ and $-g_{m3}V_2 + sC_{m1}(V_1 - V_o) + sC_{m2}(V_2 - V_o) - sC_LV_o = 0$. Solving,
+
+$$
+A(s) = \frac{g_{m1}}{sC_{m1}}\cdot\frac{1 - sC_{m2}/g_{m3} - s^2C_{m1}C_{m2}/(g_{m2}g_{m3})}{1 + sC_{m2}(1/g_{m2} - 1/g_{m3}) + s^2C_{m2}C_L/(g_{m2}g_{m3})} .
+$$
+
+With $g_{m3} \gg g_{m2}$ and the high-frequency zeros neglected, the amplifier is an integrator $g_{m1}/(sC_{m1})$ followed by $1/(1 + sC_{m2}/g_{m2} + s^2C_{m2}C_L/(g_{m2}g_{m3}))$: the pole-splitting argument nests. In unity-gain feedback the closed-loop denominator is
 
 $$
 1 + s\frac{C_{m1}}{g_{m1}} + s^2\frac{C_{m1}C_{m2}}{g_{m1}g_{m2}} + s^3\frac{C_{m1}C_{m2}C_L}{g_{m1}g_{m2}g_{m3}} .
@@ -264,7 +280,7 @@ $$
 
 **The cost.** A two-stage amplifier with $p_2 = 2\omega_u$ needs $g_{m6} \approx 2\omega_uC_L$; NMC needs $g_{m3} = 4\omega_uC_L$, twice as much output-stage transconductance for the same GBW. And the recipe assumes the node capacitances are small compared with $C_{m1}$ and $C_{m2}$, which fails at node 2, where the output transistor's large gate sits. Example 20-02.6 shows the margins falling and what it takes to restore them.
 
-> **Going deeper — beyond NMC.** Two decades of work aim to recover NMC's lost bandwidth: multipath NMC adds a feedforward input stage [2]; reversed, damping-factor-control, feedforward and single-Miller schemes trade the inner capacitor for active networks. Leung and Mok's review compares them analytically [3], and the figures of merit in §9 come from this literature.
+> **Going deeper — beyond NMC.** Multipath NMC adds a feedforward input stage [2]; reversed, damping-factor-control and single-Miller schemes trade the inner capacitor for active networks. Leung and Mok's review compares them analytically [3].
 
 ### 3.7 Gain boosting
 
@@ -276,17 +292,17 @@ $$
 A(s) \approx \frac{g_{m1}}{sC_L}\cdot\frac{s + \omega_{ub}}{s + \omega_{ub} + 1/(R_0C_L)} .
 $$
 
-A zero at $\omega_{ub}$ and a pole just above it, separated by $\delta = 1/(R_0C_L)$, the *unboosted* amplifier's dominant-pole frequency: a **pole–zero doublet**. It barely shows in a Bode plot, but it settles slowly. With feedback factor β, the closed-loop poles are the roots of $s^2 + s(\omega_{ub} + \delta + \beta\omega_u) + \beta\omega_u\omega_{ub} = 0$. When $\beta\omega_u \gg \omega_{ub}$, one root is fast, $\approx \beta\omega_u$, and the other sits at $\approx \omega_{ub}$; the step response's residue at the slow root is about $\delta/(\beta\omega_u)$. Since $\delta/\omega_u = 1/(g_{m1}R_0) = 1/A_{unb}$, the unboosted gain:
+A zero at $\omega_{ub}$ and a pole just above it, separated by the *unboosted* dominant-pole frequency $\delta = 1/(R_0C_L)$: a **pole–zero doublet**, invisible in a Bode plot but slow to settle. With feedback factor β, the closed-loop poles are the roots of $s^2 + s(\omega_{ub} + \delta + \beta\omega_u) + \beta\omega_u\omega_{ub} = 0$. When $\beta\omega_u \gg \omega_{ub}$, one root is fast, $\approx \beta\omega_u$, and the other sits at $\approx \omega_{ub}$; the step response's residue at the slow root is about $\delta/(\beta\omega_u)$. Since $\delta/\omega_u = 1/(g_{m1}R_0) = 1/A_{unb}$, the unboosted gain:
 
 $$
 e_{slow}(t) \approx \frac{1}{\beta A_{unb}}\,e^{-\omega_{ub}t} .
 $$
 
-The interpretation is clean. For times shorter than $1/\omega_{ub}$ the booster has not yet acted, so the amplifier settles like the unboosted one, to an error of $1/(\beta A_{unb})$; the booster then removes that error at its own pace. This is Bult and Geelen's design condition [4]: **the booster's unity-gain frequency must exceed the closed-loop bandwidth $\beta\omega_u$** (so its tail is faster than the main settling), **and stay below the main amplifier's non-dominant pole** (so the booster's own loop is stable). For an amplifier with $g_{m1}$ = 1 mS, $C_L$ = 1 pF ($f_u$ = **159.2** MHz), $A_{unb}$ = 300, $A_{b0}$ = 100 and β = 0.5, the boosted DC gain is **30,300** and the estimated tail amplitude **0.667**%. The estimate assumes $\omega_{ub} \ll \beta\omega_u$; here the ratio is only 4, and the exact tail starts at **1.16**% and decays with a **7.95** ns time constant (a slow pole at **20.02** MHz, just below the booster's zero). Settling to 0.01% takes **37.8** ns with $f_{ub}$ = 20 MHz but **18.5** ns with $f_{ub}$ = 300 MHz, against **18.4** ns for an ideal single-pole amplifier (Figure 5).
+Before $1/\omega_{ub}$ the booster has not acted, so the amplifier settles like the unboosted one, to $1/(\beta A_{unb})$; the booster then removes that error at its own pace. Hence Bult and Geelen's condition [4]: **the booster's unity-gain frequency must exceed the closed-loop bandwidth $\beta\omega_u$** (so its tail is faster than the main settling), **and stay below the main amplifier's non-dominant pole** (so the booster's own loop is stable). For an amplifier with $g_{m1}$ = 1 mS, $C_L$ = 1 pF ($f_u$ = **159.2** MHz), $A_{unb}$ = 300, $A_{b0}$ = 100 and β = 0.5, the boosted DC gain is **30,300** and the estimated tail amplitude **0.667**%. The estimate assumes $\omega_{ub} \ll \beta\omega_u$; here the ratio is only 4, and the exact tail starts at **1.16**% and decays with a **7.95** ns time constant (a slow pole at **20.02** MHz, just below the booster's zero). Settling to 0.01% takes **37.8** ns with $f_{ub}$ = 20 MHz but **18.5** ns with $f_{ub}$ = 300 MHz, against **18.4** ns for an ideal single-pole amplifier (Figure 4).
 
 ![Settling error against time on a logarithmic error axis for a gain-boosted amplifier with a slow and a fast booster: both fall at the closed-loop rate at first, but with the slow booster the error bends near 1 percent and then decays slowly, crossing 0.01 percent about twice as late](../../../assets/figures/20-02/boost-settling.svg)
 
-*Figure 5. Step-response error of the gain-boosted example (exact model). With the booster's unity-gain frequency below the closed-loop bandwidth (20 MHz against 79.6 MHz), the error falls at the closed-loop rate only to about 1%, of the order of $1/(\beta A_{unb})$, and then decays with the booster's time constant; above it (300 MHz), settling is indistinguishable from an ideal single-pole amplifier.*
+*Figure 4. Step-response error of the gain-boosted example (exact model). With the booster's unity-gain frequency below the closed-loop bandwidth (20 MHz against 79.6 MHz), the error falls at the closed-loop rate only to about 1%, of the order of $1/(\beta A_{unb})$, and then decays with the booster's time constant; above it (300 MHz), settling is indistinguishable from an ideal single-pole amplifier.*
 
 ### 3.8 Slewing and settling
 
@@ -304,13 +320,13 @@ $$
 t_{slew} = \frac{V - \text{SR}\,\tau}{\text{SR}}, \qquad t_{lin} = \tau\ln\frac{\text{SR}\,\tau}{\varepsilon V} .
 $$
 
-For Example 20-02.3's op-amp as a follower ($\tau$ = **3.18** ns, SR = 34.9 V/µs), the largest step that does not slew is **0.111** V; a 0.5 V step to 0.1% takes **11.1** ns of slewing and **17.2** ns of linear settling, **28.3** ns in all, against **22.0** ns if there were no slew limit. Slewing is why large-signal settling, not small-signal bandwidth, usually sets a switched-capacitor circuit's clock rate.
+For Example 20-02.3's op-amp as a follower ($\tau$ = **3.18** ns, SR = 34.9 V/µs), the largest step that does not slew is **0.111** V; a 0.5 V step to 0.1% takes **11.1** ns of slewing and **17.2** ns of linear settling, **28.3** ns in all, against **22.0** ns if there were no slew limit. Large-signal settling, not small-signal bandwidth, usually sets a switched-capacitor circuit's clock rate.
 
-**Phase margin and settling.** For the two-pole loop of §3.2 the closed loop is $1/(1 + s/\omega_u + s^2/(k\omega_u^2))$, a second-order system with $\zeta = \tfrac12\sqrt k$ (15-03). Its settling time to 0.1% is not monotonic in $k$ (Figure 6): as damping falls, the response first settles *faster* than the single-pole limit $\ln(1000)/\omega_u$ = **6.91**$/\omega_u$, because its first overshoot lands inside the error band, and then slower once it rings outside it. The minimum, **3.45**$/\omega_u$, is near $k$ ≈ **3.3** (PM ≈ **74**°); at $k$ = 1.5 (PM 60°) it is **8.35**$/\omega_u$. This is the quantitative basis for the practitioner's habit of asking for 70–75° in amplifiers that must settle precisely.
+**Phase margin and settling.** For the two-pole loop of §3.2 the closed loop is $1/(1 + s/\omega_u + s^2/(\kappa\omega_u^2))$, a second-order system with $\zeta = \tfrac12\sqrt \kappa$ (15-03). Its settling time to 0.1% is not monotonic in $\kappa$ (Figure 5): as damping falls, the response first settles *faster* than the single-pole limit $\ln(1000)/\omega_u$ = **6.91**$/\omega_u$, because its first overshoot lands inside the error band, and then slower once it rings outside it. The minimum, **3.44**$/\omega_u$, is at $\kappa$ ≈ **3.31** (PM ≈ **74**°), where the first overshoot just touches the error band; at $\kappa$ = 1.5 (PM 60°) it is **8.35**$/\omega_u$. Hence the habit of asking for 70–75° in amplifiers that must settle precisely.
 
-![Settling time to 0.1 percent, in units of one over the gain-bandwidth product, against phase margin for a two-pole loop: a staircase-shaped curve with a minimum of about 3.45 near 74 degrees, rising to about 8.35 at 60 degrees and approaching 6.91 at 90 degrees](../../../assets/figures/20-02/settling-vs-pm.svg)
+![Settling time to 0.1 percent, in units of one over the gain-bandwidth product, against phase margin for a two-pole loop: a staircase-shaped curve with a minimum of about 3.44 near 74 degrees, rising to about 8.35 at 60 degrees and approaching 6.91 at 90 degrees](../../../assets/figures/20-02/settling-vs-pm.svg)
 
-*Figure 6. Settling time to 0.1% of a two-pole unity-gain loop against its phase margin. The jumps occur where an overshoot or undershoot just touches the error band.*
+*Figure 5. Settling time to 0.1% of a two-pole unity-gain loop against its phase margin. The jumps occur where an overshoot or undershoot just touches the error band.*
 
 ### 3.9 Swing, input range, offset and noise
 
@@ -320,13 +336,13 @@ $$
 V_{DS,sat} = V_T\left[2(q_s - q_d) + \ln\frac{q_s}{q_d}\right] .
 $$
 
-In weak inversion $q_d = 0.02q_s$ and $V_{DS,sat} = V_T\ln 50$ = **3.91** $V_T$, about **101** mV whatever the current. In strong inversion $q_d \to \sqrt{0.02}\,q_s$ = **0.141** $q_s$, and expanding for large $q_s$ gives $V_{DS,sat} \approx$ **0.86** $(2V_Tq_s)$ + **2.8** $V_T$, where $2V_Tq_s \approx V_P$ is the pinch-off voltage: a little below $V_P$, because a 2% reverse current is tolerated. We use this long-channel estimate with each device's actual $q$.
+In weak inversion $q_d = 0.02q_s$ and $V_{DS,sat} = V_T\ln 50$ = **3.91** $V_T$, about **101** mV whatever the current. In strong inversion $q_d \to \sqrt{0.02}\,q_s$ = **0.141** $q_s$, and expanding for large $q_s$ gives $V_{DS,sat} \approx$ **0.86** $(2V_Tq_s)$ + **2.8** $V_T$, where $2V_Tq_s \approx V_P$ is the pinch-off voltage: a little below $V_P$, because a 2% reverse current is tolerated.
 
 **Output swing.** The output stays linear while M6 and M7 are both saturated: $V_{DS,sat6} \le v_{out} \le V_{DD} - V_{SD,sat7}$. Weak inversion buys swing; strong inversion buys speed.
 
-**Input common-mode range.** For the PMOS input pair, the tail M5 must stay saturated: $V_{CM} \le V_{DD} - V_{SD,sat5} - V_{SG1}$. M1 must stay saturated with its drain at M3's gate–source voltage: $V_{CM} \ge V_{GS3} + V_{SD,sat1} - V_{SG1}$. A PMOS pair's range reaches close to ground, which suits single-supply circuits that process signals near ground.
+**Input common-mode range.** For the PMOS input pair, the tail M5 must stay saturated: $V_{CM} \le V_{DD} - V_{SD,sat5} - V_{SG1}$. M1 must stay saturated with its drain at M3's gate–source voltage: $V_{CM} \ge V_{GS3} + V_{SD,sat1} - V_{SG1}$. A PMOS pair's range reaches close to ground.
 
-**Systematic offset.** With zero input, node 1 must sit at the voltage that makes M6 carry exactly M7's current. In the balanced first stage node 1 equals M3's gate voltage, so M6 must have **the same $V_{GS}$ as M3**, which in the charge model means the same normalized charge $q$ (not the same $IC$: devices of different lengths at the same $q$ differ slightly in $IC$ through $\lambda_c$). Likewise M5 and M7 share the bias $V_{bp}$, so they share $q$. Sizing both pairs this way makes the systematic offset zero by construction; 12-08 §3.6 wrote the square-law version of the same condition.
+**Systematic offset.** With zero input, node 1 must sit at the voltage that makes M6 carry exactly M7's current. In the balanced first stage node 1 equals M3's gate voltage, so M6 must have **the same $V_{GS}$ as M3**, which in the charge model means the same normalized charge $q$ (not the same $IC$: devices of different lengths at the same $q$ differ slightly in $IC$ through $\lambda_c$). Likewise M5 and M7 share the bias $V_{bp}$, so they share $q$. Sizing both pairs this way makes the systematic offset zero by construction (12-08 §3.6 gives the square-law version).
 
 **Noise.** The input-referred white noise of the first stage is 12-10's $\bar v_n^2 = (8kT\gamma/g_{m1})(1 + g_{m3}/g_{m1})$, with γ = 2/3. (In weak inversion the factor is $n/2$ instead, **0.65** for T130, so 2/3 is a fair value across the range used here.) The second stage's noise, referred to the input, is divided by the first stage's gain and is negligible at low frequency. Flicker noise, which favors large PMOS input devices in many processes, is treated in 20-11.
 
@@ -342,54 +358,50 @@ with $G_{o6} = 1/r_{o6}$. Three regions follow.
 
 - **DC:** $\text{PSRR}^-(0) = g_{m1}R_1 \cdot g_{m6}r_{o6}$, the first stage's gain times M6's intrinsic gain, about $2A_0$ when $r_{o6} = r_{o7}$.
 - **Above $\omega_{pp} = 1/(g_{m6}R_1r_{o6}C_c)$** (about half the dominant pole), the $sC_cg_{m6}$ term takes over and $1/\text{PSRR} \approx s\,C_c/g_{m1} = s/\omega_u$: the rejection **falls as $\omega_u/\omega$** and reaches 0 dB at the GBW. Physically, once $C_c$ ties M6's gate to its drain, M6 behaves as a diode from the output to VSS, and the output follows the rail.
-- **Near the GBW and above**, supply ripple passes almost unattenuated.
 
-For Example 20-02.3's op-amp ($r_{o6}$ = 4 V/$I_6$), $\text{PSRR}^-(0)$ = **2880** (**69.2** dB), the corner $\omega_{pp}/2\pi$ is **17.4** kHz, and at 1 MHz the rejection has fallen to **33.7** dB, close to the asymptote $20\log(f_u/f)$ = 34.0 dB.
+For Example 20-02.3's op-amp ($r_{o6}$ = 4 V/$I_6$), $\text{PSRR}^-(0)$ = **2880** (**69.2** dB), the corner $\omega_{pp}/2\pi$ is **17.4** kHz, and at 1 MHz the rejection has fallen to **33.7** dB, close to the asymptote $20\log_{10}(f_u/f)$ = 34.0 dB.
 
 This is the "severe degradation above the open-loop pole frequency" that Ahuja set out to fix [1]: with indirect compensation $C_c$ no longer ties M6's gate to its drain. The positive rail is better protected here, because M7 is a current source whose gate bias can be referred to VDD. In 12-08's mirrored circuit the roles of the rails swap.
 
-**Common-mode rejection.** The first stage's CMRR (12-01 §3.5) is set at DC by the tail's output resistance and by mismatch between the two halves. At high frequency the tail node's capacitance shunts that resistance, and CMRR falls at 20 dB per decade above the corner where the two impedances are equal. Both limits matter for an op-amp used as a follower, where the common-mode input swings with the signal.
+**Common-mode rejection.** The first stage's CMRR (12-01 §3.5) is set at DC by the tail's output resistance and the halves' mismatch, and falls at 20 dB per decade once the tail node's capacitance shunts that resistance: it matters most in a follower, whose common mode swings with the signal.
 
 ### 3.11 Fully differential amplifiers and switched-capacitor CMFB
 
-12-08 §3.4 explained why a fully differential amplifier needs common-mode feedback (CMFB): the differential loop does not define the output common mode, and a current mismatch times megohms of output resistance moves it by volts. A continuous-time CMFB senses the output common mode with resistors (which load the output) or with source followers (which cost headroom). In clocked circuits, the **switched-capacitor CMFB** avoids both [5].
+12-08 §3.4 explained why a fully differential amplifier needs common-mode feedback (CMFB): the differential loop does not define the output common mode. Continuous-time CMFB senses it with resistors (which load the output) or source followers (which cost headroom); in clocked circuits the **switched-capacitor CMFB** avoids both [5].
 
-**The circuit.** Two equal capacitors $C_s$ connect the outputs $v_{o+}$ and $v_{o-}$ to the CMFB control node $v_{ctrl}$ (which sets, say, the second stage's bias current). Because the two capacitors are equal, $v_{ctrl}$ follows the output common mode $v_{oc}$ plus whatever DC voltage $\Delta V$ the capacitors hold: $v_{ctrl} = v_{oc} - \Delta V$. Two more capacitors $C_r$ are charged, on clock phase φ1, to $V_{CM,ref} - V_{bias}$, where $V_{CM,ref}$ is the desired output common mode and $V_{bias}$ the nominal control voltage. On phase φ2 they are connected in parallel with the $C_s$ capacitors.
+**The circuit.** Two equal capacitors $C_s$ connect the outputs $v_{o\pm}$ to the control node $v_{ctrl}$ (which sets, say, the second stage's bias), so $v_{ctrl} = v_{oc} - \Delta V$, where $v_{oc}$ is the output common mode and $\Delta V$ the DC voltage the capacitors hold. On phase φ1 two capacitors $C_r$ are charged to $V_{CM,ref} - V_{bias}$ (the desired common mode minus the nominal control voltage); on φ2 they are connected in parallel with the $C_s$ capacitors. Charge stops moving when $\Delta V = V_{CM,ref} - V_{bias}$; the high-gain CMFB loop holds $v_{ctrl}$ at $V_{bias}$, so $v_{oc} = V_{CM,ref}$.
 
-**Steady state.** Charge stops moving only when the voltage on $C_s$ equals the voltage $C_r$ brings, $\Delta V = V_{CM,ref} - V_{bias}$. The CMFB loop (control node → bias current → output common mode) has high gain, so it holds $v_{ctrl}$ at whatever value balances the currents, $V_{bias}$ when the design is nominal; then $v_{oc} = v_{ctrl} + \Delta V = V_{CM,ref}$.
-
-**Convergence.** Let $e_k$ be the error of $\Delta V$ after $k$ clock cycles. Charge sharing on φ2 gives $C_s\Delta V_{k+1} + C_r\Delta V_{k+1} = C_s\Delta V_k + C_r(V_{CM,ref} - V_{bias})$, so
+**Convergence.** Charge sharing on φ2 gives $(C_s + C_r)\Delta V_{j+1} = C_s\Delta V_j + C_r(V_{CM,ref} - V_{bias})$, so the error $e_j$ of $\Delta V$ after $j$ cycles obeys
 
 $$
-e_{k+1} = \frac{C_s}{C_s + C_r}\,e_k .
+e_{j+1} = \frac{C_s}{C_s + C_r}\,e_j .
 $$
 
-With $C_r = C_s/4$ the error shrinks by 0.8 per cycle, and a factor of 1000 takes **31** cycles; with $C_r = C_s/2$, **18** cycles. A larger $C_r$ converges faster but injects more switch charge and loads the outputs more on φ2. Designs usually make $C_r$ several times smaller than $C_s$, accepting tens of cycles of start-up in exchange for a quiet steady state. Between updates the sensing is purely capacitive, so it neither loads the output resistively nor limits the swing: the reason SC CMFB is standard in switched-capacitor filters and pipelined ADCs.
+With $C_r = C_s/4$ the error shrinks by 0.8 per cycle, and a factor of 1000 takes **31** cycles; with $C_r = C_s/2$, **18** cycles. A larger $C_r$ converges faster but injects more switch charge and loads the outputs more on φ2, so designs make $C_r$ several times smaller than $C_s$ and accept tens of cycles at start-up. Between updates the sensing is purely capacitive: no resistive load, no swing limit, which is why SC CMFB is standard in switched-capacitor filters and pipelined ADCs.
 
 ### 3.12 The design procedure
 
-1. **Topology and process.** Choose the input-pair type from the input common-mode range and the noise (PMOS for ranges near ground and, often, lower flicker noise), and the second-stage type for speed (NMOS for its higher $f_T$).
+1. **Topology.** Input-pair type from the common-mode range and noise (PMOS near ground, often lower flicker noise); second stage NMOS for its higher $f_T$.
 2. **Slew → $(g_m/I_D)_1$.** $(g_m/I_D)_1 \le 2\omega_u/\text{SR}$; pick a value with margin.
 3. **Noise → minimum $g_{m1}$ and $C_c$.** $g_{m1} \ge (8kT\gamma/\bar v_n^2)(1 + g_{m3}/g_{m1})$ and $C_c \ge g_{m1,min}/\omega_u$.
-4. **Phase margin → $k$.** Choose $p_2 = k\omega_u$ with $k$ ≈ 2 (65.5° before the zero and further poles), more for precise settling.
-5. **Second stage.** Choose $(g_m/I_D)_6$ and $L_6$, read $f_{T6}$, check $k\omega_u < p_{2,max}$, and compute $g_{m6}$ from §3.3's formula.
+4. **Phase margin → $\kappa$.** Choose $p_2 = \kappa\omega_u$ with $\kappa$ ≈ 2 (65.5° before the zero and further poles), more for precise settling.
+5. **Second stage.** Choose $(g_m/I_D)_6$ and $L_6$, read $f_{T6}$, check $\kappa\omega_u < p_{2,max}$, and compute $g_{m6}$ from §3.3's formula.
 6. **$C_c$.** Minimize $I_{SS} + I_6$ over $C_c$ (it is flat); respect the noise floor.
 7. **Currents and widths.** $I_{SS} = 2\omega_uC_c/(g_m/I_D)_1$, $I_6 = g_{m6}/(g_m/I_D)_6$, then each $W$ from current density (20-01). Check $I_6 \ge I_{SS}(1 + C_L/C_c)$.
 8. **Mirror and sources.** Size M3–M4 at M6's $q$ and M5 at M7's $q$ (zero systematic offset); choose lengths for gain.
-9. **Gain, swing, input range, noise, power.** Check each against the specification; iterate on lengths and inversion levels.
+9. **Gain, swing, input range, noise, power.** Check each; iterate on lengths and inversion levels.
 10. **Compensation network.** Choose $R_z$ ($1/g_{m6}$ for robustness), then compute the exact poles and margins at the extreme load and corner.
 11. **Simulate** (§3.13), then lay out and repeat at the post-layout netlist.
 
 ### 3.13 Verifying a design in simulation
 
-Hand analysis finds the design; simulation tests it against effects the model omits (every device capacitance, body effect, short-channel output conductance, the mirror pole). A complete verification plan covers:
+Hand analysis finds the design; simulation tests it against what the model omits (every device capacitance, body effect, short-channel output conductance, the mirror pole). A verification plan covers:
 
-- **Operating point.** Every transistor saturated with margin (a $V_{DS} - V_{DS,sat}$ the team sets, often several $V_T$) at every corner, and the output at its intended level (no systematic offset).
-- **Loop gain, not open-loop gain.** The stability of a feedback circuit depends on the loop gain with the actual feedback network and load attached. Opening the loop while keeping the DC operating point is done with a very large inductor in the feedback path and a very large capacitor to inject the test signal; it ignores loading at the break point. Middlebrook's method injects a voltage and a current at the same point *without* opening the loop and combines the two measurements, which is exact when the injection point is not ideal [6]; Tian, Visvanathan, Hantgan and Kundert extended it to bilateral loops, and commercial simulators provide stability analyses built on such methods [7]. Read phase margin **and** gain margin, at every corner and load.
-- **Transient.** Small steps (settling to the required accuracy, overshoot) and large steps (slewing on both edges); the two edges of a two-stage op-amp differ (§3.8).
-- **Rejection.** PSRR from each supply and CMRR, against frequency, not only at DC.
-- **Noise.** Input-referred spectrum, white and flicker, integrated over the application's bandwidth.
-- **Variation.** Process corners, supply and temperature, plus Monte Carlo for offset (20-11). Bias by current (20-01) so that threshold corners move inversion levels, not currents.
+- **Operating point.** Every transistor saturated with margin at every corner, and the output at its intended level (no systematic offset).
+- **Loop gain, not open-loop gain.** Stability depends on the loop gain with the real feedback network and load attached. Breaking the loop with a huge inductor and injecting through a huge capacitor keeps the DC point but ignores loading at the break. Middlebrook's method injects a voltage and a current at the same point *without* opening the loop and combines the two, exactly, even at a non-ideal injection point [6]; Tian, Visvanathan, Hantgan and Kundert extended it to bilateral loops [7], and simulators offer stability analyses of this kind (which method each implements is not always documented). Read phase margin **and** gain margin, at every corner and load.
+- **Transient.** Small steps (settling to the required accuracy) and large steps (slewing on both edges, which differ, §3.8).
+- **Rejection and noise.** PSRR from each supply and CMRR against frequency; the input-referred noise spectrum integrated over the application's band.
+- **Variation.** Process corners, supply and temperature, plus Monte Carlo for offset (20-11); bias by current (20-01) so that corners move inversion levels, not currents.
 
 ## 4. Worked examples
 
@@ -427,7 +439,7 @@ $$
 g_{m6} = \frac{(6.283 \times 10^8)\,[(30\text{ fF})(2.6\text{ pF}) + (0.6\text{ pF})(2\text{ pF})]}{0.6\text{ pF} - (6.283 \times 10^8)(2.6\text{ pF})/(1.930 \times 10^{10})} = \textbf{1.558}\text{ mS} .
 $$
 
-The naive rule gives $2\omega_uC_L$ = **1.257** mS, **24**% too little: $C_1$ and the $C_c$–$C_L$ interaction both lower $p_2$.
+The naive rule gives $2\omega_uC_L$ = **1.257** mS: the required $g_{m6}$ is **24**% above it, because $C_1$ and the $C_c$–$C_L$ interaction both lower $p_2$.
 
 (c) $C_{gg6} = g_{m6}/\omega_{T6}$ = **80.7** fF, so $C_1$ = 30 + 80.7 = **110.7** fF.
 
@@ -461,7 +473,7 @@ The naive rule gives $2\omega_uC_L$ = **1.257** mS, **24**% too little: $C_1$ an
 
 **Units check.** (S/A)·V = dimensionless gain; V/A = Ω; A/F = V/s.
 
-**Sanity check.** The second stage takes **88**% of the current, as §1 noted. The input pair is wide and in moderate inversion (good for noise and matching), the second stage short and at moderate-to-strong inversion (good for speed), and every specification has margin; the slimmest is slew, with **16**%. It is not the minimum-current design, though: Part 1 of the lab shows that running M6 at about 18 S/A with $C_c$ ≈ 0.92 pF meets the same specification with 136 µA, 23% less, for an M6 3.4 times wider, a larger $C_1$ and a mirror pushed toward weak inversion. Here 10 S/A buys margin, not efficiency.
+**Sanity check.** The second stage takes **88**% of the current, as §1 noted. The input pair is wide and in moderate inversion (good for noise and matching), the second stage short and at moderate-to-strong inversion (good for speed), and every specification has margin; the slimmest is slew, with **16**%. It is not the minimum-current design, though: Part 1 of the lab shows that running M6 at about 18 S/A with $C_c$ ≈ 0.92 pF (the continuous optimum, at 17.9 S/A; the lab's 18 S/A grid point gives 0.932 pF) meets the same specification with 136 µA, 23% less, for an M6 3.4 times wider, a larger $C_1$ and a mirror pushed toward weak inversion. Here 10 S/A buys margin, not efficiency.
 
 ### Example 20-02.4 · Checking the design exactly and choosing the nulling resistor (tier B)
 
@@ -477,11 +489,11 @@ The naive rule gives $2\omega_uC_L$ = **1.257** mS, **24**% too little: $C_1$ an
 
 (d) With $C_L$ = 4 pF and the resistors unchanged: (b) gives PM = **54.7**° (crossover 38.43 MHz); (c) gives **70.0**°, now with the zero no longer on the moved $p_2$ (**59.9** MHz). Without $R_z$ the margin would be **49.7**°.
 
-**Sanity check.** Figure 4 shows the three loop gains. The cancelling resistor looks spectacular at the nominal load, but its advantage over $R_z = 1/g_{m6}$ falls from **18**° to **15**° when the load doubles, and both designs drop below 60°: a design that must drive 4 pF has to be compensated for 4 pF. The robust choice (b) plus a check at the worst load is the standard practice.
+**Sanity check.** Figure 6 shows the three loop gains. The cancelling resistor's advantage falls from **18**° to **15**° when the load doubles, and only (b) drops below 60°: on phase margin, (c) wins at every load. It pays elsewhere: $p_3$ falls from 2.68 GHz to 519 MHz, only 11 times the crossover; a moved load leaves a doublet that slows precise settling; and $R_z$ must track $g_{m6}$. Choose (c) for a well-defined load with simulated settling, (b) when the load varies.
 
 ![Bode magnitude and phase of the example op-amp's loop gain with three nulling-resistor choices: the magnitudes are nearly identical up to crossover near 44 to 47 MHz, while the phase at crossover is about minus 118, minus 112 and minus 94 degrees](../../../assets/figures/20-02/loop-gain-rz.svg)
 
-*Figure 4. Loop gain of Example 20-02.3's op-amp as a follower, for $R_z$ = 0, $1/g_{m6}$ and the cancelling value. The phase margins are 61.8°, 67.6° and 86.0°.*
+*Figure 6. Loop gain of Example 20-02.3's op-amp as a follower, for $R_z$ = 0, $1/g_{m6}$ and the cancelling value. The phase margins are 61.8°, 67.6° and 86.0°.*
 
 ### Example 20-02.5 · Indirect compensation: what it buys and what it risks (tier C)
 
@@ -495,11 +507,11 @@ The naive rule gives $2\omega_uC_L$ = **1.257** mS, **24**% too little: $C_1$ an
 
 (c) With $g_{mc}$ = 600 µS, $p_3 \approx$ **206.9** MHz: crossover **50.59** MHz, PM = **83.2**°, damping **0.345**, gain margin **10.3** dB at 300.7 MHz. Running the cascode at 18 S/A takes $I_c$ = 600 µS / 18 = **33.3** µA of its own.
 
-(d) $I_{SS} + I_c + I_6$ = 20.94 + 33.33 + 100 = **154.3** µA against **176.8** µA, **12.7**% less, with **16**° more phase margin and better negative-supply rejection.
+(d) $I_{SS} + I_c + I_6$ = 20.94 + 33.33 + 100 = **154.3** µA against **176.8** µA, **12.7**% less, with **16**° more phase margin and (by §3.10's argument) better negative-supply rejection. The price is gain margin: **10.3** dB, against **35.5** dB for the Miller design of Example 20-02.4(b).
 
 **Units check.** S·F/(F·F) = S/F = s⁻¹.
 
-**Sanity check.** §3.5 predicted gain margin ≈ $p_3/\omega_u$: 65.0/50 = **1.30** (**2.3** dB) in (b) and 206.9/50 = **4.14** (**12.3** dB) in (c), the right size and trend. Indirect compensation saves power here mainly because slew, not pole splitting, now sets the second stage's current; its price is a cascode that must be fast, and a gain margin that must be checked.
+**Sanity check.** §3.5 predicted gain margin ≈ $p_3/\omega_u$: 65.0/50 = **1.30** (**2.3** dB) in (b) and 206.9/50 = **4.14** (**12.3** dB) in (c), the right size and trend. Indirect compensation saves power because slew, not pole splitting, now sets the second stage's current; its price is a fast cascode and a gain margin to check.
 
 ### Example 20-02.6 · Nested Miller compensation of a three-stage amplifier (tier C)
 
@@ -515,7 +527,7 @@ The naive rule gives $2\omega_uC_L$ = **1.257** mS, **24**% too little: $C_1$ an
 
 (d) Doubling $g_{m3}$ (**5.027** mS, **502.7** µA; its gate capacitance doubles too), doubling $g_{m2}$ and setting $C_{m2}$ = 0.4 pF gives PM = **66.6**° and gain margin **10.4** dB at a crossover of **51.0** MHz.
 
-**Sanity check.** NMC bought **19** dB more gain than the two-stage design, at the price of **3.2** times its output-stage current once parasitics are respected. This is why NMC is used where gain at low voltage is worth the current, and why the literature of §3.6 exists.
+**Sanity check.** NMC bought **19** dB more gain than the two-stage design, at the price of **3.2** times its output-stage current once parasitics are respected. NMC is used where gain at low voltage is worth the current.
 
 ### Answer key
 
@@ -653,7 +665,7 @@ The naive rule gives $2\omega_uC_L$ = **1.257** mS, **24**% too little: $C_1$ an
 | Ex 20-02.6s | g_m3, modified | 5.027 | mS |
 | Ex 20-02.6t | gain advantage over the two-stage design | 19 | dB |
 | Ex 20-02.6u | output-stage current ratio, modified NMC to two-stage | 3.2 | — |
-| Txt 20-02.a | crossover/GBW for k = 1.5 (sqrt 3/2) | 0.866 | — |
+| Txt 20-02.a | crossover/GBW for kappa = 1.5 (sqrt 3/2) | 0.866 | — |
 | Txt 20-02.b | PM for k = 1.5 | 60.0 | ° |
 | Txt 20-02.c | PM for k = 2 | 65.5 | ° |
 | Txt 20-02.d | W/L of the triode R_z device | 43.3 | — |
@@ -672,10 +684,10 @@ The naive rule gives $2\omega_uC_L$ = **1.257** mS, **24**% too little: $C_1$ an
 | Txt 20-02.q | total settling time | 28.3 | ns |
 | Txt 20-02.r | settling time without slew limit | 22.0 | ns |
 | Txt 20-02.s | single-pole settling to 0.1 %, units of 1/omega_u | 6.91 | — |
-| Txt 20-02.t | minimum two-pole settling, units of 1/omega_u | 3.45 | — |
-| Txt 20-02.u | k at the minimum | 3.3 | — |
+| Txt 20-02.t | minimum two-pole settling, units of 1/omega_u | 3.44 | — |
+| Txt 20-02.u | kappa at the minimum | 3.31 | — |
 | Txt 20-02.v | PM at the minimum | 74 | ° |
-| Txt 20-02.w | settling at k = 1.5, units of 1/omega_u | 8.35 | — |
+| Txt 20-02.w | settling at kappa = 1.5, units of 1/omega_u | 8.35 | — |
 | Txt 20-02.x | weak-inversion V_DS,sat in units of V_T | 3.91 | — |
 | Txt 20-02.y | SC CMFB cycles, C_r = C_s/4 | 31 | — |
 | Txt 20-02.z | SC CMFB cycles, C_r = C_s/2 | 18 | — |
@@ -685,6 +697,7 @@ The naive rule gives $2\omega_uC_L$ = **1.257** mS, **24**% too little: $C_1$ an
 | Txt 20-02.ad | upper end of the 1 % current band | 0.87 | pF |
 | Txt 20-02.ae | current penalty at 0.6 pF | 0.19 | % |
 | Txt 20-02.af | 2 V_GS6 | 1.20 | V |
+| Txt 20-02.bg | (1 + n) V_GS6, grounded bulk | 1.38 | V |
 | Txt 20-02.ag | W_6 (unrounded) | 28.16 | µm |
 | Txt 20-02.ah | weak-inversion V_DS,sat | 101 | mV |
 | Txt 20-02.ai | sqrt(0.02) | 0.141 | — |
@@ -714,7 +727,7 @@ The naive rule gives $2\omega_uC_L$ = **1.257** mS, **24**% too little: $C_1$ an
 
 ## 5. Simulate it
 
-The lab ([labs/20-02-lab](../labs/20-02-lab/README.md)) implements the design procedure in `opamp.py`, on top of 20-01's `gmid.py`, and confirms the circuit analysis in ngspice with small-signal and behavioral models of the designed op-amp.
+The lab ([labs/20-02-lab](../labs/20-02-lab/README.md)) implements the design procedure in `opamp.py` (on 20-01's `gmid.py`) and confirms it in ngspice.
 
 **Predict, then run.**
 
@@ -746,7 +759,7 @@ The lab ([labs/20-02-lab](../labs/20-02-lab/README.md)) implements the design pr
 |---|---|---|
 | Two-pole PM at $p_2 = 1.5\,\omega_u$ | 60.0° (exact) | crossover at 0.866 $\omega_u$ |
 | PM at $p_2 = 2\,\omega_u$ | 65.5° | a sensible design target |
-| Fastest 0.1% settling of a two-pole loop | about 74° PM, 3.45/$\omega_u$ | 6.91/$\omega_u$ for a single pole |
+| Fastest 0.1% settling of a two-pole loop | about 74° PM, 3.44/$\omega_u$ | 6.91/$\omega_u$ for a single pole |
 | SR / $\omega_u$ | $2/(g_m/I_D)_1$: **0.111** V at 18 S/A; $2nV_T$ = **67.2** mV in weak inversion | 12-08 for bipolar and square law |
 | NMC Butterworth GBW | $g_{m3}/(4C_L)$ | half a two-stage op-amp's at equal output $g_m$ |
 | Second-stage share of current (Miller) | 88% in Example 20-02.3 | set by $p_2$ (Miller) or by slew (indirect) |
@@ -757,13 +770,12 @@ The lab ([labs/20-02-lab](../labs/20-02-lab/README.md)) implements the design pr
 
 ## 8. Common mistakes
 
-- **Taking the GBW as the crossover.** The loop gain crosses unity below $g_{m1}/C_c$ (43.6 MHz against 50 MHz in Example 20-02.4). A specification of "unity-gain frequency" and one of "GBW" are different requirements.
+- **Taking the GBW as the crossover.** The loop gain crosses unity below $g_{m1}/C_c$ (43.6 MHz against 50 MHz in Example 20-02.4).
 - **Using $p_2 = g_{m6}/C_L$ when $C_1$ is not small.** The gate of a large M6 lowers $p_2$, and the $f_T$ bound makes the last few degrees of phase margin very expensive.
 - **Reading phase margin without gain margin.** Complex pole pairs (indirect compensation, NMC, capacitive loads) can leave 80° of PM and 1 dB of gain margin.
-- **Cancelling $p_2$ with $R_z$ at one load.** The cancellation is lost when the load changes; compensate at the worst load.
-- **Specifying slew rate and noise independently.** With the GBW fixed, they pull $(g_m/I_D)_1$ in opposite directions; check both before sizing.
+- **Cancelling $p_2$ with $R_z$ and checking only the margin.** The cancelling resistor keeps a good phase margin over load in Example 20-02.4, but it lowers $p_3$ and leaves a doublet when the load moves; check settling and the third pole at the extreme loads.
 - **Forgetting the output stage's slew limit.** In Figure 2's circuit the rising edge needs $I_6 \ge I_{SS}(1 + C_L/C_c)$.
-- **Measuring open-loop gain with the wrong loading.** A loop broken without the feedback network's loading, or at the wrong DC operating point, gives a margin for a circuit that does not exist.
+- **Measuring open-loop gain with the wrong loading.** A loop broken without the feedback network's loading, or at the wrong operating point, gives a margin for a circuit that does not exist.
 - **Trusting a Bode plot for settling.** A gain-boosting doublet is invisible in the magnitude plot and dominates settling to high accuracy.
 - **Quoting PSRR at DC.** Supply ripple and switching noise sit at kilohertz to megahertz, where a Miller op-amp's PSRR has fallen by tens of decibels.
 
@@ -771,32 +783,31 @@ The lab ([labs/20-02-lab](../labs/20-02-lab/README.md)) implements the design pr
 
 ### State of the art (as of Nov 2026)
 
-- **The two-stage Miller op-amp is still the baseline [Established].** Its supply-rejection weakness was identified, and indirect compensation proposed, by Ahuja in 1983; his abstract reports the Miller op-amp's supply rejection "shows severe degradation above the open-loop pole frequency" and 70 dB of negative-supply rejection at 100 kHz with the new scheme [1], [R-323]. Steyaert and Sansen showed that a single-stage OTA's PSRR is "one order of magnitude better" than a Miller OTA's [12], [R-323].
-- **Gain boosting is the standard way to high gain at one-stage speed [Established].** Bult and Geelen's 1990 op-amp, in 1.6 µm CMOS, reported 90 dB of DC gain, 116 MHz unity-gain frequency into 16 pF, and settling to better than 0.03% at a feedback factor of 1/3, for 15% more power and 30% more area than the unboosted design [4], [R-323].
-- **Multistage compensation is an active research field [Established].** Eschauzier, Kerklaan and Huijsing's multipath nested Miller amplifier (a bipolar design) reached 100 dB and 100 MHz into 100 pF in 1992 [2]. Recent CMOS work targets nanofarad loads: for published three-stage OTAs from 2015 to 2018, the current-normalized figure of merit $f_uC_L/I$ computed from each paper's reported GBW, load and current runs from **4.4 × 10⁴** to **6.8 × 10⁶** MHz·pF/mA (papers often normalize by power instead, and their own tables do not always agree with their abstracts) [R-324]. These designs optimize one metric for huge loads and are not comparable with an ADC driver's.
-- **In switched-capacitor ADCs, the op-amp is being designed out [Established].** Hershberg and colleagues' ring amplifiers (2012) replaced op-amps in a pipelined ADC with slew-based charging: their 15-bit, 20 MS/s prototype in 0.18 µm reported 76.8 dB SNDR at 5.1 mW [R-323]. Dynamic and ring amplifiers, and SAR architectures without residue amplifiers, are why many modern ADCs contain no classical op-amp (20-07).
-- **Commercial op-amps span four decades of bandwidth [Established].** TI's micropower OPA379 offers 90 kHz at 2.9 µA, the precision OPA376 5.5 MHz at 760 µA, the OPA837 50 MHz at 592 µA, and the fully differential THS4541 850 MHz and 1500 V/µs at 10.1 mA (typical datasheet values) [R-325].
+- **The two-stage Miller op-amp is still the baseline [Established].** Its supply-rejection weakness was identified, and indirect compensation proposed, by Ahuja in 1983; his abstract reports the Miller op-amp's supply rejection "shows severe degradation above the open-loop pole frequency" and 70 dB of negative-supply rejection at 100 kHz with the new scheme [1], [R-323]. A single-stage OTA's PSRR is "one order of magnitude better" than a Miller OTA's (Steyaert and Sansen) [12], [R-323].
+- **Gain boosting is the standard way to high gain at one-stage speed [Established].** Bult and Geelen's 1990 op-amp reported 90 dB of DC gain and 116 MHz into 16 pF, settling to better than 0.03%, for 15% more power than the unboosted design [4], [R-323].
+- **Multistage compensation is an active research field [Established].** Recent CMOS work targets nanofarad loads: for published three-stage OTAs from 2015 to 2018, the current-normalized figure of merit $f_uC_L/I$ computed from each paper's reported GBW, load and current runs from **4.4 × 10⁴** to **6.8 × 10⁶** MHz·pF/mA [R-324]; these designs optimize one metric for huge loads and are not comparable with an ADC driver's.
+- **In switched-capacitor ADCs, the op-amp is being designed out [Established].** Hershberg and colleagues' ring amplifiers (2012) replaced a pipelined ADC's op-amps with slew-based charging (76.8 dB SNDR at 5.1 mW) [R-323]. Many modern ADCs contain no classical op-amp (20-07).
+- **Commercial op-amps span four decades of bandwidth [Established].** From TI's OPA379 (90 kHz at 2.9 µA) to the fully differential THS4541 (850 MHz and 1500 V/µs at 10.1 mA), typical data-sheet values [R-325].
 
 ### Why it matters commercially
 
-An op-amp is rarely a product by itself inside an SoC, but it is in nearly every analog block, and its power and area multiply: a pipelined ADC has one residue amplifier per stage, a sigma-delta modulator an integrator per order, a power-management IC an error amplifier per rail. In low-power products (wearables, IoT sensor nodes) the amplifiers' bias currents can dominate the analog power budget; in data converters for AI-infrastructure SerDes and automotive radar, the amplifier's settling sets the conversion rate. Teams that can trade a 10% current saving against a gain-margin risk with numbers, rather than by habit, ship smaller and more robust blocks. The trend away from op-amps in ADCs is also a design-IP question for acquirers: an "op-amp-free" architecture can scale with digital processes in a way a classical one does not (20-12).
+An op-amp is in nearly every analog block, and its power and area multiply: one per pipeline stage, per sigma-delta integrator, per regulator rail. In wearables and IoT nodes the amplifiers' bias currents can dominate the analog budget; in data converters for SerDes and radar their settling sets the conversion rate. For acquirers, an "op-amp-free" ADC architecture is a design-IP question: it scales with digital processes in a way a classical one does not (20-12).
 
 ### Marketing vs Reality
 
-- **"GBW 50 MHz."** Ask whether it is the asymptotic $g_{m1}/C_c$ or the measured unity-gain frequency, at what load and at what corner. The crossover is lower than the GBW, and a decompensated part may not be stable at unity gain at all.
-- **"Phase margin 65°."** Ask for gain margin, the load at which it was measured, and the worst corner. Indirect and multistage compensation can show high PM with little gain margin.
+- **"GBW 50 MHz."** Asymptotic $g_{m1}/C_c$ or measured unity-gain frequency, at what load and corner? The crossover is lower, and a decompensated part may not be unity-gain stable.
+- **"Phase margin 65°."** Ask for gain margin, load and worst corner: indirect and multistage compensation can show high PM with little gain margin.
 - **"PSRR 120 dB."** That is a DC number (1 µV/V). Ask for the curve: at 1 MHz the rejection of Example 20-02.3's op-amp has fallen to **33.7** dB.
-- **"Settles in 10 ns."** To what accuracy, for what step size and feedback factor? Slewing and doublets change the answer by factors of two.
-- **"Figure of merit 10⁶."** Check the definition (per mA or per mW, GBW or unity-gain frequency) and the load: multistage-OTA figures for nanofarad loads are not comparable with an ADC driver's.
-- **Sanity check.** From GBW, load and current, compute $f_uC_L/I$ and the implied $g_m/I_D$ of the input pair from $\text{SR}/\omega_u = 2/(g_m/I_D)$. A claim requiring $g_m/I_D$ above the weak-inversion limit (about **30** S/A for $n$ = 1.3) is impossible.
+- **"Settles in 10 ns."** To what accuracy, step size and feedback factor? Slewing and doublets change it twofold.
+- **"Figure of merit 10⁶."** Check the definition (per mA or mW, GBW or unity-gain frequency) and the load.
+- **Sanity check.** From GBW, load and current, compute $f_uC_L/I$ and the implied $g_m/I_D$ of the input pair from $\text{SR}/\omega_u = 2/(g_m/I_D)$. A claim requiring $g_m/I_D$ above the weak-inversion limit (about **30** S/A for $n$ = 1.3) is impossible for a MOS input pair with class-A slewing; bipolar inputs reach about 38.7 S/A, and slew-enhanced or class-AB input stages break $\text{SR} = I_{SS}/C_c$.
 
 ### Questions for engineering leaders
 
-1. **"How did you measure the loop gain, and at which corner and load?"** Strong: a stability analysis (Middlebrook- or Tian-style) with the real feedback network, worst-case load and slow corner, with gain margin reported. Evasive: "open-loop AC, typical corner."
+1. **"How did you measure the loop gain, and at which corner and load?"** Strong: a Middlebrook- or Tian-style analysis with the real feedback network, worst load and slow corner, gain margin included. Evasive: "open-loop AC, typical corner."
 2. **"Where does the second-stage current come from: pole splitting or slew?"** Strong: a clear statement of which constraint binds, with numbers. Evasive: "we used the standard ratio."
-3. **"What settles slowest, and why?"** Strong: names slewing, a doublet or a mirror pole and shows the transient to the required accuracy. Evasive: "the phase margin is 60°, so it's fine."
+3. **"What settles slowest, and why?"** Strong: names slewing, a doublet or a mirror pole, with the transient. Evasive: "the phase margin is 60°, so it's fine."
 4. **"What is the PSRR at your switching regulator's frequency?"** Strong: a number at that frequency, with the supply that limits it. Evasive: the DC specification.
-5. **"Why not an op-amp-free architecture?"** Strong: a reasoned answer (accuracy, linearity, risk) with a comparison. Evasive: "we've always used this."
 
 ## 10. Concept check
 
@@ -804,7 +815,7 @@ An op-amp is rarely a product by itself inside an SoC, but it is in nearly every
 
 <details><summary>Answer</summary>
 
-Because the GBW ties $g_{m1}$ to $C_c$: $g_{m1} = \omega_uC_c$, so $I_{SS} = 2g_{m1}/(g_m/I_D)_1$ grows in proportion to $C_c$, and $I_{SS}/C_c = 2\omega_u/(g_m/I_D)_1$. A bigger $C_c$ needs proportionally more current, which slews it at the same rate.
+The GBW ties $g_{m1} = \omega_uC_c$, so $I_{SS} = 2g_{m1}/(g_m/I_D)_1$ grows with $C_c$ and $I_{SS}/C_c = 2\omega_u/(g_m/I_D)_1$.
 
 </details>
 
@@ -820,7 +831,7 @@ The second-stage transistor's own gate capacitance, which sits at node 1 and gro
 
 <details><summary>Answer</summary>
 
-Exactly 60°: the crossover is at $(\sqrt3/2)\omega_u$, where the second pole lags by $\arctan(1/\sqrt3)$ = 30°. The crossover is lower because the second pole already reduces the magnitude below the asymptote $\omega_u/\omega$.
+Exactly 60°: the crossover is at $(\sqrt3/2)\omega_u$, where the second pole lags 30°; the pole has already pulled the magnitude below $\omega_u/\omega$.
 
 </details>
 
@@ -840,30 +851,6 @@ It must be above the closed-loop bandwidth $\beta\omega_u$, and below the main a
 
 </details>
 
-**Q6.** Why does the negative-supply rejection of Figure 2's op-amp fall above roughly the dominant-pole frequency?
-
-<details><summary>Answer</summary>
-
-Above it, $C_c$ ties M6's gate to its drain, so M6 acts as a diode between the output and VSS, and the output follows VSS ripple. The input-referred ripple rises as $\omega/\omega_u$, so PSRR falls as $\omega_u/\omega$, reaching 0 dB at the GBW.
-
-</details>
-
-**Q7.** In a switched-capacitor CMFB with $C_r = C_s/4$, by what factor does the common-mode error shrink each clock cycle, and why not make $C_r$ larger?
-
-<details><summary>Answer</summary>
-
-By $C_s/(C_s + C_r)$ = 0.8. A larger $C_r$ converges faster but loads the outputs more on its phase and injects more switch charge into the control node, disturbing the steady state.
-
-</details>
-
-**Q8.** Why must M6 have the same $V_{GS}$ as the mirror device M3, and why is "the same inversion coefficient" not quite the right condition?
-
-<details><summary>Answer</summary>
-
-With zero input the balanced first stage puts node 1 at M3's gate voltage, so M6 must carry exactly M7's current at that $V_{GS}$, or the output moves and an input offset appears. $V_{GS}$ fixes the normalized charge $q$; at different lengths the same $q$ gives slightly different $IC$ through velocity saturation.
-
-</details>
-
 Problems: [20-02 problem set](../problems/20-02-problems.md) · Worked solutions: [20-02 solutions](../solutions/20-02-solutions.md)
 
 ## 11. Key terms
@@ -879,9 +866,8 @@ Problems: [20-02 problem set](../problems/20-02-problems.md) · Worked solutions
 
 ## 13. Further study
 
-- B. Razavi, *Design of Analog CMOS Integrated Circuits*, 2nd ed., McGraw-Hill, 2017: the chapters on operational amplifiers and on stability and frequency compensation (two-stage design, gain boosting, slewing, CMFB).
-- T. C. Carusone, D. A. Johns and K. W. Martin, *Analog Integrated Circuit Design*, 2nd ed., Wiley, 2012: the chapters on basic and advanced op-amp design (two-stage design procedure, fully differential amplifiers, SC CMFB).
-- P. E. Allen and D. R. Holberg, *CMOS Analog Circuit Design*, 3rd ed., Oxford University Press, 2012: the two-stage op-amp design procedure, the classic square-law counterpart of §3.12.
+- B. Razavi, *Design of Analog CMOS Integrated Circuits*, 2nd ed., McGraw-Hill, 2017: the chapters on operational amplifiers and on stability and frequency compensation.
+- T. C. Carusone, D. A. Johns and K. W. Martin, *Analog Integrated Circuit Design*, 2nd ed., Wiley, 2012: the chapters on basic and advanced op-amp design.
 - P. G. A. Jespers and B. Murmann, *Systematic Design of Analog CMOS Circuits*, Cambridge University Press, 2017: the $g_m/I_D$-based two-stage design, with the lookup-table version of §3.3's optimization.
 - Lecture videos: Ali Hajimiri's Caltech analog circuit design lectures and Razavi's UCLA lecture series (both on YouTube) cover op-amp compensation; Murmann's Stanford EE 214B materials cover $g_m/I_D$-based amplifier design.
 

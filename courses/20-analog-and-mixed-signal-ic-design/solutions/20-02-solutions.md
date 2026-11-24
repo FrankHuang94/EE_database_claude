@@ -19,15 +19,15 @@ Problems: [20-02 problem set](../problems/20-02-problems.md) · Chapter: [20-02]
 
 ### Solution 20-02.2
 
-With $x = \omega_c/\omega_u$, $x^2 = (k^2/2)(\sqrt{1 + 4/k^2} - 1)$ and PM = $90^\circ - \arctan(x/k)$:
+With $x = \omega_c/\omega_u$, $x^2 = (\kappa^2/2)(\sqrt{1 + 4/\kappa^2} - 1)$ and PM = $90^\circ - \arctan(x/\kappa)$:
 
-| $k$ | $x$ | Exact PM | $90^\circ - \arctan(1/k)$ |
+| $\kappa$ | $x$ | Exact PM | $90^\circ - \arctan(1/\kappa)$ |
 |---|---|---|---|
 | 1 | **0.786** | **51.8**° | **45.0**° |
 | 2.2 | **0.922** | **67.3**° | **65.6**° |
 | 3 | **0.953** | **72.4**° | **71.6**° |
 
-The estimate is always pessimistic: it evaluates the second pole's lag at $\omega_u$, but the true crossover is lower, where the pole lags less. The error is large at small $k$ (6.8° at $k$ = 1) and small at large $k$, where the crossover approaches $\omega_u$.
+The estimate is always pessimistic: it evaluates the second pole's lag at $\omega_u$, but the true crossover is lower, where the pole lags less. The error is large at small $\kappa$ (6.8° at $\kappa$ = 1) and small at large $\kappa$, where the crossover approaches $\omega_u$.
 
 ### Solution 20-02.3
 
@@ -132,7 +132,29 @@ $$
 
 At a zero of transmission $V_o = 0$, so the third equation requires the current through $C_c$, $sC_cV_x$, to equal $g_{m6}V_1$ (with the sign that cancels); the second gives $V_x = V_1/(1 + sC_cR_z)$. Then $sC_c/(1 + sC_cR_z) = g_{m6}$, i.e. $s = g_{m6}/[C_c(1 - g_{m6}R_z)] = 1/[C_c(1/g_{m6} - R_z)]$.
 
-(b) Eliminating $V_x$ and $V_1$ multiplies every term by the extra time constant $R_zC_c$; the $s^3$ coefficient collects the product of all three capacitances, $a_3 = R_1R_2R_zC_1C_LC_c$ (the full $a_1$ and $a_2$ are in §3.4). Dividing,
+(b) Write the three equations as a nodal matrix, with $G_z = 1/R_z$:
+
+$$
+\begin{bmatrix} G_1 + sC_1 + G_z & -G_z & 0\\ -G_z & G_z + sC_c & -sC_c\\ g_{m6} & -sC_c & G_2 + sC_L + sC_c\end{bmatrix}\begin{bmatrix}V_1\\V_x\\V_o\end{bmatrix} = \begin{bmatrix}-g_{m1}V_{in}\\0\\0\end{bmatrix} .
+$$
+
+The poles are the roots of its determinant. Expanding along the first row,
+
+$$
+\Delta = (G_1 + sC_1 + G_z)\left[(G_z + sC_c)(G_2 + sC_L + sC_c) - s^2C_c^2\right] + G_z\left[sC_cg_{m6} - G_z(G_2 + sC_L + sC_c)\right] .
+$$
+
+Collect powers of $s$. The constant term is $(G_1 + G_z)G_zG_2 - G_z^2G_2 = G_1G_2G_z$. The $s$ term is $C_1G_2G_z + C_LG_1G_z + C_c(G_1G_2 + G_1G_z + G_2G_z + G_zg_{m6})$. The $s^2$ term is $C_1C_LG_z + C_1C_c(G_2 + G_z) + C_LC_c(G_1 + G_z)$: the $s^2C_c^2$ terms cancel. The $s^3$ term is $C_1C_LC_c$. Dividing by the constant term $G_1G_2G_z$ and writing $G = 1/R$:
+
+$$
+\begin{aligned}
+a_1 &= R_1C_1 + R_2C_L + R_1C_c + R_2C_c + R_zC_c + g_{m6}R_1R_2C_c,\\
+a_2 &= R_1R_2[C_1C_L + C_c(C_1 + C_L)] + R_zC_c(R_1C_1 + R_2C_L),\\
+a_3 &= R_1R_2R_zC_1C_LC_c ,
+\end{aligned}
+$$
+
+which are §3.4's coefficients: $R_z$ adds $R_zC_c$ to $a_1$, $R_zC_c(R_1C_1 + R_2C_L)$ to $a_2$, and creates $a_3$. Dividing,
 
 $$
 \frac{a_2}{a_3} = \frac{C_1C_L + C_c(C_1 + C_L)}{R_zC_1C_LC_c} + \frac{R_1C_1 + R_2C_L}{R_1R_2C_1C_L} = \frac{1}{R_z}\left(\frac{1}{C_1} + \frac{1}{C_c} + \frac{1}{C_L}\right) + \frac{1}{R_2C_L} + \frac{1}{R_1C_1},
@@ -154,7 +176,7 @@ and the last two terms are negligible (they are of the order of the open-loop po
 - $p_2 \approx g_{m6}C_c/[C_1(C_L + C_c)]$ = **448.9** MHz;
 - $p_3 \approx g_{mc}(C_L + C_c)/(C_LC_c)$ = **103.5** MHz;
 - $\zeta \approx$ **0.240**, $f_n \approx$ **215.5** MHz;
-- gain margin ≈ $20\log(p_3/\omega_u)$ = **6.3** dB.
+- gain margin ≈ $20\log_{10}(p_3/\omega_u)$ = **6.3** dB.
 
 (c) The natural frequency (within **1.2**%) and damping (within **6**%) are good, and the phase margin is high as predicted. The gain-margin estimate is **1.7** dB optimistic: it takes the peak as exactly $1/(2\zeta)$ at $\omega_n$ and ignores the extra lag from $C_x$ and the zeros, which move the −180° point to where the gain is higher. Use the estimate to choose $g_{mc}$, and the exact analysis (or simulation) to sign off.
 
@@ -168,13 +190,13 @@ and the last two terms are negligible (they are of the order of the open-loop po
 
 ### Solution 20-02.15
 
-(a) The error shrinks by $C_s/(C_s + C_r)$ = 0.8/1.0 = **0.8** per cycle. A factor of 100 needs $n \ge \ln 100/\ln 1.25$ = 20.6, so **21** cycles, **420** ns at 50 MHz.
+(a) The error shrinks by $C_s/(C_s + C_r)$ = 0.8/1.0 = **0.8** per cycle. A factor of 100 needs $N_{cyc} \ge \ln 100/\ln 1.25$ = 20.6, so **21** cycles, **420** ns at 50 MHz.
 
-(b) $C_s/(C_s + C_r)$ = **0.889**; $n \ge \ln 100/\ln 1.125$ = 39.1, so **40** cycles, **800** ns.
+(b) $C_s/(C_s + C_r)$ = **0.889**; $N_{cyc} \ge \ln 100/\ln 1.125$ = 39.1, so **40** cycles, **800** ns.
 
 (c) Any two of these:
 
-- each $C_r$ is connected across the outputs on one phase, loading them and slowing the main amplifier;
+- on φ2 each $C_r$ sits between one output and the control node, in parallel with $C_s$, loading the outputs and slowing the main amplifier;
 - the switches inject charge proportional to their size, which a larger $C_r$ needs, and disturbs the common mode every cycle;
 - a larger $C_r$ also takes more area.
 
