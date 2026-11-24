@@ -8016,3 +8016,28 @@
   definition: "Testing first silicon in the lab at full speed with real software and systems, to find the functional and electrical bugs that pre-silicon verification missed; visibility is limited to on-chip debug features."
   chapter: "19-13"
   see_also: [Design verification, Respin]
+# ---- 20-01
+- term: Inversion coefficient
+  definition: "IC = I_D/I_spec, a MOSFET's drain current divided by its specific current; below about 0.1 the transistor is in weak inversion, above about 10 in strong inversion, and in moderate inversion between. It fixes g_m/I_D, current density and f_T without reference to the threshold voltage."
+  chapter: "20-01"
+  see_also: [Specific current, Moderate inversion, Transconductance efficiency]
+- term: Specific current
+  definition: "I_spec = 2nμC_ox(W/L)V_T², the current scale of the charge-based MOSFET model, set by the device's size and the process rather than its bias; the inversion coefficient is the drain current in units of it."
+  chapter: "20-01"
+  see_also: [Inversion coefficient]
+- term: Moderate inversion
+  definition: "The MOSFET operating region between weak and strong inversion (inversion coefficient about 0.1 to 10), where drift and diffusion currents are comparable and neither the exponential law nor the square law holds; most low-voltage analog transistors operate there."
+  chapter: "20-01"
+  see_also: [Weak inversion, Inversion coefficient]
+- term: gm/ID design method
+  definition: "Analog transistor sizing that chooses each device's transconductance efficiency g_m/I_D and length, takes the current from the required g_m and the width from tabulated current density; it replaces the square law with simulated device curves and does not depend on the threshold voltage."
+  chapter: "20-01"
+  see_also: [Transconductance efficiency, Inversion coefficient, Intrinsic gain]
+- term: Charge-based (EKV) model
+  definition: "A MOSFET model, due to Enz, Krummenacher and Vittoz, that writes the drain current through the normalized inversion charge at source and drain, I_D = I_spec[(q_s² + q_s) − (q_d² + q_d)], valid continuously from weak to strong inversion."
+  chapter: "20-01"
+  see_also: [Specific current, Moderate inversion]
+- term: Transit frequency
+  definition: "f_T = g_m/(2πC_gg), the frequency at which a transistor's small-signal current gain falls to one; it rises with inversion level and falls with channel length, as 1/L² for long channels and 1/L when the carriers are velocity-saturated."
+  chapter: "20-01"
+  see_also: [Cutoff frequency, Velocity saturation]

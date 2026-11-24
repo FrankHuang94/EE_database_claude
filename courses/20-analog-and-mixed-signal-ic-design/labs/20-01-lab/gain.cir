@@ -1,0 +1,32 @@
+* Lab 20-01: intrinsic gain g_m r_o of a level-1 NMOS (W/L = 10/1, KP = 200 uA/V^2, VTO = 0.45 V) carrying 20 uA
+* from an ideal current source. The gate is self-biased through 1 GOhm from the drain (so V_DS = V_GS) and driven
+* through 1 uF; the AC gain at 1 kHz is -(g_m - 1/R_f)/(g_ds + 1/R_f), essentially g_m r_o.
+* Circuit A: LAMBDA = 0.1 1/V. Circuit B: LAMBDA = 0.05 1/V (a channel twice as long, in level-1 terms).
+* EXPECT gaina key:README.md#Lab_20-01.a rtol=2e-3
+* EXPECT gainb key:README.md#Lab_20-01.b rtol=2e-3
+
+.model nla nmos (level=1 kp=200u vto=0.45 lambda=0.1)
+.model nlb nmos (level=1 kp=200u vto=0.45 lambda=0.05)
+
+VDD vdd 0 1.8
+VIN in 0 DC 0 AC 1
+
+IA vdd dra DC 20u
+MA dra gta 0 0 nla W=10u L=1u
+RFA dra gta 1G
+CIA in gta 1u
+
+IB vdd drb DC 20u
+MB drb gtb 0 0 nlb W=10u L=1u
+RFB drb gtb 1G
+CIB in gtb 1u
+
+.control
+ac dec 10 100 10k
+* AC magnitudes are measured inside a control block (ngspice's .meas cannot read vm() here)
+let maga = mag(v(dra))
+let magb = mag(v(drb))
+meas ac gaina FIND maga AT=1k
+meas ac gainb FIND magb AT=1k
+.endc
+.end

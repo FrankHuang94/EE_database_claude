@@ -27,7 +27,7 @@ Designing analog and mixed-signal blocks in CMOS: gm/ID methodology, two-stage o
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [20-01 · Analog Design Fundamentals in Nanometer CMOS](chapters/20-01-analog-design-fundamentals-gm-id.md) | 8 | ⬜ planned | — |
+| [20-01 · Analog Design Fundamentals in Nanometer CMOS](chapters/20-01-analog-design-fundamentals-gm-id.md) | 8 | ✅ verified | [problems](problems/20-01-problems.md) · [solutions](solutions/20-01-solutions.md) · [lab](labs/20-01-lab/README.md) · [verify](verify/verify_20_01.py) |
 | [20-02 · Two-Stage Op-Amp Design](chapters/20-02-two-stage-op-amp-design.md) | 12 | ⬜ planned | — |
 | [20-03 · Bandgap and Voltage References](chapters/20-03-bandgap-references.md) | 8 | ⬜ planned | — |
 | [20-04 · Low-Dropout Regulators](chapters/20-04-ldo-regulators.md) | 8 | ⬜ planned | — |
