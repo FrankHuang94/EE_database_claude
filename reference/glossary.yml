@@ -8563,3 +8563,48 @@
   definition: Clipping and filtering a signal's rare peaks in baseband to lower its PAPR, trading a small EVM penalty for operating the power amplifier closer to saturation.
   chapter: "21-07"
   see_also: [Peak-to-average power ratio (PAPR), Digital predistortion (DPD)]
+# ---------------------------------------------------------------- 21-08
+- term: Intermediate frequency (IF)
+  definition: The fixed frequency to which a superheterodyne converts every received channel, so that gain and channel filtering can be built once, at one easy frequency; a high IF eases image rejection, a low IF eases the channel filter.
+  chapter: "21-08"
+  see_also: [Superheterodyne receiver, Image frequency]
+- term: Preselector
+  definition: The band filter ahead of a receiver's first mixer that attenuates the image and other out-of-band signals; for an order-n Butterworth, each order adds about 20 log of the normalized image distance in dB.
+  chapter: "21-08"
+  see_also: [Image frequency]
+- term: Spurious response
+  definition: A receiver response to an input frequency other than the wanted one, wherever |m f_LO − n f_RF| equals the IF for integers m and n, caused by LO harmonics and RF-path nonlinearity; frequency planning lists them in a spur chart.
+  chapter: "21-08"
+  see_also: [Half-IF spur]
+- term: Half-IF spur
+  definition: The (2, 2) spurious response at f_LO ∓ f_IF/2, where the second harmonics of the RF and LO mix to the IF; it lies close to the wanted channel and is suppressed mainly by the mixer's even-order balance.
+  chapter: "21-08"
+  see_also: [Spurious response]
+- term: Direct-conversion (zero-IF) receiver
+  definition: A receiver whose quadrature mixers convert the channel straight to baseband; it needs no image filter, but I/Q mismatch, DC offsets, flicker noise and second-order distortion fall on the signal and must be calibrated.
+  chapter: "21-08"
+  see_also: [Low-IF receiver, Image-rejection ratio (IRR)]
+- term: Low-IF receiver
+  definition: A quadrature receiver that converts to an IF of about one channel bandwidth, avoiding DC offsets and most flicker noise; its image is the adjacent channel, which I/Q matching and complex filtering must reject.
+  chapter: "21-08"
+  see_also: [Complex filter, Direct-conversion (zero-IF) receiver]
+- term: Complex filter
+  definition: A filter acting on an I/Q pair as one complex signal, built from cross-coupled real sections, whose response is centred on +f_IF and rejects −f_IF; also called a polyphase filter.
+  chapter: "21-08"
+  see_also: [Low-IF receiver, Polyphase filter]
+- term: Direct RF sampling
+  definition: Digitizing the RF band directly with a gigasample ADC (or synthesizing it with an RF DAC) and doing frequency translation and channel filtering digitally; limited by converter jitter, noise figure, linearity and power.
+  chapter: "21-08"
+  see_also: [Nyquist zone, Aperture jitter, Digital downconverter (DDC)]
+- term: Digital downconverter (DDC)
+  definition: A digital block that multiplies a sampled signal by a numerically controlled oscillator, low-pass filters and decimates, selecting one channel and gaining 10 log(f_s/2B) of processing gain.
+  chapter: "21-08"
+  see_also: [Processing gain, Direct RF sampling]
+- term: Software-defined radio (SDR)
+  definition: A radio whose frequency, bandwidth and waveform are set largely in software, either by digitizing close to the antenna or by a widely tunable analog front end followed by programmable sampling and filtering.
+  chapter: "21-08"
+  see_also: [Direct RF sampling]
+- term: LO leakage
+  definition: Carrier feedthrough at the LO frequency in a direct-conversion transmitter, set by baseband DC offsets and mixer imbalance, about 20 log(V_DC/V_signal) relative to the wanted output; in receivers, LO coupling to the input that self-mixes to DC.
+  chapter: "21-08"
+  see_also: [Direct-conversion (zero-IF) receiver]

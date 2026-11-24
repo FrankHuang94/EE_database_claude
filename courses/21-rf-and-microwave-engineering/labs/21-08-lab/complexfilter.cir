@@ -1,0 +1,31 @@
+* Lab 21-08 -- a first-order complex (polyphase) filter centred at +1 MHz (AC analysis).
+* I and Q sections: R = 1 kohm into C = 318.31 pF (f_p = 0.5 MHz), cross-coupled by transconductances of
+* w_IF C = 2 mS so that dy/dt = -w_p (y - x) + j w_IF y for y = y_I + j y_Q.
+* Copy A is driven by a positive-frequency input (Q lags I by 90 degrees), copy B by a negative-frequency input
+* (Q leads by 90 degrees), both at 1 MHz. |v(yi)| is |H(+f_IF)| in A and |H(-f_IF)| in B; their ratio is the
+* image selectivity of Example 21-08.5d, 10 log10(1 + (2 f_IF / f_p)^2) = 12.30 dB.
+*
+* EXPECT rej key:../../chapters/21-08-transceiver-architectures.md#Ex_21-08.5d rtol=1e-3
+VIA xia 0 dc 0 ac 1 0
+VQA xqa 0 dc 0 ac 1 -90
+RIA xia yia 1k
+RQA xqa yqa 1k
+CIA yia 0 318.30989p
+CQA yqa 0 318.30989p
+GIA yia 0 yqa 0 2m
+GQA 0 yqa yia 0 2m
+VIB xib 0 dc 0 ac 1 0
+VQB xqb 0 dc 0 ac 1 90
+RIB xib yib 1k
+RQB xqb yqb 1k
+CIB yib 0 318.30989p
+CQB yqb 0 318.30989p
+GIB yib 0 yqb 0 2m
+GQB 0 yqb yib 0 2m
+.control
+ac lin 1 1meg 1meg
+let pass = db(v(yia))
+let rej = db(v(yia)) - db(v(yib))
+print pass rej
+.endc
+.end

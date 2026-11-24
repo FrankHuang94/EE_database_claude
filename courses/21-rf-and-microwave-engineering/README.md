@@ -34,7 +34,7 @@ Radio hardware from S-parameters to standards: matching, noise figure and linear
 | [21-05 · Mixers](chapters/21-05-mixers.md) | 6 | ✅ verified | [problems](problems/21-05-problems.md) · [solutions](solutions/21-05-solutions.md) · [lab](labs/21-05-lab/README.md) · [verify](verify/verify_21_05.py) |
 | [21-06 · Oscillators and VCOs](chapters/21-06-oscillators-and-vcos.md) | 6 | ✅ verified | [problems](problems/21-06-problems.md) · [solutions](solutions/21-06-solutions.md) · [lab](labs/21-06-lab/README.md) · [verify](verify/verify_21_06.py) |
 | [21-07 · Power Amplifiers](chapters/21-07-power-amplifiers.md) | 9 | ✅ verified | [problems](problems/21-07-problems.md) · [solutions](solutions/21-07-solutions.md) · [lab](labs/21-07-lab/README.md) · [verify](verify/verify_21_07.py) |
-| [21-08 · Transceiver Architectures](chapters/21-08-transceiver-architectures.md) | 7 | ⬜ planned | — |
+| [21-08 · Transceiver Architectures](chapters/21-08-transceiver-architectures.md) | 7 | ✅ verified | [problems](problems/21-08-problems.md) · [solutions](solutions/21-08-solutions.md) · [lab](labs/21-08-lab/README.md) · [verify](verify/verify_21_08.py) |
 | [21-09 · The RF Front End: Filters, Switches and Modules](chapters/21-09-rf-front-end.md) | 6 | ⬜ planned | — |
 | [21-10 · Antennas, Arrays, Beamforming and mmWave](chapters/21-10-antennas-arrays-mmwave.md) | 8 | ⬜ planned | — |
 | [21-11 · Link Budgets](chapters/21-11-link-budgets.md) | 5 | ⬜ planned | — |

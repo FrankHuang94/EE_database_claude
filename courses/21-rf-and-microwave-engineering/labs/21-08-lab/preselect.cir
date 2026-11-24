@@ -1,0 +1,30 @@
+* Lab 21-08 -- a third-order Butterworth band-pass preselector (AC analysis).
+* Centre 2.45 GHz, 100 MHz 3 dB bandwidth, 50 ohm terminations: shunt, series and shunt resonators from the
+* low-pass prototype g = 1, 2, 1. Its attenuation, 20 log10(v(in source) / 2 v(out)) relative to the available
+* power, is checked at the image (3.05 GHz) and at the two half-IF spurs (2.60 and 2.90 GHz) of Examples 21-08.1
+* and 21-08.2 (receiver at 2.45 GHz, LO 2.75 GHz, IF 300 MHz).
+*
+* EXPECT aim key:../../chapters/21-08-transceiver-architectures.md#Ex_21-08.1e rtol=2e-3
+* EXPECT asp1 key:../../chapters/21-08-transceiver-architectures.md#Ex_21-08.2c rtol=2e-3
+* EXPECT asp2 key:../../chapters/21-08-transceiver-architectures.md#Ex_21-08.2d rtol=2e-3
+VIN in 0 dc 0 ac 1
+RS in a 50
+CP1 a 0 31.830989p
+LP1 a 0 0.13257388n
+LS2 a b 159.15494n
+CS2 b c 0.026514776p
+CP3 c 0 31.830989p
+LP3 c 0 0.13257388n
+RL c 0 50
+.control
+ac lin 1 3.05g 3.05g
+let aim = -db(2 * v(c))
+print aim
+ac lin 1 2.60g 2.60g
+let asp1 = -db(2 * v(c))
+print asp1
+ac lin 1 2.90g 2.90g
+let asp2 = -db(2 * v(c))
+print asp2
+.endc
+.end

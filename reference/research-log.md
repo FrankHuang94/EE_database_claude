@@ -3825,3 +3825,36 @@ R&D % = R&D ÷ revenue.
 - **Li et al.**, *IEEE JSSC* 58(12):3296–3307, Dec. 2023, DOI 10.1109/JSSC.2023.3310980: transformer-based quadrature Doherty digital PA in 28 nm bulk CMOS, "4.1 W (36.1 dBm) peak output power". [Established]
 - **Yang, Qian, Wang and Luo**, *IEEE JSSC* 58(2):357–370, Feb. 2023, DOI 10.1109/JSSC.2022.3191975: 40 nm CMOS, 4096-QAM at 5 MSym/s with −43.0 dB EVM; 256-QAM at 50 MSym/s −31.46 dB EVM. [Established]
 - **Shay et al. (Intel)**, RFIC 2024, pp. 255–258, DOI 10.1109/RFIC61187.2024.10600000: all-digital polar Wi-Fi 7 TX in 16 nm FinFET, "30.15dBm/34.7% at 5.2GHz"; "-38dB/830mW … at 6.1GHz and 9-dB backoff". [Established]
+
+## R-389 · Receiver-architecture classics: Armstrong, Abidi, Crols–Steyaert, Mitola, Walden (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref metadata and OpenAlex abstracts.*
+
+- **Armstrong**, "A new system of short wave amplification," *Proc. IRE* 9(1):3–11, Feb. 1921, DOI 10.1109/JRPROC.1921.220092: "1. Heterodyning, with the production of a beat frequency which is itself a radio frequency … 3. Amplification at the beat radio frequency, preferably by a tuned amplifier." **Armstrong**, *Proc. IRE* 12(5):539–552, Oct. 1924, DOI 10.1109/JRPROC.1924.219990: success due to "the reduction in the number of tubes required". (Priority was disputed: Schottky, *Proc. IRE* 14(5):695–698, Oct. 1926, DOI 10.1109/JRPROC.1926.221074, text not read.) [Established]
+- **Abidi**, *IEEE JSSC* 30(12):1399–1410, Dec. 1995, DOI 10.1109/4.482187: direct conversion's signal is "amplified and filtered at baseband rather than at some high intermediate frequency"; "Baseband digital signal processing must be coupled to the analog front-end to make direct-conversion transceivers a practical reality." [Established]
+- **Crols and Steyaert**, *IEEE JSSC* 30(12):1483–1492, Dec. 1995, DOI 10.1109/4.482196: a low-IF front end with "a phase accuracy of less than 0.3°"; *IEEE TCAS-II* 45(3):269–282, Mar. 1998, DOI 10.1109/82.664233: low-IF "does not operate in the baseband, only near the baseband"; VLSI Symp. 1995, DOI 10.1109/VLSIC.1995.520698: a polyphase filter with 64 dB "mirror signal suppression". [Established]
+- **Mitola**, *IEEE Commun. Mag.* 33(5):26–38, May 1995, DOI 10.1109/35.393001: "the canonical functional partitioning of channel coding into antenna, RF, IF, baseband, and bitstream segments". **Abidi**, *IEEE JSSC* 42(5):954–966, May 2007, DOI 10.1109/JSSC.2007.894307: "it is enough to receive one channel with any bandwidth, situated in any band"; a 90 nm prototype tuning 800 MHz–6 GHz. **Mirabbasi and Martin**, *IEEE Commun. Mag.* 38(11):132–139, Nov. 2000, DOI 10.1109/35.883502. **Bhagavatula**, *IEEE SSC Mag.* 13(1):35–47, 2021, DOI 10.1109/MSSC.2020.3036144. [Established]
+- **Walden**, *IEEE JSAC* 17(4):539–550, Apr. 1999, DOI 10.1109/49.761034: resolution "falls off by ~1 bit for every doubling of the sampling rate", attributed to "uncertainty in the sampling instant due to aperture jitter". [Established]
+
+## R-390 · RF-sampling converter data sheets (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: TI data-sheet PDFs. analog.com and amd.com could not be fetched; no ADI or AMD numbers are used.*
+
+- **TI AFE7950** (SBASA41E, rev. May 2025): 4T6R, 12 GSPS DACs, 3 GSPS ADCs, RF 600 MHz–12 GHz; at f_ADC = 2949.12 MSPS, NSD −155.2 to −150 dBFS/Hz and minimum NF 19.1–30 dB from 830 MHz to 9610 MHz (at 3610 MHz: full scale −0.4 dBm at DSA 0 dB, NSD −154.1 dBFS/Hz at DSA 3 dB, NF 22.8 dB); Mode 3 (4T4R2F) dissipation 10513.0 mW. [Established]
+- **TI AFE8092** (SBASA16B, rev. Nov. 2024): octal 12 GSPS DACs and 3 GSPS ADCs, RF to 6 GHz, for "Macro remote radio unit (RRU)" and massive-MIMO radios. [Established]
+- **TI ADC32RF5x** (SBAS500B, rev. Aug. 2023): NSD −155.6 dBFS/Hz (no averaging), −158.1 (2×), −160.4 (4×); 50 fs aperture jitter; SNR 63 dBFS at 1.8 GHz with 2× averaging; "2.6 W/channel (2x AVG)", 2.1 W/ch at 3 GSPS. **TI DAC39RF10** (SBASAC8B, rev. Mar. 2024): 10.24/20.48 GSPS, 12 GHz output bandwidth. [Established]
+
+## R-391 · Transceiver architectures in products, 2019–2026 (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref metadata and OpenAlex abstracts.*
+
+- **Jann et al. (Intel)**, ISSCC 2019, pp. 352–354, DOI 10.1109/ISSCC.2019.8662417: "A 5G Sub-6GHz Zero-IF and mm-Wave IF Transceiver". **Verma et al. (Samsung)**, ISSCC 2022, DOI 10.1109/ISSCC42614.2022.9731664: a 16-channel FR2 phased-array IC with a "quad-stream intermediate-frequency IC (IFIC)". **Bae et al. (Samsung)**, ISSCC 2024, pp. 80–82, DOI 10.1109/ISSCC49657.2024.10454281: "24 receivers (RXs) and 7 RX local oscillators", 450–7125 MHz, 43 mm². [Established]
+- **Chen et al. (MediaTek)**, RFIC 2023, pp. 181–184, DOI 10.1109/RFIC54547.2023.10186200: 55 nm tri-band Wi-Fi transceiver, 57.9 fs rms PLL jitter at 7.115 GHz, −42.6 dB TX EVM floor with EHT320 4096-QAM. **Lee et al. (Samsung)**, *IEEE JSSC* 59(12):3966–3979, Dec. 2024, DOI 10.1109/JSSC.2024.3441858: 14 nm, −46.1 dB TX EVM floor at 7.1 GHz. [Established]
+- **Elgaard et al. (Ericsson)**, *IEEE JSSC* 60(7):2367–2383, Jul. 2025, DOI 10.1109/JSSC.2025.3552278: a "non-frequency-translating" 22 nm FD-SOI base-station front end, 1.25–5.5 GHz, P_sat 38.1 dBm, RX NF 1.3–2 dB. **Gard et al. (Analog Devices)**, RFIC 2026, pp. 3–6, DOI 10.1109/RFIC70222.2026.11602200: O-RAN 4T4R radio-unit SoC in 16 nm, LO 400 MHz–7.1 GHz, 24.1 W; "first" is the authors' claim [Contested in principle]. **Montazerolghaem, de Vreede and Babaie**, ISSCC 2023, DOI 10.1109/ISSCC42615.2023.10067266: NR bands to 7.125 GHz, up to 400 MHz RF bandwidth, "a −15dBm continuous-wave (CW) out-of-band (OOB) close-in blocker can also be present at 60MHz offset". [Established]
+- **Shao, Mak, Qi and Martins**, *IEEE JSSC* 57(12):3669–3680, Dec. 2022, DOI 10.1109/JSSC.2022.3200932: 28 nm BLE receiver, 266 µW, "191 µW in the LO divider + buffer", NF 6.1 dB, complex baseband filter. **Heel et al.**, ISSCC 2025, pp. 76–78, DOI 10.1109/ISSCC49661.2025.10904786: a 12.8 GS/s sub-sampling ADC front end with 38 GHz input bandwidth and ">39dB SNDR for 1 to 32GHz". [Established]
+
+## R-392 · SDR platforms (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: an Ettus spec-sheet PDF and the product page.*
+
+- **Ettus USRP B200/B210** spec sheet (undated, uploaded 2019): 70 MHz–6 GHz, up to 56 MHz instantaneous bandwidth (1×1), "SSB/LO Suppression -35/50 dBc", receive NF < 8 dB, IIP3 −20 dBm; "Both use an Analog Devices RFIC". **Ettus USRP X410** product page (read 24 Nov 2026): "features a two-stage superheterodyne architecture with 4 independent TX and RX channels capable of 400 MHz of instantaneous bandwidth each" with a Zynq US+ RFSoC ZU28DR; price $33,020 (as of 24 Nov 2026). [Established]
