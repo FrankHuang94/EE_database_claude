@@ -8436,3 +8436,28 @@
   definition: A wideband LNA in which the matching device's noise appears at two outputs in phase while the signal appears in antiphase, so a differencing output cancels that noise; the match no longer fixes the noise figure, which falls as the cancelling path's transconductance rises.
   chapter: "21-04"
   see_also: [Low-noise amplifier (LNA), Common-gate amplifier]
+# ---------------------------------------------------------------- 21-05
+- term: Local oscillator (LO)
+  definition: The periodic signal a mixer multiplies the input by; its frequency sets the translation, and its phase noise, harmonics and leakage become the mixer's.
+  chapter: "21-05"
+  see_also: [Mixer]
+- term: Mixer conversion gain
+  definition: The ratio of a mixer's output amplitude at the intermediate frequency to its input amplitude at the RF; 2/π (−3.92 dB) for an ideal double-balanced commutating mixer and (2/π)g_mR_L for a Gilbert cell.
+  chapter: "21-05"
+  see_also: [Mixer, Gilbert cell]
+- term: Gilbert cell
+  definition: An active double-balanced mixer or multiplier in which a transconductor's output current is steered by a cross-coupled switching quad driven by the LO; introduced by Gilbert in 1968 as a four-quadrant multiplier.
+  chapter: "21-05"
+  see_also: [Mixer conversion gain]
+- term: Image-rejection ratio (IRR)
+  definition: The ratio of a receiver's response to the wanted signal to its response at the image; for a quadrature (Hartley) receiver with gain error ε and phase error θ, approximately 4/(ε² + θ²).
+  chapter: "21-05"
+  see_also: [Image frequency]
+- term: Harmonic-reject mixer
+  definition: A mixer driven by several phase-shifted, weighted LO waveforms (for example weights 1, √2 and 1 at −45°, 0 and +45°) whose sum has no 3rd or 5th harmonic, so inputs near 3f_LO and 5f_LO are not converted.
+  chapter: "21-05"
+  see_also: [Mixer]
+- term: N-path filter
+  definition: A band-pass filter made of N capacitors switched in rotation by an N-phase clock; the clock sets the centre frequency and N·R·C sets the bandwidth, 1/(πNRC).
+  chapter: "21-05"
+  see_also: [Mixer]

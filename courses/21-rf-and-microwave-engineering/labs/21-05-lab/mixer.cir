@@ -1,0 +1,91 @@
+* Lab 21-05 -- ideal commutating mixers and a 4-path filter (transient, ideal voltage-controlled switches).
+* A: double-balanced passive mixer; RF 10 mV differential at 101 MHz, LO square wave at 100 MHz -> IF 1 MHz,
+*    conversion gain 2/pi (Example 21-05.1)
+* B: the same mixer with RF at 301 MHz -> converted to 1 MHz by the LO's 3rd harmonic, gain 2/(3 pi)
+* C: Gilbert-type: a 20 mS transconductor's differential current commutated into 500 ohm loads, gain (2/pi) gm RL
+* D: 4-path band-pass filter, 50 ohm source, 200 pF per path, four 25 % clock phases at 1 GHz; gain at 1 GHz
+*    after settling (Example 21-05.8: -1.82 dB)
+* Each IF amplitude is found by resampling on a uniform grid (linearize) and correlating with cos and sin over a
+* whole number of IF periods.
+*
+* EXPECT gca key:../../chapters/21-05-mixers.md#Ex_21-05.1e rtol=1e-3
+* EXPECT gcb key:../../chapters/21-05-mixers.md#Ex_21-05.1f rtol=1e-3
+* EXPECT gcc key:../../chapters/21-05-mixers.md#Ex_21-05.2b rtol=4e-3
+* EXPECT gnp key:../../chapters/21-05-mixers.md#Ex_21-05.8b scale=-1 rtol=4e-3
+.options reltol=1e-6
+.model sw1 sw (vt=0 vh=0 ron=1m roff=1e9)
+VLO lo 0 pulse(-1 1 0 10p 10p 4.99n 10n)
+ELOB lob 0 lo 0 -1
+* ---- A
+VRA rpa 0 dc 0 sin(0 5m 101meg)
+ERA rna 0 rpa 0 -1
+S1A rpa ipa lo 0 sw1
+S2A rna ipa lob 0 sw1
+S3A rna ina lo 0 sw1
+S4A rpa ina lob 0 sw1
+RPA ipa 0 1meg
+RNA ina 0 1meg
+* ---- B
+VRB rpb 0 dc 0 sin(0 5m 301meg)
+ERB rnb 0 rpb 0 -1
+S1B rpb ipb lo 0 sw1
+S2B rnb ipb lob 0 sw1
+S3B rnb inb lo 0 sw1
+S4B rpb inb lob 0 sw1
+RPB ipb 0 1meg
+RNB inb 0 1meg
+* ---- C: transconductor currents into two rails, commutated into loads (voltage-mode switches in series)
+VRC rc 0 dc 0 sin(0 5m 101meg)
+GP 0 cp rc 0 10m
+GN 0 cn rc 0 -10m
+S1C cp lp lo 0 sw1
+S2C cp ln lob 0 sw1
+S3C cn ln lo 0 sw1
+S4C cn lp lob 0 sw1
+RLP lp 0 500
+RLN ln 0 500
+* ---- D: 4-path filter
+VCK1 k1 0 pulse(-1 1 0 1p 1p 0.249n 1n)
+VCK2 k2 0 pulse(-1 1 0.25n 1p 1p 0.249n 1n)
+VCK3 k3 0 pulse(-1 1 0.5n 1p 1p 0.249n 1n)
+VCK4 k4 0 pulse(-1 1 0.75n 1p 1p 0.249n 1n)
+VRD sd 0 dc 0 sin(0 1 1g)
+RSD sd xd 50
+S1D xd c1 k1 0 sw1
+S2D xd c2 k2 0 sw1
+S3D xd c3 k3 0 sw1
+S4D xd c4 k4 0 sw1
+C1D c1 0 200p
+C2D c2 0 200p
+C3D c3 0 200p
+C4D c4 0 200p
+.tran 2p 1.5u 0 2p
+.control
+run
+linearize
+let via = v(ipa) - v(ina)
+let vib = v(ipb) - v(inb)
+let vic = v(lp) - v(ln)
+let ka = via * cos(2 * pi * 1e6 * time)
+let sa = via * sin(2 * pi * 1e6 * time)
+let kb = vib * cos(2 * pi * 1e6 * time)
+let sb = vib * sin(2 * pi * 1e6 * time)
+let kc = vic * cos(2 * pi * 1e6 * time)
+let sc = vic * sin(2 * pi * 1e6 * time)
+let kd = v(xd) * cos(2 * pi * 1e9 * time)
+let sd = v(xd) * sin(2 * pi * 1e9 * time)
+meas tran mka integ ka from=0.5u to=1.5u
+meas tran msa integ sa from=0.5u to=1.5u
+meas tran mkb integ kb from=0.5u to=1.5u
+meas tran msb integ sb from=0.5u to=1.5u
+meas tran mkc integ kc from=0.5u to=1.5u
+meas tran msc integ sc from=0.5u to=1.5u
+meas tran mkd integ kd from=1.4u to=1.5u
+meas tran msd integ sd from=1.4u to=1.5u
+let gca = 20 * log10(2 * sqrt(mka^2 + msa^2) / 1e-6 / 0.01)
+let gcb = 20 * log10(2 * sqrt(mkb^2 + msb^2) / 1e-6 / 0.01)
+let gcc = 20 * log10(2 * sqrt(mkc^2 + msc^2) / 1e-6 / 0.005)
+let gnp = 20 * log10(2 * sqrt(mkd^2 + msd^2) / 1e-7)
+print gca gcb gcc gnp
+.endc
+.end

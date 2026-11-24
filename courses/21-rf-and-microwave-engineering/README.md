@@ -31,7 +31,7 @@ Radio hardware from S-parameters to standards: matching, noise figure and linear
 | [21-02 · Impedance Matching Networks](chapters/21-02-impedance-matching-networks.md) | 7 | ✅ verified | [problems](problems/21-02-problems.md) · [solutions](solutions/21-02-solutions.md) · [lab](labs/21-02-lab/README.md) · [verify](verify/verify_21_02.py) |
 | [21-03 · Noise Figure and Linearity](chapters/21-03-noise-figure-and-linearity.md) | 8 | ✅ verified | [problems](problems/21-03-problems.md) · [solutions](solutions/21-03-solutions.md) · [lab](labs/21-03-lab/README.md) · [verify](verify/verify_21_03.py) |
 | [21-04 · Low-Noise Amplifiers](chapters/21-04-low-noise-amplifiers.md) | 7 | ✅ verified | [problems](problems/21-04-problems.md) · [solutions](solutions/21-04-solutions.md) · [lab](labs/21-04-lab/README.md) · [verify](verify/verify_21_04.py) |
-| [21-05 · Mixers](chapters/21-05-mixers.md) | 6 | ⬜ planned | — |
+| [21-05 · Mixers](chapters/21-05-mixers.md) | 6 | ✅ verified | [problems](problems/21-05-problems.md) · [solutions](solutions/21-05-solutions.md) · [lab](labs/21-05-lab/README.md) · [verify](verify/verify_21_05.py) |
 | [21-06 · Oscillators and VCOs](chapters/21-06-oscillators-and-vcos.md) | 6 | ⬜ planned | — |
 | [21-07 · Power Amplifiers](chapters/21-07-power-amplifiers.md) | 9 | ⬜ planned | — |
 | [21-08 · Transceiver Architectures](chapters/21-08-transceiver-architectures.md) | 7 | ⬜ planned | — |

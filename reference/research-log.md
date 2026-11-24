@@ -3686,3 +3686,30 @@ R&D % = R&D ÷ revenue.
 - **Skyworks SKY67177-11** (205909M, 13 Aug 2025): 3.3–4.2 GHz, 5 V; high-gain mode gain 34 dB typ, NF 0.6 typ / 1.0 max dB, IIP3 −1 to −4 dBm, IP1dB −14 dBm; bypass mode gain 15 dB, NF 0.8 dB, IIP3 +13 to +15 dBm; IDQ 120 typ / 145 max mA; "min/max limits, valid over temperature –40 °C to 105 °C ... are verified by characterization". [Established]
 - **Mini-Circuits PMA3-83LN+** (Rev. E, date code 240417): at 2 GHz, +6 V: NF 1.3 dB typ (1.7 max), gain 22.1 dB, OIP3 +35.2 dBm, OP1dB +20.7 dBm, 77 mA; +5 V: gain 21.3 dB, OIP3 +30.0 dBm, 60 mA; "Measured on Mini-Circuits Characterization test board TB-830A+". [Established]
 - **TI AWR2944** (SWRS273E, rev. Feb 2026): receiver NF 12 dB typ "with run time calibrations enabled"; **AWR1843** (SWRS222D, rev. Sep 2024): 14 dB (76–77 GHz), 15 dB (77–81 GHz), "quoted for complex 1x mode", image rejection 30 dB. [Established]
+
+## R-374 · Mixer classics: Gilbert cell, passive mixers, harmonic rejection, N-path filters, Weaver (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref metadata and OpenAlex abstracts.*
+
+- **Gilbert**, "A precise four-quadrant multiplier with subnanosecond response," *IEEE JSSC* 3(4):365–373, Dec. 1968, DOI 10.1109/JSSC.1968.1049925: "linear on both inputs and useful from dc to an upper frequency very close to the f_T of the transistors"; precision "limited primarily by the matching of the transistors". [Established]
+- **Mirzaei, Darabi, Leete, Chen, Juan and Yazdi**, *IEEE JSSC* 44(10):2678–2688, Oct. 2009, DOI 10.1109/JSSC.2009.2027937: "the mixer reflects the baseband impedance to the RF and vice versa through simple frequency shifting"; I/Q interaction "results in different high- and low-side conversion gains, and unexpected IIP2 and IIP3 values." [Established]
+- **Weldon et al.**, *IEEE JSSC* 36(12):2003–2015, Dec. 2001, DOI 10.1109/4.972151: harmonic-rejection mixers "used to eliminate the need for a discrete IF filter" (rejection value not in the abstract). **Ru, Moseley, Klumperink and Nauta**, *IEEE JSSC* 44(12):3359–3375, Dec. 2009, DOI 10.1109/JSSC.2009.2032272: two-stage harmonic rejection ">60 dB" for the 2nd to 6th harmonics "over 40 chips"; digital cancellation "at least 80 dB" for one harmonic. [Established]
+- **Franks and Sandberg**, *Bell Syst. Tech. J.* 39(5):1321–1350, Sep. 1960, DOI 10.1002/j.1538-7305.1960.tb03962.x (N-path filter). **Ghaffari, Klumperink, Soer and Nauta**, *IEEE JSSC* 46(5):998–1010, May 2011, DOI 10.1109/JSSC.2011.2117010: "The switching frequency defines the center frequency, while the RC-time and duty cycle of the clock define the bandwidth"; 4-path, 65 nm, tunable 0.1–1 GHz, IIP3 > 14 dBm, NF 3–5 dB, 2–16 mW clock power. [Established]
+- **Weaver**, "A third method of generation and detection of single-sideband signals," *Proc. IRE* 44(12):1703–1705, Dec. 1956, DOI 10.1109/JRPROC.1956.275061 (author given as D. Weaver in the metadata). [Established]
+- **Blaakmeer, Klumperink, Leenaerts and Nauta**, "The Blixer, a wideband balun-LNA-I/Q-mixer topology," *IEEE JSSC* 43(12):2706–2715, Dec. 2008, DOI 10.1109/JSSC.2008.2004866: a 25% duty-cycle LO gives a 2× smaller DC drop and 2× higher IF impedance. [Established]
+
+## R-375 · Image rejection, zero-IF and mixer-first receiver results (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref/OpenAlex; one university lecture PDF.*
+
+- **Behbahani, Kishigami, Leete and Abidi**, *IEEE JSSC* 36(6):873–887, Jun. 2001, DOI 10.1109/4.924850: a low-IF downconverter "repeatedly rejects the image by 60 dB over the wide band of 3.5 to 20 MHz without trimming or calibration." **Der and Razavi**, *IEEE JSSC* 38(2):167–175, Feb. 2003, DOI 10.1109/JSSC.2002.807407: "57 dB after calibration". Razavi, VLSI 2000, DOI 10.1109/VLSIC.2000.852844: 62 dB by "Placing the image around the zero frequency". Elmala and Embabi, *IEEE JSSC* 39(2), 2004, DOI 10.1109/JSSC.2003.821779: 59 dB with on-line calibration. [Established]
+- **A. Niknejad, EECS 242 lecture "Receiver Architectures"**, UC Berkeley (PDF dated 5 Feb 2009): "Typical op-chip values of 30-40 dB achieved (< 5°, < 0.6 dB)" (sic). [Industry estimate: course material; the exact formula gives about 25 dB at that corner]
+- **Lee, Yun and Kwon**, RFIC 2023, DOI 10.1109/RFIC54547.2023.10186173: 5G NR front end with "calibration-free IIP2 of more than 59 dBm", NF 3.5 dB. [Established]
+- **Andrews and Molnar**, *IEEE JSSC* 45(12):2696–2708, Dec. 2010, DOI 10.1109/JSSC.2010.2077151: "70 dB of gain, NF as low as 3 dB, and 25 dBm out-of-band IIP3", 0.1–1.3 GHz. **van Zanten, van der Zee and Nauta**, ISSCC 2024, DOI 10.1109/ISSCC49657.2024.10454419: ">20dBm adjacent-channel IIP3 consuming less than 25mW". **Gadelkarim and Mercier**, ISSCC 2025, DOI 10.1109/ISSCC49661.2025.10904619: mm-wave mixer-first N-path receivers cost "13 to 89mW and 8 to 20dB"; "there are no SAW-equivalent filters available at these frequencies". [Established]
+
+## R-376 · Passive mixer data sheets (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Mini-Circuits PDFs. ADI and Marki sites were blocked and not used.*
+
+- **Mini-Circuits ADE-1+** (Rev. G, 2020): Level 7 (+7 dBm LO), 0.5–500 MHz; conversion loss 5.0 dB typ mid-band; IP3 15 dBm typ; 1 dB compression +1 dBm typ; L–I isolation 65/40/30 dB typ (low/mid/upper band) with minima 45/25/20 dB. **ADE-1H+** (Rev. G): Level 17 (+17 dBm LO); conversion loss 5.3 dB; IP3 23 dBm; 1 dB compression +14 dBm. [Established]
+- **Mini-Circuits MDB-24H+** (Rev. A, 2021): 5–21.5 GHz MMIC double-balanced mixer, LO +15 dBm; conversion loss 6.9 dB and NF 6.9 dB at 5 GHz; IIP3 14–24 dBm across the band. [Established]
