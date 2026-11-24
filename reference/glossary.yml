@@ -8149,3 +8149,24 @@
   definition: "A comparator's energy per decision multiplied by its input-referred noise variance (nJ·µV²); because energy scales as 1/noise² at fixed design, it compares comparators fairly across noise levels."
   chapter: "20-05"
   see_also: [StrongARM latch]
+# ---- 20-06
+- term: Missing code
+  definition: "An output code an ADC never produces because its transition levels coincide (zero code width, DNL = −1 LSB); in a SAR it appears when a bit's weight is smaller than the sum of the lower bits' weights plus one LSB."
+  chapter: "20-06"
+  see_also: [Differential nonlinearity (DNL)]
+- term: Code-density test
+  definition: "A static ADC test that applies an input of known amplitude distribution, usually a sine slightly above full scale, and infers each code's width from how often it occurs; for a sine the transition levels follow as T_k = V_0 − A cos(π C_{k−1}), with C the cumulative fraction of samples below code k. Also called the histogram test."
+  chapter: "20-06"
+  see_also: [Differential nonlinearity (DNL), Integral nonlinearity (INL), Coherent sampling]
+- term: Noise spectral density
+  definition: "A converter's noise power per hertz relative to full scale, NSD = −SNR_FS − 10 log10(f_s/2) dBFS/Hz for white noise; a signal occupying a narrower band sees the SNR improved by 10 log10(f_s/2B)."
+  chapter: "20-06"
+  see_also: [Effective number of bits (ENOB)]
+- term: Walden figure of merit
+  definition: "FoM_W = P/(2^ENOB f_s), an ADC's energy per conversion step (fJ/conv-step), smaller being better; it assumes power doubles per effective bit and so favors low-resolution designs."
+  chapter: "20-06"
+  see_also: [Schreier figure of merit, Effective number of bits (ENOB)]
+- term: Schreier figure of merit
+  definition: "FoM_S = SNDR + 10 log10(BW/P) in dB, larger being better; it assumes power quadruples per bit, as thermal noise requires, and is bounded near 192 dB at 300 K by the 8kT·SNR energy of an ideal class-B-driven sampler."
+  chapter: "20-06"
+  see_also: [Walden figure of merit, kT/C noise]

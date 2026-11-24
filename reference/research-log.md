@@ -3284,3 +3284,12 @@ R&D % = R&D ÷ revenue.
 - **ADC32RF55** (SBAS500B, rev. Aug 2023): 14 b, up to 3 GS/s; aperture jitter 50 fs; full-power bandwidth 2.75 GHz; CER 10⁻¹⁵.
 - **ADC12DJ3200** (SLVSD97A, rev. Apr 2020): 50 fs aperture jitter; 8 GHz bandwidth; CER 10⁻¹⁸.
 - **LF398** (SNOSBI3C, rev. Oct 2018): classic sample-and-hold; hold step 0.5 mV at 0.01 µF; "Hold step, acquisition time, and droop rate are the major trade-offs in the selection of a hold capacitor value."
+
+## R-334 · Converter metrics in data sheets and the Murmann short course (Course 20)
+
+*Read on 24 Nov 2026 by a research subagent (with R-331 to R-333) from TI data sheets on ti.com and Murmann's ISSCC 2022 short-course PDF in the ADC-survey repository (raw.githubusercontent.com).*
+
+- **B. Murmann, "Introduction to ADCs/DACs: Metrics, Topologies, Trade Space, and Applications," ISSCC Short Course, Feb. 2022** (pdf/ISSCC2022-Short Course-Murmann.pdf in github.com/bmurmann/ADC-survey): take-away slide: high-speed ADCs and DACs at "Tens of femtoseconds timing jitter"; low-speed ADCs at the "8kTSNR energy limit".
+- **TI ADC12DJ5200RF** (SLVSEN9H, rev. Aug 2026): noise spectral density at AIN = −20 dBFS, dual-channel: −150.4 dBFS/Hz at the default 0.8 Vpp full scale (−152.0 at 1.0 Vpp); single-channel −152.9 and −154.2 dBFS/Hz. SNR, dual-channel, f_CLK = 5.12 GHz, −1 dBFS: 55.6 dBFS at 347 MHz, 54.7 at 2397 MHz, 53.0 at 4197 MHz, 51.4 at 5997 MHz, 49.6 at 7997 MHz.
+- **TI ADC32RF55** (SBAS500B, rev. Aug 2023): 14 b, up to 3 GS/s; NSD −155.6 dBFS/Hz (no averaging), −158.1 (2× averaging), −160.4 (4× averaging); SNR 62.3 dBFS at 1 GHz and 63 dBFS at 1.8 GHz (−4 dBFS, 2× averaging). The 2.5 dB and 4.8 dB averaging gains against an ideal 3 and 6 dB are a derived comparison.
+- **TI ADC32RF45** (SBAS747C, rev. Dec 2016): SNR (−2 dBFS) 62.7 dBFS at 100 MHz, 60.9 at 900 MHz, 58.8 at 1850 MHz, 54.2 at 3500 MHz.
