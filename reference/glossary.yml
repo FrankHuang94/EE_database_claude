@@ -8095,3 +8095,24 @@
   definition: "The vertical bipolar transistor available in any CMOS process (p⁺ diffusion emitter, n-well base, p-substrate collector); with its collector fixed at the substrate it is used diode-connected as the junction of CMOS bandgap references."
   chapter: "20-03"
   see_also: [Bandgap reference, Bipolar junction transistor]
+# ---- 20-04
+- term: Dropout voltage
+  definition: "The smallest input-to-output difference at which a linear regulator still regulates at a stated load current; with a PMOS pass device it is the device's triode drop with its gate pulled fully on, and it sets the regulator's minimum input and best-case efficiency V_out/V_in."
+  chapter: "20-04"
+  see_also: [Low-dropout regulator (LDO), Pass device]
+- term: Pass device
+  definition: "The large transistor in series between a linear regulator's input and output that carries the load current and drops the difference in voltage; a PMOS allows the lowest dropout, an NMOS source follower gives lower output impedance and better supply rejection but needs a gate drive above the output."
+  chapter: "20-04"
+  see_also: [Low-dropout regulator (LDO), Dropout voltage]
+- term: Current efficiency
+  definition: "The fraction of a regulator's input current that reaches the load, I_L/(I_L + I_Q); it multiplies V_out/V_in in an LDO's efficiency and dominates at light load."
+  chapter: "20-04"
+  see_also: [Quiescent current, Low-dropout regulator (LDO)]
+- term: Capacitor-less LDO
+  definition: "An LDO with no external output capacitor, relying on tens to hundreds of picofarads of on-chip capacitance; its loop is a Miller-compensated two-stage amplifier whose second pole g_mp/C_o moves with load, and its load-step droop is about ΔI t_resp/C_o, so it needs a sub-nanosecond response or fast local feedback."
+  chapter: "20-04"
+  see_also: [Low-dropout regulator (LDO), Miller compensation]
+- term: Digital LDO
+  definition: "A linear regulator whose error amplifier is replaced by a clocked comparator and controller that switches an array of unit pass transistors on or off; it works at supplies too low for analog amplifiers and scales with digital processes, at the cost of limit-cycle ripple, quantized response and weak high-frequency supply rejection."
+  chapter: "20-04"
+  see_also: [Low-dropout regulator (LDO), Capacitor-less LDO]

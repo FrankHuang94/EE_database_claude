@@ -1,0 +1,79 @@
+* Lab 20-04 -- supply rejection of the running design (chapter section 3.5), closed loop. VIN carries a 1 V AC
+* ripple. The error amplifier (g_ma = 1 mS, R_a = 100 kohm, C_a = 0.2 pF) senses beta = 0.5 of the output and moves
+* the gate up when the output rises. The gate buffer (g_mb = 2 mS) and the gate capacitance C_g = 1.614162 pF are
+* referenced to k v(vin): k = 1 is a driver referenced to the input (the gate tracks the ripple), k = 0 a driver
+* referenced to ground. The pass device injects g_mp (v(vin) - v(g)) and has r_ds from the input to the output; the
+* output has R_L, R_div = 1.2 Mohm and C_L = 1 uF with 5 mohm ESR. The rejection is -20 log |v(out)/v(vin)|.
+* Copies: (a) 100 mA, k = 1; (b) 100 mA, k = 0; (c) 100 uA, k = 1 (g_mp and r_ds from labs/20-04-lab/ldo.py).
+*
+* EXPECT r1dc key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.5a rtol=1e-3
+* EXPECT r1m key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.5b rtol=1e-3
+* EXPECT r10m key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.5c rtol=1e-3
+* EXPECT r0dc key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.5d rtol=1e-3
+* EXPECT r0m key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.5e rtol=1e-3
+* EXPECT r010m key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.5f rtol=1e-3
+* EXPECT rlight key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.5g rtol=1e-3
+
+VIN vin 0 DC 0 AC 1
+
+* (a) 100 mA, k = 1
+EFA fba 0 outa 0 0.5
+GAA 0 aa fba 0 1m
+RAA aa 0 100k
+CAA aa 0 0.2p
+EKA a2a aa vin 0 1
+EGA gka 0 vin 0 1
+GBA 0 ga a2a ga 2m
+CGA ga gka 1.614162p
+GPA 0 outa vin ga 313.6387m
+RDSA vin outa 12
+RLA outa 0 12
+RDVA outa 0 1.2Meg
+RESA outa xa 5m
+CLA xa 0 1u
+
+* (b) 100 mA, k = 0
+EFB fbb 0 outb 0 0.5
+GAB 0 ab fbb 0 1m
+RAB ab 0 100k
+CAB ab 0 0.2p
+GBB 0 gb ab gb 2m
+CGB gb 0 1.614162p
+GPB 0 outb vin gb 313.6387m
+RDSB vin outb 12
+RLB outb 0 12
+RDVB outb 0 1.2Meg
+RESB outb xb 5m
+CLB xb 0 1u
+
+* (c) 100 uA, k = 1
+EFC fbc 0 outc 0 0.5
+GAC 0 ac fbc 0 1m
+RAC ac 0 100k
+CAC ac 0 0.2p
+EKC a2c ac vin 0 1
+EGC gkc 0 vin 0 1
+GBC 0 gc a2c gc 2m
+CGC gc gkc 1.614162p
+GPC 0 outc vin gc 2.82729m
+RDSC vin outc 12k
+RLC outc 0 12k
+RDVC outc 0 1.2Meg
+RESC outc xc 5m
+CLC xc 0 1u
+
+.control
+ac dec 200 1m 100Meg
+let ra = -db(v(outa))
+let rb = -db(v(outb))
+let rc = -db(v(outc))
+meas ac r1dc find ra at=1m
+meas ac r1m find ra at=1Meg
+meas ac r10m find ra at=10Meg
+meas ac r0dc find rb at=1m
+meas ac r0m find rb at=1Meg
+meas ac r010m find rb at=10Meg
+meas ac rlight find rc at=1m
+print r1dc r1m r10m r0dc r0m r010m rlight
+.endc
+.end

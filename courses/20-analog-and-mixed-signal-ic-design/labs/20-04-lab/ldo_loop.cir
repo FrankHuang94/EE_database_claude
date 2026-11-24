@@ -1,0 +1,83 @@
+* Lab 20-04 -- the running design's LDO loop (chapter section 3.4) as a small-signal chain, loop broken at the
+* error amplifier's input. A 1 V AC test source drives the error amplifier (g_ma = 1 mS into R_a = 100 kohm and
+* C_a = 0.2 pF); the gate buffer (g_mb = 2 mS) charges C_g = 1.614162 pF; the pass device injects g_mp v_g into the
+* output node, which has r_ds, R_L and R_div = 1.2 Mohm to ground and C_L in series with its 5 mohm ESR; the divider
+* returns beta = 0.5 of the output. v(fb)/v(test) is the loop gain L(s). Signs are chosen so the chain is
+* non-inverting (the inversion of the real loop is the 180 degrees in the phase-margin definition).
+* Operating points from labs/20-04-lab/ldo.py:
+*   (a) 100 uA:  g_mp = 2.82729 mS,  r_ds = R_L = 12 kohm, C_L = 1 uF
+*   (b) 100 mA:  g_mp = 313.6387 mS, r_ds = R_L = 12 ohm,  C_L = 1 uF
+*   (c) 100 mA with C_L = 0.1 uF
+* ngspice reports phase in radians.
+*
+* EXPECT l0a key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.3g rtol=2e-3
+* EXPECT l0b key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.3i rtol=2e-3
+* EXPECT fca key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.4c scale=1e3 rtol=2e-3
+* EXPECT pma key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.4d rtol=2e-3
+* EXPECT fcb key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.4i scale=1e6 rtol=2e-3
+* EXPECT pmb key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.4j rtol=2e-3
+* EXPECT fcc key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.4m scale=1e6 rtol=2e-3
+* EXPECT pmc key:../../chapters/20-04-ldo-regulators.md#Ex_20-04.4n rtol=3e-3
+
+VT test 0 DC 0 AC 1
+
+* (a) 100 uA, 1 uF
+GAA 0 aa test 0 1m
+RAA aa 0 100k
+CAA aa 0 0.2p
+GBA 0 ga aa ga 2m
+CGA ga 0 1.614162p
+GPA 0 outa ga 0 2.82729m
+RDSA outa 0 12k
+RLA outa 0 12k
+RDVA outa 0 1.2Meg
+RESA outa xa 5m
+CLA xa 0 1u
+EFA fba 0 outa 0 0.5
+
+* (b) 100 mA, 1 uF
+GAB 0 ab test 0 1m
+RAB ab 0 100k
+CAB ab 0 0.2p
+GBB 0 gb ab gb 2m
+CGB gb 0 1.614162p
+GPB 0 outb gb 0 313.6387m
+RDSB outb 0 12
+RLB outb 0 12
+RDVB outb 0 1.2Meg
+RESB outb xb 5m
+CLB xb 0 1u
+EFB fbb 0 outb 0 0.5
+
+* (c) 100 mA, 0.1 uF
+GAC 0 ac test 0 1m
+RAC ac 0 100k
+CAC ac 0 0.2p
+GBC 0 gc ac gc 2m
+CGC gc 0 1.614162p
+GPC 0 outc gc 0 313.6387m
+RDSC outc 0 12
+RLC outc 0 12
+RDVC outc 0 1.2Meg
+RESC outc xc 5m
+CLC xc 0 0.1u
+EFC fbc 0 outc 0 0.5
+
+.control
+ac dec 400 1m 10G
+let la = mag(v(fba))
+let lb = mag(v(fbb))
+meas ac l0a find la at=1m
+meas ac l0b find lb at=1m
+meas ac fca when vdb(fba)=0
+meas ac pha find vp(fba) at=fca
+meas ac fcb when vdb(fbb)=0
+meas ac phb find vp(fbb) at=fcb
+meas ac fcc when vdb(fbc)=0
+meas ac phc find vp(fbc) at=fcc
+let pma = 180 + pha * 180 / pi
+let pmb = 180 + phb * 180 / pi
+let pmc = 180 + phc * 180 / pi
+print l0a l0b fca pma fcb pmb fcc pmc
+.endc
+.end
