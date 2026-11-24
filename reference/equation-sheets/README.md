@@ -24,3 +24,4 @@ One sheet per course: the equations you should be able to write from memory (or 
 | 17 · Communication Systems | [17-communication-systems.md](17-communication-systems.md) |
 | 18 · Embedded Systems and Microcontrollers | [18-embedded-systems-and-microcontrollers.md](18-embedded-systems-and-microcontrollers.md) |
 | 19 · Digital VLSI Design | [19-digital-vlsi-design.md](19-digital-vlsi-design.md) |
+| 20 · Analog and Mixed-Signal IC Design | [20-analog-and-mixed-signal-ic-design.md](20-analog-and-mixed-signal-ic-design.md) |
