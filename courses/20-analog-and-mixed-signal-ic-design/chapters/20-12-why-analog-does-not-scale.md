@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 20-12 · Why Analog Does Not Scale Like Digital
 
 | | |

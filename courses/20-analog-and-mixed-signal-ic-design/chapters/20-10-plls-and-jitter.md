@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 20-10 · PLLs and Jitter
 
 | | |

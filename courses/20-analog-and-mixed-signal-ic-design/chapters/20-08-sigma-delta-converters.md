@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 20-08 · Oversampling and Sigma-Delta Converters
 
 | | |

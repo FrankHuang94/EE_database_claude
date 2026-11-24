@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 20-05 · Comparators and Sample-and-Hold Circuits
 
 | | |

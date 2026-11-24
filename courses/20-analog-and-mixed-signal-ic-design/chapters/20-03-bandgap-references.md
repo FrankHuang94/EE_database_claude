@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 20-03 · Bandgap and Voltage References
 
 | | |

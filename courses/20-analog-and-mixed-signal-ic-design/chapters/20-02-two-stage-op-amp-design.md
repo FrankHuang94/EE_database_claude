@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 20-02 · Two-Stage Op-Amp Design
 
 | | |

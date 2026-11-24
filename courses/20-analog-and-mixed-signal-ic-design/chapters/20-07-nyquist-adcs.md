@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 20-07 · Nyquist ADCs: Flash, SAR and Pipeline
 
 | | |

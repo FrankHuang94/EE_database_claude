@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 20-01 · Analog Design Fundamentals in Nanometer CMOS
 
 | | |
