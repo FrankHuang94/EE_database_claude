@@ -1,11 +1,11 @@
 # Course 19 · Final Exam Solutions (Digital VLSI Design)
 
-Exam: [README.md](README.md). Every number below is recomputed by [verify_19_exam.py](../verify/verify_19_exam.py), each by a route other than the one shown here:
+Exam: [README.md](README.md). Every number below is recomputed by [verify_19_exam.py](../verify/verify_19_exam.py). Answers with a non-trivial route are recomputed independently, as listed here; closed-form arithmetic is re-evaluated directly:
 
 - the inverter by solving the square-law current balance numerically, and its delay by integrating the discharge ODE;
 - Elmore constants by building the RC networks as matrices; pseudo-NMOS and charge sharing by root finding;
 - logical-effort sizing by numerical minimization of path delay over the gate sizes and the stage count;
-- the wire by its Fourier-series step response and the repeater optimum by a grid search over $(k, h)$;
+- the repeater optimum by numerical minimization over $(k, h)$, with the distributed line's 0.38 coefficient confirmed from its Fourier-series step response;
 - power, leakage and DVFS by root finding on the alpha-power law; synchronizer MTBF from its definition;
 - SRAM read disturbance with the 19-08 lab model, yield by Poisson sums;
 - Euler orderings by brute force over all 24 orderings with the 19-09 lab's graph tools;
@@ -32,7 +32,7 @@ The stronger NMOS pulls $V_M$ below the midpoint.
 
 (c) With $r = 1$: $V_{IL} = (3V_{DD} + 2V_{TH})/8 = (3 + 0.6)/8$ = **0.450** V and $V_{IH} = (5V_{DD} - 2V_{TH})/8$ = **0.550** V. With $V_{OL} = 0$ and $V_{OH} = V_{DD}$, both noise margins are **0.450** V, 45% of the supply.
 
-(d) At $V_M$ = 0.5 V, $V_{ov}$ = 0.2 V. Exact symmetric form: $\lvert A_v\rvert = 2(1 + \lambda V_{DD}/2)/(\lambda V_{ov}) = 2 \times 1.04/0.016$ = **130**; approximation $2/(\lambda V_{ov})$ = **125**. The output swings over about $V_{DD}/\lvert A_v\rvert$ = **7.69** mV of input. $\sigma_{V_M} = \sigma_{VT}\sqrt{r + 1}/(1 + \sqrt r) = 20/\sqrt2$ = **14.14** mV: each threshold contributes half its variance.
+(d) At $V_M$ = 0.5 V, $V_{ov}$ = 0.2 V. Exact symmetric form: $\lvert A_v\rvert = 2(1 + \lambda V_{DD}/2)/(\lambda V_{ov}) = 2 \times 1.04/0.016$ = **130**; approximation $2/(\lambda V_{ov})$ = **125**. The output swings over about $V_{DD}/\lvert A_v\rvert$ = **7.69** mV of input. $\sigma_{V_M} = \sigma_{VT}\sqrt{r + 1}/(1 + \sqrt r) = 20/\sqrt2$ = **14.14** mV: each threshold moves $V_M$ by half its own shift ($\partial V_M/\partial V_{TN} = -\partial V_M/\partial\lvert V_{TP}\rvert = \tfrac12$), so each contributes a quarter of $\sigma_{VT}^2$, and together half.
 
 ### Solution 2
 
@@ -60,9 +60,9 @@ $$
 
 and $t_p \approx 0.69\,\tau_E$ = **122.5** ps.
 
-(c) $I_{load} = \tfrac12 \times 60\ \mu\text{A/V}^2 \times 0.7^2$ = **14.7** µA. With $a = V_{DD} - V_{TN} = 0.7$ V, $V_{OL} = a - \sqrt{a^2 - 2I_{load}/k_n} = 0.7 - \sqrt{0.49 - 0.098}$ = **0.0739** V. Static power while low: $1.0\ \text{V} \times 14.7\ \mu\text{A}$ = **14.7** µW.
+(c) $I_{load} = \tfrac12 \times 60\ \mu\text{A/V}^2 \times 0.7^2$ = **14.7** µA. With $a = V_{DD} - V_{TN} = 0.7$ V, $V_{OL} = a - \sqrt{a^2 - 2I_{load}/k_n} = 0.7 - \sqrt{0.49 - 0.098}$ = **0.0739** V. Check the load: the PMOS has $V_{SD} = 1.0 - 0.0739 = 0.926$ V, above $V_{SG} - \lvert V_{TP}\rvert = 0.7$ V, so it is saturated as assumed. Static power while low: $1.0\ \text{V} \times 14.7\ \mu\text{A}$ = **14.7** µW.
 
-(d) The boundary is $C_a/C_L = V_{TN}/(V_{DD} - V_{TN}) = 0.3/0.7$ = **0.4286**. For $C_a$ = 4 fF ($C_a/C_L$ = 0.333, below the boundary) full sharing would give $12/16 = 0.75$ V, above $V_{DD} - V_{TN}$ = 0.7 V, so the connecting transistor cuts off first: the internal node stops at 0.7 V, the output loses $\Delta V = (C_a/C_L)(V_{DD} - V_{TN}) = 0.233$ V and settles at **0.767** V. For $C_a$ = 6 fF (above the boundary) the nodes equalize: $12/18$ = **0.667** V, close to an inverter's switching threshold.
+(d) The boundary is $C_a/C_L = V_{TN}/(V_{DD} - V_{TN}) = 0.3/0.7$ = **0.4286**. For $C_a$ = 4 fF ($C_a/C_L$ = 0.333, below the boundary) full sharing would give $12/16 = 0.75$ V, above $V_{DD} - V_{TN}$ = 0.7 V, so the connecting transistor cuts off first: the internal node stops at 0.7 V, the output loses $\Delta V = (C_a/C_L)(V_{DD} - V_{TN})$ = **0.233** V and settles at **0.767** V. For $C_a$ = 6 fF (above the boundary) the nodes equalize: $12/18$ = **0.667** V, close to an inverter's switching threshold.
 
 ### Solution 4
 
@@ -80,7 +80,7 @@ and $t_p \approx 0.69\,\tau_E$ = **122.5** ps.
 
 (b) $t \approx 0.69R_d(C_w + C_L) + R_w(0.38C_w + 0.69C_L) = 0.69 \times 2\ \text{k}\Omega \times 420\ \text{fF} + 16\ \text{k}\Omega \times (152 + 13.8)\ \text{fF} = 0.580 + 2.653$ = **3.232** ns; the wire-resistance term is **82.1** % of it, so a bigger driver barely helps.
 
-(c) $k_{opt} = \sqrt{0.38R_wC_w/(0.69R_0C_0)} = \sqrt{2.432\ \text{ns}/1.38\ \text{ps}}$ = **41.98** (use 42 repeaters, about 48 µm apart); $h_{opt} = \sqrt{R_0C_w/(R_wC_0)} = \sqrt{4\ \text{ns}/3.2\ \text{ps}}$ = **35.36**. $T_{min} = (2\sqrt{0.69 \times 0.38} + 1.38)\sqrt{R_0C_0R_wC_w} = 2.404 \times \sqrt{2\ \text{ps} \times 6.4\ \text{ns}} = 2.404 \times 113.1\ \text{ps}$ = **272.0** ps, **11.88** times faster than (b).
+(c) $k_{opt} = \sqrt{0.38R_wC_w/(0.69R_0C_0)} = \sqrt{2.432\ \text{ns}/1.38\ \text{ps}}$ = **41.98** (use **42** repeaters, about **48** µm apart); $h_{opt} = \sqrt{R_0C_w/(R_wC_0)} = \sqrt{4\ \text{ns}/3.2\ \text{ps}}$ = **35.36**. $T_{min} = (2\sqrt{0.69 \times 0.38} + 1.38)\sqrt{R_0C_0R_wC_w} = 2.404 \times \sqrt{2\ \text{ps} \times 6.4\ \text{ns}} = 2.404 \times 113.1\ \text{ps}$ = **272.0** ps, **11.88** times faster than (b).
 
 (d) The quiet neighbor and the ground capacitance both hold the victim: $\Delta V = 1.0 \times 30/(30 + 30 + 40)$ = **0.300** V. Effective capacitance $C_g + \text{MCF} \times \sum C_c$: both switching with it, MCF 0: **40** fF; both quiet, MCF 1: **100** fF; both against it, MCF 2: **160** fF. A 4× spread in load is why timing analysis must know the neighbors' switching windows.
 
@@ -90,9 +90,9 @@ and $t_p \approx 0.69\,\tau_E$ = **122.5** ps.
 
 (b) $S = nV_T\ln 10 = 1.35 \times 25.85\ \text{mV} \times 2.3026$ = **80.35** mV/decade. A 60 mV lower threshold multiplies leakage by $10^{60/80.35}$ = **5.58**.
 
-(c) Frequency scales as $(V_{DD} - V_{TH})^{1.3}/V_{DD}$; at 0.9 V this is $0.6^{1.3}/0.9$. Halving it, $(V - 0.3)^{1.3}/V = \tfrac12 \times 0.5148$, has the root $V$ = **0.536** V (by iteration). Power scales as $V^2f$: $(0.536/0.9)^2 \times 0.5$ = **0.178**; energy per operation as $V^2$: **0.355**. Halving the speed cuts power more than fivefold and energy per operation almost threefold.
+(c) Frequency scales as $(V_{DD} - V_{TH})^{1.3}/V_{DD}$; at 0.9 V this is $0.6^{1.3}/0.9$. Halving it, $(V - 0.3)^{1.3}/V = \tfrac12 \times 0.6^{1.3}/0.9 = 0.2860$, has the root $V$ = **0.536** V (by iteration). Power scales as $V^2f$: $(0.536/0.9)^2 \times 0.5$ = **0.178**; energy per operation as $V^2$: **0.355**. Halving the speed cuts power more than fivefold and energy per operation almost threefold.
 
-(d) The rail draws $CV^2 = 800\ \text{pF} \times 0.5625\ \text{V}^2 = 0.45$ nJ from the supply; with control, 0.50 nJ. Break-even: $0.50\ \text{nJ}/3\ \text{mW}$ = **166.7** ns. Gating shorter idle periods costs energy.
+(d) The rail draws $CV^2 = 800\ \text{pF} \times 0.5625\ \text{V}^2$ = **0.45** nJ from the supply; with control, **0.50** nJ. Break-even: $0.50\ \text{nJ}/3\ \text{mW}$ = **166.7** ns. Gating shorter idle periods costs energy.
 
 ### Solution 7
 
@@ -108,9 +108,9 @@ and $t_p \approx 0.69\,\tau_E$ = **122.5** ps.
 
 (a) Solve $\tfrac12k_A(V_{DD} - \Delta V - V_{TH})^2 = k_N[(V_{DD} - V_{TH})\Delta V - \tfrac12\Delta V^2]$ with $k_N = 180$ µA/V²: $50(0.6 - \Delta V)^2 = 180(0.6\Delta V - 0.5\Delta V^2)$, i.e. $140\Delta V^2 - 168\Delta V + 18 = 0$, whose smaller root is $\Delta V$ = **0.1189** V. The margin to $V_{TN}$ is **0.181** V.
 
-(b) $C_{BL} = 512 \times 0.07 + 12$ = 47.84 fF; $t = C_{BL}\Delta V/I_{cell} = 47.84\ \text{fF} \times 0.09\ \text{V}/18\ \mu\text{A}$ = **239.2** ps. Regeneration: $\tau\ln(V_{DD}/\Delta V) = 12\ \text{ps} \times \ln 10$ = **27.63** ps. Small-swing sensing makes the bitline the dominant term.
+(b) $C_{BL} = 512 \times 0.07 + 12$ = **47.84** fF; $t = C_{BL}\Delta V/I_{cell} = 47.84\ \text{fF} \times 0.09\ \text{V}/18\ \mu\text{A}$ = **239.2** ps. Regeneration: $\tau\ln(V_{DD}/\Delta V) = 12\ \text{ps} \times \ln 10$ = **27.63** ps. Small-swing sensing makes the bitline the dominant term.
 
-(c) $Q(6)$ = **9.87 × 10⁻¹⁰**; expected failures $2^{28} \times 9.87 \times 10^{-10}$ = **0.265**; yield $e^{-0.265}$ = **76.7** %. With one repair: $e^{-0.265}(1 + 0.265)$ = **97.05** %. For 99% without repair, $Q(z) = -\ln 0.99/2^{28} = 3.74 \times 10^{-11}$, so $z$ = **6.51** σ.
+(c) From the sheet's table, $Q(5.5)$ = **1.90 × 10⁻⁸**; expected failures $2^{28} \times 1.90 \times 10^{-8}$ = **5.10**; yield without repair $e^{-5.10}$ = **0.611** %. With redundancy that repairs $s$ failing cells, the yield is the Poisson probability of at most $s$ failures: $s = 10$ gives 98.44 % and $s$ = **11** gives **99.37** %. For 99% without repair, $Q(z) = -\ln 0.99/2^{28}$ = **3.74 × 10⁻¹¹**, so $z$ = **6.51** σ (between the table's 6.5σ and 7σ entries, or by iterating the asymptotic form). Half a sigma of margin is worth eleven spare rows or columns.
 
 (d) Bitcells: $64 \times 2^{20} \times 0.0175\ \mu\text{m}^2$ = **1.174** mm²; macro $1.174/0.72$ = **1.631** mm²; density $67.11\ \text{Mb}/1.631\ \text{mm}^2$ = **41.1** Mb/mm².
 
@@ -118,11 +118,11 @@ and $t_p \approx 0.69\,\tau_E$ = **122.5** ps.
 
 (a) Contacted pitch $2 + 2 \times 2 + 2$ = **8** λ; uncontacted $2 + 3$ = **5** λ. Each end of the strip needs $1 + 2 + 2 = 5\lambda$ (enclosure, contact, contact-to-gate). Uncontacted internals: $2 \times 5 + 4 \times 2 + 3 \times 3$ = **27** λ = **2.43** µm. Contacting every internal node: $2 \times 5 + 4 \times 2 + 3 \times 6$ = **36** λ = **3.24** µm, a third longer. Internal stack nodes are left uncontacted.
 
-(b) Pull-down: $A \parallel B$ in series with $C$ and $D$; pull-up (the dual): $A$ in series with $B$, in parallel with $C$ and with $D$. An ordering must be an Euler path of both graphs. Checking the $4! = 24$ orderings, **4** work: A-B-C-D, B-A-C-D, D-C-A-B and D-C-B-A. In the pull-down, $A$ and $B$ must be adjacent (they share both nodes of the parallel pair); in the pull-up, $C$ and $D$ must be adjacent at the end of the $A$–$B$ series pair.
+(b) Pull-down, as drawn: output – ($A \parallel B$) – $C$ – $D$ – ground; pull-up (the dual): ($A$ in series with $B$) in parallel with $C$ and with $D$, between $V_{DD}$ and the output. An ordering must be an Euler path of both graphs. In the pull-down, $A$ and $B$ join the same two nodes (output and the $A \parallel B$/$C$ node), and the output node has degree 2, so the path must start or end there with $A$ and $B$ adjacent; $C$ and $D$ then follow in the stack's order, so they are adjacent at the other end. Checking the $4! = 24$ orderings, **4** satisfy both graphs: A-B-C-D, B-A-C-D, D-C-A-B and D-C-B-A. If the series stack may be reordered (for example $C$ – ($A \parallel B$) – $D$, or $D$ next to the output), more orderings open up: **8** in all (A-B-C-D, A-B-D-C, B-A-C-D, B-A-D-C, C-D-A-B, C-D-B-A, D-C-A-B, D-C-B-A), because the parallel pair only has to sit at one end of the stack.
 
-(c) Logic: $350/120$ = 2.917 mm²; flip-flops $20\,000 \times 20.02\ \mu\text{m}^2/0.70$ = 0.572 mm² (routed density already includes utilization; flip-flop cell area does not). Block ≈ **3.489** mm².
+(c) Logic: $350/150$ = **2.333** mm²; flip-flops $20\,000 \times 25\ \mu\text{m}^2/0.65$ = **0.769** mm² (routed density already includes utilization; flip-flop cell area does not). Block ≈ **3.103** mm².
 
-(d) Gate area $0.3\ \mu\text{m}^2$; allowed metal area $400 \times 0.3 = 120\ \mu\text{m}^2$; length $120/0.2$ = **600** µm.
+(d) Gate area $0.3\ \mu\text{m}^2$; allowed metal area $250 \times 0.3 = 75\ \mu\text{m}^2$; length $75/0.25$ = **300** µm. (Real rules such as SKY130's also count the line's sidewall area, which shortens the limit considerably; see 19-09.)
 
 ### Solution 10
 
@@ -130,7 +130,7 @@ and $t_p \approx 0.69\,\tau_E$ = **122.5** ps.
 
 (b) $\text{slack} = T_c + L_2 - t_{setup} - U - (L_1 + t_{pcq} + t_{pd}) = 1.20 + 0.28 - 0.06 - 0.05 - 1.09$ = **0.28** ns. Shortest period $1.20 - 0.28$ = **0.92** ns, **1.087** GHz.
 
-(c) Hold: $(0.35 + 0.09 + 0.04) - (0.28 + 0.03 + 0.02)$ = **0.15** ns. With $L_2$ = 0.60 ns: setup slack **0.60** ns, hold slack $0.48 - 0.65$ = **−0.17** ns. Add at least 0.17 ns to the short path. Inserted on a segment only the short path uses, setup is untouched; even on a shared segment, setup slack falls only to 0.43 ns. Skew that helps setup hurts hold by the same amount.
+(c) Hold: $(0.35 + 0.09 + 0.04) - (0.28 + 0.03 + 0.02)$ = **0.15** ns. With $L_2$ = 0.60 ns: setup slack **0.60** ns, hold slack $0.48 - 0.65$ = **−0.17** ns. Add at least 0.17 ns to the short path. Inserted on a segment only the short path uses, setup is untouched; even on a shared segment, setup slack falls only to **0.43** ns. Skew that helps setup hurts hold by the same amount.
 
 (d) $\sigma_{path} = \sigma\sqrt{N + N(N-1)\rho} = 8\sqrt{12 + 132 \times 0.2} = 8\sqrt{38.4}$ = **49.57** ps; 3σ = **148.7** ps. Independent: $3 \times 8\sqrt{12}$ = **83.14** ps. Correlation nearly doubles the margin: random variation averages out along a path only when it is independent.
 
@@ -158,7 +158,7 @@ Delay to sink 1: $rx(cx/2 + C_1) + t_1 = 127.3\ \Omega \times 45.45\ \text{fF} +
 
 (c) Inclusion–exclusion: singles $1/0.6 + 1/0.3 + 1/0.1 = 15.000$; pairs $1/0.9 + 1/0.7 + 1/0.4 = 5.040$; all three $1/1 = 1$. $E = 15.000 - 5.040 + 1$ = **10.96** transactions, only 10% above $1/p_{\min}$ = **10**: the rare bin dominates.
 
-(d) The sequence is 0, 3, 6, 1, 4, 7, 2, 5: 3 is coprime to 8, so the counter visits every state, and 5 comes last. The property is violated at BMC depth **7**, the last state reached, so the diameter is also **7**. BMC with any bound below 7 reports no violation.
+(d) From 0 the counter visits 0 to 5 and returns: **6** states are reachable, and 6 and 7 are not. The property is not 1-inductive: the unreachable state **6** satisfies $x \ne 7$ and steps to 7, a counterexample to induction. For $k = 2$ the step needs two consecutive $P$-states before a 7, i.e. a predecessor of 6, and 6 has none (5 goes to 0), so no such path exists; with the base case (no violation within one step of 0) the property is **2**-inductive. The lemma $x \le 5$ holds at 0 and is preserved by every step from 0 to 5, so it is 1-inductive and implies $x \ne 7$.
 
 ### Solution 13
 
@@ -174,9 +174,9 @@ Delay to sink 1: $rx(cx/2 + C_1) + t_1 = 127.3\ \Omega \times 45.45\ \text{fF} +
 
 (b) Frequency scales by $\left(\frac{0.55}{0.45}\right)^{1.3}\frac{0.75}{0.85}$ = **1.145**, giving **1.374** GHz, not 2.0 GHz. Dynamic power rises by $(0.85/0.75)^2 \times 1.145$ = **1.471**, to **397** W before leakage, which rises too. By the same law a 2 GHz turbo would need about **1.34** V, which is beyond the process's reliability limits and the thermal budget. *Rubric:* frequency (1), power (1), conclusion (1).
 
-(c) $\text{DL} = 1 - 0.55^{0.03}$ = **17 775** DPPM (1.8%), not 50. 50 DPPM needs $T$ = **99.9916** %. Ask which fault models (stuck-at, transition, cell-aware, memory BIST) and what coverage each reaches, the burn-in and system-level test plan, the in-field self-test plan for a datacenter part (silent data corruption), and how the 55% yield was estimated. *Rubric:* defect level (1), required coverage (1), questions (1).
+(c) $\text{DL} = 1 - 0.55^{0.03}$ = **17 775** DPPM (**1.78** %), not 50. 50 DPPM needs $T$ = **99.9916** %. Ask which fault models (stuck-at, transition, cell-aware, memory BIST) and what coverage each reaches, the burn-in and system-level test plan, the in-field self-test plan for a datacenter part (silent data corruption), and how the 55% yield was estimated. *Rubric:* defect level (1), required coverage (1), questions (1).
 
-(d) 512 MB = $2^{32}$ bits; $4.295 \times 10^9 \times 0.021\ \mu\text{m}^2$ = **90.19** mm² of bitcells, **128.8** mm² at 70% efficiency, **21.5** % of the die: plausible. The verification claim is not: in the 2026 Wilson/Siemens study only 5% of IC/ASIC respondents reported first-silicon success (14.4% in 2024), and no team "fully verifies" a large SoC. Questions: (1) "What was your coverage closure, with which waivers, and which blocks are formally proven?" (2) "When did your compiler and runtime first run on emulation, and for how many cycles?" (3) "What is your plan and budget for a respin, and which bugs would a metal-only fix cover?" *Rubric:* SRAM area and share (1), the first-silicon data (1), three good questions (1).
+(d) 512 MB = $2^{32}$ bits; $4.295 \times 10^9 \times 0.021\ \mu\text{m}^2$ = **90.19** mm² of bitcells, **128.8** mm² at 70% efficiency, **21.5** % of the die: plausible. The verification claim is not: in the Siemens/Wilson functional verification study released in September 2026 [Industry estimate], only 5% of IC/ASIC respondents reported first-silicon success (14.4% in 2024). Read that with its caveats: a tool vendor sponsors the survey, the recruitment method changed in 2024, and 5% of 320 is at most about 16 respondents. Even so, the direction is clear, and no team "fully verifies" a large SoC. Questions: (1) "What was your coverage closure, with which waivers, and which blocks are formally proven?" (2) "When did your compiler and runtime first run on emulation, and for how many cycles?" (3) "What is your plan and budget for a respin, and which bugs would a metal-only fix cover?" *Rubric:* SRAM area and share (1), the first-silicon data with its source and caveats (1), three good questions (1).
 
 <!-- answer-key -->
 
@@ -213,6 +213,8 @@ Delay to sink 1: $rx(cx/2 + C_1) + t_1 = 127.3\ \Omega \times 45.45\ \text{fF} +
 | X19.3j | charge-sharing boundary | 0.4286 | — |
 | X19.3k | output with 4 fF | 0.767 | V |
 | X19.3l | output with 6 fF | 0.667 | V |
+| X19.3m | charge-sharing loss with 4 fF | 0.233 | V |
+| X19.3n | load PMOS source-drain voltage | 0.926 | V |
 | X19.4a | path logical effort | 2.778 | — |
 | X19.4b | branching effort | 3 | — |
 | X19.4c | electrical effort | 30 | — |
@@ -241,6 +243,8 @@ Delay to sink 1: $rx(cx/2 + C_1) + t_1 = 127.3\ \Omega \times 45.45\ \text{fF} +
 | X19.5l | effective capacitance, same direction | 40 | fF |
 | X19.5m | effective capacitance, quiet | 100 | fF |
 | X19.5n | effective capacitance, opposite | 160 | fF |
+| X19.5o | repeaters used | 42 | — |
+| X19.5p | repeater spacing | 48 | µm |
 | X19.6a | logic dynamic power | 40.5 | mW |
 | X19.6b | clock power | 126.6 | mW |
 | X19.6c | gated clock power | 75.9 | mW |
@@ -250,6 +254,8 @@ Delay to sink 1: $rx(cx/2 + C_1) + t_1 = 127.3\ \Omega \times 45.45\ \text{fF} +
 | X19.6g | power ratio | 0.178 | — |
 | X19.6h | energy ratio | 0.355 | — |
 | X19.6i | break-even time | 166.7 | ns |
+| X19.6j | rail recharge energy | 0.45 | nJ |
+| X19.6k | total wake energy | 0.50 | nJ |
 | X19.7a | minimum period | 442 | ps |
 | X19.7b | maximum frequency | 2.262 | GHz |
 | X19.7c | hold slack | -5 | ps |
@@ -264,10 +270,13 @@ Delay to sink 1: $rx(cx/2 + C_1) + t_1 = 127.3\ \Omega \times 45.45\ \text{fF} +
 | X19.8b | margin to V_TN | 0.181 | V |
 | X19.8c | bitline time | 239.2 | ps |
 | X19.8d | sense time | 27.63 | ps |
-| X19.8e | Q(6) | 9.87e-10 | — |
-| X19.8f | expected failing cells | 0.265 | — |
-| X19.8g | yield without repair | 76.7 | % |
-| X19.8h | yield with one repair | 97.05 | % |
+| X19.8e | Q(5.5) | 1.90e-8 | — |
+| X19.8f | expected failing cells | 5.10 | — |
+| X19.8g | yield without repair | 0.611 | % |
+| X19.8h | repairable cells for 99 % yield | 11 | — |
+| X19.8m | yield with 11 repairs | 99.37 | % |
+| X19.8n | Q target for 99 % without repair | 3.74e-11 | — |
+| X19.8o | bitline capacitance | 47.84 | fF |
 | X19.8i | margin for 99 % yield | 6.51 | σ |
 | X19.8j | bitcell area | 1.174 | mm² |
 | X19.8k | macro area | 1.631 | mm² |
@@ -278,9 +287,12 @@ Delay to sink 1: $rx(cx/2 + C_1) + t_1 = 127.3\ \Omega \times 45.45\ \text{fF} +
 | X19.9d | strip length in µm | 2.43 | µm |
 | X19.9e | strip, contacted internals | 36 | λ |
 | X19.9f | contacted strip in µm | 3.24 | µm |
-| X19.9g | valid orderings | 4 | — |
-| X19.9h | block area | 3.489 | mm² |
-| X19.9i | antenna length limit | 600 | µm |
+| X19.9g | valid orderings, stack as drawn | 4 | — |
+| X19.9j | valid orderings, stack reorderable | 8 | — |
+| X19.9k | logic area | 2.333 | mm² |
+| X19.9l | flip-flop area | 0.769 | mm² |
+| X19.9h | block area | 3.103 | mm² |
+| X19.9i | antenna length limit | 300 | µm |
 | X19.10a | arrival at G1 | 0.30 | ns |
 | X19.10b | arrival at G2 | 0.45 | ns |
 | X19.10c | arrival at G3 | 0.60 | ns |
@@ -296,6 +308,9 @@ Delay to sink 1: $rx(cx/2 + C_1) + t_1 = 127.3\ \Omega \times 45.45\ \text{fF} +
 | X19.10m | path sigma | 49.57 | ps |
 | X19.10n | 3-sigma margin | 148.7 | ps |
 | X19.10o | independent 3-sigma margin | 83.14 | ps |
+| X19.10p | setup slack after a shared-segment fix | 0.43 | ns |
+| X19.10q | slack at G2 | 0.10 | ns |
+| X19.10r | slack at G3 | 0.10 | ns |
 | X19.11a | core area | 1.714 | mm² |
 | X19.11b | core side | 1.309 | mm |
 | X19.11c | strap resistance | 11.75 | Ω |
@@ -314,8 +329,9 @@ Delay to sink 1: $rx(cx/2 + C_1) + t_1 = 127.3\ \Omega \times 45.45\ \text{fF} +
 | X19.12e | test data volume | 150 | MB |
 | X19.12f | expected transactions | 10.96 | — |
 | X19.12g | floor 1/p_min | 10 | — |
-| X19.12h | BMC depth of the violation | 7 | — |
-| X19.12i | diameter | 7 | — |
+| X19.12h | reachable states | 6 | — |
+| X19.12i | counterexample to induction | 6 | — |
+| X19.12j | smallest k | 2 | — |
 | X19.13a | sensitivity of V_M to V_TN | 0.608 | — |
 | X19.13b | repeater intrinsic delay | 1.38 | ps |
 | X19.13c | best stage effort, p_inv = 1.5 | 3.97 | — |
@@ -328,6 +344,7 @@ Delay to sink 1: $rx(cx/2 + C_1) + t_1 = 127.3\ \Omega \times 45.45\ \text{fF} +
 | X19.14g | dynamic power at 0.85 V | 397 | W |
 | X19.14h | implied defect level | 17775 | DPPM |
 | X19.14i | coverage for 50 DPPM | 99.9916 | % |
+| X19.14n | implied defect level as a percentage | 1.78 | % |
 | X19.14j | SRAM bitcell area | 90.19 | mm² |
 | X19.14k | SRAM macro area | 128.8 | mm² |
 | X19.14l | SRAM share of the die | 21.5 | % |

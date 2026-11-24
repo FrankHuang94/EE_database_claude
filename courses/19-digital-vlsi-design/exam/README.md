@@ -14,12 +14,14 @@
 **Conventions.** These follow the chapters, with the threshold written $V_{TH}$ and the thermal voltage $V_T = kT/q$ (25.85 mV at 300 K).
 
 - Transistors follow the square law (SPICE level 1) with $\lambda = 0$ unless a question gives λ; $k = \mu C_{ox}W/L$, with thresholds $V_{TN}$ and $\lvert V_{TP}\rvert$.
-- A lumped RC delay is $t_p = \ln 2\,RC \approx 0.69\,RC$; a distributed wire's 50% delay is $0.38\,RC$; an "Elmore constant" is the unscaled sum $\sum R_jC_k$.
+- A lumped RC delay is $t_p \approx 0.69\,RC$ (use 0.69 unless a question says $\ln 2$); a distributed wire's 50% delay is $0.38\,RC$; an "Elmore constant" is the unscaled sum $\sum R_jC_k$, an estimate (and upper bound) of a network's delay constant, not a 50% delay.
 - Logical effort uses $\mu_n/\mu_p = 2$, $p_{inv} = 1$ and $\tau = 0.69\,RC_{inv}$, with capacitances in units of a unit inverter's input capacitance.
 - The activity factor α counts 0→1 transitions per node per cycle, so $P = \alpha CV_{DD}^2f$, and clocks have α = 1.
 - Skew is $\delta = L_2 - L_1$ (capture minus launch latency); negative slack fails, and hold slack is arrival minus required.
 - Alpha-power delay is $t_p \propto V_{DD}/(V_{DD} - V_{TH})^{\alpha}$, with the exponent given in each question.
-- $Q(z)$ is the standard normal upper tail; failure counts in large arrays are Poisson.
+- $Q(z)$ is the standard normal upper tail (the equation sheet tabulates it); failure counts in large arrays are Poisson.
+- Memory capacities (Mib, and MB of SRAM) are binary; densities in Mb/mm² and data volumes in MB are decimal. A year is 365.25 days.
+- Transistors have no body effect unless stated.
 
 ---
 
@@ -53,7 +55,7 @@ A path has four stages: a NOR2 whose input capacitance is 6 units, an inverter t
 A 2 mm wire has $r$ = 8 Ω/µm and $c$ = 0.2 fF/µm.
 (a) Find $R_w$, $C_w$, and the 50% delays of the distributed line and of a lumped RC with the same totals.
 (b) A 2 kΩ driver drives the wire into a 20 fF load. Estimate the delay, and the share of it due to the wire's resistance.
-(c) Repeaters have unit resistance $R_0$ = 10 kΩ and input capacitance $C_0$ = 0.2 fF. Find the optimal number and size of repeaters, the minimum delay (use the exact coefficient $2\sqrt{0.69 \times 0.38} + 1.38$), and the speed-up over (b).
+(c) Repeaters have unit resistance $R_0$ = 10 kΩ and input capacitance $C_0$ = 0.2 fF. Find the optimal number and size of repeaters, the minimum delay (use the coefficient $2\sqrt{0.69 \times 0.38} + 1.38$), and the speed-up over (b).
 (d) A floating victim wire has 40 fF to ground and 30 fF to each of two neighbors. One neighbor switches by 1.0 V while the other stays quiet. Find the noise on the victim. Then find the victim's effective capacitance for delay when both neighbors switch with it, when both are quiet, and when both switch against it.
 
 **6 [B] · Power.** (19-06)
@@ -69,17 +71,17 @@ A 2 mm wire has $r$ = 8 Ω/µm and $c$ = 0.2 fF/µm.
 (d) A synchronizer flip-flop has τ = 18 ps and $T_0$ = 15 ps, with a 1.5 GHz clock and asynchronous data at 80 MHz. With 600 ps allowed for resolution, find the MTBF. How much does a second flip-flop (one extra full cycle of resolution) multiply it by?
 
 **8 [B] · SRAM.** (19-08)
-(a) A 6T cell at $V_{DD}$ = 0.9 V has $V_{TN} = \lvert V_{TP}\rvert$ = 0.30 V, $k_A$ = 100 µA/V² and cell ratio 1.8. Find the read disturbance $\Delta V$ of the '0' node, and its margin to $V_{TN}$.
+(a) A 6T cell (no body effect) at $V_{DD}$ = 0.9 V has $V_{TN} = \lvert V_{TP}\rvert$ = 0.30 V, $k_A$ = 100 µA/V² and cell ratio 1.8. Find the read disturbance $\Delta V$ of the '0' node, and its margin to $V_{TN}$.
 (b) A bitline has 512 cells at 0.07 fF each plus 12 fF of wiring, and the cell current is 18 µA. How long does a 90 mV swing take? A sense amplifier with τ = 12 ps then regenerates it to the full 0.9 V: how long does that take?
-(c) A 256 Mib array (2²⁸ cells) is designed for a 6σ cell margin. Find the cell failure probability, the expected number of failing cells and the array yield without repair, and the yield if one failure can be repaired. What margin would give 99% yield without repair?
+(c) A 256 Mib array (2²⁸ cells) is designed for a 5.5σ cell margin. Find the cell failure probability, the expected number of failing cells and the array yield without repair. How many failing cells must redundancy be able to repair for 99% yield? What margin would give 99% yield without repair?
 (d) A 64 Mib macro uses a 0.0175 µm² bitcell with 72% array efficiency. Find the bitcell area, the macro area and the density in Mb/mm².
 
 **9 [B] · Layout and cells.** (19-09)
 Use the chapter's illustrative rules: poly width 2λ, poly spacing 3λ, contact 2λ, contact-to-gate 2λ, active enclosure of contact 1λ.
 (a) Give the contacted and uncontacted gate pitches. A NAND4 pull-down is a strip of four series transistors with contacts at its two ends. How long is the strip if the internal nodes are left uncontacted, and how long if every internal node were contacted? Give both in λ and in µm for λ = 0.09 µm.
-(b) For the OAI211 gate $Y = \overline{(A + B)CD}$, find every input ordering that is an Euler path in both the pull-down and the pull-up networks, so that each diffusion strip is unbroken.
-(c) A block has 350 kGates of logic at a routed density of 120 kGates/mm² and 20 000 flip-flops of 20.02 µm² each, placed at 70% utilization. Estimate the block area.
-(d) A gate of 0.3 µm × 1.0 µm connects to a 0.2 µm wide metal-1 line. With an antenna ratio limit of 400 (metal area over gate area), how long can the line be before a jumper or diode is needed?
+(b) The OAI211 gate $Y = \overline{(A + B)CD}$ has its pull-down drawn as written: the parallel pair $A \parallel B$ nearest the output, then $C$, then $D$ to ground. Find every input ordering that is an Euler path in both the pull-down and its dual pull-up, so that each diffusion strip is unbroken. How many orderings work if the designer may also reorder the series stack?
+(c) In a library whose routed density is 150 kGates/mm², a block has 350 kGates of logic and 20 000 flip-flops of 25 µm² each, placed at 65% utilization. Estimate the block area.
+(d) A gate of 0.3 µm × 1.0 µm connects to a 0.25 µm wide metal-1 line. With an antenna ratio limit of 250 (metal top area over gate area, ignoring sidewalls), how long can the line be before a jumper or diode is needed?
 
 **10 [B] · Static timing.** (19-10)
 (a) A small timing graph has inputs $a$ (arrival 0) and $b$ (arrival 0.10 ns). Gate G1 takes $a$ and $b$ with delay 0.20 ns; G2 takes $b$ with delay 0.35 ns; G3 takes G1 and G2 with delay 0.15 ns and drives an output required at 0.70 ns. Find the arrival times, required times and slacks of every node, and the critical path.
@@ -90,18 +92,18 @@ Use the chapter's illustrative rules: poly width 2λ, poly spacing 3λ, contact 
 **11 [B] · Floorplan, place and route.** (19-11)
 (a) A block has 1.20 mm² of standard cells. Find the core area and the side of a square core at 70% utilization.
 (b) A 400 µm power strap is 1.6 µm wide on a layer of 0.047 Ω/□ and carries 3 mA spread uniformly along its length. Find its resistance and the worst IR drop when fed from both ends and from one end. What is the largest feed spacing that keeps the drop below 10 mV at the same current per length?
-(c) Two clock subtrees have delays $t_1$ = 50 ps and $t_2$ = 55 ps and loads $C_1$ = 20 fF and $C_2$ = 30 fF. A 300 µm wire with $r$ = 0.5 Ω/µm and $c$ = 0.2 fF/µm joins them. Find the zero-skew tapping point, measured from subtree 1, and the Elmore delay from the tap to the sinks.
+(c) Two clock subtrees have delays $t_1$ = 50 ps and $t_2$ = 55 ps and loads $C_1$ = 20 fF and $C_2$ = 30 fF. A 300 µm wire with $r$ = 0.5 Ω/µm and $c$ = 0.2 fF/µm joins them. Find the zero-skew tapping point, measured from subtree 1, and the Elmore constant (delay estimate) from the tap to the sinks, including the subtree delays.
 (d) A net has pins at (0, 0), (40, 10), (10, 50) and (30, 30) µm. Find its HPWL, its rectilinear minimum spanning tree length and its rectilinear Steiner tree length (Steiner points on the Hanan grid), and check Hwang's bound.
 
 **12 [B] · Test and verification.** (19-12, 19-13)
 (a) A product yields 85% and its test reaches 98% stuck-at coverage. Find the defect level in DPPM, and the coverage needed for 200 DPPM.
 (b) A design has 200 000 scan flip-flops in 100 balanced chains and 3000 patterns, shifted at 50 MHz. Find the clock cycles, the test time, and the uncompressed test data volume (≈ 2FP bits) in megabytes.
 (c) A coverpoint has three bins hit with probabilities 0.6, 0.3 and 0.1 per random transaction. Find the expected number of transactions to fill it, and compare with $1/p_{\min}$.
-(d) A 3-bit counter starts at 0 and adds 3 (modulo 8) every cycle. The property is "$x \ne 5$". Is it violated? If so, at what BMC depth is the violation found, and what is the diameter of the reachable state graph?
+(d) A 3-bit counter starts at 0 and counts 0, 1, …, 5 and back to 0 (from 5 it goes to 0; from any other value $x$ to $x + 1$ modulo 8). The property is "$x \ne 7$". How many states are reachable? Show that the property is not 1-inductive and give the counterexample to induction. What is the smallest $k$ for which it is $k$-inductive, and what lemma makes it 1-inductive?
 
 **13 [C] · Three derivations.** (19-01, 19-05, 19-04)
 (a) Derive the switching threshold of a square-law CMOS inverter, $V_M = (V_{TN}\sqrt r + V_{DD} - \lvert V_{TP}\rvert)/(1 + \sqrt r)$ with $r = k_n/k_p$, stating your assumptions. Show that it is $V_{DD}/2$ for a symmetric inverter, derive $\partial V_M/\partial V_{TN}$, and evaluate it for the process of Question 1 with equal widths.
-(b) For a wire of total resistance $R_w$ and capacitance $C_w$ split by $k$ repeaters of size $h$ (unit resistance $R_0$, unit input capacitance $C_0$), derive $k_{opt}$ and $h_{opt}$ from $T(k, h) = 0.69R_0C_w/h + 0.69kR_0C_0 + 0.38R_wC_w/k + 0.69R_whC_0$. Show that at the optimum each segment's wire delay equals the repeater's intrinsic delay $0.69R_0C_0$, and evaluate that delay for Question 5's repeaters.
+(b) For a wire of total resistance $R_w$ and capacitance $C_w$ split by $k$ repeaters of size $h$ (unit resistance $R_0$, unit input capacitance $C_0$), derive $k_{opt}$ and $h_{opt}$ from $T(k, h) = 0.69R_0C_w/h + 0.69kR_0C_0 + 0.38R_wC_w/k + 0.69R_whC_0$. Show that at the optimum each segment's wire delay equals the repeater's unit delay $0.69R_0C_0$ (τ, ignoring its self-loading), and evaluate that delay for Question 5's repeaters.
 (c) Prove that for a path of $N$ stages with fixed path effort $F$, delay is minimized when every stage bears effort $F^{1/N}$. Then let $N$ vary, adding inverters with parasitic delay $p_{inv}$, and derive the condition $\rho(\ln\rho - 1) = p_{inv}$ for the best stage effort. Find ρ for $p_{inv}$ = 1.5.
 
 **14 [C] · Diligence: an AI inference accelerator.** (19-05 to 19-13)
@@ -113,6 +115,6 @@ A start-up seeks an investment for an inference accelerator on a 3 nm process. I
 4. "512 MB of on-die SRAM at a 0.021 µm² bitcell; the design is fully verified, so first-pass silicon is guaranteed."
 
 (a) Check claim 1: compute the dynamic power, the remainder it implies, and the power density. Is the claim internally consistent, and what would you ask?
-(b) Check claim 2: what frequency does 0.85 V support, and by what factor does dynamic power rise? What would the turbo mode really deliver?
+(b) Check claim 2: what frequency does 0.85 V support, and by what factor does dynamic power rise at that frequency? What would the turbo mode really deliver?
 (c) Check claim 3: find the defect level the stated coverage and yield imply, and the coverage that 50 DPPM would need. What would you ask about the test strategy?
 (d) Check claim 4: compute the raw bitcell area of the SRAM and its share of the die at 70% array efficiency. Then assess the verification claim against the industry's reported first-silicon success rates (19-13 §9), and list three questions you would put to the VP of Engineering.

@@ -8,7 +8,8 @@ Conventions:
 - square-law devices: $k = \mu C_{ox}W/L$, $r = k_n/k_p$; λ is channel-length modulation in 19-01 and the design-rule unit in 19-09;
 - lumped RC delay $\ln 2\,RC \approx 0.69\,RC$; a distributed line's 50% delay 0.38 $RC$; "Elmore constant" is the unscaled $\sum R C$;
 - logical effort with $\mu = \mu_n/\mu_p = 2$, $p_{inv} = 1$ and $\tau = 0.69\,RC_{inv}$;
-- skew $\delta = L_2 - L_1$ (capture minus launch); negative slack fails.
+- skew $\delta = L_2 - L_1$ (capture minus launch); negative slack fails;
+- other symbols are reused between chapters, so read each row with its chapter: α is the activity factor in power rows and the alpha-power exponent in delay rows; τ is the logical-effort unit, a latch's regeneration time constant, or a ramp time; ρ is resistivity, the best stage effort or a correlation; $S$ is a size factor, the subthreshold slope or a scaling factor; utilization is $u$, while $U$ is clock uncertainty; $T$ is fault coverage in the test rows and a period elsewhere; μ is the mobility ratio in sizing rows and a margin's mean in yield rows.
 
 ## The inverter: statics
 
@@ -28,7 +29,7 @@ Conventions:
 | $C_L = C_{int} + C_{ext}$, $C_{int} = C_{dn} + C_{dp} + 2(C_{gdn} + C_{gdp})$, $C_{ext} = \sum C_g + C_w$ | Miller doubles $C_{gd}$; $\gamma = C_{int}/C_g$ | [19-02](../../courses/19-digital-vlsi-design/chapters/19-02-cmos-inverter-dynamic.md) |
 | $t_{pHL} = \dfrac{C_L}{k_nV_{ov}}\left[\dfrac{2V_{TN}}{V_{ov}} + \ln\left(\dfrac{4V_{ov}}{V_{DD}} - 1\right)\right]$ | Step input, square law, $V_{TN} < V_{DD}/2$ | [19-02](../../courses/19-digital-vlsi-design/chapters/19-02-cmos-inverter-dynamic.md) |
 | $t_p = \ln 2\,R_{eq}C_L$, $R_{eq} \approx 3V_{DD}/(4I_{sat})$; $t_p = (t_{pHL} + t_{pLH})/2$ | $R_{eq} \propto 1/W$ | [19-02](../../courses/19-digital-vlsi-design/chapters/19-02-cmos-inverter-dynamic.md) |
-| $t_p = t_{p0}(1 + C_{ext}/(SC_{int,ref}))$, $t_{p0} = 0.69R_{ref}C_{int,ref}$; FO4 $= t_{p0}(1 + 4/\gamma)$ | Intrinsic delay is size independent | [19-02](../../courses/19-digital-vlsi-design/chapters/19-02-cmos-inverter-dynamic.md) |
+| $t_p = t_{p0}(1 + C_{ext}/(SC_{int,ref}))$, $t_{p0} = 0.69R_{ref}C_{int,ref}$; FO4 $= t_{p0}(1 + 4/\gamma)$ | Intrinsic delay is size independent; γ is logical effort's $p_{inv}$, so the course's $p_{inv} = 1$ gives FO4 = 5τ, while γ ≈ 0.5 (19-02's reading of Ho et al.) gives $9t_{p0} = 4.5\tau$ | [19-02](../../courses/19-digital-vlsi-design/chapters/19-02-cmos-inverter-dynamic.md) |
 | Ring oscillator $f = 1/(2Nt_p)$ | Stage delay includes ramp-input slowdown | [19-02](../../courses/19-digital-vlsi-design/chapters/19-02-cmos-inverter-dynamic.md) |
 | $t_p \propto V_{DD}/(V_{DD} - V_{TH})^\alpha$; EDP-optimal $V_{DD} = 3V_{TH}/(3 - \alpha)$ | Alpha-power law | [19-02](../../courses/19-digital-vlsi-design/chapters/19-02-cmos-inverter-dynamic.md) |
 
@@ -58,10 +59,10 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | $R = \rho L/(Wt) = R_\square L/W$ | Narrow copper well above bulk resistivity | [19-05](../../courses/19-digital-vlsi-design/chapters/19-05-interconnect.md) |
-| $rc\,\partial v/\partial t = \partial^2v/\partial x^2$; $t_{50} = 0.38\,RC$ (lumped 0.69, Elmore $RC/2$) | Distributed RC line, step input | [19-05](../../courses/19-digital-vlsi-design/chapters/19-05-interconnect.md) |
+| $rc\,\partial v/\partial t = \partial^2v/\partial x^2$; $t_{50} = 0.38\,RC$ (more exactly 0.379; a lumped RC gives 0.69 $RC$; the Elmore constant is $RC/2$, an upper bound) | Distributed RC line, step input | [19-05](../../courses/19-digital-vlsi-design/chapters/19-05-interconnect.md) |
 | $t \approx 0.69R_d(C_w + C_L) + R_w(0.38C_w + 0.69C_L)$ | Driver, wire, load | [19-05](../../courses/19-digital-vlsi-design/chapters/19-05-interconnect.md) |
-| $k_{opt} = \sqrt{\dfrac{0.38R_wC_w}{0.69R_0C_0}}$, $h_{opt} = \sqrt{\dfrac{R_0C_w}{R_wC_0}}$, $T_{min} = 2.41\sqrt{R_0C_0\,rc}\,L$ | Repeated delay is linear in $L$ | [19-05](../../courses/19-digital-vlsi-design/chapters/19-05-interconnect.md) |
-| Floating victim $\Delta V = \Delta V_{agg}C_c/(C_c + C_g)$; Miller coupling factor 0, 1, 2 | Same, quiet, opposite switching | [19-05](../../courses/19-digital-vlsi-design/chapters/19-05-interconnect.md) |
+| $k_{opt} = \sqrt{\dfrac{0.38R_wC_w}{0.69R_0C_0}}$, $h_{opt} = \sqrt{\dfrac{R_0C_w}{R_wC_0}}$, $T_{min} = (2\sqrt{0.69 \times 0.38} + 2 \times 0.69)\sqrt{R_0C_0\,rc}\,L$ | 2.40 with 0.69 and 0.38, 2.41 with ln 2 and 0.379 (as 19-05 computes); repeated delay is linear in $L$ | [19-05](../../courses/19-digital-vlsi-design/chapters/19-05-interconnect.md) |
+| Floating victim $\Delta V = \Delta V_{agg}C_c/(C_c + C_g)$; Miller coupling factor 0, 1, 2 | $C_g$ is all capacitance to quiet nodes, including non-switching neighbours; MCF for same, quiet, opposite switching | [19-05](../../courses/19-digital-vlsi-design/chapters/19-05-interconnect.md) |
 | Scaling by $S$: $r \propto 1/S^2$, $c$ ≈ constant; repeated delay per length $\propto S^{-1/2}$ | Local RC roughly constant | [19-05](../../courses/19-digital-vlsi-design/chapters/19-05-interconnect.md) |
 
 ## Power
@@ -81,16 +82,17 @@ Conventions:
 | $T_c \ge t_{pcq} + t_{pd} + t_{setup} - \delta + t_{jitter}$; $t_{ccq} + t_{cd} \ge t_{hold} + \delta$ | Hold is independent of $T_c$ | [19-07](../../courses/19-digital-vlsi-design/chapters/19-07-sequential-timing-and-clocking.md) |
 | $T_c = t_L/N + t_o$, latency $t_L + Nt_o$ | $t_o = t_{pcq} + t_{setup}$ | [19-07](../../courses/19-digital-vlsi-design/chapters/19-07-sequential-timing-and-clocking.md) |
 | Two-phase latches: $T_c \ge t_{L1} + t_{L2} + 2t_{pdq}$; borrow up to $T_c/2 - t_{setup}$ | 50% duty cycle | [19-07](../../courses/19-digital-vlsi-design/chapters/19-07-sequential-timing-and-clocking.md) |
-| $\Delta v = \Delta v_0e^{t/\tau}$, $\tau = C/g_m$; $\text{MTBF} = e^{t_r/\tau}/(T_0f_{clk}f_{data})$ | Each extra synchronizer stage ×$e^{T_c/\tau}$ | [19-07](../../courses/19-digital-vlsi-design/chapters/19-07-sequential-timing-and-clocking.md) |
+| $\Delta v = \Delta v_0e^{t/\tau}$, $\tau = C/g_m$; $\text{MTBF} = e^{t_r/\tau}/(T_0f_{clk}f_{data})$ | Each extra synchronizer stage ×$e^{t/\tau}$, with $t$ the period less the flip-flop overhead | [19-07](../../courses/19-digital-vlsi-design/chapters/19-07-sequential-timing-and-clocking.md) |
 
 ## SRAM
 
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | Read: $\tfrac12k_A(V_{DD} - \Delta V - V_{TH})^2 = k_N[(V_{DD} - V_{TH})\Delta V - \tfrac12\Delta V^2]$, need $\Delta V < V_{TN}$ | Cell ratio $k_N/k_A$ ≈ 1.5–2.5 | [19-08](../../courses/19-digital-vlsi-design/chapters/19-08-sram-design.md) |
-| Write: pull-up ratio $k_P/k_A$ ≲ 1–1.5; $k_P < k_A < k_N$ | Both constraints bind | [19-08](../../courses/19-digital-vlsi-design/chapters/19-08-sram-design.md) |
+| Write: the written node must fall below $V_{TN}$, which needs $k_P/k_A$ ≲ 0.67 for 19-08's cell; $k_P < k_A < k_N$ | Textbook W/L rules near 1–1.5 absorb the PMOS's lower mobility; both constraints bind | [19-08](../../courses/19-digital-vlsi-design/chapters/19-08-sram-design.md) |
 | $t_{BL} = C_{BL}\Delta V/I_{cell}$; sense $\tau\ln(V_{DD}/\Delta V)$ | Sense at about 100 mV | [19-08](../../courses/19-digital-vlsi-design/chapters/19-08-sram-design.md) |
-| Array yield $e^{-NQ(\mu/\sigma)}$; with $s$ spares, Poisson CDF up to $s$ | About 6σ cell margin | [19-08](../../courses/19-digital-vlsi-design/chapters/19-08-sram-design.md) |
+| Array yield $e^{-NQ(\mu/\sigma)}$; with $s$ spares, Poisson CDF up to $s$ | About 6σ cell margin |
+| $Q(z) \approx \dfrac{e^{-z^2/2}}{z\sqrt{2\pi}}\left(1 - \dfrac{1}{z^2}\right)$; $Q(5) = 2.87 \times 10^{-7}$, $Q(5.5) = 1.90 \times 10^{-8}$, $Q(6) = 9.87 \times 10^{-10}$, $Q(6.5) = 4.02 \times 10^{-11}$, $Q(7) = 1.28 \times 10^{-12}$ | Standard normal upper tail; the asymptotic form is within 0.5% for $z \ge 5$ | [19-08](../../courses/19-digital-vlsi-design/chapters/19-08-sram-design.md) |
 
 ## Layout and standard cells
 
@@ -98,7 +100,7 @@ Conventions:
 |---|---|---|
 | Contacted pitch 8λ, uncontacted 5λ | The chapter's illustrative rules | [19-09](../../courses/19-digital-vlsi-design/chapters/19-09-layout-and-standard-cells.md) |
 | One ordering must be an Euler path of both the pull-down and pull-up graphs | A connected graph has one iff 0 or 2 nodes have odd degree | [19-09](../../courses/19-digital-vlsi-design/chapters/19-09-layout-and-standard-cells.md) |
-| $A_{core} = \sum A_{cells}/U$; routed gate density already includes utilization | $U$ ≈ 0.6–0.8 | [19-09](../../courses/19-digital-vlsi-design/chapters/19-09-layout-and-standard-cells.md) |
+| $A_{core} = \sum A_{cells}/u$; routed gate density already includes utilization | $u$ ≈ 0.6–0.8 | [19-09](../../courses/19-digital-vlsi-design/chapters/19-09-layout-and-standard-cells.md) |
 | Antenna ratio = metal area ÷ gate area ≤ limit | Fix with a jumper or a diode | [19-09](../../courses/19-digital-vlsi-design/chapters/19-09-layout-and-standard-cells.md) |
 
 ## Synthesis and static timing
@@ -119,12 +121,12 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | Core area $= A_{\text{cells}}/u$ | $u$ target utilization; rows rounded up | [19-11](../../courses/19-digital-vlsi-design/chapters/19-11-place-route-signoff.md) |
-| Strap IR drop: $IR/8$ fed at both ends, $IR/2$ at one end; largest feed spacing $\sqrt{8\Delta V_{\max}/(ri)}$ | Uniform current $I$ (or $i$ per length) on a strap of total resistance $R$ (or $r$ per length) | [19-11](../../courses/19-digital-vlsi-design/chapters/19-11-place-route-signoff.md) |
+| Strap IR drop: $IR/8$ fed at both ends, $IR/2$ at one end; largest feed spacing $\sqrt{8\Delta V_{\max}/(ri)}$ (fed at both ends) | Uniform current $I$ (or $i$ per length) on a strap of total resistance $R$ (or $r$ per length) | [19-11](../../courses/19-digital-vlsi-design/chapters/19-11-place-route-signoff.md) |
 | HPWL $= (x_{\max} - x_{\min}) + (y_{\max} - y_{\min})$; HPWL ≤ RSMT ≤ RMST ≤ 1.5 RSMT | Steiner points on the Hanan grid; Hwang's bound | [19-11](../../courses/19-digital-vlsi-design/chapters/19-11-place-route-signoff.md) |
 | Quadratic placement: minimize $\sum w_{ij}[(x_i - x_j)^2 + (y_i - y_j)^2]$, i.e. solve $Q\mathbf{x} = \mathbf{b}_x$ | $Q$ the weighted Laplacian of movable cells, pads in $\mathbf b$ | [19-11](../../courses/19-digital-vlsi-design/chapters/19-11-place-route-signoff.md) |
 | Zero-skew tap $x = [t_2 - t_1 + rL(C_2 + cL/2)]/[r(C_1 + C_2 + cL)]$ | From subtree 1; outside $[0, L]$ means snaking | [19-11](../../courses/19-digital-vlsi-design/chapters/19-11-place-route-signoff.md) |
 | H-tree with $k$ levels: $4^k$ sinks, source-to-sink length $D(1 - 2^{-k})$, total $1.5D(2^k - 1)$ | Square of side $D$ | [19-11](../../courses/19-digital-vlsi-design/chapters/19-11-place-route-signoff.md) |
-| Routed-net delay $R_d(C_w + C_L) + R_w(C_w/2 + C_L)$; clock power $C_{\text{clk}}V_{DD}^2f$ | Elmore; clock activity 1 | [19-11](../../courses/19-digital-vlsi-design/chapters/19-11-place-route-signoff.md) |
+| Routed net: 50% delay $\approx R_{eff}(C_w + C_L) + R_w(0.38C_w + 0.69C_L)$, with $R_{eff}$ the Liberty delay-versus-load slope (it already contains ln 2); Elmore constant $R_{eq}(C_w + C_L) + R_w(C_w/2 + C_L)$ with $R_{eq} = R_{eff}/\ln 2$; clock power $C_{\text{clk}}V_{DD}^2f$ | Clock activity 1 | [19-11](../../courses/19-digital-vlsi-design/chapters/19-11-place-route-signoff.md) |
 
 ## Design for test
 

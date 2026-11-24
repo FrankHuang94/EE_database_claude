@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Verify every number in the Course 19 final-exam solutions.
 
-Independent routes (each answer is recomputed differently from the closed form the solution shows):
+Answers with a non-trivial route are recomputed independently (below); closed-form arithmetic is re-evaluated:
 - the inverter by solving the square-law current balance numerically (with lambda in both regions), unity-gain
   points from the computed transfer curve, and threshold sensitivity by finite differences;
 - the step delay by integrating the discharge ODE; Elmore constants by explicit path-resistance sums over the
@@ -79,9 +79,9 @@ lam = 0.08
 x0 = vm_numeric(k, k, 1.0, 0.3, 0.3, lam)
 h = 1e-7
 gain = (vout(x0 + h, k, k, 1.0, 0.3, 0.3, lam) - vout(x0 - h, k, k, 1.0, 0.3, 0.3, lam)) / (2 * h)
-v.check("X19.1f", abs(gain), rtol=2e-3)
+v.check("X19.1f", abs(gain))
 v.check("X19.1g", 2 / (lam * (x0 - 0.3)))
-v.check("X19.1h", 1e3 * 1.0 / abs(gain), rtol=2e-3)
+v.check("X19.1h", 1e3 * 1.0 / abs(gain))
 d = 1e-5
 dn = (vm_numeric(k, k, 1.0, 0.3 + d, 0.3) - vm_numeric(k, k, 1.0, 0.3 - d, 0.3)) / (2 * d)
 dp = (vm_numeric(k, k, 1.0, 0.3, 0.3 + d) - vm_numeric(k, k, 1.0, 0.3, 0.3 - d)) / (2 * d)
@@ -136,6 +136,8 @@ def share(cl_, ca, vdd=1.0, vt=0.3):
 v.check("X19.3j", brentq(lambda ca: 12 * 1.0 / (12 + ca) - 0.7, 0.1, 20) / 12)
 v.check("X19.3k", share(12, 4))
 v.check("X19.3l", share(12, 6))
+v.check("X19.3m", 1.0 - share(12, 4))
+v.check("X19.3n", 1.0 - vol)
 
 # ---------------------------------------------------------------- Q4 logical effort by numerical minimization
 g = [5 / 3, 1, 5 / 3, 1]
@@ -163,7 +165,7 @@ cins = np.exp(res4.x)
 v.check("X19.4h", cins[2])
 v.check("X19.4i", cins[1])
 v.check("X19.4j", cins[0])
-v.check("X19.4k", 6.0)
+v.check("X19.4k", (5 / 3) * cins[0] / ((res4.fun - sum(p)) / 4))   # NOR2 input recovered from the optimum
 v.check("X19.4l", math.log(250) / math.log(3.59))
 res5 = minimize(lambda x: path_delay(np.exp(x), g + [1], p + [1], branch + [1], 180.0), np.log([10, 20, 40, 90]),
                 method="Nelder-Mead", options={"xatol": 1e-12, "fatol": 1e-14, "maxiter": 40000})
@@ -198,6 +200,8 @@ v.check("X19.5g", opt.x[0])
 v.check("X19.5h", opt.x[1])
 v.check("X19.5i", opt.fun)
 v.check("X19.5j", t5 / (opt.fun * 1e-12))
+v.check("X19.5o", round(opt.x[0]))
+v.check("X19.5p", 2000 / round(opt.x[0]))
 v.check("X19.5k", 1.0 * 30 / (30 + 30 + 40))
 for ident, mcf in (("X19.5l", 0), ("X19.5m", 1), ("X19.5n", 2)):
     v.check(ident, 40 + mcf * 60)
@@ -215,6 +219,8 @@ v.check("X19.6f", vh)
 v.check("X19.6g", (vh / 0.9) ** 2 * 0.5)
 v.check("X19.6h", (vh / 0.9) ** 2)
 v.check("X19.6i", 1e9 * (800e-12 * 0.75 ** 2 + 0.05e-9) / 3e-3)
+v.check("X19.6j", 1e9 * 800e-12 * 0.75 ** 2)
+v.check("X19.6k", 1e9 * (800e-12 * 0.75 ** 2 + 0.05e-9))
 
 # ---------------------------------------------------------------- Q7 sequential timing
 tmin = 45 + 380 + 25 - 20 + 12
@@ -239,13 +245,17 @@ v.check("X19.8b", 0.3 - dv)
 cbl = 512 * 0.07e-15 + 12e-15
 v.check("X19.8c", 1e12 * cbl * 0.09 / 18e-6)
 v.check("X19.8d", 1e12 * 12e-12 * math.log(0.9 / 0.09))
-q6 = norm.sf(6)
-v.check("X19.8e", q6)
-lam8 = 2 ** 28 * q6
+q55 = norm.sf(5.5)
+v.check("X19.8e", q55)
+lam8 = 2 ** 28 * q55
 v.check("X19.8f", lam8)
 v.check("X19.8g", 100 * poisson.pmf(0, lam8))
-v.check("X19.8h", 100 * poisson.cdf(1, lam8))
+spares = next(sp for sp in range(100) if poisson.cdf(sp, lam8) >= 0.99)
+v.check("X19.8h", spares)
+v.check("X19.8m", 100 * poisson.cdf(spares, lam8))
+v.check("X19.8n", -math.log(0.99) / 2 ** 28)
 v.check("X19.8i", brentq(lambda z: math.exp(-(2 ** 28) * norm.sf(z)) - 0.99, 5, 8))
+v.check("X19.8o", 1e15 * cbl)
 cells = 64 * 2 ** 20 * 0.0175e-6
 v.check("X19.8j", cells)
 v.check("X19.8k", cells / 0.72)
@@ -279,9 +289,19 @@ for order in itertools.permutations("ABCD"):
     if layout.is_euler_path(pd_edges, list(order)) and layout.is_euler_path(pu_edges, list(order)):
         valid += 1
 v.check("X19.9g", valid)
+free = set()
+for variant in layout.stack_variants(pdn):
+    for order in itertools.permutations("ABCD"):
+        e1 = layout.to_edges(variant, "gnd", "out", itertools.count())
+        e2 = layout.to_edges(layout.dual(variant), "vdd", "out", itertools.count(100))
+        if layout.is_euler_path(e1, list(order)) and layout.is_euler_path(e2, list(order)):
+            free.add(order)
+v.check("X19.9j", len(free))
 v.assert_true("lab's common orderings agree", len(layout.common_euler_orders(pdn)) == valid, "")
-v.check("X19.9h", 350 / 120 + 20000 * 20.02e-6 / 0.70)
-v.check("X19.9i", 400 * 0.3 * 1.0 / 0.2)
+v.check("X19.9k", 350 / 150)
+v.check("X19.9l", 20000 * 25e-6 / 0.65)
+v.check("X19.9h", 350 / 150 + 20000 * 25e-6 / 0.65)
+v.check("X19.9i", 250 * 0.3 * 1.0 / 0.25)
 
 # ---------------------------------------------------------------- Q10 timing graph
 edges = {"G1": [("a", 0.20), ("b", 0.20)], "G2": [("b", 0.35)], "G3": [("G1", 0.15), ("G2", 0.15)]}
@@ -313,6 +333,9 @@ cov = 64.0 * (0.2 * np.ones((12, 12)) + 0.8 * np.eye(12))
 sig = math.sqrt(np.ones(12) @ cov @ np.ones(12))
 v.check("X19.10m", sig)
 v.check("X19.10n", 3 * sig)
+v.check("X19.10p", setup(0.60) - 0.17)
+v.check("X19.10q", slack["G2"])
+v.check("X19.10r", slack["G3"])
 v.check("X19.10o", 3 * math.sqrt(np.ones(12) @ (64.0 * np.eye(12)) @ np.ones(12)))
 
 # ---------------------------------------------------------------- Q11 place and route
@@ -387,15 +410,25 @@ def e_cover(mask):
 
 v.check("X19.12f", e_cover(0))
 v.check("X19.12g", 1 / 0.1)
-depth, x = {0: 0}, 0
-while True:
-    nx = (x + 3) % 8
-    if nx in depth:
-        break
-    depth[nx] = depth[x] + 1
-    x = nx
-v.check("X19.12h", depth[5])
-v.check("X19.12i", max(depth.values()))
+succ6 = lambda x: (0 if x == 5 else (x + 1) % 8)
+reach6, x = {0}, 0
+while succ6(x) not in reach6:
+    x = succ6(x)
+    reach6.add(x)
+v.check("X19.12h", len(reach6))
+cti = [st for st in range(8) if st != 7 and succ6(st) == 7]
+v.check("X19.12i", cti[0])
+
+
+def k_ok(k):
+    """Every sequence of k+1 states following the transitions with x != 7 on the first k ends with x != 7."""
+    for seq in itertools.product(range(8), repeat=k + 1):
+        if all(succ6(seq[i]) == seq[i + 1] for i in range(k)) and all(q != 7 for q in seq[:-1]) and seq[-1] == 7:
+            return False
+    return True
+
+
+v.check("X19.12j", next(k for k in range(1, 6) if k_ok(k)))
 
 # ---------------------------------------------------------------- Q13 derivations
 dd = 1e-6
@@ -418,6 +451,7 @@ v.check("X19.14e", 1.2 * fr)
 v.check("X19.14f", (0.85 / 0.75) ** 2 * fr)
 v.check("X19.14g", pdyn * (0.85 / 0.75) ** 2 * fr)
 v.check("X19.14h", 1e6 * (1 - 0.55 ** 0.03))
+v.check("X19.14n", 100 * (1 - 0.55 ** 0.03))
 v.check("X19.14i", 100 * brentq(lambda tt: 1 - 0.55 ** (1 - tt) - 5e-5, 0.9, 1.0, xtol=1e-15))
 bits = 512 * 2 ** 20 * 8
 v.check("X19.14j", bits * 0.021e-6)
