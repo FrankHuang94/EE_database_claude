@@ -1,0 +1,62 @@
+* Lab 20-08 -- continuous-time first-order delta-sigma modulators (chapter sections 3.2 and 3.7, Examples 20-08.2 and
+* 20-08.7). Clock period T = 1 us; integrator dv/dt = (vin - vdac)/T (an ideal current (vin - vdac)/1 Mohm into 1 pF);
+* comparator tanh(1e4 v); master-slave latch from voltage-controlled switches and 1 pF hold capacitors.
+* Copy 1: the DAC updates right after each falling clock edge (t = nT), so the sampled loop is u[n+1] = u[n] + x - y[n].
+* Copy 2: a third latch stage delays the DAC by T/2 (excess loop delay d = 0.5): u[n+1] = u[n] + x - y[n]/2 - y[n-1]/2.
+* Both start at u[0] = 0.1 V with the DAC at +1 V and a DC input of 0.2 V.
+.param T=1u
+VIN in 0 DC 0.2
+* falling edges (sampling instants) at t = 0, T, 2T, ...
+VCLK clk 0 PULSE(1 0 0 1p 1p {T/2-1p} {T})
+.model SWH SW(VT=0.5 VH=0 RON=1 ROFF=1e15)
+.model SWL SW(VT=0.5 VH=0 RON=1e15 ROFF=1)
+* ---- copy 1: no excess delay
+BI1 0 int1 I = (V(in) - V(dac1)) / 1e6
+CI1 int1 0 1p IC=0.1
+BC1 cmp1 0 V = tanh(1e4 * V(int1))
+S11 cmp1 m1 clk 0 SWH
+CM1 m1 0 1p IC=1
+EM1 mb1 0 m1 0 1
+S12 mb1 dac1 clk 0 SWL
+CD1 dac1 0 1p IC=1
+* ---- copy 2: DAC delayed by T/2
+BI2 0 int2 I = (V(in) - V(dac2)) / 1e6
+CI2 int2 0 1p IC=0.1
+BC2 cmp2 0 V = tanh(1e4 * V(int2))
+S21 cmp2 m2 clk 0 SWH
+CM2 m2 0 1p IC=1
+EM2 mb2 0 m2 0 1
+S22 mb2 s2 clk 0 SWL
+CS2 s2 0 1p IC=1
+ES2 sb2 0 s2 0 1
+S23 sb2 dac2 clk 0 SWH
+CD2 dac2 0 1p IC=1
+.tran 1n 40.5u 0 0.2n uic
+.control
+run
+meas tran u1 find v(int1) at=1u
+meas tran u2 find v(int1) at=2u
+meas tran u3 find v(int1) at=3u
+meas tran u4 find v(int1) at=4u
+meas tran u5 find v(int1) at=5u
+meas tran avg1 avg v(dac1) from=0 to=40u
+meas tran d1 find v(int2) at=1u
+meas tran d2 find v(int2) at=2u
+meas tran d3 find v(int2) at=3u
+meas tran d4 find v(int2) at=4u
+meas tran d5 find v(int2) at=5u
+meas tran avg2 avg v(dac2) from=0.5u to=40.5u
+.endc
+* EXPECT u1 key:../../chapters/20-08-sigma-delta-converters.md#Ex_20-08.2a rtol=1e-4
+* EXPECT u2 key:../../chapters/20-08-sigma-delta-converters.md#Ex_20-08.2b rtol=1e-4
+* EXPECT u3 key:../../chapters/20-08-sigma-delta-converters.md#Ex_20-08.2c rtol=1e-4
+* EXPECT u4 key:../../chapters/20-08-sigma-delta-converters.md#Ex_20-08.2d rtol=1e-4
+* EXPECT u5 key:../../chapters/20-08-sigma-delta-converters.md#Ex_20-08.2e rtol=1e-3
+* EXPECT avg1 key:../../chapters/20-08-sigma-delta-converters.md#Ex_20-08.2f rtol=1e-4
+* EXPECT d1 key:../../chapters/20-08-sigma-delta-converters.md#Ex_20-08.7b rtol=1e-4
+* EXPECT d2 key:../../chapters/20-08-sigma-delta-converters.md#Ex_20-08.7c rtol=1e-4
+* EXPECT d3 key:../../chapters/20-08-sigma-delta-converters.md#Ex_20-08.7d rtol=1e-4
+* EXPECT d4 key:../../chapters/20-08-sigma-delta-converters.md#Ex_20-08.7e rtol=1e-4
+* EXPECT d5 key:../../chapters/20-08-sigma-delta-converters.md#Ex_20-08.7f rtol=1e-3
+* EXPECT avg2 key:../../chapters/20-08-sigma-delta-converters.md#Ex_20-08.2f rtol=1e-4
+.end

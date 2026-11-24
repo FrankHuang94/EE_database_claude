@@ -8212,3 +8212,45 @@
   definition: In a time-interleaved ADC, the difference between a channel's actual and ideal sampling instant; for two channels it produces an image at f_s/2 − f_in with relative power (π f_in Δt)².
   chapter: "20-07"
   see_also: [Time-interleaved ADC]
+
+# ---------------------------------------------------------------- 20-08
+- term: Delta-sigma modulator
+  definition: A feedback loop of integrators, a coarse quantizer and a DAC, run far above the Nyquist rate, whose output averages to its input while its quantization noise is shaped away from the signal band; followed by a decimation filter it forms a delta-sigma (sigma-delta) ADC.
+  chapter: "20-08"
+  see_also: [Noise shaping, Noise transfer function (NTF), Oversampling]
+- term: Noise shaping
+  definition: Filtering quantization error by a feedback loop so that its spectrum is small in the signal band and large elsewhere; an L-th-order shaper gains about 6L + 3 dB of SQNR per doubling of the oversampling ratio.
+  chapter: "20-08"
+  see_also: [Delta-sigma modulator, Noise transfer function (NTF)]
+- term: Noise transfer function (NTF)
+  definition: In the linear model of a delta-sigma modulator, Y = STF·X + NTF·E, the transfer function from the quantization error E to the output; (1 − z^-1)^L for an L-th-order loop with all zeros at DC.
+  chapter: "20-08"
+  see_also: [Signal transfer function (STF), Lee's rule]
+- term: Signal transfer function (STF)
+  definition: In the linear model of a delta-sigma modulator, the transfer function from the input to the output; usually a pure delay or a gentle low-pass in band.
+  chapter: "20-08"
+  see_also: [Noise transfer function (NTF)]
+- term: Idle tone
+  definition: A spectral line produced by a delta-sigma modulator's periodic output pattern for a constant or slowly varying input (a limit cycle); for a first-order loop with a small DC input x, tones sit at multiples of |x| f_s.
+  chapter: "20-08"
+  see_also: [Dither, Delta-sigma modulator]
+- term: Lee's rule
+  definition: An empirical stability guideline for single-bit delta-sigma loops limiting the NTF's peak out-of-band gain (to 2 in Lee's 1987 form, about 1.5 in practice); neither necessary nor sufficient.
+  chapter: "20-08"
+  see_also: [Noise transfer function (NTF)]
+- term: MASH (multi-stage noise shaping)
+  definition: A cascade of low-order delta-sigma loops in which each stage quantizes the previous stage's error and digital filters cancel all but the last stage's error; high-order shaping from stable stages, at the cost of analog-digital matching.
+  chapter: "20-08"
+  see_also: [Delta-sigma modulator]
+- term: Continuous-time delta-sigma modulator
+  definition: A delta-sigma modulator whose loop filter is built from continuous-time (active-RC or gm-C) integrators and which samples only at the quantizer; it filters its input before sampling but is sensitive to clock jitter and excess loop delay.
+  chapter: "20-08"
+  see_also: [Excess loop delay, Delta-sigma modulator]
+- term: Excess loop delay
+  definition: In a continuous-time delta-sigma modulator, the delay between the quantizer's clock edge and the feedback DAC's response; it adds poles to the noise transfer function and can destabilize higher-order loops unless compensated.
+  chapter: "20-08"
+  see_also: [Continuous-time delta-sigma modulator]
+- term: Dynamic element matching
+  definition: Selecting different unit elements of a multi-bit DAC from sample to sample (for example by data-weighted averaging) so that their mismatch becomes noise, often shaped out of band, instead of a fixed nonlinearity.
+  chapter: "20-08"
+  see_also: [Delta-sigma modulator]
