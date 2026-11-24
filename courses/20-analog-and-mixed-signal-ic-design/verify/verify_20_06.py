@@ -224,7 +224,6 @@ v.check("Ex 20-06.7b", SNR + db10(50))
 v.check("Ex 20-06.7c", db10(50))
 v.check("Ex 20-06.7d", SNR + db10(8192))
 v.check("Txt 20-06.c", db10(8192))
-v.check("Txt 20-06.d", enob(49.6))
 v.check("Txt 20-06.e", -55.6 - db10(5.12e9 / 2))
 
 # ------------------------------------------------------------------ Example 20-06.8 and the thermal limit
@@ -249,6 +248,8 @@ ratio = sp.simplify(p_classb.subs(Csym, csub) / (fs_sym * kTs * snr_sym))
 v.assert_true("sympy: class-B P/(f_s kT SNR) = 8", ratio == 8, str(ratio))
 lim = db10(1 / (16 * KT))
 v.check("Txt 20-06.a", lim)
+v.check("Txt 20-06.d", lim - 189.17)
+v.check("Txt 20-06.f", math.log2(math.sqrt(12)))
 s_b = -db10(10 ** (-SNR / 10) + 10 ** (-64.40878967245925 / 10))
 v.check("Ex 20-06.8l", lim - fsch(s_b, 50e6, 1.5e-3))
 

@@ -199,7 +199,7 @@ $$
 \frac{P}{f_s} = 8kT\cdot\text{SNR} \quad\Longrightarrow\quad \text{FoM}_S = 10\log_{10}\frac{1}{16kT} .
 $$
 
-At 300 K this is **191.8** dB. Real converters need much more than one ideal driver and one capacitor, but the bound explains the shape of the survey data: at high resolution, power must grow fourfold per bit, so the Schreier figure is the fair yardstick there, while at low resolution the Walden figure is.
+At 300 K this is **191.8** dB. Murmann's survey plots exactly this line, $P/f_s = 8kT\cdot\text{SNR}$, attributing it to rail-to-rail class-B circuits after Vittoz (1990) [3]. Real converters need much more than one ideal driver and one capacitor, but the bound explains the shape of the survey data: at high resolution, power must grow fourfold per bit, so the Schreier figure is the fair yardstick there, while at low resolution the Walden figure is.
 
 > **Going deeper — what the figures ignore.** Neither figure counts the power of the input driver, the reference buffer or the clock, all of which can exceed the converter core's; neither rewards input bandwidth beyond $f_s/2$, latency or area. Murmann's survey, which collects every ISSCC and VLSI Symposium converter since 1997, plots both figures against speed so readers can see the trade-offs rather than one number (§9).
 
@@ -422,7 +422,8 @@ $\text{SINAD} = -10\log_{10}(10^{-6.876} + 10^{-6.441})$ for the first row. With
 | Txt 20-06.a | thermal limit on FoM_S | 191.8 | dB |
 | Txt 20-06.b | mid-scale DNL for 0.5% | 0.32 | LSB |
 | Txt 20-06.c | 10 log10(8192) | 39 | dB |
-| Txt 20-06.d | ENOB at 49.6 dBFS | 7.9 | bits |
+| Txt 20-06.d | gap from the record to the thermal line | 2.6 | dB |
+| Txt 20-06.f | log2 sqrt(12) | 1.79 | bits |
 | Txt 20-06.e | NSD from 55.6 dBFS at 5.12 GS/s | −149.7 | dBFS/Hz |
 
 ## 5. Simulate it
@@ -461,6 +462,9 @@ The lab ([labs/20-06-lab](../labs/20-06-lab/README.md)) implements a behavioral 
 | RF-sampling ADC noise density (as of Nov 2026) | about −150 to −156 dBFS/Hz | TI ADC12DJ5200RF: −150.4 dBFS/Hz (dual channel, 0.8 Vpp); ADC32RF55: −155.6 dBFS/Hz [R-334] |
 | SNR across frequency of a 12-bit RF-sampling ADC (as of Nov 2026) | 55.6 dBFS at 347 MHz falling to 49.6 dBFS at 8.0 GHz | TI ADC12DJ5200RF, dual-channel mode [R-334] |
 | Low-speed state of the art (as of 2022) | at the "8kTSNR energy limit" | Murmann, ISSCC 2022 short course [R-334] |
+| Best published Walden figure (as of Nov 2026) | 0.35 fJ/conversion-step | 10-bit SAR at 200 kS/s, 65 nm (Bindra et al., VLSI 2019), from the survey [R-336] |
+| Best published Schreier figure (as of Nov 2026) | 189.2 dB (oversampled); 186.8 dB (Nyquist rate) | noise-shaping SAR, 1 kHz bandwidth (Zhao et al., ISSCC 2025); SAR-ISDM (Hsieh and Hsieh, ISSCC 2018) [R-336] |
+| Best Schreier figure at high speed (as of Nov 2026) | 181.5 dB at 130 MS/s; 173.3 dB at 1 GS/s; 159.3 dB at 12 GS/s | Wang and Kuo (ISSCC 2022); Cao et al. (ISSCC 2025); Cao et al. (ISSCC 2024) [R-336] |
 
 ## 8. Common mistakes
 
@@ -476,9 +480,10 @@ The lab ([labs/20-06-lab](../labs/20-06-lab/README.md)) implements a behavioral 
 
 ### State of the art (as of Nov 2026)
 
-- **The field's yardstick is a public survey [Established].** Murmann's "ADC Performance Survey 1997–2026" collects every converter published at ISSCC and the VLSI Symposium since 1997, with power, speed, SNDR and both figures of merit; its latest revision (August 2026) includes VLSI 2026 [R-332]. It is the standard way to place a design against the frontier, and anyone can download it.
-- **Low-speed converters are near the thermal limit; high-speed ones are not [Established].** Murmann's 2022 short course summarizes low-speed ADCs as operating at the "8kTSNR energy limit," the bound derived in §3.6, while high-speed converters are limited by "tens of femtoseconds timing jitter" (20-05) [R-334], [R-332]. Walden's 1999 survey had already found resolution falling by about one bit per doubling of sample rate from about 2 MS/s to 4 GS/s, attributed to aperture jitter [R-332].
-- **Commercial RF-sampling converters specify the full curve, not one number [Established].** TI's ADC12DJ5200RF (12 bits, up to 10.4 GS/s) specifies SNR from 55.6 dBFS at 347 MHz down to 49.6 dBFS at 8.0 GHz, and noise densities by mode and full-scale setting; the ADC32RF55 (14 bits, 3 GS/s) specifies −155.6 dBFS/Hz, improving to −158.1 and −160.4 dBFS/Hz with 2× and 4× on-chip averaging [R-334].
+- **The definitions are standardized [Established].** IEEE Std 1241-2023 (ADCs) and IEEE Std 1658-2023 (DACs) are the current editions of the terminology and test-method standards [1]. Their text is paywalled; the definitions in §3 follow the standard's terms as described by members of its committee and by vendors' application notes, which also state the $6.02N + 1.76$ dB and ENOB conventions and the coherent-sampling rule [R-335].
+- **The field's yardstick is a public survey [Established].** Murmann's "ADC Performance Survey 1997–2026" collects every converter published at ISSCC and the VLSI Symposium since 1997; its latest revision (August 2026) includes VLSI 2026 [R-332]. From its data, as of Nov 2026: the best Walden figure is **0.35** fJ/conversion-step, a 10-bit SAR at 200 kS/s in 65 nm (Bindra et al., VLSI 2019, unchanged since); the best Schreier figure is **189.2** dB, a noise-shaping SAR with 120 dB SNDR in a 1 kHz band (Zhao et al., ISSCC 2025), and **186.8** dB at Nyquist rate (Hsieh and Hsieh, ISSCC 2018). The record sits **2.6** dB below the 191.8 dB thermal line of §3.6 [R-336].
+- **The frontier falls with speed [Established].** The best Schreier figures are 181.5 dB at 130 MS/s (a pipelined-SAR, Wang and Kuo, ISSCC 2022), 173.3 dB at 1 GS/s (a 14-bit single-channel pipeline, Cao et al., ISSCC 2025) and 159.3 dB at 12 GS/s (a 4× time-interleaved pipeline, Cao et al., ISSCC 2024) [R-336]. Murmann's 2022 short course shows the envelope rolling off at about −10 dB per decade above roughly 10 MS/s and summarizes low-speed converters as at the "8kTSNR energy limit" and high-speed ones as limited by "tens of femtoseconds timing jitter" [R-334].
+- **Commercial converters specify the full picture [Established].** TI's ADC12DJ5200RF (12 bits, up to 10.4 GS/s) specifies DNL of +0.14/−0.13 LSB with no missing codes but INL of +2.0/−2.4 LSB, and at 2.4 GHz SNR 54.7 dBFS, SINAD 53.9 dBFS, ENOB 8.7 and SFDR 65 dBFS. A 16-bit, 1 MS/s SAR (ADS8861) specifies ±1 LSB INL, 96.5 dB SNR and −112 dB THD at 5.5 mW; a 24-bit ΔΣ converter (ADS127L11) specifies 0.9 ppm best-fit INL and 111.5 dB dynamic range [R-336].
 
 ### Why it matters commercially
 
@@ -494,11 +499,13 @@ Converter specifications are where analog performance meets a customer's purchas
 
 ### Marketing vs Reality
 
-- **"12-bit."** Resolution is the number of output bits; ENOB at your frequency is what you get. The ADC12DJ5200RF's 49.6 dBFS at 8 GHz corresponds to about 8 effective bits ((49.6 − 1.76)/6.02 = 7.9) [R-334].
-- **Noise density versus SNR.** NSD is usually measured with a small input (−20 dBFS for the ADC12DJ5200RF), where jitter and distortion are negligible, so it looks better than the SNR measured near full scale. From the 55.6 dBFS SNR at 347 MHz and 5.12 GS/s, §3.5's formula gives **−149.7** dBFS/Hz, against the specified −150.4 dBFS/Hz at −20 dBFS: close, but the conditions differ, and at gigahertz inputs the gap grows [R-334].
-- **Averaging is not free resolution.** Averaging two or four converters improves noise only if their noise is uncorrelated; the ADC32RF55's 2× and 4× modes gain 2.5 and 4.8 dB against an ideal 3.0 and 6.0 dB [R-334].
-- **Best-fit INL and "typical" values.** A best-fit INL is never larger than the endpoint INL, and a typical value says nothing about the worst part (Example 20-06.2).
-- **Figures of merit.** A record Walden figure at 6 bits and a record Schreier figure at 16 bits are different achievements; ask which power was counted (core only, or with references, drivers and clocks) and at what input frequency the SNDR was measured.
+- **"12-bit."** Resolution is the number of output bits; ENOB at your frequency is what you get. The ADC12DJ5200RF specifies 8.7 effective bits at 2.4 GHz and 7.4 at 8.0 GHz (SINAD 46.2 dBFS) [R-336].
+- **dBFS versus dBc.** The same data sheet quotes SFDR in dBFS; most older data sheets and TI's own measurement guide use dBc. At −1 dBFS the difference is 1 dB, at −10 dBFS ten [R-335], [R-336].
+- **Noise density versus SNR.** NSD is usually measured with a small input (−20 dBFS for the ADC12DJ5200RF), where jitter and distortion are negligible, so it looks better than the SNR measured near full scale. From the 55.6 dBFS SNR at 347 MHz and 5.12 GS/s, §3.5's formula gives **−149.7** dBFS/Hz, against the specified −150.4 dBFS/Hz at −20 dBFS [R-334].
+- **Dynamic-range figures of merit.** A Schreier figure computed from dynamic range instead of SNDR can be inflated by a noise floor that depends on the signal. Computed from the survey's data, one 2020 incremental ADC reaches about 203 dB on dynamic range against 164.9 dB on SNDR, above the thermal line; Murmann ranks by SNDR for this reason [R-336].
+- **"Effective resolution."** Some precision-converter data sheets quote an "effective resolution" of $\log_2(\text{FSR}/v_{n,rms})$, which omits the $\sqrt{12}$ of the IEEE-style ENOB and so reads **1.79** bits higher for the same noise [R-336].
+- **Averaging is not free resolution.** The ADC32RF55's 2× and 4× averaging modes gain 2.5 and 4.8 dB against an ideal 3.0 and 6.0 dB, because the averaged channels' noise is partly correlated [R-334].
+- **Front page versus table.** Check both: the ADC12DJ5200RF's front page gives 8.6 bits where its table gives 8.7, and the ADS8861's front page gives −115 dB THD where its table gives −112 dB [R-336].
 - **Sanity check.** Convert every claim to the same footing: SNR in dBFS at a stated frequency and amplitude, ENOB from SINAD, and power at the package pins. Then compare against $-20\log_{10}(2\pi f_{in}\sigma_t)$ and the 192 dB thermal limit.
 
 ## 10. Concept check
@@ -576,14 +583,15 @@ Problems: [20-06 problem set](../problems/20-06-problems.md) · Worked solutions
 
 - M. Pelgrom, *Analog-to-Digital Conversion*, 4th ed., Springer, 2022: the chapters on converter specifications and quantization.
 - F. Maloberti, *Data Converters*, Springer, 2007: specifications and testing.
-- IEEE Std 1241, *Terminology and Test Methods for Analog-to-Digital Converters* (cited in §14), for the formal definitions and test procedures.
+- IEEE Std 1241-2023, *Terminology and Test Methods for Analog-to-Digital Converters* (cited in §14), for the formal definitions and test procedures.
 - B. Murmann, "ADC Performance Survey" (github.com/bmurmann/ADC-survey): download the spreadsheet and plot the figures of merit yourself.
 
 ## 14. Sources
 
-1. IEEE Std 1241, *IEEE Standard for Terminology and Test Methods for Analog-to-Digital Converters* (definitions of transition levels, DNL, INL, the sine-wave code-density test and dynamic metrics).
+1. IEEE Std 1241-2023, *IEEE Standard for Terminology and Test Methods for Analog-to-Digital Converters*, DOI 10.1109/IEEESTD.2023.10269815; IEEE Std 1658-2023 (DACs), DOI 10.1109/IEEESTD.2023.10285677; P. Crovetti et al., "The IEEE Std. 1658-2023 for terminology and test methods of digital-to-analog converters," *IEEE Instrum. Meas. Mag.*, vol. 28, no. 4, pp. 7–12, June 2025 [R-335].
 2. R. H. Walden, "Analog-to-digital converter survey and analysis," *IEEE J. Sel. Areas Commun.*, vol. 17, no. 4, pp. 539–550, Apr. 1999, DOI 10.1109/49.761034 [R-332].
-3. B. Murmann, "ADC Performance Survey 1997–2026," github.com/bmurmann/ADC-survey (revision 2026-08-01), and "Introduction to ADCs/DACs: Metrics, Topologies, Trade Space, and Applications," ISSCC Short Course, Feb. 2022 [R-332], [R-334].
-4. T. Neu, "Clock jitter analyzed in the time domain, Part 1," TI *Analog Applications Journal* SLYT379, 3Q 2010 (combining quantization, thermal and jitter SNR; thermal floors of 14- and 16-bit pipelines) [R-332].
-5. Texas Instruments data sheets ADC12DJ5200RF (SLVSEN9H) and ADC32RF55 (SBAS500B) [R-333], [R-334].
-6. Course chapters [16-10](../../16-digital-signal-processing/chapters/16-10-quantization-and-fixed-point.md) (quantization), [16-05](../../16-digital-signal-processing/chapters/16-05-spectral-analysis-and-windowing.md) (spectral analysis) and [20-05](20-05-comparators-and-sample-and-hold.md) (kT/C and jitter).
+3. B. Murmann, "ADC Performance Survey 1997–2026," github.com/bmurmann/ADC-survey (revision 2026-08-01), and "Introduction to ADCs/DACs: Metrics, Topologies, Trade Space, and Applications," ISSCC Short Course, Feb. 2022 (the 8kT·SNR line, after E. A. Vittoz, "Future of analog in the VLSI environment," *Proc. ISCAS*, 1990) [R-332], [R-334], [R-336].
+4. Record designs: H. S. Bindra et al., VLSI Symposium 2019, DOI 10.23919/VLSIC.2019.8778093; H. Zhao et al., ISSCC 2025, paper 18.1, DOI 10.1109/ISSCC49661.2025.10904778; S.-E. Hsieh and C.-C. Hsieh, ISSCC 2018, DOI 10.1109/ISSCC.2018.8310273; J.-C. Wang and T.-H. Kuo, ISSCC 2022, DOI 10.1109/ISSCC42614.2022.9731546; Y. Cao et al., ISSCC 2025, paper 24.2, DOI 10.1109/ISSCC49661.2025.10904766; Y. Cao et al., ISSCC 2024, paper 22.1, DOI 10.1109/ISSCC49657.2024.10454350 [R-336].
+5. TI application notes: C. Pearson, "High-speed, analog-to-digital converter basics," SLAA510, 2011; *ADCPro User's Guide* SBAU128C, 2012 (coherent sampling); R. Reeder, "Coherently sampling in high-speed data-converter testing," SLVAG04, 2025; T. Neu, "Clock jitter analyzed in the time domain, Part 1," SLYT379, 2010 [R-332], [R-335].
+6. Texas Instruments data sheets ADC12DJ5200RF (SLVSEN9H), ADC32RF55 (SBAS500B), ADS8861 and ADS127L11 [R-333], [R-334], [R-336].
+7. Course chapters [16-10](../../16-digital-signal-processing/chapters/16-10-quantization-and-fixed-point.md) (quantization), [16-05](../../16-digital-signal-processing/chapters/16-05-spectral-analysis-and-windowing.md) (spectral analysis) and [20-05](20-05-comparators-and-sample-and-hold.md) (kT/C and jitter).
