@@ -7957,3 +7957,59 @@
   definition: "Wrong results produced by hardware without any error being signaled; at datacenter scale, rare defective or degrading processor cores make it a measurable fleet-level problem addressed by in-field screening."
   chapter: "19-12"
   see_also: [Built-in self-test (BIST)]
+- term: Verification plan
+  definition: "The list of every feature in a chip's specification together with how each will be checked (scoreboard, assertion, formal proof, software test) and how its exercise will be measured (coverage items); the yardstick for verification signoff."
+  chapter: "19-13"
+  see_also: [Design verification, Coverage closure]
+- term: Scoreboard
+  definition: "The testbench component that compares the transactions a design actually produced (seen by monitors) with those a reference model predicts, and reports every mismatch."
+  chapter: "19-13"
+  see_also: [Self-checking testbench, Reference model]
+- term: Constrained-random verification
+  definition: "Generating simulation stimulus by drawing transaction fields at random subject to constraints that keep them legal, so that combinations nobody listed are exercised; it needs a reference model to check results and functional coverage to show what was reached."
+  chapter: "19-13"
+  see_also: [Functional coverage, Scoreboard]
+- term: Coverage closure
+  definition: "The iterative process of running regressions, finding coverage holes and steering stimulus (biased constraints, directed tests, formal cover traces) until every bin of the coverage model is hit or justified; rare bins dominate its cost."
+  chapter: "19-13"
+  see_also: [Functional coverage, Verification plan]
+- term: SystemVerilog Assertions (SVA)
+  definition: "The temporal assertion language of IEEE 1800: clocked properties built from sequences (##n delays), implications (|-> and |=>) and system functions, used as assertions, assumptions or cover targets in simulation, formal tools and emulation."
+  chapter: "19-13"
+  see_also: [SystemVerilog, Formal verification]
+- term: Universal Verification Methodology (UVM)
+  definition: "IEEE 1800.2: a SystemVerilog class library and methodology for building reusable testbenches from sequences, sequencers, drivers, monitors, agents, scoreboards and environments, configured by a factory and a configuration database."
+  chapter: "19-13"
+  see_also: [Testbench, Scoreboard]
+- term: Logic equivalence checking (LEC)
+  definition: "Formal proof that two versions of a design (RTL and synthesized netlist, or netlists before and after an ECO) compute the same function, usually by matching registers and checking the combinational logic between them."
+  chapter: "19-13"
+  see_also: [Miter, Formal verification]
+- term: Miter
+  definition: "A circuit that XORs corresponding outputs of two designs and ORs the results; the designs are equivalent exactly when the miter is unsatisfiable (constantly 0), and any input that sets it to 1 is a counterexample."
+  chapter: "19-13"
+  see_also: [Logic equivalence checking (LEC)]
+- term: Binary decision diagram (BDD)
+  definition: "A graph representation of a Boolean function as a decision diagram; reduced and ordered (ROBDD), it is canonical for a fixed variable order, so equivalence is a graph comparison, but its size depends strongly on the order."
+  chapter: "19-13"
+  see_also: [Logic equivalence checking (LEC), Model checking]
+- term: Model checking
+  definition: "Formal verification of a state machine's temporal properties by exploring its reachable states, explicitly or symbolically, and returning either a proof or a counterexample trace."
+  chapter: "19-13"
+  see_also: [Bounded model checking (BMC), k-induction]
+- term: Bounded model checking (BMC)
+  definition: "Unrolling a design's transition relation k steps and asking a SAT solver for a property violation within k cycles; it finds shortest bugs quickly but proves nothing beyond the bound unless the bound reaches the state graph's diameter."
+  chapter: "19-13"
+  see_also: [Model checking, k-induction]
+- term: k-induction
+  definition: "A proof method that combines a BMC base case (no violation within k − 1 steps) with an inductive step (any k consecutive states satisfying the property are followed by one that does); counterexamples to induction from unreachable states require a larger k or a strengthening lemma."
+  chapter: "19-13"
+  see_also: [Bounded model checking (BMC), Model checking]
+- term: FPGA prototyping
+  definition: "Partitioning a chip design across FPGAs to run it at up to tens of megahertz for software development and system testing before silicon, with less signal visibility and longer bring-up than an emulator."
+  chapter: "19-13"
+  see_also: [Emulation]
+- term: Post-silicon validation
+  definition: "Testing first silicon in the lab at full speed with real software and systems, to find the functional and electrical bugs that pre-silicon verification missed; visibility is limited to on-chip debug features."
+  chapter: "19-13"
+  see_also: [Design verification, Respin]
