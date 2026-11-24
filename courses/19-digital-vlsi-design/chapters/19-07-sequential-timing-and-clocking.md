@@ -32,7 +32,7 @@ A **latch** is a door that stays open while the clock is high: data walks straig
 
 The **setup time** is how long before the door shuts the data must arrive to be sure of getting through; the **hold time** is how long after it shuts the data must stay put, so that the new value does not slip in under the closing door. The **clock-to-Q delay** is how long it takes the captured value to appear on the far side.
 
-A metastable latch is a ball balanced on a hilltop: two cross-coupled inverters with their outputs exactly at the switching threshold are in equilibrium, and only a nudge decides which valley the ball rolls into. The smaller the nudge, the longer it takes to fall. The analogy is accurate in its key feature: the time to fall grows only logarithmically as the nudge shrinks, which is why waiting a little longer makes failures exponentially rarer.
+A metastable latch is a ball balanced on a hilltop: two cross-coupled inverters with their outputs exactly at the switching threshold are in equilibrium, and only a nudge decides which valley the ball rolls into. The smaller the nudge, the longer it takes to fall. The analogy is accurate in its key feature: the time to fall grows only logarithmically as the nudge shrinks, which is why waiting a little longer makes failures exponentially rarer. It breaks in two places: a ball has inertia and its fall accelerates (second-order dynamics), whereas the latch is a first-order RC loop whose imbalance grows exponentially from the start; and for the tiniest nudges, electrical noise, not the initial offset, decides which way the latch falls.
 
 ```text
   D --TG1(clk_b)--+--[inv]--+--TG3(clk)--+--[inv]--+-- Q
@@ -86,7 +86,7 @@ $$
 
 **Jitter.** The clock period itself varies from cycle to cycle. If successive edges can come $t_{jitter}$ early relative to each other, the setup budget loses $t_{jitter}$; hold involves the *same* edge at both registers and is unaffected by cycle-to-cycle jitter. In design, skew and jitter are combined into a **clock uncertainty** that is subtracted from the setup budget and added to the hold requirement in the worst direction. Unintended skew must be bounded in both directions: positive skew threatens hold, negative skew threatens setup. Some designs intentionally skew clocks ("useful skew") to lend time from a fast stage to a slow one.
 
-**Fixing violations.** A setup violation is fixed by a slower clock, faster logic (19-04 sizing, restructuring) or less overhead. A hold violation is fixed by adding delay to the short path (buffers), never by changing the clock.
+**Fixing violations.** A setup violation is fixed by a slower clock, faster logic (19-04 sizing, restructuring) or less overhead. A hold violation is fixed by adding delay to the short path (buffers) or by reducing the clock skew on that pair of registers, never by changing the clock *period*.
 
 ### 3.3 Sequencing overhead and pipelining
 
@@ -100,7 +100,7 @@ Pipelining raises throughput until $t_L/N$ becomes comparable to $t_o$, after wh
 
 ![Throughput and overhead share against the number of pipeline stages for 2000 ps of logic and 60 ps of overhead per stage: throughput rises from 0.485 GHz to 8.2 GHz at 32 stages, below the ideal straight line, while the overhead share rises from 2.9% to 49%](../../../assets/figures/19-07/pipelining.svg)
 
-*Figure 3. Pipelining Example 4's logic. Throughput falls further and further below the ideal line as overhead takes a growing share of each cycle.* In processors, deeper pipelines also lose cycles on branch mispredictions and hazards, so the best depth balances overhead, hazards and power. Expressed in FO4 delays (19-04), sequencing overhead is a few FO4 per cycle, and cycle times of commercial processors are a small number of tens of FO4 (§9).
+*Figure 2. Pipelining Example 4's logic. Throughput falls further and further below the ideal line as overhead takes a growing share of each cycle.* In processors, deeper pipelines also lose cycles on branch mispredictions and hazards, so the best depth balances overhead, hazards and power. Expressed in FO4 delays (19-04), sequencing overhead is a few FO4 per cycle, and cycle times of commercial processors are a small number of tens of FO4 (§9).
 
 ### 3.4 Latches and time borrowing
 
@@ -124,7 +124,7 @@ The pair is unstable: any initial difference grows exponentially with time const
 
 ![Left: node voltages of a cross-coupled inverter pair released from 0.6 V with offsets of 1 mV, 1 microvolt and 1 nV; the outputs cross 0.9 V after 643.9, 1334.6 and 2025 ps. Right: time to reach 0.9 V against the reciprocal of the initial offset on a log axis, a straight line rising 230 ps per decade](../../../assets/figures/19-07/metastability.svg)
 
-*Figure 2. Metastability in the lab's cross-coupled pair. Each thousand-fold smaller initial offset adds the same 690.8 ps ($\tau\ln 1000$).*
+*Figure 3. Metastability in the lab's cross-coupled pair. Each thousand-fold smaller initial offset adds the same 690.8 ps ($\tau\ln 1000$).*
 
 **Failure probability.** If data transitions arrive uniformly in time, the probability that a transition lands close enough to the clock edge to leave the latch unresolved after a waiting time $t_r$ is proportional to $e^{-t_r/\tau}$. With $f_{data}$ data transitions per second and a clock at $f_{clk}$, the mean time between failures is
 
@@ -132,7 +132,7 @@ $$
 \text{MTBF} = \frac{e^{t_r/\tau}}{T_0\,f_{clk}\,f_{data}},
 $$
 
-where $T_0$ is a characterized aperture constant of the flip-flop. Because MTBF grows exponentially in $t_r$, the standard **synchronizer** is two flip-flops in series: the first may go metastable, and it has a full clock cycle (minus overhead) to resolve before the second samples it. Each extra cycle of waiting multiplies the MTBF by $e^{T_c/\tau}$.
+where $T_0$ is a characterized aperture constant of the flip-flop. (08-10 writes the same result as $e^{S/\tau}/(T_WF_CF_D)$, with the metastability window $T_W$ in place of $T_0$, the resolution time $S$ in place of $t_r$, and $F_C$, $F_D$ for the two frequencies.) Because MTBF grows exponentially in $t_r$, the standard **synchronizer** is two flip-flops in series: the first may go metastable, and it has a full clock cycle (minus overhead) to resolve before the second samples it. Each extra cycle of waiting multiplies the MTBF by $e^{T_c/\tau}$.
 
 ### 3.6 Clock distribution
 
@@ -143,7 +143,9 @@ The clock must reach every register with small skew and jitter, every cycle, whi
 - **Generation.** A phase-locked loop (15-12) multiplies a reference clock to the core frequency; its jitter and the supply noise on clock buffers set the jitter budget.
 - **Gating.** Clock gates at the tree's branches stop the clock to idle blocks, the main dynamic-power saving of 19-06.
 
-> **Going deeper — resonant clocking and source-synchronous links.** Because a clock network is a large capacitance switched every cycle, some processors resonate it with on-chip inductors, recovering part of the $CV^2$ energy each cycle. And for long distances or between chips, designs send a clock or strobe alongside the data (source-synchronous) so that skew between data and clock, not absolute delay, matters: the starting point of the high-speed links covered in the companion material on datacenter networking.
+> **Going deeper — resonant clocking and source-synchronous links.** Because a clock network is a large capacitance switched every cycle, some processors resonate it with on-chip inductors, recovering part of the $CV^2$ energy each cycle. And for long distances or between chips, designs send a clock or strobe alongside the data (source-synchronous) so that skew between data and clock, not absolute delay, matters: the starting point of the high-speed links of Course 24.
+>
+> **Deeper:** see companion repo *Datacenter Networking*.
 
 ## 4. Worked examples
 
@@ -277,6 +279,8 @@ The 16-stage latency is $16 \times 185$ = **2960** ps, 48% longer than the unpip
 | Txt 19-07.b | implied global clock share of core power | 18 | % |
 | Txt 19-07.c | SKY130 flip-flop t_pcq + t_setup | 0.373 | ns |
 | Txt 19-07.d | the same in FO4 at 65 ps | 5.7 | — |
+| Txt 19-07.i | the same in FO4 at 0.36 ps/nm | 8.0 | — |
+| Txt 19-07.j | the same in FO4 at 3 × 31.8 ps | 3.9 | — |
 | Txt 19-07.e | resolution time, 1 nV offset | 2025 | ps |
 | Txt 19-07.f | resolution-time slope per decade | 230 | ps |
 | Txt 19-07.g | throughput at 32 stages | 8.2 | GHz |
@@ -335,7 +339,7 @@ The lab ([labs/19-07-lab](../labs/19-07-lab/README.md)) has two parts:
 - **How deep should pipelines be? [Established].** Hrishikesh and colleagues (ISCA 2002) concluded that "The Optimal Logic Depth Per Pipeline Stage is 6 to 8 FO4 Inverter Delays", counting a sequencing overhead of 1.8 FO4 at 100 nm: a 1 FO4 latch plus 0.3 FO4 of skew and 0.5 FO4 of jitter ([R-316]). IBM described POWER6 as a "13 FO4 design" ([R-315]). Harris's textbook slides give a buffered latch as "1.5 – 2 FO4 delays" ([R-316]).
 - **Skew budgets in shipped processors [Established].** Intel's Itanium (0.18 µm, 800 MHz) projected 110 ps of clock skew without its deskew circuits and 28 ps with them, **2.2** % of its 1.25 ns cycle; the Pentium 4 cut skew from about ±32 ps to ±8 ps with compensation and then "Deliberately skew[ed] clocks for performance", gaining 200 MHz: useful skew in practice ([R-316]). IBM's POWER6 drove a clock grid from local H-trees, and "On-chip clock tuning resulted in up to a 10% frequency improvement" ([R-316]).
 - **The clock's share of power [Established].** AMD's Piledriver resonant clock mesh (ISSCC 2012) cut clock distribution power "up to 24%"; its journal paper reports "a peak 25% global clock power reduction at 75°C, which translates to a 4.5% reduction in average application core power" ([R-316]), which implies the global clock was about **18** % of core power.
-- **An open library's flip-flop [Established].** SkyWater's `sky130_fd_sc_hd__dfxtp_1` (the transmission-gate flip-flop of §3.1) has, at its typical corner with a fast clock edge and a light load, a clock-to-Q delay of 0.269 ns, a setup time of up to 0.103 ns and negative hold times (−0.029 and −0.047 ns), so D may change slightly before the edge ([R-316]). Its $t_{pcq} + t_{setup}$ of **0.373** ns is about **5.7** FO4 by Harris's rule of thumb for a 130 nm-class process (FO4 ≈ 0.5 ps per nm of feature size), several times the aggressive custom latch above: open, density-oriented libraries are not built for the highest frequencies.
+- **An open library's flip-flop [Established].** SkyWater's `sky130_fd_sc_hd__dfxtp_1` (the transmission-gate flip-flop of §3.1) has, at its typical corner with a fast clock edge and a light load, a clock-to-Q delay of 0.269 ns, a setup time of up to 0.103 ns and negative hold times (−0.029 and −0.047 ns), so D may change slightly before the edge ([R-316]). Its $t_{pcq} + t_{setup}$ of **0.373** ns is about 4 to 8 FO4, depending on which rule sets FO4 for a 130 nm-class process: **5.7** FO4 by Harris's rule of thumb (0.5 ps per nm of feature size, 65 ps); **8.0** FO4 by Ho, Mai and Horowitz's 0.36 ps per nm (47 ps); **3.9** FO4 if FO4 is taken as three times SKY130's measured fan-out-of-1 delay of 31.8 ps (19-02). Even the low end is several times the 1 FO4 latch overhead of the study above (a flip-flop's $t_{pcq} + t_{setup}$ and one latch's overhead are not identical quantities, but the gap is large): open, density-oriented libraries are not built for the highest frequencies.
 
 ### Why it matters commercially
 

@@ -54,11 +54,19 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 19-05.11 [C]
 
-**Scaling with the size effect.** Suppose that, on top of geometric scaling by 0.7 per node, the effective resistivity of global wires rises by 1.25 times per node. (a) By what factor does the resistance per length rise per node? (b) By what factor does an optimally repeated global wire's delay per length change per node, and relative to gate delay? (c) What are the two factors over three nodes?
+**Scaling with the size effect.** Suppose that, on top of geometric scaling by 0.7 per node (with the repeaters' $R_0C_0$ also scaling by 0.7), the effective resistivity of global wires rises by 1.25 times per node. (a) By what factor does the resistance per length rise per node? (b) By what factor does an optimally repeated global wire's delay per length change per node, and relative to gate delay? (c) What are the two factors over three nodes?
 
 ### Problem 19-05.12 [C]
 
 **Pipelining a long wire.** A 6 mm signal runs on Example 19-05.4's wire with optimal repeaters. The clock period is 250 ps, of which 50 ps is flip-flop overhead. (a) What is the wire's repeated delay? (b) How far can the signal travel in one cycle? (c) How many cycles must the wire be pipelined over?
+
+### Problem 19-05.13 [C] *(lab)*
+
+**The slowest mode.** Use the series for $v(L, t)$ in §3.3. (a) At $t = 0.379RC$, how large is the second term ($n$ = 1) relative to the first ($n$ = 0)? (b) Keeping only the first term, derive a closed form for $t_{50}$ and evaluate its coefficient. (c) Compare it with the exact coefficient (solve the full series numerically) and give the error in percent. (d) The first term decays with time constant $\tau_1$. Find $\tau_1/(RC)$ and compare it with the Elmore constant $RC/2$. Why is the Elmore constant larger?
+
+### Problem 19-05.14 [B] *(lab)*
+
+**A driven victim.** An aggressor wire ramps from 0 to 1.0 V in a time $t_r$. It couples to a victim through $C_c$ = 20 fF; the victim has $C_g$ = 30 fF to ground and is held at 0 V by a driver of resistance $R_v$. (a) Write the victim's node equation during the ramp and show that its voltage peaks at the end of the ramp at $\Delta V\,\dfrac{C_c}{C_c + C_g}\,\dfrac{\tau}{t_r}\left(1 - e^{-t_r/\tau}\right)$, with $\tau = R_v(C_c + C_g)$. (b) Find the peak for $R_v$ = 2 kΩ and $t_r$ = 50 ps. (c) For $R_v$ = 2 kΩ and $t_r$ = 200 ps. (d) For $R_v$ = 500 Ω and $t_r$ = 50 ps. (e) What are the limits for a very weak and a very strong victim driver, and which of (b) to (d) would disturb a receiving gate whose switching threshold is 0.5 V?
 
 ---
 
@@ -67,7 +75,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Objective | Problems |
 |---|---|
 | 1. Wire resistance and capacitance from geometry | 1, 9 |
-| 2. The distributed line and its estimates | 4, 10 |
+| 2. The distributed line and its estimates | 4, 13 |
 | 3. Driver–wire–load delay | 2, 5 |
 | 4. Repeaters | 6, 7, 10, 12 |
-| 5. Crosstalk and scaling | 3, 8, 11 |
+| 5. Crosstalk and scaling | 3, 8, 11, 14 |

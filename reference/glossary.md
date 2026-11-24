@@ -1284,7 +1284,7 @@
 
 <a id="elliptic-filter"></a>**Elliptic filter** — A filter with equiripple passband and stopband, obtained by placing zeros on the jω axis just beyond the passband; it meets a magnitude specification with the lowest order of the classical families, at the cost of large group-delay variation. *First defined in* [11-11](../courses/11-signals-and-systems/chapters/11-11-modulation-and-filtering-applications.md). *See also:* [Butterworth response](#butterworth-response), [Bessel filter](#bessel-filter).
 
-<a id="elmore-delay"></a>**Elmore delay** — The first moment (time centroid) of a network's impulse response, computed directly from its resistances and capacitances; a fast, somewhat pessimistic interconnect delay estimate. *First defined in* [01-06](../courses/01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md).
+<a id="elmore-delay"></a>**Elmore delay** — The first moment (time centroid) of a network's impulse response, computed directly from its resistances and capacitances (also called the Elmore constant). For an RC tree it is an upper bound on the 50% delay, so it is somewhat pessimistic; scaled by ln 2 it becomes an estimate that can fall below the true delay, as for a uniform line. *First defined in* [01-06](../courses/01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md).
 
 <a id="emitter-degeneration"></a>**Emitter degeneration** — A resistor in series with a bipolar transistor's emitter, which provides negative feedback that stabilizes the bias against β, V_BE and temperature, at the cost of headroom and gain. *First defined in* [10-03](../courses/10-electronics-1/chapters/10-03-bjt-dc-operation-and-biasing.md). *See also:* [Source degeneration](#source-degeneration).
 

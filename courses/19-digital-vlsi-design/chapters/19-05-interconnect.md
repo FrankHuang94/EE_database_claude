@@ -28,11 +28,11 @@ Transistors get faster with every process node; wires do not. A wire on a chip i
 
 ## 2. Intuition first
 
-A short wire is just a capacitor: its resistance is negligible next to the transistor driving it, so it adds to the load like any other capacitance. A long wire is different. Think of it as a long, leaky garden hose being filled from one end: water must flow through the hose's own resistance to reach the far end, and it fills the near part of the hose (its capacitance) on the way. Doubling the hose's length doubles both its resistance and the volume to fill, so the time to fill it grows four times: the delay of an unbuffered wire is proportional to the **square** of its length.
+A short wire is just a capacitor: its resistance is negligible next to the transistor driving it, so it adds to the load like any other capacitance. A long wire is different. Think of it as a long hose with elastic, balloon-like walls being filled from one end: water must flow through the hose's own resistance to reach the far end, and it fills the near part of the hose (its capacitance) on the way. Doubling the hose's length doubles both its resistance and the volume to fill, so the time to fill it grows four times: the delay of an unbuffered wire is proportional to the **square** of its length.
 
 Repeaters are pumps placed along the hose. Each pump refills only its own short section, so the total time grows with the number of sections, linearly with length, at the cost of the pumps' own delay and power. Crosstalk is the hose's wall being shared with a neighbor: when the neighbor's pressure changes suddenly, the wall flexes and pushes some water into yours.
 
-The analogy fails in one important respect. Electrical signals on a chip are not limited by the speed of light at these lengths; they are limited by diffusion through the RC network, which is why the delay grows quadratically rather than linearly with length.
+The analogy fails in two respects. Water has inertia, so a real hose can carry pressure waves that travel and reflect; the RC model has no such term (inductance, its electrical counterpart, is ignored until the Going deeper box of §3.7), so on-chip signals diffuse rather than propagate. And the hose's pumps draw water without slowing the section before them, whereas each repeater's input capacitance loads the segment that drives it, which is what sets the optimum of §3.5.
 
 ```text
  Driver   R_d       r dx      r dx      r dx              far end
@@ -66,11 +66,11 @@ These are why the roadmap's tightest wires have resistances of hundreds of ohms 
 
 A wire's capacitance per unit length has three parts:
 
-- **Area (parallel-plate) capacitance** to the layers above and below: $\epsilon W/h$ for each, where $h$ is the dielectric thickness;
+- **Area (parallel-plate) capacitance** to the layers above and below: $\epsilon W/H$ for each, where $H$ is the dielectric thickness;
 - **Fringing** from the wire's edges to those layers, comparable to the area term for narrow wires;
 - **Coupling** to its neighbors on the same layer: $\epsilon t/s$ to each, for spacing $s$.
 
-Here $\epsilon = \epsilon_r\epsilon_0$ with $\epsilon_r$ between about 2.5 and 4 for the low-$k$ dielectrics used between wires. Because scaling shrinks $W$, $t$, $h$ and $s$ together, the ratios $W/h$ and $t/s$, and hence the capacitance **per unit length**, stay roughly constant across nodes, at about 0.2 fF/µm. As wires become taller than they are wide, the coupling term dominates (Example 2), which is what makes crosstalk important.
+Here $\epsilon = \epsilon_r\epsilon_0$, with $\epsilon_r$ about 2.5 to 3 for the low-$k$ dielectrics used between wires (silicon dioxide, the older reference, is about 3.9). Because scaling shrinks $W$, $t$, $H$ and $s$ together, the ratios $W/H$ and $t/s$, and hence the capacitance **per unit length**, stay roughly constant across nodes, at about 0.2 fF/µm. As wires become taller than they are wide, the coupling term dominates (Example 2), which is what makes crosstalk important.
 
 ### 3.3 The distributed RC line
 
@@ -98,7 +98,7 @@ $$
 t_{50} = 0.379\,RC ,
 $$
 
-against $0.69RC$ if the wire's whole resistance and capacitance were lumped into one RC, and $0.69 \times RC/2 = 0.35RC$ from the Elmore constant of 19-03, which for a uniform line is $RC/2$. The lumped model overestimates the delay by 83%; the Elmore estimate is 8.5% low, the same gap that 19-03's long ladders showed. Because $R$ and $C$ both grow with $L$, an unbuffered wire's delay grows as $L^2$.
+against $0.69RC$ if the wire's whole resistance and capacitance were lumped into one RC, and $0.69 \times RC/2 = 0.35RC$ from the Elmore constant of 19-03, which for a uniform line is $RC/2$. The lumped model overestimates the delay by 83%; the Elmore estimate is 8.5% low, the same gap that 19-03's long ladders showed. Note which Elmore quantity is meant: the unscaled **Elmore constant** $RC/2$ is 32% *above* $t_{50}$ and, for any RC tree, an upper bound on it (19-11 balances clock trees with it); scaling it by ln 2 to imitate a lumped pole gives the estimate $0.35RC$, which here falls below $t_{50}$. Because $R$ and $C$ both grow with $L$, an unbuffered wire's delay grows as $L^2$.
 
 ![Far-end voltage against time in units of RC for a distributed RC line, a lumped RC and a single pole with the Elmore time constant: the distributed line starts slowly and crosses 50% at 0.379, the Elmore pole at 0.347 and the lumped RC at 0.693](../../../assets/figures/19-05/line-step.svg)
 
@@ -146,7 +146,7 @@ The minimum delay is **linear in length**: $R_wC_w = rcL^2$, so its square root 
 
 *Figure 3. Unrepeated delay grows as $L^2$, optimally repeated delay as $L$ (Example 4's values marked).*
 
-Bakoglu and Meindl derived this optimization in 1985 using 0–90% delay coefficients (1.0 for the distributed line and 2.3 for the lumped one), which give the same $h_{opt}$ and a $k_{opt}$ with those coefficients in place of 0.38 and 0.69 ([R-315]). The optimum is shallow: Ho, Mai and Horowitz note that optimizing for delay times power instead of delay alone lengthens the segments 1.7 times and costs about 13% in latency for 30% less capacitance ([R-315]), so practical designs use fewer, smaller repeaters than $k_{opt}$ and $h_{opt}$.
+Bakoglu and Meindl derived this optimization in 1985 using 0–90% delay coefficients (1.0 for the distributed line and 2.3 for the lumped one), which give the same $h_{opt}$ and a $k_{opt}$ with those coefficients in place of 0.38 and 0.69 ([R-315]). The optimum is shallow: Ho, Mai and Horowitz note that trading delay against power, instead of minimizing delay alone, lengthens the segments 1.7 times and costs about 13% in latency for 30% less capacitance ([R-315]), so practical designs use fewer, smaller repeaters than $k_{opt}$ and $h_{opt}$.
 
 ### 3.6 Crosstalk
 
@@ -168,12 +168,14 @@ This disturbance does not recover until the node is driven again, which is why d
 
 Scale a process by $S < 1$ in every dimension (about 0.7 per node), including the wire's width, thickness and spacing. Per unit length, resistance rises as $1/S^2$ (twice per node) and capacitance stays about constant.
 
-- **Local wires** connect nearby gates and shrink in length with them, by $S$. Their resistance scales as $L/(Wt) \propto S/S^2 = 1/S$ and their capacitance as $S$, so their RC product stays about the same, while gate delay falls by $S$: local wires get slightly worse relative to gates, but they remain mostly capacitive loads.
+- **Local wires** connect nearby gates and shrink in length with them, by $S$. Their resistance scales as $L/(Wt) \propto S/S^2 = 1/S$ and their capacitance as $S$, so their own RC product stays about the same while gate delay falls by $S$: relative to gates, a local wire's intrinsic RC worsens by $1/S$, about 1.43 times per node at $S$ = 0.7. What keeps local wires tracking gates is that their delay is dominated by the driver charging them, $R_dC_w$, and $C_w$ shrinks by $S$ along with the gate, so they remain mostly capacitive loads.
 - **Global wires** cross a block or the die and do not shrink. Unrepeated, their RC grows as $1/S^2$, doubling every node. Repeated, their delay per length grows as $\sqrt{R_0C_0\,rc} \propto \sqrt{S \cdot S^{-2}} = S^{-1/2}$, about 1.2 times per node, while gates speed up by 1/S; relative to gates, they slow by about 1.7 times per node (Example 6).
 
 Ho, Mai and Horowitz summarized the outcome: local wires "have delays that either track gate delays or grow slowly relative to gate delays", while for global wires, "relative to gate delays, their delays scale upwards" ([R-315]). The size effect makes the resistance grow faster than the ideal $1/S^2$. Designers respond by giving global signals wide, thick upper-layer wires, by pipelining long wires with flip-flops, by partitioning chips into blocks that communicate over on-chip networks, and, most recently, by moving power delivery to the back of the wafer to free front-side routing (§9).
 
-> **Going deeper — when inductance matters.** The RC model ignores inductance. For wide, low-resistance upper-layer wires driven by fast edges, the inductive impedance $\omega L$ can exceed the resistance, and the line behaves as a lossy transmission line, with propagation near the speed of light in the dielectric and possible ringing. Clock networks and power grids are where on-chip inductance matters most; it is the domain of 20-series and signal-integrity courses, and of the companion material on chip-to-chip links.
+> **Going deeper — when inductance matters.** The RC model ignores inductance. For wide, low-resistance upper-layer wires driven by fast edges, the inductive impedance $\omega\mathcal{L}$ (with $\mathcal{L}$ the wire's inductance) can exceed the resistance, and the line behaves as a lossy transmission line, with propagation near the speed of light in the dielectric and possible ringing. Clock networks and power grids are where on-chip inductance matters most. Transmission lines are developed in [13-07](../../13-electromagnetics/chapters/13-07-transmission-lines-time-domain.md) and signal integrity in [24-01](../../24-high-speed-io-signal-integrity-and-photonics/chapters/24-01-signal-integrity-fundamentals.md).
+>
+> **Deeper:** see companion repo *Datacenter Networking* for chip-to-chip and rack-scale links.
 
 ## 4. Worked examples
 

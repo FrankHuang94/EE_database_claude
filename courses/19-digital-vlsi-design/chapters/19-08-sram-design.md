@@ -89,13 +89,13 @@ In **hold**, the inverters are unloaded and the SNM is close to that of the inve
 
 ### 3.5 Bitlines and sense amplifiers
 
-A bitline connects hundreds of cells; its capacitance $C_{BL}$ is the sum of every access transistor's drain capacitance plus the wire (19-05). The selected cell discharges it with a small current $I_{cell}$ (two minimum transistors in series). Developing a swing $\Delta V$ takes
+A bitline connects hundreds of cells; its capacitance $C_{BL}$ is the sum of every access transistor's drain capacitance plus the wire (19-05). The selected cell discharges it with a small current $I_{cell}$ (two minimum transistors in series). Developing a bitline swing $\Delta V_{BL}$ takes
 
 $$
-t_{BL} = \frac{C_{BL}\,\Delta V}{I_{cell}},
+t_{BL} = \frac{C_{BL}\,\Delta V_{BL}}{I_{cell}},
 $$
 
-so a full swing would be slow. Instead, a **sense amplifier**, typically a cross-coupled latch like 19-07's metastable pair, is enabled once the bitlines differ by about 100 mV and amplifies the difference regeneratively in $\tau\ln(V_{DD}/\Delta V)$. Small-swing sensing also saves energy, since every column's bitlines are precharged every access. Sense-amplifier offset (from transistor mismatch) sets the minimum $\Delta V$, and therefore the read speed.
+so a full swing would be slow. Instead, a **sense amplifier**, typically a cross-coupled latch like 19-07's metastable pair, is enabled once the bitlines differ by about 100 mV and amplifies the difference regeneratively in $\tau\ln(V_{DD}/\Delta V_{BL})$. Small-swing sensing also saves energy, since every column's bitlines are precharged every access. Sense-amplifier offset (from transistor mismatch) sets the minimum $\Delta V_{BL}$, and therefore the read speed.
 
 ### 3.6 Array organization
 
@@ -273,7 +273,7 @@ The lab ([labs/19-08-lab](../labs/19-08-lab/README.md)) has two parts:
 | Cell ratio $k_N/k_A$ | ≈ 1.5–2.5 | Read stability |
 | Pull-up ratio $k_P/k_A$ | ≲ 0.67 here (conservative); W/L rules near 1–1.5 | Writability; the PMOS's lower mobility explains the difference |
 | Bitline swing at sensing | ≈ 100 mV | Set by sense-amplifier offset |
-| Bitline time | $C_{BL}\Delta V/I_{cell}$ | |
+| Bitline time | $C_{BL}\Delta V_{BL}/I_{cell}$ | |
 | Design margin | ≈ 6σ | Billions of cells |
 | Array yield | $e^{-NQ(\mu/\sigma)}$ | Before repair |
 

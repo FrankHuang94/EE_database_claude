@@ -186,7 +186,8 @@ v.check("19-05.8a", 60)
 v.check("19-05.8b", 60 + 30 * 2 + 30 * 2)
 v.check("19-05.8c", 60 + 30 + 0)
 v.check("19-05.8d", 60 + 30 + 60)
-pc9, cc9 = 3.0 * EPS0 * 40 / 80, 3.0 * EPS0 * 80 / 40
+EPS0_9 = 8.854e-12  # the value stated in the problem set conventions
+pc9, cc9 = 3.0 * EPS0_9 * 40 / 80, 3.0 * EPS0_9 * 80 / 40
 v.check("19-05.9a", 2 * pc9 * 1e12)
 v.check("19-05.9b", 2 * cc9 * 1e12)
 v.check("19-05.9c", (2 * pc9 + 2 * cc9) * 1e12)
@@ -213,5 +214,42 @@ v.assert_true("half the repeaters costs the same", abs(t_rep(k4 / 2, h4, 10e3, 0
 v.check("Lab 19-05.g", 100 * (t_rep(k4, 2 * h4, 10e3, 0.1e-15, Rw, Cw) / T4 - 1))
 v.check("Lab 19-05.h", opt_rep(5e3, 0.1e-15, Rw, Cw)[2] / P)
 v.check("Lab 19-05.i", LN2 * Rw * 10e-15 / P)
+
+
+# ---------------------------------------------------------------- Problem 13: the slowest mode
+def far_end(s_, terms=400):
+    n = np.arange(terms)
+    return 1 - 4 / np.pi * np.sum((-1.0) ** n / (2 * n + 1) * np.exp(-((2 * n + 1) ** 2) * np.pi ** 2 / 4 * s_))
+
+
+v.check("19-05.13a", (1 / 3) * np.exp(-(9 - 1) * np.pi ** 2 / 4 * 0.379))
+one_term = brentq(lambda s_: 1 - 4 / np.pi * np.exp(-np.pi ** 2 * s_ / 4) - 0.5, 0.01, 2.0, xtol=1e-14)
+exact = brentq(lambda s_: far_end(s_) - 0.5, 0.05, 2.0, xtol=1e-14)
+v.check("19-05.13b", one_term)
+v.assert_true("one-term closed form", abs(one_term - 4 / np.pi ** 2 * np.log(8 / np.pi)) < 1e-12, "")
+v.check("19-05.13c", exact)
+v.check("19-05.13d", 100 * (one_term - exact) / exact)
+v.check("19-05.13e", 4 / np.pi ** 2)
+v.check("19-05.13f", (4 / np.pi ** 2) / 0.5)
+# Elmore constant of the line = mean of the far-end impulse response, by numerical integration of 1 - v(L, t)
+ts = np.linspace(0, 12, 120001)
+mean_t = np.trapezoid([1 - far_end(t_) for t_ in ts], ts) if hasattr(np, "trapezoid") else np.trapz([1 - far_end(t_) for t_ in ts], ts)
+v.assert_true("Elmore constant of the line is RC/2", abs(mean_t - 0.5) < 1e-4, f"{mean_t}")
+
+
+# ---------------------------------------------------------------- Problem 14: driven victim, by integrating the ODE
+def victim_peak(rv, tr, cc=20e-15, cg=30e-15, dv=1.0):
+    def f(t, y):
+        dva = dv / tr if t < tr else 0.0
+        return [(cc * dva - y[0] / rv) / (cc + cg)]
+    sol = solve_ivp(f, (0, 10 * tr), [0.0], max_step=tr / 2000, rtol=1e-10, atol=1e-14, dense_output=True)
+    tt = np.linspace(0, 10 * tr, 200001)
+    return float(np.max(sol.sol(tt)[0]))
+
+
+v.check("19-05.14a", 1.0 * 20 / (20 + 30))
+v.check("19-05.14b", victim_peak(2e3, 50e-12))
+v.check("19-05.14c", victim_peak(2e3, 200e-12))
+v.check("19-05.14d", victim_peak(500, 50e-12))
 
 sys.exit(v.finish())

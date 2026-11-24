@@ -60,7 +60,7 @@ $400 - 70 - 15 - 20$ = **295** ps of logic, 74% of the cycle.
 
 (a) Time per instruction $T(N) = (t_L/N + t_o)(1 + bN) = t_L/N + bt_L + t_o + bt_oN$. Setting $dT/dN = -t_L/N^2 + bt_o = 0$ gives $N_{opt} = \sqrt{t_L/(bt_o)}$.
 
-(b) $N_{opt} = \sqrt{2000/6}$ = **18.3**. At 18 stages, $T$ = **479.1** ps (19 stages: 479.3 ps). Unpipelined, $(2000 + 60)(1.1)$ = **2266** ps, so pipelining gives **4.73** times the performance, far less than the 18-fold cut in cycle time.
+(b) $N_{opt} = \sqrt{2000/6}$ = **18.3**. At 18 stages, $T$ = **479.1** ps (19 stages: 479.3 ps). Unpipelined, $(2000 + 60)(1.1)$ = **2266** ps, so pipelining gives **4.73** times the performance, far less than the **12.0**-fold cut in cycle time (from 2060 to **171.1** ps; the logic per stage falls **18**-fold).
 
 ### Solution 19-07.12
 
@@ -108,4 +108,7 @@ $400 - 70 - 15 - 20$ = **295** ps of logic, 74% of the cycle.
 | 19-07.11c | time per instruction, 19 stages | 479.3 | ps |
 | 19-07.11d | time per instruction, unpipelined | 2266 | ps |
 | 19-07.11e | speed-up | 4.73 | — |
+| 19-07.11f | cycle time, 18 stages | 171.1 | ps |
+| 19-07.11g | cycle-time reduction | 12.0 | — |
+| 19-07.11h | logic-per-stage reduction | 18 | — |
 | 19-07.12a | tau with twice the width | 50 | ps |

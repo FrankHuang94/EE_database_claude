@@ -878,7 +878,7 @@
   definition: The width of an ideal brick-wall filter passing the same white-noise power as a real filter, ∫₀^∞ |H(f)|² df divided by the passband gain; (π/2) f_c for one pole.
   chapter: "01-06"
 - term: Elmore delay
-  definition: The first moment (time centroid) of a network's impulse response, computed directly from its resistances and capacitances; a fast, somewhat pessimistic interconnect delay estimate.
+  definition: The first moment (time centroid) of a network's impulse response, computed directly from its resistances and capacitances (also called the Elmore constant). For an RC tree it is an upper bound on the 50% delay, so it is somewhat pessimistic; scaled by ln 2 it becomes an estimate that can fall below the true delay, as for a uniform line.
   chapter: "01-06"
 - term: Simpson's rule
   definition: Numerical integration fitting parabolas through triples of samples, with weights h/3 × (1, 4, 2, 4, …, 4, 1); its error falls as h⁴.

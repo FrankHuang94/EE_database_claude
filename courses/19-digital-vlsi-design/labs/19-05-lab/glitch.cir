@@ -1,0 +1,28 @@
+* Lab 19-05: Problem 19-05.14's driven victim. An aggressor ramps 0 -> 1 V and couples through Cc = 20 fF
+* into a victim with Cg = 30 fF to ground, held at 0 V by a driver of resistance Rv.
+* Circuit A: Rv = 2 kOhm, 50 ps ramp. Circuit B: Rv = 2 kOhm, 200 ps ramp. Circuit C: Rv = 500 Ohm, 50 ps ramp.
+* EXPECT pka key:../../solutions/19-05-solutions.md#19-05.14b rtol=2e-3
+* EXPECT pkb key:../../solutions/19-05-solutions.md#19-05.14c rtol=2e-3
+* EXPECT pkc key:../../solutions/19-05-solutions.md#19-05.14d rtol=2e-3
+
+VA agga 0 PWL(0 0 10p 0 60p 1 2n 1)
+CCA agga va 20f
+CGA va 0 30f
+RVA va 0 2k
+
+VB aggb 0 PWL(0 0 10p 0 210p 1 2n 1)
+CCB aggb vb 20f
+CGB vb 0 30f
+RVB vb 0 2k
+
+VC aggc 0 PWL(0 0 10p 0 60p 1 2n 1)
+CCC aggc vc 20f
+CGC vc 0 30f
+RVC vc 0 500
+
+.options reltol=1e-7 abstol=1e-15 vntol=1e-9
+.tran 0.1p 1n 0 0.1p
+.meas tran pka MAX v(va)
+.meas tran pkb MAX v(vb)
+.meas tran pkc MAX v(vc)
+.end

@@ -16,6 +16,7 @@ A distributed RC line obeys the diffusion equation $rc\,\partial v/\partial t = 
 Files:
 
 - `rcline.cir`: Example 19-05.3's 1 mm wire as a 100-section ladder, bare and with a 1 kΩ driver and a 10 fF load.
+- `glitch.cir`: Problem 19-05.14's driven victim for three combinations of driver resistance and aggressor ramp.
 - `wires.py`: `wire_resistance`, `sheet_resistance`, `plate_cap_per_length`, `coupling_cap_per_length`, `line_step_response` and `line_t50` (the Fourier series), `ladder_t50` (exact ladder response by the matrix exponential), `driver_wire_load_delay`, `repeater_optimum`, `repeated_delay`, `floating_victim_noise` and `effective_cap`.
 - `19-05-wires-lab.ipynb`: the procedure below.
 

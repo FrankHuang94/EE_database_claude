@@ -44,7 +44,7 @@ $T_{min} \propto \sqrt{R_0C_0}$, so it changes by $\sqrt{0.5}$ = **0.707**: halv
 
 ### Solution 19-05.9
 
-Each plane: $3.0 \times 8.854 \times 10^{-12} \times 40/80$ F/m = 13.3 aF/µm, so **26.6** aF/µm for both. Each neighbor: $3.0 \times 8.854 \times 10^{-12} \times 80/40$ = 53.1 aF/µm, so **106.3** aF/µm for both. Total **132.8** aF/µm, **80** % of it coupling.
+Each plane: $3.0 \times 8.854 \times 10^{-12} \times 40/80$ F/m = 13.3 aF/µm, so **26.6** aF/µm for both. Each neighbor: $3.0 \times 8.854 \times 10^{-12} \times 80/40$ = 53.12 aF/µm, so **106.2** aF/µm for both. Total **132.8** aF/µm, **80** % of it coupling.
 
 ### Solution 19-05.10
 
@@ -73,6 +73,42 @@ $$
 (b) 200 ps/123.7 ps per mm = **1.62** mm per cycle.
 
 (c) 6/1.62 = 3.7, so **4** cycles: the wire needs three pipeline flip-flops along its route, and the microarchitecture must tolerate four cycles of latency.
+
+### Solution 19-05.13
+
+(a) With $s = t/RC$ = 0.379, the ratio of the $n$ = 1 term to the $n$ = 0 term is $\tfrac13e^{-(9 - 1)\pi^2s/4}$ = **1.9 × 10⁻⁴**: by the 50 % point the line is already a single exponential.
+
+(b) Keep $v(L, t) \approx 1 - \tfrac4\pi e^{-\pi^2t/(4RC)}$ and set it to 0.5: $e^{-\pi^2t/(4RC)} = \pi/8$, so
+
+$$
+t_{50} \approx \frac{4}{\pi^2}\ln\frac{8}{\pi}\,RC = 0.4053 \times 0.9347\,RC = 0.3788\,RC .
+$$
+
+The coefficient is **0.3788**.
+
+(c) Solving the full series gives **0.3787**$RC$; the one-term estimate is **0.02** % high, which is why the chapter's 0.379 is safe to three figures.
+
+(d) $\tau_1 = 4RC/\pi^2$ = **0.405**$RC$, **0.81** times the Elmore constant $RC/2$. The Elmore constant is the mean of the impulse response, which includes the delayed start of the far-end response (the signal must first diffuse along the line), so it exceeds the slowest mode's time constant. It is an upper bound on $t_{50}$, not the decay rate of the tail.
+
+### Solution 19-05.14
+
+(a) Charge conservation at the victim, with aggressor voltage $v_a = \Delta V\,t/t_r$ during the ramp:
+
+$$
+C_g\frac{dv}{dt} + C_c\frac{d(v - v_a)}{dt} = -\frac{v}{R_v}
+\quad\Longrightarrow\quad
+\tau\frac{dv}{dt} + v = R_vC_c\frac{\Delta V}{t_r} .
+$$
+
+From $v(0)$ = 0, $v(t) = R_vC_c(\Delta V/t_r)(1 - e^{-t/\tau})$, which rises throughout the ramp; after it, the source term vanishes and $v$ decays. The peak is at $t_r$: $v_{pk} = \Delta V\,\dfrac{C_c}{C_c + C_g}\,\dfrac{\tau}{t_r}(1 - e^{-t_r/\tau})$.
+
+(b) $\tau = 2\ \text{kΩ} \times 50\ \text{fF}$ = 100 ps; $0.4 \times 2 \times (1 - e^{-0.5})$ = **0.315** V.
+
+(c) $0.4 \times 0.5 \times (1 - e^{-2})$ = **0.173** V.
+
+(d) $\tau$ = 25 ps: $0.4 \times 0.5 \times (1 - e^{-2})$ = **0.173** V, the same as (c): only the ratio $\tau/t_r$ matters.
+
+(e) For $\tau \gg t_r$ (a weak driver), $(\tau/t_r)(1 - e^{-t_r/\tau}) \to 1$ and the peak is the floating-victim value $\Delta V\,C_c/(C_c + C_g)$ = **0.400** V. For $\tau \ll t_r$, the peak tends to $R_vC_c\Delta V/t_r$: a stiff driver bleeds the coupled charge away as fast as it arrives. None of (b) to (d) reaches 0.5 V, but (b) comes close, and noise from several aggressors adds; the fixes are a stronger victim driver, slower aggressor edges, more spacing or a shield. The lab's `glitch.cir` confirms (b) to (d).
 
 ---
 
@@ -106,7 +142,7 @@ $$
 | 19-05.8c | minimum with a shield | 90 | fF |
 | 19-05.8d | maximum with a shield | 150 | fF |
 | 19-05.9a | plate capacitance, both planes | 26.6 | aF/µm |
-| 19-05.9b | coupling, both neighbors | 106.3 | aF/µm |
+| 19-05.9b | coupling, both neighbors | 106.2 | aF/µm |
 | 19-05.9c | total | 132.8 | aF/µm |
 | 19-05.9d | coupling fraction | 80 | % |
 | 19-05.10a | repeated-delay coefficient | 2.41 | — |
@@ -118,3 +154,13 @@ $$
 | 19-05.12a | repeated delay of 6 mm | 742.5 | ps |
 | 19-05.12b | distance per cycle | 1.62 | mm |
 | 19-05.12c | cycles | 4 | — |
+| 19-05.13a | second over first term at 0.379 RC | 1.9e-4 | — |
+| 19-05.13b | one-term t50 coefficient | 0.3788 | RC |
+| 19-05.13c | exact t50 coefficient | 0.3787 | RC |
+| 19-05.13d | one-term error | 0.02 | % |
+| 19-05.13e | slowest time constant | 0.405 | RC |
+| 19-05.13f | slowest time constant over Elmore constant | 0.81 | — |
+| 19-05.14a | floating-victim limit | 0.400 | V |
+| 19-05.14b | peak, 2 kΩ and 50 ps | 0.315 | V |
+| 19-05.14c | peak, 2 kΩ and 200 ps | 0.173 | V |
+| 19-05.14d | peak, 500 Ω and 50 ps | 0.173 | V |
