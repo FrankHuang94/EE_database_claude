@@ -8280,3 +8280,33 @@
   definition: A dynamic element matching method that selects the next D elements in rotation for each code D, so every element is used equally often and element mismatch becomes first-order noise-shaped error.
   chapter: "20-09"
   see_also: [Dynamic element matching]
+
+# ---------------------------------------------------------------- 20-10
+- term: Phase-frequency detector
+  definition: A PLL block that compares the edges of the reference and the divided output and drives the charge pump up or down for the time between them; it detects frequency as well as phase, so the loop acquires lock from any initial frequency.
+  chapter: "20-10"
+  see_also: [Charge pump, Phase-locked loop (PLL)]
+- term: Charge pump
+  definition: In a PLL, the circuit that sources or sinks a current I_cp for the duration of each phase-detector pulse, so the average current into the loop filter is I_cp times the phase error over 2π.
+  chapter: "20-10"
+  see_also: [Phase-frequency detector]
+- term: Voltage-controlled oscillator (VCO)
+  definition: An oscillator whose frequency varies with a control voltage, f = f_free + K_VCO·V; in a PLL's phase-domain model it is an integrator, because phase is the integral of frequency.
+  chapter: "20-10"
+  see_also: [Phase-locked loop (PLL), Phase noise]
+- term: Fractional-N synthesizer
+  definition: A PLL whose divide ratio switches between integers so that its average is fractional, usually under the control of a ΔΣ modulator that pushes the resulting phase error to high offsets where the loop filters it.
+  chapter: "20-10"
+  see_also: [Phase-locked loop (PLL), Delta-sigma modulator]
+- term: Time-to-digital converter (TDC)
+  definition: A circuit that measures a time interval, such as the phase error of an all-digital PLL, as a digital word; its resolution sets an in-band phase-noise floor.
+  chapter: "20-10"
+  see_also: [All-digital PLL (ADPLL)]
+- term: All-digital PLL (ADPLL)
+  definition: A PLL built from a time-to-digital converter, a digital loop filter and a digitally controlled oscillator instead of a charge pump, analog filter and VCO; its dynamics are set by digital coefficients.
+  chapter: "20-10"
+  see_also: [Time-to-digital converter (TDC)]
+- term: Reference spur
+  definition: A spurious tone at offsets equal to multiples of the reference frequency in a PLL's output, caused by the periodic charge-pump activity rippling the VCO's control voltage.
+  chapter: "20-10"
+  see_also: [Charge pump]

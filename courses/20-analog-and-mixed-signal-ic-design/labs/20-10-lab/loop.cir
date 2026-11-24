@@ -1,0 +1,27 @@
+* Lab 20-10 -- open-loop phase-domain model of the charge-pump PLL of Example 20-10.2 (AC analysis).
+* Voltages stand for phases (rad): V(pe) is the phase error, V(fb) the divided output phase.
+* Charge pump: current I_cp/(2 pi) * V(pe) into the loop filter (R in series with C1, C2 across).
+* VCO: a current K_vco * V(vc) into 1 F gives V(th) = K_vco V(vc) / s. Divider: V(fb) = V(th) / N.
+* I_cp = 500 uA, K_vco = 2 pi x 500 MHz/V, N = 100; R, C1, C2 from the design of Example 20-10.2.
+VPE pe 0 DC 0 AC 1
+GCP 0 vc pe 0 {500e-6/(2*3.141592653589793)}
+R1 vc x 5585.0536
+C1 x 0 45.057054p
+C2 vc 0 5.0063393p
+GVCO 0 th vc 0 {2*3.141592653589793*500e6}
+CTH th 0 1
+RTH th 0 1e18
+RVC vc 0 1e18
+EDIV fb 0 th 0 0.01
+.ac dec 400 1k 100Meg
+.control
+run
+meas ac fcx when vdb(fb)=0
+meas ac phx find vp(fb) at=fcx
+let fcm = fcx / 1e6
+let pm = 180 + phx * 180 / 3.141592653589793
+print fcm pm
+.endc
+* EXPECT fcm key:../../chapters/20-10-plls-and-jitter.md#Ex_20-10.2h rtol=2e-3
+* EXPECT pm key:../../chapters/20-10-plls-and-jitter.md#Ex_20-10.2i rtol=1e-3
+.end
