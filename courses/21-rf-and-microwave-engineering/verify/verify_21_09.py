@@ -20,6 +20,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from scipy import optimize
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -375,4 +376,12 @@ for key, vswr in (("j", 1), ("k", 2), ("l", 4)):
 v.check("Lab 21-09.m", (1 + g1) / (1 - g1))
 v.check("Lab 21-09.n", mismatch_db(6) - mismatch_db(1.5))
 
+# Problem 21-09.16: locate the parallel resonance and its peak |Z| numerically from the full BVD impedance.
+_c0, _fs16, _rm = 1e-12, 2.00e9, 0.694
+_cm = _c0 / 17.44
+_lm = 1 / ((2 * math.pi * _fs16) ** 2 * _cm)
+_zabs = lambda f: abs(1 / (1j * 2 * math.pi * f * _c0 + 1 / (_rm + 1j * 2 * math.pi * f * _lm + 1 / (1j * 2 * math.pi * f * _cm))))
+_pk = optimize.minimize_scalar(lambda f: -_zabs(f), bounds=(2.03e9, 2.08e9), method="bounded", options={"xatol": 1e-3})
+v.check("21-09.16a", _pk.x / 1e9)
+v.check("21-09.16b", _zabs(_pk.x) / 1e3)
 v.finish()

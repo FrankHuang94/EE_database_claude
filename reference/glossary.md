@@ -622,7 +622,7 @@
 
 <a id="class-e-amplifier"></a>**Class-E amplifier** — A switching amplifier whose shunt capacitor and slightly inductive series resonator make the switch voltage reach zero with zero slope at turn-on, giving 100 % ideal efficiency with P_out = 0.5768 V_DD²/R and a peak switch voltage of 3.56 V_DD (Sokal and Sokal, 1975). *First defined in* [21-07](../courses/21-rf-and-microwave-engineering/chapters/21-07-power-amplifiers.md). *See also:* [Class-D amplifier](#class-d-amplifier).
 
-<a id="class-f-amplifier"></a>**Class-F amplifier** — An amplifier that adds odd-harmonic voltage (third, fifth, ...) to square up the drain voltage over a half-sine current, so voltage and current overlap less; 88.4 % with the third harmonic alone, approaching 100 % with all of them. *First defined in* [21-07](../courses/21-rf-and-microwave-engineering/chapters/21-07-power-amplifiers.md). *See also:* [Class-B amplifier](#class-b-amplifier).
+<a id="class-f-amplifier"></a>**Class-F amplifier** — An amplifier that adds odd-harmonic voltage (third, fifth, ...) to square up the drain voltage over a half-sine current, so voltage and current overlap less; 88.4 % with a maximally flat third harmonic and at most 90.7 % with the third harmonic alone, approaching 100 % with all of them. *First defined in* [21-07](../courses/21-rf-and-microwave-engineering/chapters/21-07-power-amplifiers.md). *See also:* [Class-B amplifier](#class-b-amplifier).
 
 <a id="clock-feedthrough"></a>**Clock feedthrough** — Coupling of a switch's gate transition onto a sampling capacitor through the gate's overlap capacitance, ΔV = ΔV_G C_ov/(C_ov + C). *First defined in* [20-05](../courses/20-analog-and-mixed-signal-ic-design/chapters/20-05-comparators-and-sample-and-hold.md). *See also:* [Charge injection](#charge-injection).
 
@@ -738,7 +738,7 @@
 
 <a id="complex-exponential"></a>**Complex exponential** — A signal e^{st} with complex s = σ + jω. It rotates at ω rad/s while its magnitude grows (σ > 0), decays (σ < 0) or stays constant (σ = 0); its real part is a growing, decaying or steady sinusoid. *First defined in* [02-01](../courses/02-complex-numbers-des-and-linear-algebra/chapters/02-01-complex-numbers-euler-and-phasors.md).
 
-<a id="complex-filter"></a>**Complex filter** — A filter acting on an I/Q pair as one complex signal, built from cross-coupled real sections, whose response is centred on +f_IF and rejects −f_IF; also called a polyphase filter. *First defined in* [21-08](../courses/21-rf-and-microwave-engineering/chapters/21-08-transceiver-architectures.md). *See also:* [Low-IF receiver](#low-if-receiver), [Polyphase filter](#polyphase-filter).
+<a id="complex-filter"></a>**Complex filter** — A filter acting on an I/Q pair as one complex signal, built from cross-coupled real sections, whose response is centred on +f_IF and rejects −f_IF; sometimes called an active polyphase filter, distinct from the passive RC polyphase network used to generate quadrature. *First defined in* [21-08](../courses/21-rf-and-microwave-engineering/chapters/21-08-transceiver-architectures.md). *See also:* [Low-IF receiver](#low-if-receiver), [Polyphase filter](#polyphase-filter).
 
 <a id="complex-number"></a>**Complex number** — A number z = x + jy with real part x and imaginary part y (both real numbers), drawn as a point or arrow in the complex plane. *First defined in* [02-01](../courses/02-complex-numbers-des-and-linear-algebra/chapters/02-01-complex-numbers-euler-and-phasors.md). *See also:* [Imaginary unit](#imaginary-unit), [Complex plane](#complex-plane).
 
@@ -2380,7 +2380,7 @@
 
 <a id="limit-cycle"></a>**Limit cycle** — A small sustained oscillation in a fixed-point recursive filter with zero or constant input, caused by rounding inside the feedback loop; it cannot occur in the exact linear system. *First defined in* [11-04](../courses/11-signals-and-systems/chapters/11-04-lti-systems-and-differential-equations.md). *See also:* [IIR filter](#iir-filter).
 
-<a id="limited-buffer-rate-matching"></a>**Limited-buffer rate matching** — An NR rule that caps the coded bits a receiver must store per code block at the information bits divided by R_LBRM = 2/3, so the soft buffer holds 1.5 coded bits per information bit rather than the mother code's three. *First defined in* [21-12](../courses/21-rf-and-microwave-engineering/chapters/21-12-modem-baseband-and-standards.md). *See also:* [Soft buffer](#soft-buffer).
+<a id="limited-buffer-rate-matching"></a>**Limited-buffer rate matching** — An NR rule that caps the coded bits a receiver must store per code block at the information bits divided by R_LBRM = 2/3, so the soft buffer holds 1.5 coded bits per information bit rather than the mother code's three (LDPC base graph 1; five for base graph 2). *First defined in* [21-12](../courses/21-rf-and-microwave-engineering/chapters/21-12-modem-baseband-and-standards.md). *See also:* [Soft buffer](#soft-buffer).
 
 <a id="limiter"></a>**Limiter** — A circuit, also called a clipper, that holds its output below (or above) a set level, typically with diodes from the signal to a reference; the limiting is soft because the diode is exponential. *First defined in* [10-01](../courses/10-electronics-1/chapters/10-01-diodes-and-diode-circuits.md).
 
@@ -2892,7 +2892,7 @@
 
 <a id="noise-figure"></a>**Noise figure** — 10 log₁₀ of the noise factor F, the ratio of a system's total output noise to the part due to a source at 290 K; a receiver's noise floor is −174 dBm/Hz + 10 log₁₀B + NF. *First defined in* [03-06](../courses/03-probability-statistics-and-random-variables/chapters/03-06-random-processes-preview.md).
 
-<a id="noise-folding"></a>**Noise folding** — The aliasing of noise by a sampler; every band of width fs of the continuous noise spectrum lands in the first Nyquist zone, so unfiltered wideband noise raises the in-band density by about 2B_N/fs while the total power is unchanged. *First defined in* [17-01](../courses/17-communication-systems/chapters/17-01-random-processes-and-psd.md). *See also:* [Aliasing (sampling)](#aliasing-sampling), [Equivalent noise bandwidth (ENBW)](#equivalent-noise-bandwidth-enbw).
+<a id="noise-folding"></a>**Noise folding** — The aliasing of noise by a sampler; every band of width fs of the continuous noise spectrum lands in the first Nyquist zone, so unfiltered wideband noise raises the in-band density by about 2B_N/fs while the total power is unchanged; in a switching mixer, also the conversion of noise from the image and LO-harmonic bands to the IF (21-05). *First defined in* [17-01](../courses/17-communication-systems/chapters/17-01-random-processes-and-psd.md). *See also:* [Aliasing (sampling)](#aliasing-sampling), [Equivalent noise bandwidth (ENBW)](#equivalent-noise-bandwidth-enbw).
 
 <a id="noise-gain"></a>**Noise gain** — The gain 1 + R2/R1 from a signal at the op-amp's + input (offset voltage, input noise) to its output; it is the same for inverting and non-inverting stages and sets the finite-gain error, about (noise gain)/A. *First defined in* [06-10](../courses/06-circuit-analysis-1-dc/chapters/06-10-ideal-op-amp.md). *See also:* [Input offset voltage](#input-offset-voltage), [Loop gain](#loop-gain).
 
@@ -2904,7 +2904,7 @@
 
 <a id="noise-parameters"></a>**Noise parameters** — The four real numbers that fully describe a linear two-port's noise independently of the circuit around it, usually given as the minimum noise figure, the optimum source reflection coefficient (complex) and the noise resistance; the noise factor for any source is F = Fmin + (Rn/Gs)|Ys − Yopt|². *First defined in* [21-03](../courses/21-rf-and-microwave-engineering/chapters/21-03-noise-figure-and-linearity.md). *See also:* [Noise figure](#noise-figure), [Noise circle](#noise-circle).
 
-<a id="noise-rise"></a>**Noise rise** — The increase of a receiver's effective noise floor caused by interference from other users, 10 log(1/(1 − η)) at load η; carried in cellular budgets as an interference margin, 3 dB at 50 percent load. *First defined in* [21-11](../courses/21-rf-and-microwave-engineering/chapters/21-11-link-budgets.md). *See also:* [Uplink-limited coverage](#uplink-limited-coverage).
+<a id="noise-rise"></a>**Noise rise** — The increase of a receiver's effective noise floor caused by interference from other users, 10 log₁₀(1/(1 − X)) at load X; carried in cellular budgets as an interference margin, 3 dB at 50 percent load. *First defined in* [21-11](../courses/21-rf-and-microwave-engineering/chapters/21-11-link-budgets.md). *See also:* [Uplink-limited coverage](#uplink-limited-coverage).
 
 <a id="noise-shaping"></a>**Noise shaping** — Filtering quantization error by a feedback loop so that its spectrum is small in the signal band and large elsewhere; an L-th-order shaper gains about 6L + 3 dB of SQNR per doubling of the oversampling ratio. *First defined in* [20-08](../courses/20-analog-and-mixed-signal-ic-design/chapters/20-08-sigma-delta-converters.md). *See also:* [Delta-sigma modulator](#delta-sigma-modulator), [Noise transfer function (NTF)](#noise-transfer-function-ntf).
 
@@ -3628,7 +3628,7 @@
 
 <a id="repeater"></a>**Repeater** — A buffer inserted along a long on-chip wire to break it into shorter segments, converting delay that grows with the square of length into delay that grows linearly. *First defined in* [07-02](../courses/07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md).
 
-<a id="repetition-gain"></a>**Repetition gain** — The SNR gain of sending a transmission N times and combining the copies coherently, 10 log N dB at the cost of N times the airtime; with narrow bandwidth it is how NB-IoT, LTE-M and Bluetooth's Coded PHY reach long range. *First defined in* [21-11](../courses/21-rf-and-microwave-engineering/chapters/21-11-link-budgets.md). *See also:* [Maximum coupling loss (MCL)](#maximum-coupling-loss-mcl).
+<a id="repetition-gain"></a>**Repetition gain** — The SNR gain of sending a transmission N times and combining the copies coherently, 10 log₁₀ N dB at the cost of N times the airtime; with narrow bandwidth it is how NB-IoT, LTE-M and Bluetooth's Coded PHY reach long range. *First defined in* [21-11](../courses/21-rf-and-microwave-engineering/chapters/21-11-link-budgets.md). *See also:* [Maximum coupling loss (MCL)](#maximum-coupling-loss-mcl).
 
 <a id="reproducibility"></a>**Reproducibility** — The property that someone else can regenerate a result from the recorded code, data and environment and get the same numbers; achieved by scripting every step, pinning versions, seeding randomness and fingerprinting data. *First defined in* [05-04](../courses/05-programming-for-engineers/chapters/05-04-reproducible-workflows.md).
 

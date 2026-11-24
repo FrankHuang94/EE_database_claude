@@ -91,6 +91,7 @@ v.check("Txt 21-11.l", rate(12, 125e3))
 ae = db10((C / 1.9e9) ** 2 / (4 * math.pi))
 v.check("Txt 21-11.m", -120 + ae + 30)
 v.check("Txt 21-11.n", -110.6 + ae + 30)
+v.check("Txt 21-11.o", 10 * math.log10(1e6 / 15e3))
 
 print("Example 21-11.1")
 pr = -5 - pl_office(20) - 5
@@ -116,6 +117,8 @@ v.check("Ex 21-11.2f", 10 ** (db10(8) / 23.9))
 v.check("Ex 21-11.2g", ebn0_shannon(1.0))
 v.check("Ex 21-11.2h", ebn0_shannon(0.125))
 v.check("Ex 21-11.2i", db10(math.log(2)))
+v.check("Ex 21-11.2j", 10 ** ((-96.5 + 102) / 10) / 8 * 100)
+v.check("Ex 21-11.2k", 10 ** ((-95 + 103) / 10) / 8 * 100)
 
 print("Example 21-11.3")
 for (a, b, c, d), p in ((("a", "b", "c", "d"), 0.1), (("e", "f", "g", "h"), 0.01)):
@@ -289,4 +292,8 @@ v.assert_true("simulated coherent repetition gain within 0.05 dB of 10 log 32", 
 for key, el in (("f", 90), ("g", 20)):
     v.check(f"Lab 21-11.{key}", -7 - fspl(2e9, slant(600e3, el)) - 5.3 + 1.1 + 228.6 - db10(360e3))
 
+# Problem 21-11.16: slant range by intersecting the line of sight with the orbit sphere numerically.
+_re16, _h16, _el16 = 6371.0, 550.0, math.radians(25)
+_d16 = optimize.brentq(lambda d: math.hypot(d * math.cos(_el16), _re16 + d * math.sin(_el16)) - (_re16 + _h16), 0, 5000)
+v.check("21-11.16", _d16)
 v.finish()

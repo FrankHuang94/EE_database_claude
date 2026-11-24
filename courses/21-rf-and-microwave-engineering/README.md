@@ -27,18 +27,18 @@ Radio hardware from S-parameters to standards: matching, noise figure and linear
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [21-01 · S-Parameters and Network Analysis](chapters/21-01-s-parameters.md) | 8 | ✅ verified | [problems](problems/21-01-problems.md) · [solutions](solutions/21-01-solutions.md) · [lab](labs/21-01-lab/README.md) · [verify](verify/verify_21_01.py) |
-| [21-02 · Impedance Matching Networks](chapters/21-02-impedance-matching-networks.md) | 7 | ✅ verified | [problems](problems/21-02-problems.md) · [solutions](solutions/21-02-solutions.md) · [lab](labs/21-02-lab/README.md) · [verify](verify/verify_21_02.py) |
-| [21-03 · Noise Figure and Linearity](chapters/21-03-noise-figure-and-linearity.md) | 8 | ✅ verified | [problems](problems/21-03-problems.md) · [solutions](solutions/21-03-solutions.md) · [lab](labs/21-03-lab/README.md) · [verify](verify/verify_21_03.py) |
-| [21-04 · Low-Noise Amplifiers](chapters/21-04-low-noise-amplifiers.md) | 7 | ✅ verified | [problems](problems/21-04-problems.md) · [solutions](solutions/21-04-solutions.md) · [lab](labs/21-04-lab/README.md) · [verify](verify/verify_21_04.py) |
-| [21-05 · Mixers](chapters/21-05-mixers.md) | 6 | ✅ verified | [problems](problems/21-05-problems.md) · [solutions](solutions/21-05-solutions.md) · [lab](labs/21-05-lab/README.md) · [verify](verify/verify_21_05.py) |
-| [21-06 · Oscillators and VCOs](chapters/21-06-oscillators-and-vcos.md) | 6 | ✅ verified | [problems](problems/21-06-problems.md) · [solutions](solutions/21-06-solutions.md) · [lab](labs/21-06-lab/README.md) · [verify](verify/verify_21_06.py) |
-| [21-07 · Power Amplifiers](chapters/21-07-power-amplifiers.md) | 9 | ✅ verified | [problems](problems/21-07-problems.md) · [solutions](solutions/21-07-solutions.md) · [lab](labs/21-07-lab/README.md) · [verify](verify/verify_21_07.py) |
-| [21-08 · Transceiver Architectures](chapters/21-08-transceiver-architectures.md) | 7 | ✅ verified | [problems](problems/21-08-problems.md) · [solutions](solutions/21-08-solutions.md) · [lab](labs/21-08-lab/README.md) · [verify](verify/verify_21_08.py) |
-| [21-09 · The RF Front End: Filters, Switches and Modules](chapters/21-09-rf-front-end.md) | 6 | ✅ verified | [problems](problems/21-09-problems.md) · [solutions](solutions/21-09-solutions.md) · [lab](labs/21-09-lab/README.md) · [verify](verify/verify_21_09.py) |
-| [21-10 · Antennas, Arrays, Beamforming and mmWave](chapters/21-10-antennas-arrays-mmwave.md) | 8 | ✅ verified | [problems](problems/21-10-problems.md) · [solutions](solutions/21-10-solutions.md) · [lab](labs/21-10-lab/README.md) · [verify](verify/verify_21_10.py) |
-| [21-11 · Link Budgets](chapters/21-11-link-budgets.md) | 5 | ✅ verified | [problems](problems/21-11-problems.md) · [solutions](solutions/21-11-solutions.md) · [lab](labs/21-11-lab/README.md) · [verify](verify/verify_21_11.py) |
-| [21-12 · Modem Baseband Architecture and Wireless Standards](chapters/21-12-modem-baseband-and-standards.md) | 9 | ✅ verified | [problems](problems/21-12-problems.md) · [solutions](solutions/21-12-solutions.md) · [lab](labs/21-12-lab/README.md) · [verify](verify/verify_21_12.py) |
+| [21-01 · S-Parameters and Network Analysis](chapters/21-01-s-parameters.md) | 8 | 🏁 reviewed | [problems](problems/21-01-problems.md) · [solutions](solutions/21-01-solutions.md) · [lab](labs/21-01-lab/README.md) · [verify](verify/verify_21_01.py) |
+| [21-02 · Impedance Matching Networks](chapters/21-02-impedance-matching-networks.md) | 7 | 🏁 reviewed | [problems](problems/21-02-problems.md) · [solutions](solutions/21-02-solutions.md) · [lab](labs/21-02-lab/README.md) · [verify](verify/verify_21_02.py) |
+| [21-03 · Noise Figure and Linearity](chapters/21-03-noise-figure-and-linearity.md) | 8 | 🏁 reviewed | [problems](problems/21-03-problems.md) · [solutions](solutions/21-03-solutions.md) · [lab](labs/21-03-lab/README.md) · [verify](verify/verify_21_03.py) |
+| [21-04 · Low-Noise Amplifiers](chapters/21-04-low-noise-amplifiers.md) | 7 | 🏁 reviewed | [problems](problems/21-04-problems.md) · [solutions](solutions/21-04-solutions.md) · [lab](labs/21-04-lab/README.md) · [verify](verify/verify_21_04.py) |
+| [21-05 · Mixers](chapters/21-05-mixers.md) | 6 | 🏁 reviewed | [problems](problems/21-05-problems.md) · [solutions](solutions/21-05-solutions.md) · [lab](labs/21-05-lab/README.md) · [verify](verify/verify_21_05.py) |
+| [21-06 · Oscillators and VCOs](chapters/21-06-oscillators-and-vcos.md) | 6 | 🏁 reviewed | [problems](problems/21-06-problems.md) · [solutions](solutions/21-06-solutions.md) · [lab](labs/21-06-lab/README.md) · [verify](verify/verify_21_06.py) |
+| [21-07 · Power Amplifiers](chapters/21-07-power-amplifiers.md) | 9 | 🏁 reviewed | [problems](problems/21-07-problems.md) · [solutions](solutions/21-07-solutions.md) · [lab](labs/21-07-lab/README.md) · [verify](verify/verify_21_07.py) |
+| [21-08 · Transceiver Architectures](chapters/21-08-transceiver-architectures.md) | 7 | 🏁 reviewed | [problems](problems/21-08-problems.md) · [solutions](solutions/21-08-solutions.md) · [lab](labs/21-08-lab/README.md) · [verify](verify/verify_21_08.py) |
+| [21-09 · The RF Front End: Filters, Switches and Modules](chapters/21-09-rf-front-end.md) | 6 | 🏁 reviewed | [problems](problems/21-09-problems.md) · [solutions](solutions/21-09-solutions.md) · [lab](labs/21-09-lab/README.md) · [verify](verify/verify_21_09.py) |
+| [21-10 · Antennas, Arrays, Beamforming and mmWave](chapters/21-10-antennas-arrays-mmwave.md) | 8 | 🏁 reviewed | [problems](problems/21-10-problems.md) · [solutions](solutions/21-10-solutions.md) · [lab](labs/21-10-lab/README.md) · [verify](verify/verify_21_10.py) |
+| [21-11 · Link Budgets](chapters/21-11-link-budgets.md) | 5 | 🏁 reviewed | [problems](problems/21-11-problems.md) · [solutions](solutions/21-11-solutions.md) · [lab](labs/21-11-lab/README.md) · [verify](verify/verify_21_11.py) |
+| [21-12 · Modem Baseband Architecture and Wireless Standards](chapters/21-12-modem-baseband-and-standards.md) | 9 | 🏁 reviewed | [problems](problems/21-12-problems.md) · [solutions](solutions/21-12-solutions.md) · [lab](labs/21-12-lab/README.md) · [verify](verify/verify_21_12.py) |
 
 **Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/21-rf-and-microwave-engineering.csv) · [Equation sheet](../../reference/equation-sheets/21-rf-and-microwave-engineering.md)
 
@@ -71,7 +71,7 @@ Work at least the [A] and [B] problems of every chapter. The labs are of two kin
 - inductive degeneration makes a 50 Ω input without a resistor; the gate inductor's loss, not the transistor, often limits the noise figure (21-04);
 - a switching mixer's gain is 2/π; image rejection is limited by I/Q matching to about $4/(\varepsilon^2 + \theta^2)$ (21-05);
 - phase noise falls with tank Q squared and with signal power; dividing by N improves it by 20 log N (21-06);
-- PA efficiency collapses in back-off; Doherty and envelope tracking recover it, DPD buys back linearity, and neither exceeds saturation (21-07);
+- PA efficiency collapses in back-off; Doherty and envelope tracking recover it, DPD buys back linearity, and none of them can exceed the PA's saturated power (21-07);
 - architectures trade image, DC-offset, I/Q and ADC problems against each other; frequency plans are checked for images and spurs before anything is designed (21-08);
 - acoustic coupling sets filter bandwidth, TCF eats duplex gaps, and an SOI switch is judged by $R_{on}C_{off}$ and its stack (21-09);
 - EIRP grows as $N^2$; phase shifters squint, bits set a scattered-power floor, and the DC-optimal array balances PA and overhead power (21-10);

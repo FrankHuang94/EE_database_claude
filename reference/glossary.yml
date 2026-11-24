@@ -6506,7 +6506,7 @@
   chapter: "17-01"
   see_also: [Correlation time, Noise folding]
 - term: Noise folding
-  definition: The aliasing of noise by a sampler; every band of width fs of the continuous noise spectrum lands in the first Nyquist zone, so unfiltered wideband noise raises the in-band density by about 2B_N/fs while the total power is unchanged.
+  definition: The aliasing of noise by a sampler; every band of width fs of the continuous noise spectrum lands in the first Nyquist zone, so unfiltered wideband noise raises the in-band density by about 2B_N/fs while the total power is unchanged; in a switching mixer, also the conversion of noise from the image and LO-harmonic bands to the IF (21-05).
   chapter: "17-01"
   see_also: [Aliasing (sampling), Equivalent noise bandwidth (ENBW)]
 - term: Spectral line
@@ -8528,7 +8528,7 @@
   chapter: "21-07"
   see_also: [Class-D amplifier]
 - term: Class-F amplifier
-  definition: An amplifier that adds odd-harmonic voltage (third, fifth, ...) to square up the drain voltage over a half-sine current, so voltage and current overlap less; 88.4 % with the third harmonic alone, approaching 100 % with all of them.
+  definition: An amplifier that adds odd-harmonic voltage (third, fifth, ...) to square up the drain voltage over a half-sine current, so voltage and current overlap less; 88.4 % with a maximally flat third harmonic and at most 90.7 % with the third harmonic alone, approaching 100 % with all of them.
   chapter: "21-07"
   see_also: [Class-B amplifier]
 - term: Doherty amplifier
@@ -8589,7 +8589,7 @@
   chapter: "21-08"
   see_also: [Complex filter, Direct-conversion (zero-IF) receiver]
 - term: Complex filter
-  definition: A filter acting on an I/Q pair as one complex signal, built from cross-coupled real sections, whose response is centred on +f_IF and rejects −f_IF; also called a polyphase filter.
+  definition: A filter acting on an I/Q pair as one complex signal, built from cross-coupled real sections, whose response is centred on +f_IF and rejects −f_IF; sometimes called an active polyphase filter, distinct from the passive RC polyphase network used to generate quadrature.
   chapter: "21-08"
   see_also: [Low-IF receiver, Polyphase filter]
 - term: Direct RF sampling
@@ -8740,11 +8740,11 @@
   chapter: "21-11"
   see_also: [Fade margin]
 - term: Noise rise
-  definition: The increase of a receiver's effective noise floor caused by interference from other users, 10 log(1/(1 − η)) at load η; carried in cellular budgets as an interference margin, 3 dB at 50 percent load.
+  definition: The increase of a receiver's effective noise floor caused by interference from other users, 10 log₁₀(1/(1 − X)) at load X; carried in cellular budgets as an interference margin, 3 dB at 50 percent load.
   chapter: "21-11"
   see_also: [Uplink-limited coverage]
 - term: Repetition gain
-  definition: The SNR gain of sending a transmission N times and combining the copies coherently, 10 log N dB at the cost of N times the airtime; with narrow bandwidth it is how NB-IoT, LTE-M and Bluetooth's Coded PHY reach long range.
+  definition: The SNR gain of sending a transmission N times and combining the copies coherently, 10 log₁₀ N dB at the cost of N times the airtime; with narrow bandwidth it is how NB-IoT, LTE-M and Bluetooth's Coded PHY reach long range.
   chapter: "21-11"
   see_also: [Maximum coupling loss (MCL)]
 - term: G/T (figure of merit)
@@ -8769,7 +8769,7 @@
   chapter: "21-12"
   see_also: [Hybrid ARQ (HARQ), Limited-buffer rate matching]
 - term: Limited-buffer rate matching
-  definition: An NR rule that caps the coded bits a receiver must store per code block at the information bits divided by R_LBRM = 2/3, so the soft buffer holds 1.5 coded bits per information bit rather than the mother code's three.
+  definition: An NR rule that caps the coded bits a receiver must store per code block at the information bits divided by R_LBRM = 2/3, so the soft buffer holds 1.5 coded bits per information bit rather than the mother code's three (LDPC base graph 1; five for base graph 2).
   chapter: "21-12"
   see_also: [Soft buffer]
 - term: Two-way ranging

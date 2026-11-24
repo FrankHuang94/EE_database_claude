@@ -72,6 +72,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A 77 GHz radar chip.** TI's AWR2944 has 4 transmitters and 4 receivers, each transmitter delivering 13.5 dBm (§9). Arranged as a filled λ/2 virtual array, find (a) the number of virtual channels, (b) λ/2 at 77 GHz, (c) the virtual aperture and (d) the angular resolution near broadside. (e) With all four transmitters on together, what is the total conducted power, and (f) by how many dB does their coherent sum in the beam direction exceed one transmitter's?
 
+### Problem 21-10.16 [C]
+
+**Derive the quantization floor.** An $N$-element array has ideal weights $w_k$ (with $\sum\lvert w_k\rvert = 1$ and uniform amplitude $1/N$) and independent phase errors $\varepsilon_k$, each uniform in $\pm x$. (a) Show that $\langle e^{j\varepsilon}\rangle = \sin x/x$. (b) Writing the perturbed pattern as $AF = \sum_kw_ke^{j\varepsilon_k}e^{j\phi_k}$, show that $\langle\lvert AF\rvert^2\rangle = S\lvert AF_0\rvert^2 + (1 - S)/N$ with $S = (\sin x/x)^2$. (c) Evaluate the floor for 3-bit phase shifters on a 16-element array.
+
 ---
 
 ## Objective coverage
@@ -81,6 +85,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Patch design and the Chu limit | 1, 2, 3, 4 |
 | 2. Array gain, scan loss and grating lobes | 5, 6 |
 | 3. Beam squint and true-time delay | 7 |
-| 4. Phase quantization | 8 |
+| 4. Phase quantization | 8, 16 |
 | 5. EIRP, element count and beamforming power | 9, 10, 11, 14 |
 | 6. Millimetre-wave links, packaging and radar arrays | 12, 13, 15 |

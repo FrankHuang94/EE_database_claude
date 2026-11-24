@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 21-11 · Link Budgets
 
 | | |
@@ -60,7 +60,7 @@ $$
 \text{MAPL} = \underbrace{P_t - L_t + G_t}_{\text{EIRP}} + G_r - L_r - S - M - L_{ex} .
 $$
 
-3GPP's coverage targets use the closely related **maximum coupling loss** (MCL), the loss between the two antenna connectors, which excludes antenna gains: $\text{MCL} = P_t - S$ when both are referred to the antenna ports. With a path-loss model $PL(d) = PL(d_0) + 10n\log_{10}(d/d_0)$, the range follows by inversion:
+3GPP's coverage targets use the closely related **maximum coupling loss** (MCL), the loss between the two antenna connectors, which absorbs the antenna gains into the loss (they do not appear as separate terms): $\text{MCL} = P_t - S$ with both referred to the antenna ports. With a path-loss model $PL(d) = PL(d_0) + 10n\log_{10}(d/d_0)$, the range follows by inversion:
 
 $$
 d_{max} = d_0 \cdot 10^{(\text{MAPL} - PL(d_0))/(10n)} .
@@ -106,10 +106,10 @@ $$
 
 With σ = 8 dB and $n$ = 3.5, 75% coverage at the edge gives about 90% over the area; 90% at the edge gives about 97% (Example 21-11.4).
 
-**Interference margin.** In a loaded cell, other users' signals raise the effective noise. If a fraction η of the receiver's total noise-plus-interference power is interference (the **load**), the noise floor rises by
+**Interference margin.** In a loaded cell, other users' signals raise the effective noise. If a fraction $X$ of the receiver's total noise-plus-interference power is interference (the **load**), then $I = X(N + I)$, so $N + I = N/(1 - X)$ and the noise floor rises by
 
 $$
-\text{NR} = 10\log_{10}\frac{1}{1 - \eta} ,
+\text{NR} = 10\log_{10}\frac{1}{1 - X} ,
 $$
 
 3 dB at 50% load and 6 dB at 75%. Cellular budgets carry this as an interference margin, larger on the uplink of busy cells.
@@ -128,13 +128,13 @@ $$
 \frac{C}{N_0} = \text{EIRP} - L_{path} - L_{other} + \frac{G}{T} - 10\log_{10}k \quad [\text{dBHz}],
 $$
 
-with $10\log_{10}k$ = −228.6 dBW/K/Hz. The achievable bandwidth then follows from the SNR needed: $B = (C/N_0)/\text{SNR}_{req}$. For a low-Earth-orbit satellite at altitude $h$ seen at elevation ε from a terminal on an Earth of radius $R_E$, the slant range is
+with $10\log_{10}k$ = −228.6 dBW/K/Hz. The achievable bandwidth then follows from the SNR needed: $B = (C/N_0)/\text{SNR}_{req}$. For a low-Earth-orbit satellite at altitude $h$ seen at elevation angle $\theta_{el}$ (above the horizon) from a terminal on an Earth of radius $R_E$, the triangle formed by Earth's centre, the terminal and the satellite has sides $R_E$, $d$ and $R_E + h$, with the angle $90° + \theta_{el}$ at the terminal between the local vertical and the line of sight. The law of cosines gives $(R_E + h)^2 = R_E^2 + d^2 + 2R_Ed\sin\theta_{el}$, a quadratic in $d$ whose positive root is the slant range
 
 $$
-d = \sqrt{(R_E + h)^2 - R_E^2\cos^2\varepsilon} - R_E\sin\varepsilon ,
+d = \sqrt{(R_E + h)^2 - R_E^2\cos^2\theta_{el}} - R_E\sin\theta_{el} ,
 $$
 
-600 km overhead but 1075 km at 30° elevation, 5.1 dB more path loss. A phone's G/T is very poor (a near-isotropic antenna in a hand, with a few hundred kelvin of noise), which is why direct-to-phone satellite service starts at text messages and narrowband voice (§9).
+600 km overhead but 1075 km at 30° elevation, 5.1 dB more path loss. A phone's G/T is very poor (a near-isotropic antenna in a hand, with a system noise temperature well above 1000 K from a 290 K antenna and a 7 dB noise figure, Example 21-11.8), which is why direct-to-phone satellite service starts at text messages and narrowband voice (§9).
 
 **GNSS** is the extreme case: the GPS signal arrives below the thermal noise in its 2 MHz bandwidth, and the receiver recovers it only by correlating against the known spreading code for a millisecond or more (17-02). Its budget is a C/N0: a −128.5 dBm signal (the specified minimum, §9) in a receiver with a 2 dB noise figure gives 43.5 dBHz. A modern receiver keeps tracking signals tens of dB weaker than that by integrating for longer, but it needs much stronger signals to find the satellites from a cold start without help (Example 21-11.9), which is why a phone keeps its fix moving indoors but struggles to get one there.
 
@@ -151,7 +151,7 @@ $$
 - (d) −5 − 70.52 − 5 + 0 = **−80.52** dBm.
 - (e) **15.98** dB; (f) $5.01 \times 1.2816$ = **6.42** dB; (g) **9.56** dB.
 - (h) **−10.52** dB: a receiver built to the specification's minimum fails.
-- (i) $d = 10^{(-5 - 5 + 70 - 6.42 - 39.43)/23.9}$ = **3.9** m.
+- (i) $d = 10^{(-5 - 5 + 70 - 6.42 - 39.43)/23.9}$ = **3.9** m (just below the model's 4 m lower limit, so treat it as approximate).
 - (j) **21.48** dB.
 
 **Units check.** dBm − dB = dBm; the model gives dB with $d$ in metres and $f$ in GHz.
@@ -167,7 +167,7 @@ $$
 **Solution.**
 
 - (a) $10\log_{10}8$ = **9.03** dB.
-- (b–d) **5.5**, **8** and **7.5** dB: real parts collect 60–90% of the ideal energy gain, because the extra redundancy is not combined perfectly and the receiver must still synchronize at the lower SNR.
+- (b–d) **5.5**, **8** and **7.5** dB: real parts realize 5.5–8 of the ideal 9 dB, which is **44** % (j) to **79** % (k) of the ideal energy gain ($10^{0.55}/8$ and $10^{0.8}/8$), because the extra redundancy is not combined perfectly and the receiver must still synchronize at the lower SNR.
 - (e) $10^{5.5/23.9}$ = **1.70**; (f) $10^{9.03/23.9}$ = **2.39**.
 - (g) $(2^1 - 1)/1$ = 1: **0** dB; (h) $(2^{0.125} - 1)/0.125$: **−1.40** dB; (i) $\ln 2$: **−1.59** dB.
 
@@ -200,7 +200,7 @@ $$
 
 **Units check.** Probabilities; margins in dB.
 
-**Sanity check.** Operators quote area coverage; engineers design the edge. The two differ by 10–15 percentage points, so the same network can honestly be described as "90%" or "75%". The verify script confirms (a) and (b) by Monte Carlo over a disc.
+**Sanity check.** Operators quote area coverage; engineers design the edge. The two differ by about 7–15 percentage points, so the same network can honestly be described as "90%" or "75%". The verify script confirms (a) and (b) by Monte Carlo over a disc.
 
 ### Example 21-11.5 · Wi-Fi's rate–range curve (tier B)
 
@@ -245,7 +245,7 @@ $$
 
 **Units check.** dBm and dB throughout.
 
-**Sanity check.** 164 dB is 20–25 dB beyond broadband cellular, bought with a single narrow subcarrier (17 dB less noise than 1 MHz) and tens of repetitions. The price is seconds of airtime per message, acceptable for a meter, useless for video.
+**Sanity check.** 164 dB is 20–25 dB beyond broadband cellular, bought with a single narrow subcarrier (18.2 dB less noise than 1 MHz) and tens of repetitions. The price is seconds of airtime per message, acceptable for a meter, useless for video.
 
 ### Example 21-11.8 · A satellite talks to a phone (tier C)
 
@@ -262,7 +262,7 @@ $$
 
 **Units check.** dBW − dB + dB/K − dBW/(K·Hz) = dBHz.
 
-**Sanity check.** Even with a satellite antenna 30 dBi strong, the phone's uplink closes at under 3 dB SNR in a few hundred kilohertz: about half a megabit per second at the Shannon limit, shared by everyone in the beam. Direct-to-phone service starts with messaging and needs huge satellite apertures to grow (§9).
+**Sanity check.** Even with a 30 dBi satellite receive antenna (TR 38.821's LEO-600 value [7]), the phone's uplink closes at under 3 dB SNR in a few hundred kilohertz: about half a megabit per second at the Shannon limit, shared by everyone in the beam. Direct-to-phone service starts with messaging and needs huge satellite apertures to grow (§9).
 
 ### Example 21-11.9 · GPS indoors (tier B)
 
@@ -302,6 +302,8 @@ $$
 | Ex 21-11.2g | Shannon Eb/N0, 1 b/s/Hz | 0 | dB |
 | Ex 21-11.2h | Shannon Eb/N0, 0.125 b/s/Hz | −1.40 | dB |
 | Ex 21-11.2i | Shannon Eb/N0 limit | −1.59 | dB |
+| Ex 21-11.2j | CC2340R5 share of the ideal energy gain | 44 | % |
+| Ex 21-11.2k | nRF52840 share of the ideal energy gain | 79 | % |
 | Ex 21-11.3a | shadowing margin, 10 % | 10.25 | dB |
 | Ex 21-11.3b | Rayleigh margin, 10 % | 9.77 | dB |
 | Ex 21-11.3c | sum, 10 % | 20.03 | dB |
@@ -368,6 +370,7 @@ $$
 | Txt 21-11.l | LoRa SF12 bit rate, 125 kHz | 293 | b/s |
 | Txt 21-11.m | PFD limit as received power, 0 dBi at 1.9 GHz | −117.0 | dBm/MHz |
 | Txt 21-11.n | waiver PFD as received power | −107.6 | dBm/MHz |
+| Txt 21-11.o | noise reduction, 15 kHz against 1 MHz | 18.2 | dB |
 
 ## 5. Simulate it
 
@@ -403,8 +406,8 @@ The lab ([labs/21-11-lab](../labs/21-11-lab/README.md)) puts the ledger, the mar
 | Shannon limit | $E_b/N_0$ ≥ −1.59 dB | §3.2 |
 | Rayleigh margin | 9.8 dB (10%), 20 dB (1%) | §3.3 |
 | Bluetooth LE sensitivity, specification | −70 dBm (1M, 2M), −82 dBm (Coded S = 8) | [1] (Core 6.2) |
-| Bluetooth LE sensitivity, real parts | about −95 to −99 dBm (1M), −102 to −107 dBm (Coded) | [2] (as of Nov 2026) |
-| Wi-Fi minimum sensitivity, 20 MHz | −82 dBm (MCS0) to −52 dBm (MCS11); −3 dB per bandwidth doubling | [3] |
+| Bluetooth LE sensitivity, real parts | about −95 to −99 dBm (1M), −102 to −106 dBm (Coded) | [2] (as of Nov 2026) |
+| Wi-Fi minimum sensitivity, 20 MHz | −82 dBm (MCS0) to −52 dBm (MCS11); 3 dB higher (less sensitive) per bandwidth doubling [Established; secondary source] | [3] |
 | 2.4 GHz power limits | US 30 dBm conducted + 6 dBi; EU 20 dBm EIRP | [4] |
 | NR UE power classes | 23 / 26 / 29 / 31 dBm | [5] |
 | 3GPP coupling-loss targets | 164 dB (massive IoT, 160 b/s); 140–143 dB (eMBB extreme coverage) | [5] |
@@ -426,7 +429,7 @@ The lab ([labs/21-11-lab](../labs/21-11-lab/README.md)) puts the ledger, the mar
 
 ### State of the art (as of Nov 2026)
 
-- **What the standards demand [Established].** Bluetooth Core 6.2 sets the reference sensitivity at "-70 dBm" for the uncoded PHYs and −75 and −82 dBm for Coded S = 2 and S = 8, at a bit-error rate of 0.1% for short packets, and allows transmit power "between 0.01 mW (-20 dBm) and 100 mW (+20 dBm)" [1]. With random bit errors, 0.1% BER on a 37-byte test packet (368 counted bits) is a **30.8** % packet-error rate. Wi-Fi's minimum sensitivities (draft 802.11be tables, 10% PER with 4096-byte packets) run from −82 dBm at MCS0 to −52 dBm at MCS11 in 20 MHz [3]. 5G NR phones are 23 dBm by default, with 26, 29 and 31 dBm classes ("PC1 UE is not targeted for smartphone form factor"); a wide-area base station has "no upper limit" on rated power [5].
+- **What the standards demand [Established].** Bluetooth Core 6.2 sets the reference sensitivity at "-70 dBm" for the uncoded PHYs and −75 and −82 dBm for Coded S = 2 and S = 8, at a bit-error rate of 0.1% for short packets, and allows transmit power "between 0.01 mW (-20 dBm) and 100 mW (+20 dBm)" [1]. With random bit errors, 0.1% BER on a 37-byte test packet (368 counted bits) is a **30.8** % packet-error rate. Wi-Fi's minimum sensitivities (10% PER with 4096-byte packets) run from −82 dBm at MCS0 to −52 dBm at MCS11 in 20 MHz [3] [Established; secondary source: these are the MCS0–11 rows of Rohde & Schwarz's summary of the 802.11be draft table; the IEEE 802.11ax-2021 table itself was not read]. 5G NR phones are 23 dBm by default, with 26, 29 and 31 dBm classes ("PC1 UE is not targeted for smartphone form factor"); a wide-area base station has "no upper limit" on rated power [5].
 - **What real radios do [Industry estimate, vendor typicals].** TI's CC2340R5 receives Bluetooth 1M at −96.5 dBm and Coded at −102 dBm and transmits 0 dBm on 5.1 mA [2]; Nordic's nRF52840 quotes −95 and −103 dBm and "a total link budget of >111 dBm [sic]", which is its +8 dBm maximum minus its best sensitivity [2]. Espressif's ESP32-C6 is about 12 dB better than the IEEE Wi-Fi minimums (−93.8 dBm at MCS0) and backs its transmit power off from 19.5 to 16.5 dBm at MCS9 to meet the EVM limit [3].
 - **Regulation [Established].** In the US a 2.4 GHz digital transmitter may deliver 1 W with antennas up to 6 dBi; the EU caps "e.i.r.p." at 20 dBm: a **16** dB difference in budget [4].
 - **Coverage targets [Established].** 3GPP's requirement study sets a 164 dB maximum coupling loss target for massive IoT at 160 b/s and 140–143 dB for extreme-coverage broadband, with base-station and device noise figures of 5 and 9 dB [5]; the ITU's IMT-2020 evaluations assume 5 and 7 dB [5].
@@ -438,7 +441,7 @@ The lab ([labs/21-11-lab](../labs/21-11-lab/README.md)) puts the ledger, the mar
 
 - **Battery life is a link budget.** Every dB of antenna efficiency or sensitivity in a wearable trades directly against transmit power or retries, which is current from a small battery.
 - **Coverage is capital.** In cellular networks the uplink budget sets the cell radius, and site count scales roughly as $1/R^2$: a 3 dB uplink improvement at $n$ = 3.9 is about 30% fewer sites for the same area (Problem 21-11.9).
-- **Interference rules are commercial fights.** The FCC let SpaceX's direct-to-cell service exceed the −120 dBW/m²/MHz out-of-band limit up to −110.6 dBW/m²/MHz; AT&T predicted an 18% throughput loss and T-Mobile 0.2–1.8% [7]. At a 0 dBi antenna at 1.9 GHz those limits are **−117.0** and **−107.6** dBm/MHz, against a −108 dBm/MHz noise floor: both sides' numbers follow from the same budget with different assumptions [Contested].
+- **Interference rules are commercial fights.** The FCC let SpaceX's direct-to-cell service exceed the −120 dBW/m²/MHz out-of-band limit up to −110.6 dBW/m²/MHz; AT&T predicted an 18% throughput loss and T-Mobile 0.2–1.8% [7]. At a 0 dBi antenna at 1.9 GHz those limits are **−117.0** and **−107.6** dBm/MHz, against a −108 dBm/MHz noise floor (−174 + 60 + 6 dB noise figure): both sides' numbers follow from the same budget with different assumptions [Contested].
 
 ### Marketing vs Reality
 
@@ -539,7 +542,7 @@ Problems: [21-11 problem set](../problems/21-11-problems.md) · Worked solutions
 4. 47 CFR §15.247 and §15.407 (eCFR, as of 1 Nov 2026); ETSI EN 300 328 V2.2.2 (2019-07) [R-407].
 5. 3GPP TS 38.101-1 V19.7.0 (2026-10), Tables 6.2.1-1 and 7.3.2; 3GPP TS 38.104 V19.6.0 (2026-09); 3GPP TR 38.913 V19.0.0 (2025-10), §7.10; Report ITU-R M.2412-0 (10/2017) [R-408].
 6. 3GPP TR 38.901 V19.5.0 (2026-09), §7.4; Rec. ITU-R P.1238-13 (09/2025); Rec. ITU-R P.525-5 (11/2024) [R-409].
-7. 3GPP TR 38.821 V16.2.0 (2023-03), Tables 6.1.1.1 and 6.1.3.3-1; 3GPP TS 38.101-5 V19.6.0 (2026-09); FCC Order DA 25-197, 7 Mar 2025; Apple Support articles 105097 and 101573; "AST SpaceMobile deploys BlueBird 6," SatNews, 24 Dec 2025 [R-410].
+7. 3GPP TR 38.821 V16.2.0 (2023-03), Tables 6.1.1.1-1 and 6.1.3.3-1; 3GPP TS 38.101-5 V19.6.0 (2026-09); FCC Order DA 25-197, 7 Mar 2025; Apple Support articles 105097 and 101573; "AST SpaceMobile deploys BlueBird 6," SatNews, 24 Dec 2025 [R-410].
 8. Semtech, *SX1261/2 Data Sheet* Rev 1.1 (Dec 2017) and *LoRa SX126x* product brochure [R-411].
 9. IS-GPS-200N (1 Aug 2022), §3.3.1.6; u-blox, *MAX-M10S Data Sheet*, UBX-20035208 R08 (30 Jan 2026) [R-411].
 10. H. Suzuki, "A statistical model for urban radio propogation [sic]," *IEEE Trans. Commun.*, vol. 25, no. 7, pp. 673–680, Jul. 1977, DOI 10.1109/TCOM.1977.1093888; W. C. Jakes (ed.), *Microwave Mobile Communications*, Wiley, 1974; H. T. Friis, "A note on a simple transmission formula," *Proc. IRE*, vol. 34, no. 5, pp. 254–256, May 1946, DOI 10.1109/JRPROC.1946.234568 [R-412].

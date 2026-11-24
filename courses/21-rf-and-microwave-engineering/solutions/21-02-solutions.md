@@ -48,7 +48,7 @@ $\Delta f \le 1/[2RC\ln(1/\Gamma_m)]$ with RC = 150 ps: 10 dB ($\Gamma_m$ = 0.31
 
 ### Solution 21-02.11
 
-$R_v = 50/(3^2 + 1)$ = **5** Ω, $Q_1 = Q_2 = 3$: shunt susceptances 0.06 S each, $C$ = **3.979** pF each; series reactance $(3 + 3) \times 5$ = 30 Ω, $L$ = **1.989** nH. Simulated 10 dB band: **2.235**–**2.536** GHz, **12.5**%: a band-pass filter as well as a match.
+$R_v = 50/(3^2 + 1)$ = **5** Ω, $Q_1 = Q_2 = 3$: shunt susceptances 0.06 S each, $C$ = **3.979** pF each; series reactance $(3 + 3) \times 5$ = 30 Ω, $L$ = **1.989** nH. Simulated 10 dB band: **2.235**–**2.536** GHz, **12.5**%: a third-order low-pass (harmonic) filter whose response has a reflection zero at 2.4 GHz. It also passes DC and reflects strongly between about 0.3 and 2.2 GHz, so the 2.235–2.536 GHz band is the match around the upper reflection zero of a low-pass, not a passband.
 
 ### Solution 21-02.12
 

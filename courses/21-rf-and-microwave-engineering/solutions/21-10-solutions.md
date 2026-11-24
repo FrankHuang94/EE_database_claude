@@ -126,6 +126,20 @@ Ten times the distance costs 20 dB of spreading and 6.6 dB more absorption. Oxyg
 
 (e) $13.5 + 10\log_{10}4$ = **19.5** dBm. (f) Coherent voltages add: $20\log_{10}4$ = **12.04** dB, 6 dB from the extra power and 6 dB from the array gain.
 
+### Solution 21-10.16
+
+(a) $\langle e^{j\varepsilon}\rangle = \frac{1}{2x}\int_{-x}^{x}e^{j\varepsilon}\,d\varepsilon = \frac{e^{jx} - e^{-jx}}{2jx} = \frac{\sin x}{x}$, real because the distribution is symmetric.
+
+(b) $\lvert AF\rvert^2 = \sum_k\sum_lw_kw_l^*e^{j(\phi_k - \phi_l)}e^{j(\varepsilon_k - \varepsilon_l)}$. For $k \ne l$ the errors are independent, so $\langle e^{j(\varepsilon_k - \varepsilon_l)}\rangle = \langle e^{j\varepsilon}\rangle\langle e^{-j\varepsilon}\rangle = S$; for $k = l$ it is 1. Adding and subtracting the $k = l$ terms with weight S,
+
+$$
+\langle\lvert AF\rvert^2\rangle = S\sum_{k,l}w_kw_l^*e^{j(\phi_k - \phi_l)} + (1 - S)\sum_k\lvert w_k\rvert^2 = S\lvert AF_0\rvert^2 + (1 - S)\cdot N\cdot\frac{1}{N^2} .
+$$
+
+The first term is the ideal beam scaled by S; the second, $(1 - S)/N$, is a floor that does not depend on angle.
+
+(c) 3 bits: $x = \pi/8$, $S$ = 0.9496, and the floor is $10\log_{10}(0.0504/16)$ = **−25.02** dB below the peak, 6 dB higher than the 64-element array's, because the scattered power is spread over fewer elements.
+
 ---
 
 ## Answer key
@@ -190,3 +204,4 @@ Ten times the distance costs 20 dB of spreading and 6.6 dB more absorption. Oxyg
 | 21-10.15d | angular resolution | 7.16 | deg |
 | 21-10.15e | total conducted power | 19.5 | dBm |
 | 21-10.15f | coherent gain of four transmitters | 12.04 | dB |
+| 21-10.16 | quantization floor, 16 elements, 3 bits | −25.02 | dB |

@@ -233,7 +233,12 @@ v.check("Ex 21-04.6b", cascade_nf(1.0, 15, 10))
 v.check("Ex 21-04.6c", cascade_nf(1.0, 15, 10) - 1.0)
 
 # ---------------------------------------------------------------- Problems
-v.check("21-04.1a", db(2 + 4 * 0.5))
+# Explicit noise powers at the amplifier input (per hertz, units of kT0): source share (1/2)^2 4 R_s, both resistors
+# 4 (R_s/2), amplifier excess (F_A - 1) 4 (R_s/2) referred to its 25 ohm source.
+rs_, fa_ = 50.0, 1.5
+n_source = 0.25 * 4 * rs_
+n_total = 4 * (rs_ / 2) + (fa_ - 1) * 4 * (rs_ / 2)
+v.check("21-04.1a", db(n_total / n_source))
 cg2, ls2p, lg2p, _ = match(5.5e9, 0.03, 40e9)
 w5 = 2 * math.pi * 5.5e9
 v.check("21-04.2a", cg2 * 1e15)
@@ -308,6 +313,7 @@ v.check("21-04.13b", -10 * lg(1 / 10 ** (iip3_dbm(1 / (2 * w0 * RS * cgs2), 0.3)
 # ---------------------------------------------------------------- practitioner numbers
 delta, gam, c = 4 / 3, 2 / 3, 0.395
 v.check("Txt 21-04.c", db(1 + 2 * 0.1 * math.sqrt(delta * gam * (1 - c * c) / 5)))
+v.check("Txt 21-04.h", db(1 + 2 * 0.2 * math.sqrt(delta * gam * (1 - c * c) / 5)))
 v.check("Txt 21-04.d", 2.5e-3 * 1.8 * 1e3)
 v.check("Txt 21-04.e", 0.120 * 5.0)
 v.check("Txt 21-04.f", 35.2 - 22.1)

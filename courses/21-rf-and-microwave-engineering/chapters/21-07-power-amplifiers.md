@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 21-07 · Power Amplifiers
 
 | | |
@@ -20,7 +20,7 @@
 
 ## 1. Big picture
 
-The power amplifier (PA) is the last active stage before the antenna, and it is usually the largest consumer of power in a radio. In a phone it draws most of the battery current while transmitting; in a cellular base station it dominates the electricity bill and the heat that the site must remove. Its job looks simple, to make the signal bigger, but it must do three hard things at once: deliver watts into a 50 Ω antenna from a supply of a few volts (or a few tens of volts), do so efficiently, and keep the signal clean enough that it neither corrupts its own constellation (EVM, 17-06) nor spills into neighbouring channels (ACLR). Efficiency and linearity pull in opposite directions, and modern signals make the conflict worse: OFDM's peak power is 8 to 10 dB above its average (03-03), so a PA sized for the peaks spends most of its time far below them, where conventional amplifiers are inefficient. Most of PA engineering since 1990 is about escaping that trap.
+The power amplifier (PA) is the last active stage before the antenna, and it is usually the largest consumer of power in a radio. In a phone it draws most of the battery current while transmitting; in a cellular base station it dominates the electricity bill and the heat that the site must remove. Its job looks simple, to make the signal bigger, but it must do three hard things at once: deliver watts into a 50 Ω antenna from a supply of a few volts (or a few tens of volts), do so efficiently, and keep the signal clean enough that it neither corrupts its own constellation (EVM, 17-06) nor spills into neighbouring channels (ACLR). Efficiency and linearity pull in opposite directions, and modern signals make the conflict worse: OFDM's peak power is about 10 dB above its average (9.64 dB at the $10^{-4}$ point, 03-03), so a PA sized for the peaks spends most of its time far below them, where conventional amplifiers are inefficient. Most of PA engineering since 1990 is about escaping that trap.
 
 - **Efficiency is money and heat.** A base-station PA at 40% instead of 30% average efficiency saves a quarter of its DC power; a handset PA's efficiency sets talk time and how hot the phone gets.
 - **Linearity is a regulatory requirement.** Standards cap adjacent-channel leakage and EVM; a PA that violates them cannot be sold.
@@ -113,6 +113,8 @@ $$
 \eta_{F3} = \frac{\tfrac12V_1I_1}{V_{DD}I_{DC}} = \frac98\cdot\frac\pi4 = 88.36\ \% .
 $$
 
+The flattest waveform is not quite the best. Allowing a slightly rippled bottom, with $V_3 = V_1/6$, raises the fundamental to $V_1 = (2/\sqrt3)V_{DD}$ = 1.155 $V_{DD}$ while the voltage still stays non-negative, and the efficiency to $(2/\sqrt3)(\pi/4)$ = **90.69**%, the true maximum with one harmonic [3].
+
 With more odd harmonics the voltage approaches a square wave, the overlap vanishes and η → 100%. The **inverse class F** swaps the roles: a square current and a half-sine voltage.
 
 **Class E: switch at zero voltage.** A transistor used as a switch, a shunt capacitor $C$ (which can be the transistor's own output capacitance), and a series resonator tuned slightly inductive into the load $R$. The network is designed so that when the switch closes the voltage across it is already zero and has zero slope: **zero-voltage switching**, so the capacitor's charge is never dumped through the switch. Sokal and Sokal introduced it in 1975 [3]. The results, derived below, are
@@ -147,7 +149,7 @@ $$
 
 not the average of η. 03-03 (Example 03-03.7) did this for class B with a complex-Gaussian (OFDM-like) signal whose peak, set at its $10^{-4}$ PAPR of 9.64 dB, just reaches saturation: 29.2%, against 78.5% at peak. That gap is the motivation for everything in §§3.5–3.6.
 
-**Adjacent-channel leakage from a cubic nonlinearity.** Model the PA's envelope response as $y = a_1x + a_3x\lvert x\rvert^2$, where $x$ is a complex-Gaussian signal of average power $P = \mathbb{E}\lvert x\rvert^2$ with a flat spectrum of width $B$. Its power $\lvert x\rvert^2$ is exponential with mean $P$ (03-03), and the $k$-th moment of an exponential is $k!P^k$, so $\mathbb{E}\lvert x\rvert^4 = 2P^2$ and $\mathbb{E}\lvert x\rvert^6 = 6P^3$. These split the cubic term into a part that looks like gain and a part that does not. The part of $x\lvert x\rvert^2$ correlated with $x$ is $(\mathbb{E}\lvert x\rvert^4/P)\,x = 2Px$, a gain change of $2a_3P$: compression. The remainder $d = a_3(x\lvert x\rvert^2 - 2Px)$ is uncorrelated with $x$ and has power
+**Adjacent-channel leakage from a cubic nonlinearity.** Model the PA's envelope response as $y = a_1x + a_3x\lvert x\rvert^2$, where $x$ now denotes the complex baseband signal (not the normalized amplitude above), a complex-Gaussian signal of average power $P = \mathbb{E}\lvert x\rvert^2$ with a flat spectrum of width $B$. Its power $\lvert x\rvert^2$ is exponential with mean $P$ (03-03), and the $k$-th moment of an exponential is $k!P^k$, so $\mathbb{E}\lvert x\rvert^4 = 2P^2$ and $\mathbb{E}\lvert x\rvert^6 = 6P^3$. These split the cubic term into a part that looks like gain and a part that does not. The part of $x\lvert x\rvert^2$ correlated with $x$ is $(\mathbb{E}\lvert x\rvert^4/P)\,x = 2Px$, a gain change of $2a_3P$: compression. The remainder $d = a_3(x\lvert x\rvert^2 - 2Px)$ is uncorrelated with $x$ and has power
 
 $$
 \mathbb{E}\lvert d\rvert^2 = \lvert a_3\rvert^2\left(6P^3 - 2 \cdot 4P^3 + 4P^3\right) = 2\lvert a_3\rvert^2P^3 .
@@ -173,9 +175,9 @@ Doherty's 1936 idea [1] is to combine two amplifiers so that, at low power, one 
 
 **The circuit.** A **main** (carrier) amplifier, biased class B (in practice AB), feeds the load through a quarter-wave line of impedance $Z_0 = R_{opt}$. An **auxiliary** (peaking) amplifier, biased class C so that it turns on only above half drive, connects directly to the load node, driven 90° late to match the line's delay. The load is $R_L = R_{opt}/2$.
 
-**Low power** ($x \le 1/2$, auxiliary off). The quarter-wave line inverts impedance: the main amplifier sees $Z_0^2/R_L = 2R_{opt}$. With fundamental current $I_m = xI_{max}$ (where $I_{max} = V_{DD}/R_{opt}$), its drain voltage is $2xV_{DD}$, so at $x$ = 1/2 it reaches the full swing $V_{DD}$ while delivering a quarter of its peak power: it is at peak class-B efficiency, π/4, **6.02 dB below the combined peak**.
+**Low power** ($x \le 1/2$, auxiliary off). The quarter-wave line inverts impedance: the main amplifier sees $Z_0^2/R_L = 2R_{opt}$. With fundamental current $I_{main} = xI_{1,max}$, where $I_{1,max} = V_{DD}/R_{opt}$ is the main device's fundamental current at full power (its peak drain current is twice that in class B, unlike the $I_{max}$ of §3.2), its drain voltage is $2xV_{DD}$, so at $x$ = 1/2 it reaches the full swing $V_{DD}$ while delivering a quarter of its peak power: it is at peak class-B efficiency, π/4, **6.02 dB below the combined peak**.
 
-**High power** ($x > 1/2$). The auxiliary amplifier injects $I_a = (2x - 1)I_{max}$ into the load node. A quarter-wave line ties the voltage at one end to the current at the other: $\lvert V_L\rvert = Z_0\lvert I_m\rvert = xV_{DD}$ and $\lvert V_m\rvert = Z_0\lvert I_2\rvert$, where $I_2$ is the line's output current. The load node needs $I_2 + I_a = V_L/R_L = 2xI_{max}$, so $I_2 = I_{max}$ and $\lvert V_m\rvert = V_{DD}$: the main amplifier stays at full swing while the auxiliary's current **pulls its load down** from $2R_{opt}$ to $R_{opt}$. This is **load modulation**. At $x$ = 1 both amplifiers deliver $V_{DD}I_{max}/2$.
+**High power** ($x > 1/2$). The auxiliary amplifier injects $I_a = (2x - 1)I_{1,max}$ into the load node. A quarter-wave line ties the voltage at one end to the current at the other: $\lvert V_L\rvert = Z_0\lvert I_{main}\rvert = xV_{DD}$ and $\lvert V_m\rvert = Z_0\lvert I_2\rvert$, where $I_2$ is the line's output current. The load node needs $I_2 + I_a = V_L/R_L = 2xI_{1,max}$, so $I_2 = I_{1,max}$ and $\lvert V_m\rvert = V_{DD}$: the main amplifier stays at full swing while the auxiliary's current **pulls its load down** from $2R_{opt}$ to $R_{opt}$. This is **load modulation**. At $x$ = 1 both amplifiers deliver $V_{DD}I_{1,max}/2$.
 
 **Efficiency.** Output power is $V_L^2/(2R_L) = x^2V_{DD}^2/R_{opt}$; DC power is $(2/\pi)V_{DD}$ times the sum of the fundamental currents. Hence
 
@@ -183,7 +185,7 @@ $$
 \eta_D(x) = \frac\pi2\cdot\frac{x^2}{x + \max(0,\ 2x - 1)} = \begin{cases} \dfrac\pi2x, & x \le \tfrac12 \\[2mm] \dfrac\pi2\cdot\dfrac{x^2}{3x - 1}, & x > \tfrac12 \end{cases}
 $$
 
-78.5% at 6.02 dB back-off and at peak, with a shallow dip to $(\pi/2)(4/9)$ = 69.8% at $x$ = 2/3 (Figure 1). For an OFDM signal this lifts the average efficiency from class B's 29.2% to 54.9% (Example 21-07.5).
+This is the ideal-Doherty idealization: the auxiliary is modelled as a class-B current source whose fundamental grows linearly from zero at $x$ = ½, with DC current $(2/\pi)$ times its fundamental. A real class-C auxiliary turns on more gradually and has a different DC-to-fundamental ratio, which is one reason measured curves sag (Practical limits, below). The ideal curve gives 78.5% at 6.02 dB back-off and at peak, with a shallow dip to $(\pi/2)(4/9)$ = 69.8% at $x$ = 2/3 (Figure 1). For an OFDM signal this lifts the average efficiency from class B's 29.2% to 54.9% (Example 21-07.5).
 
 ![Drain efficiency against output back-off for class A, class B, the symmetric Doherty and envelope tracking, drawn over the probability density of an OFDM envelope, which peaks around 10 dB below the peak power](../../../assets/figures/21-07/backoff.svg)
 
@@ -219,7 +221,7 @@ so $b_3 = -a_3/a_1$ cancels the third-order term, leaving fifth- and higher-orde
 
 **What DPD cannot do.** It cannot make the PA deliver more than its saturated power. Peaks that would need more are clipped whatever the predistorter does, so the achievable ACLR is set by how often the signal exceeds saturation (Example 21-07.8). Hence **crest-factor reduction** (CFR): deliberately clip and filter the signal's rare peaks in baseband, accepting a controlled EVM penalty (03-03 computed the error power of clipping an OFDM signal 8 dB above average: −39.25 dB), so the PA can run closer to saturation. CFR, DPD and an efficient PA architecture together form the modern transmitter line-up.
 
-![Output spectra of a saturating PA model driven by OFDM, without predistortion showing spectral skirts about 45 dB below the channel, and with fifth-order predistortion showing skirts about 20 dB lower](../../../assets/figures/21-07/dpd.svg)
+![Output spectra of a saturating PA model driven by OFDM, without predistortion showing spectral skirts about 45 dB below the channel, and with fifth-order predistortion showing skirts about 18 dB lower](../../../assets/figures/21-07/dpd.svg)
 
 *Figure 2. A Rapp-model PA driven by 16-QAM OFDM with 12 dB between average power and saturation (the lab's Part 6): without predistortion the third- and fifth-order products form skirts in the adjacent channels; a fifth-order predistorter learned by indirect learning lowers them by about 18 dB.*
 
@@ -256,15 +258,15 @@ so $b_3 = -a_3/a_1$ cancels the third-order term, leaving fifth- and higher-orde
 | α | $I_{DC}$ | $I_1$ | η | Power vs class A |
 |---|---|---|---|---|
 | 360° (A) | 0.5000 | 0.5000 | **50.00** % | **0.00** dB |
-| 240° (AB) | 0.4060 | 0.5363 | **66.05** % | **+0.61** dB |
+| 240° (AB) | 0.4060 | 0.5363 | **66.05** % | **+0.30** dB |
 | 180° (B) | 0.3183 | 0.5000 | **78.54** % | **0.00** dB |
-| 120° (C) | 0.2180 | 0.3910 | **89.68** % | **−2.14** dB |
+| 120° (C) | 0.2180 | 0.3910 | **89.68** % | **−1.07** dB |
 
-The optimum load is $V_{DD}/I_1$, so it changes with class: in units of $V_{DD}/I_{max}$, 2.000 for classes A and B, **1.865** for 240° and **2.558** for 120°.
+Every class swings the full $V_1 = V_{DD}$, so $P_{out} = \tfrac12V_{DD}I_1$ and the power ratio is the current ratio, $10\log_{10}(I_1/I_{1,A})$. The optimum load is $V_{DD}/I_1$, so it changes with class: in units of $V_{DD}/I_{max}$, 2.000 for classes A and B, **1.865** for 240° and **2.558** for 120°.
 
 **Units check.** Currents in units of $I_{max}$; efficiency and power ratios dimensionless.
 
-**Sanity check.** Class C's efficiency gain costs power: at 120° the device delivers 2.1 dB less from the same peak current, and needs more drive to get there.
+**Sanity check.** Class C's efficiency gain costs power: at 120° the device delivers 1.1 dB less from the same peak current, and needs more drive to get there.
 
 ### Example 21-07.3 · Designing a class-E stage (tier B)
 
@@ -288,7 +290,7 @@ The optimum load is $V_{DD}/I_1$, so it changes with class: in units of $V_{DD}/
 
 **Setup.** A class-B current waveform is combined with a maximally flat drain voltage using only the third harmonic. Find (a) the fundamental voltage amplitude relative to $V_{DD}$, (b) the third-harmonic amplitude, (c) the efficiency and (d) the output power gain over class B at the same current.
 
-**Solution.** (a) $V_1 = \tfrac98V_{DD}$ = **1.125** $V_{DD}$. (b) $V_3 = V_1/9$ = **0.125** $V_{DD}$. (c) $\tfrac98 \cdot \tfrac\pi4$ = **88.36** %. (d) The fundamental voltage is 9/8 of class B's for the same current: $20\log_{10}(9/8)$ = **1.02** dB more power, into a load 9/8 as large.
+**Solution.** (a) $V_1 = \tfrac98V_{DD}$ = **1.125** $V_{DD}$. (b) $V_3 = V_1/9$ = **0.125** $V_{DD}$. (c) $\tfrac98 \cdot \tfrac\pi4$ = **88.36** %. (d) The fundamental voltage is 9/8 of class B's for the same current, so the power $\tfrac12V_1I_1$ rises by 9/8: $10\log_{10}(9/8)$ = **0.51** dB, into a load 9/8 as large (the same 9/8 as the efficiency ratio, since the DC power is unchanged).
 
 **Units check.** Ratios throughout.
 
@@ -373,9 +375,9 @@ The optimum load is $V_{DD}/I_1$, so it changes with class: in units of $V_{DD}/
 | Ex 21-07.2c | efficiency, 180° | 78.54 | % |
 | Ex 21-07.2d | efficiency, 120° | 89.68 | % |
 | Ex 21-07.2e | power vs class A, 360° | 0.00 | dB |
-| Ex 21-07.2f | power vs class A, 240° | 0.61 | dB |
+| Ex 21-07.2f | power vs class A, 240° | 0.30 | dB |
 | Ex 21-07.2g | power vs class A, 180° | 0.00 | dB |
-| Ex 21-07.2h | power vs class A, 120° | −2.14 | dB |
+| Ex 21-07.2h | power vs class A, 120° | −1.07 | dB |
 | Ex 21-07.2i | normalized R_opt, 240° | 1.865 | |
 | Ex 21-07.2j | normalized R_opt, 120° | 2.558 | |
 | Ex 21-07.3a | load resistance | 6.281 | Ω |
@@ -390,7 +392,7 @@ The optimum load is $V_{DD}/I_1$, so it changes with class: in units of $V_{DD}/
 | Ex 21-07.4a | fundamental voltage | 1.125 | V_DD |
 | Ex 21-07.4b | third-harmonic voltage | 0.125 | V_DD |
 | Ex 21-07.4c | efficiency | 88.36 | % |
-| Ex 21-07.4d | power gain over class B | 1.02 | dB |
+| Ex 21-07.4d | power gain over class B | 0.51 | dB |
 | Ex 21-07.5a | class A at 6.02 dB back-off | 12.5 | % |
 | Ex 21-07.5b | class B at 6.02 dB back-off | 39.27 | % |
 | Ex 21-07.5c | class A at 9.64 dB back-off | 5.43 | % |
@@ -436,6 +438,8 @@ The optimum load is $V_{DD}/I_1$, so it changes with class: in units of $V_{DD}/
 | Txt 21-07.m | ET average with 20 % floor and 85 % modulator | 65.5 | % |
 | Txt 21-07.n | Wi-Fi 7 TX output at 9 dB back-off | 21.15 | dBm |
 | Txt 21-07.o | Wi-Fi 7 TX efficiency at that point | 15.7 | % |
+| Txt 21-07.p | class F3 maximum efficiency (V3 = V1/6) | 90.69 | % |
+| Txt 21-07.q | class F3 maximum fundamental | 1.155 | V_DD |
 
 ## 5. Simulate it
 
@@ -469,7 +473,7 @@ The lab ([labs/21-07-lab](../labs/21-07-lab/README.md)) collects the formulas in
 |---|---|---|
 | Ideal tuned class A | 50% (×(1 − V_k/V_DD)) | §3.1 |
 | Ideal class B | π/4 = 78.5% | §3.2 |
-| Class F, third harmonic only | 88.4% | §3.3 |
+| Class F, third harmonic only | 88.4% maximally flat ($V_3 = V_1/9$); 90.7% maximum ($V_3 = V_1/6$) | §3.3 [3] |
 | Class E | P = 0.5768 V_DD²/R; ωCR = 0.1836; X/R = 1.1525; peak 3.56 V_DD and 2.86 I_DC | §3.3 |
 | Class-B efficiency at 6 dB back-off | 39.3% | $(\pi/4)x$ |
 | Symmetric Doherty | 78.5% at 6.02 dB back-off and at peak, 69.8% dip | §3.5 |
@@ -481,7 +485,7 @@ The lab ([labs/21-07-lab](../labs/21-07-lab/README.md)) collects the formulas in
 | NR base-station limits | ACLR 45 dB; 1024-QAM EVM 2.5% | TS 38.104 V19.6.0 [5] |
 | FR2 handset ACLR | 16–17 dB | TS 38.101-2 [4] |
 | Wi-Fi 7 4096-QAM EVM | −38 dB | [6] |
-| OFDM/NR PAPR at 0.01% | 10–13 dB raw, 6.5–8 dB after CFR | [7] |
+| OFDM/NR PAPR at 0.01% | about 10–12 dB raw (TI quotes 10–15 dB), 6.5–8 dB after CFR | [7] |
 | GaN MMIC Doherty, 4–6 GHz | 38.5–46.5% drain efficiency at 6 dB back-off | [9] (2022) |
 | 28 GHz silicon Doherty | 38% PAE at P1dB; 15–21% average with 64/256-QAM | [11] (2026) |
 
@@ -501,10 +505,10 @@ The lab ([labs/21-07-lab](../labs/21-07-lab/README.md)) collects the formulas in
 
 - **The architectures are old; the implementations are new [Established].** Doherty's 1936 paper reported "Plate circuit efficiencies of sixty to sixty-five per cent independent of modulation", obtained from "varying circuit impedance over the modulation cycle", in a 50 kW broadcast transmitter [1]. Chireix's outphasing (1935) and Kahn's envelope elimination and restoration (1952) date from the same era, and Sokal and Sokal's class E (1975) reached "96 percent transistor efficiency at 3.9 MHz at 26-W output" [2, 3]. Raab's analyses showed that the maximum efficiency "depends not upon the class of operation, but upon the number of harmonics employed" [3].
 - **What the standards demand [Established].** A 5G NR handset (power class 3) transmits up to 23 dBm and must keep its NR ACLR at 30 dB (33 dB to a 3G neighbour when signalled) and its 256-QAM EVM within 3.5% [4]. The standard openly allows a **maximum power reduction** of up to 6.5 dB for CP-OFDM 256-QAM, an admission that a handset PA cannot hold full power with a high-PAPR waveform [4]. A base station must reach 45 dB ACLR and, for 1024-QAM, 2.5% EVM [5]. Millimetre-wave handsets are allowed 16–17 dB ACLR, because their EIRP comes from array gain rather than one PA [4]. Wi-Fi 7's 4096-QAM needs −38 dB EVM [6].
-- **PAPR and crest-factor reduction [Established].** Uncoded OFDM and NR signals have a PAPR of about 10–13 dB at the 0.01% CCDF point; crest-factor reduction brings it to about 6.5–8 dB [7]. The 0.01% point is written into the data sheets the industry buys against: NXP's GaN Doherty transistors are characterized with a 9.9 dB-PAR test signal and guarantee the output PAR at 0.01% probability [8].
-- **Base-station GaN Doherty PAs [Established per paper].** A 4.1–5.6 GHz GaN MMIC Doherty delivers about 8 W with 38.5–46.5% drain efficiency at 6 dB back-off and, after DPD, better than −45 dBc ACLR at more than 38% average efficiency with a 6.5 dB-PAPR signal [9]. A 3.5 GHz design with an 8.5 dB back-off point reaches 38.9–56.8% drain efficiency, but its raw ACLR with a 100 MHz NR signal is −24.6 dBc: DPD must supply some 20 dB [9]. An Infineon GaN-on-Si module reaches 51–53% efficiency at 8 W average, with linearized ACLR of −63 dBc at 20 MHz but only −42 dBc at 530 MHz [9]; a Mitsubishi Electric 7 GHz module reaches 34.5% PAE with ACLR below −51.4 dBc after DPD [9].
+- **PAPR and crest-factor reduction [Established].** Uncoded OFDM and NR signals have a PAPR of about 10–12 dB at the 0.01% CCDF point (TI quotes 10–15 dB); crest-factor reduction brings it to about 6.5–8 dB [7]. The 0.01% point is written into the data sheets the industry buys against: NXP's GaN Doherty transistors are characterized with a 9.9 dB-PAR test signal and guarantee the output PAR at 0.01% probability [8]. (Trade press reported in December 2025 that NXP is leaving the RF power market and closing its Chandler GaN fab around 2027 [R-419]; not confirmed here from NXP's own release. The 0.01% CCDF convention is industry-wide and outlives any one supplier.)
+- **Base-station GaN Doherty PAs [Established per paper].** A 4.1–5.6 GHz GaN MMIC Doherty delivers about 8 W with 38.5–46.5% drain efficiency at 6 dB back-off and, after DPD, better than −45 dBc ACLR at more than 38% average efficiency with a 6.5 dB-PAPR signal [9]. A 3.5 GHz design with an 8.5 dB back-off point reaches 38.9–56.8% drain efficiency with 20 MHz LTE (−45 dBc ACLR after DPD) and 38.5–50.2% with 100 MHz NR, where its ACLR without DPD is "under −24.6 dBc"; reaching a 45 dB base-station limit there would need some 20 dB from DPD (our inference) [9]. An Infineon GaN-on-Si module reaches 51–53% efficiency at 8 W average, with linearized ACLR of −63 dBc at 20 MHz but only −42 dBc at 530 MHz [9]; a Mitsubishi Electric 7 GHz module reaches 34.5% PAE with ACLR below −51.4 dBc after DPD [9].
 - **Handsets [Established per paper].** A Murata Doherty PA amplifies 100 MHz 5G signals "without requiring digital predistortion", at 42.8% PAE and −35 dBc ACLR, 5 dB inside the 30 dB requirement [10]. Envelope tracking is described as "essential technology" for handsets; a 2022 Samsung supply modulator claims 200 MHz bandwidth and 93.6% efficiency [10].
-- **Millimetre waves [Established per paper].** 3GPP's own study notes that PA power capability "roughly degrades by 20 dB per decade" of frequency and, in 2017, that the best reported PAE was about 40% at 30 GHz and 25% at 77 GHz [11]. Recent silicon Doherty PAs reach 38% PAE at the 1 dB compression point at 28 GHz in 0.154 mm² [11], and a 2026 Samsung 22 nm FDSOI design averages more than 15.8 dBm and 16.9% PAE across 24–28 GHz with a 100 MHz 64-QAM signal [11]. At 80 GHz the Doherty's advantage shrinks: a 16 nm FinFET Doherty improves 6 dB back-off efficiency only 1.25× over ideal class B [11].
+- **Millimetre waves [Established per paper].** 3GPP's own study notes that PA power capability "roughly degrades by 20 dB per decade" of frequency and, in 2017, that the best reported PAE was about 40% at 30 GHz and 25% at 77 GHz [11]. Recent silicon Doherty PAs reach 38% PAE at the 1 dB compression point at 28 GHz in 0.154 mm² [11], and a 2026 Samsung 22 nm FDSOI design averages more than 15.8 dBm and 16.9% PAE across 24–28 GHz with a 100 MHz 64-QAM signal [11]. At W-band the Doherty's advantage shrinks: a CMOS Doherty improves 6 dB back-off efficiency only 1.25× over ideal class B [11].
 - **CMOS at watt level and Wi-Fi 7 [Established per paper].** A 28 nm CMOS transformer-combined Doherty digital PA delivers 4.1 W peak [12]. Intel's all-digital polar Wi-Fi 7 transmitter in 16 nm FinFET reaches 30.15 dBm at 34.7% at peak and meets −38 dB EVM for 4096-QAM 9 dB below peak while consuming 830 mW [12].
 
 ### Why it matters commercially
@@ -516,10 +520,10 @@ The lab ([labs/21-07-lab](../labs/21-07-lab/README.md)) collects the formulas in
 
 ### Marketing vs Reality
 
-- **"38% PAE."** At the 1 dB compression point. The same 28 GHz Doherty averages 21.0% PAE with a 64-QAM signal and 15.1% with 256-QAM [11]. Intel's Wi-Fi 7 transmitter is 34.7% efficient at peak but, by our arithmetic, **15.7** % at the −38 dB-EVM operating point (**21.15** dBm out for 830 mW consumed) [12]. Ask for efficiency at the average power of the actual signal.
+- **"38% PAE."** At the 1 dB compression point. The same 28 GHz Doherty averages 21.0% PAE with a 64-QAM signal and 15.1% with 256-QAM [11]. Intel's Wi-Fi 7 transmitter is 34.7% efficient at peak but, by our arithmetic and only if the 6.1 GHz peak equals the reported 5.2 GHz peak, about **15.7** % at the −38 dB-EVM operating point (**21.15** dBm out for 830 mW consumed; an estimate, not a reported figure, and the 830 mW may include more than the PA) [12]. Ask for efficiency at the average power of the actual signal.
 - **"93.6%-efficient envelope tracker."** Modulator efficiency is not system efficiency: a 2026 class-G modulator with 88.9% peak efficiency raised a commercial PA's system PAE from 6.2% (average power tracking) to 7.1% with a 200 MHz NR signal [10].
 - **"4096-QAM capable."** A 40 nm CMOS watt-level PA showed −43.0 dB EVM with 4096-QAM, but at 5 MSym/s; at 50 MSym/s 256-QAM it managed −31.5 dB [12]. Headline modulation orders are often shown at the narrowest bandwidth.
-- **"−45 dBc ACLR."** After DPD. The raw PA may be at −25 dBc [9]; the DPD, its observation receiver and its wider DAC are part of the product and part of the power budget.
+- **"−45 dBc ACLR."** After DPD. The raw PA may be near −25 dBc [9]; the DPD, its observation receiver and its wider DAC are part of the product and part of the power budget.
 - **"6 dB less back-off with CFR."** TI's classic CFR data sheet draws a figure labelled 6 dB, while its own numbers and text promise 2–3 dB more drive [7]. Read the numbers, not the cartoon.
 - **"32% PAE at 8 dB back-off."** The best point in the band; the same design's range is 18.6–32% [11].
 
@@ -562,7 +566,7 @@ The switch closes when its voltage is already zero with zero slope, so the shunt
 
 <details><summary>Answer</summary>
 
-Its peaks are 8–10 dB above its average, so a PA sized for the peaks spends most of its time far below saturation, where class A and B efficiencies fall in proportion to amplitude or power. The average efficiency of an ideal class-B PA drops from 78.5% to about 29%.
+Its peaks are about 10–12 dB above its average at the 0.01% point before crest-factor reduction, so a PA sized for the peaks spends most of its time far below saturation, where class A and B efficiencies fall in proportion to amplitude or power. The average efficiency of an ideal class-B PA drops from 78.5% to about 29%.
 
 </details>
 

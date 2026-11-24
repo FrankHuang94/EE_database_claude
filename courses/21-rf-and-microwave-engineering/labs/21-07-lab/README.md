@@ -27,7 +27,7 @@ Chapter: [21-07 · Power Amplifiers](../../chapters/21-07-power-amplifiers.md)
 
 ## Expected results
 
-- **Part 1.** 50.0%, 66.1%, 78.5% and 89.7%; class AB at 240° gives 0.6 dB more power than class A, class C at 120° 2.1 dB less.
+- **Part 1.** 50.0%, 66.1%, 78.5% and 89.7%; class AB at 240° gives 0.3 dB more power than class A, class C at 120° 1.1 dB less (at full swing the power follows $I_1$, so the comparison is $10\log_{10}$ of the current ratio).
 - **Part 2.** About 1.01 W at 99.95% efficiency, peak switch voltage near 11.9 V (the ideal 1.000 W and 11.75 V, raised 1–2% by the finite Q and choke). The voltage returns to zero with zero slope at the switching instant.
 - **Part 3.** Class B 29.2%, Doherty 54.9% and envelope tracking (20% floor, 85% modulator) 65.5% average efficiency, against class A's 5.4%.
 - **Part 4.** The main drain swings 28.0 V at both 0.5 and full drive; efficiency 78.5%, 69.8% and 78.5%.

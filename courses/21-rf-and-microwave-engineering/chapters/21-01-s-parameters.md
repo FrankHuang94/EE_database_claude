@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 21-01 · S-Parameters and Network Analysis
 
 | | |
@@ -75,7 +75,7 @@ the same Γ as in 13-08. The common figures of merit follow:
 
 ### 3.2 The scattering matrix
 
-For an $N$-port the waves are related linearly, $\mathbf{b} = S\mathbf{a}$. For two ports,
+For an $N$-port the waves are related linearly, $\mathbf{b} = S\mathbf{a}$. (In this chapter the matrices $S$, $Z$ and $T$ and the identity $I$ are written in plain type, and transposes as $^T$ and $^H$, because bold is reserved for the wave and port vectors $\mathbf{a}$, $\mathbf{b}$, $\mathbf{V}$ and $\mathbf{I}$.) For two ports,
 
 $$
 \begin{bmatrix}b_1\\ b_2\end{bmatrix} = \begin{bmatrix}S_{11} & S_{12}\\ S_{21} & S_{22}\end{bmatrix}\begin{bmatrix}a_1\\ a_2\end{bmatrix} , \qquad S_{ij} = \left.\frac{b_i}{a_j}\right|_{a_k = 0,\ k \ne j} .
@@ -144,7 +144,7 @@ A reflection measured through a length of line rotates clockwise on the Smith ch
 
 A **vector network analyzer** (VNA) generates a sine at each test frequency, separates incident from reflected waves with directional couplers or bridges at each port, and measures their ratios with coherent receivers, giving magnitude and phase. Its hardware is imperfect: the coupler leaks some incident wave into the reflected channel (finite **directivity**), the test port is not a perfect 50 Ω (**source match**), and the cables and receivers have their own frequency response (**tracking**). Calibration measures these errors with known standards and removes them mathematically.
 
-**The one-port error model.** Between the ideal reflectometer and the device lies an error two-port with terms $e_{00}$ (directivity), $e_{11}$ (source match) and $e_{10}e_{01}$ (reflection tracking). The measured reflection is the input reflection of that error box terminated in the device's Γ (the formula of §3.6 applied to the error box):
+**The one-port error model.** Between the ideal reflectometer and the device lies an error two-port with terms $e_{00}$ (directivity), $e_{11}$ (source match) and $e_{10}e_{01}$ (reflection tracking). The measured reflection is the input reflection of that error box terminated in the device's Γ (the formula of §3.7 applied to the error box):
 
 $$
 \Gamma_m = e_{00} + \frac{e_{10}e_{01}\,\Gamma}{1 - e_{11}\Gamma} .
@@ -204,11 +204,31 @@ which is the distance from the origin of the $\Gamma_L$ plane to the nearest uns
 
 *Figure 3. The stability circle at work (Example 21-01.6, 500 MHz). Loads in the shaded segment give $\lvert\Gamma_{in}\rvert > 1$; μ is the radius of the largest circle around the matched point that stays clear of them.*
 
-**Gains.** The **maximum stable gain** $\text{MSG} = \lvert S_{21}/S_{12}\rvert$ is the most gain available from a conditionally stable device (with some resistive loading to bring K to 1). When $K > 1$, simultaneous conjugate matching is possible and the **maximum available gain** is
+**Gains.** A source with reflection $\Gamma_S$ and source wave $b_s$ has available power $P_{avs} = \lvert b_s\rvert^2/[2(1 - \lvert\Gamma_S\rvert^2)]$, and the wave it launches into the two-port is $a_1 = b_s/(1 - \Gamma_S\Gamma_{in})$. The output wave is $b_2 = S_{21}a_1/(1 - S_{22}\Gamma_L)$, and the load absorbs $P_L = \tfrac12\lvert b_2\rvert^2(1 - \lvert\Gamma_L\rvert^2)$. Their ratio is the **transducer gain**
 
 $$
-G_{max} = \left\lvert\frac{S_{21}}{S_{12}}\right\rvert\left(K - \sqrt{K^2 - 1}\right) .
+G_T = \frac{P_L}{P_{avs}} = \frac{\lvert S_{21}\rvert^2(1 - \lvert\Gamma_S\rvert^2)(1 - \lvert\Gamma_L\rvert^2)}{\lvert 1 - \Gamma_S\Gamma_{in}\rvert^2\,\lvert 1 - S_{22}\Gamma_L\rvert^2} .
 $$
+
+With the load conjugately matched to the output ($\Gamma_L = \Gamma_{out}^*$) it becomes the **available gain**, a function of the source alone. Using $1 - \lvert\Gamma_{out}\rvert^2 = (\lvert 1 - S_{11}\Gamma_S\rvert^2 - \lvert S_{22} - \Delta\Gamma_S\rvert^2)/\lvert 1 - S_{11}\Gamma_S\rvert^2$ and expanding,
+
+$$
+G_A = \frac{\lvert S_{21}\rvert^2(1 - \lvert\Gamma_S\rvert^2)}{D_2 - 2\,\text{Re}(C_1\Gamma_S) + D_1\lvert\Gamma_S\rvert^2}, \qquad D_1 = \lvert S_{11}\rvert^2 - \lvert\Delta\rvert^2,\quad D_2 = 1 - \lvert S_{22}\rvert^2,\quad C_1 = S_{11} - \Delta S_{22}^* .
+$$
+
+**Maximizing it** gives the simultaneous conjugate match. Choose the phase of $\Gamma_S$ so that $\text{Re}(C_1\Gamma_S) = \lvert C_1\rvert r$ with $r = \lvert\Gamma_S\rvert$; then minimize $f(r) = (D_2 - 2\lvert C_1\rvert r + D_1r^2)/(1 - r^2)$. Setting $f'(r) = 0$ and collecting terms gives $\lvert C_1\rvert r^2 - B_1r + \lvert C_1\rvert = 0$ with $B_1 = D_1 + D_2 = 1 + \lvert S_{11}\rvert^2 - \lvert S_{22}\rvert^2 - \lvert\Delta\rvert^2$. Its roots multiply to 1, so the passive one is the smaller,
+
+$$
+\Gamma_{S,opt} = \frac{B_1 - \sqrt{B_1^2 - 4\lvert C_1\rvert^2}}{2C_1} ,
+$$
+
+and symmetrically for $\Gamma_L$ with $B_2 = 1 + \lvert S_{22}\rvert^2 - \lvert S_{11}\rvert^2 - \lvert\Delta\rvert^2$ and $C_2 = S_{22} - \Delta S_{11}^*$. At a stationary point $f$ equals the ratio of the derivatives of its numerator and denominator, $f = \lvert C_1\rvert/r - D_1$, and $1/r$ is the larger root, $[B_1 + \sqrt{B_1^2 - 4\lvert C_1\rvert^2}]/(2\lvert C_1\rvert)$. Two identities finish the job: $\lvert C_1\rvert^2 = \lvert S_{12}S_{21}\rvert^2 + D_1D_2$ (expand both sides), so $B_1^2 - 4\lvert C_1\rvert^2 = (D_2 - D_1)^2 - 4\lvert S_{12}S_{21}\rvert^2 = 4\lvert S_{12}S_{21}\rvert^2(K^2 - 1)$, because $D_2 - D_1 = 2K\lvert S_{12}S_{21}\rvert$ by the definition of K. Then $f_{min} = \lvert S_{12}S_{21}\rvert(K + \sqrt{K^2 - 1})$, and since $(K + \sqrt{K^2 - 1})(K - \sqrt{K^2 - 1}) = 1$, the **maximum available gain** is
+
+$$
+G_{max} = \frac{\lvert S_{21}\rvert^2}{f_{min}} = \left\lvert\frac{S_{21}}{S_{12}}\right\rvert\left(K - \sqrt{K^2 - 1}\right) .
+$$
+
+A real, passive solution exists only when $B_1^2 > 4\lvert C_1\rvert^2$, that is $K > 1$, with the "−" root passive when $B_1 > 0$: simultaneous conjugate matching requires unconditional stability. The **maximum stable gain** $\text{MSG} = \lvert S_{21}/S_{12}\rvert$, the limit of $G_{max}$ as K → 1, is the most gain obtainable from a conditionally stable device, after enough resistive loading to bring K to 1.
 
 A transistor is often unconditionally stable at high frequency and only conditionally stable at low frequency, where its gain is highest (Example 21-01.6): stability must be checked across the whole band where the device has gain, not just the operating band.
 
@@ -298,7 +318,7 @@ $0.283^2 + 0.959^2$ = **1.000**: lossless, as it must be.
 
 **Units check.** All dimensionless; gains in dB use 10 log₁₀ because K, MSG and $G_{max}$ are power ratios.
 
-**Sanity check.** Lower frequency, more gain and more feedback through $S_{12}$: low-frequency instability is common, and designers add resistive loading or feedback that costs little gain at the operating frequency.
+**Sanity check.** Lower frequency: more gain, and input and output closer to the edge of the Smith chart (less resistive loss), even though $S_{12}$ is smaller here. Low-frequency instability is common, and designers add resistive loading or feedback that costs little gain at the operating frequency.
 
 ### Answer key
 
@@ -400,7 +420,7 @@ The lab ([labs/21-01-lab](../labs/21-01-lab/README.md)) collects the chapter's f
 | Reference impedance | 50 Ω (RF instruments and coax), 75 Ω (video and cable TV), 100 Ω differential (high-speed serial links) | Conventions, not physics [Established] |
 | VNA system dynamic range, 10 Hz IF bandwidth | specified 129 to 146 dB from about 0.5 to 50 GHz (typical up to 151 dB; much less below 50 MHz); typical 96 to 111 dB up to 110 GHz | Three vendors' data sheets, Aug 2022 to Aug 2026 [R-362] |
 | Narrower IF bandwidth | **10** dB more dynamic range per decade of bandwidth | Receiver noise power is proportional to bandwidth |
-| Residual errors after a coaxial calibration | directivity 46 to 60 dB, source match 31 to 46 dB, load match 42 to 58 dB | Two vendors' specified values, as of Apr–Aug 2026 [R-362] |
+| Residual errors after a coaxial calibration | directivity 46 to 60 dB, source match 31 to 43 dB (46 dB typical), load match 42 to 58 dB | Two vendors' specified values (typical where stated), as of Apr–Aug 2026 [R-362] |
 | Adapter with VSWR 1.5 after calibration | effective directivity about **14** dB | HP application note [9, R-361] |
 | Return-loss uncertainty with 46 dB residual directivity and 43 dB source match | 20 dB reads as **19.6** to **20.5** dB; 35 dB as **32.8** to **37.9** dB | Worst-case phases of those two terms only (Marketing vs Reality, §9) |
 | Unconditional stability | $K > 1$ and $\lvert\Delta\rvert < 1$, or $\mu > 1$ | At every frequency where the device has gain |
@@ -421,7 +441,7 @@ The lab ([labs/21-01-lab](../labs/21-01-lab/README.md)) collects the chapter's f
 
 - **The definitions are sixty years old and settled [Established].** Kurokawa defined power waves in 1965, with a possibly complex reference impedance, and stated the simultaneous-match and unconditional-stability conditions in S-parameter terms [1]. Hewlett-Packard's 1967 *HP Journal* article, later reissued as Application Note 95-1, carried them into instrument practice [3]. Marks and Williams separated traveling waves, defined by a line's own characteristic impedance, from pseudo-waves, defined by an arbitrary reference impedance [2]; what a VNA reports and what this chapter uses are pseudo-waves with a real 50 Ω reference, and the subtleties matter only for complex reference impedances and lossy lines.
 - **The stability tests have a lineage [Established].** Rollett's 1962 factor was defined with immittance parameters and called "the basic invariant stability factor" [4]; Woods reworked the unconditional-stability conditions in S-parameters in 1976 [5]; Edwards and Sinsky showed in 1992 that "mu >1 alone is necessary and sufficient" [6]. Simulators report both K and μ.
-- **Calibration is the measurement [Established].** The HP/Agilent application note describes "twelve-term error correction" with six error terms in each direction, prefers SOLT in coax and recommends TRL for "noncoaxial environments, such as testing waveguide, using test fixtures, or making on-wafer measurements with probes" [9]. TRL, published by Engen and Hoer in 1979, removed the need for a precisely known short or load [7]; NIST's multiline TRL uses several redundant lines for better accuracy and bandwidth [8]. On wafer, the open–short de-embedding of Koolen and colleagues (1991) is still the standard first step [13]. Rohde & Schwarz calls SOLT "TOSM" [R-362].
+- **Calibration is the measurement [Established].** The HP/Agilent application note describes twelve-term error correction, "a total of twelve error terms" with six in each direction, prefers SOLT in coax and recommends TRL for "noncoaxial environments, such as testing waveguide, using test fixtures, or making on-wafer measurements with probes" [9]. TRL, published by Engen and Hoer in 1979, removed the need for a precisely known short or other calibration circuit [7]; NIST's multiline TRL uses several redundant lines for better accuracy and bandwidth [8]. On wafer, the open–short de-embedding of Koolen and colleagues (1991) is still the standard first step [13]. Rohde & Schwarz calls SOLT "TOSM" [R-362].
 - **Instruments [Established for the data, Industry estimate for any comparison].** Keysight's PNA-X Pro data sheet (August 2026) specifies 144 dB of system dynamic range for its 50 GHz model between 582 MHz and 7 GHz (150 dB typical) and 129 dB at 46–50 GHz; Rohde & Schwarz's ZNA (April 2026) quotes more than 129 dB specified, 147 dB typical with options and "up to 170 dB (maximum attainable range, allowing full 2-port correction)"; Anritsu's VectorStar broadband system covers 70 kHz to 110 GHz with 96 to 111 dB and the note "All values are typical" [R-362]. A USB VNA from Copper Mountain lists 152 dB typical at 10 Hz IF bandwidth up to 9 GHz [R-362].
 - **The file format is Touchstone [Established].** The IBIS Open Forum ratified Touchstone 2.0 in April 2009 and 2.1 in January 2024; 2.1 is the current version as of Oct 2026. The format originated at Agilent, and no version 1.0 specification was ever published: files in the original syntax are simply called version 1.0 files [11, R-363]. Defaults matter: GHz, S-parameters, magnitude–angle, 50 Ω. A version-1.0 file normalizes the noise resistance $R_n$ to the reference resistance, while 2.0 and 2.1 files give it in ohms; mixing them changes $R_n$ by a factor of 50 [R-363].
 - **High-speed digital runs on S-parameters [Established].** IEEE 802.3's Channel Operating Margin tool takes the victim channel and each aggressor as 4-port S-parameter models (.s4p files) [R-363], and IEEE Std 370-2020 standardizes the electrical characterization of printed-circuit interconnect up to 50 GHz [14]; channel models are routinely screened for passivity, reciprocity and causality before use. Differential channels use the mixed-mode S-parameters of Bockelman and Eisenstadt [12].
@@ -487,7 +507,7 @@ $e_{00}$ (directivity): incident signal that leaks into the reflected channel wi
 
 <details><summary>Answer</summary>
 
-Its gain $\lvert S_{21}\rvert$ is higher there, and the feedback product $\lvert S_{12}S_{21}\rvert$ grows with it, which lowers K.
+At low frequency the device's input and output are nearly lossless ($\lvert S_{11}\rvert$ and $\lvert S_{22}\rvert$ approach 1), so the numerator of K, $1 - \lvert S_{11}\rvert^2 - \lvert S_{22}\rvert^2 + \lvert\Delta\rvert^2$, shrinks, while $\lvert S_{21}\rvert$ (and MSG) is largest. In Example 21-01.6 the numerator nearly halves even though $S_{12}$ itself is smaller.
 
 </details>
 

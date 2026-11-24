@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 21-03 · Noise Figure and Linearity
 
 | | |
@@ -29,7 +29,7 @@ A receiver has to hear a whisper while someone shouts nearby. The whisper sets a
 
 ## 2. Intuition first
 
-![Output power in dBm against input power in dBm, both on decibel axes: the fundamental rises with slope 1 and bends over near the top; the third-order product rises with slope 3; the dashed straight-line extensions of both meet at the third-order intercept point, about 9 dB above the input 1 dB compression point; a horizontal noise-floor line at the bottom marks where the spurious-free dynamic range begins](../../../assets/figures/21-03/intercept.svg)
+![Output power in dBm against input power in dBm, both on decibel axes: the fundamental rises with slope 1 and bends over near the top; the third-order product rises with slope 3; the dashed straight-line extensions of both meet at the third-order intercept point; the fundamental plotted is the per-tone output of a two-tone test, which compresses about 14 dB below IP3, while the single-tone 1 dB point (not plotted) lies about 9 dB below; a horizontal noise-floor line at the bottom marks where the spurious-free dynamic range begins](../../../assets/figures/21-03/intercept.svg)
 
 *Figure 1. The floor and the ceiling on one plot. The fundamental grows 1 dB per dB, the third-order intermodulation product 3 dB per dB; their extrapolations cross at the intercept point (IP3), which no real amplifier reaches. The spurious-free dynamic range is the window between the noise floor and the input at which the third-order product reaches it.*
 
@@ -81,7 +81,13 @@ $$
 F = F_{min} + \frac{R_n}{G_s}\,\lvert Y_s - Y_{opt}\rvert^2 , \qquad Y_{opt} = G_{opt} + jB_{opt} .
 $$
 
-Four real numbers, $F_{min}$, $R_n$ and the complex $Y_{opt}$, describe a two-port's noise completely and do not depend on the circuit outside it; data sheets and Touchstone files (21-01) give them as $F_{min}$, $\Gamma_{opt}$ and $R_n$. In reflection-coefficient form, with $r_n = R_n/Z_0$,
+Four real numbers, $F_{min}$, $R_n$ and the complex $Y_{opt}$, describe a two-port's noise completely and do not depend on the circuit outside it; data sheets and Touchstone files (21-01) give them as $F_{min}$, $\Gamma_{opt}$ and $R_n$. To convert, write each admittance through its reflection coefficient, $Y = (1 - \Gamma)/[Z_0(1 + \Gamma)]$. Then
+
+$$
+G_s = \text{Re}\,Y_s = \frac{1 - \lvert\Gamma_s\rvert^2}{Z_0\lvert 1 + \Gamma_s\rvert^2}, \qquad Y_s - Y_{opt} = \frac{(1 - \Gamma_s)(1 + \Gamma_{opt}) - (1 - \Gamma_{opt})(1 + \Gamma_s)}{Z_0(1 + \Gamma_s)(1 + \Gamma_{opt})} = \frac{2(\Gamma_{opt} - \Gamma_s)}{Z_0(1 + \Gamma_s)(1 + \Gamma_{opt})} ,
+$$
+
+and substituting both into $(R_n/G_s)\lvert Y_s - Y_{opt}\rvert^2$, the factor $\lvert 1 + \Gamma_s\rvert^2$ cancels. In reflection-coefficient form, with $r_n = R_n/Z_0$,
 
 $$
 F = F_{min} + \frac{4r_n\,\lvert\Gamma_s - \Gamma_{opt}\rvert^2}{\left(1 - \lvert\Gamma_s\rvert^2\right)\lvert 1 + \Gamma_{opt}\rvert^2} .
@@ -91,7 +97,13 @@ $R_n$ is the **sensitivity**: a device with a small $R_n$ tolerates a mismatched
 
 > **Math refresher — completing the square.** For $f(x) = ax^2 + bx + c$ with $a > 0$, write $f = a(x + b/2a)^2 + c - b^2/4a$: the minimum is $c - b^2/4a$ at $x = -b/2a$, and the distance from the minimum is a perfect square. The noise factor is a quadratic in $G_s$ and $B_s$ divided by $G_s$, and the same move turns it into a minimum plus a squared distance from the optimum.
 
-**Noise circles.** Setting $F$ to a constant $F_i$ in the reflection form and rearranging (it is a circle equation in $\Gamma_s$) gives circles with
+**Noise circles.** Set $F$ to a constant $F_i$ in the reflection form and collect the constants into $N = (F_i - F_{min})\lvert 1 + \Gamma_{opt}\rvert^2/(4r_n)$. Then $\lvert\Gamma_s - \Gamma_{opt}\rvert^2 = N(1 - \lvert\Gamma_s\rvert^2)$; expanding the left side,
+
+$$
+(N + 1)\lvert\Gamma_s\rvert^2 - 2\,\text{Re}(\Gamma_s\Gamma_{opt}^*) + \lvert\Gamma_{opt}\rvert^2 - N = 0 .
+$$
+
+Dividing by $N + 1$ and completing the square, $\lvert\Gamma_s - \Gamma_{opt}/(N + 1)\rvert^2 = \lvert\Gamma_{opt}\rvert^2/(N + 1)^2 - (\lvert\Gamma_{opt}\rvert^2 - N)/(N + 1) = N(N + 1 - \lvert\Gamma_{opt}\rvert^2)/(N + 1)^2$: a circle with
 
 $$
 N = \frac{F_i - F_{min}}{4r_n}\,\lvert 1 + \Gamma_{opt}\rvert^2, \qquad C_F = \frac{\Gamma_{opt}}{N + 1}, \qquad R_F = \frac{\sqrt{N\left(N + 1 - \lvert\Gamma_{opt}\rvert^2\right)}}{N + 1} .
@@ -99,7 +111,7 @@ $$
 
 As $F_i \to F_{min}$ the circle shrinks to $\Gamma_{opt}$; as $F_i$ grows, it widens and its centre slides toward the origin (Figure 2, Example 21-03.3).
 
-**Noise match versus power match.** The source reflection that minimizes noise, $\Gamma_{opt}$, is generally not the one that maximizes gain, $\Gamma_s = \Gamma_{in}^*$ (21-01). A low-noise amplifier's input is therefore usually matched for noise, and its input return loss can look poor: 21-02 §9 showed a Wi-Fi front end with a 7 dB return loss next to a 1.8 dB noise figure. The design techniques that bring the two optima together (inductive source degeneration) are the subject of 21-04.
+**Noise match versus power match.** The source reflection that minimizes noise, $\Gamma_{opt}$, is generally not the one that maximizes gain, $\Gamma_s = \Gamma_{in}^*$ (21-01). A low-noise amplifier's input is therefore usually matched for noise, and its input return loss can look poor: 21-02 §9 showed a Wi-Fi front end with a 7 dB return loss next to a 1.8 dB noise figure, a combination that noise matching would explain. The design techniques that bring the two optima together (inductive source degeneration) are the subject of 21-04.
 
 ![Source reflection plane with the unit circle, the minimum-noise point Gamma_opt at 0.45 at 60 degrees, two noise circles for 1.0 and 1.5 dB centred on the line from the origin to Gamma_opt, the matched point at the origin lying just outside the 1.0 dB circle, and the conjugate-match point at 0.6 at minus 40 degrees lying outside the 1.5 dB circle](../../../assets/figures/21-03/noise-circles.svg)
 
@@ -167,7 +179,7 @@ $$
 \text{IIP3} - P_{1dB} = 20\log_{10}\sqrt{\frac{4/3}{0.145}} = 9.64\ \text{dB}
 $$
 
-(**9.64** dB, from the exact 0.1087 rather than the rounded 0.145). Real devices have higher-order terms too, and the spread in data sheets is several decibels either side (§9).
+Real devices have higher-order terms too, and the spread in data sheets is several decibels either side (§9).
 
 **Measuring them.** Apply two equal tones of $P_{in}$ dBm each and read the output fundamental $P_{fund}$ and the output IM3 $P_{IM3}$, both in dBm. Because the gap between them closes 2 dB per dB of input, it closes to zero after $(P_{fund} - P_{IM3})/2$ more decibels of input:
 
@@ -175,7 +187,7 @@ $$
 \text{IIP3} = P_{in} + \frac{P_{fund} - P_{IM3}}{2}, \qquad \text{IIP2} = P_{in} + (P_{fund} - P_{IM2}) .
 $$
 
-These hold only in the small-signal region, where the slopes really are 1, 2 and 3; a measurement taken too close to compression gives a wrong intercept (Example 21-03.1). Equivalently, the IM3 level relative to the fundamental is $-2(\text{IIP3} - P_{in})$ dBc.
+These hold only in the small-signal region, where the slopes really are 1, 2 and 3; a measurement taken too close to compression gives a wrong intercept (Example 21-03.1). With two equal tones, each fundamental's own gain is $a_1 + \tfrac94a_3A^2$: the cube's $\tfrac34A^3$ self-term plus $\tfrac32A^3$ from the other tone. In a two-tone test the fundamentals therefore compress at a per-tone power $10\log_{10}3$ = 4.77 dB below the single-tone P1dB, and in a pure cubic it is the fundamental, not the IM3, that leaves its asymptote first. Equivalently, the IM3 level relative to the fundamental is $-2(\text{IIP3} - P_{in})$ dBc.
 
 **Why IIP2 matters.** In a superheterodyne receiver, IM2 products near DC are filtered away. In a zero-IF receiver the wanted signal itself is converted to DC, so the IM2 products of any two strong signals, or the envelope of a single amplitude-modulated blocker, demodulate straight into the baseband [6, 7]. In frequency-division duplex phones the strongest such signal is the phone's own transmitter leaking through the duplexer (Problem 21-03.13).
 
@@ -225,10 +237,10 @@ $$
 
 3GPP writes exactly this for 5G handsets, with an implementation margin and a diversity gain added, and the published reference sensitivities can be reconstructed from it (Example 21-03.6) [8, 9].
 
-**Spurious-free dynamic range.** At the bottom the input-referred noise floor is $N = -174 + 10\log_{10}B + \text{NF}$ dBm. At the top, two equal input tones of $P_{in}$ create input-referred IM3 products at $3P_{in} - 2\,\text{IIP3}$ dBm. The largest input with no visible spurious product is the one where IM3 just reaches the floor, $3P_{in} - 2\,\text{IIP3} = N$, so $P_{in} = (2\,\text{IIP3} + N)/3$, and
+**Spurious-free dynamic range.** At the bottom the input-referred noise floor is $N_{floor} = -174 + 10\log_{10}B + \text{NF}$ dBm. At the top, two equal input tones of $P_{in}$ create input-referred IM3 products at $3P_{in} - 2\,\text{IIP3}$ dBm. The largest input with no visible spurious product is the one where IM3 just reaches the floor, $3P_{in} - 2\,\text{IIP3} = N_{floor}$, so $P_{in} = (2\,\text{IIP3} + N_{floor})/3$, and
 
 $$
-\text{SFDR} = P_{in} - N = \frac23\left(\text{IIP3} - N\right)\ \text{dB}.
+\text{SFDR} = P_{in} - N_{floor} = \frac23\left(\text{IIP3} - N_{floor}\right)\ \text{dB}.
 $$
 
 The factor 2/3 is worth remembering: 3 dB more intercept buys only 2 dB more dynamic range, and a 1 dB worse noise figure costs 2/3 dB.
@@ -277,7 +289,7 @@ All powers are in dBm referred to 50 Ω; "dBc" is relative to the fundamental at
 
 - $r_n = 8/50$ = 0.16, $F_{min} = 10^{0.08}$ = 1.202, and $\lvert 1 + \Gamma_{opt}\rvert^2 = (1 + 0.225)^2 + 0.3897^2$ = 1.652.
 - (a) $\Gamma_s = 0$: $F = 1.202 + 4(0.16)(0.45)^2/1.652$ = 1.281, NF = **1.07** dB.
-- (b) $\lvert\Gamma_s - \Gamma_{opt}\rvert^2$ = 0.5908 and $1 - \lvert\Gamma_s\rvert^2$ = 0.64, so $F = 1.202 + 4(0.16)(0.5908)/(0.64 \times 1.652)$ = 1.599, NF = **2.04** dB.
+- (b) $\lvert\Gamma_s - \Gamma_{opt}\rvert^2$ = 0.6563 and $1 - \lvert\Gamma_s\rvert^2$ = 0.64, so $F = 1.202 + 4(0.16)(0.6563)/(0.64 \times 1.652)$ = 1.599, NF = **2.04** dB.
 - (c) For 1.0 dB: $N = (1.259 - 1.202)(1.652)/0.64$ = 0.1463; centre $0.45/1.1463$ = **0.393**∠60°, radius $\sqrt{0.1463(1.1463 - 0.2025)}/1.1463$ = **0.324**. For 1.5 dB: centre **0.292**∠60°, radius **0.553**.
 
 **Units check.** $r_n$, $N$ and reflection coefficients are dimensionless.
@@ -286,7 +298,7 @@ All powers are in dBm referred to 50 Ω; "dBc" is relative to the fundamental at
 
 ### Example 21-03.4 · Distortion of a bipolar transistor and a differential pair (tier B)
 
-**Setup.** At 300 K ($V_T$ = 25.85 mV): (a) for a bipolar transistor driven at its base, find the input IIP3 amplitude and its power across 50 Ω; then the second and third harmonic ratios for a 5 mV tone, from the series and exactly, and the IM3 level for two 5 mV tones. (b) For an emitter-coupled pair, find the IIP3 amplitude, the 1 dB compression amplitude from the cubic model and exactly, and the IM3 level for two differential tones of 10 mV each.
+**Setup.** At 300 K ($V_T$ = 25.852 mV): (a) for a bipolar transistor driven at its base, find the input IIP3 amplitude and its power across 50 Ω; then the second and third harmonic ratios for a 5 mV tone, from the series and exactly, and the IM3 level for two 5 mV tones. (b) For an emitter-coupled pair, find the IIP3 amplitude, the 1 dB compression amplitude from the cubic model and exactly, and the IM3 level for two differential tones of 10 mV each.
 
 **Solution.**
 
@@ -320,8 +332,8 @@ All powers are in dBm referred to 50 Ω; "dBc" is relative to the fundamental at
 
 - n1, 5 MHz: $B$ = 4.5 MHz, $P_{sens} = -174 + 66.53 + 9 - 1 + 2.5 - 3$ = **−99.97** dBm; 10 MHz: $B$ = 9.36 MHz, **−96.79** dBm.
 - n78, 100 MHz: $B$ = 98.28 MHz, $P_{sens} = -174 + 79.92 + 10 - 1.5$ = **−85.58** dBm.
-- The published values are −100.0, −96.8 and −85.6 dBm [8, R-368], the computed values rounded down to one decimal place as the specification's note on rounding says.
-- Example 21-03.5's receiver: $N = -173.98 + 66.53 + 4.45$ = **−103.0** dBm, and SFDR = $\tfrac23(-11.5 + 103.0)$ = **61.0** dB.
+- The n1 table publishes −100.0 and −96.8 dBm [8, R-368]. For n78 the specification gives the formula $-96.1 + 10\log_{10}(N_{RB}/24)$, which is −85.54 dBm at 273 resource blocks: −85.6 dBm if its note on rounding ("rounded to the nearest number down to one decimal point") is read as rounding down, −85.5 dBm if read as rounding to nearest.
+- Example 21-03.5's receiver: $N_{floor} = -173.98 + 66.53 + 4.45$ = **−103.0** dBm, and SFDR = $\tfrac23(-11.5 + 103.0)$ = **61.0** dB.
 
 **Units check.** dBm/Hz + dB(Hz) = dBm.
 
@@ -409,6 +421,8 @@ All powers are in dBm referred to 50 Ω; "dBc" is relative to the fundamental at
 | Ex 21-03.5f | IIP3 lost with 5 dB more LNA gain | 4.1 | dB |
 | Txt 21-03.g | concept check IIP3 | 5 | dBm |
 | Txt 21-03.h | concept check IM3 at −30 dBm | −70 | dBc |
+| Txt 21-03.i | two-tone versus single-tone compression offset | 4.77 | dB |
+| Txt 21-03.j | n78 REFSENS formula at 273 resource blocks | −85.54 | dBm |
 
 ## 5. Simulate it
 
@@ -418,7 +432,7 @@ The lab ([labs/21-03-lab](../labs/21-03-lab/README.md)) collects the chapter's f
 
 1. Predict the noise figure of Example 21-03.3's device over the whole source plane, then map it and overlay the noise circles (Part 1).
 2. Predict how far a Y-factor measurement scatters when each noise power is averaged over a finite number of samples, then simulate many measurements (Part 2).
-3. Predict the IM3 slope and the intercept of a cubic amplifier, run a two-tone sweep through it with an FFT, and see where the slope bends away from 3 (Part 3).
+3. Predict the IM3 slope and the intercept of a cubic amplifier, run a two-tone sweep through it with an FFT, and see where the fundamental departs from slope 1 while the IM3 keeps slope 3 (Part 3).
 4. Predict the harmonic and intermodulation levels of a bipolar transistor and a differential pair, compute them exactly, and run `ngspice -b bjt_im.cir` (Part 4).
 5. Predict which stage dominates a line-up's noise figure and which its IIP3, then sweep the LNA gain and plot both (Part 5).
 
@@ -441,14 +455,14 @@ The lab ([labs/21-03-lab](../labs/21-03-lab/README.md)) collects the chapter's f
 | $kT_0$ | −173.98 dBm/Hz (−174) | 290 K reference [5, 10] |
 | IIP3 − P1dB | 9.64 dB for a pure cubic; 8.96 dB for a differential pair; 8 to 13 dB in four LNA and front-end data sheets | Model result, not a rule (§9) [R-369] |
 | IM3 slope | 3 dB per dB; IM3 level $-2(\text{IIP3} - P_{in})$ dBc | Small-signal region only |
-| SFDR | $\tfrac23(\text{IIP3} - N)$ | 3 dB of IIP3 buys 2 dB |
+| SFDR | $\tfrac23(\text{IIP3} - N_{floor})$ | 3 dB of IIP3 buys 2 dB |
 | Bipolar transistor IIP3 | $\sqrt8\,V_T$ = 73 mV peak (−12.7 dBm across 50 Ω) | Degeneration raises it |
 | Differential-pair IIP3 | $4V_T$ = 103 mV peak (differential) | Even orders cancel |
 | Discrete LNA noise figure | 0.6 dB typical (1.1 dB max) at 2.6 GHz; 1.6 dB typical at 5.5 GHz | Infineon data sheets, 2021 and 2023 [R-369] |
 | Wi-Fi 7 front-end receive path | NF 1.8 dB typical, IIP3 +8 dBm, IP1dB −5 dBm | Qorvo QPF4609, Sep 2024 [R-369] |
 | 77 GHz single-chip radar receiver | NF 12 to 15 dB | TI AWR2944 and AWR1843 data sheets [R-369] |
 | 5G handset NF assumed by 3GPP | about 9 dB (legacy bands, inferred), 10 to 10.5 dB (n77–n79, stated) | TR 38.817-01 [9, R-368] |
-| 5G reference sensitivity, two receivers | −100.0 dBm (n1, 5 MHz); −85.6 dBm (n78, 100 MHz) | TS 38.101-1 V19.7.0, Sep 2026 [8, R-368] |
+| 5G reference sensitivity, two receivers | −100.0 dBm (n1, 5 MHz); −85.54 dBm by formula, −85.6 dBm rounded down (n78, 100 MHz) | TS 38.101-1 V19.7.0, Sep 2026 [8, R-368] |
 | 5G wide-band intermodulation test | two interferers of −46 dBm each (one CW, one modulated), wanted 6 to 9 dB above REFSENS | TS 38.101-1 §7.8.2 [8, R-368] |
 | Y-factor limit | not used when NF exceeds the source's ENR by more than about 10 dB | Agilent AN 57-1 [5] |
 
@@ -471,7 +485,7 @@ The lab ([labs/21-03-lab](../labs/21-03-lab/README.md)) collects the chapter's f
 - **Measurement is a ratio [Established].** The Y-factor method remains the standard bench method; Agilent's application note gives the cold-temperature correction and warns that ENR "is not the 'on' noise relative to kTB as is often erroneously believed" [5]. Vector network analyzers now include noise receivers and noise tuners for measuring noise parameters (21-01 §9).
 - **Discrete LNAs reach well under 1 dB [Established].** Infineon's BGA9H1BN6 (SiGe, 2.3–2.7 GHz, December 2023) specifies 0.6 dB typical and 1.1 dB maximum at 2.6 GHz with 20.3 dB of gain and an IIP3 of −7 dBm typical at 5.5 mA [R-369]. For scale, Shaeffer and Lee's landmark 1997 CMOS LNA reached 3.5 dB at 1.5 GHz with 22 dB of gain while drawing 30 mW [11].
 - **Integrated front ends trade noise for integration [Established].** Qorvo's QPF4609 Wi-Fi 7 front end specifies a receive noise figure of 1.8 dB typical (2.2 dB maximum), IIP3 of +8 dBm and input P1dB of −5 dBm [R-369]. Texas Instruments' single-chip 77 GHz radars specify 12 dB (AWR2944) and 14 to 15 dB (AWR1843) noise figure, with an in-band IIP2 of 16 dBm on the latter, because their FMCW receivers convert to an IF near DC [R-369].
-- **Standards encode the floor and the ceiling [Established].** 3GPP's 5G handset specification (TS 38.101-1 V19.7.0, Release 19, September 2026) defines reference sensitivity as the power at which throughput reaches at least 95% of the reference channel's maximum, measured in FDD bands with the handset's own transmitter at full power; it adds adjacent-channel selectivity, in-band and out-of-band blocking (out-of-band CW blockers up to −15 dBm), narrow-band blocking and a wide-band intermodulation test with two −46 dBm interferers [8, R-368]. The study behind the sensitivity table writes it as $-174 + 10\log B + \text{NF} + \text{SNR} + \text{IM} - \text{diversity gain}$ and agrees noise figures of 10.5, 10 and 10 dB for bands n77 to n79 [9].
+- **Standards encode the floor and the ceiling [Established].** 3GPP's 5G handset specification (TS 38.101-1 V19.7.0, Release 19, September 2026) defines reference sensitivity as the power at which throughput reaches at least 95% of the reference channel's maximum, measured in FDD bands with the handset's own transmitter at full power; it adds adjacent-channel selectivity, in-band and out-of-band blocking (out-of-band CW blockers up to −15 dBm), narrow-band blocking and a wide-band intermodulation test with two −46 dBm interferers [8, R-368]. The study behind the sensitivity table writes it as $-174 + 10\log_{10} B + \text{NF} + \text{SNR} + \text{IM} - \text{diversity gain}$ and agrees noise figures of 10.5, 10 and 10 dB for bands n77 to n79 [9].
 - **Second-order linearity is the zero-IF tax [Established].** Razavi's and Abidi's analyses of direct-conversion receivers identified DC offsets, even-order distortion, flicker noise and LO leakage as the architecture's problems [6, 7]; in FDD handsets the transmitter's own leakage through the duplexer is a strong second-order aggressor, and 3GPP tests reference sensitivity with that transmitter at full power [8] (Problem 21-03.13).
 
 ### Why it matters commercially

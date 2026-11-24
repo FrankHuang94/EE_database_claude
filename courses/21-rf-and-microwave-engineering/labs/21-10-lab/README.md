@@ -29,7 +29,7 @@ Chapter: [21-10 · Antennas, Arrays, Beamforming and mmWave](../../chapters/21-1
 - **Part 1.** The 28 GHz patch is 3.785 × 2.986 mm; the 39 GHz patch is 2.562 × 1.977 mm. The bandwidth bound falls from 7.51% (10 mm) to **3.48** % (7.5 mm) and 1.11% (5 mm): the band needs 3.42%, so the 7.5 mm antenna is just able to cover it at full efficiency.
 - **Part 2.** The grating lobe appears at **−48.6**°, at full strength; a 0.8λ array is grating-lobe free only to **14.5**°. At 30°, 45° and 60° the cosine element costs **0.62**, 1.51 and 3.01 dB, and the 16-element beamwidth widens from 6.36° to **7.35**°, 9.02° and 12.99°.
 - **Part 3.** The beam moves to 68.85° at 26 GHz and 53.93° at 30 GHz, losing 3.82 dB toward 60° at both; ngspice gives −3.82 dB for the phase shifters, 0 dB at 28 GHz, and 24.08 dB of coherent gain for the TTD array at every frequency.
-- **Part 4.** The seeded Monte Carlo gives **0.221** dB of gain loss and a **−31.04** dB floor at the first null for 3 bits, matching $S + (1 - S)/N$ and $(1 - S)/N$; 4 bits give 0.055 dB and about −37 dB.
+- **Part 4.** The seeded Monte Carlo gives **0.221** dB of gain loss and a **−31.04** dB floor at the first null for 3 bits, matching $S + (1 - S)/N$ and $(1 - S)/N$; 4 bits give 0.055 dB and about −37 dB. The lab's gain loss is the mean power toward the beam, $S + (1 - S)/N$, which includes the scattered floor; Example 21-10.5 quotes $S$ alone, so its 4-bit figure is 0.056 dB. With 64 elements the two differ by less than 0.01 dB.
 - **Part 5.** N* = 145 at 29.04 W; 64 and 256 elements cost 39.34 and 33.84 W, with PA outputs of 18.9 and 6.8 dBm. The digital, hybrid and analog arrays draw 3.22, 1.16 and 1.01 W.
 
 ## Discussion

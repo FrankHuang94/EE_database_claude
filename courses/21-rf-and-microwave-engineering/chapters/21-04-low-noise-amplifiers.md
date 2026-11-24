@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 21-04 · Low-Noise Amplifiers
 
 | | |
@@ -55,7 +55,7 @@ $$
 F = 1 + \frac{R_s}{R_T} = 2 \qquad (3.01\ \text{dB}),
 $$
 
-before the amplifier adds anything. If the amplifier has its own noise factor $F_A$ referred to the divided source, the total is $2 + 4(F_A - 1)$: the divider halves the signal voltage, so the amplifier's excess noise counts four times. Resistive termination is acceptable only where noise figure hardly matters (instrumentation inputs, some test equipment).
+before the amplifier adds anything. If the amplifier has noise factor $F_A$ when driven from the divided source ($R_s \parallel R_T = R_s/2$), the total is $F = 2F_A$: the terminated source's noise at the amplifier, $4kT_0(R_s/2)$, is twice the source's own share $(1/2)^2\,4kT_0R_s$, so the amplifier's excess noise relative to it counts twice. (Equivalently, for an amplifier with input voltage noise only and noise factor $F_A'$ measured from an $R_s$ source, $F = 2 + 4(F_A' - 1)$.) Resistive termination is acceptable only where noise figure hardly matters (instrumentation inputs, some test equipment).
 
 ### 3.3 The common-gate stage
 
@@ -95,9 +95,9 @@ $$
 F = 1 + \frac{\tfrac14\,4kT_0\gamma g_{d0}}{G_m^2\,4kT_0R_s} = 1 + \frac{\gamma}{\alpha}\,g_mR_s\left(\frac{\omega_0}{\omega_T}\right)^2 .
 $$
 
-(Substitute $G_m = \omega_T/2\omega_0R_s$ and $g_{d0} = g_m/\alpha$.) The noise figure falls as $(\omega_0/\omega_T)^2$: a fast transistor at a low frequency is nearly noiseless. ngspice confirms the halving exactly (§5, Example 21-04.2).
+(Substitute $G_m = \omega_T/2\omega_0R_s$ and $g_{d0} = g_m/\alpha$.) The noise figure falls as $(\omega_0/\omega_T)^2$: a faster transistor, or a lower frequency, is quieter, until induced gate noise takes over (Going deeper below). ngspice confirms the halving exactly (§5, Example 21-04.2).
 
-> **Going deeper — induced gate noise.** At high frequency the channel's thermal fluctuations also couple capacitively to the gate, producing a gate noise current partly correlated with the drain noise. Including it adds a term that grows as $Q_{in}$ falls and changes the optimization: for a fixed power budget there is an optimum device width (and $Q_{in}$) at which the noise figure is minimum. Shaeffer and Lee's analysis of this LNA, with its 1.5 GHz CMOS demonstration, is the classic treatment (read it with its 2005 correction) [1]; the textbooks reproduce it [2, 3]. With the long-channel constants ($\delta$ = 4/3 for the gate noise, correlation $\lvert c\rvert$ = 0.395), the transistor's own minimum noise factor becomes $F_{min} = 1 + 2(\omega_0/\omega_T)\sqrt{\delta\gamma(1 - \lvert c\rvert^2)/5}$ [3, 8], **0.32** dB at $f_0/f_T$ = 0.1. The drain-noise-only result above is the right first-order picture and the one this chapter verifies.
+> **Going deeper — induced gate noise.** At high frequency the channel's thermal fluctuations also couple capacitively to the gate, producing a gate noise current partly correlated with the drain noise. Including it adds a term that grows as $Q_{in}$ falls and changes the optimization: for a fixed power budget there is an optimum device width (and $Q_{in}$) at which the noise figure is minimum. Shaeffer and Lee's analysis of this LNA, with its 1.5 GHz CMOS demonstration, is the classic treatment (read it with its 2005 correction) [1]; the textbooks reproduce it [2, 3]. With the long-channel constants ($\delta$ = 4/3 for the gate noise, correlation $\lvert c\rvert$ = 0.395), the transistor's own minimum noise factor becomes $F_{min} = 1 + 2(\omega_0/\omega_T)\sqrt{\delta\gamma(1 - \lvert c\rvert^2)/5}$ [3, 8], **0.32** dB at $f_0/f_T$ = 0.1. The drain-noise-only result above is the one this chapter verifies, but it is a lower bound on the circuit's noise figure and optimistic at small $\omega_0/\omega_T$: the gate-noise term falls only as $\omega_0/\omega_T$, while the drain term falls as its square. At $f_0/f_T$ = 0.1 no source impedance takes this device below about 0.32 dB (0.63 dB at 0.2), so the 0.086 dB of Example 21-04.4 and the 0.334 dB of Example 21-04.2 are not attainable; they show the trends, not the floor.
 
 ### 3.5 Losses in the gate inductor
 
@@ -111,7 +111,7 @@ The first term usually dominates. An on-chip spiral with $Q_L$ of 10 at 2.4 GHz 
 
 ![Noise figure in dB against the gate inductor's Q from 5 to 200 on a logarithmic axis: the curve falls steeply from 2.2 dB at Q = 5 through marked points at Q = 10 (1.32 dB), 15 (1.01 dB) and 30 (0.68 dB) and flattens toward a dashed line at 0.33 dB for an ideal inductor](../../../assets/figures/21-04/gate-q.svg)
 
-*Figure 2. Example 21-04.2's LNA with a lossy gate inductor, re-matched at each Q. Below a Q of about 30 the inductor contributes more noise than the transistor.*
+*Figure 2. Example 21-04.2's LNA with a lossy gate inductor, re-matched at each Q. Below a Q of about 24 the inductor contributes more noise than the transistor.*
 
 ### 3.6 Gain, Q and linearity
 
@@ -196,7 +196,7 @@ All examples use $R_s$ = 50 Ω, $T_0$ = 290 K and drain noise only (no induced g
 
 **Units check.** S/(rad/s) = F; Ω/(rad/s) = H.
 
-**Sanity check.** ngspice's noise analysis of this model gives 0.334 dB and an input resistance of exactly 50 Ω (§5). Without the halving of the drain noise the noise factor would be $1 + 4 \times 0.08$ = 1.32, or **1.21** dB.
+**Sanity check.** ngspice's noise analysis of this model gives 0.334 dB and an input resistance of exactly 50 Ω (§5). That is the drain-noise-only figure; with induced gate noise this device's own $F_{min}$ at $f_0/f_T$ = 0.2 is about 0.63 dB (§3.4, Going deeper), so a real LNA would sit above that. Without the halving of the drain noise the noise factor would be $1 + 4 \times 0.08$ = 1.32, or **1.21** dB.
 
 ### Example 21-04.3 · The gate inductor's loss (tier B)
 
@@ -220,11 +220,11 @@ All examples use $R_s$ = 50 Ω, $T_0$ = 290 K and drain noise only (no induced g
 
 - Example 2: $Q_{in}$ = 1.25, so the source EMF reaches the intercept at 0.3/1.25 = 0.24 V; available power $v_s^2/(8R_s)$ = **−8.42** dBm.
 - $f_T$ = 24 GHz: $C_{gs}$ halves, $Q_{in}$ = **2.5**, the EMF intercept is 0.12 V and IIP3 = **−14.44** dBm, lower by $20\log_{10}2.5$ = **7.96** dB minus the first design's 1.94 dB, i.e. **6.02** dB.
-- Noise figure: **0.086** dB for the faster device against 0.334 dB.
+- Noise figure (drain noise only): **0.086** dB for the faster device against 0.334 dB.
 
 **Units check.** A peak EMF $v_s$ across a matched load delivers $(v_s/2)^2/(2R_s) = v_s^2/(8R_s)$.
 
-**Sanity check.** Doubling $Q_{in}$ doubles the gate voltage for a given input: 6 dB more voltage gain and 6 dB less IIP3. The faster device's noise advantage is real but its linearity cost is the same 6 dB.
+**Sanity check.** Doubling $Q_{in}$ doubles the gate voltage for a given input: 6 dB more voltage gain and 6 dB less IIP3. The 6 dB linearity cost is real, but the drain-noise-only model overstates the noise advantage: with induced gate noise the faster device's own $F_{min}$ is still about 0.32 dB (long-channel constants), so most of the 0.25 dB noise gain is not attainable.
 
 ### Example 21-04.5 · A noise-cancelling wideband LNA (tier C)
 
@@ -287,7 +287,7 @@ All examples use $R_s$ = 50 Ω, $T_0$ = 290 K and drain noise only (no induced g
 | Ex 21-04.4a | IIP3, f_T 12 GHz | −8.42 | dBm |
 | Ex 21-04.4b | Qin, f_T 24 GHz | 2.5 | — |
 | Ex 21-04.4c | IIP3, f_T 24 GHz | −14.44 | dBm |
-| Ex 21-04.4d | 20 log Qin at 2.5 | 7.96 | dB |
+| Ex 21-04.4d | 20 log₁₀ Qin at 2.5 | 7.96 | dB |
 | Ex 21-04.4e | IIP3 difference | 6.02 | dB |
 | Ex 21-04.4f | NF, f_T 24 GHz | 0.086 | dB |
 | Ex 21-04.5a | R1 | 1000 | Ω |
@@ -302,6 +302,7 @@ All examples use $R_s$ = 50 Ω, $T_0$ = 290 K and drain noise only (no induced g
 | Txt 21-04.a | Q_in voltage gain IIP3 shift at 1.25 | 1.94 | dB |
 | Txt 21-04.b | gm2 where noise cancelling beats the common gate | 32 | mS |
 | Txt 21-04.c | device Fmin with gate noise, f0/fT = 0.1 | 0.32 | dB |
+| Txt 21-04.h | device Fmin with gate noise, f0/fT = 0.2 | 0.63 | dB |
 | Txt 21-04.d | GNSS LNA power | 4.5 | mW |
 | Txt 21-04.e | base-station LNA power | 0.60 | W |
 | Txt 21-04.f | PMA3-83LN+ input intercept at +6 V | 13.1 | dBm |
@@ -324,7 +325,7 @@ The lab ([labs/21-04-lab](../labs/21-04-lab/README.md)) collects the design form
 | Knob | Improves | Costs | Typical decision owner |
 |---|---|---|---|
 | Gate-inductor quality (off-chip, thick metal, shield) | Noise figure (often the largest single term) | Pins, board area, die area, cost | RF designer and package engineer |
-| Input-network $Q_{in}$ (device $f_T$, $C_{gs}$) | Gain, noise figure | IIP3 (20 log $Q_{in}$), bandwidth, sensitivity to tolerances | RF designer |
+| Input-network $Q_{in}$ (device $f_T$, $C_{gs}$) | Gain, noise figure | IIP3 ($20\log_{10}Q_{in}$), bandwidth, sensitivity to tolerances | RF designer |
 | LNA gain | Cascade noise figure (Friis) | Cascade IIP3, blocker tolerance | RF system architect |
 | Bias current | $f_T$ and $g_m$, hence noise and linearity | Power, battery life | RF designer and product owner |
 | Narrowband (inductive) versus wideband (noise-cancelling, CG) | Noise at one band versus coverage of many | Inductor area versus current | Transceiver architect |
@@ -340,7 +341,7 @@ The lab ([labs/21-04-lab](../labs/21-04-lab/README.md)) collects the design form
 | Device $F_{min}$ with induced gate noise | $1 + 2(\omega_0/\omega_T)\sqrt{\delta\gamma(1 - \lvert c\rvert^2)/5}$: **0.32** dB at $f_0/f_T$ = 0.1 | Long-channel constants [3, 8] |
 | Discrete GNSS LNA | NF 0.55 dB typ (1.0 max), gain 19.6 dB, 2.5 mA at 1.8 V (**4.5** mW) | Infineon BGA524N6, 2021 [R-373] |
 | Base-station LNA | NF 0.6 dB typ (1.0 max), gain 34 dB, 120 mA at 5 V (**0.60** W) | Skyworks SKY67177-11, Aug 2025 [R-373] |
-| mmWave CMOS LNA research | minimum NF about 2.2–3.6 dB at 28–40 GHz; 3.4–6.5 dB at 70–86 GHz | 2023–2026 papers [R-372] |
+| mmWave CMOS LNA research | 2.2 dB minimum at 36.5 GHz (65 nm); 2.3 dB minimum (3.2 dB band average) at 60–74 GHz; 3.4–6.5 dB at 70–86 GHz | 2023–2026 papers [R-372] |
 | Single-chip 77 GHz radar receiver | NF 12–15 dB (whole receive chain) | TI data sheets [R-373] |
 | Published CMOS LNAs surveyed | about 500 over 20 years; more than 30 figures of merit in use | Belostotski and Klumperink, 2022 [8] |
 
@@ -376,7 +377,7 @@ The lab ([labs/21-04-lab](../labs/21-04-lab/README.md)) collects the design form
 ### Marketing vs Reality
 
 - **"0.55 dB noise figure."** On the BGA524N6 data sheet it is typical, at 1.8 V and 25 °C, with "PCB losses are subtracted" and "Verification based on AQL; not 100% tested in production"; the maximum is 1.0 dB [12]. Your board, connector and ESD losses before the LNA add to it decibel for decibel.
-- **Front-page numbers mix conditions.** The same data sheet's headline −12 dBm compression point and −4 dBm out-of-band IIP3 come from its 2.8 V table; at 1.8 V they are −16 and −5 dBm. The PMA3-83LN+'s headline +35 dBm IP3 is at +6 V and is an *output* intercept: subtracting its 22.1 dB gain gives an input intercept of about **13.1** dBm, and at +5 V the output intercept is +30.0 dBm (about **8.7** dBm at the input) [12].
+- **Front-page numbers mix conditions.** The same data sheet's headline −12 dBm compression point and −4 dBm out-of-band IIP3 come from its 2.8 V table; at 1.8 V they are −16 and −5 dBm. The PMA3-83LN+'s headline +35.2 dBm IP3 is at +6 V and is an *output* intercept: subtracting its 22.1 dB gain gives an input intercept of about **13.1** dBm, and at +5 V the output intercept is +30.0 dBm (about **8.7** dBm at the input) [12].
 - **"Sub-0.2 dB noise figure."** True, for a source impedance chosen for noise rather than 50 Ω [5]. A noise figure is meaningful only with its source impedance (21-03 §3.2).
 - **Minimum versus average.** Papers headline the best frequency: the 60 GHz-band LNA above reports 2.32 dB minimum and 3.23 dB averaged over its band [10]. With more than 30 figures of merit in use, authors can also choose a flattering one [8].
 
@@ -426,7 +427,7 @@ The noise current also flows through $L_s$, driving the input loop, whose total 
 
 <details><summary>Answer</summary>
 
-$C_{gs}$ halves, so $Q_{in}$ doubles: the gate sees twice the voltage for a given input, so IIP3 falls by 6 dB, and the match's bandwidth narrows. The noise figure gain is real but small if it was already well below 1 dB.
+$C_{gs}$ halves, so $Q_{in}$ doubles: the gate sees twice the voltage for a given input, so IIP3 falls by 6 dB, and the match's bandwidth narrows. The noise-figure gain predicted by the drain-noise-only model is small, and induced gate noise (Going deeper, §3.4) erodes most of it, because the gate-noise term falls only as $\omega_0/\omega_T$.
 
 </details>
 

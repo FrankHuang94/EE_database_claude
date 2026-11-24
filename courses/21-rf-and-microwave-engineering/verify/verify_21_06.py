@@ -131,7 +131,11 @@ v.check("Ex 21-06.2g", BOUND)
 v.assert_true("FoM = bound - 10log F + 10log eta", abs(BOUND - db10(2) + db10(ETA1) - FOM2) < 1e-9)
 FC = 1e6 * 0.15 ** 2
 v.check("Ex 21-06.2h", FC / 1e3)
-v.check("Ex 21-06.2i", db10(2 * G2 * SI / (2 * QMAX ** 2 * (2 * math.pi * 1e4) ** 2) * (1 + FC / 1e4)))
+# Flicker applies to the device half only: tank noise (white) plus device noise (white times 1 + f_c/df).
+L_TANK_10K = G2 * SI / (2 * QMAX ** 2 * (2 * math.pi * 1e4) ** 2)
+v.check("Ex 21-06.2i", db10(L_TANK_10K + L_TANK_10K * (1 + FC / 1e4)))
+fc_total = optimize.brentq(lambda f: (1 + (1 + FC / f)) / 2 - 2, 1, 1e6)  # where the 1/f^3 part equals the white part
+v.check("Ex 21-06.2j", fc_total / 1e3)
 
 
 # ================================================================ Example 21-06.3

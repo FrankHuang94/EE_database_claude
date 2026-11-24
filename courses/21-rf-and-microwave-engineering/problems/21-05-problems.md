@@ -18,7 +18,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 21-05.2 [A]
 
-**Single- versus double-balanced.** Find the conversion gain of an ideal single-balanced (0/1 switching) mixer in dB, and how much less it is than a double-balanced one.
+**A single switch versus a balanced pair.** Find the conversion gain of an ideal single-switch (0/1, unbalanced) mixer in dB, and how much less it is than a balanced (±1) one.
 
 ### Problem 21-05.3 [A]
 

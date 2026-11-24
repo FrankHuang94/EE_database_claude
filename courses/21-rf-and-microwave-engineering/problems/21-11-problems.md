@@ -72,6 +72,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **From BER to PER.** Bluetooth's sensitivity test uses 0.1% BER for 37-byte payloads (368 counted bits) and 0.017% for 255-byte payloads (255 × 8 + 72 counted bits). Assuming independent bit errors, find the packet-error rate for (a) the 37-byte and (b) the 255-byte case, and (c) the number of counted bits in the latter.
 
+### Problem 21-11.16 [B]
+
+**Derive the slant range.** A satellite at altitude $h$ is seen at elevation angle $\theta_{el}$ from a user on a spherical Earth of radius $R_E$. (a) Using the triangle formed by the Earth's centre, the user and the satellite, derive $d = \sqrt{(R_E + h)^2 - R_E^2\cos^2\theta_{el}} - R_E\sin\theta_{el}$. (b) Evaluate it for $h$ = 550 km at 25° elevation ($R_E$ = 6371 km).
+
 ---
 
 ## Objective coverage
@@ -82,4 +86,4 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 2. Sensitivity in rate form and the rate–range trade | 3, 4, 11 |
 | 3. Margins and coverage probability | 5, 6 |
 | 4. Interference, penetration and uplink limits | 7, 8, 9 |
-| 5. Complete budgets: BLE, Wi-Fi, NR, IoT, satellite, GNSS | 10, 12, 13, 14, 15 |
+| 5. Complete budgets: BLE, Wi-Fi, NR, IoT, satellite, GNSS | 10, 12, 13, 14, 15, 16 |

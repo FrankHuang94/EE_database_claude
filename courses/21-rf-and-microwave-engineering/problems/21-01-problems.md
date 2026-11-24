@@ -38,7 +38,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 21-01.7 [B] *(lab)*
 
-**A cascade.** A 3 dB π attenuator in 50 Ω has shunt arms $R_{sh} = Z_0(K + 1)/(K - 1)$ and series arm $R_{se} = Z_0(K^2 - 1)/(2K)$ with $K = 10^{3/20}$. Find the resistors. Two such pads are joined by a matched line of 60°. Find the overall $S_{21}$ (dB and angle) with transfer matrices.
+**A cascade.** A 3 dB π attenuator in 50 Ω has shunt arms $R_{sh} = Z_0(k_a + 1)/(k_a - 1)$ and series arm $R_{se} = Z_0(k_a^2 - 1)/(2k_a)$ with the voltage ratio $k_a = 10^{3/20}$ (not the stability factor K). Find the resistors. Two such pads are joined by a matched line of 60°. Find the overall $S_{21}$ (dB and angle) with transfer matrices.
 
 ### Problem 21-01.8 [A]
 

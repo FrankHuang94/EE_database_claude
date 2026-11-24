@@ -72,7 +72,7 @@ n = np.arange(16, 513)
 e_w, ge, eta, poh = 1000.0, 10 ** 0.5, 0.15, 0.1
 fig, ax = plt.subplots(figsize=(5.8, 3.8))
 ax.plot(n, [ant.dc_power_w(x, e_w, ge, eta, poh) for x in n], color=PALETTE[0], lw=1.6, label="total DC power")
-ax.plot(n, e_w / (n * ge * eta), color=PALETTE[3], lw=1, ls="--", label="PAs: E/(N G_e η)")
+ax.plot(n, e_w / (n * ge * eta), color=PALETTE[3], lw=1, ls="--", label="PAs: E/(N G_e η_PA)")
 ax.plot(n, n * poh, color=PALETTE[2], lw=1, ls="--", label="overhead: N P_oh")
 nopt = ant.optimal_elements(e_w, ge, eta, poh)
 ax.plot(nopt, ant.dc_power_w(nopt, e_w, ge, eta, poh), "o", color="k", ms=5)

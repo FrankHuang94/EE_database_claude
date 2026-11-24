@@ -68,6 +68,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Shorter Bluetooth intervals.** Bluetooth Core 6.2 cuts the minimum connection interval from 7.5 ms to 375 µs. By what factor?
 
+### Problem 21-12.15 [C]
+
+**Derive the largest Doppler from a low orbit.** A satellite moves at speed $v$ on a circular orbit of radius $R_E + h$, and a user on a non-rotating spherical Earth lies in the orbital plane. (a) Show that the satellite's line-of-sight speed toward the user is $v\sin\beta$, where β is the angle at the satellite between the nadir and the line of sight, and that it is largest at the horizon, where $\sin\beta = R_E/(R_E + h)$. (b) For $h$ = 800 km, find $v$, the largest line-of-sight speed and the Doppler shift at 2 GHz. (c) What does neglecting the Earth's rotation omit?
+
 ---
 
 ## Objective coverage
@@ -79,4 +83,4 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 3. Decoder, HARQ and layer-2 sizing | 3, 4, 5 |
 | 4. Wi-Fi rates from the tone plan | 7 |
 | 5. Ranging: UWB, Bluetooth, GNSS | 8, 9, 10 |
-| 6. Satellites and the standards map | 11, 13, 14 |
+| 6. Satellites and the standards map | 11, 13, 14, 15 |

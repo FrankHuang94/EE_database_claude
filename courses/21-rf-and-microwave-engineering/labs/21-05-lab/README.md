@@ -26,7 +26,7 @@ Chapter: [21-05 · Mixers](../../chapters/21-05-mixers.md)
 
 - **Part 1.** Both tones land at 50 MHz, the 7.25 GHz one 9.5 dB weaker.
 - **Part 2.** −3.92 dB, −13.46 dB, +16.08 dB and −1.82 dB, matching $2/\pi$, $2/(3\pi)$, $(2/\pi)g_mR_L$ and the N-path centre loss.
-- **Part 3.** The unfiltered noise factor comes out near $\pi^2/4$: **3.8** dB in the seeded simulation (a few tenths of a decibel of scatter between seeds); removing the image brings it to about 1.7 dB.
+- **Part 3.** The unfiltered noise factor comes out near $\pi^2/4$: **3.8** dB in the seeded simulation (a few tenths of a decibel of scatter between seeds); removing the image brings it to about 1.6 dB in the seeded run (theory 1.67 dB).
 - **Part 4.** 40 dB near 1 % and 1°; the harmonic-reject LO's 3rd response rises from zero to −55.6 dB for 1 % weight error and about −44 dB for 1° phase error.
 - **Part 5.** −1.82 dB at 1 GHz, and **−2.96** dB and **−3.06** dB (relative to the centre) at +3.98 MHz and −3.98 MHz: the averaging model's 3 dB points, with a small asymmetry from the sampled nature of the circuit.
 

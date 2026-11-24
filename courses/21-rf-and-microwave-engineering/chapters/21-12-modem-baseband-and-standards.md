@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 21-12 · Modem Baseband Architecture and Wireless Standards
 
 | | |
@@ -22,8 +22,8 @@
 
 The **modem** (modulator-demodulator, or baseband processor) is the digital engine between a radio's converters and the operating system's network stack. It turns samples into packets and back: filtering, FFTs, channel estimation, MIMO detection, demodulation, decoding, retransmission, ciphering and the protocol layers that schedule all of it. In a phone it is one of the largest and most power-hungry blocks after the application processor, and it is where the standards bodies' documents become silicon: every feature 3GPP, IEEE 802.11 or the Bluetooth SIG writes into a specification costs gates, memory and milliwatts in someone's modem. This chapter takes the RF chain of Course 21 to the bit pipe and gives the learner the arithmetic to read a modem product brief, and the standards map to judge which features are real, shipping and certified.
 
-- **Peak rates are arithmetic, not measurements:** bandwidth × layers × bits per symbol × code rate, minus overhead; real users see 1–3% of them.
-- **Decoding and memory dominate the modem's silicon:** LDPC decoders run at picojoules per bit, and the HARQ soft buffer is tens of megabytes.
+- **Peak rates are arithmetic, not measurements:** bandwidth × layers × bits per symbol × code rate, minus overhead; real users see about 3% of them (§9).
+- **Decoding and memory take a large share of the modem's datapath:** LDPC decoders run at picojoules per bit, and the HARQ soft buffer is tens of megabytes.
 - **Ranging is now a radio feature:** UWB, Bluetooth Channel Sounding and dual-frequency GNSS turn timing and phase into position.
 - **Standards are dated, staged commitments:** a feature is real when it is frozen, implemented, certified and deployed, in that order.
 
@@ -49,7 +49,7 @@ $$
 R = 10^{-6}\sum_{j} v_{layers}^{(j)}\,Q_m^{(j)}\,f^{(j)}\,R_{max}\,\frac{N_{PRB}^{(j)}\cdot 12}{T_s^{\mu}}\,(1 - OH^{(j)}) \quad [\text{Mb/s}],
 $$
 
-summed over component carriers $j$, with $v$ the MIMO layers, $Q_m$ the bits per symbol (10 for 1024-QAM), $f$ a scaling factor (1, 0.8, 0.75 or 0.4), $R_{max}$ = 948/1024 the highest code rate, $N_{PRB}$ the resource blocks (273 in 100 MHz at 30 kHz), $T_s^\mu = 10^{-3}/(14\cdot2^\mu)$ the average symbol duration and $OH$ the overhead (0.14 for FR1 downlink). Every term is a ceiling: all resources to one user, the highest modulation and code rate, every layer the channel can carry. NR states this per band combination: "The DL, UL and SL max data rate supported by the UE is calculated by band or band combinations supported by the UE" [1]; LTE instead had fixed UE categories (Category 4: 150,752 bits per 1 ms TTI) [1].
+summed over component carriers $j$, with $v$ the MIMO layers, $Q_m$ the bits per symbol (10 for 1024-QAM), $f$ a scaling factor (1, 0.8, 0.75 or 0.4; here $f$ is 3GPP's symbol for this factor, not a frequency), $R_{max}$ = 948/1024 the highest code rate, $N_{PRB}$ the resource blocks (273 in 100 MHz at 30 kHz), $T_s^\mu = 10^{-3}/(14\cdot2^\mu)$ the average symbol duration and $OH$ the overhead (0.14 for FR1 downlink). Every term is a ceiling: all resources to one user, the highest modulation and code rate, every layer the channel can carry. NR states this per band combination: "The DL, UL and SL max data rate supported by the UE is calculated by band or band combinations supported by the UE" [1]; LTE instead had fixed UE categories (Category 4: 150,752 bits per 1 ms TTI) [1].
 
 **What users get.** The ITU's 5G requirements are explicit about the gap: a peak of 20 Gb/s downlink, but a user-experienced rate, defined as "the 5% point of the cumulative distribution function", of 100 Mb/s [2]. The ratio is 200.
 
@@ -57,11 +57,11 @@ summed over component carriers $j$, with $v$ the MIMO layers, $Q_m$ the bits per
 
 For one OFDM symbol on one antenna, a size-$N$ FFT costs $(N/2)\log_2N$ complex multiplications (17-10). A 100 MHz carrier at 30 kHz uses a 4096-point FFT, and with 14 symbols per 0.5 ms slot there are 28,000 symbols per second, so each antenna needs about 0.69 billion complex multiplications per second for the FFT alone (Example 21-12.5). Channel estimation interpolates pilot measurements across time and frequency; the MIMO detector solves, per subcarrier, a small linear system (an MMSE equalizer inverts a matrix of the layer count's size, $O(v^3)$); the demapper computes a log-likelihood ratio per bit. These are regular, highly parallel operations, implemented in dedicated hardware and vector DSPs rather than general-purpose cores.
 
-The **channel decoder** is the most energy-intensive digital block per bit. NR uses LDPC codes for data ("UL-SCH, DL-SCH and PCH" use "LDPC") and polar codes for control [3]. An LDPC decoder passes messages along the edges of the code's graph for several iterations; its power scales with throughput times energy per bit. Published 5G decoders span 5–60 pJ per bit (§9), so decoding 10 Gb/s costs between about 50 and 600 mW (Example 21-12.4): one reason modem power climbs steeply with rate, and why decoders stop iterating early when the parity checks are satisfied.
+The **channel decoder** is among the most energy-intensive digital blocks per bit. NR uses LDPC codes for data ("UL-SCH, DL-SCH and PCH" use "LDPC") and polar codes for control [3]. An LDPC decoder passes messages along the edges of the code's graph for several iterations; its power scales with throughput times energy per bit. Published 5G decoders span 5–60 pJ per bit (§9), so decoding 10 Gb/s costs between about 50 and 600 mW (Example 21-12.4): one reason modem power climbs steeply with rate, and why decoders stop iterating early when the parity checks are satisfied.
 
 ### 3.3 Memory: HARQ soft buffers and layer-2 buffers
 
-**Hybrid ARQ** retransmits a failed block and lets the receiver combine the new copy with the stored soft information of the old one. Each HARQ process must therefore keep the LLRs of its block until it is decoded: "a maximum of 16 HARQ processes per cell are supported by the UE, or subject to UE capability, a maximum of 32" [4]. The stored size is capped by **limited-buffer rate matching**: the receiver stores at most $N_{ref} = \lfloor TBS_{LBRM}/(C\cdot R_{LBRM})\rfloor$ coded bits per code block, with $R_{LBRM}$ = 2/3 [3], that is, 1.5 coded bits per information bit instead of the mother code's three. With a few bits per LLR, a single wide carrier at peak rate needs tens of megabytes of soft buffer (Example 21-12.3).
+**Hybrid ARQ** retransmits a failed block and lets the receiver combine the new copy with the stored soft information of the old one. Each HARQ process must therefore keep the LLRs of its block until it is decoded: "a maximum of 16 HARQ processes per cell are supported by the UE, or subject to UE capability, a maximum of 32" [4]. The stored size is capped by **limited-buffer rate matching**: the receiver stores at most $N_{ref} = \lfloor TBS_{LBRM}/(C\cdot R_{LBRM})\rfloor$ coded bits per code block, with $R_{LBRM}$ = 2/3 [3], that is, 1.5 coded bits per information bit instead of the mother code's three (for LDPC base graph 1, rate 1/3; five for base graph 2, rate 1/5). With a few bits per LLR, a single wide carrier at peak rate needs tens of megabytes of soft buffer (Example 21-12.3).
 
 **Layer-2 buffers** hold packets while the radio-link control (RLC) and packet data convergence protocol (PDCP) layers reorder and retransmit. 3GPP sizes them as the data in flight over one RLC round trip: "MaxDLDataRate * RLC RTT + MaxULDataRate * RLC RTT", with an RLC round-trip time of 50, 40, 30 and 20 ms at 15, 30, 60 and 120 kHz spacing [1]. At 10 Gb/s down and 3.5 Gb/s up, that is 67.5 MB (Example 21-12.2). Buffers of this size sit partly on die and partly in the phone's DRAM, and the bandwidth between them is part of the modem's power.
 
@@ -85,7 +85,19 @@ $$
 \hat\tau = \frac{(1 + e_A)T_{round} - (1 + e_B)T_{reply}}{2} \approx \tau + \frac{(e_A - e_B)\,T_{reply}}{2} ,
 $$
 
-using $T_{round} \approx T_{reply}$ (the flight time is tiny). With a 1 ms reply time and a 20 ppm clock difference the error is 10 ns, **3.00** m: single-sided ranging is useless at UWB's resolution unless the clocks are corrected. **Double-sided** two-way ranging adds a second exchange in the other direction; the terms proportional to the reply times cancel, leaving an error of about the distance times the mean clock offset (0.1 mm at 10 m and 10 ppm). That is the scheme UWB phones and car keys use.
+using $T_{round} \approx T_{reply}$ (the flight time is tiny). With a 1 ms reply time and a 20 ppm clock difference the error is 10 ns, **3.00** m: single-sided ranging is useless at UWB's resolution unless the clocks are corrected. **Double-sided** two-way ranging adds a second exchange in the other direction: A sends, B replies after $D_1$, A replies again after $D_2$, and each device times its own round ($T_r$) and reply ($T_d$) intervals with its own clock. With clock factors $a = 1 + e_A$ and $b = 1 + e_B$,
+
+$$
+T_{r1} = a(2\tau + D_1), \quad T_{d1} = bD_1, \quad T_{r2} = b(2\tau + D_2), \quad T_{d2} = aD_2 .
+$$
+
+The asymmetric estimator combines them as
+
+$$
+\hat\tau = \frac{T_{r1}T_{r2} - T_{d1}T_{d2}}{T_{r1} + T_{r2} + T_{d1} + T_{d2}} = \frac{ab\left[(2\tau + D_1)(2\tau + D_2) - D_1D_2\right]}{(a + b)(2\tau + D_1 + D_2)} = \frac{2ab}{a + b}\,\tau \approx \tau\left(1 + \frac{e_A + e_B}{2}\right),
+$$
+
+because the numerator's bracket is $2\tau(2\tau + D_1 + D_2)$. The reply times cancel exactly, even when $D_1 \ne D_2$, and the error is the flight time times the mean clock offset: 0.1 mm at 10 m and 10 ppm, and only $-e^2\tau$ when the two offsets are equal and opposite (Problem 21-12.8). That is the scheme UWB phones and car keys use.
 
 **Phase-based ranging.** Bluetooth's Channel Sounding (Core 6.0) adds a "Phase-Based Ranging" method that measures the phase of tones on up to 72 channels at 1 MHz spacing [7]. A round trip of distance $d$ shifts a tone of frequency $f$ by $\phi = 4\pi fd/c$, so the phase difference between two tones $\Delta f$ apart gives
 
@@ -95,7 +107,7 @@ $$
 
 unambiguous up to $c/(2\Delta f)$ = 150 m for 1 MHz steps; using all the tones resolves multipath to about $c/(2B)$ with $B$ the span (about 2 m for 72 MHz), which is why Bluetooth ranging is decimetre-to-metre class and UWB centimetre class.
 
-![Time-of-flight profiles of a 12 m direct path and a half-amplitude reflection at 20 m: a 72 MHz Bluetooth sweep shows two broad peaks a few metres wide, while a 499.2 MHz UWB channel shows two narrow peaks well under a metre wide](../../../assets/figures/21-12/ranging.svg)
+![Time-of-flight profiles of a 12 m direct path and a half-amplitude reflection at 20 m: a 72 MHz Bluetooth sweep shows two broad peaks a few metres wide, while a 499.2 MHz UWB channel shows two narrow peaks well under a metre wide. Both are modelled as round-trip tone sweeps processed by a Hann-windowed inverse FFT, which widens the peaks beyond the unwindowed resolutions of §3.5](../../../assets/figures/21-12/ranging.svg)
 
 **GNSS.** GPS L1 C/A spreads its data with a 1.023 Mchip/s code; L5 uses 10.23 Mchip/s at 1176.45 MHz, "115 times 10.23 MHz" [8]. A chip is 293 m long at L1 and 29.3 m at L5, and a receiver's ranging precision is a fraction of a chip, so L5 is ten times sharper and far better at rejecting late, reflected copies. The **ionosphere** delays each signal by $40.3\,\text{TEC}/f^2$ metres, so a receiver with two frequencies can remove it: with pseudoranges $\rho_1$ and $\rho_5$,
 
@@ -109,7 +121,7 @@ which cancels the $1/f^2$ term exactly (Example 21-12.9). The price is noise: th
 
 3GPP Release 17 added non-terrestrial networks: "Only transparent payload", new bands n255 (L-band) and n256 (S-band), handheld power-class-3 devices, and "UEs with GNSS capabilities are assumed", because "the UE shall autonomously pre-compensate the Timing Advance, as well as the frequency Doppler shift" [9]. The physics explains each choice:
 
-- **Doppler.** A low-orbit satellite at 600 km moves at $\sqrt{GM/(R_E + h)}$ = 7.56 km/s; its line-of-sight velocity toward a ground user reaches about $vR_E/(R_E + h)$ = 6.91 km/s near the horizon, a Doppler shift of ±46 kHz at 2 GHz, more than three 15 kHz subcarriers. The phone must know its own position (GNSS) and the satellite's orbit to pre-compensate.
+- **Doppler.** A low-orbit satellite at 600 km moves at $\sqrt{GM/(R_E + h)}$ = 7.56 km/s; its line-of-sight velocity toward a ground user reaches about $vR_E/(R_E + h)$ = 6.91 km/s near the horizon. (At the horizon the line of sight is tangent to the Earth, so it makes an angle with the satellite's radius whose sine is $R_E/(R_E + h)$; the orbital velocity is perpendicular to that radius, so its component along the line of sight is $vR_E/(R_E + h)$. Earth's rotation, at most **0.47** km/s at the equator, is neglected.) That gives a Doppler shift of ±46 kHz at 2 GHz, more than three 15 kHz subcarriers. The phone must know its own position (GNSS) and the satellite's orbit to pre-compensate.
 - **Delay.** At 30° elevation the slant range is 1075 km (21-11): a 7.2 ms round trip to the satellite alone, longer via a ground gateway. Timing advance must be pre-computed for the same reason.
 - **HARQ.** Stop-and-wait HARQ needs enough processes to keep the pipe full during one round trip; with 1 ms per transport block and a round trip of tens of milliseconds, 16 processes stall, so the number "can be increased to 32 (e.g., in NGSO satellite systems)" or feedback disabled [9].
 
@@ -119,11 +131,11 @@ which cancels the $1/f^2$ term exactly (Example 21-12.9). The price is noise: th
 
 A feature becomes real in stages: a study, a work item, a **frozen** specification (Stage 3, then ASN.1), conformance tests, certification, operator deployment and devices in volume. Product briefs routinely announce features at the first of these stages.
 
-- **3GPP.** Release 15 (2019) was the first 5G; Releases 18 and 19 are "5G-Advanced" (Release 19 "is now complete" with specifications at the end of 2025); Release 20 carries early 6G studies; "Release 21 will be the first normative 6G release", with Stage 3 frozen in December 2028 and ASN.1 in March 2029 [10]. The ITU accepts IMT-2030 (6G) proposals from February 2027 to February 2029 [10].
+- **3GPP.** Release 15 (2018–19) was the first 5G; Releases 18 and 19 are "5G-Advanced" (Release 19 "is now complete" with specifications at the end of 2025); Release 20 carries early 6G studies; "Release 21 will be the first normative 6G release", with Stage 3 frozen in December 2028 and ASN.1 in March 2029 [10]. The ITU accepts IMT-2030 (6G) proposals from February 2027 to February 2029 [10].
 - **IEEE 802.11.** Wi-Fi 7 (802.11be) was approved in September 2024 and certified from January 2024 (the certification preceded final ratification); Wi-Fi 8 (802.11bn, "Ultra High Reliability") is projected for final approval in May 2028 [5].
 - **Bluetooth.** Core 6.0 added Channel Sounding; 6.1 randomized address updates; 6.2 shortened the minimum connection interval from 7.5 ms to 375 µs [7]. LE Audio (LC3 codec, Auracast broadcast) is complete.
 - **UWB.** IEEE 802.15.4z (2020) added secure ranging; 802.15.4ab is extending it to sensing and higher rates [6]. The Car Connectivity Consortium's Digital Key Release 3 uses UWB with Bluetooth LE for hands-free car access [6].
-- **GNSS.** GPS L1 C/A and L5, Galileo E1 and E5a (1575.420 and 1176.450 MHz), and the other constellations share frequencies precisely so that one multi-constellation receiver can use them all [8].
+- **GNSS.** GPS L1 C/A and L5, Galileo E1 and E5a, and BeiDou-3 B1C and B2a share the 1575.420 and 1176.450 MHz carriers precisely so that one multi-constellation receiver can use them all [8]; legacy GLONASS (FDMA channels near 1602 MHz) and BeiDou B1I (1561.098 MHz) do not [8].
 
 ## 4. Worked examples
 
@@ -136,7 +148,7 @@ A feature becomes real in stages: a study, a work item, a **frozen** specificati
 - (a) $4 \times 10 \times 0.9258 \times 273 \times 12 \times 28{,}000 \times 0.86$ = **2921.3** Mb/s.
 - (b) The same with 106 RBs: **1134.3** Mb/s.
 - (c) $3 \times 2921.3 + 2 \times 1134.3$ = **11,032** Mb/s.
-- (d) 11.2 Gb/s is **1.5** % above the formula: a vendor test with slightly different overhead, not a contradiction.
+- (d) 11.2 Gb/s is **1.5** % above the 38.306 ceiling for these inputs: the vendor must be assuming a different overhead or configuration, and that is the question to ask.
 - (e) $Q_m$ = 8: **2337.0** Mb/s, the 17-11 result.
 
 **Units check.** layers × bits/symbol × subcarriers × symbols/s = b/s.
@@ -169,7 +181,7 @@ A feature becomes real in stages: a study, a work item, a **frozen** specificati
 
 **Units check.** bits × bits per LLR / 8 = bytes.
 
-**Sanity check.** Tens of megabytes of fast memory per wide carrier is why soft-buffer size is a negotiated UE capability, why LBRM exists (without it the buffer would double), and why HARQ memory is a large share of modem area.
+**Sanity check.** Tens of megabytes of fast memory per wide carrier is why soft-buffer size is a negotiated UE capability, why LBRM exists (without it the buffer would double for base graph 1), and why HARQ memory is a large share of modem area.
 
 ### Example 21-12.4 · What decoding 10 Gb/s costs (tier B)
 
@@ -183,7 +195,7 @@ A feature becomes real in stages: a study, a work item, a **frozen** specificati
 
 **Units check.** b/s × J/b = W.
 
-**Sanity check.** A tenfold spread in energy per bit separates nodes and architectures; at the 40 nm figure, decoding alone would take a large fraction of a phone modem's budget. Process scaling and early termination are why modern decoders are a small part of modem power.
+**Sanity check.** A tenfold spread in energy per bit separates nodes and architectures; at the 40 nm figure, decoding alone would take a large fraction of a phone modem's budget. Process scaling and early termination are why, on this estimate, a modern decoder takes a modest share of a phone modem's power budget rather than most of it.
 
 ### Example 21-12.5 · FFT load of a 100 MHz carrier (tier A)
 
@@ -335,6 +347,9 @@ A feature becomes real in stages: a study, a work item, a **frozen** specificati
 | Txt 21-12.h | handsets share of QCT revenue, FY2026 | 64.7 | % |
 | Txt 21-12.i | QCT handsets change, FY2025 to FY2026 | −13.4 | % |
 | Txt 21-12.j | 16 nm LDPC decoder area efficiency | 50 | Gb/s/mm² |
+| Txt 21-12.k | US median 5G download as a share of a 12.5 Gb/s peak | 2.5 | % |
+| Txt 21-12.l | US median 5G download as a share of a 10 Gb/s peak | 3.1 | % |
+| Txt 21-12.m | Earth's equatorial rotation speed | 0.47 | km/s |
 
 ## 5. Simulate it
 
@@ -381,7 +396,7 @@ The lab ([labs/21-12-lab](../labs/21-12-lab/README.md)) collects the capability 
 
 ## 8. Common mistakes
 
-- **Treating peak rate as performance.** It is a ceiling summed over every carrier a phone supports; median users see 2–3% of it.
+- **Treating peak rate as performance.** It is a ceiling summed over every carrier a phone supports; the fastest US operator's median user sees **2.5** to **3.1** % of it (§9).
 - **Comparing peak rates across different assumptions.** Carriers, layers, modulation, FR1 versus FR1 + FR2, and lab versus field all change the number.
 - **Ignoring memory.** Soft buffers and layer-2 buffers scale with rate × round trip; they are megabytes and cost area and DRAM power.
 - **Equating a release's freeze with shipping products.** Features need certification and operator deployment; "Release-18-ready" may mean software not yet enabled.
@@ -506,7 +521,7 @@ Problems: [21-12 problem set](../problems/21-12-problems.md) · Worked solutions
 5. Wi-Fi Alliance, "Wi-Fi Alliance introduces Wi-Fi CERTIFIED 7," 8 Jan 2024; Keysight N7617 "802.11be Introduction"; G. Geraci et al., "Wi-Fi: twenty-five years and counting," arXiv:2507.09613; IEEE 802.11 TGbn update page (Nov 2026) [R-416, R-288].
 6. IEEE Std 802.15.4z-2020 (IEEE SA page); D. Coppens et al., "An overview of UWB standards and organizations (IEEE 802.15.4, FiRa, Apple)," *IEEE Access*, vol. 10, pp. 70219–70241, 2022, DOI 10.1109/ACCESS.2022.3187410; Apple Newsroom, 12 Sep 2023; Car Connectivity Consortium, Digital Key Release 3 press release, 26 Jul 2022 [R-417].
 7. Texas Instruments, *High Accuracy, Low Cost, Secure Ranging with Bluetooth Channel Sounding*, SWRA791 (Feb 2024); Bluetooth SIG Core 6.0–6.2 feature overviews (secondary) [R-417].
-8. IS-GPS-705J (1 Aug 2022); Galileo OS SIS ICD Issue 2.2 (Nov 2025); EUSPA, "World's first dual-frequency GNSS smartphone hits the market," 4 Jun 2018 [R-418].
+8. IS-GPS-705J (1 Aug 2022); Galileo OS SIS ICD Issue 2.2 (Nov 2025); EUSPA, "World's first dual-frequency GNSS smartphone hits the market," 4 Jun 2018 [R-418]; ESA Navipedia, "BeiDou Signal Plan" and "GLONASS Signal Plan" (checked Nov 2026) [R-420].
 9. 3GPP, "NTN overview" and "NTN & Satellite in Rel-17 & 18" pages; Apple Newsroom, 15 Nov 2022; T-Mobile Newsroom, 1 Oct 2025; SatNews, 16 Jul 2026 [R-415].
 10. 3GPP Release 18, 19 and 21 pages; ITU-R IMT-2030 page (read Nov 2026) [R-413, R-291].
 11. Qualcomm, *Snapdragon X80* and *X85* product briefs; MediaTek M90 press release, 26 Feb 2025; Samsung, *Exynos Modem 5400* product page; Apple Newsroom, 19 Feb 2025 and 9 Sep 2025 [R-414].

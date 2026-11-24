@@ -13,6 +13,7 @@ Independent routes (the lab module antenna.py sums complex exponentials and uses
 """
 from __future__ import annotations
 
+import itertools
 import math
 import sys
 from pathlib import Path
@@ -167,6 +168,19 @@ v.check("Ex 21-10.4f", tspan * 1e12)
 v.check("Ex 21-10.4i", tspan * 28e9)
 v.check("Ex 21-10.4g", db20(16))
 v.check("Ex 21-10.4j", db10(16))
+v.check("Ex 21-10.4k", beam_peak(16, 0.5, 60, 26 / 28) - 60)
+v.check("Ex 21-10.4l", 60 - beam_peak(16, 0.5, 60, 30 / 28))
+
+# §3.6 mean-power identity: E|AF|^2 = S|AF0|^2 + (1-S)/N, checked by brute-force expectation over
+# all 2-bit error patterns for a random 3-element weight set (errors uniform on 4 discrete points
+# so the expectation is an exact finite sum; S = |E e^{j eps}|^2 for that distribution).
+_rng = np.random.default_rng(10)
+_a = np.exp(1j * _rng.uniform(0, 2 * np.pi, 3))
+_pts = np.array([-0.3, -0.1, 0.1, 0.3])
+_mean = np.mean([abs(np.sum(_a * np.exp(1j * np.array(e))) / 3) ** 2
+                 for e in itertools.product(_pts, repeat=3)])
+_S = abs(np.mean(np.exp(1j * _pts))) ** 2
+v.assert_true("quantization mean-power identity", abs(_mean - (_S * abs(np.sum(_a) / 3) ** 2 + (1 - _S) / 3)) < 1e-12)
 v.assert_true("TTD array has no loss toward 60 deg at 26 GHz", abs(af_closed(60, 16, 0.5, 60, 26 / 28, ttd=True) - 1) < 1e-12)
 
 print("Example 21-10.5")
@@ -346,4 +360,12 @@ peak = np.mean(np.abs(np.exp(1j * eps).sum(axis=1)) ** 2) / 64 ** 2
 v.assert_true("Monte Carlo (independent seed) gain loss within 0.01 dB of the formula",
               abs(-db10(peak) - (-db10(S3 + (1 - S3) / 64))) < 0.01, f"{-db10(peak):.4f}")
 
+# Problem 21-10.16: Monte Carlo of the mean pattern at an ideal null, 16 elements, 3-bit (uniform +-pi/8) errors.
+_rng16 = np.random.default_rng(1016)
+_u = 2 / 16  # first null of a 16-element lambda/2 array: N pi u / 2 = pi
+_acc = 0.0
+for _ in range(20000):
+    _w = np.exp(1j * _rng16.uniform(-math.pi / 8, math.pi / 8, 16)) / 16
+    _acc += abs(np.sum(_w * np.exp(1j * math.pi * np.arange(16) * _u))) ** 2
+v.check("21-10.16", 10 * math.log10(_acc / 20000), tol=0.1)  # Monte Carlo: +-0.1 dB at 20,000 trials
 v.finish()

@@ -21,7 +21,7 @@ Chapter: [21-06 · Oscillators and VCOs](../../chapters/21-06-oscillators-and-vc
 
 1. **Amplitude and frequency.** *Predict* the amplitude from $(4/\pi)I_0R_p$ and from the describing function, and the frequency from $1/(2\pi\sqrt{LC})$. Run `ngspice -b vco.cir` and compare; then compute the Groszkowski shift from the harmonic currents (Part 1).
 2. **ISF.** *Predict* the phase shift per unit charge at 0°, 90°, 180° and 270°. Kick the normalized oscillator at 16 phases, plot $\Gamma(\theta)$ against $-\sin\theta$, and compute $\Gamma_{rms}$ and $\Gamma_{dc}$; repeat at Q = 50 (Part 2).
-3. **Phase-noise budget.** *Predict* the total at 1 MHz from the tank and devices (Example 21-06.2, $F$ = 2) and from a 1 kΩ resistor on a 400 MHz/V tuning line (Example 21-06.4). Plot each contribution from 1 kHz to 10 MHz with the 22.5 kHz flicker corner (Part 3).
+3. **Phase-noise budget.** *Predict* the total at 1 MHz from the tank and devices (Example 21-06.2, $F$ = 2) and from a 1 kΩ resistor on a 400 MHz/V tuning line (Example 21-06.4). Plot each contribution from 1 kHz to 10 MHz with the devices' 22.5 kHz flicker corner, which makes the total's corner 11.25 kHz because the tank resistor has no 1/f noise (Part 3).
 4. **Band map.** *Predict* how $K_{VCO}$ changes from code 0 to code 7 in Example 21-06.3, then plot all eight bands (Part 4).
 5. **Quadrature.** *Predict* the worst IRR of the RC-CR network over 2.40–2.50 GHz with RC at ±10% of nominal; sweep it, and run `ngspice -b polyphase.cir` (Part 5).
 6. **Injection.** *Predict* whether injection at 0.9 and at 2 lock ranges (Q = 10, 5% injection, measured from the free-running frequency) locks, and the beat frequency if not. Simulate and plot the relative phase (Part 6).

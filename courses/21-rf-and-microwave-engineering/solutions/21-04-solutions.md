@@ -8,7 +8,13 @@ Problems: [21-04 problem set](../problems/21-04-problems.md) · Chapter: [21-04]
 
 ### Solution 21-04.1
 
-The source and termination divide the signal by two and present 25 Ω to the amplifier. Referred to the source, the termination doubles the noise ($F$ = 2), and the amplifier's excess noise, $F_A - 1$ relative to the divided source's noise, counts four times because the signal power at its input is a quarter of the source's available EMF power: $F = 2 + 4(1.5 - 1)$ = 4, or **6.02** dB.
+The source and termination divide the signal by two and present 25 Ω to the amplifier. At the amplifier's input the two resistors' noise is $4kT_0(R_s/2) = 2kT_0R_s$ per hertz, of which the source's own share is $(1/2)^2\,4kT_0R_s = kT_0R_s$. The amplifier, with noise factor 1.5 from this 25 Ω source, raises the total to $1.5 \times 2kT_0R_s$, so
+
+$$
+F = \frac{1.5 \times 2kT_0R_s}{kT_0R_s} = 2F_A = 3.0 ,
+$$
+
+or **4.77** dB. The termination's factor of 2 multiplies everything the amplifier adds.
 
 ### Solution 21-04.2
 
@@ -101,7 +107,7 @@ Noise figure: $F = 1.262 + (10 - 1)/100$ = 1.352, **1.31** dB. IIP3 (mW): $1/\te
 
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
-| 21-04.1a | noise figure | 6.02 | dB |
+| 21-04.1a | noise figure | 4.77 | dB |
 | 21-04.2a | Cgs | 119.4 | fF |
 | 21-04.2b | Ls | 0.199 | nH |
 | 21-04.2c | Lg | 6.816 | nH |

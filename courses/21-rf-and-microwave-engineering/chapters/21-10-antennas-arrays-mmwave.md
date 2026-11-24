@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 21-10 · Antennas, Arrays, Beamforming and mmWave
 
 | | |
@@ -20,7 +20,7 @@
 
 ## 1. Big picture
 
-An antenna converts a guided wave into a radiated one, and an array of antennas lets electronics, instead of motors, decide where the energy goes. Chapter 13-11 derived the dipole, directivity, the Friis equation and the array factor; chapter 17-11 treated beamforming as signal processing. This chapter is about the hardware between them: the printed patches that make up modern arrays, the physical limit that makes small antennas narrow-band or lossy, the phase shifters and delay lines that steer beams, and the power and packaging arithmetic that decides how many elements a phone, a base station or a radar carries. At millimetre-wave frequencies these choices dominate: a 28 GHz link only closes because arrays recover the gain that short wavelengths cost, and the array must live in the package, next to the transceiver, because a few millimetres of board trace already cost decibels.
+An antenna converts a guided wave into a radiated one, and an array of antennas lets electronics, instead of motors, decide where the energy goes. Chapter 13-11 derived the dipole, directivity, the Friis equation and the array factor; chapter 17-11 treated beamforming as signal processing. This chapter is about the hardware between them: the printed patches that make up modern arrays, the physical limit that makes small antennas narrow-band or lossy, the phase shifters and delay lines that steer beams, and the power and packaging arithmetic that decides how many elements a phone, a base station or a radar carries. At millimetre-wave frequencies these choices dominate: a 28 GHz link only closes because arrays recover the gain that short wavelengths cost, and the array must live in the package, next to the transceiver, because at about 0.3 dB/mm a few millimetres of routing cost around 1 dB.
 
 - **Every wireless product is antenna-limited somewhere:** wearables by the Chu limit, phones by hand blockage and the number of modules, base stations by EIRP and DC power, radars by aperture.
 - **Arrays trade elements for power:** EIRP grows as $N^2$, so doubling the element count lets each PA deliver a quarter of the power.
@@ -51,7 +51,7 @@ From 13-11: directivity $D$, gain $G = e_rD$ with radiation efficiency $e_r$, ef
 
 - **Total efficiency** $e_{tot} = e_r(1 - \lvert\Gamma\rvert^2)$: what reaches free space out of what the PA delivers, including the mismatch loss of 21-09.
 - **Impedance bandwidth**: the band over which $\lvert\Gamma\rvert$ stays below a limit, often VSWR 2 (return loss 9.5 dB) or VSWR 3 for phones.
-- **Polarization**: a linearly polarized antenna receiving a linear wave tilted by ψ loses $\cos^2\psi$; linear receiving circular loses half, 3 dB.
+- **Polarization**: a linearly polarized antenna receiving a linear wave tilted by $\psi_p$ loses $\cos^2\psi_p$; linear receiving circular loses half, 3 dB.
 - **Total radiated power (TRP)** and **total isotropic sensitivity (TIS)**: transmit power and receiver sensitivity averaged over all directions, measured in an anechoic chamber with the phone in a hand or against a head phantom. Carriers specify these, not antenna gain.
 
 ### 3.2 The microstrip patch
@@ -100,7 +100,7 @@ $$
 
 ![The Chu-McLean lower bound on radiation Q falling steeply with ka on log-log axes, with the 5 mm sphere at Q of at least 63.6 and the 10 mm sphere at 9.4 marked against the largest Q, about 20.7, that covers the 2400 to 2483.5 MHz band](../../../assets/figures/21-10/chu.svg)
 
-**Efficiency buys bandwidth.** Loss lowers the total Q: with radiation efficiency $\eta$, $Q_{total} = \eta Q_{rad}$, since the loss resistance adds to the radiation resistance while the stored energy stays the same. A small antenna can therefore cover a wider band than Chu allows only by wasting power, which is exactly what many compact designs do (Example 21-10.2).
+**Efficiency buys bandwidth.** Loss lowers the total Q: with radiation efficiency $e_r$, $Q_{total} = e_r Q_{rad}$, since the loss resistance adds to the radiation resistance while the stored energy stays the same. A small antenna can therefore cover a wider band than Chu allows only by wasting power, which is exactly what many compact designs do (Example 21-10.2).
 
 ### 3.4 Planar arrays, element patterns and scan loss
 
@@ -110,7 +110,7 @@ $$
 G(\theta_0) \approx N\,G_e(\theta_0), \qquad N = N_xN_y .
 $$
 
-**Scan loss.** An element's gain falls off broadside because its projected area does: for an ideal aperture element $G_e(\theta) \propto \cos\theta$, so steering to 45° costs 1.5 dB and to 60° costs 3.0 dB, on top of the beam widening by $1/\cos\theta_0$. Real patches fall a little faster. Mutual coupling also changes each element's input impedance with the scan angle (the **active reflection coefficient**), and at some angles a surface wave can make it total: **scan blindness**. Arrays are therefore usually specified for ±45° to ±60°, and phones use several modules facing different ways rather than one module that scans everywhere.
+**Scan loss.** An element's gain falls off broadside because its projected area does: for an ideal aperture element $G_e(\theta) \propto \cos\theta$, so steering to 45° costs 1.5 dB and to 60° costs 3.0 dB; the same projected-aperture effect widens the beam by $1/\cos\theta_0$ (one effect seen two ways, not two losses to add). Real patches fall a little faster. Mutual coupling also changes each element's input impedance with the scan angle (the **active reflection coefficient**), and at some angles a surface wave can make it total: **scan blindness**. Arrays are therefore usually specified for ±45° to ±60°, and phones use several modules facing different ways rather than one module that scans everywhere.
 
 **Grating lobes in two dimensions.** In each axis the spacing must satisfy $d \le \lambda/(1 + \lvert\sin\theta_{max}\rvert)$ for the scan range it needs. Base-station arrays that scan little in elevation can space elements farther apart vertically and save RF chains.
 
@@ -142,7 +142,7 @@ which is the broadside beamwidth in radians divided by $\sin\theta_0$: **the lar
 
 ### 3.6 Phase quantization
 
-Digital phase shifters have $b$ bits, so each element's phase is rounded to the nearest multiple of $2\pi/2^b$. If the rounding errors $\varepsilon_k$ are uniform in $\pm\pi/2^b$ and independent between elements (which calibration offsets usually make them), the average array output toward $\theta_0$ is scaled by $\langle e^{j\varepsilon}\rangle = \sin x/x$ with $x = \pi/2^b$. The mean power pattern becomes
+Digital phase shifters have $b$ bits, so each element's phase is rounded to the nearest multiple of $2\pi/2^b$. If the rounding errors $\varepsilon_k$ are uniform in $\pm\pi/2^b$ and independent between elements (which calibration offsets usually make them), the average array output toward $\theta_0$ is scaled by $\langle e^{j\varepsilon}\rangle = \sin x/x$ with $x = \pi/2^b$. To get the mean power, write $AF = \frac1N\sum_k a_ke^{j\varepsilon_k}$ with unit-magnitude ideal phasors $a_k$, so $AF_0 = \frac1N\sum_k a_k$, and average $\lvert AF\rvert^2 = \frac1{N^2}\sum_k\sum_l a_ka_l^*e^{j(\varepsilon_k - \varepsilon_l)}$ term by term. The $N$ diagonal terms ($k = l$) average to 1; each off-diagonal term averages to $\lvert\langle e^{j\varepsilon}\rangle\rvert^2 = S$ because the errors are independent. The off-diagonal sum is the full double sum minus its diagonal, $\lvert\sum_k a_k\rvert^2 - N$, so $\langle\lvert AF\rvert^2\rangle = \frac1{N^2}\left[S\left(N^2\lvert AF_0\rvert^2 - N\right) + N\right]$, which is
 
 $$
 \langle\lvert AF\rvert^2\rangle = S\,\lvert AF_0\rvert^2 + \frac{1 - S}{N}, \qquad S = \left(\frac{\sin x}{x}\right)^2 ,
@@ -158,21 +158,21 @@ $$
 \text{EIRP} = N^2P_eG_e, \qquad \text{EIRP [dBm]} = P_e\,[\text{dBm}] + G_e\,[\text{dBi}] + 20\log_{10}N .
 $$
 
-On receive, signals add coherently while each element's noise adds incoherently, so the SNR improves by $N$ (10 log N); the receive figure of merit $G/T$ grows as $N$.
+On receive, signals add coherently while each element's noise adds incoherently, so the SNR improves by $N$, or $10\log_{10}N$ dB; the receive figure of merit $G/T$ grows as $N$.
 
-**The DC-optimal element count.** For a target EIRP $E$, each PA must deliver $P_e = E/(N^2G_e)$. With PA efficiency $\eta$ and a fixed overhead $P_{oh}$ per element (phase shifter, driver, bias, its share of LO distribution), the DC power is
+**The DC-optimal element count.** For a target EIRP $E$, each PA must deliver $P_e = E/(N^2G_e)$. With PA efficiency $\eta_{PA}$ and a fixed overhead $P_{oh}$ per element (phase shifter, driver, bias, its share of LO distribution), the DC power is
 
 $$
-P_{DC}(N) = N\left(\frac{P_e}{\eta} + P_{oh}\right) = \frac{E}{NG_e\eta} + NP_{oh} .
+P_{DC}(N) = N\left(\frac{P_e}{\eta_{PA}} + P_{oh}\right) = \frac{E}{NG_e\eta_{PA}} + NP_{oh} .
 $$
 
 The first term falls and the second rises with $N$; setting $dP_{DC}/dN = 0$ gives
 
 $$
-N^* = \sqrt{\frac{E}{G_e\eta P_{oh}}}, \qquad P_{DC}(N^*) = 2\sqrt{\frac{EP_{oh}}{G_e\eta}} ,
+N^* = \sqrt{\frac{E}{G_e\eta_{PA} P_{oh}}}, \qquad P_{DC}(N^*) = 2\sqrt{\frac{EP_{oh}}{G_e\eta_{PA}}} ,
 $$
 
-at which the PAs' share and the overhead share are equal. The minimum is flat: halving or doubling $N$ costs only about 25% more power (Example 21-10.6). In practice $\eta$ falls at low output power and thermal density limits large $P_e$, so real designs sit near this optimum with technology constraints deciding the side.
+at which the PAs' share and the overhead share are equal. The minimum is flat: halving or doubling $N$ costs only about 25% more power (Example 21-10.6). In practice $\eta_{PA}$ falls at low output power and thermal density limits large $P_e$, so real designs sit near this optimum with technology constraints deciding the side.
 
 ![DC power of a 60 dBm EIRP transmit array against element count on a logarithmic axis: the PA term falls as 1/N, the overhead term rises as N, and their sum has a flat minimum of 29.0 W at N = 145](../../../assets/figures/21-10/dcpower.svg)
 
@@ -186,7 +186,7 @@ From 13-11, free-space path loss grows as $f^2$ for antennas of fixed gain but t
 - **Rain**, several dB per kilometre in heavy rain at 28 GHz, which matters for backhaul but little within a few hundred metres.
 - **Blockage**: bodies, hands, foliage and walls absorb or reflect tens of dB, while diffraction around them is weak because obstacles are many wavelengths across. Links rely on line of sight or strong reflections, and a hand over the module can cut the link (§9).
 
-**Antenna in package.** At 28 GHz a few millimetres of printed transmission line cost a fraction of a dB, and every dB of loss between PA and antenna is lost EIRP and wasted DC power. Millimetre-wave transceivers therefore put the antennas in the same package as the RFIC (**antenna-in-package**, AiP), and phones carry several such modules on different edges so that a hand cannot block all of them.
+**Antenna in package.** At 28 GHz package routing loses about 0.3 dB/mm (§9), so a few millimetres of printed transmission line cost around 1 dB, and every dB of loss between PA and antenna is lost EIRP and wasted DC power. Millimetre-wave transceivers therefore put the antennas in the same package as the RFIC (**antenna-in-package**, AiP), and phones carry several such modules on different edges so that a hand cannot block all of them.
 
 ### 3.9 MIMO radar and virtual arrays
 
@@ -219,7 +219,7 @@ An automotive radar transmits from $N_{TX}$ antennas in turn (or with orthogonal
 - (a) $ka = 2\pi \times 10/122.8$ = **0.512**; (b) $Q_{min} = 1/0.512^3 + 1/0.512$ = **9.42**; (c) $B = 0.707/9.42$ = **7.51** %.
 - (d) **0.256**; (e) **63.6**; (f) **1.11** %.
 - (g) 83.5/2441.75 = **3.42** %; (h) $Q \le 0.707/0.0342$ = **20.7**.
-- (i) The total Q is $\eta Q_{rad} \ge \eta \times 63.6$, so $\eta \le 20.7/63.6$ = **32.5** %, (j) **−4.88** dB.
+- (i) The total Q is $e_r Q_{rad} \ge e_r \times 63.6$, so $e_r \le 20.7/63.6$ = **32.5** %, (j) **−4.88** dB.
 
 **Units check.** $ka$ and Q dimensionless.
 
@@ -259,7 +259,7 @@ An automotive radar transmits from $N_{TX}$ antennas in turn (or with orthogonal
 
 **Units check.** Angles from arcsines; delay = length/c.
 
-**Sanity check.** Each band edge moves the beam by about 7°, more than half the 13° beamwidth, so the loss exceeds 3 dB, consistent with the ±2 GHz edges lying just outside the 3.59 GHz bandwidth. The lab's ngspice model (`squint.cir`) builds both arrays from delay lines and reproduces (e) and (g). The 24.08 dB is signal power; noise from 16 elements adds incoherently, so the SNR gain is $10\log_{10}16$ = **12.04** dB (j), as in §3.7.
+**Sanity check.** The beam moves **8.85**° at 26 GHz (k) and **6.07**° at 30 GHz (l). The shifts are unequal and so are the beamwidths (the beam is narrower at 30 GHz and nearer broadside), so no single "half the beamwidth" rule applies; the exact result is that both ±2 GHz edges fall just outside the 3.59 GHz (12.8 %) 3 dB bandwidth, hence a loss slightly beyond 3 dB at both. The lab's ngspice model (`squint.cir`) builds both arrays from delay lines and reproduces (e) and (g). The 24.08 dB is signal power; noise from 16 elements adds incoherently, so the SNR gain is $10\log_{10}16$ = **12.04** dB (j), as in §3.7.
 
 ### Example 21-10.5 · How many phase-shifter bits? (tier A)
 
@@ -379,6 +379,8 @@ An automotive radar transmits from $N_{TX}$ antennas in turn (or with orthogonal
 | Ex 21-10.4h | 3 dB squint bandwidth | 12.8 | % |
 | Ex 21-10.4i | delay span in carrier periods | 6.50 | |
 | Ex 21-10.4j | SNR gain of 16 elements | 12.04 | dB |
+| Ex 21-10.4k | beam shift at 26 GHz | 8.85 | deg |
+| Ex 21-10.4l | beam shift at 30 GHz | 6.07 | deg |
 | Ex 21-10.5a | gain loss, 3 bits | 0.22 | dB |
 | Ex 21-10.5b | rms phase error, 3 bits | 13.0 | deg |
 | Ex 21-10.5c | scattered floor, 3 bits | −31.0 | dB |
@@ -474,7 +476,7 @@ The lab ([labs/21-10-lab](../labs/21-10-lab/README.md)) collects the design form
 | EIRP scaling | $20\log_{10}N$ + element gain + element power | §3.7 |
 | 5G FR2 handset (PC3, n257) | ≥ 22.4 dBm peak EIRP; ≤ 23 dBm TRP, ≤ 43 dBm EIRP; ≥ 11.5 dBm at the 50 %-tile | [1] (as of Sep 2026) |
 | US mmWave EIRP caps | 43 dBm mobile; 75 dBm per 100 MHz base station; 40 dBm average at 57–71 GHz | [2] |
-| Gaseous absorption (sea level) | about 0.1 dB/km at 28–39 GHz; about 15 dB/km near 60 GHz | [3] |
+| Gaseous absorption (sea level, standard atmosphere, 7.5 g/m³ water vapour) | about 0.1 dB/km at 28–39 GHz; about 15 dB/km near 60 GHz | [3] |
 | Rain, 25 mm/h | 4.6 dB/km at 28 GHz; 10.1 dB/km at 60 GHz | [3] |
 | Hand blockage (3GPP model) | 30 dB | [4] |
 | 28 GHz beamformer ICs | 32 elements per IC; 54 dBm EIRP from 64 dual-polarized elements | [6] |
@@ -561,7 +563,7 @@ On transmit, $N$ PAs add $N$ times the power and the array concentrates it with 
 
 <details><summary>Answer</summary>
 
-PA power for a fixed EIRP falls as $1/N$ (each element needs $1/N^2$ of the power, and there are $N$ of them), while per-element overhead grows as $N$. Their sum has a minimum at $N^* = \sqrt{E/(G_e\eta P_{oh})}$, where the two terms are equal.
+PA power for a fixed EIRP falls as $1/N$ (each element needs $1/N^2$ of the power, and there are $N$ of them), while per-element overhead grows as $N$. Their sum has a minimum at $N^* = \sqrt{E/(G_e\eta_{PA} P_{oh})}$, where the two terms are equal.
 
 </details>
 

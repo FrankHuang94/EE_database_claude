@@ -31,7 +31,7 @@ Chapter: [21-01 · S-Parameters and Network Analysis](../../chapters/21-01-s-par
 
 ## Discussion
 
-1. **Why do rounded resistor values still give an excellent attenuator?** The pad's match depends on ratios; a 0.3% error in the series arm moves $S_{11}$ only to about −67 dB.
+1. **Why do rounded resistor values still give an excellent attenuator?** The pad's match depends on ratios; a 0.3% error in the shunt arms (and 0.1% in the series arm) moves $S_{11}$ only to about −67 dB.
 2. **Why must calibration standards be known?** The three unknown error terms are solved from the standards' assumed reflections; any error in those assumptions becomes an error in every corrected measurement.
 3. **Why does stabilizing with a resistor cost gain?** The resistor dissipates power and lowers the available gain to the maximum stable gain or below; designers place it where it costs least at the operating frequency.
 

@@ -4041,7 +4041,7 @@ R&D % = R&D ÷ revenue.
 
 *Read on 24 Nov 2026 by a research subagent.*
 
-- **3GPP TR 38.821 V16.2.0 (2023-03)** [Established study assumptions]: LEO-600 S-band EIRP density 34 dBW/MHz, satellite G/T 1.1 dB/K; handheld "0 dBi per element", "Antenna temperature 290 K", "Noise figure 7 dB", "200 mW (23 dBm)"; UL bandwidth 360 kHz; 30° elevation; shadowing margin 3 dB, ionospheric/scintillation 2.2 dB, atmospheric 0.1 dB. Table 6.1.3.3-1 case SC9: DL EIRP 78.8 dBm, G/T −31.6 dB/K, FSPL 159.1 dB, CNR 6.6 dB; UL CNR 2.8 dB. GEO handheld (SC4): FSPL 190.6 dB, UL CNR −10.9 dB. Recomputed in verify_21_11.py (UL 2.74 dB).
+- **3GPP TR 38.821 V16.2.0 (2023-03)** [Established study assumptions]: LEO-600 S-band EIRP density 34 dBW/MHz, satellite G/T 1.1 dB/K; handheld "0 dBi per element", "Antenna temperature 290 K", "Noise figure 7 dB", "200 mW (23 dBm)"; UL bandwidth 360 kHz; 30° elevation; Table 6.1.1.1-1 (Set-1 satellite parameters), S-band uplink: GEO "G/T 19 dB K-1", "Satellite Rx max Gain 51 dBi"; LEO-1200 and LEO-600 "G/T 1.1 dB K-1", "Satellite Rx max Gain 30 dBi" (read from the 3GPP archive copy, 24 Nov 2026); shadowing margin 3 dB, ionospheric/scintillation 2.2 dB, atmospheric 0.1 dB. Table 6.1.3.3-1 case SC9: DL EIRP 78.8 dBm, G/T −31.6 dB/K, FSPL 159.1 dB, CNR 6.6 dB; UL CNR 2.8 dB. GEO handheld (SC4): FSPL 190.6 dB, UL CNR −10.9 dB. Recomputed in verify_21_11.py (UL 2.74 dB).
 - **3GPP TS 38.101-5 V19.6.0 (2026-09)** [Established]: NTN bands n255/n256 classes 1–3 (31/26/23 dBm).
 - **FCC Order DA 25-197 (7 Mar 2025)** [Established rule; Contested impact]: limit "-120 dBW/m2/MHz at 1.5 meters above ground level"; waiver "up to -110.6 dBW/m2/MHz"; AT&T "18% reduction in average network throughput"; T-Mobile ".2% to 1.8%".
 - **Apple Support 105097 (29 Sep 2026) and 101573** [Established as Apple statement]: "a message might take 30 seconds or more to send"; "might not work in places above 62° latitude".
@@ -4128,3 +4128,18 @@ R&D % = R&D ÷ revenue.
 - **Galileo OS SIS ICD Issue 2.2 (Nov 2025)** [Established]: carriers "E1 1575.420 … E5a 1176.450" MHz; E5a chip rate "10.230" Mchip/s; E1-B/C "1.023" Mcps; a new "E5a-QP" component.
 - **EUSPA news, 4 Jun 2018** [Established that the device shipped; accuracy is a claim]: "the Xiaomi Mi 8, launched on May 31, is the world's first smartphone providing up to decimetre-level accuracy" with a "dual-frequency (E1/L1+E5/L5) GNSS chip".
 - **Sources:** [IS-GPS-705J](https://www.gps.gov/sites/default/files/2025-07/IS-GPS-705J.pdf); [Galileo ICD 2.2](https://www.gsc-europa.eu/sites/default/files/sites/all/files/Galileo_OS_SIS_ICD_v2.2.pdf); [EUSPA](https://www.euspa.europa.eu/newsroom-events/news/worlds-first-dual-frequency-gnss-smartphone-hits-market). Checked Nov 2026.
+
+## R-419 · NXP's exit from RF power (Course 21 audit)
+
+*Search results only, 24 Nov 2026 (main agent and an audit subagent); the articles and NXP's own release were not opened. Medium confidence.*
+
+- **Bits & Chips, 11 Dec 2025; also KTAR, ABC15, EverythingRF and Altium's supplier map** (search snippets): NXP is winding down its radio (RF) power business and closing its 150 mm RF-GaN fab in Chandler, Arizona (opened 2020), with final GaN wafers around Q1 2027 and a transition period for customers; the rest of the Chandler site continues. Reasons reported: weak 5G base-station demand. Not confirmed from an NXP press release. [Reported, unconfirmed]
+- **Sources:** [Bits & Chips](https://bits-chips.com/article/nxp-exits-5g-radio-power-market-shutters-arizona-gan-fab/); [EverythingRF](https://www.everythingrf.com/news/details/21371-nxp-to-exit-5g-rf-power-amplifier-market-scales-back-gan-manufacturing-in-arizona); [KTAR](https://ktar.com/arizona-business/nxp-semiconductors-chandler-fab); [ABC15](https://www.abc15.com/news/business/nxp-to-exit-radio-power-market-and-shutter-arizona-manufacturing-facility).
+
+## R-420 · GNSS carrier frequencies beyond GPS and Galileo (Course 21 audit)
+
+*Search results, 24 Nov 2026 (main agent); the BeiDou and GLONASS ICDs themselves were not opened. QZSS was not confirmed and is not claimed.*
+
+- **ESA Navipedia, "BeiDou Signal Plan"** [Established; secondary source]: B1I carrier 1561.098 MHz (BPSK); B1C centred at 1575.42 MHz; B2a centred at 1176.45 MHz. The page cites the separate BeiDou ICDs for each signal.
+- **ESA Navipedia, "GLONASS Signal Plan," and ITU-R M.1787** [Established]: legacy GLONASS L1 FDMA carriers at 1602 + k × 0.5625 MHz, so they do not coincide with the GPS and Galileo L1 band.
+- **Sources:** [Navipedia BeiDou](https://gssc.esa.int/navipedia/index.php/BeiDou_Signal_Plan); [Navipedia GLONASS](https://gssc.esa.int/navipedia/index.php/GLONASS_Signal_Plan); [ITU-R M.1787-0](https://www.itu.int/dms_pubrec/itu-r/rec/m/R-REC-M.1787-0-200908-S!!PDF-E.pdf). Checked Nov 2026.

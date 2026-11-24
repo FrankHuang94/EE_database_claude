@@ -19,8 +19,9 @@ def db(x):
 
 # ---------------------------------------------------------------- simple topologies
 def nf_resistive_termination(f_amp=1.0):
-    """Shunt R = R_s at the input, ideal (or F_amp) voltage amplifier after it: F = 2 + 4 (F_amp - 1)."""
-    return 2 + 4 * (f_amp - 1)
+    """Shunt R = R_s at the input, then an amplifier with noise factor f_amp referred to the divided source
+    (R_s/2): the terminated source's noise is twice the source's own share, so F = 2 f_amp."""
+    return 2 * f_amp
 
 
 def nf_common_gate(x, gm, rs=50.0):

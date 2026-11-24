@@ -56,7 +56,7 @@ ax.text(papr - 0.3, 92, "average power of a\n9.64 dB-PAPR signal", fontsize=8, h
 ax.set_xlim(0, 25)
 ax.set_ylim(0, 100)
 ax.set_xlabel("output back-off from peak power (dB)")
-ax.set_ylabel("drain efficiency (%)")
+ax.set_ylabel("efficiency (%) (ET includes modulator)")
 ax.set_title("Efficiency where the signal actually spends its time", fontsize=10)
 ax.legend(fontsize=8, loc="upper right")
 save(fig, f"{OUT}/backoff.svg")

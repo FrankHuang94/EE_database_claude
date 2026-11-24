@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 21-02 · Impedance Matching Networks
 
 | | |
@@ -49,7 +49,7 @@ $$
 Q = \sqrt{\frac{R_{high}}{R_{low}} - 1}, \qquad \lvert X\rvert = QR_{low}, \qquad \lvert B\rvert = \frac{Q}{R_{high}} ,
 $$
 
-and opposite signs (an inductor and a capacitor). The low-pass form (series L, shunt C) also filters harmonics; the high-pass form (series C, shunt L) passes DC blocking and bias. The network's Q is fixed by the resistance ratio, and so is its bandwidth: roughly, the match degrades over a fractional bandwidth of order $1/Q$. Here is how wide.
+and opposite signs (an inductor and a capacitor). The low-pass form (series L, shunt C) also filters harmonics; the high-pass form (series C, shunt L) provides DC blocking and a path for bias. The network's Q is fixed by the resistance ratio, and so is its bandwidth: roughly, the match degrades over a fractional bandwidth of order $1/Q$. Here is how wide.
 
 **The bandwidth of one L-section.** Take the low-pass form and detune by a fraction δ, $\omega = \omega_0(1 + \delta)$. Normalized to the 50 Ω side, the input admittance is $y = R_{high}\left[j\omega C + 1/(R_{low} + j\omega L)\right]$, which equals 1 at δ = 0. Differentiate at δ = 0 using $\omega_0L = QR_{low}$, $\omega_0C = Q/R_{high}$ and $R_{high} = R_{low}(1 + Q^2)$: the capacitor contributes $jQ$, and the series branch contributes $-jQ(1 - jQ)^2/(1 + Q^2)$. Adding them,
 
@@ -72,7 +72,7 @@ A load $Z_L = R_L + jX_L$ adds its own reactance. Two ways to handle it:
 - **Absorption.** Treat $X_L$ as part of the network's series element: design the L-network for $R_L$, then add a series reactance $X - X_L$. For a shunt-type load (a resistor in parallel with a capacitor), absorb the load's susceptance into the network's shunt element the same way.
 - **Resonance.** First cancel $X_L$ with an equal and opposite reactance at the operating frequency, then match the remaining resistance. This always works but adds an element and narrows the bandwidth.
 
-Absorption is preferred when the load reactance has the right sign and is not too large; otherwise its reactance already exceeds what the network needs, and resonance (or a different topology) is required (Example 21-02.2).
+For a series element, absorption always works: the element becomes $X - X_L$, which absorbs a same-sign load reactance (a smaller element) and cancels an opposite-sign one (a larger element) in a single part, as in Example 21-02.2. The same holds for a shunt susceptance. Absorption fails only when a same-type load reactance or susceptance exceeds what the network needs, since the remaining element would have to be of the other type; then resonate it out first or choose the other topology (Problem 21-02.4).
 
 ### 3.3 π and T networks: choosing the Q
 
@@ -212,7 +212,7 @@ All examples use 50 Ω sources unless stated. "Bandwidth" means the band where t
 
 **Units check.** Dimensionless ratios.
 
-**Sanity check.** In a power amplifier delivering 1 W, 1.38 dB of match loss is **0.27** W of heat in the inductor: a reason PA output matches use high-Q off-chip or laminate components.
+**Sanity check.** With 1 W entering the match, 1.38 dB of match loss is **0.27** W of heat in the inductor: a reason PA output matches use high-Q off-chip or laminate components.
 
 ### Example 21-02.6 · Bode–Fano and a two-section transformer (tier C)
 
@@ -328,10 +328,10 @@ The lab ([labs/21-02-lab](../labs/21-02-lab/README.md)) collects the design form
 
 ### State of the art (as of Nov 2026)
 
-- **The limits are seventy years old [Established].** Bode's 1945 book on network analysis and feedback amplifiers gave the integral for a parallel RC load [1]; Fano's two-part 1950 paper in the *Journal of the Franklin Institute*, developed from a 1948 MIT Research Laboratory of Electronics report, extended it to arbitrary loads [2]; Youla's 1964 "new theory of broad-band matching" generalized the method [3]. Nothing since has moved the bound; what has changed is how close practical networks and tunable matching get to it.
+- **The limits are about eighty years old [Established].** Bode's 1945 book on network analysis and feedback amplifiers gave the integral for a parallel RC load [1]; Fano's two-part 1950 paper in the *Journal of the Franklin Institute*, developed from a 1948 MIT Research Laboratory of Electronics report, extended it to arbitrary loads [2]; Youla's 1964 "new theory of broad-band matching" generalized the method [3]. Nothing since has moved the bound; what has changed is how close practical networks and tunable matching get to it.
 - **The Smith chart is from 1939 [Established].** Phillip H. Smith, then an engineer in the Radio Development Department of Bell Telephone Laboratories, published it as a "Transmission Line Calculator" in *Electronics* in January 1939 [4, R-364]; every matching tool still draws it.
 - **On-chip inductors set the loss of integrated matches [Established].** Burghartz and colleagues at IBM showed in 1998 that "spiral inductors with inductances of 0.5-100 nH and Q's up to 40" are feasible in silicon, with thick copper wiring, a best case rather than a typical one [5]. Yue and Wong showed that a patterned ground shield "increases the inductor quality factor up to 33%" at 1–2 GHz and reduces substrate coupling "by as much as 25 dB" [6]. Niknejad and Meyer's ASITIC tool (1998) made spiral analysis routine [7], and Mohan, Hershenson, Boyd and Lee's 1999 expressions match field solvers "typically within around 3%" [8]. Burghartz and Rejaei's 2003 review relates Q, self-resonance and area to the substrate's resistivity [9]. We found no primary source that states a "typical" standard-CMOS inductor Q: it depends on metal thickness, substrate and frequency, and this chapter's examples use 8 to 20 as working assumptions.
-- **Discrete LNAs leave the match to the board [Established].** Infineon's BGA9H1BN6 (2.3–2.7 GHz) specifies 9 dB minimum and 13 dB typical input return loss at 2.6 GHz with its recommended external parts, and notes that performance "Can be tuned by using different external matching components" [12]. Qorvo's QPF4609 Wi-Fi 7 front end specifies a receive-path antenna-port return loss of 6 dB minimum and 7 dB typical alongside a 1.8 dB typical noise figure [13]: its input is matched for noise, not for power (21-03, 21-04).
+- **Discrete LNAs leave the match to the board [Established].** Infineon's BGA9H1BN6 (2.3–2.7 GHz) specifies 9 dB minimum and 13 dB typical input return loss at 2.6 GHz with its recommended external parts, and notes that performance "Can be tuned by using different external matching components" [12]. Qorvo's QPF4609 Wi-Fi 7 front end specifies a receive-path antenna-port return loss of 6 dB minimum and 7 dB typical alongside a 1.8 dB typical noise figure [13]: a likely reading, not stated in the data sheet, is that the LNA input is matched for noise rather than for power (21-03, 21-04), though the switch and module matching also shape the port [Industry estimate].
 
 ### Why it matters commercially
 
@@ -342,7 +342,7 @@ The lab ([labs/21-02-lab](../labs/21-02-lab/README.md)) collects the design form
 ### Marketing vs Reality
 
 - **"A broadband, well-matched input."** Check it against Bode–Fano. For 50 Ω in parallel with 1 pF, no lossless network gives 20 dB return loss over more than 4.34 GHz, or 10 dB over more than 8.69 GHz. A claim beyond the bound means the network is lossy (a resistive pad, which costs gain and noise figure) or the claim is wrong.
-- **"Poor" input return loss.** A 7 dB return loss is $\lvert\Gamma\rvert$ = **0.447**, which looks bad until you notice that the same part has a 1.8 dB noise figure: the input is deliberately matched to the source impedance that minimizes noise. Judge an LNA's input match against its noise and gain, not against 50 Ω alone.
+- **"Poor" input return loss.** A 7 dB return loss is $\lvert\Gamma\rvert$ = **0.447**, which looks bad until you notice that the same part has a 1.8 dB noise figure: the input is probably matched to the source impedance that minimizes noise rather than for power. Judge an LNA's input match against its noise and gain, not against 50 Ω alone.
 - **"On-chip inductors with Q of 40."** Headline Q values come from thick-metal, shielded or high-resistivity test structures at their best frequency. Ask for Q at the operating frequency, the self-resonance margin and the area, in the process the product actually uses.
 - **"Typical" data-sheet performance.** It assumes the vendor's matching network on the vendor's board. Move one capacitor on a customer's board and noise figure, gain and linearity move together.
 
@@ -392,7 +392,7 @@ A small antenna stores much reactive energy relative to the power it radiates (h
 
 <details><summary>Answer</summary>
 
-When the load's reactance has the wrong sign or is larger than the network's required element, so that it cannot be absorbed into the network.
+When a same-type load reactance (or susceptance) is larger than the network's required element, so the remaining element would have to be of the other type. A reactance of the opposite type is simply absorbed into a larger element.
 
 </details>
 

@@ -1,10 +1,10 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 21-05 · Mixers
 
 | | |
 |---|---|
 | **Course** | [21 · RF and Microwave Engineering](../README.md) |
-| **University equivalent** | The mixer chapter of a senior or first-year graduate RF IC course: frequency translation, the image, switching (commutating) mixers and their harmonic responses, active (Gilbert) and passive mixers, mixer noise and noise folding, image-reject architectures, harmonic-reject mixers, LO leakage and second-order distortion, N-path filters (Razavi, *RF Microelectronics*, the mixer and transceiver-architecture chapters; Lee, *The Design of CMOS Radio-Frequency Integrated Circuits*, the mixer chapter) |
+| **University equivalent** | The mixer chapter of a senior or first-year graduate RF IC course: frequency translation, the image, switching (commutating) mixers and their harmonic responses, active (Gilbert) and passive mixers, the noise and noise folding of ideal switching mixers (active-mixer noise analysis is left to Razavi), image-reject architectures, harmonic-reject mixers, LO leakage and second-order distortion, N-path filters (Razavi, *RF Microelectronics*, the mixer and transceiver-architecture chapters; Lee, *The Design of CMOS Radio-Frequency Integrated Circuits*, the mixer chapter) |
 | **Prerequisites** | [21-03](21-03-noise-figure-and-linearity.md) (noise figure, IIP2/IIP3), [21-04](21-04-low-noise-amplifiers.md) (the stage before the mixer), [11-05](../../11-signals-and-systems/chapters/11-05-fourier-series.md) (Fourier series), [11-11](../../11-signals-and-systems/chapters/11-11-modulation-and-filtering-applications.md) (modulation and frequency shifting) |
 | **Estimated study hours** | 6 |
 | **Last verified** | 2026-11-24 |
@@ -69,7 +69,7 @@ $$
 G_c = \frac12\cdot\frac4\pi = \frac2\pi \qquad (-3.92\ \text{dB}),
 $$
 
-and the $n$-th harmonic (odd $n$) converts inputs at $nf_{LO} \pm f_{IF}$ to the IF with gain $2/(n\pi)$: −13.46 dB for $n$ = 3 and −17.90 dB for $n$ = 5. A wideband receiver without a filter in front of the mixer therefore also hears signals near $3f_{LO}$ and $5f_{LO}$, only 9.5 and 14 dB weaker than the wanted one (Example 21-05.1). A single-balanced mixer switches between the input and nothing (a 0/1 waveform, $\tfrac12 + \tfrac12s(t)$): its conversion gain is half, $1/\pi$, and the $\tfrac12$ term passes the RF and the LO's own feedthrough straight to the output, which is why double-balanced circuits dominate.
+and the $n$-th harmonic (odd $n$) converts inputs at $nf_{LO} \pm f_{IF}$ to the IF with gain $2/(n\pi)$: −13.46 dB for $n$ = 3 and −17.90 dB for $n$ = 5. A wideband receiver without a filter in front of the mixer therefore also hears signals near $3f_{LO}$ and $5f_{LO}$, only 9.5 and 14 dB weaker than the wanted one (Example 21-05.1). A single-switch (unbalanced, "return-to-zero") mixer switches between the input and nothing, a 0/1 waveform $\tfrac12 + \tfrac12s(t)$: its conversion gain is $1/\pi$, and the $\tfrac12$ term passes the RF straight to the output. A **single-balanced** mixer uses a differential LO and two switches (or a switching pair), so its differential output is again multiplied by ±1 with gain $2/\pi$; but the LO, or in an active mixer the bias current times $s(t)$, feeds through to the output. A **double-balanced** mixer cancels both feedthroughs and suppresses even-order products, which is why it dominates; conversion gain is not the reason.
 
 **The Gilbert cell.** An active mixer first converts the RF voltage to a current with a transconductor $g_m$, then steers that current with a switching quad driven by the LO into load resistors $R_L$. Gilbert's 1968 four-quadrant multiplier is the bipolar original [1]. With hard switching, the output current is $g_mv_{RF}\,s(t)$ and the voltage conversion gain is
 
@@ -91,7 +91,7 @@ $$
 \frac{1}{(2/\pi)^2} = \frac{\pi^2}{4} = 3.92\ \text{dB} \quad\text{(SSB)},
 $$
 
-of which the image accounts for 3 dB and the odd harmonics for the rest: their conversion gains sum to $\sum_{n\ \text{odd}}(2/n\pi)^2 = \tfrac12$, and the fundamental's two bands take $2 \times 4/\pi^2$ = 0.811 of it (Example 21-05.4). This is one reason a band filter or an LNA with gain precedes the mixer.
+of which the image accounts for 3 dB and the odd harmonics for the rest: summed over both sidebands of every odd harmonic, the power conversion gains total $2\sum_{n\ \text{odd}}(2/n\pi)^2 = 1$, as $s^2 = 1$ requires, and the fundamental's two bands take $2 \times 4/\pi^2$ = 0.811 of that, the higher harmonics the remaining 0.189 (Example 21-05.4). How the 3.92 dB is split between the image and the harmonics depends on which bands are removed first, because noise-factor contributions add in linear units, not in decibels: removing the image first credits it with 3 dB, removing the harmonics first credits them with 1.67 dB (Example 21-05.4). This is why a band filter (or a tuned LNA load that is itself band-limited) sits ahead of the mixer. Gain alone does not help: an LNA's amplified noise in the image and harmonic bands folds just the same.
 
 **Passive mixers: NF ≈ conversion loss.** A passive mixer at room temperature behaves like an attenuator, whose noise figure equals its loss (17-02). Mini-Circuits' MDB-24H+ diode mixer specifies a 6.9 dB conversion loss and a 6.9 dB noise figure at 5 GHz [10].
 
@@ -129,7 +129,7 @@ $$
 \frac1n\left[\sqrt2 + 2\cos\left(n\cdot 45°\right)\right],
 $$
 
-which is $2\sqrt2$ for $n$ = 1 and 7 but **zero** for $n$ = 3 and 5 ($2\cos 135° = 2\cos 225° = -\sqrt2$). The composite LO approximates a sinusoid sampled at eight phases, so the first uncancelled harmonics are the 7th and 9th (at 1/7 and 1/9 of the fundamental). ![Left: one LO period of a square wave and of the harmonic-reject composite LO, which steps through five levels and approximates a sine wave; right: bar chart of odd harmonic amplitudes relative to the fundamental, 1, 0.33, 0.2, 0.14 and 0.11 for the square wave and 1, 0, 0, 0.14 and 0.11 for the harmonic-reject LO](../../../assets/figures/21-05/hr-lo.svg)
+whose bracket equals $2\sqrt2$ for $n$ = 1 and 7 but **zero** for $n$ = 3 and 5 ($2\cos 135° = 2\cos 225° = -\sqrt2$). The composite LO approximates a sinusoid sampled at eight phases, so the first uncancelled harmonics are the 7th and 9th (at 1/7 and 1/9 of the fundamental). ![Left: one LO period of a square wave and of the harmonic-reject composite LO, which steps through four levels (±1 and ±0.414 of its peak) and approximates a sine wave; right: bar chart of odd harmonic amplitudes relative to the fundamental, 1, 0.33, 0.2, 0.14 and 0.11 for the square wave and 1, 0, 0, 0.14 and 0.11 for the harmonic-reject LO](../../../assets/figures/21-05/hr-lo.svg)
 
 *Figure 3. The harmonic-reject LO is a staircase approximation of a sinusoid: its 3rd and 5th harmonics vanish, its 7th and 9th equal the square wave's.*
 
@@ -214,7 +214,7 @@ Unless stated, mixers are ideal hard-switched double-balanced commutators, and c
 
 ### Example 21-05.5 · A passive mixer in a receiver (tier B)
 
-**Setup.** An LNA (15 dB gain, NF 1.5 dB) drives a passive mixer (conversion loss 6.9 dB, NF 6.9 dB), followed by an IF amplifier (NF 3 dB). Find the cascade NF, and the NF without the LNA.
+**Setup.** An LNA (15 dB gain, NF 1.5 dB) drives a passive mixer (conversion loss 6.9 dB, NF 6.9 dB) through an image-reject filter that removes the image and LO-harmonic bands, followed by an IF amplifier (NF 3 dB). Find the cascade NF, and the NF without the LNA.
 
 **Solution.**
 
@@ -257,7 +257,7 @@ Unless stated, mixers are ideal hard-switched double-balanced commutators, and c
 
 - $NR_sC$ = 40 ns, much longer than the 1 ns LO period, so the averaging result holds: BW = $1/(\pi \times 4 \times 50 \times 200\ \text{pF})$ = **7.96** MHz.
 - Centre gain $[(4/\pi)\sin(\pi/4)]^2$ = 0.811: loss **1.82** dB. For N = 8: **0.45** dB.
-- A time-domain simulation of the switched circuit gives −1.82 dB at the centre and −3.0 dB at ±3.98 MHz (§5).
+- A time-domain simulation of the switched circuit gives −1.82 dB at the centre and −3.0 dB relative to the centre at ±3.98 MHz (§5).
 
 **Units check.** Ω × F = s; 1/s = Hz.
 
@@ -335,10 +335,10 @@ The lab ([labs/21-05-lab](../labs/21-05-lab/README.md)) collects the formulas in
 
 | Quantity | Typical value | Note |
 |---|---|---|
-| Commutating mixer conversion gain | $2/\pi$ (−3.92 dB) double-balanced; $1/\pi$ single-balanced | Ideal hard switching |
+| Commutating mixer conversion gain | $2/\pi$ (−3.92 dB) single- and double-balanced; $1/\pi$ for a single-switch (0/1) mixer | Ideal hard switching |
 | LO-harmonic responses | 3rd: −13.46 dB, 5th: −17.90 dB (9.5 and 14 dB below the fundamental) | Square-wave LO |
 | Noise folding, noiseless switching mixer | SSB 3.92 dB unfiltered; 3 dB from the image alone | $s^2 = 1$ |
-| Image rejection | $4/(\varepsilon^2 + \theta^2)$: 40 dB at 1% and 1°; "30–40 dB" typical on chip without calibration; 57–62 dB with calibration or special frequency plans | [2, 7, R-375] |
+| Image rejection | $4/(\varepsilon^2 + \theta^2)$: 40 dB at 1% and 1°; "30–40 dB" typical on chip without calibration; 57–62 dB with calibration or special frequency plans | [2, 7, 12, 13] |
 | Passive diode mixer | conversion loss about 5 dB, IP3 15 dBm at +7 dBm LO; 23 dBm at +17 dBm LO | Mini-Circuits ADE-1+/ADE-1H+ [10] |
 | Passive mixer noise figure | about equal to its conversion loss (6.9 dB at 5 GHz) | Mini-Circuits MDB-24H+ [10] |
 | Single-chip radar receiver image rejection | 30 dB | TI AWR1843 [R-373] |
@@ -360,8 +360,8 @@ The lab ([labs/21-05-lab](../labs/21-05-lab/README.md)) collects the formulas in
 
 - **The building blocks are classics [Established].** Gilbert's 1968 multiplier was "linear on both inputs and useful from dc to an upper frequency very close to the $f_T$ of the transistors", with precision "limited primarily by the matching of the transistors" [1]. Weaver published his third method of single-sideband generation and detection in 1956 [8]. Franks and Sandberg proposed the N-path filter in 1960 [9].
 - **Zero-IF won, and its problems are understood [Established].** Abidi's and Razavi's analyses identified DC offsets, I/Q mismatch, even-order distortion, flicker noise and LO leakage as the costs of direct conversion [5, 6]. A 2023 5G receiver front end reports "calibration-free IIP2 of more than 59 dBm" with a 3.5 dB noise figure [R-375].
-- **Passive current-mode mixers dominate CMOS receivers [Established].** Mirzaei and colleagues analysed how the passive mixer "reflects the baseband impedance to the RF" and how I/Q interaction "results in different high- and low-side conversion gains, and unexpected IIP2 and IIP3 values" [3]. The Blixer used a 25% duty-cycle LO to halve the switches' DC drop and double the IF impedance [R-374].
-- **Image rejection: 30–40 dB uncalibrated, 57–62 dB calibrated [Established per paper].** A Berkeley course quotes typical on-chip values of "30-40 dB achieved (< 5°, < 0.6 dB)" [R-375]; the exact formula gives about 25 dB at that corner. Der and Razavi reported 57 dB after LMS calibration [7]; Behbahani and colleagues reached 60 dB "without trimming or calibration" at low IF with careful polyphase filters [7]; a single-chip radar specifies 30 dB [R-373].
+- **Passive current-mode mixers dominate CMOS receivers [Established].** Mirzaei and colleagues analysed how the passive mixer "reflects the baseband impedance to the RF" and how I/Q interaction "results in different high- and low-side conversion gains, and unexpected IIP2 and IIP3 values" [3]. The Blixer used a 25% duty-cycle LO to halve the switches' DC drop and double the IF impedance [14].
+- **Image rejection: 30–40 dB typical uncalibrated, 57–62 dB with calibration or special designs [Established per paper].** A Berkeley course quotes typical on-chip values of "30-40 dB achieved (< 5°, < 0.6 dB)" [13]; the exact formula gives about 25 dB at that corner. Der and Razavi reported 57 dB after LMS calibration [7]; Behbahani and colleagues reached 60 dB "without trimming or calibration" at low IF with careful polyphase filters [7]; a single-chip radar specifies 30 dB [R-373]; placing the image around zero frequency reached 62 dB [12].
 - **Harmonic rejection and N-path selectivity replace filters in wideband radios [Established].** Ru and colleagues reported more than 60 dB of harmonic rejection for the 2nd to 6th harmonics "over 40 chips", with digital cancellation adding more [4]. Ghaffari's 4-path filters are tunable from 0.1 to 1 GHz with IIP3 above 14 dBm and a noise figure of 3–5 dB, using 2–16 mW of clock power [9]. Andrews and Molnar's mixer-first receiver showed "NF as low as 3 dB, and 25 dBm out-of-band IIP3" from 0.1 to 1.3 GHz [11], and a 2024 design reached more than 20 dBm adjacent-channel IIP3 below 25 mW [11]. At millimetre waves, a 2025 survey puts mixer-first receivers at "13 to 89mW and 8 to 20dB", noting that "there are no SAW-equivalent filters available at these frequencies" [11].
 
 ### Why it matters commercially
@@ -467,3 +467,6 @@ Problems: [21-05 problem set](../problems/21-05-problems.md) · Worked solutions
 9. L. E. Franks and I. W. Sandberg, "An alternative approach to the realization of network transfer functions: The N-path filter," *Bell Syst. Tech. J.*, vol. 39, no. 5, pp. 1321–1350, Sep. 1960, DOI 10.1002/j.1538-7305.1960.tb03962.x; A. Ghaffari, E. A. M. Klumperink, M. C. M. Soer and B. Nauta, "Tunable high-Q N-path band-pass filters: Modeling and verification," *IEEE J. Solid-State Circuits*, vol. 46, no. 5, pp. 998–1010, May 2011, DOI 10.1109/JSSC.2011.2117010 [R-374].
 10. Mini-Circuits data sheets: ADE-1+ and ADE-1H+ (Rev. G, 2020), MDB-24H+ (Rev. A, 2021) [R-376].
 11. C. Andrews and A. C. Molnar, "A passive mixer-first receiver with digitally controlled and widely tunable RF interface," *IEEE J. Solid-State Circuits*, vol. 45, no. 12, pp. 2696–2708, Dec. 2010, DOI 10.1109/JSSC.2010.2077151; S. van Zanten, R. van der Zee and B. Nauta, ISSCC 2024, paper 5.5, DOI 10.1109/ISSCC49657.2024.10454419; A. G. Gadelkarim and P. Mercier, ISSCC 2025, paper 5.10, DOI 10.1109/ISSCC49661.2025.10904619 [R-375].
+12. B. Razavi, *Symp. VLSI Circuits*, 2000, DOI 10.1109/VLSIC.2000.852844 (62 dB with the image placed around zero frequency) [R-375].
+13. A. Niknejad, EECS 242 lecture "Receiver Architectures," UC Berkeley, PDF dated 5 Feb 2009 [R-375].
+14. S. C. Blaakmeer, E. A. M. Klumperink, D. M. W. Leenaerts and B. Nauta, "The Blixer, a wideband balun-LNA-I/Q-mixer topology," *IEEE J. Solid-State Circuits*, vol. 43, no. 12, pp. 2706–2715, Dec. 2008, DOI 10.1109/JSSC.2008.2004866 [R-374].

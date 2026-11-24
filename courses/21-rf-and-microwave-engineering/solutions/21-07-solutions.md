@@ -34,8 +34,8 @@ Problems: [21-07 problem set](../problems/21-07-problems.md) · Chapter: [21-07]
 
 With $I_{max}$ = 1, $c = \cos(\alpha/2)$, $I_{DC} = (2\sin(\alpha/2) - \alpha c)/[2\pi(1 - c)]$ and $I_1 = (\alpha - \sin\alpha)/[2\pi(1 - c)]$:
 
-- 300° (class AB): $I_{DC}$ = 0.4720, $I_1$ = 0.5204, (a) η = **55.13** %, (c) **+0.35** dB, (e) $R_{opt}$ = **1.921** $V_{DD}/I_{max}$.
-- 150° (class C): $I_{DC}$ = 0.2693, $I_1$ = 0.4548, (b) η = **84.43** %, (d) **−0.82** dB, (f) **2.199** $V_{DD}/I_{max}$.
+- 300° (class AB): $I_{DC}$ = 0.4720, $I_1$ = 0.5204, (a) η = **55.13** %, (c) $10\log_{10}(0.5204/0.5)$ = **+0.17** dB (same swing, so power follows $I_1$), (e) $R_{opt}$ = **1.921** $V_{DD}/I_{max}$.
+- 150° (class C): $I_{DC}$ = 0.2693, $I_1$ = 0.4548, (b) η = **84.43** %, (d) **−0.41** dB, (f) **2.199** $V_{DD}/I_{max}$.
 
 ### Solution 21-07.5
 
@@ -79,11 +79,11 @@ Integrating over the exponential envelope power as in Example 21-07.5, with the 
 
 (a) The load must let the main reach full swing when only it conducts, at $x = 1/(1 + \gamma)$: $R_L = R_{opt}/(1 + \gamma)$ = **8.33** Ω. (b) $Z_0 = R_{opt}$ = **25** Ω.
 
-(c) At peak both devices swing $V_{DD}$, the main with $I_{max}$ = 1.12 A and the auxiliary with $2I_{max}$: $P = (1 + \gamma)V_{DD}I_{max}/2$ = **47.04** W.
+(c) At peak both devices swing $V_{DD}$, the main with fundamental current $I_{1,max}$ = 1.12 A (§3.5's notation; its peak drain current is twice that) and the auxiliary with $2I_{1,max}$: $P = (1 + \gamma)V_{DD}I_{max}/2$ = **47.04** W.
 
 (d) The main sees $Z_0^2/R_L = 3R_{opt}$ and reaches full swing at $x$ = 1/3, a back-off of $20\log_{10}3$ = **9.54** dB, where (e) it delivers $P/9$ = **5.23** W at π/4.
 
-(f) Above $x$ = 1/3 the auxiliary current is $(3x - 1)I_{max}$. The line gives $\lvert V_L\rvert = xV_{DD}$, and the load node needs $3xI_{max}$, so the line's output current is $I_{max}$ and the main stays at $V_{DD}$. Output power $x^2V_{DD}^2(1 + \gamma)/(2R_{opt})$, DC power $(2/\pi)V_{DD}I_{max}(x + 3x - 1)$:
+(f) Above $x$ = 1/3 the auxiliary current is $(3x - 1)I_{1,max}$. The line gives $\lvert V_L\rvert = xV_{DD}$, and the load node needs $3xI_{max}$, so the line's output current is $I_{max}$ and the main stays at $V_{DD}$. Output power $x^2V_{DD}^2(1 + \gamma)/(2R_{opt})$, DC power $(2/\pi)V_{DD}I_{max}(x + 3x - 1)$:
 
 $$
 \eta = \frac{3\pi}{4}\cdot\frac{x^2}{4x - 1} .
@@ -154,8 +154,8 @@ A modulator that keeps 70% efficiency while tracking a 100 MHz-class envelope is
 | 21-07.3b | class B | 70.69 | % |
 | 21-07.4a | efficiency, 300° | 55.13 | % |
 | 21-07.4b | efficiency, 150° | 84.43 | % |
-| 21-07.4c | power vs class A, 300° | 0.35 | dB |
-| 21-07.4d | power vs class A, 150° | −0.82 | dB |
+| 21-07.4c | power vs class A, 300° | 0.17 | dB |
+| 21-07.4d | power vs class A, 150° | −0.41 | dB |
 | 21-07.4e | normalized R_opt, 300° | 1.921 | |
 | 21-07.4f | normalized R_opt, 150° | 2.199 | |
 | 21-07.5a | R | 7.210 | Ω |

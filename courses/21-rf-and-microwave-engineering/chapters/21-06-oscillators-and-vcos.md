@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 21-06 · Oscillators and VCOs
 
 | | |
@@ -369,8 +369,8 @@ so the beat frequency is $\sqrt{\Delta\omega^2 - \omega_L^2}$ and the oscillator
 - (e) Doubling $S_i$ adds 3.01 dB: **−115.73** dBc/Hz.
 - (f) FoM = 115.73 + 20 log(5000) − 10 log(2.4) = 115.73 + 73.98 − 3.80 = **185.9** dB.
 - (g) $10\log_{10}[2Q^2(1\text{ mW})/kT]$ = **198.1** dB. The gap to (f) is $10\log_{10}F$ = 3.0 dB plus $-10\log_{10}\eta$ = 9.2 dB, exactly.
-- (h) $\Delta f_{1/f^3} = f_{1/f}(\Gamma_{dc}/\Gamma_{rms})^2$ = 1 MHz × 0.0225 = **22.5** kHz.
-- (i) The $1/\Delta f^2$ part at 10 kHz is 40 dB above its 1 MHz value, −75.73 dBc/Hz; the flicker factor $1 + 22.5/10$ = 3.25 adds 5.12 dB: **−70.61** dBc/Hz.
+- (h) For the devices' own noise, $\Delta f_{1/f^3} = f_{1/f}(\Gamma_{dc}/\Gamma_{rms})^2$ = 1 MHz × 0.0225 = **22.5** kHz. The tank resistor has no 1/f noise, and with $F$ = 2 the devices supply only half the white noise, so the corner of the total phase noise is half that, **11.25** kHz.
+- (i) At 10 kHz each white half is 40 dB above its 1 MHz value: the tank's −118.74 + 40 = −78.74 dBc/Hz, and the devices' the same, raised by the flicker factor $1 + 22.5/10$ = 3.25 to −73.62 dBc/Hz. Together: **−72.45** dBc/Hz. (Applying the flicker factor to the whole $F$ = 2 noise would count flicker on the tank's thermal noise, which has none.)
 
 **Units check.** $S_i/(q^2\omega^2)$: (A²/Hz)/(C²·s⁻²) = 1/Hz. FoM: dB relative to 1/(Hz·mW).
 
@@ -473,7 +473,7 @@ so the beat frequency is $\sqrt{\Delta\omega^2 - \omega_L^2}$ and the oscillator
 - (b) 106.5 + 89.28 + 0.555 = **196.3** dB.
 - (c) 106.5 + 87.78 + 0.555 = **194.8** dB. The headline depends on which carrier is paired with the power.
 - (d) −152 + 20 log 20 + 20 log 7 = −152 + 26.02 + 16.90 = **−109.1** dBc/Hz.
-- (e) −106.5 − 20 log(29.1/28) = **−106.8** dBc/Hz.
+- (e) Assuming the −106.5 dBc/Hz was measured at 29.1 GHz (the paper reports "better than" that across its band), −106.5 − 20 log(29.1/28) = **−106.8** dBc/Hz; if it belongs to a lower carrier, the 28 GHz value is −106.5 dBc/Hz or slightly worse.
 - (f) **2.24** dB better; $10\log_{10}N \ge 2.24$ needs $N$ = 2 cores (3.01 dB) at 1.76 mW, still below (a)'s 6.6 mW.
 
 **Units check.** Every term is in decibels relative to the stated reference.
@@ -503,8 +503,9 @@ so the beat frequency is $\sqrt{\Delta\omega^2 - \omega_L^2}$ and the oscillator
 | Ex 21-06.2e | phase noise with F = 2 | −115.73 | dBc/Hz |
 | Ex 21-06.2f | FoM | 185.9 | dB |
 | Ex 21-06.2g | FoM bound, F = 1 | 198.1 | dB |
-| Ex 21-06.2h | 1/f³ corner | 22.5 | kHz |
-| Ex 21-06.2i | phase noise at 10 kHz | −70.61 | dBc/Hz |
+| Ex 21-06.2h | 1/f³ corner of the device noise | 22.5 | kHz |
+| Ex 21-06.2j | 1/f³ corner of the total | 11.25 | kHz |
+| Ex 21-06.2i | phase noise at 10 kHz | −72.45 | dBc/Hz |
 | Ex 21-06.3a | code-0 band, low edge | 5.033 | GHz |
 | Ex 21-06.3b | code-0 band, high edge | 5.459 | GHz |
 | Ex 21-06.3c | code-0 tuning range | 8.12 | % |
@@ -567,7 +568,7 @@ The lab ([labs/21-06-lab](../labs/21-06-lab/README.md)) collects the formulas in
 3. Predict the phase noise at 100 kHz and 1 MHz from the tank, the devices and the tuning line, then plot the budget (Part 3).
 4. Predict how $K_{VCO}$ changes from the top band to the bottom band of a capacitor bank, then compute the band map (Part 4).
 5. Predict the IRR of an RC-CR network across a 2.40–2.50 GHz band with ±10% RC spread, then run `ngspice -b polyphase.cir` and sweep (Part 5).
-6. Predict whether an injection at 1.1 and at 2 lock-ranges locks, and the beat frequency if not, then simulate it (Part 6).
+6. Predict whether an injection at 0.9 and at 2 lock-ranges locks, and the beat frequency if not, then simulate it (Part 6).
 
 ## 6. Engineering tradeoffs
 
@@ -589,7 +590,7 @@ The lab ([labs/21-06-lab](../labs/21-06-lab/README.md)) collects the formulas in
 | Ideal-tank ISF | $\Gamma = -\sin\theta$, $\Gamma_{rms}$ = 0.707 | Half of white noise becomes phase noise |
 | FoM bound | $10\log_{10}[2Q^2(1\text{ mW})/(FkT)]$: 196.8 dB at Q = 10, F = 1 | 20-10 |
 | Best LC VCO FoM, 1–9 GHz | about 189–195 dB | [7, 8, 9, 10] (as of Nov 2026) |
-| Best VCO FoM, 25–30 GHz | about 184–193 dB | [10, 12] (as of Nov 2026) |
+| Best VCO FoM, 25–30 GHz | about 184–193 dB in JSSC designs; 195 dB claimed for a sub-milliwatt design | [10, 11, 12] (as of Nov 2026) |
 | Integrated synthesizer VCO | about −128 to −132 dBc/Hz at 1 MHz from 6–8 GHz | TI LMX2595, LMX2820 [13] |
 | 77 GHz radar LO | −93 to −96 dBc/Hz at 1 MHz | TI AWR2944, AWR1843 [14] |
 | Division by N | $-20\log_{10}N$: 6.02 dB per divide-by-2 | Until the divider's noise floor |

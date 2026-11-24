@@ -72,13 +72,17 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Why acoustic resonators are small.** At 3.5 GHz, find (a) the thickness of a half-wavelength AlN resonator ($v$ = 11,000 m/s) and (b) the length of a quarter-wavelength line on a board with $\varepsilon_{eff}$ = 6. (c) What is their ratio?
 
+### Problem 21-09.16 [C]
+
+**Derive the resonator's two resonances.** For a lossless Butterworth-Van Dyke resonator ($R_m$ = 0), (a) show from its admittance that the series resonance is $f_s = 1/(2\pi\sqrt{L_mC_m})$ and the parallel resonance is $f_p = f_s\sqrt{1 + C_m/C_0}$. (b) Now keep a small $R_m$ and show that the impedance at $f_p$ is approximately $1/(\omega_p^2C_0^2R_m)$. (c) Evaluate $f_p$ and the peak impedance for Example 21-09.1's resonator ($C_0$ = 1 pF, $f_s$ = 2.00 GHz, $C_0/C_m$ = 17.44, $R_m$ = 0.694 Ω).
+
 ---
 
 ## Objective coverage
 
 | Objective | Problems |
 |---|---|
-| 1. BVD model, k² and why acoustic resonators are small | 1, 2, 15 |
+| 1. BVD model, k² and why acoustic resonators are small | 1, 2, 15, 16 |
 | 2. Ladder filters: bandwidth from k², loss from Q | 3, 4 |
 | 3. Temperature drift and the duplex gap | 5 |
 | 4. Duplexer isolation and loss budgets | 6, 7 |

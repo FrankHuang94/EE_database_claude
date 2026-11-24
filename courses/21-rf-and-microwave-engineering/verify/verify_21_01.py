@@ -194,7 +194,23 @@ s2g = np.array([[P(0.6, -160), P(0.05, 50)], [P(4.0, 80), P(0.5, -40)]])
 k, d = kdelta(s2g)
 v.check("Ex 21-01.6a", d)
 v.check("Ex 21-01.6b", k)
-mu2 = lab.stability(s2g)["mu"]
+def mu_distance(s, r_max=5.0):
+    """Distance from the origin of the Gamma_L plane to the nearest load (passive or not) with |Gamma_in| >= 1."""
+    best = np.inf
+    rr = np.linspace(0.0, r_max, 5001)
+    for phi in np.linspace(0, 2 * math.pi, 1441):
+        mags = np.abs([gin(s, q * cmath.exp(1j * phi)) for q in rr[::10]])
+        hit = np.nonzero(mags >= 1)[0]
+        if hit.size:
+            i = hit[0]
+            lo, hi = rr[::10][max(i - 1, 0)], rr[::10][i]
+            best = min(best, optimize.brentq(lambda q: abs(gin(s, q * cmath.exp(1j * phi))) - 1, lo, hi, xtol=1e-12)
+                       if i > 0 else 0.0)
+    return best
+
+
+mu2 = mu_distance(s2g)  # distance search, independent of the lab's closed form
+v.assert_true("lab mu agrees with the distance search at 2 GHz", abs(lab.stability(s2g)["mu"] - mu2) < 1e-3)
 v.check("Ex 21-01.6c", mu2)
 v.check("Ex 21-01.6d", 10 * lg(abs(s2g[1, 0] / s2g[0, 1])))
 gm = gmax_numeric(s2g)
@@ -366,5 +382,38 @@ for rl, klo, khi in ((20, "Txt 21-01.k", "Txt 21-01.l"), (35, "Txt 21-01.m", "Tx
     gm = np.abs(e_d * ph[:, None] + gam / (1 - e_s * ph[None, :] * gam))
     v.check(klo, -20 * lg(gm.max()))
     v.check(khi, -20 * lg(gm.min()))
+
+
+# §3.7 derivation: |C1|^2 = |S12 S21|^2 + D1 D2, B1^2 - 4|C1|^2 = 4|S12 S21|^2 (K^2 - 1), and G_A at the passive
+# root equals |S21/S12|(K - sqrt(K^2 - 1)), checked on random stable two-ports against a brute-force maximum of G_A.
+rng_g = np.random.default_rng(2101)
+ok_id, ok_g, n_stable = True, True, 0
+for _ in range(400):
+    s11, s12, s21, s22 = (rng_g.uniform(0, 1) * np.exp(1j * rng_g.uniform(0, 2 * np.pi)) for _ in range(4))
+    s21 *= 4
+    s12 *= 0.1
+    dlt = s11 * s22 - s12 * s21
+    d1, d2 = abs(s11) ** 2 - abs(dlt) ** 2, 1 - abs(s22) ** 2
+    c1 = s11 - dlt * np.conj(s22)
+    kk = (1 - abs(s11) ** 2 - abs(s22) ** 2 + abs(dlt) ** 2) / (2 * abs(s12 * s21))
+    b1 = d1 + d2
+    ok_id &= abs(abs(c1) ** 2 - (abs(s12 * s21) ** 2 + d1 * d2)) < 1e-12
+    ok_id &= abs(b1**2 - 4 * abs(c1) ** 2 - 4 * abs(s12 * s21) ** 2 * (kk**2 - 1)) < 1e-12
+    if kk > 1 and abs(dlt) < 1:
+        n_stable += 1
+        gs = (b1 - np.sqrt(b1**2 - 4 * abs(c1) ** 2)) / (2 * c1)
+        def g_a(g):
+            return abs(s21) ** 2 * (1 - abs(g) ** 2) / (d2 - 2 * np.real(c1 * g) + d1 * abs(g) ** 2)
+        grid = np.array([r * np.exp(1j * t) for r in np.linspace(0, 0.995, 120) for t in np.linspace(0, 2 * np.pi, 240)])
+        vals = g_a(grid)
+        g0 = grid[int(np.argmax(vals))]
+        res = optimize.minimize(lambda p: -g_a(p[0] * np.exp(1j * p[1])), [abs(g0), np.angle(g0)],
+                                bounds=[(0, 0.999999), (-10, 10)], method="L-BFGS-B")
+        brute = max(np.max(vals), -res.fun)
+        closed = abs(s21 / s12) / (kk + np.sqrt(kk**2 - 1))  # = K - sqrt(K^2 - 1), without cancellation
+        ok_g &= abs(gs) < 1 and abs(g_a(gs) / closed - 1) < 1e-7 and brute <= closed * (1 + 1e-7) and brute > 0.999 * closed
+v.assert_true("§3.7 identities hold on 400 random two-ports", bool(ok_id))
+v.assert_true(f"§3.7 G_A at the passive root equals G_max and bounds a brute-force search ({n_stable} stable cases)",
+              bool(ok_g) and n_stable > 20)
 
 sys.exit(v.finish())

@@ -186,7 +186,7 @@ $$
 
 (d) Exactly, $\Delta f - \sqrt{\Delta f^2 - f_L^2}$ = **10.00** kHz: the approximation is excellent here.
 
-(e) The PA's 5 GHz output is then 5 GHz from the 10 GHz VCO, a thousand times its lock range, so it cannot pull it. The PA's second harmonic does land at 10 GHz, though; it is weaker, but frequency plans that avoid every harmonic coincidence (for example a VCO at 4/3 of the carrier) exist for that reason.
+(e) The PA's 5 GHz output is then 5 GHz from the 10 GHz VCO, thousands of times its lock range (about 4,000×), far outside the narrowband model's range, so it cannot pull it. The PA's second harmonic does land at 10 GHz, though; it is weaker, but frequency plans that avoid every harmonic coincidence (for example a VCO at 4/3 of the carrier) exist for that reason.
 
 ### Solution 21-06.15
 

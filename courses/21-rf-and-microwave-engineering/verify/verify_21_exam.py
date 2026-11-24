@@ -11,7 +11,10 @@ Answers with a non-trivial route are recomputed independently; closed-form arith
 - mixer gains and harmonic responses from numerical Fourier coefficients of the LO waveforms; IRR from I/Q phasors;
 - the tank in parallel-loss form; the oscillator amplitude by numerical Fourier integration; phase noise from the
   Leeson form 2kT/P_s (omega_0/2Q d omega)^2;
-- PA efficiencies by numerical integration of the clipped-cosine current; ACLR in linear units by root finding;
+- PA efficiencies by numerical integration of the clipped-cosine current; the ACLR limit in linear units, with the
+  cubic ACLR law itself confirmed by a Monte Carlo complex-Gaussian simulation; OFDM average efficiencies by
+  integrating over a clipped Rayleigh envelope;
+- the N-path filter's bandwidth and centre gain confirmed by a time-domain switched-RC simulation;
 - the preselector from scipy's analog Butterworth band-pass design;
 - the BAW coupling from the Butterworth-Van Dyke impedance's numerically located resonances;
 - switch loss and isolation from the ABCD matrix of the series element;
@@ -39,6 +42,7 @@ lg = math.log10
 TWO_PI = 2 * math.pi
 Z0 = 50.0
 C0 = 299_792_458.0
+rng = np.random.default_rng(21)
 
 
 def db(x: float) -> float:
@@ -114,7 +118,9 @@ best = radii.min()
 p0 = phis[int(np.argmin(radii))]
 mu_fine = optimize.minimize_scalar(first_unstable_radius, bounds=(p0 - 0.01, p0 + 0.01), method="bounded",
                                    options={"xatol": 1e-12}).fun
+v.assert_true("mu search agrees with the grid", abs(mu_fine - best) < 2e-3, f"{mu_fine} vs {best}")
 v.check("X21.1k", mu_fine)
+v.check("X21.1p", abs(S22 - delta * np.conj(S11)))
 # Unconditional stability: no passive load or source gives |Gamma| >= 1 at the other port.
 disk = np.array([rr * np.exp(1j * p) for rr in np.linspace(0, 1, 101) for p in np.linspace(0, TWO_PI, 181)])
 gout = S22 + S12 * S21 * disk / (1 - S11 * disk)
@@ -135,6 +141,7 @@ best_gt = min((optimize.minimize(neg_gt, x0, bounds=[(0, 0.999), (-10, 10), (0, 
                                  method="L-BFGS-B") for x0 in
                ([0.5, 2.4, 0.5, 0.8], [0.7, 2.0, 0.6, 1.0], [0.3, -2.0, 0.3, 0.5])), key=lambda res: res.fun)
 v.check("X21.1m", db(-best_gt.fun))
+v.check("X21.1q", -best_gt.fun / abs(S21 / S12))  # G_max / MSG = K - sqrt(K^2 - 1)
 
 # (d) Gamma_in through the Z-matrix: Z = Z0 (I + S)(I - S)^-1, terminate, convert back.
 I2 = np.eye(2)
@@ -148,33 +155,55 @@ v.check("X21.1o", math.degrees(np.angle(g_in)))
 # ---------------------------------------------------------------- Q2: matching a PA
 f0 = 2.4e9
 w0 = TWO_PI * f0
+R_PA = 4.0
 
 
 def zin_l(lv: float, cv: float, w) -> complex:
-    """Input impedance seen by the 5 ohm PA: series L, then shunt C across 50 ohms."""
+    """Input impedance seen by the 4 ohm PA: series L, then shunt C across 50 ohms."""
     return 1j * w * lv + 1 / (1 / 50 + 1j * w * cv)
 
 
-sol = optimize.fsolve(lambda p: [zin_l(p[0] * 1e-9, p[1] * 1e-12, w0).real - 5,
+sol = optimize.fsolve(lambda p: [zin_l(p[0] * 1e-9, p[1] * 1e-12, w0).real - R_PA,
                                  zin_l(p[0] * 1e-9, p[1] * 1e-12, w0).imag], [1.0, 4.0], xtol=1e-13)
 l_mat, c_mat = sol[0] * 1e-9, sol[1] * 1e-12
-v.check("X21.2a", (w0 * l_mat) / 5)  # Q = X_series / R_low
+v.check("X21.2a", (w0 * l_mat) / R_PA)  # Q = X_series / R_low
 v.check("X21.2b", l_mat * 1e9)
 v.check("X21.2c", c_mat * 1e12)
-qn = w0 * l_mat / 5
+qn = w0 * l_mat / R_PA
 v.check("X21.2d", f0 * 2 * 0.1 * math.sqrt(1 + qn**2) / qn**2 / 1e6)
 v.check("X21.2e", f0 * 2 * 0.1 / qn / 1e6)
 fs_ = np.linspace(2.0e9, 2.8e9, 800_001)
 zz = zin_l(l_mat, c_mat, TWO_PI * fs_)
-good = fs_[np.abs((zz - 5) / (zz + 5)) <= 0.1]
+good = fs_[np.abs((zz - R_PA) / (zz + R_PA)) <= 0.1]
 v.check("X21.2k", (good.max() - good.min()) / 1e6)
-rm = math.exp((math.log(5) + math.log(50)) / 2)
+rm = math.exp((math.log(R_PA) + math.log(50)) / 2)
 v.check("X21.2f", rm)
-v.check("X21.2g", math.sqrt(rm / 5 - 1))
+v.check("X21.2g", math.sqrt(rm / R_PA - 1))
 v.check("X21.2h", db(1 + qn / 20))
 v.check("X21.2i", 2 * db(1 + math.sqrt(50 / rm - 1) / 20))
-v.check("X21.2j", 1 / (2 * 5 * 40e-12 * math.log(1 / 0.1)) / 1e9)
-v.assert_true("the L-network's band is inside the Bode-Fano limit", (good.max() - good.min()) < 1.086e9)
+v.check("X21.2n", db(1 + math.sqrt(100 - 1) / 20))
+v.check("X21.2o", 2 * db(1 + math.sqrt(math.sqrt(100) - 1) / 20))
+# Binomial two-section transformer: log steps weighted by C(2, n)/2^2, then checked by an exact line cascade.
+weights = [math.comb(2, i) / 4 for i in range(3)]
+z_sec = [R_PA * math.exp(sum(weights[: i + 1]) * math.log(50 / R_PA)) for i in range(2)]
+v.check("X21.2l", z_sec[0])
+v.check("X21.2m", z_sec[1])
+
+
+def zin_lines(f: float) -> complex:
+    """Exact input impedance of the two quarter-wave lines (quarter-wave at f0) loaded by 50 ohms."""
+    zl_ = 50.0
+    th_ = (math.pi / 2) * f / f0
+    for zc in reversed(z_sec):
+        zl_ = zc * (zl_ + 1j * zc * math.tan(th_)) / (zc + 1j * zl_ * math.tan(th_))
+    return zl_
+
+
+v.assert_true("binomial transformer is matched at f0", abs(zin_lines(f0) - R_PA) < 1e-9)
+g_lines = [abs((zin_lines(f) - R_PA) / (zin_lines(f) + R_PA)) for f in (0.95 * f0, 1.05 * f0)]
+v.assert_true("binomial transformer is flat near f0 (|Gamma| < 0.02 at +-5%)", max(g_lines) < 0.02, str(g_lines))
+v.check("X21.2j", 1 / (2 * R_PA * 40e-12 * math.log(1 / 0.1)) / 1e9)
+v.assert_true("the L-network's band is inside the Bode-Fano limit", (good.max() - good.min()) < 1.357e9)
 
 # ---------------------------------------------------------------- Q3: receiver cascade
 T0 = 290.0
@@ -205,13 +234,15 @@ spec = np.abs(np.fft.rfft(y)) / (nfft / 2)
 p_fund = 20 * lg(spec[k1])
 p_im3 = 20 * lg(spec[2 * k1 - k2])
 iip3_sim = -60 + (p_fund - p_im3) / 2
-v.check("X21.3b", iip3_sim, tol=0.006)
+v.check("X21.3b", iip3_sim)
+v.check("X21.3f", idb(iip3_sim))
 nf = db(f_tot)
 noise = -174 + db(20e6) + nf
 v.check("X21.3c", noise + 5)
 v.check("X21.3d", 2 / 3 * (iip3_sim - noise))
 th = T0 * (idb(15) + 1)
 v.check("X21.3e", db((th + te) / (T0 + te)))
+v.check("X21.3g", db(th / T0))  # noiseless receiver: T_e = 0
 
 # ---------------------------------------------------------------- Q4: the LNA
 f0 = 5.5e9
@@ -265,6 +296,7 @@ f_lossy = 1 + (abs(hs1) ** 2 * 4 * kt0 * rg + abs(hn1) ** 2 * 4 * kt0 * gm) / (a
 v.check("X21.4j", db(f_lossy))
 g_need = optimize.brentq(lambda g: f_lossy + (10 - 1) / g - f_lossy * 10**0.05, 1, 1e4)
 v.check("X21.4k", db(g_need))
+v.check("X21.4l", g_need)
 
 # ---------------------------------------------------------------- Q5: mixers
 
@@ -291,6 +323,7 @@ phase = math.radians(3)
 wanted = abs(1 + (1 + eps) * np.exp(1j * phase)) ** 2
 image = abs(1 - (1 + eps) * np.exp(1j * phase)) ** 2
 v.check("X21.5e", db(wanted / image))
+v.check("X21.5k", wanted / image)
 v.check("X21.5f", db(4 / (eps**2 + phase**2)))
 v.check("X21.5g", 20 * lg(abs(fourier(square, 3)) / b1))
 
@@ -302,17 +335,43 @@ def hr_lo(t: float) -> float:
 
 v.assert_true("HR LO cancels the 3rd and 5th", abs(fourier(hr_lo, 3)) < 1e-9 and abs(fourier(hr_lo, 5)) < 1e-9)
 v.check("X21.5h", 20 * lg(abs(fourier(hr_lo, 7)) / abs(fourier(hr_lo, 1))))
-npath, cpath = 8, 30e-12
+npath, cpath = 6, 25e-12
 tau = npath * rs * cpath  # each capacitor is connected for 1/N of the period
 f3 = optimize.brentq(lambda f: abs(1 / (1 + 1j * TWO_PI * f * tau)) - 1 / math.sqrt(2), 1, 1e9)
 v.check("X21.5i", 2 * f3 / 1e6)
 held = integrate.quad(math.cos, -math.pi / npath, math.pi / npath)[0] / (TWO_PI / npath)
 v.check("X21.5j", 20 * lg(held**2))
 
+
+def npath_sim(df: float, f_lo: float = 1e9, steps: int = 240, periods: int = 400) -> float:
+    """Time-domain N-path filter: source EMF cos(2 pi (f_lo + df) t) through R_s, capacitor k connected during
+    phase k of N. Returns the node voltage's component at f_lo + df (amplitude per unit EMF) in steady state."""
+    dt = 1 / (f_lo * steps)
+    vc = np.zeros(npath)
+    a_step = math.exp(-dt / (rs * cpath))
+    t = np.arange(periods * steps) * dt
+    src = np.cos(TWO_PI * (f_lo + df) * t)
+    node = np.empty_like(t)
+    for i in range(t.size):
+        ph = (i % steps) * npath // steps
+        vc[ph] = src[i] + (vc[ph] - src[i]) * a_step
+        node[i] = vc[ph]
+    tail = slice((periods // 2) * steps, periods * steps)
+    ref = np.exp(-1j * TWO_PI * (f_lo + df) * t[tail])
+    return abs(2 * np.mean(node[tail] * ref))
+
+
+g_centre = npath_sim(0.0)
+v.assert_true("time-domain N-path centre gain matches [(N/pi) sin(pi/N)]^2 within 2%",
+              abs(g_centre / held**2 - 1) < 0.02, f"{g_centre:.4f} vs {held**2:.4f}")
+g_edge = npath_sim(f3)
+v.assert_true("time-domain N-path is about 3 dB down at the predicted band edge (within 0.5 dB)",
+              abs(20 * lg(g_edge / g_centre) + 3.01) < 0.5, f"{20 * lg(g_edge / g_centre):.2f} dB")
+
 # ---------------------------------------------------------------- Q6: the VCO
 f0 = 6e9
 w0 = TWO_PI * f0
-lt = 0.8e-9
+lt = 0.6e-9
 ct = 1 / (w0**2 * lt)
 r_l = 12 * w0 * lt  # inductor loss as a parallel resistance
 r_c = 30 / (w0 * ct)  # capacitor loss as a parallel resistance
@@ -332,6 +391,7 @@ kt = 1.380649e-23 * 300
 dw = TWO_PI * 1e6
 l_tank = 2 * kt / p_s * (w0 / (2 * qt * dw)) ** 2
 v.check("X21.6g", db(l_tank))
+v.check("X21.6k", l_tank)
 v.check("X21.6h", db(3 * l_tank))
 v.check("X21.6i", -db(3 * l_tank) + 20 * lg(f0 / 1e6) - db(3e-3 / 1e-3))
 v.check("X21.6j", db(3 * l_tank / 4))
@@ -358,10 +418,32 @@ def eta_numeric(alpha_deg: float) -> float:
 for key, ang in (("X21.7c", 360), ("X21.7d", 240), ("X21.7e", 180), ("X21.7f", 120)):
     v.check(key, 100 * eta_numeric(ang))
 v.check("X21.7g", 100 * (3.4 - 0.4) / 2 / 3.4)
-iip3_mw = idb(12)
-p_max = iip3_mw * math.sqrt(3 * 1e-4)  # (1/3)(P/P_IIP3)^2 = 10^-4
+iip3_mw = idb(6)
+p_max = optimize.brentq(lambda pp: (pp / iip3_mw) ** 2 / 3 - 1e-4, 1e-6, iip3_mw)  # ACLR = (1/3)(P/P_IIP3)^2
 v.check("X21.7h", db(p_max))
 v.check("X21.7i", db(p_max) + 30)
+v.check("X21.7m", 28 - (db(p_max) + 30))
+papr = db(math.log(1e4))  # complex-Gaussian envelope: P(|x|^2 > s) = exp(-s/P), 10^-4 point
+v.check("X21.7n", db(p_max) + 30 + papr)
+# Monte Carlo check of the cubic ACLR law for a flat complex-Gaussian signal (no clipping).
+nmc = 2**18
+bw_bins = nmc // 16
+spec_in = np.zeros(nmc, complex)
+spec_in[:bw_bins // 2] = rng.normal(size=bw_bins // 2) + 1j * rng.normal(size=bw_bins // 2)
+spec_in[-bw_bins // 2:] = rng.normal(size=bw_bins // 2) + 1j * rng.normal(size=bw_bins // 2)
+xs = np.fft.ifft(spec_in)
+xs /= math.sqrt(np.mean(abs(xs) ** 2))
+a3_mc = -0.003  # small cubic term (0.6% gain compression), relative to a1 = 1, for unit average power
+ys = xs + a3_mc * xs * abs(xs) ** 2
+ps = abs(np.fft.fft(ys)) ** 2
+fbin = np.fft.fftfreq(nmc) * nmc
+main = ps[abs(fbin) < bw_bins / 2].sum()
+adj = ps[(fbin >= bw_bins / 2) & (fbin < 3 * bw_bins / 2)].sum()
+aclr_mc = db(adj / main)
+p_iip3_mc = 1 / abs(a3_mc)  # A^2_IIP3 per the envelope model: |a1/a3| in power units of |x|^2
+aclr_law = db((1 / p_iip3_mc) ** 2 / 3)
+v.assert_true("Monte Carlo ACLR of a cubic PA matches (1/3)(P/P_IIP3)^2 within 0.1 dB",
+              abs(aclr_mc - aclr_law) < 0.1, f"{aclr_mc:.2f} vs {aclr_law:.2f} dB")
 
 
 def doherty(xx: float) -> float:
@@ -377,22 +459,26 @@ v.check("X21.7j", 100 * doherty(x8))
 idc_b = integrate.quad(lambda t: max(0.0, x8 * math.cos(t)), -math.pi, math.pi)[0] / TWO_PI
 v.check("X21.7k", 100 * (0.5 * x8 * (x8 / 2)) / idc_b)  # V = x V_DD, I_1 = x I_max/2, I_max = 1
 v.check("X21.7l", 100 * doherty(10 ** (-3 / 20)))
+v.check("X21.7o", 100 * 0.65 * 0.85)
 
 # ---------------------------------------------------------------- Q8: architectures
 f_rf, f_if = 5.8e9, 0.4e9
 f_lo = f_rf - f_if
 v.check("X21.8a", f_lo / 1e9)
 v.check("X21.8b", (f_lo - f_if) / 1e9)
-half_if = [fr for fr in (f_lo + f_if / 2, f_lo - f_if / 2) if abs(2 * fr - 2 * f_lo) == f_if]
-v.check("X21.8c", max(half_if) / 1e9)
+half_if = sorted(fr for fr in (f_lo + f_if / 2, f_lo - f_if / 2) if math.isclose(abs(2 * fr - 2 * f_lo), f_if))
+v.assert_true("two half-IF spurs, one each side of the LO", len(half_if) == 2 and half_if[0] < f_lo < half_if[1])
+v.check("X21.8c", half_if[1] / 1e9)  # between the LO and the wanted signal
+v.check("X21.8k", half_if[0] / 1e9)  # between the image and the LO
 # Band edges with f1*f2 = f0^2 and f2 - f1 = B.
 bw = 0.2e9
 f1 = (-bw + math.sqrt(bw**2 + 4 * f_rf**2)) / 2
 f2 = f1 + bw
 bb, aa = signal.butter(4, [TWO_PI * f1, TWO_PI * f2], btype="bandpass", analog=True)
-_, h = signal.freqs(bb, aa, worN=[TWO_PI * 5.0e9, TWO_PI * 5.6e9, TWO_PI * f_rf])
+_, h = signal.freqs(bb, aa, worN=[TWO_PI * 5.0e9, TWO_PI * half_if[1], TWO_PI * f_rf, TWO_PI * half_if[0]])
 v.check("X21.8d", -20 * lg(abs(h[0])))
 v.check("X21.8e", -20 * lg(abs(h[1])))
+v.check("X21.8l", -20 * lg(abs(h[3])))
 v.assert_true("preselector passes the wanted signal", abs(abs(h[2]) - 1) < 1e-6)
 irr_need = 30 + 12
 v.check("X21.8f", irr_need)
@@ -404,6 +490,7 @@ f_adc = idb(n_adc) / idb(-174)
 v.check("X21.8h", db(f_adc))
 g_adc = optimize.brentq(lambda g: idb(2) + (f_adc - 1) / g - idb(3), 1, 1e5)
 v.check("X21.8i", db(g_adc))
+v.check("X21.8m", g_adc)
 sig_fs = optimize.brentq(lambda s_: -20 * lg(TWO_PI * 6e9 * s_ * 1e-15) - 55, 1, 1000, xtol=1e-12)
 v.check("X21.8j", sig_fs)
 
@@ -429,7 +516,12 @@ fp_found = bvd_fp(ratio)
 xk = (math.pi / 2) * fs_res / fp_found
 v.check("X21.9a", 100 * xk / math.tan(xk))
 v.check("X21.9b", 100 * (math.pi**2 / 4) * (fp_found - fs_res) / fp_found)
-v.check("X21.9d", 3.70e9 * 25e-6 * (90 - (-30)) / 1e6)
+p_pa = db(idb(26) * idb(2.5))
+v.check("X21.9d", p_pa)
+v.check("X21.9m", db(idb(p_pa) / idb(50)))
+floor_ant = db(kt0 * 1e3) + 4  # receiver noise referred to the antenna, dBm/Hz (kT at 290 K)
+iso = optimize.brentq(lambda ii: -138 - ii - (floor_ant - 6), 0, 100)
+v.check("X21.9n", iso, tol=0.05)  # kT at 290 K is -173.98 dBm/Hz; the question uses -174
 ron, coff = 2.4, 100e-15
 v.check("X21.9e", ron * coff * 1e15)
 v.check("X21.9f", 1 / (TWO_PI * ron * coff) / 1e9)
@@ -468,12 +560,34 @@ gain_50 = np.array([af2(50, f, 50) for f in freqs]) / nx**2
 band = freqs[gain_50 >= 0.5]
 v.check("X21.10d", 0.886 * 39 / (8 * 0.5 * math.sin(math.radians(50))))
 v.check("X21.10j", (band.max() - band.min()) / 1e9)
-xq = math.pi / 8
-mean_c = integrate.quad(lambda e: math.cos(e), -xq, xq)[0] / (2 * xq)  # E[e^{j eps}] for uniform errors
-s_loss = mean_c**2
+def quant(bits: int):
+    xq = math.pi / 2**bits
+    mean_c = integrate.quad(lambda e: math.cos(e), -xq, xq)[0] / (2 * xq)  # E[e^{j eps}] for uniform errors
+    rms = math.degrees(math.sqrt(integrate.quad(lambda e: e**2, -xq, xq)[0] / (2 * xq)))
+    return mean_c**2, rms
+
+
+s_loss, rms2 = quant(2)
 v.check("X21.10e", -db(s_loss))
 v.check("X21.10f", db((1 - s_loss) / (nx * ny)))
-v.check("X21.10g", math.degrees(math.sqrt(integrate.quad(lambda e: e**2, -xq, xq)[0] / (2 * xq))))
+v.check("X21.10g", rms2)
+v.check("X21.10k", db((1 - quant(4)[0]) / (nx * ny)))
+v.check("X21.10l", db((1 - quant(5)[0]) / (nx * ny)))
+bits_needed = next(b for b in range(1, 12) if db((1 - quant(b)[0]) / (nx * ny)) < -40)
+v.check("X21.10m", bits_needed)
+# Monte Carlo: random phase errors (uniform over one 2-bit step) on all 64 elements, sampled where the ideal
+# pattern has nulls (u = m/4 for an 8-wide row at lambda/2), where only the scattered floor (1 - S)/N remains.
+u_null = np.array([0.25, 0.5, 0.75])
+idx = np.arange(nx * ny)
+pos_x = idx % nx
+acc = np.zeros(u_null.size)
+trials = 2000
+for _ in range(trials):
+    w_el = np.exp(1j * rng.uniform(-math.pi / 4, math.pi / 4, nx * ny))
+    acc += abs((w_el[None, :] * np.exp(1j * math.pi * pos_x[None, :] * u_null[:, None])).sum(axis=1) / (nx * ny)) ** 2
+floor_mc = db(acc.mean() / trials)
+v.assert_true("Monte Carlo floor at the ideal pattern's nulls within 0.5 dB of (1 - S)/N (2 bits)",
+              abs(floor_mc - db((1 - s_loss) / (nx * ny))) < 0.5, f"{floor_mc:.2f} dB")
 v.check("X21.10h", 0.5 * 42 / 39)
 lim = optimize.brentq(lambda dl: math.sin(math.radians(50)) - 1 / dl + 1, 0.3, 1.0)
 v.check("X21.10i", lim)
@@ -482,7 +596,7 @@ v.check("X21.10i", lim)
 eirp = 0 - 1 - 6
 v.check("X21.11a", eirp)
 sens = db(kt0 * 1e3) + db(1e6) + 11 + 7  # thermal floor from kT at 290 K
-v.check("X21.11b", sens, tol=0.03)
+v.check("X21.11b", sens, tol=0.03)  # kT at 290 K is -173.98 dBm/Hz; the question uses -174
 sens = -174 + 60 + 11 + 7
 marg = 6 * stats.norm.ppf(0.9)
 v.check("X21.11c", marg)
@@ -519,10 +633,10 @@ t_reply = 300e-6
 t_round_meas = (2 * tau_true + t_reply) * (1 + e_a)
 t_reply_meas = t_reply * (1 + e_b)
 err = ((t_round_meas - t_reply_meas) / 2 - tau_true) * C0
-v.check("X21.12e", err, rtol=1e-3)
+v.check("X21.12e", err)
 t_max = optimize.brentq(lambda tr: (e_a - e_b) * tr / 2 * C0 - 0.10, 1e-6, 1e-3)
 v.check("X21.12f", t_max * 1e6)
-GM, RE, H = 3.986e14, 6371e3, 550e3
+GM, RE, H = 3.986e14, 6371e3, 1200e3
 rad = RE + H
 v_orb = math.sqrt(GM / rad)
 v.check("X21.12g", v_orb)
@@ -534,7 +648,7 @@ vel = v_orb * np.stack([np.cos(ang), -np.sin(ang)], axis=1)
 rel = pos - user
 range_rate = np.sum(rel * vel, axis=1) / np.linalg.norm(rel, axis=1)
 v_los = np.abs(range_rate).max()
-v.check("X21.12h", v_los, tol=0.6)
+v.check("X21.12h", v_los)
 v.check("X21.12i", v_los * 2e9 / C0 / 1e3)
 v.check("X21.12j", v_los * 2e9 / C0 / 15e3)
 
@@ -579,9 +693,26 @@ v.check("X21.14b", coff_fF)
 v.check("X21.14c", ron_max * coff_max * 1e15)
 v.check("X21.14d", 100e-15 / (ron_max * coff_max))
 v.check("X21.14e", 26 + 9.64)
+v.check("X21.14l", idb(26 + 9.64) / 1e3)
 p_avg = idb(26)
 v.check("X21.14f", p_avg / 0.45)
 v.check("X21.14g", p_avg / 0.45 / 3.8)
+# The 29.2% and 54.9% given in the question: average efficiency E[x^2]/E[x^2/eta(x)] over a complex-Gaussian
+# envelope clipped at its 10^-4 point (PAPR 9.64 dB), x = min(r/r_sat, 1) with r Rayleigh.
+r_sat2 = math.log(1e4)  # |x|^2 at the 10^-4 point for unit average power
+
+
+def avg_eff(eta_fn) -> float:
+    def pdf(s_):  # |x|^2 is exponential with unit mean
+        return math.exp(-s_)
+    num = integrate.quad(lambda s_: min(s_ / r_sat2, 1.0) * pdf(s_), 0, 60, points=[r_sat2], limit=200)[0]
+    den = integrate.quad(lambda s_: min(s_ / r_sat2, 1.0) / eta_fn(math.sqrt(min(s_ / r_sat2, 1.0))) * pdf(s_),
+                         1e-12, 60, points=[r_sat2], limit=200)[0]
+    return num / den
+
+
+v.assert_true("ideal class-B OFDM average efficiency is 29.2%", round(100 * avg_eff(lambda xx: math.pi / 4 * xx), 1) == 29.2)
+v.assert_true("ideal Doherty OFDM average efficiency is 54.9%", round(100 * avg_eff(doherty), 1) == 54.9)
 v.check("X21.14h", p_avg / 0.292)
 v.check("X21.14i", p_avg / 0.549)
 
@@ -598,5 +729,6 @@ def system_nf(switch_db: float) -> float:
 
 v.check("X21.14j", system_nf(0.2))
 v.check("X21.14k", system_nf(0.5))
+v.check("X21.14m", system_nf(0.2) - 1.0)
 
 v.finish()

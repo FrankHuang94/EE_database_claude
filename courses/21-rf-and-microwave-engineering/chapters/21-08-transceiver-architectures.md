@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 21-08 · Transceiver Architectures
 
 | | |
@@ -97,7 +97,7 @@ Set $f_{LO} = f_{RF}$ and convert with a quadrature mixer pair (21-05) straight 
 - **Self-image from I/Q mismatch.** Gain error ε and phase error θ between the I and Q paths leak each frequency $+f$ of the baseband signal onto $-f$ at a level $1/\text{IRR}$ (21-05). For OFDM, subcarrier $+k$ is corrupted by subcarrier $-k$; if they have equal power, the mismatch alone limits the SNR, and hence the EVM, to the IRR: $\text{EVM}_{IQ} = 10^{-\text{IRR}/20}$ (Example 21-08.3).
 - **DC offsets** from LO leakage mixing with itself (21-05) and from device mismatch can exceed the wanted signal and saturate the baseband; they are removed by calibration and high-pass filtering, which notches the subcarriers near DC.
 - **Flicker noise** of the mixer and baseband sits on top of the channel. It matters most for narrow channels: a 1 MHz channel next to a 100 kHz flicker corner loses noticeable sensitivity, a 100 MHz channel hardly any.
-- **Second-order distortion.** An amplitude-modulated interferer $P$ produces, through second-order nonlinearity, a baseband product at $P_{IM2} = 2P - \text{IIP2}$ (input-referred, dBm), right on the channel. In an FDD phone the worst interferer is its own transmitter, leaking through the duplexer into the receiver; this sets the IIP2 requirement (Example 21-08.4).
+- **Second-order distortion.** An amplitude-modulated interferer $P$ produces, through second-order nonlinearity, a baseband product at $P_{IM2} = 2P - \text{IIP2}$ (input-referred, dBm; the two-tone form, conservative for a modulated blocker, only part of whose IM2 spectrum falls in the channel), right on the channel. In an FDD phone the worst interferer is its own transmitter, leaking through the duplexer into the receiver; this sets the IIP2 requirement (Example 21-08.4).
 
 ### 3.4 Low-IF and complex filtering
 
@@ -119,7 +119,7 @@ In real terms, two RC sections (I and Q) cross-coupled by transconductances $\pm
 
 Digitize the RF band directly with a gigasample ADC and do the frequency translation, channel filtering and decimation digitally. Five quantities decide whether it works.
 
-**Nyquist zone.** A sampler at $f_s$ folds every input onto $[0, f_s/2]$ (11-10). An input in zone $k$ ($(k-1)f_s/2 \le f < kf_s/2$) appears at $f - \lfloor 2f/f_s\rfloor f_s/2$ in odd zones and mirrored in even zones. Everything in every zone that reaches the ADC lands somewhere in the first zone, so an RF band filter is still needed, now as an anti-alias filter.
+**Nyquist zone.** A sampler at $f_s$ folds every input onto $[0, f_s/2]$ (11-10). An input in zone $k$ ($(k-1)f_s/2 \le f < kf_s/2$) appears at $f - \lfloor 2f/f_s\rfloor f_s/2$ in odd zones and at $f_s/2 - (f - \lfloor 2f/f_s\rfloor f_s/2)$, mirrored, in even zones. Everything in every zone that reaches the ADC lands somewhere in the first zone, so an RF band filter is still needed, now as an anti-alias filter.
 
 **Jitter.** Sampling $A\sin\omega t$ a time $\delta t$ late produces an error $A\omega\cos(\omega t)\,\delta t$. With rms jitter $\sigma_t$ the error power is $(A\omega\sigma_t)^2/2$ against a signal power $A^2/2$, so
 
@@ -241,7 +241,7 @@ Mitola's software radio moves functions into software toward the antenna, partit
 
 - (a) $f_s/2$ = 1.4746 GHz; 3.5 GHz is in zone **3**. (b) $3.5 - 2.94912$ = **550.88** MHz (an odd zone, not mirrored).
 - (c) $-20\log_{10}(2\pi \times 3.5\times10^9 \times 50\times10^{-15})$ = **59.18** dB.
-- (d) −154.1 + 2.6 = **−151.5** dBm/Hz; (e) NF = **22.5** dB.
+- (d) −154.1 + 2.6 = **−151.5** dBm/Hz (the 2.6 dBm full scale is the data sheet's −0.4 dBm plus its 3 dB attenuator setting); (e) NF = **22.5** dB. The data sheet itself lists 22.8 dB at 3.61 GHz; the difference comes from its own noise-figure definition and conditions.
 - (f) $G \ge (10^{2.25} - 1)/(10^{0.3} - 10^{0.15})$ = 303, **24.82** dB.
 - (g) −15 + 24.82 = **+9.82** dBm, 7 dB above full scale.
 - (h) $10\log_{10}(2949.12/200)$ = **11.69** dB.

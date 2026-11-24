@@ -26,7 +26,7 @@ Chapter: [21-03 · Noise Figure and Linearity](../../chapters/21-03-noise-figure
 
 - **Part 1.** The map's minimum, 0.80 dB, sits at $\Gamma_{opt}$; 50 Ω gives 1.07 dB and the power match 2.04 dB.
 - **Part 2.** The noise figures scatter with a standard deviation close to the prediction $10\log_{10}e \times \tfrac{Y}{Y - 1} \times 2/\sqrt{n}$ = **0.091** dB for $n = 10^4$: a single quick measurement cannot resolve a 0.1 dB difference.
-- **Part 3.** The measured slope is **3.00**; the IIP3 extrapolated at −30 dBm is 0 dBm. Above about −15 dBm per tone the products no longer follow slope 3, and an intercept extrapolated there is wrong.
+- **Part 3.** The measured slope is **3.00**; the IIP3 extrapolated at −30 dBm is 0 dBm. The IM3 products keep slope 3 exactly at every level, because a pure cubic has no higher-order terms. What departs from its asymptote is the fundamental: in a two-tone test each tone's gain is $a_1 + \tfrac94a_3A^2$, so it is 1 dB compressed near −14.4 dBm per tone and nulls near −4.8 dBm. An intercept extrapolated from −10 dBm therefore reads about −1.6 dBm instead of 0 dBm.
 - **Part 4.** HD2 4.828%, HD3 0.1555%, IM3 −46.66 dBc for the transistor and −40.87 dBc for the pair, in both Python and ngspice; the pair's IM2 residue is about $10^{-8}$ of the fundamental.
 - **Part 5.** At 10 dB of LNA gain the cascade noise figure is **6.32** dB and IIP3 **−8.6** dBm; at 25 dB they are **3.34** dB and **−20.3** dBm. No single gain is best for both, which is why receivers switch LNA gain with signal level.
 
@@ -34,7 +34,7 @@ Chapter: [21-03 · Noise Figure and Linearity](../../chapters/21-03-noise-figure
 
 1. **Why does the noise map have a single minimum, with circles around it?** The noise factor is a quadratic in the source admittance divided by its real part; in the reflection plane its level sets are circles, nested around $\Gamma_{opt}$ (§3.2).
 2. **Why does more averaging help a Y-factor measurement only as $1/\sqrt n$?** Each noise power is estimated from $n$ samples of a random signal; the estimate's relative standard deviation falls as $\sqrt{2/n}$, and the ratio of two such estimates inherits both.
-3. **Why does the IM3 slope change near compression?** Terms beyond the cubic (fifth and higher order) grow faster with amplitude and, in most amplifiers, oppose the cubic term; the polynomial's small-signal predictions no longer hold.
+3. **Why do real amplifiers' IM3 slopes change near compression?** In this lab's pure cubic they do not: only the fundamental compresses. In real amplifiers, terms beyond the cubic (fifth and higher order) grow faster with amplitude and, in most amplifiers, oppose the cubic term, so the IM3 slope bends as well and the polynomial's small-signal predictions no longer hold. Either way, measure intercepts well below compression.
 4. **Why is the differential pair's IM2 zero?** Its transfer characteristic is odd (tanh), so all even-order terms cancel; in a real pair, mismatch between the two halves leaves a residue that sets its IIP2.
 
 ## Optional hardware

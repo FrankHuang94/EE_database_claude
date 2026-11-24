@@ -12,7 +12,7 @@ With a high-side LO, $f_{LO} = f_{RF} + f_{IF}$ = **5.90** GHz, and the image li
 
 ### Solution 21-05.2
 
-The 0/1 waveform is $\tfrac12 + \tfrac12s(t)$, whose fundamental is $\tfrac12 \cdot 4/\pi = 2/\pi$; half of that reaches the difference frequency: $1/\pi$, or **−9.94** dB, which is **6.02** dB below the double-balanced $2/\pi$.
+The 0/1 waveform is $\tfrac12 + \tfrac12s(t)$, whose fundamental is $\tfrac12 \cdot 4/\pi = 2/\pi$; half of that reaches the difference frequency: $1/\pi$, or **−9.94** dB, which is **6.02** dB below the $2/\pi$ of a ±1 (single- or double-balanced) mixer. The balanced mixers differ from each other in feedthrough, not in gain.
 
 ### Solution 21-05.3
 
@@ -70,7 +70,7 @@ $C = 1/(\pi NR_s\,\text{BW}) = 1/(\pi \times 8 \times 50 \times 20 \times 10^6)$
 
 ### Solution 21-05.12
 
-The 3rd harmonic lands in the band when $3f_{LO} \le 800$ MHz, i.e. for $f_{LO}$ from 50 MHz to **266.7** MHz; the 5th when $5f_{LO} \le 800$ MHz, from 50 to **160** MHz. Over a third of the tuning range, an unfiltered square-wave mixer would also receive strong signals at 3 or 5 times the tuned frequency. The mixer needs harmonic rejection (an eight-phase or harmonic-reject LO) or a tracking filter.
+The 3rd harmonic lands in the band when $3f_{LO} \le 800$ MHz, i.e. for $f_{LO}$ from 50 MHz to **266.7** MHz; the 5th when $5f_{LO} \le 800$ MHz, from 50 to **160** MHz. Over nearly 30% of the tuning range, an unfiltered square-wave mixer would also receive strong signals at 3 or 5 times the tuned frequency. The mixer needs harmonic rejection (an eight-phase or harmonic-reject LO) or a tracking filter.
 
 ---
 
@@ -82,7 +82,7 @@ The 3rd harmonic lands in the band when $3f_{LO} \le 800$ MHz, i.e. for $f_{LO}$
 |---|---|---|---|
 | 21-05.1a | LO | 5.90 | GHz |
 | 21-05.1b | image | 6.00 | GHz |
-| 21-05.2a | single-balanced gain | −9.94 | dB |
+| 21-05.2a | single-switch gain | −9.94 | dB |
 | 21-05.2b | difference | 6.02 | dB |
 | 21-05.3a | gm | 15.6 | mS |
 | 21-05.4a | IRR at 3 % and 0.5° | 36.24 | dB |

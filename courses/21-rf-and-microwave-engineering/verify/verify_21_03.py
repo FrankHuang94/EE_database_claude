@@ -85,6 +85,11 @@ v.check("Txt 21-03.f", 4 / 3 * c1db)
 fund = lambda a: line(spectrum(lambda x: x - x ** 3, [a], [F1]), F1) / a  # noqa: E731
 a1db_num = optimize.brentq(lambda a: 20 * lg(fund(a)) + 1, 0.05, 0.6, xtol=1e-12)
 v.check("Txt 21-03.c", 20 * lg(math.sqrt(4 / 3) / a1db_num))
+# Two-tone fundamental: gain a1 + (9/4) a3 A^2 against a1 + (3/4) a3 A^2 for one tone, found by root finding.
+a_one = optimize.brentq(lambda aa: 20 * lg(1 - 0.75 * aa**2) + 1, 1e-4, 1.0)
+a_two = optimize.brentq(lambda aa: 20 * lg(1 - 2.25 * aa**2) + 1, 1e-4, 0.66)
+v.check("Txt 21-03.i", 20 * lg(a_one / a_two))
+v.check("Txt 21-03.j", -96.1 + 10 * lg(273 / 24))
 
 # ---------------------------------------------------------------- Example 1: two-tone arithmetic, checked by simulation
 iip3_1 = -30 + (-12 + 72) / 2
@@ -422,5 +427,13 @@ v.check("Lab 21-03.b", (im_40 - im_50) / 10)
 for glna, kn, ki in ((10, "Lab 21-03.c", "Lab 21-03.d"), (25, "Lab 21-03.e", "Lab 21-03.f")):
     v.check(kn, friis_t([(-2, 2), (glna, 1.2), (8, 10), (20, 15)]))
     v.check(ki, two_tone_iip3(composed([(-2, 40), (glna, -8), (8, 5), (20, 15)]), -60))
+
+# Lab README Part 3: pure cubic, two-tone fundamental gain a1 + (9/4) a3 A^2 (per-tone amplitude A), IIP3 = 0 dBm.
+r1 = optimize.brentq(lambda r: 20 * math.log10(1 - 3 * r) + 1, 1e-6, 0.3)  # r = A^2 / A_IIP3^2
+v.assert_true("lab: two-tone fundamental is 1 dB compressed near -14.4 dBm per tone", abs(10 * math.log10(r1) + 14.4) < 0.05)
+v.assert_true("lab: two-tone fundamental nulls near -4.8 dBm per tone", abs(10 * math.log10(1 / 3) + 4.8) < 0.05)
+r10 = 10 ** (-10 / 10)
+iip3_est = -10 + ((-10 + 20 * math.log10(1 - 3 * r10)) - (3 * -10)) / 2
+v.assert_true("lab: intercept extrapolated from -10 dBm is about -1.6 dBm", abs(iip3_est + 1.55) < 0.06, f"{iip3_est:.2f}")
 
 sys.exit(v.finish())

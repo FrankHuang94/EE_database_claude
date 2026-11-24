@@ -6,7 +6,7 @@ Chapter: [21-09 · The RF Front End](../../chapters/21-09-rf-front-end.md)
 
 - Build an acoustic resonator from the Butterworth-Van Dyke model and see its series and parallel resonances.
 - Assemble a three-section ladder filter, measure its loss, bandwidth and rejection, and confirm them in ngspice.
-- Watch temperature drift move a filter skirt across a fixed frequency.
+- Watch temperature drift move a filter's notch and skirt relative to fixed frequencies.
 - Evaluate an RF switch's on-state loss and off-state isolation (confirmed in ngspice) and size a transistor stack.
 - Quantify antenna mismatch loss and decide when a tuner pays.
 
@@ -28,7 +28,7 @@ Chapter: [21-09 · The RF Front End](../../chapters/21-09-rf-front-end.md)
 
 - **Part 1.** The anti-resonance is 2.0565 GHz; with $C_0$ doubled it falls to **2.0285** GHz, because the spacing is proportional to $C_m/C_0$. At $f_s$ the impedance is **0.694** Ω, essentially $R_m$.
 - **Part 2.** The bandwidth is 72.2 MHz; doubling the coupling nearly doubles it, to **142.0** MHz. At Q = 1000 the centre loss is **0.655** dB, twice the Q = 2000 value. ngspice reproduces the loss at 2.00 GHz (0.328 dB) and the rejections at 1.88 and 2.12 GHz (32.15 and 33.20 dB).
-- **Part 3.** The edge drifts **−4.37** MHz. At 2.07 GHz the rejection is **52.98** dB at −30 °C, **49.94** dB at +25 °C and **47.35** dB at +85 °C: with a negative TCF the filter moves down in frequency as it warms, and the upper skirt slides toward the fixed frequency.
+- **Part 3.** The edge drifts **−4.37** MHz. At 2.07 GHz the rejection is **52.98** dB at −30 °C, **49.94** dB at +25 °C and **47.35** dB at +85 °C: with a negative TCF the whole response, notch included, moves down in frequency as it warms. 2.07 GHz lies above the upper notch (2.0565 GHz at 25 °C), where rejection falls with distance from the notch toward the capacitive-divider floor, so as the notch recedes the rejection there drops by about 5.6 dB. On the steep pass-band side of the skirt the trend reverses, so guaranteed isolation must be read at the worst-case temperature for each frequency.
 - **Part 4.** Isolation 21.64, 12.72 and **4.73** dB at 0.7, 2 and 6 GHz; ngspice gives 0.172 dB on and 12.72 dB off at 2 GHz. The stack needs **6**, **8** and **10** transistors at VSWR 1, 2 and 4.
 - **Part 5.** Mismatch costs 1 dB at VSWR **2.66**; going from VSWR 6 to 1.5 is worth up to **2.92** dB of tuner loss.
 

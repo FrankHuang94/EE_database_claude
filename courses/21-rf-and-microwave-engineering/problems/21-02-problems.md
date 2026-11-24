@@ -26,7 +26,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 21-02.4 [B] *(lab)*
 
-**Wrong sign to absorb.** A load is 100 Ω in parallel with 2 pF at 1 GHz. A low-pass match would need a shunt capacitance at the load smaller than the 2 pF already there. Design a high-pass match instead (shunt inductor at the load, series capacitor at the 50 Ω side), absorbing the load capacitance into the inductor.
+**Too much capacitance to absorb.** A load is 100 Ω in parallel with 2 pF at 1 GHz. A low-pass match would need a shunt capacitance at the load smaller than the 2 pF already there. Design a high-pass match instead (shunt inductor at the load, series capacitor at the 50 Ω side), absorbing the load capacitance into the inductor.
 
 ### Problem 21-02.5 [B] *(lab)*
 
@@ -54,7 +54,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 21-02.11 [C] *(lab)*
 
-**A π band-pass between equal resistances.** Design a π network with Q = 3 between 50 Ω and 50 Ω at 2.4 GHz (a harmonic filter that also "matches" 50 Ω to itself). Find $R_v$, the element values in pF and nH, and its 10 dB return-loss bandwidth by simulation.
+**A π low-pass between equal resistances.** Design a π network with Q = 3 between 50 Ω and 50 Ω at 2.4 GHz (a harmonic filter that also "matches" 50 Ω to itself). Find $R_v$, the element values in pF and nH, and its 10 dB return-loss bandwidth by simulation.
 
 ### Problem 21-02.12 [C]
 

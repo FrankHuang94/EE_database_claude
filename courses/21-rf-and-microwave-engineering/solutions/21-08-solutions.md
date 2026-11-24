@@ -12,7 +12,7 @@ Problems: [21-08 problem set](../problems/21-08-problems.md) · Chapter: [21-08]
 
 ### Solution 21-08.2
 
-$x = (1.9/0.06)(1.5/1.9 - 1.9/1.5)$ = −15.09, so each order adds about $20\log_{10}15.09$ = 23.6 dB: (a) **23.60** dB, (b) **47.17** dB, (c) **70.76** dB, and (d) order **3** meets 50 dB.
+$x = (1.9/0.06)(1.5/1.9 - 1.9/1.5)$ = −15.11, so each order adds about $20\log_{10}15.11$ = 23.6 dB: (a) **23.60** dB, (b) **47.17** dB, (c) **70.76** dB, and (d) order **3** meets 50 dB.
 
 ### Solution 21-08.3
 

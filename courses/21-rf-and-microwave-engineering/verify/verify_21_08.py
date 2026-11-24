@@ -12,12 +12,13 @@ Independent routes (the lab module trx.py uses the closed forms):
 """
 from __future__ import annotations
 
+import cmath
 import math
 import sys
 from pathlib import Path
 
 import numpy as np
-from scipy import optimize
+from scipy import optimize, signal
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -26,6 +27,20 @@ sys.path.insert(0, str(HERE.parents[2] / "tools"))
 sys.path.insert(0, str(LAB))
 from eeverify import Verifier  # noqa: E402
 import trx as lab  # noqa: E402
+
+
+def irr_phasor_db(eps, theta_deg):
+    """IRR from the I/Q phasors: wanted |1 + (1+eps)e^{j theta}|^2 over image |1 - (1+eps)e^{j theta}|^2."""
+    g = (1 + eps) * cmath.exp(1j * math.radians(theta_deg))
+    return 10 * math.log10(abs(1 + g) ** 2 / abs(1 - g) ** 2)
+
+
+def shifted_butter_db(f, f_if, f_p, order):
+    """Gain (dB) of an analog Butterworth low-pass of corner f_p (scipy design), shifted to +f_if."""
+    b_, a_ = signal.butter(order, 2 * math.pi * f_p, btype="low", analog=True)
+    _, hh = signal.freqs(b_, a_, worN=[2 * math.pi * (f - f_if)])
+    return 20 * math.log10(abs(hh[0]))
+
 
 v = Verifier.from_files("21-08", ROOT / "chapters" / "21-08-transceiver-architectures.md",
                         ROOT / "solutions" / "21-08-solutions.md", LAB / "README.md")
@@ -106,7 +121,7 @@ for (ke, kt), irr in ((("c", "d"), 40.0), (("f", "g"), 45.0)):
     e = math.sqrt(2 * 10 ** (-irr / 10))                     # equal share, small-error formula as in the text
     v.check(f"Ex 21-08.3{ke}", e * 100)
     v.check(f"Ex 21-08.3{kt}", math.degrees(e))
-    ex = optimize.brentq(lambda x: lab.irr_db(x, math.degrees(x)) - irr, 1e-5, 0.2)
+    ex = optimize.brentq(lambda x: irr_phasor_db(x, math.degrees(x)) - irr, 1e-5, 0.2)
     v.assert_true(f"exact formula within 0.5% of the small-error share at {irr} dB", abs(ex / e - 1) < 5e-3)
 v.check("Ex 21-08.3e", 45)
 
@@ -124,7 +139,7 @@ v.check("Ex 21-08.5c", math.degrees(e5))
 wif, wp = 2 * math.pi * 1e6, 2 * math.pi * 0.5e6
 Himg = wp / (wp + 1j * (-wif - wif))      # state-equation transfer function at -f_IF
 v.check("Ex 21-08.5d", -db20(abs(Himg)))
-v.check("Ex 21-08.5e", -lab.complex_filter_db(-1e6, 1e6, 0.5e6, 3))
+v.check("Ex 21-08.5e", -shifted_butter_db(-1e6, 1e6, 0.5e6, 3))
 
 
 # ================================================================ Example 21-08.6
@@ -148,7 +163,7 @@ v.check("Ex 21-08.6g", -15 + db10(G6))
 v.check("Ex 21-08.6h", db10(FS / (2 * 100e6)))
 
 # ================================================================ Example 21-08.7
-v.check("Ex 21-08.7a", lab.irr_db(0.01, 1.0))
+v.check("Ex 21-08.7a", irr_phasor_db(0.01, 1.0))
 v.check("Ex 21-08.7b", db20(0.5e-3 / 0.5))
 v.check("Ex 21-08.7c", -174 + 5 - 10 + 50)
 v.check("Ex 21-08.7d", -174 + 5 - 10 + 50 - 23)
@@ -205,7 +220,7 @@ v.check("21-08.8a", 37)
 e8 = math.sqrt(2 * 10 ** -3.7)
 v.check("21-08.8b", e8 * 100)
 v.check("21-08.8c", math.degrees(e8))
-v.check("21-08.8d", -lab.complex_filter_db(-2e6, 2e6, 1e6, 4))
+v.check("21-08.8d", -shifted_butter_db(-2e6, 2e6, 1e6, 4))
 for (kz, ka), f in ((("a", "b"), 2.45e9), (("c", "d"), 5.8e9)):
     al9, z9 = fold(f, 3e9)
     v.check(f"21-08.9{kz}", z9)
@@ -219,7 +234,7 @@ v.check("21-08.11c", db10(10 ** 0.15 * (10 ** 0.1 + (10 ** 2.5 - 1) / G11)))
 th = math.radians(0.5)
 e12 = math.sqrt(4e-4 - th * th)
 v.check("21-08.12a", e12 * 100)
-v.check("21-08.12b", lab.irr_db(e12, 0.5))
+v.check("21-08.12b", irr_phasor_db(e12, 0.5))
 v.check("21-08.13a", -174 + 4 - 6 + 45)
 v.check("21-08.13b", -174 + 4 - 6 + 45 - 26)
 v.check("21-08.13c", -135 + 176)

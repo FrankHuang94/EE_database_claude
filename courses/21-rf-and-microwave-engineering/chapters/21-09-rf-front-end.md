@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 21-09 · The RF Front End: Filters, Switches and Modules
 
 | | |
@@ -62,7 +62,7 @@ $$
 k^2_{eff} = \frac{\pi}{2}\,\frac{f_s}{f_p}\cot\left(\frac{\pi}{2}\,\frac{f_s}{f_p}\right) \approx \frac{\pi^2}{4}\,\frac{f_p - f_s}{f_p} .
 $$
 
-![Impedance magnitude of the BVD resonator of Example 21-09.1: a sharp minimum near 0.7 ohm at the 2.000 GHz series resonance and a sharp maximum near 9 kilohm at the 2.057 GHz anti-resonance, following the 1 pF static capacitance elsewhere](../../../assets/figures/21-09/bvd.svg)
+![Impedance magnitude of the BVD resonator of Example 21-09.1: a sharp minimum near 0.7 ohm at the 2.000 GHz series resonance and a sharp maximum near 9 kilohm at the 2.057 GHz anti-resonance, and approaching the 1 pF static capacitance far from resonance](../../../assets/figures/21-09/bvd.svg)
 
 **Q** is set by the motional loss, $Q = 2\pi f_sL_m/R_m$. Two numbers therefore characterize a resonator technology: k² (how far apart $f_s$ and $f_p$ are, which bounds the filter's bandwidth) and Q (how lossy, which sets insertion loss and skirt steepness).
 
@@ -173,7 +173,7 @@ Discrete parts have given way to **front-end modules**: the PAMiD (PA module wit
 
 ### Example 21-09.4 · A duplexer budget (tier B)
 
-**Setup.** A handset transmits 23 dBm at the antenna through a duplexer with 2.0 dB typical transmit loss and 55 dB minimum transmit-to-receive isolation (a published quadplexer, §9). (a) What power must the PA deliver, and (b) what reaches the LNA? If the loss were the 3.5 dB maximum, what DC power would a 40%-efficient PA draw (c) at the typical and (d) at the maximum loss, and (e) how much more is that? (f) The PA's noise in the receive band is −135 dBm/Hz; with a 3 dB receiver noise figure and 10 dB margin, what receive-band isolation is needed?
+**Setup.** A handset transmits 23 dBm at the antenna through a duplexer with 2.0 dB typical transmit loss and 55 dB minimum transmit-to-receive isolation (the Band 2 path of a published quadplexer, §9). (a) What power must the PA deliver, and (b) what reaches the LNA? If the loss were the 3.5 dB maximum, what DC power would a 40%-efficient PA draw (c) at the typical and (d) at the maximum loss, and (e) how much more is that? (f) The PA's noise in the receive band is −135 dBm/Hz; with a 3 dB receiver noise figure and 10 dB margin, what receive-band isolation is needed?
 
 **Solution.**
 
@@ -324,7 +324,7 @@ The lab ([labs/21-09-lab](../labs/21-09-lab/README.md)) collects the resonator, 
 1. Predict the anti-resonance of a 2 GHz resonator with $C_0/C_m$ = 17.4, and what happens to it if $C_0$ is doubled with the motional branch unchanged; then plot $\lvert Z\rvert$ (Part 1).
 2. Predict how the ladder's 3 dB bandwidth changes if the coupling doubles (the capacitance ratio halves); then run the sweep (Part 2).
 3. Predict the centre loss of the ladder at Q = 1000, then edit the motional resistances in `ladder.cir` and run `ngspice -b ladder.cir` (Part 2).
-4. Predict, for a −20 ppm/°C filter, the edge drift from −30 to +85 °C at 1.9 GHz, then sweep the ladder over temperature and watch the rejection at a fixed frequency in the gap (Part 3).
+4. Predict, for a −20 ppm/°C filter, the edge drift from −30 to +85 °C at 1.9 GHz, then sweep the ladder over temperature and watch the rejection at a fixed frequency just above the upper notch (Part 3).
 5. Predict the off-state isolation of the 378 fs switch at 0.7, 2 and 6 GHz, then run `ngspice -b switch.cir` and the stacking calculator (Part 4).
 6. Predict the VSWR at which mismatch costs 1 dB, then find it numerically and test a tuner's break-even loss (Part 5).
 
@@ -357,7 +357,7 @@ The lab ([labs/21-09-lab](../labs/21-09-lab/README.md)) collects the resonator, 
 | Duplexer TX-to-RX isolation | 50–55 dB guaranteed minimum | [2], [11] |
 | Duplexer or quadplexer loss | 2.0–2.8 dB typical, 3.0–3.8 dB maximum | [11] |
 | Handset transmit power | 23 dBm at the antenna (NR power class 3) | 21-07 |
-| SOI switch figure of merit | ~100–120 fs (process); 125–378 fs (tuner parts) | [9], [12], [17] |
+| SOI switch figure of merit | ~100–120 fs (process); 378 fs for one shipping tuner part | [9], [12], [17] |
 | Mismatch loss | 0.18 dB at VSWR 1.5; 1.25 dB at 3; 3.10 dB at 6 | §3.6 |
 | Mobile RFFE market | $15.4 billion (2024) [Industry estimate] | [15] |
 
@@ -379,7 +379,7 @@ The lab ([labs/21-09-lab](../labs/21-09-lab/README.md)) collects the resonator, 
 - **The AlN BAW baseline [Established].** Fujitsu's 2004 AlN FBAR with ruthenium electrodes reached "an unloaded resonant quality factor, Q_r, of 3585 and an effective electromechanical coupling coefficient, k², of 6.6% at 5 GHz" [3]. The first FBAR duplexer (1999) measured 5 × 8 × 2.2 mm³ with isolation exceeding "50 dB over most of the Tx band and 46 dB in the Rx band", handling 2 W [2]. Its successors' transmit filters dissipate up to 343 mW in resonators, "~1 MWatts/cm³" per FBAR [4]: filter loss is a thermal problem.
 - **Temperature-compensated SAW [Established].** Murata's multilayer IHP-SAW resonator reached "a Bode-Q over 4000 and TCF of -8 ppm/°C, which are four times higher than and one-fifth as small as those of a conventional 4° YX-LT SAW resonator", and enabled "a band 25 duplexer with very narrow duplex gap" [5].
 - **High-coupling resonators [Established as research; production Contested].** The first lithium-niobate XBARs (2019) showed "a resonance Q-factor ∼300, strong piezoelectric coupling ∼25%, (indicated by the large Resonance-antiResonance frequency spacing, ∼11%)" [6]; an n79 XBAR filter followed with "1 dB mid-band loss and 600 MHz bandwidth" at 4.7 GHz, a **12.8** % fractional bandwidth [6]. Murata completed its acquisition of Resonant, the XBAR developer, on 28 March 2022 [18]; as late as September 2025 Murata wrote that "the feasibility of XBARs for practical mass production remains unreported" before presenting its own Wi-Fi filter data [6]. Scandium-doped AlN FBARs have exceeded 20% coupling in research (2024) [7], and thin-film lithium-niobate resonators have reached k² of 46.4%, but at Q 598 [7]: coupling is bought with Q.
-- **Duplexers in data sheets [Established].** A handset SAW quadplexer for Bands 2/25 and 66 guarantees 55 dB TX-to-RX isolation over most of the transmit band, relaxing to 50 dB at the edge next to the duplex gap, with 2.0 dB typical and 3.5 dB maximum transmit loss [11]. A small-cell Band 25 duplexer, whose duplex gap of 15 MHz is **0.78** % of the carrier, guarantees 37 dB isolation in its transmit band from −20 to +95 °C but only 31 dB from −40 to −20 °C [11]: **6** dB of guaranteed isolation lost to temperature drift.
+- **Duplexers in data sheets [Established].** A handset SAW quadplexer for Bands 2/25 and 66 guarantees 55 dB TX-to-RX isolation over most of the transmit band, relaxing to 50 dB at the edge next to the duplex gap, with 2.0 dB typical and 3.5 dB maximum transmit loss on the Band 2 path (2.6/3.8 dB for Band 25) [11]. A small-cell Band 25 duplexer, whose duplex gap of 15 MHz is **0.78** % of the carrier, guarantees 37 dB isolation in its transmit band from −20 to +95 °C but only 31 dB from −40 to −20 °C [11]: **6** dB of guaranteed isolation lost to temperature drift.
 - **Integrated CMOS duplexers [Established per paper].** "The stringent isolation requirements prohibit the integration of RF duplexers on silicon," wrote the authors of a 2009 electrical-balance design [13]. A 2016 CMOS duplexer reached about 50 dB isolation over 1.6–2.2 GHz with "about 3.2 dB" transmit loss and a 6.5 dB cascaded noise figure [13], **1.2** dB more transmit loss than the quadplexer's typical.
 - **Switches [Established].** "CMOS Silicon-on-insulator (SOI) has emerged over the past few years as the dominant technology for RF switches in RF FEMs for cell phones and WiFi" (2016, with a sub-120 fs process, a cut-off above **1.33** THz) [9]. GlobalFoundries reported 98 fs at 28 GHz in 22 nm FD-SOI (2018) [17]; a 2023 study projected a "60fs record" by simulation while measuring a 7.2% improvement in $C_{off}$ [17]; a 2024 TSMC phase-change switch reported 11.6 fs (a **13.7** THz cut-off) below 1.8 V, as research [17]. Qorvo sources "silicon on insulator ("SOI") for LNAs, switches and tuners" and MEMS for some switches and tuners [14]. A shipping aperture-tuning switch: 2 Ω, 189 fF, 42 V peak [12].
 - **Modules [Established].** Skyworks' SKY58813-11 L-PAMiD (Feb 2026) "integrates power amplifier (PA) blocks for 4G/5G, a controller with MIPI RFFE interface, RF band switches, MB/HB antenna switches, bi-directional couplers, and filters for Bands 25, 66, and 41", with an "Integrated quadplexer filter for Bands 25 and 66, with carrier aggregation (CA) support for Band 41", in 4.32 × 4.4 × 0.642 mm (**19.0** mm²) [10].
@@ -396,7 +396,7 @@ The lab ([labs/21-09-lab](../labs/21-09-lab/README.md)) collects the resonator, 
 1. **"XBAR: Q above 1000 and 25% coupling."** The Q above 1000 was simulated; the first measured devices had Q of about 300, and in 2025 the company that acquired the technology wrote that mass-production feasibility "remains unreported" [6]. Lab coupling arrives years before production reliability.
 2. **"ScAlN gives 20%+ coupling."** True for research FBARs [7]; the production baseline is AlN near 6–7% [3]. Ask what scandium fraction ships, at what Q and with what yield.
 3. **"Integrated CMOS duplexers will replace acoustic filters."** Electrical-balance duplexers reach about 50 dB isolation at 3–4 dB transmit loss [13]; an acoustic quadplexer guarantees 55 dB at 2.0 dB typical [11], and modules still integrate acoustic multiplexers seventeen years after the first CMOS demonstration [10].
-4. **"Record Ron·Coff."** A 60 fs "record" can be a simulation [17]; shipping tuning switches sit at 125–378 fs at the part level [12]. Ask for the part's numbers, and its harmonics at full power into a 3:1 VSWR.
+4. **"Record Ron·Coff."** A 60 fs "record" can be a simulation [17]; a shipping tuning switch sits at 378 fs at the part level [12], several times the process figure. Ask for the part's numbers, and its harmonics at full power into a 3:1 VSWR.
 5. **"We lead the market with 50% share."** Shares depend on the definition: SAW filters, mobile RFFE, all RF. Yole's $15.4 billion mobile RFFE market and a different Yole scope's figures are not additive [15]. The filings' customer-concentration numbers are harder facts [14].
 
 ### Questions for engineering leaders

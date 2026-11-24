@@ -49,7 +49,7 @@ $b = 39.08\log_{10}e/(6\sqrt2)$ = 2.000. Jakes's formula gives (a) **97.4** % an
 
 ### Solution 21-11.7
 
-$-10\log_{10}(1 - \eta)$: (a) **1.55** dB, (b) **3.98** dB, (c) **10** dB. Loading a cell beyond about 75% costs disproportionately in uplink coverage.
+$-10\log_{10}(1 - X)$ for load $X$: (a) **1.55** dB, (b) **3.98** dB, (c) **10** dB. Loading a cell beyond about 75% costs disproportionately in uplink coverage.
 
 ### Solution 21-11.8
 
@@ -108,6 +108,18 @@ At the limit the interference raises the noise floor by about 0.5 dB; at the wai
 (a) $1 - 0.999^{368}$ = **30.8** %. (b) $1 - (1 - 0.00017)^{2112}$ = **30.2** %. (c) **2112** bits.
 
 The specification lowers the BER for longer packets so that the packet-error rate at sensitivity stays near 30%.
+
+### Solution 21-11.16
+
+(a) At the user, the angle between the direction to the Earth's centre and the line of sight is $90° + \theta_{el}$, because the line of sight rises $\theta_{el}$ above the horizontal and the horizontal is 90° from the downward vertical. The law of cosines in the triangle with sides $R_E$, $d$ and $R_E + h$ gives $(R_E + h)^2 = R_E^2 + d^2 - 2R_Ed\cos(90° + \theta_{el}) = R_E^2 + d^2 + 2R_Ed\sin\theta_{el}$. Solving the quadratic $d^2 + 2R_E\sin\theta_{el}\,d - [(R_E + h)^2 - R_E^2] = 0$ for its positive root,
+
+$$
+d = -R_E\sin\theta_{el} + \sqrt{R_E^2\sin^2\theta_{el} + (R_E + h)^2 - R_E^2} = \sqrt{(R_E + h)^2 - R_E^2\cos^2\theta_{el}} - R_E\sin\theta_{el} .
+$$
+
+At zenith ($\theta_{el}$ = 90°) it reduces to $h$, as it must.
+
+(b) $\sqrt{6921^2 - (6371\cos 25°)^2} - 6371\sin 25°$ = **1123.3** km, about twice the altitude.
 
 ---
 
@@ -175,3 +187,4 @@ The specification lowers the BER for longer packets so that the packet-error rat
 | 21-11.15a | PER, 37-byte payload | 30.8 | % |
 | 21-11.15b | PER, 255-byte payload | 30.2 | % |
 | 21-11.15c | counted bits, 255-byte payload | 2112 | |
+| 21-11.16 | slant range, 550 km at 25° | 1123.3 | km |

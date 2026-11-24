@@ -1326,14 +1326,14 @@ z
    </g>
    <g id="legend_1">
     <g id="line2d_29">
-     <path d="M 164.223672 35.0375 
-L 172.223672 35.0375 
-L 180.223672 35.0375 
+     <path d="M 159.819922 35.0375 
+L 167.819922 35.0375 
+L 175.819922 35.0375 
 " style="fill: none; stroke: #0072b2; stroke-width: 1.6; stroke-linecap: square"/>
     </g>
     <g id="text_17">
      <!-- total DC power -->
-     <g transform="translate(186.623672 37.8375) scale(0.08 -0.08)">
+     <g transform="translate(182.219922 37.8375) scale(0.08 -0.08)">
       <use xlink:href="#Inter-Regular-37b"/>
       <use xlink:href="#Inter-Regular-318" transform="translate(31.75 0)"/>
       <use xlink:href="#Inter-Regular-37b" transform="translate(91.71875 0)"/>
@@ -1351,14 +1351,14 @@ L 180.223672 35.0375
      </g>
     </g>
     <g id="line2d_30">
-     <path d="M 164.223672 48.717188 
-L 172.223672 48.717188 
-L 180.223672 48.717188 
+     <path d="M 159.819922 48.717188 
+L 167.819922 48.717188 
+L 175.819922 48.717188 
 " style="fill: none; stroke-dasharray: 3.7,1.6; stroke-dashoffset: 0; stroke: #cc79a7"/>
     </g>
     <g id="text_18">
-     <!-- PAs: E/(N G_e η) -->
-     <g transform="translate(186.623672 51.517188) scale(0.08 -0.08)">
+     <!-- PAs: E/(N G_e η_PA) -->
+     <g transform="translate(182.219922 51.517188) scale(0.08 -0.08)">
       <defs>
        <path id="Inter-Regular-5e3" d="M 922 -41 
 C 1156 -41 1344 147 1344 381 
@@ -1411,15 +1411,6 @@ L 1056 0
 L 1056 2094 
 z
 " transform="scale(0.015625)"/>
-       <path id="Inter-Regular-5a0" d="M 300 -872 
-L 847 -872 
-C 1369 16 1653 969 1653 1897 
-C 1653 2909 1316 4172 847 4941 
-L 300 4941 
-C 784 3956 1081 2809 1081 1897 
-C 1081 1094 853 269 300 -872 
-z
-" transform="scale(0.015625)"/>
       </defs>
       <use xlink:href="#Inter-Regular-178"/>
       <use xlink:href="#Inter-Regular-2" transform="translate(56.5 0)"/>
@@ -1436,18 +1427,21 @@ z
       <use xlink:href="#Inter-Regular-267" transform="translate(591.515625 0)"/>
       <use xlink:href="#Inter-Regular-6eb" transform="translate(649.8125 0)"/>
       <use xlink:href="#Inter-Regular-484" transform="translate(677.9375 0)"/>
-      <use xlink:href="#Inter-Regular-5a0" transform="translate(737.0625 0)"/>
+      <use xlink:href="#Inter-Regular-609" transform="translate(737.0625 0)"/>
+      <use xlink:href="#Inter-Regular-178" transform="translate(782.671875 0)"/>
+      <use xlink:href="#Inter-Regular-2" transform="translate(839.171875 0)"/>
+      <use xlink:href="#Inter-Regular-5a9" transform="translate(908.171875 0)"/>
      </g>
     </g>
     <g id="line2d_31">
-     <path d="M 164.223672 62.396875 
-L 172.223672 62.396875 
-L 180.223672 62.396875 
+     <path d="M 159.819922 62.396875 
+L 167.819922 62.396875 
+L 175.819922 62.396875 
 " style="fill: none; stroke-dasharray: 3.7,1.6; stroke-dashoffset: 0; stroke: #009e73"/>
     </g>
     <g id="text_19">
      <!-- overhead: N P_oh -->
-     <g transform="translate(186.623672 65.196875) scale(0.08 -0.08)">
+     <g transform="translate(182.219922 65.196875) scale(0.08 -0.08)">
       <use xlink:href="#Inter-Regular-318"/>
       <use xlink:href="#Inter-Regular-3d6" transform="translate(58.015625 0)"/>
       <use xlink:href="#Inter-Regular-267" transform="translate(112.265625 0)"/>

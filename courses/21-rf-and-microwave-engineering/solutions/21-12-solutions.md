@@ -66,7 +66,7 @@ $2048 \times 12 = 24{,}576$ per FFT; $14 \times 8000$ = 112,000 symbols/s: **2.7
 
 (a) $1.54 \times 10^9 \times 6911/c$ = **35.5** kHz.
 
-(b) $4 \times 1075\ \text{km}/c$ = **14.34** ms. (c) **15**: just inside the 16 processes of terrestrial NR, which is why low-orbit NTN can keep HARQ while geostationary cannot.
+(b) $4 \times 1075\ \text{km}/c$ = **14.34** ms. (c) **15** processes for propagation alone, before UE and gNB processing time (several slots), so 16 is marginal even at 30°. At the 10° minimum elevation the slant range is $\sqrt{6971^2 - (6371\cos 10°)^2} - 6371\sin 10°$ = **1931.6** km, the four legs take **25.77** ms and about **26** processes are needed. That is why Release 17 allows up to 32 for non-geostationary satellites, and why geostationary links disable HARQ feedback instead.
 
 ### Solution 21-12.12
 
@@ -81,6 +81,14 @@ Automotive and IoT growth offset part of a 13% handset decline: the diversificat
 ### Solution 21-12.14
 
 7.5 ms / 375 µs = **20** times.
+
+### Solution 21-12.15
+
+(a) On a circular orbit the velocity is perpendicular to the radius vector, so it is perpendicular to the nadir direction at the satellite. Its component along the line of sight is therefore $v\cos(90° - \beta) = v\sin\beta$ (in the orbital plane). β grows as the satellite moves away from overhead and is largest when the line of sight grazes the Earth: then the line of sight is tangent at the user, the triangle (centre, user, satellite) has a right angle at the user, and $\sin\beta = R_E/(R_E + h)$. Hence $v_{los,max} = vR_E/(R_E + h)$.
+
+(b) $v = \sqrt{3.986 \times 10^{14}/7.171 \times 10^6}$ = **7455.5** m/s; $v_{los,max} = 7455.5 \times 6371/7171$ = **6623.8** m/s; Doppler $6623.8 \times 2 \times 10^9/c$ = **44.19** kHz.
+
+(c) The ground moves at up to about 0.46 km/s at the equator. Depending on the orbit's inclination and the user's latitude this adds or subtracts up to about 6% of the satellite's speed (0.46/7.46), so real Doppler profiles are slightly asymmetric about the pass.
 
 ---
 
@@ -118,9 +126,15 @@ Automotive and IoT growth offset part of a 13% handset decline: the diversificat
 | 21-12.11a | Doppler at 1.54 GHz | 35.5 | kHz |
 | 21-12.11b | four-leg round trip | 14.34 | ms |
 | 21-12.11c | HARQ processes | 15 | |
+| 21-12.11d | slant range at 10° elevation | 1931.6 | km |
+| 21-12.11e | four-leg round trip at 10° | 25.77 | ms |
+| 21-12.11f | HARQ processes at 10° | 26 | |
 | 21-12.12a | smallest ratio | 100 | |
 | 21-12.12b | largest ratio | 667 | |
 | 21-12.13a | automotive growth | 51.7 | % |
 | 21-12.13b | IoT growth | 7.8 | % |
 | 21-12.13c | handset share, FY2025 | 72.4 | % |
 | 21-12.14 | interval reduction | 20 | |
+| 21-12.15a | orbital speed, 800 km | 7455.5 | m/s |
+| 21-12.15b | largest line-of-sight speed | 6623.8 | m/s |
+| 21-12.15c | Doppler at 2 GHz | 44.19 | kHz |

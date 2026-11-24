@@ -164,6 +164,14 @@ A switch IIP3 above 80 dBm is a demanding specification; it is one reason uplink
 
 (c) About **5,570** times.
 
+### Solution 21-09.16
+
+(a) The admittance is $Y = j\omega C_0 + 1/Z_m$ with $Z_m = j\omega L_m + 1/(j\omega C_m) = j(\omega^2L_mC_m - 1)/(\omega C_m)$. $Y$ is infinite (series resonance) where $Z_m = 0$, at $\omega_s^2 = 1/(L_mC_m)$. $Y$ is zero (parallel resonance) where $1/Z_m = -j\omega C_0$, that is $\omega C_m/(\omega^2L_mC_m - 1) = \omega C_0$, so $\omega^2L_mC_m = 1 + C_m/C_0$ and $\omega_p = \omega_s\sqrt{1 + C_m/C_0}$.
+
+(b) Near $\omega_p$ the motional branch is inductive with reactance $X_m \approx 1/(\omega_pC_0)$, much larger than $R_m$. Then $1/(R_m + jX_m) = (R_m - jX_m)/(R_m^2 + X_m^2) \approx R_m/X_m^2 - j/X_m$, and the $-j/X_m$ cancels $j\omega_pC_0$, leaving $Y \approx R_m/X_m^2 = R_m\omega_p^2C_0^2$. Hence $Z(f_p) \approx 1/(\omega_p^2C_0^2R_m)$: the peak is set by the motional loss, scaled up by the square of the static reactance over $R_m$.
+
+(c) $f_p = 2.00\sqrt{1 + 1/17.44}$ = **2.0565** GHz, and $Z(f_p) \approx 1/[(2\pi \times 2.0565 \times 10^9)^2(10^{-12})^2 \times 0.694]$ = **8.63** kΩ, the height of the anti-resonance peak in Figure 1.
+
 ---
 
 ## Answer key
@@ -237,3 +245,5 @@ A switch IIP3 above 80 dBm is a demanding specification; it is one reason uplink
 | 21-09.15a | AlN thickness | 1.57 | µm |
 | 21-09.15b | quarter-wave line | 8.75 | mm |
 | 21-09.15c | ratio | 5570 | |
+| 21-09.16a | parallel resonance | 2.0565 | GHz |
+| 21-09.16b | impedance at the parallel resonance | 8.63 | kΩ |

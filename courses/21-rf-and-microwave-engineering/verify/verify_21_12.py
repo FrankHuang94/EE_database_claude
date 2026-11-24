@@ -20,6 +20,7 @@ from fractions import Fraction
 from pathlib import Path
 
 import numpy as np
+from scipy import optimize
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -145,6 +146,12 @@ v.check("Ex 21-12.7c", (ss - 10 / C) * 1e9)
 v.check("Ex 21-12.7d", (ss - 10 / C) * C)
 v.check("Ex 21-12.7e", 2 * 0.1 / (C * 1e-3) * 1e6)
 v.assert_true("double-sided residual equals range x mean clock offset (0.1 mm at 10 m, 20 ppm)", abs((ds - 10 / C) * C - 10 * 20e-6 / 2) < 1e-7)
+import sympy as sp  # noqa: E402
+_a, _b, _tau, _d1, _d2 = sp.symbols("a b tau D1 D2", positive=True)
+_tr1, _td1, _tr2, _td2 = _a * (2 * _tau + _d1), _b * _d1, _b * (2 * _tau + _d2), _a * _d2
+_est = (_tr1 * _tr2 - _td1 * _td2) / (_tr1 + _tr2 + _td1 + _td2)
+v.assert_true("§3.5: DS-TWR estimate is exactly 2ab tau/(a+b), independent of D1 and D2",
+              sp.simplify(_est - 2 * _a * _b * _tau / (_a + _b)) == 0)
 
 print("Example 21-12.8")
 v.check("Ex 21-12.8a", C * math.radians(30) / (4 * math.pi * 1e6))
@@ -188,6 +195,9 @@ v.check("Txt 21-12.g", 12.5e3 / 314.38)
 v.check("Txt 21-12.h", 24072 / 37208 * 100)
 v.check("Txt 21-12.i", (24072 / 27793 - 1) * 100)
 v.check("Txt 21-12.j", 118.3 / 2.35)
+v.check("Txt 21-12.k", 314.38 / 12.5e3 * 100)
+v.check("Txt 21-12.l", 314.38 / 10e3 * 100)
+v.check("Txt 21-12.m", 2 * math.pi * 6378.137 / 86164.0905)  # WGS-84 equatorial radius, sidereal day
 
 # ================================================================ problems
 print("Problems")
@@ -226,6 +236,12 @@ v.check("21-12.11a", doppler_max(1.54e9, 600e3) / 1e3)
 rtt11 = 4 * 1075.088e3 / C
 v.check("21-12.11b", rtt11 * 1e3)
 v.check("21-12.11c", math.ceil(rtt11 / 1e-3))
+# 10 degree elevation: slant range by solving the Earth-centred triangle numerically (law of cosines root).
+_re, _rs = 6371e3, 6371e3 + 600e3
+d10 = optimize.brentq(lambda d: _rs**2 - (_re**2 + d**2 + 2 * _re * d * math.sin(math.radians(10))), 1e3, 5e6)
+v.check("21-12.11d", d10 / 1e3)
+v.check("21-12.11e", 4 * d10 / C * 1e3)
+v.check("21-12.11f", math.ceil(4 * d10 / C / 1e-3))
 v.check("21-12.12a", 50e9 / 500e6)
 v.check("21-12.12b", 200e9 / 300e6)
 v.check("21-12.13a", (6004 / 3957 - 1) * 100)
@@ -260,4 +276,14 @@ for _ in range(4000):
 v.assert_true("simulated single-sided rms within 3% of the triangular-distribution value",
               abs(math.sqrt(np.mean(np.square(errs))) / rms - 1) < 0.03)
 
+# Problem 21-12.15: maximum range rate over a pass, found by scanning the orbit geometry (800 km).
+_r15 = 6371e3 + 800e3
+_v15 = math.sqrt(3.986e14 / _r15)
+_ang = np.linspace(-math.acos(6371e3 / _r15), math.acos(6371e3 / _r15), 400001)
+_pos = np.stack([_r15 * np.sin(_ang), _r15 * np.cos(_ang) - 6371e3], axis=1)
+_vel = _v15 * np.stack([np.cos(_ang), -np.sin(_ang)], axis=1)
+_rr = np.abs(np.sum(_pos * _vel, axis=1) / np.linalg.norm(_pos, axis=1)).max()
+v.check("21-12.15a", _v15)
+v.check("21-12.15b", _rr)
+v.check("21-12.15c", _rr * 2e9 / 299792458 / 1e3)
 v.finish()

@@ -124,7 +124,7 @@ for key, a in zip("abcd", (360, 240, 180, 120)):
     idc, i1 = fourier_trunc(a)
     v.check(f"Ex 21-07.2{key}", 0.5 * i1 / idc * 100)
 for key, a in zip("efgh", (360, 240, 180, 120)):
-    v.check(f"Ex 21-07.2{key}", db20(fourier_trunc(a)[1] / ref))
+    v.check(f"Ex 21-07.2{key}", 10 * lg(fourier_trunc(a)[1] / ref))  # same swing V_DD: P = V_DD I1 / 2
 v.check("Ex 21-07.2i", 1 / fourier_trunc(240)[1])
 v.check("Ex 21-07.2j", 1 / fourier_trunc(120)[1])
 
@@ -155,7 +155,7 @@ v.check("Ex 21-07.4a", V1)
 v.check("Ex 21-07.4b", V1 / 9)
 idc_h, i1_h = fourier_trunc(180)
 v.check("Ex 21-07.4c", 0.5 * V1 * i1_h / idc_h * 100)
-v.check("Ex 21-07.4d", db20(V1))
+v.check("Ex 21-07.4d", 10 * lg(V1))  # same current: P = V1 I1 / 2
 
 # ================================================================ Example 21-07.5
 etaA = lambda x: 0.5 * x * x  # noqa: E731
@@ -273,7 +273,7 @@ v.check("21-07.3b", 0.5 * i1_h / idc_h * 0.9 * 100)
 for (ke, kp, kr), a in ((("a", "c", "e"), 300), (("b", "d", "f"), 150)):
     idc, i1 = fourier_trunc(a)
     v.check(f"21-07.4{ke}", 0.5 * i1 / idc * 100)
-    v.check(f"21-07.4{kp}", db20(i1 / ref))
+    v.check(f"21-07.4{kp}", 10 * lg(i1 / ref))
     v.check(f"21-07.4{kr}", 1 / i1)
 w5 = 2 * math.pi * 0.9e9
 r5 = CE["P"] * 25 / 2
@@ -340,4 +340,16 @@ v.check("21-07.14c", (po14 - pi14) / 0.4 / 3.8 * 1e3)
 v.check("21-07.14d", (po14 - pi14) / 0.5 / 3.8 * 1e3)
 v.check("21-07.14e", (po14 - pi14) / 3.8 * (1 / 0.4 - 1 / 0.5) * 1e3)
 
+# Class F3 maximum (Raab): maximize V1 over V3 subject to v(theta) = 1 - V1 cos(theta) + V3 cos(3 theta) >= 0.
+th_grid = np.linspace(0, math.pi, 20001)
+
+
+def v1_max_for(v3_ratio: float) -> float:
+    return optimize.brentq(lambda v1: np.min(1 - v1 * np.cos(th_grid) + v3_ratio * v1 * np.cos(3 * th_grid)), 0.5, 1.5)
+
+
+best_r = optimize.minimize_scalar(lambda r: -v1_max_for(r), bounds=(0.05, 0.3), method="bounded", options={"xatol": 1e-10})
+v.assert_true("optimum third-harmonic ratio is V3 = V1/6", abs(best_r.x - 1 / 6) < 1e-4, f"{best_r.x}")
+v.check("Txt 21-07.q", -best_r.fun)
+v.check("Txt 21-07.p", -best_r.fun * math.pi / 4 * 100)
 sys.exit(v.finish())
