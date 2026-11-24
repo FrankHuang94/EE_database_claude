@@ -41,10 +41,41 @@ Designing digital chips: the CMOS inverter, logic families, sizing and logical e
 | [19-12 · Design for Test: Scan, BIST and ATPG](chapters/19-12-design-for-test.md) | 6 | ✅ verified | [problems](problems/19-12-problems.md) · [solutions](solutions/19-12-solutions.md) · [lab](labs/19-12-lab/README.md) · [verify](verify/verify_19_12.py) |
 | [19-13 · Verification: Simulation, UVM, Formal and Emulation](chapters/19-13-verification-methods.md) | 8 | ✅ verified | [problems](problems/19-13-problems.md) · [solutions](solutions/19-13-solutions.md) · [lab](labs/19-13-lab/README.md) · [verify](verify/verify_19_13.py) |
 
+**Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/19-digital-vlsi-design.csv) · [Equation sheet](../../reference/equation-sheets/19-digital-vlsi-design.md)
+
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 
 <!-- END GENERATED -->
 
 ## Course notes
 
-*(Hand-written notes for this course go below the generated block.)*
+**How to approach this course.** Course 19 is planned at about 112 hours: the chapters' own estimates add to 106, plus 6 hours of review and the exam. Course 09 gave you the MOSFET, Courses 10 and 12 its circuit models, Course 08 digital logic and Verilog, and Course 14 the processors these chips implement. This course follows a digital chip from the single transistor pair to signoff: why a CMOS gate works, how fast it switches and what it costs in power, how gates, wires, flip-flops and memories are sized and timed, and how a netlist becomes verified, testable layout.
+
+The thirteen chapters fall into four blocks:
+
+- **The gate (19-01 to 19-04).** The inverter's transfer curve, noise margins and gain; its delay from the square law and the RC model, intrinsic delay and FO4; static, ratioed, pass-transistor and dynamic logic with Elmore delay; and logical effort for sizing whole paths.
+- **The chip's physics (19-05 to 19-08).** Wire resistance, capacitance and the distributed RC line, repeaters and crosstalk; dynamic, short-circuit and leakage power with the techniques that cut each; setup, hold, skew, pipelining and metastability; and the 6T SRAM cell, its margins, sensing and yield.
+- **The flow (19-09 to 19-11).** Layout layers, design rules, Euler paths and standard cells; synthesis, technology mapping and static timing analysis on SKY130 data; and floorplanning, placement, clock trees, routing and signoff.
+- **Making sure it works (19-12 and 19-13).** Manufacturing test (defect level, fault models, scan, BIST, compression) and pre-silicon verification (testbenches, coverage, assertions, UVM, equivalence and model checking, emulation).
+
+Work at least the [A] and [B] problems of every chapter. The labs are of three kinds, each checked by its chapter's verify script:
+
+- ngspice netlists with level-1 transistors and RC ladders: the inverter's transfer curve (19-01), step delay and a ring oscillator (19-02), pseudo-NMOS, pass gates, dynamic nodes and TG ladders (19-03), a tapered chain (19-04), a distributed wire (19-05), supply-current integration (19-06), a metastable latch (19-07), the 6T cell (19-08), and a power strap, a clock-tree merge and a routed net (19-11);
+- Python models imported by their notebooks: `inverter.py`, `delay.py`, `logic.py`, `effort.py`, `wires.py`, `power.py`, `timing.py`, `sram.py`, `layout.py`, a static-timing engine and technology mapper on real SKY130 Liberty tables (`sta.py`, `techmap.py`), `pnr.py`, `dft.py` and `verif.py`;
+- self-checking Verilog testbenches under Icarus Verilog: a scan chain with an injected fault (19-12) and a constrained-random arbiter testbench with coverage and fairness checks (19-13).
+
+**What to master cold.** The [equation sheet](../../reference/equation-sheets/19-digital-vlsi-design.md) collects the relations; these are the ideas behind them:
+
+- a CMOS gate is a pair of switches with gain: its threshold moves only with the square root of the sizing ratio, and its noise margins come from the unity-gain points (19-01);
+- delay is resistance times capacitance, but a gate's own capacitance sets a floor, so whole paths, not single gates, are sized, with about four as the stage effort (19-02 to 19-04);
+- wires are distributed RC lines whose unrepeated delay grows with the square of length; repeaters make it linear, and neighbours make it uncertain (19-05);
+- power is $\alpha CV_{DD}^2f$ plus leakage that is exponential in threshold and temperature; supply voltage is the strongest knob, until leakage sets a minimum-energy point (19-06);
+- hold does not depend on the clock period; skew helps one check and hurts the other; synchronizers make failure rare, not impossible (19-07);
+- an SRAM cell must survive a read yet accept a write, and the 6σ cell, not the typical one, sets yield and minimum voltage (19-08);
+- layout is ordered by Euler paths and standard-cell rows; area is cell area over utilization (19-09);
+- timing is a graph: arrival forward, required backward, slack the difference, with corners, derates and statistics for margin (19-10);
+- placement minimizes wirelength, clock trees balance Elmore delays, and signoff checks timing, rules, connectivity and power integrity together (19-11);
+- test escapes fall tenfold per extra nine of coverage, and scan turns sequential test into combinational test (19-12);
+- verification is sampling plus proof: coverage measures stimulus, not checking; formal proves what you state under what you assume; emulation buys the cycles software needs (19-13).
+
+**Assessment.** The [course final exam](exam/README.md) has 14 questions and takes 240 minutes, with a calculator and the equation sheet but no Python or simulator. Aim for at least 70%. Questions 1 to 11 follow the chapters 19-01 to 19-11 in order, and Question 12 combines test and verification (19-12, 19-13). Question 13 asks for three derivations: the inverter's switching threshold, the optimal repeaters, and the best stage effort. Question 14 is a diligence question on an AI accelerator's power, frequency, test-quality and verification claims. The exam's verify script recomputes all 150 answers, each by a route other than the one the solutions show.

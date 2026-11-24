@@ -371,7 +371,6 @@ The lab ([labs/19-11-lab](../labs/19-11-lab/README.md)) implements this chapter'
 | H-tree, $k$ levels | $4^k$ sinks; path $D(1 - 2^{-k})$; total $1.5D(2^k - 1)$ | Square of side $D$ |
 | Routed-net delay | $R_d(C_w + C_L) + R_w(C_w/2 + C_L)$ | Elmore |
 | Clock power | $C_{\text{clk}}V_{DD}^2f$ | Activity 1 |
-
 | SKY130 metal stack | li1 plus 5 metals; 0.125 Ω/□ (met1, met2), 0.047 (met3, met4), about 0.029 (met5) | As of Nov 2026 [R-319] |
 | SKY130 minimum width / pitch | 0.14/0.34 µm (met1); 0.30/0.68 (met3); 1.6/3.4 (met5) | Tech LEF and DRC manual [R-319] |
 | SKY130 EM limit (average) | 2.8 mA/µm (met1, met2), 6.8 (met3, met4), 10.17 (met5) at 90 °C | Tech LEF comments only [R-319] |

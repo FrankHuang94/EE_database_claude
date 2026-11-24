@@ -90,7 +90,7 @@ $$
 N = \frac{\ln(1 - P)}{\ln(1 - p)} \approx \frac{-\ln(1 - P)}{p} .
 $$
 
-A 16-input AND gate's output stuck-at-0 needs all 16 inputs at 1: $p = 2^{-16}$, and 95 % confidence takes about 196 000 random patterns, against 4 deterministic ones for all its faults (Example 4). Designers add **test points** (extra control or observation logic) to make such nodes easier.
+A 16-input AND gate's output stuck-at-0 needs all 16 inputs at 1: $p = 2^{-16}$, and 95 % confidence takes about 196 000 random patterns, against 17 deterministic ones for all its faults (Example 4). Designers add **test points** (extra control or observation logic) to make such nodes easier.
 
 ![Stuck-at fault coverage against the number of random patterns on a logarithmic axis, for a 10-input AND gate feeding an OR: coverage jumps to 30 percent within a few patterns, stays flat, then climbs from about a thousand patterns to 100 percent at several thousand, with a dashed line at 2048.](../../../assets/figures/19-12/random-coverage.svg)
 
@@ -305,7 +305,6 @@ The lab ([labs/19-12-lab](../labs/19-12-lab/README.md)) has a Python fault simul
 | Maximal LFSR period | $2^n - 1$ | Primitive polynomial |
 | MISR aliasing | $\approx 2^{-n}$ | Exactly $(2^{n(m-1)} - 1)/(2^{nm} - 1)$ |
 | March C− | $10n$ operations | |
-
 | Scan gate overhead (classic estimate) | $4n_{\text{sff}}/(n_g + 10n_{\text{sff}})$; 6.7 % for 100k gates, 2k flip-flops | 2001 teaching data [R-320] |
 | Cost of test | under 2–3 % of IC revenue | ITRS 2015 [R-320] |
 | Compression in production | "often 100X or more" | Vendor claim, Nov 2026 [R-320] |
