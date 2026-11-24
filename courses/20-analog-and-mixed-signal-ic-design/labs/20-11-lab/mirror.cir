@@ -1,0 +1,30 @@
+* Lab 20-11 -- three current mirrors whose output device has a threshold 1 mV higher than its diode-connected input.
+* Square-law (level 1) devices, lambda = 0, W/L = 10/1, KP = 200 uA/V^2, VTO = 0.5 V (output: 0.501 V).
+* Reference currents 10 uA, 100 uA and 400 uA give overdrives 0.1, 0.316 and 0.632 V, i.e. gm/ID = 20, 6.32, 3.16 /V.
+* The output drains are held at 1.0 V by sources whose currents are measured. Mismatch in % = (1 - Iout/Iref) * 100.
+.model nin nmos level=1 vto=0.5 kp=200u lambda=0
+.model nout nmos level=1 vto=0.501 kp=200u lambda=0
+IA 0 ga 10u
+M1A ga ga 0 0 nin w=10u l=1u
+M2A da ga 0 0 nout w=10u l=1u
+VDA da 0 1.0
+IB 0 gb 100u
+M1B gb gb 0 0 nin w=10u l=1u
+M2B db gb 0 0 nout w=10u l=1u
+VDB db 0 1.0
+IC 0 gc 400u
+M1C gc gc 0 0 nin w=10u l=1u
+M2C dc gc 0 0 nout w=10u l=1u
+VDC dc 0 1.0
+.op
+.control
+run
+let mma = (1 - (-i(vda)) / 10u) * 100
+let mmb = (1 - (-i(vdb)) / 100u) * 100
+let mmc = (1 - (-i(vdc)) / 400u) * 100
+print mma mmb mmc
+.endc
+* EXPECT mma key:README.md#Lab_20-11.a rtol=1e-3
+* EXPECT mmb key:README.md#Lab_20-11.b rtol=1e-3
+* EXPECT mmc key:README.md#Lab_20-11.c rtol=1e-3
+.end

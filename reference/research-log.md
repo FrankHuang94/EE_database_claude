@@ -3489,3 +3489,42 @@ R&D % = R&D ÷ revenue.
 - **G. Giust, SiTime**, "Practical analysis of refclk jitter for SerDes applications" (2024): the 12 kHz–20 MHz band was introduced in 1992 "to support sales into the SONET OC-48 (2.488 Gbps) telecom market" and "is no longer suited for modern high-speed designs".
 - **T. Neu, TI SLYT379** (3Q 2010): jitter from 10–100 MHz offsets "~360 fs… far more than the entire jitter contribution of ~194 fs with the offset between 100 Hz and 10 MHz".
 - **3GPP TS 38.104 V18.5.0** (ETSI TS 138 104, May 2024), Table 6.5.2.2-1: base-station EVM QPSK 17.5%, 16QAM 12.5%, 64QAM 8%, 256QAM 3.5%, 1024QAM 2.5–2.8%.
+
+## R-353 · Mismatch literature: Pelgrom, Lakshmikumar, Kinget (Course 20)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref metadata and OpenAlex abstracts; Pelgrom 1989 and Pelgrom–Tuinhout–Vertregt 1998 read in full (scanned copies); Kinget and Steyaert's 1997 chapter read in full (author-hosted). Kinget 2005 full text not read (abstract only).*
+
+- **M. J. M. Pelgrom, A. C. J. Duinmaijer and A. P. G. Welbers**, *IEEE JSSC* 24(5), pp. 1433–1439, Oct. 1989, DOI 10.1109/JSSC.1989.572629: σ²(ΔP) = A_P²/(WL) + S_P²D² for the difference of two devices; Table I (2.5 µm, 50 nm oxide): A_VT0 = 30 (n) / 35 (p) mV·µm, A_β = 2.3 / 3.2 %·µm, S_VT0 = 4 µV/µm; cross-coupled quad cancels "the linear components in the gradient"; "the estimation of the standard deviation of an ideal normal distribution by means of 100 samples leads to a relative error larger than 10 percent once out of six times" (χ² check: 15.9%).
+- **Lakshmikumar, Hadaway and Copeland**, *IEEE JSSC* 21(6), pp. 1057–1066, Dec. 1986, DOI 10.1109/JSSC.1986.1052648: 3 µm CMOS data; mismatch models "relate the mismatch to the device dimensions"; DAC yield "greater than 97%".
+- **P. R. Kinget**, *IEEE JSSC* 40(6), pp. 1212–1224, June 2005, DOI 10.1109/JSSC.2005.848021 (abstract): "accuracy requirements impose a minimal device area"; "a fixed bandwidth-accuracy-power tradeoff which is set by technology constants"; "For MOS circuits the power constraints due to matching are several orders of magnitude higher than for thermal noise." Exact equations of the 2005 paper UNVERIFIED (paywalled). **Kinget and Steyaert**, CICC 1996, DOI 10.1109/CICC.1996.510569 ("two orders higher"), and the 1997 Springer chapter, DOI 10.1007/978-1-4757-2580-3_2: P = 24·C_ox·A_VT0²·f·DR² (3σ, class-B) against 8kT·f·DR²; its Table 3.4 energies do not reproduce from its stated constants.
+- **M. J. M. Pelgrom, H. P. Tuinhout and M. Vertregt**, IEDM 1998, pp. 915–918, DOI 10.1109/IEDM.1998.746503: A_VT "reduces with decreasing gate oxide thickness"; its main contribution is "the uncertainty in the number of active doping atoms in the depletion layer"; "Optimum circuit performance can only be achieved when the matched circuit elements are designed identical with respect to geometry, rotation, biasing and temperature"; describes the Monte Carlo flow for global and mismatch variation.
+
+## R-354 · Matching coefficients by technology node (Course 20)
+
+*Read on 24 Nov 2026 by a research subagent (with R-353): author slides, course notes, a PhD thesis and abstracts. No public measured A_VT found for foundry 7/5 nm FinFET or GAA nodes.*
+
+- **M. Pelgrom**, TWEPP-13 slides (CERN Indico, 24 Sep 2013): "A_VT = 1mVµm/nm", "Aβ = 1-2%µm", bipolar "A_VBE = 0.3mVµm", resistors 0.5–5 %·µm, capacitors 0.3%/√(C in fF); 65 nm NMOS A_VT = 3.5 mV·µm; mismatch energy C_ox·A_VT² "70x higher than thermal noise energy".
+- **B. Boser**, UC Berkeley EE240B "Matching" (2016): "Avt increases ~1 mV×µm for every nm of gate insulator thickness – for well-engineered process"; typical 180 nm A_VT 5 mV·µm, A_β 1 %·µm.
+- **Kuhn et al.**, *IEEE TED* 58(8), pp. 2197–2208, Aug. 2011, DOI 10.1109/TED.2011.2121913: A_VT benchmarks "may differ by √2, depending on the background of the author"; FinFET normalization by electrical vs footprint area; random variation constant at 65 nm (last SiON node), "HiK-MG in 45 nm restored Tox scaling"; SRAM Vccmin set by random V_T variation.
+- **L. Rahhal**, PhD thesis, Univ. Grenoble 2014 (HAL tel-01305050): pair constants 2.4 mV·µm (28 nm bulk gate-first) and 1.9 mV·µm (20 nm gate-last); 28/14 nm FD-SOI ≈ 1.3/1.4 mV·µm. **Paul et al.**, IEDM 2013, DOI 10.1109/IEDM.2013.6724625: 14 nm SOI FinFET 1.4 (n) / 0.7 (p) mV·µm (definition not stated in the abstract). **Giles et al.**, VLSI 2015, DOI 10.1109/VLSIT.2015.7223657: Intel 14 nm single-fin σV_t 19 mV (N), 24 mV (P), "normally distributed out to +/-5σ".
+- **Loke et al.**, CICC 2019 tutorial, DOI 10.1109/CICC.2019.8780267 (abstract): "AMS area scaling 0.8-0.9x per node vs. 0.5x for logic & SRAM"; "Parasitics a[nd] LDEs only get worse".
+
+## R-355 · Layout-dependent effects and systematic mismatch (Course 20)
+
+*Read on 24 Nov 2026 by a research subagent (with R-353): Hook et al. read in full; others from abstracts.*
+
+- **Hook et al.**, *IEEE TED* 50(9), pp. 1946–1951, Sep. 2003, DOI 10.1109/TED.2003.815371: "Threshold voltage shifts of up to 100 mV can be observed over a lateral distance on the order of a micrometer"; magnitude "directly proportional to the gate oxide thickness" (IBM 0.18 µm, 3.5/6.8 nm oxides).
+- **Grochowska and Pleskacz**, DDECS 2024, DOI 10.1109/DDECS60919.2024.10508916: well-edge effect "essential at 1 μm or shorter distances"; "In 40nm technology it can change threshold voltage even by 33 % for IO devices while at 16nm the change will be just 1.87%."
+- **Drennan, Kniffin and Locascio**, CICC 2006, DOI 10.1109/CICC.2006.320869: well proximity and STI stress; "bias points can shift by 20-30%".
+- **Gregor**, *IEEE TED* 39(2), pp. 275–282, 1992, DOI 10.1109/16.121683: topography effects "extend over distances greater than 30 µm and are not reduced by common-centroid layout techniques".
+- **Drennan and McAndrew**, *IEEE JSSC* 38(3), pp. 450–456, Mar. 2003, DOI 10.1109/JSSC.2002.808305: "V_t mismatch does not follow a simplistic 1/(√area) law, especially for wide/short and narrow/long devices".
+
+## R-356 · Corners, temperature grades and precision data sheets (Course 20)
+
+*Read on 24 Nov 2026 by a research subagent (with R-353). AEC-Q100 base document and JEDEC JESD78 not reachable; grades confirmed through vendor pages.*
+
+- **D. Harris**, HMC E158 slides (2004): corner definitions; "VDD is usually designed +/- 10%"; leakage worst at fast devices, high V_DD, hot; latch-up avoided with substrate and well taps and guard rings; wire capacitance "About 0.2 fF/µm".
+- **GlobalFoundries GF180MCU PDK docs** (2022): "The provided corner models are primarily for predicting static logic delay"; statistical global and mismatch models (§9). "Corners = ±3σ" is a convention not confirmed in any foundry document.
+- **Dongaonkar, Mudanai and Giles**, *IEEE TED* 66(1), pp. 19–27, Jan. 2019, DOI 10.1109/TED.2018.2860929: corner-based validation "has fundamental limitations in predicting the circuit performance variation". Temperature-effect inversion in FinFETs: ICCAD 2015, DOI 10.1109/ICCAD.2015.7372611.
+- **Renesas** temperature-ranges page and **TI** qualification FAQ: commercial 0 to 70 °C; industrial −40 to 85 °C; AEC-Q100 Grade 3/2/1/0 −40 °C to 85/105/125/150 °C; Q100 parts "pre and post tested at room and hot temperature per the grade".
+- **TI REF35** (SNAS809C, rev. Sep. 2024): initial accuracy ±0.05% max at 25 °C; 12 ppm/°C max (box method) over −40 to 105 °C; long-term stability 40 ppm and hysteresis 70 ppm typical; "long-term stability is not ensured by design". **TI TMP117** (SNOSD82D, rev. Sep. 2022): ±0.1 °C (−20 to 50 °C) to ±0.3 °C (−55 to 150 °C), 8 averages. **Pertijs, Makinwa and Huijsing**, *IEEE JSSC* 40(12), Dec. 2005, DOI 10.1109/JSSC.2005.858476: "3σ inaccuracy of ±0.1 °C", trimmed "based on a calibration at one temperature".

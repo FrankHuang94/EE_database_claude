@@ -8310,3 +8310,50 @@
   definition: A spurious tone at offsets equal to multiples of the reference frequency in a PLL's output, caused by the periodic charge-pump activity rippling the VCO's control voltage.
   chapter: "20-10"
   see_also: [Charge pump]
+# ---------------------------------------------------------------- 20-11
+- term: Mismatch
+  definition: The random and systematic difference between the parameters (threshold, gain factor, resistance, capacitance) of nominally identical devices on the same die; it sets the offset and linearity of analog circuits.
+  chapter: "20-11"
+  see_also: [Pelgrom's law, Common-centroid layout]
+- term: Common-centroid layout
+  definition: Placing the unit cells of matched devices so that each device's cells have the same average position (for example ABBA), which cancels the effect of a linear gradient across the die.
+  chapter: "20-11"
+  see_also: [Interdigitation]
+- term: Interdigitation
+  definition: Alternating the fingers or unit cells of matched devices (ABAB…); it keeps the devices' centroids one pitch apart however long the row, reducing gradient errors without cancelling them, and keeps routing simple.
+  chapter: "20-11"
+  see_also: [Common-centroid layout]
+- term: Dummy device
+  definition: A non-functional transistor, resistor or capacitor placed at the end of an array so that every active element has the same neighbors and sees the same etching, lithography and stress.
+  chapter: "20-11"
+- term: Well-proximity effect
+  definition: The threshold shift of transistors close to a well edge, caused by implant ions scattered from the photoresist edge into the nearby channel.
+  chapter: "20-11"
+- term: Guard ring
+  definition: A heavily doped diffusion ring tied to a supply around a device or block, which collects injected substrate carriers; it prevents latch-up and isolates sensitive circuits from substrate noise.
+  chapter: "20-11"
+  see_also: [Latch-up]
+- term: Latch-up
+  definition: The triggering of the parasitic PNPN thyristor formed by the wells and diffusions of a CMOS process, which shorts the supply until power is removed.
+  chapter: "20-11"
+  see_also: [Guard ring]
+- term: Monte Carlo simulation
+  definition: Repeating a circuit simulation with process and mismatch parameters drawn at random from the foundry's statistical models, to estimate the distribution and yield of a specification.
+  chapter: "20-11"
+  see_also: [PVT corner]
+- term: Trimming
+  definition: Adjusting a circuit once at production test (with fuses, one-time-programmable memory or laser-cut resistors) to remove an offset or gain error measured at one condition.
+  chapter: "20-11"
+# ---------------------------------------------------------------- 20-12
+- term: Headroom
+  definition: The voltage left for signal swing after every transistor in a path between the supply rails has the minimum drain-source voltage it needs to stay in saturation; it shrinks as supplies fall.
+  chapter: "20-12"
+  see_also: [Cascode]
+- term: Digitally assisted analog
+  definition: A design approach that builds deliberately imprecise analog circuits and removes their errors with digital estimation and correction, trading analog gain and matching for cheap logic.
+  chapter: "20-12"
+  see_also: [Background calibration, Dynamic element matching]
+- term: Background calibration
+  definition: Calibration that estimates and corrects a circuit's errors continuously while it operates, so that it tracks temperature and supply drift without interrupting the signal.
+  chapter: "20-12"
+  see_also: [Digitally assisted analog]
