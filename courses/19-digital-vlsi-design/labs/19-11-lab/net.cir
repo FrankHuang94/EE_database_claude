@@ -1,0 +1,96 @@
+* Lab 19-11: a 1 mm routed net on SKY130 metal 1 (Example 19-11.6a)
+* Driver: SKY130 inv_1's effective pull-up resistance, 5.64 kohm (19-10), as a linear resistor from an ideal step.
+* Wire: the open flow's metal-1 estimate, 1.20565 ohm/um and 0.172375 fF/um, as a 40-section pi ladder
+* (whose Elmore delay equals the continuous wire's). Load: inv_1's input, 2.302 fF.
+* Elmore delay = area above the unit-step response; t50 = 50% crossing.
+* EXPECT elmore key:../../chapters/19-11-place-route-signoff.md#Ex_19-11.6a scale=1e-12 rtol=1e-3
+* EXPECT t50 key:README.md#Lab_19-11.f scale=1e-12 rtol=2e-3
+Vin in 0 PWL(0 0 1f 1)
+Rd in n0 5640
+Rw0 n0 n1 30.14125
+Rw1 n1 n2 30.14125
+Rw2 n2 n3 30.14125
+Rw3 n3 n4 30.14125
+Rw4 n4 n5 30.14125
+Rw5 n5 n6 30.14125
+Rw6 n6 n7 30.14125
+Rw7 n7 n8 30.14125
+Rw8 n8 n9 30.14125
+Rw9 n9 n10 30.14125
+Rw10 n10 n11 30.14125
+Rw11 n11 n12 30.14125
+Rw12 n12 n13 30.14125
+Rw13 n13 n14 30.14125
+Rw14 n14 n15 30.14125
+Rw15 n15 n16 30.14125
+Rw16 n16 n17 30.14125
+Rw17 n17 n18 30.14125
+Rw18 n18 n19 30.14125
+Rw19 n19 n20 30.14125
+Rw20 n20 n21 30.14125
+Rw21 n21 n22 30.14125
+Rw22 n22 n23 30.14125
+Rw23 n23 n24 30.14125
+Rw24 n24 n25 30.14125
+Rw25 n25 n26 30.14125
+Rw26 n26 n27 30.14125
+Rw27 n27 n28 30.14125
+Rw28 n28 n29 30.14125
+Rw29 n29 n30 30.14125
+Rw30 n30 n31 30.14125
+Rw31 n31 n32 30.14125
+Rw32 n32 n33 30.14125
+Rw33 n33 n34 30.14125
+Rw34 n34 n35 30.14125
+Rw35 n35 n36 30.14125
+Rw36 n36 n37 30.14125
+Rw37 n37 n38 30.14125
+Rw38 n38 n39 30.14125
+Rw39 n39 n40 30.14125
+Cw0 n0 0 2.1546875e-15
+Cw1 n1 0 4.309375e-15
+Cw2 n2 0 4.309375e-15
+Cw3 n3 0 4.309375e-15
+Cw4 n4 0 4.309375e-15
+Cw5 n5 0 4.309375e-15
+Cw6 n6 0 4.309375e-15
+Cw7 n7 0 4.309375e-15
+Cw8 n8 0 4.309375e-15
+Cw9 n9 0 4.309375e-15
+Cw10 n10 0 4.309375e-15
+Cw11 n11 0 4.309375e-15
+Cw12 n12 0 4.309375e-15
+Cw13 n13 0 4.309375e-15
+Cw14 n14 0 4.309375e-15
+Cw15 n15 0 4.309375e-15
+Cw16 n16 0 4.309375e-15
+Cw17 n17 0 4.309375e-15
+Cw18 n18 0 4.309375e-15
+Cw19 n19 0 4.309375e-15
+Cw20 n20 0 4.309375e-15
+Cw21 n21 0 4.309375e-15
+Cw22 n22 0 4.309375e-15
+Cw23 n23 0 4.309375e-15
+Cw24 n24 0 4.309375e-15
+Cw25 n25 0 4.309375e-15
+Cw26 n26 0 4.309375e-15
+Cw27 n27 0 4.309375e-15
+Cw28 n28 0 4.309375e-15
+Cw29 n29 0 4.309375e-15
+Cw30 n30 0 4.309375e-15
+Cw31 n31 0 4.309375e-15
+Cw32 n32 0 4.309375e-15
+Cw33 n33 0 4.309375e-15
+Cw34 n34 0 4.309375e-15
+Cw35 n35 0 4.309375e-15
+Cw36 n36 0 4.309375e-15
+Cw37 n37 0 4.309375e-15
+Cw38 n38 0 4.309375e-15
+Cw39 n39 0 4.309375e-15
+Cw40 n40 0 2.1546875e-15
+CL n40 0 2.302f
+Be e 0 V=1-V(n40)
+.tran 0.5p 15n
+.meas tran elmore INTEG V(e) FROM=0 TO=15n
+.meas tran t50 TRIG V(in) VAL=0.5 RISE=1 TARG V(n40) VAL=0.5 RISE=1
+.end

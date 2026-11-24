@@ -7861,3 +7861,51 @@
   definition: "A path designed to take more than one clock cycle, constrained with set_multicycle_path; a setup multiplier of N is normally paired with a hold multiplier of N - 1 so the hold check stays at the launch edge."
   chapter: "19-10"
   see_also: [False path]
+- term: Floorplan
+  definition: "The first physical-design step: choosing the die and core outline, the standard-cell rows, the positions of macros and I/O, and the power-distribution network, before any standard cell is placed."
+  chapter: "19-11"
+  see_also: [Utilization, IR drop]
+- term: Half-perimeter wirelength (HPWL)
+  definition: "Half the perimeter of the smallest rectangle around a net's pins, (x_max - x_min) + (y_max - y_min): the standard placement estimate of routed length, exact for two- and three-pin nets and a lower bound otherwise."
+  chapter: "19-11"
+  see_also: [Steiner tree, Quadratic placement]
+- term: Quadratic placement
+  definition: "Placing cells by minimizing the sum of weighted squared connection lengths with some pins fixed; setting the gradient to zero gives a sparse linear system in which each cell sits at the weighted average of its neighbors. Real placers add spreading to undo the resulting overlap."
+  chapter: "19-11"
+  see_also: [Legalization, Half-perimeter wirelength (HPWL)]
+- term: Legalization
+  definition: "The placement step that moves cells from their continuous global-placement positions into legal sites in standard-cell rows without overlap, disturbing the placement as little as possible."
+  chapter: "19-11"
+  see_also: [Quadratic placement]
+- term: Clock-tree synthesis (CTS)
+  definition: "Building the buffered network that distributes a clock from its source to every sequential element with bounded skew, slew and insertion delay, after placement and before routing."
+  chapter: "19-11"
+  see_also: [H-tree, Zero-skew merge, Clock skew]
+- term: H-tree
+  definition: "A recursively H-shaped clock-distribution wire pattern whose 4^k endpoints are all the same wire length from the source, giving nominally zero skew for uniformly spread sinks."
+  chapter: "19-11"
+  see_also: [Clock-tree synthesis (CTS)]
+- term: Zero-skew merge
+  definition: "Joining two clock subtrees by a wire tapped at the point where the Elmore delays to both subtrees' sinks are equal; the tap has a closed form because the squared-length terms cancel, and repeated merges build a zero-skew tree bottom-up."
+  chapter: "19-11"
+  see_also: [Clock-tree synthesis (CTS), Elmore delay]
+- term: Maze routing
+  definition: "Routing a connection on a grid by breadth-first wave expansion from the source around obstacles (Lee's algorithm), then tracing back from the target; it finds a shortest path whenever one exists."
+  chapter: "19-11"
+  see_also: [Steiner tree, Routing]
+- term: Steiner tree
+  definition: "A tree connecting a net's pins that may add extra junctions (Steiner points). The rectilinear Steiner minimum tree is never longer than the minimum spanning tree, which is at most 3/2 times it; computing it exactly is NP-hard, so routers use heuristics."
+  chapter: "19-11"
+  see_also: [Half-perimeter wirelength (HPWL), Maze routing]
+- term: Parasitic extraction
+  definition: "Computing the resistance, ground capacitance and coupling capacitance of every routed wire and via from the layout and the process's layer data, written out (as SPEF) for post-route timing and signal-integrity analysis."
+  chapter: "19-11"
+  see_also: [Signoff]
+- term: Signoff
+  definition: "The final set of independent checks a design must pass before tape-out: timing at every mode and corner with extracted parasitics, IR drop and electromigration, DRC, LVS, antenna and density rules, and logical equivalence."
+  chapter: "19-11"
+  see_also: [Tape-out, Design-rule check (DRC), Layout versus schematic (LVS)]
+- term: Tape-out
+  definition: "Releasing a chip's final layout database (GDSII or OASIS) to the foundry for mask making; the name comes from the magnetic tapes once used to deliver it."
+  chapter: "19-11"
+  see_also: [Signoff]
