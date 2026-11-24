@@ -8461,3 +8461,48 @@
   definition: A band-pass filter made of N capacitors switched in rotation by an N-phase clock; the clock sets the centre frequency and N·R·C sets the bandwidth, 1/(πNRC).
   chapter: "21-05"
   see_also: [Mixer]
+# ---------------------------------------------------------------- 21-06
+- term: Impulse sensitivity function (ISF)
+  definition: The phase shift an oscillator suffers per unit of injected charge (relative to its maximum charge swing) as a function of where in the cycle the charge arrives; −sin θ for an ideal LC tank, and its rms and average values set the oscillator's thermal and flicker phase noise (Hajimiri and Lee, 1998).
+  chapter: "21-06"
+  see_also: [Phase noise, Flicker-noise up-conversion]
+- term: Flicker-noise up-conversion
+  definition: The conversion of a device's low-frequency 1/f noise into close-in oscillator phase noise falling at −30 dB per decade; it acts through the average (DC) value of the effective ISF, so the 1/f³ corner is the device's flicker corner times (Γ_dc/Γ_rms)², which waveform symmetry keeps small.
+  chapter: "21-06"
+  see_also: [Impulse sensitivity function (ISF), Flicker noise]
+- term: Groszkowski frequency shift
+  definition: The lowering of an oscillator's frequency below 1/√(LC) by the harmonic currents of its nonlinear device, about −(1/2)Σ(n² − 1)h_n² for harmonic voltage ratios h_n; −1/(8Q²) for a square-wave current.
+  chapter: "21-06"
+  see_also: [Describing function]
+- term: Varactor
+  definition: A capacitor whose value varies with its DC bias (a reverse-biased junction or a MOS capacitor), used for continuous fine tuning of a VCO; its Q falls as its tuning ratio rises.
+  chapter: "21-06"
+  see_also: [Switched-capacitor bank, VCO gain (KVCO)]
+- term: Switched-capacitor bank
+  definition: A binary-weighted set of capacitors connected across a VCO tank by MOS switches, giving coarse digital tuning in overlapping bands so that the varactor, and the VCO gain, can stay small.
+  chapter: "21-06"
+  see_also: [Varactor]
+- term: VCO gain (KVCO)
+  definition: The slope of a VCO's frequency against its control voltage, in Hz/V or rad/s per volt; for the same varactor it scales as C_tot^(−3/2), and noise on the control line causes phase noise K²S_v/(2Δf²).
+  chapter: "21-06"
+  see_also: [Voltage-controlled oscillator (VCO), Varactor]
+- term: Oscillator figure of merit (FoM)
+  definition: −L(Δf) + 20 log(f0/Δf) − 10 log(P/1 mW), in dB, which normalizes phase noise for carrier, offset and core power; bounded by 10 log[2Q²(1 mW)/(FkT)] and reduced further by the oscillator's DC-to-tank efficiency.
+  chapter: "21-06"
+  see_also: [Phase noise]
+- term: Quadrature VCO (QVCO)
+  definition: Two LC oscillators coupled so that each injects into the other, locking 90° apart at the LO frequency without a divider; coupling costs phase noise and tank mismatch becomes I/Q phase error.
+  chapter: "21-06"
+  see_also: [Injection locking, Image-rejection ratio (IRR)]
+- term: Polyphase filter
+  definition: An RC network that produces quadrature (or multiphase) signals; a single RC-CR stage gives exactly 90° at all frequencies but equal amplitudes only at ω = 1/RC, so multistage versions with staggered centres widen its band.
+  chapter: "21-06"
+  see_also: [Image-rejection ratio (IRR)]
+- term: Injection locking
+  definition: The capture of an oscillator by an injected signal near its frequency; it locks if the detuning is within (ω0/2Q)(I_inj/I_osc), and outside that range Adler's equation predicts a beat at √(Δω² − ω_L²).
+  chapter: "21-06"
+  see_also: [Oscillator pulling, Quadrature VCO (QVCO)]
+- term: Oscillator pulling
+  definition: The disturbance of an oscillator's frequency by an injected signal outside its lock range, such as a transmitter's own PA output; the average frequency moves toward the injection by about ω_L²/(2Δω), which frequency plans avoid by running the VCO at 2f, 4f or an offset.
+  chapter: "21-06"
+  see_also: [Injection locking]

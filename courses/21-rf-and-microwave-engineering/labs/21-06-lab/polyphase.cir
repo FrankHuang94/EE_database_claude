@@ -1,0 +1,19 @@
+* Lab 21-06 -- an RC-CR quadrature network (AC analysis).
+* R = 1 kohm, C = 64.961 fF, so 1/(2 pi R C) = 2.45 GHz. Driven by an ideal 1 V source, unloaded.
+* The low-pass output (I) and high-pass output (Q) are exactly 90 degrees apart at every frequency; their amplitude
+* ratio |Q/I| = f / f_RC equals 1 only at 2.45 GHz. At 2.40 GHz (Example 21-06.6c): ratio -0.1791 dB.
+*
+* EXPECT rdb key:../../chapters/21-06-oscillators-and-vcos.md#Ex_21-06.6c rtol=1e-3
+* EXPECT dph key:../../chapters/21-06-oscillators-and-vcos.md#Ex_21-06.6d rtol=1e-6
+VIN in 0 dc 0 ac 1
+R1 in i 1k
+C1 i 0 64.9612f
+C2 in q 64.9612f
+R2 q 0 1k
+.control
+ac lin 1 2.4g 2.4g
+let rdb = db(v(q)) - db(v(i))
+let dph = (cph(v(q)) - cph(v(i))) * 180 / pi
+print rdb dph
+.endc
+.end

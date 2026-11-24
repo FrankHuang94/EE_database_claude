@@ -1,0 +1,38 @@
+* Lab 21-06 -- an LC oscillator built from a lossy tank and a memoryless negative-resistance device (transient).
+* Tank (differential values): L = 1 nH, C = 1.0132 pF (resonant at 5 GHz), R_p = 362.49 ohm (Q = 11.54,
+* Example 21-06.1). The cross-coupled bipolar pair with a 2 mA tail is modelled by its large-signal current into
+* the tank, i = (I_tail/2) tanh(v / 2V_T) with I_tail/2 = 1 mA and 2V_T = 51.704 mV at 300 K.
+* A: free-running. Amplitude from the describing function (Example 21-06.1g: 0.4591 V) and the frequency,
+*    pulled 0.064 % below 1/(2 pi sqrt(LC)) by the harmonic currents (Groszkowski, Txt 21-06.c: 4.9968 GHz).
+* B: the same oscillator with an injected current of 10 % of its own fundamental current (126.66 uA) at
+*    5.010 GHz, inside the 21.78 MHz lock range (Example 21-06.7b): it runs at exactly the injection frequency.
+* Frequencies are measured over 180 cycles between interpolated zero crossings, long after start-up.
+*
+* EXPECT amp key:../../chapters/21-06-oscillators-and-vcos.md#Ex_21-06.1g rtol=1e-3
+* EXPECT fa key:../../chapters/21-06-oscillators-and-vcos.md#Txt_21-06.c scale=1e9 rtol=1e-4
+* EXPECT fb key:../../chapters/21-06-oscillators-and-vcos.md#Ex_21-06.7e scale=1e9 rtol=1e-5
+.param L0=1n C0=1.0132118p RP=362.49146 I0=1m V0=51.704m
+* ---- A: free-running
+LA a 0 {L0}
+CA a 0 {C0}
+RA a 0 {RP}
+BA 0 a I={I0}*tanh(V(a)/{V0})
+* ---- B: injection-locked
+LB b 0 {L0}
+CB b 0 {C0}
+RB b 0 {RP}
+BB 0 b I={I0}*tanh(V(b)/{V0})
+IINJ 0 b sin(0 126.66u 5.010g)
+.ic v(a)=10m v(b)=10m
+.control
+tran 0.5p 150n 0 0.5p uic
+meas tran amax MAX v(a) from=120n to=150n
+meas tran amin MIN v(a) from=120n to=150n
+meas tran ta TRIG v(a) VAL=0 RISE=550 TARG v(a) VAL=0 RISE=730
+meas tran tb TRIG v(b) VAL=0 RISE=550 TARG v(b) VAL=0 RISE=730
+let amp = (amax-amin)/2
+let fa = 180/ta
+let fb = 180/tb
+print amp fa fb
+.endc
+.end

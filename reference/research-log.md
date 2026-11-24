@@ -3713,3 +3713,52 @@ R&D % = R&D ÷ revenue.
 
 - **Mini-Circuits ADE-1+** (Rev. G, 2020): Level 7 (+7 dBm LO), 0.5–500 MHz; conversion loss 5.0 dB typ mid-band; IP3 15 dBm typ; 1 dB compression +1 dBm typ; L–I isolation 65/40/30 dB typ (low/mid/upper band) with minima 45/25/20 dB. **ADE-1H+** (Rev. G): Level 17 (+17 dBm LO); conversion loss 5.3 dB; IP3 23 dBm; 1 dB compression +14 dBm. [Established]
 - **Mini-Circuits MDB-24H+** (Rev. A, 2021): 5–21.5 GHz MMIC double-balanced mixer, LO +15 dBm; conversion loss 6.9 dB and NF 6.9 dB at 5 GHz; IIP3 14–24 dBm across the band. [Established]
+
+## R-377 · Oscillator theory classics: Leeson, Razavi, Hajimiri–Lee, Kinget's FoM, Adler, Groszkowski (Course 21)
+
+*Read on 24 Nov 2026: Crossref metadata and OpenAlex abstracts (by a research subagent, re-checked by the writer for Adler, Razavi 2004 and Groszkowski); Kinget's chapter preprint from the author's site.*
+
+- **Leeson**, "A simple model of feedback oscillator noise spectrum," *Proc. IEEE* 54(2):329–330, Feb. 1966, DOI 10.1109/PROC.1966.4682 (the text itself was not read; the chapter derives the formula rather than quoting it); **Leeson**, "Oscillator phase noise: A 50-year review," *IEEE Trans. UFFC* 63(8):1208–1225, Aug. 2016, DOI 10.1109/TUFFC.2016.2562663. [Established]
+- **Razavi**, "A study of phase noise in CMOS oscillators," *IEEE JSSC* 31(3):331–343, Mar. 1996, DOI 10.1109/4.494195. [Established]
+- **Hajimiri and Lee**, "A general theory of phase noise in electrical oscillators," *IEEE JSSC* 33(2):179–194, Feb. 1998, DOI 10.1109/4.658619 (corrections DOI 10.1109/4.678662): works "by acknowledging the true periodically time-varying nature of all oscillators" and "explains the details of how 1/f noise in a device upconverts into close-in phase noise". **Lee and Hajimiri**, "Oscillator phase noise: A tutorial," *IEEE JSSC* 35(3):326–336, Mar. 2000, DOI 10.1109/4.826814: "identifies the importance of symmetry in suppressing the upconversion of 1/f noise". [Established]
+- **Kinget**, "Integrated GHz voltage controlled oscillators," in *Analog Circuit Design*, Kluwer, 1999, pp. 353–381, DOI 10.1007/978-1-4757-3047-0_17: FM = 10 log[(f0/Δf)²/(L·P)] with P in mW; "The power consumption P is for the oscillator core only and does not include the output buffer". Described here as "popularized by", not invented by. [Established]
+- **Adler**, "A study of locking phenomena in oscillators," *Proc. IRE* 34(6):351–357, Jun. 1946, DOI 10.1109/JRPROC.1946.229930; **Razavi**, "A study of injection locking and pulling in oscillators," *IEEE JSSC* 39(9):1415–1424, Sep. 2004, DOI 10.1109/JSSC.2004.831608 (citations only; the chapter derives the lock range and Adler's equation itself). [Established]
+- **Groszkowski**, "The interdependence of frequency variation and harmonic content, and the problem of constant-frequency oscillators," *Proc. IRE* 21(7):958–981, Jul. 1933, DOI 10.1109/JRPROC.1933.227821 (citation only; the chapter derives the shift). [Established]
+
+## R-378 · LC oscillator topology milestones: tail filtering, Colpitts vs LC tank, class-C, class-F (Course 21)
+
+*Read on 24 Nov 2026: Crossref metadata and OpenAlex abstracts.*
+
+- **Hegazi, Sjöland and Abidi**, *IEEE JSSC* 36(12):1921–1930, Dec. 2001, DOI 10.1109/4.972142: a passive LC filter lowers "the phase-noise factor in a differential oscillator to its fundamental minimum"; two 1.1 GHz VCOs at −153 dBc/Hz at 3 MHz, 3.7 mA from 2.5 V, which "exceed discrete transistor modules in figure of merit" (FoM 194.6 dB, our arithmetic). [Established]
+- **Andreani, Wang, Vandi and Fard**, *IEEE JSSC* 40(5):1107–1118, May 2005, DOI 10.1109/JSSC.2005.845991: theory gives the LC-tank oscillator "a 2-dB lower phase-noise figure-of-merit" than the differential Colpitts under simplified assumptions; best LC tank −142 dBc/Hz at 3 MHz from 2.9 GHz at 16 mW, "FoM of ∼189 dBc/Hz"; the differential Colpitts' measured FoM "is ∼5 dB lower". [Established]
+- **Mazzanti and Andreani**, *IEEE JSSC* 43(12):2716–2729, Dec. 2008, DOI 10.1109/JSSC.2008.2004867: "a theoretical 3.9 dB phase noise improvement compared to the standard differential-pair LC-tank oscillator is achieved for the same current consumption". **Fanori and Andreani**, *IEEE JSSC* 48(7):1730–1740, Jul. 2013, DOI 10.1109/JSSC.2013.2253402: 90 nm, 3.4–4.5 GHz, 5.5 mA from 1.2 V, below −152 dBc/Hz at 20 MHz from 4 GHz, "The resulting FoM is 191 dBc/Hz" (189.8 dB recomputed with exactly −152 dBc/Hz). [Established]
+- **Babaie and Staszewski**, *IEEE JSSC* 48(12):3120–3133, Dec. 2013, DOI 10.1109/JSSC.2013.2273823: "enforcing a pseudo-square voltage waveform around the LC tank by increasing the third-harmonic"; "the effective impulse sensitivity function (ISF) decreases"; 65 nm, −136 dBc/Hz average at 3 MHz over 5.9–7.6 GHz, FoM 192 dBc/Hz, 12 mA from 1.25 V, 0.12 mm². Class-F2: *IEEE JSSC* 50(3):679–692, Mar. 2015, DOI 10.1109/JSSC.2014.2379265: −139 dBc/Hz at 3 MHz from 8.7 GHz, 191 dBc/Hz FoM. [Established]
+
+## R-379 · Oscillator results 2016–2026 and how FoM rewards low power (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref metadata and OpenAlex abstracts. FoM in dBc/Hz, positive convention.*
+
+- **Jafari, Ghafari, Aniruddhan, Mirabbasi and Shekhar**, *IEEE JSSC* 61(3):816–829, Mar. 2026, DOI 10.1109/JSSC.2025.3643322: self-injection LC oscillator, 65 nm, 4.6–6 GHz, −141.3 dBc/Hz at 10 MHz from 4.64 GHz at 1.45 mW, peak FoM 193, 1/f³ corner 5–35 kHz. [Established]
+- **Shu and Luo**, *IEEE JSSC* 58(12):3308–3319, Dec. 2023, DOI 10.1109/JSSC.2023.3321647: 40 nm, 28 GHz multi-core; quad-core FoM 193.3, 20-core 192.7 with −120.8 dBc/Hz at 1 MHz. [Established]
+- **Shan et al.**, *IEEE JSSC* 59(9):2774–2787, Sep. 2024, DOI 10.1109/JSSC.2024.3385642: mode-switching oscillator, 2.88–5.87 GHz (68.3%), −135.8 dBc/Hz at 1 MHz from 2.88 GHz, FoM 191.5. [Established]
+- **Zhang, Deng, Jia, Wang and Chi**, *IEEE JSSC* 60(5):1644–1655, May 2025, DOI 10.1109/JSSC.2025.3529600: multi-core series-resonance oscillator, FoM 188.3/187.1; claims "the lowest PN using CMOS technology in open literature so far, albeit with tradeoffs in power and area". [Established that the paper claims it]
+- **Hu, Siriburanon and Staszewski**, *IEEE JSSC* 53(7):1977–1987, Jul. 2018, DOI 10.1109/JSSC.2018.2818681: 28 nm, 27.3–31.2 GHz class-F23, −106 dBc/Hz at 1 MHz, FoM 184, 1/f³ corner 120 kHz. [Established]
+- **Kurtoglu, Shirazi, Mirabbasi and Lavasani**, *Electronics* (MDPI) 13(6):1162, Mar. 2024, DOI 10.3390/electronics13061162: 65 nm, 24.5–29.1 GHz, 0.455–0.88 mW, better than −106.5 dBc/Hz at 1 MHz, FoM 195.2 (recomputed: 196.3 at 29.1 GHz, 194.8 at 24.5 GHz with 0.88 mW). An open-access journal with a different review standard from JSSC; used as an illustration of how FoM rewards low power. [Established that the paper reports it]
+
+## R-380 · Quadrature LO generation (Course 21)
+
+*Read on 24 Nov 2026: Crossref metadata and OpenAlex abstracts.*
+
+- **Rofougaran, Rael, Rofougaran and Abidi**, "A 900 MHz CMOS LC-oscillator with quadrature outputs," ISSCC 1996, pp. 392–393, DOI 10.1109/ISSCC.1996.488731. [Established]
+- **Andreani, Bonfanti, Romano and Samori**, *IEEE JSSC* 37(12):1737–1747, Dec. 2002, DOI 10.1109/JSSC.2002.804352: 1.64–1.97 GHz QVCO, ≤ −140 dBc/Hz at 3 MHz, 25 mA from 2 V, "equivalent phase error between I and Q signals was at most 0.25°". [Established]
+- **Iesurum, Manente, Padovan, Bassi and Bevilacqua**, *IEEE JSSC* 59(1):294–306, Jan. 2024, DOI 10.1109/JSSC.2023.3280360: coupled-PLL QVCO, 24–29.2 GHz, 28 nm, −134 dBc/Hz at 10 MHz, average quadrature error 0.9°, 60 mW. **Chen, Hu, Siriburanon, Du, Staszewski and Zhu**, *IEEE JSSC* 58(7):1945–1958, Jul. 2023, DOI 10.1109/JSSC.2023.3237788: 30 GHz class-F quadrature DCO, −112 dBc/Hz at 1 MHz from 25.7 GHz, FoM 185, "image rejection ratio (IRR) >47 dB over the whole 18% tuning range". [Established]
+- **Shao, Martins and Mak**, *IEEE JSSC* 59(12):3980–3992, Dec. 2024, DOI 10.1109/JSSC.2024.3462093 (see also R-372): a passive quadrature front end lets a 2.4 GHz class-D VCO drive the mixers directly, "averting the power-hungry divider-by-2 and LO buffers"; VCO −110/−119.1/−131 dBc/Hz at 1/2.5/10 MHz, FoM 188/189/189.1; 167 µW receiver. [Established]
+- **Divide-by-2 quadrature phase error:** no sourced number was found; the chapter derives $(D - 1/2) \times 180°$ for a clock of duty cycle D from first principles instead.
+
+## R-381 · Integrated synthesizer and radar LO data sheets (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: TI PDFs. analog.com refused downloads; no ADI data was used.*
+
+- **TI LMX2595** (SNAS736C, Jun. 2017, rev. Apr. 2019): 10 MHz–20 GHz; seven VCO cores covering 7.5–15 GHz with capacitor-bank capcodes ("The entire range, 7.5 to 15 GHz, covers an octave that allows the divider to take care of frequencies below the lower bound"); open-loop VCO phase noise, typical, VCO1 at 8 GHz: −107/−128/−148 dBc/Hz at 100 kHz/1 MHz/10 MHz; "< 20-µs VCO calibration speed" with assistance, 50 µs typical without; "Figure of merit: –236 dBc/Hz" defined through PLL_flat = PLL_FOM + 20 log(Fvco/Fpd) + 10 log(Fpd/1 Hz), an in-band PLL metric. [Established]
+- **TI LMX2820** (SNAS783C, Jun. 2020, rev. Feb. 2021): VCO 5.65–11.3 GHz; open-loop phase noise at 6.0 GHz −110.3/−131.9/−151.0 dBc/Hz at 100 kHz/1 MHz/10 MHz; K_VCO 95 MHz/V at 6.0 GHz rising to 156 MHz/V at 10.2 GHz; "2.5-µs fast VCO calibration time". [Established]
+- **TI AWR2944** (SWRS273E, rev. Feb. 2026): LO "Phase noise at 1-MHz offset" −96 dBc/Hz (76–77 GHz) and −95 dBc/Hz (76–81 GHz). **TI AWR1843** (SWRS222D, rev. Sep. 2024): −95/−93 dBc/Hz. [Established]
