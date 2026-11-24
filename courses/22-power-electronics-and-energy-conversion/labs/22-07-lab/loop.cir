@@ -1,0 +1,40 @@
+* Lab 22-07, Part 1 -- Example 22-07.3's voltage-mode buck with its type-III compensator, closed in ngspice.
+* Averaged buck: the switch node is the controlled source d*Vg with d = v_c/V_M (V_M = 1 V), then L = 0.6 uH,
+* C = 62.5 uF and R = 0.12 ohm. The compensator is the type-III network around a high-gain op-amp (VCVS) with a
+* 1.2 V reference (H = 1). Middlebrook's method: an AC source in series between the output and the compensator
+* input; the loop gain is T = -v(out)/v(fb). The crossover and phase margin are read from T.
+* EXPECT fcross key:../../chapters/22-07-converter-dynamics-and-control.md#Ex_22-07.3o scale=1e3 rtol=2e-3
+* EXPECT pm key:../../chapters/22-07-converter-dynamics-and-control.md#Ex_22-07.3k rtol=2e-3
+* EXPECT vout 1.2 rtol=1e-4
+.param Vg=12 VM=1 L=0.6u C=62.5u Rl=0.12
+.param R1=10k R2=992.3005 C1=11.236714n C2=0.6740832n R3=599.89353 C3=1.0519160n
+* averaged power stage
+Bsw sw 0 V = {Vg}*V(vc)/{VM}
+Lb sw out {L}
+Cb out 0 {C}
+Rload out 0 {Rl}
+* Middlebrook injection between the output and the feedback input
+Vinj fb out dc 0 ac 1
+* type-III compensator: input network R1 || (R3 + C3), feedback (R2 + C1) || C2
+Rin fb n {R1}
+R3a fb n3 {R3}
+C3a n3 n {C3}
+R2a n n2 {R2}
+C1a n2 vc {C1}
+C2a n vc {C2}
+Vref ref 0 dc 1.2
+Eamp vc 0 ref n 1e6
+.control
+op
+let vout = v(out)
+print vout
+ac dec 200 100 2meg
+let tg = -v(out)/v(fb)
+let tgdb = db(tg)
+let tgph = 180/pi*cph(tg)
+meas ac fcross when tgdb=0
+meas ac phc find tgph when tgdb=0
+let pm = 180 + phc
+print pm
+.endc
+.end

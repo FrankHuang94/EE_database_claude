@@ -9124,3 +9124,48 @@
 - term: Threshold-voltage drift
   definition: A slow shift of a SiC MOSFET's gate threshold under gate and switching stress over its life, which mainly raises its on-resistance; managed by the gate-drive voltage window.
   chapter: "22-06"
+- term: Averaged model
+  definition: A converter model obtained by averaging its state equations over one switching period, replacing the switch by controlled sources such as d·v_g; valid for signals well below the switching frequency.
+  chapter: "22-07"
+  see_also: [Small-ripple approximation]
+- term: Control-to-output transfer function
+  definition: G_vd(s), the small-signal response of a converter's output voltage to its duty cycle; for a buck, V_g/(1 + sL/R + s²LC).
+  chapter: "22-07"
+  see_also: [Averaged model]
+- term: Output impedance (converter)
+  definition: The small-signal response of a converter's output voltage to an injected load current; open loop it is sL ∥ R ∥ 1/(sC) for a buck, and feedback divides it by 1 + T.
+  chapter: "22-07"
+- term: Voltage-mode control
+  definition: Regulation in which an error amplifier's output is compared with a fixed sawtooth to set the duty cycle, so the loop includes the power stage's LC resonance.
+  chapter: "22-07"
+  see_also: [Peak current-mode control]
+- term: PWM modulator gain
+  definition: The small-signal gain 1/V_M from the control voltage to the duty cycle of a pulse-width modulator with a sawtooth of peak V_M.
+  chapter: "22-07"
+- term: Type-II compensator
+  definition: An integrator with one zero and one pole, giving up to 90° of phase boost; used when the plant is first-order near crossover, as in current-mode control.
+  chapter: "22-07"
+  see_also: [Type III compensator]
+- term: K-factor method
+  definition: A compensator design rule that places the zeros a factor k below and the poles a factor k above the crossover frequency, choosing k from the required phase boost.
+  chapter: "22-07"
+- term: Peak current-mode control
+  definition: Control in which each switching cycle ends when the sensed inductor current reaches a control level, giving an inner current loop, a first-order outer plant and cycle-by-cycle current limiting.
+  chapter: "22-07"
+  see_also: [Slope compensation]
+- term: Subharmonic oscillation
+  definition: Alternating wide and narrow pulses at half the switching frequency in a peak current-mode converter above 50% duty cycle, caused by a current perturbation that grows by −m2/m1 each cycle.
+  chapter: "22-07"
+  see_also: [Slope compensation]
+- term: Slope compensation
+  definition: An artificial ramp added to the sensed current (or subtracted from the control level) in peak current-mode control; a slope above half the inductor's down-slope makes the current loop stable at every duty cycle.
+  chapter: "22-07"
+- term: Middlebrook injection
+  definition: Measuring a closed loop's gain by inserting a small AC source in series at a low-to-high impedance point and taking the ratio of the returned to the injected signal, without opening the loop.
+  chapter: "22-07"
+- term: Constant on-time control
+  definition: A ripple-based control that starts a fixed on-time whenever the output (or an emulated ripple) falls to a threshold; it responds within a cycle without a compensation network but runs at a variable frequency.
+  chapter: "22-07"
+- term: Digital multiphase controller
+  definition: A controller IC that samples the output and phase currents digitally and computes the duty cycles of many interleaved phases, with programmable compensation, phase shedding and telemetry over PMBus or similar buses.
+  chapter: "22-07"

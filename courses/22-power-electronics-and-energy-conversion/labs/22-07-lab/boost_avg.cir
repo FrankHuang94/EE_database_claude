@@ -1,0 +1,28 @@
+* Lab 22-07, Part 2 -- Example 22-07.2's boost as an averaged model, and its control-to-output response.
+* The switch network is replaced by its averages: the transistor node sees (1 - d) v_out, and the output receives
+* (1 - d) i_L. Vg = 3.6 V, L = 1 uH, C = 22 uF, R = 3.333 ohm, D = 0.28; a 1 V AC signal on d gives G_vd directly.
+* EXPECT vout 5 rtol=1e-4
+* EXPECT g1k key:README.md#Lab_22-07.a rtol=2e-3
+* EXPECT gz key:README.md#Lab_22-07.b rtol=2e-3
+* EXPECT phz key:README.md#Lab_22-07.c rtol=2e-3
+.param Vg=3.6 L=1u C=22u Rl=3.33333333 D=0.28
+Vd d 0 dc {D} ac 1
+Vin in 0 dc {Vg}
+Lb in x {L}
+Vs x xs dc 0
+Bsw xs 0 V = (1 - V(d))*V(out)
+Bd 0 out I = (1 - V(d))*I(Vs)
+Cb out 0 {C}
+Rload out 0 {Rl}
+.control
+op
+let vout = v(out)
+print vout
+ac dec 400 10 275.0197k
+let gm = mag(v(out))
+let gp = 180/pi*cph(v(out))
+meas ac g1k find gm at=1k
+meas ac gz find gm at=275.0197k
+meas ac phz find gp at=275.0197k
+.endc
+.end
