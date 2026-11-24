@@ -4143,3 +4143,54 @@ R&D % = R&D ÷ revenue.
 - **ESA Navipedia, "BeiDou Signal Plan"** [Established; secondary source]: B1I carrier 1561.098 MHz (BPSK); B1C centred at 1575.42 MHz; B2a centred at 1176.45 MHz. The page cites the separate BeiDou ICDs for each signal.
 - **ESA Navipedia, "GLONASS Signal Plan," and ITU-R M.1787** [Established]: legacy GLONASS L1 FDMA carriers at 1602 + k × 0.5625 MHz, so they do not coincide with the GPS and Galileo L1 band.
 - **Sources:** [Navipedia BeiDou](https://gssc.esa.int/navipedia/index.php/BeiDou_Signal_Plan); [Navipedia GLONASS](https://gssc.esa.int/navipedia/index.php/GLONASS_Signal_Plan); [ITU-R M.1787-0](https://www.itu.int/dms_pubrec/itu-r/rec/m/R-REC-M.1787-0-200908-S!!PDF-E.pdf). Checked Nov 2026.
+
+## R-421 · Efficiency standards and USB Power Delivery (Course 22)
+
+*Read on 24 Nov 2026 by a research subagent (curl through the session proxy; HTML and PDF text extracted). R-122 holds the 80 PLUS power-factor details; R-098 holds the earlier USB PD 3.1 excerpts, superseded here by the 3.3 text.*
+
+- **CLEAResult, "80 PLUS: What do the different PSU ratings mean?"** [Established]:
+  - 115 V internal non-redundant, at 5/10/20/50/100% load: Titanium – / 90 / 92 / 94 / 90%; Ruby 85 / 91 / 93 / 95 / 91%.
+  - 230 V and 277 V internal redundant, at 10/20/50/100%: Platinum "88% | 90% | 94% PFC ≥ 0.95 | 91%" (with "230V - 10% efficiency criteria below Titanium are suggested"); Titanium "90% | 94% PFC ≥ 0.95 | 96% | 91%"; Ruby at 5/10/20/50/100% "90% … | 91% … | 95% … | 96.5% … | 92%".
+  - 380 V DC, 800 V DC, 400 V and 480 V internal redundant: Ruby "91% | 95% | 97% | 92%".
+- **US DOE, 88 FR 7284 (2 Feb 2023), Table II.1, restating 10 CFR 430.32(w)** (Level VI, for external power supplies manufactured on or after 10 Feb 2016) [Established]:
+  - Single-voltage AC-DC, basic-voltage: "1 W < Pout <= 49 W … >= 0.071 x ln(Pout)-0.0014 x Pout + 0.67 … <= 0.100"; "49 W < Pout <= 250 W … >= 0.880 … <= 0.210"; "Pout > 250 W … >= 0.875 … <= 0.500". Efficiencies are decimals; the last figure is maximum no-load power in W.
+  - The low-voltage block (< 6 V nameplate, ≥ 550 mA) uses 0.0834 ln(P) − 0.0014P + 0.609 for 1–49 W and 0.870 for 49–250 W (the notice mislabels this block "Basic-Voltage").
+  - Tighter levels proposed in 2023 were not found adopted (unverified).
+- **Commission Regulation (EU) 2019/1782, Annex II and Art. 2, from 1 Apr 2020** (legislation.gov.uk "as adopted" copy; EUR-Lex blocked) [Established]:
+  - "'average active efficiency' means the average of the active mode efficiencies at 25 %, 50 %, 75 % and 100 % of the nameplate output power".
+  - The AC-DC formulas equal the US ones. No-load ≤ 0.10 W up to 49 W and ≤ 0.21 W above (AC-DC). The "Efficiency at low load (10 %)" must be declared, except for supplies of 10 W or less.
+- **USB-IF, *USB Power Delivery Specification*, Revision 3.3, Version 1.0, 16 Oct 2026** (document library entry dated 11/05/2026) [Established]:
+  - "Extends the power range from a maximum of 100W (SPR) to a maximum of 240W (EPR)".
+  - "EPR PDO … Fixed Supply PDO that offers either 28V, 36V or 48V".
+  - "up to 240W (48V/5A)".
+- **Sources:** [80 PLUS ratings](https://www.clearesult.com/80plus/80plus-psu-ratings-explained); [88 FR 7284](https://www.govinfo.gov/content/pkg/FR-2023-02-02/html/2023-01282.htm); [EU 2019/1782 Annex II](https://www.legislation.gov.uk/eur/2019/1782/annex/II/adopted); [USB PD library](https://www.usb.org/document-library/usb-power-delivery). Checked Nov 2026.
+
+## R-422 · Ultra-low-quiescent-current regulators (Course 22)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **TI TPS7A02 data sheet, SBVS277C (rev. Sep 2022)** [Established as data-sheet values]: "Ultra-low IQ: 25 nA (typ), even in dropout"; "Shutdown IQ: 3 nA (typ)"; "270 mV (max) at 200 mA (VOUT = 3.3 V)".
+- **TI TPS62840 data sheet, SLVSEC6D (rev. Mar 2020)** [Established as data-sheet values]: "60-nA operating quiescent current"; "80% efficiency at 1 µA IOUT (3.6 VIN to 1.8 VOUT)"; "typical switching frequency of 1.8 MHz".
+- **Sources:** [TPS7A02](https://www.ti.com/lit/ds/symlink/tps7a02.pdf); [TPS62840](https://www.ti.com/lit/ds/symlink/tps62840.pdf). Checked Nov 2026.
+
+## R-423 · Power-density and efficiency references for adapters, PFC stages and server supplies (Course 22)
+
+*Read on 24 Nov 2026 by a research subagent. Vendor claims; densities are recomputed from stated dimensions where given.*
+
+- **TI TIDA-050072, design guide TIDUF57 (Nov 2023)** [Industry estimate]: 65 W GaN USB-PD adapter. "25.29 W/in3 power density achieved for compact adapter designs"; "92.83% efficiency at full-load, 90 Vac input", "94.09% … 115 Vac", "94.32% … 230 Vac"; "30-mW standby power at 115 Vac". The guide does not say whether the density is for a cased unit.
+- **TI PMP40988, test report TIDT294 (Jun 2022); PMP23475, TIDT415 (Mar 2025)** [Industry estimate]: 5 kW GaN totem-pole PFC. "A peak system efficiency of 99% with an open-frame power density of 120 W/in3", and "peak system efficiency of 99.2% with an open-frame power density of 120W/in3". This is a PFC stage alone.
+- **Infineon 8 kW AI-server PSU (Infineon release reprinted by *Semiconductor Today*, 24 May 2024; *All About Circuits*, 30 May 2024)** [Industry estimate; efficiency Contested]:
+  - "efficiency of 97.5%" and "100 Watts per in³ compared with 32W/in³ in the available 3kW PSU".
+  - The trade press reported "Achieving a benchmark efficiency of 98%".
+  - Devices: SiC in the totem-pole PFC, GaN in the LLC, and silicon "where switching losses are minimal".
+- **Infineon 18 kW three-phase PSU reference (*Semiconductor Today*, 29 Jun 2026)** [Industry estimate]:
+  - "peak efficiency of 97.5%"; "650V CoolSiC MOSFETs, 80V CoolGaN switches"; "20ms hold-up time".
+  - "104mm x 710mm x 40mm … achieves 100W/in 3 power density". The stated box recomputes to 99.9 W/in³.
+- **Navitas 4.5 kW CRPS185 reference (*Semiconductor Today*, 26 Jul 2024; EEPower, 27 Nov 2024)** [Industry estimate; framing Contested]:
+  - "137W/in 3 and over 97% efficiency".
+  - "while silicon's switching frequency cannot significantly go beyond 150 kHz" (vendor framing).
+- **ORv3 shelves and PSUs** [Industry estimate]:
+  - Delta's 33 kW 1OU shelf on the OCP Marketplace: "six 5.5kW power supplies with a maximum power of 33 kW", "over 97.5% power efficiency".
+  - Advanced Energy's 5.5 kW 50 V HPR PSU data sheet (file dated 27 Jun 2026): "Peak efficiency 97.5%"; "640 x 73.5x 40 mm (L x W x H)", which recomputes to 47.9 W/in³.
+- **TI PMP23340UCD, 48 V to 12 V 1.1 kW eighth-brick bus converter** [Industry estimate]: "Efficiency of 97.7%"; "Power density of 1300 W/in^3 without connector"; "1MHz switching frequency".
+- **Sources:** [TIDUF57](https://www.ti.com/lit/pdf/tiduf57); [TIDT294](https://www.ti.com/lit/pdf/tidt294); [TIDT415](https://www.ti.com/lit/pdf/tidt415); [Infineon 8 kW](https://www.semiconductor-today.com/news_items/2024/may/infineon-240524.shtml); [Infineon 18 kW](https://www.semiconductor-today.com/news_items/2026/jun/infineon-290626.shtml); [Navitas 4.5 kW](https://www.semiconductor-today.com/news_items/2024/jul/navitas-260724.shtml); [EEPower](https://eepower.com/technical-articles/addressing-power-density-in-ai-data-center-psus/); [Delta ORv3 shelf](https://www.opencompute.org/products/430/delta-33kw-1ou-open-rack-v3-power-shelf); [PMP23340UCD](https://www.ti.com/tool/PMP23340UCD). Checked Nov 2026.

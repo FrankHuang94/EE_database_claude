@@ -1,0 +1,32 @@
+* Lab 22-01: the price of charging a capacitor (Example 22-01.3)
+* Three copies of a 10 uF capacitor charge from 0 to 5 V: through 1 ohm, through 100 ohm, and through
+* 1 ohm from a four-step staircase source (1.25 V steps every 200 us, each step settling for 20 time
+* constants of the 1 ohm path). The energy dissipated in each resistor is integrated after linearizing the waveforms.
+* EXPECT e1 key:../../chapters/22-01-power-conversion-principles.md#Ex_22-01.3a scale=1e-6 rtol=2e-3
+* EXPECT e100 key:../../chapters/22-01-power-conversion-principles.md#Ex_22-01.3a scale=1e-6 rtol=2e-3
+* EXPECT estep key:../../chapters/22-01-power-conversion-principles.md#Ex_22-01.3b scale=1e-6 rtol=2e-3
+V1 s1 0 pwl(0 0 1n 5)
+R1 s1 c1 1
+C1 c1 0 10u ic=0
+V100 s100 0 pwl(0 0 1n 5)
+R100 s100 c100 100
+C100 c100 0 10u ic=0
+Vst sst 0 pwl(0 0 1n 1.25 200u 1.25 200.001u 2.5 400u 2.5 400.001u 3.75 600u 3.75 600.001u 5)
+Rst sst cst 1
+Cst cst 0 10u ic=0
+
+.control
+* the 1 ohm cases: time constant 10 us, so a 1 ms run with a 1 ns grid
+tran 1n 1m 0 5n uic
+linearize
+let p1 = (v(s1) - v(c1)) * (v(s1) - v(c1)) / 1
+let pst = (v(sst) - v(cst)) * (v(sst) - v(cst)) / 1
+meas tran e1 integ p1 from=0 to=1m
+meas tran estep integ pst from=0 to=1m
+* the 100 ohm case: time constant 1 ms, so a 15 ms run with a 100 ns grid
+tran 100n 15m 0 200n uic
+linearize
+let p100 = (v(s100) - v(c100)) * (v(s100) - v(c100)) / 100
+meas tran e100 integ p100 from=0 to=15m
+.endc
+.end

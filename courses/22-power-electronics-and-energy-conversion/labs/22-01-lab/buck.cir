@@ -1,0 +1,30 @@
+* Lab 22-01: an ideal synchronous buck, 12 V to 3.3 V at 500 kHz (Example 22-01.4)
+* Two voltage-controlled switches (1 mohm on, 1 Gohm off) alternately connect the switch node to the
+* input and to ground; the high-side switch is on for 0.55 us of each 2 us period (D = 0.275).
+* L = 10 uH, C = 1 uF, load 3.3 ohm. The LC filter (Q about 1) settles in well under 400 us, and the
+* average and peak-to-peak output are measured over the last 10 periods.
+* EXPECT vavg key:../../chapters/22-01-power-conversion-principles.md#Ex_22-01.4a scale=12 rtol=2e-3
+* EXPECT vpp key:../../chapters/22-01-power-conversion-principles.md#Ex_22-01.4f scale=1e-3 rtol=1e-2
+* EXPECT iin key:../../chapters/22-01-power-conversion-principles.md#Ex_22-01.4b rtol=5e-3
+.model swm sw vt=0.5 vh=0 ron=1m roff=1G
+* the low-side switch is on when v(0) - v(g) > -0.5, i.e. when the gate signal is low
+.model swm_lo sw vt=-0.5 vh=0 ron=1m roff=1G
+Vin in 0 dc 12
+Vg g 0 pulse(0 1 0 1n 1n 0.549u 2u)
+Shi in sw g 0 swm
+Slo sw 0 0 g swm_lo
+L1 sw out 10u ic=0
+C1 out 0 1u ic=0
+Rl out 0 3.3
+
+.control
+tran 2n 420u 0 4n uic
+meas tran vavg avg v(out) from=400u to=420u
+meas tran vmax max v(out) from=400u to=420u
+meas tran vmin min v(out) from=400u to=420u
+meas tran iinneg avg i(vin) from=400u to=420u
+let vpp = vmax - vmin
+let iin = -iinneg
+print vpp iin
+.endc
+.end

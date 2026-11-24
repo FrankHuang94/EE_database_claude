@@ -1,0 +1,38 @@
+* Lab 22-01: a PMOS-pass linear regulator, 3.6 V to 1.8 V, at 10 mA and at 1 uA (Example 22-01.2)
+* An ideal error amplifier (gain 1e5, a VCVS) drives the PMOS gate so that the output equals the 1.8 V
+* reference. A 25 nA current source from the input to ground stands for the quiescent (ground) current.
+* The two regulators are identical except for their loads (180 ohm and 1.8 Mohm).
+* EXPECT eta10m key:../../chapters/22-01-power-conversion-principles.md#Ex_22-01.2a scale=0.01 rtol=1e-3
+* EXPECT eta1u key:../../chapters/22-01-power-conversion-principles.md#Ex_22-01.2c scale=0.01 rtol=1e-3
+* EXPECT pl10m key:../../chapters/22-01-power-conversion-principles.md#Ex_22-01.2b scale=1e-3 rtol=2e-3
+.model pmos1 pmos level=1 vto=-0.5 kp=50u lambda=0.02
+Vref ref 0 dc 1.8
+
+* regulator A, 10 mA load
+Vina ina 0 dc 3.6
+Iqa ina 0 dc 25n
+Mpa outa ga ina ina pmos1 w=20m l=1u
+Ea ga 0 outa ref 1e5
+Rla outa 0 180
+
+* regulator B, 1 uA load
+Vinb inb 0 dc 3.6
+Iqb inb 0 dc 25n
+Mpb outb gb inb inb pmos1 w=20m l=1u
+Eb gb 0 outb ref 1e5
+Rlb outb 0 1.8Meg
+
+.control
+op
+let pina = -v(ina) * i(vina)
+let pouta = v(outa) * v(outa) / 180
+let pinb = -v(inb) * i(vinb)
+let poutb = v(outb) * v(outb) / 1.8e6
+let eta10m = pouta / pina
+let eta1u = poutb / pinb
+let pl10m = pina - pouta
+let vouta = v(outa)
+let voutb = v(outb)
+print eta10m eta1u pl10m vouta voutb
+.endc
+.end
