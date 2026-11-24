@@ -24,7 +24,7 @@ Chapter: [20-09 · DACs](../../chapters/20-09-dacs.md)
 
 ## Expected results
 
-- **Part 1.** 0.8004 V; with 1% switch resistance, worst DNL 1.68 LSB at the 511 → 512 transition and worst INL 0.84 LSB. ngspice agrees.
+- **Part 1.** 0.8004 V; with 1% switch resistance, worst DNL −1.68 LSB at the 511 → 512 transition (the output falls 0.80 mV: non-monotonic) and worst INL 0.84 LSB. ngspice agrees. With every leg made 2R − r_sw the DNL vanishes; padding only the termination leaves it at −1.69 LSB.
 - **Part 2.** The DNL spreads at the worst step follow §3.3: about 0.64, 0.005 and 0.11 LSB.
 - **Part 3.** About 98% of designs pass at 0.521%, and about 99.7% at 0.430%; the exact rule is the one that meets the target.
 - **Part 4.** ngspice: 0.7389 V at full scale and 0.0556 LSB of INL. Harmonics: single-ended HD2 −36.1 dBc; differential HD2 cancelled, HD3 −72.3 dBc.
@@ -32,7 +32,7 @@ Chapter: [20-09 · DACs](../../chapters/20-09-dacs.md)
 
 ## Discussion
 
-1. **Why does the switch resistance give a DNL error twice its INL error?** The MSB leg's weight is low by a fixed amount ε; INL peaks at about ε/2 on either side of mid-scale with opposite signs, and DNL at the MSB step is the full jump between them.
+1. **Why does the switch resistance give a DNL error twice its INL error?** Every leg is a little too resistive, so the MSB's weight ends up low by about ε relative to the sum of the lower bits; INL peaks at about ε/2 on either side of mid-scale with opposite signs, and the DNL at the MSB step is the full (negative) jump between them.
 2. **Why is the mid-scale yield estimate optimistic?** It checks one code. The INL is a random walk pinned at both ends, and its maximum over all codes is larger than its mid-scale value.
 3. **Why does DWA's error look like first-order shaped noise?** Each element's usage count never differs from any other's by more than one, so the accumulated error is bounded and the error itself is its first difference.
 

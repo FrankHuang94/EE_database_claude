@@ -68,6 +68,22 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **TDC resolution for an ADPLL.** A 2.4 GHz ADPLL with a 25 MHz reference must reach −110 dBc/Hz in band. What TDC resolution does it need?
 
+### Problem 20-10.15 [B]
+
+**Lock settling after a channel hop.** A PLL has $I_{cp}$ = 500 µA, $K_{VCO}$ = 2π × 500 MHz/V and N = 100, with a third-order filter designed for a 0.3 MHz crossover and spread b = 10.
+(a) Find $C_1 + C_2$, $C_1$, $C_2$ and $R$ from $C_1 + C_2 = K\sqrt b/\omega_c^2$, $K = I_{cp}K_{VCO}/(2\pi N)$, $\omega_z = \omega_c/\sqrt b$.
+(b) Ignoring $C_2$, find the natural frequency $\omega_n/2\pi$ and the damping ζ.
+(c) The divide ratio steps by one, moving the output by 50 MHz. Estimate, from the envelope $e^{-\zeta\omega_nt}$, how long the frequency error takes to fall below 10 kHz. The lab's exact third-order step response gives 8.17 µs: why is the estimate close?
+(d) How does the settling time scale if the crossover is halved at the same b?
+
+### Problem 20-10.16 [C] *(lab)*
+
+**Design a fractional-N loop.** A synthesizer must produce 5.0123 GHz from a 50 MHz reference with a MASH 1-1-1 divider (busy and dithered), $I_{cp}$ = 500 µA, $K_{VCO}$ = 2π × 500 MHz/V and a third-order filter with b = 10. The input-referred reference, PFD and pump noise is −150 dBc/Hz; the VCO alone has −120 dBc/Hz at 1 MHz, falling 20 dB per decade. Specifications: rms jitter at most 250 fs from 10 kHz to 20 MHz, and after a 50 MHz channel hop the frequency must be within 10 kHz in 10 µs.
+(a) By hand: at what offset does $N^2$ times the reference noise meet the VCO line, and at what offset does the unfiltered MASH noise $\mathcal{L}_{\Sigma\Delta}$ of §3.6 rise to that same level? What do the two offsets suggest about the bandwidth?
+(b) With the lab's model, find the total jitter (reference, VCO and MASH noise) and the settling time for crossovers of 0.2, 0.3 and 0.5 MHz. Can any of them meet both specifications?
+(c) Double the reference to 100 MHz (N ≈ 50.1). Show by hand why the MASH noise at a given low offset falls by about 15 dB and the multiplied reference noise by 6 dB. Then find the jitter and settling at a 0.3 MHz crossover, and the filter's R, $C_1$ and $C_2$.
+(d) The chip can afford at most 500 pF of loop-filter capacitance. By what factor must $I_{cp}K_{VCO}$ fall, and what does lowering each of them cost?
+
 ---
 
 ## Objective coverage
@@ -75,8 +91,8 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Objective | Problems |
 |---|---|
 | 1. Phase-domain model, natural frequency, damping | 1, 2, 3 |
-| 2. Loop-filter design and phase margin | 4, 5, 6 |
-| 3. Noise transfer | 7, 10 |
+| 2. Loop-filter design, phase margin and settling | 4, 5, 6, 15, 16 |
+| 3. Noise transfer | 7, 10, 16 |
 | 4. Phase noise to jitter | 8, 9 |
-| 5. Fractional-N | 11, 12 |
+| 5. Fractional-N | 11, 12, 16 |
 | 6. Figures of merit and ADPLLs | 13, 14 |

@@ -89,9 +89,9 @@ $$
 A_i = g_mr_o = \frac{g_m}{I_D}\,V_A ,
 $$
 
-where the Early voltage $V_A$ grows roughly in proportion to channel length. Short channels lower $V_A$ through channel-length modulation and drain-induced barrier lowering (09-10), so at minimum length a planar transistor's intrinsic gain fell with each generation; Annema et al. measured "a factor 2 in four generations" at fixed bias [2]. FinFETs recovered some of it (§7), but an op-amp needs far more than one device gives. An op-amp needs far more (20-02).
+where the Early voltage $V_A$ grows roughly in proportion to channel length. Short channels lower $V_A$ through channel-length modulation and drain-induced barrier lowering (09-10), so at minimum length a planar transistor's intrinsic gain fell with each generation; Annema et al. measured "a factor 2 in four generations" at fixed bias [2]. FinFETs recovered some of it (§7), but an op-amp needs far more than one device gives (20-02).
 
-The classic remedy is the **cascode** (12-02): stacking a second transistor multiplies the output resistance by about $g_mr_o$, so a cascoded stage gains roughly $A_i^2/2$. But every device in the stack needs its $V_{DS,sat}$, and the signal swing gets what is left:
+The classic remedy is the **cascode** (12-02): stacking a second transistor multiplies the output resistance by about $g_mr_o$, so a cascoded stage with an equally cascoded load (which halves the output resistance seen) gains roughly $A_i^2/2$; with an ideal current-source load it would gain $A_i^2$. But every device in the stack needs its $V_{DS,sat}$, and the signal swing gets what is left:
 
 $$
 V_{swing} \approx V_{DD} - n_{stack}V_{DS,sat} .
@@ -99,13 +99,13 @@ $$
 
 A telescopic cascode op-amp stacks five devices between the rails (tail, input, two cascodes, load). At 1.8 V that is comfortable; at 0.8 V it leaves almost nothing (Example 20-12.3). Designers fall back on longer channels (more gain, less speed, more area), multistage amplifiers (more gain, but compensation costs bandwidth and power, 20-02), gain boosting (20-02), or architectures that need less gain in the first place.
 
-![Output resistance of a single short-channel transistor and of a cascode against output voltage on a 0.8 V supply: the single device is flat at 74 kilohms; the cascode is about 230 kilohms at 0.3 V and jumps to over 5 megohms once the output exceeds about 0.35 V](../../../assets/figures/20-12/stack.svg)
+![Output resistance of a single short-channel transistor and of a cascode against output voltage on a 0.8 V supply: the single device is flat at 74 kilohms above about 0.15 volt of output; the cascode is about 230 kilohms at 0.3 V and jumps to over 5 megohms once the output exceeds about 0.35 V](../../../assets/figures/20-12/stack.svg)
 
 *Figure 3. The cascode's price. It multiplies the output resistance by about $g_mr_o$ (here 75 times), but only above about 0.35 V of output: on a 0.8 V supply that is almost half the range (the lab confirms it in ngspice).*
 
 ### 3.4 Matching: the limit that scaling does help
 
-Pelgrom's law (20-11) gives a pair's threshold mismatch as $\sigma(\Delta V_T) = A_{VT}/\sqrt{WL}$. For a target σ the gate area is $A_{VT}^2/\sigma^2$ and its capacitance $C_{mm} = C_{ox}A_{VT}^2/\sigma^2$.
+Pelgrom's law (20-11) gives a pair's threshold mismatch as $\sigma(\Delta V_{TH}) = A_{VT}/\sqrt{WL}$. For a target σ the gate area is $A_{VT}^2/\sigma^2$ and its capacitance $C_{mm} = C_{ox}A_{VT}^2/\sigma^2$.
 
 Compare that with the capacitance kT/C noise demands for the same voltage error: $\sigma^2 = kT/C_n$, so $C_n = kT/\sigma^2$. The ratio does not depend on σ:
 
@@ -130,7 +130,7 @@ If precise analog is expensive and digital logic is cheap, build imprecise analo
 - **Dynamic element matching:** rotating unit elements turns mismatch into shaped noise (20-09).
 - **Time-domain and digital-PLL design:** a TDC and a digital loop filter replace the charge pump and analog filter (20-10).
 
-The calibration must measure the error accurately enough. If an analog stage has a gain error ε and the system needs a total gain error below $\varepsilon_{max}$, the digital estimate of ε must be accurate to $\varepsilon_{max}/\varepsilon$ of itself (Example 20-12.5). The calibration also has to track temperature and supply drift, which is why many designs calibrate in the background, continuously, rather than once at power-up. The digital logic costs power and area too, but it is cheap: Murmann's 2005 comparison put one conversion of a then state-of-the-art 10-bit ADC at the energy of "1nJ/6fJ= 166,666" gate operations in 0.13 µm CMOS [5], and a few thousand gates cost far less than the 30–40 dB of extra open-loop gain they replace.
+The calibration must measure the error accurately enough. If an analog stage has a gain error ε and the system needs a total gain error below $\varepsilon_{max}$, the digital estimate of ε must be accurate to $\varepsilon_{max}/\varepsilon$ of itself (Example 20-12.5). The calibration also has to track temperature and supply drift, which is why many designs calibrate in the background, continuously, rather than once at power-up. The digital logic costs power and area too, but it is cheap: Murmann's 2005 comparison put one conversion of a then state-of-the-art 10-bit ADC at the energy of "1nJ/6fJ= 166,666" gate operations in 0.13 µm CMOS [5], and a few thousand gates cost far less than the tens of decibels of extra open-loop gain they replace (about 50 dB in Example 20-12.5).
 
 ### 3.7 Economics and partitioning
 
@@ -208,7 +208,7 @@ The lower supply costs **2.25** times the power, exactly $1.8/0.8$.
 
 **Units check.** All quantities are ratios.
 
-**Sanity check.** A digital multiplier that scales the backend's code by $1/(1 - \hat\varepsilon)$ replaces about 50 dB of analog gain. The lab shows a two-step converter with this error at 50.1 dB SNDR uncorrected and 73.4 dB corrected; a 2% estimation error still gives 73.0 dB.
+**Sanity check.** A digital multiplier that scales the backend's code by $1/(1 - \hat\varepsilon)$ replaces about 50 dB of analog gain. The lab's two-step converter applies the same 6.25% error, but to a residue amplified by 16 behind a 4-bit coarse stage, so a residual gain error moves the output only 1/16 as much: it shows 50.1 dB SNDR uncorrected and 73.4 dB corrected, and a 2% estimation error still gives 73.0 dB. Its tolerance to estimation error is correspondingly looser (**6.25**% for one 12-bit LSB) than this gain-2 stage's 0.39%.
 
 ### Answer key
 
@@ -259,6 +259,7 @@ The lower supply costs **2.25** times the power, exactly $1.8/0.8$.
 | Txt 20-12.e | cost per analog copy, 1.1× shrink | 1.65 | — |
 | Txt 20-12.f | wafer price ratio, 5 nm over 7 nm | 1.82 | — |
 | Txt 20-12.g | best Schreier FoM below the thermal line | 2.6 | dB |
+| Txt 20-12.h | lab two-step estimate tolerance | 6.25 | % |
 
 ## 5. Simulate it
 
@@ -291,10 +292,10 @@ The lab ([labs/20-12-lab](../labs/20-12-lab/README.md)) collects the chapter's s
 | Supply history | 5 V (early 1990s) → 1.8 V (180 nm) → 1.1 V (65 nm) → 0.8 V (7 nm, roadmap) | Annema et al.; ITRS via Stillmaker and Baas [2], [3] |
 | Logic $V_{DD}$ roadmap (as of Nov 2026) | 0.70 V now, 0.60 V from 2027; raised to 0.75 V in 2021 for FinFET leakage | IRDS 2024 [3] [R-357] **[Industry estimate]** |
 | Threshold at the same node | $V_{t,sat}$ ≈ 0.16 V (high performance) to 0.29 V (high density) | IRDS 2024; $V_{DD}/V_{t}$ ≈ **2.4** [3] |
-| Analog and I/O supplies | analog supplies near 0.9–1.0 V in recent ADC papers; I/O stuck at 1.8 V | ADC survey medians; Loke [6], [8] |
+| Analog and I/O supplies | many I/Os still signal at 1.8 V "despite core VDD reduction"; precision analog uses thick-oxide devices or separate, higher supplies | Loke [6] |
 | $A_{VT}$ | ≈ 1 mV·µm per nm of oxide; 3.5 mV·µm at 65 nm; 0.7–1.4 mV·µm in fully depleted FinFET and FD-SOI devices | ITRS 2003, Pelgrom; IEDM 2013 [4] [R-358] |
 | Mismatch energy against kT | $C_{ox}A_{VT}^2$ ≈ 30–70 times kT | Example 20-12.4; Pelgrom's slides say 70 [4] **[Contested]** (definition-dependent) |
-| FinFET intrinsic gain | about 3–3.8 times 28 nm planar | Loke (Qualcomm), Jeong et al. (Samsung) [6], [7] |
+| FinFET intrinsic gain | "3×" (Loke, Qualcomm; baseline not stated); 3.8 times 28 nm planar (Jeong et al., Samsung, 14 nm RF FinFET) | [6], [7] |
 | Analog and I/O area per node | 0.8–0.9×, against 0.5× for logic and SRAM; IRDS assumes 0.9× per node | Loke; IRDS 2024 [3], [6] **[Industry estimate]** |
 | TSMC N3 against N5 (2020 claim) | logic up to 1.7×, SRAM 1.2×, analog 1.1× density | press report of TSMC's symposium [9] **[Industry estimate]** |
 | ADC energy trend | median Walden FoM down about 575× from 1997–99 to 2024–26; best Schreier FoM 189.2 dB (2025, 0.18 µm), **2.6** dB below the 191.8 dB thermal line | Murmann's survey; our extraction [8] [R-359] |
@@ -313,14 +314,14 @@ The lab ([labs/20-12-lab](../labs/20-12-lab/README.md)) collects the chapter's s
 
 ### State of the art (as of Nov 2026)
 
-- **The supply has stopped falling [Established].** IRDS puts logic $V_{DD}$ at 0.70 V, after a bump to 0.75 V in 2021 because of "higher than anticipated leakage of FinFET transistors", and sees "no solutions left to reduce the supply voltage" below about 0.6 V [3]. With thresholds of 0.16–0.29 V, a core device has little more than two thresholds of supply. Analog blocks therefore run on thicker-oxide devices or higher separate supplies: in recent ADC papers the median analog supply has sat near 1.0 V since about 2009 [8], and I/O signaling remains at 1.8 V "despite core VDD reduction" [6].
-- **FinFETs helped analog, partly [Established].** Fully depleted fins cut drain-induced barrier lowering and random dopant fluctuation: Loke et al. (Qualcomm) list "3× intrinsic gain" and "less RDF mismatch", and Samsung reported 3.8 times the intrinsic gain of 28 nm planar for its 14 nm RF FinFET [6], [7]. The same slides list what got worse: source/drain resistance, parasitics, layout-dependent effects, quantized widths and gate-density mismatch [6].
+- **The supply has stopped falling [Industry estimate: roadmap values].** IRDS puts logic $V_{DD}$ at 0.70 V, after a bump to 0.75 V in 2021 because of "higher than anticipated leakage of FinFET transistors", and sees "no solutions left to reduce the supply voltage" below about 0.6 V [3]. With thresholds of 0.16–0.29 V, a core device has little more than two thresholds of supply. Analog blocks therefore run on thicker-oxide devices or higher separate supplies, and many I/Os still signal at 1.8 V "despite core VDD reduction" [6].
+- **FinFETs helped analog, partly [Established].** Fully depleted fins cut drain-induced barrier lowering and random dopant fluctuation: Loke et al. (Qualcomm) list "3× intrinsic gain" and "less RDF mismatch", and Samsung reported 3.8 times the intrinsic gain of 28 nm planar for its 14 nm RF FinFET [6], [7]. The same slides flag "High S/D resistance" as a "big deal" [6]; fins also bring larger parasitic capacitance, stronger layout-dependent effects and device widths quantized in whole fins.
 - **Converters improved anyway, by changing architecture [Established].** Murmann's survey of ISSCC and VLSI papers shows the median Walden figure falling about 575× over 27 years (our extraction) [8]. The gains came from SAR, dynamic and digitally assisted designs that use scaling for speed and logic; the best noise-limited results are not in the newest nodes: the best Schreier figure, 189.2 dB (2025), is in 0.18 µm, and in 2022–2026 no published ADC with SNDR ≥ 90 dB used a node at or below 16 nm, while all 51 at ≥ 1 GS/s used 28 nm or below (our extraction) [8].
 - **Scaling-friendly analog is an established field [Established].** VCO-based sigma-delta ADCs (Straayer and Perrott, 2008), a "mostly digital" ring-oscillator ADC that "does not contain analog integrators, feedback DACs, comparators, or reference voltages" (Taylor and Galton, 2010), ring amplifiers whose "performance … scales with process technology" (Hershberg et al., 2012), inverter-based switched-capacitor modulators at 0.7 V (Chae and Han, 2009) and Staszewski's digital RF (20-10) all turn analog functions into timing and logic [12].
 
 ### Why it matters commercially
 
-Analog and I/O decide how much of a leading-edge die is "wasted" area, and the industry now partitions around that. AMD's chiplet processors put memory interfaces and SerDes on an older node because they "see a very small shrink factor to 7nm and very little performance or power gain from advanced nodes" [11]; its fourth-generation EPYC pairs 5 nm cores with 6 nm I/O dies, explaining that the core process is "on a different innovation path than the technology that lays down the analog circuitry" [11]. AMD estimated its first chiplet server cost about 0.59 of a monolithic design despite using about 10% more silicon [11]. The economics are simple: CSET's model has a 5 nm wafer at **1.82** times the price of a 7 nm one [10]; if an analog block shrank only 1.1–1.2× across such a step, each copy would cost about **1.5–1.65** times more (our arithmetic). For the learner's coverage: **AI datacenter** accelerators are surrounded by SerDes and HBM PHYs that shrink slowly and increasingly sit on I/O dies; **wearables and IoT** MCUs stay on mature nodes partly because their analog (ADCs, regulators, radios, sensors) would not benefit; **automotive** parts need high-voltage and precision analog that advanced nodes do not offer. In diligence, an analog IP company's portability across nodes, and its share of the die, are value drivers.
+Analog and I/O decide how much of a leading-edge die is "wasted" area, and the industry now partitions around that. AMD's chiplet processors put memory interfaces and SerDes on an older node because they "see a very small shrink factor to 7nm and very little performance or power gain from advanced nodes" [11]; its fourth-generation EPYC pairs 5 nm cores with 6 nm I/O dies, explaining that the core process is on "a different innovation path" from the one the analog circuitry needs [11]. AMD estimated its first chiplet server cost about 0.59 of a monolithic design despite using about 10% more silicon [11]. The economics are simple: CSET's model has a 5 nm wafer at **1.82** times the price of a 7 nm one [10]; if an analog block shrank only 1.1–1.2× across such a step, each copy would cost about **1.5–1.65** times more (our arithmetic). For the learner's coverage: **AI datacenter** accelerators are surrounded by SerDes and HBM PHYs that shrink slowly and increasingly sit on I/O dies; **wearables and IoT** MCUs stay on mature nodes partly because their analog (ADCs, regulators, radios, sensors) would not benefit; **automotive** parts need high-voltage and precision analog that advanced nodes do not offer. In diligence, an analog IP company's portability across nodes, and its share of the die, are value drivers.
 
 ### Questions for engineering leaders
 
@@ -333,7 +334,7 @@ Analog and I/O decide how much of a leading-edge die is "wasted" area, and the i
 ### Marketing vs Reality
 
 - **"The new node is 1.7× denser."** For logic. TSMC's own 2020 figures for N3 against N5 were 1.2× for SRAM and 1.1× for analog, and its "chip density" for N3E, which assumes 50% logic, 30% SRAM and 20% analog, was 1.3× [9]. IRDS assumes analog and I/O area shrinks only to 0.9× per node, against a 1.42× step in logic gate density (2024 to 2025) [3].
-- **"Moving our ADC to 3 nm will cut its power."** Only for its speed-limited and digital parts. Noise-limited precision does not move with the node (§3.2), which is why the record noise-limited converters are in 0.18 µm and 90 nm [8]. Ask what the converter's SNDR is and where its energy goes.
+- **"Moving our ADC to 3 nm will cut its power."** Only for its speed-limited and digital parts. Noise-limited precision does not move with the node (§3.2), which is why the record noise-limited converter is in 0.18 µm (189.2 dB, 2025) [8]. Ask what the converter's SNDR is and where its energy goes.
 - **"Record figure of merit."** Murmann's survey takes power "as specified by the authors. Sometimes this number includes power for clocks, references, etc.; sometimes it doesn't" [8]. Check references, buffers, clocks and decimation.
 - **"All-digital."** An all-digital PLL still has an analog oscillator whose "imperfections … are compensated through digital means" [12], and a mostly digital ADC still has ring oscillators and calibration. The value is portability and area, not freedom from physics.
 - **"Cost per transistor keeps falling."** [Contested.] CSET notes that "some analysts claim that decreases have stopped past the 28 nm node … while others disagree" [10]. For a block that does not shrink, the question is settled: it costs more per copy on the newer, pricier wafer.

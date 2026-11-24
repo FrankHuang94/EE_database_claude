@@ -143,6 +143,16 @@ v.assert_true("lab jitter integrator agrees",
               abs(lab.integrate_jitter([1e3, 2e6, 2e9], [-100, -100, -160], 1e4, 1e9, 5e9) / sj - 1) < 1e-4)
 v.check("Lab 20-10.a", jitter_quad(1e-10, 2e6, 12e3, 20e6, 5e9)[1] * 1e15)
 v.check("Lab 20-10.b", jitter_quad(1e-10, 2e6, 10e3, 100e6, 5e9)[1] * 1e15)
+# Part 3: closed-loop noise transfer with this script's own loop design, integrated 1 kHz to 1 GHz
+f3 = np.logspace(3, 9, 20001)
+l_ref3 = 10 ** (-150 / 10) * N ** 2
+l_vco3 = 10 ** (-120 / 10) * (1e6 / f3) ** 2
+for key, fc3 in zip("cdefg", (0.1e6, 0.3e6, 1e6, 2e6, 5e6)):
+    g3 = g_eval(f3, ICP, KV, N, *design(fc3, 10, ICP, KV, N))
+    tot3 = l_ref3 * np.abs(g3 / (1 + g3)) ** 2 + l_vco3 * np.abs(1 / (1 + g3)) ** 2
+    v.check(f"Lab 20-10.{key}", math.sqrt(2 * integrate.trapezoid(tot3, f3)) / (TWO_PI * 5e9) * 1e15)
+v.check("Lab 20-10.h", optimize.brentq(lambda f_mhz: -120 + 20 * lg(1 / f_mhz) - (-150 + 20 * lg(N)), 0.01, 10))
+v.check("Lab 20-10.i", -150 + 20 * lg(N))
 
 # ------------------------------------------------------------------ Example 20-10.6
 print("Example 20-10.6")
@@ -248,5 +258,76 @@ v.check("Txt 20-10.i", fom_j(21.6e-15, 18.1))
 v.check("Txt 20-10.j", fom_j(143e-15, 40))
 # LMX2594 model: flat = FOM + 20 log(fvco/fpd) + 10 log(fpd/1 Hz).
 v.check("Txt 20-10.k", 10 * lg(10 ** (-236 / 10) * (12e9 / 100e6) ** 2 * 100e6))
+# ideal oscillator FoM from Leeson's model evaluated at an arbitrary 1/f^2-region point (F = 1, P_s = P)
+kt10 = 1.380649e-23 * 300
+f0_, df_, q_, p_ = 5e9, 1e6, 10, 1e-3
+l_leeson = 2 * kt10 / p_ * (1 + (f0_ / (2 * q_ * df_)) ** 2)
+v.check("Txt 20-10.l", -10 * lg(l_leeson) + 20 * lg(f0_ / df_) - 10 * lg(p_ / 1e-3))
+v.assert_true("closed form 2Q^2 mW/(FkT) agrees", abs(10 * lg(2 * q_ ** 2 * 1e-3 / kt10) - 196.8) < 0.05)
+
+# ------------------------------------------------------------------ Problems 15 and 16 (own design, own transfer functions)
+print("Problems 15-16")
+
+
+def loop_parts(fc, b, icp, kv, n):
+    rr, cc1, cc2 = design(fc, b, icp, kv, n)
+    return rr, cc1, cc2
+
+
+def settle(fc, n, tol=10e3 / 50e6, b=10):
+    rr, cc1, cc2 = design(fc, b, ICP, KV, n)
+    nm, dn = g_poly(ICP, KV, n, rr, cc1, cc2)
+    tt = np.linspace(0, 40e-6, 400001)
+    _, yy, _ = signal.lsim((nm, np.polyadd(dn, nm)), np.ones_like(tt), tt)
+    return tt[np.nonzero(np.abs(yy - 1) > tol)[0][-1] + 1]
+
+
+r15, c1_15, c2_15 = design(0.3e6, 10, ICP, KV, N)
+k15 = ICP * KV / (TWO_PI * N)
+v.check("20-10.15a", (c1_15 + c2_15) * 1e9)
+v.assert_true("C1 + C2 = K sqrt(b)/wc^2 exactly", abs((c1_15 + c2_15) - k15 * math.sqrt(10) / (TWO_PI * 0.3e6) ** 2) < 1e-15)
+v.check("20-10.15b", c2_15 * 1e12)
+v.check("20-10.15c", c1_15 * 1e9)
+v.check("20-10.15d", r15)
+wn15 = math.sqrt(k15 / c1_15)
+z15 = r15 / 2 * math.sqrt(k15 * c1_15)
+v.check("20-10.15e", wn15 / TWO_PI / 1e3)
+v.check("20-10.15f", z15)
+v.check("20-10.15g", math.log(5000) / (z15 * wn15) * 1e6)
+v.check("20-10.15h", settle(0.15e6, N) * 1e6)
+v.assert_true("exact settling at 0.3 MHz is 8.17 us", abs(settle(0.3e6, N) * 1e6 - 8.17) < 0.005)
+
+mash3 = lambda f, fr: TWO_PI ** 2 / (12 * fr) * (2 * np.sin(np.pi * f / fr)) ** 4  # noqa: E731
+v.check("20-10.16a", optimize.brentq(lambda fm: -120 + 20 * lg(1 / fm) + 110, 0.01, 10))
+v.check("20-10.16b", optimize.brentq(lambda f: 10 * lg(mash3(f, 50e6)) + 110, 1e5, 5e6) / 1e6)
+f16 = np.logspace(4, math.log10(20e6), 40001)
+
+
+def jitter16(fc, fref, with_mash=True, only_mash=False):
+    nn = 5.0123e9 / fref
+    gg = g_eval(f16, ICP, KV, nn, *design(fc, 10, ICP, KV, nn))
+    hh = np.abs(gg / (1 + gg)) ** 2
+    ref = 1e-15 * nn ** 2 * hh
+    vco = 1e-12 * (1e6 / f16) ** 2 * np.abs(1 / (1 + gg)) ** 2
+    msh = mash3(f16, fref) * hh
+    tot = msh if only_mash else ref + vco + (msh if with_mash else 0)
+    return math.sqrt(2 * integrate.trapezoid(tot, f16)) / (TWO_PI * 5.0123e9) * 1e15
+
+
+for kj, ks, fc in (("c", "d", 0.2e6), ("e", "f", 0.3e6), ("g", "h", 0.5e6)):
+    v.check(f"20-10.16{kj}", jitter16(fc, 50e6))
+    v.check(f"20-10.16{ks}", settle(fc, 5.0123e9 / 50e6) * 1e6)
+v.check("20-10.16r", jitter16(0.3e6, 50e6, with_mash=False))
+v.check("20-10.16q", jitter16(0.3e6, 50e6, only_mash=True))
+v.check("20-10.16i", 10 * lg(mash3(1e5, 50e6) / mash3(1e5, 100e6)))
+v.check("20-10.16j", 20 * lg(2))
+v.check("20-10.16k", jitter16(0.3e6, 100e6))
+v.assert_true("100 MHz reference: settling unchanged", abs(settle(0.3e6, 5.0123e9 / 100e6) - settle(0.3e6, 5.0123e9 / 50e6)) < 2e-9)
+r16, c1_16, c2_16 = design(0.3e6, 10, ICP, KV, 5.0123e9 / 100e6)
+v.check("20-10.16l", (c1_16 + c2_16) * 1e9)
+v.check("20-10.16m", c1_16 * 1e9)
+v.check("20-10.16n", c2_16 * 1e12)
+v.check("20-10.16o", r16)
+v.check("20-10.16p", (c1_16 + c2_16) / 0.5e-9)
 
 sys.exit(v.finish())

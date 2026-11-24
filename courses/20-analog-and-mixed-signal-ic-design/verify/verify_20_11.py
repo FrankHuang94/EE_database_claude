@@ -19,7 +19,7 @@ from fractions import Fraction as Fr
 from pathlib import Path
 
 import numpy as np
-from scipy import special
+from scipy import optimize, special
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -217,7 +217,8 @@ trim = 0.5 / math.sqrt(12)
 drift = 1.2e3 * 10e-6 * 165
 v.check("20-11.12a", trim)
 v.check("20-11.12b", drift)
-v.check("20-11.12c", drift / trim)
+v.check("20-11.12c", (drift / 2) / 0.25)
+v.assert_true("span ratio equals worst-case ratio", abs(drift / 0.5 - (drift / 2) / 0.25) < 1e-12)
 # uniform-error sigma by simulation
 u = rng.uniform(-0.25, 0.25, 200000)
 v.assert_true("uniform trim error sigma = step/sqrt(12) (MC)", abs(u.std() / trim - 1) < 0.01)
@@ -246,5 +247,48 @@ v.check("Txt 20-11.j", p_out * 100)
 est100 = rng.normal(0, 1, (20000, 100)).std(axis=1, ddof=1)
 v.assert_true("MC: 100-run estimates off by >10% about 16% of the time",
               abs(np.mean(np.abs(est100 - 1) > 0.1) - p_out) < 0.01)
+
+# ------------------------------------------------------------------ Problems 13-15
+print("Problems 13-15")
+gm13, dr13 = 8e-3, 5.0
+v.check("20-11.13a", 1e-3 * dr13 * 1e3)
+v.check("20-11.13b", -8 * 1e-3 * dr13 * 100)
+i2 = optimize.brentq(lambda i: i - (1e-3 + gm13 * (-(i * dr13))), 0, 2e-3)      # I2 = I1 + gm (VGS2 - VGS1)
+v.check("20-11.13c", (i2 / 1e-3 - 1) * 100)
+drmax = optimize.brentq(lambda r: gm13 * r / (1 + gm13 * r) - 1e-3, 0, 1)
+v.assert_true("exact and first-order bounds agree to 0.1%", abs(drmax - 1e-3 / gm13) / drmax < 2e-3)
+v.check("20-11.13d", 1e-3 / gm13)
+v.check("20-11.13e", 1e-3 / gm13 / 0.05)
+v.check("20-11.14a", 5 * 2)
+v.check("20-11.14b", 0.7 / 500 * 1e3)
+v.check("20-11.14c", 0.7 / 20 * 1e3)
+v.check("20-11.14d", 10e-3 * 20)
+
+
+def area15(gmid):
+    return ((gmid * 3.5e-3) ** 2 + 0.01 ** 2) / 1e-3 ** 2
+
+
+v.check("20-11.15a", area15(5))
+v.check("20-11.15b", area15(10))
+gmid15 = optimize.brentq(lambda g: 2 / g - 0.3, 1, 30)
+v.check("20-11.15c", gmid15)
+v.check("20-11.15d", area15(gmid15))
+pos15 = (np.arange(8) - 3.5) * 10.0
+
+
+def grad_err(pattern):
+    vt = 0.05 * pos15 + 5e-4 * pos15 ** 2
+    a_ = np.mean([vt[i] for i, c in enumerate(pattern) if c == "A"])
+    b_ = np.mean([vt[i] for i, c in enumerate(pattern) if c == "B"])
+    return a_ - b_
+
+
+v.check("20-11.15e", abs(grad_err("AAAABBBB")))
+v.check("20-11.15f", abs(grad_err("AAAABBBB")) * 1e-3 * gmid15 * 100)
+v.check("20-11.15g", abs(grad_err("ABBAABBA")))
+v.check("20-11.15h", abs(grad_err("ABBAABBA")) * 1e-3 * gmid15 * 100)
+v.assert_true("ABBABAAB cancels linear and quadratic terms", abs(grad_err("ABBABAAB")) < 1e-12)
+v.check("20-11.15i", 2 * area15(gmid15))
 
 sys.exit(v.finish())

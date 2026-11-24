@@ -40,15 +40,16 @@ def ladder_thevenin(code, nbits, vref):
     return vk
 
 
-def ladder_mna(code, nbits, vref, rsw):
-    """Nodes ordered MSB first; R = 1. Every 2R leg has a switch resistance rsw; the termination has none."""
+def ladder_mna(code, nbits, vref, rsw, leg_adj=0.0, term_adj=0.0):
+    """Nodes ordered MSB first; R = 1. Every 2R leg has a switch resistance rsw (legs 2R + rsw + leg_adj); the
+    termination is 2R + term_adj."""
     n = nbits
     g = np.zeros((n, n))
     rhs = np.zeros(n)
     idx = lambda k: n - 1 - k  # noqa: E731
     for k in range(n):
         i = idx(k)
-        gl = 1 / (2 + rsw)
+        gl = 1 / (2 + rsw + leg_adj)
         g[i, i] += gl
         rhs[i] += gl * vref * ((code >> k) & 1)
         if k > 0:
@@ -57,7 +58,7 @@ def ladder_mna(code, nbits, vref, rsw):
             g[j, j] += 1
             g[i, j] -= 1
             g[j, i] -= 1
-    g[idx(0), idx(0)] += 1 / 2
+    g[idx(0), idx(0)] += 1 / (2 + term_adj)
     return np.linalg.solve(g, rhs)[idx(n - 1)]
 
 
@@ -102,7 +103,19 @@ vs = np.array([ladder_mna(c, 10, 1.2, 0.01) for c in range(1024)])
 lsb = (vs[-1] - vs[0]) / 1023
 dnl = np.diff(vs) / lsb - 1
 inl = (vs - vs[0]) / lsb - np.arange(1024)
-v.check("Ex 20-09.1e", np.abs(dnl).max())
+v.check("Ex 20-09.1e", dnl[np.argmax(np.abs(dnl))])          # signed: negative means a falling step
+v.check("Ex 20-09.1g", -(vs[512] - vs[511]) * 1e3)
+v.assert_true("non-monotonic: code 512 below code 511", vs[512] < vs[511])
+
+
+def worst_dnl(**kw):
+    vv = np.array([ladder_mna(c, 10, 1.2, 0.01, **kw) for c in range(1024)])
+    dd = np.diff(vv) / ((vv[-1] - vv[0]) / 1023) - 1
+    return dd[np.argmax(np.abs(dd))]
+
+
+v.assert_true("padding only the termination does not fix it", worst_dnl(term_adj=0.01) < -1.6)
+v.assert_true("legs made 2R - r_sw restore binary weighting", abs(worst_dnl(leg_adj=-0.01)) < 1e-9)
 v.check("Ex 20-09.1f", np.abs(inl).max())
 v.assert_true("worst DNL at the 511 -> 512 transition", int(np.argmax(np.abs(dnl))) == 511)
 v.assert_true("lab ladder solver agrees (switch resistance)",
@@ -183,6 +196,19 @@ v.assert_true("differential HD2 cancels", hd(df_fun(x12), 2) < -250)
 v.check("Ex 20-09.4g", h2 - h3)
 v.check("Ex 20-09.4h", hd(df_fun(10 * x12), 3))
 v.assert_true("lab harmonic routine agrees", abs(lab.harmonics(df_fun(x12))[3] - h3) < 0.01)
+# capacitive quasi-static model: x = j omega C R_L, harmonics from the complex Fourier coefficients
+
+
+def hd_complex(fun, k, m=4096):
+    tt = np.arange(m)
+    c = np.fft.fft(fun(np.sin(2 * math.pi * tt / m))) / m
+    return 20 * lg(abs(c[k]) / abs(c[1]))
+
+
+v.check("Ex 20-09.4i", hd_complex(se_fun(1j * x12), 2))
+v.check("Ex 20-09.4j", hd_complex(df_fun(1j * x12), 3))
+v.check("Ex 20-09.4k", hd_complex(df_fun(10j * x12), 3))
+v.assert_true("complex FFT route reproduces the real-x harmonics", abs(hd_complex(se_fun(x12), 2) - h2) < 0.01)
 
 # ------------------------------------------------------------------ Example 20-09.5
 print("Example 20-09.5")
@@ -282,6 +308,57 @@ for key, p_ in zip("abc", ptrs):
     v.check(f"20-09.14{key}", p_)
 v.check("20-09.14d", int(np.sum(used == 2)))
 v.assert_true("lab DWA agrees", np.array_equal(lab.dwa_select([3, 5, 2], 8).sum(axis=0), used))
+
+# Problem 15: ladder fixed point by iterating the recursion, weights by solving the node equation numerically
+eps15 = 0.01
+rk = 2.0                                       # start anywhere; the recursion converges
+for _ in range(200):
+    rk = (rk + 1) * (2 + eps15) / (rk + 3 + eps15)
+v.check("20-09.15a", rk)
+v.assert_true("closed-form fixed point", abs(rk - (-1 + math.sqrt(9 + 4 * eps15)) / 2) < 1e-12)
+v.check("20-09.15b", (2 + eps15) / (rk + 3 + eps15))
+v.check("20-09.15c", (rk + 1) / (rk + 3 + eps15))
+v.assert_true("first-order a and c", abs((2 + eps15) / (rk + 3 + eps15) - 0.5 * (1 + eps15 / 6)) < 1e-4)
+for nb, ke, kn in ((10, "d", "e"), (8, "f", "g")):
+    v.check(f"20-09.15{ke}", -(eps15 / 3) * 2 ** (nb - 1))
+    vv = np.array([ladder_mna(c, nb, 1.0, eps15) for c in range(2 ** nb)])
+    dd = np.diff(vv) / ((vv[-1] - vv[0]) / (2 ** nb - 1)) - 1
+    v.check(f"20-09.15{kn}", dd[np.argmax(np.abs(dd))])
+
+# Problem 16: segmentation search, area, and the cell-capacitance bound with the full harmonic analysis
+nt16 = 2 ** 14 - 1
+su16 = 0.5 / (kolmogorov_lambda(0.9973) * math.sqrt(nt16))
+v.assert_true("lambda(99.73%) rounds to 1.818", abs(kolmogorov_lambda(0.9973) - 1.818) < 5e-4)
+su16 = 0.5 / (1.818 * math.sqrt(nt16))
+v.check("20-09.16a", su16 * 100)
+ok_m = [m for m in range(1, 15) if su16 * math.sqrt(2 ** (14 - m + 1) - 1) <= 0.1 and 2 ** m - 1 <= 63]
+v.check("20-09.16b", min(ok_m))
+v.check("20-09.16c", max(ok_m))
+wl16 = (math.sqrt(2) * 3e-3 / (0.4 * su16)) ** 2
+v.check("20-09.16d", wl16)
+v.check("20-09.16e", wl16 * nt16 / 1e6)
+xn16 = 4 * 10 ** (-70 / 40)
+v.check("20-09.16f", xn16)
+zu16 = 25 / (xn16 / nt16)
+v.check("20-09.16g", zu16 / 1e6)
+cu16 = 1 / (2 * math.pi * 5e8 * zu16)
+v.check("20-09.16h", cu16 * 1e18)
+ccell = 256 * cu16
+v.check("20-09.16i", ccell * 1e15)
+
+
+def cell_dac_diff(xc, m_cells=63, units=256):
+    """Unary-cell model: m of 63 cells on, each 256 units with impedance R_L/xc (complex for a capacitor)."""
+    def f(sv):
+        mm_ = m_cells * (1 + sv) / 2
+        mc_ = m_cells * (1 - sv) / 2
+        return mm_ * units / (1 + mm_ * xc) - mc_ * units / (1 + mc_ * xc)
+    return f
+
+
+xc16 = 1j * 2 * math.pi * 5e8 * ccell * 25
+v.assert_true("full capacitive-cell harmonic analysis within 0.3 dB of -70 dBc",
+              abs(hd_complex(cell_dac_diff(xc16), 3) + 70) < 0.3)
 
 # ------------------------------------------------------------------ lab Part 5: DWA shaping (deterministic)
 print("Lab")

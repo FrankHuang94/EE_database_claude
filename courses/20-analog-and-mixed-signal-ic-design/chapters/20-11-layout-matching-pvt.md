@@ -31,7 +31,7 @@ Two transistors drawn identically are never identical. Random atomic-scale varia
 ## 2. Intuition first
 
 ```text
- side by side           common centroid (ABBA)          one row, gradient g(x) of V_T
+ side by side           common centroid (ABBA)          one row, gradient g(x) of V_TH
   [ A ][ B ]              [ A ][ B ][ B ][ A ]            A:   x = −1.5p, +1.5p   → mean 0
   A sees g(x_A),          each device's centroid          B:   x = −0.5p, +0.5p   → mean 0
   B sees g(x_B)           sits at the same point          linear part cancels; x² part does not
@@ -48,31 +48,31 @@ Two transistors drawn identically are never identical. Random atomic-scale varia
 Divide a gate of area $WL$ into many small patches, each with an independent random contribution to the device's threshold. The device's threshold is the average over its patches; the average of $n$ independent terms has a standard deviation $1/\sqrt n$ of one term's, and $n$ is proportional to area. So the threshold's random part scales as $1/\sqrt{WL}$. Pelgrom, Duinmaijer and Welbers wrote this for the **difference** between two nominally identical devices [1] (Lakshmikumar, Hadaway and Copeland had modeled mismatch against device dimensions three years earlier [2]):
 
 $$
-\sigma(\Delta V_T) = \frac{A_{VT}}{\sqrt{WL}}, \qquad \sigma\!\left(\frac{\Delta\beta}{\beta}\right) = \frac{A_\beta}{\sqrt{WL}} ,
+\sigma(\Delta V_{TH}) = \frac{A_{VT}}{\sqrt{WL}}, \qquad \sigma\!\left(\frac{\Delta\beta}{\beta}\right) = \frac{A_\beta}{\sqrt{WL}} ,
 $$
 
-with technology constants $A_{VT}$ (mV·µm) and $A_\beta$ (%·µm), plus a distance term that is negligible for devices close together. A single device's deviation from the mean is $1/\sqrt2$ of the pair value. Because $\sigma^2 \propto 1/(WL)$, **halving a mismatch requires four times the area**; this is the most important design law of precision analog.
+with technology constants $A_{VT}$ (mV·µm), the Pelgrom coefficient for the threshold $V_{TH}$, and $A_\beta$ (%·µm), plus a distance term that is negligible for devices close together. A single device's deviation from the mean is $1/\sqrt2$ of the pair value. Because $\sigma^2 \propto 1/(WL)$, **halving a mismatch requires four times the area**; this is the most important design law of precision analog.
 
 ![Log-log plot of the standard deviation of a pair's threshold difference against gate area from 0.1 to 1000 square micrometres: a straight line falling with slope minus one half, from about 11 mV at 0.1 square micrometre to 0.11 mV at 1000, with Monte Carlo points lying on it; annotations mark 3.50 mV at 1 square micrometre and 0.35 mV at 100](../../../assets/figures/20-11/pelgrom.svg)
 
-*Figure 2. Pelgrom's law for $A_{VT}$ = 3.5 mV·µm. The dots are a Monte Carlo of devices built from independent unit cells: the law follows from averaging, with no fitting.*
+*Figure 2. Pelgrom's law for $A_{VT}$ = 3.5 mV·µm. The dots are a Monte Carlo of gates divided into fixed 0.01 µm² patches with independent 24.75 mV errors, so larger gates average more patches: the law follows from averaging, with no fitting.*
 
 $A_{VT}$ tracks the gate dielectric: in a well-engineered process it is roughly 1 mV·µm per nanometer of gate oxide [4], because the dominant random term is the number of dopant atoms under the gate, converted to a voltage through the oxide capacitance. The trend paused at 65 nm, the last silicon-oxynitride generation, resumed with high-k metal gates, and improved again with the lightly doped channels of FD-SOI and FinFETs [5], [6]. Pelgrom's original 2.5 µm process had $A_{VT}$ = 30 mV·µm; recent processes are below 2 mV·µm (§7). Beware comparing published values: some authors quote the single-device σ, which differs from the pair value by $\sqrt2$, and FinFET values depend on whether area means footprint or the full fin surface [5].
 
 ### 3.2 Mirrors and differential pairs
 
-**Current mirrors.** Two transistors with the same $V_{GS}$ carry currents that differ through both terms. In strong inversion, $I \propto \beta(V_{GS} - V_T)^2$, so a threshold difference changes the current by $\Delta I/I = -(g_m/I_D)\,\Delta V_T$, and a gain-factor difference by $\Delta\beta/\beta$. With independent terms,
+**Current mirrors.** Two transistors with the same $V_{GS}$ carry currents that differ through both terms. In strong inversion, $I \propto \beta(V_{GS} - V_{TH})^2$, so a threshold difference changes the current by $\Delta I/I = -(g_m/I_D)\,\Delta V_{TH}$, and a gain-factor difference by $\Delta\beta/\beta$. With independent terms,
 
 $$
-\sigma\!\left(\frac{\Delta I}{I}\right)^2 = \left(\frac{g_m}{I_D}\right)^2\sigma(\Delta V_T)^2 + \sigma\!\left(\frac{\Delta\beta}{\beta}\right)^2 ,
+\sigma\!\left(\frac{\Delta I}{I}\right)^2 = \left(\frac{g_m}{I_D}\right)^2\sigma(\Delta V_{TH})^2 + \sigma\!\left(\frac{\Delta\beta}{\beta}\right)^2 ,
 $$
 
 which holds in every inversion region if $g_m/I_D$ is the device's actual value (20-01). A mirror that must match well should run at **low** $g_m/I_D$ (large overdrive): the threshold error then matters less.
 
-**Differential pairs.** The input offset is the gate voltage difference that balances the drain currents: $V_{os} = \Delta V_T + \Delta\beta/\beta \cdot I_D/g_m$ (the gain-factor error is converted to an input voltage by dividing by $g_m/I_D$):
+**Differential pairs.** The input offset is the gate voltage difference that balances the drain currents: $V_{os} = \Delta V_{TH} + \Delta\beta/\beta \cdot I_D/g_m$ (the gain-factor error is converted to an input voltage by dividing by $g_m/I_D$):
 
 $$
-\sigma(V_{os})^2 = \sigma(\Delta V_T)^2 + \left(\frac{I_D}{g_m}\right)^2\sigma\!\left(\frac{\Delta\beta}{\beta}\right)^2 .
+\sigma(V_{os})^2 = \sigma(\Delta V_{TH})^2 + \left(\frac{I_D}{g_m}\right)^2\sigma\!\left(\frac{\Delta\beta}{\beta}\right)^2 .
 $$
 
 A pair that must have low offset should run at **high** $g_m/I_D$, where the threshold term dominates and only area can reduce it. The opposite preferences for mirrors and pairs are a standard design rule (Example 20-11.2).
@@ -105,7 +105,7 @@ In two dimensions the same logic gives cross-coupled quads (A and B on the diago
 
 Some systematic effects depend on the *surroundings* of each device rather than its position:
 
-- **Well-proximity effect (WPE):** ions scattered from the photoresist edge during well implantation raise the doping near a well edge, shifting $V_T$ of devices close to it.
+- **Well-proximity effect (WPE):** ions scattered from the photoresist edge during well implantation raise the doping near a well edge, shifting $V_{TH}$ of devices close to it.
 - **Length-of-diffusion (LOD) and shallow-trench-isolation (STI) stress:** the mechanical stress from nearby isolation changes carrier mobility and threshold, depending on the distance from the gate to the diffusion's edge.
 - **Etch and lithography effects:** the outermost fingers of an array are patterned differently from interior ones.
 
@@ -138,11 +138,11 @@ When matching cannot reach a specification at acceptable area and power, designs
 
 ### Example 20-11.1 · Sizing for matching (tier A)
 
-**Setup.** A process has $A_{VT}$ = 3.5 mV·µm. Find σ(ΔV_T) for a pair of 10 µm × 1 µm devices, the 3σ offset, and the area that brings σ(ΔV_T) to 0.5 mV.
+**Setup.** A process has $A_{VT}$ = 3.5 mV·µm. Find σ(ΔV_TH) for a pair of 10 µm × 1 µm devices, the 3σ offset, and the area that brings σ(ΔV_TH) to 0.5 mV.
 
 **Solution.**
 
-- σ(ΔV_T) = 3.5 mV·µm/√(10 µm²) = **1.11** mV; 3σ = **3.32** mV.
+- σ(ΔV_TH) = 3.5 mV·µm/√(10 µm²) = **1.11** mV; 3σ = **3.32** mV.
 - For 0.5 mV: $WL = (3.5/0.5)^2$ = **49** µm², **4.9** times the area for **2.2** times less mismatch.
 
 **Units check.** mV·µm divided by µm gives mV.
@@ -153,7 +153,7 @@ When matching cannot reach a specification at acceptable area and power, designs
 
 **Setup.** With $A_{VT}$ = 3.5 mV·µm, $A_\beta$ = 1%·µm and 10 µm × 1 µm devices, find a mirror's current mismatch and a pair's offset at $g_m/I_D$ = 5, 10 and 20 V⁻¹.
 
-**Solution.** σ(ΔV_T) = **1.107** mV and σ(Δβ/β) = **0.316**%.
+**Solution.** σ(ΔV_TH) = **1.107** mV and σ(Δβ/β) = **0.316**%.
 
 | $g_m/I_D$ (V⁻¹) | Mirror σ(ΔI/I) | Pair σ(V_os) |
 |---|---|---|
@@ -161,9 +161,9 @@ When matching cannot reach a specification at acceptable area and power, designs
 | 10 | **1.15**% | **1.15** mV |
 | 20 | **2.24**% | **1.12** mV |
 
-**Units check.** $(g_m/I_D)\,\sigma(\Delta V_T)$ is V⁻¹ × V, dimensionless; σ(Δβ/β)/(g_m/I_D) is a voltage.
+**Units check.** $(g_m/I_D)\,\sigma(\Delta V_{TH})$ is V⁻¹ × V, dimensionless; σ(Δβ/β)/(g_m/I_D) is a voltage.
 
-**Sanity check.** The mirror gets **3.5** times worse from 5 to 20 V⁻¹, while the pair improves slightly and saturates at σ(ΔV_T): mirrors want large overdrive, pairs want weak inversion.
+**Sanity check.** The mirror gets **3.5** times worse from 5 to 20 V⁻¹, while the pair improves slightly and saturates at σ(ΔV_TH): mirrors want large overdrive, pairs want weak inversion.
 
 ### Example 20-11.3 · The price of accuracy (tier B)
 
@@ -171,7 +171,7 @@ When matching cannot reach a specification at acceptable area and power, designs
 
 **Solution.**
 
-- 1 mV: $WL = 3.5^2$ = **12.25** µm², $C$ = **123** fF per device.
+- 1 mV: $WL = 3.5^2$ = **12.25** µm², $C$ = **122.5** fF per device.
 - 0.25 mV: $WL$ = **196** µm², $C$ = **1960** fF.
 - At the same bandwidth and swing, power scales with capacitance: **16** times more for four times the accuracy.
 
@@ -224,7 +224,7 @@ When matching cannot reach a specification at acceptable area and power, designs
 
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
-| Ex 20-11.1a | σ(ΔV_T), 10 × 1 µm | 1.11 | mV |
+| Ex 20-11.1a | σ(ΔV_TH), 10 × 1 µm | 1.11 | mV |
 | Ex 20-11.1b | 3σ offset | 3.32 | mV |
 | Ex 20-11.1c | area for 0.5 mV | 49 | µm² |
 | Ex 20-11.2a | mirror, gm/ID 5 | 0.64 | % |
@@ -234,7 +234,7 @@ When matching cannot reach a specification at acceptable area and power, designs
 | Ex 20-11.2e | pair, gm/ID 10 | 1.15 | mV |
 | Ex 20-11.2f | pair, gm/ID 20 | 1.12 | mV |
 | Ex 20-11.3a | area for 1 mV | 12.25 | µm² |
-| Ex 20-11.3b | capacitance for 1 mV | 123 | fF |
+| Ex 20-11.3b | capacitance for 1 mV | 122.5 | fF |
 | Ex 20-11.3c | area for 0.25 mV | 196 | µm² |
 | Ex 20-11.3d | capacitance for 0.25 mV | 1960 | fF |
 | Ex 20-11.3e | power ratio | 16 | — |
@@ -254,7 +254,7 @@ When matching cannot reach a specification at acceptable area and power, designs
 | Ex 20-11.6e | failure-free runs | 1109 | — |
 | Ex 20-11.1d | area ratio | 4.9 | — |
 | Ex 20-11.1e | mismatch ratio | 2.2 | — |
-| Ex 20-11.2g | σ(ΔV_T) | 1.107 | mV |
+| Ex 20-11.2g | σ(ΔV_TH) | 1.107 | mV |
 | Ex 20-11.2h | σ(Δβ/β) | 0.316 | % |
 | Ex 20-11.2i | mirror ratio, 20 vs 5 | 3.5 | — |
 | Ex 20-11.5e | limit in σ | 2.71 | — |
@@ -280,7 +280,7 @@ The lab ([labs/20-11-lab](../labs/20-11-lab/README.md)) implements the mismatch 
 
 **Predict, then run.**
 
-1. Predict the slope of σ(ΔV_T) against $1/\sqrt{WL}$, then simulate pairs built from independent unit cells and fit it (Part 1).
+1. Predict the slope of σ(ΔV_TH) against $1/\sqrt{WL}$, then simulate pairs built from independent unit cells and fit it (Part 1).
 2. Predict the current mismatch of three square-law mirrors with a 1 mV threshold step at $g_m/I_D$ = 20, 6.32 and 3.16 V⁻¹, then run `ngspice -b mirror.cir` (Part 2).
 3. Predict which of AB, AABB, ABAB, ABBA and ABBABAAB cancel linear and quadratic gradients, then compute their residuals (Part 3).
 4. Predict the fraction of offsets outside ±3 mV for σ = 1.107 mV, then draw a million (Part 4).
@@ -303,12 +303,12 @@ The lab ([labs/20-11-lab](../labs/20-11-lab/README.md)) implements the mismatch 
 | Quantity | Typical value | Note |
 |---|---|---|
 | $A_{VT}$ rule of thumb | ≈ 1 mV·µm per nm of gate oxide | Pelgrom; Boser's course notes [4], [9] **[Established]** |
-| $A_{VT}$ by process | 2.5 µm: 30 (n) / 35 (p); 180 nm: ≈ 5; 65 nm: 3.5; 28 nm bulk HKMG: 2.4; 20 nm: 1.9; 28/14 nm FD-SOI: ≈ 1.3–1.4; 14 nm SOI FinFET: 1.4 (n) / 0.7 (p) mV·µm | [1], [4], [6] [R-353], [R-354]; definitions vary by $\sqrt2$ [5] **[Industry estimate]** |
+| $A_{VT}$ by process | 2.5 µm: 30 (n) / 35 (p); 180 nm: ≈ 5; 65 nm: 3.5; 28 nm bulk HKMG: 2.4; 20 nm: 1.9; 28/14 nm FD-SOI: ≈ 1.3–1.4; 14 nm SOI FinFET: 1.4 (n) / 0.7 (p) mV·µm | [1], [4], [6], with 180 nm from Boser's notes [9] [R-353], [R-354]; definitions vary by $\sqrt2$ [5] **[Industry estimate]** |
 | $A_{VT}$ at 7 nm, 5 nm, GAA (as of Nov 2026) | no public measured value found | foundry data are in confidential design kits |
 | Gain factor $A_\beta$ | 1–2 %·µm | [4] |
 | Other components | bipolar $V_{BE}$ ≈ 0.3 mV·µm; resistors 0.5–5 %·µm; capacitors ≈ 0.3%/√(C in fF) | Pelgrom's summary [4] |
-| A small 65 nm pair (1 µm × 0.06 µm) | σ(ΔV_T) ≈ **14.3** mV | from $A_{VT}$ = 3.5 mV·µm; our arithmetic |
-| Pelgrom's 1989 pair (20 µm × 20 µm) | σ(ΔV_T) ≈ **1.5** mV | from $A_{VT}$ = 30 mV·µm; our arithmetic |
+| A small 65 nm pair (1 µm × 0.06 µm) | σ(ΔV_TH) ≈ **14.3** mV | from $A_{VT}$ = 3.5 mV·µm; our arithmetic |
+| Pelgrom's 1989 pair (20 µm × 20 µm) | σ(ΔV_TH) ≈ **1.5** mV | from $A_{VT}$ = 30 mV·µm; our arithmetic |
 | Well-proximity shift | up to 100 mV within about 1 µm of the well edge (0.18 µm, 2003); 33% for 40 nm I/O devices against 1.87% at 16 nm FinFET | [7] [R-355] |
 | Layout-dependent bias shift | 20–30% (well proximity, STI stress) | Drennan et al. [7] |
 | Supply and temperature corners | $V_{DD}$ ±10%; commercial 0 to 70 °C; industrial −40 to 85 °C; AEC-Q100 grades 3/2/1/0: −40 °C to 85/105/125/150 °C | [9], [11] [R-356] **[Established]** |
@@ -330,14 +330,14 @@ The lab ([labs/20-11-lab](../labs/20-11-lab/README.md)) implements the mismatch 
 
 ### State of the art (as of Nov 2026)
 
-- **Matching kept improving, unevenly [Established].** Random threshold variation follows oxide thickness: Kuhn et al. report that it stalled at 65 nm, the last silicon-oxynitride generation, and that high-k metal gates "restored Tox scaling" at 45 nm; the best devices are "high-k with ultrathin body or nanowire architectures" [5]. Published values run from 2.4 mV·µm for 28 nm bulk to about 1.3 mV·µm for FD-SOI and 0.7–1.4 mV·µm for a 14 nm SOI FinFET; Intel's 14 nm single-fin devices show σ(V_T) of 19 mV (n) and 24 mV (p), "normally distributed out to +/-5σ" [6].
+- **Matching kept improving, unevenly [Established].** Random threshold variation follows oxide thickness: Kuhn et al. report that it stalled at 65 nm, the last silicon-oxynitride generation, and that high-k metal gates "restored Tox scaling" at 45 nm [5]; thin-body devices (FD-SOI and FinFETs), with little or no channel doping to fluctuate, match best. Published values run from 2.4 mV·µm for 28 nm bulk to about 1.3 mV·µm for FD-SOI and 0.7–1.4 mV·µm for a 14 nm SOI FinFET; Intel's 14 nm single-fin devices show σ(V_TH) of 19 mV (n) and 24 mV (p), "normally distributed out to +/-5σ" [6].
 - **Analog area does not follow [Industry estimate].** A 2019 CICC tutorial by Loke et al. puts analog and mixed-signal area scaling at 0.8–0.9× per node against 0.5× for logic and SRAM, and warns that "parasitics and LDEs only get worse" [12]. Matching sets a minimum area for a given accuracy, whatever the lithography (20-12).
 - **Layout-dependent effects are modeled, not avoided [Established].** Well proximity, diffusion length and isolation stress shift devices by amounts that depend on their neighborhood; at 16 nm FinFET a well-edge shift measured 1.87%, against 33% for 40 nm I/O devices [7]. Design kits include these effects, so post-layout extraction and simulation are mandatory sign-off steps.
 - **Corners are giving way to statistics [Established].** Dongaonkar, Mudanai and Giles describe corner-based validation as having "fundamental limitations in predicting the circuit performance variation" [10]; foundry kits ship statistical global and mismatch models alongside the corners [10]. FinFET logic adds temperature-effect inversion, where delay falls with rising temperature, so the slow corner can be cold [10].
 
 ### Why it matters commercially
 
-Matching and PVT robustness decide yield, test cost and qualification, and the learner's coverage areas meet them everywhere. **Automotive** parts must meet AEC-Q100 grades up to −40 to 150 °C and are tested at room and hot temperature per grade, while commercial parts are tested only at room temperature after stress [11]: an automotive analog block carries a wider PVT space and a stricter yield target. **Wearables and IoT** depend on trimmed references and sensors, such as a digital temperature sensor guaranteed to ±0.1 °C over −20 to 50 °C [13]. In **AI datacenter** chips, random threshold variation sets SRAM's minimum supply voltage, and larger cells buy lower minimum voltages [5]: matching is a digital power problem too. For **M&A**, analog IP is tied to its process: porting it means re-layout, new statistical models and re-characterization, and a team's silicon-versus-Monte-Carlo correlation data is a good indicator of its maturity.
+Matching and PVT robustness decide yield, test cost and qualification, and the learner's coverage areas meet them everywhere. **Automotive** parts must meet AEC-Q100 grades up to −40 to 150 °C and are tested at room and hot temperature per grade [11]: an automotive analog block carries a wider PVT space and a stricter yield target. **Wearables and IoT** depend on trimmed references and sensors, such as a digital temperature sensor guaranteed to ±0.1 °C over −20 to 50 °C [13]. In **AI datacenter** chips, random threshold variation sets SRAM's minimum supply voltage, and larger cells buy lower minimum voltages [5]: matching is a digital power problem too. For **M&A**, analog IP is tied to its process: porting it means re-layout, new statistical models and re-characterization, and a team's silicon-versus-Monte-Carlo correlation data is a good indicator of its maturity.
 
 ### Questions for engineering leaders
 

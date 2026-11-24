@@ -4536,7 +4536,7 @@
 
 <a id="voltage-controlled-oscillator"></a>**Voltage-controlled oscillator** — An oscillator whose frequency is tuned by a control voltage, typically through a varactor in an LC tank or the bias of a ring oscillator's stages; the controlled element of a phase-locked loop. *First defined in* [12-09](../courses/12-electronics-2/chapters/12-09-oscillators.md). *See also:* [Ring oscillator](#ring-oscillator), [Negative resistance](#negative-resistance).
 
-<a id="voltage-controlled-oscillator-vco"></a>**Voltage-controlled oscillator (VCO)** — An oscillator whose frequency varies with a control voltage, f = f_free + K_VCO·V; in a PLL's phase-domain model it is an integrator, because phase is the integral of frequency. *First defined in* [20-10](../courses/20-analog-and-mixed-signal-ic-design/chapters/20-10-plls-and-jitter.md). *See also:* [Phase-locked loop (PLL)](#phase-locked-loop-pll), [Phase noise](#phase-noise).
+<a id="voltage-controlled-oscillator-vco"></a>**Voltage-controlled oscillator (VCO)** — An oscillator whose frequency varies with a control voltage, ω = ω_free + K_VCO·V (K_VCO in rad/s per volt); in a PLL's phase-domain model it is an integrator, because phase is the integral of frequency. *First defined in* [20-10](../courses/20-analog-and-mixed-signal-ic-design/chapters/20-10-plls-and-jitter.md). *See also:* [Phase-locked loop (PLL)](#phase-locked-loop-pll), [Phase noise](#phase-noise).
 
 <a id="letter-w"></a>
 

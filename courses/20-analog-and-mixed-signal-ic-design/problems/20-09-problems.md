@@ -68,15 +68,31 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Data-weighted averaging.** An 8-element DAC with DWA receives the codes 3, 5, 2 (the pointer starts at element 0). Which elements are used each time, where is the pointer after each sample, and why does the mismatch error of the first two samples sum to zero?
 
+### Problem 20-09.15 [B]
+
+**Why switch resistance breaks an R-2R ladder.** An R-2R ladder has a switch of resistance $r = \varepsilon R$ in every 2R leg; the series resistors are R.
+(a) Far from the termination, the resistance looking left from a node into the ladder reaches a fixed value $R^*$. Show that $R^* = R(-1 + \sqrt{9 + 4\varepsilon})/2 \approx R(1 + \varepsilon/3)$, and evaluate it for ε = 0.01.
+(b) Show that each node passes a fraction $a \approx \tfrac12(1 + \varepsilon/6)$ of the voltage to its left and weights its own bit by $c \approx \tfrac12(1 - \varepsilon/6)$. Evaluate both exactly for ε = 0.01.
+(c) Hence show that the MSB's weight is low relative to the sum of all lower bits by about $\varepsilon/3$ of itself, so the DNL at the major carry is about $-(\varepsilon/3)2^{N-1}$ LSB. Evaluate it for N = 10 and N = 8 with ε = 0.01, and compare with the nodal result of Example 20-09.1.
+(d) What leg resistance removes the error?
+
+### Problem 20-09.16 [C]
+
+**Design a 14-bit RF DAC core.** A 14-bit current-steering DAC drives a doubly terminated 25 Ω load differentially. The process has $A_{VT}$ = 3 mV·µm; the unit sources run at $V_{ov}$ = 0.4 V; ignore β mismatch.
+(a) What unit σ_u gives 99.73% yield of |INL| ≤ ½ LSB (use λ = 1.818)?
+(b) The DNL standard deviation at the worst step must not exceed 0.1 LSB, and the decoder can handle at most 63 unary cells. Which numbers of unary bits M are allowed?
+(c) Find the unit-source area and the total current-source area.
+(d) With M = 6, each unary cell (of $2^B$ units) adds a code-dependent capacitance $C_{cell}$ at the output. Using the first-order estimate, what is the largest $C_{cell}$ that keeps the differential HD3 at or below −70 dBc for a full-scale 500 MHz output? Why does segmentation relax this requirement, compared with spreading the same capacitance over every unit?
+
 ---
 
 ## Objective coverage
 
 | Objective | Problems |
 |---|---|
-| 1. Resistor and current-steering outputs and their errors | 1, 2, 7 |
-| 2. Segmentation | 3, 4, 12 |
-| 3. Mismatch, yield and area | 5, 6 |
-| 4. Output impedance and differential outputs | 7, 8 |
+| 1. Resistor and current-steering outputs and their errors | 1, 2, 7, 15 |
+| 2. Segmentation | 3, 4, 12, 16 |
+| 3. Mismatch, yield and area | 5, 6, 16 |
+| 4. Output impedance and differential outputs | 7, 8, 16 |
 | 5. Sinc response, images, settling | 9, 10, 11, 13 |
 | 6. Dynamic element matching | 14 |

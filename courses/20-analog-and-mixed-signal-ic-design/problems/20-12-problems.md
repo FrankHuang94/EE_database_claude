@@ -60,6 +60,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Check the claim.** A vendor says moving its 12-bit converter from a 0.9 V node to a 0.75 V node halves its power. Assume 40% of the power is thermal-noise-limited analog (scaling as $1/V_{DD}$ at fixed swing fraction) and 60% is digital logic whose power scales as $CV_{DD}^2f$ with $C$ halving. Find the analog factor and the total power factor. Is the claim supported?
 
+### Problem 20-12.13 [C]
+
+**Calibrate, or build the gain?** A 12-bit pipeline's first residue amplifier (closed-loop gain 2, β = 1/2) drives a 1 pF load and must settle to ½ LSB at 12 bits in a 2 ns hold phase, on a 0.8 V supply. Use Example 20-12.3's devices: $A_i$ = 30 at $g_m/I_D$ = 12 V⁻¹, $V_{DS,sat}$ ≈ 0.15 V. Treat each amplifier as fully differential (two identical branches) and ignore slewing.
+(a) Find the closed-loop time constant and bandwidth the settling needs, the $g_m$ a single-stage amplifier needs for it, and its total current and power.
+(b) A simple single stage has $A_0 \approx A_i/2$ = 15. What closed-loop gain error does it leave, and how accurately must a digital calibration estimate that error?
+(c) Without calibration the amplifier needs 78.3 dB (Example 20-12.5). Do the options of Example 20-12.3 reach it at 0.8 V? For comparison, size a two-stage Miller amplifier for the same settling: the second stage's $g_m$ for a non-dominant pole of 2.2 times the loop crossover, and the first stage's $g_m$ with $C_c$ = 0.25 pF. Find its total current and power.
+(d) Compare the two designs. What does the calibrated design pay instead of power?
+
 ---
 
 ## Objective coverage
@@ -68,7 +76,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Digital versus analog scaling | 1, 12 |
 | 2. Noise-limited power and supply | 2, 3, 4, 5, 11 |
-| 3. Intrinsic gain and headroom | 6, 7 |
+| 3. Intrinsic gain and headroom | 6, 7, 13 |
 | 4. Mismatch-limited versus noise-limited | 8 |
-| 5. Calibration requirements | 9, 10 |
+| 5. Calibration requirements | 9, 10, 13 |
 | 6. Judging scaling claims | 12 |

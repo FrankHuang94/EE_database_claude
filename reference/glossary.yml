@@ -8291,7 +8291,7 @@
   chapter: "20-10"
   see_also: [Phase-frequency detector]
 - term: Voltage-controlled oscillator (VCO)
-  definition: An oscillator whose frequency varies with a control voltage, f = f_free + K_VCO·V; in a PLL's phase-domain model it is an integrator, because phase is the integral of frequency.
+  definition: An oscillator whose frequency varies with a control voltage, ω = ω_free + K_VCO·V (K_VCO in rad/s per volt); in a PLL's phase-domain model it is an integrator, because phase is the integral of frequency.
   chapter: "20-10"
   see_also: [Phase-locked loop (PLL), Phase noise]
 - term: Fractional-N synthesizer

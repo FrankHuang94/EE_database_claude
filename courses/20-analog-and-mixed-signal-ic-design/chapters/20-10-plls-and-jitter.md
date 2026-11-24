@@ -42,7 +42,7 @@ Every synchronous chip needs clocks at frequencies its crystal cannot provide, a
 
 ## 3. Theory
 
-> **Conventions.** Phases in radians; $K_{VCO}$ in rad/s per volt (so a VCO with 500 MHz/V has $K_{VCO} = 2\pi \times 500\text{ MHz/V}$); $I_{cp}$ is the charge-pump current; $N$ the divide ratio. $\mathcal{L}(f)$ is the single-sideband phase noise in dBc/Hz at offset $f$; for small phase deviations it equals the two-sided phase spectral density $S_\phi(f)$ in rad²/Hz.
+> **Conventions.** Phases in radians; $K_{VCO}$ in rad/s per volt (so a VCO with 500 MHz/V has $K_{VCO} = 2\pi \times 500\text{ MHz/V}$); $I_{cp}$ is the charge-pump current; $N$ the divide ratio. $\mathcal{L}(f)$ is the single-sideband phase noise in dBc/Hz at offset $f$; for small phase deviations $\mathcal{L}(f) = S_\phi(f)/2$, where $S_\phi(f)$ is the one-sided spectral density of the phase in rad²/Hz (the IEEE 1139 and NIST usage). This chapter uses $S_\phi$ only in that one-sided sense.
 
 ### 3.1 The phase-domain model
 
@@ -94,19 +94,33 @@ $$
 
 ### 3.3 Why the bandwidth stays well below the reference
 
-The charge pump delivers its correction as a pulse once per reference period; the continuous-time model of §3.1 averages those pulses. That approximation holds only if the loop changes little during one period, so the crossover must sit far below $f_{ref}$. Gardner analyzed the sampled loop and found a stability limit that the continuous model misses [1]. In the form taught in a widely used ISSCC tutorial it reads $\omega_c < \omega_{ref}/[\pi(1 + \pi\omega_z/\omega_{ref})]$, which approaches $f_{ref}/\pi$ = **0.32** $f_{ref}$ when the zero is far below the reference [1]. Exact sampled-loop analysis of the third-order loop puts instability at a reference-to-bandwidth ratio of about 3 to 3.7, depending on phase margin [2], and Banerjee's design guide warns of instability near 28% of the phase-detector frequency [3]. The practical rule, followed by IC designers for decades, keeps the bandwidth below about a tenth of the reference frequency [2], [3]. A narrow bandwidth also filters the pump's periodic ripple, the source of reference spurs.
+The charge pump delivers its correction as a pulse once per reference period; the continuous-time model of §3.1 averages those pulses. That approximation holds only if the loop changes little during one period, so the crossover must sit far below $f_{ref}$. Gardner analyzed the sampled loop and found a stability limit that the continuous model misses [1]. A widely used ISSCC tutorial quotes it as $\omega_n^2 < \omega_{ref}^2/[\pi(RC_1\omega_{ref} + \pi)]$ [1]. Dividing by $\omega_z = 1/(RC_1)$ and using $\omega_c \approx \omega_n^2/\omega_z$, which holds for a well-damped loop, gives the bandwidth form $\omega_c < \omega_{ref}/[\pi(1 + \pi\omega_z/\omega_{ref})]$, which approaches $f_{ref}/\pi$ = **0.32** $f_{ref}$ when the zero is far below the reference. Exact sampled-loop analysis of the third-order loop puts instability at a reference-to-bandwidth ratio of about 3 (at 70° phase margin, unstable at 3.3 and stable at 3.7) [2], and Banerjee's design guide warns of instability near 28% of the phase-detector frequency [3]. The practical rule, followed by IC designers for decades, keeps the bandwidth below about a tenth of the reference frequency [2], [3]. A narrow bandwidth also filters the pump's periodic ripple, the source of reference spurs.
 
 ### 3.4 Phase noise and how it reaches the output
 
-**Phase noise.** An oscillator's output $\cos(\omega_0t + \phi(t))$ has a random phase $\phi$. Its **single-sideband phase noise** $\mathcal{L}(f)$ is the noise power in a 1 Hz band at offset $f$ from the carrier, relative to the carrier, in dBc/Hz. For small $\phi$, $\mathcal{L}(f)$ equals the two-sided spectral density of $\phi$ in rad²/Hz. Standards bodies and instrument makers usually quote the one-sided density instead, and then $S_\phi(f) \approx 2\mathcal{L}(f)$ [9]: the same factor of 2 that appears in the jitter integral of §3.5.
+**Phase noise.** An oscillator's output $\cos(\omega_0t + \phi(t))$ has a random phase $\phi$. Its **single-sideband phase noise** $\mathcal{L}(f)$ is the noise power in a 1 Hz band at offset $f$ from the carrier, relative to the carrier, in dBc/Hz. For small $\phi$, the carrier's sidebands carry the phase spectrum split equally above and below the carrier, so $\mathcal{L}(f)$ is half the one-sided phase density: $\mathcal{L}(f) = S_\phi(f)/2$, the convention of standards bodies and instrument makers [9]. That factor of 2 reappears in the jitter integral of §3.5.
 
-**Oscillator noise.** A free-running oscillator's phase noise falls at −20 dB per decade over most offsets: white noise in its frequency integrates into phase (a random walk), so phase noise ∝ $1/f^2$. Leeson's model expresses this through the tank's quality factor Q: the noise is shaped by the resonator's half-bandwidth $f_0/2Q$, so a higher Q lowers phase noise. Close to the carrier, flicker noise steepens the slope to −30 dB per decade. The oscillator **figure of merit** normalizes for frequency, offset and power:
+**Oscillator noise.** A free-running oscillator's phase noise falls at −20 dB per decade over most offsets: white noise in its frequency integrates into phase (a random walk), so phase noise ∝ $1/f^2$. Leeson's model [4], in the form of Lee and Hajimiri's tutorial, expresses this through the loaded quality factor $Q$ of the tank and the signal power $P_s$ it holds:
+
+$$
+\mathcal{L}(\Delta f) = 10\log_{10}\left\{\frac{2FkT}{P_s}\left[1 + \left(\frac{f_0}{2Q\,\Delta f}\right)^2\right]\left(1 + \frac{\Delta f_{1/f^3}}{\lvert\Delta f\rvert}\right)\right\} .
+$$
+
+Read it term by term. $2FkT/P_s$ is the noise floor: thermal noise ($kT$ per hertz, raised by the active devices' noise factor $F$) relative to the carrier power, split between amplitude and phase and counted in both sidebands. The bracket is the resonator: inside its half-bandwidth $f_0/2Q$ the feedback loop integrates that noise into phase, so it rises as $1/\Delta f^2$, −20 dB per decade. The last factor adds flicker noise up-converted by the active devices, which steepens the slope to −30 dB per decade below the corner $\Delta f_{1/f^3}$. (Texts place the prefactor differently: some write $FkT/(2P_s)$, a factor of 4 lower, because they define the power and $F$ at a different point in the loop; the slopes and the Q and power dependence are the same.) Hajimiri and Lee's impulse-sensitivity analysis explains which noise is converted and why the flicker corner is usually below the devices' own [4].
+
+The oscillator **figure of merit** normalizes for frequency, offset and power:
 
 $$
 \text{FoM}_{osc} = -\mathcal{L}(\Delta f) + 20\log_{10}\frac{f_0}{\Delta f} - 10\log_{10}\frac{P}{1\text{ mW}} ,
 $$
 
-so that a 5 GHz oscillator with −120 dBc/Hz at 1 MHz offset and 5 mW scores 187.0 dB (Example 20-10.7).
+so that a 5 GHz oscillator with −120 dBc/Hz at 1 MHz offset and 5 mW scores 187.0 dB (Example 20-10.7). Leeson's model gives its ideal value. In the $1/\Delta f^2$ region, $\mathcal{L} \approx (2FkT/P_s)\,f_0^2/(4Q^2\Delta f^2)$, and if all the DC power $P$ reached the tank ($P_s = P$),
+
+$$
+\text{FoM}_{osc} = 10\log_{10}\frac{2Q^2\,(1\text{ mW})}{FkT} ,
+$$
+
+**196.8** dB for $Q$ = 10 and $F$ = 1 at 300 K. Every unit of the ratio is physics: the FoM rises 20 dB per decade of Q and falls with the noise factor and with any DC power that does not become tank signal. Razavi's estimate for a simple cross-coupled LC oscillator, with the transistors' excess-noise coefficient γ = 1, a single-ended swing of about $V_{DD}/2$ and the supply power $I_{SS}V_{DD}$ (tail and flicker noise neglected), is $10\log_{10}[Q^2/(10^3\pi kT(1 + \gamma))]$, about 186 dB for $Q$ = 10 at 300 K; he cites a class-C design reaching about 196 dB with $Q \approx 16$ [10]. The gap below the ideal bound measures the excess device noise and the power lost between the supply and the tank, which is what class-C and other high-efficiency topologies recover.
 
 **Noise transfer.** Inject each noise source into the phase-domain model:
 
@@ -121,7 +135,7 @@ The total output noise is the reference-path noise inside the bandwidth and the 
 
 ### 3.5 From phase noise to jitter
 
-The rms phase deviation is the integral of the phase spectrum over the offsets of interest, $\sigma_\phi^2 = \int S_\phi\,df$ taken over positive and negative offsets, which equals $2\int_{f_1}^{f_2}\mathcal{L}(f)\,df$. The rms **jitter** is that phase expressed as time at the carrier:
+The rms phase deviation is the integral of the one-sided phase spectrum over the offsets of interest, $\sigma_\phi^2 = \int_{f_1}^{f_2}S_\phi(f)\,df = 2\int_{f_1}^{f_2}\mathcal{L}(f)\,df$. The rms **jitter** is that phase expressed as time at the carrier:
 
 $$
 \sigma_t = \frac{\sigma_\phi}{2\pi f_0} = \frac{1}{2\pi f_0}\sqrt{2\int_{f_1}^{f_2}\mathcal{L}(f)\,df} .
@@ -145,7 +159,7 @@ $$
 \mathcal{L}_{\Sigma\Delta}(f) = \frac{(2\pi)^2}{12f_{ref}}\left[2\sin\frac{\pi f}{f_{ref}}\right]^{2(m - 1)} ,
 $$
 
-which rises at 20(m − 1) dB per decade: the loop's low-pass response must cut it off, which is why fractional-N loops pair a third-order MASH with a loop filter of third order or higher. The formula assumes the modulator's error is "busy". A fraction that is a simple rational number, such as 123/500, makes the sequence periodic and turns the noise into spurs (Example 20-10.6); designs add a dither LSB or use a large accumulator modulus.
+which rises at 20(m − 1) dB per decade: the loop's low-pass response must cut it off, which is why a fractional-N loop with a third-order MASH (whose noise rises 40 dB per decade) needs a closed-loop roll-off of at least 40 dB per decade beyond its bandwidth, usually with an extra pole in the filter; Example 20-10.6 shows what happens just beyond the filter pole when the roll-off is only just enough. The formula assumes the modulator's error is "busy". A fraction that is a simple rational number, such as 123/500, makes the sequence periodic and turns the noise into spurs (Example 20-10.6); designs add a dither LSB or use a large accumulator modulus.
 
 ![Divider phase noise against offset from 30 kHz to 25 MHz for a MASH 1-1-1 fractional-N divider at a 50 MHz reference: the busy-fraction spectrum follows the dashed formula rising at 40 dB per decade from about minus 165 to minus 60 dBc per hertz, while the 123 over 500 fraction shows a comb of discrete spurs spaced 50 kHz apart instead of smooth noise](../../../assets/figures/20-10/mash.svg)
 
@@ -153,7 +167,7 @@ which rises at 20(m − 1) dB per decade: the loop's low-pass response must cut 
 
 ### 3.7 All-digital PLLs
 
-An **all-digital PLL** (ADPLL) replaces the charge pump and analog loop filter with a time-to-digital converter (TDC) that measures the phase error, a digital loop filter, and a digitally controlled oscillator (DCO). The loop dynamics are set by digital coefficients, which do not vary with process and scale with each node; the loop filter takes no capacitor area. The TDC's resolution $\Delta t_{res}$ quantizes the phase error in steps of $2\pi\,\Delta t_{res}/T_{out}$; treated as white noise of variance $(2\pi\,\Delta t_{res}f_0)^2/12$ at rate $f_{ref}$, it sets an in-band floor
+An **all-digital PLL** (ADPLL) replaces the charge pump and analog loop filter with a time-to-digital converter (TDC) that measures the phase error, a digital loop filter, and a digitally controlled oscillator (DCO). The loop dynamics are set by digital coefficients, which scale with each node; the DCO and TDC gains still vary with process, voltage and temperature, so ADPLLs measure and normalize them (gain calibration); the loop filter takes no capacitor area. The TDC's resolution $\Delta t_{res}$ quantizes the phase error in steps of $2\pi\,\Delta t_{res}/T_{out}$; treated as white noise of variance $(2\pi\,\Delta t_{res}f_0)^2/12$ at rate $f_{ref}$, it sets an in-band floor
 
 $$
 \mathcal{L}_{TDC} = \frac{(2\pi)^2}{12}\,\left(\Delta t_{res}f_0\right)^2\frac{1}{f_{ref}} ,
@@ -273,7 +287,7 @@ since $\int_{f_c}^{f_2}(f_c/f)^2df = f_c(1 - f_c/f_2)$. So $\sigma_\phi$ = **28.
 - (b) $120 + 20\log_{10}(5000) - 10\log_{10}5$ = **187.0** dB.
 - (c) $\mathcal{L}_{TDC} = 10\log_{10}[(2\pi)^2/12 \times (10\text{ ps} \times 5\text{ GHz})^2/50\text{ MHz}]$ = **−97.8** dBc/Hz.
 
-**Units check.** The FoMs are dB relative to 1 s² · 1 mW and to 1 Hz·mW conventions; the floor is per hertz.
+**Units check.** The jitter-power FoM is in dB relative to 1 s²·mW; the oscillator FoM in dB relative to 1/(Hz·mW); the TDC floor in dBc per hertz.
 
 **Sanity check.** The TDC floor is **2.2** dB above the in-band plateau of Example 20-10.5: a 10 ps TDC would set this ADPLL's in-band noise, so sub-10 ps resolution is needed to match an analog loop.
 
@@ -335,6 +349,7 @@ since $\int_{f_c}^{f_2}(f_c/f)^2df = f_c(1 - f_c/f_2)$. So $\sigma_\phi$ = **28.
 | Txt 20-10.i | fractional-N record FoM | −260.7 | dB |
 | Txt 20-10.j | wireline digital PLL FoM | −240.9 | dB |
 | Txt 20-10.k | LMX2594 flat noise at 12 GHz | −114.4 | dBc/Hz |
+| Txt 20-10.l | ideal LC oscillator FoM, Q = 10 | 196.8 | dB |
 
 ## 5. Simulate it
 
@@ -344,7 +359,7 @@ The lab ([labs/20-10-lab](../labs/20-10-lab/README.md)) implements the phase-dom
 
 1. Predict the crossover and phase margin of Example 20-10.2, then run `ngspice -b loop.cir` (Part 1).
 2. Predict the closed-loop peaking and settling, then plot the step response for b = 4, 10 and 20 (Part 2).
-3. Predict how the output phase noise splits between reference and VCO for loop bandwidths of 0.5, 2 and 5 MHz, then plot the total (Part 3).
+3. Predict how the output phase noise splits between reference and VCO for loop bandwidths from 0.1 to 5 MHz, and which bandwidth minimizes the jitter; then plot the totals (Part 3: the minimum is near 0.3 MHz, where the multiplied reference meets the VCO line).
 4. Predict the jitter of Example 20-10.5, integrate it, and see how the integration band changes the answer (Part 4).
 5. Predict where a 123/500 fractional-N divider puts its spurs, then simulate the MASH sequence and compare a "busy" fraction with the formula (Part 5).
 
@@ -364,17 +379,17 @@ The lab ([labs/20-10-lab](../labs/20-10-lab/README.md)) implements the phase-dom
 
 | Quantity | Typical value | Note |
 |---|---|---|
-| Loop bandwidth against reference | $f_c \lesssim f_{ref}/10$ by design; sampled-loop instability near $f_{ref}/3$ (28–30%) | Gardner [1], Hanumolu et al. [2], Banerjee [3] **[Established]** |
-| Phase-noise convention | $\mathcal{L}(f)$ single-sideband; one-sided $S_\phi \approx 2\mathcal{L}$; $\sigma_\phi^2 = 2\int\mathcal{L}\,df$ | NIST [9], Banerjee [3] **[Established]** |
-| Peak-to-peak against rms for Gaussian jitter | about $2Q^{-1}(1/2N)$ times σ: **6.58** for $10^3$ edges, **12.2** for $10^9$, **14.3** for $10^{12}$ | Banerjee's table [3]; a peak-to-peak number grows with the observation |
-| LC oscillator FoM | about 186 dB for Q = 10 at 300 K; about 196 dB for a class-C design | Razavi [10] |
+| Loop bandwidth against reference | $f_c \lesssim f_{ref}/10$ by design; sampled-loop instability near $f_{ref}/3$ (about 28–33%) | Gardner [1], Hanumolu et al. [2], Banerjee [3] **[Established]** |
+| Phase-noise convention | $\mathcal{L}(f)$ single-sideband; one-sided $S_\phi = 2\mathcal{L}$; $\sigma_\phi^2 = \int S_\phi\,df = 2\int\mathcal{L}\,df$ | NIST [9], Banerjee [3] **[Established]** |
+| Peak-to-peak against rms for Gaussian jitter | about $2Q^{-1}(1/2N)$ times σ: **6.58** for $10^3$ edges, **12.2** for $10^9$, **14.3** for $10^{12}$ (our computation; the table stops at $10^9$) | Banerjee's table [3]; a peak-to-peak number grows with the observation |
+| LC oscillator FoM | ideal (F = 1, all power in the tank) **196.8** dB for Q = 10; Razavi: about 186 dB for a simple cross-coupled VCO with Q = 10 at 300 K, about 196 dB for a class-C design with Q ≈ 16 | Leeson [4]; Razavi [10] |
 | Best published PLL FoM (as of Nov 2026) | −263.1 dB: 20.3 fs at 19 GHz for 12 mW (integer-N sampling PLL, 28 nm, 2021) | [12] [R-350] **[Established]** |
 | Best fractional-N PLL (as of Nov 2026) | 21.6 fs, −260.7 dB, worst-case fractional spur −67.4 dBc (14 GHz, 28 nm, ISSCC 2026) | [12] [R-350] **[Established]** |
-| Lowest published PLL jitter (as of Nov 2026) | 15.8 fs rms (13 GHz charge-pump PLL, ISSCC 2025; band not stated in the abstract) | [12] [R-350] |
+| Lowest jitter in the public survey (as of Nov 2026) | 15.8 fs rms (13 GHz charge-pump PLL, ISSCC 2025); the band is not stated in the abstract, so it cannot be ranked against the band-stated records above | [12] [R-350] |
 | Commercial RF synthesizer (as of Nov 2026) | TI LMX2594: 10 MHz–15 GHz; 45 fs rms at 7.5 GHz (100 Hz–100 MHz); −110 dBc/Hz at 100 kHz on 15 GHz; normalized in-band floor −236 dBc/Hz | [13] [R-351] |
-| SerDes reference clock (as of Nov 2026) | 112G PAM4: about 100 fs rms (12 kHz–20 MHz) at 312.5 MHz; 224G example: 35 fs with a 4 MHz high-pass filter | TI and Renesas notes [14] [R-352] **[Industry estimate]** |
+| SerDes reference clock (as of Nov 2026) | 112G PAM4: about 100 fs rms at 312.5 MHz (12 kHz–20 MHz in TI's example SerDes table; Renesas states no band); with a 4 MHz high-pass filter, 90 fs (112G) and 35 fs (224G) | TI and Renesas notes [14] [R-352] **[Industry estimate]** |
 | PCIe reference-clock limit (as of Nov 2026) | Gen 5: 0.15 ps rms; Gen 6: 0.1 ps rms, both after the standard's clock-recovery filters | TI SNAA386 table, not the PCI-SIG text [14] [R-352] |
-| MCU system PLL (as of Nov 2026) | TI MSPM0G3507: period jitter 45 ps rms and cycle-to-cycle 60 ps rms at 80 MHz; 316 µA | [15] [R-351] |
+| MCU system PLL (as of Nov 2026) | TI MSPM0G3507: period jitter 45 ps rms and cycle-to-cycle 60 ps rms at 80 MHz; supply current 316 µA (specified at a 160 MHz VCO frequency) | [15] [R-351] |
 | 77 GHz radar chirp PLL (as of Nov 2026) | TI AWR2944: −96 dBc/Hz at 1 MHz offset (76–77 GHz); ramps to 250 MHz/µs | [15] [R-351] |
 | 5G EVM budget | 256QAM base-station EVM 3.5%: if the LO took all of it, **2.0**° rms, **199** fs at 28 GHz | 3GPP TS 38.104 [16]; our arithmetic |
 
@@ -391,10 +406,10 @@ The lab ([labs/20-10-lab](../labs/20-10-lab/README.md)) implements the phase-dom
 
 ### State of the art (as of Nov 2026)
 
-- **Sampling LC PLLs hold the records [Established].** Gao, Klumperink, Bohsali and Nauta's sub-sampling PLL (2009) removed the divider from the locked loop so that phase-detector and pump noise are "not multiplied by N²": 0.15 ps rms (10 kHz–40 MHz) at 2.2 GHz for 7.56 mW, a FoM of **−247.7** dB (our arithmetic) [8]. Its descendants lead today: Zhao and Razavi's 19 GHz sampling PLL reaches 20.3 fs (10 kHz–100 MHz) for 12 mW in 28 nm, **−263.1** dB, the best FoM in the public survey; the lowest absolute jitter in it, 15.8 fs, comes from a 13 GHz charge-pump PLL at ISSCC 2025 [12].
+- **Sampling LC PLLs hold the FoM records [Established].** Gao, Klumperink, Bohsali and Nauta's sub-sampling PLL (2009) removed the divider from the locked loop so that phase-detector and pump noise are "not multiplied by N²": 0.15 ps rms (10 kHz–40 MHz) at 2.2 GHz for 7.56 mW, a FoM of **−247.7** dB (our arithmetic) [8]. Its descendants lead today: Zhao and Razavi's 19 GHz sampling PLL reaches 20.3 fs (10 kHz–100 MHz) for 12 mW in 28 nm, **−263.1** dB, the best FoM in the public survey; the lowest jitter number in it, 15.8 fs, comes from a 13 GHz charge-pump PLL at ISSCC 2025, but its integration band is not stated in the abstract, so it is not comparable [12].
 - **Fractional-N has nearly closed the gap [Established].** An ISSCC 2026 fractional-N PLL reaches 21.6 fs and **−260.7** dB with a worst-case fractional spur of −67.4 dBc at 14 GHz in 28 nm [12]; a 7.3–9.5 GHz design reports 34 fs and −255.5 dB from an 80 MHz reference [12].
 - **Digital PLLs are mainstream [Established].** Staszewski and colleagues replaced the charge pump and loop filter with a TDC and digital filter in a 130 nm Bluetooth radio (2004) and then a 90 nm GSM/EDGE phone transmitter (2005, "the first all-digital PLL and polar transmitter for mobile phones") [7]. The best digital PLL in the survey scores −257 dB (45.9 fs at 4.75 GHz, 2025), and a 7 nm wireline bang-bang PLL with "fully synthesized" digital functions reaches 143 fs (1 kHz–100 MHz) for 40 mW, **−240.9** dB [12].
-- **Rings for many lanes [Established].** LC PLLs "occupy considerable space, lack efficiency in generating multiple phases" in multi-lane SerDes, so a 2024 ring-oscillator sampling PLL targets 69.3 fs over 6.8–14 GHz for >100 Gb/s links; in the survey's data, ring PLLs trail LC PLLs by about 10 dB of FoM (our reading) [12].
+- **Rings for many lanes [Established].** Inductors are large and an LC tank gives only two phases, so multi-lane SerDes keep turning to ring oscillators, which are small and naturally multiphase; a 2024 ring-oscillator sampling PLL reaches 69.3 fs over 6.8–14 GHz [12]. Rings pay in phase noise (a ring has no resonator to filter its noise), which is why they need wide loop bandwidths to suppress it.
 - **Jitter is expensive [Established].** Razavi shows that for a VCO-limited loop "to halve σj, PVCO must quadruple", and with reference noise included power rises 16-fold per halving; clock generation "may consume a greater power than the converter itself" [10].
 - **A public survey exists, with errors.** Davami and Jang's ETH Zürich survey lists 228 PLLs from JSSC and ISSCC 2020–2026 and other conferences; 23 of its FoM entries disagree with 20 log σ + 10 log P by more than 0.6 dB, so numbers here were re-checked against each paper's abstract [11] [R-350].
 
@@ -417,7 +432,7 @@ Every clocked chip in the learner's coverage contains PLLs, and their quality li
 - **The band decides the number.** In one TI analysis of an ADC clock, offsets from 10 to 100 MHz contributed about 360 fs, more than the 194 fs from 100 Hz to 10 MHz [17]. The same Zhao–Razavi PLL is 20.3 fs from 10 kHz to 100 MHz and 20.9 fs of "random jitter" from 10 kHz to 40 MHz in its journal version [12]. SiTime notes that the 12 kHz–20 MHz band was introduced in 1992 for SONET OC-48 and calls it "no longer suited for modern high-speed designs" [14]. Conversely, a part measured at 179 fs (12 kHz–20 MHz) still passes PCIe Gen 6's 100 fs limit, because that limit applies the standard's own filters [14].
 - **Filtered and spur-free numbers.** TI's LMK05318B quotes 32 fs "with 4MHz 1st order high-pass filter" on its front page and 50 fs typical, 80 fs maximum without it; one of its outputs is 125 fs "excluding output crosstalk spurs" and 145 fs with them [13].
 - **Two different "figures of merit".** The LMX2594's "Figure of merit: –236 dBc/Hz" is its normalized in-band noise floor: the flat noise is that number plus $20\log_{10}(f_{VCO}/f_{PD}) + 10\log_{10}(f_{PD}/1\text{ Hz})$, **−114.4** dBc/Hz at 12 GHz with a 100 MHz phase detector [13]. It is not the jitter-power FoM of §3.8, which for academic PLLs is around −250 to −263 dB.
-- **The reference is often outside the FoM.** Low-power crystal oscillators reach −153 to −158 dBc/Hz at 100 kHz offset for under 0.2 mW, while a 100 MHz crystal oscillator with −178 dBc/Hz draws 1.8 W [10]. Record FoMs use 100–250 MHz references, and one ISSCC 2025 team notes that "high reference frequencies of 150 to 500 MHz are not practical for cost-effective mass deployment" [12].
+- **The reference is often outside the FoM.** Low-power crystal oscillators reach −153 to −158 dBc/Hz at 100 kHz offset for under 0.2 mW, while a 100 MHz crystal oscillator with −178 dBc/Hz draws 1.8 W [10]. Check the reference frequency behind any record FoM: one ISSCC 2025 team notes that "high reference frequencies of 150 to 500 MHz are not practical for cost-effective mass deployment" [12].
 - **Typical is not guaranteed.** The LMK04832 table states that typical values "are not assured", and its feature list and electrical table give different bands for the same 64 fs [13]. Banerjee warns of a few dB of part-to-part and board-to-board variation in phase noise [3].
 - **Sanity check.** Convert any phase-noise plot to jitter with $\sigma_t = \sqrt{2\int\mathcal{L}\,df}/(2\pi f_0)$ over your band, recompute the FoM as $20\log_{10}\sigma_t + 10\log_{10}P$, and ask what the reference costs.
 
@@ -497,7 +512,7 @@ Problems: [20-10 problem set](../problems/20-10-problems.md) · Worked solutions
 1. F. M. Gardner, "Charge-pump phase-lock loops," *IEEE Trans. Commun.*, vol. 28, no. 11, pp. 1849–1858, Nov. 1980, DOI 10.1109/TCOM.1980.1094619; D. Fischette, "Practical phase-locked loop design," ISSCC 2004 tutorial (stability-limit form) [R-349].
 2. P. K. Hanumolu, M. Brownlee, K. Mayaram and U.-K. Moon, "Analysis of charge-pump phase-locked loops," *IEEE Trans. Circuits Syst. I*, vol. 51, no. 9, pp. 1665–1674, Sep. 2004, DOI 10.1109/TCSI.2004.834516 [R-349].
 3. D. Banerjee, *PLL Performance, Simulation, and Design*, 5th ed., Texas Instruments SNAA106C, May 2017 (loop-filter design, noise models, integrated jitter) [R-349].
-4. D. B. Leeson, "A simple model of feedback oscillator noise spectrum," *Proc. IEEE*, vol. 54, no. 2, pp. 329–330, 1966, DOI 10.1109/PROC.1966.4682; A. Hajimiri and T. H. Lee, "A general theory of phase noise in electrical oscillators," *IEEE J. Solid-State Circuits*, vol. 33, no. 2, pp. 179–194, Feb. 1998, DOI 10.1109/4.658619, with corrections in vol. 33, no. 6, p. 928, June 1998, DOI 10.1109/4.678662; T. H. Lee and A. Hajimiri, "Oscillator phase noise: a tutorial," *IEEE J. Solid-State Circuits*, vol. 35, no. 3, pp. 326–336, Mar. 2000, DOI 10.1109/4.826814 [R-349].
+4. D. B. Leeson, "A simple model of feedback oscillator noise spectrum," *Proc. IEEE*, vol. 54, no. 2, pp. 329–330, Feb. 1966, DOI 10.1109/PROC.1966.4682 (not read; formula as restated by T. H. Lee and A. Hajimiri, "Oscillator phase noise: a tutorial," *IEEE J. Solid-State Circuits*, vol. 35, no. 3, pp. 326–336, Mar. 2000, DOI 10.1109/4.826814, eq. 13); A. Hajimiri and T. H. Lee, "A general theory of phase noise in electrical oscillators," *IEEE J. Solid-State Circuits*, vol. 33, no. 2, pp. 179–194, Feb. 1998, DOI 10.1109/4.658619, with corrections in vol. 33, no. 6, p. 928, June 1998, DOI 10.1109/4.678662; T. H. Lee and A. Hajimiri, "Oscillator phase noise: a tutorial," *IEEE J. Solid-State Circuits*, vol. 35, no. 3, pp. 326–336, Mar. 2000, DOI 10.1109/4.826814 [R-349].
 5. B. Razavi, "A study of phase noise in CMOS oscillators," *IEEE J. Solid-State Circuits*, vol. 31, no. 3, pp. 331–343, Mar. 1996, DOI 10.1109/4.494195; J. A. McNeill, "Jitter in ring oscillators," *IEEE J. Solid-State Circuits*, vol. 32, no. 6, pp. 870–879, June 1997, DOI 10.1109/4.585289 [R-349].
 6. T. A. D. Riley, M. A. Copeland and T. A. Kwasniewski, "Delta-sigma modulation in fractional-N frequency synthesis," *IEEE J. Solid-State Circuits*, vol. 28, no. 5, pp. 553–559, May 1993, DOI 10.1109/4.229400 [R-349].
 7. R. B. Staszewski et al., "All-digital TX frequency synthesizer and discrete-time receiver for Bluetooth radio in 130-nm CMOS," *IEEE J. Solid-State Circuits*, vol. 39, no. 12, pp. 2278–2291, Dec. 2004, DOI 10.1109/JSSC.2004.836345, and "All-digital PLL and transmitter for mobile phones," *ibid.*, vol. 40, no. 12, pp. 2469–2482, Dec. 2005, DOI 10.1109/JSSC.2005.857417 [R-349].

@@ -219,5 +219,29 @@ v.check("Txt 20-12.f", wafer)
 v.check("Txt 20-12.d", wafer / 1.2)
 v.check("Txt 20-12.e", wafer / 1.1)
 v.check("Txt 20-12.g", -10 * lg(16 * KT) - 189.17)
+# gain-16 residue: output error = delta * eps / 16 of full scale; one 12-bit LSB allows delta = 16 / (4096 eps)
+v.check("Txt 20-12.h", optimize.brentq(lambda d: d * 0.0625 / 16 - 1 / 4096, 1e-6, 1) * 100)
+
+# ------------------------------------------------------------------ Problem 13: settle-limited power, by root finding
+tau13 = optimize.brentq(lambda t: math.exp(-2e-9 / t) - 2 ** -13, 1e-12, 1e-9)
+v.check("20-12.13a", tau13 * 1e9)
+v.check("20-12.13b", 1 / (2 * math.pi * tau13) / 1e6)
+gm13 = optimize.brentq(lambda g: 0.5 * g / 1e-12 - 1 / tau13, 1e-5, 1)       # beta gm / CL = 1/tau
+v.check("20-12.13c", gm13 * 1e3)
+i13 = 2 * gm13 / 12
+v.check("20-12.13d", i13 * 1e3)
+v.check("20-12.13e", 0.8 * i13 * 1e3)
+eps13 = 1 / (1 + 15 * 0.5)
+v.check("20-12.13f", eps13 * 100)
+v.check("20-12.13g", (1 / 4096) / eps13 * 100)
+gm6_13 = 2.2 / tau13 * 1e-12
+gm1_13 = (2 / tau13) * 0.25e-12
+v.check("20-12.13h", gm6_13 * 1e3)
+v.check("20-12.13i", gm1_13 * 1e3)
+i2st = 2 * gm6_13 / 12 + 2 * gm1_13 / 12
+v.check("20-12.13j", i2st * 1e3)
+v.check("20-12.13k", 0.8 * i2st * 1e3)
+v.check("20-12.13l", i13 / i2st)
+v.assert_true("both 0.8 V options fall short of 78.3 dB", max(20 * lg(450), 20 * lg(225)) < 78.3 - 25)
 
 sys.exit(v.finish())

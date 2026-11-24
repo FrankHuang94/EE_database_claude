@@ -4,7 +4,7 @@ Chapter: [20-11 · Layout, Matching and PVT Variation](../../chapters/20-11-layo
 
 ## Objective
 
-- Watch Pelgrom's area law emerge from a Monte Carlo of independent patches under the gate.
+- Watch Pelgrom's area law emerge from a Monte Carlo of independent fixed-size patches under the gate.
 - Compare how current mirrors and differential pairs respond to $g_m/I_D$, and confirm the mirror's threshold sensitivity in ngspice.
 - Compute the gradient residuals of common placement patterns and see which cancel linear and quadratic gradients.
 - Turn σ into yield, and find out how much a Monte Carlo of 100 or 1000 runs really tells you.
@@ -15,19 +15,19 @@ Chapter: [20-11 · Layout, Matching and PVT Variation](../../chapters/20-11-layo
 
 ## Procedure
 
-1. **Area law.** Split each device of a pair into $n$ unit cells with independent threshold errors and simulate 4000 pairs at several gate areas; plot σ(ΔV_T) against $1/\sqrt{WL}$ (Part 1). *Predict* the slope.
+1. **Area law.** Divide each gate into patches of a fixed 0.01 µm², each with an independent 24.75 mV threshold error, so a larger gate has more patches; simulate 4000 pairs at several gate areas and plot σ(ΔV_TH) against $1/\sqrt{WL}$ (Part 1). *Predict* the slope.
 2. **Mirrors and pairs.** Plot the mirror's σ(ΔI/I) and the pair's σ(V_os) of Example 20-11.2 against $g_m/I_D$ from 3 to 25 V⁻¹. Then *predict* the current mismatch of each mirror in `mirror.cir` and run `ngspice -b mirror.cir` (Part 2).
 3. **Gradients.** Compute the linear and quadratic residuals of AB, AABB, ABAB, ABBA and ABBABAAB, and the offset of each for the gradient of Example 20-11.4 (Part 3). *Predict* which patterns cancel each order.
 4. **Yield.** Draw 10⁶ offsets with σ = 1.107 mV and count those outside ±3 mV; compare with Example 20-11.5 (Part 4).
-5. **How many runs?** Repeat a 100-run Monte Carlo 2000 times and histogram the estimated σ; compare its spread with the chi-square interval. Then tabulate the failure-free runs needed for 3σ, 4σ and 4.5σ yield claims (Part 5).
+5. **How many runs?** Repeat a 100-run Monte Carlo 2000 times and histogram the estimated σ; check how often the chi-square interval built from each run's estimate contains the true σ, and compare the estimate's own spread with its sampling interval. Then tabulate the failure-free runs needed for 3σ, 4σ and 4.5σ yield claims (Part 5).
 
 ## Expected results
 
-- **Part 1.** σ(ΔV_T) falls on a straight line through the origin against $1/\sqrt{WL}$, with the slope set by the unit-cell value: Pelgrom's law with no fitting.
-- **Part 2.** The mirror's mismatch grows almost linearly with $g_m/I_D$ while the pair's offset falls toward σ(ΔV_T). ngspice gives current mismatches of **1.99**%, **0.631**% and **0.316**% for the three mirrors; the linear formula $(g_m/I_D)\Delta V_T$ gives **2.00**%, **0.632**% and **0.316**%. The small differences are the square law's second-order term, $(\Delta V_T/V_{ov})^2$.
-- **Part 3.** AB and ABAB both leave one pitch of linear residual: however long an interdigitated row is, its two centroids stay one pitch apart (the end effect of §3.4), while AABB leaves two pitches, a gap that grows with the number of cells per device. ABBA cancels the linear term and leaves 2 pitch² of quadratic; ABBABAAB cancels both, reproducing Example 20-11.4.
+- **Part 1.** σ(ΔV_TH) falls on a straight line through the origin against $1/\sqrt{WL}$ with a slope of about 3.5 mV·µm, equal to $\sigma_{patch}\sqrt{2a_{patch}}$ = 24.75 × √0.02: the area law comes out of averaging more patches, and $A_{VT}$ is an output, not an input.
+- **Part 2.** The mirror's mismatch grows almost linearly with $g_m/I_D$ while the pair's offset falls toward σ(ΔV_TH). ngspice gives current mismatches of **1.99**%, **0.631**% and **0.316**% for the three mirrors; the linear formula $(g_m/I_D)\Delta V_{TH}$ gives **2.00**%, **0.632**% and **0.316**%. The small differences are the square law's second-order term, $(\Delta V_T/V_{ov})^2$.
+- **Part 3.** AB and ABAB both leave one pitch of linear residual: however long an interdigitated row is, its two centroids stay one pitch apart (the one-pitch offset of §3.4), while AABB leaves two pitches, a gap that grows with the number of cells per device. ABBA cancels the linear term and leaves 2 pitch² of quadratic; ABBABAAB cancels both, reproducing Example 20-11.4.
 - **Part 4.** About 0.67% of the draws fall outside ±3 mV.
-- **Part 5.** About 95% of the 100-run estimates fall inside 0.878–1.162 times the true σ. A 3σ claim needs about 1109 failure-free runs; a 4.5σ claim needs hundreds of thousands, which is why high-sigma yield needs importance sampling or extrapolation rather than brute force.
+- **Part 5.** The interval 0.878 σ̂ to 1.162 σ̂, built from each run's estimate σ̂, contains the true σ in about 95% of runs. (The estimates themselves scatter within 0.861–1.139 times the true σ, 95% of the time: a different interval, because it is centred on the truth rather than on the estimate.) A 3σ claim needs about 1109 failure-free runs; a 4.5σ claim needs hundreds of thousands, which is why high-sigma yield needs importance sampling or extrapolation rather than brute force.
 
 ## Discussion
 

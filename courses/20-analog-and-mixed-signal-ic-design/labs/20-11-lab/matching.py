@@ -53,14 +53,19 @@ def gradient_offset(pattern, coeffs, pitch):
     return float(a.mean() - b.mean())
 
 
-def mc_pair(a_vt, w, l, n_cells, trials, rng):
-    """Monte Carlo: each device is n_cells unit cells of area W L / n_cells whose threshold errors are independent with
-    single-device sigma a_vt / sqrt(2 * cell area); returns the pair offsets (difference of mean thresholds)."""
-    cell_area = w * l / n_cells
-    s_cell = a_vt / math.sqrt(2 * cell_area)
-    va = rng.normal(0, s_cell, (trials, n_cells)).mean(axis=1)
-    vb = rng.normal(0, s_cell, (trials, n_cells)).mean(axis=1)
-    return va - vb
+def mc_pair(sigma_patch, patch_area, w, l, trials, rng, chunk=250):
+    """Monte Carlo of Pelgrom's law from first principles: each device's gate is divided into round(W L / patch_area)
+    patches of fixed area, each with an independent threshold error of standard deviation sigma_patch (mV). A device's
+    threshold is the mean over its patches; returns the pair offsets (difference of the two means). Nothing about the
+    area law is put in: the number of patches grows with the area, and A_VT = sigma_patch sqrt(2 patch_area) emerges."""
+    n = max(1, round(w * l / patch_area))
+    out = []
+    for start in range(0, trials, chunk):
+        m = min(chunk, trials - start)
+        va = rng.normal(0, sigma_patch, (m, n)).mean(axis=1)
+        vb = rng.normal(0, sigma_patch, (m, n)).mean(axis=1)
+        out.append(va - vb)
+    return np.concatenate(out)
 
 
 def zero_failure_runs(p_fail, confidence=0.95):

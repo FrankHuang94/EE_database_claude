@@ -18,7 +18,7 @@ Chapter: [20-10 · PLLs and Jitter](../../chapters/20-10-plls-and-jitter.md)
 
 1. **Open loop.** Run `ngspice -b loop.cir`; compare with `crossover_and_pm` (Part 1).
 2. **Spread.** Redesign the loop for b = 4, 10 and 20 at the same crossover; plot the closed-loop phase-step responses and the closed-loop gain (Part 2).
-3. **Noise.** With −150 dBc/Hz reference noise and a VCO at −120 dBc/Hz at 1 MHz (falling 20 dB per decade), compute the output phase noise for crossovers of 0.5, 2 and 5 MHz and integrate each to jitter (Part 3).
+3. **Noise.** With −150 dBc/Hz reference noise and a VCO at −120 dBc/Hz at 1 MHz (falling 20 dB per decade), compute the output phase noise for crossovers of 0.1, 0.3, 1, 2 and 5 MHz and integrate each to jitter (Part 3).
 4. **Jitter bands.** Integrate the profile of Example 20-10.5 from 12 kHz to 20 MHz and from 10 kHz to 100 MHz (Part 4).
 5. **Fractional-N.** Generate the MASH 1-1-1 sequence for 123/500 and for a busy fraction ($2^{23} + 12345$ out of $2^{25}$); compute the phase-error spectra and compare the busy one with `divider_phase_psd` (Part 5).
 
@@ -26,7 +26,7 @@ Chapter: [20-10 · PLLs and Jitter](../../chapters/20-10-plls-and-jitter.md)
 
 - **Part 1.** ngspice and the Python model agree: 2.00 MHz crossover and 54.9° of phase margin.
 - **Part 2.** b = 4, 10 and 20 give 36.9°, 54.9° and 64.8° of margin; the lowest margin rings longest and peaks most.
-- **Part 3.** The reference path dominates in band and the VCO outside; the total jitter is lowest for an intermediate bandwidth.
+- **Part 3.** The reference path dominates in band and the VCO outside. Integrated from 1 kHz to 1 GHz the jitter is about 226, 172, 226, 309 and 483 fs: the minimum, about 172 fs, sits near 0.3 MHz, where $N^2$ times the reference noise (−110 dBc/Hz) meets the VCO's −120 dBc/Hz·(1 MHz/f)² line (§3.4). Wider loops let in more multiplied reference noise; narrower ones leave the VCO uncorrected.
 - **Part 4.** **876** fs for 12 kHz–20 MHz and **895** fs for 10 kHz–100 MHz: for this profile most of the jitter lies within a few times the loop bandwidth, so the band changes little. A noisier tail beyond 20 MHz would change it a lot.
 - **Part 5.** The 123/500 sequence repeats every 1000 reference cycles and its spectrum is a comb of spurs 50 kHz apart; the busy fraction follows the formula to within the spectral estimate's scatter (a decibel or two for the notebook's record length; longer records converge on it).
 
@@ -46,3 +46,10 @@ Evaluation boards for integer and fractional-N synthesizers come with loop-filte
 |---|---|---|---|
 | Lab 20-10.a | jitter, 12 kHz to 20 MHz | 876 | fs |
 | Lab 20-10.b | jitter, 10 kHz to 100 MHz | 895 | fs |
+| Lab 20-10.c | Part 3 jitter at 0.1 MHz | 226 | fs |
+| Lab 20-10.d | Part 3 jitter at 0.3 MHz (minimum) | 172 | fs |
+| Lab 20-10.e | Part 3 jitter at 1 MHz | 226 | fs |
+| Lab 20-10.f | Part 3 jitter at 2 MHz | 309 | fs |
+| Lab 20-10.g | Part 3 jitter at 5 MHz | 483 | fs |
+| Lab 20-10.h | reference-VCO crossing | 0.316 | MHz |
+| Lab 20-10.i | multiplied reference noise | −110 | dBc/Hz |

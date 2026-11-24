@@ -1,6 +1,7 @@
 * Lab 20-09 -- 10-bit voltage-mode R-2R ladder (chapter section 3.2, Example 20-09.1). R = 1 kohm, V_REF = 1.2 V,
 * output at the MSB node (n9), unloaded. Copy A: ideal switches, code 683. Copies B to D: every 2R leg has a 10 ohm
 * (1% of R) switch, the 2R termination has none; codes 511, 512 and 1023 give the worst DNL (at the MSB transition).
+* The DNL there is negative (below -1 LSB): the ladder is non-monotonic because no leg is exactly twice its series R.
 * ---- a: code 683, switch resistance 0 ohm per 2R leg
 Vab0 as0 0 DC 1.2
 Raw0 as0 al0 1e-06
@@ -171,7 +172,7 @@ op
 setplot const
 let vout = op1.an9
 let lsb = op1.dn9 / 1023
-let dnlw = abs((op1.cn9 - op1.bn9) / lsb - 1)
+let dnlw = (op1.cn9 - op1.bn9) / lsb - 1
 print vout dnlw
 .endc
 * EXPECT vout key:../../chapters/20-09-dacs.md#Ex_20-09.1b rtol=1e-4

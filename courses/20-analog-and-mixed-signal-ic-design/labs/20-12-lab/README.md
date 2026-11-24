@@ -33,7 +33,7 @@ Chapter: [20-12 · Why Analog Does Not Scale Like Digital](../../chapters/20-12-
 ## Discussion
 
 1. **Why does the corrected converter not reach the ideal SNDR?** The residue only spans 93.75% of the fine quantizer's range, so after correction the fine step is 1/0.9375 times larger. Real designs add redundancy so that the fine stage's range covers the residue with margin.
-2. **Why is the cascode's output resistance about 75 times the single device's, not exactly $g_mr_o$?** The cascode multiplies by $1 + (g_m + g_{mb})r_o$ of the upper device at its own operating point, and the square-law model's $r_o$ depends on the drain voltage.
+2. **Why is the cascode's output resistance about 75 times the single device's, not exactly $g_mr_o$?** In the level-1 netlist there is no body effect ($g_{mb}$ = 0), and $r_o = 1/(\lambda I_D)$ does not depend on the drain voltage. The factor of about 75 is $1 + g_{m3}r_{o3}$ plus the $r_{o3}/r_{o1}$ term of the exact formula $r_{out} = r_{o1} + r_{o3} + g_{m3}r_{o3}r_{o1}$, evaluated at the cascode device's own bias, which differs from the single device's.
 3. **Why does Part 2's curve diverge?** As the supply approaches the fixed headroom, the swing goes to zero and the capacitance needed for a fixed SNR goes to infinity.
 
 ## Optional hardware
