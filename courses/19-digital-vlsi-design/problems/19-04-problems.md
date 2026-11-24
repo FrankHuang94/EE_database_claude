@@ -42,7 +42,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 19-04.8 [B]
 
-**Calibrating τ.** In a new process, a simulated inverter in a chain of FO4 inverters has a delay of 22 ps. Taking $p_{inv}$ = 1, find τ, and predict the FO4 delay of a NAND2 and the minimum delay of Example 19-04.3's path.
+**Calibrating τ.** In a new process, a simulated inverter in a chain of FO4 inverters has a delay of 22 ps. Taking $p_{inv}$ = 1, find τ, and predict the FO4 delay of a NAND2 and the minimum delay of Example 19-04.3's path. Then find τ with $p_{inv}$ = 0.5 and the percentage difference between the two calibrations.
 
 ### Problem 19-04.9 [B]
 
@@ -60,13 +60,21 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **When does the tree win?** Repeat Example 19-04.6 for $H$ = 1 and $H$ = 100. Which topology is best in each case, and why does the answer change with the load?
 
+### Problem 19-04.13 [B]
+
+**Efforts of complex gates.** Size each gate for unit drive (the same pull-down and pull-up resistance as a unit inverter with an NMOS of width 1). (a) With μ = 2, derive the logical effort of each input and the parasitic delay of an AOI22, $F = \overline{AB + CD}$, with the pull-up's parallel pair C, D next to the output. (b) Repeat §3.2's AOI21 and part (a) with μ = 2.5. (c) Which efforts changed, and why did the AOI21's A and B inputs not?
+
+### Problem 19-04.14 [B]
+
+**Skewed gates.** (a) A LO-skew inverter keeps the unit NMOS (width 1) and halves the PMOS to width 1 (μ = 2). Find its rising, falling and average logical efforts. (b) A HI-skew NAND2 keeps the unit PMOS (width 2 each) and halves each series NMOS to width 1. Find the same three efforts. (c) After a domino gate (19-03), a HI-skew inverter is used rather than a LO-skew one. Explain why, from which output edge the evaluation needs.
+
 ---
 
 ## Objective coverage
 
 | Objective | Problems |
 |---|---|
-| 1. Derive $d = gh + p$; efforts of common gates | 1, 8 |
+| 1. Derive $d = gh + p$; efforts of common gates | 1, 8, 13, 14 |
 | 2. Path efforts and the minimum delay | 2, 3, 4, 7 |
 | 3. Size the gates on a path | 4, 7 |
 | 4. Best stage effort and number of stages | 5, 6, 10, 11 |

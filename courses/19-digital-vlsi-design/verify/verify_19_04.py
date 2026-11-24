@@ -268,4 +268,69 @@ v.check("Txt 19-04.c", t1 / TAU)
 v.assert_true("three stages best at transistor level", t3 < min(t1, t2, t4), "")
 v.assert_true("lab simulate_chain matches", abs(ef.simulate_chain([1, 4, 16], 128e-15) - t3) < 1e-3 * t3, "")
 
+
+# ---------------------------------------------------------------- complex and skewed gates, P/N ratio
+def cap_units(nmos_w, pmos_w):
+    return nmos_w + pmos_w
+
+
+def unit_gate_efforts(mu):
+    """Unit-drive widths for AOI21 / AOI22 (two-deep stacks get doubled widths) and the inverter reference."""
+    inv = 1 + mu
+    aoi21 = {"A": cap_units(2, 2 * mu), "C": cap_units(1, 2 * mu), "p": (2 + 1 + 2 * mu)}
+    aoi22 = {"A": cap_units(2, 2 * mu), "p": (2 + 2 + 2 * mu + 2 * mu)}
+    return ({k: v_ / inv for k, v_ in aoi21.items()}, {k: v_ / inv for k, v_ in aoi22.items()})
+
+
+a21, a22 = unit_gate_efforts(2.0)
+v.check("Txt 19-04.i", a21["A"])
+v.check("Txt 19-04.j", a21["C"])
+v.check("Txt 19-04.k", a21["p"])
+v.check("19-04.13a", a22["A"])
+v.check("19-04.13b", a22["p"])
+b21, b22 = unit_gate_efforts(2.5)
+v.check("19-04.13c", b21["A"])
+v.check("19-04.13d", b21["C"])
+v.check("19-04.13e", b21["p"])
+v.check("19-04.13f", b22["A"])
+v.check("19-04.13g", b22["p"])
+
+
+def skew_efforts(n_w, p_w, n_stack=1, p_stack=1, mu=2.0):
+    """Rising/falling logical effort: input capacitance over that of an inverter with the same edge strength."""
+    cin = n_w + p_w
+    up_strength = p_w / (p_stack * mu)      # pull-up strength relative to a unit inverter
+    dn_strength = n_w / n_stack             # pull-down strength relative to a unit inverter
+    gu = cin / (up_strength * (1 + mu))
+    gd = cin / (dn_strength * (1 + mu))
+    return gu, gd, (gu + gd) / 2
+
+
+gu, gd, ga = skew_efforts(0.5, 2.0)
+v.check("Txt 19-04.l", gu)
+v.check("Txt 19-04.m", gd)
+v.check("Txt 19-04.n", ga)
+gu, gd, ga = skew_efforts(1.0, 1.0)
+v.check("19-04.14a", gd)
+v.check("19-04.14b", gu)
+v.check("19-04.14c", ga)
+gu, gd, ga = skew_efforts(1.0, 2.0, n_stack=2, p_stack=1)
+v.check("19-04.14d", gu)
+v.check("19-04.14e", gd)
+v.check("19-04.14f", ga)
+
+
+def pn_delay(beta, mu):
+    return (1 + beta) * (1 + mu / beta)
+
+
+for mu, kb, kg in ((2.0, "Txt 19-04.o", "Txt 19-04.p"), (2.5, "Txt 19-04.q", "Txt 19-04.r")):
+    bopt = minimize_scalar(lambda b: pn_delay(b, mu), bounds=(0.5, 5), method="bounded", options={"xatol": 1e-12}).x
+    v.check(kb, bopt)
+    v.check(kg, 100 * (1 - pn_delay(bopt, mu) / pn_delay(mu, mu)))
+v.check("Txt 19-04.g", 4 + 0.5)
+v.check("Txt 19-04.h", 100 * (5 / 4.5 - 1))
+v.check("19-04.8d", 22 / 4.5)
+v.check("19-04.8e", 100 * (22 / 4.5 / tau8 - 1))
+
 sys.exit(v.finish())

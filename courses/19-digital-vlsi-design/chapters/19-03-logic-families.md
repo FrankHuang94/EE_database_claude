@@ -12,7 +12,7 @@
 **Learning objectives.** After this chapter you can:
 
 1. Build static CMOS gates from dual pull-up and pull-down networks and size them to match a reference inverter's drive, computing their input capacitance.
-2. Derive the Elmore delay of an RC network and use it to show why the delay of a series stack grows quadratically with fan-in.
+2. Derive the Elmore constant of an RC network and use it to show why the delay of a series stack grows faster than linearly with fan-in.
 3. Compute the output low level and static power of a ratioed (pseudo-NMOS) gate, and the sizing ratio it requires.
 4. Compute the threshold drop of an NMOS pass transistor with body effect, explain why transmission gates avoid it, and estimate the delay of a transmission-gate chain with and without buffers.
 5. Explain precharge and evaluation in dynamic logic, compute charge-sharing and leakage limits, and explain why domino logic is needed to cascade dynamic gates.
@@ -22,7 +22,7 @@
 An inverter computes only NOT. Every other function needs gates with several inputs, and there is more than one way to build them. **Static CMOS**, with a pull-up network to the supply and a dual pull-down network to ground, is the default: it is robust, draws no static current and is what almost every standard-cell library is made of. The other families trade some of that robustness for something else: fewer transistors, less input capacitance, or more speed. A designer who knows only static CMOS cannot read a flip-flop, a multiplexer or an SRAM column, all of which use the other styles.
 
 - **Standard-cell libraries** are mostly static CMOS (NAND, NOR, AOI, OAI), with transmission gates inside multiplexers, latches and flip-flops (19-07, 19-09).
-- **Fan-in is expensive.** A four-input NAND is slower than two two-input gates in many paths, because series transistors add resistance and internal capacitance quadratically; this chapter derives why.
+- **Fan-in is expensive.** A four-input NAND is slower than two two-input gates in many paths, because the charge on a stack's internal nodes adds a delay term quadratic in fan-in, while the output diffusion and the input capacitance grow linearly; this chapter derives why.
 - **Dynamic and domino logic** buy speed by removing the slow PMOS network from the inputs, at the cost of a clock, power and noise sensitivity; they appear in high-performance datapaths, register files and memory read paths.
 - **Ratioed logic** survives where a very wide NOR is needed cheaply, such as in programmable logic arrays and address decoders, and as the conceptual ancestor of the SRAM sense path.
 
@@ -70,7 +70,7 @@ Three properties follow from the structure. First, a gate with $N$ inputs needs 
 
 ### 3.2 Sizing for the drive of a unit inverter
 
-Take as reference a **unit inverter**: an NMOS of width 1 and a PMOS of width $\mu$, where $\mu = \mu_n/\mu_p$ (about 2) makes their resistances equal. Call that resistance $R$. A gate is sized so that its **worst-case** pull-down and pull-up resistances equal $R$, so that it drives a load as well as the unit inverter does.
+Take as reference a **unit inverter**: an NMOS of width 1 and a PMOS of width $\mu$, where $\mu = \mu_n/\mu_p$ makes their resistances equal. This chapter and 19-04 take μ = 2, the Weste–Harris arithmetic convention; real ratios are 2 to 3 (19-01), and less under velocity saturation. Call that resistance $R$. A gate is sized so that its **worst-case** pull-down and pull-up resistances equal $R$, so that it drives a load as well as the unit inverter does.
 
 - **NAND-$N$:** the $N$ series NMOS each contribute resistance; widening each to $N$ makes each $R/N$ and the stack $R$. The worst case for the pull-up is a single PMOS conducting, so each PMOS stays at width $\mu$.
 - **NOR-$N$:** the $N$ series PMOS each need width $N\mu$; a single NMOS conducting is the worst case for the pull-down, so each NMOS stays at width 1.
@@ -99,13 +99,13 @@ $$
 \int_0^\infty \frac{v_k(t)}{V_{DD}}\,dt = \sum_{j \in \text{path}(k)} R_j \sum_{m \in \text{down}(j)} C_m = \sum_m C_m R_{km},
 $$
 
-where $R_{km}$ is the resistance shared by the paths from the source to $k$ and to $m$. This sum is the **Elmore time constant** $\tau_E$. For a single RC it is exactly $RC$, the area under the normalized exponential; in general it is the centroid of the response's derivative, the "first moment" met in 01-06. The standard delay estimate is
+where $R_{km}$ is the resistance shared by the paths from the source to $k$ and to $m$. This sum is the **Elmore constant** $\tau_E$. For a single RC it is exactly $RC$, the area under the normalized exponential; in general it is the centroid of the response's derivative, the "first moment" met in 01-06. The standard delay estimate is
 
 $$
 t_p \approx \ln 2\;\tau_E = 0.69\,\tau_E ,
 $$
 
-exact for one RC and a good estimate for an RC tree (Example 5 measures its error for a long ladder). The rule for computing $\tau_E$ is mechanical: for each capacitor, multiply it by the resistance it shares with the path to the output, and add.
+exact for one RC and a good estimate for an RC tree (Example 5 measures its error for a long ladder). Keep the two quantities apart. The unscaled Elmore constant $\tau_E$ is a proven upper bound on the 50 % step delay of any RC tree (Gupta, Tutuianu and Pileggi, 1997), so used directly as a delay it is pessimistic; the **Elmore estimate** $0.69\tau_E$ is exact for one RC and runs up to about 9 % low for long ladders and distributed lines (Example 5, Problem 19-03.10). The glossary's "Elmore delay" is the first of these, the unscaled first moment. The rule for computing $\tau_E$ is mechanical: for each capacitor, multiply it by the resistance it shares with the path to the output, and add.
 
 **The NAND-$N$ pull-down.** Size the stack as in §3.2: $N$ transistors of resistance $R/N$. Let each internal node have diffusion capacitance $cN$ ($c$ per unit width, one shared diffusion of width $N$), and let the output carry the top NMOS's drain ($cN$), the $N$ parallel PMOS drains ($c\mu N$) and the external load $C_{ext}$. Number the internal nodes $i$ = 1 to $N - 1$ from ground; node $i$ sees $i$ transistors to ground. In the worst case all internal nodes start charged, and
 
@@ -113,9 +113,9 @@ $$
 \tau_E = \sum_{i=1}^{N-1}\frac{iR}{N}\,cN + R\left[(1 + \mu)cN + C_{ext}\right] = Rc\,\frac{N(N-1)}{2} + R\left[(1 + \mu)cN + C_{ext}\right] .
 $$
 
-The first term grows as $N^2$: each extra input adds a node whose charge must flow through more resistance. The second grows linearly, as the output's own diffusion grows with $N$. This is why practical static gates rarely exceed four inputs: beyond that, a tree of smaller gates is faster, a choice 19-04 quantifies.
+The first term grows as $N^2$: each extra input adds a node whose charge must flow through more resistance. The second grows linearly, as the output's own diffusion grows with $N$. At practical fan-ins the internal-node term is the smaller one (Example 2); what keeps static gates to about four inputs is both terms together with the growing input capacitance, the logical effort $(N + 2)/3$ of a NAND (19-04). Beyond that, a tree of smaller gates is faster, a choice 19-04 quantifies.
 
-![Stacked bars of the Elmore constant of NAND gates with fan-in 1 to 8: the output-node term grows linearly from 115 to 220 ps, and the internal-node term grows quadratically from 0 to 140 ps; the estimated fall delays rise from 80 to 250 ps](../../../assets/figures/19-03/fanin-elmore.svg)
+![Stacked bars of the Elmore constant of NAND gates with fan-in 1 to 8: the output-node term grows linearly, the internal-node term grows quadratically from zero, and the estimated fall delays rise with fan-in](../../../assets/figures/19-03/fanin-elmore.svg)
 
 *Figure 2. The Elmore constant of a NAND-$N$ pull-down sized for unit drive, with Example 2's values. The output term (blue) grows linearly; the internal-node term (orange) grows quadratically. The labels are the estimated fall delays.*
 
@@ -150,7 +150,7 @@ What it buys is the PUN: an $N$-input pseudo-NMOS NOR needs $N + 1$ transistors 
 
 ### 3.5 The cost of static power, in numbers
 
-A pseudo-NMOS gate's static current is a few to tens of microamperes. That sounds small until it is multiplied by the number of gates: $10^5$ gates, half of them with low outputs, each at 20 µA from 1.2 V, burn about a watt doing nothing (Example 3). Static CMOS, whose only standing current is leakage measured in nanoamperes per thousand gates (19-01, [R-314]), won for this reason.
+A pseudo-NMOS gate's static current is a few to tens of microamperes. That sounds small until it is multiplied by the number of gates: $10^5$ gates, half of them with low outputs, each at 20 µA from 1.2 V, burn about a watt doing nothing (Example 3). Static CMOS, whose only standing current is leakage, won for this reason. That leakage is as low as about 1 nA per thousand gates in a mature 130 nm library at 25 °C (SKY130, [R-314]) **[Established]** for that library, and far higher in leading-edge, low-threshold logic at high temperature (19-06).
 
 ### 3.6 Pass-transistor logic and transmission gates
 
@@ -195,7 +195,7 @@ A **dynamic** gate replaces the PUN by a single clocked PMOS and adds a clocked 
 - **Precharge** (CLK = 0): the PMOS charges the output to $V_{DD}$; the foot is off, so no path to ground exists whatever the inputs.
 - **Evaluate** (CLK = 1): the PMOS turns off and the foot turns on. If the PDN conducts, the output discharges; if not, it stays high, held only by its capacitance.
 
-The gate needs $N + 2$ transistors, each input drives only an NMOS (less input capacitance than static CMOS), and there is no fight between networks and no short-circuit current. A dynamic NAND2's input presents only its NMOS, two units of width against four for the static NAND2 of §3.2. The price is a set of failure modes that static logic does not have.
+The gate needs $N + 2$ transistors, each input drives only an NMOS (less input capacitance than static CMOS), and there is no fight between networks and no short-circuit current. A footed dynamic NAND2 sized for unit pull-down drive has three NMOS in series, each of width 3, so each input presents three units (two if unfooted) against four for the static NAND2 of §3.2. The price is a set of failure modes that static logic does not have.
 
 **Leakage.** During evaluation a high output is held by nothing. Subthreshold and junction leakage discharge it at a rate $I_{leak}/C_L$, so the output droops by $\Delta V$ in a time
 
@@ -212,7 +212,7 @@ Dynamic gates therefore have a **minimum clock frequency**, and in leaky process
 
 Ignoring the body effect, the boundary is $C_a/C_L = V_{TN}/(V_{DD} - V_{TN})$. If the output falls below the next stage's switching threshold, the gate computes a wrong answer.
 
-![Output of a dynamic gate after charge sharing against internal-node capacitance from 0 to 20 fF with a 10 fF output: a straight line falling to 0.85 V at 4.1 fF, then a curve crossing the 0.6 V switching threshold at 10 fF; with the body effect the straight part is shallower and extends to about 6.8 fF](../../../assets/figures/19-03/charge-sharing.svg)
+![Output of a dynamic gate after charge sharing against internal-node capacitance from 0 to 20 fF with a 10 fF output: a straight line falling to 0.85 V at Example 6's boundary, then a curve crossing the 0.6 V switching threshold at 10 fF; with the body effect the straight part is shallower and extends further](../../../assets/figures/19-03/charge-sharing.svg)
 
 *Figure 3. Charge sharing in Example 6's gate. While the internal node cuts the transistor off, the output falls linearly with $C_a$; beyond the boundary the nodes equalize. The dots are Example 6's two cases; the dashed curve includes the body effect (Problem 19-03.11).* The remedies are to keep internal capacitances small relative to the output, to precharge critical internal nodes as well, and to rely on the keeper.
 
@@ -230,7 +230,7 @@ Ignoring the body effect, the boundary is $C_a/C_L = V_{TN}/(V_{DD} - V_{TN})$. 
 | Pseudo-NMOS | $N + 1$ | $V_{DD}I_{load}$ when low | $V_{OL} > 0$ | Fast fall, slow rise | Wide NOR, decoders, PLAs |
 | Pass transistor (NMOS) | Fewer, function-dependent | Downstream, from the degraded 1 | $V_{DD} - V_{TN}$ for a 1 | Good for short chains | Muxes, with level restoring |
 | Transmission gate | 2 per switch | Leakage only | Rails | Quadratic in chain length | Muxes, XOR, latches, flip-flops |
-| Dynamic / domino | $N + 2$ (+ inverter) | Clock and precharge every cycle | Rails, when correct | Fastest | High-performance datapaths, register files |
+| Dynamic / domino | $N + 2$ (+ inverter) | Leakage, plus the keeper's fight (switching power is high: precharge and clock every cycle) | Rails, when correct | Fastest | High-performance datapaths, register files |
 
 ## 4. Worked examples
 
@@ -250,7 +250,7 @@ Ignoring the body effect, the boundary is $C_a/C_L = V_{TN}/(V_{DD} - V_{TN})$. 
 
 **Solution.** From §3.3, $\tau_E = Rc\,N(N-1)/2 + R[3cN + C_{ext}]$:
 
-- $N$ = 1: $10\ \text{kΩ} \times (1.5 + 10)\ \text{fF}$ = **115** ps, $t_p$ = 0.69 × 115 = **79.7** ps.
+- $N$ = 1: $10\ \text{kΩ} \times (1.5 + 10)\ \text{fF}$ = **115** ps, $t_p = \ln 2 \times 115$ = **79.7** ps.
 - $N$ = 2: 5 + 130 = **135** ps, **93.6** ps.
 - $N$ = 3: 15 + 145 = **160** ps, **110.9** ps.
 - $N$ = 4: 30 + 160 = **190** ps, **131.7** ps.
@@ -289,13 +289,13 @@ The NAND4 is **1.65** times slower than the inverter while driving the same load
 
 **Units check.** $\gamma_B\sqrt{V}$ is in volts.
 
-**Sanity check.** A level restorer or a transmission gate would bring the node to 1.2 V and remove the current; so would a PMOS threshold above 0.485 V, which is one reason pass-transistor logic suits high-threshold processes better.
+**Sanity check.** A level restorer or a transmission gate would bring the node to 1.2 V and remove the current; so would a receiving PMOS whose threshold exceeds 0.485 V (for example a high-threshold PMOS in the following inverter). Raising every threshold does not help, because it also lowers the passed level, which costs noise margin and speed: pass-transistor logic degrades as $V_{DD}/V_{TH}$ falls.
 
 ### Example 19-03.5 · A transmission-gate chain (tier B)
 
 **Setup.** Twelve TGs in series, each $R_{TG}$ = 5 kΩ with 2 fF at the following node, are driven by a step. (a) Estimate the delay with the Elmore formula. (b) An exact simulation of the RC ladder gives 590.5 ps; how good is the estimate? (c) Inverting buffers with $t_{buf}$ = 30 ps may be inserted. Find $m_{opt}$, and the delays for segments of 2, 3 and 4.
 
-**Solution.** (a) $\tau_E = 5\ \text{kΩ} \times 2\ \text{fF} \times 12 \times 13/2$ = 780 ps, and $t_p \approx 0.69 \times 780$ = **540.7** ps.
+**Solution.** (a) $\tau_E = 5\ \text{kΩ} \times 2\ \text{fF} \times 12 \times 13/2$ = 780 ps, and $t_p \approx \ln 2 \times 780$ = **540.7** ps.
 
 (b) The estimate is **8.4** % low. The factor 0.69 is exact for one RC but the far end of a long ladder has a slower, more delayed response: its 50% delay tends to $0.38RC_{total}$ for a continuous line, against $0.69 \times 0.5RC_{total}$ = $0.35RC_{total}$ (19-05).
 
@@ -319,7 +319,7 @@ The NAND4 is **1.65** times slower than the inverter while driving the same load
 
 **Units check.** C = F·V; F·V/A = s.
 
-**Sanity check.** Charge is conserved in both cases: in (a) the output loses $10\ \text{fF} \times 0.255\ \text{V}$ = 2.55 fC, exactly the $3\ \text{fF} \times 0.85\ \text{V}$ the internal node gains.
+**Sanity check.** Charge is conserved in both cases: in (a) the output loses $10\ \text{fF} \times$ **0.255** V = 2.55 fC, exactly the $3\ \text{fF} \times 0.85\ \text{V}$ the internal node gains.
 
 <!-- answer-key -->
 
@@ -367,6 +367,7 @@ The NAND4 is **1.65** times slower than the inverter while driving the same load
 | Ex 19-03.6d | boundary ratio Ca/CL | 0.412 | — |
 | Ex 19-03.6e | hold time | 1 | µs |
 | Ex 19-03.6f | charge moved, 3 fF case | 2.55 | fC |
+| Ex 19-03.6g | output drop, 3 fF case | 0.255 | V |
 | Txt 19-03.a | SKY130 inv_1 PMOS to NMOS width ratio | 1.54 | — |
 
 ## 5. Simulate it
@@ -401,8 +402,9 @@ The lab ([labs/19-03-lab](../labs/19-03-lab/README.md)) has two parts:
 |---|---|---|
 | Static gate transistor count | $2N$ | $N$ inputs |
 | Input capacitance relative to inverter, $\mu$ = 2 | NAND2 4/3, NAND3 5/3, NOR2 5/3, NOR3 7/3 | Logical effort (19-04) |
-| Elmore delay estimate | $0.69\sum_m C_mR_{km}$ | Exact for one RC |
-| Stack or chain Elmore constant | $\propto N(N+1)/2$ | Quadratic in length |
+| Elmore estimate | $0.69\sum_m C_mR_{km}$ | Exact for one RC; up to about 9% low for long ladders |
+| NAND-$N$ stack Elmore constant | $RcN(N - 1)/2 + R[(1 + \mu)cN + C_{ext}]$ | Quadratic internal term plus linear output term |
+| Chain of $n$ equal RC sections | $RC\,n(n + 1)/2$ | Quadratic in length |
 | Pseudo-NMOS ratio | $k_n/k_p \gtrsim 4$ | For $V_{OL}$ near 0.1 V |
 | Optimal buffer spacing | $m_{opt} \approx 1.7\sqrt{t_{buf}/RC}$ | TG chains and wires |
 | Charge-sharing boundary | $C_a/C_L = V_{TN}/(V_{DD} - V_{TN})$ | No body effect |
@@ -415,7 +417,7 @@ The lab ([labs/19-03-lab](../labs/19-03-lab/README.md)) has two parts:
 - **Forgetting the body effect on passed levels.** The degraded 1 is $V_{DD} - V_{TN}(V_{out})$, noticeably lower than $V_{DD} - V_{TN0}$.
 - **Applying the charge-sharing formula $V_{DD}C_L/(C_L + C_a)$ without checking the cut-off.** If that level exceeds $V_{DD} - V_{TN}$, the transistor turns off first and the loss is smaller.
 - **Cascading dynamic gates directly.** Their outputs fall during evaluation; the next dynamic gate needs monotonically rising inputs, which is what the domino inverter provides.
-- **Assuming dynamic logic has no static power.** It draws no current through a fight, but its clock and precharge switch every cycle whether or not the output changes.
+- **Assuming dynamic logic saves power.** It has no static fight, but its precharge and clock switch every cycle whatever the data, so its activity factor is near 1 (19-06).
 
 ## 9. Practitioner lens
 
@@ -519,5 +521,6 @@ Problems: [19-03 problem set](../problems/19-03-problems.md).
 1. Rabaey, Chandrakasan & Nikolić, *Digital Integrated Circuits*, 2nd ed., Prentice Hall, 2003, ch. 6.
 2. Weste & Harris, *CMOS VLSI Design*, 4th ed., Addison-Wesley, 2011, ch. 4 and 9.
 3. W. C. Elmore, "The transient response of damped linear networks with particular regard to wideband amplifiers", *Journal of Applied Physics*, vol. 19, no. 1, 1948.
-4. [R-314] SkyWater SKY130 library leakage figures (§3.5).
-5. [R-315] Silberman et al. (*JSSC*, 1998) and Nowka and Galambos (ICCD 1998); Sager, Hinton et al. (ISSCC 2001); Stolt et al., POWER6 (*JSSC*, 2008); Harris, *CMOS VLSI Design* lecture slides (2010); Intel patent US 7,362,621; the `sky130_fd_sc_hd` library repository.
+4. R. Gupta, B. Tutuianu and L. T. Pileggi, "The Elmore delay as a bound for RC trees with generalized input signals," *IEEE Trans. Computer-Aided Design* 16(1), 1997.
+5. [R-314] SkyWater SKY130 library leakage figures (§3.5).
+6. [R-315] Silberman et al. (*JSSC*, 1998) and Nowka and Galambos (ICCD 1998); Sager, Hinton et al. (ISSCC 2001); Stolt et al., POWER6 (*JSSC*, 2008); Harris, *CMOS VLSI Design* lecture slides (2010); Intel patent US 7,362,621; the `sky130_fd_sc_hd` library repository.

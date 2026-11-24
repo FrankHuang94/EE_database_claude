@@ -44,7 +44,7 @@ Files:
 **Answers.**
 
 1. The single inverter is driven by a near-step, the condition under which τ was defined (19-02's step-input $R_{eq}$). Each stage of the chain is driven by the slow ramp of the previous one, which lengthens its delay (19-02 §3.6).
-2. The slope penalty affects every stage of every candidate chain similarly, so it scales the delays without moving the optimum much; calibrating τ from an FO4 chain absorbs it (Problem 19-04.8).
+2. The slope penalty applies to every stage driven by a previous stage's ramp, but not to the first stage, which here is driven by a sharp edge. The ratio of simulated to model delay therefore grows with the number of stages, which slightly favors fewer stages in the transistor-level comparison. Calibrating τ from an FO4 chain fits ramp-driven stages and over-predicts a step-driven one (Problem 19-04.8).
 3. Under the model the delay is $\sum g_ih_i + P$ with $\prod g_ih_i$ fixed, and the sum of numbers with a fixed product is smallest when they are equal (§3.3).
 4. With little effort to share, the tree's extra stages add parasitic delay (7 against 6) without enough effort to divide.
 

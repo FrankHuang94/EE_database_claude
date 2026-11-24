@@ -60,11 +60,19 @@ $$
 
 ### Problem 19-02.11 [C]
 
-**The delay-optimal PMOS width.** An inverter with $W_p = \beta W_n$ drives $N$ copies of itself, with no wire. At equal widths the PMOS resistance is $r$ times the NMOS's. (a) Show that $t_p \propto (1 + \beta)(1 + r/\beta)$, so that the delay is minimized at $\beta = \sqrt r$. (b) For $r$ = 2.5, find $\beta_{opt}$ and how much faster it is than β = $r$ (equal rise and fall) and than β = 1. (c) Why is the optimum not at equal rise and fall delays?
+**The delay-optimal PMOS width.** An inverter with $W_p = \beta W_n$ drives $N$ copies of itself, with no wire. At equal widths the PMOS resistance is $r$ times the NMOS's. (Here β is a width ratio, not a current gain; $r$ is the same number as 19-01's $k_n/k_p$ at equal widths.) (a) Show that $t_p \propto (1 + \beta)(1 + r/\beta)$, so that the delay is minimized at $\beta = \sqrt r$. (b) For $r$ = 2.5, find $\beta_{opt}$ and how much faster it is than β = $r$ (equal rise and fall) and than β = 1. (c) Why is the optimum not at equal rise and fall delays?
 
 ### Problem 19-02.12 [C]
 
-**Other figures of merit.** With $E \propto V_{DD}^2$ and $D \propto V_{DD}/(V_{DD} - V_{TH})^\alpha$: (a) show that $E\,D^n$ is minimized at $V_{DD} = (2 + n)V_{TH}/(2 + n - n\alpha)$ when $2 + n > n\alpha$. (b) For $V_{TH}$ = 0.35 V and α = 1.3, evaluate the optimum for $n$ = 1, 2 and 3. (c) Why does $E\,D^2$ have no finite optimum for the square law, and what does a designer who cares mostly about speed conclude?
+**Other figures of merit.** (Here $n$ is an exponent, not the subthreshold factor.) With $E \propto V_{DD}^2$ and $D \propto V_{DD}/(V_{DD} - V_{TH})^\alpha$: (a) show that $E\,D^n$ is minimized at $V_{DD} = (2 + n)V_{TH}/(2 + n - n\alpha)$ when $2 + n > n\alpha$. (b) For $V_{TH}$ = 0.35 V and α = 1.3, evaluate the optimum for $n$ = 1, 2 and 3. (c) Why does $E\,D^2$ have no finite optimum for the square law, and what does a designer who cares mostly about speed conclude?
+
+### Problem 19-02.13 [B]
+
+**Capacitances from device data.** An inverter has $W_n$ = 0.5 µm and $W_p$ = 1.0 µm, both with $L$ = 0.15 µm, and drives four copies of itself. Take $C_{ox}$ = 8.5 fF/µm², gate–source and gate–drain overlap capacitance 0.3 fF/µm of width each, and for both drain junctions a zero-bias bottom capacitance of 1.0 fF/µm² and sidewall capacitance of 0.25 fF/µm. Each drain extends 0.5 µm from the gate; count the sidewall on the three sides away from the gate. Over the output swing, the junction capacitances average to $K_{eq}$ = 0.62 (bottom) and 0.75 (sidewall) times their zero-bias values (09-06). (a) Find the input capacitance $C_g$ of one inverter (channel plus both overlaps). (b) Find each device's contribution to the driver's self-loading $C_{int}$, counting its gate–drain overlap twice (Miller effect), and the total. (c) Find γ and the FO4 load capacitance.
+
+### Problem 19-02.14 [B] *(lab)*
+
+**Fall time.** For the step-driven NMOS of Example 19-02.2 ($k_n$ = 200 µA/V², $V_{TN}$ = 0.35 V, $V_{DD}$ = 1.2 V, 20 fF), derive the time for the output to fall from 90 % to 10 % of $V_{DD}$, using §3.3's saturation and linear phases. Compare it with $t_{pHL}$, and with the 10–90 % time $\ln 9\,R_{eq}C_L$ that the RC model would give with $R_{eq}$ = 12.573 kΩ. What does the comparison say about using $R_{eq}$ for edge rates?
 
 ---
 
@@ -72,8 +80,8 @@ $$
 
 | Objective | Problems |
 |---|---|
-| 1. Identify and add up the load capacitances | 1, 2 |
-| 2. Derive the step delay and the equivalent-resistance model | 4, 5, 10 |
+| 1. Identify and add up the load capacitances | 1, 2, 13 |
+| 2. Derive the step delay and the equivalent-resistance model | 4, 5, 10, 14 |
 | 3. Intrinsic delay, self-loading, sizing and FO4 | 6, 7, 8, 11 |
 | 4. Ring oscillators | 3, 8 |
 | 5. Supply scaling and the energy–delay product | 9, 12 |

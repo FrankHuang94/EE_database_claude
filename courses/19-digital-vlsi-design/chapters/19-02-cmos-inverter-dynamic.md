@@ -74,6 +74,8 @@ $$
 
 Below $V_{ov}$ the NMOS is linear: $C_L\,dV/dt = -k_n(V_{ov}V - V^2/2)$. Separate variables and use partial fractions, $\dfrac{1}{V(V_{ov} - V/2)} = \dfrac{1}{V_{ov}}\left(\dfrac1V + \dfrac{1}{2V_{ov} - V}\right)$:
 
+> **Math refresher — partial fractions.** A ratio whose denominator is a product of simple factors can be split into a sum of simpler ratios, one per factor, each of which integrates to a logarithm (01-06). To check the split above, put the right side over a common denominator: $\frac{1}{V_{ov}}\cdot\frac{(2V_{ov} - V) + V}{V(2V_{ov} - V)} = \frac{2}{V(2V_{ov} - V)}$, which is the left side. Then $\int dV/V = \ln V$ and $\int dV/(2V_{ov} - V) = -\ln(2V_{ov} - V)$.
+
 $$
 t_2 = \frac{C_L}{k_nV_{ov}}\int_{V_{DD}/2}^{V_{ov}}\left(\frac1V + \frac{1}{2V_{ov} - V}\right)dV
 = \frac{C_L}{k_nV_{ov}}\ln\frac{2V_{ov} - V_{DD}/2}{V_{DD}/2}
@@ -108,7 +110,7 @@ $$
 R_{eq} \approx \frac{3V_{DD}}{4I_{sat}} ,
 $$
 
-12.46 kΩ here. With $R_{eq}$ = 12.57 kΩ the RC model gives $0.69 \times 12.57\ \text{kΩ} \times 20\ \text{fF}$ = 174.3 ps, 3.6% above the exact 168.2 ps: the model is approximate, but it is linear, so it composes along paths and through sizing. That is why every timing model, from logical effort (19-04) to Elmore delay (19-05), starts from it.
+12.46 kΩ here. With $R_{eq}$ = 12.573 kΩ the RC model gives $\ln 2 \times 12.573\ \text{kΩ} \times 20\ \text{fF}$ = 174.3 ps, 3.6% above the exact 168.2 ps: the model is approximate, but it is linear, so it composes along paths and through sizing. That is why every timing model, from logical effort (19-04) to Elmore delay (19-05), starts from it.
 
 Two scalings follow. $R_{eq} \propto 1/W$: doubling a transistor's width halves its resistance. And $R_{eq}$ grows as the supply approaches the threshold (§3.7).
 
@@ -128,7 +130,7 @@ $$
 t_{FO4} = t_{p0}\left(1 + \frac4\gamma\right),
 $$
 
-five intrinsic delays for γ = 1. The ratio of the FO4 delay to the fan-out-of-1 delay, $t_{p0}(1 + 1/\gamma)$, reveals γ: Ho, Mai and Horowitz's rule that "a FO1 is one-third a FO4" for typical diffusion capacitances ([R-314]) means $(1 + 4/\gamma) = 3(1 + 1/\gamma)$, so γ = **0.5**, and the FO4 delay is then nine intrinsic delays. Because both $t_{p0}$ and $t_{FO4}$ scale with the process, the **FO4 delay** is the standard technology-independent unit of speed: a design's clock period quoted in FO4 delays says how much logic fits in a cycle, whatever the node. Fan-out 4 is chosen because it is close to the fan-out per stage that minimizes the delay of a long buffer chain (19-04).
+five intrinsic delays for γ = 1. The ratio of the FO4 delay to the fan-out-of-1 delay, $t_{p0}(1 + 1/\gamma)$, reveals γ: Ho, Mai and Horowitz's rule that "a FO1 is one-third a FO4" ([R-314]) means $(1 + 4/\gamma) = 3(1 + 1/\gamma)$, so γ = **0.5**, and the FO4 delay is then nine intrinsic delays. The two values in this chapter, five intrinsic delays for γ = 1 and nine for γ = 0.5, are the same physics under two conventions: γ = 1 is the textbook's round number (used in Example 4 and in 19-04, where γ appears as the inverter's parasitic delay $p_{inv}$), while the FO1/FO4 rule describes measured processes. Conclusions that depend on ratios, such as the best fan-out per stage, barely change between them (19-04 §3.1). Because both $t_{p0}$ and $t_{FO4}$ scale with the process, the **FO4 delay** is the standard technology-independent unit of speed: a design's clock period quoted in FO4 delays says how much logic fits in a cycle, whatever the node. Fan-out 4 is chosen because it is close to the fan-out per stage that minimizes the delay of a long buffer chain (19-04).
 
 ### 3.6 Ring oscillators
 
@@ -154,7 +156,7 @@ $$
 \text{EDP} \propto \frac{V_{DD}^3}{(V_{DD} - V_{TH})^\alpha},
 $$
 
-has a minimum: setting $d\ln(\text{EDP})/dV_{DD} = 3/V_{DD} - \alpha/(V_{DD} - V_{TH}) = 0$ gives
+has a minimum (counting switching energy only; leakage energy, which grows as the delay stretches at low supply, is added in 19-06 and pushes the energy optimum up from zero and the EDP optimum slightly higher): setting $d\ln(\text{EDP})/dV_{DD} = 3/V_{DD} - \alpha/(V_{DD} - V_{TH}) = 0$ gives
 
 $$
 V_{DD,EDP} = \frac{3V_{TH}}{3 - \alpha},
@@ -200,7 +202,7 @@ which is $1.5V_{TH}$ for α = 1, $1.76V_{TH}$ for α = 1.3 and $3V_{TH}$ for the
 
 **Solution.** (a) Integrating $V/I_D(V)$ numerically over 0.6–1.2 V (saturated above 0.85 V, linear below) and dividing by 0.6 V gives $R_{eq}$ = **12.57** kΩ. The approximation gives $3 \times 1.2/(4 \times 72.25\ \mu\text{A})$ = **12.46** kΩ.
 
-(b) $0.693 \times 12.57\ \text{kΩ} \times 20\ \text{fF}$ = **174.3** ps, **3.6** % above the exact 168.2 ps.
+(b) $\ln 2 \times 12.573\ \text{kΩ} \times 20\ \text{fF}$ = **174.3** ps, **3.6** % above the exact 168.2 ps.
 
 **Units check.** V/A = Ω; Ω × F = s.
 
@@ -210,13 +212,13 @@ which is $1.5V_{TH}$ for α = 1, $1.76V_{TH}$ for α = 1.3 and $3V_{TH}$ for the
 
 **Setup.** A symmetric unit inverter has $R_{eq}$ = 12.57 kΩ for both pull-up and pull-down, $C_{int}$ = 2 fF and $C_g$ = 2 fF. Find (a) its intrinsic delay, (b) its FO4 delay, (c) its delay driving 50 fF, and (d) the delay driving 50 fF if it is made four times larger.
 
-**Solution.** (a) $t_{p0} = 0.693 \times 12.57\ \text{kΩ} \times 2\ \text{fF}$ = **17.4** ps.
+**Solution.** (a) $t_{p0} = \ln 2 \times 12.573\ \text{kΩ} \times 2\ \text{fF}$ = **17.4** ps.
 
 (b) γ = 1: $t_{FO4} = 5t_{p0}$ = **87.1** ps.
 
 (c) $t_p = 17.43 \times (1 + 50/2)$ = **453.1** ps.
 
-(d) $17.43 \times (1 + 50/8)$ = **126.3** ps, 3.6 times faster, but the inverter's input capacitance has grown from 2 to 8 fF, which slows whatever drives it.
+(d) $17.43 \times (1 + 50/8)$ = **126.3** ps, **3.6** times faster, but the inverter's input capacitance has grown from 2 to 8 fF, which slows whatever drives it.
 
 **Units check.** Every term is ps × a ratio of capacitances.
 
@@ -269,6 +271,7 @@ which is $1.5V_{TH}$ for α = 1, $1.76V_{TH}$ for α = 1.3 and $3V_{TH}$ for the
 | Ex 19-02.4b | FO4 delay | 87.1 | ps |
 | Ex 19-02.4c | delay driving 50 fF | 453.1 | ps |
 | Ex 19-02.4d | delay driving 50 fF at four times the size | 126.3 | ps |
+| Ex 19-02.4e | speed-up from four times the size | 3.6 | — |
 | Ex 19-02.5a | step-input delay, 10 fF | 84.1 | ps |
 | Ex 19-02.5b | estimated ring frequency | 1.19 | GHz |
 | Ex 19-02.5c | stage delay from the simulated period | 160.5 | ps |
@@ -290,7 +293,7 @@ which is $1.5V_{TH}$ for α = 1, $1.76V_{TH}$ for α = 1.3 and $3V_{TH}$ for the
 | Txt 19-02.i | simulated FO4 ratio, 180 nm to 7 nm | 31.3 | — |
 | Txt 19-02.j | supply ratio, 1.8 V to 0.8 V | 2.25 | — |
 | Txt 19-02.k | SKY130 FO1 delay spread, max over min | 1.79 | — |
-| Txt 19-02.l | IRDS intrinsic delay ratio, 2024 to 2039 | 1.71 | — |
+| Txt 19-02.l | IRDS intrinsic delay ratio, 2024 to 2039 | 1.70 | — |
 | Txt 19-02.m | simulated FO4 ratio, 180 nm to 130 nm | 2.22 | — |
 | Txt 19-02.n | lower supply with EDP within 10% of minimum, alpha = 1.3 | 0.51 | V |
 | Txt 19-02.o | upper supply with EDP within 10% of minimum, alpha = 1.3 | 0.79 | V |
@@ -327,7 +330,7 @@ The lab ([labs/19-02-lab](../labs/19-02-lab/README.md)) has two parts:
 | RC step to 50% | $\ln 2\,RC$ = 0.69 $RC$ | |
 | $R_{eq}$ | $\approx 3V_{DD}/(4I_{sat})$ | Average of $V/I$ over the transition |
 | Intrinsic delay | $t_{p0} = 0.69R_{eq}C_{int}$, independent of size | |
-| FO4 delay | $t_{p0}(1 + 4/\gamma)$, about $5t_{p0}$ | γ = $C_{int}/C_g$ ≈ 1 |
+| FO4 delay | $t_{p0}(1 + 4/\gamma)$: $5t_{p0}$ to $9t_{p0}$ | γ = $C_{int}/C_g$ from 1 (textbook convention) to 0.5 (the FO1/FO4 rule) |
 | Ring oscillator | $f = 1/(2Nt_p)$ | $t_p$ here includes input-slope effects |
 | EDP-optimal supply | $3V_{TH}/(3 - \alpha)$: 1.5–3 $V_{TH}$ | α from 1 to 2 |
 
@@ -346,8 +349,8 @@ The lab ([labs/19-02-lab](../labs/19-02-lab/README.md)) has two parts:
 - **The FO4 rule of thumb [Established].** Ho, Mai and Horowitz (2001) gave the FO4 delay as about 360 ps per micrometre of drawn gate length at typical conditions and 500 ps per micrometre under worst-case conditions, adding that "in a 0.18-µm technology, an FO4 is about 90 pS under worst case environmental conditions" ([R-314]). At typical conditions the rule gives **64.8** ps for 0.18 µm. Harris, Ho, Wei and Horowitz proposed the FO4 delay precisely "to normalize process and operating condition variations".
 - **FO4 across nodes, simulated [Industry estimate].** Stillmaker and Baas (2017), using predictive device models rather than silicon, list FO4 delays of 77.2 ps at 180 nm and 1.8 V, 34.7 ps at 130 nm and 1.2 V, 10.9 ps at 45 nm and 1.1 V, 4.02 ps at 14 nm and 0.86 V, and 2.47 ps at 7 nm and 0.8 V ([R-314]): **31.3** times faster across the range while the supply fell by **2.25** times. These are intrinsic-dominated numbers without real wiring, and no foundry publishes a measured FO4 for its leading nodes that we could find.
 - **An open process's measured delay [Established].** SkyWater's SKY130 PDK lists a fan-out-of-1 inverter delay of 31.8 ps nominal, from 24.7 to 44.1 ps across its e-test limits, from a 143-stage structure; the page does not state the supply, temperature or method ([R-314]). The spread between the limits is a factor of **1.79**, which is why timing is signed off at corners rather than at nominal.
-- **The roadmap's intrinsic delay [Industry estimate].** The IEEE IRDS 2024 More Moore tables define an intrinsic transistor delay $\tau = C_{g,total}V_{dd}/I_{d,sat}$, this chapter's $CV/I$, and project it falling from about 1.06 ps in 2024 to 0.62 ps by 2039 ([R-314]): a factor of **1.71** in fifteen years, with the supply held near 0.6 V (19-01).
-- **Leading-node claims [Industry estimate].** TSMC's IEDM 2024 paper on N2 reports "a 15% speed gain (or 30% power reduction) at >1.15x chip density" against its N3 process; Intel says its 18A node delivers "up to 15% better performance per watt and 30% improved chip density compared to Intel 3", based on its internal analysis as of February 2024 ([R-314]). For scale, the simulated FO4 above improved **2.22** times from 180 nm to 130 nm.
+- **The roadmap's intrinsic delay [Industry estimate].** The IEEE IRDS 2024 More Moore tables define an intrinsic NMOS delay $\tau_{IRDS} = C_{g,total}V_{dd}/I_{d,sat}$ at 25 °C with a fan-out-of-3 load, this chapter's $CV/I$, and project it falling from 1.061 ps in 2024 to 0.624 ps in 2039 ([R-314]): a factor of **1.70** in fifteen years, while the supply falls from 0.70 V to 0.60 V by 2027 and is then held (19-01).
+- **Leading-node claims [Vendor claim].** TSMC's IEDM 2024 paper on N2 reports "a 15% speed gain (or 30% power reduction) at >1.15x chip density" against its N3 process; Intel says its 18A node delivers "up to 15% better performance per watt and 30% improved chip density compared to Intel 3", based on its internal analysis as of February 2024 ([R-314]). For scale, the simulated FO4 above improved **2.22** times from 180 nm to 130 nm.
 
 ### Why it matters commercially
 

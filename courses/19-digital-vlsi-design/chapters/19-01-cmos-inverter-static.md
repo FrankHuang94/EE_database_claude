@@ -73,7 +73,7 @@ Two facts follow at once. The output levels are the rails: $V_{OH} = V_{DD}$ and
 
 ### 3.2 The switching threshold
 
-The **switching threshold** $V_M$ is the input at which $V_{out} = V_{in}$, the crossing of the transfer curve with the 45° line. There $V_{DS} = V_M$ and $V_{SD} = V_{DD} - V_M$, both larger than the overdrives in a well-designed inverter, so both transistors are saturated (region C). Ignoring λ for the moment, equate the two saturation currents:
+The **switching threshold** $V_M$ is the input at which $V_{out} = V_{in}$, the crossing of the transfer curve with the 45° line. There $V_{DS} = V_M$ and $V_{SD} = V_{DD} - V_M$, both larger than the overdrives $V_M - V_{TN}$ and $V_{DD} - V_M - \lvert V_{TP}\rvert$ (always, since the thresholds are positive), so both transistors are saturated (region C). Ignoring λ for the moment, equate the two saturation currents:
 
 $$
 \frac{k_n}{2}(V_M - V_{TN})^2 = \frac{k_p}{2}(V_{DD} - V_M - \lvert V_{TP}\rvert)^2 .
@@ -99,7 +99,7 @@ $$
 
 For a symmetric inverter with matched thresholds, $r$ = 1 and $W_p/W_n = \mu_n/\mu_p$, typically 2 to 3 in bulk silicon because holes are less mobile than electrons.
 
-**$V_M$ is insensitive to sizing.** Because $V_M$ depends on $\sqrt r$, and that only through a weighted average, doubling or halving $r$ moves $V_M$ by tens of millivolts, not by a fraction of the supply (Figure 2). Two consequences: a small sizing error does not break a gate, and conversely you cannot move $V_M$ far by sizing alone. Designers often choose $W_p/W_n$ below the symmetric value to save area and input capacitance, accepting a $V_M$ slightly below the midpoint; 19-04 shows that the delay of a chain of inverters is smallest near $W_p/W_n = \sqrt{\mu_n/\mu_p}$, about 1.6 for a mobility ratio of 2.5.
+**$V_M$ is insensitive to sizing.** Because $V_M$ depends on $\sqrt r$, and that only through a weighted average, doubling or halving $r$ moves $V_M$ by tens of millivolts, not by a fraction of the supply (Figure 2). Two consequences: a small sizing error does not break a gate, and conversely you cannot move $V_M$ far by sizing alone. Designers often choose $W_p/W_n$ below the symmetric value to save area and input capacitance, accepting a $V_M$ slightly below the midpoint; Problem 19-02.11 and 19-04 §3.2 show that the delay of a chain of inverters is smallest near $W_p/W_n = \sqrt{\mu_n/\mu_p}$, about 1.6 for a mobility ratio of 2.5.
 
 ![Switching threshold against Wp/Wn on a logarithmic axis, for long-channel transistors with a mobility ratio of 2.5 and for velocity-saturated ones with a drive ratio of 1.6; each curve crosses 0.6 V at its own symmetric ratio](../../../assets/figures/19-01/vm-sizing.svg)
 
@@ -123,13 +123,17 @@ $$
 
 For static CMOS, $V_{OL}$ = 0 and $V_{OH} = V_{DD}$, so $NM_L = V_{IL}$ and $NM_H = V_{DD} - V_{IH}$. A noise voltage smaller than the margin, added to a valid output, still lands in the input range the next gate reads correctly.
 
-**Deriving $V_{IL}$.** Just above $V_{TN}$ (region B) the NMOS is saturated and the PMOS linear. With λ = 0 and lengths that make $k_p$ the unit of current, the current balance is
+**Deriving $V_{IL}$.** Just above $V_{TN}$ (region B) the NMOS is saturated and the PMOS linear. With λ = 0, and normalizing currents by $k_p$ (so the PMOS has $k$ = 1 and the NMOS $k = r$), the current balance is
 
 $$
 \frac{r}{2}b^2 = a\,u - \frac{u^2}{2},\qquad b = V_{in} - V_{TN},\quad a = V_{DD} - V_{in} - \lvert V_{TP}\rvert,\quad u = V_{DD} - V_{out} ,
 $$
 
-where $b$ and $a$ are the two overdrives and $u$ the PMOS's source–drain voltage. Differentiate with respect to $V_{in}$, using $db/dV_{in} = 1$, $da/dV_{in} = -1$ and, at the unity-gain point, $du/dV_{in} = -dV_{out}/dV_{in} = 1$:
+where $b$ and $a$ are the two overdrives and $u$ the PMOS's source–drain voltage.
+
+> **Math refresher — implicit differentiation.** When two variables are tied by an equation rather than an explicit formula, differentiate both sides with respect to one of them, treating the other as a function of it and applying the chain rule (01-03). For $x^2 + y^2 = 1$, this gives $2x + 2y\,dy/dx = 0$, so $dy/dx = -x/y$ without ever solving for $y$. Here the current balance ties $V_{out}$ to $V_{in}$; differentiating it and setting the slope to −1 locates the unity-gain point directly.
+
+Differentiate with respect to $V_{in}$, using $db/dV_{in} = 1$, $da/dV_{in} = -1$ and, at the unity-gain point, $du/dV_{in} = -dV_{out}/dV_{in} = 1$:
 
 $$
 r\,b = -u + a - u \quad\Longrightarrow\quad u = \frac{a - r\,b}{2} .
@@ -205,7 +209,7 @@ $$
 \frac{2x - D}{n} = \ln\left(1 - e^{-(D - y)}\right) - \ln\left(1 - e^{-y}\right) .
 $$
 
-Differentiate with respect to $x$ at the midpoint $x = y = D/2$, where each logarithm's derivative with respect to $y$ is $-1/(e^{D/2} - 1)$:
+Differentiate with respect to $x$ at the midpoint $x = y = D/2$, where each term on the right contributes $-1/(e^{D/2} - 1)$ to the derivative with respect to $y$:
 
 $$
 \frac2n = -\frac{2}{e^{D/2} - 1}\,\frac{dy}{dx}
@@ -309,7 +313,7 @@ $$
 
 **Units check.** $V_{DD}/V_T$ is dimensionless.
 
-**Sanity check.** The lab solves the subthreshold transfer curve numerically: at 45.3 mV its slope at the midpoint is −1.000, and at 200 mV it is −33.47. Halving the supply from 200 to 100 mV cuts the gain eightfold, because the gain is exponential in $V_{DD}$.
+**Sanity check.** Differentiating the subthreshold transfer curve numerically at its midpoint, as the verify script does, gives a slope of −1.000 at 45.3 mV and −33.47 at 200 mV. Halving the supply from 200 to 100 mV cuts the gain eightfold, because the gain is exponential in $V_{DD}$.
 
 <!-- answer-key -->
 
@@ -344,7 +348,11 @@ $$
 | Txt 19-01.c | sigma of V_M for 25 mV threshold sigma, r = 1 | 17.7 | mV |
 | Txt 19-01.d | ideal minimum supply, n = 1 | 36 | mV |
 | Txt 19-01.e | thermal voltage at 300 K | 25.85 | mV |
-| Txt 19-01.f | SKY130 NMOS to PMOS e-test drive ratio | 2.6 | — |
+| Txt 19-01.f | SKY130 NMOS to PMOS typical-corner drive ratio | 2.6 | — |
+| Txt 19-01.i | square root of the drive ratio | 1.61 | — |
+| Txt 19-01.j | 8 kT/q at 27 degrees C | 0.2 | V |
+| Txt 19-01.k | Claremont clock-frequency range | 305 | — |
+| Txt 19-01.l | V_M with the PMOS doubled, Example 1 | 0.643 | V |
 | Txt 19-01.g | slope factor n for 70 mV per decade at 300 K | 1.18 | — |
 | Txt 19-01.h | ideal subthreshold slope at 300 K | 59.5 | mV/decade |
 
@@ -369,7 +377,7 @@ The lab ([labs/19-01-lab](../labs/19-01-lab/README.md)) has two parts:
 | Knob | Improves | Costs | Typical decision owner |
 |---|---|---|---|
 | $W_p/W_n$ toward the symmetric ratio | Balanced noise margins, symmetric rise and fall | PMOS area and input capacitance (slower driving gates) | Standard-cell library designer |
-| $W_p/W_n$ below symmetric | Area, input capacitance, often delay in a chain (19-04) | Lower $V_M$, smaller $NM_L$ | Library designer |
+| $W_p/W_n$ below symmetric | Area, input capacitance, often delay in a chain (Problem 19-02.11, 19-04 §3.2) | Lower $V_M$, smaller $NM_L$ | Library designer |
 | Longer channel length | Higher gain (smaller λ), less variation | Area, capacitance, speed | Analog and special cells, not standard logic |
 | Lower $V_{DD}$ | Dynamic energy (∝ $V_{DD}^2$) | Gain, noise margins and speed; more sensitivity to variation | Product and power architect |
 | Lower thresholds | Overdrive and speed at a given supply | Leakage grows exponentially (19-06) | Process and library team (multi-$V_{TH}$ libraries) |
@@ -400,11 +408,11 @@ The lab ([labs/19-01-lab](../labs/19-01-lab/README.md)) has two parts:
 
 ### State of the art (as of Nov 2026)
 
-- **An open process you can simulate [Established].** SkyWater's SKY130 open PDK, which its maintainers describe as "a mature 180nm-130nm hybrid technology", runs its core logic at 1.8 V with 5.0 V I/O. Its 1.8 V transistors (`nfet_01v8` and `pfet_01v8`, with low- and high-threshold variants) have typical-corner thresholds of 0.645 V and −0.781 V at the minimum 0.15 µm length, and 0.538 V and −1.050 V at 8 µm: thresholds depend on length, so a single $V_{TN}$ is a simplification. The PDK's e-test saturation currents for 7 µm/0.15 µm devices are 3.512 mA and 1.347 mA, a drive ratio of **2.6** that a symmetric inverter's widths must undo ([R-314]). The documentation also cautions that the open PDK "is not intended to be used for production settings at this current time".
+- **An open process you can simulate [Established].** SkyWater's SKY130 open PDK, which its maintainers describe as "a mature 180nm-130nm hybrid technology", runs its core logic at 1.8 V with 5.0 V I/O. Its 1.8 V transistors (`nfet_01v8` and `pfet_01v8`, with low- and high-threshold variants) have typical-corner thresholds of 0.645 V and −0.781 V at the minimum 0.15 µm length, and 0.538 V and −1.050 V at 8 µm: thresholds depend on length, so a single $V_{TN}$ is a simplification. The PDK's typical-corner saturation currents for 7 µm/0.15 µm devices (bias not stated) are 3.512 mA and 1.347 mA, a drive ratio of **2.6**; at that bias, and ignoring the threshold difference, a symmetric inverter's widths would have to undo it ([R-314]). The library's own minimum inverter uses $W_p/W_n$ = 1.54, close to $\sqrt{2.6}$ = **1.61**, the delay-optimal ratio of 19-04 §3.2 rather than the symmetric one (19-03 §9). The documentation also cautions that the open PDK "is not intended to be used for production settings at this current time".
 - **Supplies have stopped falling [Industry estimate].** The IEEE IRDS 2024 More Moore roadmap, the latest edition, lists logic supplies of 0.70 V in 2024, 0.65 V in 2025 and 0.60 V from 2027 through 2039, and names the reason in §3.5's terms: "no solutions left to reduce the supply voltage because of lack of steep-subthreshold devices". Its subthreshold-slope row reaches 70 mV/decade, which is $n$ = **1.18** at 300 K against the ideal 59.5 mV/decade. The 2024 Executive Summary adds that supplies were raised to 0.75 V in 2021 because of "higher than anticipated leakage of FinFET transistors" ([R-314]).
-- **The thermal floor, measured early [Established].** Swanson and Meindl, in 1972, put the smallest supply at which their CMOS circuits functioned at "approximately 8kT/q", about 0.2 V at 27 °C, from requiring enough gain for digital use rather than gain of exactly 1 ([R-314]). §3.5's unity-gain floor, $2V_T\ln(1 + n)$, is the weaker bound.
-- **Near-threshold processors [Established].** Intel's "Claremont" IA-32 research processor (ISSCC 2012, 32 nm) "Operates from 280mV @3MHz to 1.2V @915MHz", with "4.7x better energy efficiency" in its near-threshold mode ([R-314]): the energy gain is real, and so is the factor of 300 in clock frequency.
-- **Subthreshold microcontrollers [Established / Industry estimate].** Ambiq's SPOT platform, introduced in 2015, "operates transistors at sub-threshold voltages (less than 0.5V)". In March 2026 Ambiq announced a 12 nm SPOT platform on TSMC N12e whose ultra-low-power mode is "engineered to operate as low as 300mV", for an upcoming part; treat that as a company claim until the part ships ([R-314]).
+- **The thermal floor, measured early [Established].** Swanson and Meindl, in 1972, put the smallest supply at which their CMOS circuits functioned at "approximately 8kT/q", about **0.2** V at 27 °C, from requiring enough gain for digital use rather than gain of exactly 1 ([R-314]). §3.5's unity-gain floor, $2V_T\ln(1 + n)$, is the weaker bound.
+- **Near-threshold processors.** Intel's "Claremont" IA-32 research processor was published at ISSCC 2012 (32 nm) **[Established]**; Intel's press overview reports that it "Operates from 280mV @3MHz to 1.2V @915MHz", with "4.7x better energy efficiency" in its near-threshold mode **[Vendor claim]** ([R-314]). Take both sides of the trade: the energy gain, and a factor of **305** in clock frequency.
+- **Subthreshold microcontrollers.** Ambiq's SPOT platform, introduced in 2015, "operates transistors at sub-threshold voltages (less than 0.5V)" **[Established]** (shipping products). In March 2026 Ambiq announced a 12 nm SPOT platform on TSMC N12e whose ultra-low-power mode is "engineered to operate as low as 300mV", for an upcoming part **[Vendor claim]**; treat it as a company claim until the part ships ([R-314]).
 
 ### Why it matters commercially
 
@@ -439,7 +447,7 @@ In each steady state one transistor is off, so the other carries no current and 
 
 <details><summary>Answer</summary>
 
-Up, but only a little: $r$ halves and $\sqrt r$ falls from 1 to 0.707, which moves the weighted average by tens of millivolts (43 mV for Example 1's inverter, from 0.600 to 0.643 V).
+Up, but only a little: $r$ halves and $\sqrt r$ falls from 1 to 0.707, which moves the weighted average by tens of millivolts (43 mV for Example 1's inverter, from 0.600 to **0.643** V).
 
 </details>
 

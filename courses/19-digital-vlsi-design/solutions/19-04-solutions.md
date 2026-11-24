@@ -44,7 +44,7 @@ Unit-sized stages see electrical efforts 1, 1 and 64: $D = (1 + 1) + (1 + 1) + (
 
 ### Solution 19-04.8
 
-An FO4 inverter has $d$ = 5, so τ = 22/5 = **4.4** ps. NAND2 FO4: $7.33 \times 4.4$ = **32.3** ps. Example 3's path: $18.39 \times 4.4$ = **80.9** ps. Calibrating τ from a chain absorbs the input-slope effect (§3.6), so these estimates are closer to simulation than ones based on a step-driven inverter.
+An FO4 inverter has $d$ = 5, so τ = 22/5 = **4.4** ps. NAND2 FO4: $7.33 \times 4.4$ = **32.3** ps. Example 3's path: $18.39 \times 4.4$ = **80.9** ps. With $p_{inv}$ = 0.5 an FO4 is 4.5τ, so τ = 22/4.5 = **4.89** ps, **11.1** % larger. Calibrating τ from a chain absorbs the input-slope effect (§3.6), so these estimates are closer to simulation than ones based on a step-driven inverter.
 
 ### Solution 19-04.9
 
@@ -87,6 +87,22 @@ With $B$ = 1, $F = GH$ for each topology.
 
 With a small load, the path effort is small and extra stages add more parasitic delay than they save; with a large load, the path needs about $\log_4 F$ stages, and the tree supplies them with useful logic instead of buffers.
 
+### Solution 19-04.13
+
+(a) Pull-down: two series pairs, each NMOS width 2. Pull-up: the pair A, B in parallel, in series with the pair C, D in parallel, so each PMOS has width 4. Every input presents 2 + 4 = 6 units: $g$ = 6/3 = **2** for each. The output node carries NMOS A and C (2 each) and PMOS C and D (4 each): 12 units, $p$ = 12/3 = **4** $p_{inv}$.
+
+(b) With μ = 2.5 the unit inverter has NMOS 1 and PMOS 2.5, 3.5 units of input. Series PMOS pairs need width 5. AOI21: inputs A and B present 2 + 5 = 7 units, $g$ = 7/3.5 = **2.00**; input C presents 1 + 5 = 6, $g$ = 6/3.5 = **1.71**; output diffusion 2 + 1 + 5 = 8, $p$ = 8/3.5 = **2.29** $p_{inv}$. AOI22: every input 2 + 5 = 7, $g$ = **2.00**; output 2 + 2 + 5 + 5 = 14, $p$ = **4.00** $p_{inv}$.
+
+(c) $g_C$ rose slightly and $p$ fell slightly for the AOI21; the AOI22's numbers did not move. An input whose pull-down and pull-up are both two-deep stacks scales exactly like the inverter: its NMOS width doubles (2 against 1) and its PMOS width doubles (2μ against μ), so the ratio to the inverter's $1 + \mu$ stays 2 for any μ. Input C has a single NMOS (width 1) but a two-deep PMOS (width 2μ), so its ratio $(1 + 2\mu)/(1 + \mu)$ grows with μ.
+
+### Solution 19-04.14
+
+(a) Input capacitance 1 + 1 = 2 units. Falling output: unit pull-down, compared with a unit inverter (3 units): $g_d$ = 2/3 = **0.667**. Rising output: the pull-up of a half-size inverter (1.5 units): $g_u$ = 2/1.5 = **1.33**. Average **1.00**.
+
+(b) Input capacitance per input 1 + 2 = 3 units. Rising output: unit pull-up, compared with the unit inverter: $g_u$ = 3/3 = **1.00**. Falling output: half-strength pull-down, compared with a half-size inverter: $g_d$ = 3/1.5 = **2.00**. Average **1.50**, against 4/3 for the unskewed NAND2.
+
+(c) During evaluation the dynamic node can only fall, so the inverter's output can only rise; precharge, when the output falls, is off the critical path. A HI-skew inverter makes that rising edge cheaper (0.833 against 1) and also lightens the load on the dynamic node, at the cost of a slow falling edge that does not matter.
+
 ---
 
 ## Answer key
@@ -128,6 +144,8 @@ With a small load, the path effort is small and extra stages add more parasitic 
 | 19-04.8a | tau | 4.4 | ps |
 | 19-04.8b | NAND2 FO4 delay | 32.3 | ps |
 | 19-04.8c | Example 3 path delay | 80.9 | ps |
+| 19-04.8d | tau with p_inv = 0.5 | 4.89 | ps |
+| 19-04.8e | difference between calibrations | 11.1 | % |
 | 19-04.9a | NOR2 + INV delay | 11.16 | τ |
 | 19-04.9b | INV + NAND2 delay | 10.30 | τ |
 | 19-04.10a | best stage effort, p_inv = 0.5 | 3.18 | — |
@@ -145,3 +163,16 @@ With a small load, the path effort is small and extra stages add more parasitic 
 | 19-04.12d | NAND8 + INV, H = 100 | 45.51 | τ |
 | 19-04.12e | NAND4 + NOR2, H = 100 | 42.51 | τ |
 | 19-04.12f | tree, H = 100 | 23.60 | τ |
+| 19-04.13a | AOI22 logical effort, each input | 2 | — |
+| 19-04.13b | AOI22 parasitic delay | 4 | p_inv |
+| 19-04.13c | AOI21 logical effort A and B, mu = 2.5 | 2.00 | — |
+| 19-04.13d | AOI21 logical effort C, mu = 2.5 | 1.71 | — |
+| 19-04.13e | AOI21 parasitic delay, mu = 2.5 | 2.29 | p_inv |
+| 19-04.13f | AOI22 logical effort, mu = 2.5 | 2.00 | — |
+| 19-04.13g | AOI22 parasitic delay, mu = 2.5 | 4.00 | p_inv |
+| 19-04.14a | LO-skew inverter falling effort | 0.667 | — |
+| 19-04.14b | LO-skew inverter rising effort | 1.33 | — |
+| 19-04.14c | LO-skew inverter average effort | 1.00 | — |
+| 19-04.14d | HI-skew NAND2 rising effort | 1.00 | — |
+| 19-04.14e | HI-skew NAND2 falling effort | 2.00 | — |
+| 19-04.14f | HI-skew NAND2 average effort | 1.50 | — |

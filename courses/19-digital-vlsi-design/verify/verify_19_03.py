@@ -326,6 +326,7 @@ lo_, hi_ = share(10e-15, [0.95 * bnd * 10e-15]), share(10e-15, [1.05 * bnd * 10e
 v.assert_true("simulation: cut-off below the boundary, equalized above",
               abs(lo_[1] - 0.85) < 1e-4 < lo_[0] - lo_[1] and abs(hi_[0] - hi_[1]) < 1e-4, f"{lo_} {hi_}")
 v.check("Ex 19-03.6f", (10e-15 * (1.2 - f3[0])) / F)
+v.check("Ex 19-03.6g", 1.2 - f3[0])
 v.assert_true("charge conserved, 3 fF", abs(10e-15 * (1.2 - f3[0]) - 3e-15 * f3[1]) < 1e-21, "")
 v.assert_true("lab charge_sharing matches", abs(lg.charge_sharing(1.2, 0.35, 10e-15, 3e-15) - f3[0]) < 1e-6, "")
 v.check("Ex 19-03.6e", 10e-15 * 0.1 / 1e-9 * 1e6)

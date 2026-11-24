@@ -7678,7 +7678,7 @@
   chapter: "19-03"
   see_also: [Static CMOS]
 - term: Pass-transistor logic
-  definition: "Logic that routes signals through transistor channels rather than connecting outputs to the rails. An NMOS passes a strong 0 but a 1 only up to V_DD − V_TN (raised by the body effect), which can leave the next stage drawing static current."
+  definition: "Logic that routes signals through transistor channels rather than connecting outputs to the rails. An NMOS passes a strong 0 but a 1 only up to V_DD − V_TN, with V_TN itself raised by the body effect, which can leave the next stage drawing static current."
   chapter: "19-03"
   see_also: [Transmission gate, Body effect]
 - term: Dynamic logic

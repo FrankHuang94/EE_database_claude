@@ -5,7 +5,7 @@
 |---|---|
 | **Course** | [19 · Digital VLSI Design](../README.md) |
 | **University equivalent** | The path-sizing part of a senior digital-IC course: the method of logical effort, optimal buffer chains and the best number of stages, and choosing gate topologies for speed (Sutherland, Sproull & Harris, *Logical Effort*, ch. 1–4; Weste & Harris, *CMOS VLSI Design*, §4.5; Rabaey, Chandrakasan & Nikolić, §5.4.3 and §6.2.1) |
-| **Prerequisites** | [19-02](19-02-cmos-inverter-dynamic.md) (intrinsic delay, self-loading and FO4), [19-03](19-03-logic-families.md) (static gates, their sizing and input capacitance), [01-04](../../01-calculus-for-engineers/chapters/01-04-applications-of-derivatives.md) (optimization with derivatives) |
+| **Prerequisites** | [19-02](19-02-cmos-inverter-dynamic.md) (intrinsic delay, self-loading and FO4), [19-03](19-03-logic-families.md) (static gates, their sizing and input capacitance), [01-04](../../01-calculus-for-engineers/chapters/01-04-applications-of-derivatives.md) (optimization with derivatives), [01-09](../../01-calculus-for-engineers/chapters/01-09-multivariable-calculus-1.md) (Lagrange multipliers) |
 | **Estimated study hours** | 9 |
 | **Last verified** | 2026-11-21 |
 
@@ -67,9 +67,11 @@ $$
 
 where $f = gh$ is the **stage effort**. Three numbers capture a gate: $g$ (how hard it is to drive, a property of its topology), $h$ (how big its load is relative to itself, a property of its sizing) and $p$ (its self-loading, independent of size, as 19-02 showed). For the inverter, $g$ = 1 and $p = p_{inv}$ = 1, so the FO4 delay is $d = 1 \times 4 + 1$ = 5, the same $t_{p0}(1 + 4/\gamma)$ as 19-02.
 
+**What value for $p_{inv}$?** An inverter's parasitic delay is its own diffusion charged through its own resistance, so $p_{inv}$ in units of τ is exactly 19-02's self-loading ratio γ. This chapter follows the Weste–Harris teaching convention $p_{inv}$ = 1, which makes an FO4 5τ. Ho, Mai and Horowitz's rule that a fan-out-of-1 delay is a third of an FO4 (19-02 §3.5) implies $p_{inv} \approx$ 0.5 instead, and an FO4 of **4.5**τ. The conclusions below barely move: the best stage effort is 3.59 for $p_{inv}$ = 1 and 3.18 for 0.5 (Problem 19-04.10), both "about 4" within a flat optimum. What changes is a τ calibrated from a measured FO4: FO4/5 and FO4/4.5 differ by **11** %, so say which convention a number assumes.
+
 ### 3.2 Logical effort and parasitic delay of common gates
 
-The logical effort of a gate sized for unit drive is its input capacitance divided by the inverter's, which 19-03 §3.2 computed with $\mu$ = 2:
+The logical effort of a gate sized for unit drive is its input capacitance divided by the inverter's, which 19-03 §3.2 computed with $\mu$ = 2. That value is the Weste–Harris arithmetic convention; real mobility ratios are 2 to 3 (19-01) and the effective ratio is lower under velocity saturation, so the efforts below are teaching values (Problem 19-04.13 redoes two gates with μ = 2.5):
 
 | Gate | Logical effort $g$ | Parasitic delay $p$ |
 |---|---|---|
@@ -81,6 +83,12 @@ The parasitic delays follow from counting output diffusion. A unit-drive NAND-$n
 
 Two observations follow. Logical effort grows with the number of inputs, so a single wide gate is a heavy load on its driver. And NOR is worse than NAND because its series devices are the weaker PMOS; with $\mu$ = 2, a NOR2 costs 5/3 against a NAND2's 4/3.
 
+**Complex gates.** The same counting gives any gate's efforts, input by input. An AOI21, $F = \overline{AB + C}$, sized for unit drive with μ = 2, has series NMOS A and B of width 2 and a single NMOS C of width 1. Its pull-up puts the parallel pair A, B in series with C, so every PMOS has width 4. Inputs A and B each present 2 + 4 = 6 units, so $g_A = g_B$ = 6/3 = **2**; input C presents 1 + 4 = 5 units, $g_C$ = 5/3 = **1.67**. With PMOS C placed next to the output, the output node carries NMOS A (2), NMOS C (1) and PMOS C (4): 7 units, $p$ = 7/3 = **2.33** $p_{inv}$. Because the inputs differ, a late-arriving critical signal should use the input with the smallest effort, here C.
+
+**Skewed gates.** A gate can be sized to favor one output edge. A HI-skew inverter keeps the unit PMOS (width 2) but halves the NMOS to width 0.5, so its input capacitance is 2.5 units. Its rising output has the pull-up of a unit inverter (3 units of input), so its rising logical effort is $g_u$ = 2.5/3 = **0.833**; its falling output has the pull-down of a half-size inverter (1.5 units), so $g_d$ = 2.5/1.5 = **1.67**. The average, **1.25**, is worse than an ordinary inverter's 1: skewing speeds the edge that matters at the expense of the other, which is what the inverter after a domino gate (19-03), whose output only ever needs to rise quickly during evaluation, wants. Problem 19-04.14 treats LO-skew gates and a skewed NAND2.
+
+**The best P/N ratio.** The tables size each PMOS μ times wider than the NMOS it complements (β = μ, where β = $W_p/W_n$), which equalizes rising and falling delays. That is not the fastest choice for a chain. For an inverter driving copies of itself, the average of the two delays is proportional to $(1 + \beta)(1 + \mu/\beta)$: a wider PMOS speeds the rising edge but adds input capacitance that slows both. Setting the derivative to zero gives $\beta_{opt} = \sqrt\mu$ (Problem 19-02.11). For μ = 2, β = **1.41** is **2.9** % faster than β = 2; for μ = 2.5, β = **1.58** is **4.8** % faster than β = 2.5. The optimum is flat, which is why logical effort keeps β = μ by convention; real libraries often sit near the square root, as SkyWater's `inv_1` does with $W_p/W_n$ = 1.54 (19-03 §9).
+
 ### 3.3 Paths: total effort and the minimum delay
 
 A path of $N$ stages has delay $D = \sum(g_ih_i + p_i)$. Define three path quantities:
@@ -91,13 +99,15 @@ A path of $N$ stages has delay $D = \sum(g_ih_i + p_i)$. Define three path quant
 
 Their product is the **path effort** $F = GBH$. The point of the definitions is that $F$ is fixed by the path's topology and its two end capacitances, whatever the internal sizes: the stage efforts satisfy $\prod f_i = \prod g_ih_i = G \cdot \prod h_i$, and the internal capacitances cancel in $\prod h_i$ except for the ends and the branching, so $\prod f_i = F$.
 
-**Minimizing the delay.** With $P = \sum p_i$ fixed (it does not depend on sizes), minimize $\sum f_i$ subject to $\prod f_i = F$. Take logarithms, $x_i = \ln f_i$ with $\sum x_i = \ln F$, and minimize $\sum e^{x_i}$. A Lagrange multiplier gives $e^{x_i} = \lambda$ for every $i$: **all stage efforts are equal**,
+**Minimizing the delay.** With $P = \sum p_i$ fixed (it does not depend on sizes), minimize $\sum f_i$ subject to $\prod f_i = F$. Take logarithms, $x_i = \ln f_i$ with $\sum x_i = \ln F$, and minimize $\sum e^{x_i}$. A Lagrange multiplier Λ gives $e^{x_i} = \Lambda$ for every $i$: **all stage efforts are equal**,
 
 $$
 \hat f = F^{1/N}, \qquad \hat D = N F^{1/N} + P .
 $$
 
 (Equivalently, by the inequality of arithmetic and geometric means, $\tfrac1N\sum f_i \ge (\prod f_i)^{1/N}$, with equality when all are equal.) This is the relay-race intuition made exact.
+
+> **Math refresher — Lagrange multipliers and the AM–GM inequality.** To minimize $\phi(x_1, \ldots, x_N)$ subject to a constraint $c(x_1, \ldots, x_N) = 0$, look for points where the gradient of φ is parallel to the gradient of $c$: $\nabla\phi = \Lambda\nabla c$ for some number Λ, the multiplier (01-09). Here $\phi = \sum e^{x_i}$ and $c = \sum x_i - \ln F$, so $\partial\phi/\partial x_i = e^{x_i}$ must equal Λ for every $i$, and all the $f_i$ are equal. The arithmetic–geometric mean inequality reaches the same answer without calculus: for positive numbers, the average is at least the geometric mean, with equality only when all are equal. With the product fixed at $F$, the sum is smallest when every factor is $F^{1/N}$. In portfolio language, it is the same reason that, for a fixed product of growth factors, the arithmetic average is smallest when the factors are all equal.
 
 ### 3.4 Sizing the gates
 
@@ -150,7 +160,7 @@ Logical effort inherits the RC model's simplifications, and adds a few of its ow
 
 > **Going deeper — logical effort in synthesis.** Commercial synthesis and placement tools size gates and insert buffers using characterized delay tables and numerical optimization rather than the closed form, but their behavior matches the method's predictions: they balance stage efforts on critical paths, insert buffer trees with fan-outs near four, and restructure wide gates into trees. The method remains the designer's way to predict what the tool should do, and to recognize when it has not.
 
-![Minimum delay of three 8-input AND topologies against electrical effort from 1 to 1000 on a log axis: NAND8 plus inverter and NAND4 plus NOR2 rise steeply to about 125 tau, while the four-stage tree rises slowly to about 37 tau; NAND4 plus NOR2 is lowest below H of about 7](../../../assets/figures/19-04/topologies.svg)
+![Minimum delay of three 8-input AND topologies against electrical effort from 1 to 1000 on a log axis: NAND8 plus inverter and NAND4 plus NOR2 rise steeply, while the four-stage tree rises slowly; NAND4 plus NOR2 is lowest below H of about 7](../../../assets/figures/19-04/topologies.svg)
 
 *Figure 3. The 8-input AND topologies of Example 6 against the path's electrical effort. Fewer stages win only for small loads; above $H$ = 6.7 the four-stage tree is fastest (Problem 19-04.12).*
 
@@ -194,7 +204,7 @@ Backward: the inverter has $C_{in} = 1 \times 200/4.46$ = **44.8**; each NOR2 ha
 
 **Setup.** A unit inverter with 2 fF of input capacitance must drive a 10 pF off-chip load. How many inverting stages are best, and what is the delay? What would a single unit inverter take?
 
-**Solution.** $H$ = 10 pF/2 fF = 5000. $\hat N = \ln 5000/\ln 3.59$ = **6.66**. Six stages: $D = 6 \times 5000^{1/6} + 6$ = **30.81** τ. Seven: **30.63** τ. Eight: **31.20** τ. Seven stages are best, **533.8** ps; if the signal must not be inverted, six (or eight) stages cost 0.6% more. A single unit inverter would take $5000 + 1$ τ = **87.1** ns.
+**Solution.** $H$ = 10 pF/2 fF = 5000. $\hat N = \ln 5000/\ln 3.59$ = **6.66**. Six stages: $D = 6 \times 5000^{1/6} + 6$ = **30.81** τ. Seven: **30.63** τ. Eight: **31.20** τ. Seven stages are best, **533.8** ps; if the signal must not be inverted, six stages cost 0.6% more and eight 1.9% more. A single unit inverter would take $5000 + 1$ τ = **87.1** ns.
 
 **Units check.** τ × 17.43 ps.
 
@@ -286,6 +296,18 @@ The four-stage tree of small gates is fastest, though it has the most gates. The
 | Txt 19-04.d | 13 FO4 in units of tau | 65 | τ |
 | Txt 19-04.e | Example 3 paths in 13 FO4 | 3.5 | — |
 | Txt 19-04.f | falling-edge logical effort of an equal-width NAND2 | 2 | — |
+| Txt 19-04.g | FO4 in tau for p_inv = 0.5 | 4.5 | τ |
+| Txt 19-04.h | tau calibrations FO4/4.5 against FO4/5 | 11 | % |
+| Txt 19-04.i | AOI21 logical effort, inputs A and B | 2 | — |
+| Txt 19-04.j | AOI21 logical effort, input C | 1.67 | — |
+| Txt 19-04.k | AOI21 parasitic delay | 2.33 | p_inv |
+| Txt 19-04.l | HI-skew inverter rising effort | 0.833 | — |
+| Txt 19-04.m | HI-skew inverter falling effort | 1.67 | — |
+| Txt 19-04.n | HI-skew inverter average effort | 1.25 | — |
+| Txt 19-04.o | best P/N ratio, mu = 2 | 1.41 | — |
+| Txt 19-04.p | speed gain over beta = 2 | 2.9 | % |
+| Txt 19-04.q | best P/N ratio, mu = 2.5 | 1.58 | — |
+| Txt 19-04.r | speed gain over beta = 2.5 | 4.8 | % |
 
 ## 5. Simulate it
 
@@ -406,7 +428,7 @@ The NAND8 has a large logical effort and a parasitic delay of 8 units; the tree 
 
 <details><summary>Answer</summary>
 
-Logical effort assumes each gate's delay depends only on its load; in a chain each gate is driven by a ramp from the previous one, which lengthens its delay (19-02 §3.6). Calibrating τ from an FO4 chain absorbs most of this.
+Logical effort assumes each gate's delay depends only on its load; in a chain each gate is driven by a ramp from the previous one, which lengthens its delay (19-02 §3.6). Calibrating τ from an FO4 chain absorbs much of it for stages driven by a previous stage, but not for a stage driven by a sharp edge, which such a τ over-predicts.
 
 </details>
 

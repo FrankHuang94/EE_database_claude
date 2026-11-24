@@ -54,7 +54,7 @@ Each NMOS has $R/3$ = 3.33 kΩ. Number the internal nodes from ground.
 
 ### Solution 19-03.7
 
-(a) $0.69 \times 4\ \text{kΩ} \times 3\ \text{fF} \times 16 \times 17/2$ = **1131** ps.
+(a) $\ln 2 \times 4\ \text{kΩ} \times 3\ \text{fF} \times 16 \times 17/2$ = **1131** ps.
 
 (b) $m_{opt} = \sqrt{2 \times 25/(0.693 \times 12)}$ = **2.45**.
 
@@ -98,7 +98,7 @@ $$
 
 (b) Footed: three logic NMOS, the precharge PMOS, the foot, and the two-transistor inverter: **7**. A static AOI21 (6) plus an inverter (2): **8**.
 
-(c) $\overline F$ would require a domino stage whose output falls when its inputs rise, which would violate the monotonicity required of the next stage's inputs: every domino stage is non-inverting. The usual remedy is **dual-rail** domino, which computes $F$ and $\overline F$ in two stages from both polarities of every input.
+(c) $\overline F$ would require a domino stage whose output falls when its inputs rise, which would violate the monotonicity required of the next stage's inputs: every domino stage is non-inverting. The usual remedy is **dual-rail** domino, which computes $F$ and $\overline F$ in two complementary domino gates, side by side, from both polarities of every input.
 
 ---
 

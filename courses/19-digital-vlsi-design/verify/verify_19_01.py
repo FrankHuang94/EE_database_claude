@@ -167,6 +167,27 @@ v.check("Txt 19-01.d", 1e3 * brentq(lambda d: sub_gain(d, 1.0) - 1, 0.01, 0.1, x
 v.check("Txt 19-01.e", 1e3 * VT)
 # Practitioner lens: SKY130 e-test currents [R-314] and the IRDS 70 mV/decade slope
 v.check("Txt 19-01.f", 3.512 / 1.347)
+v.check("Txt 19-01.i", math.sqrt(3.512 / 1.347))
+v.check("Txt 19-01.j", 8 * 1.380649e-23 * 300.15 / 1.602176634e-19)
+v.check("Txt 19-01.k", 915 / 3)
+v.check("Txt 19-01.l", vm(1.2, 0.35, 0.35, 200e-6, 400e-6))
+
+
+def gain_lambda(lam, vdd=1.2, vt=0.35, k=200e-6, h=1e-7):
+    """Symmetric inverter with channel-length modulation (1 + lambda V_DS) in saturation: slope of the VTC at V_M."""
+    def i_n(vi, vo):
+        ov = vi - vt
+        if ov <= 0:
+            return 0.0
+        return k * (ov * vo - vo * vo / 2) if vo < ov else 0.5 * k * ov * ov * (1 + lam * vo)
+
+    def vo_of(vi):
+        return brentq(lambda vo: i_n(vi, vo) - i_n(vdd - vi, vdd - vo), 0.0, vdd, xtol=1e-15)
+    return abs(vo_of(vdd / 2 + h) - vo_of(vdd / 2 - h)) / (2 * h)
+
+
+v.check("Lab 19-01.b", gain_lambda(0.05))
+v.check("Lab 19-01.c", gain_lambda(0.2))
 v.check("Txt 19-01.g", 70e-3 / (VT * math.log(10)))
 v.check("Txt 19-01.h", 1e3 * VT * math.log(10))
 

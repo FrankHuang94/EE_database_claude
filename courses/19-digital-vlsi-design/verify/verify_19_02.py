@@ -149,6 +149,7 @@ v.check("Ex 19-02.4a", tp0 / P)
 v.check("Ex 19-02.4b", tp0 * (1 + 4 * 2 / 2) / P)
 v.check("Ex 19-02.4c", tp0 * (1 + 50 / 2) / P)
 v.check("Ex 19-02.4d", tp0 * (1 + 50 / 8) / P)
+v.check("Ex 19-02.4e", (1 + 50 / 2) / (1 + 50 / 8))
 v.check("Lab 19-02.b", tp0 * (1 + 50 / 4) / P)
 v.assert_true("lab tp_with_fanout matches", abs(dl.tp_with_fanout(tp0, 50 * F, 2 * F, 4) - tp0 * 7.25) < 1e-18, "")
 
@@ -198,7 +199,7 @@ v.check("Txt 19-02.h", 360 * 0.18)
 v.check("Txt 19-02.i", 77.2 / 2.47)
 v.check("Txt 19-02.j", 1.8 / 0.8)
 v.check("Txt 19-02.k", 44.1 / 24.7)
-v.check("Txt 19-02.l", 1.06 / 0.62)
+v.check("Txt 19-02.l", 1.0611080997 / 0.6240911176)  # IRDS 2024 MM01 "CV/I (ps) - FO3 load, HP"
 v.check("Txt 19-02.m", 77.2 / 34.7)
 
 # ---------------------------------------------------------------- Problems 1-3
@@ -296,5 +297,48 @@ v.check("19-02.12c", edn_opt(3))
 xs = np.linspace(0.4, 10, 500)
 ed2 = (xs / (xs - 0.35)) ** 4
 v.assert_true("square-law E D^2 decreases monotonically", bool(np.all(np.diff(ed2) < 0)), "")
+
+
+# ---------------------------------------------------------------- Problem 13: capacitances from device data
+WN, WP, L13, COX, COV, CJ, CJSW, LD, KB, KS = 0.5, 1.0, 0.15, 8.5, 0.3, 1.0, 0.25, 0.5, 0.62, 0.75
+
+
+def c_int_dev(w):
+    return w * LD * CJ * KB + (2 * LD + w) * CJSW * KS + 2 * COV * w
+
+
+cg13 = (COX * L13 + 2 * COV) * (WN + WP)
+v.check("19-02.13a", cg13)
+v.check("19-02.13b", c_int_dev(WN))
+v.check("19-02.13c", c_int_dev(WP))
+v.check("19-02.13d", c_int_dev(WN) + c_int_dev(WP))
+v.check("19-02.13e", (c_int_dev(WN) + c_int_dev(WP)) / cg13)
+v.check("19-02.13f", c_int_dev(WN) + c_int_dev(WP) + 4 * cg13)
+
+
+# ---------------------------------------------------------------- Problem 14: fall time by integrating the discharge ODE
+def discharge_times(c, k, vdd, vt, levels):
+    from scipy.integrate import solve_ivp
+
+    def ids_n(vo):
+        vov = vdd - vt
+        return k * (vov * vo - vo * vo / 2) if vo < vov else k * vov * vov / 2
+
+    out = {}
+    for lev in levels:
+        ev = lambda t, y, lev=lev: y[0] - lev
+        ev.terminal, ev.direction = True, -1
+        sol = solve_ivp(lambda t, y: [-ids_n(y[0]) / c], (0, 5e-9), [vdd], events=ev, rtol=1e-11, atol=1e-15, max_step=1e-13)
+        out[lev] = sol.t_events[0][0]
+    return out
+
+
+tt = discharge_times(20e-15, 200e-6, 1.2, 0.35, (1.08, 0.6, 0.12))
+v.check("19-02.14a", tt[1.08] / P)
+v.check("19-02.14b", tt[0.12] / P)
+v.check("19-02.14c", (tt[0.12] - tt[1.08]) / P)
+v.check("19-02.14d", (tt[0.12] - tt[1.08]) / tt[0.6])
+v.check("19-02.14e", math.log(9) * 12.5728e3 * 20e-15 / P)
+v.check("19-02.14f", 100 * (math.log(9) * 12.5728e3 * 20e-15 / (tt[0.12] - tt[1.08]) - 1))
 
 sys.exit(v.finish())

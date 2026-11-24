@@ -30,8 +30,8 @@ Files:
 
 ## Expected results
 
-- Part 1: $V_M$ = 0.6000 V (symmetric) and 0.5244 V (equal widths), the same in ngspice and Python.
-- Part 2: gains of 164.8, 84.8 and 44.8, each equal to $2(1 + \lambda V_{DS})/(\lambda V_{ov})$: halving λ roughly doubles the gain. ngspice measures 84.80 for λ = 0.1 V⁻¹.
+- Part 1: $V_M$ = 0.6000 V (symmetric) and 0.5243 V (equal widths) in Python; ngspice's swept curve gives 0.5244 V.
+- Part 2: gains of **164.8**, 84.8 and **44.8**, each equal to $2(1 + \lambda V_{DS})/(\lambda V_{ov})$: halving λ roughly doubles the gain. ngspice measures 84.80 for λ = 0.1 V⁻¹.
 - Part 3: at $r$ = 1 both margins are 0.5375 V; as $r$ grows $NM_L$ falls and $NM_H$ rises, and the smaller of the two is largest at $r$ = 1.
 - Part 4: the levels are 0.55, 1.119, then exactly 0 and 1.2 V: the second stage already sits on a rail, because 1.119 V turns its PMOS off.
 - Part 5: about 17.7 mV, matching $\sigma_{VT}/\sqrt2$.
@@ -60,3 +60,5 @@ A CD4007 (a classic CMOS array with three complementary pairs) on a breadboard a
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
 | Lab 19-01.a | first output of the chain from 0.55 V | 1.119 | V |
+| Lab 19-01.b | gain at V_M, lambda = 0.05 per volt | 164.8 | — |
+| Lab 19-01.c | gain at V_M, lambda = 0.2 per volt | 44.8 | — |
