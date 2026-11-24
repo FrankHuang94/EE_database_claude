@@ -207,8 +207,9 @@ v.check("21-12.5a", 12.5e9 * 5.14e-12 * 1e3)
 v.check("21-12.5b", 12.5e9 * 58.6e-12 * 1e3)
 v.check("21-12.5c", math.ceil(12.5 / 2.38))
 v.check("21-12.6", nfft * 14 * 8000 / 1e9)
-v.check("21-12.7a", wifi(936, 12, 5 / 6, 0.8e-6, 2) / 1e6)
-v.check("21-12.7b", wifi(936, 12, 5 / 6, 3.2e-6, 2) / 1e6)
+assert 4 * 980 == 3920 and 2 * 980 == 1960  # 80 MHz is a quarter of the 320 MHz tone plan
+v.check("21-12.7a", wifi(980, 12, 5 / 6, 0.8e-6, 2) / 1e6)
+v.check("21-12.7b", wifi(980, 12, 5 / 6, 3.2e-6, 2) / 1e6)
 tau8 = 10 / C
 s8, d8 = twr(tau8, 1e-3, 0.5e-3, 10e-6, -10e-6)
 v.check("21-12.8a", tau8 * 1e9)

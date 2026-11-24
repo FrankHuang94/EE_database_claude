@@ -40,7 +40,7 @@ $2048 \times 12 = 24{,}576$ per FFT; $14 \times 8000$ = 112,000 symbols/s: **2.7
 
 ### Solution 21-12.7
 
-(a) $2 \times 936 \times 12 \times \tfrac56/13.6\ \mu\text{s}$ = **1376.5** Mb/s. (b) Over 16 µs symbols: **1170.0** Mb/s, 15% less, the price of the longer guard interval that outdoor and large-room channels need.
+(a) $2 \times 980 \times 12 \times \tfrac56/13.6\ \mu\text{s}$ = **1441.2** Mb/s. (b) Over 16 µs symbols: **1225.0** Mb/s, 15% less, the price of the longer guard interval that outdoor and large-room channels need.
 
 ### Solution 21-12.8
 
@@ -104,8 +104,8 @@ Automotive and IoT growth offset part of a 13% handset decline: the diversificat
 | 21-12.5b | power at 58.6 pJ/b | 732.5 | mW |
 | 21-12.5c | parallel decoders | 6 | |
 | 21-12.6 | FFT multiplications per second | 2.75 | billion |
-| 21-12.7a | rate, 0.8 µs guard | 1376.5 | Mb/s |
-| 21-12.7b | rate, 3.2 µs guard | 1170.0 | Mb/s |
+| 21-12.7a | rate, 0.8 µs guard | 1441.2 | Mb/s |
+| 21-12.7b | rate, 3.2 µs guard | 1225.0 | Mb/s |
 | 21-12.8a | flight time | 33.36 | ns |
 | 21-12.8b | single-sided error | 3.00 | m |
 | 21-12.8c | double-sided error | −1.0e-6 | mm |

@@ -34,3 +34,5 @@ Math is written as `\(...\)` (inline) and `\[...\]` (display), which Anki render
 | 17 · Communication Systems | [17-communication-systems.csv](17-communication-systems.csv) | 102 |
 | 18 · Embedded Systems and Microcontrollers | [18-embedded-systems-and-microcontrollers.csv](18-embedded-systems-and-microcontrollers.csv) | 95 |
 | 19 · Digital VLSI Design | [19-digital-vlsi-design.csv](19-digital-vlsi-design.csv) | 82 |
+| 20 · Analog and Mixed-Signal IC Design | [20-analog-and-mixed-signal-ic-design.csv](20-analog-and-mixed-signal-ic-design.csv) | 73 |
+| 21 · RF and Microwave Engineering | [21-rf-and-microwave-engineering.csv](21-rf-and-microwave-engineering.csv) | 90 |

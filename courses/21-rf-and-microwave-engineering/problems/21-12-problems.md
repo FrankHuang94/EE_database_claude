@@ -38,7 +38,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 21-12.7 [A]
 
-**An 80 MHz Wi-Fi 7 link.** At 80 MHz an 802.11be symbol has 936 data subcarriers. Find the two-stream rate at 4096-QAM, rate 5/6, with (a) a 0.8 µs guard interval and (b) a 3.2 µs guard interval.
+**An 80 MHz Wi-Fi 7 link.** At 80 MHz an 802.11be symbol has 980 data subcarriers (a quarter of the 320 MHz plan's 3920). Find the two-stream rate at 4096-QAM, rate 5/6, with (a) a 0.8 µs guard interval and (b) a 3.2 µs guard interval.
 
 ### Problem 21-12.8 [C]
 

@@ -32,9 +32,9 @@ Conventions:
 | $A_0 = g_{m1}R_1\,g_{m6}R_2$; $z = g_{m6}/C_c$ (RHP) | Miller-compensated two-stage | [20-02](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md) |
 | $p_1 \approx 1/(g_{m6}R_1R_2C_c)$, $p_2 \approx g_{m6}C_c/[C_1C_L + C_c(C_1 + C_L)]$; $\omega_u = g_{m1}/C_c$ | Pole splitting | [20-02](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md) |
 | $p_{2,max} = \omega_{T6}\,C_c/(C_L + C_c)$ | Second stage's own capacitance bounds $p_2$ | [20-02](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md) |
-| Nulling resistor: zero at $1/[C_c(1/g_{m6} - R_z)]$; $R_z = 1/g_{m6}$ cancels it; $R_zg_{m6} = (W/L)_6/[n(W/L)_z]$ tracks | Triode-device $R_z$ |
+| Nulling resistor: zero at $1/[C_c(1/g_{m6} - R_z)]$; $R_z = 1/g_{m6}$ cancels it; $R_zg_{m6} = (W/L)_6/[n(W/L)_z]$ tracks | Triode-device $R_z$ | [20-02](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md) |
 | Zero on $p_2$: $R_z = 1/g_{m6} + 1/(p_2C_c)$, ≈ $(1 + C_L/C_c)/g_{m6}$ when $p_2 \approx g_{m6}/C_L$ | The shortcut needs $C_1 \ll C_c, C_L$ | [20-02](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md) |
-| $\text{PM} \approx 90° - \arctan(\omega_u/p_2) - \arctan(\omega_u/z)$ | Two-pole estimate; RHP zero subtracts phase | [20-02](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md) | [20-02](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md) |
+| $\text{PM} \approx 90° - \arctan(\omega_u/p_2) - \arctan(\omega_u/z)$ | Two-pole estimate; RHP zero subtracts phase | [20-02](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md) |
 | $\text{SR} = I_{SS}/C_c = 2\omega_u/(g_m/I_D)_1$; $I_6 \ge I_{SS}(1 + C_L/C_c)$ | Slewing; output stage must not starve | [20-02](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md) |
 | $t_{slew} = (V - \text{SR}\,\tau)/\text{SR}$, $t_{lin} = \tau\ln[\text{SR}\,\tau/(\varepsilon V)]$ | Large-step settling | [20-02](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md) |
 | Nested Miller (Butterworth): $C_{m1} = 4g_{m1}C_L/g_{m3}$, $C_{m2} = 2g_{m2}C_L/g_{m3}$, $\omega_u = g_{m3}/(4C_L)$ | Three stages | [20-02](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md) |
@@ -93,8 +93,8 @@ Conventions:
 | Redundancy margin $m_k = \sum_{j>k}w_j - w_k + 1$ | Sub-binary SAR | [20-07](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-07-nyquist-adcs.md) |
 | 1.5-bit MDAC: $v_{res} = (2v_{in} - DV_{REF})/(1 + 1/(A\beta))$, $\beta = C_f/(C_s + C_f + C_p)$ | Finite-gain error | [20-07](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-07-nyquist-adcs.md) |
 | Stage scaling: referred noise $kT/C_1(1 + \tfrac12 + \tfrac14 + \cdots) \to 2kT/C_1$ | Capacitors halve per stage | [20-07](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-07-nyquist-adcs.md) |
-| Two-channel interleaving: offset spur $\Delta o^2/(2A^2)$ at $f_s/2$; gain image $(\alpha/2)^2$; skew image $(\pi f_{in}\Delta t)^2$ at $f_s/2 - f_{in}$ | Power ratios to the signal |
-| $M$ channels: total skew-spur power ≈ $(2\pi f_{in}\sigma_{skew})^2$ | $\sigma_{skew}$ = per-channel rms skew; two channels: $\sigma = \Delta t/2$ | [20-07](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-07-nyquist-adcs.md) | [20-07](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-07-nyquist-adcs.md) |
+| Two-channel interleaving: offset spur $\Delta o^2/(2A^2)$ at $f_s/2$; gain image $(\alpha/2)^2$; skew image $(\pi f_{in}\Delta t)^2$ at $f_s/2 - f_{in}$ | Power ratios to the signal | [20-07](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-07-nyquist-adcs.md) |
+| $M$ channels: total skew-spur power ≈ $(2\pi f_{in}\sigma_{skew})^2$ | $\sigma_{skew}$ = per-channel rms skew; two channels: $\sigma = \Delta t/2$ | [20-07](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-07-nyquist-adcs.md) |
 
 ## Sigma-delta converters
 
@@ -105,8 +105,8 @@ Conventions:
 | Order $L$: $P_q \approx \dfrac{\Delta^2}{12}\cdot\dfrac{\pi^{2L}}{(2L + 1)\text{OSR}^{2L+1}}$: $(6L + 3)$ dB per octave of OSR | Ideal NTF $(1 - z^{-1})^L$ | [20-08](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-08-sigma-delta-converters.md) |
 | Lee's rule $\|\text{NTF}\|_\infty \le 2$ (1.5 in practice) | 1-bit higher-order stability | [20-08](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-08-sigma-delta-converters.md) |
 | Integrator leak $p = (1 + 1/A)/[1 + (1 + C_s/C_i)/A] \approx 1 - (C_s/C_i)/A$; $P_q \approx \sigma_e^2[\varepsilon^2/\text{OSR} + \pi^2/(3\,\text{OSR}^3)]$ | First-order loop; for $C_s = C_i$ leakage matters if $A < \sqrt3\,\text{OSR}/\pi$ | [20-08](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-08-sigma-delta-converters.md) |
-| MASH 1-1: $Y = z^{-2}X + (1 - z^{-1})^2E_2$ | Needs matched analog and digital filters |
-| MASH 1-1 leak residue $\varepsilon z^{-2}E_1$: need $\varepsilon < \pi^2/(\sqrt5\,\text{OSR}^2)$ | Far stricter than a single loop | [20-08](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-08-sigma-delta-converters.md) | [20-08](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-08-sigma-delta-converters.md) |
+| MASH 1-1: $Y = z^{-2}X + (1 - z^{-1})^2E_2$ | Needs matched analog and digital filters | [20-08](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-08-sigma-delta-converters.md) |
+| MASH 1-1 leak residue $\varepsilon z^{-2}E_1$: need $\varepsilon < \pi^2/(\sqrt5\,\text{OSR}^2)$ | Far stricter than a single loop | [20-08](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-08-sigma-delta-converters.md) |
 | CT NRZ jitter: $P_{jitter} = E[(y[n] - y[n-1])^2]\,(\sigma_tf_s)^2/\text{OSR}$ | Multi-bit feedback reduces the steps | [20-08](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-08-sigma-delta-converters.md) |
 | Decimation filter: $\text{sinc}^{L+1}$ | One order above the modulator | [20-08](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-08-sigma-delta-converters.md) |
 
@@ -127,8 +127,8 @@ Conventions:
 |---|---|---|
 | $G(s) = (I_{cp}/2\pi)Z(s)(K_{VCO}/s)/N$; $\theta_{out}/\theta_{ref} = NG/(1 + G)$ | Phase-domain model | [20-10](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-10-plls-and-jitter.md) |
 | Second order: $\omega_n = \sqrt{I_{cp}K_{VCO}/(2\pi NC)}$, $\zeta = (R/2)\sqrt{I_{cp}K_{VCO}C/(2\pi N)}$ | R in series with C | [20-10](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-10-plls-and-jitter.md) |
-| Third order: $\text{PM}_{max} = \arctan[(b - 1)/(2\sqrt b)]$, $b = 1 + C_1/C_2$ | Zero and pole $\sqrt b$ either side of crossover |
-| $Z(s) = (1 + sRC_1)/[s(C_1 + C_2)(1 + sRC_1C_2/(C_1 + C_2))]$; $\omega_z = 1/(RC_1)$, $\omega_p = (C_1 + C_2)/(RC_1C_2)$; $C_1 + C_2 = K\sqrt b/\omega_c^2$, $K = I_{cp}K_{VCO}/(2\pi N)$ | Third-order loop filter; from $\lvert G(j\omega_c)\rvert = 1$ | [20-10](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-10-plls-and-jitter.md) | [20-10](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-10-plls-and-jitter.md) |
+| Third order: $\text{PM}_{max} = \arctan[(b - 1)/(2\sqrt b)]$, $b = 1 + C_1/C_2$ | Zero and pole $\sqrt b$ either side of crossover | [20-10](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-10-plls-and-jitter.md) |
+| $Z(s) = (1 + sRC_1)/[s(C_1 + C_2)(1 + sRC_1C_2/(C_1 + C_2))]$; $\omega_z = 1/(RC_1)$, $\omega_p = (C_1 + C_2)/(RC_1C_2)$; $C_1 + C_2 = K\sqrt b/\omega_c^2$, $K = I_{cp}K_{VCO}/(2\pi N)$ | Third-order loop filter; from $\lvert G(j\omega_c)\rvert = 1$ | [20-10](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-10-plls-and-jitter.md) |
 | $f_c \lesssim f_{ref}/10$; sampled-loop limit $\omega_c < \omega_{ref}/[\pi(1 + \pi\omega_z/\omega_{ref})]$ | Gardner | [20-10](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-10-plls-and-jitter.md) |
 | $\sigma_t = \sqrt{2\int\mathcal L\,df}/(2\pi f_0)$ | Single-sideband $\mathcal L$ | [20-10](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-10-plls-and-jitter.md) |
 | $\text{FoM}_{osc} = -\mathcal L(\Delta f) + 20\log_{10}(f_0/\Delta f) - 10\log_{10}(P/1\text{ mW})$ | Larger is better | [20-10](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-10-plls-and-jitter.md) |
