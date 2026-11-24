@@ -123,6 +123,44 @@ def sar_sweep(w, n_bits, vfs, per_lsb=16):
     return vin, code
 
 
+def own_code(vin, w, n_bits, vfs):
+    """The script's own SAR binary search (same comparison rule as sar_sweep) on an array of inputs."""
+    lsb = vfs / 2 ** n_bits
+    scale = (2 ** n_bits - 1) / sum(w)
+    code = np.zeros(np.shape(vin), dtype=np.int64)
+    for bit in range(n_bits - 1, -1, -1):
+        trial = code | (1 << bit)
+        dac = np.zeros(np.shape(vin))
+        for bb in range(n_bits):
+            dac = dac + ((trial >> bb) & 1) * w[bb]
+        code = np.where(vin >= (dac * scale - 0.5) * lsb, trial, code)
+    return code
+
+
+def own_transitions(w, n_bits=12, vfs=1.6, iters=60):
+    """Transition T_k (k = 1..2^N - 1): the lowest input whose code is at least k, by vectorized bisection."""
+    k = np.arange(1, 2 ** n_bits)
+    lo = np.full(k.size, -vfs / 2 ** n_bits)
+    hi = np.full(k.size, vfs * (1 + 2 / 2 ** n_bits))
+    for _ in range(iters):
+        mid = (lo + hi) / 2
+        ge = own_code(mid, w, n_bits, vfs) >= k
+        hi = np.where(ge, mid, hi)
+        lo = np.where(ge, lo, mid)
+    return hi
+
+
+def own_sfdr(x, m):
+    """SFDR from the full complex FFT, pairing each bin with its mirror (an independent route to the lab's rfft)."""
+    n = x.size
+    xx = np.fft.fft(x - x.mean())
+    p = np.abs(xx) ** 2
+    one = np.concatenate([[0.0], p[1:n // 2] + p[n - 1:n // 2:-1], [p[n // 2]]])
+    sig = one[m]
+    spur = np.max(np.delete(one, [0, m]))
+    return db10(sig / spur)
+
+
 def widths_from_sweep(vin, code, n_bits, vfs, per_lsb):
     lsb = vfs / 2 ** n_bits
     counts = np.bincount(code, minlength=2 ** n_bits)
@@ -139,7 +177,8 @@ v.check("Ex 20-06.3a", 2048 * 0.0005)
 step = (wa[-1] - sum(wa[:-1])) * scale_a           # LSB step at the major carry, renormalized
 davg_a = (4095 - scale_a * wa[0]) / 4094               # average step in nominal LSB
 v.check("Ex 20-06.3b", step / davg_a - 1)
-ta = lab.sar_transitions(np.array(wa), 1.6)
+ta = own_transitions(wa)
+v.assert_true("lab transitions agree (a)", np.max(np.abs(ta - lab.sar_transitions(np.array(wa), 1.6))) < 1e-9)
 _, dnl_a, inl_a = endpoint(list(ta))
 v.assert_true("independent DNL at the carry matches the lab transitions", abs(dnl_a[2046] - (step / davg_a - 1))
               < 1e-6, f"{dnl_a[2046]}")
@@ -152,7 +191,8 @@ missing = [c for c in range(1, 4095) if c not in present]
 v.check("Ex 20-06.3d", missing[0])
 v.check("Ex 20-06.3e", missing[1])
 v.check("Ex 20-06.3f", len(missing))
-tb = lab.sar_transitions(np.array(wb), 1.6)
+tb = own_transitions(wb)
+v.assert_true("lab transitions agree (b)", np.max(np.abs(tb - lab.sar_transitions(np.array(wb), 1.6))) < 1e-9)
 _, dnl_b, inl_b = endpoint(list(tb))
 v.check("Ex 20-06.3g", dnl_b[2044])
 v.check("Ex 20-06.3h", inl_b[2047])
@@ -168,7 +208,8 @@ v.check("Txt 20-06.b", 0.005 * math.sqrt(4095))
 # seeded instance, rebuilt independently from the same draws
 rs = np.random.default_rng(2006)
 ws = [2 ** bb + 0.005 * math.sqrt(2 ** bb) * rs.standard_normal() for bb in range(N)]
-ts = lab.sar_transitions(np.array(ws), 1.6)
+ts = own_transitions(ws)
+v.assert_true("lab transitions agree (seeded)", np.max(np.abs(ts - lab.sar_transitions(np.array(ws), 1.6))) < 1e-9)
 _, dnl_s, inl_s = endpoint(list(ts))
 v.check("Ex 20-06.4d", max(abs(x_) for x_ in dnl_s))
 v.check("Ex 20-06.4e", max(abs(x_) for x_ in inl_s))
@@ -223,6 +264,8 @@ v.check("Ex 20-06.7a", -SNR - db10(50e6))
 v.check("Ex 20-06.7b", SNR + db10(50))
 v.check("Ex 20-06.7c", db10(50))
 v.check("Ex 20-06.7d", SNR + db10(8192))
+v.check("Ex 20-06.7e", enob(SNR))
+v.check("Ex 20-06.7f", enob(SNR + db10(50)))
 v.check("Txt 20-06.c", db10(8192))
 v.check("Txt 20-06.e", -55.6 - db10(5.12e9 / 2))
 
@@ -242,12 +285,17 @@ v.check("Ex 20-06.8i", emin * 1e12)
 v.check("Ex 20-06.8j", emin * 100e6 * 1e6)
 v.check("Ex 20-06.8k", 1.5e-3 / (emin * 100e6))
 Asym, Csym, fs_sym, kTs, snr_sym = sp.symbols("A C f_s kT SNR", positive=True)
-p_classb = 2 * Asym * 4 * Asym * Csym * fs_sym / 2
 csub = sp.solve(sp.Eq(Asym ** 2 * Csym / (2 * kTs), snr_sym), Csym)[0]
-ratio = sp.simplify(p_classb.subs(Csym, csub) / (fs_sym * kTs * snr_sym))
-v.assert_true("sympy: class-B P/(f_s kT SNR) = 8", ratio == 8, str(ratio))
+# class-B supply charge per period by numerical integration of the positive part of C dv/dt (A = C = f = 1)
+tt = np.linspace(0, 1, 200001)
+i_drv = 2 * math.pi * np.cos(2 * math.pi * tt)                   # C dv/dt for v = A(1 + sin 2 pi f t)
+q_supply = np.trapezoid(np.clip(i_drv, 0, None), tt)
+v.assert_true("class-B supply charge per period is 2AC", abs(q_supply - 2) < 1e-6, f"{q_supply:.6f}")
+p_b_nyq = 2 * q_supply * 0.5                    # P/f_s in units of A^2 C: V_DD = 2A, f = f_s/2
+v.assert_true("ideal class-B at Nyquist: P/f_s = 4kT SNR", abs(p_b_nyq * 2 - 4) < 1e-6)   # A^2 C = 2 kT SNR
 lim = db10(1 / (16 * KT))
 v.check("Txt 20-06.a", lim)
+v.check("Txt 20-06.a2", db10(1 / (8 * KT)))
 v.check("Txt 20-06.d", lim - 189.17)
 v.check("Txt 20-06.f", math.log2(math.sqrt(12)))
 s_b = -db10(10 ** (-SNR / 10) + 10 ** (-64.40878967245925 / 10))
@@ -288,12 +336,15 @@ for key_s, key_f, m in (("Lab 20-06.a", "Lab 20-06.b", 1001), ("Lab 20-06.c", "L
     dm = dft_metrics(cq, m)
     v.assert_true(f"explicit DFT SINAD matches the lab FFT for M = {m}", abs(dm["sinad"] - met["sinad"]) < 1e-6)
     v.check(key_s, dm["sinad"])
-    v.check(key_f, met["sfdr"])
+    v.check(key_f, own_sfdr(cq, m))
+    v.assert_true(f"lab SFDR agrees for M = {m}", abs(own_sfdr(cq, m) - met["sfdr"]) < 1e-9)
 rd = np.random.default_rng(20061)
 xd = 0.8 + 0.8 * 0.98 * np.sin(2 * np.pi * 64 * np.arange(n4k) / n4k) + rd.normal(0, 0.5 * D12, n4k)
-md = lab.spectrum_metrics(np.clip(np.floor(xd / D12 + 0.5), 0, 4095) * D12, 64)
-v.check("Lab 20-06.e", md["sfdr"])
-v.check("Lab 20-06.f", md["sinad"])
+cd_ = np.clip(np.floor(xd / D12 + 0.5), 0, 4095) * D12
+md = lab.spectrum_metrics(cd_, 64)
+v.check("Lab 20-06.e", own_sfdr(cd_, 64))
+v.check("Lab 20-06.f", dft_metrics(cd_, 64)["sinad"])
+v.assert_true("lab dithered metrics agree", abs(md["sinad"] - dft_metrics(cd_, 64)["sinad"]) < 1e-6)
 # histogram tests on the seeded instance
 ns, Ah = 2 ** 22, 1.02 * 0.8
 ph_c = 2 * np.pi * (np.arange(ns) * 1048573 / ns + 0.123)
@@ -325,7 +376,8 @@ v.check("Lab 20-06.l", m49 * 100e6 / n16 / 1e6)
 v.check("Lab 20-06.m", dmf["snr"])
 v.check("Lab 20-06.n", dmf["thd"])
 v.check("Lab 20-06.o", dmf["sinad"])
-v.check("Lab 20-06.p", lab.spectrum_metrics(cf, m49)["sfdr"])
+v.check("Lab 20-06.p", own_sfdr(cf, m49))
+v.assert_true("lab SFDR agrees (full FFT test)", abs(own_sfdr(cf, m49) - lab.spectrum_metrics(cf, m49)["sfdr"]) < 1e-9)
 e_fs = enob(dmf["sinad"] + 20 * math.log10(0.8 / dmf["amp"]))
 v.check("Lab 20-06.q", e_fs)
 v.check("Lab 20-06.r", fw(1.5e-3, 100e6, e_fs))
@@ -379,8 +431,7 @@ v.check("20-06.9e", min(76, 88 - 1))
 v.check("20-06.9f", enob(sinad9))
 v.check("20-06.9g", enob(sinad9 + 1))
 v.check("20-06.9h", -88 + 1)
-m10 = round(70e6 * 8192 / 250e6)
-m10 += 1 - m10 % 2
+m10 = min(range(1, 8192, 2), key=lambda m: abs(m * 250e6 / 8192 - 70e6))   # nearest odd cycle count by search
 v.check("20-06.10a", m10)
 v.check("20-06.10b", m10 * 250e6 / 8192 / 1e6)
 v.check("20-06.10c", math.gcd(m10, 8192))
@@ -407,11 +458,14 @@ for (ke, kw, ks), (s, bw, p) in ((("13a", "13b", "13c"), (50, 5e9, 0.1)), (("13d
 v.check("20-06.14a", 8 * KT * 10 ** (sqnr_closed(16) / 10) * 1e6 * 1e6)
 v.check("20-06.14b", 8 * KT * 10 ** (sqnr_closed(12) / 10) * 1e9 * 1e3)
 p_classa = 2 * Asym * Csym * Asym * sp.pi * fs_sym
-ratio_a = sp.simplify(p_classa.subs(Csym, csub) / (8 * fs_sym * kTs * snr_sym))
-v.assert_true("sympy: class-A over class-B is pi/2", sp.simplify(ratio_a - sp.pi / 2) == 0, str(ratio_a))
+ratio_a = sp.simplify(p_classa.subs(Csym, csub) / (4 * fs_sym * kTs * snr_sym))   # over ideal class B at Nyquist
+v.assert_true("sympy: class-A over class-B is pi", sp.simplify(ratio_a - sp.pi) == 0, str(ratio_a))
+i_peak = 2 * math.pi                                                 # constant class-A current, A = C = f = 1
+v.assert_true("numerical class-A over class-B is pi", abs(i_peak / q_supply - math.pi) < 1e-6)
 v.check("20-06.14c", float(ratio_a))
-v.check("20-06.14d", lim - db10(math.pi / 2))
-v.check("20-06.14e", db10(math.pi / 2))
+v.check("20-06.14d", db10(1 / (8 * math.pi * KT)))
+v.check("20-06.14e", lim - db10(1 / (8 * math.pi * KT)))
+v.check("20-06.14f", db10(math.pi))
 
 # ------------------------------------------------------------------ agreement with the lab module
 print("Lab module agreement")

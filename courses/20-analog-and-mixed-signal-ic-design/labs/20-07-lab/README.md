@@ -31,7 +31,7 @@ Chapter: [20-07 · Nyquist ADCs: Flash, SAR and Pipeline](../../chapters/20-07-n
 ## Discussion
 
 1. **Why is the conventional energy highest for code 0?** Every trial fails, so each capacitor is charged to $V_{REF}$ and then discharged; for large codes most trials succeed and the charge stays where it is.
-2. **Why does a gain above 1 widen a code while a gain below 1 removes codes?** A residue that is too large overlaps the next segment's range, so two input ranges map to the same codes (a wide code); one that is too small leaves a gap that no input reaches (missing codes).
+2. **Why does a gain above 1 widen a code while a gain below 1 removes codes?** A residue that is too large overlaps the next segment's range, so two input ranges map to the same codes; one that is too small leaves a gap that no input reaches (missing codes). The overlap also makes the transfer non-monotonic: just past each decision point the output steps back two to three codes (about 1% of the 256-code backend range), which a code-count DNL shows only as wide codes. Plot the output against the input to see it.
 3. **What would an interleaved converter with four channels show?** Spurs at $f_s/4$ and $f_s/2$ for offsets, and images at $f_s/2 - f_{in}$ and $f_s/4 \pm f_{in}$ for gain and skew.
 
 ## Optional hardware

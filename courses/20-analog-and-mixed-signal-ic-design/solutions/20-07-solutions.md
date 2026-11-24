@@ -65,9 +65,13 @@ The 1.5-bit stage tolerates $\pm V_{REF}/4$ = **±125** mV. The 1-bit stage tole
 
 ### Solution 20-07.10
 
-- Scaled (1, 0.5, 0.25 pF): $kT/C_1(1 + \tfrac12 + \tfrac14)$ = 1.75 $kT/C_1$ → **85.1** µV.
-- Equal (1 pF each): $1 + \tfrac14 + \tfrac1{16}$ = 1.3125 $kT/C_1$ → **73.7** µV.
-- First stage alone: **64.4** µV.
+(a) $\beta = C_f/(C_s + C_f + C_p)$ = 0.65/1.5 = **0.433**. The gain error $1/(A\beta) < 2^{-11}$ needs $A > 2048/0.433$ = **4726**, or **73.5** dB.
+
+(b) $C_{L,eff} = C_{load} + C_f(C_s + C_p)/(C_s + C_f + C_p)$ = 0.65 + 0.65 × 0.85/1.5 = **1.018** pF. The time constant must be $\tau \le 2.5\ \text{ns}/(13\ln 2)$ = 0.277 ns, so $g_m = C_{L,eff}/(\beta\tau)$ = **8.47** mS: **0.706** mA per side at 12 V⁻¹, with $f_t = g_m/(2\pi C_{L,eff})$ = **1.32** GHz.
+
+(c) Doubling every capacitor leaves β = 0.433 unchanged (it is a ratio) and doubles $C_{L,eff}$, so the $g_m$, the current and the power all double, to **1.41** mA per side: 3 dB of SNR costs twice the power, the kT/C trade of 20-05.
+
+(d) β = 0.65/1.8 = **0.361**, so $A > 2048/0.361$ = **5671** (**75.1** dB). $C_{L,eff}$ = 0.65 + 0.65 × 1.15/1.8 = 1.065 pF, and $g_m = C_{L,eff}/(\beta\tau)$ = **10.6** mS, **26**% more current than (b), and 1.6 dB more DC gain. The bigger pair costs about a quarter more power; the 3 dB noise improvement costs twice the power. A pair is enlarged only as far as offset and flicker noise require.
 
 ### Solution 20-07.11
 
@@ -75,7 +79,7 @@ $10\log_{10}[\Delta o^2/(2A^2)] = 10\log_{10}[(2\text{ mV})^2/(2 \times 0.25)]$ 
 
 ### Solution 20-07.12
 
-Gain: $\alpha = 2 \times 10^{-50/20}$ = **0.63**%. Skew: $\Delta t = 1/(\pi \times 5\text{ GHz} \times 10^{50/20})$ = **0.20** ps, or 200 fs.
+Gain: $\alpha = 2 \times 10^{-50/20}$ = **0.63**%. Skew: $\Delta t = 1/(\pi \times 5\text{ GHz} \times 10^{50/20})$ = **0.20** ps, or 200 fs. Both images land at the same frequency, $f_s/2 - f_{in}$, and are in quadrature (one comes from the amplitude, the other from the phase of the sampling), so their powers add: with each at −50 dBc the combined image is **−47.0** dBc. To hold the combined image at −50 dBc, budget each at −53 dBc.
 
 ### Solution 20-07.13
 
@@ -128,11 +132,22 @@ From $\text{FoM}_S = \text{SNDR} + 10\log_{10}(BW/P)$: $P = BW/10^{(\text{FoM}_S
 | 20-07.8b | gain in dB | 86.2 | dB |
 | 20-07.9a | 1.5-bit tolerance | 125 | mV |
 | 20-07.9b | 1-bit tolerance | 0 | mV |
-| 20-07.10a | scaled noise | 85.1 | µV |
-| 20-07.10b | equal noise | 73.7 | µV |
-| 20-07.10c | first stage alone | 64.4 | µV |
+| 20-07.10a | feedback factor | 0.433 | — |
+| 20-07.10b | DC gain | 4726 | — |
+| 20-07.10c | DC gain | 73.5 | dB |
+| 20-07.10d | effective load | 1.018 | pF |
+| 20-07.10e | transconductance | 8.47 | mS |
+| 20-07.10f | current per side | 0.706 | mA |
+| 20-07.10g | unity-gain frequency | 1.32 | GHz |
+| 20-07.10h | current per side, doubled capacitors | 1.41 | mA |
+| 20-07.10i | feedback factor, larger pair | 0.361 | — |
+| 20-07.10j | DC gain, larger pair | 5671 | — |
+| 20-07.10k | DC gain, larger pair | 75.1 | dB |
+| 20-07.10l | transconductance, larger pair | 10.6 | mS |
+| 20-07.10m | extra current, larger pair | 26 | % |
 | 20-07.11a | offset spur | −51.0 | dBc |
 | 20-07.12a | gain mismatch | 0.63 | % |
 | 20-07.12b | skew | 0.20 | ps |
+| 20-07.12c | combined image | −47.0 | dBc |
 | 20-07.13a | power, 14-bit 100 MS/s | 5.0 | mW |
 | 20-07.13b | power, 8-bit 20 GS/s | 316 | mW |

@@ -89,7 +89,7 @@ Doubling the OSR now cuts the noise eightfold: 9 dB, 1.5 bits per octave.
 
 > **Math refresher — small-angle expansions.** $\sin\theta = \theta - \theta^3/6 + \theta^5/120 - \cdots$, so $\theta - \sin\theta = \theta^3/6 - \cdots$. Equivalently, $4\sin^2(\omega/2) \approx \omega^2$ for small ω, and $\int_0^{\omega_B}\omega^2\,d\omega = \omega_B^3/3$ gives the same leading term. The approximation is excellent in band: at OSR = 16 the exact and approximate integrals differ by **0.2**%.
 
-**The output average equals the input.** Summing the loop equation over $N$ samples, $\sum_{n=0}^{N-1}(x[n] - y[n]) = u[N] - u[0]$. If the integrator stays bounded, the average of $y$ equals the average of $x$ with an error of at most $(\max\lvert u\rvert \cdot 2)/N$. It does stay bounded for $\lvert x\rvert \le 1$: if $0 \le u \le 1 + \lvert x\rvert$, the output is +1 and the next value $u + x - 1$ lies between $x - 1 \ge -(1 + \lvert x\rvert)$ and $\lvert x\rvert + x \le 1 + \lvert x\rvert$; the case $u < 0$ is symmetric. So $\lvert u\rvert \le 1 + \lvert x\rvert$ forever, and a first-order loop cannot overload for inputs inside the DAC's range.
+**The output average equals the input.** Summing the loop equation over $N_s$ samples, $\sum_{n=0}^{N_s-1}(x[n] - y[n]) = u[N_s] - u[0]$. If the integrator stays bounded, the average of $y$ equals the average of $x$ with an error of at most $(\max\lvert u\rvert \cdot 2)/N_s$. It does stay bounded for $\lvert x\rvert \le 1$: if $0 \le u \le 1 + \lvert x\rvert$, the output is +1 and the next value $u + x - 1$ lies between $x - 1 \ge -(1 + \lvert x\rvert)$ and $\lvert x\rvert + x \le 1 + \lvert x\rvert$; the case $u < 0$ is symmetric. So $\lvert u\rvert \le 1 + \lvert x\rvert$ forever, and a first-order loop cannot overload for inputs inside the DAC's range.
 
 **Idle tones.** The linear model assumes the error is white, which fails badly for a first-order loop with a constant or slowly varying input. A DC input $x$ produces a periodic output (Example 20-08.2): for $x = 0.2$ the pattern repeats every five samples. For a small DC input the output alternates +1, −1 and slips (two +1s in a row) once every $1/\lvert x\rvert$ samples; that slip train is a periodic signal, and the lab's simulation shows tones at multiples of $\lvert x\rvert f_s$ with amplitude $2\lvert x\rvert$. They fall in the signal band when $\lvert x\rvert f_s < f_B$, that is when $\lvert x\rvert < 1/(2\,\text{OSR})$: small inputs, exactly where an audio converter is listened to most critically. These **idle tones** (also called limit cycles) were reported in the very first ΔΣ papers as "periodical noise which are inherent to the proposed system" [1]; they are why first-order modulators are rarely used alone, and why practical designs add dither or use higher-order loops, whose error is much closer to white.
 
@@ -103,13 +103,13 @@ P_q \approx \frac{\sigma_e^2}{\pi}\int_0^{\omega_B}\omega^{2L}\,d\omega
 = \frac{\Delta^2}{12}\cdot\frac{\pi^{2L}}{(2L + 1)\,\text{OSR}^{2L + 1}} .
 $$
 
-For a sine of amplitude $A$ (power $A^2/2$):
+For a sine of amplitude $A_x$ (power $A_x^2/2$):
 
 $$
-\text{SQNR} = 10\log_{10}\frac{A^2/2}{\Delta^2/12} - 10\log_{10}\frac{\pi^{2L}}{2L + 1} + (20L + 10)\log_{10}\text{OSR} \text{ dB} .
+\text{SQNR} = 10\log_{10}\frac{A_x^2/2}{\Delta^2/12} - 10\log_{10}\frac{\pi^{2L}}{2L + 1} + (20L + 10)\log_{10}\text{OSR} \text{ dB} .
 $$
 
-Each doubling of the OSR gains $(20L + 10)\log_{10}2 = (6.02L + 3.01)$ dB: **9.0**, **15.1**, **21.1** and **27.1** dB per octave for $L$ = 1 to 4. The first term is the quantizer's own SQNR; with a 1-bit quantizer and $A = 1$ it is 10 log₁₀(1.5) = 1.76 dB, and every extra quantizer bit adds 6 dB. The middle term is a penalty: the NTF's gain grows towards the band edge, and $\pi^{2L}/(2L + 1)$ is 5.2 dB for $L = 1$, 12.9 dB for $L = 2$.
+Each doubling of the OSR gains $(20L + 10)\log_{10}2 = (6.02L + 3.01)$ dB: **9.0**, **15.1**, **21.1** and **27.1** dB per octave for $L$ = 1 to 4. The first term is the quantizer's own SQNR; with a 1-bit quantizer and $A_x = 1$ it is 10 log₁₀(1.5) = 1.76 dB, and an $M$-level quantizer gains $20\log_{10}(M - 1)$ on it: about 6 dB per extra bit once there are several bits. The middle term is a penalty: the NTF's gain grows towards the band edge, and $\pi^{2L}/(2L + 1)$ is 5.2 dB for $L = 1$, 12.9 dB for $L = 2$.
 
 ![Output power spectra of first- and second-order one-bit modulators with a minus 6 dBFS sine, on a logarithmic frequency axis: the signal line near 0.003 of the sample rate, the noise floor rising at about 20 dB per decade for first order and 40 dB per decade for second order from very low levels up to about minus 30 dBFS near half the sample rate, with the OSR-64 band edge marked](../../../assets/figures/20-08/spectra.svg)
 
@@ -127,7 +127,7 @@ $$
 Y\left[(1 - z^{-1})^2 + a_2z^{-1} + (a_1 - a_2)z^{-2}\right] = z^{-2}X + (1 - z^{-1})^2E .
 $$
 
-The bracket is $1 + (a_2 - 2)z^{-1} + (1 + a_1 - a_2)z^{-2}$, which equals 1 only for $a_2 = 2$ and $a_1 = 1$. So STF = $z^{-2}$ and NTF = $(1 - z^{-1})^2$. With a 1-bit quantizer the loop's scale is arbitrary, because $\text{sign}(ku) = \text{sign}(u)$ for $k > 0$; real designs scale the integrators to keep their outputs within the op-amps' swing. Boser and Wooley's 1988 analysis of this loop's circuit impairments made it the workhorse of moderate-performance converters [4], [10].
+The bracket is $1 + (a_2 - 2)z^{-1} + (1 + a_1 - a_2)z^{-2}$, which equals 1 only for $a_2 = 2$ and $a_1 = 1$. So STF = $z^{-2}$ and NTF = $(1 - z^{-1})^2$. With a 1-bit quantizer the loop's scale is arbitrary, because $\text{sign}(ku) = \text{sign}(u)$ for $k > 0$; real designs scale the integrators to keep their outputs within the op-amps' swing.
 
 **What the linear model gets wrong.** A 1-bit quantizer has no well-defined gain: its error is not bounded by Δ/2 and is correlated with its input. The linear model is still the right tool for design, but simulation is the arbiter. At OSR = 64 and −6 dBFS the model predicts 44.8 dB (first order) and 73.2 dB (second order); the lab measures 47.7 and 70.3 dB (Example 20-08.3). Near full scale the model is optimistic: Schreier's simulations at OSR = 128 give 55 dB (first order, full-scale input) and 86 dB (second order, 75% of full scale), where the model predicts **59.8** and **91.7** dB [5].
 
@@ -143,11 +143,11 @@ The bracket is $1 + (a_2 - 2)z^{-1} + (1 + a_1 - a_2)z^{-2}$, which equals 1 onl
 
 **Why high-order loops overload.** $\lvert(1 - z^{-1})^L\rvert$ reaches $2^L$ at $f_s/2$: 2, 4, 8 and 16 for $L$ = 1 to 4. The quantizer error, of order ±1, is amplified by up to $2^L$ and fed back into the integrators. For $L \ge 3$ with a 1-bit quantizer, the quantizer input grows without bound: the loop is unstable, and once the integrators saturate the converter's output is garbage until it is reset. The lab shows a pure $(1 - z^{-1})^3$ loop diverging from a −6 dBFS input.
 
-**Lee's rule.** The practical remedy is to give the NTF poles that flatten its out-of-band gain, $\text{NTF}(z) = (1 - z^{-1})^L/A(z)$, keeping the peak gain $\lVert\text{NTF}\rVert_\infty$ to about 1.5. W. L. Lee (1987) proposed limiting the peak gain to 2 for 1-bit loops; designers use about 1.5 as a margin. The criterion is neither necessary (the second-order loop is stable with a peak gain of 4) nor sufficient, but loops with $\lVert\text{NTF}\rVert_\infty \approx 1.5$ are usually stable for inputs up to some **maximum stable amplitude** below full scale [5]. Candy had already observed in 1985 that with three or more integrators the loop "can latch into undesirable overloading modes" [2]. The cost is in-band noise: in band, $\lvert\text{NTF}\rvert \approx \omega^L/\lvert A(1)\rvert$, so the noise rises by $20\log_{10}(1/\lvert A(1)\rvert)$ dB. A Butterworth high-pass denominator scaled to a 1.5 peak gives penalties of 26.9 dB for $L = 3$ and 44.1 dB for $L = 4$ (Example 20-08.5). Higher order still wins once the OSR is large, because the slope grows by 6 dB per octave per order, but the gain from going to high order is far less than the naive formula suggests.
+**Lee's rule.** The practical remedy is to give the NTF poles that flatten its out-of-band gain, $\text{NTF}(z) = (1 - z^{-1})^L/D(z)$, keeping the peak gain $\lVert\text{NTF}\rVert_\infty$ to about 1.5. W. L. Lee (1987) proposed limiting the peak gain to 2 for 1-bit loops; designers use about 1.5 as a margin. The criterion is neither necessary (the second-order loop is stable with a peak gain of 4) nor sufficient, but loops with $\lVert\text{NTF}\rVert_\infty \approx 1.5$ are usually stable for inputs up to some **maximum stable amplitude** below full scale [5]. Candy saw this in 1985: such loops "can latch into undesirable overloading modes" [2]. The cost is in-band noise: in band, $\lvert\text{NTF}\rvert \approx \omega^L/\lvert D(1)\rvert$, so the noise rises by $20\log_{10}(1/\lvert A(1)\rvert)$ dB. A Butterworth high-pass denominator scaled to a 1.5 peak gives penalties of 26.9 dB for $L = 3$ and 44.1 dB for $L = 4$ (Example 20-08.5). Higher order still wins once the OSR is large, because the slope grows by 6 dB per octave per order, but the gain from going to high order is far less than the naive formula suggests.
 
 ![Magnitude of noise transfer functions against frequency on a log axis: the pure differentiators of order 1, 2 and 4 rise at 20, 40 and 80 dB per decade to peaks of 2, 4 and 16 at half the sample rate; the third- and fourth-order Lee-rule NTFs rise steeply in band and flatten at 1.5 above about a tenth of the sample rate, sitting above the pure fourth-order curve in band](../../../assets/figures/20-08/ntf.svg)
 
-*Figure 4. Pure differentiator NTFs reach a gain of $2^L$ at $f_s/2$; a 1-bit loop with $L \ge 3$ cannot tolerate that. Butterworth poles hold the peak to 1.5 (dashed line), at the price of in-band suppression: inside the OSR-64 band edge (vertical line) the Lee-rule curves sit 26.9 and 44.1 dB above the pure third- and fourth-order differentiators.*
+*Figure 4. Pure differentiator NTFs reach a gain of $2^L$ at $f_s/2$; a 1-bit loop with $L \ge 3$ cannot tolerate that. Butterworth poles hold the peak to 1.5 (dashed line), at the price of in-band suppression: inside the OSR-64 band edge (vertical line) the Lee-rule curves sit 26.9 and 44.1 dB above the pure third- and fourth-order differentiators (the pure third-order curve is not drawn).*
 
 **Optimized zeros.** Placing all $L$ zeros at DC wastes them: the noise is largest near the band edge. Spreading the zeros across the band minimizes the integral of $\lvert\text{NTF}\rvert^2$. For $L = 2$ with zeros at $\pm\omega_z$, the in-band integrand is $(\omega^2 - \omega_z^2)^2$; with $t = \omega/\omega_B$ and $a = \omega_z/\omega_B$,
 
@@ -204,7 +204,7 @@ $$
 
 Repeating §3.2's algebra, $Y\left(1 - dz^{-1} + dz^{-2}\right) = z^{-1}X + (1 - z^{-1})E$. The NTF gains poles at the roots of $z^2 - dz + d = 0$, of radius $\sqrt d$ (for $0 < d < 4$ they are complex). A first-order loop stays stable for $d < 1$ and still averages correctly; at $d = 0.5$ the poles have radius **0.707**. Higher-order loops are much more sensitive: their NTF is designed for a specific delay, and an uncompensated delay of a fraction of a period can make them unstable. Designs therefore budget a fixed fraction of a period for the delay and add a direct feedback path around the quantizer to restore the intended NTF [8].
 
-**Clock jitter.** A discrete-time modulator's DAC delivers a fixed charge per clock period, whatever the edge timing. An NRZ CT DAC delivers charge for as long as it is on, so an edge that arrives δ early or late changes the charge by $(y[n] - y[n - 1])\delta$, an input-referred error $\varepsilon[n] = (y[n] - y[n - 1])\,\delta_n/T$. (This is the standard NRZ jitter model [9]: jitter matters only at edges where the data changes.) If the edge errors are white with rms $\sigma_t$, this error is white with variance $E[(\Delta y)^2]\,(\sigma_tf_s)^2$, and its in-band part is
+**Clock jitter.** A discrete-time modulator's DAC delivers a fixed charge per clock period, whatever the edge timing. Its input sampler is still jitter-sensitive, but gently: a sampling-time error δ gives an error $(dv/dt)\,\delta$, which is white for white jitter, so only $1/\text{OSR}$ of it falls in band and $\text{SNR}_{jit,DT} = -20\log_{10}(2\pi f_{in}\sigma_t) + 10\log_{10}\text{OSR}$. An NRZ CT DAC delivers charge for as long as it is on, so an edge that arrives δ early or late changes the charge by $(y[n] - y[n - 1])\delta$, an input-referred error $\varepsilon[n] = (y[n] - y[n - 1])\,\delta_n/T$. (This is the standard NRZ jitter model [9]: jitter matters only at edges where the data changes.) If the edge errors are white with rms $\sigma_t$, this error is white with variance $E[(\Delta y)^2]\,(\sigma_tf_s)^2$, and its in-band part is
 
 $$
 P_{jitter} = \frac{E\!\left[(y[n] - y[n - 1])^2\right]\,(\sigma_tf_s)^2}{\text{OSR}} .
@@ -214,11 +214,11 @@ The shaped quantization noise makes the output jump around at high frequency, an
 
 ### 3.8 Decimation
 
-The modulator's output carries the signal plus shaped noise rising to $f_s/2$. The **decimation filter** (16-09) removes the noise above $f_B$ and reduces the rate to about $2f_B$. It is almost always a cascade: a CIC (sinc$^K$) filter decimates by a large factor cheaply, without multipliers, and one or more half-band FIR stages finish with a sharp transition band. A CIC of order $K$ decimating by $M$ has zeros of order $K$ at every multiple of $f_s/M$, exactly where the noise that would fold into the band after decimation sits. There the shaped noise is large, and it keeps rising with frequency (as $f^{2L}$ in power), while the CIC's sidelobes fall only as $f^{-2K}$. The noise folded back from all the sidelobes stays below the in-band noise only if the filter's order exceeds the modulator's: **$K \ge L + 1$**, the standard sinc$^{L+1}$ rule [6]. Hogenauer's cascaded integrator-comb structure makes such filters multiplier-free [11]. 16-09's Example 16-09.5 works through a sinc⁴ filter of a commercial ΔΣ ADC, including its droop, alias protection and latency.
+The modulator's output carries the signal plus shaped noise rising to $f_s/2$. The **decimation filter** (16-09) removes the noise above $f_B$ and reduces the rate to about $2f_B$. It is almost always a cascade: a CIC (sinc$^K$) filter decimates by a large factor cheaply, without multipliers, and one or more half-band FIR stages finish with a sharp transition band. A CIC of order $K$ decimating by $R$ has zeros of order $K$ at every multiple of $f_s/R$, exactly where the noise that would fold into the band after decimation sits. There the shaped noise is large, and it keeps rising with frequency (as $f^{2L}$ in power), while the CIC's sidelobes fall only as $f^{-2K}$. The noise folded back from all the sidelobes stays below the in-band noise only if the filter's order exceeds the modulator's: **$K \ge L + 1$**, the standard sinc$^{L+1}$ rule [6]. Hogenauer's cascaded integrator-comb structure makes such filters multiplier-free [11]. 16-09's Example 16-09.5 works through a sinc⁴ filter of a commercial ΔΣ ADC, including its droop, alias protection and latency.
 
 ### 3.9 The modern landscape
 
-Three ideas extend the classic loop. **Noise-shaping SARs** add a loop filter around a SAR's residue (20-07), shaping its quantization and comparator noise with a few extra capacitors; they now hold the best figures of merit at low bandwidth (§9). **Incremental** ΔΣ converters reset the loop for every conversion, so they can be multiplexed across sensor channels and have no idle tones. **Digital** ΔΣ modulators, with no analog parts at all, shape the truncation error of a word: in ΔΣ DACs (20-09), in class-D audio amplifiers, and in fractional-N synthesizers, where they dither the divide ratio so that its average is fractional and its error is pushed to high offsets where the loop filters it (20-10) [12].
+Three ideas extend the classic loop. **Noise-shaping SARs** add a loop filter around a SAR's residue (20-07), shaping its quantization and comparator noise with a few extra capacitors; they now hold the best figures of merit at low bandwidth (§9). **Incremental** ΔΣ converters reset the loop for every conversion, so they can be multiplexed across sensor channels and have no idle tones. **Digital** ΔΣ modulators shape a word's truncation error, in ΔΣ DACs (20-09) and fractional-N synthesizers, where they dither the divide ratio so that its average is fractional and its error is pushed to high offsets where the loop filters it (20-10) [12].
 
 ## 4. Worked examples
 
@@ -300,7 +300,7 @@ For $x$ = 0.002, the lab's simulation shows tones at multiples of $xf_s$ = **10.
 - $L = 2$: $\int_0^1t^4dt = 1/5$ against the minimum $4/45$ at $a^2 = 1/3$: $10\log_{10}(9/4)$ = **3.5** dB, with the zeros at $f_B/\sqrt3$ = **11.5** kHz.
 - $L = 3$: $\int_0^1t^2(t^2 - a^2)^2dt = 1/7 - 2a^2/5 + a^4/3$, smallest at $a^2 = 3/5$, where it equals $1/7 - 3/25 = 4/175$: $10\log_{10}(25/4)$ = **8.0** dB.
 - Peak gain at $f_s/2$ ($z = -1$): $2^2$ = **4** and $2^4$ = **16**, far above Lee's 1.5.
-- Butterworth poles chosen so that $\max\lvert\text{NTF}\rvert$ = 1.5: $\lvert A(1)\rvert$ = **0.0453** and **0.00627**, in-band penalties of **26.9** and **44.1** dB.
+- Butterworth poles chosen so that $\max\lvert\text{NTF}\rvert$ = 1.5: $\lvert D(1)\rvert$ = **0.0453** and **0.00627**, in-band penalties of **26.9** and **44.1** dB.
 
 **Units check.** Zero frequencies in hertz; gains dimensionless.
 
@@ -341,11 +341,11 @@ For $x$ = 0.002, the lab's simulation shows tones at multiples of $xf_s$ = **10.
 
 The state returns after five samples, with three +1s: the average is still 0.2, but the pattern has changed. The poles have radius $\sqrt{0.5}$ = **0.707**.
 
-(c) The lab finds $E[(\Delta y)^2]$ = **2.36** (1-bit) and **0.0298** (16 levels). With $\sigma_tf_s = 1.28 \times 10^{-3}$, the 1-bit jitter noise is $2.36 \times (1.28 \times 10^{-3})^2/32 = 1.21 \times 10^{-7}$ against a signal power of 0.125: **60.1** dB. With 16 levels: **79.1** dB. A Nyquist sampler at 20 MHz is limited to $-20\log_{10}(2\pi \times 20\text{ MHz} \times 1\text{ ps})$ = **78.0** dB.
+(c) The lab finds $E[(\Delta y)^2]$ = **2.36** (1-bit) and **0.0298** (16 levels). With $\sigma_tf_s = 1.28 \times 10^{-3}$, the 1-bit jitter noise is $2.36 \times (1.28 \times 10^{-3})^2/32 = 1.21 \times 10^{-7}$ against a signal power of 0.125: **60.1** dB. With 16 levels: **79.1** dB. A Nyquist sampler at 20 MHz is limited to $-20\log_{10}(2\pi \times 20\text{ MHz} \times 1\text{ ps})$ = **78.0** dB, and a discrete-time ΔΣ at the same OSR gains $10\log_{10}32$ on that: **93.1** dB.
 
 **Units check.** $\sigma_tf_s$ is dimensionless (seconds times per second).
 
-**Sanity check.** The 1-bit NRZ loop is **17.9** dB more jitter-sensitive than a sampler at the band edge, because it is the DAC's large, frequent steps, not the slow input, that the jitter corrupts. The ngspice netlist reproduces the delayed-loop trace.
+**Sanity check.** At this −6 dBFS input the 1-bit NRZ loop is **17.9** dB more jitter-sensitive than a Nyquist sampler at the band edge (whose jitter SNR does not depend on the input level; at full scale, with similar bitstream statistics, the gap would be about 12 dB), because it is the DAC's large, frequent steps, not the slow input, that the jitter corrupts. A discrete-time loop is the most tolerant of the three. The ngspice netlist reproduces the delayed-loop trace.
 
 ### Answer key
 
@@ -392,8 +392,8 @@ The state returns after five samples, with three +1s: the average is still 0.2, 
 | Ex 20-08.5e | peak NTF gain, L = 4 | 16 | — |
 | Ex 20-08.5f | Lee-rule penalty, L = 3 | 26.9 | dB |
 | Ex 20-08.5g | Lee-rule penalty, L = 4 | 44.1 | dB |
-| Ex 20-08.5h | magnitude of A(1), L = 3 | 0.0453 | — |
-| Ex 20-08.5i | magnitude of A(1), L = 4 | 0.00627 | — |
+| Ex 20-08.5h | magnitude of D(1), L = 3 | 0.0453 | — |
+| Ex 20-08.5i | magnitude of D(1), L = 4 | 0.00627 | — |
 | Ex 20-08.6a | single-loop gain threshold | 35.3 | — |
 | Ex 20-08.6b | MASH gain threshold | 928 | — |
 | Ex 20-08.6c | MASH gain threshold in dB | 59.4 | dB |
@@ -413,6 +413,7 @@ The state returns after five samples, with three +1s: the average is still 0.2, 
 | Ex 20-08.7k | jitter SNR, 16 levels | 79.1 | dB |
 | Ex 20-08.7l | Nyquist sampler jitter SNR | 78.0 | dB |
 | Ex 20-08.7m | 1-bit penalty against the sampler | 17.9 | dB |
+| Ex 20-08.7n | discrete-time loop jitter SNR | 93.1 | dB |
 | Txt 20-08.a | slope, L = 3 | 21.1 | dB/octave |
 | Txt 20-08.b | slope, L = 4 | 27.1 | dB/octave |
 | Txt 20-08.c | π^(2L)/(2L+1), L = 1 | 5.2 | dB |
@@ -426,6 +427,7 @@ The state returns after five samples, with three +1s: the average is still 0.2, 
 | Txt 20-08.k | model, L = 1, OSR 128, 0 dBFS | 59.8 | dB |
 | Txt 20-08.l | model, L = 2, OSR 128, −2.5 dBFS | 91.7 | dB |
 | Txt 20-08.m | convention offset | 6.02 | dB |
+| Txt 20-08.n | ADS127L21 jitter limit with oversampling | 113.1 | dB |
 
 ## 5. Simulate it
 
@@ -445,7 +447,7 @@ The lab ([labs/20-08-lab](../labs/20-08-lab/README.md)) implements the modulator
 |---|---|---|---|
 | Oversampling ratio | $(6L + 3)$ dB per octave of SQNR; smaller capacitors | Modulator clock rate and power, decimation filter length; bandwidth for a given clock | Converter architect |
 | Loop order | Slope of the noise shaping | Stability (Lee's rule penalty), maximum stable amplitude, more integrators | Converter architect |
-| Multi-bit quantizer | 6 dB per bit, stability, jitter tolerance in CT loops | A linear multi-bit DAC (dynamic element matching), more comparators | Analog designer |
+| Multi-bit quantizer | $20\log_{10}(M - 1)$ (about 6 dB per bit with several bits), stability, jitter tolerance in CT loops | A linear multi-bit DAC (dynamic element matching), more comparators | Analog designer |
 | Optimized NTF zeros | 3.5 dB ($L$ = 2), 8 dB ($L$ = 3) for free | Local resonator feedback, coefficient accuracy | Analog designer |
 | MASH instead of single loop | High order with stable stages | Op-amp gain and matching for noise cancellation | Converter architect |
 | Continuous-time loop | Implicit anti-aliasing, easy-to-drive input, speed and power at wide bandwidth | Excess loop delay, clock-jitter sensitivity, RC time-constant variation | Converter architect |
@@ -483,15 +485,13 @@ The lab ([labs/20-08-lab](../labs/20-08-lab/README.md)) implements the modulator
 ### State of the art (as of Nov 2026)
 
 - **Noise-shaping SARs hold the efficiency record [Established].** The best Schreier figure of any converter in Murmann's survey (August 2026 revision) is 189.2 dB: a fully dynamic noise-shaping SAR with 120.6 dB SNDR in a 1 kHz band at 139 µW (Zhao et al., UESTC, ISSCC 2025). The best classic loop is a discrete-time single-loop audio modulator at 185.3 dB, 105.4 dB SNDR in 20 kHz at 203.5 µW (Lee and Moon, ISSCC 2022) [13], [14] [R-343].
-- **Research is split across architectures [Established; the categories are our extraction from the survey's tags].** Of the 40 oversampled converters published at ISSCC and the VLSI Symposium in 2024–2026, 14 are continuous-time ΔΣ, 10 pipelined or hybrid, 8 noise-shaping SAR, 6 discrete-time ΔΣ and 2 VCO-based [13] [R-343].
-- **Wide bandwidth is continuous-time [Established].** The widest CT ΔΣ in the survey covers 360 MHz at 5 GS/s with 158 mW (a 1-1-1 filtering MASH from TU Eindhoven, NXP and TU Delft, ISSCC 2022); Analog Devices' 2016 CT MASH claimed 465 MHz in its title, tabulated by the survey at 350 MHz. The most efficient CT design above 100 MHz reaches 170.5 dB (University of Macau, ISSCC 2019, 100 MHz at 16.3 mW), and a 4 GS/s fifth-order 2-bit loop reaches −100.1 dBc THD in 100 MHz (NXP and TU Delft, VLSI 2025). Oversampled CT *pipelined* converters from Analog Devices extend to 1 GHz of bandwidth at OSR of about 3–5 [14] [R-343].
-- **Commercial precision converters are mostly discrete-time [Established].** TI's ADS127L21 states that "The modulator is a switched-capacitor, third-order architecture," and its clock specification follows the ordinary sampling law: "with a 200kHz signal frequency, an external clock with <10ps (rms) jitter is required," relaxed by 20 dB per decade at lower frequencies. A CT NRZ loop's jitter limit would instead scale with its quantization steps (§3.7) [15] [R-344].
-- **Audio, microphones and biopotential [Established].** TI's 2024 continuous-time audio ADC reaches 118.5 dBA dynamic range at 3.3 mW (ISSCC 2024) [14]. Digital MEMS microphones contain the modulator and send its PDM stream; TDK's T5838 uses "a fifth order Σ-Δ modulator" and Infineon's IM69D130 trades clock rate for current (69 dB(A) at 3.072 MHz and 980 µA, 64 dB(A) at 768 kHz and 300 µA) [16]. TI's ADS1298 ECG front end "uses a second-order modulator optimized for low-power applications"; its noise table falls by **15.5** dB per halving of data rate between 32 and 16 kSPS, where quantization noise dominates, close to second-order shaping's 15 dB per octave (our computation) [15] [R-344].
-- **ΔΣ beyond ADCs [Established].** Riley, Copeland and Kwasniewski introduced ΔΣ-modulated fractional-N synthesis in 1993 [12]; TI's LMX2594 synthesizer has a "programmable delta-sigma modulator up to 4th order" [15].
+- **Wide bandwidth is continuous-time [Established].** The widest CT ΔΣ in the survey covers 360 MHz at 5 GS/s with 158 mW (ISSCC 2022), and oversampled CT *pipelined* converters extend to 1 GHz of bandwidth at OSR of about 3–5 [14] [R-343].
+- **Commercial precision converters are mostly discrete-time [Established].** TI's ADS127L21 states that "The modulator is a switched-capacitor, third-order architecture," and its clock specification follows the sampling law plus the oversampling gain of §3.7: "with a 200kHz signal frequency, an external clock with <10ps (rms) jitter is required," and $-20\log_{10}(2\pi \times 200\ \text{kHz} \times 10\ \text{ps}) + 10\log_{10}(12.8\ \text{MHz}/400\ \text{kSPS})$ = **113.1** dB, at or above the part's 111.5 dB dynamic range [15] [R-344].
+- **Audio, microphones and biopotential [Established].** TI's 2024 continuous-time audio ADC reaches 118.5 dBA dynamic range at 3.3 mW (ISSCC 2024) [14]. TI's ADS1298 ECG front end "uses a second-order modulator optimized for low-power applications"; its noise table falls by **15.5** dB per halving of data rate between 32 and 16 kSPS, where quantization noise dominates, close to second-order shaping's 15 dB per octave (our computation) [15] [R-344].
 
 ### Why it matters commercially
 
-Oversampling converters are where most of a consumer device's analog signals enter the digital world. Every earbud, smartwatch, smart speaker and XR headset carries several PDM microphones, each with its own ΔΣ modulator, and an audio codec whose ADCs and DACs are ΔΣ; fitness and medical wearables digitize ECG and other biopotentials with low-power ΔΣ front ends; IoT sensors and industrial condition monitoring use precision ΔΣ ADCs. In automotive and wireless receivers, continuous-time ΔΣ modulators digitize tens to hundreds of megahertz directly. In AI datacenters the honest answer is narrower: we found no ΔΣ ADC in the data path; ΔΣ appears in clock synthesis (fractional-N PLLs) and in power and condition monitoring. For a corporate-development lens, the value in this category sits in low power per channel, in the digital filters and calibration that ship with the modulator, and in specifications (dynamic range, latency, maximum stable amplitude) that are easy to quote flatteringly.
+Oversampling converters are where most of a consumer device's analog signals enter the digital world. Earbuds, watches and XR headsets carry ΔΣ microphones and codecs, wearables digitize biopotentials with low-power ΔΣ front ends, and IoT and industrial sensors use precision ΔΣ ADCs. In automotive and wireless receivers, continuous-time ΔΣ modulators digitize tens to hundreds of megahertz directly. In AI datacenters the honest answer is narrower: we found no ΔΣ ADC in the data path; ΔΣ appears in clock synthesis (fractional-N PLLs) and in power and condition monitoring. For a corporate-development lens, the value in this category sits in low power per channel, in the digital filters and calibration that ship with the modulator, and in specifications (dynamic range, latency, maximum stable amplitude) that are easy to quote flatteringly.
 
 ### Questions for engineering leaders
 
@@ -506,7 +506,6 @@ Oversampling converters are where most of a consumer device's analog signals ent
 - **"24-bit."** The output word is 24 bits; the information is not. The ADS127L21 specifies a 111.5 dB dynamic range at 200 kSPS, about **18.2** effective bits by $(DR - 1.76)/6.02$; the ADS1298 guarantees 24 bits with no missing codes only up to 8 kSPS and specifies 17 bits at 32 kSPS [15].
 - **"110 dB SNR."** The PCM1865 audio ADC's "110-dB SNR" is specified with a "–60-dB input signal" and A-weighted: it is a dynamic range [15]. A TI application note measures an A-weighted 118 dB dynamic range as 116 dB unweighted, "about 2dB down from the A-weighted setting as expected," and quotes "123dB Dynamic Range with DRE enable and 113dB with DRE disabled" for a part that switches gain on small signals [15]. Murmann's survey excludes such gain switching [13].
 - **"Inherent anti-aliasing."** A continuous-time loop does filter its input, but the alias bands do not disappear: the ADS127L21 data sheet warns that out-of-band signals can saturate the modulator, after which "the noise floor increases" [15]. Ask for the attenuation at $f_s \pm f_B$ and the overload behavior.
-- **"Low power."** Survey figures for ΔΣ modulators exclude the decimation filter by rule [13]; data-sheet power includes it. Compare like with like.
 - **"Fast."** A ΔΣ ADC's output rate is not its latency. The ADS127L21's default FIR filter has a group delay of 34 output periods, 85 µs at 400 kSPS, against 3 µs for its low-latency sinc path [15].
 - **Sanity check.** Convert any resolution claim to SNDR at full scale near the band edge; check it against $(6L + 3)$ dB per octave for the stated order and OSR, minus the NTF penalty and a few decibels for a 1-bit quantizer; and ask whether a headline number is dynamic range, weighted, or measured at low frequency only (one 2026 paper's title SNDR of 98.5 dB is 93.9 dB at its band edge in the survey) [13].
 
@@ -583,11 +582,11 @@ Problems: [20-08 problem set](../problems/20-08-problems.md) · Worked solutions
 
 ## 13. Further study
 
-- R. Schreier, S. Pavan and G. C. Temes, *Understanding Delta-Sigma Data Converters*, 2nd ed., Wiley-IEEE Press, 2017, DOI 10.1002/9781119258308 (author order as in the publisher's metadata; the book is also cited with Pavan first): the standard text; chapters on first- and second-order modulators, higher-order design and continuous-time loops.
+- R. Schreier, S. Pavan and G. C. Temes, *Understanding Delta-Sigma Data Converters*, 2nd ed., Wiley-IEEE Press, 2017, DOI 10.1002/9781119258308: the standard text; chapters on first- and second-order modulators, higher-order design and continuous-time loops.
 - B. Razavi, "The delta-sigma modulator," *IEEE Solid-State Circuits Magazine*, Spring 2016 (§14 [10]): a six-page history and tour, posted on the author's UCLA page.
 - R. Schreier, "Oversampling Delta-Sigma Data Converters: The One-Page Story" and his University of Toronto ECE1371 slides (§14 [5]): the noise-shaping law, Lee's rule and toolbox practice in compact form.
 - M. Pelgrom, *Analog-to-Digital Conversion*, 4th ed., Springer, 2022: the chapter on sigma-delta modulation.
-- R. Schreier's Delta Sigma Toolbox (MATLAB, BSD-style licence): synthesize NTFs (its `synthesizeNTF` defaults to Lee's 1.5), simulate modulators and find the maximum stable amplitude. Its 2015 Python port (python-deltasigma 0.2.2) uses features removed from current Python and NumPy, which is why this chapter's lab is written in plain NumPy.
+- R. Schreier's Delta Sigma Toolbox (MATLAB, BSD-style licence): synthesize NTFs (its `synthesizeNTF` defaults to Lee's 1.5), simulate modulators and find the maximum stable amplitude.
 
 ## 14. Sources
 
@@ -599,11 +598,11 @@ Problems: [20-08 problem set](../problems/20-08-problems.md) · Worked solutions
 6. D. Johns and K. Martin, "Oversampling Converters" lecture slides (from *Analog Integrated Circuit Design*, Wiley, 1997), University of Toronto [R-342].
 7. K. C.-H. Chao, S. Nadeem, W. L. Lee and C. G. Sodini, "A higher order topology for interpolative modulators for oversampling A/D converters," *IEEE Trans. Circuits Syst.*, vol. 37, no. 3, pp. 309–318, Mar. 1990, DOI 10.1109/31.52724 [R-341].
 8. J. A. Cherry and W. M. Snelgrove, "Excess loop delay in continuous-time delta-sigma modulators," *IEEE Trans. Circuits Syst. II*, vol. 46, no. 4, pp. 376–389, Apr. 1999, DOI 10.1109/82.755409, and "Clock jitter and quantizer metastability in continuous-time delta-sigma modulators," *ibid.*, vol. 46, no. 6, pp. 661–676, June 1999, DOI 10.1109/82.769775 [R-341].
-9. R. Saad, S. Hoyos and S. Palermo, "Analysis and modeling of clock-jitter effects in delta-sigma modulators," in *MATLAB — A Fundamental Tool for Scientific Computing and Engineering Applications*, vol. 1, InTech, 2012, DOI 10.5772/46453 [R-342].
+9. R. Saad, S. Hoyos and S. Palermo, book chapter on clock-jitter effects in delta-sigma modulators, InTech, 2012, DOI 10.5772/46453 [R-342].
 10. B. Razavi, "The delta-sigma modulator [A circuit for all seasons]," *IEEE Solid-State Circuits Magazine*, vol. 8, no. 2, pp. 10–15, Spring 2016, DOI 10.1109/MSSC.2016.2543061 [R-341].
 11. E. B. Hogenauer, "An economical class of digital filters for decimation and interpolation," *IEEE Trans. Acoust., Speech, Signal Process.*, vol. 29, no. 2, pp. 155–162, Apr. 1981, DOI 10.1109/TASSP.1981.1163535 [R-341].
 12. T. A. D. Riley, M. A. Copeland and T. A. Kwasniewski, "Delta-sigma modulation in fractional-N frequency synthesis," *IEEE J. Solid-State Circuits*, vol. 28, no. 5, pp. 553–559, May 1993, DOI 10.1109/4.229400 [R-341].
 13. B. Murmann, "ADC Performance Survey 1997–2026," github.com/bmurmann/ADC-survey (xls/ADCsurvey_latest.xlsx, revision of Aug. 2026), accessed 24 Nov 2026 [R-343].
 14. H. Zhao et al., "A fully dynamic noise-shaping SAR ADC achieving 120dB SNDR and 189dB FoMS in 1kHz BW," ISSCC 2025, pp. 306–308, DOI 10.1109/ISSCC49661.2025.10904778; C. Y. Lee and U.-K. Moon, ISSCC 2022, paper 25.3, DOI 10.1109/ISSCC42614.2022.9731606; ISSCC 2022, paper 25.4 (360 MHz CT MASH), DOI 10.1109/ISSCC42614.2022.9731789; ISSCC 2016, paper 15.5 (465 MHz CT MASH), DOI 10.1109/ISSCC.2016.7418015; ISSCC 2019, paper 20.7, DOI 10.1109/ISSCC.2019.8662317; VLSI 2025, paper C5-2, DOI 10.23919/VLSITechnologyandCir65189.2025.11074991; Subramanian et al., ISSCC 2024, pp. 176–178, DOI 10.1109/ISSCC49657.2024.10454526 [R-343].
-15. Texas Instruments data sheets: ADS127L21 (SBASAK4C, rev. Aug. 2025), ADS127L11 (SBAS946C, rev. Sept. 2022), PCM186x (SLAS831D, rev. Mar. 2018), ADS1298 (SBAS459K, rev. Aug. 2015), ADS1292 (SBAS502C, rev. Apr. 2020), LMX2594 (SNAS696C, rev. Apr. 2019); application note SLLA641, July 2024 [R-344].
+15. Texas Instruments data sheets: ADS127L21 (SBASAK4C, rev. Aug. 2025), ADS127L11 (SBAS946C, rev. Sept. 2022), PCM186x (SLAS831D, rev. Mar. 2018), ADS1298 (SBAS459K), ADS1292 (SBAS502C, rev. Apr. 2020), LMX2594 (SNAS696C, rev. Apr. 2019); application note SLLA641, July 2024 [R-344].
 16. Infineon, IM69D130 data sheet, v1.0, Dec. 2017; TDK InvenSense, T5838 data sheet DS-000383, rev. 1.2, Sept. 2025 [R-344].

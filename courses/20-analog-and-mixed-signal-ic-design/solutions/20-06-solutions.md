@@ -70,7 +70,7 @@ The INL would be uncertain by most of an LSB however good the converter. The tes
 
 ### Solution 20-06.10
 
-$M = \text{round}(70\text{ MHz} \times 8192/250\text{ MS/s})$ = 2294, which is even, so $M$ = **2295** and $f_{in} = 2295 \times 250\text{ MS/s}/8192$ = **70.0378** MHz. Since 2295 is odd and 8192 = 2¹³, their greatest common divisor is **1**.
+The exact cycle count for 70 MHz is $70\text{ MHz} \times 8192/250\text{ MS/s}$ = 2293.76. The nearest integer, 2294, is even; its odd neighbours are 2293 (0.76 away) and 2295 (1.24 away), so $M$ = **2293** and $f_{in} = 2293 \times 250\text{ MS/s}/8192$ = **69.9768** MHz, 23 kHz from the target (2295 would give 70.0378 MHz, 38 kHz away). Since 2293 is odd and 8192 = 2¹³, their greatest common divisor is **1**.
 
 ### Solution 20-06.11
 
@@ -112,7 +112,7 @@ $$
 P = 2A \cdot CA\pi f_s = 2\pi A^2Cf_s = 4\pi kT\cdot\text{SNR}\cdot f_s ,
 $$
 
-using $A^2C = 2kT\cdot\text{SNR}$. That is **π/2 = 1.571** times the class-B bound, so the $\text{FoM}_S$ limit falls by 1.96 dB to **189.8** dB.
+using $A^2C = 2kT\cdot\text{SNR}$. The ideal class-B driver at the same Nyquist frequency draws $4kT\cdot\text{SNR}\cdot f_s$ (§3.6), so class A costs **π = 3.142** times as much, **4.97** dB. The $\text{FoM}_S$ limit falls from 194.8 dB to $10\log_{10}[1/(8\pi kT)]$ = **189.8** dB, which is **1.96** dB (a factor π/2) below the survey's 191.8 dB line.
 
 ---
 
@@ -168,8 +168,8 @@ using $A^2C = 2kT\cdot\text{SNR}$. That is **π/2 = 1.571** times the class-B bo
 | 20-06.9f | ENOB measured | 11.29 | bits |
 | 20-06.9g | ENOB normalized | 11.46 | bits |
 | 20-06.9h | non-harmonic spur in dBc | −87 | dBc |
-| 20-06.10a | M | 2295 | — |
-| 20-06.10b | coherent frequency | 70.0378 | MHz |
+| 20-06.10a | M | 2293 | — |
+| 20-06.10b | coherent frequency | 69.9768 | MHz |
 | 20-06.10c | gcd | 1 | — |
 | 20-06.11a | NSD | −152.0 | dBFS/Hz |
 | 20-06.11b | SNR in 20 MHz | 79.0 | dB |
@@ -191,6 +191,7 @@ using $A^2C = 2kT\cdot\text{SNR}$. That is **π/2 = 1.571** times the class-B bo
 | 20-06.13i | FoM_S C3 | 183.0 | dB |
 | 20-06.14a | 16-bit minimum power | 213 | µW |
 | 20-06.14b | 12-bit minimum power | 0.834 | mW |
-| 20-06.14c | class-A factor | 1.571 | — |
+| 20-06.14c | class-A factor over class B | 3.142 | — |
 | 20-06.14d | class-A FoM_S limit | 189.8 | dB |
-| 20-06.14e | class-A penalty | 1.96 | dB |
+| 20-06.14e | class-A penalty below the survey line | 1.96 | dB |
+| 20-06.14f | class-A penalty over class B | 4.97 | dB |

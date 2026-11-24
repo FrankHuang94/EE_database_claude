@@ -48,9 +48,13 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Offset tolerance.** With $V_{REF}$ = 0.5 V, how much comparator offset can a 1.5-bit stage tolerate? How much can a 1-bit stage (one comparator at 0, residue $2v - DV_{REF}$ with $D = \pm1$) tolerate, and why?
 
-### Problem 20-07.10 [B]
+### Problem 20-07.10 [C]
 
-**Noise of three stages.** With $C_1$ = 1 pF and stage gains of 2, find the input-referred kT/C noise (µV rms) for stage capacitors 1, 0.5, 0.25 pF and for 1, 1, 1 pF, and the noise of the first stage alone.
+**Size a first pipeline stage.** A 12-bit, 200 MS/s pipeline has a 1.5-bit flip-around first stage with $C_s = C_f$ = 0.65 pF (1.3 pF of sampling capacitance per side, Example 20-07.6), a summing-node parasitic $C_p$ = 0.2 pF and a 0.65 pF next-stage load; the hold phase lasts 2.5 ns, and the op-amp is a single stage at $g_m/I_D$ = 12 V⁻¹.
+(a) Find β and the op-amp DC gain that keeps the gain error below $2^{-11}$.
+(b) Find the effective load, the $g_m$ for 12-bit settling in the hold phase, the current per side and the op-amp's unity-gain frequency.
+(c) To gain 3 dB of SNR, all three capacitors are doubled. How do β, the effective load and the current change?
+(d) Instead, a larger input pair raises $C_p$ to 0.5 pF. Find the new β, DC gain and $g_m$. Which costs more: the bigger pair, or a 3 dB noise improvement?
 
 ### Problem 20-07.11 [A]
 
@@ -60,7 +64,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A 10 GS/s target.** A two-channel interleaved 10 GS/s ADC must keep interleaving spurs at −50 dBc for inputs up to 5 GHz. Find the allowed gain mismatch and timing skew.
 
-### Problem 20-07.13 [C]
+### Problem 20-07.13 [B]
 
 **Choosing by figure of merit.** Estimate the power of (a) a 14-bit, 100 MS/s Nyquist ADC with 80 dB SNDR built at a Schreier figure of 180 dB, and (b) an 8-bit, 20 GS/s ADC with 45 dB SNDR at 150 dB. Which architectures (§9) would you expect for each?
 
@@ -73,6 +77,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Flash, SAR and pipeline trade-offs | 1, 2, 13 |
 | 2. SAR operation and switching energy | 3, 4, 5 |
 | 3. Redundancy | 6, 9 |
-| 4. Pipeline residue, gain and noise | 7, 8, 10 |
+| 4. Pipeline residue, gain, speed and noise | 7, 8, 10 |
 | 5. Interleaving spurs | 11, 12 |
 | 6. Architecture choice | 13 |

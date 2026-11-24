@@ -82,7 +82,7 @@ Conventions:
 | $\sigma(\text{DNL}_{mid}) = \sigma_u\sqrt{2^N - 1}$; $\sigma(\text{INL}_{mid}) \approx (\sigma_u/2)2^{N/2}$ | Binary-weighted unit elements | [20-06](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-06-data-converter-fundamentals.md) |
 | $\text{ENOB} = (\text{SINAD} - 1.76)/6.02$; $\text{NSD} = -\text{SNR}_{FS} - 10\log_{10}(f_s/2)$ dBFS/Hz |  | [20-06](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-06-data-converter-fundamentals.md) |
 | $\text{FoM}_W = P/(2^{\text{ENOB}}f_s)$; $\text{FoM}_S = \text{SNDR} + 10\log_{10}(BW/P)$ | Walden (J/step), Schreier (dB) | [20-06](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-06-data-converter-fundamentals.md) |
-| $P/f_s = 8kT\cdot\text{SNR}$ ⇒ $\text{FoM}_S \le 10\log_{10}[1/(16kT)]$ ≈ 191.8 dB | Ideal class-B sampler at 300 K | [20-06](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-06-data-converter-fundamentals.md) |
+| $P/f_s = 8kT\cdot\text{SNR}$ ⇒ $\text{FoM}_S \le 10\log_{10}[1/(16kT)]$ ≈ 191.8 dB | Survey's thermal line at 300 K; an ideal class-B sampler at a Nyquist input needs $4kT\cdot\text{SNR}$ (194.8 dB) | [20-06](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-06-data-converter-fundamentals.md) |
 
 ## Nyquist ADCs
 

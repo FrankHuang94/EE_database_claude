@@ -22,7 +22,7 @@ Each step adds $x - y$ = −1.4 when $u \ge 0$ and +0.6 when $u < 0$:
 | 3 | **0.1** | +1 |
 | 4 | **−1.3** | −1 |
 
-The integrator stays within $1 + \lvert x\rvert$ = 1.4. The output average must equal −0.4, so the fraction $p$ of +1s satisfies $p - (1 - p) = -0.4$: $p$ = **0.3**. The values are $0.3 - 0.4n$ modulo 1, which repeat after **10** samples (three +1s, seven −1s).
+The integrator stays within $1 + \lvert x\rvert$ = 1.4. The output average must equal −0.4, so the fraction $p$ of +1s satisfies $p - (1 - p) = -0.4$: $p$ = **0.3**. Each step adds $x - y = -1.4$ (after a +1) or $+0.6$ (after a −1), and both are 0.6 modulo 2, so $u[n] \equiv 0.3 + 0.6n \pmod 2$: the values first repeat when $0.6n$ is a multiple of 2, after **10** samples (three +1s, seven −1s).
 
 ### Solution 20-08.3
 
@@ -30,7 +30,7 @@ Tones at multiples of $xf_s$ = 0.004 × 2.56 MHz = **10.24** kHz, amplitude $2x$
 
 ### Solution 20-08.4
 
-Quantizer term at −6 dBFS, 1-bit: $10\log_{10}[(0.25/2)/(1/3)]$ = −4.26 dB. Penalty: $10\log_{10}(\pi^6/7)$ = 21.41 dB. Slope: $70\log_{10}32$ = 105.36 dB. SQNR = −4.26 − 21.41 + 105.36 = **79.7** dB. A 16-level quantizer adds $20\log_{10}15$ = 23.52 dB: **103.2** dB. (A real third-order 1-bit loop would need Lee's rule and lose much of this; the 16-level loop is far more likely to be stable with the pure NTF.)
+Quantizer term at −6 dBFS, 1-bit: $10\log_{10}[(0.25/2)/(1/3)]$ = −4.26 dB. Penalty: $10\log_{10}(\pi^6/7)$ = 21.38 dB. Slope: $70\log_{10}32$ = 105.36 dB. SQNR = −4.26 − 21.38 + 105.36 = **79.7** dB. A 16-level quantizer adds $20\log_{10}15$ = 23.52 dB: **103.2** dB. (A real third-order 1-bit loop would need Lee's rule and lose much of this; the 16-level loop is far more likely to be stable with the pure NTF.)
 
 ### Solution 20-08.5
 
@@ -61,7 +61,9 @@ $$
 Y = z^{-3}X + (1 - z^{-1})^3E_2 ,
 $$
 
-a **3**rd-order NTF. Its linear-model SQNR is that of Problem 4's 1-bit loop at OSR = 64: $-4.26 - 21.41 + 70\log_{10}64$ = **100.8** dB, from two stable low-order loops, if the digital filters match the analog ones.
+a **3**rd-order NTF. Its linear-model SQNR is that of Problem 4's 1-bit loop at OSR = 64: $-4.26 - 21.38 + 70\log_{10}64$ = **100.8** dB, from two stable low-order loops, if the digital filters match the analog ones.
+
+In practice the second stage cannot take $-E_1$ at full size: the 1-bit second-order loop's second integrator swings several units, which would overload a ±1 first-order stage, so the interstage signal is scaled down and the same scale is undone in $D_2$.
 
 ### Solution 20-08.9
 
@@ -99,14 +101,14 @@ The integrate-and-dump input filter gives $\sin(\pi/64)/[\pi(1 - 1/64)]$ = 0.015
 
 (b) The band edge is $f_B = f_s/256$: $\lvert H\rvert = [\sin(32\pi/256)/(32\sin(\pi/256))]^4$ = 0.902, **−0.90** dB, to be equalized in the half-band stages.
 
-(c) $K\log_2M = 4 \times 5$ = **20** bits beyond the modulator's word.
+(c) $K\log_2R = 4 \times 5$ = **20** bits beyond the modulator's word.
 
 ### Solution 20-08.15
 
 Solve as in Solution 5 with a 70 dB target:
 
 - Second order, 1-bit: $50\log_{10}\text{OSR} = 70 + 4.26 + 12.90$, OSR = **55.4**, $f_s = 2 \times 20\text{ MHz} \times 55.4$ = **2.21** GHz.
-- Third order, 16 levels: $70\log_{10}\text{OSR} = 70 + 4.26 - 23.52 + 21.41$, OSR = **10.7**, $f_s$ = **0.429** GHz.
+- Third order, 16 levels: $70\log_{10}\text{OSR} = 70 + 4.26 - 23.52 + 21.38$, OSR = **10.7**, $f_s$ = **0.429** GHz.
 
 The multi-bit third-order loop runs **5.2** times slower, is easier to keep stable, and (Example 20-08.7) is far less sensitive to clock jitter, at the cost of a 16-level DAC that needs element matching. Wide-bandwidth CT modulators are built this way.
 

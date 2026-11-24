@@ -66,7 +66,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 20-06.14 [C]
 
-**The thermal limit.** (a) Using $P/f_s = 8kT\cdot\text{SNR}$, find the minimum power of an ideal 16-bit converter (SNR 98.1 dB) at 1 MS/s and of an ideal 12-bit converter (74.0 dB) at 1 GS/s. (b) Repeat §3.6's derivation for a class-A driver whose supply current is constant and equal to the sine's peak current $CA\omega$ at the Nyquist frequency. By what factor does the minimum power rise, and what is the limit on $\text{FoM}_S$?
+**The thermal limit.** (a) Using $P/f_s = 8kT\cdot\text{SNR}$, find the minimum power of an ideal 16-bit converter (SNR 98.1 dB) at 1 MS/s and of an ideal 12-bit converter (74.0 dB) at 1 GS/s. (b) Repeat §3.6's derivation for a class-A driver whose supply current is constant and equal to the sine's peak current $CA\omega$ at the Nyquist frequency. By what factor does the minimum power rise over the ideal class-B driver at the same frequency, what is the limit on $\text{FoM}_S$, and how far is it below the survey's 191.8 dB line?
 
 ---
 

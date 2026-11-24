@@ -85,7 +85,7 @@ $$
 \text{INL}_k = \frac{T_k - \left[T_1 + (k - 1)\Delta_{avg}\right]}{\Delta_{avg}} = \sum_{j=1}^{k-1}\text{DNL}_j .
 $$
 
-The second form follows by telescoping: INL is the running sum of DNL. A **best-fit** INL uses a least-squares line instead; it is never larger than the endpoint INL's worst case and is the more flattering number, so data sheets should say which they use.
+The second form follows by telescoping: INL is the running sum of DNL. A **best-fit** INL uses a least-squares line instead. It is usually, though not always, smaller than the endpoint worst case (a least-squares line minimizes the sum of squares, not the maximum; only a minimax line is guaranteed never to be larger), so it is usually the more flattering number, and data sheets should say which they use.
 
 **Properties.** DNL cannot be below −1 LSB: a code of zero width is a **missing code**. "No missing codes" therefore means DNL > −1 everywhere. A converter is **monotonic** if its output never decreases as the input increases; a SAR's binary search is monotonic by construction (a larger input wins the first comparison where two inputs differ), so its DNL errors appear as wide codes or missing codes, never as reversed ones.
 
@@ -187,19 +187,25 @@ $$
 
 with $BW$ the signal bandwidth ($f_s/2$ for a Nyquist converter) and larger being better. A variant uses the dynamic range (DR) instead of SNDR.
 
-**A thermal limit on FoM_S.** Consider the simplest Nyquist sampler: a capacitor $C$ driven by an ideal class-B driver from a supply equal to the full-scale swing $2A$, sampling a full-scale sine at the Nyquist frequency $f_s/2$. The driver delivers current $C\,dv/dt$, so each signal period moves a charge of $4AC$ through the supply. The power is
+**A thermal limit on FoM_S.** Consider the simplest Nyquist sampler: a capacitor $C$ driven by an ideal class-B driver from a supply equal to the full-scale swing $2A$, tracking a full-scale sine of frequency $f$. The driver delivers current $C\,dv/dt$. In class B the supply sources only the charging half-cycles; on the discharging half the capacitor returns its charge to ground, not to the supply. Each signal period therefore draws a charge $2AC$ from the supply, and the power is
 
 $$
-P = 2A \times 4AC \times \frac{f_s}{2} = 4A^2Cf_s ,
+P = 2A \times 2AC \times f = 4A^2Cf .
 $$
 
-and kT/C noise gives $\text{SNR} = (A^2/2)/(kT/C) = A^2C/(2kT)$, so $A^2C = 2kT\cdot\text{SNR}$ and
+kT/C noise gives $\text{SNR} = (A^2/2)/(kT/C) = A^2C/(2kT)$, so $A^2C = 2kT\cdot\text{SNR}$ and $P = 8kT\cdot\text{SNR}\cdot f$. For a sine at the Nyquist frequency, $f = f_s/2$:
 
 $$
-\frac{P}{f_s} = 8kT\cdot\text{SNR} \quad\Longrightarrow\quad \text{FoM}_S = 10\log_{10}\frac{1}{16kT} .
+\frac{P}{f_s} = 4kT\cdot\text{SNR} \quad\Longrightarrow\quad \text{FoM}_S \le 10\log_{10}\frac{1}{8kT} ,
 $$
 
-At 300 K this is **191.8** dB. Murmann's survey plots exactly this line, $P/f_s = 8kT\cdot\text{SNR}$, attributing it to rail-to-rail class-B circuits after Vittoz (1990) [3]. Real converters need much more than one ideal driver and one capacitor, but the bound explains the shape of the survey data: at high resolution, power must grow fourfold per bit, so the Schreier figure is the fair yardstick there, while at low resolution the Walden figure is.
+**194.8** dB at 300 K. Murmann's survey draws a more conservative line, $P/f_s = 8kT\cdot\text{SNR}$, attributing it to rail-to-rail class-B circuits after Vittoz (1990) [3]; it is the same bound evaluated at $f = f_s$, 3 dB higher in power, and corresponds to
+
+$$
+\text{FoM}_S = 10\log_{10}\frac{1}{16kT} ,
+$$
+
+**191.8** dB at 300 K. This course follows the survey and calls 191.8 dB "the thermal line", while remembering that an ideal sampler at a Nyquist input could in principle do 3 dB better. Real converters need much more than one ideal driver and one capacitor, but the bound explains the shape of the survey data: at high resolution, power must grow fourfold per bit, so the Schreier figure is the fair yardstick there, while at low resolution the Walden figure is.
 
 > **Going deeper — what the figures ignore.** Neither figure counts the power of the input driver, the reference buffer or the clock, all of which can exceed the converter core's; neither rewards input bandwidth beyond $f_s/2$, latency or area. Murmann's survey, which collects every ISSCC and VLSI Symposium converter since 1997, plots both figures against speed so readers can see the trade-offs rather than one number (§9).
 
@@ -308,7 +314,7 @@ $\text{SINAD} = -10\log_{10}(10^{-6.876} + 10^{-6.441})$ for the first row. With
 
 **Solution.** $\text{NSD} = -68.8 - 10\log_{10}(50 \times 10^6)$ = **−145.8** dBFS/Hz. In 1 MHz, $\text{SNR} = 68.8 + 10\log_{10}(50)$ = **85.8** dB, a processing gain of **17.0** dB. The FFT floor is $68.8 + 10\log_{10}(8192)$ = **107.9** dB below full scale per bin.
 
-**Sanity check.** A narrowband user of a wideband ADC gains about 3 dB (half a bit) per doubling of the oversampling ratio: from 12 bits' worth of noise to almost 14 within 1 MHz. A spectrum plot's floor at −108 dBFS is not the SNR.
+**Sanity check.** A narrowband user of a wideband ADC gains about 3 dB (half a bit) per doubling of the oversampling ratio: from **11.1** effective bits of noise to **14.0** within 1 MHz. A spectrum plot's floor at −108 dBFS is not the SNR.
 
 ### Example 20-06.8 · Figures of merit (tier B)
 
@@ -407,6 +413,8 @@ $\text{SINAD} = -10\log_{10}(10^{-6.876} + 10^{-6.441})$ for the first row. With
 | Ex 20-06.7b | SNR in 1 MHz | 85.8 | dB |
 | Ex 20-06.7c | processing gain | 17.0 | dB |
 | Ex 20-06.7d | FFT floor below full scale | 107.9 | dB |
+| Ex 20-06.7e | effective bits, full band | 11.1 | bits |
+| Ex 20-06.7f | effective bits in 1 MHz | 14.0 | bits |
 | Ex 20-06.8a | FoM_W, body grounded | 12.9 | fJ |
 | Ex 20-06.8b | FoM_S, body grounded | 168.3 | dB |
 | Ex 20-06.8c | FoM_W, body tied | 6.82 | fJ |
@@ -420,6 +428,7 @@ $\text{SINAD} = -10\log_{10}(10^{-6.876} + 10^{-6.441})$ for the first row. With
 | Ex 20-06.8k | ratio to 1.5 mW | 60 | — |
 | Ex 20-06.8l | gap to the thermal limit | 23.5 | dB |
 | Txt 20-06.a | thermal limit on FoM_S | 191.8 | dB |
+| Txt 20-06.a2 | ideal class-B limit at a Nyquist input | 194.8 | dB |
 | Txt 20-06.b | mid-scale DNL for 0.5% | 0.32 | LSB |
 | Txt 20-06.c | 10 log10(8192) | 39 | dB |
 | Txt 20-06.d | gap from the record to the thermal line | 2.6 | dB |
@@ -457,8 +466,8 @@ The lab ([labs/20-06-lab](../labs/20-06-lab/README.md)) implements a behavioral 
 | Ideal SQNR, full-scale sine | $6.02N + 1.76$ dB | 74.0 dB at 12 bits, 98.1 dB at 16 bits; exact |
 | SQNR penalty for a Gaussian signal at ±4σ | 7.27 dB below a uniform signal, 9.0 dB below a sine | crest factor; exact |
 | Processing gain | $10\log_{10}(f_s/2B)$ | 3 dB (half a bit) per doubling of oversampling |
-| Thermal limit on the Schreier figure | about 192 dB at 300 K | $10\log_{10}(1/16kT)$ for an ideal class-B-driven sampler (§3.6) |
-| Thermal noise floor of pipeline ADCs (as of 2010) | about 70–74 dB at 14 bits, 77–80 dB at 16 bits | TI *Analog Applications Journal* SLYT379 [R-332] |
+| Thermal limit on the Schreier figure | about 192 dB at 300 K (the survey's $8kT\cdot\text{SNR}$ line); 194.8 dB for an ideal class-B sampler with a Nyquist-frequency input | $10\log_{10}(1/16kT)$ and $10\log_{10}(1/8kT)$ (§3.6) |
+| Thermal noise floor of pipeline ADCs (as of 2010) | about 70–74 dB for a 14-bit pipeline, 77–80 dB for a 16-bit ADC | TI *Analog Applications Journal* SLYT379 [R-332] |
 | RF-sampling ADC noise density (as of Nov 2026) | about −150 to −156 dBFS/Hz | TI ADC12DJ5200RF: −150.4 dBFS/Hz (dual channel, 0.8 Vpp); ADC32RF55: −155.6 dBFS/Hz [R-334] |
 | SNR across frequency of a 12-bit RF-sampling ADC (as of Nov 2026) | 55.6 dBFS at 347 MHz falling to 49.6 dBFS at 8.0 GHz | TI ADC12DJ5200RF, dual-channel mode [R-334] |
 | Low-speed state of the art (as of 2022) | at the "8kTSNR energy limit" | Murmann, ISSCC 2022 short course [R-334] |
@@ -471,7 +480,7 @@ The lab ([labs/20-06-lab](../labs/20-06-lab/README.md)) implements a behavioral 
 - **Reading the FFT floor as the SNR.** The floor per bin sits $10\log_{10}(N_{FFT}/2)$ dB below the noise power; a 16k-point FFT shows a floor 39 dB below the SNR.
 - **Comparing dBc with dBFS.** An SNR measured at −1 dBFS is 1 dB worse in dBc; data sheets usually quote dBFS.
 - **Quoting ENOB without frequency and amplitude.** ENOB at 1 MHz and at Nyquist can differ by bits; ENOB at −1 dBFS may be normalized to full scale or not.
-- **Best-fit INL presented as INL.** The least-squares line hides gain error and lowers the worst case; check which definition is used.
+- **Best-fit INL presented as INL.** Both lines remove gain error, but the least-squares line usually lowers the worst case; check which definition is used.
 - **Assuming DNL > −1 means good linearity.** A converter can have no missing codes and still have a bowed INL that produces large harmonics.
 - **Non-coherent FFT tests without a window.** Leakage spreads the signal over many bins and corrupts every metric.
 - **Comparing Walden figures across resolutions.** Walden flatters low-resolution designs; use Schreier for thermal-noise-limited ones, and ask what power was counted.
@@ -502,7 +511,7 @@ Converter specifications are where analog performance meets a customer's purchas
 - **"12-bit."** Resolution is the number of output bits; ENOB at your frequency is what you get. The ADC12DJ5200RF specifies 8.7 effective bits at 2.4 GHz and 7.4 at 8.0 GHz (SINAD 46.2 dBFS) [R-336].
 - **dBFS versus dBc.** The same data sheet quotes SFDR in dBFS; most older data sheets and TI's own measurement guide use dBc. At −1 dBFS the difference is 1 dB, at −10 dBFS ten [R-335], [R-336].
 - **Noise density versus SNR.** NSD is usually measured with a small input (−20 dBFS for the ADC12DJ5200RF), where jitter and distortion are negligible, so it looks better than the SNR measured near full scale. From the 55.6 dBFS SNR at 347 MHz and 5.12 GS/s, §3.5's formula gives **−149.7** dBFS/Hz, against the specified −150.4 dBFS/Hz at −20 dBFS [R-334].
-- **Dynamic-range figures of merit.** A Schreier figure computed from dynamic range instead of SNDR can be inflated by a noise floor that depends on the signal. Computed from the survey's data, one 2020 incremental ADC reaches about 203 dB on dynamic range against 164.9 dB on SNDR, above the thermal line; Murmann ranks by SNDR for this reason [R-336].
+- **Dynamic-range figures of merit.** A Schreier figure computed from dynamic range instead of SNDR can be inflated by a noise floor that depends on the signal. Computed from the survey's data, one 2020 entry reaches about 203 dB on dynamic range against 164.9 dB on SNDR, above the thermal line; the survey ranks by SNDR and has no dynamic-range column [R-336].
 - **"Effective resolution."** Some precision-converter data sheets quote an "effective resolution" of $\log_2(\text{FSR}/v_{n,rms})$, which omits the $\sqrt{12}$ of the IEEE-style ENOB and so reads **1.79** bits higher for the same noise [R-336].
 - **Averaging is not free resolution.** The ADC32RF55's 2× and 4× averaging modes gain 2.5 and 4.8 dB against an ideal 3.0 and 6.0 dB, because the averaged channels' noise is partly correlated [R-334].
 - **Front page versus table.** Check both: the ADC12DJ5200RF's front page gives 8.6 bits where its table gives 8.7, and the ADS8861's front page gives −115 dB THD where its table gives −112 dB [R-336].
@@ -562,7 +571,7 @@ It depends on the use. By Walden, X is ten times better. By Schreier, with the s
 
 <details><summary>Answer</summary>
 
-About 191.8 dB at 300 K: a capacitor driven by an ideal class-B driver needs $P/f_s = 8kT\cdot\text{SNR}$, combining kT/C noise with the charge the driver must move per sample.
+About 191.8 dB at 300 K on the survey's line $P/f_s = 8kT\cdot\text{SNR}$, which combines kT/C noise with the charge a class-B driver must move. An ideal class-B sampler tracking a Nyquist-frequency sine needs only half that power, $4kT\cdot\text{SNR}$ per sample, and could reach 194.8 dB; the survey's line is the same bound evaluated at $f = f_s$.
 
 </details>
 

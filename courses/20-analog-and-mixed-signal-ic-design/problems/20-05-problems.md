@@ -58,7 +58,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 20-05.12 [B]
 
-**Metastability in a flash ADC.** The latch has τ = 40 fF/2 mS and a preamplifier gain $A_0$ = 5; $V_L$ = 0.6 V. (a) Find τ and the decision times for 1 mV and 10 µV inputs. (b) For the 6-bit flash of Problem 20-05.11 with 200 ps to decide and an input uniform over the full scale, find $v_{min}$ and the probability per conversion that the comparator nearest the input is unresolved ($\approx 2v_{min}/\Delta$). (c) How many such events per second occur at 1 GS/s?
+**Metastability in a flash ADC.** The latch has a node capacitance of 40 fF and a transconductance of 2 mS, and its preamplifier gain is $A_0$ = 5; $V_L$ = 0.6 V. (a) Find τ and the decision times for 1 mV and 10 µV inputs. (b) For the 6-bit flash of Problem 20-05.11 with 200 ps to decide and an input uniform over the full scale, find $v_{min}$ and the probability per conversion that the comparator nearest the input is unresolved ($\approx 2v_{min}/\Delta$). (c) How many such events per second occur at 1 GS/s?
 
 ### Problem 20-05.13 [C]
 

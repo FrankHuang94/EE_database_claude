@@ -97,7 +97,7 @@ $$
 I = K\left(V_G - V_{TH} - v_m\right)(v_a - v_b), \qquad v_m = \frac{v_a + v_b}{2}, \quad K = \mu C_{ox}\frac{W}{L} ,
 $$
 
-which is the long-channel triode law $K[(V_{GS} - V_{TH})V_{DS} - V_{DS}^2/2]$ (10-02) rewritten about the channel's mean voltage. For a small difference the switch is a resistor
+which is the long-channel triode law $K[(V_{GS} - V_{TH})V_{DS} - V_{DS}^2/2]$ (10-02) rewritten about the channel's mean voltage. The threshold is evaluated at that mean voltage, $V_{TH}(v_m)$, because the body effect raises it as the channel moves up (the lab and the ngspice netlist do the same). For a small difference the switch is a resistor
 
 $$
 R_{on} = \frac{1}{K\left(V_G - v_{in} - V_{TH}(v_{in})\right)}, \qquad V_{TH}(v) = V_{TH0} + \gamma_b\left(\sqrt{2\phi_F + v} - \sqrt{2\phi_F}\right),
@@ -118,7 +118,7 @@ For 12 bits, $\ln 2^{13}$ = 9.01 time constants. The same $\tau$ sets the track-
 
 ### 3.4 Bootstrapped switches
 
-A **bootstrapped switch** holds the gate a fixed voltage above the input. The idea of a constant gate–source voltage is old; the version with a precharged capacitor as the "battery" became standard around 1999 in low-voltage converters (Abo and Gray; Dessouky and Kaiser), and Dessouky and Kaiser's 2001 topology, which keeps every device within its voltage rating, is the one most designs follow [3]. During hold, a capacitor $C_b$ is charged to $V_{DD}$. During track, it is connected between the input and the gate, so $V_G = v_{in} + V_{DD}$ and $V_{GS} = V_{DD}$ regardless of the input. The overdrive becomes $V_{DD} - V_{TH}(v_{in})$: the switch now conducts over the whole range, and its resistance varies only through the body effect. Two imperfections remain:
+A **bootstrapped switch** holds the gate a fixed voltage above the input. The idea of a constant gate–source voltage is old; the version with a precharged capacitor as the "battery" became standard around 1999 in low-voltage converters (Abo and Gray; Dessouky and Kaiser), and Razavi's history of the circuit, which traces the precharged capacitor to Brandt, Ferguson and Rebeschini (1997), culminates in Dessouky and Kaiser's 2001 topology, which keeps every device within its voltage rating [3]. During hold, a capacitor $C_b$ is charged to $V_{DD}$. During track, it is connected between the input and the gate, so $V_G = v_{in} + V_{DD}$ and $V_{GS} = V_{DD}$ regardless of the input. The overdrive becomes $V_{DD} - V_{TH}(v_{in})$: the switch now conducts over the whole range, and its resistance varies only through the body effect. Two imperfections remain:
 
 - **Charge sharing.** The gate's parasitic capacitance $C_p$ shares the bootstrap charge, so $V_{GS} = V_{DD}C_b/(C_b + C_p)$; $C_b$ is made several times $C_p$.
 - **Body effect.** With the body at ground, $V_{TH}$ still rises with the input. A switch in its own well (a triple-well NMOS) with the body tied to the source removes this term.
@@ -149,7 +149,7 @@ Three remedies are standard:
 
 - **Differential sampling.** The common part of both errors cancels between the two sides.
 - **Bottom-plate sampling.** A second switch at the capacitor's other (bottom) plate, at a fixed potential, opens first. Once it is open, the capacitor's charge can no longer change, so the top-plate switch's later charge injection cannot alter the sample; the bottom switch's own charge is signal independent because its terminals sit at a fixed voltage.
-- **Small switches.** $Q_{ch}$ is proportional to $W$, and so is the conductance. The ratio $\Delta V_{inj}/\tau$ is fixed by the process's $\mu$ and $C_{ox}$ and the overdrive: speed and charge injection trade directly.
+- **Small switches.** $Q_{ch}$ is proportional to $W$, and so is the conductance, so a narrower switch injects less charge but settles more slowly. The product is fixed: with $\Delta V_{inj} = WLC_{ox}V_{ov}/(2C)$ and $\tau = R_{on}C = LC/(\mu C_{ox}WV_{ov})$, $\Delta V_{inj}\,\tau = L^2/(2\mu)$, independent of $W$, $C$, $C_{ox}$ and the overdrive (Problem 20-05.6). At a given channel length, speed and charge injection trade one for one; only a shorter channel or a higher mobility improves both.
 
 ### 3.6 Aperture jitter
 
@@ -335,7 +335,7 @@ The plain switch meets 852 Ω only for inputs below **0.147** V, outside the inp
 
 $C_{ov}$ = 0.3 fF/µm × 0.888 µm = **0.266** fF. The feedthrough is $(v_{in} + V_{DD})C_{ov}/(C_{ov} + C)$: **0.572** mV at 0.2 V and **0.899** mV at 1.0 V.
 
-**Sanity check.** Both errors are about an LSB, and both vary with the input by a few tenths of an LSB. A differential sampler cancels the common part, but the signal-dependent part of the injection (0.104 mV across the range, **0.27** LSB) is odd-symmetric between the two sides and does not cancel. Bottom-plate sampling removes the top-plate switch's contribution entirely, which is why every precision SAR uses it.
+**Sanity check.** Both errors are about an LSB, and both vary with the input by a few tenths of an LSB. A differential sampler cancels the common part. The signal-dependent part of the injection (0.104 mV across the range, **0.27** LSB) is mostly linear in $v_{in}$, so between the two sides it becomes a gain error, which a gain trim or calibration absorbs; only its curvature, from the body effect, is distortion. Bottom-plate sampling removes the top-plate switch's contribution entirely, which is why every precision SAR uses it.
 
 ### Example 20-05.4 · Tracking distortion of the bootstrapped switch (tier C)
 
@@ -507,6 +507,7 @@ The second-harmonic estimate agrees with simulation to within 0.2 dB. The third-
 | Txt 20-05.m | years between errors at 1e-18 and 10.4 GS/s | 3 | years |
 | Txt 20-05.n | days between errors at 1e-15 and 3 GS/s | 4 | days |
 | Txt 20-05.o | tau ln 10 | 46 | ps |
+| Txt 20-05.p | ADC32RF45 SNR relative to the carrier | 52.2 | dB |
 
 ## 5. Simulate it
 
@@ -561,7 +562,7 @@ The lab ([labs/20-05-lab](../labs/20-05-lab/README.md)) implements the switch, t
 
 - **The circuits are decades old; their refinements are not [Established].** The StrongARM latch dates from 1992–93 [1], [2] and the precharged-capacitor bootstrapped switch from the late 1990s [3]. Both remain the default choices: Razavi's 2015 tutorials call them "circuits for all seasons," and his 2020 design example in 28 nm reaches a 2.5 ps regeneration time constant, 0.31 mV of noise and 4.7 mV of offset at about 0.2 mW and 5 GHz (simulated) [R-331].
 - **Comparator energy is now spent on preamplification [Established].** A dynamic-bias preamplifier cut energy about 2.5× at equal noise (Bindra et al., 2018). The floating-inverter-amplifier (FIA) comparator reached 46 µV of noise at 1 pJ in 180 nm, reported as more than seven times the energy efficiency of a StrongARM latch (Tang et al., 2020). A stacked FIA reached 38 µV at 0.48 pJ in 28 nm, a noise-efficiency factor of 0.69 nJ·µV², which its authors report as 23 times better than a classic StrongARM (Zhuang et al., 2025), implying about **16** nJ·µV² for the StrongARM they compare against [R-331].
-- **Sampling jitter is at tens of femtoseconds [Established].** An ISSCC 2016 RF ADC states that "SNR is dominated by aperture jitter of 50fs" at a 3.8 GHz input. Murmann's survey of ISSCC and VLSI converters (updated through VLSI 2026) draws 1 ps and 0.1 ps jitter lines, and his 2022 short course summarizes high-speed converters as limited by "tens of femtoseconds timing jitter" [R-332]. TI's current RF-sampling ADCs specify 50 fs (ADC12DJ5200RF, ADC32RF55) to 90 fs (ADC32RF45) of aperture jitter [R-333].
+- **Sampling jitter is at tens of femtoseconds [Established].** An ISSCC 2016 RF ADC states that "SNR is dominated by aperture jitter of 50fs" at a 3.8 GHz input. Murmann's survey of ISSCC and VLSI converters (updated through VLSI 2026) draws 1 ps and 0.1 ps jitter lines, and his 2022 short course summarizes high-speed converters as limited by "tens of femtoseconds timing jitter" [R-332]. TI's current RF-sampling ADCs specify 50 fs (ADC12DJ5200RF with its dither off, 60 fs with it on; ADC32RF55) to 90 fs (ADC32RF45) of aperture jitter [R-333]. At 7.997 GHz, 50 fs alone allows at most **52.0** dB of SNR; at 3.5 GHz, 90 fs allows **54.1** dB relative to the carrier, and the ADC32RF45's 54.2 dBFS at a −2 dBFS input, **52.2** dB relative to the carrier, shows that jitter supplies about two-thirds of its noise there [R-333].
 - **Metastability is specified, not ignored [Established].** RF-sampling ADC data sheets give code error rates of 10⁻¹⁵ to 10⁻¹⁸ per sample and attribute such errors to comparator metastability; TI's claim that its architecture is "multiple orders of magnitude better" than pipelined flash or SAR converters at equal rates is a vendor statement **[Contested]** [R-333]. For SAR converters, assuming a uniform input overestimates the signal-to-metastability ratio by up to 18 dB compared with Gaussian or Laplacian inputs (Waters et al., 2016) [R-331].
 
 ### Why it matters commercially
@@ -570,7 +571,7 @@ Sampling and comparison set the floor of every data converter, and data converte
 
 ### Marketing vs Reality
 
-- **"12-bit ADC."** The bit count is the quantizer's. The effective number of bits at your input frequency is set by kT/C, jitter and distortion: a 12-bit converter at 8 GHz with 60 fs of jitter cannot exceed 50.4 dB of jitter-limited SNR, about 8 effective bits. TI's ADC12DJ5200RF specifies 49.6 dBFS at 7997 MHz, consistent with that limit [R-333].
+- **"12-bit ADC."** The bit count is the quantizer's. The effective number of bits at your input frequency is set by kT/C, jitter and distortion: a 12-bit converter at 8 GHz with 60 fs of jitter (the ADC12DJ5200RF with dither on) cannot exceed 50.4 dB of jitter-limited SNR, about 8 effective bits. TI's ADC12DJ5200RF specifies 49.6 dBFS at 7997 MHz, consistent with that limit [R-333].
 - **"50 fs aperture jitter."** That is the converter's own contribution. The system's jitter is the root-sum-square of it and the clock source's and buffers' jitter, and TI notes the aperture jitter rises as the clock's slew rate falls [7]. Ask for the SNR at your input frequency with your clock.
 - **"7× (or 23×) better than a StrongARM."** Energy-efficiency claims for comparators depend on the noise level at which they are compared, because energy scales as 1/noise². The noise-efficiency factor $E\sigma^2$ makes them comparable. Even so, the baseline matters: the chapter's idealized StrongARM model gives **4.7** nJ·µV², about a third of the 16 nJ·µV² implied for the published baseline, because real latches have parasitics, regeneration noise and output-node energy that the model omits.
 - **Code error rates.** 10⁻¹⁸ errors per sample at 10.4 GS/s is about one error every three years per converter; 10⁻¹⁵ at 3 GS/s is about one every four days. Whether that matters depends on the application, and data sheets exclude the digital interface's own bit errors [R-333].

@@ -51,7 +51,7 @@ Every modern design mixes these ideas: pipelined-SAR hybrids, SARs with flash fr
 
 A flash ADC compares the input with $2^N - 1$ reference levels from a resistor ladder (20-06, Example 20-06.2) at once. The comparator outputs form a **thermometer code**: all ones below the input, all zeros above. An encoder converts it to binary.
 
-- **Cost grows as $2^N$.** Each extra bit doubles the comparators, their power and their input capacitance, and the offset requirement tightens: a comparator offset is a transition error (20-06), and keeping all $2^N - 1$ offsets within half an LSB with high yield needs σ ≈ LSB/8 (Problem 20-06.11). By Pelgrom's law, that area grows fourfold per bit on top of the doubling count (Example 20-07.1).
+- **Cost grows as $2^N$.** Each extra bit doubles the comparators, their power and their input capacitance, and the offset requirement tightens: a comparator offset is a transition error (20-06), and keeping all $2^N - 1$ offsets within half an LSB with high yield needs σ ≈ LSB/8 (Problem 20-05.11). By Pelgrom's law, that area grows fourfold per bit on top of the doubling count (Example 20-07.1).
 - **Bubbles.** Noise or metastability can produce a thermometer code with an isolated zero below a one (a "bubble"). An encoder that looks for the first 1→0 transition then errs by many codes; a **ones-counting** (Wallace-tree) encoder, whose output is the number of comparators that fired, errs by at most one code.
 - **Where it is used.** Flash survives at low resolution and the highest speeds: as the coarse quantizer inside pipelines and SARs, in interleaved arrays, and in serial-link receivers. Murmann's short course describes flash as "typically" used for 6 bits or fewer [3].
 
@@ -81,9 +81,9 @@ $$
 
 ![Switching energy drawn from the reference for each of the 1024 output codes of a 10-bit differential SAR: the conventional curve falls from about 1705 at code 0 to about 683 at the top code, while the monotonic curve stays between about 171 and 298, peaking at mid-scale](../../../assets/figures/20-07/sar_energy.svg)
 
-*Figure 2. Switching energy per conversion for every code of a 10-bit differential SAR, from the lab's charge bookkeeping. Conventional switching costs most at code 0, where every trial fails and each capacitor is charged and then discharged (1704.7 down to 682.7 $C_uV_{REF}^2$); monotonic switching never charges a capacitor it may have to discharge and stays between 170.7 and 298.2.*
+*Figure 2. Switching energy per conversion for every code of a 10-bit differential SAR, from the lab's charge bookkeeping. Conventional switching costs most at code 0, where every trial fails and each capacitor is charged and then discharged (1704.7 down to 682.7 $C_uV_{REF}^2$); monotonic switching never charges a capacitor it may have to discharge and stays between 170.7 and 298.2. The differential conventional curve assumes two single-ended arrays switching identically; only its average, 1363.3, is free of that assumption.*
 
-**Speed.** A synchronous SAR needs at least $N$ comparator-and-DAC cycles plus sampling per conversion. Each DAC step must settle to within its error budget before the comparison: for the last bit, half an LSB of a full-scale step, $\tau_{DAC} \le T_{bit}/\ln 2^{N+1}$. Asynchronous SARs (Chen and Brodersen, 2006 [4]) start each comparison as soon as the previous one resolves, so fast decisions lend time to slow ones (20-05 §3.9).
+**Speed.** A synchronous SAR needs at least $N$ comparator-and-DAC cycles plus sampling per conversion. Each DAC step must settle before its comparison. The largest step is the MSB's, half the full scale, and its remaining error must be below half an LSB by the last comparison; requiring that within one bit period gives the conservative bound $\tau_{DAC} \le T_{bit}/\ln 2^{N+1}$. Asynchronous SARs (Chen and Brodersen, 2006 [4]) start each comparison as soon as the previous one resolves, so fast decisions lend time to slow ones (20-05 §3.9).
 
 ### 3.3 Redundancy
 
@@ -115,9 +115,23 @@ $$
 
 for $C_s = C_f$. The gain error $1/(A\beta)$ must keep the residue's error below the remaining stages' LSB: for an $N$-bit converter whose first stage resolves one effective bit, $1/(A\beta) < 2^{-(N-1)}$, so $A > 2^{N-1}/\beta$. A 12-bit pipeline with β = 0.45 needs more than 73 dB of op-amp gain (Example 20-07.5). Unlike comparator offset, gain error is *not* corrected by redundancy; it causes DNL errors and missing codes at the stage's decision points, which calibration must remove (lab Part 3).
 
+**The residue amplifier sets the speed too.** In the hold phase the MDAC is a feedback loop with factor β. A single-pole op-amp with transconductance $g_m$ driving the capacitance at its output,
+
+$$
+C_{L,eff} = C_{load} + \frac{C_f(C_s + C_p)}{C_s + C_f + C_p} ,
+$$
+
+(the next stage's sampling capacitor plus the feedback capacitor in series with the summing node's capacitance) has unity-gain frequency $\omega_t = g_m/C_{L,eff}$, and the closed loop settles with time constant $\tau = 1/(\beta\omega_t)$. Settling the residue to half an LSB of an $N$-bit converter within the hold time $T_h$ takes $(N + 1)\ln 2$ time constants, so
+
+$$
+\omega_t \ge \frac{(N + 1)\ln 2}{\beta T_h} .
+$$
+
+For 12 bits at 200 MS/s ($T_h$ = 2.5 ns) with β = 0.45, $f_t \ge 9.01/(2\pi \times 0.45 \times 2.5\ \text{ns})$ = **1.27** GHz, before any slewing (Example 20-07.8). β enters twice: a small β demands both more DC gain and more bandwidth, so every femtofarad of $C_p$ costs power; and capacitors made larger for lower kT/C raise $C_{L,eff}$ in proportion, so each 3 dB of SNR doubles the amplifier's current. This bandwidth, not the DC gain, usually sets a pipeline's power.
+
 ![Left: residue of a 1.5-bit stage against input, three line segments of slope 2 within plus or minus 0.5 volt for ideal thresholds; with the upper threshold moved up by 0.2 volt the middle segment extends to 0.9 volt, still inside the next stage's range of plus or minus 1 volt. Right: DNL of the 10-bit pipeline against code, zero except at codes near 384 and 640, where a stage-1 gain of 0.99 gives DNL of minus 1 (missing codes) and a gain of 1.01 gives plus 1 (double-width codes)](../../../assets/figures/20-07/pipeline.svg)
 
-*Figure 3. What redundancy forgives and what it does not. (a) A comparator offset of 0.2 V moves a decision point; the residue grows but stays inside the next stage's range, and the digital addition corrects it. (b) An interstage gain error is not corrected: at stage 1's two decision points a gain of 0.99 leaves missing codes (DNL −1) and 1.01 produces double-width codes (DNL +0.99). The two codes at each end are excluded; there the error is a range compression, not DNL.*
+*Figure 3. What redundancy forgives and what it does not. (a) A comparator offset of 0.2 V moves a decision point; the residue grows but stays inside the next stage's range, and the digital addition corrects it. (b) An interstage gain error is not corrected: at stage 1's two decision points a gain of 0.99 leaves missing codes (DNL −1) and 1.01 produces double-width codes (DNL +0.99). A gain above 1 also makes the transfer non-monotonic: just past each decision point the output steps back by about 1% of the 256-code backend range (two to three codes), which a code-count DNL reports only as wide codes. The two codes at each end are excluded; there the error is a range compression, not DNL.*
 
 **Noise and stage scaling.** Noise added in stage $k$ is divided by the gain before it, $2^{k-1}$, when referred to the input. Stage 2 can therefore use a capacitor half as large as stage 1 (its kT/C noise doubles, but is divided by 4), stage 3 a quarter, and so on; the referred noise is then $kT/C_1(1 + \tfrac12 + \tfrac14 + \cdots) \to 2kT/C_1$, at a fraction of the power of equal stages (Example 20-07.6).
 
@@ -176,7 +190,7 @@ The result is 1001 = **9**: 9/16 = 0.5625 ≤ 0.6 < 10/16 = 0.625.
 
 **Solution.** From §3.2: conventional **1363.3** and monotonic **255.5** $C_uV_{REF}^2$, a saving of **81.3**%. With 1 fF and 1 V: **1.363** pJ and **0.256** pJ per conversion, **136** µW and **25.6** µW at 100 MS/s. At 12 bits the conventional figure is **5459.3** $C_uV_{REF}^2$.
 
-**Sanity check.** The energy grows about fourfold per bit (5459/1363 ≈ 4.0), because the array doubles in size and the reference charge per step doubles. The DAC's switching power is small next to the 0.59 mW comparator of 20-05 at 12 bits and 100 MS/s; the energy saving matters most at low speed and low power.
+**Sanity check.** The energy grows about fourfold per bit (5459/1363 ≈ 4.0), because the array doubles in size and the reference charge per step doubles. Whether the DAC's switching power matters depends on the unit capacitor: with this example's 1 fF and 1 V, a 12-bit conventional array draws **0.546** mW at 100 MS/s, about as much as the 0.59 mW comparator of 20-05, while the 20-05 design's smaller unit (0.651 pF/4096 ≈ 0.16 fF) would draw about a sixth of that at the same reference. The saving matters most when the array is large or the converter is otherwise frugal.
 
 ### Example 20-07.4 · Redundancy against DAC settling (tier B)
 
@@ -222,13 +236,28 @@ The result is 1001 = **9**: 9/16 = 0.5625 ≤ 0.6 < 10/16 = 0.625.
 
 (a) A tone at 500 MHz: $10\log_{10}[\Delta o^2/(2A^2)]$ = **−61.1** dBc.
 
-(b) An image at $f_s/2 - f_{in}$ = 255.62 MHz: $20\log_{10}(\alpha/2)$ = **−46.1** dBc (simulated −46.06 dBc; Razavi's SNR $4/\alpha^2$ = **46.0** dB).
+(b) An image at $f_s/2 - f_{in}$ = 255.62 MHz: $20\log_{10}(\alpha/2)$ = **−46.0** dBc. The simulation gives **−46.06** dBc, which is $(\alpha/2)/(1 + \alpha/2)$: the two gains, 1 and 1.01, average 1.005, and the image is measured against that mean signal. Razavi's SNR $4/\alpha^2$ = **46.0** dB.
 
 (c) The same image frequency: $20\log_{10}(\pi f_{in}\Delta t)$ = **−62.3** dBc.
 
 (d) Skew $\Delta t = 1/(\pi f_{in}10^{60/20})$ = **0.64** ps; gain mismatch $2 \times 10^{-60/20}$ = **0.2**%; offset difference $A\sqrt{2 \times 10^{-8}}$ = **0.113** mV.
 
-**Sanity check.** A picosecond of skew is a few millimeters of on-chip wiring difference in clock delay; the requirement tightens in proportion to input frequency, which is why GHz interleaved converters calibrate skew to tens of femtoseconds.
+**Sanity check.** A picosecond is the time of flight of only about 0.15 mm of on-chip wire even at the speed of light in silicon dioxide (RC-limited wires are slower still), or a few millivolts of threshold mismatch in a clock buffer; the requirement tightens in proportion to input frequency, which is why GHz interleaved converters calibrate skew to tens of femtoseconds.
+
+### Example 20-07.8 · Settling the MDAC (tier B)
+
+**Setup.** The MDAC of Example 20-07.5 ($C_s = C_f$ = 0.5 pF, $C_p$ = 0.1 pF) is the first stage of a 12-bit, 200 MS/s pipeline. The next stage loads it with 0.5 pF, and the hold phase lasts 2.5 ns. Find the closed-loop time constant needed, β, the effective load, the op-amp's unity-gain frequency and $g_m$, and the current per side at $g_m/I_D$ = 12 V⁻¹.
+
+**Solution.**
+
+- Settling to half an LSB at 12 bits: $\tau \le 2.5\ \text{ns}/(13\ln 2)$ = **0.277** ns.
+- β = 0.5/1.1 = **0.455**.
+- $C_{L,eff} = 0.5 + 0.5 \times 0.6/1.1$ = **0.773** pF.
+- $f_t = 1/(2\pi\beta\tau)$ = **1.26** GHz, so $g_m = 2\pi f_tC_{L,eff}$ = **6.13** mS: **0.511** mA per side.
+
+**Units check.** $C/(\beta\tau)$ is F/s, that is siemens.
+
+**Sanity check.** With $T_h = 1/(2f_s)$, the requirement is $f_t/f_s = (N + 1)\ln 2/(\pi\beta)$ = **6.3**: a first-stage op-amp needs a unity-gain frequency several times the sample rate. Later stages, with scaled capacitors and fewer bits left to resolve, need much less. Slewing adds to this budget, because a large residue step must first be slewed before it settles linearly.
 
 ### Answer key
 
@@ -285,7 +314,8 @@ The result is 1001 = **9**: 9/16 = 0.5625 ≤ 0.6 < 10/16 = 0.625.
 | Ex 20-07.6e | first-stage capacitance | 1.30 | pF |
 | Ex 20-07.6f | noise cost of scaling | 1.2 | dB |
 | Ex 20-07.7a | offset spur | −61.1 | dBc |
-| Ex 20-07.7b | gain-mismatch spur | −46.1 | dBc |
+| Ex 20-07.7b | gain-mismatch spur | −46.0 | dBc |
+| Ex 20-07.7i | gain-mismatch spur, simulated | −46.06 | dBc |
 | Ex 20-07.7c | Razavi gain-mismatch SNR | 46.0 | dB |
 | Ex 20-07.7d | skew spur | −62.3 | dBc |
 | Ex 20-07.7e | skew for 60 dBc at 500 MHz | 0.64 | ps |
@@ -298,6 +328,15 @@ The result is 1001 = **9**: 9/16 = 0.5625 ≤ 0.6 < 10/16 = 0.625.
 | Txt 20-07.d | Schreier figure, ADC12DJ5200RF per channel | 144.0 | dB |
 | Txt 20-07.e | channels of the 72 GS/s design | 64 | — |
 | Txt 20-07.f | effective bits at 36.1 dB SNDR | 5.7 | bits |
+| Ex 20-07.8a | time constant | 0.277 | ns |
+| Ex 20-07.8b | feedback factor | 0.455 | — |
+| Ex 20-07.8c | effective load | 0.773 | pF |
+| Ex 20-07.8d | unity-gain frequency | 1.26 | GHz |
+| Ex 20-07.8e | transconductance | 6.13 | mS |
+| Ex 20-07.8f | current per side | 0.511 | mA |
+| Ex 20-07.8g | unity-gain frequency over sample rate | 6.3 | — |
+| Txt 20-07.g | unity-gain frequency for 12 bits, beta 0.45 | 1.27 | GHz |
+| Txt 20-07.h | 12-bit conventional DAC power at 1 fF | 0.546 | mW |
 
 ## 5. Simulate it
 
@@ -355,7 +394,7 @@ The lab ([labs/20-07-lab](../labs/20-07-lab/README.md)) implements the architect
 
 - **SAR-based architectures dominate [Established].** Murmann's 2022 short course sums up the field as "Going hybrid & dominance of SAR-based architectures" [3]. In his survey (August 2026 revision), 48 Nyquist-rate converters were published at ISSCC and the VLSI Symposium in 2024–2026; 25 of them are time-interleaved and none is a pure flash or folding design [11] [R-339]. Flash now lives mainly inside other converters, as a coarse quantizer.
 - **Each architecture owns a speed range [Established; the category assignment is our extraction from the survey].** By the Schreier figure at high input frequency, SARs lead below 10 MS/s (186.8 dB, ISSCC 2018), pipelined-SAR hybrids from 10 MS/s to 1 GS/s (182.3 dB at 50 MS/s, ISSCC 2024; 181.5 dB at 130 MS/s, ISSCC 2022), a single-channel pipeline at 1 GS/s (173.3 dB, ISSCC 2025), interleaved pipelines between 10 and 100 GS/s (159.3 dB at 12 GS/s, ISSCC 2024) and interleaved SARs above 100 GS/s (150.1 dB) [11], [12]. This is the boundary list of §3.6, with dates.
-- **Speed records come from interleaving SARs [Established].** IBM's 64× interleaved SAR reached 90 GS/s at 8 bits and 667 mW in 32 nm SOI in 2014; a 64-way 5 nm design reached 60 GS/s at 7 bits and 109.3 mW, with 34.3 dB SNDR up to 32 GHz, in 2024 [12]. The fastest entry in the survey is Marvell's 200 GS/s, 8-bit receiver, built into an 800 Gb/s coherent-optics DSP (ISSCC 2024); the survey lists 41.5 dB SNDR at low frequency and 36.1 dB at 20 GHz, and the abstract gives neither the channel count nor the sub-ADC type [12]. Hybrids interleave too: a 2025 converter reaches 72 GS/s at 9 bits from 1.125 GS/s pipelined-SAR units, that is **64** channels, with 37.0 dB SNDR at Nyquist and 393.6 mW [12]. Single-channel SARs top out near 2.4 GS/s at 7 bits (ISSCC 2017) [11].
+- **Speed records come from interleaving SARs [Established].** A 64× interleaved SAR reached 90 GS/s at 8 bits and 667 mW in 32 nm SOI in 2014; a 64-way 5 nm design reached 60 GS/s at 7 bits and 109.3 mW, with 34.3 dB SNDR up to 32 GHz, in 2024 [12]. The fastest entry in the survey is a 200 GS/s, 8-bit receiver built into an 800 Gb/s coherent-optics DSP (ISSCC 2024); the survey lists 41.5 dB SNDR at low frequency and 36.1 dB at 20 GHz, and the abstract gives neither the channel count nor the sub-ADC type [12]. Hybrids interleave too: a 2025 converter reaches 72 GS/s at 9 bits from 1.125 GS/s pipelined-SAR units, that is **64** channels, with 37.0 dB SNDR at Nyquist and 393.6 mW [12]. Single-channel SARs top out near 2.4 GS/s at 7 bits (ISSCC 2017) [11].
 - **Pipelines survive by changing their amplifiers [Established].** Digital calibration of open-loop or imprecise amplifiers [7] and ring amplifiers [8] removed the precision op-amp that made pipelines hard to scale. A 16 nm single-channel ring-amplifier pipeline reaches 1 GS/s with 10.91 ENOB at 17.8 mW, calibrating DAC mismatch and interstage gain in the background with dither (VLSI 2024) [12].
 - **High-speed converters calibrate continuously [Established].** Published examples include comparator offsets calibrated "by detecting patterns in the SAR output decisions" [12], correlation-based timing-skew calibration [14] and Razavi's background timing calibration, which held the skew image to −75 dB above 500 MHz [6]. A 2025 paper adds that skew calibration alone "only provides first-order correction for bandwidth mismatch" [12]. Commercial parts swap in a spare core so that the others can be recalibrated without stopping [10].
 - **Low-energy switching schemes [Contested as a ranking].** Splitting the MSB capacitor saves 37%, monotonic switching about 81% and merged-capacitor switching 93.4%, each against its own "conventional" baseline, with different assumptions about references and reset [2], [13]. Treat them as each paper's claim, not as a league table.
@@ -381,7 +420,7 @@ The scaling story matters for valuations and roadmaps. SAR-based designs are mos
 - **"81% (or 93%) less switching energy."** Each figure is against its own baseline [2], [13], and the DAC is only part of a SAR's power; the comparator, logic, reference buffer and clock often dominate at high speed. Liu et al.'s converter, with its 81% saving, draws 0.826 mW at 50 MS/s for 57.0 dB SNDR [2].
 - **"SNR excludes interleaving spurs."** The ADC12DJ5200RF data sheet says so explicitly: "SNR results exclude DC, HD2 to HD9 and interleaving spurs; SINAD, ENOB, and SFDR results exclude DC and fixed-frequency interleaving spurs." Its $f_s/2 - f_{in}$ spur is specified separately: −68 dBFS typical and −56 dBFS maximum at 2.4 GHz [10]. Read the worst case, not just the typical.
 - **"Background calibration."** It costs power and can disturb the data. The same part draws 4.90 W with background calibration against 4.01 W with foreground calibration, **22**% more, and warns that "small brief glitches may still occur on the converter data as the cores are swapped" [10].
-- **"Record figure of merit."** The survey's Readme warns that power "Sometimes … includes power for clocks, references, etc.; sometimes it doesn't" [11]. Academic interleaved cores reach 150–160 dB; the ADC12DJ5200RF computes to about **144.0** dB per channel from its whole-chip power, which includes a JESD204C interface, input buffers and a spare core. Neither number is wrong; they measure different things. Watch labels too: one 2025 abstract calls a 53.7 fJ/conversion-step Walden figure "FoMs" [12].
+- **"Record figure of merit."** The survey's Readme warns that power "Sometimes … includes power for clocks, references, etc.; sometimes it doesn't" [11]. Academic interleaved cores reach 150–160 dB; the ADC12DJ5200RF computes to about **144.0** dB per channel (53.9 dBFS SINAD at 2397 MHz, $f_s$ = 5.12 GS/s, and half of its 5.03 W dual-channel power), which includes a JESD204C interface, input buffers and a spare core. Neither number is wrong; they measure different things. Watch labels too: one 2025 abstract calls a 53.7 fJ/conversion-step Walden figure "FoMs" [12].
 - **"200 GS/s, 8 bits."** At 20 GHz the record receiver's survey entry is 36.1 dB SNDR, about **5.7** effective bits [12]. For wideband converters, ask for ENOB at the top of the band.
 - **Sanity check.** For any interleaved claim, compute the skew it implies: a two-channel spur of −60 dBc at 500 MHz needs $\Delta t$ ≤ 0.64 ps (§3.5). If the claimed spur needs tens of femtoseconds, ask how skew is calibrated and over what temperature range. For any architecture claim, place it on the survey's Schreier-versus-speed plot.
 

@@ -18,6 +18,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from scipy import optimize
 import sympy as sp
 
 HERE = Path(__file__).resolve().parent
@@ -109,8 +110,31 @@ v.check("Ex 20-07.3h", conv(12))
 v.check("Ex 20-07.3i", conv(12) / conv(10))
 v.check("Lab 20-07.a", ec.min())
 v.check("Lab 20-07.b", ec.max())
-em = np.array([lab.monotonic_energy(10, ((c + 0.5) / 1024 - 0.5) * 2) for c in range(1024)])
-v.assert_true("lab monotonic average equals the closed form", abs(em.mean() - mono(10)) < 1e-9)
+
+
+def mono_energy_own(n, vdiff, vref=1.0):
+    """Monotonic switching from charge conservation. Each side: caps 2^(n-2)..1 plus a unit dummy, bottoms at V_REF
+    while sampling, so the floating top plate holds Q = C_t (v_top - V_REF). After each comparison the side whose
+    top plate is higher grounds its next cap; the caps still on V_REF then draw C_ref (v_old - v_new) from it."""
+    caps = [2.0 ** i for i in range(n - 2, -1, -1)] + [1.0]
+    ct = sum(caps)
+    tops = [vref / 2 + vdiff / 2, vref / 2 - vdiff / 2]
+    on_ref = [[True] * len(caps), [True] * len(caps)]
+    energy = 0.0
+    for k in range(n - 1):
+        side = 0 if tops[0] > tops[1] else 1
+        on_ref[side][k] = False
+        v_new = tops[side] - caps[k] * vref / ct           # grounding cap k lowers the top plate by c_k V_REF / C_t
+        c_ref = sum(c for c, r in zip(caps, on_ref[side]) if r)
+        energy += vref * c_ref * (tops[side] - v_new)
+        tops[side] = v_new
+    return energy
+
+
+em = np.array([mono_energy_own(10, ((c + 0.5) / 1024 - 0.5) * 2) for c in range(1024)])
+v.assert_true("charge-conservation monotonic average equals the closed form", abs(em.mean() - mono(10)) < 1e-9)
+em_lab = np.array([lab.monotonic_energy(10, ((c + 0.5) / 1024 - 0.5) * 2) for c in range(1024)])
+v.assert_true("lab monotonic energies agree code by code", np.max(np.abs(em - em_lab)) < 1e-9)
 v.check("Lab 20-07.c", em.min())
 v.check("Lab 20-07.d", em.max())
 v.assert_true("lab conventional average equals the closed form", abs(lab.conventional_energy_avg(10) - conv(10)) < 1e-6)
@@ -221,6 +245,15 @@ v.check("Ex 20-07.6d", math.sqrt(s_equal * KT / 1e-12) * 1e6)
 v.check("Ex 20-07.6e", 2 * 24 * KT / (1.6 / 4096) ** 2 * 1e12)
 v.check("Ex 20-07.6f", 10 * math.log10(s_scaled / s_equal))
 
+def mdac_size(cs, cf, cp, cload, th=2.5e-9, nbits=12, gmid=12):
+    beta = cf / (cs + cf + cp)
+    tau = 1e-9 * optimize.brentq(lambda t_ns: math.exp(-th * 1e9 / t_ns) - 2.0 ** -(nbits + 1), 1e-4, 10,
+                                 xtol=1e-14)   # half-LSB settling, solved in ns
+    cle = cload + cf * (cs + cp) / (cs + cf + cp)
+    gm = cle / (beta * tau)
+    return beta, tau, cle, gm, gm / gmid
+
+
 # ------------------------------------------------------------------ Example 20-07.7: interleaving
 
 
@@ -242,7 +275,9 @@ for name, (o, g, s_, b) in cases.items():
     sp_db[name] = 10 * math.log10(dft_power(x, b) / dft_power(x, m))
 v.check("Ex 20-07.7a", sp_db["off"])
 v.assert_true("offset spur equals the closed form", abs(sp_db["off"] - 10 * math.log10(1e-6 / (2 * amp ** 2))) < 1e-6)
-v.check("Ex 20-07.7b", sp_db["gain"])
+v.check("Ex 20-07.7b", 20 * math.log10(0.01 / 2))
+v.check("Ex 20-07.7i", sp_db["gain"])
+v.assert_true("simulated image is (a/2)/(1 + a/2)", abs(sp_db["gain"] - 20 * math.log10(0.005 / 1.005)) < 1e-6)
 v.check("Ex 20-07.7c", 10 * math.log10(4 / 0.01 ** 2))
 v.check("Ex 20-07.7d", sp_db["skew"])
 v.assert_true("skew spur equals (pi f dt)^2", abs(sp_db["skew"] - 20 * math.log10(math.pi * fin * 1e-12)) < 1e-4)
@@ -260,6 +295,17 @@ v.check("Txt 20-07.c", (4.90 / 4.01 - 1) * 100)                         # ADC12D
 v.check("Txt 20-07.d", 53.9 + 10 * math.log10(2.56e9 / (5.03 / 2)))     # dual channel, 5.12 GS/s, 5.03 W
 v.check("Txt 20-07.e", 72e9 / 1.125e9)
 v.check("Txt 20-07.f", (36.1 - 1.76) / 6.02)
+b8, t8, cl8, gm8, i8 = mdac_size(0.5e-12, 0.5e-12, 0.1e-12, 0.5e-12)
+v.check("Ex 20-07.8a", t8 * 1e9)
+v.check("Ex 20-07.8b", b8)
+v.check("Ex 20-07.8c", cl8 * 1e12)
+v.check("Ex 20-07.8d", 1 / (2 * math.pi * b8 * t8) / 1e9)
+v.check("Ex 20-07.8e", gm8 * 1e3)
+v.check("Ex 20-07.8f", i8 * 1e3)
+v.check("Ex 20-07.8g", 13 * math.log(2) / (math.pi * b8))
+v.assert_true("ratio equals f_t / f_s", abs(1 / (2 * math.pi * b8 * t8) / 200e6 - 13 * math.log(2) / (math.pi * b8)) < 1e-9)
+v.check("Txt 20-07.g", 13 * math.log(2) / (2 * math.pi * 0.45 * 2.5e-9) / 1e9)
+v.check("Txt 20-07.h", conv(12) * 1e-15 * 100e6 * 1e3)
 
 # ------------------------------------------------------------------ problems
 print("Problems")
@@ -297,12 +343,34 @@ v.check("20-07.8a", 2 ** 13 / 0.4)
 v.check("20-07.8b", 20 * math.log10(2 ** 13 / 0.4))
 v.check("20-07.9a", 0.5 / 4 * 1e3)
 v.check("20-07.9b", 0)
-v.check("20-07.10a", math.sqrt(1.75 * KT / 1e-12) * 1e6)
-v.check("20-07.10b", math.sqrt(1.3125 * KT / 1e-12) * 1e6)
-v.check("20-07.10c", math.sqrt(KT / 1e-12) * 1e6)
+
+b10, t10, cl10, gm10, i10 = mdac_size(0.65e-12, 0.65e-12, 0.2e-12, 0.65e-12)
+v.check("20-07.10a", b10)
+v.check("20-07.10b", 2048 / b10)
+v.check("20-07.10c", 20 * math.log10(2048 / b10))
+v.check("20-07.10d", cl10 * 1e12)
+v.check("20-07.10e", gm10 * 1e3)
+v.check("20-07.10f", i10 * 1e3)
+v.check("20-07.10g", gm10 / (2 * math.pi * cl10) / 1e9)
+b2, _, _, _, i2 = mdac_size(1.3e-12, 1.3e-12, 0.4e-12, 1.3e-12)
+v.assert_true("doubling every capacitor keeps beta", abs(b2 - b10) < 1e-12)
+v.check("20-07.10h", i2 * 1e3)
+b3, _, _, gm3, i3 = mdac_size(0.65e-12, 0.65e-12, 0.5e-12, 0.65e-12)
+v.check("20-07.10i", b3)
+v.check("20-07.10j", 2048 / b3)
+v.check("20-07.10k", 20 * math.log10(2048 / b3))
+v.check("20-07.10l", gm3 * 1e3)
+v.check("20-07.10m", (i3 / i10 - 1) * 100)
 v.check("20-07.11a", 10 * math.log10(4e-6 / (2 * 0.25)))
 v.check("20-07.12a", 2 * 10 ** (-50 / 20) * 100)
 v.check("20-07.12b", 1 / (math.pi * 5e9 * 10 ** 2.5) * 1e12)
+# combined image: simulate a two-channel capture with both errors at -50 dBc each and read the image bin
+al12 = 2 * 10 ** (-50 / 20)
+dt12 = 1 / (math.pi * 5e9 * 10 ** 2.5)
+x12, _ = lab.ti_capture(2, 10e9, 4096, 2047, 0.5, np.zeros(2), np.array([1 - al12 / 2, 1 + al12 / 2]), np.array([0, dt12]))
+img12 = 10 * math.log10(dft_power(x12, 4096 // 2 - 2047) / dft_power(x12, 2047))
+v.check("20-07.12c", 10 * math.log10(2 * 10 ** (-5)))
+v.assert_true(f"simulated combined image near -47 dBc ({img12:.2f})", abs(img12 + 47.0) < 0.1)
 v.check("20-07.13a", 50e6 / 10 ** ((180 - 80) / 10) * 1e3)
 v.check("20-07.13b", 10e9 / 10 ** ((150 - 45) / 10) * 1e3)
 

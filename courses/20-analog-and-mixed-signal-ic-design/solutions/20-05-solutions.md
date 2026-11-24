@@ -28,7 +28,7 @@ Each bit halves $\Delta$, so $C$ grows by a factor of **4** per bit. The driver 
 
 (b) The worst case is the highest input, 0.85 V, where $V_{TH}$ = **0.606** V and the bootstrapped overdrive is $V_{DD} - V_{TH}$ = **0.594** V. Then $W/L = 1/(\mu C_{ox}R_{on}V_{ov})$ = **1.78** and $W$ = **0.231** µm.
 
-**Check.** A smaller capacitor (16 times smaller in kT/C terms than 12 bits) makes the switch small too, despite the doubled rate.
+**Check.** The capacitor is **6.25** times smaller than the 12-bit design's 0.651 pF (two fewer bits, but also a smaller 1.0 V full scale: the ratio is $(0.977\ \text{mV}/0.391\ \text{mV})^2$), so the switch is small too, despite the doubled rate.
 
 ### Solution 20-05.4
 
@@ -181,6 +181,7 @@ Halving the amplitude lowers HD2 by **6.1** dB and HD3 by **12.2** dB. The secon
 | 20-05.3e | W/L | 1.78 | — |
 | 20-05.3f | W | 0.231 | µm |
 | 20-05.3g | ln 2^11 | 7.62 | — |
+| 20-05.3h | capacitor ratio to the 12-bit design | 6.25 | — |
 | 20-05.4a | V_GS with charge sharing | 1.091 | V |
 | 20-05.4b | R_on at 1.0 V | 1053 | Ω |
 | 20-05.4c | width factor | 1.236 | — |

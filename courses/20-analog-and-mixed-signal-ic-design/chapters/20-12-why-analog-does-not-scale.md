@@ -75,7 +75,7 @@ Every factor on the right except $V_{DD}$ is set by the specification or by phys
 
 Two effects make it worse in practice. First, the swing fraction η falls at low supply, because each transistor in the signal path needs a fixed $V_{DS,sat}$ of roughly 100–150 mV (20-01) that does not scale with the node; η enters squared. Second, the threshold voltage scales slowly (subthreshold leakage, 09-11), so a low supply leaves little room for the gate overdrive that sets $V_{DS,sat}$.
 
-Compare the 8kT·SNR limit of 20-06, $P = 8kT\cdot\text{SNR}\cdot f_s$, which has no $V_{DD}$: it assumes an ideal class-B driver that swings rail to rail and wastes no supply voltage. The formula above shows why real class-A circuits, which waste the supply-minus-swing headroom, lose ground as the supply falls.
+Compare the survey's 8kT·SNR line of 20-06, $P = 8kT\cdot\text{SNR}\cdot f_s$, which has no $V_{DD}$: it is the bound for an ideal class-B driver that swings rail to rail and wastes no supply voltage (evaluated conservatively at $f = f_s$). The formula above shows why real class-A circuits, which waste the supply-minus-swing headroom, lose ground as the supply falls.
 
 ![Power of the 74 dB, 100 MHz buffer against supply from 0.45 to 3.3 V on a log scale: with the swing fixed at 80 percent of the supply the power falls slowly from about 120 microwatts to 17 as the supply rises; with a swing of the supply minus 0.3 V it rises steeply below 1 V to about 700 microwatts at 0.45 V; a dashed digital C V squared curve does the opposite, falling toward low supplies](../../../assets/figures/20-12/power.svg)
 
