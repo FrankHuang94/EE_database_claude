@@ -79,7 +79,7 @@ The full map, with university equivalents, textbook alignment, objectives and ch
 | 5 | [17 · Communication Systems](courses/17-communication-systems/README.md) | 13 | 103 | 13/13 |
 | 5 | [18 · Embedded Systems and Microcontrollers](courses/18-embedded-systems-and-microcontrollers/README.md) | 11 | 83 | 11/11 |
 | 6 | [19 · Digital VLSI Design](courses/19-digital-vlsi-design/README.md) | 13 | 112 | 13/13 |
-| 6 | [20 · Analog and Mixed-Signal IC Design](courses/20-analog-and-mixed-signal-ic-design/README.md) | 12 | 104 | 6/12 |
+| 6 | [20 · Analog and Mixed-Signal IC Design](courses/20-analog-and-mixed-signal-ic-design/README.md) | 12 | 104 | 7/12 |
 | 6 | [21 · RF and Microwave Engineering](courses/21-rf-and-microwave-engineering/README.md) | 12 | 91 | 0/12 |
 | 6 | [22 · Power Electronics and Energy Conversion](courses/22-power-electronics-and-energy-conversion/README.md) | 12 | 92 | 0/12 |
 | 6 | [23 · Memory and Storage Technology](courses/23-memory-and-storage-technology/README.md) | 9 | 53 | 0/9 |

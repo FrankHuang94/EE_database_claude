@@ -8170,3 +8170,45 @@
   definition: "FoM_S = SNDR + 10 log10(BW/P) in dB, larger being better; it assumes power quadruples per bit, as thermal noise requires, and is bounded near 192 dB at 300 K by the 8kT·SNR energy of an ideal class-B-driven sampler."
   chapter: "20-06"
   see_also: [Walden figure of merit, kT/C noise]
+
+# ---------------------------------------------------------------- 20-07
+- term: Flash ADC
+  definition: An ADC that compares the input with all 2^N − 1 reference levels at once using 2^N − 1 comparators and encodes the result in one clock cycle; fast, but practical only to about 6 bits.
+  chapter: "20-07"
+  see_also: [Thermometer code]
+- term: Thermometer code
+  definition: The pattern of comparator outputs in a flash ADC, all ones below the input level and all zeros above it; an isolated wrong bit is called a bubble.
+  chapter: "20-07"
+  see_also: [Flash ADC]
+- term: Charge-redistribution DAC
+  definition: A binary-weighted capacitor array whose bottom plates are switched between reference and ground so that charge conservation on the shared top plate subtracts a DAC value from the sampled input; the core of most SAR ADCs.
+  chapter: "20-07"
+  see_also: [Successive-approximation (SAR) ADC, Monotonic switching]
+- term: Monotonic switching
+  definition: A SAR capacitor-switching sequence (Liu et al., 2010) that samples on the top plates, makes the first comparison without switching and then switches one capacitor per step from the reference to ground, cutting average switching energy by about 81% against conventional switching.
+  chapter: "20-07"
+  see_also: [Charge-redistribution DAC]
+- term: Redundancy (ADC)
+  definition: Extra decision range (sub-binary weights, extra SAR cycles, or extra comparators in a pipeline stage) that lets later decisions correct errors in earlier ones, so comparator offsets and incomplete settling do not cause output errors.
+  chapter: "20-07"
+  see_also: [Pipeline ADC, Successive-approximation (SAR) ADC]
+- term: Pipeline ADC
+  definition: An ADC built from cascaded stages, each of which resolves a few bits, subtracts them and passes an amplified residue to the next stage; every stage works on a different sample, so throughput is one sample per clock.
+  chapter: "20-07"
+  see_also: [Residue, Multiplying DAC (MDAC)]
+- term: Residue
+  definition: In a pipeline or subranging ADC, the difference between a stage's input and the value its coarse decision represents, amplified (usually by 2 per resolved bit) for the next stage.
+  chapter: "20-07"
+  see_also: [Pipeline ADC]
+- term: Multiplying DAC (MDAC)
+  definition: The switched-capacitor circuit of a pipeline stage that samples the input, subtracts the stage's DAC value and amplifies the result in one operation; its op-amp gain and capacitor matching set the stage's accuracy.
+  chapter: "20-07"
+  see_also: [Residue]
+- term: Time-interleaved ADC
+  definition: M identical ADCs that sample in rotation, each at f_s/M, to form one converter at f_s; offset, gain, timing and bandwidth differences between channels produce spurs at multiples of f_s/M and around them.
+  chapter: "20-07"
+  see_also: [Timing skew]
+- term: Timing skew
+  definition: In a time-interleaved ADC, the difference between a channel's actual and ideal sampling instant; for two channels it produces an image at f_s/2 − f_in with relative power (π f_in Δt)².
+  chapter: "20-07"
+  see_also: [Time-interleaved ADC]

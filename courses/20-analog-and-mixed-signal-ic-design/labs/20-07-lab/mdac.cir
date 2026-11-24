@@ -1,0 +1,28 @@
+* Lab 20-07 -- 1.5-bit MDAC hold phase (chapter section 3.4, Example 20-07.5): Cs = Cf = 0.5 pF, Cp = 0.1 pF, OTA gm = 10 mS, Ro = 100 kohm (A = 1000) or 10 kohm (A = 100),
+* CL = 1 pF. Sampled vin = 0.3 V: at t = 0, x = 0, out = vin, Cs bottom = vin; Cs bottom then driven to D*Vref = 0.5 V.
+VB1 b1 0 PWL(0 0.3 1p 0.5)
+CS1 b1 x1 0.5p IC=0.3
+CF1 out1 x1 0.5p IC=0.3
+CP1 x1 0 0.1p IC=0
+G1 out1 0 x1 0 10m
+RO1 out1 0 100k
+CL1 out1 0 1p IC=0.3
+VB2 b2 0 PWL(0 0.3 1p 0.5)
+CS2 b2 x2 0.5p IC=0.3
+CF2 out2 x2 0.5p IC=0.3
+CP2 x2 0 0.1p IC=0
+G2 out2 0 x2 0 10m
+RO2 out2 0 10k
+CL2 out2 0 1p IC=0.3
+*
+* EXPECT r1 key:../../chapters/20-07-nyquist-adcs.md#Ex_20-07.5d rtol=1e-5
+* EXPECT r2 key:../../chapters/20-07-nyquist-adcs.md#Ex_20-07.5e rtol=1e-5
+
+.options reltol=1e-7 abstol=1e-15 vntol=1e-10
+.control
+tran 1p 20n 0 5p uic
+meas tran r1 find v(out1) at=20n
+meas tran r2 find v(out2) at=20n
+print r1 r2
+.endc
+.end
