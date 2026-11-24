@@ -1,0 +1,23 @@
+* Lab 22-02: the same buck at 0.3 A in discontinuous conduction (Example 22-02.5)
+* A near-ideal diode (emission coefficient 0.02, so about 15 mV forward drop) replaces the low-side switch,
+* so the inductor current stops at zero instead of reversing. The high-side switch is on for 74.5 ns of each
+* 1.667 us period, the on-time that DCM theory says gives 1.2 V into 4 ohm. The diode's small drop costs
+* about 0.6 % of the output, inside the 1 % tolerance below.
+* EXPECT vavg 1.2 rtol=1e-2
+* EXPECT ipk key:../../chapters/22-02-buck-converter-steady-state.md#Ex_22-02.5h rtol=1e-2
+.model swm sw vt=0.5 vh=0 ron=1m roff=1G
+.model dideal d is=1e-12 n=0.02 rs=1m
+Vin in 0 dc 12
+Vg g 0 pulse(0 1 0 1n 1n 73.5356n 1.6666667u)
+Shi in sw g 0 swm
+D1 0 sw dideal
+L1 sw out 0.6u ic=0
+C1 out 0 62.5u ic=0
+Rl out 0 4
+.control
+tran 1n 1.2m 0 2n uic
+meas tran vavg avg v(out) from=1.1m to=1.2m
+meas tran ipk max i(L1) from=1.19m to=1.2m
+meas tran imin min i(L1) from=1.19m to=1.2m
+.endc
+.end

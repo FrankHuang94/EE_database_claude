@@ -1,0 +1,56 @@
+* Lab 22-02: a 12 V to 1.2 V, 10 A synchronous buck at 600 kHz in continuous conduction (Examples 22-02.1, .2, .4)
+* Instance A: near-ideal switches (0.1 mohm), D = 0.1, L = 0.6 uH, C = 62.5 uF: ripple and RMS currents.
+* Instance B: high side 8 mohm, low side 3 mohm, inductor DCR 1 mohm, D = 0.10377 (the duty that restores
+* 1.2 V at 10 A): conduction-loss efficiency. Both run 1 ms and are measured over the last 120 periods (ngspice time-step changes leave sub-millivolt
+* steps in the waveform, so averages use 800-1000 us and peak-to-peak values use the final period only).
+* EXPECT diA key:../../chapters/22-02-buck-converter-steady-state.md#Ex_22-02.1c rtol=5e-3
+* EXPECT dvA key:../../chapters/22-02-buck-converter-steady-state.md#Ex_22-02.2e scale=1e-3 rtol=5e-3
+* EXPECT ilrmsA key:../../chapters/22-02-buck-converter-steady-state.md#Ex_22-02.3a rtol=5e-3
+* EXPECT iqhA key:../../chapters/22-02-buck-converter-steady-state.md#Ex_22-02.3b rtol=1e-2
+* EXPECT etaB key:../../labs/22-02-lab/README.md#Lab_22-02.a scale=0.01 rtol=2e-4
+* EXPECT voB 1.2 rtol=1e-3
+.model swm sw vt=0.5 vh=0 ron=0.1m roff=1G
+.model swl sw vt=-0.5 vh=0 ron=0.1m roff=1G
+.model swh8 sw vt=0.5 vh=0 ron=8m roff=1G
+.model swl3 sw vt=-0.5 vh=0 ron=3m roff=1G
+
+* ---- instance A
+VinA inA 0 dc 12
+VgA gA 0 pulse(0 1 0 1n 1n 165.6667n 1.6666667u)
+ShA inA swA gA 0 swm
+SlA swA 0 0 gA swl
+LA swA iA 0.6u ic=10
+VsA iA outA dc 0
+CA outA 0 62.5u ic=1.2
+RA outA 0 0.12
+
+* ---- instance B
+VinB inB 0 dc 12
+VgB gB 0 pulse(0 1 0 1n 1n 171.9428n 1.6666667u)
+ShB inB swB gB 0 swh8
+SlB swB 0 0 gB swl3
+LB swB mB 0.6u ic=10
+RdB mB outB 1m
+CB outB 0 62.5u ic=1.2
+RB outB 0 0.12
+
+.control
+tran 1n 1000u 0 2n uic
+meas tran imaxA max i(VsA) from=998.3333333u to=1000u
+meas tran iminA min i(VsA) from=998.3333333u to=1000u
+meas tran vmaxA max v(outA) from=998.3333333u to=1000u
+meas tran vminA min v(outA) from=998.3333333u to=1000u
+meas tran ilrmsA rms i(VsA) from=800u to=1000u
+let ihA = -i(VinA)
+meas tran iqhA rms ihA from=800u to=1000u
+let pinB = -v(inB) * i(VinB)
+let poutB = v(outB) * v(outB) / 0.12
+meas tran pinavgB avg pinB from=800u to=1000u
+meas tran poutavgB avg poutB from=800u to=1000u
+meas tran voB avg v(outB) from=800u to=1000u
+let diA = imaxA - iminA
+let dvA = vmaxA - vminA
+let etaB = poutavgB / pinavgB
+print diA dvA etaB
+.endc
+.end

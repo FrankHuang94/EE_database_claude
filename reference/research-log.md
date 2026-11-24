@@ -4194,3 +4194,24 @@ R&D % = R&D ÷ revenue.
   - Advanced Energy's 5.5 kW 50 V HPR PSU data sheet (file dated 27 Jun 2026): "Peak efficiency 97.5%"; "640 x 73.5x 40 mm (L x W x H)", which recomputes to 47.9 W/in³.
 - **TI PMP23340UCD, 48 V to 12 V 1.1 kW eighth-brick bus converter** [Industry estimate]: "Efficiency of 97.7%"; "Power density of 1300 W/in^3 without connector"; "1MHz switching frequency".
 - **Sources:** [TIDUF57](https://www.ti.com/lit/pdf/tiduf57); [TIDT294](https://www.ti.com/lit/pdf/tidt294); [TIDT415](https://www.ti.com/lit/pdf/tidt415); [Infineon 8 kW](https://www.semiconductor-today.com/news_items/2024/may/infineon-240524.shtml); [Infineon 18 kW](https://www.semiconductor-today.com/news_items/2026/jun/infineon-290626.shtml); [Navitas 4.5 kW](https://www.semiconductor-today.com/news_items/2024/jul/navitas-260724.shtml); [EEPower](https://eepower.com/technical-articles/addressing-power-density-in-ai-data-center-psus/); [Delta ORv3 shelf](https://www.opencompute.org/products/430/delta-33kw-1ou-open-rack-v3-power-shelf); [PMP23340UCD](https://www.ti.com/tool/PMP23340UCD). Checked Nov 2026.
+
+## R-424 · Buck power-stage design references (Course 22)
+
+*Read on 24 Nov 2026 by the main agent (curl through the session proxy, pdftotext); the DA9063 entry was read by a research subagent the same day.*
+
+- **B. Hauke, *Basic Calculation of a Buck Converter's Power Stage*, Texas Instruments SLVA477C (Dec 2011, revised Sep 2026)** [Established, vendor application note]:
+  - "A good estimation for the inductor ripple current is 20% to 40% of the output current".
+  - $C_{OUT(min)} = \Delta I_L/(8 \times f_S \times \Delta V_{OUT})$ and "ΔVOUT(ESR) = ESR × ΔIL".
+  - Ceramic dielectric "must be X5R or better. Otherwise, the capacitor loses much of its capacitance due to dc bias or temperature."
+- **TI *LMR33630* data sheet, SNVSAN3F (Aug 2017, revised Nov 2020)** [Established as data-sheet values]:
+  - "Short minimum on-time of 68 ns"; "Frequency: 400 kHz, 1.4 MHz, 2.1 MHz"; "Low operating quiescent current of 25 µA"; "Peak efficiency > 95%".
+  - §8.4.3: "the LMR33630 automatically reduces the switching frequency when the minimum on-time limit is reached".
+- **TI *TPS62840* data sheet, SLVSEC6D** [Established as data-sheet values]:
+  - PFM "generates a single switching pulse to ramp up the inductor current and recharge the output capacitor, followed by a sleep period".
+  - Its Equation 2 sets the on-time to $(V_{OUT}/V_{IN}) \times 556$ ns, and its Equation 3 gives the PFM frequency.
+  - "The boundary between PWM and PFM mode is when the inductor current becomes discontinuous".
+  - Forced PWM "reduces or eliminates interference with RF and noise-sensitive circuits, but reduces efficiency at light loads".
+  - 100% mode: "VINmin = VOUT + IOUT × (RDS(on)max + RL)".
+- **"High CV MLCC DC BIAS Capacitance Loss Explained," EEPower, 31 Jul 2019** [Industry estimate]: "The loss at rated voltage can vary from -35% to -65% at rated voltage" (10 µF 6.3 V X7R 0805, three vendors).
+- **Renesas DA9063 product page** [Established]: "Six buck converters, 0.3 V to 3.34 V up to 2.5 A"; "High efficiency is achieved over a wide load range by automatically selecting Pulse Frequency Modulation (PFM) or Pulse Width Modulation (PWM) modes."
+- **Sources:** [SLVA477C](https://www.ti.com/lit/an/slva477b/slva477b.pdf) (the URL serves revision C); [LMR33630](https://www.ti.com/lit/ds/symlink/lmr33630.pdf); [TPS62840](https://www.ti.com/lit/ds/symlink/tps62840.pdf); [EEPower](https://eepower.com/technical-articles/high-cv-mlcc-dc-bias-capacitance-loss-explained/); [DA9063](https://www.renesas.com/en/products/da9063). Checked Nov 2026.

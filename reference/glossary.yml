@@ -8848,3 +8848,47 @@
   definition: The regulatory efficiency metric for external power supplies in the EU and US, the mean of the efficiencies at 25, 50, 75 and 100 percent of rated output, paired with a separate no-load power limit.
   chapter: "22-01"
   see_also: [Efficiency]
+- term: Charge balance
+  definition: In a periodic steady state the average current into a capacitor is zero, because its voltage returns to the same value each period; with volt-second balance it gives a switching converter's average currents.
+  chapter: "22-02"
+  see_also: [Volt-second balance]
+- term: Small-ripple approximation
+  definition: Treating a converter's output voltage as constant at its DC value when writing the inductor's voltage in each subinterval, valid because the output ripple is a small fraction of the DC value; never applied to the inductor current, whose ripple is deliberately large.
+  chapter: "22-02"
+  see_also: [Volt-second balance, Charge balance]
+- term: Continuous conduction mode (CCM)
+  definition: Operation of a switching converter in which the inductor current never falls to zero during the cycle; a buck in CCM has the load-independent conversion ratio M = D.
+  chapter: "22-02"
+  see_also: [Discontinuous conduction mode (DCM), Critical current]
+- term: Discontinuous conduction mode (DCM)
+  definition: Operation in which the inductor current falls to zero and stays there for part of each cycle, because a diode or diode-emulating switch blocks reverse current; the conversion ratio then depends on the load, M = 2/(1 + √(1 + 4K/D²)) for a buck with K = 2L/(R·T_s).
+  chapter: "22-02"
+  see_also: [Continuous conduction mode (CCM), Pulse-frequency modulation (PFM)]
+- term: Critical current
+  definition: The load current at the boundary between continuous and discontinuous conduction, half the inductor's peak-to-peak ripple; in dimensionless form the boundary is K = 1 − D for a buck.
+  chapter: "22-02"
+  see_also: [Discontinuous conduction mode (DCM)]
+- term: Ripple ratio
+  definition: The inductor's peak-to-peak ripple current divided by its DC (load) current, r = Δi_L/I; buck designs commonly target 0.2–0.4 as a balance between inductor size and peak current, capacitor ripple and core loss.
+  chapter: "22-02"
+  see_also: [Critical current]
+- term: Synchronous rectification
+  definition: Replacing a converter's freewheeling diode with a controlled MOSFET, so the low-side drop is I·R_DS(on) instead of a forward voltage of about half a volt; essential at low output voltages, at the cost of a second driver and dead-time control.
+  chapter: "22-02"
+  see_also: [Dead time]
+- term: Dead time
+  definition: The short interval in which both switches of a half bridge are held off between transitions, so that they never conduct together and short the supply; the inductor current flows through a body diode meanwhile.
+  chapter: "22-02"
+  see_also: [Synchronous rectification]
+- term: Minimum on-time
+  definition: The shortest time a converter's controller can hold its high-side switch on, set by delays and blanking; it caps the switching frequency at f_s ≤ D_min/t_on,min for a given step-down ratio, and many controllers fold the frequency back when they reach it.
+  chapter: "22-02"
+  see_also: [Duty cycle]
+- term: Dropout mode (100% duty cycle)
+  definition: A buck converter's dropout behaviour in which the high-side switch stays on continuously as the input approaches the output, so the output follows the input less I·(R_DS(on) + R_L).
+  chapter: "22-02"
+  see_also: [Dropout voltage]
+- term: Forced PWM
+  definition: A mode that keeps a converter switching at its fixed frequency at all loads, letting the inductor current go negative at light load; it gives predictable ripple and spectrum at the cost of light-load efficiency.
+  chapter: "22-02"
+  see_also: [Pulse-frequency modulation (PFM), Continuous conduction mode (CCM)]
