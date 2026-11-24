@@ -1,0 +1,53 @@
+* Lab 21-02 -- three matching networks driven from a 50 ohm source into their design loads (AC analysis).
+* Input reflection Gamma = (Zin - 50)/(Zin + 50), Zin = V(in)/I(in); the 10 dB return-loss band edges are measured.
+*   (1) L-match 10 ohm -> 50 ohm at 2.4 GHz: shunt 2.6526 pF at the 50 ohm side, series 1.3263 nH by the load (Example 21-02.1)
+*   (3) pi network, Q = 5, 10 ohm -> 50 ohm at 2.4 GHz: 6.6315 pF, 0.89900 nH, 13.5904 pF (Example 21-02.3)
+*   (5) two-section L-match 5 ohm -> 15.81 ohm -> 50 ohm at 2 GHz: 2.3403 pF, 1.8502 nH, 7.4008 pF, 0.58508 nH (Example 21-02.4)
+VS1 s1 0 dc 0 ac 1
+RS1 s1 i1 50
+C1 i1 0 2.652582p
+L1 i1 o1 1.326291n
+RL1 o1 0 10
+VS3 s3 0 dc 0 ac 1
+RS3 s3 i3 50
+C31 i3 0 6.631456p
+L3 i3 o3 0.898995n
+C32 o3 0 13.590441p
+RL3 o3 0 10
+VS5 s5 0 dc 0 ac 1
+RS5 s5 i5 50
+C51 i5 0 2.340323p
+L52 i5 m5 1.850188n
+C53 m5 0 7.400752p
+L54 m5 o5 0.585081n
+RL5 o5 0 5
+.ac lin 7001 0.5e9 4e9
+.control
+run
+let z1 = v(i1) * 50 / (1 - v(i1))
+let z3 = v(i3) * 50 / (1 - v(i3))
+let z5 = v(i5) * 50 / (1 - v(i5))
+let rl1 = db((z1 - 50) / (z1 + 50))
+let rl3 = db((z3 - 50) / (z3 + 50))
+let rl5 = db((z5 - 50) / (z5 + 50))
+meas ac f1lo when rl1=-10 fall=1
+meas ac f1hi when rl1=-10 rise=1
+meas ac f3lo when rl3=-10 fall=1
+meas ac f3hi when rl3=-10 rise=1
+meas ac f5lo when rl5=-10 fall=1
+meas ac f5hi when rl5=-10 rise=1
+let g1lo = f1lo / 1e9
+let g1hi = f1hi / 1e9
+let g3lo = f3lo / 1e9
+let g3hi = f3hi / 1e9
+let g5lo = f5lo / 1e9
+let g5hi = f5hi / 1e9
+print g1lo g1hi g3lo g3hi g5lo g5hi
+.endc
+* EXPECT g1lo key:../../chapters/21-02-impedance-matching-networks.md#Ex_21-02.1f rtol=1e-3
+* EXPECT g1hi key:../../chapters/21-02-impedance-matching-networks.md#Ex_21-02.1g rtol=1e-3
+* EXPECT g3lo key:../../chapters/21-02-impedance-matching-networks.md#Ex_21-02.3e rtol=1e-3
+* EXPECT g3hi key:../../chapters/21-02-impedance-matching-networks.md#Ex_21-02.3f rtol=1e-3
+* EXPECT g5lo key:../../chapters/21-02-impedance-matching-networks.md#Ex_21-02.4g rtol=1e-3
+* EXPECT g5hi key:../../chapters/21-02-impedance-matching-networks.md#Ex_21-02.4h rtol=1e-3
+.end

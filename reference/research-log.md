@@ -3596,3 +3596,30 @@ R&D % = R&D ÷ revenue.
 - **Mixed-mode S-parameters**: Bockelman and Eisenstadt, *IEEE Trans. MTT* 43(7):1530–1539, 1995, DOI 10.1109/22.392911. [Established]
 - **IEEE 802.3 Channel Operating Margin**: per MathWorks documentation, "Models of the victim and each aggressor are passed into COM as 4-port S-parameter models"; scripts from the IEEE 802.3ck tools page (not opened). [Established, secondary source]
 - **IEEE Std 370-2020**, "Electrical Characterization of Printed Circuit Board and Related Interconnects at Frequencies up to 50 GHz," DOI 10.1109/IEEESTD.2021.9316329. Title and scope only; clause content not read (open issue). [Established for existence and scope]
+
+## R-364 · Broadband-matching limits and the Smith chart: primary references (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref metadata for Fano and Youla; MIT DSpace metadata for the 1948 RLE report (PDF rate-limited); Bode's book confirmed only as a bibliographic entry; Smith's article through the RF Cafe reprint.*
+
+- **Bode**, *Network Analysis and Feedback Amplifier Design*, D. Van Nostrand, New York, 1945. Bibliographic entry only (cited in Youla's Cambridge chapter "Theory of broadband matching"); the page where the RC-load integral appears is unverified. [Established for the citation]
+- **Fano**, "Theoretical limitations on the broadband matching of arbitrary impedances," *J. Franklin Inst.* 249(1):57–83, Jan. 1950, DOI 10.1016/0016-0032(50)90006-8, and 249(2):139–154, Feb. 1950, DOI 10.1016/S0016-0032(50)91101-X. Precursor: MIT RLE Technical Report No. 41, "January 2, 1948", hdl 1721.1/5007. [Established]
+- **Youla**, "A New Theory of Broad-band Matching," *IEEE Trans. Circuit Theory* 11(1):30–50, 1964, DOI 10.1109/TCT.1964.1082267. [Established]
+- **Smith**, "Transmission Line Calculator," *Electronics* 12(1), Jan. 1939 (page numbers unverified); RF Cafe reprint: "He was an engineer at the Radio Development Department of Bell Telephone Laboratories." Follow-up "An Improved Transmission Line Calculator," *Electronics*, Jan. 1944. [Established for the publication; affiliation from a reprint page]
+
+## R-365 · On-chip spiral inductors: Q, shields, modeling and formulas (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: OpenAlex abstracts and Crossref metadata.*
+
+- **Burghartz, Edelstein, Soyuer, Ainspan and Jenkins**, *IEEE JSSC* 33(12):2028–2034, Dec. 1998, DOI 10.1109/4.735544: "Integrated spiral inductors with inductances of 0.5-100 nH and Q's up to 40 are shown to be feasible in very-large-scale-integration silicon technology" (IBM thick-copper wiring; a best case). [Established]
+- **Yue and Wong**, *IEEE JSSC* 33(5):743–752, May 1998, DOI 10.1109/4.668989: "At 1-2 GHz, the addition of the shield increases the inductor quality factor up to 33% and reduces the substrate coupling between two adjacent inductors by as much as 25 dB ... the quality factor of a 2-GHz LC tank can be nearly doubled with a shielded inductor." [Established]
+- **Niknejad and Meyer**, *IEEE JSSC* 33(10):1470–1481, 1998, DOI 10.1109/4.720393 (ASITIC; measurements 100 MHz to 5 GHz). [Established]
+- **Mohan, Hershenson, Boyd and Lee**, *IEEE JSSC* 34(10):1419–1424, 1999, DOI 10.1109/4.792620: "Our simple expression matches the field solver inductance values typically within around 3%"; previous expressions have "typical errors around 20% (or more)". [Established]
+- **Burghartz and Rejaei**, *IEEE TED* 50(3):718–729, Mar. 2003, DOI 10.1109/TED.2003.810474 (Q, self-resonance and area across technologies; substrate-resistivity regimes). [Established]
+- A "typical" standard-CMOS inductor Q (often quoted as roughly 5–20 at 1–10 GHz) was **not** found in a primary source; the chapter uses 8 to 20 only as working assumptions.
+
+## R-366 · Matching in LNA and front-end data sheets (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: vendor PDFs (Infineon direct; Qorvo through a DigiKey-hosted copy).*
+
+- **Infineon BGA9H1BN6** (2.3–2.7 GHz LNA, SiGe BiCMOS), data sheet Rev. 2.1, 20 Dec 2023: input return loss at 2600 MHz 9 dB min, 13 dB typ. (high-performance mode); NF 0.6 dB typ., 1.1 dB max; footnote "Can be tuned by using different external matching components". [Established]
+- **Qorvo QPF4609** (Wi-Fi 7 FEM, 5925–7125 MHz), Data Sheet Rev. C (preliminary), Sep 2024: receive path "ANT Port Return Loss" 6 dB min, 7 dB typ.; "Noise Figure" 1.8 dB typ., 2.2 dB max; "Specifications are not guaranteed over all recommended operating conditions." [Established]
