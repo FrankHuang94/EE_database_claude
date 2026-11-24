@@ -20,17 +20,17 @@ $\Delta V = 0.8 \times 3/(3 + 15)$ = **0.133** V, and it stays until the node is
 
 ### Solution 19-05.4
 
-$R_wC_w$ = 500 ps. Distributed: $0.379 \times 500$ = **189.5** ps. Lumped: $0.69 \times 500$ = **346.6** ps, 83% high. Elmore: $0.69 \times 250$ = **173.3** ps, 8.5% low.
+$R_wC_w$ = 500 ps. Distributed: $0.379 \times 500$ = **189.5** ps. Lumped: $\ln 2 \times 500$ = **346.6** ps, 83% high. Elmore: $\ln 2 \times 250$ = **173.3** ps, 8.5% low.
 
 ### Solution 19-05.5
 
-(a) $R_w$ = 10 kΩ and $C_w$ = 400 fF. $t = 0.69 \times 500 \times 420\ \text{fF} + 10\ \text{kΩ} \times (0.379 \times 400 + 0.69 \times 20)\ \text{fF}$ = 145.6 + 1654.6 = **1800.2** ps.
+(a) $R_w$ = 10 kΩ and $C_w$ = 400 fF. $t = \ln 2 \times 500 \times 420\ \text{fF} + 10\ \text{kΩ} \times (0.379 \times 400 + 0.69 \times 20)\ \text{fF}$ = 145.6 + 1654.6 = **1800.2** ps.
 
 (b) With 125 Ω: 36.4 + 1654.6 = **1691.0** ps, only **6.1** % faster. The wire's own term dominates.
 
 ### Solution 19-05.6
 
-$k_{opt} = \sqrt{0.379 \times 10\ \text{kΩ} \times 400\ \text{fF}/(0.69 \times 8\ \text{kΩ} \times 0.2\ \text{fF})}$ = **37.0** segments, every **54** µm. $h_{opt} = \sqrt{8\ \text{kΩ} \times 400\ \text{fF}/(10\ \text{kΩ} \times 0.2\ \text{fF})}$ = **40**. $T_{min}$ = **192.9** ps, **96.5** ps/mm, **9.3** times faster than Problem 5(a).
+$k_{opt} = \sqrt{0.379 \times 10\ \text{kΩ} \times 400\ \text{fF}/(\ln 2 \times 8\ \text{kΩ} \times 0.2\ \text{fF})}$ = **37.0** segments, every **54** µm. $h_{opt} = \sqrt{8\ \text{kΩ} \times 400\ \text{fF}/(10\ \text{kΩ} \times 0.2\ \text{fF})}$ = **40**. $T_{min}$ = **192.9** ps, **96.5** ps/mm, **9.3** times faster than Problem 5(a).
 
 ### Solution 19-05.7
 
@@ -51,7 +51,7 @@ Each plane: $3.0 \times 8.854 \times 10^{-12} \times 40/80$ F/m = 13.3 aF/µm, s
 (a) $T = 0.69R_0C_w/h + 0.69kR_0C_0 + 0.379R_wC_w/k + 0.69R_whC_0$. The $k$ terms are $ak + b/k$ with $a = 0.69R_0C_0$ and $b = 0.379R_wC_w$; their minimum is at $k = \sqrt{b/a}$ with value $2\sqrt{ab}$. The $h$ terms are $c/h + dh$ with $c = 0.69R_0C_w$ and $d = 0.69R_wC_0$; minimum at $h = \sqrt{c/d} = \sqrt{R_0C_w/(R_wC_0)}$ with value $2\sqrt{cd} = 2 \times 0.69\sqrt{R_0C_0R_wC_w}$. So
 
 $$
-T_{min} = \left(2\sqrt{0.69 \times 0.379} + 1.386\right)\sqrt{R_0C_0R_wC_w} = 2.41\sqrt{R_0C_0R_wC_w} .
+T_{min} = \left(2\sqrt{\ln 2 \times 0.379} + 2\ln 2\right)\sqrt{R_0C_0R_wC_w} = 2.41\sqrt{R_0C_0R_wC_w} .
 $$
 
 (b) At $k_{opt}$, $ak = b/k$: $0.69R_0C_0 = 0.379R_wC_w/k^2$, and $0.379(R_w/k)(C_w/k)$ is one segment's distributed wire delay.

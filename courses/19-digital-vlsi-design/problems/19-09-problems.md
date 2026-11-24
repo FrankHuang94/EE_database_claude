@@ -34,7 +34,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 19-09.6 [B]
 
-**Block area.** A block has 500 kGates of logic and 30 000 `dfxtp_1` flip-flops (20.02 µm² each). (a) Estimate the logic area from the 120 kGates/mm² routed density. (b) What is the flip-flops' cell area, and their core area at 65% and at 80% utilization?
+**Block area.** A block has 500 kGates of logic and 30 000 `dfxtp_1` flip-flops (20.02 µm² each). (a) Estimate the logic area from the library's 160 kGates/mm² routed density. (b) What is the flip-flops' cell area, and their core area at 65% and at 80% utilization?
 
 ### Problem 19-09.7 [B]
 

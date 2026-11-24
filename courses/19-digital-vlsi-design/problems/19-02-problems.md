@@ -46,7 +46,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 19-02.9 [B]
 
-**Lowering the supply.** A design has $V_T$ = 0.3 V and follows the alpha-power law with α = 1.4. Its supply is lowered from 0.9 V to 0.5 V. (a) By what factor does the delay grow? (b) By what factor does the energy per transition fall? (c) What happens to the energy–delay product? (d) Where is the EDP minimum?
+**Lowering the supply.** A design has $V_{TH}$ = 0.3 V and follows the alpha-power law with α = 1.4. Its supply is lowered from 0.9 V to 0.5 V. (a) By what factor does the delay grow? (b) By what factor does the energy per transition fall? (c) What happens to the energy–delay product? (d) Where is the EDP minimum?
 
 ### Problem 19-02.10 [C]
 
@@ -64,7 +64,7 @@ $$
 
 ### Problem 19-02.12 [C]
 
-**Other figures of merit.** With $E \propto V_{DD}^2$ and $D \propto V_{DD}/(V_{DD} - V_T)^\alpha$: (a) show that $E\,D^n$ is minimized at $V_{DD} = (2 + n)V_T/(2 + n - n\alpha)$ when $2 + n > n\alpha$. (b) For $V_T$ = 0.35 V and α = 1.3, evaluate the optimum for $n$ = 1, 2 and 3. (c) Why does $E\,D^2$ have no finite optimum for the square law, and what does a designer who cares mostly about speed conclude?
+**Other figures of merit.** With $E \propto V_{DD}^2$ and $D \propto V_{DD}/(V_{DD} - V_{TH})^\alpha$: (a) show that $E\,D^n$ is minimized at $V_{DD} = (2 + n)V_{TH}/(2 + n - n\alpha)$ when $2 + n > n\alpha$. (b) For $V_{TH}$ = 0.35 V and α = 1.3, evaluate the optimum for $n$ = 1, 2 and 3. (c) Why does $E\,D^2$ have no finite optimum for the square law, and what does a designer who cares mostly about speed conclude?
 
 ---
 

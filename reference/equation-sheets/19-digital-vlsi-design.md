@@ -4,7 +4,7 @@ The relations to know cold from Course 19, each with its conditions and the chap
 
 Conventions:
 
-- $V_{TH}$ is a threshold ($V_{TN}$, $\lvert V_{TP}\rvert$) and $V_T = kT/q$ = 25.85 mV at 300 K is the thermal voltage (some chapters still write $V_T$ for the threshold; read it from context);
+- $V_{TH}$ is a threshold ($V_{TN}$, $\lvert V_{TP}\rvert$) and $V_T = kT/q$ = 25.85 mV at 300 K is the thermal voltage;
 - square-law devices: $k = \mu C_{ox}W/L$, $r = k_n/k_p$; λ is channel-length modulation in 19-01 and the design-rule unit in 19-09;
 - lumped RC delay $\ln 2\,RC \approx 0.69\,RC$; a distributed line's 50% delay 0.38 $RC$; "Elmore constant" is the unscaled $\sum R C$;
 - logical effort with $\mu = \mu_n/\mu_p = 2$, $p_{inv} = 1$ and $\tau = 0.69\,RC_{inv}$;

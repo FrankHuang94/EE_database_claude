@@ -8,7 +8,18 @@ Problems: [19-08 problem set](../problems/19-08-problems.md) · Chapter: [19-08]
 
 ### Solution 19-08.1
 
-With Q = 0 and QB = 1, the pull-down on the Q side (gate QB = 1) and the pull-up on the QB side (gate Q = 0) conduct; both access transistors are on (wordline high). BL discharges through the Q-side access transistor and pull-down; BLB stays high because QB is already at $V_{DD}$. That is **4** conducting transistors (two of them carrying the read current). An 8T cell has **8** transistors: the extra two form a read port (a transistor gated by the storage node in series with one gated by a read wordline) that discharges a separate read bitline without touching the storage nodes.
+Take the cell during the read, with Q pulled slightly up (0.128 V for the chapter's cell) and QB, BL and BLB at $V_{DD}$:
+
+| Device | Gate drive | Drain–source voltage | State |
+|---|---|---|---|
+| Q-side access | $V_{GS} = V_{DD} - Q$ | $V_{DD} - Q > 0$ | on, carries the read current |
+| Q-side pull-down | $V_{GS} = V_{DD}$ (gate QB) | $Q > 0$ | on, carries the read current |
+| QB-side pull-up | $V_{SG} = V_{DD} - Q$ | 0 | channel on, no current |
+| QB-side access | $V_{GS} = 0$ (gate, drain and source all at $V_{DD}$) | 0 | off |
+| Q-side pull-up | $V_{SG} = 0$ (gate QB) | | off |
+| QB-side pull-down | $V_{GS} = Q < V_{TN}$ | | off |
+
+So **2** transistors carry current and **3** have channels on. BL discharges through the Q-side access transistor and pull-down; BLB stays high because QB is already at $V_{DD}$, so its access transistor has no gate drive. An 8T cell has **8** transistors: the extra two form a read port (a transistor gated by the storage node in series with one gated by a read wordline) that discharges a separate read bitline without touching the storage nodes.
 
 ### Solution 19-08.2
 
@@ -20,7 +31,7 @@ $C_{BL} = 128 \times 0.1 + 10$ = **22.8** fF; $t = 22.8\ \text{fF} \times 0.08\ 
 
 ### Solution 19-08.4
 
-Solving §3.2's balance at 0.8 V: $\Delta V$ = **0.113** V, a margin of **0.187** V to $V_T$. The disturbance falls with the supply, but so does the other inverter's switching threshold and, more importantly, the lobes of the butterfly (Problem 9).
+Solving §3.2's balance at 0.8 V: $\Delta V$ = **0.113** V, a margin of **0.187** V to $V_{TH}$. The disturbance falls with the supply, but so does the other inverter's switching threshold and, more importantly, the lobes of the butterfly (Problem 9).
 
 ### Solution 19-08.5
 
@@ -28,7 +39,7 @@ Set $\Delta V$ = 0.1 V in §3.2: $CR = \tfrac12(1.0 - 0.1 - 0.3)^2/[(0.7)(0.1) -
 
 ### Solution 19-08.6
 
-Set $V = V_T$ = 0.3 V in §3.3: $PR = 2[(0.7)(0.3) - 0.045]/0.49 = 0.33/0.49$ = **0.673**. With the cell ratio of Problem 5, the three strengths must satisfy $k_P \le 0.673k_A$ and $k_N \ge 2.77k_A$.
+Set $V = V_{TH}$ = 0.3 V in §3.3: $PR = 2[(0.7)(0.3) - 0.045]/0.49 = 0.33/0.49$ = **0.673**. With the cell ratio of Problem 5, the three strengths must satisfy $k_P \le 0.673k_A$ and $k_N \ge 2.77k_A$.
 
 ### Solution 19-08.7
 
@@ -50,7 +61,7 @@ Set $V = V_T$ = 0.3 V in §3.3: $PR = 2[(0.7)(0.3) - 0.045]/0.49 = 0.33/0.49$ = 
 | 0.8 V | **0.348** V | **0.204** V |
 | 0.6 V | **0.300** V | **0.176** V |
 
-Both margins shrink with the supply while threshold variation, a fixed number of millivolts, does not; the read margin, smallest to begin with, runs out first in the worst cells of a large array. This is why SRAM sets $V_{min}$ and why separate rails and assists exist (§3.8).
+The 0.6 V row is optimistic: at $V_{DD} = 2V_{TH}$ the square-law inverter becomes an ideal step, so its hold SNM is exactly $V_{DD}/2$; real cells keep conducting below threshold and lose margin faster. Both margins shrink with the supply while threshold variation, a fixed number of millivolts, does not; the read margin, smallest to begin with, runs out first in the worst cells of a large array. This is why SRAM sets $V_{min}$ and why separate rails and assists exist (§3.8).
 
 ### Solution 19-08.10
 
@@ -64,7 +75,8 @@ $e^{-2^{30}Q(z)} = 0.99$ requires $Q(z) = -\ln 0.99/2^{30}$ = **9.36 × 10⁻¹�
 
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
-| 19-08.1a | conducting transistors during the read | 4 | — |
+| 19-08.1a | transistors carrying current during the read | 2 | — |
+| 19-08.1c | transistors with channels on during the read | 3 | — |
 | 19-08.1b | transistors in an 8T cell | 8 | — |
 | 19-08.2a | cell area | 0.00459 | mm² |
 | 19-08.2b | macro area at 38 Mb/mm² | 0.00690 | mm² |

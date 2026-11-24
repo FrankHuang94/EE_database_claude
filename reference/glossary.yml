@@ -7726,7 +7726,7 @@
   chapter: "19-05"
   see_also: [Crosstalk]
 - term: Short-circuit power
-  definition: "Power drawn while both transistors of a CMOS gate conduct during an input transition. For an unloaded symmetric inverter with input ramps of duration τ, Veendrick's formula gives (β/12)(V_DD − 2V_T)³τ/T; it vanishes when V_DD < 2V_T."
+  definition: "Power drawn while both transistors of a CMOS gate conduct during an input transition. For an unloaded symmetric inverter with input ramps of duration τ, Veendrick's formula gives (β/12)(V_DD − 2V_TH)³τ/T; it vanishes when V_DD < 2V_T."
   chapter: "19-06"
   see_also: [Dynamic power]
 - term: Stack effect
@@ -7762,7 +7762,7 @@
   chapter: "19-08"
   see_also: [Pull-up ratio, SRAM]
 - term: Pull-up ratio
-  definition: "In a 6T SRAM cell, the strength of the pull-up PMOS relative to the access transistor, k_P/k_A; it must be small enough (about 1 or less) for a low bitline to overpower the pull-up and write the cell."
+  definition: "In a 6T SRAM cell, the strength of the pull-up PMOS relative to the access transistor, k_P/k_A; it must be small enough for a low bitline to overpower the pull-up and write the cell (about 0.67 or less for the conservative criterion in this course's square-law cell; rules of thumb in W/L terms run near 1–1.5 because the PMOS's mobility is lower)."
   chapter: "19-08"
   see_also: [Cell ratio, SRAM]
 - term: Static noise margin

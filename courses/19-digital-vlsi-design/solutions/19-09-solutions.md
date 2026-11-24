@@ -28,7 +28,7 @@ With the stack fixed as A-B-C, the pull-down graph is a chain, so only **2** ord
 
 ### Solution 19-09.6
 
-(a) $500/120$ = **4.17** mm².
+(a) $500/160$ = **3.125** mm².
 
 (b) $30\,000 \times 20.02\ \mu\text{m}^2$ = **0.601** mm² of cells; at 65%, **0.924** mm²; at 80%, **0.751** mm².
 
@@ -90,7 +90,7 @@ Leaving the internal nodes uncontacted saves **21** %.
 | 19-09.3a | valid NAND3 orderings, fixed stack | 2 | — |
 | 19-09.4a | valid AOI211 orderings | 4 | — |
 | 19-09.5a | valid OAI22 orderings | 8 | — |
-| 19-09.6a | logic area | 4.17 | mm² |
+| 19-09.6a | logic area | 3.125 | mm² |
 | 19-09.6b | flip-flop cell area | 0.601 | mm² |
 | 19-09.6c | flip-flop core area at 65% | 0.924 | mm² |
 | 19-09.6d | flip-flop core area at 80% | 0.751 | mm² |

@@ -219,7 +219,7 @@ The 16-stage latency is $16 \times 185$ = **2960** ps, 48% longer than the unpip
 
 ### Example 19-07.6 · Metastability and synchronizers (tier C)
 
-**Setup.** (a) The lab's cross-coupled inverter pair (10 fF per node, $k$ = 200 µA/V², $V_{DD}$ = 1.2 V, $V_T$ = 0.35 V) starts with offsets of 1 mV and 1 µV. Simulation gives the times for the high node to reach 0.9 V. Check that their difference matches τ = C/g_m. (b) A faster flip-flop has τ = 20 ps and $T_0$ = 20 ps, with a 1 GHz clock and data changing at 100 MHz. Compare the MTBF of a single flip-flop with 0.3 ns to resolve and a two-flip-flop synchronizer with 0.95 ns.
+**Setup.** (a) The lab's cross-coupled inverter pair (10 fF per node, $k$ = 200 µA/V², $V_{DD}$ = 1.2 V, $V_{TH}$ = 0.35 V) starts with offsets of 1 mV and 1 µV. Simulation gives the times for the high node to reach 0.9 V. Check that their difference matches τ = C/g_m. (b) A faster flip-flop has τ = 20 ps and $T_0$ = 20 ps, with a 1 GHz clock and data changing at 100 MHz. Compare the MTBF of a single flip-flop with 0.3 ns to resolve and a two-flip-flop synchronizer with 0.95 ns.
 
 **Solution.** (a) Simulation gives **643.9** ps and **1334.6** ps. $g_m = 2 \times 200\ \mu \times 0.25$ = 100 µS and τ = 10 fF/100 µS = **100** ps, so the difference should be $100 \times \ln 1000$ = **690.8** ps, as observed.
 

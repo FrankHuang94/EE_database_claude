@@ -10,7 +10,7 @@ Chapter: [19-06 · Power and Low-Power Design](../../chapters/19-06-power-and-lo
 
 ## Background
 
-Each full switching cycle costs $C_LV_{DD}^2$, so $P_{dyn} = \alpha CV_{DD}^2f$ (§3.1). An unloaded inverter driven by ramps of duration τ draws $\beta\tau(V_{DD} - 2V_T)^3/(24V_{DD})$ per transition (§3.2). Subthreshold leakage falls tenfold per subthreshold slope of threshold, and two stacked off transistors leak far less than one because of DIBL (§3.3). Lowering the supply with the frequency, or running parallel copies slower, saves energy (§3.4). In subthreshold, the energy per operation $V^2[\alpha + L_de^{-V/(nV_{th})}]$ has a minimum at a few hundred millivolts (§3.6).
+Each full switching cycle costs $C_LV_{DD}^2$, so $P_{dyn} = \alpha CV_{DD}^2f$ (§3.1). An unloaded inverter driven by ramps of duration τ draws $\beta\tau(V_{DD} - 2V_{TH})^3/(24V_{DD})$ per transition (§3.2). Subthreshold leakage falls tenfold per subthreshold slope of threshold, and two stacked off transistors leak far less than one because of DIBL (§3.3). Lowering the supply with the frequency, or running parallel copies slower, saves energy (§3.4). In subthreshold, the energy per operation $V^2[\alpha + L_de^{-V/(nV_T)}]$ has a minimum at a few hundred millivolts (§3.6).
 
 Files:
 
@@ -44,13 +44,13 @@ Files:
 **Answers.**
 
 1. The supply must deliver the charge $C_LV_{DD}$ that ends up on the capacitor, whatever the current waveform; the transistor only sets how fast.
-2. Unloaded, the output follows the static curve, so the current at every instant is the saturation current of the transistor turning off. With a load, the output lags, and the transistor turning off sees less drain voltage and conducts less (19-02 §3.6).
-3. The single device's leakage carries a factor $e^{\eta V_{DD}/(nV_{th})}$ from DIBL that the stacked device almost loses, and that factor is exponential in η.
+2. Unloaded, the output follows the static curve, so the current at every instant is the saturation current of the transistor with the smaller gate overdrive: for a rising input, the NMOS turning on below $V_{DD}/2$ and the PMOS turning off above it. With a load, the output lags, and the transistor that is turning off sees less drain voltage and conducts less (19-02 §3.6).
+3. The single device's leakage carries a factor $e^{\eta V_{DD}/(nV_T)}$ from DIBL that the stacked device almost loses, and that factor is exponential in η.
 4. The model ignores variation, SRAM's higher minimum voltage and the speed the application needs; real designs add margin, usually ending up a little above the minimum-energy point (§3.6).
 
 ## Optional hardware
 
-Measure the supply current of a CD4069 driving a capacitor load with a square wave at several frequencies and two supplies (5 V and 10 V): the current grows linearly with frequency, and its slope, $CV_{DD}$, doubles with the supply. A small series resistor in the supply and an oscilloscope show the short-circuit spikes with slow input edges.
+Measure the supply current of a CD4069 driving a capacitor load with a square wave at several frequencies and two supplies (5 V and 10 V): the current grows linearly with frequency, and its slope, $CV_{DD}$, doubles with the supply once the short-circuit contribution is removed (measure with sharp input edges, since that contribution grows faster than the supply). A small series resistor in the supply and an oscilloscope show the short-circuit spikes with slow input edges.
 
 <!-- answer-key -->
 

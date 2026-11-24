@@ -32,7 +32,7 @@ Each time a gate's output rises, it fills its load capacitance from the supply l
 
 Leakage is a dripping tap: even with nothing happening, every transistor that should be off lets a little current through, and a billion of them add up. The drip is exponentially sensitive to how tightly the tap is closed (the threshold voltage) and to temperature.
 
-The analogy misleads on one point: in the water picture, filling slowly wastes nothing extra. In a circuit, the energy dissipated while charging a capacitor through a resistor is $\tfrac12CV^2$ whatever the resistance, so slow charging does not help either; only lowering $V$ does (or charging in small steps, adiabatic charging, which is rarely practical).
+Where the analogy breaks: it invites the idea that a gentler tap would waste less. It does not, in either picture. Charging a capacitor from a fixed supply through any resistance dissipates $\tfrac12CV^2$ in the resistance, however slowly, because the charge always falls through the full difference between the supply and the rising node. What does help has no everyday counterpart: raising the supply together with the node so that the charge never falls far (adiabatic charging), which needs a slowly ramping supply and is rarely practical in logic. Within the analogy, only a lower bucket (a lower $V_{DD}$) saves energy.
 
 ## 3. Theory
 
@@ -54,39 +54,39 @@ For a whole chip, $C$ is the total switched capacitance (gates, diffusion and wi
 
 ### 3.2 Short-circuit power
 
-While an input ramps between $V_{TN}$ and $V_{DD} - \lvert V_{TP}\rvert$, both transistors conduct and current flows straight from the supply to ground. For an **unloaded** symmetric inverter ($k_n = k_p = \beta$, $V_{TN} = \lvert V_{TP}\rvert = V_T$) driven by a linear ramp from 0 to $V_{DD}$ in time $\tau$, the output follows the static transfer curve. Below the switching threshold $V_{DD}/2$ the NMOS is saturated and limits the current, $\tfrac12\beta(v_{in} - V_T)^2$; above it the PMOS does, symmetrically. With $v_{in} = V_{DD}t/\tau$, the charge drawn during the first half is
+While an input ramps between $V_{TN}$ and $V_{DD} - \lvert V_{TP}\rvert$, both transistors conduct and current flows straight from the supply to ground. For an **unloaded** symmetric inverter ($k_n = k_p = \beta$, $V_{TN} = \lvert V_{TP}\rvert = V_{TH}$) driven by a linear ramp from 0 to $V_{DD}$ in time $\tau$, the output follows the static transfer curve. Below the switching threshold $V_{DD}/2$ the NMOS is saturated and limits the current, $\tfrac12\beta(v_{in} - V_{TH})^2$; above it the PMOS does, symmetrically. With $v_{in} = V_{DD}t/\tau$, the charge drawn during the first half is
 
 $$
-Q_{1/2} = \int \tfrac12\beta(v_{in} - V_T)^2\,dt = \frac{\beta\tau}{2V_{DD}}\int_{V_T}^{V_{DD}/2}(v - V_T)^2\,dv = \frac{\beta\tau}{6V_{DD}}\left(\frac{V_{DD}}2 - V_T\right)^3,
+Q_{1/2} = \int \tfrac12\beta(v_{in} - V_{TH})^2\,dt = \frac{\beta\tau}{2V_{DD}}\int_{V_{TH}}^{V_{DD}/2}(v - V_{TH})^2\,dv = \frac{\beta\tau}{6V_{DD}}\left(\frac{V_{DD}}2 - V_{TH}\right)^3,
 $$
 
-and the second half contributes the same. So each transition draws $Q_{sc} = \beta\tau(V_{DD} - 2V_T)^3/(24V_{DD})$. With two transitions per period $T$, the average power is
+and the second half contributes the same. So each transition draws $Q_{sc} = \beta\tau(V_{DD} - 2V_{TH})^3/(24V_{DD})$. With two transitions per period $T$, the average power is
 
 $$
-P_{sc} = \frac{2V_{DD}Q_{sc}}{T} = \frac{\beta}{12}\left(V_{DD} - 2V_T\right)^3\frac{\tau}{T},
+P_{sc} = \frac{2V_{DD}Q_{sc}}{T} = \frac{\beta}{12}\left(V_{DD} - 2V_{TH}\right)^3\frac{\tau}{T},
 $$
 
-**Veendrick's formula** (1984). It is an upper bound: a loaded output moves more slowly, so the transistor that is turning off sees a smaller drain-source voltage and the overlap current is smaller. Two consequences: short-circuit power is small when input edges are fast relative to output edges (designers keep them comparable, which limits it to a few percent of dynamic power), and it vanishes when $V_{DD} < 2V_T$, because then the two transistors are never on together. The lab's ngspice simulation reproduces the formula exactly for the unloaded case.
+**Veendrick's formula** (1984). It is an upper bound: a loaded output moves more slowly, so the transistor that is turning off sees a smaller drain-source voltage and the overlap current is smaller. Two consequences: short-circuit power is small when input edges are fast relative to output edges (designers keep them comparable, which limits it to a few percent of dynamic power), and it vanishes when $V_{DD} < 2V_{TH}$, because then the two transistors are never on together. The lab's ngspice simulation reproduces the formula exactly for the unloaded case.
 
 ![Supply current of an unloaded inverter during a 50 ps input ramp: zero until the input passes the threshold at 14.6 ps, a peak of 6.25 microamps when the input crosses half the supply at 25 ps, and zero again after 35.4 ps; the shaded area is 0.0434 fC](../../../assets/figures/19-06/short-circuit.svg)
 
-*Figure 1. Short-circuit current during one input ramp (Example 2's inverter). The current is the saturation current of whichever transistor is turning off, peaking at the switching threshold.*
+*Figure 1. Short-circuit current during one input ramp (Example 2's inverter). The current is the saturation current of whichever transistor has the smaller gate overdrive: for a rising input, the NMOS turning on below $V_{DD}/2$ and the PMOS turning off above it. It peaks at the switching threshold.*
 
 ### 3.3 Leakage
 
 An "off" transistor still conducts. The main components are:
 
-- **Subthreshold current** (09-09): $I = I_0\,e^{(V_{GS} - V_T + \eta V_{DS})/(nV_{th})}\left(1 - e^{-V_{DS}/V_{th}}\right)$, where $V_{th} = kT/q$, $n$ is the slope factor and η the **drain-induced barrier lowering** (DIBL) coefficient: a high drain voltage lowers the source barrier in a short channel, reducing the effective threshold. The **subthreshold slope** $S = nV_{th}\ln 10$ is the gate-voltage change per decade of current, about 60 mV/decade × $n$ at room temperature.
+- **Subthreshold current** (09-09): $I = I_0\,e^{(V_{GS} - V_{TH} + \eta V_{DS})/(nV_T)}\left(1 - e^{-V_{DS}/V_T}\right)$, where $V_T = kT/q$, $n$ is the slope factor and η the **drain-induced barrier lowering** (DIBL) coefficient: a high drain voltage lowers the source barrier in a short channel, reducing the effective threshold. The **subthreshold slope** $S = nV_T\ln 10$ is the gate-voltage change per decade of current, about 60 mV/decade × $n$ at room temperature.
 - **Gate leakage** through thin gate dielectrics, controlled since the 45 nm generation by high-$k$ dielectrics.
 - **Junction and gate-induced drain leakage**, smaller in most logic but important in memories and at high temperature.
 
-The exponential is the whole story of leakage scaling. Lowering the threshold by $\Delta V_T$ multiplies subthreshold leakage by $10^{\Delta V_T/S}$; at $S$ = 90 mV/decade, 100 mV costs a factor of 12.9 (Example 3). Temperature raises $V_{th}$ (widening the slope) and lowers $V_T$, so leakage rises steeply with temperature (Problem 19-06.5). Static power is $P_{leak} = V_{DD}I_{leak}$.
+The exponential is the whole story of leakage scaling. Lowering the threshold by $\Delta V_{TH}$ multiplies subthreshold leakage by $10^{\Delta V_{TH}/S}$; at $S$ = 90 mV/decade, 100 mV costs a factor of 12.9 (Example 3). Temperature raises $V_T$ (widening the slope) and lowers $V_{TH}$, so leakage rises steeply with temperature (Problem 19-06.5). Static power is $P_{leak} = V_{DD}I_{leak}$.
 
-**The stack effect.** Two off transistors in series leak far less than one. The node between them floats up to a small voltage $V_x$ at which the two currents balance. The upper transistor then has a negative gate-source voltage ($-V_x$) and a reduced drain-source voltage, both of which cut its current; the lower one has only $V_x$ across it, so DIBL hardly helps it. Solving the balance numerically (Example 4) shows a reduction of about 16 times with typical DIBL, but less than 2 times without DIBL: the stack effect is mostly a DIBL effect. Libraries exploit it with "stacked" low-leakage cells, and designers with input-vector control in standby.
+**The stack effect.** Two off transistors in series leak far less than one. The node between them floats up to a small voltage $V_x$ at which the two currents balance. The upper transistor then has a negative gate-source voltage ($-V_x$) and a reduced drain-source voltage, both of which cut its current; the lower one has only $V_x$ across it, so DIBL hardly helps it. Solving the balance numerically (Example 4), and ignoring the body effect (which raises the upper transistor's threshold, since its source sits at $V_x$, and would add further reduction), shows a reduction of about 16 times with typical DIBL but less than 2 times without DIBL: in this model the stack effect is mostly a DIBL effect. Libraries exploit it with "stacked" low-leakage cells, and designers with input-vector control in standby.
 
 ### 3.4 Voltage scaling and parallelism
 
-Because dynamic energy per operation is $CV_{DD}^2$, lowering the supply is the strongest lever, at the price of speed: with the alpha-power law (19-02), delay $\propto V_{DD}/(V_{DD} - V_T)^\alpha$.
+Because dynamic energy per operation is $CV_{DD}^2$, lowering the supply is the strongest lever, at the price of speed: with the alpha-power law (19-02), delay $\propto V_{DD}/(V_{DD} - V_{TH})^{\alpha_p}$, where this chapter writes the alpha-power exponent as $\alpha_p$ to keep α for the activity factor.
 
 - **Dynamic voltage and frequency scaling** (DVFS) runs at the lowest voltage that meets the current workload's frequency. Halving the frequency of Example 5's design allows the supply to fall from 1.0 V to 0.611 V, cutting power to 0.187 of its original value (5.4 times less) for half the throughput, and energy per operation to 0.373 of its value.
 - **Parallelism** keeps the throughput: two copies of the logic, each at half the frequency, can run at the same lower voltage. Total power is $(2C)(V^2)(f/2)$, the same $CV^2f$ per copy-pair, so the saving is $(V/V_0)^2$ less any overhead (multiplexers and wiring). With 15% capacitance overhead, Example 5's design uses 0.43 of the power at the same throughput, at roughly twice the area. Pipelining achieves the same effect with less area by shortening each stage's logic.
@@ -97,19 +97,19 @@ These are the arguments that made multicore processors and wide, slower AI accel
 
 - **Clock gating** stops the clock to registers whose values will not change, setting α = 0 for the clock and for the logic behind them. Since the clock network alone switches every cycle, gating it is often the single largest dynamic-power saving, and synthesis tools insert it automatically.
 - **Power gating** disconnects an idle block from its supply through a high-threshold **sleep transistor** (header PMOS or footer NMOS), cutting its leakage by orders of magnitude. It costs the sleep transistor's area and on-resistance (a small IR drop in operation), state loss (registers must be saved or use retention flip-flops), wake-up latency and the energy to recharge the block's internal capacitance. It pays only if the block sleeps longer than the **break-even time** $E_{wake}/P_{leak,saved}$ (the same idea as 18-09's power modes).
-- **Multiple thresholds** (multi-$V_T$): libraries offer each cell with several thresholds (19-09). Synthesis uses fast, leaky low-$V_T$ cells only on timing-critical paths and slow, frugal high-$V_T$ cells everywhere else, typically leaving most cells high-$V_T$.
-- **Body biasing** shifts thresholds after manufacture: reverse bias raises $V_T$ to cut leakage in standby, forward bias lowers it for speed. It is most effective in fully depleted SOI processes.
+- **Multiple thresholds** (multi-$V_{TH}$): libraries offer each cell with several thresholds (19-09). Synthesis uses fast, leaky low-$V_{TH}$ cells only on timing-critical paths and slow, frugal high-$V_{TH}$ cells everywhere else, typically leaving most cells high-$V_{TH}$.
+- **Body biasing** shifts thresholds after manufacture: reverse bias raises $V_{TH}$ to cut leakage in standby, forward bias lowers it for speed. It is most effective in fully depleted SOI processes.
 - **Voltage islands** give each block its own supply, with level shifters at the boundaries.
 
 ### 3.6 The minimum-energy point
 
-How low should the supply go if energy per operation is all that matters (sensors, wearables, 19-01's subthreshold logic)? Below threshold, both currents are exponential: on-current $\propto e^{(V_{DD} - V_T)/(nV_{th})}$ and off-current $\propto e^{-V_T/(nV_{th})}$, so their ratio is $I_{off}/I_{on} = e^{-V_{DD}/(nV_{th})}$. A circuit of $N$ gates with switched capacitance $C$ per gate, activity α and logic depth $L_d$ has a cycle time proportional to $L_dCV_{DD}/I_{on}$, during which all $N$ gates leak. Per operation, normalized to $NC$:
+How low should the supply go if energy per operation is all that matters (sensors, wearables, 19-01's subthreshold logic)? Below threshold, both currents are exponential: on-current $\propto e^{(V_{DD} - V_{TH})/(nV_T)}$ and off-current $\propto e^{-V_{TH}/(nV_T)}$, so their ratio is $I_{off}/I_{on} = e^{-V_{DD}/(nV_T)}$. A circuit of $N$ gates with switched capacitance $C$ per gate, activity α and logic depth $L_d$ has a cycle time proportional to $L_dCV_{DD}/I_{on}$, during which all $N$ gates leak. Per operation, normalized to $NC$:
 
 $$
-\frac{E}{NC} = \underbrace{\alpha V_{DD}^2}_{\text{switching}} + \underbrace{V_{DD}\,I_{off}\,\frac{L_dV_{DD}}{I_{on}}}_{\text{leakage}} = V_{DD}^2\left[\alpha + L_d\,e^{-V_{DD}/(nV_{th})}\right] .
+\frac{E}{NC} = \underbrace{\alpha V_{DD}^2}_{\text{switching}} + \underbrace{V_{DD}\,I_{off}\,\frac{L_dV_{DD}}{I_{on}}}_{\text{leakage}} = V_{DD}^2\left[\alpha + L_d\,e^{-V_{DD}/(nV_T)}\right] .
 $$
 
-As $V_{DD}$ falls, the switching term shrinks quadratically, but the leakage term's exponential grows, because each operation takes longer and every gate leaks throughout. Setting $dE/dV_{DD} = 0$ with $x = V_{DD}/(nV_{th})$:
+As $V_{DD}$ falls, the switching term shrinks quadratically, but the leakage term's exponential grows, because each operation takes longer and every gate leaks throughout. Setting $dE/dV_{DD} = 0$ with $x = V_{DD}/(nV_T)$:
 
 $$
 2\alpha + L_de^{-x}(2 - x) = 0 \quad\Longrightarrow\quad L_de^{-x}(x - 2) = 2\alpha .
@@ -139,7 +139,7 @@ The left side rises from zero at $x$ = 2 to a peak at $x$ = 3 and then decays; t
 
 ### Example 19-06.2 · Short-circuit power (tier B)
 
-**Setup.** A symmetric inverter ($\beta$ = 200 µA/V², $V_T$ = 0.35 V, $V_{DD}$ = 1.2 V) sees input ramps of 50 ps, twice per 1 ns period. (a) Find its short-circuit power and charge per transition (unloaded). (b) Compare with the dynamic power of the same inverter driving 10 fF with α = 0.5.
+**Setup.** A symmetric inverter ($\beta$ = 200 µA/V², $V_{TH}$ = 0.35 V, $V_{DD}$ = 1.2 V) sees input ramps of 50 ps, twice per 1 ns period. (a) Find its short-circuit power and charge per transition (unloaded). (b) Compare with the dynamic power of the same inverter driving 10 fF with α = 0.5.
 
 **Solution.** (a) $P_{sc} = (200\ \mu/12)(0.5)^3 \times 50/1000$ = **0.104** µW; per transition $Q = \beta\tau(0.5)^3/(24 \times 1.2)$ = **0.0434** fC.
 
@@ -147,7 +147,7 @@ The left side rises from zero at $x$ = 2 to a peak at $x$ = 3 and then decays; t
 
 **Units check.** (A/V²)·V³ = W.
 
-**Sanity check.** At $V_{DD}$ = 0.7 V = $2V_T$, $P_{sc}$ = 0: near-threshold circuits have no short-circuit power.
+**Sanity check.** At $V_{DD}$ = 0.7 V = $2V_{TH}$, $P_{sc}$ = 0 in the square-law model; with subthreshold conduction it is small but not zero, so near-threshold circuits have little short-circuit power.
 
 ### Example 19-06.3 · Leakage and threshold (tier B)
 
@@ -159,7 +159,7 @@ The left side rises from zero at $x$ = 2 to a peak at $x$ = 3 and then decays; t
 
 **Units check.** µm × nA/µm = nA.
 
-**Sanity check.** With low-threshold cells everywhere (a), the same chip would leak about 52 W: multi-$V_T$ design is not optional.
+**Sanity check.** With low-threshold cells everywhere (a), the same chip would leak about 52 W: multi-$V_{TH}$ design is not optional.
 
 ### Example 19-06.4 · The stack effect (tier B)
 
@@ -167,13 +167,13 @@ The left side rises from zero at $x$ = 2 to a peak at $x$ = 3 and then decays; t
 
 **Solution.** Balancing the two currents numerically gives an intermediate node at **84.4** mV and a leakage **15.9** times smaller than one transistor's. Without DIBL ($\eta$ = 0), the node sits at **20.4** mV and the reduction is only **1.83** times.
 
-**Units check.** Exponent arguments are voltages over $nV_{th}$, dimensionless.
+**Units check.** Exponent arguments are voltages over $nV_T$, dimensionless.
 
 **Sanity check.** With DIBL, the single transistor benefits from the full 1.0 V of drain bias ($e^{0.1 \times 1.0/(1.3 \times 0.02585)}$ = **19.6** times), while the lower stacked device sees only 84 mV; most of the stack's advantage is the lost DIBL.
 
 ### Example 19-06.5 · DVFS and parallelism (tier B)
 
-**Setup.** A design runs at 1.0 V with $V_T$ = 0.35 V and α = 1.3 in the alpha-power law. (a) If the workload needs only half the frequency, how low can the supply go, and what are the new power and energy per operation? (b) Instead, two copies run in parallel at half the frequency each, with 15% extra capacitance for multiplexing; what power is needed for the original throughput?
+**Setup.** A design runs at 1.0 V with $V_{TH}$ = 0.35 V and $\alpha_p$ = 1.3 in the alpha-power law. (a) If the workload needs only half the frequency, how low can the supply go, and what are the new power and energy per operation? (b) Instead, two copies run in parallel at half the frequency each, with 15% extra capacitance for multiplexing; what power is needed for the original throughput?
 
 **Solution.** (a) Solving $V/(V - 0.35)^{1.3} = 2 \times 1/(0.65)^{1.3}$: $V$ = **0.611** V. Power: $(0.611)^2 \times 0.5$ = **0.187** of the original (5.4 times less); energy per operation $(0.611)^2$ = **0.373**.
 
@@ -193,7 +193,7 @@ The left side rises from zero at $x$ = 2 to a peak at $x$ = 3 and then decays; t
 
 (c) α = 0.05: **231** mV; $L_d$ = 50: **241** mV. Leakage weighs more, so the optimum moves up.
 
-**Units check.** $nV_{th}$ in volts.
+**Units check.** $nV_T$ in volts.
 
 **Sanity check.** At 0.4 V leakage is negligible, and the switching energy is $(0.4/0.201)^2$ = **3.95** times that at the minimum; but at the minimum, leakage adds half again to the switching energy (a third of the total), so the ratio is $3.95/1.5$ = 2.63.
 
@@ -261,8 +261,8 @@ The lab ([labs/19-06-lab](../labs/19-06-lab/README.md)) has two parts:
 | Parallelism or pipelining | Energy at a given throughput | Area, latency, design complexity | Microarchitect |
 | Clock gating | Clock and logic dynamic power | Enable logic, timing on gated clocks | RTL designer, synthesis |
 | Power gating | Leakage in idle blocks | Sleep-transistor area and IR drop, wake latency and energy, state retention | SoC power architect |
-| High-$V_T$ cells | Leakage (exponentially) | Speed | Synthesis, library |
-| Low-$V_T$ cells | Speed on critical paths | Leakage | Synthesis, timing closure |
+| High-$V_{TH}$ cells | Leakage (exponentially) | Speed | Synthesis, library |
+| Low-$V_{TH}$ cells | Speed on critical paths | Leakage | Synthesis, timing closure |
 | Body bias | Leakage or speed after manufacture | Bias generators, process support | Process and power architect |
 
 ## 7. Numbers to know
@@ -271,11 +271,11 @@ The lab ([labs/19-06-lab](../labs/19-06-lab/README.md)) has two parts:
 |---|---|---|
 | Energy per full switching cycle | $CV_{DD}^2$ | Half dissipated charging, half discharging |
 | Dynamic power | $\alpha CV_{DD}^2f$ | α = 1 for clocks |
-| Short-circuit power | $(\beta/12)(V_{DD} - 2V_T)^3\tau/T$ | Upper bound; zero for $V_{DD} < 2V_T$ |
-| Subthreshold slope | $nV_{th}\ln 10$ ≈ 60 $n$ mV/decade at 300 K | |
+| Short-circuit power | $(\beta/12)(V_{DD} - 2V_{TH})^3\tau/T$ | Upper bound; zero for $V_{DD} < 2V_{TH}$ in the square-law model |
+| Subthreshold slope | $nV_T\ln 10$ ≈ 60 $n$ mV/decade at 300 K | |
 | Leakage vs threshold | ×10 per $S$ of threshold lowering | |
 | Stack effect | ~10× or more, mostly from DIBL | |
-| Minimum-energy point | $L_de^{-x}(x-2) = 2\alpha$, $x = V/(nV_{th})$ | Typically 0.2–0.4 V |
+| Minimum-energy point | $L_de^{-x}(x-2) = 2\alpha$, $x = V/(nV_T)$ | Typically 0.2–0.4 V |
 | Power-gating break-even | $E_{wake}/P_{leak,saved}$ | |
 
 ## 8. Common mistakes
@@ -295,8 +295,8 @@ The lab ([labs/19-06-lab](../labs/19-06-lab/README.md)) has two parts:
 - **Supplies have stalled [Industry estimate].** The IEEE IRDS 2024 More Moore roadmap holds logic supplies at 0.70 V (2024), 0.65 V (2025) and 0.60 V from 2027 through 2039, giving as the reason "Power scaling — no solutions left to reduce the supply voltage because of lack of steep-subthreshold devices"; it notes that supplies were even raised to 0.75 V in 2021 because of "higher than anticipated leakage of FinFET transistors" ([R-314]). With the quadratic lever of §3.4 mostly spent, power savings now come from architecture, gating and specialization.
 - **DVFS tables in shipping products [Established].** The mainline Linux device tree for Rockchip's RK3588 runs its Cortex-A76 cores from 1200 MHz at 0.675 V to 2400 MHz at 1.000 V, and NXP's i.MX 8M Mini runs its Cortex-A53 cores at 1.2, 1.6 and 1.8 GHz at 0.85, 0.95 and 1.00 V ([R-316]). Doubling the RK3588's A76 frequency costs $(1.000/0.675)^2$ = **2.19** times the energy per operation, and **4.39** times the dynamic power.
 - **How much leakage is optimal [Established].** Horowitz and colleagues argued that minimizing total energy "sets the leakage energy to be about 30% of the active power" ([R-316]): leakage is not simply to be minimized, but traded against the speed that lower thresholds buy, as §3.6 does for subthreshold logic.
-- **Leakage is a library choice [Established].** SkyWater's open SKY130 process offers a high-density library (`hd`) with leakage of "0.86 nA / kGate" at 1.8 V and 25 °C and a low-leakage variant (`hdll`) at 0.08 nA/kGate, described as having "5-10X lower leakage power" ([R-314]): a factor of **10.75** between two libraries of the same process, bought with speed.
-- **Near-threshold operation in silicon [Established].** Intel's Claremont research processor (ISSCC 2012) ran "from 280mV @3MHz to 1.2V @915MHz" with "4.7x better energy efficiency" in its near-threshold mode, and Ambiq's SPOT microcontrollers operate transistors "at sub-threshold voltages (less than 0.5V)" ([R-314]), consistent with §3.6's minimum-energy range.
+- **Leakage is a library choice [Established].** SkyWater's open SKY130 process offers a high-density library (`hd`) with leakage of "0.86 nA / kGate" at 1.8 V and 25 °C and a low-leakage variant (`hdll`) at 0.08 nA/kGate, described as having "5-10X lower leakage power" ([R-317]): the two documented figures differ by a factor of **10.75**, slightly beyond the vendor's own 5–10× description, between two libraries of the same process, bought with speed and density (160 against 120 kGates/mm²).
+- **Near-threshold operation in silicon.** Intel's Claremont research processor was published at ISSCC 2012 **[Established]**; Intel's press overview reports that it ran "from 280mV @3MHz to 1.2V @915MHz" with "4.7x better energy efficiency" in its near-threshold mode, and Ambiq says its SPOT microcontrollers operate transistors "at sub-threshold voltages (less than 0.5V)" **[Vendor claim]** for both ([R-314]), consistent with §3.6's minimum-energy range.
 - **Power reshaped circuit styles [Established].** IBM's POWER6 (2008) was designed "without the use of power-hungry dynamic circuits outside of register files and arrays", and Harris's textbook slides describe domino as "Largely displaced by static CMOS now that power is the limiter" ([R-315], 19-03).
 - **Power delivery is part of the power problem [Established].** Intel's backside power test chip reported more than 5% frequency benefit "due to reduced IR drop" ([R-315], 19-05): supply droop costs voltage margin, and voltage margin costs power.
 
@@ -304,7 +304,7 @@ The lab ([labs/19-06-lab](../labs/19-06-lab/README.md)) has two parts:
 
 - **Power sets performance.** Processors are sold by performance per watt because power, not area, limits how much of the silicon can be active; a design with better energy per operation can be clocked higher inside the same thermal envelope.
 - **Leakage sets battery life in standby.** Wearables and IoT devices spend most of their life idle; their leakage (and the library and process choices behind it) is a product specification (18-09).
-- **Data-center operating cost is energy.** For AI accelerators and servers, energy per operation drives both the electricity bill and the cooling and power-delivery capital, often a larger lifetime cost than the chips.
+- **Data-center cost includes energy.** For servers and AI accelerators, energy per operation drives the electricity bill and also the power-delivery and cooling capacity a facility must build. How that compares with the price of the chips depends on the chip's cost and power and on the price of electricity, so ask for the total-cost-of-ownership model behind any claim either way.
 
 ### Marketing vs Reality
 
@@ -329,11 +329,11 @@ The supply delivers charge $CV$ at voltage $V$, energy $CV^2$; the capacitor sto
 
 </details>
 
-**Q2.** Why does short-circuit power vanish for $V_{DD} < 2V_T$?
+**Q2.** Why does the square-law model predict no short-circuit power for $V_{DD} < 2V_{TH}$, and what does it miss?
 
 <details><summary>Answer</summary>
 
-The NMOS conducts only for $v_{in} > V_T$ and the PMOS only for $v_{in} < V_{DD} - V_T$; these ranges do not overlap when $V_{DD} < 2V_T$.
+The NMOS conducts only for $v_{in} > V_{TH}$ and the PMOS only for $v_{in} < V_{DD} - V_{TH}$; these ranges do not overlap when $V_{DD} < 2V_{TH}$. The model misses subthreshold conduction: both devices still pass a weak, exponentially small current through the transition, so a small short-circuit current remains.
 
 </details>
 
@@ -397,3 +397,4 @@ Problems: [19-06 problem set](../problems/19-06-problems.md).
 5. [R-314] IEEE IRDS 2024 More Moore tables, report and Executive Summary; SkyWater SKY130 library documentation; Intel Labs ISSCC 2012 press overview (Claremont); Ambiq news releases.
 6. [R-315] Stolt et al., POWER6 (*JSSC*, 2008); Harris, *CMOS VLSI Design* lecture slides; Intel PowerVia (VLSI Symposium 2023).
 7. [R-316] Dennard et al. (*JSSC*, 1974); Horowitz et al. (IEDM 2005); Horowitz (ISSCC 2014); Linux device trees for Rockchip RK3588 and NXP i.MX 8M Mini.
+8. [R-317] SkyWater SKY130 foundry-provided library pages: `hd` and `hdll` leakage and routed density.

@@ -19,7 +19,7 @@
 
 ## 1. Big picture
 
-On-chip memory is where most of a processor's transistors live: caches, register files, buffers and the weight and activation memories of AI accelerators are built from static random-access memory, and SRAM often covers a third to a half of a die. Its basic cell, six transistors forming two cross-coupled inverters and two access switches, is the densest structure a logic process can build, drawn with special rules at the edge of manufacturability. Because there are billions of identical cells, the rare one in a billion that misbehaves sets the design, and SRAM is usually what limits how low a chip's supply can go.
+On-chip memory is where most of a processor's transistors live: caches, register files, buffers and the weight and activation memories of AI accelerators are built from static random-access memory, and SRAM often takes a large share of a die's area. Its basic cell, six transistors forming two cross-coupled inverters and two access switches, is the densest structure a logic process can build, drawn with special rules at the edge of manufacturability. Because there are billions of identical cells, the rare one in a billion that misbehaves sets the design, and SRAM is usually what limits how low a chip's supply can go.
 
 - **Density.** A cell's area, multiplied by billions, decides a chip's cost; bitcell area is one of the headline numbers of every new process node (§9).
 - **Stability.** The same transistors must hold the bit during a read but let it be overwritten during a write; the sizing ratios that satisfy both are the core of cell design.
@@ -57,10 +57,10 @@ Each inverter has a pull-down NMOS (N) and a pull-up PMOS (P); each storage node
 
 ### 3.2 Read stability: the cell ratio
 
-During a read, node Q (storing 0) is pulled up by the access transistor A, whose drain is the bitline at $V_{DD}$ and whose gate is at $V_{DD}$, and pulled down by N, whose gate is the other node QB at $V_{DD}$. The node settles at a small voltage $\Delta V$ where the currents balance. A has $V_{GS} = V_{DD} - \Delta V$ and $V_{DS} = V_{DD} - \Delta V > V_{GS} - V_T$, so it is saturated; N has $V_{GS} = V_{DD}$ and a small $V_{DS} = \Delta V$, so it is linear:
+During a read, node Q (storing 0) is pulled up by the access transistor A, whose drain is the bitline at $V_{DD}$ and whose gate is at $V_{DD}$, and pulled down by N, whose gate is the other node QB at $V_{DD}$. The node settles at a small voltage $\Delta V$ where the currents balance. A has $V_{GS} = V_{DD} - \Delta V$ and $V_{DS} = V_{DD} - \Delta V > V_{GS} - V_{TH}$, so it is saturated; N has $V_{GS} = V_{DD}$ and a small $V_{DS} = \Delta V$, so it is linear:
 
 $$
-\tfrac12k_A\left(V_{DD} - \Delta V - V_T\right)^2 = k_N\left[(V_{DD} - V_T)\Delta V - \tfrac12\Delta V^2\right] .
+\tfrac12k_A\left(V_{DD} - \Delta V - V_{TH}\right)^2 = k_N\left[(V_{DD} - V_{TH})\Delta V - \tfrac12\Delta V^2\right] .
 $$
 
 The disturbance shrinks as the **cell ratio** $CR = k_N/k_A$ (the pull-down's strength over the access transistor's) grows. If $\Delta V$ approaches the switching threshold of the other inverter, the read flips the cell; the conservative design goal is $\Delta V < V_{TN}$, so that the other inverter's NMOS stays off and its output stays at $V_{DD}$. Typical cell ratios are 1.5 to 2.5; the price of a higher ratio is a larger pull-down (area) or a weaker access transistor (slower reads).
@@ -70,10 +70,12 @@ The disturbance shrinks as the **cell ratio** $CR = k_N/k_A$ (the pull-down's st
 To write a 0 into the node storing 1 (QB), its bitline is driven to 0 V. The access transistor (gate $V_{DD}$, source at 0 V) pulls QB down in its linear region; the pull-up PMOS P (gate at Q, still 0 V, so fully on) holds QB up in saturation while QB is small. This is exactly the pseudo-NMOS circuit of 19-03, with the access transistor as the pull-down and the cell's pull-up as the load:
 
 $$
-k_A\left[(V_{DD} - V_T)V - \tfrac12V^2\right] = \tfrac12k_P\left(V_{DD} - \lvert V_{TP}\rvert\right)^2 .
+k_A\left[(V_{DD} - V_{TH})V - \tfrac12V^2\right] = \tfrac12k_P\left(V_{DD} - \lvert V_{TP}\rvert\right)^2 .
 $$
 
-The write succeeds if $V$ falls low enough for the other inverter to switch; the conservative goal is $V < V_{TN}$. The **pull-up ratio** $PR = k_P/k_A$ must therefore be small, typically below about 1 to 1.5. Read stability wants a weak access transistor (relative to N), writability a strong one (relative to P): the cell's three transistor strengths satisfy $k_P < k_A < k_N$, with margins on both sides.
+This form assumes the pull-up is saturated ($V < \lvert V_{TP}\rvert$) and the access transistor linear ($V < V_{DD} - V_{TN}$), which covers every write that meets the conservative goal below. Higher levels change the regions. For $\lvert V_{TP}\rvert < V < V_{DD} - V_{TN}$ both devices are linear: $k_A[(V_{DD} - V_{TN})V - \tfrac12V^2] = k_P[(V_{DD} - \lvert V_{TP}\rvert)(V_{DD} - V) - \tfrac12(V_{DD} - V)^2]$. Above $V_{DD} - V_{TN}$ the access transistor saturates, with current $\tfrac12k_A(V_{DD} - V_{TN})^2$, against a linear pull-up.
+
+The write succeeds if $V$ falls low enough for the other inverter to switch; the conservative goal is $V < V_{TN}$. The **pull-up ratio** $PR = k_P/k_A$ must therefore be small: for this chapter's cell, setting $V = V_{TN}$ in the equation above gives $PR \le 0.67$ (Problem 19-08.6), and aiming only for the other inverter's switching threshold would allow more. Rules of thumb quoted as ratios of W/L, near 1 to 1.5, say the same thing: the PMOS's hole mobility is two to three times lower than the NMOS's electron mobility, so equal W/L already gives $k_P$ well below $k_A$. Read stability wants a weak access transistor (relative to N), writability a strong one (relative to P): the cell's three transistor strengths satisfy $k_P < k_A < k_N$, with margins on both sides.
 
 ### 3.4 Static noise margin
 
@@ -150,11 +152,11 @@ As the supply falls, read SNM and write margin shrink and variation's share grow
 
 **Setup.** For the same cell, find the level to which the access transistor pulls the node storing 1 (with its bitline at 0 V) for pull-up ratios of 0.5, 1 and 2, and judge each against $V_{TN}$.
 
-**Solution.** PR = 0.5: **0.205** V, below 0.3 V: the write succeeds. PR = 1: **0.500** V, and PR = 2: **0.795** V: both fail the conservative criterion; at PR = 2 the node is barely disturbed.
+**Solution.** PR = 0.5: the §3.3 equation (pull-up saturated, access linear) gives $0.7V - \tfrac12V^2 = 0.5 \times \tfrac12(0.7)^2$, so $V$ = **0.205** V, below 0.3 V and inside the equation's range: the write succeeds. PR = 1: the same equation gives $V$ = 0.7 V, outside its range (above $\lvert V_{TP}\rvert$ the pull-up is linear). With both devices linear, $0.7V - \tfrac12V^2 = 0.7(1 - V) - \tfrac12(1 - V)^2$, solved by $V$ = **0.500** V. PR = 2: with both linear the pull-up still wins at 0.7 V, so the node rises further and the access transistor saturates: $\tfrac12(0.7)^2 = 2[0.7u - \tfrac12u^2]$ with $u = 1 - V$ gives $u = 0.205$ and $V$ = **0.795** V. Both fail the conservative criterion; at PR = 2 the node is barely disturbed.
 
 **Units check.** As before.
 
-**Sanity check.** The level for PR = 1 is exactly $V_{DD}/2$: with equal strengths and thresholds the two square-law expressions balance there by symmetry.
+**Sanity check.** The level for PR = 1 is exactly $V_{DD}/2$: with equal strengths and thresholds both devices are linear there, and their currents are mirror images about $V_{DD}/2$. The PR = 2 result mirrors PR = 0.5 ($0.795 = 1 - 0.205$) for the same reason.
 
 ### Example 19-08.4 · Bitline sensing (tier B)
 
@@ -168,7 +170,7 @@ As the supply falls, read SNM and write margin shrink and variation's share grow
 
 **Units check.** F·V/A = s.
 
-**Sanity check.** Doubling the rows per bitline doubles (a) but not (b): long bitlines are why arrays are divided into sub-arrays.
+**Sanity check.** A bitline twice as long, with twice the rows and twice the wire, doubles (a) but not (b): long bitlines are why arrays are divided into sub-arrays. (The lab doubles only the rows and keeps the 15 fF of wire, so its time grows by less.)
 
 ### Example 19-08.5 · Yield and redundancy (tier B)
 
@@ -186,13 +188,13 @@ As the supply falls, read SNM and write margin shrink and variation's share grow
 
 ### Example 19-08.6 · Static noise margin (tier C)
 
-**Setup.** For a cell with $V_{DD}$ = 1.0 V, $V_T$ = 0.3 V, $k_P$ = 100 µA/V² and $k_A$ = 100 µA/V², compute the hold SNM with $k_N$ = 200 µA/V², and the read SNM for cell ratios of 1, 2 and 3.
+**Setup.** For a cell with $V_{DD}$ = 1.0 V, $V_{TH}$ = 0.3 V, $k_P$ = 100 µA/V² and $k_A$ = 100 µA/V², compute the hold SNM with $k_N$ = 200 µA/V², and the read SNM for cell ratios of 1, 2 and 3.
 
 **Solution.** From the butterfly curves (lab): hold SNM **0.397** V. Read SNM: CR = 1, **0.184** V; CR = 2, **0.226** V; CR = 3, **0.249** V. Reading costs **43** % of the hold margin at CR = 2, and raising the ratio from 1 to 3 increases the read SNM by **35** %.
 
 **Units check.** Volts.
 
-**Sanity check.** Even the symmetric ideal inverter pair has a hold SNM of only 0.40 V of a 1.0 V supply, below the $V_{DD}/2$ of infinitely high gain, because the transfer curves have a finite transition region.
+**Sanity check.** With $k_N = k_P$ the same square-law pair has a hold SNM of **0.40** V of a 1.0 V supply (0.397 V for this cell's $k_N = 2k_P$), below the $V_{DD}/2$ of infinitely high gain, because the transfer curves have a finite transition region.
 
 <!-- answer-key -->
 
@@ -269,7 +271,7 @@ The lab ([labs/19-08-lab](../labs/19-08-lab/README.md)) has two parts:
 |---|---|---|
 | Cell transistors | 6 (2 P, 2 N, 2 A) | 8T adds a read port |
 | Cell ratio $k_N/k_A$ | ≈ 1.5–2.5 | Read stability |
-| Pull-up ratio $k_P/k_A$ | ≲ 1–1.5 | Writability |
+| Pull-up ratio $k_P/k_A$ | ≲ 0.67 here (conservative); W/L rules near 1–1.5 | Writability; the PMOS's lower mobility explains the difference |
 | Bitline swing at sensing | ≈ 100 mV | Set by sense-amplifier offset |
 | Bitline time | $C_{BL}\Delta V/I_{cell}$ | |
 | Design margin | ≈ 6σ | Billions of cells |
@@ -287,7 +289,7 @@ The lab ([labs/19-08-lab](../labs/19-08-lab/README.md)) has two parts:
 
 ### State of the art (as of Nov 2026)
 
-- **Bitcells have nearly stopped shrinking [Established / Industry estimate].** TSMC's N5 process introduced a 0.021 µm² high-density cell (IEDM 2019). Trade-press reporting of TSMC's later papers puts N3E at the same 0.021 µm², "no advantages in terms of SRAM scaling compared to N5", and N2 at about 0.0175 µm² with 38 Mb/mm² macro density; Intel's 18A SRAM paper at ISSCC 2025 is titled for a 0.021 µm² cell ([R-316]). The IEEE IRDS 2024 roadmap states that "Bitcell scaling is slowing down because of the slow-down of the device pitch and gate pitch" ([R-316]).
+- **Bitcells have nearly stopped shrinking [Established / Industry estimate].** TSMC's N5 process introduced a 0.021 µm² high-density cell (IEDM 2019). Trade-press reporting of TSMC's later papers puts N3E at the same 0.021 µm² as N5, and N2 at about 0.0175 µm² with 38 Mb/mm² macro density; Intel's 18A SRAM paper at ISSCC 2025 is titled for a 0.021 µm² cell ([R-316]). The IEEE IRDS 2024 roadmap states that "Bitcell scaling is slowing down because of the slow-down of the device pitch and gate pitch" ([R-316]).
 - **Cell density is not macro density [Industry estimate].** A 0.0175 µm² cell alone would give **57.1** Mb/mm²; the reported 38 Mb/mm² implies that about **67** % of a macro is bitcells (my arithmetic on press-reported figures), the rest periphery (§3.6).
 - **Wide-voltage SRAM [Established].** TSMC's VLSI Symposium 2023 paper describes "A 3-nm 27.6-Mbit/mm2 Self-Timed SRAM Enabling 0.48 - 1.2 V Wide Operating Range with Far-End Pre-Charge and Weak-Bit Tracking" ([R-316]): circuits that track the weakest cells are how SRAM follows DVFS (19-06) down in voltage.
 - **Separate SRAM supplies [Established].** IBM's POWER6 gave "voltage sensitive memory cells … a higher voltage supply (nominal at 1.25 V)" than its 1.1 V logic ([R-316]), the separate-rail response of §3.8.

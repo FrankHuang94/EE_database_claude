@@ -18,17 +18,17 @@ $CV^2 = 5\ \text{fF} \times 0.81$ = **4.05** fJ per full cycle, of which **2.025
 
 ### Solution 19-06.3
 
-$S = nV_{th}\ln 10$: **83.3** mV/decade at 300 K and, scaling with absolute temperature, **105.6** mV/decade at 380 K. A hot chip needs more gate voltage per decade of current, which is one reason leakage grows with temperature.
+$S = nV_T\ln 10$: **83.3** mV/decade at 300 K and, scaling with absolute temperature, **105.6** mV/decade at 380 K. A hot chip needs more gate voltage per decade of current, which is one reason leakage grows with temperature.
 
 ### Solution 19-06.4
 
 (a) $P_{sc}$ scales with τ: $4 \times 0.104$ = **0.417** µW, **5.8** % of the dynamic power. Slow edges matter; this is why libraries constrain maximum transition times (19-02).
 
-(b) $(0.8 - 0.7)^3/(0.5)^3 = 1/125$: **0.00333** µW. Near $2V_T$ the overlap window almost closes.
+(b) $(0.8 - 0.7)^3/(0.5)^3 = 1/125$: **0.00333** µW. Near $2V_{TH}$ the overlap window almost closes.
 
 ### Solution 19-06.5
 
-At 380 K, $V_T = 0.35 - 0.8\ \text{mV/K} \times 80\ \text{K}$ = 0.286 V and $nV_{th} = 1.3 \times 32.75$ mV = 42.57 mV. The ratio is $\exp(-0.286/0.04257 + 0.35/0.03361)$ = **40.3**. Under these assumptions leakage rises forty-fold from room temperature to 107 °C; with a temperature-dependent $I_0$ the real figure differs, but the conclusion holds: leakage must be signed off hot.
+At 380 K, $V_{TH} = 0.35 - 0.8\ \text{mV/K} \times 80\ \text{K}$ = 0.286 V and $nV_T = 1.3 \times 32.75$ mV = 42.57 mV. The ratio is $\exp(-0.286/0.04257 + 0.35/0.03361)$ = **40.3**. Under these assumptions leakage rises forty-fold from room temperature to 107 °C; with a temperature-dependent $I_0$ the real figure differs, but the conclusion holds: leakage must be signed off hot.
 
 ### Solution 19-06.6
 
@@ -36,7 +36,7 @@ Balancing the two currents as in Example 4: η = 0.05 gives **50.2** mV and a **
 
 ### Solution 19-06.7
 
-Solving $V/(V - 0.35)^{1.3} = 3/(0.65)^{1.3}$: $V$ = **0.518** V. Power relative to full speed: $(0.518)^2/3$ = **0.0896**; energy per operation: $(0.518)^2$ = **0.269**.
+Solving $V/(V - 0.35)^{1.3} = 3/(0.65)^{1.3}$: $V$ = **0.518** V (0.5184 V before rounding). Power relative to full speed: $(0.5184)^2/3$ = **0.0896**; energy per operation: $(0.5184)^2$ = **0.269**.
 
 ### Solution 19-06.8
 
@@ -52,10 +52,10 @@ $0.9 + 0.1 \times 12.9$ = **2.19** times, and $0.7 + 0.3 \times 12.9$ = **4.57**
 
 ### Solution 19-06.10
 
-(a) For an unloaded inverter the output follows the static transfer curve. Below $V_{DD}/2$ the NMOS is saturated (region B of 19-01) and the current is its saturation current $\tfrac12\beta(v_{in} - V_T)^2$; above, the PMOS's, symmetrically. With $v_{in} = V_{DD}t/\tau$, $dt = (\tau/V_{DD})dv$, so
+(a) For an unloaded inverter the output follows the static transfer curve. Below $V_{DD}/2$ the NMOS is saturated (region B of 19-01) and the current is its saturation current $\tfrac12\beta(v_{in} - V_{TH})^2$; above, the PMOS's, symmetrically. With $v_{in} = V_{DD}t/\tau$, $dt = (\tau/V_{DD})dv$, so
 
 $$
-Q = 2\int_{V_T}^{V_{DD}/2}\tfrac12\beta(v - V_T)^2\,\frac{\tau}{V_{DD}}\,dv = \frac{\beta\tau}{3V_{DD}}\left(\frac{V_{DD}}2 - V_T\right)^3 = \frac{\beta\tau(V_{DD} - 2V_T)^3}{24V_{DD}} .
+Q = 2\int_{V_{TH}}^{V_{DD}/2}\tfrac12\beta(v - V_{TH})^2\,\frac{\tau}{V_{DD}}\,dv = \frac{\beta\tau}{3V_{DD}}\left(\frac{V_{DD}}2 - V_{TH}\right)^3 = \frac{\beta\tau(V_{DD} - 2V_{TH})^3}{24V_{DD}} .
 $$
 
 It is exact because no capacitance delays the output: the static curve, and hence the current, holds at every instant (λ = 0).
@@ -74,7 +74,7 @@ It is exact because no capacitance delays the output: the static curve, and henc
 
 (a) Two-way parallelism at 0.611 V uses $(1 + o) \times 0.611^2$ of the power, which is below 1 while $o <$ **1.68**: even 168% capacitance overhead would break even.
 
-(b) Each copy at a quarter of the frequency: $V$ = **0.477** V. Power ratio $(0.477)^2$ = **0.227** with no overhead and **0.295** with 30%. The returns diminish as $V$ approaches $V_T$, and the area grows four-fold.
+(b) Each copy at a quarter of the frequency: $V$ = **0.477** V. Power ratio $(0.477)^2$ = **0.227** with no overhead and **0.295** with 30%. The returns diminish as $V$ approaches $V_{TH}$, and the area grows four-fold.
 
 ---
 

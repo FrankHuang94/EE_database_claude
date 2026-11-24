@@ -75,16 +75,16 @@ def ladder_t50(n: int, r_total: float, c_total: float, r_drive: float = 0.0, c_l
 
 
 def driver_wire_load_delay(r_d: float, r_w: float, c_w: float, c_l: float) -> float:
-    """Standard estimate: 0.69 R_d (C_w + C_L) + R_w (0.379 C_w + 0.69 C_L)."""
+    """Standard estimate: ln2 R_d (C_w + C_L) + R_w (0.379 C_w + ln2 C_L), the 0.69 and 0.38 of the chapter kept unrounded."""
     return LN2 * r_d * (c_w + c_l) + r_w * (K_LINE * c_w + LN2 * c_l)
 
 
 # ---------------------------------------------------------------- repeaters
 def repeater_optimum(r0: float, c0: float, r_w: float, c_w: float) -> tuple[float, float, float]:
     """Optimal number of segments k, repeater size h and minimum delay T for a wire (total R_w, C_w) driven by
-    repeaters of size h (resistance r0/h, input capacitance h c0), using 0.69 for lumped and 0.38 for distributed
+    repeaters of size h (resistance r0/h, input capacitance h c0), using ln 2 for lumped and 0.379 for distributed
     terms and ignoring repeater self-loading:
-    T(k, h) = 0.69 r0 c_w / h + 0.69 k r0 c0 + 0.38 r_w c_w / k + 0.69 r_w h c0."""
+    T(k, h) = ln2 r0 c_w / h + ln2 k r0 c0 + 0.379 r_w c_w / k + ln2 r_w h c0."""
     k = math.sqrt(K_LINE * r_w * c_w / (LN2 * r0 * c0))
     h = math.sqrt(r0 * c_w / (r_w * c0))
     return k, h, repeated_delay(k, h, r0, c0, r_w, c_w)

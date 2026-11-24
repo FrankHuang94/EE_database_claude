@@ -142,29 +142,29 @@ Test chips use ring oscillators to measure $t_p$, because a frequency is easy to
 
 ### 3.7 Supply voltage, threshold and the energy–delay product
 
-The delay is the charge $C_LV_{DD}$ divided by a current. With the alpha-power law of 19-01, $I_{sat} \propto (V_{DD} - V_T)^\alpha$, so
+The delay is the charge $C_LV_{DD}$ divided by a current. With the alpha-power law of 19-01, $I_{sat} \propto (V_{DD} - V_{TH})^\alpha$, so
 
 $$
-t_p \propto \frac{C_LV_{DD}}{(V_{DD} - V_T)^\alpha} .
+t_p \propto \frac{C_LV_{DD}}{(V_{DD} - V_{TH})^\alpha} .
 $$
 
 Far above threshold the delay falls slowly as the supply rises (for α near 1 it is almost flat), and near threshold it rises steeply. Meanwhile the energy per transition is $C_LV_{DD}^2$ (19-06). Their product, the **energy–delay product**,
 
 $$
-\text{EDP} \propto \frac{V_{DD}^3}{(V_{DD} - V_T)^\alpha},
+\text{EDP} \propto \frac{V_{DD}^3}{(V_{DD} - V_{TH})^\alpha},
 $$
 
-has a minimum: setting $d\ln(\text{EDP})/dV_{DD} = 3/V_{DD} - \alpha/(V_{DD} - V_T) = 0$ gives
+has a minimum: setting $d\ln(\text{EDP})/dV_{DD} = 3/V_{DD} - \alpha/(V_{DD} - V_{TH}) = 0$ gives
 
 $$
-V_{DD,EDP} = \frac{3V_T}{3 - \alpha},
+V_{DD,EDP} = \frac{3V_{TH}}{3 - \alpha},
 $$
 
-which is $1.5V_T$ for α = 1, $1.76V_T$ for α = 1.3 and $3V_T$ for the square law.
+which is $1.5V_{TH}$ for α = 1, $1.76V_{TH}$ for α = 1.3 and $3V_{TH}$ for the square law.
 
 ![Delay, energy and energy–delay product against supply, each relative to its value at 1.2 V, for alpha = 1.3 and alpha = 2 with a 0.35 V threshold; delay rises steeply toward the threshold, energy rises as the square of the supply, and the EDP has a shallow minimum at 0.618 V for alpha = 1.3 and 1.05 V for alpha = 2](../../../assets/figures/19-02/supply-scaling.svg)
 
-*Figure 2. Delay ($V_{DD}/(V_{DD} - V_T)^\alpha$), energy ($V_{DD}^2$) and their product, relative to 1.2 V, with $V_T$ = 0.35 V. The EDP minimum is shallow: for α = 1.3 it stays within 10% of its minimum from 0.51 to 0.79 V.* The EDP is one figure of merit among several (energy alone favors even lower supplies; delay alone, higher ones), but it explains why supplies have settled at a small multiple of the threshold voltage. Halving the supply from 1.2 to 0.6 V with $V_T$ = 0.35 V cuts the energy per transition by 4 but multiplies the delay by 2.45 for α = 1.3, and by 5.78 for the square law.
+*Figure 2. Delay ($V_{DD}/(V_{DD} - V_{TH})^\alpha$), energy ($V_{DD}^2$) and their product, relative to 1.2 V, with $V_{TH}$ = 0.35 V. The EDP minimum is shallow: for α = 1.3 it stays within 10% of its minimum from 0.51 to 0.79 V.* The EDP is one figure of merit among several (energy alone favors even lower supplies; delay alone, higher ones), but it explains why supplies have settled at a small multiple of the threshold voltage. Halving the supply from 1.2 to 0.6 V with $V_{TH}$ = 0.35 V cuts the energy per transition by 4 but multiplies the delay by 2.45 for α = 1.3, and by 5.78 for the square law.
 
 > **Going deeper — what the simple model leaves out.** Real inverters see input ramps rather than steps (§3.6), channel-length modulation (which speeds the early part of the transition), velocity saturation (which makes $R_{eq}$ less sensitive to supply than the square law), and the PMOS and NMOS both conducting briefly during a transition, which costs short-circuit current (19-06). Cell libraries capture all of this by simulation, in tables of delay and output transition time against input transition and load (the nonlinear delay model) or in current-source models; the RC model remains the designer's mental arithmetic.
 
@@ -236,13 +236,13 @@ which is $1.5V_T$ for α = 1, $1.76V_T$ for α = 1.3 and $3V_T$ for the square l
 
 ### Example 19-02.6 · Lowering the supply (tier C)
 
-**Setup.** A design runs at 1.2 V with $V_T$ = 0.35 V. (a) Halving the supply cuts the energy per transition by how much? (b) By what factor does the delay grow if α = 1.3, and if α = 2? (c) At what supply is the energy–delay product smallest, for each α?
+**Setup.** A design runs at 1.2 V with $V_{TH}$ = 0.35 V. (a) Halving the supply cuts the energy per transition by how much? (b) By what factor does the delay grow if α = 1.3, and if α = 2? (c) At what supply is the energy–delay product smallest, for each α?
 
 **Solution.** (a) $(0.6/1.2)^2$ = **0.25**: four times less energy.
 
 (b) The delay ratio is $[0.6/(0.25)^\alpha]/[1.2/(0.85)^\alpha]$: **2.45** for α = 1.3 and **5.78** for α = 2.
 
-(c) $V_{DD,EDP} = 3V_T/(3 - \alpha)$: **0.618** V for α = 1.3 and **1.05** V for α = 2.
+(c) $V_{DD,EDP} = 3V_{TH}/(3 - \alpha)$: **0.618** V for α = 1.3 and **1.05** V for α = 2.
 
 **Units check.** Ratios of voltages; the optimum is a voltage.
 
@@ -280,8 +280,8 @@ which is $1.5V_T$ for α = 1, $1.76V_T$ for α = 1.3 and $3V_T$ for the square l
 | Ex 19-02.6d | EDP-optimal supply, alpha = 1.3 | 0.618 | V |
 | Ex 19-02.6e | EDP-optimal supply, alpha = 2 | 1.05 | V |
 | Txt 19-02.a | linear-region part of t_pHL | 71.3 | ps |
-| Txt 19-02.b | EDP-optimal supply over V_T, alpha = 1 | 1.5 | — |
-| Txt 19-02.c | EDP-optimal supply over V_T, alpha = 1.3 | 1.76 | — |
+| Txt 19-02.b | EDP-optimal supply over V_{TH}, alpha = 1 | 1.5 | — |
+| Txt 19-02.c | EDP-optimal supply over V_{TH}, alpha = 1.3 | 1.76 | — |
 | Txt 19-02.d | gamma implied by FO1 = FO4/3 | 0.5 | — |
 | Txt 19-02.e | stage delay of an 11-stage ring at 1 GHz | 45.5 | ps |
 | Txt 19-02.f | RC time constant, 12.57 kOhm and 20 fF | 251 | ps |
@@ -329,7 +329,7 @@ The lab ([labs/19-02-lab](../labs/19-02-lab/README.md)) has two parts:
 | Intrinsic delay | $t_{p0} = 0.69R_{eq}C_{int}$, independent of size | |
 | FO4 delay | $t_{p0}(1 + 4/\gamma)$, about $5t_{p0}$ | γ = $C_{int}/C_g$ ≈ 1 |
 | Ring oscillator | $f = 1/(2Nt_p)$ | $t_p$ here includes input-slope effects |
-| EDP-optimal supply | $3V_T/(3 - \alpha)$: 1.5–3 $V_T$ | α from 1 to 2 |
+| EDP-optimal supply | $3V_{TH}/(3 - \alpha)$: 1.5–3 $V_{TH}$ | α from 1 to 2 |
 
 ## 8. Common mistakes
 
@@ -407,7 +407,7 @@ $t_p = 1/(2 \times 11 \times 1\ \text{GHz})$ = 45.5 ps. It is longer than the st
 
 <details><summary>Answer</summary>
 
-The charge to move falls only as $V_{DD}$, but the current falls as $(V_{DD} - V_T)^\alpha$, which goes to zero at threshold.
+The charge to move falls only as $V_{DD}$, but the current falls as $(V_{DD} - V_{TH})^\alpha$, which goes to zero at threshold.
 
 </details>
 
@@ -415,7 +415,7 @@ The charge to move falls only as $V_{DD}$, but the current falls as $(V_{DD} - V
 
 <details><summary>Answer</summary>
 
-The energy–delay product, $V_{DD}^3/(V_{DD} - V_T)^\alpha$, is smallest at $3V_T/(3 - \alpha)$, between 1.5 and 3 times the threshold.
+The energy–delay product, $V_{DD}^3/(V_{DD} - V_{TH})^\alpha$, is smallest at $3V_{TH}/(3 - \alpha)$, between 1.5 and 3 times the threshold.
 
 </details>
 

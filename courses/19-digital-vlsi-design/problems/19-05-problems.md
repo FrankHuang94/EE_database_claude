@@ -4,7 +4,7 @@ Chapter: [19-05](../chapters/19-05-interconnect.md) · Worked solutions: [19-05 
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
 
-**Conventions.** Delay coefficients: 0.69 for lumped RC products and 0.379 for a distributed line's own $R_wC_w$. Repeaters of size $h$ have resistance $R_0/h$ and input capacitance $hC_0$, and their self-loading is ignored. $\epsilon_0$ = 8.854 × 10⁻¹² F/m. Problems marked *(lab)* can be checked with `labs/19-05-lab/wires.py`.
+**Conventions.** Delay coefficients: $\ln 2 = 0.6931$ (written 0.69 in formulas) for lumped RC products and 0.379 (written 0.38) for a distributed line's own $R_wC_w$; keep both at these values, since rounding them changes some answers in the third significant figure. Repeaters of size $h$ have resistance $R_0/h$ and input capacitance $hC_0$, and their self-loading is ignored. $\epsilon_0$ = 8.854 × 10⁻¹² F/m. Problems marked *(lab)* can be checked with `labs/19-05-lab/wires.py`.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 

@@ -3136,7 +3136,7 @@
 
 <a id="pull-up-and-pull-down-networks"></a>**Pull-up and pull-down networks** — The pMOS switch network connecting a CMOS gate's output to the supply and the nMOS network connecting it to ground; series connections in one are parallel in the other, the circuit form of De Morgan's theorem. *First defined in* [08-02](../courses/08-digital-logic-design/chapters/08-02-boolean-algebra-and-gates.md).
 
-<a id="pull-up-ratio"></a>**Pull-up ratio** — In a 6T SRAM cell, the strength of the pull-up PMOS relative to the access transistor, k_P/k_A; it must be small enough (about 1 or less) for a low bitline to overpower the pull-up and write the cell. *First defined in* [19-08](../courses/19-digital-vlsi-design/chapters/19-08-sram-design.md). *See also:* [Cell ratio](#cell-ratio), [SRAM](#sram).
+<a id="pull-up-ratio"></a>**Pull-up ratio** — In a 6T SRAM cell, the strength of the pull-up PMOS relative to the access transistor, k_P/k_A; it must be small enough for a low bitline to overpower the pull-up and write the cell (about 0.67 or less for the conservative criterion in this course's square-law cell; rules of thumb in W/L terms run near 1–1.5 because the PMOS's mobility is lower). *First defined in* [19-08](../courses/19-digital-vlsi-design/chapters/19-08-sram-design.md). *See also:* [Cell ratio](#cell-ratio), [SRAM](#sram).
 
 <a id="pulse-compression"></a>**Pulse compression** — Transmitting a long, wideband pulse (often a linear chirp) and matched filtering it on reception, so that detection depends on the long pulse's energy while range resolution is that of a short pulse, about c/(2B); the compression ratio is the time–bandwidth product. *First defined in* [17-05](../courses/17-communication-systems/chapters/17-05-matched-filters-and-detection.md). *See also:* [Matched filter](#matched-filter).
 
@@ -3632,7 +3632,7 @@
 
 <a id="short-circuit-current"></a>**Short-circuit current** — The current a source or network would deliver into a short circuit, I_sc = V_oc/R_int for a linear model; a model parameter, not a safe operating point. *First defined in* [06-02](../courses/06-circuit-analysis-1-dc/chapters/06-02-circuit-elements-and-ohms-law.md).
 
-<a id="short-circuit-power"></a>**Short-circuit power** — Power drawn while both transistors of a CMOS gate conduct during an input transition. For an unloaded symmetric inverter with input ramps of duration τ, Veendrick's formula gives (β/12)(V_DD − 2V_T)³τ/T; it vanishes when V_DD < 2V_T. *First defined in* [19-06](../courses/19-digital-vlsi-design/chapters/19-06-power-and-low-power-design.md). *See also:* [Dynamic power](#dynamic-power).
+<a id="short-circuit-power"></a>**Short-circuit power** — Power drawn while both transistors of a CMOS gate conduct during an input transition. For an unloaded symmetric inverter with input ramps of duration τ, Veendrick's formula gives (β/12)(V_DD − 2V_TH)³τ/T; it vanishes when V_DD < 2V_T. *First defined in* [19-06](../courses/19-digital-vlsi-design/chapters/19-06-power-and-low-power-design.md). *See also:* [Dynamic power](#dynamic-power).
 
 <a id="short-circuit-time-constants"></a>**Short-circuit time constants** — The time constants R_isC_i of coupling and bypass capacitors, each found with the other low-frequency capacitors shorted; the sum Σ 1/(R_isC_i) is a conservative estimate of the lower −3 dB frequency. *First defined in* [12-04](../courses/12-electronics-2/chapters/12-04-high-frequency-analysis-methods.md). *See also:* [Open-circuit time constants](#open-circuit-time-constants).
 

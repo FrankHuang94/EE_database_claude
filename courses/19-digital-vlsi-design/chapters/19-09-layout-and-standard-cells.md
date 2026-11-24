@@ -112,7 +112,7 @@ $$
 A_{core} = \frac{\sum A_{cells}}{u} .
 $$
 
-Utilizations of about 60–80% are common; higher values save area but make routing and timing closure harder. Libraries often quote a **routed gate density** in thousands of NAND2-equivalent gates per mm², which already includes utilization: SKY130's high-density library quotes "120 kGates/mm^2" ([R-317]).
+Utilizations of about 60–80% are common; higher values save area but make routing and timing closure harder. Libraries often quote a **routed gate density** in thousands of NAND2-equivalent gates per mm², which already includes utilization: SKY130's high-density library quotes "160 kGates/mm^2 or better", and its low-leakage variant 120 kGates/mm² ([R-317]).
 
 ### 3.5 Physical verification
 
@@ -160,17 +160,17 @@ Before a layout becomes masks, it passes several automated checks, collectively 
 
 ### Example 19-09.4 · Block area (tier B)
 
-**Setup.** A block in SKY130's high-density library has 10 000 flip-flops (`dfxtp_1`, 16 sites of 0.46 × 2.72 µm) and 200 000 NAND2-equivalent gates of logic. (a) What is one site's area and the flip-flops' total cell area? (b) At 70% utilization, what core area do the flip-flops need? (c) Using the library's routed density of 120 kGates/mm² for the logic, estimate the block's area.
+**Setup.** A block in SKY130's high-density library has 10 000 flip-flops (`dfxtp_1`, 16 sites of 0.46 × 2.72 µm) and 200 000 NAND2-equivalent gates of logic. (a) What is one site's area and the flip-flops' total cell area? (b) At 70% utilization, what core area do the flip-flops need? (c) Using the library's routed density of 160 kGates/mm² for the logic, estimate the block's area.
 
 **Solution.** (a) One site: $0.46 \times 2.72$ = **1.2512** µm²; a flip-flop: 16 sites = **20.02** µm²; 10 000 flip-flops: **0.2002** mm².
 
 (b) $0.2002/0.7$ = **0.286** mm².
 
-(c) Logic: $200/120$ = **1.667** mm²; block ≈ **1.95** mm².
+(c) Logic: $200/160$ = **1.250** mm²; block ≈ **1.54** mm².
 
 **Units check.** µm² × 10⁻⁶ = mm².
 
-**Sanity check.** The flip-flops are **5** % of the items counted (flip-flops plus NAND2-equivalent gates) but **15** % of the area: sequential cells are big.
+**Sanity check.** The flip-flops are **5** % of the items counted (flip-flops plus NAND2-equivalent gates) but **19** % of the area: sequential cells are big.
 
 ### Example 19-09.5 · Cell height (tier B)
 
@@ -215,10 +215,10 @@ Before a layout becomes masks, it passes several automated checks, collectively 
 | Ex 19-09.4b | flip-flop area | 20.02 | µm² |
 | Ex 19-09.4c | flip-flop total | 0.2002 | mm² |
 | Ex 19-09.4d | flip-flop core area at 70% | 0.286 | mm² |
-| Ex 19-09.4e | logic area | 1.667 | mm² |
-| Ex 19-09.4f | block area | 1.95 | mm² |
+| Ex 19-09.4e | logic area | 1.250 | mm² |
+| Ex 19-09.4f | block area | 1.54 | mm² |
 | Ex 19-09.4g | flip-flops' share of items counted | 5 | % |
-| Ex 19-09.4h | flip-flops' share of area | 15 | % |
+| Ex 19-09.4h | flip-flops' share of area | 19 | % |
 | Ex 19-09.5a | 7.5-track height | 2.267 | µm |
 | Ex 19-09.5b | area reduction | 16.7 | % |
 | Ex 19-09.6a | antenna ratio | 500 | — |
@@ -257,7 +257,7 @@ The lab ([labs/19-09-lab](../labs/19-09-lab/README.md)) is in Python (`layout.py
 | Euler path exists | 0 or 2 odd-degree nodes | Connected graph |
 | SKY130 minimum poly width | 0.150 µm | [R-314] |
 | SKY130 `hd` site | 0.46 × 2.72 µm, 9 met1 tracks | [R-317] |
-| SKY130 `hd` routed density | 120 kGates/mm² | [R-317] |
+| SKY130 `hd` routed density | 160 kGates/mm² or better (`hdll`: 120) | [R-317] |
 | Core area | $\sum A_{cells}/u$ | $u$ ≈ 0.6–0.8 |
 
 ## 8. Common mistakes
@@ -272,7 +272,7 @@ The lab ([labs/19-09-lab](../labs/19-09-lab/README.md)) is in Python (`layout.py
 
 ### State of the art (as of Nov 2026)
 
-- **An open library in numbers [Established].** SkyWater's high-density SKY130 library has 163 cell functions in 437 variants ([R-315]), on "a 0.46 x 2.72um site, equivalent to 9 met1 tracks" ([R-317]), with a stated "Routed Gate Density is 120 kGates/mm^2" ([R-317]); its higher-speed libraries use a 0.48 × 3.33 µm site, about 11 tracks ([R-317]): the height–speed tradeoff of Example 5 in a real process. One `hs` site is **28** % larger than an `hd` site.
+- **An open library in numbers [Established].** SkyWater's high-density SKY130 library has 163 cell functions in 437 variants ([R-315]), on "a 0.46 x 2.72um site, equivalent to 9 met1 tracks" ([R-317]), with a stated "Routed Gate Density is 160 kGates/mm^2 or better" ([R-317]); its higher-speed libraries use a 0.48 × 3.33 µm site, about 11 tracks ([R-317]): the height–speed tradeoff of Example 5 in a real process. One `hs` site is **28** % larger than an `hd` site.
 - **Pitches at the leading edge [Industry estimate].** The IEEE IRDS 2024 roadmap lists a 48 nm gate pitch and a 24 nm M0 pitch for its 2024 "3nm" node, shrinking toward a 42 nm gate pitch and 14 nm metal pitch in the mid-2030s ([R-315]): the whole 48 nm gate pitch (gate plus spacing) is about a third of SKY130's minimum gate length alone (0.150 µm, a ratio of **3.1**), a measure of the gap between an open teaching process and the leading edge.
 - **Backside power frees the cell's rails.** Intel's PowerVia test chip, presented at the 2023 VLSI Symposium **[Established]**, moved power delivery to the back of the wafer; Intel reported "standard cell utilization exceeding 90%" **[Vendor claim]** ([R-315]): when power rails no longer compete with signals for the lowest metal layers, cells can be packed more tightly than the 60–80% utilizations typical of front-side designs.
 

@@ -24,7 +24,7 @@ $r = ((1.8 - 0.5 - 0.9)/(0.9 - 0.45))^2 = (0.4/0.45)^2$ = **0.790**, and $W_p/W_
 
 ### Solution 19-01.4
 
-$V_{IL} = (3 \times 1.8 + 2 \times 0.45)/8$ = **0.7875** V and $V_{IH} = (5 \times 1.8 - 0.9)/8$ = **1.0125** V, so $NM_L = NM_H$ = **0.7875** V. The region of gain is $V_{IH} - V_{IL} = (V_{DD} - 2V_T)/4$ = **0.225** V wide.
+$V_{IL} = (3 \times 1.8 + 2 \times 0.45)/8$ = **0.7875** V and $V_{IH} = (5 \times 1.8 - 0.9)/8$ = **1.0125** V, so $NM_L = NM_H$ = **0.7875** V. The region of gain is $V_{IH} - V_{IL} = (V_{DD} - 2V_{TH})/4$ = **0.225** V wide.
 
 ### Solution 19-01.5
 
@@ -56,7 +56,7 @@ At $V_M$ both transistors are saturated with $V_{ov}$ = 0.25 V: $I = \tfrac12 \t
 
 ### Solution 19-01.10
 
-The derivation is that of §3.3: differentiating the region-B balance $\tfrac r2b^2 = au - u^2/2$ at slope −1 gives $u = (a - rb)/2$, and substituting gives $(r^2 + 4r)b^2 + 2rab - 3a^2 = 0$, whose positive root in $t = b/a$ is the stated $t$. Since $a + b = V_{DD} - V_{TN} - \lvert V_{TP}\rvert$, $b = \tfrac{t}{1 + t}(a + b)$. For $r$ = 1, $t = 3/5$ and $t/(1 + t) = 3/8$, so $V_{IL} = V_T + \tfrac38(V_{DD} - 2V_T) = (3V_{DD} + 2V_T)/8$.
+The derivation is that of §3.3: differentiating the region-B balance $\tfrac r2b^2 = au - u^2/2$ at slope −1 gives $u = (a - rb)/2$, and substituting gives $(r^2 + 4r)b^2 + 2rab - 3a^2 = 0$, whose positive root in $t = b/a$ is the stated $t$. Since $a + b = V_{DD} - V_{TN} - \lvert V_{TP}\rvert$, $b = \tfrac{t}{1 + t}(a + b)$. For $r$ = 1, $t = 3/5$ and $t/(1 + t) = 3/8$, so $V_{IL} = V_{TH} + \tfrac38(V_{DD} - 2V_{TH}) = (3V_{DD} + 2V_{TH})/8$.
 
 For $r$ = 2: $t = (2\sqrt{10} - 2)/12$ = **0.360**, $t/(1 + t) = 0.2650$, and $V_{IL} = 0.3 + 0.2650 \times 0.4$ = **0.406** V.
 

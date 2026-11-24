@@ -43,8 +43,8 @@ Files:
 
 **Answers.**
 
-1. Both are a saturated transistor of strength $k$ against a linear one of strength $2k$, with the same supply and thresholds; the equations are identical.
-2. The disturbed node (0.128 V) stays below $V_T$, so the other inverter's NMOS remains off and its output stays exactly at $V_{DD}$, which is the closed form's assumption.
+1. The coincidence is algebraic. With $a = V_{DD} - V_{TH}$, the read at CR = 1 balances $\tfrac12k(a - x)^2 = k(ax - \tfrac12x^2)$, which rearranges to $k(ax - \tfrac12x^2) = \tfrac12(k/2)a^2$: exactly the write equation at PR = 0.5. The circuits differ (in the read both devices have strength $k$ and the saturated one's gate drive varies), but the equations have the same root.
+2. The disturbed node (0.128 V) stays below $V_{TH}$, so the other inverter's NMOS remains off and its output stays exactly at $V_{DD}$, which is the closed form's assumption.
 3. The access transistors load the storage nodes during a read, raising the low output of each inverter and shrinking both butterfly lobes.
 4. Failures are rare and roughly Poisson; if the expected count is a few, the probability of more than a handful is tiny, so a few spares cover almost every die.
 

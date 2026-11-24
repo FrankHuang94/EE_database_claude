@@ -50,7 +50,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 19-01.10 [C]
 
-**Deriving $V_{IL}$.** Starting from the region-B current balance, derive the closed form $V_{IL} = V_{TN} + \tfrac{t}{1 + t}(V_{DD} - V_{TN} - \lvert V_{TP}\rvert)$ with $t = (2\sqrt{r^2 + 3r} - r)/(r(r + 4))$, check that it gives $(3V_{DD} + 2V_T)/8$ for the symmetric inverter, and evaluate it for $V_{DD}$ = 1.0 V, $V_{TN} = \lvert V_{TP}\rvert$ = 0.3 V and $r$ = 2.
+**Deriving $V_{IL}$.** Starting from the region-B current balance, derive the closed form $V_{IL} = V_{TN} + \tfrac{t}{1 + t}(V_{DD} - V_{TN} - \lvert V_{TP}\rvert)$ with $t = (2\sqrt{r^2 + 3r} - r)/(r(r + 4))$, check that it gives $(3V_{DD} + 2V_{TH})/8$ for the symmetric inverter, and evaluate it for $V_{DD}$ = 1.0 V, $V_{TN} = \lvert V_{TP}\rvert$ = 0.3 V and $r$ = 2.
 
 ### Problem 19-01.11 [C]
 

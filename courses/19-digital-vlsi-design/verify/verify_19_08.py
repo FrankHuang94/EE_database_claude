@@ -153,7 +153,19 @@ v.check("Txt 19-08.b", 100 * 38 / (1 / 0.0175))
 v.check("Txt 19-08.c", 1.200 * 1.580)
 v.check("Txt 19-08.d", vtc_point(1.0, 1.0, 0.3, 200e-6, 100e-6, 100e-6))
 
-v.check("19-08.1a", 4)
+# Problem 1: count devices from the solved read operating point of the chapter's cell
+q1, qb1 = full_cell_read(ka, 2 * ka, 50e-6, 1.0, 0.3)
+VDD1, VT1 = 1.0, 0.3
+dev = {  # (k, |V_GS|, |V_DS|)
+    "access Q": (ka, VDD1 - q1, VDD1 - q1),
+    "pull-down Q": (2 * ka, qb1, q1),
+    "pull-up Q": (50e-6, VDD1 - qb1, VDD1 - q1),
+    "pull-up QB": (50e-6, VDD1 - q1, VDD1 - qb1),
+    "access QB": (ka, VDD1 - min(VDD1, qb1), abs(VDD1 - qb1)),
+    "pull-down QB": (2 * ka, q1, qb1),
+}
+v.check("19-08.1a", sum(ids(k_, g_, d_, VT1) > 1e-12 for k_, g_, d_ in dev.values()))
+v.check("19-08.1c", sum(g_ > VT1 for _, g_, _d in dev.values()))
 v.check("19-08.1b", 8)
 v.check("19-08.2a", 2 ** 18 * 0.0175e-6)
 v.check("19-08.2b", 2 ** 18 / 38e6)

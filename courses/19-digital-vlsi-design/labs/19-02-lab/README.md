@@ -11,7 +11,7 @@ Chapter: [19-02 · The CMOS Inverter: Dynamic Behavior and Delay](../../chapters
 
 ## Background
 
-A step-driven NMOS discharging $C_L$ is saturated for the first $V_{TN}$ of the swing and linear after it, giving $t_{pHL} = \dfrac{C_L}{k_nV_{ov}}\left[\dfrac{2V_{TN}}{V_{ov}} + \ln\left(\dfrac{4V_{ov}}{V_{DD}} - 1\right)\right]$ (§3.3). The RC model replaces the transistor by the average of $V/I$ over the transition, $R_{eq}$, and gives $t_p = \ln 2\,R_{eq}C_L$ (§3.4). Sizing by $S$ leaves the intrinsic delay $t_{p0}$ unchanged: $t_p = t_{p0}(1 + C_{ext}/(SC_{int}))$ (§3.5). A ring of $N$ stages oscillates at $1/(2Nt_p)$ (§3.6), and with the alpha-power law the delay scales as $V_{DD}/(V_{DD} - V_T)^\alpha$ (§3.7).
+A step-driven NMOS discharging $C_L$ is saturated for the first $V_{TN}$ of the swing and linear after it, giving $t_{pHL} = \dfrac{C_L}{k_nV_{ov}}\left[\dfrac{2V_{TN}}{V_{ov}} + \ln\left(\dfrac{4V_{ov}}{V_{DD}} - 1\right)\right]$ (§3.3). The RC model replaces the transistor by the average of $V/I$ over the transition, $R_{eq}$, and gives $t_p = \ln 2\,R_{eq}C_L$ (§3.4). Sizing by $S$ leaves the intrinsic delay $t_{p0}$ unchanged: $t_p = t_{p0}(1 + C_{ext}/(SC_{int}))$ (§3.5). A ring of $N$ stages oscillates at $1/(2Nt_p)$ (§3.6), and with the alpha-power law the delay scales as $V_{DD}/(V_{DD} - V_{TH})^\alpha$ (§3.7).
 
 Files:
 
@@ -27,7 +27,7 @@ Files:
 3. **The RC model's error.** Predict whether the ratio of the RC delay to the exact delay depends on $C$ or $k$; plot it against $V_{TN}/V_{DD}$ from 0.2 to 0.45 (Part 3).
 4. **Fan-out and sizing.** Plot $t_p$ against $C_{ext}$ for $S$ = 1, 2 and 4 with Example 19-02.4's inverter (Part 4).
 5. **Ring oscillator.** Predict the period with seven stages instead of five; simulate both with `simulate_ring` and compare the stage delays with the step-input delay (Part 5). Edit `ring.cir` to seven stages and compare.
-6. **Supply scaling.** Plot normalized delay, energy and EDP from 0.5 to 1.5 V for α = 1.3 and 2 with $V_T$ = 0.35 V, and find each minimum (Part 6).
+6. **Supply scaling.** Plot normalized delay, energy and EDP from 0.5 to 1.5 V for α = 1.3 and 2 with $V_{TH}$ = 0.35 V, and find each minimum (Part 6).
 
 ## Expected results
 
@@ -50,11 +50,11 @@ Files:
 1. Both delays are $C/(kV_{DD})$ times a function of $V_{TN}/V_{DD}$, so the scale cancels in the ratio (Problem 19-02.10).
 2. Each stage drives an identical load from an identical input waveform, so each takes the same time; the number of stages sets only how many delays make up a period. The stage delay is longer because each input is a ramp, not a step: the pull-down turns on gradually while the pull-up is still conducting (§3.6).
 3. It would add a Miller-doubled $C_{gd}$ to each output (§3.1) and couple the input edge into the output, slightly overshooting it at first; both lengthen the delay.
-4. With a larger α the current falls faster as the supply approaches threshold, so the delay penalty of a low supply is steeper and the balance with the $V_{DD}^2$ energy shifts upward: $3V_T/(3 - \alpha)$ grows with α (§3.7).
+4. With a larger α the current falls faster as the supply approaches threshold, so the delay penalty of a low supply is steeper and the balance with the $V_{DD}^2$ energy shifts upward: $3V_{TH}/(3 - \alpha)$ grows with α (§3.7).
 
 ## Optional hardware
 
-A CD4069 (hex inverter) or the inverters of a CD4007 on a breadboard at 5 V form a three- or five-stage ring oscillator; measure its frequency with an oscilloscope, then add a capacitor at each node and watch the frequency fall in proportion to the load. Lower the supply to 3 V and compare the slowdown with $V_{DD}/(V_{DD} - V_T)^\alpha$.
+A CD4069 (hex inverter) or the inverters of a CD4007 on a breadboard at 5 V form a three- or five-stage ring oscillator; measure its frequency with an oscilloscope, then add a capacitor at each node and watch the frequency fall in proportion to the load. Lower the supply to 3 V and compare the slowdown with $V_{DD}/(V_{DD} - V_{TH})^\alpha$.
 
 <!-- answer-key -->
 

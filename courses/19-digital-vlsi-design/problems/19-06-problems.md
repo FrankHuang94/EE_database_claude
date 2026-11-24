@@ -4,7 +4,7 @@ Chapter: [19-06](../chapters/19-06-power-and-low-power-design.md) · Worked solu
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
 
-**Conventions.** $P_{dyn} = \alpha CV_{DD}^2f$ with α the 0→1 probability per cycle. Subthreshold current $I = I_0e^{(V_{GS} - V_T + \eta V_{DS})/(nV_{th})}(1 - e^{-V_{DS}/V_{th}})$ with $V_{th} = kT/q$ (25.85 mV at 300 K). Alpha-power delay $\propto V_{DD}/(V_{DD} - V_T)^\alpha$. Problems marked *(lab)* can be checked with `labs/19-06-lab/power.py`.
+**Conventions.** $P_{dyn} = \alpha CV_{DD}^2f$ with α the 0→1 probability per cycle. Subthreshold current $I = I_0e^{(V_{GS} - V_{TH} + \eta V_{DS})/(nV_T)}(1 - e^{-V_{DS}/V_T})$ with $V_T = kT/q$ (25.85 mV at 300 K). Alpha-power delay $\propto V_{DD}/(V_{DD} - V_{TH})^{\alpha_p}$, with the exponent written $\alpha_p$ to keep α for activity. Problems marked *(lab)* can be checked with `labs/19-06-lab/power.py`.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 
@@ -38,7 +38,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 19-06.7 [B]
 
-**One-third speed.** For Example 19-06.5's design (1.0 V, $V_T$ = 0.35 V, α = 1.3), find the supply that allows one-third of the frequency, and the power and energy per operation relative to full speed.
+**One-third speed.** For Example 19-06.5's design (1.0 V, $V_{TH}$ = 0.35 V, $\alpha_p$ = 1.3), find the supply that allows one-third of the frequency, and the power and energy per operation relative to full speed.
 
 ### Problem 19-06.8 [B]
 
@@ -50,11 +50,11 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 19-06.10 [C]
 
-**Veendrick's formula.** (a) Derive the short-circuit charge per transition of an unloaded symmetric inverter driven by a ramp of duration τ, and state why it is exact for that circuit. (b) Evaluate it for β = 100 µA/V², $V_{DD}$ = 1.0 V, $V_T$ = 0.3 V and τ = 100 ps. *(lab)*
+**Veendrick's formula.** (a) Derive the short-circuit charge per transition of an unloaded symmetric inverter driven by a ramp of duration τ, and state why it is exact for that circuit. (b) Evaluate it for β = 100 µA/V², $V_{DD}$ = 1.0 V, $V_{TH}$ = 0.3 V and τ = 100 ps. *(lab)*
 
 ### Problem 19-06.11 [C]
 
-**The minimum-energy point.** (a) From $E/(NC) = V^2[\alpha + L_de^{-V/(nV_{th})}]$, show that at the minimum the leakage share of the energy is $2/x$, where $x = V/(nV_{th})$. (b) Show that $V_{min}$ depends on α and $L_d$ only through $L_d/\alpha$. (c) Find $V_{min}$ for α = 0.02 and $L_d$ = 10 ($n$ = 1.3, 300 K).
+**The minimum-energy point.** (a) From $E/(NC) = V^2[\alpha + L_de^{-V/(nV_T)}]$, show that at the minimum the leakage share of the energy is $2/x$, where $x = V/(nV_T)$. (b) Show that $V_{min}$ depends on α and $L_d$ only through $L_d/\alpha$. (c) Find $V_{min}$ for α = 0.02 and $L_d$ = 10 ($n$ = 1.3, 300 K).
 
 ### Problem 19-06.12 [C]
 
@@ -69,5 +69,5 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Switching energy and dynamic power | 1, 2 |
 | 2. Short-circuit power | 4, 10 |
 | 3. Leakage and the stack effect | 3, 5, 6, 9 |
-| 4. Voltage scaling, parallelism, gating and multi-$V_T$ | 2, 7, 8, 9, 12 |
+| 4. Voltage scaling, parallelism, gating and multi-$V_{TH}$ | 2, 7, 8, 9, 12 |
 | 5. The minimum-energy point | 11 |

@@ -155,13 +155,13 @@ $$
 
 **$V_{IH}$ by symmetry.** Replacing $V_{in}$ by $V_{DD} - V_{in}$ and $V_{out}$ by $V_{DD} - V_{out}$ turns the NMOS into the PMOS and vice versa. So $V_{IH} = V_{DD} - V_{IL}'$, where $V_{IL}'$ is the formula above with $V_{TN}$ and $\lvert V_{TP}\rvert$ swapped and $r$ replaced by $1/r$.
 
-For the symmetric inverter ($r$ = 1, $V_{TN} = \lvert V_{TP}\rvert = V_T$), $t = (2 \cdot 2 - 1)/5 = 3/5$ and $t/(1 + t) = 3/8$:
+For the symmetric inverter ($r$ = 1, $V_{TN} = \lvert V_{TP}\rvert = V_{TH}$), $t = (2 \cdot 2 - 1)/5 = 3/5$ and $t/(1 + t) = 3/8$:
 
 $$
-V_{IL} = \frac{3V_{DD} + 2V_T}{8}, \qquad V_{IH} = \frac{5V_{DD} - 2V_T}{8}, \qquad NM_L = NM_H = \frac{3V_{DD} + 2V_T}{8} .
+V_{IL} = \frac{3V_{DD} + 2V_{TH}}{8}, \qquad V_{IH} = \frac{5V_{DD} - 2V_{TH}}{8}, \qquad NM_L = NM_H = \frac{3V_{DD} + 2V_{TH}}{8} .
 $$
 
-For $V_{DD}$ = 1.2 V and $V_T$ = 0.35 V the margins are 0.5375 V each, 45% of the supply, and the region of gain, $V_{IH} - V_{IL} = (V_{DD} - 2V_T)/4$, is only 0.125 V wide. An asymmetric inverter trades one margin for the other: with $r$ = 2.5, $NM_L$ falls to 0.466 V and $NM_H$ rises to 0.612 V (Example 19-01.3). The *smaller* margin limits the gate, which is one reason symmetric sizing is the reference.
+For $V_{DD}$ = 1.2 V and $V_{TH}$ = 0.35 V the margins are 0.5375 V each, 45% of the supply, and the region of gain, $V_{IH} - V_{IL} = (V_{DD} - 2V_{TH})/4$, is only 0.125 V wide. An asymmetric inverter trades one margin for the other: with $r$ = 2.5, $NM_L$ falls to 0.466 V and $NM_H$ rises to 0.612 V (Example 19-01.3). The *smaller* margin limits the gate, which is one reason symmetric sizing is the reference.
 
 > **Going deeper — other noise-margin definitions.** The unity-gain definition is the textbook standard, but it is not the only one. The largest-square (or maximum-equal-criterion) method fits the biggest square between the transfer curve and its mirror image and is better suited to cross-coupled pairs such as SRAM cells (19-08). Both ignore dynamic noise: a short glitch larger than the static margin may do no harm if it is shorter than the gate's delay, which is why signal-integrity tools use noise-rejection curves rather than a single number.
 
@@ -372,7 +372,7 @@ The lab ([labs/19-01-lab](../labs/19-01-lab/README.md)) has two parts:
 | $W_p/W_n$ below symmetric | Area, input capacitance, often delay in a chain (19-04) | Lower $V_M$, smaller $NM_L$ | Library designer |
 | Longer channel length | Higher gain (smaller λ), less variation | Area, capacitance, speed | Analog and special cells, not standard logic |
 | Lower $V_{DD}$ | Dynamic energy (∝ $V_{DD}^2$) | Gain, noise margins and speed; more sensitivity to variation | Product and power architect |
-| Lower thresholds | Overdrive and speed at a given supply | Leakage grows exponentially (19-06) | Process and library team (multi-$V_T$ libraries) |
+| Lower thresholds | Overdrive and speed at a given supply | Leakage grows exponentially (19-06) | Process and library team (multi-$V_{TH}$ libraries) |
 
 ## 7. Numbers to know
 
@@ -380,7 +380,7 @@ The lab ([labs/19-01-lab](../labs/19-01-lab/README.md)) has two parts:
 |---|---|---|
 | Static CMOS output levels | $V_{OH} = V_{DD}$, $V_{OL}$ = 0 | No static current except leakage |
 | Symmetric switching threshold | $V_{DD}/2$ | Needs $k_n = k_p$ and matched thresholds |
-| Symmetric noise margins | $(3V_{DD} + 2V_T)/8$ each | Square law, λ = 0; about 40–45% of $V_{DD}$ |
+| Symmetric noise margins | $(3V_{DD} + 2V_{TH})/8$ each | Square law, λ = 0; about 40–45% of $V_{DD}$ |
 | Long-channel symmetric sizing | $W_p/W_n = \mu_n/\mu_p$, about 2–3 | Less with velocity saturation |
 | Gain at $V_M$ | $\approx 2/(\lambda V_{ov})$, tens to a few hundred | Symmetric, square law |
 | $\sigma_{V_M}$ | $\sigma_{VT}/\sqrt2$ | Symmetric, independent thresholds |

@@ -4,7 +4,7 @@ Chapter: [19-08](../chapters/19-08-sram-design.md) · Worked solutions: [19-08 s
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
 
-**Conventions.** Square-law transistors with λ = 0; $V_{TN} = \lvert V_{TP}\rvert = V_T$. Access, pull-down and pull-up strengths $k_A$, $k_N$, $k_P$; cell ratio $CR = k_N/k_A$, pull-up ratio $PR = k_P/k_A$. Conservative criteria: read disturbance below $V_T$; write level below $V_T$. $Q(z)$ is the standard normal tail; array yield without repair is $e^{-NQ}$. Problems marked *(lab)* can be checked with `labs/19-08-lab/sram.py`.
+**Conventions.** Square-law transistors with λ = 0; $V_{TN} = \lvert V_{TP}\rvert = V_{TH}$. Access, pull-down and pull-up strengths $k_A$, $k_N$, $k_P$; cell ratio $CR = k_N/k_A$, pull-up ratio $PR = k_P/k_A$. Conservative criteria: read disturbance below $V_{TH}$; write level below $V_{TH}$. $Q(z)$ is the standard normal tail; array yield without repair is $e^{-NQ}$. Problems marked *(lab)* can be checked with `labs/19-08-lab/sram.py`.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 
@@ -26,15 +26,15 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 19-08.4 [B]
 
-**Read disturb at a lower supply.** For $V_{DD}$ = 0.8 V, $V_T$ = 0.3 V and $CR$ = 1.5, find the read disturbance and its margin to $V_T$.
+**Read disturb at a lower supply.** For $V_{DD}$ = 0.8 V, $V_{TH}$ = 0.3 V and $CR$ = 1.5, find the read disturbance and its margin to $V_{TH}$.
 
 ### Problem 19-08.5 [B]
 
-**Choosing the cell ratio.** With $V_{DD}$ = 1.0 V and $V_T$ = 0.3 V, what cell ratio limits the read disturbance to 0.1 V?
+**Choosing the cell ratio.** With $V_{DD}$ = 1.0 V and $V_{TH}$ = 0.3 V, what cell ratio limits the read disturbance to 0.1 V?
 
 ### Problem 19-08.6 [B]
 
-**Choosing the pull-up ratio.** With $V_{DD}$ = 1.0 V and $V_T$ = 0.3 V, what is the largest pull-up ratio that still writes the node below $V_T$?
+**Choosing the pull-up ratio.** With $V_{DD}$ = 1.0 V and $V_{TH}$ = 0.3 V, what is the largest pull-up ratio that still writes the node below $V_{TH}$?
 
 ### Problem 19-08.7 [B] *(lab)*
 
@@ -46,7 +46,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 19-08.9 [C] *(lab)*
 
-**SNM against supply.** For the cell of Example 19-08.6 ($V_T$ = 0.3 V, $k_N$ = 200, $k_P$ = 100, $k_A$ = 100 µA/V²), compute the hold and read SNM at 1.0, 0.8 and 0.6 V, and explain why SRAM limits the minimum supply.
+**SNM against supply.** For the cell of Example 19-08.6 ($V_{TH}$ = 0.3 V, $k_N$ = 200, $k_P$ = 100, $k_A$ = 100 µA/V²), compute the hold and read SNM at 1.0, 0.8 and 0.6 V, and explain why SRAM limits the minimum supply.
 
 ### Problem 19-08.10 [C]
 

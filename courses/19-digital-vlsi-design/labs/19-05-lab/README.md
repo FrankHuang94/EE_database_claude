@@ -11,7 +11,7 @@ Chapter: [19-05 · Interconnect](../../chapters/19-05-interconnect.md)
 
 ## Background
 
-A distributed RC line obeys the diffusion equation $rc\,\partial v/\partial t = \partial^2v/\partial x^2$; its far end reaches 50% at $0.379RC$ (§3.3). A driven wire's delay is about $0.69R_d(C_w + C_L) + R_w(0.38C_w + 0.69C_L)$ (§3.4). Optimal repeaters give $T_{min} = 2.41\sqrt{R_0C_0\,rc}\,L$ (§3.5). A floating victim moves by $\Delta V_{agg}C_c/(C_c + C_g)$, and coupling capacitance counts 0, 1 or 2 times when the victim switches (§3.6).
+A distributed RC line obeys the diffusion equation $rc\,\partial v/\partial t = \partial^2v/\partial x^2$; its far end reaches 50% at $0.379RC$ (§3.3). A driven wire's delay is about $0.69R_d(C_w + C_L) + R_w(0.38C_w + 0.69C_L)$ (§3.4). As in the chapter, 0.69 and 0.38 stand for $\ln 2$ and 0.379, kept unrounded in every calculation. Optimal repeaters give $T_{min} = 2.41\sqrt{R_0C_0\,rc}\,L$ (§3.5). A floating victim moves by $\Delta V_{agg}C_c/(C_c + C_g)$, and coupling capacitance counts 0, 1 or 2 times when the victim switches (§3.6).
 
 Files:
 
@@ -39,14 +39,14 @@ Files:
 
 1. Why does a ladder overestimate the distributed line's delay, and why does the error fall as $1/n$?
 2. Why is the delay so insensitive to the number and size of repeaters near the optimum?
-3. In `rcline.cir`, why is the driven wire's delay (1262.8 ps) more than the bare wire's (1007.4 ps) plus the driver's own $0.69R_d(C_w + C_L)$ (144.2 ps)?
+3. In `rcline.cir`, why is the driven wire's delay (1262.8 ps) more than the bare wire's (1007.4 ps) plus the driver's own $\ln 2\,R_d(C_w + C_L)$ (144.2 ps)?
 4. Why do memories and dynamic logic care more about floating-victim crosstalk than static logic does?
 
 **Answers.**
 
 1. A ladder places each section's capacitance after its full resistance, so on average the capacitance is charged through slightly more resistance than in the continuous line; the excess per section is a fraction $1/n$ of the total.
 2. At an optimum the first derivative is zero, so small departures cost only in second order: halving or doubling a variable changes the sum $ax + b/x$ by $(0.5 + 2)/2 - 1$ = 25% of that pair of terms, which is a fraction of the total.
-3. The load's 10 fF is charged through the whole wire ($0.69R_wC_L$ = 92.2 ps), and the driver's resistance slows the wire's own diffusion as well as charging it.
+3. The load's 10 fF is charged through the whole wire ($\ln 2\,R_wC_L$ = 92.2 ps), and the driver's resistance slows the wire's own diffusion as well as charging it.
 4. A floating node has no driver to restore it, so any coupled charge stays until the next precharge; a static gate's driver pulls a disturbed node back.
 
 ## Optional hardware

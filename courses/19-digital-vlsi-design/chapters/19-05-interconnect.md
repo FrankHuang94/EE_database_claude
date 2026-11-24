@@ -112,6 +112,8 @@ $$
 t_p \approx 0.69\,R_d(C_w + C_L) + R_w\left(0.38\,C_w + 0.69\,C_L\right) .
 $$
 
+**Convention for the coefficients.** In formulas this chapter writes 0.69 for $\ln 2 = 0.6931$ and 0.38 for the distributed line's 0.379; every calculation keeps them at those values, so the worked numbers show $\ln 2$ and 0.379, and answers computed with the rounded 0.69 and 0.38 can differ in the third significant figure.
+
 It is a good approximation, not an exact result: for Example 3's 1 mm wire it is 1.5% below the exact value. The formula says when a wire's resistance matters: when $R_w$ becomes comparable to $R_d$. For short wires $R_w \ll R_d$ and the wire is simply a capacitance; for long ones the $R_wC_w$ term dominates and no driver, however large, can remove it, because it is the wire's own diffusion time.
 
 ### 3.5 Repeaters
@@ -132,7 +134,7 @@ $$
 and substituting,
 
 $$
-T_{min} = \left(2\sqrt{0.69 \times 0.38} + 2 \times 0.69\right)\sqrt{R_0C_0R_wC_w} = 2.41\sqrt{R_0C_0\,rc}\;L .
+T_{min} = \left(2\sqrt{\ln 2 \times 0.379} + 2\ln 2\right)\sqrt{R_0C_0R_wC_w} = 2.41\sqrt{R_0C_0\,rc}\;L .
 $$
 
 The minimum delay is **linear in length**: $R_wC_w = rcL^2$, so its square root is proportional to $L$. The constant depends on the product of the repeater's intrinsic speed ($R_0C_0$) and the wire's ($rc$). Two consequences:
@@ -183,7 +185,7 @@ Ho, Mai and Horowitz summarized the outcome: local wires "have delays that eithe
 
 (b) **680** Ω.
 
-(c) $R$ = **47.5** kΩ, $C$ = **27.0** fF, and $0.38RC$ = **486** ps: a 100 µm tight-pitch wire, unrepeated, is slower than a dozen gate delays.
+(c) $R$ = **47.5** kΩ, $C$ = **27.0** fF, and $0.379RC$ = **486** ps: a 100 µm tight-pitch wire, unrepeated, is slower than a hundred gate delays at the 2.5–4 ps FO4 of 7–14 nm predictive models (19-02), which is why tight-pitch layers carry only very short local connections.
 
 **Units check.** Ω·m/m = Ω per square; (Ω/µm)(µm) = Ω.
 
@@ -203,9 +205,9 @@ Ho, Mai and Horowitz summarized the outcome: local wires "have delays that eithe
 
 **Setup.** A 1 mm wire has $r$ = 13.3 Ω/µm and $c$ = 0.198 fF/µm (the roadmap's 80 nm-pitch reference wire). (a) Find $R_w$, $C_w$ and $R_wC_w$, and compare the 50% delay of the distributed line with the lumped and Elmore estimates. (b) A 1 kΩ driver drives it into a 10 fF load: estimate the delay with §3.4's formula and compare with the exact value for a continuous wire (1253.2 ps, from ladder simulations extrapolated to infinitely many sections).
 
-**Solution.** (a) $R_w$ = **13.3** kΩ, $C_w$ = **198** fF, $R_wC_w$ = **2.633** ns. Distributed: $0.379 \times 2.633$ = **998** ps. Lumped: $0.69 \times 2.633$ = **1825** ps. Elmore: $0.69 \times 2.633/2$ = **913** ps.
+**Solution.** (a) $R_w$ = **13.3** kΩ, $C_w$ = **198** fF, $R_wC_w$ = **2.633** ns. Distributed: $0.379 \times 2.633$ = **998** ps. Lumped: $\ln 2 \times 2.633$ = **1825** ps. Elmore: $\ln 2 \times 2.633/2$ = **913** ps.
 
-(b) $0.69 \times 1\ \text{kΩ} \times 208\ \text{fF} + 13.3\ \text{kΩ} \times (0.379 \times 198 + 0.69 \times 10)\ \text{fF}$ = 144.2 + 1090.2 = **1234.4** ps, **1.5** % below the exact value.
+(b) $\ln 2 \times 1\ \text{kΩ} \times 208\ \text{fF} + 13.3\ \text{kΩ} \times (0.379 \times 198 + 0.69 \times 10)\ \text{fF}$ = 144.2 + 1090.2 = **1234.4** ps, **1.5** % below the exact value.
 
 **Units check.** Ω × F = s.
 
@@ -215,9 +217,9 @@ Ho, Mai and Horowitz summarized the outcome: local wires "have delays that eithe
 
 **Setup.** Repeat Example 3's wire with inverters whose unit size has $R_0$ = 10 kΩ and $C_0$ = 0.1 fF ($R_0C_0$ = 1 ps). (a) Find $k_{opt}$, $h_{opt}$ and $T_{min}$. (b) Compare with the wire driven once by a single repeater of size $h_{opt}$ into a load of the same size. (c) Repeat (a) and (b) for a 5 mm wire.
 
-**Solution.** (a) $k_{opt} = \sqrt{0.379 \times 13.3\ \text{kΩ} \times 198\ \text{fF}/(0.69 \times 1\ \text{ps})}$ = **37.9** segments, about every **26** µm; $h_{opt} = \sqrt{10\ \text{kΩ} \times 198\ \text{fF}/(13.3\ \text{kΩ} \times 0.1\ \text{fF})}$ = **38.6**; $T_{min}$ = **123.7** ps.
+**Solution.** (a) $k_{opt} = \sqrt{0.379 \times 13.3\ \text{kΩ} \times 198\ \text{fF}/(\ln 2 \times 1\ \text{ps})}$ = **37.9** segments, about every **26** µm; $h_{opt} = \sqrt{10\ \text{kΩ} \times 198\ \text{fF}/(13.3\ \text{kΩ} \times 0.1\ \text{fF})}$ = **38.6**; $T_{min}$ = **123.7** ps.
 
-(b) Unrepeated: $0.69 \times (10\ \text{kΩ}/38.6)(198 + 3.9)\ \text{fF} + 13.3\ \text{kΩ}(0.379 \times 198 + 0.69 \times 3.9)\ \text{fF}$ = **1069.9** ps, **8.6** times slower.
+(b) Unrepeated: $\ln 2 \times (10\ \text{kΩ}/38.6)(198 + 3.9)\ \text{fF} + 13.3\ \text{kΩ}(0.379 \times 198 + 0.69 \times 3.9)\ \text{fF}$ = **1069.9** ps, **8.6** times slower.
 
 (c) For 5 mm, $k_{opt}$ = **189.7**, $h_{opt}$ is unchanged, and $T_{min}$ = **618.7** ps, five times the 1 mm value; unrepeated, **25.3** ns, **40.9** times slower.
 

@@ -88,7 +88,7 @@ $$
 
 (c) The EDP ratio is $0.309 \times 2.59$ = **0.798**, 20% lower: at α = 1.4 the energy saving outweighs the slowdown.
 
-(d) $3V_T/(3 - \alpha) = 0.9/1.6$ = **0.5625** V, close to the new supply.
+(d) $3V_{TH}/(3 - \alpha) = 0.9/1.6$ = **0.5625** V, close to the new supply.
 
 ### Solution 19-02.10
 
@@ -126,11 +126,11 @@ Setting the derivative $1 - r/\beta^2$ to zero gives $\beta_{opt} = \sqrt r$.
 
 ### Solution 19-02.12
 
-(a) $\ln(E\,D^n) = (2 + n)\ln V_{DD} - n\alpha\ln(V_{DD} - V_T)$ plus a constant. The derivative is zero when $(2 + n)/V_{DD} = n\alpha/(V_{DD} - V_T)$, that is $V_{DD}(2 + n - n\alpha) = (2 + n)V_T$, which has a positive solution above $V_T$ only if $2 + n > n\alpha$. For $n$ = 1 it is the chapter's $3V_T/(3 - \alpha)$.
+(a) $\ln(E\,D^n) = (2 + n)\ln V_{DD} - n\alpha\ln(V_{DD} - V_{TH})$ plus a constant. The derivative is zero when $(2 + n)/V_{DD} = n\alpha/(V_{DD} - V_{TH})$, that is $V_{DD}(2 + n - n\alpha) = (2 + n)V_{TH}$, which has a positive solution above $V_{TH}$ only if $2 + n > n\alpha$. For $n$ = 1 it is the chapter's $3V_{TH}/(3 - \alpha)$.
 
 (b) $n$ = 1: **0.618** V; $n$ = 2: $4 \times 0.35/1.4$ = **1.00** V; $n$ = 3: $5 \times 0.35/1.1$ = **1.59** V.
 
-(c) For α = 2 and $n$ = 2, $2 + n - n\alpha$ = 0: $E\,D^2 \propto [V_{DD}/(V_{DD} - V_T)]^4$ falls monotonically toward a constant as the supply rises, so there is no interior optimum. The more a metric weights delay, the higher its optimal supply; a designer who values speed above all runs at the highest supply that reliability and power delivery allow, which is why turbo modes exist (19-06).
+(c) For α = 2 and $n$ = 2, $2 + n - n\alpha$ = 0: $E\,D^2 \propto [V_{DD}/(V_{DD} - V_{TH})]^4$ falls monotonically toward a constant as the supply rises, so there is no interior optimum. The more a metric weights delay, the higher its optimal supply; a designer who values speed above all runs at the highest supply that reliability and power delivery allow, which is why turbo modes exist (19-06).
 
 ---
 
