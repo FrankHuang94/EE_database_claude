@@ -1,0 +1,81 @@
+* Lab 20-09 -- current-steering DAC with finite cell output impedance (chapter section 3.5, Example 20-09.4a).
+* 15 unary cells of 1 mA, each with a 50 kohm output resistance, into R_L = 50 ohm (single-ended). Copies for 7, 8 and
+* 15 cells on. INL is endpoint-referenced: LSB = v(15)/15.
+* ---- 7 cells on
+RL7 o7 0 50
+I7_0 0 o7 DC 1m
+RZ7_0 o7 0 50k
+I7_1 0 o7 DC 1m
+RZ7_1 o7 0 50k
+I7_2 0 o7 DC 1m
+RZ7_2 o7 0 50k
+I7_3 0 o7 DC 1m
+RZ7_3 o7 0 50k
+I7_4 0 o7 DC 1m
+RZ7_4 o7 0 50k
+I7_5 0 o7 DC 1m
+RZ7_5 o7 0 50k
+I7_6 0 o7 DC 1m
+RZ7_6 o7 0 50k
+* ---- 8 cells on
+RL8 o8 0 50
+I8_0 0 o8 DC 1m
+RZ8_0 o8 0 50k
+I8_1 0 o8 DC 1m
+RZ8_1 o8 0 50k
+I8_2 0 o8 DC 1m
+RZ8_2 o8 0 50k
+I8_3 0 o8 DC 1m
+RZ8_3 o8 0 50k
+I8_4 0 o8 DC 1m
+RZ8_4 o8 0 50k
+I8_5 0 o8 DC 1m
+RZ8_5 o8 0 50k
+I8_6 0 o8 DC 1m
+RZ8_6 o8 0 50k
+I8_7 0 o8 DC 1m
+RZ8_7 o8 0 50k
+* ---- 15 cells on
+RL15 o15 0 50
+I15_0 0 o15 DC 1m
+RZ15_0 o15 0 50k
+I15_1 0 o15 DC 1m
+RZ15_1 o15 0 50k
+I15_2 0 o15 DC 1m
+RZ15_2 o15 0 50k
+I15_3 0 o15 DC 1m
+RZ15_3 o15 0 50k
+I15_4 0 o15 DC 1m
+RZ15_4 o15 0 50k
+I15_5 0 o15 DC 1m
+RZ15_5 o15 0 50k
+I15_6 0 o15 DC 1m
+RZ15_6 o15 0 50k
+I15_7 0 o15 DC 1m
+RZ15_7 o15 0 50k
+I15_8 0 o15 DC 1m
+RZ15_8 o15 0 50k
+I15_9 0 o15 DC 1m
+RZ15_9 o15 0 50k
+I15_10 0 o15 DC 1m
+RZ15_10 o15 0 50k
+I15_11 0 o15 DC 1m
+RZ15_11 o15 0 50k
+I15_12 0 o15 DC 1m
+RZ15_12 o15 0 50k
+I15_13 0 o15 DC 1m
+RZ15_13 o15 0 50k
+I15_14 0 o15 DC 1m
+RZ15_14 o15 0 50k
+.op
+.control
+op
+setplot const
+let vfs = op1.o15
+let lsb = op1.o15 / 15
+let inlmax = max(abs(op1.o7 / lsb - 7), abs(op1.o8 / lsb - 8))
+print vfs inlmax
+.endc
+* EXPECT vfs key:../../chapters/20-09-dacs.md#Ex_20-09.4a rtol=1e-4
+* EXPECT inlmax key:../../chapters/20-09-dacs.md#Ex_20-09.4b rtol=2e-3
+.end

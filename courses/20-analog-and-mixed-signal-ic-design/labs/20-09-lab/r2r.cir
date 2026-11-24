@@ -1,0 +1,179 @@
+* Lab 20-09 -- 10-bit voltage-mode R-2R ladder (chapter section 3.2, Example 20-09.1). R = 1 kohm, V_REF = 1.2 V,
+* output at the MSB node (n9), unloaded. Copy A: ideal switches, code 683. Copies B to D: every 2R leg has a 10 ohm
+* (1% of R) switch, the 2R termination has none; codes 511, 512 and 1023 give the worst DNL (at the MSB transition).
+* ---- a: code 683, switch resistance 0 ohm per 2R leg
+Vab0 as0 0 DC 1.2
+Raw0 as0 al0 1e-06
+Ral0 al0 an0 2k
+Ras0 an0 an1 1k
+Vab1 as1 0 DC 1.2
+Raw1 as1 al1 1e-06
+Ral1 al1 an1 2k
+Ras1 an1 an2 1k
+Vab2 as2 0 DC 0
+Raw2 as2 al2 1e-06
+Ral2 al2 an2 2k
+Ras2 an2 an3 1k
+Vab3 as3 0 DC 1.2
+Raw3 as3 al3 1e-06
+Ral3 al3 an3 2k
+Ras3 an3 an4 1k
+Vab4 as4 0 DC 0
+Raw4 as4 al4 1e-06
+Ral4 al4 an4 2k
+Ras4 an4 an5 1k
+Vab5 as5 0 DC 1.2
+Raw5 as5 al5 1e-06
+Ral5 al5 an5 2k
+Ras5 an5 an6 1k
+Vab6 as6 0 DC 0
+Raw6 as6 al6 1e-06
+Ral6 al6 an6 2k
+Ras6 an6 an7 1k
+Vab7 as7 0 DC 1.2
+Raw7 as7 al7 1e-06
+Ral7 al7 an7 2k
+Ras7 an7 an8 1k
+Vab8 as8 0 DC 0
+Raw8 as8 al8 1e-06
+Ral8 al8 an8 2k
+Ras8 an8 an9 1k
+Vab9 as9 0 DC 1.2
+Raw9 as9 al9 1e-06
+Ral9 al9 an9 2k
+Rat an0 0 2k
+* ---- b: code 511, switch resistance 10 ohm per 2R leg
+Vbb0 bs0 0 DC 1.2
+Rbw0 bs0 bl0 10
+Rbl0 bl0 bn0 2k
+Rbs0 bn0 bn1 1k
+Vbb1 bs1 0 DC 1.2
+Rbw1 bs1 bl1 10
+Rbl1 bl1 bn1 2k
+Rbs1 bn1 bn2 1k
+Vbb2 bs2 0 DC 1.2
+Rbw2 bs2 bl2 10
+Rbl2 bl2 bn2 2k
+Rbs2 bn2 bn3 1k
+Vbb3 bs3 0 DC 1.2
+Rbw3 bs3 bl3 10
+Rbl3 bl3 bn3 2k
+Rbs3 bn3 bn4 1k
+Vbb4 bs4 0 DC 1.2
+Rbw4 bs4 bl4 10
+Rbl4 bl4 bn4 2k
+Rbs4 bn4 bn5 1k
+Vbb5 bs5 0 DC 1.2
+Rbw5 bs5 bl5 10
+Rbl5 bl5 bn5 2k
+Rbs5 bn5 bn6 1k
+Vbb6 bs6 0 DC 1.2
+Rbw6 bs6 bl6 10
+Rbl6 bl6 bn6 2k
+Rbs6 bn6 bn7 1k
+Vbb7 bs7 0 DC 1.2
+Rbw7 bs7 bl7 10
+Rbl7 bl7 bn7 2k
+Rbs7 bn7 bn8 1k
+Vbb8 bs8 0 DC 1.2
+Rbw8 bs8 bl8 10
+Rbl8 bl8 bn8 2k
+Rbs8 bn8 bn9 1k
+Vbb9 bs9 0 DC 0
+Rbw9 bs9 bl9 10
+Rbl9 bl9 bn9 2k
+Rbt bn0 0 2k
+* ---- c: code 512, switch resistance 10 ohm per 2R leg
+Vcb0 cs0 0 DC 0
+Rcw0 cs0 cl0 10
+Rcl0 cl0 cn0 2k
+Rcs0 cn0 cn1 1k
+Vcb1 cs1 0 DC 0
+Rcw1 cs1 cl1 10
+Rcl1 cl1 cn1 2k
+Rcs1 cn1 cn2 1k
+Vcb2 cs2 0 DC 0
+Rcw2 cs2 cl2 10
+Rcl2 cl2 cn2 2k
+Rcs2 cn2 cn3 1k
+Vcb3 cs3 0 DC 0
+Rcw3 cs3 cl3 10
+Rcl3 cl3 cn3 2k
+Rcs3 cn3 cn4 1k
+Vcb4 cs4 0 DC 0
+Rcw4 cs4 cl4 10
+Rcl4 cl4 cn4 2k
+Rcs4 cn4 cn5 1k
+Vcb5 cs5 0 DC 0
+Rcw5 cs5 cl5 10
+Rcl5 cl5 cn5 2k
+Rcs5 cn5 cn6 1k
+Vcb6 cs6 0 DC 0
+Rcw6 cs6 cl6 10
+Rcl6 cl6 cn6 2k
+Rcs6 cn6 cn7 1k
+Vcb7 cs7 0 DC 0
+Rcw7 cs7 cl7 10
+Rcl7 cl7 cn7 2k
+Rcs7 cn7 cn8 1k
+Vcb8 cs8 0 DC 0
+Rcw8 cs8 cl8 10
+Rcl8 cl8 cn8 2k
+Rcs8 cn8 cn9 1k
+Vcb9 cs9 0 DC 1.2
+Rcw9 cs9 cl9 10
+Rcl9 cl9 cn9 2k
+Rct cn0 0 2k
+* ---- d: code 1023, switch resistance 10 ohm per 2R leg
+Vdb0 ds0 0 DC 1.2
+Rdw0 ds0 dl0 10
+Rdl0 dl0 dn0 2k
+Rds0 dn0 dn1 1k
+Vdb1 ds1 0 DC 1.2
+Rdw1 ds1 dl1 10
+Rdl1 dl1 dn1 2k
+Rds1 dn1 dn2 1k
+Vdb2 ds2 0 DC 1.2
+Rdw2 ds2 dl2 10
+Rdl2 dl2 dn2 2k
+Rds2 dn2 dn3 1k
+Vdb3 ds3 0 DC 1.2
+Rdw3 ds3 dl3 10
+Rdl3 dl3 dn3 2k
+Rds3 dn3 dn4 1k
+Vdb4 ds4 0 DC 1.2
+Rdw4 ds4 dl4 10
+Rdl4 dl4 dn4 2k
+Rds4 dn4 dn5 1k
+Vdb5 ds5 0 DC 1.2
+Rdw5 ds5 dl5 10
+Rdl5 dl5 dn5 2k
+Rds5 dn5 dn6 1k
+Vdb6 ds6 0 DC 1.2
+Rdw6 ds6 dl6 10
+Rdl6 dl6 dn6 2k
+Rds6 dn6 dn7 1k
+Vdb7 ds7 0 DC 1.2
+Rdw7 ds7 dl7 10
+Rdl7 dl7 dn7 2k
+Rds7 dn7 dn8 1k
+Vdb8 ds8 0 DC 1.2
+Rdw8 ds8 dl8 10
+Rdl8 dl8 dn8 2k
+Rds8 dn8 dn9 1k
+Vdb9 ds9 0 DC 1.2
+Rdw9 ds9 dl9 10
+Rdl9 dl9 dn9 2k
+Rdt dn0 0 2k
+.op
+.control
+op
+setplot const
+let vout = op1.an9
+let lsb = op1.dn9 / 1023
+let dnlw = abs((op1.cn9 - op1.bn9) / lsb - 1)
+print vout dnlw
+.endc
+* EXPECT vout key:../../chapters/20-09-dacs.md#Ex_20-09.1b rtol=1e-4
+* EXPECT dnlw key:../../chapters/20-09-dacs.md#Ex_20-09.1e rtol=3e-3
+.end

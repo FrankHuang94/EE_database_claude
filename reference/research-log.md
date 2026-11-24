@@ -3404,3 +3404,43 @@ R&D % = R&D ÷ revenue.
 - **TI PCM186x** (SLAS831D, rev. Mar 2018): "110-dB SNR" specified at "–60-dB input signal", A-weighted in the comparison table; FIR latency 30 samples, IIR 10. **TI SLLA641** (July 2024): unweighted dynamic range "about 2dB down from the A-weighted setting" (118 dB spec, 116 dB measured); "123dB Dynamic Range with DRE enable and 113dB with DRE disabled".
 - **TI ADS1298** (SBAS459K): "second-order modulator optimized for low-power applications"; 0.75 mW/channel; 24 bits no missing codes to 8 kSPS, 19 bits at 16 kSPS, 17 bits at 32 kSPS; noise 58 µVrms at 32 kSPS and 9.7 µVrms at 16 kSPS (G = 6). **ADS1292** (SBAS502C): "second-order modulator", 335 µW/channel, modulator clock typically 128 kHz, 125 SPS to 8 kSPS. **LMX2594** (SNAS696C): "programmable delta-sigma modulator up to 4th order".
 - **Infineon IM69D130** (v1.0, Dec 2017): sigma-delta ADC with PDM output; 69 dB(A) at 3.072 MHz and 980 µA typical, 64 dB(A) at 768 kHz and 300 µA. **TDK T5838** (DS-000383 rev. 1.2, Sept 2025): "a fifth order Σ-Δ modulator"; 68 dBA in a 20 kHz band at 2.4 MHz and 310 µA; 65 dBA in 8 kHz at 768 kHz and 120 µA.
+
+## R-345 · DAC architecture literature: segmented current steering, output impedance, quad switching (Course 20)
+
+*Read on 24 Nov 2026 by a research subagent: IEEE metadata from Crossref, abstracts from OpenAlex; Razavi's 2018 and 2019 columns and Johns and Martin's slides read in full.*
+
+- **C.-H. Lin and K. Bult**, *IEEE JSSC* 33(12), pp. 1948–1958, 1998, DOI 10.1109/4.735535: 10-bit 500 MS/s current-steering DAC in 0.6 mm²; SFDR "better than 60 dB" to Nyquist up to 200 MS/s, "better than 55 dB" to 400 MS/s; DNL 0.1, INL 0.2 LSB; 125 mW at 500 MS/s. Segmentation split UNVERIFIED (not in the abstract).
+- **J. Bastos et al.**, *IEEE JSSC* 33(12), pp. 1959–1969, 1998, DOI 10.1109/4.735536: 12-bit, "doubly segmented 6+2+4 architecture", no calibration or trimming; glitch "1.9 pV.s".
+- **G. A. M. Van der Plas et al.**, *IEEE JSSC* 34(12), pp. 1708–1718, 1999, DOI 10.1109/4.808896: 14-bit 150 MS/s, "Q² random walk" switching, full 14-bit accuracy without trimming; SFDR "84 dB at 500 kHz and 61 dB at 5 MHz".
+- **A. Van den Bosch et al.**, *IEEE JSSC* 36(3), pp. 315–324, Mar. 2001, DOI 10.1109/4.910469: 10-bit 1 GS/s, SFDR "more than 61 dB ... from dc to Nyquist", 110 mW. ICECS 1999, DOI 10.1109/ICECS.1999.814383: "dynamic output impedance ... an important limitation for the spurious free dynamic range".
+- **S. Luschas and H.-S. Lee**, "Output impedance requirements for DACs," ISCAS 2003, DOI 10.1109/ISCAS.2003.1205700 (not TCAS-II 2002): "the output impedance required in a fully-differential implementation is much lower than that required in a single-ended one."
+- **B. Razavi**, "The current-steering DAC," *IEEE SSC Magazine* 10(1), pp. 11–15, Winter 2018, DOI 10.1109/MSSC.2017.2771102: INL_max = (σ_I/2I_u)√(2^N) LSB (citing Lin and Bult); single-ended output-impedance INL I_uR_L²M²/(4r_O); n-th harmonic ≈ [MR_L/(4|Z_u|)]^{n−1} (attributed to Palmers and Steyaert, TCAS-I 57(11), Nov. 2010, DOI 10.1109/TCSI.2010.2052491). His numerical area example (1.8 µm²) does not follow from his stated relations (3.7 µm²); the curriculum uses its own convention. "The R-2R and C-2C ladders," *ibid.* 11(3), pp. 10–15, Summer 2019, DOI 10.1109/MSSC.2019.2922886.
+- **S. Park et al.**, *IEEE JSSC* 37(10), pp. 1335–1338, Oct. 2002, DOI 10.1109/JSSC.2002.803056: differential-quad switching.
+
+## R-346 · DAC mismatch yield and dynamic element matching (Course 20)
+
+*Read on 24 Nov 2026 by a research subagent (with R-345); Cong's dissertation and the Heydenreich et al. arXiv paper read in full.*
+
+- **Yield rule σ(I)/I ≤ 1/(2C√2^N)**, attributed to Van den Bosch, Steyaert and Sansen (ISCAS 2000, DOI 10.1109/ISCAS.2000.858699; *AICSP* 29(3), 2001, DOI 10.1023/A:1011261330190): the printed form was not read (UNVERIFIED as printed). Cong (PhD, Iowa State, 2002) describes it as "based on a nonstandard INL definition and a questionable statistical assumption, where each current output is compared to the ideal value without correcting for the gain error"; Cong's Monte Carlo gives 0.22% for 14 bits at 99% yield.
+- **G. I. Radulov, M. Heydenreich, R. van der Hofstad, J. A. Hegt, A. H. M. van Roermund**, *IEEE TCAS-II* 54(2), pp. 146–150, Feb. 2007, DOI 10.1109/TCSII.2006.886900; arXiv:math/0606584: "For the thermometer case, the functional is the maximal absolute value of the Brownian bridge." The curriculum's Kolmogorov-quantile rule (λ = 1.818 at 99.73%) and its Monte Carlo agree.
+- **Pelgrom et al.**, *IEEE JSSC* 24(5), pp. 1433–1439, Oct. 1989, DOI 10.1109/JSSC.1989.572629.
+- **L. R. Carley**, *IEEE JSSC* 24(2), pp. 267–273, Apr. 1989, DOI 10.1109/4.18585: multibit noise-shaping coder with "a novel form of dynamic element matching". **R. T. Baird and T. S. Fiez**, *IEEE TCAS-II* 42(12), pp. 753–762, 1995, DOI 10.1109/82.476173: data weighted averaging shapes DAC errors by "first-order noise shaping".
+
+## R-347 · DAC state of the art 2020–2026 (Course 20)
+
+*Read on 24 Nov 2026 by a research subagent (abstracts via OpenAlex). No public DAC performance survey comparable to Murmann's ADC survey was found; papers define their own figures of merit.*
+
+- **F. Ahmad et al.**, ISSCC 2024, paper 18.3, DOI 10.1109/ISSCC49657.2024.10454480: "4 reconfigurable 60-160GS/s 8b DACs with a 57GHz AFE bandwidth, fabricated in a 5nm FinFET process", in an 800G coherent DSP; power and ENOB not in the abstract (UNVERIFIED).
+- **M. Cusmai et al.**, ISSCC 2024, paper 7.2, DOI 10.1109/ISSCC49657.2024.10454558: 224 Gb/s PAM-4/PAM-6 DAC-based transmitter in 3 nm, "7b DAC driver (4b binary, 3b thermometer-coded) with 9-tap FFE".
+- **H. Luo et al.**, ISSCC 2026, paper 11.8, DOI 10.1109/ISSCC49663.2026.11409046: 14-bit 20 GS/s RF-sampling DAC, 70.4 dBc IMD3 up to 8.9 GHz (title), ISI-mitigating DEM.
+- **C. Huang et al.**, *IEEE JSSC* 61(3), pp. 1140–1152, Mar. 2026, DOI 10.1109/JSSC.2025.3583372: 16-bit 10 GS/s, SFDR > 70 dBc up to 2.86 GHz.
+- **D. Widmann et al.**, *IEEE JSSC* 59(3), 2024, DOI 10.1109/JSSC.2023.3310381: up to 108–118 GS/s with an analog multiplexer; "At 100 GS/s, the total power consumption is about 4 W".
+
+## R-348 · Commercial DAC data sheets (Course 20)
+
+*Read on 24 Nov 2026 by a research subagent from ti.com. ADI material was unreachable (open issue 55).*
+
+- **TI DAC39RF10** (SBASAC8B, rev. Mar 2024): 16-bit core, 10.24 GS/s (20.48 GS/s at 8 bits); thermometer MSBs, middle segment and binary LSBs; "Dynamic element Mixing ... whitens the non-linearity", "Both DEM and dither increase the noise floor"; DNL ±2.2, INL ±9 LSB typical; SFDR 85 dBc at 97 MHz, 61 dBc at 2997 MHz (NRZ, 20.5 mA); NSD −155 dBFS/Hz small-signal (front page); "ENOB 9.6 bits" from NPR; Table 7-1 peak output NRZ 0 dBFS, RTZ −6 dBFS, RF mode −2.8 dBFS; Mode 1 power 3747 mW, of which the 1.0 V digital/SerDes/encoder rail draws 2263 mA. **DAC38RF82** (SLASEA6D, rev. June 2020): "14-Bit resolution"; SFDR 62 dBc (0–f_DAC/2) vs 94 dBc "within 500 MHz fOUT ± 250 MHz" at 501 MHz; INL/DNL typicals changed from ±1/±0.5 to ±4/±3 LSB in Rev. B (Aug 2017).
+- **TI DAC11001A** (SLASEL0B, rev. June 2020): 20-bit R-2R; INL ±4 LSB max (−40 to 125 °C); deglitch "code-independent ultra-low glitch (1 nV-s)"; settling 1 µs to 0.1% FSR, 2.5 µs full-scale to ±1 LSB. **DAC11001B** (SLASF03, Dec 2021): front page "1-LSB INL (max)"; table ±1 LSB over 0–70 °C by design with temperature calibration, ±2 LSB over −40 to 125 °C; 3 µs to ±1 LSB.
+- **TI DAC80508** (SLASEL1D): 16-bit R-2R, glitch 4 nV-s, ¼ to ¾ settling 5 µs to ±2 LSB. **DAC8568** (SBAS430F): 16-bit string, INL ±12 LSB max (endpoints at codes 485 and 64714), DNL ±1, glitch 0.1 nV-s; glitch defined as "normally specified as the area of the glitch in nanovolt-seconds". **TIDU022** (July 2015): "most data sheets inaccurately term 'glitch energy' as the time integral of glitch voltage."
+- **TI PCM5102A** (SLAS859C): "advanced segment-DAC architecture", 8× interpolation, 32-bit ΔΣ modulator, DR 112 dB (A-weighted), THD+N −93 dB. **MSPM0G3507** (SLASEX6C): 12-bit 1 MS/s DAC, INL ±4 LSB max, settling 0.8 µs typical, glitch 1.2 nV-s, ENOB 11.5 bits with a 300 Hz–4 kHz output filter.

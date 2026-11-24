@@ -8254,3 +8254,29 @@
   definition: Selecting different unit elements of a multi-bit DAC from sample to sample (for example by data-weighted averaging) so that their mismatch becomes noise, often shaped out of band, instead of a fixed nonlinearity.
   chapter: "20-08"
   see_also: [Delta-sigma modulator]
+
+# ---------------------------------------------------------------- 20-09
+- term: Resistor-string DAC
+  definition: A DAC that taps a string of 2^N equal resistors between the reference and ground and connects the selected tap to the output; inherently monotonic, but large and slow at high resolution.
+  chapter: "20-09"
+  see_also: [R–2R ladder]
+- term: Current-steering DAC
+  definition: A DAC built from unit current sources that are switched between two output nodes and summed in load resistors; the architecture of nearly all DACs above about 100 MS/s.
+  chapter: "20-09"
+  see_also: [Segmentation (DAC), Glitch impulse]
+- term: Segmentation (DAC)
+  definition: Building a DAC's most significant bits from equal (unary, thermometer-decoded) cells and its least significant bits from binary-weighted cells, trading decoder cost for much better DNL and smaller glitches at the major carries.
+  chapter: "20-09"
+  see_also: [Current-steering DAC, Thermometer code]
+- term: Glitch impulse
+  definition: The area of the transient error a DAC output shows when the code changes, caused by cells switching at slightly different times; quoted in pV·s or nV·s and largest at the major carries of a binary DAC.
+  chapter: "20-09"
+  see_also: [Segmentation (DAC)]
+- term: Return-to-zero DAC
+  definition: A DAC output that holds each sample for only part of the clock period and returns to zero for the rest, flattening the sinc response and making transitions code-independent at the cost of output power.
+  chapter: "20-09"
+  see_also: [Zero-order hold]
+- term: Data-weighted averaging
+  definition: A dynamic element matching method that selects the next D elements in rotation for each code D, so every element is used equally often and element mismatch becomes first-order noise-shaped error.
+  chapter: "20-09"
+  see_also: [Dynamic element matching]

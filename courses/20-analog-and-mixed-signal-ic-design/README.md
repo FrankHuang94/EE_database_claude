@@ -35,7 +35,7 @@ Designing analog and mixed-signal blocks in CMOS: gm/ID methodology, two-stage o
 | [20-06 · Data Converter Fundamentals](chapters/20-06-data-converter-fundamentals.md) | 7 | ✅ verified | [problems](problems/20-06-problems.md) · [solutions](solutions/20-06-solutions.md) · [lab](labs/20-06-lab/README.md) · [verify](verify/verify_20_06.py) |
 | [20-07 · Nyquist ADCs: Flash, SAR and Pipeline](chapters/20-07-nyquist-adcs.md) | 10 | ✅ verified | [problems](problems/20-07-problems.md) · [solutions](solutions/20-07-solutions.md) · [lab](labs/20-07-lab/README.md) · [verify](verify/verify_20_07.py) |
 | [20-08 · Oversampling and Sigma-Delta Converters](chapters/20-08-sigma-delta-converters.md) | 9 | ✅ verified | [problems](problems/20-08-problems.md) · [solutions](solutions/20-08-solutions.md) · [lab](labs/20-08-lab/README.md) · [verify](verify/verify_20_08.py) |
-| [20-09 · DACs](chapters/20-09-dacs.md) | 6 | ⬜ planned | — |
+| [20-09 · DACs](chapters/20-09-dacs.md) | 6 | ✅ verified | [problems](problems/20-09-problems.md) · [solutions](solutions/20-09-solutions.md) · [lab](labs/20-09-lab/README.md) · [verify](verify/verify_20_09.py) |
 | [20-10 · PLLs and Jitter](chapters/20-10-plls-and-jitter.md) | 10 | ⬜ planned | — |
 | [20-11 · Layout, Matching and PVT Variation](chapters/20-11-layout-matching-pvt.md) | 7 | ⬜ planned | — |
 | [20-12 · Why Analog Does Not Scale Like Digital](chapters/20-12-why-analog-does-not-scale.md) | 5 | ⬜ planned | — |
