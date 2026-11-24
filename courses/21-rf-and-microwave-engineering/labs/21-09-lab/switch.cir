@@ -1,0 +1,21 @@
+* Lab 21-09 -- a series RF switch between 50 ohm ports, on and off (AC analysis at 2 GHz).
+* On state: R_on = 2 ohm; off state: C_off = 189 fF (the antenna-tuning switch of Example 21-09.5).
+* Insertion loss 20 log10(1 + R_on/100) and isolation from the series capacitance.
+*
+* EXPECT ilon key:../../chapters/21-09-rf-front-end.md#Ex_21-09.5c rtol=2e-3
+* EXPECT isoff key:../../chapters/21-09-rf-front-end.md#Ex_21-09.5d rtol=2e-3
+VA ia 0 dc 0 ac 1
+RSA ia a 50
+RON a b 2
+RLA b 0 50
+VB ib 0 dc 0 ac 1
+RSB ib c 50
+COFF c d 189f
+RLB d 0 50
+.control
+ac lin 1 2g 2g
+let ilon = -db(2 * v(b))
+let isoff = -db(2 * v(d))
+print ilon isoff
+.endc
+.end

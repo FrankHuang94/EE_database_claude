@@ -1,0 +1,51 @@
+* Lab 21-09 -- a three-section acoustic ladder filter from Butterworth-Van Dyke resonators (AC analysis).
+* Series resonators: fs = 2.000 GHz, C0 = 1 pF; shunt resonators: fs = 1.945 GHz, C0 = 2 pF, so the shunt
+* anti-resonance falls on the series resonance. Every resonator has C0/Cm = 17.44 (AlN-like coupling,
+* k2_eff = 6.6 %) and Q = 2000 at its series resonance. 50 ohm terminations. Example 21-09.2: insertion loss
+* at 2.00 GHz and rejection at 1.88 and 2.12 GHz, 20 log10(1 / (2 v(out))) for a 1 V source.
+*
+* EXPECT il key:../../chapters/21-09-rf-front-end.md#Ex_21-09.2a rtol=2e-3
+* EXPECT rlo key:../../chapters/21-09-rf-front-end.md#Ex_21-09.2d rtol=2e-3
+* EXPECT rhi key:../../chapters/21-09-rf-front-end.md#Ex_21-09.2e rtol=2e-3
+VIN in 0 dc 0 ac 1
+RS in n0 50
+* section 1: series resonator n0-n1, shunt resonator at n1
+C0S0 n0 n1 1p
+LMS0 n0 xs0 110.4616774n
+CMS0 xs0 ys0 57.32824385f
+RMS0 ys0 n1 0.6940511884
+C0P0 n1 0 2p
+LMP0 n1 xp0 58.39712568n
+CMP0 xp0 yp0 114.6564877f
+RMP0 yp0 0 0.3568341602
+* section 2: series resonator n1-n2, shunt resonator at n2
+C0S1 n1 n2 1p
+LMS1 n1 xs1 110.4616774n
+CMS1 xs1 ys1 57.32824385f
+RMS1 ys1 n2 0.6940511884
+C0P1 n2 0 2p
+LMP1 n2 xp1 58.39712568n
+CMP1 xp1 yp1 114.6564877f
+RMP1 yp1 0 0.3568341602
+* section 3: series resonator n2-n3, shunt resonator at n3
+C0S2 n2 n3 1p
+LMS2 n2 xs2 110.4616774n
+CMS2 xs2 ys2 57.32824385f
+RMS2 ys2 n3 0.6940511884
+C0P2 n3 0 2p
+LMP2 n3 xp2 58.39712568n
+CMP2 xp2 yp2 114.6564877f
+RMP2 yp2 0 0.3568341602
+RL n3 0 50
+.control
+ac lin 1 2.00g 2.00g
+let il = -db(2 * v(n3))
+print il
+ac lin 1 1.88g 1.88g
+let rlo = -db(2 * v(n3))
+print rlo
+ac lin 1 2.12g 2.12g
+let rhi = -db(2 * v(n3))
+print rhi
+.endc
+.end
