@@ -1,0 +1,58 @@
+* Lab 22-03: boost converters (Examples 22-03.1 and 22-03.3)
+* Instance A: synchronous boost, 3.6 V to 5.0 V at 1.5 A, 1 MHz, 1 uH, 22 uF, D = 0.28, near-ideal switches.
+* Instances B and C: a normalized boost (1 V input) with a 0.1 ohm winding into 25 ohm, at D = 0.8 and 0.9,
+* 100 kHz, 100 uH, 100 uF; their outputs equal the conversion ratio directly.
+* Initial conditions are set at the predicted steady state, because the boost's lightly damped LC would
+* otherwise take milliseconds to settle; the measurements use the final 20 periods.
+* EXPECT voA 5.0 rtol=2e-3
+* EXPECT diA key:../../chapters/22-03-boost-buck-boost-topologies.md#Ex_22-03.1c rtol=1e-2
+* EXPECT dvA key:../../chapters/22-03-boost-buck-boost-topologies.md#Ex_22-03.1f scale=1e-3 rtol=2e-2
+* EXPECT voB key:../../chapters/22-03-boost-buck-boost-topologies.md#Ex_22-03.3d rtol=2e-3
+* EXPECT voC key:../../chapters/22-03-boost-buck-boost-topologies.md#Ex_22-03.3f rtol=2e-3
+.model swon sw vt=0.5 vh=0 ron=0.1m roff=1G
+.model swoff sw vt=-0.5 vh=0 ron=0.1m roff=1G
+
+* ---- A: low-side switch on for 0.28 us of each 1 us
+VinA inA 0 dc 3.6
+VgA gA 0 pulse(0 1 0 1n 1n 279n 1u)
+LA inA swA 1u ic=2.0833
+VsA swA swA2 dc 0
+SlA swA2 0 gA 0 swon
+ShA swA2 outA 0 gA swoff
+CA outA 0 22u ic=5.0
+RA outA 0 3.3333333
+
+* ---- B: D = 0.8 at 100 kHz, winding resistance 0.1 ohm
+VinB inB 0 dc 1
+VgB gB 0 pulse(0 1 0 1n 1n 7.999u 10u)
+LB inB mB 100u ic=0.909
+RwB mB swB 0.1
+SlB swB 0 gB 0 swon
+ShB swB outB 0 gB swoff
+CB outB 0 100u ic=4.545
+RB outB 0 25
+
+* ---- C: D = 0.9
+VinC inC 0 dc 1
+VgC gC 0 pulse(0 1 0 1n 1n 8.999u 10u)
+LC inC mC 100u ic=2.857
+RwC mC swC 0.1
+SlC swC 0 gC 0 swon
+ShC swC outC 0 gC swoff
+CC outC 0 100u ic=7.143
+RC outC 0 25
+
+.control
+tran 1n 6m 0 2n uic
+meas tran voA avg v(outA) from=5.98m to=6m
+meas tran imaxA max i(VsA) from=5.999m to=6m
+meas tran iminA min i(VsA) from=5.999m to=6m
+meas tran vmaxA max v(outA) from=5.999m to=6m
+meas tran vminA min v(outA) from=5.999m to=6m
+meas tran voB avg v(outB) from=5.8m to=6m
+meas tran voC avg v(outC) from=5.8m to=6m
+let diA = imaxA - iminA
+let dvA = vmaxA - vminA
+print diA dvA
+.endc
+.end

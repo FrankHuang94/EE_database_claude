@@ -1,0 +1,29 @@
+* Lab 22-03: a SEPIC, 12 V to 12 V at 2 A (D = 0.5), 300 kHz
+* L1 = L2 = 47 uH with 50 mohm windings (which damp the C1-L resonance), coupling capacitor C1 = 10 uF,
+* output 47 uF, load 6 ohm. The low-side switch and the
+* output rectifier are complementary near-ideal switches (a synchronous SEPIC). Initial conditions are set at
+* the predicted steady state: I_L1 = I_L2 = 2 A, V_C1 = V_in = 12 V, V_out = 12 V.
+* The windings lower the output to the averaged model's 11.80 V (Lab 22-03.a); C1 still averages V_in.
+* EXPECT vout key:../../labs/22-03-lab/README.md#Lab_22-03.a rtol=1e-3
+* EXPECT vc1 key:../../labs/22-03-lab/README.md#Lab_22-03.b rtol=1e-3
+.model swon sw vt=0.5 vh=0 ron=0.1m roff=1G
+.model swoff sw vt=-0.5 vh=0 ron=0.1m roff=1G
+Vin in 0 dc 12
+Vg g 0 pulse(0 1 0 1n 1n 1.6656667u 3.3333333u)
+L1 in a1 47u ic=2
+R1 a1 a 50m
+S1 a 0 g 0 swon
+C1 a b 10u ic=12
+L2 b b2 47u ic=-2
+R2 b2 0 50m
+S2 b out 0 g swoff
+Cout out 0 47u ic=12
+Rl out 0 6
+.control
+tran 2n 6m 0 4n uic
+meas tran vout avg v(out) from=5.5m to=6m
+let vcap = v(a) - v(b)
+meas tran vc1 avg vcap from=5.5m to=6m
+meas tran il1 avg i(L1) from=5.5m to=6m
+.endc
+.end

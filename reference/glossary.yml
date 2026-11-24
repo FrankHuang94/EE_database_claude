@@ -8892,3 +8892,32 @@
   definition: A mode that keeps a converter switching at its fixed frequency at all loads, letting the inductor current go negative at light load; it gives predictable ripple and spectrum at the cost of light-load efficiency.
   chapter: "22-02"
   see_also: [Pulse-frequency modulation (PFM), Continuous conduction mode (CCM)]
+- term: Boost converter
+  definition: A step-up switching converter in which a switch charges an inductor from the input and a diode or synchronous switch releases it into the output, giving V = V_in/(1 − D); its output current is pulsed and its inductor carries I/(1 − D).
+  chapter: "22-03"
+  see_also: [Buck converter, Right-half-plane zero]
+- term: Buck-boost converter
+  definition: A converter that stores the input's energy in an inductor and releases it to an output of opposite polarity, V = −D·V_in/(1 − D), so it can step up or down; its switch blocks the sum of the input and output magnitudes.
+  chapter: "22-03"
+  see_also: [Four-switch buck-boost, Boost converter]
+- term: Four-switch buck-boost
+  definition: A non-inverting converter with a buck half bridge at its input and a boost half bridge at its output sharing one inductor; it runs as a buck, a boost or a mixed mode, so a rail can be held while a battery crosses it.
+  chapter: "22-03"
+  see_also: [Buck-boost converter]
+- term: SEPIC
+  definition: The single-ended primary-inductance converter, a non-inverting step-up/step-down converter with two inductors and a series coupling capacitor that averages the input voltage, V = D·V_in/(1 − D), with continuous input current.
+  chapter: "22-03"
+  see_also: [Ćuk converter]
+- term: Ćuk converter
+  anchor: cuk-converter
+  definition: An inverting capacitor-coupled converter with inductors at both input and output, V = −D·V_in/(1 − D), whose input and output currents are both continuous.
+  chapter: "22-03"
+  see_also: [SEPIC]
+- term: Switch stress
+  definition: A topology-comparison figure, the active switch's peak blocking voltage times its peak current divided by the output power; at D = 0.5 a buck or boost scores 2 and an inverting buck-boost 4.
+  chapter: "22-03"
+  see_also: [Buck-boost converter]
+- term: Pass-through mode
+  definition: A boost converter's behaviour when its input exceeds its set output; it then stops switching and holds its high-side switch on, so the output follows the input less a small drop.
+  chapter: "22-03"
+  see_also: [Boost converter]

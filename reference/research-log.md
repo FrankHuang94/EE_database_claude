@@ -4215,3 +4215,16 @@ R&D % = R&D ÷ revenue.
 - **"High CV MLCC DC BIAS Capacitance Loss Explained," EEPower, 31 Jul 2019** [Industry estimate]: "The loss at rated voltage can vary from -35% to -65% at rated voltage" (10 µF 6.3 V X7R 0805, three vendors).
 - **Renesas DA9063 product page** [Established]: "Six buck converters, 0.3 V to 3.34 V up to 2.5 A"; "High efficiency is achieved over a wide load range by automatically selecting Pulse Frequency Modulation (PFM) or Pulse Width Modulation (PWM) modes."
 - **Sources:** [SLVA477C](https://www.ti.com/lit/an/slva477b/slva477b.pdf) (the URL serves revision C); [LMR33630](https://www.ti.com/lit/ds/symlink/lmr33630.pdf); [TPS62840](https://www.ti.com/lit/ds/symlink/tps62840.pdf); [EEPower](https://eepower.com/technical-articles/high-cv-mlcc-dc-bias-capacitance-loss-explained/); [DA9063](https://www.renesas.com/en/products/da9063). Checked Nov 2026.
+
+## R-425 · Low-voltage boost and buck-boost converters (Course 22)
+
+*Read on 24 Nov 2026 by the main agent (curl through the session proxy, pdftotext).*
+
+- **TI *TPS61023* data sheet, SLVSF14B (Sep 2019, revised Aug 2020)** [Established as data-sheet values]:
+  - "Input voltage range: 0.5 V to 5.5 V"; "Output voltage setting range: 2.2 V to 5.5 V"; "Two 47-mΩ (LS) / 68-mΩ (HS) MOSFETs"; "3.7-A Valley switching current limit".
+  - "94% Efficiency at VIN = 3.6 V, VOUT = 5 V and IOUT = 1.5 A"; "1-MHz Switching frequency when VIN > 1.5 V and 0.5-MHz switching frequency when VIN < 1 V".
+  - "Auto PFM operation mode at light load"; "Pass-through mode when VIN > VOUT"; "True disconnection between input and output during shutdown".
+- **TI *TPS63802* data sheet, SLVSEU9D (Nov 2018, revised Jan 2021)** [Established as data-sheet values]:
+  - "Input voltage range: 1.3 V to 5.5 V"; "Output voltage range: 1.8 V to 5.2 V (adjustable)"; "2-A output current for VI ≥ 2.3 V, VO = 3.3 V"; "11-µA operating quiescent current"; "Small 0.47-µH inductor".
+  - It "automatically operates in boost, buck, or in a novel 4-cycle buck-boost mode when the input voltage is approximately equal to the output voltage. The transitions between modes happen at defined thresholds and avoid unwanted toggling".
+- **Sources:** [TPS61023](https://www.ti.com/lit/ds/symlink/tps61023.pdf); [TPS63802](https://www.ti.com/lit/ds/symlink/tps63802.pdf). Checked Nov 2026.

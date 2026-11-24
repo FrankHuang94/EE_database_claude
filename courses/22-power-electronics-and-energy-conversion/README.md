@@ -29,7 +29,7 @@ Converting and delivering power efficiently, from wearables to AI racks: switchi
 |---|---|---|---|
 | [22-01 · Power Conversion Principles](chapters/22-01-power-conversion-principles.md) | 6 | ✅ verified | [problems](problems/22-01-problems.md) · [solutions](solutions/22-01-solutions.md) · [lab](labs/22-01-lab/README.md) · [verify](verify/verify_22_01.py) |
 | [22-02 · Steady-State Analysis and the Buck Converter](chapters/22-02-buck-converter-steady-state.md) | 9 | ✅ verified | [problems](problems/22-02-problems.md) · [solutions](solutions/22-02-solutions.md) · [lab](labs/22-02-lab/README.md) · [verify](verify/verify_22_02.py) |
-| [22-03 · Boost, Buck-Boost and Other Topologies](chapters/22-03-boost-buck-boost-topologies.md) | 7 | ⬜ planned | — |
+| [22-03 · Boost, Buck-Boost and Other Topologies](chapters/22-03-boost-buck-boost-topologies.md) | 7 | ✅ verified | [problems](problems/22-03-problems.md) · [solutions](solutions/22-03-solutions.md) · [lab](labs/22-03-lab/README.md) · [verify](verify/verify_22_03.py) |
 | [22-04 · Isolated Converters: Flyback and Forward](chapters/22-04-isolated-converters.md) | 6 | ⬜ planned | — |
 | [22-05 · Magnetics Design](chapters/22-05-magnetics-design.md) | 7 | ⬜ planned | — |
 | [22-06 · Converter Losses and Wide-Bandgap Switches](chapters/22-06-converter-losses-and-wide-bandgap.md) | 7 | ⬜ planned | — |
