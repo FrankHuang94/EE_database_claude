@@ -7809,3 +7809,55 @@
   definition: "Damage to thin gate oxide from charge collected by long metal lines during plasma processing, before the line connects to a diffusion. Antenna rules limit the ratio of connected metal area to gate area; fixes are layer jumps and protection diodes."
   chapter: "19-09"
   see_also: [Design-rule check (DRC)]
+- term: Tree covering
+  definition: "A technology-mapping method: write the logic and every library cell as trees of two-input NANDs and inverters, then choose, by dynamic programming from the leaves up, the set of cell patterns that covers the tree at least total area or delay. Optimal for trees; logic with fanout is split into trees first."
+  chapter: "19-10"
+  see_also: [Technology mapping]
+- term: Liberty
+  definition: "The standard text format for standard-cell library models: each cell's function, area, pin capacitances, timing tables, power and design-rule limits, characterized at one process-voltage-temperature corner per file. Maintained by an industry advisory board under IEEE-ISTO."
+  chapter: "19-10"
+  see_also: [Nonlinear delay model (NLDM), Timing arc]
+- term: Nonlinear delay model (NLDM)
+  definition: "Liberty's table-lookup timing model: for each timing arc, delay and output transition tables indexed by input transition and output load, interpolated bilinearly between characterized points."
+  chapter: "19-10"
+  see_also: [Liberty, Timing arc]
+- term: Timing arc
+  definition: "A cause-and-effect timing relation from one pin of a cell to another (input to output, or clock to output), with its own delay tables and a unateness: negative (inverting), positive or non-unate."
+  chapter: "19-10"
+  see_also: [Nonlinear delay model (NLDM)]
+- term: Required time
+  definition: "The latest time a signal may arrive at a node without violating any downstream timing check, found by propagating constraints backward from the endpoints; slack is required time minus arrival time."
+  chapter: "19-10"
+  see_also: [Slack, Static timing analysis (STA)]
+- term: Synopsys Design Constraints (SDC)
+  definition: "The Tcl-based constraint format read by synthesis, timing and place-and-route tools: clock definitions, clock latency and uncertainty, input and output delays, port loads and drivers, and timing exceptions."
+  chapter: "19-10"
+  see_also: [False path, Multicycle path, Clock uncertainty]
+- term: Clock latency
+  definition: "The delay of a clock edge from its source to a register's clock pin: source latency outside the design plus network latency through the clock tree. The difference between two registers' latencies is their skew."
+  chapter: "19-10"
+  see_also: [Clock skew]
+- term: Clock uncertainty
+  definition: "A margin subtracted from every setup check (and added to hold checks) to cover clock jitter and effects the analysis does not otherwise model."
+  chapter: "19-10"
+  see_also: [Jitter, Clock latency]
+- term: PVT corner
+  definition: "A process-voltage-temperature condition at which a cell library is characterized, such as slow transistors at low voltage and high temperature; timing is signed off at several corners, often with separate wire (RC) corners."
+  chapter: "19-10"
+  see_also: [On-chip variation (OCV)]
+- term: On-chip variation (OCV)
+  definition: "Delay differences between nominally identical elements on one die at one corner. Modeled by flat late/early derates, by depth-dependent derates (AOCV), or statistically with a mean and sigma per arc (POCV, using Liberty Variation Format data)."
+  chapter: "19-10"
+  see_also: [PVT corner, Clock reconvergence pessimism removal (CRPR)]
+- term: Clock reconvergence pessimism removal (CRPR)
+  definition: "Crediting back the pessimism of derating the shared part of the launch and capture clock paths both late and early at once; the credit is the common delay times the difference between the late and early derates. Also called common path pessimism removal (CPPR)."
+  chapter: "19-10"
+  see_also: [On-chip variation (OCV)]
+- term: False path
+  definition: "A structural path that can never carry a transition in operation (for example through two multiplexers with complementary selects), excluded from timing analysis with set_false_path; wrongly declaring a real path false hides a failure."
+  chapter: "19-10"
+  see_also: [Multicycle path, Synopsys Design Constraints (SDC)]
+- term: Multicycle path
+  definition: "A path designed to take more than one clock cycle, constrained with set_multicycle_path; a setup multiplier of N is normally paired with a hold multiplier of N - 1 so the hold check stays at the launch edge."
+  chapter: "19-10"
+  see_also: [False path]
