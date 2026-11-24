@@ -8981,3 +8981,77 @@
   definition: A safety-rated capacitor across an isolation barrier that gives common-mode noise a return path; its line-frequency current 2πfCV flows into the touchable side, so the touch-current limit caps the total Y-capacitance.
   chapter: "22-04"
   see_also: [Galvanic isolation]
+- term: Air gap
+  definition: A deliberate break in a magnetic core's flux path, usually a fraction of a millimetre, whose reluctance dominates the core's; it sets the inductance by geometry and stores most of an inductor's energy.
+  chapter: "22-05"
+  see_also: [Reluctance, Fringing flux]
+- term: Inductance factor
+  definition: A_L = L/N², the inductance per turn squared of a core with a given gap, usually quoted in nH; the vendor's measured value includes fringing, so N = √(L/A_L).
+  chapter: "22-05"
+  see_also: [Air gap]
+- term: Effective permeability
+  definition: The relative permeability a gapless core of the same shape would need to give a gapped core's inductance, µ_e = µ_r/(1 + µ_r g/ℓ_e).
+  chapter: "22-05"
+  see_also: [Air gap, Relative permeability]
+- term: Fringing flux
+  definition: Flux that bulges outward around an air gap, enlarging the gap's effective area (raising the inductance) and cutting nearby turns, where it induces eddy-current loss.
+  chapter: "22-05"
+  see_also: [Air gap]
+- term: Steinmetz equation
+  definition: The empirical core-loss fit P_v = k·f^α·B_pk^β for sinusoidal flux, with k, α and β fitted over a limited range of frequency, flux density and temperature.
+  chapter: "22-05"
+  see_also: [Core loss, Improved generalized Steinmetz equation]
+- term: Improved generalized Steinmetz equation
+  definition: The iGSE, which reuses sine-wave Steinmetz parameters to estimate core loss for arbitrary flux waveforms by averaging a function of |dB/dt| over the period; for a triangle wave it adds the factor D^(1−α) + (1−D)^(1−α).
+  chapter: "22-05"
+  see_also: [Steinmetz equation]
+- term: Powder core
+  definition: A core pressed from insulated magnetic-metal particles, whose many tiny gaps act as a distributed air gap; it has high saturation flux density and saturates softly, which suits inductors carrying DC current.
+  chapter: "22-05"
+  see_also: [Soft saturation, Air gap]
+- term: Soft saturation
+  definition: The gradual fall of a powder core's inductance with DC bias as its particles saturate progressively, in contrast with the abrupt collapse of a gapped ferrite.
+  chapter: "22-05"
+  see_also: [Powder core, Saturation current]
+- term: Proximity effect
+  definition: Eddy currents induced in a conductor by the magnetic field of neighbouring conductors; in a multilayer winding it raises the AC resistance roughly as the square of the number of layers.
+  chapter: "22-05"
+  see_also: [Skin effect, Dowell's equation]
+- term: Dowell's equation
+  definition: The ratio of AC to DC resistance of a winding section of M layers of thickness h in a one-dimensional field, a function of Δ = h/δ; for thin layers it is about 1 + (5M² − 1)Δ⁴/45.
+  chapter: "22-05"
+  see_also: [Proximity effect, Skin depth]
+- term: Litz wire
+  definition: Wire made of many fine, individually insulated strands twisted so that each strand takes every position in the bundle, which keeps skin and proximity losses low at high frequency.
+  chapter: "22-05"
+  see_also: [Proximity effect]
+- term: Mean length per turn
+  definition: The average length of one turn of a winding on a given bobbin (MLT), used with the turns and wire area to compute the winding's resistance.
+  chapter: "22-05"
+- term: Window utilization factor
+  definition: The fraction K_u of a core's winding window that is filled with conductor, after insulation, bobbin and packing losses.
+  chapter: "22-05"
+  see_also: [Area product]
+- term: Area product
+  definition: A_p = A_e·W_A, the product of a core's cross-section and winding-window area; an inductor needs A_p ≥ L·I_pk·I_rms/(K_u·J·B_max).
+  chapter: "22-05"
+  see_also: [Core geometrical constant, Window utilization factor]
+- term: Core geometrical constant
+  definition: K_g = A_e²·W_A/MLT, which collects a core's geometry so that a design's copper-loss limit fixes the minimum core size; it scales as the fifth power of the core's linear dimensions.
+  chapter: "22-05"
+  see_also: [Area product]
+- term: Winding interleaving
+  definition: Splitting a transformer's windings into alternating sections (such as half primary, secondary, half primary) to lower the peak field between them, which cuts leakage inductance and proximity loss at the cost of more insulation and capacitance.
+  chapter: "22-05"
+  see_also: [Leakage inductance, Proximity effect]
+- term: Planar magnetics
+  definition: Inductors and transformers with flat windings made from PCB layers or stamped copper on low-profile cores, giving repeatable leakage and capacitance and a low height.
+  chapter: "22-05"
+- term: Coupled inductor
+  definition: Two or more inductors wound on a common core so that their currents interact; in a multiphase converter coupling can reduce each phase's ripple while keeping a fast transient response.
+  chapter: "22-05"
+  see_also: [Trans-inductor voltage regulator]
+- term: Trans-inductor voltage regulator
+  definition: The TLVR, a multiphase buck in which each phase's inductor has a secondary winding and all secondaries form one series loop, so a transient on any phase drives every phase's current at once.
+  chapter: "22-05"
+  see_also: [Coupled inductor]

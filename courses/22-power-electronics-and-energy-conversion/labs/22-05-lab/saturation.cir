@@ -1,0 +1,29 @@
+* Lab 22-05, Part 1 -- Example 22-05.3's gapped flyback core, driven by a 100 V step, with a saturating core.
+* The winding voltage is integrated into the flux linkage lam, so B = lam/(N Ae). The ferrite's B-H curve is
+* B = Bs tanh(mur mu0 H/Bs) + mu0 H: linear with slope mur mu0 at low H, and slope mu0 (air) once saturated.
+* Node h carries the core's field H, solved implicitly: the current source drives the curve's B to equal lam/(N Ae).
+* The winding current then follows from the magnetic circuit, N i = H le + B g/mu0.
+* Core: TDK ETD 34/17/11, N87 (le 78.6 mm, Ae 97.1 mm^2, ungapped mu_e 1675, Bs 390 mT at 100 C);
+* 32 turns; gap 0.5134 mm (the ideal-model gap that gives 223 uH in the linear limit).
+* EXPECT i_ton key:README.md#Lab_22-05.a rtol=2e-3
+* EXPECT i_115 key:README.md#Lab_22-05.b rtol=2e-3
+* EXPECT i_125 key:README.md#Lab_22-05.c rtol=5e-3
+.param N=32 Ae=97.1e-6 le=78.6e-3 mur=1674.8148 g=0.51337404e-3 Bs=0.39 mu0=1.25663706144e-6 V=100
+Vin in 0 dc {V}
+Vs in w dc 0
+* flux-linkage integrator: d(lam)/dt = v(w)
+Gint 0 lam w 0 1
+Clam lam 0 1 ic=0
+Rlam lam 0 1e15
+* implicit solve for the core field H = V(h): k (B_target - B(H)) = V(h)/Rh, with k Rh = 1e18
+Bh 0 h I = 1e6*(V(lam)/({N}*{Ae}) - ({Bs}*tanh({mur}*{mu0}*V(h)/{Bs}) + {mu0}*V(h)))
+Rh h 0 1e12
+* winding current from the magnetic circuit
+Bw w 0 I = (V(h)*{le} + V(lam)/({N}*{Ae})*{g}/{mu0})/{N}
+.control
+tran 2n 12.6u 0 2n uic
+meas tran i_ton find i(Vs) at=5.61u
+meas tran i_115 find i(Vs) at=11.5u
+meas tran i_125 find i(Vs) at=12.5u
+.endc
+.end

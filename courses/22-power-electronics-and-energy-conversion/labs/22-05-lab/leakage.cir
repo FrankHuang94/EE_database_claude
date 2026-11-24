@@ -1,0 +1,38 @@
+* Lab 22-05, Part 2 -- short-circuit and open-circuit tests on Example 22-05.8's transformer (9:9, referred to
+* the primary). The leakage is split equally between the windings: L1 = L2 = Lm + Llk/2 and k = Lm/(Lm + Llk/2).
+* 1 uOhm series resistors break the DC source-inductor loops; they do not change imag(Z).
+* With the secondary shorted, Z_in = j w L1 (1 - k^2) = j w Llk (Lm + Llk/4)/(Lm + Llk/2), within 0.02% of Llk here.
+* Lm = 2600 nH x 81 = 210.6 uH; Llk = 0.147324 uH (layered) and 0.044197 uH (P/2-S-P/2 interleaved).
+* EXPECT lsc_a key:../../chapters/22-05-magnetics-design.md#Ex_22-05.8g scale=1e-6 rtol=4e-3
+* EXPECT lsc_b key:../../chapters/22-05-magnetics-design.md#Ex_22-05.8h scale=1e-6 rtol=1e-3
+* EXPECT loc key:../../chapters/22-05-magnetics-design.md#Ex_22-05.8i scale=1e-6 rtol=1e-3
+.param Lm=210.6u La=0.147324u Lb=0.044197u
+* (a) layered windings, secondary shorted
+Va qa 0 dc 0 ac 1
+Ras qa pa 1u
+L1a pa 0 {Lm+La/2}
+L2a sa 0 {Lm+La/2}
+Rsa sa 0 1u
+Ka L1a L2a {Lm/(Lm+La/2)}
+* (b) interleaved windings, secondary shorted
+Vb qb 0 dc 0 ac 1
+Rbs qb pb 1u
+L1b pb 0 {Lm+Lb/2}
+L2b sb 0 {Lm+Lb/2}
+Rsb sb 0 1u
+Kb L1b L2b {Lm/(Lm+Lb/2)}
+* (c) open-circuit test on the layered transformer
+Vc qc 0 dc 0 ac 1
+Rcs qc pc 1u
+L1c pc 0 {Lm+La/2}
+L2c sc 0 {Lm+La/2}
+Rsc sc 0 1G
+Kc L1c L2c {Lm/(Lm+La/2)}
+.control
+ac lin 1 100k 100k
+let lsc_a = imag(1/(-i(Va)))/(2*pi*100e3)
+let lsc_b = imag(1/(-i(Vb)))/(2*pi*100e3)
+let loc = imag(1/(-i(Vc)))/(2*pi*100e3)
+print lsc_a lsc_b loc
+.endc
+.end

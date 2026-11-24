@@ -4245,3 +4245,50 @@ R&D % = R&D ÷ revenue.
   - "Most FR4 PCBs" are material group IIIa; "IEC 60950-1 had been withdrawn in December, 2020".
 - **Vishay *VY1 series* data sheet (revision 28 Sep 2026)** [Established]: "Class X1, 760 VAC, Class Y1, 500 VAC"; "Component test (100 %): 4000 VAC, 50 Hz, 2 s"; "Impulse voltage 3 pulses of 8 kV No failure"; "Reinforced insulation".
 - **Sources:** [UL brief](https://japan.ul.com/wp-content/uploads/sites/27/2014/06/1_techbrief_ESvsSELV.pdf); [SLUP421](https://www.ti.com/lit/pdf/SLUP421); [Vishay VY1](https://www.vishay.com/docs/28537/vy1series.pdf). Checked Nov 2026.
+
+## R-427 · Core materials and core data sheets (Course 22, magnetics)
+
+*Read on 24 Nov 2026 by a research subagent (PDFs downloaded and read with pdftotext; key tables checked against page images).*
+
+- **TDK Electronics, *ETD 34/17/11 – Core and accessories*, B66361/B66362, Oct 2022** [Established]:
+  - "Σl/A = 0.81 mm–1; le = 78.6 mm; Ae = 97.1 mm2; Amin = 91.6 mm2; Ve = 7630 mm3".
+  - Ungapped: "N87 2600 +30/–20% 1670 < 4.00 (200 mT, 100 kHz, 100 °C)" (A_L in nH, µe, W/set).
+  - Gapped A_L for N27/N87 (gap mm → nH, µe): 0.10 → 790, 508; 0.20 → 482, 310; 0.50 → 251, 161; 1.00 → 153, 98; 2.50 → 80, 50. "The AL value in the table applies to a core set comprising one ungapped core (dimension g = 0 mm) and one gapped core".
+  - Fit "K1 (25 °C) 153, K2 –0.713", valid for 0.10–2.50 mm. Coil former "AN 122 mm2, lN 60.5 mm". Centre pole Ø11.1 mm.
+- **Ferroxcube, *ETD34/17/11* product specification (2016)** [Established]: "Ve 7640 mm³; Le 78.6; Ae 97.1; Amin 91.6"; 3C95 maximum loss "100 kHz 200 mT 100 ºC 3.700 W/set". The 2002 ETD34 data sheet gives the CPH-ETD34 coil former a "min winding width 20.9 mm".
+- **Ferroxcube material sheets** [Established]: 3C95 (2015 October 02, the current revision): "A low to medium frequency power material with low power losses from 25 to 100 °C"; "B … 25 °C … ≈ 530 mT … 100 °C … ≈ 410"; "PV 25 °C; 100 kHz; 200 mT ≈ 350 kW/m3 … 100 °C … ≈ 290"; "ρ DC, 25 °C ≈5 Ωm". 3C97 (2018 August 09): "≈ 320 kW/m3" at 60 °C and "≈ 380" at 140 °C (100 kHz, 200 mT).
+- **PQ 32/30 by two vendors** [Established]: TDK (Oct 2022) "le 67.80; Ae 153.8; Amin 127.5; Ve 10440"; Ferroxcube (2016) "Ve 12500, Le 74.7, Ae 167, Amin 142".
+- **VACUUMSCHMELZE, *VITROPERM 500/800*, Rev. 2019-03** [Established]: "Saturation polarization (nanocrystalline @ 20°C) 1.24 T"; "Magnetic power loss (VP 800 F @ 100 kHz, 0,3 T) ≤ 80 W/kg"; "Mass density (nanocrystalline) 7.35 g/cm3"; "Electrical resistivity (nanocrystalline) 1.15 μΩm"; ribbon "14 ± 2 / 16 ± 2 / 18 ± 3 μm".
+- **U.S. DOE NETL, *MnZn Ferrite Material (EPCOS N87) datasheet*, Rev 0.1, Sep 2018** [Established method; one-core numbers]: fit P_w = k_w (f/f0)^α (B/B0)^β per unit mass with f0 = 1 Hz, B0 = 1 T; sine: k_w = 3.478e-05, α = 1.635, β = 2.253.
+- **Derived here:** N87 ETD34 guaranteed loss density 4.00 W/7630 mm³ = 524 kW/m³; 3C95 ETD34 3.700 W/7640 mm³ = 484 kW/m³, 1.67 times the 3C95 typical; ungapped µe from A_L = 1675.
+- **Sources:** [TDK ETD 34/17/11](https://www.tdk-electronics.tdk.com/inf/80/db/fer/etd_34_17_11.pdf); [Ferroxcube ETD34](https://www.ferroxcube.com/upload/media/product/file/Pr_ds/ETD34_17_11.pdf); [Ferroxcube 3C95](https://www.ferroxcube.com/upload/media/product/file/MDS/3c95.pdf); [Ferroxcube 3C97](https://www.ferroxcube.com/upload/media/product/file/MDS/3c97.pdf); [TDK PQ 32/30](https://www.tdk-electronics.tdk.com/inf/80/db/fer/pq_32_30.pdf); [VITROPERM](https://www.vacuumschmelze.com/03_Documents/Brochures/Datasheet%20VITROPERM%20500%20-%20800.pdf); [NETL N87](https://netl.doe.gov/projects/files/MnZnFerriteMaterialEPCOSN87_093018.pdf). Checked Nov 2026.
+
+## R-428 · Windings: copper, skin and proximity effects, Litz wire (Course 22)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **NBS Handbook 100, *Copper Wire Tables*, Feb 1966** [Established]: the IEC standard "volume resistivity of standard annealed copper is 1/58=0.017241 … ohm square millimetre per metre" and "0.00393 = 1/254.45 … per degree Centigrade".
+- **L. Dixon, TI Magnetics Design Handbook sections (2000–2001)** [Established practice]:
+  - SLUP125 "Windings", p. 3-2: "In copper at 100°C, resistivity, ρ = 2.3•10-8 Ω-m … D_PEN = 7.6/√f cm … At 100 kHz in copper, D_PEN = .024 cm." p. 3-4: "With the large ac currents in a transformer, R_AC/R_DC of 1.5 is generally considered optimum." p. 3-8: "In a small transformer with a bobbin and with high voltage isolation requirements, perhaps only 25% or 30% of the window area is copper."
+  - SLUP126 "Power Transformer Design": p. 4-3, "total losses are at a broad minimum when core losses are approximately equal to or a little less than winding losses"; p. 4-8, "assumes a window utilization of 40% copper", "current density of 420A/cm2", "Use the ∆B value that results in a core loss of 100mW/cm3".
+  - SLUP127 "Inductor and Flyback Transformer Design", p. 5-4: "A_g ≈ (a+ℓg)×(b+ℓg)", "helpful when the correction is less than 20%"; "Windings have been known to melt in this vicinity"; "several small gaps will dramatically reduce the extent of the fringing field".
+- **New England Wire Technologies, "Traditional Litz Wire Theory" (undated web page)** [Industry estimate]: recommended strand gauge 38 AWG for 50–100 kHz, 40 AWG for 100–200 kHz, 42 AWG for 200–350 kHz.
+- **C. R. Sullivan and R. Y. Zhang, "Simplified design method for litz wire," IEEE APEC 2014, pp. 2667–2674, doi:10.1109/APEC.2014.6803681** [Contested framing]: "Simple approaches, such as tables of recommended strand diameter by frequency, can backfire, in some cases leading to higher resistance than a simple solid-wire or foil winding".
+- **P. L. Dowell, "Effects of eddy currents in transformer windings," Proc. IEE 113(8):1387–1394, 1966** (Crossref-verified).
+- **Sources:** [NBS Handbook 100](https://nvlpubs.nist.gov/nistpubs/Legacy/hb/nbshandbook100.pdf); [SLUP125](https://www.ti.com/lit/ml/slup125/slup125.pdf); [SLUP126](https://www.ti.com/lit/ml/slup126/slup126.pdf); [SLUP127](https://www.ti.com/lit/ml/slup127/slup127.pdf); [New England Wire](https://www.newenglandwire.com/traditional-litz-wire-theory); [Sullivan and Zhang](https://www.ryz.web.illinois.edu/pdf/simplitz_apec2014.pdf). Checked Nov 2026.
+
+## R-429 · Powder cores, coupled and planar magnetics, data-driven core loss (Course 22)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **Magnetics, *2025 Magnetics Powder Cores Catalog* (Apr 2025; distributor copy, because mag-inc.com catalog links returned 404)** [Established]: p. 63, "% initial permeability = 1/(a + bH^c) where H is Oersteds (Oe)", "Fit valid only for range shown on graph"; Kool Mµ toroid 60µ: a = 0.01, b = 2.142E-06, c = 1.855; 26µ: 0.01, 5.266E-07, 1.819. p. 10 (60µ): Kool Mµ keeps 80% of µi at 45 Oe and 50% at 95 Oe. p. 9: "Kool Mμ powder cores are distributed air gap cores".
+- **Magnetics, "Learn More about Powder Cores" (© 2026)** [Established]: "Soft saturation is a distributed gap material advantage over a ferrite."
+- **TLVR** [Industry estimate unless noted]:
+  - Google defensive publication, Technical Disclosure Commons, 9 May 2019: each phase's output inductor "is the secondary winding of a transformer whose primary windings are all connected in a series loop" [Established].
+  - TI SLUP413 (2024): "Introduced in 2019 … (a >40% capacitor reduction for the design example reviewed in this topic)".
+  - Infineon AN_2011_PL12_2012_221647, V1.0 (2021): "large output capacitors can be removed. These are mostly polymeric capacitors"; "One drawback is that the output ripple current becomes larger."
+  - Z. Wang, Y. Li and Y. Wang, IEEE APEC 2025, pp. 485–490, doi:10.1109/APEC48143.2025.10977329: "TLVR suffers from low light-load efficiency due to the interphase coupling"; "12V/1.8V, 500kHz, 80A 4phase … average light load efficiency improvement of 2.9%" [Established, one paper].
+- **Payton Planar, "About Payton's planar transformer" (undated)** [Industry estimate, vendor marketing]: "Low Leakage: Inductance ~0.2% of primary inductance"; "efficiency (typically 98–99%)"; power density "Up to 3×".
+- **MagNet** [Established]: APEC 2022 (doi:10.1109/APEC43599.2022.9773372) abstract, "over 150,000 excitation waveforms for six ferrite materials"; IEEE OJPEL 6:883–898 (2025, doi:10.1109/OJPEL.2024.3469916): "Over 2,000,000 data points like this are available in the MagNet database for 15 different materials"; "In April 2023, 39 teams from 17 countries registered".
+- **Derived here:** the 60µ Kool Mµ fit gives 76.7% at 50 Oe and 47.7% at 100 Oe.
+- **Sources:** [Magnetics catalog (distributor copy)](https://www.acalbfi.com/media/pdf/Magnetics-Powder-Core-Catalog-2024.pdf); [Magnetics powder-core page](https://www.mag-inc.com/Products/Powder-Cores/Learn-More-about-Powder-Cores); [Google TDCommons](https://www.tdcommons.org/dpubs_series/2194); [TI SLUP413](https://www.ti.com/lit/pdf/slup413); [Infineon TLVR AN (mirror)](https://www.eenewseurope.com/download_whitepaper/18484); [Wang et al. 2025](https://pearl.shanghaitech.edu.cn/pdf/wangziyao2025.pdf); [Payton](https://paytongroup.com/about-paytons-planar-transformer); [MagNet Challenge](https://repository.tudelft.nl/file/File_e85a2106-420c-4e9c-8194-9627ad46e046). Checked Nov 2026.
