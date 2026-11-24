@@ -1,0 +1,23 @@
+* Lab 22-04: a CCM flyback, 150 V to 20 V at 3.25 A (Example 22-04.1), 100 kHz
+* Coupled inductors with unity coupling: primary 500 uH, secondary 500 uH / 6.4^2 (turns ratio 6.4).
+* The switch is on for D = 128/278 of each period; a near-ideal output diode (about 15 mV) feeds 470 uF
+* and a 6.154 ohm load. The drain voltage is sampled in the middle of the last off-time.
+* EXPECT vout 20 rtol=1e-2
+* EXPECT vdoff key:../../chapters/22-04-isolated-converters.md#Ex_22-04.1d rtol=1e-2
+.model swm sw vt=0.5 vh=0 ron=1m roff=1G
+.model dideal d is=1e-12 n=0.02 rs=1m
+Vin in 0 dc 150
+Vg g 0 pulse(0 1 0 1n 1n 4.6033u 10u)
+Lp in drain 500u
+Ls 0 s 12.20703u
+Kps Lp Ls 1
+Sw drain 0 g 0 swm
+Dout s out dideal
+Cout out 0 470u ic=20
+Rl out 0 6.1538
+.control
+tran 5n 15m 0 10n uic
+meas tran vout avg v(out) from=14m to=15m
+meas tran vdoff find v(drain) at=14.99726m
+.endc
+.end

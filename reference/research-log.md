@@ -4228,3 +4228,20 @@ R&D % = R&D ÷ revenue.
   - "Input voltage range: 1.3 V to 5.5 V"; "Output voltage range: 1.8 V to 5.2 V (adjustable)"; "2-A output current for VI ≥ 2.3 V, VO = 3.3 V"; "11-µA operating quiescent current"; "Small 0.47-µH inductor".
   - It "automatically operates in boost, buck, or in a novel 4-cycle buck-boost mode when the input voltage is approximately equal to the output voltage. The transitions between modes happen at defined thresholds and avoid unwanted toggling".
 - **Sources:** [TPS61023](https://www.ti.com/lit/ds/symlink/tps61023.pdf); [TPS63802](https://www.ti.com/lit/ds/symlink/tps63802.pdf). Checked Nov 2026.
+
+## R-426 · Isolation and safety for converters (Course 22)
+
+*Read on 24 Nov 2026 by a research subagent. Secondary summaries of IEC tables; the standards themselves are paywalled and were not opened.*
+
+- **C. Sato (UL), "Electrical Energy Source (ES) vs. SELV and LCC," IEC 62368-1 Technical Brief, 4 Jun 2010** [Established for the 1st and 2nd editions; the 2023 edition was not checked]:
+  - "ES1 is considered safe for all persons, including children, to touch".
+  - Summary table, ES1: "30 V rms 42.4 V peak" below 1 kHz, "60 V dc"; touch current "0.5 mArms 0.7 mA peak" below 1 kHz and "2 mA dc".
+- **W. Zhang and T. LaBella, "Demystifying clearance and creepage distance for high-voltage end equipment," TI SLUP421 (© 2024)** [Established, secondary summary of IEC 60664-1 and IEC 62368-1]:
+  - Mains transient at ≤ 300 V L-N for OVC I/II/III/IV: "1,500 2,500 4,000 6,000" V.
+  - Clearance for 4.0 kV: "3.0 (3.8)" mm, the parentheses being IEC 62368-1 Table 10.
+  - "For reinforced insulation, dimension CLR as specified the rate impulse voltage in Table F.2 but one step higher".
+  - Creepage at 400 Vrms, PD2: MG I/II/III "2.0 2.8 4.0" mm. "CPG for reinforced insulation shall be twice the CPG for basic".
+  - Telecom example: "Clearance at 5,000 m 5.7 mm (3.8 mm × 1.48)".
+  - "Most FR4 PCBs" are material group IIIa; "IEC 60950-1 had been withdrawn in December, 2020".
+- **Vishay *VY1 series* data sheet (revision 28 Sep 2026)** [Established]: "Class X1, 760 VAC, Class Y1, 500 VAC"; "Component test (100 %): 4000 VAC, 50 Hz, 2 s"; "Impulse voltage 3 pulses of 8 kV No failure"; "Reinforced insulation".
+- **Sources:** [UL brief](https://japan.ul.com/wp-content/uploads/sites/27/2014/06/1_techbrief_ESvsSELV.pdf); [SLUP421](https://www.ti.com/lit/pdf/SLUP421); [Vishay VY1](https://www.vishay.com/docs/28537/vy1series.pdf). Checked Nov 2026.

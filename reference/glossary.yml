@@ -8921,3 +8921,63 @@
   definition: A boost converter's behaviour when its input exceeds its set output; it then stops switching and holds its high-side switch on, so the output follows the input less a small drop.
   chapter: "22-03"
   see_also: [Boost converter]
+- term: Galvanic isolation
+  definition: Separation of two circuits so that no conductive path connects them, while energy or signals still cross by magnetic, capacitive or optical coupling; required between mains and anything a user can touch.
+  chapter: "22-04"
+  see_also: [Reinforced insulation, Flyback converter]
+- term: Core reset
+  definition: Returning a transformer's magnetizing current, and so its core flux, to its starting value every switching cycle; volt-second balance applied to the magnetizing inductance, without which the core walks into saturation.
+  chapter: "22-04"
+  see_also: [Magnetizing inductance, Tertiary winding]
+- term: Flyback converter
+  definition: An isolated buck-boost whose coupled inductor stores energy in its magnetizing inductance during the on-time and releases it through the secondary during the off-time, V = (V_in/n)·D/(1 − D); the usual topology below about 100–150 W.
+  chapter: "22-04"
+  see_also: [Buck-boost converter, Reflected voltage]
+- term: Reflected voltage
+  definition: A flyback's output voltage multiplied by the turns ratio, n·V, which appears on the primary during the off-time and adds to the input across the switch.
+  chapter: "22-04"
+  see_also: [Flyback converter]
+- term: Quasi-resonant flyback
+  definition: A flyback that waits after the magnetizing current reaches zero and turns its switch on at a valley of the drain's ringing, cutting capacitive turn-on loss at the cost of a load- and line-dependent frequency.
+  chapter: "22-04"
+  see_also: [Flyback converter]
+- term: RCD clamp
+  definition: A diode, capacitor and resistor that catch a transformer's leakage-inductance current when the switch opens, holding the drain at a clamp voltage; it absorbs ½·L_lk·I_pk²·V_c/(V_c − V_R) per cycle.
+  chapter: "22-04"
+  see_also: [Leakage inductance, Active clamp]
+- term: Active clamp
+  definition: A second switch and capacitor that absorb a converter's leakage energy and return it instead of burning it, often also enabling zero-voltage switching.
+  chapter: "22-04"
+  see_also: [RCD clamp]
+- term: Forward converter
+  definition: An isolated buck converter that passes power through its transformer during the on-time into an LC output filter, V = D·V_in/n, and must reset its core during the off-time.
+  chapter: "22-04"
+  see_also: [Tertiary winding, Buck converter]
+- term: Tertiary winding
+  definition: A third transformer winding, connected through a diode to the input, that returns a forward converter's magnetizing energy and resets its core; with N3 = N1 it limits the duty cycle to 0.5 and the switch voltage to 2·V_in.
+  chapter: "22-04"
+  see_also: [Forward converter, Core reset]
+- term: Full-bridge converter
+  definition: An isolated converter whose four switches drive the transformer primary to ±V_in, so each switch blocks only V_in and the core is used in both directions; preferred at higher power.
+  chapter: "22-04"
+  see_also: [Flux walking]
+- term: Flux walking
+  definition: The gradual drift of a bridge or push-pull transformer's flux toward saturation when the positive and negative volt-seconds are not exactly equal; prevented by current-mode control or a series blocking capacitor.
+  chapter: "22-04"
+  see_also: [Full-bridge converter, Core reset]
+- term: Reinforced insulation
+  definition: A single insulation system that gives protection against electric shock equivalent to double insulation (basic plus supplementary); required between mains and user-touchable parts, with doubled creepage and higher-impulse clearance.
+  chapter: "22-04"
+  see_also: [Creepage, Clearance]
+- term: Clearance
+  definition: The shortest distance through air between two conductors, sized to withstand the mains' transient overvoltage for the insulation grade and increased with altitude.
+  chapter: "22-04"
+  see_also: [Creepage]
+- term: Creepage
+  definition: The shortest distance along an insulating surface between two conductors, sized by working voltage, pollution degree and the surface material's tracking resistance; reinforced creepage is twice basic.
+  chapter: "22-04"
+  see_also: [Clearance]
+- term: Y-capacitor
+  definition: A safety-rated capacitor across an isolation barrier that gives common-mode noise a return path; its line-frequency current 2πfCV flows into the touchable side, so the touch-current limit caps the total Y-capacitance.
+  chapter: "22-04"
+  see_also: [Galvanic isolation]

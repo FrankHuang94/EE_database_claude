@@ -1,0 +1,33 @@
+* Lab 22-04: a forward converter with tertiary reset, 48 V to 5 V at 5 A, 250 kHz
+* Three coupled windings with unity coupling, N1:N2:N3 = 3:1:3 (primary and tertiary 300 uH, secondary
+* 33.33 uH). D = 15/48 = 0.3125. Near-ideal diodes: D1 forward rectifier, D2 freewheel, D3 tertiary reset
+* back to the input. Output filter 10 uH and 100 uF into 1 ohm. The drain is sampled in the middle of the
+* reset interval, where it should sit at V_in (1 + N1/N3) = 96 V; the magnetizing current is checked to
+* return to zero before each on-time.
+* EXPECT vout 5 rtol=1e-2
+* EXPECT vdreset key:../../chapters/22-04-isolated-converters.md#Ex_22-04.3e scale=0.64 rtol=1e-2
+* EXPECT imend 0 atol=1e-3
+.model swm sw vt=0.5 vh=0 ron=1m roff=1G
+.model dideal d is=1e-12 n=0.02 rs=1m
+Vin in 0 dc 48
+Vg g 0 pulse(0 1 0 1n 1n 1.249u 4u)
+Lp in drain 300u
+Ls a 0 33.3333u
+Lt 0 t 300u
+K1 Lp Ls 1
+K2 Lp Lt 1
+K3 Ls Lt 1
+Sw drain 0 g 0 swm
+D3 t in dideal
+D1 a x dideal
+D2 0 x dideal
+Lo x out 10u ic=5
+Co out 0 100u ic=5
+Rl out 0 1
+.control
+tran 2n 2m 0 4n uic
+meas tran vout avg v(out) from=1.9m to=2m
+meas tran vdreset find v(drain) at=1.99787m
+meas tran imend find i(Lp) at=1.99999m
+.endc
+.end
