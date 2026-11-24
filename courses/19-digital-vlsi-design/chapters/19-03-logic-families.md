@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 19-03 · Combinational Logic Families
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The combinational-logic chapter of a senior digital-IC course: static CMOS gates and their sizing, the delay of transistor stacks, ratioed (pseudo-NMOS) logic, pass-transistor and transmission-gate logic, and dynamic and domino logic (Rabaey, Chandrakasan & Nikolić, *Digital Integrated Circuits*, ch. 6; Weste & Harris, *CMOS VLSI Design*, ch. 9) |
 | **Prerequisites** | [19-01](19-01-cmos-inverter-static.md) and [19-02](19-02-cmos-inverter-dynamic.md) (the inverter, static and dynamic), [08-02](../../08-digital-logic-design/chapters/08-02-boolean-algebra-and-gates.md) (gates as switch networks), [09-09](../../09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md) (the body effect), [01-06](../../01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md) (the Elmore delay as a centroid) |
 | **Estimated study hours** | 8 |
-| **Last verified** | 2026-11-21 |
+| **Last verified** | 2026-11-24 |
 
 **Learning objectives.** After this chapter you can:
 

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 19-12 · Design for Test: Scan, BIST and ATPG
 
 | | |

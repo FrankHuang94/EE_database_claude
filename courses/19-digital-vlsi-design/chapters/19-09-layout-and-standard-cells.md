@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 19-09 · Layout, Design Rules and Standard Cells
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The physical-design fundamentals of a senior digital-IC course: process layers and masks, design rules, stick diagrams and Euler paths, standard-cell architecture, area estimation, and physical verification (DRC, LVS, extraction, antenna rules) (Weste & Harris, *CMOS VLSI Design*, ch. 1 and 3; Rabaey, Chandrakasan & Nikolić, *Digital Integrated Circuits*, ch. 2) |
 | **Prerequisites** | [19-03](19-03-logic-families.md) (static CMOS networks), [19-04](19-04-sizing-and-logical-effort.md) (drive strengths), [19-05](19-05-interconnect.md) (metal layers), [09-11](../../09-semiconductor-devices/chapters/09-11-cmos-and-scaling.md) (CMOS structure) and [09-12](../../09-semiconductor-devices/chapters/09-12-finfet-gaa-cfet-backside-power.md) (FinFETs, nanosheets and backside power) |
 | **Estimated study hours** | 6 |
-| **Last verified** | 2026-11-21 |
+| **Last verified** | 2026-11-24 |
 
 **Learning objectives.** After this chapter you can:
 

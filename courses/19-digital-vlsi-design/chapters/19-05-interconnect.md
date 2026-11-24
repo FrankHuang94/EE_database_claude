@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 19-05 · Interconnect
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The interconnect chapter of a senior digital-IC course: wire resistance and capacitance, the distributed RC line, Elmore estimates of driver–wire–load delay, repeater insertion, capacitive crosstalk, and how wires scale (Rabaey, Chandrakasan & Nikolić, *Digital Integrated Circuits*, ch. 4 and 9; Weste & Harris, *CMOS VLSI Design*, ch. 6; Ho, Mai & Horowitz, "The Future of Wires") |
 | **Prerequisites** | [19-02](19-02-cmos-inverter-dynamic.md) (RC delay), [19-03](19-03-logic-families.md) (the Elmore delay), [19-04](19-04-sizing-and-logical-effort.md) (sizing for minimum delay), [04-05](../../04-physics-for-ee/chapters/04-05-current-resistance-and-conduction.md) (resistivity), [04-04](../../04-physics-for-ee/chapters/04-04-potential-capacitance-and-dielectrics.md) (capacitance), [02-09](../../02-complex-numbers-des-and-linear-algebra/chapters/02-09-systems-of-odes-and-matrix-exponential.md) (systems of ODEs) |
 | **Estimated study hours** | 8 |
-| **Last verified** | 2026-11-21 |
+| **Last verified** | 2026-11-24 |
 
 **Learning objectives.** After this chapter you can:
 

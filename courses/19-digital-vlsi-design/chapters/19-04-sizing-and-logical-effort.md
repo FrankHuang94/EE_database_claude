@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 19-04 · Transistor Sizing and Logical Effort
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The path-sizing part of a senior digital-IC course: the method of logical effort, optimal buffer chains and the best number of stages, and choosing gate topologies for speed (Sutherland, Sproull & Harris, *Logical Effort*, ch. 1–4; Weste & Harris, *CMOS VLSI Design*, §4.5; Rabaey, Chandrakasan & Nikolić, §5.4.3 and §6.2.1) |
 | **Prerequisites** | [19-02](19-02-cmos-inverter-dynamic.md) (intrinsic delay, self-loading and FO4), [19-03](19-03-logic-families.md) (static gates, their sizing and input capacitance), [01-04](../../01-calculus-for-engineers/chapters/01-04-applications-of-derivatives.md) (optimization with derivatives), [01-09](../../01-calculus-for-engineers/chapters/01-09-multivariable-calculus-1.md) (Lagrange multipliers) |
 | **Estimated study hours** | 9 |
-| **Last verified** | 2026-11-21 |
+| **Last verified** | 2026-11-24 |
 
 **Learning objectives.** After this chapter you can:
 

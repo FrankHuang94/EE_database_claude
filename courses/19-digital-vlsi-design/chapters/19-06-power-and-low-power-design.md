@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 19-06 · Power and Low-Power Design
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The power chapter of a senior digital-IC course: switching, short-circuit and leakage power, voltage and frequency scaling, parallelism, clock and power gating, multiple thresholds and the minimum-energy point (Rabaey, Chandrakasan & Nikolić, *Digital Integrated Circuits*, §5.5 and ch. 11; Weste & Harris, *CMOS VLSI Design*, ch. 5) |
 | **Prerequisites** | [19-01](19-01-cmos-inverter-static.md) (subthreshold operation and the supply floor), [19-02](19-02-cmos-inverter-dynamic.md) (delay against supply and the energy–delay product), [09-09](../../09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md) (subthreshold current), [18-09](../../18-embedded-systems-and-microcontrollers/chapters/18-09-ultra-low-power-design.md) (power modes at the system level) |
 | **Estimated study hours** | 9 |
-| **Last verified** | 2026-11-21 |
+| **Last verified** | 2026-11-24 |
 
 **Learning objectives.** After this chapter you can:
 

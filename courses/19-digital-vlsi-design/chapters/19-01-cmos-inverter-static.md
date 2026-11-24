@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 19-01 · The CMOS Inverter: Static Characteristics
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The static inverter analysis of a senior digital-IC course: the transfer curve region by region, switching threshold, unity-gain points and noise margins, sizing for symmetry, and robustness to supply and variation (Rabaey, Chandrakasan & Nikolić, *Digital Integrated Circuits*, ch. 5; Weste & Harris, *CMOS VLSI Design*, ch. 2) |
 | **Prerequisites** | [09-11](../../09-semiconductor-devices/chapters/09-11-cmos-and-scaling.md) (the inverter's first look), [09-09](../../09-semiconductor-devices/chapters/09-09-long-channel-mosfet.md) (square law and subthreshold current), [09-10](../../09-semiconductor-devices/chapters/09-10-short-channel-effects-and-leakage.md) (velocity saturation), [10-04](../../10-electronics-1/chapters/10-04-small-signal-models.md) (small-signal $g_m$ and $r_o$), [08-02](../../08-digital-logic-design/chapters/08-02-boolean-algebra-and-gates.md) (logic levels) |
 | **Estimated study hours** | 8 |
-| **Last verified** | 2026-11-21 |
+| **Last verified** | 2026-11-24 |
 
 **Learning objectives.** After this chapter you can:
 

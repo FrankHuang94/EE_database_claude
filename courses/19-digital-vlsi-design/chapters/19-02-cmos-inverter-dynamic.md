@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 19-02 · The CMOS Inverter: Dynamic Behavior and Delay
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The dynamic inverter analysis of a senior digital-IC course: load capacitance, propagation delay from the device equations and from an equivalent resistance, sizing and self-loading, the FO4 metric, ring oscillators and supply scaling (Rabaey, Chandrakasan & Nikolić, *Digital Integrated Circuits*, ch. 5; Weste & Harris, *CMOS VLSI Design*, ch. 4) |
 | **Prerequisites** | [19-01](19-01-cmos-inverter-static.md) (the static transfer curve), [07-02](../../07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md) (RC transients), [09-08](../../09-semiconductor-devices/chapters/09-08-mos-capacitor.md) (gate capacitance), [09-06](../../09-semiconductor-devices/chapters/09-06-pn-junction-iv-and-capacitance.md) (junction capacitance), [12-03](../../12-electronics-2/chapters/12-03-frequency-response-miller-poles-zeros.md) (the Miller effect) |
 | **Estimated study hours** | 8 |
-| **Last verified** | 2026-11-21 |
+| **Last verified** | 2026-11-24 |
 
 **Learning objectives.** After this chapter you can:
 

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 19-13 · Verification: Simulation, UVM, Formal and Emulation
 
 | | |

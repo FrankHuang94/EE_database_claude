@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 19-10 · The ASIC Flow I: Synthesis and Static Timing Analysis
 
 | | |

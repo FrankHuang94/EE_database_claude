@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 19-07 · Sequential Circuits, Timing and Clocking
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The sequencing and clocking chapter of a senior digital-IC course: latch and flip-flop timing parameters, setup and hold constraints with skew and jitter, sequencing overhead and pipelining, latch-based design and time borrowing, metastability and synchronizers, and clock distribution (Weste & Harris, *CMOS VLSI Design*, ch. 10 and 13; Rabaey, Chandrakasan & Nikolić, *Digital Integrated Circuits*, ch. 7 and 10) |
 | **Prerequisites** | [08-06](../../08-digital-logic-design/chapters/08-06-latches-and-flip-flops.md) (latches and flip-flops), [08-10](../../08-digital-logic-design/chapters/08-10-timing-metastability-cdc.md) (timing, metastability and clock-domain crossing at the logic level), [19-03](19-03-logic-families.md) (transmission gates), [19-04](19-04-sizing-and-logical-effort.md) (FO4 and buffering), [19-01](19-01-cmos-inverter-static.md) (gain at the switching threshold) |
 | **Estimated study hours** | 9 |
-| **Last verified** | 2026-11-21 |
+| **Last verified** | 2026-11-24 |
 
 **Learning objectives.** After this chapter you can:
 

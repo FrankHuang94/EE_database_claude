@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 19-08 · SRAM Design
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The SRAM chapter of a senior digital-IC course: the 6T cell, read and write stability and cell sizing, static noise margin, bitline sensing and sense amplifiers, array organization, variation, yield and redundancy, assist techniques and register files (Weste & Harris, *CMOS VLSI Design*, ch. 12; Rabaey, Chandrakasan & Nikolić, *Digital Integrated Circuits*, ch. 12) |
 | **Prerequisites** | [19-01](19-01-cmos-inverter-static.md) (transfer curves and noise margins), [19-03](19-03-logic-families.md) (ratioed logic and precharged nodes), [19-07](19-07-sequential-timing-and-clocking.md) (cross-coupled latches and regeneration), [08-11](../../08-digital-logic-design/chapters/08-11-memories-and-programmable-logic.md) (memory organization), [03-02](../../03-probability-statistics-and-random-variables/chapters/03-02-random-variables-and-distributions.md) (the normal distribution) |
 | **Estimated study hours** | 8 |
-| **Last verified** | 2026-11-21 |
+| **Last verified** | 2026-11-24 |
 
 **Learning objectives.** After this chapter you can:
 
