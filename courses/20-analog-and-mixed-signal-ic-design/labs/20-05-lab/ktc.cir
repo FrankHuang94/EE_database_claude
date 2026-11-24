@@ -1,0 +1,29 @@
+* Lab 20-05 -- kT/C noise of an RC low-pass in ngspice. Two copies, R = 100 ohm and 10 kohm, each driving the
+* running design's sampling capacitor C = 0.6514719 pF; a third copy uses 1 pF. The noise analysis integrates the
+* output noise from 1 Hz to 10 THz (far above every RC corner); onoise_total is the rms output noise, which must equal
+* sqrt(kT/C) whatever R is. .options temp=26.85 sets T = 300 K.
+*
+* EXPECT na key:../../chapters/20-05-comparators-and-sample-and-hold.md#Ex_20-05.1d scale=1e-6 rtol=1e-3
+* EXPECT nb key:../../chapters/20-05-comparators-and-sample-and-hold.md#Ex_20-05.1d scale=1e-6 rtol=1e-3
+* EXPECT nc key:../../chapters/20-05-comparators-and-sample-and-hold.md#Txt_20-05.a scale=1e-6 rtol=1e-3
+
+.options temp=26.85
+V1 in 0 DC 0 AC 1
+RA in oa 100
+CA oa 0 0.6514719p
+RB in ob 10k
+CB ob 0 0.6514719p
+RC in oc 1k
+CC oc 0 1p
+
+.control
+noise v(oa) V1 dec 50 1 10T
+noise v(ob) V1 dec 50 1 10T
+noise v(oc) V1 dec 50 1 10T
+setplot const
+let na = noise2.onoise_total
+let nb = noise4.onoise_total
+let nc = noise6.onoise_total
+print na nb nc
+.endc
+.end

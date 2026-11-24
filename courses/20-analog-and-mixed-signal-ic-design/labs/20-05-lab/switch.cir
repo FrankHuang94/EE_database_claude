@@ -1,0 +1,45 @@
+* Lab 20-05 -- tracking distortion of the running design's bootstrapped sampling switch (chapter section 3.4,
+* Example 20-05.4) in ngspice. Each switch is a behavioral current source carrying the symmetric long-channel triode
+* law I = K (V_G - V_TH(v_m) - v_m)(v_in - v_out), v_m = (v_in + v_out)/2, with K = mu C_ox W/L = 2.055750 mA/V^2
+* (W = 0.8879 um, L = 0.13 um). The bootstrapped gate is V_G = v_in + 1.2 V. Copy A has the body at ground,
+* V_TH = 0.45 + 0.4 (sqrt(0.8 + v_m) - sqrt(0.8)); copy B has the body tied to the source, V_TH = 0.45. Each drives
+* C = 0.6514719 pF from a 0.4 V-amplitude, 49 MHz sine around 0.6 V. After 8 periods the last 4 are linearized on
+* 2048 points per window and the harmonics are computed as Fourier sums; HD = 20 log10(|H_k|/|H_1|).
+*
+* EXPECT hd2a key:../../chapters/20-05-comparators-and-sample-and-hold.md#Ex_20-05.4l rtol=2e-3
+* EXPECT hd3a key:../../chapters/20-05-comparators-and-sample-and-hold.md#Ex_20-05.4m rtol=2e-3
+* EXPECT hd3b key:../../chapters/20-05-comparators-and-sample-and-hold.md#Ex_20-05.4q rtol=2e-3
+
+.param kk=2.055750m
+VIN in 0 SIN(0.6 0.4 49Meg)
+BA in oa I = kk*max(V(in) + 1.2 - (0.45 + 0.4*(sqrt(0.8 + 0.5*(V(in)+V(oa))) - sqrt(0.8))) - 0.5*(V(in)+V(oa)), 0)*(V(in)-V(oa))
+CA oa 0 0.6514719p
+BB in ob I = kk*max(V(in) + 1.2 - 0.45 - 0.5*(V(in)+V(ob)), 0)*(V(in)-V(ob))
+CB ob 0 0.6514719p
+.ic V(oa)=0.6 V(ob)=0.6
+.options reltol=1e-8 abstol=1e-16 vntol=1e-12 method=gear maxord=4
+
+.control
+let per = 1/49e6
+tran 4.982461735p 244.8979592n 163.2653061n 4.982461735p uic
+linearize v(oa) v(ob)
+let n = length(time)
+let ph = 2*pi*49e6*(time[0,n-2] - time[0])
+let va = v(oa)[0,n-2]
+let vb = v(ob)[0,n-2]
+let a1 = 2*mean(va*cos(ph))
+let b1 = 2*mean(va*sin(ph))
+let a2 = 2*mean(va*cos(2*ph))
+let b2 = 2*mean(va*sin(2*ph))
+let a3 = 2*mean(va*cos(3*ph))
+let b3 = 2*mean(va*sin(3*ph))
+let c1 = 2*mean(vb*cos(ph))
+let d1 = 2*mean(vb*sin(ph))
+let c3 = 2*mean(vb*cos(3*ph))
+let d3 = 2*mean(vb*sin(3*ph))
+let hd2a = 20*log10(sqrt(a2^2 + b2^2)/sqrt(a1^2 + b1^2))
+let hd3a = 20*log10(sqrt(a3^2 + b3^2)/sqrt(a1^2 + b1^2))
+let hd3b = 20*log10(sqrt(c3^2 + d3^2)/sqrt(c1^2 + d1^2))
+print n hd2a hd3a hd3b
+.endc
+.end

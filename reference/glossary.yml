@@ -8116,3 +8116,36 @@
   definition: "A linear regulator whose error amplifier is replaced by a clocked comparator and controller that switches an array of unit pass transistors on or off; it works at supplies too low for analog amplifiers and scales with digital processes, at the cost of limit-cycle ripple, quantized response and weak high-frequency supply rejection."
   chapter: "20-04"
   see_also: [Low-dropout regulator (LDO), Capacitor-less LDO]
+# ---- 20-05
+- term: Bootstrapped switch
+  definition: "A MOS sampling switch whose gate is driven from a capacitor precharged to V_DD and connected between input and gate during tracking, so V_GS stays near V_DD for any input; it lets low-voltage samplers pass the full input range with nearly constant on-resistance, the body effect being the main residual nonlinearity."
+  chapter: "20-05"
+  see_also: [Sample-and-hold, Charge injection]
+- term: Charge injection
+  definition: "The error on a sampling capacitor when a MOS switch turns off and its channel charge W L C_ox (V_GS − V_TH) flows out of the channel, roughly half to each side; it is partly signal dependent and is reduced by differential and bottom-plate sampling."
+  chapter: "20-05"
+  see_also: [Clock feedthrough, Bottom-plate sampling]
+- term: Clock feedthrough
+  definition: "Coupling of a switch's gate transition onto a sampling capacitor through the gate's overlap capacitance, ΔV = ΔV_G C_ov/(C_ov + C)."
+  chapter: "20-05"
+  see_also: [Charge injection]
+- term: Bottom-plate sampling
+  definition: "Opening a switch at the sampling capacitor's fixed-potential (bottom) plate slightly before the input switch, so the capacitor's charge is frozen before the signal-dependent charge injection of the input switch can alter it."
+  chapter: "20-05"
+  see_also: [Charge injection, Sample-and-hold]
+- term: StrongARM latch
+  definition: "A clocked comparator with an input pair, NMOS and PMOS cross-coupled pairs and precharge switches; it draws no static current, gives rail-to-rail outputs, integrates the input difference with a gain of about (g_m/I_D) V_TH and then regenerates it with positive feedback."
+  chapter: "20-05"
+  see_also: [Regeneration time constant, Kickback, Metastability]
+- term: Regeneration time constant
+  definition: "The time constant τ ≈ C/g_m with which a latch's positive feedback grows a small differential voltage exponentially, v = v_0 e^{t/τ}; it sets the decision time τ ln(V_L/v_0) and the metastability error rate."
+  chapter: "20-05"
+  see_also: [StrongARM latch, Metastability]
+- term: Kickback
+  definition: "The disturbance a latched comparator's internal voltage swings couple back to its inputs through the input devices' gate capacitances; it can upset the source (a capacitive DAC or reference ladder) before the next decision."
+  chapter: "20-05"
+  see_also: [StrongARM latch]
+- term: Noise-efficiency factor
+  definition: "A comparator's energy per decision multiplied by its input-referred noise variance (nJ·µV²); because energy scales as 1/noise² at fixed design, it compares comparators fairly across noise levels."
+  chapter: "20-05"
+  see_also: [StrongARM latch]

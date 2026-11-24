@@ -31,7 +31,7 @@ Designing analog and mixed-signal blocks in CMOS: gm/ID methodology, two-stage o
 | [20-02 · Two-Stage Op-Amp Design](chapters/20-02-two-stage-op-amp-design.md) | 12 | ✅ verified | [problems](problems/20-02-problems.md) · [solutions](solutions/20-02-solutions.md) · [lab](labs/20-02-lab/README.md) · [verify](verify/verify_20_02.py) |
 | [20-03 · Bandgap and Voltage References](chapters/20-03-bandgap-references.md) | 8 | ✅ verified | [problems](problems/20-03-problems.md) · [solutions](solutions/20-03-solutions.md) · [lab](labs/20-03-lab/README.md) · [verify](verify/verify_20_03.py) |
 | [20-04 · Low-Dropout Regulators](chapters/20-04-ldo-regulators.md) | 8 | ✅ verified | [problems](problems/20-04-problems.md) · [solutions](solutions/20-04-solutions.md) · [lab](labs/20-04-lab/README.md) · [verify](verify/verify_20_04.py) |
-| [20-05 · Comparators and Sample-and-Hold Circuits](chapters/20-05-comparators-and-sample-and-hold.md) | 8 | ⬜ planned | — |
+| [20-05 · Comparators and Sample-and-Hold Circuits](chapters/20-05-comparators-and-sample-and-hold.md) | 8 | ✅ verified | [problems](problems/20-05-problems.md) · [solutions](solutions/20-05-solutions.md) · [lab](labs/20-05-lab/README.md) · [verify](verify/verify_20_05.py) |
 | [20-06 · Data Converter Fundamentals](chapters/20-06-data-converter-fundamentals.md) | 7 | ⬜ planned | — |
 | [20-07 · Nyquist ADCs: Flash, SAR and Pipeline](chapters/20-07-nyquist-adcs.md) | 10 | ⬜ planned | — |
 | [20-08 · Oversampling and Sigma-Delta Converters](chapters/20-08-sigma-delta-converters.md) | 9 | ⬜ planned | — |
