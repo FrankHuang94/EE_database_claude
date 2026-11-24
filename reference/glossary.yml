@@ -7909,3 +7909,51 @@
   definition: "Releasing a chip's final layout database (GDSII or OASIS) to the foundry for mask making; the name comes from the magnetic tapes once used to deliver it."
   chapter: "19-11"
   see_also: [Signoff]
+- term: Yield
+  definition: "The fraction of manufactured dies (or packaged parts) that are free of defects and meet specification; it multiplies directly into the cost of every good chip."
+  chapter: "19-12"
+  see_also: [Defect level (DPPM), Fault coverage]
+- term: Stuck-at fault
+  definition: "A fault model in which one line (a gate output, primary input or fanout branch) is permanently 0 or 1; the single-stuck-at model, with one such fault at a time, is the basis of most production test generation."
+  chapter: "19-12"
+  see_also: [Fault collapsing, Automatic test pattern generation (ATPG)]
+- term: Fault collapsing
+  definition: "Reducing a fault list by keeping one fault from each equivalence class (faults detected by exactly the same tests, such as a NAND input stuck-at-0 and its output stuck-at-1) and, optionally, dropping dominated faults."
+  chapter: "19-12"
+  see_also: [Stuck-at fault]
+- term: Transition fault
+  definition: "A delay-fault model in which a node is slow to rise or slow to fall; detecting it needs two patterns, one to set the initial value and one to launch the transition, captured at functional speed."
+  chapter: "19-12"
+  see_also: [Stuck-at fault, Scan chain]
+- term: Automatic test pattern generation (ATPG)
+  definition: "Algorithms (D-algorithm, PODEM, FAN and successors) that find input patterns detecting each target fault by activating it, propagating the difference to an observable point and justifying the required values."
+  chapter: "19-12"
+  see_also: [Stuck-at fault, Fault coverage]
+- term: Scan chain
+  definition: "Flip-flops given a test multiplexer (scan enable) and connected in series, so that a tester can shift any state in, run one functional clock, and shift the captured state out; it makes sequential logic as testable as combinational logic."
+  chapter: "19-12"
+  see_also: [Test compression, Automatic test pattern generation (ATPG)]
+- term: Test compression
+  definition: "On-chip decompressors that expand a few tester channels into many short internal scan chains, and compactors that fold their outputs back, cutting test time and data by roughly the ratio of internal chains to pins."
+  chapter: "19-12"
+  see_also: [Scan chain, Multiple-input signature register (MISR)]
+- term: Built-in self-test (BIST)
+  definition: "Test logic on the chip itself: pattern generators (usually LFSRs), response compactors (MISRs) and a controller for logic, or March-algorithm engines for memories, so that tests run at speed and in the field without an external tester."
+  chapter: "19-12"
+  see_also: [Linear-feedback shift register (LFSR), Multiple-input signature register (MISR), March test]
+- term: Multiple-input signature register (MISR)
+  definition: "An LFSR that XORs a response word into its state every cycle, compressing a long response into an n-bit signature; a faulty response escapes (aliases) with probability about 2^-n."
+  chapter: "19-12"
+  see_also: [Built-in self-test (BIST), Linear-feedback shift register (LFSR)]
+- term: March test
+  definition: "A memory-test algorithm made of elements that apply the same read and write operations to every address in ascending or descending order; March C- uses 10 operations per cell and detects stuck-at, transition, address-decoder and coupling faults."
+  chapter: "19-12"
+  see_also: [Built-in self-test (BIST)]
+- term: Boundary scan (JTAG)
+  definition: "IEEE 1149.1: a test access port (TCK, TMS, TDI, TDO) and a chain of cells at a chip's pins that let a board tester drive and observe every pin serially, finding shorts and opens without probes; the port is also widely used for on-chip debug."
+  chapter: "19-12"
+  see_also: [Scan chain]
+- term: Silent data corruption
+  definition: "Wrong results produced by hardware without any error being signaled; at datacenter scale, rare defective or degrading processor cores make it a measurable fleet-level problem addressed by in-field screening."
+  chapter: "19-12"
+  see_also: [Built-in self-test (BIST)]

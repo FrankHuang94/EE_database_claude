@@ -38,7 +38,7 @@ Designing digital chips: the CMOS inverter, logic families, sizing and logical e
 | [19-09 · Layout, Design Rules and Standard Cells](chapters/19-09-layout-and-standard-cells.md) | 6 | ✅ verified | [problems](problems/19-09-problems.md) · [solutions](solutions/19-09-solutions.md) · [lab](labs/19-09-lab/README.md) · [verify](verify/verify_19_09.py) |
 | [19-10 · The ASIC Flow I: Synthesis and Static Timing Analysis](chapters/19-10-synthesis-and-sta.md) | 9 | ✅ verified | [problems](problems/19-10-problems.md) · [solutions](solutions/19-10-solutions.md) · [lab](labs/19-10-lab/README.md) · [verify](verify/verify_19_10.py) |
 | [19-11 · The ASIC Flow II: Floorplan, Place and Route, Signoff](chapters/19-11-place-route-signoff.md) | 10 | ✅ verified | [problems](problems/19-11-problems.md) · [solutions](solutions/19-11-solutions.md) · [lab](labs/19-11-lab/README.md) · [verify](verify/verify_19_11.py) |
-| [19-12 · Design for Test: Scan, BIST and ATPG](chapters/19-12-design-for-test.md) | 6 | ⬜ planned | — |
+| [19-12 · Design for Test: Scan, BIST and ATPG](chapters/19-12-design-for-test.md) | 6 | ✅ verified | [problems](problems/19-12-problems.md) · [solutions](solutions/19-12-solutions.md) · [lab](labs/19-12-lab/README.md) · [verify](verify/verify_19_12.py) |
 | [19-13 · Verification: Simulation, UVM, Formal and Emulation](chapters/19-13-verification-methods.md) | 8 | ⬜ planned | — |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
