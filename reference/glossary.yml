@@ -8066,3 +8066,32 @@
   definition: "The smallest drain-source voltage at which a MOSFET's current is within a stated fraction of its saturated value; in the charge-based model with a 2 % criterion it is about 3.9 V_T (about 0.1 V) in weak inversion and a little below the pinch-off voltage in strong inversion, and it sets an amplifier's output swing and input range."
   chapter: "20-02"
   see_also: [Inversion coefficient, Moderate inversion]
+# ---- 20-03
+- term: CTAT voltage
+  definition: "A voltage that falls with absolute temperature, complementary to a PTAT voltage; a forward-biased junction's V_BE at fixed current density falls by about 2 mV/K and is the CTAT half of a bandgap reference."
+  chapter: "20-03"
+  see_also: [PTAT voltage, Bandgap reference]
+- term: Magic voltage
+  definition: "The output of a first-order bandgap reference at its zero-temperature-coefficient temperature, V_g0 + (η − m)V_T, independent of saturation current, bias current and resistor values; production tests trim the output to it at one temperature, which removes PTAT-shaped errors at all temperatures."
+  chapter: "20-03"
+  see_also: [Bandgap reference, PTAT voltage]
+- term: Box-method temperature coefficient
+  definition: "A reference's temperature coefficient specified as (V_max − V_min)/(V_nom (T_max − T_min)) in ppm/K: the slope of the box that contains the output over the stated range; it bounds the total variation but not the curve's shape or slope."
+  chapter: "20-03"
+  see_also: [Bandgap reference]
+- term: Curvature compensation
+  definition: "Cancelling the residual T ln T curvature of a first-order bandgap, typically by adding a scaled difference of junction voltages biased with PTAT and constant currents; its benefit is limited by how accurately the temperature exponent η of the saturation current is known."
+  chapter: "20-03"
+  see_also: [Bandgap reference, Magic voltage]
+- term: Startup circuit
+  definition: "Circuitry that forces a self-biased reference or bias loop out of its zero-current operating point at power-up and then turns off; any current it leaks in normal operation becomes an error in the reference."
+  chapter: "20-03"
+  see_also: [Beta multiplier, Bandgap reference]
+- term: Beta multiplier
+  definition: "A self-biased MOS current reference in which two transistors of width ratio K, one with a source resistor R, are forced to equal currents by a mirror; in weak inversion with grounded bulks it gives I = V_T ln K/R, a PTAT current, and it needs a startup circuit."
+  chapter: "20-03"
+  see_also: [Startup circuit, PTAT voltage, Weak inversion]
+- term: Substrate PNP
+  definition: "The vertical bipolar transistor available in any CMOS process (p⁺ diffusion emitter, n-well base, p-substrate collector); with its collector fixed at the substrate it is used diode-connected as the junction of CMOS bandgap references."
+  chapter: "20-03"
+  see_also: [Bandgap reference, Bipolar junction transistor]

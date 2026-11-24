@@ -1,0 +1,34 @@
+* Lab 20-03 -- the 0.6 V current-mode (sub-1 V) reference of Example 20-03.4, swept over temperature.
+* Node a: unit PNP Q1 in parallel with R2 = 115.2307 kohm to ground. Node b: R1 = 10.7515 kohm in series with an
+* eight-unit PNP Q2, in parallel with another R2 to ground. Node out: R3 = 55.1065 kohm to ground. Three equal
+* current sources (ideal transconductors driven by the op-amp's output, standing in for a 1:1:1 PMOS mirror) feed
+* the three nodes, and an ideal op-amp (gain 1e9) drives them so that V(a) = V(b). PNP model as in bandgap.cir.
+* The transconductors are 10 uS so the control node sits near 1 V, well above ngspice's 1 uV node tolerance.
+* EXPECT vnom key:../../chapters/20-03-bandgap-references.md#Ex_20-03.4i rtol=1e-5
+* EXPECT vmax key:../../chapters/20-03-bandgap-references.md#Ex_20-03.4j rtol=1e-5
+* EXPECT vmin key:../../chapters/20-03-bandgap-references.md#Ex_20-03.4k rtol=1e-5
+
+.options tnom=26.85
+.model qp pnp (is=2e-17 bf=1e6 eg=1.2009 xti=3)
+
+Q1 0 0 a qp
+R2A a 0 115.2307k
+R1 b c 10.7515k
+Q2 0 0 c qp 8
+R2B b 0 115.2307k
+R3 out 0 55.1065k
+GA 0 a ctl 0 10u
+GB 0 b ctl 0 10u
+GO 0 out ctl 0 10u
+EOP ctl 0 a b 1e9
+
+.nodeset V(ctl)=1.0888 V(out)=0.6
+
+.control
+dc temp -40 125 0.05
+meas dc vnom find v(out) at=26.85
+meas dc vmax max v(out)
+meas dc vmin min v(out)
+print vnom vmax vmin
+.endc
+.end

@@ -1,0 +1,50 @@
+* Lab 20-03 -- the op-amp bandgap of Example 20-03.2 swept over temperature in ngspice.
+* Diode-connected substrate PNPs (collector and base at ground): Q1 unit area at node a; Q2 eight in parallel (area 8)
+* below R1 at node c. Both branches are fed from the output through R2. An ideal op-amp (gain 1e9) forces
+* V(a) = V(b) (copy A) or V(a) - V(b) = 1 mV (copy B, an input offset). The PNP model has IS = 2e-17 A at
+* TNOM = 300 K (26.85 C), EG = 1.2009 V and XTI = 3, so I_S(T) follows the chapter's model exactly; BF = 1e6 makes
+* the base current negligible. R1 = 10.7515 kohm, R2 = 115.2307 kohm (zero TC at 312.0 K). Resistors have no TC.
+* .nodeset selects the working state; without it the circuit also has a zero-current solution (section 3.7).
+* The peak temperature is the midpoint of the two crossings 50 uV below the maximum (the curve is nearly parabolic).
+*
+* EXPECT vnom key:../../chapters/20-03-bandgap-references.md#Ex_20-03.2d rtol=1e-5
+* EXPECT vmax key:../../chapters/20-03-bandgap-references.md#Ex_20-03.2e rtol=1e-5
+* EXPECT vmin key:../../chapters/20-03-bandgap-references.md#Ex_20-03.2f rtol=1e-5
+* EXPECT tpk key:../../chapters/20-03-bandgap-references.md#Ex_20-03.2g rtol=5e-3
+* EXPECT vnomb key:../../chapters/20-03-bandgap-references.md#Ex_20-03.3e rtol=1e-5
+
+.options tnom=26.85
+.model qp pnp (is=2e-17 bf=1e6 eg=1.2009 xti=3)
+
+* copy A: no offset
+QA1 0 0 aa qp
+QA2 0 0 ca qp 8
+RA1 ba ca 10.7515k
+RA2A outa aa 115.2307k
+RA2B outa ba 115.2307k
+EA outa 0 aa ba 1e9
+
+* copy B: 1 mV offset, V(ab) - V(bb) = 1 mV
+QB1 0 0 ab qp
+QB2 0 0 cb qp 8
+RB1 bb cb 10.7515k
+RB2A outb ab 115.2307k
+RB2B outb bb 115.2307k
+VOS ab abp DC 1m
+EB outb 0 abp bb 1e9
+
+.nodeset V(outa)=1.25 V(outb)=1.24
+
+.control
+dc temp -40 125 0.05
+meas dc vnom find v(outa) at=26.85
+meas dc vmax max v(outa)
+meas dc vmin min v(outa)
+let lvl = vmax - 5e-5
+meas dc tlo when v(outa)=lvl rise=1
+meas dc thi when v(outa)=lvl fall=1
+let tpk = (tlo + thi) / 2
+meas dc vnomb find v(outb) at=26.85
+print vnom vmax vmin tpk vnomb
+.endc
+.end
