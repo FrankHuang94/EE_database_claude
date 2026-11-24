@@ -8506,3 +8506,60 @@
   definition: The disturbance of an oscillator's frequency by an injected signal outside its lock range, such as a transmitter's own PA output; the average frequency moves toward the injection by about ω_L²/(2Δω), which frequency plans avoid by running the VCO at 2f, 4f or an offset.
   chapter: "21-06"
   see_also: [Injection locking]
+# ---------------------------------------------------------------- 21-07
+- term: Drain efficiency
+  definition: A power amplifier's RF output power divided by its DC supply power; π/4 (78.5 %) for an ideal class-B stage at full swing.
+  chapter: "21-07"
+  see_also: [Power-added efficiency (PAE)]
+- term: Power-added efficiency (PAE)
+  definition: (P_out − P_in)/P_DC, the drain efficiency penalized by the drive power; it trails drain efficiency badly when the stage's gain is low, as at millimetre waves.
+  chapter: "21-07"
+  see_also: [Drain efficiency]
+- term: Load-pull
+  definition: Measuring a transistor's output power, efficiency and linearity while a tuner sweeps the load impedance, to find the optimum load that the matching network must then present.
+  chapter: "21-07"
+  see_also: [Load line]
+- term: Class-C amplifier
+  definition: An amplifier biased to conduct for less than half of each cycle; its efficiency approaches 100 % as the conduction angle shrinks, but its output power and gain fall and its amplitude response is nonlinear.
+  chapter: "21-07"
+  see_also: [Conduction angle, Class-B amplifier]
+- term: Class-E amplifier
+  definition: A switching amplifier whose shunt capacitor and slightly inductive series resonator make the switch voltage reach zero with zero slope at turn-on, giving 100 % ideal efficiency with P_out = 0.5768 V_DD²/R and a peak switch voltage of 3.56 V_DD (Sokal and Sokal, 1975).
+  chapter: "21-07"
+  see_also: [Class-D amplifier]
+- term: Class-F amplifier
+  definition: An amplifier that adds odd-harmonic voltage (third, fifth, ...) to square up the drain voltage over a half-sine current, so voltage and current overlap less; 88.4 % with the third harmonic alone, approaching 100 % with all of them.
+  chapter: "21-07"
+  see_also: [Class-B amplifier]
+- term: Doherty amplifier
+  definition: A main amplifier feeding the load through a quarter-wave impedance inverter, with an auxiliary amplifier that turns on at high drive and modulates the main's load, so the main reaches full swing, and peak efficiency, 6 dB below the combined peak (Doherty, 1936).
+  chapter: "21-07"
+  see_also: [Load modulation]
+- term: Load modulation
+  definition: Changing the load impedance a transistor sees as the signal level changes, by injecting current from a second device into a shared node; the principle behind the Doherty and outphasing amplifiers.
+  chapter: "21-07"
+  see_also: [Doherty amplifier]
+- term: Envelope tracking (ET)
+  definition: Supplying a power amplifier from a fast DC-DC modulator that follows the signal's envelope, so the PA stays near full swing at every instant; overall efficiency is the PA's times the modulator's.
+  chapter: "21-07"
+  see_also: [Average power tracking (APT)]
+- term: Average power tracking (APT)
+  definition: Adjusting a power amplifier's supply slowly, once per time slot, to suit the average transmit power, which recovers efficiency at low power without a wideband modulator.
+  chapter: "21-07"
+  see_also: [Envelope tracking (ET)]
+- term: Adjacent-channel leakage ratio (ACLR)
+  definition: The power a transmitter leaks into the neighbouring channel relative to its in-channel power; for a cubic nonlinearity and a noise-like signal, (P/P_IIP3)²/3, i.e. 2(P_in − IIP3) − 4.77 dB.
+  chapter: "21-07"
+  see_also: [Third-order intercept point (IP3)]
+- term: AM-PM conversion
+  definition: The change of an amplifier's phase shift with input amplitude, caused mainly by voltage-dependent device capacitances; with AM-AM compression it describes a memoryless power amplifier.
+  chapter: "21-07"
+  see_also: [Digital predistortion (DPD)]
+- term: Digital predistortion (DPD)
+  definition: Distorting the transmit signal in baseband with an approximate inverse of the power amplifier's nonlinearity, learned from an observation receiver, so the cascade is linear; it cannot extend the output beyond saturation.
+  chapter: "21-07"
+  see_also: [Crest-factor reduction (CFR), AM-PM conversion]
+- term: Crest-factor reduction (CFR)
+  definition: Clipping and filtering a signal's rare peaks in baseband to lower its PAPR, trading a small EVM penalty for operating the power amplifier closer to saturation.
+  chapter: "21-07"
+  see_also: [Peak-to-average power ratio (PAPR), Digital predistortion (DPD)]

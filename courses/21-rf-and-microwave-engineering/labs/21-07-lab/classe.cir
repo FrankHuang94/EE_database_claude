@@ -1,0 +1,32 @@
+* Lab 21-07 -- an ideal class-E power amplifier (transient, ideal switch).
+* Design (Example 21-07.3): 2 GHz, 1 W from 3.3 V. R = 0.5768 VDD^2/P = 6.2814 ohm; shunt C = 0.1836/(w R)
+* = 2.3260 pF; excess series reactance X = 1.1525 R = 7.2392 ohm (0.57608 nH). The series resonator has loaded
+* Q = 30 (14.996 nH, 0.42229 pF) and the choke is 1 uH; the ideal theory assumes infinite Q and choke, so the
+* simulated power and peak voltage come out 1-2 % high. The switch is driven at 50 % duty cycle.
+* Measured over the last 10 cycles after 800 ns of settling: output power, DC input power, drain efficiency and
+* the peak switch voltage (theory 3.562 VDD = 11.75 V).
+*
+* EXPECT pout key:../../chapters/21-07-power-amplifiers.md#Ex_21-07.3i rtol=0.02
+* EXPECT vpk key:../../chapters/21-07-power-amplifiers.md#Ex_21-07.3f rtol=0.025
+* EXPECT eff key:../../chapters/21-07-power-amplifiers.md#Ex_21-07.3h scale=0.01 rtol=0.005
+VDD vdd 0 dc 3.3
+LCH vdd d 1u
+SW1 d 0 g 0 swm
+.model swm sw (vt=0 vh=0 ron=1m roff=1e9)
+VG g 0 pulse(-1 1 0 1p 1p 249p 500p)
+CS d 0 2.3260p
+LX d a 0.57608n
+L0 a b 14.9956n
+C0 b o 0.422294p
+RL o 0 6.28136
+.control
+tran 0.5p 800n 0 0.5p uic
+meas tran idc avg i(VDD) from=780n to=800n
+meas tran vrms rms v(o) from=780n to=800n
+meas tran vpk max v(d) from=780n to=800n
+let pout = vrms * vrms / 6.28136
+let pin = -idc * 3.3
+let eff = pout / pin
+print pout pin eff vpk
+.endc
+.end

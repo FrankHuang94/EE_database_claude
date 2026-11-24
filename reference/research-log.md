@@ -3762,3 +3762,66 @@ R&D % = R&D ÷ revenue.
 - **TI LMX2595** (SNAS736C, Jun. 2017, rev. Apr. 2019): 10 MHz–20 GHz; seven VCO cores covering 7.5–15 GHz with capacitor-bank capcodes ("The entire range, 7.5 to 15 GHz, covers an octave that allows the divider to take care of frequencies below the lower bound"); open-loop VCO phase noise, typical, VCO1 at 8 GHz: −107/−128/−148 dBc/Hz at 100 kHz/1 MHz/10 MHz; "< 20-µs VCO calibration speed" with assistance, 50 µs typical without; "Figure of merit: –236 dBc/Hz" defined through PLL_flat = PLL_FOM + 20 log(Fvco/Fpd) + 10 log(Fpd/1 Hz), an in-band PLL metric. [Established]
 - **TI LMX2820** (SNAS783C, Jun. 2020, rev. Feb. 2021): VCO 5.65–11.3 GHz; open-loop phase noise at 6.0 GHz −110.3/−131.9/−151.0 dBc/Hz at 100 kHz/1 MHz/10 MHz; K_VCO 95 MHz/V at 6.0 GHz rising to 156 MHz/V at 10.2 GHz; "2.5-µs fast VCO calibration time". [Established]
 - **TI AWR2944** (SWRS273E, rev. Feb. 2026): LO "Phase noise at 1-MHz offset" −96 dBc/Hz (76–77 GHz) and −95 dBc/Hz (76–81 GHz). **TI AWR1843** (SWRS222D, rev. Sep. 2024): −95/−93 dBc/Hz. [Established]
+
+## R-382 · Power-amplifier classics: Doherty, Chireix, Kahn, Sokal, Raab, Cripps, DPD models (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref metadata and OpenAlex abstracts; Cripps' book from a library record.*
+
+- **Doherty**, "A new high efficiency power amplifier for modulated waves," *Proc. IRE* 24(9):1163–1182, Sep. 1936, DOI 10.1109/JRPROC.1936.228468: "Plate circuit efficiencies of sixty to sixty-five per cent independent of modulation are obtained by means of the combined action of varying load distribution among the tubes and varying circuit impedance over the modulation cycle"; a 50 kW transmitter. Reviews: **Pengelly, Fager and Ozen**, *IEEE Microwave Mag.* 17(2):41–58, Feb. 2016, DOI 10.1109/MMM.2015.2498081; **Camarchia et al.**, *IEEE T-MTT* 63(2):559–571, Feb. 2015, DOI 10.1109/TMTT.2014.2387061. [Established]
+- **Chireix**, "High power outphasing modulation," *Proc. IRE* 23(11):1370–1392, Nov. 1935, DOI 10.1109/JRPROC.1935.227299. **Kahn**, "Single-sideband transmission by envelope elimination and restoration," *Proc. IRE* 40(7):803–806, Jul. 1952, DOI 10.1109/JRPROC.1952.273844: the phase component is "amplified by means of Class-C amplifiers, and the amplitude envelope is restored at the final amplifier". [Established]
+- **Sokal and Sokal**, "Class E—A new class of high-efficiency tuned single-ended switching power amplifiers," *IEEE JSSC* 10(3):168–176, Jun. 1975, DOI 10.1109/JSSC.1975.1050582: "96 percent transistor efficiency at 3.9 MHz at 26-W output". [Established]
+- **Raab**, "Class-F power amplifiers with maximally flat waveforms," *IEEE T-MTT* 45(11):2007–2012, Nov. 1997, DOI 10.1109/22.644215; "Class-E, class-C, and class-F power amplifiers based upon a finite number of harmonics," *IEEE T-MTT* 49(8):1462–1468, Aug. 2001, DOI 10.1109/22.939927: "the maximum achievable efficiency depends not upon the class of operation, but upon the number of harmonics employed" (a published comment exists: DOI 10.1109/TMTT.2009.2019999). **Raab et al.**, "Power amplifiers and transmitters for RF and microwave," *IEEE T-MTT* 50(3):814–826, Mar. 2002, DOI 10.1109/22.989965. [Established]
+- **Cripps**, *RF Power Amplifiers for Wireless Communications*, 2nd ed., Artech House, 2006 (library record; the publisher page returned 403). [Established]
+- **DPD models:** **Ding et al.**, *IEEE Trans. Commun.* 52(1):159–165, Jan. 2004, DOI 10.1109/TCOMM.2003.822188 (memory polynomial with indirect learning); **Morgan et al.**, *IEEE Trans. Signal Process.* 54(10):3852–3860, Oct. 2006, DOI 10.1109/TSP.2006.879264 (generalized memory polynomial): amplifiers "must be backed off considerably from their peak power level in order to control out-of-band spurious emissions". [Established]
+
+## R-383 · 3GPP NR and Wi-Fi 7 transmitter requirements (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: 3GPP DOCX files from the official FTP archive; a Rohde & Schwarz application note PDF.*
+
+- **3GPP TS 38.101-1 V19.7.0 (2026-09)**: UE power class 3 = 23 dBm (class 2 = 26 dBm); MPR for power class 3 up to 6.5 dB for CP-OFDM 256-QAM and 3 dB for CP-OFDM QPSK at edge allocations ("UE is allowed to reduce the maximum output power due to higher order modulations and transmit bandwidth configurations"); NR ACLR 30 dB (PC3), 31 dB (PC2), 37 dB (PC1); UTRA ACLR1 33 dB when signalled; EVM 256-QAM 3.5%. [Established]
+- **3GPP TS 38.104 V19.6.0 (2026-09)**: base-station ACLR 45 dB (FR1); EVM 256-QAM 3.5%, 1024-QAM 2.5% (≤ 4.2 GHz). [Established]
+- **3GPP TS 38.101-2 V19.5.0 (2026-09)**: FR2 UE ACLR 17 dB (n257, n258, n261) and 16 dB (n259, n260, n262); PC3 maximum EIRP 43 dBm. [Established]
+- **3GPP TR 38.803 V14.5.0**: PA power capability "roughly degrades by 20 dB per decade"; "The maximum reported PAE is about 40% and 25% at 30 GHz and 77 GHz, respectively" (a 2017 Rel-14 snapshot). [Established]
+- **Rohde & Schwarz application note 1EF114** (v1e, Aug. 2024): IEEE 802.11be EHT transmit EVM −35 dB for 1024-QAM and −38 dB for 4096-QAM (MCS12/13). The final IEEE standard was not read (paywalled). [Established per the app note]
+
+## R-384 · PAPR, crest-factor reduction and PA characterization signals (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: TI data sheets (distributor-hosted copies), NXP data sheets, journal abstracts.*
+
+- **TI GC1115** (SLWS144D, rev. Apr. 2009): W-CDMA and OFDM PARs "ranging from 10 dB to 15 dB"; CFR limits PAR to 6–7 dB, enabling "a 2-dB to 3-dB increase in PA drive". The data sheet's figure labels 6 dB of peak reduction while its numbers (10 W → 20 W) show 3 dB. **TI GC5322** (SLWS206D, rev. Nov. 2010): CFR "<6.5-dB PAR, <8-dB PAR for OFDMA Signals"; DPD "Typical ACLR Improvement > 20 dB". [Established; old products, cited for concepts]
+- **NXP Airfast GaN Doherty data sheets**: characterized with "Single-Carrier W-CDMA, IQ Magnitude Clipping, Input Signal PAR = 9.9 dB @ 0.01% Probability on CCDF"; output PAR guaranteed at 0.01% CCDF. [Established]
+- NR signals have a "10–12-dB peak-to-average power ratio (PAPR)" (Zhang, Guo and Chi, *IEEE JSSC* 59(12), 2024); recent PA test reports use 6.5–8 dB PAPR after CFR. [Established per paper]
+
+## R-385 · GaN Doherty PAs for base stations, 2022–2025 (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref metadata and OpenAlex abstracts.*
+
+- **Pang et al.**, *IEEE JSSC* 57(7):2143–2154, Jul. 2022, DOI 10.1109/JSSC.2022.3145349: 250 nm GaN MMIC Doherty, "around 8 W saturated power from 4.1 to 5.6 GHz", "38.5%–46.5% drain efficiencies … at 6-dB output power back-off"; with 6.5 dB-PAPR 100 MHz OFDM, "better than −45-dBc" ACLR and "higher than 38% average efficiency … after digital predistortion". [Established]
+- **Choi et al.**, *IEEE T-MTT* 70(4):2258–2270, Apr. 2022, DOI 10.1109/TMTT.2022.3144422: 3.45–3.75 GHz, 8.5 dB back-off; LTE 20 MHz (8 dB PAPR) DE 38.9–56.8% with ACLR ≤ −45 dBc after DPD; 100 MHz NR DE 38.5–50.2% "with an ACLR of under −24.6 dBc without DPD linearization". [Established]
+- **Sakata et al. (Mitsubishi Electric)**, IMS 2025, pp. 49–52, DOI 10.1109/IMS40360.2025.11103774: 7 GHz GaN Doherty module, PAE 34.5–34.6% at 37.1–37.6 dBm average, ACLR below −51.4 dBc after DPD (20 MHz, 7.5 dB PAPR). [Established]
+- **Iqbal, Peppas, Pitton and Singerl (Infineon/TU Graz)**, *IEEE MWTL* 35(6):828–831, Jun. 2025, DOI 10.1109/LMWT.2025.3567969: GaN-on-Si Doherty module, 51–53% efficiency, 3.4–4.0 GHz, 8 W average (100 MHz LTE); linearized ACLR −63.0 and −42.0 dBc for 20 and 530 MHz signals. [Established]
+
+## R-386 · Handset PAs and envelope tracking (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref metadata and OpenAlex abstracts.*
+
+- **Imai, Mukai, Okabe and Wada (Murata)**, *IEEE T-MTT* 73(5):2695–2710, May 2025, DOI 10.1109/TMTT.2024.3477389: a handset Doherty amplifying 100 MHz 5G signals "without requiring digital predistortion (DPD), achieving 42.8% power-added efficiency (PAE) and −35 dBc adjacent channel leakage ratio (ACLR)"; names "load variation, gain variation, and supply variation" as the obstacles. [Established]
+- **Bang et al. (Samsung)**, ISSCC 2022, DOI 10.1109/ISSCC42614.2022.9731655: a 2-Tx digital ET supply modulator, "200MHz channel bandwidth and 93.6% efficiency" (title; conditions not in the abstract); "Envelope tracking (ET) has become essential technology to save power consumption of RF power amplifiers (PAs) in mobile handsets." [Established that the paper claims it]
+- **Liang et al.**, *IEEE JSSC* 61(10):5243–5255, Oct. 2026, DOI 10.1109/JSSC.2026.3711586: class-G supply modulator, 88.9% peak efficiency; with a commercial PA "the SM improves the system power-added efficiency (PAE) from 6.2% using average power tracking (APT) to 7.1% at 19-dBm average output power" (200 MHz NR). **Chen et al.**, *IEEE JSSC* 59(12):4101–4113, Dec. 2024, DOI 10.1109/JSSC.2024.3481906: 83.4% tracking a 200 MHz NR envelope. **Li, Montoro and Gilabert**, *IEEE T-MTT* 71(1):48–58, Jan. 2023, DOI 10.1109/TMTT.2022.3196691: ET PA with DPD, −36 dBc ACPR for 60–200 MHz NR, 10.1–16.5% overall efficiency. [Established]
+
+## R-387 · Millimetre-wave PAs, 2023–2026 (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref metadata and OpenAlex abstracts.*
+
+- **Liu and Wang**, *IEEE JSSC* 61(6):2520–2531, Jun. 2026, DOI 10.1109/JSSC.2025.3626463: 28 GHz transformer Doherty, OP1dB 20.4 dBm, "38% PAE at OP1dB", 29.3%/20.3% PAE at 6/9 dB back-off, PAE_AVG 21.0%/15.1% for 64-/256-QAM, core area 0.154 mm². [Established]
+- **Park et al. (Samsung)**, ISSCC 2026, pp. 342–344, DOI 10.1109/ISSCC49663.2026.11409253: 22 nm FDSOI unequal-stacked Doherty, "P_avg and PAE_avg exceed 15.8 dBm and 16.9%, respectively, from 24 to 28 GHz with the EVM of −25 dB" (100 MHz 64-QAM). [Established]
+- **Ibrahim and Niknejad**, *IEEE JSSC* 61(10):5589–5600, Oct. 2026, DOI 10.1109/JSSC.2026.3708783: at W-band, a Doherty improves 6 dB back-off efficiency 1.25× over ideal class B (sequential PA 1.4×). [Established]
+- **Zhang, Guo and Chi**, *IEEE JSSC* 59(12):3898–3914, Dec. 2024, DOI 10.1109/JSSC.2024.3453321: 47 GHz four-way Doherty, 24.0 dBm Psat, 26.8% peak PAE, 21.7% at 6 dB back-off. **Li et al.**, *IEEE JSSC* 58(4):901–914, Apr. 2023, DOI 10.1109/JSSC.2022.3232137: 39 GHz 64-element Doherty phased array with shared-LUT DPD, 55.2 dBm EIRP. **Liu et al.**, *IEEE MWTL* 34(10):1174–1177, Oct. 2024, DOI 10.1109/LMWT.2024.3450752: GaN Doherty whose title claims "32% PAE at 8-dB back-off" while the abstract gives 18.6–32% across the band. [Established]
+
+## R-388 · CMOS watt-level and Wi-Fi 7 transmitters (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Crossref metadata and OpenAlex abstracts.*
+
+- **Li et al.**, *IEEE JSSC* 58(12):3296–3307, Dec. 2023, DOI 10.1109/JSSC.2023.3310980: transformer-based quadrature Doherty digital PA in 28 nm bulk CMOS, "4.1 W (36.1 dBm) peak output power". [Established]
+- **Yang, Qian, Wang and Luo**, *IEEE JSSC* 58(2):357–370, Feb. 2023, DOI 10.1109/JSSC.2022.3191975: 40 nm CMOS, 4096-QAM at 5 MSym/s with −43.0 dB EVM; 256-QAM at 50 MSym/s −31.46 dB EVM. [Established]
+- **Shay et al. (Intel)**, RFIC 2024, pp. 255–258, DOI 10.1109/RFIC61187.2024.10600000: all-digital polar Wi-Fi 7 TX in 16 nm FinFET, "30.15dBm/34.7% at 5.2GHz"; "-38dB/830mW … at 6.1GHz and 9-dB backoff". [Established]

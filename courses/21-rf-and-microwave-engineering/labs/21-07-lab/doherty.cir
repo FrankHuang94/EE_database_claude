@@ -1,0 +1,102 @@
+* Lab 21-07 -- an ideal symmetric Doherty amplifier (transient, ideal class-B current sources).
+* Each device is a half-wave-rectified sinusoidal current (ideal class B: DC = (2/pi) x fundamental) at 2 GHz.
+* R_opt = 25 ohm per device for a 28 V supply (I_max = 1.12 A fundamental). The main device drives a 25 ohm
+* quarter-wave line (Z0 = R_opt) into the 12.5 ohm combining load; the auxiliary device is driven 90 degrees
+* behind and turns on above half drive with fundamental (2x - 1) I_max. Parallel LC tanks at each drain short
+* the harmonics; the supply is implicit: DC power = 28 V x average device current.
+* Three copies run at normalized drive x = 0.5 (6.02 dB back-off), 2/3 (the efficiency dip) and 1 (peak).
+* Fundamental amplitudes come from correlating uniformly resampled waveforms over 20 periods.
+* Example 21-07.6: the main drain swings 28 V at both x = 0.5 and x = 1 (load modulation), the output power at
+* x = 0.5 is 7.84 W, and the drain efficiency is pi/4 at x = 0.5 and 1 and 69.81 % at x = 2/3.
+*
+* EXPECT vma key:../../chapters/21-07-power-amplifiers.md#Ex_21-07.6g rtol=1e-3
+* EXPECT vmc key:../../chapters/21-07-power-amplifiers.md#Ex_21-07.6g rtol=1e-3
+* EXPECT poa key:../../chapters/21-07-power-amplifiers.md#Ex_21-07.6e rtol=1e-3
+* EXPECT pob key:../../chapters/21-07-power-amplifiers.md#Ex_21-07.6h rtol=1e-3
+* EXPECT effa key:../../chapters/21-07-power-amplifiers.md#Ex_21-07.6f scale=0.01 rtol=1e-3
+* EXPECT effb key:../../chapters/21-07-power-amplifiers.md#Ex_21-07.6i scale=0.01 rtol=1e-3
+* EXPECT effc key:../../chapters/21-07-power-amplifiers.md#Ex_21-07.6f scale=0.01 rtol=1e-3
+* ---- a: x = 0.5
+VSMa dma xma 0
+VSAa daa xaa 0
+BMa xma 0 I=1.12*max(0,sin(2*pi*2e9*time))
+BAa xaa 0 I=0*max(0,sin(2*pi*2e9*time-pi/2))
+LTMa dma 0 0.2n ic=-0.356507
+CTMa dma 0 31.6629p
+LTAa daa 0 0.2n ic=-0
+CTAa daa 0 31.6629p
+CBMa dma ma 10n
+CBAa daa la 10n
+Ta ma 0 la 0 Z0=25 TD=125p
+RLa la 0 12.5
+* ---- b: x = 0.666667
+VSMb dmb xmb 0
+VSAb dab xab 0
+BMb xmb 0 I=1.49333*max(0,sin(2*pi*2e9*time))
+BAb xab 0 I=0.746667*max(0,sin(2*pi*2e9*time-pi/2))
+LTMb dmb 0 0.2n ic=-0.475343
+CTMb dmb 0 31.6629p
+LTAb dab 0 0.2n ic=-0.237671
+CTAb dab 0 31.6629p
+CBMb dmb mb 10n
+CBAb dab lb 10n
+Tb mb 0 lb 0 Z0=25 TD=125p
+RLb lb 0 12.5
+* ---- c: x = 1
+VSMc dmc xmc 0
+VSAc dac xac 0
+BMc xmc 0 I=2.24*max(0,sin(2*pi*2e9*time))
+BAc xac 0 I=2.24*max(0,sin(2*pi*2e9*time-pi/2))
+LTMc dmc 0 0.2n ic=-0.713014
+CTMc dmc 0 31.6629p
+LTAc dac 0 0.2n ic=-0.713014
+CTAc dac 0 31.6629p
+CBMc dmc mc 10n
+CBAc dac lc 10n
+Tc mc 0 lc 0 Z0=25 TD=125p
+RLc lc 0 12.5
+.control
+tran 1p 60n 0 1p uic
+linearize
+let kma = v(dma) * cos(2 * pi * 2e9 * time)
+let sma = v(dma) * sin(2 * pi * 2e9 * time)
+let kla = v(la) * cos(2 * pi * 2e9 * time)
+let sla = v(la) * sin(2 * pi * 2e9 * time)
+let ida = i(VSMa) + i(VSAa)
+meas tran mkma integ kma from=50n to=60n
+meas tran msma integ sma from=50n to=60n
+meas tran mkla integ kla from=50n to=60n
+meas tran msla integ sla from=50n to=60n
+meas tran mida integ ida from=50n to=60n
+let vma = 2 * sqrt(mkma^2 + msma^2) / 10n
+let poa = (2 * sqrt(mkla^2 + msla^2) / 10n)^2 / 25
+let effa = poa / (mida / 10n * 28)
+let kmb = v(dmb) * cos(2 * pi * 2e9 * time)
+let smb = v(dmb) * sin(2 * pi * 2e9 * time)
+let klb = v(lb) * cos(2 * pi * 2e9 * time)
+let slb = v(lb) * sin(2 * pi * 2e9 * time)
+let idb = i(VSMb) + i(VSAb)
+meas tran mkmb integ kmb from=50n to=60n
+meas tran msmb integ smb from=50n to=60n
+meas tran mklb integ klb from=50n to=60n
+meas tran mslb integ slb from=50n to=60n
+meas tran midb integ idb from=50n to=60n
+let vmb = 2 * sqrt(mkmb^2 + msmb^2) / 10n
+let pob = (2 * sqrt(mklb^2 + mslb^2) / 10n)^2 / 25
+let effb = pob / (midb / 10n * 28)
+let kmc = v(dmc) * cos(2 * pi * 2e9 * time)
+let smc = v(dmc) * sin(2 * pi * 2e9 * time)
+let klc = v(lc) * cos(2 * pi * 2e9 * time)
+let slc = v(lc) * sin(2 * pi * 2e9 * time)
+let idc = i(VSMc) + i(VSAc)
+meas tran mkmc integ kmc from=50n to=60n
+meas tran msmc integ smc from=50n to=60n
+meas tran mklc integ klc from=50n to=60n
+meas tran mslc integ slc from=50n to=60n
+meas tran midc integ idc from=50n to=60n
+let vmc = 2 * sqrt(mkmc^2 + msmc^2) / 10n
+let poc = (2 * sqrt(mklc^2 + mslc^2) / 10n)^2 / 25
+let effc = poc / (midc / 10n * 28)
+print vma vmc poa pob poc effa effb effc
+.endc
+.end
