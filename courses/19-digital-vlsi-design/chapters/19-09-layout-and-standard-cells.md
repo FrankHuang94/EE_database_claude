@@ -139,11 +139,11 @@ Before a layout becomes masks, it passes several automated checks, collectively 
 
 **Setup.** The gate $F = \overline{A(B + C)}$ has a pull-down network of A in series with (B parallel C), and the dual pull-up. Find all input orderings that give unbroken diffusion in both networks.
 
-**Solution.** In the pull-down graph, A joins the output to an internal node, and B and C both join that node to ground. Enumerating the 6 orderings and checking each in both networks leaves **4**: A-B-C, A-C-B, B-C-A and C-B-A. B-A-C and C-A-B fail: after B (internal node to ground) comes A (output to internal node), which shares the internal node in the pull-down, but in the pull-up (A parallel to the series pair B-C) B and A share no node.
+**Solution.** In the pull-down graph, A joins the output to an internal node, and B and C both join that node to ground. Enumerating the 6 orderings and checking each in both networks leaves **4**: A-B-C, A-C-B, B-C-A and C-B-A. B-A-C and C-A-B fail in the **pull-down**: A is the only transistor touching the output node, so that node has degree 1 and any Euler path must start or end with A. Putting A in the middle leaves the walk at the output after A, where neither B nor C connects. The pull-up (A in parallel with the series pair B–C) accepts all six orderings, because A spans both ends of the B–C stack.
 
 **Units check.** Counts.
 
-**Sanity check.** Each valid ordering keeps B and C adjacent, as their parallel connection in one network and series connection in the other requires.
+**Sanity check.** Every valid ordering has A at an end, as the pull-down's degree-1 output node requires, and therefore B and C adjacent.
 
 ### Example 19-09.3 · AOI22 (tier B)
 

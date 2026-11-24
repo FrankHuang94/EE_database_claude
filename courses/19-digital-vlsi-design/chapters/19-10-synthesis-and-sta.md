@@ -132,7 +132,7 @@ $$
 D(s, C_L) \approx D_0(s) + R_{\text{eff}}\, C_L ,
 $$
 
-where the slope $R_{\text{eff}}$ is an effective drive resistance (ns per pF is kΩ). This is the RC model of 19-02 and the $d = gh + p$ of 19-04 written in absolute units; the tables add what those models leave out, chiefly the dependence on input slew. Example 1 reads $R_{\text{eff}}$ off SKY130's inverter.
+where the slope $R_{\text{eff}}$ is an effective drive resistance (ns per pF is kΩ). This is the RC model of 19-02 and the $d = gh + p$ of 19-04 written in absolute units, with one difference to remember: the table holds 50 % delays, so its slope already contains the factor ln 2 of $t_p = \ln 2\,R_{\text{eq}}C_L$. Thus $R_{\text{eff}} = \ln 2 \times R_{\text{eq}}$; multiply $R_{\text{eff}}$ by a capacitance to get a 50 % delay directly, and divide it by ln 2 to get the resistor for an Elmore constant or a circuit simulation (19-11); the tables add what those models leave out, chiefly the dependence on input slew. Example 1 reads $R_{\text{eff}}$ off SKY130's inverter.
 
 ![Two panels. Left: log-log plot of the SKY130 minimum inverter's rising delay against output load, one curve for each of seven input slews from 0.01 to 1.5 ns, with Example 1's interpolated point marked between curves. Right: linear plot of the delay row for a 0.053 ns input slew at the typical and slow corners; both are nearly straight lines, the slow corner steeper.](../../../assets/figures/19-10/nldm-inverter.svg)
 

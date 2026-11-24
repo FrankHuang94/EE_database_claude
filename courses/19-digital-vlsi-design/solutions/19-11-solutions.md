@@ -121,7 +121,7 @@ Core area $120\,000/0.70$ = **171 429** µm². With height = 2 × width, $W^2 \t
 | 19-11.6c | RSMT of the plus net | 8 | — |
 | 19-11.6d | RMST over RSMT | 1.5 | — |
 | 19-11.7a | tapping point from subtree 1 | 308.3 | µm |
-| 19-11.7b | merged delay | 16.55 | ps |
+| 19-11.7b | merged Elmore constant | 16.55 | ps |
 | 19-11.7c | merged capacitance | 200 | fF |
 | 19-11.7d | unconstrained tapping point, 80 ps case | 1442 | µm |
 | 19-11.7e | balancing wire length | 1341 | µm |

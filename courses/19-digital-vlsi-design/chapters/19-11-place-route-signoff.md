@@ -5,7 +5,7 @@
 |---|---|
 | **Course** | [19 · Digital VLSI Design](../README.md) |
 | **University equivalent** | The physical-design part of a senior VLSI or VLSI-CAD course: floorplanning and power planning, analytical placement, clock-tree synthesis with zero-skew merging, global and detailed routing with maze routers and Steiner trees, parasitic extraction, and signoff (Weste & Harris, *CMOS VLSI Design*, ch. 13–14; Kahng, Lienig, Markov & Hu, *VLSI Physical Design: From Graph Partitioning to Timing Closure*) |
-| **Prerequisites** | [19-10](19-10-synthesis-and-sta.md) (netlists, Liberty and STA), [19-09](19-09-layout-and-standard-cells.md) (standard cells, rows and utilization), [19-05](19-05-interconnect.md) (wire resistance, capacitance and the Elmore delay), [19-07](19-07-sequential-timing-and-clocking.md) (clock skew and distribution), [02-06](../../02-complex-numbers-des-and-linear-algebra/chapters/02-06-vectors-matrices-and-linear-systems.md) (linear systems) |
+| **Prerequisites** | [19-10](19-10-synthesis-and-sta.md) (netlists, Liberty and STA), [19-09](19-09-layout-and-standard-cells.md) (standard cells, rows and utilization), [19-05](19-05-interconnect.md) (wire resistance, capacitance and the Elmore constant), [19-07](19-07-sequential-timing-and-clocking.md) (clock skew and distribution), [02-06](../../02-complex-numbers-des-and-linear-algebra/chapters/02-06-vectors-matrices-and-linear-systems.md) (linear systems) |
 | **Estimated study hours** | 10 |
 | **Last verified** | 2026-11-24 |
 
@@ -13,7 +13,7 @@
 
 1. Size a floorplan from cell area and utilization, and derive the IR drop on a power strap to set strap spacing.
 2. Formulate placement as wirelength minimization, solve quadratic placement as a linear system, and estimate wirelength with the half-perimeter bound.
-3. Derive the zero-skew merging point of two clock subtrees from the Elmore delay and compute the geometry of an H-tree.
+3. Derive the zero-skew merging point of two clock subtrees from Elmore constants and compute the geometry of an H-tree.
 4. Route a net with Lee's maze algorithm and compare spanning-tree and Steiner-tree wirelengths.
 5. Estimate a routed net's resistance, capacitance and delay from layer data, and explain why timing changes after routing.
 6. List the signoff checks a design must pass before tape-out and what each one protects against.
@@ -120,7 +120,7 @@ Equal geometry gives nominally zero skew, but sinks are not uniformly spread, an
 
 *Figure 2. A two-level H-tree reaching 16 sinks; every source-to-sink path has the same length, $D(1 - 2^{-2}) = 0.75D$.*
 
-**Zero-skew merging.** For arbitrary sink positions and loads, CTS builds the tree bottom-up, merging subtrees in pairs so that each merge has equal Elmore delay (19-05) to every sink below it. Two subtrees have delays $t_1$ and $t_2$ from their roots to their sinks and total capacitances $C_1$ and $C_2$. Join their roots with a wire of length $L$, resistance $r$ and capacitance $c$ per unit length, and drive it at a tapping point a distance $x$ from subtree 1. The Elmore delay from the tap through a wire segment of length $\ell$ to a subtree of capacitance $C$ is $r\ell(c\ell/2 + C)$, so equal delays require
+**Zero-skew merging.** For arbitrary sink positions and loads, CTS builds the tree bottom-up, merging subtrees in pairs so that each merge has an equal Elmore constant (19-05) to every sink below it. Two subtrees have delays $t_1$ and $t_2$ from their roots to their sinks and total capacitances $C_1$ and $C_2$. Join their roots with a wire of length $L$, resistance $r$ and capacitance $c$ per unit length, and drive it at a tapping point a distance $x$ from subtree 1. The Elmore constant from the tap through a wire segment of length $\ell$ to a subtree of capacitance $C$ is $r\ell(c\ell/2 + C)$, so equal delays require
 
 $$
 t_1 + r x\left(\frac{c x}{2} + C_1\right) = t_2 + r (L - x)\left(\frac{c (L - x)}{2} + C_2\right).
@@ -152,13 +152,19 @@ Finding the RSMT in general is NP-hard, so routers use fast heuristics that come
 
 ### 3.5 Extraction and post-route timing
 
-Once routed, every net's geometry is known, and **parasitic extraction** computes its resistance and capacitance (and the coupling capacitance to its neighbors) from the layer data: a segment of length $\ell$ and width $W$ on a layer of sheet resistance $R_\square$ has $R = R_\square \ell/W$ (19-05), and its capacitance follows from per-length tables or field solvers. Vias add resistance at each layer change. The result is written as a SPEF file and read by the timing tool, which now computes each net's delay as an RC tree instead of a lumped load. For a driver of effective resistance $R_d$ (read from the Liberty tables, 19-10) driving a wire of resistance $R_w$ and capacitance $C_w$ into a load $C_L$, the Elmore estimate is
+Once routed, every net's geometry is known, and **parasitic extraction** computes its resistance and capacitance (and the coupling capacitance to its neighbors) from the layer data: a segment of length $\ell$ and width $W$ on a layer of sheet resistance $R_\square$ has $R = R_\square \ell/W$ (19-05), and its capacitance follows from per-length tables or field solvers. Vias add resistance at each layer change. The result is written as a SPEF file and read by the timing tool, which now computes each net's delay as an RC tree instead of a lumped load. For a driver of resistance $R_d$ driving a wire of resistance $R_w$ and capacitance $C_w$ into a load $C_L$, the **Elmore constant** (19-03, 19-05) is
 
 $$
-t_{\text{Elmore}} = R_d\,(C_w + C_L) + R_w\left(\frac{C_w}{2} + C_L\right).
+\tau_E = R_d\,(C_w + C_L) + R_w\left(\frac{C_w}{2} + C_L\right),
 $$
 
-The first term is the driver charging all the capacitance; the second is the wire's own distributed RC. On a thin lower metal the second term grows quickly with length, which is why long nets are promoted to thicker upper layers and buffered (19-05's repeaters).
+an upper bound on the 50 % delay of an RC tree, and the right quantity to balance when two paths are compared (as in zero-skew merging). For an absolute 50 % delay use 19-05's estimate. The driver's resistance needs care: the slope $R_{\text{eff}}$ of a Liberty delay table against load (19-10) already includes the factor ln 2, because the tables give 50 % delays, so $R_{\text{eff}} = \ln 2 \times R_{\text{eq}}$, where $R_{\text{eq}}$ is 19-02's equivalent resistor. With the Liberty slope the estimate is
+
+$$
+t_{50} \approx R_{\text{eff}}\,(C_w + C_L) + R_w\,(0.38\,C_w + 0.69\,C_L),
+$$
+
+while the Elmore constant and a circuit simulation need the resistor $R_{\text{eq}} = R_{\text{eff}}/\ln 2$. The first term is the driver charging all the capacitance; the second is the wire's own distributed RC. On a thin lower metal the second term grows quickly with length, which is why long nets are promoted to thicker upper layers and buffered (19-05's repeaters).
 
 **Why slack moves after routing.** Synthesis estimated wires from statistics (wire-load models) or ignored them; placement estimated them from HPWL; only after routing are detours, layer choices, vias and coupling known. Clock skew also changes from ideal to propagated. Slack typically shrinks, and some paths that passed now fail. Closing them means resizing, buffering, re-routing or moving cells, then re-extracting: the **timing-closure** loop.
 
@@ -245,7 +251,7 @@ Positions: A (**2.5**, **1.2**), B (**5.0**, **2.4**), C (**7.5**, **1.2**), D (
 
 ### Example 19-11.4 · A zero-skew merge (tier B)
 
-**Setup.** Two clock subtrees each have an Elmore delay of 15 ps to their sinks; subtree 1 has 30 fF of capacitance and subtree 2 has 50 fF. Their roots are 400 µm apart on a wire with r = 0.2 Ω/µm and c = 0.2 fF/µm. (a) Where should the wire be driven? (b) What are the merged delay and capacitance? (c) Where would the tap be if both subtrees had 30 fF?
+**Setup.** Two clock subtrees each have an Elmore constant of 15 ps to their sinks; subtree 1 has 30 fF of capacitance and subtree 2 has 50 fF. Their roots are 400 µm apart on a wire with r = 0.2 Ω/µm and c = 0.2 fF/µm. (a) Where should the wire be driven? (b) What are the merged delay and capacitance? (c) Where would the tap be if both subtrees had 30 fF?
 
 **Solution.** (a) With $t_1 = t_2$, the formula reduces to $x = L(C_2 + cL/2)/(C_1 + C_2 + cL)$. Here $cL = 80$ fF: $x = 400 \times (50 + 40)/(30 + 50 + 80)$ = **225** µm from subtree 1, past the midpoint toward the heavier load.
 
@@ -255,7 +261,7 @@ Positions: A (**2.5**, **1.2**), B (**5.0**, **2.4**), C (**7.5**, **1.2**), D (
 
 **Units check.** Ω × fF = 10⁻¹⁵ s; with r in Ω/µm and lengths in µm, $rx$ is in Ω.
 
-**Sanity check.** The heavier subtree gets the shorter wire, so its larger capacitance sees less resistance. The lab confirms both sinks' Elmore delays in ngspice for Problem 7's merge.
+**Sanity check.** The heavier subtree gets the shorter wire, so its larger capacitance sees less resistance. The lab confirms both sinks' Elmore constants in ngspice for Problem 7's merge.
 
 ### Example 19-11.5 · Spanning and Steiner trees (tier B)
 
@@ -273,19 +279,19 @@ Positions: A (**2.5**, **1.2**), B (**5.0**, **2.4**), C (**7.5**, **1.2**), D (
 
 ### Example 19-11.6 · Post-route delay on two layers (tier C)
 
-**Setup.** An inverter `inv_1` drives a 1 mm net to another `inv_1` input (2.302 fF, 19-10). Use the driver's effective pull-up resistance from 19-10's Liberty table, 5.64 kΩ, and the open flow's per-layer wire estimates for SKY130: metal 1, 1.20565 Ω/µm and 0.172375 fF/µm; metal 3, 0.166281 Ω/µm and 0.214962 fF/µm [R-319]. With the Elmore estimate of §3.5, find the delay (a) on metal 1 and (b) on metal 3. (c) Repeat both with a driver eight times stronger (705 Ω). (d) Repeat (c) for a 3 mm net.
+**Setup.** An inverter `inv_1` drives a 1 mm net to another `inv_1` input (2.302 fF, 19-10). Use the driver's pull-up delay slope from 19-10's Liberty table, $R_{\text{eff}}$ = 5.64 kΩ, and the open flow's per-layer wire estimates for SKY130: metal 1, 1.20565 Ω/µm and 0.172375 fF/µm; metal 3, 0.166281 Ω/µm and 0.214962 fF/µm [R-319]. With the 50 % delay estimate of §3.5, find the delay (a) on metal 1 and (b) on metal 3. (c) Repeat both with a driver eight times stronger ($R_{\text{eff}}$ = 705 Ω). (d) Repeat (c) for a 3 mm net.
 
-**Solution.** (a) Metal 1: $C_w = 172.375$ fF, $R_w = 1205.65$ Ω. Driver term $5640 \times (172.375 + 2.302)$ fF = 985.18 ps; wire term $1205.65 \times (86.19 + 2.302)$ fF = 106.69 ps; total **1091.87** ps.
+**Solution.** (a) Metal 1: $C_w = 172.375$ fF, $R_w = 1205.65$ Ω. Driver term $5640 \times (172.375 + 2.302)$ fF = **985.18** ps; wire term $1205.65 \times (0.38 \times 172.375 + 0.69 \times 2.302)$ fF = **80.89** ps; total **1066.07** ps.
 
-(b) Metal 3: $C_w = 214.962$ fF, $R_w = 166.281$ Ω: $5640 \times 217.264$ fF + $166.281 \times 109.783$ fF = **1243.62** ps. Metal 3 is *slower*: with a weak driver the delay is almost all driver resistance times total capacitance, and the flow's estimate gives metal 3 more capacitance per micrometre.
+(b) Metal 3: $C_w = 214.962$ fF, $R_w = 166.281$ Ω: $5640 \times 217.264$ fF + $166.281 \times (81.686 + 1.588)$ fF = **1239.22** ps. Metal 3 is *slower*: with a weak driver the delay is almost all driver resistance times total capacitance, and the flow's estimate gives metal 3 more capacitance per micrometre.
 
-(c) With 705 Ω: metal 1 **229.83** ps, metal 3 **171.43** ps. Now the wire's own RC matters, and the thicker layer wins by 25 %.
+(c) With 705 Ω: metal 1 **204.04** ps, metal 3 **167.02** ps. Now the wire's own RC matters, and the thicker layer wins by **18** %.
 
-(d) At 3 mm with the strong driver: metal 1 **1309.73** ps, metal 3 **618.26** ps. The wire term grows as the square of the length (on metal 1 it is 944 ps of the total), so the lower-resistance layer is more than twice as fast. The lab finds the lengths at which metal 3 starts to win: about 2.8 mm with the weak driver and 0.32 mm with the strong one.
+(d) At 3 mm with the strong driver: metal 1 **1082.70** ps, metal 3 **579.30** ps. The wire term grows as the square of the length (on metal 1 it is **717** ps of the total), so the lower-resistance layer is almost twice as fast. The lab finds the lengths at which metal 3 starts to win: about 3.6 mm with the weak driver and 0.43 mm with the strong one.
 
 **Units check.** Ω × fF = fs.
 
-**Sanity check.** The lab's ngspice model of case (a), a 40-section π ladder, gives the same Elmore delay, and a 50 % delay of 767.66 ps, 0.70 times the Elmore value: the Elmore delay is an upper bound, and for a driver-dominated net the 50 % delay is close to ln 2 times it. Layer choice only helps once the wire, not the driver, dominates; that is why long nets get both upper metal and repeaters (19-05).
+**Sanity check.** The lab's ngspice model of case (a) drives a 40-section π ladder through the resistor $R_{\text{eq}} = 5.64\ \text{k}\Omega/\ln 2$ = 8.14 kΩ and measures a 50 % delay of 1070.0 ps, within 0.4 % of (a), and an Elmore constant of 1528.0 ps: the Elmore constant bounds the delay from above, and for a driver-dominated net the delay is close to ln 2 times it. Putting the Liberty slope 5.64 kΩ itself into the simulation would count ln 2 twice and give a delay about 28 % too small. Layer choice only helps once the wire, not the driver, dominates; that is why long nets get both upper metal and repeaters (19-05).
 
 <!-- answer-key -->
 
@@ -316,28 +322,29 @@ Positions: A (**2.5**, **1.2**), B (**5.0**, **2.4**), C (**7.5**, **1.2**), D (
 | Ex 19-11.3h | y of D | 4.8 | — |
 | Ex 19-11.3i | total Manhattan length | 18.4 | — |
 | Ex 19-11.4a | tapping point from subtree 1 | 225 | µm |
-| Ex 19-11.4b | merged delay | 17.36 | ps |
+| Ex 19-11.4b | merged Elmore constant | 17.36 | ps |
 | Ex 19-11.4c | merged capacitance | 160 | fF |
 | Ex 19-11.4d | tap with equal loads | 200 | µm |
 | Ex 19-11.5a | HPWL | 14 | — |
 | Ex 19-11.5b | RMST length | 18 | — |
 | Ex 19-11.5c | RSMT length | 16 | — |
 | Ex 19-11.5d | RMST over RSMT | 1.125 | — |
-| Ex 19-11.6a | delay on metal 1, weak driver | 1091.87 | ps |
-| Ex 19-11.6b | delay on metal 3, weak driver | 1243.62 | ps |
-| Ex 19-11.6c | delay on metal 1, strong driver | 229.83 | ps |
-| Ex 19-11.6d | delay on metal 3, strong driver | 171.43 | ps |
-| Ex 19-11.6e | delay on metal 1, 3 mm, strong driver | 1309.73 | ps |
-| Ex 19-11.6f | delay on metal 3, 3 mm, strong driver | 618.26 | ps |
-| Ex 19-11.6g | wire term on metal 1, 3 mm | 944 | ps |
-| Ex 19-11.6h | metal 3 advantage, 1 mm, strong driver | 25 | % |
+| Ex 19-11.6a | delay on metal 1, weak driver | 1066.07 | ps |
+| Ex 19-11.6b | delay on metal 3, weak driver | 1239.22 | ps |
+| Ex 19-11.6c | delay on metal 1, strong driver | 204.04 | ps |
+| Ex 19-11.6d | delay on metal 3, strong driver | 167.02 | ps |
+| Ex 19-11.6e | delay on metal 1, 3 mm, strong driver | 1082.70 | ps |
+| Ex 19-11.6f | delay on metal 3, 3 mm, strong driver | 579.30 | ps |
+| Ex 19-11.6g | wire term on metal 1, 3 mm | 717 | ps |
+| Ex 19-11.6h | metal 3 advantage, 1 mm, strong driver | 18 | % |
 | Ex 19-11.6i | driver term on metal 1, weak driver | 985.18 | ps |
-| Ex 19-11.6j | wire term on metal 1, weak driver | 106.69 | ps |
+| Ex 19-11.6j | wire term on metal 1, weak driver | 80.89 | ps |
+| Ex 19-11.6k | equivalent resistor R_eq | 8.14 | kΩ |
 | Txt 19-11.a | core area saved closing at 70 % instead of 50 % | 29 | % |
 
 ## 5. Simulate it
 
-The lab ([labs/19-11-lab](../labs/19-11-lab/README.md)) implements this chapter's models in `pnr.py` and checks two of them in ngspice: `strap.cir` (a 200-segment power strap with a hot spot) and `merge.cir` (a zero-skew clock merge, with each sink's Elmore delay measured as the area above its step response).
+The lab ([labs/19-11-lab](../labs/19-11-lab/README.md)) implements this chapter's models in `pnr.py` and checks two of them in ngspice: `strap.cir` (a 200-segment power strap with a hot spot) and `merge.cir` (a zero-skew clock merge, with each sink's Elmore constant measured as the area above its step response).
 
 **Predict, then run.**
 
@@ -369,7 +376,8 @@ The lab ([labs/19-11-lab](../labs/19-11-lab/README.md)) implements this chapter'
 | Tree lengths | HPWL ≤ RSMT ≤ RMST ≤ 1.5 RSMT | Hanan; Hwang |
 | Zero-skew tap | $x = \dfrac{t_2 - t_1 + rL(C_2 + cL/2)}{r(C_1 + C_2 + cL)}$ | Elmore |
 | H-tree, $k$ levels | $4^k$ sinks; path $D(1 - 2^{-k})$; total $1.5D(2^k - 1)$ | Square of side $D$ |
-| Routed-net delay | $R_d(C_w + C_L) + R_w(C_w/2 + C_L)$ | Elmore |
+| Routed-net 50 % delay | $R_{\text{eff}}(C_w + C_L) + R_w(0.38C_w + 0.69C_L)$ | $R_{\text{eff}}$ = Liberty slope = ln 2 × $R_{\text{eq}}$ |
+| Elmore constant of a net | $R_{\text{eq}}(C_w + C_L) + R_w(C_w/2 + C_L)$ | Upper bound; use for balancing |
 | Clock power | $C_{\text{clk}}V_{DD}^2f$ | Activity 1 |
 | SKY130 metal stack | li1 plus 5 metals; 0.125 Ω/□ (met1, met2), 0.047 (met3, met4), about 0.029 (met5) | As of Nov 2026 [R-319] |
 | SKY130 minimum width / pitch | 0.14/0.34 µm (met1); 0.30/0.68 (met3); 1.6/3.4 (met5) | Tech LEF and DRC manual [R-319] |
@@ -382,7 +390,8 @@ The lab ([labs/19-11-lab](../labs/19-11-lab/README.md)) implements this chapter'
 - **Filling the core to 95 % at floorplan.** Cells grow and buffers are added during optimization, CTS and hold fixing; a block that starts too full will not route.
 - **Feeding straps from one end.** The drop is four times larger than with feeds at both ends, and grows with the square of the length.
 - **Trusting HPWL for large nets.** It is a lower bound; nets with many pins, and clock nets, are much longer.
-- **Treating the Elmore delay as the 50 % delay.** The Elmore delay (the first moment of the response) bounds the 50 % delay from above for RC trees; scaled by ln 2, as in 19-05, it can fall below. Use it to compare and balance paths, and signoff timing for absolute values.
+- **Treating the Elmore constant as the 50 % delay.** The Elmore constant (the first moment of the impulse response) bounds the 50 % delay from above for RC trees; scaled by ln 2, as in 19-05, it can fall below.
+- **Dropping a Liberty slope into SPICE as a resistor.** Liberty delays are 50 % delays, so their slope against load already contains ln 2; the physical resistor is $R_{\text{eff}}/\ln 2$. Use it to compare and balance paths, and signoff timing for absolute values.
 - **Judging timing before routing.** Placement-stage timing uses estimated wires and ideal clocks; slack moves after CTS and routing.
 - **Waiving signoff checks to make a date.** Every check exists because a chip failed without it; a waiver needs an analysis, not a schedule.
 
@@ -446,7 +455,7 @@ The lab ([labs/19-11-lab](../labs/19-11-lab/README.md)) implements this chapter'
 
    <details><summary>Answer</summary>
 
-   A wire segment's own Elmore delay is $rc\ell^2/2$; the two segments contribute $rcx^2/2$ and $rc(L - x)^2/2$, whose $x^2$ parts are equal. The balance condition is therefore linear in $x$, giving a closed-form tap for every merge, which makes bottom-up tree construction fast.
+   A wire segment's own Elmore constant is $rc\ell^2/2$; the two segments contribute $rcx^2/2$ and $rc(L - x)^2/2$, whose $x^2$ parts are equal. The balance condition is therefore linear in $x$, giving a closed-form tap for every merge, which makes bottom-up tree construction fast.
 
    </details>
 
@@ -482,7 +491,7 @@ Problems: [19-11 problem set](../problems/19-11-problems.md) · Solutions: [19-1
 
 ## 12. Connections
 
-- **Builds on:** [19-10](19-10-synthesis-and-sta.md) (the netlist and STA), [19-09](19-09-layout-and-standard-cells.md) (cells, rows and physical verification), [19-05](19-05-interconnect.md) (wire RC, Elmore delay, repeaters), [19-07](19-07-sequential-timing-and-clocking.md) (skew and clock distribution), [19-06](19-06-power-and-low-power-design.md) (clock gating and power), [06-04](../../06-circuit-analysis-1-dc/chapters/06-04-nodal-analysis.md) (nodal analysis for power grids).
+- **Builds on:** [19-10](19-10-synthesis-and-sta.md) (the netlist and STA), [19-09](19-09-layout-and-standard-cells.md) (cells, rows and physical verification), [19-05](19-05-interconnect.md) (wire RC, Elmore constant, repeaters), [19-07](19-07-sequential-timing-and-clocking.md) (skew and clock distribution), [19-06](19-06-power-and-low-power-design.md) (clock gating and power), [06-04](../../06-circuit-analysis-1-dc/chapters/06-04-nodal-analysis.md) (nodal analysis for power grids).
 - **Next:** [19-12](19-12-design-for-test.md) adds scan chains and test logic, which placement and routing must accommodate.
 - **Used later:** [19-13](19-13-verification-methods.md) (equivalence checking of the final netlist), [25-09](../../25-fabrication-packaging-test-and-reliability/chapters/25-09-reliability-physics.md) (electromigration and reliability).
 

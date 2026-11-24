@@ -180,9 +180,9 @@ def rsmt_length(points):
     return best
 
 
-# ---------------------------------------------------------------- clock trees: Elmore delay and zero-skew merging
+# ---------------------------------------------------------------- clock trees: Elmore constant and zero-skew merging
 def zero_skew_tap(t1, c1, t2, c2, length, r, c):
-    """Tapping point x (distance from subtree 1 along a wire of the given length) at which the Elmore delays to the
+    """Tapping point x (distance from subtree 1 along a wire of the given length) at which the Elmore constants to the
     two subtrees are equal. t: subtree delay from its root (s), C: subtree capacitance (F), r, c per unit length.
     Returns x; x outside [0, length] means the wire must be lengthened (snaked) on one side."""
     return (t2 - t1 + r * length * (c2 + c * length / 2)) / (r * (c1 + c2 + c * length))
@@ -197,7 +197,7 @@ def merged(t1, c1, t2, c2, length, r, c):
 
 
 def snake_length(t_fast, c_fast, t_slow, r, c):
-    """Wire length that, tapped at the slow subtree's root, adds exactly (t_slow - t_fast) of Elmore delay to the fast
+    """Wire length that, tapped at the slow subtree's root, adds exactly (t_slow - t_fast) of Elmore constant to the fast
     subtree: r l (c l / 2 + C_fast) = t_slow - t_fast, the positive root of a quadratic."""
     a = r * c / 2
     b = r * c_fast
@@ -206,7 +206,7 @@ def snake_length(t_fast, c_fast, t_slow, r, c):
 
 
 def elmore_tree(edges, root, caps):
-    """Elmore delay from the root to every node of an RC tree. edges: {child: (parent, R)}; caps: {node: C}.
+    """Elmore constant from the root to every node of an RC tree. edges: {child: (parent, R)}; caps: {node: C}.
     Delay(n) = sum over resistors on the root-to-n path of R times the capacitance downstream of that resistor."""
     children = {}
     for ch, (par, _) in edges.items():
@@ -224,7 +224,13 @@ def elmore_tree(edges, root, caps):
     return delay
 
 
+def wire_delay50(r_eff, r_wire, c_wire, c_load):
+    """50 % delay estimate of a driver into a distributed wire and a load (19-05): r_eff (C_w + C_L) +
+    R_w (0.38 C_w + 0.69 C_L), where r_eff is a Liberty delay-versus-load slope (it already contains ln 2)."""
+    return r_eff * (c_wire + c_load) + r_wire * (0.38 * c_wire + 0.69 * c_load)
+
+
 def wire_elmore(r_drv, r_wire, c_wire, c_load):
-    """Elmore delay of a driver resistance into a distributed wire (lumped as half its capacitance at each end in
+    """Elmore constant of a driver resistance into a distributed wire (lumped as half its capacitance at each end in
     the Elmore sense) and a load: R_d (C_w + C_L) + R_w (C_w / 2 + C_L)."""
     return r_drv * (c_wire + c_load) + r_wire * (c_wire / 2 + c_load)

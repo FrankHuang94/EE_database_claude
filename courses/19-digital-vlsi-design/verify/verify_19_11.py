@@ -302,17 +302,26 @@ def ladder_elmore(length, layer, rd, n=40):
     return rd * (c * length + CL6) + pi_ladder_elmore(length, r, c, n, CL6)
 
 
+def est50(length, layer, r_eff):
+    """19-05's 50 % estimate with a Liberty slope r_eff: r_eff (C_w + C_L) + R_w (0.379 or 0.38 C_w + 0.69 C_L)."""
+    r, c = LAYER[layer]
+    return r_eff * (c * length + CL6) + r * length * (0.38 * c * length + 0.69 * CL6)
+
+
+REQ6 = RD6 / math.log(2)
 for key, (L, rd, layer) in {"Ex 19-11.6a": (1000, RD6, "met1"), "Ex 19-11.6b": (1000, RD6, "met3"),
                             "Ex 19-11.6c": (1000, RD6 / 8, "met1"), "Ex 19-11.6d": (1000, RD6 / 8, "met3"),
                             "Ex 19-11.6e": (3000, RD6 / 8, "met1"), "Ex 19-11.6f": (3000, RD6 / 8, "met3")}.items():
-    v.check(key, 1e12 * ladder_elmore(L, layer, rd))
-v.check("Ex 19-11.6g", 1e12 * pi_ladder_elmore(3000, *LAYER["met1"], 40, CL6))
-v.check("Ex 19-11.6h", 100 * (1 - ladder_elmore(1000, "met3", RD6 / 8) / ladder_elmore(1000, "met1", RD6 / 8)))
+    v.check(key, 1e12 * est50(L, layer, rd))
+v.check("Ex 19-11.6g", 1e12 * LAYER["met1"][0] * 3000 * (0.38 * LAYER["met1"][1] * 3000 + 0.69 * CL6))
+v.check("Ex 19-11.6h", 100 * (1 - est50(1000, "met3", RD6 / 8) / est50(1000, "met1", RD6 / 8)))
 v.check("Ex 19-11.6i", 1e12 * RD6 * (LAYER["met1"][1] * 1000 + CL6))
-v.check("Ex 19-11.6j", 1e12 * pi_ladder_elmore(1000, *LAYER["met1"], 40, CL6))
-v.assert_true("lab wire_elmore agrees", abs(pnr.wire_elmore(RD6, 1205.65, 172.375e-15, CL6) - ladder_elmore(1000, "met1", RD6)) < 1e-18, "")
+v.check("Ex 19-11.6j", 1e12 * LAYER["met1"][0] * 1000 * (0.38 * LAYER["met1"][1] * 1000 + 0.69 * CL6))
+v.check("Ex 19-11.6k", REQ6 / 1e3)
+v.assert_true("lab wire_delay50 agrees", abs(pnr.wire_delay50(RD6, 1205.65, 172.375e-15, CL6) - est50(1000, "met1", RD6)) < 1e-18, "")
+v.assert_true("lab wire_elmore agrees with the ladder", abs(pnr.wire_elmore(REQ6, 1205.65, 172.375e-15, CL6) - ladder_elmore(1000, "met1", REQ6)) < 1e-18, "")
 for key, rd in (("Lab 19-11.d", RD6), ("Lab 19-11.e", RD6 / 8)):
-    v.check(key, brentq(lambda L: ladder_elmore(L, "met1", rd, 8) - ladder_elmore(L, "met3", rd, 8), 10, 1e5, xtol=1e-6))
+    v.check(key, brentq(lambda L: est50(L, "met1", rd) - est50(L, "met3", rd), 10, 1e5, xtol=1e-6))
 
 
 def step_t50(length, layer, rd, n=40):
@@ -334,9 +343,11 @@ def step_t50(length, layer, rd, n=40):
     return brentq(lambda t: (ones - expm(A * t) @ ones)[-1] - 0.5, 1e-13, 1e-8, xtol=1e-17)
 
 
-t50 = step_t50(1000, "met1", RD6)
+t50 = step_t50(1000, "met1", REQ6)
 v.check("Lab 19-11.f", 1e12 * t50)
-v.assert_true("Elmore bounds the 50 % delay", t50 < ladder_elmore(1000, "met1", RD6), "")
+v.check("Lab 19-11.g", 1e12 * ladder_elmore(1000, "met1", REQ6))
+v.assert_true("Elmore constant bounds the 50 % delay", t50 < ladder_elmore(1000, "met1", REQ6), "")
+v.assert_true("estimate within 0.5 % of the ladder's 50 % delay", abs(est50(1000, "met1", RD6) / t50 - 1) < 0.005, "")
 v.check("Txt 19-11.a", 100 * (1 - 0.5 / 0.7))
 
 sys.exit(v.finish())

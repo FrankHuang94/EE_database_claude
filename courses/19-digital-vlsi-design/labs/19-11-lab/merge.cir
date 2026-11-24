@@ -1,8 +1,8 @@
-* Lab 19-11: a zero-skew merge (Problem 19-11.7), checked by Elmore delays
+* Lab 19-11: a zero-skew merge (Problem 19-11.7), checked by Elmore constants
 * Subtree 1: 10 ps and 40 fF, modeled as 250 ohm into 40 fF; subtree 2: 12 ps and 60 fF, 200 ohm into 60 fF.
 * A 500 um wire (0.30 ohm/um, 0.20 fF/um) is driven at the zero-skew tap, 308.3333 um from subtree 1.
-* Each side of the tap is a 40-section pi ladder, whose Elmore delay equals the continuous wire's.
-* The Elmore delay to a sink is the area above its unit-step response: INTEG of 1 - v(sink).
+* Each side of the tap is a 40-section pi ladder, whose Elmore constant equals the continuous wire's.
+* The Elmore constant to a sink is the area above its unit-step response: INTEG of 1 - v(sink).
 * EXPECT elm1 key:../../solutions/19-11-solutions.md#19-11.7b scale=1e-12 rtol=1e-3
 * EXPECT elm2 key:../../solutions/19-11-solutions.md#19-11.7b scale=1e-12 rtol=1e-3
 Vin tap 0 PWL(0 0 1f 1)

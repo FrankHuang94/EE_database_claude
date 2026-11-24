@@ -4,7 +4,7 @@ Chapter: [19-11](../chapters/19-11-place-route-signoff.md) · Worked solutions: 
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
 
-**Conventions.** Lengths in µm unless stated; SKY130 high-density rows are 2.72 µm tall and sites 0.46 µm wide (19-09). Wire delays use the Elmore model (19-05). Problems marked *(lab)* can be checked with `labs/19-11-lab/pnr.py`.
+**Conventions.** Lengths in µm unless stated; SKY130 high-density rows are 2.72 µm tall and sites 0.46 µm wide (19-09). Wire delays are Elmore constants (19-05): unscaled, suitable for balancing and comparison; a 50 % delay needs the 0.38 and 0.69 factors of 19-05. Problems marked *(lab)* can be checked with `labs/19-11-lab/pnr.py`.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 
@@ -38,7 +38,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 19-11.7 [B]
 
-**Merging two clock subtrees.** Subtree 1 has an Elmore delay of 10.0 ps to its sinks and 40 fF of capacitance; subtree 2 has 12.0 ps and 60 fF. Their roots are joined by a 500 µm wire with r = 0.30 Ω/µm and c = 0.20 fF/µm. (a) Find the zero-skew tapping point. (b) Find the merged delay and capacitance. (c) If subtree 2's delay were 80 ps instead, what would happen, and how much extra wire on subtree 1's side would balance the two (tap at subtree 2's root)?
+**Merging two clock subtrees.** Subtree 1 has an Elmore constant of 10.0 ps to its sinks and 40 fF of capacitance; subtree 2 has 12.0 ps and 60 fF. Their roots are joined by a 500 µm wire with r = 0.30 Ω/µm and c = 0.20 fF/µm. (a) Find the zero-skew tapping point. (b) Find the merged delay and capacitance. (c) If subtree 2's delay were 80 ps instead, what would happen, and how much extra wire on subtree 1's side would balance the two (tap at subtree 2's root)?
 
 ### Problem 19-11.8 [B]
 
