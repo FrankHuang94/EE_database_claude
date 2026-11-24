@@ -1,0 +1,86 @@
+* Lab 20-02 -- Example 20-02.6: a three-stage amplifier with nested Miller compensation (section 3.6), small-signal.
+* Stage 1: g_m1 = 188.4956 uS into node 1 (R1 = 25/g_m1); stage 2: g_m2 into node 2 (R2 = 25/g_m2), non-inverting;
+* stage 3: g_m3 out of the output (R3 = 20/g_m3), inverting; CL = 2 pF; Cm1 from node 1 to the output, Cm2 from
+* node 2 to the output. The amplifier inverts at DC, so the loop gain is read from -v(out).
+* (b) Butterworth sizing, no parasitics: g_m2 = g_m1, g_m3 = 2.513274 mS, Cm1 = 0.6 pF, Cm2 = 0.3 pF.
+* (c) as (b) plus 30 fF at node 1 and 30 fF + C_gg3 = 160.217 fF at node 2.
+* (d) modified: g_m2 = 2 g_m1, g_m3 = 5.026548 mS (C_gg3 = 260.435 fF), Cm2 = 0.4 pF, parasitics as (c).
+*
+* EXPECT pmb key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.6h rtol=2e-3
+* EXPECT gmb key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.6i rtol=2e-3
+* EXPECT pmc key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.6k rtol=2e-3
+* EXPECT gmc key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.6l rtol=2e-3
+* EXPECT pmd key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.6o rtol=2e-3
+* EXPECT gmd key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.6p rtol=5e-3
+
+VIN in 0 DC 0 AC 1
+
+* (b)
+G1B 0 n1b in 0 188.4956u
+R1B n1b 0 132.6291k
+G2B 0 n2b n1b 0 188.4956u
+R2B n2b 0 132.6291k
+G3B outb 0 n2b 0 2.513274m
+R3B outb 0 7.957747k
+CLB outb 0 2p
+CM1B n1b outb 0.6p
+CM2B n2b outb 0.3p
+
+* (c)
+G1C 0 n1c in 0 188.4956u
+R1C n1c 0 132.6291k
+CN1C n1c 0 30f
+G2C 0 n2c n1c 0 188.4956u
+R2C n2c 0 132.6291k
+CN2C n2c 0 160.217f
+G3C outc 0 n2c 0 2.513274m
+R3C outc 0 7.957747k
+CLC outc 0 2p
+CM1C n1c outc 0.6p
+CM2C n2c outc 0.3p
+
+* (d)
+G1D 0 n1d in 0 188.4956u
+R1D n1d 0 132.6291k
+CN1D n1d 0 30f
+G2D 0 n2d n1d 0 376.9911u
+R2D n2d 0 66.31456k
+CN2D n2d 0 290.435f
+G3D outd 0 n2d 0 5.026548m
+R3D outd 0 3.978874k
+CLD outd 0 2p
+CM1D n1d outd 0.6p
+CM2D n2d outd 0.4p
+
+.control
+ac dec 1000 1 10G
+let lb = -v(outb)
+let lc = -v(outc)
+let ld = -v(outd)
+let phb_c = cph(lb)
+let phc_c = cph(lc)
+let phd_c = cph(ld)
+let mb_v = mag(lb)
+let mc_v = mag(lc)
+let md_v = mag(ld)
+meas ac fcb when mb_v=1
+meas ac phb find phb_c at=fcb
+meas ac f180b when phb_c=-3.141592653589793
+meas ac mb find mb_v at=f180b
+meas ac fcc when mc_v=1
+meas ac phc find phc_c at=fcc
+meas ac f180c when phc_c=-3.141592653589793
+meas ac mc find mc_v at=f180c
+meas ac fcd when md_v=1
+meas ac phd find phd_c at=fcd
+meas ac f180d when phd_c=-3.141592653589793
+meas ac md find md_v at=f180d
+let pmb = 180 + phb * 180 / pi
+let pmc = 180 + phc * 180 / pi
+let pmd = 180 + phd * 180 / pi
+let gmb = -20 * log10(mb)
+let gmc = -20 * log10(mc)
+let gmd = -20 * log10(md)
+print fcb pmb gmb fcc pmc gmc fcd pmd gmd
+.endc
+.end

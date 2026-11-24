@@ -8041,3 +8041,28 @@
   definition: "f_T = g_m/(2πC_gg), the frequency at which a transistor's small-signal current gain falls to one; it rises with inversion level and falls with channel length, as 1/L² for long channels and 1/L when the carriers are velocity-saturated."
   chapter: "20-01"
   see_also: [Cutoff frequency, Velocity saturation]
+# ---- 20-02
+- term: Indirect compensation
+  definition: "Frequency compensation of a two-stage op-amp in which the compensation capacitor returns from the output to a low-impedance node (the source of a cascode in the first stage's signal path) instead of to the first stage's high-impedance output; it removes the right-half-plane zero and raises the second pole several times, at the cost of a lightly damped non-dominant pole pair whose damping is set by the cascode's transconductance (Ahuja, 1983)."
+  chapter: "20-02"
+  see_also: [Miller compensation, Right-half-plane zero, Gain margin]
+- term: Nested Miller compensation
+  definition: "Compensation of a three-stage amplifier with two Miller capacitors, one around the last two stages and one around the output stage; the Butterworth design C_m1 = 4g_m1C_L/g_m3, C_m2 = 2g_m2C_L/g_m3 gives a gain-bandwidth product of g_m3/(4C_L), half that of a two-stage amplifier with the same output transconductance."
+  chapter: "20-02"
+  see_also: [Miller compensation, Pole splitting]
+- term: Gain boosting
+  definition: "Raising a cascode's output resistance by (1 + A_b) with an auxiliary amplifier of gain A_b that holds the cascode device's source still; it gives multistage gain at single-stage speed, but creates a pole-zero doublet near the booster's unity-gain frequency that slows settling unless that frequency lies above the closed-loop bandwidth (Bult and Geelen, 1990)."
+  chapter: "20-02"
+  see_also: [Cascode, Pole–zero doublet, Settling time]
+- term: Switched-capacitor common-mode feedback
+  definition: "Common-mode feedback for clocked fully differential amplifiers in which capacitors sense the output common mode and a pair of switched capacitors, recharged every cycle to the desired offset, refresh them by charge sharing; it loads the outputs only capacitively and converges by the factor C_s/(C_s + C_r) per cycle."
+  chapter: "20-02"
+  see_also: [Common-mode feedback, Fully differential amplifier]
+- term: Op-amp figure of merit
+  definition: "A normalized measure of an amplifier's speed per unit of supply: small-signal FOM_S = GBW·C_L/I (MHz·pF/mA) and large-signal FOM_L = SR·C_L/I ((V/µs)·pF/mA); many papers divide by power instead of current, so values are comparable only with the same definition and similar loads."
+  chapter: "20-02"
+  see_also: [Gain-bandwidth product, Slew rate]
+- term: Drain saturation voltage
+  definition: "The smallest drain-source voltage at which a MOSFET's current is within a stated fraction of its saturated value; in the charge-based model with a 2 % criterion it is about 3.9 V_T (about 0.1 V) in weak inversion and a little below the pinch-off voltage in strong inversion, and it sets an amplifier's output swing and input range."
+  chapter: "20-02"
+  see_also: [Inversion coefficient, Moderate inversion]

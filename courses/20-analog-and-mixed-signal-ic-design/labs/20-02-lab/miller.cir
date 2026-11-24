@@ -1,0 +1,62 @@
+* Lab 20-02 -- Example 20-02.3's two-stage op-amp as a small-signal circuit (section 3.2's two-node model), in ngspice.
+* g_m1 = 188.4956 uS, R1 = 381.972 kohm, C1 = 110.729 fF; g_m6 = 1.558121 mS, R2 = 12.8360 kohm, CL = 2 pF;
+* Cc = 0.6 pF. Three copies driven by the same 1 V AC input: (a) Cc alone, (b) Rz = 1/g_m6 = 641.799 ohm,
+* (c) the cancelling Rz = (1 + CL/Cc)/g_m6 = 2781.128 ohm. The open-loop gain v(out)/v(in) is the loop gain of a
+* unity-gain follower, so the 0 dB crossing is the crossover and 180 degrees plus the phase there is the phase
+* margin (ngspice reports phase in radians). A third measurement reads the DC gain at 1 Hz.
+*
+* EXPECT a0 key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.3w rtol=1e-3
+* EXPECT fca key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.4e scale=1e6 rtol=1e-3
+* EXPECT pma key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.4f rtol=2e-3
+* EXPECT fcb key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.4l scale=1e6 rtol=1e-3
+* EXPECT pmb key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.4m rtol=2e-3
+* EXPECT fcc key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.4r scale=1e6 rtol=1e-3
+* EXPECT pmc key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.4s rtol=2e-3
+
+VIN in 0 DC 0 AC 1
+
+* (a) Miller capacitor only
+G1A n1a 0 in 0 188.4956u
+R1A n1a 0 381.972k
+C1A n1a 0 110.729f
+G6A outa 0 n1a 0 1.558121m
+R2A outa 0 12.8360k
+CLA outa 0 2p
+CCA n1a outa 0.6p
+
+* (b) nulling resistor 1/g_m6
+G1B n1b 0 in 0 188.4956u
+R1B n1b 0 381.972k
+C1B n1b 0 110.729f
+G6B outb 0 n1b 0 1.558121m
+R2B outb 0 12.8360k
+CLB outb 0 2p
+RZB n1b nxb 641.799
+CCB nxb outb 0.6p
+
+* (c) cancelling nulling resistor
+G1C n1c 0 in 0 188.4956u
+R1C n1c 0 381.972k
+C1C n1c 0 110.729f
+G6C outc 0 n1c 0 1.558121m
+R2C outc 0 12.8360k
+CLC outc 0 2p
+RZC n1c nxc 2781.128
+CCC nxc outc 0.6p
+
+.control
+ac dec 400 0.1 20G
+let mag_a = mag(v(outa))
+meas ac a0 find mag_a at=1
+meas ac fca when vdb(outa)=0
+meas ac pha find vp(outa) at=fca
+meas ac fcb when vdb(outb)=0
+meas ac phb find vp(outb) at=fcb
+meas ac fcc when vdb(outc)=0
+meas ac phc find vp(outc) at=fcc
+let pma = 180 + pha * 180 / pi
+let pmb = 180 + phb * 180 / pi
+let pmc = 180 + phc * 180 / pi
+print a0 fca pma fcb pmb fcc pmc
+.endc
+.end

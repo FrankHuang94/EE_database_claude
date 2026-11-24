@@ -1,0 +1,62 @@
+* Lab 20-02 -- Example 20-02.5: indirect (cascode) compensation of Example 20-02.3's first stage, small-signal model
+* of section 3.5. Nodes: x (cascode source: g_mc, Rx = 1 Mohm, Cx = 20 fF), n1 (first-stage output: R1, C1), out
+* (R2 = 20 kohm, CL = 2 pF). The first stage's current g_m1 v_in leaves node x; the cascode passes g_mc v_x on to
+* node 1; Cc = 0.6 pF returns from the output to node x. The second stage is sized for slew: g_m6 = 1 mS, so
+* C1 = 30 fF + C_gg6 = 81.812 fF. Copy (b) has g_mc = g_m1 = 188.4956 uS, copy (c) g_mc = 600 uS.
+* Phase margin from the 0 dB crossing; gain margin from the frequency where the continuous phase cph() reaches
+* -180 degrees.
+*
+* EXPECT fcb key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.5g scale=1e6 rtol=1e-3
+* EXPECT pmb key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.5h rtol=2e-3
+* EXPECT gmb key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.5k rtol=1e-2
+* EXPECT fcc key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.5m scale=1e6 rtol=1e-3
+* EXPECT pmc key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.5n rtol=2e-3
+* EXPECT gmc key:../../chapters/20-02-two-stage-op-amp-design.md#Ex_20-02.5p rtol=5e-3
+
+VIN in 0 DC 0 AC 1
+
+* (b) g_mc = g_m1
+G1B xb 0 in 0 188.4956u
+RXB xb 0 1Meg
+CXB xb 0 20f
+GCB xb n1b xb 0 188.4956u
+R1B n1b 0 381.972k
+C1B n1b 0 81.812f
+G6B outb 0 n1b 0 1m
+R2B outb 0 20k
+CLB outb 0 2p
+CCB xb outb 0.6p
+
+* (c) g_mc = 600 uS
+G1C xc 0 in 0 188.4956u
+RXC xc 0 1Meg
+CXC xc 0 20f
+GCC xc n1c xc 0 600u
+R1C n1c 0 381.972k
+C1C n1c 0 81.812f
+G6C outc 0 n1c 0 1m
+R2C outc 0 20k
+CLC outc 0 2p
+CCC xc outc 0.6p
+
+.control
+ac dec 1000 1 10G
+let phb_c = cph(v(outb))
+let phc_c = cph(v(outc))
+let magb = mag(v(outb))
+let magc = mag(v(outc))
+meas ac fcb when vdb(outb)=0
+meas ac phb find phb_c at=fcb
+meas ac f180b when phb_c=-3.141592653589793
+meas ac mb find magb at=f180b
+meas ac fcc when vdb(outc)=0
+meas ac phc find phc_c at=fcc
+meas ac f180c when phc_c=-3.141592653589793
+meas ac mc find magc at=f180c
+let pmb = 180 + phb * 180 / pi
+let pmc = 180 + phc * 180 / pi
+let gmb = -20 * log10(mb)
+let gmc = -20 * log10(mc)
+print fcb pmb f180b gmb fcc pmc f180c gmc
+.endc
+.end

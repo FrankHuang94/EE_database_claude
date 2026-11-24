@@ -1,0 +1,39 @@
+* Lab 20-02 -- slewing of Example 20-02.3's op-amp as a unity-gain follower, with a behavioral large-signal model.
+* The first stage is a transconductor g_m1 = 188.4956 uS whose output current is clipped at +/- I_SS = 20.944 uA (a
+* fully switched pair); node 1 has R1 = 381.972 kohm and C1 = 110.729 fF. M6 sinks I_6 + g_m6 v(n1), never less than
+* zero (it cannot source), with I_6 = 155.812 uA and g_m6 = 1.558121 mS; M7 sources a constant I_6. R2 = 12.836 kohm
+* returns to a 0.6 V reference, so the output rests where v(n1) is near zero. Compensation: Rz = 641.799 ohm in
+* series with Cc = 0.6 pF; CL = 2 pF. The input steps between 0.2 V and 1.0 V, inside the output swing; the
+* behavioral model has no input-range limit (a real follower would leave Example 20-02.3's 0.24-0.55 V input range,
+* so on silicon this test is run in an inverting configuration). The slew rate is measured between 0.4 V and 0.7 V
+* on each edge, while the pair is fully switched; README section 4 derives the steady-ramp value
+* (I_SS/C_c)/(1 + 1/A_2).
+*
+* EXPECT srr key:README.md#Lab_20-02.c scale=1e6 rtol=1e-2
+* EXPECT srf key:README.md#Lab_20-02.c scale=1e6 rtol=1e-2
+
+VIN in 0 PULSE(0.2 1.0 50n 1p 1p 200n 400n)
+VREF ref 0 0.6
+
+B1 n1 0 I = max(-20.944u, min(20.944u, 188.4956u * (V(in) - V(out))))
+R1 n1 0 381.972k
+C1 n1 0 110.729f
+B6 out 0 I = max(0, 155.812u + 1.558121m * V(n1))
+I7 0 out 155.812u
+R2 out ref 12.836k
+RZ n1 nx 641.799
+CC nx out 0.6p
+CL out 0 2p
+
+.ic V(out)=0.2 V(n1)=0.02 V(nx)=0.02
+.control
+tran 10p 500n uic
+meas tran t1r when v(out)=0.4 rise=1
+meas tran t2r when v(out)=0.7 rise=1
+meas tran t1f when v(out)=0.7 fall=1
+meas tran t2f when v(out)=0.4 fall=1
+let srr = 0.3 / (t2r - t1r)
+let srf = 0.3 / (t2f - t1f)
+print srr srf
+.endc
+.end
