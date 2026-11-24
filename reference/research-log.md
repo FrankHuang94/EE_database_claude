@@ -4064,3 +4064,67 @@ R&D % = R&D ÷ revenue.
 - **H. Suzuki, "A Statistical Model for Urban Radio Propogation [sic]," *IEEE Trans. Commun.* 25(7):673–680, Jul 1977, DOI 10.1109/TCOM.1977.1093888** [Established].
 - **H. T. Friis, "A Note on a Simple Transmission Formula," *Proc. IRE* 34(5):254–256, May 1946, DOI 10.1109/JRPROC.1946.234568** [Established].
 - **W. C. Jakes (ed.), *Microwave Mobile Communications*, Wiley, 1974** [Established]: origin of the edge-to-area coverage result (as reproduced in Rappaport, *Wireless Communications*); not opened in this session.
+
+## R-413 · 3GPP capability, coding and HARQ clauses; ITU IMT-2020/2030; 3GPP release plan (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: ETSI PDFs of the 3GPP specifications, the ITU report and 3GPP/ITU web pages. Facts already logged in R-285–R-291 are not repeated.*
+
+- **TS 38.306 V19.4.0 (2026-09), clause 4.1.1** [Established]: "The DL, UL and SL max data rate supported by the UE is calculated by band or band combinations supported by the UE." **Clause 4.1.4:** layer-2 buffer "calculated by MaxDLDataRate * RLC RTT + MaxULDataRate * RLC RTT"; Table 4.1.4-1 RLC RTT 50 / 40 / 30 / 20 ms at 15 / 30 / 60 / 120 kHz; "RLC RTT for EUTRA cell group = 75ms".
+- **TS 36.306 V19.3.0 (2026-08)** [Established]: Category 4 150,752 DL-SCH bits per TTI, 1,827,072 soft channel bits, layer-2 buffer 1,900,000 bytes; DL Category 20 up to 2,019,360 bits; DL Category 26 up to 3,531,888 bits.
+- **TS 38.212 V19.4.0 (2026-07)** [Established]: Table 5.3-1 "LDPC" for UL-SCH, DL-SCH and PCH, "Polar code" for BCH; Table 5.3-2 "Polar code" for DCI; clause 5.4.2.1 "N cb = min(N, N ref) … N ref = ⌊TBS_LBRM / (C·R_LBRM)⌋, R_LBRM = 2/3".
+- **TS 38.214 V19.5.0 (2026-09), clause 5.1** [Established]: "a maximum of 16 HARQ processes per cell are supported by the UE, or subject to UE capability, a maximum of 32 HARQ processes per cell … the UE may assume a default number of 8 processes".
+- **Report ITU-R M.2410-0 (11/2017)** [Established]: "Downlink peak data rate is 20 Gbit/s"; user experienced data rate is "the 5% point of the cumulative distribution function (CDF) of the user throughput"; "Downlink user experienced data rate is 100 Mbit/s".
+- **3GPP Release 19 and 21 pages** [Established; future dates perishable]: Rel-19 "is now complete"; "Release 21 will be the first normative 6G release"; timeline agreed June 2026: Stage-3 freeze Dec 2028, ASN.1/OpenAPI freeze Mar 2029. **ITU-R IMT-2030 page:** proposals "to be received by ITU in the timeframe 02/2027-02/2029"; peak targets "50–200 Gbps", user experienced "300–500 Mbps or higher".
+- **Sources:** [TS 38.306](https://www.etsi.org/deliver/etsi_ts/138300_138399/138306/19.04.00_60/ts_138306v190400p.pdf); [TS 36.306](https://www.etsi.org/deliver/etsi_ts/136300_136399/136306/19.03.00_60/ts_136306v190300p.pdf); [TS 38.212](https://www.etsi.org/deliver/etsi_ts/138200_138299/138212/19.04.00_60/ts_138212v190400p.pdf); [TS 38.214](https://www.etsi.org/deliver/etsi_ts/138200_138299/138214/19.05.00_60/ts_138214v190500p.pdf); [M.2410](https://www.itu.int/dms_pub/itu-r/opb/rep/R-REP-M.2410-2017-PDF-E.pdf); [Rel-21](https://www.3gpp.org/specifications-technologies/releases/release-21); [IMT-2030](https://www.itu.int/en/ITU-R/study-groups/rsg5/rwp5d/imt-2030/Pages/default.aspx). Checked Nov 2026.
+
+## R-414 · Modems, decoders and measured throughput (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: vendor product briefs and newsroom pages, paper abstracts (OpenAlex/Crossref), and secondary reports of Ookla data.*
+
+- **Qualcomm Snapdragon X80 product brief 87-73875-1 Rev. C** [vendor]: "5G Peak Download Speed: 10 Gbps"; "5G Peak Upload Speed: 3.5 Gbps"; "6xRx for smartphones"; "fully integrated Snapdragon Satellite support including NB-NTN". **X85 brief 87-87284-1 Rev. B:** 12.5 / 3.7 Gb/s; "first downlink carrier aggregation with 400MHz bandwidth in Sub-6GHz" (vendor "first" claim).
+- **MediaTek M90 press release, 26 Feb 2025** [vendor]: "up to 12Gbps"; "near 10Gbps download speed in a live network".
+- **Samsung Exynos Modem 5400 product page** [vendor]: "up to 14.79Gbps*" ("* Based on internal test result for NR-DC"); "a combined 380MHz bandwidth … three of 100MHz and two of 40MHz … FR1-only transfer rates of up to 11.2Gbps with 1024 QAM"; "4nm EUV".
+- **Apple Newsroom, 19 Feb 2025 and 9 Sep 2025** [Apple claims]: C1 "the first cellular modem designed by Apple"; C1X "up to 2x faster than C1 … using 30 percent less energy overall"; N1 "enables Wi-Fi 7, Bluetooth 6, and Thread". C2 details are from press reports only (UNVERIFIED, not used).
+- **Decoders** [Established, as published]: Y. Ren et al., VLSI 2026, DOI 10.1109/VLSITechnologyandCir65830.2026.11577322 — "A 2.35mm² 118.3Gbps 5.14pJ/Bit Dual-Mode LDPC Decoder for 5G/6G", 16 nm; Y.-J. Su et al., *IEEE SSC-L* 5:98–101, 2022, DOI 10.1109/LSSC.2022.3167423 — 2.38/1.85 Gb/s at 58.6/91.3 pJ/b, 40 nm; X. Tao et al., *IEEE JSSC* 56(2):612–623, 2021, DOI 10.1109/JSSC.2020.3005763 — polar SCL 3.25 Gb/s, 13.2 pJ/b, 0.64 mm², 40 nm.
+- **Measured throughput** [Industry estimate, secondary]: IEEE ComSoc Technology Blog, 23 Jul 2026, summarizing Ookla's US H1 2026 report: T-Mobile "a median 5G download speed of 314.38 Mbps". ISPreview, 23 Mar 2026, summarizing Ookla Q4 2025 data on the iPhone Air: C1X at "real-world parity in download and latency performance with the Qualcomm X80", while the X80-based model "still maintains up to a 32% lead in upload speeds" and Apple's modem "may be held back by limited uplink carrier aggregation capability". Ookla's own pages were not reached.
+- **Sources:** [X80 brief](https://docs.qualcomm.com/bundle/publicresource/87-73875-1_REV_C_Snapdragon_X80_5G_Modem-RF_System_Product_Brief.pdf); [X85 brief](https://docs.qualcomm.com/bundle/publicresource/87-87284-1_REV_B_Qualcomm_x85_5G_Modem_RF_Product_Brief.pdf); [M90](https://www.mediatek.com/press-room/mediatek-introduces-m90-5g-advanced-modem-with-ai-and-12gbps-peak-speed); [Exynos 5400](https://semiconductor.samsung.com/processor/modem/exynos-modem-5400/); [Apple Feb 2025](https://www.apple.com/newsroom/2025/02/apple-debuts-iphone-16e-a-powerful-new-member-of-the-iphone-16-family/); [Apple Sep 2025](https://www.apple.com/newsroom/2025/09/introducing-iphone-air-a-powerful-new-iphone-with-a-breakthrough-design/); [ComSoc](https://techblog.comsoc.org/2026/07/23/highlights-from-ooklas-u-s-speedtest-connectivity-report-mobile-fixed-networks/); [ISPreview](https://www.ispreview.co.uk/index.php/2026/03/ookla-benchmarks-apples-c1x-mobile-broadband-modem-in-the-iphone-air.html). Checked Nov 2026.
+
+## R-415 · NTN standards and satellite-to-phone services (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **3GPP "NTN overview" page** [Established]: "Release 17 (ASN.1 frozen in June 2022) was the first release with normative requirements for NTN"; "Only transparent payload"; bands "n255 (L-band) and n256 (S-band)"; "Handheld devices with power class 3 are supported"; "UEs with GNSS capabilities are assumed"; "the UE shall autonomously pre-compensate the Timing Advance, as well as the frequency Doppler shift"; HARQ processes "can be increased to 32 (e.g., in NGSO satellite systems)"; Rel-19 adds regenerative payloads.
+- **Apple Newsroom, 15 Nov 2022** [Apple statement]: "users can send and receive messages in as little as 15 seconds in clear conditions"; "it can take a few minutes for even short messages to get through".
+- **T-Mobile Newsroom, 1 Oct 2025** [operator statement]: "Powered by 650+ Starlink Direct to Cell Satellites"; "We started with just text messaging and text-to-911".
+- **SatNews, 16 Jul 2026** [Industry estimate, trade press]: AST SpaceMobile "rescheduled its commercial Direct-to-Device (D2D) service launch to early 2027" (reporting a regulatory filing not opened here).
+- **Sources:** [3GPP NTN](https://www.3gpp.org/technologies/deep-dive/ntn-overview); [Apple 2022](https://www.apple.com/newsroom/2022/11/emergency-sos-via-satellite-available-today-on-iphone-14-lineup/); [T-Mobile](https://www.t-mobile.com/news/network/t-satellite-data-ready-app-expansion); [SatNews](https://satnews.com/2026/07/16/ast-spacemobile-defers-commercial-direct-to-device-timeline-to-early-2027/). Checked Nov 2026.
+
+## R-416 · Wi-Fi 7 rates, Wi-Fi 8 status and the wireless-chip market (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **Wi-Fi Alliance press release, 8 Jan 2024** [Established]: "Wi-Fi CERTIFIED 7"; "320 MHz channels"; "Multi-Link Operation (MLO)"; "4K QAM: achieves 20% higher transmission rates than 1024 QAM".
+- **Keysight N7617 "802.11be Introduction"** [Established, secondary]: "Up to 8 spatial streams"; "MCSs 0 to 15". **G. Geraci et al., arXiv:2507.09613:** data subcarriers "{234, 468, 936, 1960, 3920}" for 20–320 MHz; "TSYM = 12.8 µs+TGI … TGI ∈{0.8 us, 1.6 us, 3.2 us}". The 46 Gb/s figure corresponds to 16 streams, not in the approved amendment (author's arithmetic; cf. R-042).
+- **IEEE 802.11 TGbn update page (Nov 2026)** [Established, perishable]: "RevCom and SASB approval May 2028" (projected).
+- **Qualcomm Form 10-K for fiscal 2026** [Established]: QCT revenue $37,208M (FY2026) and $38,367M (FY2025); handsets $24,072M and $27,793M; automotive $6,004M and $3,957M; IoT $7,132M and $6,617M; "we expect that Apple will primarily use its own modem products, rather than our products, in its devices going forward".
+- **ABI Research press release, 15 Jul 2026** [Industry estimate]: Bluetooth device shipments "5.4 billion units in 2025 to 8.1 billion in 2030"; UWB "nearly 1.18 billion by 2030, up from 597 million in 2026".
+- **Sources:** [WFA](https://www.wi-fi.org/news-events/newsroom/wi-fi-alliance-introduces-wi-fi-certified-7); [Keysight](https://helpfiles.keysight.com/csg/n7617/Content/Main/802.11be%20Introduction.htm); [arXiv:2507.09613](https://arxiv.org/abs/2507.09613); [TGbn](https://www.ieee802.org/11/Reports/tgbn_update.htm); [Qualcomm 10-K](https://www.sec.gov/Archives/edgar/data/0000804328/000080432826000128/qcom-20260927.htm); [ABI](https://www.abiresearch.com/press/iot-connectivity-market-rebounds-as-bluetooth-shipments-march-toward-8.1-billion-by-2030-and-wi-fi-8-enters-the-spotlight). Checked Nov 2026.
+
+## R-417 · UWB and Bluetooth ranging (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **IEEE SA page for IEEE 802.15.4z-2020** [Established]: "Enhanced Ultra Wideband (UWB) Physical Layers (PHYs) and Associated Ranging Techniques"; board approval 2020-06-04, published 2020-08-25; superseded, with P802.15.4ab in progress (sensing, "at least 50 Mbit/s").
+- **D. Coppens et al., *IEEE Access* 10:70219–70241, 2022, DOI 10.1109/ACCESS.2022.3187410** [Established]: HRP channel 5 at 6489.6 MHz and channel 9 at 7987.2 MHz, each 499.2 MHz wide; the STS field supports secure ranging.
+- **Apple Newsroom, 12 Sep 2023** [Apple claim]: the second-generation UWB chip connects "at three times the range as before". **CCC press release, 26 Jul 2022** [Established]: Digital Key Release 3 provides "hands-free, location-aware keyless access … through the implementation of UWB in combination with Bluetooth Low Energy".
+- **TI application note SWRA791 (Feb 2024)** [Established]: Bluetooth Channel Sounding Phase-Based Ranging; "72 channels with 1MHz channel spacing can be used". Bluetooth Core 6.1/6.2 feature details (randomized RPA updates; minimum connection interval "from 7.5 ms to 375 µs") were seen only in secondary sources (CNX Software, Help Net Security) because bluetooth.com refused automated access [Established, secondary].
+- **Sources:** [IEEE 802.15.4z](https://standards.ieee.org/ieee/802.15.4z/10230/); [Coppens et al.](https://arxiv.org/abs/2202.02190); [Apple 2023](https://www.apple.com/newsroom/2023/09/apple-debuts-iphone-15-and-iphone-15-plus/); [CCC](https://carconnectivity.org/press-release/car-connectivity-consortium-delivers-digital-key-release-3-0-specification/); [TI SWRA791](https://www.ti.com/lit/pdf/swra791). Checked Nov 2026.
+
+## R-418 · GNSS signal structure and dual-frequency phones (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent.*
+
+- **IS-GPS-705J (1 Aug 2022)** [Established]: L5 codes "with a chipping rate of 10.23 Mbps … the 10,230 chip code"; carrier "1176.45 MHz, or 115 times 10.23 MHz"; minimum received power "-157.0 dBW" (GPS III/IIIF). L1 C/A (1.023 Mcps, 1575.42 MHz) is from IS-GPS-200N (R-411). L2's 1227.60 MHz (120 × 10.23 MHz) is GPS's long-standing L2 carrier, also defined in IS-GPS-200N; the clause stating it was not re-read in this session [Established, not re-read].
+- **Galileo OS SIS ICD Issue 2.2 (Nov 2025)** [Established]: carriers "E1 1575.420 … E5a 1176.450" MHz; E5a chip rate "10.230" Mchip/s; E1-B/C "1.023" Mcps; a new "E5a-QP" component.
+- **EUSPA news, 4 Jun 2018** [Established that the device shipped; accuracy is a claim]: "the Xiaomi Mi 8, launched on May 31, is the world's first smartphone providing up to decimetre-level accuracy" with a "dual-frequency (E1/L1+E5/L5) GNSS chip".
+- **Sources:** [IS-GPS-705J](https://www.gps.gov/sites/default/files/2025-07/IS-GPS-705J.pdf); [Galileo ICD 2.2](https://www.gsc-europa.eu/sites/default/files/sites/all/files/Galileo_OS_SIS_ICD_v2.2.pdf); [EUSPA](https://www.euspa.europa.eu/newsroom-events/news/worlds-first-dual-frequency-gnss-smartphone-hits-market). Checked Nov 2026.

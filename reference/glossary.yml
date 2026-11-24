@@ -8755,3 +8755,40 @@
   definition: The usual state of cellular networks, in which the phone's far lower transmit power makes the uplink close at a shorter range than the downlink, so the cell edge is where the phone can no longer be heard; balanced with receive diversity, narrow uplink allocations and higher power classes.
   chapter: "21-11"
   see_also: [Link budget, Noise rise]
+# ---------------------------------------------------------------- 21-12
+- term: Baseband processor (modem)
+  definition: The digital engine between a radio's converters and the network stack, running filtering, FFTs, channel estimation, MIMO detection, demapping, HARQ, channel decoding and the protocol layers; its silicon cost is dominated by the datapath, the decoders and the buffers.
+  chapter: "21-12"
+  see_also: [Hybrid ARQ (HARQ), Soft buffer]
+- term: Peak data rate (3GPP)
+  definition: The maximum data rate a device supports, computed (not measured) by TS 38.306 as layers × bits per symbol × scaling factor × maximum code rate × subcarriers per second × (1 − overhead), summed over aggregated carriers; real users see a few per cent of it.
+  chapter: "21-12"
+  see_also: [Baseband processor (modem)]
+- term: Soft buffer
+  definition: The memory in which a receiver keeps the soft values (LLRs) of each unfinished HARQ block so that retransmissions can be combined; tens of megabytes for a wide carrier at peak rate.
+  chapter: "21-12"
+  see_also: [Hybrid ARQ (HARQ), Limited-buffer rate matching]
+- term: Limited-buffer rate matching
+  definition: An NR rule that caps the coded bits a receiver must store per code block at the information bits divided by R_LBRM = 2/3, so the soft buffer holds 1.5 coded bits per information bit rather than the mother code's three.
+  chapter: "21-12"
+  see_also: [Soft buffer]
+- term: Two-way ranging
+  definition: Measuring distance by a timed message exchange between two devices with independent clocks; single-sided ranging suffers an error of half the reply time times the clock difference, which double-sided ranging cancels, leaving about the distance times the mean clock offset.
+  chapter: "21-12"
+  see_also: [Phase-based ranging]
+- term: Phase-based ranging
+  definition: Measuring distance from the round-trip phase of tones at several frequencies, d = cΔφ/(4πΔf); Bluetooth Channel Sounding uses up to 72 tones at 1 MHz spacing, giving a 150 m unambiguous range and about 2 m multipath resolution.
+  chapter: "21-12"
+  see_also: [Two-way ranging]
+- term: Ionosphere-free combination
+  definition: A weighted difference of GNSS pseudoranges on two frequencies, (f₁²ρ₁ − f₂²ρ₂)/(f₁² − f₂²), that cancels the ionosphere's 1/f² delay exactly at the cost of amplifying uncorrelated noise (about 2.6 times for L1/L5).
+  chapter: "21-12"
+  see_also: [Two-way ranging]
+- term: Non-terrestrial network (NTN)
+  definition: Cellular service through satellites or high-altitude platforms, first specified in 3GPP Release 17 with transparent payloads, bands n255 and n256 and GNSS-equipped devices that pre-compensate tens of kilohertz of Doppler and milliseconds of delay.
+  chapter: "21-12"
+  see_also: [G/T (figure of merit)]
+- term: Specification freeze
+  definition: The point at which a standards release stops accepting new functionality (Stage 3) and then fixes its message encoding (ASN.1); features become real only after freeze, conformance testing, certification and deployment, often years apart.
+  chapter: "21-12"
+  see_also: [Peak data rate (3GPP)]
