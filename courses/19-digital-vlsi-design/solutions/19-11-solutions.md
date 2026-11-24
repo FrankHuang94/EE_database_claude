@@ -8,7 +8,7 @@ Problems: [19-11 problem set](../problems/19-11-problems.md) · Chapter: [19-11]
 
 ### Solution 19-11.1
 
-Core area $120\,000/0.70$ = **171 429** µm². With height = 2 × width, $W^2 \times 2 = 171\,429$, so $W$ = **292.77** µm and the target height is 585.54 µm. Rows: $585.54/2.72 = 215.27$, rounded up to **216** rows, a height of $216 \times 2.72$ = **587.52** µm. Sites per row: $\lfloor 292.77/0.46 \rfloor$ = **636**. Achieved utilization: $120\,000/(292.77 \times 587.52)$ = **69.76** %, slightly under target because of the rounding up.
+Core area $120\,000/0.70$ = **171 429** µm². With height = 2 × width, $W^2 \times 2 = 171\,429$, so $W$ = **292.77** µm and the target height is 585.54 µm. Rows: $585.54/2.72 = 215.27$, rounded up to **216** rows, a height of $216 \times 2.72$ = **587.52** µm. Sites per row: $\lfloor 292.77/0.46 \rfloor$ = **636**. Achieved utilization: $120\,000/(292.77 \times 587.52)$ = **69.76** %, slightly under target because of the rounding up. With the width snapped to whole sites, $636 \times 0.46$ = **292.56** µm, it is **69.81** %.
 
 ### Solution 19-11.2
 
@@ -94,6 +94,51 @@ Core area $120\,000/0.70$ = **171 429** µm². With height = 2 × width, $W^2 \t
 
 (c) The uniform load alone gives $IR/8 = 1\ \text{mA} \times 100\ \Omega/8$ = **12.5** mV. With the macro at the middle, its own drop is $2\ \text{mA} \times 0.5 \times 100 \times 100/200 = 50$ mV, and the total worst drop is **62.5** mV. Putting heavy loads near the feeds (or adding a feed beside them) is a floorplanning decision.
 
+### Solution 19-11.13
+
+(a) Metal 1, 400 µm: $R_w = 1.20565 \times 400 = 482.26$ Ω, $C_w = 0.172375 \times 400 = 68.95$ fF, $C_L = 4 \times 2.302 = 9.208$ fF. Driver term $1410 \times (68.95 + 9.208)$ fF = **110.20** ps; wire term $482.26 \times (0.38 \times 68.95 + 0.69 \times 9.208)$ fF = **15.70** ps; total **125.90** ps.
+
+(b) 600 µm: $R_w = 723.39$ Ω, $C_w = 103.425$ fF. Driver term $1410 \times 112.633$ fF = 158.81 ps, wire term $723.39 \times 45.655$ fF = 33.03 ps; total **191.84** ps, so the path loses **65.94** ps of slack. The detour adds 50 % to the length but 52 % to the delay, because the wire term grows as the square of the length.
+
+(c) Opposite-direction switching doubles the charge through the coupling capacitance (the Miller effect, 19-05), adding $\Delta C = 300 \times 0.05 = 15$ fF to the effective capacitance; same-direction switching removes it. The change is $1410 \times 15\ \text{fF} + 723.39 \times 0.38 \times 15\ \text{fF} = 21.15 + 4.12$ = **±25.27** ps: slower for opposite switching, which matters for setup, and faster for same-direction switching, which matters for hold. This is why signoff STA checks both with signal-integrity analysis.
+
+(d) Metal 3, 600 µm: driver term $1410 \times (128.977 + 9.208)$ fF = 194.84 ps, wire term 5.52 ps, total **200.36** ps, *worse* than metal 1, because this net is driver-dominated and the flow's metal-3 estimate has more capacitance per micrometre. The stronger driver: $705 \times 112.633$ fF + 33.03 ps = **112.43** ps, better than the placement estimate. Its cost is about twice the input capacitance, which loads the previous stage and slows it, twice the area and more leakage. As in Example 19-11.6, upper metal helps only once the wire's own RC dominates.
+
+### Solution 19-11.14
+
+| Defect | Check | What it protects against |
+|---|---|---|
+| (a) missing vias, local droop | Power-integrity (static and dynamic IR drop) analysis | Cells slower than the timing assumed, or failing, where the supply sags |
+| (b) 0.10 µm spacing | DRC | Shorts and opens from lithography and etch the foundry cannot print reliably |
+| (c) swapped mux inputs | Logical equivalence check of the final netlist against the RTL | A netlist that does not compute the specified function |
+| (d) hold fails with parasitics | Signoff STA at every corner with extracted RC | Races that corrupt data at any clock frequency |
+| (e) charge on a gate-only wire | Antenna check (part of DRC) | Gate-oxide damage during manufacture |
+| (f) fill short to VDD | LVS | A layout whose connectivity differs from the netlist |
+| (g) excessive current density | Electromigration check | Wires that open or short after years of operation |
+
+(h) The budget is $0.05 \times 1.80$ = **90** mV; the measured droop is $0.08 \times 1.80$ = **144** mV, **54** mV over. Either the grid is strengthened (more straps or vias, decoupling, spreading the switching activity) until the droop is within budget, or timing is re-signed at the lower voltage with the margin that implies; the block cannot be signed off as is.
+
+### Solution 19-11.15
+
+(a) Connections crossing between A = {1, 2, 4} and B = {3, 5, 6}: (1, 3), (2, 3), (3, 4), (4, 5), (4, 6), (2, 5). The cut is **6**; only (1, 2) and (5, 6) are internal.
+
+(b) Gains, as external minus internal connections:
+
+| Cell | Side | External | Internal | Gain |
+|---|---|---|---|---|
+| 1 | A | 1 (to 3) | 1 (to 2) | **0** |
+| 2 | A | 2 (to 3, 5) | 1 (to 1) | **1** |
+| 4 | A | 3 (to 3, 5, 6) | 0 | **3** |
+| 3 | B | 3 (to 1, 2, 4) | 0 | **3** |
+| 5 | B | 2 (to 2, 4) | 1 (to 6) | **1** |
+| 6 | B | 1 (to 4) | 1 (to 5) | **0** |
+
+(c) Moving cell $a$ alone reduces the cut by $g_a$, and likewise $b$. If $a$ and $b$ are connected, each gain counted their connection as removed, but after the swap it still crosses, now in the other direction; subtracting it twice gives $g_a + g_b - 2w_{ab}$. The best swap is 4 with 3: $3 + 3 - 2 \times 1$ = **4**, against 3 for swapping 4 with 5 ($3 + 1 - 2$) and 3 for swapping 4 with 6 ($3 + 0 - 0$). The new partition A = {1, 2, 3}, B = {4, 5, 6} has a cut of $6 - 4$ = **2**: (3, 4) and (2, 5).
+
+(d) New gains: cells 1 and 6 have $-2$; cells 2, 3, 4 and 5 have $-1$. Every swap gain is at most $-1 + (-1) - 0$ = **−2**, so no single swap helps. A Fiduccia–Mattheyses pass would still make these moves tentatively and keep the best prefix, which here is the swap already made.
+
+(e) There are $\binom{6}{3}/2$ = **10** distinct bisections. Checking all ten gives cuts of 2, 4, 4, 5, 5, 5, 5, 6, 6 and 6, so the result is the unique global minimum. Here the two triangles {1, 2, 3} and {4, 5, 6} are the natural clusters, which is what multilevel partitioners find by coarsening first.
+
 ---
 
 <!-- answer-key -->
@@ -106,6 +151,8 @@ Core area $120\,000/0.70$ = **171 429** µm². With height = 2 × width, $W^2 \t
 | 19-11.1d | core height | 587.52 | µm |
 | 19-11.1e | sites per row | 636 | — |
 | 19-11.1f | achieved utilization | 69.76 | % |
+| 19-11.1g | site-aligned core width | 292.56 | µm |
+| 19-11.1h | utilization with site-aligned width | 69.81 | % |
 | 19-11.2a | drop fed at both ends | 5.0 | mV |
 | 19-11.2b | drop fed at one end | 20 | mV |
 | 19-11.2c | drop with a middle feed | 1.25 | mV |
@@ -146,3 +193,24 @@ Core area $120\,000/0.70$ = **171 429** µm². With height = 2 × width, $W^2 \t
 | 19-11.12c | position of worst drop | 50 | µm |
 | 19-11.12d | uniform-load drop alone | 12.5 | mV |
 | 19-11.12e | worst drop with the macro at the middle | 62.5 | mV |
+| 19-11.13a | driver term, 400 µm metal 1 | 110.20 | ps |
+| 19-11.13b | wire term, 400 µm metal 1 | 15.70 | ps |
+| 19-11.13c | delay, 400 µm metal 1 | 125.90 | ps |
+| 19-11.13d | delay, 600 µm metal 1 | 191.84 | ps |
+| 19-11.13e | slack lost to the detour | 65.94 | ps |
+| 19-11.13f | crosstalk delay change, each way | 25.27 | ps |
+| 19-11.13g | delay, 600 µm metal 3 | 200.36 | ps |
+| 19-11.13h | delay, 600 µm metal 1, stronger driver | 112.43 | ps |
+| 19-11.14a | IR-drop budget | 90 | mV |
+| 19-11.14b | measured IR drop | 144 | mV |
+| 19-11.14c | excess drop | 54 | mV |
+| 19-11.15a | initial cut | 6 | — |
+| 19-11.15b | gain of cell 4 | 3 | — |
+| 19-11.15c | gain of cell 3 | 3 | — |
+| 19-11.15d | gain of cell 2 | 1 | — |
+| 19-11.15e | gain of cell 5 | 1 | — |
+| 19-11.15f | gain of cells 1 and 6 | 0 | — |
+| 19-11.15g | best swap gain | 4 | — |
+| 19-11.15h | cut after the swap | 2 | — |
+| 19-11.15i | best swap gain afterwards | -2 | — |
+| 19-11.15j | distinct balanced bisections | 10 | — |

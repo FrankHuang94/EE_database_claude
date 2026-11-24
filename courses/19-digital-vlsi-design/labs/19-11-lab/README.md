@@ -26,7 +26,7 @@ Files:
 
 1. **Floorplan and straps.** Reproduce Example 19-11.1. Then predict the drop at the middle of Problem 12's strap (100 µm), and run `strap.cir` (Part 1).
 2. **Placement.** Solve Example 19-11.3, then a random 40-cell netlist with pads on the boundary. Predict where the cells end up before you plot them (Part 2).
-3. **Routing.** Route Problem 5's maze; then compute the RMST/RSMT ratio for 200 random five-pin nets on a 10 × 10 grid (seed 1). Predict the average ratio and the largest (Part 3).
+3. **Routing.** Route Problem 5's maze; then compute the RMST/RSMT ratio for 200 random nets on a 10 × 10 grid (seed 1), each with five random pins; after duplicates are removed, 18 of the 200 have four distinct pins. Predict the average ratio and the largest (Part 3).
 4. **Clock merge.** Compute Problem 7's tapping point and run `merge.cir`. Predict how the tap moves as subtree 2's load grows from 20 to 200 fF (Part 4).
 5. **Layers.** For Example 19-11.6's net, predict the length beyond which metal 3 beats metal 1, with the weak `inv_1` driver and with a driver eight times stronger; then sweep the length. Run `net.cir` and compare its Elmore constant and 50 % delay (Part 5).
 
@@ -34,7 +34,7 @@ Files:
 
 - Part 1: Example 1 gives a 707.11 µm core of 260 rows; the strap's drop is 46.875 mV at the hot spot (50 µm) and 37.5 mV at the middle, and ngspice agrees to the microvolt.
 - Part 2: Example 3's cells sit at (2.5, 1.2), (5.0, 2.4), (7.5, 1.2) and (5.0, 4.8). The random netlist's cells crowd toward the middle of the region, the reason real placers add spreading forces.
-- Part 3: the maze route is 12 steps. Over 200 random five-pin nets the spanning tree is on average 9.3 % longer than the Steiner tree (mean ratio 1.093), and at worst 1.333 times, inside Hwang's 3/2 bound.
+- Part 3: the maze route is 12 steps. Over the 200 random nets the spanning tree is on average 9.3 % longer than the Steiner tree (mean ratio 1.093), and at worst 1.333 times, inside Hwang's 3/2 bound.
 - Part 4: the tap is 308.3 µm from subtree 1 and both sinks see 16.55 ps in ngspice; as subtree 2's load grows, the tap slides toward it.
 - Part 5: with the 50 % delay estimate of §3.5, metal 3 overtakes metal 1 beyond about 3648 µm with the weak driver and 434 µm with the strong one; `net.cir` gives a 50 % delay of 1070.0 ps, within 0.4 % of Example 6(a)'s 1066.07 ps, and an Elmore constant of 1528.0 ps.
 
@@ -65,7 +65,7 @@ None: physical design is a software activity. Designs made with the open flow ca
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
 | Lab 19-11.a | strap drop at its middle, Problem 12 | 37.5 | mV |
-| Lab 19-11.b | mean RMST/RSMT ratio, 200 random five-pin nets | 1.093 | — |
+| Lab 19-11.b | mean RMST/RSMT ratio, 200 random nets of up to five pins | 1.093 | — |
 | Lab 19-11.c | largest RMST/RSMT ratio among them | 1.333 | — |
 | Lab 19-11.d | length where metal 3 overtakes metal 1, weak driver | 3648 | µm |
 | Lab 19-11.e | length where metal 3 overtakes metal 1, strong driver | 434 | µm |

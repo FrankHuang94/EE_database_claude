@@ -34,7 +34,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 19-10.6 [B]
 
-**A faster clock on SKY130.** Two `dfxtp_1` flip-flops on a 1.5 ns clock. Launch latency 0.25 ns, capture latency 0.20 ns. Q rises with $t_{pcq} = t_{ccq} = 0.307$ ns, the logic does not invert, so D rises: setup 0.051 ns, hold −0.029 ns (from the Liberty tables at a fast clock edge). Logic delay is 0.85 ns maximum, 0.10 ns minimum. Uncertainty 0.08 ns (setup), 0.04 ns (hold). (a) Find the setup slack and the maximum frequency. (b) Find the hold slack. (c) If the logic inverted instead (D falling, setup 0.103 ns), what would the setup slack be?
+**A faster clock on SKY130.** Two `dfxtp_1` flip-flops on a 1.5 ns clock. Launch latency 0.25 ns, capture latency 0.20 ns. Q rises with $t_{pcq} = t_{ccq} = 0.307$ ns, the logic does not invert, so D rises: setup 0.051 ns, hold −0.029 ns (clock-to-Q at 0.053 ns clock slew and 3.4 fF load; setup and hold at 0.01 ns clock and data slews). Logic delay is 0.85 ns maximum, 0.10 ns minimum. Uncertainty 0.08 ns (setup), 0.04 ns (hold). (a) Find the setup slack and the maximum frequency. (b) Find the hold slack. (c) If the logic inverted instead (D falling, setup 0.103 ns), what would the setup slack be?
 
 ### Problem 19-10.7 [B]
 
@@ -60,6 +60,18 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Hold at the slow corner.** At the typical corner a register-to-register path has launch latency 0.20 ns, capture latency 0.60 ns, $t_{ccq} = 0.25$ ns, shortest logic 0.20 ns and hold time 0.02 ns (no uncertainty). At the slow corner the clock-tree buffers slow by a factor of 1.5, while the flip-flop and the data-path cells slow by 1.3. (a) Find the hold slack at both corners. (b) Explain why the slow corner can be the hold-limiting one. (c) What delay must a hold buffer add at the slow corner, and how much will it add at the typical corner if it scales by 1.3?
 
+### Problem 19-10.13 [B]
+
+**Writing the constraints.** A block has a clock port `clk` at 500 MHz, data inputs `din[7:0]` and `en`, and outputs `dout[7:0]`. The inputs arrive 0.80 ns after the clock edge at the source (the clock with zero latency); the outputs must reach the next block 0.60 ns before the next clock edge, because that block needs this time for its own logic and setup; each output drives 0.01 pF, and each input is driven by a `sky130_fd_sc_hd__buf_2`. Reserve 0.05 ns of clock uncertainty. (a) Write the SDC (units ns and pF). (b) Find the slack of an input-to-register path with 1.05 ns of logic into a flip-flop with 0.06 ns setup and an ideal clock. (c) Find the slack of a register-to-output path with 0.31 ns clock-to-Q and 0.60 ns of logic. (d) The downstream team revises its need to 1.10 ns. What is the new slack of the path in (c), and how much logic can that path have? (e) The SDC writer forgot the `set_input_delay` for `en`. What happens to the paths that start at `en`?
+
+### Problem 19-10.14 [B]
+
+**Recognizing a false path.** A register R1 (clock-to-Q 0.30 ns) drives two multiplexers in series, ending at a register R2 (setup 0.08 ns) on a 2.0 ns clock with no skew or uncertainty. Each multiplexer adds 0.15 ns. M1 passes its 1-input, which comes from R1 through block X (1.20 ns), when $s = 1$, and its 0-input, a 0.10 ns bypass from R1, when $s = 0$. M1's output feeds block Y (1.00 ns), which goes to M2's 1-input, and a 0.10 ns bypass to M2's 0-input. M2's select is $ar{s}$. The select $s$ comes from a configuration register that is written only while the block is idle. (a) List the four structural paths from R1 to R2 with their logic delays and the value of $s$ each needs. (b) What setup slack does STA report without exceptions? (c) How many of the paths are false, and what is the true worst setup slack? (d) Write an exception that removes only the false path that matters for setup. (e) A colleague writes `set_false_path -through [get_pins u_x/Z]`, where `u_x/Z` is the output of block X. What slack does STA now report, and what has gone wrong? (f) Why does the exception depend on $s$ being static?
+
+### Problem 19-10.15 [C]
+
+**A half-cycle path.** A rising-edge flip-flop launches data through combinational logic to a falling-edge flip-flop. The clock has a 2.0 ns period and a 50 % duty cycle, and is ideal (zero latency at both flip-flops). Both flip-flops have $t_{pcq} = t_{ccq} = 0.30$ ns, setup 0.10 ns and hold 0.04 ns. Uncertainty is 0.05 ns for setup and 0.02 ns for hold. The logic delay is 0.45 ns maximum and 0.05 ns minimum. (a) Find the setup slack. (b) Find the hold slack, stating which pair of edges the hold check uses. (c) Repeat (a) and (b) if the clock's high time shrinks to 45 % of the period. (d) At a 50 % duty cycle, what is the highest clock frequency this path allows, and what would it be for the same logic between two rising-edge flip-flops? (e) Give two reasons designers use half-cycle paths despite this cost.
+
 ---
 
 ## Objective coverage
@@ -69,6 +81,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. The synthesis flow and its inputs | 5, 7 |
 | 2. Technology mapping by tree covering | 5 |
 | 3. Liberty lookup and timing propagation | 1, 2, 3, 4, 11 |
-| 4. Setup, hold and I/O slack; SDC | 6, 7, 8 |
+| 4. Setup, hold and I/O slack; SDC | 6, 7, 8, 13, 15 |
 | 5. Corners, OCV, CRPR and statistics | 9, 10, 12 |
-| 6. False and multicycle paths | 8 |
+| 6. False and multicycle paths | 8, 14 |

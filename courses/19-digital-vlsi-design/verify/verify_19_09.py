@@ -212,4 +212,17 @@ v.check("19-09.10c", 400 * 0.150 * 0.420 / 0.14)
 v.check("Txt 19-09.a", 100 * ((0.48 * 3.33) / (0.46 * 2.72) - 1))
 v.check("Txt 19-09.b", 0.150 / 0.048)
 
+# problems 10(b), 11 and 13
+v.check("19-09.10d", 25.2 / (2 * 0.35) - 0.14)
+v.check("19-09.11a", ly.strip_length(2, False))
+v.check("19-09.11b", ly.strip_length(2, True))
+v.check("19-09.11c", ly.strip_length(2, False) * 0.075)
+v.check("19-09.11d", ly.strip_length(2, True) * 0.075)
+import json  # noqa: E402
+lib = json.loads((ROOT / "labs" / "19-10-lab" / "sky130_hd_subset.json").read_text())
+w_nand2 = lib["cells"]["nand2_1"]["area"] / 2.72
+v.check("19-09.13a", w_nand2)
+v.check("19-09.13b", w_nand2 / 0.46)
+v.check("19-09.13c", 100 * (ly.strip_length(2, True) * 0.075 / w_nand2 - 1))
+
 sys.exit(v.finish())

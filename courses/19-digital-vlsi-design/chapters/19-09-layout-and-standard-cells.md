@@ -34,23 +34,24 @@ Design rules are the printing tolerances of these stencils, like a sign painter'
 
 ```text
    Inverter layout (top view, simplified)
+   legend: # poly, c contact, | and - metal 1, boxes = active (diffusion) regions
 
-   VDD rail  ===========================================  metal1
-                 |c|                        
-          +------+-+------------+           pMOS active (in n-well)
-          |  p+  |G|     p+     |
-          +------+-+------------+
-                 |o|--------+  output (metal1, contacted to both drains)
-   A (in) ======|l|         |
-                 |y|        |
-          +------+-+------------+           nMOS active
-          |  n+  | |     n+     |
-          +------+-+------------+
-                 |c|                        
-   GND rail  ===========================================  metal1
+   VDD ================================================  metal-1 rail
+              |
+        +-----c-----#-----------+            pMOS: p+ active inside the n-well
+        |  source   #   drain c-|----+
+        +-----------#-----------+    |
+                    #                |       metal-1 strap joining both drains
+   A ---c############                +----  Y (output)
+                    #                |
+        +-----------#-----------+    |
+        |  source   #   drain c-|----+
+        +-----c-----#-----------+            nMOS: n+ active
+              |
+   GND ================================================  metal-1 rail
 ```
 
-*Figure 1. A simplified inverter layout. A vertical polysilicon stripe crosses the p-type active region (pMOS, inside an n-well) and the n-type active region (nMOS); contacts (c) tie the sources to the power rails and the drains to the output wire.*
+*Figure 1. A simplified inverter layout. One vertical polysilicon stripe (#) crosses the p+ active region (the pMOS, inside an n-well, whose boundary is not drawn) and the n+ active region (the nMOS), forming both gates; the input A reaches the poly through a contact on a poly extension. Source contacts (c) on the left tie the two sources to the VDD and GND rails; drain contacts on the right are joined by a vertical metal-1 strap, which is the output Y. Nothing else touches the poly.*
 
 ## 3. Theory
 
@@ -67,7 +68,7 @@ Rules come in four kinds:
 - **Enclosure:** how far one layer must extend around another, for example active around a contact, so that misalignment cannot expose the contact's edge.
 - **Extension:** how far poly must extend beyond active (and active beyond poly), so that a slightly misaligned gate still cuts the channel completely.
 
-Textbooks teach with **scalable (λ) rules**, every dimension a small multiple of a unit λ (about half the minimum feature), so that a layout can be shrunk with the process. This chapter uses its own illustrative set: poly width 2λ, poly spacing 3λ, active width 3λ, contacts 2λ × 2λ, contact-to-gate spacing 2λ, active enclosure of contacts 1λ, poly extension past active 2λ, and metal-1 width and spacing 3λ. Real processes have hundreds of rules in absolute units, many context-dependent. SkyWater's open SKY130 PDK, for instance, sets a minimum poly width of 0.150 µm (rule poly.1a) and a minimum channel width of 0.420 µm, reduced to 0.360 µm inside standard-cell areas ([R-314]).
+Textbooks teach with **scalable (λ) rules**, every dimension a small multiple of a unit λ (about half the minimum feature), so that a layout can be shrunk with the process. This chapter uses its own illustrative set: poly width 2λ, poly spacing 3λ, active width 3λ, contacts 2λ × 2λ, contact-to-gate spacing 2λ, active enclosure of contacts 1λ, poly extension past active 2λ, and metal-1 width and spacing 3λ. Real processes have hundreds of rules in absolute units, many context-dependent. SkyWater's open SKY130 PDK, for instance, sets a minimum poly width of 0.150 µm (rule poly.1a) and a minimum channel width of 0.420 µm, reduced to 0.360 µm inside standard-cell areas (rule difftap.2b) ([R-314]).
 
 **Transistor pitch.** The rules set how closely transistors can be packed along a diffusion strip. Two adjacent transistors that share a **contacted** source/drain need room for the poly, a contact and its spacing on both sides:
 
@@ -88,9 +89,11 @@ For a static CMOS gate, the goal is to place each network's transistors in one u
 
 A graph has an Euler path if and only if it is connected and has zero or two nodes of odd degree. Where no common ordering exists, the strip needs a **break** (a gap and a second contact), which widens the cell. Example 2 finds the orderings for an OAI21 gate; Example 3 shows that only 8 of the 24 orderings of an AOI22 work.
 
-![Stick diagram of an AOI22 gate: four vertical poly stripes labeled A, B, D, C cross a p-diffusion strip whose regions read m, VDD, m, F, m and an n-diffusion strip whose regions read F, x, GND, y, F](../../../assets/figures/19-09/aoi22-stick.svg)
+> **Math refresher — graphs and Euler paths.** A **graph** is a set of nodes joined by edges; here the nodes are electrical nodes and each transistor is an edge. A node's **degree** is the number of edges touching it. An **Euler path** uses every edge exactly once. Why the odd-degree condition: a walk that passes *through* a node enters on one edge and leaves on another, using edges in pairs, so every node the path only passes through has even degree; only the start and end nodes can have an odd count. Hence a connected graph has an Euler path only if it has zero odd-degree nodes (the path can then close into a loop) or exactly two (the path must start at one and end at the other). The converse also holds and can be proven by building the path greedily, but the "only if" is what the layout argument uses: an odd-degree node such as a gate's output touched by one transistor forces that transistor to an end of the ordering.
 
-*Figure 2. Stick diagram of the AOI22 gate F = NOT(AB + CD) with input order A-B-D-C. Each vertical poly stripe gates one pMOS and one nMOS. Between stripes, the diffusion regions are shared nodes: in the pull-up, m is the node between the two parallel pairs (it appears three times and is joined by metal); in the pull-down, x and y are the internal nodes of the two series stacks. Neither strip has a break.*
+![Stick diagram of an AOI22 gate: four vertical poly stripes labeled A, B, D, C cross a p-diffusion strip whose regions read m, VDD, m, F, m and an n-diffusion strip whose regions read F, x, GND, y, F. A metal-1 VDD rail runs along the top and a GND rail along the bottom, each dropping to its diffusion region through a contact; a dashed metal-2 strap joins the three m regions through vias; a metal-1 strap joins the p-diffusion F region and both n-diffusion F regions to the output F.](../../../assets/figures/19-09/aoi22-stick.svg)
+
+*Figure 2. Stick diagram of the AOI22 gate F = NOT(AB + CD) with input order A-B-D-C. Each vertical poly stripe gates one pMOS and one nMOS. Between stripes, the diffusion regions are shared nodes: in the pull-up, m is the node between the two parallel pairs; it appears three times and is joined on metal 2, which can cross the metal-1 VDD connection. In the pull-down, x and y are the internal nodes of the two series stacks and need no contact. Metal 1 carries the rails and the output strap that joins the three F regions. Neither diffusion strip has a break.*
 
 ### 3.4 Standard cells
 
@@ -101,12 +104,12 @@ A **standard-cell library** is a set of pre-drawn, characterized gates (inverter
 - **Pins on a grid,** so that the router can reach them.
 - **Several drive strengths** of each function, built as wider or parallel transistors (19-04), and often several threshold flavors (19-06).
 
-SkyWater's high-density SKY130 library uses "a 0.46 x 2.72um site, equivalent to 9 met1 tracks" ([R-314]); its flip-flop `dfxtp_1` is 16 sites wide, 20.02 µm² ([R-317]). Taller cells (more tracks) hold wider transistors and are faster; shorter cells are denser. Libraries are offered in several heights for this reason.
+SkyWater's high-density SKY130 library uses "a 0.46 x 2.72um site, equivalent to 9 met1 tracks" ([R-317]); its flip-flop `dfxtp_1` is 16 sites wide, 20.02 µm² ([R-317]). Taller cells (more tracks) hold wider transistors and are faster; shorter cells are denser. Libraries are offered in several heights for this reason.
 
 **Area estimation.** A design's area follows from its cell count and the **utilization**, the fraction of the core area that cells occupy (the rest goes to routing, power grid and spacing):
 
 $$
-A_{core} = \frac{\sum A_{cells}}{U} .
+A_{core} = \frac{\sum A_{cells}}{u} .
 $$
 
 Utilizations of about 60–80% are common; higher values save area but make routing and timing closure harder. Libraries often quote a **routed gate density** in thousands of NAND2-equivalent gates per mm², which already includes utilization: SKY130's high-density library quotes "120 kGates/mm^2" ([R-317]).
@@ -118,7 +121,7 @@ Before a layout becomes masks, it passes several automated checks, collectively 
 - **Design-rule check (DRC):** every polygon against every rule. A single violation can make a mask set unusable.
 - **Layout versus schematic (LVS):** the circuit extracted from the layout (devices and their connectivity) must match the schematic or netlist exactly, catching opens, shorts and wrong devices.
 - **Parasitic extraction (PEX):** resistances and capacitances of the drawn wires and devices are computed, so that timing (19-10) and power use the real wiring rather than estimates.
-- **Antenna checks:** during manufacturing, long metal lines connected only to a gate collect charge from plasma etching, which can damage the thin gate oxide. Rules limit the ratio of connected metal area to gate area; violations are fixed by routing a jumper to a higher metal layer or adding a protection diode.
+- **Antenna checks:** during manufacturing, long metal lines connected only to a gate collect charge from plasma etching, which can damage the thin gate oxide. Rules limit the ratio of connected metal area to gate area; violations are fixed by routing a jumper to a higher metal layer or adding a protection diode. Many processes, SKY130 among them, count a metal layer's *sidewall* area (perimeter times thickness) rather than its top area, which makes the allowed length much shorter for narrow lines (Problem 10).
 - **Density and electrical rules:** minimum and maximum metal densities (for uniform polishing), well and substrate tie spacing (to prevent latch-up, the parasitic thyristor of 09-07), and electrical checks.
 
 > **Going deeper — layout at advanced nodes.** In FinFET and nanosheet processes, transistor widths come in whole numbers of fins or sheets, gates sit on a fixed pitch, and lower metal layers are often unidirectional and patterned with multiple exposures, so cell architecture is tightly constrained. Effects that depend on a transistor's surroundings (stress from neighboring structures, distance to the well edge) shift its characteristics, so libraries are characterized with their real context. These constraints are why standard-cell heights at leading nodes are quoted in a small number of tracks and why new device structures (backside power, stacked transistors) are often motivated by cell area as much as by transistor performance.
@@ -253,9 +256,9 @@ The lab ([labs/19-09-lab](../labs/19-09-lab/README.md)) is in Python (`layout.py
 | Contacted vs uncontacted pitch | 8λ vs 5λ | This chapter's illustrative rules |
 | Euler path exists | 0 or 2 odd-degree nodes | Connected graph |
 | SKY130 minimum poly width | 0.150 µm | [R-314] |
-| SKY130 `hd` site | 0.46 × 2.72 µm, 9 met1 tracks | [R-314] |
+| SKY130 `hd` site | 0.46 × 2.72 µm, 9 met1 tracks | [R-317] |
 | SKY130 `hd` routed density | 120 kGates/mm² | [R-317] |
-| Core area | $\sum A_{cells}/U$ | $U$ ≈ 0.6–0.8 |
+| Core area | $\sum A_{cells}/u$ | $u$ ≈ 0.6–0.8 |
 
 ## 8. Common mistakes
 
@@ -269,9 +272,9 @@ The lab ([labs/19-09-lab](../labs/19-09-lab/README.md)) is in Python (`layout.py
 
 ### State of the art (as of Nov 2026)
 
-- **An open library in numbers [Established].** SkyWater's high-density SKY130 library has 163 cell functions in 437 variants ([R-315]), on "a 0.46 x 2.72um site, equivalent to 9 met1 tracks" ([R-314]), with a stated "Routed Gate Density is 120 kGates/mm^2" ([R-317]); its higher-speed libraries use a 0.48 × 3.33 µm site, about 11 tracks ([R-314]): the height–speed tradeoff of Example 5 in a real process. One `hs` site is **28** % larger than an `hd` site.
+- **An open library in numbers [Established].** SkyWater's high-density SKY130 library has 163 cell functions in 437 variants ([R-315]), on "a 0.46 x 2.72um site, equivalent to 9 met1 tracks" ([R-317]), with a stated "Routed Gate Density is 120 kGates/mm^2" ([R-317]); its higher-speed libraries use a 0.48 × 3.33 µm site, about 11 tracks ([R-317]): the height–speed tradeoff of Example 5 in a real process. One `hs` site is **28** % larger than an `hd` site.
 - **Pitches at the leading edge [Industry estimate].** The IEEE IRDS 2024 roadmap lists a 48 nm gate pitch and a 24 nm M0 pitch for its 2024 "3nm" node, shrinking toward a 42 nm gate pitch and 14 nm metal pitch in the mid-2030s ([R-315]): the whole 48 nm gate pitch (gate plus spacing) is about a third of SKY130's minimum gate length alone (0.150 µm, a ratio of **3.1**), a measure of the gap between an open teaching process and the leading edge.
-- **Backside power frees the cell's rails [Established].** Intel's PowerVia test chip moved power delivery to the back of the wafer and reported "standard cell utilization exceeding 90%" ([R-315]): when power rails no longer compete with signals for the lowest metal layers, cells can be packed more tightly than the 60–80% utilizations typical of front-side designs.
+- **Backside power frees the cell's rails.** Intel's PowerVia test chip, presented at the 2023 VLSI Symposium **[Established]**, moved power delivery to the back of the wafer; Intel reported "standard cell utilization exceeding 90%" **[Vendor claim]** ([R-315]): when power rails no longer compete with signals for the lowest metal layers, cells can be packed more tightly than the 60–80% utilizations typical of front-side designs.
 
 ### Why it matters commercially
 
@@ -346,7 +349,7 @@ Problems: [19-09 problem set](../problems/19-09-problems.md).
 
 ## 11. Key terms
 
-[Design rules](../../../reference/glossary.md#design-rules) · [Stick diagram](../../../reference/glossary.md#stick-diagram) · [Euler path](../../../reference/glossary.md#euler-path) · [Standard cell](../../../reference/glossary.md#standard-cell) · [Utilization](../../../reference/glossary.md#utilization) (as defined for FPGAs; the same idea for cell area) · [Design-rule check (DRC)](../../../reference/glossary.md#design-rule-check-drc) · [Layout versus schematic (LVS)](../../../reference/glossary.md#layout-versus-schematic-lvs) · [Antenna effect](../../../reference/glossary.md#antenna-effect)
+[Design rules](../../../reference/glossary.md#design-rules) · [Stick diagram](../../../reference/glossary.md#stick-diagram) · [Euler path](../../../reference/glossary.md#euler-path) · [Standard cell](../../../reference/glossary.md#standard-cell) · [Utilization](../../../reference/glossary.md#utilization) · [Design-rule check (DRC)](../../../reference/glossary.md#design-rule-check-drc) · [Layout versus schematic (LVS)](../../../reference/glossary.md#layout-versus-schematic-lvs) · [Antenna effect](../../../reference/glossary.md#antenna-effect)
 
 ## 12. Connections
 
@@ -359,6 +362,7 @@ Problems: [19-09 problem set](../problems/19-09-problems.md).
 - Weste & Harris, *CMOS VLSI Design*, 4th ed., §1.5 (layout and design rules) and ch. 3 (CMOS processing technology).
 - Rabaey, Chandrakasan & Nikolić, *Digital Integrated Circuits*, 2nd ed., ch. 2 (the manufacturing process and design rules).
 - The SkyWater SKY130 PDK documentation: its design-rule pages and standard-cell library descriptions are a rare open view of a real process.
+- D. Harris, lecture slides for *CMOS VLSI Design*, the lecture on circuits and layout (stick diagrams, design rules, cell pitch).
 
 ## 14. Sources
 
@@ -366,4 +370,4 @@ Problems: [19-09 problem set](../problems/19-09-problems.md).
 2. Rabaey, Chandrakasan & Nikolić, *Digital Integrated Circuits*, 2nd ed., Prentice Hall, 2003, ch. 2.
 3. [R-314] SkyWater SKY130 PDK rules and library documentation.
 4. [R-315] The `sky130_fd_sc_hd` library repository; IEEE IRDS 2024 More Moore tables; Intel PowerVia (VLSI Symposium 2023).
-5. [R-317] SkyWater SKY130 `hd` routed gate density and `dfxtp_1` area.
+5. [R-317] SkyWater SKY130 library sites (`hd` and `hs`), `hd` routed gate density and `dfxtp_1` area.

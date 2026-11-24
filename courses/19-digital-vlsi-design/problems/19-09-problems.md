@@ -50,7 +50,19 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 19-09.10 [C]
 
-**Antenna limits on a minimum gate.** A minimum SKY130 transistor has a 0.150 µm gate length and 0.420 µm width. With an illustrative antenna limit of 400, what metal area may connect to its gate before a diffusion does, and how long may a 0.14 µm-wide metal-1 line be?
+**Antenna limits on a minimum gate.** A minimum SKY130 transistor has a 0.150 µm gate length and 0.420 µm width. (a) With an antenna limit of 400 applied to the metal's top area, what metal area may connect to its gate before a diffusion does, and how long may a 0.14 µm-wide metal-1 line be? (b) SKY130's actual metal-1 rule applies the limit of 400 to the line's sidewall area, its perimeter times the metal thickness of 0.35 µm [R-319]. How long may the line be now?
+
+### Problem 19-09.11 [B] *(lab)*
+
+**A NAND2 cell from the rules.** (a) Draw a stick diagram of a two-input NAND: pull-down A and B in series, pull-up A and B in parallel sharing the output drain. (b) Using the chapter's rules, find the length of each diffusion strip in λ: the series pull-down with contacts only at its ends, and the parallel pull-up with contacts at both ends and on the shared middle node. Which strip sets the cell's width? (c) Convert to micrometres with λ = 0.075 µm (half SKY130's 0.150 µm gate length).
+
+### Problem 19-09.12 [B]
+
+**Which check catches it?** For each layout problem, name the signoff check that catches it (DRC, LVS, parasitic extraction with timing, antenna, or none) and say why: (a) two metal-1 lines drawn 0.10 µm apart where the rule is 0.14 µm; (b) a missing via, so a gate's output never reaches the next gate's input; (c) a route 40 % longer than the placer estimated, adding delay to a critical path; (d) a 600 µm metal-1 line connected only to a small gate; (e) a transistor drawn 0.65 µm wide where the schematic says 0.42 µm; (f) a logic mistake that was in the schematic itself.
+
+### Problem 19-09.13 [C]
+
+**Measuring a real cell.** SKY130's `sky130_fd_sc_hd__nand2_1` has a Liberty area of 3.7536 µm² (the 19-10 lab's data file), in rows 2.72 µm tall with 0.46 µm sites. (a) How wide is the cell, in micrometres and in sites? (b) Compare with your λ estimate from Problem 11. (c) Optionally, open the cell's GDS in KLayout or Magic (the library is open source) and measure the transistor widths; compare them with 19-03's 0.65 µm NMOS and 1.0 µm PMOS. Why are real cells smaller than λ-rule estimates?
 
 ---
 
@@ -58,8 +70,8 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 | Objective | Problems |
 |---|---|
-| 1. Layers and reading a layout | 1, 7 |
-| 2. Design rules and pitches | 1, 2, 7 |
+| 1. Layers and reading a layout | 11, 13 |
+| 2. Design rules and pitches | 1, 2, 7, 11 |
 | 3. Euler paths | 3, 4, 5, 9 |
-| 4. Standard cells and area estimation | 6, 8 |
-| 5. Physical verification | 10 |
+| 4. Standard cells and area estimation | 6, 8, 13 |
+| 5. Physical verification | 10, 12 |

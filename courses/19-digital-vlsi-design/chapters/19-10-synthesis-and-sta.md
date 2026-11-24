@@ -124,7 +124,7 @@ $$
 D(s, C_L) \approx (1 - t_s)(1 - t_C) D_{00} + (1 - t_s)\, t_C\, D_{01} + t_s (1 - t_C) D_{10} + t_s\, t_C\, D_{11} .
 $$
 
-Doing the slew direction first gives the same expression, so the order does not matter. The formula is exact for any function of the form $a + bs + cC_L + d\,sC_L$, and its error elsewhere grows with the table's curvature between grid points. Outside the table, tools extrapolate linearly from the end segment, which is less trustworthy; libraries set a `max_capacitance` and a `max_transition` per pin so that legal designs stay inside.
+The order of the two steps does not matter. The formula is exact for any function of the form $a + bs + cC_L + d\,sC_L$, and its error elsewhere grows with the table's curvature between grid points. Outside the table, tools extrapolate linearly from the end segment, which is less trustworthy; libraries set a `max_capacitance` and a `max_transition` per pin so that legal designs stay inside.
 
 **The linear model inside the table.** Along any row (fixed input slew), delay is nearly a straight line in load once the load is not tiny:
 
@@ -138,7 +138,7 @@ where the slope $R_{\text{eff}}$ is an effective drive resistance (ns per pF is 
 
 *Figure 2. The `cell_rise` table of SKY130's `inv_1`. Left: delay rises with both load and input slew; Example 1's point (star) lies between grid points. Right: at a fixed slew, delay is nearly linear in load once the load exceeds a few femtofarads; the slope is the effective resistance (5.64 kΩ at the typical corner), and the slow corner's line is steeper.*
 
-**Beyond NLDM.** NLDM drives an ideal ramp into a lumped capacitor. Where wire resistance shields part of the load, **current-source models** (CCS and ECSM) store the output current waveform so the tool can compute the voltage on a real RC network. **Liberty Variation Format** (LVF) tables add each arc's standard deviation (§3.7).
+**Beyond NLDM.** NLDM drives an ideal ramp into a lumped capacitor. Where wire resistance shields part of the load, **current-source models** store the output waveform (CCS the current, ECSM the voltage, from which current is derived) so the tool can drive a real RC network. **Liberty Variation Format** (LVF) tables add each arc's standard deviation (§3.7).
 
 ### 3.4 The timing graph: arrival, required and slack
 
@@ -149,6 +149,8 @@ where the slope $R_{\text{eff}}$ is an effective drive resistance (ns per pF is 
 $$
 AT(v) = \max_{(u, v)} \big[ AT(u) + d(u, v) \big] .
 $$
+
+> **Math refresher — topological order and dynamic programming.** A **directed acyclic graph** (DAG) has directed edges and no cycles, so its nodes can be listed in a **topological order** in which every edge points forward (for edges a→c, b→c, c→d, b→d: a, b, c, d). Processing nodes in that order means every node's predecessors are finished when it is reached. **Dynamic programming** uses this: the answer at a node (the latest arrival) is built from its predecessors' answers, so each edge is used once instead of every path being enumerated. It is option-pricing backward induction run forward; unlike a recombining binomial tree, a timing graph has arbitrary fan-in and fan-out, and its path count can grow exponentially while the work stays linear in the number of edges.
 
 Claim: evaluated in topological order, this equals the length of the longest path from any start point to $v$. Proof by induction: it holds at start points. For any other node, the longest path to $v$ ends with some edge $(u, v)$, and its first part is a path to $u$, of length at most $AT(u)$ by the induction hypothesis; conversely, every $AT(u) + d(u, v)$ is the length of a real path. So the maximum over incoming edges is exactly the longest path. Each edge is examined once, so the cost is proportional to the number of nodes plus edges.
 
@@ -162,7 +164,7 @@ $$
 RT(u) = \min_{(u, v)} \big[ RT(v) - d(u, v) \big], \qquad \text{slack}(v) = RT(v) - AT(v) .
 $$
 
-By the same induction run backward, $RT(u)$ is the latest arrival at $u$ that still meets the tightest downstream endpoint. Combining the two: the slack of a node is the smallest slack of any start-to-endpoint path through it. Along the most critical path every node has the same, minimum slack; nodes off it have at least as much. Negative slack means a violation; **total negative slack** (the sum over failing endpoints) and **worst negative slack** are the two numbers a timing report leads with.
+By the same induction run backward, $RT(u)$ is the latest arrival at $u$ that still meets the tightest downstream endpoint. So the slack of a node is the smallest slack of any start-to-endpoint path through it; every node on the most critical path has the same, minimum slack. Negative slack means a violation; **total negative slack** (the sum over failing endpoints) and **worst negative slack** are the two numbers a timing report leads with.
 
 ### 3.5 Clocked checks: latency, setup, hold and I/O
 
@@ -180,7 +182,7 @@ $$
 RT_{\text{setup}} = T_c + L_2 - t_{\text{setup}} - U_{\text{setup}}, \qquad \text{slack}_{\text{setup}} = RT_{\text{setup}} - AT .
 $$
 
-Setting the slack to zero recovers 19-07's $T_c \ge t_{pcq} + t_{pd} + t_{\text{setup}} - \delta + U$.
+Setting the slack to zero recovers 19-07's $T_c \ge t_{pcq} + t_{pd} + t_{\text{setup}} - \delta + U$, with $U$ in place of 19-07's $t_{\text{jitter}}$.
 
 **Hold.** The same edge that captures at register 2 launches new data at register 1. With the shortest path delay and the fastest clock-to-Q,
 
@@ -202,7 +204,7 @@ The chip's internal budget for a feed-through path from input to output is there
 
 ### 3.6 Constraints: SDC
 
-Constraints are written in **SDC** (Synopsys Design Constraints), a set of Tcl commands read by synthesis, timing and place-and-route tools alike. A minimal file for a 2 ns clock:
+Constraints are written in **SDC** (Synopsys Design Constraints), a set of Tcl commands read by synthesis, timing and place-and-route tools alike. Units come from the library (here ns and pF). A minimal file for a 2 ns clock:
 
 ```tcl
 create_clock -name clk -period 2.0 [get_ports clk]
@@ -210,7 +212,7 @@ set_clock_uncertainty 0.10 [get_clocks clk]
 set_input_delay  0.50 -clock clk [get_ports {a b c}]
 set_output_delay 0.60 -clock clk [all_outputs]
 set_load 0.005 [all_outputs]
-set_driving_cell -lib_cell sky130_fd_sc_hd__inv_2 [all_inputs]
+set_driving_cell -lib_cell sky130_fd_sc_hd__inv_2 [remove_from_collection [all_inputs] [get_ports clk]]
 set_max_transition 1.5 [current_design]
 ```
 
@@ -354,7 +356,7 @@ At the root three matches exist:
 
 ### Example 19-10.4 · Register-to-register setup and hold (tier B)
 
-**Setup.** Two SKY130 `dfxtp_1` flip-flops on a 2.0 ns clock (500 MHz). The launch clock latency is 0.30 ns and the capture latency 0.36 ns. The launch flip-flop's Q rises with $t_{pcq} = t_{ccq} = 0.307$ ns (its Liberty clock-to-Q at the operating slew and load, rounded to the picosecond). The logic inverts, so D falls; the flip-flop's falling-D setup time is 0.103 ns and hold time −0.047 ns. The longest logic path is 1.20 ns and the shortest 0.08 ns. Clock uncertainty is 0.10 ns for setup and 0.05 ns for hold. (a) Find the setup slack and the maximum frequency. (b) Find the hold slack. (c) A clock-tree change raises the capture latency to 0.76 ns. Recompute both slacks and fix any violation.
+**Setup.** Two SKY130 `dfxtp_1` flip-flops on a 2.0 ns clock (500 MHz). The launch clock latency is 0.30 ns and the capture latency 0.36 ns. The launch flip-flop's Q rises with $t_{pcq} = t_{ccq} = 0.307$ ns (its Liberty clock-to-Q at 0.053 ns clock slew and 3.4 fF load, rounded to the picosecond). The logic inverts, so D falls; the flip-flop's falling-D setup time is 0.103 ns and hold time −0.047 ns (both at 0.01 ns clock and data slews, the table's first entry). The longest logic path is 1.20 ns and the shortest 0.08 ns. Clock uncertainty is 0.10 ns for setup and 0.05 ns for hold. (a) Find the setup slack and the maximum frequency. (b) Find the hold slack. (c) A clock-tree change raises the capture latency to 0.76 ns. Recompute both slacks and fix any violation.
 
 **Solution.** (a) Arrival: $0.30 + 0.307 + 1.20 = 1.807$ ns. Required: $2.0 + 0.36 - 0.103 - 0.10 = 2.157$ ns. Setup slack **0.350** ns. The period can shrink by the slack: $T_{\min} = 1.650$ ns, $f_{\max}$ = **606** MHz.
 
@@ -452,7 +454,7 @@ The lab ([labs/19-10-lab](../labs/19-10-lab/README.md)) is a small timing engine
 
 1. Predict the inverter's delay at a load beyond the table's last point (0.25 pF), then compute it by extrapolation and compare with the trend of the last column.
 2. Predict how a chain of four inverters' total delay changes if the first stage's input slew rises from 0.01 ns to 0.5 ns. Which stages feel it?
-3. Build a chain of diamonds and predict how the number of paths and the analysis time grow with its length; then check that graph-based arrival times equal the longest path found by brute-force enumeration.
+3. Build a chain of diamonds and predict how the number of paths and the analysis time grow with its length; then compare the graph-based arrival with the longest path found by enumerating every path with its own slews (path-based analysis), and explain why graph-based is never smaller (§3.4).
 4. Map the subject tree of Example 3 and of $\overline{AB + CD}$; predict which cells win for area and for delay.
 5. Sweep the late/early derate from 1.00/1.00 to 1.10/0.90 in Example 5 and plot slack with and without CRPR.
 
@@ -503,11 +505,11 @@ The lab ([labs/19-10-lab](../labs/19-10-lab/README.md)) is a small timing engine
 
 ### State of the art (as of Nov 2026)
 
-- **Open-source tools are real and current [Established].** Yosys (version 0.71, tagged 12 Nov 2026, ISC license) synthesizes Verilog and hands technology mapping to Berkeley's ABC, whose mapper works on and-inverter graphs with "optimal-delay DAG-based technology mapping for look-up tables and standard cells"; `dfflibmap -liberty` and `abc -liberty` map onto a Liberty library, and `abc -D` sets a delay target. OpenSTA (release 3.2.0, 15 Oct 2026; GPL v3 or commercial license) reads Verilog, Liberty, SDC 2.1, SDF and SPEF; runs on-chip-variation analysis with `set_timing_derate` and CRPR by default; and has supported statistical timing with LVF models since March 2026 and multi-corner, multi-mode analysis since November 2025 ([R-318]). Neither documents AOCV.
-- **What an open library looks like [Established].** SKY130's `sky130_fd_sc_hd` ships 16 corners, from `ss_n40C_1v28` to `ff_n40C_1v95`, with NLDM tables only. The OpenROAD flow's SKY130 platform loads only the typical corner; its five reference designs are constrained at 1.1 ns (`gcd`) to 8.0 ns (`ibex`) with no clock uncertainty or derate, and one larger design uses 0.25 ns of uncertainty and ±5 % derates ([R-318]). These are regression settings for a research flow, not signoff practice.
-- **Variation modeling has moved from flat to statistical [Established].** Kahng's history of timing closure (DAC 2015) reports AOCV tables "mainstream since the 40nm foundry node" and describes POCV as accumulating σ² terms along a path, the √N effect of §3.7. The Liberty Technical Advisory Board (under IEEE-ISTO since 2006) ratified the Liberty Variation Format in August 2014, unifying AOCV, POCV and SOCV data, and added mean-shift, sigma and skewness moments in 2017 for non-Gaussian behavior at near-threshold voltages ([R-318]).
-- **Corner counts exploded [Industry estimate].** The same paper speaks of "hundreds of scenarios" in multi-corner, multi-mode clock synthesis at FinFET nodes, driven by many supply voltages, test modes and per-layer RC corners. A 2014 white paper from a signoff-tool vendor (with an interest in the problem) reported companies using 12 to 126 corners, before multiplying by modes. I found no dated public figure for 5 nm or 3 nm designs ([R-318]).
-- **Commercial signoff [Vendor claim].** Synopsys calls PrimeTime "the industry's trusted golden signoff solution"; Cadence sells Tempus (signoff timing) and Genus (synthesis). At Tempus's 2013 launch a Cadence executive put timing closure and signoff at "approaching 40 percent of the overall design implementation flow" ([R-318]).
+- **Open-source tools are real and current [Established].** Yosys (0.71, Nov 2026) synthesizes Verilog and hands technology mapping to Berkeley's ABC, which maps and-inverter graphs onto a Liberty library (`abc -liberty`, with `abc -D` as the delay target). OpenSTA (3.2.0, Oct 2026) reads Verilog, Liberty, SDC, SDF and SPEF, applies OCV derates and CRPR, analyzes multiple corners and modes, and since March 2026 supports LVF statistical timing ([R-318]).
+- **What an open library looks like [Established].** SKY130's `sky130_fd_sc_hd` ships 16 corners, from `ss_n40C_1v28` to `ff_n40C_1v95`, with NLDM timing tables only (no CCS timing or LVF); two corners add CCS noise models. The OpenROAD flow's SKY130 reference designs load only the typical corner and are constrained at 1.1 ns (`gcd`) to 8.0 ns (`ibex`) with no clock uncertainty or derate ([R-318]): regression settings for a research flow, not signoff practice.
+- **Variation modeling has moved from flat to statistical [Established].** Kahng's history of timing closure (DAC 2015) reports AOCV tables "mainstream since the 40nm foundry node" and describes POCV as accumulating σ² terms along a path, the √N effect of §3.7. The Liberty Variation Format, ratified in 2014 and extended in 2017, carries AOCV, POCV and SOCV data in one format ([R-318]).
+- **Corner counts exploded [Industry estimate].** The same paper speaks of "hundreds of scenarios" in multi-corner, multi-mode clock synthesis at FinFET nodes. A 2014 white paper from a signoff-tool vendor (with an interest in the problem) reported companies using 12 to 126 corners, before multiplying by modes. I found no dated public figure for 5 nm or 3 nm designs ([R-318]).
+- **Commercial signoff [Vendor claim].** Synopsys calls PrimeTime "the industry's trusted golden signoff solution"; Cadence sells Tempus (signoff timing) and Genus (synthesis), and at Tempus's 2013 launch put timing closure and signoff at "approaching 40 percent of the overall design implementation flow" ([R-318]).
 
 ### Why it matters commercially
 
@@ -517,7 +519,7 @@ The lab ([labs/19-10-lab](../labs/19-10-lab/README.md)) is a small timing engine
 
 ### Marketing vs Reality
 
-- **"AI improves PPA by 10–25 %."** The vendors' own figures: Synopsys DSO.ai customers saw "more than 3x productivity increases, up to 25% lower total power" (2023) and "a more than 10% boost in performance, power, area (PPA), up to 10X faster turn-around time" against optimization without AI (2024); Cadence Cerebrus offered productivity "up to 10X versus a manual approach" and "up to a 20% better" PPA (2021), with customers reporting 8 % power on critical blocks (Samsung), 5 % area and 6 % power (MediaTek) and a 75 % improvement in total negative slack (Renesas) ([R-318]). **[Vendor claim]** for all of them. Ask for the baseline (an expert team with the same compute, or a default flow?), the block types, and whether the result was signed off at every corner; a 75 % TNS improvement does not say the design closed. These tools search flow settings automatically, as the open-source OpenROAD AutoTuner does. I found no independent benchmark of either vendor's numbers.
+- **"AI improves PPA by 10–25 %."** The vendors' own figures: Synopsys DSO.ai customers saw "more than 3x productivity increases, up to 25% lower total power" (2023) and "a more than 10% boost in performance, power, area (PPA), up to 10X faster turn-around time" against optimization without AI (2024); Cadence Cerebrus offered productivity "up to 10X versus a manual approach" and "up to a 20% better" PPA (2021), with customers reporting 8 % power on critical blocks (Samsung), 5 % area and 6 % power (MediaTek) and a 75 % improvement in total negative slack (Renesas) ([R-318]). **[Vendor claim]** for all of them. Ask for the baseline (an expert team with the same compute, or a default flow?), the block types, and whether the result was signed off at every corner; a 75 % TNS improvement does not say the design closed. These tools search flow settings (synthesis and placement options, constraints, effort levels) automatically. I found no independent benchmark of either vendor's numbers.
 - **"Golden signoff."** It means the foundry, the IP vendors and customers accept the tool's results, which is commercially decisive; it does not mean the results are physical truth. Every number still comes from characterized Liberty tables and extracted parasitics, and silicon correlation is a separate claim to ask for.
 - **"Timing is closed."** Ask at which corners and modes, with what uncertainty and derates, with how many exceptions, and after which stage (synthesis, placement or post-route). A design "closed" at the typical corner with zero uncertainty, like the open flow's defaults, has not been signed off.
 - **"Runs at X GHz on node Y."** Frequency depends on the corner and the margins assumed. The open flow's 1.1 ns `gcd` on SKY130 is a regression target on a tiny design, not a statement about the process.
@@ -615,6 +617,7 @@ Problems: [19-10 problem set](../problems/19-10-problems.md) · Solutions: [19-1
 - G. De Micheli, *Synthesis and Optimization of Digital Circuits* (McGraw-Hill, 1994), ch. 10 (library binding by tree covering).
 - K. Keutzer, "DAGON: technology binding and local optimization by DAG matching", *Proc. 24th Design Automation Conference*, 1987: the tree-covering method of §3.2.
 - The OpenSTA and Yosys documentation, for open-source tools that implement the methods of this chapter.
+- R. Rutenbar, *VLSI CAD Part I: Logic* (University of Illinois, Coursera), the lectures on technology mapping, and *VLSI CAD Part II: Layout*, the lectures on static timing analysis.
 
 ## 14. Sources
 

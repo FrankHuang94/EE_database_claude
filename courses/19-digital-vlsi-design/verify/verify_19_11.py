@@ -55,6 +55,8 @@ v.check("Ex 19-11.1e", math.floor(w / SITE))
 v.check("Ex 19-11.1f", 100 * 300_000 / (w * h))
 v.check("Ex 19-11.1g", (w + 80) * (h + 80) / 1e6)
 v.check("Ex 19-11.1h", 100 * ((w + 80) * (h + 80) / 1e6 / 0.5 - 1))
+v.check("Ex 19-11.1i", math.floor(w / SITE) * SITE)
+v.check("Ex 19-11.1j", 100 * 300_000 / (math.floor(w / SITE) * SITE * h))
 core, w, rows, h = floorplan(120_000, 0.70, 2.0)
 v.check("19-11.1a", core)
 v.check("19-11.1b", w)
@@ -62,6 +64,8 @@ v.check("19-11.1c", rows)
 v.check("19-11.1d", h)
 v.check("19-11.1e", math.floor(w / SITE))
 v.check("19-11.1f", 100 * 120_000 / (w * h))
+v.check("19-11.1g", math.floor(w / SITE) * SITE)
+v.check("19-11.1h", 100 * 120_000 / (math.floor(w / SITE) * SITE * h))
 v.assert_true("lab floorplan agrees", abs(pnr.core_dimensions(120_000, 0.70, 2.0)[1] - h) < 1e-9, "")
 
 
@@ -349,5 +353,76 @@ v.check("Lab 19-11.g", 1e12 * ladder_elmore(1000, "met1", REQ6))
 v.assert_true("Elmore constant bounds the 50 % delay", t50 < ladder_elmore(1000, "met1", REQ6), "")
 v.assert_true("estimate within 0.5 % of the ladder's 50 % delay", abs(est50(1000, "met1", RD6) / t50 - 1) < 0.005, "")
 v.check("Txt 19-11.a", 100 * (1 - 0.5 / 0.7))
+
+
+# ---------------------------------------------------------------- Problem 13: slack after routing
+def t50_terms(r_eff, r_per_um, c_per_um_fF, length_um, c_load_fF):
+    rw, cw, cl = r_per_um * length_um, c_per_um_fF * length_um * 1e-15, c_load_fF * 1e-15
+    return r_eff * (cw + cl) * 1e12, rw * (0.38 * cw + 0.69 * cl) * 1e12
+
+
+M1, M3, CL13 = (1.20565, 0.172375), (0.166281, 0.214962), 4 * 2.302
+d13a, w13a = t50_terms(1410, *M1, 400, CL13)
+v.check("19-11.13a", d13a)
+v.check("19-11.13b", w13a)
+v.check("19-11.13c", d13a + w13a)
+t13b = sum(t50_terms(1410, *M1, 600, CL13))
+v.check("19-11.13d", t13b)
+v.check("19-11.13e", t13b - (d13a + w13a))
+# coupling change: +/- 15 fF of effective capacitance spread along the wire
+dC = 300 * 0.05
+t13_up = sum(t50_terms(1410, M1[0], M1[1] + dC / 600, 600, CL13))
+t13_dn = sum(t50_terms(1410, M1[0], M1[1] - dC / 600, 600, CL13))
+v.check("19-11.13f", t13_up - t13b)
+v.assert_true("crosstalk change is symmetric in the linear model", abs((t13_up - t13b) - (t13b - t13_dn)) < 1e-9, "")
+v.check("19-11.13g", sum(t50_terms(1410, *M3, 600, CL13)))
+v.check("19-11.13h", sum(t50_terms(705, *M1, 600, CL13)))
+v.assert_true("lab helper agrees on Problem 13(b)",
+              abs(pnr.wire_delay50(1410, M1[0] * 600, M1[1] * 600e-15, CL13 * 1e-15) * 1e12 - t13b) < 1e-6, "")
+v.check("19-11.14a", 0.05 * 1.80 * 1e3)
+v.check("19-11.14b", 0.08 * 1.80 * 1e3)
+v.check("19-11.14c", (0.08 - 0.05) * 1.80 * 1e3)
+
+# ---------------------------------------------------------------- Problem 15: Kernighan-Lin step by enumeration
+E15 = [(1, 2), (1, 3), (2, 3), (3, 4), (4, 5), (4, 6), (5, 6), (2, 5)]
+
+
+def cut15(A):
+    return sum((a in A) != (b in A) for a, b in E15)
+
+
+def gain15(c, A):
+    nb = [b for a, b in E15 if a == c] + [a for a, b in E15 if b == c]
+    ext = sum((n in A) != (c in A) for n in nb)
+    return ext - (len(nb) - ext)
+
+
+A0 = {1, 2, 4}
+B0 = set(range(1, 7)) - A0
+v.check("19-11.15a", cut15(A0))
+g0 = {c: gain15(c, A0) for c in range(1, 7)}
+v.check("19-11.15b", g0[4])
+v.check("19-11.15c", g0[3])
+v.check("19-11.15d", g0[2])
+v.check("19-11.15e", g0[5])
+v.check("19-11.15f", g0[1])
+v.assert_true("cells 1 and 6 have equal gain", g0[1] == g0[6], "")
+swaps = {}
+for a in A0:
+    for b in B0:
+        A1 = (A0 - {a}) | {b}
+        swaps[(a, b)] = cut15(A0) - cut15(A1)
+        w_ab = int((a, b) in E15 or (b, a) in E15)
+        v.assert_true(f"swap formula holds for ({a}, {b})", swaps[(a, b)] == g0[a] + g0[b] - 2 * w_ab, "")
+best = max(swaps, key=swaps.get)
+v.assert_true("best swap is 4 with 3", best == (4, 3), "")
+v.check("19-11.15g", swaps[best])
+A1 = (A0 - {4}) | {3}
+v.check("19-11.15h", cut15(A1))
+B1 = set(range(1, 7)) - A1
+v.check("19-11.15i", max(cut15(A1) - cut15((A1 - {a}) | {b}) for a in A1 for b in B1))
+bis = [set(c) for c in itertools.combinations(range(1, 7), 3) if 1 in c]
+v.check("19-11.15j", len(bis))
+v.assert_true("result is the unique global minimum", sorted(cut15(b) for b in bis)[:2] == [2, 4] and cut15(A1) == 2, "")
 
 sys.exit(v.finish())

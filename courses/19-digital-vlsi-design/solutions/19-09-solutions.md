@@ -54,7 +54,27 @@ Leaving the internal nodes uncontacted saves **21** %.
 
 ### Solution 19-09.10
 
-Gate area $0.150 \times 0.420$ = **0.063** µm², so the metal may cover $400 \times 0.063$ = **25.2** µm², a line of $25.2/0.14$ = **180** µm. Small gates driven over long routes are the usual antenna violations.
+(a) Gate area $0.150 \times 0.420$ = **0.063** µm², so the metal may cover $400 \times 0.063$ = **25.2** µm², a line of $25.2/0.14$ = **180** µm of top area.
+
+(b) Counting sidewalls, a line of length $\ell$ and width 0.14 µm exposes $2(\ell + 0.14) \times 0.35$ µm² of sidewall. Setting that to 25.2 µm² gives $\ell + 0.14 = 36$, so $\ell$ = **35.9** µm, five times shorter. Small gates driven over long routes are the usual antenna violations, which is why routers insert diodes and layer jumps.
+
+### Solution 19-09.11
+
+(a) Pull-down: one diffusion strip, gate A then gate B, with the output contact at one end and ground at the other. Pull-up: one strip with VDD contacts at both ends and the output contact in the middle, gates A and B on either side of it; a vertical metal strap joins the two output contacts, and each input's poly stripe crosses both strips.
+
+(b) Each end needs enclosure, contact and contact-to-gate space, $1 + 2 + 2 = 5\lambda$. Pull-down (two gates, one uncontacted gap of 3λ): $2 \times 5 + 2 \times 2 + 3$ = **17** λ. Pull-up (two gates, one contacted gap of $2 + 2 + 2 = 6\lambda$): $2 \times 5 + 2 \times 2 + 6$ = **20** λ. The pull-up's middle contact sets the width.
+
+(c) $17 \times 0.075$ = **1.275** µm and $20 \times 0.075$ = **1.50** µm.
+
+### Solution 19-09.12
+
+(a) **DRC**: a spacing rule is violated. (b) **LVS**: the extracted connectivity has an open that the schematic does not, so the netlists differ. (c) **Parasitic extraction with static timing**: the layout is legal and matches the schematic; only the extracted RC reveals the slower path. (d) **Antenna**: a manufacturing-time charge rule, separate from DRC's geometry. (e) **LVS** with parameter checking compares device sizes, so it flags the width mismatch. (f) **None** of them: every physical check compares the layout with the schematic or with rules, so a wrong schematic passes; only verification (19-13) catches it.
+
+### Solution 19-09.13
+
+(a) $3.7536/2.72$ = **1.38** µm, which is $1.38/0.46$ = **3** sites.
+
+(b) The λ estimate of 1.50 µm (Problem 11) is about **8.7** % wider than the real cell. (c) The real transistors are 0.65 µm (NMOS) and 1.0 µm (PMOS), as in 19-03. Real rules are not multiples of one λ: each layer has its own minimum widths and spacings, contacts can be shared and placed tighter than a scalable rule allows, and library designers spend months compacting each cell, so production cells beat λ-rule estimates.
 
 ---
 
@@ -85,3 +105,11 @@ Gate area $0.150 \times 0.420$ = **0.063** µm², so the metal may cover $400 \t
 | 19-09.10a | gate area | 0.063 | µm² |
 | 19-09.10b | allowed metal area | 25.2 | µm² |
 | 19-09.10c | allowed metal-1 length | 180 | µm |
+| 19-09.10d | allowed length with sidewall area | 35.9 | µm |
+| 19-09.11a | pull-down strip | 17 | λ |
+| 19-09.11b | pull-up strip | 20 | λ |
+| 19-09.11c | pull-down strip in µm | 1.275 | µm |
+| 19-09.11d | pull-up strip in µm | 1.50 | µm |
+| 19-09.13a | nand2_1 width | 1.38 | µm |
+| 19-09.13b | nand2_1 width in sites | 3 | — |
+| 19-09.13c | λ estimate excess | 8.7 | % |

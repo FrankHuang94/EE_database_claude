@@ -71,7 +71,7 @@ Backward: z requires 150 at H5, so H3 and H4 are required at 110. H1 feeds H3 (1
 
 (b) Also three covers: `inv_1` + `o21ai_1` (**8.7584** µm², 63.4 + 154.8 = **218.2** ps); `inv_1` + two `nand2_1` + two `inv_1` (18.768 µm², 281.0 ps); `and2_1` + `nand2_1` + two `inv_1` (17.5168 µm², 303.5 ps). The `o21ai_1` cover wins both.
 
-(c) A complex cell implements the whole function in a single stage of series-parallel transistors (19-03), with no internal node to charge and no extra inverter. The multi-cell covers add stages, each with its own intrinsic delay, and more transistors. The complex cell's arcs are slower than a NAND2's, but slower by less than an extra stage.
+(c) A complex cell implements the whole function in a single stage of series-parallel transistors (19-03), with no intermediate gate output to charge and no extra inverter (its stack has internal nodes, but no extra stage). The multi-cell covers add stages, each with its own intrinsic delay, and more transistors. The complex cell's arcs are slower than a NAND2's, but slower by less than an extra stage.
 
 ### Solution 19-10.6
 
@@ -141,6 +141,68 @@ Slow: clock latencies $0.30$ and $0.90$ ns; $t_{ccq} = 0.325$ ns, logic 0.26 ns,
 
 (c) At least **0.041** ns at the slow corner, which is $0.041/1.3$ = **0.032** ns at the typical corner (where the hold slack then becomes about 0.062 ns). Hold buffers must be sized at the corner where hold fails, then checked against setup at all corners.
 
+### Solution 19-10.13
+
+(a) The period is $1/(500\ \text{MHz})$ = **2.0** ns.
+
+```tcl
+create_clock -name clk -period 2.0 [get_ports clk]
+set_clock_uncertainty 0.05 [get_clocks clk]
+set_input_delay  0.80 -clock clk [get_ports {din[*] en}]
+set_output_delay 0.60 -clock clk [get_ports {dout[*]}]
+set_load 0.01 [get_ports {dout[*]}]
+set_driving_cell -lib_cell sky130_fd_sc_hd__buf_2 [get_ports {din[*] en}]
+```
+
+The input delay is the external launch-to-port time; the output delay is the time the receiver needs after the port, which is subtracted from the next edge. The clock port gets no input delay or driving cell.
+
+(b) Arrival at D $0.80 + 1.05 = 1.85$ ns; required $2.0 - 0.06 - 0.05 = 1.89$ ns; slack **0.04** ns.
+
+(c) Arrival at the port $0.31 + 0.60 = 0.91$ ns; required $2.0 - 0.60 - 0.05 = 1.35$ ns; slack **0.44** ns.
+
+(d) Required $2.0 - 1.10 - 0.05 = 0.85$ ns; slack $0.85 - 0.91$ = **−0.06** ns. The logic may take at most $0.85 - 0.31$ = **0.54** ns, so 0.06 ns must come out of the 0.60 ns path, or the budget split must be renegotiated.
+
+(e) An input with no input delay has no defined arrival relative to `clk`, so the paths from `en` are **unconstrained**: most tools do not time them and report them only in an unconstrained-paths report. The timing report stays clean while `en` could miss setup by any amount. This is why constraint checks (unconstrained endpoints, ports without delays) are run before trusting a slack report.
+
+### Solution 19-10.14
+
+(a) With the multiplexers' 0.30 ns included:
+
+| Path | Logic delay (ns) | Needs at M1 | Needs at M2 | Possible? |
+|---|---|---|---|---|
+| X, then Y | $1.20 + 0.15 + 1.00 + 0.15$ = **2.50** | $s = 1$ | $\bar{s} = 1$, so $s = 0$ | no |
+| X, then bypass | $1.20 + 0.15 + 0.10 + 0.15$ = **1.60** | $s = 1$ | $\bar{s} = 0$, so $s = 1$ | yes |
+| bypass, then Y | $0.10 + 0.15 + 1.00 + 0.15$ = **1.40** | $s = 0$ | $s = 0$ | yes |
+| bypass, then bypass | $0.10 + 0.15 + 0.10 + 0.15$ = **0.50** | $s = 0$ | $s = 1$ | no |
+
+(b) STA times the longest structural path: required $2.0 - 0.08 = 1.92$ ns, arrival $0.30 + 2.50 = 2.80$ ns, slack **−0.88** ns.
+
+(c) **2** of the 4 paths are false. The longest true path is X then bypass: arrival $0.30 + 1.60 = 1.90$ ns, slack **0.02** ns. The design meets timing; the violation in (b) is pessimism.
+
+(d) Remove only paths that pass through both X and Y:
+
+```tcl
+set_false_path -through [get_pins u_x/Z] -through [get_pins u_y/Z]
+```
+
+where `u_y/Z` is the output of block Y. The second false path, through both bypasses, is the shortest path and does not limit setup, so it needs no exception.
+
+(e) The single `-through` removes every path through X, including the true path at 0.02 ns. STA now reports the worst remaining path, bypass then Y: $1.92 - (0.30 + 1.40)$ = **0.22** ns. The report looks healthier than the design: the critical true path is no longer checked, so a later change that slows X by 0.03 ns would go unnoticed. Each exception should name the narrowest set of paths, and its effect should be checked by comparing reports before and after.
+
+(f) The analysis of (a) assumes $s$ holds one value for the whole cycle. If $s$ could change in the same cycle that R1 launches, a transition could pass M1 while $s = 1$ and reach M2 after $s$ has switched to 0, so the X-then-Y path would be exercised. Writing the configuration register only while the block is idle makes the path false; a constraint that relies on this needs a matching design rule, ideally checked by an assertion.
+
+### Solution 19-10.15
+
+(a) The falling edge after the launch is at $T_c/2 = 1.0$ ns. Arrival at D $0.30 + 0.45 = 0.75$ ns; required $1.0 - 0.10 - 0.05 = 0.85$ ns; setup slack **0.10** ns.
+
+(b) Hold is checked against the falling edge that precedes the setup capture edge by one period, at $1.0 - 2.0 = -1.0$ ns (equivalently, the next launch at 2.0 ns against the capture edge at 1.0 ns). The data changes at $0.30 + 0.05 = 0.35$ ns and must stay until $-1.0 + 0.04 + 0.02 = -0.94$ ns; hold slack $0.35 - (-0.94)$ = **1.29** ns.
+
+(c) The falling edge moves to 0.90 ns. Setup: required $0.90 - 0.15 = 0.75$ ns, slack **0.00** ns. Hold: the check edge moves to $0.90 - 2.0 = -1.10$ ns, required $-1.04$ ns, hold slack **1.39** ns. Duty-cycle distortion moves the entire half-period budget, so half-cycle paths need a duty-cycle allowance in their uncertainty.
+
+(d) Setup needs $T_c/2 \ge 0.30 + 0.45 + 0.10 + 0.05 = 0.90$ ns, so $T_c \ge 1.80$ ns and $f_{\max}$ = **555.6** MHz. Between two rising-edge flip-flops the same path needs $T_c \ge 0.90$ ns, **1111.1** MHz. The half-cycle path halves the frequency the logic allows; in exchange its hold margin is about half a period.
+
+(e) Half-cycle paths appear on purpose where that trade is wanted. (1) A **lockup latch** or negative-edge stage between scan segments in different clock domains (19-12) buys half a period of hold margin where clock skew is large and the data path is a bare wire. (2) **Double-data-rate interfaces** (DDR memory, 19-08) transfer data on both edges to double the data rate at a given clock frequency. (3) Clock-gating cells use a latch transparent while the clock is low, so the enable is timed as a half-cycle path. Each has a short, controlled data path, which is what makes the halved setup budget affordable.
+
 ---
 
 <!-- answer-key -->
@@ -208,3 +270,22 @@ Slow: clock latencies $0.30$ and $0.90$ ns; $t_{ccq} = 0.325$ ns, logic 0.26 ns,
 | 19-10.12c | hold buffer at slow corner | 0.041 | ns |
 | 19-10.12d | same buffer at typical corner | 0.032 | ns |
 | 19-10.12e | typical hold slack after fix | 0.062 | ns |
+| 19-10.13a | clock period | 2.0 | ns |
+| 19-10.13b | input-to-register setup slack | 0.04 | ns |
+| 19-10.13c | register-to-output setup slack | 0.44 | ns |
+| 19-10.13d | output slack with 1.10 ns output delay | -0.06 | ns |
+| 19-10.13e | logic allowed with 1.10 ns output delay | 0.54 | ns |
+| 19-10.14a | logic delay, X then Y | 2.50 | ns |
+| 19-10.14b | logic delay, X then bypass | 1.60 | ns |
+| 19-10.14c | logic delay, bypass then Y | 1.40 | ns |
+| 19-10.14d | logic delay, both bypasses | 0.50 | ns |
+| 19-10.14e | structural setup slack | -0.88 | ns |
+| 19-10.14f | number of false paths | 2 | paths |
+| 19-10.14g | true worst setup slack | 0.02 | ns |
+| 19-10.14h | reported slack after the wrong exception | 0.22 | ns |
+| 19-10.15a | half-cycle setup slack | 0.10 | ns |
+| 19-10.15b | half-cycle hold slack | 1.29 | ns |
+| 19-10.15c | setup slack at 45 percent duty | 0.00 | ns |
+| 19-10.15d | hold slack at 45 percent duty | 1.39 | ns |
+| 19-10.15e | half-cycle path maximum frequency | 555.6 | MHz |
+| 19-10.15f | full-cycle maximum frequency | 1111.1 | MHz |

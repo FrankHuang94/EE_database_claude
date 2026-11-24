@@ -124,6 +124,11 @@ Semiconductor work conventionally uses cm and eV. Chapters convert to SI explici
 - Number bases: `0x` prefix for hexadecimal, `0b` for binary in prose and C; Verilog literals as `8'hFF`. Number-system chapters (Course 08) may instead write the base as a subscript (1011₂, 3F7₁₆), the textbook convention, and say so in their conventions.
 - Bit numbering: bit 0 is the least-significant bit.
 - Performance: CPI, IPC, $f_{clk}$; energy in J (pJ/op, pJ/bit), power in W.
+- VLSI timing and layout (Course 19):
+  - drive resistance: $R_{\text{eq}}$ is the equivalent switching resistor of 19-02, used in RC models, Elmore constants and simulation; $R_{\text{eff}} = \ln 2 \times R_{\text{eq}}$ is the slope of a Liberty 50 % delay table against load (19-10), multiplied directly by a capacitance to give a 50 % delay;
+  - the **Elmore constant** $\tau_E$ is the unscaled first moment of an RC network's impulse response (an upper bound on the 50 % delay); a 50 % delay is written $t_{50}$ or $t_{pd}$;
+  - $u$ is placement utilization (cell area over core area); $U$ is clock uncertainty in STA (19-10), playing the role of 19-07's $t_{\text{jitter}}$;
+  - in timing, $s$ is an input slew and $L$ a clock latency; in layout, lengths and spacings are written $\ell$ and named in words where ambiguity is possible.
 
 ## 10. Problem and answer labeling
 

@@ -102,7 +102,11 @@ $$
 
 a linear system $Q\mathbf{x} = \mathbf{b}$: each cell sits at the weighted average of its neighbors. $Q$ is the connection graph's Laplacian with the fixed pins' weights added to the diagonal. It is symmetric, and positive definite as long as every group of connected cells reaches at least one fixed pin (otherwise the group could slide freely and the energy would have a flat direction), so the minimum is unique. Multi-pin nets are converted to springs by a model such as a clique (every pair connected, with the weights scaled down, for example by $1/(k-1)$ for $k$ pins) or a star with an extra node.
 
+> **Math refresher — positive definite matrices.** A symmetric matrix $Q$ is **positive definite** if $\mathbf{x}^\mathsf{T} Q\,\mathbf{x} > 0$ for every nonzero vector $\mathbf{x}$. For the spring energy this means the surface curves upward in every direction, like a bowl, so it has exactly one lowest point, found by setting the gradient to zero, and the linear system has exactly one solution. The Laplacian alone gives $\mathbf{x}^\mathsf{T} L\,\mathbf{x} = \sum w_{ij}(x_i - x_j)^2$, which is zero when every cell shifts by the same amount: it is only positive *semi*definite. Each fixed pin adds a term $w_{ik}x_i^2$ that removes this flat direction (Problem 19-11.11). A covariance matrix is the finance example: it is positive definite exactly when no portfolio of the assets is riskless. The analogy breaks in what the flat direction means: here it is a rigid shift of the whole netlist, which costs no wirelength.
+
 **Why quadratic placement is not enough.** The quadratic optimum piles cells into the middle: it ignores the fact that cells have area. Practical placers alternate wirelength minimization with **spreading**: recursive partitioning of the region (as in early analytical placers), added forces that push cells out of dense areas, or, in the electrostatics analogy of modern placers, cells as positive charges whose mutual repulsion spreads them evenly, solved with a fast Poisson solver. The squared-distance objective also over-penalizes long wires compared with true length, so modern placers minimize smooth approximations of HPWL instead. Global placement is followed by **legalization** (snapping cells into rows and sites without overlap) and **detailed placement** (local swaps and shifts).
+
+> **Going deeper — min-cut partitioning.** Before analytical placers, and still for splitting a design across blocks, dies or FPGAs, cells were placed by recursive **bisection**: divide them into two halves of nearly equal area so that as few connections as possible cross between the halves (the **cut**), give each half one side of the region, and repeat. Finding the minimum balanced cut is NP-hard, so Kernighan and Lin (1970) improved a starting partition by swapping pairs of cells. A cell's **gain** is its number of connections to the other side minus those to its own side; swapping cells $a$ and $b$ reduces the cut by $g_a + g_b - 2w_{ab}$, where $w_{ab}$ is the weight of a connection between them, which stays cut although both gains counted it as removed. Fiduccia and Mattheyses (1982) moved one cell at a time under a balance limit and kept the gains in bucket lists, so that each pass takes time linear in the netlist size; a pass tentatively moves every cell once, accepting negative gains to escape local minima, and keeps the best prefix of the moves. Multilevel partitioners such as hMETIS first coarsen the netlist by merging tightly connected cells, partition the small version, then refine level by level. Problem 19-11.15 works one improvement step by hand.
 
 ### 3.3 Clock-tree synthesis
 
@@ -150,6 +154,8 @@ $$
 
 Finding the RSMT in general is NP-hard, so routers use fast heuristics that come within a few percent.
 
+> **Math refresher — greedy trees and NP-hardness.** **Prim's algorithm** builds a minimum spanning tree by growing it from any one pin: at each step it connects the unconnected pin nearest to the tree. This greedy rule is provably optimal for spanning trees (if a shorter connection crossed between the tree and the remaining pins, it could replace a longer one), and its run time grows only polynomially with the number of pins. A problem is **NP-hard** if every problem in the class NP (problems whose proposed solutions can be checked quickly) can be translated into it. No polynomial-time algorithm is known for any NP-hard problem, and finding one would settle the P versus NP question. The practical options are exact search for small instances (Hanan's grid makes nets of a few pins tractable) and heuristics with good typical behavior for large ones. Optimal partitioning, placement and Steiner routing are all NP-hard, which is why physical design is a field of heuristics judged against bounds such as HPWL.
+
 ### 3.5 Extraction and post-route timing
 
 Once routed, every net's geometry is known, and **parasitic extraction** computes its resistance and capacitance (and the coupling capacitance to its neighbors) from the layer data: a segment of length $\ell$ and width $W$ on a layer of sheet resistance $R_\square$ has $R = R_\square \ell/W$ (19-05), and its capacitance follows from per-length tables or field solvers. Vias add resistance at each layer change. The result is written as a SPEF file and read by the timing tool, which now computes each net's delay as an RC tree instead of a lumped load. For a driver of resistance $R_d$ driving a wire of resistance $R_w$ and capacitance $C_w$ into a load $C_L$, the **Elmore constant** (19-03, 19-05) is
@@ -183,7 +189,7 @@ Signoff tools are often different from the implementation tools that built the l
 
 ### 3.7 An open flow: OpenROAD on SKY130
 
-OpenROAD (BSD 3-clause license) began in June 2018 under DARPA's IDEA program with the goal of "24-hour, no human in the loop" layout generation [R-319]. Its modules map one to one onto this chapter:
+OpenROAD (BSD 3-clause license) began in June 2018 under DARPA's IDEA program with the goal of an "Autonomous, No-Human-In-Loop (NHIL) flow, 24 hour turnaround" for layout generation [R-319]. Its modules map one to one onto this chapter:
 
 | Step | OpenROAD module | Method (from its documentation) |
 |---|---|---|
@@ -202,7 +208,7 @@ The OpenROAD-flow-scripts (ORFS) platform for SKY130's high-density library runs
 
 **Setup.** A SKY130 block has 300 000 µm² of standard cells (about 0.3 mm²). Plan a square core at 60 % utilization with 2.72 µm rows and 0.46 µm sites, and a 40 µm margin on every side for pins and the power ring. Find the core width, the number of rows and the core height, the sites per row, the achieved utilization and the block area.
 
-**Solution.** Core area $300\,000/0.60$ = **500 000** µm²; width $\sqrt{500\,000}$ = **707.11** µm. Rows: $707.11/2.72 = 259.97$, rounded up to **260**, height $260 \times 2.72$ = **707.20** µm. Sites per row: $\lfloor 707.11/0.46 \rfloor$ = **1537**. Achieved utilization $300\,000/(707.11 \times 707.20)$ = **59.99** %. Block $(707.11 + 80)(707.20 + 80)$ µm² = **0.6196** mm².
+**Solution.** Core area $300\,000/0.60$ = **500 000** µm²; width $\sqrt{500\,000}$ = **707.11** µm. Rows: $707.11/2.72 = 259.97$, rounded up to **260**, height $260 \times 2.72$ = **707.20** µm. Sites per row: $\lfloor 707.11/0.46 \rfloor$ = **1537**. Achieved utilization $300\,000/(707.11 \times 707.20)$ = **59.99** %. (This uses the unsnapped width. Snapping the width to whole sites gives $1537 \times 0.46$ = **707.02** µm and **60.00** %; tools snap, and the difference is below the precision of a target.) Block $(707.11 + 80)(707.20 + 80)$ µm² = **0.6196** mm².
 
 **Units check.** µm × µm = µm²; 10⁶ µm² = 1 mm².
 
@@ -305,6 +311,8 @@ Positions: A (**2.5**, **1.2**), B (**5.0**, **2.4**), C (**7.5**, **1.2**), D (
 | Ex 19-11.1f | achieved utilization | 59.99 | % |
 | Ex 19-11.1g | block area | 0.6196 | mm² |
 | Ex 19-11.1h | area added by the margin | 24 | % |
+| Ex 19-11.1i | site-aligned core width | 707.02 | µm |
+| Ex 19-11.1j | utilization with site-aligned width | 60.00 | % |
 | Ex 19-11.2a | metal-1 rail resistance per length | 0.2604 | Ω/µm |
 | Ex 19-11.2b | worst drop, both ends fed | 2.60 | mV |
 | Ex 19-11.2c | worst drop, one end fed | 10.4 | mV |
@@ -350,9 +358,9 @@ The lab ([labs/19-11-lab](../labs/19-11-lab/README.md)) implements this chapter'
 
 1. Predict the drop at the middle of Problem 12's strap, then run `strap.cir`.
 2. Predict where 40 randomly connected cells land under quadratic placement with pads on the boundary; plot them.
-3. Predict the average and worst RMST/RSMT ratio for random five-pin nets, then compute them for 200 nets.
-4. Predict the direction the zero-skew tap moves as one subtree's load grows; run `merge.cir` and sweep the load.
-5. Predict the length at which a routed net's own RC delay equals its driver's RC delay on metal 1 and on metal 4.
+3. Predict the average and worst RMST/RSMT ratio for random nets of up to five pins, then compute them for 200 nets.
+4. Predict the direction the zero-skew tap moves as one subtree's load grows; sweep the load with `pnr.py`, then run `merge.cir` to confirm one point.
+5. Predict the length beyond which metal 3 beats metal 1 for Example 6's net, with the weak `inv_1` driver and with one eight times stronger; then sweep the length in the lab.
 
 ## 6. Engineering tradeoffs
 
@@ -382,7 +390,7 @@ The lab ([labs/19-11-lab](../labs/19-11-lab/README.md)) implements this chapter'
 | SKY130 metal stack | li1 plus 5 metals; 0.125 Ω/□ (met1, met2), 0.047 (met3, met4), about 0.029 (met5) | As of Nov 2026 [R-319] |
 | SKY130 minimum width / pitch | 0.14/0.34 µm (met1); 0.30/0.68 (met3); 1.6/3.4 (met5) | Tech LEF and DRC manual [R-319] |
 | SKY130 EM limit (average) | 2.8 mA/µm (met1, met2), 6.8 (met3, met4), 10.17 (met5) at 90 °C | Tech LEF comments only [R-319] |
-| SKY130 antenna limit, metal 1 | ratio 400 without a diode | DRC manual [R-319]; 19-09's illustrative value |
+| SKY130 antenna limit, metal 1 | ratio 400 without a diode, on sidewall area (perimeter × thickness) | DRC manual [R-319]; see 19-09 §3.5 |
 | Open-flow SKY130 targets | core utilization 35–50 %, placement density 0.60 | ORFS reference designs, Nov 2026 [R-319] |
 
 ## 8. Common mistakes
@@ -399,7 +407,7 @@ The lab ([labs/19-11-lab](../labs/19-11-lab/README.md)) implements this chapter'
 
 ### State of the art (as of Nov 2026)
 
-- **Open tools have taped out real chips [Established].** OpenROAD's documentation reports use "for full physical implementation in over 600 tapeouts in SKY130 and GF180 through the Google-sponsored, Efabless MPW shuttle and ChipIgnite programs" (a project claim). Google's open shuttle program launched in November 2020; by November 2023 it had run eight SKY130 shuttles and a GF180 test run with 40 slots each, manufacturing 360 designs from more than 600 submissions, and it wound down after the GF180 MPW-1 run of 2023–24 [R-319].
+- **Open tools have taped out real chips.** OpenROAD's documentation reports use "for full physical implementation in over 600 tapeouts in SKY130 and GF180 through the Google-sponsored, Efabless MPW shuttle and ChipIgnite programs" **[Vendor claim]**, the project's own count. **[Established]**: Google's open shuttle program launched in November 2020; by November 2023 it had run eight SKY130 shuttles and a GF180 test run with 40 slots each, manufacturing 360 designs from more than 600 submissions, and it wound down after the GF180 MPW-1 run of 2023–24 [R-319].
 - **The shuttle landscape changed [Established].** Efabless, which ran the shuttles, shut down in early 2025 (reported by Tiny Tapeout on 1 March 2025); UmbraLogic, trading as ChipFoundry, acquired its assets and as of November 2026 lists SKY130 tape-outs at $14,950 for up to 15 mm². wafer.space offers GF180MCU shuttles (an early-bird 3.93 × 5.12 mm slot at $7,000, next deadline 16 December 2026). The Caravel harness used by the original shuttles gives a 2.92 × 3.52 mm (about 10 mm²) user area with 38 I/Os [R-319]. Prices and schedules change; check before planning.
 - **Open flows are maintained but evolving [Established].** OpenLane 1 is in maintenance mode and not recommended for new designs; OpenLane 2 development moved to LibreLane (FOSSi Foundation), whose latest stable release is 3.0.17. ORFS removed its in-repository quality-of-results thresholds in September 2026 in favor of an external dashboard; the last in-repository bounds accepted negative setup slack on several SKY130 reference designs (for example −1.52 ns on `gcd`), so they were regression guards, not timing-clean results [R-319].
 - **Leading-edge interconnect is deep [Industry estimate].** The IRDS 2024 roadmap refers in passing to "10−15 metal layers for logic IC's", and TechInsights' analysis of Intel 4 shows an 18-layer metal stack, against SKY130's five metals plus local interconnect. I could not read a foundry's primary figure for N3, N2 or 18A [R-319].
@@ -431,7 +439,7 @@ The lab ([labs/19-11-lab](../labs/19-11-lab/README.md)) implements this chapter'
 
    <details><summary>Answer</summary>
 
-   Two effects multiply. Each half is a one-end-fed strap of half the length, and the drop of a one-end-fed strap is $riL^2/2$: halving the length quarters it. Feeding from one end puts the worst point at the far end ($IR/2$); feeding from both puts it at the middle with $IR/8$.
+   Two effects combine. Each half is a one-end-fed strap of half the length that also carries half the current, and the drop of a one-end-fed strap is $riL^2/2 = IR/2$, proportional to both its resistance and its current: halving each halves the drop twice, a factor of four. Feeding from one end puts the worst point at the far end ($IR/2$); feeding from both puts it at the middle with $IR/8$.
 
    </details>
 
@@ -487,7 +495,7 @@ Problems: [19-11 problem set](../problems/19-11-problems.md) · Solutions: [19-1
 
 ## 11. Key terms
 
-[Floorplan](../../../reference/glossary.md#floorplan) · [Utilization](../../../reference/glossary.md#utilization) · [IR drop](../../../reference/glossary.md#ir-drop) · [Electromigration](../../../reference/glossary.md#electromigration) · [Half-perimeter wirelength (HPWL)](../../../reference/glossary.md#half-perimeter-wirelength-hpwl) · [Quadratic placement](../../../reference/glossary.md#quadratic-placement) · [Legalization](../../../reference/glossary.md#legalization) · [Clock-tree synthesis (CTS)](../../../reference/glossary.md#clock-tree-synthesis-cts) · [H-tree](../../../reference/glossary.md#h-tree) · [Zero-skew merge](../../../reference/glossary.md#zero-skew-merge) · [Maze routing](../../../reference/glossary.md#maze-routing) · [Steiner tree](../../../reference/glossary.md#steiner-tree) · [Routing congestion](../../../reference/glossary.md#routing-congestion) · [Parasitic extraction](../../../reference/glossary.md#parasitic-extraction) · [Signoff](../../../reference/glossary.md#signoff) · [Tape-out](../../../reference/glossary.md#tape-out)
+[Floorplan](../../../reference/glossary.md#floorplan) · [Utilization](../../../reference/glossary.md#utilization) · [Min-cut partitioning](../../../reference/glossary.md#min-cut-partitioning) · [IR drop](../../../reference/glossary.md#ir-drop) · [Electromigration](../../../reference/glossary.md#electromigration) · [Half-perimeter wirelength (HPWL)](../../../reference/glossary.md#half-perimeter-wirelength-hpwl) · [Quadratic placement](../../../reference/glossary.md#quadratic-placement) · [Legalization](../../../reference/glossary.md#legalization) · [Clock-tree synthesis (CTS)](../../../reference/glossary.md#clock-tree-synthesis-cts) · [H-tree](../../../reference/glossary.md#h-tree) · [Zero-skew merge](../../../reference/glossary.md#zero-skew-merge) · [Maze routing](../../../reference/glossary.md#maze-routing) · [Steiner tree](../../../reference/glossary.md#steiner-tree) · [Routing congestion](../../../reference/glossary.md#routing-congestion) · [Parasitic extraction](../../../reference/glossary.md#parasitic-extraction) · [Signoff](../../../reference/glossary.md#signoff) · [Tape-out](../../../reference/glossary.md#tape-out)
 
 ## 12. Connections
 
@@ -500,6 +508,7 @@ Problems: [19-11 problem set](../problems/19-11-problems.md) · Solutions: [19-1
 - A. B. Kahng, J. Lienig, I. L. Markov and J. Hu, *VLSI Physical Design: From Graph Partitioning to Timing Closure*, 2nd ed. (Springer, 2022): partitioning, floorplanning, placement, routing and clock trees with algorithms.
 - Weste & Harris, *CMOS VLSI Design*, 4th ed., §13.4 (clock distribution), §13.3 (power distribution) and ch. 14.
 - The OpenROAD and OpenROAD-flow-scripts documentation, for an open flow whose every step can be inspected.
+- R. Rutenbar, *VLSI CAD Part II: Layout* (University of Illinois, Coursera): video lectures on partitioning, placement, routing and interconnect timing.
 
 ## 14. Sources
 
@@ -515,3 +524,4 @@ Problems: [19-11 problem set](../problems/19-11-problems.md) · Solutions: [19-1
 10. IRDS 2024 More Moore; TechInsights analysis of Intel 4 in Semiconductor Digest (Oct 2022) — [R-319].
 11. Synopsys Fusion Compiler and IC Compiler II pages; Cadence Innovus launch release (10 Mar 2015, via reprint) — [R-319].
 12. 19-10's SKY130 Liberty data (effective drive resistance and pin capacitance) — [R-318].
+13. B. W. Kernighan and S. Lin, "An efficient heuristic procedure for partitioning graphs," *Bell System Technical Journal* 49(2), 1970; C. M. Fiduccia and R. M. Mattheyses, "A linear-time heuristic for improving network partitions," *Proc. 19th Design Automation Conference*, 1982.

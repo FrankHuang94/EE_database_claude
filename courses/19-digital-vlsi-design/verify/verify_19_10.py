@@ -545,4 +545,49 @@ def zero_derate(crpr):
 v.check("Lab 19-10.i", zero_derate(False))
 v.check("Lab 19-10.j", zero_derate(True))
 
+# ---------------------------------------------------------------- Problems 13-15: SDC budgets, false paths, half-cycle
+v.check("19-10.13a", 1 / 500e6 * 1e9)
+v.check("19-10.13b", setup_check(2.0, 0, 0, 0.80, 1.05, 0.06, 0.05))
+v.check("19-10.13c", (2.0 - 0.60 - 0.05) - (0.31 + 0.60))
+v.check("19-10.13d", (2.0 - 1.10 - 0.05) - (0.31 + 0.60))
+v.check("19-10.13e", (2.0 - 1.10 - 0.05) - 0.31)
+MUX, X14, Y14, BYP = 0.15, 1.20, 1.00, 0.10
+paths14 = {}
+for m1 in (1, 0):            # M1 input taken: 1 = through X, 0 = bypass
+    for m2 in (1, 0):        # M2 input taken: 1 = through Y, 0 = bypass
+        d = (X14 if m1 else BYP) + MUX + (Y14 if m2 else BYP) + MUX
+        # M1 passes input 1 when s = 1; M2 (select s-bar) passes input 1 when s = 0
+        feasible = any((s_ == 1) == bool(m1) and (s_ == 0) == bool(m2) for s_ in (0, 1))
+        paths14[(m1, m2)] = (d, feasible)
+v.check("19-10.14a", paths14[(1, 1)][0])
+v.check("19-10.14b", paths14[(1, 0)][0])
+v.check("19-10.14c", paths14[(0, 1)][0])
+v.check("19-10.14d", paths14[(0, 0)][0])
+v.check("19-10.14e", min(setup_check(2.0, 0, 0, 0.30, d, 0.08) for d, _ in paths14.values()))
+v.check("19-10.14f", sum(not f for _, f in paths14.values()))
+v.check("19-10.14g", min(setup_check(2.0, 0, 0, 0.30, d, 0.08) for d, f in paths14.values() if f))
+v.check("19-10.14h", min(setup_check(2.0, 0, 0, 0.30, d, 0.08) for k, (d, _) in paths14.items() if k[0] == 0))
+v.assert_true("false paths are exactly X-then-Y and bypass-bypass",
+              {k for k, (_, f) in paths14.items() if not f} == {(1, 1), (0, 0)}, "")
+
+
+def half_cycle(T, high_frac, tcq, tpd_max, tpd_min, tsu, th, u_setup, u_hold):
+    fall = high_frac * T                        # first falling edge after the rising launch at 0
+    setup = setup_check(T, 0, 0, tcq, tpd_max, tsu, u_setup, n_cycles=fall / T)
+    hold = hold_check(0, 0, tcq, tpd_min, th, u_hold, hold_edge=fall - T)
+    return setup, hold
+
+
+s15, h15 = half_cycle(2.0, 0.5, 0.30, 0.45, 0.05, 0.10, 0.04, 0.05, 0.02)
+v.check("19-10.15a", s15)
+v.check("19-10.15b", h15)
+s15c, h15c = half_cycle(2.0, 0.45, 0.30, 0.45, 0.05, 0.10, 0.04, 0.05, 0.02)
+v.check("19-10.15c", s15c)
+v.check("19-10.15d", h15c)
+v.check("19-10.15e", 1e3 / (2 * (0.30 + 0.45 + 0.10 + 0.05)))
+v.check("19-10.15f", 1e3 / (0.30 + 0.45 + 0.10 + 0.05))
+# the other hold pairing (next launch at T against the setup capture edge) gives the same slack
+v.assert_true("both hold pairings agree", abs(hold_check(0, 0, 0.30, 0.05, 0.04, 0.02, hold_edge=1.0 - 2.0) - h15) < 1e-12
+              and abs((2.0 + 0.30 + 0.05) - (1.0 + 0.04 + 0.02) - h15) < 1e-12, "")
+
 sys.exit(v.finish())

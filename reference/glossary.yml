@@ -3432,7 +3432,7 @@
   definition: Dedicated, hard-wired carry logic between neighboring FPGA logic cells that makes adders and counters much faster than the same logic built from lookup tables and general routing.
   chapter: "08-12"
 - term: Utilization
-  definition: The fraction of a device's resources (logic cells, block RAMs, DSP blocks, I/O) that a design uses, as reported after synthesis or placement; high utilization makes routing harder.
+  definition: The fraction of a device's resources (logic cells, block RAMs, DSP blocks, I/O) that a design uses, as reported after synthesis or placement; in ASIC physical design, total standard-cell area divided by core area. High utilization makes routing harder.
   chapter: "08-12"
 # ---- 09-01
 - term: Diamond structure
@@ -7909,6 +7909,9 @@
   definition: "Releasing a chip's final layout database (GDSII or OASIS) to the foundry for mask making; the name comes from the magnetic tapes once used to deliver it."
   chapter: "19-11"
   see_also: [Signoff]
+- term: Min-cut partitioning
+  definition: "Dividing a netlist into parts of nearly equal size so that as few connections as possible cross between them; used for recursive bisection placement and for splitting designs across blocks, dies or FPGAs, with Kernighan-Lin or Fiduccia-Mattheyses improvement and multilevel coarsening."
+  chapter: "19-11"
 - term: Yield
   definition: "The fraction of manufactured dies (or packaged parts) that are free of defects and meet specification; it multiplies directly into the cost of every good chip."
   chapter: "19-12"

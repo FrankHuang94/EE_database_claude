@@ -60,6 +60,18 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A hot spot on a strap.** A 200 µm strap with r = 0.5 Ω/µm is fed at both ends. It supplies 1 mA drawn uniformly, plus a 2 mA point load (a hot macro) at 50 µm from the left end. (a) Derive the drop caused by the point load alone, as a function of position. (b) Find the worst total drop and where it occurs. (c) Compare with the uniform load's worst drop alone, and with placing the macro at the middle.
 
+### Problem 19-11.13 [B] *(lab)*
+
+**Slack after routing.** A driver whose Liberty delay slope is $R_{\text{eff}}$ = 1.41 kΩ drives four `inv_1` inputs (2.302 fF each). Use §3.5's 50 % estimate and the open flow's metal-1 estimate of 1.20565 Ω/µm and 0.172375 fF/µm (metal 3: 0.166281 Ω/µm and 0.214962 fF/µm) [R-319]. (a) Placement estimated the net at its HPWL, 400 µm of metal 1. Find the delay, split into its driver and wire terms. (b) The router detours around a macro, giving 600 µm of metal 1. Find the new delay and the slack lost. (c) For 300 µm of the route a neighbor runs alongside with 0.05 fF/µm of coupling capacitance, already counted in the per-length value for a quiet neighbor. Treating the change in effective coupling as spread along the wire, by how much can the neighbor's switching change the delay of (b), and in which directions? (d) Compare two fixes for (b): moving the 600 µm route to metal 3, and a driver twice as strong ($R_{\text{eff}}$ = 705 Ω). Which recovers the placement-stage delay, and what does the stronger driver cost?
+
+### Problem 19-11.14 [A]
+
+**Which check catches it?** For each defect, name the signoff check that catches it and what that check protects against. (a) A missing via array in a power strap leaves one region of the block with a supply droop much larger than the timing assumed. (b) Two metal-2 wires drawn 0.10 µm apart where the rule requires 0.14 µm. (c) An engineering change order swaps the two data inputs of a multiplexer in the netlist. (d) A path that met hold with estimated wires fails it at the fast corner with extracted parasitics. (e) A long metal-1 wire connected only to a transistor gate collects charge during plasma etching. (f) A metal fill shape shorts an output net to VDD. (g) A clock wire's average current density exceeds its layer's limit. (h) Timing was signed off assuming at most 5 % IR drop on a 1.80 V supply; dynamic analysis shows 8 % in one region. Express both in millivolts and say what must happen next.
+
+### Problem 19-11.15 [C]
+
+**One improvement step of min-cut bisection.** Six cells are joined by two-pin connections of weight 1: (1, 2), (1, 3), (2, 3), (3, 4), (4, 5), (4, 6), (5, 6) and (2, 5). A balanced bisection puts three cells on each side. Start from A = {1, 2, 4}, B = {3, 5, 6}. (a) Find the cut. (b) Find every cell's gain (connections to the other side minus connections to its own side). (c) Find the Kernighan–Lin swap of one cell from A with one from B that reduces the cut most, explaining the $-2w_{ab}$ correction, and the new cut. (d) Show that no further single swap reduces the cut. (e) How many distinct balanced bisections are there, and is the result the global minimum?
+
 ---
 
 ## Objective coverage
@@ -67,8 +79,8 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Objective | Problems |
 |---|---|
 | 1. Floorplan sizing and IR drop | 1, 2, 12 |
-| 2. Placement and wirelength | 3, 4, 11 |
+| 2. Placement and wirelength | 3, 4, 11, 15 |
 | 3. Clock trees | 7, 8, 9 |
 | 4. Routing and Steiner trees | 5, 6 |
-| 5. Extraction and post-route delay | 10 |
-| 6. Signoff checks | 9, 10, 12 |
+| 5. Extraction and post-route delay | 10, 13 |
+| 6. Signoff checks | 12, 14 |
