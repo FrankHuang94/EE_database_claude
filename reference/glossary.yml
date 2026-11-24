@@ -8673,3 +8673,48 @@
   definition: Loss of a receiver's sensitivity caused by the same device's own transmitter, through transmit noise, harmonics or intermodulation landing in the receive channel; an interferer inside the receive filter's pass band can only be removed before it reaches the shared antenna path.
   chapter: "21-09"
   see_also: [Carrier aggregation, Duplexer]
+# ---------------------------------------------------------------- 21-10
+- term: Microstrip patch antenna
+  definition: A printed rectangle of metal over a grounded dielectric slab that resonates when its length is about half a guided wavelength and radiates from the fringing fields at its two open edges; low profile and easily arrayed, with bandwidth that grows with substrate thickness.
+  chapter: "21-10"
+  see_also: [Antenna-in-package (AiP)]
+- term: Chu limit
+  definition: The lower bound on the radiation Q of any antenna that fits inside a sphere of radius a, Q ≥ 1/(ka)³ + 1/ka (McLean's form); since bandwidth is about 0.707/Q for VSWR 2, an electrically small antenna must be narrow-band or lossy.
+  chapter: "21-10"
+  see_also: [Quality factor]
+- term: Total radiated power (TRP)
+  definition: The power a device radiates integrated over all directions, measured in an anechoic chamber; 3GPP caps a handheld millimetre-wave phone at 23 dBm TRP while allowing 43 dBm EIRP.
+  chapter: "21-10"
+  see_also: [EIRP, Spherical coverage]
+- term: Spherical coverage
+  definition: A 3GPP millimetre-wave handset requirement on the EIRP reached at a given percentile of directions over the full sphere, for example 11.5 dBm at the 50th percentile in n257, which forces phones to carry several antenna modules.
+  chapter: "21-10"
+  see_also: [Total radiated power (TRP)]
+- term: Scan loss
+  definition: The fall in an array's gain as its beam is steered away from broadside, mainly because each element's projected area and gain fall roughly as cos θ (1.5 dB at 45°, 3 dB at 60°), plus impedance changes from mutual coupling.
+  chapter: "21-10"
+  see_also: [Grating lobe]
+- term: Beam squint
+  definition: The drift of a phase-shifter array's beam with frequency, sin θ = (f₀/f) sin θ₀, because a fixed phase equals the needed delay only at the design frequency; it limits the bandwidth of large, widely scanned arrays.
+  chapter: "21-10"
+  see_also: [True-time delay]
+- term: True-time delay
+  definition: Steering an array with real delays rather than phase shifts, so the beam points the same way at every frequency; it needs delay spans of many carrier periods, costly in analog hardware and natural in digital beamforming.
+  chapter: "21-10"
+  see_also: [Beam squint]
+- term: Phase quantization
+  definition: The rounding of each element's phase to a b-bit phase shifter's steps; with decorrelated errors it costs a gain factor (sin x/x)² with x = π/2^b and leaves a scattered-power floor about 6 dB lower per added bit.
+  chapter: "21-10"
+  see_also: [Hybrid beamforming]
+- term: Antenna-in-package (AiP)
+  definition: Integrating millimetre-wave antennas in the same package as the transceiver IC, because package and board routing cost tenths of a dB per millimetre and on-chip antennas are inefficient.
+  chapter: "21-10"
+  see_also: [Microstrip patch antenna]
+- term: Virtual array
+  definition: The set of positions formed by every transmitter–receiver pair of a MIMO radar, at the sums of their positions; N_TX transmitters and N_RX receivers can emulate a filled array of N_TX N_RX elements.
+  chapter: "21-10"
+  see_also: [Grating lobe]
+- term: Gaseous absorption
+  definition: Attenuation of radio waves by oxygen and water vapour, about 0.1 dB/km at 28 to 39 GHz but about 15 dB/km near the 60 GHz oxygen band at sea level (ITU-R P.676), which limits range and eases frequency reuse there.
+  chapter: "21-10"
+  see_also: [EIRP]

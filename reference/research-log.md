@@ -3927,3 +3927,72 @@ R&D % = R&D ÷ revenue.
 - **Microwave Journal, "RF Front-End Modules for Mobile: How Chinese OEMs Are Driving Innovation and Disruption," 8 Sep 2025 (reprinting Yole's *RF Front-End Module for Mobile 2025*)** [Industry estimate]: "Valued at $15.4 billion in 2024"; leaders "still control over 70 percent"; "Qualcomm leads with a 21 percent share … followed by Broadcom with 18 percent"; "Maxscend … 4 percent".
 - **Compound Semiconductor, "RF to be a $70b market by 2030," 28 Jul 2025 (Yole *Status of the RF Industry*)** [Industry estimate]: $51.3B (2024) to $70B (2030); "RFFE modules: more than $17b" (a different scope from the $15.4B mobile-RFFE figure; not additive).
 - **Sources:** [Skyworks 10-K](https://www.sec.gov/Archives/edgar/data/4127/000000412726000055/swks-20261002.htm); [Qorvo 10-K](https://www.sec.gov/Archives/edgar/data/1604778/000162828026032873/rfmd-20260328.htm); [Qualcomm 10-K](https://www.sec.gov/Archives/edgar/data/0000804328/000080432826000128/qcom-20260927.htm); [Microwave Journal](https://www.microwavejournal.com/articles/44684-rf-front-end-modules-for-mobile-how-chinese-oems-are-driving-innovation-and-disruption); [Compound Semiconductor](https://compoundsemiconductor.net/article/122194/RF_to_be_a_70b_market_by_2030). Checked Nov 2026.
+
+## R-399 · 3GPP FR2 handset and base-station requirements (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: DOCX specifications from the 3GPP FTP archive.*
+
+- **3GPP TS 38.101-2 V20.1.0 (2026-09), Release 20** [Established; perishable]: "Power class 3 is default power class" (handheld UE). Table 6.2.1.3-1 minimum peak EIRP: n257 22.4, n258 22.4, n259 18.7, n260 20.6, n261 22.4 dBm; Table 6.2.1.3-2 maximum TRP / EIRP 23 / 43 dBm (n257–n262); Table 6.2.1.3-3 spherical coverage at the 50 %-tile: n257 11.5, n260 8 dBm ("The minimum EIRP at the 50th percentile of the distribution of radiated power measured over the full sphere around the UE is defined as the spherical coverage requirement"); "The max allowed EIRP is derived from regulatory requirements". PC1 (FWA) 55 dBm maximum EIRP, 35 dBm TRP. PC3 REFSENS n257 at 100 MHz −85.3 dBm (EIS).
+- **3GPP TS 38.104 V20.1.0 (2026-09)** [Established]: §9.3.1 "There is no upper limit for the rated carrier TRP output power of BS type 2-O"; §9.2.3 declared EIRP "shall be achievable to within ± 3.4 dB of the claimed value" (normal conditions).
+- **3GPP TS 38.213 V19.5.0 (2026-09), §4.1** [Established]: Lmax = 64 for FR2; Case D candidate first symbols "4,8,16,20+28⋅n" with 16 values of n in FR2 (64 candidate SS/PBCH blocks per half frame, author's count).
+- **Sources:** [TS 38.101-2](https://www.3gpp.org/ftp/Specs/archive/38_series/38.101-2/38101-2-k10.zip); [TS 38.104](https://www.3gpp.org/ftp/Specs/archive/38_series/38.104/38104-k10.zip); [TS 38.213](https://www.3gpp.org/ftp/Specs/archive/38_series/38.213/38213-j50.zip). Checked Nov 2026.
+
+## R-400 · US millimetre-wave EIRP limits (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent via the eCFR API.*
+
+- **47 CFR §30.202** [Established; perishable]: base stations "limited to an equivalent isotopically radiated power (EIRP) density of +75dBm/100 MHz"; mobile stations "a maximum EIRP of +43 dBm"; transportable stations "+55 dBm".
+- **47 CFR §15.255 (57–71 GHz)** [Established]: "The average power of any emission shall not exceed 40 dBm and the peak power of any emission shall not exceed 43 dBm"; conducted output of devices other than radars "shall not exceed 500 mW".
+- **Sources:** [eCFR 30.202](https://www.ecfr.gov/current/title-47/chapter-I/subchapter-B/part-30/subpart-C/section-30.202); [eCFR 15.255](https://www.ecfr.gov/current/title-47/chapter-I/subchapter-A/part-15/subpart-C/subject-group-ECFR2f2e5828339709e/section-15.255). Checked Nov 2026.
+
+## R-401 · Millimetre-wave propagation models and measurements (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: ITU PDFs, the 3GPP DOCX and a course-hosted copy of Rappaport 2013.*
+
+- **Rec. ITU-R P.676-13 (08/2022)** [Established]: "Near 60 GHz, many oxygen absorption lines merge together at sea-level pressures to form a single, broad absorption band". The Recommendation gives curves, not a value table; the subagent evaluated its Annex 1 line-by-line model (44 oxygen and 35 water-vapour lines, standard atmosphere 1013.25 hPa, 15 °C, 7.5 g/m³): 0.101 dB/km at 28 GHz, 0.122 at 39 GHz, 14.66 at 60 GHz (peak 15.06 at 60.8 GHz), 0.388 at 73 GHz. The chapter quotes these only rounded (about 0.1 and about 15 dB/km); an independent implementation (e.g., the `itur` package) was not available to cross-check (open issue).
+- **Rec. ITU-R P.838-3 (03/2005)** [Established]: $\gamma_R = kR^\alpha$; Table 5 coefficients (kH, αH): 28 GHz 0.2051, 0.9679; 39 GHz 0.4215, 0.8743; 60 GHz 0.8606, 0.7656. At 25 mm/h these give 4.62, 7.03 and 10.12 dB/km (verified in verify_21_10.py).
+- **3GPP TR 38.901 V19.5.0 (2026-09)** [Established model]: UMi street canyon LOS "PL1=32.4+21log10(d3D)+20log10(fc)"; NLOS "35.3log10(d3D)+22.4 + 21.3log10(fc)-0.3(hUT-1.5)" with σ_SF 7.82 dB; self-blocking "The attenuation of each cluster due to self-blocking … is 30 dB"; penetration "Lglass=2+0.2f", "Lconcrete=5+4f".
+- **T. S. Rappaport et al., "Millimeter Wave Mobile Communications for 5G Cellular: It Will Work!", *IEEE Access* 1:335–349, 2013, DOI 10.1109/ACCESS.2013.2260813** [Established, one campaign]: LOS PLE 1.68 (best) and 2.55; NLOS 4.58 (best) and 5.76; "57% of locations were outages … with most outages occurring beyond 200 m from the TX". Its 28 GHz rain figure (7 dB/km at 25 mm/h) differs from P.838-3 (4.6 dB/km); it gives clear glass as both 3.6 and 3.9 dB.
+- **Sources:** [P.676-13](https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.676-13-202208-I!!PDF-E.pdf); [P.838-3](https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.838-3-200503-I!!PDF-E.pdf); [TR 38.901](https://www.3gpp.org/ftp/Specs/archive/38_series/38.901/38901-j50.zip); DOI above. Checked Nov 2026.
+
+## R-402 · Phased-array ICs, packaging and beamforming power (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: abstracts (OpenAlex), a TI data sheet and an arXiv full text.*
+
+- **B. Sadhu et al. (IBM, Ericsson), *IEEE JSSC* 52(12):3373–3391, Dec 2017, DOI 10.1109/JSSC.2017.2766211** [Established]: 32 TRX elements in 130 nm SiGe BiCMOS; "13.5 dBm/16 dBm Op1dB/Psat per front end"; four ICs with 64 dual-polarized antennas, ±50° "without requiring calibration"; "A maximum saturated effective isotropic radiated power of 54 dBm".
+- **U. Kibaroglu, M. Sayginer, G. M. Rebeiz, *IEEE JSSC* 53(5):1260–1274, 2018, DOI 10.1109/JSSC.2018.2791481** [Established]: 32-element array, "EIRP of 43 dBm at P1dB"; "130 mW in the RX mode and 200 mW in the TX mode at P1dB per channel".
+- **Y. Wang et al., *IEEE JSSC* 55(5):1249–1269, 2020, DOI 10.1109/JSSC.2020.2980509** (39 GHz, 64 elements, "EIRPMAX of 53 dBm"); **J. Pang et al., *IEEE JSSC* 56(4):1310–1326, 2021, DOI 10.1109/JSSC.2020.3045258** (28 GHz, 64 elements, "52.2-dBm saturated" EIRP) [Established].
+- **G. Gültepe et al., *IEEE TMTT* 69(9):4157–4168, 2021, DOI 10.1109/TMTT.2021.3075678** [Established]: 1024-element Ku-band transmitter, "EIRP of 75 dBm per polarization", "scans to ±75°", triangular lattice.
+- **Texas Instruments AWR2943/AWR2944 data sheet SWRS273E (rev. Feb 2026)** [Established]: "76 to 81GHz"; "4 receive and 3 – 4 transmit channels"; "13.5dBm at BGA ball"; "6 bit programmable phase shifter".
+- **Y. P. Zhang, D. Liu, *IEEE TAP* 57(10):2830–2841, 2009, DOI 10.1109/TAP.2009.2029295** [Established]: on-chip antennas "less than 12%" efficient; LTCC AiP at 60 GHz "better than 90%". **C.-T. Wang et al. (TSMC), ECTC 2018, pp. 202–207, DOI 10.1109/ECTC.2018.00039**: InFO RDL "transmission loss of 0.3 dB/mm".
+- **S. Dutta et al., "A Case for Digital Beamforming at mmWave," *IEEE TWC* 19(2):756–770, 2020, DOI 10.1109/TWC.2019.2948329** [Contested; model-based]: arXiv:1901.08693 Table I (16 antennas, receive): analog 292.15 mW, hybrid (K = 2) 337.01, digital 8-bit 742.35, digital 4-bit 242.85 mW.
+- **Sources:** DOIs above; [AWR2944](https://www.ti.com/lit/ds/symlink/awr2944.pdf); [arXiv:1901.08693](https://arxiv.org/abs/1901.08693). Checked Nov 2026.
+
+## R-403 · Handset and fixed-wireless millimetre-wave modules; blockage (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: Qualcomm PDFs and paper abstracts.*
+
+- **Qualcomm QTM547 product brief (2021)** [Established, vendor claim]: "from 16 to 64 dual polarization antenna elements, achieving up to 48 dBm of peak EIRP and complying with Power Class 1 and 5 devices" (fixed wireless, not a handset part).
+- **Qualcomm QTM527 briefing slides (4 Sep 2019)** [vendor claim]: "Coverage of up to 1.7 Km distance from base station in rural area" with "CPE height at 6m above ground, BW:400MHz, 7:1 TDD Config, light Foliage, and on 28Ghz".
+- **V. Raghavan et al. (Qualcomm), *IEEE TMTT* 67(7):3010–3024, 2019, DOI 10.1109/TMTT.2019.2899846** [Established]: "the biggest determinants of viability of mmW systems are penetration and blockage of mmW signals"; remedies include "subarray switching in a user equipment designed with multiple subarrays".
+- **Not used (UNVERIFIED):** QTM052 "up to four" modules per phone and QTM565 specifications (snippets only); the number of mmWave modules in any specific phone (no first-party source).
+- **Sources:** [QTM547](https://www.qualcomm.com/content/dam/qcomm-martech/dm-assets/documents/prod_brief_qcom_qtm547.pdf); [QTM527](https://www.qualcomm.com/content/dam/qcomm-martech/dm-assets/documents/qualcomm_qtm527_mmwave_antenna_module.pdf); DOI above. Checked Nov 2026.
+
+## R-404 · Millimetre-wave deployment and array markets (Course 21)
+
+*Read on 24 Nov 2026 by a research subagent: GSA, Ookla, Nokia and Microwave Journal pages.*
+
+- **GSA, "Millimetre-Wave Spectrum July 2025"** [Industry estimate]: "203 operators in 56 countries and territories investing in 5G mmWave … 24 operators in 17 countries have launched 5G networks using mmWave spectrum". **GSA, "State of the Market April 2026"**: "392 operators have launched 5G networks".
+- **M. Dano, "A Return to mmWave 5G," Ookla, 13 Apr 2026** (RootMetrics, US, 2H 2025) [Industry estimate]: "mmWave showed up in 2.2% of Verizon's samples . For AT&T, that figure was 0.2%"; "5G mmWave signals aren't usable beyond 900 meters"; "most RootMetrics mmWave samples … were collected within just 150 meters … of a mmWave transmission site".
+- **Nokia, Habrok press release, 26 Feb 2023** [vendor]: "32 TRX (Habrok 32) and 64 TRX (Habrok 64)"; "the Habrok 64 weighing only 24 kg".
+- **S. Lankshear, "Hybrid Phased Arrays for Mass Market Satellite User Terminals," *Microwave Journal*, 12 May 2026** [Industry estimate]: Starlink "represents the only true mass market deployment of phased array antenna technology"; terminals "integrate several hundred RF integrated circuits"; hybrid beamforming per teardowns. Element count UNVERIFIED (not published).
+- **E. Zeydan, O. Dedeoğlu, Y. Türk, *IEEE Access* 8:33202–33214, 2020, DOI 10.1109/ACCESS.2020.2974277** [Industry estimate, one site]: "up to 212% and 50% higher cell throughput compared to … FDD-based MIMO deployments with 10 Mhz and 20 Mhz respectively"; median total cell traffic up 38%.
+- **Sources:** [GSA mmWave](https://gsacom.com/paper/millimetre-wave-spectrum-july-2025/); [Ookla](https://www.ookla.com/articles/a-return-to-mmwave-5g); [Nokia](https://www.nokia.com/newsroom/nokia-redefines-massive-mimo-radio-performance-with-the-launch-of-habrok-its-latest-generation-of-airscale-5g-radios-powered-by-reefshark-mwc23/); [Microwave Journal](https://www.microwavejournal.com/articles/45652). Checked Nov 2026.
+
+## R-405 · Small-antenna and patch-design references (Course 21)
+
+*Checked on 24 Nov 2026 against Crossref metadata.*
+
+- **L. J. Chu, "Physical Limitations of Omni-Directional Antennas," *J. Appl. Phys.* 19(12):1163–1175, Dec 1948, DOI 10.1063/1.1715038** [Established].
+- **J. S. McLean, "A re-examination of the fundamental limits on the radiation Q of electrically small antennas," *IEEE TAP* 44(5):672, May 1996, DOI 10.1109/8.496253** [Established]: the bound $Q = 1/(ka)^3 + 1/ka$ used in 21-10 (stated from the antenna-theory literature; the paper's full text was not opened).
+- **E. O. Hammerstad, "Equations for Microstrip Circuit Design," 5th European Microwave Conference, 1975, pp. 268–272, DOI 10.1109/EUMA.1975.332206** [Established]: origin of the effective-permittivity and edge-extension fits used for patch design (as presented in Balanis, *Antenna Theory*).
