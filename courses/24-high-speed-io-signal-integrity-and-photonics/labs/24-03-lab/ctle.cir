@@ -1,0 +1,23 @@
+* 24-03 lab: source-degenerated CTLE, small-signal differential half-circuit (Example 24-03.4)
+* gm = 20 mS, RD = 200 ohm, RS = 400 ohm (RS/2 in the half-circuit), CS = 198.94 fF (2 CS in the
+* half-circuit), CL = 40 fF. Zero 2 GHz, first pole 10 GHz, output pole 19.9 GHz.
+* EXPECT gdc key:../../chapters/24-03-serdes-architecture.md#Ex_24-03.4b rtol=0.001
+* EXPECT gpk key:../../chapters/24-03-serdes-architecture.md#Ex_24-03.4e rtol=0.002
+* EXPECT fpk key:../../chapters/24-03-serdes-architecture.md#Ex_24-03.4e2 scale=1e9 rtol=0.004
+* EXPECT g16 key:../../chapters/24-03-serdes-architecture.md#Ex_24-03.4f0 rtol=0.001
+Vin in 0 AC 1
+G1 out s in s 20m
+RD out 0 200
+CL out 0 40f
+RS2 s 0 200
+CS2 s 0 397.887f
+.control
+ac dec 4000 1e6 1e11
+let mag = abs(v(out))
+let dmag = deriv(mag)
+meas ac gdc find mag at=1e6
+meas ac gpk max mag
+meas ac fpk when dmag=0 cross=1
+meas ac g16 find mag at=16e9
+.endc
+.end

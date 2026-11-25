@@ -9950,3 +9950,31 @@
   definition: "IEEE 802.3's single-number channel figure of merit: 20·log10 of signal amplitude over noise-plus-interference amplitude at the target error ratio, computed from S-parameters with a reference transmitter and receiver; a channel passes at 3 dB or more."
   chapter: "24-02"
   see_also: [Statistical eye, Detector error ratio (DER)]
+- term: De-emphasis
+  definition: "Transmitter equalization that lowers the level of slow (repeated-symbol) patterns relative to transitions, because a peak-swing-limited FFE cannot raise the transitions; quoted in dB as 1/Σc_j, the inverse of the FFE's DC gain."
+  chapter: "24-03"
+  see_also: [Feed-forward equalizer (FFE)]
+- term: Loop unrolling (DFE)
+  definition: "Speculative DFE: each slicer is duplicated for every possible value of the previous symbol and the previous decision selects the right result, removing the summer from the one-UI feedback loop; one tap costs M(M − 1) comparators (2 for NRZ, 12 for PAM4)."
+  chapter: "24-03"
+  see_also: [Decision-feedback equalizer (DFE)]
+- term: Error propagation
+  definition: "The tendency of a decision-feedback equalizer to follow a wrong decision with another, because it then subtracts the wrong intersymbol interference; for one NRZ tap the continuation probability is ½Q((h₀ − 2h₁)/σ) + ½Q((h₀ + 2h₁)/σ), 0.25 when h₁ = h₀/2."
+  chapter: "24-03"
+  see_also: [Decision-feedback equalizer (DFE), Detector error ratio (DER)]
+- term: Sign-sign LMS
+  definition: "The hardware form of least-mean-squares adaptation, c_k ← c_k + μ·sgn(e_n)·sgn(x_{n−k}), needing only comparators and counters; it converges where the error is uncorrelated with each tap's input and then dithers by ±μ."
+  chapter: "24-03"
+  see_also: [Decision-feedback equalizer (DFE)]
+- term: Bang-bang phase detector
+  definition: "A clock-recovery phase detector that outputs only early or late from data and edge samples; random jitter of rms σ linearizes it to a gain of about √(2/π)/σ, so the loop's bandwidth depends on the incoming jitter, and it saturates for errors of a few σ."
+  chapter: "24-03"
+  see_also: [Clock and data recovery (CDR)]
+- term: Phase interpolator
+  definition: "A circuit that produces a clock of any phase between two input clock phases by weighting and summing them under digital control; it lets many CDRs share one PLL."
+  chapter: "24-03"
+  see_also: [Clock and data recovery (CDR)]
+- term: Voltage-mode driver
+  definition: "A transmitter (also source-series-terminated, SST) that switches each output to a supply or ground through a 50 Ω on-resistance; it delivers the same swing as a CML driver for a quarter of the supply power."
+  chapter: "24-03"
+  see_also: [Current-mode logic (CML)]

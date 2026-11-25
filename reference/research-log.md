@@ -5053,3 +5053,35 @@ R&D % = R&D ÷ revenue.
 
 - **D. Das Sharma, "PCIe 7.0 Specification: 128 GT/s Bandwidth for Future Data-Intensive Markets," SNIA SDC deck** [Industry estimate: a pre-release presentation by the PCI-SIG board member who led the work; the final PCIe 7.0 text was not read]: repeats PCIe 6.0's "FBER of 1E-6 with a burst of <=16 to meet the performance goals with a light-weight FEC", noting "(Numbers get worse by 2x at 128.0 GT/s - still well within expectations)"; the flit carries "236B TLP, 6B DLP, 8B CRC, 6B FEC"; "Retry probability per FLIT is 5 x 10-6". The deck carries "©2023 SNIA" on every slide, but its title slide shows a 2021 conference template date.
 - **Sources:** [SNIA SDC deck](https://www.snia.org/sites/default/files/2025-05/SNIA-SDC23-DasSharma-PCIe-7.0-Specification-Bandwidth.pdf). Checked Nov 2026.
+
+## R-509 · 200 Gb/s-class SerDes transceivers, 2024–2026 (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent from peer-reviewed abstracts and bibliographic records (OpenAlex and Crossref; IEEE Xplore full texts not read). Tagged [Established] for what the abstracts state; vendors' "lowest power" or "longest reach" wording is a claim. "Analog" pJ/b usually excludes the DSP, and loss is as each paper defines it.*
+
+- **Synopsys, 3 nm:** D. Pfaff et al., ISSCC 2024 paper 7.3 (224 Gb/s, 3 pJ/b, 40 dB IL; "channel losses exceeding 35dB must be addressed by higher order digital equalizers and optional maximum likelihood sequence detection (MLSD)"); JSSC 60(1):9–22, Jan 2025: BER 1e-6 over 40 dB at 3 pJ/bit analog; TX 7-bit current-mode DAC at 1/8 rate, 55 fs rms random and 170 fs deterministic jitter; RX inverter-based AFE with 20 dB peaking and a 7-bit time-interleaved ADC; shared 14 GHz all-digital bang-bang PLL; MLSD plus DFE; 4 lanes per macro, 0.5 mm² per lane. CICC 2025: "post-FEC, error-free, 42dB insertion loss operation".
+- **Marvell:** ISSCC 2025 7.2, 5 nm: "more than 46dB of loss at 212.5Gb/s with an optimized analog power of 2.2pJ/b". VLSI 2026, 3 nm, 212.5 Gb/s: pre-FEC BER 2e-7 at 54.7 dB bump-to-bump and 4e-9 at 49.5 dB, 2.05 pJ/bit analog per lane; TX DAC driver with 36 dB SNDR, RLM 0.97, 50 fs rms jitter. VLSI 2025, 3 nm, 128 Gb/s for PCIe 7.0 rates: ">45dB channel loss @128Gbps achieving BER < 2e-8", analog 1.89 pJ/b, "total power efficiency is 4.1 pJ/b". ISSCC 2025: 4-lane 212.5 Gb/s retimer equalizing 40 dB on the C2M interface (5 nm).
+- **MediaTek, ISSCC 2025 7.1, 4 nm:** 212.5 Gb/s DSP PAM-4, "2.5e-6 BER over a channel with loss exceeding 50dB", extended FFE, floating taps for reflection cancellation, MLSD.
+- **Others:** Ciena, VLSI 2026, 3 nm: 224 Gb/s receiver at 1.39 pJ/bit, BER 3e-7 over 38 dB. Peking University, ISSCC 2025, 12 nm: 1.11 pJ/b 224 Gb/s extra-short-reach receiver with a slice-based CTLE (no ADC/DSP).
+- **Derived here:** 4.1/1.89 = 2.2 (total over analog at 128 Gb/s); 212.5 Gb/s × 2.05 pJ/b = 0.436 W per lane.
+- **Sources (DOIs):** [10.1109/ISSCC49657.2024.10454537](https://doi.org/10.1109/ISSCC49657.2024.10454537); [10.1109/JSSC.2024.3466092](https://doi.org/10.1109/JSSC.2024.3466092); [10.1109/CICC63670.2025.10983461](https://doi.org/10.1109/CICC63670.2025.10983461); [10.1109/ISSCC49661.2025.10904591](https://doi.org/10.1109/ISSCC49661.2025.10904591); [10.1109/VLSITechnologyandCir65830.2026.11577411](https://doi.org/10.1109/VLSITechnologyandCir65830.2026.11577411); [10.23919/VLSITechnologyandCir65189.2025.11074819](https://doi.org/10.23919/VLSITechnologyandCir65189.2025.11074819); [10.1109/ISSCC49661.2025.10904515](https://doi.org/10.1109/ISSCC49661.2025.10904515); [10.1109/ISSCC49661.2025.10904601](https://doi.org/10.1109/ISSCC49661.2025.10904601); [10.1109/VLSITechnologyandCir65830.2026.11577560](https://doi.org/10.1109/VLSITechnologyandCir65830.2026.11577560); [10.1109/ISSCC49661.2025.10904800](https://doi.org/10.1109/ISSCC49661.2025.10904800). Checked Nov 2026.
+
+## R-510 · 112 Gb/s-class SerDes baselines, 2021–2022 (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent from abstracts via OpenAlex. Tagged [Established] for the abstract statements.*
+
+- **Marvell, ISSCC 2022, 5 nm:** 112.5 Gb/s ADC/DAC-DSP PAM-4 at ">50dB", "power efficiency of 4.5pJ/b".
+- **Inphi, ISSCC 2021, 7 nm:** 112 Gb/s ADC-DSP PAM-4 at ">41.5dB"; ">40dB channel equalization is critical due to the extra 8-10dB package insertion loss".
+- **Huawei Canada, ISSCC 2021:** 116 Gb/s; BER ≤ 1e-5 at 112 Gb/s PAM-4 over 45 dB, and 58 Gb/s PAM-2 below 1e-15 over 52 dB without FEC, at better than 6 pJ/b.
+- **MediaTek, ISSCC 2021, 7 nm:** 1.7 pJ/b 112 Gb/s XSR.
+- **Derived here (indicative only, mixing analog and total figures):** long-reach energy fell from about 4.5–6 pJ/b at 112 Gb/s (2021–22) to about 2–3 pJ/b analog at 212–224 Gb/s (2024–26), with equalized loss of 40–55 dB at twice the Nyquist frequency.
+- **Sources (DOIs):** [10.1109/ISSCC42614.2022.9731650](https://doi.org/10.1109/ISSCC42614.2022.9731650); [10.1109/ISSCC42613.2021.9365929](https://doi.org/10.1109/ISSCC42613.2021.9365929); [10.1109/ISSCC42613.2021.9366030](https://doi.org/10.1109/ISSCC42613.2021.9366030); [10.1109/ISSCC42613.2021.9365752](https://doi.org/10.1109/ISSCC42613.2021.9365752). Checked Nov 2026.
+
+## R-511 · 200 Gb/s SerDes architecture (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent: the ISSCC 2024 Session 7 overview abstract (OpenAlex) and the Intel OJ-SSCS 2024 abstract (DOAJ record). Tagged [Established] for the abstract statements; the "usual chain" is a synthesis.*
+
+- **ISSCC 2024 Session 7 overview, of Marvell paper 7.1:** "The transmitter features a 4-way time interleaved DAC followed by a linear driver, and the receiver consists of a wideband AFE followed by 128-way time-interleaved ADC. Including per-lane PLL, the transceiver achieves 2.69pJ/b analog power efficiency."
+- **A. Khairi et al. (Intel), "Beyond 200-Gb/s PAM4 ADC and DAC-Based Transceiver for Wireline and Linear Optics Applications," IEEE OJ-SSCS, 2024:** 3 nm, long-reach channels "with up to 40 dB of loss at Nyquist", a "hybrid continuous-time linear equalizer", "inductive peaking clock routing" and a "one stage TX driver based on grounded switches"; 224 Gb/s with linear optics shown.
+- **Synthesis:** TX FFE (3–4 taps) → CTLE → 6–7-bit time-interleaved ADC → long RX FFE with floating taps → one DFE tap and/or MLSD → FEC, matching the 802.3dj COM reference receiver (R-507).
+- **Further reading, not read:** A. Chan Carusone, T. Dickson, S. Palermo, S. Shekhar and M. Mansuri, "Modern Wireline Transceivers," IEEE JSSC 61(2):395–422, 2026, doi:10.1109/JSSC.2025.3642231 (open access per its record).
+- **Sources:** [ISSCC 2024 Session 7 overview](https://doi.org/10.1109/ISSCC49657.2024.10454506); [Khairi et al., OJ-SSCS 2024](https://doi.org/10.1109/OJSSCS.2024.3501975). Checked Nov 2026.
