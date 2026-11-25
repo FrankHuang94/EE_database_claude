@@ -37,10 +37,38 @@ Moving bits between chips at hundreds of gigabits per second: loss, reflection a
 | [24-08 · Silicon Photonics and Optical Transceivers](chapters/24-08-silicon-photonics.md) | 6 | ✅ verified | [problems](problems/24-08-problems.md) · [solutions](solutions/24-08-solutions.md) · [lab](labs/24-08-lab/README.md) · [verify](verify/verify_24_08.py) |
 | [24-09 · Linear-Drive and Co-Packaged Optics](chapters/24-09-lpo-and-cpo.md) | 4 | ✅ verified | [problems](problems/24-09-problems.md) · [solutions](solutions/24-09-solutions.md) · [lab](labs/24-09-lab/README.md) · [verify](verify/verify_24_09.py) |
 
+**Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/24-high-speed-io-signal-integrity-and-photonics.csv) · [Equation sheet](../../reference/equation-sheets/24-high-speed-io-signal-integrity-and-photonics.md)
+
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 
 <!-- END GENERATED -->
 
 ## Course notes
 
-*(Hand-written notes for this course go below the generated block.)*
+**How to approach this course.** Course 24 is planned at about 59 hours: the chapters' own estimates add to 56, plus about 3 hours of review; allow a further 4.5 hours for the exam. Course 13 gave you transmission lines, skin depth and reflections; Course 17 pulse shaping, ISI, matched filters and coding; Course 12 differential pairs and frequency response; Course 03 Gaussian tails and confidence bounds; Course 09 photodiodes and lasers; and Course 23 the memory interfaces whose wires this course generalizes. This course follows a bit from one chip to another: across a board, through a SerDes, over a standard protocol, between chiplets, and finally out onto fiber.
+
+The nine chapters fall into four blocks:
+
+- **The channel (24-01 and 24-02).** Conductor, dielectric and roughness loss; reflections, stubs and crosstalk; pulse responses, eyes, jitter decomposition, BER and bathtubs; why every link now runs with FEC.
+- **The transceiver (24-03 and 24-04).** Drivers, transmit FFE, CTLE, DFE and CDR; ADC-and-DSP receivers, MLSD and the FEC stack, with their latency and power.
+- **Protocols and fabrics (24-05 and 24-06).** PCIe, CXL and Ethernet rates, encodings, credits and retry; die-to-die links, memory PHYs and scale-up fabrics, and the energy-per-bit ladder that orders them.
+- **Light (24-07 to 24-09).** Fiber, lasers, modulators, receivers and link budgets; silicon photonics, coupling, integration and pluggable transceivers; linear-drive and co-packaged optics and how to judge their claims.
+
+Work at least the [A] and [B] problems of every chapter. The labs are of two kinds, both run in CI (the verify scripts, `run_spice.py` for the netlists' EXPECT lines, and `run_notebooks.py` for the notebooks):
+
+- ngspice netlists: coupled-line crosstalk and a via stub (24-01), a pulse response (24-02), a CTLE (24-03), a distributed die-to-die wire (24-06), a shunt-feedback TIA (24-07) and a ring modulator driven through a wire bond and a hybrid bond (24-08);
+- Python models imported by their notebooks: `si.py`, `eye.py`, `serdes.py`, `dsp.py` (with a Viterbi detector), `links.py` (with a credit simulator), `d2d.py`, `optics.py` (with an FFT fiber propagator), `siph.py` and `cpo.py` (with a Monte Carlo of zero-failure tests).
+
+**What to master cold.** The [equation sheet](../../reference/equation-sheets/24-high-speed-io-signal-integrity-and-photonics.md) collects the relations; these are the ideas behind them:
+
+- loss is specified at the Nyquist frequency; conductor loss grows as $\sqrt f$ and dielectric loss as $f$, so dielectric loss wins at high rates; every impedance step reflects, and every stub notches (24-01);
+- an eye is set by the main cursor minus the ISI; BER falls as a Gaussian tail of the eye-to-noise ratio, so a few dB of margin are worth orders of magnitude; total jitter is quoted at a BER (24-02);
+- equalizers mostly lose low-frequency gain rather than add high-frequency gain; the DFE removes post-cursors without amplifying noise but must close its loop in one UI (24-03);
+- long-reach SerDes moved to ADCs and DSP because DSP scales with CMOS; MLSD and FEC buy dB at a cost in power and latency (24-04);
+- protocol bandwidth is lanes × rate × efficiency; buffers scale with bandwidth × round-trip time; the PCIe cadence doubles every three years (24-05);
+- short unterminated wires cost $CV^2/4$; density comes from bump pitch squared; the energy ladder runs from die-to-die links through scale-up fabrics to optics (24-06);
+- light is detected in proportion to power, so optical dB are half electrical dB; dispersion grows as the square of the rate; sensitivity is $Q\sigma/\mathcal R$ plus penalties (24-07);
+- silicon guides but cannot detect or lase; coupling and packaging set much of the loss and cost; retimed links add BER while linear ones add $1/Q^2$ (24-08);
+- LPO and CPO cut optics power by removing the DSP and shortening the electrical path; their cost is margin, serviceability and supplier choice, and zero failures bound a failure rate only to $3/T$ (24-09).
+
+**After this course.** Course 25 makes and packages the chips these links connect (advanced packaging, hybrid bonding, test and reliability physics). Course 27 assembles whole systems, where 24-06's energy ladder and 24-09's optics budgets decide an AI cluster's power. The companion repo *Datacenter Networking* continues from 24-05 and 24-09 into fabric design and operations.

@@ -73,7 +73,9 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 >
 > 24-09 (Linear-Drive and Co-Packaged Optics) is verified: where a pluggable link's energy goes (22 dB against 4 dB electrical paths); LPO, its $1/Q^2$ budget and why 200 Gb/s lanes favour LRO; CPO optical engines, external ELSFP lasers and laser sharing; Broadcom's Humboldt–Bailly–Davisson ladder and NVIDIA's evolving claims converted to pJ/bit; zero-failure reliability bounds (rule of three, chi-square) and blast radius; ecosystem and the Marvell–Celestial AI deal. 8 examples, 12 problems, verify (102 checks: numerically convolved noise, Poisson root-finding for failure bounds), lab (cpo.py with a Monte Carlo of zero-failure tests; notebook), 2 figures, 5 glossary terms, R-541 to R-551. Two values corrected by verification before commit (Example 3(d): Q 4.57 and margin 2.3 dB).
 >
-> **Next: Course 24 wrap-up** — exam (`exam/README.md`, 10–15 problems with solutions and answer key, plus `verify/verify_24_exam.py`), equation sheet (`reference/equation-sheets/24-high-speed-io-signal-integrity-and-photonics.md`), course notes and flashcards (`flashcards/24-high-speed-io-signal-integrity-and-photonics.csv`, 50–150 cards); then a fresh-reviewer audit of 24-01 to 24-09, fixes, reviewed status, push and CI. Log any new facts as R-552 onward. Two research files gathered on 2026-11-25 are in the session scratchpad: `research24_A.md` (32 entries for 24-01 to 24-05: PCB and package loss, PCIe and 802.3dj budgets and error targets, reference receivers, jitter limits, SerDes results from abstracts, FEC thresholds and latencies, standards dates) and `research24_B.md` (37 entries for 24-06 to 24-09: UCIe, BoW, NVLink and UALink, fibre and modulators, 800G/1.6T modules, LPO/LRO and CPO). Both mark which items came from opened pages and which from search excerpts only; re-open any excerpt-only fact before publishing it. Known gaps: no laminate data at 26.5 or 53 GHz, PCIe 7.0's budget only second-hand, 802.3dj not yet approved (RevCom 8 Dec 2026), NVLink 6 per-GPU bandwidth conflicting on NVIDIA's own pages (3.6 against 3.0 TB/s), no public NVLink energy per bit.
+> Course 24 wrap-up is done: final exam (12 questions, 104 points, 270 minutes; `exam/README.md`, `exam/solutions.md`, `verify/verify_24_exam.py` with 133 checks, about half by second routes), equation sheet, course notes in the course README and 92 flashcards.
+>
+> **Next: Course 24 audit.** Spawn fresh reviewers (not this drafting session) over 24-01 to 24-03, 24-04 to 24-06, 24-07 to 24-09, and the exam, equation sheet, flashcards and notes; fix every finding; mark the chapters reviewed; push; confirm CI. Log any new facts as R-552 onward.
 >
 > Tips carried from Course 22: switched-converter ngspice runs show sub-millivolt steps when the time step changes, so measure averages over a late window and peak-to-peak values over the final period only; new notebooks that call ngspice must use the guarded helper (copied in 21-01 to 21-10), because CI's notebook job has no ngspice; `.meas integ` on non-uniform transient points is inaccurate for small harmonics, so run, `linearize`, then `meas` in a `.control` block.
 >
@@ -170,10 +172,10 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | 21 | 12 | 12 | 12 | 12 | 98,549 | 170 | 1662 | 12 | 12 / 14 / 0 |
 | 22 | 12 | 12 | 12 | 12 | 96,801 | 171 | 1653 | 12 | 12 / 25 / 0 |
 | 23 | 9 | 9 | 9 | 9 | 73,016 | 123 | 1567 | 9 | 9 / 8 / 0 |
-| 24 | 9 | 9 | 9 | 0 | 61,115 | 120 | 1268 | 9 | 9 / 7 / 0 |
-| **Total** | **307** | **270** | **270** | **261** | **1,912,833** | **3851** | **33138** | **270** | **266 / 269 / 27** |
+| 24 | 9 | 9 | 9 | 0 | 61,115 | 120 | 1399 | 9 | 9 / 7 / 0 |
+| **Total** | **307** | **270** | **270** | **261** | **1,912,833** | **3851** | **33269** | **270** | **266 / 269 / 27** |
 
-Glossary terms: **2746** · Flashcards: **2453**
+Glossary terms: **2746** · Flashcards: **2545**
 
 <!-- END STATS -->
 
@@ -599,3 +601,4 @@ Changes relative to the original build brief's chapter plan.
 | 2026-11-25 | Phase 2. **24-07 Photonics Fundamentals ✅ verified.** Fiber windows, loss, latency and dispersion; lasers; MZM and ring modulators; photodetection, sensitivity and optical dB; the TIA; link budgets and WDM. 9 worked examples, 13 problems with solutions, verify (131 checks), lab (tia.cir, optics.py, notebook), 2 figures, 9 glossary terms, R-526 to R-532. |
 | 2026-11-25 | Phase 2. **24-08 Silicon Photonics and Optical Transceivers ✅ verified.** Materials and cutoff wavelengths; waveguides and single-mode conditions; fiber-to-chip coupling; grating couplers; EIC–PIC integration and bond parasitics; laser budgets; pluggables and the DSP; retimed against linear links; yield and test. 9 worked examples, 13 problems with solutions, verify (144 checks), lab (bond.cir, siph.py, notebook), 2 figures, 7 glossary terms, R-533 to R-540. |
 | 2026-11-25 | Phase 2. **24-09 Linear-Drive and Co-Packaged Optics ✅ verified.** Link energy; LPO and LRO budgets; CPO engines and external lasers; vendor claims in pJ/bit; reliability bounds and blast radius; ecosystem and deals. 8 worked examples, 12 problems with solutions, verify (102 checks), lab (cpo.py, notebook), 2 figures, 5 glossary terms, R-541 to R-551. All nine Course 24 chapters verified. |
+| 2026-11-25 | Phase 2. **Course 24 wrap-up.** Final exam (12 questions, 104 points, 270 minutes) with worked solutions and a verify script (133 checks); equation sheet; course notes; 92 flashcards. Next: the course audit. |
