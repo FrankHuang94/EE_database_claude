@@ -185,7 +185,6 @@ v.check("Txt 24-02.i", 0.67e-5 + 2e-5)
 ui_by_gen = {"1.1": (86, 400), "2.1": (3.1, 200), "3.1": (1.0, 125), "4.0": (0.5, 62.5),
              "5.0": (0.15, 31.25), "6.0": (0.1, 31.25), "7.0": (0.067, 15.625)}
 frac = {g: a / b for g, (a, b) in ui_by_gen.items()}
-v.check("Txt 24-02.j", frac["1.1"])
 later = [frac[g] for g in ("3.1", "4.0", "5.0", "6.0", "7.0")]
 v.check("Txt 24-02.k", min(later))
 v.check("Txt 24-02.l", max(later))
@@ -409,5 +408,14 @@ v.assert_true("fitted DJ(dd) below the 3 ps peak-to-peak", 2 * dA < 3.0 and 2 * 
 
 for key, f in (("Lab 24-02.i", 1e5), ("Lab 24-02.j", 4e6), ("Lab 24-02.k", 4e7)):
     v.check(key, abs(1 - 1 / (1 + 1j * f / 4e6)))
+
+# ---------------------------------------------------------------- Problem 24-02.16 (dual-Dirac, by root finding)
+from scipy.stats import norm as _norm  # noqa: E402
+qroot = lambda p: optimize.brentq(lambda x: _norm.sf(x) - p, 0, 20, xtol=1e-12)  # noqa: E731
+v.check("24-02.16a", 2 * optimize.brentq(lambda x: 0.5 * _norm.sf(x) - 1e-12, 0, 20, xtol=1e-12))
+tj12 = 2 * qroot(1e-12) * 0.2 + 1.5
+v.check("24-02.16c", tj12)
+v.check("24-02.16c1", 2 * qroot(1e-15) * 0.2 + 1.5)
+v.check("24-02.16c2", 1e12 / 53.125e9 - tj12)
 
 sys.exit(v.finish())

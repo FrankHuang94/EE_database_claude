@@ -102,7 +102,7 @@ $$
 K_r = 1 + \frac{2}{\pi}\arctan\!\left[1.4\left(\frac{\Delta_{rms}}{\delta}\right)^2\right] ,
 $$
 
-where $\Delta_{rms}$ is the rms roughness [10]. $K_r$ rises from 1 toward 2 as δ falls below $\Delta_{rms}$. At 16 GHz, 1 µm of roughness nearly doubles conductor loss; "very low profile" foils with a few tenths of a micrometre cost much less (Example 24-01.2). The correction saturates at 2, and more detailed models (Huray's "snowball" model) are used above about 30 GHz, where it is known to underestimate.
+where $\Delta_{rms}$ is the rms roughness [10]. $K_r$ rises from 1 toward 2 as δ falls below $\Delta_{rms}$. At 16 GHz, 1 µm of roughness nearly doubles conductor loss; "very low profile" foils with a few tenths of a micrometre cost much less (Example 24-01.2). The correction saturates at 2, and more detailed models (Huray's "snowball" model) are used at high frequency, once $K_r$ approaches 2.
 
 ### 3.3 Dielectric loss
 
@@ -112,7 +112,7 @@ $$
 \alpha_d = \frac{G'Z_0}{2} = \frac{\omega C'\tan\delta}{2}\sqrt{\frac{L'}{C'}} = \frac{\omega\tan\delta}{2}\sqrt{L'C'} = \frac{\pi f\sqrt{\varepsilon_r}\tan\delta}{c} ,
 $$
 
-using $\sqrt{L'C'} = \sqrt{\varepsilon_r}/c$ for a line whose fields lie in the dielectric (stripline; for microstrip use the effective permittivity). Units: (1/s)/(m/s) = 1/m. ✓ Dielectric loss grows as $f$ and does not depend on the trace geometry or $Z_0$ at all: only the material matters. In board units,
+using $\sqrt{L'C'} = \sqrt{\varepsilon_r}/c$ for a line whose fields lie in the dielectric (stripline). In microstrip only the part of the field inside the dielectric is lossy, so $\alpha_d = (\pi f/c)\,\varepsilon_r(\varepsilon_{eff} - 1)\tan\delta/[\sqrt{\varepsilon_{eff}}(\varepsilon_r - 1)]$, somewhat less than substituting $\varepsilon_{eff}$ alone would give. Units: (1/s)/(m/s) = 1/m. ✓ Dielectric loss grows as $f$ and does not depend on the trace geometry or $Z_0$ at all: only the material matters. In board units,
 
 $$
 \alpha_d\,[\text{dB/in}] = \frac{8.686\,\pi \times 10^9 \times 0.0254}{c}\,f_{GHz}\tan\delta\sqrt{\varepsilon_r} = 2.3\,f_{GHz}\tan\delta\sqrt{\varepsilon_r} .
@@ -131,11 +131,19 @@ A channel is characterized as a two-port (or, for a differential pair, a four-po
 
 High-speed links are differential. A four-port measurement converts into **mixed-mode** parameters: $S_{DD21}$ (differential in, differential out), the one that carries the signal; $S_{DD11}$, differential return loss; and $S_{CD21}$, conversion from differential to common mode, which measures how asymmetry (a length mismatch between the two lines of a pair, an asymmetric via) turns signal into common-mode noise that radiates and couples.
 
+**From single-ended to mixed-mode.** Number the ports so that line P runs from port 1 to port 2 and line N from port 3 to port 4. A differential wave of amplitude $a$ drives $a_1 = a/\sqrt2$ and $a_3 = -a/\sqrt2$; the output's differential and common-mode waves are $b_{d2} = (b_2 - b_4)/\sqrt2$ and $b_{c2} = (b_2 + b_4)/\sqrt2$. With $b_2 = S_{21}a_1 + S_{23}a_3$ and $b_4 = S_{41}a_1 + S_{43}a_3$,
+
+$$
+S_{DD21} = \tfrac12(S_{21} - S_{23} - S_{41} + S_{43}), \qquad S_{CD21} = \tfrac12(S_{21} - S_{23} + S_{41} - S_{43}).
+$$
+
+For two identical, uncoupled lines $S_{21} = S_{43}$ and $S_{23} = S_{41} = 0$, so $S_{DD21} = S_{21}$ and $S_{CD21} = 0$: any difference between the lines, such as skew, appears as mode conversion (Example 24-01.9).
+
 **Cascading.** For matched sections, insertion losses in dB add. That is what makes loss budgets work. Mismatches spoil the addition: waves bounce between discontinuities, and $\lvert S_{21}\rvert$ ripples with frequency.
 
-**A single mismatch.** At a junction between a line of impedance $Z_1$ and one of $Z_2$, the reflection coefficient is $\Gamma = (Z_2 - Z_1)/(Z_2 + Z_1)$ (13-07). A lossless junction conserves power, so the transmitted power fraction is $1 - \lvert\Gamma\rvert^2$ and the **mismatch loss** is $-10\log_{10}(1 - \lvert\Gamma\rvert^2)$. Return loss is $-20\log_{10}\lvert\Gamma\rvert$. PCIe boards use 85 Ω differential (42.5 Ω single-ended) traces [8]; measured in a 100 Ω (50 Ω) system, each end has $\Gamma$ = −0.081, a return loss of 21.8 dB and a mismatch loss of only 0.029 dB (Example 24-01.5). Return loss specifications matter less for the energy lost than for the echoes they allow.
+**A single mismatch.** At a junction between a line of impedance $Z_1$ and one of $Z_2$, the reflection coefficient is $\Gamma = (Z_2 - Z_1)/(Z_2 + Z_1)$ (13-07). A lossless junction conserves power, so the transmitted power fraction is $1 - \lvert\Gamma\rvert^2$ and the **mismatch loss** is $-10\log_{10}(1 - \lvert\Gamma\rvert^2)$. Return loss is $-20\log_{10}\lvert\Gamma\rvert$. PCIe boards use 85 Ω differential (42.5 Ω odd-mode, per line) traces [8]; measured in a 100 Ω (50 Ω) system, each end has $\Gamma$ = −0.081, a return loss of 21.8 dB and a mismatch loss of only 0.029 dB (Example 24-01.5). Return loss specifications matter less for the energy lost than for the echoes they allow.
 
-**Two mismatches.** Two identical discontinuities separated by a line make a resonator. Waves reflected twice arrive back in phase with the through wave at some frequencies and out of phase at others, so the transmission ripples between $1$ and $(1 - \lvert\Gamma\rvert^2)/(1 + \lvert\Gamma\rvert^2)$, a peak-to-peak ripple of $20\log_{10}[(1 + \lvert\Gamma\rvert^2)/(1 - \lvert\Gamma\rvert^2)]$ dB, with a period in frequency of $1/(2T_d)$ for a line of one-way delay $T_d$. In the time domain the same echo lands $2T_d$ after the main signal.
+**Two mismatches.** Two identical discontinuities separated by a line make a resonator. Waves reflected twice arrive back in phase with the through wave at some frequencies and out of phase at others, so on a lossless line the transmission ripples between $1$ and $(1 - \lvert\Gamma\rvert^2)/(1 + \lvert\Gamma\rvert^2)$, a peak-to-peak ripple of $20\log_{10}[(1 + \lvert\Gamma\rvert^2)/(1 - \lvert\Gamma\rvert^2)]$ dB, with a period in frequency of $1/(2T_D)$ for a line of one-way delay $T_D$. If the line transmits a fraction $A$ of the amplitude one way, the twice-reflected wave is weakened by $A^2$ and the ripple becomes $20\log_{10}[(1 + \lvert\Gamma\rvert^2A^2)/(1 - \lvert\Gamma\rvert^2A^2)]$: on a channel with 30 dB of loss at Nyquist the ripple there is 1,000 times smaller. In the time domain the same echo lands $2T_D$ after the main signal.
 
 ### 3.5 Vias and stubs
 
@@ -145,7 +153,13 @@ $$
 f_{stub} = \frac{c}{4\,\ell_{stub}\sqrt{\varepsilon_r}} ,
 $$
 
-where $\ell_{stub}$ is the stub length. A 1.6 mm (63 mil) stub in $\varepsilon_r$ = 3.6 notches at 24.7 GHz, uncomfortably close to PCIe 5.0's 16 GHz Nyquist (Example 24-01.6). Designers keep the notch well above the Nyquist frequency, often at 1.5 times it or more, by routing to layers near the bottom, using blind or buried vias, or **back-drilling** the stub away. At 53 GHz the tolerable stub is about half a millimetre, which is why 200 Gb/s boards back-drill nearly every via.
+where $\ell_{stub}$ is the stub length. A 1.6 mm (63 mil) stub in $\varepsilon_r$ = 3.6 notches at 24.7 GHz, uncomfortably close to PCIe 5.0's 16 GHz Nyquist (Example 24-01.6). **What a stub costs below its notch.** Seen from the through line, an open stub of electrical length $\theta = 2\pi f\ell_{stub}\sqrt{\varepsilon_r}/c$ is a shunt impedance $Z_{stub} = -jZ_0\cot\theta$ (13-07); a shunt impedance $Z$ across a matched line of the same $Z_0$ passes $S_{21} = 2Z/(2Z + Z_0)$, so
+
+$$
+\lvert S_{21}\rvert^2 = \frac{4\cot^2\theta}{4\cot^2\theta + 1}, \qquad \theta = \frac{\pi}{2}\cdot\frac{f}{f_{stub}} .
+$$
+
+At the Nyquist frequency a notch at 1.5 times $f_N$ costs 2.43 dB, at 2 times 0.97 dB and at 3 times 0.35 dB. Designers therefore keep the notch at two to three times the Nyquist frequency or more, by routing to layers near the bottom, using blind or buried vias, or **back-drilling** the stub away. At 53 GHz the tolerable stub is about half a millimetre, which is why 200 Gb/s boards back-drill nearly every via.
 
 ### 3.6 Crosstalk on coupled lines
 
@@ -256,11 +270,11 @@ Supply noise matters to SI because delays depend on supply voltage. A buffer who
 
 **Units check.** (1/s)/(m/s) = 1/m. ✓
 
-**Sanity check.** The dielectric parts of TI's two numbers match the formula, and the remainder is the same for both materials, as conductor loss should be: TI's model evidently assumes a wider trace than 5 mils. In FR-4 the dielectric dominates; in Megtron 6 the copper does, so on premium laminates the next dollar goes to smoother copper and wider traces.
+**Sanity check.** The dielectric parts of TI's two numbers match the formula, and at 16 GHz the remainder is the same for both materials, as conductor loss should be: TI's model evidently assumes a wider trace than 5 mils. In FR-4 the dielectric dominates; in Megtron 6 the copper does, so on premium laminates the next dollar goes to smoother copper and wider traces.
 
 ### Example 24-01.4 · A loss budget and the reach it allows (tier B)
 
-**Setup.** TI's PCIe 5.0 budget allocates 36 dB at 16 GHz: CPU package 9 dB, system board 16 dB, CEM connector 1.5 dB and a 4-inch add-in card 9.5 dB [1]. (a) Check the total. If the board's two vias cost 0.5 dB each (assumed), how far can a 5-mil, smooth-copper trace run in (b) the FR-4-class laminate and (c) Megtron 6 (Example 24-01.3), at room temperature? (d, e) Repeat when loss is 11% and 8% higher at temperature [1]. (f) In the 802.3dj copper-cable budget, a nominal host is allowed 11.5 dB at 53.125 GHz, of which a package takes 5 dB and the BGA transition 0.5 dB [4]. How much trace does the rest buy at 1.4 dB/in [3]?
+**Setup.** TI's PCIe 5.0 budget allocates 36 dB at 16 GHz: CPU package 9 dB, system board 16 dB, CEM connector 1.5 dB and a 4-inch add-in card 9.5 dB [1]. (a) Check the total. If the board's two vias cost 0.5 dB each (assumed), how far can a 5-mil, smooth-copper trace run in (b) the FR-4-class laminate and (c) Megtron 6 (Example 24-01.3), at room temperature? (d, e) Repeat when loss is 11% and 8% higher at temperature [1]. (f) In the 802.3dj copper-cable budget, a nominal host is allowed 11.5 dB at 53.125 GHz [4], of which a package takes 5 dB and the BGA transition 0.5 dB in one proposal [3]. How much trace does the rest buy at 1.4 dB/in [3]?
 
 **Solution.**
 
@@ -286,7 +300,7 @@ Supply noise matters to SI because delays depend on supply voltage. A buffer who
 
 **Units check.** Ratios of impedances; decibels of power ratios. ✓
 
-**Sanity check.** The energy lost is negligible, a few hundredths of a decibel. The echo is what matters: 8% of the signal comes back and, after a second reflection, arrives later as interference. A good channel keeps every discontinuity's return loss above about 15–20 dB across the band.
+**Sanity check.** The energy lost is negligible, a few hundredths of a decibel. The echo is what matters: 8% of the signal comes back and, after a second reflection, arrives later as interference. The 0.114 dB ripple of (d) assumes a lossless line; on a real channel the twice-reflected wave also suffers the line's loss twice, so near Nyquist the ripple is far smaller (§3.4). A good channel keeps every discontinuity's return loss above about 15–20 dB across the band.
 
 ### Example 24-01.6 · A via stub (tier B)
 
@@ -300,7 +314,7 @@ Supply noise matters to SI because delays depend on supply voltage. A buffer who
 
 **Units check.** (m/s)/m = 1/s. ✓
 
-**Sanity check.** The stub notch sits only 1.54 times above PCIe 5.0's Nyquist frequency: just acceptable at 16 GHz, hopeless at 53 GHz. The ngspice lab confirms the notch with an open-stub transmission line.
+**Sanity check.** The stub notch sits only 1.54 times above PCIe 5.0's Nyquist frequency, and by §3.5's model the stub already costs 2.2 dB at 16 GHz, far more than the 0.5 dB per via that Example 24-01.4 assumed; at 53 GHz it would be hopeless. The ngspice lab confirms the notch with an open-stub transmission line.
 
 ### Example 24-01.7 · Crosstalk between microstrip traces (tier C)
 
@@ -334,6 +348,21 @@ Supply noise matters to SI because delays depend on supply voltage. A buffer who
 **Units check.** H × A/s = V; V/A = Ω; 1/√(H·F) = 1/s. ✓
 
 **Sanity check.** A 128 mV bounce on a 0.4 V-swing single-ended bus would be fatal, which is why fast links are differential. The capacitor count shows that board decoupling cannot reach hundreds of megahertz; on-package and on-die capacitance must, and the clock path needs its own quiet supply.
+
+### Example 24-01.9 · Skew and mode conversion (tier B)
+
+**Setup.** The two lines of a lossless, uncoupled differential pair differ in delay by a skew $\Delta t$: $S_{21} = e^{-j\omega T}$ and $S_{43} = e^{-j\omega(T + \Delta t)}$, with $S_{23} = S_{41} = 0$. (a) Find $\lvert S_{DD21}\rvert$ and $\lvert S_{CD21}\rvert$ in general. (b) Evaluate both in dB for 1 ps of skew at 53.125 GHz. (c) What skew makes $S_{CD21}$ reach −10 dB there? (d) What length mismatch in a stripline with $\varepsilon_r$ = 3.4 gives 1 ps?
+
+**Solution.**
+
+- (a) From §3.4, $S_{DD21} = \tfrac12(e^{-j\omega T} + e^{-j\omega(T + \Delta t)}) = e^{-j\omega(T + \Delta t/2)}\cos(\omega\Delta t/2)$ and $S_{CD21} = \tfrac12(e^{-j\omega T} - e^{-j\omega(T + \Delta t)})$, so $\lvert S_{DD21}\rvert = \lvert\cos(\pi f\Delta t)\rvert$ and $\lvert S_{CD21}\rvert = \lvert\sin(\pi f\Delta t)\rvert$.
+- (b) $\pi f\Delta t$ = 0.167 rad: $\lvert S_{DD21}\rvert$ = **0.986** (**−0.12** dB) and $\lvert S_{CD21}\rvert$ = **0.166** (**−15.6** dB).
+- (c) $\sin(\pi f\Delta t) = 10^{-0.5}$ gives $\Delta t$ = **1.93** ps.
+- (d) $\ell = c\Delta t/\sqrt{\varepsilon_r}$ = **0.163** mm, about **6.4** mil.
+
+**Units check.** Hz × s = dimensionless; (m/s) × s = m. ✓
+
+**Sanity check.** Skew barely dents the differential signal (0.12 dB) but converts a sixth of its amplitude to common mode, which radiates and couples into neighbours. At 200 Gb/s per lane, a few mils of length mismatch matter, which is why layout tools match pair lengths and serpentine the shorter line.
 
 <!-- answer-key -->
 
@@ -423,7 +452,6 @@ Supply noise matters to SI because delays depend on supply voltage. A buffer who
 | Txt 24-01.h | via-stub notch, 3 s.f. | 24.7 | GHz |
 | Txt 24-01.i | Np to dB | 8.686 | dB |
 | Txt 24-01.j | allowed supply noise | 18 | mV |
-| Txt 24-01.k | 802.3dj Nyquist frequency, 4 s.f. | 53.13 | GHz |
 | Txt 24-01.l | magnitude of PCIe reflection coefficient, 2 s.f. | 0.081 | |
 | Txt 24-01.m | PCIe mismatch loss, 2 s.f. | 0.029 | dB |
 | Txt 24-01.n | 1.6 mm in mils | 63 | mil |
@@ -433,6 +461,19 @@ Supply noise matters to SI because delays depend on supply voltage. A buffer who
 | Txt 24-01.r | 0.4 nH capacitor at 500 MHz | 1.26 | Ω |
 | Txt 24-01.s | FEXT over NEXT | 3.85 | |
 | Txt 24-01.t | three-quarter-wave notch, 1.6 mm stub | 74.1 | GHz |
+| Txt 24-01.u | stub loss at Nyquist, notch at 1.5 f_N | 2.43 | dB |
+| Txt 24-01.v | stub loss at Nyquist, notch at 2 f_N | 0.97 | dB |
+| Txt 24-01.w | stub loss at Nyquist, notch at 3 f_N | 0.35 | dB |
+| Txt 24-01.x | 1.6 mm stub loss at 16 GHz | 2.2 | dB |
+| Txt 24-01.y | ripple reduction for 30 dB of line loss | 1000 | |
+| Ex 24-01.9b0 | pi f dt | 0.167 | rad |
+| Ex 24-01.9b | differential transmission | 0.986 | |
+| Ex 24-01.9b1 | differential transmission | -0.12 | dB |
+| Ex 24-01.9b2 | mode conversion | 0.166 | |
+| Ex 24-01.9b3 | mode conversion | -15.6 | dB |
+| Ex 24-01.9c | skew for -10 dB | 1.93 | ps |
+| Ex 24-01.9d | length mismatch | 0.163 | mm |
+| Ex 24-01.9d1 | length mismatch | 6.4 | mil |
 
 ## 5. Simulate it
 
@@ -440,7 +481,7 @@ The lab is [labs/24-01-lab/](../labs/24-01-lab/README.md). `si.py` holds the cha
 
 ![Insertion loss per inch against frequency for an FR-4-class laminate and Megtron 6, split into conductor and dielectric parts, with TI's tabulated values at 8 and 16 GHz](../../../assets/figures/24-01/loss-vs-frequency.svg)
 
-*Figure 2. Loss per inch of a 5-mil, 50 Ω trace. Conductor loss grows as √f, dielectric loss as f; in FR-4 the dielectric dominates above a few gigahertz. TI's model values [1], with a wider trace, lie below the curves by a nearly constant conductor term.*
+*Figure 2. Loss per inch of a 5-mil, 50 Ω trace. Conductor loss grows as √f, dielectric loss as f; in FR-4 the dielectric dominates above a few gigahertz. TI's model values [1], with a wider trace, lie below the curves; at 16 GHz the gap is the same conductor term for both materials.*
 
 ![Magnitude of the through transmission of a via with a 1.6 mm stub and with a 0.4 mm back-drilled stub, showing quarter-wave notches at 24.7 and 98.8 GHz](../../../assets/figures/24-01/via-stub.svg)
 
@@ -474,7 +515,7 @@ The lab is [labs/24-01-lab/](../labs/24-01-lab/README.md). `si.py` holds the cha
 | Conductor-loss rule | $36\sqrt{f_{GHz}}/(w_{mil}Z_0)$ dB/in, smooth copper | §3.2 |
 | Dielectric-loss rule | $2.3\,f_{GHz}\tan\delta\sqrt{\varepsilon_r}$ dB/in | §3.3 |
 | Laminate loss at 16 GHz (TI model, as of Jun 2023) | FR-4 1.289, Megtron 6 0.336 dB/in | [1] |
-| PCB loss at 53 GHz (802.3dj working values, 2023–2025) | 1.27–1.8 dB/in; cabled host about 0.35 dB/in | [2], [3] |
+| PCB loss at 53 GHz (802.3dj working values, 2023–2024) | 1.27–1.8 dB/in; cabled host about 0.35 dB/in | [2], [3] |
 | Package trace loss at 53 GHz | 0.15–0.21 dB/mm | [2] |
 | PCIe 5.0 budget | 36 dB at 16 GHz | [1] |
 | PCIe 6.0 budget | 32 dB at 16 GHz | [9] |
@@ -496,11 +537,11 @@ The lab is [labs/24-01-lab/](../labs/24-01-lab/README.md). `si.py` holds the cha
 
 **State of the art (as of Nov 2026).**
 
-- *PCIe budgets* [Established as vendor guidance; Industry estimate for PCIe 7.0]. TI's PCIe Gen3–Gen5 tables allocate 23.5, 28 and 36 dB at the respective Nyquist frequencies, with Gen5 needing a further 4–5 dB for crosstalk mitigation and 2–3 dB for temperature and humidity [1]. PCIe 6.0 kept 16 GHz with PAM4 and tightened the budget to 32 dB [9]. Connector and SerDes vendors report that PCIe 7.0 restores 36 dB at 32 GHz, which they say requires about 1 dB/in at 32 GHz ("such as Megtron-8 or equivalent") [7]. The PCI-SIG specifications are members-only and were not read.
+- *PCIe budgets* [Established as vendor guidance; Industry estimate for PCIe 7.0]. TI's PCIe Gen3–Gen5 tables allocate 23.5, 28 and 36 dB at the respective Nyquist frequencies, with Gen5 needing a further 4–5 dB for crosstalk mitigation and 2–3 dB for temperature and humidity [1]. PCIe 6.0 kept 16 GHz with PAM4 and tightened the budget to 32 dB [9]. Connector and SerDes vendors report that PCIe 7.0 restores 36 dB, at 32 GHz; Amphenol's Wander adds that this requires about 1 dB/in at 32 GHz ("such as Megtron-8 or equivalent") [7]. The PCI-SIG specifications are members-only and were not read.
 - *200 Gb/s per lane* [Established for objectives; Industry estimate for working budgets]. IEEE P802.3dj targets a die-to-die loss of 40 dB at 53.125 GHz and passive copper of at least 1 m, against 2 m at 100 Gb/s per lane [5]. Its adopted copper-cable baseline splits 40 dB as 11.5 dB per host and 17 dB for the cable assembly [4]. Task-force contributions use 1.27–1.8 dB/in for advanced PCB at 53 GHz, 0.35 dB/in for cabled hosts, 0.15–0.21 dB/mm for package traces, about 0.8 dB per host via and 1.6 dB per OSFP connector [2], [3].
-- *Cable manufacturability* [Industry estimate: one vendor's data]. TE reported that 1 m, 26 and 25 AWG cables built to robust processes reached only 15% assembly yield against a 24 dB limit at 53.12 GHz, rising to 62% at 25 dB, and proposed moving 1 dB of budget from the hosts to the cable [6].
+- *Cable manufacturability* [Industry estimate: one vendor's data]. TE reported that 1 m, 26 and 25 AWG cables built to robust processes reached only 15% assembly yield against a 24 dB limit at 53.12 GHz, rising to 62% at 25 dB, and argued that "an additional 1 dB" should be allocated to the cable assembly [6]. The 24 dB limit is measured between the cable assembly's test points TP1 and TP4, a different reference from the 17 dB cable share of the die-to-die budget above, so the two numbers are not directly comparable.
 
-**Why it matters commercially.** Laminate grade, layer count, back-drilling and copper profile are a large share of an AI server board's cost, and they scale with the SerDes rate. A SerDes that tolerates 2 dB more loss can save a laminate grade or a retimer chip per lane, so loss tolerance is a competitive feature, and retimers, cabled backplanes and active copper cables exist to sell reach where passive channels run out.
+**Why it matters commercially.** Laminate grade, layer count, back-drilling and copper profile drive an AI server board's cost (the author's assessment; no public cost breakdown was found), and they scale with the SerDes rate. A SerDes that tolerates 2 dB more loss can save a laminate grade or a retimer chip per lane, so loss tolerance is a competitive feature, and retimers, cabled backplanes and active copper cables exist to sell reach where passive channels run out.
 
 **Marketing vs Reality.**
 
@@ -604,5 +645,5 @@ Problems: [24-01 problem set](../problems/24-01-problems.md) · Solutions: [24-0
 6. N. Tracy, H. Heck et al. (TE Connectivity), "Cable Assembly TP1-TP4 Insertion Loss (Comment #358)," IEEE 802.3dj, Sep 2025, <https://www.ieee802.org/3/dj/public/25_09/heck_3dj_02_2509.pdf>. [R-504]
 7. A. Wander, "Navigating Signal Integrity Challenges: Transitioning From PCIe Gen6 to Gen7," *Signal Integrity Journal*, 21 Feb 2024, <https://www.signalintegrityjournal.com/articles/3462-navigating-signal-integrity-challenges-transitioning-from-pcie-gen6-to-gen7>; A. Wander, "Evolution of PCIe Beyond Gen7: PCIe Gen8," *SIJ*, 13 Dec 2025, <https://www.signalintegrityjournal.com/articles/4156-evolution-of-pcie-beyond-gen7-pcie-gen8>; Synopsys, "How PCIe 7.0 Addresses AI's Bandwidth Demands," 2024, <https://www.synopsys.com/articles/pcie-7-design-ai-bandwidth.html>. [R-504]
 8. Texas Instruments, SLAAE45, Sep 2021 (trace impedance table), <https://www.ti.com/lit/pdf/slaae45>. [R-198]
-9. M. Mazumder, PCI-SIG Electrical Work Group, SNIA SDC 2021 and 2024 presentations on PCIe 6.0 and 7.0 channels (PCIe 6.0: 32 dB at 16 GHz). [R-141]
+9. M. Mazumder, PCI-SIG Electrical Work Group, SNIA SDC 2021 and 2024 presentations on PCIe 6.0 and 7.0 channels (PCIe 6.0: 32 dB at 16 GHz): [SDC 2021](https://snia.org/sites/default/files/2025-05/SNIA-SDC21-Mazumder-PCIe6p0-A-High-Performance-Interconnect-for-Storage-Networking-Challenges.pdf), [SDC 2024](https://www.snia.org/sites/default/files/2025-05/SNIA-SDC2024-Mazumder-PCIe-Cabling-Solutions_1.pdf). [R-141]
 10. E. Hammerstad and Ø. Jensen, "Accurate Models for Microstrip Computer-Aided Design," *IEEE MTT-S International Microwave Symposium Digest*, 1980, pp. 407–409.

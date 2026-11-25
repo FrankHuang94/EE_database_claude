@@ -142,6 +142,30 @@ Even 15 pH, a very low package inductance, exceeds a high-current core's target 
 
 (c) $1 - 0.5^2 - 0.2^2$ = **0.71**, or 71%. A passive channel cannot create power, so the rest was dissipated in its conductors and dielectric (or radiated): that is the insertion loss beyond mismatch.
 
+### Solution 24-01.16
+
+A backward wave born at position $z$ when the aggressor's edge passes ($t = z/v$) reaches the near end after another $z/v$. Summing the contributions,
+
+$$
+V_{NEXT}(t) = \frac{1}{2v}\left(\frac{C_m}{C} + \frac{L_m}{L}\right)\int_0^{\ell}V_a'\!\left(t - \frac{2z}{v}\right)dz .
+$$
+
+Substitute $u = t - 2z/v$, $dz = -(v/2)\,du$: the integral becomes $[V_a(t) - V_a(t - 2T_D)]\,v/2$ with $T_D = \ell/v$, so $V_{NEXT} = K_b[V_a(t) - V_a(t - 2T_D)]$ with $K_b = \tfrac14(C_m/C + L_m/L)$. For a ramp, $V_a(t) - V_a(t - 2T_D)$ is the rise over a window $2T_D$ long: it reaches the full $V_a$ if the window spans the whole edge ($2T_D \ge t_r$), and otherwise at most the slope times the window, $V_a(2T_D/t_r)$.
+
+Here $K_b = \tfrac14(0.04 + 0.06)$ = **0.025**.
+
+(a) $2T_D = 2 \times 1\ \text{mm}/(1.5 \times 10^8)$ = **13.3** ps < 30 ps: peak $25 \times 13.3/30$ = **11.1** mV.
+
+(b) $2T_D$ = **66.7** ps ≥ 30 ps: the full **25.0** mV.
+
+### Solution 24-01.17
+
+(a) $\Delta t = \ell\sqrt{\varepsilon_r}/c = 3 \times 25.4\ \mu\text{m} \times \sqrt{3.4}/c$ = **0.469** ps.
+
+(b) $\lvert S_{CD21}\rvert = \lvert\sin(\pi f\Delta t)\rvert$: **−28.2** dB at 26.5625 GHz.
+
+(c) **−22.1** dB at 53.125 GHz: doubling the rate raises the conversion by 6 dB.
+
 ---
 
 ## Answer key
@@ -220,3 +244,11 @@ Even 15 pH, a very low package inductance, exceeds a high-current core's target 
 | 24-01.15a | insertion loss | 6.02 | dB |
 | 24-01.15b | return loss | 13.98 | dB |
 | 24-01.15c | power neither reflected nor transmitted | 0.71 | |
+| 24-01.16a0 | backward coefficient | 0.025 | |
+| 24-01.16a1 | 2T_D at 1 mm | 13.3 | ps |
+| 24-01.16a | NEXT peak at 1 mm | 11.1 | mV |
+| 24-01.16b0 | 2T_D at 5 mm | 66.7 | ps |
+| 24-01.16b | NEXT peak at 5 mm | 25.0 | mV |
+| 24-01.17a | skew | 0.469 | ps |
+| 24-01.17b | mode conversion at 26.6 GHz | -28.2 | dB |
+| 24-01.17c | mode conversion at 53.1 GHz | -22.1 | dB |

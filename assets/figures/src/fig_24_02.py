@@ -3,6 +3,8 @@
 
 Run from anywhere:  python assets/figures/src/fig_24_02.py
 Outputs
+  assets/figures/24-02/eye-anatomy.svg  an annotated NRZ eye of the two-pole channel (tau = 0.4 UI) built from
+                                      random bits with a little Gaussian timing jitter: height, width, crossings
   assets/figures/24-02/bathtub.svg    dual-Dirac bathtub (RJ 0.4 ps, DJ(dd) 3 ps, 32 GBd) on a log-BER scale and
                                       on a Q scale, with the 1e-12 eye width marked
   assets/figures/24-02/stat-eye.svg   statistical NRZ eye of the two-pole channel (tau = 0.4 UI, 400 mV swing,
@@ -27,6 +29,40 @@ OUT = "assets/figures/24-02"
 use_style()
 (ROOT / OUT).mkdir(parents=True, exist_ok=True)
 UI, RJ, DJ = 31.25, 0.4, 3.0
+
+
+def eye_anatomy() -> None:
+    """Overlay two-UI slices of a random NRZ waveform through the two-pole channel and label the eye."""
+    rng = np.random.default_rng(3)
+    nbits, spb = 400, 64
+    bits = rng.integers(0, 2, nbits) * 2 - 1
+    t = np.arange(nbits * spb) / spb  # time in UI
+    step = eye.two_pole_step
+    wave = sum(b * (step(t - k, 0.4) - step(t - k - 1, 0.4)) for k, b in enumerate(bits))
+    fig, ax = plt.subplots(figsize=(6.2, 3.8))
+    phase, _ = eye.cursors(0.4)
+    for k in range(20, nbits - 3):
+        j = rng.normal(0, 0.02)
+        i0 = int(round((k + phase - 1 + j) * spb))
+        seg = wave[i0:i0 + 2 * spb + 1]
+        ax.plot(np.linspace(-1, 1, len(seg)), seg, color=PALETTE[0], lw=0.4, alpha=0.35)
+    h = eye.cursors(0.4)[1]
+    e = eye.peak_distortion_eye(h)
+    ax.annotate("", xy=(0, e), xytext=(0, -e), arrowprops=dict(arrowstyle="<->", color=PALETTE[1], lw=1.4))
+    ax.text(0.04, 0.25, "eye height\n(worst case)", color=PALETTE[1], fontsize=8, va="center",
+            bbox=dict(facecolor="white", edgecolor="none", alpha=0.85, pad=1))
+    ax.annotate("", xy=(-0.42, 0.0), xytext=(0.42, 0.0), arrowprops=dict(arrowstyle="<->", color=PALETTE[2], lw=1.2))
+    ax.text(-0.38, -0.16, "eye width at the threshold", color=PALETTE[2], fontsize=8,
+            bbox=dict(facecolor="white", edgecolor="none", alpha=0.85, pad=1))
+    for xc in (-0.5, 0.5):
+        ax.axvline(xc, color="0.6", ls=":", lw=0.8)
+    ax.text(-0.98, 1.08, "crossings spread by ISI and jitter", fontsize=8, color="0.3")
+    ax.set_xlim(-1, 1)
+    ax.set_ylim(-1.25, 1.25)
+    ax.set_xlabel("time relative to the sampling instant (UI)")
+    ax.set_ylabel("received signal (fraction of the ±1 swing)")
+    ax.grid(True, alpha=0.3)
+    save(fig, f"{OUT}/eye-anatomy.svg")
 
 
 def bathtub() -> None:
@@ -94,5 +130,6 @@ def stat_eye() -> None:
 
 
 if __name__ == "__main__":
+    eye_anatomy()
     bathtub()
     stat_eye()

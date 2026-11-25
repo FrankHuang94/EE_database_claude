@@ -23,7 +23,7 @@
 24-01 described what a channel does to a signal in the frequency domain. A receiver, though, makes a decision once per symbol, at one instant, against one threshold. Whether it decides correctly depends on how far the signal is from the threshold at that instant (the vertical margin) and how close the instant is to a symbol boundary (the horizontal, or timing, margin). The **eye diagram** shows both at once, and **jitter** and **noise** eat into them from the two directions. Link specifications are, in the end, statements about the probability that one of them wins: the **bit error rate** (BER).
 
 - **Specifications:** PCIe 1.0 to 5.0 required a BER of 10⁻¹²; PCIe 6.0 and 7.0, with PAM4 and forward error correction, target a first-bit-error rate of 10⁻⁶ before correction; 200 Gb/s Ethernet lanes budget detector error ratios of about 10⁻⁴ [6], [7].
-- **Clocking:** a reference clock's jitter budget has shrunk from 86 ps rms for PCIe 1.1 to 67 fs for PCIe 7.0 [3], [4].
+- **Clocking:** a reference clock's jitter budget has shrunk from tens of picoseconds for PCIe 1.1 to 67 fs rms for PCIe 7.0 [3], [4].
 - **Test and qualification:** proving a BER of 10⁻¹² takes minutes of error-free data at 32 Gb/s; proving 10⁻¹⁵ takes a day, so test engineers extrapolate.
 - **Products:** the same analysis sets the timing margin of DDR interfaces (23-04), camera and display links in phones and cars, and the optical modules of 24-08.
 
@@ -35,6 +35,10 @@ Two kinds of disturbance shape the eye, and they behave differently:
 
 - **Bounded** disturbances, such as ISI, duty-cycle distortion and crosstalk from a finite set of aggressors, have a worst case. Add up the worst case and you know the eye can never close further.
 - **Unbounded** disturbances, such as thermal noise and random jitter, are Gaussian. Their worst case is infinite; you can only ask how often they exceed a margin. That is why every eye has to be quoted at a BER.
+
+![An NRZ eye built from random bits through a two-pole channel, with the worst-case eye height, the eye width at the threshold and the spread crossings labelled](../../../assets/figures/24-02/eye-anatomy.svg)
+
+*Figure 0. An eye diagram: two-UI slices of a random NRZ waveform through the two-pole channel of §3.1 (τ = 0.4 UI), with a little timing jitter. ISI splits the 1 and 0 levels into bands, narrowing the eye vertically; jitter and ISI spread the crossings, narrowing it horizontally.*
 
 **Analogy and its limits.** A credit analyst separates a portfolio's losses into known exposures (bounded, add them up) and market noise (Gaussian, quoted at a confidence level such as a 99% value-at-risk). Total jitter at a BER is the same idea: a deterministic part plus a multiple of the Gaussian sigma. Where it breaks down: real tails are not exactly Gaussian, and a single "bad" pattern or burst can dominate, which is why SI engineers, unlike VaR models in 2008, are expected to check their tail assumptions against measurements.
 
@@ -60,7 +64,7 @@ $$
 E_{PAM\text{-}M} = \frac{h_0}{M - 1} - \sum_{k\ne0}\lvert h_k\rvert .
 $$
 
-For PAM4 the signal shrinks to a third but the ISI does not: the same channel at the same symbol rate opens a PAM4 eye far smaller than an NRZ eye, and can close it entirely (Example 24-01.2's channel, Example 24-02.2).
+For PAM4 the signal shrinks to a third but the ISI does not: the same channel at the same symbol rate opens a PAM4 eye far smaller than an NRZ eye, and can close it entirely (Example 24-02.2).
 
 **A two-pole channel.** A channel with two equal real poles at time constant τ has the step response $s(t) = 1 - (1 + t/\tau)e^{-t/\tau}$ (07-03). A one-UI pulse produces $p(t) = s(t) - s(t - UI)$. Sampling at its peak and at whole UIs either side gives the cursors. With τ = 0.4 UI, $h_0$ = 0.734, $h_1$ = 0.211 and $h_{-1}$ = 0.022: a strong first post-cursor, the signature of a low-pass channel, and a small pre-cursor (Example 24-02.2). The lab confirms these cursors in ngspice.
 
@@ -103,19 +107,19 @@ Deterministic jitter (DJ) is the bounded part: DDJ, PJ and BUJ. **Total jitter**
 
 ### 3.5 The dual-Dirac model and total jitter at a BER
 
-Instruments and standards fit measured jitter with the **dual-Dirac model**: the deterministic part is replaced by two Dirac deltas separated by $DJ(\delta\delta)$, and each is smeared by the random part's Gaussian of rms $\sigma = RJ$. Far out in the tails, which is all that matters at 10⁻¹², only the outer Dirac's Gaussian contributes, so the probability that a transition lies more than $x$ beyond the eye's ideal crossing is approximately $Q((x - DJ/2)/\sigma)$.
+Instruments and standards fit measured jitter with the **dual-Dirac model**: the deterministic part is replaced by two Dirac deltas separated by $DJ(\delta\delta)$, and each is smeared by the random part's Gaussian of rms $\sigma = RJ$. Far out in the tails, which is all that matters at 10⁻¹², only the outer Dirac's Gaussian contributes, so the probability that a transition lies more than $x$ beyond the eye's ideal crossing is approximately $\tfrac12Q((x - DJ/2)/\sigma)$: each Dirac carries half the transitions. The conventions below absorb the ½ into how the BER is normalized.
 
-Setting that probability on each side equal to the BER, the eye closes by $DJ/2 + Q(\text{BER})\,\sigma$ from each side, and the total jitter at that BER is
+Setting that probability on each side equal to the BER, the eye closes by $DJ/2 + Q^{-1}(\text{BER})\,\sigma$ from each side, and the total jitter at that BER is
 
 $$
-TJ(\text{BER}) = 2Q(\text{BER})\cdot RJ + DJ(\delta\delta) .
+TJ(\text{BER}) = 2Q^{-1}(\text{BER})\cdot RJ + DJ(\delta\delta) .
 $$
 
-At BER = 10⁻¹², $2Q$ = 14.07, the multiplier Teledyne LeCroy quotes [1]. The eye width at that BER is $UI - TJ$.
+At BER = 10⁻¹², $2Q^{-1}$ = 14.07, the multiplier Teledyne LeCroy quotes [1]. The eye width at that BER is $UI - TJ$.
 
 Three cautions apply:
 
-- **$DJ(\delta\delta)$ is a fitted parameter, not a peak-to-peak measurement.** A real DJ distribution (say, sinusoidal PJ) has most of its mass inside its extremes, so the dual-Dirac fit to the tails gives a smaller separation than the peak-to-peak DJ: "Dj(δδ) is not a 'peak-to-peak' or 'full scale' measure" [1].
+- **$DJ(\delta\delta)$ is a fitted parameter, not a peak-to-peak measurement.** A real DJ distribution (say, sinusoidal PJ, whose density peaks at its extremes but spreads mass inward) makes the combined tail rise more gradually than two Diracs would, so the fit trades DJ for σ and gives a smaller separation than the peak-to-peak DJ: "Dj(δδ) is not a 'peak-to-peak' or 'full scale' measure" [1].
 - **Conventions differ slightly.** The multiplier 14.07 sets the one-sided Gaussian tail $Q(x)$ equal to the BER. Keysight's white paper reaches the same value by writing $\text{BER} = \rho_T\,\text{erfc}(Q/\sqrt2)$ with a transition density $\rho_T$ = ½ (only about half of all bits have a transition) [2]. With $\rho_T$ = 1 the same formula gives 14.26, and setting $\tfrac12Q(x)$ equal to the BER gives 13.87. The spread is small because $Q$ is so steep, but an instrument or specification must state which it uses (Example 24-02.1).
 - **Extrapolation assumes Gaussian tails.** If the tail is not Gaussian, for example from rare crosstalk alignments, the dual-Dirac extrapolation can be badly optimistic.
 
@@ -153,7 +157,7 @@ Above $f_c$ the tolerance flattens at $M$: the CDR cannot follow, and the eye's 
 
 **Jitter transfer** is the opposite concern for a device that passes a clock on (a retimer, a PLL): its $H(f)$ must not amplify jitter, so standards limit its peaking.
 
-**Reference clocks.** In PCIe's common-clock architecture, transmitter and receiver share one reference clock, and much of its low-frequency jitter cancels; standards specify the reference clock's jitter after weighting functions that model the PLLs and CDR at each end. The limit has fallen with every generation: 86 ps rms (PCIe 1.1), 3.1 ps (2.1), 1.0 ps (3.1), 0.5 ps (4.0), 0.15 ps (5.0), 0.1 ps (6.0) and 67 fs (7.0) [3], [4]. In UI terms the limit fell from 0.215 UI for PCIe 1.1 to between 0.003 and 0.008 UI from PCIe 3.0 on: since then it has tightened in step with the UI. Phase-noise integration (20-10) turns an oscillator's phase-noise plot into these numbers (Example 24-02.8).
+**Reference clocks.** In PCIe's common-clock architecture, transmitter and receiver share one reference clock, and much of its low-frequency jitter cancels; standards specify the reference clock's jitter after weighting functions that model the PLLs and CDR at each end. The limit has fallen with every generation: 86 ps for PCIe 1.1 [Contested: TI's table labels it rms; other vendor documents, seen only in search excerpts, label it peak-to-peak], then 3.1 ps (2.1), 1.0 ps (3.1), 0.5 ps (4.0), 0.15 ps (5.0), 0.1 ps (6.0) and 67 fs (7.0) rms [3], [4]. In UI terms the limit has sat between 0.003 and 0.008 UI from PCIe 3.0 on, tightening faster than the UI. Phase-noise integration (20-10) turns an oscillator's phase-noise plot into these numbers (Example 24-02.8).
 
 ### 3.8 BER targets, FEC and test time
 
@@ -177,11 +181,11 @@ must be at least 3 dB [5]. COM combines loss, reflections, crosstalk, jitter and
 
 ### Example 24-02.1 · The Q multiplier (tier A)
 
-**Setup.** Find $Q^{-1}$ and the dual-Dirac multiplier $2Q$ at BERs of (a) 10⁻⁶, (b) 10⁻⁹, (c) 10⁻¹² and (d) 10⁻¹⁵. What multiplier results at 10⁻¹² under the other conventions of §3.5: (e) $\tfrac12Q(x) = 10^{-12}$ and (f) Keysight's formula with $\rho_T$ = 1, which gives $2Q(x) = 10^{-12}$?
+**Setup.** Find $Q^{-1}$ and the dual-Dirac multiplier $2Q^{-1}$ at BERs of (a) 10⁻⁶, (b) 10⁻⁹, (c) 10⁻¹² and (d) 10⁻¹⁵. What multiplier results at 10⁻¹² under the other conventions of §3.5: (e) $\tfrac12Q(x) = 10^{-12}$ and (f) Keysight's formula with $\rho_T$ = 1, which gives $2Q(x) = 10^{-12}$?
 
 **Solution.**
 
-- (a) $Q^{-1}(10^{-6})$ = **4.753**; $2Q$ = **9.507**.
+- (a) $Q^{-1}(10^{-6})$ = **4.753**; $2Q^{-1}$ = **9.507**.
 - (b) **5.998**; **11.996**.
 - (c) **7.034**; **14.07**.
 - (d) **7.941**; **15.88**.
@@ -264,6 +268,8 @@ must be at least 3 dB [5]. COM combines loss, reflections, crosstalk, jitter and
 - (c) $14.07 \times 0.3536 + 6.5$ = **11.47** ps.
 - (d) $11.47/31.25$ = **0.367** UI.
 
+The peak-to-peak sum in (b) stands in for DJ(δδ); since §3.5 shows the fitted DJ(δδ) is smaller than a peak-to-peak sum, this budget is a conservative upper bound.
+
 **Units check.** ps throughout. ✓
 
 **Sanity check.** Root-sum-squaring the random terms is exact for independent Gaussians; summing the deterministic terms linearly is conservative, because their worst cases rarely coincide. Here the deterministic part is the larger share, and most of it is residual ISI, which better equalization would remove.
@@ -303,13 +309,13 @@ must be at least 3 dB [5]. COM combines loss, reflections, crosstalk, jitter and
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
 | Ex 24-02.1a | inverse Q at 1e-6 | 4.753 | |
-| Ex 24-02.1a1 | 2Q at 1e-6 | 9.507 | |
+| Ex 24-02.1a1 | 2Q^-1 at 1e-6 | 9.507 | |
 | Ex 24-02.1b | inverse Q at 1e-9 | 5.998 | |
-| Ex 24-02.1b1 | 2Q at 1e-9 | 11.996 | |
+| Ex 24-02.1b1 | 2Q^-1 at 1e-9 | 11.996 | |
 | Ex 24-02.1c | inverse Q at 1e-12 | 7.034 | |
-| Ex 24-02.1c1 | 2Q at 1e-12 | 14.07 | |
+| Ex 24-02.1c1 | 2Q^-1 at 1e-12 | 14.07 | |
 | Ex 24-02.1d | inverse Q at 1e-15 | 7.941 | |
-| Ex 24-02.1d1 | 2Q at 1e-15 | 15.88 | |
+| Ex 24-02.1d1 | 2Q^-1 at 1e-15 | 15.88 | |
 | Ex 24-02.1e | multiplier with half-weighted tail | 13.87 | |
 | Ex 24-02.1f | multiplier with transition density 1 | 14.26 | |
 | Ex 24-02.2a | pulse peak time | 1.0894 | UI |
@@ -377,7 +383,6 @@ must be at least 3 dB [5]. COM combines loss, reflections, crosstalk, jitter and
 | Txt 24-02.g | pre-cursor, 2 s.f. | 0.022 | |
 | Txt 24-02.h | margin drop taking 1e-12 to 1e-6 | 1.5 | |
 | Txt 24-02.i | 802.3dj combined AUI DER | 2.67e-5 | |
-| Txt 24-02.j | PCIe 1.1 refclk limit in UI | 0.215 | UI |
 | Txt 24-02.k | smallest refclk limit in UI since PCIe 3.0 | 0.003 | UI |
 | Txt 24-02.l | largest refclk limit in UI since PCIe 3.0 | 0.008 | UI |
 | Txt 24-02.m | SNR worth of moving from 1e-12 to 1e-6 | 3.4 | dB |
@@ -448,7 +453,7 @@ The lab is [labs/24-02-lab/](../labs/24-02-lab/README.md). `eye.py` builds pulse
 - *Reference receivers* [Established, as task-force configuration files]. The 802.3ck COM configuration (draft 3.1, 2021) used a 12-tap DFE with floating taps for 100 Gb/s backplanes; the 802.3dj configuration (draft 2.3, Jan 2026) uses a feed-forward equalizer with 6 pre-cursor and 8 post-cursor taps plus floating groups, a 1-tap DFE, MLSE and 6-bit ADC quantization, with COM ≥ 3 dB and random jitter of 0.01 UI [5].
 - *Reference clocks* [Established as vendor statements of the PCI-SIG limits]. Clock and test-equipment vendors report PCIe common-clock limits of 0.15 ps (5.0), 0.1 ps (6.0) and 67 fs rms (7.0), the last after 16 weighting transfer functions [3], [4].
 
-**Why it matters commercially.** Clock generators, retimers, BER testers and real-time oscilloscopes are sold on these numbers. A reference clock with 30 fs of headroom against PCIe 7.0's 67 fs commands a premium; a scope whose jitter decomposition disagrees with another's at the dual-Dirac fit can fail a product at qualification. For an M&A or investment analysis of the SI and test-equipment niche, the key driver is that each generation halves the UI while jitter components shrink more slowly, so test complexity and the value of better instruments rise.
+**Why it matters commercially.** Clock generators, retimers, BER testers and real-time oscilloscopes are sold on these numbers. A reference clock with 30 fs of headroom against PCIe 7.0's 67 fs is a selling point (the author's assessment); a scope whose jitter decomposition disagrees with another's at the dual-Dirac fit can fail a product at qualification. For an M&A or investment analysis of the SI and test-equipment niche, the key driver is that each generation halves the UI while jitter components shrink more slowly, so test complexity and the value of better instruments rise.
 
 **Marketing vs Reality.**
 

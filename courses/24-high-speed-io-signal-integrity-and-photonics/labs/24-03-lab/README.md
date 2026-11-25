@@ -59,7 +59,7 @@
 
    <details><summary>Answer</summary>
 
-   The update's average is proportional to the correlation between the error and the previous decision. That correlation is zero only when no ISI from the previous symbol remains in the sample, which is when the tap equals $h_1$. Noise and other cursors are uncorrelated with the previous decision, so they do not bias the result, though they make it dither.
+   Sign-sign LMS stops moving when $E[\text{sgn}(e_n)\,\text{sgn}(\hat a_{n-1})] = 0$. When the noise and the other cursors' ISI are symmetric about zero, that happens when no ISI from the previous symbol remains in the sample, which is when the tap equals $h_1$. (Plain LMS, which multiplies the error itself, is driven by the correlation directly.) The noise and other cursors, uncorrelated with the previous decision, make the tap dither; for symmetric distributions they do not bias it.
 
    </details>
 

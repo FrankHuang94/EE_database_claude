@@ -62,25 +62,29 @@ $$
 f_{clk} = \frac{f_{baud}}{N}, \qquad \text{phase spacing} = \frac{360°}{N} = 1\ \text{UI} .
 $$
 
-A phase error between clock phases therefore becomes a timing error of the samples they take: at quarter rate, 1° of quadrature error is UI/90 (Example 24-03.1). This deterministic error is part of the DJ budgets of 24-02. ADC-based receivers interleave much further: a 64-way time-interleaved ADC has 64 sub-ADCs, each sampling at $f_{baud}/64$ [1], [R-235].
+A phase error between clock phases therefore becomes a timing error of the samples they take: at quarter rate, 1° of quadrature error is UI/90 (Example 24-03.1). This deterministic error is part of the DJ budgets of 24-02. ADC-based receivers interleave much further: a 64-way time-interleaved ADC has 64 sub-ADCs, each sampling at $f_{baud}/64$ [R-235].
 
 ### 3.2 The driver: current mode against voltage mode
 
 Two driver styles dominate.
 
-A **current-mode logic** (CML) driver (12-01) steers a tail current $I$ to one side of a differential pair whose drains have 50 Ω pull-up resistors. For the differential signal, each output sees its 50 Ω pull-up in parallel with the 50 Ω line, 25 Ω in all. Steering $I$ fully to one side gives a differential current of $\pm I/2$ per side, so each side moves by $\pm 25I/2$ and the differential voltage swings between $+25I$ and $-25I$:
+A **current-mode logic** (CML) driver (12-01; Figure 1(b)) steers a tail current $I$ to one side of a differential pair whose drains have 50 Ω pull-up resistors. For the differential signal, each output sees its 50 Ω pull-up in parallel with the 50 Ω line, 25 Ω in all. Steering $I$ fully to one side gives a differential current of $\pm I/2$ per side, so each side moves by $\pm 25I/2$ and the differential voltage swings between $+25I$ and $-25I$:
 
 $$
 V_{pp,diff} = 50\ \Omega \times I, \qquad P_{CML} = V_{DD}\,I = \frac{V_{DD}V_{pp,diff}}{50\ \Omega} .
 $$
 
-A **voltage-mode** or **source-series-terminated** (SST) driver connects each output to a supply $V_{reg}$ or to ground through a switch whose on-resistance plus series resistor makes 50 Ω. The current path runs from $V_{reg}$ through 50 Ω, the line, the receiver's 100 Ω differential termination, the other line and 50 Ω to ground: 200 Ω in all. The current is $V_{reg}/200\ \Omega$ and the termination sees $\pm V_{reg}/2$, so
+A **voltage-mode** or **source-series-terminated** (SST) driver (Figure 1(c)) connects each output to a supply $V_{reg}$ or to ground through a switch whose on-resistance plus series resistor makes 50 Ω. The current path runs from $V_{reg}$ through 50 Ω, the line, the receiver's 100 Ω differential termination, the other line and 50 Ω to ground: 200 Ω in all. The current is $V_{reg}/200\ \Omega$ and the termination sees $\pm V_{reg}/2$, so
 
 $$
 V_{pp,diff} = V_{reg}, \qquad P_{SST} = \frac{V_{reg}^2}{200\ \Omega} .
 $$
 
 Supplying $V_{reg}$ from $V_{DD}$ through a linear regulator costs $V_{DD}\times V_{reg}/200\ \Omega$, exactly a quarter of the CML driver's power for the same swing. The CML driver wastes power because half its current flows in its own termination and because the tail current flows whether or not the line needs it. Voltage-mode drivers took over at lower rates for this reason. At 100 Gb/s and above, the DAC-based drivers needed for fine FFE taps and PAM4 linearity have brought current-steering structures back in some designs [1]; the choice depends on the required linearity, swing and supply.
+
+![Schematics: the CTLE's differential half-circuit with R_D load and R_S/2 in parallel with 2C_S at the source; a CML driver steering a tail current between two 50-ohm pull-ups; one side of an SST driver switching a 50-ohm segment between the regulated supply and ground into a 50-ohm termination](../../../assets/figures/24-03/ctle-and-drivers.svg)
+
+*Figure 1. (a) The CTLE's differential half-circuit (§3.4). (b) A CML driver: the tail current $I$ is steered to one 50 Ω pull-up, so half of it flows in the driver's own termination. (c) One side of an SST driver: the output switches between $V_{reg}$ and ground through a segment of about 50 Ω into the line's 50 Ω termination.*
 
 ### 3.3 Transmitter feed-forward equalization
 
@@ -114,11 +118,11 @@ c_{-1}h_2 + c_0h_1 + c_1h_0 &= 0 , \\
 \end{aligned}
 $$
 
-the last written for negative outer taps. Its weakness is visible in the result: the main cursor $g_0$ falls well below the unequalized $h_0$, because most of the swing is spent cancelling ISI (Example 24-03.3). A transmitter FFE never amplifies noise, since it acts before the noise is added, but it shrinks the signal, which for a noise-limited link is equivalent.
+the last written for negative outer taps. Its weakness is visible in the result: the main cursor $g_0$ falls well below the unequalized $h_0$, because about a quarter of the swing is spent cancelling ISI (Example 24-03.3). A transmitter FFE never amplifies noise, since it acts before the noise is added, but it shrinks the signal, which for a noise-limited link is equivalent.
 
 ### 3.4 The continuous-time linear equalizer
 
-The standard CTLE is a differential pair with **source degeneration**: a resistor $R_S$ and a capacitor $C_S$ in parallel between the two sources (Figure 1). In the differential half-circuit the source sees $R_S/2$ in parallel with $2C_S$ to ground:
+The standard CTLE is a differential pair with **source degeneration**: a resistor $R_S$ and a capacitor $C_S$ in parallel between the two sources (Figure 1(a) shows its half-circuit). In the differential half-circuit the source sees $R_S/2$ in parallel with $2C_S$ to ground:
 
 $$
 Z_S(s) = \frac{R_S/2}{1 + sR_SC_S} .
@@ -192,7 +196,7 @@ which needs only an error slicer (a comparator at the expected level $h_0$) and 
 
 The receiver has no clock wire, so it recovers timing from the data's transitions (24-02 §3.7). Two families exist: a **PLL-based CDR** steers a dedicated oscillator, and a **phase-interpolator** (PI) CDR mixes the phases of a shared PLL's clocks to produce any phase under digital control, so many lanes can share one PLL.
 
-**The bang-bang phase detector.** Most CDRs sample each transition's midpoint with an extra "edge" slicer. If the edge sample equals the previous data bit, the clock is late; if it equals the next bit, early. This **bang-bang** (Alexander) detector outputs only the sign of the phase error, but random jitter linearizes it. With Gaussian jitter of rms σ (in UI) and a phase error φ, the average output at a transition is
+**The bang-bang phase detector.** Most CDRs sample each transition's midpoint with an extra "edge" slicer. If the edge sample equals the previous data bit, the edge was sampled before the transition, so the clock is early; if it equals the next bit, the clock is late. This **bang-bang** (Alexander) detector outputs only the sign of the phase error, but random jitter linearizes it. With Gaussian jitter of rms σ (in UI) and a phase error φ, the average output at a transition is
 
 $$
 E[\text{sgn}(\varphi + n)] = 1 - 2Q\!\left(\frac{\varphi}{\sigma}\right) \approx \sqrt{\frac{2}{\pi}}\,\frac{\varphi}{\sigma} \quad (\lvert\varphi\rvert \ll \sigma) .
@@ -200,7 +204,7 @@ $$
 
 So its gain is about $0.80/\sigma$ per UI, inversely proportional to the jitter, and it saturates at ±1 once the error exceeds a few σ. The CDR's bandwidth therefore depends on the incoming jitter: halve the jitter and the bandwidth doubles. This is one reason a measured jitter tolerance differs from a linear model's prediction.
 
-**Frequency offset and loop order.** The transmitter's and receiver's reference clocks never agree exactly. An offset of Δ parts per million makes the data phase drift at $\Delta \times f_{baud}$ UI per second. A first-order loop, with $d\varphi_c/dt = 2\pi f_c(\varphi_d - \varphi_c)$, follows a ramp only with a lag. In steady state $d\varphi_c/dt$ equals the drift, so
+**Frequency offset and loop order.** The transmitter's and receiver's reference clocks never agree exactly. A fractional frequency offset Δ (100 ppm is Δ = 10⁻⁴) makes the data phase drift at $\Delta \times f_{baud}$ UI per second. A first-order loop, with $d\varphi_c/dt = 2\pi f_c(\varphi_d - \varphi_c)$, follows a ramp only with a lag. In steady state $d\varphi_c/dt$ equals the drift, so
 
 $$
 \varphi_d - \varphi_c = \frac{\Delta\,f_{baud}}{2\pi f_c}\ \text{UI} .
@@ -218,7 +222,7 @@ A SerDes's efficiency is quoted as power divided by bit rate, in pJ/b: 1 pJ/b at
 - **At what loss?** Energy per bit rises steeply with the loss to be equalized. A short-reach link needs a fraction of the energy of a long-reach one.
 - **Per lane, one direction.** The figure covers a transmitter and receiver pair per lane at the line rate, not the sum of both directions.
 
-Where does the power go? The driver itself is small (§3.2 and Example 24-03.2). Most is in clock generation and distribution, the AFE and the ADC, and, for DSP receivers, the digital equalizer. Long-reach designs have gone from 4.5–6 pJ/b at 112 Gb/s in 2021–22 to about 2–3 pJ/b of analog power at 212–224 Gb/s in 2024–26, while doubling the rate and keeping the equalized loss at 40–55 dB [1], [2], [3]. Process scaling, from 7 and 5 nm to 3 nm, paid for much of that.
+Where does the power go? The driver itself is small (§3.2 and Example 24-03.2). Most is in clock generation and distribution, the AFE and the ADC, and, for DSP receivers, the digital equalizer. Long-reach designs have gone from 4.5–6 pJ/b at 112 Gb/s in 2021–22 to about 2–3 pJ/b of analog power at 212–224 Gb/s in 2024–26, while doubling the rate and keeping the equalized loss at 40–55 dB [1], [2], [3]. Process scaling, from 7 and 5 nm to 3 nm, plausibly paid for much of that (the author's inference; the papers do not separate the causes).
 
 ### 3.9 NRZ or PAM4, revisited
 
@@ -234,7 +238,7 @@ $$
 L > \frac{9.54\ \text{dB}}{\alpha(\sqrt2 - 1) + 1 - \alpha} .
 $$
 
-The break-even loss runs from 9.54 dB for a purely dielectric channel to 23.0 dB for a purely conductor-limited one. Every 100 and 200 Gb/s electrical standard has channels far beyond this, which is why all use PAM4 [R-234]. The heuristic ignores PAM4's other costs, which this chapter has met one by one: a third of the eye for the same noise, three thresholds to keep aligned, a 12-comparator unrolled DFE tap, and the linearity that pushes the transmitter toward a DAC and the receiver toward an ADC.
+The break-even loss runs from 9.54 dB for a purely dielectric channel to 23.0 dB for a purely conductor-limited one. Every 100 and 200 Gb/s electrical standard has channels far beyond this, which is why all use PAM4 [R-234]. The heuristic ignores PAM4's other costs, which this chapter has met one by one: residual ISI that does not shrink with the eye (24-02 §3.1), three thresholds to keep aligned, a 12-comparator unrolled DFE tap, and the linearity that pushes the transmitter toward a DAC and the receiver toward an ADC.
 
 > **Going deeper — why "loss at Nyquist" is a proxy.** After ideal equalization the eye is limited by the noise the equalizer amplifies, and for a linear equalizer that enhancement grows roughly with the loss it removes. The loss at the Nyquist frequency is a convenient single number for that, but the full answer depends on the whole channel response, which is why standards qualify channels with COM (24-02 §3.9) rather than loss alone.
 
@@ -316,7 +320,7 @@ The break-even loss runs from 9.54 dB for a purely dielectric channel to 23.0 dB
 
 **Units check.** ps throughout. ✓
 
-**Sanity check.** Unrolling trades the summer's analog settling for a digital multiplexer, at the cost of doubling (NRZ) or multiplying by 12 (PAM4) the slicers and their clock load. Unrolling a second tap would square the factor, which is why analog DFEs unroll only the first tap.
+**Sanity check.** Unrolling trades the summer's analog settling for a digital multiplexer, at the cost of doubling (NRZ, 1 → 2) or quadrupling (PAM4, 3 → 12) the slicers and their clock load. Unrolling a second tap multiplies the count by $M$ again (NRZ 4, PAM4 48), which is why analog DFEs unroll only the first tap.
 
 ### Example 24-03.6 · Error propagation in a DFE (tier C)
 
@@ -330,7 +334,7 @@ The break-even loss runs from 9.54 dB for a purely dielectric channel to 23.0 dB
 
 **Units check.** Q's argument is a ratio of voltages. ✓
 
-**Sanity check.** A large first post-cursor turns a quarter of all errors into longer bursts; a small one hardly matters. FEC analyses for 200 Gb/s links assume burst-continuation probabilities as high as 0.75 [R-067], which corresponds to a DFE tap larger than $h_0/2$ or to error propagation through several taps.
+**Sanity check.** A large first post-cursor turns a quarter of all errors into longer bursts; a small one hardly matters. FEC analyses for 200 Gb/s links assume burst-continuation probabilities as high as 0.75 [R-067]. That is the PAM4 limit for a first tap above $h_0/2$: after an error, inner symbols (half of all symbols) always err and outer ones half the time, $\tfrac12 + \tfrac14$. In NRZ a single tap cannot push the probability above 0.5.
 
 ### Example 24-03.7 · A CDR against frequency offset (tier B)
 
@@ -350,14 +354,14 @@ The break-even loss runs from 9.54 dB for a purely dielectric channel to 23.0 dB
 
 ### Example 24-03.8 · Energy per bit at system scale (tier B)
 
-**Setup.** (a) What does one 224 Gb/s lane at 3 pJ/b of analog power dissipate? (b) Marvell's 128 Gb/s transceiver spends 1.89 pJ/b analog and 4.1 pJ/b in total [2]; what multiple of analog power is the total? (c) A switch chip has 51.2 Tb/s of SerDes bandwidth. What is its SerDes power at 3 pJ/b and at 4.5 pJ/b? (d) Compare per-lane power at 112.5 Gb/s and 4.5 pJ/b with 212.5 Gb/s and 2.05 pJ/b [2].
+**Setup.** (a) What does one 224 Gb/s lane at 3 pJ/b of analog power dissipate? (b) Marvell's 128 Gb/s transceiver spends 1.89 pJ/b analog and 4.1 pJ/b in total [2]; what multiple of analog power is the total? (c) A switch chip has 51.2 Tb/s of SerDes bandwidth. What is its SerDes power at 3 pJ/b and at 4.5 pJ/b? (d) Compare per-lane power at 112.5 Gb/s and 4.5 pJ/b [3] with 212.5 Gb/s and 2.05 pJ/b of analog power [2].
 
 **Solution.**
 
 - (a) $224 \times 10^9 \times 3 \times 10^{-12}$ = **0.672** W.
 - (b) $4.1/1.89$ = **2.2** times.
 - (c) $51.2 \times 10^{12} \times 3 \times 10^{-12}$ = **154** W; at 4.5 pJ/b, **230** W.
-- (d) **0.506** W and **0.436** W: nearly twice the rate for less power per lane.
+- (d) **0.506** W and **0.436** W. The comparison is indicative only: the 4.5 pJ/b figure's boundary is not stated in its abstract, while 2.05 pJ/b is analog only. At (b)'s total-to-analog ratio the newer lane would draw about **0.95** W in total.
 
 **Units check.** b/s × J/b = W. ✓
 
@@ -440,6 +444,7 @@ The break-even loss runs from 9.54 dB for a purely dielectric channel to 23.0 dB
 | Ex 24-03.8c1 | switch SerDes power at 4.5 pJ/b | 230 | W |
 | Ex 24-03.8d | lane power at 112.5 Gb/s | 0.506 | W |
 | Ex 24-03.8d1 | lane power at 212.5 Gb/s | 0.436 | W |
+| Ex 24-03.8d2 | lane total at the (b) ratio | 0.95 | W |
 | Ex 24-03.8e | power per 0.1 pJ/b at 51.2 Tb/s | 5 | W |
 | Txt 24-03.a | CML-to-SST power ratio | 4 | |
 | Txt 24-03.b | bang-bang gain coefficient | 0.80 | |
@@ -455,11 +460,11 @@ The lab is [labs/24-03-lab/](../labs/24-03-lab/README.md). `ctle.cir` is the sma
 
 ![Magnitude response of the source-degenerated CTLE of Example 24-03.4, with and without the output pole, and the ideal peaking](../../../assets/figures/24-03/ctle.svg)
 
-*Figure 1. The CTLE of Example 24-03.4. Without the output pole (dashed) the gain rises from 0.8 at DC to 4 above 10 GHz, 14 dB of peaking; the 40 fF load's pole at 19.9 GHz (solid) cuts the peak to 10.5 dB of boost at 13.8 GHz.*
+*Figure 2. The CTLE of Example 24-03.4. Without the output pole (dashed) the gain rises from 0.8 at DC and approaches 4 well above 10 GHz, 14 dB of peaking; the 40 fF load's pole at 19.9 GHz (solid) cuts the peak to 10.5 dB of boost at 13.8 GHz.*
 
 ![Pulse response cursors of the 24-02 channel before equalization, after the three-tap transmitter FFE and after a two-tap DFE](../../../assets/figures/24-03/equalized-cursors.svg)
 
-*Figure 2. Cursors of 24-02's channel (left), after the zero-forcing three-tap FFE (centre) and after a two-tap DFE (right). The FFE cancels the first pre- and post-cursor but lowers the main cursor; the DFE keeps it.*
+*Figure 3. Cursors of 24-02's channel (left), after the zero-forcing three-tap FFE (centre) and after a two-tap DFE (right). The FFE cancels the first pre- and post-cursor but lowers the main cursor; the DFE keeps it.*
 
 **Predict, then run:**
 
@@ -489,7 +494,7 @@ The lab is [labs/24-03-lab/](../labs/24-03-lab/README.md). `ctle.cir` is the sma
 | Comparators per unrolled DFE tap | NRZ 2; PAM4 12 | §3.5 |
 | Bang-bang detector gain | about 0.8/σ per UI | §3.7 |
 | PAM4 break-even loss at its Nyquist frequency | 9.5–23 dB (dielectric to conductor) | §3.9 |
-| Long-reach SerDes, 2021–22 | 112 Gb/s, >40–50 dB, 4.5–6 pJ/b (mostly total) | [3] |
+| Long-reach SerDes, 2021–22 | 112 Gb/s, >40–50 dB, 4.5–6 pJ/b (boundary not stated in the abstracts) | [3] |
 | Long-reach SerDes, 2024–26 | 212–224 Gb/s, 40–55 dB, about 2–3 pJ/b analog | [1], [2] |
 | DSP's share of a DSP SerDes | about half (4.1 against 1.89 pJ/b at 128 Gb/s) | [2] |
 | Time-interleaved ADCs | 6–7 bits, 64- to 128-way | [1], [4], [R-235] |
@@ -510,9 +515,9 @@ The lab is [labs/24-03-lab/](../labs/24-03-lab/README.md). `ctle.cir` is the sma
 - *224 Gb/s, 3 nm (Synopsys).* ISSCC 2024 and JSSC 2025: 224 Gb/s, BER 10⁻⁶ over a 40 dB channel at 3 pJ/b of analog power. Its transmitter is a 7-bit current-mode DAC at 1/8 rate with 55 fs rms random jitter; its receiver an inverter-based AFE with 20 dB of peaking and a 7-bit time-interleaved ADC; a shared 14 GHz all-digital PLL clocks 4 lanes of 0.5 mm² each; the DSP combines MLSD and a DFE. A 2025 follow-up reports post-FEC error-free operation at 42 dB [1].
 - *212.5 Gb/s DSP transceivers (Marvell, MediaTek).* Marvell, ISSCC 2025, 5 nm: more than 46 dB at 2.2 pJ/b analog. Marvell, VLSI 2026, 3 nm: pre-FEC BER 2 × 10⁻⁷ at 54.7 dB bump-to-bump at 2.05 pJ/b analog per lane. MediaTek, ISSCC 2025, 4 nm: BER 2.5 × 10⁻⁶ beyond 50 dB, with an extended FFE, floating taps for reflections and MLSD. Marvell, VLSI 2025, 3 nm, 128 Gb/s for PCIe 7.0 rates: more than 45 dB at BER below 2 × 10⁻⁸, 1.89 pJ/b analog and 4.1 pJ/b total [2].
 - *2021–22 baselines.* 112 Gb/s ADC/DSP transceivers reached more than 41.5 dB (Inphi, 7 nm) and more than 50 dB at 4.5 pJ/b (Marvell, 5 nm); Huawei reported 45 dB at better than 6 pJ/b. Inphi's abstract notes that 8–10 dB of the budget is package loss [3].
-- *Architecture.* Marvell's 2024 optical-DSP transceiver uses a 4-way interleaved DAC with a linear driver and a 128-way interleaved ADC, at 2.69 pJ/b including a per-lane PLL; Intel's 3 nm design supports 40 dB with a hybrid CTLE and a one-stage transmitter [4], [R-235]. The common chain is TX FFE, CTLE, TI-ADC, long FFE with floating taps, one DFE tap or MLSD, then FEC, the same structure as 802.3dj's reference receiver (24-02 §3.9).
+- *Architecture.* Marvell's 2024 optical-DSP transceiver uses a 4-way interleaved DAC with a linear driver and a 128-way interleaved ADC, at 2.69 pJ/b of analog power including a per-lane PLL; Intel's 3 nm design supports 40 dB with a hybrid CTLE and a one-stage transmitter [4], [R-235]. The common chain is TX FFE, CTLE, TI-ADC, long FFE with floating taps, one DFE tap or MLSD, then FEC, the same structure as 802.3dj's reference receiver (24-02 §3.9).
 
-**Why it matters commercially.** SerDes is a make-or-license decision. Merchant switch and accelerator vendors with leading SerDes treat it as a moat; others license it from IP vendors, and the per-lane pJ/b and reach decide how many lanes fit a power envelope and whether copper reaches the next rack. When a company claims a SerDes advantage, its value depends on how long it lasts: each generation resets the race at twice the rate.
+**Why it matters commercially.** SerDes is a make-or-license decision. Merchant switch and accelerator vendors with leading SerDes tend to treat it as a moat (the author's assessment); others license it from IP vendors, and the per-lane pJ/b and reach decide how many lanes fit a power envelope and whether copper reaches the next rack. When a company claims a SerDes advantage, its value depends on how long it lasts: each generation resets the race at twice the rate.
 
 **Marketing vs Reality.**
 

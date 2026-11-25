@@ -90,7 +90,6 @@ for ident, rate, bits in (("a", 32e9, 1), ("b", 64e9, 2), ("c", 128e9, 2), ("d",
         v.check("Ex 24-01.1b1", baud / 2 / 1e9)
     if ident in "acd":
         v.check(f"Ex 24-01.1{ident}2", 1 / baud * 1e12)
-v.check("Txt 24-01.k", 212.5 / 4)
 
 # ---------------------------------------------------------------- Example 24-01.2
 f16, w5 = 16e9, 5 * MIL
@@ -340,5 +339,68 @@ v.check("Lab 24-01.f", kb * 0.4 * 1e3)
 v.check("Lab 24-01.g", 0.5 * td * (-0.02) * 0.4 * 1e12)
 v.check("Lab 24-01.h", 0.5 * td * (-0.02) * 0.4 / 60e-12 * 1e3)
 v.check("Lab 24-01.i", 2 * td * 1e12)
+
+# ---------------------------------------------------------------- stub loss below the notch (shunt open stub, ABCD)
+def stub_s21_db(f, f_notch, z0=50.0):
+    th = math.pi / 2 * f / f_notch
+    zs = -1j * z0 / math.tan(th)  # open stub input impedance
+    abcd = np.array([[1, 0], [1 / zs, 1]])
+    a, b, c_, d = abcd[0, 0], abcd[0, 1], abcd[1, 0], abcd[1, 1]
+    return 20 * math.log10(abs(2 / (a + b / z0 + c_ * z0 + d)))
+
+
+for key, r in (("u", 1.5), ("v", 2.0), ("w", 3.0)):
+    v.check(f"Txt 24-01.{key}", -stub_s21_db(1.0, r))
+fn16 = 299792458.0 / (4 * 1.6e-3 * math.sqrt(3.6))
+v.check("Txt 24-01.x", -stub_s21_db(16e9, fn16))
+g2 = 0.0811 ** 2
+lossless = 20 * math.log10((1 + g2) / (1 - g2))
+lossy = 20 * math.log10((1 + g2 * 10 ** (-30 / 10)) / (1 - g2 * 10 ** (-30 / 10)))  # A^2 = 10^(-30/10)
+v.check("Txt 24-01.y", lossless / lossy)
+
+# ---------------------------------------------------------------- Example 24-01.9: mixed-mode transformation of a skewed pair
+f9, dt9 = 53.125e9, 1e-12
+w9 = 2 * math.pi * f9
+S = np.zeros((4, 4), dtype=complex)  # ports 1..4 -> indices 0..3; line P: 1->2, line N: 3->4
+S[1, 0] = S[0, 1] = np.exp(-1j * w9 * 1e-9)
+S[3, 2] = S[2, 3] = np.exp(-1j * w9 * (1e-9 + dt9))
+M = np.array([[1, 0, -1, 0], [0, 1, 0, -1], [1, 0, 1, 0], [0, 1, 0, 1]]) / math.sqrt(2)  # rows: d1, d2, c1, c2
+Smm = M @ S @ np.linalg.inv(M)
+sdd21, scd21 = Smm[1, 0], Smm[3, 0]
+v.check("Ex 24-01.9b0", math.pi * f9 * dt9)
+v.check("Ex 24-01.9b", abs(sdd21))
+v.check("Ex 24-01.9b1", 20 * math.log10(abs(sdd21)))
+v.check("Ex 24-01.9b2", abs(scd21))
+v.check("Ex 24-01.9b3", 20 * math.log10(abs(scd21)))
+dt_10 = optimize.brentq(lambda t: abs(np.sin(math.pi * f9 * t)) - 10 ** -0.5, 1e-13, 2.5e-12, xtol=1e-18)
+v.check("Ex 24-01.9c", dt_10 * 1e12)
+ell = 299792458.0 * dt9 / math.sqrt(3.4)
+v.check("Ex 24-01.9d", ell * 1e3)
+v.check("Ex 24-01.9d1", ell / 25.4e-6)
+
+# ---------------------------------------------------------------- Problems 24-01.16 and 24-01.17
+kb16 = 0.25 * (0.04 + 0.06)
+v.check("24-01.16a0", kb16)
+
+
+def next_peak(ell, v_=1.5e8, tr=30e-12, va=1.0):
+    ramp_slope = lambda t: va / tr if 0 <= t <= tr else 0.0  # noqa: E731
+    ts = np.linspace(0, tr + 2 * ell / v_, 2001)
+    out = [kb16 * 2 / v_ * integrate.quad(lambda z: ramp_slope(t - 2 * z / v_), 0, ell, limit=200,
+                                              points=[max(0.0, min(ell, (t - tr) * v_ / 2)),
+                                                      max(0.0, min(ell, t * v_ / 2))])[0] for t in ts]
+    return max(out)
+
+
+for key, ell in (("a", 1e-3), ("b", 5e-3)):
+    v.check(f"24-01.16{key}0" if key == "b" else "24-01.16a1", 2 * ell / 1.5e8 * 1e12)
+    v.check(f"24-01.16{key}", next_peak(ell) * 1e3)
+dt17 = 3 * 25.4e-6 * math.sqrt(3.4) / 299792458.0
+v.check("24-01.17a", dt17 * 1e12)
+for key, f in (("b", 26.5625e9), ("c", 53.125e9)):
+    S = np.zeros((4, 4), dtype=complex)
+    S[1, 0] = S[0, 1] = 1.0
+    S[3, 2] = S[2, 3] = np.exp(-2j * math.pi * f * dt17)
+    v.check(f"24-01.17{key}", 20 * math.log10(abs((M @ S @ np.linalg.inv(M))[3, 0])))
 
 sys.exit(v.finish())

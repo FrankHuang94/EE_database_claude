@@ -3,6 +3,7 @@
 
 Run from anywhere:  python assets/figures/src/fig_24_03.py
 Outputs
+  assets/figures/24-03/ctle-and-drivers.svg   schematics: CTLE half-circuit, CML driver, one side of an SST driver
   assets/figures/24-03/ctle.svg               |H| of the source-degenerated CTLE of Example 24-03.4 with its 40 fF
                                               load and without the output pole, with zero, poles and peak marked
   assets/figures/24-03/equalized-cursors.svg  cursors of the 24-02 channel unequalized, after the zero-forcing
@@ -15,6 +16,8 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+import schemdraw
+import schemdraw.elements as elm
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "tools"))
@@ -28,6 +31,65 @@ use_style()
 GM, RD, RS, CL = 20e-3, 200.0, 400.0, 40e-15
 CS = 1 / (2 * np.pi * RS * 2e9)
 H = {-1: 0.02156, 0: 0.73402, 1: 0.21088, 2: 0.02967, 3: 0.00345, 4: 0.00037}
+
+
+def schematics(path: str) -> None:
+    schemdraw.config(fontsize=11, bgcolor="white")
+    d = schemdraw.Drawing(show=False)
+    # (a) CTLE half circuit
+    d += elm.Label().at((1.6, 6.4)).label("(a) CTLE half-circuit", fontsize=12)
+    d += (m := elm.NFet(bulk=False).right().reverse().at((2, 2.2)).anchor("gate"))
+    d += elm.Line().at(m.gate).left().length(0.8)
+    d += elm.Dot(open=True).label("$v_{in}/2$", loc="left")
+    d += elm.Resistor().at(m.drain).up().length(1.6).label("$R_D$", loc="bottom")
+    d += elm.Vdd().label("$V_{DD}$")
+    d += elm.Line().at(m.drain).right().length(1.2)
+    d += elm.Dot(open=True).label("$v_{out}/2$", loc="right")
+    d += elm.Line().at(m.source).down().length(0.5)
+    d += (ns := elm.Dot())
+    d += elm.Line().left().length(0.7)
+    d += elm.Resistor().down().length(1.6).label("$R_S/2$", loc="bottom")
+    d += elm.Ground()
+    d += elm.Line().at(ns.center).right().length(0.7)
+    d += elm.Capacitor().down().length(1.6).label("$2C_S$", loc="bottom")
+    d += elm.Ground()
+    # (b) CML driver
+    x0 = 7.0
+    d += elm.Label().at((x0 + 2.3, 6.4)).label("(b) CML driver", fontsize=12)
+    d += (q1 := elm.NFet(bulk=False).right().reverse().at((x0 + 0.6, 2.2)).anchor("gate"))
+    d += (q2 := elm.NFet(bulk=False).right().at((x0 + 4.6, 2.2)).anchor("gate"))
+    d += elm.Line().at(q1.gate).left().length(0.4)
+    d += elm.Label().label("$d$", loc="left")
+    d += elm.Line().at(q2.gate).right().length(0.4)
+    d += elm.Label().label("$\\bar d$", loc="right")
+    d += elm.Resistor().at(q1.drain).up().length(1.6).label("50 Ω", loc="top")
+    d += elm.Vdd().label("$V_{DD}$")
+    d += elm.Resistor().at(q2.drain).up().length(1.6).label("50 Ω", loc="bottom")
+    d += elm.Vdd().label("$V_{DD}$")
+    d += elm.Line().at(q1.source).down().length(0.5)
+    d += (t1 := elm.Dot())
+    d += elm.Line().right().tox(q2.source)
+    d += elm.Line().up().toy(q2.source)
+    d += elm.Line().at(t1.center).right().length(0.0)
+    d += elm.SourceI().at(((q1.source[0] + q2.source[0]) / 2, t1.center[1])).down().length(1.4).label("$I$", loc="bottom")
+    d += elm.Ground()
+    d += elm.Dot().at(((q1.source[0] + q2.source[0]) / 2, t1.center[1]))
+    d += elm.Label().at((x0 + 2.5, -1.9)).label("outputs at the drains, a 50 Ω line each side", fontsize=9)
+    # (c) SST driver, one side
+    x1 = 15.5
+    d += elm.Label().at((x1 + 2.0, 6.4)).label("(c) SST driver (one side)", fontsize=12)
+    d += elm.Vdd().at((x1 + 0.5, 4.8)).label("$V_{reg}$")
+    d += elm.Switch().at((x1 + 0.5, 4.8)).down().length(1.6).label("on for $d$ = 1", loc="top")
+    d += (no := elm.Dot())
+    d += elm.Switch().down().length(1.6).label("on for $d$ = 0", loc="top")
+    d += elm.Ground()
+    d += elm.Line().at(no.center).right().length(0.6)
+    d += elm.Resistor().right().length(2.2).label("$R_{seg}$ ≈ 50 Ω", loc="bottom")
+    d += elm.Line().right().length(0.8)
+    d += (nr := elm.Dot())
+    d += elm.Resistor().down().length(1.6).label("50 Ω\ntermination", loc="bottom")
+    d += elm.Ground()
+    d.save(path)
 
 
 def ctle() -> None:
@@ -72,5 +134,6 @@ def cursors() -> None:
 
 
 if __name__ == "__main__":
+    schematics(str(ROOT / OUT / "ctle-and-drivers.svg"))
     ctle()
     cursors()

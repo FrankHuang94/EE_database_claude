@@ -174,7 +174,7 @@ In practice the PCIe weighting filters suppress much of the low-offset band, so 
 
 (d) $N = 2.996/10^{-6}$ = **3.0** × 10⁶ bits, which takes **23.4** µs at 128 Gb/s.
 
-FEC buys about 3.5 dB, a third of the PAM4 penalty of Problem 24-02.6. It also turns a test that takes minutes into one that takes microseconds, which is why the FBER of 10⁻⁶ can be monitored in the field.
+FEC buys about 3.5 dB, a third of the PAM4 penalty of Problem 24-02.6. It also turns a test that takes tens of seconds into one that takes microseconds, which is why the FBER of 10⁻⁶ can be monitored in the field.
 
 ### Solution 24-02.15
 
@@ -185,6 +185,14 @@ FEC buys about 3.5 dB, a third of the PAM4 penalty of Problem 24-02.6. It also t
 (c) It fails when $A_{ni} > 30/10^{3/20}$ = **21.2** mV, only 6% above its present value.
 
 A pass by 0.5 dB leaves little room for manufacturing spread in the channel.
+
+### Solution 24-02.16
+
+(a) Take the left crossing's distribution as a Gaussian of rms $RJ$ centred at $-DJ/2$ (relative to the nominal edge). The probability that an edge lands beyond a sampling point $x$ to its right is $Q((x + DJ/2)/RJ)$ for the outer Dirac and $Q((x - DJ/2)/RJ)$ for the inner one; the inner term dominates. Setting $Q((x - DJ/2)/RJ)$ = BER gives $x = DJ/2 + Q^{-1}(\text{BER})\,RJ$: the eye closes by that much from the left, and by symmetry from the right. The total closure is $TJ = 2Q^{-1}(\text{BER})\,RJ + DJ(\delta\delta)$.
+
+(b) Strictly, each Dirac carries half the transitions, and only transitions cause timing errors, so the tail probability is $\tfrac12Q(\cdot)$ times the transition density. The standard convention (§3.5) defines the multiplier from $Q^{-1}(\text{BER})$ alone, which absorbs these factors: at 10⁻¹² it gives 14.07 rather than the 13.87 of $\tfrac12Q$. The difference is small because $Q$ falls so steeply.
+
+(c) $2 \times 7.034 \times 0.2 + 1.5$ = **4.31** ps at 10⁻¹²; $2 \times 7.941 \times 0.2 + 1.5$ = **4.68** ps at 10⁻¹⁵. The UI is 18.82 ps, so the eye is **14.5** ps wide at 10⁻¹².
 
 ---
 
@@ -287,3 +295,7 @@ A pass by 0.5 dB leaves little room for manufacturing spread in the channel.
 | 24-02.15b | margin over threshold | 0.5 | dB |
 | 24-02.15c | noise-plus-interference limit | 21.2 | mV |
 | 24-02.15c1 | growth before failing | 6 | % |
+| 24-02.16a | multiplier with half-Q at 1e-12 | 13.87 | |
+| 24-02.16c | TJ at 1e-12 | 4.31 | ps |
+| 24-02.16c1 | TJ at 1e-15 | 4.68 | ps |
+| 24-02.16c2 | eye width | 14.5 | ps |

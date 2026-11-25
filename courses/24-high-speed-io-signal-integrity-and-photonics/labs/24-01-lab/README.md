@@ -44,7 +44,7 @@
 - Part 1: the curves cross at 4.46 GHz. Below that the copper dominates; above it FR-4's dielectric does. Megtron 6's dielectric loss stays below the conductor loss up to 53 GHz.
 - Part 2: FR-4 delivers a pulse 0.39 V high, Megtron 6 0.62 V, and the FR-4 pulse arrives later (its $\varepsilon_r$ is higher) and is much wider. The lost height has become a tail that interferes with later bits.
 - Part 3: ngspice and the ABCD model agree with the formula to within the sweep's resolution: 24.69 and 98.8 GHz.
-- Part 4: ngspice gives a 10.0 mV plateau lasting 578 ps and a FEXT area of −1.155 ps·V, matching the formulas to better than 0.1%. Doubling the rise time leaves NEXT and the FEXT area unchanged and halves the FEXT peak from −38.5 mV to −19.3 mV. The simulated FEXT peak at 30 ps (about −47 mV) is larger than the ideal ramp's −38.5 mV, because each lumped section rings at the ramp's sharp corners; the area is immune to that.
+- Part 4: ngspice gives a 10.0 mV plateau lasting 578 ps and a FEXT area of −1.155 ps·V, matching the formulas to better than 0.1%. Doubling the rise time leaves NEXT and the FEXT area unchanged and halves the FEXT peak from −38.5 mV to −19.3 mV. The simulated FEXT peak at a 30 ps rise is noticeably larger than the ideal ramp's −38.5 mV, because each lumped section rings at the ramp's sharp corners; the area is immune to that.
 
 ## Discussion
 

@@ -135,6 +135,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 - (b) Does the channel pass the 3 dB threshold?
 - (c) How large could the noise-plus-interference grow before it fails?
 
+### Problem 24-02.16 [C]
+
+**Deriving total jitter.** In the dual-Dirac model each crossing is a Gaussian of rms $RJ$ centred at $\pm DJ(\delta\delta)/2$. (a) Show that, if each edge's tail beyond the sampling point is set equal to the BER, the eye closes by $DJ/2 + Q^{-1}(\text{BER})\,RJ$ from each side, so $TJ = 2Q^{-1}(\text{BER})\,RJ + DJ(\delta\delta)$. (b) Explain why the factor ½ (half the transitions in each Dirac) does not appear, and what convention absorbs it. (c) Evaluate TJ for $RJ$ = 0.2 ps and $DJ(\delta\delta)$ = 1.5 ps at 10⁻¹² and 10⁻¹⁵, and the eye width at 10⁻¹² for 53.125 GBd.
+
 ---
 
 ## Objective coverage
@@ -143,7 +147,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Pulse response, cursors and peak-distortion and statistical eyes | 3, 4, 12 |
 | 2. Vertical eye to BER, NRZ and PAM4 | 5, 6, 14 |
-| 3. Jitter decomposition and dual-Dirac total jitter | 1, 2, 7 |
+| 3. Jitter decomposition and dual-Dirac total jitter | 1, 2, 7, 16 |
 | 4. Bathtubs and jitter budgets | 8, 9 |
 | 5. CDR jitter tolerance and reference clocks | 11, 13 |
 | 6. BER targets, FEC and test time | 10, 14, 15 |

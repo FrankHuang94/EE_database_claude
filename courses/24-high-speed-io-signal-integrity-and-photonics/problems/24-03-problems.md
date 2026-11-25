@@ -124,6 +124,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 - (b) Find the PAM4 SER and BER with each.
 - (c) Which PAM4 option would meet an FEC input target of 10⁻⁴? Which would meet 10⁻⁶?
 
+### Problem 24-03.15 [C]
+
+**The CTLE with its load.** *(lab)* (a) Derive the half-circuit transfer function of the source-degenerated CTLE when the load is $R_D$ in parallel with $C_L$. (b) For $g_m$ = 25 mS, $R_D$ = 250 Ω, $R_S$ = 320 Ω, $C_S$ = 250 fF and $C_L$ = 30 fF, find the zero, both poles, the DC gain and the gain the stage would reach without $C_L$. (c) Find the peak gain, its frequency and the peaking over DC numerically or by sketching the Bode plot.
+
+### Problem 24-03.16 [C]
+
+**The bang-bang gain.** (a) Show that, with Gaussian jitter of rms σ (in UI) and phase error φ, the average output of a bang-bang detector at a transition is $1 - 2Q(\varphi/\sigma)$, and that for $\lvert\varphi\rvert \ll \sigma$ it is $\sqrt{2/\pi}\,\varphi/\sigma$. (b) Find the gain for σ = 0.02 UI. (c) By what percentage does the linear approximation overstate the output at φ = 0.5σ and at φ = σ?
+
 ---
 
 ## Objective coverage
@@ -132,7 +140,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Rates, clocks, interleaving and driver power | 1, 2 |
 | 2. Transmitter FFE design | 3, 4, 14 |
-| 3. CTLE zeros, poles and peaking | 5, 6 |
+| 3. CTLE zeros, poles and peaking | 5, 6, 15 |
 | 4. DFE timing, error propagation and adaptation | 4, 7, 8, 9 |
-| 5. CDR loops, bang-bang gain and frequency offset | 10, 11 |
+| 5. CDR loops, bang-bang gain and frequency offset | 10, 11, 16 |
 | 6. Energy per bit and modulation choice | 12, 13 |

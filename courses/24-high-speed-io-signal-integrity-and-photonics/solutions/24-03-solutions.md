@@ -164,6 +164,28 @@ That difference is why accelerators keep their highest-bandwidth links short (24
 
 NRZ is effectively error-free with either equalizer on this gentle channel. PAM4 at the same symbol rate needs both the DFE and FEC, a reminder that PAM4 is chosen for steep channels, not easy ones.
 
+### Solution 24-03.15
+
+(a) The half-circuit's source impedance is $Z_S = (R_S/2)/(1 + sR_SC_S)$ and its load $Z_D = R_D/(1 + sR_DC_L)$. With $v_{gs} = v_{in} - i_dZ_S$ and $i_d = g_mv_{gs}$, $i_d = g_mv_{in}/(1 + g_mZ_S)$ and $v_{out} = -i_dZ_D$, so
+
+$$
+H(s) = -\frac{g_mR_D(1 + sR_SC_S)}{(1 + g_mR_S/2 + sR_SC_S)(1 + sR_DC_L)} .
+$$
+
+It has a zero at $1/(R_SC_S)$, a pole at $(1 + g_mR_S/2)/(R_SC_S)$ and a second pole at $1/(R_DC_L)$.
+
+(b) $f_z = 1/(2\pi R_SC_S)$ = **1.99** GHz; $f_{p1} = 5f_z$ = **9.95** GHz; $f_{p2} = 1/(2\pi R_DC_L)$ = **21.2** GHz. DC gain $g_mR_D/(1 + g_mR_S/2)$ = **1.25**; without $C_L$ the gain would approach $g_mR_D$ = **6.25**.
+
+(c) Evaluating $\lvert H(j2\pi f)\rvert$ gives a peak of **4.30** at **14.2** GHz, **10.7** dB above DC: the load pole, only about twice the first pole, eats about 3.3 dB of the 14 dB the degeneration alone would give.
+
+### Solution 24-03.16
+
+(a) The detector outputs $\text{sgn}(\varphi + n)$ with $n \sim N(0, \sigma^2)$. It is +1 with probability $P(n > -\varphi) = 1 - Q(\varphi/\sigma)$ and −1 with probability $Q(\varphi/\sigma)$, so the mean is $1 - 2Q(\varphi/\sigma)$. For small φ, $Q(x) \approx \tfrac12 - x/\sqrt{2\pi}$ (the slope of $Q$ at 0 is the Gaussian density $1/\sqrt{2\pi}$), so the mean is $\sqrt{2/\pi}\,\varphi/\sigma$.
+
+(b) $\sqrt{2/\pi}/0.02$ = **39.9** per UI.
+
+(c) At φ = 0.5σ: exact $1 - 2Q(0.5)$ = **0.383**, linear **0.399**, **4.2**% high. At φ = σ: exact **0.683**, linear **0.798**, **16.9**% high. The detector's gain falls as the phase error grows, which is why bang-bang loops slew-limit under large disturbances.
+
 ---
 
 ## Answer key
@@ -272,3 +294,19 @@ NRZ is effectively error-free with either equalizer on this gentle channel. PAM4
 | 24-03.14b4 | PAM4 DFE argument | 5.5 | |
 | 24-03.14b5 | PAM4 SER with DFE | 3.3e-8 | |
 | 24-03.14b6 | PAM4 BER with DFE | 1.6e-8 | |
+| 24-03.15b | zero | 1.99 | GHz |
+| 24-03.15b1 | first pole | 9.95 | GHz |
+| 24-03.15b2 | load pole | 21.2 | GHz |
+| 24-03.15b3 | DC gain | 1.25 | |
+| 24-03.15b4 | gain without C_L | 6.25 | |
+| 24-03.15c | peak gain | 4.30 | |
+| 24-03.15c1 | peak frequency | 14.2 | GHz |
+| 24-03.15c2 | peaking over DC | 10.7 | dB |
+| 24-03.15c3 | peaking lost to C_L | 3.3 | dB |
+| 24-03.16b | bang-bang gain | 39.9 | 1/UI |
+| 24-03.16c | exact at 0.5 sigma | 0.383 | |
+| 24-03.16c1 | linear at 0.5 sigma | 0.399 | |
+| 24-03.16c2 | overstatement at 0.5 sigma | 4.2 | % |
+| 24-03.16c3 | exact at sigma | 0.683 | |
+| 24-03.16c4 | linear at sigma | 0.798 | |
+| 24-03.16c5 | overstatement at sigma | 16.9 | % |

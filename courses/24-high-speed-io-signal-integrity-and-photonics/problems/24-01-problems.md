@@ -22,7 +22,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 24-01.3 [B]
 
-**Conductor loss of a PCIe trace.** *(lab)* A 4-mil-wide, 42.5 Ω trace of smooth copper carries a 28 GHz Nyquist tone. Find (a) its resistance per metre, (b) its conductor loss in dB/in from the first-order model, (c) the rule-of-thumb value and (d) the loss of 10 inches.
+**Conductor loss of a narrow trace.** *(lab)* A 4-mil-wide, 42.5 Ω trace of smooth copper carries a 28 GHz Nyquist tone. Find (a) its resistance per metre, (b) its conductor loss in dB/in from the first-order model, (c) the rule-of-thumb value and (d) the loss of 10 inches.
 
 ### Problem 24-01.4 [B]
 
@@ -72,6 +72,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Reading S-parameters.** A channel has $\lvert S_{21}\rvert$ = 0.5 and $\lvert S_{11}\rvert$ = 0.2 at its Nyquist frequency. Find (a) the insertion loss, (b) the return loss and (c) the fraction of the incident power that is neither reflected nor transmitted. Where did it go?
 
+### Problem 24-01.16 [C]
+
+**Deriving NEXT.** Starting from the backward-wave density $dV_b = (1/2v)(C_m/C + L_m/L)\,\partial V_a/\partial t\,dz$ of §3.6, show that the near-end voltage is $K_b[V_a(t) - V_a(t - 2T_D)]$. For a linear ramp of height $V_a$ and rise time $t_r$, show that the peak is $K_bV_a$ if $2T_D \ge t_r$ and $K_bV_a\,(2T_D/t_r)$ otherwise. Evaluate the peak for $C_m/C$ = 0.04, $L_m/L$ = 0.06, $V_a$ = 1 V, $v$ = 1.5 × 10⁸ m/s and $t_r$ = 30 ps, for coupled lengths of (a) 1 mm and (b) 5 mm.
+
+### Problem 24-01.17 [B]
+
+**Length mismatch.** *(lab)* The two lines of a pair in a stripline with $\varepsilon_r$ = 3.4 differ in length by 3 mil. Using Example 24-01.9's model, find (a) the skew and (b) $\lvert S_{CD21}\rvert$ in dB at 26.5625 GHz and (c) at 53.125 GHz.
+
 ---
 
 ## Objective coverage
@@ -80,7 +88,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Nyquist frequency, conductor and dielectric loss, roughness | 1, 2, 3, 4, 5, 6 |
 | 2. Loss budgets and reach | 4, 7 |
-| 3. S-parameters, return loss and ripple | 8, 9, 15 |
+| 3. S-parameters, return loss and ripple | 8, 9, 15, 17 |
 | 4. Via stubs | 10 |
-| 5. Crosstalk | 11, 12 |
+| 5. Crosstalk | 11, 12, 16 |
 | 6. Ground bounce, PDN and jitter | 13, 14 |

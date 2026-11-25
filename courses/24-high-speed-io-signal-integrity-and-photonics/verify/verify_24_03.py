@@ -206,6 +206,7 @@ v.check("Ex 24-03.8c", 51.2e12 * 3e-12)
 v.check("Ex 24-03.8c1", 51.2e12 * 4.5e-12)
 v.check("Ex 24-03.8d", 112.5e9 * 4.5e-12)
 v.check("Ex 24-03.8d1", 212.5e9 * 2.05e-12)
+v.check("Ex 24-03.8d2", 212.5e9 * 2.05e-12 * 4.1 / 1.89)
 v.check("Ex 24-03.8e", 51.2e12 * 0.1e-12)
 
 
@@ -400,5 +401,37 @@ v.check("Lab 24-03.k", h[2])
 v.check("Lab 24-03.l", h[0])
 v.check("Lab 24-03.m", 0.5 * 2 ** -14 * 1e6)
 v.check("Lab 24-03.n", 100e-6)
+
+# ---------------------------------------------------------------- Problems 24-03.15 and 24-03.16
+g15, rd15, rs15, cs15, cl15 = 25e-3, 250.0, 320.0, 250e-15, 30e-15
+num = np.array([rs15 * cs15, 1.0]) * g15 * rd15
+den = np.polymul([rs15 * cs15, 1 + g15 * rs15 / 2], [rd15 * cl15, 1.0])
+v.check("24-03.15b", abs(np.roots([rs15 * cs15, 1.0])[0]) / (2 * math.pi) / 1e9)
+poles = sorted(abs(np.roots(den)) / (2 * math.pi))
+v.check("24-03.15b1", poles[0] / 1e9)
+v.check("24-03.15b2", poles[1] / 1e9)
+hmag = lambda f: abs(np.polyval(num, 2j * math.pi * f) / np.polyval(den, 2j * math.pi * f))  # noqa: E731
+v.check("24-03.15b3", hmag(1.0))
+v.check("24-03.15b4", g15 * rd15)
+res15 = optimize.minimize_scalar(lambda lf: -hmag(10 ** lf), bounds=(8, 12), method="bounded",
+                                 options={"xatol": 1e-10})
+v.check("24-03.15c", hmag(10 ** res15.x))
+v.check("24-03.15c1", 10 ** res15.x / 1e9)
+v.check("24-03.15c2", 20 * math.log10(hmag(10 ** res15.x) / hmag(1.0)))
+v.check("24-03.15c3", 20 * math.log10(g15 * rd15 / hmag(1.0)) - 20 * math.log10(hmag(10 ** res15.x) / hmag(1.0)))
+from scipy.stats import norm as _n  # noqa: E402
+mean_sgn = lambda ph: integrate.quad(lambda x: np.sign(ph + x) * _n.pdf(x), -12, 12, points=[-ph])[0]  # noqa: E731
+v.check("24-03.16b", math.sqrt(2 / math.pi) / 0.02)
+for key, r in (("", 0.5), ("3", 1.0)):
+    exact = mean_sgn(r)
+    lin = math.sqrt(2 / math.pi) * r
+    if r == 0.5:
+        v.check("24-03.16c", exact)
+        v.check("24-03.16c1", lin)
+        v.check("24-03.16c2", 100 * (lin / exact - 1))
+    else:
+        v.check("24-03.16c3", exact)
+        v.check("24-03.16c4", lin)
+        v.check("24-03.16c5", 100 * (lin / exact - 1))
 
 sys.exit(v.finish())
