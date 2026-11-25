@@ -1,0 +1,69 @@
+* Lab 23-09: an analog in-memory matrix-vector multiply on a 4 x 4 resistive crossbar
+* Rows carry input voltages 0.1 V per unit of activation x = (2, 1, 0, 3). Each signed weight w (from
+* [[1,-2],[3,0],[-1,2],[2,1]]) is a pair of conductances G+ = 10 uS max(w,0) + 1 uS, G- = 10 uS max(-w,0) + 1 uS.
+* Part A: columns held at 0 V (ideal transimpedance amplifiers), currents read through 0 V sources.
+* Part B: the same array with each column sensed by a 10 kohm resistor, so column voltages rise and cells lose current.
+VR1 r1 0 DC 0.2
+VR2 r2 0 DC 0.1
+VR3 r3 0 DC 0.0
+VR4 r4 0 DC 0.3
+Rac1p1 r1 ac1p 90909.1
+Rac1p2 r2 ac1p 32258.1
+Rac1p3 r3 ac1p 1e+06
+Rac1p4 r4 ac1p 47619
+VMac1p ac1p 0 DC 0
+Rac1n1 r1 ac1n 1e+06
+Rac1n2 r2 ac1n 1e+06
+Rac1n3 r3 ac1n 90909.1
+Rac1n4 r4 ac1n 1e+06
+VMac1n ac1n 0 DC 0
+Rac2p1 r1 ac2p 1e+06
+Rac2p2 r2 ac2p 1e+06
+Rac2p3 r3 ac2p 47619
+Rac2p4 r4 ac2p 90909.1
+VMac2p ac2p 0 DC 0
+Rac2n1 r1 ac2n 47619
+Rac2n2 r2 ac2n 1e+06
+Rac2n3 r3 ac2n 1e+06
+Rac2n4 r4 ac2n 1e+06
+VMac2n ac2n 0 DC 0
+Rbc1p1 r1 bc1p 90909.1
+Rbc1p2 r2 bc1p 32258.1
+Rbc1p3 r3 bc1p 1e+06
+Rbc1p4 r4 bc1p 47619
+RSc1p bc1p 0 10k
+Rbc1n1 r1 bc1n 1e+06
+Rbc1n2 r2 bc1n 1e+06
+Rbc1n3 r3 bc1n 90909.1
+Rbc1n4 r4 bc1n 1e+06
+RSc1n bc1n 0 10k
+Rbc2p1 r1 bc2p 1e+06
+Rbc2p2 r2 bc2p 1e+06
+Rbc2p3 r3 bc2p 47619
+Rbc2p4 r4 bc2p 90909.1
+RSc2p bc2p 0 10k
+Rbc2n1 r1 bc2n 47619
+Rbc2n2 r2 bc2n 1e+06
+Rbc2n3 r3 bc2n 1e+06
+Rbc2n4 r4 bc2n 1e+06
+RSc2n bc2n 0 10k
+.op
+.control
+run
+let i1p = i(vmac1p)
+let i1n = i(vmac1n)
+let i2p = i(vmac2p)
+let i2n = i(vmac2n)
+let y1 = i1p - i1n
+let y2 = i2p - i2n
+let y1b = v(bc1p)/10k - v(bc1n)/10k
+let y2b = v(bc2p)/10k - v(bc2n)/10k
+print i1p i1n i2p i2n y1 y2 y1b y2b
+.endc
+* EXPECT i1p key:README.md#Lab_23-09.a scale=1e-6 rtol=0.001
+* EXPECT i2n key:README.md#Lab_23-09.b scale=1e-6 rtol=0.001
+* EXPECT y1 key:README.md#Lab_23-09.c scale=1e-6 rtol=0.001
+* EXPECT y2 key:README.md#Lab_23-09.d scale=1e-6 rtol=0.001
+* EXPECT y1b key:README.md#Lab_23-09.e scale=1e-6 rtol=0.002
+* EXPECT y2b key:README.md#Lab_23-09.f scale=1e-6 rtol=0.005
+.end

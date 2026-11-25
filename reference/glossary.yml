@@ -9826,3 +9826,39 @@
   definition: "Memory meant to sit between DRAM and NAND in speed and cost, persistent like storage but byte-addressable; 3D XPoint (Optane) was the best-known attempt and was discontinued in 2021–2022."
   chapter: "23-08"
   see_also: [Phase-change memory (PCM)]
+- term: Compute-in-memory (CIM)
+  definition: "Performing arithmetic inside a memory array, either in the analog domain (Ohm's and Kirchhoff's laws in a crossbar, read out by ADCs) or digitally (adder trees beside the bitcells), so weights never move."
+  chapter: "23-09"
+  see_also: [Processing-in-memory (PIM), Analog crossbar]
+- term: Processing-in-memory (PIM)
+  definition: "Placing simple compute units beside the banks of a memory die, so memory-bound operations use the die's internal bandwidth instead of its pins; also called near-memory computing."
+  chapter: "23-09"
+  see_also: [Compute-in-memory (CIM), Arithmetic intensity]
+- term: Analog crossbar
+  definition: "A grid of programmable conductances between row and column wires; with input voltages on the rows and virtual-ground columns, the column currents form the matrix-vector product I = GᵀV."
+  chapter: "23-09"
+  see_also: [Differential conductance pair, Compute SNR]
+- term: Differential conductance pair
+  definition: "Storing a signed weight as two conductances G⁺ and G⁻ in two columns and taking the current difference, so offsets common to both cancel."
+  chapter: "23-09"
+  see_also: [Analog crossbar]
+- term: Bit slicing
+  definition: "Splitting a multi-bit weight across several devices or columns, each holding a few bits, and combining their partial sums digitally with shifts; it multiplies the number of ADC conversions."
+  chapter: "23-09"
+  see_also: [Analog crossbar]
+- term: Compute SNR
+  definition: "The signal-to-noise ratio of an analog in-memory dot product; for zero-mean products with independent relative errors σ it is 1/σ², independent of the number of rows, and it sets the effective bits."
+  chapter: "23-09"
+  see_also: [Analog crossbar]
+- term: TOPS/W
+  definition: "Tera-operations per second per watt, equal to operations per picojoule (a MAC counts as two); meaningful only with its precision, utilization and measurement boundary (macro, chip, card or system)."
+  chapter: "23-09"
+  see_also: [Utilization (accelerator)]
+- term: Digital in-memory computing
+  definition: "Compute-in-memory that sums bitcell-gated partial products with digital adders next to SRAM arrays; exact and free of ADCs, but with less energy advantage than analog schemes."
+  chapter: "23-09"
+  see_also: [Compute-in-memory (CIM)]
+- term: Utilization (accelerator)
+  definition: "The fraction of an accelerator's processing elements doing useful work on a given model; delivered throughput is peak operations per element × elements × utilization, so peak TOPS overstates real performance."
+  chapter: "23-09"
+  see_also: [TOPS/W]
