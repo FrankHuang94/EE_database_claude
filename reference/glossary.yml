@@ -9978,3 +9978,39 @@
   definition: "A transmitter (also source-series-terminated, SST) that switches each output to a supply or ground through a 50 Ω on-resistance; it delivers the same swing as a CML driver for a quarter of the supply power."
   chapter: "24-03"
   see_also: [Current-mode logic (CML)]
+- term: MMSE equalizer
+  definition: "An equalizer whose taps minimize the mean square of the difference between its output and the transmitted symbol, trading residual intersymbol interference against noise enhancement; adaptive (LMS) equalizers converge to it."
+  chapter: "24-04"
+  see_also: [Zero-forcing equalizer, Feed-forward equalizer (FFE)]
+- term: Floating tap
+  definition: "An equalizer tap, or small group of taps, placed at an adaptively chosen delay to cancel a distant reflection without building an equalizer long enough to reach it."
+  chapter: "24-04"
+  see_also: [Feed-forward equalizer (FFE)]
+- term: Maximum-likelihood sequence detection (MLSD)
+  definition: "Choosing the transmitted symbol sequence whose noiseless channel output is closest to the received samples, computed by the Viterbi algorithm over the channel's M^L states; it uses the post-cursor energy a DFE discards, worth 10·log10(1 + α²) dB on a channel (1, α) with α ≤ 1."
+  chapter: "24-04"
+  see_also: [Decision-feedback equalizer (DFE), Error event]
+- term: Error event
+  definition: "The difference between a transmitted and a wrongly detected symbol sequence; in sequence detection its probability is Q(‖e∗h‖/2σ), so the smallest such distance sets the error rate, and errors arrive as multi-symbol events."
+  chapter: "24-04"
+  see_also: [Maximum-likelihood sequence detection (MLSD)]
+- term: Net coding gain (NCG)
+  definition: "The reduction in required SNR a code provides at a target output error rate, net of its rate loss; in the BPSK-equivalent convention 20·log10(Q⁻¹(p_out)/Q⁻¹(p_in)) + 10·log10(R) dB."
+  chapter: "24-04"
+  see_also: [Coding gain, Forward error correction (FEC)]
+- term: Concatenated code
+  definition: "Two codes in series, an inner code next to the channel (often soft-decision decoded) and an outer code that cleans up its residual errors, usually with an interleaver between them; 802.3dj optics pair a (128,120) Hamming-based inner code with RS(544,514)."
+  chapter: "24-04"
+  see_also: [Reed–Solomon code, Soft decision]
+- term: Interleaving (FEC)
+  definition: "Spreading consecutive symbols across several codewords so that a burst of errors costs each codeword only a fraction of its correction capacity; it multiplies the decoder's accumulation latency."
+  chapter: "24-04"
+  see_also: [Forward error correction (FEC), Error propagation]
+- term: Flit
+  definition: "A fixed-size link-layer unit (256 bytes in PCIe 6.0) carrying data, link information, CRC and FEC parity, so that error correction and retry operate on whole flits."
+  chapter: "24-04"
+  see_also: [Link-level retry]
+- term: Link-level retry
+  definition: "Resending a unit the receiver's CRC rejects, from a replay buffer in the transmitter; it costs latency only when an error occurs, so PCIe pairs it with a light FEC instead of a strong, slow one."
+  chapter: "24-04"
+  see_also: [Flit, Forward error correction (FEC)]

@@ -5085,3 +5085,29 @@ R&D % = R&D ÷ revenue.
 - **Synthesis:** TX FFE (3–4 taps) → CTLE → 6–7-bit time-interleaved ADC → long RX FFE with floating taps → one DFE tap and/or MLSD → FEC, matching the 802.3dj COM reference receiver (R-507).
 - **Further reading, not read:** A. Chan Carusone, T. Dickson, S. Palermo, S. Shekhar and M. Mansuri, "Modern Wireline Transceivers," IEEE JSSC 61(2):395–422, 2026, doi:10.1109/JSSC.2025.3642231 (open access per its record).
 - **Sources:** [ISSCC 2024 Session 7 overview](https://doi.org/10.1109/ISSCC49657.2024.10454506); [Khairi et al., OJ-SSCS 2024](https://doi.org/10.1109/OJSSCS.2024.3501975). Checked Nov 2026.
+
+## R-512 · RS(544,514) decoder latency (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (document opened).*
+
+- **I. Lyubomirsky, V. Shvydun, A. Farhoodfar and J. Riani (Inphi), "FEC Latency and Power/Area Tradeoffs for 100G KR/CR," IEEE P802.3ck, Sep 2019** [Industry estimate: one company's implementation numbers]: Clause 91 RS(544,514) "Block Time 51 ns", "Processing 100 ns", "Total 151"; an interleaved RS(544,514) 102 + 100 + 10 = 212 ns, "=> 61 ns increase in latency for interleaved FEC". Relative decoder complexity: syndrome 20%, key-equation solver 35%, Chien search 25%, Forney 20%; interleaving adds 40%.
+- **Derived here:** a codeword is 544 × 10 = 5,440 bits: 51.2 ns at 106.25 Gb/s and 25.6 ns at 212.5 Gb/s, so accumulation halves at 200 Gb/s per lane while processing is implementation-bound.
+- **Source:** [Lyubomirsky et al., 2019](https://grouper.ieee.org/groups/802/3/ck/public/19_09/lyubomirsky_3ck_01_0919.pdf). Checked Nov 2026.
+
+## R-513 · Concatenated FEC for 200 Gb/s optical lanes and 1.6 TbE FEC structure (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (documents opened).*
+
+- **L. Patra (Marvell), "Updates on Concatenated FEC Proposal for 200G/Lane PMD," IEEE 802.3df, 12 Jul 2022** [Industry estimate; the slide does not state its NCG convention]: RS(544,514) KP4 at 106.25 G, pre-FEC threshold 2.2E-4, NCG 7 dB; RS(576,514) at 112.5 G, 1.1E-3, 8 dB; RS(544,514) + Hamming(128,120) soft decision at 113.3 G, 4.85E-3, 9.5 dB; "Delta improvement over KP FEC=2.5dB"; soft-decision FEC "~100mW per 200G Lane" (N5).
+- **L. Patra, A. Farhood, R. Radhamohan et al., "FEC baseline proposal for 200Gb/s per Lane IM-DD Optical PMDs," IEEE 802.3dj, Mar 2023** (adopted as motion 03-2023 #5, 70/5/15) [Established for the adopted baseline]: RS(544,514) outer code plus a Hamming-based (128,120) soft-decision inner code with a convolutional interleaver, for 200GBASE-DR1/FR1, 400GBASE-DR2 and 800GBASE-DR4/DR4-2/FR4; the inner code "Appends 8b parity to 120b payload" over 12 KP4 symbols from distinct RS codewords, with an 8-way Hamming interleave; "113.3333GBaud" without and "113.4375GBaud" with padding, "an integer multiple of 156.25M*726"; 384 pad bits per 3,264 Hamming codewords in the baseline (changed in Sep 2023 to 1,024-bit pads every 8,704 codewords); decoder-input BER threshold 4.85E-3 (AWGN); convolutional interleaver plus inner code latency "~140ns" (2-way) or "~56ns" (4-way). The same inner FEC was adopted for 1.6TbE SMF PMDs (Jul 2023 #9); 200 G/lane copper and backplane use RS(544,514) only (May 2023 #6).
+- **M. Gustlin et al., "1.6TbE PCS/FEC Baseline Proposal," Feb 2023** (adopted May 2023) [Established]: "RS(544,514) based FEC", "Keeps 4 FEC engines/codewords for excellent burst error tolerance"; 200 GbE and 400 GbE on 200 G/lanes use "4x RS codewords interleaving" (Jul 2023 #10).
+- **Derived here (BPSK convention, NCG = 20 log10(Q_out/Q_in) + 10 log10 R):** KP4 at 2.2e-4: 6.16 dB (output 1e-13), 6.83 dB (1e-15); concatenated at 4.85e-3 with R = (514/544)(120/128): 8.54 and 9.22 dB; difference 2.38 dB. The slide's 7 and 9.5 dB are a few tenths above, consistent with a different convention.
+- **Sources:** [Patra 2022](https://grouper.ieee.org/groups/802/3/df/public/22_07/patra_3df_01a_2207.pdf); [Patra et al. 2023](https://www.ieee802.org/3/dj/public/23_03/patra_3dj_01b_2303.pdf); [Gustlin et al. 2023](https://www.ieee802.org/3/dj/public/23_01/23_0206/gustlin_3dj_01b_230206.pdf); [802.3dj Key Motions](https://www.ieee802.org/3/dj/projdoc/KeyMotions_3dj_240516.pdf). Checked Nov 2026.
+
+## R-514 · PCIe 6.0 flit FEC latency targets (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (document opened).*
+
+- **D. Das Sharma, "PCI Express 6.0: a low latency, high bandwidth…," IEEE San Diego CAS/SSCS, 27 Aug 2021** [Industry estimate: pre-release design targets; the slides say Rev 0.7]: "<10ns adder for Transmitter + Receiver over 32.0 GT/s (including FEC)", with "(We can not afford the 100ns FEC latency as networking does with PAM-4)"; "Need to keep FEC correction latency low (2ns)"; "FEC + CRC delay expected to be ~ 1-2 ns"; flit accumulation latency "2ns x16, 4ns x8, 8 ns x4, 16 ns x2, 32 ns x1"; networking PHY latency "100+ ns w/ FEC" against "0-1ns FEC overhead" for load–store I/O; "retrying a packet with 10-6 (or 10-5) probability with a retry latency of 100ns – better than always paying a FEC latency impact of 150ns+ in networking"; bandwidth loss "0.05% even with go-back-n". The FEC is "3-way interleaved, single symbol correct" (R-059).
+- **Derived here:** a 256-byte flit is 2,048 bits, 2.0 ns at x16 and 64 GT/s; 151 ns of KP4 latency (R-512) is about 75 times that.
+- **Source:** [Das Sharma 2021](https://ewh.ieee.org/r6/san_diego/sscs/events/slides/2021_08_27_PCIe6.0_IEEE_CAS_iDLP_Debendra.pdf). Checked Nov 2026.
