@@ -153,6 +153,8 @@ v.check("Ex 24-06.8b", math.ceil(2048 * 8 / 224))
 v.check("Ex 24-06.8c", 2048 * 8e9 * 3e-12)
 v.check("Ex 24-06.8d", 2048 * 8e9 * 0.052e-12)
 v.check("Ex 24-06.8e", 3 / 0.052)
+v.check("Ex 24-06.8e1", 1.11 / 0.052)
+v.check("Ex 24-06.8e2", 1.7 / 0.052)
 v.check("Txt 24-06.e", 1.3e-12 * 0.4 ** 2 / 4 * 1e12)
 
 v.check("Txt 24-06.a", (t90 - t10) * 1e12)
@@ -224,5 +226,21 @@ v.check("Lab 24-06.d", elmore * 1e12)
 v.check("Lab 24-06.e", (t90b - t10b) * 1e12)
 v.check("Lab 24-06.f", (1000 / 25) ** 2 / 2 * 32 / 8)
 v.check("Lab 24-06.g", 72 * 18 * 2 * link / 1000)
+
+# ---------------------------------------------------------------- Problem 24-06.13 (Elmore sums)
+def elmore_ladder(ron, cpad, rw, cw, cl, n):
+    caps = np.full(n, cw / n)
+    caps[-1] += cl
+    downstream = np.cumsum(caps[::-1])[::-1]  # capacitance at and beyond each section
+    return ron * (cpad + cw + cl) + float(np.sum(rw / n * downstream))
+
+
+v.check("24-06.13b", 60 * (40e-15 + 300e-15 + 40e-15) * 1e12)
+lim = elmore_ladder(60, 40e-15, 80, 300e-15, 40e-15, 200000)
+v.check("24-06.13b1", (lim - 60 * 380e-15) * 1e12)
+v.check("24-06.13b2", lim * 1e12)
+e10 = elmore_ladder(60, 40e-15, 80, 300e-15, 40e-15, 10)
+v.check("24-06.13c0", (e10 - 60 * 380e-15) * 1e12)
+v.check("24-06.13c", e10 * 1e12)
 
 sys.exit(v.finish())

@@ -6,7 +6,7 @@ Chapter: [24-06](../chapters/24-06-d2d-memory-phys-scale-up.md) · Worked soluti
 
 **Conventions.**
 
-- Unterminated energy per bit is $CV^2/4$; terminated energy is $V^2/(4Rf_b)$.
+- Unterminated energy per bit is $CV^2/4$ with $V$ the swing; terminated energy is $V^2/(4Rf_b)$ with $V$ the supply feeding the driver and termination resistors in series (the receiver sees $V/2$).
 - Bumps lie on a square grid; areal density is $\phi r/(8p^2)$.
 - Elmore delay is $R_{on}C_{tot} + R_w(C_w/2 + C_L)$, and the 10–90% rise time is about $2.2\times$ the Elmore delay (single-pole approximation).
 - Bandwidths "both directions" add the two directions.
@@ -25,7 +25,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 24-06.2 [B]
 
-**Terminated or not?** A link swings 0.3 V. (a) Terminated with 50 Ω at each end at 16 Gb/s, what is its energy per bit? (b) Unterminated with 300 fF, what is it? (c) At what rate would the two be equal, and why does that rate say the lumped model has broken down?
+**Terminated or not?** A link is driven from a 0.3 V supply. (a) Terminated with 50 Ω at each end at 16 Gb/s, what is its energy per bit? (b) Unterminated with 300 fF (swinging the full 0.3 V), what is it? (c) At what rate would the two be equal? Does that rate tell you when a wire must be terminated?
 
 ### Problem 24-06.3 [B]
 
@@ -67,13 +67,17 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **The limit of hybrid bonding.** At 1 µm pitch, with half the bonds carrying data at 1 GT/s (assumed), find (a) the areal density in TB/s per mm² and (b) the power of a 10 TB/s link at 0.01 pJ/b.
 
+### Problem 24-06.13 [C]
+
+**Deriving the Elmore delay.** *(lab)* The Elmore delay of an RC tree is $\sum_iR_iC_{down,i}$: each resistor times all the capacitance downstream of it. (a) Apply it to a driver $R_{on}$ with pad capacitance $C_{pad}$, a uniform wire of total $R_w$ and $C_w$ split into $N$ equal sections, and a load $C_L$, and show that as $N \to \infty$ it becomes $R_{on}C_{tot} + R_w(C_w/2 + C_L)$. (b) Evaluate both terms and the total for $R_{on}$ = 60 Ω, $C_{pad}$ = 40 fF, $R_w$ = 80 Ω, $C_w$ = 300 fF and $C_L$ = 40 fF. (c) What does a 10-section ladder (wire capacitance $C_w/N$ at the far end of each section, $C_L$ at the end) give?
+
 ---
 
 ## Objective coverage
 
 | Objective | Problems |
 |---|---|
-| 1. Wire energy and speed | 1, 2, 6 |
+| 1. Wire energy and speed | 1, 2, 6, 13 |
 | 2. Bandwidth density from pitch | 3, 4, 7, 12 |
 | 3. UCIe and BoW sizing | 4, 5, 7 |
 | 4. Memory PHYs against SerDes | 11 |

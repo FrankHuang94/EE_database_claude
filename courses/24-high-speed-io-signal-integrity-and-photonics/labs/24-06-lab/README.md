@@ -37,7 +37,7 @@
 | Lab 24-06.g | NVL72 total | 129.6 | TB/s |
 
 - Part 1: ngspice integrates 74.9 fJ, within 0.2% of $CV^2$ = 75 fJ; half of it ends on the capacitors and half is burned in the resistances.
-- Part 2: the rise time is 43.7 ps, longer than the 31.25 ps UI at 32 GT/s; the 50% delay is 16.5 ps, under the 22.5 ps Elmore bound. Halving the driver resistance to 25 Ω cuts the rise time to 28.0 ps, under one UI, which shows that the driver, not the wire, sets the speed of this link.
+- Part 2: the rise time is 43.7 ps, longer than the 31.25 ps UI at 32 GT/s; the 50% delay is 16.5 ps, under the 22.5 ps Elmore bound. Halving the driver resistance to 25 Ω cuts the rise time to 28.0 ps, under one UI, which shows that the driver's term, not the wire's, dominates the speed of this link.
 - Part 3: 3,200 GB/s/mm² at 25 µm; 129.6 TB/s for 72 GPUs at 1.8 TB/s.
 
 ## Discussion

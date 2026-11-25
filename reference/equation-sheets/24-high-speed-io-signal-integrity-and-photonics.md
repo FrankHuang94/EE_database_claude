@@ -58,7 +58,7 @@ Conventions:
 |---|---|---|
 | SNR$_{jitter} = -20\log_{10}(2\pi f\sigma_t)$; ENOB $= (\text{SNR} - 1.76)/6.02$ | Sampling-clock jitter | [24-04](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-04-dsp-serdes-and-fec.md) |
 | $\Delta = FS/2^N$; $\sigma_q = \Delta/\sqrt{12}$ | ADC step and quantization noise |
-| $z_n = \sum_{j=-P}^{F}c_jx_{n-j}$; $T \times P$ multipliers at $f_{baud}/P$ | $T$-tap digital FFE, $P$-way parallel |
+| $z_n = \sum_{j=-P}^{F}c_jx_{n-j}$; $T \times N_p$ multipliers at $f_{baud}/N_p$ | $T$-tap digital FFE, $N_p$-way parallel |
 | Codeword time $= nm/R_b$ | $n$ symbols of $m$ bits at line rate $R_b$ (RS(544,514): $m$ = 10) |
 | Inner-code rate expansion $128/120$ | 802.3dj inner code for 200 Gb/s optical lanes | [24-04](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-04-dsp-serdes-and-fec.md) |
 | $G_{MLSD} = 10\log_{10}(1 + \alpha^2)$ dB | Channel $1 + \alpha D$, single-error event | [24-04](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-04-dsp-serdes-and-fec.md) |

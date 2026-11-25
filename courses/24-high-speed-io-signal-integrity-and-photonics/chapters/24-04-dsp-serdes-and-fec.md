@@ -22,7 +22,7 @@
 24-03 built a receiver from analog parts: a CTLE, a few slicers and a DFE. At 100 Gb/s per lane and above, every long-reach SerDes instead digitizes the received signal with a time-interleaved ADC and equalizes it in DSP, as a modem does. The ADC and DSP cost power and latency, but they buy long equalizers, cancellation of distant reflections, sequence detection and adaptation that analog circuits cannot match. Forward error correction then allows the raw error rate to be orders of magnitude worse than the delivered one.
 
 - **Products:** 112 and 224 Gb/s Ethernet SerDes in switches and NICs, PCIe 7.0-rate SerDes, and the DSPs inside pluggable optical modules (24-08) all use this architecture.
-- **The trade:** the DSP can roughly double a transceiver's power (§3.7), and Ethernet's FEC adds on the order of 100 ns of latency, while PCIe's FEC is designed to add about 2 ns.
+- **The trade:** in one published transceiver the DSP roughly doubles the power (§3.7), and Ethernet's FEC adds on the order of 100 ns of latency, while PCIe's FEC is designed to add about 2 ns.
 - **Why it matters commercially:** the DSP rides process scaling, so the SerDes with the best DSP in the newest node usually wins on reach and power; and the latency of the FEC decides which links can carry memory and cache traffic (24-05, 24-06).
 
 ## 2. Intuition first
@@ -56,11 +56,11 @@ $$
 \text{SNR}_{jitter} = -20\log_{10}(2\pi f\sigma_t) .
 $$
 
-At the 26.56 GHz Nyquist frequency of a 106.25 Gb/s lane, 100 fs rms of jitter limits the SNR to 35.6 dB, about 5.6 effective bits. Doubling the rate halves the jitter allowed for the same SNR, which is why 224 Gb/s transmitters and samplers quote jitter in tens of femtoseconds [R-509].
+At the 26.56 GHz Nyquist frequency of a 106.25 Gb/s lane, 100 fs rms of jitter limits the SNR to 35.6 dB. By the usual full-scale-sine convention, (SNR − 1.76)/6.02, that is about 5.6 effective bits; for a PAM4 signal in a ±1.5 full scale, as in this chapter, the quantization SNR is $6.02N - 1.30$ dB, so 35.6 dB matches about 6.1 bits. This is the worst case, a full-power tone at the Nyquist frequency; random data carries less power near Nyquist and relaxes the limit by a few dB. Doubling the rate halves the jitter allowed for the same SNR, which is why 224 Gb/s transmitters quote jitter in tens of femtoseconds [R-509].
 
 **Interleaving.** No single converter samples at 100 GS/s, so the ADC is $M$ slices, each sampling in turn at $f_s/M$ (20-07). Mismatches between slices create spurs: offset at multiples of $f_s/M$, gain and timing skew as images around them. Random timing skew between many slices behaves much like jitter, with the same SNR formula, so a 35 dB target at 26.56 GHz requires skews below about 100 fs rms. Background calibration of offset, gain, skew and bandwidth is therefore part of every such ADC, and its convergence time is part of the link's start-up time.
 
-**Resolution in practice.** The 802.3dj reference receiver models a 6-bit ADC [R-507], and published 200 Gb/s-class receivers use 6- to 7-bit time-interleaved ADCs with 64 to 128 slices [R-235], [R-511].
+**Resolution in practice.** The 802.3dj reference receiver models a 6-bit ADC [R-507], and published 200 Gb/s-class receivers use 6- to 7-bit time-interleaved ADCs with 64 to 128 slices [R-235], [R-509], [R-511].
 
 ### 3.3 The digital equalizer
 
@@ -72,11 +72,11 @@ $$
 
 Unlike the transmitter FFE of 24-03, it has no peak-swing constraint, but it amplifies the noise by $\sum_jc_j^2$ (17-04). Zero forcing removes ISI regardless of noise; a **minimum mean-square error** (MMSE) design instead minimizes $E[(z_n - a_n)^2]$, the sum of residual ISI and amplified noise, and is what adaptive receivers converge to.
 
-**Floating taps.** A reflection from a discontinuity at distance $\ell$ returns after a round trip of $2\ell/v$, possibly 30 to 80 UI later. Rather than build an FFE that long, the DSP places a few taps at the reflection's delay, found by correlation during adaptation. The 802.3dj reference receiver has 6 pre-cursor and 8 post-cursor taps plus 2 floating groups of 4 taps within an 80 UI span [R-507].
+**Floating taps.** A reflection from a discontinuity at distance $\ell$ returns after a round trip of $2\ell/v$, often tens of UI later (illustrative). Rather than build an FFE that long, the DSP places a few taps at the reflection's delay, found by correlation during adaptation. The 802.3dj reference receiver has 6 pre-cursor and 8 post-cursor taps plus 2 floating groups of 4 taps [R-507].
 
-**The arithmetic.** A $T$-tap FFE performs $T$ multiply-accumulates per symbol: $T \times f_{baud}$ MAC/s. No logic runs at 100 GHz, so the DSP is parallel: with $P$ parallel lanes, it clocks at $f_{baud}/P$ and needs $T \times P$ multipliers. At 106.25 GBd, a 24-tap FFE in a 128-way-parallel DSP is 3,072 multipliers clocked at 830 MHz (Example 24-04.3). That is why DSP power tracks the process node and why tap counts are budgeted.
+**The arithmetic.** A $T$-tap FFE performs $T$ multiply-accumulates per symbol: $T \times f_{baud}$ MAC/s. No logic runs at 100 GHz, so the DSP is parallel: with $N_p$ parallel lanes, it clocks at $f_{baud}/N_p$ and needs $T \times N_p$ multipliers. At 106.25 GBd, a 24-tap FFE in a 128-way-parallel DSP is 3,072 multipliers clocked at 830 MHz (Example 24-04.3). That is why DSP power tracks the process node and why tap counts are budgeted.
 
-**DFE in DSP.** A one-tap DFE survives in many DSP receivers, but its one-symbol feedback loop cannot be pipelined. In a parallel DSP the loop is resolved by look-ahead, computing both outcomes in parallel and selecting, as unrolling did in 24-03.
+**DFE in DSP.** A one-tap DFE survives in many DSP receivers, but its one-symbol feedback loop cannot be pipelined. In a parallel DSP the loop is resolved by look-ahead, computing the outcome for every possible previous symbol (two for NRZ, four for PAM4) in parallel and selecting, as unrolling did in 24-03.
 
 ### 3.4 Maximum-likelihood sequence detection
 
@@ -96,7 +96,7 @@ $$
 \lVert\mathbf e * h\rVert^2 = 4(1 + \alpha^2) .
 $$
 
-For $\alpha \le 1$ no longer error event is closer (the lab searches them all), so MLSD's gain over a DFE is
+No longer error event is closer. For an event $(e_0, \ldots, e_{k-1})$ whose first and last errors are ±2, the filtered error $\mathbf e * h$ starts with $e_0$ and ends with $\alpha e_{k-1}$, and every other term's square is non-negative, so $\lVert\mathbf e * h\rVert^2 \ge e_0^2 + \alpha^2e_{k-1}^2 = 4(1 + \alpha^2)$: the single error is always the closest event (the lab confirms this for every event up to 7 symbols). For $\alpha \le 1$, where $h_0$ is the main cursor and a DFE's distance is 4, MLSD's gain over a DFE is
 
 $$
 G_{MLSD} = 10\log_{10}(1 + \alpha^2)\ \text{dB} ,
@@ -114,9 +114,9 @@ $$
 \text{NCG} = 20\log_{10}\frac{Q^{-1}(p_{out})}{Q^{-1}(p_{in})} + 10\log_{10}R\ \text{dB} .
 $$
 
-For RS(544,514), $R$ = 514/544, a threshold of $p_{in}$ = 2.2 × 10⁻⁴ gives 6.2 dB of NCG at $p_{out}$ = 10⁻¹³ (Example 24-04.7).
+For RS(544,514), $R$ = 514/544, the threshold $p_{in}$ = 2.2 × 10⁻⁴ is the input that yields an output BER near 10⁻¹⁵ for random errors (lab Part 3), giving 6.8 dB of NCG (Example 24-04.7). For an output of 10⁻¹³ the threshold is higher, about 3 × 10⁻⁴ (24-02 §7). A threshold is always defined for a stated output.
 
-**Concatenated codes.** For 200 Gb/s optical lanes, 802.3dj adds an *inner* code underneath the KP4 code: a (128,120) Hamming-based code that "Appends 8b parity to 120b payload", decoded with **soft decisions**, that is with the ADC's sample values rather than only the sliced bits, and with a convolutional interleaver between the codes. The inner code's decoder tolerates an input BER of 4.85 × 10⁻³, against KP4's 2.2 × 10⁻⁴, at the cost of 128/120 more line rate: 106.25 GBd becomes 113.33 GBd, and padding to a convenient clock multiple makes it 113.4375 GBd [R-513]. Copper and backplane lanes, whose SerDes are in the host, use RS(544,514) alone [R-507].
+**Concatenated codes.** For 200 Gb/s optical lanes, 802.3dj adds an *inner* code underneath the KP4 code: a (128,120) Hamming-based code that "Appends 8b parity to 120b payload", decoded with **soft decisions**, that is with the ADC's sample values rather than only the sliced bits, and with a convolutional interleaver between the codes. The inner code's decoder tolerates an input BER of 4.85 × 10⁻³, against KP4's 2.2 × 10⁻⁴, at the cost of 128/120 more line rate: 106.25 GBd becomes 113.33 GBd, and padding to a convenient clock multiple makes it 113.4375 GBd [R-513]. Copper and backplane lanes, whose SerDes are in the host, use RS(544,514) alone [R-513], [R-234].
 
 **Interleaving against bursts.** A burst of $b$ bit errors that falls inside one codeword uses up its correction capacity quickly, but the same burst spread across four codewords costs each only a quarter. The 1.6 Tb/s Ethernet PCS keeps 4 RS codewords "for excellent burst error tolerance", and 200 and 400 Gb/s Ethernet on 200 Gb/s lanes interleave 4 codewords [R-513]. Interleaving multiplies the latency (§3.6).
 
@@ -129,13 +129,13 @@ FEC latency has two parts:
 - **Accumulation.** The decoder cannot finish until the whole codeword has arrived, $n\,m/R_b$ for $n$ symbols of $m$ bits at line rate $R_b$. An RS(544,514) codeword is 5,440 bits: 51.2 ns at 106.25 Gb/s and 25.6 ns at 212.5 Gb/s. Interleaving $I$ codewords multiplies it by up to $I$.
 - **Processing.** Syndrome calculation, the key-equation solver, the Chien search and the Forney algorithm take a time set by the implementation. One 2019 analysis for 100 Gb/s lanes put Clause 91's RS(544,514) at 51 ns of block time plus 100 ns of processing, 151 ns, and an interleaved version at 212 ns [R-512].
 
-The inner soft-decision code with its convolutional interleaver adds roughly 56 to 140 ns, depending on its interleaving depth [R-513]. PCIe's flit FEC, by contrast, targets "<10ns adder for Transmitter + Receiver" with the FEC correction itself near 2 ns, because a 256-byte flit accumulates in 2 ns on a x16 link at 64 GT/s [R-514].
+The inner soft-decision code with its convolutional interleaver adds roughly 56 to 140 ns, depending on its interleaving depth [R-513]. PCIe's flit FEC, by contrast, targets "<10ns adder for Transmitter + Receiver" with the FEC correction itself near 2 ns; separately, a 256-byte flit takes 2 ns to accumulate on a x16 link at 64 GT/s [R-514].
 
 The comparison shows why the two worlds diverged. Paying 150 ns on every packet is acceptable for networking, where switch hops and software already cost microseconds. For a load–store interconnect, where a CPU waits on each cache line, it is not: the expected cost of retry, a probability of a few per million times a retry latency of about 100 ns, is under a picosecond per flit (Example 24-04.8).
 
 ### 3.7 Where the power goes
 
-In a DSP SerDes the converters, clocking and analog front end take about half the power and the DSP and FEC the rest: one 128 Gb/s transceiver of 2025 spends 1.89 pJ/b on analog and 4.1 pJ/b in total [R-509]. The DSP half improves with each process node; the ADC's power is set by its resolution, speed and jitter, and improves more slowly (20-06, 20-12). That asymmetry drives two current debates: whether optical modules can drop their DSP and rely on the host SerDes ("linear" optics, 24-09), and how far short-reach links can drop the ADC altogether (24-06).
+In a DSP SerDes the converters, clocking and analog front end take about half the power and the DSP and FEC the rest: one 128 Gb/s transceiver of 2025 spends 1.89 pJ/b on analog and 4.1 pJ/b in total [R-509]. The DSP half improves with each process node; the ADC's power is set by its resolution, speed and jitter, and improves more slowly (20-06, 20-12). That asymmetry drives two current debates: whether optical modules can drop their DSP and rely on the host SerDes ("linear" optics, 24-09), and why short-reach die-to-die links need no ADC at all (24-06).
 
 ## 4. Worked examples
 
@@ -146,7 +146,7 @@ In a DSP SerDes the converters, clocking and analog front end take about half th
 **Solution.**
 
 - (a) $FS$ = 3. For 6 bits: $\Delta = 3/64$ = **0.0469**, $\sigma_q = \Delta/\sqrt{12}$ = **0.0135**, half-eye ratio **24.6**, SQNR $= 20\log_{10}(\sqrt{5/9}/0.0135)$ = **34.8** dB. For 5 bits: σ = **0.0271**, ratio **12.3**, **28.8** dB. For 7 bits: σ = **0.0068**, ratio **49.3**, **40.8** dB.
-- (b) 100 fs: $-20\log_{10}(2\pi \times 26.5625 \times 10^9 \times 10^{-13})$ = **35.6** dB, or $(35.6 - 1.76)/6.02$ = **5.6** effective bits. 50 fs: **41.6** dB, **6.6** bits.
+- (b) 100 fs: $-20\log_{10}(2\pi \times 26.5625 \times 10^9 \times 10^{-13})$ = **35.6** dB, or $(35.6 - 1.76)/6.02$ = **5.6** effective bits by the full-scale-sine convention. 50 fs: **41.6** dB, **6.6** bits. In this chapter's PAM4 convention ($6.02N - 1.30$ dB) the same SNRs match **6.1** and **7.1** bits.
 - (c) **50** fs: SNR depends on the product $f\sigma_t$.
 
 **Units check.** Δ in units of the PAM4 level; Hz × s is dimensionless. ✓
@@ -165,7 +165,7 @@ In a DSP SerDes the converters, clocking and analog front end take about half th
 
 **Units check.** (dimensionless)/(rad/s) = s. ✓
 
-**Sanity check.** Each slice is a modest 1.66 GS/s converter; the hard part is making 64 of them agree in timing to about 100 fs, under 0.02% of a slice's 602 ps sampling period. That is a calibration problem, not a speed problem.
+**Sanity check.** Each slice is a modest 1.66 GS/s converter; the hard part is making 64 of them agree in timing. For the 106.25 GBd lanes this ADC serves, whose Nyquist frequency is 53.125 GHz, (c) requires 53 fs, under 0.009% of a slice's 602 ps sampling period. That is a calibration problem, not a speed problem.
 
 ### Example 24-04.3 · What a digital FFE costs (tier B)
 
@@ -195,7 +195,7 @@ In a DSP SerDes the converters, clocking and analog front end take about half th
 
 **Units check.** Distances are squared amplitudes; their ratio is dimensionless. ✓
 
-**Sanity check.** MLSD's gain is the energy of the post-cursor that a DFE throws away. On a channel with a large first post-cursor it is worth up to 3 dB, roughly what the industry's long-reach receivers gain by enabling it.
+**Sanity check.** MLSD's gain is the energy of the post-cursor that a DFE throws away. On a channel with a large first post-cursor it is worth up to 3 dB.
 
 ### Example 24-04.5 · FEC accumulation and processing latency (tier B)
 
@@ -204,9 +204,9 @@ In a DSP SerDes the converters, clocking and analog front end take about half th
 **Solution.**
 
 - (a) $5440/106.25 \times 10^9$ = **51.2** ns and **25.6** ns.
-- (b) $51 + 100$ = **151** ns.
+- (b) $51.2 + 100$ = **151** ns.
 - (c) $2048/(16 \times 64 \times 10^9)$ = **2.0** ns; on x1, **32** ns.
-- (d) $151/2.0$ = **75.5**.
+- (d) $151.2/2.0$ = **75.6**.
 
 **Units check.** bits ÷ (bits/s) = s. ✓
 
@@ -214,7 +214,7 @@ In a DSP SerDes the converters, clocking and analog front end take about half th
 
 ### Example 24-04.6 · Line rate of the concatenated code (tier A)
 
-**Setup.** 802.3dj's inner code adds 8 parity bits to every 120 [R-513]. (a) What symbol rate does a 106.25 GBd lane need with the inner code? (b) Padding adds 384 bits per 3,264 inner codewords of 128 bits; what rate results? (c) Check that it equals 156.25 MHz × 726. (d) What is the inner code's overhead?
+**Setup.** 802.3dj's inner code adds 8 parity bits to every 120 [R-513]. (a) What symbol rate does a 106.25 GBd lane need with the inner code? (b) Padding adds 384 bits per 3,264 inner codewords of 128 bits (an earlier proposal; the September 2023 baseline pads 1,024 bits per 8,704 codewords, the same ratio [R-513]); what rate results? (c) Check that it equals 156.25 MHz × 726. (d) What is the inner code's overhead?
 
 **Solution.**
 
@@ -225,17 +225,17 @@ In a DSP SerDes the converters, clocking and analog front end take about half th
 
 **Units check.** Ratios of bits multiply a symbol rate. ✓
 
-**Sanity check.** The 6.7% higher rate raises the Nyquist frequency and the loss slightly, which is acceptable on an optical link whose impairment is mostly noise, not loss. That is why the inner code is used for optics and not for copper.
+**Sanity check.** The 6.7% higher rate raises the Nyquist frequency and the loss slightly, which is acceptable on an optical link whose impairment is mostly noise, not loss. That is plausibly why the inner code is used for optics and not for copper (the author's reasoning; R-513 does not give the reason).
 
 ### Example 24-04.7 · Net coding gain (tier B)
 
-**Setup.** Using the BPSK-equivalent convention, find the NCG of (a) RS(544,514) at an input threshold of 2.2 × 10⁻⁴ and (b) the concatenated code (rate $(514/544)(120/128)$) at 4.85 × 10⁻³, each for output BERs of 10⁻¹³ and 10⁻¹⁵. (c) What does the inner code add?
+**Setup.** Using the BPSK-equivalent convention, find the NCG of (a) RS(544,514) at an input threshold of 2.2 × 10⁻⁴ and (b) the concatenated code (rate $(514/544)(120/128)$) at 4.85 × 10⁻³, each for an output BER of 10⁻¹⁵, the output these thresholds correspond to (§3.5). (c) What does the inner code add?
 
-**Solution.** $Q^{-1}$ = 3.515 at 2.2 × 10⁻⁴, 2.586 at 4.85 × 10⁻³, 7.349 at 10⁻¹³ and 7.941 at 10⁻¹⁵. The rates are 0.9449 and 0.8858.
+**Solution.** $Q^{-1}$ = 3.515 at 2.2 × 10⁻⁴, 2.586 at 4.85 × 10⁻³ and 7.941 at 10⁻¹⁵. The rates are 0.9449 and 0.8858.
 
-- (a) $20\log_{10}(7.349/3.515) + 10\log_{10}0.9449$ = **6.16** dB at 10⁻¹³; **6.83** dB at 10⁻¹⁵.
-- (b) **8.54** dB and **9.22** dB.
-- (c) **2.38** dB at either output BER.
+- (a) $20\log_{10}(7.941/3.515) + 10\log_{10}0.9449$ = **6.83** dB.
+- (b) $20\log_{10}(7.941/2.586) + 10\log_{10}0.8858$ = **9.22** dB.
+- (c) **2.38** dB.
 
 **Units check.** Ratios of Q arguments in dB. ✓
 
@@ -273,12 +273,14 @@ In a DSP SerDes the converters, clocking and analog front end take about half th
 | Ex 24-04.1b1 | effective bits at 100 fs | 5.6 | |
 | Ex 24-04.1b2 | jitter SNR at 50 fs | 41.6 | dB |
 | Ex 24-04.1b3 | effective bits at 50 fs | 6.6 | |
+| Ex 24-04.1b4 | PAM4-convention bits at 100 fs | 6.1 | |
+| Ex 24-04.1b5 | PAM4-convention bits at 50 fs | 7.1 | |
 | Ex 24-04.1c | jitter at doubled frequency | 50 | fs |
 | Ex 24-04.2a | slice sample rate | 1.66 | GS/s |
 | Ex 24-04.2b | skew for 35 dB at 26.56 GHz | 107 | fs |
 | Ex 24-04.2c | skew for 35 dB at 53.125 GHz | 53 | fs |
 | Ex 24-04.2d | slice sampling period | 602 | ps |
-| Ex 24-04.2d1 | skew as share of slice period | 0.02 | % |
+| Ex 24-04.2d1 | skew as share of slice period | 0.009 | % |
 | Ex 24-04.3a | MAC rate | 2.55e12 | MAC/s |
 | Ex 24-04.3b | DSP clock | 0.830 | GHz |
 | Ex 24-04.3b1 | multipliers | 3072 | |
@@ -297,7 +299,7 @@ In a DSP SerDes the converters, clocking and analog front end take about half th
 | Ex 24-04.5b | total latency | 151 | ns |
 | Ex 24-04.5c | flit time, x16 | 2.0 | ns |
 | Ex 24-04.5c1 | flit time, x1 | 32 | ns |
-| Ex 24-04.5d | ratio | 75.5 | |
+| Ex 24-04.5d | ratio | 75.6 | |
 | Ex 24-04.6a | rate with inner code | 113.33 | GBd |
 | Ex 24-04.6b | rate with padding | 113.4375 | GBd |
 | Ex 24-04.6c | 156.25 MHz times 726 | 113437.5 | MHz |
@@ -305,13 +307,10 @@ In a DSP SerDes the converters, clocking and analog front end take about half th
 | Ex 24-04.6d1 | inner-code overhead, 2 s.f. | 6.7 | % |
 | Ex 24-04.7a0 | inverse Q at 2.2e-4 | 3.515 | |
 | Ex 24-04.7a00 | inverse Q at 4.85e-3 | 2.586 | |
-| Ex 24-04.7a01 | inverse Q at 1e-13 | 7.349 | |
 | Ex 24-04.7a02 | inverse Q at 1e-15 | 7.941 | |
 | Ex 24-04.7a03 | KP4 rate | 0.9449 | |
 | Ex 24-04.7a04 | concatenated rate | 0.8858 | |
-| Ex 24-04.7a | KP4 NCG at 1e-13 | 6.16 | dB |
 | Ex 24-04.7a1 | KP4 NCG at 1e-15 | 6.83 | dB |
-| Ex 24-04.7b | concatenated NCG at 1e-13 | 8.54 | dB |
 | Ex 24-04.7b1 | concatenated NCG at 1e-15 | 9.22 | dB |
 | Ex 24-04.7c | inner-code gain | 2.38 | dB |
 | Ex 24-04.8a | average retry latency | 0.5 | ps |
@@ -321,10 +320,10 @@ In a DSP SerDes the converters, clocking and analog front end take about half th
 | Txt 24-04.b | KP4 codeword bits | 5440 | |
 | Txt 24-04.c | PAM4 states, memory 1 | 4 | |
 | Txt 24-04.d | PAM4 branches, memory 1 | 16 | |
-| Txt 24-04.e | skew for 35 dB, 1 s.f. | 1e2 | fs |
 | Txt 24-04.f | SNR per extra bit | 6 | dB |
 | Txt 24-04.g | 6-bit SQNR, 2 s.f. | 35 | dB |
-| Txt 24-04.h | KP4 NCG at 1e-13, 2 s.f. | 6.2 | dB |
+| Txt 24-04.h | KP4 NCG at 1e-15, 2 s.f. | 6.8 | dB |
+| Txt 24-04.i | PAM4 SQNR offset | 1.30 | dB |
 
 ## 5. Simulate it
 
@@ -343,7 +342,7 @@ The lab is [labs/24-04-lab/](../labs/24-04-lab/README.md). `dsp.py` quantizes, e
 1. *Predict* how the BER of a PAM4 link with an MMSE FFE changes as its ADC goes from 4 to 8 bits, then simulate it.
 2. *Predict* the smallest error-event distance for $h = (1, \alpha)$ at α = 0.5, 1 and 1.25, then run the exhaustive search.
 3. Simulate an ideal DFE and a Viterbi detector on $h = (1, 1)$ and *predict* whether the SNR gap at a BER of 10⁻³ is the full 3 dB.
-4. *Predict* the KP4 decoder's output BER at an input of 2.4 × 10⁻⁴ for random errors, and what changes if errors arrive in pairs.
+4. *Predict* the KP4 decoder's output BER at an input of 2.4 × 10⁻⁴ for random errors.
 
 ## 6. Engineering tradeoffs
 
@@ -362,9 +361,9 @@ The lab is [labs/24-04-lab/](../labs/24-04-lab/README.md). `dsp.py` quantizes, e
 | Quantity | Value | Source |
 |---|---|---|
 | Jitter-limited SNR | $-20\log_{10}(2\pi f\sigma_t)$; 35.6 dB at 26.56 GHz and 100 fs | §3.2 |
-| SerDes ADCs | 6–7 bits, 64- to 128-way interleaved | [R-235], [R-507], [R-511] |
+| SerDes ADCs | 6–7 bits, 64- to 128-way interleaved | [R-235], [R-507], [R-509], [R-511] |
 | MLSD gain on $h = (1, \alpha)$, α ≤ 1 | $10\log_{10}(1 + \alpha^2)$, 3 dB at α = 1 | §3.4 |
-| KP4 NCG (BPSK convention) | about 6.2–6.8 dB | Example 24-04.7 |
+| KP4 NCG (BPSK convention) | about 6.8 dB, 2.2 × 10⁻⁴ to 10⁻¹⁵ | Example 24-04.7 |
 | Inner-code threshold and rate | 4.85 × 10⁻³; 113.4375 GBd lanes | [R-513] |
 | RS(544,514) latency, 100 G lanes | about 151 ns (51 + 100), 212 ns interleaved | [R-512] |
 | PCIe 6.0 FEC target | "<10ns" TX + RX; flit 2 ns at x16 | [R-514] |
@@ -373,7 +372,7 @@ The lab is [labs/24-04-lab/](../labs/24-04-lab/README.md). `dsp.py` quantizes, e
 ## 8. Common mistakes
 
 - **Sizing the ADC for the PAM4 levels alone.** Residual ISI and noise need headroom; clipping is worse than quantization.
-- **Ignoring jitter in the ADC budget.** At tens of GHz, 100 fs of jitter costs as much SNR as dropping to about 5.6 bits.
+- **Ignoring jitter in the ADC budget.** At tens of GHz, 100 fs of jitter costs as much SNR as this chapter's whole 6-bit quantizer.
 - **Quoting an MLSD gain without the channel.** The gain is the post-cursor energy it recovers; on a channel already equalized flat it is nothing.
 - **Comparing NCGs across conventions.** Output BER, modulation and hard or soft input all change the number.
 - **Forgetting that FEC latency multiplies with interleaving and inner codes.** 150 ns can become several hundred.
@@ -383,12 +382,12 @@ The lab is [labs/24-04-lab/](../labs/24-04-lab/README.md). `dsp.py` quantizes, e
 
 **State of the art (as of Nov 2026).**
 
-- *DSP receivers* [Established, from abstracts]. Published 200 Gb/s-class receivers use 6- to 7-bit time-interleaved ADCs (64- and 128-way), long FFEs with floating taps for reflections, and MLSD with a DFE; the best report 46 to 55 dB of loss at 2.05–3 pJ/b of analog power, with the DSP roughly doubling the total [R-509], [R-511].
+- *DSP receivers* [Established, from abstracts]. Published 200 Gb/s-class receivers use 6- to 7-bit time-interleaved ADCs (64- and 128-way), long FFEs with floating taps for reflections, and MLSD with a DFE; the best report 40 to 55 dB of loss at 2.05–3 pJ/b of analog power [R-509], [R-511]; in the one transceiver that reports both, the DSP roughly doubles the total [Industry estimate: one 128 Gb/s data point, R-509].
 - *Ethernet FEC* [Established for task-force motions]. 200 Gb/s electrical lanes use RS(544,514) only. Optical PMDs at 200 Gb/s per lane add the Hamming-based (128,120) soft-decision inner code with a convolutional interleaver, at 113.4375 GBd; 1.6 TbE keeps 4 RS codewords for burst tolerance [R-507], [R-513].
 - *FEC latency* [Industry estimate: one company's implementation]. About 151 ns for RS(544,514) at 100 Gb/s lanes, 212 ns interleaved [R-512]; the inner code adds roughly 56 to 140 ns [R-513].
 - *PCIe* [Industry estimate: pre-release design targets]. A flit FEC of about 2 ns within a TX-plus-RX budget under 10 ns, with retry for the rest [R-514].
 
-**Why it matters commercially.** The DSP is where SerDes vendors differentiate and where process nodes pay off, so leadership tends to follow access to leading-edge wafers. The FEC's latency is why Ethernet-derived links are contested for AI scale-up fabrics, which care about every 100 ns (24-06), and why PCIe and CXL keep their own PHY rules. And the optical module's DSP is the target of linear-drive optics (24-09): removing it saves module power but moves the equalization burden to the host SerDes described here.
+**Why it matters commercially.** The DSP is where SerDes vendors differentiate and where process nodes pay off, so leadership tends to follow access to leading-edge wafers. The FEC's latency is why Ethernet-derived links are contested for AI scale-up fabrics, which care about every 100 ns (24-05 and 24-06 describe them), and why PCIe and CXL keep their own PHY rules. And the optical module's DSP is the target of linear-drive optics (24-09): removing it saves module power but moves the equalization burden to the host SerDes described here.
 
 **Marketing vs Reality.**
 
@@ -435,7 +434,7 @@ The post-cursors. A DFE subtracts them as interference after deciding from the m
 
 <details><summary>Answer</summary>
 
-It raises the line rate by 6.7%, which on a loss-limited copper channel raises the Nyquist frequency and the loss. Optical links are mostly noise-limited, so the coding gain is worth the small rate increase.
+It raises the line rate by 6.7%, which on a loss-limited copper channel raises the Nyquist frequency and the loss. Optical links are mostly noise-limited, so the coding gain is worth the small rate increase. (This is the author's reasoning; the standard's documents in R-513 do not state it.)
 
 </details>
 

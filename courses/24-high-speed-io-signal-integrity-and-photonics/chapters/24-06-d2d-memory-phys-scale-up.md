@@ -43,7 +43,7 @@ $$
 E_{bit} = \frac{CV^2}{4} .
 $$
 
-It does not depend on the data rate. A 2 mm interposer wire with 300 fF in all, swinging 0.5 V, uses 75 fJ per rising edge and about 0.019 pJ per bit (Example 24-06.1). 23-05 found 0.052 pJ/bit for an HBM wire of 1.3 pF at 0.4 V.
+It does not depend on the data rate. A 2 mm interposer wire with 300 fF in all, swinging 0.5 V, uses 75 fJ per rising edge and about 0.019 pJ per bit (Example 24-06.1). 23-05 found 0.052 pJ/bit for an HBM wire of 1.3 pF (assumed) at 0.4 V.
 
 **Terminated.** A longer package trace that reflects at these speeds is terminated, and then current flows continuously. With driver and receiver resistances $R$ in series from a supply $V$, the wire draws $V/2R$ whenever it is high, half the time, so the average power is $V^2/4R$ and the energy per bit at rate $f_b$ is
 
@@ -51,7 +51,7 @@ $$
 E_{bit} = \frac{V^2}{4Rf_b} .
 $$
 
-At 0.4 V, 50 Ω and 32 Gb/s that is 0.025 pJ/b.
+From a 0.4 V supply through 50 Ω at each end, at 32 Gb/s, that is 0.025 pJ/b; the receiver sees half the supply, a 0.2 V swing.
 
 **What dominates.** These wire energies are small against the 0.25 to 0.5 pJ/b that UCIe targets for the whole link [R-524]. The rest goes to the circuits around the wire: clock generation and forwarding, per-lane deskew, serializers to the core's clock, receivers and test logic. That is why the best short-reach designs *lower* the per-wire rate as the pitch shrinks: slower circuits are simpler, and with more wires per millimetre the bandwidth is still there. A peer-reviewed analysis of 3D hybrid-bonded links puts the total at 0.03 pJ/b at 9 µm pitch and 4 GT/s, and 0.015 pJ/b at 1 µm [R-524].
 
@@ -71,7 +71,7 @@ At 45 µm pitch, half the bumps carrying data at 32 Gb/s give about 990 GB/s/mm�
 
 **Shoreline density.** Die-to-die signals must reach the die's edge, and only a band of a certain depth along the edge is usable for them. Shoreline density is bandwidth per millimetre of edge: the areal density times that depth. It is the number that decides whether a die has enough edge for its memory, I/O and die-to-die links, and it improves with finer pitch, more bump rows and higher rate.
 
-**Hybrid bonding.** Bonding dies face to face with copper pads at 10 µm pitch or less (UCIe-3D) multiplies the density by tens and removes most of the capacitance: the consortium's target is 4 TB/s/mm² at 9 µm at under 0.05 pJ/b [R-524].
+**Hybrid bonding.** Bonding dies face to face with copper pads at 10 µm pitch or less (UCIe-3D) multiplies the bump density by tens (25 times from 45 µm to 9 µm) and removes most of the capacitance: the consortium's target is 4 TB/s/mm² at 9 µm at under 0.05 pJ/b [R-524].
 
 ### 3.3 Die-to-die standards: UCIe and BoW
 
@@ -129,16 +129,16 @@ Distance costs energy. Collecting this course's figures:
 | UCIe-3D (target) | vertical, µm | under 0.05 pJ/b; 0.03 modelled at 9 µm | [R-524] |
 | UCIe-A (target) | under 2 mm | 0.25 pJ/b | [R-524] |
 | UCIe-S, BoW (targets) | 10–25 mm | 0.25–1 pJ/b | [R-524], [R-525] |
-| NVLink (2023 vendor claim) | board, cable | about 1.3 pJ/b | [R-522] |
+| NVLink (2023 marketing figure; generation, reach and conditions unspecified) | unspecified | about 1.3 pJ/b | [R-522] |
 | Long-reach 224 Gb/s SerDes | 40 dB channel | about 2–3 pJ/b analog | [R-509] |
 
-Moving 1 TB/s costs about 2 W over UCIe-A and about 10 W over NVLink-class SerDes (Example 24-06.7). Optical links, which add lasers, modulators and often a DSP, are the next rungs (24-08, 24-09). The ladder is the quantitative reason the industry packs more into each package and each rack before going optical.
+Moving 1 TB/s costs about 2 W over UCIe-A and about 10 W at NVLink's 1.3 pJ/b marketing figure (Example 24-06.7). Optical links, which add lasers, modulators and often a DSP, are the next rungs (24-08, 24-09). The ladder is the quantitative reason the industry packs more into each package and each rack before going optical.
 
 ## 4. Worked examples
 
 ### Example 24-06.1 · The energy of a short wire (tier B)
 
-**Setup.** A 2 mm interposer wire has 200 fF of trace capacitance and 50 fF of pad and ESD capacitance at each end (assumed), and swings 0.5 V. (a) What energy does one rising edge draw? (b) What is the energy per bit for random data? (c) A hybrid-bonded connection presents 20 fF and swings 0.4 V (assumed); find its energy per bit. (d) A terminated link swings 0.4 V through 50 Ω at each end at 32 Gb/s; find its energy per bit and its power.
+**Setup.** A 2 mm interposer wire has 200 fF of trace capacitance and 50 fF of pad and ESD capacitance at each end (assumed), and swings 0.5 V. (a) What energy does one rising edge draw? (b) What is the energy per bit for random data? (c) A hybrid-bonded connection presents 20 fF and swings 0.4 V (assumed); find its energy per bit. (d) A terminated link is driven from a 0.4 V supply through 50 Ω at each end at 32 Gb/s; find its energy per bit and its power.
 
 **Solution.**
 
@@ -247,7 +247,7 @@ Moving 1 TB/s costs about 2 W over UCIe-A and about 10 W over NVLink-class SerDe
 
 **Units check.** Gb/s ÷ Gb/s per lane; b/s × J/b = W. ✓
 
-**Sanity check.** The comparison is not complete, since an HBM interface also spends power in its PHY circuits and DRAM, but the factor of about 58 in wire energy is why memory bandwidth is delivered wide and slow, next to the processor, and why HBM supply is a strategic constraint.
+**Sanity check.** The comparison is not complete: an HBM interface also spends power in its PHY circuits and DRAM, the SerDes lanes run one way while HBM's 2 TB/s is a shared bus, and 224 Gb/s is a line rate, not payload. Still, the factor of about 58 between a long-reach SerDes's energy and the HBM wires' switching energy is why memory bandwidth is delivered wide and slow, next to the processor, and why HBM supply is a strategic constraint. Against package-scale extra-short-reach SerDes, reported at 1.11 pJ/b (a 224 Gb/s receiver) to 1.7 pJ/b (a 112 Gb/s transceiver) [R-509], [R-510], the factor is about 21 to 33.
 
 <!-- answer-key -->
 
@@ -302,7 +302,9 @@ Moving 1 TB/s costs about 2 W over UCIe-A and about 10 W over NVLink-class SerDe
 | Ex 24-06.8b | SerDes lanes | 74 | |
 | Ex 24-06.8c | SerDes power | 49 | W |
 | Ex 24-06.8d | HBM wire power | 0.85 | W |
-| Ex 24-06.8e | wire-energy ratio | 58 | |
+| Ex 24-06.8e | SerDes energy over HBM wire energy | 58 | |
+| Ex 24-06.8e1 | XSR receiver over HBM wire energy | 21 | |
+| Ex 24-06.8e2 | XSR transceiver over HBM wire energy | 33 | |
 | Txt 24-06.a | 40-section wire rise time, 10-90% | 43.7 | ps |
 | Txt 24-06.b | 40-section wire 50% delay | 16.5 | ps |
 | Txt 24-06.c | Elmore delay | 22.5 | ps |
@@ -451,6 +453,8 @@ Problems: [24-06 problem set](../problems/24-06-problems.md) · Solutions: [24-0
 - **Previous:** [24-05](24-05-pcie-cxl-ethernet.md) placed PCIe, CXL and Ethernet; [23-05](../../23-memory-and-storage-technology/chapters/23-05-hbm-in-depth.md) built HBM and its wire energy; [19-02](../../19-digital-vlsi-design/chapters/19-02-cmos-inverter-dynamic.md) the $CV^2$ and RC models.
 - **Next:** [24-07](24-07-photonics-fundamentals.md) starts the optical half of the course: when copper runs out of reach, light takes over.
 - **Used later:** [24-09](24-09-lpo-and-cpo.md) brings optics into the package, onto the same rungs of the energy ladder.
+
+> **Deeper:** see companion repo *Datacenter Networking* for scale-up and scale-out fabrics, and companion repo *LLM Inference Engineering* for how HBM bandwidth and scale-up links set inference throughput.
 
 ## 13. Further study
 

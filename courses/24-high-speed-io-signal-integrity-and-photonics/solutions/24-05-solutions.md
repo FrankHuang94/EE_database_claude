@@ -82,7 +82,7 @@ The average is $100 + 100x \le 110$, so $x \le$ **0.10**: at most 10% of accesse
 
 (e) Each spine has 128 ports: $4096/128$ = **32** spines.
 
-That is 96 switch chips and 4,096 leaf-to-spine links, most of them optical: the optics often cost more than the switches (24-08).
+That is 96 switch chips and 4,096 leaf-to-spine links, most of them optical (24-08 prices the optics' power).
 
 ### Solution 24-05.11
 

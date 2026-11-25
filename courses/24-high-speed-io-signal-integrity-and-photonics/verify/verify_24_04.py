@@ -72,15 +72,18 @@ v.check("Ex 24-04.1b", j100)
 v.check("Ex 24-04.1b1", (j100 - 1.76) / 6.02)
 v.check("Ex 24-04.1b2", j50)
 v.check("Ex 24-04.1b3", (j50 - 1.76) / 6.02)
+pam4_off = -20 * math.log10(PAM4_RMS * math.sqrt(12) / 3.0)  # SQNR = 6.02N - offset for a +-1.5 full scale
+v.check("Txt 24-04.i", pam4_off)
+v.check("Ex 24-04.1b4", (j100 + pam4_off) / (20 * math.log10(2)))
+v.check("Ex 24-04.1b5", (j50 + pam4_off) / (20 * math.log10(2)))
 v.check("Ex 24-04.1c", sigma_for_snr(53.125e9, j100) * 1e15)
 
 v.check("Ex 24-04.2a", 106.25 / 64)
 sk1 = sigma_for_snr(26.5625e9, 35.0) * 1e15
 v.check("Ex 24-04.2b", sk1)
-v.check("Txt 24-04.e", sk1)
 v.check("Ex 24-04.2c", sigma_for_snr(53.125e9, 35.0) * 1e15)
 v.check("Ex 24-04.2d", 1e12 / (106.25e9 / 64))
-v.check("Ex 24-04.2d1", 100 * sk1 * 1e-15 * (106.25e9 / 64))
+v.check("Ex 24-04.2d1", 100 * sigma_for_snr(53.125e9, 35.0) * (106.25e9 / 64))
 
 mac = 24 * 106.25e9
 v.check("Ex 24-04.3a", mac)
@@ -119,11 +122,11 @@ cw = 544 * 10
 v.check("Txt 24-04.b", cw)
 v.check("Ex 24-04.5a", cw / 106.25e9 * 1e9)
 v.check("Ex 24-04.5a1", cw / 212.5e9 * 1e9)
-v.check("Ex 24-04.5b", 51 + 100)
+v.check("Ex 24-04.5b", cw / 106.25e9 * 1e9 + 100)
 flit16 = 256 * 8 / (16 * 64e9) * 1e9
 v.check("Ex 24-04.5c", flit16)
 v.check("Ex 24-04.5c1", 256 * 8 / 64e9 * 1e9)
-v.check("Ex 24-04.5d", 151 / flit16)
+v.check("Ex 24-04.5d", (cw / 106.25e9 * 1e9 + 100) / flit16)
 
 r_inner = 106.25 * 128 / 120
 v.check("Ex 24-04.6a", r_inner)
@@ -138,7 +141,6 @@ R1, R2 = 514 / 544, 514 / 544 * 120 / 128
 qa, qb, q13, q15 = Qi(2.2e-4), Qi(4.85e-3), Qi(1e-13), Qi(1e-15)
 v.check("Ex 24-04.7a0", qa)
 v.check("Ex 24-04.7a00", qb)
-v.check("Ex 24-04.7a01", q13)
 v.check("Ex 24-04.7a02", q15)
 v.check("Ex 24-04.7a03", R1)
 v.check("Ex 24-04.7a04", R2)
@@ -151,10 +153,8 @@ def ncg(qin, qout, r):
 
 kp13, kp15 = ncg(qa, q13, R1), ncg(qa, q15, R1)
 cc13, cc15 = ncg(qb, q13, R2), ncg(qb, q15, R2)
-v.check("Ex 24-04.7a", kp13)
-v.check("Txt 24-04.h", kp13)
+v.check("Txt 24-04.h", kp15)
 v.check("Ex 24-04.7a1", kp15)
-v.check("Ex 24-04.7b", cc13)
 v.check("Ex 24-04.7b1", cc15)
 v.check("Ex 24-04.7c", cc13 - kp13)
 v.assert_true("inner-code gain independent of output BER", abs((cc13 - kp13) - (cc15 - kp15)) < 1e-12)
@@ -277,5 +277,51 @@ v.check("Lab 24-04.h", ucr)
 v.check("Lab 24-04.i", 16 / 5440 * ucr)
 v.check("Lab 24-04.j", r_pad)
 v.check("Lab 24-04.k", cw / 212.5e9 * 1e9)
+
+# ---------------------------------------------------------------- Problems 24-04.14 to 24-04.16
+import itertools  # noqa: E402
+from scipy import stats as _st  # noqa: E402
+# 14: expectations by enumerating the three symbols involved, noise added analytically
+combos = list(itertools.product([-1, 1], repeat=3))  # (a_n, a_{n-1}, a_{n-2})
+Exx = np.zeros((2, 2))
+Exa = np.zeros(2)
+for an, a1, a2 in combos:
+    xv = np.array([an + 0.5 * a1, a1 + 0.5 * a2])
+    Exx += np.outer(xv, xv) / len(combos)
+    Exa += xv * an / len(combos)
+Exx += 0.01 * np.eye(2)
+v.check("24-04.14a0", Exx[0, 0])
+v.check("24-04.14a1", Exx[0, 1])
+v.check("24-04.14a2", np.linalg.det(Exx))
+cm = np.linalg.solve(Exx, Exa)
+v.check("24-04.14a", cm[0])
+v.check("24-04.14a3", cm[1])
+mse = lambda c_: c_ @ Exx @ c_ - 2 * c_ @ Exa + 1.0  # noqa: E731
+v.check("24-04.14b", mse(cm))
+v.check("24-04.14c0", float(np.convolve([1, -0.5], [1, 0.5])[2] ** 2))
+v.check("24-04.14c", mse(np.array([1.0, -0.5])))
+# 15: brute force over all 16 sequences, and the running two-state metrics
+y15 = [1.6, 0.4, -1.3, -0.7]
+best = min(itertools.product([-1, 1], repeat=4),
+           key=lambda seq: sum((y15[n] - seq[n] - 0.5 * (seq[n - 1] if n else 1)) ** 2 for n in range(4)))
+v.assert_true("Viterbi sequence is (+1, -1, -1, -1)", tuple(best) == (1, -1, -1, -1))
+cost = lambda seq: sum((y15[n] - seq[n] - 0.5 * (seq[n - 1] if n else 1)) ** 2 for n in range(len(seq)))  # noqa: E731
+v.check("24-04.15b", cost(best))
+pm_ = {}
+for n in range(4):
+    for s_ in (1, -1):
+        pm_[(n, s_)] = min(cost(seq) for seq in itertools.product([-1, 1], repeat=n + 1) if seq[-1] == s_)
+keys15 = [("24-04.15a", (0, 1)), ("24-04.15a1", (0, -1)), ("24-04.15a2", (1, 1)), ("24-04.15a3", (1, -1)),
+          ("24-04.15a4", (2, 1)), ("24-04.15a5", (2, -1)), ("24-04.15a6", (3, 1))]
+for kk, idx in keys15:
+    v.check(kk, pm_[idx])
+# 16: binomial tail summed directly in logs
+ps16 = 1 - (1 - 2.4e-4) ** 10
+v.check("24-04.16a", ps16)
+v.check("24-04.16b", 544 * ps16)
+logterms = [math.lgamma(545) - math.lgamma(k + 1) - math.lgamma(545 - k) + k * math.log(ps16)
+            + (544 - k) * math.log1p(-ps16) for k in range(16, 545)]
+v.check("24-04.16c", sum(math.exp(t) for t in logterms))
+v.assert_true("binomial tail matches scipy", abs(sum(math.exp(t) for t in logterms) / _st.binom.sf(15, 544, ps16) - 1) < 1e-6)
 
 sys.exit(v.finish())

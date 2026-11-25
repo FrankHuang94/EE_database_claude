@@ -73,6 +73,18 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A round trip.** A request and its response each cross two PHY links. What FEC latency does the round trip accumulate with (a) 151 ns per Ethernet PHY crossing and (b) 2 ns per PCIe-style flit FEC?
 
+### Problem 24-04.14 [C]
+
+**An MMSE equalizer by hand.** NRZ symbols ±1 (independent, equally likely) cross the channel $x_n = a_n + 0.5a_{n-1} + w_n$ with white noise of variance 0.01. A two-tap FFE forms $z_n = c_0x_n + c_1x_{n-1}$ to estimate $a_n$. (a) Write the normal equations $\mathbf R\mathbf c = \mathbf p$ and solve for the MMSE taps. (b) Find the minimum mean-square error. (c) Compare with the zero-forcing taps (1, −0.5): find their residual ISI and total mean-square error. Why does MMSE do better?
+
+### Problem 24-04.15 [C]
+
+**A Viterbi trace.** *(lab)* The channel is $y_n = a_n + 0.5a_{n-1}$ plus noise, with NRZ symbols and $a_{-1} = +1$ known. The receiver sees $y$ = (1.6, 0.4, −1.3, −0.7). (a) Run the two-state Viterbi algorithm by hand with squared-error branch metrics, giving both path metrics after each sample. (b) Trace back the most likely sequence and its metric. (c) Compare with a plain slicer and with a one-tap DFE ($z_n = y_n - 0.5\hat a_{n-1}$).
+
+### Problem 24-04.16 [B]
+
+**How often does KP4 fail?** *(lab)* RS(544,514) uses 10-bit symbols and corrects up to 15 symbol errors. With independent bit errors at 2.4 × 10⁻⁴, find (a) the symbol error probability, (b) the mean number of symbol errors per codeword and (c) the probability that a codeword has more than 15 (binomial).
+
 ---
 
 ## Objective coverage
@@ -81,6 +93,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Why ADC and DSP | 3, 5 |
 | 2. ADC resolution, jitter and skew | 1, 2, 3, 4 |
-| 3. Digital FFE arithmetic and energy | 5 |
-| 4. MLSD distance gain and complexity | 6, 7 |
-| 5. FEC gain, line rate, latency, retry | 8, 9, 10, 11, 12, 13 |
+| 3. Digital FFE arithmetic, energy and MMSE design | 5, 14 |
+| 4. MLSD distance gain, complexity and the Viterbi algorithm | 6, 7, 15 |
+| 5. FEC gain, line rate, latency, retry | 8, 9, 10, 11, 12, 13, 16 |

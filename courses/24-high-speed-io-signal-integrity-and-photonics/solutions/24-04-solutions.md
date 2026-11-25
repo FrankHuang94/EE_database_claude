@@ -18,7 +18,7 @@ Every number is recomputed by [verify_24_04.py](../verify/verify_24_04.py).
 
 (d) $(1/3)/0.00564$ = **59.1**.
 
-One more bit and 17% less headroom gain 7.6 dB over the 6-bit design of Example 24-04.1, but the smaller headroom risks clipping when ISI is large.
+One more bit and a full scale 17% smaller (headroom above the outer level halved, from 50% to 25%) gain 7.6 dB over the 6-bit design of Example 24-04.1, but the smaller headroom risks clipping when ISI is large.
 
 ### Solution 24-04.2
 
@@ -110,6 +110,43 @@ The FEC corrects almost all of the 2 errored flits in a thousand. The remaining 
 
 Six hundred nanoseconds is more than a DRAM access, which is why a memory-semantic fabric cannot use Ethernet's standard FEC unchanged.
 
+### Solution 24-04.14
+
+(a) The error is $e_n = c_0x_n + c_1x_{n-1} - a_n$. Setting $\partial E[e_n^2]/\partial c_i = 0$ gives $\mathbf R\mathbf c = \mathbf p$ with $R_{ij} = E[x_{n-i}x_{n-j}]$ and $p_i = E[x_{n-i}a_n]$. Here $E[x_n^2] = 1 + 0.25 + 0.01$ = **1.26**, $E[x_nx_{n-1}] = E[(a_n + 0.5a_{n-1})(a_{n-1} + 0.5a_{n-2})]$ = **0.5**, and $\mathbf p = (1, 0)$. So
+
+$$
+\begin{pmatrix}1.26 & 0.5\\ 0.5 & 1.26\end{pmatrix}\begin{pmatrix}c_0\\ c_1\end{pmatrix} = \begin{pmatrix}1\\ 0\end{pmatrix},
+$$
+
+with determinant **1.3376**: $c_0 = 1.26/1.3376$ = **0.942** and $c_1 = -0.5/1.3376$ = **−0.374**.
+
+(b) At the optimum, $E[e_n^2] = 1 - \mathbf p^T\mathbf c = 1 - c_0$ = **0.0580**.
+
+(c) With (1, −0.5) the combined response is $(1, 0, -0.25)$: residual ISI of variance $0.25^2$ = **0.0625** plus noise $(1 + 0.25) \times 0.01$ = 0.0125, a total of **0.075**. MMSE accepts a little ISI (it does not fully cancel the post-cursor) to amplify the noise less, and its total error is lower.
+
+### Solution 24-04.15
+
+(a) Each state is the current symbol; a branch from $a_{n-1}$ to $a_n$ costs $(y_n - a_n - 0.5a_{n-1})^2$, and each state keeps the cheaper of its two incoming paths. Starting from state +1 (metric 0):
+
+| $n$ | $y_n$ | metric of state +1 (from) | metric of state −1 (from) |
+|---|---|---|---|
+| 0 | 1.6 | **0.01** (+1) | **4.41** (+1) |
+| 1 | 0.4 | **1.22** (+1) | **0.82** (+1) |
+| 2 | −1.3 | **4.06** (−1) | **0.86** (−1) |
+| 3 | −0.7 | **2.30** (−1) | **1.50** (−1) |
+
+(b) State −1 ends cheapest (**1.50**). Tracing back: −1 ← −1 ← −1 ← +1, so the sequence is (+1, −1, −1, −1).
+
+(c) A slicer decides on the sign of $y_n$: (+1, +1, −1, −1), wrong at $n$ = 1 because the post-cursor of the first +1 lifted $y_1$. The DFE subtracts $0.5\hat a_{n-1}$ and gets (+1, −1, −1, −1), the same as Viterbi here; the two differ only when noise makes a DFE decision wrong and the error propagates.
+
+### Solution 24-04.16
+
+(a) $p_s = 1 - (1 - 2.4 \times 10^{-4})^{10}$ = **2.40 × 10⁻³**.
+
+(b) $544 \times p_s$ = **1.30** symbol errors per codeword.
+
+(c) $P(N > 15) = \sum_{k=16}^{544}\binom{544}{k}p_s^k(1 - p_s)^{544 - k}$ = **8.2 × 10⁻¹³**. Uncorrectable codewords are rare at this input, but bursts (several bit errors in one symbol or neighbouring symbols) raise the rate, which is why burst behaviour matters for FEC design.
+
 ---
 
 ## Answer key
@@ -166,3 +203,22 @@ Six hundred nanoseconds is more than a DRAM access, which is why a memory-semant
 | 24-04.12b1 | symbols corrected across 4 codewords | 60 | |
 | 24-04.13a | Ethernet round trip | 604 | ns |
 | 24-04.13b | flit-FEC round trip | 8 | ns |
+| 24-04.14a0 | R00 | 1.26 | |
+| 24-04.14a1 | R01 | 0.5 | |
+| 24-04.14a2 | determinant | 1.3376 | |
+| 24-04.14a | c0 | 0.942 | |
+| 24-04.14a3 | c1 | -0.374 | |
+| 24-04.14b | minimum MSE | 0.0580 | |
+| 24-04.14c0 | ZF residual ISI | 0.0625 | |
+| 24-04.14c | ZF MSE | 0.075 | |
+| 24-04.15a | metric +1 at n=0 | 0.01 | |
+| 24-04.15a1 | metric -1 at n=0 | 4.41 | |
+| 24-04.15a2 | metric +1 at n=1 | 1.22 | |
+| 24-04.15a3 | metric -1 at n=1 | 0.82 | |
+| 24-04.15a4 | metric +1 at n=2 | 4.06 | |
+| 24-04.15a5 | metric -1 at n=2 | 0.86 | |
+| 24-04.15a6 | metric +1 at n=3 | 2.30 | |
+| 24-04.15b | final metric | 1.50 | |
+| 24-04.16a | symbol error probability | 2.40e-3 | |
+| 24-04.16b | mean symbol errors | 1.30 | |
+| 24-04.16c | uncorrectable probability | 8.2e-13 | |

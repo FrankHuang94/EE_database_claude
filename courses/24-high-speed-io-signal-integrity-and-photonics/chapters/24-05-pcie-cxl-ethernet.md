@@ -24,7 +24,7 @@ Every chip-to-chip link in a server or a datacenter runs one of a handful of sta
 
 - **Cadence:** PCIe has doubled its rate about every three years, from 16 GT/s (2017) to 128 GT/s (2025), with 256 GT/s targeted for 2028 [R-216], [R-515]. Ethernet moved from 100 to 200 Gb/s per lane with 802.3dj, awaiting final approval in December 2026 [R-519].
 - **The AI shift:** accelerator clusters need memory-like latency between thousands of devices, which has spawned new specifications (UALink, Ultra Ethernet) built on the same 200 Gb/s-class lanes [R-517], [R-518].
-- **Why it matters commercially:** standards decide which chips interoperate, which IP blocks every SoC must license, and when a new generation of products can ship, typically 12 to 18 months after a specification is final [R-515].
+- **Why it matters commercially:** standards decide which chips interoperate, which IP blocks every SoC must license, and when a new generation of products can ship, at least 12 to 18 months after a specification is final by one journalist's estimate [R-515].
 
 ## 2. Intuition first
 
@@ -106,7 +106,7 @@ The generations track PCIe's PHY and add fabric features [R-217], [R-516]:
 | 3.1 (Nov 2023), 3.2 (Dec 2024) | 64 GT/s | port-based routing switches, host-to-host memory, security, hot-page monitoring for tiering |
 | 4.0 (Nov 2025) | 128 GT/s | bundled ports, native x2 links, up to four retimers |
 
-**What it buys and costs.** A x16 CXL 3.x link at 64 GT/s carries 128 GB/s each way raw and about 118 GB/s of flit payload, against 51.2 GB/s for one DDR5-6400 channel (23-04): one link adds the bandwidth of more than two DDR5 channels over far fewer pins. The cost is latency: a CXL memory access crosses the host's root port, the link (with its flit FEC, 24-04) and the device's controller, adding on the order of a DRAM access to each read. Whether that hurts depends on how often software touches the slower tier, which is why CXL 3.2 added hot-page monitoring to place frequently used pages in local DRAM (Example 24-05.4).
+**What it buys and costs.** A x16 CXL 3.x link at 64 GT/s carries 128 GB/s each way raw and about 118 GB/s of flit payload, against 51.2 GB/s for one DDR5-6400 channel (23-04): one link adds the bandwidth of more than two DDR5 channels over far fewer pins. The cost is latency: a CXL memory access crosses the host's root port, the link (with its flit FEC, 24-04) and the device's controller, adding latency to each read. Whether that hurts depends on how often software touches the slower tier, which is why CXL 3.2 added hot-page monitoring to place frequently used pages in local DRAM (Example 24-05.4).
 
 ### 3.4 Ethernet's PHY and lanes
 
@@ -133,14 +133,14 @@ hosts at full bisection bandwidth, and three tiers $k^3/4$ (Example 24-05.6). Do
 Inside an AI accelerator cluster, devices exchange gradients and activations so often that they want PCIe-like latency with Ethernet-like scale. Three approaches compete (24-06 develops them):
 
 - **Proprietary links** such as NVIDIA's NVLink.
-- **UALink**, an open accelerator-to-accelerator specification. Its 200G 1.0 release (April 2025) runs 200 Gb/s per connection, up to 4 per accelerator, in pods of up to 1,024 accelerators, pitched as "the same raw speed as Ethernet with the latency of PCIe switches" [R-518]. Its lanes are the same 212.5 Gb/s electrical lanes as 802.3dj.
+- **UALink**, an open accelerator-to-accelerator specification. Its 200G 1.0 release (April 2025) runs 200 GT/s per lane, signalled at 212.5 GT/s, in x1, x2 or x4 ports of up to 800 Gb/s each way, in pods of up to 1,024 accelerators, pitched as "the same raw speed as Ethernet with the latency of PCIe switches" [R-518], [R-523]. Its lanes are the same 212.5 Gb/s electrical lanes as 802.3dj [R-523].
 - **Ethernet extended for AI**: the Ultra Ethernet Consortium's specification 1.0 (June 2025) and 1.1 (October 2026) leave the PHY "essentially unchanged" but add RDMA transport, congestion control, optional credit-based flow control and link-level retry, and in 1.1 a scale-up profile and an optional smaller header [R-517].
 
 The pattern is convergence: Ethernet adopting PCIe's link-level retry and credits, and PCIe-like fabrics adopting Ethernet's SerDes.
 
 ### 3.6 Cadence and roadmaps
 
-PCI-SIG describes its cadence as "doubling the IO bandwidth every three years" [R-216]. If a rate doubles every $T$ years, it grows by a factor $2^{t/T}$ after $t$ years, or $2^{1/T} - 1$ per year: 26% per year for $T$ = 3. From PCIe 4.0 (2017, 16 GT/s) to the 8.0 target (2028, 256 GT/s) is four doublings in eleven years, 2.75 years each (Example 24-05.8). Each doubling has to be paid for in the channel: PCIe 7.0 kept the same physical channel budget as 6.0 at twice the Nyquist frequency only by demanding better materials and retimers (24-01 [R-504]), and PCI-SIG says PCIe 8.0 will evaluate new connector technology [R-515].
+PCI-SIG describes its cadence as "doubling the IO bandwidth every three years" [R-216]. If a rate doubles every $T$ years, it grows by a factor $2^{t/T}$ after $t$ years, or $2^{1/T} - 1$ per year: 26% per year for $T$ = 3. From PCIe 4.0 (2017, 16 GT/s) to the 8.0 target (2028, 256 GT/s) is four doublings in eleven years, 2.75 years each (Example 24-05.8). Each doubling has to be paid for in the channel: PCIe 7.0 doubled the Nyquist frequency to 32 GHz with a reported 36 dB budget (against 32 dB at 16 GHz for 6.0), which vendors say needs laminates of about 1 dB/in at 32 GHz (24-01, [R-504]), and PCI-SIG says PCIe 8.0 will evaluate new connector technology [R-515].
 
 ## 4. Worked examples
 
@@ -157,7 +157,7 @@ PCI-SIG describes its cadence as "doubling the IO bandwidth every three years" [
 
 **Units check.** GT/s × lanes × bits per transfer ÷ 8 = GB/s. ✓
 
-**Sanity check.** PCIe 6.0 doubles the raw rate over 5.0, but the flit's FEC, CRC and link bytes take back 6.3 points of efficiency compared with 128b/130b, so the usable gain is 1.87×, not 2×.
+**Sanity check.** PCIe 6.0 doubles the raw rate over 5.0, but the flit's FEC, CRC and link bytes take back 6.3 points of efficiency compared with 128b/130b, so the encoding alone gives 1.87×, not 2×. Flit mode also drops each TLP's own framing and link CRC (sequence numbers and CRC move to the flit), so for small packets the usable gain recovers much of the difference.
 
 ### Example 24-05.2 · The cost of small packets (tier B)
 
@@ -240,7 +240,7 @@ PCI-SIG describes its cadence as "doubling the IO bandwidth every three years" [
 
 **Units check.** b/s × s ÷ 8 = bytes. ✓
 
-**Sanity check.** A 64-port switch would need several megabytes of retry buffering in total if every port supported it, comparable to its packet buffers: that cost is why the feature is optional.
+**Sanity check.** A 64-port switch would need several megabytes of retry buffering in total if every port supported it, a real cost in on-chip memory.
 
 ### Example 24-05.8 · The doubling cadence (tier A)
 
@@ -325,7 +325,7 @@ The lab is [labs/24-05-lab/](../labs/24-05-lab/README.md). `links.py` computes b
 
 ![PCIe per-lane bandwidth in each direction by generation on a log scale, raw and after encoding, with the doubling trend line](../../../assets/figures/24-05/pcie-generations.svg)
 
-*Figure 2. PCIe per-lane bandwidth from 1.0 to 7.0, raw and after encoding. The step from 8b/10b to 128b/130b let 3.0 nearly double 2.0's bandwidth with only a 60% rate increase; the flit gives back some efficiency for FEC.*
+*Figure 2. PCIe per-lane bandwidth from 1.0 to 7.0, raw and after encoding. The step from 8b/10b to 128b/130b let 3.0 nearly double 2.0's bandwidth with only a 60% rate increase; the flit's FEC and CRC cost some encoding efficiency, partly recovered by dropping per-TLP framing.*
 
 **Predict, then run:**
 
@@ -354,8 +354,8 @@ The lab is [labs/24-05-lab/](../labs/24-05-lab/README.md). `links.py` computes b
 | Encodings | 8b/10b 80%; 128b/130b 98.5%; flit 236 of 256 bytes for TLPs | §3.1 |
 | CXL generations | 2.0 (2020) pooling; 3.0 (2022) 64 GT/s fabrics; 4.0 (Nov 2025) 128 GT/s | [R-217], [R-516] |
 | Ethernet 200 Gb/s lane | 212.5 Gb/s, 106.25 GBd PAM4, 53.125 GHz Nyquist | [R-234] |
-| Spec to product lag | 12–18 months (journalist's estimate) | [R-515] |
-| UALink 200G 1.0 | April 2025; 200 Gb/s links, up to 1,024 accelerators | [R-518] |
+| Spec to product lag | at least 12–18 months (journalist's estimate) | [R-515] |
+| UALink | 200G 1.0 April 2025 (200 GT/s lanes, x1–x4 ports, up to 1,024 accelerators); 2.0-series specifications April 2026 | [R-518], [R-523] |
 | Ultra Ethernet | 1.0 June 2025; 1.1 October 2026 | [R-517] |
 
 ## 8. Common mistakes
@@ -374,9 +374,9 @@ The lab is [labs/24-05-lab/](../labs/24-05-lab/README.md). `links.py` computes b
 - *PCIe* [Established for releases; roadmap dates are PCI-SIG targets]. PCIe 6.0 was released in January 2022 and PCIe 7.0 to members on 11 June 2025, with an Optical Aware Retimer ECN amending PCIe 6.4 and 7.0. PCIe 8.0 was announced in August 2025 at 256 GT/s; a draft 0.5 in May 2026 keeps PAM4 with FEC and flits and is evaluating new connector technology, with final ratification targeted for 2028 [R-216], [R-515].
 - *CXL* [Established]. CXL 4.0 (November 2025) doubled the rate to 128 GT/s at the same 256-byte flit, added bundled ports, native x2 links and up to four retimers. As of November 2026 no later version was found [R-217], [R-516].
 - *Ethernet* [Established]. P802.3dj (200 Gb/s per lane, up to 1.6 Tb/s) is on the IEEE RevCom agenda for 8 December 2026, not yet approved [R-519]. The Ultra Ethernet specification reached version 1.1 on 12 October 2026 [R-517].
-- *UALink* [Established for the release; the latency and power advantages are Contested marketing statements]. UALink 200G 1.0 was released on 8 April 2025, with a 400G follow-on mentioned [R-518].
+- *UALink* [Established for the release; the latency and power advantages are Contested marketing statements]. UALink 200G 1.0 was released on 8 April 2025, with a 400G follow-on mentioned [R-518]; in April 2026 the consortium released a common specification 2.0, a separate 200G data-link and physical-layer specification 2.0, and a chiplet specification compliant with UCIe 3.0 [R-523].
 
-**Why it matters commercially.** IP vendors license PCIe, CXL and Ethernet controllers and PHYs to nearly every SoC, and their revenue tracks each generation's adoption. CXL memory expansion creates a market for expander controllers and changes server memory economics; Ethernet-versus-proprietary scale-up is a contest between merchant switch vendors and integrated accelerator vendors. For a corporate-development view, standards timing is a leading indicator: products follow a final specification by 12 to 18 months, and compliance and interoperability testing add more.
+**Why it matters commercially.** IP vendors license PCIe, CXL and Ethernet controllers and PHYs to nearly every SoC, and their revenue tracks each generation's adoption. CXL memory expansion creates a market for expander controllers and changes server memory economics; Ethernet-versus-proprietary scale-up is a contest between merchant switch vendors and integrated accelerator vendors. For a corporate-development view, standards timing is a leading indicator: products follow a final specification by at least 12 to 18 months (a journalist's estimate), and compliance and interoperability testing add more.
 
 **Marketing vs Reality.**
 
@@ -454,6 +454,8 @@ Problems: [24-05 problem set](../problems/24-05-problems.md) · Solutions: [24-0
 - **Previous:** [24-04](24-04-dsp-serdes-and-fec.md) built the PHY's FEC and flits; [17-13](../../17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) the network layering; [23-04](../../23-memory-and-storage-technology/chapters/23-04-dram-interfaces.md) the DDR channel this chapter compares CXL with.
 - **Next:** [24-06](24-06-d2d-memory-phys-scale-up.md) goes inside the package (UCIe, HBM PHYs) and into scale-up fabrics (NVLink, UALink).
 - **Used later:** [24-08](24-08-silicon-photonics.md) carries Ethernet lanes over optics; [24-09](24-09-lpo-and-cpo.md) puts the optics next to the switch.
+
+> **Deeper:** see companion repo *Datacenter Networking* for Ethernet fabrics, Ultra Ethernet and how leaf-spine networks are built and operated.
 
 ## 13. Further study
 

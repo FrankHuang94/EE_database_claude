@@ -24,7 +24,7 @@ Every number is recomputed by [verify_24_06.py](../verify/verify_24_06.py).
 
 (b) $300\ \text{fF} \times 0.09/4$ = **6.75** fJ = 0.0068 pJ/b, a quarter of (a).
 
-(c) Setting $V^2/(4Rf_b) = CV^2/4$ gives $f_b = 1/RC$ = **66.7** Gb/s. At that rate a bit lasts only one $RC$ time constant, so the wire no longer settles within a bit and cannot be treated as a lumped capacitor: it is a transmission line that would need termination anyway. Below that rate, a short unterminated wire is cheaper.
+(c) Setting $V^2/(4Rf_b) = CV^2/4$ gives $f_b = 1/RC$ = **66.7** Gb/s, using the termination $R$ and the wire's $C$. This is only an energy crossover: below it the unterminated wire is cheaper per bit (and the terminated link also delivers just half the supply, 0.15 V, to its receiver). Whether a wire must be terminated is decided by its electrical length, the flight time against the signal's rise time (24-01, 24-06 §3.1), not by this $RC$.
 
 ### Solution 24-06.3
 
@@ -100,6 +100,20 @@ Both exceed the JEDEC baseline, so the parts must run faster than 8 Gb/s (or the
 
 (b) $10\ \text{TB/s} \times 8 \times 0.01$ pJ/b = **0.8** W.
 
+### Solution 24-06.13
+
+(a) The driver resistance sees everything downstream: $R_{on}(C_{pad} + C_w + C_L) = R_{on}C_{tot}$. Section $k$ of the wire ($k = 1 \ldots N$, from the driver) has resistance $R_w/N$ and sees the capacitance of sections $k$ to $N$ plus $C_L$: $(N - k + 1)C_w/N + C_L$. Summing,
+
+$$
+\sum_{k=1}^{N}\frac{R_w}{N}\left[\frac{(N - k + 1)C_w}{N} + C_L\right] = R_wC_w\frac{N + 1}{2N} + R_wC_L \;\to\; R_w\left(\frac{C_w}{2} + C_L\right),
+$$
+
+using $\sum_{k=1}^{N}(N - k + 1) = N(N + 1)/2$.
+
+(b) Driver: $60 \times 380$ fF = **22.8** ps. Wire: $80 \times (150 + 40)$ fF = **15.2** ps. Total **38.0** ps.
+
+(c) With $N$ = 10 the wire term is $R_wC_w(11/20) + R_wC_L$ = 16.4 ps, so the total is **39.2** ps: a coarse ladder overstates the distributed wire's delay by $R_wC_w/(2N)$.
+
 ---
 
 ## Answer key
@@ -151,3 +165,8 @@ Both exceed the JEDEC baseline, so the parts must run faster than 8 Gb/s (or the
 | 24-06.11b1 | rate for 19.2 TB/s | 9.4 | Gb/s |
 | 24-06.12a | areal density | 62.5 | TB/s/mm² |
 | 24-06.12b | power | 0.8 | W |
+| 24-06.13b | driver term | 22.8 | ps |
+| 24-06.13b1 | wire term | 15.2 | ps |
+| 24-06.13b2 | total | 38.0 | ps |
+| 24-06.13c0 | 10-section wire term | 16.4 | ps |
+| 24-06.13c | 10-section total | 39.2 | ps |
