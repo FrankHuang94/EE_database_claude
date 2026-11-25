@@ -28,7 +28,7 @@ The technologies that hold data: SRAM, DRAM and its interfaces (DDR, LPDDR, GDDR
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
 | [23-01 · The Memory Hierarchy and the Memory Wall](chapters/23-01-memory-hierarchy-and-memory-wall.md) | 4 | ✅ verified | [problems](problems/23-01-problems.md) · [solutions](solutions/23-01-solutions.md) · [lab](labs/23-01-lab/README.md) · [verify](verify/verify_23_01.py) |
-| [23-02 · SRAM Technology](chapters/23-02-sram-technology.md) | 4 | ⬜ planned | — |
+| [23-02 · SRAM Technology](chapters/23-02-sram-technology.md) | 4 | ✅ verified | [problems](problems/23-02-problems.md) · [solutions](solutions/23-02-solutions.md) · [lab](labs/23-02-lab/README.md) · [verify](verify/verify_23_02.py) |
 | [23-03 · DRAM Cells, Arrays and Refresh](chapters/23-03-dram-cells-arrays-refresh.md) | 7 | ⬜ planned | — |
 | [23-04 · DRAM Interfaces: DDR, LPDDR and GDDR](chapters/23-04-dram-interfaces.md) | 6 | ⬜ planned | — |
 | [23-05 · HBM in Depth](chapters/23-05-hbm-in-depth.md) | 7 | ⬜ planned | — |

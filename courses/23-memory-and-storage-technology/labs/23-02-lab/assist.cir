@@ -1,0 +1,64 @@
+* Lab 23-02 -- Examples 23-02.4 and 23-02.5: SRAM read and write assists, SPICE level-1 model.
+* VDD = 0.7 V; nominal VTN = |VTP| = 0.3 V; pass gate k = 100 uA/V^2, pull-down 100 uA/V^2, pull-up 80 uA/V^2.
+* Circuit T: the cell inverter with its output tied to its input settles at its switching threshold VM.
+* Circuits W0, W1, W2: write half-cells. The node storing 1 is pulled toward the bitline through the pass gate
+*   against the pull-up (gate held at 0 V). W0 nominal; W1 with a 50 mV mismatch against the write (pass gate
+*   VT +50 mV, pull-up |VT| -50 mV); W2 the same mismatch with the bitline driven to -43 mV (negative-bitline assist).
+* Circuits R0, R1: read half-cells. The node storing 0 is pulled up from a 0.7 V bitline through the pass gate
+*   against the pull-down; wordline at 0.7 V (R0) and underdriven to 0.6 V (R1). i(VBLR*) is the read current.
+* EXPECT vm key:../../chapters/23-02-sram-technology.md#Ex_23-02.5a rtol=1e-3
+* EXPECT vw0 key:../../chapters/23-02-sram-technology.md#Ex_23-02.5b rtol=2e-3
+* EXPECT vw1 key:../../chapters/23-02-sram-technology.md#Ex_23-02.5c rtol=1e-3
+* EXPECT vw2 key:README.md#Lab_23-02.a rtol=2e-3
+* EXPECT vr0 key:../../chapters/23-02-sram-technology.md#Ex_23-02.4a rtol=2e-3
+* EXPECT vr1 key:../../chapters/23-02-sram-technology.md#Ex_23-02.4b rtol=2e-3
+* EXPECT ir0 key:../../chapters/23-02-sram-technology.md#Ex_23-02.4c scale=1e-6 rtol=2e-3
+* EXPECT ir1 key:../../chapters/23-02-sram-technology.md#Ex_23-02.4d scale=1e-6 rtol=2e-3
+
+VDD vdd 0 DC 0.7
+VZ z 0 DC 0
+* T: inverter with input tied to output
+MPT t t vdd vdd pu W=1u L=1u
+MNT t t 0 0 pd W=1u L=1u
+* W0: nominal write half-cell
+VBL0 bl0 0 DC 0
+MAW0 bl0 vdd w0 0 pg W=1u L=1u
+MPW0 w0 z vdd vdd pu W=1u L=1u
+* W1: 50 mV mismatch against the write, bitline at 0
+VBL1 bl1 0 DC 0
+MAW1 bl1 vdd w1 0 pgslow W=1u L=1u
+MPW1 w1 z vdd vdd pufast W=1u L=1u
+* W2: same mismatch, bitline at -43 mV
+VBL2 bl2 0 DC -0.043
+MAW2 bl2 vdd w2 0 pgslow W=1u L=1u
+MPW2 w2 z vdd vdd pufast W=1u L=1u
+* R0: read half-cell, wordline 0.7 V
+VBLR0 blr0 0 DC 0.7
+VWL0 wl0 0 DC 0.7
+MAR0 blr0 wl0 r0 0 pg W=1u L=1u
+MDR0 r0 vdd 0 0 pd W=1u L=1u
+* R1: read half-cell, wordline underdriven to 0.6 V
+VBLR1 blr1 0 DC 0.7
+VWL1 wl1 0 DC 0.6
+MAR1 blr1 wl1 r1 0 pg W=1u L=1u
+MDR1 r1 vdd 0 0 pd W=1u L=1u
+
+.model pg NMOS (LEVEL=1 KP=100u VTO=0.30 LAMBDA=0)
+.model pgslow NMOS (LEVEL=1 KP=100u VTO=0.35 LAMBDA=0)
+.model pd NMOS (LEVEL=1 KP=100u VTO=0.30 LAMBDA=0)
+.model pu PMOS (LEVEL=1 KP=80u VTO=-0.30 LAMBDA=0)
+.model pufast PMOS (LEVEL=1 KP=80u VTO=-0.25 LAMBDA=0)
+
+.control
+op
+let vm = v(t)
+let vw0 = v(w0)
+let vw1 = v(w1)
+let vw2 = v(w2)
+let vr0 = v(r0)
+let vr1 = v(r1)
+let ir0 = -i(VBLR0)
+let ir1 = -i(VBLR1)
+print vm vw0 vw1 vw2 vr0 vr1 ir0 ir1
+.endc
+.end

@@ -9493,3 +9493,42 @@
   definition: "The two phases of language-model inference: prefill processes the whole prompt at once and is compute-bound, while decode generates one token per step, reading all weights and the KV cache each time, and is memory-bound."
   chapter: "23-01"
   see_also: [KV cache, Arithmetic intensity]
+- term: Bitcell
+  definition: "The circuit that stores one bit in a memory array, drawn as the densest tile the design rules allow: six transistors for SRAM, one transistor and one capacitor for DRAM; its area sets the array's raw density."
+  chapter: "23-02"
+  see_also: [SRAM macro, Array efficiency]
+- term: SRAM macro
+  definition: "A complete SRAM block as placed on a chip: the bitcell array plus row decoders, wordline drivers, precharge, column multiplexers, sense amplifiers, write drivers, timing and redundancy; its density is lower than the bitcell's."
+  chapter: "23-02"
+  see_also: [Bitcell, Array efficiency]
+- term: Array efficiency
+  definition: "The fraction of a memory macro's area occupied by bitcells: macro density divided by the bitcells' raw density; about 80% for the densest 2025 SRAM macros and lower for fast ones."
+  chapter: "23-02"
+  see_also: [SRAM macro]
+- term: Fin quantization
+  definition: "In a FinFET, a transistor's width comes in whole fins, so device strength ratios inside a cell can only be ratios of integers; nanosheet transistors remove the restriction by letting the ribbon width vary."
+  chapter: "23-02"
+  see_also: [Nanosheet]
+- term: Minimum operating voltage (Vmin)
+  definition: "The lowest supply at which a circuit, typically an SRAM array, still reads and writes correctly across all its cells; set by the worst cell, so it rises with array size and threshold mismatch and falls with assists, repair and ECC."
+  chapter: "23-02"
+  see_also: [Read assist, Write assist]
+- term: Read-disturb voltage
+  definition: "The voltage to which an SRAM cell's 0 node rises during a read, as the access transistor fights the pull-down; the cell flips if it exceeds the other inverter's switching threshold. For equal pass-gate and pull-down strength it is (V_DD - V_T)(1 - 1/sqrt 2)."
+  chapter: "23-02"
+  see_also: [Read assist, Static noise margin]
+- term: Write assist
+  definition: "A circuit technique that helps an SRAM write overcome the cell's pull-up at low voltage: a negative bitline, a lowered cell supply during the write, or a boosted wordline."
+  chapter: "23-02"
+  see_also: [Negative-bitline write assist, Read assist]
+- term: Negative-bitline write assist
+  definition: "Driving the written bitline slightly below ground during a write, which raises the access transistor's gate-source and drain-source voltages so it overpowers the pull-up; tens of millivolts can rescue writes broken by mismatch."
+  chapter: "23-02"
+  see_also: [Write assist]
+- term: Dual-rail SRAM
+  definition: "An SRAM whose bitcells run from their own, higher supply while the periphery shares the logic's lower, scaled supply, with level shifters between them; it lets the logic run below the SRAM's minimum voltage."
+  chapter: "23-02"
+  see_also: [Minimum operating voltage (Vmin)]
+- term: Data-retention voltage
+  definition: "The lowest supply at which an idle SRAM cell's cross-coupled inverters still hold their state; far below the voltage needed to read and write, it sets how low a sleep mode can drop the array to cut leakage."
+  chapter: "23-02"
