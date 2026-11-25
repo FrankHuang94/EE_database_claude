@@ -56,11 +56,11 @@ $2V_{SD}It_df_s$: (a) $2 \times 4.3 \times 20 \times 100\ \text{ns} \times 100\ 
 
 $\varepsilon\mu\mathcal{E}_c^3$ with $\varepsilon_r$ in place of $\varepsilon$ (the $\varepsilon_0$ cancels in ratios):
 
-- Si: $11.9 \times 1240 \times 0.3^3 = 398.4$;
-- SiC: $9.7 \times 980 \times 3.1^3 = 2.832 \times 10^5$;
-- GaN: $10.4 \times 1000 \times 4.9^3 = 1.224 \times 10^6$.
+- Si: $11.9 \times 1240 \times 0.3^3$ = **398.4** (f);
+- SiC: $9.7 \times 980 \times 3.1^3$ = **2.832** × 10⁵ (g);
+- GaN: $10.4 \times 1000 \times 4.9^3$ = **1.224** × 10⁶ (h).
 
-(a) **711**; (b) **3071**. (c) $R_{on,sp} \propto V_B^2/(\varepsilon\mu\mathcal{E}_c^3)$, so SiC's is lower by the same **711** times. (Tsao's tabulated figures of merit give **712.5** and **3170**, because the table's inputs are rounded and GaN's mobility and field are given to two figures.)
+(a) **711**; (b) **3071**. (c) $R_{on,sp} \propto V_B^2/(\varepsilon\mu\mathcal{E}_c^3)$, so SiC's is lower by the same **711** times. (Tsao's tabulated figures of merit give **712.5** (d) and **3170** (e), because the table's inputs are rounded and GaN's mobility and field are given to two figures.)
 
 ### Solution 22-06.10
 
@@ -86,7 +86,44 @@ The switching-related loss at 500 kHz is the total minus conduction.
 
 2% of 240 W is 4.8 W: (c) $(4.8 - 0.72)/19.62$ = **0.208** MHz; (d) $(4.8 - 0.96)/7.054$ = **0.544** MHz.
 
-At the same loss, GaN runs **2.6** times faster, which is the density argument of 22-01 in one number.
+(e) At the same loss, GaN runs **2.6** times faster, which is the density argument of 22-01 in one number.
+
+### Solution 22-06.13
+
+(a) Count the energy entering and leaving over the swing; the switches' channels are off, so nothing is dissipated.
+
+- *Bus.* The upper switch's capacitance charges from 0 to $V$. All of its charge $Q_{oss}$ comes from the bus, which sits at the constant voltage $V$, so the bus delivers $VQ_{oss}$. This holds for a nonlinear capacitance, because the bus voltage does not change while the charge flows.
+- *Capacitors.* The lower switch goes from $E_{oss}$ to 0 and the upper from 0 to $E_{oss}$. The switches are identical, so the stored energy is unchanged.
+- *Far end.* By KCL at the node, the inductor carries the charge the lower capacitance releases plus the charge pushed through the upper one, $2Q_{oss}$ in all. It delivers that charge into the fixed potential $V_x$, which absorbs $2V_xQ_{oss}$.
+- *Inductor.* Its stored energy changes by $\tfrac12L(I_1^2 - I_0^2)$.
+
+Energy in equals the increase in storage plus energy out:
+
+$$
+VQ_{oss} = \tfrac12L(I_1^2 - I_0^2) + 2V_xQ_{oss}
+\quad\Longrightarrow\quad
+\tfrac12L(I_0^2 - I_1^2) = Q_{oss}(2V_x - V) .
+$$
+
+Units: H·A² = J and C·V = J.
+
+(b) The voltage across the inductor, in the direction of $i$, is $v - V_x$, so $L\,di/dt = v - V_x$. While the node is above $V_x$ the current rises, and once the node falls below $V_x$ it falls. Since $v$ only decreases, the current rises then falls, and its smallest value is at one end of the swing: $\min(I_0, I_1)$. The swing therefore completes if $I_1 \ge 0$.
+
+- With $V_x = V$, the node is never above $V_x$, so the current falls throughout. Setting $I_1 = 0$ gives
+
+$$
+I_{0,min} = \sqrt{\frac{2Q_{oss}V}{L}} .
+$$
+
+- With $V_x \le V/2$, the right side of (a) is zero or negative, so $I_1 \ge I_0$: any starting current finishes the swing. That is the case of the half-bridge LLC, whose magnetizing inductance returns to the split-capacitor midpoint at $V/2$, so only the timing condition $I \ge 2Q_{oss}/t_d$ matters there (Example 22-06.7).
+
+(c, d) GaN: $Q_{oss} = 88\ \text{pF} \times 400\ \text{V}$ = **35.2** nC, and $I_{0,min} = \sqrt{2 \times 35.2\ \text{nC} \times 400\ \text{V}/4\ \mu\text{H}}$ = **2.65** A.
+
+(e, f) Superjunction: $Q_{oss} = 1212\ \text{pF} \times 400\ \text{V}$ = **484.8** nC, so $I_{0,min} = \sqrt{2 \times 484.8\ \text{nC} \times 400\ \text{V}/4\ \mu\text{H}}$ = **9.85** A.
+
+(g) $2E_{oss} = C_{o(er)}V^2 = 117\ \text{pF} \times (400\ \text{V})^2$ = 18.72 µJ, so the rule gives $\sqrt{2 \times 18.72\ \mu\text{J}/4\ \mu\text{H}}$ = **3.06** A.
+
+(h) The ratio is $\sqrt{C_{o(tr)}/C_{o(er)}} = \sqrt{1212/117}$ = **3.2**. A design sized with $E_{oss}$ would lose ZVS below about a third of the current it actually needs. The verify script confirms (a) and (d) by integrating the swing with a nonlinear capacitance.
 
 ---
 
@@ -123,6 +160,9 @@ At the same loss, GaN runs **2.6** times faster, which is the density argument o
 | 22-06.9c | specific on-resistance ratio | 711 | |
 | 22-06.9d | Tsao table ratio, SiC | 712.5 | |
 | 22-06.9e | Tsao table ratio, GaN | 3170 | |
+| 22-06.9f | Si product εr·µ·Ec³ | 398.4 | |
+| 22-06.9g | SiC product | 2.832 | ×10⁵ |
+| 22-06.9h | GaN product | 1.224 | ×10⁶ |
 | 22-06.10a | negative current, 5 ns | 17.2 | A |
 | 22-06.10b | negative current, 10 ns | 8.6 | A |
 | 22-06.10c | negative current, 20 ns | 4.3 | A |
@@ -134,3 +174,9 @@ At the same loss, GaN runs **2.6** times faster, which is the density argument o
 | 22-06.12c | Si frequency at 2% loss | 0.208 | MHz |
 | 22-06.12d | GaN frequency at 2% loss | 0.544 | MHz |
 | 22-06.12e | frequency ratio | 2.6 | |
+| 22-06.13c | GaN output charge at 400 V | 35.2 | nC |
+| 22-06.13d | GaN smallest starting current | 2.65 | A |
+| 22-06.13e | superjunction output charge at 400 V | 484.8 | nC |
+| 22-06.13f | superjunction smallest starting current | 9.85 | A |
+| 22-06.13g | current from the 2·E_oss rule | 3.06 | A |
+| 22-06.13h | understatement factor | 3.2 | |

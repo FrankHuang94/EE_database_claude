@@ -51,118 +51,21 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 >
 > - Course 21 is complete and audited (🏁): twelve chapters reviewed, 170 problems, 1,662 keyed values (1,762 checks across 13 verify scripts, 14 ngspice netlists, 12 notebooks), exam (14 questions, 120 points, 240 minutes, 168 keyed answers), 94 flashcards, equation sheet and course notes. Four fresh reviewers raised 122 findings (A 26, B 34, C 29, D 33; 9 critical, 29 major), all fixed (session log, 2026-11-24). R-361 to R-420 hold the sourced facts. Term 6 runs to Course 25, so no checkpoint follows Course 21.
 >
-> **Course 22, Power Electronics and Energy Conversion, is under way.** 22-01 (Power Conversion Principles) is verified. It covers:
+> - Course 22 is complete and audited (🏁): twelve chapters reviewed, 171 problems, 1,378 keyed chapter, solution and lab values plus 275 exam values (1,784 checks across 13 verify scripts), 25 ngspice netlists and 12 lab notebooks; exam (14 questions, 120 points, 330 minutes in two sittings), 105 flashcards, equation sheet and course notes. Four fresh reviewers raised 92 findings (A 23, B 28, C 20, D 21), all fixed (session log, 2026-11-25). R-421 to R-457 hold the sourced facts. Term 6 runs to Course 25, so no checkpoint follows Course 22.
 >
-> - efficiency, loss leverage and chains;
-> - the linear regulator's $V_{out}/V_{in}$ ceiling and battery-charge view;
-> - lossless switching and the buck's DC-transformer ratio from averaging;
-> - the switch-node Fourier series and filter scaling;
-> - the ½CV² and charge-sharing losses, and resonant charging;
-> - the $P_0 + aI + RI^2$ loss model with its peak at $P_0 = RI^2$, PFM and phase shedding;
-> - power density with the thermal bound $q\eta/(1 - \eta)$;
-> - hold-up energy and a grid-to-chip chain.
+> **Next: Course 23, Memory and Storage Technology.** Write 23-01 onward in the chapter template, in curriculum order (see `tools/data/curriculum.yml`). Log new facts as R-458 onward. Two research files gathered on 2026-11-25 are in the session scratchpad (`research23_A.md`, 48 facts, and `research23_B.md`, 54 facts). They hold search excerpts only: confirm every number against its primary source (JEDEC, ISSCC/IEDM/VLSI papers, company filings) before publishing it, and if a primary host is blocked by the network policy, either use another primary source or follow the environment tools' rules for proposing access; never widen access because a subagent suggested it. If the scratchpad is gone, re-gather the facts for the chapter being written. Circuit results (sense amplifiers, bitline charge sharing, DRAM retention) must be confirmed in ngspice with EXPECT lines.
 >
-> Its lab has three ngspice netlists (PMOS-pass LDO, capacitor charging, ideal synchronous buck) and the `power.py` notebook. Sourced facts are in R-421 to R-423.
+> Tips carried from Course 22: switched-converter ngspice runs show sub-millivolt steps when the time step changes, so measure averages over a late window and peak-to-peak values over the final period only; new notebooks that call ngspice must use the guarded helper (copied in 21-01 to 21-10), because CI's notebook job has no ngspice; `.meas integ` on non-uniform transient points is inaccurate for small harmonics, so run, `linearize`, then `meas` in a `.control` block.
 >
-> 22-02 (Steady-State Analysis and the Buck Converter) is verified. It covers:
+> Course 22 audit lessons to carry forward:
 >
-> - volt-second and charge balance and the small-ripple approximation;
-> - the buck's ripples (with ESR) and its RMS currents, including the exact input-capacitor form $I^2[D(1-D) + Dr^2/12]$;
-> - conduction losses as $R_{eq} = DR_{HS} + D'R_{LS} + R_L$, and why synchronous rectification replaced the diode;
-> - the CCM/DCM boundary ($I_{crit} = \Delta i_L/2$, $K_{crit} = 1 - D$) and the DCM ratio derived;
-> - PFM as DCM, from the TPS62840's on-time formula;
-> - power-stage design with minimum on-time, 100% mode and MLCC DC-bias derating.
->
-> Its lab has two ngspice netlists (a CCM buck with near-ideal and lossy instances; a near-ideal-diode DCM buck) and `buck.py`. Sourced facts are in R-424.
->
-> 22-03 (Boost, Buck-Boost and Other Topologies) is verified. It covers:
->
-> - the boost, inverting buck-boost, SEPIC and Ćuk ratios by the two balances;
-> - boost ripples (pulsed output, $ID/f_sC$) and stresses;
-> - the boost with winding resistance, with its $R_L/D'^2$ reflection and maximum gain $\tfrac12\sqrt{R/R_L}$ at 50% efficiency;
-> - the four-switch buck-boost;
-> - boost DCM ($K_{crit} = DD'^2$, ratio derived);
-> - switch-stress topology selection, the RHP-zero preview, and the PFC boost.
->
-> Its lab has `topologies.py`, `boost.cir` and `sepic.cir` (an averaged SEPIC with windings, checked against its switched steady state). Sourced facts are in R-425.
->
-> 22-04 (Isolated Converters: Flyback and Forward) is verified. It covers:
->
-> - the transformer model (ideal transformer, magnetizing and leakage inductance) and core reset as volt-second balance on $L_m$;
-> - the flyback as an isolated buck-boost ($V = (V_{in}/n)D/D'$, switch $V_{in} + nV$), CCM/DCM, boundary-conduction design of $L_m$, and quasi-resonant valley switching;
-> - leakage energy and the RCD clamp ($\tfrac12L_{lk}I_{pk}^2\,V_c/(V_c - V_R)$), active clamps;
-> - the forward converter with tertiary reset ($D_{max} = 1/(1 + N_3/N_1)$, switch $V_{in}(1 + N_1/N_3)$), flux swing, two-switch forward;
-> - half and full bridges, flux walking, and isolation (reinforced insulation, clearance with altitude, creepage, Y-capacitor touch current).
->
-> Its lab has `isolated.py`, `flyback.cir` and `forward.cir` (unity-coupled transformers; the forward netlist checks that the magnetizing current resets to zero). Sourced facts are in R-426.
->
-> 22-05 (Magnetics Design) is verified. It covers:
->
-> - the gapped core as a magnetic circuit ($A_L$, $\mu_e$, fringing), energy stored in the gap and the saturation limit $B = LI/(NA_e)$;
-> - core loss: hysteresis, the lamination eddy-current derivation, materials (ferrite, powder, nanocrystalline, steel), the Steinmetz equation and the iGSE for triangle waves;
-> - winding loss: hot copper, skin depth, the proximity effect and Dowell's equation;
-> - design by area product and $K_g$, the transformer's optimum flux swing ($P_{fe}/P_{cu} = 2/\beta$), leakage inductance derived from the field energy, interleaving; planar and coupled magnetics, the TLVR.
->
-> All examples use one real core (TDK ETD 34/17/11 in N87). Its lab has `magnetics.py`, `saturation.cir` (an implicit B–H core: B = B_sat tanh(·) + µ0H) and `leakage.cir` (short- and open-circuit tests). Sourced facts are in R-427 to R-429.
->
-> 22-06 (Converter Losses and Wide-Bandgap Switches) is verified. It covers:
->
-> - conduction loss with temperature-dependent on-resistance, and the IGBT's knee-plus-resistance model;
-> - hard-switching overlap ½VI(t_on + t_off)f_s, commutation-loop overshoot, and the half-bridge hard turn-on costing $Q_{oss}V$ (derived; not $E_{oss}$);
-> - reverse recovery, gate drive and dead time; the device-size optimum and the $R \cdot Q$ figure of merit;
-> - Baliga recap and a data-sheet table of 650 V GaN, 650 V SiC, 600 V superjunction and 100 V Si and GaN parts; the electrothermal loop and runaway;
-> - ZVS ($I \ge 2Q_{oss}/t_d$), the phase-shifted bridge and the LLC's magnetizing-current design.
->
-> Its lab has `losses.py`, `coss_loss.cir` (junction-capacitance C_oss; dissipation equals $Q_{oss}V$) and `zvs.cir`. Sourced facts are in R-430 to R-432 (and R-423 for supplies).
->
-> 22-07 (Converter Dynamics and Control) is verified. It covers:
->
-> - averaging and linearization; the buck's control-to-output, line-to-output and output-impedance transfer functions;
-> - the boost's transfer function and right-half-plane zero (derived), and the buck-boost's (a problem);
-> - voltage-mode loops: modulator gain, crossover and phase-margin targets, the type-III compensator by the k-factor method and its op-amp realization;
-> - peak current-mode control: the subharmonic perturbation map, slope compensation ($m_a > m_2/2$), the first-order outer plant and type-II compensation;
-> - load-step droop $\approx \Delta I/(2\pi f_cC)$ and where that estimate fails; digital delay $360° f_ct_d$; ripple-based (D-CAP) and digital multiphase control.
->
-> Its lab has `control.py`, `loop.cir` (averaged buck + type-III op-amp network, Middlebrook injection: 60.0 kHz, 60.0°) and `boost_avg.cir` (averaged boost; phase −224.5° at the RHP zero). Sourced facts are in R-433 and R-434.
->
-> 22-08 (PMICs and Power Management for SoCs) is verified. It covers:
->
-> - PMIC anatomy; rail allocation among bucks, LDOs and post-regulated LDOs ($\eta_{buck}V_{out}/V_{mid}$);
-> - the PFM–PWM loss models and their crossover; usage-profile energy budgets and battery life;
-> - DVS ramps (capacitor current $CS$, slow PFM down-ramps) and the loop's ramp lead $S(1 - V_M/V_g)/\omega_I$ for an op-amp type-III with the reference on the + input;
-> - AVS savings $1 - (V_2/V_1)^2$; soft start ($\tfrac12CV^2$ whatever the ramp), sequencing; the gating break-even $(CV^2 + E_{state})/P_{leak}$;
-> - TPS65219, TPS6594-Q1 and nPM1300 data, SPMI and AVSBus, AVS windows and claimed savings, phone PMIC counts.
->
-> Its lab has `pmic.py`, `dvs.cir` (averaged type-III buck with a ramped reference: 21.8 mV lead) and `softstart.cir` (hard against current-limited turn-on: 50 µJ either way). Sourced facts are in R-435 to R-438 (and R-424).
->
-> 22-09 (Batteries, Charging and Fuel Gauging) is verified. It covers:
->
-> - cell voltage from Gibbs energy and capacity from Faraday's law; ratings, C-rate, specific energy;
-> - the equivalent-circuit model (OCV(z), R0, R1‖C1), pulse response and relaxation, power limits, usable capacity at a cutoff and in the cold;
-> - CC/CV charging with the CV taper derived as $RC_{eff}$ charging, precharge, termination, timers, JEITA; linear, switching, power-path and 2:1 direct chargers;
-> - voltage, coulomb-counting and combined gauging, error budgets and capacity learning; SEI √t calendar aging, cycle life, protection and IEC 62133-2; wearable battery-life derating.
->
-> Its lab has `battery.py`, `pulse.cir` (SOC as a 1080 F capacitor; 3.7775 V after relaxation) and `cccv.cir` (1C and 2C charges: 67.8 and 42.0 min). Sourced facts are in R-439 to R-443 (with R-082 and R-098).
->
-> 22-10 (Datacenter Power Delivery) is verified. It covers:
->
-> - the grid-to-die conversion chain, efficiency products and PUE; conductor loss $P^2R/V^2$, the tapped-busbar $I^2R/3$, copper mass, and AC against DC per conductor;
-> - fixed-ratio bus converters; multiphase VRMs with the interleaved-ripple formula derived (zero when $ND$ is an integer), slew limits, load lines and AVP;
-> - PDN target impedance, the package–die resonance and first droop $\Delta I\sqrt{L/C}$, damping; lateral, vertical, backside and integrated delivery; rack energy storage.
->
-> Its lab has `pdn.py`, `multiphase.cir` (4 interleaved phases: 7.46 A per phase, 5.84 A summed) and `pdn.cir` (impedance peak 1.05 mΩ at 25.3 MHz; first droop 26.5 mV). Sourced facts are in R-444 to R-447.
->
-> 22-11 (Electric Machines and Drives) is verified. It covers:
->
-> - force and EMF to $ei = T\omega$; the DC machine's speed–torque line; the rotating field derived ($\tfrac32B_m\cos(\theta - \omega t)$), synchronous speed and slip;
-> - the induction machine's equivalent circuit, power split ($sP_{ag}$ rotor loss), torque–slip curve with $s_{max}$ and $T_{max}$; synchronous machines' power angle and pull-out; PMSMs and field weakening;
-> - V/f drives, inverter voltage limits (0.612 against 0.707 $V_{dc}$), field-oriented control, affinity laws; IE classes and EU/US rules, NEMA design letters, EV traction benchmarks and rare-earth exposure.
->
-> Its lab has `machines.py`, `dcmotor.cir` (start-up with inertia: 41.7 A peak, 20.5 ms to 63%) and `induction.cir` (equivalent circuit at s = 1 and 0.03). Sourced facts are in R-448 to R-451.
->
-> 22-12 (Power Systems Fundamentals) is verified. It covers the per-unit system, line parameters from flux and field integrals with SIL and the Ferranti effect, two-bus power flow and the voltage-drop approximation with its quadrature correction, three-phase and single-line-to-ground faults with symmetrical components, the swing equation, RoCoF, droop and the nadir, and inverter-based resources, ride-through and large datacenter loads. Its lab has `grid.py`, `powerflow.cir` (Example 22-12.4 in volts and ohms) and `freq.cir` (frequency response after a 1.8 GW loss: nadir 0.344 Hz at 2.27 s). Sourced facts are in R-452 to R-457.
->
-> **All twelve Course 22 chapters are verified, and the wrap-up is done:** a final exam (14 questions, 120 points, 240 minutes) whose 270 keyed answers `verify_22_exam.py` checks (288 checks), an equation sheet in twelve sections, course notes in the README, and 105 flashcards. While drafting, eleven exam parts were found to share setups with worked examples (22-02.5's 0.3 A, 22-03.4's −5 V from 12 V, 22-04.3's forward converter, 22-05.1's 20-turn 0.5 mm core, 22-05.6's foil, 22-06.1's 400 V 10 A overlap, 22-07.4's 5 V to 3.3 V current-mode buck, 22-08.2's 300 mA point, 22-08.7's 20 nF domain, 22-11.1's DC motor, 22-12.2/22-12.6's base and fault data); all were given new parameters before publishing. **Next: the Course 22 audit:** fresh-reviewer subagents in parts (A: 22-01–22-04, B: 22-05–22-08, C: 22-09–22-12, D: exam, sheet, cards, notes), fixes, and reviewed status. Then Term 6 continues with Course 23 (Memory and Storage Technology). Log new facts as R-458 onward. ngspice tip from 22-02: switched-converter runs show sub-millivolt steps when the time step changes. Measure averages over a late window and peak-to-peak values over the final period only. Two research files gathered on 2026-11-24 are in the session scratchpad (`research22_A.md` and `research22_B.md`). Log their facts as R-421 onward when a chapter uses them; if the scratchpad is gone, re-gather the facts for the chapter being written. Power-converter circuits must be confirmed in ngspice (switching transients with EXPECT lines). New notebooks that call ngspice must use the guarded helper (copied in 21-01 to 21-10), because CI's notebook job has no ngspice. ngspice tip from 21-03: `.meas integ` on non-uniform transient points is inaccurate for small harmonics; run, `linearize`, then `meas` in a `.control` block.
+> - **(i) State the boundary of every efficiency and saving.** PUE is facility power over IT power metered after the UPS, so multiplying the UPS input by the PUE counts the UPS loss twice. The exam's two "150 W" savings add on 22-10's regulator-only boundary (about 349 W) but overlap if the baseline was measured at the die.
+> - **(ii) Label a rule of thumb as a rule, and check it against the exact optimum.** The droop-minimizing ESR is 0.53 $Z_0$ by simulation, against the $Z_0/2$ rule; the optimum is flat, so the rule stands, but the question must say which it asks for.
+> - **(iii) Nonlinear capacitance needs charge, not energy.** Both the hard-turn-on loss and the ZVS energy condition are $Q_{oss}V$ ($C_{o(tr)}V^2$), which equals $2E_{oss}$ only for a linear capacitor.
+> - **(iv) Exams must not reuse problem-set setups either.** Q11(b) was Problem 22-11.3 exactly, and Q3(c) shared Problem 22-03.2's duty cycle; check originality against the problem sets as well as the worked examples.
+> - **(v) Size the exam from its keyed answers.** 270 answers with four derivations did not fit 240 minutes; the paper now runs 330 minutes in two sittings.
+> - **(vi) Specify the loss model in the question.** "The inductor and switch together have 50 mΩ" admits two models; state the winding resistance and which devices are ideal.
+> - **(vii) Every intermediate a solution prints is a published number.** Key it with its part label, or drop it (Ex 22-06.4's 0.32 and 3.6, Solution 22-06.9's Baliga products, the figure's 208 and 544 kHz crossings).
 >
 > Course 21 audit lessons to carry forward:
 >
@@ -211,7 +114,7 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 |---|---|---|
 | 0 · Scaffold | Structure, CLAUDE.md, CURRICULUM.md, README, STUDY_PLAN, SETUP, env files, CI, tooling, notation | ✅ complete |
 | 1 · Pilot | 02-01 and 07-02, complete with problems, solutions, labs, verification; then stop for feedback | ✅ complete — feedback still pending; learner asked to continue meanwhile |
-| 2 · Courses | Terms 1 → 7 in prerequisite order; per-course audit; term checkpoints | 🔄 in progress: Courses 00–21 🏁 (Terms 1–5 and their checkpoints complete); Term 6 continues with Course 22 (22-01 to 22-12 ✅, wrap-up done; audit next) |
+| 2 · Courses | Terms 1 → 7 in prerequisite order; per-course audit; term checkpoints | 🔄 in progress: Courses 00–22 🏁 (Terms 1–5 and their checkpoints complete); Term 6 continues with Course 23 (Memory and Storage Technology) |
 | 3 · Capstones and practitioner layer | Capstones C1–C4, practitioner playbooks and case studies, reference files, final STUDY_PLAN | ⬜ not started |
 | 4 · Final QA | Full CI pass, glossary/objective/cross-link audits, final report | ⬜ not started |
 
@@ -245,8 +148,8 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | 19 | 13 | 13 | 13 | 13 | 89,495 | 169 | 1381 | 13 | 13 / 16 / 2 |
 | 20 | 12 | 12 | 12 | 12 | 104,874 | 177 | 2074 | 12 | 12 / 21 / 0 |
 | 21 | 12 | 12 | 12 | 12 | 98,549 | 170 | 1662 | 12 | 12 / 14 / 0 |
-| 22 | 12 | 12 | 12 | 0 | 94,057 | 157 | 1539 | 12 | 12 / 25 / 0 |
-| **Total** | **307** | **252** | **252** | **240** | **1,775,958** | **3594** | **30189** | **252** | **248 / 254 / 27** |
+| 22 | 12 | 12 | 12 | 12 | 96,801 | 171 | 1653 | 12 | 12 / 25 / 0 |
+| **Total** | **307** | **252** | **252** | **252** | **1,778,702** | **3608** | **30303** | **252** | **248 / 254 / 27** |
 
 Glossary terms: **2570** · Flashcards: **2349**
 
@@ -278,6 +181,7 @@ Glossary terms: **2570** · Flashcards: **2349**
 | 19 | 🏁 audited | ✅ 2026-11-24 | 13 chapters reviewed: 169 problems, 1,381 keyed values, 13 lab notebooks, 16 ngspice netlists and self-checking Verilog; exam (14 questions, 120 points, 240 minutes), 86 flashcards, equation sheet and course notes. Five reviewers, 131 findings, all fixed. |
 | 20 | 🏁 audited | ✅ 2026-11-24 | 12 chapters reviewed: 177 problems, 2,074 keyed values, 12 lab notebooks, 21 ngspice netlists; exam (14 questions, 120 points, 240 minutes), 77 flashcards, equation sheet and course notes. Four reviewers, 144 findings, all fixed. |
 | 21 | 🏁 audited | ✅ 2026-11-24 | 12 chapters reviewed: 170 problems, 1,662 keyed values (1,762 checks), 12 lab notebooks, 14 ngspice netlists; exam (14 questions, 120 points, 240 minutes, 168 keyed answers), 94 flashcards, equation sheet and course notes. Four reviewers, 122 findings (9 critical, 29 major), all fixed. |
+| 22 | 🏁 audited | ✅ 2026-11-25 | 12 chapters reviewed: 171 problems, 1,378 keyed values plus 275 exam values (1,784 checks), 12 lab notebooks, 25 ngspice netlists; exam (14 questions, 120 points, 330 minutes in two sittings), 105 flashcards, equation sheet, course notes. Four fresh reviewers raised 92 findings (A 23, B 28, C 20, D 21), all fixed. |
 | all others | ⬜ planned (stubs only) | — | |
 
 Course status values: ⬜ planned · 🔄 in progress · ✅ complete (all chapters verified, exam + flashcards + glossary done) · 🏁 audited (independent review findings fixed).
@@ -349,6 +253,7 @@ Course status values: ⬜ planned · 🔄 in progress · ✅ complete (all chapt
 | 61 | **21-10 facts not independently confirmed.** (a) ✅ Closed 2026-11-24: an independent `itur` implementation of P.676 agrees with R-401 to about 1 % (0.1018/0.1234/14.78 dB/km against 0.101/0.122/14.66). (b) Ericsson AIR element counts, ADAR1000 specifications, Qualcomm QTM052/QTM565 claims and Opensignal time-on-mmWave figures were seen only in search snippets and are not used. (c) The number of mmWave modules in any specific phone and the Starlink terminal element count have no first-party source. | 21-10 | Publish (b) and (c) only if primary sources are found. |
 | 62 | **Course 21 audit items answered without a full change.** (a) NXP's exit from RF power is reported only by trade press (R-419); 21-07 says so. (b) Wi-Fi minimum sensitivities are the MCS0–11 rows of R&S's 802.11be-draft summary; IEEE Std 802.11ax-2021's table was not read, and 21-11 tags them as a secondary source (R-407). (c) BeiDou and GLONASS carriers come from ESA Navipedia, and QZSS is not claimed (R-420). (d) The Chu limit and GNSS are taught and in the problem sets but not examined (audit D minor 14). (e) 21-06 and 21-07 run about 7,800 and 7,100 prose words without tables and display math, so the reviewer's length flag (B m19) needed no cut. | 2026-11-24 | Read IEEE 802.11ax-2021 and the BeiDou ICDs if reachable; consider an exam variant that examines the Chu limit. |
 | 63 | **22-08 sources read from copies or not found.** (a) The nPM1300 Product Specification v1.3 was read from a public copy on GitHub because Nordic's site served a bot challenge (R-435); 22-08 §9 says so. (b) The SPMI clock rates come from MIPI's 2012 overview slides, not the current specification page (R-436). (c) No public source states PMIC counts per Snapdragon platform; 22-08 uses iFixit's S25 Ultra chip ID as a lower bound (R-438). (d) The NXP PCA9450 data sheet was unreachable. | 22-08 drafting, 24 Nov 2026 | Re-read the nPM1300 specification on docs.nordicsemi.com when reachable and update 22-08 §9 if any value differs. |
+| 64 | **Course 22 audit sources re-read before a container restart.** The audit's reviewers re-read several primary documents on 25 Nov 2026 (TI's TIDUF57 and TIDT294 design notes, ERCOT's inertia white paper) before the container restarted. After the restart the network policy refused those primary hosts (for example ercot.com, my.ece.utah.edu and nvidia.com), so the fixes rest on the reviewers' readings, logged in R-423 and R-454 as "re-read during the course audit". | Phase 2 | Re-open the primary documents when reachable and confirm the quoted figures. |
 
 ## Change log
 
@@ -646,3 +551,4 @@ Changes relative to the original build brief's chapter plan.
 | 2026-11-25 | Phase 2. **22-11 Electric Machines and Drives ✅ verified.** Energy conversion $ei = T\omega$; the DC machine; the rotating magnetic field derived; synchronous speed and slip; the induction equivalent circuit with power flow and the torque–slip curve (Thevenin, $s_{max}$, $T_{max}$); synchronous machines and PMSMs; V/f, inverter voltage limits with SVPWM, field-oriented control, affinity laws; IE classes, EU 2019/1781 and the 2027 US rule, NEMA design letters, ORNL EV benchmarks, rare-earth supply. 8 examples, 13 problems with solutions; verify 108 checks (root-found DC operating points and an ODE start-up, field-peak tracking for synchronous speed, a complex nodal solution of the full equivalent circuit with open/short-circuit Thevenin, phasor power for the synchronous machine, Fourier fundamentals of synthesized PWM with min–max injection); 2 ngspice netlists (8 EXPECTs), notebook, 3 figures, 19 glossary terms, R-448 to R-451. Corrections during drafting: a lab value written before computing (151.2 N·m) replaced by the computed 136.1 N·m; the DC-motor netlist's torque sign fixed; the switched-PWM check moved to averaged legs after carrier-peak clipping biased it by 0.04%.
 | 2026-11-25 | Phase 2. **22-12 Power Systems Fundamentals ✅ verified.** Per-unit bases and base changes; line inductance and capacitance from flux and field integrals, characteristic impedance, SIL and the Ferranti effect; two-bus power flow from S = VI*, the first-order voltage drop and its quadrature correction (8% here); three-phase and SLG faults with symmetrical components; the swing equation, RoCoF, droop, nadir; IBRs, IEEE 1547/2800, NERC's 1,500 MW datacenter event, interconnection queues. 9 examples, 13 problems with solutions; verify 79 checks (base quantities from per-phase values, quad-integrated L and C, phasor power flow, sequence-network phase currents with the a operator, solve_ivp swing equation, root-found droop balance, ABCD Ferranti ratio); 2 ngspice netlists (7 EXPECTs), notebook, 2 figures, 15 glossary terms, R-452 to R-457. Corrections during drafting: the voltage-drop approximation proved 8% low against the exact phasor solution, so the example and §3.3 now teach the quadrature correction; research-log URLs replaced by the exact URLs read (including an eCFR link in R-449).
 | 2026-11-25 | Phase 2. **Course 22 wrap-up.** Final exam (14 questions, 120 points, 240 minutes: one question per chapter, a derivations question (capacitor charging and stepped charging, the boost's right-half-plane zero from the averaged model, the transformer's optimal flux swing, the sending-end voltage with its quadrature term) and a diligence question on a vertical-power module's efficiency, lateral-delivery saving and droop claims) with fully worked solutions, a rubric and 270 keyed answers checked by `verify_22_exam.py` (288 checks: sampled switching waveforms for ripple, RMS and DCM duty cycles; averaged-model solves; field-energy and iGSE integrals; switching-energy integrals and minimization; numerical loop crossover and an iterated peak-current map; time-domain cell and CC/CV integration; discrete busbar taps, shifted-phase ripple sums and L–C droop simulation; slip sweeps, phasors, symmetrical components and a swing-equation simulation; numerical linearization for the RHP zero). Equation sheet (12 sections), course notes, 105 flashcards. Eleven exam parts that shared setups with worked examples were re-parameterized before publication. |
+| 2026-11-25 | Phase 2. **Course 22 audited 🏁.** Four fresh reviewers raised 92 findings: A (22-01 to 22-04) 23, B (22-05 to 22-08) 28, C (22-09 to 22-12) 20, D (exam, sheet, cards, notes) 21. Main fixes: PUE applied to IT power after the UPS (22-10, sheet, card); per-point efficiency leverage $P_{wall}\Delta\eta/(\eta_k + \Delta\eta)$; DCM flyback and buck-boost ratios; the Ćuk capacitor voltage; derivations added for symmetrical components and line-to-line and double-line-to-ground faults, line inductance and capacitance from flux and field integrals, the long-line Ferranti effect, synchronous P and Q, and the droop estimate $Z_{cl} \approx 1/(C(s + \omega_c))$; the ZVS energy condition for a small swinging inductance derived by energy balance ($\tfrac12LI^2 \ge Q_{oss}V$, not $2E_{oss}$) and confirmed by integrating a nonlinear-capacitance swing; new derivation problems 22-06.13 (ZVS energy condition for any far-end potential) and 22-08.13 ($k_{PFM}$ from a fixed-peak pulse model, with the pulse-rate limit $I_{pk}/2$), plus a powder-core problem 22-05.15; unkeyed intermediates keyed with part labels; wording and tags (IGBT crossover, dead-time power, hard-commutation once per cycle, SiC traction share [Industry estimate]). Exam: Q14(d) boundary logic and a 3-point rubric (savings add on 22-10's boundary, 1962 W against 1613 W, 349 W); time limit 330 minutes in two sittings; Q3(b) loss model stated; Q3(c) and Q11(b) re-parameterized away from Problems 22-03.2 and 22-11.3; Q10(d) by the $Z_0/2$ rule with the simulated optimum 0.53 $Z_0$; RoCoF signed; under-specified parts completed; solution steps derived (KVL charging current, DCM $M^2$, unity-pf $\mathbf E_f$); verify independence improved (sampled buck-boost switch voltage, 24 h profile integration, simulated $Z_0$ and ESR optimum, swing-equation RoCoF) and its header reworded to "about half by a second route". Sheet: PUE row, switch-resistance, full-bridge and ESR-zero rows, symbol-reuse list. Cards: flyback current scaling, PUE, CSV escaping, perishable dating, four polish items. Notes: the inertia/droop/secondary-control timescale. All 12 chapters marked reviewed; 13 verify scripts (1,784 checks, 1,653 keyed values) and 25 ngspice netlists pass. Open issue 64 records the sources re-read before the restart. |

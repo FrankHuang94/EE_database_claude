@@ -44,7 +44,7 @@ $T = K\Phi I_a \propto I_a^2$, so doubling the current multiplies the torque by 
 
 ### Solution 22-11.10
 
-(a) $0.612 \times 400$ = **245** V; (b) $400/\sqrt2$ = **283** V. For the same power an 800 V platform carries half the current of a 400 V one, a quarter of the conduction loss in the cables and machine windings.
+(a) $0.612 \times 400$ = **245** V; (b) $400/\sqrt2$ = **283** V. For the same power an 800 V platform carries half the current of a 400 V one, so cables of the same cross-section lose a quarter as much. The machine's winding loss is not reduced this way: a winding for twice the voltage has twice the turns of half the area, so with the same copper its $I^2R$ is unchanged.
 
 ### Solution 22-11.11
 
@@ -57,6 +57,10 @@ $T = K\Phi I_a \propto I_a^2$, so doubling the current multiplies the torque by 
 ### Solution 22-11.13
 
 $B(\theta, t) = B_m[\cos\omega t\cos\theta + \sin\omega t\sin\theta] = B_m\cos(\theta - \omega t)$: a rotating field of amplitude (a) **1.0** times one winding's peak, against (b) the three-phase **1.5** times, a ratio of **0.67**.
+
+### Solution 22-11.14
+
+(a) $V = 13\,800/\sqrt3$ = **7967** V and $I = P/(3V\cos\varphi) = 40\ \text{MW}/(3 \times 7967 \times 0.9)$ = **1859** A, lagging by 25.84°. (b) As a generator, $\mathbf E_f = \mathbf V + jX_s\mathbf I = 7967 + j4.0 \times 1859\angle{-25.84°} = 7967 + 3246 + j6693$ V, so $E_f$ = **13.06** kV at δ = **30.84**°. Check: $3VE_f\sin\delta/X_s$ = 40.0 MW. ✓ (c) $3VE_f/X_s$ = **78.0** MW. (d) $Q = 3VI\sin\varphi$ = **19.37** MVAr delivered. (e) At unity power factor $\mathbf I$ is in phase with $\mathbf V$, $I$ = 1673 A, and $E_f = \sqrt{V^2 + (X_sI)^2}$ = **10.41** kV. Lowering the field from 13.06 to 10.41 kV removes the reactive output while the governor holds the power: excitation sets reactive power, the prime mover sets real power.
 
 ---
 
@@ -108,3 +112,10 @@ $B(\theta, t) = B_m[\cos\omega t\cos\theta + \sin\omega t\sin\theta] = B_m\cos(\
 | 22-11.13a | two-phase amplitude | 1.0 | |
 | 22-11.13b | three-phase amplitude | 1.5 | |
 | 22-11.13c | ratio | 0.67 | |
+| 22-11.14a | phase voltage | 7967 | V |
+| 22-11.14b | phase current | 1859 | A |
+| 22-11.14c | excitation EMF | 13.06 | kV |
+| 22-11.14d | power angle | 30.84 | ° |
+| 22-11.14e | pull-out power | 78.0 | MW |
+| 22-11.14f | reactive power delivered | 19.37 | MVAr |
+| 22-11.14g | EMF for unity power factor | 10.41 | kV |

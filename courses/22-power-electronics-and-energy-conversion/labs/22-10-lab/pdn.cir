@@ -1,4 +1,4 @@
-* Lab 22-10, Part 1 -- Example 22-10.6: a die's 20 uF of capacitance (with 0.1 mohm ESR) behind 2 pH of package
+* Lab 22-10, Parts 3 and 4 -- Example 22-10.6: a die's 20 uF of capacitance (with 0.1 mohm ESR) behind 2 pH of package
 * inductance, fed from a stiff 0.8 V source, sees a 100 A load step with a 10 ps edge at t = 1 ns.
 * (a) AC: the impedance seen from the die peaks near f0 = 1/(2 pi sqrt(LC)). (b) Transient: the first droop.
 * EXPECT droop key:../../chapters/22-10-datacenter-power-delivery.md#Ex_22-10.6g scale=1e-3 rtol=1e-2

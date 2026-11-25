@@ -1,4 +1,4 @@
-* Lab 22-11, Part 1 -- Example 22-11.4: the per-phase equivalent circuit of a 400 V, 50 Hz, 4-pole induction motor
+* Lab 22-11, Part 2 -- Example 22-11.4: the per-phase equivalent circuit of a 400 V, 50 Hz, 4-pole induction motor
 * (R1 = 0.5, X1 = 1.0, Xm = 30, R2 = 0.4, X2 = 1.0 ohm) solved by AC analysis at 50 Hz, at standstill (s = 1)
 * and at 3% slip. Torque = 3 |I2|^2 (R2/s) / omega_s with omega_s = 50 pi rad/s.
 * EXPECT tst key:../../chapters/22-11-electric-machines.md#Ex_22-11.4d rtol=1e-3

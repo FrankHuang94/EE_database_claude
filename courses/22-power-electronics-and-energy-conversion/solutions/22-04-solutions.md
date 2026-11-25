@@ -78,7 +78,7 @@ IEC 60664-1: $3.0 \times 1.48$ = **4.44** mm. IEC 62368-1: $3.8 \times 1.48$ = *
 
 (a) $n = V_R/V = 100/12$ = **8.33**.
 
-(b) $D = V_R/(V_{in} + V_R) = 100/200$ = **0.5** at 100 V; (c) $100/473$ = **0.211** at 373 V.
+(b) $D = V_R/(V_{in} + V_R) = 100/200$ = **0.5** at 100 V. (c) At 373 V the frequency is still 65 kHz, so the converter runs in discontinuous conduction and the CCM relation no longer applies. In DCM it delivers $P_{in} = (V_{in}D)^2T_s/(2L_m)$, so the volt-seconds per cycle $V_{in}DT_s = \sqrt{2L_mP_{in}T_s}$ are fixed by the power; with $L_m$ and $P_{in}$ from (g) and (e), $V_{in}D = \sqrt{2L_mP_{in}f_s}$ = 50.0 V, the same as at 100 V, and $D = 50.0/373$ = **0.134**. Check: the reset takes $D_2 = V_{in}D/V_R$ = 0.50, and $D + D_2$ = 0.634 < 1, so it is discontinuous. (A quasi-resonant flyback that stays at the boundary would instead raise its frequency here.)
 
 (d) $373 + 100$ = **473** V, plus the clamp's excursion.
 
@@ -87,6 +87,18 @@ IEC 60664-1: $3.0 \times 1.48$ = **4.44** mm. IEC 62368-1: $3.8 \times 1.48$ = *
 (f) $I_{pk} = 2P_{in}/(V_{in}D) = 2 \times 27.27/(100 \times 0.5)$ = **1.09** A.
 
 (g) $L_m = V_{in}DT_s/I_{pk} = 100 \times 0.5 \times 15.38\ \mu\text{s}/1.091$ = **705** µH.
+
+### Solution 22-04.13
+
+(a) $2 \times 4.0$ = **8.0** mm. (b) Group I needs $2 \times 2.0$ = 4.0 mm, **4.0** mm shorter. (c) Reinforced creepage is 4.0 mm for group I, 5.6 mm for group II and 8.0 mm for group III, so a 6.0 mm path serves groups I and II but not III: either a better-tracking bobbin material, or slots and barriers that lengthen the path.
+
+### Solution 22-04.14
+
+(a) In DCM the energy stored each cycle, $\tfrac12L_mI_{pk}^2$ with $I_{pk} = V_{in}DT_s/L_m$, is all delivered to the output, so $(V_{in}D)^2T_s/(2L_m) = V^2/R$ and $M = V/V_{in} = D\sqrt{RT_s/(2L_m)}$. With $R$ = 2.5 Ω and $T_s$ = 6.667 µs, $\sqrt{RT_s/(2L_m)}$ = 0.527, so $D = (5/48)/0.527$ = **0.198**. (b) In CCM, $D/D' = nV/V_{in} = 20/48$ gives $D$ = 0.294 and $D'^2$ = 0.498, while $2L_m/(n^2RT_s)$ = **0.225**: below $D'^2$, so discontinuous. (c) $I_{pk} = V_{in}DT_s/L_m = 48 \times 0.198 \times 6.667\ \mu\text{s}/30\ \mu\text{H}$ = **2.11** A; check: $\tfrac12L_mI_{pk}^2f_s$ = 10.0 W. ✓ (d) The boundary is at $2L_m/(n^2RT_s) = D'^2$: $L_m = 0.498 \times 16 \times 2.5 \times 6.667\ \mu\text{s}/2$ = **66.4** µH.
+
+### Solution 22-04.15
+
+(a) $D = nV/V_{in}$: **0.4125** at 36 V and **0.206** at 72 V, both below $D_{max}$ = 0.5. (b) The ripple is $\Delta i = (V_{in}/n - V)DT_s/L = V(1 - D)/(f_sL)$, largest at the lowest $D$, so at 72 V: $L = 3.3 \times (1 - 0.206)/(300\ \text{kHz} \times 4.5\ \text{A})$ = **1.940** µH. (c) $C = \Delta i/(8f_s\Delta v) = 4.5/(8 \times 300\ \text{kHz} \times 20\ \text{mV})$ = **93.75** µF. (d) $\Delta B = V_{in}DT_s/(N_1A_e) = nVT_s/(N_1A_e) = 14.85 \times 3.333\ \mu\text{s}/(9 \times 60\ \text{mm}^2)$ = **0.0917** T, independent of the input voltage because $V_{in}D = nV$ in steady state.
 
 ---
 
@@ -125,8 +137,19 @@ IEC 60664-1: $3.0 \times 1.48$ = **4.44** mm. IEC 62368-1: $3.8 \times 1.48$ = *
 | 22-04.11b | clearance at 5000 m, IEC 62368-1 | 5.62 | mm |
 | 22-04.12a | turns ratio | 8.33 | |
 | 22-04.12b | duty at 100 V | 0.5 | |
-| 22-04.12c | duty at 373 V | 0.211 | |
+| 22-04.12c | duty at 373 V | 0.134 | |
 | 22-04.12d | drain voltage at 373 V | 473 | V |
 | 22-04.12e | input power | 27.3 | W |
 | 22-04.12f | peak primary current | 1.09 | A |
 | 22-04.12g | magnetizing inductance | 705 | µH |
+| 22-04.13a | reinforced creepage, group III | 8.0 | mm |
+| 22-04.13b | saving with group I | 4.0 | mm |
+| 22-04.14a | DCM duty cycle | 0.198 | |
+| 22-04.14b | conduction parameter | 0.225 | |
+| 22-04.14c | peak primary current | 2.11 | A |
+| 22-04.14d | boundary magnetizing inductance | 66.4 | µH |
+| 22-04.15a | duty cycle at 36 V | 0.4125 | |
+| 22-04.15b | duty cycle at 72 V | 0.206 | |
+| 22-04.15c | output inductance | 1.940 | µH |
+| 22-04.15d | output capacitance | 93.75 | µF |
+| 22-04.15e | flux swing | 0.0917 | T |

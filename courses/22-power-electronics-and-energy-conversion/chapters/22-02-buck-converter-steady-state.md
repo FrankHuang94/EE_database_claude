@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 22-02 · Steady-State Analysis and the Buck Converter
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The steady-state analysis weeks of a senior power-electronics course: inductor volt-second balance, capacitor charge balance and the small-ripple approximation; the buck converter's ratio, ripples and RMS currents; conduction losses in the equivalent circuit; continuous and discontinuous conduction; and power-stage design (Erickson & Maksimović, *Fundamentals of Power Electronics*, ch. 2, 3 and 5; Mohan, Undeland & Robbins, the step-down converter chapter) |
 | **Prerequisites** | [22-01](22-01-power-conversion-principles.md) (switching, averaging, losses), [07-01](../../07-circuit-analysis-2-transient-and-ac/chapters/07-01-capacitors-and-inductors.md) (inductor and capacitor laws), [03-03](../../03-probability-statistics-and-random-variables/chapters/03-03-expectation-and-functions-of-rvs.md) (mean and variance, used for RMS values) |
 | **Estimated study hours** | 9 |
-| **Last verified** | 2026-11-24 |
+| **Last verified** | 2026-11-25 |
 
 **Learning objectives.** After this chapter you can:
 
@@ -87,7 +87,7 @@ $$
 \Delta Q = \frac12\cdot\frac{T_s}{2}\cdot\frac{\Delta i_L}{2} = \frac{\Delta i_L T_s}{8}, \qquad \Delta v_C = \frac{\Delta Q}{C} = \frac{\Delta i_L}{8f_sC} .
 $$
 
-Applied to Example 22-01.4 ($\Delta i_L$ = 0.4785 A, 1 µF, 500 kHz), this gives **119.6** mV (Txt a), against the exact 120.3 mV. The difference is the small share of ripple current that flows in the load.
+Applied to Example 22-01.4 ($\Delta i_L$ = 0.4785 A, 1 µF, 500 kHz), this gives **119.6** mV (Txt a), against the exact 120.3 mV. The exact value is slightly larger because the true inductor ripple is 0.482 A: the 120 mV output ripple, 3.6% of $V$, enlarges the inductor's volt-seconds in both subintervals, which the small-ripple approximation ignores. The small share of ripple current that flows in the load pulls the other way, by less.
 
 **ESR and ESL.** A real capacitor has an **equivalent series resistance** (ESR) and an **equivalent series inductance** (ESL) (07-01). The ripple current through the ESR adds a triangular voltage $\text{ESR}\cdot\Delta i_L$ peak to peak, in phase with the current, not with the charge. The capacitive and resistive parts peak at different times, so adding their peak-to-peak values is a slightly conservative estimate. The ESL turns each switching edge into a spike $L_{ESL}\,di/dt$. Ceramic capacitors have milliohm ESR, so their ripple is capacitive; electrolytic and polymer capacitors can be ESR-dominated, and then the capacitance hardly matters.
 
@@ -99,10 +99,10 @@ $$
 I_{L,rms} = I\sqrt{1 + \frac{r^2}{12}} .
 $$
 
-With $r$ = 0.3 the ripple adds only **0.37** % to the RMS current (Txt b), so conduction losses barely depend on ripple. The high-side switch carries the inductor current for a fraction $D$ of the time, and the low-side switch for $D'$; each switch carries a sliced piece of the same triangle-on-a-pedestal. Since the mean square of a waveform that equals $i_L$ for a fraction $D$ of the time (and is zero otherwise) is $D\langle i_L^2\rangle$ for small ripple,
+With $r$ = 0.3 the ripple adds only **0.37** % to the RMS current (Txt b), so conduction losses barely depend on ripple. The high-side switch carries the inductor current for a fraction $D$ of the time, and the low-side switch for $D'$; each switch carries a sliced piece of the same triangle-on-a-pedestal. Each subinterval spans a full ramp of the triangle, from valley to peak or back, so the mean square of the inductor current over either subinterval equals its mean square over the whole period. A waveform that equals $i_L$ for a fraction $D$ of the time (and is zero otherwise) therefore has mean square $D\,I_{L,rms}^2$, exactly, for a triangular inductor current:
 
 $$
-I_{HS,rms} \approx \sqrt D\,I_{L,rms}, \qquad I_{LS,rms} \approx \sqrt{D'}\,I_{L,rms} .
+I_{HS,rms} = \sqrt D\,I_{L,rms}, \qquad I_{LS,rms} = \sqrt{D'}\,I_{L,rms} .
 $$
 
 The **input capacitor** supplies the high-side switch's pulsed current while the source supplies its average, $DI$. The capacitor's current is therefore the switch current minus its mean, and by the refresher its mean square is the switch's mean square minus the square of its mean:
@@ -127,7 +127,7 @@ $$
 \eta = \frac{VI}{VI + I^2R_{eq}} = \frac{1}{1 + R_{eq}/R} .
 $$
 
-The ripple raises the true loss by the factor $1 + r^2/12$ of the RMS current. A regulated converter's control loop raises $D$ slightly above $V/V_{in}$ to make up the drop.
+The ripple raises the loss by the factor $1 + r^2/12$ (the RMS current by its square root). A regulated converter's control loop raises $D$ slightly above $V/V_{in}$ to make up the drop.
 
 **Why synchronous rectification.** The original buck used a diode for the low-side path, which needs no control. A diode conducting the inductor current drops a roughly constant forward voltage $V_F$, and the same volt-second balance gives
 
@@ -439,7 +439,7 @@ The lab ([labs/22-02-lab](../labs/22-02-lab/README.md)) collects the formulas in
 - **Light-load modes [Established as data-sheet behaviour].**
   - A wearable buck runs a fixed-on-time PFM that "generates a single switching pulse to ramp up the inductor current … followed by a sleep period". It switches to PWM at the CCM boundary, and offers forced PWM for when "interference with RF and noise-sensitive circuits" matters, at the cost of light-load efficiency [3].
   - An application-processor PMIC with six bucks selects PFM or PWM automatically "over a wide load range" [5].
-- **Minimum on-time sets frequency.** An industrial 36 V buck specifies a 68 ns minimum on-time and folds its 2.1 MHz frequency back when it is reached [2]. This is the same arithmetic as Example 22-02.7.
+- **Minimum on-time sets frequency** [Established as data-sheet values]. An industrial 36 V buck specifies a 68 ns minimum on-time and folds its 2.1 MHz frequency back when it is reached [2]. This is the same arithmetic as Example 22-02.7.
 
 **Commercial relevance.** The buck power stage is a commodity at the component level and a differentiator at the system level:
 

@@ -64,6 +64,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Decoupling count.** A 0.75 V rail allows 3% for a 400 A step. (a) What is the target impedance? (b) How many ceramic capacitors with 2 mΩ ESR must be paralleled for their combined ESR to meet it at their resonance?
 
+### Problem 22-10.14 [B]
+
+**Slew rate and pick-up time.** A 16-phase regulator converts 12 V to 0.75 V with 120 nH per phase. The load steps by 600 A instantly, and the controller turns every phase on until the regulator's current catches up. Find (a) the maximum slew rate of the total current, (b) the time to pick up the step, (c) the charge the output capacitors must supply meanwhile, treating the regulator's current as a linear ramp, and (d) the capacitance that keeps the droop within 30 mV. (e) Repeat (b) and (d) with 8 phases of the same inductance.
+
 ---
 
 ## Objective coverage
@@ -72,6 +76,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Conversion chain, efficiency and PUE | 4, 11 |
 | 2. Distribution voltage, conductor loss, AC and DC | 1, 2, 3, 10 |
-| 3. Multiphase regulators and load lines | 5, 6, 7 |
+| 3. Multiphase regulators and load lines | 5, 6, 7, 14 |
 | 4. Target impedance, resonance and decoupling | 8, 9, 13 |
 | 5. Vertical delivery and energy storage | 10, 12 |

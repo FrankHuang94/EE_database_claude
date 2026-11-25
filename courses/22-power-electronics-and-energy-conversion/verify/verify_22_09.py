@@ -174,7 +174,8 @@ qmax = 160 / (0.90 - 0.35)
 v.check("Ex 22-09.6e", qmax)
 v.check("Ex 22-09.6f", 100 * qmax / 300)
 corners = [160 / ((0.90 + a) - (0.35 + b)) for a, b in itertools.product((-0.01, 0.01), repeat=2)]
-v.check("Ex 22-09.6g", 100 * (max(corners) - min(corners)) / 2 / qmax)
+v.check("Ex 22-09.6g", 100 * (max(corners) - qmax) / qmax)
+v.check("Txt 22-09.l", 1e3 * 20 / (7 * 24))
 
 # ---------------------------------------------------------------- Example 22-09.7 (ring)
 i_ring = 22.5 / (7 * 24)                   # mA
@@ -213,6 +214,9 @@ v.check("22-09.3a", terminal(p3.y[:, 0], 2.0, ocv=lambda z: 3.75, r0=0.08))
 v.check("22-09.3b", terminal(p3.y[:, 1], 2.0, ocv=lambda z: 3.75, r0=0.08))
 v.check("22-09.3c", terminal(p3.y[:, 1], 0.0, ocv=lambda z: 3.75, r0=0.08))
 v.check("22-09.3d", terminal(p3.y[:, 2], 0.0, ocv=lambda z: 3.75, r0=0.08))
+v.check("22-09.3e", 1e3 * p3.y[1, 1])  # RC-branch state just before removal
+v.check("22-09.3f", 1e3 * p3.y[1, 2])
+v.check("22-09.3g", 1e3 * 0.9 * 2.0 * 10.0 / (4.5 * 3600))
 
 v.check("22-09.4a", 100 * discharge_to_cutoff(0.6, 0.30, 3.30)[0])
 v.check("22-09.4b", 100 * discharge_to_cutoff(0.6, 1.20, 3.30)[0])
@@ -290,5 +294,13 @@ v.check("Txt 22-09.h", 16e-3 * 4.2)                            # P42A DC 16 mOhm
 v.check("Txt 22-09.i", (0.20 + 0.10) * 0.300)                  # teaching cell
 v.check("Txt 22-09.j", 0.5 * 0.050)                            # VARTA CP 1254: <0.5 ohm at 1 kHz, 50 mAh
 v.check("Txt 22-09.k", 100 * (1 - 6.1 / 6.8))                  # Saft MP 176065
+
+qm14 = 1.32 / (0.80 - 0.25)
+v.check("22-09.14a", qm14)
+v.check("22-09.14b", 100 * qm14 / 2.6)
+c14 = [1.32 / ((0.80 + a) - (0.25 + b)) for a, b in itertools.product((-0.005, 0.005), repeat=2)]
+v.check("22-09.14c", 100 * (max(c14) - qm14) / qm14)
+v.check("22-09.14d", 100 * (min(c14) - qm14) / qm14)
+v.check("22-09.14e", optimize.brentq(lambda dz: dz / (dz - 0.01) - 1.02, 0.02, 5))
 
 v.finish()

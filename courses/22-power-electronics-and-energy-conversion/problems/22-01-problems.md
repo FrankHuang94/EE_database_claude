@@ -72,6 +72,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A density claim under diligence.** A start-up claims a "3 kW, 99% efficient, 150 W/in³" converter. (a) Find the implied loss, (b) the volume and (c) the heat density. (d) It emerges that the 99% is the PFC stage and the DC-DC stage is 98%: find the overall efficiency, (e) the real loss, (f) the real heat density and (g) the factor by which the heat was understated. (h) If the box can reject 3 W/in³ (assumed), what overall efficiency would 150 W/in³ require?
 
+### Problem 22-01.16 [B]
+
+**A light-load mode.** A 1.8 V wearable buck's loss is $P_0 + aI + RI^2$ with $P_0$ = 6 mW, $a$ = 20 mW/A and $R$ = 0.25 Ω in forced PWM. In pulse-frequency mode, $P_0$ falls to 20 µW, but the larger current pulses raise the effective $R$ to 0.60 Ω. Find the efficiency (a) in PWM and (b) in PFM at 1 mA, and (c) in PWM and (d) in PFM at 50 mA. (e) Above what load does PWM become the better mode?
+
 ---
 
 ## Objective coverage
@@ -81,5 +85,5 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Efficiency, loss, leverage and chains | 1, 2, 14, 15 |
 | 2. Linear regulators and the LDO-or-switcher decision | 3, 4, 5 |
 | 3. Lossless switching, the ½CV² loss and filter size | 6, 7, 8, 9 |
-| 4. Loss models, peak efficiency and light-load techniques | 9, 10, 11 |
+| 4. Loss models, peak efficiency and light-load techniques | 9, 10, 11, 16 |
 | 5. Power density, its thermal limit and hold-up energy | 12, 13, 15 |

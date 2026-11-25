@@ -58,7 +58,7 @@ The bracket at 0.5 is 3.106, so (c) **1.90** and (d) **1.16**. A 12 V to 1 V con
 
 (b) $2267/7650$ = **0.296** W/kg.
 
-(c) $\pi^2 \times (2 \times 10^4)^2 \times 0.01 \times (0.35\ \text{mm})^2/(3\ \mu\Omega\text{m})$ = **1.61** MW/m³: 1.6 W per cubic centimetre from eddy currents alone, at a modest flux density. Steel laminations stop at audio frequencies.
+(c) $\pi^2 \times (2 \times 10^4)^2 \times 0.01 \times (0.35\ \text{mm})^2/(3\ \mu\Omega\text{m})$ = **1.61** MW/m³: 1.6 W per cubic centimetre from eddy currents alone, at a modest flux density. (The formula overestimates here: at 20 kHz the steel's skin depth is far below 0.35 mm, so the flux crowds to the surfaces; the true loss is lower but still prohibitive.) Steel laminations stop at audio frequencies.
 
 ### Solution 22-05.8
 
@@ -126,6 +126,10 @@ $$
 
 The thick insulation needed for reinforced isolation (22-04) dominates the leakage: in (a) it contributes 0.4 of 1.07 mm, and interleaving halves its term but doubles the number of insulated interfaces. Interleaving saves 2.3 W, 3.3% of the 70.65 W input, which is why adapter transformers are interleaved despite the extra insulation layers.
 
+### Solution 22-05.15
+
+(a, b) $H = NI/\ell_e$, so $I = H\ell_e/N$. 45 Oe is 3581 A/m: $I = 3581 \times 0.0984/20$ = **17.6** A; 95 Oe is 7560 A/m: **37.2** A. (c, d) The inductance follows the permeability: $0.80 \times 10.0$ = **8.0** µH and $0.50 \times 10.0$ = **5.0** µH. (e) The ripple scales as $1/L$: $2.0/0.80$ = **2.50** A, a quarter more than designed, with a correspondingly higher peak current and RMS loss. (f) A gapped ferrite keeps almost its full inductance up to $B_{sat}$ and then loses it within a few per cent more current (Lab 22-05, Part 1), so its current runs away; the powder core's distributed gap lets the inductance fall gradually, which is why data sheets quote its "saturation current" as a stated percentage drop.
+
 ---
 
 ## Answer key
@@ -184,3 +188,8 @@ The thick insulation needed for reinforced isolation (22-04) dominates the leaka
 | 22-05.14f | interleaved share | 0.61 | % |
 | 22-05.14g | interleaved energy | 4.34 | µJ |
 | 22-05.14h | interleaved clamp loss | 1.20 | W |
+| 22-05.15a | current at 45 Oe | 17.6 | A |
+| 22-05.15b | current at 95 Oe | 37.2 | A |
+| 22-05.15c | inductance at 45 Oe | 8.0 | µH |
+| 22-05.15d | inductance at 95 Oe | 5.0 | µH |
+| 22-05.15e | ripple at 45 Oe | 2.50 | A |

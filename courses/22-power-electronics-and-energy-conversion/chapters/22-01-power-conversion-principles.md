@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 22-01 · Power Conversion Principles
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The opening weeks of a senior power-electronics course: efficiency and loss, linear against switching regulation, why ideal switches and reactive elements convert power without loss, the capacitor-charging loss, the shape of a converter's efficiency curve, power density, and energy storage for hold-up (Erickson & Maksimović, *Fundamentals of Power Electronics*, ch. 1–2; MIT 6.334, first lectures) |
 | **Prerequisites** | [06-01](../../06-circuit-analysis-1-dc/chapters/06-01-charge-current-voltage-power.md) (power, efficiency), [07-01](../../07-circuit-analysis-2-transient-and-ac/chapters/07-01-capacitors-and-inductors.md) (capacitor and inductor energy, continuity), [07-02](../../07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md) (RC charging), [11-05](../../11-signals-and-systems/chapters/11-05-fourier-series.md) (Fourier series), [20-04](../../20-analog-and-mixed-signal-ic-design/chapters/20-04-ldo-regulators.md) (LDO regulators) |
 | **Estimated study hours** | 6 |
-| **Last verified** | 2026-11-24 |
+| **Last verified** | 2026-11-25 |
 
 **Learning objectives.** After this chapter you can:
 
@@ -187,7 +187,7 @@ A processor voltage regulator turns phases off as the load falls, and back on as
 
 ### 3.6 Power density and its thermal limit
 
-**Power density** is rated output power divided by the volume of a defined box, quoted in W/in³ (1 in³ = 16.387 cm³) or W/cm³. Two physical limits bound it. The passives shrink as $1/f_s$ (§3.3), while the fixed and proportional losses grow with $f_s$ (§3.5). Even with perfect heat removal, then, there is a best frequency. If the passives' volume goes as $A/f_s$ and the volume needed to remove the frequency-dependent loss goes as $Bf_s$, total volume is smallest at $f_s^* = \sqrt{A/B}$, by the refresher above. Faster switches, with smaller switching energy (22-06), shrink $B$ and push $f_s^*$ up; that is the commercial argument for GaN and SiC.
+**Power density** is rated output power divided by the volume of a defined box, quoted in W/in³ (1 in³ = 16.387 cm³) or W/cm³. Two physical limits bound it. The passives shrink as $1/f_s$ (§3.3), while the fixed and proportional losses grow with $f_s$ (§3.5). Because removing the loss also takes volume (heat sinks, fans, board area), there is a best frequency. If the passives' volume goes as $A/f_s$ and the volume needed to remove the frequency-dependent loss goes as $Bf_s$, total volume is smallest at $f_s^* = \sqrt{A/B}$, by the refresher above. Faster switches, with smaller switching energy (22-06), shrink $B$ and push $f_s^*$ up; that is the commercial argument for GaN and SiC.
 
 The second limit is heat. Suppose a box can reject at most $q$ watts of heat per unit volume at its allowed temperature rise. This is a property of its cooling (natural convection, a fan, a cold plate) and not of the converter. Then $P_{loss}/\text{Vol} \le q$, and with $P_{loss} = P_{out}(1 - \eta)/\eta$,
 
@@ -266,7 +266,7 @@ The choice is rarely all-or-nothing. A common pattern is a buck from the battery
 
 **Units check.** Farads times volts squared gives joules; joules per second give watts.
 
-**Sanity check.** The lab charges the same capacitor through 1 Ω and through 100 Ω in ngspice and finds the same 125 µJ, and 31.25 µJ for the four-step staircase. The loss in (c) depends on the square of the voltage difference, so halving the difference (with a larger capacitor or a faster clock) quarters it: a switched-capacitor converter is efficient only when its capacitors swing little.
+**Sanity check.** The lab charges the same capacitor through 1 Ω and through 100 Ω in ngspice and finds the same 125 µJ, and 31.25 µJ for the four-step staircase. The loss in (c) depends on the square of the voltage difference, so halving the difference halves the loss power at a given load current, whether by doubling $C$ or doubling the clock ($P = I^2/(f_sC)$, Problem 22-01.7): a switched-capacitor converter is efficient only when its capacitors swing little.
 
 ### Example 22-01.4 · Switching plus filtering (tier B)
 
@@ -284,7 +284,7 @@ The choice is rarely all-or-nothing. A common pattern is a buck from the battery
 
 **Units check.** $\sqrt{LC}$ has units of $\sqrt{\text{H}\cdot\text{F}}$ = s; ripple is in volts.
 
-**Sanity check.** The estimate in (e) misses the higher harmonics and the load's damping and lands **1.2** % low (i), close enough for a first design. Ripple of 120 mV is **3.6** % of 3.3 V (j), too much for a processor rail, so a real design would raise $f_s$, $L$ or $C$. Item (g) shows the commercial point: doubling $f_s$ halves the energy each passive stores, and roughly its volume, if the switches' extra loss can be afforded.
+**Sanity check.** The estimate in (e) omits the higher harmonics and lands **1.2** % low (i), close enough for a first design. Using the unloaded filter slightly overstates the fundamental, because the load adds attenuation above resonance, so the whole shortfall comes from the harmonics. Ripple of 120 mV is **3.6** % of 3.3 V (j), too much for a processor rail, so a real design would raise $f_s$, $L$ or $C$. Item (g) shows the commercial point: doubling $f_s$ halves the energy each passive stores, and roughly its volume, if the switches' extra loss can be afforded.
 
 ### Example 22-01.5 · Where the efficiency peaks, and how to fix light load (tier B)
 
@@ -300,7 +300,7 @@ The choice is rarely all-or-nothing. A common pattern is a buck from the battery
 
 **Units check.** $P_0/R$ is W/Ω = A², so its root is in amperes.
 
-**Sanity check.** At the peak the fixed and conduction losses are both 150 mW, as derived. At 0.1 A the fixed 150 mW is 1.5 times the 100 mW output, which is why every converter for battery products has a light-load mode. A 49 K rise at full load would not pass a 25 °C-ambient design with 85 °C parts: two phases at 20 A cut the conduction loss from 1.2 to 0.6 W and the total to **1.5** W (j).
+**Sanity check.** At the peak the fixed and conduction losses are both 150 mW, as derived. At 0.1 A the fixed 150 mW is 1.5 times the 100 mW output, which is why every converter for battery products has a light-load mode. A 49 K rise at full load would not pass a 40 °C-ambient design with 85 °C parts (88.8 °C): two phases at 20 A cut the conduction loss from 1.2 to 0.6 W and the total to **1.5** W (j), a **37.5** K rise (77.5 °C).
 
 ### Example 22-01.6 · Recomputing power-density claims (tier C)
 
@@ -314,7 +314,7 @@ The choice is rarely all-or-nothing. A common pattern is a buck from the battery
 
 **Units check.** mm³ × 10⁻⁶ = L; 1 in³ = 16.387 cm³.
 
-**Sanity check.** Both products are server supplies of similar efficiency, but one is twice as dense as the other, so its designers had to remove heat twice as fast per unit volume (or count a different box). The thermal limit shows why: at 97.5% a box can only reach 117 W/in³ if it rejects 3 W/in³, so a 100 W/in³ product is near what forced air can do at that efficiency.
+**Sanity check.** Both products are server supplies of similar efficiency, but one is twice as dense as the other, so its designers had to remove heat twice as fast per unit volume (or count a different box). The thermal limit shows why: at 97.5% a box can only reach 117 W/in³ if it rejects 3 W/in³, so a 100 W/in³ product is near what a box rejecting 3 W/in³ allows at that efficiency.
 
 ### Example 22-01.7 · Sizing a hold-up capacitor (tier C)
 
@@ -343,7 +343,7 @@ The choice is rarely all-or-nothing. A common pattern is a buck from the battery
 
 **Units check.** Every stage's loss is its input power minus its output power, in watts; the four losses add to 202.5 W.
 
-**Sanity check.** The two-point VRM improvement saves twice as much as the one-point UPS improvement. That is partly because it is two points, but mostly because the VRM's loss is multiplied by every upstream stage: each watt lost at the processor costs 1/(0.97 × 0.975 × 0.977) = **1.08** W (j) at the wall. Point-of-load efficiency is where the leverage is, which is why 22-10's vertical power delivery and 48 V architectures exist.
+**Sanity check.** The two-point VRM improvement saves about twice as much as the one-point UPS improvement, and almost all of that factor is simply that it is two points. Raising any stage $k$ from $\eta_k$ to $\eta_k + \Delta\eta$ saves $P_{wall}\Delta\eta/(\eta_k + \Delta\eta)$ at the wall, because every stage carries the same wall-referred power: per point, **13.1** W at the VRM against **12.3** W at the UPS (l). Each watt lost at the processor does cost 1/(0.97 × 0.975 × 0.977) = **1.08** W (j) at the wall, but the UPS handles more power than the VRM by almost exactly that factor, so the two effects cancel. Point-of-load efficiency matters because that is where most of the loss sits (55%) and where most points remain to be won, not because a point there is worth much more; that is why 22-10's vertical power delivery and 48 V architectures exist.
 
 ### Answer key
 
@@ -365,7 +365,7 @@ The choice is rarely all-or-nothing. A common pattern is a buck from the battery
 | Ex 22-01.2d | LDO loss at 1 µA | 1.89 | µW |
 | Ex 22-01.2e | buck battery current at 1 µA | 0.625 | µA |
 | Ex 22-01.2f | battery-current ratio, LDO to buck | 1.64 | |
-| Ex 22-01.2g | quiescent share of the input current at 1 µA | 2.5 | % |
+| Ex 22-01.2g | quiescent current as a share of the load current at 1 µA | 2.5 | % |
 | Ex 22-01.3a | single-step charging loss | 125 | µJ |
 | Ex 22-01.3b | four-step charging loss | 31.25 | µJ |
 | Ex 22-01.3c | charge-sharing loss per connection | 10.0 | nJ |
@@ -436,6 +436,9 @@ The choice is rarely all-or-nothing. A common pattern is a buck from the battery
 | Txt 22-01.j | output over heat capacity at 99 % | 99 | |
 | Txt 22-01.k | four 97 % stages | 88.5 | % |
 | Txt 22-01.l | 99 % PFC times 98 % DC-DC | 97.0 | % |
+| Ex 22-01.8l | saving per point at the VRM | 13.1 | W |
+| Ex 22-01.8m | saving per point at the UPS | 12.3 | W |
+| Ex 22-01.5p | temperature rise with two phases | 37.5 | K |
 
 ## 5. Simulate it
 
@@ -470,8 +473,8 @@ The lab ([labs/22-01-lab](../labs/22-01-lab/README.md)) collects the chapter's f
 |---|---|---|
 | 80 PLUS Titanium, 230 V redundant supplies (10/20/50/100% load) | 90 / 94 / 96 / 91% | [1] (as of Nov 2026) |
 | 80 PLUS Ruby, 230 V redundant supplies (5/10/20/50/100%) | 90 / 91 / 95 / 96.5 / 92% | [1] (as of Nov 2026) |
-| EU and US external supplies above 49 W (to 250 W), single-voltage AC-DC | ≥ 88.0% average active efficiency; ≤ 0.21 W no-load | [2, 3] |
-| External supplies of 49 W or less | ≤ 0.10 W no-load | [2, 3] |
+| EU and US external supplies above 49 W (to 250 W), basic-voltage (output ≥ 6 V) single-voltage AC-DC | ≥ 88.0% average active efficiency; ≤ 0.21 W no-load | [2, 3] |
+| AC-DC external supplies of 49 W or less | ≤ 0.10 W no-load | [2, 3] |
 | USB Power Delivery maximum | 240 W (48 V × 5 A), Revision 3.3 (Oct 2026) | [4] |
 | Ultra-low-quiescent LDO / buck for wearables | 25 nA / 60 nA quiescent; buck 80% at 1 µA | [5] |
 | GaN 65 W USB-PD adapter reference | 25.29 W/in³ (box unstated); 92.8–94.3% at full load | [6] |
@@ -498,7 +501,7 @@ The lab ([labs/22-01-lab](../labs/22-01-lab/README.md)) collects the chapter's f
 
 - **Standards set the targets [Established].**
   - **80 PLUS:** for redundant datacenter supplies at 230 V, Titanium requires 90/94/96/91% at 10/20/50/100% load, and the Ruby tier 90/91/95/96.5/92% at 5/10/20/50/100%, with power-factor floors attached. The 10% Platinum point is described as "suggested" rather than required [1].
-  - **External power supplies:** the EU Ecodesign regulation and the US DOE Level VI rules (in force since 2016) use the same formulas for single-voltage AC-DC supplies. The average of the 25/50/75/100% points must be at least 88.0% above 49 W, and the formula $0.071\ln P_O - 0.0014P_O + 0.67$ applies from 1 to 49 W; no-load power is capped at 0.10 W up to 49 W and 0.21 W above [2, 3].
+  - **External power supplies:** the EU Ecodesign regulation and the US DOE Level VI rules (in force since 2016) use the same formulas for single-voltage AC-DC supplies. For basic-voltage supplies (output 6 V or more), the average of the 25/50/75/100% points must be at least 88.0% above 49 W, and the formula $0.071\ln P_O - 0.0014P_O + 0.67$ applies from 1 to 49 W (low-voltage supplies use $0.0834\ln P_O - 0.0014P_O + 0.609$ and 87.0%); no-load power is capped at 0.10 W up to 49 W and 0.21 W above [2, 3].
   - **USB Power Delivery:** Revision 3.3 (October 2026) keeps Extended Power Range at 28, 36 and 48 V, up to "240W (48V/5A)" [4].
 - **Wearables live on quiescent current [Established as data-sheet values].** A current ultra-low-I_Q LDO quotes "25 nA (typ), even in dropout", and a companion buck "60-nA operating quiescent current" with "80% efficiency at 1 µA IOUT (3.6 VIN to 1.8 VOUT)" [5].
 - **Datacenter supplies [Industry estimate].**
@@ -515,10 +518,10 @@ The lab ([labs/22-01-lab](../labs/22-01-lab/README.md)) collects the chapter's f
 
 **Marketing vs Reality.**
 
-- **"Industry-leading X W/in³."** The box decides the number. Published figures span an open-frame PFC stage alone (120 W/in³), a bus converter "without connector" (1300 W/in³), a full server supply with stated dimensions (48–100 W/in³) and a cased charger (around 20–25 W/in³). Ask for the dimensions and recompute, as in Example 22-01.6.
+- **"Industry-leading X W/in³."** The box decides the number. Published figures span an open-frame PFC stage alone (120 W/in³), a bus converter "without connector" (1300 W/in³), a full server supply with stated dimensions (48–100 W/in³) and a charger whose box is unstated (around 18–25 W/in³). Ask for the dimensions and recompute, as in Example 22-01.6.
 - **"97.5% efficient."** Is that peak, full load or a regulated weighted average, at which input voltage, and measured on which unit? The same 8 kW design was reported at both 97.5% and 98% [8].
 - **"99% efficiency."** Often true of one stage (a PFC stage alone [7]), not of the supply: 99% PFC times 98% DC-DC is **97.0** % (Txt l).
-- **"Silicon cannot switch above 150 kHz."** One GaN vendor's framing [10] [Contested]. Silicon superjunction devices run in resonant converters above that, and the best designs keep silicon where its switching loss is small [8]. Chapter 22-06 compares the devices properly.
+- **"Silicon's switching frequency cannot significantly go beyond 150 kHz."** One GaN vendor's framing [10] [Contested]. Silicon superjunction devices run in resonant converters above that, and the best designs keep silicon where its switching loss is small [8]. Chapter 22-06 compares the devices properly.
 
 **Questions for engineering leaders.**
 
@@ -590,7 +593,7 @@ The usable energy is $\tfrac12C(V_1^2 - V_2^2)$. Lowering $V_2$ from 320 to 300 
 
 <details><summary>Answer</summary>
 
-Usually the 90% stage. It has the larger loss, and each watt it loses is multiplied by 1/0.97 at the input: a point there saves more input power than a point upstream, unless the upstream improvement is much cheaper.
+Usually the 90% stage, because it holds the larger loss and so has more points to win. Per point, a stage saves about $P_{in}/\eta_k$ of input power, so a point at the 90% stage is worth only about 8% more than a point at the 97% stage (1/0.90 against 1/0.97): if the upstream point is much cheaper, improve that one first.
 
 </details>
 

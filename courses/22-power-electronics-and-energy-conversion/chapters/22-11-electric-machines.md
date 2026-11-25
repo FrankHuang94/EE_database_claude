@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 22-11 · Electric Machines and Drives
 
 | | |
@@ -43,6 +43,8 @@ flowchart LR
 ```
 
 ## 3. Theory
+
+As in 07-11, every AC phasor in this chapter is an RMS phasor, written without the rms subscript, so the complex power per phase is $\mathbf V\mathbf I^*$ with no factor of ½.
 
 ### 3.1 Force, EMF and energy conversion
 
@@ -127,13 +129,19 @@ $T_{max}$ does not depend on $R_2$, but $s_{max}$ does: a higher-resistance roto
 
 ### 3.5 The synchronous machine
 
-A synchronous machine's rotor carries a DC field winding or permanent magnets and turns at exactly $\omega_s$. Per phase, the stator sees the rotor's induced EMF $\mathbf{E}_f$, proportional to speed and field, behind the **synchronous reactance** $X_s$ (armature reaction plus leakage; resistance is small and neglected here). As a motor, $\mathbf{V} = \mathbf{E}_f + jX_s\mathbf{I}$. With $\mathbf{E}_f$ lagging $\mathbf{V}$ by the **power angle** $\delta$, the real power per phase follows from the phasor diagram, and for three phases
+A synchronous machine's rotor carries a DC field winding or permanent magnets and turns at exactly $\omega_s$. Per phase, the stator sees the rotor's induced EMF $\mathbf{E}_f$, proportional to speed and field, behind the **synchronous reactance** $X_s$ (armature reaction plus leakage; resistance is small and neglected here). As a motor, $\mathbf{V} = \mathbf{E}_f + jX_s\mathbf{I}$. Take $\mathbf V = V\angle0$ and let $\mathbf{E}_f = E_f\angle{-\delta}$ lag it by the **power angle** $\delta$. Then
 
 $$
-P = \frac{3VE_f}{X_s}\sin\delta ,
+\mathbf I = \frac{\mathbf V - \mathbf E_f}{jX_s} = \frac{E_f\sin\delta}{X_s} - j\,\frac{V - E_f\cos\delta}{X_s},
 $$
 
-with $V$ and $E_f$ phase (line-to-neutral) values. Power rises with $\delta$ to a maximum $3VE_f/X_s$ at $\delta$ = 90°, the **pull-out** limit beyond which the rotor slips out of synchronism. The field current sets $E_f$ and so, at a given power, the stator current's phase: an over-excited synchronous machine supplies reactive power, which is why large ones are used for power-factor correction and why grid generators control voltage with their excitation (22-12).
+and the complex power drawn per phase, $\mathbf V\mathbf I^*$, has real part $VE_f\sin\delta/X_s$ and imaginary part $(V^2 - VE_f\cos\delta)/X_s$. For three phases
+
+$$
+P = \frac{3VE_f}{X_s}\sin\delta , \qquad Q = \frac{3(V^2 - VE_f\cos\delta)}{X_s} \ \text{(absorbed)},
+$$
+
+with $V$ and $E_f$ phase (line-to-neutral) values. Units: V × V/Ω = W. ✓ As a generator, the current is reversed: $\mathbf E_f = \mathbf V + jX_s\mathbf I$ with $\mathbf E_f$ leading $\mathbf V$ by δ, and the same expression gives the power delivered. Power rises with $\delta$ to a maximum $3VE_f/X_s$ at $\delta$ = 90°, the **pull-out** limit beyond which the rotor slips out of synchronism. The field current sets $E_f$ and so, at a given power, the stator current's phase: when $E_f\cos\delta > V$ the machine is over-excited, $Q$ is negative and it supplies reactive power, which is why large ones are used for power-factor correction and why grid generators control voltage with their excitation (22-12).
 
 **Permanent-magnet synchronous machines (PMSMs)** replace the field winding with magnets: no rotor losses, high efficiency and power density, at the cost of magnets (and their rare-earth supply) and a fixed field. Above **base speed**, the back EMF would exceed what the inverter can supply, so the drive injects stator current that opposes the magnet flux (field weakening), trading torque for speed so that power stays roughly constant. Interior-magnet designs add **reluctance torque** from rotor saliency, which helps at high speed.
 
@@ -170,7 +178,7 @@ Adding a common-mode third harmonic (or using space-vector PWM) lets $m$ rise to
 
 **Units check.** V/(V·s/rad) = rad/s; (N·m/A)·A = N·m. ✓
 
-**Sanity check.** The efficiency equals $E_a/V$ = 19/24, because the only loss is $I_a^2R_a$ and the back EMF absorbs the rest. At a fifth of stall torque the motor runs at four fifths of no-load speed, exactly as the straight speed–torque line predicts.
+**Sanity check.** The efficiency equals $E_a/V$ = 19/24, because the only loss is $I_a^2R_a$ and the back EMF absorbs the rest. At 5/24 of stall torque (about a fifth) the motor runs at 19/24 of no-load speed, exactly as the straight speed–torque line predicts.
 
 ### Example 22-11.2 · Synchronous speed and slip (tier A)
 
@@ -234,16 +242,17 @@ Adding a common-mode third harmonic (or using space-vector PWM) lets $m$ rise to
 
 ### Example 22-11.6 · Running a fan on a VFD (tier B)
 
-**Setup.** A 400 V, 50 Hz, 4-pole induction motor with a rated slip speed of 40 rpm drives a fan. To run it at 30 Hz with constant flux, find (a) the voltage, (b) the synchronous speed and (c) the shaft speed with the same slip speed. (d) If the fan runs at 60% of rated speed, what fraction of rated power does it need?
+**Setup.** A 400 V, 50 Hz, 4-pole induction motor with a rated slip speed of 40 rpm drives a fan. To run it at 30 Hz with constant flux, find (a) the voltage, (b) the synchronous speed and (c) the shaft speed if the load torque were unchanged (a constant-torque load keeps the same slip speed). (d) If the fan runs at 60% of rated speed, what fraction of rated power does it need? (e) The fan's torque actually falls as the square of speed. Taking the slip speed as proportional to torque at constant flux, find the fan's slip speed and (f) shaft speed at 30 Hz.
 
 **Solution.**
 
 - (a) $400 \times 30/50$ = **240** V; (b) $120 \times 30/4$ = **900** rpm; (c) $900 - 40$ = **860** rpm.
 - (d) $0.6^3$ = **0.216** of rated power.
+- (e) The rated speed is 1460 rpm, so at 30 Hz the slip speed is $40(n/1460)^2$ rpm and $n = 900 - 40(n/1460)^2$. Two iterations from $n$ = 900 give a slip speed of **14.7** rpm and (f) $n$ = **885** rpm, 60.6% of rated speed.
 
 **Units check.** V/Hz × Hz = V. ✓
 
-**Sanity check.** With the same flux, the same torque needs the same slip *speed*, not the same slip fraction, so the motor's speed curve shifts down in parallel. A fan at 60% speed for most of the day uses about a fifth of full power: the basis of most VFD retrofits.
+**Sanity check.** With the same flux, the same torque needs the same slip *speed*, not the same slip fraction, so the motor's speed curve shifts down in parallel. A fan's torque falls with speed, so its slip falls too, and it runs a little faster than the constant-torque estimate. A fan at 60% speed for most of the day uses about a fifth of full power: the basis of most VFD retrofits.
 
 ### Example 22-11.7 · How much voltage the inverter can make (tier A)
 
@@ -311,6 +320,8 @@ Adding a common-mode third harmonic (or using space-vector PWM) lets $m$ rise to
 | Ex 22-11.6b | synchronous speed at 30 Hz | 900 | rpm |
 | Ex 22-11.6c | shaft speed at 30 Hz | 860 | rpm |
 | Ex 22-11.6d | fan power at 60% speed | 0.216 | |
+| Ex 22-11.6e | fan slip speed at 30 Hz | 14.7 | rpm |
+| Ex 22-11.6f | fan shaft speed at 30 Hz | 885 | rpm |
 | Ex 22-11.7a | SPWM line voltage | 490 | V |
 | Ex 22-11.7b | SVPWM line voltage | 566 | V |
 | Ex 22-11.7c | ratio | 1.155 | |
@@ -375,7 +386,7 @@ The lab is [labs/22-11-lab/](../labs/22-11-lab/README.md). `machines.py` collect
 | Inverter line voltage | $0.612mV_{dc}$ rms (sine-triangle); up to $0.707V_{dc}$ (space vector) | §3.6 |
 | Fans and pumps | power ∝ speed³; 20% less speed saves about half the power | §3.6, [11] |
 | Motors' share of electricity (as of Nov 2026) | 43–46% of global use (2006 data); 53% (2023, different method) | [1], [2] |
-| IE classes, 11 kW 4-pole 50 Hz | IE1 87.6%, IE2 89.8%, IE3 91.4%, IE4 93.3% minimum | [4], [8] |
+| IE classes, 11 kW 4-pole 50 Hz | IE1 87.6%, IE2 89.8%, IE3 91.4%, IE4 93.3% minimum | [4], [8], [22] |
 | Regulation (as of Nov 2026) | EU: IE3 for 0.75–1000 kW since July 2021, IE4 for 75–200 kW since July 2023; US: IE4 levels for 100–250 hp from June 2027 | [4], [5], [6] |
 | NEMA design B | starting current 600–700%, breakdown torque 175–300%, slip 1–5% of rated | [10] |
 | Drive losses | 2–5% at nominal torque and speed, 10–30% at a quarter of each [Industry estimate] | [1] |
@@ -400,7 +411,7 @@ The lab is [labs/22-11-lab/](../labs/22-11-lab/README.md). `machines.py` collect
 
 **Efficiency classes and rules** [Established].
 
-- IEC 60034-30-1 grades line-fed motors from "IE1 meaning low efficiency up to IE5 meaning the highest efficiency"; its 2025 edition adds IE5 to the table [7]. For an 11 kW, 4-pole, 50 Hz motor the minimum efficiencies are 87.6% (IE1), 89.8% (IE2), 91.4% (IE3) and 93.3% (IE4) [4], [8], losses of **1557**, **1249**, **1035** and **790** W: each class cuts losses by roughly a fifth.
+- IEC 60034-30-1 grades line-fed motors from "IE1 meaning low efficiency up to IE5 meaning the highest efficiency"; its 2025 edition adds IE5 to the table [7]. For an 11 kW, 4-pole, 50 Hz motor the minimum efficiencies are 87.6% (IE1), 89.8% (IE2), 91.4% (IE3) and 93.3% (IE4) [4], [8], [22], losses of **1557**, **1249**, **1035** and **790** W: each class cuts losses by roughly a fifth.
 - The EU requires IE3 for three-phase motors from 0.75 to 1000 kW since July 2021, and IE4 for 75–200 kW motors with 2, 4 or 6 poles since July 2023 [4]. The US raises 100–250 hp motors to the IE4 level from June 2027, which DOE describes as "approximately … a 20 percent reduction of losses over Premium/IE3" [6]. The IEA's 2011 report put the IE3-to-IE4 step at 15% [1]; the table values above give **23.7** % at 11 kW, so treat the step as roughly 15–25%.
 
 **A real motor, three ways** [Established]. ABB's catalog lists the same 11 kW, 4-pole frame (M3BP 160MLA 4) in three classes [9]. The IE4 version runs at 1477 rpm, a slip of **1.53** %, with 93.3% efficiency at full load, 93.4% at three-quarter load, a power factor of 0.79, 21.6 A at 400 V, a starting current 7.6 times rated, and starting and breakdown torques 2.7 and 3.7 times its 71.1 N·m rated torque [8]. The chapter's formulas reproduce the data sheet: $T = P/\omega$ gives **71.1** N·m and $I = P/(\sqrt3V\eta\cos\varphi)$ gives **21.5** A. The IE2 version of the same frame slips **2.27** % and weighs 135 kg against 188 kg for IE3 and IE4 [9]: lower slip means less rotor loss (§3.4), bought with more copper and iron.
@@ -423,7 +434,7 @@ The lab is [labs/22-11-lab/](../labs/22-11-lab/README.md). `machines.py` collect
 - *"SiC adds 5% range."* The gain is concentrated at partial load, where IGBTs' fixed voltage drop hurts most; on a highway cycle it is smaller. It is a vendor figure for one vehicle [17].
 - *"Rare-earth-free."* True of current-excited and induction machines, but they pay with rotor copper loss and, for current excitation, a way to feed the rotor; induction motors use 11–24 kg of copper per vehicle against 3–6 kg for PM motors [20].
 - *"Up to 50% savings with a VFD."* Only on fans and pumps without static head; constant-torque loads save in proportion to speed, and the drive itself loses a few percent [1], [11].
-- *"Pays back in 10 months."* ABB's IE4 example assumes 24/7 full-load operation at a stated electricity price [8]; at partial load and part-time duty the payback stretches.
+- *"Pays back in 10 months."* ABB's IE4 example is a 45 kW motor running 24 hours a day at 0.1 EUR/kWh [8]; at partial load and part-time duty the payback stretches.
 
 **Questions for engineering leaders.**
 
@@ -534,3 +545,4 @@ Now work the [22-11 problem set](../problems/22-11-problems.md).
 19. STMicroelectronics blog, "Silicon carbide," 12 Jul 2021. [R-450]
 20. IEA, *The Role of Critical Minerals in Clean Energy Transitions*, May 2021 (revised March 2022). [R-451]
 21. US DOE, *Rare Earth Permanent Magnets: Supply Chain Deep Dive Assessment*, 24 Feb 2022. [R-451]
+22. ABB, *IEC 60034-30-1 standard on efficiency classes for low voltage AC motors*, technical note 9AKK107319 EN 05-2018. [R-449]

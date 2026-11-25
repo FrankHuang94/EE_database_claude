@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 22-03 · Boost, Buck-Boost and Other Topologies
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The non-isolated topology weeks of a senior power-electronics course: the boost and inverting buck-boost converters, the Ćuk and SEPIC capacitor-coupled converters, conversion ratios by volt-second and charge balance, ripples and switch stresses, the effect of inductor resistance on gain and efficiency, discontinuous conduction in the boost, and topology selection (Erickson & Maksimović, *Fundamentals of Power Electronics*, ch. 2, 3, 5 and 6) |
 | **Prerequisites** | [22-02](22-02-buck-converter-steady-state.md) (volt-second and charge balance, small ripple, DCM), [22-01](22-01-power-conversion-principles.md) (efficiency and loss) |
 | **Estimated study hours** | 7 |
-| **Last verified** | 2026-11-24 |
+| **Last verified** | 2026-11-25 |
 
 **Learning objectives.** After this chapter you can:
 
@@ -135,7 +135,13 @@ $$
 
 This is the same magnitude as the buck-boost, but non-inverting, with a continuous input current through $L_1$ and a DC-blocking capacitor that isolates input from output if the switch fails. The switch and diode see $V_{in} + V$. SEPICs are common in automotive supplies whose input range straddles the output.
 
-**Ćuk.** The mirror image, with the coupling capacitor in the switch path and $L_2$ in series with the output. It gives $V = -DV_{in}/D'$ with *both* input and output currents continuous (inductor-smoothed), at the price of inverting.
+**Ćuk.** The mirror image, with the coupling capacitor in the switch path and $L_2$ in series with the output. $L_1$ runs from $V_{in}$ to node $a$; the switch connects $a$ to ground; $C_1$ connects $a$ to node $b$; the diode runs from $b$ (anode) to ground; and $L_2$ runs from $b$ to the (negative) output $V$. With the switch on, $a$ is grounded and $b$ sits at $-V_{C1}$, so $L_1$ sees $V_{in}$ and $L_2$ sees $-V_{C1} - V$. With the switch off, the diode holds $b$ at ground and $a$ at $V_{C1}$, so $L_1$ sees $V_{in} - V_{C1}$ and $L_2$ sees $-V$. Volt-second balance on each inductor gives
+
+$$
+V_{in}D + (V_{in} - V_{C1})D' = 0 \;\Rightarrow\; V_{C1} = \frac{V_{in}}{D'}, \qquad (-V_{C1} - V)D - VD' = 0 \;\Rightarrow\; V = -DV_{C1} = -\frac{D}{D'}V_{in} .
+$$
+
+The switch and diode each block $V_{C1} = V_{in}/D' = V_{in} + \lvert V\rvert$, the same stress as the buck-boost. The Ćuk converter has *both* input and output currents continuous (inductor-smoothed), at the price of inverting.
 
 ### 3.5 The boost in discontinuous conduction
 
@@ -220,7 +226,7 @@ The selection rules that follow:
 
 **Units check.** $D'V/V_{in}$ is a ratio of volts.
 
-**Sanity check.** The duty cycle rose from 0.28 to 0.32 to make up the resistive drops. The exact steady state, which includes the 1 A ripple's RMS effect on the conduction loss, gives **94.28** % (e). The data sheet's 94% at this operating point [2] is close to either estimate, which suggests that conduction dominates its losses here, provided the assumed 30 mΩ inductor is representative.
+**Sanity check.** The duty cycle rose from 0.28 to 0.32 to make up the resistive drops. The exact steady state, which includes the 1.15 A ripple's RMS effect on the conduction loss, gives **94.28** % (e). The data sheet's 94% at this operating point [2] is close to either estimate, which suggests that conduction dominates its losses here, provided the assumed 30 mΩ inductor is representative.
 
 ### Example 22-03.3 · The boost's gain limit (tier B)
 
@@ -236,7 +242,7 @@ The selection rules that follow:
 
 **Units check.** $R_L/(D'^2R)$ is a ratio of ohms.
 
-**Sanity check.** The ideal gain at $D$ = 0.9 would be 10; the winding resistance, reflected as $R_L/D'^2$ = 10 Ω against a 25 Ω load, costs 29% of the power. Going from 4.5× to 7× more than triples the loss fraction. This is why 12 V to 48 V boosts are built from two stages or with coupled inductors.
+**Sanity check.** The ideal gain at $D$ = 0.9 would be 10; the winding resistance, reflected as $R_L/D'^2$ = 10 Ω against a 25 Ω load, costs **28.6** % of the input power (h). Going from 4.5× to 7× more than triples the loss fraction. This is why single-stage step-ups much beyond about 5× are rare.
 
 ### Example 22-03.4 · Negative and straddling rails (tier B)
 
@@ -324,6 +330,7 @@ The selection rules that follow:
 | Ex 22-03.3e | efficiency at D = 0.8 | 90.9 | % |
 | Ex 22-03.3f | gain at D = 0.9 | 7.14 | |
 | Ex 22-03.3g | efficiency at D = 0.9 | 71.4 | % |
+| Ex 22-03.3h | loss fraction at D = 0.9 | 28.6 | % |
 | Ex 22-03.4a | buck-boost duty cycle | 0.294 | |
 | Ex 22-03.4b | buck-boost switch voltage | 17 | V |
 | Ex 22-03.4c | buck-boost inductor current | 1.42 | A |

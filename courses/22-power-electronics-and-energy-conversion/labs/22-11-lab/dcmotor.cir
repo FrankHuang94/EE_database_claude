@@ -1,4 +1,4 @@
-* Lab 22-11, Part 2 -- Example 22-11.1's 24 V PM DC motor (Ra = 0.5 ohm, La = 1 mH, k = 0.05 V s/rad) starting
+* Lab 22-11, Part 1 -- Example 22-11.1's 24 V PM DC motor (Ra = 0.5 ohm, La = 1 mH, k = 0.05 V s/rad) starting
 * a 0.5 N m load with rotor inertia J = 1e-4 kg m^2. The speed is the voltage on a capacitor of value J driven by
 * the net torque (k i - T_load); the back EMF is a behavioral source k*omega. The load torque is applied only once
 * the motor turns (a smooth step over the first 1 rad/s) so that it never drives the rotor backwards.

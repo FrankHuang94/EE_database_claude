@@ -30,7 +30,7 @@ $10 \times (138/13.8)^2$ = **1000** Ω: an impedance scales with the square of t
 
 (c) $(1.02^2 - 1.02\cos29.4°)/0.25$ = **0.605** pu.
 
-The line absorbs 1.05 pu of reactive power ($I^2X$) to carry 2 pu of real power, which is why heavily loaded lines need reactive support at both ends.
+The line absorbs 0.605 + 0.444 = **1.05** pu of reactive power ($I^2X$) to carry 2 pu of real power, which is why heavily loaded lines need reactive support at both ends.
 
 ### Solution 22-12.6
 
@@ -64,6 +64,16 @@ $\beta_1 = 300/(0.04 \times 60)$ = 125 MW/Hz and $\beta_2 = 500/(0.05 \times 60)
 
 $\beta = 2\pi \times 60/(0.979c)$ = 1.284 × 10⁻³ rad/km, so $V_R/V_S = 1/\cos(0.385)$ = **1.079**: an 8% rise at the open end, which is why long lines are switched with shunt reactors.
 
+### Solution 22-12.14
+
+(a) $r' = e^{-1/4} \times 14$ mm = **10.90** mm. (b) $L = (\mu_0/2\pi)\ln(D/r') = 2 \times 10^{-7}\ln(7.0/0.01090)$ = 1.293 µH/m = **1.293** mH/km; (c) $X = 2\pi \times 60 \times 1.293$ mH = **0.487** Ω/km. (d) $C = 2\pi\varepsilon_0/\ln(D/r) = 55.63\ \text{pF/m}/\ln 500$ = 8.95 pF/m = **8.95** nF/km. (e) $Z_c = \sqrt{L/C}$ = **380** Ω; (f) SIL $= (230\ \text{kV})^2/380\ \Omega$ = **139** MW. These match the typical 230 kV values in §7: a single conductor of this size is what such a line uses.
+
+### Solution 22-12.15
+
+The base current at 230 kV is 251.0 A.
+
+(a) $I_f = 1/0.30$ = **3.33** pu = **837** A. (b) $3/(0.30 + 0.30 + 0.15)$ = **4.00** pu = **1004** A. (c) $I_1 = 1/(Z_1 + Z_2) = -j1.667$ pu, and $I_b = (a^2 - a)I_1 = -j\sqrt3I_1$, so $\lvert I_b\rvert = \sqrt3/0.60$ = **2.89** pu = **725** A, 0.866 of the three-phase value. (d) $Z_2Z_0/(Z_2 + Z_0)$ = j0.10, so $I_1 = 1/(\text{j}0.30 + \text{j}0.10) = -\text{j}2.50$; the current divides as $I_2 = -I_1Z_0/(Z_2 + Z_0) = +\text{j}0.833$ and $I_0 = -I_1Z_2/(Z_2 + Z_0) = +\text{j}1.667$. Then $I_b = I_0 + a^2I_1 + aI_2$, whose magnitude is **3.82** pu = **959** A. (e) The ground carries $3I_0$: **5.00** pu = **1255** A. With $Z_0 < Z_1$ both ground faults exceed the three-phase fault, and the double-line-to-ground fault puts the largest current into the ground.
+
 ---
 
 ## Answer key
@@ -82,6 +92,7 @@ $\beta = 2\pi \times 60/(0.979c)$ = 1.284 × 10⁻³ rad/km, so $V_R/V_S = 1/\co
 | 22-12.5a | angle | 29.4 | ° |
 | 22-12.5b | reactive power arriving at bus 2 | −0.444 | pu |
 | 22-12.5c | reactive power leaving bus 1 | 0.605 | pu |
+| 22-12.5d | reactive power absorbed by the line | 1.05 | pu |
 | 22-12.6a | voltage drop | 2029 | V |
 | 22-12.6b | voltage drop | 2.94 | % |
 | 22-12.7a | source impedance | 0.020 | pu |
@@ -100,3 +111,19 @@ $\beta = 2\pi \times 60/(0.979c)$ = 1.284 × 10⁻³ rad/km, so $V_R/V_S = 1/\co
 | 22-12.12a | implied 2024 total | 4085 | TWh |
 | 22-12.12b | implied 2030 total | 5500 | TWh |
 | 22-12.13 | Ferranti ratio | 1.079 | |
+| 22-12.14a | geometric mean radius | 10.90 | mm |
+| 22-12.14b | inductance | 1.293 | mH/km |
+| 22-12.14c | reactance | 0.487 | Ω/km |
+| 22-12.14d | capacitance | 8.95 | nF/km |
+| 22-12.14e | characteristic impedance | 380 | Ω |
+| 22-12.14f | surge-impedance loading | 139 | MW |
+| 22-12.15a | three-phase fault | 3.33 | pu |
+| 22-12.15b | three-phase fault | 837 | A |
+| 22-12.15c | SLG fault | 4.00 | pu |
+| 22-12.15d | SLG fault | 1004 | A |
+| 22-12.15e | LL fault | 2.89 | pu |
+| 22-12.15f | LL fault | 725 | A |
+| 22-12.15g | DLG fault, faulted phase | 3.82 | pu |
+| 22-12.15h | DLG fault, faulted phase | 959 | A |
+| 22-12.15i | DLG ground current | 5.00 | pu |
+| 22-12.15j | DLG ground current | 1255 | A |

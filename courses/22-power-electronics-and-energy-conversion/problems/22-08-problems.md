@@ -60,6 +60,18 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **The cost of a lazy LDO.** A 1.8 V I/O rail draws 200 mA for 2 hours a day from a 3.8 V battery. Find the loss (a) with an LDO and (b) with a 90%-efficient buck, (c) the difference, (d) the energy wasted per day by the LDO choice and (e) that energy as a share of the 4158 J battery of Example 22-08.3.
 
+### Problem 22-08.13 [C]
+
+**Where the PFM coefficient comes from.** A PFM buck from 3.6 V to 1.8 V delivers charge in separate triangular pulses. The high-side switch ramps the inductor ($L$ = 2.2 µH) from 0 to a fixed peak $I_{pk}$ = 400 mA, the low side ramps it back to 0, and the converter then idles until the output needs the next pulse. Each pulse costs a fixed switching and gate-drive energy $E_p$ = 16 nJ, and the current flows through a resistance $R$ = 0.15 Ω in both intervals (all assumed).
+
+(a) Derive the charge $q$ each pulse delivers to the output, and evaluate it. (b) Find the pulse rate at a 10 mA load.
+
+Show that both the switching loss and the conduction loss are proportional to the load current $I$, so together they form the $k_{PFM}I$ term of §3.3, and find (c) the switching part $E_p/q$, (d) the conduction part and (e) $k_{PFM}$.
+
+(f) With $I_q$ = 1 µA, find the efficiency at 10 mA.
+
+(g) What is the largest load current this pulse train can carry? At that current, find the loss (h) in PFM and (i) in the forced PWM of Example 22-08.2 ($P_f$ = 20 mW plus $0.2I^2$). Where does this ideal model place the handover?
+
 ---
 
 ## Objective coverage
@@ -67,7 +79,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Objective | Problems |
 |---|---|
 | 1. Rail allocation and cascaded efficiency | 1, 2, 12 |
-| 2. PFM/PWM crossover and battery life | 3, 4 |
+| 2. PFM/PWM crossover and battery life | 3, 4, 13 |
 | 3. DVS transitions and ramp tracking | 5, 6, 8 |
 | 4. AVS, soft start and sequencing | 7, 9, 10 |
 | 5. Power gating break-even | 11 |

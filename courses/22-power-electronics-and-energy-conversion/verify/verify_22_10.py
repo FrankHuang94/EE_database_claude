@@ -119,6 +119,7 @@ v.check("Ex 22-10.2d", bar_loss_discrete(2400, r_loop, lambda u: 1 - u))
 v.check("Ex 22-10.2e", 2 * a_bar * 1.5 * 8960)
 v.check("Ex 22-10.2f", bar_loss_discrete(150, r_loop, lambda u: 1 - u))
 v.check("Txt 22-10.e", 2 * a_bar * 1.5 * 8960 * (1e6 / 120e3))
+v.check("Txt 22-10.n", 100 * bar_loss_discrete(2400, r_loop, lambda u: 1 - u) / 120e3)
 
 # ---------------------------------------------------------------- AC vs DC (text)
 r3 = per_conductor_sampled(800, 415, 3, 1.0)
@@ -135,8 +136,10 @@ p_in = chain_input(1.0, etas)
 v.check("Ex 22-10.3a", 100 / p_in)
 v.check("Ex 22-10.3b", p_in)
 v.check("Ex 22-10.3c", p_in - 1.0)
-v.check("Ex 22-10.3d", 1.09 * p_in)
-v.check("Ex 22-10.3e", 1.54 * p_in)
+p_it = chain_input(1.0, etas[1:])  # PUE meters IT power at the UPS output, the rack-PSU input
+v.check("Ex 22-10.3f", p_it)
+v.check("Ex 22-10.3d", 1.09 * p_it)
+v.check("Ex 22-10.3e", 1.54 * p_it)
 vrm_loss = 1 / 0.90 - 1
 v.assert_true("Ex 22-10.3: the VRM is more than half the loss", vrm_loss / (p_in - 1) > 0.5)
 
@@ -271,5 +274,25 @@ v.check("Txt 22-10.j", 1342 / (0.25 * 4 * 25.4 ** 2))          # CDA 1/4 x 4 in 
 v.check("Txt 22-10.k", 100 * 826 / 1252)                       # Intel model, useful / MBVR input, 1 kW
 v.check("Txt 22-10.l", 100 * 3472 / 8301)                      # Intel model, 5 kW
 v.check("Txt 22-10.m", 280 / (10 * 9))                         # Infineon TDM2454xx: 280 A over 10 x 9 mm
+
+# ---------------------------------------------------------------- Problem 22-10.14
+def pickup(nph, l=120e-9, step=600.0):
+    """Integrate the phase currents (all on) against a stepped load; return slew, pick-up time and deficit charge."""
+    slew = nph * (12 - 0.75) / l
+    tt = np.linspace(0, 2e-6, 200001)
+    i_reg = np.minimum(slew * tt, step)
+    t_up = tt[np.argmax(i_reg >= step)]
+    deficit = integrate.trapezoid(step - i_reg, tt)
+    return slew, t_up, deficit
+
+
+s16, t16, q16 = pickup(16)
+v.check("22-10.14a", s16 / 1e6)
+v.check("22-10.14b", t16 * 1e6)
+v.check("22-10.14c", q16 * 1e6)
+v.check("22-10.14d", q16 / 0.03 * 1e3)
+_, t8, q8 = pickup(8)
+v.check("22-10.14e", t8 * 1e6)
+v.check("22-10.14f", q8 / 0.03 * 1e3)
 
 v.finish()

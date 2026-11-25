@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 22-06 · Converter Losses and Wide-Bandgap Switches
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The switch-realization and loss weeks of a senior power-electronics course: conduction and switching losses, output-capacitance and reverse-recovery losses, gate drive and dead time, Si, SiC and GaN power devices and their figures of merit, and an introduction to soft switching (Erickson & Maksimović, *Fundamentals of Power Electronics*, the switch-realization chapter; Baliga, *Fundamentals of Power Semiconductor Devices*) |
 | **Prerequisites** | [22-02](22-02-buck-converter-steady-state.md) (RMS currents, synchronous rectification, dead time), [22-01](22-01-power-conversion-principles.md) (the $P_0 + aI + RI^2$ loss model), [09-13](../../09-semiconductor-devices/chapters/09-13-compound-and-wide-bandgap-semiconductors.md) (critical field, Baliga's limit), [10-02](../../10-electronics-1/chapters/10-02-mosfet-dc-operation-and-biasing.md) (MOSFET operation) |
 | **Estimated study hours** | 7 |
-| **Last verified** | 2026-11-24 |
+| **Last verified** | 2026-11-25 |
 
 **Learning objectives.** After this chapter you can:
 
@@ -20,17 +20,17 @@
 
 ## 1. Big picture
 
-Chapters 22-02 to 22-05 treated the switches as ideal: zero resistance when on, zero current when off, and instant transitions. Real switches have resistance, take nanoseconds to switch, store charge in their capacitances and, in silicon, in their body diodes, and need charge to drive their gates. Each imperfection costs energy, and the switching-related ones cost it every cycle, so they grow with frequency. This is what limits how fast a converter can switch, and so how small its magnetics and capacitors can be (22-01, 22-05). Wide-bandgap materials (SiC and GaN) attack exactly these losses, which is why they lead every high-density charger and AI-server power-supply announcement. This chapter builds the loss model mechanism by mechanism, compares the devices with real data-sheet numbers, and introduces soft switching, the circuit-level answer that removes the largest switching loss altogether.
+Chapters 22-02 to 22-05 treated the switches as ideal: zero resistance when on, zero current when off, and instant transitions. Real switches have resistance, take nanoseconds to switch, store charge in their capacitances and, in silicon, in their body diodes, and need charge to drive their gates. Each imperfection costs energy, and the switching-related ones cost it every cycle, so they grow with frequency. This is what limits how fast a converter can switch, and so how small its magnetics and capacitors can be (22-01, 22-05). Wide-bandgap materials (SiC and GaN) attack exactly these losses, which is why they appear in most recent high-density charger and AI-server power-supply designs [Industry estimate]. This chapter builds the loss model mechanism by mechanism, compares the devices with real data-sheet numbers, and introduces soft switching, the circuit-level answer that removes the largest switching loss altogether.
 
 - **USB-C chargers:** GaN switches in quasi-resonant flybacks (22-04) let adapters run faster and shrink.
 - **AI-server and datacenter supplies:** totem-pole PFC stages need switches without reverse recovery (SiC or GaN), and LLC converters use GaN to raise frequency (22-10).
-- **Electric vehicles:** 800 V traction inverters and onboard chargers moved to 1200 V SiC MOSFETs.
+- **Electric vehicles:** 800 V traction inverters and onboard chargers increasingly use 1200 V SiC MOSFETs [Industry estimate].
 - **48 V and point-of-load converters:** 100 V GaN and silicon trench MOSFETs compete on charge per milliohm (22-08, 22-10).
 - **Industry structure:** the device choice touches foundry strategy, wafer-size transitions and second sourcing (§9).
 
 ## 2. Intuition first
 
-**Every transition is a toll.** When a switch turns on into a circuit that is still holding the full voltage across it, current and voltage overlap for a few nanoseconds, and the switch absorbs their product. The switch's own output capacitance, charged to the bus voltage, empties into its channel. In silicon, the opposite switch's body diode, which was conducting, must first be swept clear of its stored charge, and that charge flows through the turning-on switch at full voltage. And each cycle the gate is charged and discharged by its driver. None of these depends much on the load current except the overlap loss; all of them are paid $f_s$ times per second.
+**Every transition is a toll.** When a switch turns on into a circuit that is still holding the full voltage across it, current and voltage overlap for a few nanoseconds, and the switch absorbs their product. The switch's own output capacitance, charged to the bus voltage, empties into its channel. In silicon, the opposite switch's body diode, which was conducting, must first be swept clear of its stored charge, and that charge flows through the turning-on switch at full voltage. And each cycle the gate is charged and discharged by its driver. Only the overlap loss (and, less strongly, the reverse recovery) depends much on the load current. None of the others does except the overlap loss; all of them are paid $f_s$ times per second.
 
 **Conduction is rent; switching is a per-transaction fee.** A finance analogy fits well. Conduction loss, $I_{rms}^2R_{DS(on)}$, is rent: it depends on how much current you carry and for how long. Switching loss is a transaction fee charged on every trade: it scales with how often you switch. A bigger switch has lower rent (lower resistance) but higher fees (more charge to move), so there is an optimal size, set by the product of the two, the figure of merit $R_{DS(on)} \times Q$. Wide-bandgap devices are like a broker with both low rent and low fees: their much higher critical field (09-13) lets a smaller, thinner device block the same voltage, so it has far less charge for the same resistance. The analogy fails in one respect: in power electronics the "fee" can be avoided altogether by timing the trade, letting the circuit's own inductor current move the charge before the switch turns on. That is **soft switching**.
 
@@ -54,7 +54,7 @@ flowchart TD
 A MOSFET (silicon, SiC) or HEMT (GaN) that is fully on behaves as a resistor $R_{DS(on)}$. Its conduction loss is $I_{rms}^2R_{DS(on)}$ with the switch's own RMS current (22-02 gave $I\sqrt{D}$ for a buck's high side and $I\sqrt{1 - D}$ for its low side, ignoring ripple). Two facts make this harder than it looks.
 
 - **On-resistance rises with temperature.** In a majority-carrier device the mobility falls as the lattice heats. A 650 V GaN HEMT's typical $R_{DS(on)}$ rises from 55 mΩ at 25 °C to 120 mΩ at 150 °C, a factor of 2.2 [1]. A 650 V SiC MOSFET rises from 50 to 82 mΩ between 25 and 175 °C [2]. Loss is therefore computed at the operating junction temperature, which depends on the loss (§3.6).
-- **Bipolar devices behave differently.** An **IGBT** (insulated-gate bipolar transistor) is a MOSFET that injects minority carriers into a thick, lightly doped drift layer, flooding it with charge so that its resistance collapses. Its conduction loss is closer to $V_{CE0}I_{avg} + r_{CE}I_{rms}^2$, with a near-constant knee voltage, which beats a silicon MOSFET above about 1 kV, where Baliga's limit (09-13) makes a unipolar silicon device impossibly resistive. The cost is that the stored charge must be removed at turn-off, producing a slow "tail" current and large switching loss. IGBTs dominate low-frequency, high-voltage applications such as motor drives (22-11), and SiC MOSFETs now compete with them at 1200 V.
+- **Bipolar devices behave differently.** An **IGBT** (insulated-gate bipolar transistor) is a MOSFET that injects minority carriers into a thick, lightly doped drift layer, flooding it with charge so that its resistance collapses. Its conduction loss is closer to $V_{CE0}I_{avg} + r_{CE}I_{rms}^2$, with a near-constant knee voltage, which beats a silicon MOSFET at high current from about 600 V upward, and decisively above 1 kV, where Baliga's limit (09-13) makes a unipolar silicon device impossibly resistive. The cost is that the stored charge must be removed at turn-off, producing a slow "tail" current and large switching loss. IGBTs dominate low-frequency, high-voltage applications such as motor drives (22-11), and SiC MOSFETs now compete with them at 1200 V.
 
 ### 3.2 Hard switching: the voltage–current overlap
 
@@ -119,7 +119,7 @@ $$
 
 The gate resistance changes where the heat goes and how fast the switch moves, but not the total.
 
-**Dead time.** A half bridge must never turn both switches on at once (the shoot-through would short the bus), so the controller leaves a **dead time** $t_d$ at each edge with both off. The inductor current then flows in the reverse direction through one switch: through the body diode in Si or SiC, at a drop $V_{SD}$ (4.3 V for a 650 V SiC MOSFET [2]), or by **third-quadrant** conduction in GaN, at a drop that depends on the off-state gate voltage. The dead-time loss is $V_{SD}I\,t_d$ per edge, $2V_{SD}It_df_s$ per cycle with two edges.
+**Dead time.** A half bridge must never turn both switches on at once (the shoot-through would short the bus), so the controller leaves a **dead time** $t_d$ at each edge with both off. The inductor current then flows in the reverse direction through one switch: through the body diode in Si or SiC, at a drop $V_{SD}$ (4.3 V for a 650 V SiC MOSFET [2]), or by **third-quadrant** conduction in GaN, at a drop that depends on the off-state gate voltage. The dead-time loss is $V_{SD}I\,t_d$ per edge, so $2V_{SD}I\,t_d$ per cycle with two edges, a power of $2V_{SD}I\,t_df_s$.
 
 **The optimal device size.** Make a switch larger (more die area $A$) and its resistance falls as $R = r/A$, while all its charges rise as $Q = qA$. For a switch carrying $I_{rms}$, the conduction plus gate-drive loss is
 
@@ -173,7 +173,23 @@ $$
 I \ge \frac{2Q_{oss}}{t_d} .
 $$
 
-$C_{o(tr)}$, not $C_{o(er)}$, sets the transition time, because the inductor must move the charge. **Zero-current switching (ZCS)**, the dual, turns a switch off when a resonant current has already fallen to zero; it suits IGBTs, whose tail current is the problem.
+$C_{o(tr)}$, not $C_{o(er)}$, sets the transition time, because the inductor must move the charge.
+
+**When the inductor is small: an energy condition.** The current-source picture assumes the inductance is large enough that its current barely changes during the swing, which holds for a filter inductor or a magnetizing inductance. A small inductance, such as a transformer's leakage inductance, slows down as it works against the circuit, and the question becomes whether it has enough stored energy to finish. Take the worst case: the inductor's far end sits at the rail the switch node is leaving, as in a phase-shifted full bridge whose shorted transformer ties the leakage inductance to the other leg. Let the node fall from $V$ to 0 while the inductor current $i$ flows out of it. Count energy over the swing:
+
+- the switch that is turning on loses its stored output energy $E_{oss}$, and the other switch gains the same $E_{oss}$, so the capacitors' net energy does not change;
+- charging the upper switch draws charge $Q_{oss}$ from the bus, delivering energy $VQ_{oss}$;
+- the inductor carries both switches' charge, $2Q_{oss}$, into its far end at potential $V$, so it delivers energy $2VQ_{oss}$ into that rail.
+
+Conservation then says the inductor's stored energy must fall by $2VQ_{oss} - VQ_{oss} = VQ_{oss}$. For the swing to finish with current still flowing,
+
+$$
+\tfrac{1}{2}LI^2 \ge Q_{oss}V = C_{o(tr)}V^2 .
+$$
+
+Units: H·A² = J, and C·V = J. For a linear capacitance this is $CV^2 = 2E_{oss}$, the "energy for both capacitors" rule found in application notes. For a real, nonlinear $C_{oss}$, $C_{o(tr)} > C_{o(er)}$, so a condition written with $E_{oss}$ understates the energy needed, the same correction as for the transition time. The verify script confirms this boundary by integrating the swing with a nonlinear capacitance, and Problem 22-06.13 generalizes it to any far-end potential.
+
+**Zero-current switching (ZCS)**, the dual, turns a switch off when a resonant current has already fallen to zero; it suits IGBTs, whose tail current is the problem.
 
 **How circuits arrange ZVS.**
 
@@ -218,7 +234,7 @@ ZVS needs $I_{m,pk} \ge 2Q_{oss}/t_d$, an upper limit on $L_m$. A smaller $L_m$ 
 
 ### Example 22-06.3 · Reverse recovery in a hard-switched bridge (tier B)
 
-**Setup.** In a continuous-conduction totem-pole PFC at 400 V and 100 kHz, each switching edge hard-commutates the opposite device's reverse conduction. Estimate the recovery-related loss $Q_{rr}V f_s$ for (a, b) the superjunction part ($Q_{rr}$ = 3.6 µC), (c, d) its fast-diode variant (0.88 µC), (e, f) the SiC MOSFET (49 nC "forward recovery", which includes $Q_{oss}$) and (g, h) the GaN HEMT (no $Q_{rr}$; its $Q_{oss}$ = 35 nC still applies). Give the energy per transition and the power.
+**Setup.** In a continuous-conduction totem-pole PFC at 400 V and 100 kHz, once per switching cycle the turning-on switch hard-commutates the opposite device's reverse conduction (the other edge is naturally soft). Estimate the recovery-related loss $Q_{rr}V f_s$ for (a, b) the superjunction part ($Q_{rr}$ = 3.6 µC), (c, d) its fast-diode variant (0.88 µC), (e, f) the SiC MOSFET (49 nC "forward recovery", which includes $Q_{oss}$) and (g, h) the GaN HEMT (no $Q_{rr}$; its $Q_{oss}$ = 35 nC still applies). Give the energy per transition and the power.
 
 **Solution.**
 
@@ -244,7 +260,7 @@ ZVS needs $I_{m,pk} \ge 2Q_{oss}/t_d$, an upper limit on $L_m$. A smaller $L_m$ 
 
 **Units check.** √(Ω·C·V·Hz) = √(Ω·W) = √(Ω²A²) = Ω·A; divided by A gives Ω. ✓
 
-**Sanity check.** The Si optimum (2.09 mΩ) is close to the real part's 1.8 mΩ: it is well sized for 1 MHz at this current, and its best loss is 1.26 W. GaN's lower FOM and lower drive voltage give one-third of that loss at the optimum, with a device three times larger in resistance terms (a paralleled 0.66 mΩ). This counts gate loss only; $R \cdot Q_{oss}$ follows the same logic.
+**Sanity check.** The Si optimum (2.09 mΩ) is close to the real part's 1.8 mΩ: it is well sized for 1 MHz at this current, and its best loss is 1.26 W. GaN's lower FOM and lower drive voltage give **0.32** of that loss at the optimum (i), with a device about **3.6** times the size of the 2.4 mΩ part (j), a paralleled 0.66 mΩ. This counts gate loss only; $R \cdot Q_{oss}$ follows the same logic.
 
 ### Example 22-06.5 · Hot on-resistance and thermal runaway (tier B)
 
@@ -255,12 +271,12 @@ ZVS needs $I_{m,pk} \ge 2Q_{oss}/t_d$, an upper limit on $L_m$. A smaller $L_m$ 
 - (a) $(120 - 55)/125$ = **0.52** mΩ/K, so $R_{25}k$ = 0.52 mΩ/K.
 - (b) With $R_{th}I^2$ = 720 K/Ω: $T_j = (60 + 720 \times (0.055 - 25 \times 0.00052))/(1 - 720 \times 0.00052) = 90.24/0.6256$ = **144.2** °C.
 - (c) $55 + 0.52 \times 119.2$ = **117.0** mΩ; (d) $36 \times 0.1170$ = **4.21** W.
-- (e) $60 + 20 \times 36 \times 0.055$ = **99.6** °C: an error of **45** K.
+- (e) $60 + 20 \times 36 \times 0.055$ = **99.6** °C: an error of **45** K (i).
 - (f) Runaway when $R_{th}I^2R_{25}k = 1$: $I = 1/\sqrt{20 \times 0.00052}$ = **9.81** A.
 
 **Units check.** K/W × A² × Ω/K = 1, dimensionless. ✓
 
-**Sanity check.** Electrothermal feedback more than doubled the loss here (4.21 W against **1.98** W cold). The runaway current is only **63** % above the operating point. Real designs keep the product $R_{th}I^2R_{25}k$ well below 1 with heat sinking, and check $R_{DS(on)}$ at the maximum junction temperature, not at 25 °C.
+**Sanity check.** Electrothermal feedback more than doubled the loss here (4.21 W against **1.98** W cold, g). The runaway current is only **63** % (h) above the operating point. Real designs keep the product $R_{th}I^2R_{25}k$ well below 1 with heat sinking, and check $R_{DS(on)}$ at the maximum junction temperature, not at 25 °C.
 
 ### Example 22-06.6 · A 48 V to 12 V buck: silicon against GaN (tier C)
 
@@ -281,7 +297,7 @@ ZVS needs $I_{m,pk} \ge 2Q_{oss}/t_d$, an upper limit on $L_m$. A smaller $L_m$ 
 
 **Units check.** Each term is in watts; the efficiency is $240/(240 + P)$. ✓
 
-![Stacked switch losses against switching frequency for the 48 V to 12 V, 20 A buck: silicon's losses are dominated by output charge, reverse recovery and overlap and cross 2% of 240 W near 200 kHz; GaN's are smaller, with overlap and dead time dominant, and cross near 540 kHz](../../../assets/figures/22-06/loss-vs-frequency.svg)
+![Stacked switch losses against switching frequency for the 48 V to 12 V, 20 A buck: silicon's losses are dominated by output charge, reverse recovery and overlap and cross 2% of 240 W near 208 kHz; GaN's are smaller, with overlap and dead time dominant, and cross near 544 kHz](../../../assets/figures/22-06/loss-vs-frequency.svg)
 
 **Sanity check.** At 500 kHz silicon's switching-related losses (**9.8** W) dwarf its conduction loss; GaN cuts every switching term but pays more in conduction (higher $R_{DS(on)}$) and dead time (a higher reverse-conduction drop), which is why GaN designs use dead times of a few nanoseconds. The silicon part is sized for low frequency: Example 22-06.4's optimum shows a smaller silicon device would do better at 500 kHz. Real designs also soft-switch the low side naturally (its body diode conducts first), which this budget already reflects by charging $Q_{oss}$ only once per cycle.
 
@@ -334,6 +350,8 @@ ZVS needs $I_{m,pk} \ge 2Q_{oss}/t_d$, an upper limit on $L_m$. A smaller $L_m$ 
 | Ex 22-06.4f | Si minimum loss | 1.26 | W |
 | Ex 22-06.4g | GaN optimal on-resistance | 0.66 | mΩ |
 | Ex 22-06.4h | GaN minimum loss | 0.40 | W |
+| Ex 22-06.4i | GaN minimum loss as a fraction of Si | 0.32 | |
+| Ex 22-06.4j | GaN optimum size against the 2.4 mΩ part | 3.6 | |
 | Ex 22-06.5a | resistance slope | 0.52 | mΩ/K |
 | Ex 22-06.5b | junction temperature | 144.2 | °C |
 | Ex 22-06.5c | hot on-resistance | 117.0 | mΩ |
@@ -377,6 +395,8 @@ ZVS needs $I_{m,pk} \ge 2Q_{oss}/t_d$, an upper limit on $L_m$. A smaller $L_m$ 
 | Txt 22-06.i | superjunction Q_oss at 400 V | 485 | nC |
 | Txt 22-06.j | concept-check turn-on loss | 40 | µJ |
 | Txt 22-06.k | concept-check charging loss | 30 | µJ |
+| Txt 22-06.l | Si frequency at a 2% loss budget (figure) | 208 | kHz |
+| Txt 22-06.m | GaN frequency at a 2% loss budget (figure) | 544 | kHz |
 
 ## 5. Simulate it
 
@@ -438,7 +458,7 @@ The lab is [labs/22-06-lab/](../labs/22-06-lab/README.md). `losses.py` collects 
 
 - *GaN:* the 650 V part has no avalanche rating, only a transient one, "VDS,trans … 900 V … <1% duty cycle; <1 μs" [1]. Its on-resistance can rise transiently after switching because charge gets trapped: JEDEC's JEP173 guideline notes that "the value of the resulting measured RDS(on) is method dependent" [9] [Established].
 - *SiC:* Infineon's gate-drive guideline names "drift of the gate threshold voltage VGS(th) during long-term operation" as an important issue, which mainly raises $R_{DS(on)}$ slowly over life [10] (my translation from the Japanese edition) [Contested in magnitude across vendors]. Short-circuit withstand, where rated, is about 3 µs at 800 V for 1200 V parts, and some data sheets omit it [8].
-- *Integration:* 100 V GaN now ships as integrated half bridges with drivers (TI's LMG2100R044, "Integrated 4.4mΩ half-bridge GaN FETs and driver", up to 10 MHz [11]), which shrinks the commutation loop that limits switching speed.
+- *Integration* [Established as data-sheet values]: 100 V GaN now ships as integrated half bridges with drivers (TI's LMG2100R044, "Integrated 4.4mΩ half-bridge GaN FETs and driver", up to 10 MHz [11]), which shrinks the commutation loop that limits switching speed.
 
 **Market structure** [Industry estimate]. Yole's Power GaN 2026 report, as summarized by *Semiconductor Today* (Aug 2026), puts Innoscience at the top in 2025 and Infineon as the fastest gainer, with onsemi entering on a 200 mm GaN-on-silicon platform with GlobalFoundries [12]. TSMC told Navitas it "will end GaN wafer foundry production by end-July 2027", moving that volume to PSMC and others [13]. In SiC, Yole reported 2025 utilization of "around 50 percent for upstream processes and 70 percent for device lines", with recovery expected around 2027–2028 as 200 mm production ramps [14]. For a corporate-development reader, these are signals about pricing pressure (SiC), foundry dependence and second sourcing (GaN).
 
@@ -480,7 +500,7 @@ $Q_{oss}V$ = 40 µJ: its own $E_{oss}$ (10 µJ) plus the $Q_{oss}V - E_{oss}$ (3
 
 <details><summary>Answer</summary>
 
-Each edge hard-commutates the opposite device's reverse conduction. A silicon superjunction body diode's microcoulombs of recovery charge at 400 V cost tens to over a hundred watts at 100 kHz; SiC's small recovery charge and GaN's absence of it make the loss a watt or two.
+Once per switching cycle, the turning-on switch hard-commutates the opposite device's reverse conduction. A silicon superjunction body diode's microcoulombs of recovery charge at 400 V cost tens to over a hundred watts at 100 kHz; SiC's small recovery charge and GaN's absence of it make the loss a watt or two.
 
 </details>
 

@@ -58,11 +58,15 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 22-09.12 [B]
 
-**Cycles against calendar.** A cell retains 80% of its capacity after 1000 full cycles, and assume its cycle fade is linear. Find the capacity left from cycling alone after 2 years for (a) a watch charged daily and (b) a ring charged every 5 days, and (c) the ring's number of cycles in those 2 years. Compare (b) with Problem 22-09.11(a).
+**Cycles against calendar.** A cell retains 80% of its capacity after 1000 full cycles, and assume its cycle fade is linear. Counting one full cycle per charge, find the capacity left from cycling alone after 2 years for (a) a watch charged daily and (b) a ring charged every 5 days, and (c) the ring's number of cycles in those 2 years. Compare (b) with Problem 22-09.11(a).
 
 ### Problem 22-09.13 [C]
 
 **A ring that must last a week.** A ring has a 22.5 mAh cell and must last 7 days on an aged cell at 80% of rated capacity on a cold day that strands another 10%. (a) What average current is allowed? (b) The sensors, radio, processor and converters average 85 µA: how much is left for the fuel gauge?
+
+### Problem 22-09.14 [B]
+
+**Capacity learning.** A gauge reads $z_1$ = 0.80 from the OCV after one rest and $z_2$ = 0.25 after the next, having counted 1.32 Ah of discharge between them. (a) What capacity does it learn, and (b) what state of health is that against a rated 2.6 Ah? (c) If each OCV reading may be off by ±0.005 in SOC, what are the largest overestimate and underestimate of the capacity, in per cent? (d) What is the smallest SOC swing between rests that keeps the overestimate within 2%? Why do gauges wait for deep discharges before updating their capacity?
 
 ---
 
@@ -73,5 +77,5 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Cell voltage, capacity and ratings | 1, 2 |
 | 2. Equivalent circuit, pulses and usable capacity | 3, 4 |
 | 3. CC/CV charging and charger architectures | 5, 6, 7, 8 |
-| 4. Fuel-gauging errors | 9, 10 |
+| 4. Fuel-gauging errors and capacity learning | 9, 10, 14 |
 | 5. Aging and wearable battery life | 11, 12, 13 |

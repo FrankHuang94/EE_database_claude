@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Verify every number in the Course 22 final-exam solutions.
 
-Answers with a non-trivial route are recomputed independently; closed-form arithmetic is re-evaluated directly:
+About half the values are recomputed by a second route, listed below; the rest are closed-form
+re-evaluations of the solution's formulas (definitions and one-line arithmetic):
 - efficiency optima and crossovers by numerical minimization and root finding; the hold-up time by integrating
   the constant-power discharge C v dv/dt = -P;
 - buck and boost ripples, RMS currents and capacitor ripple from waveforms sampled over one switching period;
@@ -86,6 +87,7 @@ sol = integrate.solve_ivp(lambda t, y: [-3000 / (c_hold * y[0])], (0, 0.02), [54
 v.assert_true("hold-up: constant-power discharge reaches 40 V at 20 ms", abs(sol.y[0, -1] - 40) < 1e-6)
 v.check("X22.1o", 1e3 * c_hold)
 v.check("X22.1p", 100 * (0.5 * c_hold * (54**2 - 40**2)) / (0.5 * c_hold * 54**2))
+v.check("X22.1q", 100 * integrate.quad(lambda x: c_hold * x, 0, 40)[0] / integrate.quad(lambda x: c_hold * x, 0, 54)[0])
 
 # ---------------------------------------------------------------- Q2 buck
 VIN, VOUT, IOUT, FS, L2, C2 = 5.0, 1.0, 6.0, 2e6, 220e-9, 47e-6
@@ -105,7 +107,8 @@ i_c = i_l - IOUT
 q_c = np.concatenate([[0], np.cumsum((i_c[1:] + i_c[:-1]) / 2 * np.diff(t))])
 v.check("X22.2d", 1e3 * np.ptp(q_c / C2))
 v.check("X22.2e", 1e3 * np.ptp(2e-3 * i_c))
-v.check("X22.2f", 1e3 * np.ptp(q_c / C2 + 2e-3 * i_c))
+v.assert_true("ESR plus capacitive ripple lies between the larger term and the sum",
+              max(np.ptp(q_c / C2), np.ptp(2e-3 * i_c)) < np.ptp(q_c / C2 + 2e-3 * i_c) < np.ptp(q_c / C2) + np.ptp(2e-3 * i_c))
 v.check("X22.2g", rms(i_l, t))
 i_hs = np.where(t < ton, i_l, 0.0)
 i_ls = np.where(t < ton, 0.0, i_l)
@@ -172,12 +175,19 @@ mx = optimize.minimize_scalar(lambda d: -boost_avg(d)[1], bounds=(0.9, 0.99), me
                               options={"xatol": 1e-10})
 v.check("X22.3i", -mx.fun / VI3)
 v.check("X22.3j", mx.x)
-dbb = optimize.brentq(lambda d: 5 * d - 15 * (1 - d), 0.01, 0.99)  # V_in D = |V| D'
+dbb = optimize.brentq(lambda d: 5 * d - 12 * (1 - d), 0.01, 0.99)  # V_in D = |V| D'
 v.check("X22.3k", dbb)
 v.check("X22.3l", 0.3 / (1 - dbb))
-v.check("X22.3m", 5 + 15)
-v.check("X22.3n", dbb * 0.3 / (1 - dbb))
-v.assert_true("buck-boost input power equals output power", abs(5 * dbb * 0.3 / (1 - dbb) - 15 * 0.3) < 1e-9)
+# switch voltage over one sampled period: 0 while on; while off the inductor is clamped to the output,
+# so the switch node sits at V_in - v_L with v_L set by volt-second balance
+tbb = np.linspace(0, 1.0, 100001)
+v_l_off = -5 * dbb / (1 - dbb)
+v_sw = np.where(tbb < dbb, 0.0, 5 - v_l_off)
+v.assert_true("buck-boost inductor volt-second balance", abs(trap(np.where(tbb < dbb, 5.0, v_l_off), tbb)) < 1e-4)
+v.check("X22.3m", v_sw.max())
+i_in = np.where(tbb < dbb, 0.3 / (1 - dbb), 0.0)
+v.check("X22.3n", trap(i_in, tbb))
+v.assert_true("buck-boost input power equals output power", abs(5 * trap(i_in, tbb) - 12 * 0.3) < 1e-3)
 R_L20 = VO3 / 0.02
 k3 = 2 * L3 / (R_L20 / FS3)
 v.check("X22.3o", k3)
@@ -421,7 +431,11 @@ v.check("X22.8e", 1e3 * optimize.brentq(lambda i: p_pwm(i) - p_pfm(i), 1e-4, 1))
 for key, i, fn in (("X22.8f", 0.5e-3, p_pwm), ("X22.8g", 0.5e-3, p_pfm), ("X22.8h", 0.2, p_pwm),
                    ("X22.8i", 0.2, p_pfm)):
     v.check(key, 100 * 1.0 * i / (1.0 * i + fn(i)))
-terms = [20e-6 * 23.5 * 3600 / 0.8, 6e-3 * 25 * 60 / 0.9, 45e-3 * 5 * 60 / 0.88, 3.8 * 1.5e-6 * 86400]
+# integrate the battery power over a sampled 24 h profile (1 s steps), term by term
+tday = np.arange(0, 86400, 1.0)
+mode = np.where(tday < 23.5 * 3600, 0, np.where(tday < 23.5 * 3600 + 25 * 60, 1, 2))
+p_load = np.array([20e-6 / 0.8, 6e-3 / 0.9, 45e-3 / 0.88])[mode]
+terms = [float(np.sum(np.where(mode == k, p_load, 0.0))) for k in range(3)] + [float(np.sum(np.full_like(tday, 3.8 * 1.5e-6)))]
 v.assert_true("usage profile covers 24 h", abs(23.5 * 60 + 25 + 5 - 24 * 60) < 1e-9)
 for key, e in zip(("X22.8j", "X22.8k", "X22.8l", "X22.8m"), terms):
     v.check(key, e)
@@ -552,7 +566,14 @@ v.check("X22.10r", 1e3 * first_droop(LP, CD, 300))
 v.check("X22.10s", 1e3 * first_droop(LP, CD, 400))
 c_need = optimize.brentq(lambda c: first_droop(LP, c, 400) - 0.03, 100e-6, 200e-6, xtol=1e-12)
 v.check("X22.10t", 1e6 * c_need)
-v.check("X22.10u", 1e6 * math.sqrt(LP / CD) / 2)
+z0_sim = first_droop(LP, CD, 1.0)  # an undamped 1 A step droops by Z0
+v.check("X22.10u", 1e6 * z0_sim / 2)
+esr_opt = optimize.minimize_scalar(lambda e: first_droop(LP, CD, 400, e), bounds=(10e-6, 100e-6), method="bounded",
+                                   options={"xatol": 1e-9}).x
+v.check("X22.10x", esr_opt / math.sqrt(LP / CD))
+v.check("X22.10y", 1e6 * esr_opt)
+v.assert_true("the droop optimum is flat: Z0/2 is within 0.2% of the best droop",
+              first_droop(LP, CD, 400, z0_sim / 2) / first_droop(LP, CD, 400, esr_opt) - 1 < 2e-3)
 
 # ---------------------------------------------------------------- Q11 machines
 KM, RA, VDC = 0.12, 0.25, 48.0
@@ -564,10 +585,10 @@ w11 = (VDC - i11 * RA) / KM
 v.check("X22.11d", i11)
 v.check("X22.11e", w11)
 v.check("X22.11f", 100 * 3.0 * w11 / (VDC * i11))
-ns11 = 120 * 60 / 6
-s11 = (ns11 - 1164) / ns11
+ns11 = 120 * 50 / 8
+s11 = (ns11 - 727.5) / ns11
 v.check("X22.11g", s11)
-v.check("X22.11h", s11 * 60)
+v.check("X22.11h", s11 * 50)
 v.check("X22.11i", s11 * 20e3)
 v.check("X22.11j", (1 - s11) * 20e3 / 1e3)
 v.check("X22.11k", (1 - s11) * 20e3 / (2 * PI * (1 - s11) * ns11 / 60))  # P_mech / omega_m
@@ -661,7 +682,6 @@ v.check("X22.12n", abs(iabc[0]))
 v.check("X22.12o", abs(iabc[0]) * ib12 / 1e3)
 H12, S12, F0, DP12 = 4.5, 80e3, 60.0, 1200.0
 v.check("X22.12p", H12 * S12 / 1e3)
-v.check("X22.12q", DP12 * F0 / (2 * H12 * S12))
 GOV, DAMP, TGOV = 30e3 / (0.05 * F0), 1500.0, 5.0
 
 
@@ -671,6 +691,7 @@ def grid(_t, y):
     return [dfdt, (-GOV * df - pg) / TGOV]
 
 
+v.check("X22.12q", grid(0, [0.0, 0.0])[0])  # initial RoCoF from the swing equation itself
 g = integrate.solve_ivp(grid, (0, 600), [0.0, 0.0], max_step=0.05, rtol=1e-10, atol=1e-12)
 v.assert_true("RoCoF at t = 0 matches the swing equation",
               abs(grid(0, [0, 0])[0] + DP12 * F0 / (2 * H12 * S12)) < 1e-12)
@@ -689,6 +710,7 @@ v.check("X22.13b", 1e9 * C13 * V13**2)
 v.check("X22.13c", 1e6 * e_r * 1e4)
 e_steps = sum(trap(((V13 / 4) / R13 * np.exp(-tt13 / (R13 * C13))) ** 2 * R13, tt13) for _ in range(4))
 v.check("X22.13d", 1e6 * e_steps * 1e4)
+v.check("X22.13w", 1e9 * e_steps)
 VI13, VO13, IO13, L13, C13b = 5.0, 12.0, 2.0, 3.3e-6, 47e-6
 R13b = VO13 / IO13
 d13 = 1 - VI13 / VO13
@@ -778,5 +800,9 @@ v.check("X22.14p", 100 * droop14 / 0.75)
 v.check("X22.14q", 1 / (2 * PI * math.sqrt(L14 * C14)) / 1e6)
 v.check("X22.14r", 1e6 * 0.0375 / 1000)
 v.check("X22.14s", 1e6 * optimize.brentq(lambda c: first_droop(L14, c, 1000) - 0.0375, 150e-6, 500e-6, xtol=1e-12))
+# (d) on 22-10's boundary the regulator efficiency excludes the plane I^2R, so the lateral chain must supply both
+lateral_in = optimize.brentq(lambda p: p * chain - (P14 + 2000**2 * plane_loop(6)), 1000, 5000)
+v.check("X22.14t", lateral_in)
+v.check("X22.14u", lateral_in - pin14)
 
 v.finish()

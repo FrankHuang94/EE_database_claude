@@ -64,6 +64,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A two-phase rotating field.** Two windings 90° apart carry $I_m\cos\omega t$ and $I_m\sin\omega t$. Show that they produce a rotating field. In units of one winding's peak field, find the rotating field's amplitude for (a) this two-phase arrangement and (b) the three-phase arrangement of §3.3, and (c) the ratio of the two.
 
+### Problem 22-11.14 [B]
+
+**A generator's excitation.** A Y-connected 50 MVA, 13.8 kV synchronous generator has $X_s$ = 4.0 Ω per phase (resistance neglected) and delivers 40 MW at a power factor of 0.9 lagging. Find (a) the phase voltage and current, (b) $E_f$ and the power angle, (c) the pull-out power at this excitation, (d) the reactive power it delivers, and (e) the $E_f$ that would deliver 40 MW at unity power factor.
+
 ---
 
 ## Objective coverage
@@ -73,5 +77,5 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Torque, back EMF and the DC machine | 1, 2 |
 | 2. Rotating field, synchronous speed and slip | 3, 13 |
 | 3. Induction machine power flow and torque–slip | 4, 5, 6, 12 |
-| 4. Synchronous machines | 7 |
+| 4. Synchronous machines | 7, 14 |
 | 5. Inverter-fed drives and EV envelopes | 8, 9, 10, 11 |

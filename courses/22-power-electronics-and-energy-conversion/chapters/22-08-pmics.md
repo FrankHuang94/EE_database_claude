@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 22-08 · PMICs and Power Management for SoCs
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The power-management unit of a senior power-electronics or mixed-signal IC course: multi-rail regulator architectures, cascaded regulation, light-load efficiency, dynamic voltage scaling, power sequencing and soft start, and power gating, as practised in application-processor and wearable PMICs (Erickson & Maksimović for the converters; vendor PMIC data sheets for the system features) |
 | **Prerequisites** | [22-07](22-07-converter-dynamics-and-control.md) (loops), [22-01](22-01-power-conversion-principles.md) (LDOs, the loss model, ½CV² charging), [22-02](22-02-buck-converter-steady-state.md) (PFM), [19-06](../../19-digital-vlsi-design/chapters/19-06-power-and-low-power-design.md) (DVFS and power gating), [18-09](../../18-embedded-systems-and-microcontrollers/chapters/18-09-ultra-low-power-design.md) (duty cycling, battery life) |
 | **Estimated study hours** | 6 |
-| **Last verified** | 2026-11-24 |
+| **Last verified** | 2026-11-25 |
 
 **Learning objectives.** After this chapter you can:
 
@@ -68,17 +68,17 @@ $$
 \eta_{chain} = \eta_{buck}\cdot\frac{V_{out}}{V_{mid}},
 $$
 
-where $V_{mid}$ is the buck's output. $V_{mid}$ must exceed $V_{out}$ by the LDO's dropout plus margin; every extra 100 mV of headroom costs $0.1/V_{mid}$ of efficiency. The rule that falls out: feed the heavy digital rails directly from bucks; use LDOs, ideally post-regulated, only where current is small or noise matters; and run always-on rails from an LDO with the lowest quiescent current, because their load is tiny but permanent.
+where $V_{mid}$ is the buck's output. $V_{mid}$ must exceed $V_{out}$ by the LDO's dropout plus margin; every extra 100 mV of headroom costs a fraction $0.1/V_{mid}$ of the chain's efficiency (at 1.8 V, about 3 percentage points of the 60% in Example 22-08.1). The rule that falls out: feed the heavy digital rails directly from bucks; use LDOs, ideally post-regulated, only where current is small or noise matters; and run always-on rails from an LDO with the lowest quiescent current, because their load is tiny but permanent.
 
 ### 3.3 Light load: PFM, PWM and the crossover
 
-A buck in forced PWM switches every cycle whatever the load, so it pays a roughly fixed switching and gate-drive loss $P_f$ plus conduction $I^2R$ (22-01, 22-06). In **pulse-frequency modulation (PFM)** it switches only when the output needs charge (22-02), so its switching loss scales with load: a loss per coulomb delivered, $\alpha I$, plus its quiescent draw $V_{in}I_q$. PFM's pulses carry larger peak currents, so its conduction term $R_pI^2$ is larger than PWM's. With
+A buck in forced PWM switches every cycle whatever the load, so it pays a roughly fixed switching and gate-drive loss $P_f$ plus conduction $I^2R$ (22-01, 22-06). In **pulse-frequency modulation (PFM)** it switches only when the output needs charge (22-02), so its switching loss scales with load: a loss per coulomb delivered, $k_{PFM}I$, plus its quiescent draw $V_{in}I_q$. PFM's pulses carry larger peak currents, so its conduction term $R_pI^2$ is larger than PWM's. With
 
 $$
-P_{PWM} = P_f + RI^2, \qquad P_{PFM} = V_{in}I_q + \alpha I + R_pI^2,
+P_{PWM} = P_f + RI^2, \qquad P_{PFM} = V_{in}I_q + k_{PFM}I + R_pI^2,
 $$
 
-the two are equal where $(R_p - R)I^2 + \alpha I + V_{in}I_q - P_f = 0$. Below that current PFM wins, above it PWM wins, and a PMIC's "auto" mode switches between them. The gap at light load is enormous: a 20 mW fixed PWM loss at 1 mA of a 1.8 V output (1.8 mW) gives under 10% efficiency, while PFM can stay above 90% (Example 22-08.2). The price of PFM is a variable switching frequency (noise that can land in an RF or audio band) and larger output ripple.
+the two are equal where $(R_p - R)I^2 + k_{PFM}I + V_{in}I_q - P_f = 0$. (Problem 22-08.13 derives $k_{PFM}$ from the shape of a fixed-peak pulse: every coulomb carries the same switching and conduction cost.) Below that current PFM wins, above it PWM wins, and a PMIC's "auto" mode switches between them. The gap at light load is enormous: a 20 mW fixed PWM loss at 1 mA of a 1.8 V output (1.8 mW) gives under 10% efficiency, while PFM can stay above 90% (Example 22-08.2). The price of PFM is a variable switching frequency (noise that can land in an RF or audio band) and larger output ripple.
 
 ### 3.4 Usage profiles and battery life
 
@@ -130,13 +130,13 @@ of dynamic power, and more of the leakage, which rises faster than linearly with
 
 ### 3.7 Soft start, inrush and sequencing
 
-Switching a rail or domain on charges its capacitance $C$ to $V$. Charging a capacitor from a fixed source dissipates exactly $\tfrac12CV^2$ in the switch and wiring whatever the resistance (22-01), and the same holds whatever the *rate*. If the switch limits the current to $I_{ss}$, the voltage across it is $V - v(t)$ while it carries $C\,dv/dt$, so it dissipates
+Switching a domain on through a load switch from a fixed rail charges its capacitance $C$ to $V$. Charging a capacitor from a fixed source dissipates exactly $\tfrac12CV^2$ in the switch and wiring whatever the resistance (22-01), and the same holds whatever the *rate*. If the switch limits the current to $I_{ss}$, the voltage across it is $V - v(t)$ while it carries $C\,dv/dt$, so it dissipates
 
 $$
 \int_0^V (V - v)\,C\,dv = \tfrac12CV^2 ,
 $$
 
-the same as a hard turn-on. What soft start changes is the **peak current**: a hard turn-on through a switch of resistance $R_{on}$ draws $V/R_{on}$, enough to collapse the shared supply and reset its neighbours, while a controlled ramp draws only $I_{ss} = C\,dV/dt$. The ramp time $t_{ss} = CV/I_{ss}$ is the price.
+the same as a hard turn-on. What soft start changes is the **peak current**: a hard turn-on through a switch of resistance $R_{on}$ draws $V/R_{on}$, enough to collapse the shared supply and reset its neighbours, while a controlled ramp draws only $I_{ss} = C\,dV/dt$. The ramp time $t_{ss} = CV/I_{ss}$ is the price. A regulator's own soft start is different: it ramps the source voltage itself, so the charging energy passes through the converter at its efficiency and no $\tfrac12CV^2$ is burned in a switch.
 
 **Sequencing** brings rails up in an order the SoC requires. Typical reasons: an I/O ring powered before its core can forward-bias protection diodes or float control signals; an analog block needs its reference before its supply; a memory interface needs its core before its I/O. The sequencer enables each rail after the previous one's power-good, with programmed delays. The total power-up time is the sum of the slots, which matters for wake-up from deep sleep.
 
@@ -187,7 +187,7 @@ Units: J/W = s. ✓ The SoC's power manager estimates the idle time and gates a 
 
 - (a) $50\ \mu\text{W} \times 82\,800\ \text{s}/0.80$ = **5.175** J; (b) $15\ \text{mW} \times 3300\ \text{s}/0.88$ = **56.3** J; (c) $150\ \text{mW} \times 300\ \text{s}/0.90$ = **50.0** J.
 - (d) $3.85\ \text{V} \times 1\ \mu\text{A} \times 86\,400\ \text{s}$ = **0.333** J; (e) **111.8** J.
-- (f) The battery holds $0.3 \times 3.85 \times 3600$ = 4158 J, so it lasts **37.2** days.
+- (f) The battery holds $0.3 \times 3.85 \times 3600$ = **4158** J (g), so it lasts **37.2** days.
 
 **Units check.** W × s = J; A·h × V × s/h = J. ✓
 
@@ -253,7 +253,7 @@ Units: J/W = s. ✓ The SoC's power manager estimates the idle time and gates a 
 | Ex 22-08.1a | LDO from the battery | 31.6 | % |
 | Ex 22-08.1b | buck plus LDO | 60.0 | % |
 | Ex 22-08.1c | direct buck | 88 | % |
-| Ex 22-08.1d | gain from a 1.5 V intermediate rail | 12.0 | % |
+| Ex 22-08.1d | gain from a 1.5 V intermediate rail | 12.0 | percentage points |
 | Ex 22-08.2a | PFM–PWM crossover current | 119 | mA |
 | Ex 22-08.2b | PWM efficiency at 1 mA | 8.3 | % |
 | Ex 22-08.2c | PFM efficiency at 1 mA | 93.5 | % |
@@ -307,7 +307,7 @@ The lab is [labs/22-08-lab/](../labs/22-08-lab/README.md). `pmic.py` collects th
 4. Rebuild Example 22-08.3's battery budget. *Predict* which of three changes extends the band's life most: halving the sleep power, halving the PMIC's quiescent current, or halving the active-state converter losses.
 5. Plot Problem 22-08.11's break-even time against temperature from 0 °C to 100 °C.
 
-![Efficiency against load of a 3.6 V to 1.8 V buck in forced PWM and in PFM: PFM stays above 90% down to microamps, PWM collapses below 10 mA, and they cross at 119 mA](../../../assets/figures/22-08/light-load-efficiency.svg)
+![Efficiency against load of a 3.6 V to 1.8 V buck in forced PWM and in PFM: PFM stays above 90% down to about 50 µA (79% at 10 µA, where its 1 µA quiescent current dominates), PWM collapses below 10 mA, and they cross at 119 mA](../../../assets/figures/22-08/light-load-efficiency.svg)
 
 ## 6. Engineering tradeoffs
 
@@ -328,10 +328,10 @@ The lab is [labs/22-08-lab/](../labs/22-08-lab/README.md). `pmic.py` collects th
 | Quantity | Typical value | Source |
 |---|---|---|
 | Cascaded efficiency | $\eta_{buck}V_{out}/V_{mid}$ | §3.2 |
-| PFM–PWM crossover | where $(R_p - R)I^2 + \alpha I + V_{in}I_q = P_f$; tens to a hundred-odd mA | §3.3 |
+| PFM–PWM crossover | where $(R_p - R)I^2 + k_{PFM}I + V_{in}I_q = P_f$; tens to a hundred-odd mA | §3.3 |
 | DVS capacitor current | $CS$; 2 A for 200 µF at 10 mV/µs | §3.5 |
 | AVS saving | $1 - (V_2/V_1)^2$; 40 mV at 0.8 V is about 10% | §3.6 |
-| Soft-start energy | $\tfrac12CV^2$ in the switch, whatever the ramp | §3.7 |
+| Load-switch soft-start energy | $\tfrac12CV^2$ in the switch, whatever the ramp | §3.7 |
 | Gating break-even | $(CV^2 + E_{state})/P_{leak}$ | §3.8 |
 | Application-processor PMIC (as of Nov 2026) | 3–6 bucks of 2–4 A and 4–11 LDOs of 0.3–0.5 A per device | [1], [3], [4] |
 | Wearable converter quiescent current (as of Nov 2026) | 60 nA (a single buck) to about 1 µA (a PMIC with two bucks in auto mode) | [2], [5] |
@@ -345,7 +345,7 @@ The lab is [labs/22-08-lab/](../labs/22-08-lab/README.md). `pmic.py` collects th
 - **Comparing efficiencies at one load.** Battery life is set by the whole usage profile; a converter that wins at full load can lose the day (Example 22-08.3, Problem 22-08.4).
 - **Raising the clock before the voltage has arrived.** The voltage must reach its new value (or the PMIC must report power-good) before the frequency rises. A down-ramp in PFM can take many times longer than the programmed slew (Example 22-08.4).
 - **Forgetting the capacitor current during DVS.** $CS$ adds to the load and can trip the current limit; a fast slew into a large capacitance needs amperes (§9).
-- **Believing soft start saves energy.** It reduces the peak current; the switch still dissipates $\tfrac12CV^2$.
+- **Believing a load switch's soft start saves energy.** It reduces the peak current; the switch still dissipates $\tfrac12CV^2$. (Ramping the regulator's own output avoids that loss.)
 - **Ignoring the loop's tracking error.** A loop that leads the reference by tens of millivolts during a ramp overshoots by the same amount when the ramp stops (§5).
 - **Gating with one fixed idle threshold.** Leakage rises steeply with temperature, so the break-even time falls when the chip is hot (Problem 22-08.11).
 - **Feeding a heavy rail from an LDO "because it is simpler".** At 3.8 V in and 1.8 V out an LDO wastes more than half the input power (Problem 22-08.12).
@@ -372,7 +372,7 @@ The lab is [labs/22-08-lab/](../labs/22-08-lab/README.md). `pmic.py` collects th
 
 - *"60 nA quiescent current."* True for one converter in one mode with no load. The battery sees the whole PMIC: the TPS65219 draws 250 µA with all rails on in PFM and 15 µA in its INITIALIZE state [3]. Ask for the current in the product's real sleep configuration.
 - *"Supports DVS."* Ask for the slew in both directions and what limits it. A down-ramp six times slower than the up-ramp (TPS65219) changes how fast the SoC can save power.
-- *"AVS saves up to 60%."* Against a fixed worst-case voltage, including the voltage-frequency scaling that DVFS already provides. The guardband AVS alone removes is typically tens of millivolts, worth about 10% (Example 22-08.5, Problem 22-08.7).
+- *"AVS saves up to 60%."* Against a fixed worst-case voltage, including the voltage-frequency scaling that DVFS already provides. What AVS removes per chip depends on the process spread it replaces: Example 22-08.5's 40 mV is worth about 10%, while the QRB5165's 0.29 V nominal window shows that a fast chip can save up to half the dynamic power of a worst-case setting. Ask which corner, which chips and which baseline the claim uses.
 - *"One PMIC for the whole platform."* Flagship phones use six or more power-management parts; a single PMIC that claims to replace them usually covers the core rails and leaves the camera, display and RF rails to companions.
 
 **Questions for engineering leaders.**
@@ -467,7 +467,7 @@ Now work the [22-08 problem set](../problems/22-08-problems.md).
 ## 14. Sources
 
 1. Renesas, *DA9063* product page (system PMIC), accessed Nov 2026. [R-424]
-2. Texas Instruments, *TPS62840* data sheet, SLVSEC6D (rev. Mar 2020). [R-424]
+2. Texas Instruments, *TPS62840* data sheet, SLVSEC6D (rev. Mar 2020). [R-422], [R-424]
 3. Texas Instruments, *TPS65219 Power Management IC (PMIC) with 3 BUCKs and 4 LDOs for Industrial Applications*, SLVSGA0D (rev. Apr 2026). [R-435]
 4. Texas Instruments, *TPS6594-Q1* data sheet, SLVSEA7B (rev. Feb 2022). [R-435]
 5. Nordic Semiconductor, *nPM1300 Product Specification* v1.3, 2026-03-02. [R-435]

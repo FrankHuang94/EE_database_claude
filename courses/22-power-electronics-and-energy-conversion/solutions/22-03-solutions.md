@@ -119,6 +119,20 @@ $$D'\left(\frac{ID}{D'}\right)^2 + DI^2 = I^2\left(\frac{D^2}{D'} + D\right) = I
 
 (b) $\sqrt{0.75/0.25}$ = **1.73**: the capacitor carries 73% more RMS current than the load draws.
 
+### Solution 22-03.14
+
+(a) In DCM the inductor current rises from zero to $i_{pk} = V_{in}DT_s/L$ during the on-time and falls to zero at $\lvert V\rvert/L$ during $D_2T_s$. Volt-second balance gives $V_{in}D = \lvert V\rvert D_2$, so $D_2 = D/\lvert M\rvert$. All the inductor's off-time current flows to the output through the diode, so its average equals the load current:
+
+$$
+\frac12 i_{pk}D_2 = \frac{\lvert V\rvert}{R} \;\Rightarrow\; \frac{V_{in}DT_s}{2L}\cdot\frac{D}{\lvert M\rvert} = \frac{\lvert M\rvert V_{in}}{R} \;\Rightarrow\; \lvert M\rvert^2 = \frac{D^2RT_s}{2L} = \frac{D^2}{K} .
+$$
+
+The current stays discontinuous while $D + D_2 < 1$, that is $D + \sqrt K < 1$. At the boundary the CCM ratio $D/D'$ also holds, so $\sqrt K = D'$ there: DCM whenever $K < D'^2$. (b) $K = 2 \times 10\ \mu\text{H} \times 200\ \text{kHz}/48$ = **0.0833**. In CCM a unity ratio would need $D$ = 0.5 and $K_{crit} = D'^2$ = 0.25, so with $K$ < 0.25 the converter is discontinuous, and $D = \lvert M\rvert\sqrt K = \sqrt{0.0833}$ = **0.289**.
+
+### Solution 22-03.15
+
+(a) $V = (D/D')V_{in}$ gives $D = V/(V + V_{in}) = 12/21$ = **0.571**, and $V_{C1} = V_{in}$ = **9** V. (b) $L_2$ carries the load's average current, **2.00** A; power balance gives $L_1$'s, $2 \times 12/9$ = **2.67** A. (c) While the switch is on, $C_1$ carries $I_{L2}$: $\Delta V_{C1} = I_{L2}DT_s/C_1 = 2 \times 0.571 \times 3.33\ \mu\text{s}/10\ \mu\text{F}$ = **0.381** V, about 4% of its DC voltage. (d) Both inductors see $V_{in}$ during the on-time: $\Delta i = V_{in}DT_s/L = 9 \times 0.571 \times 3.33\ \mu\text{s}/20\ \mu\text{H}$ = **0.857** A each. (e) The switch carries both inductor currents when on, peaking at $2.67 + 2.00 + (0.857 + 0.857)/2$ = **5.52** A, and blocks $V_{in} + V$ = **21** V when off.
+
 ---
 
 ## Answer key
@@ -167,3 +181,13 @@ $$D'\left(\frac{ID}{D'}\right)^2 + DI^2 = I^2\left(\frac{D^2}{D'} + D\right) = I
 | 22-03.12b | duty at the peak | 0.682 | |
 | 22-03.12c | inductor current at the peak | 7.86 | A |
 | 22-03.13a | RMS ratio at D = 0.75 | 1.73 | |
+| 22-03.14a | K | 0.0833 | |
+| 22-03.14b | duty cycle | 0.289 | |
+| 22-03.15a | duty cycle | 0.571 | |
+| 22-03.15b | coupling-capacitor voltage | 9 | V |
+| 22-03.15c | L2 average current | 2.00 | A |
+| 22-03.15d | L1 average current | 2.67 | A |
+| 22-03.15e | coupling-capacitor ripple | 0.381 | V |
+| 22-03.15f | inductor ripple | 0.857 | A |
+| 22-03.15g | switch peak current | 5.52 | A |
+| 22-03.15h | switch blocking voltage | 21 | V |

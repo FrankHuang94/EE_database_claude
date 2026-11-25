@@ -1,6 +1,6 @@
 # Course 22 · Final Exam Solutions
 
-Exam: [README.md](README.md). Every number below is recomputed by [verify_22_exam.py](../verify/verify_22_exam.py), mostly by a second route:
+Exam: [README.md](README.md). Every number below is recomputed by [verify_22_exam.py](../verify/verify_22_exam.py). About half the values are recomputed by a second route, listed below; the rest are closed-form re-evaluations of the same formulas:
 
 - Questions 1 and 8: efficiencies and crossovers by numerical optimization and root finding, and the hold-up time by integrating the constant-power discharge;
 - Questions 2, 3 and 6(d): ripples, RMS currents and discontinuous-conduction duty cycles from sampled switching waveforms over one period;
@@ -36,7 +36,7 @@ $$
 C = \frac{2Pt}{V_1^2 - V_2^2} = \frac{2 \times 3000 \times 0.02}{54^2 - 40^2} = \frac{120}{1316} = \mathbf{91.19}\ \text{mF}.
 $$
 
-It uses $1 - (40/54)^2$ = **45.1**% of its stored energy: energy goes as $V^2$, so the last quarter of the voltage holds most of what is left, and the converter's minimum input voltage sets how much of it is usable.
+It uses $1 - (40/54)^2$ = **45.1**% of its stored energy: energy goes as $V^2$, so the top quarter of the voltage range (54 to 40 V) holds 45.1% of the energy, and the **55**% left below 40 V is stranded by the converter's minimum input voltage.
 
 ### Solution 2
 
@@ -46,7 +46,7 @@ $$
 \Delta i_L = \frac{V(1 - D)}{f_sL} = \frac{1.0 \times 0.8}{2\ \text{MHz} \times 220\ \text{nH}} = \frac{0.8}{0.44} = \mathbf{1.818}\ \text{A},
 $$
 
-so $r$ = **0.303** and the peak is 6 + 0.909 = **6.909** A. The capacitive ripple is $\Delta i_L/(8f_sC) = 1.818/(8 \times 2\ \text{MHz} \times 47\ \mu\text{F})$ = **2.418** mV. A 2 mΩ ESR alone adds $\Delta i_L \times$ ESR = **3.64** mV, more than the capacitance does. The two do not simply add, because the ESR term peaks with the current and the capacitive term a quarter cycle later; summing the two waveforms gives **4.18** mV peak to peak.
+so $r$ = **0.303** and the peak is 6 + 0.909 = **6.909** A. The capacitive ripple is $\Delta i_L/(8f_sC) = 1.818/(8 \times 2\ \text{MHz} \times 47\ \mu\text{F})$ = **2.418** mV. A 2 mΩ ESR alone adds $\Delta i_L \times$ ESR = **3.64** mV, more than the capacitance does. The two do not simply add, because the ESR term peaks with the current and the capacitive term a quarter cycle later, so the combined ripple lies between the larger of the two and their sum.
 
 (b) $I_{L,rms} = I\sqrt{1 + r^2/12} = 6\sqrt{1 + 0.0918/12}$ = **6.023** A. Each switch carries the inductor current for its share of the period: $I_{HS} = \sqrt{0.2} \times 6.023$ = **2.694** A and $I_{LS} = \sqrt{0.8} \times 6.023$ = **5.387** A. The input capacitor carries the pulsed switch current minus its average:
 
@@ -74,13 +74,13 @@ $$
 K = \frac{2L}{RT_s} = \frac{2 \times 220\ \text{nH} \times 2\ \text{MHz}}{2.5} = \mathbf{0.352},
 $$
 
-below $K_{crit} = 1 - D$ = 0.8, so the converter is discontinuous. From $M^2 = D_1^2(1 - M)/K$ with $M$ = 0.2, $D_1 = M\sqrt{K/(1 - M)} = 0.2\sqrt{0.44}$ = **0.1327**. Volt-second balance gives $D_2 = D_1(V_{in} - V)/V$ = **0.5307**, and the peak is $(V_{in} - V)D_1T_s/L = 4 \times 0.1327 \times 0.5\ \mu\text{s}/220\ \text{nH}$ = **1.206** A. Check: the average current $\tfrac12 \times 1.206 \times (0.1327 + 0.5307)$ = 0.400 A. ✓
+below $K_{crit} = 1 - D$ = 0.8, so the converter is discontinuous. The sheet's $M = 2/(1 + \sqrt{1 + 4K/D_1^2})$ rearranges to $\sqrt{1 + 4K/D_1^2} = (2 - M)/M$; squaring, $4K/D_1^2 = ((2 - M)^2 - M^2)/M^2 = 4(1 - M)/M^2$, so $M^2 = D_1^2(1 - M)/K$. With $M$ = 0.2, $D_1 = M\sqrt{K/(1 - M)} = 0.2\sqrt{0.44}$ = **0.1327**. Volt-second balance gives $D_2 = D_1(V_{in} - V)/V$ = **0.5307**, and the peak is $(V_{in} - V)D_1T_s/L = 4 \times 0.1327 \times 0.5\ \mu\text{s}/220\ \text{nH}$ = **1.206** A. Check: the average current $\tfrac12 \times 1.206 \times (0.1327 + 0.5307)$ = 0.400 A. ✓
 
 ### Solution 3
 
 (a) $D = 1 - 3/12$ = **0.75**, $I_L = I/D'$ = **2.00** A, $\Delta i_L = V_{in}DT_s/L = 3 \times 0.75 \times 1\ \mu\text{s}/4.7\ \mu\text{H}$ = **0.479** A, and the output ripple (the capacitor alone supplies the load while the switch is on) is $ID/(f_sC) = 0.5 \times 0.75/(1\ \text{MHz} \times 22\ \mu\text{F})$ = **17.05** mV.
 
-(b) With $R$ = 24 Ω,
+(b) Only the winding resistance $R_L$ = 50 mΩ is lossy, and it carries $I_L$ all the time. With $R$ = 24 Ω,
 
 $$
 \eta = \frac{1}{1 + R_L/(D'^2R)} = \frac{1}{1 + 0.05/(0.0625 \times 24)} = \mathbf{96.77}\ \%,
@@ -88,7 +88,7 @@ $$
 
 and $V = (V_{in}/D')\eta$ = **11.61** V. The gain with resistance is $M = D'/(D'^2 + R_L/R)$; setting it to 4 gives $D'^2 - 0.25D' + 0.002083 = 0$, whose larger root is $D'$ = 0.2414, so $D$ = **0.7586** and η = $D'V/V_{in}$ = **96.55**%. The largest gain is $M_{max} = \tfrac12\sqrt{R/R_L} = \tfrac12\sqrt{480}$ = **10.95**, at $D' = \sqrt{R_L/R}$ = 0.0456, $D$ = **0.9544**. Beyond that, more duty cycle lowers the output, and a controller that keeps pushing latches up at maximum duty.
 
-(c) $\lvert V\rvert = (D/D')V_{in}$ gives $D$ = 15/20 = **0.75**. The inductor carries $I/D'$ = 0.3/0.25 = **1.20** A, the switch blocks $V_{in} + \lvert V\rvert$ = **20** V, and the input current is $DI_L$ = **0.900** A, equal to $P/V_{in}$ = 4.5/5. ✓ The inductor carries four times the load current: at large step-up ratios the buck-boost's currents grow as $1/D'$.
+(c) $\lvert V\rvert = (D/D')V_{in}$ gives $D$ = 12/17 = **0.7059**. The inductor carries $I/D'$ = 0.3/0.2941 = **1.020** A, the switch blocks $V_{in} + \lvert V\rvert$ = **17** V, and the input current is $DI_L$ = **0.720** A, equal to $P/V_{in}$ = 3.6/5. ✓ The inductor carries $1/D'$ times the load current: at large step-up ratios the buck-boost's currents grow as $1/D'$.
 
 (d) $R$ = 600 Ω, so $K = 2L/(RT_s) = 2 \times 4.7\ \mu\text{H}/(600 \times 1\ \mu\text{s})$ = **0.01567**, and $K_{crit} = DD'^2 = 0.75 \times 0.0625$ = **0.0469**. $K < K_{crit}$, so it is discontinuous. From $M(M - 1) = D^2/K$, $D = \sqrt{KM(M - 1)} = \sqrt{0.01567 \times 12}$ = **0.4336**, well below the CCM value of 0.75.
 
@@ -162,13 +162,13 @@ $$
 L = \frac{V(1 - D)}{f_s\Delta i_L} = \frac{12 \times 0.75}{400\ \text{kHz} \times 14} = \mathbf{1.607}\ \mu\text{H}.
 $$
 
-The peak is 5 + 7 = **12.0** A and the RMS $5\sqrt{1 + 2.8^2/12}$ = **6.43** A, so conduction loss rises by a factor of $(6.43/5)^2$ = **1.653**. TCM trades that conduction loss for zero turn-on loss.
+The peak is 5 + 7 = **12.0** A and the RMS $5\sqrt{1 + 2.8^2/12}$ = **6.43** A, so the conduction loss exceeds that of a ripple-free 5 A by a factor of $(6.43/5)^2$ = **1.653**. TCM trades that conduction loss for zero turn-on loss.
 
 ### Solution 7
 
 (a) $f_0 = 1/(2\pi\sqrt{LC}) = 1/(2\pi\sqrt{2.35 \times 10^{-10}})$ = **10.38** kHz, $Q = 0.12\sqrt{940}$ = **3.68**, and $G_{vd}(0) = V_g$ = 12, or **21.58** dB. At 40 kHz, $\omega^2LC$ = 14.844 and $\omega L/R$ = 1.047, so the denominator is −13.844 + j1.047: $\lvert G_{vd}\rvert = 12/13.884$ = **0.864** at **−175.7**°.
 
-(b) $B = \text{PM} - 90° - \varphi_p = 55 - 90 + 175.67$ = **140.7**°, and $k = \tan((70.34° + 90°)/2) = \tan 80.17°$ = **5.77**. The zeros go at 40/5.770 = **6.93** kHz and the poles at 40 × 5.770 = **230.8** kHz, below $f_s/2$. The compensator must have $\lvert G_c\rvert = V_M/(\lvert G_{vd}\rvert H)$ = **1.157** at crossover, and each zero–pole pair contributes $k$ there, so $\omega_I = 1.157\,\omega_c/k^2$ and $f_I$ = 1.157 × 40 kHz/33.30 = **1.390** kHz. Evaluating $T(j\omega)$ numerically confirms the crossover at **40.0** kHz with a **55.0**° margin.
+(b) $B = \text{PM} - 90° - \varphi_p = 55 - 90 + 175.67$ = **140.7**°, and $k = \tan((70.34° + 90°)/2) = \tan 80.17°$ = **5.77**. The zeros go at 40/5.770 = **6.93** kHz and the poles at 40 × 5.770 = **230.8** kHz, below $f_s/2$. The compensator must have $\lvert G_c\rvert = V_M/(\lvert G_{vd}\rvert H)$ = **1.157** at crossover, and each zero–pole pair contributes $k$ there, so $\omega_I = 1.157\,\omega_c/k^2$ and $f_I$ = 1.157 × 40 kHz/33.30 = **1.390** kHz. As a check, not a required answer: evaluating $T(j\omega)$ numerically confirms the crossover at **40.0** kHz with a **55.0**° margin.
 
 (c) $m_1 = (12 - 7.5)/3.3\ \mu\text{H}$ = **1.364** A/µs and $m_2 = 7.5/3.3\ \mu\text{H}$ = **2.273** A/µs, so α = $-m_2/m_1$ = **−1.67**: with $D$ = 0.625 > 0.5, each perturbation grows and alternates, the subharmonic oscillation. Stability needs $m_2 - m_a < m_1 + m_a$, that is $m_a > (m_2 - m_1)/2$ = **0.455** A/µs. With $m_a = m_2/2$ = 1.136 A/µs, $\alpha = -(2.273 - 1.136)/(1.364 + 1.136)$ = **−0.455**, and after five cycles a perturbation is $\lvert\alpha\rvert^5$ = **0.0194** of its initial size, alternating in sign.
 
@@ -233,13 +233,13 @@ $$
 
 (c) $Z_t = 30\ \text{mV}/400\ \text{A}$ = **75** µΩ. With $R_{LL}$ = 75 µΩ, the output at 600 A is $0.80 - 75\ \mu\Omega \times 600$ = **0.755** V. The bulk capacitance must carry the step until the loop responds: $C \ge \Delta I/(2\pi f_c\Delta V) = 400/(2\pi \times 300\ \text{kHz} \times 0.03)$ = **7.07** mF.
 
-(d) $f_0 = 1/(2\pi\sqrt{0.8\ \text{pH} \times 80\ \mu\text{F}})$ = **19.89** MHz and $Z_0 = \sqrt{L/C}$ = **100** µΩ. The first droop is $\Delta IZ_0$: **30.0** mV for 300 A and **40.0** mV for 400 A, which fails the 30 mV allowance. Meeting it needs $C \ge L\Delta I^2/\Delta V^2 = 0.8\ \text{pH} \times 400^2/0.03^2$ = **142.2** µF of die capacitance (or less package inductance), and the best damping ESR is about $Z_0/2$ = **50** µΩ.
+(d) $f_0 = 1/(2\pi\sqrt{0.8\ \text{pH} \times 80\ \mu\text{F}})$ = **19.89** MHz and $Z_0 = \sqrt{L/C}$ = **100** µΩ. The first droop is $\Delta IZ_0$: **30.0** mV for 300 A and **40.0** mV for 400 A, which fails the 30 mV allowance. Meeting it needs $C \ge L\Delta I^2/\Delta V^2 = 0.8\ \text{pH} \times 400^2/0.03^2$ = **142.2** µF of die capacitance (or less package inductance), and the $Z_0/2$ rule puts the droop-minimizing ESR at about $Z_0/2$ = **50** µΩ. (A simulation of the damped L–C network puts the exact minimum at **0.53** $Z_0$ ≈ **53** µΩ; the optimum is flat, so the rule is close enough.)
 
 ### Solution 11
 
 (a) With no load, $E_a = V$, so ω = $V/k$ = **400** rad/s, **3820** rpm. At stall, $I = V/R_a$ = 192 A and $T = kI$ = **23.04** N·m. At 3 N·m, $I = T/k$ = **25.0** A and ω = $(V - IR_a)/k = (48 - 6.25)/0.12$ = **347.9** rad/s; the efficiency is $T\omega/(VI) = 347.9/400$ = **86.98**%. With no mechanical loss, a DC motor's efficiency is just $E_a/V$, its speed as a fraction of no-load speed.
 
-(b) $n_s = 120 \times 60/6$ = 1200 rpm, so $s$ = 36/1200 = **0.030** and the rotor currents run at $sf$ = **1.80** Hz. The rotor copper loss is $sP_{ag}$ = **600** W, the mechanical power $(1 - s)P_{ag}$ = **19.4** kW, and the torque $P_{ag}/\omega_s = 20\,000/125.66$ = **159.2** N·m.
+(b) $n_s = 120 \times 50/8$ = 750 rpm, so $s$ = 22.5/750 = **0.030** and the rotor currents run at $sf$ = **1.50** Hz. The rotor copper loss is $sP_{ag}$ = **600** W, the mechanical power $(1 - s)P_{ag}$ = **19.4** kW, and the torque $P_{ag}/\omega_s = 20\,000/78.54$ = **254.6** N·m.
 
 (c) ω_s = 188.5 rad/s and $\sqrt{R_{th}^2 + (X_{th} + X_2)^2} = \sqrt{0.09 + 3.24}$ = 1.8248 Ω. Then $s_{max}$ = 0.35/1.8248 = **0.1918**, at **1455** rpm, and
 
@@ -252,10 +252,10 @@ At $s$ = 1, $T = 3 \times 62\,500 \times 0.35/(188.5 \times (0.65^2 + 3.24))$ = 
 (d) $V$ = 4160/√3 = 2401.8 V per phase, so $\sin\delta = PX_s/(3VE_f) = 12 \times 10^6/20.175 \times 10^6$ = 0.5948 and δ = **36.50**°. The pull-out power is $3VE_f/X_s$ = **2.522** MW. From $\mathbf V = \mathbf E_f + jX_s\mathbf I_a$ with $\mathbf E_f$ lagging by δ,
 
 $$
-\mathbf I_a = \frac{2401.8 - 2800\angle{-36.50°}}{j8} = \frac{150.8 + j1665.4}{j8} = 208.2 - j18.85\ \text{A},
+\mathbf I_a = \frac{2401.8 - 2800\angle{-36.50°}}{j8} = \frac{150.9 + j1665.4}{j8} = 208.2 - j18.87\ \text{A},
 $$
 
-so $\lvert\mathbf I_a\rvert$ = **209.0** A at a power factor of **0.996** lagging, and the motor draws $3 \times 2401.8 \times 18.85$ = **0.136** MVAr. Unity power factor needs $E_f = \sqrt{V^2 + (X_sI)^2}$ with $I = P/(3V)$ = 208.2 A: **2923** V. More field current would make the motor supply reactive power, as a synchronous condenser does.
+so $\lvert\mathbf I_a\rvert$ = **209.0** A at a power factor of **0.996** lagging, and the motor draws $3 \times 2401.8 \times 18.87$ = **0.136** MVAr. Unity power factor puts $\mathbf I_a$ in phase with $\mathbf V$, so $\mathbf E_f = V - jX_sI$ and $E_f = \sqrt{V^2 + (X_sI)^2}$ with $I = P/(3V)$ = 208.2 A: **2923** V. More field current would make the motor supply reactive power, as a synchronous condenser does.
 
 ### Solution 12
 
@@ -277,7 +277,7 @@ $$
 
 larger than the three-phase fault because $Z_0 < Z_1$, as near solidly grounded transformers. Breakers must be rated for the worse of the two.
 
-(d) The machines store $E_k = HS$ = 4.5 s × 80 GVA = **360** GJ. The initial RoCoF is $\Delta Pf_0/(2HS) = 1200 \times 60/(2 \times 4.5 \times 80\,000)$ = **0.100** Hz/s. The governors contribute $S/(Rf_0) = 30\,000/(0.05 \times 60)$ = 10 000 MW/Hz, so
+(d) The machines store $E_k = HS$ = 4.5 s × 80 GVA = **360** GJ. The initial RoCoF is $-\Delta Pf_0/(2HS) = -1200 \times 60/(2 \times 4.5 \times 80\,000)$ = **−0.100** Hz/s, falling. The governors contribute $S/(Rf_0) = 30\,000/(0.05 \times 60)$ = 10 000 MW/Hz, so
 
 $$
 \Delta f_{ss} = -\frac{1200}{10\,000 + 1500} = \mathbf{-0.1043}\ \text{Hz},
@@ -287,21 +287,21 @@ and the governors pick up $10\,000 \times 0.1043$ = **1043** MW, the load's damp
 
 ### Solution 13
 
-(a) After the step, $i = (V/R)e^{-t/RC}$, so
+(a) KVL around the loop after the step gives $V = Ri + v_C$ with $i = C\,dv_C/dt$, so $RC\,dv_C/dt + v_C = V$ with $v_C(0) = 0$. Its solution is $v_C = V(1 - e^{-t/RC})$, and the current is $i = C\,dv_C/dt = (V/R)e^{-t/RC}$. Then
 
 $$
 E_R = \int_0^\infty i^2R\,dt = \frac{V^2}{R}\int_0^\infty e^{-2t/RC}dt = \frac{V^2}{R}\cdot\frac{RC}{2} = \frac12CV^2 ,
 $$
 
-in which $R$ cancels. The source delivers charge $CV$ at voltage $V$, so it supplies $CV^2$: half is stored and half is lost, whatever the resistance. In $N$ equal steps, each step charges $C$ through $R$ by $V/N$ from a source at the new level, which by the same integral dissipates $\tfrac12C(V/N)^2$; the $N$ steps dissipate $N \times \tfrac12C(V/N)^2 = \tfrac12CV^2/N$. For 40 nF to 0.9 V: $\tfrac12CV^2$ = **16.2** nJ lost and $CV^2$ = **32.4** nJ drawn; at 10 000 wake-ups per second the loss is **162** µW, and with four steps **40.5** µW. This is why soft start does not save the charging energy (it only limits the current), and why stepped or adiabatic charging does.
+in which $R$ cancels. The source delivers charge $CV$ at voltage $V$, so it supplies $CV^2$: half is stored and half is lost, whatever the resistance. In $N$ equal steps, each step charges $C$ through $R$ by $V/N$ from a source at the new level, which by the same integral dissipates $\tfrac12C(V/N)^2$; the $N$ steps dissipate $N \times \tfrac12C(V/N)^2 = \tfrac12CV^2/N$. For 40 nF to 0.9 V: one step loses $\tfrac12CV^2$ = **16.2** nJ, four steps lose 16.2/4 = **4.05** nJ, and the supply delivers $CV^2$ = **32.4** nJ to a one-step charge; at 10 000 wake-ups per second the loss is **162** µW, and with four steps **40.5** µW. This is why soft start does not save the charging energy (it only limits the current), and why stepped or adiabatic charging does.
 
-(b) The averaged boost obeys $L\,d\langle i\rangle/dt = v_g - d'\langle v\rangle$ and $C\,d\langle v\rangle/dt = d'\langle i\rangle - \langle v\rangle/R$. Write $d' = D' - \hat d$, $i = I + \hat\imath$, $v = V + \hat v$, keep first-order terms and transform:
+(b) The averaged boost obeys $L\,d\langle i\rangle/dt = v_g - d'\langle v\rangle$ and $C\,d\langle v\rangle/dt = d'\langle i\rangle - \langle v\rangle/R$. Write $d' = D' - \hat d$, $\langle i\rangle = I_L + \hat\imath$, $\langle v\rangle = V + \hat v$, keep first-order terms and transform:
 
 $$
-sL\hat\imath = -D'\hat v + V\hat d, \qquad sC\hat v = D'\hat\imath - I\hat d - \hat v/R .
+sL\hat\imath = -D'\hat v + V\hat d, \qquad sC\hat v = D'\hat\imath - I_L\hat d - \hat v/R .
 $$
 
-Substitute $\hat\imath = (V\hat d - D'\hat v)/(sL)$ into the second, multiply by $sL$, and use $I = V/(D'R)$:
+Substitute $\hat\imath = (V\hat d - D'\hat v)/(sL)$ into the second, multiply by $sL$, and use the inductor's DC current $I_L = V/(D'R)$:
 
 $$
 \hat v\left(s^2LC + \frac{sL}{R} + D'^2\right) = \hat d\left(D'V - \frac{sLV}{D'R}\right) \quad\Rightarrow\quad G_{vd}(s) = \frac{V}{D'}\cdot\frac{1 - s\dfrac{L}{D'^2R}}{1 + s\dfrac{L}{D'^2R} + s^2\dfrac{LC}{D'^2}} .
@@ -333,14 +333,23 @@ so the in-phase drop is $\Delta V = (RP + XQ)/V_r$ and the quadrature term $\del
 
 (c) $Z_0 = \sqrt{0.4\ \text{pH}/150\ \mu\text{F}}$ = **51.6** µΩ, so a 1000 A step droops **51.6** mV, **6.89**% of 0.75 V, at the resonance $f_0$ = **20.5** MHz. A 5% allowance means $Z_t$ = 37.5 mV/1000 A = **37.5** µΩ, which needs $C \ge L\Delta I^2/\Delta V^2$ = **284** µF at this inductance. A module under the package shortens the board path but leaves the package and die loop, which sets the first droop. "Eliminates PDN droop" is false; at most the module shrinks the lower-frequency part of the impedance.
 
-(d) The 150 W could be the efficiency gain over a conventional chain (part a: 155 W) or the lateral planes' $I^2R$ (part b: 164 W on six planes). These are different losses at different boundaries. The plane loss is already counted inside the conventional chain's "board" efficiency if that was measured at the die, and is outside it if measured at the regulator's output. Adding both would double-count; quoting either needs the boundary stated. Questions for the chief architect, with what a strong answer contains:
+(d) The 150 W could be the efficiency gain over a conventional chain (part a: 155 W) or the lateral planes' $I^2R$ (part b: 164 W on six planes). These are different losses at different boundaries, so which applies, and whether both do, depends on where each efficiency is measured.
+
+- *On 22-10's boundary they add.* In 22-10's Intel model the 87.0% covers the regulator alone, and the plane $I^2R$ is listed separately. The lateral regulator must then supply 1500 + 164 = 1664 W, and the chain draws $1664/0.8483$ = **1962** W, about **349** W more than the module's 1613 W (if the module's 93% is measured all the way to the die).
+- *If the start-up's baseline was measured at the die,* the plane loss is already inside its efficiency, and adding the two savings would double-count it.
+
+Either way, a saving quoted without its boundary cannot be checked. Questions for the chief architect, with what a strong answer contains:
 
 1. **"Where exactly is 93% measured, from which terminal to which, at what load and temperature?"** *Strong:* 48 V at the module input to the die bumps (or to the module output, stated as such), at 25%, 50% and 100% load, at the module's operating temperature, with the measurement method. *Evasive:* "peak efficiency" with no boundary.
 2. **"What is your lateral baseline: how many planes, what copper weight, what distance, and which losses does it include?"** *Strong:* a named reference design with the plane stackup and a loss breakdown that adds to the claimed saving. *Evasive:* "150 W, per our simulation."
 3. **"What does the die see for a 1000 A step, and what package inductance and die capacitance did you assume?"** *Strong:* a measured or simulated first droop and impedance profile against a target impedance, with the loop bandwidth of the module. *Evasive:* "no droop because we are under the package."
 4. **"How do you remove 113 W from under the package, and what happens to the board's power and signal routing there?"** *Strong:* a thermal stack with the cooling path, junction temperatures at full load, and how the module coexists with the package's signal escape and the board's backside components. *Evasive:* "the cold plate handles it."
 
-Rubric: (d) earns full marks for separating the two savings and four questions with strong-answer content; up to half for questions alone.
+**Rubric for (d), 3 points.**
+
+- **1 point:** identifies the two candidate savings with numbers (about 155 W of conversion loss and about 164 W of plane $I^2R$), and explains that whether they add depends on where each efficiency is measured: additive on 22-10's boundary (about 349 W), double-counted if the baseline was measured at the die.
+- **0.5 point for each of four questions** that names a measurable boundary or quantity and says what a strong answer contains: the efficiency boundary, load and temperature; the baseline stackup and loss breakdown; the first droop with the assumed $L$ and $C$; the thermal path for about 113 W and the routing impact.
+- **0.25 point** for a relevant question without strong-answer content.
 
 ---
 
@@ -363,12 +372,12 @@ Rubric: (d) earns full marks for separating the two savings and four questions w
 | X22.1n | one-to-two-phase crossover | 7.07 | A |
 | X22.1o | hold-up capacitance | 91.19 | mF |
 | X22.1p | stored energy used | 45.1 | % |
+| X22.1q | energy left below 40 V | 55 | % |
 | X22.2a | inductor ripple | 1.818 | A |
 | X22.2b | ripple ratio | 0.303 |  |
 | X22.2c | peak inductor current | 6.909 | A |
 | X22.2d | capacitive output ripple | 2.418 | mV |
 | X22.2e | ESR ripple | 3.64 | mV |
-| X22.2f | combined ripple | 4.18 | mV |
 | X22.2g | inductor RMS current | 6.023 | A |
 | X22.2h | high-side RMS current | 2.694 | A |
 | X22.2i | low-side RMS current | 5.387 | A |
@@ -392,10 +401,10 @@ Rubric: (d) earns full marks for separating the two savings and four questions w
 | X22.3h | efficiency at that duty cycle | 96.55 | % |
 | X22.3i | maximum gain | 10.95 |  |
 | X22.3j | duty cycle of maximum gain | 0.9544 |  |
-| X22.3k | buck-boost duty cycle | 0.75 |  |
-| X22.3l | buck-boost inductor current | 1.20 | A |
-| X22.3m | switch blocking voltage | 20 | V |
-| X22.3n | average input current | 0.900 | A |
+| X22.3k | buck-boost duty cycle | 0.7059 |  |
+| X22.3l | buck-boost inductor current | 1.020 | A |
+| X22.3m | switch blocking voltage | 17 | V |
+| X22.3n | average input current | 0.720 | A |
 | X22.3o | K at 20 mA | 0.01567 |  |
 | X22.3p | K_crit | 0.0469 |  |
 | X22.3q | DCM duty cycle | 0.4336 |  |
@@ -463,8 +472,8 @@ Rubric: (d) earns full marks for separating the two savings and four questions w
 | X22.7i | pole frequency | 230.8 | kHz |
 | X22.7j | compensator gain at crossover | 1.157 |  |
 | X22.7k | integrator frequency | 1.390 | kHz |
-| X22.7l | crossover (numerical) | 40.0 | kHz |
-| X22.7m | phase margin (numerical) | 55.0 | ° |
+| X22.7l | crossover (numerical check) | 40.0 | kHz |
+| X22.7m | phase margin (numerical check) | 55.0 | ° |
 | X22.7n | on-time slope | 1.364 | A/µs |
 | X22.7o | off-time slope | 2.273 | A/µs |
 | X22.7p | alpha without compensation | −1.67 |  |
@@ -534,7 +543,9 @@ Rubric: (d) earns full marks for separating the two savings and four questions w
 | X22.10r | first droop, 300 A | 30.0 | mV |
 | X22.10s | first droop, 400 A | 40.0 | mV |
 | X22.10t | die capacitance for 30 mV | 142.2 | µF |
-| X22.10u | best damping ESR | 50 | µΩ |
+| X22.10u | damping ESR, Z0/2 rule | 50 | µΩ |
+| X22.10x | droop-minimizing ESR, as a fraction of Z0 (simulated) | 0.53 | |
+| X22.10y | droop-minimizing ESR (simulated) | 53 | µΩ |
 | X22.11a | no-load speed | 400 | rad/s |
 | X22.11b | no-load speed | 3820 | rpm |
 | X22.11c | stall torque | 23.04 | N·m |
@@ -542,10 +553,10 @@ Rubric: (d) earns full marks for separating the two savings and four questions w
 | X22.11e | speed at 3 N·m | 347.9 | rad/s |
 | X22.11f | efficiency at 3 N·m | 86.98 | % |
 | X22.11g | slip | 0.030 |  |
-| X22.11h | rotor frequency | 1.80 | Hz |
+| X22.11h | rotor frequency | 1.50 | Hz |
 | X22.11i | rotor copper loss | 600 | W |
 | X22.11j | mechanical power | 19.4 | kW |
-| X22.11k | induced torque | 159.2 | N·m |
+| X22.11k | induced torque | 254.6 | N·m |
 | X22.11l | slip of maximum torque | 0.1918 |  |
 | X22.11m | speed of maximum torque | 1455 | rpm |
 | X22.11n | maximum torque | 234.1 | N·m |
@@ -573,10 +584,11 @@ Rubric: (d) earns full marks for separating the two savings and four questions w
 | X22.12n | SLG fault current | 6.00 | pu |
 | X22.12o | SLG fault current | 1.004 | kA |
 | X22.12p | stored kinetic energy | 360 | GJ |
-| X22.12q | initial RoCoF | 0.100 | Hz/s |
+| X22.12q | initial RoCoF | −0.100 | Hz/s |
 | X22.12r | settling deviation | −0.1043 | Hz |
 | X22.12s | governor pickup | 1043 | MW |
 | X22.13a | charging loss | 16.2 | nJ |
+| X22.13w | four-step charging loss | 4.05 | nJ |
 | X22.13b | supply energy | 32.4 | nJ |
 | X22.13c | loss power, one step | 162 | µW |
 | X22.13d | loss power, four steps | 40.5 | µW |
@@ -617,3 +629,5 @@ Rubric: (d) earns full marks for separating the two savings and four questions w
 | X22.14q | resonant frequency | 20.5 | MHz |
 | X22.14r | target impedance | 37.5 | µΩ |
 | X22.14s | die capacitance needed | 284 | µF |
+| X22.14t | lateral chain input with plane loss added | 1962 | W |
+| X22.14u | additive saving on 22-10's boundary | 349 | W |

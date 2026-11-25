@@ -64,14 +64,22 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **The boost's hot capacitor.** (a) Derive the boost's output-capacitor RMS current, $I\sqrt{D/D'}$, from its capacitor-current waveform with small ripple. (b) Evaluate the ratio of that RMS current to the load current at $D$ = 0.75.
 
+### Problem 22-03.14 [C]
+
+**The buck-boost in discontinuous conduction.** (a) Derive the inverting buck-boost's DCM conversion ratio, $\lvert M\rvert = D/\sqrt K$ with $K = 2L/(RT_s)$, from volt-second balance on the inductor and the diode's average current, and show that it is discontinuous when $K < D'^2$ (with $D'$ the CCM value). (b) A buck-boost makes −12 V from 12 V into 48 Ω with $L$ = 10 µH at 200 kHz. Find $K$, show that it is discontinuous, and find the duty cycle.
+
+### Problem 22-03.15 [C]
+
+**Designing a SEPIC's power stage.** A SEPIC makes 12 V at 2 A from 9 V, switching at 300 kHz with $L_1 = L_2$ = 20 µH and a 10 µF coupling capacitor. Find (a) the duty cycle and the coupling capacitor's DC voltage, (b) the average current in each inductor, (c) the coupling capacitor's peak-to-peak ripple (it carries $L_2$'s current while the switch is on), (d) each inductor's ripple, and (e) the switch's peak current and blocking voltage.
+
 ---
 
 ## Objective coverage
 
 | Objective | Problems |
 |---|---|
-| 1. Conversion ratios of boost, buck-boost, Ćuk and SEPIC | 1, 2, 3 |
-| 2. Currents, ripples and stresses | 1, 2, 4, 12, 13 |
+| 1. Conversion ratios of boost, buck-boost, Ćuk and SEPIC | 1, 2, 3, 15 |
+| 2. Currents, ripples and stresses | 1, 2, 4, 12, 13, 15 |
 | 3. Resistance, efficiency and maximum gain | 5, 6 |
-| 4. Boost DCM boundary and ratio | 7, 8 |
+| 4. Boost DCM boundary and ratio (and the buck-boost's) | 7, 8, 14 |
 | 5. Topology selection: stress, range, RHP zero | 9, 10, 11, 12 |

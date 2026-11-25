@@ -1,10 +1,10 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 22-10 · Datacenter Power Delivery
 
 | | |
 |---|---|
 | **Course** | [22 · Power Electronics and Energy Conversion](../README.md) |
-| **University equivalent** | The power-distribution and power-integrity part of a graduate power-electronics or high-speed-systems course: distribution voltage and conductor loss, fixed-ratio bus converters, multiphase voltage regulators, load lines, PDN target impedance and decoupling, vertical and integrated power delivery (Erickson & Maksimović for converters; Swaminathan & Engin, *Power Integrity Modeling and Design*; Smith & Bogatin, *Principles of Power Integrity for PDN Design*) |
+| **University equivalent** | An introduction, at senior-undergraduate depth, to topics usually taught in graduate power-electronics and power-integrity courses: distribution voltage and conductor loss, fixed-ratio bus converters, multiphase voltage regulators, load lines, PDN target impedance and decoupling, vertical and integrated power delivery (Erickson & Maksimović for converters; Swaminathan & Engin, *Power Integrity Modeling and Design*; Smith & Bogatin, *Principles of Power Integrity for PDN Design*) |
 | **Prerequisites** | [22-07](22-07-converter-dynamics-and-control.md) (loops, load-step droop), [22-08](22-08-pmics.md) (DVS, AVS), [22-02](22-02-buck-converter-steady-state.md) (the buck), [22-05](22-05-magnetics-design.md) (coupled and trans-inductor magnetics), [07-03](../../07-circuit-analysis-2-transient-and-ac/chapters/07-03-second-order-rlc-transients.md) (RLC resonance), [07-11](../../07-circuit-analysis-2-transient-and-ac/chapters/07-11-three-phase-circuits.md) (three-phase power) |
 | **Estimated study hours** | 8 |
 | **Last verified** | 2026-11-25 |
@@ -100,7 +100,7 @@ A single buck phase can carry a few tens of amperes before its inductor, switche
 - **Ripple.** The inductor ripple currents partly cancel in the sum, and the residual repeats at $Nf_s$, so the output capacitor sees a smaller ripple at a higher frequency.
 - **Slew rate.** All phases can turn on together during a load step, so the total current can rise at $N(V_{in} - V_{out})/L$.
 
-**Deriving the ripple cancellation.** In a buck, each inductor current rises at $(V_{in} - V_o)/L$ for $DT$ and falls at $V_o/L$ for the rest of the period. Consider the sum over one interval $T/N$ (the sum repeats with that period). Let $m = \lfloor ND\rfloor$, the number of phases whose on-times fully overlap any instant (when $ND$ is not an integer, $m$ or $m + 1$ phases are on at any time). During the part of the interval in which $m + 1$ phases are on, which lasts $(ND - m)T/N$, the sum rises at
+**Deriving the ripple cancellation.** In a buck, each inductor current rises at $(V_{in} - V_o)/L$ for $DT$ and falls at $V_o/L$ for the rest of the period. Consider the sum over one interval $T/N$ (the sum repeats with that period). Let $m = \lfloor ND\rfloor$, the number of phases that are on at every instant (when $ND$ is not an integer, $m$ or $m + 1$ phases are on at any time). During the part of the interval in which $m + 1$ phases are on, which lasts $(ND - m)T/N$, the sum rises at
 
 $$
 \frac{d}{dt}\sum i = \frac{(m + 1)(V_{in} - V_o) - (N - m - 1)V_o}{L} = \frac{(m + 1)V_{in} - NV_o}{L}.
@@ -112,7 +112,7 @@ $$
 \Delta I_{\Sigma} = \frac{V_{in}T}{L}\cdot\frac{(ND - m)(m + 1 - ND)}{N}.
 $$
 
-Check: for $N$ = 1, $m$ = 0, this is $V_{in}TD(1 - D)/L$, the single-phase ripple (22-02). ✓ The ripple vanishes whenever $ND$ is an integer, because the falling slopes then exactly cancel the rising ones. At the low duty cycles of 12 V to sub-volt conversion ($D \approx 0.07$), $ND$ stays small for practical $N$, so cancellation is partial unless $N$ is large (Example 22-10.4); the higher ripple frequency and the shared current are the more dependable benefits.
+Check: for $N$ = 1, $m$ = 0, this is $V_{in}TD(1 - D)/L$, the single-phase ripple (22-02). ✓ The ripple vanishes whenever $ND$ is an integer, because the falling slopes then exactly cancel the rising ones. At the low duty cycles of 12 V to sub-volt conversion ($D \approx 0.07$), $ND$ stays below 1 until $N$ reaches about 15, so four to eight phases cancel only a modest share of the ripple; with 15 to 20 phases $ND$ reaches or passes 1 and cancellation is strong (complete at 15, Example 22-10.4). The higher ripple frequency and the shared current help at any phase count.
 
 **Transient response.** When the load steps, the controller can drive all phases on at once, so the regulator's current rises at most at $N(V_{in} - V_o)/L$. Smaller inductors respond faster but ripple more, which is the tradeoff that trans-inductor (TLVR) designs address by coupling the phases (22-05). Until the regulator's current catches up, the output capacitors and, closer to the die, the package and on-die capacitance supply the difference (§3.6). Controllers also shed phases at light load to cut switching loss (22-07).
 
@@ -200,17 +200,17 @@ AI training is synchronous: thousands of accelerators compute, then communicate,
 
 **Units check.** Ω·m × m/m² = Ω; m² × m × kg/m³ = kg. ✓
 
-**Sanity check.** 165 W is 0.14% of the rack's 120 kW, acceptable, but the bar is 16 kg of copper, and 2400 A in 600 mm² is **4.0** A/mm², about twice the **2.08** A/mm² of the Copper Development Association's still-air rating for a 1/4 × 4 in bar at a 30 °C rise [30]. A real busbar at this current is larger, or cooled. At a megawatt and 50 V the current grows by 1 MW/120 kW = 8.3 times, and keeping the same loss fraction needs 8.3 times the copper, about **134** kg for this geometry: the scale of the 200 kg NVIDIA cites [2].
+**Sanity check.** 165 W is **0.14**% of the rack's 120 kW, acceptable, but the bar is 16 kg of copper, and 2400 A in 600 mm² is **4.0** A/mm², about twice the **2.08** A/mm² of the Copper Development Association's still-air rating for a 1/4 × 4 in bar at a 30 °C rise [30]. A real busbar at this current is larger, or cooled. At a megawatt and 50 V the current grows by 1 MW/120 kW = 8.3 times, and keeping the same loss fraction needs 8.3 times the copper, about **134** kg for this geometry: the scale of the 200 kg NVIDIA cites [2].
 
 ### Example 22-10.3 · From chip to grid (tier B)
 
-**Setup.** A conversion chain has a 97% UPS, a 97.5% rack PSU, a 98% bus converter and a 90% VRM (the first two as quoted in §3.1, the last two assumed). Find (a) the end-to-end efficiency and (b) the power drawn at the UPS input for 1 MW of chip power, and (c) the conversion loss. Find the facility power at a PUE of (d) 1.09 and (e) 1.54, treating the UPS input as the IT power.
+**Setup.** A conversion chain has a 97% UPS, a 97.5% rack PSU, a 98% bus converter and a 90% VRM (the first two as quoted in §3.1, the last two assumed). Find (a) the end-to-end efficiency and (b) the power drawn at the UPS input for 1 MW of chip power, and (c) the conversion loss. Find the facility power at a PUE of (d) 1.09 and (e) 1.54. PUE meters IT power at the UPS output (the rack-PSU input), so the UPS's own loss is already part of the facility overhead.
 
 **Solution.**
 
 - (a) $0.97 \times 0.975 \times 0.98 \times 0.90$ = **83.4** %.
 - (b) $1/0.834$ = **1.20** MW; (c) **0.20** MW.
-- (d) $1.09 \times 1.199$ = **1.31** MW; (e) $1.54 \times 1.199$ = **1.85** MW.
+- The IT power is the rack-PSU input, $1/(0.975 \times 0.98 \times 0.90) = 1/0.860$ = **1.163** MW. (d) $1.09 \times 1.163$ = **1.27** MW; (e) $1.54 \times 1.163$ = **1.79** MW. Multiplying the UPS input by the PUE would count the UPS loss twice.
 
 **Units check.** Ratios times MW. ✓
 
@@ -260,7 +260,7 @@ AI training is synchronous: thousands of accelerators compute, then communicate,
 
 **Units check.** $\sqrt{\text{H}/\text{F}} = \sqrt{\Omega^2} = \Omega$. ✓
 
-**Sanity check.** A 100 A step is 12.5% of an 800 A chip's current, yet it uses all of a 3% budget at the package resonance. That is why processors limit their current slew (staggered clock gating, power-gating ramps) and why package capacitance and inductance are designed as carefully as the regulator.
+**Sanity check.** A 100 A step is 12.5% of an 800 A chip's current, yet its 31.6 mV first droop exceeds a 3% budget (24 mV at 0.8 V) at the package resonance. That is why processors limit their current slew (staggered clock gating, power-gating ramps) and why package capacitance and inductance are designed as carefully as the regulator.
 
 ### Example 22-10.7 · Lateral current through board planes (tier B)
 
@@ -307,8 +307,9 @@ AI training is synchronous: thousands of accelerators compute, then communicate,
 | Ex 22-10.3a | end-to-end efficiency | 83.4 | % |
 | Ex 22-10.3b | UPS input power | 1.20 | MW |
 | Ex 22-10.3c | conversion loss | 0.20 | MW |
-| Ex 22-10.3d | facility power at PUE 1.09 | 1.31 | MW |
-| Ex 22-10.3e | facility power at PUE 1.54 | 1.85 | MW |
+| Ex 22-10.3f | IT power (rack-PSU input) | 1.163 | MW |
+| Ex 22-10.3d | facility power at PUE 1.09 | 1.27 | MW |
+| Ex 22-10.3e | facility power at PUE 1.54 | 1.79 | MW |
 | Ex 22-10.4a | current per phase | 50 | A |
 | Ex 22-10.4b | duty cycle | 0.0667 | |
 | Ex 22-10.4c | single-phase ripple | 7.47 | A |
@@ -340,6 +341,7 @@ AI training is synchronous: thousands of accelerators compute, then communicate,
 | Ex 22-10.8c | capacitance at 50 V | 0.274 | F |
 | Txt 22-10.a | per-conductor ratio, 3 AC conductors | 1.67 | |
 | Txt 22-10.e | copper for a 1 MW, 50 V busbar at the same loss fraction | 134 | kg |
+| Txt 22-10.n | busbar loss as a share of rack power (Ex 22-10.2) | 0.14 | % |
 | Txt 22-10.f | Intel model: motherboard VR efficiency for a 1 kW GPU | 87.0 | % |
 | Txt 22-10.g | intended droop of a 1.1 mΩ load line at 280 A | 0.31 | V |
 | Txt 22-10.h | L di/dt for 1 nH at 20 A/ns | 20 | V |
@@ -379,9 +381,9 @@ The lab is [labs/22-10-lab/](../labs/22-10-lab/README.md). `pdn.py` collects the
 | Fixed-ratio instead of regulated bus converter | Efficiency and power density | Needs a narrow input range; regulation pushed downstream | Board power architect |
 | More VRM phases | Current per phase, ripple frequency, transient slew | Board area, cost, controller complexity, light-load loss (shed phases) | VR designer with the board team |
 | Smaller phase inductance | Faster current slew for load steps | Larger ripple and ripple loss; coupled or trans-inductor magnetics help | VR designer |
-| Load line (AVP) | Halves the impedance needed for the same window; lower power at peak load | Higher idle voltage and leakage; timing signed off at $V_{min}$ | SoC power architect with the VR team |
+| Load line (AVP) | Doubles the output impedance allowed for the same window (halving the capacitance or bandwidth needed); lower power at peak load | Higher idle voltage and leakage; timing signed off at $V_{min}$ | SoC power architect with the VR team |
 | More package and die capacitance | Lower $Z_0$ and first droop | Die and package area, on-die capacitor leakage, cost | Package and SoC teams |
-| Damping (ESR) near $Z_0/2$ | Minimum first droop without ringing | Too much adds an instant resistive drop | Power-integrity engineer |
+| Damping (ESR) near $Z_0/2$ | Minimum first droop (damping ratio about 0.25, so some ringing remains) | Too much adds an instant resistive drop | Power-integrity engineer |
 | Vertical power delivery | Lateral $I^2R$ loss and droop from the last centimetres | Regulators under a hot processor, board complexity, serviceability | Platform architect |
 | Integrated regulators (IVR) | Path loss, per-domain fast DVFS, fewer board parts | Die area and heat on the die, efficiency of very-high-frequency conversion | SoC architect |
 | Rack energy storage | Grid peaks and facility sizing | Volume in the PSU or rack, cost, control | Rack and facility architects |
@@ -394,14 +396,14 @@ The lab is [labs/22-10-lab/](../labs/22-10-lab/README.md). `pdn.py` collects the
 | Multiphase summed ripple | $(V_{in}T/L)(ND - m)(m + 1 - ND)/N$; zero when $ND$ is an integer | §3.4 |
 | Load line | $R_{LL} = (V_{max} - V_{min})/I_{max}$ | §3.5 |
 | Target impedance, first droop | $Z_t = \Delta V/\Delta I$; first droop $\approx \Delta I\sqrt{L/C}$ at $1/(4f_0)$ | §3.6 |
-| AI rack power (as of Nov 2026) | about 120 kW (GB200 NVL72) today; 800 kW to 1.1 MW racks specified | [1], [6] |
+| AI rack power (as of Nov 2026) | about 120 kW (GB200 NVL72) today; racks of 800 kW to 1 MW and more specified | [1], [6] |
 | Rack distribution (as of Nov 2026) | 48–54 V DC (ORv3: 51 V nominal, 46–52 V); ±400 V or 800 V DC for megawatt racks | [2], [5], [6], [33] |
 | Rack PSU and bus converter efficiency (as of Nov 2026) | PSU 97.5% peak; 48 → 12 V converters 96.6–97.5%; OCP requirement 97% at full load | [8], [16], [19] |
-| Smart power stage (as of Nov 2026) | 60–90 A per phase in a 5 × 6 mm package, up to about 1–1.75 MHz | [21], [34] |
+| Smart power stage (as of Nov 2026) | 60–90 A per phase in a 5 × 6 mm package, switching up to 1–1.25 MHz | [21], [34], [35] |
 | Processor load lines (as of Nov 2026) | about 1 mΩ for 200–300 A processors; ±20–22 mV tolerance band | [22], [23] |
 | Client processor PDN | path inductance ~1 nH, current slew ~20 A/ns | [24] |
 | Accelerator power (as of Nov 2026) | up to 1400 W per GPU; 2× rated power for up to 20 µs in OAM specs | [10], [26] |
-| Busbar design | ≤ 30 °C rise; about 2–2.5 A/mm² for single bars in still air | [30] |
+| Busbar design | ≤ 30 °C rise; about 1.5–2.5 A/mm² for single bars (larger bars lower) | [30] |
 | PUE (2025) | 1.09 (Google fleet) against 1.54 (industry survey) | [18] |
 
 ## 8. Common mistakes
@@ -410,7 +412,7 @@ The lab is [labs/22-10-lab/](../labs/22-10-lab/README.md). `pdn.py` collects the
 - **Using lumped $I^2R$ for a tapped busbar, or ignoring where the load sits.** Uniform taps cost a third of the lumped loss, a load at the midpoint half of it (Problem 22-10.2).
 - **Comparing AC and DC "per conductor" without stating the conductor count and power factor.** The answer moves from 67% to 123% more power on those choices alone (§3.2).
 - **Expecting interleaving to cancel ripple at low duty cycle.** At 12 V to 0.8 V, four phases cancel only a fifth of it (Example 22-10.4).
-- **Sizing for TDP.** Accelerators draw twice their rated power for tens of microseconds and 1.5× for milliseconds [6], [26]; regulators, capacitors and busbars must cover the excursions.
+- **Sizing for TDP.** Accelerators may draw twice their rated power for up to 20 µs and 1.5× for milliseconds [6], [26]; regulators, capacitors and busbars must cover the excursions.
 - **Meeting the target impedance only at low frequency.** The regulator's loop covers kilohertz; the package resonance at tens of megahertz needs capacitance and damping (Example 22-10.6).
 - **Assuming more damping is always better.** Beyond about $Z_0/2$ the capacitor's ESR adds more droop than it removes (lab Part 4).
 - **Comparing current densities without their basis.** A/mm² figures differ by whether the current is continuous or peak and whether the area includes keep-out (§9).
@@ -422,7 +424,7 @@ The lab is [labs/22-10-lab/](../labs/22-10-lab/README.md). `pdn.py` collects the
 **Racks** [Established for specifications; Industry estimate for vendor benefit claims].
 
 - *Today's 50 V racks.* NVIDIA's GB200 NVL72 converts AC to "nominal 50V-51V DC" in eight 33 kW power shelves with N+N redundancy for a rack consuming "approximately 120kW" [1]. The Open Rack V3 high-power shelf holds "6x 12kW PSU slots", up to 72 kW per shelf, on a "Narrow Range 48V Architecture" [7], and its 2000 A output connector allows "Max busbar +/- DC resistance … within 20uohm, i.e. max. 40mV voltage drop at 2000A current" [31].
-- *Megawatt racks.* The OCP Mt. Diablo specification from Microsoft, Meta and Google covers racks "from 800kW to 1MW+" fed at ±400 V or 800 V DC, with peak loads of 175–180% of TDP for under 2 ms [6]. NVIDIA plans "full-scale production of 800 VDC data centers" with its Kyber racks in 2027 [2]; NVIDIA, Google and Microsoft published a solid-state transformer specification in July 2026 [4]. NVIDIA's Vera Rubin NVL72 rack adds "a new liquid-cooled busbar" [32], an answer to the current density of Example 22-10.2.
+- *Megawatt racks.* The OCP Mt. Diablo specification from Microsoft, Meta and Google covers racks "from 800kW to 1MW+" fed at ±400 V or 800 V DC, with peak loads of 175% of TDP for under 2 ms (Microsoft) and 180% for under 0.5 ms (Meta) [6]. NVIDIA plans "full-scale production of 800 VDC data centers" with its Kyber racks in 2027 [2]; NVIDIA, Google and Microsoft published a solid-state transformer specification in July 2026 [4]. NVIDIA's Vera Rubin NVL72 rack adds "a new liquid-cooled busbar" [32], an answer to the current density of Example 22-10.2.
 
 **Boards and regulators** [Established].
 
@@ -478,7 +480,7 @@ The current falls along the bar as each tap takes its share, so most of the leng
 
 <details><summary>Answer</summary>
 
-When $ND$ is an integer, the rising slopes of the on phases exactly cancel the falling slopes of the others. At $D \approx 0.07$, $ND$ stays well below 1 for practical $N$, so only a small fraction of the ripple cancels; the ripple's higher frequency is the larger benefit.
+When $ND$ is an integer, the rising slopes of the on phases exactly cancel the falling slopes of the others. At $D \approx 0.07$, $ND$ stays below 1 until $N$ reaches about 15, so four to eight phases cancel only a modest share of the ripple; with 15 to 20 phases $ND$ reaches or passes 1 and cancellation is strong (complete at 15, Example 22-10.4). The ripple's higher frequency, $Nf_s$, helps at any phase count.
 
 </details>
 
@@ -572,3 +574,4 @@ Now work the [22-10 problem set](../problems/22-10-problems.md).
 32. NVIDIA Blog, report on Vera Rubin and gigawatt AI factories at OCP, 13 Oct 2025. [R-444]
 33. Open Compute Project, *Open Rack Base Specification Version 3*, Rev 1.0, 24 Aug 2022. [R-445]
 34. Renesas, *ISL99390R5935* short-form data sheet, R16DS0066EU0101 Rev.1.01, Dec 2023. [R-446]
+35. onsemi, *NCP303160* data sheet, Rev. 7, Aug 2024. [R-446]

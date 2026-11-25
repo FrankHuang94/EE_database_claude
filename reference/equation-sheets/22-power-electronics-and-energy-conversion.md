@@ -4,10 +4,10 @@ The relations to know cold from Course 22, each with its conditions and the chap
 
 Conventions:
 
-- converters are in periodic steady state; $D$ is the main switch's duty cycle and $D' = 1 - D$; $T_s = 1/f_s$; ripples written Δ are peak-to-peak; $R$ is the load resistance unless a subscript says otherwise;
+- converters are in periodic steady state; $D$ is the main switch's duty cycle and $D' = 1 - D$; $T_s = 1/f_s$; ripples written Δ are peak-to-peak; $R$ is the load resistance unless a subscript says otherwise, but plain $R$ is also a loss coefficient (22-01), an on-resistance (22-06), a conductor resistance (22-10) and a cell resistance (22-09), by context;
 - in the converter chapters, $V$ and $I$ are the DC output voltage and current, $V_{in}$ or $V_g$ the input, and $I_L$ the inductor's average current; the small-ripple approximation holds unless stated;
 - turns ratios are $n = N_1/N_2$ (primary over secondary);
-- symbols reused between chapters: $k$ is the type-III placement factor (22-07), a Steinmetz coefficient (22-05), a motor constant (22-11) or a temperature coefficient (22-06); $K = 2L/(RT_s)$ is the conduction parameter (22-02, 22-03); $R$ is also a governor droop (22-12); $Q$ is a quality factor, a charge or a cell's capacity, by context; $z$ is state of charge;
+- symbols reused between chapters: $k$ is the type-III placement factor (22-07), a Steinmetz coefficient (22-05), a motor constant (22-11) or a temperature coefficient (22-06); $K = 2L/(RT_s)$ is the conduction parameter (22-02, 22-03); $R$ is also a governor droop (22-12); $Q$ is a quality factor, a charge or a cell's capacity, by context; $z$ is state of charge; α is a Steinmetz exponent (22-05) or the current-mode perturbation ratio (22-07), and $k_{PFM}$ the PFM loss per ampere (22-08); $a$ is a proportional loss coefficient (22-01) or the operator $1\angle120°$ (22-12); $D'$ is $1 - D$ except in 22-09's SEI law, where it is an effective diffusivity; $M$ is a conversion ratio, Dowell's layer count (22-05) or a molar mass (22-09); $n$ is a turns ratio, a harmonic index (22-01) or the electrons per reaction (22-09); δ is a skin depth (22-05) or a power angle (22-11, 22-12), and $\delta V$ the quadrature voltage drop (22-12);
 - three-phase voltages are line-to-line RMS and powers are three-phase totals unless "per phase" is written; per-unit quantities sit on stated bases.
 
 ## Conversion principles
@@ -46,6 +46,7 @@ Conventions:
 | Boost: $V = V_{in}/D'$, $I_L = I/D'$, $\Delta i_L = V_{in}DT_s/L$, $\Delta v = ID/(f_sC)$ | CCM | [22-03](../../courses/22-power-electronics-and-energy-conversion/chapters/22-03-boost-buck-boost-topologies.md) |
 | $V/V_{in} = \dfrac{1}{D'}\cdot\dfrac{1}{1 + R_L/(D'^2R)}$; $\eta = 1/(1 + R_L/(D'^2R))$ | Boost with inductor resistance $R_L$ | [22-03](../../courses/22-power-electronics-and-energy-conversion/chapters/22-03-boost-buck-boost-topologies.md) |
 | $M_{max} = \tfrac12\sqrt{R/R_L}$ at $D' = \sqrt{R_L/R}$ | Beyond it the gain falls | [22-03](../../courses/22-power-electronics-and-energy-conversion/chapters/22-03-boost-buck-boost-topologies.md) |
+| With switch resistances: $R_L \to R_L + DR_{LS} + D'R_{HS}$ | Boost; $R_{LS}$ conducts during $D$, $R_{HS}$ (synchronous rectifier) during $D'$ | [22-03](../../courses/22-power-electronics-and-energy-conversion/chapters/22-03-boost-buck-boost-topologies.md) |
 | Buck-boost: $V = -(D/D')V_{in}$; switch and diode block $V_{in} + \lvert V\rvert$; $I_L = I/D'$ | Inverting | [22-03](../../courses/22-power-electronics-and-energy-conversion/chapters/22-03-boost-buck-boost-topologies.md) |
 | Ćuk: $V = -(D/D')V_{in}$; SEPIC: $V = (D/D')V_{in}$ | Capacitor-coupled | [22-03](../../courses/22-power-electronics-and-energy-conversion/chapters/22-03-boost-buck-boost-topologies.md) |
 | Boost DCM: $M = \tfrac12\left(1 + \sqrt{1 + 4D^2/K}\right)$; CCM if $K > K_{crit} = DD'^2$ | Light load | [22-03](../../courses/22-power-electronics-and-energy-conversion/chapters/22-03-boost-buck-boost-topologies.md) |
@@ -59,6 +60,7 @@ Conventions:
 | DCM flyback: $P = \tfrac12L_mI_{pk}^2f_s$ | Energy per cycle | [22-04](../../courses/22-power-electronics-and-energy-conversion/chapters/22-04-isolated-converters.md) |
 | Clamp: $t_c = L_{lk}I_{pk}/(V_c - V_R)$, $E_c = \tfrac12L_{lk}I_{pk}^2\,V_c/(V_c - V_R)$ | $V_R = nV$; $V_c$ above the input | [22-04](../../courses/22-power-electronics-and-energy-conversion/chapters/22-04-isolated-converters.md) |
 | Forward: $V = DV_{in}/n$; $D_{max} = 1/(1 + N_3/N_1)$; $V_{DS,off} = V_{in}(1 + N_1/N_3)$ | Reset winding $N_3$; $2V_{in}$ and 0.5 for $N_3 = N_1$ | [22-04](../../courses/22-power-electronics-and-energy-conversion/chapters/22-04-isolated-converters.md) |
+| Full bridge: $V = D_{eff}V_{in}/n$; each switch blocks $V_{in}$ | $D_{eff}$ = fraction of the period the primary is driven; centre-tapped rectifier | [22-04](../../courses/22-power-electronics-and-energy-conversion/chapters/22-04-isolated-converters.md) |
 | Reset needs $V_{in}D = V_{in}(N_1/N_3)D_r$ | Volt-second balance of $L_m$ | [22-04](../../courses/22-power-electronics-and-energy-conversion/chapters/22-04-isolated-converters.md) |
 
 ## Magnetics
@@ -96,6 +98,7 @@ Conventions:
 |---|---|---|
 | Buck: $G_{vd} = \dfrac{V_g}{1 + sL/R + s^2LC}$, $G_{vg} = \dfrac{D}{1 + sL/R + s^2LC}$, $Z_{out} = \dfrac{sL}{1 + sL/R + s^2LC}$ | Averaged, linearized; $f_0 = 1/(2\pi\sqrt{LC})$, $Q = R\sqrt{C/L}$ | [22-07](../../courses/22-power-electronics-and-energy-conversion/chapters/22-07-converter-dynamics-and-control.md) |
 | Boost: $G_{vd} = \dfrac{V}{D'}\cdot\dfrac{1 - sL/(D'^2R)}{1 + sL/(D'^2R) + s^2LC/D'^2}$ | RHP zero at $D'^2R/(2\pi L)$; $f_0 = D'/(2\pi\sqrt{LC})$ | [22-07](../../courses/22-power-electronics-and-energy-conversion/chapters/22-07-converter-dynamics-and-control.md) |
+| ESR zero: $f_{esr} = 1/(2\pi R_cC)$ | Left-half-plane zero of $G_{vd}$ from the output capacitor's ESR $R_c$ | [22-07](../../courses/22-power-electronics-and-energy-conversion/chapters/22-07-converter-dynamics-and-control.md) |
 | $T(s) = G_c(s)\,G_{vd}(s)\,H/V_M$; PM $= 180° + \angle T(j\omega_c)$ | Voltage mode | [22-07](../../courses/22-power-electronics-and-energy-conversion/chapters/22-07-converter-dynamics-and-control.md) |
 | Type III: $G_c = \dfrac{\omega_I}{s}\cdot\dfrac{(1 + s/\omega_z)^2}{(1 + s/\omega_p)^2}$; $B = \text{PM} - 90° - \varphi_p$, $k = \tan\!\left(\dfrac{B/2 + 90°}{2}\right)$ | Zeros at $f_c/k$, poles at $kf_c$; $\lvert G_c(j\omega_c)\rvert = (\omega_I/\omega_c)k^2$ | [22-07](../../courses/22-power-electronics-and-energy-conversion/chapters/22-07-converter-dynamics-and-control.md) |
 | Op-amp network: $\omega_I = 1/(R_1(C_1 + C_2))$; zeros $1/(R_2C_1)$, $1/((R_1 + R_3)C_3)$; poles $(C_1 + C_2)/(R_2C_1C_2)$, $1/(R_3C_3)$ | Realization | [22-07](../../courses/22-power-electronics-and-energy-conversion/chapters/22-07-converter-dynamics-and-control.md) |
@@ -108,7 +111,7 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | $\eta_{chain} = \eta_{buck}V_{out}/V_{mid}$ | Buck then LDO | [22-08](../../courses/22-power-electronics-and-energy-conversion/chapters/22-08-pmics.md) |
-| $P_{PWM} = P_f + RI^2$, $P_{PFM} = V_{in}I_q + \alpha I + R_pI^2$ | Mode crossover where they are equal | [22-08](../../courses/22-power-electronics-and-energy-conversion/chapters/22-08-pmics.md) |
+| $P_{PWM} = P_f + RI^2$, $P_{PFM} = V_{in}I_q + k_{PFM}I + R_pI^2$ | Mode crossover where they are equal | [22-08](../../courses/22-power-electronics-and-energy-conversion/chapters/22-08-pmics.md) |
 | $E_{day} = \sum_iP_it_i/\eta_i + V_{bat}I_qT_{day}$ | Battery life = usable energy / $E_{day}$ | [22-08](../../courses/22-power-electronics-and-energy-conversion/chapters/22-08-pmics.md) |
 | DVS: $I_C = CS$ for slew $S$; tracking lead $e_{ramp} = (S/\omega_I)(1 - V_M/V_g)$ | Up-ramp; type-III loop | [22-08](../../courses/22-power-electronics-and-energy-conversion/chapters/22-08-pmics.md) |
 | AVS saving $1 - (V_2/V_1)^2$ | Dynamic power $\propto V^2$ at fixed $f$ | [22-08](../../courses/22-power-electronics-and-energy-conversion/chapters/22-08-pmics.md) |
@@ -131,7 +134,7 @@ Conventions:
 
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
-| $P_{in} = P_{chip}/\prod\eta_i$; facility power = $P_{in}\times$ PUE | Grid to transistor | [22-10](../../courses/22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md) |
+| $P_{IT} = P_{chip}/\prod\eta_i$ over the in-rack stages (rack PSU onward); facility power = $P_{IT}\times$ PUE | PUE already includes the UPS and cooling | [22-10](../../courses/22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md) |
 | $P_{loss} = I^2R = P^2R/V^2$; uniform taps: $I^2(2R)/3$ | $R$ one way; $2R$ the loop | [22-10](../../courses/22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md) |
 | $\dfrac{P_{DC}/2}{P_{AC}/n_c} = \dfrac{n_cV_{DC}}{2\sqrt3V_{LL}\cos\varphi}$ | Power per conductor of equal rating | [22-10](../../courses/22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md) |
 | $\Delta I_\Sigma = \dfrac{V_{in}T}{L}\cdot\dfrac{(ND - m)(m + 1 - ND)}{N}$, $m = \lfloor ND\rfloor$ | Interleaved buck; ripple at $Nf_s$, zero when $ND$ is an integer | [22-10](../../courses/22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md) |

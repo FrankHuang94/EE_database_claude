@@ -290,6 +290,31 @@ v.check("22-08.12c", p_ldo - p_buck)
 v.check("22-08.12d", integrate.quad(lambda t: p_ldo - p_buck, 0, 7200)[0])
 v.check("22-08.12e", 100 * (p_ldo - p_buck) * 7200 / e_bat)
 
+# Problem 22-08.13: build one sampled pulse from the inductor's slopes and integrate it.
+L13, IPK13, VIN13, VO13, R13, EP13 = 2.2e-6, 0.4, 3.6, 1.8, 0.15, 16e-9
+up, down = (VIN13 - VO13) / L13, -VO13 / L13          # A/s
+t_peak = optimize.brentq(lambda t: up * t - IPK13, 0, 1e-5)
+t_end = optimize.brentq(lambda t: IPK13 + down * (t - t_peak), t_peak, 1e-5)
+tt = np.linspace(0, t_end, 200001)
+ii = np.where(tt <= t_peak, up * tt, IPK13 + down * (tt - t_peak))
+q13 = integrate.trapezoid(ii, tt)
+er13 = integrate.trapezoid(R13 * ii ** 2, tt)
+v.check("22-08.13a", q13 * 1e9)
+v.check("22-08.13b", 10e-3 / q13 / 1e3)
+v.check("22-08.13c", EP13 / q13)
+v.check("22-08.13d", er13 / q13)
+k13 = (EP13 + er13) / q13
+v.check("22-08.13e", k13)
+pfm13 = lambda i: VIN13 * 1e-6 + k13 * i
+v.check("22-08.13f", 100 * VO13 * 10e-3 / (VO13 * 10e-3 + pfm13(10e-3)))
+imax13 = q13 / t_end
+v.check("22-08.13g", imax13 * 1e3)
+v.check("22-08.13h", pfm13(imax13) * 1e3)
+pwm13 = lambda i: 20e-3 + 0.2 * i ** 2
+v.check("22-08.13i", pwm13(imax13) * 1e3)
+gap = optimize.minimize_scalar(lambda i: pwm13(i) - pfm13(i), bounds=(0, imax13), method="bounded")
+v.assert_true("22-08.13: ideal PFM stays below PWM up to its pulse-rate limit", gap.fun > 0)
+
 # ---------------------------------------------------------------- text values derived from data-sheet figures
 v.check("Txt 22-08.a", schedule(16, 16, t_ss=10e-3, t_pg=0.0) * 1e3)
 v.check("Txt 22-08.b", 4.0e-3 / 800e-9)

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 22-09 · Batteries, Charging and Fuel Gauging
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The battery-systems unit of a senior power-electronics or energy-storage elective: lithium-ion cell fundamentals, equivalent-circuit modeling, CC/CV charging and charger architectures, state-of-charge estimation and aging (Plett, *Battery Management Systems* vols. I–II; *Linden's Handbook of Batteries* for chemistry) |
 | **Prerequisites** | [22-08](22-08-pmics.md) (PMICs, usage profiles), [22-02](22-02-buck-converter-steady-state.md) (the buck), [07-02](../../07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md) (first-order step response), [04-05](../../04-physics-for-ee/chapters/04-05-current-resistance-and-conduction.md) (current and conduction), [18-09](../../18-embedded-systems-and-microcontrollers/chapters/18-09-ultra-low-power-design.md) (battery life) |
 | **Estimated study hours** | 8 |
-| **Last verified** | 2026-11-24 |
+| **Last verified** | 2026-11-25 |
 
 **Learning objectives.** After this chapter you can:
 
@@ -64,7 +64,7 @@ $$
 q_{th} = \frac{F}{3.6\,M}\ \text{mAh/g}.
 $$
 
-Graphite stores one lithium per six carbons (LiC₆, $M$ = 72.07 g/mol): **372** mAh/g. Lithium cobalt oxide (LiCoO₂, $M$ = 97.87 g/mol) has a theoretical **274** mAh/g, but only part of its lithium can be removed before the structure degrades, which is one reason charge voltages are capped. Silicon alloys with far more lithium per gram, which is why silicon-anode cells promise more energy, at the price of large volume changes and shorter cycle life [1], [2].
+Graphite stores one lithium per six carbons; per gram of the C₆ host ($M$ = 72.07 g/mol) that is **372** mAh/g. By convention, anode capacities are quoted per gram of the delithiated host and cathode capacities per gram of the lithiated compound. Lithium cobalt oxide (LiCoO₂, $M$ = 97.87 g/mol) has a theoretical **274** mAh/g, but only part of its lithium can be removed before the structure degrades, which is one reason charge voltages are capped. Silicon alloys with far more lithium per gram, which is why silicon-anode cells promise more energy, at the price of large volume changes and shorter cycle life [1], [2].
 
 **Ratings.** A cell's **capacity** $Q$ (A·h or mA·h) is the charge it delivers from full to empty at a stated current and temperature. Its energy is approximately $QV_{nom}$, where $V_{nom}$ is the average discharge voltage. Currents are quoted as a **C-rate**: 1C is the current that would empty the cell in one hour ($I = Q/1\ \text{h}$), so 0.5C takes two hours and 2C half an hour, ideally. **Specific energy** (Wh/kg) and energy density (Wh/L) compare chemistries and packages.
 
@@ -136,7 +136,7 @@ $$
 V_{OC}(z_{cv}) = V_{max} - I_{cc}R .
 $$
 
-The charger then holds the terminal at $V_{max}$, and the current falls as the OCV rises toward it:
+The charger then holds the terminal at $V_{max}$, and the current falls as the OCV rises toward it. Here $i$ is the charging current (positive into the cell, the opposite sign from §3.2), and the RC branch is taken as settled ($\tau_1 \ll RC_{eff}$), so $R = R_0 + R_1$:
 
 $$
 i = \frac{V_{max} - V_{OC}(z)}{R}.
@@ -154,7 +154,7 @@ $$
 t_{cv} = RC_{eff}\ln\frac{I_{cc}}{I_{term}},
 $$
 
-having added the charge $(I_{cc} - I_{term})RC_{eff}$. Chargers and cell makers choose $I_{term}$ differently: TI's linear chargers default to 10% of the fast-charge current [14], [15], while cell data sheets rate capacity with a cut-off near 1–2% of 1C (50 mA, or **0.012**C, for a 4200 mAh cylindrical cell; 0.02C for a wearable coin cell) [11], [12]. The charger trades the last percent or two for a shorter CV tail. Three lessons fall out.
+having added the charge $(I_{cc} - I_{term})RC_{eff}$. Chargers and cell makers choose $I_{term}$ differently: TI's linear chargers default to 10% of the fast-charge current [14], [15], while cell data sheets rate capacity with a cut-off near 1–2% of 1C (50 mA, or **0.012**C, for a 4200 mAh cylindrical cell; 0.02C for a wearable coin cell) [11], [12]. A 900 mAh prismatic cell's data sheet recommends charging at 450 mA to 4.2 V and holding until the current falls to 90 mA, a C/10 termination [22]. The charger trades the last percent or two for a shorter CV tail. Three lessons fall out.
 
 - **The CV phase is not optional.** Stopping at the end of CC leaves the cell short by $I_{cc}R$ worth of OCV, which at 1C is several percent of capacity.
 - **Doubling the current does not halve the time.** A larger $I_{cc}$ reaches $V_{max}$ earlier, at a lower SOC, and leaves more for the CV phase, whose time constant does not change (Example 22-09.4). This is why "0–50% in 15 minutes" is advertised more than "0–100%".
@@ -227,7 +227,7 @@ $$
 
 where the derating factors account for capacity lost to aging, to cold, and to the cutoff under load (§3.3), and $I_{avg}$ is the time-weighted average of the usage profile (22-08 §3.4), including the converters' losses, the PMIC's quiescent current and the gauge's own draw. Four habits distinguish good battery-life engineering.
 
-- **Budget in microamps.** With a 20 mAh cell and a week of life, the average budget is about 120 µA, so a 10 µA gauge or a leaky sensor costs most of a day.
+- **Budget in microamps.** With a 20 mAh cell and a week of life, the average budget is about **119** µA, so a 10 µA gauge or a leaky sensor costs most of a day.
 - **Derate honestly.** Quote life for an aged cell at the coldest realistic temperature, not a new cell at 25 °C, or customers will discover the difference in the second winter.
 - **Watch the peaks.** A radio burst or a haptic motor draws milliamps to hundreds of milliamps; through a small cell's resistance that can dip the voltage below a converter's undervoltage lockout long before the cell is empty. A bulk capacitor supplies the peak and the cell refills it slowly.
 - **Count cycles.** A device charged every few days accumulates under a hundred cycles a year, so calendar aging, not cycle count, usually sets its battery's lifetime.
@@ -326,7 +326,7 @@ The examples use one teaching cell, a 300 mAh wearable-class lithium-ion cell (t
 - (a) $10\ \mu\text{A} \times 168\ \text{h}$ = **1.68** mAh; (b) **0.56** %.
 - (c) $0.01 \times 270$ = **2.7** mAh; (d) **0.90** %.
 - (e) $160/(0.90 - 0.35)$ = **291** mAh; (f) **97.0** %.
-- (g) The swing lies between 0.53 and 0.57, giving 280.7 to 301.9 mAh: ±**3.6** % about 290.9 mAh.
+- (g) The swing lies between 0.53 and 0.57, giving 280.7 to 301.9 mAh about 290.9 mAh: a worst case of **+3.8** % (and −3.5 %), against ±3.6 % to first order (0.02/0.55).
 
 **Units check.** A × h = A·h; mAh divided by a dimensionless SOC difference is mAh. ✓
 
@@ -389,7 +389,7 @@ The examples use one teaching cell, a 300 mAh wearable-class lithium-ion cell (t
 | Ex 22-09.6d | gain error share | 0.90 | % |
 | Ex 22-09.6e | learned capacity | 291 | mAh |
 | Ex 22-09.6f | learned capacity over rated | 97.0 | % |
-| Ex 22-09.6g | worst-case capacity error | 3.6 | % |
+| Ex 22-09.6g | worst-case capacity error | 3.8 | % |
 | Ex 22-09.7a | average current | 134 | µA |
 | Ex 22-09.7b | gauge share of the budget | 8.2 | % |
 | Ex 22-09.7c | derated battery life | 5.0 | days |
@@ -404,6 +404,7 @@ The examples use one teaching cell, a 300 mAh wearable-class lithium-ion cell (t
 | Txt 22-09.i | teaching cell R0 + R1 × capacity | 0.090 | Ω·Ah |
 | Txt 22-09.j | VARTA CP 1254 1 kHz impedance bound × capacity | 0.025 | Ω·Ah |
 | Txt 22-09.k | capacity lost by charging to 4.1 V instead of 4.2 V (Saft MP 176065) | 10.3 | % |
+| Txt 22-09.l | average current budget, 20 mAh for a week | 119 | µA |
 
 ## 5. Simulate it
 
@@ -447,7 +448,7 @@ The lab is [labs/22-09-lab/](../labs/22-09-lab/README.md). `battery.py` collects
 | Cell voltage | $E = -\Delta G/(nF)$; 3.6–3.85 V nominal for cobalt- and nickel-based cells, about 3.2–3.3 V for LFP | §3.1, [1], [11] |
 | Charge voltage | 4.20 V (± 0.05 V) typical; JEITA warm band ≤ 4.10 V | [3], [11], [12], [21] |
 | Discharge cut-off | 2.5–3.0 V | [11], [12] |
-| Specific energy (as of Nov 2026) | 230–260 Wh/kg for high-energy 21700 cells; 150–220 Wh/kg chemistry range | [1], [11] |
+| Specific energy (as of Nov 2026) | 230–260 Wh/kg for high-energy 21700 cells; 150–220 Wh/kg chemistry range | [1], [11], [27] |
 | Internal resistance (as of Nov 2026) | 10 mΩ (1 kHz) and 16 mΩ (DC pulse) for a 4.2 Ah 21700; < 0.5 Ω (1 kHz) for a 50 mAh coin cell | [11], [12] |
 | CV time constant | $RC_{eff}$, with $C_{eff} = Q/(dV_{OC}/dz)$ | §3.4 |
 | Charger termination and precharge | about 10% of $I_{cc}$; precharge 10–20% of $I_{cc}$ below 2.5–3.0 V | [14], [15] |
@@ -614,3 +615,4 @@ Now work the [22-09 problem set](../problems/22-09-problems.md).
 24. Battery University (Cadex), "BU-808: How to Prolong Lithium-based Batteries", updated 11 Oct 2023. [R-441]
 25. Battery University (Cadex), "BU-802b: What does Elevated Self-discharge Do?", updated 2 Nov 2021. [R-441]
 26. USB Implementers Forum, "USB Charger (USB Power Delivery)", accessed Nov 2026. [R-098]
+27. Molicel, *Product Data Sheet, Model INR-21700-P50B*, Version 1.1 (2024). [R-439]

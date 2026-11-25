@@ -68,6 +68,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Leakage in the flyback of Example 22-05.3.** The 32-turn primary occupies a 1.2 mm section and the secondary 0.8 mm, separated by 0.4 mm of insulation tape across the 20.9 mm window breadth (MLT 60.5 mm). Find (a) the leakage inductance and (b) its percentage of $L_m$ = 223 µH. With 22-04's RCD clamp at 200 V and a 128 V reflected voltage, at $I_{pk}$ = 2.52 A and 100 kHz, find (c) the leakage energy per cycle and (d) the clamp loss. Repeat for P/2–S–P/2 interleaving: (e) leakage, (f) percentage, (g) energy and (h) clamp loss.
 
+### Problem 22-05.15 [B]
+
+**Soft saturation in a powder core.** A 60µ Kool Mµ toroid has a 98.4 mm magnetic path and gives 10.0 µH with 20 turns at zero bias (assumed values). Use the chapter's data points for this material: 80% of the initial permeability at 45 Oe and 50% at 95 Oe (1 Oe = $1000/(4\pi)$ A/m). At what DC currents does the winding reach (a) 45 Oe and (b) 95 Oe? What is the inductance (c) at 45 Oe and (d) at 95 Oe? (e) A buck designed for 2.0 A of ripple with the zero-bias inductance runs at the 45 Oe current: what is the ripple there? (f) Why does a gapped ferrite inductor of the same zero-bias inductance behave differently as its current rises past saturation?
+
 ---
 
 ## Objective coverage
@@ -79,4 +83,4 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 3. Core loss: Steinmetz, iGSE, eddy currents | 5, 6, 7, 11 |
 | 4. Winding loss: temperature, skin, proximity | 8, 9, 10 |
 | 5. Area product, $K_g$, optimum flux swing, leakage | 12, 13, 14 |
-| 6. Materials and structures | 7, 11, 14 |
+| 6. Materials and structures | 7, 11, 14, 15 |

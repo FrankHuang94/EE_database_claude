@@ -64,6 +64,10 @@ $n_cV_{DC}/(2\sqrt3V_{LL}\cos\varphi)$: (a) $3 \times 800/(2\sqrt3 \times 480 \t
 
 (a) $0.03 \times 0.75/400$ = **56.25** µΩ; (b) $2\ \text{m}\Omega/56.25\ \mu\Omega$ = 35.6, so **36** capacitors. In practice capacitors of several values are mixed so that their resonances cover a band, and their mounting inductance, not ESR alone, decides how many are needed at high frequency.
 
+### Solution 22-10.14
+
+(a) With every phase on, each inductor current rises at $(V_{in} - V_o)/L$, so the total rises at $N(V_{in} - V_o)/L = 16 \times 11.25/120\ \text{nH}$ = **1500** A/µs. (b) A 600 A step takes 600/1500 = **0.40** µs. (c) The deficit between the stepped load and the ramping regulator is a triangle: $\tfrac12 \times 600 \times 0.40\ \mu\text{s}$ = **120** µC. (d) $C \ge Q/\Delta V = 120\ \mu\text{C}/30\ \text{mV}$ = **4.0** mF. (e) Eight phases halve the slew: **0.80** µs and **8.0** mF. The charge, and so the capacitance, grows as the square of the pick-up time, which is why fast transient response is bought with phases or with smaller inductance (at the cost of ripple).
+
 ---
 
 ## Answer key
@@ -113,3 +117,9 @@ $n_cV_{DC}/(2\sqrt3V_{LL}\cos\varphi)$: (a) $3 \times 800/(2\sqrt3 \times 480 \t
 | 22-10.12b | capacitance | 0.0471 | F |
 | 22-10.13a | target impedance | 56.25 | µΩ |
 | 22-10.13b | capacitor count | 36 | |
+| 22-10.14a | maximum slew rate | 1500 | A/µs |
+| 22-10.14b | pick-up time | 0.40 | µs |
+| 22-10.14c | charge supplied by the capacitors | 120 | µC |
+| 22-10.14d | capacitance | 4.0 | mF |
+| 22-10.14e | pick-up time, 8 phases | 0.80 | µs |
+| 22-10.14f | capacitance, 8 phases | 8.0 | mF |

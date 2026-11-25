@@ -167,6 +167,9 @@ v.check("Ex 22-11.6a", optimize.brentq(lambda vv: vv / 30 - 400 / 50, 0, 1000))
 v.check("Ex 22-11.6b", field_speed(4, 30) / RPM)
 v.check("Ex 22-11.6c", field_speed(4, 30) / RPM - 40)
 v.check("Ex 22-11.6d", 0.6 ** 3)
+n_fan = optimize.brentq(lambda n: n - (field_speed(4, 30) / RPM - 40 * (n / 1460) ** 2), 800, 900)
+v.check("Ex 22-11.6e", field_speed(4, 30) / RPM - n_fan)
+v.check("Ex 22-11.6f", n_fan)
 
 # ---------------------------------------------------------------- Example 22-11.7 (synthesized PWM)
 v_spwm = pwm_line_rms(800, 1.0)
@@ -292,5 +295,23 @@ v.check("Txt 22-11.k", n_base)
 v.check("Txt 22-11.l", 10390 / n_base)
 M_ND, M_FE, M_B = 144.242, 55.845, 10.811
 v.check("Txt 22-11.m", 100 * 2 * M_ND / (2 * M_ND + 14 * M_FE + M_B))
+
+# ---------------------------------------------------------------- Problem 22-11.14 (generator)
+vph14 = 13800 / math.sqrt(3)
+i14 = 40e6 / (3 * vph14 * 0.9)
+ia14 = i14 * np.exp(-1j * math.acos(0.9))
+ef14 = vph14 + 1j * 4.0 * ia14
+v.check("22-11.14a", vph14)
+v.check("22-11.14b", i14)
+v.check("22-11.14c", abs(ef14) / 1e3)
+v.check("22-11.14d", math.degrees(np.angle(ef14)))
+v.assert_true("22-11.14: P = 3 V Ef sin(delta)/Xs reproduces 40 MW",
+              abs(3 * vph14 * abs(ef14) * math.sin(np.angle(ef14)) / 4.0 - 40e6) < 1)
+v.check("22-11.14e", optimize.minimize_scalar(lambda d: -3 * vph14 * abs(ef14) * math.sin(d) / 4.0, bounds=(0, math.pi),
+                                              method="bounded").fun * -1e-6)
+v.check("22-11.14f", 3 * (vph14 * np.conj(ia14)).imag * 1e-6)  # delivered: current out of the machine
+ef_u = optimize.brentq(lambda e: (vph14 * np.conj((e * np.exp(1j * math.asin(40e6 * 4.0 / (3 * vph14 * e))) - vph14)
+                                                  / (1j * 4.0))).imag, 8000, 13000)
+v.check("22-11.14g", ef_u / 1e3)
 
 v.finish()

@@ -214,6 +214,7 @@ v.check("Ex 22-01.5h", shed_point(2, P0, R))
 v.check("Ex 22-01.5i", 25 * (P0 + A * 20 + R * 400))
 v.check("Ex 22-01.5j", 2 * P0 + A * 20 + R * 400 / 2)
 v.check("Ex 22-01.5k", P0 + A * ip + R * ip * ip)
+v.check("Ex 22-01.5p", 25 * (2 * P0 + A * 20 + R * 400 / 2))
 for key, i, p0 in (("l", 20.0, P0), ("m", 1.0, P0), ("n", 0.1, P0), ("o", 0.1, 0.015)):
     v.check(f"Ex 22-01.5{key}", p0 + A * i + R * i * i)
 
@@ -261,6 +262,11 @@ v.check("Ex 22-01.8k", pin92 - 1000)
 v.check("Ex 22-01.8e", pin - pin92)
 v.check("Ex 22-01.8f", pin - chain_input(1000, [0.98] + CH[1:]))
 v.check("Ex 22-01.8j", chain_input(1, CH[:3]))
+# saving per point, by finite steps of one point at each stage (wall-referred)
+v.check("Ex 22-01.8l", (pin - pin92) / 2)
+v.check("Ex 22-01.8m", pin - chain_input(1000, [0.98] + CH[1:]))
+v.assert_true("Ex 22-01.8: per-point saving = P_wall * d/(eta + d) at each stage",
+              abs((pin - pin92) - pin * 0.02 / 0.92) < 1e-9 and abs((pin - chain_input(1000, [0.98] + CH[1:])) - pin * 0.01 / 0.98) < 1e-9)
 
 # ---------------------------------------------------------------- text
 print("Text")
@@ -405,6 +411,17 @@ v.check("22-01.15g", loss(3000, e15) / l15)
 v.check("22-01.15h", optimize.brentq(lambda e: loss(150, e) - 3.0, 0.5, 0.99999) * 100)
 
 # ---------------------------------------------------------------- lab
+# Problem 22-01.16: light-load mode (efficiency from the loss model; crossover by root finding)
+def eta16(i, p0, a1, r):
+    return 1.8 * i / (1.8 * i + p0 + a1 * i + r * i * i)
+
+
+v.check("22-01.16a", 100 * eta16(1e-3, 6e-3, 0.02, 0.25))
+v.check("22-01.16b", 100 * eta16(1e-3, 20e-6, 0.02, 0.60))
+v.check("22-01.16c", 100 * eta16(50e-3, 6e-3, 0.02, 0.25))
+v.check("22-01.16d", 100 * eta16(50e-3, 20e-6, 0.02, 0.60))
+v.check("22-01.16e", 1e3 * optimize.brentq(lambda i: eta16(i, 6e-3, 0.02, 0.25) - eta16(i, 20e-6, 0.02, 0.60), 0.01, 1))
+
 print("Lab")
 sys.path.insert(0, str(LAB))
 import power as pw  # noqa: E402

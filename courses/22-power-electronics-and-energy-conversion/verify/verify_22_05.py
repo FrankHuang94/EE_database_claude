@@ -175,6 +175,7 @@ v.check("Ex 22-05.1g", (al_ideal / 251e-9 - 1) * 100)
 v.check("Ex 22-05.1h", (al_fr / 251e-9 - 1) * 100)
 v.check("Ex 22-05.1i", 251e-9 * 20 ** 2 * 1e6)
 v.check("Ex 22-05.1j", 251e-9 / (MU0 * AE / LE))
+v.check("Ex 22-05.1k", (ag / AE - 1) * 100)
 v.assert_true("ungapped µ_e reproduces the data sheet's 1670 to within 0.3%", abs(MUE0 / 1670 - 1) < 3e-3)
 
 # ---------------------------------------------------------------- Example 22-05.2
@@ -270,6 +271,7 @@ opt6 = optimize.minimize_scalar(lambda h: foil(h, 4)[3], bounds=(0.05e-3, 0.4e-3
                                 options={"xatol": 1e-9})
 v.check("Ex 22-05.6l", opt6.x * 1e3)
 v.check("Ex 22-05.6m", opt6.fun)
+v.check("Ex 22-05.6n", foil(opt6.x, 4)[1])
 
 # ---------------------------------------------------------------- Example 22-05.7
 print("Example 22-05.7")
@@ -307,6 +309,8 @@ db7 = L7 * di7 / (N7 * AE)
 v.check("Ex 22-05.7o", db7)
 v.check("Ex 22-05.7p", igse_wave(tri(db7, D7, F7), F7) / sine_ref * ANCHOR_W)
 v.check("Ex 22-05.7q", (di7 / math.sqrt(12)) ** 2 * 10 * r7)
+tt7 = np.linspace(0, 1, 200001)
+v.check("Ex 22-05.7r", math.sqrt(np.mean((di7 * (tt7 - 0.5)) ** 2)))  # sampled triangle (sawtooth has the same RMS)
 
 # ---------------------------------------------------------------- Example 22-05.8
 print("Example 22-05.8")
@@ -327,6 +331,9 @@ v.check("Ex 22-05.8g", llk8 * 1e6)
 v.check("Ex 22-05.8h", lint8 * 1e6)
 lm8 = AL0 * 81
 v.check("Ex 22-05.8i", lm8 * 1e6)
+v.check("Ex 22-05.8j", b9)
+v.check("Ex 22-05.8k", a8 * b9 ** B87)
+v.check("Ex 22-05.8l", b8 / b9 ** 2)
 
 # ---------------------------------------------------------------- text numbers
 print("Text")
@@ -459,5 +466,17 @@ v.assert_true("lab optimum_flux_swing matches numerical minimization",
               abs(mg.optimum_flux_swing(a8, B87, b8) / opt8.x - 1) < 1e-8)
 v.assert_true("lab kg_required matches the scaling route",
               abs(mg.kg_required(RHO100, L7, ipk7, irms7, BMAX, 0.5, KU) / (AE ** 2 * AN / MLT * pcu_etd / 0.5) - 1) < 1e-9)
+
+# ---------------------------------------------------------------- Problem 22-05.15 (powder core)
+OE = 1000 / (4 * math.pi)        # A/m per oersted
+le15, n15, l0_15 = 98.4e-3, 20, 10.0e-6
+perm15 = {45: 0.80, 95: 0.50}    # fraction of initial permeability at each bias (chapter data)
+i45 = optimize.brentq(lambda i: n15 * i / le15 - 45 * OE, 0, 100)
+i95 = optimize.brentq(lambda i: n15 * i / le15 - 95 * OE, 0, 100)
+v.check("22-05.15a", i45)
+v.check("22-05.15b", i95)
+v.check("22-05.15c", 1e6 * l0_15 * perm15[45])
+v.check("22-05.15d", 1e6 * l0_15 * perm15[95])
+v.check("22-05.15e", 2.0 * l0_15 / (l0_15 * perm15[45]))
 
 v.finish()

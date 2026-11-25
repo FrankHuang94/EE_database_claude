@@ -64,6 +64,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **The Ferranti effect.** An open-ended 300 km line has a wave speed of 0.979$c$. Find the ratio of receiving-end to sending-end voltage at 60 Hz.
 
+### Problem 22-12.14 [B]
+
+**Line parameters from geometry.** A 230 kV, 60 Hz line has one solid round conductor of radius 1.4 cm per phase and an equivalent phase spacing of 7.0 m. Find (a) the geometric mean radius, (b) the inductance and (c) the reactance per kilometre, (d) the capacitance per kilometre, (e) the characteristic impedance and (f) the surge-impedance loading.
+
+### Problem 22-12.15 [B]
+
+**Four faults at one bus.** At the 230 kV bus of Example 22-12.6 ($Z_1 = Z_2$ = j0.30 pu, $Z_0$ = j0.15 pu on 100 MVA, 1.0 pu prefault voltage), find the fault current in per unit and in amperes for (a) a three-phase fault, (b) a single-line-to-ground fault, (c) a line-to-line fault and (d) a double-line-to-ground fault (the current in either faulted phase), and (e) the ground current in the double-line-to-ground fault.
+
 ---
 
 ## Objective coverage
@@ -71,7 +79,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Objective | Problems |
 |---|---|
 | 1. Per-unit and transformers | 1, 2, 3 |
-| 2. Line parameters, SIL and line models | 4, 13 |
+| 2. Line parameters, SIL and line models | 4, 13, 14 |
 | 3. Power flow and voltage drop | 5, 6 |
-| 4. Faults | 7, 8 |
+| 4. Faults | 7, 8, 15 |
 | 5. Frequency, inertia and large loads | 9, 10, 11, 12 |

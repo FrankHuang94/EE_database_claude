@@ -115,6 +115,12 @@ for keys, fom, vd in (("cef", 1.8e-3 * 73e-9, 10), ("dgh", 2.4e-3 * 11e-9, 5)):
     v.check(f"Ex 22-06.4{keys[2]}", opt.fun)
     v.assert_true(f"conduction equals gate loss at the optimum ({keys})",
                   abs(I4 ** 2 * opt.x / (fom * vd * FS4 / opt.x) - 1) < 1e-6)
+opt4 = {}
+for tag, fom, vd in (("si", 1.8e-3 * 73e-9, 10), ("gan", 2.4e-3 * 11e-9, 5)):
+    opt4[tag] = optimize.minimize_scalar(lambda r, fom=fom, vd=vd: I4 ** 2 * r + fom * vd * FS4 / r,
+                                         bounds=(1e-5, 1e-1), method="bounded", options={"xatol": 1e-12})
+v.check("Ex 22-06.4i", opt4["gan"].fun / opt4["si"].fun)
+v.check("Ex 22-06.4j", 2.4e-3 / opt4["gan"].x)
 
 # ---------------------------------------------------------------- Example 22-06.5
 print("Example 22-06.5")
@@ -157,6 +163,9 @@ v.assert_true("GaN recovery loss is zero", gan[3] == 0.0)
 v.check("Ex 22-06.6n", sum(gan))
 v.check("Ex 22-06.6o", 240 / (240 + sum(gan)) * 100)
 v.check("Ex 22-06.6p", sum(si) - si[0])
+# figure: frequency at which each device's total switch loss reaches 2% of 240 W (switching terms scale with f)
+for key, losses in (("Txt 22-06.l", si), ("Txt 22-06.m", gan)):
+    v.check(key, optimize.brentq(lambda f: losses[0] + (sum(losses) - losses[0]) * f / 500e3 - 0.02 * 240, 1e3, 5e6) / 1e3)
 
 # ---------------------------------------------------------------- Example 22-06.7
 print("Example 22-06.7")
@@ -185,6 +194,36 @@ v.check("Txt 22-06.h", 38 * 90)
 v.check("Txt 22-06.i", 1212e-12 * 400 * 1e9)
 v.check("Txt 22-06.j", 100e-9 * 400 * 1e6)
 v.check("Txt 22-06.k", (100e-9 * 400 - 10e-6) * 1e6)
+
+# §3.7 energy condition for a small swinging inductance: integrate the swing with a nonlinear
+# C(v) = C0/sqrt(1 + v/V0) per switch, the inductor's far end at the rail the node leaves, and find
+# the smallest starting current that still reaches 0 V. Compare 1/2 L I^2 with Q_oss V and 2 E_oss.
+C0Z, V0Z, VZ, LZ = 2e-9, 5.0, 400.0, 2e-6
+
+
+def czv(x):
+    return C0Z / math.sqrt(1 + max(x, 0.0) / V0Z)
+
+
+def swing_margin(i0):
+    def rhs(_t, y):
+        vn, i = y
+        return [-i / (czv(vn) + czv(VZ - vn)), (vn - VZ) / LZ]
+    hit0 = lambda _t, y: y[0]
+    hit0.terminal, hit0.direction = True, -1
+    stall = lambda _t, y: y[1]
+    stall.terminal, stall.direction = True, -1
+    sol = integrate.solve_ivp(rhs, (0, 1e-5), [VZ, i0], events=(hit0, stall), rtol=1e-10, atol=[1e-9, 1e-12],
+                              max_step=1e-9)
+    return sol.y[1, -1] if sol.t_events[0].size else -sol.y[0, -1]
+
+
+i_crit = optimize.brentq(swing_margin, 0.5, 20, xtol=1e-9)
+qz = integrate.quad(czv, 0, VZ)[0]
+ez = integrate.quad(lambda x: x * czv(x), 0, VZ)[0]
+v.assert_true("§3.7: ZVS energy boundary 1/2 L I^2 equals Q_oss V for nonlinear C_oss",
+              abs(0.5 * LZ * i_crit ** 2 / (qz * VZ) - 1) < 1e-4)
+v.assert_true("§3.7: a 2 E_oss condition would understate it for nonlinear C_oss", 2 * ez < 0.9 * qz * VZ)
 
 # ---------------------------------------------------------------- problems
 print("Problems")
@@ -219,6 +258,10 @@ v.check("22-06.8b", 30e-9 * 400 * 65e3)
 EPS0 = 8.8541878128e-12
 bf = lambda er, mu, ec: er * EPS0 * mu * 1e-4 * (ec * 1e8) ** 3      # SI: F/m · m²/V·s · (V/m)³
 si_b, sic_b, gan_b = bf(11.9, 1240, 0.3), bf(9.7, 980, 3.1), bf(10.4, 1000, 4.9)
+v.check("22-06.9f", 11.9 * 1240 * 0.3 ** 3)
+v.check("22-06.9g", 9.7 * 980 * 3.1 ** 3 / 1e5)
+v.check("22-06.9h", 10.4 * 1000 * 4.9 ** 3 / 1e6)
+v.assert_true("22-06.9: SI Baliga products have the same ratios", abs(sic_b / si_b - (9.7 * 980 * 3.1 ** 3) / (11.9 * 1240 * 0.3 ** 3)) < 1e-9)
 v.check("22-06.9a", sic_b / si_b)
 v.check("22-06.9b", gan_b / si_b)
 VB = 1200.0
@@ -243,6 +286,34 @@ f_gan = optimize.brentq(lambda f: gan[0] + slope_gan * f - 4.8, 0, 10)
 v.check("22-06.12c", f_si)
 v.check("22-06.12d", f_gan)
 v.check("22-06.12e", f_gan / f_si)
+
+# Problem 22-06.13: (a) the energy identity for a general far-end potential, by integrating the swing
+# with the nonlinear C(v) of the §3.7 check; (c-h) the minimum currents.
+def swing_end(i0, vx):
+    def rhs(_t, y):
+        return [-y[1] / (czv(y[0]) + czv(VZ - y[0])), (y[0] - vx) / LZ]
+    hit0 = lambda _t, y: y[0]
+    hit0.terminal, hit0.direction = True, -1
+    s = integrate.solve_ivp(rhs, (0, 1e-5), [VZ, i0], events=hit0, rtol=1e-10, atol=[1e-9, 1e-12], max_step=1e-9)
+    return s.y[1, -1], s.y[1].min()
+
+
+for vx in (0.8 * VZ, 0.3 * VZ):
+    i1, imin = swing_end(8.0, vx)
+    v.assert_true(f"22-06.13a: 1/2 L (I0^2 - I1^2) = Q_oss (2Vx - V) at Vx = {vx:.0f} V",
+                  abs(0.5 * LZ * (8.0 ** 2 - i1 ** 2) - qz * (2 * vx - VZ)) < 1e-6 * 0.5 * LZ * 64)
+    v.assert_true(f"22-06.13b: smallest current is at an end of the swing (Vx = {vx:.0f} V)",
+                  imin >= min(8.0, i1) - 1e-6)
+L13 = 4e-6
+q13g, q13s = integrate.quad(lambda x: 88e-12, 0, 400)[0], integrate.quad(lambda x: 1212e-12, 0, 400)[0]
+v.check("22-06.13c", q13g * 1e9)
+v.check("22-06.13d", optimize.brentq(lambda i: 0.5 * L13 * i ** 2 - q13g * 400, 0, 100))
+v.check("22-06.13e", q13s * 1e9)
+i13f = optimize.brentq(lambda i: 0.5 * L13 * i ** 2 - q13s * 400, 0, 100)
+v.check("22-06.13f", i13f)
+i13g = optimize.brentq(lambda i: 0.5 * L13 * i ** 2 - 117e-12 * 400 ** 2, 0, 100)
+v.check("22-06.13g", i13g)
+v.check("22-06.13h", i13f / i13g)
 
 # ---------------------------------------------------------------- lab
 print("Lab")

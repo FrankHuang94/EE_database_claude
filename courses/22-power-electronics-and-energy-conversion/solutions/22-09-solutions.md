@@ -24,9 +24,9 @@ $\tau_1 = R_1C_1$ = 20 s, and at 10 s, $1 - e^{-0.5}$ = 0.3935.
 
 (b) $3.75 - 2(0.08 + 0.05 \times 0.3935)$ = **3.551** V.
 
-(c) $R_0$'s drop vanishes at once, but $v_1 = 2 \times 0.05 \times 0.3935$ = 39.3 mV remains: **3.711** V.
+(c) $R_0$'s drop vanishes at once, but $v_1 = 2 \times 0.05 \times 0.3935$ = **39.3** mV remains: **3.711** V.
 
-(d) $v_1$ decays by $e^{-0.5}$ to 23.9 mV: **3.726** V. The cell is still 24 mV below its OCV 10 s after the pulse, so a gauge that reads it as OCV would misjudge the SOC (§3.6). (The SOC drift, $0.9 \times 20\ \text{C}/16\,200\ \text{C}$ = 1.1 mV, is negligible for this 4500 mAh cell.)
+(d) $v_1$ decays by $e^{-0.5}$ to **23.9** mV: **3.726** V. The cell is still 24 mV below its OCV 10 s after the pulse, so a gauge that reads it as OCV would misjudge the SOC (§3.6). (Assuming the teaching cell's OCV slope of 0.9 V per unit SOC, the SOC drift moves the OCV by $0.9 \times 20\ \text{C}/16\,200\ \text{C}$ = **1.1** mV, negligible for this 4500 mAh cell.)
 
 ### Solution 22-09.4
 
@@ -116,6 +116,10 @@ The ring loses about 3% to cycling in two years but 8% to calendar aging (Proble
 
 (a) $22.5 \times 0.80 \times 0.90/168$ = **96.4** µA; (b) $96.4 - 85$ = **11.4** µA, just enough for a gauge whose sleep current is about 11 µA (§9), with nothing to spare.
 
+### Solution 22-09.14
+
+(a) $Q_{max} = \Delta q/(z_1 - z_2) = 1.32/0.55$ = **2.40** Ah; (b) $2.40/2.6$ = **92.3** %. (c) The swing can be as small as 0.54 or as large as 0.56: $1.32/0.54$ = 2.444 Ah, **+1.85** %, and $1.32/0.56$ = 2.357 Ah, **−1.79** %. (d) The overestimate is $\Delta z/(\Delta z - 0.01) - 1 \le 0.02$, so $\Delta z \ge 1.02 \times 0.01/0.02$ = **0.51**. The error scales as the reading error over the swing: a shallow swing makes the learned capacity noisy, so gauges update only after a deep enough discharge between two rests.
+
 ---
 
 ## Answer key
@@ -133,6 +137,9 @@ The ring loses about 3% to cycling in two years but 8% to calendar aging (Proble
 | 22-09.3b | voltage at 10 s | 3.551 | V |
 | 22-09.3c | voltage just after removal | 3.711 | V |
 | 22-09.3d | voltage 10 s after removal | 3.726 | V |
+| 22-09.3e | RC-branch voltage at removal | 39.3 | mV |
+| 22-09.3f | RC-branch voltage 10 s later | 23.9 | mV |
+| 22-09.3g | OCV change from the SOC drift | 1.1 | mV |
 | 22-09.4a | usable fraction at 25 °C | 80 | % |
 | 22-09.4b | usable fraction at −10 °C | 20 | % |
 | 22-09.4c | current for 90% at −10 °C | 75 | mA |
@@ -172,3 +179,8 @@ The ring loses about 3% to cycling in two years but 8% to calendar aging (Proble
 | 22-09.12c | ring cycles in 2 years | 146 | |
 | 22-09.13a | allowed average current | 96.4 | µA |
 | 22-09.13b | budget left for the gauge | 11.4 | µA |
+| 22-09.14a | learned capacity | 2.40 | Ah |
+| 22-09.14b | state of health | 92.3 | % |
+| 22-09.14c | largest overestimate | 1.85 | % |
+| 22-09.14d | largest underestimate | −1.79 | % |
+| 22-09.14e | smallest swing for 2% | 0.51 | |

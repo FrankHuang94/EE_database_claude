@@ -167,7 +167,7 @@ Subtracting the first from the second gives $4a + 24R = 0.148$, so $a = 0.037 - 
 
 (e) With the supply at 96%, the chain is 81.10%, and the input is 1233.0 W: a saving of **26.2** W.
 
-(f) Both upgrades are two points: **14.0** W per point at the VRM against **13.1** W per point at the supply. Here they are close because the supply is far from 100%; with a 97–98% supply the VRM's lead would grow.
+(f) Both upgrades are two points: **14.0** W per point at the VRM against **13.1** W per point at the supply. They are close for a general reason: raising stage $k$ by Δη saves $P_{in}\Delta\eta/(\eta_k + \Delta\eta)$, so a point is worth about $P_{in}/\eta_k$ at any stage and the stages differ only through $1/\eta_k$.
 
 ### Solution 22-01.15
 
@@ -176,6 +176,10 @@ Subtracting the first from the second gives $4a + 24R = 0.148$, so $a = 0.037 - 
 (d) $0.99 \times 0.98$ = **97.02** %. (e) $3000(1/0.9702 - 1)$ = **92.1** W. (f) $92.1/20$ = **4.61** W/in³. (g) $92.1/30.3$ = **3.04**: the "99%" understated the heat threefold.
 
 (h) From $\rho \le q\eta/(1 - \eta)$: $\eta \ge \rho/(\rho + q) = 150/153$ = **98.04** %. Unless the whole converter reaches 98%, or the cooling beats 3 W/in³ (forced air or a cold plate), the density claim does not hold for the full product. The question to ask is which box, and with what cooling.
+
+### Solution 22-01.16
+
+At 1 mA the output is 1.8 mW. (a) PWM loses 6 + 0.02 + 0.000\,25 = 6.020 mW: η = 1.8/7.820 = **23.02** %. (b) PFM loses 0.020 + 0.020 + 0.000\,6 = 0.0406 mW: η = **97.79** %. At 50 mA the output is 90 mW. (c) PWM loses 6 + 1 + 0.625 = 7.625 mW: **92.19** %. (d) PFM loses 0.02 + 1 + 1.5 = 2.52 mW: **97.28** %. (e) The losses are equal where $6\ \text{mW} + 0.25I^2 = 20\ \mu\text{W} + 0.60I^2$ (the $aI$ terms cancel), at $I = \sqrt{5.98\ \text{mW}/0.35\ \Omega}$ = **130.7** mA. Below it the fixed loss dominates and PFM wins by a wide margin; above it, PFM's larger pulses cost more conduction loss than PWM's fixed loss.
 
 ---
 
@@ -268,3 +272,8 @@ Subtracting the first from the second gives $4a + 24R = 0.148$, so $a = 0.037 - 
 | 22-01.15f | real heat density | 4.61 | W/in³ |
 | 22-01.15g | understatement factor | 3.04 | |
 | 22-01.15h | efficiency required for 150 W/in³ | 98.04 | % |
+| 22-01.16a | PWM efficiency at 1 mA | 23.02 | % |
+| 22-01.16b | PFM efficiency at 1 mA | 97.79 | % |
+| 22-01.16c | PWM efficiency at 50 mA | 92.19 | % |
+| 22-01.16d | PFM efficiency at 50 mA | 97.28 | % |
+| 22-01.16e | crossover load | 130.7 | mA |

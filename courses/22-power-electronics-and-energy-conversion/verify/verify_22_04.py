@@ -153,6 +153,7 @@ ipk7 = magnetizing(400.0, 0.5 / 100e3, lm7)
 v.check("Ex 22-04.7e", ipk7)
 v.check("Ex 22-04.7f", 400 * (1000 / 50) / 6)
 v.check("Ex 22-04.7g", 800 * ipk7)
+v.check("Ex 22-04.7h", 4 * 400 * (1000 / 50) / 6 / 1e3)
 
 # ---------------------------------------------------------------- problems
 print("Problems")
@@ -197,13 +198,44 @@ n12 = 100 / 12
 d12a = vsb_flyback_duty(100.0, 12.0, n12)
 v.check("22-04.12a", n12)
 v.check("22-04.12b", d12a)
-v.check("22-04.12c", vsb_flyback_duty(373.0, 12.0, n12))
 v.check("22-04.12d", 373 + 100)
 p12 = 24 / 0.88
 v.check("22-04.12e", p12)
 lm12 = boundary_lm(p12, 100.0, d12a, 65e3)
 v.check("22-04.12f", magnetizing(100.0, d12a / 65e3, lm12))
 v.check("22-04.12g", lm12 * 1e6)
+# (c) at 373 V and fixed 65 kHz: DCM; find D whose stored energy per cycle delivers P_in
+d12c = optimize.brentq(lambda d: 0.5 * lm12 * (373 * d / 65e3 / lm12) ** 2 * 65e3 - p12, 0.01, 0.5)
+v.check("22-04.12c", d12c)
+v.assert_true("22-04.12c is discontinuous (D + D2 < 1)", d12c + 373 * d12c / 100 < 1)
+v.check("22-04.13a", 2 * 4.0)
+v.check("22-04.13b", 2 * 4.0 - 2 * 2.0)
+v.assert_true("22-04.13c: groups I and II fit a 6 mm path, III does not", 2 * 2.0 <= 6 and 2 * 2.8 <= 6 and 2 * 4.0 > 6)
+# 22-04.14: D from per-cycle energy balance; DCM confirmed by simulating the reset interval
+ts14, lm14, r14 = 1 / 150e3, 30e-6, 5 / 2
+d14 = optimize.brentq(lambda d: 0.5 * lm14 * (48 * d * ts14 / lm14) ** 2 / ts14 - 5 * 2, 0.01, 0.9)
+v.check("22-04.14a", d14)
+v.check("22-04.14b", 2 * lm14 / (16 * r14 * ts14))
+ipk14 = 48 * d14 * ts14 / lm14
+v.check("22-04.14c", ipk14)
+t_reset14 = ipk14 * lm14 / (4 * 5)            # magnetizing current falls at nV/Lm
+v.assert_true("22-04.14 resets within the period", d14 * ts14 + t_reset14 < ts14)
+d14c = optimize.brentq(lambda d: 48 / 4 * d / (1 - d) - 5, 0.01, 0.9)
+v.check("22-04.14d", 1e6 * optimize.brentq(lambda lm: 2 * lm / (16 * r14 * ts14) - (1 - d14c) ** 2, 1e-6, 1e-3))
+# 22-04.15: output stage as a buck fed by Vin/n; ripple from the sampled inductor waveform
+v.check("22-04.15a", 4.5 * 3.3 / 36)
+d15b = 4.5 * 3.3 / 72
+v.check("22-04.15b", d15b)
+l15 = optimize.brentq(lambda l: (72 / 4.5 - 3.3) * d15b / 300e3 / l - 4.5, 1e-7, 1e-5)
+tt15 = np.linspace(0, 1 / 300e3, 300001)
+vl15 = np.where(tt15 < d15b / 300e3, 72 / 4.5 - 3.3, -3.3)
+il15 = np.concatenate([[0], np.cumsum((vl15[1:] + vl15[:-1]) / 2 * np.diff(tt15))]) / l15
+v.assert_true("22-04.15: sampled ripple is 4.5 A", abs(np.ptp(il15) - 4.5) < 1e-3)
+v.check("22-04.15c", 1e6 * l15)
+ic15 = il15 - il15.mean()
+q15 = np.concatenate([[0], np.cumsum((ic15[1:] + ic15[:-1]) / 2 * np.diff(tt15))])
+v.check("22-04.15d", 1e6 * optimize.brentq(lambda c: np.ptp(q15 / c) - 0.02, 1e-6, 1e-3))
+v.check("22-04.15e", 36 * (4.5 * 3.3 / 36) / 300e3 / (9 * 60e-6))
 
 # ---------------------------------------------------------------- lab helpers
 print("Lab")

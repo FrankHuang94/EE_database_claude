@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 22-07 · Converter Dynamics and Control
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The converter-dynamics weeks of a senior power-electronics course: averaged models, small-signal transfer functions of the buck and boost, the right-half-plane zero, voltage-mode compensation (type II and III), peak current-mode control and slope compensation, output impedance and load transients, and digital control (Erickson & Maksimović, *Fundamentals of Power Electronics*, the AC equivalent-circuit modeling, converter transfer functions, controller design and current-programmed control chapters) |
 | **Prerequisites** | [22-02](22-02-buck-converter-steady-state.md) and [22-03](22-03-boost-buck-boost-topologies.md) (steady state), [15-07](../../15-control-systems/chapters/15-07-frequency-domain-design.md) (Bode design, phase margin), [15-09](../../15-control-systems/chapters/15-09-lead-lag-compensation.md) (lead compensation), [15-12](../../15-control-systems/chapters/15-12-control-applications-pll-regulators-thermal.md) (regulator loops, load line) |
 | **Estimated study hours** | 9 |
-| **Last verified** | 2026-11-24 |
+| **Last verified** | 2026-11-25 |
 
 **Learning objectives.** After this chapter you can:
 
@@ -57,7 +57,7 @@ $$
 L\frac{d\langle i_L\rangle}{dt} = d\,v_g - \langle v\rangle, \qquad C\frac{d\langle v\rangle}{dt} = \langle i_L\rangle - \frac{\langle v\rangle}{R} .
 $$
 
-This **averaged model** is nonlinear in general (it multiplies $d$ by $v_g$) but continuous. It is valid for frequencies well below $f_s$, typically up to a fraction of $f_s/2$, where the ripple and the sampling nature of the PWM start to matter. To get transfer functions, perturb each quantity about its operating point, $d = D + \hat d$, $v = V + \hat v$, $i_L = I + \hat\imath$, $v_g = V_g + \hat v_g$, keep the first-order terms and drop products of small signals (Course 15's linearization).
+This **averaged model** is nonlinear in general (it multiplies $d$ by $v_g$) but continuous. It is valid for frequencies well below $f_s$, typically up to a fraction of $f_s/2$, where the ripple and the sampling nature of the PWM start to matter. To get transfer functions, perturb each quantity about its operating point, $d = D + \hat d$, $v = V + \hat v$, $i_L = I + \hat\imath$, $v_g = V_g + \hat v_g$, keep the first-order terms and drop products of small signals (Course 15's linearization). The hat marks a small-signal perturbation here, Erickson and Maksimović's convention for converters; elsewhere in the course a hat marks a unit vector ([notation](../../../reference/notation.md)).
 
 **The buck.** The perturbed equations are $sL\hat\imath = V_g\hat d + D\hat v_g - \hat v$ and $sC\hat v = \hat\imath - \hat v/R$. Eliminating $\hat\imath$:
 
@@ -121,7 +121,7 @@ $$
 k = \tan\left(\frac{B/2 + 90°}{2}\right).
 $$
 
-Finally $\omega_I$ is chosen so that $|T(j\omega_c)| = 1$. Units: $\omega_I$ in rad/s makes $\omega_I/s$ dimensionless. ✓ When the capacitors' ESR zero falls below $f_c$, it supplies 90° of the lead itself and a **type-II** compensator (integrator, one zero, one pole) suffices. That is also the case for current-mode control (§3.4).
+(Venable's original k-factor for type III is the square of this $k$, with the zeros at $f_c/\sqrt{k}$; the placements are identical.) Finally $\omega_I$ is chosen so that $|T(j\omega_c)| = 1$. Units: $\omega_I$ in rad/s makes $\omega_I/s$ dimensionless. ✓ When the capacitors' ESR zero falls below $f_c$, it supplies 90° of the lead itself and a **type-II** compensator (integrator, one zero, one pole) suffices. That is also the case for current-mode control (§3.4).
 
 **Realizing it.** The classic type-III network wraps an op-amp with $R_2$ in series with $C_1$, in parallel with $C_2$, in the feedback path, and $R_1$ in parallel with $R_3$-in-series-with-$C_3$ in the input path. Its transfer function is
 
@@ -157,7 +157,7 @@ a single pole at $1/(2\pi RC)$, so a type-II compensator suffices. Ridley's mode
 
 ### 3.5 Load transients and digital delay
 
-**Load steps.** With the loop closed, the output impedance falls to $Z_{out,cl} = Z_{out}/(1 + T)$: large loop gain makes the output stiff. Near and above crossover, $T$ is small and the output capacitor alone supplies the transient current. A useful first-order estimate is that for a well-compensated loop the closed-loop output impedance near crossover is about the capacitor's impedance at $f_c$, so a load step $\Delta I$ produces a peak deviation
+**Load steps.** With the loop closed, the output impedance falls to $Z_{out,cl} = Z_{out}/(1 + T)$: large loop gain makes the output stiff. Near and above crossover, $T$ is small and the output capacitor alone supplies the transient current. A useful first-order estimate follows from two approximations valid between $f_0$ and $f_c$: the open-loop output impedance is about the capacitor's, $Z_{out} \approx 1/(sC)$, and a well-compensated loop has $T \approx \omega_c/s$ there. Then $Z_{out,cl} = Z_{out}/(1 + T) \approx 1/(C(s + \omega_c))$, whose magnitude never exceeds $1/(\omega_cC)$: the closed-loop output impedance is at most the capacitor's impedance at $f_c$. The estimate assumes the loop gain is large enough at $f_0$ to suppress the LC peak; Problem 22-07.12 shows what happens when it is not. A load step $\Delta I$ therefore produces a peak deviation of about
 
 $$
 \Delta V \approx \frac{\Delta I}{2\pi f_cC} .
@@ -177,18 +177,18 @@ of phase margin. Digital loops therefore cross over lower, or use faster samplin
 
 ### Example 22-07.1 · The buck's plant (tier A)
 
-**Setup.** The 12 V to 1.2 V, 10 A buck of Example 22-02.1 has $L$ = 0.6 µH and an effective output capacitance of 62.5 µF (Example 22-02.2) with 2 mΩ of ESR (assumed). Find (a) the load resistance, (b) $f_0$, (c) $Q$, (d) the low-frequency control-to-output gain in dB, (e) the ESR zero, and the plant's (f) magnitude in dB and (g) phase at 60 kHz.
+**Setup.** The 12 V to 1.2 V, 10 A buck of Example 22-02.1 has $L$ = 0.6 µH and an effective output capacitance of 62.5 µF (Example 22-02.2) with 2 mΩ of ESR (assumed). Find (a) the load resistance, (b) $f_0$, (c) $Q$, (d) the low-frequency control-to-output gain in dB, (e) the ESR zero, and the plant's (f) magnitude in dB and (g) phase at 60 kHz, neglecting the ESR (its zero adds only about +2.8° there; it is checked once the design works, in Example 22-07.3).
 
 **Solution.**
 
 - (a) $R = 1.2/10$ = **0.12** Ω; (b) $f_0 = 1/(2\pi\sqrt{0.6\ \mu\text{H} \times 62.5\ \mu\text{F}})$ = **26.0** kHz; (c) $Q = 0.12\sqrt{62.5/0.6}$ = **1.22**.
 - (d) $G_{vd}(0) = V_g$ = 12, or **21.6** dB.
 - (e) $f_{esr} = 1/(2\pi \times 2\ \text{m}\Omega \times 62.5\ \mu\text{F})$ = **1.27** MHz, far above any crossover.
-- (f) At 60 kHz, $|G_{vd}|$ = **2.54**, **8.1** dB; (g) phase **−156.5**°.
+- (f) At 60 kHz, $|G_{vd}|$ = **2.54** (h), **8.1** dB; (g) phase **−156.5**°.
 
 **Units check.** $\sqrt{\text{H·F}}$ = s; Ω·√(F/H) is dimensionless. ✓
 
-**Sanity check.** At 2.3 times $f_0$ the magnitude falls roughly as $(f_0/f)^2$ from 12 (that would give **2.25**; the $Q$ term adds a little) and the phase is heading for −180°. The ESR zero is useless for compensation with ceramic capacitors, so this voltage-mode buck needs a type-III compensator.
+**Sanity check.** At 2.3 times $f_0$ the magnitude falls roughly as $(f_0/f)^2$ from 12 (that would give **2.25** (i); the $Q$ term adds a little) and the phase is heading for −180°. The ESR zero is useless for compensation with ceramic capacitors, so this voltage-mode buck needs a type-III compensator.
 
 ### Example 22-07.2 · The boost's right-half-plane zero (tier B)
 
@@ -203,7 +203,7 @@ of phase margin. Digital loops therefore cross over lower, or use faster samplin
 
 **Units check.** Ω/H = 1/s. ✓
 
-**Sanity check.** The RHP zero falls with load: at 3 A ($R$ halved) it halves to **138** kHz, so design at the heaviest load. The high $Q$ (the lightly damped resonance 22-03 saw in simulation) is why boosts are usually run in current mode.
+**Sanity check.** The RHP zero falls with load: at 3 A ($R$ halved) it halves to **138** kHz (h), so design at the heaviest load. The high $Q$ (the lightly damped resonance 22-03 saw in simulation) is why boosts are usually run in current mode.
 
 ### Example 22-07.3 · A type-III compensator for the buck (tier C)
 
@@ -213,15 +213,15 @@ of phase margin. Digital loops therefore cross over lower, or use faster samplin
 
 - (a) $B = 60° - 90° - (-156.47°)$ = **126.5**°; (b) $k = \tan((63.24° + 90°)/2)$ = **4.20**.
 - (c) $f_z = 60/4.204$ = **14.27** kHz; (d) $f_p = 60 \times 4.204$ = **252.2** kHz.
-- (e) $|G_c(j\omega_c)|$ must equal $V_M/|G_{vd}| = 1/2.541$ = **0.3935**. At $f_c$ each zero–pole pair has magnitude $|1 + jk|/|1 + j/k| = k$, so $|G_c| = (\omega_I/\omega_c)k^2$ and $\omega_I = 0.3935\,\omega_c/k^2$ = 8396 rad/s, so $f_I$ = **1.34** kHz.
-- (f, g) $C_1 + C_2 = 1/(\omega_IR_1)$ = **11.91** nF and $(C_1 + C_2)/C_2 = k^2$ = **17.67**, so $C_2$ = **0.674** nF and $C_1$ = **11.24** nF.
+- (e) $|G_c(j\omega_c)|$ must equal $V_M/|G_{vd}| = 1/2.541$ = **0.3935** (l). At $f_c$ each zero–pole pair has magnitude $|1 + jk|/|1 + j/k| = k$, so $|G_c| = (\omega_I/\omega_c)k^2$ and $\omega_I = 0.3935\,\omega_c/k^2$ = 8396 rad/s, so $f_I$ = **1.34** kHz.
+- (f, g) $C_1 + C_2 = 1/(\omega_IR_1)$ = **11.91** nF (n) and $(C_1 + C_2)/C_2 = k^2$ = **17.67** (m), so $C_2$ = **0.674** nF and $C_1$ = **11.24** nF.
 - (h) $R_2 = 1/(\omega_zC_1)$ = **992** Ω.
 - (i) $(R_1 + R_3)/R_3 = k^2$ gives $R_3 = R_1/(k^2 - 1)$ = **600** Ω; (j) $C_3 = 1/(\omega_pR_3)$ = **1.052** nF.
-- (k) Evaluating $T(j\omega)$ numerically: $|T|$ = 1 at **60.0** kHz with phase −120.0°, a phase margin of **60.0**°.
+- (k) Evaluating $T(j\omega)$ numerically: $|T|$ = 1 at **60.0** kHz (o) with phase −120.0°, a phase margin of **60.0**°. With the 2 mΩ ESR included in the plant, the same network crosses at **59.2** kHz with **63.2**° of margin (p, q): the ESR zero adds a little phase, as expected.
 
 **Units check.** 1/(rad/s · Ω) = F; 1/(rad/s · F) = Ω. ✓
 
-**Sanity check.** The zeros sit about an octave below $f_c$ and half an octave above $f_0$; the poles sit below $f_s/2$ = 300 kHz, where they attenuate the switching ripple. The lab builds this network around an ideal op-amp, closes the loop on the averaged buck in ngspice, and measures the crossover and phase margin by Middlebrook's injection method.
+**Sanity check.** The zeros sit about two octaves below $f_c$ and a little below $f_0$ (14.3 against 26.0 kHz), so their phase lead is already rising when the double pole's lag arrives; the poles sit below $f_s/2$ = 300 kHz, where they attenuate the switching ripple. The lab builds this network around an ideal op-amp, closes the loop on the averaged buck in ngspice, and measures the crossover and phase margin by Middlebrook's injection method.
 
 ![Bode plots of the buck plant, the type-III compensator and the loop gain: the compensator's phase bump near 60 kHz lifts the loop's phase to −120° at the 60 kHz crossover, a 60° phase margin](../../../assets/figures/22-07/loop-bode.svg)
 
@@ -304,6 +304,8 @@ of phase margin. Digital loops therefore cross over lower, or use faster samplin
 | Ex 22-07.3m | k² | 17.67 | |
 | Ex 22-07.3n | C1 + C2 | 11.91 | nF |
 | Ex 22-07.3o | achieved crossover | 60.0 | kHz |
+| Ex 22-07.3p | crossover with the 2 mΩ ESR | 59.2 | kHz |
+| Ex 22-07.3q | phase margin with the 2 mΩ ESR | 63.2 | ° |
 | Ex 22-07.4a | duty cycle | 0.66 | |
 | Ex 22-07.4b | up-slope | 0.773 | A/µs |
 | Ex 22-07.4c | down-slope | 1.50 | A/µs |
@@ -368,7 +370,7 @@ The lab is [labs/22-07-lab/](../labs/22-07-lab/README.md). `control.py` collects
 - **Skipping slope compensation, or adding too much.** Without it, a peak current-mode converter above 50% duty oscillates at $f_s/2$; with $m_a \gg m_2$ the current loop loses its benefits.
 - **Trusting the averaged model near $f_s/2$.** Averaging assumes slow variation; above about $f_s/5$ the sampled nature of the PWM adds phase lag the model does not show.
 - **Ignoring digital delay.** One and a half switching periods of delay cost 54° at $f_s/10$ (Example 22-07.6).
-- **Measuring loop gain at a high-impedance point.** Middlebrook's injection needs a point where the impedance looking into the compensator is much larger than the impedance looking back into the output; otherwise the measurement is wrong.
+- **Injecting at the wrong point.** Middlebrook's method needs a point where the impedance looking back toward the output is much smaller than the impedance looking into the compensator; otherwise the measurement is wrong.
 
 ## 9. Practitioner lens
 
@@ -380,7 +382,7 @@ The lab is [labs/22-07-lab/](../labs/22-07-lab/README.md). `control.py` collects
 
 **Slope compensation as specified** [Established]. Controller data sheets state the same instability: "Peak current mode regulators can exhibit unstable behavior when operating above 50% duty cycle … known as sub-harmonic oscillation" [4]. One requires the compensation slope to be "greater than half of the sensed inductor current falling slope", and calls 82% of that slope "an optimal amount" [5]. That sits between the $m_2/2$ minimum and the deadbeat $m_2$ of §3.4.
 
-**Ripple-based and digital control.**
+**Ripple-based and digital control** [Established for data-sheet descriptions; Industry estimate for performance claims].
 
 - *TI's D-CAP family* skips the error amplifier. D-CAP "uses the equivalent series resistance (ESR) of the output capacitor(s)" and "does not require an external phase compensation network", provided the ESR zero lies below a quarter of the switching frequency [6]. D-CAP3 adds an internal ramp so that ceramic capacitors work [7]. The multiphase D-CAP+ forms its control signal from the summed inductor currents and the output error [8].
 - *Digital multiphase controllers* now manage AI-accelerator rails. Infineon's XDPE1A2G5C is a "digital dual loop 16 phase controller" with "Digitally programmable PID … loop compensation", "Configurable autonomous phase add/drop" and transient features for "fast di/dt load transients" [9]. Renesas's RAA229139 uses a "digital synthetic current modulation scheme" and an AMD SVI3 interface [10]. These parts move compensation from resistors and capacitors into registers, and the loop's delay (§3.5) into firmware design.

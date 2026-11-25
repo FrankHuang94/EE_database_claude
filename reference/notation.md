@@ -83,7 +83,7 @@ Bold uppercase is shared by matrices and phasors. Context always disambiguates (
 |---|---|
 | Vector field (time domain) | arrow: $\vec{E}(\vec{r}, t)$, $\vec{H}$, $\vec{D}$, $\vec{B}$, $\vec{J}$ |
 | Phasor vector field | tilde + arrow: $\tilde{\vec{E}}(\vec{r})$ |
-| Unit vectors | hat: $\hat{x}, \hat{r}, \hat{\phi}$ |
+| Unit vectors | hat: $\hat{x}, \hat{r}, \hat{\phi}$ (in converter dynamics, 22-07, a hat instead marks a small-signal perturbation, $\hat v$, $\hat d$, following Erickson and Maksimović) |
 | Permittivity, permeability | $\varepsilon = \varepsilon_r\varepsilon_0$, $\mu = \mu_r\mu_0$ |
 | Characteristic / intrinsic impedance | $Z_0$ (line), $\eta$ (medium) |
 | Reflection coefficient | $\Gamma$ |

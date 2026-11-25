@@ -1,10 +1,10 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 22-12 · Power Systems Fundamentals
 
 | | |
 |---|---|
 | **Course** | [22 · Power Electronics and Energy Conversion](../README.md) |
-| **University equivalent** | An introductory power-systems analysis course at FE depth: the per-unit system, transformers and transmission lines in power systems, two-bus power flow, symmetrical and unsymmetrical faults, frequency control, and the grid integration of inverter-based resources, storage and large loads (Glover, Overbye & Sarma, *Power System Analysis and Design*; Grainger & Stevenson, *Power System Analysis*; Kundur, *Power System Stability and Control*) |
+| **University equivalent** | The core topics of an introductory power-systems course, at FE depth (bus-admittance matrices, Newton–Raphson power flow and transient stability are left to a full course): the per-unit system, transformers and transmission lines in power systems, two-bus power flow, symmetrical and unsymmetrical faults, frequency control, and the grid integration of inverter-based resources, storage and large loads (Glover, Overbye & Sarma, *Power System Analysis and Design*; Grainger & Stevenson, *Power System Analysis*; Kundur, *Power System Stability and Control*) |
 | **Prerequisites** | [07-11](../../07-circuit-analysis-2-transient-and-ac/chapters/07-11-three-phase-circuits.md) (three-phase circuits), [07-06](../../07-circuit-analysis-2-transient-and-ac/chapters/07-06-ac-power-and-power-factor.md) (complex power), [07-09](../../07-circuit-analysis-2-transient-and-ac/chapters/07-09-mutual-inductance-and-transformers.md) (transformers), [22-11](22-11-electric-machines.md) (synchronous machines), [22-10](22-10-datacenter-power-delivery.md) (datacenter loads) |
 | **Estimated study hours** | 8 |
 | **Last verified** | 2026-11-25 |
@@ -46,6 +46,8 @@ flowchart LR
 
 ## 3. Theory
 
+As in 07-11, every phasor in this chapter is an RMS phasor, written without the rms subscript, so complex power is $\mathbf V\mathbf I^*$ with no factor of ½.
+
 ### 3.1 The per-unit system
 
 A power system mixes voltages from 400 V to 765 kV, connected through transformers. Expressing every quantity as a fraction of a **base** removes the transformer turns ratios and makes values from different equipment comparable. Choose a three-phase power base $S_b$ for the whole system and a line-to-line voltage base $V_b$ in each zone, with zone bases related by the transformers' ratios. Then
@@ -66,13 +68,21 @@ A further benefit: per-unit impedances of a type of equipment fall in narrow ran
 
 ### 3.2 Transmission lines
 
-**Inductance.** Consider one conductor of a three-phase line with equilateral spacing $D$ (or the geometric mean of the three spacings). Ampère's law (04-06) gives the field around a conductor carrying $i$: $B = \mu_0i/(2\pi x)$ outside it. The flux linking the conductor out to distance $D$, plus the internal flux, gives, with the return currents in the other phases summing to $-i$,
+**Inductance.** Consider one conductor of radius $r$, carrying $i_a$, in a three-phase line with equilateral spacing $D$ (or the geometric mean of the three spacings). Ampère's law (04-06) gives the field outside it, $B = \mu_0i_a/(2\pi x)$, and inside it, where a circle of radius $x$ encloses only the fraction $x^2/r^2$ of a uniformly distributed current, $B = \mu_0i_ax/(2\pi r^2)$. Flux linkage counts each tube of flux by the fraction of the current it encircles. Per metre, the internal tube at radius $x$ links $x^2/r^2$ of the current:
 
 $$
-L = \frac{\mu_0}{2\pi}\ln\frac{D}{r'}\ \text{H/m},
+\lambda_{int} = \int_0^r \frac{\mu_0i_ax}{2\pi r^2}\cdot\frac{x^2}{r^2}\,dx = \frac{\mu_0i_a}{8\pi} .
 $$
 
-where $r'$ is the conductor's geometric mean radius ($0.7788r$ for a solid round conductor; for a bundle of several subconductors, an equivalent larger value). **Capacitance** follows the same geometry with the electric field: $C = 2\pi\varepsilon_0/\ln(D/r)$ F/m to neutral. Both depend only logarithmically on geometry, which is why per-length reactances of overhead lines cluster around 0.3–0.5 Ω/km at 60 Hz [16].
+Outside, out to a distant radius $R$, $\lambda_{ext} = (\mu_0i_a/2\pi)\ln(R/r)$. The other two conductors, at distance $D$, add $(\mu_0i_b/2\pi)\ln(R/D)$ and $(\mu_0i_c/2\pi)\ln(R/D)$ by the same integral from $D$ to $R$. With balanced currents, $i_b + i_c = -i_a$, so the $\ln R$ terms cancel:
+
+$$
+\lambda_a = \frac{\mu_0i_a}{2\pi}\left(\frac14 + \ln\frac Dr\right) = \frac{\mu_0i_a}{2\pi}\ln\frac{D}{re^{-1/4}}, \qquad L = \frac{\mu_0}{2\pi}\ln\frac{D}{r'}\ \text{H/m},
+$$
+
+where $r' = e^{-1/4}r = 0.7788r$ is the conductor's geometric mean radius: the internal flux is absorbed into a slightly smaller fictitious radius. For a bundle of several subconductors, $r'$ is an equivalent larger value. Units: H/m × dimensionless. ✓
+
+**Capacitance** follows the same geometry with the electric field. A line charge $q$ per metre produces $E = q/(2\pi\varepsilon_0x)$ outside the conductor (Gauss's law, 04-03), so the potential difference from radius $r$ out to $D$ is $(q/2\pi\varepsilon_0)\ln(D/r)$. With balanced charges, the other two phases' contributions cancel as before, and the capacitance to neutral is $C = 2\pi\varepsilon_0/\ln(D/r)$ F/m. The charge sits on the conductor's surface, so the radius here is $r$ itself, not $r'$. Both depend only logarithmically on geometry, which is why per-length reactances of overhead lines cluster around 0.3–0.5 Ω/km at 60 Hz [16].
 
 **Characteristic impedance and surge-impedance loading.** A lossless line's characteristic impedance is $Z_c = \sqrt{L/C}$, and waves travel at $1/\sqrt{LC}$, close to the speed of light for overhead lines. A line terminated in $Z_c$ is flat: the reactive power its series inductance absorbs, $I^2\omega L$ per metre, exactly equals what its shunt capacitance generates, $V^2\omega C$ per metre, because $V/I = \sqrt{L/C}$. That load is the **surge-impedance loading (SIL)**:
 
@@ -80,7 +90,7 @@ $$
 \text{SIL} = \frac{V_{LL}^2}{Z_c} .
 $$
 
-Below SIL a line generates net reactive power and its voltage tends to rise; above it, the line absorbs reactive power and the voltage sags. An unloaded long line's far end rises above the sending voltage (the **Ferranti effect**), $V_R = V_S/\cos(\beta\ell)$ with $\beta = \omega\sqrt{LC}$.
+Below SIL a line generates net reactive power and its voltage tends to rise; above it, the line absorbs reactive power and the voltage sags. For a lossless line of length $\ell$, the sinusoidal-steady-state line equations (13-08) give the sending-end voltage in terms of the receiving end, $\mathbf V_S = \mathbf V_R\cos\beta\ell + jZ_c\mathbf I_R\sin\beta\ell$ with $\beta = \omega\sqrt{LC}$. Unloaded, $\mathbf I_R = 0$, so $V_R = V_S/\cos(\beta\ell)$: the far end rises above the sending voltage (the **Ferranti effect**), by about 8% for 300 km at 60 Hz (Problem 22-12.13).
 
 **Which model.** Short lines (under about 80 km) are a series impedance $R + jX$; medium lines (80–240 km) add half the shunt capacitance at each end (the nominal π); long lines need the distributed solution with $Z_c$ and the propagation constant. A common planning rule loads lines to about 3 × SIL below 80 km, 1.75 × SIL for 80–240 km, and SIL beyond [16].
 
@@ -100,31 +110,48 @@ $$
 \Delta V \approx \frac{RP + XQ}{V},
 $$
 
-so on high-$X/R$ transmission the reactive power dominates the voltage drop, which is why reactive compensation (capacitor banks, static VAR compensators, inverters) controls voltage. This is a first-order estimate: the current also creates a quadrature drop $\delta V = (XP - RQ)/V$, which adds roughly $\delta V^2/(2V)$ to the magnitude, a correction that matters on long or heavily loaded lines (Example 22-12.9).
+with $R$ and $X$ per phase. Use either per-phase $P$ and $Q$ with the line-to-neutral $V$, which gives a line-to-neutral drop, or three-phase $P$ and $Q$ with the line-to-line $V$, which gives a line-to-line drop; the two agree because the three-phase totals are three times the per-phase values and $V_{LL} = \sqrt3V_{LN}$, and per unit avoids the question. On high-$X/R$ transmission the reactive power dominates the voltage drop, which is why reactive compensation (capacitor banks, static VAR compensators, inverters) controls voltage. This is a first-order estimate: the current also creates a quadrature drop $\delta V = (XP - RQ)/V$, which adds roughly $\delta V^2/(2V)$ to the magnitude, a correction that matters on long or heavily loaded lines (Example 22-12.9).
 
 ### 3.4 Faults and protection
 
 A **fault** is an unintended path for current: a lightning flashover, a fallen conductor, a failed insulator. The most severe is a balanced **three-phase fault**. In per unit, with the prefault voltage $V_f$ (usually 1.0 pu) and the Thevenin impedance $Z_{th}$ of the network at the fault (generators represented by their subtransient reactances $X''_d$),
 
 $$
-I_f = \frac{V_f}{Z_{th}}, \qquad S_{f} = \frac{S_b}{Z_{th,pu}} \text{ (fault MVA)} .
+I_f = \frac{V_f}{Z_{th}}, \qquad S_{f} = \frac{V_fS_b}{Z_{th,pu}} \text{ (fault MVA, with } V_f \text{ in pu)} .
 $$
 
 Breakers must interrupt this current, and the fault MVA (or **short-circuit level**) measures how stiff the grid is at that point.
 
-**Unbalanced faults and symmetrical components.** Most faults involve one phase to ground. Fortescue showed that any unbalanced set of three phasors is the sum of three balanced sets: positive sequence ($a$-$b$-$c$), negative sequence ($a$-$c$-$b$) and zero sequence (all in phase), using the operator $a = 1\angle120°$. Each sequence sees its own network impedance ($Z_1$, $Z_2$, $Z_0$). For a **single-line-to-ground** fault on phase $a$, the boundary conditions ($I_b = I_c = 0$, $V_a = 0$) force the three sequence currents to be equal and the three sequence networks to be in series, so
+**Unbalanced faults and symmetrical components.** Most faults involve one phase to ground. Fortescue showed that any unbalanced set of three phasors is the sum of three balanced sets: positive sequence ($a$-$b$-$c$), negative sequence ($a$-$c$-$b$) and zero sequence (all in phase). With the operator $a = 1\angle120°$ (the conjugate of 07-11's $\alpha = 1\angle{-120°}$; textbooks use both),
 
 $$
-I_a = 3I_{a1} = \frac{3V_f}{Z_1 + Z_2 + Z_0} .
+\begin{bmatrix}V_0\\V_1\\V_2\end{bmatrix} = \frac13\begin{bmatrix}1 & 1 & 1\\1 & a & a^2\\1 & a^2 & a\end{bmatrix}\begin{bmatrix}V_a\\V_b\\V_c\end{bmatrix}, \qquad \begin{aligned} V_a &= V_0 + V_1 + V_2,\\ V_b &= V_0 + a^2V_1 + aV_2,\\ V_c &= V_0 + aV_1 + a^2V_2,\end{aligned}
 $$
 
-When $Z_0 < Z_1$, as with solidly grounded transformers near the fault, the ground fault exceeds the three-phase fault (Problem 22-12.8).
+and the same for currents. A balanced network does not mix sequences, so at the fault each sequence sees its own Thevenin circuit. Generators produce only positive sequence, so
+
+$$
+V_1 = V_f - Z_1I_1, \qquad V_2 = -Z_2I_2, \qquad V_0 = -Z_0I_0 .
+$$
+
+A neutral grounded through $Z_n$ adds $3Z_n$ to $Z_0$, because all three zero-sequence currents return through it.
+
+- **Single line to ground** on phase $a$: $I_b = I_c = 0$ and $V_a = 0$. The transform gives $I_0 = I_1 = I_2 = I_a/3$, and $V_a = V_0 + V_1 + V_2 = V_f - (Z_0 + Z_1 + Z_2)I_1 = 0$: the three sequence networks are in series, and
+
+$$
+I_a = 3I_1 = \frac{3V_f}{Z_1 + Z_2 + Z_0} .
+$$
+
+- **Line to line** (phases $b$ and $c$ shorted, no ground): $I_a = 0$, $I_b = -I_c$ and $V_b = V_c$. Then $I_0 = 0$, $I_2 = -I_1$ and $V_1 = V_2$, so $V_f - Z_1I_1 = Z_2I_1$ and $I_1 = V_f/(Z_1 + Z_2)$. The fault current is $I_b = (a^2 - a)I_1 = -j\sqrt3\,I_1$, so $\lvert I_b\rvert = \sqrt3V_f/\lvert Z_1 + Z_2\rvert$: with $Z_2 = Z_1$, 0.866 of the three-phase fault.
+- **Double line to ground** (phases $b$ and $c$ to ground): $I_a = 0$ and $V_b = V_c = 0$, which give $V_0 = V_1 = V_2$: the three networks are in parallel at the fault, $I_1 = V_f/(Z_1 + Z_2Z_0/(Z_2 + Z_0))$, and $I_2$ and $I_0$ divide $-I_1$ in inverse proportion to $Z_2$ and $Z_0$.
+
+When $Z_0 < Z_1$, as with solidly grounded transformers near the fault, the ground fault exceeds the three-phase fault (Problem 22-12.8). Problem 22-12.15 compares all four fault types at one bus.
 
 **Protection.** Relays measure currents and voltages and trip breakers: overcurrent relays with time–current curves coordinated so the breaker nearest the fault opens first, distance relays that measure impedance to the fault, and differential relays that compare currents into and out of a transformer or bus. Clearing times are a few cycles.
 
 ### 3.5 Frequency, inertia and droop
 
-**The swing equation.** The rotating machines store kinetic energy $E_k = HS$, where $S$ is their rated power and $H$ the **inertia constant** in seconds: the time the stored energy could supply rated power. Typical $H$ is about 4 s for gas and coal units and 5.9 s for nuclear, while wind and solar contribute none [5]. If generation falls short of load by $\Delta P$, the energy drains at $\Delta P$; with $E_k \propto f^2$,
+**The swing equation.** For one machine, Newton's law for the rotor gives the per-unit swing equation $(2H/\omega_s)\,d^2\delta/dt^2 = P_m - P_e$: a power imbalance accelerates the rotor angle. Transient stability (whether the angles settle after a fault) follows from it, and is left to a full power-systems course. Summed over all the machines of a system turning together, it becomes a statement about frequency. The rotating machines store kinetic energy $E_k = HS$, where $S$ is their rated power and $H$ the **inertia constant** in seconds: the time the stored energy could supply rated power. Typical $H$ is about 4 s for gas and coal units and 5.9 s for nuclear, while wind and solar contribute none [5]. If generation falls short of load by $\Delta P$, the energy drains at $\Delta P$; with $E_k \propto f^2$,
 
 $$
 \frac{dE_k}{dt} = \frac{2E_k}{f_0}\frac{df}{dt} = -\Delta P \quad\Rightarrow\quad \text{RoCoF} = \frac{df}{dt} = -\frac{\Delta P\,f_0}{2HS} .
@@ -236,7 +263,7 @@ with $D$ the load damping in MW/Hz. Governors respond in seconds, so the frequen
 
 **Units check.** MW × Hz/(s × MW) = Hz/s. ✓
 
-**Sanity check.** Halving inertia halves the time governors have to respond, which is why low-inertia grids need fast frequency response from batteries and inverters. ERCOT's critical value keeps the RoCoF below the 1 Hz/s that protection can manage [5].
+**Sanity check.** Halving inertia halves the time governors have to respond, which is why low-inertia grids need fast frequency response from batteries and inverters. ERCOT derives its critical inertia from the time its load resources need to respond: after a 2,805 MW loss, frequency must take at least 0.416 s to fall from 59.7 Hz to the 59.3 Hz first stage of under-frequency load shedding [7]. The 0.84 Hz/s of part (e) also sits below the 1 Hz/s that ENTSO-E calls the limit for protection [5].
 
 ### Example 22-12.8 · Sharing a load change by droop (tier A)
 
@@ -253,7 +280,7 @@ with $D$ the load damping in MW/Hz. Governors respond in seconds, so the frequen
 
 ### Example 22-12.9 · Connecting a datacenter (tier C)
 
-**Setup.** A 300 MW datacenter at 0.98 power factor connects through 20 km of 230 kV line with $x$ = 0.489 Ω/km and $X/R$ = 8.9 [16]. Find (a) the line current, (b) the reactive power, (c) the line reactance and (d) resistance, (e) the voltage drop and (f) its percentage. (g) If the grid's short-circuit level at the substation is 3000 MVA, what is the short-circuit ratio?
+**Setup.** A 300 MW datacenter at 0.98 power factor connects through 20 km of 230 kV line with $x$ = 0.489 Ω/km and $X/R$ = 8.9 [16]. Find (a) the line current, (b) the reactive power, (c) the line reactance and (d) resistance, (e) the voltage drop and (f) its percentage. (g) If the grid's short-circuit level at the substation is 3000 MVA, what is the short-circuit ratio? Find (h) the exact voltage drop by solving the phasors, and (i) its percentage.
 
 **Solution.**
 

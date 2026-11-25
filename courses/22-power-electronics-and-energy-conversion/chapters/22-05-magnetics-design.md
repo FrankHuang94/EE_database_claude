@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 22-05 · Magnetics Design
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The magnetics weeks of a senior power-electronics course: magnetic circuits with air gaps, core materials and loss (hysteresis, eddy currents, the Steinmetz equation), winding loss (skin and proximity effects, Dowell's analysis), and inductor and transformer design by the area-product and $K_g$ methods (Erickson & Maksimović, *Fundamentals of Power Electronics*, the basic magnetics, inductor design and transformer design chapters) |
 | **Prerequisites** | [22-04](22-04-isolated-converters.md) (transformer model, flyback energy storage, leakage), [22-02](22-02-buck-converter-steady-state.md) (inductor ripple and peak current), [13-03](../../13-electromagnetics/chapters/13-03-magnetostatics-and-inductance.md) (magnetic circuits, reluctance, the gapped core), [04-07](../../04-physics-for-ee/chapters/04-07-faraday-lenz-and-inductance.md) (Faraday's law, inductance, energy) |
 | **Estimated study hours** | 7 |
-| **Last verified** | 2026-11-24 |
+| **Last verified** | 2026-11-25 |
 
 **Learning objectives.** After this chapter you can:
 
@@ -133,7 +133,7 @@ $$
 p_{eddy} = \frac{\pi^2f^2B_{pk}^2t^2}{6\rho} .
 $$
 
-Units: s⁻² × T² × m² / (Ω·m) = (V/m)²/(Ω·m)... more simply, T/s × m = V/m, and (V/m)²/(Ω·m) = W/m³. ✓ The eddy loss rises as $f^2$ and $t^2$ and falls as $1/\rho$. This one formula explains the materials table. Silicon steel, a metal, works at 50–60 Hz in laminations a few tenths of a millimetre thick, and is hopeless at 100 kHz, where the $f^2$ factor is $4 \times 10^6$ times larger than at 50 Hz. Nanocrystalline alloys are metals too, but they are made as ribbon about 18 µm thick [3]. Ferrites are ceramics: 3C95's resistivity is about 5 Ω·m [1], 4.3 million times that of the nanocrystalline alloy, so ferrites can be solid blocks at hundreds of kilohertz. The derivation assumes the lamination is thinner than the material's skin depth; otherwise the flux crowds to the surface and the formula overestimates the loss.
+Units: (T/s)² × m²/(Ω·m) = (V/m)²/(Ω·m) = W/m³, since T/s × m = V/m. ✓ The eddy loss rises as $f^2$ and $t^2$ and falls as $1/\rho$. This one formula explains the materials table. Silicon steel, a metal, works at 50–60 Hz in laminations a few tenths of a millimetre thick, and is hopeless at 100 kHz, where the $f^2$ factor is $4 \times 10^6$ times larger than at 50 Hz. Nanocrystalline alloys are metals too, but they are made as ribbon about 18 µm thick [3]. Ferrites are ceramics: 3C95's resistivity is about 5 Ω·m [1], 4.3 million times that of the nanocrystalline alloy, so ferrites can be solid blocks at hundreds of kilohertz. The derivation assumes the lamination is thinner than the material's skin depth; otherwise the flux crowds to the surface and the formula overestimates the loss.
 
 | Material | $B_{sat}$ | Resistivity | Typical use |
 |---|---|---|---|
@@ -223,7 +223,7 @@ $$
 A_p = A_eW_A \ge \frac{LI_{pk}I_{rms}}{K_uJB_{max}} .
 $$
 
-Units: H × A² / (A/m² × T) = (V·s/A) A² m²/(V·s/m²)... = m⁴. ✓ The **area product** $A_p$ is a property of the core's shape, tabulated by vendors or computed from the data sheet. Pick the smallest core with $A_p$ above the requirement. Note that $LI_{pk}I_{rms}$ is close to twice the peak stored energy when the ripple is small: energy storage sets inductor size.
+Units: H × A²/((A/m²) × T) = (V·s/A)·A²/((A/m²)·(V·s/m²)) = m⁴. ✓ The **area product** $A_p$ is a property of the core's shape, tabulated by vendors or computed from the data sheet. Pick the smallest core with $A_p$ above the requirement. Note that $LI_{pk}I_{rms}$ is close to twice the peak stored energy when the ripple is small: energy storage sets inductor size.
 
 **The $K_g$ method.** Choosing $J$ is a proxy for the real limit, which is copper loss (and the temperature rise it causes). Erickson and Maksimović make the copper loss explicit [9]. With $N = LI_{pk}/(B_{max}A_e)$ and wire area $A_w = K_uW_A/N$,
 
@@ -279,7 +279,7 @@ a quarter of the winding terms and half the insulation term. The same halving of
 
 **Why higher frequency shrinks magnetics, up to a point.** For a transformer driven by a square wave of amplitude $V$ at frequency $f$, the volt-seconds of each half-cycle, $V/(2f)$, equal $NA_e\Delta B$, so $\Delta B = V/(2NA_ef)$ peak to peak. At fixed $\Delta B$ and $J$ the power a core can handle rises in proportion to $f\,A_p$: doubling the frequency halves the required area product. But core loss density rises as $f^{\alpha}\Delta B^{\beta}$ and $F_R$ rises with $\Delta$, so at high frequency the designer must lower $\Delta B$, giving back part of the gain. Heat compounds this. If every linear dimension scales by $s$, the surface that sheds heat scales as $s^2$, so halving every dimension quarters the loss the part may dissipate at the same temperature rise, while the converter's currents stay the same.
 
-**Planar and coupled magnetics.** Planar windings, made from PCB layers or stamped copper on low-profile cores, give a flat part with repeatable leakage and capacitance and easy interleaving, at the cost of copper fill and higher inter-winding capacitance. In a multiphase buck (22-10), a small inductor per phase slews fast but has large ripple, and a large one the reverse. Coupling the phases' inductors magnetically breaks the trade, because each phase's ripple depends on all phases' switching. The **trans-inductor voltage regulator (TLVR)** gives each phase's inductor a secondary winding, with all secondaries in one series loop, so a transient on any phase drives every phase at once (§9).
+**Planar and coupled magnetics.** Planar windings, made from PCB layers or stamped copper on low-profile cores, give a flat part with repeatable leakage and capacitance and easy interleaving, at the cost of copper fill and higher inter-winding capacitance. Coupling a multiphase buck's inductors (22-10) breaks the trade between fast slew and small ripple; the **trans-inductor voltage regulator (TLVR)**, with every phase's secondary in one series loop, is the current example (§9).
 
 ## 4. Worked examples
 
@@ -300,7 +300,7 @@ The examples use one real core throughout: TDK's ETD 34/17/11 set in N87 ferrite
 
 **Units check.** m/(H/m × m²) = 1/H = A/Wb; and 1/(A/Wb) = Wb/A = H. ✓
 
-**Sanity check.** The gap dominates as designed. The ideal model is 11% low because fringing makes the gap look wider; the first-order correction recovers most of it. Dixon notes the correction is reliable when it is below about 20% [12]; here it is 9%. A design should use the vendor's measured $A_L$.
+**Sanity check.** The gap dominates as designed. The ideal model is 11% low because fringing makes the gap look wider; the first-order correction recovers most of it. Dixon notes the correction is reliable when it is below about 20% [12]; here it enlarges the gap area by **9** % (k). A design should use the vendor's measured $A_L$.
 
 ### Example 22-05.2 · Saturation current and stored energy (tier B)
 
@@ -326,7 +326,7 @@ The examples use one real core throughout: TDK's ETD 34/17/11 set in N87 ferrite
 - (a) $A_L = L/N^2 = 223\ \mu\text{H}/1024$ = **218** nH.
 - (b) $B_{pk} = LI_{pk}/(NA_e) = 223\ \mu\text{H} \times 2.52/(32 \times 97.1\ \text{mm}^2)$ = **0.181** T, under half the hot saturation value.
 - (c) $s = (217.8/153)^{-1/0.713}$ = **0.61** mm; (d) $g = \mu_0N^2A_e/L - \ell_e/\mu_e$ = 0.5603 − 0.0469 = **0.513** mm. Fringing lets the real gap be about a fifth longer for the same $A_L$.
-- (e) $\tfrac12 \times 223\ \mu\text{H} \times 2.52^2$ = **0.708** mJ.
+- (e) $\tfrac12 \times 223\ \mu\text{H} \times 2.52^2$ = **0.708** mJ (Example 22-04.2's 0.707 mJ carries the unrounded 2.517 A).
 - (f) The primary current is a ramp from 0 to $I_{pk}$ for $DT_s$, so $I_{rms} = I_{pk}\sqrt{D/3} = 2.52\sqrt{0.561/3}$ = **1.09** A.
 - (g) $nI_{pk} = 6.4 \times 2.52$ = **16.1** A, falling to zero over $(1 - D)T_s$; (h) $16.13\sqrt{0.439/3}$ = **6.17** A.
 - (i) $(32 \times 1.090 + 5 \times 6.170)/4.2$ = **15.6** mm²; (j) $15.65/122$ = **0.128**.
@@ -342,7 +342,7 @@ The examples use one real core throughout: TDK's ETD 34/17/11 set in N87 ferrite
 **Solution.**
 
 - (a) $4.00\ \text{W}/7630\ \text{mm}^3$ = **524** kW/m³.
-- (b) $\int_0^{2\pi}|\cos\theta|^{1.635}d\theta$ = 3.389, so $k_i/k = 1/((2\pi)^{0.635} \times 3.389 \times 2^{0.618})$ = **0.0598**.
+- (b) $\int_0^{2\pi}|\cos\theta|^{1.635}d\theta$ = **3.389** (h), so $k_i/k = 1/((2\pi)^{0.635} \times 3.389 \times 2^{0.618})$ = **0.0598**.
 - (c) $0.561^{-0.635} + 0.439^{-0.635}$ = **3.13**.
 - (d) With the anchor $kf^{\alpha}(0.2)^{\beta}$ at the same frequency, the ratio is $(k_i/k)(\Delta B/0.2)^{\beta}[\,\cdot\,] = 0.05985 \times 0.7972 \times 3.130$ = **0.149**.
 - (e) $0.149 \times 4.00$ = **0.60** W.
@@ -360,13 +360,13 @@ The examples use one real core throughout: TDK's ETD 34/17/11 set in N87 ferrite
 **Solution.**
 
 - (a) $p = \pi^2f^2B_{pk}^2t^2/(6\rho) = \pi^2 \times 10^{10} \times 0.09 \times (18\ \mu\text{m})^2/(6 \times 1.15\ \mu\Omega\text{m})$ = **417** kW/m³.
-- (b) The total is at most $80 \times 7350$ = **588** kW/m³, so the classical eddy loss is **71** % of it.
-- (c) The loss scales as $t^2$: $(350/18)^2$ = **378** times more, **158** MW/m³.
+- (b) The total is at most $80 \times 7350$ = **588** kW/m³ (f), so the classical eddy loss is **71** % of it.
+- (c) The loss scales as $t^2$: $(350/18)^2$ = **378** (g) times more, **158** MW/m³.
 - (d) $\pi^2 \times 10^{10} \times 0.04 \times (11.1\ \text{mm})^2/(6 \times 5\ \Omega\text{m})$ = **16.2** kW/m³; (e) **5.6** % of the total.
 
 **Units check.** (T/s)² m²/(Ω·m) = (V/m)²/(Ω·m) = W/m³. ✓
 
-**Sanity check.** In the metal, eddy currents are most of the loss even in 18 µm ribbon; a 0.35 mm sheet would dissipate 158 W/cm³ and melt. In the ferrite, eddy loss is a small part of the total even in a solid 11 mm pole, so its loss is mostly hysteresis and residual loss. (A round pole loses less than a slab; Problem 22-05.11.)
+**Sanity check.** In the metal, eddy currents are most of the loss even in 18 µm ribbon. For a 0.35 mm sheet the classical formula gives 158 W/cm³; the sheet is then several skin depths thick at 100 kHz (for any relative permeability above a few hundred), so the flux crowds to the surfaces and the real loss is lower than this estimate, but the point stands: thick metal is hopeless at 100 kHz. In the ferrite, eddy loss is a small part of the total even in a solid 11 mm pole, so its loss is mostly hysteresis and residual loss. (A round pole loses less than a slab; Problem 22-05.11.)
 
 ### Example 22-05.6 · A foil winding's AC resistance (tier B)
 
@@ -378,7 +378,7 @@ The examples use one real core throughout: TDK's ETD 34/17/11 set in N87 ferrite
 - (b) $R_{dc} = \rho N\,\text{MLT}/(hb) = 22.66\ \text{n}\Omega\text{m} \times 4 \times 60.5\ \text{mm}/(0.1 \times 20\ \text{mm}^2)$ = **2.74** mΩ; (c) $\Delta = 0.1/0.2396$ = **0.417**; (d) Dowell with $M$ = 4: $F_R$ = **1.053**; (e) $20^2 \times 2.742\ \text{m}\Omega \times 1.053$ = **1.16** W.
 - (f) **0.914** mΩ; (g) **1.25**; (h) $F_R$ = **4.93**; (i) $400 \times 0.914\ \text{m}\Omega \times 4.93$ = **1.80** W.
 - (j) $M$ = 2: $F_R$ = **1.95**; (k) **0.711** W.
-- (l) Minimizing $R_{dc}(h)F_R(h)$ numerically gives $h$ = **0.159** mm ($\Delta$ = 0.66), with (m) **0.923** W.
+- (l) Minimizing $R_{dc}(h)F_R(h)$ numerically gives $h$ = **0.159** mm ($\Delta$ = **0.66**, n), with (m) **0.923** W.
 
 **Units check.** Ω·m × m/m² = Ω. ✓
 
@@ -386,7 +386,7 @@ The examples use one real core throughout: TDK's ETD 34/17/11 set in N87 ferrite
 
 ### Example 22-05.7 · Designing a buck inductor by area product (tier C)
 
-**Setup.** A 48 V to 12 V, 20 A buck switches at 250 kHz with a 30% ripple ratio. Find (a) $L$, (b) $I_{pk}$ and (c) $I_{rms}$. With $K_u$ = 0.4, $J$ = 4.2 A/mm² and $B_{max}$ = 0.3 T, find (d) the required area product and (e) the ETD34's area product. Find (f) the turns before rounding, then with 5 turns (g) $B_{pk}$, (h) the ideal-model gap and (i) the gap from TDK's $A_L$ fit. Filling 40% of the window, find (j) the wire area per turn, (k) the winding resistance at 100 °C and (l) the DC copper loss. (m) Find the ETD34's $K_g$ and (n) the $K_g$ needed for 0.5 W of copper loss. (o) Find the flux ripple and (p) an upper bound on the core loss by the method of Example 22-05.4 (scaling $f^{\alpha}$ from 100 to 250 kHz). (q) Bound the ripple's extra copper loss if its $F_R$ were as high as 10.
+**Setup.** A 48 V to 12 V, 20 A buck switches at 250 kHz with a 30% ripple ratio. Find (a) $L$, (b) $I_{pk}$ and (c) $I_{rms}$. With $K_u$ = 0.4, $J$ = 4.2 A/mm² and $B_{max}$ = 0.3 T, find (d) the required area product and (e) the ETD34's area product. Find (f) the turns before rounding, then with 5 turns (g) $B_{pk}$, (h) the ideal-model gap and (i) the gap from TDK's $A_L$ fit. Filling 40% of the window, find (j) the wire area per turn, (k) the winding resistance at 100 °C and (l) the DC copper loss. (m) Find the ETD34's $K_g$ and (n) the $K_g$ needed for 0.5 W of copper loss. (o) Find the flux ripple and (p) an estimate of the core loss, excluding the DC-bias penalty, by the method of Example 22-05.4 (scaling $f^{\alpha}$ from 100 to 250 kHz). (q) Bound the ripple's extra copper loss if its $F_R$ were as high as 10.
 
 **Solution.**
 
@@ -396,8 +396,8 @@ The examples use one real core throughout: TDK's ETD 34/17/11 set in N87 ferrite
 - (h) $g = \mu_0 \times 25 \times 97.1\ \text{mm}^2/6\ \mu\text{H} - 0.047$ mm = **0.461** mm; (i) $A_L$ = 240 nH, so $s = (240/153)^{-1/0.713}$ = **0.53** mm.
 - (j) $0.4 \times 122/5$ = **9.76** mm²; (k) $22.66\ \text{n}\Omega\text{m} \times 5 \times 60.5\ \text{mm}/9.76\ \text{mm}^2$ = **0.702** mΩ; (l) $20.07^2 \times 0.702\ \text{m}\Omega$ = **0.283** W.
 - (m) $K_g = A_e^2W_A/\text{MLT}$ = **1.90** × 10⁻¹¹ m⁵; (n) $\rho L^2I_{pk}^2I_{rms}^2/(B_{max}^2P_{cu}K_u)$ = **9.66** × 10⁻¹² m⁵, half the core's.
-- (o) $\Delta B = L\Delta i/(NA_e)$ = **0.0742** T; (p) ratio $= 0.05985 \times (0.0742/0.2)^{2.253} \times 2.5^{1.635} \times (0.25^{-0.635} + 0.75^{-0.635}) = 0.1034$, so at most **0.41** W.
-- (q) The ripple's RMS is $6/\sqrt{12}$ = 1.73 A; $1.732^2 \times 10 \times 0.702\ \text{m}\Omega$ = **0.021** W.
+- (o) $\Delta B = L\Delta i/(NA_e)$ = **0.0742** T; (p) ratio $= 0.05985 \times (0.0742/0.2)^{2.253} \times 2.5^{1.635} \times (0.25^{-0.635} + 0.75^{-0.635}) = 0.1034$, so about **0.41** W before any DC-bias penalty: the ripple rides on a large DC flux, which raises the real loss (§3.4).
+- (q) The ripple's RMS is $6/\sqrt{12}$ = **1.73** A (r); $1.732^2 \times 10 \times 0.702\ \text{m}\Omega$ = **0.021** W.
 
 **Units check.** With H = Wb/A and T = Wb/m², H·A²/((A/m²)·T) = (Wb·A)/(A·Wb/m⁴) = m⁴; Ω·m·m/m² = Ω. ✓
 
@@ -412,7 +412,7 @@ The examples use one real core throughout: TDK's ETD 34/17/11 set in N87 ferrite
 - (a) $P_{fe} = a\,\Delta B^{\beta}$ with $a = 1.2/0.2^{2.253}$, and $P_{cu} = b/\Delta B^2$ with $b = 0.3 \times 0.2^2$. Then $\Delta B_{opt} = (2b/(\beta a))^{1/(\beta + 2)} = 0.2 \times (0.6/(2.253 \times 1.2))^{1/4.253}$ = **0.140** T.
 - (b) $1.2 \times 0.7019^{2.253}$ = **0.541** W; (c) $0.3/0.7019^2$ = **0.609** W; (d) **1.149** W, against 1.5 W at the start. The ratio is 0.888 = $2/\beta$. ✓
 - (e) $\Delta B \propto 1/N$: $6/0.7019$ = **8.55** turns.
-- (f) 9 turns: $\Delta B$ = 0.1333 T, $P_{fe}$ = 0.481 W, $P_{cu} = 0.3 \times (9/6)^2$ = 0.675 W, total **1.156** W, within 1% of the optimum.
+- (f) 9 turns: $\Delta B$ = **0.1333** T (j), $P_{fe}$ = **0.481** W (k), $P_{cu} = 0.3 \times (9/6)^2$ = **0.675** W (l), total **1.156** W, within 1% of the optimum.
 - (g) $L_{lk} = \mu_0N^2\,\text{MLT}\,(h_p/3 + d + h_s/3)/b_w = \mu_0 \times 81 \times 60.5\ \text{mm} \times 0.5\ \text{mm}/20.9\ \text{mm}$ = **0.147** µH.
 - (h) $(h_p/12 + d/2 + h_s/12) = 0.15$ mm, so **0.0442** µH, 30% of (g).
 - (i) $2600\ \text{nH} \times 81$ = **210.6** µH, so the leakage is 0.07% of $L_m$.
@@ -435,6 +435,7 @@ The examples use one real core throughout: TDK's ETD 34/17/11 set in N87 ferrite
 | Ex 22-05.1h | corrected-model error | −3.7 | % |
 | Ex 22-05.1i | inductance with 20 turns | 100.4 | µH |
 | Ex 22-05.1j | effective permeability | 162 | |
+| Ex 22-05.1k | fringing enlargement of the gap area | 9 | % |
 | Ex 22-05.2a | flux density per ampere | 0.0517 | T/A |
 | Ex 22-05.2b | current at 390 mT | 7.54 | A |
 | Ex 22-05.2c | current at 300 mT | 5.80 | A |
@@ -481,6 +482,7 @@ The examples use one real core throughout: TDK's ETD 34/17/11 set in N87 ferrite
 | Ex 22-05.6k | loss, interleaved | 0.711 | W |
 | Ex 22-05.6l | optimum foil thickness | 0.159 | mm |
 | Ex 22-05.6m | loss at the optimum | 0.923 | W |
+| Ex 22-05.6n | Δ at the optimum | 0.66 | |
 | Ex 22-05.7a | inductance | 6.0 | µH |
 | Ex 22-05.7b | peak current | 23 | A |
 | Ex 22-05.7c | RMS current | 20.07 | A |
@@ -496,8 +498,9 @@ The examples use one real core throughout: TDK's ETD 34/17/11 set in N87 ferrite
 | Ex 22-05.7m | ETD34 K_g | 1.90 | ×10⁻¹¹ m⁵ |
 | Ex 22-05.7n | required K_g | 9.66 | ×10⁻¹² m⁵ |
 | Ex 22-05.7o | flux ripple | 0.0742 | T |
-| Ex 22-05.7p | core-loss bound | 0.41 | W |
+| Ex 22-05.7p | core-loss estimate (no DC-bias penalty) | 0.41 | W |
 | Ex 22-05.7q | ripple AC-loss bound | 0.021 | W |
+| Ex 22-05.7r | ripple RMS current | 1.73 | A |
 | Ex 22-05.8a | optimum flux swing | 0.140 | T |
 | Ex 22-05.8b | core loss at the optimum | 0.541 | W |
 | Ex 22-05.8c | copper loss at the optimum | 0.609 | W |
@@ -507,6 +510,9 @@ The examples use one real core throughout: TDK's ETD 34/17/11 set in N87 ferrite
 | Ex 22-05.8g | leakage inductance | 0.147 | µH |
 | Ex 22-05.8h | interleaved leakage | 0.0442 | µH |
 | Ex 22-05.8i | magnetizing inductance | 210.6 | µH |
+| Ex 22-05.8j | flux swing with 9 turns | 0.1333 | T |
+| Ex 22-05.8k | core loss with 9 turns | 0.481 | W |
+| Ex 22-05.8l | copper loss with 9 turns | 0.675 | W |
 | Txt 22-05.a | energy density at 0.3 T | 35.8 | kJ/m³ |
 | Txt 22-05.b | gap volume for 0.7 mJ at 0.3 T | 20 | mm³ |
 | Txt 22-05.c | gap length for 100 mm² | 0.2 | mm |
@@ -536,12 +542,12 @@ The examples use one real core throughout: TDK's ETD 34/17/11 set in N87 ferrite
 
 The lab is [labs/22-05-lab/](../labs/22-05-lab/README.md). `magnetics.py` collects this chapter's formulas. Two ngspice netlists build magnetic parts from their physics:
 
-- `saturation.cir` models Example 22-05.3's gapped flyback core with a saturating B–H curve ($B = B_{sat}\tanh(\mu_r\mu_0H/B_{sat})$ in the ferrite, linear in the gap). It integrates the winding voltage to get the flux linkage and computes the current from the magnetic circuit. A 100 V step then shows the current ramp at $V/L$ and its runaway as the core saturates.
+- `saturation.cir` models Example 22-05.3's gapped flyback core with a saturating B–H curve ($B = B_{sat}\tanh(\mu_r\mu_0H/B_{sat}) + \mu_0H$ in the ferrite, linear in the gap). It integrates the winding voltage to get the flux linkage and computes the current from the magnetic circuit. A 100 V step then shows the current ramp at $V/L$ and its runaway as the core saturates.
 - `leakage.cir` runs a short-circuit test on Example 22-05.8's transformer, without and with interleaving, and reads the leakage inductance from the input impedance.
 
 **Predict, then run:**
 
-1. *Predict* the current at the flyback's on-time (5.61 µs at 100 V) and the time at which the flux density reaches N87's 390 mT. Run `ngspice -b saturation.cir` and compare the currents at 5.61, 10 and 11.5 µs. How much warning does the gapped core give before saturation?
+1. *Predict* the current at the flyback's on-time (5.61 µs at 100 V) and the time at which the flux density reaches N87's 390 mT. Run `ngspice -b saturation.cir` and compare the currents at 5.61, 11.5 and 12.5 µs with the saturation time of about 12.1 µs. How much warning does the gapped core give before saturation?
 2. *Predict* the two leakage inductances of Example 22-05.8, then run `ngspice -b leakage.cir`.
 3. In the notebook, *predict* the shape of Dowell's $F_R$ against $\Delta$ for 1 to 5 layers, and the foil thickness that minimizes Example 22-05.6's loss. Then plot core, copper and total loss against flux swing and find the optimum.
 4. Evaluate Magnetics' powder-core roll-off fit and see how a 60µ Kool Mµ inductor's inductance falls with current (Part 4).
@@ -583,7 +589,7 @@ The lab is [labs/22-05-lab/](../labs/22-05-lab/README.md). `magnetics.py` collec
 - **Computing $R_{dc}$ at 20 °C.** At 100 °C, copper's resistance is 31% higher, so the copper loss at a given current is 31% higher.
 - **Stacking many layers of thick wire.** Proximity loss grows as $M^2$; a winding that looks fine at DC can have an $F_R$ well above 3 at the switching frequency (five layers at $\Delta$ = 1 give 3.65, §3.5) and more at its harmonics. Check $\Delta$ and $M$, and interleave or use Litz.
 - **Forgetting fringing.** A large single gap can raise $L$ noticeably above $\mu_0N^2A_e/g$ and heat the turns next to it. Use the vendor's $A_L$ for the gap you buy, and keep windings away from the gap.
-- **Gapping a forward or bridge transformer.** A gap lowers $L_m$ and raises the magnetizing current the reset circuit and switches must carry (22-04). Only flybacks (coupled inductors) are gapped on purpose.
+- **Gapping a forward or bridge transformer.** A gap lowers $L_m$ and raises the magnetizing current the reset circuit and switches must carry (22-04). Forward and hard-switched bridge transformers are normally ungapped; flybacks (coupled inductors) and LLC transformers, whose magnetizing inductance is part of the resonant tank and supplies the ZVS current (22-06), are gapped on purpose.
 
 ## 9. Practitioner lens
 
@@ -593,11 +599,11 @@ The lab is [labs/22-05-lab/](../labs/22-05-lab/README.md). `magnetics.py` collec
 
 **Powder cores are specified by roll-off curves** [Established]. Magnetics fits the fraction of initial permeability left at DC bias $H$ (in oersteds) as $1/(a + bH^c)$, "valid only for range shown on graph" [2]. For 60µ Kool Mµ ($a$ = 0.01, $b$ = 2.142 × 10⁻⁶, $c$ = 1.855) it gives **76.7** % at 50 Oe and **47.7** % at 100 Oe. At full load, a powder inductor's $L$ can be half its zero-bias value, and the ripple grows to match.
 
-**Windings: rules of thumb against analysis.** Dixon's TI notes call an $R_{AC}/R_{DC}$ of 1.5 "generally considered optimum" for transformers [12] [Established practice]. New England Wire's Litz table recommends 38 AWG strands for 50–100 kHz and 40 AWG for 100–200 kHz [13]. Sullivan and Zhang warn that such tables "can backfire, in some cases leading to higher resistance than a simple solid-wire or foil winding" [14] [Contested]. Example 22-05.6 shows why: the best conductor depends on the layer count and field, not on frequency alone.
+**Windings: rules of thumb against analysis.** Dixon's TI notes call an $R_{AC}/R_{DC}$ of 1.5 "generally considered optimum" for transformers [12] [Established practice]. New England Wire's Litz table recommends 38 AWG strands for 50–100 kHz and 40 AWG for 100–200 kHz [13] [Industry estimate]. Sullivan and Zhang warn that such tables "can backfire, in some cases leading to higher resistance than a simple solid-wire or foil winding" [14] [Contested]. Example 22-05.6 shows why: the best conductor depends on the layer count and field, not on frequency alone.
 
-**Coupled inductors and the TLVR.** Google disclosed the TLVR in 2019: each phase's output inductor is "the secondary winding of a transformer whose primary windings are all connected in a series loop" [17]. TI reports "a >40% capacitor reduction for the design example reviewed" [15] [Industry estimate]. Infineon notes that the polymer output capacitors "can be removed" but that "the output ripple current becomes larger" [16]. A 2025 APEC paper adds poor light-load efficiency "due to the interphase coupling", and a reconfigurable fix worth 2.9% on average at light load in a 12 V to 1.8 V, 80 A, four-phase design [18] [Established, one paper].
+**Coupled inductors and the TLVR** [Established for the disclosures; Industry estimate for vendor results]. Google disclosed the TLVR in 2019: each phase's output inductor is "the secondary winding of a transformer whose primary windings are all connected in a series loop" [17]. TI reports "a >40% capacitor reduction for the design example reviewed" [15] [Industry estimate]. Infineon notes that the polymer output capacitors "can be removed" but that "the output ripple current becomes larger" [16]. A 2025 APEC paper adds poor light-load efficiency "due to the interphase coupling", and a reconfigurable fix worth 2.9% on average at light load in a 12 V to 1.8 V, 80 A, four-phase design [18] [Established, one paper].
 
-**Planar magnetics and data-driven models.** A planar maker claims leakage of "~0.2% of primary inductance" and "efficiency (typically 98–99%)" [19] [Industry estimate, vendor marketing]. Example 22-05.8's wound, interleaved design reached 0.02% on paper, so the real planar advantage is repeatability, not leakage. Princeton's MagNet database now holds "over 2,000,000 data points … for 15 different materials", and its 2023 challenge drew "39 teams from 17 countries" to fit neural-network loss models [6] [Established]. Waveform-, bias- and temperature-aware loss estimates will increasingly come from such models.
+**Planar magnetics and data-driven models.** A planar maker claims leakage of "~0.2% of primary inductance" and "efficiency (typically 98–99%)" [19] [Industry estimate, vendor marketing]. Example 22-05.8's wound, interleaved design reached 0.02% on paper, but the flyback of Problem 22-05.14, with reinforced insulation, sits at 0.6–1.8%: a leakage percentage means little without its insulation and $L_m$, and the planar's firmer advantage is repeatability. Princeton's MagNet database now holds "over 2,000,000 data points … for 15 different materials", and its 2023 challenge drew "39 teams from 17 countries" to fit neural-network loss models [6] [Established]. Waveform-, bias- and temperature-aware loss estimates will increasingly come from such models.
 
 **Marketing vs Reality.**
 

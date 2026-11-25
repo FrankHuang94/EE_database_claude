@@ -186,6 +186,20 @@ v.check("Ex 22-07.3o", fcx / 1e3)
 v.check("Ex 22-07.3k", 180 + math.degrees(cmath.phase(loop(fcx))))
 
 
+def plant_esr(f, esr=2e-3, l_=0.6e-6, c_=62.5e-6, r_=0.12, vg=12.0):
+    """Buck control-to-output with the capacitor's ESR, from the impedance divider."""
+    s = 2j * math.pi * f
+    zc = 1 / (s * c_) + esr
+    zp = zc * r_ / (zc + r_)
+    return vg * zp / (s * l_ + zp)
+
+
+loop_esr = lambda f: network(f, 10e3, r2s, c1s, c2s, r3s, c3s) * plant_esr(f)  # noqa: E731
+fcx_e = optimize.brentq(lambda f: abs(loop_esr(f)) - 1, 10e3, 200e3, xtol=1e-6)
+v.check("Ex 22-07.3p", fcx_e / 1e3)
+v.check("Ex 22-07.3q", 180 + math.degrees(cmath.phase(loop_esr(fcx_e))))
+
+
 # ---------------------------------------------------------------- Example 22-07.4 (waveform-geometry simulation)
 def next_start(i0, vc, m1, m2, ma, T):
     """One cycle of peak current mode with an artificial ramp: turn off when i + ma t = vc (in amperes)."""

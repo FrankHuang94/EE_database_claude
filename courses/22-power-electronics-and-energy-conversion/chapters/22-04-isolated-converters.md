@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 22-04 · Isolated Converters: Flyback and Forward
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The transformer-isolated converter weeks of a senior power-electronics course: the transformer model for converters (magnetizing and leakage inductance), core reset, the flyback in CCM and DCM, leakage energy and the RCD clamp, the forward converter with tertiary reset, bridge and push-pull converters, and insulation requirements (Erickson & Maksimović, *Fundamentals of Power Electronics*, ch. 6; Mohan, Undeland & Robbins, the switch-mode dc power supply chapter) |
 | **Prerequisites** | [22-03](22-03-boost-buck-boost-topologies.md) (buck-boost, topology stress), [22-02](22-02-buck-converter-steady-state.md) (volt-second balance, DCM), [07-09](../../07-circuit-analysis-2-transient-and-ac/chapters/07-09-mutual-inductance-and-transformers.md) (transformers and mutual inductance) |
 | **Estimated study hours** | 6 |
-| **Last verified** | 2026-11-24 |
+| **Last verified** | 2026-11-25 |
 
 **Learning objectives.** After this chapter you can:
 
@@ -19,7 +19,7 @@
 
 ## 1. Big picture
 
-Every phone charger, laptop adapter and server power supply contains a transformer. It is there for two reasons. Safety: the user must never touch anything connected to the mains, so the output must be galvanically isolated, with no conducting path back to the line, by an insulation barrier rated for thousands of volts. Ratio: converting 400 V to 12 V or 1 V with a single switch duty cycle would need impossible duty cycles (22-02's minimum on-time), while a turns ratio does most of the work and lets the switch run near the middle of its range. The **flyback** is a buck-boost whose inductor has a second winding; it dominates below about 100–150 W because it needs only one magnetic part. The **forward** converter is a buck behind a transformer; it and its bridge relatives (half bridge, full bridge, push-pull) take over at higher power. This chapter builds both from the transformer model, shows where their energy goes astray (leakage inductance, magnetizing current), and sets out the insulation rules that make a converter safe to touch.
+Every phone charger, laptop adapter and server power supply contains a transformer. It is there for two reasons. Safety: the user must never touch anything connected to the mains, so the output must be galvanically isolated, with no conducting path back to the line, by an insulation barrier rated for thousands of volts. Ratio: converting 400 V to 12 V or 1 V with a single switch would need duty cycles of a few per cent or less, straining the minimum on-time (22-02) and forcing a switch rated for 400 V to carry the full output current, while a turns ratio does most of the work and lets the switch run near the middle of its range. The **flyback** is a buck-boost whose inductor has a second winding; it dominates below about 100–150 W because it needs only one magnetic part. The **forward** converter is a buck behind a transformer; it and its bridge relatives (half bridge, full bridge, push-pull) take over at higher power. This chapter builds both from the transformer model, shows where their energy goes astray (leakage inductance, magnetizing current), and sets out the insulation rules that make a converter safe to touch.
 
 - **USB-C chargers and adapters:** quasi-resonant flybacks, increasingly with GaN switches, from 20 W to well over 100 W (22-01, 22-06).
 - **Server and telecom supplies:** forward and full-bridge converters, and resonant LLC converters (22-06, 22-10), behind a PFC boost.
@@ -85,7 +85,13 @@ $$
 P = \tfrac12L_mI_{pk}^2f_s ,
 $$
 
-regardless of output voltage. With $I_{pk} = V_{in}DT_s/L_m$ this is $P = (V_{in}D)^2T_s/(2L_m)$: in DCM the flyback acts as a power source set by its duty cycle, a useful property for control. A **quasi-resonant (QR)** flyback goes further. After the magnetizing current reaches zero, the drain voltage rings down through the switch's output capacitance and the magnetizing inductance, and the controller turns the switch on at the ring's valley. That cuts the capacitive turn-on loss (22-06) at the cost of a frequency that varies with line and load. A TI 65 W GaN reference design is a QR flyback with a "32:5" turns ratio and switching frequencies from "76 kHz" to "163 kHz" [1].
+regardless of output voltage. With $I_{pk} = V_{in}DT_s/L_m$ this is $P = (V_{in}D)^2T_s/(2L_m)$: in DCM the flyback acts as a power source set by its duty cycle, a useful property for control. Equating $P$ to $V^2/R$ gives the DCM conversion ratio,
+
+$$
+M = \frac{V}{V_{in}} = D\sqrt{\frac{RT_s}{2L_m}},
+$$
+
+independent of the turns ratio. Referred to the primary, the flyback is a buck-boost feeding $n^2R$, so by 22-03's buck-boost boundary it is discontinuous when $2L_m/(n^2RT_s) < D'^2$. Units: $\sqrt{\Omega \cdot \text{s}/\text{H}}$ is dimensionless. ✓ A **quasi-resonant (QR)** flyback goes further. After the magnetizing current reaches zero, the drain voltage rings down through the switch's output capacitance and the magnetizing inductance, and the controller turns the switch on at the ring's valley. That cuts the capacitive turn-on loss (22-06) at the cost of a frequency that varies with line and load. A TI 65 W GaN reference design is a QR flyback with a "32:5" turns ratio and switching frequencies from "76 kHz" to "163 kHz" [1].
 
 ### 3.3 Leakage inductance and the clamp
 
@@ -235,7 +241,7 @@ With a centre-tapped rectifier and output LC filter, each of these is a buck-der
 
 ### Example 22-04.6 · Clearance, creepage and Y-capacitance (tier C)
 
-**Setup.** (a) A reinforced barrier needs 3.8 mm of clearance at sea level (IEC 62368-1's value for 4 kV); the altitude factor at 5000 m is 1.48 [4]. What clearance is needed at 5000 m? (b, c, d) Reinforced creepage at 400 V working voltage, pollution degree 2, is twice the basic 2.0, 2.8 and 4.0 mm for material groups I, II and III [4]: what are the reinforced values? (e) What line-frequency current does a 2.2 nF Y-capacitor pass at 264 V and 60 Hz, and (f) what total Y-capacitance keeps the touch current within 0.5 mA?
+**Setup.** (a) On 230 V mains (overvoltage category II, a 2.5 kV transient), reinforced insulation uses the clearance for the next impulse step, 4.0 kV: 3.8 mm in IEC 62368-1's table for altitudes up to 2000 m [4]. With an altitude factor of 1.48 at 5000 m [4], what clearance is needed? (b, c, d) Reinforced creepage at 400 V working voltage, pollution degree 2, is twice the basic 2.0, 2.8 and 4.0 mm for material groups I, II and III [4]: what are the reinforced values? (e) What line-frequency current does a 2.2 nF Y-capacitor pass at 264 V and 60 Hz, and (f) what total Y-capacitance keeps the touch current within 0.5 mA?
 
 **Solution.**
 
@@ -250,7 +256,7 @@ With a centre-tapped rectifier and output LC filter, each of these is a buck-der
 
 ### Example 22-04.7 · Why bridges win at high power (tier C)
 
-**Setup.** Deliver 1 kW at 50 V from a 400 V bus. (a) A full bridge with $n$ = 6 needs what effective duty, (b) what does each switch block, and (c) what current (approximately $I/n$) does it carry? A DCM flyback at $D$ = 0.5 with a reflected voltage equal to the input needs (d) what switch voltage and (e) what peak current? (f, g) Compare $V \times I$ per switch.
+**Setup.** Deliver 1 kW at 50 V from a 400 V bus. (a) A full bridge with $n$ = 6 needs what effective duty, (b) what does each switch block, and (c) what current (approximately $I/n$) does it carry? A boundary-conduction flyback at $D$ = 0.5 with a reflected voltage equal to the input (so the reset takes exactly the off-time) needs (d) what switch voltage and (e) what peak current? (f, g) Compare $V \times I$ per switch.
 
 **Solution.**
 
@@ -261,7 +267,7 @@ With a centre-tapped rectifier and output LC filter, each of these is a buck-der
 
 **Units check.** V × A.
 
-**Sanity check.** Even with four switches, the full bridge's total of about 5.3 kV·A is less than the flyback's single 8 kV·A switch, and its transformer uses the core in both directions. Above a few hundred watts, the flyback's simplicity no longer pays for its stresses.
+**Sanity check.** Even with four switches, the full bridge's total of about **5.3** kV·A (h) is less than the flyback's single 8 kV·A switch, and its transformer uses the core in both directions. Above a few hundred watts, the flyback's simplicity no longer pays for its stresses.
 
 ### Answer key
 
@@ -304,6 +310,7 @@ With a centre-tapped rectifier and output LC filter, each of these is a buck-der
 | Ex 22-04.7e | flyback peak current | 10.0 | A |
 | Ex 22-04.7f | full-bridge V·A per switch | 1333 | V·A |
 | Ex 22-04.7g | flyback V·A | 8000 | V·A |
+| Ex 22-04.7h | full-bridge total V·A | 5.3 | kV·A |
 
 ## 5. Simulate it
 

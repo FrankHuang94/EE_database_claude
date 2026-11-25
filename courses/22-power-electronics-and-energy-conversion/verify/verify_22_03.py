@@ -151,6 +151,7 @@ for key_m, key_e, dd in (("d", "e", 0.8), ("f", "g", 0.9)):
     m = m_rl(dd, 0.1, 25.0)
     v.check(f"Ex 22-03.3{key_m}", m)
     v.check(f"Ex 22-03.3{key_e}", m * (1 - dd) * 100)
+v.check("Ex 22-03.3h", 100 - m_rl(0.9, 0.1, 25.0) * 0.1 * 100)
 
 # ---------------------------------------------------------------- Example 22-03.4
 print("Example 22-03.4")
@@ -249,5 +250,57 @@ v.check("Lab 22-03.b", vc_pss)
 sol = tp.sepic_dc(12.0, 0.5, 6.0, 0.05, 0.05)
 v.assert_true("averaged SEPIC model matches its switched steady state", abs(sol[0] - vo_pss) < 5e-3)
 v.assert_true("lab boost max gain equals the numerical maximum", abs(tp.boost_max_gain(0.1, 25)[0] + res.fun) < 1e-8)
+
+# ---------------------------------------------------------------- Problem 22-03.14 (buck-boost DCM)
+k14 = 2 * 10e-6 * 200e3 / 48
+v.check("22-03.14a", k14)
+
+
+def bb_dcm_iout(d, vin=12.0, vo=12.0, ind=10e-6, fs=200e3):
+    """Average diode current of one DCM buck-boost cycle with the output held at -vo."""
+    ipk = vin * d / fs / ind
+    t_off = ipk * ind / vo
+    v.assert_true("buck-boost cycle is discontinuous", d / fs + t_off < 1 / fs) if d > 0.28 and d < 0.3 else None
+    return 0.5 * ipk * t_off * fs
+
+
+v.check("22-03.14b", optimize.brentq(lambda d: bb_dcm_iout(d) - 12 / 48, 0.05, 0.6))
+
+# ---------------------------------------------------------------- Problem 22-03.15 (SEPIC waveforms, ideal parts)
+def sepic_wave(v_in, d, fs, l1, l2, c1, cout, r, n=4000):
+    t_s = 1 / fs
+    on = lambda t, y: [v_in / l1, y[2] / l2, -y[1] / c1, -y[3] / (r * cout)]  # noqa: E731
+    off = lambda t, y: [(v_in - y[3] - y[2]) / l1, -y[3] / l2, y[0] / c1, (y[0] + y[1] - y[3] / r) / cout]  # noqa: E731
+
+    def period(x):
+        a1 = integrate.solve_ivp(on, (0, d * t_s), x, **TOL)
+        b1 = integrate.solve_ivp(off, (0, (1 - d) * t_s), a1.y[:, -1], **TOL)
+        return b1.y[:, -1]
+
+    x0 = optimize.fsolve(lambda x: period(x) - x, [2.7, 2.0, v_in, 12.0], xtol=1e-13)
+    t1 = np.linspace(0, d * t_s, n)
+    t2 = np.linspace(0, (1 - d) * t_s, n)
+    a1 = integrate.solve_ivp(on, (0, d * t_s), x0, t_eval=t1, **TOL)
+    b1 = integrate.solve_ivp(off, (0, (1 - d) * t_s), a1.y[:, -1], t_eval=t2, **TOL)
+    return a1, b1, np.concatenate([t1, d * t_s + t2])
+
+
+d15 = optimize.brentq(lambda d: d / (1 - d) * 9 - 12, 0.1, 0.9)
+v.check("22-03.15a", d15)
+on15, off15, tt15 = sepic_wave(9.0, d15, 300e3, 20e-6, 20e-6, 10e-6, 10e-3, 6.0)
+il1 = np.concatenate([on15.y[0], off15.y[0]])
+il2 = np.concatenate([on15.y[1], off15.y[1]])
+vc1 = np.concatenate([on15.y[2], off15.y[2]])
+vo15 = np.concatenate([on15.y[3], off15.y[3]])
+t_s15 = 1 / 300e3
+v.assert_true("22-03.15: output settles at 12 V", abs(np.trapezoid(vo15, tt15) / t_s15 - 12) < 0.02)
+v.check("22-03.15b", np.trapezoid(vc1, tt15) / t_s15)
+v.check("22-03.15c", np.trapezoid(il2, tt15) / t_s15)
+v.check("22-03.15d", np.trapezoid(il1, tt15) / t_s15)
+v.check("22-03.15e", np.ptp(vc1))
+v.check("22-03.15f", np.ptp(il1))
+v.assert_true("22-03.15: both inductors ripple equally", abs(np.ptp(il1) - np.ptp(il2)) < 5e-3)
+v.check("22-03.15g", np.max(on15.y[0] + on15.y[1]))
+v.check("22-03.15h", np.max(off15.y[2] + off15.y[3]))  # switch node off: V_C1 + V
 
 sys.exit(v.finish())

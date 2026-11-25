@@ -209,6 +209,7 @@ d5 = optimize.brentq(lambda d: two_bus_phasor(1.02, 1.0, 0.25, d)[0] - 2.0, 0, 9
 v.check("22-12.5a", d5)
 v.check("22-12.5b", two_bus_phasor(1.02, 1.0, 0.25, d5)[2])
 v.check("22-12.5c", two_bus_phasor(1.02, 1.0, 0.25, d5)[1])
+v.check("22-12.5d", two_bus_phasor(1.02, 1.0, 0.25, d5)[1] - two_bus_phasor(1.02, 1.0, 0.25, d5)[2])
 dv6 = (2 * 30e6 + 8 * 10e6) / 69e3
 v.check("22-12.6a", dv6)
 v.check("22-12.6b", 100 * dv6 / 69e3)
@@ -232,5 +233,65 @@ v.check("22-12.12b", 649 / 0.118)
 beta = 2 * math.pi * 60 / (0.979 * C0)          # wave speed from Example 22-12.3, rounded as published
 a_param = math.cos(beta * 300e3)                 # ABCD 'A' of a lossless line: V_S = A V_R at no load
 v.check("22-12.13", 1 / a_param)
+
+# ---------------------------------------------------------------- Problem 22-12.14 (line parameters by integration)
+MU0, EPS0 = 4e-7 * math.pi, 8.8541878128e-12
+r14, d14 = 0.014, 7.0
+lam_int = integrate.quad(lambda x: MU0 * x / (2 * math.pi * r14**2) * (x / r14) ** 2, 0, r14)[0]  # per amp
+lam_ext = integrate.quad(lambda x: MU0 / (2 * math.pi * x), r14, d14)[0]
+l14 = lam_int + lam_ext                        # balanced phases cancel the far-field terms
+v.check("22-12.14a", 1e3 * d14 / math.exp(l14 * 2 * math.pi / MU0))
+v.check("22-12.14b", 1e6 * l14)
+v.check("22-12.14c", 2 * math.pi * 60 * l14 * 1e3)
+c14 = 1 / integrate.quad(lambda x: 1 / (2 * math.pi * EPS0 * x), r14, d14)[0]
+v.check("22-12.14d", 1e12 * c14)
+v.check("22-12.14e", math.sqrt(l14 / c14))
+v.check("22-12.14f", 230e3**2 / math.sqrt(l14 / c14) / 1e6)
+
+# ---------------------------------------------------------------- Problem 22-12.15 (faults solved in the phase domain)
+a_op = cmath.exp(2j * math.pi / 3)
+A_mat = np.array([[1, 1, 1], [1, a_op**2, a_op], [1, a_op, a_op**2]])       # phase = A @ sequence
+Zseq = np.diag([0.15j, 0.30j, 0.30j])
+Zabc = A_mat @ Zseq @ np.linalg.inv(A_mat)                                   # phase-domain Thevenin impedance
+Eabc = np.array([1, a_op**2, a_op])                                          # prefault 1.0 pu, positive sequence
+
+
+def fault(kind):
+    """Solve V = E - Z I with the fault's boundary conditions as a 6x6 linear system in (V_abc, I_abc)."""
+    M = np.zeros((6, 6), complex)
+    rhs = np.zeros(6, complex)
+    M[:3, :3] = np.eye(3)
+    M[:3, 3:] = Zabc
+    rhs[:3] = Eabc
+    rows = {"3ph": [("V", 0), ("V", 1), ("V", 2)], "slg": [("V", 0), ("I", 1), ("I", 2)],
+            "ll": [("I", 0), ("Isum", 1), ("Vdiff", 1)], "dlg": [("I", 0), ("V", 1), ("V", 2)]}[kind]
+    for k, (what, ph) in enumerate(rows):
+        r = 3 + k
+        if what == "V":
+            M[r, ph] = 1
+        elif what == "I":
+            M[r, 3 + ph] = 1
+        elif what == "Isum":
+            M[r, 4], M[r, 5] = 1, 1
+        elif what == "Vdiff":
+            M[r, 1], M[r, 2] = 1, -1
+    if kind == "3ph":  # a bolted 3-phase fault to a common point: V_a = V_b = V_c = 0
+        pass
+    x = np.linalg.solve(M, rhs)
+    return x[:3], x[3:]
+
+
+ib230p = 100e6 / (math.sqrt(3) * 230e3)
+for key_pu, key_a, kind, sel in (("22-12.15a", "22-12.15b", "3ph", lambda I: abs(I[0])),
+                                 ("22-12.15c", "22-12.15d", "slg", lambda I: abs(I[0])),
+                                 ("22-12.15e", "22-12.15f", "ll", lambda I: abs(I[1])),
+                                 ("22-12.15g", "22-12.15h", "dlg", lambda I: abs(I[1]))):
+    _, I_f = fault(kind)
+    v.check(key_pu, sel(I_f))
+    v.check(key_a, sel(I_f) * ib230p)
+_, I_dlg = fault("dlg")
+v.assert_true("DLG: both faulted phases carry the same magnitude", abs(abs(I_dlg[1]) - abs(I_dlg[2])) < 1e-9)
+v.check("22-12.15i", abs(I_dlg.sum()))
+v.check("22-12.15j", abs(I_dlg.sum()) * ib230p)
 
 v.finish()
