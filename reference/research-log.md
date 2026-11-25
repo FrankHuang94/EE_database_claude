@@ -4812,3 +4812,39 @@ R&D % = R&D ÷ revenue.
 - **SNIA white paper (J. Hands), 2021** [Established: reproduces a standard]: Table 1 of JESD218B.01 classes: client, 40 °C active, retention 30 °C for 1 year, UBER ≤ 10⁻¹⁵; enterprise, 55 °C active, retention 40 °C for 3 months, UBER ≤ 10⁻¹⁶. Definitions of TBW, DWPD = TBW/365/warranty/capacity and WAF; 1 DWPD typical for read-intensive enterprise use, 3 DWPD for mixed use. No P/E ratings by cell type are given.
 - **TrendForce press release, 18 Aug 2026** [Industry estimate]: combined 2Q26 NAND revenue of the top five publicly listed brands up 77% QoQ to $68.87 billion on AI-server and enterprise-SSD demand; Samsung nearly $23.06 billion, share 29.3%; SK Group (SK hynix and Solidigm) more than $14.27 billion; Micron $11.85 billion; Kioxia about $10.72 billion, share 13.6%; SanDisk nearly $8.97 billion. Implied total market about $78.7 billion (top five 87.5%), computed in 23-06.
 - **Sources:** [SNIA](https://www.snia.org/sites/default/files/SSSI/NVMe_SAS_SATA_Endurance_White_Paper.pdf); [TrendForce](https://www.trendforce.com/presscenter/news/20260818-13186.html). Checked Nov 2026. A Solidigm product brief opened for drive capacities did not contain the figure sought and is not used.
+
+## R-481 · Write-amplification models and flash error correction (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (papers opened).*
+
+- **Desnoyers, SYSTOR 2012** [Established: peer-reviewed]: for LRU (FIFO) cleaning under uniform random writes, survival $S = (1 - 1/U)^{T/A}$ and $A = 1/(1 - S)$, converging as $U \to \infty$ to $A = \alpha/(\alpha + W(-\alpha e^{-\alpha}))$ with $\alpha = T/U$ (equations 1–4); greedy cleaning is optimal for uniform random traffic (citing Hu); Table 2, greedy, analytic $A$ at spare factor $S_f$: 0.03 → 13.624, 0.05 → 8.872, 0.07 → 6.623, 0.11 → 4.430, 0.17 → 3.002, matching simulation to about three decimals.
+- **Cai, Ghose, Haratsch, Luo and Mutlu, *Proc. IEEE*, Sep 2017 (arXiv:1706.08642)** [Established: peer-reviewed survey]: read-retry is "widely implemented today" but can significantly increase read latency; the LDPC error-correction flow tries hard decoding, then multiple levels of soft decoding using soft information from multiple reads, then superpage-level parity; the example flow figure shows about 80 µs per hard-decoding iteration and per soft level, and about 10 ms for superpage-level parity recovery.
+- **Sources:** [Desnoyers](https://www.ccs.neu.edu/home/pjd/papers/pjd-systor12.pdf); [Cai et al.](https://arxiv.org/pdf/1706.08642). Checked Nov 2026. The Hu et al. SYSTOR 2009 PDF did not download and is cited only through Desnoyers.
+
+## R-482 · PCIe 6.0 enterprise SSDs and a merchant controller (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (pages opened).*
+
+- **Tom's Hardware (A. Klotz), 14 Feb 2026** [Established: vendor specification as reported]: Micron 9650 is the first mass-produced PCIe 6.0 SSD; PCIe 6.0 x4; up to 28 GB/s sequential read, 14 GB/s sequential write, 5,400 K random-read IOPS (headline 5.5 million) and 500 K random-write IOPS; rated up to 25 W; air- and liquid-cooled versions.
+- **StorageReview (L. Smith), 13 Feb 2026** [Established]: 9650 PRO and MAX use G9 TLC in E1.S and E3.S; PRO 7.68–30.72 TB, 28,000/14,000 MB/s, 5.4–5.5 M random-read and 500–570 K random-write IOPS, 1 DWPD for five years; in mass production and being qualified by OEMs.
+- **Kioxia, 30 Jul 2026** [Established: company announcement]: CM10 series, PCIe 6.0, NVMe 2.1 and OCP Datacenter NVMe SSD v2.7 (not all requirements supported); BiCS FLASH generation 10; up to about 92% higher sequential read and 85% higher random read than CM9; 1.60–61.44 TB; 1 and 3 DWPD options; the 2.5-inch version is PCIe 5.0.
+- **Tom's Hardware (A. Shilov), 28 Jul 2022** [Established]: Silicon Motion SM8366 "MonTitan": PCIe 5.0 x4, NVMe 2.0a, 16 NAND channels at 2,400 MT/s, up to 128 TB, over 14 GB/s sequential read, 3 M / 2.8 M random read/write IOPS.
+- **Sources:** [Tom's 9650](https://www.tomshardware.com/pc-components/ssds/worlds-first-pcie-6-0-ssd-enters-mass-production-with-28gb-s-speeds-micron-9650-series-ssds-support-air-and-liquid-cooling); [StorageReview](https://www.storagereview.com/news/micron-9650-nvme-ssd-enters-mass-production-as-first-pcie-gen6-enterprise-ssd); [Kioxia CM10](https://www.kioxia.com/en-jp/business/news/2026/20260730-1.html); [Tom's MonTitan](https://www.tomshardware.com/news/silicon-motion-unveils-montitan-sm8366-pcie-5-ssd-controller). Checked Nov 2026.
+
+## R-483 · High-capacity SSDs and flash-versus-disk pricing (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (pages opened).*
+
+- **Solidigm newsroom, 13 Nov 2024** [Established: company announcement]: 122.88 TB D5-P5336 QLC, "world's highest capacity PCIe SSD" at the time, doubling the earlier 61.44 TB version, marketed with "unlimited Random Write endurance for five years"; more than 100 EB of QLC shipped since 2018.
+- **Micron press release via HPCwire, 6 May 2026** [Established: company announcement]: the 245 TB 6600 ION (G9 QLC, U.2 and E3.L) is shipping; "up to 30 watts (W) at maximum power, only half the power consumed of a comparable-capacity HDD deployment"; "82% fewer racks" than HDD-based deployments for equal raw capacity (vendor comparisons).
+- **Tom's Hardware (L. James), 21 Aug 2026, reporting VDURA's Flash Volatility Index** [Contested: vendor with an interest]: a 30 TB TLC enterprise SSD at $22,600 against $1,216 for a 30 TB HDD, 18.6 times per TB; VDURA sells hybrid systems and revised its own earlier figures; nearline HDD output reported sold out through 2027.
+- **Sources:** [Solidigm](https://news.solidigm.com/en-WW/243441-solidigm-122tb-drive); [HPCwire](https://www.hpcwire.com/off-the-wire/micron-ships-245tb-6600-ion-ssd-for-rack-scale-ai-storage/); [Tom's Hardware](https://tomshardware.com/pc-components/ssds/enterprise-ssds-now-cost-18-times-more-than-hard-drives-per-terabyte). Checked Nov 2026. Micron's investor-relations page returned a bot challenge and was not used.
+
+## R-484 · NVMe 2.1, Flexible Data Placement and Zoned Namespaces (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (documents opened).*
+
+- **NVM Express, "Changes in NVM Express Specifications," August 2024** [Established: standards body]: NVMe is a set of eleven specifications (Base 2.1, command sets including Zoned Namespaces 1.2, transports); Flexible Data Placement (TP4146b, optional) added with reclaim groups and reclaim units.
+- **Allison et al., arXiv:2503.11665 (21 Feb 2025)** [Established: preprint with industry authors]: FDP in CacheLib with Meta and Twitter production traces achieves device write amplification of about 1, reducing embodied carbon and power.
+- **Bjørling et al., USENIX ATC 2021** [Established: peer-reviewed]: ZNS exposes erase-block boundaries and sequential-write zones, removing in-device garbage collection and over-provisioning; a zone-specialized RocksDB showed at least 2–4× lower 99.9th-percentile random-read latency and 2× higher write throughput than on a block-interface SSD of identical hardware.
+- **Sources:** [NVMe 2.1 changes](https://nvmexpress.org/wp-content/uploads/NVM-Express-Revision-2.1-Changes-09_05_24.pdf); [arXiv](https://arxiv.org/abs/2503.11665); [ZNS paper](https://www.pdl.cmu.edu/ftp/Storage/USENIX_ATC_2021_ZNS.pdf). Checked Nov 2026. Deployment scale of FDP and ZNS at hyperscalers is not public.

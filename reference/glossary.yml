@@ -9730,3 +9730,51 @@
   definition: "The number of program/erase cycles a flash block survives before errors exceed what error correction can handle; it falls with bits per cell and, divided by write amplification, sets a drive's rated writes."
   chapter: "23-06"
   see_also: ["Multi-level cell (MLC, TLC, QLC)"]
+- term: Flash translation layer (FTL)
+  definition: "The SSD firmware layer that maps logical block addresses to physical flash pages, writes every update out of place and runs garbage collection and wear leveling behind the host's back."
+  chapter: "23-07"
+  see_also: [Indirection unit, Garbage collection (SSD)]
+- term: Indirection unit
+  definition: "The smallest chunk an FTL maps with one table entry, usually 4 KiB; larger units (16 KiB) shrink the mapping table but turn small random writes into read-modify-write operations."
+  chapter: "23-07"
+  see_also: [Flash translation layer (FTL)]
+- term: Garbage collection (SSD)
+  definition: "Reclaiming flash blocks by copying their still-valid pages elsewhere and erasing them; the copies are the source of write amplification."
+  chapter: "23-07"
+  see_also: [Write amplification factor (WAF), Over-provisioning]
+- term: Write amplification factor (WAF)
+  definition: "Pages written to flash per page written by the host, 1/(1 − u) for victim blocks with valid fraction u; near 1 for sequential writes and near 8 for random writes at 7% over-provisioning."
+  chapter: "23-07"
+  see_also: [Garbage collection (SSD), Over-provisioning]
+- term: Over-provisioning
+  definition: "Flash capacity hidden from the host, (T − U)/U relative to user capacity (or (T − U)/T as a spare factor); more of it lowers write amplification and raises endurance."
+  chapter: "23-07"
+  see_also: [Write amplification factor (WAF)]
+- term: Wear leveling
+  definition: "Spreading program/erase cycles evenly over all flash blocks; dynamic leveling steers new writes to lightly worn blocks, static leveling also relocates cold data."
+  chapter: "23-07"
+  see_also: [P/E cycle endurance]
+- term: TRIM
+  definition: "A host command telling an SSD which logical blocks no longer hold useful data, so garbage collection need not copy them; it raises the effective over-provisioning."
+  chapter: "23-07"
+  see_also: [Garbage collection (SSD)]
+- term: NVMe
+  definition: "NVM Express, the protocol for SSDs on PCIe (and over fabrics), with many deep submission and completion queues in host memory so that cores issue commands without locks."
+  chapter: "23-07"
+  see_also: [Little's law]
+- term: Power-loss protection (PLP)
+  definition: "Capacitors that hold an SSD's rails up long enough after a power failure to write buffered data and mapping updates to flash; sized from E = ½C(V₁² − V₂²)."
+  chapter: "23-07"
+  see_also: [Flash translation layer (FTL)]
+- term: Zoned Namespaces (ZNS)
+  definition: "An NVMe command set that exposes flash as zones the host must write sequentially and reset itself, removing device garbage collection and most over-provisioning."
+  chapter: "23-07"
+  see_also: [Flexible Data Placement (FDP)]
+- term: Flexible Data Placement (FDP)
+  definition: "An NVMe 2.1 feature letting the host tag writes with placement handles so the SSD keeps data of different lifetimes in different blocks, cutting write amplification without host-managed zones."
+  chapter: "23-07"
+  see_also: [Zoned Namespaces (ZNS), Write amplification factor (WAF)]
+- term: SLC cache
+  definition: "Flash blocks run temporarily in one-bit-per-cell mode to absorb write bursts at high speed; data is later folded into TLC or QLC blocks, and writes slow sharply once the cache is full."
+  chapter: "23-07"
+  see_also: ["Multi-level cell (MLC, TLC, QLC)"]
