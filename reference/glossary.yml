@@ -9682,3 +9682,51 @@
   definition: "HBM whose logic-process base die includes functions specified by the accelerator customer, such as parts of the memory controller or near-memory compute."
   chapter: "23-05"
   see_also: [Base die]
+- term: Floating gate
+  definition: "An electrically isolated conductor between a transistor's control gate and channel; electrons stored on it raise the threshold voltage by Q/C_CG, which is how flash memory stores data without power."
+  chapter: "23-06"
+  see_also: [Charge-trap flash, Fowler–Nordheim tunneling]
+- term: Charge-trap flash
+  definition: "A flash cell that stores electrons in discrete traps in a silicon-nitride layer rather than on a conducting floating gate, so one oxide defect cannot drain the whole cell; the basis of almost all 3D NAND."
+  chapter: "23-06"
+  see_also: [Floating gate, 3D NAND]
+- term: Gate coupling ratio
+  definition: "The fraction C_CG/C_T of a control-gate voltage that reaches a flash cell's storage node; it sets the programming voltage needed but not the threshold shift per stored electron."
+  chapter: "23-06"
+  see_also: [Floating gate]
+- term: Incremental step pulse programming (ISPP)
+  definition: "Programming flash with a staircase of gate pulses, each a fixed step higher, with a verify read between pulses; because tunneling self-limits, each pulse raises the threshold by exactly one step, giving tight level distributions."
+  chapter: "23-06"
+  see_also: [Fowler–Nordheim tunneling, "Multi-level cell (MLC, TLC, QLC)"]
+- term: "Multi-level cell (MLC, TLC, QLC)"
+  definition: "A flash cell storing n bits in 2^n threshold levels (2 bits MLC, 3 TLC, 4 QLC); the level spacing W/(2^n − 1) shrinks with each bit, raising the raw bit error rate and lowering endurance."
+  chapter: "23-06"
+  see_also: [Raw bit error rate (RBER)]
+- term: Raw bit error rate (RBER)
+  definition: "The fraction of bits read wrongly from flash before error correction; with Gaussian levels and Gray coding it is 2(L − 1)/(L n) · Q(d/2σ), and the SSD's ECC must correct it."
+  chapter: "23-06"
+  see_also: ["Multi-level cell (MLC, TLC, QLC)"]
+- term: NAND string
+  definition: "Flash cells connected in series between one bitline contact and the source line; reading one cell turns on all the others with a pass voltage. Sharing contacts makes NAND far denser than NOR flash."
+  chapter: "23-06"
+  see_also: [Page and block (NAND), 3D NAND]
+- term: Page and block (NAND)
+  definition: "A page is the cells on one wordline programmed and read together (typically 16 KiB plus spare bytes); a block is the hundreds of pages that are erased together. Pages cannot be overwritten in place."
+  chapter: "23-06"
+  see_also: [NAND string]
+- term: 3D NAND
+  definition: "NAND flash built as vertical strings through a stack of hundreds of wordline layers, so density grows with layer count rather than lithographic shrink."
+  chapter: "23-06"
+  see_also: [Channel hole, Charge-trap flash]
+- term: Channel hole
+  definition: "The vertical hole etched through a 3D NAND layer stack and lined with blocking oxide, charge-trap nitride, tunnel oxide and a polysilicon channel; its aspect ratio forces stacks to be built in decks."
+  chapter: "23-06"
+  see_also: [3D NAND]
+- term: CMOS bonded to array (CBA)
+  definition: "Building a NAND die's peripheral CMOS and its memory array on separate wafers and joining them face to face by copper direct bonding, so each gets its optimal thermal process and the die shrinks."
+  chapter: "23-06"
+  see_also: [3D NAND, Hybrid bonding]
+- term: P/E cycle endurance
+  definition: "The number of program/erase cycles a flash block survives before errors exceed what error correction can handle; it falls with bits per cell and, divided by write amplification, sets a drive's rated writes."
+  chapter: "23-06"
+  see_also: ["Multi-level cell (MLC, TLC, QLC)"]

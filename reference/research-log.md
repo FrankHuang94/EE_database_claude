@@ -4786,3 +4786,29 @@ R&D % = R&D ÷ revenue.
 - **TrendForce, 15 Jun 2026, citing Economic Daily News** [Industry estimate]: TSMC CoWoS capacity could reach 120,000–140,000 wafers per month in 2026; supply–demand gap narrowing from about 20% to about 10% by end-2026; TSMC forecast CoWoS capacity CAGR above 80% for 2022–2027 (via Reuters).
 - **The Korea Times, 28 Oct 2026** [Established: company results]: SK hynix 3Q26 revenue 104.6 trillion won and operating profit 83.33 trillion won.
 - **Sources:** [TrendForce 2025](https://www.trendforce.com/presscenter/news/20250522-12589.html); [TechNews](https://technews.tw/?p=1565421); [TrendForce CoWoS](https://www.trendforce.com/news/2026/06/15/news-tsmc-cowos-supply-demand-gap-reportedly-seen-narrowing-from-20-to-10-by-end-2026-as-capacity-expands); [Korea Times](https://www.koreatimes.co.kr/business/companies/20261028/sk-hynix-logs-record-q3-operating-profit-of-628-bil). Checked Nov 2026. Counterpoint's HBM share reports refused automated fetches and are not used.
+
+## R-478 · 3D NAND products and layer counts: Samsung V9, Samsung ISSCC 2024, SK hynix 321-layer (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (pages opened).*
+
+- **Samsung newsroom, 23 Apr 2024** [Established: company announcement]: mass production of 1 Tb TLC 9th-generation V-NAND; bit density "about 50%" above the 8th generation; "double-stack structure" with channel-hole etching that enables "simultaneous drilling of the industry's highest cell layer count"; Toggle 5.1 interface at up to 3.2 Gb/s (+33%). The release gives no layer count.
+- **Blocks & Files, 30 Jan 2024** [Established: conference agenda]: Samsung's ISSCC 2024 paper "A 280-Layer 1Tb 4b/cell 3D-NAND Flash Memory with a 28.5Gb/mm² Area Density and a 3.2GB/s High-Speed IO Rate"; ComputerBase reported V-NAND gen 9 has 280 layers; layer comparison at the time: SK hynix 238, YMTC and Micron 232, WD and Kioxia 218.
+- **Tom's Hardware (A. Klotz), 21 Nov 2024** [Established: company announcement as reported]: SK hynix mass production of 321-layer NAND using a "3 plugs" (three-deck) process; reuse of the 238-layer development platform yielding "a purported 59% improvement in 321-layer production"; data transfer +12%, read performance +13% and power efficiency +10% or more against the previous generation; table of current layer counts (SK hynix 321, Samsung 280, Micron and YMTC 232, Kioxia 218); Samsung reportedly working toward 300 and 400 layers.
+- **Sources:** [Samsung](https://news.samsungsemiconductor.com/global/samsung-electronics-begins-industrys-first-mass-production-of-9th-gen-v-nand/); [Blocks & Files](https://www.blocksandfiles.com/flash/2024/01/30/samsung-gives-the-280-layer-3d-nand-game-away/1588319); [Tom's Hardware](https://www.tomshardware.com/pc-components/storage/sk-hynix-announces-production-of-its-321-layer-nand-flash-shipments-will-start-in-the-first-half-of-2025). Checked Nov 2026.
+
+## R-479 · Kioxia BiCS10, the 2 Tb QLC ISSCC 2026 die and CBA (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (pages opened).*
+
+- **Kioxia news release, 3 Jul 2026** [Established: company announcement]: sample shipments of 10th-generation BiCS FLASH 1 Tb TLC; 332 layers; NAND interface 4.8 Gb/s (+33% over the 8th generation) using CBA and On-Pitch Select Gate Drain technology, both adopted since the 8th generation; bit density +59% "by stacking 332 layers and improving lateral density"; write and read power efficiency +18% and +30%; manufactured at Kitakami Plant Fab2; a "dual-axis strategy" running 9th- and 10th-generation products in parallel.
+- **Kioxia R&D topic 92** [Established: conference paper as summarized by its authors]: 10th-generation 2 Tb 4 b/cell die developed by Kioxia and Sandisk; 332 stacked wordlines; 37.6 Gb/mm²; first 6-plane architecture in its QLC products (1×6 floorplan); paper: J. M. Thimmaiah et al., "A 2Tb 4b/Cell 6-Plane 3D-Flash Memory with 37.6Gb/mm2 Bit Density and >85MB/s Write Throughput," ISSCC 2026, pp. 254–256.
+- **Kioxia CBA page** [Established]: evolution from CMOS next to array (CNA) to CMOS under array (CUA, generation 6) to CBA, in which CMOS and cell-array wafers are made separately and joined by Cu direct bonding, removing the thermal-budget trade-off between cell and CMOS.
+- **Sources:** [Kioxia BiCS10](https://apac.kioxia.com/en-apac/about/news/2026/20260703-1.html); [Kioxia topic 92](https://www.kioxia.com/en-jp/rd/technology/topics/topics-92.html); [Kioxia CBA](https://www.kioxia.com/en-jp/rd/technology/cba.html). Checked Nov 2026.
+
+## R-480 · SSD endurance classes and the NAND market, 2Q26 (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (pages opened).*
+
+- **SNIA white paper (J. Hands), 2021** [Established: reproduces a standard]: Table 1 of JESD218B.01 classes: client, 40 °C active, retention 30 °C for 1 year, UBER ≤ 10⁻¹⁵; enterprise, 55 °C active, retention 40 °C for 3 months, UBER ≤ 10⁻¹⁶. Definitions of TBW, DWPD = TBW/365/warranty/capacity and WAF; 1 DWPD typical for read-intensive enterprise use, 3 DWPD for mixed use. No P/E ratings by cell type are given.
+- **TrendForce press release, 18 Aug 2026** [Industry estimate]: combined 2Q26 NAND revenue of the top five publicly listed brands up 77% QoQ to $68.87 billion on AI-server and enterprise-SSD demand; Samsung nearly $23.06 billion, share 29.3%; SK Group (SK hynix and Solidigm) more than $14.27 billion; Micron $11.85 billion; Kioxia about $10.72 billion, share 13.6%; SanDisk nearly $8.97 billion. Implied total market about $78.7 billion (top five 87.5%), computed in 23-06.
+- **Sources:** [SNIA](https://www.snia.org/sites/default/files/SSSI/NVMe_SAS_SATA_Endurance_White_Paper.pdf); [TrendForce](https://www.trendforce.com/presscenter/news/20260818-13186.html). Checked Nov 2026. A Solidigm product brief opened for drive capacities did not contain the figure sought and is not used.
