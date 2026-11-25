@@ -1,0 +1,102 @@
+* Lab 23-05: an HBM stack's thermal ladder (electrical analogy) and the supply energy of an interposer link
+* Part A: 1 V = 1 K, 1 A = 1 W, 1 ohm = 1 K/W. Each layer (bond gap plus core die) is 0.048769 K/W; the base die
+* injects 10 W at the bottom and each core die 1 W; heat leaves through the top die (node 0 V = the lid).
+* Part B: a 50 ohm driver switches 0 to 0.4 V into a 5-section interposer line (25 ohm, 1.0 pF) and a 0.3 pF load.
+.options reltol=1e-7 abstol=1e-15 vntol=1e-10
+
+* ---- Part Aa: 12-high stack
+Ra1 a0 a1 0.0487689393939
+Ra2 a1 a2 0.0487689393939
+Ra3 a2 a3 0.0487689393939
+Ra4 a3 a4 0.0487689393939
+Ra5 a4 a5 0.0487689393939
+Ra6 a5 a6 0.0487689393939
+Ra7 a6 a7 0.0487689393939
+Ra8 a7 a8 0.0487689393939
+Ra9 a8 a9 0.0487689393939
+Ra10 a9 a10 0.0487689393939
+Ra11 a10 a11 0.0487689393939
+Ra12 a11 0 0.0487689393939
+Iabase 0 a0 DC 10
+Iad1 0 a1 DC 1
+Iad2 0 a2 DC 1
+Iad3 0 a3 DC 1
+Iad4 0 a4 DC 1
+Iad5 0 a5 DC 1
+Iad6 0 a6 DC 1
+Iad7 0 a7 DC 1
+Iad8 0 a8 DC 1
+Iad9 0 a9 DC 1
+Iad10 0 a10 DC 1
+Iad11 0 a11 DC 1
+
+* ---- Part Ab: 16-high stack
+Rb1 b0 b1 0.0487689393939
+Rb2 b1 b2 0.0487689393939
+Rb3 b2 b3 0.0487689393939
+Rb4 b3 b4 0.0487689393939
+Rb5 b4 b5 0.0487689393939
+Rb6 b5 b6 0.0487689393939
+Rb7 b6 b7 0.0487689393939
+Rb8 b7 b8 0.0487689393939
+Rb9 b8 b9 0.0487689393939
+Rb10 b9 b10 0.0487689393939
+Rb11 b10 b11 0.0487689393939
+Rb12 b11 b12 0.0487689393939
+Rb13 b12 b13 0.0487689393939
+Rb14 b13 b14 0.0487689393939
+Rb15 b14 b15 0.0487689393939
+Rb16 b15 0 0.0487689393939
+Ibbase 0 b0 DC 10
+Ibd1 0 b1 DC 1
+Ibd2 0 b2 DC 1
+Ibd3 0 b3 DC 1
+Ibd4 0 b4 DC 1
+Ibd5 0 b5 DC 1
+Ibd6 0 b6 DC 1
+Ibd7 0 b7 DC 1
+Ibd8 0 b8 DC 1
+Ibd9 0 b9 DC 1
+Ibd10 0 b10 DC 1
+Ibd11 0 b11 DC 1
+Ibd12 0 b12 DC 1
+Ibd13 0 b13 DC 1
+Ibd14 0 b14 DC 1
+Ibd15 0 b15 DC 1
+
+* ---- Part B: interposer link
+VDDQ vq 0 DC 0.4
+VIN in 0 PWL(0 0 1n 0 1.02n 0.4)
+* the driver: an ideal switch to VDDQ modeled as a voltage-controlled source with 50 ohm output
+BDRV dsrc 0 V=v(in)
+RDRV dsrc l0 50
+RL1 l0 l1 5
+CL1 l1 0 0.2p
+RL2 l1 l2 5
+CL2 l2 0 0.2p
+RL3 l2 l3 5
+CL3 l3 0 0.2p
+RL4 l3 l4 5
+CL4 l4 0 0.2p
+RL5 l4 l5 5
+CL5 l5 0 0.2p
+CLOAD l5 0 0.3p
+
+.tran 1p 4n
+.control
+op
+print v(a0) v(b0)
+let dt12 = v(a0)
+let dt16 = v(b0)
+print dt12 dt16
+tran 1p 4n
+* supply energy: a driver switching from the fixed VDDQ rail draws VDDQ times the charge delivered to the line
+let ix = (v(dsrc) - v(l0))/50
+let pw = 0.4*ix
+meas tran e_rise integ pw from=0.9n to=4n
+meas tran vend find v(l5) at=4n
+.endc
+* EXPECT dt12 key:../../chapters/23-05-hbm-in-depth.md#Ex_23-05.6d rtol=0.001
+* EXPECT dt16 key:../../chapters/23-05-hbm-in-depth.md#Ex_23-05.6e rtol=0.001
+* EXPECT e_rise key:../../chapters/23-05-hbm-in-depth.md#Ex_23-05.3a scale=1e-12 rtol=0.005
+.end

@@ -4748,3 +4748,41 @@ R&D % = R&D ÷ revenue.
 - **NVIDIA Technical Blog, "NVIDIA Grace CPU Superchip Architecture In Depth," 20 Jan 2023** [Industry estimate: vendor comparison]: "Compared to an eight-channel DDR5 design, the NVIDIA Grace CPU LPDDR5X memory subsystem provides up to 53% more bandwidth at one-eighth the power per gigabyte per second while being similar in cost"; up to 960 GB and 1 TB/s per superchip.
 - **NVIDIA Grace Performance Tuning Guide** [Industry estimate: vendor comparison]: "The Grace CPU LPDDR5X memory subsystem provides up to 500 GB/s of bandwidth in only about 16W. That is one fifth the power of 12 channels of conventional DDR5 memory."
 - **Sources:** [NVIDIA blog](https://developer.nvidia.com/blog/nvidia-grace-cpu-superchip-architecture-in-depth); [Tuning guide](https://docs.nvidia.com/dccpu/grace-perf-tuning-guide/index.html). Checked Nov 2026.
+
+## R-474 · JEDEC HBM3 and HBM4 standards (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (JEDEC releases as reprinted by HPCwire; JEDEC and Business Wire refuse automated fetches).*
+
+- **JEDEC, JESD238 HBM3, 27 Jan 2022** [Established]: data rates "up to 6.4 Gb/s, equivalent to 819 GB/s per device"; independent channels doubled "from 8 (HBM2) to 16; with two pseudo channels per channel, HBM3 virtually supports 32 channels"; 4-, 8- and 12-high stacks with provision for 16-high; 8–32 Gb per layer, "4GB (8Gb 4-high) to 64GB (32Gb 16-high)"; on-die symbol-based ECC; "low-swing (0.4V) signaling on the host interface and a lower (1.1V) operating voltage".
+- **JEDEC, JESD270-4 HBM4, 16 Apr 2025** [Established]: "up to 8 Gb/s across a 2048-bit interface ... up to 2 TB/s"; channels "from 16 channels (HBM3) to 32 channels with 2 pseudo-channels per channel"; vendor-specific VDDQ (0.7, 0.75, 0.8 or 0.9 V) and VDDC (1.0 or 1.05 V); backward compatibility with HBM3 controllers; Directed Refresh Management; 4-, 8-, 12- and 16-high stacks of 24 Gb or 32 Gb dies, up to 64 GB.
+- **TrendForce, 21 Apr 2025, citing ZDNet Korea** [Industry estimate]: JEDEC confirmed "a relaxed nominal package thickness of 775 micrometers for both 12-high and 16-high stacked HBM4", reducing the immediate need for hybrid bonding.
+- **Sources:** [HBM3](https://www.hpcwire.com/off-the-wire/jedec-publishes-hbm3-updated-to-high-bandwidth-memory-hbm-standard/); [HBM4](https://www.hpcwire.com/?p=179974); [TrendForce](https://www.trendforce.com/news/2025/04/21/news-jedec-finalizes-hbm4-standard-potentially-easing-pressure-on-hybrid-bonding-adoption/). Checked Nov 2026.
+
+## R-475 · HBM3E, HBM4 and HBM4E products (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (pages opened).*
+
+- **The Register, 26 Sep 2024** [Established as reported]: SK hynix mass-produces 36 GB 12-layer HBM3E; its 24 GB part stacked eight 3 GB dies; four more layers added "while keeping the same thickness"; Advanced MR-MUF; "9.6 Gbps"; SK hynix's claim that a GPU with four HBM3E products "can read 70 billion total parameters 35 times within a second" (Llama 3 70B).
+- **Tom's Hardware (A. Shilov), 12 Sep 2025** [Established as reported]: SK hynix completed HBM4 development; 2,048-bit I/O at 10 GT/s, "25% higher" than JEDEC's; 1b DRAM dies; Advanced MR-MUF.
+- **Tom's Hardware (A. Shilov), 12 Jun 2025** [Established as reported]: Micron HBM4 samples, 12-high 36 GB, 2,048-bit, about 7.85 GT/s, 2 TB/s, 1β DRAM, base dies made by TSMC; Micron's HBM3E: 1,024-bit, up to 9.2 GT/s, 1.2 TB/s.
+- **Samsung newsroom, 12 Feb 2026** [Established for the announcement; "first" Contested]: HBM4 mass production and commercial shipment; 11.7 Gb/s ("approximately 46%" above 8 Gb/s; "1.22x" HBM3E's 9.6 Gb/s), up to 13 Gb/s; up to 3.3 TB/s per stack, "2.7x" HBM3E; 1c DRAM and 4 nm logic base die; 24–36 GB in 12 layers, 48 GB planned in 16 layers; 40% better power efficiency, 10% better thermal resistance, 30% better heat dissipation than HBM3E (vendor claims).
+- **The Register, 13 Feb 2026** [Established as reported]: a day before Samsung's announcement, Micron's CFO said Micron had started high-volume HBM4 production and shipped to customers, at "over 11 gigabits per second".
+- **Samsung newsroom, 29 May 2026** [Established as announcement]: 12-layer HBM4E samples at 14 Gb/s, scalable to 16 Gb/s, up to 3.6 TB/s per stack, 48 GB.
+- **Sources:** [Register 2024](https://www.theregister.com/2024/09/26/sk_hynix_hbm3e_production/); [SK hynix HBM4](https://www.tomshardware.com/pc-components/dram/sk-hynix-completes-development-of-hbm4-2-048-bit-interface-and-10-gt-s-speeds-promised); [Micron HBM4](https://www.tomshardware.com/pc-components/dram/micron-starts-to-ship-samples-of-hbm4-memory-to-clients-36-gb-capacity-and-bandwidth-of-2-tb-s); [Samsung HBM4](https://news.samsung.com/global/samsung-ships-industry-first-commercial-hbm4); [Register 2026](https://www.theregister.com/2026/02/13/samsung_and_micron_start_shipping/); [Samsung HBM4E](https://news.samsung.com/global/samsung-electronics-begins-shipment-of-industry-first-hbm4e-samples). Checked Nov 2026.
+
+## R-476 · SK hynix HBM packaging at Hot Chips 2026 (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (article opened).*
+
+- **ServeTheHome, "SK hynix HBM Packaging at Hot Chips 2026," 23 Aug 2026** [Industry estimate: a report of conference slides]: HBM4 "over 20K TSVs and 16148 base micro-bumps on a 12.8×11 mm part with a 775 um Z-height", more than 2 TB/s, "40+ percent power-efficiency gain"; 12-high in production, 16-high under qualification; TC-NCF "high productivity and low thermal resistivity but is sensitive to chip warpage" versus MR-MUF handling thin-die warpage "at the cost of higher thermal resistivity"; known-good stacked die testing; 16-high HBM3E needed chip thickness, gap height and bump pitch cut "roughly in half"; hybrid bonding with bump pitch "below 18 um" as the path to 20-or-more-high stacks. (The slides as reported give both 12.4 × 11 mm and 12.8 × 11 mm footprints for HBM4.)
+- **Source:** [ServeTheHome](https://www.servethehome.com/sk-hynix-hbm-packaging-at-hot-chips-2026/). Checked Nov 2026.
+
+## R-477 · HBM economics, wafer share and CoWoS capacity (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (pages opened).*
+
+- **TrendForce press release, 22 May 2025** [Industry estimate]: HBM4 die size grows with the I/O count; logic-based base dies; "HBM3e debuted with an estimated 20% price premium; HBM4's elevated manufacturing difficulty is expected to drive premiums above 30%"; HBM shipments "to surpass 30 billion gigabits in 2026"; SK hynix "over 50% market share".
+- **TechNews (Taiwan), 2 Jun 2026, reporting TrendForce** [Industry estimate]: HBM's share of DRAM wafer starts about 18%, 22% and ~30% in 2025–2027, against about 8%, 9% and ~13% of DRAM bit supply; HBM's revenue per wafer was overtaken by DDR5 64 GB RDIMMs in 1Q26.
+- **TrendForce, 15 Jun 2026, citing Economic Daily News** [Industry estimate]: TSMC CoWoS capacity could reach 120,000–140,000 wafers per month in 2026; supply–demand gap narrowing from about 20% to about 10% by end-2026; TSMC forecast CoWoS capacity CAGR above 80% for 2022–2027 (via Reuters).
+- **The Korea Times, 28 Oct 2026** [Established: company results]: SK hynix 3Q26 revenue 104.6 trillion won and operating profit 83.33 trillion won.
+- **Sources:** [TrendForce 2025](https://www.trendforce.com/presscenter/news/20250522-12589.html); [TechNews](https://technews.tw/?p=1565421); [TrendForce CoWoS](https://www.trendforce.com/news/2026/06/15/news-tsmc-cowos-supply-demand-gap-reportedly-seen-narrowing-from-20-to-10-by-end-2026-as-capacity-expands); [Korea Times](https://www.koreatimes.co.kr/business/companies/20261028/sk-hynix-logs-record-q3-operating-profit-of-628-bil). Checked Nov 2026. Counterpoint's HBM share reports refused automated fetches and are not used.

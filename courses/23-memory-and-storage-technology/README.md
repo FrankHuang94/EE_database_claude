@@ -31,7 +31,7 @@ The technologies that hold data: SRAM, DRAM and its interfaces (DDR, LPDDR, GDDR
 | [23-02 · SRAM Technology](chapters/23-02-sram-technology.md) | 4 | ✅ verified | [problems](problems/23-02-problems.md) · [solutions](solutions/23-02-solutions.md) · [lab](labs/23-02-lab/README.md) · [verify](verify/verify_23_02.py) |
 | [23-03 · DRAM Cells, Arrays and Refresh](chapters/23-03-dram-cells-arrays-refresh.md) | 7 | ✅ verified | [problems](problems/23-03-problems.md) · [solutions](solutions/23-03-solutions.md) · [lab](labs/23-03-lab/README.md) · [verify](verify/verify_23_03.py) |
 | [23-04 · DRAM Interfaces: DDR, LPDDR and GDDR](chapters/23-04-dram-interfaces.md) | 6 | ✅ verified | [problems](problems/23-04-problems.md) · [solutions](solutions/23-04-solutions.md) · [lab](labs/23-04-lab/README.md) · [verify](verify/verify_23_04.py) |
-| [23-05 · HBM in Depth](chapters/23-05-hbm-in-depth.md) | 7 | ⬜ planned | — |
+| [23-05 · HBM in Depth](chapters/23-05-hbm-in-depth.md) | 7 | ✅ verified | [problems](problems/23-05-problems.md) · [solutions](solutions/23-05-solutions.md) · [lab](labs/23-05-lab/README.md) · [verify](verify/verify_23_05.py) |
 | [23-06 · NAND Flash and 3D NAND](chapters/23-06-nand-flash-and-3d-nand.md) | 7 | ⬜ planned | — |
 | [23-07 · SSD Controllers and Storage Systems](chapters/23-07-ssd-controllers.md) | 5 | ⬜ planned | — |
 | [23-08 · Emerging Memories: MRAM, ReRAM, PCM, FeRAM](chapters/23-08-emerging-memories.md) | 5 | ⬜ planned | — |

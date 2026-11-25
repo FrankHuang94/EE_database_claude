@@ -9636,3 +9636,49 @@
   definition: "A multiplexed-rank DIMM whose data buffers interleave two ranks, so the host bus runs at twice each rank's rate (8800 MT/s from ranks at 4400 MT/s in the first generation)."
   chapter: "23-04"
   see_also: [DDR5 subchannel]
+
+# ---------------------------------------------------------------- 23-05
+- term: Through-silicon via (TSV)
+  definition: "A copper pillar through a thinned silicon die, insulated by an oxide liner, that carries signals and power vertically through a die stack; electrically a short wire of about a hundred femtofarads, physically costly in area and process steps."
+  chapter: "23-05"
+  see_also: [TSV keep-out zone, High Bandwidth Memory (HBM)]
+- term: TSV keep-out zone
+  definition: "The area around a TSV where no transistors may sit, because the copper's thermal-expansion mismatch strains the silicon and shifts device characteristics; with tens of thousands of TSVs it costs several percent of a die."
+  chapter: "23-05"
+  see_also: [Through-silicon via (TSV)]
+- term: Base die
+  definition: "The bottom die of an HBM stack, holding the PHY, test, repair and power-distribution logic; from HBM4 it moves to a logic process, which allows customer-specific functions."
+  chapter: "23-05"
+  see_also: [Custom HBM]
+- term: Pseudo-channel
+  definition: "Half of an HBM channel, operating independently with its own banks; an HBM4 stack has 32 channels and 64 pseudo-channels of 32 data bits each."
+  chapter: "23-05"
+  see_also: [High Bandwidth Memory (HBM)]
+- term: Silicon interposer
+  definition: "A silicon substrate with fine wiring on which a processor and HBM stacks sit side by side, providing thousands of short, unterminated connections between them (2.5D packaging)."
+  chapter: "23-05"
+  see_also: [CoWoS]
+- term: Mass reflow molded underfill (MR-MUF)
+  definition: "An HBM stacking method that reflows all bumps of a stack in one step and then fills the gaps with molding compound; tolerant of thin, warped dies but with higher thermal resistance than film-based bonding."
+  chapter: "23-05"
+  see_also: [Thermo-compression bonding with non-conductive film (TC-NCF)]
+- term: Thermo-compression bonding with non-conductive film (TC-NCF)
+  definition: "An HBM stacking method that bonds each die under heat and pressure through a non-conductive film; lower thermal resistance than MR-MUF but sensitive to die warpage."
+  chapter: "23-05"
+  see_also: [Mass reflow molded underfill (MR-MUF), Hybrid bonding]
+- term: Hybrid bonding
+  definition: "Joining dies by bonding their copper pads and surrounding oxide directly, with no bumps or underfill gap; it allows pitches below about 18 µm, thinner stacks and much lower thermal resistance."
+  chapter: "23-05"
+  see_also: [Mass reflow molded underfill (MR-MUF)]
+- term: Known-good die (KGD)
+  definition: "A die tested and confirmed good before assembly into a stack or package; because a stack's yield is the product of its dies' yields, HBM depends on testing every die (and every finished stack) first."
+  chapter: "23-05"
+  see_also: [High Bandwidth Memory (HBM)]
+- term: CoWoS
+  definition: "TSMC's chip-on-wafer-on-substrate 2.5D packaging, which places processors and HBM stacks on an interposer; its capacity has often limited AI-accelerator output."
+  chapter: "23-05"
+  see_also: [Silicon interposer]
+- term: Custom HBM
+  definition: "HBM whose logic-process base die includes functions specified by the accelerator customer, such as parts of the memory controller or near-memory compute."
+  chapter: "23-05"
+  see_also: [Base die]
