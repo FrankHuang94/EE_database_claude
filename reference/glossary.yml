@@ -9455,3 +9455,41 @@
 - term: Interconnection queue
   definition: "A grid operator's list of generation, storage and large-load projects awaiting the studies and agreements needed to connect; in the US it held over 2000 GW in 2025, with typical waits of four to five years or more."
   chapter: "22-12"
+- term: Memory hierarchy
+  definition: "The stack of storage levels (registers, SRAM caches, DRAM or HBM, flash, disk and network), each built from a different device, that trades capacity and cost per bit against latency, bandwidth and energy per access; locality lets a small fast level serve most accesses."
+  chapter: "23-01"
+  see_also: [Locality, Memory wall]
+- term: Memory wall
+  definition: "The widening gap between processor speed and memory performance, named by Wulf and McKee in 1995 for latency; today mostly the faster growth of peak FLOPS (about 3.0× every two years) than of DRAM bandwidth (about 1.6×), which raises the ridge point each generation."
+  chapter: "23-01"
+  see_also: [Ridge point, Machine balance]
+- term: Switching energy
+  definition: "The energy C·V² a supply delivers each time it charges a capacitance C from 0 to V; half is stored and half dissipated whatever the resistance, and the stored half is dissipated on discharge. With random data a wire draws C·V²/4 per bit."
+  chapter: "23-01"
+  see_also: [Energy per bit]
+- term: Activation energy (DRAM)
+  definition: "The energy to open a DRAM row: sensing and restoring every bit in it, typically a kilobyte, whether or not those bits are then read; divided by the bits actually used, it rewards row-buffer locality."
+  chapter: "23-01"
+- term: Beachfront (die edge)
+  definition: "The length of a die's perimeter available for off-die signal bumps; because it grows only as the square root of die area, it limits how many interface pins, and so how much off-chip bandwidth, a die can have."
+  chapter: "23-01"
+- term: Bytes in flight
+  definition: "The data requested but not yet returned; by Little's law it must equal bandwidth × latency for a memory system to deliver its bandwidth."
+  chapter: "23-01"
+  see_also: [Little's law]
+- term: Machine balance
+  definition: "A machine's peak compute divided by its memory bandwidth (FLOP per byte), equal to the roofline's ridge point; it has risen for decades because compute outgrows bandwidth."
+  chapter: "23-01"
+  see_also: [Ridge point, Memory wall]
+- term: KV cache
+  definition: "The stored keys and values of every earlier token in a transformer's context, 2·L·n_kv·d_h bytes-per-element per token; decoding reads it all for each new token, and unlike the weights it is not shared across a batch, so it caps decode intensity."
+  chapter: "23-01"
+  see_also: [Grouped-query attention, Decode and prefill]
+- term: Grouped-query attention
+  definition: "A transformer design in which several query heads share each key–value head, shrinking the KV cache by the sharing ratio and raising decode attention's intensity to 2·(n_q/n_kv)/b_kv FLOP per byte."
+  chapter: "23-01"
+  see_also: [KV cache]
+- term: Decode and prefill
+  definition: "The two phases of language-model inference: prefill processes the whole prompt at once and is compute-bound, while decode generates one token per step, reading all weights and the KV cache each time, and is memory-bound."
+  chapter: "23-01"
+  see_also: [KV cache, Arithmetic intensity]

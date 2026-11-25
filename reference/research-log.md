@@ -4609,3 +4609,52 @@ R&D % = R&D ÷ revenue.
 - **EPRI (Boemer and Walling), IEEE 1547-2018 overview, PJM workshop (Oct 2018; hosted by the Public Utilities Commission of Ohio)** [Established]: categories I ("Essential"), II (based on NERC PRC-024), III (California Rule 21 and Hawaii Rule 14H, "mandatorily requires momentary cessation"); "DER must restore output to 80% of pre-disturbance active current within 0.4 s".
 - **EPRI/NAGF/NATF/NERC joint webinar on IEEE 2800-2022 (3 May 2022)** [Established]: below 50% voltage, apparent current at least 90% of pre-disturbance; current step response ≤ 2.5 cycles, settling ≤ 4 cycles for non-Type III units; fast frequency response time adjustable to no more than 1 s.
 - **Sources:** [EPRI 1547 deck](https://dam.assets.ohio.gov/image/upload/puco.ohio.gov/empliibrary/files/DER/2018-5-epri-crash-course-ieee-standard-1547-2018.pdf); [IEEE 2800 joint webinar](https://www.nerc.com/comm/RSTC/IRPS/IEEE_2800-2022_EPRI-NAGF-NATF-NERC_May_3-2022_Joint_Webinar.pdf). Checked Nov 2026.
+
+## R-458 · Energy per operation and per memory access, 45 nm (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (primary documents opened).*
+
+- **M. Horowitz, "1.1 Computing's energy problem (and what we can do about it)," ISSCC 2014, pp. 10–14, doi:10.1109/ISSCC.2014.6757323** [Established]: Fig. 1.1.9, "Rough energy costs for various operations in 45nm 0.9V". Prose: "The energy cost of a DRAM access (1 to 2nJ) is a couple of orders-of-magnitude higher than the cost of an internal cache access or functional operation (10pJ)"; DRAM I/O "takes over 20pJ/bit" and needs static power; even with better I/O, a DRAM access stays "10pJ/bit, 0.6nJ/8B"; "a cache fetch is 20pJ"; instruction overhead about 70 pJ; extreme efficiency needs "roughly a thousand operations ... for each DRAM fetch". The figure's digits do not extract from the PDF.
+- **MIT 6.5930 (Sze and Emer), lecture L11, slide "Memory Access Cost for DRAM is Expensive", credited "[Horowitz, ISSCC 2014]"** [Established as a reproduction of Fig. 1.1.9]: 8b add 0.03 pJ, 16b add 0.05, 32b add 0.1, 16b FP add 0.4, 32b FP add 0.9, 8b mult 0.2, 32b mult 3.1, 16b FP mult 1.1, 32b FP mult 3.7, 32b SRAM read (8 KB) 5 pJ, 32b DRAM read 640 pJ.
+- **Sources:** [paper copy](https://www.Gwern.net/doc/cs/hardware/2014-horowitz-2.pdf) (bibliographic record checked against Crossref); [MIT 6.5930 L11](https://csg.csail.mit.edu/6.5930/lectures/L11-Advanced_Tech.pdf). Checked Nov 2026.
+
+## R-459 · DRAM access energy and measured HBM power (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (primary documents opened).*
+
+- **M. O'Connor, N. Chatterjee et al., "Fine-Grained DRAM: Energy-Efficient DRAM for Extreme Bandwidth Systems," MICRO-50, Oct 2017, pp. 41–54, doi:10.1145/3123939.3124545** [Established, modelled]: "The energy to access a bit in HBM2 is approximately 3.97 pJ/bit"; HBM2 breakdown at application toggle rates: on-die data movement 2.24 pJ/bit, interposer I/O 0.3 pJ/bit, activation 1.21 pJ/bit, "3.92 pJ/bit of energy (including ECC overhead)"; high-end GPU cards "limited to approximately 300W, of which no more than about 20% is budgeted to the DRAM"; Fig. 1(a) plots GDDR5 at 14.0 pJ/bit and HBM2 at 3.9 pJ/bit against the bandwidth a 60 W budget allows (536 GB/s and 1.9 TB/s); target 2 pJ/bit.
+- **A. Olgun et al. (ETH Zürich), "Understanding the Power Consumption of Modern High Bandwidth Memory," arXiv:2610.14244v1, 9 Oct 2026 (preprint)** [Industry estimate: measurements on three systems, not yet peer reviewed]: GPU memory (HBM3E) power "as high as 248 W on average across three real NVIDIA H200 GPUs ... approximately 35% of the GPU's 700 W power budget"; measured read throughput 4.52 TB/s, "94% of the peak 4.8 TB/s"; modelled HBM4 read energy "6.24 to 6.73 pJ/bit between 4.8 and 8.0 Gbps/pin" (VDDC 1.05 V, VDDQ 0.9 V); at 6.4 Gb/s HBM4's lower supplies cut read energy per bit 3.7–9.5% against HBM3E.
+- **Sources:** [FGDRAM](https://research.nvidia.com/sites/default/files/pubs/2017-10_Fine-Grained-DRAM%3A-Energy-Efficient/oconnor_and_chatterjee.micro2017.pdf); [Olgun et al.](https://arxiv.org/abs/2610.14244). Checked Nov 2026.
+
+## R-460 · GPU memory specifications and HBM3E (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (vendor pages opened).*
+
+- **NVIDIA Technical Blog, "Inside NVIDIA Blackwell Ultra: The Chip Powering the AI Factory Era" (Aug 2025)** [Established as vendor specification]: Table 2: Hopper 80 GB HBM at 3.35 TB/s (H100) and 141 GB HBM3E at 4.8 TB/s (H200); Blackwell 192 GB HBM3E, 8 TB/s; Blackwell Ultra 288 GB HBM3E, 8 TB/s; FP8 dense | sparse 2 | 4 PF (Hopper), 5 | 10 PF (Blackwell, Blackwell Ultra); NVFP4 dense | sparse 10 | 20 PF (Blackwell), 15 | 20 PF (Blackwell Ultra); TGP up to 700 W, 1,200 W, 1,400 W. Blackwell Ultra HBM: "Eight 12-Hi stacks, 16 × 512-bit controllers (8,192-bit total width)"; "Complete model residence: 300B+ parameter models without memory offloading." (The page's AI-generated summary says "on-chip"; the body says on-package.)
+- **NVIDIA GB300 NVL72 page** [Established as vendor specification]: 72 Blackwell Ultra GPUs and 36 Grace CPUs; GPU memory 20 TB, up to 576 TB/s; CPU memory 17 TB LPDDR5X at 14 TB/s; FP4 Tensor Core 1,440 | 1,080 PFLOPS (sparse | dense).
+- **NVIDIA Vera Rubin NVL72 page (read 25 Nov 2026)** [Established as vendor specification]: per Rubin GPU 288 GB HBM4 at 19.2 TB/s; NVFP4 inference 50 PF (footnote: sparse), NVFP4 training 35 PF and FP8/FP6 training 17.5 PF (footnote: dense). An earlier research note cited 22 TB/s from search extracts; the page read here gives 19.2 TB/s.
+- **Micron HBM3E product page** [Established as vendor specification]: "pin speed of more than 9.2Gbps and achieves a rate greater than 1.2TB/s"; 36 GB 12-high cube.
+- **Sources:** [Blackwell Ultra blog](https://developer.nvidia.com/blog/inside-nvidia-blackwell-ultra-the-chip-powering-the-ai-factory-era); [GB300 NVL72](https://www.nvidia.com/en-us/data-center/gb300-nvl72/); [Vera Rubin NVL72](https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/); [Micron HBM3E](https://www.micron.com/products/memory/hbm/hbm3e). Checked Nov 2026.
+
+## R-461 · Memory-wall trends (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (primary documents opened or records checked).*
+
+- **A. Gholami et al., "AI and Memory Wall," IEEE Micro 44(3):33–39, 2024, doi:10.1109/MM.2024.3373763; extended version arXiv:2403.14123** [Established for the fitted trend; the fit is to selected hardware]: "peak server hardware FLOPS has been scaling at 3.0×/2yrs, outpacing the growth of DRAM and interconnect bandwidth, which have only scaled at 1.6 and 1.4 times every 2 years"; figure labels 60000×, 100× and 30× over 20 years; training compute 750×/2 yrs and transformer parameters 410×/2 yrs (2018–2022), single-GPU memory 2×/2 yrs; decoder inference is bottlenecked by memory bandwidth.
+- **W. A. Wulf and S. A. McKee, "Hitting the memory wall," ACM SIGARCH Computer Architecture News 23(1):20–24, Mar 1995, doi:10.1145/216585.216588** [Established; cited for the term and the average-access-time argument; record checked against Crossref, full text not re-read because the ACM site refuses automated fetches].
+- **Sources:** [arXiv 2403.14123](https://arxiv.org/abs/2403.14123); Crossref records for both DOIs. Checked Nov 2026.
+
+## R-462 · DRAM latency (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (primary documents opened).*
+
+- **D. Lee et al., "Tiered-Latency DRAM: A Low Latency and Low Cost DRAM Architecture," HPCA 2013, pp. 615–626, doi:10.1109/HPCA.2013.6522354; retrospective arXiv:1805.03048** [Established]: over an 11-year interval in which DRAM cost per bit fell by a factor of 16, "DRAM latency (as measured by the tRCD and tRC timing constraints) decreased by only 30.5% and 26.3%"; long, high-capacitance bitlines are the main source of latency.
+- **Chips and Cheese, "AMD's Ryzen 9950X: Zen 5 on Desktop" (14 Aug 2024)** [Industry estimate: one measured system]: "just over 70 ns of memory latency" with DDR5-6000 (EXPO enabled); the 9950X's theoretical bandwidth is 96 GB/s.
+- **Sources:** [arXiv 1805.03048](https://arxiv.org/abs/1805.03048); [Chips and Cheese](https://chipsandcheese.com/p/amds-ryzen-9950x-zen-5-on-desktop). Checked Nov 2026.
+
+## R-463 · SRAM-centric AI processors (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (vendor page opened).*
+
+- **Cerebras press release, "Cerebras Systems Unveils World's Fastest AI Chip with Whopping 4 Trillion Transistors" (13 Mar 2024)** [Established as vendor specification]: WSE-3: 4 trillion transistors, 900,000 AI cores, 125 PF peak AI performance, "44GB on-chip SRAM", TSMC 5 nm; external memory 1.5 TB, 12 TB or 1.2 PB. (The 21 PB/s SRAM-bandwidth figure in an earlier research note is not on this page and is not used.)
+- **Source:** [Cerebras](https://www.cerebras.ai/press-release/cerebras-announces-third-generation-wafer-scale-engine). Checked Nov 2026.

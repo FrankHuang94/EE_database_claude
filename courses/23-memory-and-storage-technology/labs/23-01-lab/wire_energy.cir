@@ -1,0 +1,68 @@
+* Lab 23-01, Part 1 -- Example 23-01.2: the energy a supply delivers to charge a 1 mm on-chip wire.
+* The wire is a 20-section RC ladder: 200 fF and 2 kohm in total (0.2 fF/um, 2 ohm/um, assumed), driven
+* through a driver resistance Rdrv from a 0.75 V step. The source delivers C V^2 = 112.5 fJ whatever Rdrv is;
+* half is stored on the wire and half is dissipated in the resistors.
+* EXPECT esup1 key:../../chapters/23-01-memory-hierarchy-and-memory-wall.md#Ex_23-01.2b scale=1e-15 rtol=2e-3
+* EXPECT esup2 key:../../chapters/23-01-memory-hierarchy-and-memory-wall.md#Ex_23-01.2b scale=1e-15 rtol=2e-3
+* EXPECT estore key:README.md#Lab_23-01.a scale=1e-15 rtol=2e-3
+* EXPECT ediss1 key:README.md#Lab_23-01.b scale=1e-15 rtol=4e-3
+.param VDD=0.75 CTOT=200f RTOT=2k NSEG=20
+Vs in 0 pwl(0 0 1p {VDD})
+Rdrv in n0 1k
+Rw1 n0 n1 {RTOT/NSEG}
+Cw1 n1 0 {CTOT/NSEG}
+Rw2 n1 n2 {RTOT/NSEG}
+Cw2 n2 0 {CTOT/NSEG}
+Rw3 n2 n3 {RTOT/NSEG}
+Cw3 n3 0 {CTOT/NSEG}
+Rw4 n3 n4 {RTOT/NSEG}
+Cw4 n4 0 {CTOT/NSEG}
+Rw5 n4 n5 {RTOT/NSEG}
+Cw5 n5 0 {CTOT/NSEG}
+Rw6 n5 n6 {RTOT/NSEG}
+Cw6 n6 0 {CTOT/NSEG}
+Rw7 n6 n7 {RTOT/NSEG}
+Cw7 n7 0 {CTOT/NSEG}
+Rw8 n7 n8 {RTOT/NSEG}
+Cw8 n8 0 {CTOT/NSEG}
+Rw9 n8 n9 {RTOT/NSEG}
+Cw9 n9 0 {CTOT/NSEG}
+Rw10 n9 n10 {RTOT/NSEG}
+Cw10 n10 0 {CTOT/NSEG}
+Rw11 n10 n11 {RTOT/NSEG}
+Cw11 n11 0 {CTOT/NSEG}
+Rw12 n11 n12 {RTOT/NSEG}
+Cw12 n12 0 {CTOT/NSEG}
+Rw13 n12 n13 {RTOT/NSEG}
+Cw13 n13 0 {CTOT/NSEG}
+Rw14 n13 n14 {RTOT/NSEG}
+Cw14 n14 0 {CTOT/NSEG}
+Rw15 n14 n15 {RTOT/NSEG}
+Cw15 n15 0 {CTOT/NSEG}
+Rw16 n15 n16 {RTOT/NSEG}
+Cw16 n16 0 {CTOT/NSEG}
+Rw17 n16 n17 {RTOT/NSEG}
+Cw17 n17 0 {CTOT/NSEG}
+Rw18 n17 n18 {RTOT/NSEG}
+Cw18 n18 0 {CTOT/NSEG}
+Rw19 n18 n19 {RTOT/NSEG}
+Cw19 n19 0 {CTOT/NSEG}
+Rw20 n19 n20 {RTOT/NSEG}
+Cw20 n20 0 {CTOT/NSEG}
+.control
+tran 0.5p 30n 0 0.5p
+linearize
+let p = -v(in)*i(vs)
+meas tran esup1 integ p from=0 to=30n
+let vend = v(n20)
+meas tran vfin find vend at=29.9n
+let estore = 0.5*200e-15*vfin*vfin
+let ediss1 = esup1 - estore
+print estore ediss1
+alter Rdrv = 10k
+tran 0.5p 30n 0 0.5p
+linearize
+let p2 = -v(in)*i(vs)
+meas tran esup2 integ p2 from=0 to=30n
+.endc
+.end
